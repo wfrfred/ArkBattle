@@ -1,0 +1,43 @@
+{
+  "provenance": {
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/leithanien-summons-20261109/content/read_block_constants.py",
+      "bytes": 1874,
+      "sha256": "885ae1bcdb3e275af31b726424be258c82f00a5c94ea471ab97a0afbeab6ac6b"
+    },
+    "reader": {
+      "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/native.py",
+      "bytes": 18723,
+      "sha256": "1c6c16dc97e0dd9af0af4033c81a7534384dd65ebb1e604df3f4a3289df158e6"
+    },
+    "input": {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+      "bytes": 223112680,
+      "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff"
+    },
+    "scope": "Constants referenced by get_blockRadiusSquare/get_defaultBlockRadiusScale in blocking-native.json; static reads only."
+  },
+  "result": [
+    {
+      "name": "non-FLY radius squared",
+      "address": "0x1870afde0",
+      "bytes": "bdfeff3e",
+      "format": "<f",
+      "value": 0.4999903738498688
+    },
+    {
+      "name": "FLY radius squared",
+      "address": "0x1870afde4",
+      "bytes": "9dc94c3f",
+      "format": "<f",
+      "value": 0.7999513745307922
+    },
+    {
+      "name": "default radius scale",
+      "address": "0x1870adbe0",
+      "bytes": "0000803f",
+      "format": "<f",
+      "value": 1.0
+    }
+  ]
+}

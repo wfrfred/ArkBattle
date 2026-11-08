@@ -1,0 +1,47 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-09",
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/leithanien-summons-20261109/data/inspect_enemy_data.py",
+      "bytes": 2813,
+      "sha256": "9ce8ad35806be9279b00606306553311ac09633e97fd306c0921b75d63d78534",
+      "gitBlobSha1": "60cb74cc994b968eb97cf003a3ef3319b53d2776"
+    },
+    "mirror": {
+      "repository": "Kengxxiao/ArknightsGameData",
+      "requestedRef": "master",
+      "observedHeadCommit": "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+      "observedHeadCommitDate": "2026-11-01T02:17:15Z",
+      "path": "zh_CN/gamedata/levels/enemydata/enemy_database.json",
+      "immutableBlobUrl": "https://api.github.com/repos/Kengxxiao/ArknightsGameData/git/blobs/62ab806926b9c8ca5c80524730caf0066f6c2c2f",
+      "file": {
+        "path": ".cache/native-research/leithanien-enemydata-20261109/enemy_database.json",
+        "bytes": 15721552,
+        "sha256": "eb8559db76aecd92c37b3ac038de0e9aeb8b6d6c107adfaeadfe0fbc098e067b",
+        "gitBlobSha1": "62ab806926b9c8ca5c80524730caf0066f6c2c2f"
+      }
+    },
+    "encryptedLevelCache": {
+      "path": ".cache/native-research/autochess-update-20261108/level_autochess_enemy_data.raw",
+      "bytes": 25812,
+      "sha256": "fbb7c82bb4c4bc1a82ee17b5879d19d2f7878891d3bac816a6d118cb2d10e07b",
+      "gitBlobSha1": "4d1bcd590682c54ec0d050c899385b0d1158b968"
+    },
+    "scope": "Two exact keys in the downloaded global EnemyDB only. The observed repository head predates the 2026-11-08 release; this is not the installed hot-update EnemyDB. No current encrypted level was decrypted."
+  },
+  "result": {
+    "keys": [
+      "enemy_9025_aclts",
+      "enemy_9026_acltm"
+    ],
+    "globalEnemyEntriesScanned": 2216,
+    "matches": [],
+    "unresolvedFields": [
+      "sideType",
+      "blockCnt",
+      "moveSpeed",
+      "levelOverrides"
+    ],
+    "conclusion": "This mirror does not establish values for either new summon. Zero hits do not establish absence from the current client."
+  }
+}

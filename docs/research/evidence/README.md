@@ -42,6 +42,7 @@ uv run "$skill/scripts/archive.py" docs/research/evidence
 
 | 批次 | 调查主题 |
 | --- | --- |
+| [leithanien-summons-20261109](leithanien-summons-20261109/README.md) | 规程莱塔尼亚召唤物的热更新绑定、阻挡与追踪停走；最终 EnemyData 数值缺口 |
 | [client-excerpts-20261007](client-excerpts-20261007/README.md) | 初始客户端、Buff 模板与调用摘录；属于较早客户端指纹 |
 | [blocking-lifecycle-20261010](blocking-lifecycle-20261010/README.md) | 阻挡维护、退场与旧项目实验 |
 | [skill-lifecycle-20261013](skill-lifecycle-20261013/README.md) | 技能启动、支付、持续与结束 |
