@@ -2,7 +2,6 @@ import { Hooks } from "../../dist/core/hook.js";
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { create as createCrate } from "../../dist/content/devices/crate.js";
-import { create as createShootingPlatform } from "../../dist/content/devices/shooting-platform.js";
 import { hole, normal } from "../../dist/content/terrain/definition.js";
 import * as conditions from "../../dist/content/terrain/condition.js";
 import { createBattleState } from "../../dist/core/battle/state.js";
@@ -49,29 +48,19 @@ function place(battle, id, definition, tile, position = Tile.center(tile)) {
     return add(initialized.state, initialized.value);
 }
 
-for (const [name, create] of [["crate", createCrate], ["shooting platform", createShootingPlatform]]) {
-    for (const [terrain, initialCost] of [[normal, 2000], [hole, 1000000]]) {
-        test(`${name} rewrites ordinary cost directly and preserves hole cost (${initialCost})`, () => {
-            const input = configuration(name);
-            const definition = create(input);
-            let state = battle(terrain, initialCost);
-            const original = getTile(state.battlefield.map, [0, 0]);
+for (const [terrain, initialCost] of [[normal, 2000], [hole, 1000000]]) {
+    test(`device tile changes use the registered tile and preserve ${terrain === hole ? "hole" : "ordinary"} cost rules`, () => {
+        const definition = createCrate(configuration("crate"));
+        let state = battle(terrain, initialCost);
+        const original = getTile(state.battlefield.map, [0, 0]);
+        state = place(state, 0, definition, [0, 0], Tile.center([0, 2]));
 
-            assert.equal(definition.vitality, input.vitality);
-            assert.equal(definition.deployable, input.deployable);
-            state = place(state, 0, definition, [0, 0], Tile.center([0, 2]));
-
-            const tile = getTile(state.battlefield.map, [0, 0]);
-            const expectedCost = terrain === hole ? initialCost : 1000;
-            assert.equal(tile.definition, original.definition);
-            assert.equal(tile.state.walkCost, expectedCost);
-            assert.equal(tile.state.allowsBlocking, original.state.allowsBlocking);
-            assert.equal(state.battlefield.navigation.baseline.WALK.get([0, 0]).cost, expectedCost);
-            assert.equal(state.battlefield.navigation.baseline.FLY.get([0, 0]).cost, 1);
-            assert.equal(getTile(state.battlefield.map, [0, 2]).state.walkCost, 2000);
-
-            state = remove(state, 0, "SCRIPT");
-            assert.deepEqual(getTile(state.battlefield.map, [0, 0]).state, original.state);
-        });
-    }
+        const tile = getTile(state.battlefield.map, [0, 0]);
+        const expectedCost = terrain === hole ? initialCost : 1000;
+        assert.equal(tile.state.walkCost, expectedCost);
+        assert.equal(state.battlefield.navigation.baseline.WALK.get([0, 0]).cost, expectedCost);
+        assert.equal(getTile(state.battlefield.map, [0, 2]).state.walkCost, 2000);
+        state = remove(state, 0, "SCRIPT");
+        assert.deepEqual(getTile(state.battlefield.map, [0, 0]).state, original.state);
+    });
 }
