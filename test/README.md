@@ -18,7 +18,7 @@
 
 ## 已审查范围
 
-以下场景依据[语义验收清单](../docs/architecture/verification.md)组织。按重要结果划分场景，同一场景可以顺序验证多个业务阶段，不按接口数量拆分。
+以下场景依据[语义验收清单](../docs/architecture/verification.md)组织。先确定独立的重要结果及集中归属，再选择代表场景；现有用例不构成保留依据。同一场景可以顺序验证多个业务阶段，不按接口数量拆分。
 
 | 套件 | 需要保障的结果 |
 | --- | --- |
@@ -29,24 +29,27 @@
 | [unit-change](sim/unit-change.test.js) | update(battle, ref, change) 单目标写入；一个主场景集中验证二元 compose 的结合律与非交换、逐项 previous／no-op／Settlement，以及 optional 的 false 原对象／空后继和 guard 读取前序变换后的输入。最终 next 一次发布后才按序结算，嵌套 update 对第二 Unit 的结果不丢失，不建立跨 Unit 批次或守卫矩阵。 |
 | [hook](sim/hook.test.js) | 公共 Hook 固定候选、读取最新登记、独立嵌套派发。 |
 | [runtime](sim/runtime.test.js) | 初始化／出生事实先于 enter；正常预置替换接续最新绑定；Tick 阶段有序、失败不发布。 |
+| [route](sim/route-capability.test.js) | 首指令与重新进入、MOVE 采样、WAIT 时基与 ticking、即时循环让出、持续 TRACE、Main 出口及同步空间操作后的最新进度。 |
+| [schedule](sim/schedule.test.js) | 统一出生时间与偏移、等待先于 enter、超时只释放 wave、离场同步解除、Branch 整组抽选与同步重入、实际出生时基。 |
+| [路线与调度数据](content/route-schedule-data.test.js) | 原生路线控制流与等待编译、count／interval 展开、主线预选与 Branch 运行时选择，以及 Action／Enemy 的 notCountInTotal 合并到 NONE。 |
 | [lifetime](sim/lifetime.test.js) | 依赖者完整结束后宿主才注销；首次原因和收尾唯一；祖先开始结束后拒收新依赖。 |
 | [action](sim/action.test.js) | 启动拒绝、持久与执行身份、静态时序贡献变更时同步保留冷却进度、攻击中断／释放／输出、Combat 推进及确定性；释放通知中消失保留前缀并停止旧输出，出现后可恢复行动，不推导弹药消费政策。 |
 | [skill](sim/skill.test.js) | 持久与本轮状态、SP 门槛／支付／回复许可、TIME 当轮延时、Ammo 公式／采样／补弹额度／耗尽；开始通知中消失仍 ACTIVE 时执行 onStart，既有持续期照常推进。 |
 | [effect](sim/effect.test.js) | 安装与启停输出、零时长安装、覆写赢家、三种互斥时间、有效时长暂停与手动推进、末次回调续期、来源与生命周期依赖分离。 |
-| [contribution](sim/contribution.test.js) | 先选互斥赢家再动态求值，真实属性输出遵循领域公式。 |
+| [contribution](sim/contribution.test.js) | 先选互斥赢家再动态求值，真实 Offense 输出遵循属性公式、零下限并保留小数。实际输出与弹道负责各自采样时点。 |
 | [allegiance](sim/allegiance.test.js) | ALLY／ENEMY／NEUTRAL 的敌对关系。 |
 | [blocking](sim/blocking.test.js) | 成对资格、层与地块、容量尾部裁撤、批量解除与旧 Relation、多目标分散及独立位置计划；自身空地设置（含同值）完成角色对应的关系／偏移清理，通知可见已发布的新身份；主动空间覆盖先发布新位置和解除结果，再通知。复用代表场景，不展开字段／角色矩阵。 |
 | [locomotion](sim/locomotion.test.js)、[避障](sim/locomotion-avoidance.test.js)、[速度贡献](sim/move-speed-contributions.test.js) | 按 Locomotion 关键语义集中验证转向、限力／限速、速度与许可、最终目标吸附、地形避障和目的格反射。算法使用合法局部值，运行场景使用真实地图与领域操作，不注入速度，不复制公共不可变性或方向／缺失对象矩阵。Route／Battle 集成只保留新增的跨领域结果。 |
 | [deployment](sim/deployment.test.js) | Request 预览与执行一致、拒绝不消费、消费先于入场；撤退／死亡账务与 Card 延续；离场注销、结构占格和部署额度释放先于本地内容通知，死亡 Card 先于 Card／Request 通知结算；旧 Occupancy 配对清理、逐份恢复预算及 DP。 |
-| [core-types](sim/core-types.test.js) | Typed Ref 与构造输入保留私有状态／回调配对，Runtime 聚合不提供 `any` 私有状态上下文；预置 Unit 的 initial 对应其 Definition 能力。Change 能力逆变、compose 合并交集、optional 与 Query 守卫保留完整宿主，Action 专属操作和查询要求 Action 能力；普通登记与派发均保持键和载荷的关联。 |
+| [core-types](sim/core-types.test.js) | Typed Ref、Projectile 创建／更新、Query 守卫与构造输入保留私有状态／回调配对，Runtime 聚合不提供 `any` 私有状态上下文；预置 Unit 的 initial 对应其 Definition 能力。Change 能力逆变、compose 合并交集、optional 与 Query 守卫保留完整宿主，Action 专属操作和查询要求 Action 能力；普通登记与派发均保持键和载荷的关联。 |
 | [damage](sim/damage.test.js) | 按[伤害／治疗回归清单](../docs/architecture/verification.md#hook-与伤害治疗的回归语义)保障 HP／EP 公式与采样、独立 Calculate 状态、接收与提交、零值和取消、最新资源、Applied 后死亡及同步 Burst。 |
 | [healing](sim/healing.test.js) | HP／EP 治疗公式、四型恢复、满资源仍成功、双侧 Applied 和自然恢复的区别；一次双资源场景区分消失期间 Damage 拒收与 Healing 接收。 |
 | [elemental](sim/elemental.test.js) | rate 为零的标准 Burst 手动推进唯一时间进度，恢复期间四型 EP 逐步回填；动态与暂停预算、完整周期、零预算的一次性输出和独立产物、完成／取消后的资源与作用生命周期；自然 EP 回复及既有 Burst 不因消失冻结，不复制公共时间或 Lifetime 矩阵。 |
 | [tracking 弹道](sim/projectile-tracking.test.js) | 已锁定目标消失后仍追真实位置；身份命中不依赖 Targetable／Hitbox，Damage 接收独立判断。保留原目标失效、来源采样和具体终止结果，不为 Presence 新增通用 Projectile Rule。 |
-| [UI瞬时输出](sim/event-output.test.js) | 按EVENT清单集中验证真实结算飘字、爆发位置与注销快照、路线计数独立和Tick输出清空。 |
+| [UI瞬时输出](sim/event-output.test.js) | 按 EVENT 清单集中验证真实结算飘字、爆发位置与注销快照，以及 Tick 清空输出和旧版本保留；业务结算不依赖事件消费。 |
 | [标准元素爆发](sim/elemental-runtime.test.js) | Core 具体 Effect 使用 Data 绑定的真实数值产生伤害、异常、永久输出和周期累计结果；不重写夹具算法或按八套配置逐字段扩展。 |
 
-[battle 夹具](helpers/battle.js)只通过 Runtime 的公开输入构造地图和预置 Unit。场景通过实际领域操作建立执行、资源及依赖事实；纯算法直接使用合法值。
+[battle 夹具](helpers/battle.js)通过 Runtime 的公开输入构造地图和预置 Unit。场景通过实际领域操作建立执行、资源及依赖事实；纯算法直接使用合法值。夹具使用当前字段和初始化契约，不翻译旧 API，也不提供任意能力状态、身份计数或进度注入。
 
 伤害／治疗定向套件从文档清单编写，直接使用真实构造、Hook 登记、资源操作和 Lifetime。helper 只组合 Calculate／Apply，不承担能力装配、状态注入或另一套领域程序。
 
