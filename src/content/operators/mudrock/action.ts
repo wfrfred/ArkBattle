@@ -19,6 +19,10 @@ import {
     type Targetable,
 } from "../../../core/unit/capability/targetable/capability.js";
 import { hasOffense, resolveAttack } from "../../../core/unit/capability/offense/index.js";
+import {
+    hasAllegiance,
+    type Allegiance,
+} from "../../../core/unit/capability/allegiance/capability.js";
 
 import { finish } from "../../../core/unit/skill/index.js";
 import { hasSkill } from "../../../core/unit/capability/skill/index.js";
@@ -33,7 +37,7 @@ import {
 import * as targeting from "../../../core/battle/targeting/index.js";
 import { hasBlockable, hasBlocker } from "../../../core/unit/capability/blocking/index.js";
 import { hasDirection } from "../../../core/unit/capability/occupancy/index.js";
-import { hasLayer } from "../../../core/unit/capability/layer/index.js";
+import { hasLayer, type Layer } from "../../../core/unit/capability/layer/index.js";
 import { fromTiles } from "../../../core/geometry/range.js";
 import { topK } from "../../../core/common/collection.js";
 import type { State as BattleState } from "../../../core/battle/index.js";
@@ -45,7 +49,12 @@ import { stun } from "../../../core/effects/control.js";
 import { install } from "../../../core/unit/effect/index.js";
 import { value, healSelf } from "./common.js";
 
-function attackTarget(battle: BattleState, self: Unit, profile: Profile, skill: boolean) {
+function attackTarget(
+    battle: BattleState,
+    self: Unit & Allegiance,
+    profile: Profile,
+    skill: boolean,
+) {
     const eligible = targeting.damage(battle, self);
     const withinRange = hasDirection(self)
         ? targeting.inRange(
@@ -54,7 +63,7 @@ function attackTarget(battle: BattleState, self: Unit, profile: Profile, skill: 
           )
         : () => false;
 
-    return <U extends Unit>(target: U): target is U & Targetable & Vitality =>
+    return <U extends Unit>(target: U): target is U & Targetable & Vitality & Allegiance & Layer =>
         hasTargetable(target) &&
         eligible(target) &&
         hasLayer(target) &&
@@ -63,11 +72,11 @@ function attackTarget(battle: BattleState, self: Unit, profile: Profile, skill: 
             (!skill && hasBlockable(target) && target.blockable.relation?.blocker.id === self.id));
 }
 
-export function skillTarget(battle: BattleState, self: Unit, profile: Profile) {
+export function skillTarget(battle: BattleState, self: Unit & Allegiance, profile: Profile) {
     return attackTarget(battle, self, profile, true);
 }
 
-export function skillTargets(battle: BattleState, self: Unit, profile: Profile) {
+export function skillTargets(battle: BattleState, self: Unit & Allegiance, profile: Profile) {
     return allUnits(battle).filter(skillTarget(battle, self, profile));
 }
 
@@ -88,7 +97,7 @@ function attackDefinition(
                 id: "primary",
                 select(battle, source) {
                     const self = getCurrentUnit(battle, source);
-                    if (self === undefined) {
+                    if (self === undefined || !hasAllegiance(self)) {
                         return { state: battle, value: [] };
                     }
 
@@ -156,7 +165,7 @@ export function createSkill(
                 const currentSource = getCurrentUnit(state, host);
                 const target = getCurrentUnit(state, targetRef);
 
-                if (currentSource?.lifecycle !== "PRESENT") {
+                if (currentSource?.lifecycle !== "PRESENT" || !hasAllegiance(currentSource)) {
                     return state;
                 }
 

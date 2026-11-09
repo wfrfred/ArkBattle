@@ -40,6 +40,7 @@ import { setAttackContribution, resolveAttack } from ${module("unit/capability/o
 import { setLayer, type Blocker, type Blockable, type Relation, type Hook as BlockingHook } from ${module("unit/capability/blocking/index")};
 import * as blocking from ${module("battle/blocking/index")};
 import * as targeting from ${module("battle/targeting/index")};
+import type { Allegiance } from ${module("unit/capability/allegiance/capability")};
 import { hasTargetable } from ${module("unit/capability/targetable/capability")};
 import { topK } from ${module("common/collection")};
 import type { Spawn } from ${module("battle/schedule/index")};
@@ -258,16 +259,21 @@ for (const self of allUnits(battle).filter(actionCapability.hasAction).filter(ha
     const speed: number = skills.resolveRecoverySpeed(battle, self);
 }
 const selectableActions = allUnits(battle).filter(actionCapability.hasAction).filter(hasTargetable);
-const damagedCandidates = selectableActions.filter(targeting.damage(battle, host));
+declare const targetingSource: Unit & Allegiance;
+const damagedCandidates = selectableActions.filter(targeting.damage(battle, targetingSource));
 const nearestPatient = topK(damagedCandidates, 1, targeting.hpRatio)[0]!;
 const preservedAction: actionCapability.Action = nearestPatient;
 const establishedVitality: vitality.Vitality = nearestPatient;
-for (const self of selectableActions.filter(targeting.elementHealing(battle, host))) {
+const establishedAllegiance: Allegiance = nearestPatient;
+for (const self of selectableActions.filter(targeting.elementHealing(battle, targetingSource))) {
     const preservedAction: actionCapability.Action = self;
     const establishedElemental: elemental.Elemental = self;
+    const establishedAllegiance: Allegiance = self;
 }
+// @ts-expect-error standard target eligibility requires the source's Allegiance capability.
+targeting.damage(battle, host);
 // @ts-expect-error selection policies take an explicitly supplied source value rather than locating a Ref.
-targeting.damage(battle, reference);
+targeting.damage(battle, ref(targetingSource));
 const patient = initialize(battle, { id: 2, position: [0, 0], definition: {
     id: 'patient', hooks: Hooks.empty(),
     vitality: { maxHp: 100, defense: 10, resistance: 0 },

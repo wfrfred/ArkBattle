@@ -4,6 +4,7 @@ import { secondsToTicks } from "../../../data/arknights/tick.js";
 import * as units from "../../../core/unit/index.js";
 import { hasBlockable } from "../../../core/unit/capability/blocking/index.js";
 import { hasTargetable } from "../../../core/unit/capability/targetable/capability.js";
+import { hasAllegiance } from "../../../core/unit/capability/allegiance/capability.js";
 import * as targeting from "../../../core/battle/targeting/index.js";
 
 export interface Timing {
@@ -24,7 +25,7 @@ export function create(profile: Profile, timing: Timing): Attack {
                 id: "primary",
                 select(battle, source) {
                     const self = units.get(battle, source);
-                    if (self === undefined) {
+                    if (self === undefined || !hasAllegiance(self)) {
                         return { state: battle, value: [] };
                     }
 

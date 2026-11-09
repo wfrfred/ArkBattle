@@ -1,5 +1,9 @@
 import type { Unit } from "../../unit/unit.js";
-import { areHostile, hasAllegiance } from "../../unit/capability/allegiance/capability.js";
+import {
+    areHostile,
+    hasAllegiance,
+    type Allegiance,
+} from "../../unit/capability/allegiance/capability.js";
 import { hasHitbox } from "../../unit/capability/hitbox/capability.js";
 import { isSpatiallyPresent } from "../../unit/capability/presence/capability.js";
 import {
@@ -22,17 +26,16 @@ import type { State as BattleState } from "../state.js";
 
 export function damage(
     battle: BattleState,
-    source: Unit,
+    source: Unit & Allegiance,
     ignored: readonly Restriction[] = [],
-): <U extends Unit & Targetable>(target: U) => target is U & Vitality {
+): <U extends Unit & Targetable>(target: U) => target is U & Vitality & Allegiance {
     const allows = allowsRestrictions(battle, source, ignored);
 
-    return <U extends Unit & Targetable>(target: U): target is U & Vitality =>
+    return <U extends Unit & Targetable>(target: U): target is U & Vitality & Allegiance =>
         target.lifecycle === "PRESENT" &&
         isSpatiallyPresent(target) &&
         hasVitality(target) &&
         target.vitality.hp > 0 &&
-        hasAllegiance(source) &&
         hasAllegiance(target) &&
         areHostile(source, target) &&
         allows(target);
@@ -40,17 +43,16 @@ export function damage(
 
 export function healing(
     battle: BattleState,
-    source: Unit,
+    source: Unit & Allegiance,
     ignored: readonly Restriction[] = [],
-): <U extends Unit & Targetable>(target: U) => target is U & Vitality {
+): <U extends Unit & Targetable>(target: U) => target is U & Vitality & Allegiance {
     const allows = allowsRestrictions(battle, source, ignored);
 
-    return <U extends Unit & Targetable>(target: U): target is U & Vitality =>
+    return <U extends Unit & Targetable>(target: U): target is U & Vitality & Allegiance =>
         target.lifecycle === "PRESENT" &&
         isSpatiallyPresent(target) &&
         hasVitality(target) &&
         target.vitality.hp > 0 &&
-        hasAllegiance(source) &&
         hasAllegiance(target) &&
         source.allegiance.side === target.allegiance.side &&
         target.vitality.hp < resolveMaxHp(target.definition.vitality, target.vitality) &&
@@ -62,17 +64,16 @@ export function healing(
 
 export function elementDamage(
     battle: BattleState,
-    source: Unit,
+    source: Unit & Allegiance,
     ignored: readonly Restriction[] = [],
-): <U extends Unit & Targetable>(target: U) => target is U & Elemental {
+): <U extends Unit & Targetable>(target: U) => target is U & Elemental & Allegiance {
     const allows = allowsRestrictions(battle, source, ignored);
 
-    return <U extends Unit & Targetable>(target: U): target is U & Elemental =>
+    return <U extends Unit & Targetable>(target: U): target is U & Elemental & Allegiance =>
         isSpatiallyPresent(target) &&
         hasElemental(target) &&
         available(target) &&
         target.elemental.burst === null &&
-        hasAllegiance(source) &&
         hasAllegiance(target) &&
         target.allegiance.side !== "NEUTRAL" &&
         areHostile(source, target) &&
@@ -81,17 +82,16 @@ export function elementDamage(
 
 export function elementHealing(
     battle: BattleState,
-    source: Unit,
+    source: Unit & Allegiance,
     ignored: readonly Restriction[] = [],
-): <U extends Unit & Targetable>(target: U) => target is U & Elemental {
+): <U extends Unit & Targetable>(target: U) => target is U & Elemental & Allegiance {
     const allows = allowsRestrictions(battle, source, ignored);
 
-    return <U extends Unit & Targetable>(target: U): target is U & Elemental =>
+    return <U extends Unit & Targetable>(target: U): target is U & Elemental & Allegiance =>
         isSpatiallyPresent(target) &&
         hasElemental(target) &&
         available(target) &&
         target.elemental.burst === null &&
-        hasAllegiance(source) &&
         hasAllegiance(target) &&
         source.allegiance.side === target.allegiance.side &&
         resolveDamageRatio(battle, target) > 0 &&

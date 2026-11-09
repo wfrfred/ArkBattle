@@ -19,6 +19,7 @@ import { hasVitality } from "../../../core/unit/capability/vitality/index.js";
 import * as targeting from "../../../core/battle/targeting/index.js";
 import { hasBlockable } from "../../../core/unit/capability/blocking/index.js";
 import { hasTargetable } from "../../../core/unit/capability/targetable/capability.js";
+import { hasAllegiance } from "../../../core/unit/capability/allegiance/capability.js";
 import { topK } from "../../../core/common/collection.js";
 
 export interface Timing {
@@ -74,7 +75,7 @@ export function createMelee(profile: Profile, timing: Timing): Attack {
                 id: "primary",
                 select(battle, source) {
                     const self = units.get(battle, source);
-                    if (self === undefined) {
+                    if (self === undefined || !hasAllegiance(self)) {
                         return { state: battle, value: [] };
                     }
 
@@ -124,7 +125,7 @@ export function createRanged(profile: Profile, timing: Timing, projectile: Proje
                 id: "primary",
                 select(battle, source) {
                     const self = units.get(battle, source);
-                    if (self === undefined) {
+                    if (self === undefined || !hasAllegiance(self)) {
                         return { state: battle, value: [] };
                     }
 

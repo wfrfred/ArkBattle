@@ -3,6 +3,7 @@ import * as unitHooks from "../../../core/unit/hook.js";
 import { normal as normalSite } from "../../terrain/condition.js";
 import { update as updateUnit } from "../../../core/battle/unit.js";
 import { hasTargetable } from "../../../core/unit/capability/targetable/capability.js";
+import { hasAllegiance } from "../../../core/unit/capability/allegiance/capability.js";
 import { createArknightsElementalDefinition } from "../../../data/arknights/elemental.js";
 import {
     create as createAction,
@@ -268,7 +269,9 @@ export function create(
                 const source = getCurrentUnit(battle, sourceRef);
 
                 return (
-                    source !== undefined && skillTargets(battle, source, profile).some(() => true)
+                    source !== undefined &&
+                    hasAllegiance(source) &&
+                    skillTargets(battle, source, profile).some(() => true)
                 );
             },
             onStart(state, source) {

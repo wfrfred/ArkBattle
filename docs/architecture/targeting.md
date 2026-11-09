@@ -14,7 +14,7 @@ const selected = topK(candidates, count, targeting.distance(origin));
 const bindings = selected.map(units.ref);
 ```
 
-source 是调用者选定版本的 Unit。Query 绑定输入 BattleState，谓词读取同一版本；集合终端保留候选完整类型，只有保存身份或调用后续操作时才生成 Ref。候选来源可以是全场、阻挡关系或既有名单，内容可以组合多个查询。
+source 是调用者选定版本的 Unit。采用标准敌我资格时，来源必须具有 Allegiance，由类型约束表达；调用方从宽泛 Unit 取得来源时，在调用边界收窄。Query 绑定输入 BattleState，谓词读取同一版本；集合终端保留候选完整类型，只有保存身份或调用后续操作时才生成 Ref。候选来源可以是全场、阻挡关系或既有名单，内容可以组合多个查询。
 
 `common.topK` 负责稳定排序与截取，比较相同保留源顺序。`Query.take` 只取当前顺序的前若干项。`rng.sample(candidates, count)` 立即消费候选并无放回抽样；调用者显式接续 RNG 状态，不能在惰性谓词或比较器中消费随机数。
 
@@ -27,12 +27,12 @@ source 是调用者选定版本的 Unit。Query 绑定输入 BattleState，谓�
 ```typescript
 function damage(
     battle: BattleState,
-    source: Unit,
+    source: Unit & Allegiance,
     ignored?: readonly Restriction[],
-): <U extends Unit & Targetable>(target: U) => target is U & Vitality;
+): <U extends Unit & Targetable>(target: U) => target is U & Vitality & Allegiance;
 ```
 
-healing 同样证明 Vitality；elementDamage、elementHealing 证明 Elemental。已有 Hitbox、Route 等能力不会在连续筛选中丢失。
+四种标准谓词均要求来源具有 Allegiance。候选来自异构集合，谓词检查候选的能力并保留证明：damage、healing 证明 Vitality 与 Allegiance；elementDamage、elementHealing 证明 Elemental 与 Allegiance。已有 Hitbox、Route 等能力不会在连续筛选中丢失。通用 Targetable 限制查询不因此要求所有来源或目标具有阵营。
 
 | 谓词 | 常用政策 |
 | --- | --- |
@@ -123,7 +123,7 @@ healFree 是独立的标准 Effect，普通 HP healing 按 Definition 对象身�
 - 定义对象豁免覆盖共享定义的全部有效来源，保留其它定义；共用允许函数不合并豁免身份。竞争先于豁免，固有与临时登记互不误删。
 - ACTIVE 的标准 healFree 只影响普通 HP 治疗选择，禁用或结束后不再限制；明确目标的 Healing 和独立 EP 回复分别判断。
 - 联合治疗使用 HP 或有效 EP 的需求。阻挡前缀与普通候选可以采用不同政策，不因迁移改变既定内容结果。
-- 目标资格守卫保留已有能力；嘲讽读取有效贡献，允许负值；入场排序直接使用 ID。
+- 标准资格的来源类型要求阵营；目标资格守卫保留已有能力并证明资源能力与阵营。嘲讽读取有效贡献，允许负值；入场排序直接使用 ID。
 - 攻击按顺序接续各组 RNG，保存绑定；显式复验不重选。随机算法、Query 遍历与稳定 TopK 由公共套件集中验证。
 
 验收先按上述独立结果选最小代表场景，不测试已删除接口的缺席或为每个函数复制公共算法矩阵。具体归属见[语义验收](verification.md)。

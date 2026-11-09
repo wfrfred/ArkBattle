@@ -2,6 +2,7 @@ import { create as createAttack, type Attack } from "../../actions/attack.js";
 import * as targeting from "../../../core/battle/targeting/index.js";
 import * as units from "../../../core/unit/index.js";
 import { hasTargetable } from "../../../core/unit/capability/targetable/capability.js";
+import { hasAllegiance } from "../../../core/unit/capability/allegiance/capability.js";
 import { hasBlockable, hasBlocker } from "../../../core/unit/capability/blocking/index.js";
 import { hasDirection } from "../../../core/unit/capability/occupancy/index.js";
 import { hasLayer } from "../../../core/unit/capability/layer/index.js";
@@ -24,7 +25,7 @@ export function create(profile: Profile): Attack {
                 id: "primary",
                 select(battle, source) {
                     const self = units.get(battle, source);
-                    if (self === undefined) {
+                    if (self === undefined || !hasAllegiance(self)) {
                         return { state: battle, value: [] };
                     }
 

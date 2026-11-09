@@ -6,6 +6,7 @@ import { create as createAttack, type Attack } from "../content/actions/attack.j
 import * as targeting from "../core/battle/targeting/index.js";
 import * as units from "../core/unit/index.js";
 import { hasTargetable } from "../core/unit/capability/targetable/capability.js";
+import { hasAllegiance } from "../core/unit/capability/allegiance/capability.js";
 import { hasVitality } from "../core/unit/capability/vitality/index.js";
 import { hasBlockable, hasBlocker, sides } from "../core/unit/capability/blocking/index.js";
 import { hasDirection } from "../core/unit/capability/occupancy/index.js";
@@ -173,7 +174,7 @@ function operatorDefinition(value: unknown) {
                 id: "primary",
                 select(battle, source) {
                     const self = units.get(battle, source);
-                    if (self === undefined) {
+                    if (self === undefined || !hasAllegiance(self)) {
                         return { state: battle, value: [] };
                     }
 
@@ -295,7 +296,7 @@ function enemyDefinition(value: unknown) {
                 id: "primary",
                 select(battle, source) {
                     const self = units.get(battle, source);
-                    if (self === undefined) {
+                    if (self === undefined || !hasAllegiance(self)) {
                         return { state: battle, value: [] };
                     }
 
