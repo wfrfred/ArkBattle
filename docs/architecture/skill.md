@@ -30,9 +30,9 @@ Skill 需要保障的结果是：
 
 领域 index 提供 create、Skill／Activation、ref／activationRef、getSkill／getActivation、字段写回及 SP／Ammo／激活业务，不转发能力守卫、Rule／Hook 与 Ammo 贡献登记。Capability index 提供对应能力 API。Core 已取得当前宿主时直接读取 unit.skill，不解释私有 state；完整聚合替换只供领域内部使用。
 
-SP 的 setContribution／removeContribution 仅登记 recoverySpeed／recoveryMultiplier，不接收 Ref，返回 `Change<Unit & SkillCapability>`，经领域入口以 setSpContribution／removeSpContribution 导出。它们与 SP State／Input 保持同一模块，不增加 Capability 转发，不附带资源支付或延时。容量、门槛、支付和 TIME 时长没有通用 Contribution 注册表。
+SP 的 setContribution／removeContribution 仅登记 recoverySpeed／recoveryMultiplier，不接收 Ref，返回 `Change<Unit & SkillCapability>`，经领域入口以 setSpContribution／removeSpContribution 导出。它们与 SP State／Input 位于同一模块，不附带资源支付或延时。容量、门槛、支付和 TIME 时长没有通用 Contribution 注册表。
 
-SP 容量、门槛和默认费用直接读取 Skill Definition；发动实际费用优先采用 Activation.cost 程序。Skill 可以没有 SP，资源操作在入口通过 hasSp 确认槽位并建立 Definition／State 配对的非空类型证明，内部不重复检查。resolveRecoverySpeed／resolveRecoveryMultiplier 接收 battle 与已证明具有 SP 的当前宿主，直接求值贡献并返回 number，不再承担 Ref 定位或缺失兜底。
+SP 容量、门槛和默认费用直接读取 Skill Definition；发动实际费用优先采用 Activation.cost 程序。Skill 可以没有 SP，资源操作在入口通过 hasSp 确认槽位并建立 Definition／State 配对的非空类型证明，内部不重复检查。resolveRecoverySpeed／resolveRecoveryMultiplier 接收 battle 与已证明具有 SP 的当前宿主，直接求值贡献并返回 number。
 
 ## 1. 单槽聚合、Definition 与两种身份
 
@@ -61,7 +61,7 @@ skill: {
 }
 ```
 
-Definition.initialize(battle) 返回 Result<S>；create 接续其 state，建立 definition、state、初始 SP 和 activation: null，返回 Result<Skill<S, A>>。静态身份、SP 与持续预算配置在 create(battle, definition) 入口校验，校验通过后才调用私有初始化程序，sp.initialize 只建立初态，信任已校验的 Definition 和当前战斗 Tick。Capability.initialize 接续工厂结果，并补 nextActivationId、贡献、规则与 Hook 初态。Capability 工厂以 Result<Skill<any, any>> 接纳不同私有 S／A 的完整创建结果，公共 State 继承的 Skill 默认参数仍是 object；该创建组合边界不增加运行时形状校验。共享程序不保存私有运行进度，Unit 尚未登记时不能查询自己或假设兄弟能力已经存在。
+Definition.initialize(battle) 返回 Result<S>；create 接续其 state，建立 definition、state、初始 SP 和 activation: null，返回 Result<Skill<S, A>>。静态身份、SP 与持续预算配置在 create(battle, definition) 入口校验，校验通过后才调用私有初始化程序，sp.initialize 只建立初态，信任已校验的 Definition 和当前战斗 Tick。Capability.initialize 接续工厂结果，并补 nextActivationId、贡献、规则与 Hook 初态。Capability 工厂以 Result<Skill<any, any>> 接纳不同私有 S／A 的完整创建结果，公共 State 继承的 Skill 默认参数是 object；该创建组合边界通过类型配对保持私有数据的形状。共享程序不保存私有运行进度，Unit 尚未登记时不能查询自己或假设兄弟能力已经存在。
 
 ### 引用、查询与写回
 
@@ -70,7 +70,7 @@ Definition.initialize(battle) 返回 Result<S>；create 接续其 state，建立
 | 持久 Skill Ref | ref(source, definition)，地址为 host＋Definition；getSkill、activate、setState 使用它，跨多轮有效 |
 | 本轮 Activation Ref | activationRef(source, self)，地址为 host＋self.activation.id；getActivation、finish、cancel、operate、extendTime、setActivationState 与 SKILL Scope 使用它 |
 
-getSkill(battle, skillRef) 确认当前聚合的 Definition 对象身份，恢复 S／A；getActivation(battle, roundRef) 确认本轮 ID，返回同一聚合的非空视图。activate 返回的本轮 Ref 保留原 Definition 的 S／A。普通查询返回默认 object 的完整实体，精确 Ref 保留已有 S／A；获取 Ref 的泛型上界使用 any 以接纳不同私有类型，结果保持原 T，不把默认参数改为 any。过期 Ref 不读取或操作后来一轮，生命周期资格仍从当前 battle 检查。
+getSkill(battle, skillRef) 确认当前聚合的 Definition 对象身份，恢复 S／A；getActivation(battle, roundRef) 确认本轮 ID，返回同一聚合的非空视图。activate 返回的本轮 Ref 保留原 Definition 的 S／A。普通查询返回默认 object 的完整实体，精确 Ref 保留已有 S／A；获取 Ref 的泛型上界使用 any 以接纳不同私有类型，结果保持原 T。过期 Ref 不读取或操作后来一轮，生命周期资格从当前 battle 检查。
 
 字段级写回只接受结果值：
 
@@ -84,10 +84,9 @@ setActivationState<T extends Activation<any, any>>(
 ): BattleState;
 ```
 
-setState 只更新当前 Skill 的 state，setActivationState 只更新当前本轮 activation.state，保留 Definition、SP、Sustain、规则、Hook、槽位和 ID 进度。宿主缺失时抛出 RangeError；持久 Ref 的 Definition 不匹配时抛出 TypeError，本轮 Ref 过期时抛出 RangeError。持久 state 允许在 LEAVING 或结束程序中更新；普通本轮状态写入在 ENDING 时抛出 TypeError。数据同引用时返回原 battle，不执行完整更新，不提供旧局部 setter 或回调双协议。
+setState 只更新当前 Skill 的 state，setActivationState 只更新当前本轮 activation.state，保留 Definition、SP、Sustain、规则、Hook、槽位和 ID 进度。宿主缺失时抛出 RangeError；持久 Ref 的 Definition 不匹配时抛出 TypeError，本轮 Ref 过期时抛出 RangeError。持久 state 允许在 LEAVING 或结束程序中更新；普通本轮状态写入在 ENDING 时抛出 TypeError。数据同引用时返回原 battle，不执行完整更新。
 
 计算与提交之间不执行其他完整操作；跨领域调用后先接续 battle 并重读私有数据。字段写回保留其他当前字段，但不替调用者合并陈旧 state。NoInfer 阻止结果值反向扩大私有类型，完整聚合写回仅归 Core。
-
 
 ## 2. SP
 
@@ -97,7 +96,7 @@ SP Definition 保存 initial、capacity、requirement、可选数值 cost 和 Re
 
 Contribution 提供参与计算的数值影响，不结算配置切换、清空 SP、支付或当前 Activation 的时间变化。客户端 Rune／遗物的逐来源取整属于创建前预处理；运行中配置替换涉及资源与许可的有序变化，需要相应领域操作，当前尚无完整提交入口。证据及边界见 [Skill 原生公式调研](../research/cases/09-skill-mechanisms-and-requirements.md#27-原生公式复核ammosp-与具体持续时间操作)。
 
-实际需求包括：琳琅诗怀雅的金币配置切换、玛露西尔的容量／最低门槛／逐次支付分离，以及 Fever 的发动政策。这些干员的完整内容接入仍需逐项完成。本轮不新增运行时 SP 配置切换 API、独立配置状态机或 Definition 回调。后续确需动态查询有效容量等参数时，由类型化 Definition 的领域回调解释已有玩法 state；跨次事实归 Skill.state，本轮事实归 Activation.state，不更换共享 Definition 对象以免破坏 Skill Ref 身份。容量变化时如何处理余额、获取许可与退出恢复仍由明确操作结算，不在纯查询中偷偷写入，也不另存一份 SP.value。
+运行时 SP 配置切换尚无完整入口；琳琅诗怀雅的金币配置切换、玛露西尔的容量／最低门槛／逐次支付分离，以及 Fever 的发动政策尚未接入。跨次事实归 Skill.state，本轮事实归 Activation.state，共享 Definition 对象同时承担 Skill Ref 的身份。配置切换需要处理余额、获取许可与退出恢复，这些业务不能由纯查询或回复速度 Contribution 完成；SP.value 是余额的唯一事实来源。
 
 Recovery 为 TIME、ACTION、HIT 或 NONE。EXTERNAL 是资源操作的来源，普通 Action 的启动、推进和结束不会自动授予 SP。具体普通行动在成功释放点调用 Action.released，Skill 的 enter Hook 登记相应监听并调用自己的 recover；被拦截或取消的释放不产生通知。
 
@@ -129,9 +128,9 @@ TIME 的基础 durationTicks 在创建 Activation 时形成 endsAtTick。初始�
 
 持续时间、耗弹量及贡献输入在实际入口校验。基础弹药 amount 已由 Skill 创建入口校验，发动时的 resolveCapacity 不重复检查该静态值；动态 Modifier 的 addition 整数与 ratio 有限性仍在发动求值入口检查。内部预算、到期 Tick、剩余弹药与激活身份按游戏尺度直接计算，不重复检查算术结果是否超过安全整数范围。
 
-TIME 不保留 Duration Contribution，也不新增通用的初始时长回调。雷狼龙S空爆由现有发动过程先支付默认单层费用，再由 onStart 读取本轮剩余 SP、计算实际消费层数、消费剩余 SP 并调用 extendTime；这与已核实的具体消费／延时链一致。哈蒂娅的运行中条件延长同样由 extendTime 表达。SKILL_ACTIVATED 只输出技能动画需要的 Unit 身份和发生 Tick；初始与延长后的截止时间从当前 Activation 查询。
+TIME 的初始时长读取静态 durationTicks，运行中通过 extendTime 调整当前 Activation；没有 Duration Contribution 或初始时长回调。SP 支付与延时是独立操作，onStart 可以在默认支付之后读取剩余 SP、完成额外支付并延长本轮。雷狼龙 S 空爆的分层付费／延时、哈蒂娅的条件延时等具体内容尚未接入，原生依据见 [Skill 原生公式调研](../research/cases/09-skill-mechanisms-and-requirements.md#27-原生公式复核ammosp-与具体持续时间操作)。SKILL_ACTIVATED 只输出技能动画需要的 Unit 身份和发生 Tick；初始与延长后的截止时间从当前 Activation 查询。
 
-AMMO 的 setAmmoContribution 使用 `contribution.Input<ammo.Modifier, Unit & SkillCapability>`，只接受静态列表或返回列表的动态函数。持久来源登记在 Capability.ammo，与当前 Activation 的 Sustain 分开。ammo.Modifier 为 `{ addition, ratio }`，使用独立公式 `max(1, base + Σaddition + RoundToEven(base × Σratio))`，固定追加不参与比例乘算。原生一般式区分当前基础上限 M 和原始上限 B；项目目前覆盖普通初始化时 M = B 的情况，一个 base 已足够，不为未接入的基础上限变化另存一份状态。
+AMMO 的 setAmmoContribution 使用 `contribution.Input<ammo.Modifier, Unit & SkillCapability>`，只接受静态列表或返回列表的动态函数。持久来源登记在 Capability.ammo，与当前 Activation 的 Sustain 分开。ammo.Modifier 为 `{ addition, ratio }`，使用独立公式 `max(1, base + Σaddition + RoundToEven(base × Σratio))`，固定追加不参与比例乘算。原生一般式区分当前基础上限 M 和原始上限 B；项目覆盖普通初始化时 M = B 的情况，使用单个 base，尚未支持运行中的基础上限变化。
 
 弹药消费按完整指定数额结算，允许负余量。`consume` 不自动结束，`check` 独立检查最新同一 Activation 的余量并结束。具体行动决定调用耗尽检查的业务节点。
 
@@ -141,7 +140,7 @@ AMMO 的 setAmmoContribution 使用 `contribution.Input<ammo.Modifier, Unit & Sk
 
 `ammoReplenished` 只通知实际补入量大于零的普通补弹，报告同时保存 requested、实际 amount 及本次前后快照。容量和累计额度裁剪不会覆盖请求数量，嵌套补弹不会改写外层报告。grant 不派发普通补弹 Hook。自身增加弹药的独立通知仍需由具体观察需求确定。
 
-AMMO 描述资源和耗尽结束政策，不代表所有“弹药类技能”加成的资格。图耶式内容可以复用消费、偷弹、补弹及其通知，再由具体加成判断资格；不因客户端内部持续类型不同而新增项目中无外部差异的状态机。TIME／INFINITE 与独立弹药同时存在的模型，仍需具体玩法需求证明，不能仅从图耶案例推出。
+AMMO 描述资源和耗尽结束政策，不代表所有“弹药类技能”加成的资格。图耶等具体内容的加成资格、偷弹与补弹交互尚未接入，不能仅由 Sustain.type 判定。TIME／INFINITE 与独立弹药同时存在的内容也尚未覆盖。
 
 ## 4. Rule、程序与 Hook
 

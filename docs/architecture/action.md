@@ -2,7 +2,7 @@
 
 Action 负责行为程序的选择、启动、推进与完整终止。具体内容通过释放通知和内容程序点组合 [Skill](skill.md)、[Effect](effect.md) 与其他领域操作。
 
-接口遵守[五类约定](api-conventions.md)：完整操作使用 battle 与 typed Ref，Definition 程序显式接收 battle、宿主引用和 self，当前时间来自 battle.tick。
+接口遵守[接口约定](api-conventions.md)：完整操作使用 battle 与 typed Ref，Definition 程序显式接收 battle、宿主引用和 self，当前时间来自 battle.tick。
 
 > **每个 Unit 的每种 Action 聚合一份 Definition、持久 state、Cooldown 和可空的当前 Execution。Unit 的 Action Capability 只保存一个 Actions 运行容器；每次启动创建新的执行身份，结束只清空 execution。推进由 Runtime 调度。**
 >
@@ -113,7 +113,7 @@ export interface Execution<P extends object = object, E extends object = object>
 }
 ```
 
-Action<P, E> 表达持久行动，Execution<P, E> 表达其中某一轮执行的完整视图；两者读取同一个聚合条目，但声明不同的引用身份。Execution 的 execution 确定非空，onTick／onEnd 直接读取 self.execution.state，持久数据读取 self.state。内部 execution.State<E> 仍只保存 id、startedAtTick、lifecycle 和 E，不从公共 index 导出。宿主引用由回调的 source 参数提供，聚合条目不重复保存 host。
+Action<P, E> 表达持久行动，Execution<P, E> 表达其中某一轮执行的完整视图；两者读取同一个聚合条目，但声明不同的引用身份。Execution 的 execution 确定非空，onTick／onEnd 直接读取 self.execution.state，持久数据读取 self.state。内部 execution.State<E> 只保存 id、startedAtTick、lifecycle 和 E，不从公共 index 导出。宿主引用由回调的 source 参数提供，聚合条目不重复保存 host。
 
 具体内容将 Definition<P, E> 交给公共入口的 create，得到创建行动的初始化函数；其实现位于 [initialize.ts](../../src/core/unit/action/initialize.ts)，类型配对在这个具体创建位置建立。Unit 的 Action Capability.initialize 调用内容提供的 initialize，内容使用 createActions 按顺序执行这些函数，接续每项 Result.state，并将完整聚合条目加入 Actions。
 
@@ -140,7 +140,7 @@ const action = {
 
 create 在接收具体 Definition 时校验非空 ID、基础间隔与速度一次，返回的函数负责创建并登记自己的 Action；重复 ID 由 Actions.add 拒绝。createActions 只从空 Actions 开始逐项接续 BattleState 和容器，不解释内容私有 P／E，也不读取底层 Store。内容通过具名的具体 Definition 或 typed Ref 读写私有状态。
 
-Actions 以私有 Store<DefinitionId, Action<any, any>> 保存异构完整聚合。普通 get(id)／values() 返回默认 object／object 的 Action，包含完整 Definition、state、Cooldown 和可空 Execution；get(id, definition) 按 Definition 对象身份恢复 P／E。容器按配置 ID 统一使用 get(id)，getExecution(id) 则按本轮 Execution ID 读取完整条目，不另维护执行集合或索引；领域 getAction(battle, ref) 继续提供持久 Typed Ref 查询。any 留在异构存储及必要的泛型上界，普通查询不把 any 作为默认结果。
+Actions 以私有 Store<DefinitionId, Action<any, any>> 保存异构完整聚合。普通 get(id)／values() 返回默认 object／object 的 Action，包含完整 Definition、state、Cooldown 和可空 Execution；get(id, definition) 按 Definition 对象身份恢复 P／E。容器按配置 ID 统一使用 get(id)，getExecution(id) 则按本轮 Execution ID 读取完整条目，不另维护执行集合或索引；领域 getAction(battle, ref) 提供持久 Typed Ref 查询。any 留在异构存储及必要的泛型上界，普通查询不把 any 作为默认结果。
 
 Core 的选择、冷却刷新、推进与终止直接读取内部完整条目，保持条目与其自身 Definition 的配对，不解释私有 P／E 的形状。内容查询由精确 Typed Ref 恢复 P／E，字段 setter 保留 NoInfer；普通查询返回完整对象，私有形状由精确 Ref／Definition 证明，底层 Store 不公开。
 
@@ -154,7 +154,7 @@ nextExecutionId 保存在 Capability State，从 0 开始；每次成功启动�
 
 `executionRef(source, self)` 由宿主引用和当前 self.execution.id 生成 Ref<Execution<P, E>>，地址仍为 host 与执行 id。它只绑定本轮执行；本轮结束或后续执行 ID 不匹配时，getExecution 返回 undefined。执行查询、推进、取消、执行状态更新及 ACTION Lifetime 均使用这种引用。
 
-两种类型的 Identified 声明各自地址，Ref 的 Phantom 保留 P／E 关联。构造引用不读取 battle，也不缓存 Action 或 Cooldown；各操作从接续的最新 BattleState 读取当前条目。引用变化不增加配置 ID、执行 ID、存储集合或运行对象。
+两种类型的 Identified 声明各自地址，Ref 的 Phantom 保留 P／E 关联。构造引用不读取 battle，也不缓存 Action 或 Cooldown；各操作从接续的最新 BattleState 读取当前条目。两种 Ref 共享现有配置 ID、执行 ID 与 Actions 存储。
 
 ```typescript
 export declare function ref<P extends object, E extends object>(
@@ -223,7 +223,7 @@ interface State {
 
 setIntervalContribution／setSpeedContribution 及对应 remove 不接收 Ref，返回 `Change<Unit & ActionCapability>`，实现在 capability/action/operations.ts。贡献只接收静态 Modifier 数组，不接收依赖 BattleState 的求值函数。transform 只修改贡献集合，无变化时返回原 Unit，由 createChange 不登记 settle；实际变化的 settle 从最新 battle 调用 refreshCooldowns，按全批最终周期及当前完成比例换算冷却。Content 不补一次手工刷新，Combat 也不每 Tick 刷新。依赖 HP、技能阶段等事实的速率变化，由拥有该机制的程序在相应业务时点提交新的修正列表。
 
-Rule／释放 Hook 登记也返回 Change，但不附带冷却或 Blocking 后继。属性查询使用 resolveBaseInterval／resolveSpeed／resolvePeriod(source: Unit & ActionCapability, self: Action)，直接接收已取得的宿主与具体 Action 并返回 number。共享贡献使用 source，基础时序取 self.definition。resolveBaseInterval 是速度换算前的间隔，resolvePeriod 是用于 Cooldown 的实际周期；创建实例前的初始冷却仍使用局部公式 period(intervalTicks, speed)。
+Rule／释放 Hook 登记也返回 Change，但不附带冷却或 Blocking 后继。属性查询使用 resolveBaseInterval／resolveSpeed／resolvePeriod(source: Unit & ActionCapability, self: Action)，直接接收已取得的宿主与具体 Action 并返回 number。共享贡献使用 source，基础时序取 self.definition。resolveBaseInterval 是速度换算前的间隔，resolvePeriod 是用于 Cooldown 的实际周期；创建实例前的初始冷却使用局部公式 period(intervalTicks, speed)。
 
 普通攻击周期依据 [PRTS 攻速公式](https://prts.wiki/w/游戏数据基础#攻速公式)：修正间隔 × 100 / 限制后的速度。速度属性下限为 20，周期计算速度上限为 600，有效周期至少为 1 Tick。纯 Cooldown 支持非负连续周期，不在纯值函数中强加攻击的量化限制。
 
@@ -285,19 +285,19 @@ prepare 前检查准入；prepare 成功返回后，从接续的 BattleState 重
 
 宿主或指定执行缺失时，写入操作抛出 RangeError；Action Ref 所给 Definition 未配置或对象身份不匹配时抛出 TypeError。setExecutionState 在 execution 为 ENDING 时抛出 TypeError；setState／setCooldown 可以在结束程序中更新持久事实。调用方从当前 battle 查询并计算下一值，计算和提交之间不执行其他完整操作；跨领域调用返回后先接续 battle，再重读所需实时状态，避免用旧 self.state／self.execution.state 覆盖当前数据。`NoInfer` 限制结果值参与泛型推导；精确 Ref 保持 P／E 关联，预先弱化类型后写入不兼容数据属于调用契约错误，不增加运行时形状校验。
 
-Core 的完整写回信任已有宿主、Definition 与执行身份，不再恢复或校验内容私有数据的形状。生命周期变更由完整领域操作管理，内容只调用对应字段的更新操作。
+Core 的完整写回信任已有宿主、Definition 与执行身份，内容私有数据的类型配对由创建入口和 Typed Ref 保持。生命周期变更由完整领域操作管理，内容只调用对应字段的更新操作。
 
 终止通过 Action 的 lifetime 请求：登记 Pending、发布 execution.ENDING，再按关系请求本轮依赖者。所有依赖者完整 Finalize 后，从当前存储取得配对 Execution 执行可选 onEnd，接续返回状态，清空同一 execution、注销本轮 Lifetime 关系并登记结束事件。首次请求固定 End 与依赖传播原因，重复请求不覆盖或重复收尾；整个 Finalize 返回后才解除 owner 等待。
 
 Unit 对 Execution 的所有权保护宿主到本轮整个 Finalize 返回。onEnd 内请求宿主离场会先使 Unit LEAVING，但 Unit 不会在该回调中途注销。onEnd 返回后从最新状态读取配对 Action，再清空本轮 execution，保留回调修改的持久 state 与 Cooldown。持久状态不隐含跨部署保存。
 
-首次嵌套 cancel 同步完成请求与 Prepare，不保证 execution 已清空或结束事件已记录；同一结算范围内 cancel 后立即 start 同配置可能仍被占位拒绝。无活动结算时，结束入口在本次调用内 drain 完再返回。已经进入的 onTick 继续普通控制流，后继按需要重读当前资格；等待边不来自函数调用栈。cancelForUnit 接收具有 Action Capability 的 Typed Ref，从最新 BattleState 读取宿主并固定当前执行 Ref，依次请求取消；Unit 退场改由所有权边传播，无须手工调用这套批量入口。Action.onEnd／事件的 SOURCE_ABSENT 与依赖者接收的原离场原因分别保留。
+首次嵌套 cancel 同步完成请求与 Prepare，不保证 execution 已清空或结束事件已记录；同一结算范围内 cancel 后立即 start 同配置可能仍被占位拒绝。无活动结算时，结束入口在本次调用内 drain 完再返回。已经进入的 onTick 继续普通控制流，后继按需要重读当前资格；等待边不来自函数调用栈。cancelForUnit 接收具有 Action Capability 的 Typed Ref，从最新 BattleState 读取宿主并固定当前执行 Ref，依次请求取消；Unit 退场通过所有权边传播。Action.onEnd／事件的 SOURCE_ABSENT 与依赖者接收的原离场原因分别保留。
 
 ## 7. 调度
 
 Runtime 采用以下候选政策：
 
-1. 保留调度入口的 BattleState 与 Unit Query 快照，按登记顺序遍历；每个宿主本轮的执行 Ref 始终从该初始 BattleState 惰性查询，不要求提前生成数组。宿主离场由完整离场操作终止其执行，不保存脱离宿主的孤立 Execution。
+1. 保留调度入口的 BattleState 与 Unit Query 快照，按登记顺序遍历；处理每个宿主时，从该初始 BattleState 取得本次执行 Ref 数组。宿主离场由完整离场操作终止其执行，不保存脱离宿主的孤立 Execution。
 2. 对每个 Unit，先推进原有执行，再从接续状态读取来源，仍具备 Action、为 PRESENT 且空间在场时才运行 select，已经离场或隐藏则跳过。Cooldown 由攻速／间隔贡献变更的 Settlement 同步维护，Combat 不逐 Tick 刷新。
 3. select 返回本轮候选 Definition ID 及接续状态，可以表达优先级、随机选择和具体模式政策；未提供时从 Actions.keys() 取得全部配置项。
 4. 候选去重后逐一通过 Actions.get(id) 取得条目及其 Definition，再构造持久 Action Ref 调用 start，每次读取最新来源与配置。列表顺序不代表引擎赋予的业务优先级。
@@ -305,13 +305,13 @@ Runtime 采用以下候选政策：
 6. 本轮自动候选只尝试一次，不按“仍然就绪”循环重启即时完成的同一行动。
 7. 内容直接 start 或回调内嵌套 start 只登记执行，等待调度器推进。调度入口前已登记的执行可以在本次调度中推进；调度内嵌套登记的执行不在已固定快照中，等待后续调度。
 
-advance(battle, ref) 由 operations.ts 实现，index.ts 继续导出供调度协作；仍仅由调度器主动调用，start 不隐式推进。它通过同一 Actions 容器的 getExecution 直接取得当前执行，再调用该执行 Definition 的 onTick，并显式传入宿主引用；完成与取消直接调用 lifetime.end 请求结束，可选 onEnd 在 Finalize 中调用。Action Rule 控制新的执行；[Presence](presence.md) 登记启动限制，并在消失操作中委托 cancelForUnit 取消当前执行，advance 不直接读取 Presence。跨完整操作后的实时读取仍遵守状态接续约定。首次推进中的即时完成或同步取消按通常终止流程结算；内容不主动推进执行，不保存实例级同 Tick 去重字段。
+advance(battle, ref) 由 operations.ts 实现，index.ts 导出供调度协作；仅由调度器主动调用，start 不隐式推进。它通过同一 Actions 容器的 getExecution 直接取得当前执行，再调用该执行 Definition 的 onTick，并显式传入宿主引用；完成与取消直接调用 lifetime.end 请求结束，可选 onEnd 在 Finalize 中调用。Action Rule 控制新的执行；[Presence](presence.md) 登记启动限制，并在消失操作中委托 cancelForUnit 取消当前执行，advance 不直接读取 Presence。跨完整操作后的实时读取遵守状态接续约定。首次推进中的即时完成或同步取消按通常终止流程结算；内容不主动推进执行，不保存实例级同 Tick 去重字段。
 
 ## 8. 普通攻击、释放 Hook 与移动
 
 可复用普通攻击程序位于 content/actions/attack.ts，直接调用 Damage、Healing 与 Elemental 的公开操作。它在 prepare 绑定目标并保存 releaseAtTick／finishAtTick、released 等执行进度；到点执行输出并在恢复结束后完成。create 提供空持久／执行数据的入口；createWithState<P, E> 明确区分 initialize(battle) → Result<P> 与 prepare(battle, source, self) → Result<E>。output／afterOutput／onEnd 接收显式 source 与 execution 非空的 Execution<P, State<E>>，模板私有数据位于 self.execution.state.data。
 
-CD 补偿、cooldownAdjusted 与 released 的私有字段写回继续由完整 Action 操作经内部 replace 发布，不改为公开 Change，也不隐式触发 Blocking。Rule 可读取双方 Action 状态不表示自动订阅其所有字段；改变阻挡资格的内容在对应业务流程中显式复核关系。Attack 在真正执行 Hook、伤害等领域操作后按同一 Execution Ref 恢复当前 RUNNING 执行，并确认宿主 PRESENT；不重复读取 Presence，也不把原始发布本身当成内容回调。Combat 的 select 使用原有执行推进后重新读取的当前来源，并在选择前检查空间存在，避免已经消失的来源消费选择 RNG。
+CD 补偿、cooldownAdjusted 与 released 的私有字段由完整 Action 操作经内部 replace 发布，这些写回不隐式触发 Blocking。Rule 可读取双方 Action 状态不表示自动订阅其所有字段；改变阻挡资格的内容在对应业务流程中显式复核关系。Attack 在真正执行 Hook、伤害等领域操作后按同一 Execution Ref 恢复当前 RUNNING 执行，并确认宿主 PRESENT；不重复读取 Presence，也不把原始发布本身当成内容回调。Combat 的 select 使用原有执行推进后重新读取的当前来源，并在选择前检查空间存在，避免已经消失的来源消费选择 RNG。
 
 Attack 模板统一校验前后摇、操作数值和绑定关系，上层内容不重复校验原样传入的同一字段。只读配置直接共享，公开 attack 配置只投影配置字段，不携带程序私有回调，也不额外复制、冻结其子对象。
 
@@ -331,7 +331,7 @@ afterOutput 是模板中本轮执行的后继程序，进入前检查对应执�
 
 移动许可由 Locomotion Rule 查询当前 battle 与 Unit。具体敌人在 enter 生命周期节点登记 Casting 移动限制；已经发射的 Projectile 保持自己的生命周期。
 
-## 9. 机制依据与接口整合
+## 9. 机制依据与领域协作
 
 玩法依据见[行动与弹道](../research/cases/02-action-and-projectile-phases.md)、[计时与动画](../research/cases/07-action-timing-and-animation.md)、[启动与中断](../research/cases/08-action-eligibility-and-interruption.md)。弩手近战与远程的独立冷却要求每种配置各自保存 Cooldown；冷却就绪与执行占用是不同事实。跨轮事实和本轮多段进度分别保存在 P 与 E，按实际内容确定重置边界；研究不要求运行时使用多个独立集合。敌人技能施放期间暂停的触发冷却，与通用 Action 周期分开表达。
 
