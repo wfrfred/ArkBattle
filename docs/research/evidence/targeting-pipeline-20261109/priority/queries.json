@@ -1,0 +1,82 @@
+{
+  "client": {
+    "dll": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+    "metadata": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5"
+  },
+  "methods": [
+    "Torappu.Battle.AdvancedSelector.OnPostFilter",
+    "Torappu.Battle.AdvancedSelector._CompareEntityTauntLevel",
+    "Torappu.Battle.SecondaryFilterAdvancedSelector.OnPostFilter",
+    "Torappu.Battle.SecondaryFilterAdvancedSelector._CheckSecondFilter",
+    "Torappu.Battle.BlockedOrAdvancedSelector.DoFindTargets_DISPOSE",
+    "Torappu.Battle.FilterUtil.Filter",
+    "Torappu.Battle.FilterUtil._Filter_HatredDes",
+    "Torappu.Battle.FilterUtil._Filter_HatredDesBlockedFirst",
+    "Torappu.Battle.FilterUtil._Filter_DistToExitAsc",
+    "Torappu.Battle.FilterUtil._GetWeightSmallEnoughGap",
+    "Torappu.Battle.Character.get_hatred",
+    "Torappu.Battle.Character.UpdateHatred",
+    "Torappu.Battle.Enemy.get_hatred",
+    "Torappu.Battle.Enemy.get_distToExit",
+    "Torappu.Battle.Enemy.get_distToExitPrecise",
+    "Torappu.Battle.Enemy.get_cursor",
+    "Torappu.Battle.Enemy.get_moveCursor",
+    "Torappu.Battle.DirectionCursor.get_distToExit",
+    "Torappu.Battle.DirectionCursor.get_distToExitPrecise",
+    "Torappu.Battle.Entity.get_tauntLevel",
+    "Torappu.Battle.FilterUtil.FilterWithFilterByPriorCompFunc",
+    "Torappu.Battle.Character..cctor",
+    "Torappu.Battle.BasicCursor/MoveCheckpoint.GetEstimatedDistToFinal",
+    "Torappu.Battle.Route._GetEstimatedDistToFinalWithoutCheckpoints",
+    "Torappu.Battle.DirectionCursor.GetLocatorPosition",
+    "Torappu.Battle.Entity.CompareTo",
+    "Torappu.Battle.AdvancedSelector.get_maxTargetNum",
+    "Torappu.Battle.AdvancedSelector.get_limitTargetNum",
+    "Torappu.Battle.BlockedOrAdvancedSelector.get_limitedMaxTargetNumToBlockedCnt",
+    "Torappu.Battle.BattleUtil.LimitMaxNumToBlockCnt",
+    "Torappu.Battle.FilterUtil._Filter_Random",
+    "Torappu.Battle.Character.OnAttributeDirty",
+    "Torappu.Battle.Character._BuildAtInternal",
+    "Torappu.Battle.FilterUtil..cctor",
+    "Torappu.Battle.Route._ComplementFinalDistance",
+    "Torappu.Battle.Route._ReconstructNextMapInto"
+  ],
+  "addresses": [
+    "generic-filter-oneweight=0x1846f8270:0x1846f8870",
+    "generic-filter-twoweight=0x1846f8870:0x1846f8e90",
+    "weighted-ctor=0x1857968a0",
+    "weighted-queue-add=0x1853ff430",
+    "weighted-compare=0x185795910:0x1857962a0",
+    "stable-bubble-sort=0x18469b420",
+    "shrink=0x18469b0f0",
+    "random-helper=0x180a08ec0"
+  ],
+  "resolutions": [
+    "filter-oneweight=0x188c31ea8",
+    "filter-twoweight=0x188c320e8",
+    "secondary-sort=0x188bc1500",
+    "secondary-trim=0x188bc0050",
+    "weighted-ctor=0x188bfd628",
+    "weighted-queue-add=0x188c4a540"
+  ],
+  "types": [
+    "Torappu.Battle.BasicCursor",
+    "Torappu.Battle.BasicCursor/MoveCheckpoint",
+    "Torappu.Battle.Route",
+    "Torappu.Battle.Route/Node",
+    "Torappu.RouteData",
+    "Torappu.Battle.TracePositionCursor",
+    "Torappu.Battle.FilterUtil/WeightedTarget`1",
+    "Torappu.Battle.BattleController"
+  ],
+  "floats": [
+    "character-taunt-gap=0x1870afdec",
+    "character-time-gap=0x1870addf0",
+    "enemy-taunt-gap=0x1870afd74",
+    "enemy-clamp-min=0x1870afe60",
+    "weight-gap-float=0x1870aded8"
+  ],
+  "xrefs": [
+    "Torappu.Battle.Character.UpdateHatred"
+  ]
+}
