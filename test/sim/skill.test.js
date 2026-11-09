@@ -41,7 +41,7 @@ test("activation publishes payment before onStart and clears only the completed 
     const definition = {
         id: "operator",
         hooks: Hooks.empty(),
-        spatialPresence: {},
+        presence: {},
         skill: { initialize: (state) => skills.create(state, program) },
     };
     let state = battle([{ definition, position: [1, 1] }]);
@@ -190,7 +190,7 @@ test("TIME extension changes this activation rather than the next activation's b
     const definition = {
         id: "operator",
         hooks: Hooks.empty(),
-        spatialPresence: {},
+        presence: {},
         skill: { initialize: (state) => skills.create(state, program) },
     };
     let state = battle([{ definition, position: [1, 1] }]);

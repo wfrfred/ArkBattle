@@ -15,7 +15,7 @@ import * as units from "../../query.js";
 import type { Unit } from "../../unit.js";
 import { createChange, type Change } from "../../change.js";
 import * as presence from "../presence/operations.js";
-import { hasSpatialPresence } from "../presence/capability.js";
+import { hasPresence } from "../presence/capability.js";
 import { hasBlockable } from "../blocking/blockable.js";
 import { release } from "../blocking/blockable-operations.js";
 import { hasBlocker } from "../blocking/blocker.js";
@@ -321,13 +321,11 @@ function executeSpatial(
     checkpoint: Extract<Checkpoint, { readonly type: "DISAPPEAR" | "APPEAR" }>,
 ): BattleState {
     if (checkpoint.type === "DISAPPEAR") {
-        return hasSpatialPresence(self)
-            ? update(battle, units.ref(self), presence.disappear())
-            : battle;
+        return hasPresence(self) ? update(battle, units.ref(self), presence.disappear()) : battle;
     }
 
     const position = Vec2.add(Tile.center(checkpoint.position), checkpoint.offset);
-    if (hasSpatialPresence(self)) {
+    if (hasPresence(self)) {
         return update(battle, units.ref(self), presence.appear(position));
     }
 

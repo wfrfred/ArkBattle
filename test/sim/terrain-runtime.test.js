@@ -38,7 +38,7 @@ const combat = {
     }),
 };
 const unit = (column, fields = {}) => ({
-    definition: { id: "terrain-unit", hooks: Hooks.empty(), spatialPresence: {}, ...fields },
+    definition: { id: "terrain-unit", hooks: Hooks.empty(), presence: {}, ...fields },
     position: [column, 0],
 });
 

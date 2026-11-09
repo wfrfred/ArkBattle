@@ -7,22 +7,22 @@ export interface State {
     readonly present: boolean;
 }
 
-export interface SpatialPresence {
-    readonly definition: { readonly spatialPresence: Definition };
-    readonly spatialPresence: State;
+export interface Presence {
+    readonly definition: { readonly presence: Definition };
+    readonly presence: State;
 }
 
-export function hasSpatialPresence<U extends Unit>(unit: U): unit is U & SpatialPresence {
-    return "spatialPresence" in unit && "spatialPresence" in unit.definition;
+export function hasPresence<U extends Unit>(unit: U): unit is U & Presence {
+    return "presence" in unit && "presence" in unit.definition;
 }
 
-export function initialize<U extends Unit & Pick<SpatialPresence, "definition">>(
+export function initialize<U extends Unit & Pick<Presence, "definition">>(
     battle: BattleState,
     unit: U,
-): Result<U & SpatialPresence> {
-    return { state: battle, value: { ...unit, spatialPresence: { present: true } } };
+): Result<U & Presence> {
+    return { state: battle, value: { ...unit, presence: { present: true } } };
 }
 
-export function isSpatiallyPresent(unit: Unit): boolean {
-    return !hasSpatialPresence(unit) || unit.spatialPresence.present;
+export function isPresent(unit: Unit): boolean {
+    return !hasPresence(unit) || unit.presence.present;
 }

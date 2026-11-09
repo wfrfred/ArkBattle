@@ -21,7 +21,7 @@ const blocker = {
 };
 const enemy = {
     id: "enemy",
-    spatialPresence: {},
+    presence: {},
     hooks: Hooks.empty(),
     blockable: { volume: 1, rules: [] },
     layer: { type: "GROUND" },
@@ -262,7 +262,7 @@ test("own layer requests release current relations before hooks, including same-
 
 test("position plans survive relation release while active departure and spatial overrides cancel them", () => {
     let state = battle([
-        { definition: { ...blocker, spatialPresence: {} }, position: [2, 1] },
+        { definition: { ...blocker, presence: {} }, position: [2, 1] },
         { definition: enemy, position: [2.2, 1] },
         { definition: enemy, position: [2.3, 1] },
     ]);
@@ -311,7 +311,7 @@ test("position plans survive relation release while active departure and spatial
             invoke(current) {
                 observed = true;
                 assert.deepEqual(get(current, 2).position, [5, 1]);
-                assert.equal(get(current, 2).spatialPresence.present, true);
+                assert.equal(get(current, 2).presence.present, true);
                 assert.equal(get(current, 2).blockable.adjustment, null);
                 assert.equal(blocking.blockerOf(current, departing), undefined);
                 assert.deepEqual(blocking.blocked(current, owner), []);

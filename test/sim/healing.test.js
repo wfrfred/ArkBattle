@@ -18,7 +18,7 @@ import { hasTargetable } from "../../dist/core/unit/capability/targetable/capabi
 
 import { createArknightsElementalDefinition } from "../../dist/data/arknights/elemental.js";
 const elementalReceiver = {
-    id: "ep-receiver", hooks: Hooks.empty(), spatialPresence: {}, allegiance: { side: "ALLY" },
+    id: "ep-receiver", hooks: Hooks.empty(), presence: {}, allegiance: { side: "ALLY" },
     targetable: { taunt: 0, restrictions: [] },
     elemental: createArknightsElementalDefinition({ receiver: "CHARACTER", recoveryPerSecond: 15 }),
 };
@@ -78,7 +78,7 @@ test("APPLY-02: Calculate normalizes final HP/EP output before Apply starts rece
 test("HP Healing accepts full resources and absent patients while damage requires presence", () => {
     const calls = [];
     let state = battle([{ definition: {
-        id: "patient", hooks: Hooks.empty(), spatialPresence: {},
+        id: "patient", hooks: Hooks.empty(), presence: {},
         vitality: { maxHp: 100.5, defense: 0, resistance: 0 },
         elemental: createArknightsElementalDefinition({ receiver: "CHARACTER", recoveryPerSecond: 15 }),
     }, position: [0, 0] }]);

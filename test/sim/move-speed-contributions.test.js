@@ -12,7 +12,7 @@ const close = (actual, expected) => assert.ok(Math.abs(actual - expected) < 1e-1
 
 test("current movement speed, its minimum and movement permission remain separate", () => {
     let state = battle([{ definition: {
-        id: "mover", hooks: Hooks.empty(), spatialPresence: {},
+        id: "mover", hooks: Hooks.empty(), presence: {},
         locomotion: { speed: 0.2, minSpeed: 0.05, halfBodyWidth: 0,
             steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 } },
     }, position: [0, 0] }]);

@@ -18,7 +18,7 @@ import {
 
 import { hasLocomotion } from "../core/unit/capability/locomotion/index.js";
 import { hasRoute } from "../core/unit/capability/route/index.js";
-import { isSpatiallyPresent } from "../core/unit/capability/presence/index.js";
+import * as presence from "../core/unit/capability/presence/index.js";
 import { hasLayer } from "../core/unit/capability/layer/capability.js";
 import { hasDirection } from "../core/unit/capability/occupancy/index.js";
 import { hasAction } from "../core/unit/capability/action/index.js";
@@ -547,7 +547,7 @@ export class TacticalDemoPresentation {
         const presented = [
             ...units
                 .all(state)
-                .filter(isSpatiallyPresent)
+                .filter(presence.isPresent)
                 .map((unit) => {
                     const supplied = this.#unitMetadata?.(unit);
 
@@ -576,7 +576,7 @@ export class TacticalDemoPresentation {
 
         for (const unit of units.all(state)) {
             if (
-                !isSpatiallyPresent(unit) ||
+                !presence.isPresent(unit) ||
                 !hasElemental(unit) ||
                 (hasVitality(unit) && unit.vitality.hp <= 0)
             ) {
@@ -634,7 +634,7 @@ export class TacticalDemoPresentation {
         const live = new Set(
             units
                 .all(state)
-                .filter(isSpatiallyPresent)
+                .filter(presence.isPresent)
                 .map((unit) => unit.id),
         );
 

@@ -116,7 +116,7 @@ Rule、Hook、Contribution 与 Blocker.layer 的公开工厂只接收业务输�
 | Route              | Plan、Context 的路线进度与执行政策、State 共享出生时间基准 | Main 与 others 保存各路线 Context，activeId 选择运动与跨指令，ticking 独立控制计时；Context 使用宿主内 ID 与 Typed Ref，保存 Plan、index、current。初始化输入为 `{ plan, offset }`；Main 终点离场由 Route.advance 负责，见 [Route](navigation.md#route-定义与进度) |
 | Navigation         | 基础通行图、Overlay 与建议移动点查询           | Battlefield 持有 Navigation State；有效 Map 和 Field 在内部派生并缓存 |
 | Locomotion         | 按速度与运动规则执行自主移动、避障及目的格反射 | 保存历史速度、移速贡献与规则；消费 Route 已准备好的世界坐标目标和当前模式 |
-| SpatialPresence    | 身体空间存在与主动位置覆盖 | 以 Change 变换 present 与各能力的限制 Rule，调用阻挡释放并委托 Action 取消当前执行；不改变实例身份或统一暂停持续程序 |
+| Presence    | 身体空间存在与主动位置覆盖 | 以 Change 变换 present 与各能力的限制 Rule，调用阻挡释放并委托 Action 取消当前执行；不改变实例身份或统一暂停持续程序 |
 | Blocking | 建立、复核和解除阻挡关系，裁撤容量与计算站位 | 两端共享 Relation 对象；Rule、容量与主动释放各自决定维护范围，普通搜索在固定阶段执行 |
 | Occupancy | 地块双槽登记与乘员／支撑配对 | Battlefield 维护结构索引；Occupancy 持有 Pair，入场／离场程序调用配对通知 |
 

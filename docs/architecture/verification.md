@@ -6,7 +6,7 @@
 
 - `core/battlefield/`：地图与地块、Unit 存储、结构占格、Navigation 和 Spatial 查询。
 - `core/unit/` 的基础 Unit、构造、查询、Change，以及独立的 Action、Skill、Effect、Contribution 领域。
-- `core/unit/capability/` 的 Action、Allegiance、Blocking、Deployable、Elemental、Hitbox、Layer、Locomotion、Occupancy、Offense、Route、Skill、SpatialPresence、Targetable 与 Vitality。
+- `core/unit/capability/` 的 Action、Allegiance、Blocking、Deployable、Elemental、Hitbox、Layer、Locomotion、Occupancy、Offense、Route、Skill、Presence、Targetable 与 Vitality。
 - 对应的 `core/battle/unit.ts`、Tile、Blocking、Deployment／Card、Occupancy 协作、Schedule 主线与 Branch 调度，以及 Runtime 对上述领域的调用。
 - Unit 本地类型化 Hooks、HP／EP 的 Damage／Healing 两阶段结算，以及 Vitality／Elemental 的专属接收、资源提交与 Burst 协作。
 - 公共 Hook、Typed Ref 和 Lifetime 只承担上述领域共享的契约，不按每个消费者重复展开。
@@ -31,7 +31,7 @@ Deployable 对 Occupancy 的构造依赖、单格双槽登记、入场与配对�
 | --- | --- | --- |
 | Battlefield 版本与结构 | 写回不改写旧版本；全批最终布局决定同格双槽的唯一归属；结构发布不代办业务回调。 | [Battlefield](battlefield.md#关键语义) |
 | 地图、导航与空间查询 | Tile 与 Overlay 决定当前可达性和导航结果；缓存不改变结果。身体位置、空间存在、占格和命中几何分别表达，空间接触不等于业务命中。 | [Battlefield](battlefield.md#关键语义)、[Spatial](spatial.md) |
-| 空间存在 | 暂时消失保留身份、位置、占格、部署与生命周期；Presence Change 可位于组合任意位置，全部空间事实及限制先发布，再由自身 Settlement 调用 Blocking 完整操作清理当前关系及自身计划，之后委托 Action 领域取消宿主执行。已成立的 Skill、Effect、Burst 与独立 Projectile 不统一结束，伤害、恢复、选择与锁定命中分别判断。 | [Presence](presence.md) |
+| 空间存在 | presence.isPresent(unit) 查询空间存在，与 Unit.lifecycle 分开；暂时消失保留身份、位置、占格、部署与生命周期。Presence Change 可位于组合任意位置，全部空间事实及限制先发布，再由自身 Settlement 调用 Blocking 完整操作清理当前关系及自身计划，之后委托 Action 领域取消宿主执行。已成立的 Skill、Effect、Burst 与独立 Projectile 不统一结束，伤害、恢复、选择与锁定命中分别判断。 | [Presence](presence.md) |
 | Unit 构造与能力 | 静态 Definition 决定能力组成，构造后配置与状态配对、组成稳定；初始 Effect 通过登记后的正常安装形成。 | [构造与装配](capability.md#初始化与装配) |
 | Occupancy 与 Support | 单格 OCCUPANT／SUPPORT 两槽各自排他，占格、身体位置、空间存在与朝向分开；两端先发布同一 Pair 再通知，任一端先入场均可配对。Pair 保留建立时采样的事实；离场只解除原 Pair，不能清除替代实例的新配对或重复通知旧组合。 | [Occupancy](occupancy.md#关键协作语义) |
 | Unit 组合变更 | update(battle, ref, change) 只更新一个目标。二元 compose 左到右接续同一 Unit，组合满足结合律但不交换；各项保留自己的 previous、no-op 与 Settlement 顺序。optional 在实际执行时判断当前输入，包括前序变换后的值；false 保留原对象且无后继，true 转发原 Change 的结果。全部纯应用完成后一次发布最终 next，再按序结算；Settlement 中的嵌套 update 可以改变其它 Unit，后续结算接续最新状态。 | [批量变更](api-conventions.md#51-unit-完整操作与批量变更) |
@@ -118,7 +118,7 @@ Hitbox 的 Targeting 接入只保留一个代表场景：显式范围使用受�
 
 ## Presence 的回归语义
 
-以下结果依据 [Presence 契约](presence.md)确定；场景通过正常构造、部署、阻挡取得、启动与资源结算建立事实。`appear(position)`／`disappear()` 返回要求 SpatialPresence 的 Change，由 `unit.update(battle, ref, change)` 提交；同目标变更通过二元 compose 组合，Presence 可以在组合中的任意位置，最终 Unit 先发布，不要求它排在首位。关系与自身计划在 Presence 自身 Settlement 中由 `releaseAll`／`release` 完成，领域操作先清理再通知；消失随后调用 `Action.cancelForUnit`，由 Action 领域读取当前执行并完成取消。
+以下结果依据 [Presence 契约](presence.md)确定；场景通过正常构造、部署、阻挡取得、启动与资源结算建立事实。`appear(position)`／`disappear()` 返回要求 Presence 的 Change，由 `unit.update(battle, ref, change)` 提交；同目标变更通过二元 compose 组合，Presence 可以在组合中的任意位置，最终 Unit 先发布，不要求它排在首位。关系与自身计划在 Presence 自身 Settlement 中由 `releaseAll`／`release` 完成，领域操作先清理再通知；消失随后调用 `Action.cancelForUnit`，由 Action 领域读取当前执行并完成取消。
 
 | 必须保障的业务结果 | 集中归属 |
 | --- | --- |

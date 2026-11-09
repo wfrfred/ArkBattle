@@ -32,7 +32,7 @@ const healingRequest = (source, target, power) => ({
 
 function elementalDefinition(config = {}, hooks = Hooks.empty()) {
     return {
-        id: "ep-receiver", hooks, spatialPresence: {}, allegiance: { side: "ALLY" },
+        id: "ep-receiver", hooks, presence: {}, allegiance: { side: "ALLY" },
         elemental: { ...createArknightsElementalDefinition({ receiver: "CHARACTER" }), ...config },
     };
 }

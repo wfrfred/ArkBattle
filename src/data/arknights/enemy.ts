@@ -26,7 +26,7 @@ export interface ArknightsResolvedEnemyMovement {
 }
 
 export type MovementDefinition = UnitDefinition &
-    Pick<Definitions, "vitality" | "locomotion" | "spatialPresence" | "route">;
+    Pick<Definitions, "vitality" | "locomotion" | "presence" | "route">;
 
 export interface ArknightsEnemyMovementContent {
     readonly definition: MovementDefinition;
@@ -224,7 +224,7 @@ export function createEnemyMovementContent(
     const definition = {
         id,
         hooks: Hooks.empty(),
-        spatialPresence: {},
+        presence: {},
         route: { alwaysCheckCurrentPoint: profile.alwaysCheckCurrentPoint },
         vitality: { defense: 0, resistance: 0, maxHp },
         locomotion: {

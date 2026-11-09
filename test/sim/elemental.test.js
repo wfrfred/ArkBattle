@@ -17,7 +17,7 @@ import { create as modifier } from "../../dist/core/unit/contribution/attribute.
 import { createArknightsElementalDefinition } from "../../dist/data/arknights/elemental.js";
 
 const elementalReceiver = {
-    id: "ep-receiver", hooks: Hooks.empty(), spatialPresence: {}, allegiance: { side: "ALLY" },
+    id: "ep-receiver", hooks: Hooks.empty(), presence: {}, allegiance: { side: "ALLY" },
     vitality: { maxHp: 10000, defense: 0, resistance: 50 },
     elemental: createArknightsElementalDefinition({ receiver: "CHARACTER" }),
 };

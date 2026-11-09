@@ -4,7 +4,7 @@ Spatial 提供 Unit 位置与 Hitbox 的空间查询。查询来源是坐标和�
 
 ## 数据归属与查询入口
 
-Unit.position 保存实际世界位置，Hitbox Definition 的 shape 保存单个静态 Shape。[SpatialPresence](presence.md) 表达身体是否参与普通空间交互，没有该 Capability 的 Unit 默认具有空间存在性。暂时消失保留真实坐标和身份，不等于移除位置字段；Layer 的空地身份独立于这些几何事实。
+Unit.position 保存实际世界位置，Hitbox Definition 的 shape 保存单个静态 Shape。[Presence](presence.md) 表达身体是否参与普通空间交互，没有该 Capability 的 Unit 默认具有空间存在性。暂时消失保留真实坐标和身份，不等于移除位置字段；Layer 的空地身份独立于这些几何事实。
 
 Spatial 在传入的 BattlefieldState 上枚举 Unit，用类型守卫保留 Capability 信息，在公开结果边界形成 Ref 和数组。它不要求完整 BattleState，不维护另一份空间索引；结果始终属于本次查询的输入版本。
 
@@ -40,7 +40,7 @@ within 检查 Unit.position 是否在 Range 内，不要求 Hitbox，也不使�
 
 sweep 检查单个 Shape 沿 from 到 to 线性平移时，与各目标静态 Hitbox 的首次接触。fraction 在 [0, 1] 内，初始重叠或相切为 0；坐标分量相等时退化为静态相交。结果按 fraction 稳定升序排列，相等时保留 Unit 登记顺序。它不计算目标在 Tick 内的运动轨迹。
 
-三种查询只纳入 lifecycle 为 PRESENT 且 isSpatiallyPresent 的 Unit，不检查 HP、阵营、Targetable 或 Effect 免疫。overlap 和 sweep 要求 Hitbox，within 不要求。LEAVING 宿主在清理回调期间仍能通过 units.get 读取，但不再参与新的空间集合查询。
+三种查询只纳入 `unit.lifecycle === "PRESENT" && presence.isPresent(unit)` 的 Unit，不检查 HP、阵营、Targetable 或 Effect 免疫。overlap 和 sweep 要求 Hitbox，within 不要求。LEAVING 宿主在清理回调期间仍能通过 units.get 读取，但不再参与新的空间集合查询。
 
 每个 Unit 最多返回一次。within 和 overlap 保留 Unit Query 的逻辑登记顺序，不追加优先级。查询不按地图边界裁剪，来源不要求对应实际 Unit。
 

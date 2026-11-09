@@ -43,7 +43,7 @@ field.map 持有当前地块。battlefield/tile.update 是运行态地块变更�
 
 分类按职责划分，不按函数名、返回值或是否带一个对象参数机械判断。`currentTarget(progress)` 这类局部查询直接读取输入值，不要求传入 battle 或 ref。完整伤害结算可以返回报告；`card/state.advance(card, tick)` 仍是内部局部值转换，不是调度入口。
 
-Capability 可以提供完整领域操作，例如 Locomotion.advance。Rule、Hook、Contribution、Blocker.layer 以及 SpatialPresence.appear／disappear 的状态变更统一为 `Change<C>` 工厂，由 `battle/unit.update(battle, ref, change)` 完成同一宿主的纯转换、一次发布及顺序结算；多项通过 compose 组合为一个 Change。是否附带结算由所属领域决定，无业务后继的 Hook 登记同样返回 Change。取得、解除及通知由明确 Blocking 操作负责，通用发布不推断关系。
+Capability 可以提供完整领域操作，例如 Locomotion.advance。Rule、Hook、Contribution、Blocker.layer 以及 Presence.appear／disappear 的状态变更统一为 `Change<C>` 工厂，由 `battle/unit.update(battle, ref, change)` 完成同一宿主的纯转换、一次发布及顺序结算；多项通过 compose 组合为一个 Change。是否附带结算由所属领域决定，无业务后继的 Hook 登记同样返回 Change。取得、解除及通知由明确 Blocking 操作负责，通用发布不推断关系。
 
 命名按实际调用时点区分：初始化使用 initialize，执行前准备使用 prepare；生命周期回调使用 onXxx，主动领域操作保留 start、advance、cancel、stop 等动词。initialize 构造初始私有数据，prepare 准备一次执行并允许拒绝，两者均不要求运行实例已登记。onStart 在成功登记后执行启动业务，onTick 表示一次由调度器安排的执行机会，onEnd 用于正常完成和取消的收尾。
 

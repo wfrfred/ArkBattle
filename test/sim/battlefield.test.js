@@ -123,7 +123,7 @@ test("spatial queries distinguish body position from hitboxes and return current
             definition: {
                 id: "near",
                 hooks: Hooks.empty(),
-                spatialPresence: {},
+                presence: {},
                 hitbox: { shape: circle(0.25) },
             },
             position: [0, 0],

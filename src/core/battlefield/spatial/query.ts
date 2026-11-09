@@ -7,7 +7,7 @@ import * as intersection from "../../geometry/intersection.js";
 import type { Range } from "../../geometry/range.js";
 import type { Shape } from "../../geometry/shape.js";
 import { hasHitbox, type Hitbox } from "../../unit/capability/hitbox/capability.js";
-import { isSpatiallyPresent } from "../../unit/capability/presence/capability.js";
+import * as presence from "../../unit/capability/presence/capability.js";
 import * as units from "../../unit/query.js";
 import type { Unit } from "../../unit/unit.js";
 
@@ -17,7 +17,7 @@ export function within(
     origin: WorldPosition,
 ): readonly Ref<Unit>[] {
     return create(() => field.units.values())
-        .filter((unit) => unit.lifecycle === "PRESENT" && isSpatiallyPresent(unit))
+        .filter((unit) => unit.lifecycle === "PRESENT" && presence.isPresent(unit))
         .filter((unit) => intersection.contains(range, origin, unit.position))
         .map(units.ref)
         .toArray();
@@ -29,7 +29,7 @@ export function overlap(
     origin: WorldPosition,
 ): readonly Ref<Unit & Hitbox>[] {
     return create(() => field.units.values())
-        .filter((unit) => unit.lifecycle === "PRESENT" && isSpatiallyPresent(unit))
+        .filter((unit) => unit.lifecycle === "PRESENT" && presence.isPresent(unit))
         .filter(hasHitbox)
         .filter((unit) =>
             intersection.overlaps(range, origin, unit.definition.hitbox.shape, unit.position),
@@ -50,7 +50,7 @@ export function sweep(
     to: WorldPosition,
 ): readonly Contact[] {
     const contacts = create(() => field.units.values())
-        .filter((unit) => unit.lifecycle === "PRESENT" && isSpatiallyPresent(unit))
+        .filter((unit) => unit.lifecycle === "PRESENT" && presence.isPresent(unit))
         .filter(hasHitbox)
         .map((unit) => ({
             target: units.ref(unit),

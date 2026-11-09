@@ -45,7 +45,7 @@ test("standard HP eligibility is independent of the chosen range origin and uses
         { definition: { id: "source", hooks: Hooks.empty(), allegiance: { side: "ALLY" } }, position: [0, 0] },
         { definition: { ...living, hitbox }, position: [2.6, 1] },
         { definition: { ...living, hitbox }, position: [2.6, 1] },
-        { definition: { ...living, spatialPresence: {} }, position: [2.6, 1] },
+        { definition: { ...living, presence: {} }, position: [2.6, 1] },
         { definition: { ...living, allegiance: { side: "ALLY" }, hitbox }, position: [1, 1] },
     ]);
     state = update(state, units.ref(get(state, 2)), setType("AIR"));

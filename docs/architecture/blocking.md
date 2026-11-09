@@ -263,7 +263,7 @@ setLayer 的 Settlement 解除执行时的全部出向关系，包括在最终�
 
 ## 主动解除阻挡的空间操作
 
-[SpatialPresence](presence.md) 的 appear／disappear 返回组合 Change：自身叶子只修改空间事实，限制直接复用所属能力的 Rule Change；自身 Settlement 按 previous 的稳定角色调用 Blockable.release 或 Blocker.releaseAll，由完整操作读取当前关系、取消自身计划并释放。Blocker 不取消目标的独立计划。Route 主动覆盖位置时通过 unit.update 提交 Presence Change；没有该能力时先纯发布位置，再按角色调用相同完整操作。各释放操作在自己的首个 RELEASED Hook 前完成所属计划清理和整批双端解除，不向 Blocking.release 传入额外更新值。
+[Presence](presence.md) 的 appear／disappear 返回组合 Change：自身叶子只修改空间事实，限制直接复用所属能力的 Rule Change；自身 Settlement 按 previous 的稳定角色调用 Blockable.release 或 Blocker.releaseAll，由完整操作读取当前关系、取消自身计划并释放。Blocker 不取消目标的独立计划。Route 主动覆盖位置时通过 unit.update 提交 Presence Change；没有该能力时先纯发布位置，再按角色调用相同完整操作。各释放操作在自己的首个 RELEASED Hook 前完成所属计划清理和整批双端解除，不向 Blocking.release 传入额外更新值。
 
 Blocker.layer 的 Change 先在全批发布时设置 layer／radius，等轮到自己的 settle 才通过 releaseAll 读取并批量清理当前集合。release 操作入口固定的全部候选，在它自己的首个 RELEASED Hook 前一并清除。若较早 settle 已解除部分关系，那些较早通知遵守自己的结算语义，不能承诺全批第一个 RELEASED 前切层旧关系已全清空。
 
@@ -281,7 +281,7 @@ Blocker.layer 的 Change 先在全批发布时设置 layer／radius，等轮到�
 | Blocker 容量 Change | settle 结算本 Blocker 当前容量，从末尾逐条裁撤；不扫描资格失效关系。 |
 | Blockable volume Change | settle 读取执行时当前 owner，结算该阻挡组的当前容量；不在 Hook 后追随新的 owner。 |
 | acquire | 通知完成后只复核本次新 Relation。 |
-| release、setLayer、SpatialPresence／Unit.remove | release 仅解除各操作交入的关系集合，不附带维护或搜索。 |
+| release、setLayer、Presence／Unit.remove | release 仅解除各操作交入的关系集合，不附带维护或搜索。 |
 | Locomotion／Blockable 偏移位置提交 | 只推进位置或计划，不调用 Blocking；依赖位置的 Rule 在关系检查点求值。Route 主动覆盖位置则明确解除关系。 |
 | maintainAll、完整地块更新 | 固定入口关系列表，按 Unit 顺序及各 Blocker 内的关系顺序各复核一次资格，不裁容量。 |
 | 每 Tick 的 Blocking 阶段 | 先固定 Blocker 候选、执行 maintainAll，再搜索新关系。 |

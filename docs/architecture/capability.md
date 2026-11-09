@@ -15,7 +15,7 @@ interface Vitality {
 }
 ```
 
-Definition 保存静态参数与行为描述，State 保存本领域当前事实。结构相同的配置与初态可以共享引用；更新当前状态创建新值，不修改配置。Unit 可以不选择某项能力；一旦选择，对应 Definition 和 State 必须同时存在。SpatialPresence 使用空 Definition，Hitbox 使用空 State；空定义和空状态均使用 interface {}。Occupancy Definition 声明 Slot，State 记录当前登记地块、实例朝向和已通知的配对事实。Targetable 的 Definition 声明 taunt 基值与必填 restrictions，State 保存嘲讽贡献及固有和动态限制；空限制数组表示没有固有限制，详见 [Targeting 与 Targetable 类型](targeting.md)。Skill.activation 为 null 等领域内部业务状态不受此配对约定限制。
+Definition 保存静态参数与行为描述，State 保存本领域当前事实。结构相同的配置与初态可以共享引用；更新当前状态创建新值，不修改配置。Unit 可以不选择某项能力；一旦选择，对应 Definition 和 State 必须同时存在。Presence 使用空 Definition，Hitbox 使用空 State；空定义和空状态均使用 interface {}。Occupancy Definition 声明 Slot，State 记录当前登记地块、实例朝向和已通知的配对事实。Targetable 的 Definition 声明 taunt 基值与必填 restrictions，State 保存嘲讽贡献及固有和动态限制；空限制数组表示没有固有限制，详见 [Targeting 与 Targetable 类型](targeting.md)。Skill.activation 为 null 等领域内部业务状态不受此配对约定限制。
 
 基础 Unit 是非泛型接口，保留运行时实例 ID 与 definition.id 对应的静态内容身份。通用工厂返回 Unit 基础结构与明确选择的能力的标准 Definition／State 组合。Skill／Action Capability 本身非泛型，不把具体程序的私有类型传播到宿主 Unit、SP、Rule、Hook 或 Contribution。Core 从当前 unit.skill 直接读取完整单槽聚合；已知 Definition 构造持久 Ref、已知非空聚合构造本轮 Ref，分别保持私有类型配对。需要某项能力的业务通过 Unit 与对应 Capability 的交叉类型声明依赖。
 
@@ -25,7 +25,7 @@ Definition 保存静态参数与行为描述，State 保存本领域当前事实
 
 纯数值与几何等局部计算仍直接接收值、返回值。对已登记 Unit 的公开 Rule、Hook、Contribution、Layer.type 与 Blocker.layer 写入统一为 `setXxx(value): Change<C>`／`removeXxx(id): Change<C>`／`clearXxx(): Change<C>` 工厂；C 只要求该操作需要的宿主能力。Core 用 createChange 将纯变换与可选结算配对，compose 从左到右应用已有 Change。Unit.update 接收一个 Typed Ref 和一个 Change，先完成同一宿主的全部纯应用、一次发布，再原顺序结算；Ref 由提交入口证明能力，不由工厂绑定。跨能力 Rule 仍可只读完整 Unit 与 BattleState，不把真实业务输入压成通用上下文。
 
-Capability 也可提供接收 BattleState 与 Typed Ref 的完整操作，例如 Locomotion.advance；是否需要时间推进、资格判断或领域结算由实际业务决定。Rule、Hook、Contribution、Layer.type、Blocker.layer 与 SpatialPresence.appear／disappear 的 Change 工厂不自行提交；有后继的 Change 在发布后同步结算，无后继的 Hook Change 只改变集合。完整私有 state／生命周期操作保持各自业务契约，见 [批量变更](api-conventions.md#51-unit-完整操作与批量变更)。Route 的 Context 修改与选择同样返回 Change，动态创建与时间推进使用完整操作，见[领域设计](navigation.md#route-定义与进度)。
+Capability 也可提供接收 BattleState 与 Typed Ref 的完整操作，例如 Locomotion.advance；是否需要时间推进、资格判断或领域结算由实际业务决定。Rule、Hook、Contribution、Layer.type、Blocker.layer 与 Presence.appear／disappear 的 Change 工厂不自行提交；有后继的 Change 在发布后同步结算，无后继的 Hook Change 只改变集合。完整私有 state／生命周期操作保持各自业务契约，见 [批量变更](api-conventions.md#51-unit-完整操作与批量变更)。Route 的 Context 修改与选择同样返回 Change，动态创建与时间推进使用完整操作，见[领域设计](navigation.md#route-定义与进度)。
 
 完整结算接收当前 BattleState，按业务顺序返回已结算的新版本。有额外拒绝原因、结算报告或新身份时返回 `{ state, value }`，否则直接返回 State。普通查询不推进世界。所谓提交指生成并接续后继值；Tick 成功后，Runtime 才发布最终版本。
 
@@ -91,7 +91,7 @@ Action Capability 的 Definition 保存 initialize(battle) → Result<Actions> �
 
 路线、部署占格和 Card 归属等属于具体实例的创建业务。Occupancy 用 initial.occupancy 的 tile／direction 初始化本次登记与朝向，Slot 来自该能力的 Definition，状态与双槽反向表见 [Occupancy 与 Support](occupancy.md)。Deployment、Predefined 和 Schedule 出生操作直接调用 Unit.initialize。关卡开场 Unit 使用 initiallyPresent:true 的预置项，Predefined 负责别名、出现／移除操作和当前实例绑定。带路线的创建调用者分别提供共享 UnitDefinition、本次位置及 initial.route 的 `{ plan, offset }`，自行处理路线来源、采样和出生业务。Route initializer 装配 Context 与 State，不再次采样；定义引用与完整类型配对保持不变。出生操作直接使用统一初始化入口，不增加路线装配包装。Route 与 Locomotion 通过 Catalog 独立装配，见 [Navigation、Route 与 Locomotion 设计](navigation.md)。
 
-Core 不提供干员或敌人 Archetype 层；内容直接组合 Unit Definition 与所需的 Catalog Definitions，具体创建流程只声明实际需要的能力。Unit.initialize 是统一构造入口，负责按 Definition 建立能力配对。Unit 登记后的 Definition 与能力组成保持稳定，局部 State 可以更新；内部领域操作遵守此契约。路线可改变 SpatialPresence.present，不能临时安装或删除 SpatialPresence。查询与历史业务记录直接共享不可变 Unit，保留内容自有状态字段。
+Core 不提供干员或敌人 Archetype 层；内容直接组合 Unit Definition 与所需的 Catalog Definitions，具体创建流程只声明实际需要的能力。Unit.initialize 是统一构造入口，负责按 Definition 建立能力配对。Unit 登记后的 Definition 与能力组成保持稳定，局部 State 可以更新；内部领域操作遵守此契约。路线可改变 unit.presence.present，不能临时安装或删除 Presence。查询与历史业务记录直接共享不可变 Unit，保留内容自有状态字段。
 
 当前项目将 Blocker 与 Blockable 约束为至多一种，也允许 Unit 两者皆无。Blocking 的构造入口确认组合，通用 Unit 不点名这两个能力；内部信任能力身份不变，不重复检查互斥。该约束不推导阵营、自身 Layer、Route 或 Locomotion，也不把容量为 0 或暂时禁挡视为能力消失。
 
@@ -148,7 +148,7 @@ initialize(battle, unit) 校验 unit.definition.offense.attack 为有限非负�
 
 Unit.position 表达当前世界坐标；Layer 表达 GROUND／AIR 空地身份，Route 当前路线的 Plan.motionMode 表达 WALK／FLY 通行方式。这三者独立，升空不自动改变坐标或寻路模式。
 
-unit/capability/layer/capability.ts 的 Definition.type 提供初始身份，State.type 保存当前身份；领域消费者读取 unit.layer.type。Unit.position 与 SpatialPresence 表达位置和空间存在事实，不承担空地身份。Battlefield 不保存另一份位置索引。
+unit/capability/layer/capability.ts 的 Definition.type 提供初始身份，State.type 保存当前身份；领域消费者读取 unit.layer.type。Unit.position 与 Presence 表达位置和空间存在事实，不承担空地身份。Battlefield 不保存另一份位置索引。
 
 Layer 的 `setType(type: Type): Change<Unit & Layer>` 归 operations.ts，经 index.ts 与模型、守卫和 initialize 显式导出；Core 只需模型时继续直接依赖 capability.ts。它设置自身空地身份，与 Blocking.setLayer 调整可阻挡目标层的操作不同。setType 同时主动脱离阻挡，即使 type 相同也执行清理，每次形成新的 Layer State 和 Unit，不改变createChange 的同引用不登记结算协议。全批 transform 先发布，settle 再按 previous 的稳定角色分支：Blocker 调用 releaseAll(battle, ref(previous))，Blockable 调用自身 release，均按结算时最新状态解除关系；Blockable 同时取消位置计划。各释放操作在入口固定本次候选，不追删自身通知中新建的关系；后续独立请求仍可再次脱离当前关系；两种角色皆无时只更新身份。该操作不自动搜索，不修改 Definition、position、路线通行方式或 Blocker 自己的 layer／radius，也不代替浮空效果的其他业务。原生边界见[运动调查](../research/cases/15-locomotion-native-semantics.md)和[蒂比起飞调查](../research/cases/21-tippi-air-blocking.md)。
 
@@ -158,7 +158,7 @@ Hitbox 几何、Blocker 阻挡半径和 Locomotion.halfBodyWidth 分别用于受
 
 Battlefield 的通用空间查询领域使用 battlefield/spatial/ 命名，与单位空地身份 Layer 分开。范围重叠与形状扫掠的接口及资格边界见 [Spatial Query](spatial.md)。
 
-## SpatialPresence
+## Presence
 
 [空间存在](presence.md)只保存身体的 present 事实；暂时消失保留身份、真实坐标及生命周期登记。appear／disappear 返回在调用时按当前宿主能力组合的 Change，自身叶子只修改空间事实，其余子项直接复用所属能力的 Rule 工厂；发布后按 previous 的稳定角色调用 Blockable.release 或 Blocker.releaseAll，并在消失时委托 Action.cancelForUnit 取消当前执行。各能力消费自己的 Rule，不反向读取 Presence；空间查询、普通索敌和接触程序直接使用空间存在事实。Skill、Effect 和 Burst 不因此统一结束或暂停。
 

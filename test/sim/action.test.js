@@ -176,7 +176,7 @@ test("interrupted attack, successful release, and damage output are separate bus
     const definition = {
         id: "actor",
         hooks: Hooks.empty(),
-        spatialPresence: {},
+        presence: {},
         action: { initialize: (state) => actions.createActions(state, actions.create(program)) },
         skill: { initialize: (state) => skills.create(state, resource) },
     };
@@ -251,7 +251,7 @@ test("Combat advances an instantaneous action once per Tick and skips selection 
     const definition = {
         id: "actor",
         hooks: Hooks.empty(),
-        spatialPresence: {},
+        presence: {},
         action: {
             initialize: (state) => actions.createActions(state, actions.create(program)),
             select(state) {

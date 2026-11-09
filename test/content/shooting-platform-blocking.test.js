@@ -19,7 +19,7 @@ const card = createCardDefinition({ cost: 0, redeployTicks: 0, slots: 0, placeme
 function passenger(id = 10, tile = first, layer = "GROUND") {
     return initialize({
         id, position: Tile.center(tile), initial: { occupancy: { tile } }, definition: {
-            id: "passenger", hooks: Hooks.empty(), occupancy: { slot: "OCCUPANT" }, spatialPresence: {},
+            id: "passenger", hooks: Hooks.empty(), occupancy: { slot: "OCCUPANT" }, presence: {},
             allegiance: { side: "ALLY" }, vitality: { maxHp: 100, defense: 0, resistance: 0 },
             blocker: { layer, capacity: 1, rules: [sides("ENEMY")] },
         },

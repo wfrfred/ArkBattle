@@ -20,7 +20,7 @@ import * as vitality from ${module("unit/capability/vitality/index")};
 import * as elemental from ${module("unit/capability/elemental/index")};
 import * as skills from ${module("unit/skill/index")};
 import { hasSkill, type Skill as SkillCapability } from ${module("unit/capability/skill/index")};
-import { hasSpatialPresence, disappear } from ${module("unit/capability/presence/index")};
+import { hasPresence, disappear } from ${module("unit/capability/presence/index")};
 import { dispatch as dispatchSkill } from ${module("unit/capability/skill/hook")};
 import { dispatch as dispatchElemental } from ${module("unit/capability/elemental/hook")};
 import * as runtime from ${module("battle/runtime")};
@@ -207,7 +207,7 @@ effects.install(battle, ref(bare), shield);
 const change: Change<Unit & Offense> = setAttackContribution({ id: 'bonus', value: [] });
 const actionChange = actionCapability.setRule({ id: 'ready', allows: () => true });
 const optionalAction: Change<Unit> = optional(actionCapability.hasAction, actionChange);
-const optionalPresence: Change<Unit> = optional(hasSpatialPresence, disappear());
+const optionalPresence: Change<Unit> = optional(hasPresence, disappear());
 update(battle, ref(bare), optionalAction);
 const optionalResult = optionalAction(host);
 const optionalHost: typeof host = optionalResult.next;
@@ -250,8 +250,8 @@ const foundAction: actionCapability.Action = actionHost;
 const ordinaryPredicate: (self: Unit) => boolean = self => self.id > 0;
 // @ts-expect-error an ordinary predicate does not establish a capability proof.
 allUnits(battle).filter(ordinaryPredicate).find(() => true)!.action;
-for (const self of allUnits(battle).filter(actionCapability.hasAction).filter(hasSpatialPresence)) {
-    const present: boolean = self.spatialPresence.present;
+for (const self of allUnits(battle).filter(actionCapability.hasAction).filter(hasPresence)) {
+    const present: boolean = self.presence.present;
     const action: actionCapability.Action = self;
 }
 for (const self of allUnits(battle).filter(actionCapability.hasAction).filter(hasSkill).filter(skills.hasSp)) {

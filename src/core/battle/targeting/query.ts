@@ -5,7 +5,7 @@ import {
     type Allegiance,
 } from "../../unit/capability/allegiance/capability.js";
 import { hasHitbox } from "../../unit/capability/hitbox/capability.js";
-import { isSpatiallyPresent } from "../../unit/capability/presence/capability.js";
+import * as presence from "../../unit/capability/presence/capability.js";
 import {
     allowsRestrictions,
     type Restriction,
@@ -33,7 +33,7 @@ export function damage(
 
     return <U extends Unit & Targetable>(target: U): target is U & Vitality & Allegiance =>
         target.lifecycle === "PRESENT" &&
-        isSpatiallyPresent(target) &&
+        presence.isPresent(target) &&
         hasVitality(target) &&
         target.vitality.hp > 0 &&
         hasAllegiance(target) &&
@@ -50,7 +50,7 @@ export function healing(
 
     return <U extends Unit & Targetable>(target: U): target is U & Vitality & Allegiance =>
         target.lifecycle === "PRESENT" &&
-        isSpatiallyPresent(target) &&
+        presence.isPresent(target) &&
         hasVitality(target) &&
         target.vitality.hp > 0 &&
         hasAllegiance(target) &&
@@ -70,7 +70,7 @@ export function elementDamage(
     const allows = allowsRestrictions(battle, source, ignored);
 
     return <U extends Unit & Targetable>(target: U): target is U & Elemental & Allegiance =>
-        isSpatiallyPresent(target) &&
+        presence.isPresent(target) &&
         hasElemental(target) &&
         available(target) &&
         target.elemental.burst === null &&
@@ -88,7 +88,7 @@ export function elementHealing(
     const allows = allowsRestrictions(battle, source, ignored);
 
     return <U extends Unit & Targetable>(target: U): target is U & Elemental & Allegiance =>
-        isSpatiallyPresent(target) &&
+        presence.isPresent(target) &&
         hasElemental(target) &&
         available(target) &&
         target.elemental.burst === null &&

@@ -1,12 +1,12 @@
 # 空间存在
 
-SpatialPresence 表示身体是否参与普通空间交互。无此 Capability 的 Unit 默认具有空间存在性；有此能力时，Definition 为空，State 保存 `present`，初始化为 true。
+Presence 表示身体是否参与普通空间交互。Definition 为空，对应 `definition.presence`；State 位于 `unit.presence`，保存 `present`，初始化为 true。`hasPresence` 判断能力组成，`presence.isPresent(unit)` 查询当前空间存在性；无此 Capability 的 Unit 默认返回 true。
 
 暂时消失保留 Unit 身份、真实位置、Lifetime、部署及 Occupancy 登记。它不是离场，不触发 enter／leave，也不统一结束 Skill、Effect、Burst 或独立 Projectile。原生机制及各接收路径的差异见[案例 18](../research/cases/18-projectile-source-and-target-lifecycles.md)，技能开始通知中的同步变化见[案例 05](../research/cases/05-skill-start-and-finish.md#2026-11-06复核开始通知中的宿主消失)。
 
 ## 操作与职责
 
-`disappear(): Change<Unit & SpatialPresence>` 和 `appear(position): Change<Unit & SpatialPresence>` 不绑定 Ref，由 `unit.update(battle, ref, change)` 提交。工厂不读取 BattleState，也不自行发布。appear 同时主动覆盖位置，即使当前已 present，也要调用所属阻挡能力的完整释放操作，清理当前关系及自身偏移。
+`disappear(): Change<Unit & Presence>` 和 `appear(position): Change<Unit & Presence>` 不绑定 Ref，由 `unit.update(battle, ref, change)` 提交。工厂不读取 BattleState，也不自行发布。appear 同时主动覆盖位置，即使当前已 present，也要调用所属阻挡能力的完整释放操作，清理当前关系及自身偏移。
 
 ```typescript
 battle = update(battle, reference, presence.disappear());

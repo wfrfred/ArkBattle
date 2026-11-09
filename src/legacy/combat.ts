@@ -351,7 +351,7 @@ function enemyDefinition(value: unknown) {
 
     return {
         hooks: Hooks.empty(),
-        spatialPresence: {},
+        presence: {},
         targetable: { taunt: 0, restrictions: [] },
         elemental: createArknightsElementalDefinition({ receiver: "ENEMY" }),
         id: stringField(definition.key, "enemy key"),
@@ -383,7 +383,7 @@ function enemyDefinition(value: unknown) {
         Pick<
             CapabilityDefinitions,
             | "route"
-            | "spatialPresence"
+            | "presence"
             | "targetable"
             | "elemental"
             | "vitality"

@@ -3,7 +3,7 @@ import { forUnit } from "../../unit/action/query.js";
 import { ref as actionRef } from "../../unit/action/action.js";
 import * as units from "../../unit/query.js";
 import { hasAction } from "../../unit/capability/action/capability.js";
-import { isSpatiallyPresent } from "../../unit/capability/presence/capability.js";
+import * as presence from "../../unit/capability/presence/capability.js";
 import { hasVitality } from "../../unit/capability/vitality/capability.js";
 import { remove } from "../unit.js";
 import type { State as BattleState } from "../state.js";
@@ -39,7 +39,7 @@ export function advance(battle: BattleState): BattleState {
         }
 
         const unit = units.get(battle, source);
-        if (unit?.lifecycle !== "PRESENT" || !isSpatiallyPresent(unit)) {
+        if (unit?.lifecycle !== "PRESENT" || !presence.isPresent(unit)) {
             continue;
         }
 

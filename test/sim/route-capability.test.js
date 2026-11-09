@@ -27,7 +27,7 @@ const movement = {
 function creation(program, extra = {}) {
     return { definition: {
         id: "traveller", hooks: Hooks.empty(), route: { alwaysCheckCurrentPoint: true },
-        spatialPresence: {}, ...extra,
+        presence: {}, ...extra,
     }, position: [0, 0], initial: { route: { plan: program, offset: [0, 0] } } };
 }
 const current = state => get(state, 0).route.main;
@@ -230,7 +230,7 @@ test("spatial instructions publish consumption before hooks and resume the lates
                 released++;
                 assert.equal(current(state).index, 1);
                 assert.equal(current(state).current, null);
-                assert.equal(get(state, 0).spatialPresence.present, false);
+                assert.equal(get(state, 0).presence.present, false);
                 if (operation === "remove") {
                     state = remove(state, host.id, "SCRIPT");
                 } else {
@@ -257,7 +257,7 @@ test("spatial instructions publish consumption before hooks and resume the lates
             assert.equal(current(state).index, 2);
             assert.equal(current(state).current.timer, 4);
             assert.equal(current(state).ticking, false);
-            assert.equal(get(state, 0).spatialPresence.present, true);
+            assert.equal(get(state, 0).presence.present, true);
             assert.deepEqual(get(state, 0).position, [6, 0]);
         }
     }

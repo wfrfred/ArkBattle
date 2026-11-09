@@ -30,7 +30,7 @@ test("disappearance preserves deployment and lifetimes, releases blocking before
     };
     const idle = { ...program, id: "idle" };
     const operator = {
-        id: "operator", spatialPresence: {},
+        id: "operator", presence: {},
         hooks: Hooks.empty().set(lifecycle.enter, {
             id: "enter", invoke(state) { entries++; return { state, value: undefined }; },
         }).set(lifecycle.leave, {
@@ -48,7 +48,7 @@ test("disappearance preserves deployment and lifetimes, releases blocking before
         },
     };
     const enemy = {
-        id: "enemy", hooks: Hooks.empty(), spatialPresence: {},
+        id: "enemy", hooks: Hooks.empty(), presence: {},
         blockable: { volume: 1, rules: [] }, layer: { type: "GROUND" },
     };
     let state = battle([
@@ -81,7 +81,7 @@ test("disappearance preserves deployment and lifetimes, releases blocking before
         id: "observe-published-restrictions",
         invoke(current) {
             notifications++;
-            assert.equal(get(current, owner.id).spatialPresence.present, false);
+            assert.equal(get(current, owner.id).presence.present, false);
             assert.deepEqual(blocking.blocked(current, owner), []);
             assert.ok(targets.every((target) => blocking.blockerOf(current, target) === undefined));
             assert.equal(actions.getExecution(current, started.value.ref).execution.lifecycle, "RUNNING");

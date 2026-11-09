@@ -27,7 +27,7 @@ export interface Definition
             | "locomotion"
             | "offense"
             | "route"
-            | "spatialPresence"
+            | "presence"
             | "targetable"
             | "vitality"
         > {
@@ -92,7 +92,7 @@ export function createDefinition(
             halfBodyWidth: movement.halfBodyWidth,
         },
         route: { alwaysCheckCurrentPoint: true },
-        spatialPresence: {},
+        presence: {},
         targetable: { taunt: profile.taunt, restrictions: [] },
     };
 }

@@ -69,7 +69,7 @@ test("EVENT-01: real HP and EP damage and healing produce the corresponding floa
 
 test("EVENT-02: a Burst keeps its original position through movement and death in the same Tick", () => {
     let state = battle([{ definition: {
-        id: "receiver", hooks: Hooks.empty(), elemental, spatialPresence: {},
+        id: "receiver", hooks: Hooks.empty(), elemental, presence: {},
         vitality: { maxHp: 2000, defense: 0, resistance: 0 },
     }, position: [1, 1] }]);
     const target = units.ref(get(state, 0));

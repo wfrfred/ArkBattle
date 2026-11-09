@@ -13,7 +13,7 @@ import { advance } from "../../dist/core/unit/capability/locomotion/index.js";
 const near = (actual, expected) => assert.ok(Math.abs(actual - expected) < 1e-12, `${actual} ≈ ${expected}`);
 const context = { mode: "WALK", speedMultiplier: 1 };
 const definition = {
-    id: "mover", hooks: Hooks.empty(), spatialPresence: {},
+    id: "mover", hooks: Hooks.empty(), presence: {},
     locomotion: { speed: 0.2, minSpeed: 0, halfBodyWidth: 0,
         steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 } },
 };

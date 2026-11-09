@@ -12,13 +12,13 @@ import { hasBlocker } from "../blocking/blocker.js";
 import { hasBlockable } from "../blocking/blockable.js";
 import * as blocker from "../blocking/blocker-operations.js";
 import * as blockable from "../blocking/blockable-operations.js";
-import type { SpatialPresence } from "./capability.js";
+import type { Presence } from "./capability.js";
 
 const restriction = { id: "@presence/absent", allows: () => false };
 
-export function disappear(): Change<Unit & SpatialPresence> {
-    const spatial = createChange<Unit & SpatialPresence>(
-        (self) => ({ ...self, spatialPresence: { present: false } }),
+export function disappear(): Change<Unit & Presence> {
+    const presence = createChange<Unit & Presence>(
+        (self) => ({ ...self, presence: { present: false } }),
         (battle, previous) => {
             if (hasBlocker(previous)) {
                 battle = blocker.releaseAll(battle, units.ref(previous));
@@ -32,15 +32,15 @@ export function disappear(): Change<Unit & SpatialPresence> {
         },
     );
 
-    const change = compose(spatial, restrictions(false));
+    const change = compose(presence, restrictions(false));
 
     return (self) =>
         self.lifecycle === "PRESENT" ? change(self) : { next: self, settlements: [] };
 }
 
-export function appear(position: WorldPosition): Change<Unit & SpatialPresence> {
-    const spatial = createChange<Unit & SpatialPresence>(
-        (self) => ({ ...self, position, spatialPresence: { present: true } }),
+export function appear(position: WorldPosition): Change<Unit & Presence> {
+    const presence = createChange<Unit & Presence>(
+        (self) => ({ ...self, position, presence: { present: true } }),
         (battle, previous) => {
             if (hasBlocker(previous)) {
                 return blocker.releaseAll(battle, units.ref(previous));
@@ -53,7 +53,7 @@ export function appear(position: WorldPosition): Change<Unit & SpatialPresence> 
         },
     );
 
-    const change = compose(spatial, restrictions(true));
+    const change = compose(presence, restrictions(true));
 
     return (self) =>
         self.lifecycle === "PRESENT" ? change(self) : { next: self, settlements: [] };

@@ -14,7 +14,7 @@ import * as effects from "../../core/unit/effect/index.js";
 import { ref as effectRef, type Effect } from "../../core/unit/effect/index.js";
 
 import { hasLayer } from "../../core/unit/capability/layer/capability.js";
-import { isSpatiallyPresent } from "../../core/unit/capability/presence/index.js";
+import * as presence from "../../core/unit/capability/presence/index.js";
 import { hasAllegiance } from "../../core/unit/capability/allegiance/capability.js";
 import { hasTargetable } from "../../core/unit/capability/targetable/capability.js";
 import { TICKS_PER_SECOND } from "../../core/tick.js";
@@ -53,7 +53,7 @@ interface Behaviour<P extends object> {
 function onGround(unit: Unit): boolean {
     return (
         unit.lifecycle === "PRESENT" &&
-        isSpatiallyPresent(unit) &&
+        presence.isPresent(unit) &&
         (!hasLayer(unit) || unit.layer.type === "GROUND")
     );
 }

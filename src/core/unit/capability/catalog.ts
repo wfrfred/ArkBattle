@@ -30,7 +30,7 @@ export const initializers = {
     blockable: blockable.initialize,
     locomotion: locomotion.initialize,
     route: route.initialize,
-    spatialPresence: presence.initialize,
+    presence: presence.initialize,
     targetable: targetable.initialize,
 } as const;
 

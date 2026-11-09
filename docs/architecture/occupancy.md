@@ -69,7 +69,7 @@ battlefield/unit.ts 的 add／update／remove 原子维护 Unit 存储及反向�
 - 相同坐标值保留旧条目与 Ref；其他字段替换不重新登记。
 - 更新已有实例保持枚举顺序，删除不回收身份。
 
-结构登记与 Unit.position、SpatialPresence、HP 分别表达。身体移动或暂时空间消失不自动改变部署格。离场由 Battlefield 删除结构登记，离场 Unit 仍保留原 tile；Occupancy 只清理 pair，不将 tile 置空。槽位不承担阵营、DP、地形部署许可等业务判断。
+结构登记与 Unit.position、Presence、HP 分别表达。身体移动或暂时空间消失不自动改变部署格。离场由 Battlefield 删除结构登记，离场 Unit 仍保留原 tile；Occupancy 只清理 pair，不将 tile 置空。槽位不承担阵营、DP、地形部署许可等业务判断。
 
 ## 已通知的业务配对
 
