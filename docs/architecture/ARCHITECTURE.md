@@ -108,7 +108,7 @@ Rule、Hook、Contribution 与 Blocker.layer 的公开工厂只接收业务输�
 | Skill              | SP 获取与支付、激活许可、持续、结束和弹药消耗  | unit/skill 保存领域程序与资源操作；capability/skill 定义宿主能力与 Change 工厂，事实仍存于 Unit.skill；Effect 通过本轮 Skill Lifetime 关联 |
 | Targeting          | 候选、查询资格、优先级与确定性选择             | 读取当前事实；比较器纯函数，同分时保留候选登记顺序                                  |
 | Damage             | 公式、输出、有序接收、普通扣血及死亡       | 流程在 battle/damage；Offense／Vitality／Elemental 提供属性。通用结算登记存于 Unit.hooks，专属接收与规则留在资源能力。特殊生命保护尚待设计 |
-| Healing            | 计算、输出、有序接收、普通恢复与通知           | 流程在 battle/healing；Vitality 保存 HP／MaxHP 与专属接收 Hook，通用结算登记存于 Unit.hooks。治疗不可选中由 Targetable 表达，明确 Ref 的治疗检查当前生命周期、正 HP 和接收 Hook，不重新执行索敌限制 |
+| Healing            | 计算、输出、有序接收、普通恢复与通知           | 流程在 battle/healing；Vitality 保存 HP／MaxHP 与专属接收 Hook，通用结算登记存于 Unit.hooks。普通 HP 治疗选择由 Targeting 检查 ACTIVE 的标准 healFree Effect，明确 Ref 的治疗检查当前生命周期、正 HP 和接收 Hook，不重新执行索敌限制 |
 | Elemental          | 元素值、损伤与治疗、标准爆发及动态恢复预算 | 状态保存四型 EP 与当前 Burst Effect Ref，Core 提供具体 Effect，Data 选择实现并绑定数值；元素损伤抗性和元素 HP 伤害抗性分别表达 |
 | Effect             | 附着实例、私有状态、生效切换、覆写与结束       | Unit 持有实例与 expiration；时间归 Effect，依赖归 Lifetime；具体 Definition 登记 Hook 和 Contribution |
 | Lifetime           | 结束幂等、依赖传播与完成调度 | 静态描述符配对 Typed Ref；图保存 owner 与显式依赖；Pending 保存本次请求与阶段，owner 等全部依赖者完整 Finalize |
