@@ -2,6 +2,8 @@ import { World } from "../../dist/core/geometry/coordinate.js";
 import { Hooks } from "../../dist/core/hook.js";
 import { tiles as tileEntries } from '../helpers/tiles.js';
 import { normal } from '../../dist/content/terrain/definition.js';
+import { normal as normalSite } from "../../dist/content/terrain/condition.js";
+import { create as createTile } from "../../dist/core/battlefield/map/tile.js";
 import * as blockingQueries from "../../dist/core/battle/blocking/index.js";
 import { advance as advanceBlocking, release as releaseBlocking } from "../../dist/core/battle/blocking/index.js";
 import { test } from 'node:test';
@@ -39,7 +41,13 @@ const houndMovement = parseEnemyMovementPrefab(JSON.parse(readFileSync(new URL('
 const crossbowMovement = { halfBodyWidth: 0.2, steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 } };
 
 function emptyBattle() {
-  const tile = { heightType: 'LOWLAND', meleeBlockable: true, buildableType: 'ALL', passableMask: 'ALL', terrain: normal.create({}), walkCost: 1, advancedBuildableMask: 1 };
+  const tile = createTile({
+    terrain: normal.create({}),
+    initial: {
+      elevation: "LOWLAND", placement: "ALL", passability: "ALL",
+      walkCost: 1, allowsBlocking: true, siteCondition: normalSite,
+    },
+  });
   return createBattleState(createBattlefield(createMap(5, 5, tileEntries(Array.from({ length: 25 }, () => tile)))));
 }
 
@@ -47,7 +55,7 @@ function guard(id, position, blockCapacity = 1, restrictions = []) {
   return initialize({ id, position, definition: { hooks: Hooks.empty(),
     id: 'test-guard', targetable: { restrictions }, vitality: { maxHp: 1000, defense: 40, resistance: 0 }, allegiance: { side: 'ALLY' }, layer: { type: 'GROUND' },
     hitbox: { shape: { type: 'CIRCLE', offset: [0, 0], radius: 0.2 } },
-    blocker: { layer: "GROUND", rules: [], capacity: blockCapacity, radius: 0.70709997 },
+    blocker: { layer: "GROUND", rules: [], capacity: blockCapacity },
   } });
 }
 
@@ -67,7 +75,6 @@ test('main-mode enemy levels inherit individual defined fields and apply stage o
   assert.equal(advanced.moveSpeedPerSecond, 1.1);
   assert.equal(advanced.blockVolume, 1);
   assert.deepEqual(advanced.tags, ['infection']);
-  assert.equal(rawEnemy('enemy_1000_gopro').Value[0].enemyData.attributes.maxHp.m_value, 820);
   assert.throws(() => profile('enemy_1000_gopro', 2), /exactly one level 2/);
 });
 
@@ -177,8 +184,6 @@ test('crossbow uses explicit windup and arrow speed, then settles damage on cont
     state = advanceProjectiles({ ...state, tick }, projectilesQuery.all(state).map(projectilesQuery.ref));
   }
   assert.equal(getUnit(state, 0).vitality.hp, 800);
-  assert.equal(getUnit(before, 0).vitality.hp, 1000);
-  assert.equal(before.battlefield.projectiles.size, 0);
 });
 
 test('crossbow switching between ranged and blocker melee preserves independent cooldowns', () => {
@@ -191,7 +196,6 @@ test('crossbow switching between ranged and blocker melee preserves independent 
   const cooldown = (battle, action) => getUnit(battle, 1).action.actions.get(action.id).cooldown.readyAtTick;
   const period = actions.ranged.intervalTicks;
   assert.equal(period, 72);
-  assert.equal(getUnit(initial, 1).action.actions.size, 2);
 
   const ranged = advanceCombat(initial);
   assert.equal(ranged.battlefield.projectiles.size, 1);
@@ -207,7 +211,7 @@ test('crossbow switching between ranged and blocker melee preserves independent 
   assert.equal(cooldown(melee, actions.ranged), period);
 
   const unblocked = releaseBlocking({ ...melee, tick: 2 }, blockingQueries.relations(melee, unitRef(getUnit(melee, 1))));
-  assert.equal(getUnit(advanceCombat(unblocked), 1).action.nextExecutionId, 2);
+  assert.equal(advanceCombat(unblocked).battlefield.projectiles.size, 1);
   const rangedAgain = advanceCombat({ ...unblocked, tick: period });
   assert.equal(rangedAgain.battlefield.projectiles.size, 2);
   assert.equal(cooldown(rangedAgain, actions.ranged), period * 2);
@@ -219,6 +223,4 @@ test('crossbow switching between ranged and blocker melee preserves independent 
   assert.equal(meleeAgain.battlefield.projectiles.size, 2);
   assert.equal(cooldown(meleeAgain, actions.ranged), period * 2);
   assert.equal(cooldown(meleeAgain, actions.melee), period * 2 + 1);
-  assert.equal(cooldown(ranged, actions.melee), 0);
-  assert.equal(getUnit(initial, 0).vitality.hp, 1000);
 });

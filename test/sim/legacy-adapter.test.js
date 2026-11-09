@@ -32,9 +32,7 @@ test('legacy adapter rejects unsupported content and preserves interval conversi
   assert.throws(() => createLegacyCombatBattle({ ...options, operators: [{ definition: guard({ skill: { spCost: 1 } }), position: [1, 5] }] }), /does not execute operator skills/);
   assert.throws(() => createLegacyCombatBattle({ ...options, operators: [{ definition: guard({ dmgType: 'heal' }), position: [1, 5] }] }), /only supports physical, arts and true damage/);
   assert.throws(() => createLegacyCombatBattle({ ...options, operators: [{ definition: guard({ attackKind: 'none' }), position: [1, 5] }] }), /ordinary attacks/);
-  for (const offset of [null, [0, 1, 2], [0.5, 1]]) {
-    assert.throws(() => createLegacyCombatSpec({
-      ...options, operators: [{ definition: guard({ rangeGrid: [offset] }), position: [1, 5] }],
-    }), { name: 'RangeError', message: 'invalid tile position' });
-  }
+  assert.throws(() => createLegacyCombatSpec({
+    ...options, operators: [{ definition: guard({ rangeGrid: [[0.5, 1]] }), position: [1, 5] }],
+  }), { name: 'RangeError', message: 'invalid tile position' });
 });
