@@ -23,12 +23,11 @@ import { create as createBattlefield } from '../../dist/core/battlefield/state.j
 import { create as createMap } from '../../dist/core/battlefield/map/map.js';
 import { start as startAction, ref as actionRef } from '../../dist/core/unit/action/index.js';
 import { ref as unitRef } from '../../dist/core/unit/index.js';
-import { select } from '../../dist/core/battle/targeting/index.js';
 import { allowsRestrictions } from '../../dist/core/unit/capability/targetable/capability.js';
 import { invisibleRestriction } from '../../dist/core/effects/visibility.js';
 import { invincible } from '../../dist/core/effects/protection.js';
 import { install } from '../../dist/core/unit/effect/index.js';
-import { range } from '../../dist/core/battle/targeting/index.js';
+import { inRange } from '../../dist/core/battle/targeting/index.js';
 import { advance as advanceAction } from '../../dist/core/unit/action/index.js';
 import { advance as advanceCombat } from '../../dist/core/battle/steps/combat.js';
 import { advance as advanceProjectiles } from '../../dist/core/battle/projectile.js';
@@ -53,7 +52,7 @@ function emptyBattle() {
 
 function guard(id, position, blockCapacity = 1, restrictions = []) {
   return initialize({ id, position, definition: { hooks: Hooks.empty(),
-    id: 'test-guard', targetable: { restrictions }, vitality: { maxHp: 1000, defense: 40, resistance: 0 }, allegiance: { side: 'ALLY' }, layer: { type: 'GROUND' },
+    id: 'test-guard', targetable: { taunt: 0, restrictions }, vitality: { maxHp: 1000, defense: 40, resistance: 0 }, allegiance: { side: 'ALLY' }, layer: { type: 'GROUND' },
     hitbox: { shape: { type: 'CIRCLE', offset: [0, 0], radius: 0.2 } },
     blocker: { layer: "GROUND", rules: [], capacity: blockCapacity },
   } });
@@ -117,9 +116,9 @@ test('a hound attacks its hidden blocker while still respecting invincibility', 
   const blocker = guard(0, [2, 2], 1, [{ id: 'hidden', value: invisibleRestriction }]);
   const hound = initialize({ id: 1, position: [2, 2.5], definition, initial: routeInitial([2, 2.5]) });
   const before = advanceBlocking(addUnit(addUnit(emptyBattle(), blocker), hound));
-  const request = { ...action.attack.targetGroups[0].targeting, source: unitRef(hound) };
-  assert.equal(allowsRestrictions(before, request, getUnit(before, 0)), false);
-  assert.deepEqual(select(before, request).value.map(ref => ref.id), [0]);
+  const selectTargets = action.attack.targetGroups[0].select;
+  assert.equal(allowsRestrictions(before, hound, ['DAMAGE'])(getUnit(before, 0)), false);
+  assert.deepEqual(selectTargets(before, unitRef(hound)).value.map(ref => ref.id), [0]);
   const started = startAction(before, actionRef(unitRef(hound), action));
   const hit = advanceAction(started.state, started.value.ref);
   assert.equal(getUnit(hit, 0).vitality.hp, 850);
@@ -139,13 +138,13 @@ test('crossbow selects melee for its actual blocker while ranged targeting keeps
   const blocker = guard(0, [2, 2], 1, [{ id: 'innate', value: invisibleRestriction }]);
   const bow = initialize({ id: 1, position: [2, 2.5], definition, initial: routeInitial([2, 2.5]) });
   const state = advanceBlocking(addUnit(addUnit(emptyBattle(), blocker), bow));
-  const request = { ...actions.melee.attack.targetGroups[0].targeting, source: unitRef(bow) };
-  const ranged = { ...actions.ranged.attack.targetGroups[0].targeting, source: unitRef(bow) };
+  const melee = actions.melee.attack.targetGroups[0].select;
+  const ranged = actions.ranged.attack.targetGroups[0].select;
 
-  assert.equal(range(narrow)(state, request, getUnit(state, 0)), false);
-  assert.equal(allowsRestrictions(state, request, getUnit(state, 0)), false);
-  assert.deepEqual(select(state, request).value.map(ref => ref.id), [0]);
-  assert.deepEqual(select(state, ranged).value, []);
+  assert.equal(inRange(bow.position, narrow)(getUnit(state, 0)), false);
+  assert.equal(allowsRestrictions(state, bow, ['DAMAGE'])(getUnit(state, 0)), false);
+  assert.deepEqual(melee(state, unitRef(bow)).value.map(ref => ref.id), [0]);
+  assert.deepEqual(ranged(state, unitRef(bow)).value, []);
   assert.deepEqual(definition.action.select(state, getUnit(state, 1)).value, ['melee']);
   const started = advanceCombat(state);
   const released = advanceCombat({ ...started, tick: 1 });
@@ -157,9 +156,9 @@ test('crossbow selects melee for its actual blocker while ranged targeting keeps
     { id: 'innate', value: invisibleRestriction },
   ])), bow);
   assert.deepEqual(blockingQueries.relations(unblocked).map(({ blocker, blocked }) => ({ blockerUnitId: blocker.id, blockedUnitId: blocked.id })), []);
-  assert.equal(range(narrow)(unblocked, request, getUnit(unblocked, 0)), true);
-  assert.deepEqual(select(unblocked, request).value, []);
-  assert.deepEqual(select(unblocked, ranged).value, []);
+  assert.equal(inRange(bow.position, narrow)(getUnit(unblocked, 0)), true);
+  assert.deepEqual(melee(unblocked, unitRef(bow)).value, []);
+  assert.deepEqual(ranged(unblocked, unitRef(bow)).value, []);
   assert.deepEqual(definition.action.select(unblocked, getUnit(unblocked, 1)).value, ['ranged']);
 });
 

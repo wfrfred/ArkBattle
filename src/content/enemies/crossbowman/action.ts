@@ -17,7 +17,9 @@ import { hasOffense, resolveAttack } from "../../../core/unit/capability/offense
 
 import { hasVitality } from "../../../core/unit/capability/vitality/index.js";
 import * as targeting from "../../../core/battle/targeting/index.js";
-import { first } from "../../../core/battle/targeting/index.js";
+import { hasBlockable } from "../../../core/unit/capability/blocking/index.js";
+import { hasTargetable } from "../../../core/unit/capability/targetable/capability.js";
+import { topK } from "../../../core/common/collection.js";
 
 export interface Timing {
     readonly windupTicks: number;
@@ -70,15 +72,23 @@ export function createMelee(profile: Profile, timing: Timing): Attack {
         targetGroups: [
             {
                 id: "primary",
-                targeting: {
-                    purposes: ["DAMAGE"],
-                    filter: targeting.and(
-                        targeting.present,
-                        targeting.alive,
-                        targeting.hostile,
-                        targeting.blocker,
-                    ),
-                    selector: first(1, targeting.distance),
+                select(battle, source) {
+                    const self = units.get(battle, source);
+                    if (self === undefined) {
+                        return { state: battle, value: [] };
+                    }
+
+                    const owner = hasBlockable(self) ? self.blockable.relation?.blocker : undefined;
+                    const target = owner === undefined ? undefined : units.get(battle, owner);
+                    const eligible = targeting.damage(battle, self, () => true);
+
+                    return {
+                        state: battle,
+                        value:
+                            target !== undefined && hasTargetable(target) && eligible(target)
+                                ? [units.ref(target)]
+                                : [],
+                    };
                 },
                 operations: [
                     {
@@ -107,16 +117,32 @@ export function createRanged(profile: Profile, timing: Timing, projectile: Proje
         targetGroups: [
             {
                 id: "primary",
-                targeting: {
-                    purposes: ["DAMAGE"],
-                    filter: targeting.and(
-                        targeting.damage,
-                        targeting.not(targeting.blocker),
-                        targeting.range([
-                            { type: "CIRCLE", offset: [0, 0], radius: profile.rangeRadius },
-                        ]),
-                    ),
-                    selector: first(1, targeting.distance),
+                select(battle, source) {
+                    const self = units.get(battle, source);
+                    if (self === undefined) {
+                        return { state: battle, value: [] };
+                    }
+
+                    const blocker = hasBlockable(self)
+                        ? self.blockable.relation?.blocker
+                        : undefined;
+                    const candidates = units
+                        .all(battle)
+                        .filter(hasTargetable)
+                        .filter(targeting.damage(battle, self))
+                        .filter((target) => target.id !== blocker?.id)
+                        .filter(
+                            targeting.inRange(self.position, [
+                                { type: "CIRCLE", offset: [0, 0], radius: profile.rangeRadius },
+                            ]),
+                        );
+
+                    return {
+                        state: battle,
+                        value: topK(candidates, 1, targeting.distance(self.position)).map(
+                            units.ref,
+                        ),
+                    };
                 },
                 operations: [
                     {

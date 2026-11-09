@@ -1,5 +1,6 @@
 import { Hooks } from "../../core/hook.js";
 import {
+    assertFiniteNumber,
     assertNonnegativeNumber,
     assertNonnegativeSafeInteger,
     assertPositiveNumber,
@@ -278,6 +279,7 @@ export interface Profile {
     readonly defense: number;
     readonly resistance: number;
     readonly attackSpeed: number;
+    readonly taunt: number;
     readonly baseAttackTime: number;
     readonly moveSpeedPerSecond: number;
     readonly rangeRadius: number;
@@ -385,6 +387,7 @@ export function prepare(value: unknown, configuration: Configuration): Profile {
         "def",
         "magicResistance",
         "attackSpeed",
+        "tauntLevel",
         "baseAttackTime",
         "moveSpeed",
         "massLevel",
@@ -443,6 +446,8 @@ export function prepare(value: unknown, configuration: Configuration): Profile {
     const mass = numeric(attributes, "massLevel", 0);
     const blockVolume = numeric(attributes, "blockCnt", 1);
     const lifePointReduce = numeric(fields, "lifePointReduce", 1);
+    const taunt = attributes.tauntLevel ?? 0;
+    assertFiniteNumber(taunt, "enemy taunt level");
     assertNonnegativeSafeInteger(mass, "enemy mass");
     assertNonnegativeSafeInteger(blockVolume, "enemy block volume");
     assertNonnegativeSafeInteger(lifePointReduce, "enemy life point reduction");
@@ -457,6 +462,7 @@ export function prepare(value: unknown, configuration: Configuration): Profile {
         defense: numeric(attributes, "def", 0),
         resistance: numeric(attributes, "magicResistance", 0),
         attackSpeed: numeric(attributes, "attackSpeed", 100),
+        taunt,
         baseAttackTime,
         moveSpeedPerSecond: numeric(attributes, "moveSpeed"),
         rangeRadius: numeric(fields, "rangeRadius", 0),

@@ -1,11 +1,100 @@
-import { hasTargetable } from "../../unit/capability/targetable/capability.js";
-import * as units from "../../unit/query.js";
+import type { Unit } from "../../unit/unit.js";
+import { areHostile, hasAllegiance } from "../../unit/capability/allegiance/capability.js";
+import { hasHitbox } from "../../unit/capability/hitbox/capability.js";
+import { isSpatiallyPresent } from "../../unit/capability/presence/capability.js";
+import {
+    allowsRestrictions,
+    type Targetable,
+} from "../../unit/capability/targetable/capability.js";
+import {
+    hasVitality,
+    resolveMaxHp,
+    type Vitality,
+} from "../../unit/capability/vitality/capability.js";
+import { hasElemental, type Elemental } from "../../unit/capability/elemental/capability.js";
+import { available, resolveDamageRatio } from "../../unit/capability/elemental/query.js";
+import { overlaps } from "../../geometry/intersection.js";
+import type { WorldPosition } from "../../geometry/coordinate.js";
+import type { Range } from "../../geometry/range.js";
 import type { State as BattleState } from "../state.js";
-import type { Request } from "./contract.js";
 
-export function hasCandidate(battle: BattleState, request: Request): boolean {
-    return units
-        .all(battle)
-        .filter(hasTargetable)
-        .some((target) => request.filter(battle, request, target));
+export function damage(
+    battle: BattleState,
+    source: Unit,
+    ignore?: (kind: symbol) => boolean,
+): <U extends Unit & Targetable>(target: U) => target is U & Vitality {
+    const allows = allowsRestrictions(battle, source, ["DAMAGE"], ignore);
+
+    return <U extends Unit & Targetable>(target: U): target is U & Vitality =>
+        target.lifecycle === "PRESENT" &&
+        isSpatiallyPresent(target) &&
+        hasVitality(target) &&
+        target.vitality.hp > 0 &&
+        hasAllegiance(source) &&
+        hasAllegiance(target) &&
+        areHostile(source, target) &&
+        allows(target);
+}
+
+export function healing(
+    battle: BattleState,
+    source: Unit,
+    ignore?: (kind: symbol) => boolean,
+): <U extends Unit & Targetable>(target: U) => target is U & Vitality {
+    const allows = allowsRestrictions(battle, source, ["HEAL"], ignore);
+
+    return <U extends Unit & Targetable>(target: U): target is U & Vitality =>
+        target.lifecycle === "PRESENT" &&
+        isSpatiallyPresent(target) &&
+        hasVitality(target) &&
+        target.vitality.hp > 0 &&
+        hasAllegiance(source) &&
+        hasAllegiance(target) &&
+        source.allegiance.side === target.allegiance.side &&
+        target.vitality.hp < resolveMaxHp(target.definition.vitality, target.vitality) &&
+        allows(target);
+}
+
+export function elementDamage(
+    battle: BattleState,
+    source: Unit,
+    ignore?: (kind: symbol) => boolean,
+): <U extends Unit & Targetable>(target: U) => target is U & Elemental {
+    const allows = allowsRestrictions(battle, source, ["ELEMENTAL_INJURY"], ignore);
+
+    return <U extends Unit & Targetable>(target: U): target is U & Elemental =>
+        isSpatiallyPresent(target) &&
+        hasElemental(target) &&
+        available(target) &&
+        target.elemental.burst === null &&
+        hasAllegiance(source) &&
+        hasAllegiance(target) &&
+        target.allegiance.side !== "NEUTRAL" &&
+        areHostile(source, target) &&
+        allows(target);
+}
+
+export function elementHealing(
+    battle: BattleState,
+    source: Unit,
+    ignore?: (kind: symbol) => boolean,
+): <U extends Unit & Targetable>(target: U) => target is U & Elemental {
+    const allows = allowsRestrictions(battle, source, ["ELEMENTAL_INJURY_HEALED"], ignore);
+
+    return <U extends Unit & Targetable>(target: U): target is U & Elemental =>
+        isSpatiallyPresent(target) &&
+        hasElemental(target) &&
+        available(target) &&
+        target.elemental.burst === null &&
+        hasAllegiance(source) &&
+        hasAllegiance(target) &&
+        source.allegiance.side === target.allegiance.side &&
+        resolveDamageRatio(battle, target) > 0 &&
+        allows(target);
+}
+
+export function inRange(origin: WorldPosition, range: Range): (target: Unit) => boolean {
+    return (target) =>
+        hasHitbox(target) &&
+        overlaps(range, origin, target.definition.hitbox.shape, target.position);
 }

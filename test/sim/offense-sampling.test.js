@@ -4,7 +4,7 @@ import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { battle, unit, actionDefinition, geometry } from "../helpers/action-fixture.js";
-import { damage } from "../helpers/targeting.js";
+import { selectDamage } from "../helpers/targeting.js";
 import * as units from "../../dist/core/unit/query.js";
 import * as actions from "../../dist/core/unit/action/index.js";
 import { advance } from "../../dist/core/unit/action/index.js";
@@ -17,7 +17,7 @@ test("source attack samples current Offense separately for each target after nes
     const definition = actionDefinition(1, {
         targetGroups: [{
             id: "primary",
-            targeting: damage({ geometry, canTargetAir: true, maxTargets: 2 }),
+            select: selectDamage({ geometry, canTargetAir: true, maxTargets: 2 }),
             operations: [{ type: "DAMAGE", powerSource: "SOURCE_ATTACK", power: 1, damageType: "TRUE" }],
         }],
     });

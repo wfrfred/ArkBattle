@@ -5,7 +5,7 @@ import { Hooks } from "../../dist/core/hook.js";
 import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import * as unitQueries from "../../dist/core/unit/index.js";
 import { resolveDefense } from "../../dist/core/unit/capability/vitality/index.js";
-import { and, damage as damageFilter, range as inRange, first, distance } from "../../dist/core/battle/targeting/index.js";
+import { selectDamage } from "../helpers/targeting.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import { step as stepBattle } from "../../dist/core/battle/index.js";
 import { create as createAttack } from "../../dist/content/actions/attack.js";
@@ -26,9 +26,8 @@ const range = [{ type: 'CIRCLE', offset: [0, 0], radius: 20 }];
 const hit = { type: 'CIRCLE', offset: [0, 0], radius: 0.1 };
 function action(interval = 1) {
   return createAttack({ id: 'normal-attack', triggerBindingId: 'primary', intervalTicks: interval, recoveryTicks: 0,
-    targetGroups: [{ id: 'primary', targeting: {
-      purposes: ['DAMAGE'], filter: and(damageFilter, inRange(range)), selector: first(1, distance),
-    }, operations: [{ type: 'DAMAGE', power: 1, damageType: 'TRUE' }] }], followUps: [] });
+    targetGroups: [{ id: 'primary', select: selectDamage({ geometry: range, canTargetAir: true }),
+      operations: [{ type: 'DAMAGE', power: 1, damageType: 'TRUE' }] }], followUps: [] });
 }
 function definition(receiver = 'CHARACTER', overrides = {}) {
   return { hooks: Hooks.empty(), id: `element-${receiver}`,
@@ -134,7 +133,7 @@ function battle(receiver, type) {
   });
   const actor = (side, attack) => ({
     id: side, hooks: Hooks.empty(), vitality: { maxHp: 100000, defense: 500, resistance: 50 },
-    targetable: { restrictions: [] }, allegiance: { side },
+    targetable: { taunt: 0, restrictions: [] }, allegiance: { side },
     hitbox: { shape: hit }, action: actionCapability(attack),
   });
   return createBattle([

@@ -14,7 +14,8 @@ import { initialize, step } from "../../dist/core/battle/index.js";
 import { actionCapability } from "../helpers/actions.js";
 import { resolveAttack } from "../../dist/core/unit/capability/offense/index.js";
 import { resolveSpeed } from "../../dist/core/unit/capability/action/timing.js";
-import { hasCandidate, damage, first } from "../../dist/core/battle/targeting/index.js";
+import { damage } from "../../dist/core/battle/targeting/index.js";
+import { hasTargetable } from "../../dist/core/unit/capability/targetable/capability.js";
 import * as presence from "../../dist/core/unit/capability/presence/index.js";
 import { setType } from "../../dist/core/unit/capability/layer/index.js";
 
@@ -136,15 +137,15 @@ test("deepsea and holes affect ground enemies while leaving allies and airborne 
 
 test("smog restores invisibility after blocking ends and maintains only current terrain contacts", () => {
     const configured = setup([terrain.smog.create({}), terrain.normal.create({})], [
-        unit(0, { vitality: combat.vitality, allegiance: { side: "ALLY" }, targetable: { restrictions: [] },
+        unit(0, { vitality: combat.vitality, allegiance: { side: "ALLY" }, targetable: { taunt: 0, restrictions: [] },
             blocker: { layer: "GROUND", rules: [], capacity: 1, radius: 0.7 } }),
         unit(0, { allegiance: { side: "ENEMY" }, layer: { type: "GROUND" }, blockable: { volume: 1, rules: [] } }),
     ], [terrain.smog]);
     let battle = step(configured.battle, []);
     const enemy = units.ref(current(battle, 1));
-    const visible = state => hasCandidate(state, {
-        source: enemy, purposes: ["DAMAGE"], filter: damage, selector: first(1, () => 0),
-    });
+    const visible = state => units.all(state)
+        .filter(hasTargetable)
+        .some(damage(state, units.get(state, enemy)));
     assert.equal(visible(battle), false);
     battle = step(battle, []);
     assert.equal(visible(battle), true);

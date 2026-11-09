@@ -21,7 +21,7 @@ function setup(targetHooks = Hooks.empty()) {
   } });
   const target = initialize({ id: 1, position: [1, 0], definition: { hooks: targetHooks,
     id: 'target', vitality: { maxHp: 1000, defense: 0, resistance: 0 },
-    spatialPresence: {}, targetable: { restrictions: [{ id: 'hidden', value: {
+    spatialPresence: {}, targetable: { taunt: 0, restrictions: [{ id: 'hidden', value: {
       kind: Symbol('hidden'), allows: () => false,
     } }] },
   } });

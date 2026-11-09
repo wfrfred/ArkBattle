@@ -49,8 +49,6 @@ import {
 import * as epDamage from "../../core/battle/damage/ep/index.js";
 import * as epHealing from "../../core/battle/healing/ep/index.js";
 
-import { type Request, select } from "../../core/battle/targeting/index.js";
-
 export type Operation =
     | {
           readonly type: "DAMAGE";
@@ -68,7 +66,10 @@ export type Operation =
 
 export interface TargetGroup {
     readonly id: string;
-    readonly targeting: Omit<Request, "source">;
+    readonly select: (
+        battle: BattleState,
+        source: Ref<Unit & ActionCapability>,
+    ) => Result<readonly Ref<Unit>[]>;
     readonly operations: readonly Operation[];
 }
 
@@ -160,7 +161,7 @@ export function chooseTargets(
     const bindings: Record<string, readonly Ref<Unit>[]> = {};
 
     for (const group of definition.targetGroups) {
-        const selected = select(battle, { ...group.targeting, source });
+        const selected = group.select(battle, source);
         battle = selected.state;
         bindings[group.id] = selected.value;
     }

@@ -39,6 +39,9 @@ import type { Offense } from ${module("unit/capability/offense/index")};
 import { setAttackContribution, resolveAttack } from ${module("unit/capability/offense/index")};
 import { setLayer, type Blocker, type Blockable, type Relation, type Hook as BlockingHook } from ${module("unit/capability/blocking/index")};
 import * as blocking from ${module("battle/blocking/index")};
+import * as targeting from ${module("battle/targeting/index")};
+import { hasTargetable } from ${module("unit/capability/targetable/capability")};
+import { topK } from ${module("common/collection")};
 import type { Spawn } from ${module("battle/schedule/index")};
 declare const battle: State;
 const outputKey = key<Hook<{ amount: number }, number>>('output');
@@ -254,6 +257,17 @@ for (const self of allUnits(battle).filter(actionCapability.hasAction).filter(ha
     const action: actionCapability.Action = self;
     const speed: number = skills.resolveRecoverySpeed(battle, self);
 }
+const selectableActions = allUnits(battle).filter(actionCapability.hasAction).filter(hasTargetable);
+const damagedCandidates = selectableActions.filter(targeting.damage(battle, host));
+const nearestPatient = topK(damagedCandidates, 1, targeting.hpRatio)[0]!;
+const preservedAction: actionCapability.Action = nearestPatient;
+const establishedVitality: vitality.Vitality = nearestPatient;
+for (const self of selectableActions.filter(targeting.elementHealing(battle, host))) {
+    const preservedAction: actionCapability.Action = self;
+    const establishedElemental: elemental.Elemental = self;
+}
+// @ts-expect-error selection policies take an explicitly supplied source value rather than locating a Ref.
+targeting.damage(battle, reference);
 const patient = initialize(battle, { id: 2, position: [0, 0], definition: {
     id: 'patient', hooks: Hooks.empty(),
     vitality: { maxHp: 100, defense: 10, resistance: 0 },

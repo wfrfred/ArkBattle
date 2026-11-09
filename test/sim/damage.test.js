@@ -183,7 +183,7 @@ test("APPLY-01: invincibility installed before reception rejects HIT recovery un
     let state = battle([
         { definition: { id: "source", hooks: Hooks.empty() }, position: [0, 0] },
         { definition: {
-            id: "target", hooks: Hooks.empty(), targetable: { restrictions: [] }, vitality: { maxHp: 100, defense: 0, resistance: 0 },
+            id: "target", hooks: Hooks.empty(), targetable: { taunt: 0, restrictions: [] }, vitality: { maxHp: 100, defense: 0, resistance: 0 },
             skill: { initialize: state => skills.create(state, resource) },
         }, position: [1, 0] },
     ]);

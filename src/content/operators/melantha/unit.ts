@@ -127,7 +127,7 @@ export function create(profile: Profile): Definition {
         id: profile.id,
         profile,
         occupancy: { slot: "OCCUPANT" },
-        targetable: { restrictions: [] },
+        targetable: { taunt: profile.attributes.taunt, restrictions: [] },
         deployable: { retreatRules: [] },
         card: {
             cost: profile.attributes.cost,

@@ -4,7 +4,14 @@ import { createArknightsElementalDefinition } from "../data/arknights/elemental.
 import { create as createAction, createActions } from "../core/unit/action/index.js";
 import { create as createAttack, type Attack } from "../content/actions/attack.js";
 import * as targeting from "../core/battle/targeting/index.js";
-import { first } from "../core/battle/targeting/index.js";
+import * as units from "../core/unit/index.js";
+import { hasTargetable } from "../core/unit/capability/targetable/capability.js";
+import { hasVitality } from "../core/unit/capability/vitality/index.js";
+import { hasBlockable, hasBlocker, sides } from "../core/unit/capability/blocking/index.js";
+import { hasDirection } from "../core/unit/capability/occupancy/index.js";
+import { hasLayer } from "../core/unit/capability/layer/index.js";
+import { fromTiles } from "../core/geometry/range.js";
+import { topK } from "../core/common/collection.js";
 
 import { assertFiniteNumber, assertPositiveSafeInteger } from "../core/common/assert.js";
 import { create as createMap, type Map } from "../core/battlefield/map/map.js";
@@ -18,7 +25,6 @@ import type { Direction } from "../core/geometry/direction.js";
 import type { Route as RouteInput } from "../data/arknights/route.js";
 import { TICKS_PER_SECOND } from "../core/tick.js";
 import type { Definitions as CapabilityDefinitions } from "../core/unit/capability/catalog.js";
-import { sides } from "../core/unit/capability/blocking/index.js";
 import type { Definition as UnitDefinition } from "../core/unit/index.js";
 
 interface LegacyCombatContent {
@@ -154,6 +160,8 @@ function operatorDefinition(value: unknown) {
         throw new TypeError("canHitFly must be boolean when specified");
     }
 
+    const range = attackRange(definition.rangeGrid);
+
     const attack = createAttack({
         id: "normal-attack",
         speed: timing.attackSpeed,
@@ -163,20 +171,44 @@ function operatorDefinition(value: unknown) {
         targetGroups: [
             {
                 id: "primary",
-                targeting: {
-                    purposes: ["DAMAGE"],
-                    filter: targeting.and(
-                        targeting.damage,
-                        ...(canTargetAir ? [] : [targeting.ground]),
-                        targeting.or(
-                            targeting.directionalRange(attackRange(definition.rangeGrid)),
-                            targeting.blocking,
-                        ),
-                    ),
-                    selector: first(
-                        1,
-                        targeting.combine(targeting.blockedFirst, targeting.distance),
-                    ),
+                select(battle, source) {
+                    const self = units.get(battle, source);
+                    if (self === undefined) {
+                        return { state: battle, value: [] };
+                    }
+
+                    const withinRange = hasDirection(self)
+                        ? targeting.inRange(
+                              self.position,
+                              fromTiles(range, self.occupancy.direction),
+                          )
+                        : () => false;
+                    const candidates = units
+                        .all(battle)
+                        .filter(hasTargetable)
+                        .filter(targeting.damage(battle, self))
+                        .filter(
+                            (target) =>
+                                canTargetAir ||
+                                (hasLayer(target) && target.layer.type === "GROUND"),
+                        )
+                        .filter(
+                            (target) =>
+                                withinRange(target) ||
+                                (hasBlockable(target) &&
+                                    target.blockable.relation?.blocker.id === self.id),
+                        );
+                    const blockedFirst = hasBlocker(self) ? targeting.blockedFirst(self) : () => 0;
+                    const distance = targeting.distance(self.position);
+
+                    return {
+                        state: battle,
+                        value: topK(
+                            candidates,
+                            1,
+                            (left, right) => blockedFirst(left, right) || distance(left, right),
+                        ).map(units.ref),
+                    };
                 },
                 operations: [
                     {
@@ -194,7 +226,7 @@ function operatorDefinition(value: unknown) {
 
     return {
         hooks: Hooks.empty(),
-        targetable: { restrictions: [] },
+        targetable: { taunt: 0, restrictions: [] },
         elemental: createArknightsElementalDefinition({ receiver: "CHARACTER" }),
         id: stringField(definition.chessId, "chessId"),
         vitality: {
@@ -252,13 +284,6 @@ function enemyDefinition(value: unknown) {
     }
 
     const radius = numberField(stats.rangeRadius, "enemy range radius");
-    const combat = targeting.and(
-        targeting.present,
-        targeting.alive,
-        targeting.hostile,
-        targeting.blocker,
-    );
-
     const attack = createAttack({
         id: "normal-attack",
         speed: timing.attackSpeed,
@@ -268,28 +293,42 @@ function enemyDefinition(value: unknown) {
         targetGroups: [
             {
                 id: "primary",
-                targeting: {
-                    purposes: ["DAMAGE"],
-                    filter:
-                        applyWay === "MELEE"
-                            ? combat
-                            : targeting.or(
-                                  combat,
-                                  targeting.and(
-                                      targeting.damage,
-                                      targeting.range([
-                                          {
-                                              type: "CIRCLE",
-                                              offset: [0, 0],
-                                              radius,
-                                          },
-                                      ]),
-                                  ),
-                              ),
-                    selector: first(
-                        1,
-                        targeting.combine(targeting.blockedFirst, targeting.distance),
-                    ),
+                select(battle, source) {
+                    const self = units.get(battle, source);
+                    if (self === undefined) {
+                        return { state: battle, value: [] };
+                    }
+
+                    const blocker = hasBlockable(self)
+                        ? self.blockable.relation?.blocker
+                        : undefined;
+                    const eligible = targeting.damage(battle, self);
+                    const combat = targeting.damage(battle, self, () => true);
+                    const withinRange = targeting.inRange(self.position, [
+                        { type: "CIRCLE", offset: [0, 0], radius },
+                    ]);
+                    const candidates = units
+                        .all(battle)
+                        .filter(hasTargetable)
+                        .filter(hasVitality)
+                        .filter(
+                            (target) =>
+                                (target.id === blocker?.id && combat(target)) ||
+                                (applyWay === "RANGED" && eligible(target) && withinRange(target)),
+                        );
+                    const blockedFirst = hasBlockable(self)
+                        ? targeting.blockedFirst(self)
+                        : () => 0;
+                    const distance = targeting.distance(self.position);
+
+                    return {
+                        state: battle,
+                        value: topK(
+                            candidates,
+                            1,
+                            (left, right) => blockedFirst(left, right) || distance(left, right),
+                        ).map(units.ref),
+                    };
                 },
                 operations: [
                     {
@@ -308,7 +347,7 @@ function enemyDefinition(value: unknown) {
     return {
         hooks: Hooks.empty(),
         spatialPresence: {},
-        targetable: { restrictions: [] },
+        targetable: { taunt: 0, restrictions: [] },
         elemental: createArknightsElementalDefinition({ receiver: "ENEMY" }),
         id: stringField(definition.key, "enemy key"),
         vitality: {

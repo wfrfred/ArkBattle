@@ -19,7 +19,7 @@ export const invincibleRestriction: targetable.Restriction = {
 
 export const healFreeRestriction: targetable.Restriction = {
     kind: healFreeKind,
-    allows: (_battle, { request }) => !request.purposes.includes("HEAL"),
+    allows: (_battle, { purposes }) => !purposes.includes("HEAL"),
 };
 
 export const invincible: Definition<object, targetable.Targetable> = {

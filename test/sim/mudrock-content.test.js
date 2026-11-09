@@ -18,6 +18,7 @@ import { start, advance as advanceAction, ref as actionRef } from "../../dist/co
 import { advance as advanceLocomotion } from "../../dist/core/unit/capability/locomotion/index.js";
 import { setAttackContribution } from "../../dist/core/unit/capability/offense/index.js";
 import { setMaxHpContribution } from "../../dist/core/unit/capability/vitality/index.js";
+import { setType } from "../../dist/core/unit/capability/layer/index.js";
 import { create as modifier } from "../../dist/core/unit/contribution/attribute.js";
 import { Vec2 } from "../../dist/core/common/vector.js";
 
@@ -35,7 +36,7 @@ const profile = (fields = {}) => {
         });
 };
 const enemy = (id, position, fields = {}) => initialize({ id, position, definition: {
-    id: "enemy", hooks: Hooks.empty(), targetable: { restrictions: [] },
+    id: "enemy", hooks: Hooks.empty(), targetable: { taunt: 0, restrictions: [] },
     vitality: { maxHp: 10000, defense: 0, resistance: 0 },
     allegiance: { side: "ENEMY" }, layer: { type: "GROUND" },
     hitbox: { shape: { type: "CIRCLE", offset: [0, 0], radius: 0.1 } },
@@ -119,7 +120,7 @@ test("S2 waits for an eligible target without spending its SP", () => {
     assert.equal(getUnit(result.state, 0).skill.sp.value, 5);
 });
 
-test("S2 replaces normal attack recovery, heals once, strikes ground targets and finishes after recovery", () => {
+test("S2 replaces normal recovery, heals once and revalidates its bound targets without selecting replacements", () => {
     const fixture = setup({}, [enemy(1, [1, 0]), enemy(2, [0.8, 0]),
         enemy(3, [1, 0], { layer: { type: "AIR" } }), enemy(4, [5, 0])], { recoveryTicks: 2 });
     let battle = wound(fixture.battle);
@@ -136,10 +137,12 @@ test("S2 replaces normal attack recovery, heals once, strikes ground targets and
     battle = advanceSkill(battle, ref(fixture.unit));
     assert.equal(getUnit(battle, 0).action.actions.get(normal.id).cooldown.readyAtTick, 0);
     const started = start(battle, actionRef(ref(fixture.unit), fixture.action));
-    battle = advanceAction(started.state, started.value.ref);
+    battle = update(started.state, ref(getUnit(started.state, 2)), setType("AIR"));
+    battle = update(battle, ref(getUnit(battle, 3)), setType("GROUND"));
+    battle = advanceAction(battle, started.value.ref);
     const amount = (fixture.prepared.attributes.attack + 100) * 2.1;
     approximate(getUnit(battle, 1).vitality.hp, beforeFirst - amount);
-    approximate(getUnit(battle, 2).vitality.hp, beforeSecond - amount);
+    assert.equal(getUnit(battle, 2).vitality.hp, beforeSecond);
     assert.equal(getUnit(battle, 3).vitality.hp, 10000);
     assert.equal(getUnit(battle, 4).vitality.hp, 10000);
     approximate(getUnit(battle, 0).vitality.hp, 1000 + fixture.prepared.attributes.maxHp * 0.05);

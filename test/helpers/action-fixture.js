@@ -1,7 +1,7 @@
 import { Hooks } from "../../dist/core/hook.js";
 import { tiles as tileEntries } from './tiles.js';
 import { normal } from '../../dist/content/terrain/definition.js';
-import { damage as damageTargeting } from "./targeting.js";
+import { selectDamage } from "./targeting.js";
 import { create as createBattlefield } from "../../dist/core/battlefield/state.js";
 import { add as addUnit } from "../../dist/core/battle/unit.js";
 import { createBattleState } from "../../dist/core/battle/state.js";
@@ -33,7 +33,7 @@ export function actionDefinition(power = 7, configuration = {}) {
             targetGroups: [
                 {
                     id: "primary",
-                    targeting: damageTargeting({
+                    select: selectDamage({
                         geometry,
                         canTargetAir: true,
                         maxTargets: 1,
@@ -62,7 +62,7 @@ export function unit(
     const definition = { hooks: Hooks.empty(),
         id: `action-${id}`,
         vitality: { maxHp: hp, defense: 0, resistance: 0 },
-        targetable: { restrictions: [] }, spatialPresence: {},
+        targetable: { taunt: 0, restrictions: [] }, spatialPresence: {},
         offense: { attack: 10 },
         allegiance: { side },
         layer: { type: "GROUND" },

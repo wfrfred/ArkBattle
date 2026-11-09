@@ -25,7 +25,7 @@ const profile = () => prepare(
 );
 const receiver = (restrictions = []) => initialize({
     id: 1, position: [0.6, 0], definition: {
-        id: "enemy", hooks: Hooks.empty(), targetable: { restrictions },
+        id: "enemy", hooks: Hooks.empty(), targetable: { taunt: 0, restrictions },
         vitality: { maxHp: 10000, defense: 0, resistance: 0 },
         blockable: { volume: 1, rules: [] }, allegiance: { side: "ENEMY" }, layer: { type: "GROUND" },
         hitbox: { shape: { type: "CIRCLE", offset: [0, 0], radius: 0.1 } },

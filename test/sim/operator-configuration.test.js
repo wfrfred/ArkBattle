@@ -38,7 +38,7 @@ test("operator profiles use selected phase attributes, explicit table identity a
     assert.equal(prepared.id, mudrock);
     assert.deepEqual(prepared.attributes, {
         maxHp: 3928, attack: 882, defense: 602, resistance: 10,
-        attackSpeed: 100, baseAttackTime: 1.6, blockCapacity: 3, cost: 36, respawnTime: 70,
+        attackSpeed: 100, baseAttackTime: 1.6, blockCapacity: 3, cost: 36, respawnTime: 70, taunt: 0,
     });
     assert.deepEqual(prepared.range, [[0, 0], [0, 1]]);
     assert.equal(prepared.skill.definition.id, "skchr_mudrok_2");

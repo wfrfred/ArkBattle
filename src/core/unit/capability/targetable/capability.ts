@@ -1,16 +1,24 @@
 import * as contribution from "../../contribution/contribution.js";
+import * as attribute from "../../contribution/attribute.js";
 import type { Contribution } from "../../contribution/contribution.js";
 import type { Unit } from "../../unit.js";
-import type { Request } from "../../../battle/targeting/contract.js";
+import { assertFiniteNumber } from "../../../common/assert.js";
+import { roundToEven } from "../../../common/math.js";
 import type { State as BattleState, Result } from "../../../battle/state.js";
 import { createRegistrationOperations } from "../../registration.js";
 
 export interface Definition {
+    readonly taunt: number;
     readonly restrictions: readonly Contribution<Restriction>[];
 }
 
+export type Input = contribution.Input<attribute.Modifier, Unit & Targetable>;
+
+export type Purpose = "DAMAGE" | "HEAL" | "ELEMENTAL_INJURY" | "ELEMENTAL_INJURY_HEALED" | "EFFECT";
+
 export interface Context {
-    readonly request: Request;
+    readonly source: Unit;
+    readonly purposes: readonly Purpose[];
     readonly owner: Unit & Targetable;
 }
 
@@ -20,6 +28,7 @@ export interface Restriction {
 }
 
 interface Contributions {
+    readonly taunt: readonly Contribution<Input>[];
     readonly restrictions: readonly Contribution<Restriction>[];
 }
 
@@ -39,6 +48,7 @@ export function initialize<U extends Unit & Pick<Targetable, "definition">>(
     unit: U,
 ): Result<U & Targetable> {
     const definition = unit.definition.targetable;
+    assertFiniteNumber(definition.taunt, "taunt");
     const ids = new Set<string>();
 
     for (const entry of definition.restrictions) {
@@ -51,27 +61,42 @@ export function initialize<U extends Unit & Pick<Targetable, "definition">>(
 
     return {
         state: battle,
-        value: { ...unit, targetable: { restrictions: [...definition.restrictions] } },
+        value: { ...unit, targetable: { taunt: [], restrictions: [...definition.restrictions] } },
     };
 }
 
 export const { set: setRestriction, remove: removeRestriction } = createRegistrationOperations<
     Unit & Targetable,
     "targetable",
-    keyof Contributions
+    "restrictions"
 >("targetable", "restrictions");
+
+export const { set: setTauntContribution, remove: removeTauntContribution } =
+    createRegistrationOperations<Unit & Targetable, "targetable", "taunt">("targetable", "taunt");
+
+export function resolveTaunt(battle: BattleState, self: Unit & Targetable): number {
+    return roundToEven(
+        attribute.apply(
+            self.definition.targetable.taunt,
+            contribution
+                .resolve(self.targetable.taunt)
+                .flatMap((input) => (typeof input === "function" ? input(battle, self) : input)),
+        ),
+    );
+}
 
 export function allowsRestrictions(
     battle: BattleState,
-    request: Request,
-    owner: Unit & Targetable,
+    source: Unit,
+    purposes: readonly Purpose[],
     ignore?: (kind: symbol) => boolean,
-): boolean {
-    return contribution
-        .resolve(owner.targetable.restrictions)
-        .every(
-            (restriction) =>
-                (ignore?.(restriction.kind) ?? false) ||
-                restriction.allows(battle, { request, owner }),
-        );
+): (owner: Unit & Targetable) => boolean {
+    return (owner) =>
+        contribution
+            .resolve(owner.targetable.restrictions)
+            .every(
+                (restriction) =>
+                    (ignore?.(restriction.kind) ?? false) ||
+                    restriction.allows(battle, { source, purposes, owner }),
+            );
 }

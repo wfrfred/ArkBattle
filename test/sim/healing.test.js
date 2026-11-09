@@ -13,12 +13,13 @@ import * as presence from "../../dist/core/unit/capability/presence/index.js";
 import { update } from "../../dist/core/battle/unit.js";
 import { create as modifier } from "../../dist/core/unit/contribution/attribute.js";
 import { TacticalDemoPresentation } from "../../dist/legacy/tactical-demo-presentation.js";
-import { select, elementHealing, first } from "../../dist/core/battle/targeting/index.js";
+import { elementHealing } from "../../dist/core/battle/targeting/index.js";
+import { hasTargetable } from "../../dist/core/unit/capability/targetable/capability.js";
 
 import { createArknightsElementalDefinition } from "../../dist/data/arknights/elemental.js";
 const elementalReceiver = {
     id: "ep-receiver", hooks: Hooks.empty(), spatialPresence: {}, allegiance: { side: "ALLY" },
-    targetable: { restrictions: [] },
+    targetable: { taunt: 0, restrictions: [] },
     elemental: createArknightsElementalDefinition({ receiver: "CHARACTER", recoveryPerSecond: 15 }),
 };
 
@@ -165,11 +166,12 @@ test("EP-01/03: losses stay per element, healing gives every bar the full amount
     assert.deepEqual(full.value.application.epGain, elemental.elementValues(0));
     assert.equal(healingNotices, 3);
 
-    const selection = {
-        source: target, purposes: ["ELEMENTAL_INJURY_HEALED"],
-        filter: elementHealing({ parameters: { power: 100 } }), selector: first(1, () => 0),
-    };
-    assert.deepEqual(select(full.state, selection).value, []);
+    const recipients = state => units.all(state)
+        .filter(hasTargetable)
+        .filter(elementHealing(state, units.get(state, target)))
+        .map(units.ref)
+        .toArray();
+    assert.deepEqual(recipients(full.state), []);
     state = update(full.state, target, elemental.setContribution("maxEp", {
         id: "larger-pool", value: [modifier({ multiplier: 1 })],
     }));
@@ -177,7 +179,7 @@ test("EP-01/03: losses stay per element, healing gives every bar the full amount
     const maximum = elemental.resolveMaxEp(state, current);
     assert.equal(maximum, 2000);
     assert.equal(elemental.resolveDamageRatio(state, current), 0.5);
-    assert.deepEqual(select(state, selection).value.map(reference => reference.id), [0]);
+    assert.deepEqual(recipients(state).map(reference => reference.id), [0]);
     const view = new TacticalDemoPresentation({ lookup() {} });
     assert.equal(view.elements(state)[0][2], 0.5);
 });

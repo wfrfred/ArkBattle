@@ -9,7 +9,6 @@ import * as skills from "../../dist/core/unit/skill/index.js";
 import { create as modifier } from "../../dist/core/unit/contribution/attribute.js";
 import { update } from "../../dist/core/battle/unit.js";
 import { step } from "../../dist/core/battle/runtime.js";
-import { first } from "../../dist/core/battle/targeting/index.js";
 import { create as attack } from "../../dist/content/actions/attack.js";
 import * as presence from "../../dist/core/unit/capability/presence/index.js";
 
@@ -154,10 +153,15 @@ test("interrupted attack, successful release, and damage output are separate bus
         targetGroups: [
             {
                 id: "target",
-                targeting: {
-                    purposes: ["DAMAGE"],
-                    filter: (_state, _request, target) => target.definition.id === "target",
-                    selector: first(1, () => 0),
+                select(state) {
+                    return {
+                        state,
+                        value: units.all(state)
+                            .filter(target => target.definition.id === "target")
+                            .take(1)
+                            .map(units.ref)
+                            .toArray(),
+                    };
                 },
                 operations: [{ type: "DAMAGE", power: 7, damageType: "TRUE" }],
             },
@@ -179,7 +183,7 @@ test("interrupted attack, successful release, and damage output are separate bus
     const target = {
         id: "target",
         hooks: Hooks.empty(),
-        targetable: { restrictions: [] },
+        targetable: { taunt: 0, restrictions: [] },
         vitality: { maxHp: 100, defense: 0, resistance: 0 },
     };
     let state = battle([

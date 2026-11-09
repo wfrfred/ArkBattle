@@ -12,7 +12,6 @@ import {
 } from "../../../core/unit/action/index.js";
 import type { Attack } from "../../actions/attack.js";
 import type { State as SkillAttackState } from "../../actions/skill.js";
-import { hasCandidate } from "../../../core/battle/targeting/index.js";
 import {
     get as getCurrentUnit,
     ref as unitRef,
@@ -52,7 +51,7 @@ import {
     setState,
 } from "../../../core/unit/effect/index.js";
 
-import { createNormal, createSkill as createSkillAction } from "./action.js";
+import { createNormal, createSkill as createSkillAction, skillTargets } from "./action.js";
 import { value, healSelf } from "./common.js";
 
 export interface Definition
@@ -260,7 +259,6 @@ export function create(
     const shield = shieldEffect(profile);
     const normalAttack = createNormal(profile, recoveryTicks);
     const action = createSkillAction(profile, recoveryTicks);
-    const targeting = action.attack.targetGroups[0].targeting;
     const skill: SkillDefinition = {
         ...profile.skill.definition,
         activation: {
@@ -270,8 +268,7 @@ export function create(
                 const source = getCurrentUnit(battle, sourceRef);
 
                 return (
-                    source !== undefined &&
-                    hasCandidate(battle, { ...targeting, source: unitRef(source) })
+                    source !== undefined && skillTargets(battle, source, profile).some(() => true)
                 );
             },
             onStart(state, source) {
@@ -295,7 +292,7 @@ export function create(
         id: profile.id,
         profile,
         occupancy: { slot: "OCCUPANT" },
-        targetable: { restrictions: [] },
+        targetable: { taunt: profile.attributes.taunt, restrictions: [] },
         deployable: { retreatRules: [] },
         card: {
             cost: profile.attributes.cost,

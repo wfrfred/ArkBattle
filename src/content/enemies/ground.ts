@@ -93,6 +93,6 @@ export function createDefinition(
         },
         route: { alwaysCheckCurrentPoint: true },
         spatialPresence: {},
-        targetable: { restrictions: [] },
+        targetable: { taunt: profile.taunt, restrictions: [] },
     };
 }

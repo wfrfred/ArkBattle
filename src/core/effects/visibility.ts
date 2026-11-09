@@ -50,16 +50,10 @@ export const untargetableKind = Symbol("untargetable");
 
 export const allyUntargetableKind = Symbol("ally-untargetable");
 
-const allowsSameSide: targetable.Restriction["allows"] = (battle, { request, owner }) => {
-    const source = units.get(battle, request.source);
-
-    return (
-        source === undefined ||
-        !hasAllegiance(source) ||
-        !hasAllegiance(owner) ||
-        source.allegiance.side === owner.allegiance.side
-    );
-};
+const allowsSameSide: targetable.Restriction["allows"] = (_battle, { source, owner }) =>
+    !hasAllegiance(source) ||
+    !hasAllegiance(owner) ||
+    source.allegiance.side === owner.allegiance.side;
 
 export const invisibleRestriction: targetable.Restriction = {
     kind: invisibilityKind,
@@ -68,15 +62,8 @@ export const invisibleRestriction: targetable.Restriction = {
 
 export const camouflageRestriction: targetable.Restriction = {
     kind: camouflageKind,
-    allows(battle, { request, owner }) {
-        const source = units.get(battle, request.source);
-
-        return (
-            source === undefined ||
-            !hasAllegiance(source) ||
-            !hasAllegiance(owner) ||
-            !areHostile(source, owner)
-        );
+    allows(_battle, { source, owner }) {
+        return !hasAllegiance(source) || !hasAllegiance(owner) || !areHostile(source, owner);
     },
 };
 
@@ -87,11 +74,8 @@ export const untargetableRestriction: targetable.Restriction = {
 
 export const allyUntargetableRestriction: targetable.Restriction = {
     kind: allyUntargetableKind,
-    allows(battle, { request, owner }) {
-        const source = units.get(battle, request.source);
-
+    allows(_battle, { source, owner }) {
         return (
-            source === undefined ||
             !hasAllegiance(source) ||
             !hasAllegiance(owner) ||
             source.allegiance.side !== owner.allegiance.side
