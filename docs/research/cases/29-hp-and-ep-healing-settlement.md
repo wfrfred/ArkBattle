@@ -103,6 +103,8 @@ EP 自然回复与爆发恢复通过直接 EP setter 推进，不经过上表普
 
 项目已确认[Calculate 输出计算、Apply 目标接收](../../architecture/vitality.md#1-calculate-与-apply-的语义边界)的共同边界；本节原生事件顺序是机制证据，不是逐项迁移 Hook 的目标。
 
+普通医师与行医的启动选择、混合 HP／EP 排序，以及 Selector 与 Heal 能力同名 ignoreHealFree 字段的不同消费者，已在[案例33](33-targeting-and-targetable-pipeline.md#53-混合-hpep-治疗)补核。本案的治疗作用顺序不能代替这些选择政策；选择豁免和最终 force 接收也不合并。
+
 **零值项目决策（2026-11-03，用户确认）：** 四种业务的最终计算输出为零时，在 Apply 入口拒绝，不进入本笔接收或 Applied；实际资源变化为零则允许成功。满血目标接收正数治疗属于后者。具体契约见[Calculate 与 Apply 的语义边界](../../architecture/vitality.md#1-calculate-与-apply-的语义边界)。
 
 其余政策保持：healFree 只限制 Targeting；显式治疗不因此新增接收免疫；自然回复不派发普通治疗 Hook；既定死亡通知顺序、弱点完整双 Calculate 与 Burst 生命周期不变。上述政策与原生的差异已分别标明，不通过调查静默修改。

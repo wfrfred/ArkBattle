@@ -1,0 +1,30 @@
+{
+  "consultedOn": "2026-11-09",
+  "sourceKind": "community wiki, not official documentation or runtime observation",
+  "sources": [
+    {
+      "url": "https://prts.wiki/w/选择器",
+      "sections": ["进阶选择器的筛选参数", "迷彩判定", "二次过滤器", "额外：可以选择且优先选择阻挡单位处理", "嘲讽过滤器"],
+      "use": "Identify selection parameters and distinguish trigger, ability and added priority paths; native evidence determines each concrete ordering.",
+      "limits": "Generic prose does not establish one universal order for every derived selector."
+    },
+    {
+      "url": "https://prts.wiki/w/仇恨",
+      "sections": ["仇恨值", "创建时间", "同帧部署数", "仇恨过滤器"],
+      "use": "Cross-check hatred inputs and choose ordinary, secondary, blocked, random and mixed-healing examples.",
+      "limits": "Exact constants, clamping, comparison and cursor sources are verified in the selected native client rather than inferred from wiki formulas."
+    },
+    {
+      "url": "https://prts.wiki/w/作战机制",
+      "sections": ["索敌的概念", "隐匿"],
+      "use": "Cross-check gameplay distinctions between selecting, locking and later target changes.",
+      "limits": "Does not prove the exact current coroutine or target-validation branches."
+    }
+  ],
+  "unavailable": [
+    {
+      "url": "https://prts.wiki/w/行医",
+      "reason": "Browser retrieval failed; not used as evidence. Representative Wandering Medic selection is established from client prefabs and filter bodies."
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "collectedOn": "2026-11-09",
+  "result": [
+    {
+      "reference": "docs/research/evidence/nymph-action-settlement-20261103/target/selected-native.json",
+      "sha256": "be9c1ce392c18dd1129d10118655f68d78f6e49d9aa3461e6c71bd1dfdc1914e",
+      "size": 508636,
+      "purpose": "Nymph source/timing and projectile creation",
+      "versionScope": "Use the referenced batch provenance; no automatic version upgrade is asserted."
+    },
+    {
+      "reference": "docs/research/evidence/projectile-lifecycle-20261021/target/REPORT.md",
+      "sha256": "36988ceebb6bce078643666bd816fa4f3cb02ce6dbc6db8c5bb68ed8af3660de",
+      "size": 8300,
+      "purpose": "Identity, alive, disappeared and projectile fallback scope",
+      "versionScope": "Use the referenced batch provenance; no automatic version upgrade is asserted."
+    },
+    {
+      "reference": "docs/research/evidence/projectile-boundaries-20261021/hit/86264-OnProjectileReached.asm",
+      "sha256": "ef1b9852da20e7e057e42ea7d44de3de9d59bfe373e02fd794e7724635e42517",
+      "size": 13063,
+      "purpose": "Actual splash reception entry",
+      "versionScope": "Use the referenced batch provenance; no automatic version upgrade is asserted."
+    },
+    {
+      "reference": "docs/research/evidence/effect-immunity-20261021/manifest.json",
+      "sha256": "8c1c04b6f7774f49c9a72e1e25ed218ea2543cd0478cc3fa25b820733bc5bde9",
+      "size": 7061,
+      "purpose": "Sleep immunity exclusion, aura markers and effect admission",
+      "versionScope": "Use the referenced batch provenance; no automatic version upgrade is asserted."
+    },
+    {
+      "reference": "docs/research/evidence/tippi-air-blocking-20261029/selected-native.json",
+      "sha256": "1aae09b1d8bfc1bb7603cf28f78633e78aa073811a966961dab65146a339fbf7",
+      "size": 25359,
+      "purpose": "Motion target free target-side implementation",
+      "versionScope": "Use the referenced batch provenance; no automatic version upgrade is asserted."
+    },
+    {
+      "reference": "docs/research/evidence/tippi-air-blocking-20261029/selected-assets.json",
+      "sha256": "0129113db321c0495d693cd83c625569651b4ec2d066ad922cd1cf199ef99d4f",
+      "size": 36004,
+      "purpose": "Actual takeoff buff configuration",
+      "versionScope": "Use the referenced batch provenance; no automatic version upgrade is asserted."
+    },
+    {
+      "reference": "docs/research/evidence/healing-settlement-20261103/content/characters/decoded-content.json",
+      "sha256": "44632ccc565b2cc616c61e5f21ab58f52816cf91b952a38c964ff65e2929b196",
+      "size": 33191,
+      "purpose": "Myrrh and Mulberry HP/EP actions",
+      "versionScope": "Use the referenced batch provenance; no automatic version upgrade is asserted."
+    },
+    {
+      "reference": "docs/research/evidence/damage-output-order-20261103/native-targeting.json",
+      "sha256": "0cbb99c2cf521362733ac3808beeb216585dc5e5e2549bef33fac4d44713951a",
+      "size": 180513,
+      "purpose": "Target-side hit-range validation",
+      "versionScope": "Use the referenced batch provenance; no automatic version upgrade is asserted."
+    },
+    {
+      "reference": "docs/research/evidence/elemental-timing-20261102/schedule-native.json",
+      "sha256": "5f579fa10ac6f6ff44e60fca1f6c8cc09edba6573a314ae27b9b45ac6093b2d2",
+      "size": 1412075,
+      "purpose": "Per-frame build counter reset",
+      "versionScope": "Use the referenced batch provenance; no automatic version upgrade is asserted."
+    },
+    {
+      "reference": "docs/research/evidence/route-operations-20261107/temporary/advance-selection-20261108/move-bodies.json",
+      "sha256": "1f0088c9b070cbe4faff70a105188b6bd9e6ca7cdba4c7886f811e0c54406e50",
+      "size": 203705,
+      "purpose": "Main/temporary movement control distinction",
+      "versionScope": "Use the referenced batch provenance; no automatic version upgrade is asserted."
+    }
+  ]
+}

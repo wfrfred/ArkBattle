@@ -42,6 +42,7 @@
 | [30 通用 Scheduler 字段与调用路径](30-scheduler-action-data-fields.md) | 24 字段全链消费、主 Wave／Branch／外部召唤与预处理、跨玩法非默认样本 | 区分直接使用、间接后继和路径内结构保留；四项管理／计数／阻波语义独立，先查证据再分配职责与压缩类型 |
 | [31 Route 操作与状态保留](31-route-operations-and-state.md) | 完整类型／方法集合、槽写入与调用者、实际路线修改及临时控制内容 | 区分程序替换、索引接续、WAIT／样本保留、缓存恢复、临时接管及导航刷新；归纳最小需求而不照搬原生接口 |
 | [32 莱塔尼亚召唤物的阻挡与移动](32-leithanien-summons-blocking-and-movement.md) | 规程热更新召唤模板、两个实际 Enemy Prefab、BlockManager 与 Trace／作战状态机 | 区分我方阵营与实现类、仇恨追踪与阻挡交战、相对自身的默认地块；最终属性数值仍待确认 |
+| [33 Targeting／Targetable 通用调用链](33-targeting-and-targetable-pipeline.md) | 真实模式／Trigger／Selector／Validator、候选与优先级、Ability绑定与再验证、弹道及作用入口 | 资格与异常来源、三类排序分流、仇恨距离、HP／EP联合治疗、选中时点与本项目政策的差异 |
 
 证据文件及复现范围见[批次索引](../evidence/README.md)。案例负责维护问题、结论及适用条件、直接证据／调用链推断、未决项和项目关联；批次 README 负责版本、指纹、文件用途和实际复现入口。
 
