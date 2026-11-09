@@ -46,6 +46,7 @@ export interface ArknightsEnemyDbRef {
 export interface ArknightsSpawnAction {
     readonly actionType: "SPAWN";
     readonly managedByScheduler: boolean;
+    readonly notCountInTotal: boolean;
     readonly key: string;
     readonly count: number;
     readonly preDelay: number;
@@ -394,6 +395,7 @@ function action(
     const source = object(value, name, [
         "actionType",
         "managedByScheduler",
+        "notCountInTotal",
         "key",
         "count",
         "preDelay",
@@ -429,6 +431,10 @@ function action(
     return {
         actionType: "SPAWN",
         managedByScheduler: boolean(source.managedByScheduler, `${name}.managedByScheduler`),
+        notCountInTotal:
+            source.notCountInTotal === undefined
+                ? false
+                : boolean(source.notCountInTotal, `${name}.notCountInTotal`),
         key,
         count: integer(source.count, `${name}.count`, 1),
         preDelay: number(source.preDelay, `${name}.preDelay`, 0),

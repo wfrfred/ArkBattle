@@ -265,18 +265,19 @@ WAVE 同时承担 Wave 等待和最终管理责任。Wave 等待超时只清 wai
 
 Fragment 等待出生操作执行完，Wave 等待已登记 Unit 的关系解除，最终管理集合记录仍受调度管理的实例；这些是不同事实。Wait 不决定击杀、漏怪、扣血或全局计数资格。
 
-Data 按普通 Scheduler Spawn 所处主 Wave／Branch 上下文转换原生三个字段：
+Data 先合并 Action 与已解析 EnemyData 的 notCountInTotal，再结合普通 Spawn 所处主 Wave／Branch 上下文生成等待政策。Action 字段缺省为 false：
 
 ```typescript
+const notCountInTotal = action.notCountInTotal || enemy.notCountInTotal;
 const wait: Wait =
-    !managedByScheduler
+    notCountInTotal || !managedByScheduler
         ? "NONE"
         : dontBlockWave || (fromBranch && !forceBlockWaveInBranch)
           ? "FINAL"
           : "WAVE";
 ```
 
-Branch 默认不阻波；forceBlockWaveInBranch 只取消这一豁免，不能压过 managedByScheduler=false 或 dontBlockWave=true。Core 直接执行转换后的 Wait，不再次根据出生位置推导默认政策。
+notCountInTotal 为 true 时不登记两个等待集合，即使 Unit 仍在场也不阻止波次或调度完成。Branch 默认不阻波；forceBlockWaveInBranch 只取消这一豁免，不能压过 notCountInTotal=true、managedByScheduler=false 或 dontBlockWave=true。Core 直接执行转换后的 Wait，不再次根据出生位置推导默认政策。
 
 ## 领域边界
 
@@ -287,7 +288,7 @@ Schedule 提供调度进度与实际等待事实，Route 到达出口后请求 U
 ## 回归语义
 
 - Spawn.atTick 在前延迟之后计时；出生位置和 Route offset 使用同一次固定偏移加随机扰动，Unit.enter 能看到已登记的等待关系。
-- 主线零延迟连续推进，Fragment 完成不等 Unit 离场；WAVE 同时登记两个集合，超时仅释放 wave，完整离场同步释放二者。
+- 主线零延迟连续推进，Fragment 完成不等 Unit 离场；WAVE 同时登记两个集合，超时仅释放 wave，完整离场同步释放二者。Data 合并 Action／Enemy 的 notCountInTotal，主线与 Branch 均将其转换为 NONE，不等待这些仍在场的 Unit。
 - Branch 零延迟出生同步发生，enter 重入同一 Branch 时看见新的索引与 RNG，外层继续后不覆盖内层实例或重复出生。
 - Branch 每次执行按整组权重重新抽选；触发 Tick 与后续常规推进各负其责，延迟出生只执行一次。
 - 分支出生使用实际出生时的主流程时间快照；空计划、空 Wave 与主线结束后的时间查询及完成条件保持明确。

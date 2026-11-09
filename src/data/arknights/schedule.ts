@@ -57,8 +57,9 @@ function resolveActionSpawn(
     level: ArknightsLevelDefinition,
     action: ArknightsSpawnAction,
     route: Route,
+    fromBranch: boolean,
     resolveEnemy: ArknightsEnemyResolver,
-): Omit<Spawn, "atTick" | "wait"> {
+): Omit<Spawn, "atTick"> {
     const reference = level.enemyDbRefs.find((reference) => reference.id === action.key);
     if (reference === undefined) {
         throw new RangeError(`spawn references missing enemy ${action.key}`);
@@ -74,11 +75,16 @@ function resolveActionSpawn(
         plan: route.plan,
         offset: route.spawnOffset,
         randomRange: route.spawnRandomRange,
+        wait: wait(action, fromBranch, content.notCountInTotal),
     };
 }
 
-function wait(action: ArknightsSpawnAction, fromBranch: boolean): Wait {
-    if (!action.managedByScheduler) {
+function wait(
+    action: ArknightsSpawnAction,
+    fromBranch: boolean,
+    enemyNotCountInTotal: boolean,
+): Wait {
+    if (action.notCountInTotal || enemyNotCountInTotal || !action.managedByScheduler) {
         return "NONE";
     }
     if (action.dontBlockWave || (fromBranch && !action.forceBlockWaveInBranch)) {
@@ -100,14 +106,13 @@ function compileAction(
         throw new RangeError(`spawn references missing route ${action.routeIndex}`);
     }
 
-    const spawn = resolveActionSpawn(level, action, route, resolveEnemy);
+    const spawn = resolveActionSpawn(level, action, route, fromBranch, resolveEnemy);
     const preDelayTicks = secondsToTicks(preDelay);
 
     return Array.from({ length: action.count }, (_, index) => ({
         ...spawn,
         atTick:
             secondsToTicks(preDelay + action.preDelay + index * action.interval) - preDelayTicks,
-        wait: wait(action, fromBranch),
     }));
 }
 
