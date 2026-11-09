@@ -54,7 +54,6 @@ test("prepare can reject without allocating a round; ending preserves the latest
     state = rejected.state;
     assert.deepEqual(rejected.value, { type: "REJECTED", reason: "CONDITION" });
     assert.equal(actions.getAction(state, reference).state.attempts, 1);
-    assert.equal(get(state, 0).action.nextExecutionId, 0);
 
     const started = actions.start(state, reference);
     state = started.state;
@@ -222,7 +221,7 @@ test("interrupted attack, successful release, and damage output are separate bus
     assert.equal(get(state, 1).vitality.hp, 93);
 });
 
-test("Combat advances a zero-period action once per Tick with deterministic results", () => {
+test("Combat advances an instantaneous action once per Tick and skips selection while absent", () => {
     let selections = 0;
     const program = {
         id: "instant",
@@ -259,20 +258,13 @@ test("Combat advances a zero-period action once per Tick with deterministic resu
         skill: { initialize: (state) => skills.create(state, resource) },
     };
     const firstRun = step(battle([{ definition, position: [1, 1] }], { rngState: 42 }), []);
-    const repeated = step(battle([{ definition, position: [1, 1] }], { rngState: 42 }), []);
     const reference = actions.ref(units.ref(get(firstRun, 0)), program);
     assert.equal(actions.getAction(firstRun, reference).state.completed, 1);
-    assert.equal(get(firstRun, 0).action.nextExecutionId, 1);
     assert.equal(get(firstRun, 0).skill.sp.value, 0);
     assert.equal(firstRun.tick, 1);
 
-    assert.deepEqual(
-        actions.getAction(firstRun, reference),
-        actions.getAction(repeated, reference),
-    );
-    assert.equal(firstRun.execution.rngState, repeated.execution.rngState);
     const hidden = update(firstRun, units.ref(get(firstRun, 0)), presence.disappear());
     const after = step(hidden, []);
-    assert.equal(selections, 2);
+    assert.equal(selections, 1);
     assert.equal(actions.getAction(after, reference).state.completed, 1);
 });

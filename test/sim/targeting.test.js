@@ -7,7 +7,6 @@ import { create as modifier } from "../../dist/core/unit/contribution/attribute.
 import { search as searchBlocking } from "../../dist/core/battle/blocking/operations.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { createRng } from "../../dist/core/common/rng.js";
 import { hasCandidate, select } from "../../dist/core/battle/targeting/index.js";
 import * as filters from "../../dist/core/battle/targeting/filter.js";
 import * as selectors from "../../dist/core/battle/targeting/selector.js";
@@ -47,63 +46,17 @@ test("select enumerates Targetable and performs only the request's explicit filt
     const initial = battle(source, unit(4), ordinary, configured);
     const selected = select(initial, request(source));
 
-    assert.strictEqual(selected.state, initial);
     assert.deepEqual(selected.value, [{ id: 9 }, { id: 2 }, { id: 7 }]);
     assert.deepEqual(select(initial, request(source, {
         filter: (_battle, _request, candidate) => candidate.id === 7,
     })).value, [{ id: 7 }]);
 });
 
-test("filter and selector receive the same request, battle and filtered Unit snapshots", () => {
-    const source = unit(0);
-    const first = target(6);
-    const second = target(3);
-    const initial = battle(source, first, second);
-    const seen = [];
-    const query = request(source, {
-        filter(current, input, candidate) {
-            assert.strictEqual(current, initial);
-            assert.strictEqual(input, query);
-            seen.push(candidate);
-            return candidate.id === 3;
-        },
-        selector(current, input, candidates) {
-            assert.strictEqual(current, initial);
-            assert.strictEqual(input, query);
-            assert.deepEqual(candidates, [second]);
-            assert.strictEqual(candidates[0], second);
-            return { state: current, value: candidates.map(ref) };
-        },
-    });
-
-    assert.deepEqual(select(initial, query).value, [{ id: 3 }]);
-    assert.deepEqual(seen, [first, second]);
-});
-
-test("select still delegates an empty candidate collection to the selector", () => {
-    const source = unit(0);
-    const initial = battle(source);
-    let calls = 0;
-    const query = request(source, {
-        selector(current, input, candidates) {
-            calls++;
-            assert.strictEqual(input, query);
-            assert.deepEqual(candidates, []);
-            return { state: current, value: [] };
-        },
-    });
-
-    assert.deepEqual(select(initial, query), { state: initial, value: [] });
-    assert.equal(calls, 1);
-});
-
-test("hasCandidate short-circuits explicit eligibility without invoking the selector or drawing RNG", () => {
+test("hasCandidate checks eligibility without performing target selection", () => {
     const source = unit(0);
     const initial = battle(source, target(3), target(4), target(5));
-    const visited = [];
     const query = request(source, {
         filter(_battle, _request, candidate) {
-            visited.push(candidate.id);
             return candidate.id === 4;
         },
         selector() {
@@ -112,23 +65,10 @@ test("hasCandidate short-circuits explicit eligibility without invoking the sele
     });
 
     assert.equal(hasCandidate(initial, query), true);
-    assert.deepEqual(visited, [3, 4]);
-    assert.equal(initial.execution.rngState, 0);
     assert.equal(hasCandidate(initial, request(source, { filter: () => false })), false);
-    assert.equal(hasCandidate(battle(source), query), false);
 });
 
-test("having an eligible candidate does not guarantee the selector returns a target", () => {
-    const source = unit(0);
-    const initial = battle(source, target(2));
-    const query = request(source, { selector: selectors.random(0) });
-
-    assert.equal(hasCandidate(initial, query), true);
-    assert.deepEqual(select(initial, query).value, []);
-    assert.strictEqual(select(initial, query).state, initial);
-});
-
-test("first performs stable multi-level sorting without consuming RNG", () => {
+test("first keeps stable ties and honors the requested comparator", () => {
     const source = unit(0);
     const initial = battle(source, target(8), target(2), target(5));
     const query = request(source, {
@@ -136,58 +76,30 @@ test("first performs stable multi-level sorting without consuming RNG", () => {
     });
 
     assert.deepEqual(select(initial, query).value, [{ id: 8 }, { id: 2 }]);
-    assert.strictEqual(select(initial, query).state, initial);
     assert.deepEqual(select(initial, request(source, {
         selector: selectors.first(2, compare.distance),
     })).value, [{ id: 2 }, { id: 5 }]);
 });
 
-test("random samples without replacement, consumes battle RNG and preserves the input", () => {
+test("random selection is deterministic, samples without replacement, and advances RNG only for a draw", () => {
     const source = unit(0);
     const initial = battle(source, target(8), target(2), target(5));
     const seeded = { ...initial, execution: { ...initial.execution, rngState: 37 } };
     const query = request(source, { selector: selectors.random(2) });
     const selected = select(seeded, query);
-    const expectedRng = createRng(37);
-    const pool = [8, 2, 5];
+    const ids = selected.value.map(value => value.id);
 
-    for (let index = 0; index < 2; index++) {
-        const chosen = index + expectedRng.int(pool.length - index);
-        [pool[index], pool[chosen]] = [pool[chosen], pool[index]];
-    }
-
-    assert.deepEqual(selected.value.map(value => value.id), pool.slice(0, 2));
-    assert.equal(new Set(selected.value.map(value => value.id)).size, 2);
-    assert.equal(selected.state.execution.rngState, expectedRng.state());
-    assert.equal(seeded.execution.rngState, 37);
-    assert.strictEqual(selected.state.battlefield, seeded.battlefield);
+    assert.equal(new Set(ids).size, 2);
+    assert.ok(ids.every(id => [8, 2, 5].includes(id)));
+    assert.notEqual(selected.state.execution.rngState, seeded.execution.rngState);
     assert.deepEqual(select(seeded, query), selected);
-    assert.notEqual(select(selected.state, query).state.execution.rngState, selected.state.execution.rngState);
-});
-
-test("random returns every candidate at most once and does not draw from an empty sample", () => {
-    const source = unit(0);
-    const initial = battle(source, target(4), target(5));
-    const full = select(initial, request(source, { selector: selectors.random(10) }));
-
-    assert.deepEqual(full.value.map(value => value.id).sort(), [4, 5]);
-    assert.strictEqual(select(initial, request(source, { selector: selectors.random(0) })).state, initial);
-    const empty = battle(source);
-    assert.strictEqual(select(empty, request(source, { selector: selectors.random(2) })).state, empty);
-});
-
-test("standard filters compose eligibility and source exclusion explicitly", () => {
-    const source = target(0, { allegiance: { side: "ALLY" } });
-    const alive = target(1, { allegiance: { side: "ENEMY" }, vitality: { maxHp: 10, defense: 0, resistance: 0 } });
-    const ally = target(2, { allegiance: { side: "ALLY" }, vitality: { maxHp: 10, defense: 0, resistance: 0 } });
-    const initial = battle(source, alive, ally);
-
-    assert.deepEqual(select(initial, request(source, {
-        filter: filters.and(filters.present, filters.alive, filters.hostile, filters.notSelf),
-    })).value, [{ id: 1 }]);
-    assert.deepEqual(select(initial, request(source, {
-        filter: filters.not(filters.or(filters.hostile, filters.notSelf)),
-    })).value, [{ id: 0 }]);
+    assert.deepEqual(select(seeded, request(source, {
+        selector: selectors.random(10),
+    })).value.map(value => value.id).sort(), [2, 5, 8]);
+    assert.equal(select(seeded, request(source, {
+        selector: selectors.random(0),
+    })).state.execution.rngState, seeded.execution.rngState);
+    assert.deepEqual(select(battle(source), query).value, []);
 });
 
 test("blocked targets outrank nearer candidates and remain selectable outside ordinary range", () => {

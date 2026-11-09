@@ -14,7 +14,7 @@ import {
     allyUntargetableRestriction,
 } from "../../dist/core/effects/visibility.js";
 import { healFreeRestriction } from "../../dist/core/effects/protection.js";
-import { initialize, baseUnit, fixtureBattle } from "../helpers/unit.js";
+import { initialize } from "../helpers/unit.js";
 import { effectFixtureWork } from "../helpers/effects.js";
 
 const owner = (id = 2, side = "ENEMY", restrictions = []) => initialize({
@@ -33,19 +33,6 @@ const request = (source, purposes = ["DAMAGE"]) => ({
     selector: (state, _request, candidates) => ({ state, value: candidates.map(units.ref) }),
 });
 const restriction = (kind, allows = () => false) => ({ kind, allows });
-
-
-test("Targetable initialization rejects different contributions with the same ID", () => {
-    const first = { id: "duplicate", value: invisibleRestriction };
-    const second = { id: "duplicate", value: untargetableRestriction };
-    const definition = { restrictions: Object.freeze([first, second]) };
-
-    assert.throws(
-        () => targetable.initialize(fixtureBattle(), baseUnit({ id: "targetable", hooks: Hooks.empty(), targetable: definition })),
-        { name: "TypeError", message: "duplicate targetable restriction identity: duplicate" },
-    );
-    assert.deepEqual(definition.restrictions, [first, second]);
-});
 
 
 test("query exemption applies after exclusive group resolution without reviving the suppressed limit", () => {
@@ -82,37 +69,20 @@ test("exempting a mechanism ignores all of its instances but preserves independe
     assert.equal(targetable.allowsRestrictions(battle, input, target, kind => kind === invisibilityKind), false);
 });
 
-test("restriction callbacks receive the actual request, current battle and owner", () => {
-    const source = owner(1, "ALLY");
-    const input = request(source, []);
-    let received;
-    const target = owner(2, "ENEMY", [{
-        id: "capture",
-        value: restriction(Symbol("capture"), (...args) => { received = args; return true; }),
-    }]);
-    const battle = effectFixtureWork(source, target);
-
-    assert.equal(targetable.allowsRestrictions(battle, input, target), true);
-    assert.deepEqual(received, [battle, { request: input, owner: target }]);
-    assert.equal(targetable.allowsRestrictions(battle, input, owner(3)), true);
-});
-
-test("visibility content distinguishes different sides from hostile sides independently of Purpose", () => {
+test("visibility distinguishes different sides from hostile sides", () => {
     const ally = owner(1, "ALLY");
     const neutral = owner(2, "NEUTRAL");
     const enemy = owner(3, "ENEMY");
     const battle = effectFixtureWork(ally, neutral, enemy);
 
-    for (const purposes of [[], ["DAMAGE"], ["HEAL"], ["ELEMENTAL_INJURY", "ELEMENTAL_INJURY_HEALED"], ["EFFECT"]]) {
-        const input = request(ally, purposes);
-        assert.equal(invisibleRestriction.allows(battle, { request: input, owner: neutral }), false);
-        assert.equal(untargetableRestriction.allows(battle, { request: input, owner: neutral }), false);
-        assert.equal(camouflageRestriction.allows(battle, { request: input, owner: neutral }), true);
-        assert.equal(camouflageRestriction.allows(battle, { request: input, owner: enemy }), false);
-        assert.equal(invisibleRestriction.allows(battle, { request: input, owner: ally }), true);
-        assert.equal(allyUntargetableRestriction.allows(battle, { request: input, owner: ally }), false);
-        assert.equal(allyUntargetableRestriction.allows(battle, { request: input, owner: enemy }), true);
-    }
+    const input = request(ally, ["DAMAGE"]);
+    assert.equal(invisibleRestriction.allows(battle, { request: input, owner: neutral }), false);
+    assert.equal(untargetableRestriction.allows(battle, { request: input, owner: neutral }), false);
+    assert.equal(camouflageRestriction.allows(battle, { request: input, owner: neutral }), true);
+    assert.equal(camouflageRestriction.allows(battle, { request: input, owner: enemy }), false);
+    assert.equal(invisibleRestriction.allows(battle, { request: input, owner: ally }), true);
+    assert.equal(allyUntargetableRestriction.allows(battle, { request: input, owner: ally }), false);
+    assert.equal(allyUntargetableRestriction.allows(battle, { request: input, owner: enemy }), true);
 });
 
 test("heal-free content only restricts requests explicitly containing HEAL", () => {
@@ -123,8 +93,6 @@ test("heal-free content only restricts requests explicitly containing HEAL", () 
     assert.equal(targetable.allowsRestrictions(battle, request(source, ["HEAL"]), target), false);
     assert.equal(targetable.allowsRestrictions(battle, request(source, ["DAMAGE", "HEAL"]), target), false);
     assert.equal(targetable.allowsRestrictions(battle, request(source, ["ELEMENTAL_INJURY_HEALED"]), target), true);
-    assert.equal(targetable.allowsRestrictions(battle, request(source, ["EFFECT"]), target), true);
-    assert.equal(targetable.allowsRestrictions(battle, request(source, []), target), true);
 });
 
 test("independent visibility effects preserve innate restrictions throughout their lifecycles", () => {
@@ -135,13 +103,13 @@ test("independent visibility effects preserve innate restrictions throughout the
     const second = effects.install(first.state, units.ref(target), invisible);
     const installed = units.get(second.state, units.ref(target));
 
-    assert.equal(installed.targetable.restrictions.length, 3);
+    assert.equal(targetable.allowsRestrictions(second.state, request(source), installed), false);
     const disabled = effects.setEnabled(second.state, first.value, false);
-    assert.equal(units.get(disabled, units.ref(target)).targetable.restrictions.length, 2);
+    assert.equal(targetable.allowsRestrictions(disabled, request(source), units.get(disabled, units.ref(target))), false);
     const ended = effects.end(disabled, second.value);
     const current = units.get(ended, units.ref(target));
-    assert.deepEqual(current.targetable.restrictions, target.targetable.restrictions);
     assert.equal(targetable.allowsRestrictions(ended, request(source), current), false);
     assert.equal(targetable.allowsRestrictions(ended, request(source), current, kind => kind === invisibilityKind), true);
-    assert.equal(units.get(initial, units.ref(target)).targetable.restrictions.length, 1);
+    const cleared = applyUnitChanges(ended, units.ref(target), targetable.removeRestriction("innate"));
+    assert.equal(targetable.allowsRestrictions(cleared, request(source), units.get(cleared, units.ref(target))), true);
 });

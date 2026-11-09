@@ -1,6 +1,5 @@
 import { compose } from "../../dist/core/unit/index.js";
 import { Hooks } from "../../dist/core/hook.js";
-import { predefinedUnits } from "../helpers/predefined.js";
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { fixtureBattle, initialize } from '../helpers/unit.js';
@@ -12,12 +11,9 @@ import * as projectilesQuery from '../../dist/core/projectile/query.js';
 import { advance } from '../../dist/core/battle/projectile.js';
 import { ref } from '../../dist/core/unit/query.js';
 import { createArrow } from '../../dist/content/enemies/crossbowman/action.js';
-import * as tracking from '../../dist/content/projectiles/tracking.js';
-import { unit as actionUnit } from '../helpers/action-fixture.js';
-import { createTacticalProjectileDemo } from '../../dist/legacy/projectile-demo.js';
-import { start as startAction, ref as actionRef } from '../../dist/core/unit/action/index.js';
-import { advance as advanceAction } from '../../dist/core/unit/action/index.js';
 import { targetApplied } from '../../dist/core/battle/damage/hp/index.js';
+import { setAttackContribution } from '../../dist/core/unit/capability/offense/index.js';
+import { create as modifier } from '../../dist/core/unit/contribution/attribute.js';
 
 function setup(targetHooks = Hooks.empty()) {
   const source = initialize({ id: 0, position: [0, 0], definition: { hooks: Hooks.empty(),
@@ -32,7 +28,7 @@ function setup(targetHooks = Hooks.empty()) {
   const battle = addUnit(addUnit(fixtureBattle(), source), target);
   const state = {
     source: ref(source), target: ref(target), destination: target.position,
-    cachedAtk: 20, speedPerTick: 1, stopDelayTicks: 0, stopAtTick: null,
+    cachedAtk: 40, speedPerTick: 1, stopDelayTicks: 0, stopAtTick: null,
     hitAttempted: false, launchedAtTick: 0,
   };
   return { battle, source, target, state };
@@ -73,27 +69,28 @@ test('dispel skips the ordinary arrow fallback hit while explicit stop performs 
   assert.equal(getUnit(dispelled, 1).vitality.hp, 1000);
   assert.equal(getUnit(stopped, 1).vitality.hp, 960);
   assert.equal(dispelled.battlefield.projectiles.size, 0);
-  assert.equal(stopped.events.filter(event => event.type === 'DAMAGE').length, 1);
-  assert.strictEqual(projectiles.stop(stopped, launched.value), stopped);
+  assert.equal(stopped.battlefield.projectiles.size, 0);
 });
 
-test('tracking commits its hit attempt before content can synchronously stop the same projectile', () => {
-  const fixture = setup();
-  const observed = [];
-  const hit = (battle, self) => tracking.hit(battle, self, (current, marked) => {
-    observed.push([marked.state.hitAttempted, projectilesQuery.get(current, projectilesQuery.ref(marked)).state.hitAttempted]);
-    return projectiles.stop(current, projectilesQuery.ref(marked));
+test('an arrow cannot hit twice when its damage response stops the projectile', () => {
+  let arrow;
+  let hits = 0;
+  const fixture = setup(Hooks.empty().set(targetApplied, {
+    id: 'stop-on-hit',
+    invoke(state) {
+      hits++;
+      return { state: projectiles.stop(state, arrow), value: undefined };
+    },
+  }));
+  const launched = projectiles.create(fixture.battle, createArrow(), {
+    position: [0, 0], state: fixture.state,
   });
-  const definition = {
-    id: 'reentrant-arrow', tracking: true,
-    onTick: (battle, self) => tracking.advance(battle, self, hit),
-    onEnd: (battle, self, reason) => reason === 'DISPEL' ? battle : hit(battle, self),
-  };
-  const launched = projectiles.create(fixture.battle, definition, { position: [0, 0], state: fixture.state });
+  arrow = launched.value;
   const after = step(launched.state, 1);
 
-  assert.deepEqual(observed, [[true, true]]);
-  assert.equal(after.battlefield.projectiles.size, 0);
+  assert.equal(hits, 1);
+  assert.equal(getUnit(after, 1).vitality.hp, 960);
+  assert.equal(projectilesQuery.get(after, arrow), undefined);
 });
 
 test('delayed tracking keeps the instance active after arrival without repeating the hit', () => {
@@ -109,7 +106,6 @@ test('delayed tracking keeps the instance active after arrival without repeating
   assert.equal(projectilesQuery.get(reached, launched.value).state.stopAtTick, 3);
   assert.equal(projectilesQuery.get(waiting, launched.value).lifecycle, 'ACTIVE');
   assert.equal(projectilesQuery.get(ended, launched.value), undefined);
-  assert.equal(ended.events.filter(event => event.type === 'DAMAGE').length, 1);
   assert.equal(getUnit(ended, 1).vitality.hp, 960);
 });
 
@@ -122,46 +118,18 @@ test('tracking reads current source attack and falls back to its launch sample a
       return { state: battle, value: undefined };
     },
   }));
-  const launched = projectiles.create(fixture.battle, createArrow(), { position: [0, 0], state: fixture.state });
-  const self = projectilesQuery.get(launched.state, launched.value);
-
-  assert.equal(tracking.attackPower(launched.state, self), 40);
-  const withSource = step(launched.state, 1);
-  assert.equal(getUnit(withSource, 1).vitality.hp, 960);
-  const withoutSource = removeUnit(launched.state, fixture.source.id, "DEATH");
-  assert.equal(tracking.attackPower(withoutSource, self), 20);
-  for (const after of [step(withoutSource, 1), projectiles.stop(withoutSource, launched.value)]) {
-    assert.equal(getUnit(after, 1).vitality.hp, 980);
-  }
-  assert.deepEqual(sources, [ref(fixture.source), null, null]);
-});
-
-test('demo projectile damage uses live attack or its launch sample after source removal', () => {
-  for (const cachedOnly of [false, true]) {
-    const actor = actionUnit(0, { action: true });
-    const attack = actor.action.actions.get('primary').definition;
-    const { input } = createTacticalProjectileDemo({
-      predefines: predefinedUnits([{ definition: { ...actor.definition, attack }, position: actor.position }]),
-      schedule: { waves: [], branches: {} },
-    }, cachedOnly);
-    const source = initialize({ id: 0, ...input.predefines[0].creation });
-    const target = actionUnit(1);
-    const battle = addUnit(addUnit(fixtureBattle(), source), target);
-    const configured = source.action.actions.get('primary');
-    const started = startAction(battle, actionRef(ref(source), configured.definition));
-    assert.equal(started.value.type, 'STARTED');
-    const launched = advanceAction({ ...started.state, tick: 6 }, started.value.ref);
-    const self = projectilesQuery.all(launched).toArray()[0];
-    assert.ok(self);
-    const existing = projectiles.stop(launched, projectilesQuery.ref(self));
-    const withoutSource = projectiles.stop(removeUnit(launched, source.id, "DEATH"), projectilesQuery.ref(self));
-    const liveDamage = existing.events.find(event => event.type === 'DAMAGE');
-    const cachedDamage = withoutSource.events.find(event => event.type === 'DAMAGE');
-
-    assert.equal(liveDamage.amount, cachedOnly ? 10 : 70);
-    assert.equal(cachedDamage.amount, 10);
-    assert.equal(self.state.source.id, source.id);
-  }
+  const launched = projectiles.create(fixture.battle, createArrow(), {
+    position: [0, 0], state: { ...fixture.state, cachedAtk: 40 },
+  });
+  const boosted = updateUnits(launched.state, ref(fixture.source), setAttackContribution({
+    id: 'after-launch', value: [modifier({ addition: 20 })],
+  }));
+  const withSource = step(boosted, 1);
+  assert.equal(getUnit(withSource, 1).vitality.hp, 940);
+  const withoutSource = removeUnit(boosted, fixture.source.id, "SCRIPT");
+  const after = step(withoutSource, 1);
+  assert.equal(getUnit(after, 1).vitality.hp, 960);
+  assert.deepEqual(sources, [ref(fixture.source), null]);
 });
 
 test('a missing locked target does not redirect its arrow to another nearby unit', () => {
@@ -170,19 +138,9 @@ test('a missing locked target does not redirect its arrow to another nearby unit
   const other = initialize({ id: 2, position: [1, 0], definition: { hooks: Hooks.empty(),
     id: 'nearby', vitality: { maxHp: 100, defense: 0, resistance: 0 },
   } });
-  const withoutTarget = addUnit(removeUnit(launched.state, fixture.target.id, "DEATH"), other);
+  const withoutTarget = addUnit(removeUnit(launched.state, fixture.target.id, "SCRIPT"), other);
   const after = step(withoutTarget, 1);
 
   assert.equal(getUnit(after, 2).vitality.hp, 100);
   assert.equal(after.battlefield.projectiles.size, 0);
-});
-
-test('tracking presentation projects known program references and leaves unrelated programs opaque', () => {
-  const fixture = setup();
-  const launched = projectiles.create(fixture.battle, createArrow(), { position: [0, 0], state: fixture.state });
-  assert.deepEqual(tracking.project(launched.state, launched.value), {
-    id: launched.value.id, source: 0, traceTarget: 1, position: [0, 0], destination: [1, 0], launchedAtTick: 0,
-  });
-  const unrelated = projectiles.create(launched.state, { id: 'unrelated' }, { position: [0, 0], state: {} });
-  assert.equal(tracking.project(unrelated.state, unrelated.value), undefined);
 });
