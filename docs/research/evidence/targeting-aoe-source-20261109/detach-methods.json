@@ -1,0 +1,10 @@
+[
+  "Torappu.Battle.Ability.Detach",
+  "Torappu.Battle.AbilityStandard.StopAffect",
+  "Torappu.Battle.AbilityStandard.OnCastEnd",
+  "Torappu.Battle.AbilityStandard.OnDetached",
+  "Torappu.Battle.Entity.ClearAbilities",
+  "Torappu.Battle.Projectile.Init",
+  "Torappu.Battle.Projectile.OnTick",
+  "Torappu.Battle.Abilities.RangedAttack.ClearProjectile"
+]

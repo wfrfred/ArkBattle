@@ -1,0 +1,231 @@
+{
+  "provenance": {
+    "collectedAt": "2026-11-09T14:06:39.300592+00:00",
+    "scope": "Selected local JSON documents only. Value matches locate potential references; they do not resolve or validate bindings.",
+    "tool": {
+      "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/config.py",
+      "sha256": "67c2a913386059a57f9316f25e532c9dd20cdc4adb91d820065d09fd9dec76e4"
+    },
+    "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+    "argv": [
+      ".cache/native-research/route-operations-20261107/data/character_table.json",
+      "--source-url",
+      "https://github.com/Kengxxiao/ArknightsGameData/blob/63c7cec73c3858d0ae913f85cc89af3cef4d744f/zh_CN/gamedata/excel/character_table.json",
+      "--revision",
+      "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+      "--out",
+      "docs/research/evidence/targeting-aoe-source-20261109/catap-data.json",
+      "select",
+      "/char_282_catap",
+      "--field",
+      "/name",
+      "--field",
+      "/phases",
+      "--field",
+      "/skills",
+      "--field",
+      "/displayTokenDict",
+      "--field",
+      "/profession",
+      "--field",
+      "/subProfessionId"
+    ],
+    "sourceUrl": "https://github.com/Kengxxiao/ArknightsGameData/blob/63c7cec73c3858d0ae913f85cc89af3cef4d744f/zh_CN/gamedata/excel/character_table.json",
+    "revision": "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+    "inputs": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/route-operations-20261107/data/character_table.json",
+        "bytes": 15468242,
+        "sha256": "6a61f54802ee194dbb21968976eb99e2a4050e38928bd24bd2b770479076cea1",
+        "status": "ok",
+        "matched": 1
+      }
+    ]
+  },
+  "result": {
+    "matched": 1,
+    "matches": [
+      {
+        "source": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/route-operations-20261107/data/character_table.json",
+        "pointer": "/char_282_catap",
+        "fields": {
+          "/name": "空爆",
+          "/phases": [
+            {
+              "characterPrefabKey": "char_282_catap",
+              "rangeId": "3-3",
+              "maxLevel": 40,
+              "attributesKeyFrames": [
+                {
+                  "level": 1,
+                  "data": {
+                    "maxHp": 736,
+                    "atk": 340,
+                    "def": 51,
+                    "magicResistance": 0.0,
+                    "cost": 21,
+                    "blockCnt": 1,
+                    "moveSpeed": 1.0,
+                    "attackSpeed": 100.0,
+                    "baseAttackTime": 2.8,
+                    "respawnTime": 70,
+                    "hpRecoveryPerSec": 0.0,
+                    "spRecoveryPerSec": 1.0,
+                    "maxDeployCount": 1,
+                    "maxDeckStackCnt": 0,
+                    "tauntLevel": 0,
+                    "massLevel": 0,
+                    "baseForceLevel": 0,
+                    "blockVolume": -1,
+                    "stunImmune": false,
+                    "silenceImmune": false,
+                    "sleepImmune": false,
+                    "frozenImmune": false,
+                    "levitateImmune": false,
+                    "disarmedCombatImmune": false,
+                    "fearedImmune": false,
+                    "palsyImmune": false,
+                    "attractImmune": false,
+                    "teleportImmune": false,
+                    "groundBoundImmune": false
+                  }
+                },
+                {
+                  "level": 40,
+                  "data": {
+                    "maxHp": 920,
+                    "atk": 487,
+                    "def": 67,
+                    "magicResistance": 0.0,
+                    "cost": 21,
+                    "blockCnt": 1,
+                    "moveSpeed": 1.0,
+                    "attackSpeed": 100.0,
+                    "baseAttackTime": 2.8,
+                    "respawnTime": 70,
+                    "hpRecoveryPerSec": 0.0,
+                    "spRecoveryPerSec": 1.0,
+                    "maxDeployCount": 1,
+                    "maxDeckStackCnt": 0,
+                    "tauntLevel": 0,
+                    "massLevel": 0,
+                    "baseForceLevel": 0,
+                    "blockVolume": -1,
+                    "stunImmune": false,
+                    "silenceImmune": false,
+                    "sleepImmune": false,
+                    "frozenImmune": false,
+                    "levitateImmune": false,
+                    "disarmedCombatImmune": false,
+                    "fearedImmune": false,
+                    "palsyImmune": false,
+                    "attractImmune": false,
+                    "teleportImmune": false,
+                    "groundBoundImmune": false
+                  }
+                }
+              ],
+              "evolveCost": null
+            },
+            {
+              "characterPrefabKey": "char_282_catap",
+              "rangeId": "3-8",
+              "maxLevel": 55,
+              "attributesKeyFrames": [
+                {
+                  "level": 1,
+                  "data": {
+                    "maxHp": 920,
+                    "atk": 487,
+                    "def": 67,
+                    "magicResistance": 0.0,
+                    "cost": 23,
+                    "blockCnt": 1,
+                    "moveSpeed": 1.0,
+                    "attackSpeed": 100.0,
+                    "baseAttackTime": 2.8,
+                    "respawnTime": 70,
+                    "hpRecoveryPerSec": 0.0,
+                    "spRecoveryPerSec": 1.0,
+                    "maxDeployCount": 1,
+                    "maxDeckStackCnt": 0,
+                    "tauntLevel": 0,
+                    "massLevel": 0,
+                    "baseForceLevel": 0,
+                    "blockVolume": -1,
+                    "stunImmune": false,
+                    "silenceImmune": false,
+                    "sleepImmune": false,
+                    "frozenImmune": false,
+                    "levitateImmune": false,
+                    "disarmedCombatImmune": false,
+                    "fearedImmune": false,
+                    "palsyImmune": false,
+                    "attractImmune": false,
+                    "teleportImmune": false,
+                    "groundBoundImmune": false
+                  }
+                },
+                {
+                  "level": 55,
+                  "data": {
+                    "maxHp": 1150,
+                    "atk": 617,
+                    "def": 85,
+                    "magicResistance": 0.0,
+                    "cost": 23,
+                    "blockCnt": 1,
+                    "moveSpeed": 1.0,
+                    "attackSpeed": 100.0,
+                    "baseAttackTime": 2.8,
+                    "respawnTime": 70,
+                    "hpRecoveryPerSec": 0.0,
+                    "spRecoveryPerSec": 1.0,
+                    "maxDeployCount": 1,
+                    "maxDeckStackCnt": 0,
+                    "tauntLevel": 0,
+                    "massLevel": 0,
+                    "baseForceLevel": 0,
+                    "blockVolume": -1,
+                    "stunImmune": false,
+                    "silenceImmune": false,
+                    "sleepImmune": false,
+                    "frozenImmune": false,
+                    "levitateImmune": false,
+                    "disarmedCombatImmune": false,
+                    "fearedImmune": false,
+                    "palsyImmune": false,
+                    "attractImmune": false,
+                    "teleportImmune": false,
+                    "groundBoundImmune": false
+                  }
+                }
+              ],
+              "evolveCost": []
+            }
+          ],
+          "/skills": [
+            {
+              "skillId": "skchr_catap_1",
+              "overridePrefabKey": null,
+              "overrideTokenKey": null,
+              "levelUpCostCond": [],
+              "unlockCond": {
+                "phase": "PHASE_0",
+                "level": 1
+              }
+            }
+          ],
+          "/displayTokenDict": null,
+          "/profession": "SNIPER",
+          "/subProfessionId": "aoesniper"
+        },
+        "missingFields": []
+      }
+    ],
+    "complete": true,
+    "scanned": 1,
+    "succeeded": 1,
+    "errors": []
+  }
+}

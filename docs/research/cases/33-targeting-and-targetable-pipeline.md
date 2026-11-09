@@ -85,6 +85,8 @@ PRTS 的[选择器](https://prts.wiki/w/选择器)、[仇恨](https://prts.wiki/
 | 目标禁选、迷彩、禁疗等 | 对目标当前 Entity／Attributes 的查询 | Buff 是否仍存在、该异常是否实际生效。 |
 | 目标 hitRange | 目标自身当前登记的范围政策 | 发起者自己的攻击范围。 |
 
+初始化样本限定于对应的 TargetOptions 消费者。普通 `TargetSelector.ValidateTarget` 的额外地图层校验、迷彩阵营判断和目标 hitRange 校验还分别读取 owner 的当前地图层、阵营与根格，见[资格原体](../evidence/targeting-pipeline-20261109/qualification.json)。因此，同一来源并没有适用于所有选择路径的统一快照时点。
+
 `_UpdateTargetOptionsByBlackboard` 75511 不是任意字段反射：先检查登记的 hook-key 集合和黑板中是否存在对应键，再更新 ignoreTargetFree、选择性忽略开关、abnormalFlag 的有效值。当前普通消费者使用的字面键为 `ignore_target_free`、`only_ignore_some_of_target_free_case`、`abnormal_flag`，其 metadata 字面量绑定保存在原件。不能仅因某组件声明了相似字段名，就认定发生了有效覆盖；具体值有没有被内容／模块／玩法提供，仍需沿该内容的黑板来源核实。
 
 数量的普通 `SetData` 分支：无数量限制时初值128，有限制时初值为静态 maxNum；有数量限制且取得黑板时，主键读取以该初值为缺省，再加附加键，结果截在 `[0,128]`。不能据这个分支推导“任何静态配置都被128截断”，也不能把范围生成、内部排序缓冲和最终 maxNum 的各处限额合成一个字段。
@@ -185,6 +187,25 @@ Mon3tr S1 的实际 RangedHeal 能力 `_ignoreHealFree=true`，其 AdvancedSelec
 这份 S3 配置具体依次尝试：有非被动技能且未处于技能 affecting 的对象；有非被动技能的对象；其余符合公共资格的对象。三组都排除本来源登记的 `tocka_s3[trigger]` 标记；各组另受外层阵营、行动方式、职业、实体类型和排除自身约束。`isMatched=false` 是对整个对应 validator 的结果取反，不是任意挑其中一个字段反向。技能类型 PASSIVE／MANUAL／AUTO 的原生枚举与配置绑定保存在新增原件，不自动对应项目 Skill 的类型组织。
 
 这些事实解释的是已核实的资格组合与分组控制流，不要求项目复制相同类层次；当前显式 Filter／Selector 是否以及如何承载具体内容，留在架构设计阶段判断。
+
+### 4.6 来源离场后的真实群攻弹道
+
+2026-11-09 定向补核使用空爆的普通攻击，配置与连续原体见[本批证据](../evidence/targeting-aoe-source-20261109/README.md)。本节限定当前客户端普通 native 分支，没有执行实机撤退实验或确认活跃 XLua 替换。
+
+真实配置链为 `char_282_catap` 的 Default Mode → `RangedAttack` → `projectile_catap` → `SimpleProjectile`／`HitBehaviour`／本地 `CircleRange`。该样本未启用已核对的来源失效停止、来源管理、Character 清理及等待弹道结束时清理选项；HitBehaviour 在抵达时做范围搜索，不限于保存的原目标。炎熔的所取普通攻击则使用 `MeleeAttack` 和视觉发射配置，不能仅凭画面表现把它当作同一类逻辑弹道正例。
+
+**直接证实的先后关系：**
+
+1. `HitBehaviour.Init` 在弹道创建时初始化自己的 TargetOptions，保存来源阵营相关选项及来源运动身份样本。
+2. `HitBehaviour.OnProjectileReached` 先复制已保存的 TargetOptions，并据当前抵达位置执行 Box2d 范围查询；不是重新调用原攻击的 Selector，也不要求先成功取得当前来源。
+3. 范围名单形成后才读取当前 source。source 失效时跳过来源的选择通知，但仍继续遍历名单并调用 `DealHitTarget`。
+4. TargetOptions 中来源运动身份的查询遵守第 4.3 节的当前身份优先／初始化样本回退。目标自身的空间与资格检查仍发生在本次范围查询中，不是把发射时的目标名单固定下来。
+
+普通撤退清理链另以当前客户端复核：`Character.Withdraw` → `FinishMe`／`OnFinish` → `Character.ClearAbilities` → `Entity.ClearAbilities` → Ability 的 Detach／结束。空爆未启用 Character 的弹道清理开关；RangedAttack 在结束时只于等待弹道且未豁免清理的组合下调用 ClearProjectile，该样本不等待。Projectile.Init 又因该弹道不受来源管理而跳过来源的 managedProjectiles 登记；来源失效停止也未启用。因此，这条普通撤退路径不会仅因来源退场终止已发出的该弹道。具体方法、虚派发与配置分别保存在本批原件，不由字段名称推导触发时点。
+
+**调用链推论：** 对仍按自身生命周期运行并抵达的该弹道，当前来源身份失效不会阻止 AOE 搜索与逐项命中。发射时保留选择所需的来源信息，与抵达时选择当前范围目标，是两件独立的事。伤害使用当前 ATK 还是缓存 ATK、来源事件和归属是否保留，继续遵守[案例 18 的来源与伤害分支](18-projectile-source-and-target-lifecycles.md)，不能从范围选择仍成立推导完整来源属性与事件也被保存。
+
+这补齐的是既有延迟范围作用的原生需求，不要求建立新的 Targeting 流程或保存整份 Unit。具体来源事实在项目 API 中如何提供，仍由架构设计确定；不能将“当前来源 Ref 无法解析”设为所有选择的统一拒绝条件。
 
 ## 5. 排序、限额与作用顺序
 
@@ -310,7 +331,7 @@ Enemy 无运动 Cursor 时的距离按0处理；不是读取一个不存在的�
 | 数量与中间限额 | Range、Filter、Blackboard、阻挡数分别影响数量，部分路径有128项边界 | Selector 显式声明数量，没有统一的128项边界 | 记录各入口实际差异，不把实现中的每个缓冲上限自动变成项目统一限制。 |
 | 最终结算 | 原生 Modifier／Buff 各有接收与事件分支 | 四条 Calculate→Apply 与 Effect 生命周期 | 保持已经确认的阶段边界，不按原生事件编号改写项目。 |
 
-当前实现核对入口：[Targeting 契约](../../../src/core/battle/targeting/contract.ts)、[Filter](../../../src/core/battle/targeting/filter.ts)、[Comparator](../../../src/core/battle/targeting/compare.ts)、[Selector](../../../src/core/battle/targeting/selector.ts)、[Targetable](../../../src/core/unit/capability/targetable/capability.ts)、[攻击模板](../../../src/content/actions/attack.ts)、[原目标弹道](../../../src/content/projectiles/tracking.ts)。项目政策对应[Targeting 架构](../../architecture/targeting.md)、[普通仇恨事实](../../architecture/tactical-semantics.md#仇恨事实与普通排序)、[Calculate／Apply 边界](../../architecture/vitality.md#1-calculate-与-apply-的语义边界)。这些文档与代码只作为项目对照，不作为原生证据。
+项目基线 `9a24854` 的核对入口：[Targeting 契约](https://github.com/wfrfred/ArkBattle/blob/9a24854/src/core/battle/targeting/contract.ts)、[Filter](https://github.com/wfrfred/ArkBattle/blob/9a24854/src/core/battle/targeting/filter.ts)、[Comparator](https://github.com/wfrfred/ArkBattle/blob/9a24854/src/core/battle/targeting/compare.ts)、[Selector](https://github.com/wfrfred/ArkBattle/blob/9a24854/src/core/battle/targeting/selector.ts)、[Targetable](https://github.com/wfrfred/ArkBattle/blob/9a24854/src/core/unit/capability/targetable/capability.ts)、[攻击模板](https://github.com/wfrfred/ArkBattle/blob/9a24854/src/content/actions/attack.ts)、[原目标弹道](https://github.com/wfrfred/ArkBattle/blob/9a24854/src/content/projectiles/tracking.ts)。项目政策对应[Targeting 架构](../../architecture/targeting.md)、[普通仇恨事实](../../architecture/tactical-semantics.md#仇恨事实与普通排序)、[Calculate／Apply 边界](../../architecture/vitality.md#1-calculate-与-apply-的语义边界)。这些文档与代码只作为项目对照，不作为原生证据。
 
 本案没有修改 Core、Content 或测试，也没有为调查结果确定新的 API。
 

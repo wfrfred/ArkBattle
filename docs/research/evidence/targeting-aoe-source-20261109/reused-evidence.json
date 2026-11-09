@@ -1,0 +1,112 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-09",
+    "scope": "Exact archived method selections; no old client addresses are treated as current."
+  },
+  "result": [
+    {
+      "path": "docs/research/evidence/targeting-pipeline-20261109/qualification.json",
+      "bytes": 1005628,
+      "sha256": "32a62324c40f94f8d86da46d89cfc3d2b2194c935f924e4626727e5ca31a2a0d",
+      "client": {
+        "dll": {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+          "bytes": 223112680,
+          "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff"
+        },
+        "metadata": {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+          "bytes": 46669332,
+          "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5"
+        },
+        "metadataVersion": 29,
+        "imageBase": "0x180000000"
+      },
+      "methods": [
+        {
+          "fullname": "Torappu.Battle.TargetOptions.Init",
+          "index": 76365,
+          "address": 6453200912
+        },
+        {
+          "fullname": "Torappu.Battle.TargetOptions._InitSourceSnapshot",
+          "index": 76373,
+          "address": 6453201952
+        },
+        {
+          "fullname": "Torappu.Battle.TargetOptions._TryGetSourceMotionMode",
+          "index": 76372,
+          "address": 6453202352
+        },
+        {
+          "fullname": "Torappu.Battle.TargetOptions._VerifyAdvanced",
+          "index": 76375,
+          "address": 6453202608
+        }
+      ]
+    },
+    {
+      "path": "docs/research/evidence/targeting-pipeline-20261109/range.json",
+      "bytes": 520772,
+      "sha256": "e16d4b6e8dd84ac60b098724d3c25e77609a55fc6fc9115bbfdd5501f32e65e7",
+      "client": {
+        "dll": {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+          "bytes": 223112680,
+          "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff"
+        },
+        "metadata": {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+          "bytes": 46669332,
+          "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5"
+        },
+        "metadataVersion": 29,
+        "imageBase": "0x180000000"
+      },
+      "methods": [
+        {
+          "fullname": "Torappu.Battle.PhysicsRange.DoFindTargets_DISPOSE",
+          "index": 75405,
+          "address": 6452948000
+        },
+        {
+          "fullname": "Torappu.Battle.Box2dPhysicsUtil.FindTargets_DISPOSE",
+          "index": 75179,
+          "address": 6452794800
+        }
+      ]
+    },
+    {
+      "path": "docs/research/evidence/targeting-pipeline-20261109/binding/native/bodies.json",
+      "bytes": 1109691,
+      "sha256": "a93c57848c7c031d0a9c9d4e889fe2f1fe262322ec5a921813969eb6e0fea6a2",
+      "client": {
+        "dll": {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+          "bytes": 223112680,
+          "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff"
+        },
+        "metadata": {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+          "bytes": 46669332,
+          "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5"
+        },
+        "metadataVersion": 29,
+        "imageBase": "0x180000000"
+      },
+      "methods": [
+        {
+          "fullname": "Torappu.Battle.Abilities.RangedAttack.DoCastOnTargets",
+          "index": 92829,
+          "address": 6458612848
+        }
+      ]
+    }
+  ],
+  "mirrorVerification": {
+    "path": "docs/research/evidence/route-operations-20261107/data-source-verification.json",
+    "sha256": "4fcd255faa2fb1d1aa996243fb608b0bb75f6bf855c8daff6bdbc5a3380396bb",
+    "actualCharacterTableSha256": "6a61f54802ee194dbb21968976eb99e2a4050e38928bd24bd2b770479076cea1",
+    "matches": true
+  }
+}

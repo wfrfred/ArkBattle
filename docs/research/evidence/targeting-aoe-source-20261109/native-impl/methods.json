@@ -1,0 +1,5 @@
+[
+  "Torappu.Battle.Projectiles.HitBehaviour.Init",
+  "Torappu.Battle.Projectiles.HitBehaviour.OnProjectileReached",
+  "Torappu.Battle.Projectiles.HitBehaviour.DealHitTarget"
+]

@@ -1,0 +1,26 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-09",
+    "sourceType": "Community wiki; consulted with web search and page open, not native-runtime evidence."
+  },
+  "result": [
+    {
+      "title": "空爆",
+      "url": "https://prts.wiki/w/空爆",
+      "supports": "炮手普通攻击为范围物理伤害，可对空，溅射半径1.0。",
+      "doesNotEstablish": "来源退场后的范围筛选、TargetOptions样本及调用时点。"
+    },
+    {
+      "title": "炎熔",
+      "url": "https://prts.wiki/w/炎熔",
+      "supports": "普通攻击为范围法术伤害，可对空，溅射半径1.1。",
+      "doesNotEstablish": "视觉火球是否为承担结算的逻辑Projectile；本批用实际Prefab区分。"
+    },
+    {
+      "title": "作战机制",
+      "url": "https://prts.wiki/w/作战机制",
+      "supports": "有弹道的AOE先选择单体或地点，命中后选取范围内目标。",
+      "doesNotEstablish": "具体HitBehaviour在来源身份失效时的分支。"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+[
+  "Torappu.Battle.Character.Withdraw",
+  "Torappu.Battle.Character.FinishMe",
+  "Torappu.Battle.Entity.FinishMe",
+  "Torappu.Battle.Character.OnFinish",
+  "Torappu.Battle.Unit.OnFinish",
+  "Torappu.Battle.Entity.OnFinish",
+  "Torappu.Battle.Character.ClearAbilities",
+  "Torappu.Battle.Character._ClearAbilityProjectilesIfNeeded"
+]

@@ -1,0 +1,6 @@
+[
+  "Torappu.Battle.Ability.DoDetach",
+  "Torappu.Battle.Ability.DoFinish",
+  "Torappu.Battle.Ability.StopAffect",
+  "Torappu.Battle.AbilityStandard.OnEvent"
+]

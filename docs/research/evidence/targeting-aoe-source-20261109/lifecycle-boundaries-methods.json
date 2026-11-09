@@ -1,0 +1,5 @@
+[
+  "Torappu.Battle.Ability.InterruptIfNot",
+  "Torappu.Battle.SimpleProjectile.get_stopWhenSourceInvalid",
+  "Torappu.Battle.Abilities.RangedAttack.GetEventActions"
+]

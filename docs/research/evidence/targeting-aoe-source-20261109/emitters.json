@@ -1,0 +1,2103 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-09",
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/targeting-aoe-source-20261109/extract_config.py",
+      "bytes": 4295,
+      "sha256": "057244b94f5a69718cb89e92598736fc4993970ae666bc31c775134bd098fea9"
+    },
+    "contentReader": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/targeting-pipeline-20261109/content/extract_content.py",
+      "bytes": 12906,
+      "sha256": "37504c156e11e55c9c06174980fb1617281690ab3b01db9caa9dfd28937f5faa"
+    },
+    "sources": [
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+        "bytes": 477255,
+        "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_121_lava.ab",
+        "bytes": 20464,
+        "sha256": "3db84643784203db9745280c5d120058c634ddf49aa2096480966f0a75b3f62f"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_282_catap.ab",
+        "bytes": 19900,
+        "sha256": "b667096661f060b75ec40a342c21f067765e45f6ad2982172623d1a7439e889a"
+      }
+    ],
+    "selection": {
+      "bundles": [
+        "charpack/char_121_lava.ab",
+        "charpack/char_282_catap.ab"
+      ],
+      "roots": [
+        "char_121_lava",
+        "char_282_catap"
+      ]
+    },
+    "scope": "Complete decoded MonoBehaviour fields for selected roots; other serialized objects and external PPtrs remain references."
+  },
+  "result": [
+    {
+      "bundle": "charpack/char_121_lava.ab",
+      "file": "CAB-efb2d7c014004ec26eca638582b6854d",
+      "pathId": "-8162068334807398230",
+      "hierarchy": [
+        "char_121_lava",
+        "Modes",
+        "Default",
+        "Body",
+        "Attack",
+        "Trigger"
+      ],
+      "objectSha256": "07c716710889fa7b06a3955f8472e05aa43cd4eb1ff7ed9841d4c40102752268",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 7080728813803358465
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "7080728813803358465",
+        "name": "AdvancedSelector",
+        "cl": "AdvancedSelector",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": 896684440051730602
+        },
+        "common:349": 1,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": 7080728813803358465
+        },
+        "common:427": "",
+        "_targetSide": 2,
+        "_targetMotion": 3,
+        "_targetCategory": 1,
+        "_postFilter": 4,
+        "_ignoreTargetFree": 0,
+        "_onlyIgnoreSomeOfTargetFreeCase": 0,
+        "_abnormalFlag": 29,
+        "_abnormalCombo": 2,
+        "_ignoreAllyTargetFree": 0,
+        "_ignoreHealFree": 0,
+        "_ignoreMotionMode": 0,
+        "_forceIgnoreCamouflage": 0,
+        "_needProfessionMask": 0,
+        "_professionMask": 0,
+        "_excludeSomeAbnormalFlags": 0,
+        "_excludeAbnormalFlag": 46,
+        "_limitTargetNum": 1,
+        "_maxTargetKey": "max_target",
+        "_maxTargetExtraKey": "",
+        "_maxNum": 1,
+        "_excludeOwner": 0,
+        "_sortByTauntAtLast": 0,
+        "_ignoreHitRange": 0,
+        "_checkUnitType": 0,
+        "_unitTypeMask": 0,
+        "_abilityInputTargetAsSortSource": 0,
+        "_targetOptionHookedKeys": {
+          "Array": []
+        }
+      }
+    },
+    {
+      "bundle": "charpack/char_121_lava.ab",
+      "file": "CAB-efb2d7c014004ec26eca638582b6854d",
+      "pathId": "-7586745684998272854",
+      "hierarchy": [
+        "char_121_lava",
+        "Modes",
+        "Default"
+      ],
+      "objectSha256": "0448ac3cac154cc9a3ed94596efdc0236a13e3b9c7e80604bfca5119ed4bb37e",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 5390319429299248724
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "5390319429299248724",
+        "name": "UnitMode",
+        "cl": "UnitMode",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": 3418059064393549994
+        },
+        "common:349": 1,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": 5390319429299248724
+        },
+        "common:427": "",
+        "_bodyTransform": {
+          "m_FileID": 0,
+          "m_PathID": -737889917039392598
+        },
+        "_animatorHooker": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_overrideStartEffect": "",
+        "_overrideDeadEffect": "",
+        "_combat": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_attack": {
+          "m_FileID": 0,
+          "m_PathID": -907159050836031318
+        },
+        "_attackTrigger": {
+          "m_FileID": 0,
+          "m_PathID": -3995496837286901590
+        },
+        "_hideUIAttackRange": 0,
+        "_updateAttackRangeExtendByAttributeDirty": 0,
+        "_rangeToShow": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_extraRangesToShow": {
+          "Array": []
+        },
+        "_generalAbilities": {
+          "Array": []
+        },
+        "_addIndexToSignalId": 0,
+        "_includeIndexZero": 0,
+        "_alwaysHideHp": {
+          "isDefined": 0,
+          "value": 0
+        },
+        "_alwaysHideSp": {
+          "isDefined": 0,
+          "value": 0
+        }
+      }
+    },
+    {
+      "bundle": "charpack/char_121_lava.ab",
+      "file": "CAB-efb2d7c014004ec26eca638582b6854d",
+      "pathId": "-5359893727289784150",
+      "hierarchy": [
+        "char_121_lava",
+        "Modes",
+        "Default",
+        "Body",
+        "Attack",
+        "Trigger"
+      ],
+      "objectSha256": "e3e1ed8aed8581c9021f51be329665089919d1f34f0a8316c617bccc10b4ab0f",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -2891200616113119906
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-2891200616113119906",
+        "name": "AutoLoadBoxRange",
+        "cl": "AutoLoadBoxRange",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": 896684440051730602
+        },
+        "common:349": 1,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": -2891200616113119906
+        },
+        "common:427": "",
+        "_useBlackboardRangeId": 0,
+        "_extendable": 0
+      }
+    },
+    {
+      "bundle": "charpack/char_121_lava.ab",
+      "file": "CAB-efb2d7c014004ec26eca638582b6854d",
+      "pathId": "-3995496837286901590",
+      "hierarchy": [
+        "char_121_lava",
+        "Modes",
+        "Default",
+        "Body",
+        "Attack",
+        "Trigger"
+      ],
+      "objectSha256": "7d564db09c4cca5a4be128e075efaf2b7e3970fdff4f339c4b5dad4ee36ffed8",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 8607874384982393801
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "8607874384982393801",
+        "name": "SelectorTrigger",
+        "cl": "SelectorTrigger",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": 896684440051730602
+        },
+        "common:349": 1,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": 8607874384982393801
+        },
+        "common:427": "",
+        "_keepTarget": 0,
+        "_minTargetNum": 1,
+        "_overrideSearchTargetTick": -1
+      }
+    },
+    {
+      "bundle": "charpack/char_121_lava.ab",
+      "file": "CAB-efb2d7c014004ec26eca638582b6854d",
+      "pathId": "-907159050836031318",
+      "hierarchy": [
+        "char_121_lava",
+        "Modes",
+        "Default",
+        "Body",
+        "Attack"
+      ],
+      "objectSha256": "51d7f4fe3cad970580f76ed4728d852e632b774b1316aac285f118e3d5e287b3",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 4381884627089348317
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "4381884627089348317",
+        "name": "MeleeAttack",
+        "cl": "MeleeAttack",
+        "ns": "Torappu.Battle.Abilities",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": 7583589924293724330
+        },
+        "common:349": 1,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": 4381884627089348317
+        },
+        "common:427": "",
+        "_selector": {
+          "m_FileID": 0,
+          "m_PathID": 4951874041671862442
+        },
+        "_metadata": {
+          "namedAsAlias": "",
+          "blackboardPrefix": ""
+        },
+        "_overrideSignalId": "",
+        "_interruptAbilityOnDetach": 0,
+        "_attachPassiveBuffsOnDummy": 1,
+        "_ignoreIfOwnerDead": 0,
+        "_forceAsDmgOrHealAbility": 0,
+        "_waitForAttackEvent": 1,
+        "_interuptIfTargetDead": 0,
+        "_resetCdStrategy": 1,
+        "_selectTargetSource": 3,
+        "_selectTargetTiming": 1,
+        "_timeMode": 0,
+        "_alwaysIncludeTarget": 1,
+        "_allowNoTarget": 1,
+        "_animKey": "Attack",
+        "_endAnimKey": "Idle",
+        "_downAnimKey": "",
+        "_downEndAnimKey": "",
+        "_upAnimKey": "",
+        "_upEndAnimKey": "",
+        "_cooldown": 0.0,
+        "_cooldownKey": "duration",
+        "_preDelay": 0.0,
+        "_escapeTime": 0.0,
+        "_faceToTarget": 0,
+        "_faceToDefault": 0,
+        "_faceToFront": 0,
+        "_faceToFirstCastTarget": 0,
+        "_checkFaceToFirstCastTargetDownAttack": 0,
+        "_forceFaceToDirection": 0,
+        "_activeBuffs": {
+          "Array": []
+        },
+        "_maxAnimScale": 1.5,
+        "_onlyPlayEndAnimWhenIsLastAbility": 0,
+        "_ignorePalsyInterrupt": 0,
+        "_affectedBySlowDown": 0,
+        "_atkScale": 1.0,
+        "_atkScaleKey": "atk_scale",
+        "_attackType": 1,
+        "_elementDamageType": 0,
+        "_epDamageRatio": 0.0,
+        "_useDynamicAttackType": 0,
+        "_deliveryParaWhenReplaceActionNode": 0,
+        "_damageType": 2,
+        "_extraDamageType": 0,
+        "_alwaysPutIncludeTargetFirst": 0
+      }
+    },
+    {
+      "bundle": "charpack/char_121_lava.ab",
+      "file": "CAB-efb2d7c014004ec26eca638582b6854d",
+      "pathId": "-699929321614587734",
+      "hierarchy": [
+        "char_121_lava",
+        "Modes",
+        "Default",
+        "Body",
+        "Attack",
+        "Selector"
+      ],
+      "objectSha256": "a1312c3c53f05efaa39fc301a1c7432f96b08d7dc190e4dc0ba889ce72f48742",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 4158870186494526771
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "4158870186494526771",
+        "name": "PhysicsRange",
+        "cl": "PhysicsRange",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": -1427255716474435414
+        },
+        "common:349": 1,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": 4158870186494526771
+        },
+        "common:427": "",
+        "_useBlackboardRangeId": 0,
+        "_extendable": 0
+      }
+    },
+    {
+      "bundle": "charpack/char_121_lava.ab",
+      "file": "CAB-efb2d7c014004ec26eca638582b6854d",
+      "pathId": "-186682069142386518",
+      "hierarchy": [
+        "char_121_lava",
+        "Others",
+        "Shadow"
+      ],
+      "objectSha256": "fa65c2a21a7fdf24bd22e6b90a58967cf1cab47f5e4aa9d944e8fb55e6e1171e",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -2368896203154538901
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-2368896203154538901",
+        "name": "ShadowController",
+        "cl": "ShadowController",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": -2786633313250948950
+        },
+        "common:349": 1,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": -2368896203154538901
+        },
+        "common:427": "",
+        "_autoAttachToGround": 0,
+        "_attachOffset": 0.10000000149011612,
+        "_simplyUseTileHeight": 0,
+        "_enableAdvanced": 0,
+        "_alwaysUseSpineOffset": 0,
+        "_sprite": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_graphic": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_faceSwitcher": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_boneToFollow": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_specialInit": 0,
+        "_simpleFollow": 0,
+        "_easeType": 1
+      }
+    },
+    {
+      "bundle": "charpack/char_121_lava.ab",
+      "file": "CAB-efb2d7c014004ec26eca638582b6854d",
+      "pathId": "4951874041671862442",
+      "hierarchy": [
+        "char_121_lava",
+        "Modes",
+        "Default",
+        "Body",
+        "Attack",
+        "Selector"
+      ],
+      "objectSha256": "204b1a316da332ce7855a449df198b955e17f801fc0f703fea77d45a50f02b31",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 7080728813803358465
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "7080728813803358465",
+        "name": "AdvancedSelector",
+        "cl": "AdvancedSelector",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": -1427255716474435414
+        },
+        "common:349": 1,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": 7080728813803358465
+        },
+        "common:427": "",
+        "_targetSide": 2,
+        "_targetMotion": 3,
+        "_targetCategory": 1,
+        "_postFilter": 0,
+        "_ignoreTargetFree": 0,
+        "_onlyIgnoreSomeOfTargetFreeCase": 0,
+        "_abnormalFlag": 29,
+        "_abnormalCombo": 2,
+        "_ignoreAllyTargetFree": 0,
+        "_ignoreHealFree": 0,
+        "_ignoreMotionMode": 0,
+        "_forceIgnoreCamouflage": 0,
+        "_needProfessionMask": 0,
+        "_professionMask": 0,
+        "_excludeSomeAbnormalFlags": 0,
+        "_excludeAbnormalFlag": 46,
+        "_limitTargetNum": 0,
+        "_maxTargetKey": "max_target",
+        "_maxTargetExtraKey": "",
+        "_maxNum": 1,
+        "_excludeOwner": 0,
+        "_sortByTauntAtLast": 0,
+        "_ignoreHitRange": 0,
+        "_checkUnitType": 0,
+        "_unitTypeMask": 0,
+        "_abilityInputTargetAsSortSource": 0,
+        "_targetOptionHookedKeys": {
+          "Array": []
+        }
+      }
+    },
+    {
+      "bundle": "charpack/char_121_lava.ab",
+      "file": "CAB-efb2d7c014004ec26eca638582b6854d",
+      "pathId": "5363932608463521962",
+      "hierarchy": [
+        "char_121_lava",
+        "Modes",
+        "Default",
+        "Body",
+        "Attack"
+      ],
+      "objectSha256": "0c155ceea9066775c84e07e9259e4d082a29281d2eeebad5cf5f961102b580a4",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -550693537895634864
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-550693537895634864",
+        "name": "UberEffectEmitter",
+        "cl": "UberEffectEmitter",
+        "ns": "Torappu.Battle.Abilities",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": 7583589924293724330
+        },
+        "common:349": 1,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": -550693537895634864
+        },
+        "common:427": "",
+        "_hitEffects": {
+          "Array": [
+            {
+              "_directionType": 0,
+              "_effects": {
+                "Array": [
+                  "common_firemagic_hit_01",
+                  "",
+                  "",
+                  ""
+                ]
+              },
+              "_oneshot": 1,
+              "_endEvent": 3,
+              "_onlyOnce": 0,
+              "_useFourDirectionalFace": 0,
+              "_useOwnerToTargetDirection": 0,
+              "_playIfNotInputTarget": 0,
+              "_playOnlyIfInputTarget": 0
+            }
+          ]
+        },
+        "_castEffects": {
+          "Array": []
+        },
+        "_attachEffects": {
+          "Array": []
+        },
+        "_inputTargetEffects": {
+          "Array": [
+            {
+              "_directionType": 0,
+              "_effects": {
+                "Array": [
+                  "lava_attack_01_hit",
+                  "",
+                  "",
+                  ""
+                ]
+              },
+              "_oneshot": 1,
+              "_startEvent": 4,
+              "_endEvent": 3,
+              "_onlyOnce": 1,
+              "_useFourDirectionalFace": 0,
+              "_delayIfFirstAttack": 0.0,
+              "_hookEffectAfterFirstAttack": "",
+              "_useInputPos": 1
+            }
+          ]
+        },
+        "_castTargetEffects": {
+          "Array": []
+        },
+        "_convertCastEndToAttachFinish": 0,
+        "_recalculatePlaybackSpeed": 0,
+        "_preDelayFactor": 0.0
+      }
+    },
+    {
+      "bundle": "charpack/char_121_lava.ab",
+      "file": "CAB-efb2d7c014004ec26eca638582b6854d",
+      "pathId": "5631945501800220842",
+      "hierarchy": [
+        "char_121_lava",
+        "Talents",
+        "1"
+      ],
+      "objectSha256": "063288b6899c49a3bbe209bf9303d316ad7aec8b12195a7854ae5a0a668fee1c",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 3800760148018415462
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "3800760148018415462",
+        "name": "PassiveBuffAbility",
+        "cl": "PassiveBuffAbility",
+        "ns": "Torappu.Battle.Abilities",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": 4808111661209176234
+        },
+        "common:349": 1,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": 3800760148018415462
+        },
+        "common:427": "",
+        "_selector": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_metadata": {
+          "namedAsAlias": "",
+          "blackboardPrefix": ""
+        },
+        "_overrideSignalId": "",
+        "_interruptAbilityOnDetach": 0,
+        "_attachPassiveBuffsOnDummy": 1,
+        "_ignoreIfOwnerDead": 0,
+        "_forceAsDmgOrHealAbility": 0,
+        "_buffs": {
+          "Array": [
+            {
+              "attributes": {
+                "abnormalFlags": {
+                  "Array": []
+                },
+                "abnormalImmunes": {
+                  "Array": []
+                },
+                "abnormalAntis": {
+                  "Array": []
+                },
+                "abnormalCombos": {
+                  "Array": []
+                },
+                "abnormalComboImmunes": {
+                  "Array": []
+                },
+                "attributeModifiers": {
+                  "Array": []
+                }
+              },
+              "buffKey": "lava_t_1",
+              "loadFromDB": 0,
+              "isDurableBuff": 0,
+              "isDamageMissable": 0,
+              "isSilenceable": 0,
+              "isStunnable": 0,
+              "isFreezable": 0,
+              "isLevitatable": 0,
+              "isGroundBoundable": 0,
+              "statusResistable": 2,
+              "templateKey": "modify_sp[born]",
+              "disableOverride": 1,
+              "overrideKey": "",
+              "overrideType": 0,
+              "maxStackCnt": 1,
+              "refreshRemainingTimeWhenStackMax": 0,
+              "clearAllStackCntWhenTimeUp": 0,
+              "maxValidStackCnt": -1,
+              "independentCharacterSource": 0,
+              "overrideEffectKey": "",
+              "overrideOnEventPriority": 0,
+              "onEventPriority": 0,
+              "audioSignal": "",
+              "lifeTimeType": 0,
+              "takeSnapshotWhenExtend": 0,
+              "durationKey": "",
+              "remainingTimeKey": "",
+              "lifeTime": 0.0,
+              "triggerLifeType": 0,
+              "triggerCnt": 0,
+              "triggerInterval": -1.0,
+              "waitFirstTriggerInterval": 1,
+              "firstTriggerInterval": -1.0,
+              "priority": -1,
+              "priorityBBKeys": {
+                "Array": []
+              },
+              "stripBlackboardParamsWithBuffKey": 0,
+              "blackboard": {
+                "Array": []
+              },
+              "enableInitDirectionFromSource": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "bundle": "charpack/char_121_lava.ab",
+      "file": "CAB-efb2d7c014004ec26eca638582b6854d",
+      "pathId": "5970176033637419178",
+      "hierarchy": [
+        "char_121_lava"
+      ],
+      "objectSha256": "42622af9a1a11dc089f966b73d3d0f1bb71a43145eb53721c3531eafe052e045",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -1297314214590689040
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-1297314214590689040",
+        "name": "Character",
+        "cl": "Character",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": -6417330797341554518
+        },
+        "common:349": 1,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": -1297314214590689040
+        },
+        "common:427": "",
+        "_animator": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_modes": {
+          "Array": [
+            {
+              "m_FileID": 0,
+              "m_PathID": -7586745684998272854
+            }
+          ]
+        },
+        "_commonAbilities": {
+          "Array": []
+        },
+        "_uiMountPoint": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_effectTransform": {
+          "m_FileID": 0,
+          "m_PathID": 5322785203309398186
+        },
+        "_shadow": {
+          "m_FileID": 0,
+          "m_PathID": -186682069142386518
+        },
+        "_defaultBodyColor": {
+          "r": 1.0,
+          "g": 1.0,
+          "b": 1.0,
+          "a": 1.0
+        },
+        "_hideShadowOnRecycle": 0,
+        "_overrideGraphicBound": -1.0,
+        "_hudPluginReplacePairs": {
+          "Array": []
+        },
+        "_showDebugName": 0,
+        "_skinHolder": {
+          "m_FileID": 0,
+          "m_PathID": 7788925607367100586
+        },
+        "_motionMode": 0,
+        "_blockMode": 0,
+        "_ignoreBlockMode": 0,
+        "_isFixedRotation": 0,
+        "_occupiedRemainingCharacterCnt": 1,
+        "_useRealBornTimeFromAnim": 0,
+        "_buildCondition": {
+          "buildableType": 2,
+          "isTryingOverlapCharacater": 0,
+          "needSpecifyDirection": 1,
+          "limitByHostAttackRange": 0,
+          "limitByHostAbilityRange": 0,
+          "canNotBuildInHostAttackRange": 0,
+          "abilityName": "",
+          "tileKey": "",
+          "ignoreBuildableTypeTileTypes": 0,
+          "extraBuildConditionArray": {
+            "SerializedState": "null",
+            "SerializedObjectReferences": {
+              "Array": []
+            }
+          },
+          "advancedBuildableMask": 1,
+          "overlapOptions": {
+            "_verifySourceId": 0,
+            "_verifySourceIds": {
+              "Array": []
+            },
+            "_verifySourceProfession": 0,
+            "_verifySourceProfessions": 0,
+            "_isAllConditionOR": 1,
+            "_overlapPriority": 0,
+            "_changeTargetGraphicColor": 0,
+            "_excludeSourceId": 0,
+            "_excludeSourceIds": {
+              "Array": []
+            },
+            "_verifySourceTargetTokenRelationship": 0
+          },
+          "excludeNoTargetTile": 0,
+          "extraLocateRange": "",
+          "checkManuallyBuildableType": 0,
+          "manuallyBuildableType": 0,
+          "_excludeOccupiedByWalkEnemy": 0,
+          "allowWalkEnemyInHostRange": 0,
+          "_checkUpdateBuildable": 0
+        },
+        "_traitAbility": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_withdrawCostRecoverRatio": 0.5,
+        "_maxWithdrawCostRatioOfRawCost": 1.0,
+        "_directionTransform": {
+          "m_FileID": 0,
+          "m_PathID": -5167465518275278678
+        },
+        "_directionIndicator": {
+          "m_FileID": 0,
+          "m_PathID": -6312678962544293718
+        },
+        "_startEffect": "",
+        "_deadEffect": "",
+        "_playStartVocal": 1,
+        "_showDeadTweenColor": 1,
+        "_useSpecificDeadAnim": 0,
+        "_onlyPlayStartEffectOnce": 0,
+        "_dontMoveCameraWhenFocus": 0,
+        "_disableCharInfoPanel": 0,
+        "_disableRotateWhenDead": 0,
+        "_disableSetDirectionWhenDummy": 0,
+        "_clearProjectileWhenDead": 0,
+        "_useIdForAudioSignalMask": 0,
+        "_skipBornAudioOnMoveLikeRespawnSelf": 0,
+        "_preprocessData": 0,
+        "_disableClickCharacterInfo": 0,
+        "_skillUiFollowHeadPint": 0,
+        "m_overrideBornTime": -1.0
+      }
+    },
+    {
+      "bundle": "charpack/char_121_lava.ab",
+      "file": "CAB-efb2d7c014004ec26eca638582b6854d",
+      "pathId": "7964110080954681514",
+      "hierarchy": [
+        "char_121_lava",
+        "Talents",
+        "1"
+      ],
+      "objectSha256": "bd5b17015a2666373d8e43de0b2980a75a72523f85e6f1ae0652e26176d60700",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -2726233351382997147
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-2726233351382997147",
+        "name": "Talent",
+        "cl": "Talent",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": 4808111661209176234
+        },
+        "common:349": 1,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": -2726233351382997147
+        },
+        "common:427": "",
+        "_overwriteTalentKey": "",
+        "_overwriteParentRangeId": 0,
+        "_checkValidBySkillIndex": {
+          "Array": []
+        },
+        "_attachInDummy": 0,
+        "_defaultModeIndex": 1,
+        "_attackBlackboardModeIndex": 1,
+        "_extraAttackBlackboardModeIndices": {
+          "Array": []
+        },
+        "_overrideDefaultRangeId": 0,
+        "_applyTalentScale": 0,
+        "_influenceSkillBlackboard": 0,
+        "_fromRawDataToSkill": 0,
+        "_applyTalentRange": 0,
+        "_applyBlackboardBySkill": 0,
+        "_applyStrBlackboardBySkill": 0,
+        "_writeRangeIdToProjectileBlackboard": 0,
+        "_affectWhenNotRootTalent": 0,
+        "_scaleCertainKeyFlag": 0,
+        "_scaleCertainKeyList": {
+          "Array": []
+        },
+        "_scaleCertainMode": 0,
+        "_scaleModeIndices": {
+          "Array": []
+        }
+      }
+    },
+    {
+      "bundle": "charpack/char_282_catap.ab",
+      "file": "CAB-03e349ab35a5624b72ceed4f831bdf8e",
+      "pathId": "-7558812809064738589",
+      "hierarchy": [
+        "char_282_catap",
+        "Modes",
+        "Default"
+      ],
+      "objectSha256": "9be1df26486ae06bbbb94de5c7660d6bf45cf9721068d59feedc7c3258e944ca",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 5390319429299248724
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "5390319429299248724",
+        "name": "UnitMode",
+        "cl": "UnitMode",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": -6017639270936669981
+        },
+        "common:349": 1,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": 5390319429299248724
+        },
+        "common:427": "",
+        "_bodyTransform": {
+          "m_FileID": 0,
+          "m_PathID": -3915116924448665373
+        },
+        "_animatorHooker": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_overrideStartEffect": "",
+        "_overrideDeadEffect": "",
+        "_combat": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_attack": {
+          "m_FileID": 0,
+          "m_PathID": 6924529403159253219
+        },
+        "_attackTrigger": {
+          "m_FileID": 0,
+          "m_PathID": 8802377701367288035
+        },
+        "_hideUIAttackRange": 0,
+        "_updateAttackRangeExtendByAttributeDirty": 0,
+        "_rangeToShow": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_extraRangesToShow": {
+          "Array": []
+        },
+        "_generalAbilities": {
+          "Array": []
+        },
+        "_addIndexToSignalId": 0,
+        "_includeIndexZero": 0,
+        "_alwaysHideHp": {
+          "isDefined": 0,
+          "value": 0
+        },
+        "_alwaysHideSp": {
+          "isDefined": 0,
+          "value": 0
+        }
+      }
+    },
+    {
+      "bundle": "charpack/char_282_catap.ab",
+      "file": "CAB-03e349ab35a5624b72ceed4f831bdf8e",
+      "pathId": "-7552991004901568285",
+      "hierarchy": [
+        "char_282_catap",
+        "Talents",
+        "1"
+      ],
+      "objectSha256": "310d61a6395ec6d7637879e864ec69faf219f913c45daa8aa7340c2aa15bd3e6",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 4865767822664548221
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "4865767822664548221",
+        "name": "EmptyAbility",
+        "cl": "EmptyAbility",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": -3814117776289230621
+        },
+        "common:349": 1,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": 4865767822664548221
+        },
+        "common:427": "",
+        "_selector": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_metadata": {
+          "namedAsAlias": "",
+          "blackboardPrefix": ""
+        },
+        "_overrideSignalId": "",
+        "_interruptAbilityOnDetach": 0,
+        "_attachPassiveBuffsOnDummy": 1,
+        "_ignoreIfOwnerDead": 0,
+        "_forceAsDmgOrHealAbility": 0
+      }
+    },
+    {
+      "bundle": "charpack/char_282_catap.ab",
+      "file": "CAB-03e349ab35a5624b72ceed4f831bdf8e",
+      "pathId": "-7410779680285060893",
+      "hierarchy": [
+        "char_282_catap",
+        "Modes",
+        "Default",
+        "Body",
+        "Attack",
+        "Trigger"
+      ],
+      "objectSha256": "88532d3e797e80a9c4a639e78f221c462736b788715ca2035da1a5f95bd2dffe",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 7080728813803358465
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "7080728813803358465",
+        "name": "AdvancedSelector",
+        "cl": "AdvancedSelector",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": -3529496562718994205
+        },
+        "common:349": 1,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": 7080728813803358465
+        },
+        "common:427": "",
+        "_targetSide": 2,
+        "_targetMotion": 3,
+        "_targetCategory": 1,
+        "_postFilter": 4,
+        "_ignoreTargetFree": 0,
+        "_onlyIgnoreSomeOfTargetFreeCase": 0,
+        "_abnormalFlag": 29,
+        "_abnormalCombo": 2,
+        "_ignoreAllyTargetFree": 0,
+        "_ignoreHealFree": 0,
+        "_ignoreMotionMode": 0,
+        "_forceIgnoreCamouflage": 0,
+        "_needProfessionMask": 0,
+        "_professionMask": 0,
+        "_excludeSomeAbnormalFlags": 0,
+        "_excludeAbnormalFlag": 46,
+        "_limitTargetNum": 1,
+        "_maxTargetKey": "max_target",
+        "_maxTargetExtraKey": "",
+        "_maxNum": 1,
+        "_excludeOwner": 0,
+        "_sortByTauntAtLast": 0,
+        "_ignoreHitRange": 0,
+        "_checkUnitType": 0,
+        "_unitTypeMask": 0,
+        "_abilityInputTargetAsSortSource": 0,
+        "_targetOptionHookedKeys": {
+          "Array": []
+        }
+      }
+    },
+    {
+      "bundle": "charpack/char_282_catap.ab",
+      "file": "CAB-03e349ab35a5624b72ceed4f831bdf8e",
+      "pathId": "-7238831419135684381",
+      "hierarchy": [
+        "char_282_catap",
+        "Modes",
+        "S2",
+        "Body",
+        "Attack",
+        "Trigger"
+      ],
+      "objectSha256": "08129142f630e8871f7c513b733b54c50600f4b9359279f0b8c7909585935054",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -2891200616113119906
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-2891200616113119906",
+        "name": "AutoLoadBoxRange",
+        "cl": "AutoLoadBoxRange",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": 5091808950041710819
+        },
+        "common:349": 1,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": -2891200616113119906
+        },
+        "common:427": "",
+        "_useBlackboardRangeId": 0,
+        "_extendable": 0
+      }
+    },
+    {
+      "bundle": "charpack/char_282_catap.ab",
+      "file": "CAB-03e349ab35a5624b72ceed4f831bdf8e",
+      "pathId": "-6590638824951246621",
+      "hierarchy": [
+        "char_282_catap"
+      ],
+      "objectSha256": "b2f6d8788cd28b66bbb0d15cb9d44f3d3bbe4638778048eefa6ec017ff7de902",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -1297314214590689040
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-1297314214590689040",
+        "name": "Character",
+        "cl": "Character",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": 3944531576825712867
+        },
+        "common:349": 1,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": -1297314214590689040
+        },
+        "common:427": "",
+        "_animator": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_modes": {
+          "Array": [
+            {
+              "m_FileID": 0,
+              "m_PathID": -7558812809064738589
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 5050485710374113507
+            }
+          ]
+        },
+        "_commonAbilities": {
+          "Array": []
+        },
+        "_uiMountPoint": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_effectTransform": {
+          "m_FileID": 0,
+          "m_PathID": -6037955938112630557
+        },
+        "_shadow": {
+          "m_FileID": 0,
+          "m_PathID": 2755595945531805923
+        },
+        "_defaultBodyColor": {
+          "r": 1.0,
+          "g": 1.0,
+          "b": 1.0,
+          "a": 1.0
+        },
+        "_hideShadowOnRecycle": 0,
+        "_overrideGraphicBound": -1.0,
+        "_hudPluginReplacePairs": {
+          "Array": []
+        },
+        "_showDebugName": 0,
+        "_skinHolder": {
+          "m_FileID": 0,
+          "m_PathID": -8695281837588868893
+        },
+        "_motionMode": 0,
+        "_blockMode": 0,
+        "_ignoreBlockMode": 0,
+        "_isFixedRotation": 0,
+        "_occupiedRemainingCharacterCnt": 1,
+        "_useRealBornTimeFromAnim": 0,
+        "_buildCondition": {
+          "buildableType": 2,
+          "isTryingOverlapCharacater": 0,
+          "needSpecifyDirection": 1,
+          "limitByHostAttackRange": 0,
+          "limitByHostAbilityRange": 0,
+          "canNotBuildInHostAttackRange": 0,
+          "abilityName": "",
+          "tileKey": "",
+          "ignoreBuildableTypeTileTypes": 0,
+          "extraBuildConditionArray": {
+            "SerializedState": "null",
+            "SerializedObjectReferences": {
+              "Array": []
+            }
+          },
+          "advancedBuildableMask": 1,
+          "overlapOptions": {
+            "_verifySourceId": 0,
+            "_verifySourceIds": {
+              "Array": []
+            },
+            "_verifySourceProfession": 0,
+            "_verifySourceProfessions": 0,
+            "_isAllConditionOR": 1,
+            "_overlapPriority": 0,
+            "_changeTargetGraphicColor": 0,
+            "_excludeSourceId": 0,
+            "_excludeSourceIds": {
+              "Array": []
+            },
+            "_verifySourceTargetTokenRelationship": 0
+          },
+          "excludeNoTargetTile": 0,
+          "extraLocateRange": "",
+          "checkManuallyBuildableType": 0,
+          "manuallyBuildableType": 0,
+          "_excludeOccupiedByWalkEnemy": 0,
+          "allowWalkEnemyInHostRange": 0,
+          "_checkUpdateBuildable": 0
+        },
+        "_traitAbility": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_withdrawCostRecoverRatio": 0.5,
+        "_maxWithdrawCostRatioOfRawCost": 1.0,
+        "_directionTransform": {
+          "m_FileID": 0,
+          "m_PathID": -9199486180234096413
+        },
+        "_directionIndicator": {
+          "m_FileID": 0,
+          "m_PathID": -7052372812406910749
+        },
+        "_startEffect": "",
+        "_deadEffect": "",
+        "_playStartVocal": 1,
+        "_showDeadTweenColor": 1,
+        "_useSpecificDeadAnim": 0,
+        "_onlyPlayStartEffectOnce": 0,
+        "_dontMoveCameraWhenFocus": 0,
+        "_disableCharInfoPanel": 0,
+        "_disableRotateWhenDead": 0,
+        "_disableSetDirectionWhenDummy": 0,
+        "_clearProjectileWhenDead": 0,
+        "_useIdForAudioSignalMask": 0,
+        "_skipBornAudioOnMoveLikeRespawnSelf": 0,
+        "_preprocessData": 0,
+        "_disableClickCharacterInfo": 0,
+        "_skillUiFollowHeadPint": 0,
+        "m_overrideBornTime": -1.0
+      }
+    },
+    {
+      "bundle": "charpack/char_282_catap.ab",
+      "file": "CAB-03e349ab35a5624b72ceed4f831bdf8e",
+      "pathId": "-5513010748259364637",
+      "hierarchy": [
+        "char_282_catap",
+        "Talents",
+        "1"
+      ],
+      "objectSha256": "dff398035d4c8297f399e98ba5c7d562468e326f15ba7f657992188939351d1b",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 334723273463143948
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "334723273463143948",
+        "name": "DeckTalentToAddCardCost",
+        "cl": "DeckTalentToAddCardCost",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": -3814117776289230621
+        },
+        "common:349": 1,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": 334723273463143948
+        },
+        "common:427": "",
+        "_overwriteTalentKey": "",
+        "_overwriteParentRangeId": 0,
+        "_checkValidBySkillIndex": {
+          "Array": []
+        },
+        "_selector": {
+          "categoryMask": 0,
+          "filterTag": "",
+          "subprofessionTag": "",
+          "onlySelectMe": 1,
+          "excludeMe": 0,
+          "mapTags": {
+            "Array": []
+          },
+          "enableOverride": 0,
+          "excludeNotInHand": 0,
+          "excludeNotShowInCardList": 0,
+          "excludeHiddenByCardState": 0
+        }
+      }
+    },
+    {
+      "bundle": "charpack/char_282_catap.ab",
+      "file": "CAB-03e349ab35a5624b72ceed4f831bdf8e",
+      "pathId": "-3602409499564764957",
+      "hierarchy": [
+        "char_282_catap",
+        "Modes",
+        "Default",
+        "Body",
+        "Attack",
+        "Trigger"
+      ],
+      "objectSha256": "cfecc3063d8c62af66a792f3889c49b64da468cb3f3ae1a7d2dc457b0ba21915",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -2891200616113119906
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-2891200616113119906",
+        "name": "AutoLoadBoxRange",
+        "cl": "AutoLoadBoxRange",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": -3529496562718994205
+        },
+        "common:349": 1,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": -2891200616113119906
+        },
+        "common:427": "",
+        "_useBlackboardRangeId": 0,
+        "_extendable": 0
+      }
+    },
+    {
+      "bundle": "charpack/char_282_catap.ab",
+      "file": "CAB-03e349ab35a5624b72ceed4f831bdf8e",
+      "pathId": "-2677738894394388253",
+      "hierarchy": [
+        "char_282_catap",
+        "Modes",
+        "S2",
+        "Body",
+        "Attack",
+        "Trigger"
+      ],
+      "objectSha256": "460335ccca5266f3e969ba15fd74f03e0c6a0bd01dcee550c4bce9a2e938e375",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 7080728813803358465
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "7080728813803358465",
+        "name": "AdvancedSelector",
+        "cl": "AdvancedSelector",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": 5091808950041710819
+        },
+        "common:349": 1,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": 7080728813803358465
+        },
+        "common:427": "",
+        "_targetSide": 2,
+        "_targetMotion": 3,
+        "_targetCategory": 1,
+        "_postFilter": 4,
+        "_ignoreTargetFree": 0,
+        "_onlyIgnoreSomeOfTargetFreeCase": 0,
+        "_abnormalFlag": 29,
+        "_abnormalCombo": 2,
+        "_ignoreAllyTargetFree": 0,
+        "_ignoreHealFree": 0,
+        "_ignoreMotionMode": 0,
+        "_forceIgnoreCamouflage": 0,
+        "_needProfessionMask": 0,
+        "_professionMask": 0,
+        "_excludeSomeAbnormalFlags": 0,
+        "_excludeAbnormalFlag": 46,
+        "_limitTargetNum": 1,
+        "_maxTargetKey": "max_target",
+        "_maxTargetExtraKey": "",
+        "_maxNum": 1,
+        "_excludeOwner": 0,
+        "_sortByTauntAtLast": 0,
+        "_ignoreHitRange": 0,
+        "_checkUnitType": 0,
+        "_unitTypeMask": 0,
+        "_abilityInputTargetAsSortSource": 0,
+        "_targetOptionHookedKeys": {
+          "Array": []
+        }
+      }
+    },
+    {
+      "bundle": "charpack/char_282_catap.ab",
+      "file": "CAB-03e349ab35a5624b72ceed4f831bdf8e",
+      "pathId": "2755595945531805923",
+      "hierarchy": [
+        "char_282_catap",
+        "Others",
+        "Shadow"
+      ],
+      "objectSha256": "e1908db91d10b14c345283f899379857616b4fb4ed273e54fee85c8eb45e0003",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -2368896203154538901
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-2368896203154538901",
+        "name": "ShadowController",
+        "cl": "ShadowController",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": 3812113089774817507
+        },
+        "common:349": 1,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": -2368896203154538901
+        },
+        "common:427": "",
+        "_autoAttachToGround": 0,
+        "_attachOffset": 0.10000000149011612,
+        "_simplyUseTileHeight": 0,
+        "_enableAdvanced": 0,
+        "_alwaysUseSpineOffset": 0,
+        "_sprite": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_graphic": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_faceSwitcher": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_boneToFollow": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_specialInit": 0,
+        "_simpleFollow": 0,
+        "_easeType": 1
+      }
+    },
+    {
+      "bundle": "charpack/char_282_catap.ab",
+      "file": "CAB-03e349ab35a5624b72ceed4f831bdf8e",
+      "pathId": "5050485710374113507",
+      "hierarchy": [
+        "char_282_catap",
+        "Modes",
+        "S2"
+      ],
+      "objectSha256": "12fa3571fb37d3acc266eae2ff9c1a0fb50560ad79f79a35f2d73d1a8a62faf0",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 5390319429299248724
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "5390319429299248724",
+        "name": "UnitMode",
+        "cl": "UnitMode",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": -6897048929029779229
+        },
+        "common:349": 1,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": 5390319429299248724
+        },
+        "common:427": "",
+        "_bodyTransform": {
+          "m_FileID": 0,
+          "m_PathID": -5678738812862590749
+        },
+        "_animatorHooker": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_overrideStartEffect": "",
+        "_overrideDeadEffect": "",
+        "_combat": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_attack": {
+          "m_FileID": 0,
+          "m_PathID": 8821200858721226979
+        },
+        "_attackTrigger": {
+          "m_FileID": 0,
+          "m_PathID": 8816700431279919331
+        },
+        "_hideUIAttackRange": 0,
+        "_updateAttackRangeExtendByAttributeDirty": 0,
+        "_rangeToShow": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_extraRangesToShow": {
+          "Array": []
+        },
+        "_generalAbilities": {
+          "Array": []
+        },
+        "_addIndexToSignalId": 0,
+        "_includeIndexZero": 0,
+        "_alwaysHideHp": {
+          "isDefined": 0,
+          "value": 0
+        },
+        "_alwaysHideSp": {
+          "isDefined": 0,
+          "value": 0
+        }
+      }
+    },
+    {
+      "bundle": "charpack/char_282_catap.ab",
+      "file": "CAB-03e349ab35a5624b72ceed4f831bdf8e",
+      "pathId": "6924529403159253219",
+      "hierarchy": [
+        "char_282_catap",
+        "Modes",
+        "Default",
+        "Body",
+        "Attack"
+      ],
+      "objectSha256": "8337a00ebfe61dcf316b4bd5e5928de0e486738eb2d2864733b44bc188a6b808",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 4156651312234227407
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "4156651312234227407",
+        "name": "RangedAttack",
+        "cl": "RangedAttack",
+        "ns": "Torappu.Battle.Abilities",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": -5562302374916910877
+        },
+        "common:349": 1,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": 4156651312234227407
+        },
+        "common:427": "",
+        "_selector": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_metadata": {
+          "namedAsAlias": "",
+          "blackboardPrefix": ""
+        },
+        "_overrideSignalId": "",
+        "_interruptAbilityOnDetach": 0,
+        "_attachPassiveBuffsOnDummy": 1,
+        "_ignoreIfOwnerDead": 0,
+        "_forceAsDmgOrHealAbility": 0,
+        "_waitForAttackEvent": 1,
+        "_interuptIfTargetDead": 0,
+        "_resetCdStrategy": 1,
+        "_selectTargetSource": 2,
+        "_selectTargetTiming": 0,
+        "_timeMode": 0,
+        "_alwaysIncludeTarget": 1,
+        "_allowNoTarget": 0,
+        "_animKey": "Attack",
+        "_endAnimKey": "Idle",
+        "_downAnimKey": "",
+        "_downEndAnimKey": "",
+        "_upAnimKey": "",
+        "_upEndAnimKey": "",
+        "_cooldown": 0.0,
+        "_cooldownKey": "duration",
+        "_preDelay": 0.0,
+        "_escapeTime": 0.0,
+        "_faceToTarget": 1,
+        "_faceToDefault": 0,
+        "_faceToFront": 0,
+        "_faceToFirstCastTarget": 0,
+        "_checkFaceToFirstCastTargetDownAttack": 0,
+        "_forceFaceToDirection": 0,
+        "_activeBuffs": {
+          "Array": []
+        },
+        "_maxAnimScale": 1.0,
+        "_onlyPlayEndAnimWhenIsLastAbility": 0,
+        "_ignorePalsyInterrupt": 0,
+        "_affectedBySlowDown": 0,
+        "_atkScale": 1.0,
+        "_atkScaleKey": "atk_scale",
+        "_attackType": 1,
+        "_elementDamageType": 0,
+        "_epDamageRatio": 0.0,
+        "_useDynamicAttackType": 0,
+        "_deliveryParaWhenReplaceActionNode": 0,
+        "_projectileKey": "projectile_catap",
+        "_mountPointType": 2,
+        "_useMountGroup": 0,
+        "_mountGroup": {
+          "loopType": 0,
+          "mountPoints": {
+            "Array": []
+          }
+        },
+        "_damageType": 1,
+        "_waitForProjectileInvalid": 0,
+        "_notClearProjectileWhenCastEnd": 0,
+        "_fireAttackFinishWhenProjectileInvalid": 0,
+        "_minPostDelayWhenProjectileInvalid": 0.0,
+        "_waitForAnimEndWhenProjectileInvalid": 0,
+        "_projectileDestination": 0,
+        "_extraDamageType": 0,
+        "_emitToInputPosWhenTargetIsInvalid": 0,
+        "_emitToInputRootTileWhenTargetIsInvalid": 0,
+        "_useCachedAtkOnly": 0,
+        "_transferSource": 0,
+        "_extraProjectileKeys": {
+          "Array": []
+        },
+        "_fireCreateProjectileEvent": 0
+      }
+    },
+    {
+      "bundle": "charpack/char_282_catap.ab",
+      "file": "CAB-03e349ab35a5624b72ceed4f831bdf8e",
+      "pathId": "8802377701367288035",
+      "hierarchy": [
+        "char_282_catap",
+        "Modes",
+        "Default",
+        "Body",
+        "Attack",
+        "Trigger"
+      ],
+      "objectSha256": "4cafd06b0c70c0f26130531ccfaa40590a6bdd232c05851d8812e2f16ef43f38",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 8607874384982393801
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "8607874384982393801",
+        "name": "SelectorTrigger",
+        "cl": "SelectorTrigger",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": -3529496562718994205
+        },
+        "common:349": 1,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": 8607874384982393801
+        },
+        "common:427": "",
+        "_keepTarget": 0,
+        "_minTargetNum": 1,
+        "_overrideSearchTargetTick": -1
+      }
+    },
+    {
+      "bundle": "charpack/char_282_catap.ab",
+      "file": "CAB-03e349ab35a5624b72ceed4f831bdf8e",
+      "pathId": "8816700431279919331",
+      "hierarchy": [
+        "char_282_catap",
+        "Modes",
+        "S2",
+        "Body",
+        "Attack",
+        "Trigger"
+      ],
+      "objectSha256": "e55940ff37eb0c01c4fe30eaf6d68fed24f5ed5fbda3915e4c2105ef10105e5e",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 8607874384982393801
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "8607874384982393801",
+        "name": "SelectorTrigger",
+        "cl": "SelectorTrigger",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": 5091808950041710819
+        },
+        "common:349": 1,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": 8607874384982393801
+        },
+        "common:427": "",
+        "_keepTarget": 0,
+        "_minTargetNum": 1,
+        "_overrideSearchTargetTick": -1
+      }
+    },
+    {
+      "bundle": "charpack/char_282_catap.ab",
+      "file": "CAB-03e349ab35a5624b72ceed4f831bdf8e",
+      "pathId": "8821200858721226979",
+      "hierarchy": [
+        "char_282_catap",
+        "Modes",
+        "S2",
+        "Body",
+        "Attack"
+      ],
+      "objectSha256": "f907085eb67f865dca83971621d2c56ec5a71724c298e3bd442bdb5eca221cfe",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 4156651312234227407
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "4156651312234227407",
+        "name": "RangedAttack",
+        "cl": "RangedAttack",
+        "ns": "Torappu.Battle.Abilities",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": 6847251797051445475
+        },
+        "common:349": 1,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": 4156651312234227407
+        },
+        "common:427": "",
+        "_selector": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_metadata": {
+          "namedAsAlias": "",
+          "blackboardPrefix": ""
+        },
+        "_overrideSignalId": "",
+        "_interruptAbilityOnDetach": 0,
+        "_attachPassiveBuffsOnDummy": 1,
+        "_ignoreIfOwnerDead": 0,
+        "_forceAsDmgOrHealAbility": 0,
+        "_waitForAttackEvent": 1,
+        "_interuptIfTargetDead": 0,
+        "_resetCdStrategy": 1,
+        "_selectTargetSource": 2,
+        "_selectTargetTiming": 0,
+        "_timeMode": 0,
+        "_alwaysIncludeTarget": 1,
+        "_allowNoTarget": 0,
+        "_animKey": "Attack",
+        "_endAnimKey": "Idle",
+        "_downAnimKey": "",
+        "_downEndAnimKey": "",
+        "_upAnimKey": "",
+        "_upEndAnimKey": "",
+        "_cooldown": 0.0,
+        "_cooldownKey": "duration",
+        "_preDelay": 0.0,
+        "_escapeTime": 0.0,
+        "_faceToTarget": 1,
+        "_faceToDefault": 0,
+        "_faceToFront": 0,
+        "_faceToFirstCastTarget": 0,
+        "_checkFaceToFirstCastTargetDownAttack": 0,
+        "_forceFaceToDirection": 0,
+        "_activeBuffs": {
+          "Array": []
+        },
+        "_maxAnimScale": 1.0,
+        "_onlyPlayEndAnimWhenIsLastAbility": 0,
+        "_ignorePalsyInterrupt": 0,
+        "_affectedBySlowDown": 0,
+        "_atkScale": 1.0,
+        "_atkScaleKey": "atk_scale",
+        "_attackType": 1,
+        "_elementDamageType": 0,
+        "_epDamageRatio": 0.0,
+        "_useDynamicAttackType": 0,
+        "_deliveryParaWhenReplaceActionNode": 0,
+        "_projectileKey": "projectile_catap",
+        "_mountPointType": 2,
+        "_useMountGroup": 0,
+        "_mountGroup": {
+          "loopType": 0,
+          "mountPoints": {
+            "Array": []
+          }
+        },
+        "_damageType": 1,
+        "_waitForProjectileInvalid": 0,
+        "_notClearProjectileWhenCastEnd": 0,
+        "_fireAttackFinishWhenProjectileInvalid": 0,
+        "_minPostDelayWhenProjectileInvalid": 0.0,
+        "_waitForAnimEndWhenProjectileInvalid": 0,
+        "_projectileDestination": 0,
+        "_extraDamageType": 0,
+        "_emitToInputPosWhenTargetIsInvalid": 0,
+        "_emitToInputRootTileWhenTargetIsInvalid": 0,
+        "_useCachedAtkOnly": 0,
+        "_transferSource": 0,
+        "_extraProjectileKeys": {
+          "Array": []
+        },
+        "_fireCreateProjectileEvent": 0
+      }
+    },
+    {
+      "bundle": "charpack/char_282_catap.ab",
+      "file": "CAB-03e349ab35a5624b72ceed4f831bdf8e",
+      "pathId": "8853637612126540003",
+      "hierarchy": [
+        "char_282_catap",
+        "Modes",
+        "Default",
+        "Body",
+        "Attack"
+      ],
+      "objectSha256": "afa94d371bd865461ce544dbeec0941b8db77c3fe83103c7b1d3ea18949d109a",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -550693537895634864
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-550693537895634864",
+        "name": "UberEffectEmitter",
+        "cl": "UberEffectEmitter",
+        "ns": "Torappu.Battle.Abilities",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": -5562302374916910877
+        },
+        "common:349": 1,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": -550693537895634864
+        },
+        "common:427": "",
+        "_hitEffects": {
+          "Array": []
+        },
+        "_castEffects": {
+          "Array": [
+            {
+              "_directionType": 0,
+              "_effects": {
+                "Array": [
+                  "catap_attack_01_start",
+                  "",
+                  "",
+                  ""
+                ]
+              },
+              "_oneshot": 1,
+              "_startEvent": 4,
+              "_endEvent": 3,
+              "_onlyOnce": 0,
+              "_useFourDirectionalFace": 0,
+              "_delayIfFirstAttack": 0.0,
+              "_hookEffectAfterFirstAttack": ""
+            }
+          ]
+        },
+        "_attachEffects": {
+          "Array": []
+        },
+        "_inputTargetEffects": {
+          "Array": []
+        },
+        "_castTargetEffects": {
+          "Array": []
+        },
+        "_convertCastEndToAttachFinish": 0,
+        "_recalculatePlaybackSpeed": 0,
+        "_preDelayFactor": 0.0
+      }
+    },
+    {
+      "bundle": "charpack/char_282_catap.ab",
+      "file": "CAB-03e349ab35a5624b72ceed4f831bdf8e",
+      "pathId": "9131996713976140003",
+      "hierarchy": [
+        "char_282_catap",
+        "Modes",
+        "S2",
+        "Body",
+        "Attack"
+      ],
+      "objectSha256": "c6f2a9c154352a6774dd60d8457364905016f3748c5c705ea5e30364b050ee3d",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -550693537895634864
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-550693537895634864",
+        "name": "UberEffectEmitter",
+        "cl": "UberEffectEmitter",
+        "ns": "Torappu.Battle.Abilities",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": 6847251797051445475
+        },
+        "common:349": 1,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": -550693537895634864
+        },
+        "common:427": "",
+        "_hitEffects": {
+          "Array": []
+        },
+        "_castEffects": {
+          "Array": [
+            {
+              "_directionType": 0,
+              "_effects": {
+                "Array": [
+                  "catap_attack_01_start",
+                  "",
+                  "",
+                  ""
+                ]
+              },
+              "_oneshot": 1,
+              "_startEvent": 4,
+              "_endEvent": 3,
+              "_onlyOnce": 0,
+              "_useFourDirectionalFace": 0,
+              "_delayIfFirstAttack": 0.0,
+              "_hookEffectAfterFirstAttack": ""
+            }
+          ]
+        },
+        "_attachEffects": {
+          "Array": []
+        },
+        "_inputTargetEffects": {
+          "Array": []
+        },
+        "_castTargetEffects": {
+          "Array": []
+        },
+        "_convertCastEndToAttachFinish": 0,
+        "_recalculatePlaybackSpeed": 0,
+        "_preDelayFactor": 0.0
+      }
+    }
+  ]
+}
