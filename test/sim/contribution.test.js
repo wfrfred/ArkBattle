@@ -47,8 +47,12 @@ test("exclusive selection precedes dynamic input evaluation and the attribute fo
     state = update(state, host, setAttackContribution({
             id: "stronger",
             group: { ...group, priority: 3 },
-            value: [create({ finalAddition: 100 })],
+            value: [create({ finalAddition: 100.25 })],
         }));
-    assert.equal(resolveAttack(state, get(state, host.id)), 560);
+    assert.equal(resolveAttack(state, get(state, host.id)), 560.5);
     assert.deepEqual(calls, ["a", "z"]);
+    state = update(state, host, setAttackContribution({
+        id: "attack-penalty", value: [create({ finalAddition: -1000 })],
+    }));
+    assert.equal(resolveAttack(state, get(state, host.id)), 0);
 });
