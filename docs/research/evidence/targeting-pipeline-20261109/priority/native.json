@@ -564,8 +564,8 @@
     },
     "extractionScript": {
       "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/targeting-pipeline-20261109/priority/extract_priority.py",
-      "bytes": 6631,
-      "sha256": "3ff019f10d08b5a4a674a348d42f1f2e37aee13baea8d546eaef2c61828cb76b"
+      "bytes": 6728,
+      "sha256": "34c5abf8b983bb489a0b3e0f3e412e7f0c2757bc64cc8f7f15598351614b9fce"
     },
     "query": {
       "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/targeting-pipeline-20261109/priority/queries.json",

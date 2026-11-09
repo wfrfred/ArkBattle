@@ -564,8 +564,8 @@
     },
     "extractionScript": {
       "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/targeting-pipeline-20261109/priority/extract_priority.py",
-      "bytes": 6631,
-      "sha256": "3ff019f10d08b5a4a674a348d42f1f2e37aee13baea8d546eaef2c61828cb76b"
+      "bytes": 6728,
+      "sha256": "34c5abf8b983bb489a0b3e0f3e412e7f0c2757bc64cc8f7f15598351614b9fce"
     },
     "query": {
       "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/targeting-pipeline-20261109/priority/queries.json",
@@ -577,27 +577,32 @@
     {
       "label": "character-taunt-gap",
       "address": "0x1870afdec",
-      "value": 300000000.0
+      "value": 300000000.0,
+      "float32": 300000000.0
     },
     {
       "label": "character-time-gap",
       "address": "0x1870addf0",
-      "value": 1000.0
+      "value": 1000.0,
+      "float32": 1000.0
     },
     {
       "label": "enemy-taunt-gap",
       "address": "0x1870afd74",
-      "value": 100000000.0
+      "value": 100000000.0,
+      "float32": 100000000.0
     },
     {
       "label": "enemy-clamp-min",
       "address": "0x1870afe60",
-      "value": -100000000.0
+      "value": -100000000.0,
+      "float32": -100000000.0
     },
     {
       "label": "weight-gap-float",
       "address": "0x1870aded8",
-      "value": 0.10000000149011612
+      "value": 0.10000000149011612,
+      "float32": 0.10000000149011612
     }
   ]
 }

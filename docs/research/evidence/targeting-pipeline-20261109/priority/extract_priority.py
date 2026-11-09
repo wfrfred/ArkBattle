@@ -122,7 +122,8 @@ def main():
         bindings.append(row)
     save('generic-bindings.json', bindings)
     save('constants.json', [{'label': item.split('=', 1)[0], 'address': item.split('=', 1)[1],
-                            'value': native.pe.unpack('<f', int(item.split('=', 1)[1], 0))[0]}
+                            'value': native.pe.unpack('<f', int(item.split('=', 1)[1], 0))[0],
+                            'float32': native.pe.unpack('<f', int(item.split('=', 1)[1], 0))[0]}
                            for item in query['floats']])
     save('xrefs.json', [{'method': method,
                         'references': native.xrefs(method['address'])}
