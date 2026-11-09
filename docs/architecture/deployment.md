@@ -67,7 +67,7 @@ interface Definition<S extends object = object> {
 
 Card 创建为 addCard(battle, definition)，Battle 输入的 cards 保存完整静态 Definition 数组。相同 Definition 出现多次会创建多张独立 Card。入口校验静态数值配置，并在登记前执行 initialize；没有私有状态时也显式提供返回空对象的初始化程序。Card.initialize 只执行一次，Card 在部署和返手之间持续存在。
 
-Card 的完整 Definition<S> 在内容声明处建立 initialize 与 onTick 的类型配对；Deployment.Input 按数组各项保留 S，Runtime 在进入内部异构执行后才擦除，不以 UnitDefinition<any>[] 作为公开输入上下文。
+Card 的完整 Definition<S> 在内容声明处建立 initialize 与 onTick 的类型配对；Deployment.Input 按数组各项保留 S，Runtime 在进入内部异构执行后才擦除私有状态类型。
 
 实例保留 definition、state、当前 stock、cooldown、recovery、costStage、贡献、动态 rules 和 unitHooks；固定上限从 Definition 读取。unitHooks 使用[统一 Hooks 集合](hook.md)，注入以后部署的实例，通过 setUnitHook／removeUnitHook 按类型化键与 ID 登记、替换和移除。Card 的修改不追溯改变已创建 Unit；这些实例仍可独立通过通用 Hook Change 修改自身登记。
 
@@ -127,7 +127,7 @@ Card 动态 Rule 按 DISPLAY／SELECT／DEPLOY 区分上下文；DEPLOY 时传�
 
 付款同时维护 DP 回复的计时基准，不能把满额期间停留的时间在消费后补算成回复。部署间隔在统一资源提交时启动，先于 Unit 初始化，也不依赖是否支付 DP。
 
-部署把落点和本次方向传入 Occupancy 的可选创建输入。Unit.initialize 完成后，Deployment 调用 Deployable.setDeployment，在尚未登记的 Unit 上设置 card、cost、slots、refund，再交给 add 登记完整结果。该纯构造操作保留 Unit 的完整类型，Deployment 不直接重建 Deployable State。本次方向属于实例事实。
+部署通过必需的 initial.occupancy 传入落点 tile，并按请求提供可选的 direction。Unit.initialize 完成后，Deployment 调用 Deployable.setDeployment，在尚未登记的 Unit 上设置 card、cost、slots、refund，再交给 add 登记完整结果。该纯构造操作保留 Unit 的完整类型，Deployment 不直接重建 Deployable State。方向属于实例事实，省略时为 null。
 
 Deployment 先登记派发部署事实的 enter 程序，再登记 Card.unitHooks 和 Request.hooks，随后交给 Capability fold。Occupancy 追加自己的配对程序，各程序按登记顺序执行。
 
@@ -154,7 +154,7 @@ predefines: [
 ]
 ```
 
-definition 是完整静态 Unit Definition；initial 和 hooks 按需提供。Predefined 在出现时分配 Unit ID，调用 unit.initialize，登记预置项与实例的绑定，再由 add 完成登记和 enter。Predefined 管理别名、出现／移除及重复出现，Unit.initialize 负责实例构造。
+definition 是完整静态 Unit Definition；initial 按所选 Capability 提供，Occupancy 等能力要求其必需输入，hooks 可选。Predefined 在出现时分配 Unit ID，调用 unit.initialize，登记预置项与实例的绑定，再由 add 完成登记和 enter。Predefined 管理别名、出现／移除及重复出现，Unit.initialize 负责实例构造。
 
 预置操作直接调用 `predefined.appear(battle, id)` 与 `predefined.remove(battle, id, reason)`，id 对应 PredefinedDefinition.id。两者从 Battle Definition 查找预置项，不通过 Command 派发；开场初始化直接调用 appear。移除先撤销旧绑定，再执行实例的离场业务，离场程序可以立即让同一预置项重新出现，操作接续并保留新绑定。
 
@@ -199,7 +199,7 @@ function setDeployment<U extends Unit & Deployable>(
 ): U;
 ```
 
-Catalog 先构造 Occupancy、再构造 Deployable；Deployable 在初始化入口确认 Occupancy 依赖。初始化建立 card:null、cost:0、slots:0、refund:null 和固有撤退规则，表示尚未关联一次部署；本次部署事实在完整初始化后、登记前通过 setDeployment 设置，不改变各 Capability 初始化时点或增加专属 Initial 协议。Deployment 预先登记的 Hook 保留原位置。
+Catalog 先构造 Occupancy、再构造 Deployable；Deployable 在初始化入口确认 Occupancy 依赖。初始化建立 card:null、cost:0、slots:0、refund:null 和固有撤退规则，表示尚未关联一次部署。Deployable 没有专属 Initial；部署事实在完整初始化后、登记前通过 setDeployment 设置。Deployment 预先登记的 Hook 保留原位置。
 
 公开入口为 hasDeployable、initialize、setDeployment、canRetreat、retreat、setRule、removeRule，以及相应模型类型。setDeployment 只负责未登记实例的部署事实构造，运行态规则仍经 Change 修改。Ref<Unit & Deployable> 已保证 Occupancy，无需内部重复能力检查。临时撤退规则按 ID 登记和移除，不清除其他来源。
 
@@ -219,7 +219,7 @@ Occupancy 配对解除和实例额度释放是共有清理，在各类真实离�
 Unit 请求结束并发布 LEAVING
 → 顺序执行 prepare（包括 Blocking 自行登记的清理）
 → Lifetime 结束真实 owner／Scope 依赖者
-→ 从最新 Unit 捕获本轮 leave Hook 快照
+→ 从最新 Unit 捕获本次离场的 leave Hook 快照
 → 注销 Unit、释放结构占格，记录移除事实
 → @deployable/release-slots 归还本次部署额度
 → @deployment/death 仅在 DEATH 时结算 Card
