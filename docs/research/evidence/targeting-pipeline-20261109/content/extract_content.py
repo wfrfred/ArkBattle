@@ -211,7 +211,7 @@ def main():
                 script_file = filename if pointer['m_FileID'] == 0 else externals[pointer['m_FileID'] - 1]['path'].split('/')[-1]
                 binding = scripts.get((script_file, pointer['m_PathID']))
                 rows.append(dict(bundle=relative, file=filename, pathId=str(obj['id']),
-                                 hierarchy=hierarchy, sha256=hashlib.sha256(raw).hexdigest(),
+                                 hierarchy=hierarchy, objectSha256=hashlib.sha256(raw).hexdigest(),
                                  scriptPPtr=pointer, scriptFile=script_file, script=binding,
                                  enabled=value.get('common:349'), value=project(projected)))
         print(relative, len(rows) - before, flush=True)

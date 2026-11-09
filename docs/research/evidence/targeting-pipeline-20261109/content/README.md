@@ -21,7 +21,7 @@
 | `validator-methods.json`、`validator-composition.json` | 使用根目录已冻结的 `extract_qualification.py` 提取组合 Selector、Character Validator、来源 Buff 验证与虚调用 thunk；类型字段、签名、完整方法分段及本次客户端指纹一并保存。 |
 | `extract_validator_config.py`、`validator-config.json` | 补取粗投影未完整保留的冻河 S3 CastSkill 登记、EmptyAbility 别名和 GroupSelector 原始组件、实际外部 MonoScript 及精确子选择器引用；按本次 metadata 解出 SkillType 常量。旧 `selected-prefabs.json` 不改写。 |
 
-`selected-prefabs.json` 是选定字段摘录，不是完整 Prefab 重新序列化。Buff 摘录保留属性、机制键、模板、Blackboard 与所需生命期字段，省略无关特效和序列化默认项。对象 SHA-256 针对完整原始组件字节。`selected-data.json` 的 phases 只保留 Prefab 与 range 引用，完整输入文件指纹另列。
+`selected-prefabs.json` 是选定字段摘录，不是完整 Prefab 重新序列化。Buff 摘录保留属性、机制键、模板、Blackboard 与所需生命期字段，省略无关特效和序列化默认项。`objectSha256` 针对完整原始组件字节；Bundle 哈希单独记在 provenance.sources.sha256，二者不能混用。`selected-data.json` 的 phases 只保留 Prefab 与 range 引用，完整输入文件指纹另列。
 
 ## 复跑
 

@@ -51,7 +51,7 @@ def main():
             if obj['id'] == 4307741335078991844:
                 assert script['cl'] == 'GroupSelector'
             rows.append(dict(bundle=relative, file=filename, pathId=str(obj['id']),
-                             sha256=hashlib.sha256(raw).hexdigest(), scriptPPtr=pointer,
+                             objectSha256=hashlib.sha256(raw).hexdigest(), scriptPPtr=pointer,
                              scriptFile=script_file, script=script, value=value))
     assert len(rows) == 3
     contracts = json.loads(args.contracts.read_text())

@@ -3,8 +3,8 @@
     "collectedOn": "2026-11-09",
     "script": {
       "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/targeting-pipeline-20261109/content/extract_content.py",
-      "bytes": 12900,
-      "sha256": "29afa244fb8b3429a73a60c43c84cd16718b34bfbf7f7f22287d03118a324812"
+      "bytes": 12906,
+      "sha256": "37504c156e11e55c9c06174980fb1617281690ab3b01db9caa9dfd28937f5faa"
     },
     "helper": {
       "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/nymph-action-settlement-20261103/projectile/decode_projectile.py",
@@ -175,7 +175,7 @@
       "hierarchy": [
         "char_208_melan"
       ],
-      "sha256": "3b1dd2a84e2289e3eaf92d21b278b22050f1b740a807237e4c6633dd8f0a40c2",
+      "objectSha256": "3b1dd2a84e2289e3eaf92d21b278b22050f1b740a807237e4c6633dd8f0a40c2",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -1297314214590689040
@@ -222,7 +222,7 @@
         "Attack",
         "Trigger"
       ],
-      "sha256": "f54d2fd8ae67a901a859fde1e9177c4def9e8159fa74db51f1914ec4c68d284f",
+      "objectSha256": "f54d2fd8ae67a901a859fde1e9177c4def9e8159fa74db51f1914ec4c68d284f",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 840206743537877183
@@ -282,7 +282,7 @@
         "Modes",
         "Default"
       ],
-      "sha256": "2c38ac8bef81c9761d6572a70b1b751505bdfe7563e5c8cd3e13ba5e9bc5e6a3",
+      "objectSha256": "2c38ac8bef81c9761d6572a70b1b751505bdfe7563e5c8cd3e13ba5e9bc5e6a3",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 5390319429299248724
@@ -326,7 +326,7 @@
         "Talents",
         "1"
       ],
-      "sha256": "4d39ff682ec4c47b1c0f7e122949165940d40341581b5ab5b2e979c4a49b0d50",
+      "objectSha256": "4d39ff682ec4c47b1c0f7e122949165940d40341581b5ab5b2e979c4a49b0d50",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 3800760148018415462
@@ -402,7 +402,7 @@
         "Talents",
         "1"
       ],
-      "sha256": "1506d1abb0662883fcd1a7e627c577d70df44dfdda5ab637c5770a89db773fe3",
+      "objectSha256": "1506d1abb0662883fcd1a7e627c577d70df44dfdda5ab637c5770a89db773fe3",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -2726233351382997147
@@ -440,7 +440,7 @@
         "Attack",
         "Trigger"
       ],
-      "sha256": "fda54d6506cc74def9be0ea7252bc5c7c7b016f62d494bcb927919b5813f19b3",
+      "objectSha256": "fda54d6506cc74def9be0ea7252bc5c7c7b016f62d494bcb927919b5813f19b3",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 8607874384982393801
@@ -474,7 +474,7 @@
         "Body",
         "Attack"
       ],
-      "sha256": "0dbd1ac73398e356a4e9f759896f07d435faadb276afed4fa396b763a192d8ff",
+      "objectSha256": "0dbd1ac73398e356a4e9f759896f07d435faadb276afed4fa396b763a192d8ff",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 4381884627089348317
@@ -516,7 +516,7 @@
       "hierarchy": [
         "char_124_kroos"
       ],
-      "sha256": "9f1f4f84b32c482db23130778e1a1ab5b489f1e9fbf025b5cdc71e799c902437",
+      "objectSha256": "9f1f4f84b32c482db23130778e1a1ab5b489f1e9fbf025b5cdc71e799c902437",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -1297314214590689040
@@ -565,7 +565,7 @@
         "Others",
         "CommonAbility"
       ],
-      "sha256": "a2803efbed44e5f331953be76726dec92c9f52d328df5828b0e05a889f423958",
+      "objectSha256": "a2803efbed44e5f331953be76726dec92c9f52d328df5828b0e05a889f423958",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 3800760148018415462
@@ -633,7 +633,7 @@
         "Talents",
         "1"
       ],
-      "sha256": "91a67abd1831f6fb8733d05c104b814f9142980e43e1bf15fc47d7aba1f0248e",
+      "objectSha256": "91a67abd1831f6fb8733d05c104b814f9142980e43e1bf15fc47d7aba1f0248e",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -2726233351382997147
@@ -671,7 +671,7 @@
         "Attack",
         "Trigger"
       ],
-      "sha256": "602c717add0c9b4d39967dc4d788f59afb93495b014d29f1abbab81020dba468",
+      "objectSha256": "602c717add0c9b4d39967dc4d788f59afb93495b014d29f1abbab81020dba468",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 8052272509195254976
@@ -738,7 +738,7 @@
         "Talents",
         "1"
       ],
-      "sha256": "f6a1f12df6c7a21a2415083d4472370a5630869b8300b4606e8f03ab245a3ec4",
+      "objectSha256": "f6a1f12df6c7a21a2415083d4472370a5630869b8300b4606e8f03ab245a3ec4",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 3800760148018415462
@@ -809,7 +809,7 @@
         "Attack",
         "Trigger"
       ],
-      "sha256": "e8473a89521fb296638ca5f2043dc99f7a4e410248c7324cd2270fea87e92462",
+      "objectSha256": "e8473a89521fb296638ca5f2043dc99f7a4e410248c7324cd2270fea87e92462",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 8607874384982393801
@@ -841,7 +841,7 @@
         "Modes",
         "Default"
       ],
-      "sha256": "6c38b2b5d650552a6d9303fd91f9f6531e10b555a8f3ef2f10115224b5fb2343",
+      "objectSha256": "6c38b2b5d650552a6d9303fd91f9f6531e10b555a8f3ef2f10115224b5fb2343",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 5390319429299248724
@@ -887,7 +887,7 @@
         "Body",
         "Attack"
       ],
-      "sha256": "9c0b7b2f249234e3c8638c4afe7fdbeb7596815a64c8771ab1086a9645b1a18e",
+      "objectSha256": "9c0b7b2f249234e3c8638c4afe7fdbeb7596815a64c8771ab1086a9645b1a18e",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 4156651312234227407
@@ -935,7 +935,7 @@
         "Attack",
         "Trigger"
       ],
-      "sha256": "a493189be429fbd8aa5b71be42f9364aa889a83dd5b2e7cfa6f5de4f5cf8dd5b",
+      "objectSha256": "a493189be429fbd8aa5b71be42f9364aa889a83dd5b2e7cfa6f5de4f5cf8dd5b",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 8607874384982393801
@@ -967,7 +967,7 @@
         "Talents",
         "1"
       ],
-      "sha256": "f6763c45905ac66dc57025f456526ec6c092e2beb5ebd034674d9d5729e7dabf",
+      "objectSha256": "f6763c45905ac66dc57025f456526ec6c092e2beb5ebd034674d9d5729e7dabf",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 3800760148018415462
@@ -1043,7 +1043,7 @@
         "Modes",
         "Default"
       ],
-      "sha256": "c78b3e7f70c747cfa60cf7466fec85ff81bbd7755cdbe12d1557dd1505e21efb",
+      "objectSha256": "c78b3e7f70c747cfa60cf7466fec85ff81bbd7755cdbe12d1557dd1505e21efb",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 5390319429299248724
@@ -1090,7 +1090,7 @@
         "Attack",
         "Trigger"
       ],
-      "sha256": "5d85ea500ca6038120fb85357787e6ab2538ee100a3c3534977b0639b4d20ffd",
+      "objectSha256": "5d85ea500ca6038120fb85357787e6ab2538ee100a3c3534977b0639b4d20ffd",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 7080728813803358465
@@ -1146,7 +1146,7 @@
       "hierarchy": [
         "char_210_stward"
       ],
-      "sha256": "28f76a26941966140a4b2f2c04ff237b8e4187b7fec9c991e9bf12677f7ed113",
+      "objectSha256": "28f76a26941966140a4b2f2c04ff237b8e4187b7fec9c991e9bf12677f7ed113",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -1297314214590689040
@@ -1197,7 +1197,7 @@
         "Attack",
         "Trigger"
       ],
-      "sha256": "441b254dc7dabc1fccd31653c72aa3465ded2412b2b76359cd83a69cbbd5ba1e",
+      "objectSha256": "441b254dc7dabc1fccd31653c72aa3465ded2412b2b76359cd83a69cbbd5ba1e",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 7080728813803358465
@@ -1255,7 +1255,7 @@
         "Talents",
         "1"
       ],
-      "sha256": "cdfd585771452e724ec6791cf5e0181e7c8ccfde6666ec39d51ddb2fc6c731a5",
+      "objectSha256": "cdfd585771452e724ec6791cf5e0181e7c8ccfde6666ec39d51ddb2fc6c731a5",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -2726233351382997147
@@ -1293,7 +1293,7 @@
         "Attack",
         "Trigger"
       ],
-      "sha256": "320261b655561cc91481f55f5bf91951ffd3151ce1bee002ae5de6b160304160",
+      "objectSha256": "320261b655561cc91481f55f5bf91951ffd3151ce1bee002ae5de6b160304160",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 8607874384982393801
@@ -1327,7 +1327,7 @@
         "Body",
         "Attack"
       ],
-      "sha256": "e3942dba110646498cae11b24b86904c265a23aeccfa4ff8d59aa91a548c4dc1",
+      "objectSha256": "e3942dba110646498cae11b24b86904c265a23aeccfa4ff8d59aa91a548c4dc1",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 4156651312234227407
@@ -1372,7 +1372,7 @@
         "Modes",
         "T1"
       ],
-      "sha256": "6d665095813004142c77c559bf2b8e6c90174ed7c4b3c02f288398dc15c5db1b",
+      "objectSha256": "6d665095813004142c77c559bf2b8e6c90174ed7c4b3c02f288398dc15c5db1b",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 5390319429299248724
@@ -1418,7 +1418,7 @@
         "Body",
         "Attack"
       ],
-      "sha256": "590206c61fd72ab5c776cda22d81e80285b9436596dafa947c6857422d0b28b4",
+      "objectSha256": "590206c61fd72ab5c776cda22d81e80285b9436596dafa947c6857422d0b28b4",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 4156651312234227407
@@ -1466,7 +1466,7 @@
         "Attack",
         "Trigger"
       ],
-      "sha256": "827ab8d9bcbcd4c686e2f128221f436faa8354e5239fd6381cab87ee0c3e4d7b",
+      "objectSha256": "827ab8d9bcbcd4c686e2f128221f436faa8354e5239fd6381cab87ee0c3e4d7b",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 8607874384982393801
@@ -1496,7 +1496,7 @@
       "hierarchy": [
         "char_117_myrrh"
       ],
-      "sha256": "ce237e11fc266916a616d4d87622ce72c3982677fbc6e237f5837627dd721bf4",
+      "objectSha256": "ce237e11fc266916a616d4d87622ce72c3982677fbc6e237f5837627dd721bf4",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -1297314214590689040
@@ -1544,7 +1544,7 @@
         "Talents",
         "1"
       ],
-      "sha256": "45bed622bcdd3aae4f5e8d81c8c8ea444a47fcb4fb168bd0f009102fc246363f",
+      "objectSha256": "45bed622bcdd3aae4f5e8d81c8c8ea444a47fcb4fb168bd0f009102fc246363f",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 7080728813803358465
@@ -1604,7 +1604,7 @@
         "Body",
         "Attack"
       ],
-      "sha256": "d46b511a0c721ce7dbacc7b77eda58b83e5d9114cae558ea79d4ed31ec425ccf",
+      "objectSha256": "d46b511a0c721ce7dbacc7b77eda58b83e5d9114cae558ea79d4ed31ec425ccf",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 9150588117521808812
@@ -1650,7 +1650,7 @@
         "Modes",
         "Double"
       ],
-      "sha256": "c2b2cf3755304ef5f072b8f78950ebfa4b80541280bccb80d9f8ac4ddb4d0c22",
+      "objectSha256": "c2b2cf3755304ef5f072b8f78950ebfa4b80541280bccb80d9f8ac4ddb4d0c22",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 5390319429299248724
@@ -1697,7 +1697,7 @@
         "Attack",
         "Trigger"
       ],
-      "sha256": "9231f9630a8439449d15b3a4a1797f502110fa55f795c01e963c9347b9658a1a",
+      "objectSha256": "9231f9630a8439449d15b3a4a1797f502110fa55f795c01e963c9347b9658a1a",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 7080728813803358465
@@ -1755,7 +1755,7 @@
         "Talents",
         "1"
       ],
-      "sha256": "edb45a89c9d9e9200015a4c784e6ba6d09573ae2f4df941e998dcd804cc5c68f",
+      "objectSha256": "edb45a89c9d9e9200015a4c784e6ba6d09573ae2f4df941e998dcd804cc5c68f",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -1761593469416546375
@@ -1803,7 +1803,7 @@
         "Attack",
         "Trigger"
       ],
-      "sha256": "20f2fd0f84a7f1c837f1408b7f3b83ba7de7ce731307f0c33a41c28770c12bc9",
+      "objectSha256": "20f2fd0f84a7f1c837f1408b7f3b83ba7de7ce731307f0c33a41c28770c12bc9",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 8607874384982393801
@@ -1837,7 +1837,7 @@
         "Body",
         "Attack"
       ],
-      "sha256": "180d7e55e3868498a81f351d01c140896d70550d2fd1649ac1f00347acfcefa7",
+      "objectSha256": "180d7e55e3868498a81f351d01c140896d70550d2fd1649ac1f00347acfcefa7",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 9150588117521808812
@@ -1886,7 +1886,7 @@
         "Attack",
         "Trigger"
       ],
-      "sha256": "07eaef86efc1198b557b217698ceec985017f00dc14142581b55fa6dc3de2612",
+      "objectSha256": "07eaef86efc1198b557b217698ceec985017f00dc14142581b55fa6dc3de2612",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 7080728813803358465
@@ -1944,7 +1944,7 @@
         "Modes",
         "Default"
       ],
-      "sha256": "9df967f08b4719c2db5eafe64b50bf003ce72943e9d897faa895a0e0dab129f0",
+      "objectSha256": "9df967f08b4719c2db5eafe64b50bf003ce72943e9d897faa895a0e0dab129f0",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 5390319429299248724
@@ -1988,7 +1988,7 @@
         "Talents",
         "1"
       ],
-      "sha256": "6bd97264351090de53f1cbab02ddd964a86b7eea7c194e27e9b0fee81e6db416",
+      "objectSha256": "6bd97264351090de53f1cbab02ddd964a86b7eea7c194e27e9b0fee81e6db416",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 3694607632642821622
@@ -2023,7 +2023,7 @@
         "Talents",
         "1"
       ],
-      "sha256": "b1a4897bb2c503c92a13b9c9cfb67a589933383b1a2e8b0bb283b28d78721341",
+      "objectSha256": "b1a4897bb2c503c92a13b9c9cfb67a589933383b1a2e8b0bb283b28d78721341",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 7545541562918284761
@@ -2060,7 +2060,7 @@
         "1",
         "Aura"
       ],
-      "sha256": "ebb5245f0812d88061ebd18f70a48c7ab58a152624385ba486a32d1946fc6acb",
+      "objectSha256": "ebb5245f0812d88061ebd18f70a48c7ab58a152624385ba486a32d1946fc6acb",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -5793748974791823428
@@ -2147,7 +2147,7 @@
         "Heal",
         "Trigger"
       ],
-      "sha256": "ad76aa4d47b29d2b008279f901396086548d88ab4fa5182b268e3825674c8d8f",
+      "objectSha256": "ad76aa4d47b29d2b008279f901396086548d88ab4fa5182b268e3825674c8d8f",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 8607874384982393801
@@ -2179,7 +2179,7 @@
         "Modes",
         "Default"
       ],
-      "sha256": "b7db0a4809a2079d452e8f1cbb39e3d6f74bfabbaf5e06c1d3f7c5f0ad74852d",
+      "objectSha256": "b7db0a4809a2079d452e8f1cbb39e3d6f74bfabbaf5e06c1d3f7c5f0ad74852d",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 5390319429299248724
@@ -2223,7 +2223,7 @@
         "Talents",
         "1"
       ],
-      "sha256": "447abddfc17e063217496807101a330cbbe9e744b56b20ddb663fa68d8183a6c",
+      "objectSha256": "447abddfc17e063217496807101a330cbbe9e744b56b20ddb663fa68d8183a6c",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -2726233351382997147
@@ -2261,7 +2261,7 @@
         "Heal",
         "Trigger"
       ],
-      "sha256": "6c027a65eb4581f1e323bed824e51ba6a7fd35bee16073c3edb25e07982654d7",
+      "objectSha256": "6c027a65eb4581f1e323bed824e51ba6a7fd35bee16073c3edb25e07982654d7",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 7080728813803358465
@@ -2317,7 +2317,7 @@
       "hierarchy": [
         "char_473_mberry"
       ],
-      "sha256": "75f2ed69ec2e68c6900e3f7d5a8e98f62d3ce4afc62eadc9719190bd27991b82",
+      "objectSha256": "75f2ed69ec2e68c6900e3f7d5a8e98f62d3ce4afc62eadc9719190bd27991b82",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -1297314214590689040
@@ -2364,7 +2364,7 @@
         "char_473_mberry",
         "Trait"
       ],
-      "sha256": "e17ebf56679db2f05ba0d24f40ecc15aaf4a7b9429b9821dbf69a9b27632e95b",
+      "objectSha256": "e17ebf56679db2f05ba0d24f40ecc15aaf4a7b9429b9821dbf69a9b27632e95b",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -8004000125733044417
@@ -2444,7 +2444,7 @@
         "Heal",
         "Trigger"
       ],
-      "sha256": "d2c9514111f3ab716f7500000e3786a1f08448a6f32980ce141d13febca21aec",
+      "objectSha256": "d2c9514111f3ab716f7500000e3786a1f08448a6f32980ce141d13febca21aec",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 8607874384982393801
@@ -2476,7 +2476,7 @@
         "Modes",
         "S2"
       ],
-      "sha256": "5abe07b28dff39fffbc7d8d1dca85d2afee319bf074fa1a77986b0d2cf833c74",
+      "objectSha256": "5abe07b28dff39fffbc7d8d1dca85d2afee319bf074fa1a77986b0d2cf833c74",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 5390319429299248724
@@ -2526,7 +2526,7 @@
         "1",
         "Aura"
       ],
-      "sha256": "519056c6a769f8af1e2361bb6d33181afe0a0d9218dde76be6430004dd618046",
+      "objectSha256": "519056c6a769f8af1e2361bb6d33181afe0a0d9218dde76be6430004dd618046",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -3637692038217913187
@@ -2580,7 +2580,7 @@
         "Heal",
         "Trigger"
       ],
-      "sha256": "6b406977f77220b42e58e6064ad0871ac04944d2e840ac6d4ad34c9afd23cc79",
+      "objectSha256": "6b406977f77220b42e58e6064ad0871ac04944d2e840ac6d4ad34c9afd23cc79",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 7080728813803358465
@@ -2640,7 +2640,7 @@
         "Body",
         "Heal"
       ],
-      "sha256": "3347b8fcfba2c1a0045213c751486901a5f95c97ffa93c7ad7aa302935082500",
+      "objectSha256": "3347b8fcfba2c1a0045213c751486901a5f95c97ffa93c7ad7aa302935082500",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 9150588117521808812
@@ -2688,7 +2688,7 @@
         "Body",
         "Heal"
       ],
-      "sha256": "bb73a73d7a0564603854edb2cd3ae05bc31e5d3307af2df3eef3f47e47a5b96c",
+      "objectSha256": "bb73a73d7a0564603854edb2cd3ae05bc31e5d3307af2df3eef3f47e47a5b96c",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -1761593469416546375
@@ -2736,7 +2736,7 @@
         "Attack",
         "Trigger"
       ],
-      "sha256": "07c716710889fa7b06a3955f8472e05aa43cd4eb1ff7ed9841d4c40102752268",
+      "objectSha256": "07c716710889fa7b06a3955f8472e05aa43cd4eb1ff7ed9841d4c40102752268",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 7080728813803358465
@@ -2794,7 +2794,7 @@
         "Modes",
         "Default"
       ],
-      "sha256": "0448ac3cac154cc9a3ed94596efdc0236a13e3b9c7e80604bfca5119ed4bb37e",
+      "objectSha256": "0448ac3cac154cc9a3ed94596efdc0236a13e3b9c7e80604bfca5119ed4bb37e",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 5390319429299248724
@@ -2841,7 +2841,7 @@
         "Attack",
         "Trigger"
       ],
-      "sha256": "7d564db09c4cca5a4be128e075efaf2b7e3970fdff4f339c4b5dad4ee36ffed8",
+      "objectSha256": "7d564db09c4cca5a4be128e075efaf2b7e3970fdff4f339c4b5dad4ee36ffed8",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 8607874384982393801
@@ -2875,7 +2875,7 @@
         "Body",
         "Attack"
       ],
-      "sha256": "51d7f4fe3cad970580f76ed4728d852e632b774b1316aac285f118e3d5e287b3",
+      "objectSha256": "51d7f4fe3cad970580f76ed4728d852e632b774b1316aac285f118e3d5e287b3",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 4381884627089348317
@@ -2922,7 +2922,7 @@
         "Attack",
         "Selector"
       ],
-      "sha256": "204b1a316da332ce7855a449df198b955e17f801fc0f703fea77d45a50f02b31",
+      "objectSha256": "204b1a316da332ce7855a449df198b955e17f801fc0f703fea77d45a50f02b31",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 7080728813803358465
@@ -2980,7 +2980,7 @@
         "Talents",
         "1"
       ],
-      "sha256": "063288b6899c49a3bbe209bf9303d316ad7aec8b12195a7854ae5a0a668fee1c",
+      "objectSha256": "063288b6899c49a3bbe209bf9303d316ad7aec8b12195a7854ae5a0a668fee1c",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 3800760148018415462
@@ -3046,7 +3046,7 @@
       "hierarchy": [
         "char_121_lava"
       ],
-      "sha256": "42622af9a1a11dc089f966b73d3d0f1bb71a43145eb53721c3531eafe052e045",
+      "objectSha256": "42622af9a1a11dc089f966b73d3d0f1bb71a43145eb53721c3531eafe052e045",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -1297314214590689040
@@ -3090,7 +3090,7 @@
         "Talents",
         "1"
       ],
-      "sha256": "bd5b17015a2666373d8e43de0b2980a75a72523f85e6f1ae0652e26176d60700",
+      "objectSha256": "bd5b17015a2666373d8e43de0b2980a75a72523f85e6f1ae0652e26176d60700",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -2726233351382997147
@@ -3125,7 +3125,7 @@
         "Talents",
         "1"
       ],
-      "sha256": "cd04acec6e8f0d204d4b64ab43deca6a8e51f98961f191ddb35737121f45ea12",
+      "objectSha256": "cd04acec6e8f0d204d4b64ab43deca6a8e51f98961f191ddb35737121f45ea12",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 3800760148018415462
@@ -3195,7 +3195,7 @@
         "Body",
         "Heal"
       ],
-      "sha256": "253130df109c3b1dbff568afc16c35f67990eda9e26194bb49b2908823f60926",
+      "objectSha256": "253130df109c3b1dbff568afc16c35f67990eda9e26194bb49b2908823f60926",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 9073738633337710967
@@ -3271,7 +3271,7 @@
         "Modes",
         "S1"
       ],
-      "sha256": "713ace4649e2596e37731b4bd3154643d3f98ee64e2d855af1a2c0118e2f794c",
+      "objectSha256": "713ace4649e2596e37731b4bd3154643d3f98ee64e2d855af1a2c0118e2f794c",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 5390319429299248724
@@ -3318,7 +3318,7 @@
       "hierarchy": [
         "char_101_sora"
       ],
-      "sha256": "50b62c9070072e16cc313277d8a5389a0dbe292329861ef834963df2c180581a",
+      "objectSha256": "50b62c9070072e16cc313277d8a5389a0dbe292329861ef834963df2c180581a",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -1297314214590689040
@@ -3375,7 +3375,7 @@
         "Talents",
         "-1"
       ],
-      "sha256": "a2f1b5fc65bf09e2702767d10af4fd5f24724723ae0bbf44326846f72ee23262",
+      "objectSha256": "a2f1b5fc65bf09e2702767d10af4fd5f24724723ae0bbf44326846f72ee23262",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 4865767822664548221
@@ -3410,7 +3410,7 @@
         "Body",
         "Heal"
       ],
-      "sha256": "901772055bb7fc379169be599607ac8b50c7ba6717cf11969b1b85d91fc1b816",
+      "objectSha256": "901772055bb7fc379169be599607ac8b50c7ba6717cf11969b1b85d91fc1b816",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -3637692038217913187
@@ -3461,7 +3461,7 @@
         "Talents",
         "1"
       ],
-      "sha256": "5e73b7c0d387c7a98f9257013f75847bbc623104e9b27d18069257509c2aad6b",
+      "objectSha256": "5e73b7c0d387c7a98f9257013f75847bbc623104e9b27d18069257509c2aad6b",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -2726233351382997147
@@ -3498,7 +3498,7 @@
         "Body",
         "Heal"
       ],
-      "sha256": "ccd75fe3f1f3728d02730284dd1bb7eda42a3a31b1d6269b84120f7c2acd14f1",
+      "objectSha256": "ccd75fe3f1f3728d02730284dd1bb7eda42a3a31b1d6269b84120f7c2acd14f1",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -3637692038217913187
@@ -3550,7 +3550,7 @@
         "PassiveAbilities",
         "Dance"
       ],
-      "sha256": "3f736f926f60ee339f79621926fb987e5a5ea4cc995e9560d82953c52e5344c1",
+      "objectSha256": "3f736f926f60ee339f79621926fb987e5a5ea4cc995e9560d82953c52e5344c1",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 3800760148018415462
@@ -3620,7 +3620,7 @@
         "Body",
         "Heal"
       ],
-      "sha256": "a75aeb3a0068c662f46a7971992be07995a1fbac9e458a14a7af1558d7df5930",
+      "objectSha256": "a75aeb3a0068c662f46a7971992be07995a1fbac9e458a14a7af1558d7df5930",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 9073738633337710967
@@ -3696,7 +3696,7 @@
         "Talents",
         "-1"
       ],
-      "sha256": "61e4b1c295443322a84f300ca8f160943bf3f4cba3886454ccf0521003378c0e",
+      "objectSha256": "61e4b1c295443322a84f300ca8f160943bf3f4cba3886454ccf0521003378c0e",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -2726233351382997147
@@ -3732,7 +3732,7 @@
         "PassiveAbilities",
         "ImmuneToEncourage"
       ],
-      "sha256": "76fac6380638f8fe20d65d2811e1668a37fb4d3b5e6682bbcef3c061f3732aab",
+      "objectSha256": "76fac6380638f8fe20d65d2811e1668a37fb4d3b5e6682bbcef3c061f3732aab",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 3800760148018415462
@@ -3800,7 +3800,7 @@
         "Modes",
         "Default"
       ],
-      "sha256": "54aa39d1372e0685931fc75b260a8fee3177294f255f6982eb96e28fd400ca68",
+      "objectSha256": "54aa39d1372e0685931fc75b260a8fee3177294f255f6982eb96e28fd400ca68",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 5390319429299248724
@@ -3851,7 +3851,7 @@
         "Body",
         "HealAura"
       ],
-      "sha256": "ed3f1844b9d0b53f2166632e16dcd632db35f89a33f7ff0c3cc6e6415659fdd8",
+      "objectSha256": "ed3f1844b9d0b53f2166632e16dcd632db35f89a33f7ff0c3cc6e6415659fdd8",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -3637692038217913187
@@ -3904,7 +3904,7 @@
         "Body",
         "HealAura"
       ],
-      "sha256": "59a94d17051ee0d28f5b3aa97179e64ac02a28744e4e54099d7b5fcc24b90c51",
+      "objectSha256": "59a94d17051ee0d28f5b3aa97179e64ac02a28744e4e54099d7b5fcc24b90c51",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -3637692038217913187
@@ -3955,7 +3955,7 @@
         "Modes",
         "S1"
       ],
-      "sha256": "bf72988b57a12ff5b873c1511e95d346d00c9dbc5c74ec9bfa87aab4dbf1b93f",
+      "objectSha256": "bf72988b57a12ff5b873c1511e95d346d00c9dbc5c74ec9bfa87aab4dbf1b93f",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 5390319429299248724
@@ -4002,7 +4002,7 @@
       "hierarchy": [
         "char_1012_skadi2"
       ],
-      "sha256": "57be4949ed98b29b055c25c5b52197f77cc63375692824f1a7d91fe0c8f646d1",
+      "objectSha256": "57be4949ed98b29b055c25c5b52197f77cc63375692824f1a7d91fe0c8f646d1",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -1297314214590689040
@@ -4071,7 +4071,7 @@
         "PassiveAbilities",
         "ImmuneToEncourage"
       ],
-      "sha256": "04f2a8a06405208475ccdbd2ac09b2080d039d1872d4b6a691920de859fba974",
+      "objectSha256": "04f2a8a06405208475ccdbd2ac09b2080d039d1872d4b6a691920de859fba974",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 3800760148018415462
@@ -4141,7 +4141,7 @@
         "Body",
         "EmptyAbility"
       ],
-      "sha256": "34623039dd35b4d8dfe7b79c39c319b875024e812f5ffab8023d2c35dccafa6f",
+      "objectSha256": "34623039dd35b4d8dfe7b79c39c319b875024e812f5ffab8023d2c35dccafa6f",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 4865767822664548221
@@ -4174,7 +4174,7 @@
         "Modes",
         "S2"
       ],
-      "sha256": "969caf0bcffba1753494355e1c883c0ed52a98e339e1e5ce60f7e7cb72ea7826",
+      "objectSha256": "969caf0bcffba1753494355e1c883c0ed52a98e339e1e5ce60f7e7cb72ea7826",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 5390319429299248724
@@ -4223,7 +4223,7 @@
         "Talents",
         "-1"
       ],
-      "sha256": "9be235d91f3b57dbb9492433215bc872084ef48fcad6cb9ad54417f8e1745b28",
+      "objectSha256": "9be235d91f3b57dbb9492433215bc872084ef48fcad6cb9ad54417f8e1745b28",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -2726233351382997147
@@ -4258,7 +4258,7 @@
         "Talents",
         "2"
       ],
-      "sha256": "0892a6480297f7fb7f80095fc961c30cec4aece50bbbb122ad7088b7c260060f",
+      "objectSha256": "0892a6480297f7fb7f80095fc961c30cec4aece50bbbb122ad7088b7c260060f",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -2726233351382997147
@@ -4293,7 +4293,7 @@
         "Talents",
         "-1"
       ],
-      "sha256": "c10daa7bc26edc9982fa0149c73c28b75804e0c31de248ded5e6aaef79677160",
+      "objectSha256": "c10daa7bc26edc9982fa0149c73c28b75804e0c31de248ded5e6aaef79677160",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 4865767822664548221
@@ -4326,7 +4326,7 @@
         "Talents",
         "1"
       ],
-      "sha256": "84429e2bbfe0e4ce9b7cea7f245db5550924a56ff51118cf146aee2064e31ea1",
+      "objectSha256": "84429e2bbfe0e4ce9b7cea7f245db5550924a56ff51118cf146aee2064e31ea1",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 3800760148018415462
@@ -4394,7 +4394,7 @@
         "Modes",
         "Default"
       ],
-      "sha256": "d61aca9549e415a22a39c8e3a0db9c5e608b001501719a22e08c4e7d01e7cd98",
+      "objectSha256": "d61aca9549e415a22a39c8e3a0db9c5e608b001501719a22e08c4e7d01e7cd98",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 5390319429299248724
@@ -4445,7 +4445,7 @@
         "Body",
         "HealAura"
       ],
-      "sha256": "d72137a52770b1198dc67b0bb5d78b752f1f9175d95c4f62238c15b0e15ae6cf",
+      "objectSha256": "d72137a52770b1198dc67b0bb5d78b752f1f9175d95c4f62238c15b0e15ae6cf",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -3637692038217913187
@@ -4496,7 +4496,7 @@
         "PassiveAbilities",
         "IAmSkadi"
       ],
-      "sha256": "a5541084fe52235b8f7e2cbb718cfb5188b7d1811e4ec8388b042d12cd3c7541",
+      "objectSha256": "a5541084fe52235b8f7e2cbb718cfb5188b7d1811e4ec8388b042d12cd3c7541",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 3800760148018415462
@@ -4564,7 +4564,7 @@
         "Talents",
         "1"
       ],
-      "sha256": "40c2623b82fc301ceee1c48b24a2301514c6c4cda11674bf473ecb8191df8cad",
+      "objectSha256": "40c2623b82fc301ceee1c48b24a2301514c6c4cda11674bf473ecb8191df8cad",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -2726233351382997147
@@ -4599,7 +4599,7 @@
         "Talents",
         "2"
       ],
-      "sha256": "2b05163dddcaf25d9c57a12aeca047e4f223db9c590ac342b248148743b046f9",
+      "objectSha256": "2b05163dddcaf25d9c57a12aeca047e4f223db9c590ac342b248148743b046f9",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 9073738633337710967
@@ -4677,7 +4677,7 @@
         "Body",
         "HealAura"
       ],
-      "sha256": "9ed058f158b8170ae88244b78eac3c93b15a2e1e651546320e780ca3f625c6b5",
+      "objectSha256": "9ed058f158b8170ae88244b78eac3c93b15a2e1e651546320e780ca3f625c6b5",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 9073738633337710967
@@ -4755,7 +4755,7 @@
         "Body",
         "HealAura"
       ],
-      "sha256": "9794eeb1042280951d21243c1e758f69e0fd7d133bb1d41cf12815fc62879efd",
+      "objectSha256": "9794eeb1042280951d21243c1e758f69e0fd7d133bb1d41cf12815fc62879efd",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 9073738633337710967
@@ -4863,7 +4863,7 @@
         "PassiveAbilities",
         "DieToKillToken"
       ],
-      "sha256": "3f53362d2cf37551c6b2d6f0f89ad160b539bf8b8ebec380d972658b6984c2c4",
+      "objectSha256": "3f53362d2cf37551c6b2d6f0f89ad160b539bf8b8ebec380d972658b6984c2c4",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 3800760148018415462
@@ -4931,7 +4931,7 @@
         "Talents",
         "2"
       ],
-      "sha256": "3755ef97c06927b1ce002f33e8196115628d9ec650e3cb5084208753eea7cd24",
+      "objectSha256": "3755ef97c06927b1ce002f33e8196115628d9ec650e3cb5084208753eea7cd24",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -3637692038217913187
@@ -4984,7 +4984,7 @@
         "Body",
         "HealAura"
       ],
-      "sha256": "04a945522ce4372a3704f13808a44a8ab6d2db7cd6780bfbf6da35a4aa6ea2cd",
+      "objectSha256": "04a945522ce4372a3704f13808a44a8ab6d2db7cd6780bfbf6da35a4aa6ea2cd",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 9073738633337710967
@@ -5060,7 +5060,7 @@
         "Modes",
         "S3"
       ],
-      "sha256": "5bf2121d9cf1f55d7f3f904a140bc68d549b0efdead085c337bf9d414066e13c",
+      "objectSha256": "5bf2121d9cf1f55d7f3f904a140bc68d549b0efdead085c337bf9d414066e13c",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 5390319429299248724
@@ -5106,7 +5106,7 @@
         "Talents",
         "1"
       ],
-      "sha256": "fe130a6ee63ea2bf973c87dc1854e21099985e9b12300cca22b18b38609e41c9",
+      "objectSha256": "fe130a6ee63ea2bf973c87dc1854e21099985e9b12300cca22b18b38609e41c9",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 3800760148018415462
@@ -5176,7 +5176,7 @@
         "Talents",
         "1"
       ],
-      "sha256": "6d84222b5bd50f749c369ace0df02d5af7b04dd06d148ad5d47d854fda93e144",
+      "objectSha256": "6d84222b5bd50f749c369ace0df02d5af7b04dd06d148ad5d47d854fda93e144",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -2726233351382997147
@@ -5211,7 +5211,7 @@
         "Modes",
         "Default"
       ],
-      "sha256": "3fd33132c7f98766f842750c96501cb8b7a39a449d71dd95da31a650fec11098",
+      "objectSha256": "3fd33132c7f98766f842750c96501cb8b7a39a449d71dd95da31a650fec11098",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 5390319429299248724
@@ -5260,7 +5260,7 @@
         "Modes",
         "S2_TakeOff"
       ],
-      "sha256": "2b73c91b6d2f1ba37c36d3ebf8d090bd9b1735631e68638ad4f003cedf40cdf8",
+      "objectSha256": "2b73c91b6d2f1ba37c36d3ebf8d090bd9b1735631e68638ad4f003cedf40cdf8",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 5390319429299248724
@@ -5312,7 +5312,7 @@
         "Attack",
         "Selector"
       ],
-      "sha256": "5d7f1cc2dab3fab512c91b688f4dd8a900c4136a950a42b196a4432610df0afc",
+      "objectSha256": "5d7f1cc2dab3fab512c91b688f4dd8a900c4136a950a42b196a4432610df0afc",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 8825083085497120218
@@ -5370,7 +5370,7 @@
         "Attack",
         "Selector"
       ],
-      "sha256": "89e58dc3135d9de72b529ada394d46425aab811261dc165970dc6b4bf36484f2",
+      "objectSha256": "89e58dc3135d9de72b529ada394d46425aab811261dc165970dc6b4bf36484f2",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 8825083085497120218
@@ -5428,7 +5428,7 @@
         "Attack",
         "Selector"
       ],
-      "sha256": "c927a9974cf85f9641810faf03309fa70ce32dd9895e985642bc05ec5e54983c",
+      "objectSha256": "c927a9974cf85f9641810faf03309fa70ce32dd9895e985642bc05ec5e54983c",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 7080728813803358465
@@ -5488,7 +5488,7 @@
         "Body",
         "Attack"
       ],
-      "sha256": "8e643f8edf5f0a0fac5ff2150c7cf0e847ec6e655a6088b667dddc045f47c262",
+      "objectSha256": "8e643f8edf5f0a0fac5ff2150c7cf0e847ec6e655a6088b667dddc045f47c262",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -8109327635834973011
@@ -5566,7 +5566,7 @@
         "Attack",
         "Selector"
       ],
-      "sha256": "7ba61dc3ccb9a1b9cb67fa3b75d51eb1b1132d167d87600fa909b84008a7e69b",
+      "objectSha256": "7ba61dc3ccb9a1b9cb67fa3b75d51eb1b1132d167d87600fa909b84008a7e69b",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 7080728813803358465
@@ -5627,7 +5627,7 @@
         "Attack",
         "Selector"
       ],
-      "sha256": "baf6ae9242eb96659dbdd6f66237f371cce39f7f62a31e52859b4ba3bded2529",
+      "objectSha256": "baf6ae9242eb96659dbdd6f66237f371cce39f7f62a31e52859b4ba3bded2529",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 8607874384982393801
@@ -5662,7 +5662,7 @@
         "GeneralAbilities",
         "ClearFlyState"
       ],
-      "sha256": "5c9576b38865a3c89e0e4993f8b859e56c5399ff0629e5e1b7f19ba802c00214",
+      "objectSha256": "5c9576b38865a3c89e0e4993f8b859e56c5399ff0629e5e1b7f19ba802c00214",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 3800760148018415462
@@ -5732,7 +5732,7 @@
         "Body",
         "Attack"
       ],
-      "sha256": "52a8142fb6ff1113aaf1cb9f107dd003afc8bde092dfba1dde82209dbb24b575",
+      "objectSha256": "52a8142fb6ff1113aaf1cb9f107dd003afc8bde092dfba1dde82209dbb24b575",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -8109327635834973011
@@ -5807,7 +5807,7 @@
         "Modes",
         "S2"
       ],
-      "sha256": "ee937a7ba7550f12a61f3068bd43ee612f4463950caa6bdc02db1cedc86ca74c",
+      "objectSha256": "ee937a7ba7550f12a61f3068bd43ee612f4463950caa6bdc02db1cedc86ca74c",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 5390319429299248724
@@ -5860,7 +5860,7 @@
         "Selector",
         "Selector1"
       ],
-      "sha256": "81e2985f7ecebdd5c38989b459635cdff185069bc82f1d84e6fdeaf22a9363b1",
+      "objectSha256": "81e2985f7ecebdd5c38989b459635cdff185069bc82f1d84e6fdeaf22a9363b1",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 840206743537877183
@@ -5922,7 +5922,7 @@
         "Body",
         "Attack"
       ],
-      "sha256": "ddffa611923e14a7ccac4c18f5116e45a150dcac814455a9b0fae86f3a096709",
+      "objectSha256": "ddffa611923e14a7ccac4c18f5116e45a150dcac814455a9b0fae86f3a096709",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 8145049199648393782
@@ -5967,7 +5967,7 @@
         "GeneralAbilities",
         "TakeoffEffect"
       ],
-      "sha256": "62372f153367f3b185c3c08cb044a6604b6c90ec275b6032032c8fb4e5fd3ee0",
+      "objectSha256": "62372f153367f3b185c3c08cb044a6604b6c90ec275b6032032c8fb4e5fd3ee0",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 3800760148018415462
@@ -6100,7 +6100,7 @@
         "GeneralAbilities",
         "LandEffecct"
       ],
-      "sha256": "186e3868eecf6323aee7f2130cbf7bfc6579bdda0451dd493e867d242935161c",
+      "objectSha256": "186e3868eecf6323aee7f2130cbf7bfc6579bdda0451dd493e867d242935161c",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 3800760148018415462
@@ -6230,7 +6230,7 @@
         "Modes",
         "S1_TakeOff"
       ],
-      "sha256": "6e2c38bf643b1f75f1cbcd942d7941779c5af7029f936b5568c6bb5f3d375289",
+      "objectSha256": "6e2c38bf643b1f75f1cbcd942d7941779c5af7029f936b5568c6bb5f3d375289",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 5390319429299248724
@@ -6279,7 +6279,7 @@
         "Modes",
         "S1"
       ],
-      "sha256": "f59567760ee44ab0f041db7df1d851c2a53b72a0ceba28f19a7c9299117bef37",
+      "objectSha256": "f59567760ee44ab0f041db7df1d851c2a53b72a0ceba28f19a7c9299117bef37",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 5390319429299248724
@@ -6330,7 +6330,7 @@
         "Body",
         "Attack"
       ],
-      "sha256": "782ef7558ab1ec104d0aaa300a7fb824045030d7d32a07ea4abcf689932e070a",
+      "objectSha256": "782ef7558ab1ec104d0aaa300a7fb824045030d7d32a07ea4abcf689932e070a",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -3698736381282439861
@@ -6377,7 +6377,7 @@
         "Body",
         "Attack"
       ],
-      "sha256": "77f1eccb7858ac911f026f60e4ab361ef66862184e32a5d6fbb8dd5acce4d11e",
+      "objectSha256": "77f1eccb7858ac911f026f60e4ab361ef66862184e32a5d6fbb8dd5acce4d11e",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 8145049199648393782
@@ -6421,7 +6421,7 @@
         "Body",
         "Attack"
       ],
-      "sha256": "0ae146dadefee0bb29e7a94f03dbb73f761a4579e807b22cb18edb97e007e6a4",
+      "objectSha256": "0ae146dadefee0bb29e7a94f03dbb73f761a4579e807b22cb18edb97e007e6a4",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -8109327635834973011
@@ -6503,7 +6503,7 @@
         "Body",
         "Attack"
       ],
-      "sha256": "d2fdc20a35ed3afd0fc1adaf79dc5f1c499e4c76a66bfaa56631f4d1f356e71f",
+      "objectSha256": "d2fdc20a35ed3afd0fc1adaf79dc5f1c499e4c76a66bfaa56631f4d1f356e71f",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -8109327635834973011
@@ -6575,7 +6575,7 @@
         "Body",
         "Attack"
       ],
-      "sha256": "75300c9cc0aa7a2094402c84de90e538176e4b168e7dc574d89ae09b625737b6",
+      "objectSha256": "75300c9cc0aa7a2094402c84de90e538176e4b168e7dc574d89ae09b625737b6",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -8109327635834973011
@@ -6642,7 +6642,7 @@
         "GeneralAbilities",
         "LoopEffect"
       ],
-      "sha256": "b97f1f516521ac59ace23e50693710b694d11a5f2ebc9d10aeeb0a50ded460b9",
+      "objectSha256": "b97f1f516521ac59ace23e50693710b694d11a5f2ebc9d10aeeb0a50ded460b9",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 3800760148018415462
@@ -6803,7 +6803,7 @@
         "Modes",
         "S1_Landing"
       ],
-      "sha256": "c427df5fb2e976c2e07b68fc955828c60bf499491caa63437349894a2fae70a6",
+      "objectSha256": "c427df5fb2e976c2e07b68fc955828c60bf499491caa63437349894a2fae70a6",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 5390319429299248724
@@ -6854,7 +6854,7 @@
         "Body",
         "Attack"
       ],
-      "sha256": "b76080810b4d140fa058933b0ebeb30700dcdae17538f9b9b552ee9508d72ddc",
+      "objectSha256": "b76080810b4d140fa058933b0ebeb30700dcdae17538f9b9b552ee9508d72ddc",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -8109327635834973011
@@ -6929,7 +6929,7 @@
         "Modes",
         "S2_Landing"
       ],
-      "sha256": "4b7d9d9325388ffa3ccfb0700f18470a4a2b2c8f9c3a7f052be932dcff30ab0c",
+      "objectSha256": "4b7d9d9325388ffa3ccfb0700f18470a4a2b2c8f9c3a7f052be932dcff30ab0c",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 5390319429299248724
@@ -6980,7 +6980,7 @@
         "Body",
         "Attack"
       ],
-      "sha256": "2deea7cb8f6c91c9b86667b61c751a656576c4c7be0d39d66f7407d18e5e4e1b",
+      "objectSha256": "2deea7cb8f6c91c9b86667b61c751a656576c4c7be0d39d66f7407d18e5e4e1b",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 4156651312234227407
@@ -7028,7 +7028,7 @@
         "Attack",
         "Selector"
       ],
-      "sha256": "4a92b225975dcf62350aa7697caa60ace29dc04567dd7de6a09ce3821e928abc",
+      "objectSha256": "4a92b225975dcf62350aa7697caa60ace29dc04567dd7de6a09ce3821e928abc",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 7080728813803358465
@@ -7090,7 +7090,7 @@
         "Selector",
         "Selector1"
       ],
-      "sha256": "ec9f30a500c60027664da052bad9ec1437138d3aad486576ee9c2a30d195d823",
+      "objectSha256": "ec9f30a500c60027664da052bad9ec1437138d3aad486576ee9c2a30d195d823",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 840206743537877183
@@ -7154,7 +7154,7 @@
         "Selector",
         "Selector0"
       ],
-      "sha256": "4eb686bcff95f72abea91f781e86b14f0c668bd57652b67234940306f7b8a9cf",
+      "objectSha256": "4eb686bcff95f72abea91f781e86b14f0c668bd57652b67234940306f7b8a9cf",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 7080728813803358465
@@ -7216,7 +7216,7 @@
         "Selector",
         "Selector0"
       ],
-      "sha256": "32e328a311bdfe445270cead0fca1847ccfbae5f358ef0a25fd6d1100df19f4f",
+      "objectSha256": "32e328a311bdfe445270cead0fca1847ccfbae5f358ef0a25fd6d1100df19f4f",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 7080728813803358465
@@ -7277,7 +7277,7 @@
         "Attack",
         "Selector"
       ],
-      "sha256": "f09b5ec716a75976cbd8ef0ad4bbc59c2b33dea682421fff53dc02fdede7050c",
+      "objectSha256": "f09b5ec716a75976cbd8ef0ad4bbc59c2b33dea682421fff53dc02fdede7050c",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 8607874384982393801
@@ -7312,7 +7312,7 @@
         "GeneralAbilities",
         "TakeoffEffect"
       ],
-      "sha256": "71bbb1004db5b7bb6a9377233f71f3119779d896a43ad4ca4f0c02eb3532b855",
+      "objectSha256": "71bbb1004db5b7bb6a9377233f71f3119779d896a43ad4ca4f0c02eb3532b855",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 3800760148018415462
@@ -7445,7 +7445,7 @@
         "GeneralAbilities",
         "LoopEffect"
       ],
-      "sha256": "53b4ffd21c47d6d439e8d93e95d32ea1549deeb8a3f16bd8447413d7d705871b",
+      "objectSha256": "53b4ffd21c47d6d439e8d93e95d32ea1549deeb8a3f16bd8447413d7d705871b",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 3800760148018415462
@@ -7608,7 +7608,7 @@
         "Body",
         "Attack"
       ],
-      "sha256": "8bf0492bbed02d43f49ad4044176ad6b8ccdb17fe417d0bc4189a90db2f4a6fd",
+      "objectSha256": "8bf0492bbed02d43f49ad4044176ad6b8ccdb17fe417d0bc4189a90db2f4a6fd",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -8109327635834973011
@@ -7686,7 +7686,7 @@
       "hierarchy": [
         "char_4191_tippi"
       ],
-      "sha256": "36b3883e905233ff2f17a26fd300e0667b959ecb26fa3760cfa3350e1e91a681",
+      "objectSha256": "36b3883e905233ff2f17a26fd300e0667b959ecb26fa3760cfa3350e1e91a681",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -1297314214590689040
@@ -7756,7 +7756,7 @@
         "Body",
         "Attack"
       ],
-      "sha256": "8edfbec0af770e3e3248d08b8c87996851d03a9eb689df91765cff72c83888a5",
+      "objectSha256": "8edfbec0af770e3e3248d08b8c87996851d03a9eb689df91765cff72c83888a5",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -8109327635834973011
@@ -7822,7 +7822,7 @@
         "Body",
         "Attack"
       ],
-      "sha256": "76d0b1d3de4fa07691d8cc6ed2ec35c79299ed349929baabb87e5bdcda3e159a",
+      "objectSha256": "76d0b1d3de4fa07691d8cc6ed2ec35c79299ed349929baabb87e5bdcda3e159a",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 8145049199648393782
@@ -7867,7 +7867,7 @@
         "Attack",
         "Selector"
       ],
-      "sha256": "62eedb747f4052f6fea1106284bddfdb7b83240e6710520a391f37b08238553c",
+      "objectSha256": "62eedb747f4052f6fea1106284bddfdb7b83240e6710520a391f37b08238553c",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 7080728813803358465
@@ -7927,7 +7927,7 @@
         "Body",
         "Attack"
       ],
-      "sha256": "5001afc78905067da5936e311e47693968a5c7cb4a658269cdbbed8668fc813c",
+      "objectSha256": "5001afc78905067da5936e311e47693968a5c7cb4a658269cdbbed8668fc813c",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -8109327635834973011
@@ -8000,7 +8000,7 @@
         "GeneralAbilities",
         "LandEffecct"
       ],
-      "sha256": "981ef3ca68b9a1e4184e7e810aa4ccb85aa3834383981086ee56ecc329894c39",
+      "objectSha256": "981ef3ca68b9a1e4184e7e810aa4ccb85aa3834383981086ee56ecc329894c39",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 3800760148018415462
@@ -8132,7 +8132,7 @@
         "Body",
         "Attack"
       ],
-      "sha256": "641a3f23d388beffa5a3be25d39ceb630a3a04bfc693c9bdc8693809bf7f6de6",
+      "objectSha256": "641a3f23d388beffa5a3be25d39ceb630a3a04bfc693c9bdc8693809bf7f6de6",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -8109327635834973011
@@ -8209,7 +8209,7 @@
         "Body",
         "Attack"
       ],
-      "sha256": "9eb80dda58a5354a7fb14a8de023ef2bd086f7ed05e878eb5a081ab06c478a28",
+      "objectSha256": "9eb80dda58a5354a7fb14a8de023ef2bd086f7ed05e878eb5a081ab06c478a28",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 4156651312234227407
@@ -8257,7 +8257,7 @@
         "Attack",
         "Selector"
       ],
-      "sha256": "020aba471898675d08aae0a70f1d00bcb5b99360b8157fbfc849133d89087506",
+      "objectSha256": "020aba471898675d08aae0a70f1d00bcb5b99360b8157fbfc849133d89087506",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 840206743537877183
@@ -8319,7 +8319,7 @@
         "Body",
         "Attack"
       ],
-      "sha256": "56d73be34b6088e9485b0f8b35f9882bb673f2f7af9a76804f6262d434f412c7",
+      "objectSha256": "56d73be34b6088e9485b0f8b35f9882bb673f2f7af9a76804f6262d434f412c7",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 8145049199648393782
@@ -8364,7 +8364,7 @@
         "Attack",
         "Selector"
       ],
-      "sha256": "e08ed0da8c801188fa9de07ccf561cd0cd57dd79b96959771ada8b87dfc800e0",
+      "objectSha256": "e08ed0da8c801188fa9de07ccf561cd0cd57dd79b96959771ada8b87dfc800e0",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 8607874384982393801
@@ -8399,7 +8399,7 @@
         "Attack",
         "Trigger"
       ],
-      "sha256": "ba921cdc6069b77b9ba34d7e0a3ba81f206588353349893d735e17ca694c0e29",
+      "objectSha256": "ba921cdc6069b77b9ba34d7e0a3ba81f206588353349893d735e17ca694c0e29",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 840206743537877183
@@ -8461,7 +8461,7 @@
         "Talents",
         "1"
       ],
-      "sha256": "10fc3eefc5c14634213a789193931bd0c1bb44e2b55e45713a1de13cdb364bcd",
+      "objectSha256": "10fc3eefc5c14634213a789193931bd0c1bb44e2b55e45713a1de13cdb364bcd",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 9073738633337710967
@@ -8543,7 +8543,7 @@
       "hierarchy": [
         "char_325_bison"
       ],
-      "sha256": "794e4561535e2b261d5c8fa57947e75082a19cfd00d6b312f0f67af52a0bbca6",
+      "objectSha256": "794e4561535e2b261d5c8fa57947e75082a19cfd00d6b312f0f67af52a0bbca6",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -1297314214590689040
@@ -8594,7 +8594,7 @@
         "Attack",
         "Trigger"
       ],
-      "sha256": "10317cd01059fd125fca89e1b82023ce81d14db2a57a5660f5acaff2e19bb1da",
+      "objectSha256": "10317cd01059fd125fca89e1b82023ce81d14db2a57a5660f5acaff2e19bb1da",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 8607874384982393801
@@ -8628,7 +8628,7 @@
         "Body",
         "Attack"
       ],
-      "sha256": "182d418c9bf964ed1965938a51515451cf271000f7eed2fa68ee105509d4b75f",
+      "objectSha256": "182d418c9bf964ed1965938a51515451cf271000f7eed2fa68ee105509d4b75f",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 4381884627089348317
@@ -8674,7 +8674,7 @@
         "Body",
         "Attack"
       ],
-      "sha256": "8d2ceac39dd5979e3f9b7dca6da17aba853e3959cfa93e3b5e5b2050a61d7711",
+      "objectSha256": "8d2ceac39dd5979e3f9b7dca6da17aba853e3959cfa93e3b5e5b2050a61d7711",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 4381884627089348317
@@ -8718,7 +8718,7 @@
         "Modes",
         "Default"
       ],
-      "sha256": "2fe3fd6d603bbc95c6c0c1555fab06421d10d91bde6b7181bcafc2926c952e50",
+      "objectSha256": "2fe3fd6d603bbc95c6c0c1555fab06421d10d91bde6b7181bcafc2926c952e50",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 5390319429299248724
@@ -8764,7 +8764,7 @@
         "Talents",
         "1"
       ],
-      "sha256": "d16e2d72c0542527edfecb28872e2d8297abf500f4043bca8648dbed9e636f69",
+      "objectSha256": "d16e2d72c0542527edfecb28872e2d8297abf500f4043bca8648dbed9e636f69",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -3637692038217913187
@@ -8817,7 +8817,7 @@
         "Talents",
         "1"
       ],
-      "sha256": "2e6d4c0951db4d85b347063f31f654015eaa201cc08fbe05518f30a3d18999d8",
+      "objectSha256": "2e6d4c0951db4d85b347063f31f654015eaa201cc08fbe05518f30a3d18999d8",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -2726233351382997147
@@ -8852,7 +8852,7 @@
         "Modes",
         "S2"
       ],
-      "sha256": "bb536ed4c599398048e0258a48f9269c6cd719de000569ae43e29c491885a5c5",
+      "objectSha256": "bb536ed4c599398048e0258a48f9269c6cd719de000569ae43e29c491885a5c5",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 5390319429299248724
@@ -8894,7 +8894,7 @@
       "hierarchy": [
         "char_4062_totter"
       ],
-      "sha256": "0da5eb58746bf72010cf57b00d9bd02ca67836c99f8e551bf9688fdb113f1274",
+      "objectSha256": "0da5eb58746bf72010cf57b00d9bd02ca67836c99f8e551bf9688fdb113f1274",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -1297314214590689040
@@ -8946,7 +8946,7 @@
         "S2NormalAttack",
         "Selector"
       ],
-      "sha256": "342f77ca51d64ea3661305ef54d14c51b79e6d705f3ce2be8c9efb5c4fd04db1",
+      "objectSha256": "342f77ca51d64ea3661305ef54d14c51b79e6d705f3ce2be8c9efb5c4fd04db1",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 7080728813803358465
@@ -9007,7 +9007,7 @@
         "Attack",
         "Selector"
       ],
-      "sha256": "9fc6ad3dab9184ed9a3262b3eff2c2b4e90abe4aa3af27b870ba372586d8473e",
+      "objectSha256": "9fc6ad3dab9184ed9a3262b3eff2c2b4e90abe4aa3af27b870ba372586d8473e",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 7080728813803358465
@@ -9067,7 +9067,7 @@
         "Body",
         "Attack"
       ],
-      "sha256": "5420d36a79a7b2a853922fa730a61f2ec383ec1173b3e998f14699815fa9266d",
+      "objectSha256": "5420d36a79a7b2a853922fa730a61f2ec383ec1173b3e998f14699815fa9266d",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 4156651312234227407
@@ -9114,7 +9114,7 @@
         "Talents",
         "1"
       ],
-      "sha256": "ab7e1884cc25eaa1a745eea7a14b44db7e74dc9067e58a6b54fe11ea4964c873",
+      "objectSha256": "ab7e1884cc25eaa1a745eea7a14b44db7e74dc9067e58a6b54fe11ea4964c873",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -2726233351382997147
@@ -9151,7 +9151,7 @@
         "Talents",
         "1"
       ],
-      "sha256": "2d456bec71e356ef6382745c3ece22a2079c6e0a24e3985007b977e85e40d234",
+      "objectSha256": "2d456bec71e356ef6382745c3ece22a2079c6e0a24e3985007b977e85e40d234",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -3637692038217913187
@@ -9205,7 +9205,7 @@
         "Attack",
         "Selector"
       ],
-      "sha256": "7e716afa9d26e2833406b14517e2532fcf51f248d0613a91b6230281e45f6a84",
+      "objectSha256": "7e716afa9d26e2833406b14517e2532fcf51f248d0613a91b6230281e45f6a84",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 8607874384982393801
@@ -9241,7 +9241,7 @@
         "S2NormalAttack",
         "Selector"
       ],
-      "sha256": "dd7fbcc2039a8ef986e94c3b834ebab62c378bec9848313304038bc91f685408",
+      "objectSha256": "dd7fbcc2039a8ef986e94c3b834ebab62c378bec9848313304038bc91f685408",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 8607874384982393801
@@ -9276,7 +9276,7 @@
         "Attack",
         "S2NormalAttack"
       ],
-      "sha256": "9014c057727e971ba244495f89029a8a36900efb2b1ddf436faf26dd6355ee84",
+      "objectSha256": "9014c057727e971ba244495f89029a8a36900efb2b1ddf436faf26dd6355ee84",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 4156651312234227407
@@ -9321,7 +9321,7 @@
         "Modes",
         "Default"
       ],
-      "sha256": "973c4e0e2481fe1fd8614e3c655889e6d4cc751c6e1b0afc04ec63d361a6b51a",
+      "objectSha256": "973c4e0e2481fe1fd8614e3c655889e6d4cc751c6e1b0afc04ec63d361a6b51a",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 5390319429299248724
@@ -9368,7 +9368,7 @@
         "Attack",
         "S2CriticalAttack"
       ],
-      "sha256": "95b77f92df56b4738e1c26fdd47ef9627a63cc2e88332a9556608b2925a96db4",
+      "objectSha256": "95b77f92df56b4738e1c26fdd47ef9627a63cc2e88332a9556608b2925a96db4",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 4156651312234227407
@@ -9417,7 +9417,7 @@
         "S2CriticalAttack",
         "Selector"
       ],
-      "sha256": "36098f29d6a09b32cba8a0b04caf22879dbb04c80dfdf2770781d7e3f57d706b",
+      "objectSha256": "36098f29d6a09b32cba8a0b04caf22879dbb04c80dfdf2770781d7e3f57d706b",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 8607874384982393801
@@ -9451,7 +9451,7 @@
         "Body",
         "Attack"
       ],
-      "sha256": "bb566faed49ab9edb9a765b9137a56661287155b2732f78aa6844e1d11c99e9b",
+      "objectSha256": "bb566faed49ab9edb9a765b9137a56661287155b2732f78aa6844e1d11c99e9b",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 5752393290759919736
@@ -9488,7 +9488,7 @@
         "S2CriticalAttack",
         "Selector"
       ],
-      "sha256": "113b4236cf798df5b1498a52ad59eb69bbd3c40255ba21254a5ca525f8dbf995",
+      "objectSha256": "113b4236cf798df5b1498a52ad59eb69bbd3c40255ba21254a5ca525f8dbf995",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 7080728813803358465
@@ -9548,7 +9548,7 @@
         "Talents",
         "1"
       ],
-      "sha256": "43aa38b2f0a9a82d2ce060d3b713552afa44fc1265fd67ca2eab76f0c954b5b3",
+      "objectSha256": "43aa38b2f0a9a82d2ce060d3b713552afa44fc1265fd67ca2eab76f0c954b5b3",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 9073738633337710967
@@ -9624,7 +9624,7 @@
         "Modes",
         "S2"
       ],
-      "sha256": "94194e9c85a0e08717184c3ca9aa59a0b2eb97aa45c9cab43788c74b81980760",
+      "objectSha256": "94194e9c85a0e08717184c3ca9aa59a0b2eb97aa45c9cab43788c74b81980760",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 5390319429299248724
@@ -9668,7 +9668,7 @@
         "Talents",
         "2"
       ],
-      "sha256": "80706ce94301e33aa3b31c720951e120796338f0ded6530db39caaa47b4f447b",
+      "objectSha256": "80706ce94301e33aa3b31c720951e120796338f0ded6530db39caaa47b4f447b",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -2726233351382997147
@@ -9706,7 +9706,7 @@
         "Attack",
         "Trigger"
       ],
-      "sha256": "9d20cb908c9289a2cc1bfe4f822a687f963eee202ca15aad3691e9430e8c7c8f",
+      "objectSha256": "9d20cb908c9289a2cc1bfe4f822a687f963eee202ca15aad3691e9430e8c7c8f",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 6940084543309024326
@@ -9768,7 +9768,7 @@
         "Talents",
         "2"
       ],
-      "sha256": "5d5675b974166d9640ebdf933c7887eafb1c064efb1bd756a4dd56a3e72d93ac",
+      "objectSha256": "5d5675b974166d9640ebdf933c7887eafb1c064efb1bd756a4dd56a3e72d93ac",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 3800760148018415462
@@ -9838,7 +9838,7 @@
         "Body",
         "Attack"
       ],
-      "sha256": "2b9a0e9dbf9cf9a5dbb20712e22ba95a0addc9d8e1a66643c88ab9a264f5c215",
+      "objectSha256": "2b9a0e9dbf9cf9a5dbb20712e22ba95a0addc9d8e1a66643c88ab9a264f5c215",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 4381884627089348317
@@ -9916,7 +9916,7 @@
         "Body",
         "Heal"
       ],
-      "sha256": "86430f28e21e49bff0c2a5474b55f97c278a699f0a59c3e81fd3303c89d85e5a",
+      "objectSha256": "86430f28e21e49bff0c2a5474b55f97c278a699f0a59c3e81fd3303c89d85e5a",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -3637692038217913187
@@ -9970,7 +9970,7 @@
         "Attack",
         "Trigger"
       ],
-      "sha256": "d5b3d18c5453041aea0033cc32d7e0493bdfbd30652732844f2021fcfcefe32a",
+      "objectSha256": "d5b3d18c5453041aea0033cc32d7e0493bdfbd30652732844f2021fcfcefe32a",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 5739565485717287714
@@ -10005,7 +10005,7 @@
         "Attack",
         "Trigger"
       ],
-      "sha256": "bb945485b798331919e0752c4eca7e714478defc970fcdc42eef432291e9667e",
+      "objectSha256": "bb945485b798331919e0752c4eca7e714478defc970fcdc42eef432291e9667e",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 6940084543309024326
@@ -10067,7 +10067,7 @@
         "Modes",
         "T2_Default"
       ],
-      "sha256": "adcae4e274aa1b1de12c0cea9e032bd6427c75fd60ea629a714c3923d5534be4",
+      "objectSha256": "adcae4e274aa1b1de12c0cea9e032bd6427c75fd60ea629a714c3923d5534be4",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 5390319429299248724
@@ -10113,7 +10113,7 @@
         "Body",
         "Attack"
       ],
-      "sha256": "79cfb4531a7427826d436a804b2550793aaa840a7a57c10c66640a10e8f692da",
+      "objectSha256": "79cfb4531a7427826d436a804b2550793aaa840a7a57c10c66640a10e8f692da",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 4381884627089348317
@@ -10157,7 +10157,7 @@
         "Talents",
         "1"
       ],
-      "sha256": "ecec836540842821bceeda669cb8548e5adb5ef1820f264d7d5a3023e43b2879",
+      "objectSha256": "ecec836540842821bceeda669cb8548e5adb5ef1820f264d7d5a3023e43b2879",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -5793748974791823428
@@ -10235,7 +10235,7 @@
         "Body",
         "Heal"
       ],
-      "sha256": "1c584b49c5a7f86d7bc99a857167c5fc5e355177560bfe9aa17ae3bfb0cbaaff",
+      "objectSha256": "1c584b49c5a7f86d7bc99a857167c5fc5e355177560bfe9aa17ae3bfb0cbaaff",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 9073738633337710967
@@ -10346,7 +10346,7 @@
         "Attack",
         "Trigger"
       ],
-      "sha256": "2a4d7d8c5073fd3856eeadc03f29d742aaacb12bf178e64002f56de421942666",
+      "objectSha256": "2a4d7d8c5073fd3856eeadc03f29d742aaacb12bf178e64002f56de421942666",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 5739565485717287714
@@ -10380,7 +10380,7 @@
         "Body",
         "Attack"
       ],
-      "sha256": "657fe31559a8ecff988622e1cbe1d35df3df6fa6b11698401d90ff1ef366bb66",
+      "objectSha256": "657fe31559a8ecff988622e1cbe1d35df3df6fa6b11698401d90ff1ef366bb66",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 4381884627089348317
@@ -10424,7 +10424,7 @@
         "Modes",
         "S2"
       ],
-      "sha256": "7fa67a27451c003d586e081ab907efa6a03886975f6b5918c39fca0ba88f557e",
+      "objectSha256": "7fa67a27451c003d586e081ab907efa6a03886975f6b5918c39fca0ba88f557e",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 5390319429299248724
@@ -10475,7 +10475,7 @@
         "Body",
         "Attack"
       ],
-      "sha256": "5d311505951613d623dbb687bc1dd7337aca02a3c3be60a5c9515947044c1026",
+      "objectSha256": "5d311505951613d623dbb687bc1dd7337aca02a3c3be60a5c9515947044c1026",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 4381884627089348317
@@ -10522,7 +10522,7 @@
         "Attack",
         "Trigger"
       ],
-      "sha256": "566960f0dcd2fc3ce1714f8385684a493fb3d9563c16f88ac2b5e081356bb687",
+      "objectSha256": "566960f0dcd2fc3ce1714f8385684a493fb3d9563c16f88ac2b5e081356bb687",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 8607874384982393801
@@ -10557,7 +10557,7 @@
         "Attack",
         "Trigger"
       ],
-      "sha256": "450a12b16dfbc0f069ae6d3dc0bb81e6335d87d996cee6e25b93e3f911e52950",
+      "objectSha256": "450a12b16dfbc0f069ae6d3dc0bb81e6335d87d996cee6e25b93e3f911e52950",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 840206743537877183
@@ -10615,7 +10615,7 @@
       "hierarchy": [
         "char_423_blemsh"
       ],
-      "sha256": "0f803eab07580b405e7c6d6dcfb50fe5ae3402464d7797a50fae07d4f731fe3d",
+      "objectSha256": "0f803eab07580b405e7c6d6dcfb50fe5ae3402464d7797a50fae07d4f731fe3d",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -1297314214590689040
@@ -10671,7 +10671,7 @@
         "Talents",
         "1"
       ],
-      "sha256": "f2537c88c327078bab3fd4df9d3371b44d716617c3e25ff327ad5132d1a49849",
+      "objectSha256": "f2537c88c327078bab3fd4df9d3371b44d716617c3e25ff327ad5132d1a49849",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -2726233351382997147
@@ -10709,7 +10709,7 @@
         "Attack",
         "Trigger"
       ],
-      "sha256": "52a44eee66b5e3156fa504c8fb583dc2ed90874ed94eeab6c1e512428769c3db",
+      "objectSha256": "52a44eee66b5e3156fa504c8fb583dc2ed90874ed94eeab6c1e512428769c3db",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 6940084543309024326
@@ -10774,7 +10774,7 @@
         "Attack",
         "Trigger"
       ],
-      "sha256": "2c91502127fc74687408e40f4f58ccc278fafdf1129936aa48e2c896f57c74e8",
+      "objectSha256": "2c91502127fc74687408e40f4f58ccc278fafdf1129936aa48e2c896f57c74e8",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 5739565485717287714
@@ -10806,7 +10806,7 @@
         "Talents",
         "1"
       ],
-      "sha256": "d43f268594f555955d4de0dc66ed580ea884d8d372b7c78ad8017e2b38ccfd3a",
+      "objectSha256": "d43f268594f555955d4de0dc66ed580ea884d8d372b7c78ad8017e2b38ccfd3a",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -3637692038217913187
@@ -10857,7 +10857,7 @@
         "Modes",
         "S3"
       ],
-      "sha256": "b5a097fbd35dccc35c44431f5769b00304d58550a58fa42eb160167b7a1c381a",
+      "objectSha256": "b5a097fbd35dccc35c44431f5769b00304d58550a58fa42eb160167b7a1c381a",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 5390319429299248724
@@ -10901,7 +10901,7 @@
         "Modes",
         "Default"
       ],
-      "sha256": "33089df225eb7f8944efd79c35a1620d134128bdc15628cdaaa97bec0d91e70a",
+      "objectSha256": "33089df225eb7f8944efd79c35a1620d134128bdc15628cdaaa97bec0d91e70a",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 5390319429299248724
@@ -10947,7 +10947,7 @@
         "2",
         "tiles_ally"
       ],
-      "sha256": "1ba1be9ccb6774be9f78db9f7d3af1f135aed9ba4a7a9a609587f12e1157c9b0",
+      "objectSha256": "1ba1be9ccb6774be9f78db9f7d3af1f135aed9ba4a7a9a609587f12e1157c9b0",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -2262295142719172872
@@ -11025,7 +11025,7 @@
         "2",
         "global_enemy"
       ],
-      "sha256": "997b08bcd94970aa6dca232b54c0f813008f6f2b3b8d054cf9c5df0061b36b26",
+      "objectSha256": "997b08bcd94970aa6dca232b54c0f813008f6f2b3b8d054cf9c5df0061b36b26",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -3637692038217913187
@@ -11079,7 +11079,7 @@
         "Attack",
         "Selector"
       ],
-      "sha256": "f4a2abd9f8e0b745ead6105ef82418efa3d8771ba379d5bde2239cdbfbb24166",
+      "objectSha256": "f4a2abd9f8e0b745ead6105ef82418efa3d8771ba379d5bde2239cdbfbb24166",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 7080728813803358465
@@ -11139,7 +11139,7 @@
         "Talents",
         "2"
       ],
-      "sha256": "127551b49e47f725a2296b8b15aa4892fe47dadfcb2b983da16d9cb6ca4717e0",
+      "objectSha256": "127551b49e47f725a2296b8b15aa4892fe47dadfcb2b983da16d9cb6ca4717e0",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -4010828947651665554
@@ -11172,7 +11172,7 @@
         "Attack",
         "Selector"
       ],
-      "sha256": "0eeb226823d91df5002238b07d35b5cc7ce94c6393ca33ee696bb2172069f565",
+      "objectSha256": "0eeb226823d91df5002238b07d35b5cc7ce94c6393ca33ee696bb2172069f565",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 8607874384982393801
@@ -11207,7 +11207,7 @@
         "Talents",
         "1"
       ],
-      "sha256": "225675f4dd54f5743f8880a9aeab04b88afafa80719dac086d3d8a6561d10667",
+      "objectSha256": "225675f4dd54f5743f8880a9aeab04b88afafa80719dac086d3d8a6561d10667",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 9073738633337710967
@@ -11326,7 +11326,7 @@
         "Talents",
         "1"
       ],
-      "sha256": "5b68c969050b74c7353e6ecbec925b5c6057533f1bae8fe1c3832a8ba75373e0",
+      "objectSha256": "5b68c969050b74c7353e6ecbec925b5c6057533f1bae8fe1c3832a8ba75373e0",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -2726233351382997147
@@ -11359,7 +11359,7 @@
       "hierarchy": [
         "char_1039_thorn2"
       ],
-      "sha256": "6bc61490bd5316b1df11f3edb9db8ebfb9323bcb39893e92fa504b7525f889fd",
+      "objectSha256": "6bc61490bd5316b1df11f3edb9db8ebfb9323bcb39893e92fa504b7525f889fd",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -1297314214590689040
@@ -11415,7 +11415,7 @@
         "Attack",
         "Selector"
       ],
-      "sha256": "168e58f72ddd76520a0f3cea005530a1a6aec78d09cf329a3fe40282423a6153",
+      "objectSha256": "168e58f72ddd76520a0f3cea005530a1a6aec78d09cf329a3fe40282423a6153",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 7080728813803358465
@@ -11475,7 +11475,7 @@
         "Body",
         "Attack"
       ],
-      "sha256": "236db3e06b99030f03a55dd0265589775e17651e4251776111e9ba2063223f48",
+      "objectSha256": "236db3e06b99030f03a55dd0265589775e17651e4251776111e9ba2063223f48",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 4156651312234227407
@@ -11523,7 +11523,7 @@
         "Talents",
         "1"
       ],
-      "sha256": "2b0b1d45bc9b8d6f234dbe07f28401487604fce755e7800f044f0f0dc94281c7",
+      "objectSha256": "2b0b1d45bc9b8d6f234dbe07f28401487604fce755e7800f044f0f0dc94281c7",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -3637692038217913187
@@ -11576,7 +11576,7 @@
         "2",
         "tiles_ally"
       ],
-      "sha256": "4d0d6aefa9aed856a1202c2d82ffbfff67478b15b0747d5bf35e0c0db0e85fec",
+      "objectSha256": "4d0d6aefa9aed856a1202c2d82ffbfff67478b15b0747d5bf35e0c0db0e85fec",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -3637692038217913187
@@ -11629,7 +11629,7 @@
         "2",
         "global_ally"
       ],
-      "sha256": "8a56d41f6cf0bc166fbdd1b9e01c5791b2aa0cba54ba88e726e13509ad1f9e73",
+      "objectSha256": "8a56d41f6cf0bc166fbdd1b9e01c5791b2aa0cba54ba88e726e13509ad1f9e73",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -5793748974791823428
@@ -11739,7 +11739,7 @@
         "2",
         "global_ally"
       ],
-      "sha256": "3272d51c9638ea0e414a29bbc7b3bca83b878250ce20b8252b95ce7127d75906",
+      "objectSha256": "3272d51c9638ea0e414a29bbc7b3bca83b878250ce20b8252b95ce7127d75906",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -3637692038217913187
@@ -11790,7 +11790,7 @@
         "Modes",
         "Default"
       ],
-      "sha256": "0dd641f30f5e1d5f9d661bae2e44afd5a0c4e478f80dbfec76e96678d4611a07",
+      "objectSha256": "0dd641f30f5e1d5f9d661bae2e44afd5a0c4e478f80dbfec76e96678d4611a07",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 5390319429299248724
@@ -11834,7 +11834,7 @@
         "Modes",
         "S3"
       ],
-      "sha256": "1e565fb01488d77acd589d5170cbfa655b7e0e8534830155792b09b64ddee7f6",
+      "objectSha256": "1e565fb01488d77acd589d5170cbfa655b7e0e8534830155792b09b64ddee7f6",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 5390319429299248724
@@ -11881,7 +11881,7 @@
         "Talents",
         "1"
       ],
-      "sha256": "a0235859ff53b640b18dd7dabc7295ad7bf04d1ce8dab4bada686a2b0298ccd7",
+      "objectSha256": "a0235859ff53b640b18dd7dabc7295ad7bf04d1ce8dab4bada686a2b0298ccd7",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -2726233351382997147
@@ -11919,7 +11919,7 @@
         "Talents",
         "1"
       ],
-      "sha256": "c916bcb7ad746464c5e0d7d34122eaa15d750c8e9ad9b9c933732e8b0407307b",
+      "objectSha256": "c916bcb7ad746464c5e0d7d34122eaa15d750c8e9ad9b9c933732e8b0407307b",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 9073738633337710967
@@ -12037,7 +12037,7 @@
         "2",
         "global_enemy"
       ],
-      "sha256": "48d487d291538a8ce83f892966cba57fb07da8159214660095de0b1c0cdf3b0b",
+      "objectSha256": "48d487d291538a8ce83f892966cba57fb07da8159214660095de0b1c0cdf3b0b",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -5793748974791823428
@@ -12115,7 +12115,7 @@
         "Talents",
         "2"
       ],
-      "sha256": "332c796a176752bf5eca518324af105fa5257cbbc5e624f5de54f64a24822eaf",
+      "objectSha256": "332c796a176752bf5eca518324af105fa5257cbbc5e624f5de54f64a24822eaf",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 4865767822664548221
@@ -12150,7 +12150,7 @@
         "2",
         "tiles_enemy"
       ],
-      "sha256": "4219fca0a5d12420fc3f621c236db3c6f87807b8b9b49e305acc4212e9144ea8",
+      "objectSha256": "4219fca0a5d12420fc3f621c236db3c6f87807b8b9b49e305acc4212e9144ea8",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -2262295142719172872
@@ -12228,7 +12228,7 @@
         "Body",
         "Attack"
       ],
-      "sha256": "8fe1bec2d790437674ff9ec082eabd9511ddbbe13aba750681e9c5c4c4eac069",
+      "objectSha256": "8fe1bec2d790437674ff9ec082eabd9511ddbbe13aba750681e9c5c4c4eac069",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 4156651312234227407
@@ -12274,7 +12274,7 @@
         "Talent",
         "2"
       ],
-      "sha256": "e72a292063e38106556b59b4569a8dfa880183f56e5fea6e11699c434b6f4ff7",
+      "objectSha256": "e72a292063e38106556b59b4569a8dfa880183f56e5fea6e11699c434b6f4ff7",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -2726233351382997147
@@ -12312,7 +12312,7 @@
         "Talents",
         "1"
       ],
-      "sha256": "af5fef15cbb49fc1399c76761f2680261e671370dfd40fa73a1be756bd250421",
+      "objectSha256": "af5fef15cbb49fc1399c76761f2680261e671370dfd40fa73a1be756bd250421",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -3637692038217913187
@@ -12365,7 +12365,7 @@
         "CommonAbilities",
         "effect"
       ],
-      "sha256": "ef3c8d66e465985a9c849eb63e683e7f4689db87388b6a7702512b6255ae0a05",
+      "objectSha256": "ef3c8d66e465985a9c849eb63e683e7f4689db87388b6a7702512b6255ae0a05",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 3800760148018415462
@@ -12527,7 +12527,7 @@
         "Talent",
         "2"
       ],
-      "sha256": "d4ba642fc42966784588a58b4b149513a61aca546d01850bbfa14a1ead78bf4a",
+      "objectSha256": "d4ba642fc42966784588a58b4b149513a61aca546d01850bbfa14a1ead78bf4a",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 8671737732485835867
@@ -12583,7 +12583,7 @@
         "Attack",
         "Selector"
       ],
-      "sha256": "665b6dd1647802d2c239ae01bfc69be88a1590b6a38196a9ee8d9361e08fd885",
+      "objectSha256": "665b6dd1647802d2c239ae01bfc69be88a1590b6a38196a9ee8d9361e08fd885",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 8607874384982393801
@@ -12617,7 +12617,7 @@
         "2",
         "tiles_enemy"
       ],
-      "sha256": "210cc1e0c8e01edfcaaf7d3ea63747f46d6b958d02005e73a38e35da254cdf52",
+      "objectSha256": "210cc1e0c8e01edfcaaf7d3ea63747f46d6b958d02005e73a38e35da254cdf52",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -3637692038217913187
@@ -12670,7 +12670,7 @@
         "Talents",
         "-3"
       ],
-      "sha256": "0e813f7dcc4e310ab2ff3596876f55ad273cf8c54aa44c7edc66c3d0df22c6fa",
+      "objectSha256": "0e813f7dcc4e310ab2ff3596876f55ad273cf8c54aa44c7edc66c3d0df22c6fa",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -5482140055134904783
@@ -12733,7 +12733,7 @@
         "GlobalTeam",
         "Global"
       ],
-      "sha256": "23ca969a7be77420e6fe002ce0c028fd5fae0f01a0d519d3e1c563e2eb1ce945",
+      "objectSha256": "23ca969a7be77420e6fe002ce0c028fd5fae0f01a0d519d3e1c563e2eb1ce945",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -5793748974791823428
@@ -12811,7 +12811,7 @@
         "Talents",
         "2"
       ],
-      "sha256": "97618e0f0f4d208ec8e95e6c942e343b663126620c6c5830285ee5c53401ef6e",
+      "objectSha256": "97618e0f0f4d208ec8e95e6c942e343b663126620c6c5830285ee5c53401ef6e",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -2726233351382997147
@@ -12848,7 +12848,7 @@
         "Talents",
         "-3"
       ],
-      "sha256": "3cf1bfa4f5ccfd7f6c98609da53bfc35b76dbdbf584ad0e229be1ebce400eba2",
+      "objectSha256": "3cf1bfa4f5ccfd7f6c98609da53bfc35b76dbdbf584ad0e229be1ebce400eba2",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 3623325908489243688
@@ -12882,7 +12882,7 @@
         "GlobalTeamDouble",
         "Global"
       ],
-      "sha256": "7a27267696b52e3761fa9346e9c912827b8f35acee3b1b867d9e56276626f7a4",
+      "objectSha256": "7a27267696b52e3761fa9346e9c912827b8f35acee3b1b867d9e56276626f7a4",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -4193039724881536599
@@ -12941,7 +12941,7 @@
         "Attack",
         "AttackA"
       ],
-      "sha256": "a735730ef33160ad72842fd5ad6220428d4ae0355c6b30a2b8a332e869e9c34b",
+      "objectSha256": "a735730ef33160ad72842fd5ad6220428d4ae0355c6b30a2b8a332e869e9c34b",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 4381884627089348317
@@ -12985,7 +12985,7 @@
         "Modes",
         "S3"
       ],
-      "sha256": "66786d476ea109864c046c1d4c109b6eeabdb27e2eb53003a1d8e32a81b483c0",
+      "objectSha256": "66786d476ea109864c046c1d4c109b6eeabdb27e2eb53003a1d8e32a81b483c0",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 5390319429299248724
@@ -13033,7 +13033,7 @@
         "GlobalTeam",
         "Global"
       ],
-      "sha256": "5d05fbb9f13a54f7bc363d498f1529b611ca57affd9e9977b29c0b5921a0c6d2",
+      "objectSha256": "5d05fbb9f13a54f7bc363d498f1529b611ca57affd9e9977b29c0b5921a0c6d2",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -4193039724881536599
@@ -13092,7 +13092,7 @@
         "Attack",
         "AttackC"
       ],
-      "sha256": "441f8a0cea40e7eab367f7e679d0e81af3a43df52c249f80693514e0e7b4f5b5",
+      "objectSha256": "441f8a0cea40e7eab367f7e679d0e81af3a43df52c249f80693514e0e7b4f5b5",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 4381884627089348317
@@ -13138,7 +13138,7 @@
         "Talents",
         "-1"
       ],
-      "sha256": "c76ca9ece7b187fbba99e55b7a00c10b8beb9904937dcc41f21cef9796ee7435",
+      "objectSha256": "c76ca9ece7b187fbba99e55b7a00c10b8beb9904937dcc41f21cef9796ee7435",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 4865767822664548221
@@ -13169,7 +13169,7 @@
       "hierarchy": [
         "char_1045_svash2"
       ],
-      "sha256": "1fa6fdce42b504e63b490ee87c38a7f12e881bb06f729f79b2b2f06b47f6b3ec",
+      "objectSha256": "1fa6fdce42b504e63b490ee87c38a7f12e881bb06f729f79b2b2f06b47f6b3ec",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -1297314214590689040
@@ -13220,7 +13220,7 @@
         "2",
         "GlobalTeam"
       ],
-      "sha256": "37a91a11f624b0e6577711ac97c9b6830f7f1a231656b7a125bd655d7d933247",
+      "objectSha256": "37a91a11f624b0e6577711ac97c9b6830f7f1a231656b7a125bd655d7d933247",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 5588963537932396408
@@ -13265,7 +13265,7 @@
         "Talents",
         "-2"
       ],
-      "sha256": "aae763c143b0b5874cdead074941a992cccedcf0591ff3f4590c1bd76935bbcb",
+      "objectSha256": "aae763c143b0b5874cdead074941a992cccedcf0591ff3f4590c1bd76935bbcb",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 4865767822664548221
@@ -13300,7 +13300,7 @@
         "Talents",
         "2"
       ],
-      "sha256": "8e086a0ff32a8fa0f8d952476b9d3556bc53180c8cd9507134a00113fc8be8b1",
+      "objectSha256": "8e086a0ff32a8fa0f8d952476b9d3556bc53180c8cd9507134a00113fc8be8b1",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 3800760148018415462
@@ -13372,7 +13372,7 @@
         "Empty",
         "Selector"
       ],
-      "sha256": "00ac0369bb6a310139c4a4e19f520afcd7a5a1810b3ea6f98e9a521bb65bf063",
+      "objectSha256": "00ac0369bb6a310139c4a4e19f520afcd7a5a1810b3ea6f98e9a521bb65bf063",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 8607874384982393801
@@ -13407,7 +13407,7 @@
         "Attack",
         "Selector"
       ],
-      "sha256": "96f0e9261aa0e98b001c167da8c9b80f153007eff0f6e0a96052ba156b74dd27",
+      "objectSha256": "96f0e9261aa0e98b001c167da8c9b80f153007eff0f6e0a96052ba156b74dd27",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 8607874384982393801
@@ -13442,7 +13442,7 @@
         "Attack",
         "AttackB"
       ],
-      "sha256": "9725c574a80f72fb337d7fc2bcc394dfbb03e0d8decb1368ce22f99c805a5c85",
+      "objectSha256": "9725c574a80f72fb337d7fc2bcc394dfbb03e0d8decb1368ce22f99c805a5c85",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 4381884627089348317
@@ -13488,7 +13488,7 @@
         "Talents",
         "-5"
       ],
-      "sha256": "012910e4ce4062b42f6a23e4f03c61174a1d460ba761f833697017af3af89d02",
+      "objectSha256": "012910e4ce4062b42f6a23e4f03c61174a1d460ba761f833697017af3af89d02",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 4865767822664548221
@@ -13523,7 +13523,7 @@
         "Talents",
         "-4"
       ],
-      "sha256": "29689f9229dd9feda05edc518ca8e9a1419de58bd3042e82f77babbb97454262",
+      "objectSha256": "29689f9229dd9feda05edc518ca8e9a1419de58bd3042e82f77babbb97454262",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -3332997560282712760
@@ -13557,7 +13557,7 @@
         "Empty",
         "Selector"
       ],
-      "sha256": "e8d8c3945033c76dd12329f9e8e3f7fa8972ad508242444f62719d3c12bd73ca",
+      "objectSha256": "e8d8c3945033c76dd12329f9e8e3f7fa8972ad508242444f62719d3c12bd73ca",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 7080728813803358465
@@ -13618,7 +13618,7 @@
         "Attack",
         "Selector"
       ],
-      "sha256": "dd4b7859b365ee8cd00a0fffa8752521b4abd3f5356fdab0e93bd76c5429ae06",
+      "objectSha256": "dd4b7859b365ee8cd00a0fffa8752521b4abd3f5356fdab0e93bd76c5429ae06",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 840206743537877183
@@ -13680,7 +13680,7 @@
         "Talents",
         "2"
       ],
-      "sha256": "33ae6bafc488eb10100a745e75cc102982bda1850181cf12022ff4b031a9fa30",
+      "objectSha256": "33ae6bafc488eb10100a745e75cc102982bda1850181cf12022ff4b031a9fa30",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 5605707488871161295
@@ -13723,7 +13723,7 @@
         "Talents",
         "-2"
       ],
-      "sha256": "3d6ffa46432a7f180fa33e4b88dc017a8a4883eb35158ff5b6016eaaf08415a7",
+      "objectSha256": "3d6ffa46432a7f180fa33e4b88dc017a8a4883eb35158ff5b6016eaaf08415a7",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -2460740449315645746
@@ -13753,7 +13753,7 @@
         "Modes",
         "Default"
       ],
-      "sha256": "1b55f24e54551d7abb908fca8c9c6bd5863ff8cfbd94e1b5d2304695ddf0748b",
+      "objectSha256": "1b55f24e54551d7abb908fca8c9c6bd5863ff8cfbd94e1b5d2304695ddf0748b",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 5390319429299248724
@@ -13799,7 +13799,7 @@
         "Talents",
         "-6"
       ],
-      "sha256": "fb1b199652ad3e9c691b867ae8361fee0191e03c66ecd23203ecc8afeff10363",
+      "objectSha256": "fb1b199652ad3e9c691b867ae8361fee0191e03c66ecd23203ecc8afeff10363",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -3332997560282712760
@@ -13831,7 +13831,7 @@
         "Body",
         "Attack"
       ],
-      "sha256": "a9dd40820a18f30f9823f93356669301b3b0d13374c40603760f63aad5dca226",
+      "objectSha256": "a9dd40820a18f30f9823f93356669301b3b0d13374c40603760f63aad5dca226",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 5605707488871161295
@@ -13872,7 +13872,7 @@
         "GlobalTeamDouble",
         "Global"
       ],
-      "sha256": "c2f14eb2d25c89b3411697137a901cb23582ad4460c39af5021b457a352d0d79",
+      "objectSha256": "c2f14eb2d25c89b3411697137a901cb23582ad4460c39af5021b457a352d0d79",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -5793748974791823428
@@ -13950,7 +13950,7 @@
         "Body",
         "Attack"
       ],
-      "sha256": "651b270c2d50eb74bce56d12729ea362cd4b4ba126ab97d961be5bbd25797f52",
+      "objectSha256": "651b270c2d50eb74bce56d12729ea362cd4b4ba126ab97d961be5bbd25797f52",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 2702927552840241462
@@ -14027,7 +14027,7 @@
         "Attack",
         "Empty"
       ],
-      "sha256": "e923f540ee06d281489e506234aa8a1ae54f675a38c88e813c01a10c69e4ead3",
+      "objectSha256": "e923f540ee06d281489e506234aa8a1ae54f675a38c88e813c01a10c69e4ead3",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 2165892974539515790
@@ -14073,7 +14073,7 @@
         "Talents",
         "1"
       ],
-      "sha256": "4429124e8bc7fb78c9d52d421aa8e61c7b965f7b184fe12edaa7277803efd167",
+      "objectSha256": "4429124e8bc7fb78c9d52d421aa8e61c7b965f7b184fe12edaa7277803efd167",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -2726233351382997147
@@ -14110,7 +14110,7 @@
         "Talents",
         "1"
       ],
-      "sha256": "28b9459640edfafe30080744c0bf8a13397a9e7e9c8fced77de176f374783e6d",
+      "objectSha256": "28b9459640edfafe30080744c0bf8a13397a9e7e9c8fced77de176f374783e6d",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 3800760148018415462
@@ -14218,7 +14218,7 @@
         "2",
         "GlobalTeamDouble"
       ],
-      "sha256": "6bca30a5bd1061f5fce1a202448cb81553f87ecfe3558b153c2aaadc82ab8a48",
+      "objectSha256": "6bca30a5bd1061f5fce1a202448cb81553f87ecfe3558b153c2aaadc82ab8a48",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 5588963537932396408
@@ -14263,7 +14263,7 @@
         "Talents",
         "-3"
       ],
-      "sha256": "ffb6643787f930b6b7013a1ecdc2c141f95c5ed4d6447e53b8bd586a08836b44",
+      "objectSha256": "ffb6643787f930b6b7013a1ecdc2c141f95c5ed4d6447e53b8bd586a08836b44",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 3800760148018415462
@@ -14333,7 +14333,7 @@
         "Talents",
         "-1"
       ],
-      "sha256": "59c8aa498522757f089388573d2db0e6ed409fe7e99f17c59228051881060495",
+      "objectSha256": "59c8aa498522757f089388573d2db0e6ed409fe7e99f17c59228051881060495",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -2460740449315645746
@@ -14365,7 +14365,7 @@
         "Talents",
         "-5"
       ],
-      "sha256": "2eabda9436b9d9c2b73bb7d62d3140e6a871ca92f20c2e6d1b362b28d11b3717",
+      "objectSha256": "2eabda9436b9d9c2b73bb7d62d3140e6a871ca92f20c2e6d1b362b28d11b3717",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -3332997560282712760
@@ -14397,7 +14397,7 @@
         "Talents",
         "-4"
       ],
-      "sha256": "cf06f1e2a2469d23eaa44629a4f81e242a4b5873dfd5659d2fcfd710590d1a97",
+      "objectSha256": "cf06f1e2a2469d23eaa44629a4f81e242a4b5873dfd5659d2fcfd710590d1a97",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 4865767822664548221
@@ -14432,7 +14432,7 @@
         "Body",
         "Attack"
       ],
-      "sha256": "69d8a7005e8d8a3312ed2061019ed7176d4c767701df5d75d5abd779c512af5f",
+      "objectSha256": "69d8a7005e8d8a3312ed2061019ed7176d4c767701df5d75d5abd779c512af5f",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 1339719624887862345
@@ -14498,7 +14498,7 @@
         "Talents",
         "-6"
       ],
-      "sha256": "83cae1b1ec0b26bceea0834ba240b4a272f0aca38807eb39c5ee21635eb415aa",
+      "objectSha256": "83cae1b1ec0b26bceea0834ba240b4a272f0aca38807eb39c5ee21635eb415aa",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 4865767822664548221
@@ -14533,7 +14533,7 @@
         "Body",
         "Attack"
       ],
-      "sha256": "75aa6d075488c940f30e5be3002a54e96ed582e4ecd9d14ca92e91c910967733",
+      "objectSha256": "75aa6d075488c940f30e5be3002a54e96ed582e4ecd9d14ca92e91c910967733",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 2834425272315682029
@@ -14581,7 +14581,7 @@
         "enemy_1002_nsabr",
         "Default"
       ],
-      "sha256": "2ac060a2b4aaab0aba798eb050ce0f59b08bbd36a6fb8b1e898383bbbb8f48e0",
+      "objectSha256": "2ac060a2b4aaab0aba798eb050ce0f59b08bbd36a6fb8b1e898383bbbb8f48e0",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 5390319429299248724
@@ -14623,7 +14623,7 @@
       "hierarchy": [
         "enemy_1003_ncbow"
       ],
-      "sha256": "36eac48589d54d5cf46fe53627bf798d4093861c97eece679b6f4a6bd0b5f7c9",
+      "objectSha256": "36eac48589d54d5cf46fe53627bf798d4093861c97eece679b6f4a6bd0b5f7c9",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -6629209555389654693
@@ -14664,7 +14664,7 @@
         "Body",
         "Combat"
       ],
-      "sha256": "6e92a2e3282c73ea2f1e2e1d5d11df4b62043fcffc5a5ef07f6838d4871b7f94",
+      "objectSha256": "6e92a2e3282c73ea2f1e2e1d5d11df4b62043fcffc5a5ef07f6838d4871b7f94",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 4381884627089348317
@@ -14709,7 +14709,7 @@
         "Body",
         "Combat"
       ],
-      "sha256": "9704faf2588998567c65a6a8c5a008c4aab017d8dd55cad4ea253795e55a0efa",
+      "objectSha256": "9704faf2588998567c65a6a8c5a008c4aab017d8dd55cad4ea253795e55a0efa",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 4381884627089348317
@@ -14755,7 +14755,7 @@
         "Attack",
         "Trigger"
       ],
-      "sha256": "3da72e3335237cee68790e63c22cd1d9b20c2b37d85752cebc126eec87151603",
+      "objectSha256": "3da72e3335237cee68790e63c22cd1d9b20c2b37d85752cebc126eec87151603",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 8607874384982393801
@@ -14786,7 +14786,7 @@
         "enemy_1003_ncbow",
         "Default"
       ],
-      "sha256": "b16d2cfbad5a3a99ca941b51cb5f46b36ca98f87dae8a4b1e4907efc3be49b6c",
+      "objectSha256": "b16d2cfbad5a3a99ca941b51cb5f46b36ca98f87dae8a4b1e4907efc3be49b6c",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 5390319429299248724
@@ -14831,7 +14831,7 @@
         "Body",
         "Attack"
       ],
-      "sha256": "3deaba06111e34df0d0559cab4b87c104e0f67be1d466c8f647891e3abc913c9",
+      "objectSha256": "3deaba06111e34df0d0559cab4b87c104e0f67be1d466c8f647891e3abc913c9",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 4156651312234227407
@@ -14878,7 +14878,7 @@
         "Attack",
         "Trigger"
       ],
-      "sha256": "dac053783a3f2973a20ea3f6e6978544f64d6f3aad503eb1bf2be404729fc18a",
+      "objectSha256": "dac053783a3f2973a20ea3f6e6978544f64d6f3aad503eb1bf2be404729fc18a",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 7080728813803358465
@@ -14934,7 +14934,7 @@
       "hierarchy": [
         "enemy_1002_nsabr"
       ],
-      "sha256": "91d7db9022f7ec3b5a6a3edbd758a1b54142ac9f6bf2dc945cfe6bfaeb3b4da8",
+      "objectSha256": "91d7db9022f7ec3b5a6a3edbd758a1b54142ac9f6bf2dc945cfe6bfaeb3b4da8",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -6629209555389654693
@@ -14973,7 +14973,7 @@
         "skchr_skadi2_3",
         "DamageAura"
       ],
-      "sha256": "afc0c772e97867e99852bf3f2f1b48a71bb500e2c50f110ecfed54f1a6809da8",
+      "objectSha256": "afc0c772e97867e99852bf3f2f1b48a71bb500e2c50f110ecfed54f1a6809da8",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -3637692038217913187
@@ -15022,7 +15022,7 @@
       "hierarchy": [
         "skchr_oxi_2"
       ],
-      "sha256": "131a02d7d48459f5280eb64634e7c21f2cbca131a83016285eadad3c1e55ad33",
+      "objectSha256": "131a02d7d48459f5280eb64634e7c21f2cbca131a83016285eadad3c1e55ad33",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -8109327635834973011
@@ -15099,7 +15099,7 @@
       "hierarchy": [
         "skchr_blemsh_3"
       ],
-      "sha256": "d14f00cfc32b136e60a3fb36c8daa269f37c6e8ac2ef2f306c98f0d79d016186",
+      "objectSha256": "d14f00cfc32b136e60a3fb36c8daa269f37c6e8ac2ef2f306c98f0d79d016186",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 6851783972288338031
@@ -15137,7 +15137,7 @@
       "hierarchy": [
         "skchr_cgbird_3"
       ],
-      "sha256": "99aab1a8c368e8ff656d2fddb18c60a37504c8ac595e246f9b0c4c2030164526",
+      "objectSha256": "99aab1a8c368e8ff656d2fddb18c60a37504c8ac595e246f9b0c4c2030164526",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 9073738633337710967
@@ -15267,7 +15267,7 @@
         "Sleep",
         "Trigger"
       ],
-      "sha256": "d3e115620b222e9fc23abee36f2d5b6c70bc0eacb212a8acd2801f73c0efe475",
+      "objectSha256": "d3e115620b222e9fc23abee36f2d5b6c70bc0eacb212a8acd2801f73c0efe475",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 8607874384982393801
@@ -15300,7 +15300,7 @@
         "Fake_Attack",
         "Selector"
       ],
-      "sha256": "38544ac3335fcc4cd2e1a04c1085e12300e72da9f8504cb31627429c692eb775",
+      "objectSha256": "38544ac3335fcc4cd2e1a04c1085e12300e72da9f8504cb31627429c692eb775",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 7080728813803358465
@@ -15356,7 +15356,7 @@
       "hierarchy": [
         "skchr_yukari_1"
       ],
-      "sha256": "bb8966e0e2fc27ded797b49dcc17350535169bbc32e319b71967b723959082e4",
+      "objectSha256": "bb8966e0e2fc27ded797b49dcc17350535169bbc32e319b71967b723959082e4",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -3698736381282439861
@@ -15400,7 +15400,7 @@
         "skchr_acpion_3",
         "Empty"
       ],
-      "sha256": "f9f81d75ecf5d25d3c0c48d31ac90f25c263dbae406bfdbab2a79534c39a3d2c",
+      "objectSha256": "f9f81d75ecf5d25d3c0c48d31ac90f25c263dbae406bfdbab2a79534c39a3d2c",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 8145049199648393782
@@ -15441,7 +15441,7 @@
         "skchr_amiya2_2",
         "MultiAttack"
       ],
-      "sha256": "5aa1842f00f605d9349e9fe84550a2e020cb84c5503c6a62d780dc625b5fc406",
+      "objectSha256": "5aa1842f00f605d9349e9fe84550a2e020cb84c5503c6a62d780dc625b5fc406",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -5349745400011864685
@@ -15515,7 +15515,7 @@
       "hierarchy": [
         "skchr_svash2_2"
       ],
-      "sha256": "c1acdb0f03f5c776fb05b745259c44744ac0aee53248492237c837490df7f7d5",
+      "objectSha256": "c1acdb0f03f5c776fb05b745259c44744ac0aee53248492237c837490df7f7d5",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 6851783972288338031
@@ -15554,7 +15554,7 @@
         "skchr_oxi_2",
         "CenterFallbackSelector"
       ],
-      "sha256": "69b85f3bae50d5df7bcdec68afdd7ac6097ba23d485ae7fcccdeba93907a902c",
+      "objectSha256": "69b85f3bae50d5df7bcdec68afdd7ac6097ba23d485ae7fcccdeba93907a902c",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 840206743537877183
@@ -15614,7 +15614,7 @@
         "BlockedMeleeAttack",
         "Selector"
       ],
-      "sha256": "e88e24cbe7200f73a367fdfe12242472ec0511bffc25d6731ee8ad9cb86fb8fd",
+      "objectSha256": "e88e24cbe7200f73a367fdfe12242472ec0511bffc25d6731ee8ad9cb86fb8fd",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 8607874384982393801
@@ -15647,7 +15647,7 @@
         "Selector",
         "Caster"
       ],
-      "sha256": "b47d49d7ec3611637a9914cc8c4dcca9a10a0ca3a74ad7716562c242730e1d47",
+      "objectSha256": "b47d49d7ec3611637a9914cc8c4dcca9a10a0ca3a74ad7716562c242730e1d47",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 7080728813803358465
@@ -15706,7 +15706,7 @@
         "Selector",
         "Yukari"
       ],
-      "sha256": "baf33356cab48ad7e309165a53c2228ead567f8e87cc9795b011e4259aa1ca90",
+      "objectSha256": "baf33356cab48ad7e309165a53c2228ead567f8e87cc9795b011e4259aa1ca90",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -8393423638938299372
@@ -15774,7 +15774,7 @@
       "hierarchy": [
         "skchr_sora_1"
       ],
-      "sha256": "dd5d943ffd7dba478ec254371cbf7f265cd769ff9c604f45191e41b3734c1ec3",
+      "objectSha256": "dd5d943ffd7dba478ec254371cbf7f265cd769ff9c604f45191e41b3734c1ec3",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 9073738633337710967
@@ -15890,7 +15890,7 @@
         "Heal",
         "Selector"
       ],
-      "sha256": "38a76ff3ed31ed7e9e6c49f27279f4bf6af37dd32871583d7ab5776fc81a7e5a",
+      "objectSha256": "38a76ff3ed31ed7e9e6c49f27279f4bf6af37dd32871583d7ab5776fc81a7e5a",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 7080728813803358465
@@ -15947,7 +15947,7 @@
         "skchr_skadi2_2",
         "Aura"
       ],
-      "sha256": "8768a71daade11dd0cd4cbced83d5ed13f4e95ca100298b9199d5b4811d2aee5",
+      "objectSha256": "8768a71daade11dd0cd4cbced83d5ed13f4e95ca100298b9199d5b4811d2aee5",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -5482140055134904783
@@ -16007,7 +16007,7 @@
         "Selector",
         "Selector_2"
       ],
-      "sha256": "aa0251236b926ef5e2c84f08c31d6821fa35ff9e34fde8eb32b6f1da619f42c8",
+      "objectSha256": "aa0251236b926ef5e2c84f08c31d6821fa35ff9e34fde8eb32b6f1da619f42c8",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -5482140055134904783
@@ -16065,7 +16065,7 @@
         "skchr_thorn2_1",
         "SkillTrigger"
       ],
-      "sha256": "21649a872dd25cd54b3acda448083340fdacc082244d2461fc70b110fda32473",
+      "objectSha256": "21649a872dd25cd54b3acda448083340fdacc082244d2461fc70b110fda32473",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 8607874384982393801
@@ -16095,7 +16095,7 @@
       "hierarchy": [
         "skchr_sora_2"
       ],
-      "sha256": "ac9a5b374e18f67084eaf926aa5570dc27f2b1610ec0055bc649eef5951f5dd6",
+      "objectSha256": "ac9a5b374e18f67084eaf926aa5570dc27f2b1610ec0055bc649eef5951f5dd6",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 9073738633337710967
@@ -16169,7 +16169,7 @@
       "hierarchy": [
         "skchr_horn_1"
       ],
-      "sha256": "1084dee14b4848aff687c10d5c04f0a74b68d190cf8a95ce38836985660d0d94",
+      "objectSha256": "1084dee14b4848aff687c10d5c04f0a74b68d190cf8a95ce38836985660d0d94",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 5752393290759919736
@@ -16201,7 +16201,7 @@
         "skchr_chen_3",
         "Selector"
       ],
-      "sha256": "bebf098e4c18a59c36e50ef2fa33055fd4c77fe97f389a53ed27db04baf299f6",
+      "objectSha256": "bebf098e4c18a59c36e50ef2fa33055fd4c77fe97f389a53ed27db04baf299f6",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 8607874384982393801
@@ -16233,7 +16233,7 @@
         "MultiAttack",
         "Selector"
       ],
-      "sha256": "cb3201d14a68f7398d8f6105cb73c73cd0f96447cbb585a4c116e2f4bb328fb1",
+      "objectSha256": "cb3201d14a68f7398d8f6105cb73c73cd0f96447cbb585a4c116e2f4bb328fb1",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 8607874384982393801
@@ -16265,7 +16265,7 @@
         "MeleeAttack",
         "Selector"
       ],
-      "sha256": "12ade3749171d4b9ca53a064552500e285b54094b5d400184444ca6962a6cde3",
+      "objectSha256": "12ade3749171d4b9ca53a064552500e285b54094b5d400184444ca6962a6cde3",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 8607874384982393801
@@ -16298,7 +16298,7 @@
         "Selector",
         "Other"
       ],
-      "sha256": "b32346f2f3774d75ef7991a7732b481d0e3a36d3ae9ca8be5b9a39bc701db4f0",
+      "objectSha256": "b32346f2f3774d75ef7991a7732b481d0e3a36d3ae9ca8be5b9a39bc701db4f0",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 4228536478899308872
@@ -16351,7 +16351,7 @@
         "skchr_tocka_3",
         "S3Passive"
       ],
-      "sha256": "9e117e4f13dd7a2b23bcc7f571c59c76f1476645246d52a2f47381d66717ce45",
+      "objectSha256": "9e117e4f13dd7a2b23bcc7f571c59c76f1476645246d52a2f47381d66717ce45",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 3800760148018415462
@@ -16417,7 +16417,7 @@
       "hierarchy": [
         "skchr_monstr_1"
       ],
-      "sha256": "6e5302b52f70c3fb42005733f525d58bfd4d174414dae056db6f964d5b5de983",
+      "objectSha256": "6e5302b52f70c3fb42005733f525d58bfd4d174414dae056db6f964d5b5de983",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 9150588117521808812
@@ -16463,7 +16463,7 @@
         "AttackWrapper",
         "Fake_Attack"
       ],
-      "sha256": "259f23e2419f98039ab97f57c4fd9ed0ba164be89846bf4d1dee7beba1612dd4",
+      "objectSha256": "259f23e2419f98039ab97f57c4fd9ed0ba164be89846bf4d1dee7beba1612dd4",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -3698736381282439861
@@ -16553,7 +16553,7 @@
       "hierarchy": [
         "skchr_chen3_2"
       ],
-      "sha256": "80c15139260afc9104cb9c46d0daccf88f553f1970a92d42b80e68b5e0103ab9",
+      "objectSha256": "80c15139260afc9104cb9c46d0daccf88f553f1970a92d42b80e68b5e0103ab9",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 7085803614365642631
@@ -16616,7 +16616,7 @@
         "skchr_skadi2_2",
         "Aura"
       ],
-      "sha256": "2de6e125812266788acdfa094ee8688b5113d69cab6e86c205f58b9aa33c2094",
+      "objectSha256": "2de6e125812266788acdfa094ee8688b5113d69cab6e86c205f58b9aa33c2094",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 9073738633337710967
@@ -16759,7 +16759,7 @@
       "hierarchy": [
         "skchr_thorn2_3"
       ],
-      "sha256": "df1a92cd0ec0dffcd5a3b583418872617da95d281b04afe8bb2fb67dc1521a5c",
+      "objectSha256": "df1a92cd0ec0dffcd5a3b583418872617da95d281b04afe8bb2fb67dc1521a5c",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 6851783972288338031
@@ -16797,7 +16797,7 @@
       "hierarchy": [
         "skchr_cgbird_3"
       ],
-      "sha256": "d42adb33c9e2fc4b07cac6c7294258411f1df3238bb9a2657563893065e9a5b4",
+      "objectSha256": "d42adb33c9e2fc4b07cac6c7294258411f1df3238bb9a2657563893065e9a5b4",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 3308604825214022655
@@ -16831,7 +16831,7 @@
         "skchr_kafka_1",
         "FinalAttack"
       ],
-      "sha256": "e037a3429fc3789f659c48f35fc283253c8bbe1b32cb4f90619701f002f34d9f",
+      "objectSha256": "e037a3429fc3789f659c48f35fc283253c8bbe1b32cb4f90619701f002f34d9f",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 4381884627089348317
@@ -16874,7 +16874,7 @@
         "skchr_thorn2_1",
         "SkillTrigger"
       ],
-      "sha256": "c65ff0a66d7b49df749e062a7bd94a6c1a38ef9f0b09ca9d4a8e102ef4c2b6c7",
+      "objectSha256": "c65ff0a66d7b49df749e062a7bd94a6c1a38ef9f0b09ca9d4a8e102ef4c2b6c7",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 7080728813803358465
@@ -16931,7 +16931,7 @@
         "skchr_apionr_1",
         "Empty"
       ],
-      "sha256": "64a8e56f47ff2c612735281aaa509c4a83300589a95af703878986974f617203",
+      "objectSha256": "64a8e56f47ff2c612735281aaa509c4a83300589a95af703878986974f617203",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 1339719624887862345
@@ -17007,7 +17007,7 @@
       "hierarchy": [
         "skchr_amiya2_2"
       ],
-      "sha256": "ddbd7f31f01de50e5643dde11b3b75c8b49fa4c5d951b6da757c816117eaef90",
+      "objectSha256": "ddbd7f31f01de50e5643dde11b3b75c8b49fa4c5d951b6da757c816117eaef90",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -4234909118878081699
@@ -17084,7 +17084,7 @@
       "hierarchy": [
         "skchr_snhunt_2"
       ],
-      "sha256": "642d5e2a07640f68a2e378f7479c69d8a21c357489b16c76efb39c32f40bc379",
+      "objectSha256": "642d5e2a07640f68a2e378f7479c69d8a21c357489b16c76efb39c32f40bc379",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 6851783972288338031
@@ -17124,7 +17124,7 @@
         "RangedAttackGroup",
         "RangedAttack_Light"
       ],
-      "sha256": "3fe11fc0014f01b9d07e053e375132daeb0ae547a509c099a94fe47064c6f933",
+      "objectSha256": "3fe11fc0014f01b9d07e053e375132daeb0ae547a509c099a94fe47064c6f933",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 4156651312234227407
@@ -17207,7 +17207,7 @@
       "hierarchy": [
         "skchr_chen3_2"
       ],
-      "sha256": "c906ee0faa7735e1d580b616df6fdaa6633625029bfdd81acf6b2a224471eb28",
+      "objectSha256": "c906ee0faa7735e1d580b616df6fdaa6633625029bfdd81acf6b2a224471eb28",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -8109327635834973011
@@ -17341,7 +17341,7 @@
         "skchr_chen3_2",
         "SkillTrigger"
       ],
-      "sha256": "4731e0071a311e87704a400a66022df586be9253f335206abcbcaab974934713",
+      "objectSha256": "4731e0071a311e87704a400a66022df586be9253f335206abcbcaab974934713",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 7080728813803358465
@@ -17398,7 +17398,7 @@
         "skchr_blemsh_2",
         "Sleep"
       ],
-      "sha256": "3dad252e5c45fc765807bec849e860776efc9f8677d3af19c62254127ea6e35e",
+      "objectSha256": "3dad252e5c45fc765807bec849e860776efc9f8677d3af19c62254127ea6e35e",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 2165892974539515790
@@ -17474,7 +17474,7 @@
       "hierarchy": [
         "skchr_yukari_1"
       ],
-      "sha256": "7479d1847c8f48a5b6db4df3604e95a77f7a149cb274a9b063cf177986f29521",
+      "objectSha256": "7479d1847c8f48a5b6db4df3604e95a77f7a149cb274a9b063cf177986f29521",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -8109327635834973011
@@ -17537,7 +17537,7 @@
         "skchr_kafka_1",
         "Disarm"
       ],
-      "sha256": "bcfdc6098466d9921b6b7b8466d50ab620ee3e3ad1969db86b6d1db5d96bd528",
+      "objectSha256": "bcfdc6098466d9921b6b7b8466d50ab620ee3e3ad1969db86b6d1db5d96bd528",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -4234909118878081699
@@ -17610,7 +17610,7 @@
       "hierarchy": [
         "skchr_svash2_2"
       ],
-      "sha256": "0076baf252ce14b373460d6b4167d59a7a3e38e55ce5751df4c59606db6fd1d4",
+      "objectSha256": "0076baf252ce14b373460d6b4167d59a7a3e38e55ce5751df4c59606db6fd1d4",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 4381884627089348317
@@ -17687,7 +17687,7 @@
         "Attack",
         "Selector"
       ],
-      "sha256": "9fb1b9065f30a24ab4733b44f553dc02bd746565740a6d79bf36473eed495ce9",
+      "objectSha256": "9fb1b9065f30a24ab4733b44f553dc02bd746565740a6d79bf36473eed495ce9",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 8607874384982393801
@@ -17717,7 +17717,7 @@
       "hierarchy": [
         "skchr_kafka_1"
       ],
-      "sha256": "4e103aca4115b775a046820acf075a3351076cc3effe1479ff554f0e569229b6",
+      "objectSha256": "4e103aca4115b775a046820acf075a3351076cc3effe1479ff554f0e569229b6",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 8671737732485835867
@@ -17760,7 +17760,7 @@
       "hierarchy": [
         "skchr_skadi2_2"
       ],
-      "sha256": "aa265a30a600dadc32bd1d7cd777af18750059d75285f15aaaeb9b6b271c3767",
+      "objectSha256": "aa265a30a600dadc32bd1d7cd777af18750059d75285f15aaaeb9b6b271c3767",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 5588963537932396408
@@ -17806,7 +17806,7 @@
         "skchr_chen3_2",
         "KillEnemyInfo"
       ],
-      "sha256": "661e5c3c0ba40cc008dfd8a0285cf5edcf8a0e99f464fcff797ae4bcc6c5e559",
+      "objectSha256": "661e5c3c0ba40cc008dfd8a0285cf5edcf8a0e99f464fcff797ae4bcc6c5e559",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 3800760148018415462
@@ -17875,7 +17875,7 @@
         "Selector",
         "Other"
       ],
-      "sha256": "9ebc4b6dd3cc2e781ef7e5daa829d75fb4245fc800fed61889b81de0d482c8ae",
+      "objectSha256": "9ebc4b6dd3cc2e781ef7e5daa829d75fb4245fc800fed61889b81de0d482c8ae",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -8393423638938299372
@@ -17952,7 +17952,7 @@
         "skchr_apionr_1",
         "Empty"
       ],
-      "sha256": "e5b404c5b16ed3762169fbac0bbc0bce00cd8244282411a9430c666a00249e1f",
+      "objectSha256": "e5b404c5b16ed3762169fbac0bbc0bce00cd8244282411a9430c666a00249e1f",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 8145049199648393782
@@ -17995,7 +17995,7 @@
         "Selector",
         "Makoto"
       ],
-      "sha256": "482227f8fc2a2c581985747b8235dbd84007fedeb4526588d5e7e76187f718af",
+      "objectSha256": "482227f8fc2a2c581985747b8235dbd84007fedeb4526588d5e7e76187f718af",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -8393423638938299372
@@ -18063,7 +18063,7 @@
       "hierarchy": [
         "skchr_horn_1"
       ],
-      "sha256": "3bd0fbb6299cf5a03167521f1f9b7c4a634ffa0809c0ac0c2e9057f8360213b2",
+      "objectSha256": "3bd0fbb6299cf5a03167521f1f9b7c4a634ffa0809c0ac0c2e9057f8360213b2",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 6354921792805821228
@@ -18100,7 +18100,7 @@
       "hierarchy": [
         "skchr_cgbird_3"
       ],
-      "sha256": "c5f6790dbf417b272bbc8f9caea75ee1c417bd2c774e8ec20463ec00ebb6dc09",
+      "objectSha256": "c5f6790dbf417b272bbc8f9caea75ee1c417bd2c774e8ec20463ec00ebb6dc09",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -3637692038217913187
@@ -18151,7 +18151,7 @@
         "AttackWrapper",
         "Attack"
       ],
-      "sha256": "7962d8c2012b861a30306b8404d18989a54f7aeb55851772b60bec8bf6103fb4",
+      "objectSha256": "7962d8c2012b861a30306b8404d18989a54f7aeb55851772b60bec8bf6103fb4",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -3698736381282439861
@@ -18226,7 +18226,7 @@
       "hierarchy": [
         "skchr_svash2_2"
       ],
-      "sha256": "89cc066562639c770074ab858f911234d825f0a645f409e1c1ac856a51c0d5c3",
+      "objectSha256": "89cc066562639c770074ab858f911234d825f0a645f409e1c1ac856a51c0d5c3",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 5605707488871161295
@@ -18262,7 +18262,7 @@
         "skchr_totter_1",
         "Selector"
       ],
-      "sha256": "9b60a49b9c784d38fbaf80f01e36053018f3ca53f2d31089a82295b84e239c2d",
+      "objectSha256": "9b60a49b9c784d38fbaf80f01e36053018f3ca53f2d31089a82295b84e239c2d",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 7080728813803358465
@@ -18319,7 +18319,7 @@
         "skchr_apionr_1",
         "Skill"
       ],
-      "sha256": "ceec6170f339b4721b05e47e3f69e5265e6b7ced0631c3d092843fb6eb374237",
+      "objectSha256": "ceec6170f339b4721b05e47e3f69e5265e6b7ced0631c3d092843fb6eb374237",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -8109327635834973011
@@ -18381,7 +18381,7 @@
       "hierarchy": [
         "skchr_haak_3"
       ],
-      "sha256": "deb1edb4d17b2f91ad48adabbdfc6ae0e16be9a3177917d5ad1275e417abef33",
+      "objectSha256": "deb1edb4d17b2f91ad48adabbdfc6ae0e16be9a3177917d5ad1275e417abef33",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -3703208971068511792
@@ -18424,7 +18424,7 @@
       "hierarchy": [
         "skchr_oxi_2"
       ],
-      "sha256": "4c2cf3ed9974937799e827710f91585873b9082ac50040a6223151c8610ff56c",
+      "objectSha256": "4c2cf3ed9974937799e827710f91585873b9082ac50040a6223151c8610ff56c",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 5588173105691133161
@@ -18466,7 +18466,7 @@
       "hierarchy": [
         "skchr_haak_3"
       ],
-      "sha256": "019fc036266f365e09b95f9ca6db9a6142694e2b34043c7386cf99353346a71f",
+      "objectSha256": "019fc036266f365e09b95f9ca6db9a6142694e2b34043c7386cf99353346a71f",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 6851783972288338031
@@ -18506,7 +18506,7 @@
         "RangedAttackGroup",
         "Selector"
       ],
-      "sha256": "d388e577eb1db7df940fda1f4b7973a74708d82bf6a4aff987a17c81c2b792ae",
+      "objectSha256": "d388e577eb1db7df940fda1f4b7973a74708d82bf6a4aff987a17c81c2b792ae",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 7080728813803358465
@@ -18567,7 +18567,7 @@
         "skchr_snhunt_2",
         "Selector"
       ],
-      "sha256": "5cd1768914a7a66d418a66154de90dca7461e3e5abf1114b5dd0bf78e6b6d03d",
+      "objectSha256": "5cd1768914a7a66d418a66154de90dca7461e3e5abf1114b5dd0bf78e6b6d03d",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 7080728813803358465
@@ -18624,7 +18624,7 @@
         "skchr_skadi2_2",
         "TriggerTokenAura"
       ],
-      "sha256": "107094d8656d171c8972332cde6ea4e23aca42989906e77a8b2ef4e926a93316",
+      "objectSha256": "107094d8656d171c8972332cde6ea4e23aca42989906e77a8b2ef4e926a93316",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -5793748974791823428
@@ -18698,7 +18698,7 @@
       "hierarchy": [
         "skchr_tocka_3"
       ],
-      "sha256": "f09563d8d2e047edcfd890b02626215865ec898f71425449d827af2231c5d508",
+      "objectSha256": "f09563d8d2e047edcfd890b02626215865ec898f71425449d827af2231c5d508",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -4234909118878081699
@@ -18778,7 +18778,7 @@
         "Selector",
         "Makoto"
       ],
-      "sha256": "e5494114aaa2872fdcb09f229d07b2c921c4c62111e6589d35288bac7da2883e",
+      "objectSha256": "e5494114aaa2872fdcb09f229d07b2c921c4c62111e6589d35288bac7da2883e",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 4228536478899308872
@@ -18833,7 +18833,7 @@
         "Selector",
         "Selector_1"
       ],
-      "sha256": "a6be3d7f44d38347d4639a015d31d7c21d67f4b9270418d45d979b30379bd1d2",
+      "objectSha256": "a6be3d7f44d38347d4639a015d31d7c21d67f4b9270418d45d979b30379bd1d2",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -8393423638938299372
@@ -18919,7 +18919,7 @@
         "Skill_2",
         "Selector"
       ],
-      "sha256": "b7c99b6eb431d9ddfa2016a8f8527a61170125796fca2bd0d7ee0b4c0318518a",
+      "objectSha256": "b7c99b6eb431d9ddfa2016a8f8527a61170125796fca2bd0d7ee0b4c0318518a",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 8831995700334122577
@@ -18947,7 +18947,7 @@
       "hierarchy": [
         "skchr_svash2_2"
       ],
-      "sha256": "6b85d8f9977c5e2a432944c56bef710da975a1ff02231f1a4827767ceedd1fc0",
+      "objectSha256": "6b85d8f9977c5e2a432944c56bef710da975a1ff02231f1a4827767ceedd1fc0",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 1339719624887862345
@@ -19010,7 +19010,7 @@
         "skchr_acpion_3",
         "Skill"
       ],
-      "sha256": "60be19daef2b334394f4dcb6f119309e8fc2f0d8132fcc23f440b1cbd2f03d7c",
+      "objectSha256": "60be19daef2b334394f4dcb6f119309e8fc2f0d8132fcc23f440b1cbd2f03d7c",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 1339719624887862345
@@ -19089,7 +19089,7 @@
         "Fake_Attack",
         "Selector"
       ],
-      "sha256": "395b2022f75c1f16eba7ae7d37f334482a84d72defd48bd9a87942657806742d",
+      "objectSha256": "395b2022f75c1f16eba7ae7d37f334482a84d72defd48bd9a87942657806742d",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 8607874384982393801
@@ -19120,7 +19120,7 @@
         "skchr_monstr_1",
         "ExtraAbility0"
       ],
-      "sha256": "ad75f2ed4c15ae3ba8fddd360c4162d92cbc85e04d3719739b09753d97bf4399",
+      "objectSha256": "ad75f2ed4c15ae3ba8fddd360c4162d92cbc85e04d3719739b09753d97bf4399",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 3800760148018415462
@@ -19189,7 +19189,7 @@
         "Attack",
         "Selector"
       ],
-      "sha256": "7cf0c89f9bce3127d1af25b9ed5427d776d74d1bb7e7394fdb931e1056bb406b",
+      "objectSha256": "7cf0c89f9bce3127d1af25b9ed5427d776d74d1bb7e7394fdb931e1056bb406b",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 8607874384982393801
@@ -19221,7 +19221,7 @@
         "AttackWrapper",
         "Fake_Attack"
       ],
-      "sha256": "ed730b893d0df91a20f3030998c5e49f5ed90b453330545b2103ce89d1f23706",
+      "objectSha256": "ed730b893d0df91a20f3030998c5e49f5ed90b453330545b2103ce89d1f23706",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -3698736381282439861
@@ -19311,7 +19311,7 @@
       "hierarchy": [
         "skchr_monstr_1"
       ],
-      "sha256": "6e317dacc40c505849c986dce543cba8f03fd3085cca4875f6f849291f1b0b9b",
+      "objectSha256": "6e317dacc40c505849c986dce543cba8f03fd3085cca4875f6f849291f1b0b9b",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 6354921792805821228
@@ -19349,7 +19349,7 @@
         "skchr_thorn2_3",
         "SkillTrigger"
       ],
-      "sha256": "bf3c45f082a62a409debc5b1634b0276ceeffe785793fa5d93d7d1f3cc373141",
+      "objectSha256": "bf3c45f082a62a409debc5b1634b0276ceeffe785793fa5d93d7d1f3cc373141",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 8607874384982393801
@@ -19379,7 +19379,7 @@
       "hierarchy": [
         "skchr_chen3_2"
       ],
-      "sha256": "a2d69ef9843fae7668c9b39c20e3a8959be9c279ae6fe6c18d2c83efde2da3ed",
+      "objectSha256": "a2d69ef9843fae7668c9b39c20e3a8959be9c279ae6fe6c18d2c83efde2da3ed",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -2238232285169283534
@@ -19419,7 +19419,7 @@
         "RangedAttackGroup",
         "Selector"
       ],
-      "sha256": "b1140c015bc53af6f6166c38e1784c8a6ecd14ec187275e8bd76c3f3877b04a0",
+      "objectSha256": "b1140c015bc53af6f6166c38e1784c8a6ecd14ec187275e8bd76c3f3877b04a0",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 8607874384982393801
@@ -19449,7 +19449,7 @@
       "hierarchy": [
         "skchr_skadi2_2"
       ],
-      "sha256": "b5500442658112ca83908f1f214186a39e435797707b5ec72e374c53c1be67af",
+      "objectSha256": "b5500442658112ca83908f1f214186a39e435797707b5ec72e374c53c1be67af",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 6851783972288338031
@@ -19490,7 +19490,7 @@
         "Selector",
         "Selector_3"
       ],
-      "sha256": "b64d5fb38543fffa69fbd200bf4fc0e46f753b600f536bb6c4ebd960ef48de03",
+      "objectSha256": "b64d5fb38543fffa69fbd200bf4fc0e46f753b600f536bb6c4ebd960ef48de03",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -8393423638938299372
@@ -19561,7 +19561,7 @@
         "Selector",
         "Selector_3"
       ],
-      "sha256": "95a66973041aa748913eca3e462cc7e4c9e49d497fe99fe982f07f4852dacf45",
+      "objectSha256": "95a66973041aa748913eca3e462cc7e4c9e49d497fe99fe982f07f4852dacf45",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -5482140055134904783
@@ -19619,7 +19619,7 @@
         "skchr_kafka_1",
         "1"
       ],
-      "sha256": "f68f9a398a267b092105db62502013a7e1e2ed5ae43e3339d3328e2aa4deb174",
+      "objectSha256": "f68f9a398a267b092105db62502013a7e1e2ed5ae43e3339d3328e2aa4deb174",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 3800760148018415462
@@ -19733,7 +19733,7 @@
       "hierarchy": [
         "skchr_sora_2"
       ],
-      "sha256": "0ba0fc5eaee64182e29052c8a510488b6d121a6b4b6e7588cf62c3309ed8b21c",
+      "objectSha256": "0ba0fc5eaee64182e29052c8a510488b6d121a6b4b6e7588cf62c3309ed8b21c",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -5482140055134904783
@@ -19790,7 +19790,7 @@
       "hierarchy": [
         "skchr_blemsh_2"
       ],
-      "sha256": "6d8ee747ec0335a38ae9aa30048514a003ff1f8b8acddd2cb0aa60fa6885575d",
+      "objectSha256": "6d8ee747ec0335a38ae9aa30048514a003ff1f8b8acddd2cb0aa60fa6885575d",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -3703208971068511792
@@ -19836,7 +19836,7 @@
         "Selector",
         "Selector_1"
       ],
-      "sha256": "555ada657c7c05b778c7b94e2ae9536f3bb8aba07b8ab7f96eee91f7637b360d",
+      "objectSha256": "555ada657c7c05b778c7b94e2ae9536f3bb8aba07b8ab7f96eee91f7637b360d",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -5482140055134904783
@@ -19894,7 +19894,7 @@
         "skchr_kafka_1",
         "1"
       ],
-      "sha256": "4ac0c2f61c2bf074e1cf3681eb3d007ea4683d9b40cd8c0f9bdaa7464810c585",
+      "objectSha256": "4ac0c2f61c2bf074e1cf3681eb3d007ea4683d9b40cd8c0f9bdaa7464810c585",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -6720127530813467842
@@ -19930,7 +19930,7 @@
         "Selector",
         "Selector_1"
       ],
-      "sha256": "9b060e1e9836543be74a100df0d11ad49f78313fad6933784fe53ed783411a51",
+      "objectSha256": "9b060e1e9836543be74a100df0d11ad49f78313fad6933784fe53ed783411a51",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 1846211657456155157
@@ -19994,7 +19994,7 @@
         "Selector",
         "Other"
       ],
-      "sha256": "68946ff87e7010042f1fab245a0eaa870fba0a05d2f35f521aa830d910a9e5bc",
+      "objectSha256": "68946ff87e7010042f1fab245a0eaa870fba0a05d2f35f521aa830d910a9e5bc",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 4228536478899308872
@@ -20046,7 +20046,7 @@
       "hierarchy": [
         "skchr_totter_1"
       ],
-      "sha256": "e93904c71d95d41a8a511286c78e90cfbe6c5d6b88d02eb41ff5c26673098e7c",
+      "objectSha256": "e93904c71d95d41a8a511286c78e90cfbe6c5d6b88d02eb41ff5c26673098e7c",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 4156651312234227407
@@ -20091,7 +20091,7 @@
         "Heal",
         "Selector"
       ],
-      "sha256": "ceb9657595b73f55ed1ed4b7a4238cdc1b5be076fd365b0b0bed3364787c84b0",
+      "objectSha256": "ceb9657595b73f55ed1ed4b7a4238cdc1b5be076fd365b0b0bed3364787c84b0",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 8607874384982393801
@@ -20121,7 +20121,7 @@
       "hierarchy": [
         "skchr_totter_1"
       ],
-      "sha256": "f8517026064de2018b6a3da6a3ecec51a680639a6626d931bc250f6325c7bad5",
+      "objectSha256": "f8517026064de2018b6a3da6a3ecec51a680639a6626d931bc250f6325c7bad5",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 6354921792805821228
@@ -20158,7 +20158,7 @@
       "hierarchy": [
         "skchr_kafka_1"
       ],
-      "sha256": "a985da962aeb1f203de270ec019b0fb10522896a014605ecbf00c3feec365d70",
+      "objectSha256": "a985da962aeb1f203de270ec019b0fb10522896a014605ecbf00c3feec365d70",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 2822254928132392630
@@ -20191,7 +20191,7 @@
       "hierarchy": [
         "skchr_thorn2_1"
       ],
-      "sha256": "7cb1f381d74b529d1d7547e26fc5cb59e00a8b6cb32c8a3ec26cd7b0d5cba34c",
+      "objectSha256": "7cb1f381d74b529d1d7547e26fc5cb59e00a8b6cb32c8a3ec26cd7b0d5cba34c",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 4156651312234227407
@@ -20267,7 +20267,7 @@
         "skchr_bison_2",
         "Aura"
       ],
-      "sha256": "29a9befa8ae6cfc297cdcf8421a80c9722c47e13ab58213b82f5c2aafa42bbc7",
+      "objectSha256": "29a9befa8ae6cfc297cdcf8421a80c9722c47e13ab58213b82f5c2aafa42bbc7",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 9073738633337710967
@@ -20404,7 +20404,7 @@
       "hierarchy": [
         "skchr_shining_3"
       ],
-      "sha256": "31ba90ad60b62163813d74740162c6b2e0e68ba078b3371805775472cbdbbfed",
+      "objectSha256": "31ba90ad60b62163813d74740162c6b2e0e68ba078b3371805775472cbdbbfed",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 3308604825214022655
@@ -20439,7 +20439,7 @@
         "RangedAttackGroup",
         "RangedAttack"
       ],
-      "sha256": "622e371390fa86a88a82d5fcdebe79cf294dac8d05ebd0dd764976a1803314e5",
+      "objectSha256": "622e371390fa86a88a82d5fcdebe79cf294dac8d05ebd0dd764976a1803314e5",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 4156651312234227407
@@ -20483,7 +20483,7 @@
         "skchr_acpion_3",
         "Empty"
       ],
-      "sha256": "e862c739432289690144f0843371fddf2c82391f8e986e99e72c6a74dc756c1b",
+      "objectSha256": "e862c739432289690144f0843371fddf2c82391f8e986e99e72c6a74dc756c1b",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 1339719624887862345
@@ -20559,7 +20559,7 @@
       "hierarchy": [
         "skchr_sora_1"
       ],
-      "sha256": "3040d84654d62fc7b62424ee93ca573fba1a8e8701c4322918eccf9926aa64f2",
+      "objectSha256": "3040d84654d62fc7b62424ee93ca573fba1a8e8701c4322918eccf9926aa64f2",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -3637692038217913187
@@ -20609,7 +20609,7 @@
         "skchr_horn_1",
         "MeleeAttack"
       ],
-      "sha256": "c0bd54caaf5455796191a835fc9aff4a9a43d082fb4d1d64b90c3858f5afc56f",
+      "objectSha256": "c0bd54caaf5455796191a835fc9aff4a9a43d082fb4d1d64b90c3858f5afc56f",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 4381884627089348317
@@ -20654,7 +20654,7 @@
         "Selector",
         "Selector_1"
       ],
-      "sha256": "dd1c9eefdcc952146e2bdf2178c5a5dcb2496655b3e336a2795cce781a0c8e56",
+      "objectSha256": "dd1c9eefdcc952146e2bdf2178c5a5dcb2496655b3e336a2795cce781a0c8e56",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 1846211657456155157
@@ -20718,7 +20718,7 @@
         "Attack",
         "Selector"
       ],
-      "sha256": "da0366e30d80726c25072a884c56d8301eab0dff6b07bcffc45019100ff68ab2",
+      "objectSha256": "da0366e30d80726c25072a884c56d8301eab0dff6b07bcffc45019100ff68ab2",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 7080728813803358465
@@ -20775,7 +20775,7 @@
         "skchr_haak_3",
         "Buff"
       ],
-      "sha256": "310ebacb006f86235444d280a79b99a393a3516c53b9e9ef64d9d699b45c4f7c",
+      "objectSha256": "310ebacb006f86235444d280a79b99a393a3516c53b9e9ef64d9d699b45c4f7c",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -4234909118878081699
@@ -20861,7 +20861,7 @@
       "hierarchy": [
         "skchr_amiya2_2"
       ],
-      "sha256": "b2c13e5601982b58064ef8144227fdc4dccedaf1ca481a0f6aa0b0437d9baec5",
+      "objectSha256": "b2c13e5601982b58064ef8144227fdc4dccedaf1ca481a0f6aa0b0437d9baec5",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 6851783972288338031
@@ -20899,7 +20899,7 @@
       "hierarchy": [
         "skchr_yukari_2"
       ],
-      "sha256": "377d9f1e590feb1fe2a8d95d2ee9bede786c5642532878a0b630329a090a55fb",
+      "objectSha256": "377d9f1e590feb1fe2a8d95d2ee9bede786c5642532878a0b630329a090a55fb",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -8109327635834973011
@@ -20961,7 +20961,7 @@
       "hierarchy": [
         "skchr_yukari_1"
       ],
-      "sha256": "8e0c12149d7af7bf4b73428cb96d203973fb9de5370b1a07ae4b5c6528ff093f",
+      "objectSha256": "8e0c12149d7af7bf4b73428cb96d203973fb9de5370b1a07ae4b5c6528ff093f",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 6851783972288338031
@@ -21001,7 +21001,7 @@
         "ApplySleeping",
         "Trigger"
       ],
-      "sha256": "b9062e307ced9e7b8bd7b01e0bdd7be3baa1ae875b17e1cc0bf6f47577ae41a1",
+      "objectSha256": "b9062e307ced9e7b8bd7b01e0bdd7be3baa1ae875b17e1cc0bf6f47577ae41a1",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 7080728813803358465
@@ -21057,7 +21057,7 @@
       "hierarchy": [
         "skchr_skadi2_3"
       ],
-      "sha256": "c4a8cee585b8f87d4235bfd21dc422a541f1f8327c30181e143f28e81008371c",
+      "objectSha256": "c4a8cee585b8f87d4235bfd21dc422a541f1f8327c30181e143f28e81008371c",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 6851783972288338031
@@ -21095,7 +21095,7 @@
       "hierarchy": [
         "skchr_oxi_2"
       ],
-      "sha256": "c3f299105038e5bb6eaf4879541d5dc0177002334301c635f00ec8cd7011fc80",
+      "objectSha256": "c3f299105038e5bb6eaf4879541d5dc0177002334301c635f00ec8cd7011fc80",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -7755558598337543512
@@ -21159,7 +21159,7 @@
         "Sleep",
         "Trigger"
       ],
-      "sha256": "6516675db43cf0416299bd3b0ac1d5936d185086a70e79f17c91f22de5ee410a",
+      "objectSha256": "6516675db43cf0416299bd3b0ac1d5936d185086a70e79f17c91f22de5ee410a",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 840206743537877183
@@ -21217,7 +21217,7 @@
       "hierarchy": [
         "skchr_sora_2"
       ],
-      "sha256": "fd723ce8549d3c0ecfc6da09a76146a953e12d5fb0edc0b23792665bd53c724f",
+      "objectSha256": "fd723ce8549d3c0ecfc6da09a76146a953e12d5fb0edc0b23792665bd53c724f",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 3308604825214022655
@@ -21250,7 +21250,7 @@
       "hierarchy": [
         "skchr_iris_2"
       ],
-      "sha256": "f253676d6df621bc5f7e6cea3bcaea8474e44ade07329c4edc52be6057c1895e",
+      "objectSha256": "f253676d6df621bc5f7e6cea3bcaea8474e44ade07329c4edc52be6057c1895e",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 4156651312234227407
@@ -21293,7 +21293,7 @@
       "hierarchy": [
         "skchr_yukari_2"
       ],
-      "sha256": "a55126691a825e87daf4a1c66e1ce3fea072d7f214cf67360d1baec34cf15831",
+      "objectSha256": "a55126691a825e87daf4a1c66e1ce3fea072d7f214cf67360d1baec34cf15831",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 6851783972288338031
@@ -21331,7 +21331,7 @@
       "hierarchy": [
         "skchr_bison_2"
       ],
-      "sha256": "7477d6c1885a3fbbaccda7334fa7cf0a78fa5ede43752e960620d1690d4df3d4",
+      "objectSha256": "7477d6c1885a3fbbaccda7334fa7cf0a78fa5ede43752e960620d1690d4df3d4",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 6851783972288338031
@@ -21372,7 +21372,7 @@
         "Fake_Attack",
         "Selector"
       ],
-      "sha256": "2329dd847fc7a086f74448908343e89ae5c2b48112fbe0647304b638df977249",
+      "objectSha256": "2329dd847fc7a086f74448908343e89ae5c2b48112fbe0647304b638df977249",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 8607874384982393801
@@ -21402,7 +21402,7 @@
       "hierarchy": [
         "skchr_shining_3"
       ],
-      "sha256": "9e34ae6461f582ce847ce9c4fd78deaa635efa523358a72d4b708c2c6a821020",
+      "objectSha256": "9e34ae6461f582ce847ce9c4fd78deaa635efa523358a72d4b708c2c6a821020",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -3637692038217913187
@@ -21454,7 +21454,7 @@
         "Attack",
         "Selector"
       ],
-      "sha256": "83c9a27101cc19aa788266e51a8f1b8b1615ded67bedf4bf6c34458d04e2bff2",
+      "objectSha256": "83c9a27101cc19aa788266e51a8f1b8b1615ded67bedf4bf6c34458d04e2bff2",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 7080728813803358465
@@ -21511,7 +21511,7 @@
         "skchr_horn_1",
         "BlockedMeleeAttack"
       ],
-      "sha256": "65bab42eeeb4abe5962b80fa24ea17440963b496094483439594daa681e16f48",
+      "objectSha256": "65bab42eeeb4abe5962b80fa24ea17440963b496094483439594daa681e16f48",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 4381884627089348317
@@ -21553,7 +21553,7 @@
       "hierarchy": [
         "skchr_bison_2"
       ],
-      "sha256": "63eff90ad11ed93e7ef2e664567b6dbb48fb56d4c1df0e0ab90d15a53d731225",
+      "objectSha256": "63eff90ad11ed93e7ef2e664567b6dbb48fb56d4c1df0e0ab90d15a53d731225",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 5588963537932396408
@@ -21594,7 +21594,7 @@
       "hierarchy": [
         "skchr_chen_3"
       ],
-      "sha256": "6f15c228b07def95643c86afd64007d63ffa1212ac660f6a683f80911eca6b4c",
+      "objectSha256": "6f15c228b07def95643c86afd64007d63ffa1212ac660f6a683f80911eca6b4c",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 6851783972288338031
@@ -21632,7 +21632,7 @@
       "hierarchy": [
         "skchr_iris_2"
       ],
-      "sha256": "7de829bc842d21a0d5cbe7ad40d8e4417b88608ac668e3a63477991b5d0196bb",
+      "objectSha256": "7de829bc842d21a0d5cbe7ad40d8e4417b88608ac668e3a63477991b5d0196bb",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 6851783972288338031
@@ -21671,7 +21671,7 @@
         "skchr_horn_1",
         "RangedAttackGroup"
       ],
-      "sha256": "4cd970f6d9187a28f5ed9e3cddac26472ce3510195be9de117d051286bbe579a",
+      "objectSha256": "4cd970f6d9187a28f5ed9e3cddac26472ce3510195be9de117d051286bbe579a",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 8671737732485835867
@@ -21715,7 +21715,7 @@
         "skchr_svash2_2",
         "Passive"
       ],
-      "sha256": "e16d9493660d36163e773c8259f8ea26aabcb66716c04131b4272c845e5121df",
+      "objectSha256": "e16d9493660d36163e773c8259f8ea26aabcb66716c04131b4272c845e5121df",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 3800760148018415462
@@ -21782,7 +21782,7 @@
         "skchr_kafka_1",
         "Selector"
       ],
-      "sha256": "aa48427a21200ef183c43b8a04eb7db06440255d9a55f269782d7a884be94903",
+      "objectSha256": "aa48427a21200ef183c43b8a04eb7db06440255d9a55f269782d7a884be94903",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 7080728813803358465
@@ -21838,7 +21838,7 @@
       "hierarchy": [
         "skchr_haak_2"
       ],
-      "sha256": "e8deca06531111c36def43beb28fd29238f1d512da568be7ace2a99328d53a34",
+      "objectSha256": "e8deca06531111c36def43beb28fd29238f1d512da568be7ace2a99328d53a34",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 6851783972288338031
@@ -21876,7 +21876,7 @@
       "hierarchy": [
         "skchr_yukari_2"
       ],
-      "sha256": "289396c25abf6442c5b98ffe1ddb7974fd3cc9243561b3ea80f8ac0e7389af20",
+      "objectSha256": "289396c25abf6442c5b98ffe1ddb7974fd3cc9243561b3ea80f8ac0e7389af20",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 8145049199648393782
@@ -21917,7 +21917,7 @@
         "skchr_yukari_2",
         "Skill_2"
       ],
-      "sha256": "cd41c14e9bb76bb4b0999c2557aee9e0677d84ed890015447d41ff892ca8d5ce",
+      "objectSha256": "cd41c14e9bb76bb4b0999c2557aee9e0677d84ed890015447d41ff892ca8d5ce",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 2165892974539515790
@@ -21998,7 +21998,7 @@
         "skchr_thorn2_3",
         "Selector"
       ],
-      "sha256": "32a20c0a4adbf6ebde34f95e88bc7b977175c211a6e12d301412e442a86b455b",
+      "objectSha256": "32a20c0a4adbf6ebde34f95e88bc7b977175c211a6e12d301412e442a86b455b",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 6959540303033999559
@@ -22068,7 +22068,7 @@
         "skchr_skadi2_2",
         "TriggerTokenAura"
       ],
-      "sha256": "cb45e0905af6b7fe81bae61eccf9cf37d9ac18e47a18c30b5928f5143c111ecd",
+      "objectSha256": "cb45e0905af6b7fe81bae61eccf9cf37d9ac18e47a18c30b5928f5143c111ecd",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 2387974881844837406
@@ -22122,7 +22122,7 @@
         "MultiAttack",
         "Selector"
       ],
-      "sha256": "6ea71805ce71297d05cff1c584c9d47147c05b8cec29113bc470698a20640e58",
+      "objectSha256": "6ea71805ce71297d05cff1c584c9d47147c05b8cec29113bc470698a20640e58",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 7080728813803358465
@@ -22179,7 +22179,7 @@
         "skchr_skadi2_3",
         "DamageAura"
       ],
-      "sha256": "13eb7188a536263fa9f47ca8f54b4863bfe04de6451f67474698aa84fbffe43d",
+      "objectSha256": "13eb7188a536263fa9f47ca8f54b4863bfe04de6451f67474698aa84fbffe43d",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 9073738633337710967
@@ -22254,7 +22254,7 @@
         "skchr_chen3_2",
         "SkillTrigger"
       ],
-      "sha256": "851fa67b18181e93832e544756a43051af9a3df590a8be5759a57d22106aeb81",
+      "objectSha256": "851fa67b18181e93832e544756a43051af9a3df590a8be5759a57d22106aeb81",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 8607874384982393801
@@ -22285,7 +22285,7 @@
         "skchr_skadi2_3",
         "Aura"
       ],
-      "sha256": "802384b527a3601dd99a7c3cb8ec1dea6fd51b89d50746a54be79094f61e0a0a",
+      "objectSha256": "802384b527a3601dd99a7c3cb8ec1dea6fd51b89d50746a54be79094f61e0a0a",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -5482140055134904783
@@ -22343,7 +22343,7 @@
         "skchr_blemsh_2",
         "Switch"
       ],
-      "sha256": "bacf30f81a8e84ea54d0834dd8192c79aaf64e14adb8fce1f4e53cedb13f518b",
+      "objectSha256": "bacf30f81a8e84ea54d0834dd8192c79aaf64e14adb8fce1f4e53cedb13f518b",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -4234909118878081699
@@ -22429,7 +22429,7 @@
         "skchr_acpion_3",
         "Empty"
       ],
-      "sha256": "4175e85df9d315088dc57da5b6969fe023bfeb76d5d10fd1b1fad9a536321eb0",
+      "objectSha256": "4175e85df9d315088dc57da5b6969fe023bfeb76d5d10fd1b1fad9a536321eb0",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -8109327635834973011
@@ -22493,7 +22493,7 @@
         "MeleeAttack",
         "Selector"
       ],
-      "sha256": "e7221e2099a767cf9475cd1b032eba1c20fe005711df2c3d340f7511b7bede0f",
+      "objectSha256": "e7221e2099a767cf9475cd1b032eba1c20fe005711df2c3d340f7511b7bede0f",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 7080728813803358465
@@ -22554,7 +22554,7 @@
         "skchr_thorn2_3",
         "SkillTrigger"
       ],
-      "sha256": "3ef47b71174788a5d6635f930ca6ecf6a80efef44e1da0c602a99558450a5738",
+      "objectSha256": "3ef47b71174788a5d6635f930ca6ecf6a80efef44e1da0c602a99558450a5738",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 6959540303033999559
@@ -22624,7 +22624,7 @@
         "skchr_chen3_2",
         "RespawnBuff"
       ],
-      "sha256": "b777a599c7c7eae6449b57464cde4096d6fac6b98379b05c56a30e95ba70a190",
+      "objectSha256": "b777a599c7c7eae6449b57464cde4096d6fac6b98379b05c56a30e95ba70a190",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -4234909118878081699
@@ -22704,7 +22704,7 @@
         "skchr_apionr_1",
         "Skill"
       ],
-      "sha256": "d1a77732dab4d539110d1f855b3fb6fce111d6e735ba5984726b6eb5e363fd99",
+      "objectSha256": "d1a77732dab4d539110d1f855b3fb6fce111d6e735ba5984726b6eb5e363fd99",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 1339719624887862345
@@ -22781,7 +22781,7 @@
         "skchr_skadi2_3",
         "TriggerTokenAura"
       ],
-      "sha256": "82b871599089f6ee45349cc3d4cdd55c1cc9ac3578fe3035518bea3ea0467540",
+      "objectSha256": "82b871599089f6ee45349cc3d4cdd55c1cc9ac3578fe3035518bea3ea0467540",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -5793748974791823428
@@ -22856,7 +22856,7 @@
         "skchr_iris_2",
         "Selector"
       ],
-      "sha256": "173c121b78bbdc21f97f95da0ee083f2e0f82342ffa13e6376cbe91279b42cbc",
+      "objectSha256": "173c121b78bbdc21f97f95da0ee083f2e0f82342ffa13e6376cbe91279b42cbc",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 7080728813803358465
@@ -22913,7 +22913,7 @@
         "skchr_amiya2_2",
         "SkillEnd"
       ],
-      "sha256": "514c732d8352f3895c52e73121d977bb4dd00fa714ce60b74249fe3f1ca7a1bd",
+      "objectSha256": "514c732d8352f3895c52e73121d977bb4dd00fa714ce60b74249fe3f1ca7a1bd",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 8145049199648393782
@@ -22987,7 +22987,7 @@
         "Selector",
         "Selector0"
       ],
-      "sha256": "fea2c35cf61b6bf7254e5bbe68f271fe4320dcdd86ad694e07169b58f8353e29",
+      "objectSha256": "fea2c35cf61b6bf7254e5bbe68f271fe4320dcdd86ad694e07169b58f8353e29",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 7080728813803358465
@@ -23045,7 +23045,7 @@
         "Selector",
         "Selector1"
       ],
-      "sha256": "2e9be027d337bbd65346f26f85b2e286d1444772f4461006307031e5b81b5281",
+      "objectSha256": "2e9be027d337bbd65346f26f85b2e286d1444772f4461006307031e5b81b5281",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -3746163983071752102
@@ -23102,7 +23102,7 @@
         "skchr_haak_2",
         "Buff"
       ],
-      "sha256": "6af1c046c5dfcaa275f37964b53d8fa297e84fb6238e7b13e220b96e44236b3e",
+      "objectSha256": "6af1c046c5dfcaa275f37964b53d8fa297e84fb6238e7b13e220b96e44236b3e",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -4234909118878081699
@@ -23188,7 +23188,7 @@
       "hierarchy": [
         "skchr_acpion_3"
       ],
-      "sha256": "91b51c9575be7575394b51688d8521259e6775510dc42ead276a03699f909894",
+      "objectSha256": "91b51c9575be7575394b51688d8521259e6775510dc42ead276a03699f909894",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 9054077595100407899
@@ -23231,7 +23231,7 @@
       "hierarchy": [
         "skchr_chen3_2"
       ],
-      "sha256": "4a14d7d398a76a77237980bc8b53407dd8dbb80bcaa43c59bb62fedaaa6af8b1",
+      "objectSha256": "4a14d7d398a76a77237980bc8b53407dd8dbb80bcaa43c59bb62fedaaa6af8b1",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -5349745400011864685
@@ -23347,7 +23347,7 @@
       "hierarchy": [
         "skchr_sora_1"
       ],
-      "sha256": "14de836b9bfdbc246df18bb4c144c8213110797164dbe12ba4da15948ecff582",
+      "objectSha256": "14de836b9bfdbc246df18bb4c144c8213110797164dbe12ba4da15948ecff582",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 3308604825214022655
@@ -23380,7 +23380,7 @@
       "hierarchy": [
         "skchr_oxi_2"
       ],
-      "sha256": "4cc93c1a1d0f974f61518a9653a69f76120b3a08ff87391f55b757b5994c839c",
+      "objectSha256": "4cc93c1a1d0f974f61518a9653a69f76120b3a08ff87391f55b757b5994c839c",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 6851783972288338031
@@ -23420,7 +23420,7 @@
         "AttackWrapper",
         "Attack"
       ],
-      "sha256": "be5b962dccdac02aa0eb639ce6d346ed58ac095532b21b5637f39a37b9a9c6d4",
+      "objectSha256": "be5b962dccdac02aa0eb639ce6d346ed58ac095532b21b5637f39a37b9a9c6d4",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -3698736381282439861
@@ -23495,7 +23495,7 @@
       "hierarchy": [
         "skchr_skadi2_3"
       ],
-      "sha256": "8879999f94b594528c29d7760dfcc1053da71cc8a5c3c1d8718239aea0faa81f",
+      "objectSha256": "8879999f94b594528c29d7760dfcc1053da71cc8a5c3c1d8718239aea0faa81f",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 5588963537932396408
@@ -23546,7 +23546,7 @@
         "Skill",
         "Selector"
       ],
-      "sha256": "10a7777129bceb975b1e01b2a22cc99ccf6586c39f5d3f84026a8fa0b1bb2b56",
+      "objectSha256": "10a7777129bceb975b1e01b2a22cc99ccf6586c39f5d3f84026a8fa0b1bb2b56",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 7080728813803358465
@@ -23602,7 +23602,7 @@
       "hierarchy": [
         "skchr_acpion_3"
       ],
-      "sha256": "23c3ad86f9e02286efedad7865710c3ac24e114f17d75012fea38ab136fec5f1",
+      "objectSha256": "23c3ad86f9e02286efedad7865710c3ac24e114f17d75012fea38ab136fec5f1",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 6851783972288338031
@@ -23641,7 +23641,7 @@
         "skchr_oxi_2",
         "InputTargetValidator"
       ],
-      "sha256": "3305791186dc4d6828d947dd3d4284b2e2b92f601b22a2080e14373ab9692421",
+      "objectSha256": "3305791186dc4d6828d947dd3d4284b2e2b92f601b22a2080e14373ab9692421",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 7080728813803358465
@@ -23698,7 +23698,7 @@
         "skchr_oxi_2",
         "oxi_guard"
       ],
-      "sha256": "e1ea43dfcd14a5b7d059e612f6ddb5bb3b2a4da6f361cb1fbd168796729b70f4",
+      "objectSha256": "e1ea43dfcd14a5b7d059e612f6ddb5bb3b2a4da6f361cb1fbd168796729b70f4",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 3800760148018415462
@@ -23776,7 +23776,7 @@
         "skchr_apionr_1",
         "Empty"
       ],
-      "sha256": "16c578e5d2139950b2e44f97caebe6bfaa2d5daf19f32609837236541edb1115",
+      "objectSha256": "16c578e5d2139950b2e44f97caebe6bfaa2d5daf19f32609837236541edb1115",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -8109327635834973011
@@ -23839,7 +23839,7 @@
         "skchr_haak_2",
         "AttackWrapper"
       ],
-      "sha256": "530676ed1e0b3294b0f0ba9b0a7f28a5051a229f3145e6f5239c41249ef820c3",
+      "objectSha256": "530676ed1e0b3294b0f0ba9b0a7f28a5051a229f3145e6f5239c41249ef820c3",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 8671737732485835867
@@ -23882,7 +23882,7 @@
       "hierarchy": [
         "skchr_blemsh_2"
       ],
-      "sha256": "86c163f806d6cc45ab8aeffa20329cd4ca42cda32d16ffdac96b8c5548fc4078",
+      "objectSha256": "86c163f806d6cc45ab8aeffa20329cd4ca42cda32d16ffdac96b8c5548fc4078",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 6851783972288338031
@@ -23920,7 +23920,7 @@
       "hierarchy": [
         "skchr_apionr_1"
       ],
-      "sha256": "caefb4b32d5c38ade70103b9b6d1dc5aee0ad8d35e2ee6553f8ad4040bdd3d57",
+      "objectSha256": "caefb4b32d5c38ade70103b9b6d1dc5aee0ad8d35e2ee6553f8ad4040bdd3d57",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 9054077595100407899
@@ -23965,7 +23965,7 @@
         "FinalAttack",
         "Selector"
       ],
-      "sha256": "0f672a66334b0bb57425be956a48d9d90d6bb8e41c23fd1af9a00288dfff8bed",
+      "objectSha256": "0f672a66334b0bb57425be956a48d9d90d6bb8e41c23fd1af9a00288dfff8bed",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 7080728813803358465
@@ -24022,7 +24022,7 @@
         "skchr_amiya2_2",
         "MultiAttack"
       ],
-      "sha256": "29a693e72a65d515a652725849a4acc18dcefb12774a4ce7afdda3630f6df1a3",
+      "objectSha256": "29a693e72a65d515a652725849a4acc18dcefb12774a4ce7afdda3630f6df1a3",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 6838209345780682387
@@ -24093,7 +24093,7 @@
         "skchr_skadi2_3",
         "TriggerTokenAura"
       ],
-      "sha256": "3297841d6a9c848ebf99a098970a59052ee2ce60173bf5b5d321ed31e5e03e35",
+      "objectSha256": "3297841d6a9c848ebf99a098970a59052ee2ce60173bf5b5d321ed31e5e03e35",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 2387974881844837406
@@ -24146,7 +24146,7 @@
         "skchr_monstr_1",
         "Selector"
       ],
-      "sha256": "59641d14e9e179e78ae1f1c7a89eb604d8e65e868bf5511b065d781728568682",
+      "objectSha256": "59641d14e9e179e78ae1f1c7a89eb604d8e65e868bf5511b065d781728568682",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 7080728813803358465
@@ -24203,7 +24203,7 @@
         "skchr_kafka_1",
         "ApplySleeping"
       ],
-      "sha256": "588d2b9b7bdcc8c93a0abc4b3f315e9d478ef30cef6b7a2bd617f8981bd68786",
+      "objectSha256": "588d2b9b7bdcc8c93a0abc4b3f315e9d478ef30cef6b7a2bd617f8981bd68786",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 2165892974539515790
@@ -24279,7 +24279,7 @@
       "hierarchy": [
         "skchr_thorn2_3"
       ],
-      "sha256": "27dccfe8699297fa55b27d91ea2a46d328fe0243c7bcb61b14009ea04bef846f",
+      "objectSha256": "27dccfe8699297fa55b27d91ea2a46d328fe0243c7bcb61b14009ea04bef846f",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 7395778163041322389
@@ -24308,7 +24308,7 @@
         "skchr_oxi_2",
         "Selector"
       ],
-      "sha256": "a77b447f8dd1f7f94fb96a126985f5a610c90efea1186a96638b6c8dfb32b85c",
+      "objectSha256": "a77b447f8dd1f7f94fb96a126985f5a610c90efea1186a96638b6c8dfb32b85c",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 7080728813803358465
@@ -24365,7 +24365,7 @@
         "skchr_skadi2_3",
         "Aura"
       ],
-      "sha256": "41cfb9d60a3275a535493107ca24089f81333f64dbd6471315a1a4865c75c3ef",
+      "objectSha256": "41cfb9d60a3275a535493107ca24089f81333f64dbd6471315a1a4865c75c3ef",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 9073738633337710967
@@ -24508,7 +24508,7 @@
       "hierarchy": [
         "skchr_shining_3"
       ],
-      "sha256": "699b289d0b7121557df8800dc10f622bc23a1d562bb0e9eea2ad314351e582b1",
+      "objectSha256": "699b289d0b7121557df8800dc10f622bc23a1d562bb0e9eea2ad314351e582b1",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 9073738633337710967
@@ -24630,7 +24630,7 @@
       "hierarchy": [
         "skchr_thorn2_3"
       ],
-      "sha256": "5190148635e9460703383a862ea833f106857776c79324c0ee20be1e62330472",
+      "objectSha256": "5190148635e9460703383a862ea833f106857776c79324c0ee20be1e62330472",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 4156651312234227407
@@ -24706,7 +24706,7 @@
         "skchr_tocka_3",
         "SelectCharacter"
       ],
-      "sha256": "0f53ab266a1e818c6b046deaed22254c146a68d5b8474636d4de621b08d42c65",
+      "objectSha256": "0f53ab266a1e818c6b046deaed22254c146a68d5b8474636d4de621b08d42c65",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 4865767822664548221
@@ -24738,7 +24738,7 @@
         "skchr_bison_2",
         "Aura"
       ],
-      "sha256": "801a7c66f5665be67e98301377afe47860f456c907c098d3258382dbf017a976",
+      "objectSha256": "801a7c66f5665be67e98301377afe47860f456c907c098d3258382dbf017a976",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -3637692038217913187
@@ -24787,7 +24787,7 @@
       "hierarchy": [
         "skchr_haak_2"
       ],
-      "sha256": "6884ffd87114867b94eb4d6d65a2724de1d7ecc18f72416614c34ddde7507656",
+      "objectSha256": "6884ffd87114867b94eb4d6d65a2724de1d7ecc18f72416614c34ddde7507656",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -3703208971068511792
@@ -24833,7 +24833,7 @@
         "Selector",
         "Yukari"
       ],
-      "sha256": "737d3e103866a772b1e5bd2d371bd4dd841b2cb36daf8faa9d985e99c62f5033",
+      "objectSha256": "737d3e103866a772b1e5bd2d371bd4dd841b2cb36daf8faa9d985e99c62f5033",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 4228536478899308872
@@ -24888,7 +24888,7 @@
         "Fake_Attack",
         "Selector"
       ],
-      "sha256": "daa4f2e353a91eb4690a6b981b93646dd815757958d639ac442fa7be0642f764",
+      "objectSha256": "daa4f2e353a91eb4690a6b981b93646dd815757958d639ac442fa7be0642f764",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 7080728813803358465
@@ -24945,7 +24945,7 @@
         "skchr_yukari_1",
         "SkillTrigger"
       ],
-      "sha256": "2676c99d44cd2edbc0e2901f8c58a3315cbe09187f524dcf2bf2e9835cde2055",
+      "objectSha256": "2676c99d44cd2edbc0e2901f8c58a3315cbe09187f524dcf2bf2e9835cde2055",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 7080728813803358465
@@ -25004,7 +25004,7 @@
         "Selector",
         "Selector_2"
       ],
-      "sha256": "6042ff12e142e40810d5da41da569701e7607329fafd6e07142e28576b9c650b",
+      "objectSha256": "6042ff12e142e40810d5da41da569701e7607329fafd6e07142e28576b9c650b",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 1846211657456155157
@@ -25065,7 +25065,7 @@
       "hierarchy": [
         "skchr_apionr_1"
       ],
-      "sha256": "87e0b3dbf54f281997c44565ae6ed03d31c1700ae3c2b0e6992d57fb45caf101",
+      "objectSha256": "87e0b3dbf54f281997c44565ae6ed03d31c1700ae3c2b0e6992d57fb45caf101",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 6851783972288338031
@@ -25104,7 +25104,7 @@
         "skchr_amiya2_2",
         "SkillEnd"
       ],
-      "sha256": "b80f80622f4771e5c7ac97ebadd83b94c6912c11c37b5bef22368a8d61e3ec88",
+      "objectSha256": "b80f80622f4771e5c7ac97ebadd83b94c6912c11c37b5bef22368a8d61e3ec88",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 6838209345780682387
@@ -25174,7 +25174,7 @@
       "hierarchy": [
         "skchr_blemsh_3"
       ],
-      "sha256": "700e1b64ea7a369ab5e99286b73efc0b2e2dfdc4ae8801e1d455b4f22bf69519",
+      "objectSha256": "700e1b64ea7a369ab5e99286b73efc0b2e2dfdc4ae8801e1d455b4f22bf69519",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -4234909118878081699
@@ -25334,7 +25334,7 @@
       "hierarchy": [
         "skchr_oxi_2"
       ],
-      "sha256": "f66f8c2bc0402ec6f21c68e888d48022577310974c4f36e36e561a6746a53df4",
+      "objectSha256": "f66f8c2bc0402ec6f21c68e888d48022577310974c4f36e36e561a6746a53df4",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -2559024630759628947
@@ -25396,7 +25396,7 @@
       "hierarchy": [
         "skchr_yukari_2"
       ],
-      "sha256": "8f13b2e3c9136233c356a949bf9c1c7dea87d2e2edb3ad63c63c85cbf590f876",
+      "objectSha256": "8f13b2e3c9136233c356a949bf9c1c7dea87d2e2edb3ad63c63c85cbf590f876",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -8109327635834973011
@@ -25459,7 +25459,7 @@
         "skchr_apionr_1",
         "Skill"
       ],
-      "sha256": "956009d4db075c6673c7b047ada9403702a17e27df4ed14c3c96594113fd9918",
+      "objectSha256": "956009d4db075c6673c7b047ada9403702a17e27df4ed14c3c96594113fd9918",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -5349745400011864685
@@ -25502,7 +25502,7 @@
         "skchr_acpion_3",
         "Skill"
       ],
-      "sha256": "656d8603ec925cd0c3d1a105671f106a0a8e36f7db65efa3dbcbfeee41e2b409",
+      "objectSha256": "656d8603ec925cd0c3d1a105671f106a0a8e36f7db65efa3dbcbfeee41e2b409",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -5349745400011864685
@@ -25545,7 +25545,7 @@
         "skchr_blemsh_3",
         "Heal"
       ],
-      "sha256": "2b046cc9e18b35b18a22027225938d30a49b98bd3980b18437ced47a8fa371ba",
+      "objectSha256": "2b046cc9e18b35b18a22027225938d30a49b98bd3980b18437ced47a8fa371ba",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -1761593469416546375
@@ -25591,7 +25591,7 @@
         "Selector",
         "Selector_2"
       ],
-      "sha256": "dba07a7d3e16877ec9db9443fd10e9d91b62706c0fd753888e858dfb08d76356",
+      "objectSha256": "dba07a7d3e16877ec9db9443fd10e9d91b62706c0fd753888e858dfb08d76356",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -8393423638938299372
@@ -25667,7 +25667,7 @@
       "hierarchy": [
         "skchr_chen3_2"
       ],
-      "sha256": "d85791a2545e6ce8e8685b0762699d26fa1b77cecd45c1a852709d5a0a58df9d",
+      "objectSha256": "d85791a2545e6ce8e8685b0762699d26fa1b77cecd45c1a852709d5a0a58df9d",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 1339719624887862345
@@ -25732,7 +25732,7 @@
         "skchr_yukari_1",
         "SkillTrigger"
       ],
-      "sha256": "a4f0f2c10126fad62d90eb89a21bd685ee51be4d3e688757893e4ffcfd961925",
+      "objectSha256": "a4f0f2c10126fad62d90eb89a21bd685ee51be4d3e688757893e4ffcfd961925",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 8607874384982393801
@@ -25763,7 +25763,7 @@
         "skchr_acpion_3",
         "Skill"
       ],
-      "sha256": "f4fc5824288be16200357009aca50d7ef65fab5e5823a7aeff513c8cc6efd9b4",
+      "objectSha256": "f4fc5824288be16200357009aca50d7ef65fab5e5823a7aeff513c8cc6efd9b4",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -8109327635834973011
@@ -25825,7 +25825,7 @@
       "hierarchy": [
         "skchr_chen_3"
       ],
-      "sha256": "c6cb79e7e81179dcf95095d8dad1c4208d1a17a0e19b6b605505e182a6b04224",
+      "objectSha256": "c6cb79e7e81179dcf95095d8dad1c4208d1a17a0e19b6b605505e182a6b04224",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -5349745400011864685
@@ -25900,7 +25900,7 @@
         "skchr_haak_3",
         "AttackWrapper"
       ],
-      "sha256": "0fbc5f7a251de4ef724429f6895442c8222317b9f9a5b7bca29abf734921d5ec",
+      "objectSha256": "0fbc5f7a251de4ef724429f6895442c8222317b9f9a5b7bca29abf734921d5ec",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 8671737732485835867
@@ -25943,7 +25943,7 @@
       "hierarchy": [
         "skchr_chen_3"
       ],
-      "sha256": "10bdb3ab8d80843aa99169aa6e007def553558201c54fa206af859add7b4764f",
+      "objectSha256": "10bdb3ab8d80843aa99169aa6e007def553558201c54fa206af859add7b4764f",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 6838209345780682387
@@ -26012,7 +26012,7 @@
         "skchr_chen_3",
         "Selector"
       ],
-      "sha256": "9ef98ebd0567f62e4ff0d4b05cb88c70eac777cf408520de5fb6120fe487f586",
+      "objectSha256": "9ef98ebd0567f62e4ff0d4b05cb88c70eac777cf408520de5fb6120fe487f586",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 7080728813803358465
@@ -26068,7 +26068,7 @@
       "hierarchy": [
         "skchr_thorn2_1"
       ],
-      "sha256": "363955717172b73a374ebeb44ca77c574975484be235839fa59d061ef5e5590a",
+      "objectSha256": "363955717172b73a374ebeb44ca77c574975484be235839fa59d061ef5e5590a",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 5227880615222932794
@@ -26106,7 +26106,7 @@
         "skchr_svash2_2",
         "Selector"
       ],
-      "sha256": "377bd990311ce7977bb6c62ea4f9ed8daf49e74e89033437ed15c17358e1dae2",
+      "objectSha256": "377bd990311ce7977bb6c62ea4f9ed8daf49e74e89033437ed15c17358e1dae2",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 840206743537877183
@@ -26164,7 +26164,7 @@
       "hierarchy": [
         "skchr_tocka_3"
       ],
-      "sha256": "b6f679b18c0b0dd48e7b9e59908e47a4d04256a5a6e6b277e51f95e648b69a38",
+      "objectSha256": "b6f679b18c0b0dd48e7b9e59908e47a4d04256a5a6e6b277e51f95e648b69a38",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 6851783972288338031
@@ -26204,7 +26204,7 @@
         "Skill",
         "Selector"
       ],
-      "sha256": "416e11ff8ae5db4497a016d24ddd1ef3c9677911ec0d0a7a9cbcd6021caad4d0",
+      "objectSha256": "416e11ff8ae5db4497a016d24ddd1ef3c9677911ec0d0a7a9cbcd6021caad4d0",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 7080728813803358465
@@ -26260,7 +26260,7 @@
       "hierarchy": [
         "skchr_blemsh_2"
       ],
-      "sha256": "867ac982c228034c27a5d5d85876e2bda1e9671418b20fe57a84ecd42931bc86",
+      "objectSha256": "867ac982c228034c27a5d5d85876e2bda1e9671418b20fe57a84ecd42931bc86",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 7943132833301030580
@@ -26323,7 +26323,7 @@
         "skchr_chen3_2",
         "Selector"
       ],
-      "sha256": "e860784dc53267635ec1177f68e75a69af040db3966824724390c71dbe7990c7",
+      "objectSha256": "e860784dc53267635ec1177f68e75a69af040db3966824724390c71dbe7990c7",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 8825083085497120218
@@ -26376,7 +26376,7 @@
       "hierarchy": [
         "skchr_snhunt_2"
       ],
-      "sha256": "43ed2ac00d02c945071c5c7a41d13732a51ebba63af6b22f84cf4971b3ffe899",
+      "objectSha256": "43ed2ac00d02c945071c5c7a41d13732a51ebba63af6b22f84cf4971b3ffe899",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -3698736381282439861

@@ -3,13 +3,13 @@
     "collectedOn": "2026-11-09",
     "script": {
       "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/targeting-pipeline-20261109/content/extract_validator_config.py",
-      "bytes": 4856,
-      "sha256": "4b3b1b82a564a603f689af18879fa4936c406a8514798aa3484fa5751a0f89db"
+      "bytes": 4862,
+      "sha256": "fb230f82436cd038a02e4a3e2c4accb700aa09d5e7cd9f5b8f1f032f2371411d"
     },
     "contentReader": {
       "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/targeting-pipeline-20261109/content/extract_content.py",
-      "bytes": 12900,
-      "sha256": "29afa244fb8b3429a73a60c43c84cd16718b34bfbf7f7f22287d03118a324812"
+      "bytes": 12906,
+      "sha256": "37504c156e11e55c9c06174980fb1617281690ab3b01db9caa9dfd28937f5faa"
     },
     "contracts": {
       "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/targeting-pipeline-20261109/content/validator-composition.json",
@@ -40,7 +40,7 @@
       "bundle": "battle/prefabs/[uc]skills.ab",
       "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
       "pathId": "4307741335078991844",
-      "sha256": "a69812a11b0062e0aaeb7b1a2a06b8015d92eb787f324e81d6779223218affed",
+      "objectSha256": "a69812a11b0062e0aaeb7b1a2a06b8015d92eb787f324e81d6779223218affed",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": -7478772901303009912
@@ -95,7 +95,7 @@
       "bundle": "battle/prefabs/[uc]skills.ab",
       "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
       "pathId": "6416742763189139428",
-      "sha256": "0f53ab266a1e818c6b046deaed22254c146a68d5b8474636d4de621b08d42c65",
+      "objectSha256": "0f53ab266a1e818c6b046deaed22254c146a68d5b8474636d4de621b08d42c65",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 4865767822664548221
@@ -138,7 +138,7 @@
       "bundle": "battle/prefabs/[uc]skills.ab",
       "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
       "pathId": "8715933233783011300",
-      "sha256": "b6f679b18c0b0dd48e7b9e59908e47a4d04256a5a6e6b277e51f95e648b69a38",
+      "objectSha256": "b6f679b18c0b0dd48e7b9e59908e47a4d04256a5a6e6b277e51f95e648b69a38",
       "scriptPPtr": {
         "m_FileID": 1,
         "m_PathID": 6851783972288338031
