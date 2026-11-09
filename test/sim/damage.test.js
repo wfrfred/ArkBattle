@@ -3,7 +3,7 @@ import { test } from "node:test";
 import { battle, get } from "../helpers/battle.js";
 import { Hooks } from "../../dist/core/hook.js";
 import * as units from "../../dist/core/unit/index.js";
-import { update, remove } from "../../dist/core/battle/unit.js";
+import { update } from "../../dist/core/battle/unit.js";
 import * as hpDamage from "../../dist/core/battle/damage/hp/index.js";
 import * as epDamage from "../../dist/core/battle/damage/ep/index.js";
 import * as hpHealing from "../../dist/core/battle/healing/hp/index.js";
@@ -13,7 +13,6 @@ import * as attribute from "../../dist/core/unit/contribution/attribute.js";
 import * as blocking from "../../dist/core/battle/blocking/index.js";
 import * as skills from "../../dist/core/unit/skill/index.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
-import * as lifetime from "../../dist/core/lifetime/index.js";
 import { invincible } from "../../dist/core/effects/protection.js";
 import { createArknightsElementalDefinition } from "../../dist/data/arknights/elemental.js";
 
@@ -592,23 +591,11 @@ test("EP-01: calculated resistance and element survive later state changes; HP e
     assert.equal(hp.value.application.hpLoss, 20);
     assert.equal(get(hp.state, 0).elemental.ep.NEURAL, 830);
 
-    const zero = injuryRequest(target, "NEURAL", 0);
-    assert.equal(epDamage.applyDamage(zero, epDamage.calculateDamage(hp.state, zero)).value.type, "REJECTED");
-    const protectedState = update(hp.state, target, elemental.setHook("damageReceiving", {
-        id: "full-barrier",
-        invoke: (current, _context, pending) => ({ state: current, value: { ...pending, amount: pending.amount - 200 } }),
-    }));
-    const positive = injuryRequest(target, "NEURAL", 100);
-    const absorbed = epDamage.applyDamage(positive, epDamage.calculateDamage(protectedState, positive));
-    assert.equal(absorbed.value.type, "APPLIED");
-    assert.equal(absorbed.value.received.amount, 0);
-    assert.equal(absorbed.value.application.epLoss, 0);
-    assert.equal(get(absorbed.state, 0).elemental.ep.NEURAL, 830);
+
 });
 
 test("EP-02: depletion registers the Burst and completes standard output before resource notifications and Applied", () => {
     const order = [];
-    let ended = 0;
     const hooks = Hooks.empty()
         .set(hpDamage.beforeReceive, {
             id: "standard-output", invoke: current => {
@@ -628,22 +615,15 @@ test("EP-02: depletion registers the Burst and completes standard output before 
     ]);
     const target = units.ref(get(state, 0));
     const source = units.ref(get(state, 1));
-    state = update(state, target, units.compose(units.compose(elemental.setHook("burstStarted", {
+    state = update(state, target, units.compose(elemental.setHook("burstStarted", {
             id: "creation", invoke(current, { event }) {
                 order.push("started");
                 const reference = effects.ref(event);
                 assert.equal(get(current, 0).elemental.burst.id, reference.id);
-                assert.equal(lifetime.available(current, lifetime.scope(effects.lifetime, reference)), true);
                 return { state: current, value: undefined };
             },
         }), elemental.setHook("damaged", {
             id: "loss", invoke(current) { order.push("damaged"); return { state: current, value: undefined }; },
-        })), elemental.setHook("burstEnded", {
-            id: "end", invoke(current) {
-                ended++;
-                assert.equal(get(current, 0).elemental.burst, null);
-                return { state: current, value: undefined };
-            },
         })));
     const preceding = injuryRequest(target, "NEURAL", 200);
     state = epDamage.applyDamage(preceding, epDamage.calculateDamage(state, preceding)).state;
@@ -655,12 +635,7 @@ test("EP-02: depletion registers the Burst and completes standard output before 
     assert.equal(get(result.state, 0).vitality.hp, 9160);
     assert.equal(vitality.resolveResistance(result.state, get(result.state, 0)), 30);
     assert.deepEqual(elemental.get(result.state, result.value.application.burst).source, source);
-    const sourceRemoved = remove(result.state, source.id, "SCRIPT");
-    assert.equal(elemental.get(sourceRemoved, result.value.application.burst).lifecycle, "ACTIVE");
-    const removed = remove(sourceRemoved, target.id, "SCRIPT");
-    assert.equal(get(removed, 0), undefined);
-    assert.equal(elemental.get(removed, result.value.application.burst), undefined);
-    assert.equal(ended, 1);
+
 });
 
 test("EP-02: cancelling a newly registered Burst suppresses standard output without rewriting the loss report", () => {

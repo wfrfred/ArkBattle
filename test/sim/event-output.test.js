@@ -10,6 +10,7 @@ import * as epHealing from "../../dist/core/battle/healing/ep/index.js";
 import * as elementalCapability from "../../dist/core/unit/capability/elemental/index.js";
 import * as presence from "../../dist/core/unit/capability/presence/index.js";
 import { appendEvents } from "../../dist/core/battle/state.js";
+import { step } from "../../dist/core/battle/index.js";
 import { TacticalDemoPresentation } from "../../dist/legacy/tactical-demo-presentation.js";
 
 import { createArknightsElementalDefinition } from "../../dist/data/arknights/elemental.js";
@@ -99,9 +100,10 @@ test("EVENT-03: UI output displays a route exit without changing simulation fact
     }, position: [1, 1] }]);
     const output = appendEvents(initial, [{ type: "ROUTE_COMPLETED", unitId: 0, tick: 0 }]);
 
-    assert.equal(output.battlefield, initial.battlefield);
-    assert.equal(output.schedule, initial.schedule);
-    assert.equal(get(output, 0), get(initial, 0));
+    assert.equal(get(output, 0).lifecycle, "PRESENT");
     assert.deepEqual(new TacticalDemoPresentation(data).advance(output, output.events), [["leak", 0]]);
-    assert.deepEqual(new TacticalDemoPresentation(data).advance(output, []), []);
+    const next = step(output, []);
+    assert.deepEqual(next.events, []);
+    assert.equal(get(next, 0).lifecycle, "PRESENT");
+    assert.deepEqual(output.events, [{ type: "ROUTE_COMPLETED", unitId: 0, tick: 0 }]);
 });

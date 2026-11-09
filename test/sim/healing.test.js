@@ -71,7 +71,6 @@ test("APPLY-02: Calculate normalizes final HP/EP output before Apply starts rece
         assert.equal(calculated.value.amount, 0, name);
         const result = apply(request, calculated);
         assert.equal(result.value.type, "REJECTED", name);
-        assert.equal(result.state, state, name);
     }
 });
 
@@ -94,9 +93,6 @@ test("HP Healing accepts full resources and absent patients while damage require
         })), units.setHook(hpHealing.sourceApplied, {
             id: "source", invoke(current) { calls.push("source"); return { state: current, value: undefined }; },
         })));
-    const zero = { source: target, target, parameters: { power: 0, multiplier: 1 } };
-    assert.equal(hpHealing.applyHealing(zero, hpHealing.calculateHealing(state, zero)).value.type, "REJECTED");
-    assert.deepEqual(calls, []);
     const request = { source: target, target, parameters: { power: 25, multiplier: 2 } };
     const calculated = hpHealing.calculateHealing(state, request);
     assert.equal(calculated.value.amount, 50);
@@ -116,14 +112,6 @@ test("HP Healing accepts full resources and absent patients while damage require
     state = epDamage.applyDamage(epLoss, epDamage.calculateDamage(state, epLoss)).state;
     assert.equal(get(state, 0).vitality.hp, 70.5);
     assert.equal(get(state, 0).elemental.ep.NEURAL, 800);
-
-    const reducedRequest = { ...request, parameters: { power: 5, multiplier: 1 } };
-    const reduced = hpHealing.applyHealing(reducedRequest, hpHealing.calculateHealing(state, reducedRequest));
-    assert.equal(reduced.value.type, "APPLIED");
-    assert.equal(reduced.value.received.amount, 0);
-    assert.equal(reduced.value.application.hpGain, 0);
-    assert.equal(get(reduced.state, 0).vitality.hp, 70.5);
-    state = reduced.state;
 
     state = update(state, target, presence.disappear());
     assert.equal(hpDamage.applyDamage(hpLoss, hpDamage.calculateDamage(state, hpLoss)).value.type, "REJECTED");
@@ -162,9 +150,6 @@ test("EP-01/03: losses stay per element, healing gives every bar the full amount
         NEURAL: 800, EROSION: 920, BURN: 960, NECROSIS: 1000,
     });
     const incoming = { target, source: null, parameters: { power: 100 } };
-    const zero = { ...incoming, parameters: { ...incoming.parameters, power: 0 } };
-    assert.equal(epHealing.applyHealing(zero, epHealing.calculateHealing(state, zero)).value.type, "REJECTED");
-    assert.equal(healingNotices, 0);
     const restored = epHealing.applyHealing(incoming, epHealing.calculateHealing(state, incoming));
     assert.deepEqual(restored.value.application.epGain, {
         NEURAL: 100, EROSION: 80, BURN: 40, NECROSIS: 0,

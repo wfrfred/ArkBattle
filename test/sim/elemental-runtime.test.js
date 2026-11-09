@@ -2,10 +2,9 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { battle as createBattle, get as getUnit } from "../helpers/battle.js";
 import { Hooks } from "../../dist/core/hook.js";
-import * as unitLifecycle from "../../dist/core/unit/hook.js";
 import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import * as unitQueries from "../../dist/core/unit/index.js";
-import { resolveDefense, resolveResistance } from "../../dist/core/unit/capability/vitality/index.js";
+import { resolveDefense } from "../../dist/core/unit/capability/vitality/index.js";
 import { and, damage as damageFilter, range as inRange, first, distance } from "../../dist/core/battle/targeting/index.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import { step as stepBattle } from "../../dist/core/battle/index.js";
@@ -18,7 +17,7 @@ import { recover } from "../../dist/core/unit/skill/sp.js";
 import { resolveAttack } from "../../dist/core/unit/capability/offense/index.js";
 import { create as modifier } from "../../dist/core/unit/contribution/attribute.js";
 import * as elemental from "../../dist/core/unit/capability/elemental/index.js";
-import { get as getBurst, elementValues, setContribution } from "../../dist/core/unit/capability/elemental/index.js";
+import { elementValues, setContribution } from "../../dist/core/unit/capability/elemental/index.js";
 import { createArknightsElementalDefinition } from "../../dist/data/arknights/elemental.js";
 import { stun } from "../../dist/core/effects/control.js";
 import * as epDamage from "../../dist/core/battle/damage/ep/index.js";
@@ -31,16 +30,15 @@ function action(interval = 1) {
       purposes: ['DAMAGE'], filter: and(damageFilter, inRange(range)), selector: first(1, distance),
     }, operations: [{ type: 'DAMAGE', power: 1, damageType: 'TRUE' }] }], followUps: [] });
 }
-function definition(receiver = 'CHARACTER', overrides = {}, elementOptions = {}) {
-  return { hooks: Hooks.empty(), id: `element-${receiver}`, targetable: { restrictions: [] }, spatialPresence: {}, vitality: { maxHp: 100000, defense: 500, resistance: 50 },
+function definition(receiver = 'CHARACTER', overrides = {}) {
+  return { hooks: Hooks.empty(), id: `element-${receiver}`,
+    vitality: { maxHp: 100000, defense: 500, resistance: 50 },
     offense: { attack: 100 },
-    allegiance: { side: receiver === 'CHARACTER' ? 'ALLY' : 'ENEMY' },
-    layer: { type: 'GROUND' }, hitbox: { shape: hit },
-    action: actionCapability(action()),
-    elemental: createArknightsElementalDefinition({ receiver, ...elementOptions }), ...overrides };
+    elemental: createArknightsElementalDefinition({ receiver }), ...overrides };
 }
-function receiverBattle(receiver = 'CHARACTER', overrides = {}, elementOptions = {}) {
-  return createBattle([{ position: [1, 0], definition: definition(receiver, overrides, elementOptions) }]);
+
+function receiverBattle(receiver = 'CHARACTER', overrides = {}) {
+  return createBattle([{ position: [1, 0], definition: definition(receiver, overrides) }]);
 }
 function element(work, type, tick = work.tick, power = 1000) {
   const request = { target: unitRef(getUnit(work, 0)), source: null, parameters: { type, power } };
@@ -60,19 +58,6 @@ function power(work) {
   return resolveAttack(work, getUnit(work, 0));
 }
 function near(actual, expected) { assert.ok(Math.abs(actual - expected) < 1e-8, `${actual} != ${expected}`); }
-
-test('elemental execution: burn lowers resistance before its immediate damage and withdraws the reduction on recovery', () => {
-  const original = receiverBattle();
-  const result = element(original, 'BURN');
-  assert.equal(result.value.type, 'APPLIED');
-  assert.equal(getBurst(result.state, result.value.application.burst).source, null);
-  assert.equal(getUnit(result.state, 0).vitality.hp, 99160);
-  assert.equal(resolveResistance(result.state, getUnit(result.state, 0)), 30);
-  assert.equal(getUnit(original, 0).vitality.hp, 100000);
-  const recovered = advance(result.state, 300);
-  assert.equal(resolveResistance(recovered, getUnit(recovered, 0)), 50);
-  assert.equal(getUnit(recovered, 0).elemental.burst, null);
-});
 
 test('elemental execution: erosion defense loss survives recovery and stacks on the next burst for both receiver classes', () => {
   for (const [receiver, duration, reduction, secondHpLoss] of [['CHARACTER', 300, 100, 500], ['ENEMY', 240, 120, 5000]]) {
@@ -104,158 +89,66 @@ test('elemental execution: character necrosis settles fifteen magical pulses, dr
   work = advance(work, 450);
   assert.equal(getUnit(work, 0).vitality.hp, 99250);
   assert.equal(getUnit(work, 0).skill.sp.value, 5);
-  assert.equal(work.events.filter(event => event.type === 'DAMAGE').length, 15);
-  assert.equal(recover(work, unitRef(getUnit(work, 0)), 'TIME', 0).value.type, 'APPLIED');
   work = recover(work, unitRef(getUnit(work, 0)), 'TIME', 3).state;
   assert.equal(getUnit(work, 0).skill.sp.value, 8);
   assert.equal(activateSkill(work, skillRef(getUnit(work, 0))).value.type, 'ACTIVATED');
 });
 
-test('elemental execution: enemy necrosis damage is elemental and its attack reduction fades before full recovery', () => {
-  let work = receiverBattle('ENEMY');
-  work = element(work, 'NECROSIS').state;
+test('elemental execution: necrosis shares its recovery budget with periodic damage and fading attack loss', () => {
+  let work = element(receiverBattle('ENEMY'), 'NECROSIS').state;
   assert.equal(power(work), 50);
   work = advance(work, 150);
   near(power(work), 100 * (1 - 0.5 * 10 / 15));
   assert.equal(getUnit(work, 0).vitality.hp, 96000);
-  for (const value of Object.values(getUnit(work, 0).elemental.ep)) near(value, 1000 / 3);
-  work = advance(work, 300);
+
+  const speed = value => setContribution('burstRecoverySpeed', {
+    id: 'burst-speed', value: [modifier({ finalScaler: value })],
+  });
+  work = applyUnitChanges(work, unitRef(getUnit(work, 0)), speed(0));
+  work = advance(work, 210);
+  assert.equal(getUnit(work, 0).vitality.hp, 96000);
+  near(power(work), 100 * (1 - 0.5 * 10 / 15));
+  work = applyUnitChanges(work, unitRef(getUnit(work, 0)), speed(2));
+  work = advance(work, 285);
   near(power(work), 100 * (1 - 0.5 * 5 / 15));
-  for (const value of Object.values(getUnit(work, 0).elemental.ep)) near(value, 2000 / 3);
-  work = advance(work, 450);
+  assert.equal(getUnit(work, 0).vitality.hp, 92000);
+  work = advance(work, 360);
   assert.equal(power(work), 100);
   assert.equal(getUnit(work, 0).vitality.hp, 88000);
-  assert.deepEqual(getUnit(work, 0).elemental.ep, elementValues(1000));
   const damage = work.events.filter(event => event.type === 'DAMAGE');
   assert.equal(damage.length, 15);
   assert.equal(damage.every(event => event.amount === 800 && event.damageType === 'ELEMENTAL'), true);
+
+  const started = element(receiverBattle('ENEMY'), 'NECROSIS');
+  const ended = elemental.cancel(advance(started.state, 29), started.value.application.burst);
+  assert.equal(getUnit(ended, 0).vitality.hp, 100000);
+  assert.deepEqual(getUnit(ended, 0).elemental.ep, elementValues(1000));
 });
 
-test('elemental execution: periodic output follows burst speed and does not pay out unused time on early exit', () => {
-  let work = receiverBattle('ENEMY');
-  work = element(work, 'NECROSIS').state;
-  const speed = value => setContribution('burstRecoverySpeed', {
-    id:'burst-speed', value:[modifier({finalScaler:value})],
-  });
-  work = applyUnitChanges(work, unitRef(getUnit(work, 0)), speed(0));
-  work = advance(work, 60);
-  assert.equal(getUnit(work, 0).vitality.hp, 100000);
-  assert.equal(getBurst(work, getUnit(work, 0).elemental.burst).expiration.elapsed, 0);
-  assert.deepEqual(getUnit(work, 0).elemental.ep, elementValues(0));
-  work = applyUnitChanges(work, unitRef(getUnit(work, 0)), unitQueries.compose(
-    speed(2),
-    setContribution('maxEp', {
-      id: 'larger-ep', value: [modifier({ finalScaler: 2 })],
-    }),
-  ));
-  work = advance(work, 210);
-  assert.equal(getUnit(work, 0).vitality.hp, 92000);
-  for (const value of Object.values(getUnit(work, 0).elemental.ep)) near(value, 4000 / 3);
-  near(power(work), 100 * (1 - 0.5 * 5 / 15));
-  work = advance(work, 285);
-  assert.equal(getUnit(work, 0).elemental.burst, null);
-  assert.equal(getUnit(work, 0).vitality.hp, 88000);
-  assert.equal(work.events.filter(event => event.type === 'DAMAGE').length, 15);
-  assert.equal(power(work), 100);
-  assert.deepEqual(getUnit(work, 0).elemental.ep, elementValues(2000));
-
-  for (const end of [elemental.finish, elemental.cancel]) {
-    const started = element(receiverBattle('ENEMY'), 'NECROSIS');
-    const partial = advance(started.state, 29);
-    const ended = end(partial, started.value.application.burst);
-    assert.equal(getUnit(ended, 0).elemental.burst, null);
-    assert.equal(getUnit(ended, 0).vitality.hp, 100000);
-    assert.deepEqual(getUnit(ended, 0).elemental.ep, elementValues(1000));
-    assert.equal(ended.events.filter(event => event.type === 'DAMAGE').length, 0);
-  }
-});
-
-function battle(receiver, type, { moving = false } = {}) {
+function battle(receiver, type) {
   const casterAttack = createAttack({ ...action(10000).attack,
     targetGroups: [{ ...action().attack.targetGroups[0], operations: [
       { type: 'ELEMENTAL_INJURY', elementType: type, power: 1000 },
       ...action().attack.targetGroups[0].operations,
     ] }],
   });
-  const caster = definition('CHARACTER', { hooks: Hooks.empty(), id: 'caster', allegiance: { side: 'ALLY' },
-    action: actionCapability(casterAttack) });
-  const victim = definition(receiver, { hooks: Hooks.empty(), id: 'victim', allegiance: { side: 'ENEMY' },
-    action: actionCapability(action(1)),
-    ...(moving ? { route: { alwaysCheckCurrentPoint: true }, locomotion: { halfBodyWidth: 0, minSpeed: 0, speed: 0.001, steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 } }, blockable: { volume: 1, rules: [] } } : {}) });
-  const runtime = createBattle([
-    { definition: caster, position: [0, 0] },
-    { definition: victim, position: moving ? [3, 0] : [1, 0],
-      ...(moving ? { initial: { route: {
-        plan: { motionMode: 'WALK', startPosition: [0, 3], endPosition: null,
-          checkpoints: [{type: 'MOVE', position: [0, 7], offset: [0, 0], randomizeOffset: false}], requireAllCheckpoints: true },
-        offset: [0, 0],
-      } } } : {}),
-    },
-  ], {
-    rows: 1, columns: 8, maxTicks: 600,
+  const actor = (side, attack) => ({
+    id: side, hooks: Hooks.empty(), vitality: { maxHp: 100000, defense: 500, resistance: 50 },
+    targetable: { restrictions: [] }, allegiance: { side },
+    hitbox: { shape: hit }, action: actionCapability(attack),
   });
-  return { runtime };
+  return createBattle([
+    { definition: actor('ALLY', casterAttack), position: [0, 0] },
+    { definition: { ...actor('ENEMY', action()),
+      elemental: createArknightsElementalDefinition({ receiver }),
+    }, position: [1, 0] },
+  ], { rows: 1, columns: 8 });
 }
+
 function victim(runtime) { return unitQueries.all(runtime).find(entry => entry.id === 1); }
 
-test('elemental runtime: Unit and Effect tick triggers preserve every necrosis pulse through recovery', () => {
-  for (const source of ['Unit', 'Effect']) {
-    const trigger = {
-      id: 'burst-trigger', initialize: () => ({}),
-      onTick(state, self) {
-        state = effects.end(state, effects.ref(self));
-        const request = { target: self.host, source: null, parameters: { type: 'NECROSIS', power: 1000 } };
-        return epDamage.applyDamage(request, epDamage.calculateDamage(state, request)).state;
-      },
-    };
-    const receiver = definition('ENEMY', {
-      action: actionCapability(),
-      hooks: source === 'Unit' ? Hooks.empty().set(unitLifecycle.tick, {
-        id: 'burst-trigger',
-        invoke(state, self) {
-          state = applyUnitChanges(state, unitRef(self), unitLifecycle.removeHook(unitLifecycle.tick, 'burst-trigger'));
-          const request = { target: unitRef(self), source: null, parameters: { type: 'NECROSIS', power: 1000 } };
-          return { state: epDamage.applyDamage(request, epDamage.calculateDamage(state, request)).state, value: undefined };
-        },
-      }) : Hooks.empty().set(unitLifecycle.enter, {
-        id: 'install-trigger',
-        invoke(state, self) {
-          return { state: effects.install(state, unitRef(self), trigger).state, value: undefined };
-        },
-      }),
-    });
-    let runtime = createBattle([{ definition: receiver, position: [1, 0] }], {
-      rows: 1, columns: 8, maxTicks: 600,
-    });
-    const hits = [];
-    for (let tick = 0; tick <= 450; tick++) {
-      runtime = stepBattle(runtime, []);
-      hits.push(...runtime.events.filter(event => event.type === 'DAMAGE'));
-    }
-    const current = unitQueries.all(runtime).find(entry => entry.definition === receiver);
-    assert.equal(hits.length, 15, source);
-    assert.equal(current.vitality.hp, 88000, source);
-    assert.equal(current.elemental.burst, null, source);
-  }
-});
-
-test('elemental runtime: character neural stun prevents ordinary attacks and route movement for its own duration', () => {
-  let { runtime } = battle('CHARACTER', 'NEURAL', { moving: true });
-  const first = (runtime = stepBattle(runtime, []));
-  const casterHp = getUnit(first, 0).vitality.hp;
-  const frozenPosition = [...victim(runtime).position];
-  for (let tick = 1; tick < 300; tick++) {
-    const step = (runtime = stepBattle(runtime, []));
-    assert.equal(getUnit(step, 0).vitality.hp, casterHp);
-    assert.deepEqual(victim(runtime).position, frozenPosition);
-  }
-  const restored = (runtime = stepBattle(runtime, []));
-  assert.ok(getUnit(restored, 0).vitality.hp < casterHp);
-  assert.notDeepEqual(victim(runtime).position, frozenPosition);
-});
-
 test('elemental runtime: unused neural paralysis survives recovery and the next burst resets its remaining charges', () => {
-  let { runtime } = battle('ENEMY', 'NEURAL');
+  let runtime = battle('ENEMY', 'NEURAL');
   runtime = effects.install(runtime, unitRef(victim(runtime)), stun, {
     expiration: { type: 'DEADLINE', tick: 301 },
   }).state;

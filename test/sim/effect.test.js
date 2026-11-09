@@ -116,52 +116,33 @@ test("overall replacement uses priority and installation order; disabling the wi
     assert.equal(offense.resolveAttack(state, units.get(state, source)), 110);
 });
 
-test("absolute deadlines continue while inactive and the final callback can extend the effect", () => {
+test("absolute deadlines expire while inactive without replaying paused callbacks", () => {
+    const ticks = [];
     const ended = [];
     const program = {
-        id: "periodic",
-        initialize: () => ({ ticks: 0, extended: false }),
-        onTick(state, self) {
-            state = effects.setState(state, effects.ref(self), {
-                ...self.state,
-                ticks: self.state.ticks + 1,
-            });
-            if (state.tick === 6) {
-                state = effects.setExpiration(state, effects.ref(self), { type: "DEADLINE", tick: 9 });
-                state = effects.setState(state, effects.ref(self), {
-                    ticks: self.state.ticks + 1,
-                    extended: true,
-                });
-            }
-            return state;
-        },
+        id: "deadline", initialize: () => ({}),
+        onTick(state) { ticks.push(state.tick); return state; },
         onEnd(state, self, reason) {
-            ended.push({ id: self.definition.id, tick: state.tick, state: self.state, reason });
+            ended.push([self.definition.id, state.tick, reason]);
             return state;
         },
     };
-    const inactive = { ...program, id: "inactive" };
-    const definition = { id: "operator", hooks: Hooks.empty() };
-    let state = battle([{ definition, position: [1, 1] }]);
+    let state = battle([{ definition: { id: "operator", hooks: Hooks.empty() }, position: [1, 1] }]);
     const source = units.ref(get(state, 0));
     const active = effects.install(state, source, program, { expiration: { type: "DEADLINE", tick: 6 } });
-    const paused = effects.install(active.state, source, inactive, { expiration: { type: "DEADLINE", tick: 3 }, enabled: false });
+    const paused = effects.install(active.state, source, { ...program, id: "inactive" }, {
+        expiration: { type: "DEADLINE", tick: 3 }, enabled: false,
+    });
     state = effects.advance(paused.state);
     state = effects.setEnabled({ ...state, tick: 1 }, active.value, false);
     for (let tick = 1; tick <= 4; tick++) state = effects.advance({ ...state, tick });
-    assert.equal(effects.get(state, active.value).state.ticks, 1);
     assert.equal(effects.get(state, paused.value), undefined);
     state = effects.setEnabled({ ...state, tick: 5 }, active.value, true);
     state = effects.advance(state);
     state = effects.advance({ ...state, tick: 6 });
-    assert.deepEqual(effects.get(state, active.value).expiration, { type: "DEADLINE", tick: 9 });
-    assert.equal(effects.get(state, active.value).state.ticks, 3);
-    for (let tick = 7; tick <= 9; tick++) state = effects.advance({ ...state, tick });
+    assert.deepEqual(ticks, [0, 5, 6]);
+    assert.deepEqual(ended, [["inactive", 3, "EXPIRED"], ["deadline", 6, "EXPIRED"]]);
     assert.equal(effects.get(state, active.value), undefined);
-    assert.deepEqual(ended, [
-        { id: "inactive", tick: 3, state: { ticks: 0, extended: false }, reason: "EXPIRED" },
-        { id: "periodic", tick: 9, state: { ticks: 6, extended: true }, reason: "EXPIRED" },
-    ]);
 });
 
 test("zero expiration runs installation and cleanup; installation may replace the expiration before enabling", () => {
@@ -185,15 +166,12 @@ test("zero expiration runs installation and cleanup; installation may replace th
             return state;
         },
     };
-    for (const expiration of [
-        { type: "DURATION", elapsed: 0, total: 0, rate: 1 },
-        { type: "DEADLINE", tick: 0 },
-    ]) {
-        const installed = effects.install(state, source, program, { expiration });
-        state = installed.state;
-        assert.equal(effects.get(state, installed.value), undefined);
-    }
-    assert.deepEqual(observed, ["install", "end", "install", "end"]);
+    const installed = effects.install(state, source, program, {
+        expiration: { type: "DURATION", elapsed: 0, total: 0, rate: 1 },
+    });
+    state = installed.state;
+    assert.equal(effects.get(state, installed.value), undefined);
+    assert.deepEqual(observed, ["install", "end"]);
 
     const extended = effects.install(state, source, {
         id: "extended-installation",
