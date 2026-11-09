@@ -103,7 +103,7 @@ EP Healing.Request 同样为 `{ source, target, parameters }`，Parameters 为 `
 
 接收要求宿主生命周期为 PRESENT，具有 Vitality 时 HP 大于零。Burst 存在期间，包括 ENDING，拒绝损伤和治疗；中立阵营默认拒绝损伤。Rules 声明 damageRules／healingRules 两个数组，State 直接继承 Rules、Contributions、Hooks。damageRules 使用 `allows(battle, { self, request, type })`，type 是本次实际元素类型；healingRules 使用 `{ self, request }`。两者均由普通登记工厂生成的 `setRule(key, rule)`／`removeRule(key, id)` 修改，key 与对应 Context 类型配对。无敌通过 damageRules 拒绝，不查询 Vitality 内部接收规则；HP 禁疗不隐式决定 EP 接收。[Presence](presence.md) 同样通过 damageRules 拒收消失宿主的普通 EP 损伤，不直接限制显式回复、自然回复或 Burst 推进；普通索敌仍独立检查空间存在。
 
-Targeting 的 elementDamage／elementHealing Filter 按当前候选构造完整请求并查询 canReceive；索敌不运行 Calculate，也不派发接收 Hook。没有 Elemental 的候选在过滤边界排除，后续 Typed Ref 保留该能力证明。elementHealing 另外要求当前存在元素损伤。普通 HP 行动附带 EP 输出，不自动套用元素接收条件。
+Targeting 的 elementDamage／elementHealing 是 Query 谓词，检查 Elemental 能力、当前可用性、Burst、阵营与目标侧限制；elementHealing 还要求有 EP 恢复需求。候选选择不构造完整结算请求、不执行接收 Rule 或 Hook；实际 Apply 仍按真实 Request 检查。类型守卫保留输入能力并增加 Elemental 证明，保存 Ref 时延续该证明。普通 HP 行动附带 EP 输出，不自动套用 EP 候选条件。
 
 Elemental 定义两种资源报告：
 

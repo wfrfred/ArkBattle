@@ -25,7 +25,7 @@ Presence 根据宿主实际拥有的能力，登记或撤销自己持有的限�
 
 两个入口返回的 Change 以 compose 排序，自身空间变更排在首位，随后用 optional 按当前宿主能力应用各能力的 setRule／removeRule Change，不手写其它能力的 Rule State 或结算列表。optional 在实际应用时读取前序变换的 next。全部变换共同参与一次发布，组合不增加发布或结算边界。恢复出现只移除 Presence 自己的登记，其它 Rule 继续生效。Capability 和 Action／Skill 的业务不反向读取 Presence。
 
-空间查询、普通 Targeting 和 Terrain 接触直接消费空间存在事实。Combat 在调用可能消费 RNG 的 select 之前排除消失来源，Action 的启动 Rule 则在执行入口判断资格。已经锁定的 tracking Projectile 继续读取现存目标的真实位置；身份失效后才使用记忆位置。命中、重新索敌和伤害接收分别判断。
+空间查询、普通 Targeting 和 Terrain 接触直接消费空间存在事实。Combat 在执行可能消费 RNG 的目标选择程序之前排除消失来源，Action 的启动 Rule 则在执行入口判断资格。已经锁定的 tracking Projectile 继续读取现存目标的真实位置；身份失效后才使用记忆位置。命中、重新索敌和伤害接收分别判断。
 
 ## 发布与同步结算
 

@@ -29,7 +29,7 @@
 | [unit-change](sim/unit-change.test.js) | update(battle, ref, change) 单目标写入；一个主场景集中验证二元 compose 的结合律与非交换、逐项 previous／no-op／Settlement，以及 optional 的 false 原对象／空后继和 guard 读取前序变换后的输入。最终 next 一次发布后才按序结算，嵌套 update 对第二 Unit 的结果不丢失，不建立跨 Unit 批次或守卫矩阵。 |
 | [hook](sim/hook.test.js) | 公共 Hook 固定候选、读取最新登记、独立嵌套派发。 |
 | [runtime](sim/runtime.test.js) | 初始化／出生事实先于 enter；正常预置替换接续最新绑定；Tick 阶段有序、失败不发布。 |
-| [route](sim/route-capability.test.js) | 首指令与重新进入、MOVE 采样、WAIT 时基与 ticking、即时循环让出、持续 TRACE、Main 出口及同步空间操作后的最新进度。 |
+| [route](sim/route-capability.test.js) | 首指令与重新进入、MOVE 采样、WAIT 时基与 ticking、即时循环让出、持续 TRACE、Main 出口及同步空间操作后的最新进度；距离查询采用导航几何长度、不计传送，并显式区分 Main 与 TRACE。 |
 | [schedule](sim/schedule.test.js) | 统一出生时间与偏移、等待先于 enter、超时只释放 wave、离场同步解除、Branch 整组抽选与同步重入、实际出生时基。 |
 | [路线与调度数据](content/route-schedule-data.test.js) | 原生路线控制流与等待编译、count／interval 展开、主线预选与 Branch 运行时选择，以及 Action／Enemy 的 notCountInTotal 合并到 NONE。 |
 | [lifetime](sim/lifetime.test.js) | 依赖者完整结束后宿主才注销；首次原因和收尾唯一；祖先开始结束后拒收新依赖。 |
@@ -37,11 +37,15 @@
 | [skill](sim/skill.test.js) | 持久与本轮状态、SP 门槛／支付／回复许可、TIME 当轮延时、Ammo 公式／采样／补弹额度／耗尽；开始通知中消失仍 ACTIVE 时执行 onStart，既有持续期照常推进。 |
 | [effect](sim/effect.test.js) | 安装与启停输出、零时长安装、覆写赢家、三种互斥时间、有效时长暂停与手动推进、末次回调续期、来源与生命周期依赖分离。 |
 | [contribution](sim/contribution.test.js) | 先选互斥赢家再动态求值，真实 Offense 输出遵循属性公式、零下限并保留小数。实际输出与弹道负责各自采样时点。 |
+| [targeting](sim/targeting.test.js) | 标准 HP／EP 资格与目标限制、资源接收分开；独立空间原点使用 Hitbox，额外空地条件读取当前 Layer。有效 MaxHP 决定治疗需求与比例，联合治疗保留 HP 或 EP 需求，Burst 不抹掉 HP 需求。 |
+| [targetable](sim/targetable-restrictions.test.js) | kind 豁免在贡献竞争后检查，覆盖同机制所有有效来源且保留独立限制，固有与临时限制互不误删；有效嘲讽允许负值并决定显式优先级。 |
+| [攻击目标接入](sim/targeting-action.test.js) | 各组选择与 prepare 接续 RNG，启动拒绝保留已完成消费；保存的绑定不因后续选择限制而自动换人。实际内容需要复验时只检查原绑定。 |
+| [公共随机](common/rng.test.js)、[整数取值](common/math.test.js) | 无放回抽样的确定性与消费、正负半值取偶集中验证；Targeting 不重复 Query 或 TopK 算法。 |
 | [allegiance](sim/allegiance.test.js) | ALLY／ENEMY／NEUTRAL 的敌对关系。 |
 | [blocking](sim/blocking.test.js) | 成对资格、层与地块、容量尾部裁撤、批量解除与旧 Relation、多目标分散及独立位置计划；自身空地设置（含同值）完成角色对应的关系／偏移清理，通知可见已发布的新身份；主动空间覆盖先发布新位置和解除结果，再通知。复用代表场景，不展开字段／角色矩阵。 |
 | [locomotion](sim/locomotion.test.js)、[避障](sim/locomotion-avoidance.test.js)、[速度贡献](sim/move-speed-contributions.test.js) | 按 Locomotion 关键语义集中验证转向、限力／限速、速度与许可、最终目标吸附、地形避障和目的格反射。算法使用合法局部值，运行场景使用真实地图与领域操作，不注入速度，不复制公共不可变性或方向／缺失对象矩阵。Route／Battle 集成只保留新增的跨领域结果。 |
 | [deployment](sim/deployment.test.js) | Request 预览与执行一致、拒绝不消费、消费先于入场；撤退／死亡账务与 Card 延续；离场注销、结构占格和部署额度释放先于本地内容通知，死亡 Card 先于 Card／Request 通知结算；旧 Occupancy 配对清理、逐份恢复预算及 DP。 |
-| [core-types](sim/core-types.test.js) | Typed Ref、Projectile 创建／更新、Query 守卫与构造输入保留私有状态／回调配对，Runtime 聚合不提供 `any` 私有状态上下文；预置 Unit 的 initial 对应其 Definition 能力。Change 能力逆变、compose 合并交集、optional 与 Query 守卫保留完整宿主，Action 专属操作和查询要求 Action 能力；普通登记与派发均保持键和载荷的关联。 |
+| [core-types](sim/core-types.test.js) | Typed Ref、Projectile 创建／更新、Query 守卫与构造输入保留私有状态／回调配对，Runtime 聚合不提供 `any` 私有状态上下文；预置 Unit 的 initial 对应其 Definition 能力。Change 能力逆变、compose 合并交集、optional 与 Query 守卫保留完整宿主；目标资格增加 Vitality／Elemental 证明并贯穿集合终端，Action 专属操作和查询要求 Action 能力；普通登记与派发均保持键和载荷的关联。 |
 | [damage](sim/damage.test.js) | 按[伤害／治疗回归清单](../docs/architecture/verification.md#hook-与伤害治疗的回归语义)保障 HP／EP 公式与采样、独立 Calculate 状态、接收与提交、零值和取消、最新资源、Applied 后死亡及同步 Burst。 |
 | [healing](sim/healing.test.js) | HP／EP 治疗公式、四型恢复、满资源仍成功、双侧 Applied 和自然恢复的区别；一次双资源场景区分消失期间 Damage 拒收与 Healing 接收。 |
 | [elemental](sim/elemental.test.js) | rate 为零的标准 Burst 手动推进唯一时间进度，恢复期间四型 EP 逐步回填；动态与暂停预算、完整周期、零预算的一次性输出和独立产物、完成／取消后的资源与作用生命周期；自然 EP 回复及既有 Burst 不因消失冻结，不复制公共时间或 Lifetime 矩阵。 |

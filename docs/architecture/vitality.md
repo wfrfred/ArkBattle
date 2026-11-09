@@ -458,7 +458,7 @@ Apply 对最终计算量为零的治疗在入口返回 REJECTED，不派发本�
 
 ### 4.1 治疗不可选中是项目选择
 
-**healFree 只限制治疗目标选择，不是 Healing 的接收免疫。** 该 Effect 在 Targetable 登记限制贡献，按 Request 显式声明的 HEAL 用途判断。特殊 Filter 可以在 allowsRestrictions 中按 healFreeKind 对本次查询豁免；Request 与 HEAL Operation 不携带该开关。阻挡关系不隐式豁免本次 Filter 中的限制检查。
+**healFree 只限制治疗目标选择，不是 Healing 的接收免疫。** 该 Effect 在 Targetable 登记限制贡献，按限制查询显式采用的 HEAL 用途判断。普通 healing 谓词采用该用途；特殊选择可在 Targetable.allowsRestrictions 中按 healFreeKind 豁免本次判断。Healing Request 和 HEAL Operation 不携带选择豁免开关，阻挡关系不隐式豁免标准候选限制。
 
 显式 Ref 治疗不重新检查 Targetable、索敌距离、满血筛选或选择排序。泥岩自疗与普通直接治疗使用相同 API，照常参与治疗修正及响应，不需要特设绕过开关。已选中后目标变为不可被治疗选中，不撤销已经明确目标的治疗；具体内容如有中断要求，自行重新验证或取消行动。
 

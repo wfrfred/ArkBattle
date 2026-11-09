@@ -31,7 +31,7 @@
 | [Vitality／Damage／Healing](vitality.md) | 四类结算、Hook、取消、资源提交与死亡 |
 | [Effect](effect.md) | 附着实例、竞争、启停、时间与标准效果库 |
 | [Projectile](projectile.md) | 独立实例、异构集合、运动命中程序与生命周期 |
-| [Targeting／Targetable](targeting.md) | 请求、资格、限制、比较与选择 |
+| [Targeting／Targetable](targeting.md) | 查询组合、标准资格、目标限制、嘲讽与优先级 |
 | [空间存在](presence.md) | 暂时消失、能力限制、主动清理与持续程序 |
 | [空间查询](spatial.md) | 命中几何、范围、扫掠和候选查询 |
 | [几何与坐标](geometry.md) | Tile／World、Shape／Range、转换、相交与首次接触 |

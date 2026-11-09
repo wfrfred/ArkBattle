@@ -6,12 +6,12 @@
 
 - `core/battlefield/`：地图与地块、Unit 存储、结构占格、Navigation 和 Spatial 查询。
 - `core/unit/` 的基础 Unit、构造、查询、Change，以及独立的 Action、Skill、Effect、Contribution 领域。
-- `core/unit/capability/` 的 Action、Allegiance、Blocking、Deployable、Elemental、Hitbox、Layer、Locomotion、Occupancy、Offense、Route、Skill、SpatialPresence 与 Vitality。
+- `core/unit/capability/` 的 Action、Allegiance、Blocking、Deployable、Elemental、Hitbox、Layer、Locomotion、Occupancy、Offense、Route、Skill、SpatialPresence、Targetable 与 Vitality。
 - 对应的 `core/battle/unit.ts`、Tile、Blocking、Deployment／Card、Occupancy 协作、Schedule 主线与 Branch 调度，以及 Runtime 对上述领域的调用。
 - Unit 本地类型化 Hooks、HP／EP 的 Damage／Healing 两阶段结算，以及 Vitality／Elemental 的专属接收、资源提交与 Burst 协作。
 - 公共 Hook、Typed Ref 和 Lifetime 只承担上述领域共享的契约，不按每个消费者重复展开。
 
-Deployable 对 Occupancy 的构造依赖、单格双槽登记、入场与配对，以及 Skill Capability 的宿主配对与资源职责均属于上述范围。完整 Targeting、Projectile、Mechanism 与 Legacy 展示协议的独立业务不在本页范围内；它们参与的已审查跨领域语义按下文集中保障。
+Deployable 对 Occupancy 的构造依赖、单格双槽登记、入场与配对，以及 Skill Capability 的宿主配对与资源职责均属于上述范围。完整 Projectile、Mechanism 与 Legacy 展示协议的独立业务不在本页范围内；它们参与的已审查跨领域语义按下文集中保障。
 
 ## 保留依据
 
@@ -43,6 +43,7 @@ Deployable 对 Occupancy 的构造依赖、单格双槽登记、入场与配对�
 | Effect 生命周期 | 安装、生效、禁用与结束产生正确输出；安装回调完成后已到期的实例直接结束，不启用或推进，安装业务保留；禁用保留实例与私有进度，结束撤销输出；生命周期依赖与来源信息分开。 | [Effect](effect.md#关键语义) |
 | Effect 竞争与时间 | 覆写组赢家及禁用政策正确；DURATION、DEADLINE、INFINITE 互斥。有效时长在 ACTIVE 自动推进并先于 onTick 发布，绝对期限不因禁用暂停；rate 为零仍执行内容程序，回调可手动推进、续期或切换时间类型，结束判断采用回调后的最新时间。暂停不积攒补发。 | [Effect](effect.md#关键语义) |
 | Contribution 与阵营 | 互斥选择先于动态求值，修正采用所属领域公式；阵营不隐式决定其它能力或关系资格。 | [属性与贡献](capability.md#属性与贡献)、[Allegiance](capability.md#allegiance) |
+| Targeting 与 Targetable | 标准资格、目标侧限制和范围分别组合，来源由调用方提供 Unit 值；HP／EP 候选与最终接收分开。有效限制先竞争再豁免，嘲讽读取贡献且允许负值；仇恨只作比较，入场先后使用 UID。攻击保存绑定并接续各组随机状态，显式复验不重选。 | [目标选择](targeting.md#关键语义与验收) |
 | Offense 与攻击采样 | 攻击力先选有效贡献，再按 Attribute 公式求值并限制下限为零，保留小数。查询使用已取得的当前宿主；逐次输出、发射缓存与整段业务的采样时点由调用内容决定。 | [Offense](capability.md#offense) |
 | 数值求值 | 动态属性接收同一 BattleState 中已取得的能力对象，贡献求值返回确定数值；对象缺失与采样时点由业务入口决定。Action 时序明确区分宿主 source 与具体 Action self，基础值取 self.definition。局部公式使用显式配置与状态，不自行回查宿主。 | [数值接口](api-conventions.md#5-数值输入查询与字段写回) |
 | Blocking 资格与容量 | 双方资格、阻挡层、当前容量与体积决定取得；容量减少从后建立的关系开始裁撤，HP Applied 响应结束并确认死亡前保留旧关系。 | [Blocking](blocking.md#关键语义) |
@@ -71,7 +72,7 @@ Deployable 对 Occupancy 的构造依赖、单格双槽登记、入场与配对�
 | 阻挡及位置计划 | Blocking：资格与层、容量尾部裁撤、批量通知与旧身份、独立位置计划。自身空地设置的清理（含同值）复用批量解除与位置计划代表场景，通知读取已发布的新身份；主动空间覆盖取消计划并解除旧关系，首个通知可见新位置。不按字段、角色或切换方向另建矩阵。 |
 | 空间存在及其协作 | Presence 集中验证保留身份、部署与 Occupancy、Effect／Lifetime，以及全部限制先于自身批量解除通知、领域释放后取消行动、appear 只移除自身限制。Blocking 保留自身偏移与目标独立计划的区别；Action／Skill、资源接收、Burst 和 tracking 弹道只在各自主场景验证新增的业务结果，不复制 Rule 登记、Hook 或生命周期矩阵。 |
 | 自主运动 | Locomotion：纯算法集中验证转向、直邻／斜邻避障及反射公式；真实移动场景验证当前速度、最终目标吸附和暂停后的历史速度。半身宽、WALK 高代价格／FLY 硬障碍、方向投影与速度比例、不可通格恢复各保留独立结果，不枚举八方向及微小数值变体。历史速度通过实际推进建立，不直接注入 Unit；Route 只保障自身指令与运动协作结果。 |
-| Route 与 Schedule | 各自代表场景分别保障路线解释与调度等待，具体结果见下文回归语义。Route 不重复 Locomotion 公式；Schedule 不重复 Hook、RNG 算法或 Unit 生命周期矩阵。 |
+| Route 与 Schedule | 各自代表场景分别保障路线解释与调度等待，具体结果见下文回归语义。路线距离以导航几何段长和位置修正估计，不累计 APPEAR 跳跃；显式 Context 查询不随临时控制权改变。Route 不重复 Locomotion 公式；Schedule 不重复 Hook、RNG 算法或 Unit 生命周期矩阵。 |
 | Occupancy 配对 | 结构双槽登记由 Battlefield 保障；双方入场顺序、通知前发布与旧 Pair 保护集中在 Deployment 的 Occupancy 协作场景，具体平台只验证自身输出。 |
 | Card、部署与离场 | Deployment：Request 与资源消费、主动／被动离场账务、逐份恢复预算和 DP。在受理场景用一个非法 Quote 验证查询与执行入口一致，不按字段扩异常矩阵；部署事实、退款和额度释放通过所属领域操作完成，由时序场景验证，不单测转发或局部 setter。 |
 | Action、Skill、Effect 与 Contribution | 各自主套件。共有身份、候选、输入校验和不可变版本由公共套件承担，不因更换内容宿主再测一遍。 |
@@ -85,7 +86,23 @@ Hitbox 的 Targeting 接入只保留一个代表场景：显式范围使用受�
 
 覆盖完整且收敛的条件是：已审查语义有明确的集中归属，每个独立重要结果由代表场景保障，共享协议不因消费者变化而重复展开，夹具只承担合法场景准备。测试文件数与 test() 数量不作为覆盖充分性或冗余的判断依据。
 
-尚未完整审查的 Targeting、完整 Projectile／Mechanism 等独立业务按各自范围保障；它们参与的上述已审查语义使用相同的集中归属规则，不按整个文件豁免。
+尚未完整审查的完整 Projectile／Mechanism 等独立业务按各自范围保障；它们参与的上述已审查语义使用相同的集中归属规则，不按整个文件豁免。
+
+## Targeting 与 Targetable 的回归语义
+
+依据 [Targeting](targeting.md#关键语义与验收)确定最小代表，不为已删除的选择协议保留用例。
+
+| 重要结果 | 集中归属 |
+| --- | --- |
+| 标准 HP 资格读取当前空间存在和生命；独立几何原点使用目标 Hitbox，不要求来源就是搜索中心。当前 Layer 的额外条件由查询明确组合。 | Targeting 一个选择与几何场景，复用真实 Presence 操作。 |
+| 治疗需求与比例使用有效 MaxHP；联合 HP／EP 需求采用或，Burst 不阻止其中的 HP 需求。 | Targeting 一个资源需求与比较场景。具体行医未接入的排序政策不靠夹具另写产品实现。 |
+| EP 候选不执行完整接收 Rule，实际 Apply 仍可拒绝；只有 EP 能力的合法 Unit 可以参与对应选择。 | Targeting 一个候选／接收分离场景，不重复 EP 公式或 Burst 生命周期矩阵。 |
+| kind 豁免覆盖同机制的多个来源但保留独立限制；竞争先于豁免，不复活被压制项；固有与临时登记互不误删。 | Targetable 合并代表场景，公共注册与 Effect 竞争不逐项重测。 |
+| 有效嘲讽经过贡献和整数求值，负值合法；优先级使用显式比较规则和 ID，不新增仇恨状态。 | Targetable／Targeting 一个贡献与选择场景；数值取整公式集中在公共算法。 |
+| 已保存目标不会因为后来不再普通可选而自动换人；显式复验不重新竞争。各选择组接续 RNG，启动拒绝也保留已发生的选择消费。 | 攻击接入两个代表结果，复用实际 Action 操作，不重复伤害、Hook、冷却或不可变性证明。 |
+| 查询能力守卫保留原有结构并增加 Vitality／Elemental 证明；集合终端保持完整目标类型。 | core-types 的集中编译期代表，不为四个函数分别复制矩阵。 |
+
+阻挡前缀、分组回退与并行选择由内容的普通查询程序表达。已有生产内容的独立结果应保留；尚未实现的角色机制不新增一套测试专用算法。Query 遍历、TopK 稳定性和无放回抽样只在公共套件验证。来源退出后的快照采样归具体 Projectile／Content，不为 Targeting 增设通用生命周期或快照测试矩阵。
 
 ## Route 与 Schedule 的回归语义
 

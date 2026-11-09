@@ -69,7 +69,7 @@ topK(candidates, k, compare) → T[]
 
 名称示意实际职责，不要求所有函数使用同一 Result 类型，也不要求通过大量 Pick 表达最小依赖。对已登记 Unit 的 `setAttackContribution(contribution) → Change<Unit & Offense>` 属于变更工厂，需交给 Unit.update 发布，不是本节的局部 State 写回。
 
-Targeting 的 Filter 与 Comparator 属于只读查询。完整选择由 Selector 返回 Result，可以在筛选完成的候选中消费 RNG 并接续状态；随机抽样不放在 Comparator 的逐次比较中。类型见 [Targeting 与 Targetable 类型](targeting.md)。
+Targeting 提供直接适配 Query 的资格谓词和普通比较器，集合终端保留候选类型。Targetable 查询解释目标侧限制，来源值由调用方选定；排序使用 common.topK，随机抽样使用 RNG.sample 并由调用方显式接续状态。谓词、惰性遍历和逐次比较不消费 RNG。契约见 [Targeting 与 Targetable](targeting.md)。
 
 ### 3.2 领域结算与具体内容程序
 

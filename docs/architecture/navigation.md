@@ -117,7 +117,13 @@ nextPoint 不保证返回位置能从当前实际坐标直线到达。Field 平�
 
 nextPoint 不修改 State。同一 State 与相同参数始终产生相同的坐标值或 null，结果对象身份不作承诺。有效 Map、Field 可以内部缓存；命中、未命中、淘汰或重建不改变返回结果。缓存不能保存影响查询结果的隐式执行历史。
 
-导航调用者使用 navigation/state.ts 的 nextPoint；Field 及其构建属于内部计算。
+导航调用者使用 navigation/state.ts 的 nextPoint 与 distance；Field 及其构建属于内部计算。
+
+### distance
+
+`distance(state, mode, current, target): number | null` 查询同一有效地图上到精确目标的估计路程。它沿导航后继累计几何段长，并将当前位置相对所在格中心的偏移投影到前进方向作修正；同格直接使用目标与当前位置的距离。地图外、目标不可通行或当前格不可达时返回 null。
+
+Field.Node.distance 是寻路代价，不是几何路程；该查询不把高代价格权重当作单位实际行走的距离，也不修改导航或路线进度。
 
 ### Route／Locomotion 的交互约束
 
@@ -300,6 +306,11 @@ function setTraceTarget(id: ContextId, position: TilePosition): Change<Unit & Ro
 function advance(battle: BattleState, host: Ref<Unit & Route>): BattleState;
 function getContext(battle: BattleState, ref: Ref<Context>): Context | undefined;
 function movementTarget(battle: BattleState, host: Ref<Unit & Route>): MovementTarget | null;
+function remainingDistance(
+    battle: BattleState,
+    self: Unit & Route,
+    context: Context,
+): number | undefined;
 ```
 
 - createContext 分配动态 ID、建立执行状态并同步进入首条指令，向调用者返回 Ref<Context>；不隐式取得运动控制权。
@@ -315,6 +326,10 @@ function movementTarget(battle: BattleState, host: Ref<Unit & Route>): MovementT
 movementTarget 读取 activeId 选择的最新 Context。MOVE 使用本次进入已确定的目标样本，TRACE 使用尚未 reached 的 current.position；指令耗尽后，仅在 plan.endPosition 非空时提供最终终点目标。等待、无目标或已经抵达的 TRACE 返回空，不把空目标当作 Main 出口通知。
 
 查询将 Unit.position 减去 Context.offset，调用 Navigation.nextPoint，再给 nextPoint 和 goal 加回偏移。Locomotion 接收实际世界坐标与该 Plan.motionMode，不解释控制来源或路线偏移。地图内不可达 MOVE 根据 alwaysCheckCurrentPoint 决定跳过或等待；TRACE 的持续控制不由普通 MOVE 的跳过规则终止。
+
+remainingDistance 是只读估计，显式接收需要观察的 Context，不把当前取得运动控制权的 Fear／Attract 自动作为普通路线优先级的依据。它使用当前身体位置与已进入指令的真实目标，累计后续 MOVE 和最终终点；WAIT 不增加距离，APPEAR 只改变后续起点而不累计传送跳跃。未来尚未采样的随机 MOVE 按格中心估计，不消费 RNG。
+
+当前 TRACE 直接查询其最后登记目标格的距离，reached 不抹掉这个目标。无终点、无法终止的 GOTO 循环或尚未进入的持续 TRACE 没有可确定的有限出口距离，返回 undefined，由调用内容采用自己的排序规则，不伪造零距离或终点。在程序具有可确定有限出口的前提下，当前导航段处于地图外或不可达时，沿用原生估计分支，只返回至当前路点的直线回退，不继续叠加后续路线；不能用这项回退掩盖后续循环或持续 TRACE 的未定义出口。该查询不保存仇恨或距离缓存到 Unit。
 
 Route 不追加整段射线筛选，也不回退到当前格中心。地图外的位置恢复由 Route 协调，实际位移合法性由 Locomotion 保证。Layer 的空地身份独立于 Plan.motionMode；修改寻路方式不自动改变 Layer。
 
