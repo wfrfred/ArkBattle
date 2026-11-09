@@ -1,0 +1,280 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-09",
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/targeting-pipeline-20261109/content/extract_validator_config.py",
+      "bytes": 4856,
+      "sha256": "4b3b1b82a564a603f689af18879fa4936c406a8514798aa3484fa5751a0f89db"
+    },
+    "contentReader": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/targeting-pipeline-20261109/content/extract_content.py",
+      "bytes": 12900,
+      "sha256": "29afa244fb8b3429a73a60c43c84cd16718b34bfbf7f7f22287d03118a324812"
+    },
+    "contracts": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/targeting-pipeline-20261109/content/validator-composition.json",
+      "bytes": 1273390,
+      "sha256": "859119934d53e1098feb20a91ea8fd42e9b84e5efe401e030b2ad59321d3047e"
+    },
+    "metadata": {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+      "bytes": 46669332,
+      "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5"
+    },
+    "sources": [
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+        "bytes": 1367500,
+        "sha256": "0d0b4c0f9252c14a69a20d4bea09527403dd3eddfc2f7bcd757c3c30cf37ffc3"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+        "bytes": 477255,
+        "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99"
+      }
+    ],
+    "scope": "Exact GroupSelector, EmptyAbility alias and CastSkill registration objects with external MonoScripts; current SkillType metadata constants; other linked validators remain in selected-prefabs.json."
+  },
+  "result": [
+    {
+      "bundle": "battle/prefabs/[uc]skills.ab",
+      "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+      "pathId": "4307741335078991844",
+      "sha256": "a69812a11b0062e0aaeb7b1a2a06b8015d92eb787f324e81d6779223218affed",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -7478772901303009912
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-7478772901303009912",
+        "name": "GroupSelector",
+        "cl": "GroupSelector",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": 2587567772574513124
+        },
+        "common:349": 1,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": -7478772901303009912
+        },
+        "common:427": "",
+        "_rangeSelectorsList": {
+          "Array": [
+            {
+              "m_FileID": 0,
+              "m_PathID": -3968825468230666268
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 7464141954615375844
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": -3253970991914911772
+            }
+          ]
+        },
+        "_limitTargetNum": 1,
+        "_maxNum": 1,
+        "_maxNumBlackboardKey": "max_target",
+        "_overrideSelector": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_selectable": 1,
+        "_distinctTargets": 0
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]skills.ab",
+      "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+      "pathId": "6416742763189139428",
+      "sha256": "0f53ab266a1e818c6b046deaed22254c146a68d5b8474636d4de621b08d42c65",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 4865767822664548221
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "4865767822664548221",
+        "name": "EmptyAbility",
+        "cl": "EmptyAbility",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": 4481832812183451620
+        },
+        "common:349": 1,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": 4865767822664548221
+        },
+        "common:427": "",
+        "_selector": {
+          "m_FileID": 0,
+          "m_PathID": 4307741335078991844
+        },
+        "_metadata": {
+          "namedAsAlias": "SelectCharacter",
+          "blackboardPrefix": ""
+        },
+        "_overrideSignalId": "",
+        "_interruptAbilityOnDetach": 1,
+        "_attachPassiveBuffsOnDummy": 1,
+        "_ignoreIfOwnerDead": 0,
+        "_forceAsDmgOrHealAbility": 0
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]skills.ab",
+      "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+      "pathId": "8715933233783011300",
+      "sha256": "b6f679b18c0b0dd48e7b9e59908e47a4d04256a5a6e6b277e51f95e648b69a38",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 6851783972288338031
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "6851783972288338031",
+        "name": "CastSkill",
+        "cl": "CastSkill",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "common:374": {
+          "m_FileID": 0,
+          "m_PathID": 2714891297345468388
+        },
+        "common:349": 1,
+        "common:490": {
+          "m_FileID": 1,
+          "m_PathID": 6851783972288338031
+        },
+        "common:427": "",
+        "_maxTriggerTime": -1,
+        "_allowSpRecoveryWhenAffecting": 0,
+        "_limitGlobalTriggerTime": 0,
+        "_hidden": 0,
+        "_showSpBarEvenHidden": 0,
+        "_showSpAsBulletMode": 0,
+        "_showSpRatioAsProgress": 0,
+        "_playCharWordVoice": 1,
+        "_playCharWordWithPassiveType": 0,
+        "_earlyVoice": 0,
+        "_canCastWithNoSp": 0,
+        "_canSilenced": 0,
+        "_canUseInAbnormalState": 0,
+        "_defaultModeIndex": -1,
+        "_attackBlackboardModeIndex": 1,
+        "_extraAttackBlackboardModeIndices": {
+          "Array": []
+        },
+        "_rangeIdModeIndex": -1,
+        "_extraRangeIdModeIndices": {
+          "Array": []
+        },
+        "_rangeIdUsageType": 7,
+        "_writeDurationToAttackBlackboard": 0,
+        "_attachSignalIds": 1,
+        "_extraAbilities": {
+          "Array": [
+            {
+              "m_FileID": 0,
+              "m_PathID": -6842050128883320860
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 6416742763189139428
+            }
+          ]
+        },
+        "_useEscapeTime": 0,
+        "_earlySkillFinishAtAttackFinished": 0,
+        "_stopAffectOnInterrupt": 0,
+        "_showProgressToNext": 0,
+        "_hideSkillStackCount": 0,
+        "_hideHudSkillStackCount": 0,
+        "_playSkillBeginAnim": 1,
+        "_forceAnimFaceToDefault": 0,
+        "_beginAnim": "Skill_3_Begin",
+        "_beginAnimDown": "",
+        "_beginEffect": {
+          "Array": []
+        },
+        "_useFaceVector": 0,
+        "_beginAnimValidator": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_availableValidator": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_trigger": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_switchToState": 1,
+        "_uninterruptibleOnAbilityPredelay": 1,
+        "_canSwitchDuringBorn": 1,
+        "_canCastDuringBorn": 1,
+        "_checkHasTargetBeforeDoCast": 0,
+        "_useTriggerInManualMode": 0,
+        "_allowNoTarget": 0,
+        "_shouldCastLikeAttack": 0,
+        "_isRemoteControlled": 0,
+        "_hideRangeToShow": 0,
+        "_forceToShowRange": 0,
+        "_forceUseBaseShowRange": 0,
+        "_rangeToShow": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_recoverSpIfNoTarget": 0,
+        "_resetAbilityCooldownWhenCastEnd": 0,
+        "_onlyAvailableWhenTokenValid": 0,
+        "_hasUniStackColor": 0,
+        "_skipSpCheckInSkillState": 0
+      }
+    }
+  ],
+  "metadataEnums": [
+    {
+      "name": "Torappu.SkillType",
+      "values": [
+        {
+          "name": "PASSIVE",
+          "fieldIndex": 325442,
+          "dataIndex": 279695,
+          "encodedByte": "0x0",
+          "value": 0
+        },
+        {
+          "name": "MANUAL",
+          "fieldIndex": 325443,
+          "dataIndex": 279696,
+          "encodedByte": "0x2",
+          "value": 1
+        },
+        {
+          "name": "AUTO",
+          "fieldIndex": 325444,
+          "dataIndex": 279697,
+          "encodedByte": "0x4",
+          "value": 2
+        }
+      ]
+    }
+  ]
+}
