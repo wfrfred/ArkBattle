@@ -103,7 +103,7 @@ Hitbox 的 Targeting 接入只保留一个代表场景：显式范围使用受�
 
 ## Hook 与伤害／治疗的回归语义
 
-以下清单先于本轮伤害／治疗测试编写，依据 [Hook 契约](hook.md)、[输出与接收](vitality.md#1-calculate-与-apply-的语义边界)、[资源提交](vitality.md#18-已定稿的接收与资源提交接口)和 [Elemental](elemental.md)确定。场景数量不随接口、阶段或历史故障增加；不得以现有测试的预期反推保留要求。
+以下清单先于本轮伤害／治疗测试编写，依据 [Hook 契约](hook.md)、[输出与接收](vitality.md#1-calculate-与-apply-的语义边界)、[资源提交](vitality.md#18-接收与资源提交接口)和 [Elemental](elemental.md)确定。场景数量不随接口、阶段或历史故障增加；不得以现有测试的预期反推保留要求。
 
 | 编号 | 必须保障的业务结果 | 定向场景 |
 | --- | --- | --- |

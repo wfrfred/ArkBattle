@@ -124,7 +124,7 @@ healFree 只限制治疗目标选择，明确 Ref 的 Healing 不重新检查选
 
 两端状态归属、每 Tick 统一搜索、固定候选与实时容量、列表 Ref 条目身份，以及完整更新、维护与通知契约，统一见 [Blocking 设计](blocking.md)。[原生差异与验收](blocking.md#与原生的差异及对照验收)、[满阻挡与关系增容](blocking.md#满阻挡筛选与关系引起的容量变化)保留在同一领域文档。
 
-## Targeting 后续重构记录
+## 普通索敌的内容缺口
 
 Targeting 与 Targetable 的请求、组合和限制 API 见[领域设计](targeting.md)。以下内容事实与业务接入仍待完成。
 

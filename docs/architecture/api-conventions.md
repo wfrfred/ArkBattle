@@ -76,7 +76,7 @@ Hook 与领域操作按执行语义命名：
 | 完整实例写回 | Action 容器 `replace(definition, next)` 提交聚合条目，Effect／Projectile 容器按各自身份提交完整实例；均由 Core 内部使用。身份、Definition、执行进度与生命周期按对应领域契约维护。 |
 | 程序回调有额外结果 | 可以返回 `Result<T>`；例如 Action Definition.prepare 的准备结果、onTick 的完成指示和 Hook 的业务指令。 |
 | Damage／Healing 两阶段接续 | `applyDamage(request, calculation: Result<CalculatedDamage \| undefined>)` 与 `applyHealing(request, calculation: Result<CalculatedHealing \| undefined>)` 通过计算 Result 显式接续 state 和数值，分别返回领域 Outcome。四种 Request 的公式输入均放入 parameters，Outcome 均用 type 判别。插入其他操作时调用者须更新其中 state。 |
-| Vitality／Elemental 资源提交 | `commitDamage(battle, context)`／`commitHealing(battle, context)` 复用对应业务的精确 CommitContext，返回 Capability 定义的 Application 报告；专属接收用 receiveDamage／receiveHealing，资格查询用 canReceiveDamage／canReceiveHealing。EP Healing 不增加空的 receiveHealing；Battle 编排 BeforeCommit 与通用 Applied。见[已定稿资源接口](vitality.md#18-已定稿的接收与资源提交接口)。 |
+| Vitality／Elemental 资源提交 | `commitDamage(battle, context)`／`commitHealing(battle, context)` 复用对应业务的精确 CommitContext，返回 Capability 定义的 Application 报告；专属接收用 receiveDamage／receiveHealing，资格查询用 canReceiveDamage／canReceiveHealing。EP Healing 不增加空的 receiveHealing；Battle 编排 BeforeCommit 与通用 Applied。见[已定稿资源接口](vitality.md#18-接收与资源提交接口)。 |
 
 生命周期结束的公开 end／cancel／stop／remove 委托 [Lifetime](lifetime.md)：无活动结算时，本次调用完成 request 与 drain，返回时 Pending 为空；有活动结算时，只同步完成首次请求和 Prepare，不承诺槽位释放、注销或最终通知。重复 PREPARING 请求不等待原 Prepare。Finalize 整体返回才解除依赖者对 owner 的等待；Damage.completed 只报告本次伤害完成，不保证目标离场 Finalize 已完成。
 
@@ -103,7 +103,7 @@ Card 的 RuleContext 按用途区分：DISPLAY／SELECT 接收 Card Ref，DEPLOY
 5. 实现文件的 export 可以用于领域内部共享，不自动构成公共 API。内部模型、容器与配对读写协议按实际需要深导；不为覆盖全部内部导出扩大 index，也不为公共入口复制另一套类型。
 6. 按实际用途整理各领域，不套统一拆分模板，不增加只缩短路径的转发层，不保留重复类型；仅调整公共导出与导入路径时不新增测试，不借入口整理扩张业务语义或无关实现。
 
-### Core 领域入口与保留边界
+### Core 领域入口与职责边界
 
 下表列出当前公共入口及保留的直接依赖。index 只选择已有契约，不汇聚所有 Core 导出；Core 内部仍按实际依赖精确导入实现文件。
 
@@ -249,7 +249,7 @@ Unit 本地登记使用[类型化 Hooks 集合](hook.md)，固有 Hook 在构造
 
 接口整理保留真实可接受输入：允许普通 Unit 并用报告表达缺少能力的操作，继续使用 `Ref<Unit>`；要求明确能力的推进使用 `Ref<Unit & H>`。命名遵循 ESM 惯例，不以转发层统一签名。
 
-阶段中命令处理与自动推进保持既定顺序；拆分函数和统一签名不改变时序。Unit 生命周期复用通用 Hook 类型和 Unit 本地集合，装配与动态派发见 [Hook 集合与登记](hook.md)；部署 Hook 及其余接口按下节记录，标签与 Profile 的已知问题见 [Capability 记录](capability.md#待整理单位标签与-profile-依赖)。
+阶段中命令处理与自动推进保持既定顺序；拆分函数和统一签名不改变时序。Unit 生命周期复用通用 Hook 类型和 Unit 本地集合，装配与动态派发见 [Hook 集合与登记](hook.md)；部署 Hook 及其余接口按下节记录，标签与 Profile 的已知问题见 [Capability 记录](capability.md#单位标签与-profile-边界)。
 
 ## 5. 数值输入、查询与字段写回
 

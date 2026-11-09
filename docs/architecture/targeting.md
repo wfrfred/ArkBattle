@@ -75,7 +75,7 @@ filter.ts 提供 and、or、not、notSelf、present、alive、hostile、sameSide
 
 敌人的 Combat 选择由内容显式提供单向例外：在场、存活且敌对的 blocker 直接成为候选，绕过普通索敌限制与范围。范围攻击的普通候选仍使用 damage 与 range；处于阻挡关系中的 blocker 分支同样保留直选。干员选择自己阻挡的敌人继续检查有效限制，阻挡本身不令隐匿、迷彩或无敌失效。直选只决定选择资格，伤害接收仍由 Damage／Vitality 处理。
 
-compare.ts 提供 combine、distance、hpRatio、blockedFirst。combine 依序比较，第一个非零结果决定顺序；全相同时由稳定选择算法保留候选顺序。blockedFirst 按实际阻挡关系列表的顺序排列相关目标，其他目标交由后续 Comparator 判断。仇恨属性、出场顺序与剩余路线的接入仍见[目标语义缺口](tactical-semantics.md#targeting-后续重构记录)，不由阵营猜测实体类别。
+compare.ts 提供 combine、distance、hpRatio、blockedFirst。combine 依序比较，第一个非零结果决定顺序；全相同时由稳定选择算法保留候选顺序。blockedFirst 按实际阻挡关系列表的顺序排列相关目标，其他目标交由后续 Comparator 判断。仇恨属性、出场顺序与剩余路线的接入仍见[目标语义缺口](tactical-semantics.md#普通索敌的内容缺口)，不由阵营猜测实体类别。
 
 selector.ts 的 first(k, compare) 使用稳定 topK；random(k) 在合法候选中无放回抽取，数量不超过候选数。两者选零个时返回空结果；随机空样本不消费 RNG。不同次选择独立抽样，可以重复选中同一单位。Action 决定在启动、每发释放或其他业务时点调用选择。
 

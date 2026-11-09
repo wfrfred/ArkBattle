@@ -4,7 +4,7 @@
 
 战斗的状态接续与执行契约见 [函数式内核](functional-core.md)，具体玩法目标与当前缺口见 [目标语义与实现缺口](tactical-semantics.md)。行动的类型、时间与调度契约见 [Action 设计](action.md)，技能资源与激活见 [Skill 设计](skill.md)，元素值与爆发见 [Elemental 设计](elemental.md)，附着实例的生命周期与内容接入见 [Effect 设计](effect.md)，共享请求与析构协议见 [Lifetime 设计](lifetime.md)。研究文档提供玩法行为依据。
 
-Core 的公共入口与保留实现边界见[接口约定总表](api-conventions.md#core-领域入口与保留边界)。上层默认使用已有的领域显式 index，Core 内部按实际依赖直接导入；Runtime 入口不汇聚各个独立领域操作，也不以导出位置扩大内容调用权限。
+Core 的公共入口与保留实现边界见[接口约定总表](api-conventions.md#core-领域入口与职责边界)。上层默认使用已有的领域显式 index，Core 内部按实际依赖直接导入；Runtime 入口不汇聚各个独立领域操作，也不以导出位置扩大内容调用权限。
 
 > **状态接续的基本约定：接续操作返回的最新 BattleState 后，后续业务需要的实时事实，以这个版本为准；此前按业务规则明确采样的事实继续保留。**
 >
@@ -86,7 +86,7 @@ Definition 保存不可变基础值、参数和行为描述。Capability State �
 
 Content 直接组合 Unit Definition 与所需的 Catalog Definitions，不经过干员或敌人 Archetype 工厂；必要的领域校验放在 initialize。静态内容可用 satisfies 声明具体能力；动态加载结果使用标准 Definition，并在需要可选能力时通过守卫缩窄。
 
-Capability.initialize(battle, unit) 返回 Result<U & Capability>，从 unit.definition 读取自身配置，保留已有 Unit 字段并添加自身状态或 Hook。Unit.initialize(battle, input) 从基础 Unit 开始按 initializer 序列 fold，逐项接续 battle 与 Unit，完成后返回 Result<Unit & Product<D>>，再由创建流程登记。Product<D> 由 Catalog 从 initializer 字典推导，仅承诺明确选择的标准能力状态，并保留原始 Definition D 的字面量及内容字段。通用创建不接受预制能力状态或独立当前 tick，路线与部署等在明确的业务创建流程中设置。Skill／Action Capability 非泛型，内部普通查询集中恢复具体程序与私有状态的类型配对；Action 每个配置项在 Unit 初始化时建立聚合条目，保存 Definition、持久 state、Cooldown 和可空的 Execution；每次启动创建新执行身份，终结只清空 execution。详见 [Capability 初始化与装配](capability.md#初始化与装配)。标签归属仍待整理，现有 Profile 依赖见 [后续整理记录](capability.md#待整理单位标签与-profile-依赖)。
+Capability.initialize(battle, unit) 返回 Result<U & Capability>，从 unit.definition 读取自身配置，保留已有 Unit 字段并添加自身状态或 Hook。Unit.initialize(battle, input) 从基础 Unit 开始按 initializer 序列 fold，逐项接续 battle 与 Unit，完成后返回 Result<Unit & Product<D>>，再由创建流程登记。Product<D> 由 Catalog 从 initializer 字典推导，仅承诺明确选择的标准能力状态，并保留原始 Definition D 的字面量及内容字段。通用创建不接受预制能力状态或独立当前 tick，路线与部署等在明确的业务创建流程中设置。Skill／Action Capability 非泛型，内部普通查询集中恢复具体程序与私有状态的类型配对；Action 每个配置项在 Unit 初始化时建立聚合条目，保存 Definition、持久 state、Cooldown 和可空的 Execution；每次启动创建新执行身份，终结只清空 execution。详见 [Capability 初始化与装配](capability.md#初始化与装配)。标签归属仍待整理，现有 Profile 依赖见 [后续整理记录](capability.md#单位标签与-profile-边界)。
 
 Effect 是附着于 Unit 的实例；`Unit.effects` 持有实例集合。`unit/effect/`、`unit/contribution/` 与 `unit/capability/` 平级。公共 Hook 模块提供协议、类型化键与集合；Unit 模块定义自身生命周期键，Capability 保存专属 Hook 和 Contribution。具体 Effect Definition 组合这些公开操作，抽象 Effect 只管理实例与生命周期。
 
@@ -176,7 +176,7 @@ Locomotion 保存移速贡献，运动阶段读取当前有效速度后再乘运
 
 Blocker Definition 保存基础容量，State 保存 ADD／ZERO 容量贡献，由 Blocking 按领域公式求值。能力写入统一返回 Change，层／Rule／容量／volume 的结算按作用范围维护关系；Hook Change 没有关系后继。Unit.update 接收单个 Unit Ref 与 Change；工厂不绑定身份，compose 有序组合要求相应能力的 Change。先完成同宿主全部纯应用、一次发布数据与 Occupancy，再按原顺序结算；内部 replace 信任 Core 完整对象，不从字段差异构造、校验或通知 Blocking。setLayer 的 transform 改 layer／radius，settle 通过 releaseAll 清理当时当前出向关系，不回填旧 Unit；每次释放在操作入口固定集合，先整批发布再通知，不追删本次通知中新建的关系。关系操作局部维护受影响 owner，移动只复核本 Unit，显式 Tile 更新保留全场维护；嵌套局部操作不裁撤无关 Blocker，真实同 owner 交叠使用最新事实。新取得要求存活，旧关系不因临时 HP 为 0 失效；Damage 在 HP Applied 后仍应死亡才请求 Unit.remove。离场先发布 LEAVING，再由能力自行登记的 prepare Hook 释放自身关系，add／Finalize 不全场扫描。
 
-普通搜索每 Tick 在 Movement 后的固定 Blocking Step 中统一执行，不保存独立搜索周期，不因每次 Unit 更新全局搜索，不重构 Combat／Movement 模拟 Unity UID OnTick。显式立即搜索用于有真实需求的业务，不因本 Tick 已执行普通搜索而被拒绝。单次搜索固定开始时按距离稳定排序的候选 Ref 数组，同距离保留 Unit 登记顺序，逐项按最新资格、关系及容量尝试，不预选接敌名单或冻结起始预算；Hook 增容允许后续候选在本轮接敌，新单位不加入候选。该政策有意区别于原生预算预选，可能产生持续的关系分配差异。其余资格、容量及副作用按原生证据核对，固定阶段改变的接敌结果按对照测试评价；不以“只是一个 Tick”预先接受，也不为复刻内部调度引入全场多轮收敛。性能优化在语义稳定后进行。完整约定见 [Blocking 职责与调度政策](blocking.md#已确定的职责与调度政策)。Blockable 的阻挡消耗独立于容量、推拉重量和物理质量。
+普通搜索每 Tick 在 Movement 后的固定 Blocking Step 中统一执行，不保存独立搜索周期，不因每次 Unit 更新全局搜索，不重构 Combat／Movement 模拟 Unity UID OnTick。显式立即搜索用于有真实需求的业务，不因本 Tick 已执行普通搜索而被拒绝。单次搜索固定开始时按距离稳定排序的候选 Ref 数组，同距离保留 Unit 登记顺序，逐项按最新资格、关系及容量尝试，不预选接敌名单或冻结起始预算；Hook 增容允许后续候选在本轮接敌，新单位不加入候选。该政策有意区别于原生预算预选，可能产生持续的关系分配差异。其余资格、容量及副作用按原生证据核对，固定阶段改变的接敌结果按对照测试评价；不以“只是一个 Tick”预先接受，也不为复刻内部调度引入全场多轮收敛。性能优化在语义稳定后进行。完整约定见 [Blocking 职责与调度政策](blocking.md#职责与调度政策)。Blockable 的阻挡消耗独立于容量、推拉重量和物理质量。
 
 ## Effect、Hook 与生命周期
 
