@@ -564,8 +564,8 @@
     },
     "extractionScript": {
       "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/targeting-pipeline-20261109/extract_qualification.py",
-      "bytes": 8586,
-      "sha256": "ec0479c8882f256bfc3668d1b66c9c179e6352ef88f27ee10261c48b175c8bf1"
+      "bytes": 9006,
+      "sha256": "b7025d035b408689b8720aa9ac01f65fa29ca3ec5b524138cb23e61ba11794a7"
     },
     "collectedOn": "2026-11-09"
   },

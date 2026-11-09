@@ -29,6 +29,13 @@ def main():
         args.method.extend(json.loads(args.methods_file.read_text()))
     native = Native(args.game)
     provenance = native.provenance()
+    if args.address:
+        expected = {
+            "dll": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+            "metadata": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        }
+        if any(provenance["client"][key]["sha256"] != digest for key, digest in expected.items()):
+            raise ValueError("address-bound helpers require re-location for this client")
     provenance["extractionScript"] = fingerprint(Path(__file__))
     provenance["collectedOn"] = "2026-11-09"
     types = []
