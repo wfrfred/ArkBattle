@@ -42,7 +42,7 @@ test("an owner waits for dependent finalizers and repeated requests preserve the
             assert.equal(self.state.total, 3);
             assert.equal(units.get(current, owner).lifecycle, "LEAVING");
             calls.push("parent-ended");
-            return remove(current, owner.id, "SCRIPT");
+            return remove(current, owner, "SCRIPT");
         },
     });
     state = installed.state;
@@ -56,7 +56,7 @@ test("an owner waits for dependent finalizers and repeated requests preserve the
             onEnd(current, _self, reason) {
                 assert.equal(reason, "FIRST");
                 current = effects.end(current, parent, "SECOND");
-                current = remove(current, owner.id, "DEATH");
+                current = remove(current, owner, "DEATH");
                 assert.equal(units.get(current, owner).lifecycle, "LEAVING");
                 assert.equal(effects.get(current, parent).lifecycle, "ENDING");
                 const previous = effects.get(current, parent);
@@ -138,7 +138,7 @@ test("an ending ancestor rejects new dependents before its running Action receiv
     state = started.state;
     execution = started.value.ref;
 
-    const after = remove(state, source.id, "DEATH");
+    const after = remove(state, units.ref(source), "DEATH");
 
     assert.equal(attempted, undefined);
     assert.equal(businessCalls, 0);

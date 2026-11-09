@@ -46,7 +46,7 @@ test("initial and scheduled entry see registered battle facts and preserve their
                 assert.equal(current.deployment.dp, 20);
                 assert.equal(get(current, self.id).definition, initial);
                 assert.ok(current.predefinedPresence.some(
-                    ({ source }) => source.type === "UNIT" && source.unitId === self.id,
+                    ({ source }) => source.type === "UNIT" && source.ref.id === self.id,
                 ));
                 entered.push(self.definition.id);
                 return { state: dp.modify(current, 2), value: undefined };
@@ -95,8 +95,8 @@ test("a predefined departure can create its successor without losing that bindin
     const before = battle([], { predefines });
     const original = units.all(before).find((self) => self.definition === reappearing);
     const after = predefined.appear(predefined.remove(before, 10, "SCRIPT"), 11);
-    const replacement = after.predefinedPresence.find(({ definitionId }) => definitionId === 10).source.unitId;
-    const next = after.predefinedPresence.find(({ definitionId }) => definitionId === 11).source.unitId;
+    const replacement = after.predefinedPresence.find(({ definitionId }) => definitionId === 10).source.ref.id;
+    const next = after.predefinedPresence.find(({ definitionId }) => definitionId === 11).source.ref.id;
     assert.notEqual(replacement, original.id);
     assert.notEqual(next, replacement);
     assert.equal(get(after, original.id), undefined);

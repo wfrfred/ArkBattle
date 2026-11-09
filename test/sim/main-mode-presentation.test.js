@@ -54,7 +54,7 @@ const actionCapability = {
 test("death presentation preserves configured operator metadata after physical removal", () => {
     const view = presentation();
     const initial = battle([{ definition: definition("char_311_mudrok", { skill: skillCapability }), position: [1, 1] }]);
-    const after = remove(initial, 0, "DEATH");
+    const after = remove(initial, units.ref(get(initial, 0)), "DEATH");
     assert.deepEqual(view.advance(after, after.events), [["die", 0, "killed"]]);
     const presented = view.units(after)[0];
     assert.equal(presented.info.name, "泥岩");

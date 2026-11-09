@@ -27,7 +27,7 @@ export function advance(battle: BattleState): BattleState {
         const source = units.ref(candidate);
         const unit = units.get(battle, source);
         if (unit !== undefined && hasVitality(unit) && unit.vitality.hp <= 0) {
-            battle = remove(battle, source.id, "DEATH");
+            battle = remove(battle, source, "DEATH");
         }
     }
 

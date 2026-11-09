@@ -174,7 +174,7 @@ fieldUnit.remove(field, ref) → nextField
 
 unit.add(battle, unit) → nextBattle
 unit.update(battle, ref, change) → nextBattle
-unit.remove(battle, id, reason) → nextBattle
+unit.remove(battle, ref, reason) → nextBattle
 unit.advance(battle) → nextBattle
 ```
 

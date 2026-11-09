@@ -10,7 +10,8 @@ import { parseEnemyMovementPrefab } from "../../dist/data/arknights/prefab.js";
 import { initialize, step } from "../../dist/core/battle/runtime.js";
 import { isCompleted, triggerBranch } from "../../dist/core/battle/schedule/index.js";
 import { remove } from "../../dist/core/battle/unit.js";
-import { all } from "../../dist/core/unit/query.js";
+import { all, ref } from "../../dist/core/unit/query.js";
+import { get } from "../helpers/battle.js";
 
 const fixture = (name) => JSON.parse(readFileSync(new URL(`../fixtures/arknights/${name}.json`, import.meta.url), "utf8"));
 
@@ -137,7 +138,7 @@ test("Action and Enemy notCountInTotal release scheduling from still-present uni
     assert.deepEqual(state.schedule.waiting, { wave: [1], final: [1] });
     state = triggerBranch(state, "uncounted", false);
     assert.deepEqual(state.schedule.waiting, { wave: [1], final: [1] });
-    state = step(remove(state, 1, "DEATH"), []);
+    state = step(remove(state, ref(get(state, 1)), "DEATH"), []);
     assert.equal(state.schedule.waveIndex, 1);
     assert.equal(isCompleted(state.schedule), true);
     assert.deepEqual(all(state).map(({ id }) => id).toArray(), [0, 2]);

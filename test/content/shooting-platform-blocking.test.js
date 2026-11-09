@@ -63,7 +63,7 @@ test("an airborne passenger can block from a platform, and landing restores its 
 
 test("removing a platform kills its own passenger and restores the tile", () => {
     let battle = fixture([platform(), passenger(), passenger(11, second)]);
-    battle = remove(battle, 30, "SCRIPT");
+    battle = remove(battle, ref(getUnit(battle, 30)), "SCRIPT");
     assert.equal(getUnit(battle, 10), undefined);
     assert.equal(battle.removedUnits.find(entry => entry.unitId === 10).reason, "DEATH");
     assert.ok(getUnit(battle, 11));

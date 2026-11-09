@@ -232,7 +232,7 @@ test("spatial instructions publish consumption before hooks and resume the lates
                 assert.equal(current(state).current, null);
                 assert.equal(get(state, 0).presence.present, false);
                 if (operation === "remove") {
-                    state = remove(state, host.id, "SCRIPT");
+                    state = remove(state, host, "SCRIPT");
                 } else {
                     state = update(state, host, operation === "reassign"
                         ? route.reassign(0, replacement)

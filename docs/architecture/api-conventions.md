@@ -233,7 +233,7 @@ Effect.install 返回 `Result<Ref<Effect<S, H>> | undefined>`，普通安装拒�
 
 Projectile 使用 `create(battle, definition, { position, state }) → Result<Ref<Projectile<S>>>`；ref 保留已知实例类型，get 按引用读取当前对象。projectile/projectiles.ts 中的 Projectiles 以私有 Store 保存完整实例，Battlefield 持有容器状态，battle/projectile.ts 直接完成容器替换，普通查询返回默认 object 的完整 Projectile；精确 Ref 和 Definition 对象身份查询保留已有类型，内部擦除的完整实例用于自身程序派发，见 [Projectile 设计](projectile.md#3-异构集合与类型恢复)。
 
-存储 Map、关系表和 UI 输出事件可以使用数字 ID；Command 中的实体目标统一使用 Typed Ref。Unit 查询由 unit/index.ts 公开 all／get，实现在 unit/query.ts。已有 Ref 的业务直接传递身份；`battle/unit.remove(battle, unitId, reason)` 按 Unit ID 请求完整离场，与命令的输入协议分别定义。
+存储 Map、关系表和 UI 输出事件可以使用数字 ID；实体操作与 Command 中的实体目标统一使用 Typed Ref。Unit 查询由 unit/index.ts 公开 all／get，实现在 unit/query.ts。已有 Ref 的业务直接传递身份；`battle/unit.remove(battle, ref, reason)` 接收 `Ref<Unit>` 请求完整离场。Predefined 的 Unit 与 Mechanism 实例绑定各自保存对应 Ref，预置定义 ID 仍使用数字。
 
 ## 3. 固定 Hook Context 与状态接续
 
@@ -298,7 +298,7 @@ update<U extends Unit>(
     ref: Ref<U>,
     change: Change<NoInfer<U>>,
 ): BattleState;
-remove(battle: BattleState, unitId: Id, reason: LeaveReason): BattleState;
+remove(battle: BattleState, ref: Ref<Unit>, reason: LeaveReason): BattleState;
 advance(battle: BattleState): BattleState;
 ```
 

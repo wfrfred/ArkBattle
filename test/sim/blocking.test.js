@@ -255,7 +255,7 @@ test("own layer requests release current relations before hooks, including same-
                 return { state: current, value: undefined };
             },
         }));
-    state = unit.remove(state, owner.id, "SCRIPT");
+    state = unit.remove(state, owner, "SCRIPT");
     assert.equal(removedNotifications, 2);
     assert.ok(targets.every((target) => blocking.blockerOf(state, target) === undefined));
 });

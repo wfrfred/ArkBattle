@@ -258,11 +258,11 @@ test("source attribution alone does not bind lifetime, while explicit scope and 
         source,
         scopes: [scope(unitLifetime, source)],
     });
-    state = remove(bound.state, source.id, "SCRIPT");
+    state = remove(bound.state, source, "SCRIPT");
     assert.equal(effects.get(state, bound.value), undefined);
     assert.equal(effects.get(state, attributed.value).lifecycle, "ACTIVE");
     assert.deepEqual(effects.get(state, attributed.value).source, source);
-    state = remove(state, owner.id, "SCRIPT");
+    state = remove(state, owner, "SCRIPT");
     assert.equal(get(state, owner.id), undefined);
     assert.equal(effects.get(state, attributed.value), undefined);
 });

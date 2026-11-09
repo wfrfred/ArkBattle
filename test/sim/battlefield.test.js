@@ -139,6 +139,6 @@ test("spatial queries distinguish body position from hitboxes and return current
     );
 
     const hidden = update(state, ref(get(state, 2)), disappear());
-    const ended = remove(hidden, 0, "SCRIPT");
+    const ended = remove(hidden, ref(get(hidden, 0)), "SCRIPT");
     assert.deepEqual(sweep(ended.battlefield, circle(0.25), [-1, 0], [3, 0]), []);
 });

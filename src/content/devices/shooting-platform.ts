@@ -16,7 +16,7 @@ import { apply, restore, type Configuration, type Definition } from "./tile.js";
 function clearOccupant(battle: BattleState, position: TilePosition): BattleState {
     const occupant = occupancyAt(battle.battlefield, position)?.occupant;
 
-    return occupant == null ? battle : removeUnit(battle, occupant.id, "DEATH");
+    return occupant == null ? battle : removeUnit(battle, occupant, "DEATH");
 }
 
 export function create(configuration: Configuration): Definition {

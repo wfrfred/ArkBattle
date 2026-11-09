@@ -7,7 +7,7 @@ import { remove } from "../../dist/core/battle/unit.js";
 import * as predefined from "../../dist/core/battle/steps/predefined.js";
 import { step } from "../../dist/core/battle/runtime.js";
 import { isCompleted, timing, triggerBranch } from "../../dist/core/battle/schedule/index.js";
-import { battle } from "../helpers/battle.js";
+import { battle, get as getUnit } from "../helpers/battle.js";
 
 const plan = {
     motionMode: "WALK",
@@ -147,11 +147,11 @@ test("wait policies publish before enter; timeout leaves final waits until compl
     assert.equal(state.schedule.main.type, "COMPLETED");
     assert.equal(isCompleted(state.schedule), false);
 
-    state = remove(state, 2, "SCRIPT");
+    state = remove(state, ref(getUnit(state, 2)), "SCRIPT");
     assert.deepEqual(state.schedule.waiting.final, [1, 3]);
-    state = remove(state, 1, "SCRIPT");
+    state = remove(state, ref(getUnit(state, 1)), "SCRIPT");
     assert.deepEqual(state.schedule.waiting.final, [3]);
-    state = remove(state, 3, "SCRIPT");
+    state = remove(state, ref(getUnit(state, 3)), "SCRIPT");
     assert.equal(isCompleted(state.schedule), true);
     assert.deepEqual(
         [...all(state)].map(({ id }) => id),
@@ -163,7 +163,7 @@ test("an enemy removed in enter releases its wait before the next wave starts", 
     const births = [];
     const departing = definition("departing", (state, self) => {
         births.push([self.definition.id, state.tick]);
-        return remove(state, self.id, "SCRIPT");
+        return remove(state, ref(self), "SCRIPT");
     });
     const following = definition("following", (state, self) => {
         births.push([self.definition.id, state.tick]);

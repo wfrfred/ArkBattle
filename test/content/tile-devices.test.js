@@ -11,8 +11,9 @@ import { create as createMap, get as getTile } from "../../dist/core/battlefield
 import { create as createTile } from "../../dist/core/battlefield/map/tile.js";
 import { Tiles } from "../../dist/core/battlefield/map/tiles.js";
 import { Tile } from "../../dist/core/geometry/coordinate.js";
-import { initialize } from "../../dist/core/unit/index.js";
+import { initialize, ref } from "../../dist/core/unit/index.js";
 import { createCardDefinition } from "../helpers/deployable.js";
+import { getUnit } from "../helpers/unit.js";
 
 function battle(firstTerrain = normal, firstCost = 2000) {
     const tiles = [0, 1, 2].reduce((entries, index) => entries.add(createTile({
@@ -60,7 +61,7 @@ for (const [terrain, initialCost] of [[normal, 2000], [hole, 1000000]]) {
         assert.equal(tile.state.walkCost, expectedCost);
         assert.equal(state.battlefield.navigation.baseline.WALK.get([0, 0]).cost, expectedCost);
         assert.equal(getTile(state.battlefield.map, [0, 2]).state.walkCost, 2000);
-        state = remove(state, 0, "SCRIPT");
+        state = remove(state, ref(getUnit(state, 0)), "SCRIPT");
         assert.deepEqual(getTile(state.battlefield.map, [0, 0]).state, original.state);
     });
 }

@@ -3,7 +3,8 @@ import { test } from "node:test";
 import { Hooks } from "../../dist/core/hook.js";
 import * as mechanisms from "../../dist/core/battle/mechanism.js";
 import { remove as removeUnit } from "../../dist/core/battle/unit.js";
-import { battle as runtimeBattle } from "../helpers/battle.js";
+import { battle as runtimeBattle, get } from "../helpers/battle.js";
+import { ref } from "../../dist/core/unit/query.js";
 
 const counter = (id, extra = {}) => mechanisms.createMechanismDefinition({
     id, initialize: () => ({ count: 0 }), ...extra,
@@ -94,7 +95,7 @@ test("onTick and nested unit departure preserve the latest mechanism state", () 
             state = mechanisms.setState(state, mechanisms.ref(self), {
                 ...currentState, contacts: [0],
             });
-            return removeUnit(state, 0, "SCRIPT");
+            return removeUnit(state, ref(get(state, 0)), "SCRIPT");
         },
         onUnitLeave(state, self, departure) {
             assert.deepEqual(self.state.contacts, [departure.unit.id]);

@@ -126,7 +126,7 @@ test('tracking reads current source attack and falls back to its launch sample a
   }));
   const withSource = step(boosted, 1);
   assert.equal(getUnit(withSource, 1).vitality.hp, 940);
-  const withoutSource = removeUnit(boosted, fixture.source.id, "SCRIPT");
+  const withoutSource = removeUnit(boosted, fixture.state.source, "SCRIPT");
   const after = step(withoutSource, 1);
   assert.equal(getUnit(after, 1).vitality.hp, 960);
   assert.deepEqual(sources, [ref(fixture.source), null]);
@@ -138,7 +138,7 @@ test('a missing locked target does not redirect its arrow to another nearby unit
   const other = initialize({ id: 2, position: [1, 0], definition: { hooks: Hooks.empty(),
     id: 'nearby', vitality: { maxHp: 100, defense: 0, resistance: 0 },
   } });
-  const withoutTarget = addUnit(removeUnit(launched.state, fixture.target.id, "SCRIPT"), other);
+  const withoutTarget = addUnit(removeUnit(launched.state, fixture.state.target, "SCRIPT"), other);
   const after = step(withoutTarget, 1);
 
   assert.equal(getUnit(after, 2).vitality.hp, 100);

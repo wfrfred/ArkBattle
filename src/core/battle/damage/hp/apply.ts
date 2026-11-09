@@ -76,7 +76,7 @@ export function applyDamage(
 
     const current = units.get(battle, request.target);
     if (current?.lifecycle === "PRESENT" && current.vitality.hp <= 0) {
-        battle = remove(battle, request.target.id, "DEATH");
+        battle = remove(battle, request.target, "DEATH");
     }
 
     return complete(battle, request, calculation, { type: "APPLIED", received, application });

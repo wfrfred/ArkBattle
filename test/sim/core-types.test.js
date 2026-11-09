@@ -12,7 +12,7 @@ import type { Ref } from ${module("common/ref")};
 import type { State } from ${module("battle/state")};
 import { Hooks, key, type Hook } from ${module("hook")};
 import { initialize, ref, get, all as allUnits, compose, optional, type Unit, type Input as UnitInput, type Change } from ${module("unit/index")};
-import { update } from ${module("battle/unit")};
+import { update, remove as removeUnit } from ${module("battle/unit")};
 import * as actions from ${module("unit/action/index")};
 import * as effects from ${module("unit/effect/index")};
 import * as hpDamage from ${module("battle/damage/hp/index")};
@@ -76,6 +76,9 @@ const host = initialize(battle, { id: 0, position: [0, 0], definition: {
     action: { initialize: state => actions.createActions(state, actions.create(program)) },
 } }).value;
 const reference = ref(host);
+removeUnit(battle, reference, 'SCRIPT');
+// @ts-expect-error entity removal takes a Unit identity rather than a numeric storage key.
+removeUnit(battle, host.id, 'SCRIPT');
 const currentAction = host.action.actions.get(program.id, program)!;
 const currentPeriod: number = actionCapability.resolvePeriod(host, currentAction);
 // @ts-expect-error an Action calculation takes the instance rather than a detached Definition.

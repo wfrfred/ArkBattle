@@ -46,7 +46,7 @@ test("Hook dispatch fixes its candidates, reads current registrations and gives 
         },
     });
 
-    remove(state, subject.id, "SCRIPT");
+    remove(state, units.ref(subject), "SCRIPT");
 
     assert.deepEqual(calls, [
         ["outer", "first"],

@@ -85,6 +85,6 @@ test("Unit lifecycle reads updated registrations while leave retains the origina
     const state = battle([{ definition, position: [0, 0] }]);
     assert.deepEqual(observed, ["first", "replacement"]);
     const current = units.all(state).find((unit) => unit.definition === definition);
-    remove(state, current.id, "SCRIPT");
+    remove(state, units.ref(current), "SCRIPT");
     assert.deepEqual(observed, ["first", "replacement", "late-leave"]);
 });

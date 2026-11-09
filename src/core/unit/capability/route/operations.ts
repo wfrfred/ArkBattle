@@ -391,5 +391,5 @@ export function advance(battle: BattleState, reference: Ref<Unit & Route>): Batt
         { type: "ROUTE_COMPLETED", unitId: latest.id, tick: battle.tick },
     ]);
 
-    return removeUnit(battle, latest.id, "SCRIPT");
+    return removeUnit(battle, reference, "SCRIPT");
 }

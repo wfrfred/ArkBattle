@@ -1,6 +1,7 @@
 import { assertNonnegativeSafeInteger } from "../../common/assert.js";
-import type { Definition as UnitDefinition, LeaveReason } from "../../unit/unit.js";
+import type { Definition as UnitDefinition, LeaveReason, Unit } from "../../unit/unit.js";
 import { initialize as initializeUnit, type Input as UnitInput } from "../../unit/initialize.js";
+import { get as getUnit, ref as unitRef } from "../../unit/query.js";
 import {
     get as getMechanism,
     remove as removeMechanism,
@@ -26,7 +27,7 @@ export interface PredefinedMechanismCreation<S extends object = object> {
 }
 
 export type Source =
-    | { readonly type: "UNIT"; readonly unitId: number }
+    | { readonly type: "UNIT"; readonly ref: Ref<Unit> }
     | { readonly type: "MECHANISM"; readonly ref: Ref<Mechanism> };
 
 export interface PredefinedDefinition<T extends object = object> {
@@ -64,7 +65,7 @@ export function reconcilePredefinedPresence(battle: BattleState): readonly Prede
     const presence = battle.predefinedPresence;
     const remaining = presence.filter(({ source }) =>
         source.type === "UNIT"
-            ? battle.battlefield.units.has(source.unitId)
+            ? getUnit(battle, source.ref) !== undefined
             : getMechanism(battle, source.ref) !== undefined,
     );
 
@@ -94,7 +95,7 @@ export function appear(battle: BattleState, id: PredefinedDefinition["id"]): Bat
             ...battle,
             predefinedPresence: [
                 ...battle.predefinedPresence,
-                { definitionId: id, source: { type: "UNIT", unitId: unit.id } },
+                { definitionId: id, source: { type: "UNIT", ref: unitRef(unit) } },
             ],
         };
         battle = add(battle, unit);
@@ -135,7 +136,7 @@ export function remove(
     };
     battle =
         binding.source.type === "UNIT"
-            ? removeUnit(battle, binding.source.unitId, reason)
+            ? removeUnit(battle, binding.source.ref, reason)
             : removeMechanism(battle, binding.source.ref);
 
     return reconcile(battle);
