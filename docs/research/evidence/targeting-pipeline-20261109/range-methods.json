@@ -1,0 +1,8 @@
+[
+  "Torappu.Battle.PhysicsRange.DoFindTargets_DISPOSE",
+  "Torappu.Battle.PhysicsRange.CheckTargetIn",
+  "Torappu.Battle.GlobalRange.DoFindTargets_DISPOSE",
+  "Torappu.Battle.GlobalRange.CheckTargetIn",
+  "Torappu.Battle.Range.CheckTargetIn",
+  "Torappu.Battle.Box2dPhysicsUtil.FindTargets_DISPOSE"
+]

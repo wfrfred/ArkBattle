@@ -1,0 +1,22 @@
+[
+  "Torappu.Battle.Entity.get_isTargetFree",
+  "Torappu.Battle.Entity.get_isAllyTargetFree",
+  "Torappu.Battle.Entity.get_isHealFree",
+  "Torappu.Battle.Entity.get_isCamouflage",
+  "Torappu.Battle.Entity.IsStillTargetFreeWithImmuneFlag",
+  "Torappu.Battle.Entity.get_alive",
+  "Torappu.Battle.BattleUtil.VerifyTarget",
+  "Torappu.Battle.BattleUtil.ConvertSideType",
+  "Torappu.Battle.BattleUtil.CheckEntityUnitType",
+  "Torappu.Battle.Range.FindTargets_DISPOSE",
+  "Torappu.Battle.TargetOptions._InitSourceMapLayer",
+  "Torappu.Battle.TargetOptions.get_ignoreTargetFreeOptions",
+  "Torappu.Battle.TargetOptions.get_onlyIgnoreSomeOfTargetFreeCaseOptions",
+  "Torappu.Battle.TargetOptions.get_enableAdvanced",
+  "Torappu.Battle.BlockedOrAdvancedSelector.ValidateTarget",
+  "Torappu.Battle.BlockedBaseSelector.ValidateTarget",
+  "Torappu.Battle.BlockedBaseSelector._ValidateWithTargetFree",
+  "Torappu.Battle.RangeSelector.VerifyTarget",
+  "Torappu.Battle.RangeSelector.OnAbilityExtendUpdated",
+  "Torappu.Battle.RangeSelector.get_sourcePurposeMask"
+]

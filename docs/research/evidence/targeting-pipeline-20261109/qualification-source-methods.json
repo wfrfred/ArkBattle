@@ -1,0 +1,15 @@
+[
+  "Torappu.Battle.Entity.isTargetFreeWithImmuneFlag",
+  "Torappu.Battle.Entity.isStillMotionTargetFreeWithImmuneFlag",
+  "Torappu.Battle.Entity.isMotionTargetFreeWithImmuneFlag",
+  "Torappu.Battle.Entity.get_isInvincible",
+  "Torappu.Battle.Character.isStillMotionTargetFreeWithImmuneFlag",
+  "Torappu.Battle.Attributes.GetAbnormalFlag",
+  "Torappu.Battle.Attributes.CheckAbnormalImmune",
+  "Torappu.Battle.RangeSelector.get_sourcePurposeMask",
+  "Torappu.Battle.Attributes.GetAbnormalFlagWithImmune",
+  "Torappu.Battle.RangeSelector.get_targetOptions",
+  "Torappu.Battle.AbilityStandard.get_purposeMask",
+  "Torappu.Battle.AbilityStandard.GeneratePurposeMask",
+  "Torappu.Battle.Abilities.AbstractBasicAttack.GeneratePurposeMask"
+]
