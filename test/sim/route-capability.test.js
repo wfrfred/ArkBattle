@@ -1,243 +1,223 @@
-import { Hooks } from "../../dist/core/hook.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { initialize } from "../../dist/core/unit/capability/route/capability.js";
+import { battle, get } from "../helpers/battle.js";
+import { Hooks } from "../../dist/core/hook.js";
+import * as lifecycle from "../../dist/core/unit/hook.js";
 import * as route from "../../dist/core/unit/capability/route/index.js";
-import { add as addUnit, replace as updateUnit, update } from "../../dist/core/battle/unit.js";
-import { compose } from "../../dist/core/unit/change.js";
-import { getUnit } from "../helpers/unit.js";
-import { setOverlay } from "../../dist/core/battlefield/navigation/state.js";
-import { baseUnit, fixtureBattle } from "../helpers/unit.js";
+import * as units from "../../dist/core/unit/index.js";
+import { update, remove } from "../../dist/core/battle/unit.js";
+import { step } from "../../dist/core/battle/runtime.js";
+import { appear } from "../../dist/core/unit/capability/presence/index.js";
+import { search } from "../../dist/core/battle/blocking/index.js";
+import { setHook } from "../../dist/core/unit/capability/blocking/blockable-operations.js";
 
-function definition(overrides = {}) {
-    return {
-        motionMode: "WALK",
-        startPosition: [0, 0],
-        endPosition: [0, 8],
-        offset: [0, 0],
-        checkpoints: [],
-        requireAllCheckpoints: true,
-        alwaysCheckCurrentPoint: true,
-        ...overrides,
-    };
+const plan = (checkpoints = [], extra = {}) => ({
+    motionMode: "WALK", startPosition: [0, 0], endPosition: null,
+    checkpoints, requireAllCheckpoints: true, ...extra,
+});
+const wait = (tick, anchor = "ENTER") => ({ type: "WAIT", anchor, tick, timer: null });
+const move = position => ({ type: "MOVE", position, offset: [0, 0], randomizeOffset: false });
+const movement = {
+    speed: 1, minSpeed: 0, halfBodyWidth: 0,
+    steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 },
+};
+function creation(program, extra = {}) {
+    return { definition: {
+        id: "traveller", hooks: Hooks.empty(), route: { alwaysCheckCurrentPoint: true },
+        spatialPresence: {}, ...extra,
+    }, position: [0, 0], initial: { route: { plan: program, offset: [0, 0] } } };
+}
+const current = state => get(state, 0).route.main;
+function ticks(state, count) {
+    for (let i = 0; i < count; i++) state = step(state, []);
+    return state;
 }
 
-function fixture(config = definition(), tick = 0, position = [0, 0]) {
-    const battle = fixtureBattle(tick, { rngState: 17 });
-    const initialized = initialize(battle, baseUnit(
-        { hooks: Hooks.empty(), id: "route-test", route: config, spatialPresence: {} },
-        { id: 3, position, spatialPresence: { present: true } },
+test("Context selection and ticking separately control relative and absolute waits", () => {
+    let state = battle([creation(plan([wait(3), move([0, 2])]))]);
+    const host = units.ref(get(state, 0));
+    const temporary = route.createContext(state, host, {
+        plan: plan([wait(2)]), offset: [0, 0], alwaysCheckCurrentPoint: false, ticking: true,
+    });
+    state = update(temporary.state, host, units.compose(
+        route.selectContext(temporary.value.id), route.setTicking(0, false),
     ));
-    return { battle: addUnit(initialized.state, initialized.value), ref: { id: initialized.value.id } };
-}
+    state = ticks(state, 2);
+    assert.equal(current(state).current.timer, 3);
+    assert.equal(route.getContext(state, temporary.value).index, 1);
+    state = update(state, host, units.compose(route.selectContext(0), route.setTicking(0, true)));
+    state = ticks(state, 3);
+    assert.equal(current(state).current.type, "MOVE");
 
-function current(battle, ref) {
-    return getUnit(battle, ref.id);
-}
-
-function move(battle, ref, position) {
-    return updateUnit(battle, [{ ...current(battle, ref), position }]);
-}
-
-
-test("relative waits use entry time and repeated advance does not consume waiting twice", () => {
-    const { battle, ref } = fixture(definition({
-        checkpoints: [{ type: "WAIT", tick: 3 }, { type: "MOVE", position: [0, 4], offset: [0, 0] }],
-    }), 10);
-    const entered = route.advance(battle, ref);
-    assert.deepEqual(current(entered, ref).route.main.phase.checkpointState, { type: "WAITING", deadlineTick: 13 });
-    assert.equal(route.advance(entered, ref), entered);
-    assert.equal(route.movementTarget(entered, ref), null);
-    const waiting = { ...entered, tick: 12 };
-    assert.equal(route.advance(waiting, ref), waiting);
-    const resumed = route.advance({ ...entered, tick: 13 }, ref);
-    assert.deepEqual(current(resumed, ref).route.main.phase, {
-        type: "CHECKPOINT", index: 1, checkpointState: { type: "MOVING" },
+    let absolute = battle([creation(plan([wait(2, "BATTLE"), move([0, 2])]))]);
+    const absoluteHost = units.ref(get(absolute, 0));
+    const other = route.createContext(absolute, absoluteHost, {
+        plan: plan(), offset: [0, 0], alwaysCheckCurrentPoint: false, ticking: true,
     });
-    assert.deepEqual(route.movementTarget(resumed, ref), { nextPoint: [4, 0], goal: [4, 0] });
-});
-
-test("past absolute waits and zero relative waits advance immediately", () => {
-    const { battle, ref } = fixture(definition({ checkpoints: [
-        { type: "WAIT_UNTIL", tick: 2 }, { type: "WAIT", tick: 0 },
-    ] }), 20);
-    const advanced = route.advance(battle, ref);
-    assert.deepEqual(current(advanced, ref).route.main.phase, { type: "END" });
-    assert.deepEqual(route.movementTarget(advanced, ref), { nextPoint: [8, 0], goal: [8, 0] });
-});
-
-test("GOTO re-entry restarts relative waits while keeping absolute wait deadlines", () => {
-    const { battle, ref } = fixture(definition({ checkpoints: [
-        { type: "WAIT_UNTIL", tick: 5 }, { type: "WAIT", tick: 2 }, { type: "GOTO", index: 0 },
-    ] }), 10);
-    const first = route.advance(battle, ref);
-    assert.deepEqual(current(first, ref).route.main.phase, {
-        type: "CHECKPOINT", index: 1, checkpointState: { type: "WAITING", deadlineTick: 12 },
-    });
-    const second = route.advance({ ...first, tick: 12 }, ref);
-    assert.deepEqual(current(second, ref).route.main.phase, {
-        type: "CHECKPOINT", index: 1, checkpointState: { type: "WAITING", deadlineTick: 14 },
-    });
-});
-
-test("Alternative replacement always starts over and clear preserves Main deadlines", () => {
-    const { battle, ref } = fixture(definition({ checkpoints: [{ type: "WAIT", tick: 5 }] }), 10);
-    const entered = route.advance(battle, ref);
-    const main = current(entered, ref).route.main;
-    const alternate = definition({ checkpoints: [{ type: "WAIT", tick: 2 }] });
-    const installed = update(entered, ref, route.setAlternative(alternate));
-    const advanced = route.advance(installed, ref);
-    const previousAlternative = current(advanced, ref).route.alternative;
-    const repeated = update(advanced, ref, route.setAlternative(alternate));
-    assert.notEqual(current(repeated, ref).route.alternative, previousAlternative);
-    assert.equal(current(repeated, ref).route.main, main);
-    assert.equal(current(repeated, ref).route.alternative.phase.checkpointState.type, "PENDING");
-    const cleared = update({ ...repeated, tick: 16 }, ref, route.clearAlternative());
-    assert.equal(current(cleared, ref).route.main, main);
-    assert.equal(current(cleared, ref).route.alternative, null);
-    assert.equal(update(cleared, ref, route.clearAlternative()), cleared);
-    const resumed = route.advance(cleared, ref);
-    assert.equal(current(resumed, ref).route.main.phase.type, "END");
-});
-
-test("path mode changes preserve route progress and each route retains its current mode", () => {
-    const { battle, ref } = fixture(definition({ checkpoints: [{ type: "WAIT", tick: 5 }] }), 10);
-    const entered = route.advance(battle, ref);
-    const phase = current(entered, ref).route.main.phase;
-    const changed = update(entered, ref, route.setMotionMode("FLY"));
-    const main = current(changed, ref).route.main;
-    assert.equal(route.motionMode(current(changed, ref).route), "FLY");
-    assert.equal(main.definition.motionMode, "WALK");
-    assert.equal(main.phase, phase);
-    assert.equal(update(changed, ref, route.setMotionMode("FLY")), changed);
-
-    const alternate = definition({ checkpoints: [{ type: "WAIT", tick: 2 }] });
-    const installed = route.advance(update(changed, ref, compose(
-        route.setAlternative(alternate), route.setMotionMode("FLY"),
-    )), ref);
-    assert.equal(current(installed, ref).route.main, main);
-    assert.equal(route.motionMode(current(installed, ref).route), "FLY");
-
-    const restarted = update(installed, ref, route.setAlternative(alternate));
-    assert.equal(route.motionMode(current(restarted, ref).route), "WALK");
-    const restored = update(restarted, ref, compose(
-        route.clearAlternative(), route.setMotionMode("WALK"),
+    absolute = update(other.state, absoluteHost, units.compose(
+        route.selectContext(other.value.id), route.setTicking(0, false),
     ));
-    assert.equal(current(restored, ref).route.alternative, null);
-    assert.equal(current(restored, ref).route.main.phase, phase);
-    assert.equal(route.motionMode(current(restored, ref).route), "WALK");
+    absolute = ticks(absolute, 3);
+    assert.equal(current(absolute).current.anchor, "BATTLE");
+    absolute = update(absolute, absoluteHost, route.selectContext(0));
+    absolute = step(absolute, []);
+    assert.equal(current(absolute).current.type, "MOVE");
 });
 
-test("completed Alternative remains active until its owner clears it", () => {
-    const { battle, ref } = fixture();
-    const main = current(battle, ref).route.main;
-    const installed = update(battle, ref, route.setAlternative(definition({ endPosition: [0, 0] })));
-    const completed = route.advance(installed, ref);
-    assert.equal(current(completed, ref).route.alternative.phase.type, "COMPLETED");
-    assert.equal(current(completed, ref).route.main, main);
-    assert.equal(route.movementTarget(completed, ref), null);
-    assert.equal(route.isCompleted(current(completed, ref).route), false);
-    assert.equal(route.advance(completed, ref), completed);
-    assert.deepEqual(route.movementTarget(update(completed, ref, route.clearAlternative()), ref), { nextPoint: [8, 0], goal: [8, 0] });
+test("reassign rebuilds the entered instruction and skipWait only skips a relative wait", () => {
+    const program = plan([wait(5), move([0, 3])]);
+    let state = battle([creation(program)]);
+    const host = units.ref(get(state, 0));
+    state = update(state, host, route.skipWait(0));
+    assert.equal(current(state).current.type, "MOVE");
+    state = update(state, host, route.reassign(0, program));
+    assert.equal(current(state).id, 0);
+    assert.equal(current(state).current.timer, 5);
+    state = update(state, host, route.reassign(0, plan([wait(100, "BATTLE")])));
+    const before = state;
+    state = update(state, host, route.skipWait(0));
+    assert.equal(state, before);
 });
 
-test("Main early completion is controlled by requireAllCheckpoints even while Alternative is active", () => {
-    for (const requireAllCheckpoints of [true, false]) {
-        const { battle, ref } = fixture(definition({
-            requireAllCheckpoints,
-            checkpoints: [{ type: "WAIT", tick: 100 }],
-        }), 0, [8, 0]);
-        const installed = update(battle, ref, route.setAlternative(definition({ endPosition: [0, 12] })));
-        const advanced = route.advance(installed, ref);
-        assert.equal(route.isCompleted(current(advanced, ref).route), !requireAllCheckpoints);
-
-        assert.notEqual(current(advanced, ref), undefined);
-    }
+test("a long immediate program completes while an immediate GOTO cycle yields", () => {
+    const program = plan([...Array.from({ length: 200 }, () => wait(0, "BATTLE")), move([0, 2])]);
+    const state = battle([creation(program)]);
+    assert.equal(current(state).index, 200);
+    assert.equal(current(state).current.type, "MOVE");
+    let cyclic = battle([creation(plan([wait(0), { type: "GOTO", index: 0 }]))]);
+    assert.equal(current(cyclic).index, 0);
+    assert.equal(current(cyclic).current, null);
+    cyclic = ticks(cyclic, 2);
+    assert.equal(current(cyclic).index, 0);
+    assert.equal(current(cyclic).current, null);
 });
 
-test("route tracking applies the same sampled offset to MOVE and end targets", () => {
-    const { battle, ref } = fixture(definition({
-        offset: [0.2, 0.1],
-        checkpoints: [{ type: "MOVE", position: [0, 4], offset: [0.15, 0] }],
-    }), 0, [0.2, 0.1]);
-    assert.equal(route.movementTarget(battle, ref), null);
-    const advanced = route.advance(battle, ref);
-    assert.deepEqual(route.movementTarget(advanced, ref), {
-        nextPoint: [4.3500000000000005, 0.1], goal: [4.3500000000000005, 0.1],
+test("MOVE samples on entry, queries keep the sample and loop entry samples again", () => {
+    const instruction = { type: "MOVE", position: [0, 0], offset: [0.2, 0.2], randomizeOffset: true };
+    let state = battle([creation(plan([instruction, { type: "GOTO", index: 0 }]), { locomotion: movement })]);
+    const host = units.ref(get(state, 0));
+    const sample = current(state).current.offset;
+    const rngState = state.execution.rngState;
+    assert.equal(current(state).current.randomizeOffset, false);
+    assert.deepEqual(route.movementTarget(state, host), route.movementTarget(state, host));
+    assert.equal(state.execution.rngState, rngState);
+    state = ticks(state, 2);
+    assert.equal(current(state).current, null);
+    state = step(state, []);
+    assert.notDeepEqual(current(state).current.offset, sample);
+    assert.equal(instruction.randomizeOffset, true);
+    assert.deepEqual(instruction.offset, [0.2, 0.2]);
+});
+
+test("TRACE keeps the last tile after target death, holds arrival and can restart on the same tile", () => {
+    let state = battle([
+        creation(plan([wait(999)]), { locomotion: movement }),
+        { definition: { id: "target", hooks: Hooks.empty() }, position: [2, 0] },
+    ]);
+    const host = units.ref(get(state, 0));
+    let target = units.ref(get(state, 1));
+    const tracing = route.createContext(state, host, {
+        plan: plan([{ type: "TRACE", position: [0, 2], reached: false }]),
+        offset: [0, 0], alwaysCheckCurrentPoint: false, ticking: true,
     });
-    const reached = route.advance(move(advanced, ref, [4.35, 0.1]), ref);
-    assert.equal(current(reached, ref).route.main.phase.type, "END");
-    assert.deepEqual(route.movementTarget(reached, ref), { nextPoint: [8.2, 0.1], goal: [8.2, 0.1] });
+    state = update(tracing.state, host, units.compose(
+        route.selectContext(tracing.value.id), route.setTicking(0, false),
+    ));
+    state = remove(state, target.id, "DEATH");
+    target = null;
+    state = ticks(state, 3);
+    let context = route.getContext(state, tracing.value);
+    assert.equal(target, null);
+    assert.deepEqual(context.current.position, [0, 2]);
+    assert.equal(context.current.reached, true);
+    assert.equal(context.index, 0);
+    assert.equal(get(state, 0).route.activeId, context.id);
+    assert.equal(route.movementTarget(state, host), null);
+    state = update(state, host, appear([0, 0]));
+    state = update(state, host, route.setTraceTarget(context.id, [0, 2]));
+    context = route.getContext(state, tracing.value);
+    assert.equal(context.current.reached, false);
+    assert.deepEqual(route.movementTarget(state, host).goal, [2, 0]);
+    state = update(state, host, route.removeContext(context.id, 0));
+    assert.equal(route.getContext(state, tracing.value), undefined);
+    assert.equal(current(state).current.timer, 999);
+    assert.equal(get(state, 0).route.activeId, 0);
 });
 
-test("Alternative movement targets use their own goal and offset until cleared", () => {
-    const { battle, ref } = fixture(definition({ offset: [0.2, 0] }), 0, [0.2, 0]);
-    const installed = update(battle, ref, route.setAlternative(definition({
-        offset: [-0.1, 0.2],
-        checkpoints: [{ type: "MOVE", position: [0, 4], offset: [0.25, 0] }],
-    })));
-    const advanced = route.advance(installed, ref);
-    assert.deepEqual(route.movementTarget(advanced, ref), {
-        nextPoint: [4.15, 0.2], goal: [4.15, 0.2],
+test("Main exit is independent of the selected Context and completes Unit lifetime once", () => {
+    let leaves = 0;
+    let state = battle([creation(plan([{ type: "APPEAR", position: [0, 3], offset: [0, 0] }], {
+        endPosition: [0, 3],
+    }), { hooks: Hooks.empty().set(lifecycle.leave, {
+        id: "leave", invoke: state => { leaves++; return { state, value: undefined }; },
+    }) })]);
+    const host = units.ref(get(state, 0));
+    assert.equal(current(state).index, 1);
+    assert.deepEqual(get(state, 0).position, [3, 0]);
+    const temporary = route.createContext(state, host, {
+        plan: plan([{ type: "TRACE", position: [0, 5], reached: false }]),
+        offset: [0, 0], alwaysCheckCurrentPoint: false, ticking: true,
     });
-    assert.deepEqual(route.movementTarget(update(advanced, ref, route.clearAlternative()), ref), {
-        nextPoint: [8.2, 0], goal: [8.2, 0],
-    });
+    state = update(temporary.state, host, units.compose(
+        route.selectContext(temporary.value.id), route.setTicking(0, false),
+    ));
+    state = step(state, []);
+    assert.equal(get(state, 0), undefined);
+    assert.equal(leaves, 1);
+    assert.equal(state.events.filter(event => event.type === "ROUTE_COMPLETED").length, 1);
+    state = step(state, []);
+    assert.equal(leaves, 1);
+    assert.equal(state.events.some(event => event.type === "ROUTE_COMPLETED"), false);
+    assert.notEqual(get(ticks(battle([creation(plan())]), 3), 0), undefined);
 });
 
-test("unreachable MOVE skips only when the route permits it", () => {
-    for (const alwaysCheckCurrentPoint of [true, false]) {
-        const { battle, ref } = fixture(definition({
-            alwaysCheckCurrentPoint,
-            checkpoints: [{ type: "MOVE", position: [0, 4], offset: [0, 0] }],
+test("spatial instructions publish consumption before hooks and resume the latest Context", () => {
+    for (const operation of ["reassign", "ticking", "remove"]) {
+        let state = battle([
+            creation(plan([wait(20)]), {
+                layer: { type: "GROUND" }, blockable: { volume: 1, rules: [] },
+            }),
+            { definition: { id: "blocker", hooks: Hooks.empty(),
+                blocker: { layer: "GROUND", capacity: 1, radius: 1, rules: [] },
+            }, position: [0, 0] },
+        ]);
+        const host = units.ref(get(state, 0));
+        const replacement = plan([wait(9), move([0, 2])]);
+        let released = 0;
+        state = update(state, host, setHook("released", {
+            id: "change-route", invoke: (state) => {
+                released++;
+                assert.equal(current(state).index, 1);
+                assert.equal(current(state).current, null);
+                assert.equal(get(state, 0).spatialPresence.present, false);
+                if (operation === "remove") {
+                    state = remove(state, host.id, "SCRIPT");
+                } else {
+                    state = update(state, host, operation === "reassign"
+                        ? route.reassign(0, replacement)
+                        : route.setTicking(0, false));
+                }
+                return { state, value: undefined };
+            },
         }));
-        const navigation = setOverlay(battle.battlefield.navigation, "WALK", {
-            id: 1, cells: [[0, 4]], denyPassage: true, denyDepartures: [],
-        });
-        const advanced = route.advance({ ...battle, battlefield: { ...battle.battlefield, navigation } }, ref);
-        assert.equal(current(advanced, ref).route.main.phase.type, alwaysCheckCurrentPoint ? "CHECKPOINT" : "END");
+        state = search(state, units.ref(get(state, 1)));
+        assert.notEqual(get(state, 0).blockable.relation, null);
+        state = update(state, host, route.reassign(0, plan([
+            { type: "DISAPPEAR" }, { type: "APPEAR", position: [0, 6], offset: [0, 0] }, wait(4),
+        ])));
+        assert.equal(released, 1);
+        if (operation === "remove") {
+            assert.equal(get(state, 0), undefined);
+        } else if (operation === "reassign") {
+            assert.equal(current(state).plan, replacement);
+            assert.equal(current(state).current.timer, 9);
+            assert.deepEqual(get(state, 0).position, [0, 0]);
+        } else {
+            assert.equal(current(state).index, 2);
+            assert.equal(current(state).current.timer, 4);
+            assert.equal(current(state).ticking, false);
+            assert.equal(get(state, 0).spatialPresence.present, true);
+            assert.deepEqual(get(state, 0).position, [6, 0]);
+        }
     }
-});
-
-test("navigation and unreachable checks use the current path mode", () => {
-    const { battle, ref } = fixture(definition({
-        alwaysCheckCurrentPoint: false,
-        checkpoints: [{ type: "MOVE", position: [0, 4], offset: [0, 0] }],
-    }));
-    const navigation = setOverlay(battle.battlefield.navigation, "WALK", {
-        id: 1, cells: [[0, 4]], denyPassage: true, denyDepartures: [],
-    });
-    const blocked = { ...battle, battlefield: { ...battle.battlefield, navigation } };
-    const flying = route.advance(update(blocked, ref, route.setMotionMode("FLY")), ref);
-    assert.equal(current(flying, ref).route.main.phase.type, "CHECKPOINT");
-    assert.deepEqual(route.movementTarget(flying, ref), { nextPoint: [4, 0], goal: [4, 0] });
-    const walking = update(flying, ref, route.setMotionMode("WALK"));
-    assert.equal(route.movementTarget(walking, ref), null);
-    assert.equal(current(route.advance(walking, ref), ref).route.main.phase.type, "END");
-});
-
-test("outside-map recovery keeps the current MOVE rather than treating it as unreachable", () => {
-    const { battle, ref } = fixture(definition({
-        alwaysCheckCurrentPoint: false,
-        offset: [0.2, 0],
-        checkpoints: [{ type: "MOVE", position: [0, 4], offset: [0, 0] }],
-    }), 0, [-1, 0]);
-    const advanced = route.advance(battle, ref);
-    assert.equal(current(advanced, ref).route.main.phase.type, "CHECKPOINT");
-    const target = route.movementTarget(advanced, ref);
-    assert.ok(target.nextPoint[0] > -0.3 && target.nextPoint[0] < 0);
-    assert.equal(target.nextPoint[1], 0);
-    assert.deepEqual(target.goal, target.nextPoint);
-});
-
-test("instant instructions apply presence and teleport effects once before continuing", () => {
-    const { battle, ref } = fixture(definition({ offset: [0.2, 0.1], checkpoints: [
-        { type: "DISAPPEAR" }, { type: "APPEAR_AT_POS", position: [0, 3], offset: [0.2, 0] },
-        { type: "ALERT" }, { type: "WAIT", tick: 5 },
-    ] }), 0, [0.2, 0.1]);
-    const advanced = route.advance(battle, ref);
-    assert.equal(current(advanced, ref).spatialPresence.present, true);
-    assert.deepEqual(current(advanced, ref).position, [3.2, 0]);
-
-    assert.equal(route.advance(advanced, ref), advanced);
 });

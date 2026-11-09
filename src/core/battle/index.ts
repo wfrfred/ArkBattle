@@ -1,6 +1,6 @@
-export { initialize, step, simulateBattle } from "./runtime.js";
+export { initialize, step } from "./runtime.js";
 
-export type { Definition, Input, Command, Event, UnitRemoval, Result } from "./contract.js";
+export type { Definition, Input, Command, Event, UnitRemoval } from "./contract.js";
 
 export type { State, Result as OperationResult } from "./state.js";
 

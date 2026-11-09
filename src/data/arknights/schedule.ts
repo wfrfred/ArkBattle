@@ -1,18 +1,13 @@
 import { assertNonnegativeSafeInteger } from "../../core/common/assert.js";
-import type {
-    BranchDefinition,
-    EnemySpawnDefinition,
-    FragmentDefinition,
-    SpawnActionDefinition,
-    SpawnScheduleDefinition,
-} from "../../core/battle/schedule/index.js";
-import type { Input as RouteInput } from "../../core/battle/creation/route.js";
+import { createRng, type Rng, type Seed } from "../../core/common/rng.js";
+import type { Branch, Definition, Entry, Spawn, Wait } from "../../core/battle/schedule/index.js";
 import type { ArknightsEnemyMovementContent } from "./enemy.js";
 import type {
     ArknightsEnemyDbRef,
     ArknightsLevelDefinition,
     ArknightsSpawnAction,
 } from "./level.js";
+import type { Route } from "./route.js";
 import { secondsToTicks } from "./tick.js";
 
 export interface ArknightsActionSelection {
@@ -31,7 +26,8 @@ export type ArknightsEnemyResolver = (
 ) => ArknightsEnemyMovementContent;
 
 export interface ArknightsScheduleCompilation {
-    readonly schedule: Extract<SpawnScheduleDefinition, { readonly type: "WAVES" }>;
+    readonly schedule: Definition;
+    readonly rngState: Seed;
     readonly omittedActions: readonly string[];
     readonly inactiveBranches: readonly string[];
 }
@@ -40,27 +36,34 @@ function actionPath(selection: ArknightsActionSelection): string {
     return `waves[${selection.waveIndex}].fragments[${selection.fragmentIndex}].actions[${selection.actionIndex}]`;
 }
 
-export function resolveActionSpawn(
-    level: ArknightsLevelDefinition,
-    action: ArknightsSpawnAction,
-    route: RouteInput,
-    resolveEnemy: ArknightsEnemyResolver,
-): EnemySpawnDefinition {
+function validateAction(action: ArknightsSpawnAction): void {
     if (
         action.hiddenGroup !== null ||
-        action.randomSpawnGroupKey !== null ||
         action.randomSpawnGroupPackKey !== null ||
         action.randomType !== "ALWAYS" ||
         action.refreshType !== "ALWAYS" ||
-        action.weight !== 0 ||
         action.isUnharmfulAndAlwaysCountAsKilled
     ) {
         throw new RangeError(
-            "movement schedules require unconditional spawn actions without random packs or special kill accounting",
+            "movement schedules do not support hidden groups, random packs, non-ALWAYS random policies or special kill accounting",
         );
     }
+    if (action.randomSpawnGroupKey === null && action.weight !== 0) {
+        throw new RangeError("weighted movement spawns require a random group");
+    }
+}
 
-    const reference = level.enemyDbRefs.find((reference) => reference.id === action.key)!;
+function resolveActionSpawn(
+    level: ArknightsLevelDefinition,
+    action: ArknightsSpawnAction,
+    route: Route,
+    resolveEnemy: ArknightsEnemyResolver,
+): Omit<Spawn, "atTick" | "wait"> {
+    const reference = level.enemyDbRefs.find((reference) => reference.id === action.key);
+    if (reference === undefined) {
+        throw new RangeError(`spawn references missing enemy ${action.key}`);
+    }
+
     const content = resolveEnemy(reference);
     if (content.delayToBornTicks !== 0) {
         throw new RangeError("movement schedules require synchronous enemy births");
@@ -68,10 +71,21 @@ export function resolveActionSpawn(
 
     return {
         definition: content.definition,
-        route,
-        alwaysCheckCurrentPoint: content.alwaysCheckCurrentPoint,
-        notCountInTotal: content.notCountInTotal,
+        plan: route.plan,
+        offset: route.spawnOffset,
+        randomRange: route.spawnRandomRange,
     };
+}
+
+function wait(action: ArknightsSpawnAction, fromBranch: boolean): Wait {
+    if (!action.managedByScheduler) {
+        return "NONE";
+    }
+    if (action.dontBlockWave || (fromBranch && !action.forceBlockWaveInBranch)) {
+        return "FINAL";
+    }
+
+    return "WAVE";
 }
 
 function compileAction(
@@ -80,28 +94,103 @@ function compileAction(
     preDelay: number,
     fromBranch: boolean,
     resolveEnemy: ArknightsEnemyResolver,
-): SpawnActionDefinition {
-    const route = (fromBranch ? level.extraRoutes : level.routes)[action.routeIndex]!;
+): readonly Spawn[] {
+    const route = (fromBranch ? level.extraRoutes : level.routes)[action.routeIndex];
+    if (route === undefined) {
+        throw new RangeError(`spawn references missing route ${action.routeIndex}`);
+    }
+
     const spawn = resolveActionSpawn(level, action, route, resolveEnemy);
     const preDelayTicks = secondsToTicks(preDelay);
 
-    return {
-        spawn,
-        offsetsTicks: Array.from({ length: action.count }, (_, index) => {
-            const spawnDelay = preDelay + action.preDelay + index * action.interval;
+    return Array.from({ length: action.count }, (_, index) => ({
+        ...spawn,
+        atTick:
+            secondsToTicks(preDelay + action.preDelay + index * action.interval) - preDelayTicks,
+        wait: wait(action, fromBranch),
+    }));
+}
 
-            return secondsToTicks(spawnDelay) - preDelayTicks;
-        }),
-        managedByScheduler: action.managedByScheduler,
-        dontBlockWave: action.dontBlockWave,
-        forceBlockWaveInBranch: action.forceBlockWaveInBranch,
-    };
+function compileEntries(
+    level: ArknightsLevelDefinition,
+    actions: readonly ArknightsSpawnAction[],
+    preDelay: number,
+    fromBranch: boolean,
+    resolveEnemy: ArknightsEnemyResolver,
+): readonly Entry[] {
+    const entries: Entry[] = [];
+    const groups = new Map<string, { weight: number; spawns: readonly Spawn[] }[]>();
+    let previousGroup: string | null = null;
+
+    for (const action of actions) {
+        validateAction(action);
+        const group = action.randomSpawnGroupKey;
+        if (group !== null && group !== previousGroup && groups.has(group)) {
+            throw new RangeError("branch random spawn group candidates must be contiguous");
+        }
+
+        previousGroup = group;
+        const spawns = compileAction(level, action, preDelay, fromBranch, resolveEnemy);
+        if (group === null) {
+            entries.push(spawns);
+            continue;
+        }
+
+        let options = groups.get(group);
+        if (options === undefined) {
+            options = [];
+            groups.set(group, options);
+            entries.push({ options });
+        }
+
+        options.push({ weight: action.weight, spawns });
+    }
+
+    for (const options of groups.values()) {
+        if (!options.some((option) => option.weight > 0)) {
+            throw new RangeError("random spawn groups require a positive total weight");
+        }
+    }
+
+    return entries;
+}
+
+function selectActions(
+    actions: readonly ArknightsSpawnAction[],
+    rng: Rng,
+): readonly ArknightsSpawnAction[] {
+    const groups = new Map<string, ArknightsSpawnAction[]>();
+
+    for (const action of actions) {
+        validateAction(action);
+
+        if (action.randomSpawnGroupKey !== null) {
+            const group = groups.get(action.randomSpawnGroupKey) ?? [];
+            group.push(action);
+            groups.set(action.randomSpawnGroupKey, group);
+        }
+    }
+
+    const selected = new Set<ArknightsSpawnAction>();
+
+    for (const group of groups.values()) {
+        const [first, ...rest] = group;
+        selected.add(
+            rng.weighted([
+                [first!, first!.weight],
+                ...rest.map((action) => [action, action.weight] as const),
+            ]),
+        );
+    }
+
+    return actions.filter((action) => action.randomSpawnGroupKey === null || selected.has(action));
 }
 
 export function compileSpawnSchedule(
     level: ArknightsLevelDefinition,
     selection: ArknightsScheduleSelection,
     resolveEnemy: ArknightsEnemyResolver,
+    rngState: Seed = 0,
 ): ArknightsScheduleCompilation {
     const selected = new Set<string>();
 
@@ -133,6 +222,7 @@ export function compileSpawnSchedule(
         selectedBranches.add(id);
     }
 
+    const rng = createRng(rngState);
     const omittedActions: string[] = [];
     const waves = level.waves.map((wave, waveIndex) => {
         if (wave.advancedWaveTag !== null) {
@@ -146,36 +236,41 @@ export function compileSpawnSchedule(
                 wave.maxTimeWaitingForNextWave === -1
                     ? null
                     : secondsToTicks(wave.maxTimeWaitingForNextWave),
-            fragments: wave.fragments.map((fragment, fragmentIndex): FragmentDefinition => ({
-                preDelayTicks: secondsToTicks(fragment.preDelay),
-                actions: fragment.actions.flatMap((action, actionIndex) => {
+            fragments: wave.fragments.map((fragment, fragmentIndex) => {
+                const actions = fragment.actions.filter((_, actionIndex) => {
                     const path = actionPath({ waveIndex, fragmentIndex, actionIndex });
-                    if (!selected.has(path)) {
-                        omittedActions.push(path);
-
-                        return [];
+                    if (selected.has(path)) {
+                        return true;
                     }
 
-                    return [compileAction(level, action, fragment.preDelay, false, resolveEnemy)];
-                }),
-            })),
+                    omittedActions.push(path);
+
+                    return false;
+                });
+
+                return {
+                    preDelayTicks: secondsToTicks(fragment.preDelay),
+                    spawns: selectActions(actions, rng).flatMap((action) =>
+                        compileAction(level, action, fragment.preDelay, false, resolveEnemy),
+                    ),
+                };
+            }),
         };
     });
 
-    const branches: [string, BranchDefinition][] = [...selectedBranches].map((id) => [
+    const branches: [string, Branch][] = [...selectedBranches].map((id) => [
         id,
         {
             phases: level.branches[id]!.phases.map((phase) => ({
                 preDelayTicks: secondsToTicks(phase.preDelay),
-                actions: phase.actions.map((action) =>
-                    compileAction(level, action, phase.preDelay, true, resolveEnemy),
-                ),
+                entries: compileEntries(level, phase.actions, phase.preDelay, true, resolveEnemy),
             })),
         },
     ]);
 
     return {
-        schedule: { type: "WAVES", waves, branches: Object.fromEntries(branches) },
+        schedule: { waves, branches: Object.fromEntries(branches) },
+        rngState: rng.state(),
         omittedActions,
         inactiveBranches: Object.keys(level.branches).filter((id) => !selectedBranches.has(id)),
     };

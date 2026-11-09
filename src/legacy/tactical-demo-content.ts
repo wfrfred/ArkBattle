@@ -1,7 +1,8 @@
 import { createPredefinedDefinition } from "../core/battle/steps/predefined.js";
-import type { Input } from "../core/battle/index.js";
+import type { Spawn } from "../core/battle/schedule/index.js";
+import type { Plan } from "../core/unit/capability/route/index.js";
 import type { Map } from "../core/battlefield/map/map.js";
-import { createInput, type Input as RouteInput } from "../core/battle/creation/route.js";
+import type { Route as RouteInput } from "../data/arknights/route.js";
 import { prepare as prepareOperator, type Configuration } from "../data/arknights/operator.js";
 import { prepare as prepareEnemy } from "../data/arknights/enemy.js";
 import { TICKS_PER_SECOND } from "../core/tick.js";
@@ -92,43 +93,48 @@ export function createTacticalContentDemo(
             steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 },
         },
     );
-    const firstLane = createInput({
-        ...route,
-        checkpoints: [],
-        spawnOffset: [0, 0],
-        spawnRandomRange: [0, 0],
-    });
-    const secondLane = createInput({ ...firstLane, startPosition: [2, 10] });
-    const spawns: Extract<Input["schedule"], { type: "TIMELINE" }>["spawns"][number][] = [];
+    const firstLane: Plan = { ...route.plan, checkpoints: [] };
+    const secondLane: Plan = { ...firstLane, startPosition: [2, 10] };
+    const spawns: Spawn[] = [];
 
     for (let index = 0; index < 18; index++) {
         const tick = index * 3 * TICKS_PER_SECOND;
 
         for (const selectedRoute of [firstLane, secondLane]) {
             spawns.push({
-                tick,
+                atTick: tick,
                 definition: hound.definition,
-                route: selectedRoute,
-                alwaysCheckCurrentPoint: true,
-                notCountInTotal: false,
-                timing: { waveStartedAtTick: 0, fragmentStartedAtTick: 0 },
+                plan: selectedRoute,
+                offset: [0, 0],
+                randomRange: [0, 0],
+                wait: "WAVE",
             });
         }
     }
     for (let index = 0; index < 6; index++) {
         spawns.push({
-            tick: index * 6 * TICKS_PER_SECOND,
+            atTick: index * 6 * TICKS_PER_SECOND,
             definition: crossbowman.definition,
-            route: firstLane,
-            alwaysCheckCurrentPoint: true,
-            notCountInTotal: false,
-            timing: { waveStartedAtTick: 0, fragmentStartedAtTick: 0 },
+            plan: firstLane,
+            offset: [0, 0],
+            randomRange: [0, 0],
+            wait: "WAVE",
         });
     }
 
     const input = {
         map,
-        schedule: { type: "TIMELINE" as const, spawns },
+        schedule: {
+            waves: [
+                {
+                    preDelayTicks: 0,
+                    postDelayTicks: 0,
+                    maxWaitingTicks: null,
+                    fragments: [{ preDelayTicks: 0, spawns }],
+                },
+            ],
+            branches: {},
+        },
         predefines: [
             createPredefinedDefinition({
                 id: 0,

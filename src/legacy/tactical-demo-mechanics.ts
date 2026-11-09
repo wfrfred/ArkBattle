@@ -7,7 +7,8 @@ import { create as createAttack } from "../content/actions/attack.js";
 import type { Map } from "../core/battlefield/map/map.js";
 import { TICKS_PER_SECOND } from "../core/tick.js";
 import { Type as ElementType } from "../core/unit/capability/elemental/index.js";
-import { createInput, type Input as RouteInput } from "../core/battle/creation/route.js";
+import type { Route as RouteInput } from "../data/arknights/route.js";
+import type { Plan } from "../core/unit/capability/route/index.js";
 import { createArknightsElementalDefinition } from "../data/arknights/elemental.js";
 import { compileArknightsAttackBuffSkill } from "../data/arknights/skill-buff.js";
 import { createTacticalCombatDemoSpec } from "./tactical-demo-combat.js";
@@ -39,7 +40,7 @@ export function createTacticalMechanicsDemo(
     const base = createTacticalCombatDemoSpec(map, route, data, seed, "PROJECTILE");
     const predefined = base.predefines[0]!;
     const source = predefined.creation;
-    const spawn = base.schedule.spawns[0]!;
+    const spawn = base.schedule.waves[0]!.fragments[0]!.spawns[0]!;
     const maxTicks = (scenario === "SKILL" ? 120 : 60) * TICKS_PER_SECOND;
     const elementType = scenario === "SKILL" ? null : ELEMENT_SCENARIOS[scenario];
     const sourceDefinition = source.definition;
@@ -95,14 +96,12 @@ export function createTacticalMechanicsDemo(
             ? {}
             : { elemental: createArknightsElementalDefinition({ receiver: "ENEMY" }) }),
     };
-    const targetRoute = createInput({
-        ...route,
+    const targetRoute: Plan = {
+        ...route.plan,
         startPosition: [5, 6],
-        endPosition: [5, 7],
-        spawnOffset: [0, 0],
-        spawnRandomRange: [0, 0],
-        checkpoints: [{ type: "WAIT_FOR_TICKS", durationTicks: maxTicks + 1 }],
-    });
+        endPosition: null,
+        checkpoints: [],
+    };
 
     return {
         input: {
@@ -114,8 +113,29 @@ export function createTacticalMechanicsDemo(
                 }),
             ],
             schedule: {
-                type: "TIMELINE" as const,
-                spawns: [{ ...spawn, definition: target, route: targetRoute, tick: 0 }],
+                waves: [
+                    {
+                        preDelayTicks: 0,
+                        postDelayTicks: 0,
+                        maxWaitingTicks: null,
+                        fragments: [
+                            {
+                                preDelayTicks: 0,
+                                spawns: [
+                                    {
+                                        ...spawn,
+                                        definition: target,
+                                        plan: targetRoute,
+                                        offset: [0, 0] as const,
+                                        randomRange: [0, 0] as const,
+                                        atTick: 0,
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                ],
+                branches: {},
             },
             maxTicks,
         },

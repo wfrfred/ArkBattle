@@ -12,7 +12,6 @@ import { step as stepBattle } from "../../dist/core/battle/index.js";
 import { create as createAttack } from "../../dist/content/actions/attack.js";
 import { actionCapability } from "../helpers/actions.js";
 import { ref as unitRef } from "../../dist/core/unit/index.js";
-import { createInput as createRouteDefinition } from "../../dist/core/battle/creation/route.js";
 import { ref as skillRef, definition as createSkillDefinition } from "../helpers/skill.js";
 import { create as createSkill, activate as activateSkill, advance as advanceSkill } from "../../dist/core/unit/skill/index.js";
 import { recover } from "../../dist/core/unit/skill/sp.js";
@@ -171,14 +170,6 @@ test('elemental execution: periodic output follows burst speed and does not pay 
   }
 });
 
-function route() {
-  return createRouteDefinition({ motionMode: 'WALK', startPosition: [0, 3], endPosition: [0, 7],
-    spawnOffset: [0, 0], spawnRandomRange: [0, 0], checkpoints: [], allowDiagonalMove: false,
-    visitEveryTileCenter: false, visitEveryNodeCenter: false, visitEveryCheckPoint: true });
-}
-function spawn(definition, tick) {
-  return { definition, route: route(), tick, timing: { waveStartedAtTick: 0, fragmentStartedAtTick: 0 }, alwaysCheckCurrentPoint: true, notCountInTotal: false };
-}
 function battle(receiver, type, { moving = false } = {}) {
   const casterAttack = createAttack({ ...action(10000).attack,
     targetGroups: [{ ...action().attack.targetGroups[0], operations: [
@@ -190,14 +181,18 @@ function battle(receiver, type, { moving = false } = {}) {
     action: actionCapability(casterAttack) });
   const victim = definition(receiver, { hooks: Hooks.empty(), id: 'victim', allegiance: { side: 'ENEMY' },
     action: actionCapability(action(1)),
-    ...(moving ? { locomotion: { halfBodyWidth: 0, minSpeed: 0, speed: 0.001, steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 } }, blockable: { volume: 1, rules: [] } } : {}) });
-  const keepOpen = { hooks: Hooks.empty(), id: 'future', vitality: { maxHp: 1, defense: 0, resistance: 0 }, locomotion: { halfBodyWidth: 0, minSpeed: 0, speed: 0, steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 } } };
+    ...(moving ? { route: { alwaysCheckCurrentPoint: true }, locomotion: { halfBodyWidth: 0, minSpeed: 0, speed: 0.001, steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 } }, blockable: { volume: 1, rules: [] } } : {}) });
   const runtime = createBattle([
     { definition: caster, position: [0, 0] },
-    ...(moving ? [] : [{ definition: victim, position: [1, 0] }]),
+    { definition: victim, position: moving ? [3, 0] : [1, 0],
+      ...(moving ? { initial: { route: {
+        plan: { motionMode: 'WALK', startPosition: [0, 3], endPosition: null,
+          checkpoints: [{type: 'MOVE', position: [0, 7], offset: [0, 0], randomizeOffset: false}], requireAllCheckpoints: true },
+        offset: [0, 0],
+      } } } : {}),
+    },
   ], {
     rows: 1, columns: 8, maxTicks: 600,
-    schedule: { type: 'TIMELINE', spawns: [...(moving ? [spawn(victim, 0)] : []), spawn(keepOpen, 599)] },
   });
   return { runtime };
 }
@@ -229,10 +224,8 @@ test('elemental runtime: Unit and Effect tick triggers preserve every necrosis p
         },
       }),
     });
-      const future = { hooks: Hooks.empty(), id: 'future', vitality: { maxHp: 1, defense: 0, resistance: 0 }, locomotion: { halfBodyWidth: 0, minSpeed: 0, speed: 0, steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 } } };
     let runtime = createBattle([{ definition: receiver, position: [1, 0] }], {
       rows: 1, columns: 8, maxTicks: 600,
-      schedule: { type: 'TIMELINE', spawns: [spawn(future, 599)] },
     });
     const hits = [];
     for (let tick = 0; tick <= 450; tick++) {

@@ -1,6 +1,6 @@
 import { update as updateUnit } from "../core/battle/unit.js";
 import type { Input, State as BattleState } from "../core/battle/index.js";
-import type { FragmentDefinition } from "../core/battle/schedule/index.js";
+import type { Spawn, Entry } from "../core/battle/schedule/index.js";
 import {
     type Definition as UnitDefinition,
     get as getCurrentUnit,
@@ -178,35 +178,36 @@ export function createTacticalProjectileDemo<
         };
     }
 
-    const fragment = (value: FragmentDefinition): FragmentDefinition => ({
-        ...value,
-        actions: value.actions.map((action) => ({
-            ...action,
-            spawn: { ...action.spawn, definition: transform(action.spawn.definition) },
-        })),
-    });
-    const schedule =
-        input.schedule.type === "TIMELINE"
+    const spawn = (value: Spawn): Spawn => ({ ...value, definition: transform(value.definition) });
+    const entry = (value: Entry): Entry =>
+        "options" in value
             ? {
-                  ...input.schedule,
-                  spawns: input.schedule.spawns.map((spawn) => ({
-                      ...spawn,
-                      definition: transform(spawn.definition),
+                  options: value.options.map((option) => ({
+                      ...option,
+                      spawns: option.spawns.map(spawn),
                   })),
               }
-            : {
-                  ...input.schedule,
-                  waves: input.schedule.waves.map((wave) => ({
-                      ...wave,
-                      fragments: wave.fragments.map(fragment),
-                  })),
-                  branches: Object.fromEntries(
-                      Object.entries(input.schedule.branches).map(([id, branch]) => [
-                          id,
-                          { ...branch, phases: branch.phases.map(fragment) },
-                      ]),
-                  ),
-              };
+            : value.map(spawn);
+    const schedule = {
+        waves: input.schedule.waves.map((wave) => ({
+            ...wave,
+            fragments: wave.fragments.map((fragment) => ({
+                ...fragment,
+                spawns: fragment.spawns.map(spawn),
+            })),
+        })),
+        branches: Object.fromEntries(
+            Object.entries(input.schedule.branches).map(([id, branch]) => [
+                id,
+                {
+                    phases: branch.phases.map((phase) => ({
+                        ...phase,
+                        entries: phase.entries.map(entry),
+                    })),
+                },
+            ]),
+        ),
+    };
 
     return {
         input: {

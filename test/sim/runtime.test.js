@@ -6,7 +6,6 @@ import * as units from "../../dist/core/unit/index.js";
 import { step } from "../../dist/core/battle/runtime.js";
 import { remove } from "../../dist/core/battle/unit.js";
 import * as predefined from "../../dist/core/battle/steps/predefined.js";
-import { createInput as createRoute } from "../../dist/core/battle/creation/route.js";
 import { dp } from "../../dist/core/battle/deployment/index.js";
 import * as cards from "../../dist/core/battle/deployment/card/index.js";
 
@@ -19,22 +18,20 @@ const account = {
 
 test("initial and scheduled entry see registered battle facts and preserve their resource operations", () => {
     const entered = [];
-    const route = createRoute({
+    const plan = {
         motionMode: "WALK",
         startPosition: [0, 5],
         endPosition: [0, 6],
-        spawnOffset: [0, 0],
-        spawnRandomRange: [0, 0],
-        checkpoints: [{ type: "WAIT_FOR_TICKS", durationTicks: 30 }],
-        visitEveryCheckPoint: true,
-    });
+        checkpoints: [{ type: "WAIT", anchor: "ENTER", tick: 30, timer: null }],
+        requireAllCheckpoints: true,
+    };
     const scheduled = {
         id: "scheduled",
+        route: { alwaysCheckCurrentPoint: true },
         hooks: Hooks.empty().set(units.enter, {
             id: "observe-birth",
             invoke(current, self) {
-                assert.equal(current.schedule.spawnedCount, 1);
-                assert.ok(current.schedule.managedFinalUnitIds.includes(self.id));
+                assert.ok(current.schedule.waiting.final.includes(self.id));
                 assert.equal(get(current, self.id).definition.id, "scheduled");
                 assert.equal(current.deployment.dp, 22);
                 entered.push(self.definition.id);
@@ -47,8 +44,7 @@ test("initial and scheduled entry see registered battle facts and preserve their
         hooks: Hooks.empty().set(units.enter, {
             id: "observe-initialization",
             invoke(current, self) {
-                assert.equal(current.result, null);
-                assert.equal(current.schedule.definition.spawns.length, 1);
+                assert.equal(current.schedule.definition.waves.length, 1);
                 assert.equal(current.deployment.dp, 20);
                 assert.equal(get(current, self.id).definition, initial);
                 assert.ok(current.predefinedPresence.some(
@@ -61,25 +57,26 @@ test("initial and scheduled entry see registered battle facts and preserve their
     };
     let state = battle([{ definition: initial, position: [0, 0] }], {
         deployment: { definition: account, cards: [] },
-        schedule: { type: "TIMELINE", spawns: [{
-            tick: 0,
-            definition: scheduled,
-            route,
-            alwaysCheckCurrentPoint: true,
-            notCountInTotal: false,
-            timing: { waveStartedAtTick: 0, fragmentStartedAtTick: 0 },
-        }] },
+        schedule: { waves: [{
+            preDelayTicks: 0, postDelayTicks: 0, maxWaitingTicks: null,
+            fragments: [{ preDelayTicks: 0, spawns: [{
+                atTick: 0, definition: scheduled, plan, offset: [0, 0],
+                randomRange: [0, 0], wait: "WAVE",
+            }] }],
+        }], branches: {} },
     });
     assert.equal(state.deployment.dp, 22);
     state = step(state, []);
     assert.deepEqual(entered, ["initial", "scheduled"]);
     assert.equal(state.deployment.dp, 25);
-    assert.equal(state.result, null);
+    assert.equal(state.tick, 1);
 
     const spawned = units.all(state).find((unit) => unit.definition.id === scheduled.id);
     state = remove(state, spawned.id, "SCRIPT");
     state = step(state, []);
-    assert.equal(state.result.reason, "SCHEDULE_COMPLETED");
+    assert.equal(state.schedule.main.type, "COMPLETED");
+    assert.deepEqual(state.schedule.waiting.final, []);
+    assert.equal(state.tick, 2);
 });
 
 test("a predefined departure can create its successor without losing that binding or the next operation", () => {
@@ -118,7 +115,7 @@ test("a predefined departure can create its successor without losing that bindin
     assert.deepEqual(units.all(after).map(({ definition }) => definition.id).toArray(), ["reappearing", "next-operation"]);
 });
 
-test("Tick phases publish complete results while a failed or completed Tick preserves its input", () => {
+test("Tick phases publish their resource operations and failures preserve the input", () => {
     const failure = new Error("content failed");
     let fail = false;
     let interrupted;
@@ -154,7 +151,6 @@ test("Tick phases publish complete results while a failed or completed Tick pres
     ];
     const completed = step(before, commands);
     assert.equal(completed.tick, 1);
-    assert.equal(completed.result.reason, "SCHEDULE_COMPLETED");
     assert.deepEqual(units.all(completed).map(({ definition, position }) => [definition.id, position]).toArray(), [
         ["operator", [1, 0]],
     ]);
@@ -162,12 +158,13 @@ test("Tick phases publish complete results while a failed or completed Tick pres
     assert.equal(cards.get(completed, card).stock, 0);
     assert.deepEqual(completed.predefinedPresence, []);
     const repeated = step(before, commands);
-    assert.deepEqual(repeated.result, completed.result);
+    assert.equal(repeated.tick, completed.tick);
     assert.equal(repeated.deployment.dp, completed.deployment.dp);
     assert.equal(cards.get(repeated, card).stock, cards.get(completed, card).stock);
     const finished = step(completed, []);
-    assert.equal(finished.tick, 1);
-    assert.equal(finished.deployment.dp, 17);
+    assert.equal(finished.tick, 2);
+    assert.equal(finished.deployment.dp, 19);
+    assert.equal(completed.deployment.dp, 17);
 
     fail = true;
     let branch = before;

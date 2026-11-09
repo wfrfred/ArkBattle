@@ -1,5 +1,5 @@
 import type { Map } from "../core/battlefield/map/map.js";
-import type { Input as RouteInput } from "../core/battle/creation/route.js";
+import type { Route as RouteInput } from "../data/arknights/route.js";
 import { TICKS_PER_SECOND } from "../core/tick.js";
 import { createLegacyCombatSpec, type LegacyCombatOptions } from "./combat.js";
 import type { LegacyData } from "./tactical-demo-presentation.js";

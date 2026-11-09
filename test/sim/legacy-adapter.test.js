@@ -3,18 +3,16 @@ import { test } from "node:test";
 import { chessRec, enemyRec } from "../helpers/records.js";
 import { createLegacyCombatBattle } from "../helpers/legacy-combat.js";
 import { createLegacyCombatSpec } from "../../dist/legacy/combat.js";
-import { createInput as createRouteDefinition } from "../../dist/core/battle/creation/route.js";
 import { step as advanceBattle } from "../../dist/core/battle/runtime.js";
 
 const guard = (fields = {}) => chessRec({
     id: "guard", profession: "WARRIOR", stats: { atk: 300, blockCnt: 2 }, skill: null, ...fields,
 });
 const walker = (fields = {}) => enemyRec({ key: "walker", hp: 1e6, speed: 1, ...fields });
-const coreCombatRoute = () => createRouteDefinition({
-    motionMode: "WALK", startPosition: [1, 8], endPosition: [1, 0],
-    spawnOffset: [0, 0], spawnRandomRange: [0, 0], checkpoints: [],
-    allowDiagonalMove: false, visitEveryTileCenter: false,
-    visitEveryNodeCenter: false, visitEveryCheckPoint: true,
+const coreCombatRoute = () => ({
+    plan: { motionMode: "WALK", startPosition: [1, 8], endPosition: [1, 0],
+        checkpoints: [], requireAllCheckpoints: true },
+    spawnOffset: [0, 0], spawnRandomRange: [0, 0],
 });
 
 test('legacy adapter rejects unsupported content and preserves interval conversion', () => {

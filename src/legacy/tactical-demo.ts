@@ -1,7 +1,8 @@
 import { hash as navigationHash } from "../core/battlefield/navigation/map.js";
 import { apply as applyOverlays } from "../core/battlefield/navigation/overlay.js";
 import { initialize, step as stepBattle, type Command, type Event } from "../core/battle/index.js";
-import { getSpawnScheduleCounts } from "../core/battle/schedule/index.js";
+import { isCompleted as scheduleCompleted, triggerBranch } from "../core/battle/schedule/index.js";
+import { hasRoute } from "../core/unit/capability/route/index.js";
 import * as predefined from "../core/battle/steps/predefined.js";
 import * as units from "../core/unit/index.js";
 import { relations as blockingRelations } from "../core/battle/blocking/index.js";
@@ -102,7 +103,7 @@ export type TacticalDemoCommand =
     | "ACTIVATE_SKILL"
     | "STOP_SKILL";
 
-type RecordedInput = readonly Command[] | "APPEAR_CRATES" | "REMOVE_CRATES";
+type RecordedInput = readonly Command[] | "APPEAR_CRATES" | "REMOVE_CRATES" | "TRIGGER_DRAGON";
 
 const STAGE_IDS = new Set([
     "act1autochess_01",
@@ -304,7 +305,7 @@ export async function createTacticalDemo(view: LegacyView, options: TacticalDemo
         rows: Array.isArray(legacyStage.rows) ? legacyStage.rows : stageRows(spec.map),
         devices: [],
     };
-    const kind = route.startPosition[0] <= 6 ? "boss" : "normal";
+    const kind = route.plan.startPosition[0] <= 6 ? "boss" : "normal";
     const rect =
         kind === "boss" ? { r0: 0, r1: 6, c0: 0, c1: 20 } : { r0: 6, r1: 13, c0: 0, c1: 20 };
     const fieldId = "ts-tactical-demo";
@@ -321,6 +322,32 @@ export async function createTacticalDemo(view: LegacyView, options: TacticalDemo
     const input = projectile?.input ?? spec;
     let state = initialize(input);
     let knownUnits = new Set<number>();
+    const spawned = new Set<number>();
+    let completedRouteCount = 0;
+    const total = input.schedule.waves.reduce(
+        (count, wave) =>
+            count + wave.fragments.reduce((count, fragment) => count + fragment.spawns.length, 0),
+        0,
+    );
+
+    function currentResult() {
+        const completed = scheduleCompleted(state.schedule);
+        if (!completed && state.tick < spec.maxTicks) {
+            return null;
+        }
+
+        return {
+            reason: completed ? "SCHEDULE_COMPLETED" : "TIME_LIMIT",
+            elapsedTicks: state.tick,
+            spawnedCount: spawned.size,
+            completedRouteCount,
+            remainingUnitIds: units
+                .all(state)
+                .map((unit) => unit.id)
+                .toArray(),
+        };
+    }
+
     let accumulatedTicks = 0;
     let stopped = false;
     const previousExtrapolate = view.debug.interp.maxExtrapolate;
@@ -340,7 +367,6 @@ export async function createTacticalDemo(view: LegacyView, options: TacticalDemo
         }
 
         knownUnits = new Set(visible.map((unit) => unit.info.id));
-        const counts = getSpawnScheduleCounts(state.schedule);
         view.pushSnapshot({
             fieldId,
             gt: state.tick / TICKS_PER_SECOND,
@@ -348,7 +374,7 @@ export async function createTacticalDemo(view: LegacyView, options: TacticalDemo
             elem: presentation.elements(state),
             dp: 0,
             killed: presentation.stats().killedCount,
-            total: counts.spawnedCount + counts.unspawnedCount,
+            total: Math.max(total, spawned.size),
         });
         view.setProjectiles?.(
             projectiles
@@ -399,11 +425,15 @@ export async function createTacticalDemo(view: LegacyView, options: TacticalDemo
         if (typeof requested === "string") {
             state = { ...state, events: [] };
 
-            for (const id of crateIds) {
-                state =
-                    requested === "APPEAR_CRATES"
-                        ? predefined.appear(state, id)
-                        : predefined.remove(state, id, "SCRIPT");
+            if (requested === "TRIGGER_DRAGON") {
+                state = triggerBranch(state, "dragon", true);
+            } else {
+                for (const id of crateIds) {
+                    state =
+                        requested === "APPEAR_CRATES"
+                            ? predefined.appear(state, id)
+                            : predefined.remove(state, id, "SCRIPT");
+                }
             }
 
             events = state.events;
@@ -412,13 +442,24 @@ export async function createTacticalDemo(view: LegacyView, options: TacticalDemo
 
         state = stepBattle(state, requested);
         events = [...events, ...state.events];
+
+        for (const unit of units.all(state).filter(hasRoute)) {
+            spawned.add(unit.id);
+        }
+        for (const removed of state.removedUnits) {
+            if (hasRoute(removed.unit)) {
+                spawned.add(removed.unitId);
+            }
+        }
+
+        completedRouteCount += events.filter((event) => event.type === "ROUTE_COMPLETED").length;
         const visuals = presentation.advance(state, events);
 
-        return { events, visuals, result: state.result };
+        return { events, visuals, result: currentResult() };
     }
 
     function step(): void {
-        if (stopped || state.result !== null) {
+        if (stopped || currentResult() !== null) {
             return;
         }
 
@@ -435,8 +476,10 @@ export async function createTacticalDemo(view: LegacyView, options: TacticalDemo
         state = initialize(input);
         accumulatedTicks = 0;
         presentation.reset();
+        spawned.clear();
+        completedRouteCount = 0;
 
-        while (state.tick < target && state.result === null) {
+        while (state.tick < target && currentResult() === null) {
             advance();
         }
 
@@ -462,7 +505,7 @@ export async function createTacticalDemo(view: LegacyView, options: TacticalDemo
                     ? Math.max(0, active.sustain.endsAtTick - state.tick)
                     : 0,
             remainingAmmo: active?.sustain.type === "AMMO" ? active.sustain.remaining : undefined,
-            ready: active === null && (skill.sp?.value ?? 0) >= spCost && state.result === null,
+            ready: active === null && (skill.sp?.value ?? 0) >= spCost && currentResult() === null,
         };
     }
 
@@ -569,15 +612,15 @@ export async function createTacticalDemo(view: LegacyView, options: TacticalDemo
             tickIndex: state.tick,
             units: state.battlefield.units.size,
             mechanisms: state.mechanisms.size,
-            spawnedCount: state.schedule.spawnedCount,
-            completedRouteCount: state.completedRouteCount,
+            spawnedCount: spawned.size,
+            completedRouteCount,
             walkHash: navigationHash(
                 applyOverlays(
                     state.battlefield.navigation.baseline.WALK,
                     state.battlefield.navigation.overlays.WALK,
                 ),
             ),
-            result: state.result,
+            result: currentResult(),
             seed,
         }),
 
@@ -587,7 +630,7 @@ export async function createTacticalDemo(view: LegacyView, options: TacticalDemo
         },
 
         nextRelease(): void {
-            if (!projectileActions || stopped || state.result !== null) {
+            if (!projectileActions || stopped || currentResult() !== null) {
                 return;
             }
 
@@ -615,7 +658,7 @@ export async function createTacticalDemo(view: LegacyView, options: TacticalDemo
             if (
                 (mechanicsScenario !== "SKILL" && !contentScene) ||
                 stopped ||
-                state.result !== null
+                currentResult() !== null
             ) {
                 return;
             }
@@ -647,12 +690,12 @@ export async function createTacticalDemo(view: LegacyView, options: TacticalDemo
 
             accumulatedTicks += seconds * TICKS_PER_SECOND;
 
-            while (accumulatedTicks >= 1 && state.result === null) {
+            while (accumulatedTicks >= 1 && currentResult() === null) {
                 step();
                 accumulatedTicks -= 1;
             }
 
-            if (state.result !== null) {
+            if (currentResult() !== null) {
                 view.debug.interp.snapToNewest();
             }
         },
@@ -664,7 +707,7 @@ export async function createTacticalDemo(view: LegacyView, options: TacticalDemo
         },
 
         command(type: TacticalDemoCommand): void {
-            if (stopped || state.result !== null) {
+            if (stopped || currentResult() !== null) {
                 return;
             }
 
@@ -707,7 +750,7 @@ export async function createTacticalDemo(view: LegacyView, options: TacticalDemo
             } else if (mode === "COMBAT") {
                 return;
             } else if (type === "TRIGGER_DRAGON") {
-                requested = [{ type: "TRIGGER_BRANCH", branchId: "dragon", isLoop: true }];
+                requested = "TRIGGER_DRAGON";
             } else {
                 requested = type;
             }

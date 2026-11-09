@@ -1,3 +1,4 @@
+import { isCompleted } from "../../dist/core/battle/schedule/index.js";
 import * as unitQueries from "../../dist/core/unit/query.js";
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -20,7 +21,7 @@ test('main-mode preparation connects real operators and enemies through a comple
   let sawCombat = false;
   let triggeredMelantha = false;
   let activatedMelantha = false;
-  while (battle.result === null) {
+  while (!isCompleted(battle.schedule) && battle.tick < prepared.input.maxTicks) {
     const guard = unitQueries.all(battle).find(unit => unit.id === 1);
     const commands = !triggeredMelantha && (guard?.skill.sp?.value ?? 0) >= (guard?.skill.definition.sp?.requirement ?? Infinity)
       ? [{ type: 'ACTIVATE_SKILL', ref: unitQueries.ref(guard) }] : [];
@@ -36,7 +37,7 @@ test('main-mode preparation connects real operators and enemies through a comple
         return current !== undefined && current.vitality.hp < previous.vitality.hp;
       });
   }
-  assert.equal(battle.result.reason, 'SCHEDULE_COMPLETED');
+  assert.equal(isCompleted(battle.schedule), true);
   assert.ok(hasProjectile);
   assert.ok(sawCombat);
   assert.ok(activatedMelantha);

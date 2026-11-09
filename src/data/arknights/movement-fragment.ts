@@ -1,12 +1,7 @@
 import type { Seed } from "../../core/common/rng.js";
-import {
-    createSpawnScheduleDefinition,
-    type ScheduledEnemySpawn,
-} from "../../core/battle/schedule/index.js";
 import type { Input } from "../../core/battle/index.js";
-import { createTiming } from "../../core/battle/creation/route.js";
 import type { ArknightsLevelDefinition } from "./level.js";
-import { resolveActionSpawn, type ArknightsEnemyResolver } from "./schedule.js";
+import { compileSpawnSchedule, type ArknightsEnemyResolver } from "./schedule.js";
 import { secondsToTicks } from "./tick.js";
 
 export interface ArknightsFragmentSelection {
@@ -21,7 +16,7 @@ export interface ArknightsFragmentOptions {
 }
 
 export interface ArknightsMovementFragment {
-    readonly spec: Input;
+    readonly spec: Input & { readonly maxTicks: number };
     readonly selection: ArknightsFragmentSelection;
     readonly omittedActions: readonly string[];
     readonly inactiveBranches: readonly string[];
@@ -33,7 +28,7 @@ export function compileLevelMovementFragment(
     options: ArknightsFragmentOptions,
 ): ArknightsMovementFragment {
     if (selection.waveIndex !== 0 || selection.fragmentIndex !== 0) {
-        throw new RangeError("later wave and fragment start times require a wave scheduler");
+        throw new RangeError("later wave and fragment start times require the complete schedule");
     }
 
     const wave = level.waves[0];
@@ -42,7 +37,7 @@ export function compileLevelMovementFragment(
         throw new RangeError("selected fragment does not exist");
     }
     if (wave.advancedWaveTag !== null) {
-        throw new RangeError("advanced wave tags require a wave scheduler");
+        throw new RangeError("advanced wave tags require a content rule");
     }
 
     for (const predefines of [level.predefines, level.hardPredefines]) {
@@ -77,55 +72,28 @@ export function compileLevelMovementFragment(
         throw new RangeError("movement fragment must select at least one action");
     }
 
-    const fragmentStartedAtSeconds = wave.preDelay + fragment.preDelay;
-    const timing = createTiming({
-        waveStartedAtTick: 0,
-        fragmentStartedAtTick: secondsToTicks(fragmentStartedAtSeconds),
-    });
-    const spawns: ScheduledEnemySpawn[] = [];
+    const compiled = compileSpawnSchedule(
+        { ...level, waves: [{ ...wave, fragments: [fragment] }], branches: {} },
+        {
+            actions: [...selected].map((actionIndex) => ({
+                waveIndex: 0,
+                fragmentIndex: 0,
+                actionIndex,
+            })),
+            branches: [],
+        },
+        options.resolveEnemy,
+        options.rngState,
+    );
     const omittedActions: string[] = [];
 
-    for (let waveIndex = 0; waveIndex < level.waves.length; waveIndex++) {
-        const fragments = level.waves[waveIndex]!.fragments;
-
-        for (let fragmentIndex = 0; fragmentIndex < fragments.length; fragmentIndex++) {
-            const currentFragment = fragments[fragmentIndex]!;
-
-            for (let actionIndex = 0; actionIndex < currentFragment.actions.length; actionIndex++) {
-                const path = `waves[${waveIndex}].fragments[${fragmentIndex}].actions[${actionIndex}]`;
-
+    for (const [waveIndex, currentWave] of level.waves.entries()) {
+        for (const [fragmentIndex, currentFragment] of currentWave.fragments.entries()) {
+            for (const actionIndex of currentFragment.actions.keys()) {
                 if (waveIndex !== 0 || fragmentIndex !== 0 || !selected.has(actionIndex)) {
-                    omittedActions.push(path);
-                    continue;
-                }
-
-                const action = currentFragment.actions[actionIndex]!;
-                if (
-                    !action.managedByScheduler ||
-                    action.blockFragment ||
-                    action.dontBlockWave ||
-                    action.forceBlockWaveInBranch
-                ) {
-                    throw new RangeError(
-                        "fragment requires unconditional scheduled SPAWN actions without blocking rules",
+                    omittedActions.push(
+                        `waves[${waveIndex}].fragments[${fragmentIndex}].actions[${actionIndex}]`,
                     );
-                }
-
-                const spawn = resolveActionSpawn(
-                    level,
-                    action,
-                    level.routes[action.routeIndex]!,
-                    options.resolveEnemy,
-                );
-
-                for (let index = 0; index < action.count; index++) {
-                    spawns.push({
-                        ...spawn,
-                        tick: secondsToTicks(
-                            fragmentStartedAtSeconds + action.preDelay + index * action.interval,
-                        ),
-                        timing,
-                    });
                 }
             }
         }
@@ -134,18 +102,18 @@ export function compileLevelMovementFragment(
     return {
         spec: {
             map: level.map,
-            schedule: createSpawnScheduleDefinition({ type: "TIMELINE", spawns }),
+            schedule: compiled.schedule,
             predefines: [],
             initialMechanisms: [],
             maxTicks: secondsToTicks(level.options.maxPlayTime),
             routeMoveMultiplier: level.options.moveMultiplier,
-            rngState: options.rngState,
-        } satisfies Input,
+            rngState: compiled.rngState,
+        },
         selection: {
             ...selection,
             actionIndices: [...selected].sort((left, right) => left - right),
         },
-        omittedActions: omittedActions,
+        omittedActions,
         inactiveBranches: Object.keys(level.branches),
     };
 }

@@ -2,10 +2,9 @@ import { assert, assertFiniteNumber, assertSafeInteger } from "../../core/common
 import type { Map } from "../../core/battlefield/map/map.js";
 import type { TilePosition } from "../../core/geometry/coordinate.js";
 import { Direction } from "../../core/geometry/direction.js";
-import type { Input as RouteInput } from "../../core/battle/creation/route.js";
 import { parseBlackboard, type ArknightsBlackboardEntry } from "./blackboard.js";
 import { parseBattlefieldMap, type ArknightsMapOptions } from "./map.js";
-import { parseRouteDefinition } from "./route.js";
+import { parseRouteDefinition, type Route } from "./route.js";
 
 export type ArknightsJsonValue =
     | null
@@ -126,8 +125,8 @@ export interface ArknightsLevelMetadata {
 
 export interface ArknightsLevelContent {
     readonly mapData: ArknightsJsonValue;
-    readonly routes: readonly RouteInput[];
-    readonly extraRoutes: readonly RouteInput[];
+    readonly routes: readonly Route[];
+    readonly extraRoutes: readonly Route[];
     readonly enemies: readonly never[];
     readonly enemyDbRefs: readonly ArknightsEnemyDbRef[];
     readonly waves: readonly ArknightsWave[];

@@ -28,16 +28,16 @@ import type { Input as BattleInput, Command } from ${module("battle/contract")};
 import type { Card, UnitDefinition as CardDefinition } from ${module("battle/deployment/card/card")};
 import type { Projectile } from ${module("projectile/projectile")};
 import * as projectiles from ${module("projectile/query")};
-import { setMotionMode, setAlternative, clearAlternative, type Definition as RouteDefinition, type Route } from ${module("unit/capability/route/index")};
+import { reassign, selectContext, setTicking, type Plan, type Route } from ${module("unit/capability/route/index")};
 import * as mechanisms from ${module("battle/mechanism")};
 import { createPredefinedDefinition } from ${module("battle/steps/predefined")};
-import { initialize as initializeRouted, type Input as RoutedInput } from ${module("battle/creation/routed-unit")};
 import * as actionCapability from ${module("unit/capability/action/index")};
 import { createRegistrationOperations } from ${module("unit/registration")};
 import type { Offense } from ${module("unit/capability/offense/index")};
 import { setAttackContribution, resolveAttack } from ${module("unit/capability/offense/index")};
 import { setLayer, type Blocker, type Blockable, type Relation, type Hook as BlockingHook } from ${module("unit/capability/blocking/index")};
 import * as blocking from ${module("battle/blocking/index")};
+import type { Spawn } from ${module("battle/schedule/index")};
 declare const battle: State;
 const outputKey = key<Hook<{ amount: number }, number>>('output');
 const textKey = key<Hook<{ text: string }, number>>('text');
@@ -132,26 +132,31 @@ initialize(battle, missingInitial);
 const incompleteInput: UnitInput<typeof occupiedDefinition> = missingInitial;
 // @ts-expect-error Occupancy requires a structural tile, independently of optional direction.
 initialize(battle, { ...occupiedInput, initial: { occupancy: { direction: 'RIGHT' } } });
-declare const routedOptions: Pick<RoutedInput, 'route' | 'timing' | 'alwaysCheckCurrentPoint'>;
-initializeRouted(battle, { ...routedOptions, ...occupiedInput });
-// @ts-expect-error routed creation must preserve required inputs before forwarding to Unit.
-initializeRouted(battle, { ...routedOptions, ...missingInitial });
+declare const plan: Plan;
+const routedDefinition = { id: 'routed', hooks: Hooks.empty(), route: { alwaysCheckCurrentPoint: true } };
+initialize(battle, { id: 5, definition: routedDefinition, position: [0, 0], initial: { route: { plan, offset: [0, 0] } } });
+// @ts-expect-error Route construction requires the instance Plan and offset.
+initialize(battle, { id: 5, definition: routedDefinition, position: [0, 0] });
+declare const scheduleSpawn: Spawn;
+const routedSpawn: Spawn = { ...scheduleSpawn, definition: routedDefinition };
+// @ts-expect-error scheduled construction requires the Route capability.
+const missingRouteSpawn: Spawn = { ...scheduleSpawn, definition: bare.definition };
+const occupiedRoutedDefinition = { ...routedDefinition, occupancy: { slot: 'OCCUPANT' as const } };
+// @ts-expect-error this Spawn entry does not supply Occupancy's required initialization facts.
+const missingOccupancySpawn: Spawn = { ...scheduleSpawn, definition: occupiedRoutedDefinition };
 declare const skillCommandRef: Ref<Unit & SkillCapability>;
 declare const routeCommandRef: Ref<Unit & Route>;
-declare const routeDefinition: RouteDefinition;
-const routeChange = compose(setAlternative(routeDefinition), compose(setMotionMode('FLY'), clearAlternative()));
+declare const routeDefinition: Plan;
+const routeChange = compose(reassign(0, routeDefinition), compose(selectContext(0), setTicking(0, false)));
 update(battle, routeCommandRef, routeChange);
 // @ts-expect-error Route changes require a Route-capable Unit.
 update(battle, ref(bare), routeChange);
 declare const projectileCommandRef: Ref<Projectile<{ hits: number }>>;
 const skillCommand: Command = { type: 'ACTIVATE_SKILL', ref: skillCommandRef };
-const routeCommand: Command = { type: 'CLEAR_ALTERNATIVE_ROUTE', ref: routeCommandRef };
 const projectileCommand: Command<Card, Projectile<{ hits: number }>> = { type: 'STOP_PROJECTILE', ref: projectileCommandRef };
-runtime.step(battle, [skillCommand, routeCommand, projectileCommand]);
+runtime.step(battle, [skillCommand, projectileCommand]);
 // @ts-expect-error skill commands require a Skill-capable Unit.
 const missingSkillCommand: Command = { type: 'STOP_SKILL', ref: ref(bare) };
-// @ts-expect-error route commands require a Route-capable Unit.
-const missingRouteCommand: Command = { type: 'CLEAR_ALTERNATIVE_ROUTE', ref: ref(bare) };
 // @ts-expect-error a Unit reference is not a Projectile reference.
 const wrongProjectileCommand: Command = { type: 'STOP_PROJECTILE', ref: ref(bare) };
 declare const erasedProjectileCommand: Extract<Command, { type: 'STOP_PROJECTILE' }>;

@@ -11,6 +11,7 @@ import { remove as removeUnit } from "../../dist/core/battle/unit.js";
 import { step } from "../../dist/core/battle/runtime.js";
 import { fixtureBattlefieldState } from "../helpers/battlefield.js";
 import { fixtureBattle, initialize } from "../helpers/unit.js";
+import { battle as runtimeBattle } from "../helpers/battle.js";
 
 const counter = (id, extra = {}) => mechanisms.createMechanismDefinition({
     id, initialize: () => ({ count: 0 }), ...extra,
@@ -183,46 +184,37 @@ test("onTick and nested unit departure preserve the latest mechanism state", () 
     assert.equal(battle.battlefield.units.get(0), undefined);
 });
 
-test("runtime scans mechanisms after movement and before route completion", () => {
-    const route = (start, end) => ({
+test("runtime mechanisms observe movement and completed Unit departures", () => {
+    const plan = (start, end) => ({
         motionMode: "WALK", startPosition: start, endPosition: end,
-        offset: [0, 0], checkpoints: [], requireAllCheckpoints: false,
-        alwaysCheckCurrentPoint: true,
+        checkpoints: [], requireAllCheckpoints: false,
     });
-    const moving = initialize({
-        id: 0, position: [0, 0], definition: { hooks: Hooks.empty(),
-            id: "moving", spatialPresence: {}, route: route([0, 0], [0, 1]),
+    let battle = runtimeBattle([
+        { definition: {
+            hooks: Hooks.empty(), id: "moving", route: { alwaysCheckCurrentPoint: true },
             locomotion: {
                 speed: 1, minSpeed: 0, halfBodyWidth: 0,
                 steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 },
             },
-        },
-    });
-    const arriving = initialize({
-        id: 1, position: [2, 0], definition: { hooks: Hooks.empty(),
-            id: "arriving", spatialPresence: {}, route: route([0, 2], [0, 2]),
-        },
-    });
-    let battle = createBattleState(fixtureBattlefieldState([moving, arriving]));
+        }, position: [0, 0], initial: { route: { plan: plan([0, 0], [0, 1]), offset: [0, 0] } } },
+        { definition: {
+            hooks: Hooks.empty(), id: "arriving", route: { alwaysCheckCurrentPoint: true },
+        }, position: [2, 0], initial: { route: { plan: plan([0, 2], [0, 2]), offset: [0, 0] } } },
+    ]);
     const definition = mechanisms.createMechanismDefinition({
         id: "terrain-stage", initialize: () => ({ position: null }),
         onTick(state, self) {
-            assert.equal(state.battlefield.units.get(1).route.main.phase.type, "COMPLETED");
-            state = mechanisms.setState(state, mechanisms.ref(self), {
+            assert.equal(state.battlefield.units.get(1), undefined);
+            return mechanisms.setState(state, mechanisms.ref(self), {
                 position: state.battlefield.units.get(0).position,
             });
-            return removeUnit(state, 1, "DEATH");
         },
     });
     let reference;
     [battle, reference] = register(battle, definition);
-    const before = battle;
     battle = step(battle, []);
     assert.deepEqual(mechanisms.get(battle, reference).state.position, [1, 0]);
-    assert.equal(battle.battlefield.units.get(1), undefined);
-    assert.deepEqual(battle.removedUnits.map(({ unitId, reason }) => [unitId, reason]), [[1, "DEATH"]]);
-
-    assert.deepEqual(before.battlefield.units.get(0).position, [0, 0]);
+    assert.deepEqual(battle.removedUnits.map(({ unitId, reason }) => [unitId, reason]), [[1, "SCRIPT"]]);
 });
 
 test("typed mechanism state survives placement erasure and default programs keep object state", async () => {

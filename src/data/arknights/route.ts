@@ -1,12 +1,21 @@
 import { assertFiniteNumber, assertSafeInteger } from "../../core/common/assert.js";
 import type { TilePosition, WorldPosition } from "../../core/geometry/coordinate.js";
-import {
-    createInput,
-    type Checkpoint,
-    type Input,
-    type MoveTarget,
-} from "../../core/battle/creation/route.js";
+import type { Checkpoint, Plan } from "../../core/unit/capability/route/capability.js";
 import { secondsToTicks } from "./tick.js";
+
+export interface Route {
+    readonly plan: Plan;
+    readonly spawnOffset: WorldPosition;
+    readonly spawnRandomRange: WorldPosition;
+}
+
+type NativeCheckpoint =
+    | Extract<Checkpoint, { readonly type: "MOVE" }>
+    | (Omit<Extract<Checkpoint, { readonly type: "MOVE" }>, "type"> & {
+          readonly type: "PATROL_MOVE";
+      })
+    | Exclude<Checkpoint, { readonly type: "MOVE" | "TRACE" | "GOTO" }>
+    | { readonly type: "ALERT" };
 
 function object(value: unknown, name: string, fields: readonly string[]): Record<string, unknown> {
     if (value === null || typeof value !== "object" || Array.isArray(value)) {
@@ -52,14 +61,14 @@ function offset(value: unknown, name: string): WorldPosition {
     return [number(data.x, `${name}.x`), number(data.y, `${name}.y`)];
 }
 
-function moveTarget(data: Record<string, unknown>): MoveTarget {
-    return {
-        position: position(data.position, "checkpoint.position"),
-        reachOffset: offset(data.reachOffset, "checkpoint.reachOffset"),
-    };
-}
+const waitAnchors = {
+    WAIT_FOR_SECONDS: "ENTER",
+    WAIT_FOR_PLAY_TIME: "BATTLE",
+    WAIT_CURRENT_WAVE_TIME: "WAVE",
+    WAIT_CURRENT_FRAGMENT_TIME: "FRAGMENT",
+} as const;
 
-function checkpoint(value: unknown): Checkpoint {
+function checkpoint(value: unknown): NativeCheckpoint {
     const data = object(value, "checkpoint", [
         "type",
         "time",
@@ -72,49 +81,35 @@ function checkpoint(value: unknown): Checkpoint {
     switch (data.type) {
         case "MOVE":
         case "PATROL_MOVE":
-            return { type: data.type, target: moveTarget(data) };
+            return {
+                type: data.type,
+                position: position(data.position, "checkpoint.position"),
+                offset: offset(data.reachOffset, "checkpoint.reachOffset"),
+                randomizeOffset: boolean(
+                    data.randomizeReachOffset,
+                    "checkpoint.randomizeReachOffset",
+                ),
+            };
 
         case "WAIT_FOR_SECONDS":
-            return {
-                type: "WAIT_FOR_TICKS",
-                durationTicks: Math.max(
-                    0,
-                    secondsToTicks(number(data.time, "checkpoint.time"), "checkpoint.time"),
-                ),
-            };
-
         case "WAIT_FOR_PLAY_TIME":
-            return {
-                type: "WAIT_FOR_PLAY_TICK",
-                targetPlayTick: Math.max(
-                    0,
-                    secondsToTicks(number(data.time, "checkpoint.time"), "checkpoint.time"),
-                ),
-            };
-
         case "WAIT_CURRENT_FRAGMENT_TIME":
-            return {
-                type: "WAIT_CURRENT_FRAGMENT_TICKS",
-                targetElapsedTicks: Math.max(
-                    0,
-                    secondsToTicks(number(data.time, "checkpoint.time"), "checkpoint.time"),
-                ),
-            };
-
         case "WAIT_CURRENT_WAVE_TIME":
             return {
-                type: "WAIT_CURRENT_WAVE_TICKS",
-                targetElapsedTicks: Math.max(
+                type: "WAIT",
+                anchor: waitAnchors[data.type],
+                tick: Math.max(
                     0,
                     secondsToTicks(number(data.time, "checkpoint.time"), "checkpoint.time"),
                 ),
+                timer: null,
             };
 
         case "APPEAR_AT_POS":
             return {
-                type: data.type,
+                type: "APPEAR",
                 position: position(data.position, "checkpoint.position"),
-                reachOffset: offset(data.reachOffset, "checkpoint.reachOffset"),
+                offset: offset(data.reachOffset, "checkpoint.reachOffset"),
             };
 
         case "DISAPPEAR":
@@ -126,7 +121,38 @@ function checkpoint(value: unknown): Checkpoint {
     }
 }
 
-export function parseRouteDefinition(value: unknown): Input {
+function compileCheckpoints(source: readonly NativeCheckpoint[]): readonly Checkpoint[] {
+    const checkpoints: Checkpoint[] = [];
+    const indices: number[] = [];
+
+    for (const [index, current] of source.entries()) {
+        indices.push(checkpoints.length);
+
+        if (current.type === "MOVE" || current.type === "PATROL_MOVE") {
+            checkpoints.push({ ...current, type: "MOVE" });
+
+            if (
+                current.type === "PATROL_MOVE" &&
+                (index + 1 === source.length || source[index + 1]!.type === "MOVE")
+            ) {
+                let start = index;
+
+                while (start > 0 && source[start - 1]!.type !== "MOVE") {
+                    start--;
+                }
+                if (start < index) {
+                    checkpoints.push({ type: "GOTO", index: indices[start]! });
+                }
+            }
+        } else if (current.type !== "ALERT") {
+            checkpoints.push(current);
+        }
+    }
+
+    return checkpoints;
+}
+
+export function parseRouteDefinition(value: unknown): Route {
     const data = object(value, "route", [
         "motionMode",
         "startPosition",
@@ -147,7 +173,7 @@ export function parseRouteDefinition(value: unknown): Input {
         throw new TypeError("route.checkpoints must be an array");
     }
 
-    const checkpoints: Checkpoint[] = [];
+    const checkpoints: NativeCheckpoint[] = [];
 
     for (let index = 0; index < data.checkpoints.length; index++) {
         const value: unknown = data.checkpoints[index];
@@ -158,13 +184,21 @@ export function parseRouteDefinition(value: unknown): Input {
         checkpoints.push(checkpoint(value));
     }
 
-    return createInput({
-        motionMode,
-        startPosition: position(data.startPosition, "route.startPosition"),
-        endPosition: position(data.endPosition, "route.endPosition"),
+    const spawnRandomRange = offset(data.spawnRandomRange, "route.spawnRandomRange");
+    if (spawnRandomRange.some((halfWidth) => halfWidth < 0)) {
+        throw new RangeError("route.spawnRandomRange must be nonnegative");
+    }
+
+    return {
+        plan: {
+            motionMode,
+            startPosition: position(data.startPosition, "route.startPosition"),
+            endPosition:
+                data.endPosition === null ? null : position(data.endPosition, "route.endPosition"),
+            checkpoints: compileCheckpoints(checkpoints),
+            requireAllCheckpoints: boolean(data.visitEveryCheckPoint, "route.visitEveryCheckPoint"),
+        },
         spawnOffset: offset(data.spawnOffset, "route.spawnOffset"),
-        spawnRandomRange: offset(data.spawnRandomRange, "route.spawnRandomRange"),
-        checkpoints,
-        visitEveryCheckPoint: boolean(data.visitEveryCheckPoint, "route.visitEveryCheckPoint"),
-    });
+        spawnRandomRange,
+    };
 }

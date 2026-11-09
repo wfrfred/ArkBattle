@@ -1,24 +1,30 @@
 import { Vec2 } from "../../../common/vector.js";
 import { assert, assertNonnegativeSafeInteger } from "../../../common/assert.js";
 import type { State as BattleState, Result } from "../../../battle/state.js";
+import { timing } from "../../../battle/schedule/query.js";
 import type { MotionMode } from "../../../battlefield/navigation/state.js";
-import { type TilePosition, type WorldPosition } from "../../../geometry/coordinate.js";
-import type { Id as UnitId, Unit } from "../../unit.js";
-
-export interface Event {
-    readonly type: "ROUTE_COMPLETED";
-    readonly unitId: UnitId;
-    readonly tick: number;
-}
+import type { Identified, Ref } from "../../../common/ref.js";
+import type { TilePosition, WorldPosition } from "../../../geometry/coordinate.js";
+import type { Unit } from "../../unit.js";
+import * as lifecycle from "../../hook.js";
+import * as units from "../../query.js";
+import { enter } from "./operations.js";
 
 export interface Definition {
+    readonly alwaysCheckCurrentPoint: boolean;
+}
+
+export interface Plan {
     readonly motionMode: MotionMode;
     readonly startPosition: TilePosition;
-    readonly endPosition: TilePosition;
-    readonly offset: WorldPosition;
+    readonly endPosition: TilePosition | null;
     readonly checkpoints: readonly Checkpoint[];
     readonly requireAllCheckpoints: boolean;
-    readonly alwaysCheckCurrentPoint: boolean;
+}
+
+export interface Initial {
+    readonly plan: Plan;
+    readonly offset: WorldPosition;
 }
 
 export type Checkpoint =
@@ -26,42 +32,50 @@ export type Checkpoint =
           readonly type: "MOVE";
           readonly position: TilePosition;
           readonly offset: WorldPosition;
+          readonly randomizeOffset: boolean;
       }
-    | { readonly type: "WAIT"; readonly tick: number }
-    | { readonly type: "WAIT_UNTIL"; readonly tick: number }
     | {
-          readonly type: "APPEAR_AT_POS";
+          readonly type: "WAIT";
+          readonly anchor: "ENTER" | "BATTLE" | "WAVE" | "FRAGMENT";
+          readonly tick: number;
+          readonly timer: number | null;
+      }
+    | { readonly type: "TRACE"; readonly position: TilePosition; readonly reached: boolean }
+    | { readonly type: "GOTO"; readonly index: number }
+    | { readonly type: "DISAPPEAR" }
+    | {
+          readonly type: "APPEAR";
           readonly position: TilePosition;
           readonly offset: WorldPosition;
-      }
-    | { readonly type: "DISAPPEAR" }
-    | { readonly type: "ALERT" }
-    | { readonly type: "GOTO"; readonly index: number };
+      };
 
-export type CheckpointState =
-    | { readonly type: "PENDING" }
-    | { readonly type: "MOVING" }
-    | { readonly type: "WAITING"; readonly deadlineTick: number }
-    | { readonly type: "CONSUMED" };
+export type ContextId = number;
 
-export type Phase =
-    | {
-          readonly type: "CHECKPOINT";
-          readonly index: number;
-          readonly checkpointState: CheckpointState;
-      }
-    | { readonly type: "END" }
-    | { readonly type: "COMPLETED" };
+export interface Context extends Identified<{
+    readonly host: Ref<Unit & Route>;
+    readonly id: ContextId;
+}> {
+    readonly id: ContextId;
+    readonly plan: Plan;
+    readonly offset: WorldPosition;
+    readonly index: number;
+    readonly current: Checkpoint | null;
+    readonly alwaysCheckCurrentPoint: boolean;
+    readonly ticking: boolean;
+}
 
-export interface Progress {
-    readonly definition: Definition;
-    readonly motionMode: MotionMode;
-    readonly phase: Phase;
+export interface ContextInput extends Initial {
+    readonly alwaysCheckCurrentPoint: boolean;
+    readonly ticking: boolean;
 }
 
 export interface State {
-    readonly main: Progress;
-    readonly alternative: Progress | null;
+    readonly main: Context;
+    readonly others: readonly Context[];
+    readonly activeId: ContextId;
+    readonly nextContextId: ContextId;
+    readonly waveStartTick: number;
+    readonly fragmentReadyTick: number;
 }
 
 export interface Route {
@@ -76,48 +90,57 @@ export function hasRoute<U extends Unit>(unit: U): unit is U & Route {
 export function initialize<U extends Unit & Pick<Route, "definition">>(
     battle: BattleState,
     unit: U,
+    initial: Initial,
 ): Result<U & Route> {
+    validatePlan(initial.plan);
+    assert(Vec2.is(initial.offset), "invalid route offset", TypeError);
+
     return {
         state: battle,
         value: {
             ...unit,
-            route: { main: createProgress(unit.definition.route), alternative: null },
+            hooks: unit.hooks.set(lifecycle.enter, {
+                id: "@route/enter",
+                invoke: (current, self) => ({
+                    state: enter(current, {
+                        host: units.ref(self as Unit & Route),
+                        id: 0,
+                    } as Ref<Context>),
+                    value: undefined,
+                }),
+            }),
+            route: {
+                main: {
+                    id: 0,
+                    plan: initial.plan,
+                    offset: initial.offset,
+                    index: 0,
+                    current: null,
+                    alwaysCheckCurrentPoint: unit.definition.route.alwaysCheckCurrentPoint,
+                    ticking: true,
+                },
+                others: [],
+                activeId: 0,
+                nextContextId: 1,
+                ...timing(battle.schedule),
+            },
         },
     };
 }
 
-export function createProgress(definition: Definition): Progress {
-    assert(Vec2.is(definition.offset), "invalid route offset", TypeError);
-
-    for (const checkpoint of definition.checkpoints) {
-        if (checkpoint.type === "MOVE" || checkpoint.type === "APPEAR_AT_POS") {
+export function validatePlan(plan: Plan): void {
+    for (const checkpoint of plan.checkpoints) {
+        if (checkpoint.type === "MOVE" || checkpoint.type === "APPEAR") {
             assert(Vec2.is(checkpoint.offset), "invalid checkpoint offset", TypeError);
-        } else if (checkpoint.type === "WAIT" || checkpoint.type === "WAIT_UNTIL") {
+        } else if (checkpoint.type === "WAIT") {
             assertNonnegativeSafeInteger(checkpoint.tick, "checkpoint tick");
         } else if (checkpoint.type === "GOTO") {
             assertNonnegativeSafeInteger(checkpoint.index, "checkpoint index");
             assert(
-                checkpoint.index < definition.checkpoints.length,
+                checkpoint.index < plan.checkpoints.length,
                 "checkpoint jump must identify an instruction",
                 RangeError,
             );
         }
     }
-
-    return {
-        definition,
-        motionMode: definition.motionMode,
-        phase:
-            definition.checkpoints.length === 0
-                ? { type: "END" }
-                : { type: "CHECKPOINT", index: 0, checkpointState: { type: "PENDING" } },
-    };
-}
-
-export function isCompleted(state: State): boolean {
-    return state.main.phase.type === "COMPLETED";
-}
-
-export function motionMode(state: State): MotionMode {
-    return (state.alternative ?? state.main).motionMode;
 }

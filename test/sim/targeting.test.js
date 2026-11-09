@@ -4,7 +4,6 @@ import { update } from "../../dist/core/battle/unit.js";
 import * as damage from "../../dist/core/battle/damage/hp/index.js";
 import { setMaxHpContribution } from "../../dist/core/unit/capability/vitality/index.js";
 import { create as modifier } from "../../dist/core/unit/contribution/attribute.js";
-import { createInput, normalize } from "../../dist/core/battle/creation/route.js";
 import { search as searchBlocking } from "../../dist/core/battle/blocking/operations.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
@@ -223,11 +222,7 @@ test("blocked targets outrank nearer candidates and remain selectable outside or
     }).value.map(target => target.id), [3]);
 });
 
-test("explicit geometry uses hitboxes while ground eligibility reads current layer rather than route motion", () => {
-    const route = motionMode => normalize(createInput({
-        motionMode, startPosition: [1, 2], endPosition: [1, 6],
-        spawnOffset: [0, 0], spawnRandomRange: [0, 0], checkpoints: [], visitEveryCheckPoint: true,
-    }), { waveStartedAtTick: 0, fragmentStartedAtTick: 0 }, [0, 0], true);
+test("explicit geometry uses hitboxes while ground eligibility reads current layer", () => {
     const living = {
         id: "target", hooks: Hooks.empty(), targetable: { restrictions: [] },
         vitality: { maxHp: 100, defense: 0, resistance: 0 }, allegiance: { side: "ENEMY" },
@@ -236,8 +231,8 @@ test("explicit geometry uses hitboxes while ground eligibility reads current lay
     const hitbox = { shape: { type: "CIRCLE", offset: [0, 0], radius: 0.7 } };
     let state = createBattle([
         { definition: { id: "source", hooks: Hooks.empty(), allegiance: { side: "ALLY" } }, position: [1, 1] },
-        { definition: { ...living, hitbox, route: route("FLY") }, position: [2.6, 1] },
-        { definition: { ...living, hitbox, route: route("WALK") }, position: [2.6, 1] },
+        { definition: { ...living, hitbox }, position: [2.6, 1] },
+        { definition: { ...living, hitbox }, position: [2.6, 1] },
         { definition: { ...living, spatialPresence: {} }, position: [2.6, 1] },
     ]);
     state = update(state, ref(get(state, 2)), setType("AIR"));

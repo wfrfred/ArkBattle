@@ -26,6 +26,7 @@ export interface Definition
             | "layer"
             | "locomotion"
             | "offense"
+            | "route"
             | "spatialPresence"
             | "targetable"
             | "vitality"
@@ -90,6 +91,7 @@ export function createDefinition(
             steeringParameters: movement.steeringParameters,
             halfBodyWidth: movement.halfBodyWidth,
         },
+        route: { alwaysCheckCurrentPoint: true },
         spatialPresence: {},
         targetable: { restrictions: [] },
     };

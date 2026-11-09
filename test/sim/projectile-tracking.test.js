@@ -142,7 +142,7 @@ test('demo projectile damage uses live attack or its launch sample after source 
     const attack = actor.action.actions.get('primary').definition;
     const { input } = createTacticalProjectileDemo({
       predefines: predefinedUnits([{ definition: { ...actor.definition, attack }, position: actor.position }]),
-      schedule: { type: 'TIMELINE', spawns: [] },
+      schedule: { waves: [], branches: {} },
     }, cachedOnly);
     const source = initialize({ id: 0, ...input.predefines[0].creation });
     const target = actionUnit(1);

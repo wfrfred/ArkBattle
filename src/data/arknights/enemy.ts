@@ -25,11 +25,10 @@ export interface ArknightsResolvedEnemyMovement {
 }
 
 export type MovementDefinition = UnitDefinition &
-    Pick<Definitions, "vitality" | "locomotion" | "spatialPresence">;
+    Pick<Definitions, "vitality" | "locomotion" | "spatialPresence" | "route">;
 
 export interface ArknightsEnemyMovementContent {
     readonly definition: MovementDefinition;
-    readonly alwaysCheckCurrentPoint: boolean;
     readonly notCountInTotal: boolean;
     readonly delayToBornTicks: number;
     readonly onlyDelayToBornOnTileStart: boolean;
@@ -225,6 +224,7 @@ export function createEnemyMovementContent(
         id,
         hooks: Hooks.empty(),
         spatialPresence: {},
+        route: { alwaysCheckCurrentPoint: profile.alwaysCheckCurrentPoint },
         vitality: { defense: 0, resistance: 0, maxHp },
         locomotion: {
             speed: perSecondToPerTick(moveSpeed),
@@ -236,7 +236,6 @@ export function createEnemyMovementContent(
 
     return {
         definition,
-        alwaysCheckCurrentPoint: profile.alwaysCheckCurrentPoint,
         notCountInTotal,
         delayToBornTicks: profile.delayToBornTicks,
         onlyDelayToBornOnTileStart: profile.onlyDelayToBornOnTileStart,

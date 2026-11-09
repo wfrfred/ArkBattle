@@ -15,7 +15,7 @@ import { normal as normalCondition } from "../content/terrain/condition.js";
 import type { DamageType } from "../core/battle/damage/hp/index.js";
 import { Tile, type TilePosition } from "../core/geometry/coordinate.js";
 import type { Direction } from "../core/geometry/direction.js";
-import type { Input as RouteInput } from "../core/battle/creation/route.js";
+import type { Route as RouteInput } from "../data/arknights/route.js";
 import { TICKS_PER_SECOND } from "../core/tick.js";
 import type { Definitions as CapabilityDefinitions } from "../core/unit/capability/catalog.js";
 import { sides } from "../core/unit/capability/blocking/index.js";
@@ -329,6 +329,7 @@ function enemyDefinition(value: unknown) {
             shape: { type: "CIRCLE", offset: [0, 0], radius: LEGACY_ENEMY_HIT_RADIUS },
         },
 
+        route: { alwaysCheckCurrentPoint: true },
         blockable: { volume: numberField(stats.blockCnt, "block volume"), rules: [] },
         attack,
         action: {
@@ -337,6 +338,7 @@ function enemyDefinition(value: unknown) {
     } satisfies UnitDefinition &
         Pick<
             CapabilityDefinitions,
+            | "route"
             | "spatialPresence"
             | "targetable"
             | "elemental"
@@ -403,16 +405,26 @@ export function createLegacyCombatSpec(options: LegacyCombatOptions) {
     });
     const spawns = options.enemies.map((enemy) => ({
         definition: enemyDefinition(enemy.definition),
-        route: enemy.route,
-        tick: enemy.tick ?? 0,
-        timing: { waveStartedAtTick: 0, fragmentStartedAtTick: 0 },
-        alwaysCheckCurrentPoint: true,
-        notCountInTotal: false,
+        plan: enemy.route.plan,
+        offset: enemy.route.spawnOffset,
+        randomRange: enemy.route.spawnRandomRange,
+        atTick: enemy.tick ?? 0,
+        wait: "WAVE" as const,
     }));
 
     return {
         map: combatMap(options),
-        schedule: { type: "TIMELINE" as const, spawns },
+        schedule: {
+            waves: [
+                {
+                    preDelayTicks: 0,
+                    postDelayTicks: 0,
+                    maxWaitingTicks: null,
+                    fragments: [{ preDelayTicks: 0, spawns }],
+                },
+            ],
+            branches: {},
+        },
         predefines,
         initialMechanisms: [],
         maxTicks: options.maxTicks ?? 600,

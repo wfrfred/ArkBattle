@@ -334,7 +334,7 @@ battle/blocking/query.ts 提供 blockerOf(battle, ref)、blocked(battle, ref)、
 
 Blocker／Blockable State 各自持有 acquired、released Hook 数组，使用 setHook(key, hook)／removeHook(key, id) 返回要求对应宿主能力的 Change，再由 Unit.update 登记。每条关系在其第一个业务回调前同时固定两侧候选 ID，逐项恢复最新同 ID 登记并检查 accepts；新增 ID 不参加该条通知，同 ID 替换使用最新登记。先 Blocker，后 Blockable；Context 固定原关系事实，BattleState 每项接续最新版本。ACQUIRED 每项执行前通过原关联 Ref 条目身份确认关系仍存在，RELEASED 是历史通知，不要求旧关系仍存在。取得和解除直接派发各自业务 Hook，不输出诊断 Event；release 在整批发布后逐条开始派发，各条 Hook 候选在轮到该条时固定，不提前冻结后续关系的监听登记。
 
-Runtime 执行 Movement → Mechanism.advance → Blocking.advance → resolveRouteCompletion。最后一步只检查路线是否已完成和能否离场，不再次推进 Route。消费侧通过 relations(battle) 从两端状态取得 Typed Ref 关系，按需生成输出；不保存额外的全局权威关系。Movement 根据 Blockable 的当前归属决定是否推进自主 Locomotion。
+Runtime 执行 Movement → Mechanism.advance → Blocking.advance。Movement 中 Route.advance 先推进指令并独立检查 Main 终点，满足条件便请求完整离场；其后 Locomotion 只处理仍在场的单位。消费侧通过 relations(battle) 从两端状态取得 Typed Ref 关系，按需生成输出；不保存额外的全局权威关系。Movement 根据 Blockable 的当前归属决定是否推进自主 Locomotion。
 
 Presence 与 Route 的主动空间变更先纯发布新空间事实，再按角色调用 Blockable.release 或 Blocker.releaseAll。Blockable.release 在关系通知前取消自身计划，两种角色的释放均在首个通知前完成本次集合的双端解除。切层 Change 则先发布全批 layer 字段，自己的 settle 再读取并解除当前关系；普通位置更新仍不按距离解除旧关系。Lifetime 的请求、宿主等待及最终移除遵守[公共析构协议](lifetime.md#请求与-prepare)。Departure 保留离场入口历史；后续需要当前对象的业务重新查询。返费与 Card 资源结算归 Deployment／Deployable，不由 Blocking 通知时点推导。
 
@@ -357,7 +357,7 @@ GROUND 搜索只选一个当前根格：具有 Occupancy 时使用 `occupancy.ti
 | 原生事实 | 当前表达能力 |
 | --- | --- |
 | 目标当前运动身份 `changeableMotionMode` | 现有 `Layer.state.type` 的 GROUND／AIR 可表达目标当前空地身份，不需另存一份 Blockable motion。 |
-| 寻路模式 `pathMotionMode` | Route 当前 Context 的 Plan.motionMode 表达路线通行方式；不得用它代替阻挡资格。Locomotion 消费此方式处理运动，不保存第二份身份；修改接口随 [Route 重设计](navigation.md#route-定义与进度)确定。 |
+| 寻路模式 `pathMotionMode` | Route 当前 Context 的 Plan.motionMode 表达路线通行方式；不得用它代替阻挡资格。Locomotion 消费此方式处理运动，不保存第二份身份；修改通过 [Route](navigation.md#route-定义与进度) 的 reassign 重建相应执行。 |
 | 阻挡者 `blockMode` | 项目以 blocker.layer 表示能够阻挡的目标层，并由 blocking.setLayer 执行切换；不从宿主自身 Layer 推导，也不把原生名称引入项目状态。 |
 | `BlockFree` 等禁挡状态 | 现有双端二元 Rule 可表达，不需要第三个模式或新的 enabled 字段。 |
 

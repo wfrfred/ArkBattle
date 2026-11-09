@@ -30,7 +30,7 @@
 
 Meta 通过战斗输入、内容规则和结果接口接入。商店、经济、手牌、跨回合状态机归外层玩法。装备、盟约、策略的研究用于验证 Tactical 能否执行它们提供的战斗行为，不要求 Tactical 理解整个 Meta 数据模型。
 
-普通一 Tick 左右的差异按明确项目政策处理；重要离散结果、可察觉表现和显著累计数值偏差按具体内容验证。固定 30 Hz、线性的 Tick 顺序及 `Combat → Projectile → Movement → Blocking` 是项目选择；其中 Movement 后先复核已有 Blocking 关系，再执行普通搜索，随后检查路线完成与离场。固定阶段可能改变接敌归属与漏怪等结果，按[Blocking 对照验收](blocking.md#与原生的差异及对照验收)判断影响，不预先认定只是一个 Tick。客户端对象队列、无业务影响的 RNG 消费轨迹或 coroutine 实现不决定领域 API。
+普通一 Tick 左右的差异按明确项目政策处理；重要离散结果、可察觉表现和显著累计数值偏差按具体内容验证。固定 30 Hz、线性的 Tick 顺序及 `Combat → Projectile → Movement → Blocking` 是项目选择；其中 Movement 内先推进 Route 及 Main 出口，再执行 Locomotion；之后复核已有 Blocking 关系并执行普通搜索。固定阶段可能改变接敌归属与漏怪等结果，按[Blocking 对照验收](blocking.md#与原生的差异及对照验收)判断影响，不预先认定只是一个 Tick。客户端对象队列、无业务影响的 RNG 消费轨迹或 coroutine 实现不决定领域 API。
 
 ## 2. 目标功能要求什么
 
@@ -112,28 +112,25 @@ initialize(input) 返回完整 battle.State，包括 Schedule、预置进度、�
 
 ```text
 step(battle, commands)
-    ├─ 接收 Tick 外已发生的离场，更新 Schedule
     ├─ 形成清空本 Tick 临时事实的新值
     ├─ Deployment 时间推进 → 接续状态
     ├─ Combat.prepare → 接续状态
     ├─ Deployment → 接续状态
-    ├─ Spawning → 接续状态与 Schedule
+    ├─ Schedule → 按时出生并接续等待关系
     ├─ Unit → 接续状态
     ├─ Effects → 接续状态
     ├─ Elemental → 接续状态
     ├─ Skills → 接续状态
-    ├─ Route Commands → 接续状态
     ├─ Combat → 接续状态
     ├─ Projectile → 接续状态
     ├─ Movement → 接续状态
     ├─ Mechanism → 地形接触与控制器扫描 → 接续状态
     ├─ Blocking 固定候选 → 复核旧关系 → 统一搜索 → 接续状态
-    ├─ 路线完成与离场检查 → 接续状态
-    ├─ 判断结束，形成整体 State
+    ├─ 刷新预置绑定并推进 Tick，形成整体 State
     └─ 返回 State，由调用方接续
 ```
 
-Tick 的执行顺序在 step() 中直接可读。Combat、Movement 与路线完成检查沿 Unit Query 的登记顺序遍历入口快照，不为固定候选额外生成数组或 Ref 列表；Combat 的 Execution Ref 惰性查询始终使用保存的阶段初始 BattleState。实际操作逐项接续最新 BattleState，快照用于对象来源和静态能力证明，动态资格由完整操作读取当前状态。Movement 内先推进全体 Blockable 站位计划，再逐 Unit 推进 Route 与符合资格的 Locomotion；计划存在不排斥自主移动，完成当 Tick 也不额外停走。领域函数负责各自的纯结算；函数式契约不要求再建立一个完整的 Tick 入口或执行文件。
+Tick 的执行顺序在 step() 中直接可读。Unit 完整离场通过已登记的全局 leave Hook 同步释放 Schedule 等待，不等到下一个 Tick 扫描。Core 不保存终局结果；调用者读取返回状态自行决定是否继续推进。Combat、Movement 沿 Unit Query 的登记顺序遍历入口快照，不为固定候选额外生成数组或 Ref 列表；Combat 的 Execution Ref 惰性查询始终使用保存的阶段初始 BattleState。实际操作逐项接续最新 BattleState，快照用于对象来源和静态能力证明，动态资格由完整操作读取当前状态。Movement 内先推进全体 Blockable 站位计划，再逐 Unit 推进 Route 与符合资格的 Locomotion；计划存在不排斥自主移动，完成当 Tick 也不额外停走。领域函数负责各自的纯结算；函数式契约不要求再建立一个完整的 Tick 入口或执行文件。
 
 函数内部用局部 `let state` 顺序接续，调用方用 `battle = step(battle, commands)` 保存结果，不重放操作或已执行的回调。函数抛出时输入值仍完整保留；没有额外提交、发布或回滚协议。
 
@@ -146,9 +143,9 @@ Tick 的执行顺序在 step() 中直接可读。Combat、Movement 与路线完�
 | Unit.blocker／Unit.blockable | 初始化至多选择一种，也允许两者皆无；保存唯一归属或有序关联，Blockable 另有独立站位计划；接敌、解除及维护由 Blocking 执行，真实坐标仍只有 Unit.position |
 | Unit／Capability                   | HP、控制状态、行动就绪、技能状态、路线、各自 Hook 与 Contribution 集合   |
 | Unit.effects                       | Effects 容器保存实例身份、Definition、私有 state、生效状态、来源 Ref 与 expiration；DURATION／DEADLINE／INFINITE 互斥，Scope 关系归 Lifetime |
-| Unit.route | Plan 描述路线方案，Context 保存本条路线的偏移、phase 与执行政策，State 共享出生 Wave／Fragment 时间基准；Main 属于 Unit，其他 Context 具有宿主内唯一 ID，容器、Phase 与操作签名待定，见 [Route 设计](navigation.md#route-定义与进度) |
+| Unit.route | Plan 描述路线方案，Context 保存偏移、index、current 与 ticking；State 组织 main、others、activeId 及出生时间基准，临时 Context 具有宿主内唯一 ID，见 [Route 设计](navigation.md#route-定义与进度) |
 | Battle.deployment | DP、usedSlots 账户、Card 记录与手牌顺序、部署观察 Hook；各 Card 保存当前库存、计时及私有 state |
-| Schedule                           | 波次、片段、分支、出生进度及实际等待关系；[重设计](schedule.md)的具体 State 尚未定稿 |
+| Schedule                           | 静态调度计划、主线阶段、活动 Branch Phase、时间锚点及实际等待关系，见 [Schedule](schedule.md) |
 | Unit.action.actions                | 按配置 ID 聚合 Definition、持久 state、Cooldown 和当前 Execution；执行身份进度由 Capability.nextExecutionId 保存 |
 | PredefinedPresence                 | 预置 Definition 到实际实例的绑定                                         |
 | Execution                          | RNG 和全局 ID／请求分配进度；宿主内 Effect ID 仍归对应 Effect 集合       |
@@ -156,7 +153,7 @@ Tick 的执行顺序在 step() 中直接可读。Combat、Movement 与路线完�
 | Battle                             | Tick、统计、结果，以及本 Tick 的 UI 瞬时输出和业务移除事实                 |
 | Battle.lifetime                    | 从所有权／Scope 派生的 dependencies，以及本次结算的 endings／settling |
 
-Main Context 随 Unit 初始化建立，不走动态分配。其他 Context 运行时创建、更新与移除；对外 `Ref<Context>` 使用 `{ host: Ref<Unit & Route>, id: ContextId }`，内部使用同一个 ContextId。Context 不需要保存 host 运行字段，更新 Plan 或 Phase 保留原 id；不能用数组位置或更新后新建的 Context 对象代替稳定身份。
+Main Context 随 Unit 初始化建立，不走动态分配。其他 Context 运行时创建、更新与移除；对外 `Ref<Context>` 使用 `{ host: Ref<Unit & Route>, id: ContextId }`，内部使用同一个 ContextId。Context 不需要保存 host 运行字段，重建 Plan 或推进指令保留原 id；不能用数组位置或更新后新建的 Context 对象代替稳定身份。
 
 战斗状态组合这些值，没有第二份 Unit 覆盖层，也不复制 Battlefield 的索引维护职责。全局规则只有需要独立状态时才创建 Mechanism；不把所有特殊技能归成一种通用机制对象。
 

@@ -1,3 +1,4 @@
+import { World } from "../../dist/core/geometry/coordinate.js";
 import { Hooks } from "../../dist/core/hook.js";
 import { tiles as tileEntries } from '../helpers/tiles.js';
 import { normal } from '../../dist/content/terrain/definition.js';
@@ -95,12 +96,19 @@ test('unimplemented enemy mechanisms are rejected at the table and content bound
   }, crossbowMovement), /Crossbowman content/);
 });
 
+function routeInitial(position) {
+  return { route: { plan: {
+    motionMode: 'WALK', startPosition: World.toTile(position), endPosition: null,
+    checkpoints: [], requireAllCheckpoints: true,
+  }, offset: [0, 0] } };
+}
+
 test('a hound attacks its hidden blocker while still respecting invincibility', () => {
   const { definition, action } = createHound(profile('enemy_1000_gopro'), {
     windupTicks: 0, recoveryTicks: 0, hitRadius: 0.2,
   }, houndMovement);
   const blocker = guard(0, [2, 2], 1, [{ id: 'hidden', value: invisibleRestriction }]);
-  const hound = initialize({ id: 1, position: [2, 2.5], definition });
+  const hound = initialize({ id: 1, position: [2, 2.5], definition, initial: routeInitial([2, 2.5]) });
   const before = advanceBlocking(addUnit(addUnit(emptyBattle(), blocker), hound));
   const request = { ...action.attack.targetGroups[0].targeting, source: unitRef(hound) };
   assert.equal(allowsRestrictions(before, request, getUnit(before, 0)), false);
@@ -122,7 +130,7 @@ test('crossbow selects melee for its actual blocker while ranged targeting keeps
     windupTicks: 1, recoveryTicks: 1, hitRadius: 0.2, projectile,
   }, crossbowMovement);
   const blocker = guard(0, [2, 2], 1, [{ id: 'innate', value: invisibleRestriction }]);
-  const bow = initialize({ id: 1, position: [2, 2.5], definition });
+  const bow = initialize({ id: 1, position: [2, 2.5], definition, initial: routeInitial([2, 2.5]) });
   const state = advanceBlocking(addUnit(addUnit(emptyBattle(), blocker), bow));
   const request = { ...actions.melee.attack.targetGroups[0].targeting, source: unitRef(bow) };
   const ranged = { ...actions.ranged.attack.targetGroups[0].targeting, source: unitRef(bow) };
@@ -156,7 +164,7 @@ test('crossbow uses explicit windup and arrow speed, then settles damage on cont
     projectile: { definition: projectileDefinition, speedPerSecond: 6, stopDelayTicks: 0 },
   }, crossbowMovement);
 
-  const bow = initialize({ id: 1, position: [2, 3.5], definition });
+  const bow = initialize({ id: 1, position: [2, 3.5], definition, initial: routeInitial([2, 3.5]) });
   const before = addUnit(addUnit(emptyBattle(), guard(0, [2, 2], 0)), bow);
   const started = startAction(before, actionRef(unitRef(bow), attack));
   let state = started.state;
@@ -178,7 +186,7 @@ test('crossbow switching between ranged and blocker melee preserves independent 
     windupTicks: 0, recoveryTicks: 0, hitRadius: 0.2,
     projectile: { definition: createArrow(), speedPerSecond: 6, stopDelayTicks: 0 },
   }, crossbowMovement);
-  const bow = initialize({ id: 1, position: [2, 2.5], definition });
+  const bow = initialize({ id: 1, position: [2, 2.5], definition, initial: routeInitial([2, 2.5]) });
   const initial = addUnit(addUnit(emptyBattle(), guard(0, [2, 2])), bow);
   const cooldown = (battle, action) => getUnit(battle, 1).action.actions.get(action.id).cooldown.readyAtTick;
   const period = actions.ranged.intervalTicks;

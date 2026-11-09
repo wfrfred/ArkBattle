@@ -1,315 +1,262 @@
-import { createTiming } from "../creation/route.js";
-import type { Id } from "../../unit/unit.js";
-import { addScheduleTicks, type WaveDefinition } from "./definition.js";
-import type { SpawnScheduleExecution, WavesScheduleExecution } from "./state.js";
-import { createQueue, dispatchQueue, createScheduleSpawn, type ScheduleSpawn } from "./queue.js";
+import { createRng } from "../../common/rng.js";
+import { Vec2 } from "../../common/vector.js";
+import { Tile, type WorldPosition } from "../../geometry/coordinate.js";
+import { initialize as initializeUnit } from "../../unit/initialize.js";
+import type { Departure, Id as UnitId } from "../../unit/unit.js";
+import type { State as BattleState } from "../state.js";
+import { add } from "../unit.js";
+import type { Hook } from "../unit-hook.js";
+import type { Spawn } from "./definition.js";
+import type { ActivePhase } from "./state.js";
 
-export interface SpawnScheduleTrigger {
-    readonly branchId: string;
-    readonly isLoop: boolean;
-}
+function spawn(battle: BattleState, entry: Spawn): BattleState {
+    const id = battle.execution.nextUnitId;
+    const rng = createRng(battle.execution.rngState);
+    const offset: WorldPosition = [
+        entry.offset[0] + (rng.next() * 2 - 1) * entry.randomRange[0],
+        entry.offset[1] + (rng.next() * 2 - 1) * entry.randomRange[1],
+    ];
 
-export interface SpawnScheduleAdvance {
-    readonly state: SpawnScheduleExecution;
-    readonly spawns: readonly ScheduleSpawn[];
-}
-
-function beginWave(
-    state: WavesScheduleExecution,
-    wave: WaveDefinition,
-    tick: number,
-): WavesScheduleExecution {
-    return {
-        ...state,
-        waveStartedAtTick: tick,
-        main: { phase: "PRE_DELAY", untilTick: addScheduleTicks(tick, wave.preDelayTicks) },
+    battle = {
+        ...battle,
+        execution: { ...battle.execution, nextUnitId: id + 1, rngState: rng.state() },
     };
-}
+    const created = initializeUnit(battle, {
+        id,
+        definition: entry.definition,
+        position: Vec2.add(Tile.center(entry.plan.startPosition), offset),
+        initial: { route: { plan: entry.plan, offset } },
+    });
+    battle = created.state;
 
-function advanceBranches(
-    initial: WavesScheduleExecution,
-    tick: number,
-    triggers: readonly SpawnScheduleTrigger[],
-    spawns: ScheduleSpawn[],
-): WavesScheduleExecution {
-    let state = initial;
-    const { definition } = initial;
-    const branchCursors = { ...state.branchCursors };
-    const activeBranches = [...state.activeBranches];
-
-    for (let index = 0; index < triggers.length; index++) {
-        if (!Object.hasOwn(triggers, index)) {
-            throw new TypeError("branch triggers must be dense");
-        }
-
-        const trigger = triggers[index]!;
-        if (!Object.hasOwn(definition.branches, trigger.branchId)) {
-            throw new RangeError(`unknown scheduler branch: ${trigger.branchId}`);
-        }
-
-        const branch = definition.branches[trigger.branchId]!;
-        let cursor = branchCursors[trigger.branchId]!;
-        if (cursor === branch.phases.length && trigger.isLoop && branch.phases.length > 0) {
-            cursor = 0;
-        }
-        if (cursor === branch.phases.length) {
-            continue;
-        }
-
-        const phase = branch.phases[cursor]!;
-        branchCursors[trigger.branchId] = cursor + 1;
-        activeBranches.push(createQueue(phase, tick, { type: "CURRENT_MAIN" }, true));
+    if (entry.wait !== "NONE") {
+        const { waiting } = battle.schedule;
+        battle = {
+            ...battle,
+            schedule: {
+                ...battle.schedule,
+                waiting: {
+                    wave: entry.wait === "WAVE" ? [...waiting.wave, id] : waiting.wave,
+                    final: [...waiting.final, id],
+                },
+            },
+        };
     }
 
-    state = {
-        ...state,
-        branchCursors,
-        activeBranches: activeBranches
-            .map((queue) => dispatchQueue(queue, tick, spawns, state))
-            .filter((queue) => queue.cursor < queue.spawns.length),
-    };
-
-    return state;
+    return add(battle, created.value);
 }
 
-function advanceMainWaves(
-    initial: WavesScheduleExecution,
-    tick: number,
-    spawns: ScheduleSpawn[],
-): WavesScheduleExecution {
-    let state = initial;
-    const { definition } = initial;
-
+function advanceMain(battle: BattleState): BattleState {
     while (true) {
-        if (state.main.phase === "COMPLETED") {
-            return state;
+        const { schedule, tick } = battle;
+        const { main } = schedule;
+
+        if (main.type === "COMPLETED") {
+            return battle;
         }
 
-        const wave = definition.waves[state.waveIndex];
-        if (wave === undefined) {
-            return { ...state, main: { phase: "COMPLETED" } };
-        }
+        const wave = schedule.definition.waves[schedule.waveIndex]!;
 
-        switch (state.main.phase) {
-            case "NOT_STARTED":
-                state = beginWave(state, wave, tick);
-                break;
-
+        switch (main.type) {
             case "PRE_DELAY":
-                if (tick < state.main.untilTick) {
-                    return state;
+                if (tick < schedule.waveStartTick + wave.preDelayTicks) {
+                    return battle;
                 }
 
-                state = { ...state, main: { phase: "FRAGMENTS", fragmentIndex: 0, queue: null } };
+                battle = {
+                    ...battle,
+                    schedule: {
+                        ...schedule,
+                        fragmentStartTick:
+                            wave.fragments.length === 0 ? schedule.fragmentStartTick : tick,
+                        main:
+                            wave.fragments.length === 0
+                                ? { type: "WAITING", startTick: tick }
+                                : { type: "FRAGMENT", fragmentIndex: 0 },
+                    },
+                };
                 break;
 
-            case "FRAGMENTS": {
-                const { fragmentIndex } = state.main;
-                const fragment = wave.fragments[fragmentIndex];
-                if (fragment === undefined) {
-                    state = { ...state, main: { phase: "WAITING", startedAtTick: tick } };
-                    break;
+            case "FRAGMENT": {
+                const fragment = wave.fragments[main.fragmentIndex]!;
+                const origin = schedule.fragmentStartTick + fragment.preDelayTicks;
+
+                for (const entry of fragment.spawns) {
+                    if (origin + entry.atTick === tick) {
+                        battle = spawn(battle, entry);
+                    }
                 }
 
-                let queue = state.main.queue;
-                if (queue === null) {
-                    const fragmentStartedAtTick = addScheduleTicks(tick, fragment.preDelayTicks);
-                    const timing = createTiming({
-                        waveStartedAtTick: state.waveStartedAtTick,
-                        fragmentStartedAtTick,
-                    });
-                    queue = createQueue(fragment, tick, { type: "FIXED", timing }, false);
-                    state = { ...state, fragmentStartedAtTick };
+                if (fragment.spawns.some((entry) => origin + entry.atTick > tick)) {
+                    return battle;
                 }
 
-                queue = dispatchQueue(queue, tick, spawns, state);
-
-                if (queue.cursor < queue.spawns.length) {
-                    return { ...state, main: { phase: "FRAGMENTS", fragmentIndex, queue } };
-                }
-
-                state = {
-                    ...state,
-                    main: { phase: "FRAGMENTS", fragmentIndex: fragmentIndex + 1, queue: null },
+                const nextIndex = main.fragmentIndex + 1;
+                battle = {
+                    ...battle,
+                    schedule: {
+                        ...battle.schedule,
+                        fragmentStartTick:
+                            nextIndex === wave.fragments.length
+                                ? battle.schedule.fragmentStartTick
+                                : tick,
+                        main:
+                            nextIndex === wave.fragments.length
+                                ? { type: "WAITING", startTick: tick }
+                                : { type: "FRAGMENT", fragmentIndex: nextIndex },
+                    },
                 };
                 break;
             }
 
             case "WAITING": {
-                const waitingForWaveUnits =
-                    state.managedWaveUnitIds.length > 0 ||
-                    spawns.some(
-                        (spawn) =>
-                            spawn.schedule.managedWave &&
-                            spawn.schedule.waveIndex === state.waveIndex,
-                    );
-                const waitingTimedOut =
-                    state.waveIndex + 1 < definition.waves.length &&
-                    wave.maxWaitingTicks !== null &&
-                    tick - state.main.startedAtTick >= wave.maxWaitingTicks;
-                if (waitingForWaveUnits && !waitingTimedOut) {
-                    return state;
+                const timedOut =
+                    wave.maxWaitingTicks !== null && tick >= main.startTick + wave.maxWaitingTicks;
+
+                if (schedule.waiting.wave.length > 0 && !timedOut) {
+                    return battle;
                 }
 
-                state = {
-                    ...state,
-                    managedWaveUnitIds: [],
-                    main: {
-                        phase: "POST_DELAY",
-                        untilTick: addScheduleTicks(tick, wave.postDelayTicks),
+                battle = {
+                    ...battle,
+                    schedule: {
+                        ...schedule,
+                        waiting:
+                            schedule.waiting.wave.length === 0
+                                ? schedule.waiting
+                                : { ...schedule.waiting, wave: [] },
+                        main: { type: "POST_DELAY", startTick: tick },
                     },
                 };
                 break;
             }
 
             case "POST_DELAY":
-                if (tick < state.main.untilTick) {
-                    return state;
+                if (tick < main.startTick + wave.postDelayTicks) {
+                    return battle;
                 }
 
-                state = {
-                    ...state,
-                    waveIndex: state.waveIndex + 1,
-                    main: { phase: "NOT_STARTED" },
+                battle = {
+                    ...battle,
+                    schedule:
+                        schedule.waveIndex + 1 === schedule.definition.waves.length
+                            ? { ...schedule, main: { type: "COMPLETED" } }
+                            : {
+                                  ...schedule,
+                                  waveIndex: schedule.waveIndex + 1,
+                                  waveStartTick: tick,
+                                  waiting: { ...schedule.waiting, wave: [] },
+                                  main: { type: "PRE_DELAY" },
+                              },
                 };
                 break;
         }
     }
 }
 
-function advanceWaves(
-    initial: WavesScheduleExecution,
-    tick: number,
-    triggers: readonly SpawnScheduleTrigger[],
-    spawns: ScheduleSpawn[],
-): WavesScheduleExecution {
-    const { definition } = initial;
-    const state =
-        initial.main.phase === "NOT_STARTED" && initial.waveIndex < definition.waves.length
-            ? beginWave(initial, definition.waves[initial.waveIndex]!, tick)
-            : initial;
-    const branched = advanceBranches(state, tick, triggers, spawns);
+function advancePhase(battle: BattleState, phase: ActivePhase): BattleState {
+    const origin = phase.startTick + phase.phase.preDelayTicks;
 
-    return advanceMainWaves(branched, tick, spawns);
-}
-
-export function advanceSpawnSchedule(
-    previous: SpawnScheduleExecution,
-    context: { readonly tick: number; readonly triggers?: readonly SpawnScheduleTrigger[] },
-): SpawnScheduleAdvance {
-    const tick = context.tick;
-    if (previous.lastTick !== null && tick < previous.lastTick) {
-        throw new RangeError("schedule tick must not move backwards");
-    }
-    if (previous.pendingSpawnCount !== 0) {
-        throw new Error("schedule spawns must be recorded before advancing");
-    }
-
-    const triggers = context.triggers ?? [];
-    const spawns: ScheduleSpawn[] = [];
-    let state: SpawnScheduleExecution;
-
-    if (previous.type === "TIMELINE") {
-        if (triggers.length > 0) {
-            throw new RangeError("timeline schedules do not define branches");
+    for (const entry of phase.spawns) {
+        if (origin + entry.atTick === battle.tick) {
+            battle = spawn(battle, entry);
         }
-
-        const { definition } = previous;
-        let cursor = previous.cursor;
-
-        while (cursor < definition.spawns.length && definition.spawns[cursor]!.tick <= tick) {
-            const spawn = definition.spawns[cursor]!;
-            spawns.push(
-                createScheduleSpawn({
-                    spawn,
-                    tick: spawn.tick,
-                    timing: spawn.timing,
-                    management: {
-                        managedFinal: !spawn.notCountInTotal,
-                        managedWave: false,
-                        waveIndex: null,
-                    },
-                }),
-            );
-            cursor++;
-        }
-
-        state = { ...previous, cursor };
-    } else {
-        state = advanceWaves(previous, tick, triggers, spawns);
     }
 
-    return { state: { ...state, pendingSpawnCount: spawns.length, lastTick: tick }, spawns };
-}
-
-export function recordScheduleSpawns(
-    previous: SpawnScheduleExecution,
-    spawns: readonly ScheduleSpawn[],
-    unitIds: readonly Id[],
-): SpawnScheduleExecution {
-    if (spawns.length !== unitIds.length || spawns.length > previous.pendingSpawnCount) {
-        throw new RangeError("recorded schedule spawns must match available pending spawns");
-    }
-    if (spawns.length === 0) {
-        return previous;
-    }
-
-    const newWaveUnitIds: Id[] = [];
-    const newFinalUnitIds: Id[] = [];
-
-    for (let index = 0; index < spawns.length; index++) {
-        const unitId = unitIds[index]!;
-        const spawn = spawns[index]!;
-        if (spawn.schedule.managedFinal) {
-            newFinalUnitIds.push(unitId);
-        }
-        if (
-            spawn.schedule.managedWave &&
-            previous.type === "WAVES" &&
-            spawn.schedule.waveIndex === previous.waveIndex &&
-            previous.main.phase !== "POST_DELAY" &&
-            previous.main.phase !== "COMPLETED"
-        ) {
-            newWaveUnitIds.push(unitId);
-        }
+    if (phase.spawns.some((entry) => origin + entry.atTick > battle.tick)) {
+        return battle;
     }
 
     return {
-        ...previous,
-        spawnedCount: addScheduleTicks(previous.spawnedCount, spawns.length),
-        pendingSpawnCount: previous.pendingSpawnCount - spawns.length,
-        managedWaveUnitIds:
-            newWaveUnitIds.length === 0
-                ? previous.managedWaveUnitIds
-                : [...previous.managedWaveUnitIds, ...newWaveUnitIds],
-        managedFinalUnitIds:
-            newFinalUnitIds.length === 0
-                ? previous.managedFinalUnitIds
-                : [...previous.managedFinalUnitIds, ...newFinalUnitIds],
+        ...battle,
+        schedule: {
+            ...battle.schedule,
+            activePhases: battle.schedule.activePhases.filter((current) => current !== phase),
+        },
     };
 }
 
-export function resolveScheduleUnits(
-    previous: SpawnScheduleExecution,
-    resolvedIds: readonly Id[],
-): SpawnScheduleExecution {
-    if (resolvedIds.length === 0) {
-        return previous;
+export function advance(battle: BattleState): BattleState {
+    const phases = battle.schedule.activePhases;
+    battle = advanceMain(battle);
+
+    for (const phase of phases) {
+        if (phase.startTick < battle.tick) {
+            battle = advancePhase(battle, phase);
+        }
     }
 
-    const resolved = new Set(resolvedIds);
-    const managedWaveUnitIds = previous.managedWaveUnitIds.filter((id) => !resolved.has(id));
-    const managedFinalUnitIds = previous.managedFinalUnitIds.filter((id) => !resolved.has(id));
-
-    return {
-        ...previous,
-        managedWaveUnitIds:
-            managedWaveUnitIds.length === previous.managedWaveUnitIds.length
-                ? previous.managedWaveUnitIds
-                : managedWaveUnitIds,
-        managedFinalUnitIds:
-            managedFinalUnitIds.length === previous.managedFinalUnitIds.length
-                ? previous.managedFinalUnitIds
-                : managedFinalUnitIds,
-    };
+    return battle;
 }
+
+export function triggerBranch(battle: BattleState, id: string, loop: boolean): BattleState {
+    const { schedule } = battle;
+    const branch = schedule.definition.branches[id];
+
+    if (branch === undefined) {
+        throw new RangeError(`unknown schedule branch: ${id}`);
+    }
+
+    const nextIndex = schedule.nextPhaseIndices[id]!;
+    const index = loop && nextIndex === branch.phases.length ? 0 : nextIndex;
+    const definition = branch.phases[index];
+
+    if (definition === undefined) {
+        return battle;
+    }
+
+    const rng = createRng(battle.execution.rngState);
+    const spawns: Spawn[] = [];
+
+    for (const entry of definition.entries) {
+        if ("options" in entry) {
+            const [first, ...rest] = entry.options;
+            const selected = rng.weighted([
+                [first!.spawns, first!.weight],
+                ...rest.map(({ spawns, weight }) => [spawns, weight] as const),
+            ]);
+
+            spawns.push(...selected);
+        } else {
+            spawns.push(...entry);
+        }
+    }
+
+    const phase: ActivePhase = { phase: definition, startTick: battle.tick, spawns };
+    battle = {
+        ...battle,
+        execution: { ...battle.execution, rngState: rng.state() },
+        schedule: {
+            ...schedule,
+            nextPhaseIndices: { ...schedule.nextPhaseIndices, [id]: index + 1 },
+            activePhases: [...schedule.activePhases, phase],
+        },
+    };
+
+    return advancePhase(battle, phase);
+}
+
+export function resolveUnits(battle: BattleState, removedUnitIds: readonly UnitId[]): BattleState {
+    const { waiting } = battle.schedule;
+    const removed = new Set(removedUnitIds);
+    const wave = waiting.wave.filter((id) => !removed.has(id));
+    const final = waiting.final.filter((id) => !removed.has(id));
+
+    return wave.length === waiting.wave.length && final.length === waiting.final.length
+        ? battle
+        : {
+              ...battle,
+              schedule: {
+                  ...battle.schedule,
+                  waiting: {
+                      wave: wave.length === waiting.wave.length ? waiting.wave : wave,
+                      final: final.length === waiting.final.length ? waiting.final : final,
+                  },
+              },
+          };
+}
+
+export const leaveHook: Hook<Departure> = {
+    id: "@schedule/resolve-unit",
+    invoke: (battle, { unit }) => ({ state: resolveUnits(battle, [unit.id]), value: undefined }),
+};

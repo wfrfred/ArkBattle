@@ -7,21 +7,39 @@ import { Tile, World, type WorldPosition } from "../../../geometry/coordinate.js
 import * as units from "../../query.js";
 import type { Unit } from "../../unit.js";
 import type { MovementTarget } from "../locomotion/capability.js";
-import type { Progress, Route } from "./capability.js";
+import type { Context, ContextId, Route } from "./capability.js";
 
-export function target(progress: Progress): WorldPosition | null {
-    const phase = progress.phase;
-    if (phase.type === "END") {
-        return Tile.center(progress.definition.endPosition);
+export function ref(host: Ref<Unit & Route>, context: Context): Ref<Context> {
+    return { host, id: context.id } as Ref<Context>;
+}
+
+export function contextFor(self: Unit & Route, id: ContextId): Context | undefined {
+    return id === 0 ? self.route.main : self.route.others.find((context) => context.id === id);
+}
+
+export function getContext(battle: BattleState, reference: Ref<Context>): Context | undefined {
+    const self = units.get(battle, reference.host);
+
+    return self === undefined ? undefined : contextFor(self, reference.id);
+}
+
+export function activeContext(self: Unit & Route): Context {
+    return contextFor(self, self.route.activeId)!;
+}
+
+export function target(context: Context): WorldPosition | null {
+    const current = context.current;
+    if (current?.type === "MOVE") {
+        return Vec2.add(Tile.center(current.position), current.offset);
     }
-    if (phase.type !== "CHECKPOINT" || phase.checkpointState.type !== "MOVING") {
-        return null;
+    if (current?.type === "TRACE") {
+        return current.reached ? null : Tile.center(current.position);
     }
 
-    const checkpoint = progress.definition.checkpoints[phase.index]!;
-
-    return checkpoint.type === "MOVE"
-        ? Vec2.add(Tile.center(checkpoint.position), checkpoint.offset)
+    return current === null &&
+        context.index === context.plan.checkpoints.length &&
+        context.plan.endPosition !== null
+        ? Tile.center(context.plan.endPosition)
         : null;
 }
 
@@ -46,38 +64,36 @@ function recoveryPoint(
           ];
 }
 
-export function movementTarget(battle: BattleState, ref: Ref<Unit & Route>): MovementTarget | null {
-    const self = units.get(battle, ref);
+export function movementTarget(
+    battle: BattleState,
+    reference: Ref<Unit & Route>,
+): MovementTarget | null {
+    const self = units.get(battle, reference);
     if (self?.lifecycle !== "PRESENT") {
         return null;
     }
 
-    const progress = self.route.alternative ?? self.route.main;
-    const goal = target(progress);
+    const context = activeContext(self);
+    const goal = target(context);
     if (goal === null) {
         return null;
     }
 
-    const definition = progress.definition;
-    const map = battle.battlefield.navigation.baseline[progress.motionMode];
-    const locator = Vec2.add(self.position, Vec2.negate(definition.offset));
+    const mode = context.plan.motionMode;
+    const map = battle.battlefield.navigation.baseline[mode];
+    const locator = Vec2.sub(self.position, context.offset);
     if (!map.contains(World.toTile(self.position)) || !map.contains(World.toTile(locator))) {
-        const recovery = recoveryPoint(map, self.position, definition.offset);
+        const recovery = recoveryPoint(map, self.position, context.offset);
 
         return recovery === null ? null : { nextPoint: recovery, goal: recovery };
     }
 
-    const point = navigation.nextPoint(
-        battle.battlefield.navigation,
-        progress.motionMode,
-        locator,
-        goal,
-    );
+    const point = navigation.nextPoint(battle.battlefield.navigation, mode, locator, goal);
 
     return point === null
         ? null
         : {
-              nextPoint: Vec2.add(point, definition.offset),
-              goal: Vec2.add(goal, definition.offset),
+              nextPoint: Vec2.add(point, context.offset),
+              goal: Vec2.add(goal, context.offset),
           };
 }

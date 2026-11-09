@@ -16,7 +16,7 @@
 
 各领域文档记录有效的数据模型、API 和执行语义。尚未完成的重构、开放问题和验收要求保留在对应章节；[接口约定](api-conventions.md)汇总尚未统一的接口，[目标语义与实现缺口](tactical-semantics.md)记录未完成的玩法接入。
 
-Schedule 与 Route 正在一并[重新设计](schedule.md)：调度定义、State、三个公开操作与同步重入顺序已确认。[Route](navigation.md#route-定义与进度)采用 Plan／Context／State，不另设 Execution；创建调用者通过 initial.route 提供 `{ plan, offset }`，initializer 建立 Unit 固有的 Main Context，并在 State 捕获共享出生时间基准。其他 Context 使用宿主内唯一 ID，对外由带 host 与 id 的 Typed Ref 定位；容器、Phase 与操作签名仍待定。不为本次 Plan 合成 UnitDefinition，不强制统一的 SpawnRoute 类型。个体结算与等待关系边界继续讨论，现有实现不作为目标模型。
+[Schedule](schedule.md)管理主Wave、Fragment、Branch与Unit等待关系；[Route](navigation.md#route-定义与进度)解释Plan，使用带宿主内稳定身份的Context组织主路线与临时路线。创建者提供静态UnitDefinition及initial.route的`{ plan, offset }`，initializer保存出生时间基准并登记首指令enter程序。Route自行检查Main终点并请求完整离场；Schedule通过离场通知同步清理等待。Core每次step只推进一个Tick，终局由调用者根据状态决定。
 
 已审查部分先按[语义验收](verification.md)确定保留目标，再重新选择最小测试。当前范围为 Battlefield、Unit 独立领域、Action／Allegiance／Blocking／Deployable／Hitbox／Layer／Locomotion／Presence Capability 及对应 Battle 协作，以及 Unit 本地 Hook、HP／EP 结算和 Vitality／Elemental 的资源提交与 Burst 协作。领域文档的关键语义、接入／实现说明与未决内容分别阅读，接口和字段列表不自动成为测试清单。
 
@@ -41,7 +41,7 @@ Schedule 与 Route 正在一并[重新设计](schedule.md)：调度定义、Stat
 | [几何与坐标 API](geometry.md) | Tile／World、Shape／Range、坐标转换与纯几何相交及首次接触 |
 | [Terrain 与 Mechanism](terrain.md) | 逐格参数、类型化 Tiles、地形轮询、控制器与 Unit Effect 的职责 |
 | [Navigation、Route 与 Locomotion 设计](navigation.md) | 地图、Overlay、寻路查询、路线执行与运动结算的职责划分 |
-| [Schedule 重设计](schedule.md) | Spawn 与调度、主 Wave 预处理与 Branch 随机、统计与等待的边界，以及尚未定稿的类型 |
+| [Schedule](schedule.md) | Wave／Fragment、Branch 随机、Spawn 初始化、等待关系与同步重入 |
 | [Blocking 设计](blocking.md) | 双端关系、Blockable 唯一归属、分阶段通知、每 Tick 搜索、实时容量与关系身份 |
 | [Vitality / Damage 设计](vitality.md) | Calculate／Apply 边界、精确 Hook 类型、取消与提交报告，以及弱点伤害和特殊生命语义 |
 | [Deployment 与 Unit 生命周期](deployment.md) | Card／场上实例、部署参数与 API、登场／离场职责及支持范围 |

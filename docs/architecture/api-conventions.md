@@ -121,7 +121,7 @@ Card 的 RuleContext 按用途区分：DISPLAY／SELECT 接收 Card Ref，DEPLOY
 | Targeting | [battle/targeting/index.ts](../../src/core/battle/targeting/index.ts) | Filter／Comparator／Selector、hasCandidate 与 select；只读 hasCandidate 归 query.ts，可能消费 RNG 的选择保留 select.ts。 |
 | Deployment | [battle/deployment/index.ts](../../src/core/battle/deployment/index.ts) | 部署经济、addCard、完整 Request／Quote、统一 evaluate／preview／positions、deploy 与领域部署 Hook。retreat／canRetreat 归 Deployable，Deployment 入口保留协作导出；部署与撤退 Command 统一以 ref 携带 Typed Ref，部署据此生成完整请求，撤退直接调用领域操作。详见[部署契约](deployment.md)。 |
 | Card | [battle/deployment/card/index.ts](../../src/core/battle/deployment/card/index.ts) | Card<S>、私有程序 Definition<S>、ref、get／all、有效值查询、规则、unitHooks、费用贡献、库存、部署间隔和串行恢复。addCard 接收含顶层 card 配置的完整静态 Unit Definition，Card 保留同一引用供部署使用；本次部署事实归 Deployable State。setUnitHook／removeUnitHook 管理注入以后部署实例的 Unit 生命周期程序。字段／资源操作接收 BattleState 与 Typed Ref，纯状态变换及完整替换由 Core 内部使用。详见[静态内容与 Card](deployment.md#静态内容与-card)。 |
-| Schedule | [battle/schedule/index.ts](../../src/core/battle/schedule/index.ts) | 当前提供配置、执行状态、创建、推进、登记／结算与统计查询；[重设计](schedule.md)已确认职责边界，现有入口待调整，不作为新接口的定稿。 |
+| Schedule | [battle/schedule/index.ts](../../src/core/battle/schedule/index.ts) | 提供 Definition／State、initialize、advance／triggerBranch／resolveUnits 与 timing／isCompleted 查询；出生与等待不承担全局统计或终局裁决，见 [Schedule](schedule.md)。 |
 | 多文件 Capability | unit/capability/ 下 action、blocking、deployable、elemental、layer、locomotion、occupancy、offense、presence、route、skill、vitality 各自的 index.ts | 按能力职责选择导出。Layer 提供自身空地身份的 setType Change，模型与 operations 分开；Occupancy 保存可空的摆放朝向并提供 setDirection Change；Skill 入口只提供工厂 Definition、Capability／State、守卫、初始化及 Rule／Hook／Ammo 贡献 Change 工厂，不导出领域程序、资源结算或 Activation 业务。完整实例写回、阶段派发和具体运动算法不因共享导出成为内容 API。 |
 | 小 Capability 与 Catalog | allegiance／hitbox／targetable 的 capability.ts；unit/capability/catalog.ts | 单文件能力保留自然入口；Catalog 只维护初始化字典与派生类型，不增加模板 index 或另一套能力映射。 |
 | Contribution、Hook 与 Tick | unit/contribution/contribution.ts、attribute.ts；core/hook.ts、tick.ts | 各自保留明确的数据／计算／派发入口，不设全 Core 聚合层。 |
@@ -149,7 +149,7 @@ Action.cancelForUnit、forUnit 和 isCasting 均要求 `Ref<Unit & ActionCapabil
 
 实例身份根据实际存储确定。Projectile 的 Typed Ref 以全场唯一的实例 ID 定位；Action 的本轮 Execution、Effect、Skill Activation 与 Elemental Burst 的实例 ID 仅在宿主内唯一，Ref 同时携带 host 与 id。Action 的 ref(source, definition) 生成跨多轮有效的 Ref<Action<P, E>>，地址为 host 与 Definition 对象，保留 P／E 配对；executionRef(source, self) 从显式宿主和当前 execution.id 生成只绑定本轮的 Ref<Execution<P, E>>。两种引用共享现有聚合条目，不要求条目保存 host，不增加存储或 ID 分配。
 
-Route Context 采用宿主内运行实例身份：Main 使用固定保留 ID，其他 Context 由 Route 动态分配宿主内唯一且不复用的 ID。对外使用地址为 `{ host: Ref<Unit & Route>, id: ContextId }` 的 Ref<Context>，宿主内使用同一个 ContextId。更新 Plan／phase 不改变身份，数组位置和 Context 对象引用不作为长期地址；Context 不必额外保存 host 运行字段。State 的集合与选择字段及操作签名继续在 [Route](navigation.md#context-身份与定位) 中确定。
+Route Context 采用宿主内运行实例身份：Main 使用固定保留 ID，其他 Context 由 Route 动态分配宿主内唯一且不复用的 ID。对外使用地址为 `{ host: Ref<Unit & Route>, id: ContextId }` 的 Ref<Context>，宿主内使用同一个 ContextId。重建 Plan 或推进指令不改变身份，数组位置和 Context 对象引用不作为长期地址；Context 不必额外保存 host 运行字段。State 使用 main／others、activeId 与 nextContextId 管理这些实例，见 [Route](navigation.md#context-身份与定位)。
 
 ### 统一 Typed Ref 与类型恢复
 
@@ -221,7 +221,7 @@ collection.sort 和 topK 接受 Iterable，返回只读数组。排序保持比�
 
 ReadonlyMap 是可保留的只读关联容器协议，不要求为持久化容器提前增加 Store。Query 不负责存储更新；未来容器替换需单独处理当前 new Map(source) 更新路径，并保留 Unit Query 的逻辑登记顺序。完整操作仍负责当前生命周期和业务资格；SP、HP、是否允许移动等动态事实不由 Ref 保证。
 
-未来改用持久化树等容器时，枚举顺序是必须保留的业务契约：Combat、Movement 和路线完成检查直接按 Unit 顺序推进；Blocking 的等距离候选、Sweep 的等 fraction 接触依赖稳定排序保留输入顺序。空间查询直接遍历 Field.units.values()，也须与 Unit.all() 遵循同一顺序。可以使用保序存储，或在 UID 顺序满足所需登记顺序时，由存储／查询边界统一保证升序枚举；不能让树节点、哈希桶或重平衡改变这些结果，也不在各调用点重新散布排序。容器迁移时应复核上述遍历、同分选择和本轮固定候选的约定。
+未来改用持久化树等容器时，枚举顺序是必须保留的业务契约：Combat、Movement 直接按 Unit 顺序推进，Route 在自身推进末尾检查 Main 出口；Blocking 的等距离候选、Sweep 的等 fraction 接触依赖稳定排序保留输入顺序。空间查询直接遍历 Field.units.values()，也须与 Unit.all() 遵循同一顺序。可以使用保序存储，或在 UID 顺序满足所需登记顺序时，由存储／查询边界统一保证升序枚举；不能让树节点、哈希桶或重平衡改变这些结果，也不在各调用点重新散布排序。容器迁移时应复核上述遍历、同分选择和本轮固定候选的约定。
 
 跨 Battle 使用 Ref 属于调用契约错误；不为此加入 Battle 泛型品牌、owner token、注册表或跨 Battle 运行时检查。同一运行身份不复用于另一个 Unit，且 Ref 在实例所属 Battle 的合法接续版本中使用。
 
@@ -245,13 +245,7 @@ Unit 本地登记使用[类型化 Hooks 集合](hook.md)，固有 Hook 在构造
 
 同步嵌套操作独立收集候选，不通过 BattleState、全局变量或其他容器继承外层派发的快照。
 
-## 4. 未完成的完整操作整理
-
-以下接口尚未满足统一约定，保留当前签名与目标，直到对应重构完成。
-
-| 接口 | 当前形状 | 待调整内容 |
-| --- | --- | --- |
-| [advanceSpawning](../../src/core/battle/steps/spawning.ts) | `(battle, commands, tick)` | 实际调用重复传入当前 battle.tick；保留 Schedule 局部计算自己的时点参数。 |
+## 4. 完整操作
 
 接口整理保留真实可接受输入：允许普通 Unit 并用报告表达缺少能力的操作，继续使用 `Ref<Unit>`；要求明确能力的推进使用 `Ref<Unit & H>`。命名遵循 ESM 惯例，不以转发层统一签名。
 
@@ -318,7 +312,7 @@ battle = update(battle, reference, compose(
 ));
 ```
 
-Route 的 Context 修改与选择接口仍按[重设计](navigation.md#route-定义与进度)继续确定，不以现有模式／单替代路线工厂作为目标契约。
+Route 的 selectContext、setTicking、removeContext、reassign、skipWait 和 setTraceTarget 返回 Change；createContext 返回已分配的 Ref，并同步进入首指令。执行与初始化契约见 [Route](navigation.md#route-定义与进度)。
 
 Change 是保留完整宿主类型的纯函数，不绑定运行身份：
 

@@ -14,7 +14,6 @@ import { getUnit } from "../helpers/unit.js";
 import { initialize as initializeBattle, step as stepBattle } from "../../dist/core/battle/runtime.js";
 import { createLegacyCombatSpec } from "../../dist/legacy/combat.js";
 
-import { createInput as createRouteDefinition } from "../../dist/core/battle/creation/route.js";
 
 const candidates = battle => projectilesQuery.all(battle).map(projectilesQuery.ref);
 const instances = battle => projectilesQuery.all(battle).toArray();
@@ -26,9 +25,7 @@ const tick = (battle, number) => advance({ ...battle, tick: number }, candidates
 function runtime(initialUnits, maxTicks = 20) {
     return initializeBattle({ ...createLegacyCombatSpec({ rows: 1, columns: 8, operators: [], enemies: [], maxTicks, seed: 17 }),
         predefines: predefinedUnits(initialUnits.map(value => ({ definition: value.definition, position: value.position }))),
-        schedule: { type: "TIMELINE", spawns: [{ definition: { hooks: Hooks.empty(), spatialPresence: {}, id: "future", vitality: { maxHp: 1, defense: 0, resistance: 0 }, locomotion: { halfBodyWidth: 0, minSpeed: 0, speed: 0, steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 } } },
-            route: createRouteDefinition({ motionMode: "WALK", startPosition: [0, 7], endPosition: [0, 1], spawnOffset: [0, 0], spawnRandomRange: [0, 0], checkpoints: [], allowDiagonalMove: false, visitEveryTileCenter: false, visitEveryNodeCenter: false, visitEveryCheckPoint: true }),
-            tick: 100, timing: { waveStartedAtTick: 0, fragmentStartedAtTick: 0 }, alwaysCheckCurrentPoint: true, notCountInTotal: false }] },
+
     });
 }
 
@@ -222,18 +219,4 @@ test("Runtime freezes Projectile candidates before Unit callbacks, Action output
     assert.deepEqual(projectilesQuery.all(rt).map(self => self.id).toArray(), [0, 1, 2]);
     rt = stepBattle(rt, []);
     assert.deepEqual(observed.slice(4), [["unit-child", 2], ["action-child", 2], ["grandchild", 2]]);
-});
-
-test("a terminal battle leaves outstanding projectiles frozen without termination callbacks", () => {
-    let stops = 0;
-    let advances = 0;
-    const definition = { id: "frozen", onTick(battle) { advances++; return battle; }, onEnd(battle) { stops++; return battle; } };
-    let rt = runtime([unit(0, { hooks: Hooks.empty().set(unitLifecycle.tick, { id: "test/tick",  invoke(battle) { return { state: create(battle, definition).state, value: undefined }; } }) })], 1);
-    rt = stepBattle(rt, []);
-    const snapshot = rt;
-
-    assert.equal(snapshot.battlefield.projectiles.size, 1);
-    assert.equal(advances, 0);
-    assert.equal(stops, 0);
-    assert.strictEqual((rt = stepBattle(rt, [])), snapshot);
 });

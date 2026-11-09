@@ -3,13 +3,13 @@ import { Mechanisms } from "./mechanisms.js";
 import * as dependency from "../lifetime/dependency.js";
 import type { State as LifetimeState } from "../lifetime/lifetime.js";
 import type { State as UnitHooks } from "./unit-hook.js";
-import type { Definition, Result as BattleResult } from "./contract.js";
+import type { Definition } from "./contract.js";
 import type { Event } from "./event.js";
 import type { UnitRemoval } from "../unit/unit.js";
 import type { BattleExecutionState } from "./execution/state.js";
 import type { PredefinedPresence } from "./steps/predefined.js";
-import { createSpawnScheduleDefinition } from "./schedule/definition.js";
-import { createSpawnScheduleExecution, type SpawnScheduleExecution } from "./schedule/state.js";
+import { initialize as initializeSchedule, type State as ScheduleState } from "./schedule/state.js";
+import { leaveHook as scheduleLeaveHook } from "./schedule/runtime.js";
 import {
     initialize as initializeDeployment,
     type State as DeploymentState,
@@ -26,7 +26,6 @@ const defaultExecution: BattleExecutionState = {
 
 const defaultDefinition: Definition = {
     predefines: [],
-    maxTicks: Number.MAX_SAFE_INTEGER,
     routeMoveMultiplier: 1,
 };
 
@@ -39,10 +38,8 @@ export interface State {
     readonly deployment: DeploymentState;
     readonly lifetime: LifetimeState;
     readonly unitHooks: UnitHooks;
-    readonly schedule: SpawnScheduleExecution;
+    readonly schedule: ScheduleState;
     readonly predefinedPresence: readonly PredefinedPresence[];
-    readonly completedRouteCount: number;
-    readonly result: BattleResult | null;
     readonly events: readonly Event[];
     readonly removedUnits: readonly UnitRemoval[];
 }
@@ -57,9 +54,7 @@ export function createBattleState(
     execution: BattleExecutionState = defaultExecution,
     tick = 0,
     deployment: DeploymentState = initializeDeployment(),
-    schedule: SpawnScheduleExecution = createSpawnScheduleExecution(
-        createSpawnScheduleDefinition({ type: "TIMELINE", spawns: [] }),
-    ),
+    schedule: ScheduleState = initializeSchedule({ waves: [], branches: {} }),
     definition: Definition = defaultDefinition,
 ): State {
     return {
@@ -74,11 +69,9 @@ export function createBattleState(
             endings: new Map(),
             settling: false,
         },
-        unitHooks: { leave: [] },
+        unitHooks: { leave: [scheduleLeaveHook] },
         schedule,
         predefinedPresence: [],
-        completedRouteCount: 0,
-        result: null,
         events: [],
         removedUnits: [],
     };

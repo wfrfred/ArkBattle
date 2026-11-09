@@ -1,16 +1,28 @@
-export { hasRoute, initialize, isCompleted, motionMode } from "./capability.js";
+export { hasRoute, initialize } from "./capability.js";
 
 export type {
     Definition,
+    Plan,
+    Initial,
     Checkpoint,
-    CheckpointState,
-    Phase,
-    Progress,
+    ContextId,
+    Context,
+    ContextInput,
     State,
     Route,
-    Event,
 } from "./capability.js";
 
-export { setMotionMode, setAlternative, clearAlternative, advance } from "./operations.js";
+export type { Event } from "./event.js";
 
-export { movementTarget } from "./query.js";
+export {
+    createContext,
+    removeContext,
+    selectContext,
+    setTicking,
+    reassign,
+    skipWait,
+    setTraceTarget,
+    advance,
+} from "./operations.js";
+
+export { ref, getContext, activeContext, movementTarget } from "./query.js";

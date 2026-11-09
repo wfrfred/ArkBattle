@@ -14,7 +14,7 @@ UI 的实际需要决定输出哪些事实与字段。领域操作没有记录�
 | Action | `ATTACK_STARTED`：攻击模板首次推进时的有目标攻击表现提示；`ACTION_RELEASED`、`ACTION_FINISHED`、`ACTION_CANCELLED`：行动释放、完成与取消的动画时点。 |
 | Skill | `SKILL_ACTIVATED`、`SKILL_FINISHED`：技能动画的启动与结束。 |
 | Elemental | `ELEMENTAL_BURST`：发生爆发的 Unit、元素类型与当时位置。 |
-| Route | `ROUTE_COMPLETED`：路线完成后的漏怪表现，由 Battle 确认可以正常离场时追加。 |
+| Route | `ROUTE_COMPLETED`：路线完成后的漏怪表现，由 Route 确认 Main 终点离场时追加。 |
 | HP Damage | `DAMAGE`：目标、伤害类型和实际 HP 损失。现有取消表现保留零值输出。 |
 | EP Damage | `ELEMENTAL_INJURY`：目标、元素类型和实际 EP 损失。 |
 | HP Healing | `HEAL`：目标和实际 HP 回复。现有取消表现保留零值输出。 |
@@ -34,7 +34,7 @@ Event 按事实发生时点追加；嵌套操作产生的输出保留其先后�
 
 Tick 开始清空上一 Tick 的临时输出；保留旧 BattleState 仍可读取其原输出。初始化操作产生的输出也属于其返回状态。
 
-路线完成计数由 Battle 的路线完成结算直接更新，与 Event 是否被记录、消费或过滤无关。Schedule 的离场账务继续使用独立的 Removal Facts，不能改为读取表现事件。
+Schedule 通过既有 Unit 全局离场 Hook 同步解除等待，不读取表现事件。Route 输出不承担全局计数或终局裁决。
 
 Blocking 关系、Route 中间检查点、Projectile 到达／命中／停止、出生、部署与部署拒绝，以及元素自然恢复完成／爆发结束不再输出诊断 Event。其业务状态、返回结果与 Hook 保持原有职责。出现新的 UI 瞬时需求时，再由所属领域定义必要输出。
 

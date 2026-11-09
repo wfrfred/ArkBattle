@@ -1,3 +1,4 @@
+import { isCompleted } from "../../dist/core/battle/schedule/index.js";
 import { Hooks } from "../../dist/core/hook.js";
 import * as siteConditions from "../../dist/content/terrain/condition.js";
 import { parseSiteCondition, parseAllowedSiteConditions } from "../../dist/data/arknights/site-condition.js";
@@ -66,7 +67,7 @@ test('the real act1 m01 crates raise WALK cost without closing passage and remai
     assert.equal(cell.passable, navigationMap(baseline).get(tile).passable);
     assert.equal(runtime.battlefield.map.tiles.get(tile[0] * runtime.battlefield.map.columns + tile[1]).state.placement, 'NONE');
   }
-  while (runtime.result === null) runtime = advanceBattle(runtime, []);
+  while (!isCompleted(runtime.schedule) && runtime.tick < scenario.spec.maxTicks) runtime = advanceBattle(runtime, []);
   assert.equal(runtime.battlefield.units.size, 12);
 });
 
@@ -117,9 +118,9 @@ test('core act2 mire and tide controller prefabs initialize nonspatial mechanism
     const controllerRules = scenario.unsupportedRules.filter(rule => rule.path.includes('.skill.blackboard.'));
     assert.deepEqual(controllerRules.map(rule => rule.path.split('.skill.blackboard.')[1]),
       terrainType === deepseaTerrain ? ['skill_max_trigger_time'] : []);
-    while (runtime.result === null) (runtime = advanceBattle(runtime, []));
-    assert.equal(runtime.result.reason, 'SCHEDULE_COMPLETED');
-    assert.equal(runtime.result.remainingUnitIds.length, 4);
+    while (!isCompleted(runtime.schedule) && runtime.tick < scenario.spec.maxTicks) (runtime = advanceBattle(runtime, []));
+    assert.equal(isCompleted(runtime.schedule), true);
+    assert.equal(runtime.battlefield.units.size, 4);
   }
 });
 

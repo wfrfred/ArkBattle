@@ -10,9 +10,6 @@ import * as epHealing from "../../dist/core/battle/healing/ep/index.js";
 import * as elementalCapability from "../../dist/core/unit/capability/elemental/index.js";
 import * as presence from "../../dist/core/unit/capability/presence/index.js";
 import { appendEvents } from "../../dist/core/battle/state.js";
-import { step } from "../../dist/core/battle/runtime.js";
-import { createInput } from "../../dist/core/battle/creation/route.js";
-import { advanceMovement, resolveRouteCompletion } from "../../dist/core/battle/steps/movement.js";
 import { TacticalDemoPresentation } from "../../dist/legacy/tactical-demo-presentation.js";
 
 import { createArknightsElementalDefinition } from "../../dist/data/arknights/elemental.js";
@@ -96,44 +93,15 @@ test("EVENT-02: a Burst keeps its original position through movement and death i
     assert.deepEqual(view.units(state)[0].info.x, 4);
 });
 
-test("EVENT-03: real route completion updates business counts independently of temporary UI output", () => {
-    const route = {
-        motionMode: "WALK", startPosition: [1, 1], endPosition: [1, 1], offset: [0, 0],
-        checkpoints: [], requireAllCheckpoints: true, alwaysCheckCurrentPoint: true,
-    };
-    const futureRoute = createInput({
-        motionMode: "WALK", startPosition: [1, 2], endPosition: [1, 3],
-        spawnOffset: [0, 0], spawnRandomRange: [0, 0],
-        checkpoints: [{ type: "WAIT_FOR_TICKS", durationTicks: 100 }],
-        visitEveryCheckPoint: true,
-    });
+test("EVENT-03: UI output displays a route exit without changing simulation facts", () => {
     const initial = battle([{ definition: {
-        id: "route-unit", hooks: Hooks.empty(), route,
-    }, position: [1, 1] }], {
-        schedule: { type: "TIMELINE", spawns: [{
-            tick: 100, definition: { id: "future", hooks: Hooks.empty() }, route: futureRoute,
-            alwaysCheckCurrentPoint: true, notCountInTotal: false,
-            timing: { waveStartedAtTick: 100, fragmentStartedAtTick: 100 },
-        }] },
-    });
-    const withOutput = appendEvents(initial, [{ type: "ROUTE_COMPLETED", unitId: 0, tick: 0 }]);
-    assert.equal(withOutput.completedRouteCount, 0);
-    assert.equal(withOutput.schedule, initial.schedule);
-    assert.equal(withOutput.result, null);
-    const moved = advanceMovement(initial, { routeMoveMultiplier: 1 });
-    const completed = resolveRouteCompletion(moved);
-    assert.equal(completed.completedRouteCount, 1);
-    assert.equal(get(completed, 0), undefined);
-    const view = new TacticalDemoPresentation(data);
-    assert.deepEqual(view.advance(completed, completed.events), [["leak", 0]]);
-    assert.deepEqual(new TacticalDemoPresentation(data).advance(completed, []), []);
-    assert.equal(completed.completedRouteCount, 1);
-    const extraOutput = appendEvents(completed, [{ type: "ROUTE_COMPLETED", unitId: 0, tick: 0 }]);
-    assert.equal(extraOutput.completedRouteCount, 1);
-    assert.equal(extraOutput.schedule, completed.schedule);
-    const next = step(extraOutput, []);
-    assert.deepEqual(next.events, []);
-    assert.equal(next.completedRouteCount, 1);
-    assert.equal(completed.events.some(event => event.type === "ROUTE_COMPLETED"), true);
-    assert.equal(withOutput.completedRouteCount, 0);
+        id: "traveller", hooks: Hooks.empty(),
+    }, position: [1, 1] }]);
+    const output = appendEvents(initial, [{ type: "ROUTE_COMPLETED", unitId: 0, tick: 0 }]);
+
+    assert.equal(output.battlefield, initial.battlefield);
+    assert.equal(output.schedule, initial.schedule);
+    assert.equal(get(output, 0), get(initial, 0));
+    assert.deepEqual(new TacticalDemoPresentation(data).advance(output, output.events), [["leak", 0]]);
+    assert.deepEqual(new TacticalDemoPresentation(data).advance(output, []), []);
 });

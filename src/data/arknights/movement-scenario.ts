@@ -52,6 +52,7 @@ export interface ArknightsMovementScenario {
     readonly level: ArknightsLevelDefinition;
     readonly spec: Omit<Input<readonly object[], readonly ContactState[]>, "predefines"> & {
         readonly predefines: readonly StoredPredefinedDefinition[];
+        readonly maxTicks: number;
     };
     readonly omittedActions: readonly string[];
     readonly inactiveBranches: readonly string[];
@@ -216,23 +217,28 @@ export function loadMovementScenario(
         definition: createTerrainMechanism(definition),
     }));
     const resolvedEnemies = new Map<ArknightsEnemyDbRef, ArknightsEnemyMovementContent>();
-    const compiled = compileSpawnSchedule(level, selection, (reference) => {
-        const existing = resolvedEnemies.get(reference);
-        if (existing !== undefined) {
-            return existing;
-        }
+    const compiled = compileSpawnSchedule(
+        level,
+        selection,
+        (reference) => {
+            const existing = resolvedEnemies.get(reference);
+            if (existing !== undefined) {
+                return existing;
+            }
 
-        const values = resolveEnemyMovementValues(
-            catalog.enemy(reference.id),
-            reference.level,
-            reference.overwrittenData,
-        );
-        const profile = parseEnemyMovementPrefab(catalog.prefab(values.prefabKey));
-        const enemy = createEnemyMovementContent(values, profile);
-        resolvedEnemies.set(reference, enemy);
+            const values = resolveEnemyMovementValues(
+                catalog.enemy(reference.id),
+                reference.level,
+                reference.overwrittenData,
+            );
+            const profile = parseEnemyMovementPrefab(catalog.prefab(values.prefabKey));
+            const enemy = createEnemyMovementContent(values, profile);
+            resolvedEnemies.set(reference, enemy);
 
-        return enemy;
-    });
+            return enemy;
+        },
+        rngState,
+    );
     const unappliedLevelBlackboard = level.options.configBlackBoard ?? [];
     const unsupportedRules: ArknightsContentIssue[] = [
         ...loaded.unsupportedRules,
@@ -259,7 +265,7 @@ export function loadMovementScenario(
             initialMechanisms,
             maxTicks: secondsToTicks(level.options.maxPlayTime),
             routeMoveMultiplier: level.options.moveMultiplier,
-            rngState,
+            rngState: compiled.rngState,
         } satisfies ArknightsMovementScenario["spec"],
         omittedActions: compiled.omittedActions,
         inactiveBranches: compiled.inactiveBranches,
