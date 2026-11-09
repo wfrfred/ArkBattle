@@ -1,8 +1,8 @@
-# Effect 设计
+# Effect
 
 Effect 负责附着实例、生效状态、覆写组与生命周期。总体执行模型见[总体架构](ARCHITECTURE.md)，状态接续契约见[函数式内核](functional-core.md)。
 
-公开契约遵守[五类接口约定](api-conventions.md)。生命周期回调接收 battle 与 self；onTick 另接收本次推进前的 Expiration，onEnd 另接收结束原因。内容程序通过领域操作接续 BattleState。
+公开契约遵守[接口分类约定](api-conventions.md)。生命周期回调接收 battle 与 self；onTick 另接收本次推进前的 Expiration，onEnd 另接收结束原因。内容程序通过领域操作接续 BattleState。
 
 具体 Buff、异常与 Aura 的规则及未接入项见 [Tactical 语义](tactical-semantics.md)。标准效果库的职责、目录和候选范围见[标准效果库](#10-标准效果库与候选范围)。
 
@@ -14,7 +14,7 @@ Effect 需要保障的结果是：
 
 - 安装、实际生效和存在性分开。onInstall 完成后重读实例；零有效时长或已经到期的实例直接进入结束，不启用、不推进、不调用 onDisable。禁用保留实例及私有进度，安装期间结束的实例不能被外层流程恢复。
 - 整体覆写组按优先级和安装先后选一个生效对象。禁用最强实例不使弱者补位；最强实例结束后，仍有资格的候补才重新生效。
-- 宿主所有权、显式 Scope 与来源分开。宿主或任一依赖结束会关闭 Effect，普通 source 不自动建立依赖；开始结束的依赖链不再接受新绑定。
+- 宿主所有权、显式 Scope 与来源分开。宿主或任一依赖结束会关闭 Effect，普通 source 不自动建立依赖；开始结束的依赖链拒绝新绑定。
 - 有效时长、绝对期限与无限期明确区分。ACTIVE 的有效时长先推进并发布，再执行 onTick，最后按最新时间状态判断结束；禁用暂停有效时长，绝对期限继续到期。速率为零仍有 onTick 执行机会，末次业务和其中的续期得到完整结算。
 - 结束时先撤销自身输出，再等待依赖者完整结束，最后执行自身收尾并移除实例。收尾使用当前状态，宿主由所有权保护到本 Effect 的整个 Finalize 返回。
 
@@ -57,7 +57,7 @@ Definition 是可共享的静态行为，Effect 是附着在一个 Unit 上的�
 BattleState 是 battle 模块的不可变 State 数据值：
 
 ```typescript
-interface Definition<S extends object = object, H extends object = object> {
+interface Definition<S extends object, H extends object = object> {
     readonly id: string;
     readonly group?: { readonly id: string; readonly priority: number };
     readonly initialize: () => S;
@@ -136,7 +136,7 @@ Effects 的完整替换属于 Core 存储接口。它不接收 BattleState，不
 
 Core 的完整替换提交已经配对的宿主与 Effect，信任入口建立的身份、Definition 和能力约束；业务资格由所属领域操作负责。存储替换只发布数据和结构索引，不执行生命周期回调或重建依赖图。
 
-不可变 State 直接共享这个容器。容器的 `toJSON()` 直接物化底层 values，在序列化边界将结果断言为只读 Snapshot 数组，返回 `{ instances, nextId }`。Snapshot 用 unknown 表达诊断载荷并限制 Definition 的诊断字段，让 JSON 诊断包含数据与 ID 进度。实例与诊断 Snapshot 的 source 均保留 `Ref<Unit> | null`；具体输出只需数值来源 ID 时在输出位置读取 source?.id。诊断表示独立于普通 Query，不承担恢复 Definition、回调或运行容器的职责。
+不可变 State 直接共享这个容器。容器的 `toJSON()` 直接物化底层 values，返回类型为 `{ readonly instances: readonly Snapshot[]; readonly nextId: Id }`。Snapshot 用 unknown 表达诊断载荷并限制 Definition 的诊断字段，让 JSON 诊断包含数据与 ID 进度。实例与诊断 Snapshot 的 source 均保留 `Ref<Unit> | null`；具体输出只需数值来源 ID 时在输出位置读取 source?.id。诊断表示独立于普通 Query，不承担恢复 Definition、回调或运行容器的职责。
 
 ```typescript
 type Ref<T> = Identity<T> & Phantom<T>;
@@ -154,13 +154,13 @@ Ref 与静态 Definition 不同。Definition 相同可以有多个实例；实�
 
 BattleState.lifetime.dependencies 是 owner 与显式依赖的唯一关系权威。install 在入口校验宿主 PRESENT、输入 Scope 可用性与 expiration，发布 INSTALLING 实例并登记 owner／scopes 后才调用 onInstall。后续通过 Lifetime.bind／unbind 管理显式依赖；dependencies 查询不包含 owner。Effect 不重复保存 scopes，也不从 Unit 更新投影关系。内部写回信任已经建立的约束，战斗初始化不扫描预装实例。
 
-关系图合并 owner 与显式 Scope，直接子候选按父子边登记顺序请求；更新同一边保序，解除后重绑追加，不再区分 owned／scoped 优先级或按实例 ID 排序。Finalize 移除实例后注销关系；setState、setExpiration 等普通字段写回不修改关系图。
+关系图合并 owner 与显式 Scope，直接子候选统一按父子边登记顺序请求；更新同一边保序，解除后重绑追加。Finalize 移除实例后注销关系；setState、setExpiration 等普通字段写回不修改关系图。
 
 ENDING 时保留关系，物理移除后活索引可以撤销，但未完成 Pending.parents 保留到整个 Finalize 返回。查询依赖者同时合并这两种来源，避免子 Effect 注销后的结束通知中请求宿主退场时漏掉等待。Pending 表示工作进度，不是第二份生命周期或实例表。
 
 Scope 资格沿实际 owner 和显式 Scope 父边，检查目标及全部上游的 Pending 与最新领域状态；任一上游缺失或结束中即拒绝新的安装／绑定，即使目标自身尚未收到结束请求。各节点的存活要求为：Unit 为 PRESENT，Action 为 RUNNING，Skill 为 ACTIVE，Effect（包括标准 Burst）只要存在且未 ENDING 即可，包含 INSTALLING／INACTIVE；Mechanism 的 INACTIVE 也可成为目标。不能把 HP 或空间存在附加为 Unit 生命周期资格。开始结束的目标不能接受新绑定。
 
-宿主退场、Scope 结束、expiration 到期和显式 end 都进入同一个 Effect lifetime 请求。各领域负责决定何时请求结束自己的实例，共享运行器负责依赖传播与完成调度；不再保留 closeLifetime 或 Effect 专属递归传播入口。
+宿主退场、Scope 结束、expiration 到期和显式 end 都进入同一个 Effect lifetime 请求。各领域负责决定何时请求结束自己的实例，共享 Lifetime 运行器负责依赖传播与完成调度。
 
 ## 4. 生效状态与覆写
 
@@ -195,7 +195,7 @@ stateDiagram-v2
 | ------------------------------------ | -------------------------- |
 | 多个 Effect 哪个整体生效             | Effect 管理                |
 | 一个属性的多项 Contribution 哪些计入 | Capability 数值结算        |
-| 本次事件 Hook 如何排序、何时中止     | 提供该事件的 Capability    |
+| 本次事件 Hook 如何排序、何时中止     | 提供扩展点的领域           |
 | 已生效 Effect 本次是否执行具体动作   | 具体 Definition 的业务函数 |
 
 Hook 的 accepts 读取 Effect 的覆写结果；伤害阶段与优先级由 Damage 定义。
@@ -207,7 +207,7 @@ Hook 的 accepts 读取 Effect 的覆写结果；伤害阶段与优先级由 Dam
 | onInstall | 实例已登记后，一次               | 登记稳定 Hook，初始化内容所需联系   |
 | onEnable  | 从不生效变为生效                 | 登记静态 Contribution，恢复输出     |
 | onDisable | 从生效变为不生效，或活跃实例结束 | 撤销静态 Contribution，关闭附带输出 |
-| onTick    | 本轮推进时实例仍为 ACTIVE，时间状态已发布 | 根据本次前后时间状态结算周期伤害、治疗、补盾、Aura 刷新 |
+| onTick    | 本次推进时实例仍为 ACTIVE，时间状态已发布 | 根据本次前后时间状态结算周期伤害、治疗、补盾、Aura 刷新 |
 | onEnd     | 实例仍为 ENDING，依赖完整结束后，一次 | 移除稳定 Hook，执行结束业务         |
 
 安装先形成包含 INSTALLING 实例的新状态，以此调用 onInstall，接续其返回值。回调返回后重新读取当前实例和 expiration；仍为 INSTALLING 且已经到期时，通过 Lifetime 请求结束，不调用 onEnable、onTick 或 onDisable。未到期的实例转为 INACTIVE，再协调是否生效。onInstall 可以用 setExpiration 延长初始零时长或已到期期限，安装继续使用回调返回后的事实。生效协调准备启用实例时也先检查到期，不能先短暂启用再结束。生效切换先形成新 lifecycle，再运行回调并接续返回值；回调输入表达新状态。
@@ -274,7 +274,7 @@ Group 在 Prepare 即排除 ENDING 候选并协调弱者，早于本实例 onEnd
 
 父对象准备结束与依赖者完整完成之间的顺序、首次原因和嵌套请求边界，统一遵守[Lifetime 请求与完成契约](lifetime.md#请求与-prepare)。嵌套 end 不保证实例已经注销，需要已完成事实的后继业务使用领域完成通知。
 
-Unit 从 LEAVING 开始，通过真实所有权边请求 Skill、Action、Burst 和 Effect 结束；只有这些子项与显式依赖者都完整 Finalize 后才注销。Effect.onEnd 内请求宿主退场会先标记宿主，但宿主会等待本 Effect 整个 Finalize 返回，不会在回调中途消失。因此 onEnd 从当前存储取得 self，不再保存通用最后可得实例回退。
+Unit 从 LEAVING 开始，通过真实所有权边请求 Skill、Action 和 Effect（包括标准 Burst）结束；只有这些子项与显式依赖者都完整 Finalize 后才注销。Effect.onEnd 内请求宿主退场会先标记宿主，但宿主会等待本 Effect 整个 Finalize 返回，不会在回调中途消失。onEnd 从当前存储取得 self，宿主在整个回调期间受所有权保护。
 
 每次可能执行内容的完整操作后，后续需要当前事实时仍重读最新 battle，不把旧 Unit 或 Effect 整体写回。等待只来自真实拥有关系和显式 Scope；Effect.onEnd 调用 Unit.remove 本身不生成反向调用等待边。
 
@@ -282,7 +282,7 @@ Unit 从 LEAVING 开始，通过真实所有权边请求 Skill、Action、Burst 
 
 ## 6. 时间推进
 
-battle/runtime.step 每 Tick 调用一次 Effect advance，安排在 Spawning 之后、Elemental 与 Skills 之前。step 直接表达领域操作的顺序并接续返回值；Effect 只完成一次时间推进。
+battle/runtime.step 每 Tick 调用一次 Effect advance，安排在 Schedule 与 Unit tick 之后、Elemental 与 Skills 之前。step 直接表达领域操作的顺序并接续返回值；Effect 只完成一次时间推进。
 
 时间状态由公开的 Expiration 表达：
 
@@ -301,7 +301,7 @@ type Expiration =
 DURATION 保存有效时长进度。每次 ACTIVE 推进将 elapsed 更新为 `min(total, elapsed + rate)`；elapsed 达到 total 时到期。rate 是每次调度的具体增量，不接收求值回调。DEADLINE 在 `battle.tick >= tick` 时到期；INFINITE 没有时间到期条件。合法输入只在 install／setExpiration 校验一次，内部推进信任已建立的约束。
 
 ```text
-固定本轮 Unit / Effect Ref 候选
+固定本次推进的 Unit / Effect Ref 候选
     ↓
 逐个读取上一项返回状态中的实例
     ├─ ACTIVE：采样 previousExpiration
@@ -310,7 +310,7 @@ DURATION 保存有效时长进度。每次 ACTIVE 推进将 elapsed 更新为 `m
     └─ 重新读取实例和 expiration，到期则 end(EXPIRED)
 ```
 
-新装实例不进入已经固定的本轮候选；已经结束的候选跳过。onTick 取得时间状态已经发布的 self，第三参数是本次自动推进前的固定样本，不是第二份持久状态。内容可以据此比较跨过的周期边界，无需在 state 重复保存同一时长进度。DURATION 的 rate 为 0 时进度不变，ACTIVE 实例仍执行 onTick；DEADLINE 和 INFINITE 也照常执行 ACTIVE 的 onTick。
+新装实例不进入已经固定的本次推进候选；已经结束的候选跳过。onTick 取得时间状态已经发布的 self，第三参数是本次自动推进前的固定样本，不是第二份持久状态。内容可以据此比较跨过的周期边界，无需在 state 重复保存同一时长进度。DURATION 的 rate 为 0 时进度不变，ACTIVE 实例仍执行 onTick；DEADLINE 和 INFINITE 也照常执行 ACTIVE 的 onTick。
 
 本次自动推进达到 total 后仍执行最后一次 onTick，再读取最新实例决定是否结束。回调可以用 setExpiration 延长 total、替换进度或转换时间类型，最终检查使用回调返回后的 expiration；同步结束或移除的旧实例不再被外层推进恢复。setExpiration 本身不额外推进，也不立即结束。
 
@@ -340,7 +340,7 @@ interface Hook<C, T> {
 }
 ```
 
-Context 是本次派发固定的事件或操作事实；BattleState 与 current 逐项接续。领域持有 Hook 数组并决定排序、资格和整次派发的停止条件。Damage 的阶段与 priority 不成为 Effect 的字段。
+Context 是本次派发固定的事件或操作事实；BattleState 与 current 逐项接续。Hook 存于 Unit.hooks 或专属 Capability State；提供扩展点的领域决定排序、资格和整次派发的停止条件。Damage 的阶段与 priority 不成为 Effect 的字段。
 
 具体 Effect 可以在 onInstall 登记 Hook，在 onEnd 撤销。闭包捕获稳定的 Effect Ref 与静态配置；accepts 和 invoke 从最新 battle 读取当前实例、覆写结果和私有 state。不能把安装时捕获的数据当作当前盾数。消耗等需要被嵌套观察的进度先写回，再进入其他领域操作。
 
@@ -366,9 +366,9 @@ Contribution 分组平局使用 ID 字典序，Effect 覆写平局使用安装�
 
 静态采样由内容决定刷新时点，动态 Contribution 在查询时只读求值。`setState()` 不隐式刷新已经登记的输出；需要响应私有数据变化的内容明确更新相应 Contribution。
 
-## 8. 待接入的 Aura 内容
+## 8. Aura 的支持边界
 
-以下是 Aura 的内容组合边界，不代表已有通用 Aura 实现或已经完成具体光环的验收。当前缺口见 [Tactical 语义的逐项目标与缺口](tactical-semantics.md#逐项目标与缺口)。
+Core 没有通用 Aura 实现，具体光环也未完成接入。现有 Effect、Targeting 与 Lifetime 提供以下内容组合边界；内容覆盖范围见 [Tactical 语义的逐项目标与缺口](tactical-semantics.md#逐项目标与缺口)。
 
 ```text
 Unit A
@@ -400,7 +400,7 @@ Unit、Effect、Hook、Contribution 与其嵌套状态一旦写入，就按不�
 
 ## 10. 标准效果库与候选范围
 
-标准效果成品库位于 `core/effects/`；具体角色的私有机制由 Content 实现。按实际使用逐项实现效果，以下清单保留为语义候选目录，不作为一次性实现计划。各项精确机制、承载和 API 在实际接入时核对与确定。
+标准效果成品库位于 `core/effects/`；具体角色的私有机制由 Content 实现。下列清单是语义候选目录，不表示各项都有成品或公共 API。已实现范围见本节的目录与支持范围。
 
 ### 候选范围
 
@@ -419,7 +419,7 @@ Unit、Effect、Hook、Contribution 与其嵌套状态一旦写入，就按不�
 | 标准属性效果 | 虚弱、鼓舞、失重、坚忍、精力充沛、偷取、折射、术法充盈 |
 | 标准元素爆发 | 神经、侵蚀、灼燃、凋亡、狂躁的对应爆发效果 |
 
-这些是语义种类；独立识别不要求复制实现，也不自动要求每项都有单独的 Effect Definition、工厂、文件或枚举。拥有术语名称、多个使用者或可参数化的实现，都不足以单独决定代码归属。各项精确机制和交互仍需按实际需求核对。
+这些是语义种类，不对应封闭的 Effect 枚举，也不要求每项有独立的 Definition、工厂或文件。具体实现的归属由行为与数据职责决定；候选项的精确机制和交互不属于当前通用 Effect 协议。
 
 机制资料参考社区资料：[异常效果](https://prts.wiki/w/异常效果)、[术语释义](https://prts.wiki/w/术语释义)、[伤判效果](https://prts.wiki/w/伤判效果)。已有客户端证据见[启动资格与中断](../research/cases/08-action-eligibility-and-interruption.md)、[异常免疫与反制](../research/cases/19-effect-selection-and-immunity.md)。本表不是对全部候选完成客户端取证的声明。
 
@@ -433,7 +433,7 @@ Unit、Effect、Hook、Contribution 与其嵌套状态一旦写入，就按不�
 | 技能强启 | 特定异常中的发动许可，以及发动时的清理 |
 | 位移、失衡、传送免疫 | 相应空间操作的资格 |
 
-Core 的领域规则、资源操作、查询、Hook、Contribution 和生命周期，为标准效果库提供基础接口。标准效果组合这些接口实现公共行为；不同基础机制各自保留职责，不因列入候选就新增一套平行状态或复制实现。具体承载和 API 随实际接入确定。
+Core 的领域规则、资源操作、查询、Hook、Contribution 和生命周期，为标准效果库提供基础接口。标准效果组合这些接口实现公共行为；候选清单本身不建立实例状态或公共 API。
 
 ### 目录与职责
 
@@ -459,10 +459,10 @@ core/
 - 标准效果库导出 stun、invincible 等具体 Definition 或配置工厂；`core/unit/effect/` 提供 install、end 等实例操作。Effects 是运行时异构容器，两者按职责和导入名称区分。
 - Elemental Capability 继续负责 EP 接收与提交、爆发触发和当前爆发引用；`effects/elemental/` 实现标准爆发造成的伤害、控制、属性变化与周期输出。Data 提供数值及具体 Definition 的选择表。
 - Content 决定标准效果的施加对象、触发时机、配置参数与专属附加业务。普通属性增减、任意周期输出、反伤、标记、光环等继续按具体内容组合；专属程序也使用同一套 Definition 与安装接口，不建立涵盖所有 Effect 的封闭总枚举。
-- 现有控制、保护、可选中性程序分别位于 [control.ts](../../src/core/effects/control.ts)、[protection.ts](../../src/core/effects/protection.ts)、[visibility.ts](../../src/core/effects/visibility.ts)，标准元素爆发的四个程序位于 `effects/elemental/`。新增内容需要什么再实现什么，不为候选清单提前创建空模块。按职责组织文件，不要求每个效果单独建文件。
+- 控制、保护、可选中性程序分别位于 [control.ts](../../src/core/effects/control.ts)、[protection.ts](../../src/core/effects/protection.ts)、[visibility.ts](../../src/core/effects/visibility.ts)，标准元素爆发的四个程序位于 `effects/elemental/`。文件按职责组织，一个文件可以提供多个具体效果。
 
-### 保持现有契约
+### 支持范围
 
-当前 Core 已有四型元素的八套标准爆发；狂躁在此仅是新增类型的候选，不表示已批准扩展。现有 `control.silence` 仅限制 Skill 发动，不能据其名称认为已实现完整沉默或静默；改名与语义修正需另行落实。
+Core 提供四型元素的八套标准爆发，狂躁只在候选目录中。`control.silence` 仅限制 Skill 发动，不提供完整沉默或静默语义。
 
-`healFree` 继续遵守已确认的治疗索敌限制，与接收禁疗分开；Damage／Healing 的 Calculate、Apply、Hook 和提交时序保持既定协议。
+`healFree` 只限制治疗索敌，与接收禁疗分开；Damage／Healing 的 Calculate、Apply、Hook 和提交时序见 [Vitality](vitality.md)。

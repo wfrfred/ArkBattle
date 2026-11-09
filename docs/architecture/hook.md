@@ -16,7 +16,7 @@ Unit Definition 与运行实例都持有不可变的 `Hooks` 集合。集合按�
 | EP Damage Receiving | Elemental State | Battle 调用能力接收接口 |
 | Burst 与实际 EP 变化通知 | Elemental State | Elemental 业务 |
 
-HP Damage、EP Damage、HP Healing、EP Healing 分别定义精确键，不建立四种 Context 的联合。专属接收与能力事实通知仍归对应 Capability；不增加 Damage Capability、按 Unit 索引的外置订阅表或独立 Hook Lifetime。
+HP Damage、EP Damage、HP Healing、EP Healing 分别定义精确键，不建立四种 Context 的联合。专属接收与能力事实通知归对应 Capability；登记由宿主持有，并随宿主注销而移除。
 
 ## 类型化键与集合
 
@@ -80,7 +80,7 @@ hooks: Hooks.empty().set(hpDamage.sourceApplied, {
 
 固有 Hook 不必先包装为 Effect，也不需要通过 enter 注册。静态集合可以共享，运行时变更产生新集合，不修改 Definition。
 
-初始化仍从创建输入的 Hooks 开始，按 Capability initializer 顺序 fold，最后 merge Definition.hooks；各 initializer 保留已有登记，可在自己的生命周期键内明确前置必要清理。所有固有 Hook 在 Unit 登记和任何 enter 程序之前完成装配，不依赖其键在集合中的枚举顺序。
+初始化从创建输入的 Hooks 开始，按 Capability initializer 顺序 fold，最后 merge Definition.hooks；各 initializer 保留已有登记，可在自己的生命周期键内明确前置必要清理。所有固有 Hook 在 Unit 登记和任何 enter 程序之前完成装配，不依赖其键在集合中的枚举顺序。
 
 Deployment 的初始程序、Card.unitHooks、Request.hooks 及 Predefined 创建输入使用同一 Hooks 集合。Card 的登记修改只影响以后创建的 Unit，不追溯修改已创建实例；实例仍可独立更新自己的 Hook。
 
@@ -104,11 +104,11 @@ declare function removeHook<H extends Entry>(
 
 ## 派发与生命周期
 
-可查询宿主的派发沿用公共协议：阶段开始时固定该键下的候选 ID 与执行顺序，每项执行前从最新 BattleState 读取当前 Unit 和对应登记，再检查资格与 accepts。同 ID 替换读取新版本，移除则跳过，新 ID 不进入已开始的派发。优先级变更不重排本轮候选；嵌套派发独立取候选。
+可查询宿主的派发遵守公共协议：阶段开始时固定该键下的候选 ID 与执行顺序，每项执行前从最新 BattleState 读取当前 Unit 和对应登记，再检查资格与 accepts。同 ID 替换读取新版本，移除则跳过，新 ID 不进入已开始的派发。优先级变更不重排本次派发的候选；嵌套派发独立取候选。
 
 Unit 的 enter／tick／prepare 同样使用上述动态登记协议。enter／tick 的 Context 固定为本阶段开始时采样的 Unit，每项前要求宿主仍为 PRESENT；prepare 在已发布 LEAVING 后执行。Context 始终保留本次既定事实，prepare／leave 的 Departure 不因登记变化而改写。阶段已由键表达，条目无需再携带同义 stage 字段。
 
-leave 在物理注销前从最新 Unit 取得本轮 Hook 对象快照，随后注销 Unit，再按快照顺序执行，逐项接续 BattleState 并检查 accepts；不查询已经注销的宿主。Prepare 及依赖者结束程序对 leave 登记的修改因此可以生效。leave 集合的采样与 Departure.unit 的历史采样分别处理，不用后者代替最新登记。
+leave 在物理注销前从最新 Unit 取得该次离场的 Hook 对象快照，随后注销 Unit，再按快照顺序执行，逐项接续 BattleState 并检查 accepts；不查询已经注销的宿主。Prepare 及依赖者结束程序对 leave 登记的修改因此可以生效。leave 集合的采样与 Departure.unit 的历史采样分别处理，不用后者代替最新登记。
 
 动态修改不重放已完成的阶段，不在 setHook 时执行新增的 enter 或 prepare。生命周期的必要业务偏序仍见 [离场清理](deployment.md#离场清理的偏序)。
 
