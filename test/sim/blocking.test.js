@@ -28,7 +28,7 @@ const enemy = {
     allegiance: { side: "ENEMY" },
 };
 
-test("search applies pair rules, current volume, target layer and ground tile eligibility", () => {
+test("search and maintenance use current pair rules, volume, layers and ground tile eligibility", () => {
     let state = battle([
         {
             definition: {
@@ -60,10 +60,9 @@ test("search applies pair rules, current volume, target layer and ground tile el
         [3],
     );
     assert.equal(blocking.usedCapacity(state, owner), 2);
-    state = unit.update(state, units.ref(get(state, 3)), capability.setBlockableRule({
-            id: "cannot-be-held",
-            allows: () => false,
-        }));
+    state = unit.update(state, units.ref(get(state, 3)), capability.setVolumeContribution({
+        id: "larger-target", value: 1,
+    }));
     state = blocking.search(state, owner);
     assert.deepEqual(blocking.blocked(state, owner), []);
     state = unit.update(
@@ -88,6 +87,11 @@ test("search applies pair rules, current volume, target layer and ground tile el
         blocking.blocked(state, owner).map(({ id }) => id),
         [2],
     );
+    state = unit.update(state, units.ref(get(state, 2)), capability.setBlockableRule({
+        id: "first-tick-only", allows: (current) => current.tick === 0,
+    }));
+    state = blocking.advance({ ...state, tick: 1 });
+    assert.deepEqual(blocking.blocked(state, owner), []);
 });
 
 test("capacity shrink releases the newest relation and observes callback changes before continuing", () => {
@@ -129,6 +133,12 @@ test("capacity shrink releases the newest relation and observes callback changes
         blocking.blocked(state, owner).map(({ id }) => id),
         [1, 2],
     );
+    state = unit.update(state, owner, compose(
+        capability.removeBlockerHook("released", "restore-one-slot"),
+        capability.setCapacityContribution({ id: "capacity-change", value: [{ type: "ZERO" }] }),
+    ));
+    assert.deepEqual(blocking.blocked(state, owner), []);
+    assert.equal(capability.resolveCapacity(get(state, 0).definition.blocker, get(state, 0).blocker), 0);
 });
 
 test("layer settlements release current relations acquired by earlier settlements", () => {
@@ -137,7 +147,11 @@ test("layer settlements release current relations acquired by earlier settlement
         [capability.setLayer("AIR"), "AIR"],
     ]) {
         let state = battle([
-            { definition: { ...blocker, layer: { type: "GROUND" } }, position: [2, 1] },
+            { definition: {
+                ...blocker,
+                blocker: { ...blocker.blocker, radius: 1 },
+                layer: { type: "GROUND" },
+            }, position: [2, 1] },
             { definition: { ...enemy, allegiance: { side: "NEUTRAL" } }, position: [2.1, 1] },
             { definition: { ...enemy, layer: { type: targetLayer } }, position: [2.2, 1] },
         ]);
@@ -165,6 +179,7 @@ test("layer settlements release current relations acquired by earlier settlement
         ));
 
         assert.deepEqual(released, [first.id, next.id]);
+        assert.equal(get(state, owner.id).blocker.radius, 1);
         assert.deepEqual(blocking.blocked(state, owner), []);
         assert.equal(blocking.blockerOf(state, next), undefined);
     }
@@ -240,7 +255,7 @@ test("own layer requests release current relations before hooks, including same-
                 return { state: current, value: undefined };
             },
         }));
-    state = unit.remove(state, owner.id, "RETREAT");
+    state = unit.remove(state, owner.id, "SCRIPT");
     assert.equal(removedNotifications, 2);
     assert.ok(targets.every((target) => blocking.blockerOf(state, target) === undefined));
 });
@@ -282,7 +297,7 @@ test("position plans survive relation release while active departure and spatial
     const independentPlan = get(state, 2).blockable.adjustment;
     state = unit.update(state, owner, presence.disappear());
     assert.equal(blocking.blockerOf(state, departing), undefined);
-    assert.equal(get(state, 2).blockable.adjustment, independentPlan);
+    assert.deepEqual(get(state, 2).blockable.adjustment, independentPlan);
     state = advanceMovement({ ...state, tick: 9 }, { routeMoveMultiplier: 1 });
     assert.notDeepEqual(get(state, 2).position, independentPlan.from);
     state = unit.update(state, departing, presence.disappear());

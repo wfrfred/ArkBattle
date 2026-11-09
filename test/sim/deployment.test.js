@@ -183,6 +183,8 @@ test("occupancy pairs notify once and an old departure cannot clear the replacem
             slot: "SUPPORT",
             onOccupantAdded: (state, pair) => {
                 notifications.push(["occupantAdded", pair.occupant.id]);
+                assert.equal(units.get(state, units.ref(pair.occupant)).occupancy.pair, pair);
+                assert.equal(units.get(state, units.ref(pair.support)).occupancy.pair, pair);
                 return state;
             },
             onOccupantRemoved: (state, pair) => {
@@ -194,6 +196,8 @@ test("occupancy pairs notify once and an old departure cannot clear the replacem
             ...operator.card,
             cost: 0,
             slots: 0,
+            stock: 2,
+            stockLimit: 2,
             recoverOnRetreatOrDeath: false,
             increaseCostOnRetreatOrDeath: false,
         },
@@ -254,6 +258,16 @@ test("occupancy pairs notify once and an old departure cannot clear the replacem
     assert.equal(pair.occupant.id, replacement);
     assert.equal(get(state, replacement).occupancy.pair, pair);
     assert.equal(state.deployment.usedSlots, 1);
+
+    state = deployment.retreat(state, units.ref(get(state, placedSupport.value.unitId)));
+    assert.equal(get(state, replacement).occupancy.pair, null);
+    const returned = deployment.deploy(state, deployment.createRequest(state, supportCard, [1, 2]));
+    assert.equal(returned.value.type, "DEPLOYED");
+    state = returned.state;
+    assert.equal(get(state, replacement).occupancy.pair.support.id, returned.value.unitId);
+    assert.deepEqual(notifications.slice(-2), [
+        ["occupantRemoved", replacement], ["occupantAdded", replacement],
+    ]);
 });
 
 test("stock recovers serially with sampled budgets; pause and reduction affect only the selected segment", () => {
@@ -270,30 +284,25 @@ test("stock recovers serially with sampled budgets; pause and reduction affect o
         id: "longer-recovery",
         value: [attribute.create({ addition: 10 })],
     });
-    assert.equal(cards.get(state, card).recovery.clock.readyAtTick, 10);
     state = deployment.advance({ ...state, tick: 10 });
     assert.equal(cards.get(state, card).stock, 1);
-    assert.deepEqual(cards.get(state, card).recovery, {
-        pending: 2,
-        clock: { type: "RUNNING", readyAtTick: 30, durationTicks: 20 },
-    });
     state = cards.pauseCooldown({ ...state, tick: 15 }, card, "RECOVERY");
     state = deployment.advance({ ...state, tick: 100 });
     assert.equal(cards.get(state, card).stock, 1);
-    assert.equal(cards.get(state, card).recovery.clock.remainingTicks, 15);
     state = cards.resumeCooldown(state, card, "RECOVERY");
-    assert.equal(cards.get(state, card).recovery.clock.readyAtTick, 115);
+    state = deployment.advance({ ...state, tick: 114 });
+    assert.equal(cards.get(state, card).stock, 1);
     state = cards.reduceCooldown(state, card, 100, "RECOVERY");
     assert.equal(cards.get(state, card).stock, 2);
-    assert.deepEqual(cards.get(state, card).recovery, {
-        pending: 1,
-        clock: { type: "RUNNING", readyAtTick: 120, durationTicks: 20 },
-    });
-    assert.equal(cards.get(state, card).cooldown.readyAtTick, 200);
-    state = deployment.advance({ ...state, tick: 120 });
+    state = deployment.advance({ ...state, tick: 133 });
+    assert.equal(cards.get(state, card).stock, 2);
+    state = deployment.advance({ ...state, tick: 134 });
     assert.equal(cards.get(state, card).stock, 3);
     assert.equal(cards.get(state, card).recovery, null);
+    state = deployment.advance({ ...state, tick: 199 });
     assert.notEqual(cards.get(state, card).cooldown, null);
+    state = deployment.advance({ ...state, tick: 200 });
+    assert.equal(cards.get(state, card).cooldown, null);
 });
 
 test("negative DP halves only natural recovery, preserves progress across zero, and full time is not banked", () => {

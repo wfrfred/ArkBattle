@@ -1,4 +1,5 @@
 import { Hooks } from "../../dist/core/hook.js";
+import { ref } from "../../dist/core/unit/query.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { create as createPlatform } from "../../dist/content/devices/shooting-platform.js";
@@ -54,7 +55,7 @@ test("an airborne passenger can block from a platform, and landing restores its 
         target(20, { layer: "AIR" }), target(21)]));
     assert.equal(ownerId(battle, 20), 10);
     assert.equal(ownerId(battle, 21), undefined);
-    battle = update(battle, { id: 10 }, setLayer("GROUND"));
+    battle = update(battle, ref(getUnit(battle, 10)), setLayer("GROUND"));
     assert.equal(ownerId(battle, 20), undefined);
     battle = acquire(battle);
     assert.equal(ownerId(battle, 21), undefined);
