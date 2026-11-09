@@ -73,12 +73,15 @@ export const lifetime = createLifetime<Unit, Unit, Departure>({
         const { reason } = departure;
         const next = battlefield.remove(battle.battlefield, reference);
         battle = publishBattlefield(battle, next);
-        const removed = { unitId: reference.id, reason, unit: departing };
-        battle = {
-            ...battle,
-            removedUnits: [...battle.removedUnits, removed],
-        };
-        battle = appendEvents(battle, [{ type: "UNIT_REMOVED", tick: battle.tick, ...removed }]);
+        battle = appendEvents(battle, [
+            {
+                type: "UNIT_REMOVED",
+                tick: battle.tick,
+                unitId: reference.id,
+                reason,
+                unit: departing,
+            },
+        ]);
 
         for (const entry of entries) {
             if (entry.accepts?.(battle, departure, undefined) !== false) {

@@ -79,7 +79,7 @@ export function step(
     commands: readonly Command<Card<any>, Projectile<any>>[],
 ): State {
     const projectileCandidates = projectiles.all(battle);
-    let state: State = { ...battle, events: [], removedUnits: [] };
+    let state: State = { ...battle, events: [] };
 
     state = advanceDeployment(state);
 

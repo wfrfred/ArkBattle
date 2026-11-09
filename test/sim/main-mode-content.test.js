@@ -31,7 +31,7 @@ test('main-mode preparation connects real operators and enemies through a comple
     const currentGuard = guard === undefined ? undefined : unitQueries.get(battle, unitQueries.ref(guard));
     activatedMelantha ||= currentGuard !== undefined && currentGuard.skill.activation !== null;
     hasProjectile ||= battle.battlefield.projectiles.size > 0;
-    sawCombat ||= battle.removedUnits.some(({ reason }) => reason === 'DEATH') ||
+    sawCombat ||= battle.events.some(event => event.type === 'UNIT_REMOVED' && event.reason === 'DEATH') ||
       unitQueries.all(before).filter(hasVitality).some(previous => {
         const current = unitQueries.get(battle, unitQueries.ref(previous));
         return current !== undefined && current.vitality.hp < previous.vitality.hp;

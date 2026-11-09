@@ -1,6 +1,9 @@
-import type { UnitRemoval } from "./unit.js";
+import type { Id, LeaveReason, Unit } from "./unit.js";
 
-export type Event = {
+export interface Event {
     readonly type: "UNIT_REMOVED";
     readonly tick: number;
-} & UnitRemoval;
+    readonly unitId: Id;
+    readonly reason: LeaveReason;
+    readonly unit: Unit;
+}

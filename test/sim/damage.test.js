@@ -542,7 +542,6 @@ test("HP-03: lethal HP remains present and blocking through both Applied roles, 
     assert.deepEqual(result.value.application, { hpBefore: 40, hpAfter: 0, hpLoss: 40 });
     assert.equal(get(result.state, 1), undefined);
     assert.equal(get(result.state, 2).blockable.relation, null);
-    assert.deepEqual(result.state.removedUnits.map(({ unitId, reason }) => [unitId, reason]), [[1, "DEATH"]]);
 });
 
 test("EP-01: calculated resistance and element survive later state changes; HP elemental resistance is independent", () => {

@@ -446,9 +446,9 @@ export async function createTacticalDemo(view: LegacyView, options: TacticalDemo
         for (const unit of units.all(state).filter(hasRoute)) {
             spawned.add(unit.id);
         }
-        for (const removed of state.removedUnits) {
-            if (hasRoute(removed.unit)) {
-                spawned.add(removed.unitId);
+        for (const event of events) {
+            if (event.type === "UNIT_REMOVED" && hasRoute(event.unit)) {
+                spawned.add(event.unitId);
             }
         }
 

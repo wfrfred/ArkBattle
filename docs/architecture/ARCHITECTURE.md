@@ -52,7 +52,7 @@ initialize(input) / step(battle, commands)：创建与推进不可变状态
    ├─ lifetime（权威依赖图、当前 endings 与 settling）
    ├─ unitHooks（Unit 离场的全局观察）
    ├─ Mechanisms
-   ├─ 本 Tick 的 UI 瞬时输出与业务移除事实
+   ├─ events（本 Tick 的 UI 瞬时输出，包含 Unit 注销快照）
    └─ Battlefield
       ├─ Map
       ├─ Units + Effects + Capabilities

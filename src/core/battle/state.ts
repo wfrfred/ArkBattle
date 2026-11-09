@@ -5,7 +5,6 @@ import type { State as LifetimeState } from "../lifetime/lifetime.js";
 import type { State as UnitHooks } from "./unit-hook.js";
 import type { Definition } from "./contract.js";
 import type { Event } from "./event.js";
-import type { UnitRemoval } from "../unit/unit.js";
 import type { BattleExecutionState } from "./execution/state.js";
 import type { PredefinedPresence } from "./steps/predefined.js";
 import { initialize as initializeSchedule, type State as ScheduleState } from "./schedule/state.js";
@@ -41,7 +40,6 @@ export interface State {
     readonly schedule: ScheduleState;
     readonly predefinedPresence: readonly PredefinedPresence[];
     readonly events: readonly Event[];
-    readonly removedUnits: readonly UnitRemoval[];
 }
 
 export interface Result<A> {
@@ -73,7 +71,6 @@ export function createBattleState(
         schedule,
         predefinedPresence: [],
         events: [],
-        removedUnits: [],
     };
 }
 

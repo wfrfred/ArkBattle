@@ -21,12 +21,6 @@ export interface Departure {
     readonly reason: LeaveReason;
 }
 
-export interface UnitRemoval {
-    readonly unitId: Id;
-    readonly reason: LeaveReason;
-    readonly unit: Unit;
-}
-
 export interface Unit extends Identified<{ readonly id: Id }> {
     readonly id: Id;
     readonly lifecycle: Lifecycle;

@@ -14,8 +14,6 @@ import type { Skill } from "../unit/capability/skill/capability.js";
 
 export type { Event } from "./event.js";
 
-export type { UnitRemoval } from "../unit/unit.js";
-
 export interface Definition {
     readonly predefines: readonly StoredPredefinedDefinition[];
     readonly routeMoveMultiplier: number;

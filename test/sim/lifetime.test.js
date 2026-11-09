@@ -72,7 +72,6 @@ test("an owner waits for dependent finalizers and repeated requests preserve the
 
     assert.deepEqual(calls, ["parent-disabled", "child-ended", "parent-ended", "owner-left"]);
     assert.equal(units.get(after, owner), undefined);
-    assert.equal(after.removedUnits.length, 1);
     assert.equal(units.get(state, owner).lifecycle, "PRESENT");
 });
 

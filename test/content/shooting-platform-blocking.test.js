@@ -65,7 +65,7 @@ test("removing a platform kills its own passenger and restores the tile", () => 
     let battle = fixture([platform(), passenger(), passenger(11, second)]);
     battle = remove(battle, ref(getUnit(battle, 30)), "SCRIPT");
     assert.equal(getUnit(battle, 10), undefined);
-    assert.equal(battle.removedUnits.find(entry => entry.unitId === 10).reason, "DEATH");
+    assert.equal(battle.events.find(entry => entry.type === "UNIT_REMOVED" && entry.unitId === 10).reason, "DEATH");
     assert.ok(getUnit(battle, 11));
     assert.equal(occupancyAt(battle.battlefield, first)?.occupant ?? null, null);
     assert.equal(getTile(battle.battlefield.map, first).state.elevation, "LOWLAND");
