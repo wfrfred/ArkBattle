@@ -79,13 +79,13 @@ export function resolveTaunt(battle: BattleState, self: Unit & Targetable): numb
 export function allowsRestrictions(
     battle: BattleState,
     source: Unit,
-    ignored: readonly Restriction[] = [],
+    ignore?: (restriction: Restriction) => boolean,
 ): (target: Unit & Targetable) => boolean {
     return (target) =>
         contribution
             .resolve(target.targetable.restrictions)
             .every(
                 (restriction) =>
-                    ignored.includes(restriction) || restriction.allows(battle, source, target),
+                    (ignore?.(restriction) ?? false) || restriction.allows(battle, source, target),
             );
 }

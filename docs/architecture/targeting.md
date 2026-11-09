@@ -22,13 +22,13 @@ source 是调用者选定版本的 Unit。采用标准敌我资格时，来源�
 
 ## 标准资格
 
-四种标准谓词均接收 `(battle, source, ignored?)`，返回保留输入 U 的能力守卫：
+四种标准谓词均接收 `(battle, source, ignore?)`，返回保留输入 U 的能力守卫：
 
 ```typescript
 function damage(
     battle: BattleState,
     source: Unit & Allegiance,
-    ignored?: readonly Restriction[],
+    ignore?: (restriction: Restriction) => boolean,
 ): <U extends Unit & Targetable>(target: U) => target is U & Vitality & Allegiance;
 ```
 
@@ -98,13 +98,13 @@ Definition 的 taunt 和 restrictions 均显式提供。初始化建立空嘲讽
 const permitted = targetable.allowsRestrictions(
     battle,
     source,
-    [invisibleRestriction],
+    (restriction) => restriction === invisibleRestriction,
 );
 ```
 
-`allowsRestrictions(battle, source, ignored = [])` 返回目标谓词。它先按 Contribution 规则解析有效项，再用 `ignored.includes(restriction)` 排除本次豁免的定义，最后要求剩余项全部允许。豁免不恢复被竞争压制的项，不改变目标状态，也不豁免生命、阵营、范围或实际作用的接收规则。
+`allowsRestrictions(battle, source, ignore?)` 返回目标谓词。它先按 Contribution 规则解析有效项，再将定义传给 ignore；返回 true 的定义在本次查询中豁免，剩余项必须全部允许。省略 ignore 表示不豁免，`() => true` 表示豁免全部受选限制。豁免不恢复被竞争压制的项，不改变目标状态，也不豁免生命、阵营、范围或实际作用的接收规则。
 
-普通内容调用标准资格，不需要解释各项限制；特殊内容可以直接使用 Targetable 查询。上例跳过所有有效的 invisibleRestriction 登记，仍保留迷彩、无敌等其它定义。异常免疫由所属机制维护，Restriction 复用其事实，不在 Targetable 复制免疫状态。
+普通内容调用标准资格，不需要解释各项限制；特殊内容可以直接使用 Targetable 查询。选择性豁免按定义对象的 `===` 身份比较；上例跳过所有有效的 invisibleRestriction 登记，仍保留迷彩、无敌等其它定义。异常免疫由所属机制维护，Restriction 复用其事实，不在 Targetable 复制免疫状态。
 
 healFree 是独立的标准 Effect，普通 HP healing 按 Definition 对象身份查询其 ACTIVE 实例。它不登记 Restriction，有效性由 Effect 生命周期与竞争决定。复合内容通过安装独立的标准实例取得此语义；明确目标的 Healing 接收不检查该标记。
 

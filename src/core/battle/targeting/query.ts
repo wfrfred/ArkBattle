@@ -27,9 +27,9 @@ import type { State as BattleState } from "../state.js";
 export function damage(
     battle: BattleState,
     source: Unit & Allegiance,
-    ignored: readonly Restriction[] = [],
+    ignore?: (restriction: Restriction) => boolean,
 ): <U extends Unit & Targetable>(target: U) => target is U & Vitality & Allegiance {
-    const allows = allowsRestrictions(battle, source, ignored);
+    const allows = allowsRestrictions(battle, source, ignore);
 
     return <U extends Unit & Targetable>(target: U): target is U & Vitality & Allegiance =>
         target.lifecycle === "PRESENT" &&
@@ -44,9 +44,9 @@ export function damage(
 export function healing(
     battle: BattleState,
     source: Unit & Allegiance,
-    ignored: readonly Restriction[] = [],
+    ignore?: (restriction: Restriction) => boolean,
 ): <U extends Unit & Targetable>(target: U) => target is U & Vitality & Allegiance {
-    const allows = allowsRestrictions(battle, source, ignored);
+    const allows = allowsRestrictions(battle, source, ignore);
 
     return <U extends Unit & Targetable>(target: U): target is U & Vitality & Allegiance =>
         target.lifecycle === "PRESENT" &&
@@ -65,9 +65,9 @@ export function healing(
 export function elementDamage(
     battle: BattleState,
     source: Unit & Allegiance,
-    ignored: readonly Restriction[] = [],
+    ignore?: (restriction: Restriction) => boolean,
 ): <U extends Unit & Targetable>(target: U) => target is U & Elemental & Allegiance {
-    const allows = allowsRestrictions(battle, source, ignored);
+    const allows = allowsRestrictions(battle, source, ignore);
 
     return <U extends Unit & Targetable>(target: U): target is U & Elemental & Allegiance =>
         presence.isPresent(target) &&
@@ -83,9 +83,9 @@ export function elementDamage(
 export function elementHealing(
     battle: BattleState,
     source: Unit & Allegiance,
-    ignored: readonly Restriction[] = [],
+    ignore?: (restriction: Restriction) => boolean,
 ): <U extends Unit & Targetable>(target: U) => target is U & Elemental & Allegiance {
-    const allows = allowsRestrictions(battle, source, ignored);
+    const allows = allowsRestrictions(battle, source, ignore);
 
     return <U extends Unit & Targetable>(target: U): target is U & Elemental & Allegiance =>
         presence.isPresent(target) &&

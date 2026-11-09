@@ -85,11 +85,7 @@ export function createMelee(profile: Profile, timing: Timing): Attack {
                         return { state: battle, value: [] };
                     }
 
-                    const eligible = targeting.damage(
-                        battle,
-                        self,
-                        target.targetable.restrictions.map(({ value }) => value),
-                    );
+                    const eligible = targeting.damage(battle, self, () => true);
 
                     return {
                         state: battle,

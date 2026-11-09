@@ -10,7 +10,7 @@ import * as effects from "../../dist/core/unit/effect/index.js";
 import { topK } from "../../dist/core/common/collection.js";
 import { create as modifier } from "../../dist/core/unit/contribution/attribute.js";
 import {
-    invisible, invisibleRestriction, untargetable, untargetableRestriction,
+    invisible, invisibleRestriction, untargetable,
     camouflageRestriction, allyUntargetableRestriction,
 } from "../../dist/core/effects/visibility.js";
 
@@ -34,7 +34,8 @@ test("mechanism exemption follows Contribution competition without reviving a su
     const owner = get(state, 1);
 
     assert.equal(targetable.allowsRestrictions(state, source)(owner), false);
-    assert.equal(targetable.allowsRestrictions(state, source, [camouflageRestriction])(owner), true);
+    assert.equal(targetable.allowsRestrictions(state, source,
+        restriction => restriction === camouflageRestriction)(owner), true);
 });
 
 test("a shared restriction definition can be exempted without exempting another definition or removing other sources", () => {
@@ -47,16 +48,14 @@ test("a shared restriction definition can be exempted without exempting another 
     const installed = effects.install(state, target, invisible);
     state = installed.state;
     const visibleToDetector = state => targetable.allowsRestrictions(
-        state, source, [invisibleRestriction],
+        state, source, restriction => restriction === invisibleRestriction,
     )(units.get(state, target));
 
     assert.equal(visibleToDetector(state), true);
     const independent = effects.install(state, target, untargetable);
     state = independent.state;
     assert.equal(visibleToDetector(state), false);
-    assert.equal(targetable.allowsRestrictions(state, source, [
-        invisibleRestriction, untargetableRestriction,
-    ])(units.get(state, target)), true);
+    assert.equal(targetable.allowsRestrictions(state, source, () => true)(units.get(state, target)), true);
     state = effects.end(state, independent.value);
     assert.equal(visibleToDetector(state), true);
     state = effects.end(state, installed.value);

@@ -92,7 +92,7 @@ Card 的 RuleContext 按用途区分：DISPLAY／SELECT 接收 Card Ref，DEPLOY
 
 部署请求的 Quote 由 evaluate／preview／positions／deploy 在各自公开入口共用 validateQuote 校验一次：DP 为 null 或有限非负数，stock／slots 为非负安全整数。非法数值统一抛出 RangeError，不作为可覆盖 Rule；内部规则求值与消费信任该前提。Deployable.setDeployment 是未登记实例的纯构造操作，保留完整宿主类型；运行态规则修改仍使用 Change，账户修改由 Deployment 的完整操作负责。
 
-Targetable Restriction 按 Contribution 的登记与互斥规则组合；`allows(battle, source, target)` 直接接收判定所需对象，定义对象本身标识本次豁免。
+Targetable Restriction 按 Contribution 的登记与互斥规则组合；`allows(battle, source, target)` 直接接收判定所需对象。限制查询和四种标准资格的可选 `ignore(restriction): boolean` 在贡献竞争后判断豁免，选择性豁免以 `===` 比较定义对象，全部豁免使用 `() => true`。
 
 ### 模块与公共入口
 

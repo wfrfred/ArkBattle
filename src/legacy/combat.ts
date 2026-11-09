@@ -304,6 +304,7 @@ function enemyDefinition(value: unknown) {
                         ? self.blockable.relation?.blocker
                         : undefined;
                     const eligible = targeting.damage(battle, self);
+                    const blockerEligible = targeting.damage(battle, self, () => true);
                     const withinRange = targeting.inRange(self.position, [
                         { type: "CIRCLE", offset: [0, 0], radius },
                     ]);
@@ -313,12 +314,7 @@ function enemyDefinition(value: unknown) {
                         .filter(hasVitality)
                         .filter(
                             (target) =>
-                                (target.id === blocker?.id &&
-                                    targeting.damage(
-                                        battle,
-                                        self,
-                                        target.targetable.restrictions.map(({ value }) => value),
-                                    )(target)) ||
+                                (target.id === blocker?.id && blockerEligible(target)) ||
                                 (applyWay === "RANGED" && eligible(target) && withinRange(target)),
                         );
                     const blockedFirst = hasBlockable(self)
