@@ -35,15 +35,15 @@ Mechanism 的 lifetime 由现有操作模块导出，公共请求／析构协议
 
 ## 地形接触与调度
 
-Runtime 顺序为 `Movement → Mechanism → Blocking → RouteCompletion`。地形 Mechanism 按 Unit 当前世界坐标计算接触，要求生命周期 PRESENT 且空间存在，不用 Occupancy 代替接触。
+Runtime 依次推进 `Movement → Mechanism → Blocking`。Movement 先推进 Blockable 的阻挡位置，再对 Route 单位推进路线；主路线终点检查成立时立即请求完整 Unit 离场，仍在场、未被阻挡且具备 Locomotion 的单位随后推进自主运动。地形 Mechanism 读取这些操作之后的当前状态，按 Unit 世界坐标计算接触，要求生命周期 PRESENT 且空间存在，不用 Occupancy 代替接触。
 
 轮询维护进入、离开和持续接触。保持接触时仍重判动态资格，例如飞行单位在地穴上落地。轮询不捕获同 Tick 所有中间位置，也不复刻 Unity 对象顺序。安装与结束请求继续显式接续状态；已有 Lifetime 结算时，嵌套 Effect.end 不保证最终注销已完成。
 
-机制按实际地形配置装配，同一实例可以处理参数不同的多个格子。已由预置控制器管理的沼泽、深水不再重复注册静态机制。预置的出现、隐藏与移除使用同一个 Mechanism 生命周期。
+机制按实际地形配置装配，同一实例可以处理参数不同的多个格子。预置控制器负责其管理的沼泽、深水，静态机制装配排除这些地形，避免重复结算。预置的出现、隐藏与移除使用同一个 Mechanism 生命周期。
 
 ## Content 行为
 
-平台等 Content 按 Occupancy 登记格改写当前 Tile，而不是以身体世界位置代替登记。当前预置装置离场时，仅将自己改写的字段恢复为 `definition.initial` 对应值，保留其它当前字段。恢复政策由内容确定，没有通用撤销栈。TileBinding 和 tile-cost Effect 已移除，部署、阻挡与导航统一消费当前 Tile 属性。
+平台等 Content 按 Occupancy 登记格改写当前 Tile，而不是以身体世界位置代替登记。当前预置装置离场时，仅将自己改写的字段恢复为 `definition.initial` 对应值，保留其它当前字段。恢复政策由内容确定，没有通用撤销栈。部署、阻挡与导航统一消费当前 Tile 属性。
 
 射击台 Content 通过 Occupancy 的 SUPPORT Definition 程序，在当前乘员的 blocker.rules 登记平台实例独占的共享二元 Rule，只禁止 GROUND 阻挡，AIR 仍由其余 Blocking 规则判断；onOccupantAdded 安装，onOccupantRemoved 只清除该平台规则，不覆写地块 `allowsBlocking`。处理旧配对事实时仍重查当前乘员，详见 [Occupancy 同步通知](occupancy.md#已通知的业务配对)。原生平台向乘员施加 WALK 条件下的 `highland_common[block_core]`／`BLOCK_FREE`，详见 [Blocking 的原生对照](blocking.md#地块阻挡资格)。
 
@@ -55,4 +55,4 @@ Runtime 顺序为 `Movement → Mechanism → Blocking → RouteCompletion`。�
 - 非 retainOnLeave Effect 显式绑定控制器 Mechanism 的 lifetime，终止时由 DAG 清理并等待；控制器的 Contact 清理直接归 onDisable；Prepare 以 ENDING 调用它时只清 Contact，不手工结束这些 Effect，也不在 onEnd 重复清理。离格、换地形和可逆 Mechanism disable 继续按 Contact 业务请求结束。retainOnLeave 的活性源石等效果不自动建立绑定，避免错误缩短持续期。
 - 地穴由 Content 判断坠落资格，并通过完整 Unit 离场操作完成逻辑结算。
 
-本机沼泽模板的周期为一秒，黑板 value 是重量门槛；PRTS 的三秒描述仍有版本或热更新差异。参数应分别表达周期和重量，不把同一原始字段解释成两种职责。
+当前沼泽叠层周期为一秒，黑板 value 对应重量门槛；Data 分别写入 stackIntervalTicks 和 massThreshold，周期与重量使用独立参数。

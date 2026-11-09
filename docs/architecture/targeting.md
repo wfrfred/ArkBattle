@@ -2,7 +2,7 @@
 
 Targeting 执行本次目标选择；Targetable 提供单位参与索敌的能力及目标侧限制。领域内使用 Request、Filter、Selector、Comparator、Definition、State 等短命名。下文省略 import，targeting 表示 Targeting 领域的命名空间导入。
 
-Targeting 位于 `battle/targeting/`，公共契约从 [index.ts](../../src/core/battle/targeting/index.ts) 导入；Targetable 保留 `unit/capability/targetable/capability.ts` 单文件入口。标准伤害、治疗与元素 Filter 由 Targeting 提供，具体内容显式组合本次请求的策略。
+Targeting 位于 `battle/targeting/`，公共契约从 [index.ts](../../src/core/battle/targeting/index.ts) 导入；Targetable 的入口是 `unit/capability/targetable/capability.ts`。标准伤害、治疗与元素 Filter 由 Targeting 提供，具体内容显式组合本次请求的策略。
 
 ## Targeting
 
@@ -69,13 +69,13 @@ export function hasCandidate(
 
 select 通过 units.all(battle) 按逻辑登记顺序枚举具有 Targetable 的单位，执行 request.filter，固定筛选后的 Unit 快照后调用 request.selector。空集合也交给 Selector。Selector 返回值来自候选的约束属于调用契约，不另设输出恢复或运行时验证层。
 
-hasCandidate 实现在 query.ts，短路判断是否存在通过显式 Filter 的候选，不调用 Selector，不消费 RNG。它不承诺最终一定选出目标，例如数量为零的 Selector 仍返回空结果。Skill 等只读启动条件使用这个查询；需要实际选目标的 Action 接续 select 的 Result。select 保留在 select.ts，按 Selector 返回的状态接续随机消费，不归入只读查询。
+hasCandidate 实现在 query.ts，短路判断是否存在通过显式 Filter 的候选，不调用 Selector，不消费 RNG。它不承诺最终一定选出目标，例如数量为零的 Selector 仍返回空结果。Skill 等只读启动条件使用这个查询；需要实际选目标的 Action 接续 select 的 Result。select 实现在 select.ts，按 Selector 返回的状态接续随机消费，属于有状态选择操作。
 
 filter.ts 提供 and、or、not、notSelf、present、alive、hostile、sameSide、ground、range、blocking、blocker、missingHp，以及标准组合 damage、healing、elementDamage 和 elementHealing。它们各自表达明确条件，调用方选择组合。阻挡关系只影响显式范围与排序政策，不隐式豁免限制。
 
 敌人的 Combat 选择由内容显式提供单向例外：在场、存活且敌对的 blocker 直接成为候选，绕过普通索敌限制与范围。范围攻击的普通候选仍使用 damage 与 range；处于阻挡关系中的 blocker 分支同样保留直选。干员选择自己阻挡的敌人继续检查有效限制，阻挡本身不令隐匿、迷彩或无敌失效。直选只决定选择资格，伤害接收仍由 Damage／Vitality 处理。
 
-compare.ts 提供 combine、distance、hpRatio、blockedFirst。combine 依序比较，第一个非零结果决定顺序；全相同时由稳定选择算法保留候选顺序。blockedFirst 按实际阻挡关系列表的顺序排列相关目标，其他目标交由后续 Comparator 判断。仇恨属性、出场顺序与剩余路线的接入仍见[目标语义缺口](tactical-semantics.md#普通索敌的内容缺口)，不由阵营猜测实体类别。
+compare.ts 提供 combine、distance、hpRatio、blockedFirst。combine 依序比较，第一个非零结果决定顺序；全相同时由稳定选择算法保留候选顺序。blockedFirst 按实际阻挡关系列表的顺序排列相关目标，其他目标交由后续 Comparator 判断。普通仇恨排序所需的属性、实际出场事实与准确剩余路线查询尚未接入，见[普通索敌的内容缺口](tactical-semantics.md#普通索敌的内容缺口)；角色类与敌人类不能由当前阵营推断。
 
 selector.ts 的 first(k, compare) 使用稳定 topK；random(k) 在合法候选中无放回抽取，数量不超过候选数。两者选零个时返回空结果；随机空样本不消费 RNG。不同次选择独立抽样，可以重复选中同一单位。Action 决定在启动、每发释放或其他业务时点调用选择。
 
