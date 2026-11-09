@@ -1,61 +1,53 @@
 # 架构文档
 
-这里定义项目的目标架构：模块应承担的职责、数据与 API、依赖方向及执行语义。实现以这些契约为依据，文件划分服务于职责与阅读顺序。
+这里说明 ArkBattle 的领域职责、数据与 API、依赖方向和执行语义。文档描述当前实现及明确的支持边界；机制证据与调查过程保存在 [Research](../research/00-INDEX.md)。职责、接口或行为改变时，同步修改对应文档。
 
-**已定稿的同步结算契约：** [跨领域操作后的读取与续执行](functional-core.md#状态接续后的读取与续执行)、[每次派发独立选取 Hook 候选](functional-core.md#7-同步候选范围)、[Lifetime 请求与依赖析构](lifetime.md)、[离场清理的必要偏序](deployment.md#离场清理的偏序)。请求同步发布终止态并执行 Prepare；最外层结算器按 DAG 完成 Finalize，宿主等待真实依赖者完整返回。嵌套结束不保证槽位已释放或对象已注销，后继实时事实从最新 battle 查询。
+重要的公共契约：
 
-**已定稿的输出与接收边界：** [Calculate 与 Apply](vitality.md#1-calculate-与-apply-的语义边界)分别负责本笔伤害／治疗的输出计算与目标接收。输出计算不派发本笔受击响应；零计算输出在 Apply 入口拒绝，零实际变化允许成功。两阶段按机制语义安排内容程序，不以复刻原生 Hook 时序为目标。
+- [状态接续与同步重入](functional-core.md#状态接续后的读取与续执行)：业务回调可以结束外层实例；后继实时事实从最新 BattleState 查询，明确采样的事实保留。每次 Hook 派发独立固定候选。
+- [Change 与 Unit 更新](api-conventions.md#51-unit-完整操作与批量变更)：同一宿主的纯变换有序组合，一次发布最终状态，再顺序执行 Settlement。跨领域状态只能通过所属领域操作修改。
+- [Lifetime](lifetime.md)：请求同步发布终止态并执行 Prepare；最外层结算器按依赖图完成 Finalize，宿主等待真实依赖者完整返回。嵌套结束返回不保证对象已注销或槽位已释放。
+- [Calculate 与 Apply](vitality.md#1-calculate-与-apply-的语义边界)：输出计算不构成受击，Apply 才开始接收。零计算输出拒绝，零实际变化允许成功；HP 死亡确认在两侧 Applied 后，EP Burst 随提交同步启动。
+- [Hook](hook.md) 与 [Event](event.md)：类型化的 Unit 本地 Hooks 承载同步业务，Capability 保存专属接收；Event 只提供 UI 需要的瞬时事实，不承担业务结算或统计。
+- [Route](navigation.md#route-定义与进度) 与 [Schedule](schedule.md)：创建者提供静态 Unit Definition 和本次 `initial.route: { plan, offset }`；Route 解释路线并发起 Main 终点离场，Schedule 负责出生与等待关系。Core 每次 step 推进一个 Tick，由调用者决定是否继续。
 
-**已定稿的结算 Hook 类型与登记：** [固定 Context、工作值与取消](vitality.md#16-结算-hook-类型)由四种业务分别提供精确契约。取消不停止接收派发，后续保留已有取消及原因；领域 cancel 构造函数封装类型断言，Applied 只携带成功提交事实。[类型化键与 Unit 本地 Hooks](hook.md)承载固有及动态登记，通用 setHook／removeHook 返回 Change，生命周期键也允许运行时修改；专属接收仍归 Capability。
+测试先从[语义验收](verification.md)选定重要结果，再选择最小代表场景。接口、字段和实现步骤不自动成为独立测试目标；公共契约集中保障，各领域只补充不同的业务后果。
 
-**已定稿的资源操作边界：** [Vitality／Elemental 的资格、接收与提交](vitality.md#18-接收与资源提交接口)由 Battle 编排、Capability 实施；commit 复用对应业务的 CommitContext，返回能力定义的资源报告。HP 死亡确认位于两侧 Applied 后，EP Burst 随资源提交同步处理。
+| 文档 | 内容 |
+| --- | --- |
+| [总体架构](ARCHITECTURE.md) | 项目分层、状态归属、Tick 发布、不可变约定与模块惯例 |
+| [语义验收](verification.md) | 重要结果、集中测试归属与最小验收原则 |
+| [函数式内核](functional-core.md) | 状态接续、同步结算、Hook 与执行边界 |
+| [内容支持与缺口](tactical-semantics.md) | 当前覆盖、未接入机制与验收要求 |
+| [Capability](capability.md) | 配置／状态配对、初始化装配、领域操作与类型约束 |
+| [接口约定](api-conventions.md) | 职责分类、Typed Ref、Change、登记、查询和字段写回 |
+| [Battlefield](battlefield.md) | 地图、纯存储、结构占格、导航与空间查询 |
+| [Hook](hook.md) | 类型化键、本地不可变集合、固有登记、动态变更与派发 |
+| [UI 瞬时输出](event.md) | Event 归属、必要载荷和发生时点 |
+| [Lifetime](lifetime.md) | 所有权、Scope、依赖图、同步 Prepare 与 Finalize |
+| [Action](action.md) | 聚合与执行身份、冷却、释放、输出和终止 |
+| [Skill](skill.md) | 持久 Skill、Activation、SP、持续预算与弹药 |
+| [Elemental](elemental.md) | 四型 EP、Burst Effect、动态恢复预算与同步通知 |
+| [Vitality／Damage／Healing](vitality.md) | 四类结算、Hook、取消、资源提交与死亡 |
+| [Effect](effect.md) | 附着实例、竞争、启停、时间与标准效果库 |
+| [Projectile](projectile.md) | 独立实例、异构集合、运动命中程序与生命周期 |
+| [Targeting／Targetable](targeting.md) | 请求、资格、限制、比较与选择 |
+| [空间存在](presence.md) | 暂时消失、能力限制、主动清理与持续程序 |
+| [空间查询](spatial.md) | 命中几何、范围、扫掠和候选查询 |
+| [几何与坐标](geometry.md) | Tile／World、Shape／Range、转换、相交与首次接触 |
+| [Terrain／Mechanism](terrain.md) | 逐格参数、地形控制器与 Unit Effect |
+| [Navigation／Route／Locomotion](navigation.md) | 寻路、路线解释、Context 与自主运动 |
+| [Schedule](schedule.md) | Wave／Fragment、Branch、出生、时基与等待 |
+| [Blocking](blocking.md) | 关系、资格、容量、批量通知与位置计划 |
+| [Deployment](deployment.md) | Card、经济、部署请求、撤退与死亡账务 |
+| [Occupancy](occupancy.md) | 双槽占格、实例朝向与乘员／支撑配对 |
+| [内容接入](content.md) | 静态角色定义、数据编译、共享规则与 Core 边界 |
 
-**已定稿的外部输出边界：** [Event](event.md)提供 UI 所需的瞬时事实，各领域定义、Battle 汇总。业务结果使用 Outcome／Application，内部响应使用 Hook，统计不读取 Event；不建立覆盖全部领域变化的事件日志。
+项目以重要的游戏语义为依据选择工程结构：
 
-**已确定的 Unit 变更与 Blocking 政策：** [Unit 批量变更](api-conventions.md#51-unit-完整操作与批量变更)由 update 接收单个 Unit Ref 与声明所需能力的 Change：同宿主全部纯应用、一次 Field 发布、原顺序结算；精确私有 state 写回和完整生命周期操作保持原协议。[Blocking](blocking.md#职责与调度政策)明确构造与通知关系，后继局部维护本对象或受影响 owner，不扫描无关批次；完整 Tile 操作仍可全场维护。临时 HP 为 0 不提前解除旧关系，真实离场由 Unit.remove 的统一 prepare 节点接入 Blocking 自身清理。普通接敌每 Tick 在 Movement 后统一执行。
+1. 显著改变实际玩法结果的差异，优先核对并处理。
+2. 局部轨迹或约一个 Tick 的差异，结合实际影响采用简单、确定的项目政策，不要求复刻客户端调度。
+3. 没有可观察业务影响的实现差异，不为此增加复杂度。
+4. 客户端存在某个分支，不自动构成保留抽象或 API 的需求。
 
-各领域文档记录有效的数据模型、API 和执行语义。尚未完成的重构、开放问题和验收要求保留在对应章节；[接口约定](api-conventions.md)汇总尚未统一的接口，[目标语义与实现缺口](tactical-semantics.md)记录未完成的玩法接入。
-
-[Schedule](schedule.md)管理主Wave、Fragment、Branch与Unit等待关系；[Route](navigation.md#route-定义与进度)解释Plan，使用带宿主内稳定身份的Context组织主路线与临时路线。创建者提供静态UnitDefinition及initial.route的`{ plan, offset }`，initializer保存出生时间基准并登记首指令enter程序。Route自行检查Main终点并请求完整离场；Schedule通过离场通知同步清理等待。Core每次step只推进一个Tick，终局由调用者根据状态决定。
-
-已审查部分先按[语义验收](verification.md)确定保留目标，再重新选择最小测试。当前范围为 Battlefield、Unit 独立领域、Action／Allegiance／Blocking／Deployable／Hitbox／Layer／Locomotion／Presence Capability 及对应 Battle 协作，以及 Unit 本地 Hook、HP／EP 结算和 Vitality／Elemental 的资源提交与 Burst 协作。领域文档的关键语义、接入／实现说明与未决内容分别阅读，接口和字段列表不自动成为测试清单。
-
-| 文档                                      | 内容                                                                               |
-| ----------------------------------------- | ---------------------------------------------------------------------------------- |
-| [总体架构](ARCHITECTURE.md)               | 项目分层、状态归属、Tick 发布、不可变约定与模块惯例                                |
-| [已审查范围的语义验收](verification.md) | 关键保留目标、范围边界与最小验收原则 |
-| [Battlefield](battlefield.md) | 地图、纯存储、结构占格、导航与空间查询，以及完整 Battle 结算边界 |
-| [Tactical 函数式内核](functional-core.md) | 状态接续、同步结算、Hook、状态归属与 Tick 发布 |
-| [Tactical 目标语义与实现缺口](tactical-semantics.md) | 未完成的玩法机制、待核对问题与验收案例 |
-| [Capability API](capability.md) | 能力配对、统一初始化与装配、Change 工厂、完整结算、事件责任与模块命名 |
-| [接口约定](api-conventions.md) | 五类接口、Typed Ref、self、时间与尚未统一的接口 |
-| [Hook 集合与登记](hook.md) | 类型化键、Unit 本地不可变集合、固有组合、动态 Change 与生命周期派发 |
-| [UI 瞬时输出](event.md) | Event 的实际需求、领域归属、必要载荷与发生时点 |
-| [Lifetime 与依赖析构](lifetime.md) | 静态描述符、Scope、权威依赖图、同步 Prepare、Pending DAG 与最外层 Finalize |
-| [Action 设计](action.md) | 基础间隔与速度、贡献、Cooldown／Casting、程序与实例、调度和 Hook 契约及待定项 |
-| [Skill 设计](skill.md) | 单槽 Skill／Activation 聚合、两种 Ref、Capability 工厂、SP、持续预算、业务 Hook 与完整终止 |
-| [Elemental 设计](elemental.md) | 四型 EP、动态属性、稳定 Burst 身份、请求与损失通知、完整终止及内容边界 |
-| [Targeting 与 Targetable 设计](targeting.md) | 显式请求与选择入口、只读 Filter／Comparator、支持随机的 Selector、固有与动态限制 API |
-| [Spatial Query](spatial.md) | 命中几何、离散／连续范围、形状扫掠及只读候选查询 |
-| [空间存在](presence.md) | 暂时消失、所属能力 Rule、旧关系与执行清理，以及持续程序和锁定弹道的边界 |
-| [几何与坐标 API](geometry.md) | Tile／World、Shape／Range、坐标转换与纯几何相交及首次接触 |
-| [Terrain 与 Mechanism](terrain.md) | 逐格参数、类型化 Tiles、地形轮询、控制器与 Unit Effect 的职责 |
-| [Navigation、Route 与 Locomotion 设计](navigation.md) | 地图、Overlay、寻路查询、路线执行与运动结算的职责划分 |
-| [Schedule](schedule.md) | Wave／Fragment、Branch 随机、Spawn 初始化、等待关系与同步重入 |
-| [Blocking 设计](blocking.md) | 双端关系、Blockable 唯一归属、分阶段通知、每 Tick 搜索、实时容量与关系身份 |
-| [Vitality / Damage 设计](vitality.md) | Calculate／Apply 边界、精确 Hook 类型、取消与提交报告，以及弱点伤害和特殊生命语义 |
-| [Deployment 与 Unit 生命周期](deployment.md) | Card／场上实例、部署参数与 API、登场／离场职责及支持范围 |
-| [Effect 设计](effect.md)                  | Unit 附着实例、Definition 泛型、生命周期、Hook／Contribution 接入、Aura 与文件职责 |
-| [Projectile 设计](projectile.md) | 独立完整实例、异构 Store／Query、内容回调与更新、Step 候选及终止请求／Finalize |
-| [Tactical 内容接入](content.md) | 主模式配置、静态角色代码、登场内容与 Core 边界 |
-
-[Tactical 研究](../research/00-INDEX.md) 提供玩法行为依据。大语义遵从官方，小差异从简；项目选择自己的执行结构，设计取舍按以下已有分类处理：
-
-1. 显著改变实际游戏行为的差异，优先核对并处理。
-2. 只有局部轨迹或一个 Tick 左右的时序差异时，评估影响范围，采用简单、确定的项目约定，不要求完全复刻官方调度。
-3. 只改变内部实现、不影响可观察结果的差异，不为此增加设计复杂度。
-4. 不因客户端存在某个分支，就保留没有实际业务需求的抽象或 API。
-
-中间过程存在真实业务观察者时，先说明观察者及实际影响，再决定是否细化时序。研究记录中的客户端事实不自动成为项目的实现要求。
-
-架构以玩法需求与明确的项目规则为依据。职责、接口或语义的决策改变时，同步更新相应文档。
+中间过程存在真实业务观察者时，先确定观察者和结果差异，再决定是否细化时序。原生事实、项目选择和当前支持边界分别说明，不能用现有代码或测试证明设计理应如此。
