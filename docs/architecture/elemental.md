@@ -1,4 +1,4 @@
-# Elemental 设计
+# Elemental
 
 Elemental 负责元素值的接收、资源提交、爆发触发与恢复预算；EP Damage／Healing 的 Calculate／Apply 由 Battle 编排。整轮 Burst 由 Core 标准效果库的 Effect 承载，复用 Effect 的身份、状态、时间推进与 Lifetime。标准爆发程序实现 HP 伤害、控制、属性变化和周期输出，Data 提供数值配置，Content 通过公开接口实现特殊单位机制。当前四型为 NEURAL、EROSION、BURN、NECROSIS；狂躁尚未接入。
 
@@ -28,7 +28,7 @@ interface Definition {
 }
 ```
 
-元素 Type 是字符串字面量联合，同名的 as const 对象提供 Type.NEURAL 等运行时常量，联合类型与 ELEMENT_TYPES 均从该对象导出。合法字面量可以直接传入，不要求使用 TypeScript enum 成员。Data／Content 直接提供完整静态 Definition；Data 先按接收者类别选好 bursts 表，Core 通过 `definition.elemental.bursts[type]` 取得实际 Effect Definition。initialize 作为能力构造入口，校验基础数值和各型爆发时长，再建立初始状态；Definition 与 bursts 共享原引用。内部计算信任已建立的配置与能力配对。
+元素 Type 是字符串字面量联合，同名的 as const 对象提供 Type.NEURAL 等运行时常量，联合类型与 ELEMENT_TYPES 均从该对象导出；接口接受对应字面量。Data／Content 直接提供完整静态 Definition；Data 按接收者类别选择 bursts 表，Core 通过 `definition.elemental.bursts[type]` 取得实际 Effect Definition。initialize 作为能力构造入口，校验基础数值和各型爆发时长，再建立初始状态；Definition 与 bursts 共享原引用。内部计算信任已建立的配置与能力配对。
 
 四条 EP 分别保存数值，共用基础上限、自然回复速度与抗性。elementResistance 用于 EP 损伤，damageResistance 用于 HP 元素伤害；两个结算入口和两个属性各自独立。抗性有效值限制在 0–95，回复与爆发恢复速度不小于零，上限不小于 1。
 
@@ -65,13 +65,13 @@ interface Burst extends Effect<BurstState, Elemental> {
 }
 ```
 
-Core 提供八个具体 Effect：神经眩晕／麻痹、物理／元素侵蚀、法术／元素灼燃，以及消耗 SP／恢复攻击力的凋亡。每个实现只接收自身所需的数值参数，并明确描述行为，不通过共同的大参数表或一串开关解释效果组合。Data 在模块初始化时传入数值，构建并保存完整静态 Definition；每轮只查表复用。initialize 返回 `{ type }`，state 不重复保存时间进度。BurstDefinition 是普通 Effect Definition 加共同的只读 durationTicks 恢复预算；onInstall 接收尚未初始化时间的普通 Effect，以此预算建立 DURATION 后形成 Burst，后续程序在领域回调边界恢复该类型。Burst 的 Typed Ref 保留 DURATION 写入约束，不另保存 remainingTicks、周期 Clock 或攻击力恢复 scaler。
+Core 提供八个具体 Effect：神经眩晕／麻痹、物理／元素侵蚀、法术／元素灼燃，以及消耗 SP／恢复攻击力的凋亡。每个实现接收自身所需的数值参数。Data 在模块初始化时传入数值，构建并保存完整静态 Definition，爆发时查表复用。initialize 返回 `{ type }`，state 只保存元素类型。BurstDefinition 是普通 Effect Definition 加共同的只读 durationTicks 恢复预算；onInstall 接收尚未初始化时间的普通 Effect，以此预算建立 DURATION 后形成 Burst，后续程序在领域回调边界恢复该类型。Burst 的 Typed Ref 保留 DURATION 写入约束；expiration 是恢复、周期边界与攻击力恢复共用的唯一进度。
 
 Burst 的 id、host、source、enabled、lifecycle 由 Effect 提供，Elemental 的 burst 槽位只保存它的 Typed Ref。`ref(self)` 复用 Effect Ref，地址为 host + Effect ID；没有独立 Burst ID 分配器或 Lifetime。旧引用不能操作后来的爆发。来源引用保存历史身份，不要求来源仍在场，也不隐含生命周期绑定；跨 Battle 使用 Ref 仍属于调用契约错误。
 
-[data/arknights/elemental.ts](../../src/data/arknights/elemental.ts) 保存原始类型映射、八套数值和具体 Effect 的选择表。新增元素时新增对应 Effect 实现，补充元素类型与映射表；通用 EP 的 Calculate／Apply／Commit 以及已有爆发程序不需要为新机制增加分支。共享函数只处理进度、EP 恢复和结束收尾。通用控制实现在 [effects/control.ts](../../src/core/effects/control.ts)，Content 直接复用；通用 Effect 引擎不解释元素规则。
+[data/arknights/elemental.ts](../../src/data/arknights/elemental.ts) 保存原始类型映射、八套数值和具体 Effect 的选择表。通用 EP 的 Calculate／Apply／Commit 通过映射调用对应 Effect；共享函数只处理进度、EP 恢复和结束收尾。通用控制实现在 [effects/control.ts](../../src/core/effects/control.ts)，Content 直接复用；通用 Effect 引擎不解释元素规则。
 
-需要随本轮结束的产物通过 `scope(effects.lifetime, ref)` 绑定根 Burst Effect：灼燃减抗、封技、阻止 SP 回复等在根实例结束时清理。是否允许新依赖沿用 Effect Lifetime 的可用性，不建立另一套 Burst 状态机。
+需要随该次爆发结束的产物通过 `scope(effects.lifetime, ref)` 绑定根 Burst Effect：灼燃减抗、封技、阻止 SP 回复等在根实例结束时清理。新依赖的资格由 Effect Lifetime 的可用性判断。
 
 神经眩晕由独立的 stunDurationTicks 配置建立 DEADLINE，不绑定根恢复时间；Data 明确配置恢复十秒与眩晕十秒，二者不是同一个事实。零眩晕期限使用通用安装到期处理，不启用控制。永久侵蚀减防和冷却结束后尚未消费的麻痹也具有独立生命周期，不绑定根实例。永久性由侵蚀规则决定，不由减防数值的正负推断；再次神经爆发时按标准规则重置尚存麻痹的层数。
 
@@ -131,7 +131,7 @@ Damage 的 before／after／loss 描述本次元素类型，Burst 身份描述�
 
 通用 Formula、Output、BeforeReceive、BeforeCommit、targetApplied、sourceApplied 存于 [Unit.hooks](hook.md)，由对应 Battle 子域定义键与派发。基础目标资格成立后执行 beforeReceive，再读取最新 Rule；取消、失效及已提交结果按各业务 Outcome 表达。
 
-Elemental 仅保存专属 DamageReceivingHook 和实际资源／Burst 通知，统一由 Hooks 分组声明。专属接收使用 `setHook("damageReceiving", hook)`／`removeHook("damageReceiving", id)`，与事实通知共用普通登记工厂并返回 Change。接收 Context 固定 `{ target, request, calculated }`，工作值为 Pending；取消后仍派发后续 Hook，但保留已有取消及原因。全部接收 Hook 完成后，receiveDamage 将最终 amount 截为非负数，再交给 Battle 构造 CommitContext；BeforeCommit、资源提交及报告使用同一份接收量，零接收量仍可成功。中间各 Hook 不单独截零。领域 cancel 构造函数封装类型断言，不新增运行时取消检查。EP Healing 没有专属 Receiving，不导出取消构造器。
+Elemental 仅保存专属 DamageReceivingHook 和实际资源／Burst 通知，统一由 Hooks 分组声明。专属接收使用 `setHook("damageReceiving", hook)`／`removeHook("damageReceiving", id)`，与事实通知共用普通登记工厂并返回 Change。接收 Context 固定 `{ target, request, calculated }`，工作值为 Pending；取消后仍派发后续 Hook，但保留已有取消及原因。全部接收 Hook 完成后，receiveDamage 将最终 amount 截为非负数，再交给 Battle 构造 CommitContext；BeforeCommit、资源提交及报告使用同一份接收量，零接收量仍可成功。中间各 Hook 不单独截零。领域 cancel 构造函数封装类型断言，取消保持约束由类型表达。EP Healing 没有专属 Receiving，不导出取消构造器。
 
 事实通知固定 `{ host, event }`，T=void；以下 event 在资源写入或生命周期转移处确定：
 
@@ -149,7 +149,7 @@ EP 损伤的爆发分支在同一次 commitDamage 内按以下顺序执行：
 → effects.install 登记标准 Burst Effect 及 Unit owner
     → onInstall 写入 Elemental 的 Burst 引用，再通过 Effect.setExpiration 提交 DURATION { elapsed: 0, total: durationTicks, rate: 0 }
     → 记录 ELEMENTAL_BURST，派发 burstStarted
-    → 重新读取仍可执行的本轮实例，执行一次性爆发输出
+    → 重新读取该次爆发实例，仍可执行时运行一次性爆发输出
     → 通用安装流程处理到期；未到期时启用持续输出
 → damaged
 → 返回固定资源报告
@@ -160,7 +160,7 @@ EP 损伤的爆发分支在同一次 commitDamage 内按以下顺序执行：
 
 通用 Effect 在 onInstall 完成后检查到期，因此零预算仍产生即时伤害和独立产物，随后正常结束并通知 damaged。尚存麻痹、永久减防与独立眩晕继续遵守自己的生命周期，临时派生输出随根清理；根自身的持续贡献不经历启用。
 
-burstStarted 可以同步取消本轮 Effect；随后 damaged 和适用的 Battle Applied 仍报告已经发生的提交，本轮启动输出不执行。后续嵌套业务不重算外层报告。无活动 Lifetime 结算时，取消可以使 burstEnded 嵌套完成；有活动结算时等待 Finalize。当前对象、资格与 Hook 登记在完整业务返回后从最新 BattleState 查询，明确采样的数值和原 Ref 继续使用，不误操作后来创建的新一轮。
+burstStarted 可以同步取消该次爆发 Effect；随后 damaged 和适用的 Battle Applied 仍报告已经发生的提交，该实例的启动输出不执行。后续嵌套业务不重算外层报告。无活动 Lifetime 结算时，取消可以使 burstEnded 嵌套完成；有活动结算时等待 Finalize。当前对象、资格与 Hook 登记在完整业务返回后从最新 BattleState 查询，明确采样的数值和原 Ref 继续使用，不误操作后来创建的爆发实例。
 
 ## 5. 完整结束与离场
 
@@ -178,7 +178,7 @@ Burst 的结束复用 Effect Lifetime，先同步请求，再由最外层结算�
 
 ENDING 期间仍占用爆发槽位，重复请求不覆盖首次原因或重复清理。嵌套结束返回不保证 EP 已重置、槽位已清空或 burstEnded 已派发。Unit 所有权保证宿主直到根 Effect 整个 Finalize 返回才可注销；资源收尾直接使用当前宿主，不以旧快照兜底。
 
-burstEnded 表示 Elemental 侧资源收尾完成，触发时根 Effect 仍为 ENDING，随后才从 Effect 容器移除。该通知可以创建下一轮；通用 Finalize 接续最新 Unit，仅移除旧 Effect ID，不覆盖新槽位。无需为此增加 afterRemove 回调。
+burstEnded 表示 Elemental 侧资源收尾完成，触发时根 Effect 仍为 ENDING，随后才从 Effect 容器移除。该通知可以创建下一次爆发；通用 Finalize 接续最新 Unit，仅移除旧 Effect ID，不覆盖新槽位。
 
 正常完成与取消都在宿主仍存在时重置 EP，显式在场取消也采用相同政策。重置属于结束操作，不派发 healed。End 保留 FINISHED 与携带 reason 的 CANCELLED 语义，并用于通知及依赖清理；Effect 自然到期映射为 FINISHED。恢复进度由 UI 查询当前 expiration，不输出自然恢复完成或爆发结束的诊断 Event。
 
@@ -197,11 +197,11 @@ allEP = currentMaxEP × elapsed' / duration
 
 恢复期间四型 EP 会逐步回填，不一直保持零值到结束；Burst 槽位存在期间仍拒绝新的 EP 损伤和显式回复。速度为零或宿主暂时不具备推进资格时暂停，后续只推进当前一步，不积攒补算。动态上限与恢复速度在各次实际推进时重新求值。
 
-同一份有效进度决定跨过的周期边界与凋亡攻击力恢复。内容程序完成预算内最后一次周期业务后返回，由通用 Effect 框架按最新 expiration 处理到期，Burst 不再重复判断普通自然终止；取消、提前 finish 或宿主离场不补未来输出。不另装一枚周期 Effect 保存同类时钟，也不在 onEnd 补发另一个调度器遗漏的周期。
+同一份有效进度决定跨过的周期边界与凋亡攻击力恢复。内容程序完成预算内最后一次周期业务后返回，通用 Effect 框架按最新 expiration 处理自然到期；取消、提前 finish 或宿主离场不补未来输出。周期业务由根 Effect 的同一进度调度，onEnd 只负责资源收尾。
 
 Elemental 的 Runtime 推进只负责无 Burst 时的自然回复，量为 `当前 recoverySpeed / TICKS_PER_SECOND`，保留小数，不派发显式 heal 的 healed Hook 或普通治疗通知。按当前有效 MaxEP 完成归一化与回复后，四型 EP 均未变化则返回原 BattleState；速度为零仍需处理上限降低。Effect 与自然回复分别由既有调度阶段安排；阶段之前创建的实例可以参与当次推进，阶段之后创建的实例等下一次候选，不新增首 Tick 特判。
 
-Core 同一宿主只允许一个 Burst。少数多种元素爆发的特殊内容由 Content 组合输出和生命周期，不引入通用多阶段爆发或启动免疫窗口。狂躁及其余角色特例的内容覆盖仍需补充；这不改变上述四型与单 Burst 契约。
+Core 同一宿主只允许一个 Burst。少数多种元素爆发的特殊内容由 Content 组合输出和生命周期，Core 不提供通用多阶段爆发或启动免疫窗口。标准库覆盖上述四型，不包含狂躁及其余角色专属爆发。
 
 ### 必要回归场景
 
