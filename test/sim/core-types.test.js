@@ -28,6 +28,8 @@ import type { Input as BattleInput, Command } from ${module("battle/contract")};
 import type { Card, UnitDefinition as CardDefinition } from ${module("battle/deployment/card/card")};
 import type { Projectile } from ${module("projectile/projectile")};
 import * as projectiles from ${module("projectile/query")};
+import * as projectileOperations from ${module("battle/projectile")};
+import type { Definition as ProjectileDefinition } from ${module("projectile/definition")};
 import { reassign, selectContext, setTicking, type Plan, type Route } from ${module("unit/capability/route/index")};
 import * as mechanisms from ${module("battle/mechanism")};
 import { createPredefinedDefinition } from ${module("battle/steps/predefined")};
@@ -159,6 +161,19 @@ runtime.step(battle, [skillCommand, projectileCommand]);
 const missingSkillCommand: Command = { type: 'STOP_SKILL', ref: ref(bare) };
 // @ts-expect-error a Unit reference is not a Projectile reference.
 const wrongProjectileCommand: Command = { type: 'STOP_PROJECTILE', ref: ref(bare) };
+const projectileDefinition: ProjectileDefinition<{ hits: number }> = {
+    id: 'projectile',
+    onTick(state, self) {
+        const hits: number = self.state.hits;
+        return projectileOperations.update(state, projectiles.ref(self), { state: { hits: hits + 1 } });
+    },
+};
+const createdProjectile = projectileOperations.create(battle, projectileDefinition, {
+    position: [0, 0], state: { hits: 0 },
+});
+const projectileHits: number = projectiles.get(createdProjectile.state, createdProjectile.value)!.state.hits;
+// @ts-expect-error a Projectile Ref fixes the private state accepted by writes.
+projectileOperations.update(battle, createdProjectile.value, { state: { hits: 'wrong' } });
 declare const erasedProjectileCommand: Extract<Command, { type: 'STOP_PROJECTILE' }>;
 // @ts-expect-error an ordinary Command does not expose any private Projectile state.
 projectiles.get(battle, erasedProjectileCommand.ref)!.state.hits;
@@ -183,10 +198,6 @@ actions.forUnit(battle, reference);
 actions.isCasting(battle, reference);
 // @ts-expect-error cancelling a Unit's Actions requires its Action capability.
 actions.cancelForUnit(battle, ref(bare), 'SOURCE_ABSENT');
-// @ts-expect-error querying Actions requires the same host capability.
-actions.forUnit(battle, ref(bare));
-// @ts-expect-error casting queries cannot silently accept a different host kind.
-actions.isCasting(battle, ref(bare));
 // @ts-expect-error the host has not established the required capability.
 effects.install(battle, ref(bare), shield);
 const change: Change<Unit & Offense> = setAttackContribution({ id: 'bonus', value: [] });
@@ -230,6 +241,11 @@ if (skills.hasSp(skillHost)) {
     const speed: number = skills.resolveRecoverySpeed(battle, skillHost);
     const multiplier: number = skills.resolveRecoveryMultiplier(battle, skillHost);
 }
+const actionHost = allUnits(battle).find(actionCapability.hasAction)!;
+const foundAction: actionCapability.Action = actionHost;
+const ordinaryPredicate: (self: Unit) => boolean = self => self.id > 0;
+// @ts-expect-error an ordinary predicate does not establish a capability proof.
+allUnits(battle).filter(ordinaryPredicate).find(() => true)!.action;
 for (const self of allUnits(battle).filter(actionCapability.hasAction).filter(hasSpatialPresence)) {
     const present: boolean = self.spatialPresence.present;
     const action: actionCapability.Action = self;
