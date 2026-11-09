@@ -465,4 +465,4 @@ core/
 
 Core 提供四型元素的八套标准爆发，狂躁只在候选目录中。`control.silence` 仅限制 Skill 发动，不提供完整沉默或静默语义。
 
-`healFree` 只限制治疗索敌，与接收禁疗分开；Damage／Healing 的 Calculate、Apply、Hook 和提交时序见 [Vitality](vitality.md)。
+`healFree` 是只供普通 HP 治疗选择检查的标准 Effect，按 Definition 身份和 ACTIVE 生命周期生效，不登记目标限制贡献；独立 EP 回复与明确目标的 Healing 接收不检查它。Damage／Healing 的 Calculate、Apply、Hook 和提交时序见 [Vitality](vitality.md)。

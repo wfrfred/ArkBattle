@@ -42,39 +42,27 @@ function restriction(
     };
 }
 
-export const invisibilityKind = Symbol("invisibility");
-
-export const camouflageKind = Symbol("camouflage");
-
-export const untargetableKind = Symbol("untargetable");
-
-export const allyUntargetableKind = Symbol("ally-untargetable");
-
-const allowsSameSide: targetable.Restriction["allows"] = (_battle, { source, owner }) =>
+const allowsSameSide: targetable.Restriction["allows"] = (_battle, source, owner) =>
     !hasAllegiance(source) ||
     !hasAllegiance(owner) ||
     source.allegiance.side === owner.allegiance.side;
 
 export const invisibleRestriction: targetable.Restriction = {
-    kind: invisibilityKind,
     allows: allowsSameSide,
 };
 
 export const camouflageRestriction: targetable.Restriction = {
-    kind: camouflageKind,
-    allows(_battle, { source, owner }) {
+    allows(_battle, source, owner) {
         return !hasAllegiance(source) || !hasAllegiance(owner) || !areHostile(source, owner);
     },
 };
 
 export const untargetableRestriction: targetable.Restriction = {
-    kind: untargetableKind,
     allows: allowsSameSide,
 };
 
 export const allyUntargetableRestriction: targetable.Restriction = {
-    kind: allyUntargetableKind,
-    allows(_battle, { source, owner }) {
+    allows(_battle, source, owner) {
         return (
             !hasAllegiance(source) ||
             !hasAllegiance(owner) ||

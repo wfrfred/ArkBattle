@@ -39,7 +39,6 @@ export function createTacticalProjectileDemo<
     MechanismStates extends readonly object[],
     PredefinedTypes extends readonly object[],
 >(input: Input<CardStates, MechanismStates, PredefinedTypes>, cachedOnly = false) {
-    const marker = { ...healFree, id: "contact-mark" };
     const boost: Definition<object, Offense> = {
         id: "post-launch-attack-boost",
         initialize: () => ({}),
@@ -75,7 +74,7 @@ export function createTacticalProjectileDemo<
     const hit = (battle: BattleState, self: Projectile<tracking.State>): BattleState =>
         tracking.hit(battle, self, (state, current, target) => {
             if (hasTargetable(target)) {
-                state = install(state, unitRef(target), marker, {
+                state = install(state, unitRef(target), healFree, {
                     source: current.state.source,
                     expiration: { type: "DEADLINE", tick: state.tick + 45 },
                 }).state;

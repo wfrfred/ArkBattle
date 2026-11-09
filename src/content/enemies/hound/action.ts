@@ -30,14 +30,19 @@ export function create(profile: Profile, timing: Timing): Attack {
 
                     const owner = hasBlockable(self) ? self.blockable.relation?.blocker : undefined;
                     const target = owner === undefined ? undefined : units.get(battle, owner);
-                    const eligible = targeting.damage(battle, self, () => true);
+                    if (target === undefined || !hasTargetable(target)) {
+                        return { state: battle, value: [] };
+                    }
+
+                    const eligible = targeting.damage(
+                        battle,
+                        self,
+                        target.targetable.restrictions.map(({ value }) => value),
+                    );
 
                     return {
                         state: battle,
-                        value:
-                            target !== undefined && hasTargetable(target) && eligible(target)
-                                ? [units.ref(target)]
-                                : [],
+                        value: eligible(target) ? [units.ref(target)] : [],
                     };
                 },
                 operations: [

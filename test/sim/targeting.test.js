@@ -59,10 +59,10 @@ test("standard HP eligibility is independent of the chosen range origin and uses
         .filter(target => hasLayer(target) && target.layer.type === "GROUND")), [1]);
     state = update(state, units.ref(get(state, 3)), disappear());
     assert.deepEqual(ids(eligible(state)), [1, 2]);
-    assert.equal(targetable.allowsRestrictions(state, source, ["DAMAGE"])(get(state, 3)), true);
+    assert.equal(targetable.allowsRestrictions(state, source)(get(state, 3)), true);
 });
 
-test("healing uses effective MaxHP and keeps HP or EP demand independently of Burst and EP reception Rules", () => {
+test("mixed healing keeps HP or EP demand while only an ACTIVE healFree marker restricts HP selection", () => {
     const patient = {
         ...living, allegiance: { side: "ALLY" },
         elemental: createArknightsElementalDefinition({ receiver: "ENEMY" }),
@@ -82,16 +82,29 @@ test("healing uses effective MaxHP and keeps HP or EP demand independently of Bu
         id: "no-ep-healing", allows: () => false,
     }));
     const source = get(state, 0);
-    const hpRecipients = candidates(state).filter(targeting.healing(state, source));
-    const recipients = state => candidates(state)
-        .filter(target => targeting.healing(state, source)(target) || targeting.elementHealing(state, source)(target))
-        .filter(targetable.allowsRestrictions(state, source, ["HEAL"]));
+    const hpRecipients = state => candidates(state).filter(targeting.healing(state, source));
+    const epRecipients = state => candidates(state).filter(targeting.elementHealing(state, source));
+    const recipients = state => {
+        const hp = targeting.healing(state, source);
+        const ep = targeting.elementHealing(state, source);
+        return candidates(state).filter(target => hp(target) || ep(target));
+    };
 
     assert.ok(get(state, 4).elemental.burst);
-    assert.deepEqual(ids(topK(hpRecipients, 3, targeting.hpRatio)), [1, 4]);
+    assert.deepEqual(ids(topK(hpRecipients(state), 3, targeting.hpRatio)), [1, 4]);
     assert.deepEqual(ids(recipients(state)), [1, 2, 4]);
-    state = effects.install(state, units.ref(get(state, 2)), healFree).state;
-    assert.deepEqual(ids(recipients(state)), [1, 4]);
+
+    const patientRef = units.ref(get(state, 2));
+    state = wound(state, patientRef, 50);
+    const marker = effects.install(state, patientRef, healFree, { enabled: false });
+    state = marker.state;
+    assert.deepEqual(ids(hpRecipients(state)), [1, 2, 4]);
+    state = effects.setEnabled(state, marker.value, true);
+    assert.deepEqual(ids(hpRecipients(state)), [1, 4]);
+    assert.deepEqual(ids(epRecipients(state)), [2]);
+    assert.deepEqual(ids(recipients(state)), [1, 2, 4]);
+    state = effects.setEnabled(state, marker.value, false);
+    assert.deepEqual(ids(hpRecipients(state)), [1, 2, 4]);
 });
 
 test("EP selection checks current resource eligibility without executing reception Rules", () => {
@@ -125,7 +138,6 @@ test("EP selection checks current resource eligibility without executing recepti
     assert.ok(damageChecks > 0);
     state = update(state, target, elemental.removeRule("damageRules", "receive-damage"));
     state = injure(state, target, 200).state;
-    state = effects.install(state, target, healFree).state;
     assert.deepEqual(ids(healingCandidates(state)), [1]);
     assert.equal(healingChecks, 0);
     const restore = { source: null, target, parameters: { power: 200 } };

@@ -14,17 +14,8 @@ export interface Definition {
 
 export type Input = contribution.Input<attribute.Modifier, Unit & Targetable>;
 
-export type Purpose = "DAMAGE" | "HEAL" | "ELEMENTAL_INJURY" | "ELEMENTAL_INJURY_HEALED" | "EFFECT";
-
-export interface Context {
-    readonly source: Unit;
-    readonly purposes: readonly Purpose[];
-    readonly owner: Unit & Targetable;
-}
-
 export interface Restriction {
-    readonly kind: symbol;
-    readonly allows: (battle: BattleState, context: Context) => boolean;
+    readonly allows: (battle: BattleState, source: Unit, target: Unit & Targetable) => boolean;
 }
 
 interface Contributions {
@@ -88,15 +79,13 @@ export function resolveTaunt(battle: BattleState, self: Unit & Targetable): numb
 export function allowsRestrictions(
     battle: BattleState,
     source: Unit,
-    purposes: readonly Purpose[],
-    ignore?: (kind: symbol) => boolean,
-): (owner: Unit & Targetable) => boolean {
-    return (owner) =>
+    ignored: readonly Restriction[] = [],
+): (target: Unit & Targetable) => boolean {
+    return (target) =>
         contribution
-            .resolve(owner.targetable.restrictions)
+            .resolve(target.targetable.restrictions)
             .every(
                 (restriction) =>
-                    (ignore?.(restriction.kind) ?? false) ||
-                    restriction.allows(battle, { source, purposes, owner }),
+                    ignored.includes(restriction) || restriction.allows(battle, source, target),
             );
 }

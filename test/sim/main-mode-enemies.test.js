@@ -117,7 +117,7 @@ test('a hound attacks its hidden blocker while still respecting invincibility', 
   const hound = initialize({ id: 1, position: [2, 2.5], definition, initial: routeInitial([2, 2.5]) });
   const before = advanceBlocking(addUnit(addUnit(emptyBattle(), blocker), hound));
   const selectTargets = action.attack.targetGroups[0].select;
-  assert.equal(allowsRestrictions(before, hound, ['DAMAGE'])(getUnit(before, 0)), false);
+  assert.equal(allowsRestrictions(before, hound)(getUnit(before, 0)), false);
   assert.deepEqual(selectTargets(before, unitRef(hound)).value.map(ref => ref.id), [0]);
   const started = startAction(before, actionRef(unitRef(hound), action));
   const hit = advanceAction(started.state, started.value.ref);
@@ -142,7 +142,7 @@ test('crossbow selects melee for its actual blocker while ranged targeting keeps
   const ranged = actions.ranged.attack.targetGroups[0].select;
 
   assert.equal(inRange(bow.position, narrow)(getUnit(state, 0)), false);
-  assert.equal(allowsRestrictions(state, bow, ['DAMAGE'])(getUnit(state, 0)), false);
+  assert.equal(allowsRestrictions(state, bow)(getUnit(state, 0)), false);
   assert.deepEqual(melee(state, unitRef(bow)).value.map(ref => ref.id), [0]);
   assert.deepEqual(ranged(state, unitRef(bow)).value, []);
   assert.deepEqual(definition.action.select(state, getUnit(state, 1)).value, ['melee']);

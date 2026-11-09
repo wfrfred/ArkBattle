@@ -4,6 +4,7 @@ import { hasHitbox } from "../../unit/capability/hitbox/capability.js";
 import { isSpatiallyPresent } from "../../unit/capability/presence/capability.js";
 import {
     allowsRestrictions,
+    type Restriction,
     type Targetable,
 } from "../../unit/capability/targetable/capability.js";
 import {
@@ -13,6 +14,7 @@ import {
 } from "../../unit/capability/vitality/capability.js";
 import { hasElemental, type Elemental } from "../../unit/capability/elemental/capability.js";
 import { available, resolveDamageRatio } from "../../unit/capability/elemental/query.js";
+import { healFree } from "../../effects/protection.js";
 import { overlaps } from "../../geometry/intersection.js";
 import type { WorldPosition } from "../../geometry/coordinate.js";
 import type { Range } from "../../geometry/range.js";
@@ -21,9 +23,9 @@ import type { State as BattleState } from "../state.js";
 export function damage(
     battle: BattleState,
     source: Unit,
-    ignore?: (kind: symbol) => boolean,
+    ignored: readonly Restriction[] = [],
 ): <U extends Unit & Targetable>(target: U) => target is U & Vitality {
-    const allows = allowsRestrictions(battle, source, ["DAMAGE"], ignore);
+    const allows = allowsRestrictions(battle, source, ignored);
 
     return <U extends Unit & Targetable>(target: U): target is U & Vitality =>
         target.lifecycle === "PRESENT" &&
@@ -39,9 +41,9 @@ export function damage(
 export function healing(
     battle: BattleState,
     source: Unit,
-    ignore?: (kind: symbol) => boolean,
+    ignored: readonly Restriction[] = [],
 ): <U extends Unit & Targetable>(target: U) => target is U & Vitality {
-    const allows = allowsRestrictions(battle, source, ["HEAL"], ignore);
+    const allows = allowsRestrictions(battle, source, ignored);
 
     return <U extends Unit & Targetable>(target: U): target is U & Vitality =>
         target.lifecycle === "PRESENT" &&
@@ -52,15 +54,18 @@ export function healing(
         hasAllegiance(target) &&
         source.allegiance.side === target.allegiance.side &&
         target.vitality.hp < resolveMaxHp(target.definition.vitality, target.vitality) &&
+        !target.effects
+            .values()
+            .some((effect) => effect.definition === healFree && effect.lifecycle === "ACTIVE") &&
         allows(target);
 }
 
 export function elementDamage(
     battle: BattleState,
     source: Unit,
-    ignore?: (kind: symbol) => boolean,
+    ignored: readonly Restriction[] = [],
 ): <U extends Unit & Targetable>(target: U) => target is U & Elemental {
-    const allows = allowsRestrictions(battle, source, ["ELEMENTAL_INJURY"], ignore);
+    const allows = allowsRestrictions(battle, source, ignored);
 
     return <U extends Unit & Targetable>(target: U): target is U & Elemental =>
         isSpatiallyPresent(target) &&
@@ -77,9 +82,9 @@ export function elementDamage(
 export function elementHealing(
     battle: BattleState,
     source: Unit,
-    ignore?: (kind: symbol) => boolean,
+    ignored: readonly Restriction[] = [],
 ): <U extends Unit & Targetable>(target: U) => target is U & Elemental {
-    const allows = allowsRestrictions(battle, source, ["ELEMENTAL_INJURY_HEALED"], ignore);
+    const allows = allowsRestrictions(battle, source, ignored);
 
     return <U extends Unit & Targetable>(target: U): target is U & Elemental =>
         isSpatiallyPresent(target) &&

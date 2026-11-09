@@ -10,8 +10,8 @@ import * as effects from "../../dist/core/unit/effect/index.js";
 import { topK } from "../../dist/core/common/collection.js";
 import { create as modifier } from "../../dist/core/unit/contribution/attribute.js";
 import {
-    invisible, invisibleRestriction, invisibilityKind,
-    camouflageRestriction, camouflageKind, allyUntargetableRestriction,
+    invisible, invisibleRestriction, untargetable, untargetableRestriction,
+    camouflageRestriction, allyUntargetableRestriction,
 } from "../../dist/core/effects/visibility.js";
 
 const definition = (side, restrictions = [], taunt = 0) => ({
@@ -33,11 +33,11 @@ test("mechanism exemption follows Contribution competition without reviving a su
     const source = get(state, 0);
     const owner = get(state, 1);
 
-    assert.equal(targetable.allowsRestrictions(state, source, ["DAMAGE"])(owner), false);
-    assert.equal(targetable.allowsRestrictions(state, source, ["DAMAGE"], kind => kind === camouflageKind)(owner), true);
+    assert.equal(targetable.allowsRestrictions(state, source)(owner), false);
+    assert.equal(targetable.allowsRestrictions(state, source, [camouflageRestriction])(owner), true);
 });
 
-test("all instances of an exempt mechanism are skipped while independent restrictions and innate sources remain", () => {
+test("a shared restriction definition can be exempted without exempting another definition or removing other sources", () => {
     let state = battle([
         creation("ALLY"),
         creation("ENEMY", [{ id: "innate", value: invisibleRestriction }]),
@@ -47,18 +47,23 @@ test("all instances of an exempt mechanism are skipped while independent restric
     const installed = effects.install(state, target, invisible);
     state = installed.state;
     const visibleToDetector = state => targetable.allowsRestrictions(
-        state, source, ["DAMAGE"], kind => kind === invisibilityKind,
+        state, source, [invisibleRestriction],
     )(units.get(state, target));
 
     assert.equal(visibleToDetector(state), true);
-    state = update(state, target, targetable.setRestriction({ id: "independent", value: camouflageRestriction }));
+    const independent = effects.install(state, target, untargetable);
+    state = independent.state;
     assert.equal(visibleToDetector(state), false);
-    state = update(state, target, targetable.removeRestriction("independent"));
+    assert.equal(targetable.allowsRestrictions(state, source, [
+        invisibleRestriction, untargetableRestriction,
+    ])(units.get(state, target)), true);
+    state = effects.end(state, independent.value);
+    assert.equal(visibleToDetector(state), true);
     state = effects.end(state, installed.value);
-    assert.equal(targetable.allowsRestrictions(state, source, ["DAMAGE"])(units.get(state, target)), false);
+    assert.equal(targetable.allowsRestrictions(state, source)(units.get(state, target)), false);
     assert.equal(visibleToDetector(state), true);
     state = update(state, target, targetable.removeRestriction("innate"));
-    assert.equal(targetable.allowsRestrictions(state, source, ["DAMAGE"])(units.get(state, target)), true);
+    assert.equal(targetable.allowsRestrictions(state, source)(units.get(state, target)), true);
 });
 
 test("visibility distinguishes different sides from hostile sides using the supplied source", () => {
@@ -69,11 +74,11 @@ test("visibility distinguishes different sides from hostile sides using the supp
         creation("ALLY", [{ id: "ally-free", value: allyUntargetableRestriction }]),
     ]);
     const source = get(state, 0);
-    const allows = purpose => targetable.allowsRestrictions(state, source, [purpose]);
+    const allows = targetable.allowsRestrictions(state, source);
 
-    assert.equal(allows("DAMAGE")(get(state, 1)), false);
-    assert.equal(allows("DAMAGE")(get(state, 2)), true);
-    assert.equal(allows("DAMAGE")(get(state, 3)), false);
+    assert.equal(allows(get(state, 1)), false);
+    assert.equal(allows(get(state, 2)), true);
+    assert.equal(allows(get(state, 3)), false);
 });
 
 test("ordinary taunt comparison uses signed integer attributes after contribution changes", () => {

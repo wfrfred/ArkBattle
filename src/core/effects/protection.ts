@@ -8,18 +8,8 @@ import * as targetable from "../unit/capability/targetable/capability.js";
 import * as units from "../unit/index.js";
 import { untargetableRestriction } from "./visibility.js";
 
-export const invincibilityKind = Symbol("invincibility");
-
-export const healFreeKind = Symbol("heal-free");
-
 export const invincibleRestriction: targetable.Restriction = {
-    kind: invincibilityKind,
     allows: untargetableRestriction.allows,
-};
-
-export const healFreeRestriction: targetable.Restriction = {
-    kind: healFreeKind,
-    allows: (_battle, { purposes }) => !purposes.includes("HEAL"),
 };
 
 export const invincible: Definition<object, targetable.Targetable> = {
@@ -58,36 +48,9 @@ export const invincible: Definition<object, targetable.Targetable> = {
     },
 };
 
-export const healFree: Definition<object, targetable.Targetable> = {
+export const healFree: Definition<object> = {
     id: "protection/heal-free",
     initialize: () => ({}),
-    onEnable(state, self) {
-        const unit = units.get(state, self.host);
-        if (unit === undefined) {
-            return state;
-        }
-
-        return updateUnit(
-            state,
-            units.ref(unit),
-            targetable.setRestriction({
-                id: `@effect/${self.id}/heal-free`,
-                value: healFreeRestriction,
-            }),
-        );
-    },
-    onDisable(state, self) {
-        const unit = units.get(state, self.host);
-        if (unit === undefined) {
-            return state;
-        }
-
-        return updateUnit(
-            state,
-            units.ref(unit),
-            targetable.removeRestriction(`@effect/${self.id}/heal-free`),
-        );
-    },
 };
 
 function receptionRules(id: string, enabled: boolean): Change<units.Unit> {
