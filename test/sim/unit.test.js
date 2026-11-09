@@ -6,6 +6,7 @@ import * as units from "../../dist/core/unit/index.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import { update, remove } from "../../dist/core/battle/unit.js";
 import { output as damageOutput } from "../../dist/core/battle/damage/hp/index.js";
+import { hasOccupancy } from "../../dist/core/unit/capability/occupancy/index.js";
 
 test("Unit construction rejects conflicting roles and installs entry effects on the registered host", () => {
     const entryEffect = { id: "entry-effect", initialize: () => ({ charges: 2 }) };
@@ -28,9 +29,12 @@ test("Unit construction rejects conflicting roles and installs entry effects on 
         },
     }), TypeError);
 
-    const state = battle([{ definition, position: [0, 0] }]);
+    const state = battle([{
+        definition, position: [0, 0], initial: { occupancy: { tile: [0, 0] } },
+    }]);
     const current = units.all(state).find((unit) => unit.definition === definition);
     assert.equal(current.allegiance.side, "ALLY");
+    assert.equal(hasOccupancy(current), false);
     assert.equal(current.effects.values().find((effect) => effect.definition === entryEffect).state.charges, 2);
 });
 

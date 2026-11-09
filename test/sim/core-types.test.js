@@ -148,21 +148,37 @@ const routedInput: UnitInput<typeof routedDefinition> = {
     initial: { route: { plan, offset: [0, 0] } },
 };
 initialize(battle, routedInput);
+const unusedRoute = initialize(battle, { ...routedInput, definition: bare.definition }).value;
+// @ts-expect-error unused initialization input does not establish a capability.
+unusedRoute.route;
+// @ts-expect-error known input values remain checked even when the capability is absent.
+initialize(battle, { ...routedInput, definition: bare.definition, initial: { route: { plan, offset: 'wrong' } } });
+// @ts-expect-error an unknown initialization key is rejected alongside a valid one.
+initialize(battle, { ...routedInput, initial: { ...routedInput.initial, rouet: routedInput.initial.route } });
 // @ts-expect-error Route construction requires the instance Plan and offset.
 initialize(battle, { id: 5, definition: routedDefinition, position: [0, 0] });
 type SelectedDefinition = typeof routedDefinition | typeof occupiedDefinition;
 declare const selectedDefinition: SelectedDefinition;
 declare const chooseRoute: boolean;
-const selectedInput: UnitInput<SelectedDefinition> = chooseRoute ? routedInput : occupiedInput;
+const selectedInput = chooseRoute ? routedInput : occupiedInput;
 const selectedUnit = initialize(battle, selectedInput).value;
 // @ts-expect-error a union result promises only capabilities shared by every branch.
 selectedUnit.route;
 // @ts-expect-error independent definition selection cannot discard required instance input.
 initialize(battle, { id: 6, definition: selectedDefinition, position: [0, 0] });
-// @ts-expect-error an input for the other union branch cannot satisfy a routed definition.
+// @ts-expect-error an extra Occupancy input cannot replace the required Route input.
 const mismatchedInput: UnitInput<SelectedDefinition> = { id: 6, definition: routedDefinition, position: [0, 0], initial: occupiedInput.initial };
-// @ts-expect-error inference cannot pair a union definition with just one branch's input.
+// @ts-expect-error a uniform input must cover every possible definition's requirements.
 initialize(battle, { id: 6, definition: selectedDefinition, position: [0, 0], initial: routedInput.initial });
+const uniformInput: UnitInput<SelectedDefinition> = {
+    id: 6, definition: selectedDefinition, position: [0, 0],
+    initial: { ...routedInput.initial, ...occupiedInput.initial },
+};
+initialize(battle, uniformInput);
+declare const maybeRouteDefinition: typeof routedDefinition | { readonly id: 'plain'; readonly hooks: Hooks };
+initialize(battle, { ...routedInput, definition: maybeRouteDefinition });
+// @ts-expect-error a possible routed definition still requires its input.
+initialize(battle, { id: 6, definition: maybeRouteDefinition, position: [0, 0] });
 declare const scheduleSpawn: Spawn;
 const routedSpawn: Spawn = { ...scheduleSpawn, definition: routedDefinition };
 // @ts-expect-error scheduled construction requires the Route capability.
@@ -405,13 +421,17 @@ const occupiedPredefined = createPredefinedDefinition({
     id: 2, alias: null, initiallyPresent: true,
     creation: { type: 'UNIT', ...occupiedInput },
 });
-const selectedCreation: PredefinedUnitCreation<SelectedDefinition> = chooseRoute
-    ? { type: 'UNIT', ...routedInput }
-    : { type: 'UNIT', ...occupiedInput };
-createPredefinedDefinition<SelectedDefinition>({
+const selectedCreation = chooseRoute
+    ? { type: 'UNIT' as const, ...routedInput }
+    : { type: 'UNIT' as const, ...occupiedInput };
+createPredefinedDefinition({
     id: 4, alias: null, initiallyPresent: true, creation: selectedCreation,
 });
-// @ts-expect-error removing the allocated id does not erase a predefined branch's pairing.
+createPredefinedDefinition({
+    id: 5, alias: null, initiallyPresent: true,
+    creation: { type: 'UNIT', ...uniformInput },
+});
+// @ts-expect-error a predefined routed definition still requires Route input.
 const mismatchedCreation: PredefinedUnitCreation<SelectedDefinition> = { type: 'UNIT', definition: routedDefinition, position: [0, 0], initial: occupiedInput.initial };
 // @ts-expect-error predefined inference cannot discard a union branch's required input.
 createPredefinedDefinition({ id: 4, alias: null, initiallyPresent: true, creation: { type: 'UNIT', definition: selectedDefinition, position: [0, 0] } });
@@ -436,13 +456,10 @@ createPredefinedDefinition({ id: 0, alias: null, initiallyPresent: true, creatio
 const mismatchedCard = { ...counterCard, card: { ...counterCard.card, initialize: (state: State) => ({ state, value: { label: 'wrong' } }) } };
 // @ts-expect-error aggregating a Card cannot weaken initialize/callback pairing.
 runtime.initialize({ ...baseInput, deployment: { definition: account, cards: [mismatchedCard] }, initialMechanisms: [], predefines: [] });
-const missingOccupancy = { id: 0, alias: null, initiallyPresent: true, creation: { type: 'UNIT' as const, definition: bare.definition, position: [0, 0] as const, initial: { occupancy: { tile: [0, 0] as const } } } };
-// @ts-expect-error ordinary Unit construction cannot initialize an undeclared capability.
-initialize(battle, { id: 4, ...missingOccupancy.creation });
-// @ts-expect-error a predefined Unit cannot initialize an undeclared capability.
-createPredefinedDefinition(missingOccupancy);
-// @ts-expect-error raw Runtime input obeys the same construction constraint.
-runtime.initialize({ ...baseInput, deployment: { definition: account, cards: [] }, initialMechanisms: [], predefines: [missingOccupancy] });
+const unusedOccupancy = { id: 0, alias: null, initiallyPresent: true, creation: { type: 'UNIT' as const, definition: bare.definition, position: [0, 0] as const, initial: { occupancy: { tile: [0, 0] as const } } } };
+initialize(battle, { id: 4, ...unusedOccupancy.creation });
+createPredefinedDefinition(unusedOccupancy);
+runtime.initialize({ ...baseInput, deployment: { definition: account, cards: [] }, initialMechanisms: [], predefines: [unusedOccupancy] });
 // @ts-expect-error raw Runtime input cannot erase required capability input either.
 runtime.initialize({ ...baseInput, deployment: { definition: account, cards: [] }, initialMechanisms: [], predefines: [incompletePredefined] });
 runtime.initialize({ ...baseInput, initialMechanisms: [], predefines: [], deployment: { definition: account, cards: [{ ...counterCard, card: { ...counterCard.card,

@@ -12,14 +12,12 @@ import type { Ref } from "../../common/ref.js";
 import { instantiateMechanismPlacement } from "../creation/mechanism.js";
 import { add, remove as removeUnit } from "../unit.js";
 import type { State as BattleState } from "../state.js";
-import type { Definitions } from "../../unit/capability/catalog.js";
+import type { Definitions, Inputs } from "../../unit/capability/catalog.js";
 
 export type PredefinedUnitCreation<D extends object = UnitDefinition & Partial<Definitions>> = {
     readonly type: "UNIT";
     readonly definition: D & UnitDefinition & Partial<Definitions>;
-} & NoInfer<
-    D extends unknown ? Omit<UnitInput<D & UnitDefinition & Partial<Definitions>>, "id"> : never
->;
+} & Omit<UnitInput<D & UnitDefinition & Partial<Definitions>>, "id">;
 
 export interface PredefinedMechanismCreation<S extends object = object> {
     readonly type: "MECHANISM";
@@ -44,9 +42,33 @@ export interface PredefinedPresence {
     readonly source: Source;
 }
 
-export function createPredefinedDefinition<T extends object>(
-    definition: PredefinedDefinition<T>,
-): PredefinedDefinition<T> {
+type UnitCreationInput = Omit<UnitInput, "id" | "definition" | "initial"> & {
+    readonly type: "UNIT";
+    readonly definition: UnitDefinition & Partial<Definitions>;
+    readonly initial?: Partial<Inputs>;
+};
+
+type InvalidUnitCreation<C extends UnitCreationInput> = C extends unknown
+    ? C extends Omit<UnitInput<C["definition"]>, "id">
+        ? Exclude<keyof NonNullable<C["initial"]>, keyof Inputs> extends never
+            ? never
+            : C
+        : C
+    : never;
+
+type PredefinedHeader = Omit<PredefinedDefinition, "creation">;
+
+export function createPredefinedDefinition<
+    I extends PredefinedHeader & { readonly creation: UnitCreationInput },
+>(
+    definition: I & NoInfer<[InvalidUnitCreation<I["creation"]>] extends [never] ? unknown : never>,
+): I;
+export function createPredefinedDefinition<S extends object>(
+    definition: PredefinedHeader & { readonly creation: PredefinedMechanismCreation<S> },
+): PredefinedHeader & { readonly creation: PredefinedMechanismCreation<S> };
+export function createPredefinedDefinition(
+    definition: StoredPredefinedDefinition,
+): StoredPredefinedDefinition {
     assertNonnegativeSafeInteger(definition.id, "predefined definition id");
 
     return definition;
