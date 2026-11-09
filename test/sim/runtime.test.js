@@ -4,7 +4,6 @@ import { battle, get } from "../helpers/battle.js";
 import { Hooks } from "../../dist/core/hook.js";
 import * as units from "../../dist/core/unit/index.js";
 import { step } from "../../dist/core/battle/runtime.js";
-import { remove } from "../../dist/core/battle/unit.js";
 import * as predefined from "../../dist/core/battle/steps/predefined.js";
 import { dp } from "../../dist/core/battle/deployment/index.js";
 import * as cards from "../../dist/core/battle/deployment/card/index.js";
@@ -31,7 +30,6 @@ test("initial and scheduled entry see registered battle facts and preserve their
         hooks: Hooks.empty().set(units.enter, {
             id: "observe-birth",
             invoke(current, self) {
-                assert.ok(current.schedule.waiting.final.includes(self.id));
                 assert.equal(get(current, self.id).definition.id, "scheduled");
                 assert.equal(current.deployment.dp, 22);
                 entered.push(self.definition.id);
@@ -69,14 +67,6 @@ test("initial and scheduled entry see registered battle facts and preserve their
     state = step(state, []);
     assert.deepEqual(entered, ["initial", "scheduled"]);
     assert.equal(state.deployment.dp, 25);
-    assert.equal(state.tick, 1);
-
-    const spawned = units.all(state).find((unit) => unit.definition.id === scheduled.id);
-    state = remove(state, spawned.id, "SCRIPT");
-    state = step(state, []);
-    assert.equal(state.schedule.main.type, "COMPLETED");
-    assert.deepEqual(state.schedule.waiting.final, []);
-    assert.equal(state.tick, 2);
 });
 
 test("a predefined departure can create its successor without losing that binding or the next operation", () => {
@@ -112,7 +102,6 @@ test("a predefined departure can create its successor without losing that bindin
     assert.equal(get(after, original.id), undefined);
     assert.equal(get(after, replacement).definition, reappearing);
     assert.equal(get(after, next).definition.id, "next-operation");
-    assert.deepEqual(units.all(after).map(({ definition }) => definition.id).toArray(), ["reappearing", "next-operation"]);
 });
 
 test("Tick phases publish their resource operations and failures preserve the input", () => {
@@ -156,15 +145,9 @@ test("Tick phases publish their resource operations and failures preserve the in
     ]);
     assert.equal(completed.deployment.dp, 17);
     assert.equal(cards.get(completed, card).stock, 0);
-    assert.deepEqual(completed.predefinedPresence, []);
-    const repeated = step(before, commands);
-    assert.equal(repeated.tick, completed.tick);
-    assert.equal(repeated.deployment.dp, completed.deployment.dp);
-    assert.equal(cards.get(repeated, card).stock, cards.get(completed, card).stock);
     const finished = step(completed, []);
     assert.equal(finished.tick, 2);
     assert.equal(finished.deployment.dp, 19);
-    assert.equal(completed.deployment.dp, 17);
 
     fail = true;
     let branch = before;

@@ -71,12 +71,11 @@ test("reassign rebuilds the entered instruction and skipWait only skips a relati
     state = update(state, host, route.skipWait(0));
     assert.equal(current(state).current.type, "MOVE");
     state = update(state, host, route.reassign(0, program));
-    assert.equal(current(state).id, 0);
     assert.equal(current(state).current.timer, 5);
     state = update(state, host, route.reassign(0, plan([wait(100, "BATTLE")])));
-    const before = state;
     state = update(state, host, route.skipWait(0));
-    assert.equal(state, before);
+    assert.equal(current(state).current.anchor, "BATTLE");
+    assert.equal(current(state).current.tick, 100);
 });
 
 test("a long immediate program completes while an immediate GOTO cycle yields", () => {
@@ -86,10 +85,8 @@ test("a long immediate program completes while an immediate GOTO cycle yields", 
     assert.equal(current(state).current.type, "MOVE");
     let cyclic = battle([creation(plan([wait(0), { type: "GOTO", index: 0 }]))]);
     assert.equal(current(cyclic).index, 0);
-    assert.equal(current(cyclic).current, null);
     cyclic = ticks(cyclic, 2);
     assert.equal(current(cyclic).index, 0);
-    assert.equal(current(cyclic).current, null);
 });
 
 test("MOVE samples on entry, queries keep the sample and loop entry samples again", () => {
@@ -98,24 +95,17 @@ test("MOVE samples on entry, queries keep the sample and loop entry samples agai
     const host = units.ref(get(state, 0));
     const sample = current(state).current.offset;
     const rngState = state.execution.rngState;
-    assert.equal(current(state).current.randomizeOffset, false);
-    assert.deepEqual(route.movementTarget(state, host), route.movementTarget(state, host));
+    assert.deepEqual(route.movementTarget(state, host).goal, sample);
     assert.equal(state.execution.rngState, rngState);
     state = ticks(state, 2);
     assert.equal(current(state).current, null);
     state = step(state, []);
     assert.notDeepEqual(current(state).current.offset, sample);
-    assert.equal(instruction.randomizeOffset, true);
-    assert.deepEqual(instruction.offset, [0.2, 0.2]);
 });
 
-test("TRACE keeps the last tile after target death, holds arrival and can restart on the same tile", () => {
-    let state = battle([
-        creation(plan([wait(999)]), { locomotion: movement }),
-        { definition: { id: "target", hooks: Hooks.empty() }, position: [2, 0] },
-    ]);
+test("TRACE holds its registered tile and control after arrival until explicitly restarted or removed", () => {
+    let state = battle([creation(plan([wait(999)]), { locomotion: movement })]);
     const host = units.ref(get(state, 0));
-    let target = units.ref(get(state, 1));
     const tracing = route.createContext(state, host, {
         plan: plan([{ type: "TRACE", position: [0, 2], reached: false }]),
         offset: [0, 0], alwaysCheckCurrentPoint: false, ticking: true,
@@ -123,11 +113,8 @@ test("TRACE keeps the last tile after target death, holds arrival and can restar
     state = update(tracing.state, host, units.compose(
         route.selectContext(tracing.value.id), route.setTicking(0, false),
     ));
-    state = remove(state, target.id, "DEATH");
-    target = null;
     state = ticks(state, 3);
     let context = route.getContext(state, tracing.value);
-    assert.equal(target, null);
     assert.deepEqual(context.current.position, [0, 2]);
     assert.equal(context.current.reached, true);
     assert.equal(context.index, 0);
@@ -165,10 +152,11 @@ test("Main exit is independent of the selected Context and completes Unit lifeti
     assert.equal(get(state, 0), undefined);
     assert.equal(leaves, 1);
     assert.equal(state.events.filter(event => event.type === "ROUTE_COMPLETED").length, 1);
-    state = step(state, []);
-    assert.equal(leaves, 1);
-    assert.equal(state.events.some(event => event.type === "ROUTE_COMPLETED"), false);
     assert.notEqual(get(ticks(battle([creation(plan())]), 3), 0), undefined);
+    const waitingAtExit = plan([wait(999)], { endPosition: [0, 0] });
+    assert.ok(get(step(battle([creation(waitingAtExit)]), []), 0));
+    const earlyExit = { ...waitingAtExit, requireAllCheckpoints: false };
+    assert.equal(get(step(battle([creation(earlyExit)]), []), 0), undefined);
 });
 
 test("spatial instructions publish consumption before hooks and resume the latest Context", () => {

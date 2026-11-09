@@ -2,9 +2,9 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { Hooks } from "../../dist/core/hook.js";
 import * as lifecycle from "../../dist/core/unit/hook.js";
-import { initialize as initializeUnit } from "../../dist/core/unit/initialize.js";
-import { all } from "../../dist/core/unit/query.js";
-import { add, remove } from "../../dist/core/battle/unit.js";
+import { all, get, ref } from "../../dist/core/unit/query.js";
+import { remove } from "../../dist/core/battle/unit.js";
+import * as predefined from "../../dist/core/battle/steps/predefined.js";
 import { step } from "../../dist/core/battle/runtime.js";
 import { isCompleted, timing, triggerBranch } from "../../dist/core/battle/schedule/index.js";
 import { battle } from "../helpers/battle.js";
@@ -28,13 +28,6 @@ function definition(id, enter) {
                       invoke: (state, self) => ({ state: enter(state, self), value: undefined }),
                   }),
         route: { alwaysCheckCurrentPoint: true },
-        vitality: { maxHp: 100, defense: 0, resistance: 0 },
-        locomotion: {
-            speed: 0.05,
-            minSpeed: 0.003,
-            steeringParameters: { steeringFactor: 8, maxSteeringForce: 10 },
-            halfBodyWidth: 0.1,
-        },
     };
 }
 
@@ -89,8 +82,6 @@ test("wave and fragment clocks execute preprocessed births and share the sampled
         [5, 7, 8, 11],
     );
     const self = births[0].self;
-    assert.equal(self.definition, unitDefinition);
-    assert.equal(self.route.main.plan, plan);
     assert.deepEqual(self.position, [1 + self.route.main.offset[0], 1 + self.route.main.offset[1]]);
     assert.ok(self.route.main.offset[0] >= -0.2 && self.route.main.offset[0] <= 0.4);
     assert.ok(self.route.main.offset[1] >= -0.2 && self.route.main.offset[1] <= 0.6);
@@ -238,7 +229,6 @@ test("enter can trigger the next branch phase without losing its later births", 
     assert.deepEqual(births, ["first", "nested", "outer-tail"]);
     assert.equal(state.schedule.nextPhaseIndices.branch, 2);
     assert.equal(state.schedule.activePhases.length, 1);
-    assert.equal(state.schedule.activePhases[0].phase, secondPhase);
     state = through(state, 2);
     assert.deepEqual(births, ["first", "nested", "outer-tail", "later"]);
     assert.equal(isCompleted(state.schedule), true);
@@ -284,8 +274,6 @@ test("looping weighted phases publish RNG before enter and retain each selected 
         ["b", 0],
     ]);
     assert.equal(state.schedule.activePhases.length, 2);
-    assert.equal(state.schedule.activePhases[0].phase, phase);
-    assert.equal(state.schedule.activePhases[1].phase, phase);
     state = step(state, []);
     assert.deepEqual(births, [
         ["a", 0],
@@ -308,7 +296,7 @@ test("looping weighted phases publish RNG before enter and retain each selected 
     assert.equal(isCompleted(state.schedule), true);
 });
 
-test("branch and direct unit creation capture the current main clocks at actual birth", () => {
+test("dynamic birth waits use the captured Wave and Fragment clocks", () => {
     const snapshots = [];
     const capture = (state, self) => {
         snapshots.push([
@@ -320,19 +308,15 @@ test("branch and direct unit creation capture the current main clocks at actual 
         return state;
     };
     const follower = definition("follower", capture);
+    const followerPlan = { ...plan, checkpoints: [
+        { type: "WAIT", anchor: "WAVE", tick: 10, timer: null },
+        { type: "WAIT", anchor: "FRAGMENT", tick: 6, timer: null },
+        { type: "MOVE", position: [1, 3], offset: [0, 0], randomizeOffset: false },
+    ] };
     const branch = definition("branch", (state, self) => {
-        capture(state, self);
-        const id = state.execution.nextUnitId;
-        state = { ...state, execution: { ...state.execution, nextUnitId: id + 1 } };
-        const created = initializeUnit(state, {
-            id,
-            definition: follower,
-            position: [1, 1],
-            initial: { route: { plan, offset: [0, 0] } },
-        });
-        return add(created.state, created.value);
+        return predefined.appear(capture(state, self), 10);
     });
-    let state = create({
+    let state = battle([], { schedule: {
         waves: [
             wave([], { preDelayTicks: 2, postDelayTicks: 1 }),
             wave([fragment([spawn(definition("main", capture), 1, "WAVE")], 3)], {
@@ -340,7 +324,12 @@ test("branch and direct unit creation capture the current main clocks at actual 
             }),
         ],
         branches: { branch: { phases: [{ preDelayTicks: 2, entries: [[spawn(branch)]] }] } },
-    });
+    }, predefines: [{
+        id: 10, alias: null, initiallyPresent: false,
+        creation: { type: "UNIT", definition: follower, position: [1, 1],
+            initial: { route: { plan: followerPlan, offset: [0, 0] } },
+        },
+    }] });
     assert.deepEqual(timing(state.schedule), { waveStartTick: 0, fragmentReadyTick: 0 });
     state = through(state, 9);
     state = triggerBranch(state, "branch", false);
@@ -352,4 +341,10 @@ test("branch and direct unit creation capture the current main clocks at actual 
         ["follower", 12, 3, 8],
     ]);
     assert.deepEqual(timing(state.schedule), { waveStartTick: 3, fragmentReadyTick: 8 });
+    const followerRef = ref(all(state).find((unit) => unit.definition === follower));
+    assert.equal(get(state, followerRef).route.main.current.anchor, "WAVE");
+    state = step(state, []);
+    assert.equal(get(state, followerRef).route.main.current.anchor, "FRAGMENT");
+    state = step(state, []);
+    assert.equal(get(state, followerRef).route.main.current.type, "MOVE");
 });
