@@ -11,16 +11,10 @@ export function createCardDefinition({
     stock = 1, stockLimit = 1, activeLimit = 1,
     refund = { rate: 0.5, limit: "BASE_COST" },
     cooldownOnDeploy = false, recoverOnRetreatOrDeath = true, increaseCostOnRetreatOrDeath = true,
-    placement, buildableType, advancedBuildableMask = 1,
-    allowedSiteConditions, deploymentRules = [], unitHooks = Hooks.empty(),
+    placement = "ALL", allowedSiteConditions = [conditions.normal], deploymentRules = [], unitHooks = Hooks.empty(),
     initialize = battle => ({ state: battle, value: {} }),
     ...rest
 } = {}) {
-    const site = placement ?? buildableType ?? "ALL";
-    const allowed = allowedSiteConditions ?? [
-        [1, conditions.normal], [2, conditions.deepsea], [4, conditions.tide], [8, conditions.night],
-    ].filter(([bit]) => (advancedBuildableMask & bit) !== 0).map(([, condition]) => condition);
-
     return {
         cost, redeployTicks, slots, stock, stockLimit, activeLimit, refund,
         cooldownOnDeploy, recoverOnRetreatOrDeath, increaseCostOnRetreatOrDeath,
@@ -29,8 +23,8 @@ export function createCardDefinition({
             allows(battle, { request }) {
                 const tile = getTile(battle.battlefield.map, request.tilePosition);
                 return tile !== undefined && tile.state.placement !== "NONE" &&
-                    (site === "ALL" || tile.state.placement === "ALL" || tile.state.placement === site) &&
-                    (tile.state.siteCondition === null || allowed.includes(tile.state.siteCondition));
+                    (placement === "ALL" || tile.state.placement === "ALL" || tile.state.placement === placement) &&
+                    (tile.state.siteCondition === null || allowedSiteConditions.includes(tile.state.siteCondition));
             },
         }, ...deploymentRules],
         unitHooks, initialize, ...rest,

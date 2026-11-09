@@ -1,20 +1,24 @@
 import { tiles as tileEntries } from './tiles.js';
 import { normal } from '../../dist/content/terrain/definition.js';
-import { initialize } from "./unit.js";
+import { initialize, getUnit } from "./unit.js";
+import { ref } from "../../dist/core/unit/query.js";
 import { createBattleState } from "../../dist/core/battle/state.js";
 import { add as addUnit } from "../../dist/core/battle/unit.js";
 import { create } from "../../dist/core/battlefield/state.js";
 import { create as createMap } from "../../dist/core/battlefield/map/map.js";
-import { createTile } from "./tiles.js";
+import { create as createTile } from "../../dist/core/battlefield/map/tile.js";
+import { normal as normalSite } from "../../dist/content/terrain/condition.js";
 import * as blocking from "../../dist/core/battle/blocking/index.js";
-import * as query from "../../dist/core/battle/blocking/index.js";
 import * as blocker from "../../dist/core/unit/capability/blocking/index.js";
 import { Hooks } from "../../dist/core/hook.js";
 
 export function fixture(units = [], { rows = 3, columns = 12 } = {}) {
     const tile = createTile({
-        heightType: "LOWLAND", meleeBlockable: true, buildableType: "ALL", passableMask: "ALL",
-        terrain: normal.create({}), walkCost: 1, advancedBuildableMask: 1,
+        terrain: normal.create({}),
+        initial: {
+            elevation: "LOWLAND", placement: "ALL", passability: "ALL",
+            walkCost: 1, allowsBlocking: true, siteCondition: normalSite,
+        },
     });
     const map = createMap(rows, columns, tileEntries(Array(rows * columns).fill(tile)));
     let battle = createBattleState(create(map));
@@ -51,9 +55,9 @@ export function target(id = 20, { position = [2.25, 1], volume = 1, layer = "GRO
 }
 
 export function acquire(battle, id = 10) {
-    return blocking.search(battle, { id });
+    return blocking.search(battle, ref(getUnit(battle, id)));
 }
 
 export function ownerId(battle, id = 20) {
-    return query.blockerOf(battle, { id })?.id;
+    return blocking.blockerOf(battle, ref(getUnit(battle, id)))?.id;
 }

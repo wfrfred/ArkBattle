@@ -6,7 +6,8 @@ import { create as createBattlefield } from "../../dist/core/battlefield/state.j
 import { add as addUnit } from "../../dist/core/battle/unit.js";
 import { createBattleState } from "../../dist/core/battle/state.js";
 import { create as createMap } from "../../dist/core/battlefield/map/map.js";
-import { createTile } from "./tiles.js";
+import { create as createTile } from "../../dist/core/battlefield/map/tile.js";
+import { normal as normalSite } from "../../dist/content/terrain/condition.js";
 import { initialize } from "./unit.js";
 import { actionCapability } from "./actions.js";
 import { create as createAttack } from "../../dist/content/actions/attack.js";
@@ -14,19 +15,19 @@ import { create as createAttack } from "../../dist/content/actions/attack.js";
 export const geometry = [{ type: "CIRCLE", offset: [0, 0], radius: 10 }];
 const hit = { type: "CIRCLE", offset: [0, 0], radius: 0.1 };
 const tile = createTile({
-    heightType: "LOWLAND", meleeBlockable: true,
-    buildableType: "ALL",
-    passableMask: "ALL",
-    terrain: normal.create({}), walkCost: 1, advancedBuildableMask: 1,
+    terrain: normal.create({}),
+    initial: {
+        elevation: "LOWLAND", placement: "ALL", passability: "ALL",
+        walkCost: 1, allowsBlocking: true, siteCondition: normalSite,
+    },
 });
 const map = createMap(1, 32, tileEntries(Array(32).fill(tile)));
 
-export function actionDefinition(power = 7, extra = {}) {
-    const { baseAttackTimeTicks = 10, ...configuration } = extra;
+export function actionDefinition(power = 7, configuration = {}) {
     return createAttack(
         {
             id: "primary",
-            intervalTicks: baseAttackTimeTicks,
+            intervalTicks: 10,
             speed: 100,
             triggerBindingId: "primary",
             targetGroups: [
