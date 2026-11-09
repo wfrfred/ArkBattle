@@ -1,4 +1,8 @@
-import { assertNonnegativeNumber, assertPositiveNumber } from "./assert.js";
+import {
+    assertNonnegativeNumber,
+    assertNonnegativeSafeInteger,
+    assertPositiveNumber,
+} from "./assert.js";
 
 export type Seed = number;
 
@@ -19,6 +23,8 @@ export interface Rng {
     weighted<T>(items: NonEmptyArray<readonly [T, number]>): T;
 
     shuffle<T>(items: readonly T[]): T[];
+
+    sample<T>(items: Iterable<T>, count: number): readonly T[];
 
     state(): Seed;
 }
@@ -110,6 +116,25 @@ export function createRng(seed: Seed): Rng {
         return result;
     }
 
+    function sample<T>(items: Iterable<T>, count: number): readonly T[] {
+        assertNonnegativeSafeInteger(count, "sample count");
+
+        if (count === 0) {
+            return [];
+        }
+
+        const pool = [...items];
+        const size = Math.min(count, pool.length);
+
+        for (let index = 0; index < size; index++) {
+            const selected = index + int(pool.length - index);
+
+            [pool[index], pool[selected]] = [pool[selected]!, pool[index]!];
+        }
+
+        return pool.slice(0, size);
+    }
+
     return {
         next,
         int,
@@ -117,6 +142,7 @@ export function createRng(seed: Seed): Rng {
         pick,
         weighted,
         shuffle,
+        sample,
         state() {
             return rngState;
         },

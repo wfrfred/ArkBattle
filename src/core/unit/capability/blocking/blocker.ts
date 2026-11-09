@@ -1,5 +1,6 @@
 import type { State as BattleState, Result } from "../../../battle/state.js";
 import { assertNonnegativeNumber, assertNonnegativeSafeInteger } from "../../../common/assert.js";
+import { roundToEven } from "../../../common/math.js";
 import * as contribution from "../../contribution/contribution.js";
 import type { Unit } from "../../unit.js";
 import type { Relation, Hook } from "./contract.js";
@@ -90,8 +91,5 @@ export function resolveCapacity(definition: Definition, state: State): number {
         addition += modifier.value;
     }
 
-    const value = Math.max(0, definition.capacity + addition);
-    const lower = Math.floor(value);
-
-    return value - lower === 0.5 ? lower + (lower % 2) : Math.round(value);
+    return roundToEven(Math.max(0, definition.capacity + addition));
 }
