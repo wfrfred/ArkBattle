@@ -2,7 +2,7 @@
 
 本页规定 Navigation、Route 与 Locomotion 的类型、API 与行为契约。
 
-Route 与 Locomotion 的公共契约分别从 [route/index.ts](../../src/core/unit/capability/route/index.ts)、[locomotion/index.ts](../../src/core/unit/capability/locomotion/index.ts) 导入；Navigation 保留下面按状态与算法划分的自然入口，不增加模板 index。Core 调度可以直接依赖实际模型、查询和操作文件。
+Route 与 Locomotion 的公共契约分别从 [route/index.ts](../../src/core/unit/capability/route/index.ts)、[locomotion/index.ts](../../src/core/unit/capability/locomotion/index.ts) 导入；Navigation 按下面的状态与算法文件提供入口。Core 调度直接依赖所需的模型、查询和操作文件。
 
 文件按职责划分：
 
@@ -24,9 +24,9 @@ Navigation 是独立子系统，负责基础通行规则、Overlay 操作与导�
 
 Route 与 Locomotion 是两个独立 Unit Capability。Route 管理行程并调用 Navigation，把路线目标解析为实际世界坐标中的追踪点；Locomotion 消费追踪点并执行实际运动。
 
-上层 Navigation 查询的公开目标使用精确的 `WorldPosition`；Field 构建接收由 `World.toTile(target)` 派生的 `TilePosition`。精确目标继续用于末段移动及到达判断。当前没有已经核实的需求要求上层调用方同时提供独立的原始目标格。
+Navigation 查询的公开目标使用精确的 `WorldPosition`；Field 构建接收由 `World.toTile(target)` 派生的 `TilePosition`。精确目标用于末段移动及到达判断，调用方只需提供这一目标坐标。
 
-Navigation.State 聚合基础 Map 与 Overlay 集合这两项权威输入，由 Battlefield.State.navigation 持有，不增加 Layer。apply 的有效 Map 与 Field 是派生结果，不放进 State。单位的 Cursor、Visits 等执行进度仍归 Unit，不混入战场级导航规则状态。
+Navigation.State 聚合基础 Map 与 Overlay 集合这两项权威输入，由 Battlefield.State.navigation 持有。apply 的有效 Map 与 Field 是派生结果，不放进 State。路线进度归 Unit 的 Route：Context 保存 index、current 和 ticking，Route State 保存 Context 集合与 activeId；这些执行事实独立于战场级导航规则。
 
 Navigation 内部维护可变派生缓存，不进入 BattleState，也不需要 Operation 返回缓存的新状态。缓存命中、未命中、淘汰或重建不得改变领域结果。
 
@@ -111,24 +111,24 @@ create 信任来自同一战场地块地图的 WALK／FLY 投影，不重复验�
 
 当下一导航格已是目标格时，就追踪精确 target。返回坐标是建议追踪点，实际能移动多远由 Locomotion 决定。
 
-nextPoint 不执行额外 Raycast，不维护或推进 Cursor、Visits，也不判断是否抵达。即使 current 已非常接近 target，也按相同规则返回建议坐标；抵达由 Locomotion／Route 根据实际位置判断，null 不兼作到达通知。
+nextPoint 按 Field 的后继节点返回建议坐标，不执行额外 Raycast，也不推进 Route 进度或判断抵达。即使 current 已非常接近 target，也使用相同查询规则；抵达由 Locomotion／Route 根据实际位置判断，null 不兼作到达通知。
 
 nextPoint 不保证返回位置能从当前实际坐标直线到达。Field 平滑基于格子规则，单位偏离格子中心后的实际运动、局部避障与位移修正交给 Locomotion。
 
 nextPoint 不修改 State。同一 State 与相同参数始终产生相同的坐标值或 null，结果对象身份不作承诺。有效 Map、Field 可以内部缓存；命中、未命中、淘汰或重建不改变返回结果。缓存不能保存影响查询结果的隐式执行历史。
 
-Field、build、queryField 均不属于调用方使用 Navigation 所需的公共接口。
+导航调用者使用 navigation/state.ts 的 nextPoint；Field 及其构建属于内部计算。
 
 ### Route／Locomotion 的交互约束
 
-按[项目语义判断标准](README.md)选择最小设计，不以客户端的类层级或函数调用位置作为接口要求。
+Navigation 提供导航建议，Route 解释路线，Locomotion 执行运动，三者按以下契约协作：
 
 - Route.advance 更新等待、检查路点、执行即时指令；Route.movementTarget 选择活动路线，转换路线偏移并调用 Navigation.nextPoint，返回实际世界坐标中的 nextPoint 与 goal；Locomotion 使用当前 motionMode 执行运动。
-- 地图内的不可达路点直接利用 nextPoint 的 null 结果反馈给 Route，决定等待或跳过。当前不增加独立可达性查询、失败原因联合类型或额外的 Navigation API。
+- 地图内的不可达路点通过 nextPoint 的 null 结果反馈给 Route，由当前 Context 的政策决定等待或跳过。
 - 地图外的位置恢复目标由 Route 的追踪点查询协调，Locomotion 负责实际位移及空间约束，不要求 Navigation 为此扩张返回类型。
 - Route 每 Tick 推进一次；各 Context 的相对等待是否计时由 ticking 决定，跨路点推进及位移目标由 activeId 选择。路点可以连续推进，移动只消费一次预算。
 - 创建调用者处理出生偏移的配置与采样，通过 initial.route 传入 Plan 与本次 offset；初始 Unit.position 与路线计算使用同一样本。主路线与临时替代路线的样本各自配对，不将一个样本无条件应用于所有路线。
-- Plan 不保留 allowDiagonalMove、visitEveryTileCenter、visitEveryNodeCenter。Locomotion 若需要其他运动执行进度，由 Unit 持有，不藏进导航缓存。
+- Plan 声明通行方式与路线指令；Route Context 和 Locomotion State 分别保存解释进度与运动状态，导航缓存只保存派生计算结果。
 
 Locomotion 使用原生 Steering、八邻域地形避障和目的格反射。局部力每次积分时计算，不保存刷新缓存或计数器；完整 Unity 刚体系统及推拉不属于普通自主移动。
 
@@ -320,7 +320,7 @@ Route 不追加整段射线筛选，也不回退到当前格中心。地图外�
 
 Route.advance 末尾从最新状态检查 Main：必须存在最终终点、位置满足终点到达条件，并满足 requireAllCheckpoints；为 true 时要求指令序列耗尽，为 false 时允许提早到达终点。满足出口条件时，Route 直接请求 Unit 的完整移除操作；其他 Context 的到达或指令耗尽不触发 Main 出口。
 
-完整移除接续 Unit 生命周期、Lifetime、等待关系清理和相应 Hook。统计、蓝门扣血与胜负规则由各自领域处理，本次 Route 接入不增加这些政策。advance 返回后，运动调度重新读取 Unit，再决定是否继续 Locomotion。
+满足 Main 出口条件时，Route 先记录 ROUTE_COMPLETED，再以 SCRIPT 原因请求完整移除，接续 Unit 生命周期、Lifetime、等待关系清理和相应 Hook。Route 不处理统计、蓝门扣血或胜负规则。advance 返回后，运动调度重新读取 Unit，再决定是否继续 Locomotion。
 
 ### 初始化
 
@@ -337,7 +337,7 @@ const created = unit.initialize(battle, {
 
 Route initializer 通过 [Capability 初始化通道](capability.md#初始化与装配)读取必需 Initial，建立 Main ID 0、activeId=0、nextContextId=1、index=0、current=null、ticking=true，并捕获 Schedule 时间基准。Plan、offset 或时间快照不重新合成 UnitDefinition，也不接收调用者预装的执行状态。
 
-首条指令在完整 Unit、结构索引与 Lifetime 登记后，由普通 Unit.enter Hook 同步进入，遵守 Hook 登记顺序；unit.add 只登记并执行 enter，不特判 Route。Schedule 在 unit.add 前发布等待关系，使首指令及其同步 Hook 可见完整出生事实。动态 Context 使用同一指令进入逻辑。
+首条指令在完整 Unit 与结构索引发布后，由普通 Unit.enter Hook 同步进入，遵守 Hook 登记顺序；unit.add 只登记并执行 enter，不特判 Route。Schedule 在 unit.add 前发布等待关系，使首指令及其同步 Hook 可见完整出生事实。动态 Context 使用同一指令进入逻辑。
 
 已有 Unit 新建 Context 共享其 Route State 的出生时基；新建 Unit 则在实际初始化时从当前 Schedule 取样，不从召唤者继承。技能、Buff 与机制创建者各自组织出生业务，无需强制使用统一的 Schedule Spawn 包装。
 
@@ -420,11 +420,11 @@ export function removeSpeedContribution(id: string): Change<Unit & Locomotion>;
 
 类型、初始化、守卫及 Rule／速度贡献 Change 工厂位于 locomotion/capability.ts；工厂不接收 Ref，返回 `Change<Unit & Locomotion>`，由 Unit.update 组合发布，不附带 Blocking 后继。operations.ts 提供完整推进，不转发工厂。初始化验证速度、下限、几何半宽和转向参数非负，不要求基础速度大于 minSpeed。
 
-SteeringParameters 是普通配置值，不提供只校验并复制对象的构造工厂。Data 解析原始 Prefab 并完成 Tick 换算，Ground Enemy 内容工厂显式接收 halfBodyWidth 与 steeringParameters，不隐藏一组固定转向参数；演示调用方自行提供其示例配置。
+SteeringParameters 是普通配置值，其数值约束由 Locomotion 初始化入口建立。Data 解析原始 Prefab 并完成 Tick 换算，Ground Enemy 内容工厂显式接收 halfBodyWidth 与 steeringParameters；演示调用方自行提供其示例配置。
 
 推进读取最新 PRESENT 且 Rule 允许的 Unit；[空间消失](presence.md)由 Presence 登记 Locomotion Rule 禁止自主移动，不由 Locomotion 读取空间存在字段。Movement 先推进全部 Blockable 位置修正，再推进 Route 并读取当前关系，只限制自主移动；独立位置计划存在或刚完成不自动禁止自主移动。Locomotion 只经内部 replace 提交位置与速度，不依赖 Blocking 维护；Blockable 的偏移推进同样只发布位置与计划。依赖当前位置或其他 Battle 事实的阻挡 Rule 在后续 Blocking 检查点复核；明确要求解除旧关系的空间操作仍自行完成清理。Blocker／Blockable 在 Unit 初始化时至多选择一种，但该约束不决定是否具有 Route、Locomotion 或何种自身 Layer。
 
-Presence Change 纯转换空间事实及所需限制，发布后按稳定能力角色调用 Blockable.release 或 Blocker.releaseAll，读取当前关系并完成清理；详细顺序见[空间存在](presence.md)。Route 在消失期间继续处理等待与出现指令；无 Presence 分支的 APPEAR 先发布位置，再调用相同完整操作。各释放操作自己的首个 RELEASED Hook 已可见新位置、所属计划清理和此次整批双端解除结果。release 不自动维护、搜索或取消目标计划，Blocker 的释放保留其原目标的偏移。Blocking 不同步专用禁移 Rule，见 [Blocking](blocking.md)。有效速度为 `max(minSpeed, attribute.apply(speed, contributions)) * speedMultiplier`；无目标不调 advance，速度为零或不可移动返回原 battle 并保留 velocity。
+Presence Change 纯转换空间事实及所需限制，发布后按稳定能力角色调用 Blockable.release 或 Blocker.releaseAll，读取当前关系并完成清理；详细顺序见[空间存在](presence.md)。Route 在消失期间继续处理等待与出现指令；无 Presence 分支的 APPEAR 先发布位置，再调用相同完整操作。各释放操作自己的首个 RELEASED Hook 已可见新位置、所属计划清理和此次整批双端解除结果。release 不自动维护、搜索或取消目标计划，Blocker 的释放保留其原目标的偏移。阻挡关系由 Movement 在自主移动入口检查，见 [Blocking](blocking.md)。有效速度为 `max(minSpeed, attribute.apply(speed, contributions)) * speedMultiplier`；无目标不调 advance，速度为零或不可移动返回原 battle 并保留 velocity。
 
 如果当前位置到 goal 的距离不超过本 Tick 预算，直接设置位置为 goal，保留 velocity，跳过 Steering、避障及目的格反射。nextPoint 仅用于计算 Steering 方向，不因接近中间导航节点而吸附。
 
@@ -432,7 +432,7 @@ Presence Change 纯转换空间事实及所需限制，发布后按稳定能力�
 
 Steering 将局部力与目标速度误差产生的力相加后统一限幅，再更新速度并限制在有效移速内。仅当候选位移跨格且目的格不可通时，围绕当前位置指向目的格中心的法向量反射整次位移；不扫描完整线段，不因成本高而反射，也不再次检查反射后的目的格。最终位置可受反射修正，velocity 仍保存积分器得到的新速度。
 
-State 不保存位置、目标、moving、避障缓存或刷新计数器。位置属于 Unit；实际位置变化由展示或业务观察者按需要读取，不能从保留的历史速度直接推断本 Tick 是否发生移动。推拉与直接传送使用各自的领域契约。
+State 保存 velocity、速度贡献与 Rule；位置属于 Unit，运动目标由每次 advance 的参数提供。实际位置变化由展示或业务观察者按需要读取，不能从保留的历史速度直接推断本 Tick 是否发生移动。推拉与直接传送使用各自的领域契约。
 
 ## Map
 
@@ -574,7 +574,7 @@ build 是不修改输入 Map 的确定性计算：
 发布只读 Field
 ```
 
-目标格越界或不可通时，返回 nodes 全为 null 的 Field，保留请求 target 和地图尺寸，不因目标越界抛出异常。平滑读取已经更新的 next。项目范围明确排除生息演算，当前无已核实的关闭斜向平滑业务需求，因此 build、Field 和后续缓存键都不保留 allowDiagonalMove，统一采用允许斜向平滑的算法。原始搜索仍为四方向。
+目标格越界或不可通时，返回 nodes 全为 null 的 Field，保留请求 target 和地图尺寸，不因目标越界抛出异常。原始搜索采用四方向，随后统一进行允许斜向捷径的平滑；平滑读取已经更新的 next。build、Field 与缓存都使用这一固定算法政策。项目支持范围不包含生息演算。
 
 平滑按实际 from 到 to 的行进方向检查出口；为射线扫描排序端点，不改变有向通行规则。高成本格不参与平滑捷径。Locomotion 的局部避障将 WALK 下 cost>=1000 的可通格视为障碍类；目的格反射只检查 passable，不把高成本直接等同于不可通行。
 
@@ -582,6 +582,6 @@ build 是不修改输入 Map 的确定性计算：
 
 ## Field 与移动消费的研究依据
 
-[客户端原生核对](../research/cases/12-navigation-native-algorithm.md)确认原始搜索后原地覆盖唯一的 next 完成平滑；普通移动不保留另一份 rawNext。[Route 与移动时序核对](../research/cases/13-route-and-movement-timing.md)记录路点、等待与运动消费的原生条件及调用顺序。
+[客户端原生核对](../research/cases/12-navigation-native-algorithm.md)提供四方向搜索、原地平滑与单一 next 后继的机制依据。[Route 与移动时序核对](../research/cases/13-route-and-movement-timing.md)记录路点、等待与运动消费的原生条件及调用顺序。
 
 Navigation 使用上述搜索与平滑规则。Route 管理指令与导航追踪点，Locomotion 消费实际世界坐标并完成运动，Battle 负责调度和生命周期。导航计算保持独立，不接管这些执行状态。

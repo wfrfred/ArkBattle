@@ -2,7 +2,7 @@
 
 Schedule 保存出生计划、主 Wave 进度、Branch 执行实例及已出生 Unit 的等待关系。出生时刻由调度计划决定，Unit 离场又影响下一 Wave 的开始时间，因此本领域围绕出怪与波次组织。
 
-本页规定普通 Spawn 的接入。STORY、ACTIVATE_PREDEFINED 等操作不在本次范围，不建立通用定时任务系统或通用 Action 执行器。Predefined 继续通过自身公开的 appear／remove 操作处理。
+Schedule 负责普通 Spawn 调度，不支持 STORY、ACTIVATE_PREDEFINED 等原生 Action，也不承担通用定时任务。Predefined 通过自身公开的 appear／remove 操作处理出现与移除。
 
 ## 静态计划
 
@@ -56,7 +56,7 @@ interface WeightedSpawns {
 
 Definition 的 waves 是确定的主线程序，branches 按名称查找。Fragment 保存预处理后的确定 Spawn 序列；BranchPhase.entries 可以包含确定序列或执行时抽选的整组候选。它们不保存执行索引、每次抽选结果或实际等待关系。
 
-Schedule 导出的 UnitDefinition 描述可由普通 Spawn 创建的完整静态 Unit：基础定义、必需的 Route.definition，以及不需要额外必需 Initial 的可选 Capability。Occupancy／Deployable 等还需要独立必需初始化输入的能力不属于本入口。Data／Content 提供该定义的完整值，Schedule 不为本次 Plan、出生偏移或时间快照重新合成 UnitDefinition。
+Schedule 导出的 UnitDefinition 描述可由普通 Spawn 创建的完整静态 Unit：基础定义、必需的 Route.definition，以及不需要额外必需 Initial 的可选 Capability。该入口排除 Occupancy 和依赖它的 Deployable，因为 Spawn 只提供 Route 的必需初始化输入。Data／Content 提供完整定义，Plan、出生偏移与时间快照通过实例初始化建立。
 
 Plan 是本次路线选择，独立于共享 UnitDefinition。offset 是固定出生偏移，randomRange 是各轴随机半宽，出生时取：
 
@@ -134,7 +134,7 @@ isCompleted 由三个事实推导：主线为 COMPLETED、activePhases 为空、
 
 advance、triggerBranch、resolveUnits 接续并返回完整 BattleState。triggerBranch.id 是 Definition.branches 的键；loop 仅允许选择位置到末尾后回到首项，每次调用仍只触发一个 Phase。
 
-resolveUnits 从 waiting.wave 和 waiting.final 移除给定 Unit 的关系，不隐式调用 advance。Battle 的组成初始化在现有全局 leaveHook 登记离场反馈，任意完整 Unit 移除都同步释放等待；通用 Unit 生命周期不依赖 Schedule。
+resolveUnits 从 waiting.wave 和 waiting.final 移除给定 Unit 的关系，不隐式调用 advance。Battle 的组成初始化通过全局 leaveHook 登记离场反馈，任意完整 Unit 移除都同步释放等待；通用 Unit 生命周期不依赖 Schedule。
 
 ## 出生时间
 
@@ -227,7 +227,7 @@ triggerBranch(A)
 
 两个推进入口的分工固定：triggerBranch 负责新实例触发 Tick 的到期项；常规 advance 每 Tick 只处理 startTick < battle.tick 的已有实例，各一次。本 Tick 新实例已经由 triggerBranch 处理，常规 advance 不重复执行。完成实例从最新集合按对象身份移除，不按 Phase Definition 或 startTick 批量删除。
 
-因此触发发生在常规推进之前、期间或之后，都无需出生队列游标、lastAdvancedTick 或反复扫描 activePhases 寻求收敛。同步重入不会丢失内层登记，也不会重复出生。
+触发发生在常规推进之前、期间或之后，都遵守相同的实例推进分工。到期项由绝对出生 Tick 决定，同步重入保留内层登记，每项出生只执行一次。
 
 ## Route 的主流程时间上下文
 
@@ -283,7 +283,7 @@ notCountInTotal 为 true 时不登记两个等待集合，即使 Unit 仍在场�
 
 Schedule 提供调度进度与实际等待事实，Route 到达出口后请求 Unit 完整移除，通用生命周期通过已登记的 leaveHook 反馈等待释放。Unit 不持有 Schedule 的等待政策，Battle 也不重复解释路线出口。
 
-统计、蓝门扣血与胜负不在本次扩展。Schedule 不持有 Total／Finished／Killed，不产生 Battle.result，也不因自身完成而决定战斗胜负。演示或外部规则可以读取 isCompleted 等事实决定何时结束其运行。
+Schedule 只提供调度进度与等待事实，不处理统计、蓝门扣血或胜负。State 不持有 Total／Finished／Killed，也不产生 Battle.result。演示或外部规则可以读取 isCompleted 等事实决定何时结束其运行。
 
 ## 回归语义
 
