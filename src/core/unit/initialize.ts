@@ -11,19 +11,26 @@ import { Effects } from "./effect/effects.js";
 import type { Unit, Definition, Id } from "./unit.js";
 import { Hooks } from "../hook.js";
 
-export type Input<D extends Definition & Partial<Definitions> = Definition> = {
-    readonly id: Id;
-    readonly definition: D;
-    readonly position: WorldPosition;
-    readonly hooks?: Hooks;
-} & (Partial<Initial<NoInfer<D>>> extends Initial<NoInfer<D>>
-    ? { readonly initial?: Initial<NoInfer<D>> }
-    : { readonly initial: Initial<NoInfer<D>> });
+export type Input<D extends Definition & Partial<Definitions> = Definition> = D extends unknown
+    ? {
+          readonly id: Id;
+          readonly definition: D;
+          readonly position: WorldPosition;
+          readonly hooks?: Hooks;
+      } & (Partial<Initial<NoInfer<D>>> extends Initial<NoInfer<D>>
+          ? { readonly initial?: Initial<NoInfer<D>> }
+          : { readonly initial: Initial<NoInfer<D>> })
+    : never;
 
-export function initialize<D extends Definition & Partial<Definitions>>(
+export function initialize<
+    I extends Omit<Input, "definition" | "initial"> & {
+        readonly definition: Definition & Partial<Definitions>;
+        readonly initial?: Partial<Inputs>;
+    },
+>(
     battle: BattleState,
-    input: Input<D>,
-): Result<Unit & Product<D>>;
+    input: I & NoInfer<Input<I["definition"]>>,
+): Result<Unit & Product<I["definition"]>>;
 export function initialize(
     battle: BattleState,
     input: Omit<Input, "initial"> & { readonly initial?: Partial<Inputs> },

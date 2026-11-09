@@ -42,7 +42,7 @@ initialize<U extends Unit & Pick<Capability, "definition">>(
 
 这里的 Capability 代表各自的能力接口，例如 Vitality 或 Skill。输入 Unit 已声明本能力的 Definition，initializer 直接读取 unit.definition 中的配置；Result.state 接续 BattleState，Result.value 返回保留已有字段并补充自身能力的新 Unit。具有前置能力依赖的 initializer 也在输入类型中声明该依赖。需要具体实例输入时，通过第三参数声明 Initial，必填与可选性由该签名确定。Occupancy 的第三参数必填，接收 `{ tile, direction? }`，不为缺失地块生成空状态。Route 的 Initial 为 `{ plan, offset }`，通过 initial.route 提供；其 Definition 保存 alwaysCheckCurrentPoint，initializer 构造 Context，在 Route State 自行取得共享时间基准，不接收预装执行状态。Plan 与 Capability Definition 分开，完整类型见[Route](navigation.md#route-定义与进度)。Deployable 沿用两参数初始化，不为部署事实扩展通用构造协议。初始化可以直接登记自身的 Unit Hook，不经通用装配器识别具体能力。不改变战斗事实时返回原 battle；当前时间从 battle.tick 读取，不传独立 tick 或只有时点的 Context。Skill 的 SP、Sustain 等内部值模型仍使用各自的局部初始化接口，不因名称相同改为 Unit 装配操作。
 
-Catalog 从 initializer 签名派生 Inputs 及其必需性，Initial<D> 只接受所选能力的合法创建输入。所选能力的第三参数必填时，对应 initial 键必填，Unit.Input.initial 也必填；没有必需输入时，顶层 initial 可以省略。Predefined 的 Unit 创建描述复用 Unit.Input 的约束，不另行放宽为可选。初始化按 fold 接续，不维护额外的必需能力清单。
+Catalog 从 initializer 签名派生 Inputs 及其必需性，Initial<D> 只接受所选能力的合法创建输入。所选能力的第三参数必填时，对应 initial 键必填，Unit.Input.initial 也必填；没有必需输入时，顶层 initial 可以省略。联合 Definition 的创建输入按分支保持 definition 与 initial 配对，不能省略所选分支要求的输入或混用另一分支的输入。调用者先收窄 Definition，或在选择分支时构造完整的 Input；构造入口不通过推断更宽的 Definition 放松要求。Predefined 的 Unit 创建描述保留同一分支配对，不因省略 id 擦除关联。初始化按 fold 接续，不维护额外的必需能力清单。
 
 Catalog 只登记 capability → initializer 字典，并从函数签名派生配置、状态及能力组合类型。以下字典节选展示派生方式：
 

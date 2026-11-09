@@ -32,7 +32,7 @@ Deployable 对 Occupancy 的构造依赖、单格双槽登记、入场与配对�
 | Battlefield 版本与结构 | 写回不改写旧版本；全批最终布局决定同格双槽的唯一归属；结构发布不代办业务回调。 | [Battlefield](battlefield.md#关键语义) |
 | 地图、导航与空间查询 | Tile 与 Overlay 决定当前可达性和导航结果；缓存不改变结果。身体位置、空间存在、占格和命中几何分别表达，空间接触不等于业务命中。 | [Battlefield](battlefield.md#关键语义)、[Spatial](spatial.md) |
 | 空间存在 | presence.isPresent(unit) 查询空间存在，与 Unit.lifecycle 分开；暂时消失保留身份、位置、占格、部署与生命周期。Presence Change 可位于组合任意位置，全部空间事实及限制先发布，再由自身 Settlement 调用 Blocking 完整操作清理当前关系及自身计划，之后委托 Action 领域取消宿主执行。已成立的 Skill、Effect、Burst 与独立 Projectile 不统一结束，伤害、恢复、选择与锁定命中分别判断。 | [Presence](presence.md) |
-| Unit 构造与能力 | 静态 Definition 决定能力组成，构造后配置与状态配对、组成稳定；初始 Effect 通过登记后的正常安装形成。 | [构造与装配](capability.md#初始化与装配) |
+| Unit 构造与能力 | 静态 Definition 决定能力组成，构造后配置与状态配对、组成稳定；联合 Definition 按分支保留必需实例输入的关联，缺失或错配不能进入构造；初始 Effect 通过登记后的正常安装形成。 | [构造与装配](capability.md#初始化与装配) |
 | Occupancy 与 Support | 单格 OCCUPANT／SUPPORT 两槽各自排他，占格、身体位置、空间存在与朝向分开；两端先发布同一 Pair 再通知，任一端先入场均可配对。Pair 保留建立时采样的事实；离场只解除原 Pair，不能清除替代实例的新配对或重复通知旧组合。 | [Occupancy](occupancy.md#关键协作语义) |
 | Unit 组合变更 | update(battle, ref, change) 只更新一个目标。二元 compose 左到右接续同一 Unit，组合满足结合律但不交换；各项保留自己的 previous、no-op 与 Settlement 顺序。optional 在实际执行时判断当前输入，包括前序变换后的值；false 保留原对象且无后继，true 转发原 Change 的结果。全部纯应用完成后一次发布最终 next，再按序结算；Settlement 中的嵌套 update 可以改变其它 Unit，后续结算接续最新状态。 | [批量变更](api-conventions.md#51-unit-完整操作与批量变更) |
 | 普通注册 Change | Capability 用扁平 Rules／Contributions／Hooks 分组明确选择自动字段；工厂不绑定 Ref，按 Key 和固定字段两种接口均保持字段、Entry 与所需能力的类型关联，由 update 的目标 Ref 满足能力要求。注册遵守按 ID 替换保序和无变化不结算，特殊字段由领域完成自身变换与后继。 | [批量变更](api-conventions.md#51-unit-完整操作与批量变更) |
@@ -60,7 +60,7 @@ Deployable 对 Occupancy 的构造依赖、单格双槽登记、入场与配对�
 
 已审查范围按下表集中保障。综合测试只保障独立的跨领域业务结果，所属领域的公式、输入矩阵、Setter、生命周期或 Hook 协议集中在各自代表场景中。文件位于 Content／Legacy 或同时涉及尚未审查领域，不构成重复测试的保留理由。
 
-构造期配对由 core-types 集中保障：Card 与 Mechanism 的初始化结果和自身回调保持同一私有类型，聚合输入不提供 any 上下文；Unit 的创建输入只能对应 Definition 声明的能力，且必须提供所选 initializer 要求的实例输入。Occupancy 要求非空 tile，Route 要求 plan 与 offset；普通构造、Input 类型、预置与 Runtime 转交均保留这些要求。Schedule Spawn 要求 Route，Locomotion 按 Definition 可选，并排除 Occupancy／Deployable。无必需实例输入时可省略 initial。代表场景覆盖这些构造边界，不按每种能力、回调或数组长度扩展矩阵。类型守卫在 Query 与 optional 中保留已有完整宿主，Hook 派发与登记同样保持键和载荷的配对。
+构造期配对由 core-types 集中保障：Card 与 Mechanism 的初始化结果和自身回调保持同一私有类型，聚合输入不提供 any 上下文；Unit 的创建输入只能对应 Definition 声明的能力，且必须提供所选 initializer 要求的实例输入。Occupancy 要求非空 tile，Route 要求 plan 与 offset；普通构造、Input 类型、预置与 Runtime 转交均保留这些要求。联合构造以 Route／Occupancy 两个合法分支集中验证：分支内的正确输入可构造，缺失与交叉错配被拒绝，Product 仍只承诺所有分支共有的能力。Schedule Spawn 要求 Route，Locomotion 按 Definition 可选，并排除 Occupancy／Deployable。无必需实例输入时可省略 initial。代表场景覆盖这些构造边界，不按每种能力、回调或数组长度扩展矩阵。类型守卫在 Query 与 optional 中保留已有完整宿主，Hook 派发与登记同样保持键和载荷的配对。
 
 | 语义 | 集中归属与最小代表 |
 | --- | --- |

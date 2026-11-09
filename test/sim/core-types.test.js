@@ -32,7 +32,7 @@ import * as projectileOperations from ${module("battle/projectile")};
 import type { Definition as ProjectileDefinition } from ${module("projectile/definition")};
 import { reassign, selectContext, setTicking, type Plan, type Route } from ${module("unit/capability/route/index")};
 import * as mechanisms from ${module("battle/mechanism")};
-import { createPredefinedDefinition } from ${module("battle/steps/predefined")};
+import { createPredefinedDefinition, type PredefinedUnitCreation } from ${module("battle/steps/predefined")};
 import * as actionCapability from ${module("unit/capability/action/index")};
 import { createRegistrationOperations } from ${module("unit/registration")};
 import type { Offense } from ${module("unit/capability/offense/index")};
@@ -140,9 +140,26 @@ const incompleteInput: UnitInput<typeof occupiedDefinition> = missingInitial;
 initialize(battle, { ...occupiedInput, initial: { occupancy: { direction: 'RIGHT' } } });
 declare const plan: Plan;
 const routedDefinition = { id: 'routed', hooks: Hooks.empty(), route: { alwaysCheckCurrentPoint: true } };
-initialize(battle, { id: 5, definition: routedDefinition, position: [0, 0], initial: { route: { plan, offset: [0, 0] } } });
+const routedInput: UnitInput<typeof routedDefinition> = {
+    id: 5, definition: routedDefinition, position: [0, 0],
+    initial: { route: { plan, offset: [0, 0] } },
+};
+initialize(battle, routedInput);
 // @ts-expect-error Route construction requires the instance Plan and offset.
 initialize(battle, { id: 5, definition: routedDefinition, position: [0, 0] });
+type SelectedDefinition = typeof routedDefinition | typeof occupiedDefinition;
+declare const selectedDefinition: SelectedDefinition;
+declare const chooseRoute: boolean;
+const selectedInput: UnitInput<SelectedDefinition> = chooseRoute ? routedInput : occupiedInput;
+const selectedUnit = initialize(battle, selectedInput).value;
+// @ts-expect-error a union result promises only capabilities shared by every branch.
+selectedUnit.route;
+// @ts-expect-error independent definition selection cannot discard required instance input.
+initialize(battle, { id: 6, definition: selectedDefinition, position: [0, 0] });
+// @ts-expect-error an input for the other union branch cannot satisfy a routed definition.
+const mismatchedInput: UnitInput<SelectedDefinition> = { id: 6, definition: routedDefinition, position: [0, 0], initial: occupiedInput.initial };
+// @ts-expect-error inference cannot pair a union definition with just one branch's input.
+initialize(battle, { id: 6, definition: selectedDefinition, position: [0, 0], initial: routedInput.initial });
 declare const scheduleSpawn: Spawn;
 const routedSpawn: Spawn = { ...scheduleSpawn, definition: routedDefinition };
 // @ts-expect-error scheduled construction requires the Route capability.
@@ -385,6 +402,16 @@ const occupiedPredefined = createPredefinedDefinition({
     id: 2, alias: null, initiallyPresent: true,
     creation: { type: 'UNIT', ...occupiedInput },
 });
+const selectedCreation: PredefinedUnitCreation<SelectedDefinition> = chooseRoute
+    ? { type: 'UNIT', ...routedInput }
+    : { type: 'UNIT', ...occupiedInput };
+createPredefinedDefinition<SelectedDefinition>({
+    id: 4, alias: null, initiallyPresent: true, creation: selectedCreation,
+});
+// @ts-expect-error removing the allocated id does not erase a predefined branch's pairing.
+const mismatchedCreation: PredefinedUnitCreation<SelectedDefinition> = { type: 'UNIT', definition: routedDefinition, position: [0, 0], initial: occupiedInput.initial };
+// @ts-expect-error predefined inference cannot discard a union branch's required input.
+createPredefinedDefinition({ id: 4, alias: null, initiallyPresent: true, creation: { type: 'UNIT', definition: selectedDefinition, position: [0, 0] } });
 const incompletePredefined = {
     id: 3, alias: null, initiallyPresent: true,
     creation: { type: 'UNIT' as const, ...missingInitial },

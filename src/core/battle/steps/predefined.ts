@@ -15,7 +15,10 @@ import type { Definitions } from "../../unit/capability/catalog.js";
 
 export type PredefinedUnitCreation<D extends object = UnitDefinition & Partial<Definitions>> = {
     readonly type: "UNIT";
-} & Omit<UnitInput<D & UnitDefinition & Partial<Definitions>>, "id">;
+    readonly definition: D & UnitDefinition & Partial<Definitions>;
+} & NoInfer<
+    D extends unknown ? Omit<UnitInput<D & UnitDefinition & Partial<Definitions>>, "id"> : never
+>;
 
 export interface PredefinedMechanismCreation<S extends object = object> {
     readonly type: "MECHANISM";
