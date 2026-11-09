@@ -43,6 +43,92 @@ export function target(context: Context): WorldPosition | null {
         : null;
 }
 
+export function remainingDistance(
+    battle: BattleState,
+    self: Unit & Route,
+    context: Context,
+): number | undefined {
+    const state = battle.battlefield.navigation;
+    const mode = context.plan.motionMode;
+    let position = Vec2.sub(self.position, context.offset);
+    if (context.current?.type === "TRACE") {
+        const goal = Tile.center(context.current.position);
+
+        return (
+            navigation.distance(state, mode, position, goal) ??
+            Vec2.length(Vec2.sub(goal, position))
+        );
+    }
+    if (context.plan.endPosition === null) {
+        return undefined;
+    }
+
+    let remaining = 0;
+    let fallback: number | undefined;
+
+    const move = (goal: WorldPosition): void => {
+        if (fallback === undefined) {
+            const distance = navigation.distance(state, mode, position, goal);
+            if (distance === null) {
+                fallback = remaining + Vec2.length(Vec2.sub(goal, position));
+            } else {
+                remaining += distance;
+            }
+        }
+
+        position = goal;
+    };
+
+    const visited = new Set<number>();
+    let index = context.index;
+
+    while (index < context.plan.checkpoints.length) {
+        if (visited.has(index)) {
+            return undefined;
+        }
+
+        visited.add(index);
+        const entered = index === context.index && context.current !== null;
+        const checkpoint = entered ? context.current : context.plan.checkpoints[index]!;
+
+        switch (checkpoint.type) {
+            case "MOVE": {
+                const center = Tile.center(checkpoint.position);
+                move(
+                    entered || !checkpoint.randomizeOffset
+                        ? Vec2.add(center, checkpoint.offset)
+                        : center,
+                );
+                break;
+            }
+
+            case "APPEAR":
+                position = Vec2.sub(
+                    Vec2.add(Tile.center(checkpoint.position), checkpoint.offset),
+                    context.offset,
+                );
+                break;
+
+            case "GOTO":
+                index = checkpoint.index;
+                continue;
+
+            case "TRACE":
+                return undefined;
+
+            case "WAIT":
+            case "DISAPPEAR":
+                break;
+        }
+
+        index++;
+    }
+
+    move(Tile.center(context.plan.endPosition));
+
+    return fallback ?? remaining;
+}
+
 function recoveryPoint(
     map: Map,
     position: WorldPosition,

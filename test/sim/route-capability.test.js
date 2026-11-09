@@ -10,6 +10,9 @@ import { step } from "../../dist/core/battle/runtime.js";
 import { appear } from "../../dist/core/unit/capability/presence/index.js";
 import { search } from "../../dist/core/battle/blocking/index.js";
 import { setHook } from "../../dist/core/unit/capability/blocking/blockable-operations.js";
+import * as navigation from "../../dist/core/battlefield/navigation/state.js";
+import { get as getTile } from "../../dist/core/battlefield/map/map.js";
+import { update as updateTile } from "../../dist/core/battle/tile.js";
 
 const plan = (checkpoints = [], extra = {}) => ({
     motionMode: "WALK", startPosition: [0, 0], endPosition: null,
@@ -32,6 +35,56 @@ function ticks(state, count) {
     for (let i = 0; i < count; i++) state = step(state, []);
     return state;
 }
+
+test("remaining route distance follows navigation geometry and excludes teleport jumps", () => {
+    const program = plan([
+        move([2, 4]),
+        { type: "APPEAR", position: [0, 6], offset: [0, 0] },
+        move([0, 7]),
+    ], { endPosition: [0, 7] });
+    let state = battle([creation(program)]);
+    const corridor = new Set(["0:0", "0:1", "0:2", "1:2", "2:2", "2:3", "2:4", "0:6", "0:7"]);
+    for (let row = 0; row < 3; row++) {
+        for (let col = 0; col < 8; col++) {
+            if (!corridor.has(`${row}:${col}`)) {
+                state = updateTile(state, [row, col], {
+                    ...getTile(state.battlefield.map, [row, col]).state,
+                    passability: "NONE",
+                });
+            }
+        }
+    }
+    state = updateTile(state, [0, 0], {
+        ...getTile(state.battlefield.map, [0, 0]).state, walkCost: 20,
+    });
+    const self = get(state, 0);
+    assert.equal(navigation.distance(state.battlefield.navigation, "WALK", [0, 0], [4, 2]), 6);
+    assert.equal(route.remainingDistance(state, self, self.route.main), 7);
+
+    const open = battle();
+    assert.ok(navigation.distance(open.battlefield.navigation, "WALK", [0.49, 0.49], [0.51, 0.1]) > 0);
+});
+
+test("distance observes the requested Main or TRACE rather than temporary movement control", () => {
+    let state = battle([creation(plan([wait(999)], { endPosition: [0, 5] }))]);
+    const host = units.ref(get(state, 0));
+    const fear = route.createContext(state, host, {
+        plan: plan([move([0, 1])]), offset: [0, 0], alwaysCheckCurrentPoint: false, ticking: true,
+    });
+    const trace = route.createContext(fear.state, host, {
+        plan: plan([{ type: "TRACE", position: [0, 3], reached: false }]),
+        offset: [0, 0], alwaysCheckCurrentPoint: false, ticking: true,
+    });
+    state = update(trace.state, host, route.selectContext(trace.value.id));
+    state = update(state, host, appear([3, 0]));
+    state = route.advance(state, host);
+    assert.equal(route.getContext(state, trace.value).current.reached, true);
+    state = update(state, host, units.compose(appear([1, 0]), route.selectContext(fear.value.id)));
+    const self = get(state, 0);
+    assert.equal(route.remainingDistance(state, self, self.route.main), 4);
+    assert.equal(route.remainingDistance(state, self, route.getContext(state, trace.value)), 2);
+    assert.equal(route.remainingDistance(state, self, route.getContext(state, fear.value)), undefined);
+});
 
 test("Context selection and ticking separately control relative and absolute waits", () => {
     let state = battle([creation(plan([wait(3), move([0, 2])]))]);

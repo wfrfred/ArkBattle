@@ -25,4 +25,4 @@ export {
     advance,
 } from "./operations.js";
 
-export { ref, getContext, activeContext, movementTarget } from "./query.js";
+export { ref, getContext, activeContext, movementTarget, remainingDistance } from "./query.js";
