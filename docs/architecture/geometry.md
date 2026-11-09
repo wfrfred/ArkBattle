@@ -1,6 +1,6 @@
 # 几何与坐标 API
 
-`src/core/common/vector.ts` 提供通用二维向量，不依赖 Tactical 几何领域。`geometry/coordinate.ts` 只负责格子坐标与世界坐标的语义、旋转和转换。位置、偏移、速度与力通过字段和参数名表达用途，不另设 Offset 类型。
+`src/core/common/vector.ts` 提供通用二维向量，不依赖 Tactical 几何领域。`geometry/coordinate.ts` 只负责格子坐标与世界坐标的语义、旋转和转换。位置、偏移、速度与力统一使用二维向量，通过字段和参数名表达用途。
 
 ## 通用二维向量
 
@@ -45,9 +45,9 @@ export declare const World: {
 };
 ```
 
-`TilePosition` 按 `[row, col]` 解释，`WorldPosition` 按 `[x, y]` 解释；两个名称都复用 `Vec2` 表示，格式约束在真实输入边界建立。`Tile.is` 检查两个分量均为安全整数；接收未知连续坐标时使用 `Vec2.is`。已明确坐标分量的构造处直接使用元组字面量，需要数值校验的创建或解析入口使用已有 assert 工具，不另设坐标工厂或顶层类型守卫。
+`TilePosition` 按 `[row, col]` 解释，`WorldPosition` 按 `[x, y]` 解释；两个名称都复用 `Vec2` 表示，格式约束在真实输入边界建立。`Tile.is` 检查两个分量均为安全整数；接收未知连续坐标时使用 `Vec2.is`。已明确坐标分量的构造处直接使用元组字面量，需要数值校验的创建或解析入口使用 assert 工具。
 
-`Tile.center([row, col])` 返回 `[col, row]`。`World.toTile()` 按 ties-to-even 舍入并直接返回元组，不再通过工厂重复校验。`Tile.rotate()` 保留既定方向旋转语义。`Direction.vector()` 返回 `Vec2`，Direction 模块只依赖通用向量类型，不反向依赖坐标模块。
+`Tile.center([row, col])` 返回 `[col, row]`。`World.toTile()` 按 ties-to-even 舍入并直接返回元组，信任输入的坐标约束。`Tile.rotate()` 按四向 Direction 旋转格子向量。`Direction.vector()` 返回 `Vec2`，Direction 模块只依赖通用向量类型。
 
 通用算术统一调用 `Vec2`，`Tile` 与 `World` 不重复提供向量运算。内部 typed 数据直接共享，通过 TypeScript `readonly` 遵守不可变约定，不归一化 `-0`，不执行 `Object.freeze()`。
 
@@ -67,9 +67,9 @@ export type Range = readonly Shape[];
 export function fromTiles(tiles: readonly TilePosition[], direction: Direction): Range;
 ```
 
-Range 表示形状并集，空数组表示空范围。fromTiles 将相对原点的格子坐标绕 [0, 0] 按 direction 旋转，再转换成半宽高均为 0.5 的 Box；查询时决定实际世界原点。它不执行目标所属格查询，需要格心原点的调用方使用 Tile.center(originTile)。单个 Hitbox 直接保存 Shape，不使用中间 Geometry 包装。遵守 readonly 约定，不要求运行时冻结。
+Range 表示形状并集，空数组表示空范围。fromTiles 将相对原点的格子坐标绕 [0, 0] 按 direction 旋转，再转换成半宽高均为 0.5 的 Box；查询时决定实际世界原点。它不执行目标所属格查询，需要格心原点的调用方使用 Tile.center(originTile)。单个 Hitbox 直接保存 Shape，并遵守 readonly 约定。
 
-四向 Direction 是几何值，不意味着所有 Unit 都拥有方向。本轮固定地块摆放的朝向由 Occupancy 保存为 direction，允许 null；创建通过 initial.occupancy.direction 覆盖。Targeting.range 使用已确定的 Range，directionalRange 接收相对格子列表，仅当当前 occupancy.direction 非 null 时旋转范围。几何模块不查询 Unit 或 Battle，方向相关的业务读取留在 Targeting；不把未来所有朝向需求预先等同于占格。
+四向 Direction 是几何值，不意味着所有 Unit 都拥有方向。固定地块摆放的朝向由 Occupancy 保存为 direction，允许 null；创建时通过 initial.occupancy.direction 指定，省略时为 null。Targeting.range 使用已确定的 Range，directionalRange 接收相对格子列表，仅当当前 occupancy.direction 非 null 时旋转范围。几何模块不查询 Unit 或 Battle，方向相关的业务读取由 Targeting 负责。
 
 ## 几何计算
 
