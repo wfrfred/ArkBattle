@@ -1,0 +1,2441 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-10",
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/unit-audit-20261110/control-terrain/extract_configuration.py",
+      "bytes": 3590,
+      "sha256": "cf46feb57838d83ae2bfa38300ad2a7c80b87ad8509a069911a6e3fb5b18517e"
+    },
+    "source": "https://github.com/Kengxxiao/ArknightsGameData",
+    "revision": "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+    "sources": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/checkpoint-nondefault-20261107/mirror-current/zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_m02.json",
+        "bytes": 139227,
+        "sha256": "96bd11768271cf1d463170d51e18a1c379bf891430c5b3f09c5999ce1e707048",
+        "sourcePath": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_m02.json",
+        "gitBlob": "970881edb585508941ebdaddfd19bb379c0eb10b"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/checkpoint-nondefault-20261107/mirror-current/zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_m04.json",
+        "bytes": 130337,
+        "sha256": "0e177b8b5607c185defe9e178e6b660528c069f0794f1fdd8a3869ade6f8289c",
+        "sourcePath": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_m04.json",
+        "gitBlob": "5584564e352f4fb3b8aa8893bd7435965897ff97"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/checkpoint-nondefault-20261107/mirror-current/zh_CN/gamedata/levels/activities/act2autochess/level_act2autochess_m02.json",
+        "bytes": 122995,
+        "sha256": "ab6d922e8e9778c47311e9a62e111d01bbfe6d01214833faa2d9001995817d32",
+        "sourcePath": "zh_CN/gamedata/levels/activities/act2autochess/level_act2autochess_m02.json",
+        "gitBlob": "3822c28af2476fc70d43ebbb997960bad9ec0154"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/checkpoint-nondefault-20261107/mirror-current/zh_CN/gamedata/levels/activities/act2autochess/level_act2autochess_m03.json",
+        "bytes": 126376,
+        "sha256": "95d629159c9e241d3ef63b99052e9886e7c2d84d15ffcd6be01eeae5bd695db2",
+        "sourcePath": "zh_CN/gamedata/levels/activities/act2autochess/level_act2autochess_m03.json",
+        "gitBlob": "e1791ee8a5b0321faee87cb655a7f9ae1baa88ff"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/checkpoint-nondefault-20261107/mirror-current/zh_CN/gamedata/levels/activities/act2autochess/level_act2autochess_m04.json",
+        "bytes": 122385,
+        "sha256": "1089fd0e2ebb1f7867de107d66176c52337ac17598a37f30adebf08d116ae11f",
+        "sourcePath": "zh_CN/gamedata/levels/activities/act2autochess/level_act2autochess_m04.json",
+        "gitBlob": "3ce730bfd33711cc609b033fa55c88b5ada3d84c"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/route-operations-20261107/data/character_table.json",
+        "bytes": 15468242,
+        "sha256": "6a61f54802ee194dbb21968976eb99e2a4050e38928bd24bd2b770479076cea1",
+        "sourcePath": "zh_CN/gamedata/excel/character_table.json",
+        "gitBlob": "5cfce5bc20be49bfcefc754cbc7efa09aa69483c"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/route-operations-20261107/data/skill_table.json",
+        "bytes": 11766431,
+        "sha256": "492900f6b957233296c9736c86bb4e5f3ab4b4d7f5055a0f973c5acec3d174b1",
+        "sourcePath": "zh_CN/gamedata/excel/skill_table.json",
+        "gitBlob": "913886644cefcef46866e033656a47ac4269e9af"
+      }
+    ],
+    "scope": "Original JSON fields and exact placements from the pinned mirror. Config activation is separate from installed Prefab binding and native execution."
+  },
+  "result": {
+    "levelSelections": [
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_m02.json",
+        "pointer": "/predefines/tokenInsts/21",
+        "value": {
+          "position": {
+            "row": 12,
+            "col": 4
+          },
+          "direction": "UP",
+          "hidden": true,
+          "alias": "trap_1106_achplat#001",
+          "uniEquipIds": null,
+          "showSpIllust": false,
+          "masterInfos": null,
+          "inst": {
+            "characterKey": "trap_1106_achplat",
+            "level": 1,
+            "phase": "PHASE_0",
+            "favorPoint": 0,
+            "potentialRank": 0
+          },
+          "skillIndex": 0,
+          "mainSkillLvl": 1,
+          "skinId": "",
+          "tmplId": null,
+          "overrideSkillBlackboard": null,
+          "overrideTalents": null
+        }
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_m02.json",
+        "pointer": "/predefines/tokenInsts/22",
+        "value": {
+          "position": {
+            "row": 12,
+            "col": 5
+          },
+          "direction": "UP",
+          "hidden": true,
+          "alias": "trap_1106_achplat#002",
+          "uniEquipIds": null,
+          "showSpIllust": false,
+          "masterInfos": null,
+          "inst": {
+            "characterKey": "trap_1106_achplat",
+            "level": 1,
+            "phase": "PHASE_0",
+            "favorPoint": 0,
+            "potentialRank": 0
+          },
+          "skillIndex": 0,
+          "mainSkillLvl": 1,
+          "skinId": "",
+          "tmplId": null,
+          "overrideSkillBlackboard": null,
+          "overrideTalents": null
+        }
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_m02.json",
+        "pointer": "/predefines/tokenInsts/23",
+        "value": {
+          "position": {
+            "row": 11,
+            "col": 7
+          },
+          "direction": "UP",
+          "hidden": true,
+          "alias": "trap_1106_achplat#003",
+          "uniEquipIds": null,
+          "showSpIllust": false,
+          "masterInfos": null,
+          "inst": {
+            "characterKey": "trap_1106_achplat",
+            "level": 1,
+            "phase": "PHASE_0",
+            "favorPoint": 0,
+            "potentialRank": 0
+          },
+          "skillIndex": 0,
+          "mainSkillLvl": 1,
+          "skinId": "",
+          "tmplId": null,
+          "overrideSkillBlackboard": null,
+          "overrideTalents": null
+        }
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_m02.json",
+        "pointer": "/predefines/tokenInsts/24",
+        "value": {
+          "position": {
+            "row": 11,
+            "col": 8
+          },
+          "direction": "UP",
+          "hidden": true,
+          "alias": "trap_1106_achplat#004",
+          "uniEquipIds": null,
+          "showSpIllust": false,
+          "masterInfos": null,
+          "inst": {
+            "characterKey": "trap_1106_achplat",
+            "level": 1,
+            "phase": "PHASE_0",
+            "favorPoint": 0,
+            "potentialRank": 0
+          },
+          "skillIndex": 0,
+          "mainSkillLvl": 1,
+          "skinId": "",
+          "tmplId": null,
+          "overrideSkillBlackboard": null,
+          "overrideTalents": null
+        }
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_m02.json",
+        "pointer": "/predefines/tokenInsts/25",
+        "value": {
+          "position": {
+            "row": 12,
+            "col": 12
+          },
+          "direction": "UP",
+          "hidden": true,
+          "alias": "trap_1106_achplat#101",
+          "uniEquipIds": null,
+          "showSpIllust": false,
+          "masterInfos": null,
+          "inst": {
+            "characterKey": "trap_1106_achplat",
+            "level": 1,
+            "phase": "PHASE_0",
+            "favorPoint": 0,
+            "potentialRank": 0
+          },
+          "skillIndex": 0,
+          "mainSkillLvl": 1,
+          "skinId": "",
+          "tmplId": null,
+          "overrideSkillBlackboard": null,
+          "overrideTalents": null
+        }
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_m02.json",
+        "pointer": "/predefines/tokenInsts/26",
+        "value": {
+          "position": {
+            "row": 12,
+            "col": 13
+          },
+          "direction": "UP",
+          "hidden": true,
+          "alias": "trap_1106_achplat#102",
+          "uniEquipIds": null,
+          "showSpIllust": false,
+          "masterInfos": null,
+          "inst": {
+            "characterKey": "trap_1106_achplat",
+            "level": 1,
+            "phase": "PHASE_0",
+            "favorPoint": 0,
+            "potentialRank": 0
+          },
+          "skillIndex": 0,
+          "mainSkillLvl": 1,
+          "skinId": "",
+          "tmplId": null,
+          "overrideSkillBlackboard": null,
+          "overrideTalents": null
+        }
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_m02.json",
+        "pointer": "/predefines/tokenInsts/27",
+        "value": {
+          "position": {
+            "row": 11,
+            "col": 15
+          },
+          "direction": "UP",
+          "hidden": true,
+          "alias": "trap_1106_achplat#103",
+          "uniEquipIds": null,
+          "showSpIllust": false,
+          "masterInfos": null,
+          "inst": {
+            "characterKey": "trap_1106_achplat",
+            "level": 1,
+            "phase": "PHASE_0",
+            "favorPoint": 0,
+            "potentialRank": 0
+          },
+          "skillIndex": 0,
+          "mainSkillLvl": 1,
+          "skinId": "",
+          "tmplId": null,
+          "overrideSkillBlackboard": null,
+          "overrideTalents": null
+        }
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_m02.json",
+        "pointer": "/predefines/tokenInsts/28",
+        "value": {
+          "position": {
+            "row": 11,
+            "col": 16
+          },
+          "direction": "UP",
+          "hidden": true,
+          "alias": "trap_1106_achplat#104",
+          "uniEquipIds": null,
+          "showSpIllust": false,
+          "masterInfos": null,
+          "inst": {
+            "characterKey": "trap_1106_achplat",
+            "level": 1,
+            "phase": "PHASE_0",
+            "favorPoint": 0,
+            "potentialRank": 0
+          },
+          "skillIndex": 0,
+          "mainSkillLvl": 1,
+          "skinId": "",
+          "tmplId": null,
+          "overrideSkillBlackboard": null,
+          "overrideTalents": null
+        }
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_m02.json",
+        "pointer": "/predefines/tokenInsts/29",
+        "value": {
+          "position": {
+            "row": 5,
+            "col": 4
+          },
+          "direction": "UP",
+          "hidden": true,
+          "alias": "trap_1106_achplat#201",
+          "uniEquipIds": null,
+          "showSpIllust": false,
+          "masterInfos": null,
+          "inst": {
+            "characterKey": "trap_1106_achplat",
+            "level": 1,
+            "phase": "PHASE_0",
+            "favorPoint": 0,
+            "potentialRank": 0
+          },
+          "skillIndex": 0,
+          "mainSkillLvl": 1,
+          "skinId": "",
+          "tmplId": null,
+          "overrideSkillBlackboard": null,
+          "overrideTalents": null
+        }
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_m02.json",
+        "pointer": "/predefines/tokenInsts/30",
+        "value": {
+          "position": {
+            "row": 5,
+            "col": 5
+          },
+          "direction": "UP",
+          "hidden": true,
+          "alias": "trap_1106_achplat#202",
+          "uniEquipIds": null,
+          "showSpIllust": false,
+          "masterInfos": null,
+          "inst": {
+            "characterKey": "trap_1106_achplat",
+            "level": 1,
+            "phase": "PHASE_0",
+            "favorPoint": 0,
+            "potentialRank": 0
+          },
+          "skillIndex": 0,
+          "mainSkillLvl": 1,
+          "skinId": "",
+          "tmplId": null,
+          "overrideSkillBlackboard": null,
+          "overrideTalents": null
+        }
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_m02.json",
+        "pointer": "/predefines/tokenInsts/31",
+        "value": {
+          "position": {
+            "row": 4,
+            "col": 7
+          },
+          "direction": "UP",
+          "hidden": true,
+          "alias": "trap_1106_achplat#203",
+          "uniEquipIds": null,
+          "showSpIllust": false,
+          "masterInfos": null,
+          "inst": {
+            "characterKey": "trap_1106_achplat",
+            "level": 1,
+            "phase": "PHASE_0",
+            "favorPoint": 0,
+            "potentialRank": 0
+          },
+          "skillIndex": 0,
+          "mainSkillLvl": 1,
+          "skinId": "",
+          "tmplId": null,
+          "overrideSkillBlackboard": null,
+          "overrideTalents": null
+        }
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_m02.json",
+        "pointer": "/predefines/tokenInsts/32",
+        "value": {
+          "position": {
+            "row": 4,
+            "col": 8
+          },
+          "direction": "UP",
+          "hidden": true,
+          "alias": "trap_1106_achplat#204",
+          "uniEquipIds": null,
+          "showSpIllust": false,
+          "masterInfos": null,
+          "inst": {
+            "characterKey": "trap_1106_achplat",
+            "level": 1,
+            "phase": "PHASE_0",
+            "favorPoint": 0,
+            "potentialRank": 0
+          },
+          "skillIndex": 0,
+          "mainSkillLvl": 1,
+          "skinId": "",
+          "tmplId": null,
+          "overrideSkillBlackboard": null,
+          "overrideTalents": null
+        }
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_m02.json",
+        "pointer": "/predefines/tokenInsts/33",
+        "value": {
+          "position": {
+            "row": 5,
+            "col": 16
+          },
+          "direction": "UP",
+          "hidden": true,
+          "alias": "trap_1106_achplat#301",
+          "uniEquipIds": null,
+          "showSpIllust": false,
+          "masterInfos": null,
+          "inst": {
+            "characterKey": "trap_1106_achplat",
+            "level": 1,
+            "phase": "PHASE_0",
+            "favorPoint": 0,
+            "potentialRank": 0
+          },
+          "skillIndex": 0,
+          "mainSkillLvl": 1,
+          "skinId": "",
+          "tmplId": null,
+          "overrideSkillBlackboard": null,
+          "overrideTalents": null
+        }
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_m02.json",
+        "pointer": "/predefines/tokenInsts/34",
+        "value": {
+          "position": {
+            "row": 5,
+            "col": 15
+          },
+          "direction": "UP",
+          "hidden": true,
+          "alias": "trap_1106_achplat#302",
+          "uniEquipIds": null,
+          "showSpIllust": false,
+          "masterInfos": null,
+          "inst": {
+            "characterKey": "trap_1106_achplat",
+            "level": 1,
+            "phase": "PHASE_0",
+            "favorPoint": 0,
+            "potentialRank": 0
+          },
+          "skillIndex": 0,
+          "mainSkillLvl": 1,
+          "skinId": "",
+          "tmplId": null,
+          "overrideSkillBlackboard": null,
+          "overrideTalents": null
+        }
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_m02.json",
+        "pointer": "/predefines/tokenInsts/35",
+        "value": {
+          "position": {
+            "row": 4,
+            "col": 13
+          },
+          "direction": "UP",
+          "hidden": true,
+          "alias": "trap_1106_achplat#303",
+          "uniEquipIds": null,
+          "showSpIllust": false,
+          "masterInfos": null,
+          "inst": {
+            "characterKey": "trap_1106_achplat",
+            "level": 1,
+            "phase": "PHASE_0",
+            "favorPoint": 0,
+            "potentialRank": 0
+          },
+          "skillIndex": 0,
+          "mainSkillLvl": 1,
+          "skinId": "",
+          "tmplId": null,
+          "overrideSkillBlackboard": null,
+          "overrideTalents": null
+        }
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_m02.json",
+        "pointer": "/predefines/tokenInsts/36",
+        "value": {
+          "position": {
+            "row": 4,
+            "col": 12
+          },
+          "direction": "UP",
+          "hidden": true,
+          "alias": "trap_1106_achplat#304",
+          "uniEquipIds": null,
+          "showSpIllust": false,
+          "masterInfos": null,
+          "inst": {
+            "characterKey": "trap_1106_achplat",
+            "level": 1,
+            "phase": "PHASE_0",
+            "favorPoint": 0,
+            "potentialRank": 0
+          },
+          "skillIndex": 0,
+          "mainSkillLvl": 1,
+          "skinId": "",
+          "tmplId": null,
+          "overrideSkillBlackboard": null,
+          "overrideTalents": null
+        }
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_m04.json",
+        "pointer": "/mapData/tiles/69",
+        "value": {
+          "tileKey": "tile_infection",
+          "heightType": "LOWLAND",
+          "buildableType": "ALL",
+          "passableMask": "ALL",
+          "playerSideMask": "ALL",
+          "blackboard": [
+            {
+              "key": "damage",
+              "value": 70.0,
+              "valueStr": null
+            },
+            {
+              "key": "atk",
+              "value": 0.2,
+              "valueStr": null
+            },
+            {
+              "key": "attack_speed",
+              "value": 20.0,
+              "valueStr": null
+            },
+            {
+              "key": "duration",
+              "value": 300.0,
+              "valueStr": null
+            }
+          ],
+          "effects": null
+        },
+        "usedAt": [
+          {
+            "row": 15,
+            "col": 6
+          }
+        ]
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_m04.json",
+        "pointer": "/mapData/tiles/77",
+        "value": {
+          "tileKey": "tile_infection",
+          "heightType": "LOWLAND",
+          "buildableType": "ALL",
+          "passableMask": "ALL",
+          "playerSideMask": "ALL",
+          "blackboard": [
+            {
+              "key": "damage",
+              "value": 70.0,
+              "valueStr": null
+            },
+            {
+              "key": "atk",
+              "value": 0.2,
+              "valueStr": null
+            },
+            {
+              "key": "attack_speed",
+              "value": 20.0,
+              "valueStr": null
+            },
+            {
+              "key": "duration",
+              "value": 300.0,
+              "valueStr": null
+            }
+          ],
+          "effects": null
+        },
+        "usedAt": [
+          {
+            "row": 15,
+            "col": 14
+          }
+        ]
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_m04.json",
+        "pointer": "/mapData/tiles/90",
+        "value": {
+          "tileKey": "tile_infection",
+          "heightType": "LOWLAND",
+          "buildableType": "ALL",
+          "passableMask": "ALL",
+          "playerSideMask": "ALL",
+          "blackboard": [
+            {
+              "key": "damage",
+              "value": 70.0,
+              "valueStr": null
+            },
+            {
+              "key": "atk",
+              "value": 0.2,
+              "valueStr": null
+            },
+            {
+              "key": "attack_speed",
+              "value": 20.0,
+              "valueStr": null
+            },
+            {
+              "key": "duration",
+              "value": 300.0,
+              "valueStr": null
+            }
+          ],
+          "effects": null
+        },
+        "usedAt": [
+          {
+            "row": 14,
+            "col": 6
+          }
+        ]
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_m04.json",
+        "pointer": "/mapData/tiles/98",
+        "value": {
+          "tileKey": "tile_infection",
+          "heightType": "LOWLAND",
+          "buildableType": "ALL",
+          "passableMask": "ALL",
+          "playerSideMask": "ALL",
+          "blackboard": [
+            {
+              "key": "damage",
+              "value": 70.0,
+              "valueStr": null
+            },
+            {
+              "key": "atk",
+              "value": 0.2,
+              "valueStr": null
+            },
+            {
+              "key": "attack_speed",
+              "value": 20.0,
+              "valueStr": null
+            },
+            {
+              "key": "duration",
+              "value": 300.0,
+              "valueStr": null
+            }
+          ],
+          "effects": null
+        },
+        "usedAt": [
+          {
+            "row": 14,
+            "col": 14
+          }
+        ]
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_m04.json",
+        "pointer": "/mapData/tiles/216",
+        "value": {
+          "tileKey": "tile_infection",
+          "heightType": "LOWLAND",
+          "buildableType": "ALL",
+          "passableMask": "ALL",
+          "playerSideMask": "ALL",
+          "blackboard": [
+            {
+              "key": "damage",
+              "value": 70.0,
+              "valueStr": null
+            },
+            {
+              "key": "atk",
+              "value": 0.2,
+              "valueStr": null
+            },
+            {
+              "key": "attack_speed",
+              "value": 20.0,
+              "valueStr": null
+            },
+            {
+              "key": "duration",
+              "value": 300.0,
+              "valueStr": null
+            }
+          ],
+          "effects": null
+        },
+        "usedAt": [
+          {
+            "row": 8,
+            "col": 6
+          }
+        ]
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_m04.json",
+        "pointer": "/mapData/tiles/224",
+        "value": {
+          "tileKey": "tile_infection",
+          "heightType": "LOWLAND",
+          "buildableType": "ALL",
+          "passableMask": "ALL",
+          "playerSideMask": "ALL",
+          "blackboard": [
+            {
+              "key": "damage",
+              "value": 70.0,
+              "valueStr": null
+            },
+            {
+              "key": "atk",
+              "value": 0.2,
+              "valueStr": null
+            },
+            {
+              "key": "attack_speed",
+              "value": 20.0,
+              "valueStr": null
+            },
+            {
+              "key": "duration",
+              "value": 300.0,
+              "valueStr": null
+            }
+          ],
+          "effects": null
+        },
+        "usedAt": [
+          {
+            "row": 8,
+            "col": 14
+          }
+        ]
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_m04.json",
+        "pointer": "/mapData/tiles/237",
+        "value": {
+          "tileKey": "tile_infection",
+          "heightType": "LOWLAND",
+          "buildableType": "ALL",
+          "passableMask": "ALL",
+          "playerSideMask": "ALL",
+          "blackboard": [
+            {
+              "key": "damage",
+              "value": 70.0,
+              "valueStr": null
+            },
+            {
+              "key": "atk",
+              "value": 0.2,
+              "valueStr": null
+            },
+            {
+              "key": "attack_speed",
+              "value": 20.0,
+              "valueStr": null
+            },
+            {
+              "key": "duration",
+              "value": 300.0,
+              "valueStr": null
+            }
+          ],
+          "effects": null
+        },
+        "usedAt": [
+          {
+            "row": 7,
+            "col": 6
+          }
+        ]
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_m04.json",
+        "pointer": "/mapData/tiles/245",
+        "value": {
+          "tileKey": "tile_infection",
+          "heightType": "LOWLAND",
+          "buildableType": "ALL",
+          "passableMask": "ALL",
+          "playerSideMask": "ALL",
+          "blackboard": [
+            {
+              "key": "damage",
+              "value": 70.0,
+              "valueStr": null
+            },
+            {
+              "key": "atk",
+              "value": 0.2,
+              "valueStr": null
+            },
+            {
+              "key": "attack_speed",
+              "value": 20.0,
+              "valueStr": null
+            },
+            {
+              "key": "duration",
+              "value": 300.0,
+              "valueStr": null
+            }
+          ],
+          "effects": null
+        },
+        "usedAt": [
+          {
+            "row": 7,
+            "col": 14
+          }
+        ]
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act2autochess/level_act2autochess_m02.json",
+        "pointer": "/mapData/tiles/70",
+        "value": {
+          "tileKey": "tile_mire",
+          "heightType": "LOWLAND",
+          "buildableType": "ALL",
+          "passableMask": "ALL",
+          "playerSideMask": "ALL",
+          "blackboard": null,
+          "effects": null
+        },
+        "usedAt": [
+          {
+            "row": 15,
+            "col": 7
+          }
+        ]
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act2autochess/level_act2autochess_m02.json",
+        "pointer": "/mapData/tiles/76",
+        "value": {
+          "tileKey": "tile_mire",
+          "heightType": "LOWLAND",
+          "buildableType": "ALL",
+          "passableMask": "ALL",
+          "playerSideMask": "ALL",
+          "blackboard": null,
+          "effects": null
+        },
+        "usedAt": [
+          {
+            "row": 15,
+            "col": 13
+          }
+        ]
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act2autochess/level_act2autochess_m02.json",
+        "pointer": "/mapData/tiles/91",
+        "value": {
+          "tileKey": "tile_mire",
+          "heightType": "LOWLAND",
+          "buildableType": "ALL",
+          "passableMask": "ALL",
+          "playerSideMask": "ALL",
+          "blackboard": null,
+          "effects": null
+        },
+        "usedAt": [
+          {
+            "row": 14,
+            "col": 7
+          }
+        ]
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act2autochess/level_act2autochess_m02.json",
+        "pointer": "/mapData/tiles/97",
+        "value": {
+          "tileKey": "tile_mire",
+          "heightType": "LOWLAND",
+          "buildableType": "ALL",
+          "passableMask": "ALL",
+          "playerSideMask": "ALL",
+          "blackboard": null,
+          "effects": null
+        },
+        "usedAt": [
+          {
+            "row": 14,
+            "col": 13
+          }
+        ]
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act2autochess/level_act2autochess_m02.json",
+        "pointer": "/mapData/tiles/112",
+        "value": {
+          "tileKey": "tile_mire",
+          "heightType": "LOWLAND",
+          "buildableType": "ALL",
+          "passableMask": "ALL",
+          "playerSideMask": "ALL",
+          "blackboard": null,
+          "effects": null
+        },
+        "usedAt": [
+          {
+            "row": 13,
+            "col": 7
+          }
+        ]
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act2autochess/level_act2autochess_m02.json",
+        "pointer": "/mapData/tiles/118",
+        "value": {
+          "tileKey": "tile_mire",
+          "heightType": "LOWLAND",
+          "buildableType": "ALL",
+          "passableMask": "ALL",
+          "playerSideMask": "ALL",
+          "blackboard": null,
+          "effects": null
+        },
+        "usedAt": [
+          {
+            "row": 13,
+            "col": 13
+          }
+        ]
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act2autochess/level_act2autochess_m02.json",
+        "pointer": "/mapData/tiles/217",
+        "value": {
+          "tileKey": "tile_mire",
+          "heightType": "LOWLAND",
+          "buildableType": "ALL",
+          "passableMask": "ALL",
+          "playerSideMask": "ALL",
+          "blackboard": null,
+          "effects": null
+        },
+        "usedAt": [
+          {
+            "row": 8,
+            "col": 7
+          }
+        ]
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act2autochess/level_act2autochess_m02.json",
+        "pointer": "/mapData/tiles/225",
+        "value": {
+          "tileKey": "tile_mire",
+          "heightType": "LOWLAND",
+          "buildableType": "ALL",
+          "passableMask": "ALL",
+          "playerSideMask": "ALL",
+          "blackboard": null,
+          "effects": null
+        },
+        "usedAt": [
+          {
+            "row": 8,
+            "col": 15
+          }
+        ]
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act2autochess/level_act2autochess_m02.json",
+        "pointer": "/mapData/tiles/238",
+        "value": {
+          "tileKey": "tile_mire",
+          "heightType": "LOWLAND",
+          "buildableType": "ALL",
+          "passableMask": "ALL",
+          "playerSideMask": "ALL",
+          "blackboard": null,
+          "effects": null
+        },
+        "usedAt": [
+          {
+            "row": 7,
+            "col": 7
+          }
+        ]
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act2autochess/level_act2autochess_m02.json",
+        "pointer": "/mapData/tiles/246",
+        "value": {
+          "tileKey": "tile_mire",
+          "heightType": "LOWLAND",
+          "buildableType": "ALL",
+          "passableMask": "ALL",
+          "playerSideMask": "ALL",
+          "blackboard": null,
+          "effects": null
+        },
+        "usedAt": [
+          {
+            "row": 7,
+            "col": 15
+          }
+        ]
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act2autochess/level_act2autochess_m02.json",
+        "pointer": "/mapData/tiles/259",
+        "value": {
+          "tileKey": "tile_mire",
+          "heightType": "LOWLAND",
+          "buildableType": "ALL",
+          "passableMask": "ALL",
+          "playerSideMask": "ALL",
+          "blackboard": null,
+          "effects": null
+        },
+        "usedAt": [
+          {
+            "row": 6,
+            "col": 7
+          }
+        ]
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act2autochess/level_act2autochess_m02.json",
+        "pointer": "/mapData/tiles/267",
+        "value": {
+          "tileKey": "tile_mire",
+          "heightType": "LOWLAND",
+          "buildableType": "ALL",
+          "passableMask": "ALL",
+          "playerSideMask": "ALL",
+          "blackboard": null,
+          "effects": null
+        },
+        "usedAt": [
+          {
+            "row": 6,
+            "col": 15
+          }
+        ]
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act2autochess/level_act2autochess_m02.json",
+        "pointer": "/predefines/tokenInsts/5",
+        "value": {
+          "position": {
+            "row": 18,
+            "col": 1
+          },
+          "direction": "UP",
+          "hidden": false,
+          "alias": null,
+          "uniEquipIds": null,
+          "showSpIllust": false,
+          "masterInfos": null,
+          "inst": {
+            "characterKey": "trap_098_mire",
+            "level": 1,
+            "phase": "PHASE_0",
+            "favorPoint": 0,
+            "potentialRank": 0
+          },
+          "skillIndex": 0,
+          "mainSkillLvl": 1,
+          "skinId": "",
+          "tmplId": null,
+          "overrideSkillBlackboard": [
+            {
+              "key": "attack_speed",
+              "value": -0.05,
+              "valueStr": null
+            },
+            {
+              "key": "max_stack_cnt",
+              "value": 10.0,
+              "valueStr": null
+            },
+            {
+              "key": "move_speed",
+              "value": -0.05,
+              "valueStr": null
+            },
+            {
+              "key": "value",
+              "value": 3.0,
+              "valueStr": null
+            }
+          ],
+          "overrideTalents": null
+        }
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act2autochess/level_act2autochess_m03.json",
+        "pointer": "/mapData/tiles/69",
+        "value": {
+          "tileKey": "tile_smog",
+          "heightType": "LOWLAND",
+          "buildableType": "ALL",
+          "passableMask": "ALL",
+          "playerSideMask": "ALL",
+          "blackboard": null,
+          "effects": null
+        },
+        "usedAt": [
+          {
+            "row": 15,
+            "col": 6
+          }
+        ]
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act2autochess/level_act2autochess_m03.json",
+        "pointer": "/mapData/tiles/77",
+        "value": {
+          "tileKey": "tile_smog",
+          "heightType": "LOWLAND",
+          "buildableType": "ALL",
+          "passableMask": "ALL",
+          "playerSideMask": "ALL",
+          "blackboard": null,
+          "effects": null
+        },
+        "usedAt": [
+          {
+            "row": 15,
+            "col": 14
+          }
+        ]
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act2autochess/level_act2autochess_m03.json",
+        "pointer": "/mapData/tiles/111",
+        "value": {
+          "tileKey": "tile_smog",
+          "heightType": "LOWLAND",
+          "buildableType": "ALL",
+          "passableMask": "ALL",
+          "playerSideMask": "ALL",
+          "blackboard": null,
+          "effects": null
+        },
+        "usedAt": [
+          {
+            "row": 13,
+            "col": 6
+          }
+        ]
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act2autochess/level_act2autochess_m03.json",
+        "pointer": "/mapData/tiles/119",
+        "value": {
+          "tileKey": "tile_smog",
+          "heightType": "LOWLAND",
+          "buildableType": "ALL",
+          "passableMask": "ALL",
+          "playerSideMask": "ALL",
+          "blackboard": null,
+          "effects": null
+        },
+        "usedAt": [
+          {
+            "row": 13,
+            "col": 14
+          }
+        ]
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act2autochess/level_act2autochess_m03.json",
+        "pointer": "/mapData/tiles/216",
+        "value": {
+          "tileKey": "tile_smog",
+          "heightType": "LOWLAND",
+          "buildableType": "ALL",
+          "passableMask": "ALL",
+          "playerSideMask": "ALL",
+          "blackboard": null,
+          "effects": null
+        },
+        "usedAt": [
+          {
+            "row": 8,
+            "col": 6
+          }
+        ]
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act2autochess/level_act2autochess_m03.json",
+        "pointer": "/mapData/tiles/224",
+        "value": {
+          "tileKey": "tile_smog",
+          "heightType": "LOWLAND",
+          "buildableType": "ALL",
+          "passableMask": "ALL",
+          "playerSideMask": "ALL",
+          "blackboard": null,
+          "effects": null
+        },
+        "usedAt": [
+          {
+            "row": 8,
+            "col": 14
+          }
+        ]
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act2autochess/level_act2autochess_m03.json",
+        "pointer": "/mapData/tiles/258",
+        "value": {
+          "tileKey": "tile_smog",
+          "heightType": "LOWLAND",
+          "buildableType": "ALL",
+          "passableMask": "ALL",
+          "playerSideMask": "ALL",
+          "blackboard": null,
+          "effects": null
+        },
+        "usedAt": [
+          {
+            "row": 6,
+            "col": 6
+          }
+        ]
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act2autochess/level_act2autochess_m03.json",
+        "pointer": "/mapData/tiles/266",
+        "value": {
+          "tileKey": "tile_smog",
+          "heightType": "LOWLAND",
+          "buildableType": "ALL",
+          "passableMask": "ALL",
+          "playerSideMask": "ALL",
+          "blackboard": null,
+          "effects": null
+        },
+        "usedAt": [
+          {
+            "row": 6,
+            "col": 14
+          }
+        ]
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act2autochess/level_act2autochess_m04.json",
+        "pointer": "/mapData/tiles/69",
+        "value": {
+          "tileKey": "tile_deepsea",
+          "heightType": "LOWLAND",
+          "buildableType": "ALL",
+          "passableMask": "ALL",
+          "playerSideMask": "ALL",
+          "blackboard": null,
+          "effects": null
+        },
+        "usedAt": [
+          {
+            "row": 15,
+            "col": 6
+          }
+        ]
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act2autochess/level_act2autochess_m04.json",
+        "pointer": "/mapData/tiles/77",
+        "value": {
+          "tileKey": "tile_deepsea",
+          "heightType": "LOWLAND",
+          "buildableType": "ALL",
+          "passableMask": "ALL",
+          "playerSideMask": "ALL",
+          "blackboard": null,
+          "effects": null
+        },
+        "usedAt": [
+          {
+            "row": 15,
+            "col": 14
+          }
+        ]
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act2autochess/level_act2autochess_m04.json",
+        "pointer": "/mapData/tiles/90",
+        "value": {
+          "tileKey": "tile_deepsea",
+          "heightType": "LOWLAND",
+          "buildableType": "ALL",
+          "passableMask": "ALL",
+          "playerSideMask": "ALL",
+          "blackboard": null,
+          "effects": null
+        },
+        "usedAt": [
+          {
+            "row": 14,
+            "col": 6
+          }
+        ]
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act2autochess/level_act2autochess_m04.json",
+        "pointer": "/mapData/tiles/98",
+        "value": {
+          "tileKey": "tile_deepsea",
+          "heightType": "LOWLAND",
+          "buildableType": "ALL",
+          "passableMask": "ALL",
+          "playerSideMask": "ALL",
+          "blackboard": null,
+          "effects": null
+        },
+        "usedAt": [
+          {
+            "row": 14,
+            "col": 14
+          }
+        ]
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act2autochess/level_act2autochess_m04.json",
+        "pointer": "/mapData/tiles/111",
+        "value": {
+          "tileKey": "tile_deepsea",
+          "heightType": "LOWLAND",
+          "buildableType": "ALL",
+          "passableMask": "ALL",
+          "playerSideMask": "ALL",
+          "blackboard": null,
+          "effects": null
+        },
+        "usedAt": [
+          {
+            "row": 13,
+            "col": 6
+          }
+        ]
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act2autochess/level_act2autochess_m04.json",
+        "pointer": "/mapData/tiles/119",
+        "value": {
+          "tileKey": "tile_deepsea",
+          "heightType": "LOWLAND",
+          "buildableType": "ALL",
+          "passableMask": "ALL",
+          "playerSideMask": "ALL",
+          "blackboard": null,
+          "effects": null
+        },
+        "usedAt": [
+          {
+            "row": 13,
+            "col": 14
+          }
+        ]
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act2autochess/level_act2autochess_m04.json",
+        "pointer": "/mapData/tiles/216",
+        "value": {
+          "tileKey": "tile_deepsea",
+          "heightType": "LOWLAND",
+          "buildableType": "ALL",
+          "passableMask": "ALL",
+          "playerSideMask": "ALL",
+          "blackboard": null,
+          "effects": null
+        },
+        "usedAt": [
+          {
+            "row": 8,
+            "col": 6
+          }
+        ]
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act2autochess/level_act2autochess_m04.json",
+        "pointer": "/mapData/tiles/224",
+        "value": {
+          "tileKey": "tile_deepsea",
+          "heightType": "LOWLAND",
+          "buildableType": "ALL",
+          "passableMask": "ALL",
+          "playerSideMask": "ALL",
+          "blackboard": null,
+          "effects": null
+        },
+        "usedAt": [
+          {
+            "row": 8,
+            "col": 14
+          }
+        ]
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act2autochess/level_act2autochess_m04.json",
+        "pointer": "/mapData/tiles/237",
+        "value": {
+          "tileKey": "tile_deepsea",
+          "heightType": "LOWLAND",
+          "buildableType": "ALL",
+          "passableMask": "ALL",
+          "playerSideMask": "ALL",
+          "blackboard": null,
+          "effects": null
+        },
+        "usedAt": [
+          {
+            "row": 7,
+            "col": 6
+          }
+        ]
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act2autochess/level_act2autochess_m04.json",
+        "pointer": "/mapData/tiles/245",
+        "value": {
+          "tileKey": "tile_deepsea",
+          "heightType": "LOWLAND",
+          "buildableType": "ALL",
+          "passableMask": "ALL",
+          "playerSideMask": "ALL",
+          "blackboard": null,
+          "effects": null
+        },
+        "usedAt": [
+          {
+            "row": 7,
+            "col": 14
+          }
+        ]
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act2autochess/level_act2autochess_m04.json",
+        "pointer": "/mapData/tiles/258",
+        "value": {
+          "tileKey": "tile_deepsea",
+          "heightType": "LOWLAND",
+          "buildableType": "ALL",
+          "passableMask": "ALL",
+          "playerSideMask": "ALL",
+          "blackboard": null,
+          "effects": null
+        },
+        "usedAt": [
+          {
+            "row": 6,
+            "col": 6
+          }
+        ]
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act2autochess/level_act2autochess_m04.json",
+        "pointer": "/mapData/tiles/266",
+        "value": {
+          "tileKey": "tile_deepsea",
+          "heightType": "LOWLAND",
+          "buildableType": "ALL",
+          "passableMask": "ALL",
+          "playerSideMask": "ALL",
+          "blackboard": null,
+          "effects": null
+        },
+        "usedAt": [
+          {
+            "row": 6,
+            "col": 14
+          }
+        ]
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/activities/act2autochess/level_act2autochess_m04.json",
+        "pointer": "/predefines/tokenInsts/4",
+        "value": {
+          "position": {
+            "row": 18,
+            "col": 1
+          },
+          "direction": "UP",
+          "hidden": false,
+          "alias": "trap_042_tidectrl#1",
+          "uniEquipIds": null,
+          "showSpIllust": false,
+          "masterInfos": null,
+          "inst": {
+            "characterKey": "trap_042_tidectrl",
+            "level": 1,
+            "phase": "PHASE_0",
+            "favorPoint": 0,
+            "potentialRank": 0
+          },
+          "skillIndex": 2,
+          "mainSkillLvl": 1,
+          "skinId": "",
+          "tmplId": null,
+          "overrideSkillBlackboard": null,
+          "overrideTalents": null
+        }
+      }
+    ],
+    "tableSelections": {
+      "character_table.json/char_143_ghost": {
+        "name": "幽灵鲨",
+        "profession": "WARRIOR",
+        "subProfessionId": "centurion",
+        "skills": [
+          {
+            "skillId": "skcom_atk_up[3]",
+            "overridePrefabKey": null,
+            "overrideTokenKey": null,
+            "levelUpCostCond": [
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 28800,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 5,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30024",
+                    "count": 3,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30103",
+                    "count": 3,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 57600,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30044",
+                    "count": 3,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30024",
+                    "count": 5,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 86400,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 10,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30115",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30094",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  }
+                ]
+              }
+            ],
+            "unlockCond": {
+              "phase": "PHASE_0",
+              "level": 1
+            }
+          },
+          {
+            "skillId": "skchr_ghost_2",
+            "overridePrefabKey": null,
+            "overrideTokenKey": null,
+            "levelUpCostCond": [
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 28800,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 5,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30034",
+                    "count": 3,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30013",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 57600,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30054",
+                    "count": 3,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30034",
+                    "count": 5,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 86400,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 10,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30125",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30084",
+                    "count": 3,
+                    "type": "MATERIAL"
+                  }
+                ]
+              }
+            ],
+            "unlockCond": {
+              "phase": "PHASE_1",
+              "level": 1
+            }
+          }
+        ],
+        "trait": null,
+        "phases": [
+          {
+            "characterPrefabKey": "char_143_ghost",
+            "rangeId": "1-1",
+            "maxLevel": 50,
+            "attributesKeyFrames": [
+              {
+                "level": 1,
+                "data": {
+                  "maxHp": 1199,
+                  "atk": 293,
+                  "def": 150,
+                  "magicResistance": 0.0,
+                  "cost": 19,
+                  "blockCnt": 2,
+                  "moveSpeed": 1.0,
+                  "attackSpeed": 100.0,
+                  "baseAttackTime": 1.2,
+                  "respawnTime": 70,
+                  "hpRecoveryPerSec": 0.0,
+                  "spRecoveryPerSec": 1.0,
+                  "maxDeployCount": 1,
+                  "maxDeckStackCnt": 0,
+                  "tauntLevel": 0,
+                  "massLevel": 0,
+                  "baseForceLevel": 0,
+                  "blockVolume": -1,
+                  "stunImmune": false,
+                  "silenceImmune": false,
+                  "sleepImmune": false,
+                  "frozenImmune": false,
+                  "levitateImmune": false,
+                  "disarmedCombatImmune": false,
+                  "fearedImmune": false,
+                  "palsyImmune": false,
+                  "attractImmune": false,
+                  "teleportImmune": false,
+                  "groundBoundImmune": false
+                }
+              },
+              {
+                "level": 50,
+                "data": {
+                  "maxHp": 1538,
+                  "atk": 407,
+                  "def": 215,
+                  "magicResistance": 0.0,
+                  "cost": 19,
+                  "blockCnt": 2,
+                  "moveSpeed": 1.0,
+                  "attackSpeed": 100.0,
+                  "baseAttackTime": 1.2,
+                  "respawnTime": 70,
+                  "hpRecoveryPerSec": 0.0,
+                  "spRecoveryPerSec": 1.0,
+                  "maxDeployCount": 1,
+                  "maxDeckStackCnt": 0,
+                  "tauntLevel": 0,
+                  "massLevel": 0,
+                  "baseForceLevel": 0,
+                  "blockVolume": -1,
+                  "stunImmune": false,
+                  "silenceImmune": false,
+                  "sleepImmune": false,
+                  "frozenImmune": false,
+                  "levitateImmune": false,
+                  "disarmedCombatImmune": false,
+                  "fearedImmune": false,
+                  "palsyImmune": false,
+                  "attractImmune": false,
+                  "teleportImmune": false,
+                  "groundBoundImmune": false
+                }
+              }
+            ],
+            "evolveCost": null
+          },
+          {
+            "characterPrefabKey": "char_143_ghost",
+            "rangeId": "1-1",
+            "maxLevel": 70,
+            "attributesKeyFrames": [
+              {
+                "level": 1,
+                "data": {
+                  "maxHp": 1538,
+                  "atk": 407,
+                  "def": 215,
+                  "magicResistance": 0.0,
+                  "cost": 21,
+                  "blockCnt": 2,
+                  "moveSpeed": 1.0,
+                  "attackSpeed": 100.0,
+                  "baseAttackTime": 1.2,
+                  "respawnTime": 70,
+                  "hpRecoveryPerSec": 0.0,
+                  "spRecoveryPerSec": 1.0,
+                  "maxDeployCount": 1,
+                  "maxDeckStackCnt": 0,
+                  "tauntLevel": 0,
+                  "massLevel": 0,
+                  "baseForceLevel": 0,
+                  "blockVolume": -1,
+                  "stunImmune": false,
+                  "silenceImmune": false,
+                  "sleepImmune": false,
+                  "frozenImmune": false,
+                  "levitateImmune": false,
+                  "disarmedCombatImmune": false,
+                  "fearedImmune": false,
+                  "palsyImmune": false,
+                  "attractImmune": false,
+                  "teleportImmune": false,
+                  "groundBoundImmune": false
+                }
+              },
+              {
+                "level": 70,
+                "data": {
+                  "maxHp": 1972,
+                  "atk": 551,
+                  "def": 291,
+                  "magicResistance": 0.0,
+                  "cost": 21,
+                  "blockCnt": 2,
+                  "moveSpeed": 1.0,
+                  "attackSpeed": 100.0,
+                  "baseAttackTime": 1.2,
+                  "respawnTime": 70,
+                  "hpRecoveryPerSec": 0.0,
+                  "spRecoveryPerSec": 1.0,
+                  "maxDeployCount": 1,
+                  "maxDeckStackCnt": 0,
+                  "tauntLevel": 0,
+                  "massLevel": 0,
+                  "baseForceLevel": 0,
+                  "blockVolume": -1,
+                  "stunImmune": false,
+                  "silenceImmune": false,
+                  "sleepImmune": false,
+                  "frozenImmune": false,
+                  "levitateImmune": false,
+                  "disarmedCombatImmune": false,
+                  "fearedImmune": false,
+                  "palsyImmune": false,
+                  "attractImmune": false,
+                  "teleportImmune": false,
+                  "groundBoundImmune": false
+                }
+              }
+            ],
+            "evolveCost": [
+              {
+                "id": "3221",
+                "count": 4,
+                "type": "MATERIAL"
+              },
+              {
+                "id": "30012",
+                "count": 6,
+                "type": "MATERIAL"
+              },
+              {
+                "id": "30052",
+                "count": 3,
+                "type": "MATERIAL"
+              }
+            ]
+          },
+          {
+            "characterPrefabKey": "char_143_ghost",
+            "rangeId": "1-1",
+            "maxLevel": 80,
+            "attributesKeyFrames": [
+              {
+                "level": 1,
+                "data": {
+                  "maxHp": 1972,
+                  "atk": 551,
+                  "def": 291,
+                  "magicResistance": 0.0,
+                  "cost": 23,
+                  "blockCnt": 3,
+                  "moveSpeed": 1.0,
+                  "attackSpeed": 100.0,
+                  "baseAttackTime": 1.2,
+                  "respawnTime": 70,
+                  "hpRecoveryPerSec": 0.0,
+                  "spRecoveryPerSec": 1.0,
+                  "maxDeployCount": 1,
+                  "maxDeckStackCnt": 0,
+                  "tauntLevel": 0,
+                  "massLevel": 0,
+                  "baseForceLevel": 0,
+                  "blockVolume": -1,
+                  "stunImmune": false,
+                  "silenceImmune": false,
+                  "sleepImmune": false,
+                  "frozenImmune": false,
+                  "levitateImmune": false,
+                  "disarmedCombatImmune": false,
+                  "fearedImmune": false,
+                  "palsyImmune": false,
+                  "attractImmune": false,
+                  "teleportImmune": false,
+                  "groundBoundImmune": false
+                }
+              },
+              {
+                "level": 80,
+                "data": {
+                  "maxHp": 2630,
+                  "atk": 725,
+                  "def": 355,
+                  "magicResistance": 0.0,
+                  "cost": 23,
+                  "blockCnt": 3,
+                  "moveSpeed": 1.0,
+                  "attackSpeed": 100.0,
+                  "baseAttackTime": 1.2,
+                  "respawnTime": 70,
+                  "hpRecoveryPerSec": 0.0,
+                  "spRecoveryPerSec": 1.0,
+                  "maxDeployCount": 1,
+                  "maxDeckStackCnt": 0,
+                  "tauntLevel": 0,
+                  "massLevel": 0,
+                  "baseForceLevel": 0,
+                  "blockVolume": -1,
+                  "stunImmune": false,
+                  "silenceImmune": false,
+                  "sleepImmune": false,
+                  "frozenImmune": false,
+                  "levitateImmune": false,
+                  "disarmedCombatImmune": false,
+                  "fearedImmune": false,
+                  "palsyImmune": false,
+                  "attractImmune": false,
+                  "teleportImmune": false,
+                  "groundBoundImmune": false
+                }
+              }
+            ],
+            "evolveCost": [
+              {
+                "id": "3223",
+                "count": 3,
+                "type": "MATERIAL"
+              },
+              {
+                "id": "30074",
+                "count": 8,
+                "type": "MATERIAL"
+              },
+              {
+                "id": "30053",
+                "count": 15,
+                "type": "MATERIAL"
+              }
+            ]
+          }
+        ]
+      },
+      "character_table.json/trap_042_tidectrl": {
+        "name": "涨潮控制",
+        "profession": "TRAP",
+        "subProfessionId": "notchar2",
+        "skills": [
+          {
+            "skillId": "sktok_tidectrl_1",
+            "overridePrefabKey": null,
+            "overrideTokenKey": null,
+            "levelUpCostCond": [],
+            "unlockCond": {
+              "phase": "PHASE_0",
+              "level": 1
+            }
+          },
+          {
+            "skillId": "sktok_tidectrl_2",
+            "overridePrefabKey": null,
+            "overrideTokenKey": null,
+            "levelUpCostCond": [],
+            "unlockCond": {
+              "phase": "PHASE_0",
+              "level": 1
+            }
+          },
+          {
+            "skillId": "sktok_tidectrl_3",
+            "overridePrefabKey": null,
+            "overrideTokenKey": null,
+            "levelUpCostCond": [],
+            "unlockCond": {
+              "phase": "PHASE_0",
+              "level": 1
+            }
+          }
+        ],
+        "trait": null,
+        "phases": [
+          {
+            "characterPrefabKey": "trap_042_tidectrl",
+            "rangeId": null,
+            "maxLevel": 30,
+            "attributesKeyFrames": [
+              {
+                "level": 1,
+                "data": {
+                  "maxHp": 100,
+                  "atk": 0,
+                  "def": 0,
+                  "magicResistance": 0.0,
+                  "cost": 5,
+                  "blockCnt": 0,
+                  "moveSpeed": 1.0,
+                  "attackSpeed": 100.0,
+                  "baseAttackTime": 1.0,
+                  "respawnTime": 5,
+                  "hpRecoveryPerSec": 0.0,
+                  "spRecoveryPerSec": 1.0,
+                  "maxDeployCount": 1,
+                  "maxDeckStackCnt": 0,
+                  "tauntLevel": 0,
+                  "massLevel": 0,
+                  "baseForceLevel": 0,
+                  "blockVolume": -1,
+                  "stunImmune": false,
+                  "silenceImmune": false,
+                  "sleepImmune": false,
+                  "frozenImmune": false,
+                  "levitateImmune": false,
+                  "disarmedCombatImmune": false,
+                  "fearedImmune": false,
+                  "palsyImmune": false,
+                  "attractImmune": false,
+                  "teleportImmune": false,
+                  "groundBoundImmune": false
+                }
+              },
+              {
+                "level": 30,
+                "data": {
+                  "maxHp": 100,
+                  "atk": 0,
+                  "def": 0,
+                  "magicResistance": 0.0,
+                  "cost": 5,
+                  "blockCnt": 0,
+                  "moveSpeed": 1.0,
+                  "attackSpeed": 100.0,
+                  "baseAttackTime": 1.0,
+                  "respawnTime": 5,
+                  "hpRecoveryPerSec": 0.0,
+                  "spRecoveryPerSec": 1.0,
+                  "maxDeployCount": 1,
+                  "maxDeckStackCnt": 0,
+                  "tauntLevel": 0,
+                  "massLevel": 0,
+                  "baseForceLevel": 0,
+                  "blockVolume": -1,
+                  "stunImmune": false,
+                  "silenceImmune": false,
+                  "sleepImmune": false,
+                  "frozenImmune": false,
+                  "levitateImmune": false,
+                  "disarmedCombatImmune": false,
+                  "fearedImmune": false,
+                  "palsyImmune": false,
+                  "attractImmune": false,
+                  "teleportImmune": false,
+                  "groundBoundImmune": false
+                }
+              }
+            ],
+            "evolveCost": null
+          }
+        ]
+      },
+      "character_table.json/trap_098_mire": {
+        "name": "沼泽控制",
+        "profession": "TRAP",
+        "subProfessionId": "notchar2",
+        "skills": [
+          {
+            "skillId": "sktok_mire",
+            "overridePrefabKey": null,
+            "overrideTokenKey": null,
+            "levelUpCostCond": [],
+            "unlockCond": {
+              "phase": "PHASE_0",
+              "level": 1
+            }
+          }
+        ],
+        "trait": null,
+        "phases": [
+          {
+            "characterPrefabKey": "trap_098_mire",
+            "rangeId": null,
+            "maxLevel": 30,
+            "attributesKeyFrames": [
+              {
+                "level": 1,
+                "data": {
+                  "maxHp": 100,
+                  "atk": 0,
+                  "def": 0,
+                  "magicResistance": 0.0,
+                  "cost": 5,
+                  "blockCnt": 0,
+                  "moveSpeed": 1.0,
+                  "attackSpeed": 100.0,
+                  "baseAttackTime": 1.0,
+                  "respawnTime": 5,
+                  "hpRecoveryPerSec": 0.0,
+                  "spRecoveryPerSec": 1.0,
+                  "maxDeployCount": 1,
+                  "maxDeckStackCnt": 0,
+                  "tauntLevel": 0,
+                  "massLevel": 0,
+                  "baseForceLevel": 0,
+                  "blockVolume": -1,
+                  "stunImmune": false,
+                  "silenceImmune": false,
+                  "sleepImmune": false,
+                  "frozenImmune": false,
+                  "levitateImmune": false,
+                  "disarmedCombatImmune": false,
+                  "fearedImmune": false,
+                  "palsyImmune": false,
+                  "attractImmune": false,
+                  "teleportImmune": false,
+                  "groundBoundImmune": false
+                }
+              },
+              {
+                "level": 30,
+                "data": {
+                  "maxHp": 100,
+                  "atk": 0,
+                  "def": 0,
+                  "magicResistance": 0.0,
+                  "cost": 5,
+                  "blockCnt": 0,
+                  "moveSpeed": 1.0,
+                  "attackSpeed": 100.0,
+                  "baseAttackTime": 1.0,
+                  "respawnTime": 5,
+                  "hpRecoveryPerSec": 0.0,
+                  "spRecoveryPerSec": 1.0,
+                  "maxDeployCount": 1,
+                  "maxDeckStackCnt": 0,
+                  "tauntLevel": 0,
+                  "massLevel": 0,
+                  "baseForceLevel": 0,
+                  "blockVolume": -1,
+                  "stunImmune": false,
+                  "silenceImmune": false,
+                  "sleepImmune": false,
+                  "frozenImmune": false,
+                  "levitateImmune": false,
+                  "disarmedCombatImmune": false,
+                  "fearedImmune": false,
+                  "palsyImmune": false,
+                  "attractImmune": false,
+                  "teleportImmune": false,
+                  "groundBoundImmune": false
+                }
+              }
+            ],
+            "evolveCost": null
+          }
+        ]
+      },
+      "character_table.json/trap_1106_achplat": {
+        "name": "射击台",
+        "profession": "TRAP",
+        "subProfessionId": "notchar2",
+        "skills": [
+          {
+            "skillId": "sktok_achplat",
+            "overridePrefabKey": null,
+            "overrideTokenKey": null,
+            "levelUpCostCond": [],
+            "unlockCond": {
+              "phase": "PHASE_0",
+              "level": 1
+            }
+          }
+        ],
+        "trait": null,
+        "phases": [
+          {
+            "characterPrefabKey": "trap_1106_achplat",
+            "rangeId": "0-1",
+            "maxLevel": 30,
+            "attributesKeyFrames": [
+              {
+                "level": 1,
+                "data": {
+                  "maxHp": 100,
+                  "atk": 0,
+                  "def": 0,
+                  "magicResistance": 0.0,
+                  "cost": 5,
+                  "blockCnt": 0,
+                  "moveSpeed": 1.0,
+                  "attackSpeed": 100.0,
+                  "baseAttackTime": 1.0,
+                  "respawnTime": 1,
+                  "hpRecoveryPerSec": 0.0,
+                  "spRecoveryPerSec": 1.0,
+                  "maxDeployCount": 1,
+                  "maxDeckStackCnt": 0,
+                  "tauntLevel": -1,
+                  "massLevel": 0,
+                  "baseForceLevel": 0,
+                  "blockVolume": -1,
+                  "stunImmune": false,
+                  "silenceImmune": false,
+                  "sleepImmune": false,
+                  "frozenImmune": false,
+                  "levitateImmune": false,
+                  "disarmedCombatImmune": false,
+                  "fearedImmune": false,
+                  "palsyImmune": false,
+                  "attractImmune": false,
+                  "teleportImmune": false,
+                  "groundBoundImmune": false
+                }
+              },
+              {
+                "level": 30,
+                "data": {
+                  "maxHp": 100,
+                  "atk": 0,
+                  "def": 0,
+                  "magicResistance": 0.0,
+                  "cost": 5,
+                  "blockCnt": 0,
+                  "moveSpeed": 1.0,
+                  "attackSpeed": 100.0,
+                  "baseAttackTime": 1.0,
+                  "respawnTime": 1,
+                  "hpRecoveryPerSec": 0.0,
+                  "spRecoveryPerSec": 1.0,
+                  "maxDeployCount": 1,
+                  "maxDeckStackCnt": 0,
+                  "tauntLevel": -1,
+                  "massLevel": 0,
+                  "baseForceLevel": 0,
+                  "blockVolume": -1,
+                  "stunImmune": false,
+                  "silenceImmune": false,
+                  "sleepImmune": false,
+                  "frozenImmune": false,
+                  "levitateImmune": false,
+                  "disarmedCombatImmune": false,
+                  "fearedImmune": false,
+                  "palsyImmune": false,
+                  "attractImmune": false,
+                  "teleportImmune": false,
+                  "groundBoundImmune": false
+                }
+              }
+            ],
+            "evolveCost": null
+          }
+        ]
+      },
+      "skill_table.json/sktok_mire": {
+        "skillId": "sktok_mire",
+        "iconId": null,
+        "hidden": false,
+        "levels": [
+          {
+            "name": "沼泽控制",
+            "rangeId": null,
+            "description": "-",
+            "skillType": "AUTO",
+            "durationType": "NONE",
+            "spData": {
+              "spType": "INCREASE_WITH_TIME",
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 0,
+              "initSp": 0,
+              "increment": 0.0
+            },
+            "prefabId": "sktok_mire",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "attack_speed",
+                "value": -0.05,
+                "valueStr": null
+              },
+              {
+                "key": "max_stack_cnt",
+                "value": 10.0,
+                "valueStr": null
+              },
+              {
+                "key": "move_speed",
+                "value": -0.05,
+                "valueStr": null
+              },
+              {
+                "key": "value",
+                "value": 3.0,
+                "valueStr": null
+              }
+            ]
+          }
+        ]
+      },
+      "skill_table.json/sktok_tidectrl_3": {
+        "skillId": "sktok_tidectrl_3",
+        "iconId": null,
+        "hidden": false,
+        "levels": [
+          {
+            "name": "深水",
+            "rangeId": null,
+            "description": "-",
+            "skillType": "AUTO",
+            "durationType": "NONE",
+            "spData": {
+              "spType": 8,
+              "levelUpCost": null,
+              "maxChargeTime": 0,
+              "spCost": 0,
+              "initSp": 0,
+              "increment": 0.0
+            },
+            "prefabId": "sktok_tidectrl_3",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "skill_max_trigger_time",
+                "value": 1.0,
+                "valueStr": null
+              },
+              {
+                "key": "sea_drown[enemy].damage",
+                "value": 40.0,
+                "valueStr": null
+              },
+              {
+                "key": "sea_drown[enemy].attack_speed",
+                "value": -0.6,
+                "valueStr": null
+              },
+              {
+                "key": "sea_drown[enemy].move_speed",
+                "value": 0.6,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "name": "深水",
+            "rangeId": null,
+            "description": "-",
+            "skillType": "AUTO",
+            "durationType": "NONE",
+            "spData": {
+              "spType": 8,
+              "levelUpCost": null,
+              "maxChargeTime": 0,
+              "spCost": 0,
+              "initSp": 0,
+              "increment": 0.0
+            },
+            "prefabId": "sktok_tidectrl_3",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "skill_max_trigger_time",
+                "value": 1.0,
+                "valueStr": null
+              },
+              {
+                "key": "sea_drown[enemy].damage",
+                "value": 0.0,
+                "valueStr": null
+              },
+              {
+                "key": "sea_drown[enemy].attack_speed",
+                "value": 0.0,
+                "valueStr": null
+              },
+              {
+                "key": "sea_drown[enemy].move_speed",
+                "value": 1.0,
+                "valueStr": null
+              }
+            ]
+          }
+        ]
+      },
+      "skill_table.json/sktok_achplat": {
+        "skillId": "sktok_achplat",
+        "iconId": null,
+        "hidden": false,
+        "levels": [
+          {
+            "name": "射击台",
+            "rangeId": null,
+            "description": "可将高台干员部署于其上",
+            "skillType": "PASSIVE",
+            "durationType": "NONE",
+            "spData": {
+              "spType": 8,
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 1,
+              "initSp": 0,
+              "increment": 0.0
+            },
+            "prefabId": "sktok_achplat",
+            "duration": -1.0,
+            "blackboard": []
+          }
+        ]
+      }
+    }
+  }
+}

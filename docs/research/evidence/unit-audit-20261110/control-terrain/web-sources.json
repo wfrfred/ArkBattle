@@ -1,0 +1,57 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-10",
+    "method": "PRTS direct page/search excerpts via web tool; source URLs retained. Own paraphrases only; no complete page copy."
+  },
+  "result": [
+    {
+      "url": "https://prts.wiki/w/异常效果",
+      "title": "异常效果",
+      "accessedOn": "2026-11-10",
+      "scope": "社区机制资料；当前客户端对应资格另以native.json核对。",
+      "paraphrase": "STUNNED使状态机尝试进入STUN，通常不能攻击、使用技能或阻挡敌人，敌人不能移动。SILENCED按可沉默配置作用；SP_RECOVER_STOPPED另控制技力回复，二者不是晕眩的同义效果。部分技能允许在异常状态使用，不应由普通资格门槛推导所有技能均被终止。"
+    },
+    {
+      "url": "https://prts.wiki/w/幽灵鲨",
+      "title": "幽灵鲨",
+      "accessedOn": "2026-11-10",
+      "scope": "真实普通多目标近战内容的玩法确认；每目标ATK读取由原生调用链另证。",
+      "paraphrase": "强攻手普通攻击最大目标数按阻挡数确定，最低为一，可以同时攻击自己阻挡的多个敌人。"
+    },
+    {
+      "url": "https://prts.wiki/w/维多利亚_淤浊沼泽",
+      "title": "维多利亚 淤浊沼泽",
+      "accessedOn": "2026-11-10",
+      "scope": "支持玩法中实际启用的沼泽地图，不使用生息演算或保全样本。",
+      "paraphrase": "地面单位在沼泽每秒获得攻速降低层，敌人另受移速降低；重量至少三的敌人每秒多一层，最多十层，离开后清除。"
+    },
+    {
+      "url": "https://prts.wiki/w/射击台",
+      "title": "射击台",
+      "accessedOn": "2026-11-10",
+      "scope": "可用装置的实际机制；预置hidden配置仅另记为潜在创建来源。",
+      "paraphrase": "射击台退场时强制击杀所在格的角色类单位，平台上的地面阻挡单位另受不可阻挡限制。当前原生被动模板和Suicide路径另在本批归档。"
+    },
+    {
+      "url": "https://prts.wiki/w/R8-11_落雪，浸黑国土",
+      "title": "R8-11 落雪，浸黑国土",
+      "accessedOn": "2026-11-10",
+      "scope": "普通主线真实活性源石内容；不凭文字说明推导重入刷新政策。",
+      "paraphrase": "活性源石对部署其上的我军和经过的敌军给予有时长的增益及每秒真实伤害，示例为三百秒、每秒七十点。"
+    },
+    {
+      "url": "https://prts.wiki/w/作战机制",
+      "title": "作战机制：隐匿",
+      "accessedOn": "2026-11-10",
+      "scope": "该通说区分敌方阻挡破隐与我方隐匿；不能代替tile_smog具体绑定。",
+      "paraphrase": "多数敌人隐匿在被阻挡时失效，脱离阻挡三秒后恢复；我方干员不会因为阻挡而解除隐匿。隐匿本身与阻挡解除不是同一机制。"
+    },
+    {
+      "url": "https://prts.wiki/w/深水区",
+      "title": "深水区",
+      "accessedOn": "2026-11-10",
+      "scope": "搜索引擎索引可读，直接打开失败；仅采用索引确认的有限描述，不据此补全资格。",
+      "paraphrase": "深水使敌方降低攻击速度和移动速度，并持续损失生命；具体阵营及空地资格依本批实际Prefab和TargetOptions。"
+    }
+  ]
+}

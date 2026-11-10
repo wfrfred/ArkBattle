@@ -49,7 +49,7 @@
 - `DynamicBuffTileFixedWithExtraOptions.PreprocessTileOptions`（69708）与另一 extra-options 实现（69711）将该额外掩码写入有效选项。
 - `BuildCondition._CheckBuildable`（77190）要求 `(tileRequired & unitAllowed) == tileRequired`，除非内容显式忽略高级掩码。
 
-**证实**：深水的部署限制不能从 ALL 或 DEEPSEA 名称直接决定。**未核对**：外部 MonoScript 的完整类绑定、全部动态豁免和模式切换生命周期。
+**证实**：深水的部署限制不能从 ALL 或 DEEPSEA 名称直接决定。当前 MonoScript 绑定已在 2026-11-10 的[控制／地形批次](evidence/unit-audit-20261110/control-terrain/README.md)闭合为 `DynamicBuffTileWithExtraOptions`；全部动态豁免和模式切换生命周期仍未穷举。
 
 稳定证据见 [deepsea prefab fixture](../../test/fixtures/arknights/prefab_tile_deepsea.json)及本节保留的对象／native 调用摘录；当时部署审计报告全文没有归档，来源范围见[初始客户端批次](evidence/client-excerpts-20261007/README.md)。
 
@@ -93,6 +93,14 @@ START／END 不能自行创建敌人或判断路线完成。TELEPORT_IN／OUT �
 
 **未核对**：普通箱子的完整闭路部署检查、卫戍工事“敌人接触后破坏”的技能／受击调用链、全部 mode 切换与销毁时序。`ignoreBlockAnyRoutes` 的实际取值差异已证实，不能仅凭字段名宣称其完整执行政策。
 
+### 射击台移除与乘员死亡（2026-11-10 补核）
+
+当前根 Trap 的 `_commonAbilities` 指向实际 PassiveBuffAbility（PathID `-8568999810724959935`），安装 `trap_1106_achplat_passive`。该模板的 `ON_OWNER_FINISH=4` 直接执行 `KillCharacterOnTileIfExists`，`_noSource=true`、`_skipReborn=false`。节点在 `0x181212c64` 查询格上的 Character，并于 `0x181212cb7` 调用其 `Entity.Suicide`，不是一般无原因注销；复活不被该配置跳过。[装置页面](https://prts.wiki/w/射击台)也明确说明退场强制击杀所在地块角色类单位。
+
+同一被动的重叠事件安装 `highland_common[block]`；该程序只在乘员 `blockMode=WALK` 时授予 BLOCK_FREE，不能概括为禁止所有阻挡模式。原件、事件枚举和调用见[本批材料](evidence/unit-audit-20261110/control-terrain/README.md)。
+
+这闭合了已存在平台发生 Finish 后的后继；`act1autochess_m02` 中的平台仍是 hidden recipe，不能以该配置本身证明地图演变已经激活这些实例。
+
 ### recipe、活实例与库存分开
 
 `BattleController._LoadPredefinedData`（记录中的地址 `0x180648ff0`）检查 hidden 后跳过初始创建；`SpawnPredefinedInstanceByAlias`（地址 `0x180640e60`）按 alias 创建预置实例。
@@ -113,10 +121,10 @@ START／END 不能自行创建敌人或判断路线完成。TELEPORT_IN／OUT �
 
 | 地形样本 | 原始配置和实际模板证据 | 当前证据限度 |
 | --- | --- | --- |
-| INFECTION：act1 m04 | tile blackboard 为 damage=70、atk=0.2、attack_speed=20、duration=300 | 数据证实参数；尚未闭合具体 tile prefab、伤害类别及进入／离开时序 |
-| MIRE：act2 m02 | tile blackboard 空；预置 trap_098_mire，sktok_mire 引用 buff_mire[mark]／buff_mire[checker]；覆写 value=3、每层 attack_speed／move_speed=-0.05、max_stack_cnt=10 | 控制器、技能与参数已闭合；完整叠层／清除／免疫执行尚未闭合 |
-| SMOG：act2 m03 | tile blackboard 空 | 不能从空参数推出无机制；具体状态 flag、来源及进出规则本轮未核对 |
-| DEEPSEA：act2 m04 | trap_042_tidectrl 选 skillIndex=2；sktok_tidectrl_3 引用 sea_drown[enemy]／buff_sea，参数 damage=40、attack_speed=-0.6、move_speed=0.6 | 周期伤害与属性内容有模板证据；逐 tick 调用、豁免与模式生命周期仍需核对 |
+| INFECTION：act1 m04 | tile blackboard 为 damage=70、atk=0.2、attack_speed=20、duration=300；BuffTile 绑定 periodic_damage | 入格添加与离格保留已闭合；重入会再登记候选，不能归纳为整体效果不延长 |
+| MIRE：act2 m02 | tile blackboard 空；可见控制器 trap_098_mire 的 sktok_mire；value=3、每层 attack_speed／move_speed=-0.05、max_stack_cnt=10 | 普通／重敌叠层、独立周期与离开检查已闭合；特殊免疫不穷举 |
+| SMOG：act2 m03 | BuffTile 对 ALLY 登记 INVISIBLE，template=empty，离开清除 | 未发现阻挡压制或解除后三秒恢复；通用敌方隐匿不能支持这项烟雾政策 |
+| DEEPSEA：act2 m04 | 可见控制器 trap_042_tidectrl 选 skillIndex=2；sktok_tidectrl_3，参数 damage=40、attack_speed=-0.6、move_speed=0.6 | marker 与最终 Aura 资格已区分；普通 ENEMY／WALK 伤害分支已闭合，动态模式不穷举 |
 
 技能等级需沿 character.skills、phase、skillIndex、mainSkillLvl 选择；`SkillDataBundle.TryGetSkill` 会夹到已有 levels 范围。`Blackboard.Assign` 按大小写无关键覆写，保留未覆写的基础项。
 
@@ -124,7 +132,25 @@ START／END 不能自行创建敌人或判断路线完成。TELEPORT_IN／OUT �
 
 **推断**：静态 Tile 可以保存已归一化的地形配置，当前叠层、状态贡献、周期伤害和控制器开关仍必须有独立运行事实及转换。一个 INFECTION 标签或参数对象不能替代这些事实。
 
-当前 `terrain.ts` 和 Tile.mechanism 仅完成参数选择／归一化。感染伤害与增益、沼泽叠层、烟雾状态、深水伤害与属性转换均未接入运行解释器。
+参数加载与运行行为是两层证据；不能把加载器已经解析参数当成完整运行时兼容证明。以下补核只描述原生所选普通分支，不据此宣称项目已实现全部机制。
+
+### 5.1 进入、周期与资格的原生短链（2026-11-10 补核）
+
+本节的当前客户端、原始镜像修订、完整选中组件／模板与复跑命令见[控制／地形批次](evidence/unit-audit-20261110/control-terrain/README.md)。Prefab 是静态绑定；下面区分实际关卡启用配置、已读执行分支和仍需项目选择的地方。
+
+**活性源石。** `tile_infection` 是 BuffTile，WALK、双方普通类别；`ApplyBuffs`（71601）在入格时取得该 Tile 的 blackboard 后传给 `Entity.AddBuff`。绑定的 `periodic_damage` 每秒执行无来源 PURE 环境伤害，另带 ATK／攻速修正，`_clearBuffsWhenLeft=false`，故离开不会撤销已添加实例。该 Prefab 的 `waitFirstTriggerInterval=true`、周期一秒；同版 `Buff.Reset` 把该位传给 `PeriodicTimer.Reset`，支持首次等待完整周期，而非安装瞬间造成首跳伤害。
+
+重入不是一个“找到旧实例就完全忽略”的原生操作。该 Buff 使用 DEFAULT 覆盖组；`OverrideGroup._DoAddInternal`（66291，`0x1806e0a9e → 0x1806e0ffb`）仍将新实例加入组，没有执行旧实例时间刷新。`_DoUpdateInternal` 只启用首个未结束候选，`Buff.CompareTo` 按 priority、同优先级按 instanceUid 排序；`Buff.OnTick`（66126，`0x1806d565f` 之后）在未启用时也推进剩余时长。因此旧实例本身不刷新，不等于总体效果一定在首次到期时消失：后续入格的独立候选仍可能接替。不同格输入也不应一概认定永久使用首格参数。将其压成“首格参数＋首次截止时间、期间所有重入忽略”，需要明确作为项目选择，不能标为已经证实的原生政策。
+
+**沼泽。** 实际 `tile_mire` 安装 `buff_mire`；可见控制器提供 `buff_mire[mark]` 和每 0.1 秒的 `[checker]`。`buff_mire` 的开始程序仅在没有 `[trigger]` 时创建一个独立的每秒 trigger；它不是派生随格结束的 Buff，首次周期配置为不等待，具体首帧落点仍受原生 Buff 调度时点影响。trigger 主动触发 mark；mark 对 ENEMY 再检查重量 `>= value`，普通敌人加一层、达门槛加两层，角色类分支只加攻速层，均受 max_stack_cnt 限制。实际地图覆写门槛为 3、上限为 10。
+
+相邻格的旧地块 Buff 结束不会直接结束这个 trigger；进入下一沼泽时又因已有 trigger 而不重建周期。checker 只在定期发现已无 `buff_mire` 时结束 trigger、属性和表现 Buff。因此“相邻连续沼泽不重置叠层周期”有具体内容链支持；真正离开后清理是 checker 周期观察，不是原生每次出格都同步清空全部层数。项目当前安装沼泽 Effect 时传入 `nextTick=battle.tick`，首次 Effect Tick 即可加层，没有另外等待一整秒；这里仍须区分首次可调度微相位与一秒周期预算。特殊敌人的免疫标记等分支保留在模板原件中，没有泛化成所有单位免疫规则。
+
+**深水与地穴。** `tile_deepsea` 的 `under_sea[tile]` 只是地块 marker，甚至启用了 ignoreTargetSide；真正伤害／减速由 `sktok_tidectrl_3/Enemy` 的 ENEMY、WALK、普通类别 FilterBuffTargetValidator 识别 marker 后施加。不能把 marker 资格当成最终受伤资格，也不能仅凭 Tile 的 ALL passage 推出飞行单位受水蚀。
+
+地穴由 `HoleTile.OnEnemyEnter`、`OnEnemyMotionModeChanged` 调用 Enemy 虚槽 236 的 `FallDown`（77754）。该操作检查存活／复活状态、当前 changeableMotionMode 与传入 WALK 一致，再请求 FALL 状态；没有阵营检查。故其原生边界是 Enemy 客户端类型和运动资格，不是任意 Unit 的 ENEMY 阵营。我方 Enemy 类单位不能仅因阵营为 ALLY 就由这条链推导免疫；项目如何映射客户端类型须另行决定。
+
+**烟雾。** 当前 `tile_smog` 的 BuffTile 对 ALLY、ALL motion 的普通类别目标直接登记 INVISIBLE，模板为 empty，离开清除。实际组件没有 blocked checker、派生破隐 Buff 或三秒恢复程序。[一般隐匿说明](https://prts.wiki/w/作战机制)也区分了多数敌人的阻挡破隐与我方干员隐匿。所选原生烟雾链不支持“我方阻挡时失去隐匿，解除阻挡三秒后恢复”；若项目继续采用，必须明示为项目政策，不能用通用隐匿通说替代该地块证据。未检查实际 XLua 覆盖。
 
 ## 6. 阻挡、受击体、作用范围和物理 Body
 

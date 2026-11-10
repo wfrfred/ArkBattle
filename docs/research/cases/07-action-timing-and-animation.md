@@ -298,3 +298,28 @@ ObjectManager.OnLateFixedUpdate
 | JSON 持久化、Coroutine 形式、原生类命名和显示混合参数 | 属于实现选择，不要求 Stronghold 复刻 |
 
 [PRTS 作战机制 sandbox](https://prts.wiki/w/作战机制/sandbox) 页首明确尚需测试，且关于动画压缩存在前后不一致的历史描述。本轮没有将其概括或旧数值作为最终规则。猎手固定装填、蕾缪安的瞄准和强制后摇等正式内容说明，是未来内容验收的代表性补充，不要求所有 Action 都按普攻模板推进。
+
+## 12. 普通多目标近战的 ATK 采样（2026-11-10 补核）
+
+[本批材料](../evidence/unit-audit-20261110/control-terrain/README.md)沿真实幽灵鲨普通攻击核对，而非由单目标公式外推。当前 `char_143_ghost` 的 Default mode 指向 `MeleeAttack`（PathID `-4191513391056215697`），其 selector 是 `BlockedOrAdvancedSelector`，启用按阻挡数限制目标数；[角色说明](https://prts.wiki/w/幽灵鲨)也确认普通攻击可同时攻击多个阻挡目标。`MultiMeleeAttack` 的多段执行没有被当作多目标证据。
+
+普通调用链为：
+
+```text
+AbilityStandard.DoCastOnTargets
+  → 逐目标 OnCastOnTarget（虚槽 78）
+    → DoApplyActionsOnTarget（虚槽 79）
+      → ApplyDamage.Execute
+        → CreateDamageModifier(source, target)
+          → BattleUtil.CalculateDamageBySource
+            → Entity.get_atk
+            → CalculateDamage
+        → 该目标 ApplyModifier
+  → 继续下一目标
+```
+
+`DoCastOnTargets`（64132）在 `0x1805fc770–0x1805fc898` 中逐项调用；`OnCastOnTarget`（64113，`0x1805fec7d`）调用槽 79。`ApplyDamage.CreateDamageModifier`（99118，`0x1810dc435–0x1810dc4a8`）在来源仍存在时调用 `CalculateDamageBySource`（79614）；后者在 `0x180b400c0`、`0x180b400ea` 重新读取来源 ATK，再构造普通／弱点分支的计算输入。
+
+**证实**：这个实际普通多目标近战路径没有在整次攻击开始时固定一份共用 ATK；每个目标进入伤害计算时重新读取。因此前一目标的同步结算若改变来源 ATK，后续目标会读到变更。这里证明的是采样位置，不声称已对任意天赋组合做实机逐帧测试。
+
+该结论不推广为所有 AOE、多段或弹道都必须相同。Projectile 预处理缓存、特殊伤害节点和独立技能可以采用不同采样时点；妮芙的路径另见[案例 27](27-attack-additions-and-damage-events.md)。

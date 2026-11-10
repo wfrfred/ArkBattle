@@ -95,3 +95,16 @@
 私有状态在嵌套调用前是否写入后继 BattleState，属于函数式状态传递契约；不靠官方的共享可变对象设计来决定。异构类型封装、文件树和 Snapshot 保留字段属于工程设计。Unit.onTick 已确认的项目执行点不因本次查证而重排。
 
 本轮尚未验证所有特殊内容是否需要独立的长期并行动作、所有 enemy 技能模式的暂停入口，以及 Lua 对普通分支的替换。上述限制不会否定已明确的启动／中断区别、嵌套子能力调用和敌人技能平局选择。
+
+## 7. 晕眩的资格与中断范围（2026-11-10 补核）
+
+本节使用[控制／地形批次](../evidence/unit-audit-20261110/control-terrain/README.md)的当前客户端原生分支。方法索引与前文 2026-10-14 批次分开；同一地址的共享包装不按名字猜测行为。
+
+- `Entity.canUseAbility`（67410，`0x180733d70`）和 `canUseAtkOrCbt`（67411，`0x180733efc`）均先检查 `isStunned`，命中即拒绝普通使用资格。
+- `Entity.canMove`（67412，`0x180733980`）也显式检查 `isStunned`；不能因部分社区总表只列束缚／冻结等字段，就漏掉此门槛。
+- Character 状态机的 `BasicState.ShouldSwitchToAbnormalState`（77462）分别读取晕眩、冻结等条件。退出 Attack 时，`AttackState.OnExit`（77503，`0x180ab4c9d`）调用槽 38 的 `Ability.InterruptIfNot`；Enemy 的 AttackState 也有对应中断路径。这是运行中普通攻击会被中断的依据，与仅禁止下一次启动不同。
+- 阻挡不能只看 `Character.canBlockEnemies`：该 getter 的普通分支直接返回 true。实际 `BlockManager.SearchBlockee`（78504，`0x180aee7de`）另检查 `Entity.isStunned`，命中后不获取候选；社区[晕眩说明](https://prts.wiki/w/异常效果)也明确禁止阻挡敌人。不能把单个 getter 当成完整资格。
+
+Skill 需要保留实际豁免。`BasicSkill.ownerCanUseInAbnormalState`（73791）读取自身 `_canUseInAbnormalState`、宿主异常下可发动标志及沉默政策；`Character.EnsureSkillOnInAbnormalState`（77360）还有在异常状态发动的专门入口。因此，普通晕眩限制 Skill 启动，不足以推出“已成立的每一种持续 Skill 都立即结束”，也不能据此清除所有已生效 Buff。通用 Action 取消的项目时点与具体技能是否停止生效，仍须分别表达。
+
+晕眩、沉默、阻止 SP 回复是三种独立机制。前两项资格读取与 `_canSilenced`／`_canUseInAbnormalState` 并存；`SP_RECOVER_STOPPED` 是另一异常位。不能为了实现晕眩，顺便把沉默或阻回全部绑定进同一个控制规则。
