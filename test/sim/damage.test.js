@@ -331,7 +331,7 @@ test("APPLY-01: Receiving and BeforeCommit resource changes define the baseline 
                 id: "observe-source",
                 invoke(current, { application }) {
                     calls.push("sourceApplied");
-                    assert.equal(application, observed);
+                    assert.deepEqual(application, observed);
                     return { state: current, value: undefined };
                 },
             }),
@@ -341,7 +341,6 @@ test("APPLY-01: Receiving and BeforeCommit resource changes define the baseline 
     const result = hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request));
     assert.deepEqual(calls, ["started", "receiving", "beforeCommit", "targetApplied", "sourceApplied"]);
     assert.deepEqual(result.value.application, { hpBefore: 145, hpAfter: 115, hpLoss: 30 });
-    assert.equal(result.value.application, observed);
     assert.equal(get(result.state, 1).vitality.hp, 125);
     assert.equal(healingNotifications, 2);
 

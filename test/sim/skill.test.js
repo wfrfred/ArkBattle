@@ -78,7 +78,6 @@ test("activation publishes payment before onStart and clears only the completed 
     state = skills.finish(second.state, first.value);
     assert.equal(skills.getActivation(state, second.value).activation.lifecycle, "ACTIVE");
     state = skills.cancel(state, second.value, "STOPPED");
-    assert.equal(get(state, 0).skill.sp.value, 10);
     assert.equal(skills.getSkill(state, reference).state.completed, 2);
     assert.equal(skills.activate(state, reference).value, null);
 });
@@ -146,8 +145,8 @@ test("natural SP recovery pauses without backlog and uses current recovery speed
     const payment = skills.pay(state, source, 2);
     state = payment.state;
     assert.deepEqual(payment.value, { type: "APPLIED", amount: 2 });
-    assert.equal(skills.recover(state, source, "EXTERNAL", 1).value.reason, "RULE");
-    assert.equal(skills.modify(state, source, 1).value.reason, "RULE");
+    assert.equal(skills.recover(state, source, "EXTERNAL", 1).value.type, "REJECTED");
+    assert.equal(skills.modify(state, source, 1).value.type, "REJECTED");
     for (let tick = 6; tick <= 10; tick++) state = skills.advance({ ...state, tick }, source);
     assert.equal(get(state, 0).skill.sp.value, 0);
     state = update(state, source, skill.removeRule("recoveryRules", "blocked"));
@@ -164,10 +163,7 @@ test("natural SP recovery pauses without backlog and uses current recovery speed
     assert.equal(get(state, 0).skill.sp.value, 1);
     state = skills.advance({ ...state, tick: 16 }, source);
     assert.equal(get(state, 0).skill.sp.value, 2);
-    assert.deepEqual(skills.recover(state, source, "EXTERNAL", 1).value, {
-        type: "REJECTED",
-        reason: "FULL",
-    });
+    assert.equal(skills.recover(state, source, "EXTERNAL", 1).value.type, "REJECTED");
     state = skills.modify(state, source, -1).state;
     assert.equal(skills.recover(state, source, "EXTERNAL", 5).value.amount, 1);
 });

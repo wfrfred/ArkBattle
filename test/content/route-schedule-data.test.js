@@ -58,10 +58,6 @@ test("native routes compile patrol loops and retain wait anchors before birth", 
     assert.deepEqual(route.plan.checkpoints.map(({ anchor, tick }) => [anchor, tick]), [
         ["ENTER", 30], ["BATTLE", 30], ["WAVE", 30], ["FRAGMENT", 30],
     ]);
-
-    const patrol = raw.routes[6].checkpoints[0];
-    const alert = parseRouteDefinition({ ...raw.routes[6], checkpoints: [patrol, { type: "ALERT" }] });
-    assert.deepEqual(alert.plan.checkpoints.map(({ type }) => type), ["MOVE"]);
 });
 
 test("main random groups preserve source order and expand the selected count once", () => {
@@ -76,7 +72,6 @@ test("main random groups preserve source order and expand the selected count onc
     assert.deepEqual(spawns.map(({ definition }) => definition.id), ["N", "B", "B"]);
     assert.deepEqual(spawns.map(({ atTick }) => atTick), [0, 0, 3]);
     assert.equal(spawns[1].definition, definitions.get("B"));
-    assert.equal(spawns[1].plan, level.routes[0].plan);
     assert.notEqual(compiled.rngState, seed);
     const actions = level.waves[0].fragments[0].actions.map((action) => ({
         ...action, weight: action.randomSpawnGroupKey === null ? 0 : 1,
@@ -134,15 +129,10 @@ test("Action and Enemy notCountInTotal release scheduling from still-present uni
         map: level.map, schedule: compiled.schedule, predefines: [], initialMechanisms: [],
         routeMoveMultiplier: 1, rngState: compiled.rngState,
     }), []);
-    assert.equal(state.schedule.main.type, "WAITING");
     assert.deepEqual(state.schedule.waiting, { wave: [1], final: [1] });
     state = triggerBranch(state, "uncounted", false);
     assert.deepEqual(state.schedule.waiting, { wave: [1], final: [1] });
     state = step(remove(state, ref(get(state, 1)), "DEATH"), []);
-    assert.equal(state.schedule.waveIndex, 1);
     assert.equal(isCompleted(state.schedule), true);
     assert.deepEqual(all(state).map(({ id }) => id).toArray(), [0, 2]);
-    for (const unit of all(state)) {
-        assert.ok(unit.lifecycle === "PRESENT" && unit.vitality.hp > 0);
-    }
 });

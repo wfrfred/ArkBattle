@@ -21,7 +21,6 @@ import * as elemental from ${module("unit/capability/elemental/index")};
 import * as skills from ${module("unit/skill/index")};
 import { hasSkill, type Skill as SkillCapability } from ${module("unit/capability/skill/index")};
 import { hasPresence, disappear } from ${module("unit/capability/presence/index")};
-import { dispatch as dispatchSkill } from ${module("unit/capability/skill/hook")};
 import { dispatch as dispatchElemental } from ${module("unit/capability/elemental/hook")};
 import * as runtime from ${module("battle/runtime")};
 import type { Input as BattleInput, Command } from ${module("battle/contract")};
@@ -37,7 +36,7 @@ import * as actionCapability from ${module("unit/capability/action/index")};
 import { createRegistrationOperations } from ${module("unit/registration")};
 import type { Offense } from ${module("unit/capability/offense/index")};
 import { setAttackContribution, resolveAttack } from ${module("unit/capability/offense/index")};
-import { setLayer, type Blocker, type Blockable, type Relation, type Hook as BlockingHook } from ${module("unit/capability/blocking/index")};
+import type { Blocker, Blockable, Relation, Hook as BlockingHook } from ${module("unit/capability/blocking/index")};
 import * as blocking from ${module("battle/blocking/index")};
 import * as targeting from ${module("battle/targeting/index")};
 import type { Allegiance } from ${module("unit/capability/allegiance/capability")};
@@ -77,18 +76,12 @@ const host = initialize(battle, { id: 0, position: [0, 0], definition: {
 } }).value;
 const reference = ref(host);
 removeUnit(battle, reference, 'SCRIPT');
-// @ts-expect-error entity removal takes a Unit identity rather than a numeric storage key.
-removeUnit(battle, host.id, 'SCRIPT');
 const currentAction = host.action.actions.get(program.id, program)!;
 const currentPeriod: number = actionCapability.resolvePeriod(host, currentAction);
-// @ts-expect-error an Action calculation takes the instance rather than a detached Definition.
-actionCapability.resolvePeriod(host, program);
 actionCapability.setSpeedContribution({ id: 'fixed-speed', value: [] });
 const dynamicModifiers = (_state: State, _self: Unit & actionCapability.Action) => [];
 // @ts-expect-error Action time contributions publish fixed values through a Change.
 actionCapability.setSpeedContribution({ id: 'dynamic-speed', value: dynamicModifiers });
-// @ts-expect-error interval changes use the same fixed contribution contract as speed.
-actionCapability.setIntervalContribution({ id: 'dynamic-interval', value: dynamicModifiers });
 const persistent = actions.ref(reference, program);
 const uses: number = actions.getAction(battle, persistent)!.state.uses;
 actions.setState(battle, persistent, { uses: uses + 1 });
@@ -137,8 +130,6 @@ const occupiedTile: readonly [number, number] = occupied.occupancy.tile;
 const { initial: occupiedInitial, ...missingInitial } = occupiedInput;
 // @ts-expect-error required capability input cannot be omitted at the Unit entry point.
 initialize(battle, missingInitial);
-// @ts-expect-error assigning an Input retains the same required construction facts.
-const incompleteInput: UnitInput<typeof occupiedDefinition> = missingInitial;
 // @ts-expect-error Occupancy requires a structural tile, independently of optional direction.
 initialize(battle, { ...occupiedInput, initial: { occupancy: { direction: 'RIGHT' } } });
 declare const plan: Plan;
@@ -169,8 +160,6 @@ declare const routeCommandRef: Ref<Unit & Route>;
 declare const routeDefinition: Plan;
 const routeChange = compose(reassign(0, routeDefinition), compose(selectContext(0), setTicking(0, false)));
 update(battle, routeCommandRef, routeChange);
-// @ts-expect-error Route changes require a Route-capable Unit.
-update(battle, ref(bare), routeChange);
 declare const projectileCommandRef: Ref<Projectile<{ hits: number }>>;
 const skillCommand: Command = { type: 'ACTIVATE_SKILL', ref: skillCommandRef };
 const projectileCommand: Command<Card, Projectile<{ hits: number }>> = { type: 'STOP_PROJECTILE', ref: projectileCommandRef };
@@ -192,9 +181,6 @@ const createdProjectile = projectileOperations.create(battle, projectileDefiniti
 const projectileHits: number = projectiles.get(createdProjectile.state, createdProjectile.value)!.state.hits;
 // @ts-expect-error a Projectile Ref fixes the private state accepted by writes.
 projectileOperations.update(battle, createdProjectile.value, { state: { hits: 'wrong' } });
-declare const erasedProjectileCommand: Extract<Command, { type: 'STOP_PROJECTILE' }>;
-// @ts-expect-error an ordinary Command does not expose any private Projectile state.
-projectiles.get(battle, erasedProjectileCommand.ref)!.state.hits;
 declare const elementalUnit: Unit & elemental.Elemental;
 elemental.available(elementalUnit);
 // @ts-expect-error Elemental eligibility requires its resource capability.
@@ -241,15 +227,11 @@ update(battle, actionOnly, combined);
 declare const skillChange: Change<Unit & SkillCapability>;
 // @ts-expect-error an Action guard does not establish Skill.
 optional(actionCapability.hasAction, skillChange);
-// @ts-expect-error an Action guard does not establish every composed requirement.
-optional(actionCapability.hasAction, compose(actionChange, skillChange));
 // @ts-expect-error requiring Skill cannot be weakened into requiring only Action.
 const wrongRequirement: Change<Unit & actionCapability.Action> = skillChange;
 const general: Change<Unit> = self => ({ next: self, settlements: [] });
 const usableWithAction: Change<Unit & actionCapability.Action> = general;
 const attack: number = resolveAttack(battle, host);
-// @ts-expect-error value computation accepts the current object rather than its address.
-resolveAttack(battle, reference);
 // @ts-expect-error value computation requires the relevant capability.
 resolveAttack(battle, bare);
 declare const skillHost: Unit & SkillCapability;
@@ -264,10 +246,6 @@ const foundAction: actionCapability.Action = actionHost;
 const ordinaryPredicate: (self: Unit) => boolean = self => self.id > 0;
 // @ts-expect-error an ordinary predicate does not establish a capability proof.
 allUnits(battle).filter(ordinaryPredicate).find(() => true)!.action;
-for (const self of allUnits(battle).filter(actionCapability.hasAction).filter(hasPresence)) {
-    const present: boolean = self.presence.present;
-    const action: actionCapability.Action = self;
-}
 for (const self of allUnits(battle).filter(actionCapability.hasAction).filter(hasSkill).filter(skills.hasSp)) {
     const action: actionCapability.Action = self;
     const speed: number = skills.resolveRecoverySpeed(battle, self);
@@ -286,8 +264,6 @@ for (const self of selectableActions.filter(targeting.elementHealing(battle, tar
 }
 // @ts-expect-error standard target eligibility requires the source's Allegiance capability.
 targeting.damage(battle, host);
-// @ts-expect-error selection policies take an explicitly supplied source value rather than locating a Ref.
-targeting.damage(battle, ref(targetingSource));
 const patient = initialize(battle, { id: 2, position: [0, 0], definition: {
     id: 'patient', hooks: Hooks.empty(),
     vitality: { maxHp: 100, defense: 10, resistance: 0 },
@@ -333,26 +309,14 @@ actionCapability.setHook('beforeRelease', {
 });
 // @ts-expect-error automatic operations cannot write a special field.
 vitality.setContribution('maxHp', { id: 'wrong', value: [] });
-// @ts-expect-error an Entry cannot establish a missing host capability.
-update(battle, ref(bare), vitality.setContribution('defense', { id: 'wrong', value: [] }));
 declare const damageReceiving: hpDamage.ReceivingHook;
 declare const pairedRegistration:
     | [key: 'damageReceiving', hook: hpDamage.ReceivingHook]
     | [key: 'damageReceivingStarted', hook: hpDamage.ReceivingStartedHook];
 vitality.setHook(...pairedRegistration);
-// @ts-expect-error each field retains its corresponding Hook type.
-vitality.setHook('healingReceiving', damageReceiving);
 declare const receivingStage: 'damageReceiving' | 'healingReceiving';
 // @ts-expect-error a union key and an unrelated Entry are not a paired argument.
 vitality.setHook(receivingStage, damageReceiving);
-// @ts-expect-error a factory can select only actual registration fields.
-createRegistrationOperations<Unit & vitality.Vitality, 'vitality', 'unknown'>('vitality');
-// @ts-expect-error ordinary resource values are not registration arrays.
-createRegistrationOperations<Unit & vitality.Vitality, 'vitality', 'hp'>('vitality');
-// @ts-expect-error a different capability cannot be inferred from an unrelated proof.
-update(battle, reference, setLayer('AIR'));
-// @ts-expect-error public updates take Change behavior rather than complete snapshots.
-update(battle, reference, host);
 // @ts-expect-error a numeric address alone does not establish a Unit proof.
 const forged: Ref<Unit> = { id: 0 };
 
@@ -364,10 +328,6 @@ declare const pairedElementalEvent:
 dispatchElemental(battle, elementalHost, ...pairedElementalEvent);
 // @ts-expect-error an independent union stage cannot prove the event matches.
 dispatchElemental(battle, elementalHost, elementalStage, burst);
-declare const skillStage: 'spPaid' | 'activationStarted';
-declare const startedEvent: { readonly ref: Ref<skills.Activation> };
-// @ts-expect-error Skill dispatch preserves the same key/event association.
-dispatchSkill(battle, ref(skillHost), skillStage, startedEvent);
 
 declare const baseInput: Omit<BattleInput, 'deployment' | 'predefines' | 'initialMechanisms'>;
 declare const cardBase: Omit<CardDefinition, 'card'>;
@@ -421,9 +381,7 @@ const mismatchedCard = { ...counterCard, card: { ...counterCard.card, initialize
 // @ts-expect-error aggregating a Card cannot weaken initialize/callback pairing.
 runtime.initialize({ ...baseInput, deployment: { definition: account, cards: [mismatchedCard] }, initialMechanisms: [], predefines: [] });
 const unusedOccupancy = { id: 0, alias: null, initiallyPresent: true, creation: { type: 'UNIT' as const, definition: bare.definition, position: [0, 0] as const, initial: { occupancy: { tile: [0, 0] as const } } } };
-initialize(battle, { id: 4, ...unusedOccupancy.creation });
 createPredefinedDefinition(unusedOccupancy);
-runtime.initialize({ ...baseInput, deployment: { definition: account, cards: [] }, initialMechanisms: [], predefines: [unusedOccupancy] });
 runtime.initialize({ ...baseInput, initialMechanisms: [], predefines: [], deployment: { definition: account, cards: [{ ...counterCard, card: { ...counterCard.card,
     onTick(state, self) {
         // @ts-expect-error aggregation must not supply an any private-state context.

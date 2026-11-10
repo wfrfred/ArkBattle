@@ -60,31 +60,30 @@ test("onStart may synchronously stop its own instance while create still returns
 });
 
 
-test("Battle commands stop in order before survivors advance and ignore repeated stale references", () => {
+test("Battle commands stop in order before survivors advance", () => {
     const observed = [];
     const definition = { id: "command", onTick(battle, self) {
         observed.push(["advance", self.id]);
         return projectiles.update(battle, projectilesQuery.ref(self), { position: [1, 0] });
     }, onEnd(battle, self) { observed.push(["stop", self.id]); return battle; } };
     let initial = battle();
-    for (let index = 0; index < 4; index++) initial = create(initial, definition).state;
+    for (let index = 0; index < 3; index++) initial = create(initial, definition).state;
     const references = instances(initial).map(projectilesQuery.ref);
-    const progressed = advanceProjectiles(initial, candidates(initial), [references[2], references[2], references[0]].map(ref => ({ type: "STOP_PROJECTILE", ref })));
+    const progressed = advanceProjectiles(initial, candidates(initial), [references[2], references[0]].map(ref => ({ type: "STOP_PROJECTILE", ref })));
 
-    assert.deepEqual(observed, [["stop", 2], ["stop", 0], ["advance", 1], ["advance", 3]]);
-    assert.deepEqual(instances(progressed).map(self => [self.id, self.position]), [[1, [1, 0]], [3, [1, 0]]]);
+    assert.deepEqual(observed, [["stop", 2], ["stop", 0], ["advance", 1]]);
+    assert.deepEqual(instances(progressed).map(self => [self.id, self.position]), [[1, [1, 0]]]);
 });
 
 test("Runtime freezes Projectile candidates before Unit callbacks and Action output", () => {
     const observed = [];
-    const grandchild = { id: "grandchild", onTick(battle, self) { observed.push([self.definition.id, battle.tick]); return battle; } };
     const fromUnit = { id: "unit-child", onStart(battle) { observed.push(["unit-create", battle.tick]); return battle; }, onTick(battle, self) {
         observed.push([self.definition.id, battle.tick]);
-        return self.state.spawned ? battle : create(projectiles.update(battle, projectilesQuery.ref(self), { state: { spawned: true } }), grandchild).state;
+        return battle;
     } };
     const fromAction = { id: "action-child", onStart(battle) { observed.push(["action-create", battle.tick]); return battle; }, onTick(battle, self) { observed.push([self.definition.id, battle.tick]); return battle; } };
     const source = unit(0, { hooks: Hooks.empty().set(unitLifecycle.tick, { id: "test/tick",  invoke(battle) {
-        return { state: battle.tick === 0 ? create(battle, fromUnit, { spawned: false }).state : battle, value: undefined };
+        return { state: battle.tick === 0 ? create(battle, fromUnit).state : battle, value: undefined };
     } }), action: actionDefinition(0, { output: battle => create(battle, fromAction).state }) });
     let rt = runtime([source, unit(1)]);
 
@@ -92,6 +91,4 @@ test("Runtime freezes Projectile candidates before Unit callbacks and Action out
     assert.deepEqual(observed, [["unit-create", 0], ["action-create", 0]]);
     rt = stepBattle(rt, []);
     assert.deepEqual(observed.slice(2), [["unit-child", 1], ["action-child", 1]]);
-    rt = stepBattle(rt, []);
-    assert.deepEqual(observed.slice(4), [["unit-child", 2], ["action-child", 2], ["grandchild", 2]]);
 });

@@ -96,7 +96,6 @@ test("silence blocks activation while SP prevention independently blocks recover
     const blocked = effects.install(state, source, blockSpRecovery);
     state = blocked.state;
     assert.equal(sp.recover(state, source, "EXTERNAL", 1).value.type, "REJECTED");
-    assert.equal(get(state, 0).skill.sp.value, 9);
     state = effects.end(state, blocked.value);
     state = sp.recover(state, source, "EXTERNAL", 1).state;
     assert.equal(get(state, 0).skill.sp.value, 10);

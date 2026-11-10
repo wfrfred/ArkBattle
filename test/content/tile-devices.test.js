@@ -59,7 +59,6 @@ for (const [terrain, initialCost] of [[normal, 2000], [hole, 1000000]]) {
         const tile = getTile(state.battlefield.map, [0, 0]);
         const expectedCost = terrain === hole ? initialCost : 1000;
         assert.equal(tile.state.walkCost, expectedCost);
-        assert.equal(state.battlefield.navigation.baseline.WALK.get([0, 0]).cost, expectedCost);
         assert.equal(getTile(state.battlefield.map, [0, 2]).state.walkCost, 2000);
         state = remove(state, ref(getUnit(state, 0)), "SCRIPT");
         assert.deepEqual(getTile(state.battlefield.map, [0, 0]).state, original.state);

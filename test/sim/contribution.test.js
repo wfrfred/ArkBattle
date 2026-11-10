@@ -23,34 +23,33 @@ test("exclusive selection precedes dynamic input evaluation and the attribute fo
             id: "ratio",
             value: [create({ multiplier: 0.5, finalScaler: 2 })],
         })), setAttackContribution({
-            id: "inspiration/z",
+            id: "inspiration/weak",
             group,
             value: () => {
-                calls.push("z");
+                calls.push("weak");
                 return [create({ finalAddition: 10 })];
             },
         })), setAttackContribution({
-            id: "inspiration/a",
-            group,
+            id: "inspiration/strong",
+            group: { ...group, priority: 3 },
             value: (current, self) => {
-                calls.push("a");
-                assert.equal(get(current, self.id), self);
-                return [create({ finalAddition: self.definition.offense.attack / 2 })];
+                calls.push("strong");
+                return [create({ finalAddition: get(current, self.id).definition.offense.attack / 2 })];
             },
         })));
     assert.equal(resolveAttack(state, get(state, host.id)), 460);
-    assert.deepEqual(calls, ["a"]);
+    assert.deepEqual(calls, ["strong"]);
 
-    state = update(state, host, removeAttackContribution("inspiration/a"));
+    state = update(state, host, removeAttackContribution("inspiration/strong"));
     assert.equal(resolveAttack(state, get(state, host.id)), 380);
-    assert.deepEqual(calls, ["a", "z"]);
+    assert.deepEqual(calls, ["strong", "weak"]);
     state = update(state, host, setAttackContribution({
             id: "stronger",
-            group: { ...group, priority: 3 },
+            group: { ...group, priority: 4 },
             value: [create({ finalAddition: 100.25 })],
         }));
     assert.equal(resolveAttack(state, get(state, host.id)), 560.5);
-    assert.deepEqual(calls, ["a", "z"]);
+    assert.deepEqual(calls, ["strong", "weak"]);
     state = update(state, host, setAttackContribution({
         id: "attack-penalty", value: [create({ finalAddition: -1000 })],
     }));

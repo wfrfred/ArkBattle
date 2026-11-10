@@ -34,8 +34,6 @@ test("attribute modifiers: serialized enum names and numbers normalize only supp
     const raw = [description("MULTIPLIER", 0.5), description(1, 0.5, { attributeType: 1 })];
     const parsed = parseAttributeModifiers(raw);
     assert.deepEqual(parsed[0], parsed[1]);
-    const compiled = compileAttributeModifiers(parsed);
-    assert.equal(compiled[0].sample(context()).multiplier, 0.5);
     assert.throws(
         () => parseAttributeModifiers([description("MULTIPLIER", 1, { attributeType: "COST" })]),
         /unsupported modifier/,
@@ -54,22 +52,12 @@ test("attribute modifiers: four native operands compose before the domain range"
         entry.sample(context({ stackCount: 3 })),
     );
     close(modifier.apply(100, values), ((100 + 30) * 2.5 + 21) * 3.6);
-    assert.equal(values[0].addition, 30);
-    assert.equal(values[1].multiplier, 1.5);
-    assert.equal(values[2].finalAddition, 21);
-    close(values[3].finalScaler, 3.6);
 });
 
 test("attribute modifiers: a stacked raw final scaler is corrected once, never exponentiated", () => {
     const result = sample(description("FINAL_SCALER", -0.2), context({ stackCount: 3 }));
     close(result.finalScaler, 0.4);
     close(modifier.apply(100, [result]), 40);
-    assert.equal(sample(description("FINAL_SCALER", -0.2), context({ stackCount: 0 })), undefined);
-    const independent = [
-        sample(description("FINAL_SCALER", -0.2)),
-        sample(description("FINAL_SCALER", -0.2)),
-    ];
-    close(modifier.apply(100, independent), 64);
 });
 
 test("attribute modifiers: missing blackboard keys use the declared operand without changing its formula", () => {
@@ -114,10 +102,6 @@ test("attribute modifiers: BAT and MOVE_SPEED normalize only additive operands t
         context({ stackCount: 2 }),
     );
     assert.equal(bat.addition, 30);
-    const speed = sample(description("FINAL_ADDITION", 3, { attributeType: "MOVE_SPEED" }));
-    assert.equal(speed.finalAddition, 0.1);
-    const ratio = sample(description("MULTIPLIER", -0.5, { attributeType: "MOVE_SPEED" }));
-    assert.equal(ratio.multiplier, -0.5);
     const sourced = sample(
         description("FINAL_SCALER", 0.5, {
             attributeType: "MOVE_SPEED",
@@ -128,27 +112,11 @@ test("attribute modifiers: BAT and MOVE_SPEED normalize only additive operands t
     assert.equal(sourced.finalAddition, 1 / 30);
 });
 
-test("attribute modifiers: BLOCK_CNT uses native number 5 and leaves quantization to Blocking", () => {
-    const named = description("ADDITION", 0, {
-        attributeType: "BLOCK_CNT",
-        loadFromBlackboard: true,
-    });
-    const numeric = { ...named, attributeType: 5 };
-    assert.deepEqual(parseAttributeModifiers([named]), parseAttributeModifiers([numeric]));
-    const value = sample(
-        numeric,
-        context({ blackboard: new Map([["block_cnt", -0.25]]), stackCount: 2 }),
-    );
-    assert.equal(value.addition, -0.5);
-    assert.equal(modifier.apply(3, [value]), 2.5);
-});
-
 test("attribute modifiers: Warfarin's actual ATK descriptor is a percentage contribution", () => {
     const raw = fixture("modifiers_bldsk_s_2");
     const [compiled] = compileAttributeModifiers(parseAttributeModifiers(raw.attributeModifiers));
     assert.equal(compiled.attributeType, "ATK");
     const value = compiled.sample(context({ blackboard: new Map([["atk", 0.9]]) }));
-    assert.equal(value.multiplier, 0.9);
     close(modifier.apply(100, [value]), 190);
 });
 

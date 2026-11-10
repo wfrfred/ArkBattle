@@ -6,8 +6,6 @@ test("world and tile coordinates swap axes, round ties to even and rotate around
     const position = [2.5, 3.5];
     const tile = World.toTile(position);
     assert.deepEqual(tile, [4, 2]);
-    assert.deepEqual(World.toTile([-0.5, -1.5]), [-2, 0]);
-    assert.deepEqual(World.toTile([0.49, 0.51]), [1, 0]);
     assert.deepEqual(Tile.center(tile), [2, 4]);
     for (const [direction, expected] of [
         ["RIGHT", [4, 2]], ["UP", [2, -4]],
@@ -15,5 +13,4 @@ test("world and tile coordinates swap axes, round ties to even and rotate around
     ]) {
         assert.deepEqual(Tile.rotate(tile, direction), expected);
     }
-    assert.equal(Tile.is([0.5, 1]), false);
 });

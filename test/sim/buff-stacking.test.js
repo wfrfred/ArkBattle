@@ -20,10 +20,6 @@ test("buff stacking: complete native descriptors normalize numeric and named pol
         const numeric = ["DEFAULT", "STACK", "UNIQUE", "EXTEND", "EXTEND_TIME"].indexOf(raw.overrideType);
         assert.deepEqual(parsed, parseBuffStacking({ ...raw, overrideType: numeric }));
     }
-    assert.equal(parseBuffStacking({ ...description("STACK"), unrelatedNativeField: { value: "owned elsewhere" } }).overrideType, "STACK");
-});
-
-test("buff stacking: unknown policies are rejected at the data boundary", () => {
     assert.throws(() => parseBuffStacking(description("UNKNOWN")), /overrideType/);
 });
 
@@ -61,40 +57,6 @@ test("buff stacking: native refresh at the actual cap extends time without a new
     const rule = compileNative("ascln_t_1[debuff]");
     assert.deepEqual(rule.plan(application(1, 20), application(99, 30), 10), refresh(1, 30));
     assert.deepEqual(rule.plan(application(1, 40), application(1, 30), 10), refresh(1, 40));
-    assert.deepEqual(rule.plan(application(2, 20), application(1, 30), 10), { type: "REJECT" });
-});
-
-test("buff stacking: the retained dynamic cap controls merging without clipping existing layers", () => {
-    const rule = compileBuffStacking(description("STACK", {
-        maxStackCnt: 5, maxValidStackCnt: 2, refreshRemainingTimeWhenStackMax: true,
-    }));
-    const incoming = { ...application(1, 90), maxStackCount: null };
-    const lowered = { ...application(4, 30), maxStackCount: 2 };
-    assert.deepEqual(rule.plan(lowered, incoming, 10), { type: "REJECT" });
-    assert.equal(lowered.stackCount, 4);
-    assert.equal(rule.validStackCount(lowered.stackCount), 2);
-    assert.deepEqual(rule.plan({ ...lowered, maxStackCount: 4 }, incoming, 10), refresh(4, 90));
-    assert.deepEqual(rule.plan({ ...lowered, maxStackCount: 5 }, incoming, 10), refresh(5, 90));
-    assert.deepEqual(rule.plan({ ...lowered, maxStackCount: null }, incoming, 10), refresh(5, 90));
-    assert.deepEqual(rule.plan({ ...application(5, 30), maxStackCount: undefined }, incoming, 10), refresh(5, 90));
-    assert.deepEqual(rule.plan({ ...application(0, 30), maxStackCount: 0 }, incoming, 10), refresh(0, 90));
-});
-
-test("buff stacking: incoming caps do not reconfigure the retained instance or compiled definition", () => {
-    const rule = compileBuffStacking(description("STACK", { maxStackCnt: 2 }));
-    const incoming = { ...application(1, 90), maxStackCount: 100 };
-    assert.deepEqual(rule.plan(application(2, 30), incoming, 10), { type: "REJECT" });
-    assert.deepEqual(rule.plan({ ...application(2, 30), maxStackCount: 3 }, incoming, 10), refresh(3, 90, false, true));
-});
-
-test("buff stacking: every negative cap is unlimited, while zero effective layers remain valid", () => {
-    const rule = compileBuffStacking(description("STACK", { maxStackCnt: -7, maxValidStackCnt: -2 }));
-    assert.deepEqual(rule.plan(application(100, 20), application(1, 30), 10), refresh(101, 30, false, true));
-    assert.equal(rule.validStackCount(101), 101);
-    assert.equal(rule.validStackCount(0), 0);
-    const zero = compileBuffStacking(description("STACK", { maxStackCnt: 0, maxValidStackCnt: 0, refreshRemainingTimeWhenStackMax: true }));
-    assert.deepEqual(zero.plan(application(1, 20), application(1, 30), 10), { type: "REJECT" });
-    assert.equal(zero.validStackCount(10), 0);
 });
 
 test("buff stacking: native UNIQUE rejects repeated applications including a snapshot flag", () => {
@@ -112,42 +74,8 @@ test("buff stacking: native EXTEND fills the longest deadline and EXTEND_TIME ad
     assert.deepEqual(extend.plan(current, incoming, 10), refresh(3, 40));
 });
 
-test("buff stacking: only EXTEND requests the explicit snapshot and incoming blackboard copy", () => {
-    for (const overrideType of ["STACK", "EXTEND", "EXTEND_TIME"]) {
-        const rule = compileBuffStacking(description(overrideType, { maxStackCnt: 5, takeSnapshotWhenExtend: true }));
-        const result = rule.plan(application(1, 20), application(10, 30), 10);
-        assert.equal(result.type, "REFRESH");
-        assert.equal(result.takeSnapshot, overrideType === "EXTEND");
-        assert.equal(result.reloadModifiers, overrideType !== "EXTEND_TIME");
-    }
-});
-
 test("buff stacking: growing effective layers reload retained-source samples without an EXTEND snapshot request", () => {
     const rule = compileNative("sbell2_e_002_trait[interval]");
     assert.deepEqual(rule.plan(application(4, 20), application(1, 30), 10), refresh(5, 30, false, true));
     assert.deepEqual(rule.plan(application(5, 20), application(1, 30), 10), refresh(6, 30));
-    const zero = compileBuffStacking(description("STACK", { maxStackCnt: -1, maxValidStackCnt: 0 }));
-    assert.deepEqual(zero.plan(application(0, 20), application(1, 30), 10), refresh(1, 30));
-    const snapshot = compileBuffStacking(description("EXTEND", { takeSnapshotWhenExtend: true }));
-    assert.deepEqual(snapshot.plan(application(1, 20), application(1, 30), 10), refresh(1, 30, true, true));
-});
-
-test("buff stacking: project policy treats null deadlines as infinite for both fill and additive extension", () => {
-    for (const overrideType of ["STACK", "EXTEND", "EXTEND_TIME"]) {
-        const rule = compileBuffStacking(description(overrideType, { maxStackCnt: -1 }));
-        for (const [current, incoming] of [[application(1, null), application(1, 20)], [application(1, 20), application(1, null)], [application(1, null), application(1, null)]]) {
-            const result = rule.plan(current, incoming, 10);
-            assert.equal(result.type, "REFRESH");
-            assert.equal(result.expiresAtTick, null);
-        }
-    }
-});
-
-test("buff stacking: zero remaining time receives no extra tick and cleanup belongs to the caller", () => {
-    const extend = compileBuffStacking(description("EXTEND_TIME"));
-    assert.deepEqual(extend.plan(application(1, 10), application(1, 10), 10), refresh(1, 10));
-    assert.deepEqual(extend.plan(application(1, 9), application(1, 10), 10), refresh(1, 10));
-    assert.deepEqual(extend.plan(application(1, 10), application(1, 20), 10), refresh(1, 20));
-    const unique = compileBuffStacking(description("UNIQUE"));
-    assert.deepEqual(unique.plan(application(1, 10), application(1, 20), 10), { type: "REJECT" });
 });

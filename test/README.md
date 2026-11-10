@@ -38,7 +38,7 @@
 | [effect](sim/effect.test.js) | 安装与启停输出、零时长安装、覆写赢家、三种互斥时间、有效时长暂停与手动推进、末次回调续期、来源与生命周期依赖分离。 |
 | [contribution](sim/contribution.test.js) | 先选互斥赢家再动态求值，真实 Offense 输出遵循属性公式、零下限并保留小数。实际输出与弹道负责各自采样时点。 |
 | [targeting](sim/targeting.test.js) | 标准 HP／EP 资格与目标限制、资源接收分开；独立空间原点使用 Hitbox，额外空地条件读取当前 Layer。有效 MaxHP 决定治疗需求与比例，联合治疗保留 HP 或 EP 需求，Burst 不抹掉 HP 需求。 |
-| [targetable](sim/targetable-restrictions.test.js) | kind 豁免在贡献竞争后检查，覆盖同机制所有有效来源且保留独立限制，固有与临时限制互不误删；有效嘲讽允许负值并决定显式优先级。 |
+| [targetable](sim/targetable-restrictions.test.js) | 按 Restriction 定义对象身份的豁免在贡献竞争后检查，覆盖共享定义的所有有效来源且保留独立限制，固有与临时限制互不误删；有效嘲讽允许负值并决定显式优先级。 |
 | [攻击目标接入](sim/targeting-action.test.js) | 各组选择与 prepare 接续 RNG，启动拒绝保留已完成消费；保存的绑定不因后续选择限制而自动换人。实际内容需要复验时只检查原绑定。 |
 | [公共随机](common/rng.test.js)、[整数取值](common/math.test.js) | 无放回抽样的确定性与消费、正负半值取偶集中验证；Targeting 不重复 Query 或 TopK 算法。 |
 | [allegiance](sim/allegiance.test.js) | ALLY／ENEMY／NEUTRAL 的敌对关系。 |

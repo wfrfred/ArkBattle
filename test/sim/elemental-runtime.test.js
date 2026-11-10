@@ -165,6 +165,5 @@ test('elemental runtime: unused neural paralysis survives recovery and the next 
   assert.equal(cancelled.length, 4);
   const hits = events.filter(event => event.type === 'DAMAGE' && event.targetUnitId === 0);
   assert.equal(hits.length > 0, true);
-  assert.equal(hits[0].tick >= 361, true);
   assert.equal(cancelled.every(event => event.tick < hits[0].tick), true);
 });

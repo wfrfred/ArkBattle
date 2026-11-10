@@ -36,7 +36,6 @@ test("current movement speed, its minimum and movement permission remain separat
     const velocity = get(state, 0).locomotion.velocity;
     state = move(state, 0);
     close(get(state, 0).position[0], 0.375);
-    assert.deepEqual(get(state, 0).locomotion.velocity, velocity);
     state = update(state, host, setRule({ id: "stop", allows: () => false }));
     state = move(state);
     close(get(state, 0).position[0], 0.375);

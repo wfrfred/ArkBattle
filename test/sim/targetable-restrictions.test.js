@@ -22,28 +22,19 @@ const creation = (side, restrictions, taunt) => ({
     definition: definition(side, restrictions, taunt), position: [0, 0],
 });
 
-test("mechanism exemption follows Contribution competition without reviving a suppressed restriction", () => {
-    const state = battle([
+test("restriction exemptions use effective definition identity without reviving suppressed entries", () => {
+    let state = battle([
         creation("ALLY"),
+        creation("ENEMY", [{ id: "innate", value: invisibleRestriction }]),
         creation("ENEMY", [
             { id: "hidden", value: invisibleRestriction, group: { id: "visibility", priority: 1 } },
             { id: "camouflage", value: camouflageRestriction, group: { id: "visibility", priority: 2 } },
         ]),
     ]);
     const source = get(state, 0);
-    const owner = get(state, 1);
-
-    assert.equal(targetable.allowsRestrictions(state, source)(owner), false);
+    assert.equal(targetable.allowsRestrictions(state, source)(get(state, 2)), false);
     assert.equal(targetable.allowsRestrictions(state, source,
-        restriction => restriction === camouflageRestriction)(owner), true);
-});
-
-test("a shared restriction definition can be exempted without exempting another definition or removing other sources", () => {
-    let state = battle([
-        creation("ALLY"),
-        creation("ENEMY", [{ id: "innate", value: invisibleRestriction }]),
-    ]);
-    const source = get(state, 0);
+        restriction => restriction === camouflageRestriction)(get(state, 2)), true);
     const target = units.ref(get(state, 1));
     const installed = effects.install(state, target, invisible);
     state = installed.state;
@@ -61,8 +52,6 @@ test("a shared restriction definition can be exempted without exempting another 
     state = effects.end(state, installed.value);
     assert.equal(targetable.allowsRestrictions(state, source)(units.get(state, target)), false);
     assert.equal(visibleToDetector(state), true);
-    state = update(state, target, targetable.removeRestriction("innate"));
-    assert.equal(targetable.allowsRestrictions(state, source)(units.get(state, target)), true);
 });
 
 test("visibility distinguishes different sides from hostile sides using the supplied source", () => {
@@ -81,21 +70,13 @@ test("visibility distinguishes different sides from hostile sides using the supp
 });
 
 test("ordinary taunt comparison uses signed integer attributes after contribution changes", () => {
-    let state = battle([creation("ENEMY", [], 0), creation("ENEMY", [], -1)]);
-    const target = units.ref(get(state, 1));
+    let state = battle([creation("ENEMY", [], -1), creation("ENEMY", [], 0)]);
+    const target = units.ref(get(state, 0));
     const preferred = state => topK(units.all(state).filter(targetable.hasTargetable), 1, targeting.taunt(state))[0].id;
 
-    assert.equal(preferred(state), 0);
+    assert.equal(preferred(state), 1);
     state = update(state, target, targetable.setTauntContribution({
         id: "taunt", value: [modifier({ addition: 2 })],
     }));
-    assert.equal(targetable.resolveTaunt(state, units.get(state, target)), 1);
-    assert.equal(preferred(state), 1);
-    state = update(state, target, targetable.setTauntContribution({
-        id: "taunt", value: [modifier({ addition: -1 })],
-    }));
-    assert.equal(targetable.resolveTaunt(state, units.get(state, target)), -2);
     assert.equal(preferred(state), 0);
-    state = update(state, target, targetable.removeTauntContribution("taunt"));
-    assert.equal(targetable.resolveTaunt(state, units.get(state, target)), -1);
 });

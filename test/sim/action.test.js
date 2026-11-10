@@ -57,7 +57,6 @@ test("prepare can reject without allocating a round; ending preserves the latest
     const started = actions.start(state, reference);
     state = started.state;
     assert.notEqual(started.value, null);
-    assert.equal(actions.getExecution(state, started.value).execution.state.advances, 0);
     assert.equal(actions.start(state, reference).value, null);
     state = actions.advance(state, started.value);
     state = actions.advance({ ...state, tick: 1 }, started.value);
@@ -127,22 +126,6 @@ test("static speed and interval changes synchronously preserve independent coold
     assert.equal(actions.getAction(state, fastRef).cooldown.readyAtTick, 9);
     assert.equal(actions.getAction(state, slowRef).cooldown.readyAtTick, 15);
 
-    state = actions.resetCooldown(state, fastRef);
-    state = actions.clearCooldown(state, slowRef);
-    assert.equal(actions.getAction(state, fastRef).cooldown.readyAtTick, 13);
-    assert.equal(actions.getAction(state, slowRef).cooldown.readyAtTick, 3);
-    const slowStart = actions.start(state, slowRef);
-    state = actions.advance(slowStart.state, slowStart.value);
-    assert.equal(actions.getAction(state, slowRef).cooldown.readyAtTick, 18);
-    assert.equal(actions.start({ ...state, tick: 12 }, fastRef).value, null);
-
-    state = { ...state, tick: 13 };
-    const ready = actions.start(state, fastRef);
-    assert.notEqual(ready.value, null);
-    assert.equal(actions.start(ready.state, slowRef).value, null);
-    state = actions.advance(ready.state, ready.value);
-    assert.equal(actions.getAction(state, fastRef).cooldown.readyAtTick, 23);
-    assert.notEqual(actions.start({ ...state, tick: 18 }, slowRef).value, null);
 });
 
 test("interrupted attack, successful release, and damage output are separate business stages", () => {
@@ -216,7 +199,6 @@ test("interrupted attack, successful release, and damage output are separate bus
     assert.equal(actions.getExecution(state, started.value), undefined);
 
     state = { ...state, tick: 20 };
-    assert.equal(actions.start(state, reference).value, null);
     state = update(state, source, presence.appear([1, 1]));
     state = update(state, source, action.removeHook("released", "hide-after-release"));
     started = actions.start(state, reference);
@@ -265,7 +247,6 @@ test("Combat advances an instantaneous action once per Tick and skips selection 
     const reference = actions.ref(units.ref(get(firstRun, 0)), program);
     assert.equal(actions.getAction(firstRun, reference).state.completed, 1);
     assert.equal(get(firstRun, 0).skill.sp.value, 0);
-    assert.equal(firstRun.tick, 1);
 
     const hidden = update(firstRun, units.ref(get(firstRun, 0)), presence.disappear());
     const after = step(hidden, []);

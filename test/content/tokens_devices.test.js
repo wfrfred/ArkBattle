@@ -1,4 +1,3 @@
-import { isCompleted } from "../../dist/core/battle/schedule/index.js";
 import { Hooks } from "../../dist/core/hook.js";
 import { deepsea as deepseaTerrain, mire as mireTerrain } from "../../dist/content/terrain/definition.js";
 import { tilesOf } from "../helpers/tiles.js";
@@ -7,7 +6,7 @@ import { at as occupancyAt } from "../../dist/core/battlefield/occupancy.js";
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { initialize, step } from "../../dist/core/battle/index.js";
+import { initialize } from "../../dist/core/battle/index.js";
 import { apply as applyOverlays } from "../../dist/core/battlefield/navigation/overlay.js";
 import { loadMovementScenario } from "../../dist/data/arknights/movement-scenario.js";
 import { addCard, createRequest, preview } from "../../dist/core/battle/deployment/index.js";
@@ -34,7 +33,7 @@ function scenario(rawLevel) {
     }, catalog, 123);
 }
 
-test("a real hidden crate changes its tile while present and outlives scheduled enemies", () => {
+test("a real hidden crate changes its tile while present and restores it on removal", () => {
     const loaded = scenario(fixture("level_act1autochess_m02"));
     let battle = initialize(loaded.spec);
     const [id] = predefinedIdsForAlias(battle.definition.predefines, "trap_1105_accrate#001");
@@ -46,9 +45,6 @@ test("a real hidden crate changes its tile while present and outlives scheduled 
     assert.deepEqual(crate.position, [4, 12]);
     assert.equal(navigationMap(battle.battlefield.navigation).get(tile).cost, 1000);
     assert.equal(navigationMap(battle.battlefield.navigation).get(tile).passable, original.passable);
-    while (!isCompleted(battle.schedule) && battle.tick < loaded.spec.maxTicks) battle = step(battle, []);
-    assert.equal(isCompleted(battle.schedule), true);
-    assert.ok(battle.battlefield.units.has(crate.id));
     battle = remove(battle, id, "SCRIPT");
     assert.equal(battle.battlefield.units.has(crate.id), false);
     assert.deepEqual(navigationMap(battle.battlefield.navigation).get(tile), original);

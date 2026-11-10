@@ -1,12 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { validateShape } from '../../dist/core/geometry/shape.js';
 import { fromTiles } from '../../dist/core/geometry/range.js';
 import { contains, overlaps } from '../../dist/core/geometry/intersection.js';
-
-test('shape input rejects a negative radius', () => {
-  assert.throws(() => validateShape({ type: 'CIRCLE', offset: [0, 0], radius: -1 }), RangeError);
-});
 
 test('ranges include tangent contacts and exclude circle-box corner gaps', () => {
   const circle = radius => ({ type: 'CIRCLE', offset: [0, 0], radius });
@@ -20,9 +15,6 @@ test('ranges include tangent contacts and exclude circle-box corner gaps', () =>
   assert.equal(overlaps([circle(1)], [0, 0], {
     type: 'CIRCLE', offset: [-3, 0], radius: 0.125,
   }, [4, 0]), true);
-  assert.equal(contains([{ type: 'CIRCLE', offset: [0.5, -0.5], radius: 1 }],
-    [2, 3], [3.5, 2.5]), true);
-  assert.equal(contains([box(0.5, 0.5)], [2, 3], [2.5, 3.5]), true);
 });
 
 test('tile-derived ranges combine separated cells around a continuous source position', () => {

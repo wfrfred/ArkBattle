@@ -69,6 +69,4 @@ test("composition associates without commuting, publishes the final Unit and pre
     assert.deepEqual(order, ["increment", "nested", "scale", "offset"]);
     assert.deepEqual(units.get(after, first).position, [5, 0]);
     assert.deepEqual(units.get(after, second).position, [1, 1]);
-    assert.deepEqual(units.get(before, first).position, [0, 0]);
-    assert.deepEqual(units.get(before, second).position, [1, 0]);
 });

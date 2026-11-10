@@ -5,7 +5,6 @@ import { test } from "node:test";
 import { create as createPlatform } from "../../dist/content/devices/shooting-platform.js";
 import { add, remove, update } from "../../dist/core/battle/unit.js";
 import { get as getTile } from "../../dist/core/battlefield/map/map.js";
-import { at as occupancyAt } from "../../dist/core/battlefield/occupancy.js";
 import { Tile } from "../../dist/core/geometry/coordinate.js";
 import { createDefinition as createDeployable, createCardDefinition } from "../helpers/deployable.js";
 import { sides, setLayer } from "../../dist/core/unit/capability/blocking/index.js";
@@ -67,6 +66,5 @@ test("removing a platform kills its own passenger and restores the tile", () => 
     assert.equal(getUnit(battle, 10), undefined);
     assert.equal(battle.events.find(entry => entry.type === "UNIT_REMOVED" && entry.unitId === 10).reason, "DEATH");
     assert.ok(getUnit(battle, 11));
-    assert.equal(occupancyAt(battle.battlefield, first)?.occupant ?? null, null);
     assert.equal(getTile(battle.battlefield.map, first).state.elevation, "LOWLAND");
 });

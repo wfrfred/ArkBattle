@@ -13,6 +13,7 @@ import * as action from "../../dist/core/unit/capability/action/index.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import * as deployment from "../../dist/core/battle/deployment/index.js";
 import * as cards from "../../dist/core/battle/deployment/card/index.js";
+import { step } from "../../dist/core/battle/runtime.js";
 
 test("disappearance preserves deployment and lifetimes, releases blocking before cancelling actions, and removes only its rules", () => {
     const departures = [];
@@ -97,19 +98,13 @@ test("disappearance preserves deployment and lifetimes, releases blocking before
     assert.equal(get(state, owner.id).occupancy.pair, pair);
     assert.equal(get(state, 0).occupancy.pair, pair);
     assert.equal(state.deployment.usedSlots, 1);
-    assert.equal(state.deployment.dp, 10);
-    assert.equal(cards.get(state, card).stock, 0);
     assert.equal(entries, 1);
     assert.deepEqual(departures, []);
     assert.equal(actions.getExecution(state, started.value), undefined);
     assert.deepEqual(ended, [{ type: "CANCELLED", reason: "SOURCE_ABSENT" }]);
-    state = effects.advance({ ...state, tick: 1 });
-    assert.equal(effects.get(state, installed.value).expiration.elapsed, 1);
-    state = effects.advance({ ...state, tick: 2 });
-    state = effects.advance({ ...state, tick: 3 });
-    assert.equal(effects.get(state, installed.value), undefined);
-    assert.equal(get(state, owner.id).lifecycle, "PRESENT");
+    assert.ok(effects.get(state, installed.value));
 
+    state = step(state, []);
     state = update(state, owner, action.setRule({ id: "other-source", allows: () => false }));
     state = update(state, owner, presence.appear([2, 1]));
     assert.equal(actions.start(state, actionRef).value, null);

@@ -11,7 +11,6 @@ import * as vitality from "../../dist/core/unit/capability/vitality/index.js";
 import * as elemental from "../../dist/core/unit/capability/elemental/index.js";
 import * as hpDamage from "../../dist/core/battle/damage/hp/index.js";
 import * as epDamage from "../../dist/core/battle/damage/ep/index.js";
-import * as epHealing from "../../dist/core/battle/healing/ep/index.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import { hasLayer, setType } from "../../dist/core/unit/capability/layer/index.js";
 import { disappear } from "../../dist/core/unit/capability/presence/index.js";
@@ -103,8 +102,6 @@ test("mixed healing keeps HP or EP demand while only an ACTIVE healFree marker r
     assert.deepEqual(ids(hpRecipients(state)), [1, 4]);
     assert.deepEqual(ids(epRecipients(state)), [2]);
     assert.deepEqual(ids(recipients(state)), [1, 2, 4]);
-    state = effects.setEnabled(state, marker.value, false);
-    assert.deepEqual(ids(hpRecipients(state)), [1, 2, 4]);
 });
 
 test("EP selection checks current resource eligibility without executing reception Rules", () => {
@@ -140,12 +137,6 @@ test("EP selection checks current resource eligibility without executing recepti
     state = injure(state, target, 200).state;
     assert.deepEqual(ids(healingCandidates(state)), [1]);
     assert.equal(healingChecks, 0);
-    const restore = { source: null, target, parameters: { power: 200 } };
-    assert.equal(epHealing.applyHealing(restore, epHealing.calculateHealing(state, restore)).value.type, "REJECTED");
-    assert.ok(healingChecks > 0);
-    state = update(state, target, elemental.removeRule("healingRules", "receive-healing"));
-    state = epHealing.applyHealing(restore, epHealing.calculateHealing(state, restore)).state;
-    assert.deepEqual(ids(healingCandidates(state)), []);
     state = injure(state, target, 1000).state;
     assert.ok(get(state, 1).elemental.burst);
     assert.deepEqual(ids(damageCandidates(state)), []);

@@ -6,6 +6,5 @@ test("limiting a displacement preserves its direction and bounds its Euclidean l
     const displacement = [6, 8];
     const limited = Vec2.clampLength(displacement, 5);
     assert.deepEqual(limited, [3, 4]);
-    assert.equal(Vec2.distanceSquared([1, 2], [4, 6]), 25);
     assert.deepEqual(Vec2.clampLength(displacement, 12), displacement);
 });

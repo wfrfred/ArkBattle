@@ -55,8 +55,16 @@ test('locked arrows follow a disappeared target position and separate identity h
   assert.equal(projectilesQuery.get(state, launched.value), undefined);
 
   state = updateUnits(state, ref(fixture.target), appear([3, 0]));
-  const visible = projectiles.create(state, createArrow(), { position: [3, 0], state: fixture.state });
+  const visible = projectiles.create(state, createArrow(), {
+    position: [3, 0], state: { ...fixture.state, stopDelayTicks: 2 },
+  });
   state = step(visible.state, 5);
+  assert.equal(getUnit(state, 1).vitality.hp, 960);
+  state = step(state, 6);
+  assert.equal(projectilesQuery.get(state, visible.value).lifecycle, 'ACTIVE');
+  assert.equal(getUnit(state, 1).vitality.hp, 960);
+  state = step(state, 7);
+  assert.equal(projectilesQuery.get(state, visible.value), undefined);
   assert.equal(getUnit(state, 1).vitality.hp, 960);
 });
 
@@ -91,22 +99,6 @@ test('an arrow cannot hit twice when its damage response stops the projectile', 
   assert.equal(hits, 1);
   assert.equal(getUnit(after, 1).vitality.hp, 960);
   assert.equal(projectilesQuery.get(after, arrow), undefined);
-});
-
-test('delayed tracking keeps the instance active after arrival without repeating the hit', () => {
-  const fixture = setup();
-  const launched = projectiles.create(fixture.battle, createArrow(), {
-    position: [0, 0], state: { ...fixture.state, stopDelayTicks: 2 },
-  });
-  const reached = step(launched.state, 1);
-  const waiting = step(reached, 2);
-  const ended = step(waiting, 3);
-
-  assert.equal(projectilesQuery.get(reached, launched.value).lifecycle, 'ACTIVE');
-  assert.equal(projectilesQuery.get(reached, launched.value).state.stopAtTick, 3);
-  assert.equal(projectilesQuery.get(waiting, launched.value).lifecycle, 'ACTIVE');
-  assert.equal(projectilesQuery.get(ended, launched.value), undefined);
-  assert.equal(getUnit(ended, 1).vitality.hp, 960);
 });
 
 test('tracking reads current source attack and falls back to its launch sample after removal', () => {

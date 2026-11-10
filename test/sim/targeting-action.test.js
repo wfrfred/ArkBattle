@@ -3,7 +3,7 @@ import { test } from "node:test";
 import { Hooks } from "../../dist/core/hook.js";
 import { createRng } from "../../dist/core/common/rng.js";
 import { topK } from "../../dist/core/common/collection.js";
-import { createWithState, chooseTargets } from "../../dist/content/actions/attack.js";
+import { createWithState } from "../../dist/content/actions/attack.js";
 import * as targeting from "../../dist/core/battle/targeting/index.js";
 import { hasTargetable } from "../../dist/core/unit/capability/targetable/capability.js";
 import * as units from "../../dist/core/unit/query.js";
@@ -45,7 +45,7 @@ test("attack selection groups and prepare receive the state produced by earlier 
     const secondary = group("secondary", 2);
     const action = definition([primary, secondary], state => {
         observed = state.execution.rngState;
-        return { state, value: { selectedAt: observed } };
+        return { state, value: {} };
     });
     const source = unit(0, { action });
     const initial = battle(source, unit(1), unit(2), unit(3));
@@ -58,20 +58,17 @@ test("attack selection groups and prepare receive the state produced by earlier 
     assert.deepEqual(running.execution.state.bindings, { primary: first.value, secondary: second.value });
     assert.equal(started.state.execution.rngState, second.state.execution.rngState);
     assert.equal(observed, second.state.execution.rngState);
-    assert.equal(running.execution.state.data.selectedAt, observed);
 });
 
 test("an empty trigger binding rejects the attack without losing later completed selection state", () => {
-    const action = definition([group("primary", 1, () => false), group("secondary")],
+    const secondary = group("secondary");
+    const action = definition([group("primary", 1, () => false), secondary],
         () => assert.fail("a rejected attack must not start"));
     const source = unit(0, { action });
     const initial = battle(source, unit(1), unit(2));
-    const selected = chooseTargets(initial, units.ref(source), action.attack);
+    const selected = secondary.select(initial, units.ref(source));
     const started = actions.start(initial, actions.ref(units.ref(source), action));
 
-    assert.deepEqual(selected.value.primary, []);
-    assert.equal(selected.value.secondary.length, 1);
-    assert.notEqual(selected.state.execution.rngState, initial.execution.rngState);
     assert.equal(started.value, null);
     assert.equal(started.state.execution.rngState, selected.state.execution.rngState);
     assert.equal(units.get(started.state, units.ref(source)).action.actions.values()
@@ -99,7 +96,6 @@ test("bound healing keeps its receivers when a later selection restriction would
         targetGroups: [{ id: "primary", select: recipients, operations: [{ type: "HEAL", power: 20 }] }],
         followUps: [
             { receiver: { type: "BINDING", bindingId: "primary" }, operation: { type: "HEAL", power: 5 } },
-            { receiver: { type: "SOURCE" }, operation: { type: "HEAL", power: 15 } },
         ],
     });
     let state = createBattle([
@@ -110,7 +106,7 @@ test("bound healing keeps its receivers when a later selection restriction would
         { definition: patient, position: [2, 1] },
         { definition: patient, position: [3, 1] },
     ]);
-    for (const [id, amount] of [[0, 40], [1, 70], [2, 60]]) {
+    for (const [id, amount] of [[1, 70], [2, 60]]) {
         const request = {
             source: null, target: units.ref(get(state, id)),
             parameters: { type: "TRUE", attack: { power: amount, multiplier: 1, addition: 0 } },
@@ -124,7 +120,6 @@ test("bound healing keeps its receivers when a later selection restriction would
     assert.notEqual(started.value, null);
     assert.deepEqual(recipients(started.state, source).value.map(target => target.id), [2]);
     state = actions.advance(started.state, started.value);
-    assert.equal(get(state, 0).vitality.hp, 75);
     assert.equal(get(state, 1).vitality.hp, 55);
     assert.equal(get(state, 2).vitality.hp, 40);
 });

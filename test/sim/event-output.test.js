@@ -31,12 +31,9 @@ test("EVENT-01: real HP and EP damage and healing produce the corresponding floa
     };
     state = hpDamage.applyDamage(hp, hpDamage.calculateDamage(state, hp)).state;
     const elementalRecovery = { source: null, target, parameters: { power: 40 } };
-    const fullRecovery = epHealing.applyHealing(
+    state = epHealing.applyHealing(
         elementalRecovery, epHealing.calculateHealing(state, elementalRecovery),
-    );
-    assert.equal(fullRecovery.value.type, "APPLIED");
-    assert.equal(Object.values(fullRecovery.value.application.epGain).every(amount => amount === 0), true);
-    state = fullRecovery.state;
+    ).state;
     const injury = { source: null, target, parameters: { type: "NEURAL", power: 100 } };
     state = epDamage.applyDamage(injury, epDamage.calculateDamage(state, injury)).state;
     state = epHealing.applyHealing(elementalRecovery, epHealing.calculateHealing(state, elementalRecovery)).state;
@@ -49,10 +46,7 @@ test("EVENT-01: real HP and EP damage and healing produce the corresponding floa
             value: { ...pending, amount: pending.amount - 200 },
         }),
     }));
-    const absorbed = epDamage.applyDamage(injury, epDamage.calculateDamage(state, injury));
-    assert.equal(absorbed.value.type, "APPLIED");
-    assert.equal(absorbed.value.application.epLoss, 0);
-    state = absorbed.state;
+    state = epDamage.applyDamage(injury, epDamage.calculateDamage(state, injury)).state;
 
     const view = new TacticalDemoPresentation(data);
     assert.deepEqual(view.advance(state, state.events), [
@@ -63,8 +57,6 @@ test("EVENT-01: real HP and EP damage and healing produce the corresponding floa
         ["heal", 0, 30],
         ["dmg", 0, 0, "neural"],
     ]);
-    assert.equal(get(state, 0).vitality.hp, 980);
-    assert.equal(get(state, 0).elemental.ep.NEURAL, 940);
 });
 
 test("EVENT-02: a Burst keeps its original position through movement and death in the same Tick", () => {

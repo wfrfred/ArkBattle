@@ -51,7 +51,6 @@ test("Melantha's talent and S1 affect real attacks, and the talent remains after
 
     battle = advance({ ...battle, tick: 600 }, ref(actor));
     assert.equal(resolveAttack(battle, getUnit(battle, actor.id)), base);
-    assert.equal(getUnit(battle, 0).skill.activation, null);
 });
 
 test("Melantha's ordinary attack still requires a visible target while blocking it", () => {

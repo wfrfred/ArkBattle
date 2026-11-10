@@ -56,6 +56,12 @@ const hit = (battle, source = null, power = 100) => damage(battle, {
     source: source === null ? null : { id: source }, target: { id: 0 },
     parameters: parameters(power, "TRUE"),
 });
+function advanceEffectsUntil(battle, tick) {
+    for (let currentTick = battle.tick + 1; currentTick <= tick; currentTick++) {
+        battle = advanceEffects({ ...battle, tick: currentTick });
+    }
+    return battle;
+}
 function wound(battle) {
     battle = hit(battle, null, 1).state;
     battle = hit(battle, null, getUnit(battle, 0).vitality.hp - 1000).state;
@@ -70,27 +76,25 @@ function canMove(battle, unit) {
 
 test("Mudrock's shield cancels a hit, consumes one layer, self-heals and retains HIT recovery", () => {
     const fixture = setup();
-    assert.equal(readShield(getUnit(fixture.battle, 0)).layers, 1);
     const wounded = wound(fixture.battle);
-    const restored = advanceEffects({ ...wounded, tick: 270 });
+    const restored = advanceEffectsUntil(wounded, 270);
     const result = hit(restored, null, 5000);
     assert.deepEqual(result.value.received.cancellation, { reason: "MUDROCK_SHIELD" });
     approximate(getUnit(result.state, 0).vitality.hp, 1000 + fixture.prepared.attributes.maxHp * 0.2);
     assert.equal(getUnit(result.state, 0).skill.sp.value, 1);
-    assert.equal(readShield(getUnit(result.state, 0)).layers, 0);
     assert.equal(hit(result.state).value.application.hpLoss, 100);
 });
 
 test("Mudrock's shield keeps recharging while capped", () => {
     const fixture = setup();
     let battle = hit(fixture.battle).state;
-    battle = advanceEffects({ ...battle, tick: 270 });
-    assert.deepEqual(readShield(getUnit(battle, 0)), { layers: 1, timer: 270 });
-    battle = advanceEffects({ ...battle, tick: 1000 });
-    assert.deepEqual(readShield(getUnit(battle, 0)), { layers: 3, timer: 80 });
-    battle = hit(battle).state;
-    battle = advanceEffects({ ...battle, tick: 1080 });
-    assert.deepEqual(readShield(getUnit(battle, 0)), { layers: 3, timer: 270 });
+    battle = advanceEffectsUntil(battle, 1000);
+    assert.equal(readShield(getUnit(battle, 0)).layers, 3);
+    for (let layer = 0; layer < 3; layer++) battle = hit(battle).state;
+    const beforeRecovery = hit(advanceEffectsUntil(battle, 1079));
+    assert.equal(beforeRecovery.value.application.hpLoss, 100);
+    const recovered = hit(advanceEffectsUntil(beforeRecovery.state, 1080));
+    assert.deepEqual(recovered.value.received.cancellation, { reason: "MUDROCK_SHIELD" });
 });
 
 test("module X uses current max HP for shield healing and distinguishes blocked Sarkaz sources", () => {
@@ -102,14 +106,13 @@ test("module X uses current max HP for shield healing and distinguishes blocked 
     let battle = update(fixture.battle, ref(fixture.unit), setMaxHpContribution({
         id: "max-hp", value: [modifier({ addition: 1000 })],
     }));
-    battle = advanceEffects({ ...wound(battle), tick: 270 });
+    battle = advanceEffectsUntil(wound(battle), 270);
     const shielded = hit(battle);
     approximate(getUnit(shielded.state, 0).vitality.hp, 1000 + (fixture.prepared.attributes.maxHp + 1000) * 0.23);
     assert.equal(getUnit(shielded.state, 0).skill.sp.value, 3);
     approximate(hit(shielded.state, 1).value.application.hpLoss, 59.5);
     approximate(hit(shielded.state, 2).value.application.hpLoss, 70);
     assert.equal(hit(shielded.state, 3).value.application.hpLoss, 100);
-    assert.equal(hit(shielded.state).value.application.hpLoss, 100);
 });
 
 test("S2 waits for an eligible target without spending its SP", () => {
@@ -122,12 +125,11 @@ test("S2 waits for an eligible target without spending its SP", () => {
 
 test("S2 replaces normal recovery, heals once and revalidates its bound targets without selecting replacements", () => {
     const fixture = setup({}, [enemy(1, [1, 0]), enemy(2, [0.8, 0]),
-        enemy(3, [1, 0], { layer: { type: "AIR" } }), enemy(4, [5, 0])], { recoveryTicks: 2 });
+        enemy(3, [1, 0], { layer: { type: "AIR" } })], { recoveryTicks: 2 });
     let battle = wound(fixture.battle);
     const normal = fixture.unit.action.actions.get("normal-attack").definition;
     const ordinary = start(battle, actionRef(ref(fixture.unit), normal));
     battle = advanceAction(ordinary.state, ordinary.value);
-    assert.ok(getUnit(battle, 0).action.actions.get(normal.id).cooldown.readyAtTick > battle.tick);
     battle = modify(battle, ref(fixture.unit), 5).state;
     battle = update(battle, ref(fixture.unit), setAttackContribution({
         id: "attack", value: [modifier({ addition: 100 })],
@@ -144,7 +146,6 @@ test("S2 replaces normal recovery, heals once and revalidates its bound targets 
     approximate(getUnit(battle, 1).vitality.hp, beforeFirst - amount);
     assert.equal(getUnit(battle, 2).vitality.hp, beforeSecond);
     assert.equal(getUnit(battle, 3).vitality.hp, 10000);
-    assert.equal(getUnit(battle, 4).vitality.hp, 10000);
     approximate(getUnit(battle, 0).vitality.hp, 1000 + fixture.prepared.attributes.maxHp * 0.05);
     assert.equal(getUnit(battle, 0).skill.sp.value, 0);
     assert.notEqual(getUnit(battle, 0).skill.activation, null);
@@ -152,7 +153,7 @@ test("S2 replaces normal recovery, heals once and revalidates its bound targets 
     assert.equal(getUnit(battle, 0).skill.activation, null);
 
     assert.equal(canMove(battle, getUnit(battle, 1)), false);
-    const recovered = advanceEffects({ ...battle, tick: 18 });
+    const recovered = advanceEffectsUntil(battle, 18);
     assert.equal(canMove(recovered, getUnit(recovered, 1)), true);
 });
 

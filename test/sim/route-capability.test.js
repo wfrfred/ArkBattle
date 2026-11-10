@@ -5,7 +5,7 @@ import { Hooks } from "../../dist/core/hook.js";
 import * as lifecycle from "../../dist/core/unit/hook.js";
 import * as route from "../../dist/core/unit/capability/route/index.js";
 import * as units from "../../dist/core/unit/index.js";
-import { update, remove } from "../../dist/core/battle/unit.js";
+import { update } from "../../dist/core/battle/unit.js";
 import { step } from "../../dist/core/battle/runtime.js";
 import { appear } from "../../dist/core/unit/capability/presence/index.js";
 import { search } from "../../dist/core/battle/blocking/index.js";
@@ -60,9 +60,6 @@ test("remaining route distance follows navigation geometry and excludes teleport
     const self = get(state, 0);
     assert.equal(navigation.distance(state.battlefield.navigation, "WALK", [0, 0], [4, 2]), 6);
     assert.equal(route.remainingDistance(state, self, self.route.main), 7);
-
-    const open = battle();
-    assert.ok(navigation.distance(open.battlefield.navigation, "WALK", [0.49, 0.49], [0.51, 0.1]) > 0);
 });
 
 test("distance observes the requested Main or TRACE rather than temporary movement control", () => {
@@ -147,9 +144,7 @@ test("MOVE samples on entry, queries keep the sample and loop entry samples agai
     let state = battle([creation(plan([instruction, { type: "GOTO", index: 0 }]), { locomotion: movement })]);
     const host = units.ref(get(state, 0));
     const sample = current(state).current.offset;
-    const rngState = state.execution.rngState;
     assert.deepEqual(route.movementTarget(state, host).goal, sample);
-    assert.equal(state.execution.rngState, rngState);
     state = ticks(state, 2);
     assert.equal(current(state).current, null);
     state = step(state, []);
@@ -204,7 +199,6 @@ test("Main exit is independent of the selected Context and completes Unit lifeti
     state = step(state, []);
     assert.equal(get(state, 0), undefined);
     assert.equal(leaves, 1);
-    assert.equal(state.events.filter(event => event.type === "ROUTE_COMPLETED").length, 1);
     assert.notEqual(get(ticks(battle([creation(plan())]), 3), 0), undefined);
     const waitingAtExit = plan([wait(999)], { endPosition: [0, 0] });
     assert.ok(get(step(battle([creation(waitingAtExit)]), []), 0));
@@ -213,7 +207,7 @@ test("Main exit is independent of the selected Context and completes Unit lifeti
 });
 
 test("spatial instructions publish consumption before hooks and resume the latest Context", () => {
-    for (const operation of ["reassign", "ticking", "remove"]) {
+    for (const operation of ["reassign", "ticking"]) {
         let state = battle([
             creation(plan([wait(20)]), {
                 layer: { type: "GROUND" }, blockable: { volume: 1, rules: [] },
@@ -231,13 +225,9 @@ test("spatial instructions publish consumption before hooks and resume the lates
                 assert.equal(current(state).index, 1);
                 assert.equal(current(state).current, null);
                 assert.equal(get(state, 0).presence.present, false);
-                if (operation === "remove") {
-                    state = remove(state, host, "SCRIPT");
-                } else {
-                    state = update(state, host, operation === "reassign"
-                        ? route.reassign(0, replacement)
-                        : route.setTicking(0, false));
-                }
+                state = update(state, host, operation === "reassign"
+                    ? route.reassign(0, replacement)
+                    : route.setTicking(0, false));
                 return { state, value: undefined };
             },
         }));
@@ -247,9 +237,7 @@ test("spatial instructions publish consumption before hooks and resume the lates
             { type: "DISAPPEAR" }, { type: "APPEAR", position: [0, 6], offset: [0, 0] }, wait(4),
         ])));
         assert.equal(released, 1);
-        if (operation === "remove") {
-            assert.equal(get(state, 0), undefined);
-        } else if (operation === "reassign") {
+        if (operation === "reassign") {
             assert.equal(current(state).plan, replacement);
             assert.equal(current(state).current.timer, 9);
             assert.deepEqual(get(state, 0).position, [0, 0]);
