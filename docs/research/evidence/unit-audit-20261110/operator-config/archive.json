@@ -1,0 +1,410 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [],
+    "collectionDateSource": "not recorded",
+    "organizedOn": "2026-11-10",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+        "records": [
+          "native.json#/provenance/client/dll"
+        ],
+        "bytes": 223112680
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        "records": [
+          "native.json#/provenance/client/metadata"
+        ],
+        "bytes": 46669332
+      }
+    },
+    "sourceRecords": [
+      "configuration.json",
+      "native.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12895,
+        "sha256": "9c5b246859318caaec4aab5275ef0d2d49fce5d612c6b4e569973a9941ba621a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "configuration.json",
+        "kind": "record",
+        "bytes": 96733,
+        "sha256": "8cc5b5088b7beb873e28d4df11bde00d8282ddc7ea7d14fc6929e6162c7d2afc"
+      },
+      {
+        "path": "extract.py",
+        "kind": "historical-script",
+        "bytes": 5242,
+        "sha256": "0bee457f13d3bb7d568a856bc788290f866057a2d1fc8d55e25b18350a97c3c7"
+      },
+      {
+        "path": "extract.py.lock",
+        "kind": "artifact",
+        "bytes": 3739,
+        "sha256": "1ed9e3b399cf0743106d2124514970f3a3b5db6d9f1192fba528019ccbefdf04"
+      },
+      {
+        "path": "native.json",
+        "kind": "record",
+        "bytes": 932506,
+        "sha256": "bba0d0d8451f39297a68ac969a0536dbd3ebeb987ef1c2569a56f0d89d62893d"
+      },
+      {
+        "path": "select_config.py",
+        "kind": "historical-script",
+        "bytes": 2172,
+        "sha256": "5da3f85893b8a7f903a63c12af893cc18472a93996610a11ec76dba81d2be5fc"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 22758,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/0",
+            "native.json#/result/methods/0/method"
+          ],
+          "fullname": "Torappu.AttributesCalculator._TryGetRawData",
+          "address": "0x181ac8c90"
+        },
+        {
+          "index": 22759,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/1",
+            "native.json#/result/methods/1/method"
+          ],
+          "fullname": "Torappu.AttributesCalculator.TryGetBasicData",
+          "address": "0x181ac77c0"
+        },
+        {
+          "index": 22761,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/2",
+            "native.json#/result/methods/2/method"
+          ],
+          "fullname": "Torappu.AttributesCalculator.TryGetFinalData",
+          "address": "0x181ac7970"
+        },
+        {
+          "index": 22762,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/3",
+            "native.json#/result/methods/3/method"
+          ],
+          "fullname": "Torappu.AttributesCalculator.FetchUniEquipAttributesDelta",
+          "address": "0x181ac7140"
+        },
+        {
+          "index": 22763,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/4",
+            "native.json#/result/methods/4/method"
+          ],
+          "fullname": "Torappu.AttributesCalculator.FetchUniEquipAttributeAddition",
+          "address": "0x181ac6ed0"
+        },
+        {
+          "index": 22772,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/5",
+            "native.json#/result/methods/5/method"
+          ],
+          "fullname": "Torappu.AttributesCalculator/Input..ctor",
+          "address": "0x181ad7c50"
+        },
+        {
+          "index": 22773,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/6",
+            "native.json#/result/methods/6/method"
+          ],
+          "fullname": "Torappu.AttributesCalculator/Input..ctor",
+          "address": "0x181ad7a80"
+        },
+        {
+          "index": 22774,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/7",
+            "native.json#/result/methods/7/method"
+          ],
+          "fullname": "Torappu.AttributesCalculator/Input..ctor",
+          "address": "0x181ad7bb0"
+        },
+        {
+          "index": 22775,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/8",
+            "native.json#/result/methods/8/method"
+          ],
+          "fullname": "Torappu.AttributesCalculator/Input..ctor",
+          "address": "0x181ad7e70"
+        },
+        {
+          "index": 22776,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/9",
+            "native.json#/result/methods/9/method"
+          ],
+          "fullname": "Torappu.AttributesCalculator/Input..ctor",
+          "address": "0x181ad7dc0"
+        },
+        {
+          "index": 28330,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/10",
+            "native.json#/result/methods/10/method"
+          ],
+          "fullname": "Torappu.FavorDB.GetFavorData",
+          "address": "0x182057b80"
+        },
+        {
+          "index": 28331,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/11",
+            "native.json#/result/methods/11/method"
+          ],
+          "fullname": "Torappu.FavorDB.GetFavorBattlePhase",
+          "address": "0x182057a60"
+        },
+        {
+          "index": 31440,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/12",
+            "native.json#/result/methods/12/method"
+          ],
+          "fullname": "Torappu.AttributesData.Lerp",
+          "address": "0x182373ae0"
+        },
+        {
+          "index": 31442,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/13",
+            "native.json#/result/methods/13/method"
+          ],
+          "fullname": "Torappu.AttributesData.WriteAttributesField",
+          "address": "0x182374080"
+        },
+        {
+          "index": 31641,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/14",
+            "native.json#/result/methods/14/method"
+          ],
+          "fullname": "Torappu.CharacterData/AttributesKeyFrame.LerpData",
+          "address": "0x1824619d0"
+        },
+        {
+          "index": 31643,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/15",
+            "native.json#/result/methods/15/method"
+          ],
+          "fullname": "Torappu.CharacterData/AttributesDeltaKeyFrame.LerpData",
+          "address": "0x1824618c0"
+        },
+        {
+          "index": 31648,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/16",
+            "native.json#/result/methods/16/method"
+          ],
+          "fullname": "Torappu.CharacterData/TalentDataBundle.DoGetTalent",
+          "address": "0x182478d20"
+        },
+        {
+          "index": 34179,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/17",
+            "native.json#/result/methods/17/method"
+          ],
+          "fullname": "Torappu.CharacterUtil.CalcCharacterFavorPercent",
+          "address": "0x18268a4a0"
+        },
+        {
+          "index": 34312,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/18",
+            "native.json#/result/methods/18/method"
+          ],
+          "fullname": "Torappu.DataConvertUtil.AchieveCharAttributes",
+          "address": "0x182787380"
+        },
+        {
+          "index": 34419,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/19",
+            "native.json#/result/methods/19/method"
+          ],
+          "fullname": "Torappu.DataConvertUtil.LoadOverrideTalents",
+          "address": "0x182793980"
+        },
+        {
+          "index": 34420,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/20",
+            "native.json#/result/methods/20/method"
+          ],
+          "fullname": "Torappu.DataConvertUtil.TryGetValidTalentWithOverride",
+          "address": "0x182798650"
+        },
+        {
+          "index": 91549,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/21",
+            "native.json#/result/methods/21/method"
+          ],
+          "fullname": "Torappu.Battle.UniEquip.UniEquipUtil.TryGetOverrideTalentData",
+          "address": "0x180f05d30"
+        },
+        {
+          "index": 91550,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/22",
+            "native.json#/result/methods/22/method"
+          ],
+          "fullname": "Torappu.Battle.UniEquip.UniEquipUtil.TryGetUniEquipPackData",
+          "address": "0x180f06620"
+        },
+        {
+          "index": 91551,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/23",
+            "native.json#/result/methods/23/method"
+          ],
+          "fullname": "Torappu.Battle.UniEquip.UniEquipUtil.TryGetOverrideTalentData",
+          "address": "0x180f05e60"
+        },
+        {
+          "index": 91552,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/24",
+            "native.json#/result/methods/24/method"
+          ],
+          "fullname": "Torappu.Battle.UniEquip.UniEquipUtil.CheckFilter",
+          "address": "0x180f03f00"
+        },
+        {
+          "index": 91564,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/25",
+            "native.json#/result/methods/25/method"
+          ],
+          "fullname": "Torappu.Battle.UniEquip.UniEquipUtil.AddEquipTalentData",
+          "address": "0x180f03120"
+        }
+      ],
+      "blocks": [],
+      "types": [
+        {
+          "name": "Torappu.AttributesCalculator/Input",
+          "records": [
+            "native.json#/result/types/0"
+          ]
+        },
+        {
+          "name": "Torappu.AttributesData",
+          "records": [
+            "native.json#/result/types/1"
+          ]
+        },
+        {
+          "name": "Torappu.BattleEquipPerLevelPack",
+          "records": [
+            "native.json#/result/types/5"
+          ]
+        },
+        {
+          "name": "Torappu.BattleUniEquipData",
+          "records": [
+            "native.json#/result/types/6"
+          ]
+        },
+        {
+          "name": "Torappu.CharacterData/PhaseData",
+          "records": [
+            "native.json#/result/types/2"
+          ]
+        },
+        {
+          "name": "Torappu.EquipTalentData",
+          "records": [
+            "native.json#/result/types/7"
+          ]
+        },
+        {
+          "name": "Torappu.FavorData",
+          "records": [
+            "native.json#/result/types/3"
+          ]
+        },
+        {
+          "name": "Torappu.KeyFrames`2",
+          "records": [
+            "native.json#/result/types/9"
+          ]
+        },
+        {
+          "name": "Torappu.TalentData",
+          "records": [
+            "native.json#/result/types/4"
+          ]
+        },
+        {
+          "name": "Torappu.UniEquipTarget",
+          "records": [
+            "native.json#/result/types/8"
+          ]
+        }
+      ],
+      "constants": [],
+      "bundles": []
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

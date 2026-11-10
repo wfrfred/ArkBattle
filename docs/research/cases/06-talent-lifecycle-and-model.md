@@ -70,3 +70,29 @@ Effect 私有状态可以保存护盾／标记／计时等持续机制；Capabil
 - 现有两个接入案例尚未验证编队效果、场下状态或天赋参与切换。
 - 动态重绑天赋若成为项目目标，需要明确来源身份、旧实例结束和私有状态保留协议；官方 ReassignTalents 调用本身不能替项目决定这些政策。
 - 当前客户端与旧调查版本的 hash 不同；本案的新地址仅用于本案输入，不倒推旧模板的所有执行路径。
+
+## 干员配置数据补核（2026-11-10）
+
+本节补等级、信赖与模组的选型依据，不重新设计 Talent。原生方法／字段见[本机静态摘录](../evidence/unit-audit-20261110/operator-config/native.json)，配置见[固定提交摘录](../evidence/unit-audit-20261110/operator-config/configuration.json)，版本和复跑范围见[批次说明](../evidence/unit-audit-20261110/operator-config/README.md)。两类材料分别固定版本，不假定镜像与安装客户端同版，也没有运行时 XLua 验证。
+
+### 等级插值不能推出整数属性保留小数
+
+`AttributesCalculator.TryGetBasicData`（22759）按精英阶段取得属性关键帧。`AttributesKeyFrame.LerpData`（31641）计算并限制插值比例，再调用 `AttributesData.Lerp`（31440）；后者对允许插值的数值字段执行 `from + (to - from) × ratio`，写回 `WriteAttributesField(float)`（31442）。不能把这条链简化成“所有字段都线性插值且保留小数”。
+
+当前 `AttributesData.maxHp / atk / def` 是 `ObscuredInt`；31442 在写入这类字段前调用 `0x180007310` 取偶舍入，再构造整数。该 helper 与 [World→Tile 数值补证](../evidence/unit-audit-20261110/coordinates-numeric/README.md)中核实的舍入路径共用。浮点字段走另一分支，不做上述整数转换。
+
+因此，`operator.ts` 当前统一保留等级插值小数，与原生的整数属性写入存在差异。例如泥岩精一 2 级攻击力的插值为 `515 + 172/79`，原生整数写回得到 `517`。当前测试将保留小数当作必要结果，尚未找到对应的明确项目选择；这项不能标为原生已通过，也不在本次调查中静默改实现。是否在 Data 层按属性类别完成取整，需要后续落实。
+
+### 信赖的表映射与饱和
+
+`AttributesCalculator.Input` 的显式等级构造器（22774）通过 `FavorDB.GetFavorData` 取得 `battlePhase`；22759 再用它查询 `CharacterData.favorKeyFrames` 并 `ApplyDelta`。信赖百分比不能直接当作插值比例。
+
+固定表中，49%／50%／99%／100%／200% 分别对应 battlePhase 24／25／49／50／100。所选干员的信赖关键帧止于 50；关键帧查询超出末端时取末帧，因而 100% 后属性饱和。PRTS [信赖值](https://prts.wiki/w/干员信赖)提供玩法互证。信赖增量自身也经过 `AttributesDeltaKeyFrame.LerpData` → 31440 的字段写回，不能据表映射正确就确认所有增量小数处理也正确。
+
+### 模组阶段与真实 DATA_ONLY 正例
+
+`UniEquipUtil.TryGetUniEquipPackData`（91550）按查询的 `equipLevel` 选取单个阶段；`FetchUniEquipAttributeAddition`（22763）读取该阶段的 `attributeBlackboard`。泥岩 X 模组三级的 HP 加值分别为 245／325／400，是各阶段的完整加值，不累计前两级。
+
+解锁资格另有静态依据：同一模组要求精二 60 级，`unlockFavors` 的二／三级分别为 2732／10070，对应 50%／100% 信赖。它们是配置进入合法选型的要求，不能说战斗中的模组属性消费函数再次检查了所有解锁条件。
+
+黍的 `uniequip_002_shu` 三级提供真实 `TALENT_DATA_ONLY`：目标为已有天赋 key `1`，黑板包含 `born_range_id`，数值为 0、字符串为 `0-1`。因此字符串黑板保留有实际数据需求，无需用人工新增天赋证明该字段。`AddEquipTalentData`（91564）接纳 TALENT／TALENT_DATA_ONLY 的数据；天赋候选仍按精英、等级和潜能选择。这个正例不证明 DATA_ONLY 可以任意新增另一套 Prefab，也不代表全部模组的运行行为已经审查。
