@@ -24,7 +24,7 @@ healFree 只限制治疗目标选择，明确 Ref 的 Healing 不重新检查选
 | Battle | 同步接续领域结果，保存执行进度和 UI 事件；完整 Tick 成功后返回状态。终局由外层裁定，当前完整模式规则尚未接入。 |
 | Battlefield | 保存不可变实体、空间与关系事实，维护存储及索引一致性；Blocking 的时序操作与同步通知由完整战斗操作结算。 |
 | Unit / Capability | Unit 组合所需能力；能力提供自身的静态规则、运行状态、查询、声明最低宿主能力的 Change 工厂与完整结算。 |
-| Contribution | 带身份的不可变泛型候选；只管理登记、替换与互斥，载荷和归并由所属领域决定。 |
+| Contribution | 提供带身份的不可变泛型候选与 resolve 有效来源选择；领域 Change 通过 common/collection/entries.ts 维护登记，载荷求值与归并归所属领域。 |
 | Hook | 接入所属领域的明确阶段；领域决定顺序和本次裁决，具体内容接续返回状态。 |
 | Effect | 保存宿主附着实例、私有数据、覆写与生命周期；具体 Definition 组合 Capability 操作。 |
 | Targetable / Targeting | 前者承载固有与动态受选限制及嘲讽贡献；后者提供资格谓词、显式空间判断与比较器，内容通过 Query、TopK 和 RNG 组合选择。见 [类型设计](targeting.md)。 |

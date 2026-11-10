@@ -42,7 +42,7 @@ Effect 需要保障的结果是：
 | Effect          | 安装、私有数据、生效状态、覆写组、时间、结束     | Unit.effects                 |
 | Effects         | 不可变异构实例存储、增删查改与宿主内 ID 进度      | Unit.effects                 |
 | Hook            | 不可变登记项、类型化集合及动态登记               | Unit.hooks 或事件专属 Capability |
-| Contribution    | 不可变数据包、set／remove、分组选取与数值辅助     | 提供该属性的 Capability      |
+| Contribution    | 不可变贡献类型与 resolve 有效来源选择     | 提供该属性的 Capability      |
 | Capability      | 属性读写、事件阶段、调用顺序、短路与修改响应      | 对应 Capability State        |
 | 具体 Definition | 将生命周期回调与 Capability 操作组合为玩法        | 实例 state 保存内容需要的进度 |
 | Battlefield     | 定义场上状态值，纯转换维护存储与结构索引        | Battlefield State            |
@@ -360,7 +360,7 @@ interface Contribution<V> {
 }
 ```
 
-公共模块提供不可变数据包、数组操作、分组选取与求值辅助。Capability 的属性保存 Contribution 数组，自己暴露 `setAttackContribution()`、`removeAttackContribution()`、`resolveAttack()` 等操作；来源管理贡献的登记、替换与撤销。
+Contribution 模块只提供贡献类型与 resolve 有效来源选择，载荷求值由所属领域完成。Capability 的属性保存 Contribution 数组，通过领域 Change 复用 common/collection/entries.ts 完成登记、替换与移除，公开 `setAttackContribution()`、`removeAttackContribution()`、`resolveAttack()` 等操作；来源决定何时调用这些操作。
 
 Contribution 分组平局使用 ID 字典序，Effect 覆写平局使用安装先后，两者按各自领域规则独立结算。
 

@@ -91,7 +91,7 @@ interface BlockerState {
 }
 ```
 
-容量贡献使用 Blocking 自己的 Modifier：ADD 追加数值，ZERO 将最终容量置零。setCapacityContribution(entry) 接收 Contribution<readonly Modifier[]>，返回 Change，在发布后局部完成必要裁撤与通知；通用 Contribution 只负责按来源登记、替换、移除及互斥选择。Blocking 的 resolveCapacity 先选择生效来源，再展平其 Modifier 数组；出现任一有效 ZERO 时直接返回 0，否则在 Definition.capacity 上累加全部 ADD，再按 ties-to-even 整数化和下限 0 求值。未胜出来源里的 ZERO 不影响结果；撤销有效 ZERO 后按剩余生效贡献重新计算。
+容量贡献使用 Blocking 自己的 Modifier：ADD 追加数值，ZERO 将最终容量置零。setCapacityContribution(entry) 接收 Contribution<readonly Modifier[]>，返回 Change，通过 common/collection/entries.ts 登记或替换来源，在发布后局部完成必要裁撤与通知；移除来源使用同一数组工具。Contribution 模块只提供贡献类型和选择有效来源的 resolve。Blocking 的 resolveCapacity 先选择生效来源，再展平其 Modifier 数组；出现任一有效 ZERO 时直接返回 0，否则在 Definition.capacity 上累加全部 ADD，再按 ties-to-even 整数化和下限 0 求值。未胜出来源里的 ZERO 不影响结果；撤销有效 ZERO 后按剩余生效贡献重新计算。
 
 ADD／ZERO 是项目的容量修正协议，不代表原生全体阻挡数公式；其他领域按各自的 Attribute 协议求值。Blockable 的 volume 使用整数追加量与下限 1。
 
@@ -324,9 +324,9 @@ E 的 ACQUIRED Hook
 
 例如 A 的 ACQUIRED Hook 解除原关联条目，嵌套 RELEASED 通知同步完成；外层检查旧关联已失效，停止 A 剩余及 E 的 ACQUIRED 响应。同一双方重新建立的新条目属于另一次关系，不能恢复旧关系的派发。已完成的回调副作用保留；这里只停止已失效关系尚未执行的响应。RELEASED 是解除后的历史通知，不以原关系仍存在作为执行资格。
 
-Contribution 不处理自身生命周期，也不感知 Blocking 关系；它只提供登记、替换、移除及互斥归并。贡献何时安装、更新或移除，始终由外部 Effect／Content 或其他业务所有者负责，不向 Contribution 增加 Relation、owner、enabled 或生命周期绑定机制。
+Contribution 模块只提供贡献类型与 resolve，不处理自身生命周期，也不感知 Blocking 关系；列表修改由所属领域的 Change 通过 common/collection/entries.ts 完成。贡献何时安装、更新或移除，始终由外部 Effect／Content 或其他业务所有者负责，不向 Contribution 增加 Relation、owner、enabled 或生命周期绑定机制。
 
-Blocking 保证每个 ACQUIRED Hook 开始时原 Relation 对象仍表示当前关系。已经进入的 Hook 如果调用了其他可重入领域操作，后续依赖关系或宿主时仍须重新检查当前事实。贡献的安装与清理由外部所有者执行；清理应定位属于原关系的资源，不能误删后来重建关系的贡献。Contribution 只提供贡献登记与归并。
+Blocking 保证每个 ACQUIRED Hook 开始时原 Relation 对象仍表示当前关系。已经进入的 Hook 如果调用了其他可重入领域操作，后续依赖关系或宿主时仍须重新检查当前事实。贡献的安装与清理由外部所有者执行；清理应定位属于原关系的资源，不能误删后来重建关系的贡献。
 
 ## 查询、Hook 与 Runtime 接入
 

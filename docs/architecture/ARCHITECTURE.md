@@ -126,7 +126,7 @@ Action 程序在实际业务位置调用伤害、治疗等领域操作；Effect 
 
 Targeting 的查询资格与接收端是否接受某次作用分别判断。已选中目标仍可能拒绝、取消或承受零 HP 变化。混合行动的索敌资格由内容明确表达，Action 不从输出操作自动推导用途或组合接收条件，见 [Targeting 与 Targetable](targeting.md)。
 
-Targetable 以 Definition.taunt 和运行期贡献表达嘲讽，以必填 restrictions 声明固有限制；固有与动态限制共用 State 中的 Contribution 集合。限制使用共享机制 kind 与只读 allows，能力自身解释竞争和本次豁免。Targeting 提供标准资格、显式范围与普通比较器，Content 通过 Query、common.topK 和 RNG.sample 组合选择。来源事实由调用者选定，入场优先使用 UID，路线剩余距离由 Route／Navigation 查询；仇恨只在比较时计算，不保存为单位状态。完整类型见 [Targeting 与 Targetable](targeting.md)。
+Targetable 以 Definition.taunt 和运行期贡献表达嘲讽，以必填 restrictions 声明固有限制；固有与动态限制共用 State 中的 Contribution 集合。限制以共享定义对象本身标识机制，提供只读 allows；能力先选择有效贡献，再按本次豁免谓词检查限制。Targeting 提供标准资格、显式范围与普通比较器，Content 通过 Query、common.topK 和 RNG.sample 组合选择。来源事实由调用者选定，入场优先使用 UID，路线剩余距离由 Route／Navigation 查询；仇恨只在比较时计算，不保存为单位状态。完整类型见 [Targeting 与 Targetable](targeting.md)。
 
 Damage 和 Healing 分别在 battle/damage、battle/healing 维护 Calculate／Apply 协议；Targeting 的谓词和比较器为普通 Query 提供游戏政策，候选存在性直接用 Query.some，选择程序显式返回并接续随机状态。领域 Hook 读取当前输入版本，通过公开的纯 Damage、Healing、Effect 等操作执行同步嵌套结算，再把返回版本交给外层。取消保留已完成的消耗、回复与后继；普通死亡和治疗使用各自完整操作；倒地复活、特殊生命机制、再生与生命复原仍待设计与接入。治疗不可选中不等于接收免疫，已选中后仍可直接治疗，不设置通用禁疗绕过或跳事件开关。
 
@@ -150,7 +150,7 @@ Skill 的 Definition／create、单槽聚合、Activation 非空视图、查询�
        有效数值 + 所属领域响应
 ```
 
-Contribution<V> 是带身份、载荷和可选分组的不可变登记项，负责登记、替换与互斥。Capability 决定载荷类型与归并规则；attribute.Modifier 的四段公式仅用于适用的属性。详见 [属性与贡献](capability.md#属性与贡献)。
+Contribution<V> 是带身份、载荷和可选分组的不可变登记项。所属领域的 Change 通过 common/collection/entries.ts 完成登记、替换与移除；Contribution 模块只提供类型与 resolve，选择有效来源。Capability 决定载荷求值与归并规则；attribute.Modifier 的四段公式仅用于适用的属性。详见 [属性与贡献](capability.md#属性与贡献)。
 
 属性 Contribution 的 `value` 可以是静态 Modifier 数组，也可以是接受 `(battle, self)` 的只读函数，self 声明本领域所需的 Capability。静态值只在来源显式替换时改变；动态函数在属性查询时求值，不执行状态转换，也不消耗 RNG。先按 group 选择候选，再求值；同优先级按 Contribution ID 的字典序确定胜者，不保存取得顺序。
 
