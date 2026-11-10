@@ -301,7 +301,7 @@ Healing 中若嵌套 Damage，Damage 必须把冷却消耗、HP、致死裁决�
 
 ## 10. Meta 接入边界
 
-Meta 选择本次战斗配置，Data 将原始资料与静态配置转换为规范化数据，Content 构造包含回调和初始化程序的完整 Definition。Core 接收 Definition 与 Initial 创建初始 State，按领域时点执行程序，将本场共享进度、一次性锁、次数、样本和绑定保存在返回的 State 中。Data 不实现运行程序，Content 不在模块或闭包中保存运行时事实。
+Meta 选择本次战斗配置，Data 将原始资料与静态配置转换为规范化数据，可以静态建图、组装 Definition 或调用已有工厂绑定参数；具体战斗机制程序由 Content 或所属 Core 领域实现。Core 接收 Definition 与 Initial 创建初始 State，按领域时点执行程序，将本场共享进度、一次性锁、次数、样本和绑定保存在返回的 State 中。Data 不自行实现机制执行程序，Content 不在模块或闭包中保存运行时事实。
 
 盟约的持久层数、装备配置等由 Meta 管理；本场需要变化的内容通过明确输入／输出或规则实例 State 交接。Tactical 不定义商店或盟约管理器，也不直接修改 Meta 对象。联防是否禁止收益、全场额度的玩家作用域、里程碑触发等由传入的内容规则决定。
 

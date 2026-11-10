@@ -11,15 +11,13 @@ import * as elementalCapability from "../../dist/core/unit/capability/elemental/
 import * as presence from "../../dist/core/unit/capability/presence/index.js";
 import { appendEvents } from "../../dist/core/battle/state.js";
 import { step } from "../../dist/core/battle/index.js";
-import { TacticalDemoPresentation } from "../../dist/legacy/tactical-demo-presentation.js";
 
 import { createArknightsElementalDefinition } from "../../dist/data/elemental.js";
 import { update } from "../../dist/core/battle/unit.js";
 
 const elemental = createArknightsElementalDefinition({ receiver: "CHARACTER" });
-const data = { lookup() {} };
 
-test("EVENT-01: real HP and EP damage and healing produce the corresponding floating text", () => {
+test("EVENT-01: real HP and EP operations emit display facts including zero changes", () => {
     let state = battle([{ definition: {
         id: "receiver", hooks: Hooks.empty(), elemental,
         vitality: { maxHp: 1000, defense: 0, resistance: 0 },
@@ -48,14 +46,13 @@ test("EVENT-01: real HP and EP damage and healing produce the corresponding floa
     }));
     state = epDamage.applyDamage(injury, epDamage.calculateDamage(state, injury)).state;
 
-    const view = new TacticalDemoPresentation(data);
-    assert.deepEqual(view.advance(state, state.events), [
-        ["dmg", 0, 50, "true"],
-        ["heal", 0, 0],
-        ["dmg", 0, 100, "neural"],
-        ["heal", 0, 40],
-        ["heal", 0, 30],
-        ["dmg", 0, 0, "neural"],
+    assert.deepEqual(state.events, [
+        { type: "DAMAGE", targetUnitId: 0, amount: 50, damageType: "ELEMENTAL", tick: 0 },
+        { type: "ELEMENTAL_INJURY_HEALED", targetUnitId: 0, amount: 0, tick: 0 },
+        { type: "ELEMENTAL_INJURY", targetUnitId: 0, amount: 100, elementType: "NEURAL", tick: 0 },
+        { type: "ELEMENTAL_INJURY_HEALED", targetUnitId: 0, amount: 40, tick: 0 },
+        { type: "HEAL", targetUnitId: 0, amount: 30, tick: 0 },
+        { type: "ELEMENTAL_INJURY", targetUnitId: 0, amount: 0, elementType: "NEURAL", tick: 0 },
     ]);
 });
 
@@ -75,25 +72,24 @@ test("EVENT-02: a Burst keeps its original position through movement and death i
     state = hpDamage.applyDamage(lethal, hpDamage.calculateDamage(state, lethal)).state;
 
     assert.equal(get(state, 0), undefined);
-    const view = new TacticalDemoPresentation(data);
-    assert.deepEqual(view.advance(state, state.events), [
-        ["dmg", 0, 1000, "burn"],
-        ["fx", "burst", 1, 1, { id: 0, element: "burn" }],
-        ["dmg", 0, 1200, "arts"],
-        ["dmg", 0, 800, "true"],
-        ["die", 0, "killed"],
+    assert.deepEqual(state.events.map(({ type }) => type), [
+        "ELEMENTAL_INJURY", "ELEMENTAL_BURST", "DAMAGE", "DAMAGE", "UNIT_REMOVED",
     ]);
-    assert.deepEqual(view.units(state)[0].info.x, 4);
+    assert.deepEqual(state.events.find(({ type }) => type === "ELEMENTAL_BURST"), {
+        type: "ELEMENTAL_BURST", unitId: 0, elementType: "BURN", position: [1, 1], tick: 0,
+    });
+    const removed = state.events.find(({ type }) => type === "UNIT_REMOVED");
+    assert.equal(removed.reason, "DEATH");
+    assert.deepEqual(removed.unit.position, [4, 1]);
 });
 
-test("EVENT-03: UI output displays a route exit without changing simulation facts", () => {
+test("EVENT-03: route output is independent of simulation facts and clears next Tick", () => {
     const initial = battle([{ definition: {
         id: "traveller", hooks: Hooks.empty(),
     }, position: [1, 1] }]);
     const output = appendEvents(initial, [{ type: "ROUTE_COMPLETED", unitId: 0, tick: 0 }]);
 
     assert.equal(get(output, 0).lifecycle, "PRESENT");
-    assert.deepEqual(new TacticalDemoPresentation(data).advance(output, output.events), [["leak", 0]]);
     const next = step(output, []);
     assert.deepEqual(next.events, []);
     assert.equal(get(next, 0).lifecycle, "PRESENT");

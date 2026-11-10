@@ -4,7 +4,7 @@ Core 表达通用作战规则并维护模拟状态，Content 提供具体内容�
 
 ## 数据与行为
 
-Data 接收原表、Prefab 提取结果、关卡资料及本次静态配置，输出规范化的属性、标识、黑板、路线和调度数据。干员的精英阶段、等级、潜能、信赖、技能等级／专精及模组选择在这一步完成；具体技能、Effect、Rule 和 Hook 程序不由 Data 实现。
+Data 接收原表、Prefab 提取结果、关卡资料及本次静态配置，输出规范化的属性、标识、黑板、路线和调度数据。干员的精英阶段、等级、潜能、信赖、技能等级／专精及模组选择在这一步完成。Data 可以静态建图、组装 Definition 并调用已有工厂绑定参数；具体技能、Effect、Rule 和 Hook 程序不由 Data 实现。
 
 Content 模块通过 ESM 导入，按规范化数据组合 Capability、Effect、Hook 和 Action，构造包含回调与初始化程序的完整 Definition。Core 根据 Definition 与本次 Initial 创建初始 State，再按明确的领域时点执行内容程序。Content 不自行推进模拟，也不在模块或闭包中保存本场运行事实；私有数据由其初始化程序返回，随实例保存在 Core State 中。内容不通过字符串动态装载技能或 Effect 程序。
 
@@ -20,11 +20,11 @@ Meta 可以选择配置或提供关卡输入。卫戍的普通／金色等政策
 
 标准效果成品位于 `core/effects/`，控制、保护、可选中性程序分别由 [control.ts](../../src/core/effects/control.ts)、[protection.ts](../../src/core/effects/protection.ts)、[visibility.ts](../../src/core/effects/visibility.ts) 提供；标准元素爆发的具体程序位于 `core/effects/elemental/`。通用附着实例、生命周期操作与 Effects 异构容器继续位于 `core/unit/effect/`。Content 复用标准效果，决定触发时机、对象、参数与专属附加业务；同一标准效果的识别、叠加、替换和伤判规则由公共实现维护。
 
-Elemental Capability 负责 EP 接收与提交、爆发触发和当前爆发引用，共同的类型、进度、EP 恢复与结束收尾保留在 `core/unit/capability/elemental/burst.ts`。Data 提供接收者类别及标准数值，Content 绑定 Core 的具体 Effect，构造元素到 Effect Definition 的映射。标准效果按实际使用逐项实现，完整候选范围见[标准效果库](effect.md#10-标准效果库与候选范围)；清单不作为一次性实现计划，也不提前建立空文件。
+Elemental Capability 负责 EP 接收与提交、爆发触发和当前爆发引用，共同的类型、进度、EP 恢复与结束收尾保留在 `core/unit/capability/elemental/burst.ts`。Data 按接收者类别选取 Core 的具体 Effect、绑定标准数值，构造元素到 Effect Definition 的映射；爆发执行程序由 Core 实现。标准效果按实际使用逐项实现，完整候选范围见[标准效果库](effect.md#10-标准效果库与候选范围)；清单不作为一次性实现计划，也不提前建立空文件。
 
 弩手的 action.ts 分别定义 melee 与 ranged，两者有各自的冷却和执行状态。unit.ts 按当前阻挡关系选择近战或远程，在已有主动作执行期间不并发启动另一主动作；选择和互斥属于内容策略。场景选择敌人和配置波次，不通过一个带敌人 ID 分支的中央工厂构造所有内容。确实共用的地面属性与能力装配由普通函数提供，具体攻击程序归各自内容。
 
-装置行为位于 `devices/`。`crate.ts`、`shooting-platform.ts` 接受类型化配置并构造 Unit Definition，通过 Unit 的 enter／leave Hook 处理改格和清理；实际共用的改格函数放在 Content 内。射击台在 Occupancy 的 SUPPORT Definition 中提供 onOccupantAdded／onOccupantRemoved 程序，在当前乘员的 blocker.rules 登记平台实例独占的共享二元 Rule，只禁止 GROUND 阻挡，AIR 仍由其余 Blocking 规则判断；配对解除时只清理该平台规则，不改写地块阻挡许可。Data 解析资源标识、数值和关卡实例，Content 据此选择具体装置实现并构造完整 Definition。内部批量登记交换用于验证结构与同步通知，不能证明游戏允许自由搬动平台。
+装置行为位于 `devices/`。`crate.ts`、`shooting-platform.ts` 接受类型化配置并构造 Unit Definition，通过 Unit 的 enter／leave Hook 处理改格和清理；实际共用的改格函数放在 Content 内。射击台在 Occupancy 的 SUPPORT Definition 中提供 onOccupantAdded／onOccupantRemoved 程序，在当前乘员的 blocker.rules 登记平台实例独占的共享二元 Rule，只禁止 GROUND 阻挡，AIR 仍由其余 Blocking 规则判断；配对解除时只清理该平台规则，不改写地块阻挡许可。Data 解析资源标识、数值和关卡实例，并调用这些现有工厂绑定静态配置。内部批量登记交换用于验证结构与同步通知，不能证明游戏允许自由搬动平台。
 
 干员的分支共享模块表达共同特性和默认行为；具体干员显式组合这些函数，接入自己的天赋、技能及模组变化。不建立模板继承、中央分支注册表或逐层转发工厂。只有出现实际共享规则时才建立对应模块。
 
@@ -57,7 +57,6 @@ Occupancy 初始化自行登记 enter／leave 程序，直接调用 SUPPORT Defi
 - 护盾充能周期持续推进；满层时不累积额外层数。
 - 二技能眩晕按实际结算目标独立抽样，随机状态在每次取样后立即传递。
 - 受击回复使用 Core 的伤害结算时点；盾挡伤保留本次受击 SP。
-- 练习场前摇、后摇、碰撞半径、弩箭弹速和路线布局是显式场景配置。
 
 这些约定放在具体内容／场景和研究记录中，Core 不增加泥岩或敌人 ID 兼容分支。若后续证据推翻某项语义，修改对应内容政策并补上可观察结果测试。
 

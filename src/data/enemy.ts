@@ -1,14 +1,9 @@
-import { Hooks } from "../core/hook.js";
 import {
     assertFiniteNumber,
     assertNonnegativeNumber,
     assertNonnegativeSafeInteger,
     assertPositiveNumber,
 } from "../core/common/assert.js";
-import type { Definitions } from "../core/unit/capability/catalog.js";
-import type { Definition as UnitDefinition } from "../core/unit/index.js";
-import type { EnemyMovementPrefab } from "./prefab.js";
-import { perSecondToPerTick } from "./tick.js";
 
 interface EnemyMovementValues {
     readonly maxHp: number | undefined;
@@ -23,16 +18,6 @@ export interface ArknightsResolvedEnemyMovement {
     readonly moveSpeed: number;
     readonly prefabKey: string;
     readonly notCountInTotal: boolean;
-}
-
-export type MovementDefinition = UnitDefinition &
-    Pick<Definitions, "vitality" | "locomotion" | "presence" | "route">;
-
-export interface ArknightsEnemyMovementContent {
-    readonly definition: MovementDefinition;
-    readonly notCountInTotal: boolean;
-    readonly delayToBornTicks: number;
-    readonly onlyDelayToBornOnTileStart: boolean;
 }
 
 function record(value: unknown, name: string): Record<string, unknown> {
@@ -210,58 +195,6 @@ export function resolveEnemyMovementValues(
         notCountInTotal:
             overridden.notCountInTotal ?? selected.notCountInTotal ?? base.notCountInTotal ?? false,
     };
-}
-
-export function createEnemyMovementContent(
-    values: ArknightsResolvedEnemyMovement,
-    profile: EnemyMovementPrefab,
-): ArknightsEnemyMovementContent {
-    const { id, maxHp, moveSpeed, prefabKey, notCountInTotal } = values;
-    if (prefabKey !== profile.prefabKey) {
-        throw new TypeError(`enemy movement prefab does not match ${prefabKey}`);
-    }
-
-    const definition = {
-        id,
-        hooks: Hooks.empty(),
-        presence: {},
-        route: { alwaysCheckCurrentPoint: profile.alwaysCheckCurrentPoint },
-        vitality: { defense: 0, resistance: 0, maxHp },
-        locomotion: {
-            speed: perSecondToPerTick(moveSpeed),
-            minSpeed: perSecondToPerTick(0.1),
-            steeringParameters: profile.steeringParameters,
-            halfBodyWidth: profile.halfBodyWidth,
-        },
-    } satisfies MovementDefinition;
-
-    return {
-        definition,
-        notCountInTotal,
-        delayToBornTicks: profile.delayToBornTicks,
-        onlyDelayToBornOnTileStart: profile.onlyDelayToBornOnTileStart,
-    };
-}
-
-export function parseEnemyMovementContent(
-    value: unknown,
-    level: number,
-    profile: EnemyMovementPrefab,
-    overwrittenData?: unknown,
-): ArknightsEnemyMovementContent {
-    return createEnemyMovementContent(
-        resolveEnemyMovementValues(value, level, overwrittenData),
-        profile,
-    );
-}
-
-export function parseEnemyMovementDefinition(
-    value: unknown,
-    level: number,
-    profile: EnemyMovementPrefab,
-    overwrittenData?: unknown,
-): MovementDefinition {
-    return parseEnemyMovementContent(value, level, profile, overwrittenData).definition;
 }
 
 export interface Configuration {

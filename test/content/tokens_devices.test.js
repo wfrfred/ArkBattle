@@ -1,73 +1,66 @@
-import { Hooks } from "../../dist/core/hook.js";
-import { deepsea as deepseaTerrain, mire as mireTerrain } from "../../dist/content/terrain/definition.js";
-import { tilesOf } from "../helpers/tiles.js";
-import { predefinedIdsForAlias, appear, remove } from "../../dist/core/battle/steps/predefined.js";
-import { at as occupancyAt } from "../../dist/core/battlefield/occupancy.js";
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
+import { parseLevelContent, parseLevelDefinition } from "../../dist/data/level.js";
+import { parsePredefinedDefinition, resolvePredefinedPrefabKey } from "../../dist/data/predefined.js";
+import { parsePredefinedPrefab } from "../../dist/data/prefab.js";
+import { resolvePredefinedSkillId, resolvePredefinedSkillBlackboard } from "../../dist/data/skill.js";
+import { resolveTerrainControllers } from "../../dist/data/terrain.js";
+import { predefinedIdsForAlias, appear } from "../../dist/core/battle/steps/predefined.js";
 import { initialize } from "../../dist/core/battle/index.js";
-import { apply as applyOverlays } from "../../dist/core/battlefield/navigation/overlay.js";
-import { loadMovementScenario } from "../../dist/data/movement-scenario.js";
-import { addCard, createRequest, preview } from "../../dist/core/battle/deployment/index.js";
-import { createCardDefinition } from "../helpers/deployable.js";
+import { at as occupancyAt } from "../../dist/core/battlefield/occupancy.js";
 
-const navigationMap = (state) => applyOverlays(state.baseline.WALK, state.overlays.WALK);
 const fixture = (name) => JSON.parse(readFileSync(
     new URL(`../fixtures/arknights/${name}.json`, import.meta.url), "utf8",
 ));
-const catalog = {
-    character: (key) => fixture(`character_${key}`),
-    skill: (key) => fixture(`skill_${key}`),
-    prefab: (key) => fixture(`prefab_${key}`),
-    enemy: (key) => fixture(key === "enemy_1000_gopro_2" ? "enemy_1000_gopro" : key),
-};
-const selection = (index) => ({ source: "predefines", collection: "tokenInsts", index });
-function scenario(rawLevel) {
-    return loadMovementScenario(rawLevel, {
-        actions: [{ waveIndex: 0, fragmentIndex: 0, actionIndex: 0 }],
-        branches: [],
-        predefines: rawLevel.predefines.tokenInsts.flatMap((instance, index) =>
-            ["trap_1105_accrate", "trap_098_mire", "trap_042_tidectrl"].includes(instance.inst.characterKey)
-                ? [selection(index)] : []),
-    }, catalog, 123);
+
+function predefined(raw, key) {
+    const content = parseLevelContent(raw);
+    const instance = content.predefines.tokenInsts.find(({ inst }) => inst.characterKey === key);
+    const character = fixture(`character_${key}`);
+    const skillId = resolvePredefinedSkillId(instance, character);
+    const skill = resolvePredefinedSkillBlackboard(instance, character, fixture(`skill_${skillId}`));
+    const profile = parsePredefinedPrefab(
+        fixture(`prefab_${resolvePredefinedPrefabKey(instance, character)}`),
+        skill.prefabKey === null ? undefined : fixture(`prefab_${skill.prefabKey}`),
+    );
+
+    return { instance, character, skill, profile };
 }
 
-test("a real hidden crate changes its tile while present and restores it on removal", () => {
-    const loaded = scenario(fixture("level_act1autochess_m02"));
-    let battle = initialize(loaded.spec);
-    const [id] = predefinedIdsForAlias(battle.definition.predefines, "trap_1105_accrate#001");
-    const tile = [12, 4];
-    const original = navigationMap(battle.battlefield.navigation).get(tile);
+test("a real hidden predefine converts its alias, world position and occupancy tile", () => {
+    const raw = fixture("level_act1autochess_m02");
+    const { instance, character, profile } = predefined(raw, "trap_1105_accrate");
+    const definition = parsePredefinedDefinition(0, instance, profile, character);
+    const level = parseLevelDefinition(raw, {
+        consumeTileBlackboard: (_context, entry) => ["isValidHand", "previewNotAlloed"].includes(entry.key),
+    });
+    let battle = initialize({
+        map: level.map, predefines: [definition], initialMechanisms: [],
+        schedule: { waves: [], branches: {} }, routeMoveMultiplier: 1, rngState: 123,
+    });
     assert.equal(battle.battlefield.units.size, 0);
+    const [id] = predefinedIdsForAlias(battle.definition.predefines, "trap_1105_accrate#001");
     battle = appear(battle, id);
-    const crate = [...battle.battlefield.units.values()][0];
+    const [crate] = battle.battlefield.units.values();
     assert.deepEqual(crate.position, [4, 12]);
-    assert.equal(navigationMap(battle.battlefield.navigation).get(tile).cost, 1000);
-    assert.equal(navigationMap(battle.battlefield.navigation).get(tile).passable, original.passable);
-    battle = remove(battle, id, "SCRIPT");
-    assert.equal(battle.battlefield.units.has(crate.id), false);
-    assert.deepEqual(navigationMap(battle.battlefield.navigation).get(tile), original);
+    assert.deepEqual(crate.occupancy.tile, [12, 4]);
+    assert.equal(occupancyAt(battle.battlefield, [12, 4]).occupant.id, crate.id);
 });
 
-test("real mire and tide controllers provide shared terrain parameters without becoming spatial units", () => {
+test("real controller and skill data supply shared terrain parameters", () => {
     for (const [name, key, terrain, parameters] of [
-        ["level_act2autochess_m02", "trap_098_mire", mireTerrain, {
+        ["level_act2autochess_m02", "trap_098_mire", "mire", {
             stackIntervalTicks: 30, massThreshold: 3, attackSpeedPerStack: -0.05,
             moveSpeedRatioPerStack: -0.05, maxStacks: 10,
         }],
-        ["level_act2autochess_m04", "trap_042_tidectrl", deepseaTerrain, {
+        ["level_act2autochess_m04", "trap_042_tidectrl", "deepsea", {
             damage: 40, attackSpeedModifier: -0.6, moveSpeedMultiplier: 0.6,
         }],
     ]) {
-        const loaded = scenario(fixture(name));
-        const battle = initialize(loaded.spec);
-        const [controller] = battle.mechanisms.values();
-        assert.equal(battle.mechanisms.size, 1);
-        assert.equal(controller.definition.id, key);
-        assert.equal([...battle.battlefield.units.values()].some((unit) => unit.definition.id === key), false);
-        const [tile] = tilesOf(loaded.spec.map, terrain);
-        assert.deepEqual(tile.definition.terrain.params, parameters);
+        const { profile, skill } = predefined(fixture(name), key);
+        const resolved = resolveTerrainControllers([{ profile, skill }]);
+        assert.deepEqual(resolved.mapOptions[terrain], parameters);
     }
 });
 
@@ -80,52 +73,9 @@ test("predefined skill blackboard overrides supply the effective terrain paramet
         { key: "Sea_Drown[Enemy].Attack_Speed", value: -0.25, valueStr: null },
         { key: "sea_drown[enemy].move_speed", value: 0.75, valueStr: null },
     ];
-    const loaded = scenario(raw);
-    const [tile] = tilesOf(loaded.spec.map, deepseaTerrain);
-    assert.deepEqual(tile.definition.terrain.params, {
+    const { profile, skill } = predefined(raw, "trap_042_tidectrl");
+    const resolved = resolveTerrainControllers([{ profile, skill }]);
+    assert.deepEqual(resolved.mapOptions.deepsea, {
         damage: 90, attackSpeedModifier: -0.25, moveSpeedMultiplier: 0.75,
     });
-});
-
-test("omitted content is reported while unsupported selected customization is rejected", () => {
-    const raw = fixture("level_act1autochess_m01");
-    const index = raw.predefines.tokenInsts.findIndex((instance) => instance.inst.characterKey === "trap_1105_accrate");
-    raw.predefines.tokenInsts[index].uniEquipIds = ["unsupported_equipment"];
-    const omitted = loadMovementScenario(raw, {
-        actions: [], branches: [], predefines: [],
-    }, catalog, 123);
-    assert.ok(omitted.omittedPredefines.includes(`predefines.tokenInsts[${index}]`));
-    assert.throws(() => loadMovementScenario(raw, {
-        actions: [], branches: [], predefines: [selection(index)],
-    }, catalog, 123), /unsupported predefined character customization/);
-});
-
-test("a real hidden platform supports ranged deployment and restores its tile on removal", () => {
-    const raw = fixture("level_act1autochess_m02");
-    const index = raw.predefines.tokenInsts.findIndex((instance) => instance.inst.characterKey === "trap_1106_achplat");
-    const instance = raw.predefines.tokenInsts[index];
-    const loaded = loadMovementScenario(raw, {
-        actions: [], branches: [], predefines: [selection(index)],
-    }, catalog, 123);
-    let battle = initialize(loaded.spec);
-    const [id] = predefinedIdsForAlias(battle.definition.predefines, instance.alias);
-    const tile = [instance.position.row, instance.position.col];
-    const original = navigationMap(battle.battlefield.navigation).get(tile);
-    battle = appear(battle, id);
-    const platform = [...battle.battlefield.units.values()][0];
-    const current = battle.battlefield.map.tiles.get(tile[0] * battle.battlefield.map.columns + tile[1]);
-    assert.equal(current.state.elevation, "HIGHLAND");
-    assert.equal(current.state.placement, "RANGED");
-    assert.equal(current.state.walkCost, 1000);
-    assert.equal(occupancyAt(battle.battlefield, tile).support.id, platform.id);
-    for (const [placement, expected] of [["RANGED", "ALLOWED"], ["MELEE", "REJECTED"]]) {
-        const added = addCard(battle, {
-            id: `platform-preview-${placement}`, hooks: Hooks.empty(),
-            occupancy: { slot: "OCCUPANT" }, deployable: { retreatRules: [] },
-            card: createCardDefinition({ placement }),
-        });
-        assert.equal(preview(added.state, createRequest(added.state, added.value, tile)).type, expected);
-    }
-    battle = remove(battle, id, "SCRIPT");
-    assert.deepEqual(navigationMap(battle.battlefield.navigation).get(tile), original);
 });

@@ -26,20 +26,19 @@ Meta / 网络 / UI / 渲染 / 存储 / 工具（外部项目）
             ArkBattle
        ├─ Core：战斗规则与不可变状态
        ├─ Content：具体战斗内容
-       ├─ Data：原始资料的静态转换
-       └─ Legacy：演示与外部格式适配
+       └─ Data：原始资料的静态转换
 ```
 
 Core 可以在服务器、浏览器和无界面测试中使用。时钟、网络、文件和渲染由外层负责。
 
 | 层次 | 输入 | 输出 | 不负责 |
 | --- | --- | --- | --- |
-| Data | 原始资料、本次静态配置 | 规范化的静态数据 | 具体游戏行为、运行时状态 |
+| Data | 原始资料、本次静态配置 | 规范化的静态数据、定义和初始地图 | 战斗机制程序、运行中的状态结算 |
 | Content | Data 的转换结果 | 完整 Definition，包括回调和初始化程序 | 执行模拟、保存运行时事实 |
 | Core 初始化 | Definition、Initial | 初始 State | 解释原始明日方舟数据 |
 | Core 推进 | 当前 State、命令 | 下一 State | 解释具体角色或技能内容 |
 
-Data 解析原表、Prefab 提取结果和关卡配置，完成校验、单位换算及静态配置选择。Content 据此构造完整 Definition；Core 统一创建运行状态，在领域时点调用其中的程序。内容私有数据由初始化程序产生，并随运行实例保存在 Core State 中。Core 消费伤害类别、几何、路线和调度等领域定义，不读取原表协议。当前尚未完成的分层迁移见[实现缺口](tactical-semantics.md)。
+Data 解析原表、Prefab 提取结果和关卡配置，完成校验、单位换算、静态配置及初始地图构造，也可以调用已有 Core／Content 工厂绑定参数。Definition、State 等类型名及工厂调用本身不决定层次；Data 不自行实现技能、天赋、Effect 启停、部署资格、叠层续期等战斗机制程序。Content 提供具体机制，Core 在领域时点执行；内容私有数据随运行实例保存在 Core State 中。Core 消费伤害类别、几何、路线和调度等领域定义，不读取原表协议。当前尚未完成的分层迁移见[实现缺口](tactical-semantics.md)。
 
 外部适配层转换 Core 的输入与输出格式。Core 的规则与状态归属由领域需求决定。
 
@@ -47,7 +46,7 @@ Data 解析原表、Prefab 提取结果和关卡配置，完成校验、单位�
 
 Meta 在独立仓库中管理回合、经济、商店、棋盘、共享池、装备、羁绊、选择和局内结算，通过依赖 ArkBattle 生成战斗输入并消费战斗结果。ArkBattle 不依赖 Meta。
 
-房间、连接、会话、计时器和展示对象由外层持有。`src/legacy/` 提供演示与外部格式适配，消费 Core 的输入、状态和输出；Core 不依赖 Legacy 或上层玩法。
+房间、连接、会话、计时器和展示对象由外层持有。调用者消费 Core 的输入、状态和输出，Core 不依赖上层玩法。
 
 ## 战斗状态的层级
 
@@ -116,7 +115,7 @@ Rule、Hook、Contribution 与 Blocker.layer 的公开工厂只接收业务输�
 | Targeting          | 候选、查询资格、优先级与确定性选择             | 读取当前事实；比较器纯函数，同分时保留候选登记顺序                                  |
 | Damage             | 公式、输出、有序接收、普通扣血及死亡       | 流程在 battle/damage；Offense／Vitality／Elemental 提供属性。通用结算登记存于 Unit.hooks，专属接收与规则留在资源能力。特殊生命保护尚待设计 |
 | Healing            | 计算、输出、有序接收、普通恢复与通知           | 流程在 battle/healing；Vitality 保存 HP／MaxHP 与专属接收 Hook，通用结算登记存于 Unit.hooks。普通 HP 治疗选择由 Targeting 检查 ACTIVE 的标准 healFree Effect，明确 Ref 的治疗检查当前生命周期、正 HP 和接收 Hook，不重新执行索敌限制 |
-| Elemental          | 元素值、损伤与治疗、标准爆发及动态恢复预算 | 状态保存四型 EP 与当前 Burst Effect Ref，Core 提供具体 Effect，Content 绑定 Data 提供的静态数值；元素损伤抗性和元素 HP 伤害抗性分别表达 |
+| Elemental          | 元素值、损伤与治疗、标准爆发及动态恢复预算 | 状态保存四型 EP 与当前 Burst Effect Ref，Core 提供具体 Effect，Data 选择实现并绑定静态数值；元素损伤抗性和元素 HP 伤害抗性分别表达 |
 | Effect             | 附着实例、私有状态、生效切换、覆写与结束       | Unit 持有实例与 expiration；时间归 Effect，依赖归 Lifetime；具体 Definition 登记 Hook 和 Contribution |
 | Lifetime           | 结束幂等、依赖传播与完成调度 | 静态描述符配对 Typed Ref；图保存 owner 与显式依赖；Pending 保存本次请求与阶段，owner 等全部依赖者完整 Finalize |
 | Projectile         | 独立空间执行实例、内容程序与终止请求／Finalize | 根实例保存身份、Definition、位置、ACTIVE／ENDING 与私有 state；运动、命中、采样和计时按内容组合，见 [Projectile 设计](projectile.md) |
@@ -145,7 +144,7 @@ Skill 的 Definition／create、单槽聚合、Activation 非空视图、查询�
 
 [空间消失](presence.md)保留身份、真实坐标及生命周期登记。Presence 通过所属能力的 Rule 限制新业务，并在同批发布后调用所属阻挡能力的完整释放操作、委托 Action 取消当前执行；各能力不反向读取 Presence。空间查询、普通索敌和 Combat 选择前的检查直接消费空间存在事实，锁定弹道仍可读取现存目标的真实位置。
 
-干员和敌人内容按需组合 Vitality 与 Elemental；Core 的基础 Unit 不隐含这些能力，也不提供干员或敌人 Archetype 层。免疫通过 Elemental Rule 表达，不通过删除能力表达。神经、侵蚀、灼燃和凋亡分别积累，Elemental 只保存当前标准 Burst Effect 的引用；该 Effect 以一份有效进度推进动态恢复预算、四型 EP 回填和周期输出。Core 用八个具体 Effect 实现各套标准规则；Data 提供静态数值，Content 绑定对应实现，形成按元素枚举查找的静态表。每个具体 Effect 负责自己的参数与执行。接收者类别不依赖当前阵营或 Core 注册表。EP Commit 同步安装 Burst，先派发 burstStarted，再执行 onInstall 的一次性爆发输出，随后 damaged，返回后才执行 Battle Applied；damaged／healed 保留各自资源通知职责。EP 损伤与 HP 元素伤害调用不同操作，元素治疗有自己的接收资格，HP 禁疗不隐式决定 EP 接收。少数多爆发特例由 Content 组合实际语义，详见 [Elemental 设计](elemental.md)。
+干员和敌人内容按需组合 Vitality 与 Elemental；Core 的基础 Unit 不隐含这些能力，也不提供干员或敌人 Archetype 层。免疫通过 Elemental Rule 表达，不通过删除能力表达。神经、侵蚀、灼燃和凋亡分别积累，Elemental 只保存当前标准 Burst Effect 的引用；该 Effect 以一份有效进度推进动态恢复预算、四型 EP 回填和周期输出。Core 用八个具体 Effect 实现各套标准规则；Data 选择对应实现并绑定静态数值，形成按元素枚举查找的静态表。每个具体 Effect 负责自己的参数与执行。接收者类别不依赖当前阵营或 Core 注册表。EP Commit 同步安装 Burst，先派发 burstStarted，再执行 onInstall 的一次性爆发输出，随后 damaged，返回后才执行 Battle Applied；damaged／healed 保留各自资源通知职责。EP 损伤与 HP 元素伤害调用不同操作，元素治疗有自己的接收资格，HP 禁疗不隐式决定 EP 接收。少数多爆发特例由 Content 组合实际语义，详见 [Elemental 设计](elemental.md)。
 
 ## 数值、贡献与领域响应
 

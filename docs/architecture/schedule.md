@@ -283,7 +283,7 @@ notCountInTotal 为 true 时不登记两个等待集合，即使 Unit 仍在场�
 
 Schedule 提供调度进度与实际等待事实，Route 到达出口后请求 Unit 完整移除，通用生命周期通过已登记的 leaveHook 反馈等待释放。Unit 不持有 Schedule 的等待政策，Battle 也不重复解释路线出口。
 
-Schedule 只提供调度进度与等待事实，不处理统计、蓝门扣血或胜负。State 不持有 Total／Finished／Killed，也不产生 Battle.result。演示或外部规则可以读取 isCompleted 等事实决定何时结束其运行。
+Schedule 只提供调度进度与等待事实，不处理统计、蓝门扣血或胜负。State 不持有 Total／Finished／Killed，也不产生 Battle.result。外部规则读取 isCompleted 等事实，决定何时结束其运行。
 
 ## 回归语义
 

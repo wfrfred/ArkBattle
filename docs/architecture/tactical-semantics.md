@@ -33,11 +33,9 @@ healFree 只限制治疗目标选择，明确 Ref 的 Healing 不重新检查选
 | Projectile | 已发射后的独立执行实例；Definition 解释私有 state，按内容保存目标、样本、命中历史和运动进度，并决定命中和终止策略。 |
 | Deployment / Card | Deployment 管费用与部署操作；Card 管跨实例的私有 state、供给、费用惩罚和冷却；Deployable 管场上部署属性。 |
 | Schedule / Predefined | 分别管理出兵／关卡动作进度，以及预置定义与运行实例的绑定；开场 Unit 使用 initiallyPresent:true 的预置项，出现时直接复用 Unit 初始化与登记。 |
-| Data | 将原始资料与本次静态配置转换为规范化数据，不实现内容程序或保存运行时事实。 |
+| Data | 将原始资料与本次静态配置转换为规范化数据，可以静态建图、组装定义并调用已有工厂；不自行实现战斗机制程序或结算运行中的状态。 |
 | Content | 根据规范化数据构造完整 Definition，提供具体行为及初始化程序；运行事实由 Core State 保存，程序由 Core 调用。 |
 | Meta / 模式规则 | 通过 Battle 输入、当前状态和事件接入外层；经营、回合及完整模式结果反馈尚未接通。 |
-
-当前演示通过 [src/legacy/tactical-demo.ts](../../src/legacy/tactical-demo.ts) 调用 Core 的 initialize／step，并将状态和事件转换为展示数据。该适配层不提供完整经营、联防或领袖战规则。
 
 ## 逐项目标与缺口
 
@@ -77,7 +75,7 @@ healFree 只限制治疗目标选择，明确 Ref 的 Healing 不重新检查选
 | SPACE-03 地穴与持续地形 | 地面进入地穴触发坠落；毒雾、沼泽、深水等按各自规则结算。[地穴](https://prts.wiki/w/作战机制#地穴) | 地穴、活性源石、烟雾、沼泽、深水已有 Data 装配、Mechanism 接触与 Effect／离场执行链，见 [Terrain 设计](terrain.md)。其他地形及完整原生变体尚未覆盖。 | 基础链路已实现；更多内容／P1 |
 | MOVE-01 路线与普通运动 | Plan、Context 与共享出生时基组织 MOVE、WAIT、GOTO、空间指令及持续 TRACE；计时与控制权分开，Main 终点独立请求完整离场。见 [Navigation、Route 与 Locomotion](navigation.md)。 | Route Initial、稳定 Context 身份、显式操作与直接 Navigation／Locomotion 已接入；恐惧、诱导与追踪来源等具体内容尚未接入。 | 基础已实现；特殊来源／P1 |
 | MOVE-02 位移与术语移动 | 推拉、浮空、传送和特殊撤退再部署分别表达；重建与继承规则由内容决定。[术语释义](https://prts.wiki/w/术语释义) | 路线传送可用；完整推拉及术语移动未接入。术语移动需要完整退出与重新部署业务。 | 部分实现／P1 |
-| PROJECTILE-01 飞行与命中 | 追踪、定时、沿途碰撞、附着、套索及到期处理按内容表达；已发射弹道不自动随 Action 结束。[弹道](https://prts.wiki/w/抛射物) | [执行内核](projectile.md) 已实现独立泛型实例、异构集合、position／state 更新边界、三个回调及 Lifetime 请求／Finalize；追踪弩箭与延迟停止演示已接入。沿途碰撞、附着、套索和到达后的周期业务等具体内容尚未接入。 | 基础已实现；特殊内容／P1 |
+| PROJECTILE-01 飞行与命中 | 追踪、定时、沿途碰撞、附着、套索及到期处理按内容表达；已发射弹道不自动随 Action 结束。[弹道](https://prts.wiki/w/抛射物) | [执行内核](projectile.md) 已实现独立泛型实例、异构集合、position／state 更新边界、三个回调及 Lifetime 请求／Finalize；弩手内容提供追踪弩箭。沿途碰撞、附着、套索和到达后的周期业务等具体内容尚未接入。 | 基础已实现；特殊内容／P1 |
 | DEPLOY-02 关卡费用上限 | 实际部署费用按独立费用上限裁定，不与当前 DP 账户上限混为一个值。[数值范围](https://prts.wiki/w/数值范围) | rawCost 与运行费用分阶段取整，按 costCeiling 截断；多来源修正仍为明确项目组合，完整原生来源写入与动态同步未闭合。 | 基础已实现；来源公式待核实／P2 |
 | DEPLOY-03 部署方向 | 手动部署输入提供本次朝向，决定实例的方向相关范围与业务。[部署操作](https://prts.wiki/w/新人入门) | DeployRequest.direction 经 Occupancy 初始输入写入本次实例；调用者通过 hasDirection 取得当前朝向后生成几何范围，基础 Unit 与无朝向装置不伪造方向。 | 基础已实现；更多内容按需接入 |
 | DEPLOY-04 手动撤退资格 | 手动撤退按可撤退性裁定，内容强退与实际离场使用各自入口。[异常效果](https://prts.wiki/w/异常效果) | retreat 使用已包含 Occupancy 契约的 Deployable Typed Ref，检查 PRESENT 与当前 Rule，在请求离场前直接结算退款、Card 费用阶段与库存恢复；被动死亡结算只响应确认死亡。控制者身份和网络授权留在外层，具体限制来源仍需接入。 | 通用入口已实现；来源待接入／P2 |
@@ -85,9 +83,9 @@ healFree 只限制治疗目标选择，明确 Ref 的 Healing 不重新检查选
 | DEPLOY-06 Card 多实例回收 | 每个有效回收保留供给事实，来源明确选择冷却与补回方式。[待部署区](https://prts.wiki/w/待部署区) | 使用冷却与串行 recovery 分开；每次 enqueueRecovery 累加份数，下一段读取当前有效时长。追加保留本段是项目通用操作契约，特定原生 Reset 路径仍未闭合。 | 通用恢复已实现；来源特化待接入／P2 |
 | DEPLOY-07 场下属性与冷却 | 跨部署资源由 Card 保存，当前周期与未来时长分别操作。[待部署区](https://prts.wiki/w/待部署区) | Card 私有 Definition、Typed Ref、暂停及当前段操作已接入；负 DP 每次推进自然回复乘 0.5、跨零保留进度，主动加费不减半。特殊暂停组合及更多场下资源仍待具体内容。 | 通用能力已实现；特殊内容待接入／P2 |
 | SCHEDULE-01 波次与预置动作 | 主 Wave／Fragment 接收预处理 Spawn，Branch Phase 每次按权重选组；波次等待与最终等待分开，离场同步解除。见 [Schedule](schedule.md)。 | 已接入同步出生、随机与索引先发布、Enter 重入及超时政策；Predefined 使用独立领域操作。统计、STORY 与其他调度动作不由普通 Spawn 推断。 | 已实现普通 Spawn／P1 |
-| RESULT-01 漏怪与结束 | Core.step 产生完整一 Tick 状态，调用者依据 Schedule 与其他事实决定何时停止；蓝门扣血、Finished、Killed 分别建模。见 [职责约定](schedule.md#领域边界)。 | Core 不保存终局 Result 或自动冻结；演示调用层自行检查调度状态与时间预算。全局统计与完整玩法胜负尚未接入。 | 部分实现／P0 |
+| RESULT-01 漏怪与结束 | Core.step 产生完整一 Tick 状态，调用者依据 Schedule 与其他事实决定何时停止；蓝门扣血、Finished、Killed 分别建模。见 [职责约定](schedule.md#领域边界)。 | Core 不保存终局 Result 或自动冻结；外层依据返回状态裁定终局。全局统计与完整玩法胜负尚未接入。 | 部分实现／P0 |
 | CONTENT-01 干员与敌人接入 | 主模式等级、精英、潜能、信赖、模组与具体天赋／技能共同生成行为。[玫兰莎](https://prts.wiki/w/玫兰莎)、[泥岩](https://prts.wiki/w/泥岩) | Data 配置和四个代表内容已跑通；不能推定所有天赋、技能、敌人及分支模板已实现。 | 部分实现／P1 |
-| DATA-01 静态转换与内容构造 | [项目分层](ARCHITECTURE.md#项目分层)：Data 输出规范化静态数据，Content 输出包含程序的完整 Definition，Core 统一初始化与推进。 | Data 中仍有技能／Effect 程序、装置部署 Rule 与默认政策，以及标准爆发、地形和演示单位的定义装配。modifier 与 buff-stacking 的运行算法仅被测试消费；场景准备也尚未移出 Data。 | 分层迁移待完成／P1 |
+| DATA-01 静态转换与机制程序 | [项目分层](ARCHITECTURE.md#项目分层)：Data 解析静态资料、构造初始地图及绑定已有定义；具体战斗机制程序由 Content 或所属 Core 领域实现。 | Data 中的装置部署 Rule 尚待迁移；modifier 与 buff-stacking 的运行算法仅被测试消费。静态数值、默认配置、Definition 组装和已有工厂调用不属于这些缺口。 | 机制程序迁移待完成／P1 |
 | MODE-01 卫戍接入与归属 | 模式机制处理倒下、原地保留、自动部署、共享额度和本场收益；阵营、地图区域、控制方、敌人来源分别保存。[卫戍帮助](https://prts.wiki/w/卫戍协议/帮助) | Mechanism 有退场接入点，但实际模式内容未接齐；SIDE_A / SIDE_B 不是玩家或结算来源 ID。 | 部分实现／P1 |
 | MODE-02 Meta 与 Tactical | 经营／回合规则通过战斗输入与结果接入；联防与领袖战使用各自规则。[卫戍帮助](https://prts.wiki/w/卫戍协议/帮助) | 经营／回合、联防、领袖战等外层模式尚未与当前 Core 的输入和结果形成完整调用链。 | 未接入／P1 |
 

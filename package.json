@@ -6,8 +6,6 @@
     "license": "GPL-3.0-or-later",
     "type": "module",
     "scripts": {
-        "predemo": "npm run build",
-        "demo": "node scripts/demo.mjs",
         "build": "tsc -p tsconfig.json",
         "pretest": "npm run build",
         "test": "node --test --test-concurrency=4 test/common/*.test.js test/sim/*.test.js test/content/*.test.js",

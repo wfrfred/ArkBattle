@@ -1,7 +1,6 @@
 import { assertNonnegativeSafeInteger } from "../core/common/assert.js";
 import { createRng, type Rng, type Seed } from "../core/common/rng.js";
 import type { Branch, Definition, Entry, Spawn, Wait } from "../core/battle/schedule/index.js";
-import type { ArknightsEnemyMovementContent } from "./enemy.js";
 import type {
     ArknightsEnemyDbRef,
     ArknightsLevelDefinition,
@@ -21,9 +20,11 @@ export interface ArknightsScheduleSelection {
     readonly branches: readonly string[];
 }
 
-export type ArknightsEnemyResolver = (
-    reference: ArknightsEnemyDbRef,
-) => ArknightsEnemyMovementContent;
+export type ArknightsEnemyResolver = (reference: ArknightsEnemyDbRef) => {
+    readonly definition: Spawn["definition"];
+    readonly notCountInTotal: boolean;
+    readonly delayToBornTicks: number;
+};
 
 export interface ArknightsScheduleCompilation {
     readonly schedule: Definition;
@@ -45,11 +46,11 @@ function validateAction(action: ArknightsSpawnAction): void {
         action.isUnharmfulAndAlwaysCountAsKilled
     ) {
         throw new RangeError(
-            "movement schedules do not support hidden groups, random packs, non-ALWAYS random policies or special kill accounting",
+            "spawn schedules do not support hidden groups, random packs, non-ALWAYS random policies or special kill accounting",
         );
     }
     if (action.randomSpawnGroupKey === null && action.weight !== 0) {
-        throw new RangeError("weighted movement spawns require a random group");
+        throw new RangeError("weighted spawns require a random group");
     }
 }
 
@@ -67,7 +68,7 @@ function resolveActionSpawn(
 
     const content = resolveEnemy(reference);
     if (content.delayToBornTicks !== 0) {
-        throw new RangeError("movement schedules require synchronous enemy births");
+        throw new RangeError("spawn schedules require synchronous enemy births");
     }
 
     return {

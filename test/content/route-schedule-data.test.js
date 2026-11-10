@@ -5,8 +5,7 @@ import { Hooks } from "../../dist/core/hook.js";
 import { parseLevelDefinition } from "../../dist/data/level.js";
 import { parseRouteDefinition } from "../../dist/data/route.js";
 import { compileSpawnSchedule } from "../../dist/data/schedule.js";
-import { createEnemyMovementContent, resolveEnemyMovementValues } from "../../dist/data/enemy.js";
-import { parseEnemyMovementPrefab } from "../../dist/data/prefab.js";
+import { resolveEnemyMovementValues } from "../../dist/data/enemy.js";
 import { initialize, step } from "../../dist/core/battle/runtime.js";
 import { isCompleted, triggerBranch } from "../../dist/core/battle/schedule/index.js";
 import { remove } from "../../dist/core/battle/unit.js";
@@ -37,7 +36,7 @@ function source() {
         },
         resolve: ({ id }) => ({
             definition: definitions.get(id), delayToBornTicks: 0,
-            onlyDelayToBornOnTileStart: false, notCountInTotal: false,
+            notCountInTotal: false,
         }),
         definitions,
         actions,
@@ -100,8 +99,8 @@ test("branch groups retain whole candidates for runtime choice and preserve entr
 test("Action and Enemy notCountInTotal release scheduling from still-present units", () => {
     const raw = fixture("level_act1autochess_01");
     const wave = { ...raw.waves[0], preDelay: 0, postDelay: 0, maxTimeWaitingForNextWave: -1 };
-    const action = { ...wave.fragments[0].actions[0], count: 1, preDelay: 0, interval: 0 };
-    const enemy = "enemy_9012_acloon";
+    const action = { ...wave.fragments[0].actions[0], key: "enemy_1000_gopro", count: 1, preDelay: 0, interval: 0 };
+    const enemy = "enemy_1003_ncbow";
     raw.waves = [
         { ...wave, fragments: [{ preDelay: 0, actions: [
             { ...action, notCountInTotal: true },
@@ -113,16 +112,24 @@ test("Action and Enemy notCountInTotal release scheduling from still-present uni
     raw.branches = { uncounted: { phases: [{ preDelay: 0, actions: [
         { ...action, key: enemy, forceBlockWaveInBranch: true },
     ] }] } };
-    raw.enemyDbRefs.find(({ id }) => id === enemy).overwrittenData = {
-        attributes: {}, notCountInTotal: { m_defined: true, m_value: true },
-    };
+    raw.enemyDbRefs = [
+        { id: action.key, useDb: true, level: 0, overwrittenData: null },
+        { id: enemy, useDb: true, level: 0, overwrittenData: {
+            attributes: {}, notCountInTotal: { m_defined: true, m_value: true },
+        } },
+    ];
+    const records = fixture("main-mode-units").enemies;
     const level = parseLevelDefinition(raw);
+    const definition = {
+        id: "scheduled-unit", hooks: Hooks.empty(),
+        route: { alwaysCheckCurrentPoint: true },
+    };
     const compiled = compileSpawnSchedule(level, {
         actions: [0, 1].map((actionIndex) => ({ waveIndex: 0, fragmentIndex: 0, actionIndex })),
         branches: ["uncounted"],
     }, (reference) => {
-        const values = resolveEnemyMovementValues(fixture(reference.id), reference.level, reference.overwrittenData);
-        return createEnemyMovementContent(values, parseEnemyMovementPrefab(fixture(`prefab_${values.prefabKey}`)));
+        const values = resolveEnemyMovementValues(records.find(({ Key }) => Key === reference.id), reference.level, reference.overwrittenData);
+        return { definition, notCountInTotal: values.notCountInTotal, delayToBornTicks: 0 };
     }, 7);
     assert.deepEqual(compiled.schedule.waves[0].fragments[0].spawns.map(({ wait }) => wait), ["NONE", "WAVE"]);
     let state = step(initialize({

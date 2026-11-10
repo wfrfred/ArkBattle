@@ -12,7 +12,6 @@ import * as elemental from "../../dist/core/unit/capability/elemental/index.js";
 import * as presence from "../../dist/core/unit/capability/presence/index.js";
 import { update } from "../../dist/core/battle/unit.js";
 import { create as modifier } from "../../dist/core/unit/contribution/attribute.js";
-import { TacticalDemoPresentation } from "../../dist/legacy/tactical-demo-presentation.js";
 import { elementHealing } from "../../dist/core/battle/targeting/index.js";
 import { hasTargetable } from "../../dist/core/unit/capability/targetable/capability.js";
 
@@ -180,6 +179,4 @@ test("EP-01/03: losses stay per element, healing gives every bar the full amount
     assert.equal(maximum, 2000);
     assert.equal(elemental.resolveDamageRatio(state, current), 0.5);
     assert.deepEqual(recipients(state).map(reference => reference.id), [0]);
-    const view = new TacticalDemoPresentation({ lookup() {} });
-    assert.equal(view.elements(state)[0][2], 0.5);
 });

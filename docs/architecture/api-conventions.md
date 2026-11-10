@@ -98,7 +98,7 @@ Targetable Restriction 按 Contribution 的登记与互斥规则组合；`allows
 
 1. 按领域组织目录，按职责组织文件。query.ts 只负责只读查询，operations.ts 负责完整业务结算，局部状态变换归所属数据或 Capability 模块，Tick 调度归 Runtime。内部辅助步骤保持业务内聚，文件长度与函数名本身不决定拆分。
 2. 一个领域需要从多个实现文件提供公共 API 时，以 index.ts 显式列出公开的值与类型，不使用 export *。只有一个清晰入口的小领域不强制增加 index；公共入口直接重导出现有实现，不增加运行时包装。
-3. Content、Legacy 等上层消费侧默认从领域 index 导入，领域内部直接导入所属实现。Core 内部可以直接依赖明确的查询、模型或操作文件，以控制实际依赖方向；这是正常的依赖管理方式，不要求全部导入经过 index。不得为了 barrel 搬动 Unit／Projectile 的模型与完整 Battle 操作边界。
+3. Content、Data 等上层消费侧默认从领域 index 导入，领域内部直接导入所属实现。Core 内部可以直接依赖明确的查询、模型或操作文件，以控制实际依赖方向；这是正常的依赖管理方式，不要求全部导入经过 index。不得为了 barrel 搬动 Unit／Projectile 的模型与完整 Battle 操作边界。
 4. 调用权限由业务契约决定，不由是否出现在 index 决定。公共入口可以包含供 Core 协作或调度的接口；例如 Action.advance 仍只由调度器主动调用，Content 不能借公共导出主动推进。
 5. 实现文件的 export 可以用于领域内部共享，不自动构成公共 API。内部模型、容器与配对读写协议按实际需要深导；不为覆盖全部内部导出扩大 index，也不为公共入口复制另一套类型。
 6. 文件按实际用途拆分，避免只缩短路径的转发层和重复类型；公共导出不改变领域职责、调用权限或执行语义。
@@ -209,7 +209,7 @@ Identity 先用 `typeof identity extends keyof T` 确认协议键存在，因此
 
 Core 直接公开完整实体，Action／Execution、Skill／Activation、Effect、Projectile、Mechanism、Tile／Terrain 的默认私有参数均为 object。普通查询返回完整的默认类型，具体字段形状只由已知 Definition／精确 Ref 证明；实际诊断 Snapshot 与 Presentation 保留各自用途，不作为另一套运行模型。
 
-Core 的异构存储、统一执行边界、内部完整读取、创建组合边界及接纳不同私有类型的泛型上界可使用 any。ESLint 默认启用 no-explicit-any，仅在 src/core 下放宽；Content、Data、Legacy 保持该规则，使用具体类型或保留私有参数的泛型。ref／get 等泛型函数在上界擦除后仍返回原 T，普通公开返回使用默认 object。字段 setter 以 Ref<T> 绑定对象，NoInfer<T[字段]> 只约束已经证明的字段载荷；创建操作由 Definition 配对泛型，不为这一类型边界增加运行时校验。
+Core 的异构存储、统一执行边界、内部完整读取、创建组合边界及接纳不同私有类型的泛型上界可使用 any。ESLint 默认启用 no-explicit-any，仅在 src/core 下放宽；Content、Data 保持该规则，使用具体类型或保留私有参数的泛型。ref／get 等泛型函数在上界擦除后仍返回原 T，普通公开返回使用默认 object。字段 setter 以 Ref<T> 绑定对象，NoInfer<T[字段]> 只约束已经证明的字段载荷；创建操作由 Definition 配对泛型，不为这一类型边界增加运行时校验。
 
 all 绑定创建查询时的不可变状态版本，返回 Unit 对象，保留逻辑登记顺序，不隐含生命周期、HP、空间存在、阵营或 Targetable 条件。get 只解析传入版本中的身份，LEAVING 对象在注销前仍可读取；对象已移除则返回 undefined。更新已有单位不改变登记顺序，删除后重新登记排在末尾；需要 ID 或其他优先级的业务显式排序。
 

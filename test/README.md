@@ -57,6 +57,6 @@
 
 伤害／治疗定向套件从文档清单编写，直接使用真实构造、Hook 登记、资源操作和 Lifetime。helper 只组合 Calculate／Apply，不承担能力装配、状态注入或另一套领域程序。
 
-综合套件只验证其独立结果：Battle 的 Schedule／Route 行为，Targeting 的选择与几何，Projectile 的飞行与命中，Mechanism 的存续，以及真实 Data／Content 和 UI 转换。它们涉及已审查领域的重复覆盖同样需要删除，不整文件豁免。未完整审查领域的独立业务仍按现有范围保留，公共协议不因换一个消费者再次展开，修复问题也不自动新增回归套件。
+综合套件只验证其独立结果：Battle 的 Schedule／Route 行为，Targeting 的选择与几何，Projectile 的飞行与命中，Mechanism 的存续，以及真实 Data／Content。它们涉及已审查领域的重复覆盖同样需要删除，不整文件豁免。未完整审查领域的独立业务仍按现有范围保留，公共协议不因换一个消费者再次展开，修复问题也不自动新增回归套件。
 
 Hitbox 接入归 Targeting 的一个代表场景，真实锁定弹道单独保障身份命中。具体归属及删减边界见[几何与空间验收](../docs/architecture/verification.md#集中归属与收敛完成条件)。

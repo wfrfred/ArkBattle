@@ -146,7 +146,7 @@ export function sides(...sides: readonly Side[]): Rule;
 
 它以 `blocking/sides` 为 ID，仅检查目标当前具有 Allegiance 且其 `allegiance.side` 在指定集合内，不要求阻挡者具有 Allegiance。多个阵营可在同一规则内声明，例如 `sides("ALLY", "NEUTRAL")`。`setBlockerRule(sides(...))` 生成替换策略的 Change，Unit.update 发布后同步维护自身旧关系。未选择该规则时，没有隐含的阵营限制。
 
-Blocker Definition 的必填 `rules` 在初始化时进入当前 State，之后只读取当前 `blocker.rules`。普通干员和 Legacy 干员适配显式声明：
+Blocker Definition 的必填 `rules` 在初始化时进入当前 State，之后只读取当前 `blocker.rules`。普通干员内容显式声明：
 
 ```typescript
 blocker: {
