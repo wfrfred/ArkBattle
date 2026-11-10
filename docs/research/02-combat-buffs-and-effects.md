@@ -10,6 +10,8 @@
 
 [持久化客户端摘录](evidence/client-excerpts-20261007/records.json)记录 manifest、二进制文件 SHA-256、部分方法索引及维什戴尔模板字段。下面另外保留属性、减伤、生命流失的短字段摘录，相关批次的输入与复现范围见[归档说明](evidence/client-excerpts-20261007/README.md)。方法索引只对所记录二进制成立。
 
+2026-11-10 对 Attribute descriptor、Buff 合并与覆盖组的有限补核使用[独立输入指纹与当前索引](evidence/unit-audit-20261110/buff-attributes/README.md)，机制结论集中在 [Case A 第 8 节](cases/01-buff-installation-and-parent-scope.md#8-2026-11-10-补核属性-descriptor合并与覆盖组)。该批没有运行客户端或补齐每个模板的实际启用链。
+
 证据强度分为：
 
 - **A：原生实现直接确认。** 字段、枚举、实际调用顺序、计算和条件分支；没有展开对应 Lua/hotfix 分支，也没有据此声称已复现全部实战。
@@ -37,6 +39,8 @@
 ```
 
 最终还应用该属性自身的范围限制。原始 `FINAL_SCALER.value` 的规范化由 `SharedUtils.ProcessFinalScaler` 参与处理，不能认为原始字段始终已经是可以直接相乘的数值。`loadFromBlackboard` 也说明数值可能来自运行参数，而非模板常量。
+
+**A，2026-11-10 补核。** `_LoadAttributesModifier`（66234）在黑板查找失败时回退 descriptor.value，显式 0 不回退；先将 operand 乘层数，再处理来源采样与负 FINAL_SCALER 的 `1+x` 修正。source 无效时跳过需要来源的 descriptor；source 分支的四种写槽及指令锚点见 [Case A §8.1](cases/01-buff-installation-and-parent-scope.md#81-原始属性-operand-的解释)。BAT／移速的项目 Tick 转换另属原生单位加项目单位政策，不是原生存在同名转换函数。
 
 **B。** 实际 `[uc]skills` 的 `bldsk_s_2`（对象 5978367411090055933）有 `attributeType=ATK(1), formulaItem=MULTIPLIER(1), loadFromBlackboard=true`。这是华法琳二技能的属性百分比贡献，不是最终 HP 伤害倍率。
 
@@ -168,7 +172,11 @@ pure     = power
 
 `BuffData.OverrideType` 的原始值为 `DEFAULT=0 / STACK=1 / UNIQUE=2 / EXTEND=3 / EXTEND_TIME=4`。它不是一个统一“取最大倍率”的枚举。实际模板还包含达到层数上限是否刷新时限、到期是否清空全部层数等条件。
 
-需要区分：哪些实例存在、哪些实例当前生效、实例怎样延长／叠层、有效动作如何排序。事件优先级不决定覆盖胜者；获得顺序也不能代替内容的覆盖优先级。各 override 分支的完整行为尚未逐一逆向，不在此补写猜测。
+需要区分：哪些实例存在、哪些实例当前生效、实例怎样延长／叠层、有效动作如何排序。事件优先级不决定覆盖胜者；获得顺序也不能代替内容的覆盖优先级。
+
+**A，2026-11-10 补核。** 普通 `_DoAddInternal`（66291）的五种分支、实际／有效 cap、达上限刷新、有效层增长时重载 retained source，以及 EXTEND／EXTEND_TIME 的时长消费已核实，详见 [Case A §8.2](cases/01-buff-installation-and-parent-scope.md#82-普通-buff-合并分支)。两种延长读取 incoming.lifeTime；不能无条件解释成任意现存实例的剩余时间相加。EXTEND 的 `takeSnapshotWhenExtend` 更新运行属性快照、随后复制 incoming.blackboard，不直接重载属性 modifier；Data planner 的 `takeSnapshot → reloadModifiers` 绑定不能由此获得原生保证。
+
+普通覆盖队列还直接证明 priority 降序、同级 UID 升序、未实际生效者可占位、移除后候补补位，不再仅凭 UNIQUE 推导整体组政策。该竞争形状与 Core 持久 `enabled` setter、group.id 的接口映射仍须区分，见 [Case A §8.3](cases/01-buff-installation-and-parent-scope.md#83-覆盖组选胜与候补)。当前配置能区分这些模式，但本批未逐个闭合实际启动链；独立 Data Buff planner 的支持范围仍未决定，不能以算法或孤立测试代替产品范围确认。
 
 **A+B。** 派生关系有独立于 Unit 的生命周期。`Buff.AddDerivedBuffSafe`（64560）检查父 Buff 是否已结束；`finishDerivedBuffIfParentFinish` 只控制绑定时父已结束的分支，不保存为未来传播开关。成功绑定后，父 `MarkFinish`（64548）经 `ClearDerivedBuffsIfNot` 同步标记子结束并撤销贡献；ON_FINISH、容器移除与回收另有完成路径。详细区别见 [Case A](cases/01-buff-installation-and-parent-scope.md)。
 
@@ -249,9 +257,9 @@ wisdel_t_1[projectile_shock].ON_START
 
 ## 尚未核对的内容
 
-- 各 overrideType、动态 priority、失效／启用及层数时限的完整状态机，尤其相同来源与不同来源如何建立覆盖组。
+- 普通合并、层数 cap 与覆盖选胜已由 Case A §8 补齐；来源分组、特化／热更新、所有 OnBuffExtend 响应及完整内容启用链仍未穷尽。Data planner 的支持范围与 Core 分组接口映射不是原生调查直接决定的政策。
 - MaxHP 与法抗以外属性的最终限制、具体内容如何覆写范围，以及特殊强制 HP 接收政策。
-- Case A 的 S3 鼓舞和 Case B 的两种 ATK 策略以外，各操作数与内容模式的采样／刷新契约。
+- 原始 descriptor 的黑板、层数、source 转槽已补核；Case A 的 S3 鼓舞和 Case B 的两种 ATK 策略以外，各内容的实际采样／刷新时点仍须分别确认。
 - Healing／持续回复／元素治疗的全部事件、取消与统计归因路径。
 - Case C 的分担 skip 入口与泥岩取消后继以外，其他 HP／EP 接收入口、死亡移除与后继资格。
 - 父 Buff／辅助能力／执行记录／Unit 的结束传播及通知顺序，延迟回收与实际退场的区别。

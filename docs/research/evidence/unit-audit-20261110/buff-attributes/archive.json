@@ -1,0 +1,707 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [],
+    "collectionDateSource": "not recorded",
+    "organizedOn": "2026-11-10",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+        "records": [
+          "native/metadata.json#/provenance/client/dll",
+          "native/native.json#/provenance/client/dll"
+        ],
+        "bytes": 223112680
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        "records": [
+          "native/metadata.json#/provenance/client/metadata",
+          "native/native.json#/provenance/client/metadata"
+        ],
+        "bytes": 46669332
+      }
+    },
+    "sourceRecords": [
+      "configurations.json",
+      "native/metadata.json",
+      "native/native.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12895,
+        "sha256": "9c5b246859318caaec4aab5275ef0d2d49fce5d612c6b4e569973a9941ba621a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "configurations.json",
+        "kind": "record",
+        "bytes": 34759,
+        "sha256": "eb2927467ac94457118ef3c4c796c86d472e54d3a0a5ea4903a005753a894596"
+      },
+      {
+        "path": "configurations.py",
+        "kind": "historical-script",
+        "bytes": 4590,
+        "sha256": "460222cf5ece269b3b8358b1c9034fae2b5d328bbe84d52fe8ebc34fb939ce46"
+      },
+      {
+        "path": "configurations.py.lock",
+        "kind": "artifact",
+        "bytes": 52,
+        "sha256": "87b323d3e2572bcaa81cbb098e0e97bf27591738562d5f21247237a29a807148"
+      },
+      {
+        "path": "extract.py",
+        "kind": "historical-script",
+        "bytes": 5510,
+        "sha256": "59b523f1a81579918e1605c0921140ab7bd82023aaebf1f3ef2432fdc0bebc2c"
+      },
+      {
+        "path": "extract.py.lock",
+        "kind": "artifact",
+        "bytes": 3739,
+        "sha256": "1ed9e3b399cf0743106d2124514970f3a3b5db6d9f1192fba528019ccbefdf04"
+      },
+      {
+        "path": "native/Add-66283.asm",
+        "kind": "instructions",
+        "bytes": 2215,
+        "sha256": "83e271838315673a102c272cc8843213ee39ab3bef6db7e72e65347c1de2cb0d"
+      },
+      {
+        "path": "native/CompareTo-66089.asm",
+        "kind": "instructions",
+        "bytes": 2798,
+        "sha256": "06b81492dc64053282f82e2d66386063952a19c405ff1a7634057ac5042b13e2"
+      },
+      {
+        "path": "native/OnAllocate-66119.asm",
+        "kind": "instructions",
+        "bytes": 2435,
+        "sha256": "9dc697223aea3e8fe6a75a55b685cbf38465ab32bfe4c52e39c57638c5764121"
+      },
+      {
+        "path": "native/ProcessFinalScaler-28624.asm",
+        "kind": "instructions",
+        "bytes": 1685,
+        "sha256": "5035f9e8ee80966ee1b1d61c9f46bf60d6999c2aea42c6d6ac3911df3d977b10"
+      },
+      {
+        "path": "native/RefreshPriority-66287.asm",
+        "kind": "instructions",
+        "bytes": 1296,
+        "sha256": "305b5d02a468c07b2c4737a41e70b01816dd40839f79c9db0152430fedbe5382"
+      },
+      {
+        "path": "native/Remove-66284.asm",
+        "kind": "instructions",
+        "bytes": 1137,
+        "sha256": "743e333cd26de178f79af89ef3f9f96b6dd85b09a546668f5a615c1836eccd4f"
+      },
+      {
+        "path": "native/ResetWithBuff-66282.asm",
+        "kind": "instructions",
+        "bytes": 3464,
+        "sha256": "e0c001bebc05cb74e350e778dba4ae2c158009d79847fb466a1e3dcd0dd48859"
+      },
+      {
+        "path": "native/TakeSnapshotToBuffAttribute-66236.asm",
+        "kind": "instructions",
+        "bytes": 2017,
+        "sha256": "0479a9b4b563b1b6e8e0eb8d9e3f4fffafd1056c304e00458cda2bb4b384e015"
+      },
+      {
+        "path": "native/TryGetFP-31476.asm",
+        "kind": "instructions",
+        "bytes": 2113,
+        "sha256": "6cacc0d081942035291e53fa095e319ff400616fcad5e6c4fcf35ba10c99de0f"
+      },
+      {
+        "path": "native/UpdateMe-66286.asm",
+        "kind": "instructions",
+        "bytes": 280,
+        "sha256": "5bf23f01fce71c07cf62e0359a656161d5caa0493aeff381ffa2c3c5f5d5e799"
+      },
+      {
+        "path": "native/_AddStack-66245.asm",
+        "kind": "instructions",
+        "bytes": 2009,
+        "sha256": "ac2d59309e614d1eda9ac6adf5848c553b6b433a184901df93209f6d67f61c48"
+      },
+      {
+        "path": "native/_DoAddInternal-66291.asm",
+        "kind": "instructions",
+        "bytes": 11789,
+        "sha256": "dc1cf08a4f42a2350bc7cc1224b7054bccba116172b4f398f3d04d6705d36eb9"
+      },
+      {
+        "path": "native/_DoUpdateInternal-66292.asm",
+        "kind": "instructions",
+        "bytes": 2458,
+        "sha256": "272561e3147fd869b8616f0d47c6472ea1625a7b1dee0aa71b5772e675fdca91"
+      },
+      {
+        "path": "native/_DoUpdateStack-66244.asm",
+        "kind": "instructions",
+        "bytes": 3081,
+        "sha256": "ea9dc41c179e95a0b6194436b8c0adc39377d9ac7617ee42efff3f832ca16913"
+      },
+      {
+        "path": "native/_ExtendRemainingTime-66248.asm",
+        "kind": "instructions",
+        "bytes": 4867,
+        "sha256": "3b3d5a479f16ec5242fb6fa722b1a6e006a606b7db593f2027e0b19c768a3548"
+      },
+      {
+        "path": "native/_FillRemainingTime-66247.asm",
+        "kind": "instructions",
+        "bytes": 4303,
+        "sha256": "9eba0a36fc69bcd51e0aeaf46024084ce2e24b1a9087961f378b402155a5f780"
+      },
+      {
+        "path": "native/_FillRemainingTimeWhenStackMax-66246.asm",
+        "kind": "instructions",
+        "bytes": 1850,
+        "sha256": "d39cc785f19870e4dc18a05dbbdafde110c1b49146c5bd0c4d547a5c00984ef9"
+      },
+      {
+        "path": "native/_LoadAttributesModifier-66234.asm",
+        "kind": "instructions",
+        "bytes": 17505,
+        "sha256": "3fe94d937f4392a1064c2c31867813b9c1ba845dcacf7071c7cec52c37618465"
+      },
+      {
+        "path": "native/_TryGetNumber-31498.asm",
+        "kind": "instructions",
+        "bytes": 3261,
+        "sha256": "4345a382b3d657768b93c1fb0ef0ff6bd1416bcd69bf5c3a04aff5c744e1b75e"
+      },
+      {
+        "path": "native/_UpdateIsEnabledIfNotFinished-66249.asm",
+        "kind": "instructions",
+        "bytes": 8766,
+        "sha256": "7139d83dc6efeaf143f50f1cadd61d9e5a4ebb2dc9450d773557de7046c4d77f"
+      },
+      {
+        "path": "native/get_isEnabled-66078.asm",
+        "kind": "instructions",
+        "bytes": 1156,
+        "sha256": "26f639354b40737a25ee94c3309d51e7f5a784c957599d106331c4a0f243ba9b"
+      },
+      {
+        "path": "native/get_validStackCnt-66085.asm",
+        "kind": "instructions",
+        "bytes": 1828,
+        "sha256": "a6405f7b22715fca461d6df6125d67f4945a50a5efc588aafa77d7d1c0510fa2"
+      },
+      {
+        "path": "native/helper-0x184706710.asm",
+        "kind": "instructions",
+        "bytes": 502,
+        "sha256": "afdbe7b201d1c6f11ca2f32e86a3ebc02daa6caeb1c7c81a33d99dbc6f325f93"
+      },
+      {
+        "path": "native/helper-0x1853ff1d0.asm",
+        "kind": "instructions",
+        "bytes": 5230,
+        "sha256": "b54991700a4225e58711b8b27a35c54b0535c9d9fa1f0a82be7028662f4974d2"
+      },
+      {
+        "path": "native/helper-0x185cadad0.asm",
+        "kind": "instructions",
+        "bytes": 5283,
+        "sha256": "f73236bff1441d63a3f49e72cb2af4096384d3b4e0a14a9d8d809270e9246191"
+      },
+      {
+        "path": "native/metadata.json",
+        "kind": "record",
+        "bytes": 60128,
+        "sha256": "35f061df76fae2ffb4acc06b06ef865079c1af85115ff8c1634eb77bc861c247"
+      },
+      {
+        "path": "native/native.json",
+        "kind": "record",
+        "bytes": 69256,
+        "sha256": "6dcc04507641313d349542fd6e776d3eb670d35085e01a380be922768a66e4b1"
+      },
+      {
+        "path": "native/set_isEnabled-66079.asm",
+        "kind": "instructions",
+        "bytes": 1398,
+        "sha256": "04bfcf8d7cf3a5fbb1102df2c2672b946ef514366d1e9d5f320411f95b85fa97"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 28624,
+          "mode": "metadata",
+          "records": [
+            "native/metadata.json#/result/0/methods/0",
+            "native/native.json#/result/0/method"
+          ],
+          "fullname": "Torappu.SharedUtils.ProcessFinalScaler",
+          "address": "0x1821556e0"
+        },
+        {
+          "index": 31476,
+          "mode": "metadata",
+          "records": [
+            "native/metadata.json#/result/3/methods/0",
+            "native/native.json#/result/1/method"
+          ],
+          "fullname": "Torappu.Blackboard.TryGetFP",
+          "address": "0x1823795f0"
+        },
+        {
+          "index": 31498,
+          "mode": "metadata",
+          "records": [
+            "native/metadata.json#/result/3/methods/1",
+            "native/native.json#/result/2/method"
+          ],
+          "fullname": "Torappu.Blackboard._TryGetNumber",
+          "address": "0x182379d90"
+        },
+        {
+          "index": 66078,
+          "mode": "metadata",
+          "records": [
+            "native/metadata.json#/result/7/methods/0",
+            "native/native.json#/result/3/method"
+          ],
+          "fullname": "Torappu.Battle.Buff.get_isEnabled",
+          "address": "0x1806ddc50"
+        },
+        {
+          "index": 66079,
+          "mode": "metadata",
+          "records": [
+            "native/metadata.json#/result/7/methods/1",
+            "native/native.json#/result/4/method"
+          ],
+          "fullname": "Torappu.Battle.Buff.set_isEnabled",
+          "address": "0x1806df330"
+        },
+        {
+          "index": 66085,
+          "mode": "metadata",
+          "records": [
+            "native/metadata.json#/result/7/methods/2",
+            "native/native.json#/result/5/method"
+          ],
+          "fullname": "Torappu.Battle.Buff.get_validStackCnt",
+          "address": "0x1806deb80"
+        },
+        {
+          "index": 66089,
+          "mode": "metadata",
+          "records": [
+            "native/metadata.json#/result/7/methods/3",
+            "native/native.json#/result/6/method"
+          ],
+          "fullname": "Torappu.Battle.Buff.CompareTo",
+          "address": "0x1806ce720"
+        },
+        {
+          "index": 66119,
+          "mode": "metadata",
+          "records": [
+            "native/metadata.json#/result/7/methods/4",
+            "native/native.json#/result/7/method"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnAllocate",
+          "address": "0x1806d0320"
+        },
+        {
+          "index": 66234,
+          "mode": "metadata",
+          "records": [
+            "native/metadata.json#/result/7/methods/5",
+            "native/native.json#/result/8/method"
+          ],
+          "fullname": "Torappu.Battle.Buff._LoadAttributesModifier",
+          "address": "0x1806da630"
+        },
+        {
+          "index": 66236,
+          "mode": "metadata",
+          "records": [
+            "native/metadata.json#/result/7/methods/6",
+            "native/native.json#/result/9/method"
+          ],
+          "fullname": "Torappu.Battle.Buff.TakeSnapshotToBuffAttribute",
+          "address": "0x1806d7130"
+        },
+        {
+          "index": 66244,
+          "mode": "metadata",
+          "records": [
+            "native/metadata.json#/result/7/methods/7",
+            "native/native.json#/result/10/method"
+          ],
+          "fullname": "Torappu.Battle.Buff._DoUpdateStack",
+          "address": "0x1806d9370"
+        },
+        {
+          "index": 66245,
+          "mode": "metadata",
+          "records": [
+            "native/metadata.json#/result/7/methods/8",
+            "native/native.json#/result/11/method"
+          ],
+          "fullname": "Torappu.Battle.Buff._AddStack",
+          "address": "0x1806d83f0"
+        },
+        {
+          "index": 66246,
+          "mode": "metadata",
+          "records": [
+            "native/metadata.json#/result/7/methods/9",
+            "native/native.json#/result/12/method"
+          ],
+          "fullname": "Torappu.Battle.Buff._FillRemainingTimeWhenStackMax",
+          "address": "0x1806d96b0"
+        },
+        {
+          "index": 66247,
+          "mode": "metadata",
+          "records": [
+            "native/metadata.json#/result/7/methods/10",
+            "native/native.json#/result/13/method"
+          ],
+          "fullname": "Torappu.Battle.Buff._FillRemainingTime",
+          "address": "0x1806d9790"
+        },
+        {
+          "index": 66248,
+          "mode": "metadata",
+          "records": [
+            "native/metadata.json#/result/7/methods/11",
+            "native/native.json#/result/14/method"
+          ],
+          "fullname": "Torappu.Battle.Buff._ExtendRemainingTime",
+          "address": "0x1806d94b0"
+        },
+        {
+          "index": 66249,
+          "mode": "metadata",
+          "records": [
+            "native/metadata.json#/result/7/methods/12",
+            "native/native.json#/result/15/method"
+          ],
+          "fullname": "Torappu.Battle.Buff._UpdateIsEnabledIfNotFinished",
+          "address": "0x1806dca50"
+        },
+        {
+          "index": 66282,
+          "mode": "metadata",
+          "records": [
+            "native/metadata.json#/result/6/methods/0",
+            "native/native.json#/result/16/method"
+          ],
+          "fullname": "Torappu.Battle.Buff/OverrideGroup.ResetWithBuff",
+          "address": "0x1806e0760"
+        },
+        {
+          "index": 66283,
+          "mode": "metadata",
+          "records": [
+            "native/metadata.json#/result/6/methods/1",
+            "native/native.json#/result/17/method"
+          ],
+          "fullname": "Torappu.Battle.Buff/OverrideGroup.Add",
+          "address": "0x1806e0430"
+        },
+        {
+          "index": 66284,
+          "mode": "metadata",
+          "records": [
+            "native/metadata.json#/result/6/methods/2",
+            "native/native.json#/result/18/method"
+          ],
+          "fullname": "Torappu.Battle.Buff/OverrideGroup.Remove",
+          "address": "0x1806e06f0"
+        },
+        {
+          "index": 66286,
+          "mode": "metadata",
+          "records": [
+            "native/metadata.json#/result/6/methods/3",
+            "native/native.json#/result/19/method"
+          ],
+          "fullname": "Torappu.Battle.Buff/OverrideGroup.UpdateMe",
+          "address": "0x1806e0a40"
+        },
+        {
+          "index": 66287,
+          "mode": "metadata",
+          "records": [
+            "native/metadata.json#/result/6/methods/4",
+            "native/native.json#/result/20/method"
+          ],
+          "fullname": "Torappu.Battle.Buff/OverrideGroup.RefreshPriority",
+          "address": "0x1806e0660"
+        },
+        {
+          "index": 66291,
+          "mode": "metadata",
+          "records": [
+            "native/metadata.json#/result/6/methods/5",
+            "native/native.json#/result/21/method"
+          ],
+          "fullname": "Torappu.Battle.Buff/OverrideGroup._DoAddInternal",
+          "address": "0x1806e0a50"
+        },
+        {
+          "index": 66292,
+          "mode": "metadata",
+          "records": [
+            "native/metadata.json#/result/6/methods/6",
+            "native/native.json#/result/22/method"
+          ],
+          "fullname": "Torappu.Battle.Buff/OverrideGroup._DoUpdateInternal",
+          "address": "0x1806e1030"
+        }
+      ],
+      "blocks": [
+        {
+          "address": "0x1806ce720",
+          "records": [
+            "native/CompareTo-66089.asm"
+          ]
+        },
+        {
+          "address": "0x1806d0320",
+          "records": [
+            "native/OnAllocate-66119.asm"
+          ]
+        },
+        {
+          "address": "0x1806d7130",
+          "records": [
+            "native/TakeSnapshotToBuffAttribute-66236.asm"
+          ]
+        },
+        {
+          "address": "0x1806d83f0",
+          "records": [
+            "native/_AddStack-66245.asm"
+          ]
+        },
+        {
+          "address": "0x1806d9370",
+          "records": [
+            "native/_DoUpdateStack-66244.asm"
+          ]
+        },
+        {
+          "address": "0x1806d94b0",
+          "records": [
+            "native/_ExtendRemainingTime-66248.asm"
+          ]
+        },
+        {
+          "address": "0x1806d96b0",
+          "records": [
+            "native/_FillRemainingTimeWhenStackMax-66246.asm"
+          ]
+        },
+        {
+          "address": "0x1806d9790",
+          "records": [
+            "native/_FillRemainingTime-66247.asm"
+          ]
+        },
+        {
+          "address": "0x1806da630",
+          "records": [
+            "native/_LoadAttributesModifier-66234.asm"
+          ]
+        },
+        {
+          "address": "0x1806dca50",
+          "records": [
+            "native/_UpdateIsEnabledIfNotFinished-66249.asm"
+          ]
+        },
+        {
+          "address": "0x1806ddc50",
+          "records": [
+            "native/get_isEnabled-66078.asm"
+          ]
+        },
+        {
+          "address": "0x1806deb80",
+          "records": [
+            "native/get_validStackCnt-66085.asm"
+          ]
+        },
+        {
+          "address": "0x1806df330",
+          "records": [
+            "native/set_isEnabled-66079.asm"
+          ]
+        },
+        {
+          "address": "0x1806e0430",
+          "records": [
+            "native/Add-66283.asm"
+          ]
+        },
+        {
+          "address": "0x1806e0660",
+          "records": [
+            "native/RefreshPriority-66287.asm"
+          ]
+        },
+        {
+          "address": "0x1806e06f0",
+          "records": [
+            "native/Remove-66284.asm"
+          ]
+        },
+        {
+          "address": "0x1806e0760",
+          "records": [
+            "native/ResetWithBuff-66282.asm"
+          ]
+        },
+        {
+          "address": "0x1806e0a40",
+          "records": [
+            "native/UpdateMe-66286.asm"
+          ]
+        },
+        {
+          "address": "0x1806e0a50",
+          "records": [
+            "native/_DoAddInternal-66291.asm"
+          ]
+        },
+        {
+          "address": "0x1806e1030",
+          "records": [
+            "native/_DoUpdateInternal-66292.asm"
+          ]
+        },
+        {
+          "address": "0x1821556e0",
+          "records": [
+            "native/ProcessFinalScaler-28624.asm"
+          ]
+        },
+        {
+          "address": "0x1823795f0",
+          "records": [
+            "native/TryGetFP-31476.asm"
+          ]
+        },
+        {
+          "address": "0x182379d90",
+          "records": [
+            "native/_TryGetNumber-31498.asm"
+          ]
+        },
+        {
+          "address": "0x184706710",
+          "records": [
+            "native/helper-0x184706710.asm"
+          ]
+        },
+        {
+          "address": "0x1853ff1d0",
+          "records": [
+            "native/helper-0x1853ff1d0.asm"
+          ]
+        },
+        {
+          "address": "0x185cadad0",
+          "records": [
+            "native/helper-0x185cadad0.asm"
+          ]
+        }
+      ],
+      "types": [
+        {
+          "name": "Torappu.AttributeModifierData/AttributeModifier",
+          "records": [
+            "native/metadata.json#/result/2"
+          ]
+        },
+        {
+          "name": "Torappu.AttributeModifierData/AttributeModifier/FormulaItemType",
+          "records": [
+            "native/metadata.json#/result/1"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Buff",
+          "records": [
+            "native/metadata.json#/result/7"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Buff/OverrideGroup",
+          "records": [
+            "native/metadata.json#/result/6"
+          ]
+        },
+        {
+          "name": "Torappu.Blackboard",
+          "records": [
+            "native/metadata.json#/result/3"
+          ]
+        },
+        {
+          "name": "Torappu.BuffData",
+          "records": [
+            "native/metadata.json#/result/5"
+          ]
+        },
+        {
+          "name": "Torappu.BuffData/OverrideType",
+          "records": [
+            "native/metadata.json#/result/4"
+          ]
+        },
+        {
+          "name": "Torappu.SharedUtils",
+          "records": [
+            "native/metadata.json#/result/0"
+          ]
+        }
+      ],
+      "constants": [],
+      "bundles": [
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "sha256": "8edcb8017c977cdf52c2593b58e21db96949f3ad1e6f904180ac1241f145ca79",
+          "records": [
+            "configurations.json#/provenance/source"
+          ],
+          "bytes": 2151020
+        }
+      ]
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

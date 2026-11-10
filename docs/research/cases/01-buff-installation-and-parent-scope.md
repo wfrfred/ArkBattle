@@ -4,7 +4,7 @@
 
 **范围**：维什戴尔残影是用户此前提出的协议压力样例；当前 `data/chess.json` 未包含该干员，不能据此增加本季角色支持承诺。鼓舞对照采用本季 `chess_char_6_04_a/b → char_1012_skadi2 → skchr_skadi2_3`；S2 不作为本季默认技能证据。
 
-**证据**：客户端版本与哈希沿用 [05](../05-evidence-and-open-questions.md)。以下“证实”指本机常规原生分支与真实模板；未运行客户端，也未排除 Lua 覆盖。“推断”是据此得到的项目约束，“待核对”是尚未闭合的行为。关键短摘录保留在本文及[初始客户端批次](../evidence/client-excerpts-20261007/README.md)；当时完整新增转储与专用解码脚本未归档。
+**证据**：首轮客户端版本与哈希沿用 [05](../05-evidence-and-open-questions.md)。以下“证实”指本机常规原生分支与真实模板；未运行客户端，也未排除 Lua 覆盖。“推断”是据此得到的项目约束，“待核对”是尚未闭合的行为。关键短摘录保留在本文及[初始客户端批次](../evidence/client-excerpts-20261007/README.md)；当时完整新增转储与专用解码脚本未归档。2026-11-10 的属性、合并与覆盖组补核见第 8 节，使用该批次独立记录的输入指纹与当前方法索引。
 
 ## 1. 本案需要区分的事实
 
@@ -213,7 +213,7 @@ CreateBuff 的 modifier 描述为 `ATK / FINAL_SCALER / fetchBaseValueFromSource
 
 当前 EffectInstance 的纯数据／资源分离方向可保留；`lifetimeOwner` 只有 UNIT／EXECUTION，缺少父实例关联。当前 install/remove/expire 也没有开始、禁用、结束程序及覆盖接纳阶段。这些是本案证实的未覆盖路径，不证明现有有限直接效果实现本身错误。
 
-不在本案落定：全 override 状态机、源退场与父暂停的全部传播政策、Buff 图循环处理、所有安装免疫、全局结束动作队列、范围成员刷新，以及多鼓舞竞争的完整政策。上述问题不能用一个统一 owner 或 `group {id,strength}` 自动推导。
+首轮没有落定完整 override 状态机；第 8 节补齐普通合并与覆盖组选胜分支。来源分组、源退场与父暂停的全部传播政策、Buff 图循环处理、所有安装免疫、全局结束动作队列、范围成员刷新及多鼓舞的完整内容链仍未穷尽，不能用一个统一 owner 或 `group {id,strength}` 自动推导。
 
 ## 7. 复查锚点
 
@@ -227,3 +227,72 @@ CreateBuff 的 modifier 描述为 `ATK / FINAL_SCALER / fetchBaseValueFromSource
 | 持久模板摘录 | [client-excerpts.json](../evidence/client-excerpts-20261007/records.json) 中的残影开始动作；本篇保留鼓舞动作与 S3 组件 ID／周期配置 |
 
 模板来源为本机 `char_1035_wisdel`、`buff_template_holder` 与 skills 资源的当时解码。持久摘录及输入见[初始客户端批次](../evidence/client-excerpts-20261007/README.md)；完整模板、追加方法转储和鼓舞专用解码脚本未归档，本文仅保留已列出的字段／动作投影。第三方数据镜像与客户端清单不是已证明相同版本。
+
+## 8. 2026-11-10 补核：属性 descriptor、合并与覆盖组
+
+本节的 **N** 表示当前静态原生分支或配置直接证实，**I** 表示调用链推导，**P** 表示项目接口／支持范围选择，**G** 表示仍未闭合。没有运行客户端或排除 XLua／特化入口。证据、输入 SHA-256、当前方法签名、指令范围与复跑脚本见[补核批次](../evidence/unit-audit-20261110/buff-attributes/README.md)；旧索引与本节索引分别解释。
+
+### 8.1 原始属性 operand 的解释
+
+**N**：[`Buff._LoadAttributesModifier`](../evidence/unit-audit-20261110/buff-attributes/native/_LoadAttributesModifier-66234.asm)（66234）先确定 operand，再乘传入层数，之后处理 source 和 FormulaItem：
+
+- `loadFromBlackboard=true` 时，属性枚举名经字符串 helper 交给黑板查询；查询忽略大小写，所以 `ATK` 与 `atk` 等价。只有 `TryGetFP=false` 才回退 descriptor.value；显式数值 0 返回成功，不回退。锚点为 `0x1806dab02–b33`，以及 [`_TryGetNumber`](../evidence/unit-audit-20261110/buff-attributes/native/_TryGetNumber-31498.asm) 的 `0x182379e3c–e45`、`0x182379eb3–ebb`。
+- `0x1806dab54–b6b` 先计算 `operand × stackCount`。[`ProcessFinalScaler`](../evidence/unit-audit-20261110/buff-attributes/native/ProcessFinalScaler-28624.asm)（28624）随后将负输入转换为 `1+x`，非负值原样返回。因此 `-0.2 × 3` 修正为 `0.4`，不是 `0.8³`。
+- 需要 source 而 source 为 Unity null 时，在 `0x1806dabb4–bbb` 跳过整个 descriptor；不把不存在的 source 当作属性 0。
+
+source 非空时先读取来源的当前有效属性，四种写槽分别为：
+
+| 原始 FormulaItem | 接收方写槽 | 写入值，`v = operand × stackCount` |
+| --- | --- | --- |
+| ADDITION | ADDITION | `sourceValue + v` |
+| MULTIPLIER | ADDITION | `sourceValue × v` |
+| FINAL_ADDITION | FINAL_ADDITION | `sourceValue + v` |
+| FINAL_SCALER | FINAL_ADDITION | `sourceValue × ProcessFinalScaler(v)` |
+
+分支锚点为 `0x1806dabe7`、`0x1806dac17–c70`、`0x1806dad43`。[PRTS 固定版本的属性修正说明](https://prts.wiki/index.php?title=游戏数据基础&oldid=447894)互证来源转槽；层数先后和缺键分支以本批指令为准。四组最终求值沿用[研究02](../02-combat-buffs-and-effects.md#属性与伤害不是同一个倍率集合)及既有 numeric-parameters 证据，不重复转储。
+
+**N+P+I**：原生 BAT 使用时间单位、移速使用每秒速度，见 [Case07](07-action-timing-and-animation.md)及 [Case15 第 2、8 节](15-locomotion-native-semantics.md)。项目统一 Tick 后，BAT 的两类加算换成 Tick、移速的两类加算换成每 Tick 位移，而 multiplier／finalScaler 保持无量纲，这是单位换算；不是客户端存在同名 `/30` 转换的证据。
+
+第 5 节已经闭合鼓舞的实际内容链；本批又复核当前 `atk_to_atk[final_addition] → encourage[atk]` descriptor。其他源码分支有算法证据，不等于已经找到每一种对应的实际启用内容。
+
+### 8.2 普通 Buff 合并分支
+
+**N**：[`OverrideGroup._DoAddInternal`](../evidence/unit-audit-20261110/buff-attributes/native/_DoAddInternal-66291.asm)（66291）区分以下处理；retained 指组内保留实例，incoming 指本次新应用：
+
+| 模式 | 普通分支 |
+| --- | --- |
+| DEFAULT | incoming 加入覆盖队列；独立登记不意味着所有成员同时生效。 |
+| STACK | 空组接纳 incoming；非空时按 retained 的实际层数加 **1**，不是加 incoming.stackCnt。实际 cap<0 或加一未超 cap 才加层，并取两者 remainingTime 的最大值。 |
+| STACK 达上限 | 只有 retainedCount==cap 且 `refreshRemainingTimeWhenStackMax=true` 才刷新 remainingTime 最大值；不加层、不重载属性。 |
+| UNIQUE | 非空组拒绝 incoming，不因旧实例当前停用而放行；不消费 EXTEND snapshot 标志。 |
+| EXTEND | [`_FillRemainingTime`](../evidence/unit-audit-20261110/buff-attributes/native/_FillRemainingTime-66247.asm)（66247）在 incoming.lifeTime 有限时取 `max(retained.remainingTime, incoming.lifeTime)`；incoming.lifeTime 为负时写入该无限时限标记。 |
+| EXTEND_TIME | [`_ExtendRemainingTime`](../evidence/unit-audit-20261110/buff-attributes/native/_ExtendRemainingTime-66248.asm)（66248）在 incoming.lifeTime>=0 时，分别给 retained.remainingTime、retained.lifeTime 加 incoming.lifeTime；为负时跳过这两项加算。 |
+
+两种延长方法消费的是 incoming.lifeTime。普通新应用尚未推进时，它与 incoming.remainingTime 相同；不能把任意已运行实例的剩余时间无条件代入，也不能把项目 `null` 一概无穷加法称为原生规则。
+
+**N**：实际 cap 与有效 cap 分别由 [`ResetWithBuff`](../evidence/unit-audit-20261110/buff-attributes/native/ResetWithBuff-66282.asm)（66282）读取，黑板缺值时使用对应 descriptor 字段。`get_validStackCnt`（66085）在有效 cap<0 时返回实际层数，否则返回两者最小值。[`_DoUpdateStack`](../evidence/unit-audit-20261110/buff-attributes/native/_DoUpdateStack-66244.asm)（66244，`0x1806d93d0–9404`）只在实际层数未超过有效 cap 时重载属性；超过后仍能增加实际层数而不增加属性贡献。重载使用 retained 的 data、source 和 stackCount，incoming source 不替换原来源。
+
+**N**：EXTEND 的 snapshot 是另一条操作。`_DoAddInternal` 先 `_FillRemainingTime`，再检查 retained.data.takeSnapshotWhenExtend；为真时先 [`TakeSnapshotToBuffAttribute`](../evidence/unit-audit-20261110/buff-attributes/native/TakeSnapshotToBuffAttribute-66236.asm)（66236），然后复制 incoming.blackboard。snapshot 更新 retained source 的 `RuntimeAttributesSnapshot`，没有调用 `_LoadAttributesModifier`。`_FillRemainingTime` 还会通知 owner.OnBuffExtend；特定内容的额外响应未穷尽。
+
+**I**：`takeSnapshotWhenExtend` 不能直接等价为 `reloadModifiers=true`。现有 Data planner 将两者绑定，不由上述通用分支支持；不能反过来断言任何特化内容都不会在 OnBuffExtend 重载属性。
+
+### 8.3 覆盖组选胜与候补
+
+以下直接检查普通 OverrideGroup 队列，未从 UNIQUE 拒绝推导整体竞争：
+
+| 规则 | 原生锚点与范围 |
+| --- | --- |
+| 高 priority 优先 | **N**：`Buff.CompareTo`（66089）反向比较 priority；queue Add 按比较结果插入，`_DoUpdateInternal` 选首个未结束者。 |
+| 同级先分配者优先 | **N**：CompareTo 按 instanceUid 升序；`OnAllocate`（66119，`0x1806d0399–3ea`）递增全局 counter 后写 UID。**I**：普通创建链对应更早分配的实例，不要求项目复制全局计数器。 |
+| 未生效的赢家仍可占位 | **N**：`_DoUpdateInternal`（66292，`0x1806e10ec–1106`）选候选只看 isFinished，不按 actuallyEnabled 过滤。它设置手动启用后，`_UpdateIsEnabledIfNotFinished` 才因 silence／stun 等决定实际启用；被压制的赢家不会自动让位。 |
+| 移除赢家后启用候补 | **N**：`OverrideGroup.Remove`（66284）成功移除后重新 `_DoUpdateInternal`；RefreshPriority 则移除、重插、重选。 |
+
+证据见本批 [`CompareTo`](../evidence/unit-audit-20261110/buff-attributes/native/CompareTo-66089.asm)、[queue Add helper](../evidence/unit-audit-20261110/buff-attributes/native/helper-0x1853ff1d0.asm)、[`_DoUpdateInternal`](../evidence/unit-audit-20261110/buff-attributes/native/_DoUpdateInternal-66292.asm)和 [`Remove`](../evidence/unit-audit-20261110/buff-attributes/native/Remove-66284.asm)。[PRTS 术语释义固定版本](https://prts.wiki/index.php?title=术语释义&oldid=448536)区分先获得者生效与高效果优先，可作内容层互证，不独立证明通用队列算法。
+
+**P 边界**：Core `Effect.enabled=false` 是调用方的持久启用意图；原生 group 会重写 manuallyEnabled，实际生效还受其他条件控制。原生支持“当前未生效者仍占组位置”的竞争形状，不能单独证明项目 setter 的持续性、重入时序，或任意 group.id 与原生 key／来源分组的完整映射。整体竞争也不替代 UNIQUE 接纳、STACK 合并等其他政策。
+
+### 8.4 配置证据与尚未决定的范围
+
+当前[选中配置](../evidence/unit-audit-20261110/buff-attributes/configurations.json)分别含 `astesi_t_1[Stack]` 的实际 cap=5、`sbell2_e_002_trait[interval]` 的实际无限／有效 cap=5、`enemy_shushu_support` 的 cap=20／有效 cap=1、`ascln_t_1[debuff]` 的达上限刷新，以及 EXTEND、EXTEND_TIME 的非默认实例。这些是 **N-配置**；本批没有逐个补齐其 prefab→Ability→模板启动条件，不能全部提升为已闭合的实战链。
+
+全部 9054 个当前 holder 模板中，EXTEND+snapshot=true 仅命中 `gamecity_miner_byokai_archook_reward`。**G**：本批没有受支持常规内容的完整可执行正例；该有限集合的命中不能证明全游戏有无此需求。**P**：独立 Data Buff planner 的支持范围、公开协议及其期限表示仍需项目决定，算法有证据不等于该中间接口必须保留。本次补证不要求恢复人工动态 cap 或任意 null／0 时间测试矩阵。
