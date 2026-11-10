@@ -14,7 +14,7 @@ import * as presence from "../../dist/core/unit/capability/presence/index.js";
 import { createStun } from "../../dist/core/effects/elemental/neural.js";
 import { createSpDrain } from "../../dist/core/effects/elemental/necrosis.js";
 import { create as modifier } from "../../dist/core/unit/contribution/attribute.js";
-import { createArknightsElementalDefinition } from "../../dist/data/arknights/elemental.js";
+import { createArknightsElementalDefinition } from "../../dist/data/elemental.js";
 
 const elementalReceiver = {
     id: "ep-receiver", hooks: Hooks.empty(), presence: {}, allegiance: { side: "ALLY" },

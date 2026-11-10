@@ -1,6 +1,6 @@
-import { assertNonnegativeSafeInteger } from "../../core/common/assert.js";
-import { createRng, type Rng, type Seed } from "../../core/common/rng.js";
-import type { Branch, Definition, Entry, Spawn, Wait } from "../../core/battle/schedule/index.js";
+import { assertNonnegativeSafeInteger } from "../core/common/assert.js";
+import { createRng, type Rng, type Seed } from "../core/common/rng.js";
+import type { Branch, Definition, Entry, Spawn, Wait } from "../core/battle/schedule/index.js";
 import type { ArknightsEnemyMovementContent } from "./enemy.js";
 import type {
     ArknightsEnemyDbRef,

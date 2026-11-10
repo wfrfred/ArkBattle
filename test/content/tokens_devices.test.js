@@ -8,7 +8,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { initialize } from "../../dist/core/battle/index.js";
 import { apply as applyOverlays } from "../../dist/core/battlefield/navigation/overlay.js";
-import { loadMovementScenario } from "../../dist/data/arknights/movement-scenario.js";
+import { loadMovementScenario } from "../../dist/data/movement-scenario.js";
 import { addCard, createRequest, preview } from "../../dist/core/battle/deployment/index.js";
 import { createCardDefinition } from "../helpers/deployable.js";
 

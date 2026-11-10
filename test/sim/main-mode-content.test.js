@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import { createTacticalContentDemo, defaults } from '../../dist/legacy/tactical-demo-content.js';
-import { parseLevelDefinition } from '../../dist/data/arknights/level.js';
+import { parseLevelDefinition } from '../../dist/data/level.js';
 import { initialize as initializeBattle, step as stepBattle } from '../../dist/core/battle/runtime.js';
 import { hasVitality } from '../../dist/core/unit/capability/vitality/index.js';
 

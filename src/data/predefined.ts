@@ -1,21 +1,21 @@
-import { Hooks } from "../../core/hook.js";
+import { Hooks } from "../core/hook.js";
 import {
     assertNonnegativeNumber,
     assertPositiveNumber,
     assertPositiveSafeInteger,
-} from "../../core/common/assert.js";
+} from "../core/common/assert.js";
 import {
     createPredefinedDefinition,
     type StoredPredefinedDefinition,
-} from "../../core/battle/steps/predefined.js";
-import { createMechanismDefinition } from "../../core/battle/mechanism.js";
-import { createTerrainMechanism } from "../../content/terrain/mechanism.js";
-import { mire, deepsea } from "../../content/terrain/definition.js";
-import { create as createCrate } from "../../content/devices/crate.js";
-import { create as createShootingPlatform } from "../../content/devices/shooting-platform.js";
-import type { Definition as DeviceDefinition, Configuration } from "../../content/devices/tile.js";
-import { Tile } from "../../core/geometry/coordinate.js";
-import { get as getTile } from "../../core/battlefield/map/map.js";
+} from "../core/battle/steps/predefined.js";
+import { createMechanismDefinition } from "../core/battle/mechanism.js";
+import { createTerrainMechanism } from "../content/terrain/mechanism.js";
+import { mire, deepsea } from "../content/terrain/definition.js";
+import { create as createCrate } from "../content/devices/crate.js";
+import { create as createShootingPlatform } from "../content/devices/shooting-platform.js";
+import type { Definition as DeviceDefinition, Configuration } from "../content/devices/tile.js";
+import { Tile } from "../core/geometry/coordinate.js";
+import { get as getTile } from "../core/battlefield/map/map.js";
 import type { ArknightsPredefinedInstance } from "./level.js";
 import type { PredefinedPrefab } from "./prefab.js";
 import { secondsToTicks } from "./tick.js";

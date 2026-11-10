@@ -69,7 +69,7 @@ Core 提供八个具体 Effect：神经眩晕／麻痹、物理／元素侵蚀�
 
 Burst 的 id、host、source、enabled、lifecycle 由 Effect 提供，Elemental 的 burst 槽位只保存它的 Typed Ref。`ref(self)` 复用 Effect Ref，地址为 host + Effect ID；没有独立 Burst ID 分配器或 Lifetime。旧引用不能操作后来的爆发。来源引用保存历史身份，不要求来源仍在场，也不隐含生命周期绑定；跨 Battle 使用 Ref 仍属于调用契约错误。
 
-当前 [data/arknights/elemental.ts](../../src/data/arknights/elemental.ts) 同时保存原始类型映射、八套数值并构造具体 Effect Definition 的选择表；其中 Definition 构造尚待迁入 Content。通用 EP 的 Calculate／Apply／Commit 通过映射调用对应 Effect；共享函数只处理进度、EP 恢复和结束收尾。通用控制实现在 [effects/control.ts](../../src/core/effects/control.ts)，Content 直接复用；通用 Effect 引擎不解释元素规则。
+当前 [data/elemental.ts](../../src/data/elemental.ts) 同时保存原始类型映射、八套数值并构造具体 Effect Definition 的选择表；其中 Definition 构造尚待迁入 Content。通用 EP 的 Calculate／Apply／Commit 通过映射调用对应 Effect；共享函数只处理进度、EP 恢复和结束收尾。通用控制实现在 [effects/control.ts](../../src/core/effects/control.ts)，Content 直接复用；通用 Effect 引擎不解释元素规则。
 
 需要随该次爆发结束的产物通过 `scope(effects.lifetime, ref)` 绑定根 Burst Effect：灼燃减抗、封技、阻止 SP 回复等在根实例结束时清理。新依赖的资格由 Effect Lifetime 的可用性判断。
 

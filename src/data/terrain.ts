@@ -1,9 +1,9 @@
-import { assertNonnegativeNumber, assertPositiveSafeInteger } from "../../core/common/assert.js";
+import { assertNonnegativeNumber, assertPositiveSafeInteger } from "../core/common/assert.js";
 import type { ArknightsMapOptions } from "./map.js";
 import type { ArknightsBlackboardEntry } from "./blackboard.js";
 import type { PredefinedPrefab } from "./prefab.js";
 import type { ArknightsResolvedSkill } from "./skill.js";
-import { TICKS_PER_SECOND } from "../../core/tick.js";
+import { TICKS_PER_SECOND } from "../core/tick.js";
 
 export interface ArknightsTerrainController {
     readonly profile: Extract<PredefinedPrefab, { readonly type: "MECHANISM" }>;

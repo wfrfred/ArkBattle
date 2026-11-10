@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
-import { prepare } from "../../dist/data/arknights/operator.js";
+import { prepare } from "../../dist/data/operator.js";
 
 const fixture = JSON.parse(readFileSync(new URL("../fixtures/arknights/main-mode-units.json", import.meta.url), "utf8"));
 const mudrock = "char_311_mudrok";

@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
-import { compileBuffStacking, parseBuffStacking } from "../../dist/data/arknights/buff-stacking.js";
+import { compileBuffStacking, parseBuffStacking } from "../../dist/data/buff-stacking.js";
 
 const fixture = JSON.parse(readFileSync(new URL("../fixtures/arknights/buff_stacking.json", import.meta.url), "utf8"));
 const native = (key) => fixture.fixtures.find(({ buff }) => buff.buffKey === key).buff;

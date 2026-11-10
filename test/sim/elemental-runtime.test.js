@@ -18,7 +18,7 @@ import { resolveAttack } from "../../dist/core/unit/capability/offense/index.js"
 import { create as modifier } from "../../dist/core/unit/contribution/attribute.js";
 import * as elemental from "../../dist/core/unit/capability/elemental/index.js";
 import { elementValues, setContribution } from "../../dist/core/unit/capability/elemental/index.js";
-import { createArknightsElementalDefinition } from "../../dist/data/arknights/elemental.js";
+import { createArknightsElementalDefinition } from "../../dist/data/elemental.js";
 import { stun } from "../../dist/core/effects/control.js";
 import * as epDamage from "../../dist/core/battle/damage/ep/index.js";
 

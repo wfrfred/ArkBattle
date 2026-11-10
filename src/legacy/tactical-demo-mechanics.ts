@@ -7,10 +7,10 @@ import { create as createAttack } from "../content/actions/attack.js";
 import type { Map } from "../core/battlefield/map/map.js";
 import { TICKS_PER_SECOND } from "../core/tick.js";
 import { Type as ElementType } from "../core/unit/capability/elemental/index.js";
-import type { Route as RouteInput } from "../data/arknights/route.js";
+import type { Route as RouteInput } from "../data/route.js";
 import type { Plan } from "../core/unit/capability/route/index.js";
-import { createArknightsElementalDefinition } from "../data/arknights/elemental.js";
-import { compileArknightsAttackBuffSkill } from "../data/arknights/skill-buff.js";
+import { createArknightsElementalDefinition } from "../data/elemental.js";
+import { compileArknightsAttackBuffSkill } from "../data/skill-buff.js";
 import { createTacticalCombatDemoSpec } from "./tactical-demo-combat.js";
 import type { LegacyData } from "./tactical-demo-presentation.js";
 

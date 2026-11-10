@@ -1,4 +1,4 @@
-import { assertNonnegativeSafeInteger } from "../../core/common/assert.js";
+import { assertNonnegativeSafeInteger } from "../core/common/assert.js";
 
 const overrideTypes = { DEFAULT: 0, STACK: 1, UNIQUE: 2, EXTEND: 3, EXTEND_TIME: 4 } as const;
 

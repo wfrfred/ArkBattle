@@ -1,12 +1,12 @@
-import { Hooks } from "../../core/hook.js";
+import { Hooks } from "../core/hook.js";
 import {
     assertFiniteNumber,
     assertNonnegativeNumber,
     assertNonnegativeSafeInteger,
     assertPositiveNumber,
-} from "../../core/common/assert.js";
-import type { Definitions } from "../../core/unit/capability/catalog.js";
-import type { Definition as UnitDefinition } from "../../core/unit/index.js";
+} from "../core/common/assert.js";
+import type { Definitions } from "../core/unit/capability/catalog.js";
+import type { Definition as UnitDefinition } from "../core/unit/index.js";
 import type { EnemyMovementPrefab } from "./prefab.js";
 import { perSecondToPerTick } from "./tick.js";
 

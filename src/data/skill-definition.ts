@@ -1,7 +1,7 @@
-import type { Definition as SkillDefinition, Recovery } from "../../core/unit/skill/index.js";
-import { assertNonnegativeSafeInteger } from "../../core/common/assert.js";
+import type { Definition as SkillDefinition, Recovery } from "../core/unit/skill/index.js";
+import { assertNonnegativeSafeInteger } from "../core/common/assert.js";
 
-import { TICKS_PER_SECOND } from "../../core/tick.js";
+import { TICKS_PER_SECOND } from "../core/tick.js";
 import { parseBlackboard, type ArknightsBlackboardEntry } from "./blackboard.js";
 import { secondsToTicks } from "./tick.js";
 

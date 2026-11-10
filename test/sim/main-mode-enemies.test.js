@@ -9,8 +9,8 @@ import { advance as advanceBlocking, release as releaseBlocking } from "../../di
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { prepare } from '../../dist/data/arknights/enemy.js';
-import { parseEnemyMovementPrefab } from '../../dist/data/arknights/prefab.js';
+import { prepare } from '../../dist/data/enemy.js';
+import { parseEnemyMovementPrefab } from '../../dist/data/prefab.js';
 import { create as createHound } from '../../dist/content/enemies/hound/unit.js';
 import { create as createCrossbowman } from '../../dist/content/enemies/crossbowman/unit.js';
 import { createArrow } from '../../dist/content/enemies/crossbowman/action.js';

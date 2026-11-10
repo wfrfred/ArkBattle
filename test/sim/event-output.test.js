@@ -13,7 +13,7 @@ import { appendEvents } from "../../dist/core/battle/state.js";
 import { step } from "../../dist/core/battle/index.js";
 import { TacticalDemoPresentation } from "../../dist/legacy/tactical-demo-presentation.js";
 
-import { createArknightsElementalDefinition } from "../../dist/data/arknights/elemental.js";
+import { createArknightsElementalDefinition } from "../../dist/data/elemental.js";
 import { update } from "../../dist/core/battle/unit.js";
 
 const elemental = createArknightsElementalDefinition({ receiver: "CHARACTER" });

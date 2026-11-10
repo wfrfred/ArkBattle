@@ -1,6 +1,6 @@
-import { assertFiniteNumber, assertNonnegativeSafeInteger } from "../../core/common/assert.js";
-import * as attribute from "../../core/unit/contribution/attribute.js";
-import { TICKS_PER_SECOND } from "../../core/tick.js";
+import { assertFiniteNumber, assertNonnegativeSafeInteger } from "../core/common/assert.js";
+import * as attribute from "../core/unit/contribution/attribute.js";
+import { TICKS_PER_SECOND } from "../core/tick.js";
 
 const attributes = {
     MAX_HP: 0,

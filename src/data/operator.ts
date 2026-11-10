@@ -3,9 +3,9 @@ import {
     assertNonnegativeSafeInteger,
     assertPositiveSafeInteger,
     assertSafeInteger,
-} from "../../core/common/assert.js";
-import { roundToEven } from "../../core/common/math.js";
-import type { TilePosition } from "../../core/geometry/coordinate.js";
+} from "../core/common/assert.js";
+import { roundToEven } from "../core/common/math.js";
+import type { TilePosition } from "../core/geometry/coordinate.js";
 import { parseBlackboard, type ArknightsBlackboardEntry } from "./blackboard.js";
 import { parseArknightsSkillLevel, type ArknightsSkillLevel } from "./skill-definition.js";
 

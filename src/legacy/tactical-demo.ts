@@ -14,7 +14,7 @@ import {
     loadMovementScenario,
     type ArknightsMovementCatalog,
     type ArknightsMovementSelection,
-} from "../data/arknights/movement-scenario.js";
+} from "../data/movement-scenario.js";
 import {
     createTacticalCombatDemoSpec,
     type TacticalCombatScenario,

@@ -1,5 +1,5 @@
-import { assertFiniteNumber } from "../../core/common/assert.js";
-import { TICKS_PER_SECOND } from "../../core/tick.js";
+import { assertFiniteNumber } from "../core/common/assert.js";
+import { TICKS_PER_SECOND } from "../core/tick.js";
 
 export function secondsToTicks(value: number, name = "time"): number {
     assertFiniteNumber(value, name);

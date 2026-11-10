@@ -1,6 +1,6 @@
 import { create as createAttack, type Attack } from "../../actions/attack.js";
-import type { Profile } from "../../../data/arknights/enemy.js";
-import { secondsToTicks } from "../../../data/arknights/tick.js";
+import type { Profile } from "../../../data/enemy.js";
+import { secondsToTicks } from "../../../data/tick.js";
 import * as units from "../../../core/unit/index.js";
 import { hasBlockable } from "../../../core/unit/capability/blocking/index.js";
 import { hasTargetable } from "../../../core/unit/capability/targetable/capability.js";

@@ -1,6 +1,6 @@
 import { createPredefinedDefinition } from "../core/battle/steps/predefined.js";
 import { Hooks } from "../core/hook.js";
-import { createArknightsElementalDefinition } from "../data/arknights/elemental.js";
+import { createArknightsElementalDefinition } from "../data/elemental.js";
 import { create as createAction, createActions } from "../core/unit/action/index.js";
 import { create as createAttack, type Attack } from "../content/actions/attack.js";
 import * as targeting from "../core/battle/targeting/index.js";
@@ -23,7 +23,7 @@ import { normal as normalCondition } from "../content/terrain/condition.js";
 import type { DamageType } from "../core/battle/damage/hp/index.js";
 import { Tile, type TilePosition } from "../core/geometry/coordinate.js";
 import type { Direction } from "../core/geometry/direction.js";
-import type { Route as RouteInput } from "../data/arknights/route.js";
+import type { Route as RouteInput } from "../data/route.js";
 import { TICKS_PER_SECOND } from "../core/tick.js";
 import type { Definitions as CapabilityDefinitions } from "../core/unit/capability/catalog.js";
 import type { Definition as UnitDefinition } from "../core/unit/index.js";

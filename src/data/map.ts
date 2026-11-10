@@ -1,18 +1,18 @@
-import { assertFiniteNumber, assertSafeInteger } from "../../core/common/assert.js";
+import { assertFiniteNumber, assertSafeInteger } from "../core/common/assert.js";
 import {
     create as createMap,
     type BlockEdge,
     type Map,
     type Marker,
-} from "../../core/battlefield/map/map.js";
+} from "../core/battlefield/map/map.js";
 import {
     create as createTile,
     type Placement,
     type Elevation,
     type Passability,
-} from "../../core/battlefield/map/tile.js";
-import type { Terrain } from "../../core/battlefield/map/terrain.js";
-import { Tiles } from "../../core/battlefield/map/tiles.js";
+} from "../core/battlefield/map/tile.js";
+import type { Terrain } from "../core/battlefield/map/terrain.js";
+import { Tiles } from "../core/battlefield/map/tiles.js";
 import {
     normal,
     hole,
@@ -22,9 +22,9 @@ import {
     smog,
     type DeepseaParams,
     type MireParams,
-} from "../../content/terrain/definition.js";
-import type { TilePosition } from "../../core/geometry/coordinate.js";
-import { Direction } from "../../core/geometry/direction.js";
+} from "../content/terrain/definition.js";
+import type { TilePosition } from "../core/geometry/coordinate.js";
+import { Direction } from "../core/geometry/direction.js";
 import { parseBlackboard, type ArknightsBlackboardEntry } from "./blackboard.js";
 import { secondsToTicks } from "./tick.js";
 import type { TileDeploymentPrefab } from "./prefab.js";

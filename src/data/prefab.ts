@@ -1,12 +1,8 @@
-import { assertNonnegativeNumber } from "../../core/common/assert.js";
-import { TICKS_PER_SECOND } from "../../core/tick.js";
-import type {
-    Placement,
-    SiteCondition,
-    State as TileState,
-} from "../../core/battlefield/map/tile.js";
+import { assertNonnegativeNumber } from "../core/common/assert.js";
+import { TICKS_PER_SECOND } from "../core/tick.js";
+import type { Placement, SiteCondition, State as TileState } from "../core/battlefield/map/tile.js";
 import { parseSiteCondition, parseAllowedSiteConditions } from "./site-condition.js";
-import type { SteeringParameters } from "../../core/unit/capability/locomotion/index.js";
+import type { SteeringParameters } from "../core/unit/capability/locomotion/index.js";
 import { secondsToTicks } from "./tick.js";
 
 export interface EnemyMovementPrefab {

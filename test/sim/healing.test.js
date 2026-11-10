@@ -16,7 +16,7 @@ import { TacticalDemoPresentation } from "../../dist/legacy/tactical-demo-presen
 import { elementHealing } from "../../dist/core/battle/targeting/index.js";
 import { hasTargetable } from "../../dist/core/unit/capability/targetable/capability.js";
 
-import { createArknightsElementalDefinition } from "../../dist/data/arknights/elemental.js";
+import { createArknightsElementalDefinition } from "../../dist/data/elemental.js";
 const elementalReceiver = {
     id: "ep-receiver", hooks: Hooks.empty(), presence: {}, allegiance: { side: "ALLY" },
     targetable: { taunt: 0, restrictions: [] },

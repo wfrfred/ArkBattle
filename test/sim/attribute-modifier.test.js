@@ -4,7 +4,7 @@ import { test } from "node:test";
 import {
     parseAttributeModifiers,
     compileAttributeModifiers,
-} from "../../dist/data/arknights/modifier.js";
+} from "../../dist/data/modifier.js";
 import * as modifier from "../../dist/core/unit/contribution/attribute.js";
 
 const fixture = (name) =>

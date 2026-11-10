@@ -1,4 +1,4 @@
-import { assertFiniteNumber } from "../../core/common/assert.js";
+import { assertFiniteNumber } from "../core/common/assert.js";
 
 export interface ArknightsBlackboardEntry {
     readonly key: string;

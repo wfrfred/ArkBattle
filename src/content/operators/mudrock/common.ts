@@ -8,7 +8,7 @@ import {
     type Request as HealingRequest,
 } from "../../../core/battle/healing/hp/index.js";
 
-import type { Profile } from "../../../data/arknights/operator.js";
+import type { Profile } from "../../../data/operator.js";
 
 export function value(entries: Profile["moduleTrait"], key: string): number {
     const entry = entries.find((entry) => entry.key === key);

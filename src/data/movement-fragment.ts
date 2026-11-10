@@ -1,5 +1,5 @@
-import type { Seed } from "../../core/common/rng.js";
-import type { Input } from "../../core/battle/index.js";
+import type { Seed } from "../core/common/rng.js";
+import type { Input } from "../core/battle/index.js";
 import type { ArknightsLevelDefinition } from "./level.js";
 import { compileSpawnSchedule, type ArknightsEnemyResolver } from "./schedule.js";
 import { secondsToTicks } from "./tick.js";

@@ -1,7 +1,7 @@
-import type { Seed } from "../../core/common/rng.js";
-import type { Input } from "../../core/battle/index.js";
-import type { Definition as TerrainDefinition } from "../../core/battlefield/map/terrain.js";
-import type { StoredPredefinedDefinition } from "../../core/battle/steps/predefined.js";
+import type { Seed } from "../core/common/rng.js";
+import type { Input } from "../core/battle/index.js";
+import type { Definition as TerrainDefinition } from "../core/battlefield/map/terrain.js";
+import type { StoredPredefinedDefinition } from "../core/battle/steps/predefined.js";
 import type { ArknightsBlackboardEntry } from "./blackboard.js";
 import type { ArknightsMapOptions, ArknightsTileContext } from "./map.js";
 import {
@@ -28,8 +28,8 @@ import { compileSpawnSchedule, type ArknightsScheduleSelection } from "./schedul
 import { resolvePredefinedSkillBlackboard, resolvePredefinedSkillId } from "./skill.js";
 import { resolveTerrainControllers, type ArknightsTerrainController } from "./terrain.js";
 import { secondsToTicks } from "./tick.js";
-import { normal, mire, deepsea } from "../../content/terrain/definition.js";
-import { createTerrainMechanism, type ContactState } from "../../content/terrain/mechanism.js";
+import { normal, mire, deepsea } from "../content/terrain/definition.js";
+import { createTerrainMechanism, type ContactState } from "../content/terrain/mechanism.js";
 
 export interface ArknightsMovementCatalog {
     readonly character: (key: string) => unknown;

@@ -261,7 +261,7 @@ H8-1 的 `/waves/0/fragments/1` 有 preDelay=5，三条出生动作的 preDelay 
 | Action、有效属性、Damage／Healing、局部效果规则 | 已有闭环；未覆盖所有角色、投射物、元素爆发和技能状态机 |
 | `SCHEDULE_COMPLETED`／`TIME_LIMIT` | 当前单场结果；不等于完整卫戍 LP、联防、领袖共享血池结算 |
 
-[Data 调度边界](../../src/data/arknights/schedule.ts) 当前明确拒绝随机 pack、特殊计杀、非 ALWAYS 条件和非零出生延迟等未实现组合。
+[Data 调度边界](../../src/data/schedule.ts) 当前明确拒绝随机 pack、特殊计杀、非 ALWAYS 条件和非零出生延迟等未实现组合。
 所以“原始数据可解析”与“所选内容可模拟”要分别报告；整季内容替换、Buff 安装、技能触发和结束反馈不能留给通用 runtime 用内容分支兜底。
 
 后续核查重点是内容触发到执行链、出生／退场各时点、派发增删可见性、投射物采样及联防／领袖共享状态。
