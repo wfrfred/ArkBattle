@@ -7,6 +7,7 @@ import { hasOccupancy, type Occupancy } from "../occupancy/capability.js";
 import { Hooks } from "../../../hook.js";
 import { leave } from "../../hook.js";
 import { releaseSlots } from "../../../battle/deployment/resources.js";
+import { createRegistrationOperations } from "../../registration.js";
 
 export interface Refund {
     readonly rate: number;
@@ -29,7 +30,7 @@ export interface State extends Rules {
 }
 
 export interface RuleContext {
-    readonly ref: Ref<Unit & Deployable>;
+    readonly self: Unit & Deployable;
 }
 
 export type Rule = BaseRule<RuleContext>;
@@ -74,3 +75,9 @@ export function initialize<
 export function hasDeployable<U extends Unit>(unit: U): unit is U & Deployable {
     return "deployable" in unit && "deployable" in unit.definition;
 }
+
+export const { set: setRule, remove: removeRule } = createRegistrationOperations<
+    Unit & Deployable,
+    "deployable",
+    keyof Rules
+>("deployable", "retreatRules");

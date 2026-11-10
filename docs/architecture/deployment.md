@@ -201,7 +201,7 @@ function setDeployment<U extends Unit & Deployable>(
 
 Catalog 先构造 Occupancy、再构造 Deployable；Deployable 在初始化入口确认 Occupancy 依赖。初始化建立 card:null、cost:0、slots:0、refund:null 和固有撤退规则，表示尚未关联一次部署。Deployable 没有专属 Initial；部署事实在完整初始化后、登记前通过 setDeployment 设置。Deployment 预先登记的 Hook 保留原位置。
 
-公开入口为 hasDeployable、initialize、setDeployment、canRetreat、retreat、setRule、removeRule，以及相应模型类型。setDeployment 只负责未登记实例的部署事实构造，运行态规则仍经 Change 修改。Ref<Unit & Deployable> 已保证 Occupancy，无需内部重复能力检查。临时撤退规则按 ID 登记和移除，不清除其他来源。
+公开入口为 hasDeployable、initialize、setDeployment、canRetreat、retreat、setRule、removeRule，以及相应模型类型。setDeployment 只负责未登记实例的部署事实构造，运行态规则仍经 Change 修改。Ref<Unit & Deployable> 已保证 Occupancy，无需内部重复能力检查。撤退 Rule 的 Context 提供当前 self: Unit & Deployable；普通登记工厂与能力类型同放 capability.ts，临时撤退规则按 ID 登记和移除，不清除其他来源。
 
 ## 主动操作与被动死亡
 

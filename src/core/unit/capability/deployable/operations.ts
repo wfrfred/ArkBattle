@@ -20,7 +20,7 @@ export function canRetreat(battle: BattleState, reference: Ref<Unit & Deployable
 
     return (
         self?.lifecycle === "PRESENT" &&
-        self.deployable.retreatRules.every((rule) => rule.allows(battle, { ref: reference }))
+        self.deployable.retreatRules.every((rule) => rule.allows(battle, { self }))
     );
 }
 
