@@ -145,6 +145,12 @@ if (!map.checkGridValid(currentGrid)) {
 
 **I：** 避障缓存、ticker、旧速度均会影响后续轨迹，属于单位的运动运行事实，不能放进语义不可观测的 Navigation WeakMap 缓存。每 Tick 重新计算避障也不是已经证明等价的实现替换。
 
+2026-11-10 补核：当前客户端的 `MoveController.OnStart`（72232）仍采样脚点偏移，`CalculateIsHanging`（72236，`0x18090f280`）仍先推进 `PeriodicTicker`，仅到期时读取 `Enemy.offsetMapPosition`、重算及缓存局部力，再调用 `Next`；构造器（72247）将周期设为 3。`Enemy.get_offsetMapPosition`（77675）有 Cursor 时调用 `GetLocatorPosition`，否则取身体位置。[当前指纹与方法原文](../evidence/unit-audit-20261110/coordinates-numeric/native.json)。因此，ArkBattle 每次以身体位置重算、忽略脚点安装偏移的行为属于会影响轨迹的项目差异；本轮未找到已明确批准该取舍的依据。应单独决定是否接受，不能以“查询当前地图”或纯避障公式测试证明与原生等价，也不要求照搬整个控制器结构。
+
+### 世界坐标转地块的半整数规则
+
+**N：** 当前 `GridPosition.FromVectorPosition`（28641，`0x18214cb40`）分别将 y、x 送入 `0x18052eb60`，返回 row、col。该辅助程序分离整数与小数部分，在小数等于 `+0.5` 或 `-0.5` 时检查整数低位，选择偶数；因此正负半整数都采用 ties-to-even。`UnityEngine.Mathf.RoundToInt`（288330）经 `0x180007310` 使用相同奇偶判断。`0.5`、`-0.5`、`1.0` 的实际字节与两辅助程序原文见[本批证据](../evidence/unit-audit-20261110/coordinates-numeric/native.json)。这支持项目的 World→Tile 取偶；没有执行游戏或据此宣称验证非有限坐标、全部浮点精度路径。
+
 ### WALK、FLY 与动态障碍
 
 **N：** 两种移动方式共用上述普通运动结构，但读取各自的通行矩阵。FLY 不等于无条件穿越所有不可通地形：它仍受自己的硬不可通掩码限制。`CheckObstacleLikeOrUnpassable` 对硬不可通均返回 true；可通行时只有 WALK 继续检查 Tile.isObstacleLike，默认门槛为 moveCost>=1000。因此高成本可通格可以参与 WALK 避障，而不必成为硬不可通格。

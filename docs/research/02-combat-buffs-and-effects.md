@@ -40,6 +40,10 @@
 
 最终还应用该属性自身的范围限制。原始 `FINAL_SCALER.value` 的规范化由 `SharedUtils.ProcessFinalScaler` 参与处理，不能认为原始字段始终已经是可以直接相乘的数值。`loadFromBlackboard` 也说明数值可能来自运行参数，而非模板常量。
 
+**A，2026-11-10 默认范围补核。** 当前 `AttributesData` 原始 AttributeMeta、`Attributes.Reset`（65235）建立范围、`_CalculateAttributeValue`（65262）最终 Clamp，以及普通 Entity getter 已连起来核对：MaxHP 下限 1、DEF 下限 0、RES 为 0–100，两种元素抗性（31／32）也均为 0–100。[原始 blob、受限解码及消费链](evidence/unit-audit-20261110/coordinates-numeric/native.json)。这是默认原生范围，不排除显式范围覆写或 XLua。
+
+HP 元素公式（65900）与 EP 损伤公式（65904）另读取 `BattleFormula.MIN_ATK_FACTOR`；当前静态初始化（65915）写入 0.05，最终按此取最低伤害。**属性上限 100 与公式 5% 保底是两项事实。** 当前 Core 把抗性夹到 95，在普通正数简式中可能等效编码保底，但属性查询及后续修正不因此等价，也不能据此称原生抗性上限是 95。本次只补证，未修改项目属性或公式。
+
 **A，2026-11-10 补核。** `_LoadAttributesModifier`（66234）在黑板查找失败时回退 descriptor.value，显式 0 不回退；先将 operand 乘层数，再处理来源采样与负 FINAL_SCALER 的 `1+x` 修正。source 无效时跳过需要来源的 descriptor；source 分支的四种写槽及指令锚点见 [Case A §8.1](cases/01-buff-installation-and-parent-scope.md#81-原始属性-operand-的解释)。BAT／移速的项目 Tick 转换另属原生单位加项目单位政策，不是原生存在同名转换函数。
 
 **B。** 实际 `[uc]skills` 的 `bldsk_s_2`（对象 5978367411090055933）有 `attributeType=ATK(1), formulaItem=MULTIPLIER(1), loadFromBlackboard=true`。这是华法琳二技能的属性百分比贡献，不是最终 HP 伤害倍率。
@@ -258,7 +262,7 @@ wisdel_t_1[projectile_shock].ON_START
 ## 尚未核对的内容
 
 - 普通合并、层数 cap 与覆盖选胜已由 Case A §8 补齐；来源分组、特化／热更新、所有 OnBuffExtend 响应及完整内容启用链仍未穷尽。Data planner 的支持范围与 Core 分组接口映射不是原生调查直接决定的政策。
-- MaxHP 与法抗以外属性的最终限制、具体内容如何覆写范围，以及特殊强制 HP 接收政策。
+- MaxHP、DEF、RES 与两种元素抗性的默认范围已有当前消费链；其他属性、具体内容如何覆写范围，以及特殊强制 HP 接收政策仍未穷尽。
 - 原始 descriptor 的黑板、层数、source 转槽已补核；Case A 的 S3 鼓舞和 Case B 的两种 ATK 策略以外，各内容的实际采样／刷新时点仍须分别确认。
 - Healing／持续回复／元素治疗的全部事件、取消与统计归因路径。
 - Case C 的分担 skip 入口与泥岩取消后继以外，其他 HP／EP 接收入口、死亡移除与后继资格。

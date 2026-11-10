@@ -1,0 +1,1720 @@
+{
+  "provenance": {
+    "repository": "Kengxxiao/ArknightsGameData",
+    "revision": "bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d",
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/unit-audit-20261110/coordinates-numeric/scan_config.py",
+      "bytes": 6335,
+      "sha256": "2d204469577dd73adbed598ca47bc2b3ef8d3b849e3de6ac54ed23b8c8ec5cea"
+    },
+    "tools": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/config.py",
+        "bytes": 14074,
+        "sha256": "67c2a913386059a57f9316f25e532c9dd20cdc4adb91d820065d09fd9dec76e4"
+      }
+    ],
+    "selection": {
+      "prefix": "zh_CN/gamedata/levels/",
+      "filename": "level_*.json",
+      "totalFiles": 3997,
+      "treePathBlobListSha256": "0f9e4142fecd318ea07087a576c4c0fbbd3ab15b8ffe0ebe552649c2e4dd2372",
+      "excludedCohorts": [
+        "path containing /sandbox/",
+        "path containing /tower/"
+      ]
+    },
+    "scope": "Pinned JSON config and reference evidence only; excludes runtime execution and active XLua. Integer legacy ActionType values are not decoded as SPAWN."
+  },
+  "result": {
+    "complete": true,
+    "counts": {
+      "verifiedFiles": 3997,
+      "includedFiles": 3714,
+      "includedPhases": 4122,
+      "packPhases": 29,
+      "interleavedNamedSpawnPhases": 24,
+      "excludedFiles": 283,
+      "excludedPhases": 1247
+    },
+    "failures": [],
+    "sources": [
+      {
+        "path": "zh_CN/gamedata/levels/obt/roguelike/ro5/level_rogue5_b-9-a.json",
+        "gitBlob": "369b2b70ce41171849be73c40f1673d357bd8cf9",
+        "bytes": 569219,
+        "sha256": "2d71d4be0addfc65a9c61f8d3c55dc4c06d36cf1294d236efe6eabdfb302fe56",
+        "url": "https://github.com/Kengxxiao/ArknightsGameData/blob/bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d/zh_CN/gamedata/levels/obt/roguelike/ro5/level_rogue5_b-9-a.json"
+      },
+      {
+        "path": "zh_CN/gamedata/levels/obt/roguelike/ro6/level_rogue6_3-7.json",
+        "gitBlob": "3e3f459f67d5906de5a918e2b9d0c0efcc8687ab",
+        "bytes": 270974,
+        "sha256": "cfdf1d481daa2e534cdb914d57cee6b404f124012ca3e3a09b290694366e3196",
+        "url": "https://github.com/Kengxxiao/ArknightsGameData/blob/bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d/zh_CN/gamedata/levels/obt/roguelike/ro6/level_rogue6_3-7.json"
+      },
+      {
+        "path": "zh_CN/gamedata/levels/enemydata/enemy_database.json",
+        "gitBlob": "c788cdc94cde581088cb90a7a567e649f5962aa7",
+        "bytes": 15244245,
+        "sha256": "99f75bfe5460bf97a637c59f62cdaacb37770087f608c47480c581c2e6eff8c3",
+        "url": "https://github.com/Kengxxiao/ArknightsGameData/blob/bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d/zh_CN/gamedata/levels/enemydata/enemy_database.json"
+      }
+    ],
+    "interleaved": [
+      {
+        "path": "zh_CN/gamedata/levels/obt/roguelike/ro5/level_rogue5_b-9-a.json",
+        "pointer": "/branches/dysuib_relic_branch/phases/0/actions",
+        "groups": [
+          {
+            "group": "r1",
+            "filteredIndices": [
+              0,
+              3,
+              6,
+              9,
+              12,
+              15,
+              18
+            ],
+            "sourceIndices": [
+              0,
+              3,
+              6,
+              9,
+              12,
+              15,
+              18
+            ]
+          }
+        ],
+        "hasPack": true
+      },
+      {
+        "path": "zh_CN/gamedata/levels/obt/roguelike/ro5/level_rogue5_b-9-a.json",
+        "pointer": "/branches/dysuib_relic_branch/phases/2/actions",
+        "groups": [
+          {
+            "group": "r4",
+            "filteredIndices": [
+              0,
+              3,
+              6,
+              8,
+              12,
+              15,
+              18
+            ],
+            "sourceIndices": [
+              0,
+              3,
+              6,
+              8,
+              12,
+              15,
+              18
+            ]
+          }
+        ],
+        "hasPack": true
+      },
+      {
+        "path": "zh_CN/gamedata/levels/obt/roguelike/ro5/level_rogue5_b-9-a.json",
+        "pointer": "/branches/dysuib_relic_branch/phases/3/actions",
+        "groups": [
+          {
+            "group": "r6",
+            "filteredIndices": [
+              0,
+              3,
+              6,
+              9
+            ],
+            "sourceIndices": [
+              0,
+              3,
+              6,
+              9
+            ]
+          }
+        ],
+        "hasPack": true
+      },
+      {
+        "path": "zh_CN/gamedata/levels/obt/roguelike/ro5/level_rogue5_b-9-a.json",
+        "pointer": "/branches/dysuib_relic_branch/phases/4/actions",
+        "groups": [
+          {
+            "group": "r7",
+            "filteredIndices": [
+              1,
+              3,
+              6,
+              9,
+              12,
+              15,
+              18
+            ],
+            "sourceIndices": [
+              1,
+              3,
+              6,
+              9,
+              12,
+              15,
+              18
+            ]
+          }
+        ],
+        "hasPack": true
+      },
+      {
+        "path": "zh_CN/gamedata/levels/obt/roguelike/ro5/level_rogue5_b-9-a.json",
+        "pointer": "/branches/dysuib_relic_branch/phases/5/actions",
+        "groups": [
+          {
+            "group": "r8",
+            "filteredIndices": [
+              0,
+              3,
+              6,
+              9,
+              12,
+              15,
+              18
+            ],
+            "sourceIndices": [
+              0,
+              3,
+              6,
+              9,
+              12,
+              15,
+              18
+            ]
+          }
+        ],
+        "hasPack": true
+      },
+      {
+        "path": "zh_CN/gamedata/levels/obt/roguelike/ro5/level_rogue5_b-9-a.json",
+        "pointer": "/branches/dysuib_relic_branch/phases/6/actions",
+        "groups": [
+          {
+            "group": "r10",
+            "filteredIndices": [
+              1,
+              3,
+              6,
+              9,
+              12,
+              15,
+              18
+            ],
+            "sourceIndices": [
+              1,
+              3,
+              6,
+              9,
+              12,
+              15,
+              18
+            ]
+          }
+        ],
+        "hasPack": true
+      },
+      {
+        "path": "zh_CN/gamedata/levels/obt/roguelike/ro5/level_rogue5_b-9-b.json",
+        "pointer": "/branches/dysuib_relic_branch/phases/0/actions",
+        "groups": [
+          {
+            "group": "r1",
+            "filteredIndices": [
+              0,
+              3,
+              6,
+              9,
+              12,
+              15,
+              18
+            ],
+            "sourceIndices": [
+              0,
+              3,
+              6,
+              9,
+              12,
+              15,
+              18
+            ]
+          }
+        ],
+        "hasPack": true
+      },
+      {
+        "path": "zh_CN/gamedata/levels/obt/roguelike/ro5/level_rogue5_b-9-b.json",
+        "pointer": "/branches/dysuib_relic_branch/phases/2/actions",
+        "groups": [
+          {
+            "group": "r4",
+            "filteredIndices": [
+              0,
+              3,
+              6,
+              8,
+              12,
+              15,
+              18
+            ],
+            "sourceIndices": [
+              0,
+              3,
+              6,
+              8,
+              12,
+              15,
+              18
+            ]
+          }
+        ],
+        "hasPack": true
+      },
+      {
+        "path": "zh_CN/gamedata/levels/obt/roguelike/ro5/level_rogue5_b-9-b.json",
+        "pointer": "/branches/dysuib_relic_branch/phases/3/actions",
+        "groups": [
+          {
+            "group": "r6",
+            "filteredIndices": [
+              0,
+              3,
+              6,
+              9
+            ],
+            "sourceIndices": [
+              0,
+              3,
+              6,
+              9
+            ]
+          }
+        ],
+        "hasPack": true
+      },
+      {
+        "path": "zh_CN/gamedata/levels/obt/roguelike/ro5/level_rogue5_b-9-b.json",
+        "pointer": "/branches/dysuib_relic_branch/phases/4/actions",
+        "groups": [
+          {
+            "group": "r7",
+            "filteredIndices": [
+              1,
+              3,
+              6,
+              9,
+              12,
+              15,
+              18
+            ],
+            "sourceIndices": [
+              1,
+              3,
+              6,
+              9,
+              12,
+              15,
+              18
+            ]
+          }
+        ],
+        "hasPack": true
+      },
+      {
+        "path": "zh_CN/gamedata/levels/obt/roguelike/ro5/level_rogue5_b-9-b.json",
+        "pointer": "/branches/dysuib_relic_branch/phases/5/actions",
+        "groups": [
+          {
+            "group": "r8",
+            "filteredIndices": [
+              0,
+              3,
+              6,
+              9,
+              12,
+              15,
+              18
+            ],
+            "sourceIndices": [
+              0,
+              3,
+              6,
+              9,
+              12,
+              15,
+              18
+            ]
+          }
+        ],
+        "hasPack": true
+      },
+      {
+        "path": "zh_CN/gamedata/levels/obt/roguelike/ro5/level_rogue5_b-9-b.json",
+        "pointer": "/branches/dysuib_relic_branch/phases/6/actions",
+        "groups": [
+          {
+            "group": "r10",
+            "filteredIndices": [
+              1,
+              3,
+              6,
+              9,
+              12,
+              15,
+              18
+            ],
+            "sourceIndices": [
+              1,
+              3,
+              6,
+              9,
+              12,
+              15,
+              18
+            ]
+          }
+        ],
+        "hasPack": true
+      },
+      {
+        "path": "zh_CN/gamedata/levels/obt/roguelike/ro5/level_rogue5_b-9-c.json",
+        "pointer": "/branches/dysuib_relic_branch/phases/0/actions",
+        "groups": [
+          {
+            "group": "r1",
+            "filteredIndices": [
+              0,
+              3,
+              6,
+              9,
+              12,
+              15,
+              18
+            ],
+            "sourceIndices": [
+              0,
+              3,
+              6,
+              9,
+              12,
+              15,
+              18
+            ]
+          }
+        ],
+        "hasPack": true
+      },
+      {
+        "path": "zh_CN/gamedata/levels/obt/roguelike/ro5/level_rogue5_b-9-c.json",
+        "pointer": "/branches/dysuib_relic_branch/phases/2/actions",
+        "groups": [
+          {
+            "group": "r4",
+            "filteredIndices": [
+              0,
+              3,
+              6,
+              8,
+              12,
+              15,
+              18
+            ],
+            "sourceIndices": [
+              0,
+              3,
+              6,
+              8,
+              12,
+              15,
+              18
+            ]
+          }
+        ],
+        "hasPack": true
+      },
+      {
+        "path": "zh_CN/gamedata/levels/obt/roguelike/ro5/level_rogue5_b-9-c.json",
+        "pointer": "/branches/dysuib_relic_branch/phases/3/actions",
+        "groups": [
+          {
+            "group": "r6",
+            "filteredIndices": [
+              0,
+              3,
+              6,
+              9
+            ],
+            "sourceIndices": [
+              0,
+              3,
+              6,
+              9
+            ]
+          }
+        ],
+        "hasPack": true
+      },
+      {
+        "path": "zh_CN/gamedata/levels/obt/roguelike/ro5/level_rogue5_b-9-c.json",
+        "pointer": "/branches/dysuib_relic_branch/phases/4/actions",
+        "groups": [
+          {
+            "group": "r7",
+            "filteredIndices": [
+              1,
+              3,
+              6,
+              9,
+              12,
+              15,
+              18
+            ],
+            "sourceIndices": [
+              1,
+              3,
+              6,
+              9,
+              12,
+              15,
+              18
+            ]
+          }
+        ],
+        "hasPack": true
+      },
+      {
+        "path": "zh_CN/gamedata/levels/obt/roguelike/ro5/level_rogue5_b-9-c.json",
+        "pointer": "/branches/dysuib_relic_branch/phases/5/actions",
+        "groups": [
+          {
+            "group": "r8",
+            "filteredIndices": [
+              0,
+              3,
+              6,
+              9,
+              12,
+              15,
+              18
+            ],
+            "sourceIndices": [
+              0,
+              3,
+              6,
+              9,
+              12,
+              15,
+              18
+            ]
+          }
+        ],
+        "hasPack": true
+      },
+      {
+        "path": "zh_CN/gamedata/levels/obt/roguelike/ro5/level_rogue5_b-9-c.json",
+        "pointer": "/branches/dysuib_relic_branch/phases/6/actions",
+        "groups": [
+          {
+            "group": "r10",
+            "filteredIndices": [
+              1,
+              3,
+              6,
+              9,
+              12,
+              15,
+              18
+            ],
+            "sourceIndices": [
+              1,
+              3,
+              6,
+              9,
+              12,
+              15,
+              18
+            ]
+          }
+        ],
+        "hasPack": true
+      },
+      {
+        "path": "zh_CN/gamedata/levels/obt/roguelike/ro5/level_rogue5_b-9-d.json",
+        "pointer": "/branches/dysuib_relic_branch/phases/0/actions",
+        "groups": [
+          {
+            "group": "r1",
+            "filteredIndices": [
+              0,
+              3,
+              6,
+              9,
+              12,
+              15,
+              18
+            ],
+            "sourceIndices": [
+              0,
+              3,
+              6,
+              9,
+              12,
+              15,
+              18
+            ]
+          }
+        ],
+        "hasPack": true
+      },
+      {
+        "path": "zh_CN/gamedata/levels/obt/roguelike/ro5/level_rogue5_b-9-d.json",
+        "pointer": "/branches/dysuib_relic_branch/phases/2/actions",
+        "groups": [
+          {
+            "group": "r4",
+            "filteredIndices": [
+              0,
+              3,
+              6,
+              8,
+              12,
+              15,
+              18
+            ],
+            "sourceIndices": [
+              0,
+              3,
+              6,
+              8,
+              12,
+              15,
+              18
+            ]
+          }
+        ],
+        "hasPack": true
+      },
+      {
+        "path": "zh_CN/gamedata/levels/obt/roguelike/ro5/level_rogue5_b-9-d.json",
+        "pointer": "/branches/dysuib_relic_branch/phases/3/actions",
+        "groups": [
+          {
+            "group": "r6",
+            "filteredIndices": [
+              0,
+              3,
+              6,
+              9
+            ],
+            "sourceIndices": [
+              0,
+              3,
+              6,
+              9
+            ]
+          }
+        ],
+        "hasPack": true
+      },
+      {
+        "path": "zh_CN/gamedata/levels/obt/roguelike/ro5/level_rogue5_b-9-d.json",
+        "pointer": "/branches/dysuib_relic_branch/phases/4/actions",
+        "groups": [
+          {
+            "group": "r7",
+            "filteredIndices": [
+              1,
+              3,
+              6,
+              9,
+              12,
+              15,
+              18
+            ],
+            "sourceIndices": [
+              1,
+              3,
+              6,
+              9,
+              12,
+              15,
+              18
+            ]
+          }
+        ],
+        "hasPack": true
+      },
+      {
+        "path": "zh_CN/gamedata/levels/obt/roguelike/ro5/level_rogue5_b-9-d.json",
+        "pointer": "/branches/dysuib_relic_branch/phases/5/actions",
+        "groups": [
+          {
+            "group": "r8",
+            "filteredIndices": [
+              0,
+              3,
+              6,
+              9,
+              12,
+              15,
+              18
+            ],
+            "sourceIndices": [
+              0,
+              3,
+              6,
+              9,
+              12,
+              15,
+              18
+            ]
+          }
+        ],
+        "hasPack": true
+      },
+      {
+        "path": "zh_CN/gamedata/levels/obt/roguelike/ro5/level_rogue5_b-9-d.json",
+        "pointer": "/branches/dysuib_relic_branch/phases/6/actions",
+        "groups": [
+          {
+            "group": "r10",
+            "filteredIndices": [
+              1,
+              3,
+              6,
+              9,
+              12,
+              15,
+              18
+            ],
+            "sourceIndices": [
+              1,
+              3,
+              6,
+              9,
+              12,
+              15,
+              18
+            ]
+          }
+        ],
+        "hasPack": true
+      }
+    ],
+    "samples": [
+      {
+        "source": "zh_CN/gamedata/levels/obt/roguelike/ro5/level_rogue5_b-9-a.json",
+        "pointer": "/branches/dysuib_relic_branch/phases/0",
+        "value": {
+          "preDelay": 0.0,
+          "actions": [
+            {
+              "actionType": "SPAWN",
+              "managedByScheduler": true,
+              "key": "enemy_2105_dyrnge",
+              "count": 1,
+              "preDelay": 5.0,
+              "interval": 1.0,
+              "routeIndex": 7,
+              "blockFragment": false,
+              "autoPreviewRoute": false,
+              "autoDisplayEnemyInfo": false,
+              "isUnharmfulAndAlwaysCountAsKilled": false,
+              "hiddenGroup": null,
+              "randomSpawnGroupKey": "r1",
+              "randomSpawnGroupPackKey": "wa1",
+              "randomType": "ALWAYS",
+              "refreshType": "ALWAYS",
+              "weight": 5,
+              "dontBlockWave": false,
+              "forceBlockWaveInBranch": false
+            },
+            {
+              "actionType": "SPAWN",
+              "managedByScheduler": true,
+              "key": "enemy_2105_dyrnge",
+              "count": 1,
+              "preDelay": 5.0,
+              "interval": 1.0,
+              "routeIndex": 8,
+              "blockFragment": false,
+              "autoPreviewRoute": false,
+              "autoDisplayEnemyInfo": false,
+              "isUnharmfulAndAlwaysCountAsKilled": false,
+              "hiddenGroup": null,
+              "randomSpawnGroupKey": null,
+              "randomSpawnGroupPackKey": "wa1",
+              "randomType": "ALWAYS",
+              "refreshType": "ALWAYS",
+              "weight": 0,
+              "dontBlockWave": false,
+              "forceBlockWaveInBranch": false
+            },
+            {
+              "actionType": "SPAWN",
+              "managedByScheduler": true,
+              "key": "enemy_2105_dyrnge",
+              "count": 1,
+              "preDelay": 5.0,
+              "interval": 1.0,
+              "routeIndex": 9,
+              "blockFragment": false,
+              "autoPreviewRoute": false,
+              "autoDisplayEnemyInfo": false,
+              "isUnharmfulAndAlwaysCountAsKilled": false,
+              "hiddenGroup": null,
+              "randomSpawnGroupKey": null,
+              "randomSpawnGroupPackKey": "wa1",
+              "randomType": "ALWAYS",
+              "refreshType": "ALWAYS",
+              "weight": 0,
+              "dontBlockWave": false,
+              "forceBlockWaveInBranch": false
+            },
+            {
+              "actionType": "SPAWN",
+              "managedByScheduler": true,
+              "key": "enemy_1301_ymcnon_2",
+              "count": 1,
+              "preDelay": 5.0,
+              "interval": 1.0,
+              "routeIndex": 10,
+              "blockFragment": false,
+              "autoPreviewRoute": false,
+              "autoDisplayEnemyInfo": false,
+              "isUnharmfulAndAlwaysCountAsKilled": false,
+              "hiddenGroup": null,
+              "randomSpawnGroupKey": "r1",
+              "randomSpawnGroupPackKey": "wa2",
+              "randomType": "ALWAYS",
+              "refreshType": "ALWAYS",
+              "weight": 5,
+              "dontBlockWave": false,
+              "forceBlockWaveInBranch": false
+            },
+            {
+              "actionType": "SPAWN",
+              "managedByScheduler": true,
+              "key": "enemy_1301_ymcnon_2",
+              "count": 1,
+              "preDelay": 5.0,
+              "interval": 1.0,
+              "routeIndex": 11,
+              "blockFragment": false,
+              "autoPreviewRoute": false,
+              "autoDisplayEnemyInfo": false,
+              "isUnharmfulAndAlwaysCountAsKilled": false,
+              "hiddenGroup": null,
+              "randomSpawnGroupKey": null,
+              "randomSpawnGroupPackKey": "wa2",
+              "randomType": "ALWAYS",
+              "refreshType": "ALWAYS",
+              "weight": 0,
+              "dontBlockWave": false,
+              "forceBlockWaveInBranch": false
+            },
+            {
+              "actionType": "SPAWN",
+              "managedByScheduler": true,
+              "key": "enemy_1301_ymcnon_2",
+              "count": 1,
+              "preDelay": 5.0,
+              "interval": 1.0,
+              "routeIndex": 12,
+              "blockFragment": false,
+              "autoPreviewRoute": false,
+              "autoDisplayEnemyInfo": false,
+              "isUnharmfulAndAlwaysCountAsKilled": false,
+              "hiddenGroup": null,
+              "randomSpawnGroupKey": null,
+              "randomSpawnGroupPackKey": "wa2",
+              "randomType": "ALWAYS",
+              "refreshType": "ALWAYS",
+              "weight": 0,
+              "dontBlockWave": false,
+              "forceBlockWaveInBranch": false
+            },
+            {
+              "actionType": "SPAWN",
+              "managedByScheduler": true,
+              "key": "enemy_10007_trspsb_2",
+              "count": 1,
+              "preDelay": 5.0,
+              "interval": 1.0,
+              "routeIndex": 13,
+              "blockFragment": false,
+              "autoPreviewRoute": false,
+              "autoDisplayEnemyInfo": false,
+              "isUnharmfulAndAlwaysCountAsKilled": false,
+              "hiddenGroup": null,
+              "randomSpawnGroupKey": "r1",
+              "randomSpawnGroupPackKey": "wa3",
+              "randomType": "ALWAYS",
+              "refreshType": "ALWAYS",
+              "weight": 5,
+              "dontBlockWave": false,
+              "forceBlockWaveInBranch": false
+            },
+            {
+              "actionType": "SPAWN",
+              "managedByScheduler": true,
+              "key": "enemy_10007_trspsb_2",
+              "count": 1,
+              "preDelay": 5.0,
+              "interval": 1.0,
+              "routeIndex": 14,
+              "blockFragment": false,
+              "autoPreviewRoute": false,
+              "autoDisplayEnemyInfo": false,
+              "isUnharmfulAndAlwaysCountAsKilled": false,
+              "hiddenGroup": null,
+              "randomSpawnGroupKey": null,
+              "randomSpawnGroupPackKey": "wa3",
+              "randomType": "ALWAYS",
+              "refreshType": "ALWAYS",
+              "weight": 0,
+              "dontBlockWave": false,
+              "forceBlockWaveInBranch": false
+            },
+            {
+              "actionType": "SPAWN",
+              "managedByScheduler": true,
+              "key": "enemy_10007_trspsb_2",
+              "count": 1,
+              "preDelay": 5.0,
+              "interval": 1.0,
+              "routeIndex": 15,
+              "blockFragment": false,
+              "autoPreviewRoute": false,
+              "autoDisplayEnemyInfo": false,
+              "isUnharmfulAndAlwaysCountAsKilled": false,
+              "hiddenGroup": null,
+              "randomSpawnGroupKey": null,
+              "randomSpawnGroupPackKey": "wa3",
+              "randomType": "ALWAYS",
+              "refreshType": "ALWAYS",
+              "weight": 0,
+              "dontBlockWave": false,
+              "forceBlockWaveInBranch": false
+            },
+            {
+              "actionType": "SPAWN",
+              "managedByScheduler": true,
+              "key": "enemy_10058_cjfrog_2",
+              "count": 1,
+              "preDelay": 5.0,
+              "interval": 1.0,
+              "routeIndex": 16,
+              "blockFragment": false,
+              "autoPreviewRoute": false,
+              "autoDisplayEnemyInfo": false,
+              "isUnharmfulAndAlwaysCountAsKilled": false,
+              "hiddenGroup": null,
+              "randomSpawnGroupKey": "r1",
+              "randomSpawnGroupPackKey": "wa4",
+              "randomType": "ALWAYS",
+              "refreshType": "ALWAYS",
+              "weight": 5,
+              "dontBlockWave": false,
+              "forceBlockWaveInBranch": false
+            },
+            {
+              "actionType": "SPAWN",
+              "managedByScheduler": true,
+              "key": "enemy_10058_cjfrog_2",
+              "count": 1,
+              "preDelay": 5.0,
+              "interval": 1.0,
+              "routeIndex": 17,
+              "blockFragment": false,
+              "autoPreviewRoute": false,
+              "autoDisplayEnemyInfo": false,
+              "isUnharmfulAndAlwaysCountAsKilled": false,
+              "hiddenGroup": null,
+              "randomSpawnGroupKey": null,
+              "randomSpawnGroupPackKey": "wa4",
+              "randomType": "ALWAYS",
+              "refreshType": "ALWAYS",
+              "weight": 0,
+              "dontBlockWave": false,
+              "forceBlockWaveInBranch": false
+            },
+            {
+              "actionType": "SPAWN",
+              "managedByScheduler": true,
+              "key": "enemy_10058_cjfrog_2",
+              "count": 1,
+              "preDelay": 5.0,
+              "interval": 1.0,
+              "routeIndex": 18,
+              "blockFragment": false,
+              "autoPreviewRoute": false,
+              "autoDisplayEnemyInfo": false,
+              "isUnharmfulAndAlwaysCountAsKilled": false,
+              "hiddenGroup": null,
+              "randomSpawnGroupKey": null,
+              "randomSpawnGroupPackKey": "wa4",
+              "randomType": "ALWAYS",
+              "refreshType": "ALWAYS",
+              "weight": 0,
+              "dontBlockWave": false,
+              "forceBlockWaveInBranch": false
+            },
+            {
+              "actionType": "SPAWN",
+              "managedByScheduler": true,
+              "key": "enemy_1207_sfji_2",
+              "count": 1,
+              "preDelay": 5.0,
+              "interval": 1.0,
+              "routeIndex": 19,
+              "blockFragment": false,
+              "autoPreviewRoute": false,
+              "autoDisplayEnemyInfo": false,
+              "isUnharmfulAndAlwaysCountAsKilled": false,
+              "hiddenGroup": null,
+              "randomSpawnGroupKey": "r1",
+              "randomSpawnGroupPackKey": "wa5",
+              "randomType": "ALWAYS",
+              "refreshType": "ALWAYS",
+              "weight": 5,
+              "dontBlockWave": false,
+              "forceBlockWaveInBranch": false
+            },
+            {
+              "actionType": "SPAWN",
+              "managedByScheduler": true,
+              "key": "enemy_1207_sfji_2",
+              "count": 1,
+              "preDelay": 5.0,
+              "interval": 1.0,
+              "routeIndex": 20,
+              "blockFragment": false,
+              "autoPreviewRoute": false,
+              "autoDisplayEnemyInfo": false,
+              "isUnharmfulAndAlwaysCountAsKilled": false,
+              "hiddenGroup": null,
+              "randomSpawnGroupKey": null,
+              "randomSpawnGroupPackKey": "wa5",
+              "randomType": "ALWAYS",
+              "refreshType": "ALWAYS",
+              "weight": 0,
+              "dontBlockWave": false,
+              "forceBlockWaveInBranch": false
+            },
+            {
+              "actionType": "SPAWN",
+              "managedByScheduler": true,
+              "key": "enemy_1207_sfji_2",
+              "count": 1,
+              "preDelay": 5.0,
+              "interval": 1.0,
+              "routeIndex": 21,
+              "blockFragment": false,
+              "autoPreviewRoute": false,
+              "autoDisplayEnemyInfo": false,
+              "isUnharmfulAndAlwaysCountAsKilled": false,
+              "hiddenGroup": null,
+              "randomSpawnGroupKey": null,
+              "randomSpawnGroupPackKey": "wa5",
+              "randomType": "ALWAYS",
+              "refreshType": "ALWAYS",
+              "weight": 0,
+              "dontBlockWave": false,
+              "forceBlockWaveInBranch": false
+            },
+            {
+              "actionType": "SPAWN",
+              "managedByScheduler": true,
+              "key": "enemy_10100_crrol_2",
+              "count": 1,
+              "preDelay": 5.0,
+              "interval": 1.0,
+              "routeIndex": 22,
+              "blockFragment": false,
+              "autoPreviewRoute": false,
+              "autoDisplayEnemyInfo": false,
+              "isUnharmfulAndAlwaysCountAsKilled": false,
+              "hiddenGroup": null,
+              "randomSpawnGroupKey": "r1",
+              "randomSpawnGroupPackKey": "wa6",
+              "randomType": "ALWAYS",
+              "refreshType": "ALWAYS",
+              "weight": 5,
+              "dontBlockWave": false,
+              "forceBlockWaveInBranch": false
+            },
+            {
+              "actionType": "SPAWN",
+              "managedByScheduler": true,
+              "key": "enemy_10100_crrol_2",
+              "count": 1,
+              "preDelay": 5.0,
+              "interval": 1.0,
+              "routeIndex": 23,
+              "blockFragment": false,
+              "autoPreviewRoute": false,
+              "autoDisplayEnemyInfo": false,
+              "isUnharmfulAndAlwaysCountAsKilled": false,
+              "hiddenGroup": null,
+              "randomSpawnGroupKey": null,
+              "randomSpawnGroupPackKey": "wa6",
+              "randomType": "ALWAYS",
+              "refreshType": "ALWAYS",
+              "weight": 0,
+              "dontBlockWave": false,
+              "forceBlockWaveInBranch": false
+            },
+            {
+              "actionType": "SPAWN",
+              "managedByScheduler": true,
+              "key": "enemy_10100_crrol_2",
+              "count": 1,
+              "preDelay": 5.0,
+              "interval": 1.0,
+              "routeIndex": 24,
+              "blockFragment": false,
+              "autoPreviewRoute": false,
+              "autoDisplayEnemyInfo": false,
+              "isUnharmfulAndAlwaysCountAsKilled": false,
+              "hiddenGroup": null,
+              "randomSpawnGroupKey": null,
+              "randomSpawnGroupPackKey": "wa6",
+              "randomType": "ALWAYS",
+              "refreshType": "ALWAYS",
+              "weight": 0,
+              "dontBlockWave": false,
+              "forceBlockWaveInBranch": false
+            },
+            {
+              "actionType": "SPAWN",
+              "managedByScheduler": true,
+              "key": "enemy_10078_mprein_2",
+              "count": 1,
+              "preDelay": 5.0,
+              "interval": 1.0,
+              "routeIndex": 25,
+              "blockFragment": false,
+              "autoPreviewRoute": false,
+              "autoDisplayEnemyInfo": false,
+              "isUnharmfulAndAlwaysCountAsKilled": false,
+              "hiddenGroup": null,
+              "randomSpawnGroupKey": "r1",
+              "randomSpawnGroupPackKey": "wa7",
+              "randomType": "ALWAYS",
+              "refreshType": "ALWAYS",
+              "weight": 5,
+              "dontBlockWave": false,
+              "forceBlockWaveInBranch": false
+            },
+            {
+              "actionType": "SPAWN",
+              "managedByScheduler": true,
+              "key": "enemy_10078_mprein_2",
+              "count": 1,
+              "preDelay": 5.0,
+              "interval": 1.0,
+              "routeIndex": 26,
+              "blockFragment": false,
+              "autoPreviewRoute": false,
+              "autoDisplayEnemyInfo": false,
+              "isUnharmfulAndAlwaysCountAsKilled": false,
+              "hiddenGroup": null,
+              "randomSpawnGroupKey": null,
+              "randomSpawnGroupPackKey": "wa7",
+              "randomType": "ALWAYS",
+              "refreshType": "ALWAYS",
+              "weight": 0,
+              "dontBlockWave": false,
+              "forceBlockWaveInBranch": false
+            },
+            {
+              "actionType": "SPAWN",
+              "managedByScheduler": true,
+              "key": "enemy_10078_mprein_2",
+              "count": 1,
+              "preDelay": 5.0,
+              "interval": 1.0,
+              "routeIndex": 27,
+              "blockFragment": false,
+              "autoPreviewRoute": false,
+              "autoDisplayEnemyInfo": false,
+              "isUnharmfulAndAlwaysCountAsKilled": false,
+              "hiddenGroup": null,
+              "randomSpawnGroupKey": null,
+              "randomSpawnGroupPackKey": "wa7",
+              "randomType": "ALWAYS",
+              "refreshType": "ALWAYS",
+              "weight": 0,
+              "dontBlockWave": false,
+              "forceBlockWaveInBranch": false
+            }
+          ]
+        }
+      },
+      {
+        "source": "zh_CN/gamedata/levels/obt/roguelike/ro5/level_rogue5_b-9-a.json",
+        "pointer": "/branches/dycyue_body/phases/0",
+        "value": {
+          "preDelay": 0.0,
+          "actions": [
+            {
+              "actionType": "SPAWN",
+              "managedByScheduler": true,
+              "key": "enemy_2128_dysuib",
+              "count": 1,
+              "preDelay": 0.0,
+              "interval": 1.0,
+              "routeIndex": 0,
+              "blockFragment": false,
+              "autoPreviewRoute": false,
+              "autoDisplayEnemyInfo": false,
+              "isUnharmfulAndAlwaysCountAsKilled": false,
+              "hiddenGroup": null,
+              "randomSpawnGroupKey": null,
+              "randomSpawnGroupPackKey": null,
+              "randomType": "ALWAYS",
+              "refreshType": "ALWAYS",
+              "weight": 0,
+              "dontBlockWave": false,
+              "forceBlockWaveInBranch": false
+            },
+            {
+              "actionType": "SPAWN",
+              "managedByScheduler": true,
+              "key": "enemy_2128_dysuib_sp",
+              "count": 1,
+              "preDelay": 0.0,
+              "interval": 1.0,
+              "routeIndex": 1,
+              "blockFragment": false,
+              "autoPreviewRoute": false,
+              "autoDisplayEnemyInfo": false,
+              "isUnharmfulAndAlwaysCountAsKilled": false,
+              "hiddenGroup": null,
+              "randomSpawnGroupKey": null,
+              "randomSpawnGroupPackKey": null,
+              "randomType": "ALWAYS",
+              "refreshType": "ALWAYS",
+              "weight": 0,
+              "dontBlockWave": false,
+              "forceBlockWaveInBranch": false
+            },
+            {
+              "actionType": "SPAWN",
+              "managedByScheduler": true,
+              "key": "enemy_2128_dysuib",
+              "count": 1,
+              "preDelay": 0.0,
+              "interval": 1.0,
+              "routeIndex": 2,
+              "blockFragment": false,
+              "autoPreviewRoute": false,
+              "autoDisplayEnemyInfo": false,
+              "isUnharmfulAndAlwaysCountAsKilled": false,
+              "hiddenGroup": null,
+              "randomSpawnGroupKey": null,
+              "randomSpawnGroupPackKey": null,
+              "randomType": "ALWAYS",
+              "refreshType": "ALWAYS",
+              "weight": 0,
+              "dontBlockWave": false,
+              "forceBlockWaveInBranch": false
+            }
+          ]
+        }
+      },
+      {
+        "source": "zh_CN/gamedata/levels/obt/roguelike/ro5/level_rogue5_b-9-a.json",
+        "pointer": "/waves/0/fragments/0/actions/3",
+        "value": {
+          "actionType": "SPAWN",
+          "managedByScheduler": true,
+          "key": "enemy_2126_dycyue",
+          "count": 1,
+          "preDelay": 30.0,
+          "interval": 10.0,
+          "routeIndex": 3,
+          "blockFragment": false,
+          "autoPreviewRoute": true,
+          "autoDisplayEnemyInfo": true,
+          "isUnharmfulAndAlwaysCountAsKilled": false,
+          "hiddenGroup": null,
+          "randomSpawnGroupKey": null,
+          "randomSpawnGroupPackKey": null,
+          "randomType": "ALWAYS",
+          "refreshType": "ALWAYS",
+          "weight": 0,
+          "dontBlockWave": false,
+          "forceBlockWaveInBranch": false
+        }
+      },
+      {
+        "source": "zh_CN/gamedata/levels/obt/roguelike/ro6/level_rogue6_3-7.json",
+        "pointer": "/waves/0/fragments/1/actions",
+        "value": [
+          {
+            "actionType": "SPAWN",
+            "managedByScheduler": true,
+            "key": "enemy_10229_agactr_2",
+            "count": 1,
+            "preDelay": 0.0,
+            "interval": 1.0,
+            "routeIndex": 10,
+            "blockFragment": false,
+            "autoPreviewRoute": false,
+            "autoDisplayEnemyInfo": true,
+            "isUnharmfulAndAlwaysCountAsKilled": false,
+            "hiddenGroup": "normal",
+            "randomSpawnGroupKey": null,
+            "randomSpawnGroupPackKey": null,
+            "randomType": "ALWAYS",
+            "refreshType": "ALWAYS",
+            "weight": 50,
+            "dontBlockWave": false,
+            "forceBlockWaveInBranch": false
+          },
+          {
+            "actionType": "SPAWN",
+            "managedByScheduler": true,
+            "key": "enemy_2137_shsdgo",
+            "count": 1,
+            "preDelay": 0.0,
+            "interval": 1.0,
+            "routeIndex": 11,
+            "blockFragment": false,
+            "autoPreviewRoute": false,
+            "autoDisplayEnemyInfo": false,
+            "isUnharmfulAndAlwaysCountAsKilled": false,
+            "hiddenGroup": "shsdgo",
+            "randomSpawnGroupKey": null,
+            "randomSpawnGroupPackKey": null,
+            "randomType": "ALWAYS",
+            "refreshType": "ALWAYS",
+            "weight": 50,
+            "dontBlockWave": false,
+            "forceBlockWaveInBranch": false
+          },
+          {
+            "actionType": "SPAWN",
+            "managedByScheduler": true,
+            "key": "enemy_10229_agactr_2",
+            "count": 1,
+            "preDelay": 0.0,
+            "interval": 1.0,
+            "routeIndex": 12,
+            "blockFragment": false,
+            "autoPreviewRoute": false,
+            "autoDisplayEnemyInfo": false,
+            "isUnharmfulAndAlwaysCountAsKilled": false,
+            "hiddenGroup": "normal",
+            "randomSpawnGroupKey": "g1",
+            "randomSpawnGroupPackKey": "mag",
+            "randomType": "ALWAYS",
+            "refreshType": "ALWAYS",
+            "weight": 50,
+            "dontBlockWave": false,
+            "forceBlockWaveInBranch": false
+          },
+          {
+            "actionType": "SPAWN",
+            "managedByScheduler": true,
+            "key": "enemy_2133_shdopl",
+            "count": 1,
+            "preDelay": 0.0,
+            "interval": 1.0,
+            "routeIndex": 13,
+            "blockFragment": false,
+            "autoPreviewRoute": false,
+            "autoDisplayEnemyInfo": false,
+            "isUnharmfulAndAlwaysCountAsKilled": false,
+            "hiddenGroup": "normal",
+            "randomSpawnGroupKey": null,
+            "randomSpawnGroupPackKey": "mag",
+            "randomType": "ALWAYS",
+            "refreshType": "ALWAYS",
+            "weight": 50,
+            "dontBlockWave": false,
+            "forceBlockWaveInBranch": false
+          },
+          {
+            "actionType": "SPAWN",
+            "managedByScheduler": true,
+            "key": "enemy_2133_shdopl",
+            "count": 1,
+            "preDelay": 0.0,
+            "interval": 1.0,
+            "routeIndex": 14,
+            "blockFragment": false,
+            "autoPreviewRoute": false,
+            "autoDisplayEnemyInfo": false,
+            "isUnharmfulAndAlwaysCountAsKilled": false,
+            "hiddenGroup": "normal",
+            "randomSpawnGroupKey": null,
+            "randomSpawnGroupPackKey": "mag",
+            "randomType": "ALWAYS",
+            "refreshType": "ALWAYS",
+            "weight": 50,
+            "dontBlockWave": false,
+            "forceBlockWaveInBranch": false
+          },
+          {
+            "actionType": "SPAWN",
+            "managedByScheduler": true,
+            "key": "enemy_10229_agactr_2",
+            "count": 1,
+            "preDelay": 0.0,
+            "interval": 1.0,
+            "routeIndex": 15,
+            "blockFragment": false,
+            "autoPreviewRoute": false,
+            "autoDisplayEnemyInfo": false,
+            "isUnharmfulAndAlwaysCountAsKilled": false,
+            "hiddenGroup": "normal",
+            "randomSpawnGroupKey": null,
+            "randomSpawnGroupPackKey": "mag",
+            "randomType": "ALWAYS",
+            "refreshType": "ALWAYS",
+            "weight": 50,
+            "dontBlockWave": false,
+            "forceBlockWaveInBranch": false
+          },
+          {
+            "actionType": "SPAWN",
+            "managedByScheduler": true,
+            "key": "enemy_1080_sotidp_2",
+            "count": 1,
+            "preDelay": 0.0,
+            "interval": 1.0,
+            "routeIndex": 16,
+            "blockFragment": false,
+            "autoPreviewRoute": false,
+            "autoDisplayEnemyInfo": true,
+            "isUnharmfulAndAlwaysCountAsKilled": false,
+            "hiddenGroup": "normal",
+            "randomSpawnGroupKey": "g1",
+            "randomSpawnGroupPackKey": "def",
+            "randomType": "ALWAYS",
+            "refreshType": "ALWAYS",
+            "weight": 50,
+            "dontBlockWave": false,
+            "forceBlockWaveInBranch": false
+          },
+          {
+            "actionType": "SPAWN",
+            "managedByScheduler": true,
+            "key": "enemy_1080_sotidp_2",
+            "count": 1,
+            "preDelay": 0.0,
+            "interval": 1.0,
+            "routeIndex": 17,
+            "blockFragment": false,
+            "autoPreviewRoute": false,
+            "autoDisplayEnemyInfo": false,
+            "isUnharmfulAndAlwaysCountAsKilled": false,
+            "hiddenGroup": "normal",
+            "randomSpawnGroupKey": null,
+            "randomSpawnGroupPackKey": "def",
+            "randomType": "ALWAYS",
+            "refreshType": "ALWAYS",
+            "weight": 50,
+            "dontBlockWave": false,
+            "forceBlockWaveInBranch": false
+          },
+          {
+            "actionType": "SPAWN",
+            "managedByScheduler": true,
+            "key": "enemy_1080_sotidp_2",
+            "count": 1,
+            "preDelay": 0.0,
+            "interval": 1.0,
+            "routeIndex": 18,
+            "blockFragment": false,
+            "autoPreviewRoute": false,
+            "autoDisplayEnemyInfo": false,
+            "isUnharmfulAndAlwaysCountAsKilled": false,
+            "hiddenGroup": "normal",
+            "randomSpawnGroupKey": null,
+            "randomSpawnGroupPackKey": "def",
+            "randomType": "ALWAYS",
+            "refreshType": "ALWAYS",
+            "weight": 50,
+            "dontBlockWave": false,
+            "forceBlockWaveInBranch": false
+          },
+          {
+            "actionType": "SPAWN",
+            "managedByScheduler": true,
+            "key": "enemy_1080_sotidp_2",
+            "count": 1,
+            "preDelay": 0.0,
+            "interval": 1.0,
+            "routeIndex": 19,
+            "blockFragment": false,
+            "autoPreviewRoute": false,
+            "autoDisplayEnemyInfo": false,
+            "isUnharmfulAndAlwaysCountAsKilled": false,
+            "hiddenGroup": "normal",
+            "randomSpawnGroupKey": null,
+            "randomSpawnGroupPackKey": "def",
+            "randomType": "ALWAYS",
+            "refreshType": "ALWAYS",
+            "weight": 50,
+            "dontBlockWave": false,
+            "forceBlockWaveInBranch": false
+          }
+        ]
+      },
+      {
+        "source": "zh_CN/gamedata/levels/obt/roguelike/ro5/level_rogue5_b-9-a.json",
+        "pointer": "/enemyDbRefs/28/id",
+        "value": "enemy_2128_dysuib_sp"
+      },
+      {
+        "source": "zh_CN/gamedata/levels/obt/roguelike/ro5/level_rogue5_b-9-a.json",
+        "pointer": "/enemyDbRefs/28/level",
+        "value": 0
+      },
+      {
+        "source": "zh_CN/gamedata/levels/obt/roguelike/ro5/level_rogue5_b-9-a.json",
+        "pointer": "/enemyDbRefs/28/useDb",
+        "value": false
+      },
+      {
+        "source": "zh_CN/gamedata/levels/obt/roguelike/ro5/level_rogue5_b-9-a.json",
+        "pointer": "/enemyDbRefs/28/overwrittenData/prefabKey",
+        "value": {
+          "m_defined": true,
+          "m_value": "enemy_2128_dysuib"
+        }
+      },
+      {
+        "source": "zh_CN/gamedata/levels/obt/roguelike/ro5/level_rogue5_b-9-a.json",
+        "pointer": "/enemyDbRefs/28/overwrittenData/talentBlackboard",
+        "value": [
+          {
+            "key": "WithdrawAlly.attack@respawn_time",
+            "value": 0.15,
+            "valueStr": null
+          },
+          {
+            "key": "DysuihAura.damage_resistance",
+            "value": 0.5,
+            "valueStr": null
+          },
+          {
+            "key": "DysuihAura.stun",
+            "value": 15.0,
+            "valueStr": null
+          },
+          {
+            "key": "SecondRelicTalent.def",
+            "value": 1500.0,
+            "valueStr": null
+          },
+          {
+            "key": "SecondRelicTalent.enemy_dysuib_second_relic_t[summon_enemy].interval",
+            "value": 30.0,
+            "valueStr": null
+          },
+          {
+            "key": "SecondRelicTalent.active_relic_a",
+            "value": 0.0,
+            "valueStr": null
+          },
+          {
+            "key": "SecondRelicTalent.active_relic_b",
+            "value": 1.0,
+            "valueStr": null
+          },
+          {
+            "key": "SecondRelicTalent.enemy_dysuib_second_relic_t[summon_enemy].branch_id",
+            "value": 0.0,
+            "valueStr": "dysuib_relic_branch"
+          },
+          {
+            "key": "inverseDamage.atk_scale",
+            "value": 0.1,
+            "valueStr": null
+          }
+        ]
+      },
+      {
+        "source": "zh_CN/gamedata/levels/enemydata/enemy_database.json",
+        "pointer": "/enemies/1672/Key",
+        "value": "enemy_2126_dycyue"
+      },
+      {
+        "source": "zh_CN/gamedata/levels/enemydata/enemy_database.json",
+        "pointer": "/enemies/1672/Value/0/enemyData/prefabKey",
+        "value": {
+          "m_defined": true,
+          "m_value": "enemy_2126_dycyue"
+        }
+      },
+      {
+        "source": "zh_CN/gamedata/levels/enemydata/enemy_database.json",
+        "pointer": "/enemies/1672/Value/0/enemyData/talentBlackboard",
+        "value": [
+          {
+            "key": "MasterBlcok.base_atk",
+            "value": 0.3,
+            "valueStr": null
+          },
+          {
+            "key": "MasterBlcok.prob",
+            "value": 0.5,
+            "valueStr": null
+          },
+          {
+            "key": "MasterBlcok.branch_id",
+            "value": 0.0,
+            "valueStr": "summon_dysuih"
+          },
+          {
+            "key": "BranchData.max_index",
+            "value": 5.0,
+            "valueStr": null
+          },
+          {
+            "key": "MasterBlcok.action_index",
+            "value": 2.0,
+            "valueStr": null
+          }
+        ]
+      },
+      {
+        "source": "zh_CN/gamedata/levels/enemydata/enemy_database.json",
+        "pointer": "/enemies/1672/Value/0/enemyData/skills",
+        "value": [
+          {
+            "prefabKey": "Punch",
+            "priority": 0,
+            "cooldown": 30.0,
+            "initCooldown": 10.0,
+            "spCost": 0,
+            "blackboard": [
+              {
+                "key": "range_radius",
+                "value": 13.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "prefabKey": "SendPunchCard",
+            "priority": 1,
+            "cooldown": 36.0,
+            "initCooldown": 5.0,
+            "spCost": 0,
+            "blackboard": [
+              {
+                "key": "cnt",
+                "value": 1.0,
+                "valueStr": null
+              },
+              {
+                "key": "max_cards",
+                "value": 8.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "prefabKey": "SummonBody",
+            "priority": 2,
+            "cooldown": 54.0,
+            "initCooldown": 20.0,
+            "spCost": 0,
+            "blackboard": [
+              {
+                "key": "branch_id",
+                "value": 0.0,
+                "valueStr": "dycyue_body"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "source": "zh_CN/gamedata/levels/enemydata/enemy_database.json",
+        "pointer": "/enemies/1674/Key",
+        "value": "enemy_2128_dysuib"
+      },
+      {
+        "source": "zh_CN/gamedata/levels/enemydata/enemy_database.json",
+        "pointer": "/enemies/1674/Value/0/enemyData/prefabKey",
+        "value": {
+          "m_defined": true,
+          "m_value": "enemy_2128_dysuib"
+        }
+      },
+      {
+        "source": "zh_CN/gamedata/levels/enemydata/enemy_database.json",
+        "pointer": "/enemies/1674/Value/0/enemyData/talentBlackboard",
+        "value": [
+          {
+            "key": "WithdrawAlly.attack@respawn_time",
+            "value": 0.15,
+            "valueStr": null
+          },
+          {
+            "key": "DysuihAura.damage_resistance",
+            "value": 0.5,
+            "valueStr": null
+          },
+          {
+            "key": "DysuihAura.stun",
+            "value": 15.0,
+            "valueStr": null
+          },
+          {
+            "key": "SecondRelicTalent.def",
+            "value": 1500.0,
+            "valueStr": null
+          },
+          {
+            "key": "SecondRelicTalent.enemy_dysuib_second_relic_t[summon_enemy].interval",
+            "value": 30.0,
+            "valueStr": null
+          },
+          {
+            "key": "SecondRelicTalent.active_relic_a",
+            "value": 0.0,
+            "valueStr": null
+          },
+          {
+            "key": "SecondRelicTalent.active_relic_b",
+            "value": 0.0,
+            "valueStr": null
+          },
+          {
+            "key": "SecondRelicTalent.enemy_dysuib_second_relic_t[summon_enemy].branch_id",
+            "value": 0.0,
+            "valueStr": "dysuib_relic_branch"
+          },
+          {
+            "key": "inverseDamage.atk_scale",
+            "value": 0.0,
+            "valueStr": null
+          }
+        ]
+      },
+      {
+        "source": "zh_CN/gamedata/levels/enemydata/enemy_database.json",
+        "pointer": "/enemies/1674/Value/0/enemyData/skills",
+        "value": null
+      }
+    ]
+  }
+}

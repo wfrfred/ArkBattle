@@ -47,6 +47,14 @@ DataDriven 的 InitValidation 将 actionId 写为 `(subSchedulerI, waveI, fragI,
 
 `_ProcessEmptyActionKeys` 只根据 key 是否为空设置 isValid=false，不根据 actionType 专门识别 EMPTY。不能从函数名推断所有 EMPTY 类型都已被清理。
 
+### Pack 与交错随机组的实际范围
+
+2026-11-10 补核固定镜像的 3,997 份关卡；排除 sandbox/tower 的 3,714 份中，共检查 4,122 个 Branch Phase，29 个含 Pack，24 个含不连续的同名 SPAWN 随机组。交错组正例来自普通集成战略 `level_rogue5_b-9-a/b/c/d` 的 `dysuib_relic_branch`；例如 Phase 0 的 `r1` 候选位于索引 0、3、6……，中间是各候选 Pack 的关联动作。主线 `level_rogue6_3-7` 也实际配置 `g1 → mag/def` 两个 Pack。[范围、原节点与指纹](../evidence/unit-audit-20261110/coordinates-numeric/configuration.json)。这些计数只描述列明配置，不代表每项都已观测触发；旧数字 ActionType 没有擅自当作 SPAWN。
+
+**N：** 当前 `PhaseData.get_randomActionGroups`（32192）遍历完整 actions，按非空 key 汇入字典，同名项不要求相邻。`FetchActionsWithRandomSpawn(true)`（32193）先按组抽取并收集 Pack Key，再按原数组顺序返回已选及同 Pack 的有效动作。`enemy_2128_dysuib → Talents → SecondRelicTalent` 实际绑定的模板，会在宿主具备 `rogue_5_dyswrd_relic_b` 且 `active_relic_b=1` 时安装调用 `MoveNextLevelBranch(loop=true)` 的程序；所选关卡给 `enemy_2128_dysuib_sp` 提供该开启值并通过 `dycyue_body` 出生。[Prefab、条件与模板](../evidence/unit-audit-20261110/coordinates-numeric/content.json)、[分组及 Execute 原文](../evidence/unit-audit-20261110/coordinates-numeric/native.json)。本批未沿玩法准备层追溯该条件 Buff 的全部安装来源，也未执行客户端。
+
+因此，Data 当前拒绝 Pack、要求 Branch 同组候选连续，是适配器支持子集，不是原生合法性约束；不能从当前 throw 或卫戍样本的默认值推出这些需求不存在。继续拒绝还是扩展转换属于待明确的项目范围选择，本轮不定案。
+
 ## 3. 逐字段消费矩阵
 
 下表的“本链不读”只限定对应阶段。直接消费与间接后继分列，不能把某阶段不读当成字段全局无意义。

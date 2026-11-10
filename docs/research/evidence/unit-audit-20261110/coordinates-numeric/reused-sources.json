@@ -1,0 +1,42 @@
+{
+  "scope": "Existing immutable originals referenced, not copied or relabelled as current extraction.",
+  "legacyLocomotionClient": {
+    "dll": {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+      "sha256": "583b04ff4d1b1a4b35eaf09d77d936408c25447c9e345ef0463d814b6a123fc5",
+      "size": 218523112
+    },
+    "metadata": {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+      "sha256": "d3fede171f92740a6f5dc053c58c7013d3c962db764ad1f05cbe977c074fcd1f",
+      "size": 45805368
+    }
+  },
+  "sources": [
+    {
+      "path": "locomotion-native-20261019/space/71055.asm",
+      "bytes": 3864,
+      "sha256": "707f0a45e8a43c6bc36a9b869e257210b48215440c3ef1b64a1df53a84cf54dc"
+    },
+    {
+      "path": "locomotion-native-20261019/space/71059.asm",
+      "bytes": 8732,
+      "sha256": "7fa9a8c746db81dd2eb3d345ec0fec156ede9c0b8f0db4725957400374771465"
+    },
+    {
+      "path": "locomotion-native-20261019/space/71060.asm",
+      "bytes": 18292,
+      "sha256": "c0a4872ea68912311577885138ad5d2f3cd646aaed238766b7ce0ec32bbaa950"
+    },
+    {
+      "path": "locomotion-native-20261019/space/metadata.json",
+      "bytes": 250842,
+      "sha256": "dbe7e938ecc58d75695021e338f6dc062e73b47ac0bf957790cda328195c381b"
+    },
+    {
+      "path": "scheduler-general-20261107/preprocess/field-path-matrix.md",
+      "bytes": 12132,
+      "sha256": "bb2983f5758fcf475e35dffbedcc196cce9fa54f34787e3d864f8e024c251b04"
+    }
+  ]
+}
