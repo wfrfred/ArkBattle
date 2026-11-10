@@ -11,13 +11,12 @@ import * as units from "../../core/unit/index.js";
 import type { Id, Unit } from "../../core/unit/index.js";
 
 import * as effects from "../../core/unit/effect/index.js";
-import { ref as effectRef, type Effect } from "../../core/unit/effect/index.js";
+import type { Effect } from "../../core/unit/effect/index.js";
 
 import { hasLayer } from "../../core/unit/capability/layer/capability.js";
 import * as presence from "../../core/unit/capability/presence/index.js";
 import { hasAllegiance } from "../../core/unit/capability/allegiance/capability.js";
 import { hasTargetable } from "../../core/unit/capability/targetable/capability.js";
-import { TICKS_PER_SECOND } from "../../core/tick.js";
 import { invisible } from "../../core/effects/visibility.js";
 import * as terrain from "./definition.js";
 import { createDeepseaEffect, createInfectionEffect, createMireEffect } from "./effects.js";
@@ -148,12 +147,13 @@ function create<P extends object>(
                     const effect =
                         previous.effect === null ? undefined : effects.get(battle, previous.effect);
                     const effectExists = effect !== undefined && effect.lifecycle !== "ENDING";
-                    if (previous.index === index && effectExists) {
+                    if (previous.index === index && (effectExists || behaviour.retainOnLeave)) {
                         continue;
                     }
 
                     const previousTile = map.tiles.get(previous.index, definition);
                     if (
+                        !behaviour.retainOnLeave &&
                         effectExists &&
                         previousTile?.definition.terrain.params === tile.definition.terrain.params
                     ) {
@@ -241,23 +241,10 @@ export function createTerrainMechanism(
             intervalTicks: 1,
             retainOnLeave: true,
             accepts: onGround,
-            enter(battle, unit, params) {
-                const previous = unit.effects
-                    .values()
-                    .find(
-                        (effect) =>
-                            effect.definition.id === "terrain/infection" &&
-                            effect.lifecycle !== "ENDING",
-                    );
-                if (previous !== undefined) {
-                    return { state: battle, value: effectRef(previous) };
-                }
-
-                return effects.install(battle, units.ref(unit), createInfectionEffect(params), {
-                    state: { nextTick: battle.tick + TICKS_PER_SECOND },
+            enter: (battle, unit, params) =>
+                effects.install(battle, units.ref(unit), createInfectionEffect(params), {
                     expiration: { type: "DEADLINE", tick: battle.tick + params.durationTicks },
-                });
-            },
+                }),
         });
     }
     if (definition === terrain.mire) {

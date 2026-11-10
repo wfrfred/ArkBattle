@@ -142,6 +142,20 @@ START／END 不能自行创建敌人或判断路线完成。TELEPORT_IN／OUT �
 
 重入不是一个“找到旧实例就完全忽略”的原生操作。该 Buff 使用 DEFAULT 覆盖组；`OverrideGroup._DoAddInternal`（66291，`0x1806e0a9e → 0x1806e0ffb`）仍将新实例加入组，没有执行旧实例时间刷新。`_DoUpdateInternal` 只启用首个未结束候选，`Buff.CompareTo` 按 priority、同优先级按 instanceUid 排序；`Buff.OnTick`（66126，`0x1806d565f` 之后）在未启用时也推进剩余时长。因此旧实例本身不刷新，不等于总体效果一定在首次到期时消失：后续入格的独立候选仍可能接替。不同格输入也不应一概认定永久使用首格参数。将其压成“首格参数＋首次截止时间、期间所有重入忽略”，需要明确作为项目选择，不能标为已经证实的原生政策。
 
+感染的 `priority=-1` 是自动优先级，不是所有候选固定为 -1。针对本模板的两项修正，[优先级原件](evidence/unit-audit-20261110/control-terrain/infection-priority.json)可压为：
+
+```text
+priority = RoundToInt_FP(1000 × (atk + attack_speed))
+```
+
+`_LoadAttributesModifier`（66234）将 38 个属性槽的 Addition、Multiplier、FinalAddition 初始化为 0，FinalScaler 初始化为 1；感染只写 ATK 的 Multiplier=`atk` 和 ASPD 的 Addition=`attack_speed`，不从来源基础属性取值，堆叠数为 1。`_CalculatePriority`（66243）的空 `priorityBBKeys` 分支等权累加前三组，既不取绝对值，也不给 ATK 百分比额外乘 100；FinalScaler 不参与。`0x1806d8d55` 读取的 float 常量 `0x1870addf0` 为 1000.0，默认 Scaler 常量 `0x1870adbe0` 为 1.0。缺少黑板字段时，这两项配置的 fallback 值均为 0。
+
+`RoundToInt_FP` 经 `FP.Round` 再 `FP.AsInt`：按 Q32.32 数值取最近整数，恰半时取偶；不是 JavaScript `Math.round`。例如 atk=0.2、attack_speed=20 得到 20200。高 priority 优先，同 priority 按 instanceUid 的先后选择；damage 和 duration 不参与本模板的优先级，但不同属性增益可能改变候选先后。
+
+候补期间只有 lifetime 继续流逝，触发周期暂停。`Buff.OnTick`（66126，`0x1806d55ca`）在 `isEnabled=false` 时跳过整个 PeriodicTimer／OnTrigger 区间，直接进入剩余时长扣减；OnEnable 不重置该 timer。从未启用的候补接替后仍要等待保存的完整一秒触发预算，不按出生时刻补历史伤害；若曾部分推进，保留其剩余预算。
+
+当前实际组件是普通 BuffTile，不是 UpdateableBuffTile；本批方法表没有周期更新或 Buff 到期回调。普通路径在入格／重新获得适用资格时添加，未按新旧格参数相等合并。只要没有离格或额外资格回调，原效果到期不会由该地块主动重新添加；不能用持续轮询补发把这种入格效果改成永久效果。
+
 **沼泽。** 实际 `tile_mire` 安装 `buff_mire`；可见控制器提供 `buff_mire[mark]` 和每 0.1 秒的 `[checker]`。`buff_mire` 的开始程序仅在没有 `[trigger]` 时创建一个独立的每秒 trigger；它不是派生随格结束的 Buff，首次周期配置为不等待，具体首帧落点仍受原生 Buff 调度时点影响。trigger 主动触发 mark；mark 对 ENEMY 再检查重量 `>= value`，普通敌人加一层、达门槛加两层，角色类分支只加攻速层，均受 max_stack_cnt 限制。实际地图覆写门槛为 3、上限为 10。
 
 相邻格的旧地块 Buff 结束不会直接结束这个 trigger；进入下一沼泽时又因已有 trigger 而不重建周期。checker 只在定期发现已无 `buff_mire` 时结束 trigger、属性和表现 Buff。因此“相邻连续沼泽不重置叠层周期”有具体内容链支持；真正离开后清理是 checker 周期观察，不是原生每次出格都同步清空全部层数。项目当前安装沼泽 Effect 时传入 `nextTick=battle.tick`，首次 Effect Tick 即可加层，没有另外等待一整秒；这里仍须区分首次可调度微相位与一秒周期预算。特殊敌人的免疫标记等分支保留在模板原件中，没有泛化成所有单位免疫规则。

@@ -49,7 +49,7 @@ Runtime 依次推进 `Movement → Mechanism → Blocking`。Movement 先推进 
 
 `walkCost` 保存最终有效步行代价，不是可任意累加或取最大值的基础代价。原生普通 `Tile.get_moveCost`（70678，`0x1808adc40`）按 `overrideObstacleLikeMoveCost` 返回 1000 或 1；`HoleTile.get_moveCost`（70580，`0x1808addd0`）直接返回 1,000,000，不受该标记降低。当前装置 Content 的 apply 对普通地形赋 1000，对真实地穴保留定义中的固定代价 1,000,000；不把这些结果泛化成 `max(任意当前代价, 1000)`。完整地穴身份由 Terrain Definition 表达，不能仅凭“hole-like”状态推断固定代价。
 
-- 活性源石按进入格子的参数安装持续 Effect，离格后保留；duration 从附加时开始计时，首次伤害等待一秒。
+- 活性源石每次进入格子都按该格参数登记独立 Effect，相邻同参数格也分别登记；离格后保留。每个实例的绝对截止时间从该次入格起算，被覆写时仍流逝，停留原格到期不重新附加。同组优先级为 `roundToEven(1000 × (attackBonusRatio + attackSpeedBonus))`，高者生效、同级先登记者生效；使用当前生效实例的伤害和增益参数。每个实例保存剩余触发 Tick，仅在 ACTIVE 时推进，首次伤害等待一秒；被覆写时暂停周期，恢复后沿用剩余预算，不补发等待期间的伤害。依据与优先级公式见[活性源石原生短链](../research/03-space-units-and-mechanisms.md#51-进入周期与资格的原生短链2026-11-10-补核)。必要代表场景串联同参数相邻格、不同参数格的覆盖与候补接替，检查实际伤害、增益与独立到期，不按每种参数组合增加矩阵。
 - 烟雾对具有 Targetable 的我方单位安装通用隐匿 Effect，离开时撤销；阻挡与解除阻挡不改变隐匿，也没有恢复延迟。必要代表场景检查阻挡期间仍不可被普通索敌选中、空中单位同样受益，以及离开后恢复受选；依据见[烟雾原生短链](../research/03-space-units-and-mechanisms.md#51-进入周期与资格的原生短链2026-11-10-补核)。
 - 沼泽、深水分开保存控制器扫描进度与宿主 Effect 的周期进度，不在每次轮询重建 Effect 或重置周期。
 - 非 retainOnLeave Effect 显式绑定控制器 Mechanism 的 lifetime，终止时由 DAG 清理并等待；控制器的 Contact 清理直接归 onDisable；Prepare 以 ENDING 调用它时只清 Contact，不手工结束这些 Effect，也不在 onEnd 重复清理。离格、换地形和可逆 Mechanism disable 继续按 Contact 业务请求结束。retainOnLeave 的活性源石等效果不自动建立绑定，避免错误缩短持续期。

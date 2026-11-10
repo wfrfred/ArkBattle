@@ -75,25 +75,39 @@ function until(battle, tick) {
     return battle;
 }
 
-test("infection keeps the entered tile's damage and original duration through leaving and re-entry", () => {
+test("infection keeps independent entry deadlines and resumes paused damage periods after overrides", () => {
+    const first = terrain.infection.create({ ...infectionParams(80), durationTicks: 120 });
     const configured = setup([
-        terrain.infection.create(infectionParams(80)),
-        terrain.infection.create(infectionParams(75)),
+        first, first,
+        terrain.infection.create({
+            damage: 75, attackBonusRatio: 0.3, attackSpeedBonus: 30, durationTicks: 50,
+        }),
         terrain.normal.create({}),
-    ], [unit(0, combat), unit(1, combat)], [terrain.infection]);
+    ], [unit(0, combat)], [terrain.infection]);
     let battle = step(configured.battle, []);
     assert.equal(resolveAttack(battle, current(battle)), 120);
     assert.equal(attackSpeed(battle), 120);
-    battle = step(move(battle, 0, 2), []);
-    battle = step(move(battle, 0, 1), []);
+    battle = step(move(until(battle, 11), 0, 1), []);
+    battle = step(move(battle, 0, 3), []);
     battle = until(battle, 30);
     assert.equal(current(battle).vitality.hp, 1000);
     battle = step(battle, []);
-    assert.deepEqual([0, 1].map(id => current(battle, id).vitality.hp), [920, 925]);
-    battle = move(battle, 0, 2);
-    battle = mechanisms.remove(battle, configured.mechanism);
+    assert.equal(current(battle).vitality.hp, 920);
+    battle = step(move(until(battle, 35), 0, 2), []);
+    assert.equal(resolveAttack(battle, current(battle)), 130);
+    assert.equal(attackSpeed(battle), 130);
     battle = until(battle, 66);
-    assert.deepEqual([0, 1].map(id => current(battle, id).vitality.hp), [840, 850]);
+    assert.equal(current(battle).vitality.hp, 845);
+    battle = until(battle, 100);
+    assert.equal(resolveAttack(battle, current(battle)), 120);
+    assert.equal(current(battle).vitality.hp, 845);
+    battle = mechanisms.remove(battle, configured.mechanism);
+    battle = until(battle, 112);
+    assert.equal(current(battle).vitality.hp, 765);
+    battle = until(battle, 122);
+    assert.equal(resolveAttack(battle, current(battle)), 120);
+    battle = until(battle, 132);
+    assert.equal(current(battle).vitality.hp, 765);
     assert.equal(resolveAttack(battle, current(battle)), 100);
     assert.equal(attackSpeed(battle), 100);
 });

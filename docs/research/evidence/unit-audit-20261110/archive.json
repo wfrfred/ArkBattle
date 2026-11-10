@@ -17,6 +17,7 @@
             "records": [
               "buff-attributes/native/metadata.json#/provenance/client/dll",
               "buff-attributes/native/native.json#/provenance/client/dll",
+              "control-terrain/infection-priority.json#/provenance/client/dll",
               "control-terrain/native.json#/provenance/client/dll",
               "coordinates-numeric/native.json#/provenance/client/dll",
               "operator-config/native.json#/provenance/client/dll"
@@ -45,6 +46,7 @@
             "records": [
               "buff-attributes/native/metadata.json#/provenance/client/metadata",
               "buff-attributes/native/native.json#/provenance/client/metadata",
+              "control-terrain/infection-priority.json#/provenance/client/metadata",
               "control-terrain/native.json#/provenance/client/metadata",
               "coordinates-numeric/native.json#/provenance/client/metadata",
               "operator-config/native.json#/provenance/client/metadata"
@@ -70,6 +72,7 @@
       "buff-attributes/native/native.json",
       "control-terrain/components.json",
       "control-terrain/configuration.json",
+      "control-terrain/infection-priority.json",
       "control-terrain/native.json",
       "control-terrain/templates.json",
       "control-terrain/web-sources.json",
@@ -327,6 +330,18 @@
         "sha256": "87b323d3e2572bcaa81cbb098e0e97bf27591738562d5f21247237a29a807148"
       },
       {
+        "path": "control-terrain/extract_infection_priority.py",
+        "kind": "historical-script",
+        "bytes": 2646,
+        "sha256": "3db8ee8c3942c36e00e2cdcb5b2ac7360c9ef1c25da6a6c4e7c3237668bfe947"
+      },
+      {
+        "path": "control-terrain/extract_infection_priority.py.lock",
+        "kind": "artifact",
+        "bytes": 3739,
+        "sha256": "1ed9e3b399cf0743106d2124514970f3a3b5db6d9f1192fba528019ccbefdf04"
+      },
+      {
         "path": "control-terrain/extract_native.py",
         "kind": "historical-script",
         "bytes": 5960,
@@ -349,6 +364,12 @@
         "kind": "artifact",
         "bytes": 52,
         "sha256": "87b323d3e2572bcaa81cbb098e0e97bf27591738562d5f21247237a29a807148"
+      },
+      {
+        "path": "control-terrain/infection-priority.json",
+        "kind": "record",
+        "bytes": 338643,
+        "sha256": "d6c862c4123f42359e379f67bdcaa6e018aa9ee8e05e9e867a58a163b08996db"
       },
       {
         "path": "control-terrain/native.json",
@@ -719,6 +740,15 @@
           "address": "0x182379d90"
         },
         {
+          "index": 31509,
+          "mode": "metadata",
+          "records": [
+            "control-terrain/infection-priority.json#/result/methods/0/method"
+          ],
+          "fullname": "Torappu.BuffData.get_isAutoPriority",
+          "address": "0x18237b220"
+        },
+        {
           "index": 31641,
           "mode": "disasm",
           "records": [
@@ -989,6 +1019,24 @@
           "address": "0x1806ce720"
         },
         {
+          "index": 66103,
+          "mode": "metadata",
+          "records": [
+            "control-terrain/infection-priority.json#/result/methods/1/method"
+          ],
+          "fullname": "Torappu.Battle.Buff._SetAttributeModifier",
+          "address": "0x1806dc600"
+        },
+        {
+          "index": 66104,
+          "mode": "metadata",
+          "records": [
+            "control-terrain/infection-priority.json#/result/methods/2/method"
+          ],
+          "fullname": "Torappu.Battle.Buff._SetAttributeModifier",
+          "address": "0x1806dc760"
+        },
+        {
           "index": 66119,
           "mode": "metadata",
           "records": [
@@ -1012,7 +1060,8 @@
           "mode": "metadata",
           "records": [
             "buff-attributes/native/metadata.json#/result/7/methods/5",
-            "buff-attributes/native/native.json#/result/8/method"
+            "buff-attributes/native/native.json#/result/8/method",
+            "control-terrain/infection-priority.json#/result/methods/3/method"
           ],
           "fullname": "Torappu.Battle.Buff._LoadAttributesModifier",
           "address": "0x1806da630"
@@ -1026,6 +1075,24 @@
           ],
           "fullname": "Torappu.Battle.Buff.TakeSnapshotToBuffAttribute",
           "address": "0x1806d7130"
+        },
+        {
+          "index": 66242,
+          "mode": "metadata",
+          "records": [
+            "control-terrain/infection-priority.json#/result/methods/4/method"
+          ],
+          "fullname": "Torappu.Battle.Buff._CalculatePriority",
+          "address": "0x1806d8ac0"
+        },
+        {
+          "index": 66243,
+          "mode": "metadata",
+          "records": [
+            "control-terrain/infection-priority.json#/result/methods/5/method"
+          ],
+          "fullname": "Torappu.Battle.Buff._CalculatePriority",
+          "address": "0x1806d8b60"
         },
         {
           "index": 66244,
@@ -1238,18 +1305,47 @@
           "address": "0x18072f860"
         },
         {
+          "index": 71591,
+          "mode": "metadata",
+          "records": [
+            "control-terrain/infection-priority.json#/result/fields/2/methods/0"
+          ],
+          "fullname": "Torappu.Battle.BuffTile.get_traceBuffUids",
+          "address": "0x1808cfed0"
+        },
+        {
+          "index": 71592,
+          "mode": "metadata",
+          "records": [
+            "control-terrain/infection-priority.json#/result/fields/2/methods/1"
+          ],
+          "fullname": "Torappu.Battle.BuffTile.get_sourceSide",
+          "address": "0x1808cfe60"
+        },
+        {
           "index": 71593,
           "mode": "metadata",
           "records": [
+            "control-terrain/infection-priority.json#/result/fields/2/methods/2",
             "control-terrain/native.json#/result/methods/12/method"
           ],
           "fullname": "Torappu.Battle.BuffTile.Init",
           "address": "0x1808cf2d0"
         },
         {
+          "index": 71594,
+          "mode": "metadata",
+          "records": [
+            "control-terrain/infection-priority.json#/result/fields/2/methods/3"
+          ],
+          "fullname": "Torappu.Battle.BuffTile.GatherBuffs",
+          "address": "0x1808cf220"
+        },
+        {
           "index": 71595,
           "mode": "metadata",
           "records": [
+            "control-terrain/infection-priority.json#/result/fields/2/methods/4",
             "control-terrain/native.json#/result/methods/13/method"
           ],
           "fullname": "Torappu.Battle.BuffTile.OnCharacterEnter",
@@ -1259,15 +1355,35 @@
           "index": 71596,
           "mode": "metadata",
           "records": [
+            "control-terrain/infection-priority.json#/result/fields/2/methods/5",
             "control-terrain/native.json#/result/methods/14/method"
           ],
           "fullname": "Torappu.Battle.BuffTile.OnCharacterLeave",
           "address": "0x1808cf550"
         },
         {
+          "index": 71597,
+          "mode": "metadata",
+          "records": [
+            "control-terrain/infection-priority.json#/result/fields/2/methods/6"
+          ],
+          "fullname": "Torappu.Battle.BuffTile.OnRallyPointLikeReborn",
+          "address": "0x1808cf9d0"
+        },
+        {
+          "index": 71598,
+          "mode": "metadata",
+          "records": [
+            "control-terrain/infection-priority.json#/result/fields/2/methods/7"
+          ],
+          "fullname": "Torappu.Battle.BuffTile.OnTokenCategoryChanged",
+          "address": "0x1808cfa90"
+        },
+        {
           "index": 71599,
           "mode": "metadata",
           "records": [
+            "control-terrain/infection-priority.json#/result/fields/2/methods/8",
             "control-terrain/native.json#/result/methods/15/method"
           ],
           "fullname": "Torappu.Battle.BuffTile.OnEnemyEnter",
@@ -1277,6 +1393,7 @@
           "index": 71600,
           "mode": "metadata",
           "records": [
+            "control-terrain/infection-priority.json#/result/fields/2/methods/9",
             "control-terrain/native.json#/result/methods/16/method"
           ],
           "fullname": "Torappu.Battle.BuffTile.OnEnemyLeave",
@@ -1286,6 +1403,7 @@
           "index": 71601,
           "mode": "metadata",
           "records": [
+            "control-terrain/infection-priority.json#/result/fields/2/methods/10",
             "control-terrain/native.json#/result/methods/17/method"
           ],
           "fullname": "Torappu.Battle.BuffTile.ApplyBuffs",
@@ -1295,19 +1413,147 @@
           "index": 71602,
           "mode": "metadata",
           "records": [
+            "control-terrain/infection-priority.json#/result/fields/2/methods/11",
             "control-terrain/native.json#/result/methods/18/method"
           ],
           "fullname": "Torappu.Battle.BuffTile.ClearBuffs",
           "address": "0x1808ceee0"
         },
         {
+          "index": 71603,
+          "mode": "metadata",
+          "records": [
+            "control-terrain/infection-priority.json#/result/fields/2/methods/12"
+          ],
+          "fullname": "Torappu.Battle.BuffTile.EnsureEnemyBuffList",
+          "address": "0x1808cf010"
+        },
+        {
+          "index": 71604,
+          "mode": "metadata",
+          "records": [
+            "control-terrain/infection-priority.json#/result/fields/2/methods/13"
+          ],
+          "fullname": "Torappu.Battle.BuffTile.PreloadBuffAssets",
+          "address": "0x1808cfb50"
+        },
+        {
+          "index": 71605,
+          "mode": "metadata",
+          "records": [
+            "control-terrain/infection-priority.json#/result/fields/2/methods/14"
+          ],
+          "fullname": "Torappu.Battle.BuffTile.OnInvalidEnemyEnter",
+          "address": "0x1808cf950"
+        },
+        {
+          "index": 71606,
+          "mode": "metadata",
+          "records": [
+            "control-terrain/infection-priority.json#/result/fields/2/methods/15"
+          ],
+          "fullname": "Torappu.Battle.BuffTile.OnEnemyValid",
+          "address": "0x1808cf8a0"
+        },
+        {
+          "index": 71607,
+          "mode": "metadata",
+          "records": [
+            "control-terrain/infection-priority.json#/result/fields/2/methods/16"
+          ],
+          "fullname": "Torappu.Battle.BuffTile.OnEnemyInvalid",
+          "address": "0x1808cf730"
+        },
+        {
           "index": 71608,
           "mode": "metadata",
           "records": [
+            "control-terrain/infection-priority.json#/result/fields/2/methods/17",
             "control-terrain/native.json#/result/methods/19/method"
           ],
           "fullname": "Torappu.Battle.BuffTile.CheckTargetInBlackList",
           "address": "0x1808cecd0"
+        },
+        {
+          "index": 71609,
+          "mode": "metadata",
+          "records": [
+            "control-terrain/infection-priority.json#/result/fields/2/methods/18"
+          ],
+          "fullname": "Torappu.Battle.BuffTile..ctor",
+          "address": "0x1808cfd40"
+        },
+        {
+          "index": 71610,
+          "mode": "metadata",
+          "records": [
+            "control-terrain/infection-priority.json#/result/fields/2/methods/19"
+          ],
+          "fullname": "Torappu.Battle.BuffTile..cctor",
+          "address": "0x1808cfcb0"
+        },
+        {
+          "index": 71611,
+          "mode": "metadata",
+          "records": [
+            "control-terrain/infection-priority.json#/result/fields/2/methods/20"
+          ],
+          "fullname": "Torappu.Battle.BuffTile.<>xLuaBaseProxy_Init",
+          "address": "0x1808cfc40"
+        },
+        {
+          "index": 71612,
+          "mode": "metadata",
+          "records": [
+            "control-terrain/infection-priority.json#/result/fields/2/methods/21"
+          ],
+          "fullname": "Torappu.Battle.BuffTile.<>xLuaBaseProxy_OnCharacterEnter",
+          "address": "0x1808cfc50"
+        },
+        {
+          "index": 71613,
+          "mode": "metadata",
+          "records": [
+            "control-terrain/infection-priority.json#/result/fields/2/methods/22"
+          ],
+          "fullname": "Torappu.Battle.BuffTile.<>xLuaBaseProxy_OnCharacterLeave",
+          "address": "0x1808cfc60"
+        },
+        {
+          "index": 71614,
+          "mode": "metadata",
+          "records": [
+            "control-terrain/infection-priority.json#/result/fields/2/methods/23"
+          ],
+          "fullname": "Torappu.Battle.BuffTile.<>xLuaBaseProxy_OnRallyPointLikeReborn",
+          "address": "0x1808cfc90"
+        },
+        {
+          "index": 71615,
+          "mode": "metadata",
+          "records": [
+            "control-terrain/infection-priority.json#/result/fields/2/methods/24"
+          ],
+          "fullname": "Torappu.Battle.BuffTile.<>xLuaBaseProxy_OnTokenCategoryChanged",
+          "address": "0x1808cfca0"
+        },
+        {
+          "index": 71616,
+          "mode": "metadata",
+          "records": [
+            "control-terrain/infection-priority.json#/result/fields/2/methods/25"
+          ],
+          "fullname": "Torappu.Battle.BuffTile.<>xLuaBaseProxy_OnEnemyEnter",
+          "address": "0x1808cfc70"
+        },
+        {
+          "index": 71617,
+          "mode": "metadata",
+          "records": [
+            "control-terrain/infection-priority.json#/result/fields/2/methods/26"
+          ],
+          "fullname": "Torappu.Battle.BuffTile.<>xLuaBaseProxy_OnEnemyLeave",
+          "address": "0x1808cfc80"
         },
         {
           "index": 71732,
@@ -1642,6 +1888,33 @@
           "address": "0x18122c130"
         },
         {
+          "index": 226062,
+          "mode": "metadata",
+          "records": [
+            "control-terrain/infection-priority.json#/result/methods/6/method"
+          ],
+          "fullname": "Torappu.MathUtil.RoundToInt",
+          "address": "0x186946c30"
+        },
+        {
+          "index": 226189,
+          "mode": "metadata",
+          "records": [
+            "control-terrain/infection-priority.json#/result/methods/7/method"
+          ],
+          "fullname": "Torappu.FP.Round",
+          "address": "0x18695cf80"
+        },
+        {
+          "index": 226232,
+          "mode": "metadata",
+          "records": [
+            "control-terrain/infection-priority.json#/result/methods/8/method"
+          ],
+          "fullname": "Torappu.FP.AsInt",
+          "address": "0x18695b530"
+        },
+        {
           "index": 288330,
           "mode": "disasm",
           "records": [
@@ -1912,6 +2185,7 @@
           "name": "Torappu.Battle.Buff",
           "records": [
             "buff-attributes/native/metadata.json#/result/7",
+            "control-terrain/infection-priority.json#/result/fields/1",
             "control-terrain/native.json#/result/fields/2"
           ]
         },
@@ -1925,6 +2199,7 @@
         {
           "name": "Torappu.Battle.BuffTile",
           "records": [
+            "control-terrain/infection-priority.json#/result/fields/2",
             "control-terrain/native.json#/result/fields/4"
           ]
         },
@@ -2015,7 +2290,8 @@
         {
           "name": "Torappu.BuffData",
           "records": [
-            "buff-attributes/native/metadata.json#/result/5"
+            "buff-attributes/native/metadata.json#/result/5",
+            "control-terrain/infection-priority.json#/result/fields/0"
           ]
         },
         {
@@ -2073,7 +2349,22 @@
           ]
         }
       ],
-      "constants": [],
+      "constants": [
+        {
+          "address": "0x1870adbe0",
+          "format": "<f",
+          "records": [
+            "control-terrain/infection-priority.json#/result/literals/1"
+          ]
+        },
+        {
+          "address": "0x1870addf0",
+          "format": "<f",
+          "records": [
+            "control-terrain/infection-priority.json#/result/literals/0"
+          ]
+        }
+      ],
       "bundles": [
         {
           "kind": "bundle",

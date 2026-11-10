@@ -1,5 +1,6 @@
 import type { Ref } from "../../core/common/ref.js";
 import type { State as BattleState } from "../../core/battle/index.js";
+import { roundToEven } from "../../core/common/math.js";
 import { update as updateUnit } from "../../core/battle/unit.js";
 import { applyDamage, calculateDamage } from "../../core/battle/damage/hp/index.js";
 
@@ -28,6 +29,10 @@ interface Modifiers {
 
 interface PeriodicState {
     readonly nextTick: number;
+}
+
+interface InfectionState {
+    readonly remainingTicks: number;
 }
 
 interface MireState extends PeriodicState {
@@ -89,10 +94,14 @@ function damage(battle: BattleState, host: Ref<Unit>, amount: number): BattleSta
     return applyDamage(request, calculateDamage(battle, request)).state;
 }
 
-export function createInfectionEffect(params: InfectionParams): Definition<PeriodicState> {
+export function createInfectionEffect(params: InfectionParams): Definition<InfectionState> {
     return {
         id: "terrain/infection",
-        initialize: () => ({ nextTick: 0 }),
+        group: {
+            id: "terrain/infection",
+            priority: roundToEven(1000 * (params.attackBonusRatio + params.attackSpeedBonus)),
+        },
+        initialize: () => ({ remainingTicks: TICKS_PER_SECOND }),
         onEnable(battle, self) {
             return changeModifiers(battle, self.host, `terrain/${self.id}`, {
                 attack: attribute.create({ multiplier: params.attackBonusRatio }),
@@ -101,16 +110,13 @@ export function createInfectionEffect(params: InfectionParams): Definition<Perio
         },
         onDisable: (battle, self) => changeModifiers(battle, self.host, `terrain/${self.id}`),
         onTick(battle, self) {
-            if (battle.tick < self.state.nextTick) {
-                return battle;
-            }
+            const remainingTicks = self.state.remainingTicks - 1;
 
             battle = effects.setState(battle, effectRef(self), {
-                ...self.state,
-                nextTick: battle.tick + TICKS_PER_SECOND,
+                remainingTicks: remainingTicks === 0 ? TICKS_PER_SECOND : remainingTicks,
             });
 
-            return damage(battle, self.host, params.damage);
+            return remainingTicks === 0 ? damage(battle, self.host, params.damage) : battle;
         },
     };
 }
