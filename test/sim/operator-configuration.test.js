@@ -30,7 +30,6 @@ function profile(id = mudrock, configuration = base, overrides = {}) {
 
 const blackboard = entries => Object.fromEntries(entries.map(entry => [entry.key, entry.value]));
 const talent = (profile, key) => blackboard(profile.talents.find(talent => talent.key === key).blackboard);
-const approximate = (actual, expected) => assert.ok(Math.abs(actual - expected) < 1e-10, `${actual} != ${expected}`);
 
 test("operator profiles use selected phase attributes, explicit table identity and canonical ranges", () => {
     const configuration = { ...base };
@@ -44,9 +43,10 @@ test("operator profiles use selected phase attributes, explicit table identity a
     assert.equal(prepared.skillRange.length, fixture.ranges["x-4"].grids.length);
 });
 
-test("phase interpolation preserves fractional attributes and rejects levels outside the selected phase", () => {
+test("phase interpolation rounds integer fields and preserves floating attributes", () => {
     const interpolated = profile(mudrock, { ...base, elite: 1, level: 2 });
-    approximate(interpolated.attributes.attack, 515 + 172 / 79);
+    assert.equal(interpolated.attributes.attack, 517);
+    assert.equal(interpolated.attributes.baseAttackTime, 1.6);
     assert.equal(interpolated.attributes.cost, 34);
     assert.throws(() => profile(mudrock, { ...base, elite: 1, level: 81 }), /phase maximum/);
 });
@@ -65,13 +65,15 @@ test("UI potential maps to cumulative raw ranks and selects the unlocked talent 
     assert.deepEqual(eliteOne.talents.map(talent => talent.key), ["1"]);
 });
 
-test("trust follows favor-table battle phases, reaches full attributes at 100 percent and remains saturated", () => {
-    const values = [0, 1, 2, 49, 50, 99, 100, 200].map(trust => profile(mudrock, { ...base, trust }).attributes);
-    assert.deepEqual(values.map(attributes => attributes.maxHp), [3928, 3928, 3938, 4168, 4178, 4418, 4428, 4428]);
-    approximate(values[3].defense, 602 + 60 * 24 / 50);
-    approximate(values[5].defense, 602 + 60 * 49 / 50);
-    assert.deepEqual(values[6], values[7]);
-
+test("trust rounds its increment separately and saturates at 100 percent", () => {
+    const values = [0, 49, 100, 200].map(trust => profile(mudrock, { ...base, trust }).attributes);
+    assert.deepEqual(values.map(attributes => attributes.maxHp), [3928, 4168, 4428, 4428]);
+    assert.equal(values[1].defense, 631);
+    assert.deepEqual(values[2], values[3]);
+    const interpolated = profile(melantha, {
+        elite: 1, level: 28, potential: 1, skillIndex: 0, skillLevel: 7, trust: 10,
+    });
+    assert.equal(interpolated.attributes.attack, 666);
 });
 
 test("selected skills enforce unlocks, mastery gates and matching data", () => {

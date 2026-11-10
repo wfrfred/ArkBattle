@@ -79,15 +79,15 @@ Effect 私有状态可以保存护盾／标记／计时等持续机制；Capabil
 
 `AttributesCalculator.TryGetBasicData`（22759）按精英阶段取得属性关键帧。`AttributesKeyFrame.LerpData`（31641）计算并限制插值比例，再调用 `AttributesData.Lerp`（31440）；后者对允许插值的数值字段执行 `from + (to - from) × ratio`，写回 `WriteAttributesField(float)`（31442）。不能把这条链简化成“所有字段都线性插值且保留小数”。
 
-当前 `AttributesData.maxHp / atk / def` 是 `ObscuredInt`；31442 在写入这类字段前调用 `0x180007310` 取偶舍入，再构造整数。该 helper 与 [World→Tile 数值补证](../evidence/unit-audit-20261110/coordinates-numeric/README.md)中核实的舍入路径共用。浮点字段走另一分支，不做上述整数转换。
+当前 `AttributesData.maxHp / atk / def / tauntLevel / blockCnt / cost / respawnTime` 是 `ObscuredInt`；31442 在写入这类字段前调用 `0x180007310` 取偶舍入，再构造整数。该 helper 与 [World→Tile 数值补证](../evidence/unit-audit-20261110/coordinates-numeric/README.md)中核实的舍入路径共用。`magicResistance / attackSpeed / baseAttackTime` 是 `ObscuredFloat`，写回不做上述整数转换。
 
-因此，`operator.ts` 当前统一保留等级插值小数，与原生的整数属性写入存在差异。例如泥岩精一 2 级攻击力的插值为 `515 + 172/79`，原生整数写回得到 `517`。当前测试将保留小数当作必要结果，尚未找到对应的明确项目选择；这项不能标为原生已通过，也不在本次调查中静默改实现。是否在 Data 层按属性类别完成取整，需要后续落实。
+Data 的关键帧转换据此分别处理整数字段与浮点字段；等级属性、信赖增量各自在写回时完成取偶舍入，再相加。例如泥岩精一 2 级攻击力的插值为 `515 + 172/79`，整数写回得到 `517`。此处不改变 Core 的属性贡献或伤害结算。
 
 ### 信赖的表映射与饱和
 
 `AttributesCalculator.Input` 的显式等级构造器（22774）通过 `FavorDB.GetFavorData` 取得 `battlePhase`；22759 再用它查询 `CharacterData.favorKeyFrames` 并 `ApplyDelta`。信赖百分比不能直接当作插值比例。
 
-固定表中，49%／50%／99%／100%／200% 分别对应 battlePhase 24／25／49／50／100。所选干员的信赖关键帧止于 50；关键帧查询超出末端时取末帧，因而 100% 后属性饱和。PRTS [信赖值](https://prts.wiki/w/干员信赖)提供玩法互证。信赖增量自身也经过 `AttributesDeltaKeyFrame.LerpData` → 31440 的字段写回，不能据表映射正确就确认所有增量小数处理也正确。
+固定表中，49%／50%／99%／100%／200% 分别对应 battlePhase 24／25／49／50／100。所选干员的信赖关键帧止于 50；关键帧查询超出末端时取末帧，因而 100% 后属性饱和。PRTS [信赖值](https://prts.wiki/w/干员信赖)提供玩法互证。信赖增量自身也经过 `AttributesDeltaKeyFrame.LerpData` → 31440 的字段写回，整数增量在加到等级属性前已经取整。
 
 ### 模组阶段与真实 DATA_ONLY 正例
 

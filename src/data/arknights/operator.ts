@@ -4,6 +4,7 @@ import {
     assertPositiveSafeInteger,
     assertSafeInteger,
 } from "../../core/common/assert.js";
+import { roundToEven } from "../../core/common/math.js";
 import type { TilePosition } from "../../core/geometry/coordinate.js";
 import { parseBlackboard, type ArknightsBlackboardEntry } from "./blackboard.js";
 import { parseArknightsSkillLevel, type ArknightsSkillLevel } from "./skill-definition.js";
@@ -74,6 +75,16 @@ const moduleAttributes: Readonly<Record<string, keyof Attributes>> = {
     cost: "cost",
     respawn_time: "respawnTime",
 };
+
+const integerAttributes: ReadonlySet<keyof Attributes> = new Set([
+    "maxHp",
+    "attack",
+    "defense",
+    "taunt",
+    "blockCapacity",
+    "cost",
+    "respawnTime",
+]);
 
 function record(value: unknown, name: string): Record<string, unknown> {
     if (value === null || typeof value !== "object" || Array.isArray(value)) {
@@ -204,7 +215,9 @@ function interpolateAttributes(value: unknown, level: number): Attributes {
     const attributes = { ...lower.attributes };
 
     for (const key of Object.keys(attributes) as (keyof Attributes)[]) {
-        attributes[key] += (upper.attributes[key] - lower.attributes[key]) * ratio;
+        const value = attributes[key] + (upper.attributes[key] - lower.attributes[key]) * ratio;
+
+        attributes[key] = integerAttributes.has(key) ? roundToEven(value) : value;
     }
 
     return attributes;
