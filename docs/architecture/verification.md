@@ -38,8 +38,8 @@ Deployable 对 Occupancy 的构造依赖、单格双槽登记、入场与配对�
 | 普通注册 Change | Capability 用扁平 Rules／Contributions／Hooks 分组明确选择自动字段；工厂不绑定 Ref，按 Key 和固定字段两种接口均保持字段、Entry 与所需能力的类型关联，由 update 的目标 Ref 满足能力要求。注册遵守按 ID 替换保序和无变化不结算，特殊字段由领域完成自身变换与后继。 | [批量变更](api-conventions.md#51-unit-完整操作与批量变更) |
 | 状态接续与 Hook | 同步业务接续最新状态；有意采样的历史事实保留。一次派发不吸收后来新增的候选，执行时使用最新登记与资格，嵌套派发独立。 | [状态接续](functional-core.md#状态接续后的读取与续执行)、[同步候选](functional-core.md#7-同步候选范围) |
 | 身份与结束 | 持久对象与单次执行身份不同，旧执行引用不操作后来的执行；结束立即拒收新的依赖，依赖者完整结束后宿主才注销，收尾不重复执行或覆盖首次原因。 | [Lifetime](lifetime.md)、[Action](action.md#关键语义)、[Skill](skill.md#关键语义) |
-| Action | 启动受理、冷却、释放和输出保持各自含义；普通拒绝不创建执行。攻速与间隔使用静态修正列表，变更时同步按新周期保留完成比例，普通 Tick 不轮询刷新；释放前中断不伪造成功释放，已完成的输出与资源结算不回滚。 | [Action](action.md#关键语义) |
-| Skill 与资源 | 持久状态与单次 Activation 状态分离；SP 门槛、实际支付、回复许可分开；TIME 延时只影响当前 Activation，Ammo 使用自身公式、额度和耗尽政策。 | [Skill](skill.md#关键语义) |
+| Action | 启动受理、冷却、释放和输出保持各自含义；启动返回本次执行 Ref，普通拒绝返回 null，不创建执行且保留已发生的前缀业务。攻速与间隔使用静态修正列表，变更时同步按新周期保留完成比例，普通 Tick 不轮询刷新；释放前中断不伪造成功释放，已完成的输出与资源结算不回滚。 | [Action](action.md#关键语义) |
+| Skill 与资源 | 持久状态与单次 Activation 状态分离；发动返回本次创建的 Ref 或 null，启动回调同步结束不撤销创建事实；主动操作只报告是否受理。SP 门槛、实际支付、回复许可分开；TIME 延时只影响当前 Activation，Ammo 使用自身公式、额度和耗尽政策。 | [Skill](skill.md#关键语义) |
 | Effect 生命周期 | 安装、生效、禁用与结束产生正确输出；安装回调完成后已到期的实例直接结束，不启用或推进，安装业务保留；禁用保留实例与私有进度，结束撤销输出；生命周期依赖与来源信息分开。 | [Effect](effect.md#关键语义) |
 | Effect 竞争与时间 | 覆写组赢家及禁用政策正确；DURATION、DEADLINE、INFINITE 互斥。有效时长在 ACTIVE 自动推进并先于 onTick 发布，绝对期限不因禁用暂停；rate 为零仍执行内容程序，回调可手动推进、续期或切换时间类型，结束判断采用回调后的最新时间。暂停不积攒补发。 | [Effect](effect.md#关键语义) |
 | Contribution 与阵营 | 互斥选择先于动态求值，修正采用所属领域公式；阵营不隐式决定其它能力或关系资格。 | [属性与贡献](capability.md#属性与贡献)、[Allegiance](capability.md#allegiance) |

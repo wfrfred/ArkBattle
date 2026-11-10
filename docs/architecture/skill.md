@@ -154,6 +154,8 @@ enter Hook 仅供 Unit 装配内部登记；完整入场由 battle/unit.add 负�
 
 除持久初始化外，Definition 与 Activation Definition 的内容回调都显式接收 source 为第二参、聚合 self 为第三参。Definition.onEnter／onTick 和 Activation Definition.initialize／accepts／cost 接收 Skill<S, A>；onStart／onTick／onOperation／onEnd 接收 activation 非空的 Activation<S, A>，Operation 或 End 为第四参。Activation.initialize 只构造本轮 A；持久 Definition.initialize 则接续 Result<S>。STOP 与 RETRIGGER 交给内容程序处理，未提供 onOperation 时 STOP 默认正常结束。
 
+`operate(battle, activationRef, operation): Result<boolean>` 只报告操作是否受理；true 不承诺激活结束，具体后继由内容程序决定。未通过资格或 Rule，以及没有对应处理程序的操作返回 false。两种结果都接续已经完成的状态变化。
+
 | Hook | 事实 |
 | --- | --- |
 | spRecovered | 实际回复 SP |
@@ -184,6 +186,16 @@ interface ActivationEnded {
 HIT 回复由 Skill 的 enter Hook 在 Damage 的 receivingStarted 扩展点登记，发生在接收准入后、Receiving Hook 和 HP 扣减前。Skill 自行监听受击事实并执行回复，Damage 与 Vitality 不依赖 Skill。
 
 ## 5. 发动与完整结束
+
+```typescript
+activate<S extends object, A extends object>(
+    battle: BattleState,
+    reference: Ref<Skill<S, A>>,
+    trigger?: Trigger,
+): Result<Ref<Activation<S, A>> | null>;
+```
+
+activate 未创建激活时返回 null，创建后直接返回本轮 Ref，保留 Definition 的 S／A 配对。Ref 表达本次创建事实；启动回调可以同步结束本轮，因此返回时不保证仍可查询到该实例。Result.state 接续已经完成的业务，不因拒绝或同步结束而回滚。
 
 发动先检查当前宿主、触发方式、许可、门槛与足额支付，采样数据与持续预算，再一次性写入扣费和新 Activation，并登记 Activation→Unit 的 Lifetime owner 关系。随后依次记录 SKILL_ACTIVATED、派发 activationStarted、通知 spPaid，再执行仍有资格的 onStart。支付 Hook 可以终止已创建的激活；后续启动程序必须重读同一身份、ACTIVE 状态和宿主当前生命周期及生命资格。暂时消失本身不单独跳过仍成立的开始程序，也不统一结束持续技能；具体机制仍可明确结束该 Activation。创建事实不会被撤销，支付报告保留已提交时的前后值。
 

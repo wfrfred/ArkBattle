@@ -73,7 +73,7 @@ test("an active action waits for release animation while every AoE damage remain
         { type: "ATTACK_STARTED", sourceUnitId: 0, targetUnitId: 1, tick: 0 },
     ]), []);
 
-    const finished = actions.advance({ ...started.state, tick: 1 }, started.value.ref);
+    const finished = actions.advance({ ...started.state, tick: 1 }, started.value);
     assert.deepEqual(view.advance(finished, [
         { type: "ACTION_RELEASED", sourceUnitId: 0, tick: 1 },
         { type: "DAMAGE", targetUnitId: 1, amount: 100, damageType: "PHYSICAL", tick: 1 },
@@ -132,8 +132,8 @@ test("attack skills decorate attack cues while buff skills keep a separate activ
     ]), [["atk", 0, 2, "none", { skill: true }], ["atk", 1, 2, "none"]]);
 
     const offset = state.events.length;
-    state = skills.finish(state, attacking.value.ref);
-    state = skills.finish(state, buffing.value.ref);
+    state = skills.finish(state, attacking.value);
+    state = skills.finish(state, buffing.value);
     assert.deepEqual(view.advance(state, state.events.slice(offset)), [["skill", 1, false]]);
     assert.equal(view.units(state)[1].info.skillActive, false);
 });

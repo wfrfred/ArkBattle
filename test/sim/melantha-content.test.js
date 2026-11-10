@@ -46,7 +46,7 @@ test("Melantha's talent and S1 affect real attacks, and the talent remains after
     battle = activate(battle, skillRef(getUnit(battle, 0))).state;
     const attack = actor.action.actions.get("normal-attack").definition;
     const started = start(battle, actionRef(ref(actor), attack));
-    battle = advanceAction(started.state, started.value.ref);
+    battle = advanceAction(started.state, started.value);
     assert.ok(Math.abs(getUnit(battle, 1).vitality.hp - (10000 - (738 + 25 + 65) * 1.58)) < 1e-6);
 
     battle = advance({ ...battle, tick: 600 }, ref(actor));
@@ -60,7 +60,5 @@ test("Melantha's ordinary attack still requires a visible target while blocking 
     const battle = advanceBlocking(add(add(createBattleState(fixtureBattlefieldState([])), actor), enemy));
     assert.equal(relations(battle)[0].blocked.id, enemy.id);
     const attack = actor.action.actions.get("normal-attack").definition;
-    assert.deepEqual(start(battle, actionRef(ref(actor), attack)).value, {
-        type: "REJECTED", reason: "CONDITION",
-    });
+    assert.equal(start(battle, actionRef(ref(actor), attack)).value, null);
 });

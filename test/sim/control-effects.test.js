@@ -61,21 +61,21 @@ test("stun interrupts the current action, suppresses four capabilities, and with
     state = second.state;
 
     assert.deepEqual(endings, [{ type: "CANCELLED", reason: "INTERRUPTED" }]);
-    assert.equal(actions.getExecution(state, started.value.ref), undefined);
-    assert.equal(actions.start(state, action).value.reason, "RULE");
+    assert.equal(actions.getExecution(state, started.value), undefined);
+    assert.equal(actions.start(state, action).value, null);
     assert.equal(canMove(state, source), false);
     assert.equal(blocking.blockerOf(state, target), undefined);
     state = sp.recover(state, source, "TIME", 5).state;
     assert.equal(get(state, 0).skill.sp.value, 10);
-    assert.equal(skills.activate(state, skill).value.type, "REJECTED");
+    assert.equal(skills.activate(state, skill).value, null);
 
     state = effects.setEnabled(state, first.value, false);
-    assert.equal(actions.start(state, action).value.reason, "RULE");
+    assert.equal(actions.start(state, action).value, null);
     state = effects.end(state, second.value);
     state = { ...state, tick: 1 };
-    assert.equal(actions.start(state, action).value.type, "STARTED");
+    assert.notEqual(actions.start(state, action).value, null);
     assert.equal(canMove(state, source), true);
-    assert.equal(skills.activate(state, skill).value.type, "ACTIVATED");
+    assert.notEqual(skills.activate(state, skill).value, null);
     assert.equal(blocking.blockerOf(state, target), undefined);
     state = blocking.search(state, source);
     assert.equal(blocking.blockerOf(state, target).id, source.id);
@@ -88,8 +88,8 @@ test("silence blocks activation while SP prevention independently blocks recover
     const skill = skills.ref(source, content.skill);
     const silenced = effects.install(state, source, silence);
     state = silenced.state;
-    assert.equal(skills.activate(state, skill).value.type, "REJECTED");
-    assert.equal(actions.start(state, actions.ref(source, content.action)).value.type, "STARTED");
+    assert.equal(skills.activate(state, skill).value, null);
+    assert.notEqual(actions.start(state, actions.ref(source, content.action)).value, null);
     assert.equal(canMove(state, source), true);
 
     state = sp.pay(state, source, 1).state;
@@ -100,7 +100,7 @@ test("silence blocks activation while SP prevention independently blocks recover
     state = effects.end(state, blocked.value);
     state = sp.recover(state, source, "EXTERNAL", 1).state;
     assert.equal(get(state, 0).skill.sp.value, 10);
-    assert.equal(skills.activate(state, skill).value.type, "REJECTED");
+    assert.equal(skills.activate(state, skill).value, null);
     state = effects.end(state, silenced.value);
-    assert.equal(skills.activate(state, skill).value.type, "ACTIVATED");
+    assert.notEqual(skills.activate(state, skill).value, null);
 });

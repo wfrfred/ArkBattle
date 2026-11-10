@@ -14,13 +14,6 @@ import type { End } from "./definition.js";
 import * as cooldown from "./cooldown.js";
 import { executionRefs } from "./query.js";
 
-export type StartOutcome<P extends object, E extends object> =
-    | { readonly type: "STARTED"; readonly ref: Ref<Execution<P, E>> }
-    | {
-          readonly type: "REJECTED";
-          readonly reason: "SOURCE_UNAVAILABLE" | "RULE" | "COOLDOWN" | "CASTING" | "CONDITION";
-      };
-
 export function setState<X extends Action<any, any>>(
     battle: BattleState,
     reference: Ref<X>,
@@ -46,17 +39,13 @@ export function setCooldown<X extends Action<any, any>>(
 export function start<P extends object, E extends object>(
     battle: BattleState,
     reference: Ref<Action<P, E>>,
-): Result<StartOutcome<P, E>> {
+): Result<Ref<Execution<P, E>> | null> {
     const { host: source, definition } = reference;
-    const reject = (reason: Extract<StartOutcome<P, E>, { type: "REJECTED" }>["reason"]) => ({
-        type: "REJECTED" as const,
-        reason,
-    });
 
     function check(battle: BattleState) {
         const unit = units.get(battle, source);
         if (unit?.lifecycle !== "PRESENT" || (hasVitality(unit) && unit.vitality.hp <= 0)) {
-            return reject("SOURCE_UNAVAILABLE");
+            return null;
         }
 
         const action = unit.action.actions.get(definition.id, definition);
@@ -64,38 +53,38 @@ export function start<P extends object, E extends object>(
             throw new TypeError("action definition is not configured for its source");
         }
         if (action.execution !== null) {
-            return reject("CASTING");
+            return null;
         }
         if (
             !unit.action.rules.every((rule) =>
                 rule.allows(battle, { self: unit, definitionId: definition.id }),
             )
         ) {
-            return reject("RULE");
+            return null;
         }
 
         if (cooldown.remaining(action.cooldown, battle.tick) > 0) {
-            return reject("COOLDOWN");
+            return null;
         }
 
-        return { type: "READY" as const, unit, action };
+        return { unit, action };
     }
 
     const initial = check(battle);
-    if (initial.type === "REJECTED") {
-        return { state: battle, value: initial };
+    if (initial === null) {
+        return { state: battle, value: null };
     }
 
     const initialized = definition.prepare(battle, source, initial.action);
     battle = initialized.state;
 
     if (initialized.value === null) {
-        return { state: battle, value: reject("CONDITION") };
+        return { state: battle, value: null };
     }
 
     const latest = check(battle);
-    if (latest.type === "REJECTED") {
-        return { state: battle, value: latest };
+    if (latest === null) {
+        return { state: battle, value: null };
     }
 
     const { unit, action } = latest;
@@ -127,7 +116,7 @@ export function start<P extends object, E extends object>(
         lifetimes.scope(unitLifetime, source),
     );
 
-    return { state: battle, value: { type: "STARTED", ref: execution } };
+    return { state: battle, value: execution };
 }
 
 export function setExecutionState<X extends Execution<any, any>>(

@@ -93,8 +93,8 @@ const persistent = actions.ref(reference, program);
 const uses: number = actions.getAction(battle, persistent)!.state.uses;
 actions.setState(battle, persistent, { uses: uses + 1 });
 const started = actions.start(battle, persistent);
-if (started.value.type === 'STARTED') {
-    const execution = started.value.ref;
+if (started.value !== null) {
+    const execution = started.value;
     const hits: number = actions.getExecution(started.state, execution)!.execution.state.hits;
     const cancellation: Command = { type: 'CANCEL_ACTION_EXECUTION', ref: execution };
     runtime.step(started.state, [cancellation]);

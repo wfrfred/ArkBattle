@@ -53,8 +53,8 @@ test("attack selection groups and prepare receive the state produced by earlier 
     const second = secondary.select(first.state, units.ref(source));
     const started = actions.start(initial, actions.ref(units.ref(source), action));
 
-    assert.equal(started.value.type, "STARTED");
-    const running = actions.getExecution(started.state, started.value.ref);
+    assert.notEqual(started.value, null);
+    const running = actions.getExecution(started.state, started.value);
     assert.deepEqual(running.execution.state.bindings, { primary: first.value, secondary: second.value });
     assert.equal(started.state.execution.rngState, second.state.execution.rngState);
     assert.equal(observed, second.state.execution.rngState);
@@ -72,7 +72,7 @@ test("an empty trigger binding rejects the attack without losing later completed
     assert.deepEqual(selected.value.primary, []);
     assert.equal(selected.value.secondary.length, 1);
     assert.notEqual(selected.state.execution.rngState, initial.execution.rngState);
-    assert.deepEqual(started.value, { type: "REJECTED", reason: "CONDITION" });
+    assert.equal(started.value, null);
     assert.equal(started.state.execution.rngState, selected.state.execution.rngState);
     assert.equal(units.get(started.state, units.ref(source)).action.actions.values()
         .some(self => self.execution !== null), false);
@@ -121,9 +121,9 @@ test("bound healing keeps its receivers when a later selection restriction would
     [selected] = recipients(state, source).value;
     assert.equal(selected.id, 1);
     const started = actions.start(state, actions.ref(source, program));
-    assert.equal(started.value.type, "STARTED");
+    assert.notEqual(started.value, null);
     assert.deepEqual(recipients(started.state, source).value.map(target => target.id), [2]);
-    state = actions.advance(started.state, started.value.ref);
+    state = actions.advance(started.state, started.value);
     assert.equal(get(state, 0).vitality.hp, 75);
     assert.equal(get(state, 1).vitality.hp, 55);
     assert.equal(get(state, 2).vitality.hp, 40);

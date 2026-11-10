@@ -63,8 +63,8 @@ export function advance(battle: BattleState): BattleState {
 
             const started = actions.start(battle, actionRef(reference, self.definition));
             battle =
-                started.value.type === "STARTED"
-                    ? actions.advance(started.state, started.value.ref)
+                started.value !== null
+                    ? actions.advance(started.state, started.value)
                     : started.state;
         }
     }

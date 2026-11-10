@@ -58,10 +58,6 @@ const actionRecovery: ReleasedHook = {
     },
 };
 
-export type Outcome<T extends Activation<any, any> = Activation> =
-    | { readonly type: "ACTIVATED"; readonly ref: Ref<T> }
-    | { readonly type: "REJECTED"; readonly reason: string };
-
 export function setState<X extends Skill<any, any>>(
     battle: BattleState,
     reference: Ref<X>,
@@ -109,15 +105,11 @@ export function activate<S extends object, A extends object>(
     battle: BattleState,
     reference: Ref<Skill<S, A>>,
     trigger: Trigger = "MANUAL",
-): Result<Outcome<Activation<S, A>>> {
+): Result<Ref<Activation<S, A>> | null> {
     const source = reference.host;
     const unit = units.get(battle, source);
-    const reject = (reason: string): Result<Outcome<Activation<S, A>>> => ({
-        state: battle,
-        value: { type: "REJECTED", reason },
-    });
     if (unit?.lifecycle !== "PRESENT" || (hasVitality(unit) && unit.vitality.hp <= 0)) {
-        return reject("UNAVAILABLE");
+        return { state: battle, value: null };
     }
 
     const self = query.getSkill(battle, reference);
@@ -127,22 +119,22 @@ export function activate<S extends object, A extends object>(
 
     const definition = self.definition.activation;
     if (definition === null) {
-        return reject("NO_ACTIVATION");
+        return { state: battle, value: null };
     }
     if (self.activation !== null) {
-        return reject("ACTIVE");
+        return { state: battle, value: null };
     }
     if (definition.trigger !== trigger) {
-        return reject("WRONG_TRIGGER");
+        return { state: battle, value: null };
     }
     if (trigger === "PASSIVE" && unit.skill.nextActivationId !== 0) {
-        return reject("ALREADY_ACTIVATED");
+        return { state: battle, value: null };
     }
     if (
         !unit.skill.activationRules.every((rule) => rule.allows(battle, { self: unit })) ||
         !(definition.accepts?.(battle, source, self) ?? true)
     ) {
-        return reject("CONDITION");
+        return { state: battle, value: null };
     }
 
     const resource = self.definition.sp;
@@ -151,7 +143,7 @@ export function activate<S extends object, A extends object>(
     assertNonnegativeSafeInteger(cost, "skill activation SP cost");
     const previousSp = self.sp;
     if ((previousSp?.value ?? 0) < requirement || (previousSp?.value ?? 0) < cost) {
-        return reject("INSUFFICIENT_SP");
+        return { state: battle, value: null };
     }
 
     const sustain = initialSustain(battle, unit);
@@ -225,7 +217,7 @@ export function activate<S extends object, A extends object>(
         battle = finish(battle, activatedRef);
     }
 
-    return { state: battle, value: { type: "ACTIVATED", ref: activatedRef } };
+    return { state: battle, value: activatedRef };
 }
 
 export const lifetime = lifetimes.create<Activation, Activation<any, any>, End>({
@@ -283,36 +275,32 @@ export function operate<X extends Activation<any, any>>(
     battle: BattleState,
     reference: Ref<X>,
     operation: Operation,
-): Result<{ readonly type: "APPLIED" } | { readonly type: "REJECTED"; readonly reason: string }> {
+): Result<boolean> {
     const unit = units.get(battle, reference.host);
-    const reject = (reason: string) => ({
-        state: battle,
-        value: { type: "REJECTED" as const, reason },
-    });
     if (unit?.lifecycle !== "PRESENT") {
-        return reject("UNAVAILABLE");
+        return { state: battle, value: false };
     }
 
     const self = query.getActivation(battle, reference);
     if (self?.activation.lifecycle !== "ACTIVE") {
-        return reject("UNAVAILABLE");
+        return { state: battle, value: false };
     }
 
     const definition = self.definition.activation!;
     if (
         !unit.skill.operationRules.every((rule) => rule.allows(battle, { self: unit, operation }))
     ) {
-        return reject("CONDITION");
+        return { state: battle, value: false };
     }
     if (definition.onOperation !== undefined) {
         battle = definition.onOperation(battle, reference.host, self, operation);
     } else if (operation === "STOP") {
         battle = finish(battle, reference);
     } else {
-        return reject("UNSUPPORTED");
+        return { state: battle, value: false };
     }
 
-    return { state: battle, value: { type: "APPLIED" as const } };
+    return { state: battle, value: true };
 }
 
 export function advance(battle: BattleState, host: Ref<Unit & SkillCapability>): BattleState {

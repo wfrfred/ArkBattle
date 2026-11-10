@@ -63,24 +63,24 @@ test("activation publishes payment before onStart and clears only the completed 
         })));
     const first = skills.activate(state, reference);
     state = first.state;
-    assert.equal(first.value.type, "ACTIVATED");
-    assert.deepEqual(observed[0], { stage: "start", sp: 20, current: first.value.ref.id });
-    state = skills.finish(state, first.value.ref);
+    assert.notEqual(first.value, null);
+    assert.deepEqual(observed[0], { stage: "start", sp: 20, current: first.value.id });
+    state = skills.finish(state, first.value);
     assert.deepEqual(observed.slice(1), [
         { stage: "end", total: 7, end: { type: "FINISHED" } },
-        { stage: "notified", activation: null, id: first.value.ref.id },
+        { stage: "notified", activation: null, id: first.value.id },
     ]);
     assert.equal(skills.getSkill(state, reference).state.completed, 1);
 
-    assert.equal(skills.activate(state, reference).value.reason, "CONDITION");
+    assert.equal(skills.activate(state, reference).value, null);
     state = update(state, source, presence.appear([1, 1]));
     const second = skills.activate(state, reference);
-    state = skills.finish(second.state, first.value.ref);
-    assert.equal(skills.getActivation(state, second.value.ref).activation.lifecycle, "ACTIVE");
-    state = skills.cancel(state, second.value.ref, "STOPPED");
+    state = skills.finish(second.state, first.value);
+    assert.equal(skills.getActivation(state, second.value).activation.lifecycle, "ACTIVE");
+    state = skills.cancel(state, second.value, "STOPPED");
     assert.equal(get(state, 0).skill.sp.value, 10);
     assert.equal(skills.getSkill(state, reference).state.completed, 2);
-    assert.equal(skills.activate(state, reference).value.type, "REJECTED");
+    assert.equal(skills.activate(state, reference).value, null);
 });
 
 test("cancellation during payment notification retains payment and suppresses the old onStart", () => {
@@ -115,6 +115,7 @@ test("cancellation during payment notification retains payment and suppresses th
         }));
     const activated = skills.activate(state, skills.ref(source, program));
     state = activated.state;
+    assert.notEqual(activated.value, null);
     assert.equal(get(state, 0).skill.sp.value, 0);
     assert.equal(get(state, 0).skill.activation, null);
     assert.equal(get(state, 0).skill.state.started, false);
@@ -197,17 +198,17 @@ test("TIME extension changes this activation rather than the next activation's b
     const source = units.ref(get(state, 0));
     const reference = skills.ref(source, program);
     const first = skills.activate(state, reference);
-    state = skills.extendTime({ ...first.state, tick: 2 }, first.value.ref, 3);
+    state = skills.extendTime({ ...first.state, tick: 2 }, first.value, 3);
     state = update(state, source, presence.disappear());
     state = skills.advance({ ...state, tick: 5 }, source);
-    assert.equal(skills.getActivation(state, first.value.ref).activation.sustain.endsAtTick, 8);
-    assert.equal(skills.getActivation(state, first.value.ref).activation.state.ticks, 1);
+    assert.equal(skills.getActivation(state, first.value).activation.sustain.endsAtTick, 8);
+    assert.equal(skills.getActivation(state, first.value).activation.state.ticks, 1);
     state = skills.advance({ ...state, tick: 8 }, source);
     assert.equal(get(state, 0).skill.activation, null);
     state = update(state, source, presence.appear([1, 1]));
     const second = skills.activate(state, reference);
-    state = skills.extendTime(second.state, first.value.ref, 10);
-    assert.equal(skills.getActivation(state, second.value.ref).activation.sustain.endsAtTick, 13);
+    state = skills.extendTime(second.state, first.value, 10);
+    assert.equal(skills.getActivation(state, second.value).activation.sustain.endsAtTick, 13);
 });
 
 test("AMMO samples its own capacity formula and distinguishes consumption, refill quota, grants, and exhaustion", () => {
@@ -235,23 +236,23 @@ test("AMMO samples its own capacity formula and distinguishes consumption, refil
         }));
     const first = skills.activate(state, reference);
     state = update(first.state, source, skill.removeAmmoContribution("magazine"));
-    assert.equal(skills.getActivation(state, first.value.ref).activation.sustain.initial, 17);
+    assert.equal(skills.getActivation(state, first.value).activation.sustain.initial, 17);
     assert.equal(skills.resolveAmmoCapacity(5, [{ addition: 0, ratio: 0.5 }]), 7);
-    state = skills.consume(state, first.value.ref, 17).state;
-    assert.equal(skills.getActivation(state, first.value.ref).activation.sustain.remaining, 0);
-    let restored = skills.replenish(state, first.value.ref, 30);
+    state = skills.consume(state, first.value, 17).state;
+    assert.equal(skills.getActivation(state, first.value).activation.sustain.remaining, 0);
+    let restored = skills.replenish(state, first.value, 30);
     state = restored.state;
     assert.equal(restored.value.amount, 17);
-    state = skills.consume(state, first.value.ref, 17).state;
-    restored = skills.replenish(state, first.value.ref, 1);
+    state = skills.consume(state, first.value, 17).state;
+    restored = skills.replenish(state, first.value, 1);
     state = restored.state;
     assert.equal(restored.value.amount, 0);
-    state = skills.grant(state, first.value.ref, 1).state;
-    assert.equal(skills.getActivation(state, first.value.ref).activation.sustain.replenished, 17);
-    state = skills.consume(state, first.value.ref).state;
-    state = skills.check(state, first.value.ref);
+    state = skills.grant(state, first.value, 1).state;
+    assert.equal(skills.getActivation(state, first.value).activation.sustain.replenished, 17);
+    state = skills.consume(state, first.value).state;
+    state = skills.check(state, first.value);
     assert.equal(get(state, 0).skill.activation, null);
     const second = skills.activate(state, reference);
-    state = skills.consume(second.state, first.value.ref).state;
-    assert.equal(skills.getActivation(state, second.value.ref).activation.sustain.remaining, 10);
+    state = skills.consume(second.state, first.value).state;
+    assert.equal(skills.getActivation(state, second.value).activation.sustain.remaining, 10);
 });

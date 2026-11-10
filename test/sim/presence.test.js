@@ -84,8 +84,8 @@ test("disappearance preserves deployment and lifetimes, releases blocking before
             assert.equal(get(current, owner.id).presence.present, false);
             assert.deepEqual(blocking.blocked(current, owner), []);
             assert.ok(targets.every((target) => blocking.blockerOf(current, target) === undefined));
-            assert.equal(actions.getExecution(current, started.value.ref).execution.lifecycle, "RUNNING");
-            assert.equal(actions.start(current, idleAction).value.reason, "RULE");
+            assert.equal(actions.getExecution(current, started.value).execution.lifecycle, "RUNNING");
+            assert.equal(actions.start(current, idleAction).value, null);
             current = blocking.acquire(current, owner, targets[0]);
             assert.deepEqual(blocking.blocked(current, owner), []);
             return { state: current, value: undefined };
@@ -101,7 +101,7 @@ test("disappearance preserves deployment and lifetimes, releases blocking before
     assert.equal(cards.get(state, card).stock, 0);
     assert.equal(entries, 1);
     assert.deepEqual(departures, []);
-    assert.equal(actions.getExecution(state, started.value.ref), undefined);
+    assert.equal(actions.getExecution(state, started.value), undefined);
     assert.deepEqual(ended, [{ type: "CANCELLED", reason: "SOURCE_ABSENT" }]);
     state = effects.advance({ ...state, tick: 1 });
     assert.equal(effects.get(state, installed.value).expiration.elapsed, 1);
@@ -112,9 +112,9 @@ test("disappearance preserves deployment and lifetimes, releases blocking before
 
     state = update(state, owner, action.setRule({ id: "other-source", allows: () => false }));
     state = update(state, owner, presence.appear([2, 1]));
-    assert.equal(actions.start(state, actionRef).value.reason, "RULE");
+    assert.equal(actions.start(state, actionRef).value, null);
     state = update(state, owner, action.removeRule("other-source"));
     const restarted = actions.start(state, actionRef);
-    assert.equal(restarted.value.type, "STARTED");
-    assert.equal(actions.getExecution(restarted.state, restarted.value.ref).execution.lifecycle, "RUNNING");
+    assert.notEqual(restarted.value, null);
+    assert.equal(actions.getExecution(restarted.state, restarted.value).execution.lifecycle, "RUNNING");
 });

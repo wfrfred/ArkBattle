@@ -27,5 +27,3 @@ export {
     clearCooldown,
     advance,
 } from "./operations.js";
-
-export type { StartOutcome } from "./operations.js";

@@ -133,9 +133,9 @@ test("an ending ancestor rejects new dependents before its running Action receiv
     ]);
     const source = units.all(state).find((unit) => unit.definition.id === "source");
     const started = actions.start(state, actions.ref(units.ref(source), program));
-    assert.equal(started.value.type, "STARTED");
+    assert.notEqual(started.value, null);
     state = started.state;
-    execution = started.value.ref;
+    execution = started.value;
 
     const after = remove(state, units.ref(source), "DEATH");
 

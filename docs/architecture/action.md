@@ -44,7 +44,7 @@ Rule 只负责启动准入，不自动中断现有执行。眩晕等需要中断
 
 | 职责 | 导出 |
 | --- | --- |
-| 身份与类型 | ref、executionRef、lifetime；Action、Execution、Definition、Event、StartOutcome |
+| 身份与类型 | ref、executionRef、lifetime；Action、Execution、Definition、Event |
 | 创建 | create、createActions |
 | 查询 | forUnit、getExecution、getAction、isCasting |
 | 业务操作 | start、setExecutionState、setState、setCooldown、cancel、cancelForUnit、refreshCooldowns、resetCooldown、clearCooldown |
@@ -238,15 +238,10 @@ Cooldown 保存 periodTicks／readyAtTick；reset 从当前时点开始完整周
 ## 6. 完整启动、写回与终止
 
 ```typescript
-export type StartOutcome<P extends object, E extends object> =
-    | { readonly type: "STARTED"; readonly ref: Ref<Execution<P, E>> }
-    | { readonly type: "REJECTED"; readonly reason:
-        "SOURCE_UNAVAILABLE" | "RULE" | "COOLDOWN" | "CASTING" | "CONDITION" };
-
 export declare function start<P extends object, E extends object>(
     battle: BattleState,
     ref: Ref<Action<P, E>>,
-): Result<StartOutcome<P, E>>;
+): Result<Ref<Execution<P, E>> | null>;
 export declare function cancel<T extends Execution<any, any>>(
     battle: BattleState,
     ref: Ref<T>,
@@ -277,9 +272,9 @@ export declare function clearCooldown<T extends Action<any, any>>(
 ): BattleState;
 ```
 
-start 从当前 Action 检查配置对象身份、来源资格、execution 占用、Rule、Cooldown 和内容条件。未配置 Definition 属于调用／配置错误；普通拒绝不分配执行 ID 或开始周期。STARTED 表示已受理：start 通过 prepare 构造 E、登记本轮 Execution 并重置 Cooldown，首次 onTick 由独立的 advance 入口执行。返回的 Ref 标识本轮执行，使用时仍从最新 BattleState 确认其状态。
+start 从当前 Action 检查配置对象身份、来源资格、execution 占用、Rule、Cooldown 和内容条件。未配置 Definition 属于调用／配置错误；普通拒绝返回 null，不分配执行 ID 或开始周期。成功时通过 prepare 构造 E、登记本轮 Execution 并重置 Cooldown，直接返回本轮 Ref；首次 onTick 由独立的 advance 入口执行。Ref 表达本次创建事实，使用时仍从最新 BattleState 确认其状态。
 
-prepare 前检查准入；prepare 成功返回后，从接续的 BattleState 重新读取宿主与聚合条目，按最新周期确认仍可启动。prepare 返回 null 时返回 CONDITION。回调使自身进入冷却时返回 COOLDOWN，保留已经发生的修改。仍可启动时才基于最新宿主一次写回新 Cooldown、Execution 和 nextExecutionId，保留持久 state、兄弟行动及其他能力的修改，并登记 Execution→Unit 的 Lifetime owner 关系。
+prepare 前检查准入；prepare 成功返回后，从接续的 BattleState 重新读取宿主与聚合条目，按最新周期确认仍可启动。prepare 返回 null，或返回后已不具备启动资格时，结果为 null；Result.state 始终保留已经发生的修改。仍可启动时才基于最新宿主一次写回新 Cooldown、Execution 和 nextExecutionId，保留持久 state、兄弟行动及其他能力的修改，并登记 Execution→Unit 的 Lifetime owner 关系。
 
 三类写入只接收已经计算好的结果值。setExecutionState 以 Execution Ref 指定本轮，只设置 execution.state；setState 与 setCooldown 以 Action Ref 指定持久行动，分别只设置持久 state 与 Cooldown。Core 从传入的最新 BattleState 读取当前聚合条目，只替换指定字段，保留其他字段、Definition、执行身份和生命周期；给定值与当前字段引用相同时返回原 BattleState。
 
@@ -301,7 +296,7 @@ Runtime 采用以下候选政策：
 2. 对每个 Unit，先推进原有执行，再从接续状态读取来源，仍具备 Action、为 PRESENT 且空间在场时才运行 select，已经离场或隐藏则跳过。Cooldown 由攻速／间隔贡献变更的 Settlement 同步维护，Combat 不逐 Tick 刷新。
 3. select 返回本轮候选 Definition ID 及接续状态，可以表达优先级、随机选择和具体模式政策；未提供时从 Actions.keys() 取得全部配置项。
 4. 候选去重后逐一通过 Actions.get(id) 取得条目及其 Definition，再构造持久 Action Ref 调用 start，每次读取最新来源与配置。列表顺序不代表引擎赋予的业务优先级。
-5. 调度器扫描入口固定的执行 Ref，每项读取最新状态并推进一次。自动候选的 start 返回 STARTED 后，Combat 显式调用 advance 推进该 Ref，保持自动动作在同 Tick 首次执行。
+5. 调度器扫描入口固定的执行 Ref，每项读取最新状态并推进一次。自动候选的 start 返回非 null Ref 后，Combat 显式调用 advance 推进该 Ref，保持自动动作在同 Tick 首次执行。
 6. 本轮自动候选只尝试一次，不按“仍然就绪”循环重启即时完成的同一行动。
 7. 内容直接 start 或回调内嵌套 start 只登记执行，等待调度器推进。调度入口前已登记的执行可以在本次调度中推进；调度内嵌套登记的执行不在已固定快照中，等待后续调度。
 

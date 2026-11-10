@@ -120,13 +120,13 @@ test('a hound attacks its hidden blocker while still respecting invincibility', 
   assert.equal(allowsRestrictions(before, hound)(getUnit(before, 0)), false);
   assert.deepEqual(selectTargets(before, unitRef(hound)).value.map(ref => ref.id), [0]);
   const started = startAction(before, actionRef(unitRef(hound), action));
-  const hit = advanceAction(started.state, started.value.ref);
+  const hit = advanceAction(started.state, started.value);
   assert.equal(getUnit(hit, 0).vitality.hp, 850);
 
   const protectedState = install(before, unitRef(blocker), invincible).state;
   const protectedStart = startAction(protectedState, actionRef(unitRef(hound), action));
-  assert.equal(protectedStart.value.type, 'STARTED');
-  assert.equal(getUnit(advanceAction(protectedStart.state, protectedStart.value.ref), 0).vitality.hp, 1000);
+  assert.notEqual(protectedStart.value, null);
+  assert.equal(getUnit(advanceAction(protectedStart.state, protectedStart.value), 0).vitality.hp, 1000);
 });
 
 test('crossbow selects melee for its actual blocker while ranged targeting keeps ordinary restrictions', () => {
@@ -176,7 +176,7 @@ test('crossbow uses explicit windup and arrow speed, then settles damage on cont
   let state = started.state;
   assert.equal(state.battlefield.projectiles.size, 0);
   assert.equal(getUnit(state, 0).vitality.hp, 1000);
-  state = advanceAction({ ...state, tick: 1 }, started.value.ref);
+  state = advanceAction({ ...state, tick: 1 }, started.value);
   assert.equal(state.battlefield.projectiles.size, 1);
   assert.equal(getUnit(state, 0).vitality.hp, 1000);
   for (let tick = 2; tick <= 10; tick++) {

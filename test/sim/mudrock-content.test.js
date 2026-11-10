@@ -116,7 +116,7 @@ test("S2 waits for an eligible target without spending its SP", () => {
     const fixture = setup({}, [enemy(1, [5, 0])]);
     const ready = modify(fixture.battle, ref(fixture.unit), 5).state;
     const result = activate(ready, skillRef(getUnit(ready, 0)), "AUTO");
-    assert.deepEqual(result.value, { type: "REJECTED", reason: "CONDITION" });
+    assert.equal(result.value, null);
     assert.equal(getUnit(result.state, 0).skill.sp.value, 5);
 });
 
@@ -126,7 +126,7 @@ test("S2 replaces normal recovery, heals once and revalidates its bound targets 
     let battle = wound(fixture.battle);
     const normal = fixture.unit.action.actions.get("normal-attack").definition;
     const ordinary = start(battle, actionRef(ref(fixture.unit), normal));
-    battle = advanceAction(ordinary.state, ordinary.value.ref);
+    battle = advanceAction(ordinary.state, ordinary.value);
     assert.ok(getUnit(battle, 0).action.actions.get(normal.id).cooldown.readyAtTick > battle.tick);
     battle = modify(battle, ref(fixture.unit), 5).state;
     battle = update(battle, ref(fixture.unit), setAttackContribution({
@@ -139,7 +139,7 @@ test("S2 replaces normal recovery, heals once and revalidates its bound targets 
     const started = start(battle, actionRef(ref(fixture.unit), fixture.action));
     battle = update(started.state, ref(getUnit(started.state, 2)), setType("AIR"));
     battle = update(battle, ref(getUnit(battle, 3)), setType("GROUND"));
-    battle = advanceAction(battle, started.value.ref);
+    battle = advanceAction(battle, started.value);
     const amount = (fixture.prepared.attributes.attack + 100) * 2.1;
     approximate(getUnit(battle, 1).vitality.hp, beforeFirst - amount);
     assert.equal(getUnit(battle, 2).vitality.hp, beforeSecond);
@@ -148,7 +148,7 @@ test("S2 replaces normal recovery, heals once and revalidates its bound targets 
     approximate(getUnit(battle, 0).vitality.hp, 1000 + fixture.prepared.attributes.maxHp * 0.05);
     assert.equal(getUnit(battle, 0).skill.sp.value, 0);
     assert.notEqual(getUnit(battle, 0).skill.activation, null);
-    battle = advanceAction({ ...battle, tick: 2 }, started.value.ref);
+    battle = advanceAction({ ...battle, tick: 2 }, started.value);
     assert.equal(getUnit(battle, 0).skill.activation, null);
 
     assert.equal(canMove(battle, getUnit(battle, 1)), false);

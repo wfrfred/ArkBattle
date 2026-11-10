@@ -51,16 +51,16 @@ test("prepare can reject without allocating a round; ending preserves the latest
 
     const rejected = actions.start(state, reference);
     state = rejected.state;
-    assert.deepEqual(rejected.value, { type: "REJECTED", reason: "CONDITION" });
+    assert.equal(rejected.value, null);
     assert.equal(actions.getAction(state, reference).state.attempts, 1);
 
     const started = actions.start(state, reference);
     state = started.state;
-    assert.equal(started.value.type, "STARTED");
-    assert.equal(actions.getExecution(state, started.value.ref).execution.state.advances, 0);
-    assert.equal(actions.start(state, reference).value.reason, "CASTING");
-    state = actions.advance(state, started.value.ref);
-    state = actions.advance({ ...state, tick: 1 }, started.value.ref);
+    assert.notEqual(started.value, null);
+    assert.equal(actions.getExecution(state, started.value).execution.state.advances, 0);
+    assert.equal(actions.start(state, reference).value, null);
+    state = actions.advance(state, started.value);
+    state = actions.advance({ ...state, tick: 1 }, started.value);
     assert.equal(actions.getAction(state, reference).execution, null);
     assert.deepEqual(actions.getAction(state, reference).state, {
         attempts: 2,
@@ -68,9 +68,9 @@ test("prepare can reject without allocating a round; ending preserves the latest
     });
 
     const next = actions.start(state, reference);
-    state = actions.cancel(next.state, started.value.ref, "OLD_ROUND");
-    assert.equal(actions.getExecution(state, next.value.ref).execution.lifecycle, "RUNNING");
-    state = actions.cancel(state, next.value.ref, "STOPPED");
+    state = actions.cancel(next.state, started.value, "OLD_ROUND");
+    assert.equal(actions.getExecution(state, next.value).execution.lifecycle, "RUNNING");
+    state = actions.cancel(state, next.value, "STOPPED");
     assert.deepEqual(actions.getAction(state, reference).state.ended[1], {
         end: { type: "CANCELLED", reason: "STOPPED" },
         advances: 0,
@@ -100,9 +100,9 @@ test("static speed and interval changes synchronously preserve independent coold
     const fastRef = actions.ref(source, fast);
     const slowRef = actions.ref(source, slow);
     const firstStart = actions.start(state, fastRef);
-    state = actions.advance(firstStart.state, firstStart.value.ref);
+    state = actions.advance(firstStart.state, firstStart.value);
     const secondStart = actions.start(state, slowRef);
-    state = actions.cancel(secondStart.state, secondStart.value.ref, "STOPPED");
+    state = actions.cancel(secondStart.state, secondStart.value, "STOPPED");
     assert.equal(actions.getAction(state, fastRef).cooldown.readyAtTick, 10);
     assert.equal(actions.getAction(state, slowRef).cooldown.readyAtTick, 20);
 
@@ -132,17 +132,17 @@ test("static speed and interval changes synchronously preserve independent coold
     assert.equal(actions.getAction(state, fastRef).cooldown.readyAtTick, 13);
     assert.equal(actions.getAction(state, slowRef).cooldown.readyAtTick, 3);
     const slowStart = actions.start(state, slowRef);
-    state = actions.advance(slowStart.state, slowStart.value.ref);
+    state = actions.advance(slowStart.state, slowStart.value);
     assert.equal(actions.getAction(state, slowRef).cooldown.readyAtTick, 18);
-    assert.equal(actions.start({ ...state, tick: 12 }, fastRef).value.reason, "COOLDOWN");
+    assert.equal(actions.start({ ...state, tick: 12 }, fastRef).value, null);
 
     state = { ...state, tick: 13 };
     const ready = actions.start(state, fastRef);
-    assert.equal(ready.value.type, "STARTED");
-    assert.equal(actions.start(ready.state, slowRef).value.reason, "COOLDOWN");
-    state = actions.advance(ready.state, ready.value.ref);
+    assert.notEqual(ready.value, null);
+    assert.equal(actions.start(ready.state, slowRef).value, null);
+    state = actions.advance(ready.state, ready.value);
     assert.equal(actions.getAction(state, fastRef).cooldown.readyAtTick, 23);
-    assert.equal(actions.start({ ...state, tick: 18 }, slowRef).value.type, "STARTED");
+    assert.notEqual(actions.start({ ...state, tick: 18 }, slowRef).value, null);
 });
 
 test("interrupted attack, successful release, and damage output are separate business stages", () => {
@@ -197,7 +197,7 @@ test("interrupted attack, successful release, and damage output are separate bus
             invoke: (state) => ({ state, value: { type: "INTERRUPT", recoveryTicks: 2 } }),
         }));
     let started = actions.start(state, reference);
-    state = actions.advance(started.state, started.value.ref);
+    state = actions.advance(started.state, started.value);
     assert.equal(get(state, 0).skill.sp.value, 0);
     assert.equal(get(state, 1).vitality.hp, 100);
 
@@ -210,17 +210,17 @@ test("interrupted attack, successful release, and damage output are separate bus
             }),
         })));
     started = actions.start(state, reference);
-    state = actions.advance(started.state, started.value.ref);
+    state = actions.advance(started.state, started.value);
     assert.equal(get(state, 0).skill.sp.value, 1);
     assert.equal(get(state, 1).vitality.hp, 100);
-    assert.equal(actions.getExecution(state, started.value.ref), undefined);
+    assert.equal(actions.getExecution(state, started.value), undefined);
 
     state = { ...state, tick: 20 };
-    assert.equal(actions.start(state, reference).value.reason, "RULE");
+    assert.equal(actions.start(state, reference).value, null);
     state = update(state, source, presence.appear([1, 1]));
     state = update(state, source, action.removeHook("released", "hide-after-release"));
     started = actions.start(state, reference);
-    state = actions.advance(started.state, started.value.ref);
+    state = actions.advance(started.state, started.value);
     assert.equal(get(state, 0).skill.sp.value, 2);
     assert.equal(get(state, 1).vitality.hp, 93);
 });

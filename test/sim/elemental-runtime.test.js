@@ -77,7 +77,7 @@ test('elemental execution: character necrosis settles fifteen magical pulses, dr
   let work = receiverBattle('CHARACTER', { skill: { initialize: state => createSkill(state, skill) } });
   work = element(work, 'NECROSIS').state;
   assert.equal(getUnit(work, 0).vitality.hp, 100000);
-  assert.equal(activateSkill(work, skillRef(getUnit(work, 0))).value.type, 'REJECTED');
+  assert.equal(activateSkill(work, skillRef(getUnit(work, 0))).value, null);
   work = recover(work, unitRef(getUnit(work, 0)), 'TIME', 3).state;
   assert.equal(getUnit(work, 0).skill.sp.value, 20);
   work = advance(work, 30);
@@ -90,7 +90,7 @@ test('elemental execution: character necrosis settles fifteen magical pulses, dr
   assert.equal(getUnit(work, 0).skill.sp.value, 5);
   work = recover(work, unitRef(getUnit(work, 0)), 'TIME', 3).state;
   assert.equal(getUnit(work, 0).skill.sp.value, 8);
-  assert.equal(activateSkill(work, skillRef(getUnit(work, 0))).value.type, 'ACTIVATED');
+  assert.notEqual(activateSkill(work, skillRef(getUnit(work, 0))).value, null);
 });
 
 test('elemental execution: necrosis shares its recovery budget with periodic damage and fading attack loss', () => {
