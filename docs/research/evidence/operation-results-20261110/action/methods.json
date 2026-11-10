@@ -1,0 +1,17 @@
+[
+  "Torappu.Battle.AbilityStandard.CastToTarget",
+  "Torappu.Battle.AbilityStandard.CastDirectly",
+  "Torappu.Battle.EnemySkill.CastToTarget",
+  "Torappu.Battle.Character/States/AttackState._NextAttackOrExit",
+  "Torappu.Battle.Character/States/AttackState._StartAttack",
+  "Torappu.Battle.Enemy/AttackWrapper.Cast",
+  "Torappu.Battle.Enemy/CombatWrapper._DoCast",
+  "Torappu.Battle.Abilities.AbilityFirstSucceedGroup.CastToTarget",
+  "Torappu.Battle.Abilities.AbilityFirstSucceedGroup.CastDirectly",
+  "Torappu.Battle.Abilities.AbilityRandomGroup.CastToTarget",
+  "Torappu.Battle.Abilities.AbilityRandomGroup.CastDirectly",
+  "Torappu.Battle.Abilities.WangVisualStoneMarkAbility.RunFailedActions",
+  "Torappu.Battle.Abilities.WangVisualStoneMarkAbility.OnSpellStart",
+  "Torappu.Battle.Abilities.WangVisualStoneMarkAbility.DoOnHasNoTarget",
+  "Torappu.Battle.Action.Nodes/TriggerAbility.Execute"
+]

@@ -1,0 +1,10 @@
+{
+  "collectedOn": "2026-11-10",
+  "sources": [
+    {
+      "url": "https://prts.wiki/w/作战机制/sandbox",
+      "purpose": "Background cross-check: starting an attack, interruption and attack cooldown are separate phases; community page does not establish native return type or refusal reason payload."
+    }
+  ],
+  "scope": "Community reference only; method return contracts and caller branches are supported by local native evidence."
+}

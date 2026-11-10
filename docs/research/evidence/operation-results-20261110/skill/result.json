@@ -1,0 +1,58 @@
+{
+  "checkedOn": "2026-11-10",
+  "question": "Whether ordinary Skill activation/retrigger callers consume distinct rejection causes or only success/failure, and whether failure continuations actually exist.",
+  "scope": "Selected ordinary native Skill, Character, SkillState and UI branches; no client execution or active XLua validation; no exhaustive all-character claim.",
+  "confirmed": [
+    {
+      "fact": "BasicSkill.Cast returns bool. Failed IsAvailable returns false directly; failed DoCast dispatches each Behaviour.OnCastFailed with no parameters and then returns false. Successful DoCast invokes OnCastSucceed and returns true.",
+      "method": "Torappu.Battle.BasicSkill.Cast",
+      "index": 73861,
+      "anchors": ["0x180993692", "0x180993696", "0x1809936c7", "0x1809936cb", "0x18099374b", "0x180993760", "0x180993799", "0x1809937aa"],
+      "slotEvidence": "BasicSkill.IsAvailable slot 19; DoCast slot 52; OnCastSucceed slot 65. Behaviour.OnCastFailed slot 7, called through class offset 0x1b0."
+    },
+    {
+      "fact": "CastSkill.DoCast and CastSkillWithCost.DoCast both return bool. Ordinary CastSkill tests Ability cast success before ReduceSp. WithCost tests ReduceSp success before attempting the Ability. The upstream BasicSkill.Cast consumes only the returned bool; neither result carries a rejection-cause payload.",
+      "methods": ["Torappu.Battle.CastSkill.DoCast", "Torappu.Battle.CastSkillWithCost.DoCast"],
+      "indices": [74106, 74160],
+      "anchors": ["0x1809ada14", "0x1809ada17", "0x1809ada41", "0x1809a91eb", "0x1809a91f0", "0x1809a91f2", "0x1809a9269", "0x1809a92be"]
+    },
+    {
+      "fact": "Character.OpTrigSkill selects ordinary trigger or retrigger, checks the corresponding bool eligibility and bool execution result, logs a successful operation, and returns true; failures merge into false. It does not branch on SP/control/target rejection codes.",
+      "method": "Torappu.Battle.Character.OpTrigSkill",
+      "index": 77244,
+      "anchors": ["0x180aa4c1e", "0x180aa4c5b", "0x180aa4c86", "0x180aa4c8b", "0x180aa4d0c", "0x180aa4d2d"]
+    },
+    {
+      "fact": "RetriggerableCastSkillWithCost.RetriggerSkill tests bool eligibility. Its deferred path sets a pending flag, tests UseSkill's bool, and clears the flag on failure. Direct _DoRetrigger returns bool; a failed ReduceCost exits false. No distinct rejection-cause result is consumed in these selected paths.",
+      "methods": ["Torappu.Battle.RetriggerableCastSkillWithCost.RetriggerSkill", "Torappu.Battle.RetriggerableCastSkillWithCost._DoRetrigger"],
+      "indices": [74390, 74394],
+      "anchors": ["0x1809cd4dc", "0x1809cd51b", "0x1809cd528", "0x1809cd52d", "0x1809cd53e", "0x1809cd6c5", "0x1809cd6c7", "0x1809cd999", "0x1809cd9e3", "0x1809cda08"]
+    },
+    {
+      "fact": "SkillState has a separate failure path: canUseAbility=false and non-uninterruptible Skill calls OnCastFailedInSkillState. That void callback has no parameters and dispatches the same no-argument Behaviour.OnCastFailed. It is not a returned reason code from BasicSkill.Cast.",
+      "methods": ["Torappu.Battle.Character/States/SkillState.OnTick", "Torappu.Battle.BasicSkill.OnCastFailedInSkillState"],
+      "indices": [77511, 73879],
+      "anchors": ["0x180ad2339", "0x180ad2399", "0x180ad23f3", "0x180995c5f"],
+      "slotEvidence": "SkillState tests BasicSkill.get_stateUninterruptible slot 17 and calls OnCastFailedInSkillState slot 66."
+    },
+    {
+      "fact": "The menu button calls BattleController.PlayerOp_TrigSkill and proceeds to tutorial/UI state work without inspecting a Skill rejection cause.",
+      "method": "Torappu.Battle.UI.UICharacterMenuPanel.OnSkillButtonClicked",
+      "index": 105355,
+      "anchors": ["0x1812f2338", "0x1812f235f", "0x1812f237a"]
+    },
+    {
+      "fact": "Failure continuations exist and must not be conflated with no-op rejection: OxiFireRainSlotBehaviour.OnCastFailed checks current Ability.isCasting and Skill.isAffecting, then may call _Leave. FeverBehaviour.OnCastFailed conditionally calls _LeaveFeverIfNecessary. Both callbacks take no cause argument; selected decisions read current domain facts.",
+      "methods": ["Torappu.Battle.OxiFireRainSlotBehaviour.OnCastFailed", "Torappu.Battle.FeverBehaviour.OnCastFailed"],
+      "indices": [74032, 73958],
+      "anchors": ["0x1809bbc28", "0x1809bbca0", "0x1809bbcab", "0x1809b2592", "0x1809b25e9"],
+      "limitation": "Native implementation exists; this sub-investigation does not prove a current actual character binding for these two Behaviours."
+    }
+  ],
+  "contentEvidence": {
+    "prior": "../../skill-parameter-formulas-20261029/duration-native.json",
+    "priorBinding": "Archived catap2 S1 uses CastSkillWithCost; S2 uses RetriggerableCastSkillWithCost, with concrete first-payment/start-effect flow.",
+    "currentStatus": "Current skills.ab and buff template bundle hashes differ; archived MonoScript source file is absent. The historical binding is not relabelled as a current content proof; individual verification outcomes are in content-reuse.json."
+  },
+  "conclusion": "Selected real Skill calling protocols require success/failure and contain distinct failure continuations, but none of the covered callers consumes a structured SP/control/no-target rejection cause. This does not prove such a requirement absent from all game content. No ArkBattle API design decision is made here."
+}

@@ -1,6 +1,6 @@
 # Skill 机制与需求核对
 
-核查日期：2026-10-15；2026-10-29 补核数值修正协议，见 2.5。本文先确定业务机制和需求，不固定 Definition、实例、Hook 或 API 的最终形状，不修改源码。案例用于检验协议表达能力；具体内容接入范围仍按项目已有约定处理。
+核查日期：2026-10-15；2026-10-29 补核数值修正协议，见 2.5；2026-11-10 补查启动结果的实际消费，见 3.3。本文先确定业务机制和需求，不固定 Definition、实例、Hook 或 API 的最终形状，不修改源码。案例用于检验协议表达能力；具体内容接入范围仍按项目已有约定处理。
 
 ## 1. 来源与证据边界
 
@@ -344,6 +344,25 @@ Skill 结束后的输出不自动证明宿主离场后也继续。例如蕾缪�
 消费与耗尽结束仍分离：Counter 的 ready-to-reset 协调及 `ResetCount` 门控制后续技能收尾；CastSkillWithLimitTimes 的 OnTick 不是看到余额耗尽就无条件在本次输出前结束。不能仅据“前置消费”就把项目 consume／check 整段一同前移。
 
 这些结论限定灰烬 S2 的所选配置及普通未免耗路径，不推广为所有弹药技能的统一消费节点。流明等条件消费、节弹、弹药倾泻，以及技能关闭丢弃余弹，不与普通攻击中断合并。项目的 Lifetime／对象保留规则决定程序和存储何时结束，不能替代各玩法的消费条件和发生节点；本轮不据此修改通用 Lifetime、ENDING 写入权限或生产接口。
+
+### 3.3 启动结果与失败后继：实际需求核对
+
+本轮区分两个问题：内容是否需要知道一次启动成功／失败，以及是否需要根据不同启动失败原因选择不同后继。不以 ArkBattle 当前调用者或测试作为需求证据。当前原生签名、指令与内容摘录见 [2026-11-10 证据](../evidence/operation-results-20261110/README.md)。未运行客户端或验证现场 XLua。
+
+**成功／失败结果确有实际用途。**
+
+| 路径 | 已核实的消费方式 | 证据范围 |
+| --- | --- | --- |
+| 郁金香 `skchr_apionr_1` | Prefab 的 FirstSucceedGroup 依次放置不允许空目标的 MultiMeleeAttack 与允许空目标的 EmptyAnimatedAbility；原生组合在子能力返回 false 后尝试下一项，true 后记录成功项并开始组合施法。 | 角色／技能表绑定、实际技能 Prefab 和当前原生分支；资源指纹复核通过。 |
+| `TriggerAbility.Execute` 102055 | `_useCastResult=true` 时向内容序列返回 CastToTarget／CastDirectly 的布尔结果，false 时统一返回 true。调用方可以让后续动作依赖这次成败。 | 原生字段分支直接证实；所选旧模板中也存在 true 配置，模板存在与当前角色实际启用分别记录。 |
+| “Touch”，再生之流 | 当关联召唤物获得自缚时尝试触发“吸收灌注”；未能发动时，立即直接执行相同效果。 | [PRTS 固定版本](https://prts.wiki/index.php?title=“Touch”，再生之流&oldid=443827) 的具体内容说明；本轮未闭合该敌人的当前 Prefab／原生调用绑定。 |
+| 普通技能与二次操作 | BasicSkill.Cast、CastSkill.DoCast、CastSkillWithCost.DoCast、RetriggerSkill 和 Character.OpTrigSkill 返回 bool；调用者据此执行成功记录、维护 pending 标记或处理失败。 | 当前 Skill／Character／SkillState／UI 普通原生分支。 |
+
+失败不总是没有后继。`BasicSkill.Cast` 73861 在 IsAvailable=false 时直接返回 false，DoCast=false 时才派发无参数的 `Behaviour.OnCastFailed`。SkillState 77511 的 canUseAbility=false 分支另有 `OnCastFailedInSkillState`，同样不携带原因参数。已展开的 Fever／OxiFireRainSlotBehaviour 失败程序会查询当前 casting／affecting 并按需清理，但本轮未证明这两个 Behaviour 的当前角色绑定。不能把所有失败通知都泛化成相同的触发资格。
+
+**本轮未找到按不同启动失败原因分流的明确内容需求。** 上述组合、节点、技能调用与二次操作消费的是布尔结果，没有消费 SP 不足、冷却、受控、无目标等统一原因码。PRTS 的“Touch”例子也只区分能否发动。相反，技能已经启动后的概率分支、资源支付失败、召唤失败，以及中断／丢失目标导致结束，分别属于其他业务阶段，不能用来证明启动拒绝原因分类的必要性。
+
+本轮由实际调用证明需要保留可观察的成败与相应后继；尚无证据要求复制 ArkBattle 当前 Outcome 的具体结构或拒绝原因集合。有限样本不证明全游戏绝不存在原因分流，也不据此决定项目返回类型或新增 Hook。
 
 ## 4. 调度与范围
 

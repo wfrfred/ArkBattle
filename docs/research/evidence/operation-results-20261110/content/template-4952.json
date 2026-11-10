@@ -1,0 +1,251 @@
+{
+  "provenance": {
+    "collectedAt": "2026-11-10T07:47:28.399670+00:00",
+    "scope": "Selected local JSON documents only. Value matches locate potential references; they do not resolve or validate bindings.",
+    "tool": {
+      "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/config.py",
+      "sha256": "67c2a913386059a57f9316f25e532c9dd20cdc4adb91d820065d09fd9dec76e4"
+    },
+    "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+    "argv": [
+      ".cache/native-research/arcane-chain-20261102/all-templates.json",
+      "--out",
+      ".cache/native-research/operation-results-20261110/content/template-4952.json",
+      "--preview",
+      "0",
+      "select",
+      "/4952"
+    ],
+    "sourceUrl": null,
+    "revision": null,
+    "inputs": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/arcane-chain-20261102/all-templates.json",
+        "bytes": 32817835,
+        "sha256": "3e16ccf971ca7cf26a3f03c06cd50a37c6c1ea38574eb6eea2f143ac884fb7fb",
+        "status": "ok",
+        "matched": 1
+      }
+    ]
+  },
+  "result": {
+    "matched": 1,
+    "matches": [
+      {
+        "source": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/arcane-chain-20261102/all-templates.json",
+        "pointer": "/4952",
+        "value": {
+          "key": "svash2_s_3[target_bird_onuse]",
+          "effect": "",
+          "priority": 0,
+          "events": [
+            {
+              "event": 0,
+              "actions": [
+                {
+                  "_defaultSettings": [
+                    {
+                      "key": "succeed",
+                      "val": 0.0,
+                      "valStr": null,
+                      "overrideIfExists": false
+                    },
+                    {
+                      "key": "one",
+                      "val": 1.0,
+                      "valStr": null,
+                      "overrideIfExists": false
+                    }
+                  ],
+                  "$type": "Torappu.Battle.Action.Nodes+EnsureBlackboardDefaultValue"
+                },
+                {
+                  "_ownerType": "BUFF_SOURCE",
+                  "_targetType": "BUFF_OWNER",
+                  "_abilityName": "BirdAura",
+                  "_checkCanUseAblityFlag": false,
+                  "_castDirectly": false,
+                  "_useFirstActiveAbility": false,
+                  "_useCastResult": true,
+                  "_triggerHostAbility": false,
+                  "_notInterruptAbilityIfCasting": false,
+                  "$type": "Torappu.Battle.Action.Nodes+TriggerAbility"
+                },
+                {
+                  "_inputKey": "one",
+                  "_outputKey": "succeed",
+                  "_multiplyParamKey": null,
+                  "_dividedParamKey": null,
+                  "_useRemainder": false,
+                  "_addParamKey": null,
+                  "_minusParamKey": null,
+                  "_minValueKey": null,
+                  "_maxValueKey": null,
+                  "_finalAbs": true,
+                  "_finalCeil": false,
+                  "_finalFloor": false,
+                  "_finalRound": false,
+                  "_useAbilityBlackboard": false,
+                  "_abilityName": "",
+                  "$type": "Torappu.Battle.Action.Nodes+CalculateBlackboardValueViaParams"
+                },
+                {
+                  "_buff": {
+                    "attributes": {
+                      "abnormalFlags": [],
+                      "abnormalImmunes": [],
+                      "abnormalAntis": [],
+                      "abnormalCombos": [],
+                      "abnormalComboImmunes": [],
+                      "attributeModifiers": []
+                    },
+                    "buffKey": "svash2_s_3[summon_bird]",
+                    "loadFromDB": false,
+                    "isDurableBuff": true,
+                    "isDamageMissable": false,
+                    "isSilenceable": false,
+                    "isStunnable": false,
+                    "isFreezable": false,
+                    "isLevitatable": false,
+                    "isGroundBoundable": false,
+                    "statusResistable": "AUTOMATIC",
+                    "templateKey": "svash2_s_3[summon_bird]",
+                    "disableOverride": false,
+                    "overrideKey": null,
+                    "overrideType": "DEFAULT",
+                    "maxStackCnt": 1,
+                    "refreshRemainingTimeWhenStackMax": false,
+                    "clearAllStackCntWhenTimeUp": false,
+                    "maxValidStackCnt": -1,
+                    "independentCharacterSource": false,
+                    "overrideEffectKey": null,
+                    "overrideOnEventPriority": false,
+                    "onEventPriority": "DEFAULT",
+                    "audioSignal": null,
+                    "lifeTimeType": "INFINITY",
+                    "takeSnapshotWhenExtend": false,
+                    "durationKey": null,
+                    "remainingTimeKey": null,
+                    "lifeTime": 0.0,
+                    "triggerLifeType": "INFINITY",
+                    "triggerCnt": 0,
+                    "triggerInterval": 0.034,
+                    "waitFirstTriggerInterval": true,
+                    "firstTriggerInterval": -1.0,
+                    "priority": -1,
+                    "priorityBBKeys": [],
+                    "stripBlackboardParamsWithBuffKey": false,
+                    "blackboard": [],
+                    "enableInitDirectionFromSource": false
+                  },
+                  "_buffOwner": "BUFF_OWNER",
+                  "_useSpecialBuffSource": false,
+                  "_specialBuffSource": "BUFF_SOURCE",
+                  "_isDerivedBuff": true,
+                  "_finishDerivedBuffIfParentFinish": true,
+                  "_inherateSourceProjectileFromParentBuff": false,
+                  "_hookEffectKeyFromSourceProjectile": false,
+                  "$type": "Torappu.Battle.Action.Nodes+CreateBuff"
+                }
+              ],
+              "refs": []
+            },
+            {
+              "event": 1,
+              "actions": [
+                {
+                  "_conditionsNode": [
+                    {
+                      "_targetType": "BUFF_OWNER",
+                      "_anotherBuff": false,
+                      "_buffKey": null,
+                      "_blackboardKey": "succeed",
+                      "_blackboardKeyFromBb": null,
+                      "_valueToCompare": 0,
+                      "_anotherKeyToCompare": null,
+                      "_condType": "GT",
+                      "$type": "Torappu.Battle.Action.Nodes+FilterByBlackboardValue"
+                    }
+                  ],
+                  "_succeedNodes": [
+                    {
+                      "_targetType": "BUFF_SOURCE",
+                      "_blackboardKey": "cur_uid",
+                      "_valueKey": "",
+                      "_buffKey": "svash2_s_3",
+                      "_useBlackboardBuffKey": false,
+                      "_buffKeyAssignFrom": null,
+                      "_useCurBuffBB": false,
+                      "_assignString": false,
+                      "_defaultValue": 0.0,
+                      "_assignFirstBuff": true,
+                      "_checkAssignToBuffSource": false,
+                      "_assignToBuffSourceType": "TARGET",
+                      "_assignMode": "OVERRIDE",
+                      "_assignToMainBuff": false,
+                      "_includeDisableBuffs": false,
+                      "$type": "Torappu.Battle.Action.Nodes+AssignBuffBlackboard"
+                    },
+                    {
+                      "$type": "Torappu.Battle.Action.Nodes+AlwaysNext"
+                    },
+                    {
+                      "_charFrom": "BUFF_SOURCE",
+                      "_abilityName": "BirdAura",
+                      "_needStopAffect": false,
+                      "$type": "Torappu.Battle.Action.Nodes+InterruptCharacterAbility"
+                    }
+                  ],
+                  "_failNodes": null,
+                  "_isAnd": false,
+                  "$type": "Torappu.Battle.Action.Nodes+IfConditions"
+                }
+              ],
+              "refs": []
+            },
+            {
+              "event": 2,
+              "actions": [
+                {
+                  "_conditionsNode": [
+                    {
+                      "_targetType": "BUFF_SOURCE",
+                      "_buffKeys": [
+                        "svash2_s_3"
+                      ],
+                      "isAND": true,
+                      "_loadFromBlackboard": false,
+                      "_checkBuffSource": false,
+                      "_buffSourceType": "BUFF_SOURCE",
+                      "_checkSourceHost": false,
+                      "$type": "Torappu.Battle.Action.Nodes+CheckContainsBuff"
+                    }
+                  ],
+                  "_succeedNodes": null,
+                  "_failNodes": [
+                    {
+                      "_decCntIfStack": false,
+                      "_updateOverrideMap": true,
+                      "$type": "Torappu.Battle.Action.Nodes+FinishBuff"
+                    }
+                  ],
+                  "_isAnd": false,
+                  "$type": "Torappu.Battle.Action.Nodes+IfConditions"
+                }
+              ],
+              "refs": []
+            }
+          ],
+          "file": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 9606920,
+          "sha256": "3a28131f345a22982c8e955d375819f05c10eac2d544753f85e50d2197c06c57"
+        }
+      }
+    ],
+    "complete": true,
+    "scanned": 1,
+    "succeeded": 1,
+    "errors": []
+  }
+}

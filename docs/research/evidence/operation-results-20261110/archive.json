@@ -1,0 +1,2048 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-11-10"
+    ],
+    "collectionDateSource": "record fields",
+    "organizedOn": "2026-11-10",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+        "records": [
+          "action/contracts.json#/provenance/client/dll",
+          "action/native-bodies.json#/provenance/client/dll",
+          "skill/native.json#/provenance/client/dll"
+        ],
+        "bytes": 223112680
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        "records": [
+          "action/contracts.json#/provenance/client/metadata",
+          "action/native-bodies.json#/provenance/client/metadata",
+          "skill/native.json#/provenance/client/metadata"
+        ],
+        "bytes": 46669332
+      }
+    },
+    "sourceRecords": [
+      "action/content-bindings.json",
+      "action/contracts.json",
+      "action/methods.json",
+      "action/native-bodies.json",
+      "action/prts-sources.json",
+      "content/prts-failure-continuations.json",
+      "content/template-4952.json",
+      "content/template-5167.json",
+      "content/use-cast-result-existing.json",
+      "skill/content-reuse.json",
+      "skill/native.json",
+      "skill/result.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12895,
+        "sha256": "9c5b246859318caaec4aab5275ef0d2d49fce5d612c6b4e569973a9941ba621a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "action/content-bindings.json",
+        "kind": "record",
+        "bytes": 25228,
+        "sha256": "3dbea156a91eaa80c99ec73f153e7c081bdd6281029afc14870e258b150b725f"
+      },
+      {
+        "path": "action/contracts.json",
+        "kind": "record",
+        "bytes": 41165,
+        "sha256": "133f40178c5b71a742deb81179e80054d509c1035c8fd202485aa6340eab3d46"
+      },
+      {
+        "path": "action/extract_action.py",
+        "kind": "historical-script",
+        "bytes": 4578,
+        "sha256": "0f2bc3a137e9105de1c6584546a3a6a9bc81d44766d8415947127930c19864b3"
+      },
+      {
+        "path": "action/extract_action.py.lock",
+        "kind": "artifact",
+        "bytes": 3739,
+        "sha256": "1ed9e3b399cf0743106d2124514970f3a3b5db6d9f1192fba528019ccbefdf04"
+      },
+      {
+        "path": "action/methods.json",
+        "kind": "record",
+        "bytes": 900,
+        "sha256": "b456dac0202eb233ea88a00fc2cbf1c7c26d8a9ecc0417ddb7797d019b24311c"
+      },
+      {
+        "path": "action/native-bodies.json",
+        "kind": "record",
+        "bytes": 547095,
+        "sha256": "bcf8689522f626e7d06ae8ee4e3bbcaa6779f668629e383b40d6ef2d787682cd"
+      },
+      {
+        "path": "action/prts-sources.json",
+        "kind": "record",
+        "bytes": 444,
+        "sha256": "db4542dbfb4793b3819b47e4b5e27ff415a96aa26c58bd7e832ce5328f08cbc8"
+      },
+      {
+        "path": "content/prts-failure-continuations.json",
+        "kind": "record",
+        "bytes": 4763,
+        "sha256": "6a9ddc0fe65ebeeeacb2d806f6176f495b2f39ba04c2d6c1db866137a6fe40de"
+      },
+      {
+        "path": "content/template-4952.json",
+        "kind": "record",
+        "bytes": 9845,
+        "sha256": "c78c99ee49f7ee5081dcf98fa05849379d8f08914434e7ad2fc70a19231a55cb"
+      },
+      {
+        "path": "content/template-5167.json",
+        "kind": "record",
+        "bytes": 7543,
+        "sha256": "4d5982e88bbf2288bc602509310643909cfd8130acba90af817cd628d0d68cc4"
+      },
+      {
+        "path": "content/use-cast-result-existing.json",
+        "kind": "record",
+        "bytes": 3651,
+        "sha256": "22136ea15c377e2eb481281e7c861de803c6bab03d1f9bf5eb27698dc878b0dd"
+      },
+      {
+        "path": "skill/content-reuse.json",
+        "kind": "record",
+        "bytes": 1201,
+        "sha256": "14d6ace3fa9eb04c9e25917f55be33fe95bb2f1f0eafc4703b676b88d9d569f7"
+      },
+      {
+        "path": "skill/extract.py",
+        "kind": "historical-script",
+        "bytes": 5227,
+        "sha256": "31d2f3f8fc0e378397e5d11daa4d1bf8cd6953cc09ed9653799e90aa6031b382"
+      },
+      {
+        "path": "skill/native.json",
+        "kind": "record",
+        "bytes": 794967,
+        "sha256": "2517fd8495a3151664eee815ffe443b18ae342c89f6a9c66530941ddfc322c94"
+      },
+      {
+        "path": "skill/result.json",
+        "kind": "record",
+        "bytes": 5412,
+        "sha256": "b026e78a2c77a4f45644b559e7e5813d901a26c05780fa121dd204c9d506525d"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 63989,
+          "mode": "metadata",
+          "records": [
+            "action/contracts.json#/result/0/methods/0"
+          ],
+          "fullname": "Torappu.Battle.Ability.get_isReady",
+          "address": "0x180605590"
+        },
+        {
+          "index": 64022,
+          "mode": "metadata",
+          "records": [
+            "action/contracts.json#/result/0/methods/1"
+          ],
+          "fullname": "Torappu.Battle.Ability.CastToTarget"
+        },
+        {
+          "index": 64023,
+          "mode": "metadata",
+          "records": [
+            "action/contracts.json#/result/0/methods/2"
+          ],
+          "fullname": "Torappu.Battle.Ability.CastDirectly"
+        },
+        {
+          "index": 64098,
+          "mode": "metadata",
+          "records": [
+            "action/contracts.json#/result/1/methods/0",
+            "action/native-bodies.json#/result/0/method"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.CastToTarget",
+          "address": "0x1805fbe40"
+        },
+        {
+          "index": 64099,
+          "mode": "metadata",
+          "records": [
+            "action/contracts.json#/result/1/methods/1",
+            "action/native-bodies.json#/result/1/method"
+          ],
+          "fullname": "Torappu.Battle.AbilityStandard.CastDirectly",
+          "address": "0x1805fb8a0"
+        },
+        {
+          "index": 67304,
+          "mode": "metadata",
+          "records": [
+            "action/contracts.json#/result/2/methods/0",
+            "action/native-bodies.json#/result/2/method"
+          ],
+          "fullname": "Torappu.Battle.EnemySkill.CastToTarget",
+          "address": "0x18070e540"
+        },
+        {
+          "index": 73774,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/0"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.get_attributeMask",
+          "address": "0x180999280"
+        },
+        {
+          "index": 73776,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/1"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.get_abnormalFlagMask",
+          "address": "0x180999110"
+        },
+        {
+          "index": 73777,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/2"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.get_abnormalImmuneMask",
+          "address": "0x1809991c0"
+        },
+        {
+          "index": 73778,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/3"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.get_abnormalAntiMask",
+          "address": "0x180998ff0"
+        },
+        {
+          "index": 73779,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/4"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.get_abnormalComboMask",
+          "address": "0x1809990b0"
+        },
+        {
+          "index": 73780,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/5"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.get_abnormalComboImmuneMask",
+          "address": "0x180999050"
+        },
+        {
+          "index": 73781,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/6"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.get_showSpAsBulletMode",
+          "address": "0x18099b980"
+        },
+        {
+          "index": 73782,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/7"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.get_recoverSpWhenAffecting",
+          "address": "0x18099b380"
+        },
+        {
+          "index": 73786,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/8"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.get_stateUninterruptible",
+          "address": "0x18099bce0"
+        },
+        {
+          "index": 73787,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/9"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.SatisfySkillRangeIdModeIndex",
+          "address": "0x180998180"
+        },
+        {
+          "index": 73788,
+          "mode": "disasm",
+          "records": [
+            "skill/native.json#/types/0/methods/10",
+            "skill/native.json#/methods/2",
+            "skill/native.json#/methods/2/method"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.IsAvailable",
+          "address": "0x180994850"
+        },
+        {
+          "index": 73793,
+          "mode": "disasm",
+          "records": [
+            "skill/native.json#/types/0/methods/11",
+            "skill/native.json#/methods/3",
+            "skill/native.json#/methods/3/method"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.IsTriggerable",
+          "address": "0x180995050"
+        },
+        {
+          "index": 73796,
+          "mode": "disasm",
+          "records": [
+            "skill/native.json#/types/0/methods/12",
+            "skill/native.json#/methods/4",
+            "skill/native.json#/methods/4/method"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.IsOpTriggerable",
+          "address": "0x180994d00"
+        },
+        {
+          "index": 73797,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/13"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.IsClickable",
+          "address": "0x180994980"
+        },
+        {
+          "index": 73798,
+          "mode": "disasm",
+          "records": [
+            "skill/native.json#/types/0/methods/14",
+            "skill/native.json#/methods/5",
+            "skill/native.json#/methods/5/method"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.IsOpRetriggerable",
+          "address": "0x180994ad0"
+        },
+        {
+          "index": 73799,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/15"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.IsRetriggerClickable",
+          "address": "0x180994e70"
+        },
+        {
+          "index": 73800,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/16"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.IsRetriggerAvailable",
+          "address": "0x180994e00"
+        },
+        {
+          "index": 73801,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/17"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.isRetriggerable",
+          "address": "0x18099bec0"
+        },
+        {
+          "index": 73803,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/18"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.IsDiscardable",
+          "address": "0x180990200"
+        },
+        {
+          "index": 73804,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/19"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.CanTriggerWithReason",
+          "address": "0x1809935a0"
+        },
+        {
+          "index": 73806,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/20"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.get_isAffecting",
+          "address": "0x180999f90"
+        },
+        {
+          "index": 73809,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/21"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.get_shouldCastLikeAttack",
+          "address": "0x18099b8c0"
+        },
+        {
+          "index": 73810,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/22"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.get_shouldChangeToChargeColor",
+          "address": "0x18099b920"
+        },
+        {
+          "index": 73811,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/23"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.get_overrideAudioSignalId",
+          "address": "0x180990a80"
+        },
+        {
+          "index": 73814,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/24"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.get_remainingTime",
+          "address": "0x180991cf0"
+        },
+        {
+          "index": 73815,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/25"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.get_remainingProgress",
+          "address": "0x18099b650"
+        },
+        {
+          "index": 73816,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/26"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.get_remainingOverloadProgress",
+          "address": "0x18099b440"
+        },
+        {
+          "index": 73817,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/27"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.TryForceToOverloadProgress",
+          "address": "0x1809984c0"
+        },
+        {
+          "index": 73819,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/28"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.get_progressToReady",
+          "address": "0x18099ad20"
+        },
+        {
+          "index": 73820,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/29"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.get_spCostZero",
+          "address": "0x18099b9e0"
+        },
+        {
+          "index": 73823,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/30"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.get_ability",
+          "address": "0x180998f90"
+        },
+        {
+          "index": 73824,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/31"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.get_familyGroup",
+          "address": "0x180999b30"
+        },
+        {
+          "index": 73825,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/32"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.get_rangeToShow",
+          "address": "0x18099b030"
+        },
+        {
+          "index": 73830,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/33"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.get_spEnough",
+          "address": "0x18099bb00"
+        },
+        {
+          "index": 73831,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/34"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.get_canSkipReduceSp",
+          "address": "0x180990270"
+        },
+        {
+          "index": 73832,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/35"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.get_forceToShowRange",
+          "address": "0x180999b90"
+        },
+        {
+          "index": 73833,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/36"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.get_forceUseBaseShowRange",
+          "address": "0x180999bf0"
+        },
+        {
+          "index": 73834,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/37"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.get_isUsedUp",
+          "address": "0x18099a420"
+        },
+        {
+          "index": 73842,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/38"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.get_isRemoteControlled",
+          "address": "0x18099a3c0"
+        },
+        {
+          "index": 73843,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/39"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.get_hideProgressFlag",
+          "address": "0x180999f30"
+        },
+        {
+          "index": 73844,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/40"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.get_hasPlayedBeginAnim",
+          "address": "0x180999ce0"
+        },
+        {
+          "index": 73850,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/41"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.get_beginAnim",
+          "address": "0x180999450"
+        },
+        {
+          "index": 73856,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/42"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.get_canCastCheck",
+          "address": "0x180999660"
+        },
+        {
+          "index": 73857,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/43"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.get_beginEffect",
+          "address": "0x180999540"
+        },
+        {
+          "index": 73859,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/44"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.get_isOverloadSkill",
+          "address": "0x18099a300"
+        },
+        {
+          "index": 73860,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/45"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.AssignData",
+          "address": "0x180992700"
+        },
+        {
+          "index": 73861,
+          "mode": "disasm",
+          "records": [
+            "skill/native.json#/types/0/methods/46",
+            "skill/native.json#/methods/0",
+            "skill/native.json#/methods/0/method",
+            "skill/native.json#/xrefs/0/method"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.Cast",
+          "address": "0x180993610"
+        },
+        {
+          "index": 73863,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/47"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.DoCast"
+        },
+        {
+          "index": 73865,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/48"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.OnSkillEnd",
+          "address": "0x1809967a0"
+        },
+        {
+          "index": 73866,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/49"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.UseSkill"
+        },
+        {
+          "index": 73867,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/50"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.RetriggerSkill",
+          "address": "0x180998110"
+        },
+        {
+          "index": 73868,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/51"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.InterruptIfNot",
+          "address": "0x180994420"
+        },
+        {
+          "index": 73869,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/52"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.OnEnterSkillState",
+          "address": "0x1809960e0"
+        },
+        {
+          "index": 73870,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/53"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.TryPrepare",
+          "address": "0x180998750"
+        },
+        {
+          "index": 73871,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/54"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.CanCastCheckBeforeStart",
+          "address": "0x180993540"
+        },
+        {
+          "index": 73873,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/55"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.OnInit",
+          "address": "0x1809961c0"
+        },
+        {
+          "index": 73874,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/56"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.OnBorn",
+          "address": "0x180995940"
+        },
+        {
+          "index": 73875,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/57"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.OnLocate",
+          "address": "0x180990a20"
+        },
+        {
+          "index": 73876,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/58"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.OnOverload",
+          "address": "0x180996330"
+        },
+        {
+          "index": 73877,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/59"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.OnOwnerFinish",
+          "address": "0x180996410"
+        },
+        {
+          "index": 73878,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/60"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.OnCastSucceed",
+          "address": "0x180995da0"
+        },
+        {
+          "index": 73879,
+          "mode": "disasm",
+          "records": [
+            "skill/native.json#/types/0/methods/61",
+            "skill/native.json#/methods/6",
+            "skill/native.json#/methods/6/method",
+            "skill/native.json#/xrefs/2/method"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.OnCastFailedInSkillState",
+          "address": "0x180995b90"
+        },
+        {
+          "index": 73880,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/62"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.OnBeforeAttack",
+          "address": "0x1809953b0"
+        },
+        {
+          "index": 73881,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/63"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.OnAfterAttack",
+          "address": "0x1809952c0"
+        },
+        {
+          "index": 73882,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/64"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.GetValue",
+          "address": "0x180994340"
+        },
+        {
+          "index": 73884,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/65"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.PlayBeginEffectAndAudio",
+          "address": "0x1809978a0"
+        },
+        {
+          "index": 73886,
+          "mode": "disasm",
+          "records": [
+            "skill/native.json#/types/0/methods/66",
+            "skill/native.json#/methods/1",
+            "skill/native.json#/methods/1/method"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.DoStartSkill",
+          "address": "0x180993b20"
+        },
+        {
+          "index": 73887,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/67"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.PlayBeginAnimation",
+          "address": "0x1809975a0"
+        },
+        {
+          "index": 73888,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/68"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.PlayBeginAudio",
+          "address": "0x180997650"
+        },
+        {
+          "index": 73889,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/69"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.OnBeforeSkillBeginAnim",
+          "address": "0x180995520"
+        },
+        {
+          "index": 73894,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/70"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.GatherEffects",
+          "address": "0x180993df0"
+        },
+        {
+          "index": 73895,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/71"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.GatherProjectiles",
+          "address": "0x180993ff0"
+        },
+        {
+          "index": 73896,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/72"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.GatherBuffs",
+          "address": "0x180993ce0"
+        },
+        {
+          "index": 73897,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/73"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.GatherActionNodes",
+          "address": "0x180993bc0"
+        },
+        {
+          "index": 73898,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/74"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.OnTick",
+          "address": "0x180997220"
+        },
+        {
+          "index": 73901,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/75"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.UpdateSpRecovery",
+          "address": "0x180998830"
+        },
+        {
+          "index": 73902,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/76"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.OnCastFinish",
+          "address": "0x180995cb0"
+        },
+        {
+          "index": 73903,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/77"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.Awake",
+          "address": "0x1809933b0"
+        },
+        {
+          "index": 73913,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/0/methods/78"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.get_isAvailableToShowStackCount",
+          "address": "0x18099a100"
+        },
+        {
+          "index": 73923,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/1/methods/0"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill/Behaviour.Init",
+          "address": "0x1809a6d10"
+        },
+        {
+          "index": 73924,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/1/methods/1"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill/Behaviour.AssignData",
+          "address": "0x1809a6a90"
+        },
+        {
+          "index": 73925,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/1/methods/2"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill/Behaviour.OnCastSucceed",
+          "address": "0x1809a6f70"
+        },
+        {
+          "index": 73926,
+          "mode": "disasm",
+          "records": [
+            "skill/native.json#/types/1/methods/3",
+            "skill/native.json#/methods/7",
+            "skill/native.json#/methods/7/method"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill/Behaviour.OnCastFailed",
+          "address": "0x1809a6f10"
+        },
+        {
+          "index": 73928,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/1/methods/4"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill/Behaviour.PostprocessData",
+          "address": "0x1809a71b0"
+        },
+        {
+          "index": 73929,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/1/methods/5"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill/Behaviour.OnSkillStart",
+          "address": "0x1809a70f0"
+        },
+        {
+          "index": 73930,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/1/methods/6"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill/Behaviour.OnSkillEnd",
+          "address": "0x1809a7090"
+        },
+        {
+          "index": 73931,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/1/methods/7"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill/Behaviour.OnInit",
+          "address": "0x1809a6fd0"
+        },
+        {
+          "index": 73932,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/1/methods/8"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill/Behaviour.OnOwnerFinish",
+          "address": "0x1809a7030"
+        },
+        {
+          "index": 73933,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/1/methods/9"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill/Behaviour.OnBorn",
+          "address": "0x1809a6eb0"
+        },
+        {
+          "index": 73934,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/1/methods/10"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill/Behaviour.DealAttachInDummy",
+          "address": "0x1809a6af0"
+        },
+        {
+          "index": 73935,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/1/methods/11"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill/Behaviour.OnTick",
+          "address": "0x1809a7150"
+        },
+        {
+          "index": 73936,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/1/methods/12"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill/Behaviour.OnBeforePlayBeginAnim",
+          "address": "0x1809a6e50"
+        },
+        {
+          "index": 73937,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/1/methods/13"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill/Behaviour.OnAfterAttack",
+          "address": "0x1809a6dc0"
+        },
+        {
+          "index": 73947,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/6/methods/0"
+          ],
+          "fullname": "Torappu.Battle.FeverBehaviour.get_needInFever",
+          "address": "0x1809b3e10"
+        },
+        {
+          "index": 73948,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/6/methods/1"
+          ],
+          "fullname": "Torappu.Battle.FeverBehaviour.get_isDirectlyJoinFeverTypeSkill",
+          "address": "0x1809b3c80"
+        },
+        {
+          "index": 73950,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/6/methods/2"
+          ],
+          "fullname": "Torappu.Battle.FeverBehaviour.AssignData",
+          "address": "0x1809b21a0"
+        },
+        {
+          "index": 73954,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/6/methods/3"
+          ],
+          "fullname": "Torappu.Battle.FeverBehaviour.OnOwnerFinish",
+          "address": "0x1809b2900"
+        },
+        {
+          "index": 73955,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/6/methods/4"
+          ],
+          "fullname": "Torappu.Battle.FeverBehaviour.OnSkillEnd",
+          "address": "0x1809b29d0"
+        },
+        {
+          "index": 73956,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/6/methods/5"
+          ],
+          "fullname": "Torappu.Battle.FeverBehaviour.OnTick",
+          "address": "0x1809b2a80"
+        },
+        {
+          "index": 73957,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/6/methods/6"
+          ],
+          "fullname": "Torappu.Battle.FeverBehaviour.OnCastSucceed",
+          "address": "0x1809b2610"
+        },
+        {
+          "index": 73958,
+          "mode": "disasm",
+          "records": [
+            "skill/native.json#/types/6/methods/7",
+            "skill/native.json#/methods/21",
+            "skill/native.json#/methods/21/method"
+          ],
+          "fullname": "Torappu.Battle.FeverBehaviour.OnCastFailed",
+          "address": "0x1809b24f0"
+        },
+        {
+          "index": 73961,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/6/methods/8"
+          ],
+          "fullname": "Torappu.Battle.FeverBehaviour.OnBeforeJoinFever",
+          "address": "0x1809b2430"
+        },
+        {
+          "index": 73962,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/6/methods/9"
+          ],
+          "fullname": "Torappu.Battle.FeverBehaviour.OnJoinFeverFail",
+          "address": "0x1809b28a0"
+        },
+        {
+          "index": 73963,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/6/methods/10"
+          ],
+          "fullname": "Torappu.Battle.FeverBehaviour.OnAfterJoinFever",
+          "address": "0x1809b2370"
+        },
+        {
+          "index": 73964,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/6/methods/11"
+          ],
+          "fullname": "Torappu.Battle.FeverBehaviour.OnBeforeLeaveFever",
+          "address": "0x1809b2490"
+        },
+        {
+          "index": 73965,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/6/methods/12"
+          ],
+          "fullname": "Torappu.Battle.FeverBehaviour.OnAfterLeaveFever",
+          "address": "0x1809b23d0"
+        },
+        {
+          "index": 73968,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/6/methods/13"
+          ],
+          "fullname": "Torappu.Battle.FeverBehaviour.get_attributeMask",
+          "address": "0x1809b3b60"
+        },
+        {
+          "index": 73969,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/6/methods/14"
+          ],
+          "fullname": "Torappu.Battle.FeverBehaviour.get_abnormalFlagMask",
+          "address": "0x1809b3aa0"
+        },
+        {
+          "index": 73970,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/6/methods/15"
+          ],
+          "fullname": "Torappu.Battle.FeverBehaviour.get_abnormalImmuneMask",
+          "address": "0x1809b3b00"
+        },
+        {
+          "index": 73971,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/6/methods/16"
+          ],
+          "fullname": "Torappu.Battle.FeverBehaviour.get_abnormalAntiMask",
+          "address": "0x1809b3980"
+        },
+        {
+          "index": 73972,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/6/methods/17"
+          ],
+          "fullname": "Torappu.Battle.FeverBehaviour.get_abnormalComboMask",
+          "address": "0x1809b3a40"
+        },
+        {
+          "index": 73973,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/6/methods/18"
+          ],
+          "fullname": "Torappu.Battle.FeverBehaviour.get_abnormalComboImmuneMask",
+          "address": "0x1809b39e0"
+        },
+        {
+          "index": 73974,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/6/methods/19"
+          ],
+          "fullname": "Torappu.Battle.FeverBehaviour.GetValue",
+          "address": "0x1809b2290"
+        },
+        {
+          "index": 74028,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/7/methods/0"
+          ],
+          "fullname": "Torappu.Battle.OxiFireRainSlotBehaviour.AssignData",
+          "address": "0x1809bbb10"
+        },
+        {
+          "index": 74029,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/7/methods/1"
+          ],
+          "fullname": "Torappu.Battle.OxiFireRainSlotBehaviour.OnSkillStart",
+          "address": "0x1809bbe10"
+        },
+        {
+          "index": 74030,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/7/methods/2"
+          ],
+          "fullname": "Torappu.Battle.OxiFireRainSlotBehaviour.OnSkillEnd",
+          "address": "0x1809bbdb0"
+        },
+        {
+          "index": 74031,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/7/methods/3"
+          ],
+          "fullname": "Torappu.Battle.OxiFireRainSlotBehaviour.OnOwnerFinish",
+          "address": "0x1809bbd40"
+        },
+        {
+          "index": 74032,
+          "mode": "disasm",
+          "records": [
+            "skill/native.json#/types/7/methods/4",
+            "skill/native.json#/methods/22",
+            "skill/native.json#/methods/22/method"
+          ],
+          "fullname": "Torappu.Battle.OxiFireRainSlotBehaviour.OnCastFailed",
+          "address": "0x1809bbb80"
+        },
+        {
+          "index": 74090,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/2/methods/0"
+          ],
+          "fullname": "Torappu.Battle.CastSkill.get_spEnough",
+          "address": "0x1809af700"
+        },
+        {
+          "index": 74091,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/2/methods/1"
+          ],
+          "fullname": "Torappu.Battle.CastSkill.get_forceToShowRange",
+          "address": "0x1809af130"
+        },
+        {
+          "index": 74092,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/2/methods/2"
+          ],
+          "fullname": "Torappu.Battle.CastSkill.get_stateUninterruptible",
+          "address": "0x1809af7f0"
+        },
+        {
+          "index": 74093,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/2/methods/3"
+          ],
+          "fullname": "Torappu.Battle.CastSkill.IsAvailable",
+          "address": "0x1809adba0"
+        },
+        {
+          "index": 74095,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/2/methods/4"
+          ],
+          "fullname": "Torappu.Battle.CastSkill.get_shouldCastLikeAttack",
+          "address": "0x1809af570"
+        },
+        {
+          "index": 74096,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/2/methods/5"
+          ],
+          "fullname": "Torappu.Battle.CastSkill.get_shouldChangeToChargeColor",
+          "address": "0x1809af5f0"
+        },
+        {
+          "index": 74097,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/2/methods/6"
+          ],
+          "fullname": "Torappu.Battle.CastSkill.get_isRemoteControlled",
+          "address": "0x1809af2d0"
+        },
+        {
+          "index": 74098,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/2/methods/7"
+          ],
+          "fullname": "Torappu.Battle.CastSkill.CanTriggerWithReason",
+          "address": "0x1809ad390"
+        },
+        {
+          "index": 74100,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/2/methods/8"
+          ],
+          "fullname": "Torappu.Battle.CastSkill.get_forceUseBaseShowRange",
+          "address": "0x1809af1c0"
+        },
+        {
+          "index": 74101,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/2/methods/9"
+          ],
+          "fullname": "Torappu.Battle.CastSkill.get_canCastCheck",
+          "address": "0x1809af020"
+        },
+        {
+          "index": 74102,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/2/methods/10"
+          ],
+          "fullname": "Torappu.Battle.CastSkill.CanCastCheckBeforeStart",
+          "address": "0x1809ad2a0"
+        },
+        {
+          "index": 74103,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/2/methods/11"
+          ],
+          "fullname": "Torappu.Battle.CastSkill.get_rangeToShow",
+          "address": "0x1809af3d0"
+        },
+        {
+          "index": 74104,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/2/methods/12"
+          ],
+          "fullname": "Torappu.Battle.CastSkill.OnInit",
+          "address": "0x1809ae0e0"
+        },
+        {
+          "index": 74105,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/2/methods/13"
+          ],
+          "fullname": "Torappu.Battle.CastSkill.AssignData",
+          "address": "0x1809ad130"
+        },
+        {
+          "index": 74106,
+          "mode": "disasm",
+          "records": [
+            "skill/native.json#/types/2/methods/14",
+            "skill/native.json#/methods/8",
+            "skill/native.json#/methods/8/method"
+          ],
+          "fullname": "Torappu.Battle.CastSkill.DoCast",
+          "address": "0x1809ad4c0"
+        },
+        {
+          "index": 74107,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/2/methods/15"
+          ],
+          "fullname": "Torappu.Battle.CastSkill.OnCastFinish",
+          "address": "0x1809add60"
+        },
+        {
+          "index": 74108,
+          "mode": "disasm",
+          "records": [
+            "skill/native.json#/types/2/methods/16",
+            "skill/native.json#/methods/9",
+            "skill/native.json#/methods/9/method"
+          ],
+          "fullname": "Torappu.Battle.CastSkill.UseSkill",
+          "address": "0x1809ae750"
+        },
+        {
+          "index": 74110,
+          "mode": "disasm",
+          "records": [
+            "skill/native.json#/types/2/methods/17",
+            "skill/native.json#/methods/10",
+            "skill/native.json#/methods/10/method"
+          ],
+          "fullname": "Torappu.Battle.CastSkill.OnCastFailedInSkillState",
+          "address": "0x1809adcd0"
+        },
+        {
+          "index": 74111,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/2/methods/18"
+          ],
+          "fullname": "Torappu.Battle.CastSkill.InterruptIfNot",
+          "address": "0x1809adb20"
+        },
+        {
+          "index": 74113,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/2/methods/19"
+          ],
+          "fullname": "Torappu.Battle.CastSkill.OnTick",
+          "address": "0x1809ae2d0"
+        },
+        {
+          "index": 74116,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/2/methods/20"
+          ],
+          "fullname": "Torappu.Battle.CastSkill.get_isAvailableToShowStackCount",
+          "address": "0x1809af240"
+        },
+        {
+          "index": 74158,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/3/methods/0"
+          ],
+          "fullname": "Torappu.Battle.CastSkillWithCost.IsAvailable",
+          "address": "0x1809a9420"
+        },
+        {
+          "index": 74159,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/3/methods/1"
+          ],
+          "fullname": "Torappu.Battle.CastSkillWithCost.OnInit",
+          "address": "0x1809a94e0"
+        },
+        {
+          "index": 74160,
+          "mode": "disasm",
+          "records": [
+            "skill/native.json#/types/3/methods/2",
+            "skill/native.json#/methods/11",
+            "skill/native.json#/methods/11/method"
+          ],
+          "fullname": "Torappu.Battle.CastSkillWithCost.DoCast",
+          "address": "0x1809a9000"
+        },
+        {
+          "index": 74161,
+          "mode": "disasm",
+          "records": [
+            "skill/native.json#/types/3/methods/3",
+            "skill/native.json#/methods/12",
+            "skill/native.json#/methods/12/method"
+          ],
+          "fullname": "Torappu.Battle.CastSkillWithCost.ReduceCost",
+          "address": "0x1809a95e0"
+        },
+        {
+          "index": 74162,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/3/methods/4"
+          ],
+          "fullname": "Torappu.Battle.CastSkillWithCost.GatherHudPluginTypes",
+          "address": "0x1809a9300"
+        },
+        {
+          "index": 74381,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/4/methods/0"
+          ],
+          "fullname": "Torappu.Battle.RetriggerableCastSkillWithCost.isRetriggerable",
+          "address": "0x1809ce0b0"
+        },
+        {
+          "index": 74383,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/4/methods/1"
+          ],
+          "fullname": "Torappu.Battle.RetriggerableCastSkillWithCost.get_rangeToShow",
+          "address": "0x1809cddf0"
+        },
+        {
+          "index": 74384,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/4/methods/2"
+          ],
+          "fullname": "Torappu.Battle.RetriggerableCastSkillWithCost.IsRetriggerAvailable",
+          "address": "0x1809ccca0"
+        },
+        {
+          "index": 74385,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/4/methods/3"
+          ],
+          "fullname": "Torappu.Battle.RetriggerableCastSkillWithCost.OnBorn",
+          "address": "0x1809ccf60"
+        },
+        {
+          "index": 74386,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/4/methods/4"
+          ],
+          "fullname": "Torappu.Battle.RetriggerableCastSkillWithCost.OnInit",
+          "address": "0x1809ccff0"
+        },
+        {
+          "index": 74387,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/4/methods/5"
+          ],
+          "fullname": "Torappu.Battle.RetriggerableCastSkillWithCost.AssignData",
+          "address": "0x1809cc700"
+        },
+        {
+          "index": 74388,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/4/methods/6"
+          ],
+          "fullname": "Torappu.Battle.RetriggerableCastSkillWithCost.OnTick",
+          "address": "0x1809cd290"
+        },
+        {
+          "index": 74389,
+          "mode": "disasm",
+          "records": [
+            "skill/native.json#/types/4/methods/7",
+            "skill/native.json#/methods/13",
+            "skill/native.json#/methods/13/method"
+          ],
+          "fullname": "Torappu.Battle.RetriggerableCastSkillWithCost.DoCast",
+          "address": "0x1809ccbe0"
+        },
+        {
+          "index": 74390,
+          "mode": "disasm",
+          "records": [
+            "skill/native.json#/types/4/methods/8",
+            "skill/native.json#/methods/14",
+            "skill/native.json#/methods/14/method"
+          ],
+          "fullname": "Torappu.Battle.RetriggerableCastSkillWithCost.RetriggerSkill",
+          "address": "0x1809cd470"
+        },
+        {
+          "index": 74391,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/4/methods/9"
+          ],
+          "fullname": "Torappu.Battle.RetriggerableCastSkillWithCost.OnSkillEnd",
+          "address": "0x1809cd1d0"
+        },
+        {
+          "index": 74392,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/4/methods/10"
+          ],
+          "fullname": "Torappu.Battle.RetriggerableCastSkillWithCost.OnOwnerFinish",
+          "address": "0x1809cd0f0"
+        },
+        {
+          "index": 74393,
+          "mode": "metadata",
+          "records": [
+            "skill/native.json#/types/4/methods/11"
+          ],
+          "fullname": "Torappu.Battle.RetriggerableCastSkillWithCost.ReduceCost",
+          "address": "0x1809cd360"
+        },
+        {
+          "index": 74394,
+          "mode": "disasm",
+          "records": [
+            "skill/native.json#/types/4/methods/12",
+            "skill/native.json#/methods/15",
+            "skill/native.json#/methods/15/method"
+          ],
+          "fullname": "Torappu.Battle.RetriggerableCastSkillWithCost._DoRetrigger",
+          "address": "0x1809cd610"
+        },
+        {
+          "index": 77244,
+          "mode": "disasm",
+          "records": [
+            "skill/native.json#/methods/16",
+            "skill/native.json#/methods/16/method",
+            "skill/native.json#/xrefs/1/method"
+          ],
+          "fullname": "Torappu.Battle.Character.OpTrigSkill",
+          "address": "0x180aa4b50"
+        },
+        {
+          "index": 77245,
+          "mode": "disasm",
+          "records": [
+            "skill/native.json#/methods/17",
+            "skill/native.json#/methods/17/method"
+          ],
+          "fullname": "Torappu.Battle.Character.RemoteTrigSkill",
+          "address": "0x180aa6020"
+        },
+        {
+          "index": 77246,
+          "mode": "disasm",
+          "records": [
+            "skill/native.json#/methods/18",
+            "skill/native.json#/methods/18/method"
+          ],
+          "fullname": "Torappu.Battle.Character.TriggerAutoSkill",
+          "address": "0x180aa7d30"
+        },
+        {
+          "index": 77347,
+          "mode": "disasm",
+          "records": [
+            "skill/native.json#/methods/19",
+            "skill/native.json#/methods/19/method"
+          ],
+          "fullname": "Torappu.Battle.Character.OnBeforeSkill",
+          "address": "0x180aa2780"
+        },
+        {
+          "index": 77504,
+          "mode": "metadata",
+          "records": [
+            "action/contracts.json#/result/3/methods/0",
+            "action/native-bodies.json#/result/3/method"
+          ],
+          "fullname": "Torappu.Battle.Character/States/AttackState._NextAttackOrExit",
+          "address": "0x180ab54f0"
+        },
+        {
+          "index": 77505,
+          "mode": "metadata",
+          "records": [
+            "action/contracts.json#/result/3/methods/1",
+            "action/native-bodies.json#/result/4/method"
+          ],
+          "fullname": "Torappu.Battle.Character/States/AttackState._StartAttack",
+          "address": "0x180ab5630"
+        },
+        {
+          "index": 77510,
+          "mode": "disasm",
+          "records": [
+            "skill/native.json#/types/5/methods/0",
+            "skill/native.json#/methods/23",
+            "skill/native.json#/methods/23/method"
+          ],
+          "fullname": "Torappu.Battle.Character/States/SkillState.OnEnter",
+          "address": "0x180ad2020"
+        },
+        {
+          "index": 77511,
+          "mode": "disasm",
+          "records": [
+            "skill/native.json#/types/5/methods/1",
+            "skill/native.json#/methods/24",
+            "skill/native.json#/methods/24/method"
+          ],
+          "fullname": "Torappu.Battle.Character/States/SkillState.OnTick",
+          "address": "0x180ad22a0"
+        },
+        {
+          "index": 77512,
+          "mode": "disasm",
+          "records": [
+            "skill/native.json#/types/5/methods/2",
+            "skill/native.json#/methods/25",
+            "skill/native.json#/methods/25/method"
+          ],
+          "fullname": "Torappu.Battle.Character/States/SkillState.OnExit",
+          "address": "0x180ad21a0"
+        },
+        {
+          "index": 77513,
+          "mode": "disasm",
+          "records": [
+            "skill/native.json#/types/5/methods/3",
+            "skill/native.json#/methods/26",
+            "skill/native.json#/methods/26/method"
+          ],
+          "fullname": "Torappu.Battle.Character/States/SkillState._StartSkill",
+          "address": "0x180ad2610"
+        },
+        {
+          "index": 77514,
+          "mode": "disasm",
+          "records": [
+            "skill/native.json#/types/5/methods/4",
+            "skill/native.json#/methods/27",
+            "skill/native.json#/methods/27/method"
+          ],
+          "fullname": "Torappu.Battle.Character/States/SkillState._DoStartSkill",
+          "address": "0x180ad2520"
+        },
+        {
+          "index": 77515,
+          "mode": "disasm",
+          "records": [
+            "skill/native.json#/types/5/methods/5",
+            "skill/native.json#/methods/28",
+            "skill/native.json#/methods/28/method"
+          ],
+          "fullname": "Torappu.Battle.Character/States/SkillState..ctor",
+          "address": "0x180ad27f0"
+        },
+        {
+          "index": 78175,
+          "mode": "metadata",
+          "records": [
+            "action/contracts.json#/result/4/methods/0",
+            "action/native-bodies.json#/result/5/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy/AttackWrapper.Cast",
+          "address": "0x180ad3930"
+        },
+        {
+          "index": 78198,
+          "mode": "metadata",
+          "records": [
+            "action/contracts.json#/result/5/methods/0",
+            "action/native-bodies.json#/result/6/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy/CombatWrapper._DoCast",
+          "address": "0x180ad8190"
+        },
+        {
+          "index": 93657,
+          "mode": "metadata",
+          "records": [
+            "action/contracts.json#/result/6/methods/0",
+            "action/native-bodies.json#/result/7/method"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbilityFirstSucceedGroup.CastToTarget",
+          "address": "0x180f87780"
+        },
+        {
+          "index": 93658,
+          "mode": "metadata",
+          "records": [
+            "action/contracts.json#/result/6/methods/1",
+            "action/native-bodies.json#/result/8/method"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbilityFirstSucceedGroup.CastDirectly",
+          "address": "0x180f87590"
+        },
+        {
+          "index": 93766,
+          "mode": "metadata",
+          "records": [
+            "action/contracts.json#/result/7/methods/0",
+            "action/native-bodies.json#/result/9/method"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbilityRandomGroup.CastToTarget",
+          "address": "0x180f8aff0"
+        },
+        {
+          "index": 93767,
+          "mode": "metadata",
+          "records": [
+            "action/contracts.json#/result/7/methods/1",
+            "action/native-bodies.json#/result/10/method"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbilityRandomGroup.CastDirectly",
+          "address": "0x180f8ae10"
+        },
+        {
+          "index": 96080,
+          "mode": "metadata",
+          "records": [
+            "action/contracts.json#/result/8/methods/0",
+            "action/native-bodies.json#/result/11/method"
+          ],
+          "fullname": "Torappu.Battle.Abilities.WangVisualStoneMarkAbility.RunFailedActions",
+          "address": "0x181017db0"
+        },
+        {
+          "index": 96081,
+          "mode": "metadata",
+          "records": [
+            "action/contracts.json#/result/8/methods/1",
+            "action/native-bodies.json#/result/12/method"
+          ],
+          "fullname": "Torappu.Battle.Abilities.WangVisualStoneMarkAbility.OnSpellStart",
+          "address": "0x181017a70"
+        },
+        {
+          "index": 96082,
+          "mode": "metadata",
+          "records": [
+            "action/contracts.json#/result/8/methods/2",
+            "action/native-bodies.json#/result/13/method"
+          ],
+          "fullname": "Torappu.Battle.Abilities.WangVisualStoneMarkAbility.DoOnHasNoTarget",
+          "address": "0x181017440"
+        },
+        {
+          "index": 102055,
+          "mode": "metadata",
+          "records": [
+            "action/contracts.json#/result/9/methods/0",
+            "action/native-bodies.json#/result/14/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/TriggerAbility.Execute",
+          "address": "0x181206180"
+        },
+        {
+          "index": 105355,
+          "mode": "disasm",
+          "records": [
+            "skill/native.json#/methods/20",
+            "skill/native.json#/methods/20/method"
+          ],
+          "fullname": "Torappu.Battle.UI.UICharacterMenuPanel.OnSkillButtonClicked",
+          "address": "0x1812f2280"
+        }
+      ],
+      "blocks": [],
+      "types": [
+        {
+          "name": "Torappu.Battle.Abilities.AbilityFirstSucceedGroup",
+          "records": [
+            "action/contracts.json#/result/6"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Abilities.AbilityRandomGroup",
+          "records": [
+            "action/contracts.json#/result/7"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Abilities.WangVisualStoneMarkAbility",
+          "records": [
+            "action/contracts.json#/result/8"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Ability",
+          "records": [
+            "action/contracts.json#/result/0"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.AbilityStandard",
+          "records": [
+            "action/contracts.json#/result/1"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Action.Nodes/TriggerAbility",
+          "records": [
+            "action/contracts.json#/result/9"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.BasicSkill",
+          "records": [
+            "skill/native.json#/types/0"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.BasicSkill/Behaviour",
+          "records": [
+            "skill/native.json#/types/1"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.CastSkill",
+          "records": [
+            "skill/native.json#/types/2"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.CastSkillWithCost",
+          "records": [
+            "skill/native.json#/types/3"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Character/States/AttackState",
+          "records": [
+            "action/contracts.json#/result/3"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Character/States/SkillState",
+          "records": [
+            "skill/native.json#/types/5"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Enemy/AttackWrapper",
+          "records": [
+            "action/contracts.json#/result/4"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Enemy/CombatWrapper",
+          "records": [
+            "action/contracts.json#/result/5"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.EnemySkill",
+          "records": [
+            "action/contracts.json#/result/2"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.FeverBehaviour",
+          "records": [
+            "skill/native.json#/types/6"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.OxiFireRainSlotBehaviour",
+          "records": [
+            "skill/native.json#/types/7"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.RetriggerableCastSkillWithCost",
+          "records": [
+            "skill/native.json#/types/4"
+          ]
+        }
+      ],
+      "constants": [],
+      "bundles": [
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_1045_svash2.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_1045_svash2.ab",
+          "sha256": "4da58c3993d531490f90faa511dd8e0b314e89ffd5d081b1efb3b09d5f59130b",
+          "records": [
+            "action/content-bindings.json#/provenance/prefabSourceVerification/0/previous",
+            "action/content-bindings.json#/provenance/prefabSourceVerification/0/current"
+          ],
+          "bytes": 34030
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "sha256": "0d0b4c0f9252c14a69a20d4bea09527403dd3eddfc2f7bcd757c3c30cf37ffc3",
+          "records": [
+            "action/content-bindings.json#/provenance/prefabSourceVerification/1/previous",
+            "action/content-bindings.json#/provenance/prefabSourceVerification/1/current",
+            "skill/content-reuse.json#/sources/0"
+          ],
+          "bytes": 1367500
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "sha256": "8edcb8017c977cdf52c2593b58e21db96949f3ad1e6f904180ac1241f145ca79",
+          "records": [
+            "skill/content-reuse.json#/sources/1"
+          ]
+        }
+      ]
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

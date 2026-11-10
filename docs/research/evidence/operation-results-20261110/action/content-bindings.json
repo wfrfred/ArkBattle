@@ -1,0 +1,815 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-10",
+    "scope": "Reused selected Prefab records with current local bundle fingerprints rechecked; pinned third-party Character/Skill mirror provides static content bindings, not runtime execution or XLua activation.",
+    "prefabEvidence": {
+      "path": "docs/research/evidence/targeting-pipeline-20261109/content/selected-prefabs.json",
+      "bytes": 778409,
+      "sha256": "8f70905dc422f11eaff0519fbe6d2a46ccf09f09783cb7f246b7daabe51b4c64"
+    },
+    "prefabSourceVerification": [
+      {
+        "previous": {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_1045_svash2.ab",
+          "bytes": 34030,
+          "sha256": "4da58c3993d531490f90faa511dd8e0b314e89ffd5d081b1efb3b09d5f59130b"
+        },
+        "current": {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_1045_svash2.ab",
+          "bytes": 34030,
+          "sha256": "4da58c3993d531490f90faa511dd8e0b314e89ffd5d081b1efb3b09d5f59130b"
+        },
+        "sha256Matches": true
+      },
+      {
+        "previous": {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "bytes": 1367500,
+          "sha256": "0d0b4c0f9252c14a69a20d4bea09527403dd3eddfc2f7bcd757c3c30cf37ffc3"
+        },
+        "current": {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "bytes": 1367500,
+          "sha256": "0d0b4c0f9252c14a69a20d4bea09527403dd3eddfc2f7bcd757c3c30cf37ffc3"
+        },
+        "sha256Matches": true
+      }
+    ],
+    "dataSources": [
+      {
+        "path": ".cache/native-research/route-operations-20261107/data/character_table.json",
+        "bytes": 15468242,
+        "sha256": "6a61f54802ee194dbb21968976eb99e2a4050e38928bd24bd2b770479076cea1",
+        "sourcePath": "zh_CN/gamedata/excel/character_table.json",
+        "revision": "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+        "matchesPreviouslyGitBlobVerifiedSource": true
+      },
+      {
+        "path": ".cache/native-research/route-operations-20261107/data/skill_table.json",
+        "bytes": 11766431,
+        "sha256": "492900f6b957233296c9736c86bb4e5f3ab4b4d7f5055a0f973c5acec3d174b1",
+        "sourcePath": "zh_CN/gamedata/excel/skill_table.json",
+        "revision": "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+        "matchesPreviouslyGitBlobVerifiedSource": true
+      }
+    ],
+    "dataRevision": "Kengxxiao/ArknightsGameData@63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+    "priorDataVerification": {
+      "path": "docs/research/evidence/targeting-pipeline-20261109/content/selected-data.json",
+      "bytes": 699306,
+      "sha256": "0624ccb7fc9bfe8eccbb76f24a346c2ddeeeb223a5e1bf3182747fc5eb3f51af"
+    }
+  },
+  "result": {
+    "characters": [
+      {
+        "id": "char_513_apionr",
+        "name": "郁金香",
+        "characterPrefabKeys": [
+          "char_513_apionr"
+        ],
+        "skills": [
+          {
+            "skillId": "skchr_apionr_1",
+            "overridePrefabKey": null,
+            "overrideTokenKey": null,
+            "levelUpCostCond": [
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 0,
+                "levelUpCost": null
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 0,
+                "levelUpCost": null
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 0,
+                "levelUpCost": null
+              }
+            ],
+            "unlockCond": {
+              "phase": "PHASE_0",
+              "level": 1
+            }
+          }
+        ]
+      },
+      {
+        "id": "char_1045_svash2",
+        "name": "凛御银灰",
+        "characterPrefabKeys": [
+          "char_1045_svash2"
+        ],
+        "skills": [
+          {
+            "skillId": "skchr_svash2_1",
+            "overridePrefabKey": null,
+            "overrideTokenKey": "token_10057_svash2_eagle1",
+            "levelUpCostCond": [
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 28800,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 8,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30014",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31093",
+                    "count": 8,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 57600,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 12,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30104",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31064",
+                    "count": 8,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 86400,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 15,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30135",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31084",
+                    "count": 5,
+                    "type": "MATERIAL"
+                  }
+                ]
+              }
+            ],
+            "unlockCond": {
+              "phase": "PHASE_0",
+              "level": 1
+            }
+          },
+          {
+            "skillId": "skchr_svash2_2",
+            "overridePrefabKey": null,
+            "overrideTokenKey": "token_10057_svash2_eagle2",
+            "levelUpCostCond": [
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 28800,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 8,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31024",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31053",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 57600,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 12,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31034",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30044",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 86400,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 15,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30155",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31054",
+                    "count": 2,
+                    "type": "MATERIAL"
+                  }
+                ]
+              }
+            ],
+            "unlockCond": {
+              "phase": "PHASE_1",
+              "level": 1
+            }
+          },
+          {
+            "skillId": "skchr_svash2_3",
+            "overridePrefabKey": null,
+            "overrideTokenKey": "token_10057_svash2_eagle3",
+            "levelUpCostCond": [
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 28800,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 8,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30054",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30063",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 57600,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 12,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31064",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31054",
+                    "count": 9,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 86400,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 15,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30145",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31094",
+                    "count": 1,
+                    "type": "MATERIAL"
+                  }
+                ]
+              }
+            ],
+            "unlockCond": {
+              "phase": "PHASE_2",
+              "level": 1
+            }
+          }
+        ]
+      }
+    ],
+    "skills": [
+      {
+        "id": "skchr_apionr_1",
+        "levels": [
+          {
+            "name": "只余芬芳",
+            "prefabId": "skchr_apionr_1",
+            "description": "立即获得<@ba.vup>{cost}</>点费用；对周围的敌人发动<@ba.vup>{times}</>次连续斩击，每次造成相当于攻击力<@ba.vup>{atk_scale:0%}</>的物理伤害，并无视目标<@ba.vup>{def_penetrate:0%}</>防御力",
+            "skillType": "MANUAL",
+            "duration": -1.0
+          }
+        ]
+      },
+      {
+        "id": "skchr_svash2_3",
+        "levels": [
+          {
+            "name": "变革已至",
+            "prefabId": "skchr_svash2_3",
+            "description": "攻击范围<@ba.vup>扩大</>并使敌人<$ba.invisible>隐匿</>失效，攻击对直线范围造成攻击力<@ba.vup>{bird_atk_scale:0%}</>的物理伤害和<@ba.vup>{damage_scale_display:0%}</>的<$ba.fragile>脆弱</>；立即获得<@ba.vup>{svash2_s_3[start_cost].cost}</>点后持续获得<@ba.vup>24</>点部署费用\\n<@ba.rem>首次开启时交换待部署区中费用最高（优先选择近卫/术师/狙击干员）与最低干员的基础部署费用</>\\n<@ba.rem>技能期间“风雪之眼”变为可部署</>",
+            "skillType": "MANUAL",
+            "duration": 48.0
+          }
+        ]
+      }
+    ],
+    "prefabs": [
+      {
+        "sourcePointer": "/result/226",
+        "bundle": "charpack/char_1045_svash2.ab",
+        "file": "CAB-b5a36193fd0e7e01a20cd497ceb83a97",
+        "pathId": "-7699534928442475219",
+        "hierarchy": [
+          "char_1045_svash2",
+          "Modes",
+          "Default",
+          "Body",
+          "Attack",
+          "AttackA"
+        ],
+        "objectSha256": "a735730ef33160ad72842fd5ad6220428d4ae0355c6b30a2b8a332e869e9c34b",
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": 4381884627089348317
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "bundle": "anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "value": {
+            "id": "4381884627089348317",
+            "name": "MeleeAttack",
+            "cl": "MeleeAttack",
+            "ns": "Torappu.Battle.Abilities",
+            "asm": "Assembly-CSharp.dll"
+          }
+        },
+        "enabled": 1,
+        "value": {
+          "_selector": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_waitForAttackEvent": 1,
+          "_interuptIfTargetDead": 0,
+          "_selectTargetSource": 2,
+          "_selectTargetTiming": 0,
+          "_alwaysIncludeTarget": 1,
+          "_allowNoTarget": 0,
+          "_activeBuffs": {
+            "Array": []
+          },
+          "_attackType": 1,
+          "_useDynamicAttackType": 0
+        }
+      },
+      {
+        "sourcePointer": "/result/229",
+        "bundle": "charpack/char_1045_svash2.ab",
+        "file": "CAB-b5a36193fd0e7e01a20cd497ceb83a97",
+        "pathId": "-5531768042326246099",
+        "hierarchy": [
+          "char_1045_svash2",
+          "Modes",
+          "Default",
+          "Body",
+          "Attack",
+          "AttackC"
+        ],
+        "objectSha256": "441f8a0cea40e7eab367f7e679d0e81af3a43df52c249f80693514e0e7b4f5b5",
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": 4381884627089348317
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "bundle": "anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "value": {
+            "id": "4381884627089348317",
+            "name": "MeleeAttack",
+            "cl": "MeleeAttack",
+            "ns": "Torappu.Battle.Abilities",
+            "asm": "Assembly-CSharp.dll"
+          }
+        },
+        "enabled": 1,
+        "value": {
+          "_selector": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_waitForAttackEvent": 1,
+          "_interuptIfTargetDead": 0,
+          "_selectTargetSource": 2,
+          "_selectTargetTiming": 0,
+          "_alwaysIncludeTarget": 1,
+          "_allowNoTarget": 0,
+          "_activeBuffs": {
+            "Array": []
+          },
+          "_attackType": 1,
+          "_useDynamicAttackType": 0
+        }
+      },
+      {
+        "sourcePointer": "/result/231",
+        "bundle": "charpack/char_1045_svash2.ab",
+        "file": "CAB-b5a36193fd0e7e01a20cd497ceb83a97",
+        "pathId": "-4972930283529945811",
+        "hierarchy": [
+          "char_1045_svash2"
+        ],
+        "objectSha256": "1fa6fdce42b504e63b490ee87c38a7f12e881bb06f729f79b2b2f06b47f6b3ec",
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": -1297314214590689040
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "bundle": "anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "value": {
+            "id": "-1297314214590689040",
+            "name": "Character",
+            "cl": "Character",
+            "ns": "Torappu.Battle",
+            "asm": "Assembly-CSharp.dll"
+          }
+        },
+        "enabled": 1,
+        "value": {
+          "_modes": {
+            "Array": [
+              {
+                "m_FileID": 0,
+                "m_PathID": 727491709581147437
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": -7460371651906421459
+              }
+            ]
+          },
+          "_commonAbilities": {
+            "Array": []
+          },
+          "_traitAbility": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          }
+        }
+      },
+      {
+        "sourcePointer": "/result/237",
+        "bundle": "charpack/char_1045_svash2.ab",
+        "file": "CAB-b5a36193fd0e7e01a20cd497ceb83a97",
+        "pathId": "-1748106502364447443",
+        "hierarchy": [
+          "char_1045_svash2",
+          "Modes",
+          "Default",
+          "Body",
+          "Attack",
+          "AttackB"
+        ],
+        "objectSha256": "9725c574a80f72fb337d7fc2bcc394dfbb03e0d8decb1368ce22f99c805a5c85",
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": 4381884627089348317
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "bundle": "anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "value": {
+            "id": "4381884627089348317",
+            "name": "MeleeAttack",
+            "cl": "MeleeAttack",
+            "ns": "Torappu.Battle.Abilities",
+            "asm": "Assembly-CSharp.dll"
+          }
+        },
+        "enabled": 1,
+        "value": {
+          "_selector": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_waitForAttackEvent": 1,
+          "_interuptIfTargetDead": 0,
+          "_selectTargetSource": 2,
+          "_selectTargetTiming": 0,
+          "_alwaysIncludeTarget": 1,
+          "_allowNoTarget": 0,
+          "_activeBuffs": {
+            "Array": []
+          },
+          "_attackType": 1,
+          "_useDynamicAttackType": 0
+        }
+      },
+      {
+        "sourcePointer": "/result/244",
+        "bundle": "charpack/char_1045_svash2.ab",
+        "file": "CAB-b5a36193fd0e7e01a20cd497ceb83a97",
+        "pathId": "727491709581147437",
+        "hierarchy": [
+          "char_1045_svash2",
+          "Modes",
+          "Default"
+        ],
+        "objectSha256": "1b55f24e54551d7abb908fca8c9c6bd5863ff8cfbd94e1b5d2304695ddf0748b",
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": 5390319429299248724
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "bundle": "anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "value": {
+            "id": "5390319429299248724",
+            "name": "UnitMode",
+            "cl": "UnitMode",
+            "ns": "Torappu.Battle",
+            "asm": "Assembly-CSharp.dll"
+          }
+        },
+        "enabled": 1,
+        "value": {
+          "_combat": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_attack": {
+            "m_FileID": 0,
+            "m_PathID": 8869629110901357869
+          },
+          "_attackTrigger": {
+            "m_FileID": 0,
+            "m_PathID": -1749404267755193043
+          },
+          "_generalAbilities": {
+            "Array": []
+          }
+        }
+      },
+      {
+        "sourcePointer": "/result/259",
+        "bundle": "charpack/char_1045_svash2.ab",
+        "file": "CAB-b5a36193fd0e7e01a20cd497ceb83a97",
+        "pathId": "8869629110901357869",
+        "hierarchy": [
+          "char_1045_svash2",
+          "Modes",
+          "Default",
+          "Body",
+          "Attack"
+        ],
+        "objectSha256": "75aa6d075488c940f30e5be3002a54e96ed582e4ecd9d14ca92e91c910967733",
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": 2834425272315682029
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "bundle": "anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "value": {
+            "id": "2834425272315682029",
+            "name": "AbilityRandomGroup",
+            "cl": "AbilityRandomGroup",
+            "ns": "Torappu.Battle.Abilities",
+            "asm": "Assembly-CSharp.dll"
+          }
+        },
+        "enabled": 1,
+        "value": {
+          "_selector": {
+            "m_FileID": 0,
+            "m_PathID": 155868400357293357
+          },
+          "_abilities": {
+            "Array": [
+              {
+                "m_FileID": 0,
+                "m_PathID": -7699534928442475219
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": -1748106502364447443
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": -5531768042326246099
+              }
+            ]
+          }
+        }
+      },
+      {
+        "sourcePointer": "/result/318",
+        "bundle": "battle/prefabs/[uc]skills.ab",
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "pathId": "-4887580023928719155",
+        "hierarchy": [
+          "skchr_apionr_1",
+          "Empty"
+        ],
+        "objectSha256": "e5b404c5b16ed3762169fbac0bbc0bce00cd8244282411a9430c666a00249e1f",
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": 8145049199648393782
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "bundle": "anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "value": {
+            "id": "8145049199648393782",
+            "name": "EmptyAnimatedAbility",
+            "cl": "EmptyAnimatedAbility",
+            "ns": "Torappu.Battle.Abilities",
+            "asm": "Assembly-CSharp.dll"
+          }
+        },
+        "enabled": 1,
+        "value": {
+          "_selector": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_waitForAttackEvent": 0,
+          "_interuptIfTargetDead": 0,
+          "_selectTargetSource": 1,
+          "_selectTargetTiming": 0,
+          "_alwaysIncludeTarget": 0,
+          "_allowNoTarget": 1,
+          "_activeBuffs": {
+            "Array": []
+          }
+        }
+      },
+      {
+        "sourcePointer": "/result/425",
+        "bundle": "battle/prefabs/[uc]skills.ab",
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "pathId": "5117273669797411021",
+        "hierarchy": [
+          "skchr_apionr_1"
+        ],
+        "objectSha256": "caefb4b32d5c38ade70103b9b6d1dc5aee0ad8d35e2ee6553f8ad4040bdd3d57",
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": 9054077595100407899
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "bundle": "anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "value": {
+            "id": "9054077595100407899",
+            "name": "AbilityFirstSucceedGroup",
+            "cl": "AbilityFirstSucceedGroup",
+            "ns": "Torappu.Battle.Abilities",
+            "asm": "Assembly-CSharp.dll"
+          }
+        },
+        "enabled": 1,
+        "value": {
+          "_selector": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_abilities": {
+            "Array": [
+              {
+                "m_FileID": 0,
+                "m_PathID": 7343246726752041165
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": -4887580023928719155
+              }
+            ]
+          }
+        }
+      },
+      {
+        "sourcePointer": "/result/448",
+        "bundle": "battle/prefabs/[uc]skills.ab",
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "pathId": "7343246726752041165",
+        "hierarchy": [
+          "skchr_apionr_1",
+          "Skill"
+        ],
+        "objectSha256": "956009d4db075c6673c7b047ada9403702a17e27df4ed14c3c96594113fd9918",
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": -5349745400011864685
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "bundle": "anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "value": {
+            "id": "-5349745400011864685",
+            "name": "MultiMeleeAttack",
+            "cl": "MultiMeleeAttack",
+            "ns": "Torappu.Battle.Abilities",
+            "asm": "Assembly-CSharp.dll"
+          }
+        },
+        "enabled": 1,
+        "value": {
+          "_selector": {
+            "m_FileID": 0,
+            "m_PathID": 4144251088405657805
+          },
+          "_waitForAttackEvent": 1,
+          "_interuptIfTargetDead": 0,
+          "_selectTargetSource": 1,
+          "_selectTargetTiming": 2,
+          "_alwaysIncludeTarget": 0,
+          "_allowNoTarget": 0,
+          "_activeBuffs": {
+            "Array": []
+          },
+          "_attackType": 1,
+          "_useDynamicAttackType": 0
+        }
+      }
+    ]
+  }
+}

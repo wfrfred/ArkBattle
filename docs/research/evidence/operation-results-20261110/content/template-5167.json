@@ -1,0 +1,181 @@
+{
+  "provenance": {
+    "collectedAt": "2026-11-10T07:47:28.622219+00:00",
+    "scope": "Selected local JSON documents only. Value matches locate potential references; they do not resolve or validate bindings.",
+    "tool": {
+      "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/config.py",
+      "sha256": "67c2a913386059a57f9316f25e532c9dd20cdc4adb91d820065d09fd9dec76e4"
+    },
+    "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+    "argv": [
+      ".cache/native-research/arcane-chain-20261102/all-templates.json",
+      "--out",
+      ".cache/native-research/operation-results-20261110/content/template-5167.json",
+      "--preview",
+      "0",
+      "select",
+      "/5167"
+    ],
+    "sourceUrl": null,
+    "revision": null,
+    "inputs": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/arcane-chain-20261102/all-templates.json",
+        "bytes": 32817835,
+        "sha256": "3e16ccf971ca7cf26a3f03c06cd50a37c6c1ea38574eb6eea2f143ac884fb7fb",
+        "status": "ok",
+        "matched": 1
+      }
+    ]
+  },
+  "result": {
+    "matched": 1,
+    "matches": [
+      {
+        "source": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/arcane-chain-20261102/all-templates.json",
+        "pointer": "/5167",
+        "value": {
+          "key": "wang_stone1_t_1[trigger]",
+          "effect": "",
+          "priority": 0,
+          "events": [
+            {
+              "event": 12,
+              "actions": [
+                {
+                  "allowedSource": "ALL",
+                  "_targetType": "BUFF_OWNER",
+                  "_gridRowKey": "row",
+                  "_gridColKey": "col",
+                  "_useConstLocationKey": false,
+                  "$type": "Torappu.Battle.Action.Nodes+AssignGridPositionToBlackboard"
+                },
+                {
+                  "_conditionNode": {
+                    "_ownerType": "BUFF_OWNER",
+                    "_skillIndex": 2,
+                    "_checkTargetHost": false,
+                    "$type": "Torappu.Battle.Action.Nodes+CheckSkillIndex"
+                  },
+                  "_succeedNodes": [
+                    {
+                      "_conditionNode": {
+                        "_targetType": "BUFF_OWNER",
+                        "_checkTargetHost": true,
+                        "_checkSpShowedBuff": false,
+                        "$type": "Torappu.Battle.Action.Nodes+CheckCharSkillAffecting"
+                      },
+                      "_succeedNodes": [
+                        {
+                          "_conditionNode": {
+                            "_sourceType": "BUFF_OWNER",
+                            "_targetType": "BUFF_OWNER",
+                            "_useSourceHost": true,
+                            "_useOverlap": false,
+                            "$type": "Torappu.Battle.Action.Nodes+CheckEntityInAttackRange"
+                          },
+                          "_succeedNodes": [
+                            {
+                              "_ownerType": "BUFF_OWNER",
+                              "_targetType": "BUFF_OWNER",
+                              "_abilityName": "SpawnTokenS3InSkill",
+                              "_checkCanUseAblityFlag": false,
+                              "_castDirectly": true,
+                              "_resetSelector": false,
+                              "_assignBBKeys": [
+                                "row",
+                                "col"
+                              ],
+                              "_useFirstActiveAbility": true,
+                              "_useOwnerHost": true,
+                              "_useCastResult": true,
+                              "_excludeTarget": false,
+                              "_excludeTargetType": "TARGET",
+                              "$type": "Torappu.Battle.Action.Nodes+TriggerAbilityMergeBB"
+                            }
+                          ],
+                          "_failNodes": [
+                            {
+                              "_ownerType": "BUFF_OWNER",
+                              "_targetType": "BUFF_OWNER",
+                              "_abilityName": "SpawnTokenS3",
+                              "_checkCanUseAblityFlag": false,
+                              "_castDirectly": true,
+                              "_resetSelector": false,
+                              "_assignBBKeys": [
+                                "row",
+                                "col"
+                              ],
+                              "_useFirstActiveAbility": true,
+                              "_useOwnerHost": true,
+                              "_useCastResult": false,
+                              "_excludeTarget": false,
+                              "_excludeTargetType": "TARGET",
+                              "$type": "Torappu.Battle.Action.Nodes+TriggerAbilityMergeBB"
+                            }
+                          ],
+                          "$type": "Torappu.Battle.Action.Nodes+IfElse"
+                        }
+                      ],
+                      "_failNodes": [
+                        {
+                          "_ownerType": "BUFF_OWNER",
+                          "_targetType": "BUFF_OWNER",
+                          "_abilityName": "SpawnTokenS3",
+                          "_checkCanUseAblityFlag": false,
+                          "_castDirectly": true,
+                          "_resetSelector": false,
+                          "_assignBBKeys": [
+                            "row",
+                            "col"
+                          ],
+                          "_useFirstActiveAbility": true,
+                          "_useOwnerHost": true,
+                          "_useCastResult": false,
+                          "_excludeTarget": false,
+                          "_excludeTargetType": "TARGET",
+                          "$type": "Torappu.Battle.Action.Nodes+TriggerAbilityMergeBB"
+                        }
+                      ],
+                      "$type": "Torappu.Battle.Action.Nodes+IfElse"
+                    }
+                  ],
+                  "_failNodes": [
+                    {
+                      "_ownerType": "BUFF_OWNER",
+                      "_targetType": "BUFF_OWNER",
+                      "_abilityName": "SpawnToken",
+                      "_checkCanUseAblityFlag": false,
+                      "_castDirectly": true,
+                      "_resetSelector": false,
+                      "_assignBBKeys": [
+                        "row",
+                        "col"
+                      ],
+                      "_useFirstActiveAbility": true,
+                      "_useOwnerHost": true,
+                      "_useCastResult": false,
+                      "_excludeTarget": false,
+                      "_excludeTargetType": "TARGET",
+                      "$type": "Torappu.Battle.Action.Nodes+TriggerAbilityMergeBB"
+                    }
+                  ],
+                  "$type": "Torappu.Battle.Action.Nodes+IfElse"
+                }
+              ],
+              "refs": []
+            }
+          ],
+          "file": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 10019692,
+          "sha256": "9df9ec145c85694bf6f8137a305ad25db3b387ea7d88c0364a864ae52d9caddd"
+        }
+      }
+    ],
+    "complete": true,
+    "scanned": 1,
+    "succeeded": 1,
+    "errors": []
+  }
+}

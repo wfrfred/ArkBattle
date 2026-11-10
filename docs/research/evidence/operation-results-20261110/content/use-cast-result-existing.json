@@ -1,0 +1,91 @@
+{
+  "provenance": {
+    "collectedAt": "2026-11-10T07:45:39.381214+00:00",
+    "scope": "Selected local JSON documents only. Value matches locate potential references; they do not resolve or validate bindings.",
+    "tool": {
+      "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/config.py",
+      "sha256": "67c2a913386059a57f9316f25e532c9dd20cdc4adb91d820065d09fd9dec76e4"
+    },
+    "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+    "argv": [
+      ".cache/native-research/arcane-chain-20261102/all-templates.json",
+      "--out",
+      ".cache/native-research/operation-results-20261110/content/use-cast-result-existing.json",
+      "find",
+      "--key",
+      "_useCastResult",
+      "--equals",
+      "true"
+    ],
+    "sourceUrl": null,
+    "revision": null,
+    "inputs": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/arcane-chain-20261102/all-templates.json",
+        "bytes": 32817835,
+        "sha256": "3e16ccf971ca7cf26a3f03c06cd50a37c6c1ea38574eb6eea2f143ac884fb7fb",
+        "status": "ok",
+        "matched": 10
+      }
+    ]
+  },
+  "result": {
+    "matched": 10,
+    "matches": [
+      {
+        "source": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/arcane-chain-20261102/all-templates.json",
+        "pointer": "/2578/events/1/actions/1/_useCastResult",
+        "value": true
+      },
+      {
+        "source": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/arcane-chain-20261102/all-templates.json",
+        "pointer": "/3020/events/0/actions/0/_conditionNode/_useCastResult",
+        "value": true
+      },
+      {
+        "source": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/arcane-chain-20261102/all-templates.json",
+        "pointer": "/3144/events/0/actions/0/_failNodes/0/_useCastResult",
+        "value": true
+      },
+      {
+        "source": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/arcane-chain-20261102/all-templates.json",
+        "pointer": "/4216/events/0/actions/0/_useCastResult",
+        "value": true
+      },
+      {
+        "source": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/arcane-chain-20261102/all-templates.json",
+        "pointer": "/4217/events/0/actions/1/_useCastResult",
+        "value": true
+      },
+      {
+        "source": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/arcane-chain-20261102/all-templates.json",
+        "pointer": "/4952/events/0/actions/1/_useCastResult",
+        "value": true
+      },
+      {
+        "source": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/arcane-chain-20261102/all-templates.json",
+        "pointer": "/5167/events/0/actions/1/_succeedNodes/0/_succeedNodes/0/_succeedNodes/0/_useCastResult",
+        "value": true
+      },
+      {
+        "source": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/arcane-chain-20261102/all-templates.json",
+        "pointer": "/6487/events/2/actions/0/_succeedNodes/0/_failNodes/0/_useCastResult",
+        "value": true
+      },
+      {
+        "source": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/arcane-chain-20261102/all-templates.json",
+        "pointer": "/6514/events/2/actions/0/_succeedNodes/0/_useCastResult",
+        "value": true
+      },
+      {
+        "source": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/arcane-chain-20261102/all-templates.json",
+        "pointer": "/6616/events/0/actions/4/_succeedNodes/0/_useCastResult",
+        "value": true
+      }
+    ],
+    "complete": true,
+    "scanned": 1,
+    "succeeded": 1,
+    "errors": []
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "provenance": {
+    "accessDate": "2026-11-10",
+    "sourceKind": "PRTS community documentation; targeted web search and page reads",
+    "scope": "Actual content that retries, falls back or has no effect after an attempted Skill/Ability start. No ArkBattle consumers were used as evidence.",
+    "searchQueries": [
+      "site:prts.wiki 技能 触发失败",
+      "site:prts.wiki 技能 失败时",
+      "site:prts.wiki 无法触发 否则",
+      "site:prts.wiki 技能 重试",
+      "site:prts.wiki 未能成功触发技能",
+      "site:prts.wiki 技能 失败原因"
+    ],
+    "limitations": [
+      "This is a targeted content search, not an exhaustive proof of absence.",
+      "PRTS content descriptions do not establish native return types or exact caller implementation.",
+      "No actual game execution was performed. Native and configuration bindings require separate verification."
+    ]
+  },
+  "observations": [
+    {
+      "name": "“Touch”，再生之流",
+      "url": "https://prts.wiki/w/“Touch”，再生之流",
+      "revisionUrl": "https://prts.wiki/index.php?title=“Touch”，再生之流&oldid=443827",
+      "enemyCode": "SFR14",
+      "resourceNameShownOnPage": "enemy_8018_etouch",
+      "pageModeCategory": "矢量突破S3",
+      "location": "Rank II/III talents, Absorb Infusion trigger; rendered lines 742–752 and 995/1176 in the captured web view",
+      "excerpt": "若未能成功触发技能，则立即触发一次与技能所述相同的效果",
+      "summary": "当关联召唤物获得自缚后，Touch尝试以该单位为目标强制触发吸收灌注。若未能发动，立即执行一次同样效果。页面另说明已开始的吸收灌注因中断或丢失目标结束时也执行后继，但这是结束而非启动拒绝。",
+      "evidenceClassification": "A real success/failure-dependent fallback is described. The page does not distinguish different start failure reasons."
+    },
+    {
+      "name": "噪鳞",
+      "url": "https://prts.wiki/w/噪鳞",
+      "location": "跃出 / talents and abilities",
+      "summary": "每0.1秒尝试受制约的强制技能跃出；页面明确受某种无法行动/无敌/不可阻挡状态影响时，跃出尝试始终失败。受限状态具体名称本次未核对。",
+      "evidenceClassification": "A real repeated attempt exists. No page evidence that retry interval or continuation differs by failure reason."
+    },
+    {
+      "name": "梅尔",
+      "url": "https://prts.wiki/w/梅尔",
+      "location": "爆破回收 skill remarks",
+      "summary": "本体技能通过触发机械水獭自己的技能实现爆破回收；召唤物技能不能触发时不产生该效果。",
+      "evidenceClassification": "A real attempted secondary Skill can fail without effect. The remark does not require classifying its start failure reasons."
+    },
+    {
+      "name": "麦哲伦",
+      "url": "https://prts.wiki/w/麦哲伦",
+      "location": "Skill end drone recovery remarks",
+      "summary": "本体技能结束时的无人机回收通过触发召唤物技能执行；不能触发该技能时不产生回收效果。",
+      "evidenceClassification": "Same success/failure boundary; no reported different continuation per start failure reason."
+    },
+    {
+      "name": "断罪者",
+      "url": "https://prts.wiki/w/断罪者",
+      "location": "创世纪 skill description and remarks",
+      "summary": "技能触发时抽取概率决定敌方伤害沉默或友方晕眩。页面称作失败的概率分支发生在技能已触发后的内容程序中。",
+      "evidenceClassification": "Not evidence for Skill/Action start rejection or its reason code."
+    },
+    {
+      "name": "乌有",
+      "url": "https://prts.wiki/w/乌有",
+      "location": "Merchant trait",
+      "summary": "在场周期支付部署费用，无法支付时自动撤退。",
+      "evidenceClassification": "A resource-payment condition during existing participation, not a Skill/Action start failure-reason branch."
+    },
+    {
+      "name": "“宝箱”",
+      "url": "https://prts.wiki/w/“宝箱”",
+      "location": "开箱！ remarks",
+      "summary": "技能已开启后的召唤可能因出生地块或路线安全条件失败，相关召唤后续不处理。",
+      "evidenceClassification": "A spawn-operation failure, not Skill activation rejection. The page does not show caller branching by multiple spawn failure reasons either."
+    }
+  ],
+  "result": {
+    "foundRealStartSuccessFailureContinuation": true,
+    "foundDistinctStartFailureReasonContinuation": false,
+    "conclusionLimit": "No such reason-specific content was identified in these targeted examples; this does not prove that none exists anywhere."
+  }
+}
