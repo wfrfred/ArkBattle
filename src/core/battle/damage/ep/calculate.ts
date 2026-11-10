@@ -35,7 +35,8 @@ export function calculateDamage(
     }
 
     const resistance = resolveElementResistance(battle, target);
-    const amount = Math.max(0, parameters.power) * (1 - resistance / 100);
+    const power = Math.max(0, parameters.power);
+    const amount = Math.max(power * 0.05, power * (1 - resistance / 100));
     const result = dispatch(
         battle,
         request.source,

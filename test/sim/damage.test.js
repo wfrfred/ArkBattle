@@ -543,7 +543,7 @@ test("HP-03: lethal HP remains present and blocking through both Applied roles, 
     assert.equal(get(result.state, 2).blockable.relation, null);
 });
 
-test("EP-01: calculated resistance and element survive later state changes; HP elemental resistance is independent", () => {
+test("EP-01: full resistance preserves formula floors and sampled EP output; HP elemental resistance is independent", () => {
     const sourceHooks = Hooks.empty().set(epDamage.sourceFormula, {
         id: "converted-output",
         invoke: (state, _context, current) => ({
@@ -551,25 +551,29 @@ test("EP-01: calculated resistance and element survive later state changes; HP e
             value: { ...current, type: "NEURAL", power: 200 },
         }),
     }).set(epDamage.output, {
-        id: "output-bonus",
-        invoke: (state, _context, amount) => ({ state, value: amount + 20 }),
+        id: "output-scale",
+        invoke: (state, _context, amount) => ({ state, value: amount / 2 }),
     });
     let state = battle([
         { definition: {
-            ...elementalDefinition({ elementResistance: 50, damageResistance: 80 }),
+            ...elementalDefinition({ elementResistance: 100, damageResistance: 100 }),
             vitality: { maxHp: 1000, defense: 1000, resistance: 99 },
         }, position: [0, 0] },
         { definition: { id: "resource-free-source", hooks: sourceHooks }, position: [1, 0] },
     ]);
     const target = units.ref(get(state, 0));
     const source = units.ref(get(state, 1));
+    assert.deepEqual([
+        elemental.resolveElementResistance(state, get(state, 0)),
+        elemental.resolveDamageResistance(state, get(state, 0)),
+    ], [100, 100]);
     const incoming = injuryRequest(target, "BURN", 100, source);
     const calculated = epDamage.calculateDamage(state, incoming);
-    assert.deepEqual(calculated.value, { type: "NEURAL", amount: 120 });
+    assert.deepEqual(calculated.value, { type: "NEURAL", amount: 5 });
     assert.equal(incoming.parameters.type, "BURN");
     assert.deepEqual(get(calculated.state, 0).elemental.ep, elemental.elementValues(1000));
     state = update(calculated.state, target, units.compose(elemental.setContribution("elementResistance", {
-            id: "changed-after-calculation", value: [attribute.create({ finalScaler: 0 })],
+            id: "changed-after-calculation", value: [attribute.create({ finalAddition: -50 })],
         }), elemental.setRule("damageRules", {
             id: "only-neural", allows: (_current, { type }) => type === "NEURAL",
         })));
@@ -577,7 +581,7 @@ test("EP-01: calculated resistance and element survive later state changes; HP e
     state = epDamage.applyDamage(preceding, epDamage.calculateDamage(state, preceding)).state;
     const applied = epDamage.applyDamage(incoming, { ...calculated, state });
     assert.deepEqual(applied.value.application, {
-        type: "NEURAL", epBefore: 950, epAfter: 830, epLoss: 120, burst: null,
+        type: "NEURAL", epBefore: 975, epAfter: 970, epLoss: 5, burst: null,
     });
     assert.equal(get(applied.state, 0).elemental.ep.BURN, 1000);
     const hpRequest = {
@@ -586,10 +590,8 @@ test("EP-01: calculated resistance and element survive later state changes; HP e
         parameters: { type: "ELEMENTAL", attack: { power: 100, multiplier: 1, addition: 0 } },
     };
     const hp = hpDamage.applyDamage(hpRequest, hpDamage.calculateDamage(applied.state, hpRequest));
-    assert.equal(hp.value.application.hpLoss, 20);
-    assert.equal(get(hp.state, 0).elemental.ep.NEURAL, 830);
-
-
+    assert.equal(hp.value.application.hpLoss, 5);
+    assert.equal(get(hp.state, 0).elemental.ep.NEURAL, 970);
 });
 
 test("EP-02: depletion registers the Burst and completes standard output before resource notifications and Applied", () => {

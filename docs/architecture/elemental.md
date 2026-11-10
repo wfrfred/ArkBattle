@@ -30,7 +30,7 @@ interface Definition {
 
 元素 Type 是字符串字面量联合，同名的 as const 对象提供 Type.NEURAL 等运行时常量，联合类型与 ELEMENT_TYPES 均从该对象导出；接口接受对应字面量。Data／Content 直接提供完整静态 Definition；Data 按接收者类别选择 bursts 表，Core 通过 `definition.elemental.bursts[type]` 取得实际 Effect Definition。initialize 作为能力构造入口，校验基础数值和各型爆发时长，再建立初始状态；Definition 与 bursts 共享原引用。内部计算信任已建立的配置与能力配对。
 
-四条 EP 分别保存数值，共用基础上限、自然回复速度与抗性。Definition 的 recoverySpeed、同名贡献与查询统一表示每秒回复的 EP，推进时除以 TICKS_PER_SECOND。elementResistance 用于 EP 损伤，damageResistance 用于 HP 元素伤害；两个结算入口和两个属性各自独立。抗性有效值限制在 0–95，回复与爆发恢复速度不小于零，上限不小于 1。
+四条 EP 分别保存数值，共用基础上限、自然回复速度与抗性。Definition 的 recoverySpeed、同名贡献与查询统一表示每秒回复的 EP，推进时除以 TICKS_PER_SECOND。elementResistance 用于 EP 损伤，damageResistance 用于 HP 元素伤害；两个结算入口和两个属性各自独立。两项抗性在贡献求值后限制到 0–100；5% 损伤保底属于各自的伤害公式，不改变抗性查询结果。回复与爆发恢复速度不小于零，上限不小于 1。
 
 | State 字段 | 含义 |
 | --- | --- |
@@ -79,7 +79,7 @@ Burst 的 id、host、source、enabled、lifecycle 由 Effect 提供，Elemental
 
 EP 损伤与治疗分别通过 [damage/ep/index.ts](../../src/core/battle/damage/ep/index.ts) 和 [healing/ep/index.ts](../../src/core/battle/healing/ep/index.ts) 使用两阶段接口。Damage／Healing 顶层仅导出 hp、ep 命名空间。Calculate 形成输出，Apply 才开始接收；零计算输出在 Apply 入口拒绝，零实际变化允许成功。完整边界见 [Vitality／Elemental 接口](vitality.md#18-接收与资源提交接口)。
 
-EP Damage.Request 为 `{ source, target, parameters }`，Parameters 为可变工作值 `{ type, power }`，Calculated 保存公式确定的 `{ type, amount }`。先来源 Formula、再目标 Formula，然后按当前元素损伤抗性计算数额，最后执行来源 Output。抗性有效值在 0～95，之后的状态变化不使 Apply 重算；实际元素类型来自 Calculated，不用初始 Request.parameters.type 代替。
+EP Damage.Request 为 `{ source, target, parameters }`，Parameters 为可变工作值 `{ type, power }`，Calculated 保存公式确定的 `{ type, amount }`。先来源 Formula、再目标 Formula，然后按当前元素损伤抗性计算数额，最后执行来源 Output。令 `power = max(0, parameters.power)`，基础公式为 `max(power × 0.05, power × (1 - elementResistance / 100))`；抗性有效值在 0～100，即使达到 100，基础公式仍保留 5%。Output 可以继续将数额降到保底以下，不在它之后再次套用保底。之后的状态变化不使 Apply 重算；实际元素类型来自 Calculated，不用初始 Request.parameters.type 代替。
 
 EP Healing.Request 同样为 `{ source, target, parameters }`，Parameters 为 `{ power }`，Calculated 为 `{ amount }`。它经过自己的 Formula／Output，不应用元素损伤抗性。两种 EP Calculate 均从原始 Parameters 开始，不对负数 power 单独抛异常；按[共同输出约束](vitality.md#1-calculate-与-apply-的语义边界)，在 Output Hook 全部执行后将最终输出截为非负数，零输出由 Apply 拒绝。
 
@@ -205,6 +205,7 @@ Core 同一宿主只允许一个 Burst。少数多种元素爆发的特殊内容
 
 ### 必要回归场景
 
+- 以有效抗性达到 100 的代表场景同时核对属性查询、HP 元素与 EP 的独立公式：5% 保底在基础公式产生，随后正常执行 Output；计算结果保留采样事实。
 - 标准灼燃验证 EP 中间值、动态上限与速度、暂停和根结束后的临时减抗撤销；通过回填量与完成时点验证恢复预算，不在夹具重写计时算法。
 - 零恢复预算验证即时伤害和独立眩晕／永久减防仍发生，四型 EP 写满并清槽，凋亡不产生未来周期输出。
 - 正常完成包含预算内最后一次周期业务；取消或启动回调中结束根后不继续输出。既定 burstStarted、damaged 与 Battle Applied 时序继续由现有集中场景保障。

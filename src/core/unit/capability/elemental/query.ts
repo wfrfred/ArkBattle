@@ -49,7 +49,7 @@ function resolve(battle: BattleState, self: Unit & Elemental, parameter: Paramet
         return Math.max(1, value);
     }
     if (parameter === "elementResistance" || parameter === "damageResistance") {
-        return Math.min(95, Math.max(0, value));
+        return Math.min(100, Math.max(0, value));
     }
 
     return Math.max(0, value);

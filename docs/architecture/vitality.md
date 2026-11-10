@@ -86,6 +86,8 @@ Calculated
 
 公式参数 Hook 依次包含来源和目标的干预。随后读取目标当前 DEF／RES 或元素伤害抗性，按当前类型计算基础公式，再执行来源的输出修正。Calculated 包含整个 Calculate 的结果。
 
+元素 HP 伤害读取 Elemental 的 damageResistance，有效范围为 0–100；目标没有 Elemental 时按 0 计算。基础公式为 `max(power × 0.05, power × (1 - damageResistance / 100))`，其中 power 是截为非负数的攻击基本数值。5% 保底属于公式阶段，后续 Output 与 Receiving 仍可使伤害更低或取消；EP 损伤使用独立抗性和公式，见 [Elemental](elemental.md#3-查询结算与资源提交)。
+
 Calculate 不实行本次伤害的 HP 变化。Formula／Output Hook 可以消费资源、推进 RNG 或发起独立 Operation，其状态逐项接续。闪避、护盾、屏障、接收减伤、同步反伤、受击治疗及死亡由 Apply 处理；反伤可以在外层伤害扣血之前发生。
 
 防御属性在公式节点采样，之后的属性变化不会使 Apply 自动重算。Apply 重新读取生命周期、HP、Effect 和接收规则。
