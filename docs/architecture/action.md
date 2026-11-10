@@ -278,6 +278,8 @@ prepare 前检查准入；prepare 成功返回后，从接续的 BattleState 重
 
 三类写入只接收已经计算好的结果值。setExecutionState 以 Execution Ref 指定本轮，只设置 execution.state；setState 与 setCooldown 以 Action Ref 指定持久行动，分别只设置持久 state 与 Cooldown。Core 从传入的最新 BattleState 读取当前聚合条目，只替换指定字段，保留其他字段、Definition、执行身份和生命周期；给定值与当前字段引用相同时返回原 BattleState。
 
+这些字段写回只发布状态，不派发 Hook 或生命周期后继。调用方可以查询更新后的对象，不必在写回后重复确认执行资格；释放 Hook、输出等可重入程序返回后仍须按后继业务重新确认资格。
+
 宿主或指定执行缺失时，写入操作抛出 RangeError；Action Ref 所给 Definition 未配置或对象身份不匹配时抛出 TypeError。setExecutionState 在 execution 为 ENDING 时抛出 TypeError；setState／setCooldown 可以在结束程序中更新持久事实。调用方从当前 battle 查询并计算下一值，计算和提交之间不执行其他完整操作；跨领域调用返回后先接续 battle，再重读所需实时状态，避免用旧 self.state／self.execution.state 覆盖当前数据。`NoInfer` 限制结果值参与泛型推导；精确 Ref 保持 P／E 关联，预先弱化类型后写入不兼容数据属于调用契约错误，不增加运行时形状校验。
 
 Core 的完整写回信任已有宿主、Definition 与执行身份，内容私有数据的类型配对由创建入口和 Typed Ref 保持。生命周期变更由完整领域操作管理，内容只调用对应字段的更新操作。
