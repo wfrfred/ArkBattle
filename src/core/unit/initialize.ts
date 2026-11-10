@@ -4,7 +4,6 @@ import {
     initializers,
     type Definitions,
     type Initial,
-    type Inputs,
     type Product,
 } from "./capability/catalog.js";
 import { Effects } from "./effect/effects.js";
@@ -24,10 +23,7 @@ export function initialize<D extends Definition & Partial<Definitions>>(
     battle: BattleState,
     input: Input<D>,
 ): Result<Unit & Product<D>>;
-export function initialize(
-    battle: BattleState,
-    input: Omit<Input, "initial"> & { readonly initial?: Partial<Inputs> },
-): Result<Unit> {
+export function initialize(battle: BattleState, input: Input): Result<Unit> {
     let unit: Unit = {
         id: input.id,
         lifecycle: "PRESENT",
