@@ -105,7 +105,7 @@ export function setExpiration<T extends Effect<any, any>>(
         throw new RangeError(`unknown unit: ${ref.host.id}`);
     }
 
-    const self = unit.effects.get(ref.id);
+    const self = unit.effects.get(ref);
     if (self === undefined) {
         throw new RangeError(`unknown effect: ${ref.id}`);
     }
@@ -121,7 +121,7 @@ export function setEnabled<T extends Effect<any, any>>(
     enabled: boolean,
 ): BattleState {
     const unit = units.get<Unit>(battle, ref.host);
-    const instance = unit?.effects.get(ref.id);
+    const instance = unit?.effects.get(ref);
     if (instance === undefined || instance.lifecycle === "ENDING" || instance.enabled === enabled) {
         return battle;
     }
