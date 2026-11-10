@@ -1,0 +1,1940 @@
+{
+  "provenance": {
+    "scope": "Static native branches; no game execution or runtime XLua verification.",
+    "client": {
+      "dll": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "bytes": 223112680,
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff"
+      },
+      "metadata": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "bytes": 46669332,
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5"
+      },
+      "metadataVersion": 29,
+      "imageBase": "0x180000000"
+    },
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/native.py",
+        "bytes": 18723,
+        "sha256": "1c6c16dc97e0dd9af0af4033c81a7534384dd65ebb1e604df3f4a3289df158e6"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]"
+    },
+    "location": {
+      "metadataRegistration": "0x187ee0630",
+      "modules": {
+        "Assembly-CSharp.dll": {
+          "address": 6564854272,
+          "methodPointers": 6585881040,
+          "count": 225427,
+          "fileBacked": true
+        },
+        "mscorlib.dll": {
+          "address": 6577364064,
+          "methodPointers": 6592131600,
+          "count": 13987,
+          "fileBacked": true
+        }
+      }
+    },
+    "collectedOn": "2026-11-11",
+    "extractionScript": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/buff-group-expiry-20261111/expiry/extract.py",
+      "bytes": 5497,
+      "sha256": "921e72cdc984a8ed9166b9f7dfefc662a0e5ec8e89eb1f07a05e595715c33031"
+    }
+  },
+  "result": [
+    {
+      "fullname": "Torappu.BuffData",
+      "index": 4218,
+      "fields": [
+        {
+          "nameIndex": 529052,
+          "typeIndex": 43567,
+          "token": 67132949,
+          "index": 24084,
+          "name": "attributes",
+          "typeName": "Torappu.AttributeModifierData",
+          "static": false,
+          "offset": 16,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1190198,
+          "typeIndex": 78551,
+          "token": 67132950,
+          "index": 24085,
+          "name": "buffKey",
+          "typeName": "string",
+          "static": false,
+          "offset": 24,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1190206,
+          "typeIndex": 46029,
+          "token": 67132951,
+          "index": 24086,
+          "name": "loadFromDB",
+          "typeName": "bool",
+          "static": false,
+          "offset": 32,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1190217,
+          "typeIndex": 46029,
+          "token": 67132952,
+          "index": 24087,
+          "name": "isDurableBuff",
+          "typeName": "bool",
+          "static": false,
+          "offset": 33,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1190231,
+          "typeIndex": 46029,
+          "token": 67132953,
+          "index": 24088,
+          "name": "isDamageMissable",
+          "typeName": "bool",
+          "static": false,
+          "offset": 34,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1190248,
+          "typeIndex": 46029,
+          "token": 67132954,
+          "index": 24089,
+          "name": "isSilenceable",
+          "typeName": "bool",
+          "static": false,
+          "offset": 35,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1190262,
+          "typeIndex": 46029,
+          "token": 67132955,
+          "index": 24090,
+          "name": "isStunnable",
+          "typeName": "bool",
+          "static": false,
+          "offset": 36,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1190274,
+          "typeIndex": 46029,
+          "token": 67132956,
+          "index": 24091,
+          "name": "isFreezable",
+          "typeName": "bool",
+          "static": false,
+          "offset": 37,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1190286,
+          "typeIndex": 46029,
+          "token": 67132957,
+          "index": 24092,
+          "name": "isLevitatable",
+          "typeName": "bool",
+          "static": false,
+          "offset": 38,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1190300,
+          "typeIndex": 46029,
+          "token": 67132958,
+          "index": 24093,
+          "name": "isGroundBoundable",
+          "typeName": "bool",
+          "static": false,
+          "offset": 39,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1190318,
+          "typeIndex": 93466,
+          "token": 67132959,
+          "index": 24094,
+          "name": "statusResistable",
+          "typeName": "Torappu.BuffData/StatusResistable",
+          "static": false,
+          "offset": 40,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1190335,
+          "typeIndex": 78551,
+          "token": 67132960,
+          "index": 24095,
+          "name": "templateKey",
+          "typeName": "string",
+          "static": false,
+          "offset": 48,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1190347,
+          "typeIndex": 46029,
+          "token": 67132961,
+          "index": 24096,
+          "name": "disableOverride",
+          "typeName": "bool",
+          "static": false,
+          "offset": 56,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1190363,
+          "typeIndex": 78551,
+          "token": 67132962,
+          "index": 24097,
+          "name": "overrideKey",
+          "typeName": "string",
+          "static": false,
+          "offset": 64,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1190375,
+          "typeIndex": 93463,
+          "token": 67132963,
+          "index": 24098,
+          "name": "overrideType",
+          "typeName": "Torappu.BuffData/OverrideType",
+          "static": false,
+          "offset": 72,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1190388,
+          "typeIndex": 60314,
+          "token": 67132964,
+          "index": 24099,
+          "name": "maxStackCnt",
+          "typeName": "int",
+          "static": false,
+          "offset": 76,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1190400,
+          "typeIndex": 46029,
+          "token": 67132965,
+          "index": 24100,
+          "name": "refreshRemainingTimeWhenStackMax",
+          "typeName": "bool",
+          "static": false,
+          "offset": 80,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1190433,
+          "typeIndex": 46029,
+          "token": 67132966,
+          "index": 24101,
+          "name": "clearAllStackCntWhenTimeUp",
+          "typeName": "bool",
+          "static": false,
+          "offset": 81,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1190460,
+          "typeIndex": 60314,
+          "token": 67132967,
+          "index": 24102,
+          "name": "maxValidStackCnt",
+          "typeName": "int",
+          "static": false,
+          "offset": 84,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1190477,
+          "typeIndex": 46029,
+          "token": 67132968,
+          "index": 24103,
+          "name": "independentCharacterSource",
+          "typeName": "bool",
+          "static": false,
+          "offset": 88,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1190504,
+          "typeIndex": 78551,
+          "token": 67132969,
+          "index": 24104,
+          "name": "overrideEffectKey",
+          "typeName": "string",
+          "static": false,
+          "offset": 96,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1190522,
+          "typeIndex": 46029,
+          "token": 67132970,
+          "index": 24105,
+          "name": "overrideOnEventPriority",
+          "typeName": "bool",
+          "static": false,
+          "offset": 104,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1190546,
+          "typeIndex": 93459,
+          "token": 67132971,
+          "index": 24106,
+          "name": "onEventPriority",
+          "typeName": "Torappu.BuffData/OnEventPriority",
+          "static": false,
+          "offset": 108,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1190562,
+          "typeIndex": 78551,
+          "token": 67132972,
+          "index": 24107,
+          "name": "audioSignal",
+          "typeName": "string",
+          "static": false,
+          "offset": 112,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1190574,
+          "typeIndex": 61437,
+          "token": 67132973,
+          "index": 24108,
+          "name": "lifeTimeType",
+          "typeName": "Torappu.LifeType",
+          "static": false,
+          "offset": 120,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1190587,
+          "typeIndex": 46029,
+          "token": 67132974,
+          "index": 24109,
+          "name": "takeSnapshotWhenExtend",
+          "typeName": "bool",
+          "static": false,
+          "offset": 121,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3135,
+          "typeIndex": 78551,
+          "token": 67132975,
+          "index": 24110,
+          "name": "durationKey",
+          "typeName": "string",
+          "static": false,
+          "offset": 128,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1190610,
+          "typeIndex": 78551,
+          "token": 67132976,
+          "index": 24111,
+          "name": "remainingTimeKey",
+          "typeName": "string",
+          "static": false,
+          "offset": 136,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1190627,
+          "typeIndex": 76381,
+          "token": 67132977,
+          "index": 24112,
+          "name": "lifeTime",
+          "typeName": "float",
+          "static": false,
+          "offset": 144,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1190636,
+          "typeIndex": 61437,
+          "token": 67132978,
+          "index": 24113,
+          "name": "triggerLifeType",
+          "typeName": "Torappu.LifeType",
+          "static": false,
+          "offset": 148,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1190652,
+          "typeIndex": 60314,
+          "token": 67132979,
+          "index": 24114,
+          "name": "triggerCnt",
+          "typeName": "int",
+          "static": false,
+          "offset": 152,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1190663,
+          "typeIndex": 76381,
+          "token": 67132980,
+          "index": 24115,
+          "name": "triggerInterval",
+          "typeName": "float",
+          "static": false,
+          "offset": 156,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1190679,
+          "typeIndex": 46029,
+          "token": 67132981,
+          "index": 24116,
+          "name": "waitFirstTriggerInterval",
+          "typeName": "bool",
+          "static": false,
+          "offset": 160,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1190704,
+          "typeIndex": 76381,
+          "token": 67132982,
+          "index": 24117,
+          "name": "firstTriggerInterval",
+          "typeName": "float",
+          "static": false,
+          "offset": 164,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1047745,
+          "typeIndex": 60314,
+          "token": 67132983,
+          "index": 24118,
+          "name": "priority",
+          "typeName": "int",
+          "static": false,
+          "offset": 168,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1190725,
+          "typeIndex": 34395,
+          "token": 67132984,
+          "index": 24119,
+          "name": "priorityBBKeys",
+          "typeName": "string[]",
+          "static": false,
+          "offset": 176,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1190740,
+          "typeIndex": 46029,
+          "token": 67132985,
+          "index": 24120,
+          "name": "stripBlackboardParamsWithBuffKey",
+          "typeName": "bool",
+          "static": false,
+          "offset": 184,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3124,
+          "typeIndex": 25209,
+          "token": 67132986,
+          "index": 24121,
+          "name": "blackboard",
+          "typeName": "type(kind=0x15, data=0x188e72df8)",
+          "static": false,
+          "offset": 192,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1190773,
+          "typeIndex": 46029,
+          "token": 67132987,
+          "index": 24122,
+          "name": "enableInitDirectionFromSource",
+          "typeName": "bool",
+          "static": false,
+          "offset": 200,
+          "unboxedOffset": null
+        }
+      ],
+      "methods": []
+    },
+    {
+      "fullname": "Torappu.Battle.Buff/OverrideGroup",
+      "index": 10204,
+      "fields": [
+        {
+          "nameIndex": 2499724,
+          "typeIndex": 27666,
+          "token": 67181304,
+          "index": 72439,
+          "name": "m_queue",
+          "typeName": "type(kind=0x15, data=0x188eae9a8)",
+          "static": false,
+          "offset": 16,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 528835,
+          "typeIndex": 93462,
+          "token": 67181305,
+          "index": 72440,
+          "name": "m_type",
+          "typeName": "Torappu.BuffData/OverrideType",
+          "static": false,
+          "offset": 24,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2516630,
+          "typeIndex": 60310,
+          "token": 67181306,
+          "index": 72441,
+          "name": "m_maxStackCnt",
+          "typeName": "int",
+          "static": false,
+          "offset": 28,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2508714,
+          "typeIndex": 60310,
+          "token": 67181307,
+          "index": 72442,
+          "name": "m_maxValidStackCnt",
+          "typeName": "int",
+          "static": false,
+          "offset": 32,
+          "unboxedOffset": null
+        }
+      ],
+      "methods": [
+        {
+          "nameIndex": 394288,
+          "declaringType": 10204,
+          "returnType": 84484,
+          "parameterStart": 66984,
+          "genericContainerIndex": -1,
+          "token": 100729581,
+          "flags": 134,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 1,
+          "index": 66284,
+          "image": "Assembly-CSharp.dll",
+          "address": 6449661680,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.Buff/OverrideGroup.Remove",
+          "returnTypeName": "void",
+          "parameters": [
+            {
+              "nameIndex": 382745,
+              "token": 134284718,
+              "typeIndex": 46289,
+              "index": 66984,
+              "name": "buff",
+              "typeName": "Torappu.Battle.Buff"
+            }
+          ]
+        },
+        {
+          "nameIndex": 2516612,
+          "declaringType": 10204,
+          "returnType": 84484,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100729589,
+          "flags": 129,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 0,
+          "index": 66292,
+          "image": "Assembly-CSharp.dll",
+          "address": 6449664048,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.Buff/OverrideGroup._DoUpdateInternal",
+          "returnTypeName": "void",
+          "parameters": []
+        }
+      ]
+    },
+    {
+      "fullname": "Torappu.Battle.Buff/BuffContainer",
+      "index": 10205,
+      "fields": [
+        {
+          "nameIndex": 1927120,
+          "typeIndex": 53922,
+          "token": 67181308,
+          "index": 72443,
+          "name": "<owner>k__BackingField",
+          "typeName": "Torappu.Battle.Entity",
+          "static": false,
+          "offset": 16,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1995041,
+          "typeIndex": 93447,
+          "token": 67181309,
+          "index": 72444,
+          "name": "m_buffs",
+          "typeName": "Torappu.Battle.Buff/SortedDoubleBufferedBuffList",
+          "static": false,
+          "offset": 24,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2518687,
+          "typeIndex": 11421,
+          "token": 67181310,
+          "index": 72445,
+          "name": "m_buffOverrideMap",
+          "typeName": "type(kind=0x15, data=0x188e2eab8)",
+          "static": false,
+          "offset": 32,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2518705,
+          "typeIndex": 11881,
+          "token": 67181311,
+          "index": 72446,
+          "name": "m_buffUidMap",
+          "typeName": "type(kind=0x15, data=0x188eb9268)",
+          "static": false,
+          "offset": 40,
+          "unboxedOffset": null
+        }
+      ],
+      "methods": [
+        {
+          "nameIndex": 2516975,
+          "declaringType": 10205,
+          "returnType": 84484,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100729608,
+          "flags": 134,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 0,
+          "index": 66311,
+          "image": "Assembly-CSharp.dll",
+          "address": 6449480960,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.Buff/BuffContainer.ForceRefreshFinishedBuffs",
+          "returnTypeName": "void",
+          "parameters": []
+        },
+        {
+          "nameIndex": 391641,
+          "declaringType": 10205,
+          "returnType": 84484,
+          "parameterStart": 67089,
+          "genericContainerIndex": -1,
+          "token": 100729646,
+          "flags": 134,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 1,
+          "index": 66349,
+          "image": "Assembly-CSharp.dll",
+          "address": 6449567872,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.Buff/BuffContainer.Tick",
+          "returnTypeName": "void",
+          "parameters": [
+            {
+              "nameIndex": 3876,
+              "token": 134284823,
+              "typeIndex": 54451,
+              "index": 67089,
+              "name": "deltaTime",
+              "typeName": "Torappu.FP"
+            }
+          ]
+        },
+        {
+          "nameIndex": 2518304,
+          "declaringType": 10205,
+          "returnType": 84484,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100729652,
+          "flags": 129,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 0,
+          "index": 66355,
+          "image": "Assembly-CSharp.dll",
+          "address": 6449578784,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.Buff/BuffContainer._CheckFinishedBuffs",
+          "returnTypeName": "void",
+          "parameters": []
+        },
+        {
+          "nameIndex": 2518512,
+          "declaringType": 10205,
+          "returnType": 84484,
+          "parameterStart": 67101,
+          "genericContainerIndex": -1,
+          "token": 100729659,
+          "flags": 129,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 1,
+          "index": 66362,
+          "image": "Assembly-CSharp.dll",
+          "address": 6449583696,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.Buff/BuffContainer._FinishAndRemoveBuff",
+          "returnTypeName": "void",
+          "parameters": [
+            {
+              "nameIndex": 382745,
+              "token": 134284835,
+              "typeIndex": 46289,
+              "index": 67101,
+              "name": "buff",
+              "typeName": "Torappu.Battle.Buff"
+            }
+          ]
+        },
+        {
+          "nameIndex": 2518548,
+          "declaringType": 10205,
+          "returnType": 84484,
+          "parameterStart": 67102,
+          "genericContainerIndex": -1,
+          "token": 100729660,
+          "flags": 129,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 4,
+          "index": 66363,
+          "image": "Assembly-CSharp.dll",
+          "address": 6449583936,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.Buff/BuffContainer._FinishBuff",
+          "returnTypeName": "void",
+          "parameters": [
+            {
+              "nameIndex": 382745,
+              "token": 134284836,
+              "typeIndex": 46289,
+              "index": 67102,
+              "name": "buff",
+              "typeName": "Torappu.Battle.Buff"
+            },
+            {
+              "nameIndex": 2505152,
+              "token": 134284837,
+              "typeIndex": 46024,
+              "index": 67103,
+              "name": "updateOverrideMap",
+              "typeName": "bool"
+            },
+            {
+              "nameIndex": 2518533,
+              "token": 134284838,
+              "typeIndex": 46024,
+              "index": 67104,
+              "name": "delayToRecycle",
+              "typeName": "bool"
+            },
+            {
+              "nameIndex": 2505573,
+              "token": 134284839,
+              "typeIndex": 46049,
+              "index": 67105,
+              "name": "immediatelyFinishEffect",
+              "typeName": "bool"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "fullname": "Torappu.Battle.Buff",
+      "index": 10207,
+      "fields": [
+        {
+          "nameIndex": 4675,
+          "typeIndex": 83059,
+          "token": 67180986,
+          "index": 72121,
+          "name": "s_globalCounter",
+          "typeName": "uint",
+          "static": true,
+          "offset": 0,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2508517,
+          "typeIndex": 33407,
+          "token": 67180987,
+          "index": 72122,
+          "name": "ABFLAGS_IS_AUTO_STATUS_RESISTABLE",
+          "typeName": "Torappu.AbnormalFlag[]",
+          "static": true,
+          "offset": 8,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2508551,
+          "typeIndex": 33407,
+          "token": 67180988,
+          "index": 72123,
+          "name": "ABFLAGS_ABLE_TO_BE_RESISTED",
+          "typeName": "Torappu.AbnormalFlag[]",
+          "static": true,
+          "offset": 16,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2425812,
+          "typeIndex": 54461,
+          "token": 67180989,
+          "index": 72124,
+          "name": "INFINITY_TIME",
+          "typeName": "Torappu.FP",
+          "static": true,
+          "offset": 24,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2508579,
+          "typeIndex": 60340,
+          "token": 67180990,
+          "index": 72125,
+          "name": "EVENT_NUM",
+          "typeName": "int",
+          "static": true,
+          "offset": 0,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2344736,
+          "typeIndex": 93438,
+          "token": 67180991,
+          "index": 72126,
+          "name": "m_container",
+          "typeName": "Torappu.Battle.Buff/BuffContainer",
+          "static": false,
+          "offset": 16,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1506507,
+          "typeIndex": 27258,
+          "token": 67180992,
+          "index": 72127,
+          "name": "m_source",
+          "typeName": "type(kind=0x15, data=0x188e41128)",
+          "static": false,
+          "offset": 24,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2508589,
+          "typeIndex": 27227,
+          "token": 67180993,
+          "index": 72128,
+          "name": "m_ability",
+          "typeName": "type(kind=0x15, data=0x188e3cd88)",
+          "static": false,
+          "offset": 40,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2508599,
+          "typeIndex": 27268,
+          "token": 67180994,
+          "index": 72129,
+          "name": "m_sourceProjectile",
+          "typeName": "type(kind=0x15, data=0x188e43528)",
+          "static": false,
+          "offset": 56,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 529322,
+          "typeIndex": 33824,
+          "token": 67180995,
+          "index": 72130,
+          "name": "m_attributeMultipliers",
+          "typeName": "Torappu.FP[]",
+          "static": false,
+          "offset": 72,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 529301,
+          "typeIndex": 33824,
+          "token": 67180996,
+          "index": 72131,
+          "name": "m_attributeAdditions",
+          "typeName": "Torappu.FP[]",
+          "static": false,
+          "offset": 80,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 529345,
+          "typeIndex": 33824,
+          "token": 67180997,
+          "index": 72132,
+          "name": "m_attributeFinalAdditions",
+          "typeName": "Torappu.FP[]",
+          "static": false,
+          "offset": 88,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 529371,
+          "typeIndex": 33824,
+          "token": 67180998,
+          "index": 72133,
+          "name": "m_attributeFinalScalers",
+          "typeName": "Torappu.FP[]",
+          "static": false,
+          "offset": 96,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2508618,
+          "typeIndex": 33824,
+          "token": 67180999,
+          "index": 72134,
+          "name": "m_abnormalResistance",
+          "typeName": "Torappu.FP[]",
+          "static": false,
+          "offset": 104,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2508639,
+          "typeIndex": 60346,
+          "token": 67181000,
+          "index": 72135,
+          "name": "m_abnormalResistanceMask",
+          "typeName": "long",
+          "static": false,
+          "offset": 112,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1118079,
+          "typeIndex": 46306,
+          "token": 67181001,
+          "index": 72136,
+          "name": "m_data",
+          "typeName": "Torappu.BuffData",
+          "static": false,
+          "offset": 120,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2508664,
+          "typeIndex": 54452,
+          "token": 67181002,
+          "index": 72137,
+          "name": "m_lifeTime",
+          "typeName": "Torappu.FP",
+          "static": false,
+          "offset": 128,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 881846,
+          "typeIndex": 54452,
+          "token": 67181003,
+          "index": 72138,
+          "name": "m_remainingTime",
+          "typeName": "Torappu.FP",
+          "static": false,
+          "offset": 136,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2508675,
+          "typeIndex": 54452,
+          "token": 67181004,
+          "index": 72139,
+          "name": "m_existingTime",
+          "typeName": "Torappu.FP",
+          "static": false,
+          "offset": 144,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2508690,
+          "typeIndex": 60310,
+          "token": 67181005,
+          "index": 72140,
+          "name": "m_triggerCnt",
+          "typeName": "int",
+          "static": false,
+          "offset": 152,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2508703,
+          "typeIndex": 60310,
+          "token": 67181006,
+          "index": 72141,
+          "name": "m_stackCnt",
+          "typeName": "int",
+          "static": false,
+          "offset": 156,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2508714,
+          "typeIndex": 60310,
+          "token": 67181007,
+          "index": 72142,
+          "name": "m_maxValidStackCnt",
+          "typeName": "int",
+          "static": false,
+          "offset": 160,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2508733,
+          "typeIndex": 46025,
+          "token": 67181008,
+          "index": 72143,
+          "name": "m_refreshRemainingTimeWhenStackMax",
+          "typeName": "bool",
+          "static": false,
+          "offset": 164,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2508768,
+          "typeIndex": 46025,
+          "token": 67181009,
+          "index": 72144,
+          "name": "m_clearAllStackCntWhenTimeUp",
+          "typeName": "bool",
+          "static": false,
+          "offset": 165,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2508797,
+          "typeIndex": 66296,
+          "token": 67181010,
+          "index": 72145,
+          "name": "m_triggerTimer",
+          "typeName": "Torappu.PrecisePeriodicTimer",
+          "static": false,
+          "offset": 168,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2508812,
+          "typeIndex": 33354,
+          "token": 67181011,
+          "index": 72146,
+          "name": "m_actions",
+          "typeName": "Torappu.Battle.Action.ActionNode[][]",
+          "static": false,
+          "offset": 176,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1312564,
+          "typeIndex": 45910,
+          "token": 67181012,
+          "index": 72147,
+          "name": "m_blackboard",
+          "typeName": "Torappu.Blackboard",
+          "static": false,
+          "offset": 184,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2508822,
+          "typeIndex": 71764,
+          "token": 67181013,
+          "index": 72148,
+          "name": "m_runtimeAttributesSnapshot",
+          "typeName": "Torappu.Battle.RuntimeAttributesSnapshot",
+          "static": false,
+          "offset": 192,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2508850,
+          "typeIndex": 46025,
+          "token": 67181014,
+          "index": 72149,
+          "name": "m_isDurableBuff",
+          "typeName": "bool",
+          "static": false,
+          "offset": 496,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2508866,
+          "typeIndex": 46025,
+          "token": 67181015,
+          "index": 72150,
+          "name": "m_isDamageMissable",
+          "typeName": "bool",
+          "static": false,
+          "offset": 497,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2508885,
+          "typeIndex": 46025,
+          "token": 67181016,
+          "index": 72151,
+          "name": "m_isSilenceable",
+          "typeName": "bool",
+          "static": false,
+          "offset": 498,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2508901,
+          "typeIndex": 46025,
+          "token": 67181017,
+          "index": 72152,
+          "name": "m_isStunnable",
+          "typeName": "bool",
+          "static": false,
+          "offset": 499,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2508915,
+          "typeIndex": 46025,
+          "token": 67181018,
+          "index": 72153,
+          "name": "m_isFreezable",
+          "typeName": "bool",
+          "static": false,
+          "offset": 500,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2508929,
+          "typeIndex": 46025,
+          "token": 67181019,
+          "index": 72154,
+          "name": "m_isStatusResistable",
+          "typeName": "bool",
+          "static": false,
+          "offset": 501,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2508950,
+          "typeIndex": 46025,
+          "token": 67181020,
+          "index": 72155,
+          "name": "m_canSlowDown",
+          "typeName": "bool",
+          "static": false,
+          "offset": 502,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2508964,
+          "typeIndex": 46025,
+          "token": 67181021,
+          "index": 72156,
+          "name": "m_isLevitatable",
+          "typeName": "bool",
+          "static": false,
+          "offset": 503,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2508980,
+          "typeIndex": 46025,
+          "token": 67181022,
+          "index": 72157,
+          "name": "m_isGroundBoundable",
+          "typeName": "bool",
+          "static": false,
+          "offset": 504,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2274975,
+          "typeIndex": 46025,
+          "token": 67181023,
+          "index": 72158,
+          "name": "m_started",
+          "typeName": "bool",
+          "static": false,
+          "offset": 505,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 880002,
+          "typeIndex": 46025,
+          "token": 67181024,
+          "index": 72159,
+          "name": "m_isFinished",
+          "typeName": "bool",
+          "static": false,
+          "offset": 506,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2509000,
+          "typeIndex": 46025,
+          "token": 67181025,
+          "index": 72160,
+          "name": "m_isActuallyFinished",
+          "typeName": "bool",
+          "static": false,
+          "offset": 507,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2509021,
+          "typeIndex": 46025,
+          "token": 67181026,
+          "index": 72161,
+          "name": "m_needRemove",
+          "typeName": "bool",
+          "static": false,
+          "offset": 508,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2509034,
+          "typeIndex": 46025,
+          "token": 67181027,
+          "index": 72162,
+          "name": "m_isActuallyEnabled",
+          "typeName": "bool",
+          "static": false,
+          "offset": 509,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2509054,
+          "typeIndex": 46025,
+          "token": 67181028,
+          "index": 72163,
+          "name": "m_isLateEnabled",
+          "typeName": "bool",
+          "static": false,
+          "offset": 510,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2509070,
+          "typeIndex": 46025,
+          "token": 67181029,
+          "index": 72164,
+          "name": "m_isManuallyEnabled",
+          "typeName": "bool",
+          "static": false,
+          "offset": 511,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1770945,
+          "typeIndex": 46025,
+          "token": 67181030,
+          "index": 72165,
+          "name": "m_isValid",
+          "typeName": "bool",
+          "static": false,
+          "offset": 512,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2509090,
+          "typeIndex": 46025,
+          "token": 67181031,
+          "index": 72166,
+          "name": "m_isEpBreakBuff",
+          "typeName": "bool",
+          "static": false,
+          "offset": 513,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2200473,
+          "typeIndex": 78547,
+          "token": 67181032,
+          "index": 72167,
+          "name": "<key>k__BackingField",
+          "typeName": "string",
+          "static": false,
+          "offset": 520,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2509106,
+          "typeIndex": 78547,
+          "token": 67181033,
+          "index": 72168,
+          "name": "<overrideKey>k__BackingField",
+          "typeName": "string",
+          "static": false,
+          "offset": 528,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 4775,
+          "typeIndex": 83055,
+          "token": 67181034,
+          "index": 72169,
+          "name": "<instanceUid>k__BackingField",
+          "typeName": "uint",
+          "static": false,
+          "offset": 536,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2509135,
+          "typeIndex": 60310,
+          "token": 67181035,
+          "index": 72170,
+          "name": "<priority>k__BackingField",
+          "typeName": "int",
+          "static": false,
+          "offset": 540,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2467452,
+          "typeIndex": 60346,
+          "token": 67181036,
+          "index": 72171,
+          "name": "<attributeMask>k__BackingField",
+          "typeName": "long",
+          "static": false,
+          "offset": 544,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2467483,
+          "typeIndex": 60346,
+          "token": 67181037,
+          "index": 72172,
+          "name": "<abnormalFlagMask>k__BackingField",
+          "typeName": "long",
+          "static": false,
+          "offset": 552,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2467517,
+          "typeIndex": 60346,
+          "token": 67181038,
+          "index": 72173,
+          "name": "<abnormalImmuneMask>k__BackingField",
+          "typeName": "long",
+          "static": false,
+          "offset": 560,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2467553,
+          "typeIndex": 60346,
+          "token": 67181039,
+          "index": 72174,
+          "name": "<abnormalAntiMask>k__BackingField",
+          "typeName": "long",
+          "static": false,
+          "offset": 568,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2467587,
+          "typeIndex": 60346,
+          "token": 67181040,
+          "index": 72175,
+          "name": "<abnormalComboMask>k__BackingField",
+          "typeName": "long",
+          "static": false,
+          "offset": 576,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2467622,
+          "typeIndex": 60346,
+          "token": 67181041,
+          "index": 72176,
+          "name": "<abnormalComboImmuneMask>k__BackingField",
+          "typeName": "long",
+          "static": false,
+          "offset": 584,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2509161,
+          "typeIndex": 78547,
+          "token": 67181042,
+          "index": 72177,
+          "name": "<effectKey>k__BackingField",
+          "typeName": "string",
+          "static": false,
+          "offset": 592,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2509188,
+          "typeIndex": 46025,
+          "token": 67181043,
+          "index": 72178,
+          "name": "<enableInitDirectionFromSource>k__BackingField",
+          "typeName": "bool",
+          "static": false,
+          "offset": 600,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2509235,
+          "typeIndex": 93458,
+          "token": 67181044,
+          "index": 72179,
+          "name": "<onEventPriority>k__BackingField",
+          "typeName": "Torappu.BuffData/OnEventPriority",
+          "static": false,
+          "offset": 604,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2509268,
+          "typeIndex": 78547,
+          "token": 67181045,
+          "index": 72180,
+          "name": "<audioSignal>k__BackingField",
+          "typeName": "string",
+          "static": false,
+          "offset": 608,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2509297,
+          "typeIndex": 46025,
+          "token": 67181046,
+          "index": 72181,
+          "name": "<triggerable>k__BackingField",
+          "typeName": "bool",
+          "static": false,
+          "offset": 616,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2509326,
+          "typeIndex": 21114,
+          "token": 67181047,
+          "index": 72182,
+          "name": "m_derivedBuffs",
+          "typeName": "type(kind=0x15, data=0x188d036b8)",
+          "static": false,
+          "offset": 624,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2509341,
+          "typeIndex": 51796,
+          "token": 67181048,
+          "index": 72183,
+          "name": "m_shieldMask",
+          "typeName": "Torappu.Battle.DamageTypeMask",
+          "static": false,
+          "offset": 632,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2509354,
+          "typeIndex": 46025,
+          "token": 67181049,
+          "index": 72184,
+          "name": "<hasShield>k__BackingField",
+          "typeName": "bool",
+          "static": false,
+          "offset": 636,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2509381,
+          "typeIndex": 47275,
+          "token": 67181050,
+          "index": 72185,
+          "name": "DEFAULT_DAMAGE_EVENT_REENTRY_LIMIT",
+          "typeName": "byte",
+          "static": true,
+          "offset": 0,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2509416,
+          "typeIndex": 47275,
+          "token": 67181051,
+          "index": 72186,
+          "name": "DEFAULT_KILL_EVENT_REENTRY_LIMIT",
+          "typeName": "byte",
+          "static": true,
+          "offset": 0,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2509449,
+          "typeIndex": 60335,
+          "token": 67181052,
+          "index": 72187,
+          "name": "MAX_EVENT_REENTRY_BLOCK_LOGS_PER_FRAME",
+          "typeName": "int",
+          "static": true,
+          "offset": 0,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2509488,
+          "typeIndex": 46030,
+          "token": 67181053,
+          "index": 72188,
+          "name": "s_enableEventReentryGuard",
+          "typeName": "bool",
+          "static": true,
+          "offset": 32,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2509514,
+          "typeIndex": 33632,
+          "token": 67181054,
+          "index": 72189,
+          "name": "s_eventReentryLimits",
+          "typeName": "byte[]",
+          "static": true,
+          "offset": 40,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2509535,
+          "typeIndex": 60315,
+          "token": 67181055,
+          "index": 72190,
+          "name": "s_reentryBlockLogFrame",
+          "typeName": "int",
+          "static": true,
+          "offset": 48,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2509558,
+          "typeIndex": 60315,
+          "token": 67181056,
+          "index": 72191,
+          "name": "s_reentryBlockLogsThisFrame",
+          "typeName": "int",
+          "static": true,
+          "offset": 52,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2509586,
+          "typeIndex": 33620,
+          "token": 67181057,
+          "index": 72192,
+          "name": "m_eventReentryDepth",
+          "typeName": "byte[]",
+          "static": false,
+          "offset": 640,
+          "unboxedOffset": null
+        }
+      ],
+      "methods": [
+        {
+          "nameIndex": 3172,
+          "declaringType": 10207,
+          "returnType": 84484,
+          "parameterStart": 66855,
+          "genericContainerIndex": -1,
+          "token": 100729389,
+          "flags": 132,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 7,
+          "index": 66092,
+          "image": "Assembly-CSharp.dll",
+          "address": 6449617696,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.Buff.Reset",
+          "returnTypeName": "void",
+          "parameters": [
+            {
+              "nameIndex": 457057,
+              "token": 134284589,
+              "typeIndex": 46302,
+              "index": 66855,
+              "name": "config",
+              "typeName": "Torappu.Battle.BuffConfig"
+            },
+            {
+              "nameIndex": 1371842,
+              "token": 134284590,
+              "typeIndex": 93437,
+              "index": 66856,
+              "name": "container",
+              "typeName": "Torappu.Battle.Buff/BuffContainer"
+            },
+            {
+              "nameIndex": 6707,
+              "token": 134284591,
+              "typeIndex": 53921,
+              "index": 66857,
+              "name": "source",
+              "typeName": "Torappu.Battle.Entity"
+            },
+            {
+              "nameIndex": 1214225,
+              "token": 134284592,
+              "typeIndex": 35758,
+              "index": 66858,
+              "name": "ability",
+              "typeName": "Torappu.Battle.Ability"
+            },
+            {
+              "nameIndex": 2432109,
+              "token": 134284593,
+              "typeIndex": 45909,
+              "index": 66859,
+              "name": "extraBlackboard",
+              "typeName": "Torappu.Blackboard"
+            },
+            {
+              "nameIndex": 2505027,
+              "token": 134284594,
+              "typeIndex": 45909,
+              "index": 66860,
+              "name": "extraBlackboard2",
+              "typeName": "Torappu.Blackboard"
+            },
+            {
+              "nameIndex": 2481527,
+              "token": 134284595,
+              "typeIndex": 66511,
+              "index": 66861,
+              "name": "sourceProjectile",
+              "typeName": "Torappu.Battle.Projectile"
+            }
+          ]
+        },
+        {
+          "nameIndex": 2505170,
+          "declaringType": 10207,
+          "returnType": 84484,
+          "parameterStart": 66873,
+          "genericContainerIndex": -1,
+          "token": 100729398,
+          "flags": 134,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 1,
+          "index": 66101,
+          "image": "Assembly-CSharp.dll",
+          "address": 6449592960,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.Buff.MarkFinish",
+          "returnTypeName": "void",
+          "parameters": [
+            {
+              "nameIndex": 2505152,
+              "token": 134284607,
+              "typeIndex": 46024,
+              "index": 66873,
+              "name": "updateOverrideMap",
+              "typeName": "bool"
+            }
+          ]
+        },
+        {
+          "nameIndex": 2505197,
+          "declaringType": 10207,
+          "returnType": 84484,
+          "parameterStart": 66874,
+          "genericContainerIndex": -1,
+          "token": 100729399,
+          "flags": 134,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 3,
+          "index": 66102,
+          "image": "Assembly-CSharp.dll",
+          "address": 6449589376,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.Buff.DecStackCntOrMarkFinish",
+          "returnTypeName": "void",
+          "parameters": [
+            {
+              "nameIndex": 2505152,
+              "token": 134284608,
+              "typeIndex": 46024,
+              "index": 66874,
+              "name": "updateOverrideMap",
+              "typeName": "bool"
+            },
+            {
+              "nameIndex": 2505181,
+              "token": 134284609,
+              "typeIndex": 46049,
+              "index": 66875,
+              "name": "isTimeUp",
+              "typeName": "bool"
+            },
+            {
+              "nameIndex": 2505190,
+              "token": 134284610,
+              "typeIndex": 60334,
+              "index": 66876,
+              "name": "decCnt",
+              "typeName": "int"
+            }
+          ]
+        },
+        {
+          "nameIndex": 2505551,
+          "declaringType": 10207,
+          "returnType": 84484,
+          "parameterStart": 66916,
+          "genericContainerIndex": -1,
+          "token": 100729415,
+          "flags": 134,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 1,
+          "index": 66118,
+          "image": "Assembly-CSharp.dll",
+          "address": 6449622912,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.Buff.SubtractRemainingTime",
+          "returnTypeName": "void",
+          "parameters": [
+            {
+              "nameIndex": 2505538,
+              "token": 134284650,
+              "typeIndex": 54451,
+              "index": 66916,
+              "name": "deltaSeconds",
+              "typeName": "Torappu.FP"
+            }
+          ]
+        },
+        {
+          "nameIndex": 4496,
+          "declaringType": 10207,
+          "returnType": 84484,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100729417,
+          "flags": 486,
+          "iflags": 0,
+          "slot": 16,
+          "parameterCount": 0,
+          "index": 66120,
+          "image": "Assembly-CSharp.dll",
+          "address": 6449613232,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.Buff.OnRecycle",
+          "returnTypeName": "void",
+          "parameters": []
+        },
+        {
+          "nameIndex": 1286,
+          "declaringType": 10207,
+          "returnType": 84484,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100729419,
+          "flags": 132,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 0,
+          "index": 66122,
+          "image": "Assembly-CSharp.dll",
+          "address": 6449602528,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.Buff.OnDisable",
+          "returnTypeName": "void",
+          "parameters": []
+        },
+        {
+          "nameIndex": 6505,
+          "declaringType": 10207,
+          "returnType": 46024,
+          "parameterStart": 66917,
+          "genericContainerIndex": -1,
+          "token": 100729421,
+          "flags": 132,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 1,
+          "index": 66124,
+          "image": "Assembly-CSharp.dll",
+          "address": 6449605088,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.Buff.OnFinish",
+          "returnTypeName": "bool",
+          "parameters": [
+            {
+              "nameIndex": 2505573,
+              "token": 134284651,
+              "typeIndex": 46024,
+              "index": 66917,
+              "name": "immediatelyFinishEffect",
+              "typeName": "bool"
+            }
+          ]
+        },
+        {
+          "nameIndex": 3165,
+          "declaringType": 10207,
+          "returnType": 84484,
+          "parameterStart": 66918,
+          "genericContainerIndex": -1,
+          "token": 100729423,
+          "flags": 132,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 1,
+          "index": 66126,
+          "image": "Assembly-CSharp.dll",
+          "address": 6449616080,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.Buff.OnTick",
+          "returnTypeName": "void",
+          "parameters": [
+            {
+              "nameIndex": 3876,
+              "token": 134284652,
+              "typeIndex": 54451,
+              "index": 66918,
+              "name": "deltaTime",
+              "typeName": "Torappu.FP"
+            }
+          ]
+        },
+        {
+          "nameIndex": 2504105,
+          "declaringType": 10207,
+          "returnType": 84484,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100729424,
+          "flags": 132,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 0,
+          "index": 66127,
+          "image": "Assembly-CSharp.dll",
+          "address": 6449606176,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.Buff.OnLateTick",
+          "returnTypeName": "void",
+          "parameters": []
+        },
+        {
+          "nameIndex": 2507869,
+          "declaringType": 10207,
+          "returnType": 84484,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100729541,
+          "flags": 129,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 0,
+          "index": 66244,
+          "image": "Assembly-CSharp.dll",
+          "address": 6449632112,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.Buff._DoUpdateStack",
+          "returnTypeName": "void",
+          "parameters": []
+        },
+        {
+          "nameIndex": 2507965,
+          "declaringType": 10207,
+          "returnType": 84484,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100729546,
+          "flags": 129,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 0,
+          "index": 66249,
+          "image": "Assembly-CSharp.dll",
+          "address": 6449646160,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.Buff._UpdateIsEnabledIfNotFinished",
+          "returnTypeName": "void",
+          "parameters": []
+        },
+        {
+          "nameIndex": 2508096,
+          "declaringType": 10207,
+          "returnType": 84484,
+          "parameterStart": 66962,
+          "genericContainerIndex": -1,
+          "token": 100729551,
+          "flags": 129,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 1,
+          "index": 66254,
+          "image": "Assembly-CSharp.dll",
+          "address": 6449641232,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.Buff._PreprocessDeltaTime",
+          "returnTypeName": "void",
+          "parameters": [
+            {
+              "nameIndex": 3876,
+              "token": 134284696,
+              "typeIndex": 31833,
+              "index": 66962,
+              "name": "deltaTime",
+              "typeName": "Torappu.FP&"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

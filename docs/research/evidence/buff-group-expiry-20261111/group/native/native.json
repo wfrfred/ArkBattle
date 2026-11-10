@@ -1,0 +1,1958 @@
+{
+  "provenance": {
+    "scope": "Static native branches; no game execution or runtime XLua verification.",
+    "client": {
+      "dll": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "bytes": 223112680,
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff"
+      },
+      "metadata": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "bytes": 46669332,
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5"
+      },
+      "metadataVersion": 29,
+      "imageBase": "0x180000000"
+    },
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/native.py",
+        "bytes": 18723,
+        "sha256": "1c6c16dc97e0dd9af0af4033c81a7534384dd65ebb1e604df3f4a3289df158e6"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]"
+    },
+    "location": {
+      "metadataRegistration": "0x187ee0630",
+      "modules": {
+        "Assembly-CSharp.dll": {
+          "address": 6564854272,
+          "methodPointers": 6585881040,
+          "count": 225427,
+          "fileBacked": true
+        },
+        "mscorlib.dll": {
+          "address": 6577364064,
+          "methodPointers": 6592131600,
+          "count": 13987,
+          "fileBacked": true
+        }
+      }
+    },
+    "collectedOn": "2026-11-11",
+    "extractionScript": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/buff-group-expiry-20261111/group/extract.py",
+      "bytes": 4750,
+      "sha256": "0ced1fc10756f80725b177715676627bb26f1485b0110c0604bc1cb6fd3a7d71"
+    }
+  },
+  "result": [
+    {
+      "method": {
+        "nameIndex": 1190168,
+        "declaringType": 4218,
+        "returnType": 78546,
+        "parameterStart": -1,
+        "genericContainerIndex": -1,
+        "token": 100694807,
+        "flags": 134,
+        "iflags": 0,
+        "slot": 65535,
+        "parameterCount": 0,
+        "index": 31510,
+        "image": "Assembly-CSharp.dll",
+        "address": 6479654384,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.BuffData.GetOverrideKey",
+        "returnTypeName": "string",
+        "parameters": []
+      },
+      "followingMethodAddress": "0x18237ae90",
+      "parts": [
+        {
+          "method": null,
+          "address": "0x18237adf0",
+          "aliases": [
+            31510
+          ],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x18237ae87",
+          "decodedEnd": "0x18237ae87",
+          "decodedBytes": 151,
+          "fullyDecoded": true,
+          "bytesSha256": "c635e623bf2e768ce0b802fa08735f8daeab3324ee7d7858670a7ab3de32e362",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 41
+        },
+        {
+          "method": null,
+          "address": "0x18237ae87",
+          "aliases": [],
+          "boundary": "next known method/section boundary; completeness unproven; explicit byte limit",
+          "end": "0x18237ae90",
+          "decodedEnd": "0x18237ae90",
+          "decodedBytes": 9,
+          "fullyDecoded": true,
+          "bytesSha256": "57c1d0aaef1222fc7f655f011049271d3a843395335212156e61d3850beb51ce",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 9
+        }
+      ]
+    },
+    {
+      "method": {
+        "nameIndex": 3172,
+        "declaringType": 10207,
+        "returnType": 84484,
+        "parameterStart": 66855,
+        "genericContainerIndex": -1,
+        "token": 100729389,
+        "flags": 132,
+        "iflags": 0,
+        "slot": 65535,
+        "parameterCount": 7,
+        "index": 66092,
+        "image": "Assembly-CSharp.dll",
+        "address": 6449617696,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.Battle.Buff.Reset",
+        "returnTypeName": "void",
+        "parameters": [
+          {
+            "nameIndex": 457057,
+            "token": 134284589,
+            "typeIndex": 46302,
+            "index": 66855,
+            "name": "config",
+            "typeName": "Torappu.Battle.BuffConfig"
+          },
+          {
+            "nameIndex": 1371842,
+            "token": 134284590,
+            "typeIndex": 93437,
+            "index": 66856,
+            "name": "container",
+            "typeName": "Torappu.Battle.Buff/BuffContainer"
+          },
+          {
+            "nameIndex": 6707,
+            "token": 134284591,
+            "typeIndex": 53921,
+            "index": 66857,
+            "name": "source",
+            "typeName": "Torappu.Battle.Entity"
+          },
+          {
+            "nameIndex": 1214225,
+            "token": 134284592,
+            "typeIndex": 35758,
+            "index": 66858,
+            "name": "ability",
+            "typeName": "Torappu.Battle.Ability"
+          },
+          {
+            "nameIndex": 2432109,
+            "token": 134284593,
+            "typeIndex": 45909,
+            "index": 66859,
+            "name": "extraBlackboard",
+            "typeName": "Torappu.Blackboard"
+          },
+          {
+            "nameIndex": 2505027,
+            "token": 134284594,
+            "typeIndex": 45909,
+            "index": 66860,
+            "name": "extraBlackboard2",
+            "typeName": "Torappu.Blackboard"
+          },
+          {
+            "nameIndex": 2481527,
+            "token": 134284595,
+            "typeIndex": 66511,
+            "index": 66861,
+            "name": "sourceProjectile",
+            "typeName": "Torappu.Battle.Projectile"
+          }
+        ]
+      },
+      "followingMethodAddress": "0x1806d6e90",
+      "parts": [
+        {
+          "method": null,
+          "address": "0x1806d5b20",
+          "aliases": [
+            66092
+          ],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x1806d5cb9",
+          "decodedEnd": "0x1806d5cb9",
+          "decodedBytes": 409,
+          "fullyDecoded": true,
+          "bytesSha256": "3d16e763b5a2e374924f2b66fafeb47affc3a24d1e4de4c3ab81f51c106eef41",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 78
+        },
+        {
+          "method": null,
+          "address": "0x1806d5cb9",
+          "aliases": [],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x1806d6e20",
+          "decodedEnd": "0x1806d6e20",
+          "decodedBytes": 4455,
+          "fullyDecoded": true,
+          "bytesSha256": "05b7217cc92312ccb24818a81f641e566c495c196647770ae8bce8bc5a1e887c",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 1021
+        },
+        {
+          "method": null,
+          "address": "0x1806d6e20",
+          "aliases": [],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x1806d6e75",
+          "decodedEnd": "0x1806d6e75",
+          "decodedBytes": 85,
+          "fullyDecoded": true,
+          "bytesSha256": "d52f5106e346e8fccc4c605bb06f4a732717b7bd45840649c8163304f67f703c",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 24
+        },
+        {
+          "method": null,
+          "address": "0x1806d6e75",
+          "aliases": [],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x1806d6e87",
+          "decodedEnd": "0x1806d6e87",
+          "decodedBytes": 18,
+          "fullyDecoded": true,
+          "bytesSha256": "023e4228bab4f0cc716e2f6bd03341a2dab3c4cf23c21be96bc8826e9bcc713a",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 6
+        },
+        {
+          "method": null,
+          "address": "0x1806d6e87",
+          "aliases": [],
+          "boundary": "next known method/section boundary; completeness unproven; explicit byte limit",
+          "end": "0x1806d6e90",
+          "decodedEnd": "0x1806d6e90",
+          "decodedBytes": 9,
+          "fullyDecoded": true,
+          "bytesSha256": "57c1d0aaef1222fc7f655f011049271d3a843395335212156e61d3850beb51ce",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 9
+        }
+      ]
+    },
+    {
+      "method": {
+        "nameIndex": 4496,
+        "declaringType": 10207,
+        "returnType": 84484,
+        "parameterStart": -1,
+        "genericContainerIndex": -1,
+        "token": 100729417,
+        "flags": 486,
+        "iflags": 0,
+        "slot": 16,
+        "parameterCount": 0,
+        "index": 66120,
+        "image": "Assembly-CSharp.dll",
+        "address": 6449613232,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.Battle.Buff.OnRecycle",
+        "returnTypeName": "void",
+        "parameters": []
+      },
+      "followingMethodAddress": "0x1806d4a40",
+      "parts": [
+        {
+          "method": null,
+          "address": "0x1806d49b0",
+          "aliases": [
+            66120
+          ],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x1806d4a37",
+          "decodedEnd": "0x1806d4a37",
+          "decodedBytes": 135,
+          "fullyDecoded": true,
+          "bytesSha256": "19fb0994048a0423afee52b0bc2c7c80a804227a1a27f1a886ff6fad3c4e825a",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 32
+        },
+        {
+          "method": null,
+          "address": "0x1806d4a37",
+          "aliases": [],
+          "boundary": "next known method/section boundary; completeness unproven; explicit byte limit",
+          "end": "0x1806d4a40",
+          "decodedEnd": "0x1806d4a40",
+          "decodedBytes": 9,
+          "fullyDecoded": true,
+          "bytesSha256": "57c1d0aaef1222fc7f655f011049271d3a843395335212156e61d3850beb51ce",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 9
+        }
+      ]
+    },
+    {
+      "method": {
+        "nameIndex": 2507648,
+        "declaringType": 10207,
+        "returnType": 95689,
+        "parameterStart": 66943,
+        "genericContainerIndex": -1,
+        "token": 100729529,
+        "flags": 129,
+        "iflags": 0,
+        "slot": 65535,
+        "parameterCount": 2,
+        "index": 66232,
+        "image": "Assembly-CSharp.dll",
+        "address": 6449643600,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.Battle.Buff._RunActions",
+        "returnTypeName": "Torappu.Battle.Context/Snapshot",
+        "parameters": [
+          {
+            "nameIndex": 66664,
+            "token": 134284677,
+            "typeIndex": 93440,
+            "index": 66943,
+            "name": "ev",
+            "typeName": "Torappu.Battle.Buff/Event"
+          },
+          {
+            "nameIndex": 2507634,
+            "token": 134284678,
+            "typeIndex": 46049,
+            "index": 66944,
+            "name": "setMeAsTarget",
+            "typeName": "bool"
+          }
+        ]
+      },
+      "followingMethodAddress": "0x1806dc600",
+      "parts": [
+        {
+          "method": null,
+          "address": "0x1806dc050",
+          "aliases": [
+            66232
+          ],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x1806dc5f8",
+          "decodedEnd": "0x1806dc5f8",
+          "decodedBytes": 1448,
+          "fullyDecoded": true,
+          "bytesSha256": "5b5231649a7e1d8fbd400e0724b5ea58c8a633d688ee851f6bbc29f8e3b9caa6",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 321
+        },
+        {
+          "method": null,
+          "address": "0x1806dc5f8",
+          "aliases": [],
+          "boundary": "next known method/section boundary; completeness unproven; explicit byte limit",
+          "end": "0x1806dc600",
+          "decodedEnd": "0x1806dc600",
+          "decodedBytes": 8,
+          "fullyDecoded": true,
+          "bytesSha256": "3d2f424783df5853c8d7121b1371650c04241f318e1b0cd46bedbc805b9164c3",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 8
+        }
+      ]
+    },
+    {
+      "method": {
+        "nameIndex": 2507668,
+        "declaringType": 10207,
+        "returnType": 95689,
+        "parameterStart": 66945,
+        "genericContainerIndex": -1,
+        "token": 100729530,
+        "flags": 129,
+        "iflags": 0,
+        "slot": 65535,
+        "parameterCount": 3,
+        "index": 66233,
+        "image": "Assembly-CSharp.dll",
+        "address": 6449642448,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.Battle.Buff._RunActionsCore",
+        "returnTypeName": "Torappu.Battle.Context/Snapshot",
+        "parameters": [
+          {
+            "nameIndex": 66664,
+            "token": 134284679,
+            "typeIndex": 93440,
+            "index": 66945,
+            "name": "ev",
+            "typeName": "Torappu.Battle.Buff/Event"
+          },
+          {
+            "nameIndex": 2507634,
+            "token": 134284680,
+            "typeIndex": 46024,
+            "index": 66946,
+            "name": "setMeAsTarget",
+            "typeName": "bool"
+          },
+          {
+            "nameIndex": 2507660,
+            "token": 134284681,
+            "typeIndex": 60309,
+            "index": 66947,
+            "name": "evIndex",
+            "typeName": "int"
+          }
+        ]
+      },
+      "followingMethodAddress": "0x1806dc050",
+      "parts": [
+        {
+          "method": null,
+          "address": "0x1806dbbd0",
+          "aliases": [
+            66233
+          ],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x1806dc04b",
+          "decodedEnd": "0x1806dc04b",
+          "decodedBytes": 1147,
+          "fullyDecoded": true,
+          "bytesSha256": "b1f274e2836312b789053213ec15689d17eeedd6fd5047d572aa7079546e921f",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 267
+        },
+        {
+          "method": null,
+          "address": "0x1806dc04b",
+          "aliases": [],
+          "boundary": "next known method/section boundary; completeness unproven; explicit byte limit",
+          "end": "0x1806dc050",
+          "decodedEnd": "0x1806dc050",
+          "decodedBytes": 5,
+          "fullyDecoded": true,
+          "bytesSha256": "992cf51486f901aa1aa7d1f63e18c150c9156166e08e0b9e59cc3faf98177329",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 5
+        }
+      ]
+    },
+    {
+      "method": {
+        "nameIndex": 2508206,
+        "declaringType": 10207,
+        "returnType": 84484,
+        "parameterStart": -1,
+        "genericContainerIndex": -1,
+        "token": 100729555,
+        "flags": 129,
+        "iflags": 0,
+        "slot": 65535,
+        "parameterCount": 0,
+        "index": 66258,
+        "image": "Assembly-CSharp.dll",
+        "address": 6449647200,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.Battle.Buff._UpdateOverrideMap",
+        "returnTypeName": "void",
+        "parameters": []
+      },
+      "followingMethodAddress": "0x1806dcf10",
+      "parts": [
+        {
+          "method": null,
+          "address": "0x1806dce60",
+          "aliases": [
+            66258
+          ],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x1806dcf0b",
+          "decodedEnd": "0x1806dcf0b",
+          "decodedBytes": 171,
+          "fullyDecoded": true,
+          "bytesSha256": "77f9433b210b234a4ddcae92004bac740a4520472406b2638bc88fd485652355",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 44
+        },
+        {
+          "method": null,
+          "address": "0x1806dcf0b",
+          "aliases": [],
+          "boundary": "next known method/section boundary; completeness unproven; explicit byte limit",
+          "end": "0x1806dcf10",
+          "decodedEnd": "0x1806dcf10",
+          "decodedBytes": 5,
+          "fullyDecoded": true,
+          "bytesSha256": "992cf51486f901aa1aa7d1f63e18c150c9156166e08e0b9e59cc3faf98177329",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 5
+        }
+      ]
+    },
+    {
+      "method": {
+        "nameIndex": 2516499,
+        "declaringType": 10204,
+        "returnType": 84484,
+        "parameterStart": 66982,
+        "genericContainerIndex": -1,
+        "token": 100729579,
+        "flags": 134,
+        "iflags": 0,
+        "slot": 65535,
+        "parameterCount": 1,
+        "index": 66282,
+        "image": "Assembly-CSharp.dll",
+        "address": 6449661792,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.Battle.Buff/OverrideGroup.ResetWithBuff",
+        "returnTypeName": "void",
+        "parameters": [
+          {
+            "nameIndex": 2516487,
+            "token": 134284716,
+            "typeIndex": 46289,
+            "index": 66982,
+            "name": "initialBuff",
+            "typeName": "Torappu.Battle.Buff"
+          }
+        ]
+      },
+      "followingMethodAddress": "0x1806e08f0",
+      "parts": [
+        {
+          "method": null,
+          "address": "0x1806e0760",
+          "aliases": [
+            66282
+          ],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x1806e08ec",
+          "decodedEnd": "0x1806e08ec",
+          "decodedBytes": 396,
+          "fullyDecoded": true,
+          "bytesSha256": "5390feb58950267a5296ee63772ce0db24f9663c6a77e7f000048f183f79d649",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 97
+        },
+        {
+          "method": null,
+          "address": "0x1806e08ec",
+          "aliases": [],
+          "boundary": "next known method/section boundary; completeness unproven; explicit byte limit",
+          "end": "0x1806e08f0",
+          "decodedEnd": "0x1806e08f0",
+          "decodedBytes": 4,
+          "fullyDecoded": true,
+          "bytesSha256": "8843b54d2df63ca265cf4a05d27dd2b29a74fb476d296dd44a0e171d74b441ca",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 4
+        }
+      ]
+    },
+    {
+      "method": {
+        "nameIndex": 394288,
+        "declaringType": 10204,
+        "returnType": 84484,
+        "parameterStart": 66984,
+        "genericContainerIndex": -1,
+        "token": 100729581,
+        "flags": 134,
+        "iflags": 0,
+        "slot": 65535,
+        "parameterCount": 1,
+        "index": 66284,
+        "image": "Assembly-CSharp.dll",
+        "address": 6449661680,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.Battle.Buff/OverrideGroup.Remove",
+        "returnTypeName": "void",
+        "parameters": [
+          {
+            "nameIndex": 382745,
+            "token": 134284718,
+            "typeIndex": 46289,
+            "index": 66984,
+            "name": "buff",
+            "typeName": "Torappu.Battle.Buff"
+          }
+        ]
+      },
+      "followingMethodAddress": "0x1806e0760",
+      "parts": [
+        {
+          "method": null,
+          "address": "0x1806e06f0",
+          "aliases": [
+            66284
+          ],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x1806e0753",
+          "decodedEnd": "0x1806e0753",
+          "decodedBytes": 99,
+          "fullyDecoded": true,
+          "bytesSha256": "1954c1c9b8d6f002181bb42e53eaa79d18f83f5bb438a9371e6dfef8cb1d5425",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 27
+        },
+        {
+          "method": null,
+          "address": "0x1806e0753",
+          "aliases": [],
+          "boundary": "next known method/section boundary; completeness unproven; explicit byte limit",
+          "end": "0x1806e0760",
+          "decodedEnd": "0x1806e0760",
+          "decodedBytes": 13,
+          "fullyDecoded": true,
+          "bytesSha256": "0d0bb866505bc0e2d4276fcdee1afdc8887662d04cce9e4bbb4c10fba6d0f1ce",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 13
+        }
+      ]
+    },
+    {
+      "method": {
+        "nameIndex": 2516523,
+        "declaringType": 10204,
+        "returnType": 84484,
+        "parameterStart": -1,
+        "genericContainerIndex": -1,
+        "token": 100729583,
+        "flags": 134,
+        "iflags": 0,
+        "slot": 65535,
+        "parameterCount": 0,
+        "index": 66286,
+        "image": "Assembly-CSharp.dll",
+        "address": 6449662528,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.Battle.Buff/OverrideGroup.UpdateMe",
+        "returnTypeName": "void",
+        "parameters": []
+      },
+      "followingMethodAddress": "0x1806e0a50",
+      "parts": [
+        {
+          "method": null,
+          "address": "0x1806e0a40",
+          "aliases": [
+            66286
+          ],
+          "boundary": "next known method/section boundary; completeness unproven; explicit byte limit",
+          "end": "0x1806e0a50",
+          "decodedEnd": "0x1806e0a50",
+          "decodedBytes": 16,
+          "fullyDecoded": true,
+          "bytesSha256": "0a7868223fd294a75f77f5ce8a5030ebd7f3d2a3e3acb477a236d9bb12a8b1fc",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 11
+        }
+      ]
+    },
+    {
+      "method": {
+        "nameIndex": 394250,
+        "declaringType": 10204,
+        "returnType": 84484,
+        "parameterStart": -1,
+        "genericContainerIndex": -1,
+        "token": 100729585,
+        "flags": 134,
+        "iflags": 0,
+        "slot": 65535,
+        "parameterCount": 0,
+        "index": 66288,
+        "image": "Assembly-CSharp.dll",
+        "address": 6449661200,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.Battle.Buff/OverrideGroup.Clear",
+        "returnTypeName": "void",
+        "parameters": []
+      },
+      "followingMethodAddress": "0x1806e0650",
+      "parts": [
+        {
+          "method": null,
+          "address": "0x1806e0510",
+          "aliases": [
+            66288
+          ],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x1806e064d",
+          "decodedEnd": "0x1806e064d",
+          "decodedBytes": 317,
+          "fullyDecoded": true,
+          "bytesSha256": "c66c56c991aa7249921b99dd01375c3ea4c4cb6367d9816c0b8a4b2ab93a6e7c",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 76
+        },
+        {
+          "method": null,
+          "address": "0x1806e064d",
+          "aliases": [],
+          "boundary": "next known method/section boundary; completeness unproven; explicit byte limit",
+          "end": "0x1806e0650",
+          "decodedEnd": "0x1806e0650",
+          "decodedBytes": 3,
+          "fullyDecoded": true,
+          "bytesSha256": "e668f0a1b72560ced14c54488a25335d11336448950bb6485267ebc5eb3fecee",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 3
+        }
+      ]
+    },
+    {
+      "method": {
+        "nameIndex": 2516705,
+        "declaringType": 10205,
+        "returnType": 46289,
+        "parameterStart": 66992,
+        "genericContainerIndex": -1,
+        "token": 100729598,
+        "flags": 134,
+        "iflags": 0,
+        "slot": 65535,
+        "parameterCount": 7,
+        "index": 66301,
+        "image": "Assembly-CSharp.dll",
+        "address": 6449490240,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.Battle.Buff/BuffContainer.NewBuff",
+        "returnTypeName": "Torappu.Battle.Buff",
+        "parameters": [
+          {
+            "nameIndex": 15136,
+            "token": 134284726,
+            "typeIndex": 46302,
+            "index": 66992,
+            "name": "input",
+            "typeName": "Torappu.Battle.BuffConfig"
+          },
+          {
+            "nameIndex": 6707,
+            "token": 134284727,
+            "typeIndex": 53921,
+            "index": 66993,
+            "name": "source",
+            "typeName": "Torappu.Battle.Entity"
+          },
+          {
+            "nameIndex": 1214225,
+            "token": 134284728,
+            "typeIndex": 35758,
+            "index": 66994,
+            "name": "ability",
+            "typeName": "Torappu.Battle.Ability"
+          },
+          {
+            "nameIndex": 2432109,
+            "token": 134284729,
+            "typeIndex": 45909,
+            "index": 66995,
+            "name": "extraBlackboard",
+            "typeName": "Torappu.Blackboard"
+          },
+          {
+            "nameIndex": 2505027,
+            "token": 134284730,
+            "typeIndex": 45909,
+            "index": 66996,
+            "name": "extraBlackboard2",
+            "typeName": "Torappu.Blackboard"
+          },
+          {
+            "nameIndex": 2481527,
+            "token": 134284731,
+            "typeIndex": 66511,
+            "index": 66997,
+            "name": "sourceProjectile",
+            "typeName": "Torappu.Battle.Projectile"
+          },
+          {
+            "nameIndex": 2516681,
+            "token": 134284732,
+            "typeIndex": 78569,
+            "index": 66998,
+            "name": "customOverrideEffectKey",
+            "typeName": "string"
+          }
+        ]
+      },
+      "followingMethodAddress": "0x1806b71f0",
+      "parts": [
+        {
+          "method": null,
+          "address": "0x1806b6940",
+          "aliases": [
+            66301
+          ],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x1806b69cd",
+          "decodedEnd": "0x1806b69cd",
+          "decodedBytes": 141,
+          "fullyDecoded": true,
+          "bytesSha256": "8e74519350185019f2dafd76ee4cf668aafb253041e13562fafa319e1a4a4060",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 29
+        },
+        {
+          "method": null,
+          "address": "0x1806b69cd",
+          "aliases": [],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x1806b6f32",
+          "decodedEnd": "0x1806b6f32",
+          "decodedBytes": 1381,
+          "fullyDecoded": true,
+          "bytesSha256": "2f2bc88dec3db460ad941dd86a3facd61c8ed8d0314c4a210f018e52e9480d33",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 319
+        },
+        {
+          "method": null,
+          "address": "0x1806b6f32",
+          "aliases": [],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x1806b7177",
+          "decodedEnd": "0x1806b7177",
+          "decodedBytes": 581,
+          "fullyDecoded": true,
+          "bytesSha256": "87b7fd738f717973e79be6544d1c2d9d1f55e03e66e25b29eecc1d3cf2c3ec4a",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 146
+        },
+        {
+          "method": null,
+          "address": "0x1806b7177",
+          "aliases": [],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x1806b71e4",
+          "decodedEnd": "0x1806b71e4",
+          "decodedBytes": 109,
+          "fullyDecoded": true,
+          "bytesSha256": "81465175aea66133a0cc0952850d8bdaead0677eecfd8ef82bd46b3ff5921995",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 22
+        },
+        {
+          "method": null,
+          "address": "0x1806b71e4",
+          "aliases": [],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x1806b71f0",
+          "decodedEnd": "0x1806b71f0",
+          "decodedBytes": 12,
+          "fullyDecoded": true,
+          "bytesSha256": "5b877aeaff99d5ce0611c5c482dc0acf2b67f8e3765f86c10811b22582bcd27d",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 4
+        }
+      ]
+    },
+    {
+      "method": {
+        "nameIndex": 2516713,
+        "declaringType": 10205,
+        "returnType": 93444,
+        "parameterStart": 66999,
+        "genericContainerIndex": -1,
+        "token": 100729599,
+        "flags": 134,
+        "iflags": 0,
+        "slot": 65535,
+        "parameterCount": 1,
+        "index": 66302,
+        "image": "Assembly-CSharp.dll",
+        "address": 6449479584,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.Battle.Buff/BuffContainer.EnsureOverrideGroup",
+        "returnTypeName": "Torappu.Battle.Buff/OverrideGroup",
+        "parameters": [
+          {
+            "nameIndex": 382745,
+            "token": 134284733,
+            "typeIndex": 46289,
+            "index": 66999,
+            "name": "buff",
+            "typeName": "Torappu.Battle.Buff"
+          }
+        ]
+      },
+      "followingMethodAddress": "0x1806b43c0",
+      "parts": [
+        {
+          "method": null,
+          "address": "0x1806b3fa0",
+          "aliases": [
+            66302
+          ],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x1806b4012",
+          "decodedEnd": "0x1806b4012",
+          "decodedBytes": 114,
+          "fullyDecoded": true,
+          "bytesSha256": "4404b92ce452f3e6fc2e1d7cba32c3f001be2a0e40278950b4829440332948b4",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 24
+        },
+        {
+          "method": null,
+          "address": "0x1806b4012",
+          "aliases": [],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x1806b4398",
+          "decodedEnd": "0x1806b4398",
+          "decodedBytes": 902,
+          "fullyDecoded": true,
+          "bytesSha256": "db1a837624195a5de26975cc26feaebd421eb1c958c2e9c0a6d0258e09ac292d",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 209
+        },
+        {
+          "method": null,
+          "address": "0x1806b4398",
+          "aliases": [],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x1806b43af",
+          "decodedEnd": "0x1806b43af",
+          "decodedBytes": 23,
+          "fullyDecoded": true,
+          "bytesSha256": "862fcc334a8e6ae100e9a30d0dba4c7064d16e8358a2b8abfffbc0e43faf88c4",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 9
+        },
+        {
+          "method": null,
+          "address": "0x1806b43af",
+          "aliases": [],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x1806b43b5",
+          "decodedEnd": "0x1806b43b5",
+          "decodedBytes": 6,
+          "fullyDecoded": true,
+          "bytesSha256": "93c7e4d4d86d11d3a0d0a7b2728a8ca0d62c30a1b88222704b8001b502d95fbd",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 2
+        },
+        {
+          "method": null,
+          "address": "0x1806b43b5",
+          "aliases": [],
+          "boundary": "next known method/section boundary; completeness unproven; explicit byte limit",
+          "end": "0x1806b43c0",
+          "decodedEnd": "0x1806b43c0",
+          "decodedBytes": 11,
+          "fullyDecoded": true,
+          "bytesSha256": "3682c0a62515050101266cc639bf81f5d8c5395f49e7da93fcc22603018e0943",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 11
+        }
+      ]
+    },
+    {
+      "method": {
+        "nameIndex": 2517327,
+        "declaringType": 10205,
+        "returnType": 46024,
+        "parameterStart": 67038,
+        "genericContainerIndex": -1,
+        "token": 100729622,
+        "flags": 134,
+        "iflags": 0,
+        "slot": 65535,
+        "parameterCount": 2,
+        "index": 66325,
+        "image": "Assembly-CSharp.dll",
+        "address": 6449577792,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.Battle.Buff/BuffContainer.TryGetOverrideGroup",
+        "returnTypeName": "bool",
+        "parameters": [
+          {
+            "nameIndex": 1190363,
+            "token": 134284772,
+            "typeIndex": 78546,
+            "index": 67038,
+            "name": "overrideKey",
+            "typeName": "string"
+          },
+          {
+            "nameIndex": 551316,
+            "token": 134284773,
+            "typeIndex": 32481,
+            "index": 67039,
+            "name": "group",
+            "typeName": "Torappu.Battle.Buff/OverrideGroup&"
+          }
+        ]
+      },
+      "followingMethodAddress": "0x1806cc000",
+      "parts": [
+        {
+          "method": null,
+          "address": "0x1806cbf40",
+          "aliases": [
+            66325
+          ],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x1806cbff1",
+          "decodedEnd": "0x1806cbff1",
+          "decodedBytes": 177,
+          "fullyDecoded": true,
+          "bytesSha256": "97d45caebd9d45cf11db6a976badb4c0659baa696506887b5e7d91b2a1f8dd5c",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 42
+        },
+        {
+          "method": null,
+          "address": "0x1806cbff1",
+          "aliases": [],
+          "boundary": "next known method/section boundary; completeness unproven; explicit byte limit",
+          "end": "0x1806cc000",
+          "decodedEnd": "0x1806cc000",
+          "decodedBytes": 15,
+          "fullyDecoded": true,
+          "bytesSha256": "54cc9dd9593316e80ccaf5d10856e6502a0d75f20473a92fa01d63228ef1624c",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 15
+        }
+      ]
+    },
+    {
+      "method": {
+        "nameIndex": 2517362,
+        "declaringType": 10205,
+        "returnType": 78546,
+        "parameterStart": 67040,
+        "genericContainerIndex": -1,
+        "token": 100729623,
+        "flags": 134,
+        "iflags": 0,
+        "slot": 65535,
+        "parameterCount": 1,
+        "index": 66326,
+        "image": "Assembly-CSharp.dll",
+        "address": 6449488208,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.Battle.Buff/BuffContainer.GetOverrideKeyCandidate",
+        "returnTypeName": "string",
+        "parameters": [
+          {
+            "nameIndex": 2517347,
+            "token": 134284774,
+            "typeIndex": 78546,
+            "index": 67040,
+            "name": "independentKey",
+            "typeName": "string"
+          }
+        ]
+      },
+      "followingMethodAddress": "0x1806b6320",
+      "parts": [
+        {
+          "method": null,
+          "address": "0x1806b6150",
+          "aliases": [
+            66326
+          ],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x1806b6314",
+          "decodedEnd": "0x1806b6314",
+          "decodedBytes": 452,
+          "fullyDecoded": true,
+          "bytesSha256": "661f7e42cabfb94c05115b1bac524d032f2e9fd91a0d197c5db40fde9153ad73",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 101
+        },
+        {
+          "method": null,
+          "address": "0x1806b6314",
+          "aliases": [],
+          "boundary": "next known method/section boundary; completeness unproven; explicit byte limit",
+          "end": "0x1806b6320",
+          "decodedEnd": "0x1806b6320",
+          "decodedBytes": 12,
+          "fullyDecoded": true,
+          "bytesSha256": "a0d08a155aa4e9aadd5da959565de99acc8dc9dbda96ec3852dde76c97330902",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 12
+        }
+      ]
+    },
+    {
+      "method": {
+        "nameIndex": 2517386,
+        "declaringType": 10205,
+        "returnType": 84484,
+        "parameterStart": 67041,
+        "genericContainerIndex": -1,
+        "token": 100729624,
+        "flags": 134,
+        "iflags": 0,
+        "slot": 65535,
+        "parameterCount": 2,
+        "index": 66327,
+        "image": "Assembly-CSharp.dll",
+        "address": 6449480640,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.Battle.Buff/BuffContainer.EnsureOverrideIndependentKey",
+        "returnTypeName": "void",
+        "parameters": [
+          {
+            "nameIndex": 2517347,
+            "token": 134284775,
+            "typeIndex": 78546,
+            "index": 67041,
+            "name": "independentKey",
+            "typeName": "string"
+          },
+          {
+            "nameIndex": 1190363,
+            "token": 134284776,
+            "typeIndex": 78546,
+            "index": 67042,
+            "name": "overrideKey",
+            "typeName": "string"
+          }
+        ]
+      },
+      "followingMethodAddress": "0x1806b4500",
+      "parts": [
+        {
+          "method": null,
+          "address": "0x1806b43c0",
+          "aliases": [
+            66327
+          ],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x1806b44f8",
+          "decodedEnd": "0x1806b44f8",
+          "decodedBytes": 312,
+          "fullyDecoded": true,
+          "bytesSha256": "222c0e9046bc771e5fd135b734eb13d1c154de1b819df21b2112b991587531de",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 74
+        },
+        {
+          "method": null,
+          "address": "0x1806b44f8",
+          "aliases": [],
+          "boundary": "next known method/section boundary; completeness unproven; explicit byte limit",
+          "end": "0x1806b4500",
+          "decodedEnd": "0x1806b4500",
+          "decodedBytes": 8,
+          "fullyDecoded": true,
+          "bytesSha256": "3d2f424783df5853c8d7121b1371650c04241f318e1b0cd46bedbc805b9164c3",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 8
+        }
+      ]
+    },
+    {
+      "method": {
+        "nameIndex": 2517327,
+        "declaringType": 10205,
+        "returnType": 46024,
+        "parameterStart": 67043,
+        "genericContainerIndex": -1,
+        "token": 100729625,
+        "flags": 134,
+        "iflags": 0,
+        "slot": 65535,
+        "parameterCount": 2,
+        "index": 66328,
+        "image": "Assembly-CSharp.dll",
+        "address": 6449577984,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.Battle.Buff/BuffContainer.TryGetOverrideGroup",
+        "returnTypeName": "bool",
+        "parameters": [
+          {
+            "nameIndex": 382745,
+            "token": 134284777,
+            "typeIndex": 46289,
+            "index": 67043,
+            "name": "buff",
+            "typeName": "Torappu.Battle.Buff"
+          },
+          {
+            "nameIndex": 551316,
+            "token": 134284778,
+            "typeIndex": 32481,
+            "index": 67044,
+            "name": "group",
+            "typeName": "Torappu.Battle.Buff/OverrideGroup&"
+          }
+        ]
+      },
+      "followingMethodAddress": "0x1806cc110",
+      "parts": [
+        {
+          "method": null,
+          "address": "0x1806cc000",
+          "aliases": [
+            66328
+          ],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x1806cc101",
+          "decodedEnd": "0x1806cc101",
+          "decodedBytes": 257,
+          "fullyDecoded": true,
+          "bytesSha256": "5fdcd7864581995cc7b3cb8f3b50bd0ea1f3ca67bdac777ee20915926fc50d74",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 58
+        },
+        {
+          "method": null,
+          "address": "0x1806cc101",
+          "aliases": [],
+          "boundary": "next known method/section boundary; completeness unproven; explicit byte limit",
+          "end": "0x1806cc110",
+          "decodedEnd": "0x1806cc110",
+          "decodedBytes": 15,
+          "fullyDecoded": true,
+          "bytesSha256": "54cc9dd9593316e80ccaf5d10856e6502a0d75f20473a92fa01d63228ef1624c",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 15
+        }
+      ]
+    },
+    {
+      "method": {
+        "nameIndex": 2518187,
+        "declaringType": 10205,
+        "returnType": 84484,
+        "parameterStart": -1,
+        "genericContainerIndex": -1,
+        "token": 100729647,
+        "flags": 134,
+        "iflags": 0,
+        "slot": 65535,
+        "parameterCount": 0,
+        "index": 66350,
+        "image": "Assembly-CSharp.dll",
+        "address": 6449467728,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.Battle.Buff/BuffContainer.ClearOnRecycle",
+        "returnTypeName": "void",
+        "parameters": []
+      },
+      "followingMethodAddress": "0x1806b1290",
+      "parts": [
+        {
+          "method": null,
+          "address": "0x1806b1150",
+          "aliases": [
+            66350
+          ],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x1806b11cf",
+          "decodedEnd": "0x1806b11cf",
+          "decodedBytes": 127,
+          "fullyDecoded": true,
+          "bytesSha256": "73964977c11f7c4dd38b6733e11d70c9007646577315daacb461e59abaf9db6e",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 23
+        },
+        {
+          "method": null,
+          "address": "0x1806b11cf",
+          "aliases": [],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x1806b126e",
+          "decodedEnd": "0x1806b126e",
+          "decodedBytes": 159,
+          "fullyDecoded": true,
+          "bytesSha256": "9ac0075aeb1c8e7cd0aa190e5cc525183144f1a6701171d93bcdec9744e5a4c4",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 39
+        },
+        {
+          "method": null,
+          "address": "0x1806b126e",
+          "aliases": [],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x1806b127e",
+          "decodedEnd": "0x1806b127e",
+          "decodedBytes": 16,
+          "fullyDecoded": true,
+          "bytesSha256": "2916df051858a4769c00f6545a46167d1bd17270fe96ed308e2e360d06e59947",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 5
+        },
+        {
+          "method": null,
+          "address": "0x1806b127e",
+          "aliases": [],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x1806b1284",
+          "decodedEnd": "0x1806b1284",
+          "decodedBytes": 6,
+          "fullyDecoded": true,
+          "bytesSha256": "55bdf6f7ca2202c5cb8b684c4053cc018b8ed2b269b3139c7ef4a1e058fd9a08",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 2
+        },
+        {
+          "method": null,
+          "address": "0x1806b1284",
+          "aliases": [],
+          "boundary": "next known method/section boundary; completeness unproven; explicit byte limit",
+          "end": "0x1806b1290",
+          "decodedEnd": "0x1806b1290",
+          "decodedBytes": 12,
+          "fullyDecoded": true,
+          "bytesSha256": "a0d08a155aa4e9aadd5da959565de99acc8dc9dbda96ec3852dde76c97330902",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 12
+        }
+      ]
+    },
+    {
+      "method": {
+        "nameIndex": 2518304,
+        "declaringType": 10205,
+        "returnType": 84484,
+        "parameterStart": -1,
+        "genericContainerIndex": -1,
+        "token": 100729652,
+        "flags": 129,
+        "iflags": 0,
+        "slot": 65535,
+        "parameterCount": 0,
+        "index": 66355,
+        "image": "Assembly-CSharp.dll",
+        "address": 6449578784,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.Battle.Buff/BuffContainer._CheckFinishedBuffs",
+        "returnTypeName": "void",
+        "parameters": []
+      },
+      "followingMethodAddress": "0x1806cc760",
+      "parts": [
+        {
+          "method": null,
+          "address": "0x1806cc320",
+          "aliases": [
+            66355
+          ],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x1806cc755",
+          "decodedEnd": "0x1806cc755",
+          "decodedBytes": 1077,
+          "fullyDecoded": true,
+          "bytesSha256": "6aef9f3b70f41742fe759e3a497e5443d8bb6b0e32a1c2730888d5d902c1251c",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 257
+        },
+        {
+          "method": null,
+          "address": "0x1806cc755",
+          "aliases": [],
+          "boundary": "next known method/section boundary; completeness unproven; explicit byte limit",
+          "end": "0x1806cc760",
+          "decodedEnd": "0x1806cc760",
+          "decodedBytes": 11,
+          "fullyDecoded": true,
+          "bytesSha256": "3682c0a62515050101266cc639bf81f5d8c5395f49e7da93fcc22603018e0943",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 11
+        }
+      ]
+    },
+    {
+      "method": {
+        "nameIndex": 2518512,
+        "declaringType": 10205,
+        "returnType": 84484,
+        "parameterStart": 67101,
+        "genericContainerIndex": -1,
+        "token": 100729659,
+        "flags": 129,
+        "iflags": 0,
+        "slot": 65535,
+        "parameterCount": 1,
+        "index": 66362,
+        "image": "Assembly-CSharp.dll",
+        "address": 6449583696,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.Battle.Buff/BuffContainer._FinishAndRemoveBuff",
+        "returnTypeName": "void",
+        "parameters": [
+          {
+            "nameIndex": 382745,
+            "token": 134284835,
+            "typeIndex": 46289,
+            "index": 67101,
+            "name": "buff",
+            "typeName": "Torappu.Battle.Buff"
+          }
+        ]
+      },
+      "followingMethodAddress": "0x1806cd740",
+      "parts": [
+        {
+          "method": null,
+          "address": "0x1806cd650",
+          "aliases": [
+            66362
+          ],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x1806cd6a2",
+          "decodedEnd": "0x1806cd6a2",
+          "decodedBytes": 82,
+          "fullyDecoded": true,
+          "bytesSha256": "af512b11cd81227a0975569d28b94b041131bf0791cb2f210b13b87f3cd420fd",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 17
+        },
+        {
+          "method": null,
+          "address": "0x1806cd6a2",
+          "aliases": [],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x1806cd714",
+          "decodedEnd": "0x1806cd714",
+          "decodedBytes": 114,
+          "fullyDecoded": true,
+          "bytesSha256": "3937257c7f81020a03177023091404913dffea7d837ad3ac7308dac99fd65d8e",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 31
+        },
+        {
+          "method": null,
+          "address": "0x1806cd714",
+          "aliases": [],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x1806cd72c",
+          "decodedEnd": "0x1806cd72c",
+          "decodedBytes": 24,
+          "fullyDecoded": true,
+          "bytesSha256": "a63f9c0a5701331980a3a09161a134e4bf98920ab1987d6ac85fe520fa8f30c2",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 7
+        },
+        {
+          "method": null,
+          "address": "0x1806cd72c",
+          "aliases": [],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x1806cd732",
+          "decodedEnd": "0x1806cd732",
+          "decodedBytes": 6,
+          "fullyDecoded": true,
+          "bytesSha256": "ef734ebc726bdd8f4ac9a87921c4c02ef4338df8e0fbdf497ea2ad47279beaeb",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 2
+        },
+        {
+          "method": null,
+          "address": "0x1806cd732",
+          "aliases": [],
+          "boundary": "next known method/section boundary; completeness unproven; explicit byte limit",
+          "end": "0x1806cd740",
+          "decodedEnd": "0x1806cd740",
+          "decodedBytes": 14,
+          "fullyDecoded": true,
+          "bytesSha256": "1e875c76536c8496bed8c8760b539327f24acffbcf0a4b941877b4bfb4c44356",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 14
+        }
+      ]
+    },
+    {
+      "method": {
+        "nameIndex": 2518548,
+        "declaringType": 10205,
+        "returnType": 84484,
+        "parameterStart": 67102,
+        "genericContainerIndex": -1,
+        "token": 100729660,
+        "flags": 129,
+        "iflags": 0,
+        "slot": 65535,
+        "parameterCount": 4,
+        "index": 66363,
+        "image": "Assembly-CSharp.dll",
+        "address": 6449583936,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.Battle.Buff/BuffContainer._FinishBuff",
+        "returnTypeName": "void",
+        "parameters": [
+          {
+            "nameIndex": 382745,
+            "token": 134284836,
+            "typeIndex": 46289,
+            "index": 67102,
+            "name": "buff",
+            "typeName": "Torappu.Battle.Buff"
+          },
+          {
+            "nameIndex": 2505152,
+            "token": 134284837,
+            "typeIndex": 46024,
+            "index": 67103,
+            "name": "updateOverrideMap",
+            "typeName": "bool"
+          },
+          {
+            "nameIndex": 2518533,
+            "token": 134284838,
+            "typeIndex": 46024,
+            "index": 67104,
+            "name": "delayToRecycle",
+            "typeName": "bool"
+          },
+          {
+            "nameIndex": 2505573,
+            "token": 134284839,
+            "typeIndex": 46049,
+            "index": 67105,
+            "name": "immediatelyFinishEffect",
+            "typeName": "bool"
+          }
+        ]
+      },
+      "followingMethodAddress": "0x1806cd9e0",
+      "parts": [
+        {
+          "method": null,
+          "address": "0x1806cd740",
+          "aliases": [
+            66363
+          ],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x1806cd9dc",
+          "decodedEnd": "0x1806cd9dc",
+          "decodedBytes": 668,
+          "fullyDecoded": true,
+          "bytesSha256": "fa6ff1e42299f6d4e1706b6b35e8e93457ec718ca5cf99e11286b76150447711",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 151
+        },
+        {
+          "method": null,
+          "address": "0x1806cd9dc",
+          "aliases": [],
+          "boundary": "next known method/section boundary; completeness unproven; explicit byte limit",
+          "end": "0x1806cd9e0",
+          "decodedEnd": "0x1806cd9e0",
+          "decodedBytes": 4,
+          "fullyDecoded": true,
+          "bytesSha256": "8843b54d2df63ca265cf4a05d27dd2b29a74fb476d296dd44a0e171d74b441ca",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 4
+        }
+      ]
+    },
+    {
+      "method": {
+        "nameIndex": 2557812,
+        "declaringType": 10318,
+        "returnType": 46289,
+        "parameterStart": 67998,
+        "genericContainerIndex": -1,
+        "token": 100730840,
+        "flags": 134,
+        "iflags": 0,
+        "slot": 65535,
+        "parameterCount": 7,
+        "index": 67543,
+        "image": "Assembly-CSharp.dll",
+        "address": 6449923936,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.Battle.Entity.AddBuff",
+        "returnTypeName": "Torappu.Battle.Buff",
+        "parameters": [
+          {
+            "nameIndex": 457057,
+            "token": 134285732,
+            "typeIndex": 46302,
+            "index": 67998,
+            "name": "config",
+            "typeName": "Torappu.Battle.BuffConfig"
+          },
+          {
+            "nameIndex": 6707,
+            "token": 134285733,
+            "typeIndex": 53921,
+            "index": 67999,
+            "name": "source",
+            "typeName": "Torappu.Battle.Entity"
+          },
+          {
+            "nameIndex": 1214225,
+            "token": 134285734,
+            "typeIndex": 35758,
+            "index": 68000,
+            "name": "ability",
+            "typeName": "Torappu.Battle.Ability"
+          },
+          {
+            "nameIndex": 2432109,
+            "token": 134285735,
+            "typeIndex": 45909,
+            "index": 68001,
+            "name": "extraBlackboard",
+            "typeName": "Torappu.Blackboard"
+          },
+          {
+            "nameIndex": 2505027,
+            "token": 134285736,
+            "typeIndex": 45915,
+            "index": 68002,
+            "name": "extraBlackboard2",
+            "typeName": "Torappu.Blackboard"
+          },
+          {
+            "nameIndex": 2481527,
+            "token": 134285737,
+            "typeIndex": 66511,
+            "index": 68003,
+            "name": "sourceProjectile",
+            "typeName": "Torappu.Battle.Projectile"
+          },
+          {
+            "nameIndex": 2516681,
+            "token": 134285738,
+            "typeIndex": 78569,
+            "index": 68004,
+            "name": "customOverrideEffectKey",
+            "typeName": "string"
+          }
+        ]
+      },
+      "followingMethodAddress": "0x1807208c0",
+      "parts": [
+        {
+          "method": null,
+          "address": "0x180720760",
+          "aliases": [
+            67543
+          ],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x1807208b8",
+          "decodedEnd": "0x1807208b8",
+          "decodedBytes": 344,
+          "fullyDecoded": true,
+          "bytesSha256": "e64b189c8eec64304a33b1201d6d0b0a0d888b86f2cd2d5e61dc17cccebc627c",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 71
+        },
+        {
+          "method": null,
+          "address": "0x1807208b8",
+          "aliases": [],
+          "boundary": "next known method/section boundary; completeness unproven; explicit byte limit",
+          "end": "0x1807208c0",
+          "decodedEnd": "0x1807208c0",
+          "decodedBytes": 8,
+          "fullyDecoded": true,
+          "bytesSha256": "3d2f424783df5853c8d7121b1371650c04241f318e1b0cd46bedbc805b9164c3",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 8
+        }
+      ]
+    },
+    {
+      "method": {
+        "nameIndex": 2557812,
+        "declaringType": 10318,
+        "returnType": 46289,
+        "parameterStart": 68005,
+        "genericContainerIndex": -1,
+        "token": 100730841,
+        "flags": 134,
+        "iflags": 0,
+        "slot": 65535,
+        "parameterCount": 7,
+        "index": 67544,
+        "image": "Assembly-CSharp.dll",
+        "address": 6449924288,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.Battle.Entity.AddBuff",
+        "returnTypeName": "Torappu.Battle.Buff",
+        "parameters": [
+          {
+            "nameIndex": 1749,
+            "token": 134285739,
+            "typeIndex": 46305,
+            "index": 68005,
+            "name": "data",
+            "typeName": "Torappu.BuffData"
+          },
+          {
+            "nameIndex": 6707,
+            "token": 134285740,
+            "typeIndex": 53921,
+            "index": 68006,
+            "name": "source",
+            "typeName": "Torappu.Battle.Entity"
+          },
+          {
+            "nameIndex": 1214225,
+            "token": 134285741,
+            "typeIndex": 35758,
+            "index": 68007,
+            "name": "ability",
+            "typeName": "Torappu.Battle.Ability"
+          },
+          {
+            "nameIndex": 2432109,
+            "token": 134285742,
+            "typeIndex": 45909,
+            "index": 68008,
+            "name": "extraBlackboard",
+            "typeName": "Torappu.Blackboard"
+          },
+          {
+            "nameIndex": 2505027,
+            "token": 134285743,
+            "typeIndex": 45915,
+            "index": 68009,
+            "name": "extraBlackboard2",
+            "typeName": "Torappu.Blackboard"
+          },
+          {
+            "nameIndex": 2481527,
+            "token": 134285744,
+            "typeIndex": 66511,
+            "index": 68010,
+            "name": "sourceProjectile",
+            "typeName": "Torappu.Battle.Projectile"
+          },
+          {
+            "nameIndex": 2516681,
+            "token": 134285745,
+            "typeIndex": 78569,
+            "index": 68011,
+            "name": "customOverrideEffectKey",
+            "typeName": "string"
+          }
+        ]
+      },
+      "followingMethodAddress": "0x180720b30",
+      "parts": [
+        {
+          "method": null,
+          "address": "0x1807208c0",
+          "aliases": [
+            67544
+          ],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x180720b30",
+          "decodedEnd": "0x180720b30",
+          "decodedBytes": 624,
+          "fullyDecoded": true,
+          "bytesSha256": "8c31ba7f37525a0b850216ffb5b02957e0e402a1029ad9d3897895fb21cf17d5",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 139
+        }
+      ]
+    },
+    {
+      "method": {
+        "nameIndex": 2878313,
+        "declaringType": 11491,
+        "returnType": 83054,
+        "parameterStart": -1,
+        "genericContainerIndex": -1,
+        "token": 100740432,
+        "flags": 2182,
+        "iflags": 0,
+        "slot": 65535,
+        "parameterCount": 0,
+        "index": 77135,
+        "image": "Assembly-CSharp.dll",
+        "address": 6453655376,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.Battle.Character.get_cardUid",
+        "returnTypeName": "uint",
+        "parameters": []
+      },
+      "followingMethodAddress": "0x180aaf7c0",
+      "parts": [
+        {
+          "method": null,
+          "address": "0x180aaf750",
+          "aliases": [
+            77135
+          ],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x180aaf7c0",
+          "decodedEnd": "0x180aaf7c0",
+          "decodedBytes": 112,
+          "fullyDecoded": true,
+          "bytesSha256": "54ae99232673baf85e02cc5a7bb2400fe7a979433372386edb2ebf65427c5f96",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 27
+        }
+      ]
+    },
+    {
+      "method": {
+        "nameIndex": 397673,
+        "declaringType": 14133,
+        "returnType": 46024,
+        "parameterStart": 93503,
+        "genericContainerIndex": -1,
+        "token": 100761685,
+        "flags": 198,
+        "iflags": 0,
+        "slot": 6,
+        "parameterCount": 3,
+        "index": 98388,
+        "image": "Assembly-CSharp.dll",
+        "address": 6460011952,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.Battle.Action.Nodes/CreateBuff.Execute",
+        "returnTypeName": "bool",
+        "parameters": [
+          {
+            "nameIndex": 3124,
+            "token": 134311248,
+            "typeIndex": 45909,
+            "index": 93503,
+            "name": "blackboard",
+            "typeName": "Torappu.Blackboard"
+          },
+          {
+            "nameIndex": 440673,
+            "token": 134311249,
+            "typeIndex": 90650,
+            "index": 93504,
+            "name": "sourceType",
+            "typeName": "Torappu.Battle.Action.ActionNode/SourceType"
+          },
+          {
+            "nameIndex": 440684,
+            "token": 134311250,
+            "typeIndex": 32502,
+            "index": 93505,
+            "name": "snapshot",
+            "typeName": "Torappu.Battle.Context/Snapshot&"
+          }
+        ]
+      },
+      "followingMethodAddress": "0x1810bf970",
+      "parts": [
+        {
+          "method": null,
+          "address": "0x1810bf5b0",
+          "aliases": [
+            98388
+          ],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x1810bf625",
+          "decodedEnd": "0x1810bf625",
+          "decodedBytes": 117,
+          "fullyDecoded": true,
+          "bytesSha256": "7ad5addb946bdf88757ce6ad0cc19a8600a36784ef2f814bb70de715f4939b28",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 26
+        },
+        {
+          "method": null,
+          "address": "0x1810bf625",
+          "aliases": [],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x1810bf66d",
+          "decodedEnd": "0x1810bf66d",
+          "decodedBytes": 72,
+          "fullyDecoded": true,
+          "bytesSha256": "d38d506643ae64d57334a2b92bd4471abac6e51ff7b4a33c61969eb1dc4c69b3",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 17
+        },
+        {
+          "method": null,
+          "address": "0x1810bf66d",
+          "aliases": [],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x1810bf925",
+          "decodedEnd": "0x1810bf925",
+          "decodedBytes": 696,
+          "fullyDecoded": true,
+          "bytesSha256": "60ac3851aa977bc696d1df7680bd883cead06068ff876080b614b03d72f622c2",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 167
+        },
+        {
+          "method": null,
+          "address": "0x1810bf925",
+          "aliases": [],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x1810bf937",
+          "decodedEnd": "0x1810bf937",
+          "decodedBytes": 18,
+          "fullyDecoded": true,
+          "bytesSha256": "9d4a8d1e487db934145b667fcf985c775d3d855b9c1a4dac23c3f76a2387c85a",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 7
+        },
+        {
+          "method": null,
+          "address": "0x1810bf937",
+          "aliases": [],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x1810bf93b",
+          "decodedEnd": "0x1810bf93b",
+          "decodedBytes": 4,
+          "fullyDecoded": true,
+          "bytesSha256": "a83d5a754720b723e61b007e57780ca5d813b185bd1d3cf641c6857b8fe79620",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 2
+        },
+        {
+          "method": null,
+          "address": "0x1810bf93b",
+          "aliases": [],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x1810bf961",
+          "decodedEnd": "0x1810bf961",
+          "decodedBytes": 38,
+          "fullyDecoded": true,
+          "bytesSha256": "be94bfbf84f0cea4ea424ca5590c6d62d7a98b1d800dd321c1429b0aba2c81e9",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 12
+        },
+        {
+          "method": null,
+          "address": "0x1810bf961",
+          "aliases": [],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x1810bf96d",
+          "decodedEnd": "0x1810bf96d",
+          "decodedBytes": 12,
+          "fullyDecoded": true,
+          "bytesSha256": "89f144938e4f43b3d12b203b59b0ee95cbde3f4cb70f51ebf7aa0f0ae6e20cc6",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 4
+        },
+        {
+          "method": null,
+          "address": "0x1810bf96d",
+          "aliases": [],
+          "boundary": "next known method/section boundary; completeness unproven; explicit byte limit",
+          "end": "0x1810bf970",
+          "decodedEnd": "0x1810bf970",
+          "decodedBytes": 3,
+          "fullyDecoded": true,
+          "bytesSha256": "e668f0a1b72560ced14c54488a25335d11336448950bb6485267ebc5eb3fecee",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 3
+        }
+      ]
+    }
+  ]
+}

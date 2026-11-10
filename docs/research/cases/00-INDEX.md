@@ -10,7 +10,7 @@
 
 | 案例 | 内容锚点 | 主要问题 |
 | --- | --- | --- |
-| [01 Buff 安装与父作用域](01-buff-installation-and-parent-scope.md) | 维什戴尔残影；鼓舞源值刷新作对照 | 安装／生效／开始动作的区别；父作用域与来源；结束传播与贡献撤销 |
+| [01 Buff 安装与父作用域](01-buff-installation-and-parent-scope.md) | 维什戴尔残影；鼓舞；覆盖组与 STACK 到期 | 安装／生效／开始动作；父作用域与来源；覆盖键、合并与竞争；到期减层、结束与回收 |
 | [02 Action 与 projectile 阶段](02-action-and-projectile-phases.md) | 维什戴尔普通远程攻击；确有必要的技能模式对照 | 目标与数值读取时点；在途事实；命中、取消与执行后继 |
 | [03 Dispatch 与嵌套结算](03-dispatch-and-nested-settlement.md) | 本季泥岩盾；真实分担模板作对照 | 伤害取消与盾消耗／回复；本次／嵌套／下次派发；嵌套返回与外层继续结算 |
 | [04 协议结论](04-protocol-conclusions.md) | 前三案交叉核对当前实现 | 可落定的调用约束、局部事实与派生关系可见性，以及仍不能统一的部分 |

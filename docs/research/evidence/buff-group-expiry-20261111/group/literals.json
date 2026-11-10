@@ -1,0 +1,58 @@
+{
+  "provenance": {
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/buff-group-expiry-20261111/group/decode_literals.py",
+      "bytes": 3302,
+      "sha256": "5264d0fed06a0bc97f37c93e923c8bc3cae5a11c35729f11f89e54ba83cc7573"
+    },
+    "dll": {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+      "bytes": 223112680,
+      "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff"
+    },
+    "metadata": {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+      "bytes": 46669332,
+      "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5"
+    },
+    "registration": "0x187ee0630",
+    "scope": "Five selected RIP references in Buff.Reset/GetOverrideKey; static encoded kind-5 string and kind-1 TypeInfo usages, not runtime heap data."
+  },
+  "result": [
+    {
+      "instruction": "0x1806d6adf",
+      "slot": "0x188c43208",
+      "encodedUsage": "0xa000c0d3",
+      "literalIndex": 24681,
+      "value": "^"
+    },
+    {
+      "instruction": "0x1806d6ae9",
+      "slot": "0x188bedf40",
+      "encodedUsage": "0xa00126d7",
+      "literalIndex": 37739,
+      "value": "{0}{1}"
+    },
+    {
+      "instruction": "0x1806d6b4f",
+      "slot": "0x188bedf40",
+      "encodedUsage": "0xa00126d7",
+      "literalIndex": 37739,
+      "value": "{0}{1}"
+    },
+    {
+      "instruction": "0x1806d6a5b",
+      "slot": "0x188bd7620",
+      "encodedUsage": "0x20017a99",
+      "typeIndex": 48460,
+      "value": "Torappu.Battle.Character"
+    },
+    {
+      "instruction": "0x18237ae60",
+      "slot": "0x188bebdb8",
+      "encodedUsage": "0x200265a5",
+      "typeIndex": 78546,
+      "value": "System.String"
+    }
+  ]
+}

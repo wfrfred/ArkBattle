@@ -1,0 +1,33 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-11",
+    "method": "web.run open and find; immutable oldid from each rendered page footer",
+    "sourceKind": "community-maintained documentation, not native execution"
+  },
+  "sources": [
+    {
+      "title": "BUFF",
+      "url": "https://prts.wiki/index.php?title=BUFF&oldid=434057",
+      "section": "叠加策略",
+      "paraphrases": [
+        "同覆写名的Buff在允许覆盖时才进入叠加策略；disableOverride开启时各自独立存在。",
+        "STACK重复施加增加旧实例层数，时间到期可以逐层减少并重置时长，也可配置一次清空全部层数。"
+      ],
+      "notEstablished": [
+        "来源独立标记如何构造覆盖组键",
+        "原生到期调用顺序、时限重置实参与层数零时的完整清理路径"
+      ]
+    },
+    {
+      "title": "阿斯卡纶",
+      "url": "https://prts.wiki/index.php?title=阿斯卡纶&oldid=446397",
+      "section": "天赋／死亡拘审",
+      "paraphrases": [
+        "普通攻击给敌人施加可叠加减速与法术持续伤害，再次攻击会增加层数并刷新持续时间。"
+      ],
+      "notEstablished": [
+        "仅凭页面不能证明具体overrideKey构造或clearAll字段的原生消费分支"
+      ]
+    }
+  ]
+}

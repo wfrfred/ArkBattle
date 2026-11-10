@@ -1,0 +1,81 @@
+0x1806b1150: push rbx
+0x1806b1152: sub rsp, 0x20
+0x1806b1156: cmp byte ptr [rip + 0x88ea275], 0
+0x1806b115d: mov rbx, rcx
+0x1806b1160: jne 0x1806b11b1
+0x1806b1162: lea rcx, [rip + 0x85b9c57]
+0x1806b1169: call 0x18049c210
+0x1806b116e: lea rcx, [rip + 0x84d59e3]
+0x1806b1175: call 0x18049c210
+0x1806b117a: lea rcx, [rip + 0x859f7df]
+0x1806b1181: call 0x18049c210
+0x1806b1186: lea rcx, [rip + 0x853e2ab]
+0x1806b118d: call 0x18049c210
+0x1806b1192: lea rcx, [rip + 0x853ebcf]
+0x1806b1199: call 0x18049c210
+0x1806b119e: lea rcx, [rip + 0x85ba53b]
+0x1806b11a5: call 0x18049c210
+0x1806b11aa: mov byte ptr [rip + 0x88ea221], 1
+0x1806b11b1: mov rax, qword ptr [rip + 0x85b9c08]
+0x1806b11b8: mov rcx, qword ptr [rax + 0xb8]
+0x1806b11bf: mov rcx, qword ptr [rcx + 0x1c8]
+0x1806b11c6: test rcx, rcx
+0x1806b11c9: jne 0x1806b126e
+0x1806b11cf: mov qword ptr [rsp + 0x30], rdi
+0x1806b11d4: mov rcx, qword ptr [rbx + 0x18]
+0x1806b11d8: test rcx, rcx
+0x1806b11db: je 0x1806b127e
+0x1806b11e1: mov rdx, qword ptr [rip + 0x853eb80]
+0x1806b11e8: call 0x185c96c80
+0x1806b11ed: test al, al
+0x1806b11ef: jne 0x1806b120c
+0x1806b11f1: mov rcx, qword ptr [rbx + 0x18]
+0x1806b11f5: test rcx, rcx
+0x1806b11f8: je 0x1806b127e
+0x1806b11fe: mov rdx, qword ptr [rip + 0x853e233]
+0x1806b1205: call 0x185c94270
+0x1806b120a: jmp 0x1806b123a
+0x1806b120c: mov rcx, qword ptr [rip + 0x85ba4cd]
+0x1806b1213: call 0x18046d2f0
+0x1806b1218: mov rdi, rax
+0x1806b121b: test rax, rax
+0x1806b121e: je 0x1806b127e
+0x1806b1220: xor edx, edx
+0x1806b1222: mov rcx, rax
+0x1806b1225: call 0x1806e15a0 ; Torappu.Battle.Buff/SortedDoubleBufferedBuffList..ctor
+0x1806b122a: lea rcx, [rbx + 0x18]
+0x1806b122e: mov qword ptr [rbx + 0x18], rdi
+0x1806b1232: mov rdx, rdi
+0x1806b1235: call 0x18049bcf0
+0x1806b123a: mov rcx, qword ptr [rbx + 0x20]
+0x1806b123e: test rcx, rcx
+0x1806b1241: je 0x1806b127e
+0x1806b1243: mov rdx, qword ptr [rip + 0x859f716]
+0x1806b124a: call 0x1859c4c30
+0x1806b124f: mov rcx, qword ptr [rbx + 0x28]
+0x1806b1253: test rcx, rcx
+0x1806b1256: je 0x1806b127e
+0x1806b1258: mov rdx, qword ptr [rip + 0x84d58f9]
+0x1806b125f: mov rdi, qword ptr [rsp + 0x30]
+0x1806b1264: add rsp, 0x20
+0x1806b1268: pop rbx
+0x1806b1269: jmp 0x1859c4c30
+0x1806b126e: xor r8d, r8d
+0x1806b1271: mov rdx, rbx
+0x1806b1274: add rsp, 0x20
+0x1806b1278: pop rbx
+0x1806b1279: jmp 0x1833c9ac0 ; XLua.DelegateBridge.__Gen_Delegate_Imp27
+0x1806b127e: call 0x18049c3c0
+0x1806b1283: int3
+0x1806b1284: int3
+0x1806b1285: int3
+0x1806b1286: int3
+0x1806b1287: int3
+0x1806b1288: int3
+0x1806b1289: int3
+0x1806b128a: int3
+0x1806b128b: int3
+0x1806b128c: int3
+0x1806b128d: int3
+0x1806b128e: int3
+0x1806b128f: int3

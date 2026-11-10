@@ -178,9 +178,11 @@ pure     = power
 
 需要区分：哪些实例存在、哪些实例当前生效、实例怎样延长／叠层、有效动作如何排序。事件优先级不决定覆盖胜者；获得顺序也不能代替内容的覆盖优先级。
 
-**A，2026-11-10 补核。** 普通 `_DoAddInternal`（66291）的五种分支、实际／有效 cap、达上限刷新、有效层增长时重载 retained source，以及 EXTEND／EXTEND_TIME 的时长消费已核实，详见 [Case A §8.2](cases/01-buff-installation-and-parent-scope.md#82-普通-buff-合并分支)。两种延长读取 incoming.lifeTime；不能无条件解释成任意现存实例的剩余时间相加。EXTEND 的 `takeSnapshotWhenExtend` 更新运行属性快照、随后复制 incoming.blackboard，不直接重载属性 modifier；Data planner 的 `takeSnapshot → reloadModifiers` 绑定不能由此获得原生保证。
+**A，2026-11-10 补核。** 普通 `_DoAddInternal`（66291）的五种分支、实际／有效 cap、达上限刷新、有效层增长时重载 retained source，以及 EXTEND／EXTEND_TIME 的时长消费已核实，详见 [Case A §8.2](cases/01-buff-installation-and-parent-scope.md#82-普通-buff-合并分支)。两种延长读取 incoming.lifeTime；不能无条件解释成任意现存实例的剩余时间相加。EXTEND 的 `takeSnapshotWhenExtend` 更新运行属性快照、随后复制 incoming.blackboard，不直接重载属性 modifier；不能将 snapshot 自动等价为重载属性。
 
-普通覆盖队列还直接证明 priority 降序、同级 UID 升序、未实际生效者可占位、移除后候补补位，不再仅凭 UNIQUE 推导整体组政策。该竞争形状与 Core 持久 `enabled` setter、group.id 的接口映射仍须区分，见 [Case A §8.3](cases/01-buff-installation-and-parent-scope.md#83-覆盖组选胜与候补)。当前配置能区分这些模式，但本批未逐个闭合实际启动链；独立 Data Buff planner 的支持范围仍未决定，不能以算法或孤立测试代替产品范围确认。
+普通覆盖队列还直接证明 priority 降序、同级 UID 升序、未实际生效者可占位、移除后候补补位，不再仅凭 UNIQUE 推导整体组政策。该竞争形状与 Core 持久 `enabled` setter、group.id 的接口映射仍须区分，见 [Case A §8.3](cases/01-buff-installation-and-parent-scope.md#83-覆盖组选胜与候补)。配置能区分这些模式，不表示全部具体内容的启动链均已闭合；独立算法或孤立测试不能替代实际运行接入。
+
+**A，2026-11-11 补核。** 组身份先由 BuffData 计算基础键，再由 Buff.Reset 根据独立来源政策形成最终键，接收者 BuffContainer 按该键保存组。独立来源读取有效 Character.cardUid，其他来源采用已有键前缀回退；disableOverride 与独立来源联用仍可能产生非空键。组内政策与实例到期分开：clearAll=false 的多层实例自然到期减一层并恢复完整 lifeTime，clearAll=true 或最后一层则 MarkFinish，随后由容器结束扫描和下一帧池回收分别清理。原生未启用的有限时长实例也继续倒计时。完整条件、真实配置与证据边界见 [Case A §9](cases/01-buff-installation-and-parent-scope.md#9-2026-11-11-补核覆盖组身份与-stack-到期)，本次不改项目 Effect 契约。
 
 **A+B。** 派生关系有独立于 Unit 的生命周期。`Buff.AddDerivedBuffSafe`（64560）检查父 Buff 是否已结束；`finishDerivedBuffIfParentFinish` 只控制绑定时父已结束的分支，不保存为未来传播开关。成功绑定后，父 `MarkFinish`（64548）经 `ClearDerivedBuffsIfNot` 同步标记子结束并撤销贡献；ON_FINISH、容器移除与回收另有完成路径。详细区别见 [Case A](cases/01-buff-installation-and-parent-scope.md)。
 

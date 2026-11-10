@@ -296,3 +296,114 @@ source 非空时先读取来源的当前有效属性，四种写槽分别为：
 当前[选中配置](../evidence/unit-audit-20261110/buff-attributes/configurations.json)分别含 `astesi_t_1[Stack]` 的实际 cap=5、`sbell2_e_002_trait[interval]` 的实际无限／有效 cap=5、`enemy_shushu_support` 的 cap=20／有效 cap=1、`ascln_t_1[debuff]` 的达上限刷新，以及 EXTEND、EXTEND_TIME 的非默认实例。这些是 **N-配置**；本批没有逐个补齐其 prefab→Ability→模板启动条件，不能全部提升为已闭合的实战链。
 
 全部 9054 个当前 holder 模板中，EXTEND+snapshot=true 仅命中 `gamecity_miner_byokai_archook_reward`。**G**：本批没有受支持常规内容的完整可执行正例；该有限集合的命中不能证明全游戏有无此需求。**P**：独立 Data Buff planner 的支持范围、公开协议及其期限表示仍需项目决定，算法有证据不等于该中间接口必须保留。本次补证不要求恢复人工动态 cap 或任意 null／0 时间测试矩阵。
+
+## 9. 2026-11-11 补核：覆盖组身份与 STACK 到期
+
+本节补齐组键构造、组的登记／清理，以及有限时长实例到期后的减层／结束链。**N** 为本次静态原生分支或配置直接证实，**I** 为调用链推导，**G** 为未验证范围。输入仍为 Windows x64、metadata v29，与第 8 节指纹相同；方法重新按全名定位。完整提取、字段、字面量、配置、复跑入口和限制见[本批证据](../evidence/buff-group-expiry-20261111/README.md)。没有运行游戏或验证 XLua／hotfix，本节不修改项目 Effect 契约。
+
+### 9.1 原生职责与安装链
+
+| 对象 | 本问题中的职责 |
+| --- | --- |
+| BuffData | 保存原始覆盖字段、合并类型、层数上限和到期配置；GetOverrideKey 计算基础键。 |
+| Buff | Reset 形成最终 overrideKey，保存本实例的来源、实际层数、有效上限、lifeTime、remainingTime 和到期清层标记；OnTick 处理到期。 |
+| 宿主的 BuffContainer | 保存实例列表、UID 索引和最终键到 OverrideGroup 的字典，完成登记、组查找、结束扫描及移除。 |
+| OverrideGroup | 保存组内队列、当前合并类型及实际／有效上限，执行第 8 节的接纳、合并和选胜；不持有每层独立时钟。 |
+| BattleController | 接收延后回收登记，在指定帧把已清理 Buff 交回对象池。 |
+
+**N**：[NewBuff（66301）](../evidence/buff-group-expiry-20261111/group/native/NewBuff-66301.asm) 在 Reset 后登记列表与 UID，已初始化宿主执行 OnStart，再处理结束检查及覆盖组。最终 overrideKey 为空时直接启用，否则 EnsureOverrideGroup 后执行组的接纳和更新。因此组身份属于**接收者容器内的最终键**，不属于全战场；开始程序也不以已经通过组接纳为前提。Reset 中的独立键迁移早于新实例登记，不能把它误写成接纳之后的动作。
+
+### 9.2 基础键与最终键
+
+**N**：[BuffData.GetOverrideKey（31510）](../evidence/buff-group-expiry-20261111/group/native/GetOverrideKey-31510.asm) 在 `0x18237ae38–ae6e` 的普通分支为：
+
+```text
+disableOverride=true → 基础键为空字符串
+否则 overrideKey 非空 → 使用 overrideKey
+否则 → 使用 buffKey
+```
+
+**N**：[Buff.Reset（66092）](../evidence/buff-group-expiry-20261111/group/native/Reset-66092.asm) 随后才处理 independentCharacterSource；不是由 GetOverrideKey 一次决定最终身份。
+
+| independentCharacterSource | 来源事实 | 最终键 |
+| --- | --- | --- |
+| false | 任意 | 基础键 |
+| true | 来源能收窄为未被 Unity 判空的 Character | `基础键 + "^" + Character.cardUid` |
+| true | 来源为空、非 Character 或被 Unity 判空 | 先构造 `prefix = 基础键 + "^"`；取当前覆盖字典中首个 StartsWith(prefix) 的键，无命中则使用 prefix。 |
+
+Character 的动态类型、`"^"` 和拼接格式均由[本次静态 usage 解码](../evidence/buff-group-expiry-20261111/group/literals.json)确认。`0x1806d6b33` 调用 [Character.get_cardUid（77135）](../evidence/buff-group-expiry-20261111/group/native/get_cardUid-77135.asm)，不是 BObject／Unit 的实例 UID，也不是角色模板 key。本节不从 getter 名称额外推导跨部署的身份政策。
+
+**N**：[GetOverrideKeyCandidate（66326）](../evidence/buff-group-expiry-20261111/group/native/GetOverrideKeyCandidate-66326.asm) 的回退直接枚举当前字典键并做字符串前缀判断，不比较组优先级或来源有效性；本批不为字典枚举顺序赋予额外玩法政策。
+
+**N**：有效 Character 分支还执行 EnsureOverrideIndependentKey 的普通逻辑：prefix 条目已存在、完整键尚不存在时，将**同一组对象**从 prefix 键迁到完整键。它不重建组，也没有改写旧组成员各自保存的 overrideKey。锚点为 Reset 的 `0x1806d6c4f–6cce` 和[独立入口（66327）](../evidence/buff-group-expiry-20261111/group/native/EnsureOverrideIndependentKey-66327.asm)。不能把空来源统一解释成一个与既有来源组完全隔离的新身份。
+
+由此有一个容易遗漏的组合：**disableOverride=true 并不无条件保证最终绕过组。** independentCharacterSource=true 时，空基础键仍会变成 `"^<cardUid>"` 或以 `"^"` 为前缀的回退键，无匹配时使用 `"^"`。只有最终键为空，NewBuff 才走无组路径；不是重新检查原始 disableOverride。实际配置证据见 9.5。
+
+### 9.3 组政策、空组与清理
+
+**N**：[EnsureOverrideGroup（66302）](../evidence/buff-group-expiry-20261111/group/native/EnsureOverrideGroup-66302.asm) 按最终键查字典：
+
+- 已有非空组直接复用，不按 incoming 的 descriptor 改换合并类型及 cap。
+- 键不存在时创建组；已有组队列为空时复用并重新配置组。两种情况都从本次 Buff 的 data／blackboard 取得政策。
+- STACK 的实际与有效 cap 分别读取黑板，缺值使用各自 descriptor；非 STACK 的普通初始化采用实际 cap=1、有效 cap=-1。
+
+因此，overrideType、priority、cap 不是分组键。相同最终键先决定是否进入同一组，组内再依据当前政策合并或竞争；组清空后的下一次应用可以重新确定政策。具体五类分支沿用 8.2，不增加另一套解释。
+
+**N**：普通成员 Remove 会重新选胜，但不因组空就删除覆盖字典条目；容器 [ClearOnRecycle（66350）](../evidence/buff-group-expiry-20261111/group/native/ClearOnRecycle-66350.asm) 会清空覆盖字典和 UID 索引。`TryGetOverrideGroup(Buff, ...)` 读取实例保存的最终键做直接查找，不重新根据当前来源计算身份。
+
+### 9.4 到期减层、结束与回收
+
+**N**：Reset 在 `0x1806d6837–683b` 将 data.clearAllStackCntWhenTimeUp 复制到 Buff 实例。到期行为由实例实际层数和这个标记决定，不由 OverrideGroup 调度，也不在到期处再次检查 overrideType。
+
+[Buff.OnTick（66126）](../evidence/buff-group-expiry-20261111/expiry/native/OnTick-66126.asm) 的普通链为：
+
+```text
+尚未开始且未结束 → OnStart
+未结束 → 预处理 delta
+已启用且周期满足 → OnTrigger
+remainingTime >= 0
+  → remainingTime -= delta
+  → remainingTime <= 0 时 DecStackCntOrMarkFinish(true, true, 1)
+累加 existingTime
+```
+
+**N**：[DecStackCntOrMarkFinish（66102）](../evidence/buff-group-expiry-20261111/expiry/native/DecStackCntOrMarkFinish-66102.asm) 的参数是 updateOverrideMap、isTimeUp、decCnt。普通路径先在 `isTimeUp && clearAllStackCntWhenTimeUp` 时将实际层数置零，再执行 `max(0, stackCnt - decCnt)`：
+
+| 到期时事实 | 本次结果 |
+| --- | --- |
+| 多层、clearAll=false | 减一层，保留同一 Buff；remainingTime 重置为本实例完整 lifeTime，调用 _DoUpdateStack。 |
+| 多层、clearAll=true | 层数归零，remainingTime=0，MarkFinish。 |
+| 最后一层 | 两种配置都层数归零并 MarkFinish。 |
+
+这是**一个实例、一份剩余时间、逐次减层**；不是每层记录自己的安装期限。重置使用实例 lifeTime，不取 incoming 的任意剩余时长。减层保留同一实例和来源，不重新执行 Reset／OnStart，也不在该分支重置 existingTime 或周期触发器。`_DoUpdateStack` 仍按有效 cap 决定是否重载 retained 的属性；实际层数高于有效 cap 时，不因此额外放大贡献。
+
+`0x1806ced51–ced64` 直接重置时长后返回，OnTick 没有补处理循环。因此单次 delta 超过多个时长也只减一次，不结转超出时间；lifeTime=0 也没有一 Tick 保底，本次只处理一层，余层到后续 OnTick 再处理。这是静态分支事实，不自动要求项目采用相同的微时序。
+
+**N**：OnTick 的 isEnabled 判断只守卫周期 Trigger，扣时在其分支之外；[delta 预处理（66254）](../evidence/buff-group-expiry-20261111/expiry/native/_PreprocessDeltaTime-66254.asm) 根据状态抵抗、元素恢复速度与 slowdown 调整 delta，没有按 enabled 暂停。只要容器继续调度，有限时长的普通覆盖候补／停用实例仍倒计时；不能将原生“未生效”直接等同项目 DURATION 暂停。
+
+**N**：层数归零后的收尾分三个时点：
+
+1. [MarkFinish（66101）](../evidence/buff-group-expiry-20261111/expiry/native/MarkFinish-66101.asm) 先禁用，再写 finished，处理派生 Buff，并更新覆盖组。有效输出可立即撤销，候补可重新参与选胜；这一步不是 OnFinish。
+2. [BuffContainer.Tick（66349）](../evidence/buff-group-expiry-20261111/expiry/native/Tick-66349.asm) 完成 OnTick 和 OnLateTick 两次遍历后，[结束扫描（66355）](../evidence/buff-group-expiry-20261111/expiry/native/_CheckFinishedBuffs-66355.asm)移除实例列表和 UID 登记，调用 _FinishBuff，执行一次 Finish 程序、属性／异常抗性移除及 owner.OnBuffFinish，并登记下一帧回收；返回后再从覆盖组移除。显式 ForceRefreshFinishedBuffs 也可进入结束扫描。
+3. [RecycleBuffNextFrame（65727）](../evidence/buff-group-expiry-20261111/expiry/native/RecycleBuffNextFrame-65727.asm) 已按 fixedFrameCnt+1 登记回收桶；对应帧的 BattleController 回收阶段将其交回池，调用 Buff.OnRecycle 清理 UID 等复用字段。物理回收延期不表示仍在容器或仍生效。
+
+第 2 步依据 [_FinishAndRemoveBuff（66362）](../evidence/buff-group-expiry-20261111/expiry/native/_FinishAndRemoveBuff-66362.asm)和 [_FinishBuff（66363）](../evidence/buff-group-expiry-20261111/expiry/native/_FinishBuff-66363.asm)；第 3 步的池分派和跳转表边界见[到期证据说明](../evidence/buff-group-expiry-20261111/expiry/README.md)。这是普通自然到期路径，不把所有显式移除入口都解释为等待 Tick 尾部。
+
+### 9.5 实际配置与范围
+
+当前配置、Prefab 引用及其证据等级集中在[内容摘录](../evidence/buff-group-expiry-20261111/content/configurations.json)，普通分支与社区概述的区别见[PRTS 记录](../evidence/buff-group-expiry-20261111/content/prts.json)。配置存在、原生调用分支和实际运行观测分别解释；没有排除热更新，也没有运行游戏验证。
+
+| 配置样本 | 已确认的引用与区别 |
+| --- | --- |
+| 浊心斯卡蒂第二天赋 | 角色的 AuraAbility 实际携带 skadi2_t_2；模板两个分支创建不同 buffKey，均使用 overrideKey=skadi2_t_2[atk]。证明 buffKey 与组基础键不是同一身份。 |
+| 浊心斯卡蒂三技能鼓舞 | 技能 Aura 实际携带 disableOverride=true 的 skadi2_s_3[atk]，关联 atk_to_atk[final_addition] 模板；不能仅从模板名猜覆盖政策。 |
+| 阿斯卡纶第一天赋 | 角色 PassiveBuffAbility 携带 ascln_t_1；模板创建有限时长 STACK 的 ascln_t_1[debuff]，clearAllStackCntWhenTimeUp=true。 |
+| 妮芙第一天赋 | 角色 PassiveBuffAbility 携带 nymph_t_1；事件 61 的 listener 描述同时开启 disableOverride 和 independentCharacterSource，owner=MODIFIER_TARGET。模组版也有同样字段组合，本批只闭合普通版角色根绑定。 |
+| 某种天命 | 固定镜像 EnemyData 的 enemy_10111_ymgpck 指向同名 Prefab；本机 enm_pfb_26.ab 的 Talents/PushEnemy AuraAbility 携带 ymgpck_t[push_enemy]，模板条件分支创建有限时长 STACK 标记，clearAll=false、cap=1000。这是静态引用链；默认 lifeTime=0，durationKey=hit_count_duration 的非零最终值未定位，不能声称已观测正持续时长后的自然衰减。 |
+| pallas_s_3[peak] | 保留显式键＋来源独立的非默认描述；该模板的完整根启动链未补齐。 |
+
+**N+G**：妮芙 listener 没有开启特殊 source；[CreateBuff.Execute（98388）](../evidence/buff-group-expiry-20261111/group/native/Execute-98388.asm) 的默认来源读取当前 `Snapshot.buff.source`，不是 owner 或一般 Context.source。如果父天赋 Buff 的来源是有效妮芙 Character，最终组键为 `"^" + cardUid`；本批没有单独重证父天赋的初始来源，所以只作条件结论。当前 holder 的 9054 个模板中，这两个 listener 是仅有的两项 disableOverride＋independentCharacterSource 同开描述；统计不覆盖全部 Prefab、BuffDB 或运行覆盖。
+
+麻痹 palsy[stack] 的两个创建节点均开启 loadFromDB，节点默认时长不能代替数据库解析后的配置；本批没有将它们当作普通有限寿命逐层减层的正例。PRTS BUFF 页能互证一般 STACK 到期政策，但其禁用覆盖概述没有解释上述来源独立组合；组合条件以 9.2 的实际指令为准。
+
+本次闭合的是覆盖组身份与 STACK 自然到期的普通原生架构。第 8 节仍缺的受支持普通内容 EXTEND+snapshot 完整执行正例不因本次调查自动解决；项目如何表达分组、来源与暂停时钟，也仍由后续架构讨论决定。
