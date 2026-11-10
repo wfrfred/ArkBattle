@@ -28,7 +28,7 @@ import {
 
 export interface Contact {
     readonly index: number;
-    readonly effect: Ref<Effect> | undefined;
+    readonly effect: Ref<Effect> | null;
 }
 
 export interface ContactState {
@@ -47,7 +47,7 @@ interface Behaviour<P extends object> {
         unit: Unit,
         params: P,
         scopes: readonly LifetimeScope[],
-    ) => Result<Ref<Effect> | undefined>;
+    ) => Result<Ref<Effect> | null>;
 }
 
 function onGround(unit: Unit): boolean {
@@ -127,7 +127,7 @@ function create<P extends object>(
                 ) {
                     battle = setContact(battle, unitId);
 
-                    if (!behaviour.retainOnLeave && contact.effect !== undefined) {
+                    if (!behaviour.retainOnLeave && contact.effect !== null) {
                         battle = effects.end(battle, contact.effect, "LEFT_TERRAIN");
                     }
                 }
@@ -150,9 +150,7 @@ function create<P extends object>(
 
                 if (previous !== undefined) {
                     const effect =
-                        previous.effect === undefined
-                            ? undefined
-                            : effects.get(battle, previous.effect);
+                        previous.effect === null ? undefined : effects.get(battle, previous.effect);
                     const effectExists = effect !== undefined && effect.lifecycle !== "ENDING";
                     if (previous.index === index && effectExists) {
                         continue;
@@ -169,7 +167,7 @@ function create<P extends object>(
 
                     battle = setContact(battle, unit.id);
 
-                    if (!behaviour.retainOnLeave && previous.effect !== undefined) {
+                    if (!behaviour.retainOnLeave && previous.effect !== null) {
                         battle = effects.end(battle, previous.effect, "TERRAIN_CHANGED");
                     }
                 }
@@ -192,7 +190,7 @@ function create<P extends object>(
                 battle = installed.state;
 
                 if (mechanisms.get(battle, reference)?.lifecycle !== "ACTIVE") {
-                    return !behaviour.retainOnLeave && installed.value !== undefined
+                    return !behaviour.retainOnLeave && installed.value !== null
                         ? effects.end(battle, installed.value, "TERRAIN_UNAVAILABLE")
                         : battle;
                 }
@@ -200,7 +198,7 @@ function create<P extends object>(
                 const current = units.get(battle, candidateRef);
                 if (current !== undefined && indexOf(current) === index) {
                     battle = setContact(battle, unit.id, { index, effect: installed.value });
-                } else if (!behaviour.retainOnLeave && installed.value !== undefined) {
+                } else if (!behaviour.retainOnLeave && installed.value !== null) {
                     battle = effects.end(battle, installed.value, "LEFT_TERRAIN");
                 }
             }
@@ -226,7 +224,7 @@ function create<P extends object>(
 
             if (!behaviour.retainOnLeave && self.lifecycle !== "ENDING") {
                 for (const contact of owned) {
-                    if (contact.effect !== undefined) {
+                    if (contact.effect !== null) {
                         battle = effects.end(battle, contact.effect, "TERRAIN_UNAVAILABLE");
                     }
                 }
@@ -297,7 +295,7 @@ export function createTerrainMechanism(
             enter: (battle, unit, _params, scopes) =>
                 hasTargetable(unit)
                     ? effects.install(battle, units.ref(unit), smogEffect, { scopes })
-                    : { state: battle, value: undefined },
+                    : { state: battle, value: null },
         });
     }
     if (definition === terrain.hole) {
@@ -307,7 +305,7 @@ export function createTerrainMechanism(
             accepts: (unit) => hasAllegiance(unit) && unit.allegiance.side === "ENEMY",
             enter: (battle, unit) => ({
                 state: removeUnit(battle, units.ref(unit), "DEATH"),
-                value: undefined,
+                value: null,
             }),
         });
     }

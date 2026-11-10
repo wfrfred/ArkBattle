@@ -29,14 +29,14 @@ export function install<S extends object, H extends object>(
     host: Ref<Unit & NoInfer<H>>,
     definition: Definition<S, H>,
     initial: Initial<NoInfer<S>> = {},
-): Result<Ref<Effect<S, H>> | undefined> {
+): Result<Ref<Effect<S, H>> | null> {
     const unit = units.get(battle, host);
     const scopes = initial.scopes ?? [];
     const expiration = initial.expiration ?? { type: "INFINITE" };
     validate(expiration);
 
     if (unit?.lifecycle !== "PRESENT" || scopes.some((scope) => !available(battle, scope))) {
-        return { state: battle, value: undefined };
+        return { state: battle, value: null };
     }
 
     const instance: Effect<S, H> = {

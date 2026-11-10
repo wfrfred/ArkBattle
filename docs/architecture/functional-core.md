@@ -85,7 +85,7 @@ calculateDamage(battle, request) → Result<CalculatedDamage | undefined>
 applyDamage(request, calculation) → Result<DamageOutcome>
 calculateHealing(battle, request) → Result<CalculatedHealing | undefined>
 applyHealing(request, calculation) → Result<HealingOutcome>
-install(battle, hostRef, definition, initial) → Result<Ref<Effect<S, H>> | undefined>
+install(battle, hostRef, definition, initial) → Result<Ref<Effect<S, H>> | null>
 effects.setState(battle, effectRef, nextState) → BattleState
 actions.start(battle, actionRef) → Result<Ref<Execution<P, E>> | null>
 skills.activate(battle, skillRef) → Result<Ref<Activation<S, A>> | null>

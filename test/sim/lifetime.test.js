@@ -139,7 +139,7 @@ test("an ending ancestor rejects new dependents before its running Action receiv
 
     const after = remove(state, units.ref(source), "DEATH");
 
-    assert.equal(attempted, undefined);
+    assert.equal(attempted, null);
     assert.equal(businessCalls, 0);
     assert.equal(
         units.all(after).find((unit) => unit.definition.id === "recipient").effects.size,

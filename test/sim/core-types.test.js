@@ -115,7 +115,7 @@ const shield: effects.Definition<{ charges: number }, Offense> = {
     },
 };
 const installed = effects.install(battle, reference, shield);
-if (installed.value !== undefined) {
+if (installed.value !== null) {
     const charges: number = effects.get(installed.state, installed.value)!.state.charges;
     effects.setExpiration(installed.state, installed.value, { type: 'DEADLINE', tick: 10 });
     // @ts-expect-error writes cannot widen the identity's private data pairing.

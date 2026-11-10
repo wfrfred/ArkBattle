@@ -224,13 +224,15 @@ Contribution 的登记／撤销与 Hook 的开关是两种自然接入方式，�
 
 | 操作                                              | 含义与返回值                                             |
 | ------------------------------------------------- | -------------------------------------------------------- |
-| `install(battle, hostRef, definition, initial)` | 返回 `Result<Ref<Effect<S, H>> \| undefined>`，拒绝时不创建实例     |
+| `install(battle, hostRef, definition, initial)` | 返回 `Result<Ref<Effect<S, H>> \| null>`，拒绝时不创建实例     |
 | `get(battle, ref)`                    | 从明确输入版本查一个实例，不转换事实                     |
 | `setState(battle, ref, state)`                 | 设置指定实例的私有 state，返回相应战斗版本               |
 | `setEnabled(battle, ref, enabled)`               | 返回完成许可、生效变化与回调后的状态                     |
 | `setExpiration(battle, ref, expiration)`           | 替换当前实例的时间状态，返回 BattleState |
 | `end(battle, ref, reason?)`                       | 同步执行结束请求；最外层调用完成整批 Finalize 后返回      |
 | `advance(battle)`                                | 由 Runtime 调度，返回一次 Effect 时间推进后的状态         |
+
+install 返回的 Ref 表达本次创建事实；安装回调同步结束实例后仍返回该 Ref，当前是否存在需从接续的 State 查询。
 
 Effect 的 end 委托自身 lifetime 描述符。Scope 构造、类型恢复、资格与依赖查询、绑定和解绑使用 core/lifetime 的 scope／getRef／available／dependencies／bind／unbind；通用 request／drain 不向内容开放。
 
