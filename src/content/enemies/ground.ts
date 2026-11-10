@@ -1,15 +1,15 @@
 import { Hooks } from "../../core/hook.js";
 import * as unitHooks from "../../core/unit/hook.js";
 import { update as updateUnit } from "../../core/battle/unit.js";
-import { createArknightsElementalDefinition } from "../../data/elemental.js";
+import { createArknightsElementalDefinition } from "../../data/effect/elemental.js";
 
 import { ref as unitRef, type Definition as UnitDefinition } from "../../core/unit/index.js";
 import { isCasting } from "../../core/unit/action/index.js";
 import { hasAction } from "../../core/unit/capability/action/index.js";
 import { hasLocomotion, setRule } from "../../core/unit/capability/locomotion/index.js";
 
-import type { Profile } from "../../data/enemy.js";
-import { perSecondToPerTick } from "../../data/tick.js";
+import type { Profile } from "../../data/unit/enemy.js";
+import { perSecondToPerTick } from "../../data/time.js";
 import { assertPositiveNumber } from "../../core/common/assert.js";
 
 import type { Definitions as CapabilityDefinitions } from "../../core/unit/capability/catalog.js";

@@ -43,8 +43,8 @@ import { topK } from "../../../core/common/collection.js";
 import type { State as BattleState } from "../../../core/battle/index.js";
 
 import { createRng } from "../../../core/common/rng.js";
-import type { Profile } from "../../../data/operator.js";
-import { secondsToTicks } from "../../../data/tick.js";
+import type { Profile } from "../../../data/unit/operator.js";
+import { secondsToTicks } from "../../../data/time.js";
 import { stun } from "../../../core/effects/control.js";
 import { install } from "../../../core/unit/effect/index.js";
 import { value, healSelf } from "./common.js";

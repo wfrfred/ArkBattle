@@ -6,8 +6,8 @@ import {
 } from "../../../core/battle/damage/hp/index.js";
 
 import * as units from "../../../core/unit/index.js";
-import type { Profile } from "../../../data/enemy.js";
-import { perSecondToPerTick, secondsToTicks } from "../../../data/tick.js";
+import type { Profile } from "../../../data/unit/enemy.js";
+import { perSecondToPerTick, secondsToTicks } from "../../../data/time.js";
 import { assertNonnegativeSafeInteger, assertPositiveNumber } from "../../../core/common/assert.js";
 import { create as createProjectile } from "../../../core/battle/projectile.js";
 import type { Projectile as ProjectileInstance } from "../../../core/projectile/index.js";

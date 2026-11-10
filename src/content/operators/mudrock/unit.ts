@@ -4,7 +4,7 @@ import { normal as normalSite } from "../../terrain/condition.js";
 import { update as updateUnit } from "../../../core/battle/unit.js";
 import { hasTargetable } from "../../../core/unit/capability/targetable/capability.js";
 import { hasAllegiance } from "../../../core/unit/capability/allegiance/capability.js";
-import { createArknightsElementalDefinition } from "../../../data/elemental.js";
+import { createArknightsElementalDefinition } from "../../../data/effect/elemental.js";
 import {
     create as createAction,
     createActions,
@@ -21,8 +21,8 @@ import {
 } from "../../../core/unit/index.js";
 import { blocked } from "../../../core/battle/blocking/index.js";
 import { hasBlocker, sides } from "../../../core/unit/capability/blocking/index.js";
-import type { Profile } from "../../../data/operator.js";
-import { secondsToTicks } from "../../../data/tick.js";
+import type { Profile } from "../../../data/unit/operator.js";
+import { secondsToTicks } from "../../../data/time.js";
 import {
     create as createSkill,
     modify,

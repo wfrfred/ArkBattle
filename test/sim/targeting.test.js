@@ -16,7 +16,7 @@ import { hasLayer, setType } from "../../dist/core/unit/capability/layer/index.j
 import { disappear } from "../../dist/core/unit/capability/presence/index.js";
 import { create as modifier } from "../../dist/core/unit/contribution/attribute.js";
 import { healFree } from "../../dist/core/effects/protection.js";
-import { createArknightsElementalDefinition } from "../../dist/data/elemental.js";
+import { createArknightsElementalDefinition } from "../../dist/data/effect/elemental.js";
 
 const living = {
     id: "target", hooks: Hooks.empty(),

@@ -41,6 +41,7 @@
 | [Blocking](blocking.md) | 关系、资格、容量、批量通知与位置计划 |
 | [Deployment](deployment.md) | Card、经济、部署请求、撤退与死亡账务 |
 | [Occupancy](occupancy.md) | 双槽占格、实例朝向与乘员／支撑配对 |
+| [静态数据转换](data.md) | Unit、Skill、Action、Effect、Level 的输入职责、共享读取与转换边界 |
 | [内容接入](content.md) | 静态角色定义、数据编译、共享规则与 Core 边界 |
 
 项目以重要的游戏语义为依据选择工程结构：

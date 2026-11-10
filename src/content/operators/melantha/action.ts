@@ -9,8 +9,8 @@ import { hasLayer } from "../../../core/unit/capability/layer/index.js";
 import { fromTiles } from "../../../core/geometry/range.js";
 import { topK } from "../../../core/common/collection.js";
 
-import type { Profile } from "../../../data/operator.js";
-import { secondsToTicks } from "../../../data/tick.js";
+import type { Profile } from "../../../data/unit/operator.js";
+import { secondsToTicks } from "../../../data/time.js";
 
 export function create(profile: Profile): Attack {
     return createAttack({

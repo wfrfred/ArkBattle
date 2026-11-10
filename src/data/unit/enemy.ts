@@ -3,7 +3,7 @@ import {
     assertNonnegativeNumber,
     assertNonnegativeSafeInteger,
     assertPositiveNumber,
-} from "../core/common/assert.js";
+} from "../../core/common/assert.js";
 
 interface EnemyMovementValues {
     readonly maxHp: number | undefined;

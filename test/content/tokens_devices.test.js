@@ -1,11 +1,11 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { parseLevelContent, parseLevelDefinition } from "../../dist/data/level.js";
-import { parsePredefinedDefinition, resolvePredefinedPrefabKey } from "../../dist/data/predefined.js";
-import { parsePredefinedPrefab } from "../../dist/data/prefab.js";
-import { resolvePredefinedSkillId, resolvePredefinedSkillBlackboard } from "../../dist/data/skill.js";
-import { resolveTerrainControllers } from "../../dist/data/terrain.js";
+import { parseLevelContent, parseLevelDefinition } from "../../dist/data/level/definition.js";
+import { parsePredefinedDefinition, resolvePredefinedPrefabKey } from "../../dist/data/level/predefined.js";
+import { parsePredefinedPrefab } from "../../dist/data/level/prefab.js";
+import { resolvePredefinedSkillId, resolvePredefinedSkillBlackboard } from "../../dist/data/skill/predefined.js";
+import { resolveTerrainControllers } from "../../dist/data/level/terrain.js";
 import { predefinedIdsForAlias, appear } from "../../dist/core/battle/steps/predefined.js";
 import { initialize } from "../../dist/core/battle/index.js";
 import { at as occupancyAt } from "../../dist/core/battlefield/occupancy.js";

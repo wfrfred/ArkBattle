@@ -12,7 +12,7 @@ import * as presence from "../../dist/core/unit/capability/presence/index.js";
 import { appendEvents } from "../../dist/core/battle/state.js";
 import { step } from "../../dist/core/battle/index.js";
 
-import { createArknightsElementalDefinition } from "../../dist/data/elemental.js";
+import { createArknightsElementalDefinition } from "../../dist/data/effect/elemental.js";
 import { update } from "../../dist/core/battle/unit.js";
 
 const elemental = createArknightsElementalDefinition({ receiver: "CHARACTER" });

@@ -38,7 +38,7 @@ Core 可以在服务器、浏览器和无界面测试中使用。时钟、网络
 | Core 初始化 | Definition、Initial | 初始 State | 解释原始明日方舟数据 |
 | Core 推进 | 当前 State、命令 | 下一 State | 解释具体角色或技能内容 |
 
-Data 解析原表、Prefab 提取结果和关卡配置，完成校验、单位换算、静态配置及初始地图构造，也可以调用已有 Core／Content 工厂绑定参数。Definition、State 等类型名及工厂调用本身不决定层次；Data 不自行实现技能、天赋、Effect 启停、部署资格、叠层续期等战斗机制程序。Content 提供具体机制，Core 在领域时点执行；内容私有数据随运行实例保存在 Core State 中。Core 消费伤害类别、几何、路线和调度等领域定义，不读取原表协议。当前尚未完成的分层迁移见[实现缺口](tactical-semantics.md)。
+Data 按 Unit、Skill、Action、Effect、Level 五类战斗输入组织，Prefab、动画和原表作为资料来源。转换完成校验、单位换算、静态配置及初始地图构造，也可以调用已有 Core／Content 工厂绑定参数，具体职责与支持边界见[静态数据转换](data.md)。Definition、State 等类型名及工厂调用本身不决定层次；Data 不自行实现技能、天赋、Effect 启停、部署资格、叠层续期等战斗机制程序。Content 提供具体机制，Core 在领域时点执行；内容私有数据随运行实例保存在 Core State 中。Core 消费伤害类别、几何、路线和调度等领域定义，不读取原表协议。
 
 外部适配层转换 Core 的输入与输出格式。Core 的规则与状态归属由领域需求决定。
 

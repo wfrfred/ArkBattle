@@ -1,5 +1,5 @@
-import type { SiteCondition } from "../core/battlefield/map/tile.js";
-import * as conditions from "../content/terrain/condition.js";
+import type { SiteCondition } from "../../core/battlefield/map/tile.js";
+import * as conditions from "../../content/terrain/condition.js";
 
 const CONDITIONS: readonly (readonly [number, SiteCondition])[] = [
     [1, conditions.normal],

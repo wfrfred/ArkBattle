@@ -32,6 +32,7 @@
 | [route](sim/route-capability.test.js) | 首指令与重新进入、MOVE 采样、WAIT 时基与 ticking、即时循环让出、持续 TRACE、Main 出口及同步空间操作后的最新进度；距离查询采用导航几何长度、不计传送，并显式区分 Main 与 TRACE。 |
 | [schedule](sim/schedule.test.js) | 统一出生时间与偏移、等待先于 enter、超时只释放 wave、离场同步解除、Branch 整组抽选与同步重入、实际出生时基。 |
 | [路线与调度数据](content/route-schedule-data.test.js) | 原生路线控制流与等待编译、count／interval 展开、主线预选与 Branch 运行时选择，以及 Action／Enemy 的 notCountInTotal 合并到 NONE。 |
+| [Effect 静态数据](content/effect-data.test.js) | 真实重应用描述保留独立层数限制与续期配置，属性修正保留规范化运算位置和延迟取值标记；运行机制由实际 Effect 接入后验收。 |
 | [lifetime](sim/lifetime.test.js) | 依赖者完整结束后宿主才注销；首次原因和收尾唯一；祖先开始结束后拒收新依赖。 |
 | [action](sim/action.test.js) | 启动拒绝、持久与执行身份、静态时序贡献变更时同步保留冷却进度、攻击中断／释放／输出、Combat 推进及确定性；释放通知中消失保留前缀并停止旧输出，出现后可恢复行动，不推导弹药消费政策。 |
 | [skill](sim/skill.test.js) | 持久与本轮状态、SP 门槛／支付／回复许可、TIME 当轮延时、Ammo 公式／采样／补弹额度／耗尽；开始通知中消失仍 ACTIVE 时执行 onStart，既有持续期照常推进。 |

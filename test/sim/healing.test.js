@@ -15,7 +15,7 @@ import { create as modifier } from "../../dist/core/unit/contribution/attribute.
 import { elementHealing } from "../../dist/core/battle/targeting/index.js";
 import { hasTargetable } from "../../dist/core/unit/capability/targetable/capability.js";
 
-import { createArknightsElementalDefinition } from "../../dist/data/elemental.js";
+import { createArknightsElementalDefinition } from "../../dist/data/effect/elemental.js";
 const elementalReceiver = {
     id: "ep-receiver", hooks: Hooks.empty(), presence: {}, allegiance: { side: "ALLY" },
     targetable: { taunt: 0, restrictions: [] },

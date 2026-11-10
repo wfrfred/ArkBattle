@@ -1,5 +1,5 @@
-import { parseBlackboard, type ArknightsBlackboardEntry } from "./blackboard.js";
-import type { ArknightsPredefinedInstance } from "./level.js";
+import { parseBlackboard, type ArknightsBlackboardEntry } from "../blackboard.js";
+import type { ArknightsPredefinedInstance } from "../level/definition.js";
 
 export interface ArknightsResolvedSkill {
     readonly skillId: string;

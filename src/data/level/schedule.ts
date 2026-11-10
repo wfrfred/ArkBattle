@@ -1,13 +1,13 @@
-import { assertNonnegativeSafeInteger } from "../core/common/assert.js";
-import { createRng, type Rng, type Seed } from "../core/common/rng.js";
-import type { Branch, Definition, Entry, Spawn, Wait } from "../core/battle/schedule/index.js";
+import { assertNonnegativeSafeInteger } from "../../core/common/assert.js";
+import { createRng, type Rng, type Seed } from "../../core/common/rng.js";
+import type { Branch, Definition, Entry, Spawn, Wait } from "../../core/battle/schedule/index.js";
 import type {
     ArknightsEnemyDbRef,
     ArknightsLevelDefinition,
     ArknightsSpawnAction,
-} from "./level.js";
+} from "./definition.js";
 import type { Route } from "./route.js";
-import { secondsToTicks } from "./tick.js";
+import { secondsToTicks } from "../time.js";
 
 export interface ArknightsActionSelection {
     readonly waveIndex: number;

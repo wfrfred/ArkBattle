@@ -1,5 +1,5 @@
 import type { Attack } from "../../actions/attack.js";
-import type { Profile } from "../../../data/enemy.js";
+import type { Profile } from "../../../data/unit/enemy.js";
 import { type Unit, ref } from "../../../core/unit/index.js";
 import type {
     Definitions as CapabilityDefinitions,

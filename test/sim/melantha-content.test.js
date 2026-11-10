@@ -2,7 +2,7 @@ import { Hooks } from "../../dist/core/hook.js";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
-import { prepare } from "../../dist/data/operator.js";
+import { prepare } from "../../dist/data/unit/operator.js";
 import { create } from "../../dist/content/operators/melantha/unit.js";
 import { initialize, getUnit } from "../helpers/unit.js";
 import { createBattleState } from "../../dist/core/battle/state.js";

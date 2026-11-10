@@ -1,13 +1,18 @@
 import type { State as BattleState } from "../../core/battle/index.js";
 import { update as updateTile } from "../../core/battle/tile.js";
 import { get as getTile } from "../../core/battlefield/map/map.js";
-import type { State as TileState } from "../../core/battlefield/map/tile.js";
+import type {
+    State as TileState,
+    Placement,
+    SiteCondition,
+} from "../../core/battlefield/map/tile.js";
 import type { TilePosition } from "../../core/geometry/coordinate.js";
 import type { Definition as DeployableDefinition } from "../../core/unit/capability/deployable/index.js";
 import type { Definition as OccupancyDefinition } from "../../core/unit/capability/occupancy/index.js";
 import type { Definition as VitalityDefinition } from "../../core/unit/capability/vitality/index.js";
 import type { Definition as UnitDefinition } from "../../core/unit/index.js";
 import type { Definition as CardDefinition } from "../../core/battle/deployment/card/index.js";
+import type { Rule as DeploymentRule } from "../../core/battle/deployment/index.js";
 import { hole } from "../terrain/definition.js";
 
 export interface Definition extends UnitDefinition {
@@ -19,6 +24,28 @@ export interface Definition extends UnitDefinition {
 
 export interface Configuration extends Pick<Definition, "id" | "vitality" | "deployable" | "card"> {
     readonly tileChanges: Partial<TileState>;
+}
+
+export function deploymentSiteRule(
+    placement: Exclude<Placement, "NONE">,
+    allowedSiteConditions: readonly SiteCondition[],
+): DeploymentRule {
+    return {
+        id: "deployment/site",
+        allows(battle, { request }) {
+            const tile = getTile(battle.battlefield.map, request.tilePosition);
+
+            return (
+                tile !== undefined &&
+                tile.state.placement !== "NONE" &&
+                (tile.state.placement === "ALL" ||
+                    placement === "ALL" ||
+                    tile.state.placement === placement) &&
+                (tile.state.siteCondition === null ||
+                    allowedSiteConditions.includes(tile.state.siteCondition))
+            );
+        },
+    };
 }
 
 export function apply(

@@ -2,7 +2,7 @@ import { Hooks } from "../../dist/core/hook.js";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
-import { prepare } from "../../dist/data/operator.js";
+import { prepare } from "../../dist/data/unit/operator.js";
 import { create, readShield } from "../../dist/content/operators/mudrock/unit.js";
 import { initialize, getUnit } from "../helpers/unit.js";
 import { fixtureBattlefieldState } from "../helpers/battlefield.js";

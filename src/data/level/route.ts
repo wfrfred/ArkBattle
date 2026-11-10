@@ -1,7 +1,7 @@
-import { assertFiniteNumber, assertSafeInteger } from "../core/common/assert.js";
-import type { TilePosition, WorldPosition } from "../core/geometry/coordinate.js";
-import type { Checkpoint, Plan } from "../core/unit/capability/route/capability.js";
-import { secondsToTicks } from "./tick.js";
+import { assertFiniteNumber, assertSafeInteger } from "../../core/common/assert.js";
+import type { TilePosition, WorldPosition } from "../../core/geometry/coordinate.js";
+import type { Checkpoint, Plan } from "../../core/unit/capability/route/capability.js";
+import { secondsToTicks } from "../time.js";
 
 export interface Route {
     readonly plan: Plan;

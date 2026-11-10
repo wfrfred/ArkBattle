@@ -2,12 +2,12 @@ import {
     assertFiniteNumber,
     assertNonnegativeSafeInteger,
     assertPositiveSafeInteger,
-    assertSafeInteger,
-} from "../core/common/assert.js";
-import { roundToEven } from "../core/common/math.js";
-import type { TilePosition } from "../core/geometry/coordinate.js";
-import { parseBlackboard, type ArknightsBlackboardEntry } from "./blackboard.js";
-import { parseArknightsSkillLevel, type ArknightsSkillLevel } from "./skill-definition.js";
+} from "../../core/common/assert.js";
+import { roundToEven } from "../../core/common/math.js";
+import type { TilePosition } from "../../core/geometry/coordinate.js";
+import { parseBlackboard, type ArknightsBlackboardEntry } from "../blackboard.js";
+import { parseRange } from "../range.js";
+import { parseArknightsSkillLevel, type ArknightsSkillLevel } from "../skill/operator.js";
 
 export interface Configuration {
     readonly elite: 0 | 1 | 2;
@@ -337,31 +337,6 @@ function selectedSkill(
     };
 }
 
-function range(value: unknown, id: unknown): readonly TilePosition[] {
-    const key = text(id, "operator range identity");
-    const source = record(record(value, "range table")[key], `range ${key}`);
-    if (source.id !== key || source.direction !== 1) {
-        throw new TypeError("operator range must use its matching identity and default direction");
-    }
-
-    const seen = new Set<string>();
-
-    return Array.from(array(source.grids, "range grids"), (value) => {
-        const grid = record(value, "range grid");
-        assertSafeInteger(grid.row, "range row");
-        assertSafeInteger(grid.col, "range column");
-        const tile: TilePosition = [grid.row, grid.col];
-        const key = `${tile[0]},${tile[1]}`;
-        if (seen.has(key)) {
-            throw new RangeError("operator range must not contain duplicate tiles");
-        }
-
-        seen.add(key);
-
-        return tile;
-    });
-}
-
 function selectCandidate(
     value: unknown,
     configuration: Configuration,
@@ -590,9 +565,9 @@ export function prepare(
         id,
         configuration,
         attributes,
-        range: range(tables.ranges, phase.rangeId),
+        range: parseRange(tables.ranges, phase.rangeId),
         skill: selected.parsed,
-        skillRange: selected.rangeId === null ? null : range(tables.ranges, selected.rangeId),
+        skillRange: selected.rangeId === null ? null : parseRange(tables.ranges, selected.rangeId),
         talents: talents.filter((talent): talent is Talent => talent !== undefined),
         moduleTrait,
     };

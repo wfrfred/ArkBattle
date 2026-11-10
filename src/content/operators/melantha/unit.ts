@@ -3,14 +3,14 @@ import * as unitHooks from "../../../core/unit/hook.js";
 import { normal as normalSite } from "../../terrain/condition.js";
 import { update as updateUnit } from "../../../core/battle/unit.js";
 import { scope } from "../../../core/lifetime/index.js";
-import { createArknightsElementalDefinition } from "../../../data/elemental.js";
+import { createArknightsElementalDefinition } from "../../../data/effect/elemental.js";
 import { create as createAction, createActions } from "../../../core/unit/action/index.js";
 import {
     get as getCurrentUnit,
     ref as unitRef,
     type Definition as UnitDefinition,
 } from "../../../core/unit/index.js";
-import type { Profile } from "../../../data/operator.js";
+import type { Profile } from "../../../data/unit/operator.js";
 
 import type { Definitions as CapabilityDefinitions } from "../../../core/unit/capability/catalog.js";
 import {
@@ -32,7 +32,7 @@ import {
 import { type Definition as EffectDefinition, install } from "../../../core/unit/effect/index.js";
 
 import * as attribute from "../../../core/unit/contribution/attribute.js";
-import { secondsToTicks } from "../../../data/tick.js";
+import { secondsToTicks } from "../../../data/time.js";
 import { create as createAttack } from "./action.js";
 
 export interface Definition

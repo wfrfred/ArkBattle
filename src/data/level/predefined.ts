@@ -1,24 +1,27 @@
-import { Hooks } from "../core/hook.js";
+import { Hooks } from "../../core/hook.js";
 import {
     assertNonnegativeNumber,
     assertPositiveNumber,
     assertPositiveSafeInteger,
-} from "../core/common/assert.js";
+} from "../../core/common/assert.js";
 import {
     createPredefinedDefinition,
     type StoredPredefinedDefinition,
-} from "../core/battle/steps/predefined.js";
-import { createMechanismDefinition } from "../core/battle/mechanism.js";
-import { createTerrainMechanism } from "../content/terrain/mechanism.js";
-import { mire, deepsea } from "../content/terrain/definition.js";
-import { create as createCrate } from "../content/devices/crate.js";
-import { create as createShootingPlatform } from "../content/devices/shooting-platform.js";
-import type { Definition as DeviceDefinition, Configuration } from "../content/devices/tile.js";
-import { Tile } from "../core/geometry/coordinate.js";
-import { get as getTile } from "../core/battlefield/map/map.js";
-import type { ArknightsPredefinedInstance } from "./level.js";
+} from "../../core/battle/steps/predefined.js";
+import { createMechanismDefinition } from "../../core/battle/mechanism.js";
+import { createTerrainMechanism } from "../../content/terrain/mechanism.js";
+import { mire, deepsea } from "../../content/terrain/definition.js";
+import { create as createCrate } from "../../content/devices/crate.js";
+import { create as createShootingPlatform } from "../../content/devices/shooting-platform.js";
+import {
+    deploymentSiteRule,
+    type Definition as DeviceDefinition,
+    type Configuration,
+} from "../../content/devices/tile.js";
+import { Tile } from "../../core/geometry/coordinate.js";
+import type { ArknightsPredefinedInstance } from "./definition.js";
 import type { PredefinedPrefab } from "./prefab.js";
-import { secondsToTicks } from "./tick.js";
+import { secondsToTicks } from "../time.js";
 
 function object(value: unknown, name: string): Record<string, unknown> {
     if (value === null || typeof value !== "object" || Array.isArray(value)) {
@@ -150,23 +153,10 @@ function unitDefinition(
             increaseCostOnRetreatOrDeath: false,
             refund: { rate: 0.5, limit: "BASE_COST" },
             deploymentRules: [
-                {
-                    id: "deployment/site",
-                    allows(battle, { request }) {
-                        const tile = getTile(battle.battlefield.map, request.tilePosition);
-                        const { placement, allowedSiteConditions } = profile.deployable;
-
-                        return (
-                            tile !== undefined &&
-                            tile.state.placement !== "NONE" &&
-                            (tile.state.placement === "ALL" ||
-                                placement === "ALL" ||
-                                tile.state.placement === placement) &&
-                            (tile.state.siteCondition === null ||
-                                allowedSiteConditions.includes(tile.state.siteCondition))
-                        );
-                    },
-                },
+                deploymentSiteRule(
+                    profile.deployable.placement,
+                    profile.deployable.allowedSiteConditions,
+                ),
             ],
             unitHooks: Hooks.empty(),
             initialize: (battle) => ({ state: battle, value: {} }),
