@@ -2,7 +2,7 @@
 
 Elemental 负责元素值的接收、资源提交、爆发触发与恢复预算；EP Damage／Healing 的 Calculate／Apply 由 Battle 编排。整轮 Burst 由 Core 标准效果库的 Effect 承载，复用 Effect 的身份、状态、时间推进与 Lifetime。标准爆发程序实现 HP 伤害、控制、属性变化和周期输出，Data 提供数值配置，Content 通过公开接口实现特殊单位机制。当前四型为 NEURAL、EROSION、BURN、NECROSIS；狂躁尚未接入。
 
-Unit Definition 直接关联共享的 Elemental Definition。bursts 按元素类型映射到实际的 Burst Effect Definition；Data 选择 Core 提供的具体 Effect 并传入数值，不编写爆发执行回调。
+Unit Definition 直接关联共享的 Elemental Definition。bursts 按元素类型映射到实际的 Burst Effect Definition；Data 提供规范化的类型与数值，Content 选择 Core 提供的具体 Effect 并构造完整映射。
 
 公开类型、查询和业务操作从 [elemental/index.ts](../../src/core/unit/capability/elemental/index.ts) 导入，包括只读的 available。Capability 的 Rule、Hook 与属性贡献 set／remove 不接收 Ref，返回 `Change<Unit & Elemental>`，交给 Unit.update 登记。资源提交复用对应业务的 CommitContext，爆发与恢复等操作保持 BattleState 协议，状态写回使用 Core 内部的 Unit.replace；query.ts 负责查询。
 
@@ -28,7 +28,7 @@ interface Definition {
 }
 ```
 
-元素 Type 是字符串字面量联合，同名的 as const 对象提供 Type.NEURAL 等运行时常量，联合类型与 ELEMENT_TYPES 均从该对象导出；接口接受对应字面量。Data／Content 直接提供完整静态 Definition；Data 按接收者类别选择 bursts 表，Core 通过 `definition.elemental.bursts[type]` 取得实际 Effect Definition。initialize 作为能力构造入口，校验基础数值和各型爆发时长，再建立初始状态；Definition 与 bursts 共享原引用。内部计算信任已建立的配置与能力配对。
+元素 Type 是字符串字面量联合，同名的 as const 对象提供 Type.NEURAL 等运行时常量，联合类型与 ELEMENT_TYPES 均从该对象导出；接口接受对应字面量。Content 依据静态配置提供完整 Definition，Core 通过 `definition.elemental.bursts[type]` 取得实际 Effect Definition。initialize 作为能力构造入口，校验基础数值和各型爆发时长，再建立初始状态；Definition 与 bursts 共享原引用。内部计算信任已建立的配置与能力配对。
 
 四条 EP 分别保存数值，共用基础上限、自然回复速度与抗性。Definition 的 recoverySpeed、同名贡献与查询统一表示每秒回复的 EP，推进时除以 TICKS_PER_SECOND。elementResistance 用于 EP 损伤，damageResistance 用于 HP 元素伤害；两个结算入口和两个属性各自独立。两项抗性在贡献求值后限制到 0–100；5% 损伤保底属于各自的伤害公式，不改变抗性查询结果。回复与爆发恢复速度不小于零，上限不小于 1。
 
@@ -43,7 +43,7 @@ interface Definition {
 
 属性 Contribution 的动态 Input 为 `(battle, self) => readonly attribute.Modifier[]`。属性修正、资格 Rule、伤判和事实通知分别承担自己的职责。请求类型相关的减免通过 DamageReceivingHook 读取 calculated.type 并返回新 Pending，不复制四组基础抗性，也不在布尔 Rule 中执行副作用。
 
-能力组合由内容装配决定。内容中的干员与地面敌人默认同时提供 Vitality 和 Elemental；Core 的 Unit 允许明确组合所需能力。免疫不通过删除 Elemental 表达。CHARACTER／ENEMY 仅用于 Data 选择两套具体 Effect 映射，不进入 Core 接收者枚举，也不由当前阵营推导。
+能力组合由内容装配决定。内容中的干员与地面敌人默认同时提供 Vitality 和 Elemental；Core 的 Unit 允许明确组合所需能力。免疫不通过删除 Elemental 表达。CHARACTER／ENEMY 仅用于静态配置选取与内容装配，不进入 Core 接收者枚举，也不由当前阵营推导。
 
 ## 2. Burst Effect 与标准规则
 
@@ -65,11 +65,11 @@ interface Burst extends Effect<BurstState, Elemental> {
 }
 ```
 
-Core 提供八个具体 Effect：神经眩晕／麻痹、物理／元素侵蚀、法术／元素灼燃，以及消耗 SP／恢复攻击力的凋亡。每个实现接收自身所需的数值参数。Data 在模块初始化时传入数值，构建并保存完整静态 Definition，爆发时查表复用。initialize 返回 `{ type }`，state 只保存元素类型。BurstDefinition 是普通 Effect Definition 加共同的只读 durationTicks 恢复预算；onInstall 接收尚未初始化时间的普通 Effect，以此预算建立 DURATION 后形成 Burst，后续程序在领域回调边界恢复该类型。Burst 的 Typed Ref 保留 DURATION 写入约束；expiration 是恢复、周期边界与攻击力恢复共用的唯一进度。
+Core 提供八个具体 Effect：神经眩晕／麻痹、物理／元素侵蚀、法术／元素灼燃，以及消耗 SP／恢复攻击力的凋亡。每个实现接收自身所需的数值参数。Content 使用 Data 提供的静态数值构造完整 Definition，爆发时查表复用。initialize 返回 `{ type }`，state 只保存元素类型。BurstDefinition 是普通 Effect Definition 加共同的只读 durationTicks 恢复预算；onInstall 接收尚未初始化时间的普通 Effect，以此预算建立 DURATION 后形成 Burst，后续程序在领域回调边界恢复该类型。Burst 的 Typed Ref 保留 DURATION 写入约束；expiration 是恢复、周期边界与攻击力恢复共用的唯一进度。
 
 Burst 的 id、host、source、enabled、lifecycle 由 Effect 提供，Elemental 的 burst 槽位只保存它的 Typed Ref。`ref(self)` 复用 Effect Ref，地址为 host + Effect ID；没有独立 Burst ID 分配器或 Lifetime。旧引用不能操作后来的爆发。来源引用保存历史身份，不要求来源仍在场，也不隐含生命周期绑定；跨 Battle 使用 Ref 仍属于调用契约错误。
 
-[data/arknights/elemental.ts](../../src/data/arknights/elemental.ts) 保存原始类型映射、八套数值和具体 Effect 的选择表。通用 EP 的 Calculate／Apply／Commit 通过映射调用对应 Effect；共享函数只处理进度、EP 恢复和结束收尾。通用控制实现在 [effects/control.ts](../../src/core/effects/control.ts)，Content 直接复用；通用 Effect 引擎不解释元素规则。
+当前 [data/arknights/elemental.ts](../../src/data/arknights/elemental.ts) 同时保存原始类型映射、八套数值并构造具体 Effect Definition 的选择表；其中 Definition 构造尚待迁入 Content。通用 EP 的 Calculate／Apply／Commit 通过映射调用对应 Effect；共享函数只处理进度、EP 恢复和结束收尾。通用控制实现在 [effects/control.ts](../../src/core/effects/control.ts)，Content 直接复用；通用 Effect 引擎不解释元素规则。
 
 需要随该次爆发结束的产物通过 `scope(effects.lifetime, ref)` 绑定根 Burst Effect：灼燃减抗、封技、阻止 SP 回复等在根实例结束时清理。新依赖的资格由 Effect Lifetime 的可用性判断。
 

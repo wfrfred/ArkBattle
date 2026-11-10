@@ -56,7 +56,7 @@ interface WeightedSpawns {
 
 Definition 的 waves 是确定的主线程序，branches 按名称查找。Fragment 保存预处理后的确定 Spawn 序列；BranchPhase.entries 可以包含确定序列或执行时抽选的整组候选。它们不保存执行索引、每次抽选结果或实际等待关系。
 
-Schedule 导出的 UnitDefinition 描述可由普通 Spawn 创建的完整静态 Unit：基础定义、必需的 Route.definition，以及不需要额外必需 Initial 的可选 Capability。该入口排除 Occupancy 和依赖它的 Deployable，因为 Spawn 只提供 Route 的必需初始化输入。Data／Content 提供完整定义，Plan、出生偏移与时间快照通过实例初始化建立。
+Schedule 导出的 UnitDefinition 描述可由普通 Spawn 创建的完整静态 Unit：基础定义、必需的 Route.definition，以及不需要额外必需 Initial 的可选 Capability。该入口排除 Occupancy 和依赖它的 Deployable，因为 Spawn 只提供 Route 的必需初始化输入。Content 提供完整 Unit Definition，Data 将原始出怪配置转换为引用这些定义的静态计划；Plan、出生偏移与时间快照通过实例初始化建立。
 
 Plan 是本次路线选择，独立于共享 UnitDefinition。offset 是固定出生偏移，randomRange 是各轴随机半宽，出生时取：
 
@@ -195,7 +195,7 @@ advance 持续转换到阻塞点：未来的出生或延迟时刻、尚未解除
 
 ## Branch 抽选与同步重入
 
-普通 Spawn 的 count、interval 及主 Wave 的随机组由 Data／Content 在战斗前展开为确定序列。BranchPhase 的 WeightedSpawns 每次触发时按权重抽选一个 option，整组选中的 spawns 一起加入本次 ActivePhase，不对展开后的每个 Spawn 分别抽选，也不在后续 Tick 重抽。
+普通 Spawn 的 count、interval 及主 Wave 的随机组由 Data 在战斗前转换为确定序列；手写内容也可以直接提供静态计划。BranchPhase 的 WeightedSpawns 每次触发时按权重抽选一个 option，整组选中的 spawns 一起加入本次 ActivePhase，不对展开后的每个 Spawn 分别抽选，也不在后续 Tick 重抽。
 
 循环 Branch 再次执行同一 Phase 时重新抽选。确定 Entry 直接纳入本次完整序列；抽选结果保存在 ActivePhase.spawns，静态 Definition 保持不变。
 

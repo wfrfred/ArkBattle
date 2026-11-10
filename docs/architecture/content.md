@@ -1,10 +1,12 @@
 # 内容接入
 
-Core 表达通用作战规则，内容模块表达角色行为，数据适配层解释客户端原表。以重要的可观察玩法结果为依据选择工程结构，原生内部类与字段布局不直接决定项目 API。
+Core 表达通用作战规则并维护模拟状态，Content 提供具体内容的 Definition，Data 转换客户端静态资料。以重要的可观察玩法结果为依据选择工程结构，原生内部类与字段布局不直接决定项目 API。
 
 ## 数据与行为
 
-干员的静态角色模块通过 ESM 导入，组合 Capability、Effect、Hook 和 Action。选择精英阶段、等级、潜能、信赖、技能等级／专精及模组后，数据层提供规范化的配置结果；角色模块据此产生具体 Definition。它们不通过字符串动态装载技能或 Effect 程序。
+Data 接收原表、Prefab 提取结果、关卡资料及本次静态配置，输出规范化的属性、标识、黑板、路线和调度数据。干员的精英阶段、等级、潜能、信赖、技能等级／专精及模组选择在这一步完成；具体技能、Effect、Rule 和 Hook 程序不由 Data 实现。
+
+Content 模块通过 ESM 导入，按规范化数据组合 Capability、Effect、Hook 和 Action，构造包含回调与初始化程序的完整 Definition。Core 根据 Definition 与本次 Initial 创建初始 State，再按明确的领域时点执行内容程序。Content 不自行推进模拟，也不在模块或闭包中保存本场运行事实；私有数据由其初始化程序返回，随实例保存在 Core State 中。内容不通过字符串动态装载技能或 Effect 程序。
 
 等级属性和信赖增量分别按各自关键帧插值，并在写回时按原生字段类型处理：MaxHP、ATK、DEF、嘲讽、阻挡数、费用和再部署时间取偶舍入，法抗、攻速与基础攻击间隔保留小数。先分别完成等级属性和信赖增量的写回，再相加，不在汇总后统一取整。依据见[干员配置数据补核](../research/cases/06-talent-lifecycle-and-model.md#干员配置数据补核2026-11-10)。这项数据转换不改变 Core 属性贡献或伤害结算的数值契约。
 
@@ -18,11 +20,11 @@ Meta 可以选择配置或提供关卡输入。卫戍的普通／金色等政策
 
 标准效果成品位于 `core/effects/`，控制、保护、可选中性程序分别由 [control.ts](../../src/core/effects/control.ts)、[protection.ts](../../src/core/effects/protection.ts)、[visibility.ts](../../src/core/effects/visibility.ts) 提供；标准元素爆发的具体程序位于 `core/effects/elemental/`。通用附着实例、生命周期操作与 Effects 异构容器继续位于 `core/unit/effect/`。Content 复用标准效果，决定触发时机、对象、参数与专属附加业务；同一标准效果的识别、叠加、替换和伤判规则由公共实现维护。
 
-Elemental Capability 负责 EP 接收与提交、爆发触发和当前爆发引用，共同的类型、进度、EP 恢复与结束收尾保留在 `core/unit/capability/elemental/burst.ts`；Data 绑定数值并按接收者类别选好元素到具体 Effect Definition 的映射，不提供爆发执行回调。标准效果按实际使用逐项实现，完整候选范围见[标准效果库](effect.md#10-标准效果库与候选范围)；清单不作为一次性实现计划，也不提前建立空文件。
+Elemental Capability 负责 EP 接收与提交、爆发触发和当前爆发引用，共同的类型、进度、EP 恢复与结束收尾保留在 `core/unit/capability/elemental/burst.ts`。Data 提供接收者类别及标准数值，Content 绑定 Core 的具体 Effect，构造元素到 Effect Definition 的映射。标准效果按实际使用逐项实现，完整候选范围见[标准效果库](effect.md#10-标准效果库与候选范围)；清单不作为一次性实现计划，也不提前建立空文件。
 
 弩手的 action.ts 分别定义 melee 与 ranged，两者有各自的冷却和执行状态。unit.ts 按当前阻挡关系选择近战或远程，在已有主动作执行期间不并发启动另一主动作；选择和互斥属于内容策略。场景选择敌人和配置波次，不通过一个带敌人 ID 分支的中央工厂构造所有内容。确实共用的地面属性与能力装配由普通函数提供，具体攻击程序归各自内容。
 
-装置行为位于 `devices/`。`crate.ts`、`shooting-platform.ts` 接受类型化配置并构造 Unit Definition，通过 Unit 的 enter／leave Hook 处理改格和清理；实际共用的改格函数放在 Content 内。射击台在 Occupancy 的 SUPPORT Definition 中提供 onOccupantAdded／onOccupantRemoved 程序，在当前乘员的 blocker.rules 登记平台实例独占的共享二元 Rule，只禁止 GROUND 阻挡，AIR 仍由其余 Blocking 规则判断；配对解除时只清理该平台规则，不改写地块阻挡许可。Data 只解析资源与关卡实例，并根据资源标识选择工厂，不在运行程序中按 Prefab Key 决定业务。内部批量登记交换用于验证结构与同步通知，不能证明游戏允许自由搬动平台。
+装置行为位于 `devices/`。`crate.ts`、`shooting-platform.ts` 接受类型化配置并构造 Unit Definition，通过 Unit 的 enter／leave Hook 处理改格和清理；实际共用的改格函数放在 Content 内。射击台在 Occupancy 的 SUPPORT Definition 中提供 onOccupantAdded／onOccupantRemoved 程序，在当前乘员的 blocker.rules 登记平台实例独占的共享二元 Rule，只禁止 GROUND 阻挡，AIR 仍由其余 Blocking 规则判断；配对解除时只清理该平台规则，不改写地块阻挡许可。Data 解析资源标识、数值和关卡实例，Content 据此选择具体装置实现并构造完整 Definition。内部批量登记交换用于验证结构与同步通知，不能证明游戏允许自由搬动平台。
 
 干员的分支共享模块表达共同特性和默认行为；具体干员显式组合这些函数，接入自己的天赋、技能及模组变化。不建立模板继承、中央分支注册表或逐层转发工厂。只有出现实际共享规则时才建立对应模块。
 

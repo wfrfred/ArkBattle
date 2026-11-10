@@ -33,7 +33,8 @@ healFree 只限制治疗目标选择，明确 Ref 的 Healing 不重新检查选
 | Projectile | 已发射后的独立执行实例；Definition 解释私有 state，按内容保存目标、样本、命中历史和运动进度，并决定命中和终止策略。 |
 | Deployment / Card | Deployment 管费用与部署操作；Card 管跨实例的私有 state、供给、费用惩罚和冷却；Deployable 管场上部署属性。 |
 | Schedule / Predefined | 分别管理出兵／关卡动作进度，以及预置定义与运行实例的绑定；开场 Unit 使用 initiallyPresent:true 的预置项，出现时直接复用 Unit 初始化与登记。 |
-| Data / Content | Data 适配原始配置；Content 实现具体角色、技能、天赋、装备和模式规则，组合领域操作。 |
+| Data | 将原始资料与本次静态配置转换为规范化数据，不实现内容程序或保存运行时事实。 |
+| Content | 根据规范化数据构造完整 Definition，提供具体行为及初始化程序；运行事实由 Core State 保存，程序由 Core 调用。 |
 | Meta / 模式规则 | 通过 Battle 输入、当前状态和事件接入外层；经营、回合及完整模式结果反馈尚未接通。 |
 
 当前演示通过 [src/legacy/tactical-demo.ts](../../src/legacy/tactical-demo.ts) 调用 Core 的 initialize／step，并将状态和事件转换为展示数据。该适配层不提供完整经营、联防或领袖战规则。
@@ -63,7 +64,7 @@ healFree 只限制治疗目标选择，明确 Ref 的 Healing 不重新检查选
 | SP-02 连击回复 | 各实际攻击按机制产生回复；剑豪等特定连击有例外。[技力需求](https://prts.wiki/w/技能#技力需求) | [普通攻击程序](../../src/content/actions/attack.ts) 在明确释放点取得 ACTION SP；通用 Action 不自动回复。完整连击及例外仍需具体程序接入。 | 部分实现／P1 |
 | SKILL-01 特殊技能 | 需求和消费可分离；充能、蓄力及二次触发保留可观测语义。[技能](https://prts.wiki/w/技能#特殊属性) | [Skill 设计](skill.md) 已提供单 Skill 的持久 S、本次 A、独立 SP 支付、主动操作和完整终止；敌人多技能由 Action 等领域表达。具体特殊技能见覆盖审查。 | 基础模型已实现，特殊内容／P1 |
 | SKILL-02 弹药耗尽检查 | 消费与耗尽检查分离；普通弹药技能的下一次普攻检查结束语义应由对应内容表达。[弹药](https://prts.wiki/w/技能#特殊属性) | 现有内容组合器在本次 afterOutput 连续调用 consume／check，尚需用代表内容核对其与目标检查时点的差异及影响。 | 内容时点待核对／P1 |
-| EFFECT-02 叠加与续期 | DEFAULT / STACK / UNIQUE / EXTEND / EXTEND_TIME 等按内容实施，不能用同一组赢家替代。[叠加策略](https://prts.wiki/w/BUFF#叠加策略) | [data/arknights/buff-stacking.ts](../../src/data/arknights/buff-stacking.ts) 有计划计算，但没有生产调用链；实际安装尚未覆盖五类策略。 | 部分实现／P1 |
+| EFFECT-02 叠加与续期 | DEFAULT / STACK / UNIQUE / EXTEND / EXTEND_TIME 等按内容实施，不能用同一组赢家替代。[叠加策略](https://prts.wiki/w/BUFF#叠加策略) | [buff-stacking.ts](../../src/data/arknights/buff-stacking.ts) 的计划计算仅由测试消费，没有实际 Effect 接入；安装和组竞争不能替代重应用、叠层及续期。 | 运行接入待完成／P1 |
 | EFFECT-03 Aura 与周期业务 | Effect 保存刷新进度和目标到接收实例的关联；范围查询不等于安装事实；每个领域消费自己的输出。[BUFF](https://prts.wiki/w/BUFF) | onTick、state、子 scope 可承载，但缺代表性生产 Aura 链路及其刷新、暂停、离开验证。 | 部分实现／P1 |
 | ABNORMAL-02 沉默／静默 | 沉默只作用可沉默的技能、能力与 Buff；静默另有无条件限制。[异常效果](https://prts.wiki/w/异常效果) | [effects/control.ts](../../src/core/effects/control.ts) 的 silence 无条件禁止 Skill 激活，也未暂停已有可沉默 Effect。 | 明确不一致／P1 |
 | ABNORMAL-03 免疫、反制、抵抗 | 区分安装限制、使效果失效、清除相关 Buff 和持续时间变化；不能统一为删除实例。[BUFF](https://prts.wiki/w/BUFF)、[异常效果](https://prts.wiki/w/异常效果) | 通用行为尚未接入；当前地面敌人工厂拒绝未支持的 stunImmune 配置。 | 部分实现／P1 |
@@ -86,6 +87,7 @@ healFree 只限制治疗目标选择，明确 Ref 的 Healing 不重新检查选
 | SCHEDULE-01 波次与预置动作 | 主 Wave／Fragment 接收预处理 Spawn，Branch Phase 每次按权重选组；波次等待与最终等待分开，离场同步解除。见 [Schedule](schedule.md)。 | 已接入同步出生、随机与索引先发布、Enter 重入及超时政策；Predefined 使用独立领域操作。统计、STORY 与其他调度动作不由普通 Spawn 推断。 | 已实现普通 Spawn／P1 |
 | RESULT-01 漏怪与结束 | Core.step 产生完整一 Tick 状态，调用者依据 Schedule 与其他事实决定何时停止；蓝门扣血、Finished、Killed 分别建模。见 [职责约定](schedule.md#领域边界)。 | Core 不保存终局 Result 或自动冻结；演示调用层自行检查调度状态与时间预算。全局统计与完整玩法胜负尚未接入。 | 部分实现／P0 |
 | CONTENT-01 干员与敌人接入 | 主模式等级、精英、潜能、信赖、模组与具体天赋／技能共同生成行为。[玫兰莎](https://prts.wiki/w/玫兰莎)、[泥岩](https://prts.wiki/w/泥岩) | Data 配置和四个代表内容已跑通；不能推定所有天赋、技能、敌人及分支模板已实现。 | 部分实现／P1 |
+| DATA-01 静态转换与内容构造 | [项目分层](ARCHITECTURE.md#项目分层)：Data 输出规范化静态数据，Content 输出包含程序的完整 Definition，Core 统一初始化与推进。 | Data 中仍有技能／Effect 程序、装置部署 Rule 与默认政策，以及标准爆发、地形和演示单位的定义装配。modifier 与 buff-stacking 的运行算法仅被测试消费；场景准备也尚未移出 Data。 | 分层迁移待完成／P1 |
 | MODE-01 卫戍接入与归属 | 模式机制处理倒下、原地保留、自动部署、共享额度和本场收益；阵营、地图区域、控制方、敌人来源分别保存。[卫戍帮助](https://prts.wiki/w/卫戍协议/帮助) | Mechanism 有退场接入点，但实际模式内容未接齐；SIDE_A / SIDE_B 不是玩家或结算来源 ID。 | 部分实现／P1 |
 | MODE-02 Meta 与 Tactical | 经营／回合规则通过战斗输入与结果接入；联防与领袖战使用各自规则。[卫戍帮助](https://prts.wiki/w/卫戍协议/帮助) | 经营／回合、联防、领袖战等外层模式尚未与当前 Core 的输入和结果形成完整调用链。 | 未接入／P1 |
 

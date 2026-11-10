@@ -459,7 +459,7 @@ core/
 
 - 标准元素爆发依赖眩晕等标准效果，公共程序保持 Core 内部依赖；Content 直接复用这些成品，避免各自实现同一机制而产生优先级、叠加或替换差异。
 - 标准效果库导出 stun、invincible 等具体 Definition 或配置工厂；`core/unit/effect/` 提供 install、end 等实例操作。Effects 是运行时异构容器，两者按职责和导入名称区分。
-- Elemental Capability 继续负责 EP 接收与提交、爆发触发和当前爆发引用；`effects/elemental/` 实现标准爆发造成的伤害、控制、属性变化与周期输出。Data 提供数值及具体 Definition 的选择表。
+- Elemental Capability 继续负责 EP 接收与提交、爆发触发和当前爆发引用；`effects/elemental/` 实现标准爆发造成的伤害、控制、属性变化与周期输出。Data 提供静态数值，Content 负责具体 Definition 的装配；当前迁移缺口见 [Elemental](elemental.md#2-burst-effect-与标准规则)。
 - Content 决定标准效果的施加对象、触发时机、配置参数与专属附加业务。普通属性增减、任意周期输出、反伤、标记、光环等继续按具体内容组合；专属程序也使用同一套 Definition 与安装接口，不建立涵盖所有 Effect 的封闭总枚举。
 - 控制、保护、可选中性程序分别位于 [control.ts](../../src/core/effects/control.ts)、[protection.ts](../../src/core/effects/protection.ts)、[visibility.ts](../../src/core/effects/visibility.ts)，八个标准元素爆发 Effect 位于 `effects/elemental/`。文件按职责组织，一个文件可以提供多个具体效果。
 
