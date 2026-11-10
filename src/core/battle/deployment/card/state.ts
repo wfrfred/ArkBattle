@@ -1,4 +1,5 @@
 import * as contribution from "../../../unit/contribution/contribution.js";
+import * as entries from "../../../common/collection/entries.js";
 import * as attribute from "../../../unit/contribution/attribute.js";
 import type { Card, Clock, TimerTarget } from "./card.js";
 
@@ -183,13 +184,13 @@ export function setCostContribution<T extends Card<any>>(
     card: T,
     entry: contribution.Contribution<readonly attribute.Modifier[]>,
 ): T {
-    const costContributions = contribution.set(card.costContributions, entry);
+    const costContributions = entries.set(card.costContributions, entry);
 
     return costContributions === card.costContributions ? card : { ...card, costContributions };
 }
 
 export function removeCostContribution<T extends Card<any>>(card: T, id: string): T {
-    const costContributions = contribution.remove(card.costContributions, id);
+    const costContributions = entries.remove(card.costContributions, id);
 
     return costContributions === card.costContributions ? card : { ...card, costContributions };
 }
@@ -198,7 +199,7 @@ export function setRedeployTimeContribution<T extends Card<any>>(
     card: T,
     entry: contribution.Contribution<readonly attribute.Modifier[]>,
 ): T {
-    const redeployTimeContributions = contribution.set(card.redeployTimeContributions, entry);
+    const redeployTimeContributions = entries.set(card.redeployTimeContributions, entry);
 
     return redeployTimeContributions === card.redeployTimeContributions
         ? card
@@ -206,7 +207,7 @@ export function setRedeployTimeContribution<T extends Card<any>>(
 }
 
 export function removeRedeployTimeContribution<T extends Card<any>>(card: T, id: string): T {
-    const redeployTimeContributions = contribution.remove(card.redeployTimeContributions, id);
+    const redeployTimeContributions = entries.remove(card.redeployTimeContributions, id);
 
     return redeployTimeContributions === card.redeployTimeContributions
         ? card

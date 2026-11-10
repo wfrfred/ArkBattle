@@ -1,4 +1,4 @@
-import { type Entry, set, remove } from "../hook.js";
+import { type Entry, set, remove } from "../common/collection/entries.js";
 import { createChange, type Change } from "./change.js";
 import type { Unit } from "./unit.js";
 

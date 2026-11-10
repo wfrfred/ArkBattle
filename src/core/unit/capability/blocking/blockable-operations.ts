@@ -1,7 +1,7 @@
 import * as blocking from "../../../battle/blocking/operations.js";
 import { relations } from "../../../battle/blocking/query.js";
-import * as registry from "../../../hook.js";
-import * as contribution from "../../contribution/contribution.js";
+import * as entries from "../../../common/collection/entries.js";
+import type * as contribution from "../../contribution/contribution.js";
 import { createChange, type Change } from "../../change.js";
 import { createRegistrationOperations } from "../../registration.js";
 import type { Ref } from "../../../common/ref.js";
@@ -92,7 +92,7 @@ export function advancePosition(
 export function setRule(rule: Rule): Change<Unit & Blockable> {
     return createChange<Unit & Blockable>(
         (self) => {
-            const rules = registry.set(self.blockable.rules, rule);
+            const rules = entries.set(self.blockable.rules, rule);
 
             return rules === self.blockable.rules
                 ? self
@@ -105,7 +105,7 @@ export function setRule(rule: Rule): Change<Unit & Blockable> {
 export function removeRule(id: string): Change<Unit & Blockable> {
     return createChange<Unit & Blockable>(
         (self) => {
-            const rules = registry.remove(self.blockable.rules, id);
+            const rules = entries.remove(self.blockable.rules, id);
 
             return rules === self.blockable.rules
                 ? self
@@ -122,7 +122,7 @@ export function setVolumeContribution(
 
     return createChange<Unit & Blockable>(
         (self) => {
-            const volume = contribution.set(self.blockable.volume, entry);
+            const volume = entries.set(self.blockable.volume, entry);
 
             return volume === self.blockable.volume
                 ? self
@@ -139,7 +139,7 @@ export function setVolumeContribution(
 export function removeVolumeContribution(id: string): Change<Unit & Blockable> {
     return createChange<Unit & Blockable>(
         (self) => {
-            const volume = contribution.remove(self.blockable.volume, id);
+            const volume = entries.remove(self.blockable.volume, id);
 
             return volume === self.blockable.volume
                 ? self

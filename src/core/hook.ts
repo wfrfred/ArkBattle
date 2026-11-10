@@ -1,8 +1,5 @@
 import type { State as BattleState, Result } from "./battle/state.js";
-
-export interface Entry {
-    readonly id: string;
-}
+import { type Entry, set, remove } from "./common/collection/entries.js";
 
 declare const entryType: unique symbol;
 
@@ -118,27 +115,4 @@ export function dispatch<C, T>(
     }
 
     return { state: battle, value: current };
-}
-
-export function set<T extends { readonly id: string }>(
-    entries: readonly T[],
-    entry: T,
-): readonly T[] {
-    const index = entries.findIndex((current) => current.id === entry.id);
-    if (index < 0) {
-        return [...entries, entry];
-    }
-
-    return entries[index] === entry
-        ? entries
-        : [...entries.slice(0, index), entry, ...entries.slice(index + 1)];
-}
-
-export function remove<T extends { readonly id: string }>(
-    entries: readonly T[],
-    id: string,
-): readonly T[] {
-    return entries.some((entry) => entry.id === id)
-        ? entries.filter((entry) => entry.id !== id)
-        : entries;
 }

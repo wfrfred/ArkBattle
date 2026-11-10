@@ -128,7 +128,7 @@ Allegiance 保存 ALLY、ENEMY、NEUTRAL 三种 Side，表达阵营关系，不�
 
 unit/contribution/attribute.ts 只定义明日方舟属性的 Modifier、create、apply。四字段和四段公式只属于 Attribute，不是所有数值过程的通用公式。动态 Input 由各领域声明：静态 Modifier 数组，或 `(battle, self: Unit & 本领域Capability) => readonly Modifier[]`；所属领域直接求值，不使用通用 Query Context 或 evaluate 包装。
 
-Contribution<V> 没有默认载荷。通用模块只处理身份、登记、替换、移除和互斥；resolve 返回有效 V，不求值或展开。属性调用者显式采样并展开 Modifier 数组；特殊领域使用自己的载荷和计算。互斥优先级选择赢家，不能借此代替领域程序的执行顺序。
+Contribution<V> 没有默认载荷。登记、替换与移除复用 common/collection/entries.ts；贡献模块的 resolve 选择互斥赢家并返回有效 V，不求值或展开。属性调用者显式采样并展开 Modifier 数组；特殊领域使用自己的载荷和计算。互斥优先级选择赢家，不能借此代替领域程序的执行顺序。
 
 MaxHP 只接收明确采样的属性修正，在贡献变更时协调当前 HP 比例。各属性的范围、取整、采样和变化响应由所属领域维护。
 

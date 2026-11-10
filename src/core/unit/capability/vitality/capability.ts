@@ -1,6 +1,7 @@
 import type { State as BattleState, Result } from "../../../battle/state.js";
 import { assertNonnegativeNumber } from "../../../common/assert.js";
 import * as contribution from "../../contribution/contribution.js";
+import * as entries from "../../../common/collection/entries.js";
 import * as attribute from "../../contribution/attribute.js";
 import type { Unit } from "../../unit.js";
 import type {
@@ -96,7 +97,7 @@ export function setMaxHpContribution(
     entry: contribution.Contribution<readonly attribute.Modifier[]>,
 ): Change<Unit & Vitality> {
     return createChange<Unit & Vitality>((self) => {
-        const maxHp = contribution.set(self.vitality.maxHp, entry);
+        const maxHp = entries.set(self.vitality.maxHp, entry);
         if (maxHp === self.vitality.maxHp) {
             return self;
         }
@@ -114,7 +115,7 @@ export function setMaxHpContribution(
 
 export function removeMaxHpContribution(id: string): Change<Unit & Vitality> {
     return createChange<Unit & Vitality>((self) => {
-        const maxHp = contribution.remove(self.vitality.maxHp, id);
+        const maxHp = entries.remove(self.vitality.maxHp, id);
         if (maxHp === self.vitality.maxHp) {
             return self;
         }

@@ -1,5 +1,6 @@
 import type { Unit } from "../../unit.js";
-import * as contribution from "../../contribution/contribution.js";
+import type * as contribution from "../../contribution/contribution.js";
+import * as entries from "../../../common/collection/entries.js";
 import type { State as BattleState, Result } from "../../../battle/state.js";
 import type { Skill as SkillState } from "../../skill/skill.js";
 import type { Events, Hook } from "./hook.js";
@@ -91,7 +92,7 @@ export function setAmmoContribution(
             return self;
         }
 
-        const ammo = contribution.set(self.skill.ammo, entry);
+        const ammo = entries.set(self.skill.ammo, entry);
 
         return ammo === self.skill.ammo ? self : { ...self, skill: { ...self.skill, ammo } };
     });
@@ -103,7 +104,7 @@ export function removeAmmoContribution(id: string): Change<Unit & Skill> {
             return self;
         }
 
-        const ammo = contribution.remove(self.skill.ammo, id);
+        const ammo = entries.remove(self.skill.ammo, id);
 
         return ammo === self.skill.ammo ? self : { ...self, skill: { ...self.skill, ammo } };
     });

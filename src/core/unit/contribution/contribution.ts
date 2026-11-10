@@ -13,33 +13,6 @@ export interface Contribution<V> {
     readonly group?: Group;
 }
 
-export function set<V>(
-    entries: readonly Contribution<V>[],
-    contribution: Contribution<V>,
-): readonly Contribution<V>[] {
-    const index = entries.findIndex(({ id }) => id === contribution.id);
-    if (index === -1) {
-        return [...entries, contribution];
-    }
-    if (entries[index] === contribution) {
-        return entries;
-    }
-
-    const updated = [...entries];
-    updated[index] = contribution;
-
-    return updated;
-}
-
-export function remove<V>(
-    entries: readonly Contribution<V>[],
-    id: string,
-): readonly Contribution<V>[] {
-    const updated = entries.filter((entry) => entry.id !== id);
-
-    return updated.length === entries.length ? entries : updated;
-}
-
 export function resolve<V>(entries: readonly Contribution<V>[]): readonly V[] {
     const ordered = [...entries].sort((a, b) => {
         if (a.id === b.id) {

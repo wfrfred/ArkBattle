@@ -5,9 +5,9 @@ import type { Modifier } from "../../../unit/contribution/attribute.js";
 import type { State as BattleState } from "../../state.js";
 import { replaceCard } from "../resources.js";
 import type { Card, TimerTarget } from "./card.js";
-import type { Entry, Key } from "../../../hook.js";
+import type { Key } from "../../../hook.js";
+import { type Entry, set, remove } from "../../../common/collection/entries.js";
 import type { Rule } from "./rule.js";
-import * as hook from "../../../hook.js";
 import { get } from "./query.js";
 import * as card from "./state.js";
 
@@ -154,7 +154,7 @@ export function removeUnitHook<H extends Entry>(
 
 export function setRule(battle: BattleState, reference: Ref<Card<any>>, entry: Rule): BattleState {
     const self = requireCard(battle, reference);
-    const rules = hook.set(self.rules, entry);
+    const rules = set(self.rules, entry);
 
     return rules === self.rules ? battle : replaceCard(battle, { ...self, rules });
 }
@@ -165,7 +165,7 @@ export function removeRule(
     id: string,
 ): BattleState {
     const self = requireCard(battle, reference);
-    const rules = hook.remove(self.rules, id);
+    const rules = remove(self.rules, id);
 
     return rules === self.rules ? battle : replaceCard(battle, { ...self, rules });
 }

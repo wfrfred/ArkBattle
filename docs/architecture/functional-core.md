@@ -230,7 +230,7 @@ candidates 每次派发调用一次并复制 ID 序列，顺序由领域决定�
 
 不需要操作值的通知使用 T=void，仍返回 Result<void>，C 也可为 void。需要终止后续通知时，领域定义自己的控制值，不把业务取消、停止派发和生命周期终结混为同一个布尔值。Vitality 的阶段控制只在本节点生效，不能成为后续业务事实的一部分。
 
-公共 API 为 set、remove、dispatch；set/remove 按 ID 登记、替换与撤销，保留结构共享。领域持有登记集合，定义节点、排序、资格与停止条件。Effect 与 [Projectile](projectile.md) 的 Definition 回调直接接收完整 self；异构容器内部擦除私有参数，Core 调用同一实例自身 Definition 的程序，不解释未知 state。Definition 程序与本次 Hook 派发的固定 Context 分别定义。
+通用条目的 set／remove 位于 common/collection/entries.ts，按 ID 登记、替换与撤销，保留顺序与结构共享；Hook 模块提供类型化集合和 dispatch。领域持有登记集合，定义节点、排序、资格与停止条件。Effect 与 [Projectile](projectile.md) 的 Definition 回调直接接收完整 self；异构容器内部擦除私有参数，Core 调用同一实例自身 Definition 的程序，不解释未知 state。Definition 程序与本次 Hook 派发的固定 Context 分别定义。
 
 Unit 持有不可变 Effects 容器，内部 Store<Id, Effect<any, any>> 保存异构完整实例及 ID 进度。普通 get(id)／values() 返回默认 object／object 的完整 Effect，包含 state 与原 Definition；精确 Ref／Definition 查询保留已有类型证明。values／keys 返回绑定容器版本的 Query；Core 同样使用 get(id) 返回的默认 object 完整实例调用自身 Definition。Core 通过实例自身已配对的 Definition 执行程序，不解释未知 state 或 H；跨完整操作后仍读取最新实例。真实所有权保护结束中的宿主与存储；Departure 等明确历史载荷按本领域业务输入保存。
 

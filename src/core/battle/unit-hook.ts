@@ -1,4 +1,5 @@
 import * as hooks from "../hook.js";
+import { set, remove } from "../common/collection/entries.js";
 import type { Departure } from "../unit/unit.js";
 import type { State as BattleState } from "./state.js";
 
@@ -17,7 +18,7 @@ export function setHook<K extends Key>(
     key: K,
     entry: Hook<Events[K]>,
 ): BattleState {
-    const entries = hooks.set(battle.unitHooks[key], entry);
+    const entries = set(battle.unitHooks[key], entry);
 
     return entries === battle.unitHooks[key]
         ? battle
@@ -25,7 +26,7 @@ export function setHook<K extends Key>(
 }
 
 export function removeHook(battle: BattleState, key: Key, id: string): BattleState {
-    const entries = hooks.remove<State[Key][number]>(battle.unitHooks[key], id);
+    const entries = remove<State[Key][number]>(battle.unitHooks[key], id);
 
     return entries === battle.unitHooks[key]
         ? battle

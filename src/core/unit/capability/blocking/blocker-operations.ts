@@ -1,8 +1,8 @@
 import * as blocking from "../../../battle/blocking/operations.js";
 import { relations, usedCapacity } from "../../../battle/blocking/query.js";
 import type { State as BattleState } from "../../../battle/state.js";
-import * as registry from "../../../hook.js";
-import * as contribution from "../../contribution/contribution.js";
+import * as entries from "../../../common/collection/entries.js";
+import type * as contribution from "../../contribution/contribution.js";
 import { createChange, type Change } from "../../change.js";
 import { createRegistrationOperations } from "../../registration.js";
 import type { Ref } from "../../../common/ref.js";
@@ -67,7 +67,7 @@ export function settleCapacity(battle: BattleState, reference: Ref<Unit & Blocke
 export function setRule(rule: Rule): Change<Unit & Blocker> {
     return createChange<Unit & Blocker>(
         (self) => {
-            const rules = registry.set(self.blocker.rules, rule);
+            const rules = entries.set(self.blocker.rules, rule);
 
             return rules === self.blocker.rules
                 ? self
@@ -80,7 +80,7 @@ export function setRule(rule: Rule): Change<Unit & Blocker> {
 export function removeRule(id: string): Change<Unit & Blocker> {
     return createChange<Unit & Blocker>(
         (self) => {
-            const rules = registry.remove(self.blocker.rules, id);
+            const rules = entries.remove(self.blocker.rules, id);
 
             return rules === self.blocker.rules
                 ? self
@@ -95,7 +95,7 @@ export function setCapacityContribution(
 ): Change<Unit & Blocker> {
     return createChange<Unit & Blocker>(
         (self) => {
-            const capacity = contribution.set(self.blocker.capacity, entry);
+            const capacity = entries.set(self.blocker.capacity, entry);
 
             return capacity === self.blocker.capacity
                 ? self
@@ -108,7 +108,7 @@ export function setCapacityContribution(
 export function removeCapacityContribution(id: string): Change<Unit & Blocker> {
     return createChange<Unit & Blocker>(
         (self) => {
-            const capacity = contribution.remove(self.blocker.capacity, id);
+            const capacity = entries.remove(self.blocker.capacity, id);
 
             return capacity === self.blocker.capacity
                 ? self

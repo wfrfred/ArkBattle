@@ -51,7 +51,7 @@ Key 参数化完整 Hook 类型 H，保留特殊 ReceivingHook 的泛型 invoke�
 
 get 对无登记的键返回空集合。同键同 ID 的 set 替换原项并保留位置；新 ID 追加，remove 只移除对应项。merge 按 other 的各键内登记顺序应用同一 set 规则。ID 作用域是 Unit 身份 × Hook 键 × Hook ID，不同键可以复用 ID。删除不恢复被替换的 Definition 旧项。
 
-容器只要求 id。需要优先级的领域在自己的实际 Hook 类型上声明 `priority?: number`：缺省为 0，按降序派发，同优先级保持登记顺序。生命周期 Hook 按登记顺序执行，不引入普遍优先级。排序由派发领域完成，不改变集合中的登记顺序。
+容器只要求 id；Entry 与底层数组 set／remove 复用 [common/collection/entries.ts](../../src/core/common/collection/entries.ts)。需要优先级的领域在自己的实际 Hook 类型上声明 `priority?: number`：缺省为 0，按降序派发，同优先级保持登记顺序。生命周期 Hook 按登记顺序执行，不引入普遍优先级。排序由派发领域完成，不改变集合中的登记顺序。
 
 ## 固有声明与初始化
 

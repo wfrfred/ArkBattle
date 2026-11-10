@@ -1,4 +1,5 @@
 import * as hooks from "../../hook.js";
+import { set, remove } from "../../common/collection/entries.js";
 import type { Unit } from "../../unit/unit.js";
 import type { Deployable } from "../../unit/capability/deployable/capability.js";
 import type { State as BattleState } from "../state.js";
@@ -12,7 +13,7 @@ export interface Deployed {
 export type Hook = hooks.Hook<Deployed, void>;
 
 export function setHook(battle: BattleState, entry: Hook): BattleState {
-    const next = hooks.set(battle.deployment.hooks, entry);
+    const next = set(battle.deployment.hooks, entry);
 
     return next === battle.deployment.hooks
         ? battle
@@ -23,7 +24,7 @@ export function setHook(battle: BattleState, entry: Hook): BattleState {
 }
 
 export function removeHook(battle: BattleState, id: string): BattleState {
-    const next = hooks.remove(battle.deployment.hooks, id);
+    const next = remove(battle.deployment.hooks, id);
 
     return next === battle.deployment.hooks
         ? battle

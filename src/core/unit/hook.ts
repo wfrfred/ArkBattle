@@ -1,4 +1,5 @@
-import { key, type Entry, type Key, type Hook as TacticalHook } from "../hook.js";
+import type { Entry } from "../common/collection/entries.js";
+import { key, type Key, type Hook as TacticalHook } from "../hook.js";
 import { createChange, type Change } from "./change.js";
 import type { Departure, Unit } from "./unit.js";
 

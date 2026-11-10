@@ -9,6 +9,7 @@ import { TICKS_PER_SECOND } from "../../tick.js";
 import type { Unit } from "../unit.js";
 import * as units from "../query.js";
 import * as contribution from "../contribution/contribution.js";
+import * as entries from "../../common/collection/entries.js";
 import * as attribute from "../contribution/attribute.js";
 import { hasVitality } from "../capability/vitality/capability.js";
 import type { Skill } from "../capability/skill/capability.js";
@@ -99,7 +100,7 @@ export function setContribution(
             return self;
         }
 
-        const updated = contribution.set(sp[key], entry);
+        const updated = entries.set(sp[key], entry);
 
         return updated === sp[key]
             ? self
@@ -114,7 +115,7 @@ export function removeContribution(key: Parameter, id: string): Change<Unit & Sk
             return self;
         }
 
-        const updated = contribution.remove(sp[key], id);
+        const updated = entries.remove(sp[key], id);
 
         return updated === sp[key]
             ? self

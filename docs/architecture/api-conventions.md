@@ -342,7 +342,7 @@ compose 是二元、有序的组合：先调用 `first(self)`，再用其 next �
 
 optional 用能力守卫限定已有 Change 的应用：实际调用时检查当前位置的 self，通过时直接返回 `change(self)`，否则返回原 self 与空结算列表。放在 compose 中时，守卫读取前序变换产生的 next，不在构造组合时提前采样。它仍是普通 Change，不引入展开节点，也不改变逐项 previous、no-op、发布与结算顺序。
 
-普通数组注册由内部 [registration.ts](../../src/core/unit/registration.ts) 的 `createRegistrationOperations<U, P, K>(property)` 生成 set／remove Change。Capability 用 Rules、Contributions、Hooks 分组声明普通登记字段，State 直接继承这些分组；K 取 `keyof` 分组，Entry 直接从真实 U[P][K] 提取。set 由具体 Key 推断内联回调类型，再与字段／Entry 的映射元组联合交叉，保持联合 Key 的配对。返回的 Change 只要求相应宿主能力，不要求调用者提前绑定 Ref。单字段接口通过工厂的 `(property, key)` 重载固定字段，生成省略 key 的 set／remove，无需各领域重复数组修改逻辑。工厂复用按 ID 替换保序的数组操作，只完成纯变换和不可变复制，不增加运行时字段清单、能力校验、初始化、求值或派发。
+普通数组注册由内部 [registration.ts](../../src/core/unit/registration.ts) 的 `createRegistrationOperations<U, P, K>(property)` 生成 set／remove Change。Capability 用 Rules、Contributions、Hooks 分组声明普通登记字段，State 直接继承这些分组；K 取 `keyof` 分组，Entry 直接从真实 U[P][K] 提取。set 由具体 Key 推断内联回调类型，再与字段／Entry 的映射元组联合交叉，保持联合 Key 的配对。返回的 Change 只要求相应宿主能力，不要求调用者提前绑定 Ref。单字段接口通过工厂的 `(property, key)` 重载固定字段，生成省略 key 的 set／remove，无需各领域重复数组修改逻辑。通用 Entry 与按 ID 替换保序的数组 set／remove 归 [common/collection/entries.ts](../../src/core/common/collection/entries.ts)，由 Hook、Rule、Contribution 及此工厂共用；工厂只完成纯变换和不可变复制，不增加运行时字段清单、能力校验、初始化、求值或派发。
 
 Vitality 的 damageRules、普通贡献与专属 Hook，Elemental 的 Rules／Contributions／Hooks，Skill 的 Rules／Hooks，Action 的 Rules／Hooks，以及 Deployable、Locomotion、Offense、Targetable 的普通登记共用此工厂；Blocking 两侧的普通 Hook 也使用同一工厂。它不经 Unit 公共入口导出。MaxHP 的贡献与 HP 比例在同一次变换中更新；Ammo 注册保留 AMMO 适用条件，发动时采样容量，当前轮次仍由资源操作改变；Action interval／speed 与 Blocking Rule／容量／体积保留所属领域 Settlement。可空 SP、Unit Typed Key Hooks、Card／Battle 登记保持各自明确的状态和写回协议，不扩展通用路径或后继配置。
 
