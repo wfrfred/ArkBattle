@@ -42,6 +42,7 @@ uv run "$skill/scripts/archive.py" docs/research/evidence
 
 | 批次 | 调查主题 |
 | --- | --- |
+| [enemy-skill-semantics-20261110](enemy-skill-semantics-20261110/README.md) | EnemySkill 独立触发计时、Ability 执行、宿主共享 SP；霜星、圣堂射手与炎佑的模式及资源绑定 |
 | [unit-audit-20261110](unit-audit-20261110/README.md) | 必要语义补核：Buff／属性、控制与地形、坐标数值、Schedule 配置及干员选型；区分已证规则与实现差异 |
 | [leithanien-summons-20261109](leithanien-summons-20261109/README.md) | 规程莱塔尼亚召唤物的热更新绑定、阻挡与追踪停走；最终 EnemyData 数值缺口 |
 | [client-excerpts-20261007](client-excerpts-20261007/README.md) | 初始客户端、Buff 模板与调用摘录；属于较早客户端指纹 |

@@ -1,0 +1,38 @@
+{
+  "checkedOn": "2026-11-10",
+  "scope": "PRTS community documentation consulted for enemy-skill timing and selection; not official client runtime observation.",
+  "sources": [
+    {
+      "url": "https://prts.wiki/w/假想敌：械",
+      "location": "Enemy-skill common notes near page beginning, sections on cooldown and SP",
+      "findings": [
+        "Several skills can be eligible; priority and random ties determine automatic selection.",
+        "A mode-bound skill advances and triggers in its bound mode.",
+        "The documented cooldown begins again at the end of that skill; skills have separate cooldowns.",
+        "Some skills additionally consume SP after their cooldown is ready."
+      ],
+      "limitations": [
+        "Community summary has stated exceptions and incomplete annotations.",
+        "The named page is used for its common notes; no native binding of this specific enemy is claimed by this source."
+      ]
+    },
+    {
+      "url": "https://prts.wiki/w/模板:敌人信息/level/doc",
+      "location": "Legacy template common skill notes",
+      "findings": [
+        "Distinguishes first cooldown, subsequent cooldown and SP consumption.",
+        "Documents prioritization and random selection among equal priorities."
+      ],
+      "limitations": [
+        "Page says the template is no longer used; corroboration only, not the primary native evidence."
+      ]
+    },
+    {
+      "url": "https://prts.wiki/w/矢量战术装备",
+      "location": "Previously cited page rechecked",
+      "limitations": [
+        "The fetched current page did not expose the older common-note text at the queried locations; not used as fresh direct support for those notes."
+      ]
+    }
+  ]
+}

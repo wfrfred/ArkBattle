@@ -17,7 +17,7 @@
 | [05 Skill 开始与结束](05-skill-start-and-finish.md) | 已安装客户端普通 Skill／Ability 原生路径 | 同步结束回调、进入内容的后继与未来 coroutine 的取消边界 |
 | [06 天赋生命周期与建模](06-talent-lifecycle-and-model.md) | 当前客户端 BasicTalent／RebornTalent 与代表性主模式天赋 | 选型、参与、私有状态与多种作用域；独立 Talent Capability 的判断依据 |
 | [07 攻击周期、动画与执行占用](07-action-timing-and-animation.md) | 玫兰莎、能天使、泥岩、弩手、安洁莉娜与莫斯提马 | Cooldown 与 Casting、缓存等待、逻辑动画事件、起手／续轮与后继释放 |
-| [08 Action 启动资格与中断](08-action-eligibility-and-interruption.md) | 当前客户端 Ability、单位攻击状态与 EnemySkill；PRTS 异常／触发规则 | 主动作互斥与嵌套调用、启动与中断、结束业务、敌人技能计时与随机平局 |
+| [08 Action 启动资格与中断](08-action-eligibility-and-interruption.md) | 当前客户端 Ability、单位攻击状态与 EnemySkill；霜星、圣堂射手及炎佑实际绑定 | 主动作互斥、启动／中断与结束；EnemySkill 触发计时、Ability 执行、宿主共享 SP 及模式差异 |
 | [09 Skill 机制与需求](09-skill-mechanisms-and-requirements.md) | PRTS 技力／特殊技能／模式策略；客户端 metadata、原生指令与实际资源；10-29 补核修正协议和原生公式，11-10 核对启动结果消费 | SP 与进度、支付与门槛、触发与持续、跨次状态、弹药与二次操作、结束后输出；2.7 闭合原生公式，2.8 收紧贡献范围，3.3 区分实际成败回退与尚无内容依据的启动失败原因分类 |
 | [10 弱点伤害与概率判定](10-weak-damage-and-critical.md) | 本机 WeakDamage、AtkScaleUp、CalculateDamage 与 Buff 模板 | 已有倍率与无事件试算的区别、事件先后、概率状态及原生／热更新证据边界 |
 | [11 Damage Apply 与 HP Application](11-damage-apply-and-hp-application.md) | 本机接收／HP 原生路径、泥岩盾／玛恩纳反伤／分担模板与 PRTS 致命机制 | 分列客户端证据、Wiki 说明与项目政策；取消后资格、同步反应、普通免死竞争与其他生命干预的边界 |

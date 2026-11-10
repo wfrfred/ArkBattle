@@ -1,0 +1,646 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-11-10"
+    ],
+    "collectionDateSource": "record fields",
+    "organizedOn": "2026-11-10",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+        "records": [
+          "native/contracts.json#/provenance/client/dll",
+          "native/probe.json#/provenance/client/dll",
+          "native/selected-bodies.json#/provenance/client/dll"
+        ],
+        "bytes": 223112680
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        "records": [
+          "native/contracts.json#/provenance/client/metadata",
+          "native/probe.json#/provenance/client/metadata",
+          "native/selected-bodies.json#/provenance/client/metadata"
+        ],
+        "bytes": 46669332
+      }
+    },
+    "sourceRecords": [
+      "content/bindings.json",
+      "native/contracts.json",
+      "native/probe.json",
+      "native/selected-bodies.json",
+      "prts.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12895,
+        "sha256": "9c5b246859318caaec4aab5275ef0d2d49fce5d612c6b4e569973a9941ba621a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "content/bindings.json",
+        "kind": "record",
+        "bytes": 176900,
+        "sha256": "39ee81754c7bdfac867a8533965a5e8324115e3c90b20a6794ad642a2a651484"
+      },
+      {
+        "path": "content/extract_bindings.py",
+        "kind": "historical-script",
+        "bytes": 9475,
+        "sha256": "57897f47a89a2799966a4967192d1e0b3e5898fc186ee0f2f8bed2afd4ffef7d"
+      },
+      {
+        "path": "content/facts.md",
+        "kind": "historical-report",
+        "bytes": 5258,
+        "sha256": "2c6a1af9ee398cd5057456a8c6031e306de13e925796d4c6671b3ae6bba04a11"
+      },
+      {
+        "path": "native/contracts.json",
+        "kind": "record",
+        "bytes": 84093,
+        "sha256": "6ee80d0cd1cb901e9e28e4d2ce784d1ebbce95fe9afe80909834bd8ea09de4db"
+      },
+      {
+        "path": "native/extract_native.py",
+        "kind": "historical-script",
+        "bytes": 5153,
+        "sha256": "ed62404a8fcd7ce54efbc1cfb46878010c0c94a4d0379a02305d3eec1d5d3083"
+      },
+      {
+        "path": "native/facts.md",
+        "kind": "historical-report",
+        "bytes": 7219,
+        "sha256": "eabc4d437c732761c5cb32a0471f10d0a51e4dd292671b155d5ba898023c6b01"
+      },
+      {
+        "path": "native/probe.json",
+        "kind": "record",
+        "bytes": 16908,
+        "sha256": "79b8d7c46d62e737ac4acbe72ce4656d3fb892edc7d0d18a66ab812e4d770a6f"
+      },
+      {
+        "path": "native/selected-bodies.json",
+        "kind": "record",
+        "bytes": 670713,
+        "sha256": "b504b00dbafe3e8308828f4026eb9d0d5a3f15ea3b7d96edb02b39a3337b19c6"
+      },
+      {
+        "path": "prts.json",
+        "kind": "record",
+        "bytes": 1724,
+        "sha256": "48fb5f405cae27bbef9f0f90175abd8b38136c1660743502c88d3de8d0cc9ef9"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 26417,
+          "mode": "metadata",
+          "records": [
+            "native/contracts.json#/result/4/methods/0"
+          ],
+          "fullname": "Torappu.PeriodicTimer.get_isReady",
+          "address": "0x181e4b560"
+        },
+        {
+          "index": 26423,
+          "mode": "metadata",
+          "records": [
+            "native/contracts.json#/result/4/methods/1"
+          ],
+          "fullname": "Torappu.PeriodicTimer.Reset",
+          "address": "0x181e4b0b0"
+        },
+        {
+          "index": 26424,
+          "mode": "metadata",
+          "records": [
+            "native/contracts.json#/result/4/methods/2"
+          ],
+          "fullname": "Torappu.PeriodicTimer.Reset",
+          "address": "0x181e4afc0"
+        },
+        {
+          "index": 26430,
+          "mode": "metadata",
+          "records": [
+            "native/contracts.json#/result/4/methods/3"
+          ],
+          "fullname": "Torappu.PeriodicTimer.Update",
+          "address": "0x181e4b380"
+        },
+        {
+          "index": 63989,
+          "mode": "metadata",
+          "records": [
+            "native/contracts.json#/result/3/methods/0"
+          ],
+          "fullname": "Torappu.Battle.Ability.get_isReady",
+          "address": "0x180605590"
+        },
+        {
+          "index": 63992,
+          "mode": "metadata",
+          "records": [
+            "native/contracts.json#/result/3/methods/1"
+          ],
+          "fullname": "Torappu.Battle.Ability.get_isAffecting",
+          "address": "0x180605210"
+        },
+        {
+          "index": 63993,
+          "mode": "disasm",
+          "records": [
+            "native/contracts.json#/result/3/methods/2",
+            "native/selected-bodies.json#/result/methods/0/method",
+            "native/selected-bodies.json#/result/methods/0/chunks/0",
+            "native/selected-bodies.json#/result/methods/0/chunks/0/method"
+          ],
+          "fullname": "Torappu.Battle.Ability.get_isCasting",
+          "address": "0x1806053e0"
+        },
+        {
+          "index": 64018,
+          "mode": "metadata",
+          "records": [
+            "native/contracts.json#/result/3/methods/3"
+          ],
+          "fullname": "Torappu.Battle.Ability.DoReset",
+          "address": "0x180602a10"
+        },
+        {
+          "index": 64022,
+          "mode": "metadata",
+          "records": [
+            "native/contracts.json#/result/3/methods/4"
+          ],
+          "fullname": "Torappu.Battle.Ability.CastToTarget"
+        },
+        {
+          "index": 64027,
+          "mode": "metadata",
+          "records": [
+            "native/contracts.json#/result/3/methods/5"
+          ],
+          "fullname": "Torappu.Battle.Ability.ResetCooldown",
+          "address": "0x180603eb0"
+        },
+        {
+          "index": 64035,
+          "mode": "metadata",
+          "records": [
+            "native/contracts.json#/result/3/methods/6"
+          ],
+          "fullname": "Torappu.Battle.Ability.Reset",
+          "address": "0x180603fa0"
+        },
+        {
+          "index": 67269,
+          "mode": "disasm",
+          "records": [
+            "native/contracts.json#/result/0/methods/0",
+            "native/selected-bodies.json#/result/methods/1/method",
+            "native/selected-bodies.json#/result/methods/1/chunks/0",
+            "native/selected-bodies.json#/result/methods/1/chunks/0/method"
+          ],
+          "fullname": "Torappu.Battle.EnemySkill.get_isEnabled",
+          "address": "0x1807108a0"
+        },
+        {
+          "index": 67272,
+          "mode": "metadata",
+          "records": [
+            "native/contracts.json#/result/0/methods/1"
+          ],
+          "fullname": "Torappu.Battle.EnemySkill.get_priority",
+          "address": "0x180710c40"
+        },
+        {
+          "index": 67277,
+          "mode": "metadata",
+          "records": [
+            "native/contracts.json#/result/0/methods/2"
+          ],
+          "fullname": "Torappu.Battle.EnemySkill.get_isUsedUp",
+          "address": "0x180710a60"
+        },
+        {
+          "index": 67286,
+          "mode": "disasm",
+          "records": [
+            "native/contracts.json#/result/0/methods/3",
+            "native/selected-bodies.json#/result/methods/2/method",
+            "native/selected-bodies.json#/result/methods/2/chunks/0",
+            "native/selected-bodies.json#/result/methods/2/chunks/0/method"
+          ],
+          "fullname": "Torappu.Battle.EnemySkill.get_recoverSpWhenAffecting",
+          "address": "0x180710cf0"
+        },
+        {
+          "index": 67293,
+          "mode": "metadata",
+          "records": [
+            "native/contracts.json#/result/0/methods/4"
+          ],
+          "fullname": "Torappu.Battle.EnemySkill.get_attributeMask",
+          "address": "0x1807106c0"
+        },
+        {
+          "index": 67294,
+          "mode": "metadata",
+          "records": [
+            "native/contracts.json#/result/0/methods/5"
+          ],
+          "fullname": "Torappu.Battle.EnemySkill.get_abnormalFlagMask",
+          "address": "0x180710560"
+        },
+        {
+          "index": 67300,
+          "mode": "disasm",
+          "records": [
+            "native/contracts.json#/result/0/methods/6",
+            "native/selected-bodies.json#/result/methods/3/method",
+            "native/selected-bodies.json#/result/methods/3/chunks/0",
+            "native/selected-bodies.json#/result/methods/3/chunks/0/method"
+          ],
+          "fullname": "Torappu.Battle.EnemySkill.AssignData",
+          "address": "0x18070dba0"
+        },
+        {
+          "index": 67301,
+          "mode": "disasm",
+          "records": [
+            "native/contracts.json#/result/0/methods/7",
+            "native/selected-bodies.json#/result/methods/4/method",
+            "native/selected-bodies.json#/result/methods/4/chunks/0",
+            "native/selected-bodies.json#/result/methods/4/chunks/0/method"
+          ],
+          "fullname": "Torappu.Battle.EnemySkill.Init",
+          "address": "0x18070f010"
+        },
+        {
+          "index": 67304,
+          "mode": "disasm",
+          "records": [
+            "native/contracts.json#/result/0/methods/8",
+            "native/selected-bodies.json#/result/methods/5/method",
+            "native/selected-bodies.json#/result/methods/5/chunks/0",
+            "native/selected-bodies.json#/result/methods/5/chunks/0/method"
+          ],
+          "fullname": "Torappu.Battle.EnemySkill.CastToTarget",
+          "address": "0x18070e540"
+        },
+        {
+          "index": 67309,
+          "mode": "disasm",
+          "records": [
+            "native/contracts.json#/result/0/methods/9",
+            "native/selected-bodies.json#/result/methods/6/method",
+            "native/selected-bodies.json#/result/methods/6/chunks/0",
+            "native/selected-bodies.json#/result/methods/6/chunks/0/method"
+          ],
+          "fullname": "Torappu.Battle.EnemySkill.CheckAvailable",
+          "address": "0x18070e7d0"
+        },
+        {
+          "index": 67311,
+          "mode": "disasm",
+          "records": [
+            "native/contracts.json#/result/0/methods/10",
+            "native/selected-bodies.json#/result/methods/7/method",
+            "native/selected-bodies.json#/result/methods/7/chunks/0",
+            "native/selected-bodies.json#/result/methods/7/chunks/0/method"
+          ],
+          "fullname": "Torappu.Battle.EnemySkill.Tick",
+          "address": "0x18070f790"
+        },
+        {
+          "index": 67312,
+          "mode": "metadata",
+          "records": [
+            "native/contracts.json#/result/0/methods/11"
+          ],
+          "fullname": "Torappu.Battle.EnemySkill.OnTick",
+          "address": "0x18070f350"
+        },
+        {
+          "index": 67315,
+          "mode": "disasm",
+          "records": [
+            "native/contracts.json#/result/0/methods/12",
+            "native/selected-bodies.json#/result/methods/8/method",
+            "native/selected-bodies.json#/result/methods/8/chunks/0",
+            "native/selected-bodies.json#/result/methods/8/chunks/0/method"
+          ],
+          "fullname": "Torappu.Battle.EnemySkill.TryReduceSp",
+          "address": "0x18070fab0"
+        },
+        {
+          "index": 67317,
+          "mode": "disasm",
+          "records": [
+            "native/contracts.json#/result/0/methods/13",
+            "native/selected-bodies.json#/result/methods/9/method",
+            "native/selected-bodies.json#/result/methods/9/chunks/0",
+            "native/selected-bodies.json#/result/methods/9/chunks/0/method"
+          ],
+          "fullname": "Torappu.Battle.EnemySkill._OnCastStart",
+          "address": "0x1807100a0"
+        },
+        {
+          "index": 67318,
+          "mode": "disasm",
+          "records": [
+            "native/contracts.json#/result/0/methods/14",
+            "native/selected-bodies.json#/result/methods/10/method",
+            "native/selected-bodies.json#/result/methods/10/chunks/0",
+            "native/selected-bodies.json#/result/methods/10/chunks/0/method"
+          ],
+          "fullname": "Torappu.Battle.EnemySkill._OnCastFinish",
+          "address": "0x18070fe70"
+        },
+        {
+          "index": 67319,
+          "mode": "disasm",
+          "records": [
+            "native/contracts.json#/result/0/methods/15",
+            "native/selected-bodies.json#/result/methods/11/method",
+            "native/selected-bodies.json#/result/methods/11/chunks/0",
+            "native/selected-bodies.json#/result/methods/11/chunks/0/method"
+          ],
+          "fullname": "Torappu.Battle.EnemySkill._UpdateRegisterAsModifier",
+          "address": "0x1807101c0"
+        },
+        {
+          "index": 67320,
+          "mode": "disasm",
+          "records": [
+            "native/contracts.json#/result/0/methods/16",
+            "native/selected-bodies.json#/result/methods/12/method",
+            "native/selected-bodies.json#/result/methods/12/chunks/0",
+            "native/selected-bodies.json#/result/methods/12/chunks/0/method"
+          ],
+          "fullname": "Torappu.Battle.EnemySkill.Awake",
+          "address": "0x18070e3b0"
+        },
+        {
+          "index": 67348,
+          "mode": "metadata",
+          "records": [
+            "native/contracts.json#/result/1/methods/0"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_alive",
+          "address": "0x1807330c0"
+        },
+        {
+          "index": 67438,
+          "mode": "disasm",
+          "records": [
+            "native/contracts.json#/result/1/methods/1",
+            "native/selected-bodies.json#/result/methods/13/method",
+            "native/selected-bodies.json#/result/methods/13/chunks/0",
+            "native/selected-bodies.json#/result/methods/13/chunks/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_sp",
+          "address": "0x18073a050"
+        },
+        {
+          "index": 67646,
+          "mode": "metadata",
+          "records": [
+            "native/contracts.json#/result/1/methods/2"
+          ],
+          "fullname": "Torappu.Battle.Entity.OnReset",
+          "address": "0x18072b310"
+        },
+        {
+          "index": 67718,
+          "mode": "metadata",
+          "records": [
+            "native/contracts.json#/result/1/methods/3"
+          ],
+          "fullname": "Torappu.Battle.Entity.CompareTo",
+          "address": "0x180722b30"
+        },
+        {
+          "index": 67728,
+          "mode": "metadata",
+          "records": [
+            "native/contracts.json#/result/1/methods/4"
+          ],
+          "fullname": "Torappu.Battle.Entity.<>xLuaBaseProxy_OnReset",
+          "address": "0x180520cc0"
+        },
+        {
+          "index": 73774,
+          "mode": "metadata",
+          "records": [
+            "native/contracts.json#/result/2/methods/0"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.get_attributeMask",
+          "address": "0x180999280"
+        },
+        {
+          "index": 73776,
+          "mode": "metadata",
+          "records": [
+            "native/contracts.json#/result/2/methods/1"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.get_abnormalFlagMask",
+          "address": "0x180999110"
+        },
+        {
+          "index": 73788,
+          "mode": "metadata",
+          "records": [
+            "native/contracts.json#/result/2/methods/2"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.IsAvailable",
+          "address": "0x180994850"
+        },
+        {
+          "index": 73806,
+          "mode": "metadata",
+          "records": [
+            "native/contracts.json#/result/2/methods/3"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.get_isAffecting",
+          "address": "0x180999f90"
+        },
+        {
+          "index": 73820,
+          "mode": "metadata",
+          "records": [
+            "native/contracts.json#/result/2/methods/4"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.get_spCostZero",
+          "address": "0x18099b9e0"
+        },
+        {
+          "index": 73831,
+          "mode": "metadata",
+          "records": [
+            "native/contracts.json#/result/2/methods/5"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.get_canSkipReduceSp",
+          "address": "0x180990270"
+        },
+        {
+          "index": 73834,
+          "mode": "metadata",
+          "records": [
+            "native/contracts.json#/result/2/methods/6"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.get_isUsedUp",
+          "address": "0x18099a420"
+        },
+        {
+          "index": 73864,
+          "mode": "disasm",
+          "records": [
+            "native/contracts.json#/result/2/methods/7",
+            "native/selected-bodies.json#/result/methods/14/method",
+            "native/selected-bodies.json#/result/methods/14/chunks/0",
+            "native/selected-bodies.json#/result/methods/14/chunks/0/method"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.OnSkillStart",
+          "address": "0x180996d20"
+        },
+        {
+          "index": 73865,
+          "mode": "disasm",
+          "records": [
+            "native/contracts.json#/result/2/methods/8",
+            "native/selected-bodies.json#/result/methods/15/method",
+            "native/selected-bodies.json#/result/methods/15/chunks/0",
+            "native/selected-bodies.json#/result/methods/15/chunks/0/method"
+          ],
+          "fullname": "Torappu.Battle.BasicSkill.OnSkillEnd",
+          "address": "0x1809967a0"
+        },
+        {
+          "index": 77845,
+          "mode": "disasm",
+          "records": [
+            "native/selected-bodies.json#/result/methods/16",
+            "native/selected-bodies.json#/result/methods/16/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.OnTick",
+          "address": "0x180ac09a0"
+        },
+        {
+          "index": 77855,
+          "mode": "disasm",
+          "records": [
+            "native/selected-bodies.json#/result/methods/17/method",
+            "native/selected-bodies.json#/result/methods/17/chunks/0",
+            "native/selected-bodies.json#/result/methods/17/chunks/0/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy._GenerateSpData",
+          "address": "0x180ac70c0"
+        }
+      ],
+      "blocks": [],
+      "types": [
+        {
+          "name": "Torappu.Battle.Ability",
+          "records": [
+            "native/contracts.json#/result/3"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.BasicSkill",
+          "records": [
+            "native/contracts.json#/result/2"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.EnemySkill",
+          "records": [
+            "native/contracts.json#/result/0"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Entity",
+          "records": [
+            "native/contracts.json#/result/1"
+          ]
+        },
+        {
+          "name": "Torappu.LevelData/EnemyData/ESkillData",
+          "records": [
+            "native/contracts.json#/result/5"
+          ]
+        },
+        {
+          "name": "Torappu.PeriodicTimer",
+          "records": [
+            "native/contracts.json#/result/4"
+          ]
+        }
+      ],
+      "constants": [],
+      "bundles": [
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99",
+          "records": [
+            "content/bindings.json#/provenance/sources/0"
+          ],
+          "bytes": 477255
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_28.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_28.ab",
+          "sha256": "559485d435af0ebe0f4c5e3c02719db797cf691d736fd82cdaa382ec0718a0d9",
+          "records": [
+            "content/bindings.json#/provenance/sources/1"
+          ],
+          "bytes": 450799
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_17.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_17.ab",
+          "sha256": "5cab229230f1ad686df4048a44c7d0bfb719b0993ba38e25e66bce15c1e22e7a",
+          "records": [
+            "content/bindings.json#/provenance/sources/2"
+          ],
+          "bytes": 370630
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_3.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_3.ab",
+          "sha256": "c5ad2c22393decd0f59fb7bb7542cb342471ab8530e5b8de86a462ea9259e603",
+          "records": [
+            "content/bindings.json#/provenance/sources/3"
+          ],
+          "bytes": 148945
+        }
+      ]
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

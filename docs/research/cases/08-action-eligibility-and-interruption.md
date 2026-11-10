@@ -108,3 +108,52 @@
 Skill 需要保留实际豁免。`BasicSkill.ownerCanUseInAbnormalState`（73791）读取自身 `_canUseInAbnormalState`、宿主异常下可发动标志及沉默政策；`Character.EnsureSkillOnInAbnormalState`（77360）还有在异常状态发动的专门入口。因此，普通晕眩限制 Skill 启动，不足以推出“已成立的每一种持续 Skill 都立即结束”，也不能据此清除所有已生效 Buff。通用 Action 取消的项目时点与具体技能是否停止生效，仍须分别表达。
 
 晕眩、沉默、阻止 SP 回复是三种独立机制。前两项资格读取与 `_canSilenced`／`_canUseInAbnormalState` 并存；`SP_RECOVER_STOPPED` 是另一异常位。不能为了实现晕眩，顺便把沉默或阻回全部绑定进同一个控制规则。
+
+## 8. EnemySkill 的触发、动作与共享 SP（2026-11-10）
+
+本节核实“敌人技能应对应 Action 还是 Skill”。[证据批次](../evidence/enemy-skill-semantics-20261110/README.md)重新定位当前客户端的方法、字段和内容绑定；不按原生类名决定项目模块。DLL／metadata 指纹与第 7 节的当前客户端一致。以下是静态普通分支与实际资源引用，不是客户端运行或 XLua 热更新观测。
+
+### 8.1 原生事实
+
+| 部分 | 已确认的状态与行为 |
+| --- | --- |
+| EnemySkill | 保存自己的触发冷却、触发次数、费用、启用和模式关联，绑定一项 Ability；没有自己的 SP 余额。 |
+| Ability | 执行实际施放，拥有 casting 及动作开始／结束程序。EnemySkill 通过施放回调结算自己的触发进度。 |
+| 宿主 SP | CheckAvailable 从 owner 读取 Entity SP，TryReduceSp 对 owner 应用 SP Modifier。同一宿主的不同 EnemySkill 消耗同一份余额。 |
+| 触发计时 | EnemySkill.Tick 只在自身 Ability 不处于 casting 时推进自己的 timer；另一项技能正在施放不是该分支的暂停条件。 |
+| 施放结束 | EnemySkill._OnCastFinish 重置自己的触发 timer；另有配置可以重置主攻击 Ability 的周期，两份计时不能混为一项。 |
+| 施放期登记 | 成功施放后将 EnemySkill 登记为宿主 Attributes 的 modifier，结束时撤销；本批未展开 recoverSpWhenAffecting 的属性消费，不据 getter 名称断言 SP 停回。 |
+| 生命周期通知 | 所查 EnemySkill 普通开始／结束路径执行自身 Behaviour 与回调；BasicSkill 的开始／结束另明确通知 Character，不是同一条开启／结束协议。 |
+
+对应方法、字段和分支地址见[原生摘录](../evidence/enemy-skill-semantics-20261110/native/facts.md)。普通施放链为：
+
+```text
+单位战斗流程选择候选 EnemySkill
+→ 检查启用、冷却、次数、宿主资格及共享 SP
+→ 支付宿主 SP
+→ 调用绑定的 Ability.CastToTarget
+→ Ability 执行施放及输出
+→ 施放结束回调
+    → 重置该 EnemySkill 的触发冷却
+    → 按配置处理主攻击周期及后继程序
+```
+
+SP 支付与启动成败仍分别遵守实际调用顺序，不能把图中的完整调用视为可回滚原子操作。普通成功／失败结果的消费见[启动结果调查](../evidence/operation-results-20261110/action/README.md)。
+
+### 8.2 实际内容
+
+[配置及资源摘录](../evidence/enemy-skill-semantics-20261110/content/facts.md)联查固定版本 EnemyData、当前 Prefab 与所选关卡：
+
+| 内容 | 实际绑定及意义 |
+| --- | --- |
+| 霜星 enemy_1505_frstar | ArcticBlast 与 IceShield 都属于同一宿主，只有一个 Default 模式；分别绑定 RangedAttack 与 SpawnTokenOnTileAbility。等级 0 的独立冷却为 8.5／30 秒，均不耗 SP；4-10 的实际出生配置选择该等级。提供同一模式下多项技能的正例。 |
+| 圣堂射手 enemy_10088_hlsnip | Sniping 绑定 RangedAttack，消耗 1 SP；宿主配置保存同一份 maxSp=1、initSp=1 的资源。AddBullet 另绑定 EmptyAnimatedAbility 与 NeverTrigger，不能把它说成参与普通自动竞争的第二项候选。 |
+| “炎佑” enemy_9012_acloon | Skill 与 Skill_2 分别绑定模式 1／2，均调用 RangedAttack。仅看原表 skills 数组不能证明它们在同一模式下同时启用；该例是使用 Enemy 实体模型的友方装置。 |
+
+PRTS 的[敌人技能通则](https://prts.wiki/w/假想敌：械)也区分独立冷却、模式绑定与额外 SP 条件，作为社区说明交叉参考；没有用其文字替代上述原生／配置证据。
+
+### 8.3 对项目概念的约束
+
+按 ArkBattle 当前职责，一次 Ability 的施放对应 Action 执行；EnemySkill 的候选资格、独立计时、次数、模式和选择属于内容触发政策；SP 是宿主共享资源。所查链不要求给每项 EnemySkill 建立一份干员式 Skill 聚合或 Activation。该结论来自状态与调用关系，不来自技能数量或命名；没有穷举全部敌人特化。
+
+两项现有接入差异不能省略：Action 的默认周期从成功启动时重置、受攻速公式影响且没有暂停，不能替代 EnemySkill 的触发 timer；现有 SP 操作绑定 unit.skill，尚不是可独立挂载的资源模型。技术上可以使用无 Activation 的 Skill 保存 SP，不等于这种职责归属已经确定。本节不决定新的 API、状态结构或重构方案。
