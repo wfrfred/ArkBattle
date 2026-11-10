@@ -18,13 +18,9 @@ import * as presence from "../../core/unit/capability/presence/index.js";
 import { hasAllegiance } from "../../core/unit/capability/allegiance/capability.js";
 import { hasTargetable } from "../../core/unit/capability/targetable/capability.js";
 import { TICKS_PER_SECOND } from "../../core/tick.js";
+import { invisible } from "../../core/effects/visibility.js";
 import * as terrain from "./definition.js";
-import {
-    createDeepseaEffect,
-    createInfectionEffect,
-    createMireEffect,
-    smogEffect,
-} from "./effects.js";
+import { createDeepseaEffect, createInfectionEffect, createMireEffect } from "./effects.js";
 
 export interface Contact {
     readonly index: number;
@@ -41,7 +37,7 @@ interface Behaviour<P extends object> {
     readonly id: string;
     readonly intervalTicks: number;
     readonly retainOnLeave?: boolean;
-    readonly accepts?: (unit: Unit) => boolean;
+    readonly accepts: (unit: Unit) => boolean;
     readonly enter: (
         battle: BattleState,
         unit: Unit,
@@ -51,11 +47,7 @@ interface Behaviour<P extends object> {
 }
 
 function onGround(unit: Unit): boolean {
-    return (
-        unit.lifecycle === "PRESENT" &&
-        presence.isPresent(unit) &&
-        (!hasLayer(unit) || unit.layer.type === "GROUND")
-    );
+    return !hasLayer(unit) || unit.layer.type === "GROUND";
 }
 
 function create<P extends object>(
@@ -104,7 +96,11 @@ function create<P extends object>(
             }
 
             function indexOf(unit: Unit): number | undefined {
-                if (!onGround(unit) || behaviour.accepts?.(unit) === false) {
+                if (
+                    unit.lifecycle !== "PRESENT" ||
+                    !presence.isPresent(unit) ||
+                    !behaviour.accepts(unit)
+                ) {
                     return undefined;
                 }
 
@@ -244,6 +240,7 @@ export function createTerrainMechanism(
             id: "terrain/infection",
             intervalTicks: 1,
             retainOnLeave: true,
+            accepts: onGround,
             enter(battle, unit, params) {
                 const previous = unit.effects
                     .values()
@@ -267,6 +264,7 @@ export function createTerrainMechanism(
         return create(terrain.mire, indices, {
             id: "terrain/mire",
             intervalTicks: 3,
+            accepts: onGround,
             enter: (battle, unit, params, scopes) =>
                 effects.install(battle, units.ref(unit), createMireEffect(params), {
                     scopes,
@@ -278,7 +276,8 @@ export function createTerrainMechanism(
         return create(terrain.deepsea, indices, {
             id: "terrain/deepsea",
             intervalTicks: 6,
-            accepts: (unit) => hasAllegiance(unit) && unit.allegiance.side === "ENEMY",
+            accepts: (unit) =>
+                onGround(unit) && hasAllegiance(unit) && unit.allegiance.side === "ENEMY",
             enter: (battle, unit, params, scopes) =>
                 effects.install(battle, units.ref(unit), createDeepseaEffect(params), {
                     scopes,
@@ -294,7 +293,7 @@ export function createTerrainMechanism(
                 hasAllegiance(unit) && unit.allegiance.side === "ALLY" && hasTargetable(unit),
             enter: (battle, unit, _params, scopes) =>
                 hasTargetable(unit)
-                    ? effects.install(battle, units.ref(unit), smogEffect, { scopes })
+                    ? effects.install(battle, units.ref(unit), invisible, { scopes })
                     : { state: battle, value: null },
         });
     }
@@ -302,7 +301,8 @@ export function createTerrainMechanism(
         return create(terrain.hole, indices, {
             id: "terrain/hole",
             intervalTicks: 1,
-            accepts: (unit) => hasAllegiance(unit) && unit.allegiance.side === "ENEMY",
+            accepts: (unit) =>
+                onGround(unit) && hasAllegiance(unit) && unit.allegiance.side === "ENEMY",
             enter: (battle, unit) => ({
                 state: removeUnit(battle, units.ref(unit), "DEATH"),
                 value: null,

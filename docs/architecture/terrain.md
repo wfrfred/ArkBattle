@@ -37,7 +37,7 @@ Mechanism 的 lifetime 由现有操作模块导出，公共请求／析构协议
 
 Runtime 依次推进 `Movement → Mechanism → Blocking`。Movement 先推进 Blockable 的阻挡位置，再对 Route 单位推进路线；主路线终点检查成立时立即请求完整 Unit 离场，仍在场、未被阻挡且具备 Locomotion 的单位随后推进自主运动。地形 Mechanism 读取这些操作之后的当前状态，按 Unit 世界坐标计算接触，要求生命周期 PRESENT 且空间存在，不用 Occupancy 代替接触。
 
-轮询维护进入、离开和持续接触。保持接触时仍重判动态资格，例如飞行单位在地穴上落地。轮询不捕获同 Tick 所有中间位置，也不复刻 Unity 对象顺序。安装与结束请求继续显式接续状态；已有 Lifetime 结算时，嵌套 Effect.end 不保证最终注销已完成。
+轮询维护进入、离开和持续接触，各地形分别判断接触资格：活性源石、沼泽、深水和地穴要求地面，烟雾允许地面和空中单位。保持接触时仍重判动态资格，例如飞行单位在地穴上落地。轮询不捕获同 Tick 所有中间位置，也不复刻 Unity 对象顺序。安装与结束请求继续显式接续状态；已有 Lifetime 结算时，嵌套 Effect.end 不保证最终注销已完成。
 
 机制按实际地形配置装配，同一实例可以处理参数不同的多个格子。预置控制器负责其管理的沼泽、深水，静态机制装配排除这些地形，避免重复结算。预置的出现、隐藏与移除使用同一个 Mechanism 生命周期。
 
@@ -50,7 +50,7 @@ Runtime 依次推进 `Movement → Mechanism → Blocking`。Movement 先推进 
 `walkCost` 保存最终有效步行代价，不是可任意累加或取最大值的基础代价。原生普通 `Tile.get_moveCost`（70678，`0x1808adc40`）按 `overrideObstacleLikeMoveCost` 返回 1000 或 1；`HoleTile.get_moveCost`（70580，`0x1808addd0`）直接返回 1,000,000，不受该标记降低。当前装置 Content 的 apply 对普通地形赋 1000，对真实地穴保留定义中的固定代价 1,000,000；不把这些结果泛化成 `max(任意当前代价, 1000)`。完整地穴身份由 Terrain Definition 表达，不能仅凭“hole-like”状态推断固定代价。
 
 - 活性源石按进入格子的参数安装持续 Effect，离格后保留；duration 从附加时开始计时，首次伤害等待一秒。
-- 烟雾的索敌限制随接触建立和撤销。
+- 烟雾对具有 Targetable 的我方单位安装通用隐匿 Effect，离开时撤销；阻挡与解除阻挡不改变隐匿，也没有恢复延迟。必要代表场景检查阻挡期间仍不可被普通索敌选中、空中单位同样受益，以及离开后恢复受选；依据见[烟雾原生短链](../research/03-space-units-and-mechanisms.md#51-进入周期与资格的原生短链2026-11-10-补核)。
 - 沼泽、深水分开保存控制器扫描进度与宿主 Effect 的周期进度，不在每次轮询重建 Effect 或重置周期。
 - 非 retainOnLeave Effect 显式绑定控制器 Mechanism 的 lifetime，终止时由 DAG 清理并等待；控制器的 Contact 清理直接归 onDisable；Prepare 以 ENDING 调用它时只清 Contact，不手工结束这些 Effect，也不在 onEnd 重复清理。离格、换地形和可逆 Mechanism disable 继续按 Contact 业务请求结束。retainOnLeave 的活性源石等效果不自动建立绑定，避免错误缩短持续期。
 - 地穴由 Content 判断坠落资格，并通过完整 Unit 离场操作完成逻辑结算。

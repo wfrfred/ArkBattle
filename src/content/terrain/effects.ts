@@ -4,7 +4,7 @@ import { update as updateUnit } from "../../core/battle/unit.js";
 import { applyDamage, calculateDamage } from "../../core/battle/damage/hp/index.js";
 
 import * as effects from "../../core/unit/effect/index.js";
-import { type Definition, ref as effectRef, type Effect } from "../../core/unit/effect/index.js";
+import { type Definition, ref as effectRef } from "../../core/unit/effect/index.js";
 
 import * as units from "../../core/unit/index.js";
 import type { Unit } from "../../core/unit/index.js";
@@ -16,12 +16,9 @@ import { hasLocomotion } from "../../core/unit/capability/locomotion/index.js";
 
 import { hasVitality } from "../../core/unit/capability/vitality/index.js";
 import { hasAllegiance } from "../../core/unit/capability/allegiance/capability.js";
-import { hasBlocker } from "../../core/unit/capability/blocking/index.js";
-import * as targetable from "../../core/unit/capability/targetable/capability.js";
 import * as attribute from "../../core/unit/contribution/attribute.js";
 import { TICKS_PER_SECOND } from "../../core/tick.js";
 import type { DeepseaParams, InfectionParams, MireParams } from "./definition.js";
-import { invisibleRestriction } from "../../core/effects/visibility.js";
 
 interface Modifiers {
     readonly attack?: attribute.Modifier;
@@ -35,74 +32,6 @@ interface PeriodicState {
 
 interface MireState extends PeriodicState {
     readonly stacks: number;
-}
-
-interface SmogState {
-    readonly wasBlocking: boolean;
-    readonly restoreAt: number | null;
-}
-
-export const smogEffect: Definition<SmogState, targetable.Targetable> = {
-    id: "terrain/smog",
-    initialize: () => ({ wasBlocking: false, restoreAt: null }),
-    onEnable: reconcileSmog,
-    onTick: reconcileSmog,
-    onDisable(battle, self) {
-        const unit = units.get(battle, self.host);
-        if (unit === undefined) {
-            return battle;
-        }
-
-        return updateUnit(
-            battle,
-            units.ref(unit),
-            targetable.removeRestriction(`terrain/${self.id}`),
-        );
-    },
-};
-
-function reconcileSmog(
-    battle: BattleState,
-    self: Effect<SmogState, targetable.Targetable>,
-): BattleState {
-    let unit = units.get(battle, self.host);
-    if (unit === undefined) {
-        return battle;
-    }
-
-    const blocked = hasBlocker(unit) && unit.blocker.relations.length > 0;
-    let restoreAt = self.state.restoreAt;
-
-    if (blocked) {
-        restoreAt = null;
-    } else if (self.state.wasBlocking) {
-        restoreAt = battle.tick + 3 * TICKS_PER_SECOND;
-    } else if (restoreAt !== null && battle.tick >= restoreAt) {
-        restoreAt = null;
-    }
-
-    if (blocked !== self.state.wasBlocking || restoreAt !== self.state.restoreAt) {
-        battle = effects.setState(battle, effectRef(self), {
-            wasBlocking: blocked,
-            restoreAt,
-        });
-        unit = units.get(battle, self.host)!;
-    }
-
-    const id = `terrain/${self.id}`;
-    const active = !blocked && restoreAt === null;
-    const exists = unit.targetable.restrictions.some((entry) => entry.id === id);
-    if (active === exists) {
-        return battle;
-    }
-
-    return updateUnit(
-        battle,
-        units.ref(unit),
-        active
-            ? targetable.setRestriction({ id, value: invisibleRestriction })
-            : targetable.removeRestriction(id),
-    );
 }
 
 function changeModifiers(

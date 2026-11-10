@@ -4,7 +4,6 @@ import { Hooks } from "../../dist/core/hook.js";
 import * as terrain from "../../dist/content/terrain/definition.js";
 import { createTerrainMechanism } from "../../dist/content/terrain/mechanism.js";
 import * as mechanisms from "../../dist/core/battle/mechanism.js";
-import * as effects from "../../dist/core/unit/effect/index.js";
 import * as units from "../../dist/core/unit/index.js";
 import { create as createTile } from "../../dist/core/battlefield/map/tile.js";
 import { Tiles } from "../../dist/core/battlefield/map/tiles.js";
@@ -15,7 +14,6 @@ import { actionCapability } from "../helpers/actions.js";
 import { resolveAttack } from "../../dist/core/unit/capability/offense/index.js";
 import { resolveSpeed } from "../../dist/core/unit/capability/action/timing.js";
 import { damage } from "../../dist/core/battle/targeting/index.js";
-import { hasTargetable } from "../../dist/core/unit/capability/targetable/capability.js";
 import * as presence from "../../dist/core/unit/capability/presence/index.js";
 import { setType } from "../../dist/core/unit/capability/layer/index.js";
 
@@ -135,33 +133,27 @@ test("deepsea and holes affect ground enemies while leaving allies and airborne 
     assert.equal(current(battle, 2), undefined);
 });
 
-test("smog restores invisibility after blocking ends and maintains only current terrain contacts", () => {
+test("smog keeps allied ground and airborne units invisible through blocking until they leave", () => {
     const configured = setup([terrain.smog.create({}), terrain.normal.create({})], [
         unit(0, { vitality: combat.vitality, allegiance: { side: "ALLY" }, targetable: { taunt: 0, restrictions: [] },
             blocker: { layer: "GROUND", rules: [], capacity: 1, radius: 0.7 } }),
         unit(0, { allegiance: { side: "ENEMY" }, layer: { type: "GROUND" }, blockable: { volume: 1, rules: [] } }),
+        unit(0, { vitality: combat.vitality, allegiance: { side: "ALLY" },
+            layer: { type: "AIR" }, targetable: { taunt: 0, restrictions: [] } }),
     ], [terrain.smog]);
     let battle = step(configured.battle, []);
-    const enemy = units.ref(current(battle, 1));
-    const visible = state => units.all(state)
-        .filter(hasTargetable)
-        .some(damage(state, units.get(state, enemy)));
+    const visible = (state, id = 0) => damage(state, current(state, 1))(current(state, id));
+    assert.equal(current(battle, 1).blockable.relation.blocker.id, 0);
     assert.equal(visible(battle), false);
-    battle = step(battle, []);
-    assert.equal(visible(battle), true);
-    battle = until(move(battle, 1, 1), 92);
-    assert.equal(visible(battle), true);
+    assert.equal(visible(battle, 2), false);
     battle = step(battle, []);
     assert.equal(visible(battle), false);
-    const smoke = current(battle).effects.values().find(self => self.definition.id === "terrain/smog");
-    battle = effects.end(battle, effects.ref(smoke));
-    assert.equal(visible(battle), true);
-    battle = step(battle, []);
+    battle = step(move(battle, 1, 1), []);
+    assert.equal(current(battle, 1).blockable.relation, null);
     assert.equal(visible(battle), false);
-    battle = update(battle, units.ref(current(battle)), presence.disappear());
-    battle = step(battle, []);
-    battle = move(battle, 0, 1);
+    battle = step(move(battle, 0, 1), []);
     assert.equal(visible(battle), true);
+    assert.equal(visible(battle, 2), false);
 });
 
 test("runtime checks terrain contact after actual route movement", () => {
