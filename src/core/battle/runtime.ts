@@ -27,9 +27,8 @@ export type { Input, Command, Event } from "./contract.js";
 export function initialize<
     CardStates extends readonly object[],
     MechanismStates extends readonly object[],
-    PredefinedTypes extends readonly object[],
->(input: Input<CardStates, MechanismStates, PredefinedTypes>): State;
-export function initialize(input: Input<readonly any[], readonly any[], readonly any[]>): State {
+>(input: Input<CardStates, MechanismStates>): State;
+export function initialize(input: Input<readonly any[], readonly any[]>): State {
     assertNonnegativeNumber(input.routeMoveMultiplier, "routeMoveMultiplier");
     assert(
         Number.isInteger(input.rngState) && input.rngState >= 0 && input.rngState < 2 ** 32,

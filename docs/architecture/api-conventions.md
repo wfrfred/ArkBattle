@@ -155,7 +155,7 @@ Route Context 采用宿主内运行实例身份：Main 使用固定保留 ID，�
 
 Unit 查询返回绑定某个不可变状态版本的 Unit 对象序列。类型守卫保留筛选后的结构类型；调用方显式 ref(unit) 提取协变的运行身份。完整操作消费 Ref，并从传入的最新 BattleState 取得对象。
 
-构造输入同样保留类型关联。Runtime 的 Input 按 Card、初始 Mechanism 和预置项分别推断各项 Definition／私有状态；Card 内容先声明完整 Definition<S>，聚合后仍保持 initialize 与回调配对，内联回调不获得 any 私有状态。PredefinedDefinition<T> 的 Unit 分支要求 Initial 满足完整 Definition 的需求，允许额外已知输入；Mechanism 分支保留完整 MechanismDefinition<S>。createPredefinedDefinition 与 Runtime 使用同一输入约束。构造完成后，Core 的 StoredPredefinedDefinition 才作为异构静态存储擦除类型，不使用缺失回调的投影再强转恢复，也不新增运行对象或配对品牌。
+构造输入同样保留类型关联。Runtime 的 Input 按 Card 和初始 Mechanism 推断各项 Definition／私有状态；Card 内容先声明完整 Definition<S>，聚合后仍保持 initialize 与回调配对，内联回调不获得 any 私有状态。PredefinedUnitCreation<D> 复用 UnitInput<D>，要求具体 Definition 的必需 Initial，允许额外已知输入；PredefinedMechanismCreation<S> 保留完整 MechanismDefinition<S>。PredefinedDefinition<C> 的参数只表示完整创建项，Unit 与 Mechanism 分别在 createPredefinedDefinition 的创建入口建立类型配对。Runtime 接收并转交已完成配对的预置定义，不再次推导其构造参数；Core 的 StoredPredefinedDefinition 统一承载异构存储，不使用缺失回调的投影再强转恢复，也不新增运行对象或配对品牌。
 
 ```typescript
 // core/common/ref.ts

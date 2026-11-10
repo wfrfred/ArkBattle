@@ -5,7 +5,7 @@ import type { Definition as ScheduleDefinition } from "./schedule/definition.js"
 import type { Unit } from "../unit/unit.js";
 import type { Input as DeploymentInput } from "./deployment/deployment.js";
 import type { Card } from "./deployment/card/card.js";
-import type { StoredPredefinedDefinition, PredefinedDefinition } from "./steps/predefined.js";
+import type { StoredPredefinedDefinition } from "./steps/predefined.js";
 import type { DeploymentCommand } from "./deployment/operations.js";
 import type { Ref } from "../common/ref.js";
 import type { Execution } from "../unit/action/execution.js";
@@ -22,11 +22,7 @@ export interface Definition {
 export interface Input<
     CardStates extends readonly object[] = readonly object[],
     MechanismStates extends readonly object[] = readonly object[],
-    PredefinedTypes extends readonly object[] = readonly object[],
 > extends Definition {
-    readonly predefines: {
-        readonly [K in keyof PredefinedTypes]: PredefinedDefinition<PredefinedTypes[K]>;
-    };
     readonly deployment?: DeploymentInput<CardStates>;
     readonly map: Map;
     readonly schedule: ScheduleDefinition;

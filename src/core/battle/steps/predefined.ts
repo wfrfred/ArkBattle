@@ -14,10 +14,11 @@ import { add, remove as removeUnit } from "../unit.js";
 import type { State as BattleState } from "../state.js";
 import type { Definitions } from "../../unit/capability/catalog.js";
 
-export type PredefinedUnitCreation<D extends object = UnitDefinition & Partial<Definitions>> = {
+export type PredefinedUnitCreation<
+    D extends UnitDefinition & Partial<Definitions> = UnitDefinition & Partial<Definitions>,
+> = {
     readonly type: "UNIT";
-    readonly definition: D & UnitDefinition & Partial<Definitions>;
-} & Omit<UnitInput<D & UnitDefinition & Partial<Definitions>>, "id">;
+} & Omit<UnitInput<D>, "id">;
 
 export interface PredefinedMechanismCreation<S extends object = object> {
     readonly type: "MECHANISM";
@@ -28,28 +29,28 @@ export type Source =
     | { readonly type: "UNIT"; readonly ref: Ref<Unit> }
     | { readonly type: "MECHANISM"; readonly ref: Ref<Mechanism> };
 
-export interface PredefinedDefinition<T extends object = object> {
+type Creation = PredefinedUnitCreation | PredefinedMechanismCreation<any>;
+
+export interface PredefinedDefinition<C extends object = Creation> {
     readonly id: number;
     readonly alias: string | null;
     readonly initiallyPresent: boolean;
-    readonly creation: PredefinedUnitCreation<T> | PredefinedMechanismCreation<T>;
+    readonly creation: C;
 }
 
-export type StoredPredefinedDefinition = PredefinedDefinition<any>;
+export type StoredPredefinedDefinition = PredefinedDefinition;
 
 export interface PredefinedPresence {
     readonly definitionId: number;
     readonly source: Source;
 }
 
-type PredefinedHeader = Omit<PredefinedDefinition, "creation">;
-
 export function createPredefinedDefinition<D extends UnitDefinition & Partial<Definitions>>(
-    definition: PredefinedHeader & { readonly creation: PredefinedUnitCreation<D> },
-): PredefinedHeader & { readonly creation: PredefinedUnitCreation<D> };
+    definition: PredefinedDefinition<PredefinedUnitCreation<D>>,
+): PredefinedDefinition<PredefinedUnitCreation<D>>;
 export function createPredefinedDefinition<S extends object>(
-    definition: PredefinedHeader & { readonly creation: PredefinedMechanismCreation<S> },
-): PredefinedHeader & { readonly creation: PredefinedMechanismCreation<S> };
+    definition: PredefinedDefinition<PredefinedMechanismCreation<S>>,
+): PredefinedDefinition<PredefinedMechanismCreation<S>>;
 export function createPredefinedDefinition(
     definition: StoredPredefinedDefinition,
 ): StoredPredefinedDefinition {

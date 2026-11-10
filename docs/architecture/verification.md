@@ -60,7 +60,7 @@ Deployable 对 Occupancy 的构造依赖、单格双槽登记、入场与配对�
 
 已审查范围按下表集中保障。综合测试只保障独立的跨领域业务结果，所属领域的公式、输入矩阵、Setter、生命周期或 Hook 协议集中在各自代表场景中。文件位于 Content／Legacy 或同时涉及尚未审查领域，不构成重复测试的保留理由。
 
-构造期配对由 core-types 集中保障：Card 与 Mechanism 的初始化结果和自身回调保持同一私有类型，聚合输入不提供 any 上下文；创建方确定具体 Unit Definition，必须提供所选 initializer 要求的实例输入，允许额外的已知输入，并按普通对象类型检查字面量的未知键与输入值。Occupancy 要求非空 tile，Route 要求 plan 与 offset；普通构造、Input 类型、预置与 Runtime 转交均保留这些要求。未选择能力的输入沿用 Unit 构造场景验证不会装配该能力，不新增忽略输入的能力矩阵。Schedule Spawn 要求 Route，Locomotion 按 Definition 可选，并排除 Occupancy／Deployable。无必需实例输入时可省略 initial。代表场景覆盖这些构造边界，不按每种能力、回调或数组长度扩展矩阵。类型守卫在 Query 与 optional 中保留已有完整宿主，Hook 派发与登记同样保持键和载荷的配对。
+构造期配对由 core-types 集中保障：Card 与 Mechanism 的初始化结果和自身回调保持同一私有类型，聚合输入不提供 any 上下文；创建方确定具体 Unit Definition，必须提供所选 initializer 要求的实例输入，允许额外的已知输入，并按普通对象类型检查字面量的未知键与输入值。Occupancy 要求非空 tile，Route 要求 plan 与 offset；普通构造与预置创建入口建立这些约束，Runtime 转交已完成配对的预置定义，不另做构造校验。未选择能力的输入沿用 Unit 构造场景验证不会装配该能力，不新增忽略输入的能力矩阵。Schedule Spawn 要求 Route，Locomotion 按 Definition 可选，并排除 Occupancy／Deployable。无必需实例输入时可省略 initial。代表场景覆盖这些构造边界，不按每种能力、回调或数组长度扩展矩阵。类型守卫在 Query 与 optional 中保留已有完整宿主，Hook 派发与登记同样保持键和载荷的配对。
 
 | 语义 | 集中归属与最小代表 |
 | --- | --- |

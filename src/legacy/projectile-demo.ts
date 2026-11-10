@@ -37,8 +37,7 @@ import { hasTargetable } from "../core/unit/capability/targetable/capability.js"
 export function createTacticalProjectileDemo<
     CardStates extends readonly object[],
     MechanismStates extends readonly object[],
-    PredefinedTypes extends readonly object[],
->(input: Input<CardStates, MechanismStates, PredefinedTypes>, cachedOnly = false) {
+>(input: Input<CardStates, MechanismStates>, cachedOnly = false) {
     const boost: Definition<object, Offense> = {
         id: "post-launch-attack-boost",
         initialize: () => ({}),

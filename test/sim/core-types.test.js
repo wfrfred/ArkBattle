@@ -424,8 +424,6 @@ const unusedOccupancy = { id: 0, alias: null, initiallyPresent: true, creation: 
 initialize(battle, { id: 4, ...unusedOccupancy.creation });
 createPredefinedDefinition(unusedOccupancy);
 runtime.initialize({ ...baseInput, deployment: { definition: account, cards: [] }, initialMechanisms: [], predefines: [unusedOccupancy] });
-// @ts-expect-error raw Runtime input cannot erase required capability input either.
-runtime.initialize({ ...baseInput, deployment: { definition: account, cards: [] }, initialMechanisms: [], predefines: [incompletePredefined] });
 runtime.initialize({ ...baseInput, initialMechanisms: [], predefines: [], deployment: { definition: account, cards: [{ ...counterCard, card: { ...counterCard.card,
     onTick(state, self) {
         // @ts-expect-error aggregation must not supply an any private-state context.

@@ -154,7 +154,7 @@ predefines: [
 ]
 ```
 
-definition 是完整静态 Unit Definition；initial 按所选 Capability 提供，Occupancy 等能力要求其必需输入，hooks 可选。Predefined 在出现时分配 Unit ID，调用 unit.initialize，登记预置项与实例的绑定，再由 add 完成登记和 enter。Predefined 管理别名、出现／移除及重复出现，Unit.initialize 负责实例构造。
+definition 是完整静态 Unit Definition；initial 按所选 Capability 提供，Occupancy 等能力要求其必需输入，hooks 可选。PredefinedUnitCreation<D> 直接复用省略 id 的 UnitInput<D>；Mechanism 创建项单独保留其私有状态类型 S，PredefinedDefinition<C> 只包装完整创建项 C。创建入口完成配对，Runtime 统一接收并转交预置定义。Predefined 在出现时分配 Unit ID，调用 unit.initialize，登记预置项与实例的绑定，再由 add 完成登记和 enter。Predefined 管理别名、出现／移除及重复出现，Unit.initialize 负责实例构造。
 
 预置操作直接调用 `predefined.appear(battle, id)` 与 `predefined.remove(battle, id, reason)`，id 对应 PredefinedDefinition.id。两者从 Battle Definition 查找预置项，不通过 Command 派发；开场初始化直接调用 appear。移除先撤销旧绑定，再执行实例的离场业务，离场程序可以立即让同一预置项重新出现，操作接续并保留新绑定。
 
