@@ -20,7 +20,7 @@ Unit Definition 直接关联共享的 Elemental Definition。bursts 按元素类
 ```typescript
 interface Definition {
     readonly maxEp: number;
-    readonly recoveryPerSecond: number;
+    readonly recoverySpeed: number;
     readonly elementResistance: number;
     readonly damageResistance: number;
     readonly burstRecoverySpeed: number;
@@ -30,7 +30,7 @@ interface Definition {
 
 元素 Type 是字符串字面量联合，同名的 as const 对象提供 Type.NEURAL 等运行时常量，联合类型与 ELEMENT_TYPES 均从该对象导出；接口接受对应字面量。Data／Content 直接提供完整静态 Definition；Data 按接收者类别选择 bursts 表，Core 通过 `definition.elemental.bursts[type]` 取得实际 Effect Definition。initialize 作为能力构造入口，校验基础数值和各型爆发时长，再建立初始状态；Definition 与 bursts 共享原引用。内部计算信任已建立的配置与能力配对。
 
-四条 EP 分别保存数值，共用基础上限、自然回复速度与抗性。elementResistance 用于 EP 损伤，damageResistance 用于 HP 元素伤害；两个结算入口和两个属性各自独立。抗性有效值限制在 0–95，回复与爆发恢复速度不小于零，上限不小于 1。
+四条 EP 分别保存数值，共用基础上限、自然回复速度与抗性。Definition 的 recoverySpeed、同名贡献与查询统一表示每秒回复的 EP，推进时除以 TICKS_PER_SECOND。elementResistance 用于 EP 损伤，damageResistance 用于 HP 元素伤害；两个结算入口和两个属性各自独立。抗性有效值限制在 0–95，回复与爆发恢复速度不小于零，上限不小于 1。
 
 | State 字段 | 含义 |
 | --- | --- |

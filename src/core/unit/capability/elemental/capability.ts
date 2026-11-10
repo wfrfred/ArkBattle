@@ -31,7 +31,7 @@ export type Input = contribution.Input<attribute.Modifier, Unit & Elemental>;
 
 export interface Definition {
     readonly maxEp: number;
-    readonly recoveryPerSecond: number;
+    readonly recoverySpeed: number;
     readonly elementResistance: number;
     readonly damageResistance: number;
     readonly burstRecoverySpeed: number;
@@ -86,7 +86,7 @@ export function initialize<U extends Unit & Pick<Elemental, "definition">>(
     const definition = unit.definition.elemental;
 
     assertPositiveNumber(definition.maxEp, "maximum EP");
-    assertNonnegativeNumber(definition.recoveryPerSecond, "EP recovery per second");
+    assertNonnegativeNumber(definition.recoverySpeed, "EP recovery per second");
     assertFiniteNumber(definition.elementResistance, "element resistance");
     assertFiniteNumber(definition.damageResistance, "element HP damage resistance");
     assertNonnegativeNumber(definition.burstRecoverySpeed, "element burst recovery speed");

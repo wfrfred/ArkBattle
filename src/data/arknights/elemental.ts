@@ -97,7 +97,7 @@ export function createArknightsElementalDefinition(
     return {
         maxEp:
             options.maxEp ?? (options.receiver === "ENEMY" && options.boss === true ? 2000 : 1000),
-        recoveryPerSecond: options.recoveryPerSecond ?? 0,
+        recoverySpeed: options.recoveryPerSecond ?? 0,
         elementResistance: options.elementResistance ?? 0,
         damageResistance: options.damageResistance ?? 0,
         burstRecoverySpeed: options.burstRecoverySpeed ?? 1,

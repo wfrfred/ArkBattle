@@ -38,12 +38,8 @@ export function resolveBurstRecoverySpeed(battle: BattleState, self: Unit & Elem
 }
 
 function resolve(battle: BattleState, self: Unit & Elemental, parameter: Parameter): number {
-    const base =
-        parameter === "recoverySpeed"
-            ? self.definition.elemental.recoveryPerSecond
-            : self.definition.elemental[parameter];
     const value = attribute.apply(
-        base,
+        self.definition.elemental[parameter],
         contribution
             .resolve(self.elemental[parameter])
             .flatMap((input) => (typeof input === "function" ? input(battle, self) : input)),
