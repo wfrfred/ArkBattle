@@ -372,7 +372,7 @@ Blocker Capability 公开 `releaseAll(battle, reference: Ref<Unit & Blocker>): B
 
 add 接收创建方完成初始化的完整 Unit，登记后按顺序执行 enter。Deployment 在初始化 fold 前登记自己的 enter，Occupancy 随后追加配对程序，各程序按登记顺序执行。Unit Definition.hooks 必填，无监听传 Hooks.empty()；同键同 ID 替换保留首次位置。全部固有 Hook 在 add 前就绪，生命周期键也允许运行时修改；enter／tick／prepare 按固定候选 ID 读取最新登记，enter／tick 每项前确认 PRESENT。prepare／leave 使用固定 Departure，leave 的程序快照在物理注销前从最新 Unit 捕获，注销后执行。
 
-能力创建输入由 Catalog 按所选 Definition 与 initializer 的参数推导。当前 Occupancy 的 `{ tile, direction? }` 与 Route 的 `{ plan, offset }` 是必填 Initial；选择这些能力时，Unit.initialize 的 initial 及对应字段必填。其余能力按自己的可选输入与默认值初始化。未选择能力的已知输入允许提供并忽略，未知键及不符合对应 Inputs 类型的值拒绝；联合 Definition 的统一输入必须覆盖所有可能分支的需求。Deployable 在初始化入口要求已有 Occupancy。实际部署在初始化前提交 DP／库存／额度，通过 Deployable.setDeployment 在未登记 Unit 上构造本次部署事实，再由 add 登记并执行已组装的 enter 程序。
+能力创建输入由 Catalog 按所选 Definition 与 initializer 的参数推导。创建方确定具体 Definition 后提供对应 Initial。当前 Occupancy 的 `{ tile, direction? }` 与 Route 的 `{ plan, offset }` 是必填 Initial；选择这些能力时，Unit.initialize 的 initial 及对应字段必填。其余能力按自己的可选输入与默认值初始化。未选择能力的已知输入允许提供并忽略，键与值按 Inputs 的普通对象类型检查。Deployable 在初始化入口要求已有 Occupancy。实际部署在初始化前提交 DP／库存／额度，通过 Deployable.setDeployment 在未登记 Unit 上构造本次部署事实，再由 add 登记并执行已组装的 enter 程序。
 
 remove 接收 Unit Ref 请求 Lifetime 结束，首次请求保存 Departure、发布 LEAVING，再执行已登记 prepare。Blocking 自行清理关系与位置计划。真实依赖者完整 Finalize 后才注销 Unit、记录移除事实，执行本地 leave，最后派发全局 leave；Unit 不识别能力或扫描领域状态补救。主动撤退由 Deployable 接口在 remove 前直接结算退款、Card 费用阶段与库存恢复；被动死亡程序只接受已确认死亡，不对所有 leave 无条件回收。Occupancy 用已通知的旧 pair 清理，不把同格新实例当旧对端；Deployable 在本地 leave 调用 Deployment 的内部 releaseSlots 操作归还该实例额度；主动撤退退款调用 DP.recover，不直接修改账户 State。嵌套 remove 只保证请求／Prepare，最外层结算结束才保证完成；主动撤退的资源结算不等待物理注销。advance 固定入口候选，再逐项读取最新 PRESENT Unit 执行 tick。
 

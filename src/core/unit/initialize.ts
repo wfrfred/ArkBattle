@@ -20,28 +20,10 @@ export type Input<D extends Definition & Partial<Definitions> = Definition> = {
     ? { readonly initial?: Initial<D> }
     : { readonly initial: Initial<D> });
 
-type InvalidInput<
-    I extends {
-        readonly definition: Definition & Partial<Definitions>;
-        readonly initial?: Partial<Inputs>;
-    },
-> = I extends unknown
-    ? I extends Input<I["definition"]>
-        ? Exclude<keyof NonNullable<I["initial"]>, keyof Inputs> extends never
-            ? never
-            : I
-        : I
-    : never;
-
-export function initialize<
-    I extends Omit<Input, "definition" | "initial"> & {
-        readonly definition: Definition & Partial<Definitions>;
-        readonly initial?: Partial<Inputs>;
-    },
->(
+export function initialize<D extends Definition & Partial<Definitions>>(
     battle: BattleState,
-    input: I & NoInfer<[InvalidInput<I>] extends [never] ? unknown : never>,
-): Result<Unit & Product<I["definition"]>>;
+    input: Input<D>,
+): Result<Unit & Product<D>>;
 export function initialize(
     battle: BattleState,
     input: Omit<Input, "initial"> & { readonly initial?: Partial<Inputs> },

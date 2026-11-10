@@ -42,7 +42,7 @@ initialize<U extends Unit & Pick<Capability, "definition">>(
 
 这里的 Capability 代表各自的能力接口，例如 Vitality 或 Skill。输入 Unit 已声明本能力的 Definition，initializer 直接读取 unit.definition 中的配置；Result.state 接续 BattleState，Result.value 返回保留已有字段并补充自身能力的新 Unit。具有前置能力依赖的 initializer 也在输入类型中声明该依赖。需要具体实例输入时，通过第三参数声明 Initial，必填与可选性由该签名确定。Occupancy 的第三参数必填，接收 `{ tile, direction? }`，不为缺失地块生成空状态。Route 的 Initial 为 `{ plan, offset }`，通过 initial.route 提供；其 Definition 保存 alwaysCheckCurrentPoint，initializer 构造 Context，在 Route State 自行取得共享时间基准，不接收预装执行状态。Plan 与 Capability Definition 分开，完整类型见[Route](navigation.md#route-定义与进度)。Deployable 沿用两参数初始化，不为部署事实扩展通用构造协议。初始化可以直接登记自身的 Unit Hook，不经通用装配器识别具体能力。不改变战斗事实时返回原 battle；当前时间从 battle.tick 读取，不传独立 tick 或只有时点的 Context。Skill 的 SP、Sustain 等内部值模型仍使用各自的局部初始化接口，不因名称相同改为 Unit 装配操作。
 
-Catalog 从 initializer 签名派生 Inputs 及其必需性。所选能力的第三参数必填时，对应 initial 键必填，Unit.Input.initial 也必填；没有必需输入时，顶层 initial 可以省略。Initial 允许提供未选择能力的已知输入，按 Inputs 中的对应值类型检查；未知键拒绝。Definition 决定实际执行哪些 initializer，未选择能力的输入被忽略。联合 Definition 可以直接使用覆盖所有可能分支需求的统一输入，也可在各分支构造合法输入后组合；不能遗漏实际分支的必需输入。Predefined 使用同样的需求约束，不要求 Initial 的键集合与 Definition 相等。初始化按 fold 接续，不维护额外的必需能力清单。
+Catalog 从 initializer 签名派生 Inputs 及其必需性。创建方先确定具体 Definition；所选能力的第三参数必填时，对应 initial 键必填，Unit.Input.initial 也必填，没有必需输入时顶层 initial 可以省略。Initial 允许提供未选择能力的已知输入，键与值按 Inputs 的普通对象类型检查。Definition 决定实际执行哪些 initializer，未选择能力的输入被忽略。Predefined 复用 Unit 的构造输入约束，不要求 Initial 的键集合与 Definition 相等。初始化按 fold 接续，不维护额外的必需能力清单。
 
 Catalog 只登记 capability → initializer 字典，并从函数签名派生配置、状态及能力组合类型。以下字典节选展示派生方式：
 
@@ -75,7 +75,7 @@ export type Product<D> = {
 } & Pick<States, SelectedKeys<D>>;
 ```
 
-Product<D>.definition 直接保留 D，包含内容自有字段、字面量与联合分支信息；各 Capability 的运行 State 则使用 initializer 派生的标准 States 类型。SelectedKeys 的条件以 [D] 包裹，只有联合 Definition 的所有分支都明确要求某项能力时才承诺对应 State；可选能力也不提供存在保证。Unit 基础身份与生命周期 Hook 契约归 Unit 模块。类型推导与运行时装配共用 initializers，不另建能力映射表。Definition 与内部状态按项目契约保持不可变，不额外套深只读包装、复制或冻结。
+Product<D>.definition 直接保留 D，包含内容自有字段与字面量；各 Capability 的运行 State 则使用 initializer 派生的标准 States 类型。SelectedKeys 只为 Definition 明确要求的能力提供对应 State，可选能力不提供存在保证。Unit 基础身份与生命周期 Hook 契约归 Unit 模块。类型推导与运行时装配共用 initializers，不另建能力映射表。Definition 与内部状态按项目契约保持不可变，不额外套深只读包装、复制或冻结。
 
 Unit 装配实现在 unit/initialize.ts，由 [unit/index.ts](../../src/core/unit/index.ts) 公开 initialize(battle, input) → Result<Unit & Product<D>> 及模型、Hook 类型和查询；完整登记与离场操作仍直接归 battle/unit.ts。Input 的 id、definition、position 为必填，hooks 可选；initial 及其键的必需性取决于所选能力，不接收 effects；基础 Unit 具有原始 Definition、位置、PRESENT、调用方已登记的 hooks（缺省为空）和 Effects.empty()。初始 Effect 仍由登记后的 enter Hook 调用 install，正常执行安装、生效与依赖结算。实现按 Definition 中的配置键选择 initializer，将当前 battle、正在装配的 Unit 和该项初始输入传给它；异构 initializer 的类型只在 fold 派发处擦除。不使用 Reflect，不重复检查内部能力配置是否为 undefined 或 null，不维护另一套能力专属分支。已知能力的 Definition 受 Catalog 派生类型约束；公开装配结果只承诺明确选择的能力，Skill／Action 的私有类型仍由所属领域恢复。
 

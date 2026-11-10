@@ -77,8 +77,7 @@ type RequiredInputKeys = {
 
 export type Initial<D> = unknown extends D
     ? Partial<Inputs>
-    : Partial<Inputs> &
-          Pick<Inputs, D extends unknown ? Extract<SelectedKeys<D>, RequiredInputKeys> : never>;
+    : Partial<Inputs> & Pick<Inputs, Extract<SelectedKeys<D>, RequiredInputKeys>>;
 
 export type Product<D> = {
     readonly definition: D;
