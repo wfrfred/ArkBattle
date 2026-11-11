@@ -1,0 +1,196 @@
+{
+  "provenance": {
+    "scope": "Static native branches; no game execution or runtime XLua verification.",
+    "client": {
+      "dll": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "bytes": 223112680,
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff"
+      },
+      "metadata": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "bytes": 46669332,
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5"
+      },
+      "metadataVersion": 29,
+      "imageBase": "0x180000000"
+    },
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/native.py",
+        "bytes": 18723,
+        "sha256": "1c6c16dc97e0dd9af0af4033c81a7534384dd65ebb1e604df3f4a3289df158e6"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]"
+    },
+    "location": {
+      "metadataRegistration": "0x187ee0630",
+      "modules": {
+        "Assembly-CSharp.dll": {
+          "address": 6564854272,
+          "methodPointers": 6585881040,
+          "count": 225427,
+          "fileBacked": true
+        },
+        "mscorlib.dll": {
+          "address": 6577364064,
+          "methodPointers": 6592131600,
+          "count": 13987,
+          "fileBacked": true
+        }
+      }
+    },
+    "collectedOn": "2026-11-11",
+    "extractionScript": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/card-source-identity-20261111/allocation/extract.py",
+      "bytes": 3914,
+      "sha256": "a8006c7d76e4638025b08ae63ff6e91ef89157d0e3e6bbabaa1fcb7c9f65a42c"
+    }
+  },
+  "result": [
+    {
+      "method": {
+        "nameIndex": 3172,
+        "declaringType": 11614,
+        "returnType": 84484,
+        "parameterStart": 77967,
+        "genericContainerIndex": -1,
+        "token": 100742528,
+        "flags": 150,
+        "iflags": 0,
+        "slot": 65535,
+        "parameterCount": 1,
+        "index": 79231,
+        "image": "Assembly-CSharp.dll",
+        "address": 6454029840,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.Battle.BattleDataConverter.Reset",
+        "returnTypeName": "void",
+        "parameters": [
+          {
+            "nameIndex": 2397005,
+            "token": 134295701,
+            "typeIndex": 83067,
+            "index": 77967,
+            "name": "uniqueId",
+            "typeName": "uint"
+          }
+        ]
+      },
+      "xrefs": {
+        "target": "0x180b0ae10",
+        "scope": "Direct E8/E9 candidates only; excludes indirect/virtual calls; instruction boundaries require confirmation.",
+        "candidates": [
+          {
+            "address": "0x18068a107",
+            "opcode": "e8",
+            "section": "il2cpp",
+            "precedingMethodCandidates": [
+              65961
+            ]
+          },
+          {
+            "address": "0x18068a275",
+            "opcode": "e8",
+            "section": "il2cpp",
+            "precedingMethodCandidates": [
+              65961
+            ]
+          },
+          {
+            "address": "0x18068a43a",
+            "opcode": "e9",
+            "section": "il2cpp",
+            "precedingMethodCandidates": [
+              65959
+            ]
+          },
+          {
+            "address": "0x18068a4e5",
+            "opcode": "e9",
+            "section": "il2cpp",
+            "precedingMethodCandidates": [
+              65960
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "method": {
+        "nameIndex": 2935558,
+        "declaringType": 11614,
+        "returnType": 83054,
+        "parameterStart": 77992,
+        "genericContainerIndex": -1,
+        "token": 100742535,
+        "flags": 145,
+        "iflags": 0,
+        "slot": 65535,
+        "parameterCount": 4,
+        "index": 79238,
+        "image": "Assembly-CSharp.dll",
+        "address": 6454039088,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.Battle.BattleDataConverter._GetUniqueIdByPlayerId",
+        "returnTypeName": "uint",
+        "parameters": [
+          {
+            "nameIndex": 1200515,
+            "token": 134295726,
+            "typeIndex": 60309,
+            "index": 77992,
+            "name": "playerInstId",
+            "typeName": "int"
+          },
+          {
+            "nameIndex": 2480680,
+            "token": 134295727,
+            "typeIndex": 46024,
+            "index": 77993,
+            "name": "isCharacter",
+            "typeName": "bool"
+          },
+          {
+            "nameIndex": 2584472,
+            "token": 134295728,
+            "typeIndex": 46024,
+            "index": 77994,
+            "name": "isAssistChar",
+            "typeName": "bool"
+          },
+          {
+            "nameIndex": 1413663,
+            "token": 134295729,
+            "typeIndex": 65990,
+            "index": 77995,
+            "name": "playerSide",
+            "typeName": "Torappu.PlayerSide"
+          }
+        ]
+      },
+      "xrefs": {
+        "target": "0x180b0d230",
+        "scope": "Direct E8/E9 candidates only; excludes indirect/virtual calls; instruction boundaries require confirmation.",
+        "candidates": [
+          {
+            "address": "0x180b0a568",
+            "opcode": "e8",
+            "section": "il2cpp",
+            "precedingMethodCandidates": [
+              79237
+            ]
+          },
+          {
+            "address": "0x180b0bb42",
+            "opcode": "e8",
+            "section": "il2cpp",
+            "precedingMethodCandidates": [
+              79236
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

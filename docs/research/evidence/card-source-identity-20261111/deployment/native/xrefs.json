@@ -1,0 +1,162 @@
+{
+  "provenance": {
+    "scope": "Static native branches; no game execution or runtime XLua verification.",
+    "client": {
+      "dll": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "bytes": 223112680,
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff"
+      },
+      "metadata": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "bytes": 46669332,
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5"
+      },
+      "metadataVersion": 29,
+      "imageBase": "0x180000000"
+    },
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/native.py",
+        "bytes": 18723,
+        "sha256": "1c6c16dc97e0dd9af0af4033c81a7534384dd65ebb1e604df3f4a3289df158e6"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]"
+    },
+    "location": {
+      "metadataRegistration": "0x187ee0630",
+      "modules": {
+        "Assembly-CSharp.dll": {
+          "address": 6564854272,
+          "methodPointers": 6585881040,
+          "count": 225427,
+          "fileBacked": true
+        },
+        "mscorlib.dll": {
+          "address": 6577364064,
+          "methodPointers": 6592131600,
+          "count": 13987,
+          "fileBacked": true
+        }
+      }
+    },
+    "collectedOn": "2026-11-11",
+    "extractionScript": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/card-source-identity-20261111/deployment/extract.py",
+      "bytes": 4284,
+      "sha256": "e7fa845b199591c3ccf7ded7702f5ca0cd890adbbe7224e96f8f780638438218"
+    }
+  },
+  "result": [
+    {
+      "method": {
+        "nameIndex": 4496,
+        "declaringType": 10264,
+        "returnType": 84484,
+        "parameterStart": -1,
+        "genericContainerIndex": -1,
+        "token": 100730164,
+        "flags": 454,
+        "iflags": 0,
+        "slot": 25,
+        "parameterCount": 0,
+        "index": 66867,
+        "image": "Assembly-CSharp.dll",
+        "address": 6449712240,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.Battle.Deck/Card.OnRecycle",
+        "returnTypeName": "void",
+        "parameters": []
+      },
+      "calls": {
+        "target": "0x1806ecc70",
+        "scope": "Direct E8/E9 candidates only; excludes indirect/virtual calls; instruction boundaries require confirmation.",
+        "candidates": [
+          {
+            "address": "0x18071d344",
+            "opcode": "e8",
+            "section": "il2cpp",
+            "precedingMethodCandidates": [
+              67094
+            ]
+          },
+          {
+            "address": "0x18071dc02",
+            "opcode": "e9",
+            "section": "il2cpp",
+            "precedingMethodCandidates": [
+              67109
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "method": {
+        "nameIndex": 2537994,
+        "declaringType": 10265,
+        "returnType": 48460,
+        "parameterStart": 67714,
+        "genericContainerIndex": -1,
+        "token": 100730357,
+        "flags": 196,
+        "iflags": 0,
+        "slot": 28,
+        "parameterCount": 5,
+        "index": 67060,
+        "image": "Assembly-CSharp.dll",
+        "address": 6449821728,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.Battle.Deck/CharacterCard.SpawnInternal",
+        "returnTypeName": "Torappu.Battle.Character",
+        "parameters": [
+          {
+            "nameIndex": 523294,
+            "token": 134285448,
+            "typeIndex": 109140,
+            "index": 67714,
+            "name": "direction",
+            "typeName": "Torappu.SharedConsts/Direction"
+          },
+          {
+            "nameIndex": 1957,
+            "token": 134285449,
+            "typeIndex": 80093,
+            "index": 67715,
+            "name": "tile",
+            "typeName": "Torappu.Battle.Tile"
+          },
+          {
+            "nameIndex": 2481000,
+            "token": 134285450,
+            "typeIndex": 46024,
+            "index": 67716,
+            "name": "spawnManually",
+            "typeName": "bool"
+          },
+          {
+            "nameIndex": 2481236,
+            "token": 134285451,
+            "typeIndex": 46024,
+            "index": 67717,
+            "name": "freelyFromDeck",
+            "typeName": "bool"
+          },
+          {
+            "nameIndex": 2481251,
+            "token": 134285452,
+            "typeIndex": 96832,
+            "index": 67718,
+            "name": "spawnDetailsTracker",
+            "typeName": "Torappu.Battle.Deck/SpawnDetailsTracker"
+          }
+        ]
+      },
+      "calls": {
+        "target": "0x180707820",
+        "scope": "Direct E8/E9 candidates only; excludes indirect/virtual calls; instruction boundaries require confirmation.",
+        "candidates": []
+      }
+    }
+  ]
+}

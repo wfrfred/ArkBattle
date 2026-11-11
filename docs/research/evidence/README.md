@@ -42,6 +42,7 @@ uv run "$skill/scripts/archive.py" docs/research/evidence
 
 | 批次 | 调查主题 |
 | --- | --- |
+| [card-source-identity-20261111](card-source-identity-20261111/README.md) | BattleCharacterData.uniqueId 的生成、Card 转读与 Character.cardUid 写入；普通退场回原卡和重部署的身份保留 |
 | [buff-group-expiry-20261111](buff-group-expiry-20261111/README.md) | 覆盖组基础／独立来源键、组登记与清理；STACK 到期减层、完整结束与回收；真实非默认配置 |
 | [enemy-skill-semantics-20261110](enemy-skill-semantics-20261110/README.md) | EnemySkill 独立触发计时、Ability 执行、宿主共享 SP；霜星、圣堂射手与炎佑的模式及资源绑定 |
 | [unit-audit-20261110](unit-audit-20261110/README.md) | 必要语义补核：Buff／属性、控制与地形、坐标数值、Schedule 配置及干员选型；区分已证规则与实现差异 |

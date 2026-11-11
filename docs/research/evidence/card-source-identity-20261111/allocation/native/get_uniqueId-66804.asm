@@ -1,0 +1,38 @@
+0x1806f3f80: push rbx
+0x1806f3f82: sub rsp, 0x20
+0x1806f3f86: cmp byte ptr [rip + 0x88a75da], 0
+0x1806f3f8d: mov rbx, rcx
+0x1806f3f90: jne 0x1806f3fa5
+0x1806f3f92: lea rcx, [rip + 0x84cdd8f]
+0x1806f3f99: call 0x18049c210
+0x1806f3f9e: mov byte ptr [rip + 0x88a75c2], 1
+0x1806f3fa5: mov rax, qword ptr [rip + 0x84cdd7c]
+0x1806f3fac: mov rdx, qword ptr [rax + 0xb8]
+0x1806f3fb3: mov rcx, qword ptr [rdx + 0x40]
+0x1806f3fb7: test rcx, rcx
+0x1806f3fba: jne 0x1806f3fd7
+0x1806f3fbc: cmp qword ptr [rbx + 0x20], rcx
+0x1806f3fc0: je 0x1806f3fcf
+0x1806f3fc2: mov rax, qword ptr [rbx + 0x20]
+0x1806f3fc6: mov eax, dword ptr [rax + 0x6c]
+0x1806f3fc9: add rsp, 0x20
+0x1806f3fcd: pop rbx
+0x1806f3fce: ret
+0x1806f3fcf: xor eax, eax
+0x1806f3fd1: add rsp, 0x20
+0x1806f3fd5: pop rbx
+0x1806f3fd6: ret
+0x1806f3fd7: xor r8d, r8d
+0x1806f3fda: mov rdx, rbx
+0x1806f3fdd: add rsp, 0x20
+0x1806f3fe1: pop rbx
+0x1806f3fe2: jmp 0x183403b00 ; XLua.DelegateBridge.__Gen_Delegate_Imp316
+0x1806f3fe7: int3
+0x1806f3fe8: int3
+0x1806f3fe9: int3
+0x1806f3fea: int3
+0x1806f3feb: int3
+0x1806f3fec: int3
+0x1806f3fed: int3
+0x1806f3fee: int3
+0x1806f3fef: int3

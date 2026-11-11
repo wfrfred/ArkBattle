@@ -1,0 +1,948 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-11-11"
+    ],
+    "collectionDateSource": "batch directory",
+    "organizedOn": "2026-11-11",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+        "records": [
+          "allocation/native/metadata.json#/provenance/client/dll",
+          "allocation/native/native.json#/provenance/client/dll",
+          "allocation/native/xrefs.json#/provenance/client/dll",
+          "deployment/native/metadata.json#/provenance/client/dll",
+          "deployment/native/native.json#/provenance/client/dll",
+          "deployment/native/xrefs.json#/provenance/client/dll"
+        ],
+        "bytes": 223112680
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        "records": [
+          "allocation/native/metadata.json#/provenance/client/metadata",
+          "allocation/native/native.json#/provenance/client/metadata",
+          "allocation/native/xrefs.json#/provenance/client/metadata",
+          "deployment/native/metadata.json#/provenance/client/metadata",
+          "deployment/native/native.json#/provenance/client/metadata",
+          "deployment/native/xrefs.json#/provenance/client/metadata"
+        ],
+        "bytes": 46669332
+      }
+    },
+    "sourceRecords": [
+      "allocation/native/metadata.json",
+      "allocation/native/native.json",
+      "allocation/native/xrefs.json",
+      "deployment/native/metadata.json",
+      "deployment/native/native.json",
+      "deployment/native/xrefs.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12895,
+        "sha256": "9c5b246859318caaec4aab5275ef0d2d49fce5d612c6b4e569973a9941ba621a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "allocation/extract.py",
+        "kind": "historical-script",
+        "bytes": 3914,
+        "sha256": "a8006c7d76e4638025b08ae63ff6e91ef89157d0e3e6bbabaa1fcb7c9f65a42c"
+      },
+      {
+        "path": "allocation/extract.py.lock",
+        "kind": "artifact",
+        "bytes": 3739,
+        "sha256": "1ed9e3b399cf0743106d2124514970f3a3b5db6d9f1192fba528019ccbefdf04"
+      },
+      {
+        "path": "allocation/native/ConvertToBattlePlayerData-79227.asm",
+        "kind": "instructions",
+        "bytes": 20184,
+        "sha256": "6bb6e60f06162a147b5cb2b7f470456d5713b809face3834e098e53aa89ba3ef"
+      },
+      {
+        "path": "allocation/native/ConvertToCharacterData-79217.asm",
+        "kind": "instructions",
+        "bytes": 2012,
+        "sha256": "5678b5a5ada1e010b3b5ce9cd9cee2bbc333f0b417ee862765e6d845bea3a9d5"
+      },
+      {
+        "path": "allocation/native/Duplicate-79469.asm",
+        "kind": "instructions",
+        "bytes": 11515,
+        "sha256": "45d5ff4bb340537b8cf5e8a2820eea10b584675b4bf7601c9bf7424407c0c630"
+      },
+      {
+        "path": "allocation/native/GetCurUniqueId-79232.asm",
+        "kind": "instructions",
+        "bytes": 664,
+        "sha256": "f6baef1ae19d26b7170a4ac0bf07247579d1bb55de96e22bea50f62719ad8c39"
+      },
+      {
+        "path": "allocation/native/Init-66854.asm",
+        "kind": "instructions",
+        "bytes": 6522,
+        "sha256": "a114cc1b81a26c8863ebb8affd5ad1c7929d36a7d02cef4cda63b3bc18deb86d"
+      },
+      {
+        "path": "allocation/native/Reset-79231.asm",
+        "kind": "instructions",
+        "bytes": 908,
+        "sha256": "ce31bccd0603feda07009a7c6d57ebfaa74e6d6d00b7be434d95fe5dc68a0b8a"
+      },
+      {
+        "path": "allocation/native/ShiftByPlayerSide-79239.asm",
+        "kind": "instructions",
+        "bytes": 1019,
+        "sha256": "e467e750803d4e32ed48dc27898a6dec854712ef613de4223614efbcadb05571"
+      },
+      {
+        "path": "allocation/native/TouchCharacterData-79216.asm",
+        "kind": "instructions",
+        "bytes": 2037,
+        "sha256": "8e579a55a87078fa50d88d92e8289f5ba824420da697b04c7cc55e3936212de6"
+      },
+      {
+        "path": "allocation/native/_ConvertInternal-79236.asm",
+        "kind": "instructions",
+        "bytes": 57491,
+        "sha256": "e0123e22610cd2c809977e70077d8da7dba4ed3300e93fdfe71df96a4993724b"
+      },
+      {
+        "path": "allocation/native/_GetUniqueIdByPlayerId-79238.asm",
+        "kind": "instructions",
+        "bytes": 4674,
+        "sha256": "8b99cf44fc77c5d43ea624088dc053ddce3682a66e671be8fd589aeba842ac5a"
+      },
+      {
+        "path": "allocation/native/ctor-66853.asm",
+        "kind": "instructions",
+        "bytes": 14684,
+        "sha256": "50e293450c5f700e380ab6eb111a168f6ac54fb2a6821218766fbff492a4c2bd"
+      },
+      {
+        "path": "allocation/native/ctor-79470.asm",
+        "kind": "instructions",
+        "bytes": 7966,
+        "sha256": "65eb5a178c0e45ea3b9b30c5f99699a891ab5d86b0eff0aec1acc2420849c2b5"
+      },
+      {
+        "path": "allocation/native/get_cardUid-77135.asm",
+        "kind": "instructions",
+        "bytes": 926,
+        "sha256": "36cc53f44e35856daf23a32ab6592302d177d81356eab0f40e847b107e04f8e6"
+      },
+      {
+        "path": "allocation/native/get_uniqueId-66804.asm",
+        "kind": "instructions",
+        "bytes": 1118,
+        "sha256": "3bb532be5f5f1350c3841f5268fe9b79d5a611729d24d38911ca85a054e55fb3"
+      },
+      {
+        "path": "allocation/native/metadata.json",
+        "kind": "record",
+        "bytes": 76058,
+        "sha256": "6a7c9e0342b4eb1af3608f8f865f4a6f2f8e2d8575d4b92a1a8d09916eb30ceb"
+      },
+      {
+        "path": "allocation/native/native.json",
+        "kind": "record",
+        "bytes": 41458,
+        "sha256": "5ea547a9be41be2189b5cb869c6bbef3e785fef64fb6476e873d7558ebe21cae"
+      },
+      {
+        "path": "allocation/native/set_cardUid-77136.asm",
+        "kind": "instructions",
+        "bytes": 1345,
+        "sha256": "d1ea83e185fc497293cdbc90b435c25a979d62c4051cd5529825a4dbcdf25e05"
+      },
+      {
+        "path": "allocation/native/xrefs.json",
+        "kind": "record",
+        "bytes": 5758,
+        "sha256": "426df5fdc3cb5f7ba4640794e26b75ef1e748281b257d74170447d9bc07d6ac8"
+      },
+      {
+        "path": "deployment/extract.py",
+        "kind": "historical-script",
+        "bytes": 4284,
+        "sha256": "e7fa845b199591c3ccf7ded7702f5ca0cd890adbbe7224e96f8f780638438218"
+      },
+      {
+        "path": "deployment/extract.py.lock",
+        "kind": "artifact",
+        "bytes": 3739,
+        "sha256": "1ed9e3b399cf0743106d2124514970f3a3b5db6d9f1192fba528019ccbefdf04"
+      },
+      {
+        "path": "deployment/native/BuildAt-77239.asm",
+        "kind": "instructions",
+        "bytes": 5515,
+        "sha256": "8c06c5ad51548d978c0062218f09a1eb832a008339c8af23ca2659d145993774"
+      },
+      {
+        "path": "deployment/native/CreateCharacter-65677.asm",
+        "kind": "instructions",
+        "bytes": 9389,
+        "sha256": "b4f246756d31f24f4f2e34e9a4211bf94550f3d646f619f3948352181d643c4d"
+      },
+      {
+        "path": "deployment/native/Draw-66861.asm",
+        "kind": "instructions",
+        "bytes": 4305,
+        "sha256": "4dc0f97f9ab65365e122f17c3f8a147e2bac4d584701cddda80d183e3423e0ea"
+      },
+      {
+        "path": "deployment/native/FinishMe-77278.asm",
+        "kind": "instructions",
+        "bytes": 5281,
+        "sha256": "b79ee47eb1c4de2773cbd712b211741b1614582eafb004867e82e13729cb53c3"
+      },
+      {
+        "path": "deployment/native/OnCharacterFinished-65741.asm",
+        "kind": "instructions",
+        "bytes": 4214,
+        "sha256": "57cf7c8def125e3d464e2a763637263ae47385bd2e69ab9e003ccf2fb0d87c0b"
+      },
+      {
+        "path": "deployment/native/OnFinish-77340.asm",
+        "kind": "instructions",
+        "bytes": 5209,
+        "sha256": "343d842a1d216437b2fc0626bee6eb5cf676fa72886cfbf683186559d5a5b60a"
+      },
+      {
+        "path": "deployment/native/OnRecycle-66867.asm",
+        "kind": "instructions",
+        "bytes": 6415,
+        "sha256": "e9e8d4a3bd4984f5d6ce07424dd8faef1afdeb66078bbdefe7cd36ec2fa4d371"
+      },
+      {
+        "path": "deployment/native/OnRecycle-77328.asm",
+        "kind": "instructions",
+        "bytes": 2790,
+        "sha256": "f5679aec080047b02371833297f91381884ecabc1b6e65fce95e373d2b6e8aa5"
+      },
+      {
+        "path": "deployment/native/OnTick-66909.asm",
+        "kind": "instructions",
+        "bytes": 15480,
+        "sha256": "9a0d77c1e89a9861ffbb6ec71872a27ed961abef8e282f489774c22f1b45fb26"
+      },
+      {
+        "path": "deployment/native/RecycleCard-65742.asm",
+        "kind": "instructions",
+        "bytes": 3383,
+        "sha256": "b29d95432c491071104e952e4a90ff556dff57d8ea2c83e23f1c803900dc2463"
+      },
+      {
+        "path": "deployment/native/RecycleCard-66748.asm",
+        "kind": "instructions",
+        "bytes": 8971,
+        "sha256": "561900e67c77569bb90a0efda6c02a26621759022f5a58e40a8db0a02ec47ac8"
+      },
+      {
+        "path": "deployment/native/SpawnCharacterOrToken-66752.asm",
+        "kind": "instructions",
+        "bytes": 2871,
+        "sha256": "be719e2db28384814ba40dac43e3a658a9390c2701c783befc3ad9d1a5be4922"
+      },
+      {
+        "path": "deployment/native/SpawnCharacterOrToken-66753.asm",
+        "kind": "instructions",
+        "bytes": 2633,
+        "sha256": "384c9a745efb4fdd0d918a2f7459830513bcda2e81f88df1156ac4ed26785edb"
+      },
+      {
+        "path": "deployment/native/SpawnCharacterOrToken-66755.asm",
+        "kind": "instructions",
+        "bytes": 13121,
+        "sha256": "b3903d86b6b37f7e8aaf4edf0bc25c9f01fcbdc11b5bfb09943453d515d3202b"
+      },
+      {
+        "path": "deployment/native/SpawnInternal-67060.asm",
+        "kind": "instructions",
+        "bytes": 2333,
+        "sha256": "550d2af744244577950652b318f6c13f0375349790cd86461b621df4e3984d61"
+      },
+      {
+        "path": "deployment/native/SpawnPrefab-66857.asm",
+        "kind": "instructions",
+        "bytes": 6365,
+        "sha256": "46893d10a35d00d2039db1285195c41220cea686addb74958fd0fe14c1d4923d"
+      },
+      {
+        "path": "deployment/native/Withdraw-77251.asm",
+        "kind": "instructions",
+        "bytes": 9498,
+        "sha256": "99db20daa622474b690cc3a8bd67cee6a0d42d6bf88478ce55fc051c1cb028e7"
+      },
+      {
+        "path": "deployment/native/_BuildAtInternal-77293.asm",
+        "kind": "instructions",
+        "bytes": 13074,
+        "sha256": "57e2fa9c1534203328465bf5fbd4fdcb154864e8974c55dc3e77c46e28219f67"
+      },
+      {
+        "path": "deployment/native/get_cardPolicy-67058.asm",
+        "kind": "instructions",
+        "bytes": 889,
+        "sha256": "8fa0602ff16f1c2160b91b19c33df6aa9f64c2dc2c47bdd04e84aaa940aa15a0"
+      },
+      {
+        "path": "deployment/native/metadata.json",
+        "kind": "record",
+        "bytes": 75071,
+        "sha256": "506ead80f0f40144b9bc0b6ecc887f3b02b06d28d5816a9ac186e049e0262585"
+      },
+      {
+        "path": "deployment/native/native.json",
+        "kind": "record",
+        "bytes": 64788,
+        "sha256": "38c9fa8b7f77e83b1fec3fedf4b13edeb28b7f1c76136982441ea34025783127"
+      },
+      {
+        "path": "deployment/native/xrefs.json",
+        "kind": "record",
+        "bytes": 4999,
+        "sha256": "d556b42d9e9cf1952471ea2ae86ff7167162f35c240ca3b50da69d1780ebeca8"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 65677,
+          "mode": "metadata",
+          "records": [
+            "deployment/native/native.json#/result/0/method"
+          ],
+          "fullname": "Torappu.Battle.BattleController.CreateCharacter",
+          "address": "0x18064ba60"
+        },
+        {
+          "index": 65741,
+          "mode": "metadata",
+          "records": [
+            "deployment/native/native.json#/result/1/method"
+          ],
+          "fullname": "Torappu.Battle.BattleController.OnCharacterFinished",
+          "address": "0x180658ea0"
+        },
+        {
+          "index": 65742,
+          "mode": "metadata",
+          "records": [
+            "deployment/native/native.json#/result/2/method"
+          ],
+          "fullname": "Torappu.Battle.BattleController.RecycleCard",
+          "address": "0x18065d2d0"
+        },
+        {
+          "index": 66748,
+          "mode": "metadata",
+          "records": [
+            "deployment/native/metadata.json#/result/2/methods/0",
+            "deployment/native/native.json#/result/3/method"
+          ],
+          "fullname": "Torappu.Battle.Deck.RecycleCard",
+          "address": "0x1806fbed0"
+        },
+        {
+          "index": 66752,
+          "mode": "metadata",
+          "records": [
+            "deployment/native/metadata.json#/result/2/methods/1",
+            "deployment/native/native.json#/result/4/method"
+          ],
+          "fullname": "Torappu.Battle.Deck.SpawnCharacterOrToken",
+          "address": "0x1806fd000"
+        },
+        {
+          "index": 66753,
+          "mode": "metadata",
+          "records": [
+            "deployment/native/metadata.json#/result/2/methods/2",
+            "deployment/native/native.json#/result/5/method"
+          ],
+          "fullname": "Torappu.Battle.Deck.SpawnCharacterOrToken",
+          "address": "0x1806fcec0"
+        },
+        {
+          "index": 66755,
+          "mode": "metadata",
+          "records": [
+            "deployment/native/metadata.json#/result/2/methods/3",
+            "deployment/native/native.json#/result/6/method"
+          ],
+          "fullname": "Torappu.Battle.Deck.SpawnCharacterOrToken",
+          "address": "0x1806fd140"
+        },
+        {
+          "index": 66804,
+          "mode": "metadata",
+          "records": [
+            "allocation/native/metadata.json#/result/3/methods/0",
+            "allocation/native/native.json#/result/0/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card.get_uniqueId",
+          "address": "0x1806f3f80"
+        },
+        {
+          "index": 66853,
+          "mode": "metadata",
+          "records": [
+            "allocation/native/metadata.json#/result/3/methods/1",
+            "allocation/native/native.json#/result/1/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card..ctor",
+          "address": "0x1806f1730"
+        },
+        {
+          "index": 66854,
+          "mode": "metadata",
+          "records": [
+            "allocation/native/metadata.json#/result/3/methods/2",
+            "allocation/native/native.json#/result/2/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card.Init",
+          "address": "0x1806ec670"
+        },
+        {
+          "index": 66857,
+          "mode": "metadata",
+          "records": [
+            "deployment/native/metadata.json#/result/0/methods/0",
+            "deployment/native/native.json#/result/7/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card.SpawnPrefab",
+          "address": "0x1806eeaa0"
+        },
+        {
+          "index": 66861,
+          "mode": "metadata",
+          "records": [
+            "deployment/native/metadata.json#/result/0/methods/1",
+            "deployment/native/native.json#/result/8/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card.Draw",
+          "address": "0x1806eb980"
+        },
+        {
+          "index": 66867,
+          "mode": "metadata",
+          "records": [
+            "deployment/native/metadata.json#/result/0/methods/2",
+            "deployment/native/native.json#/result/9/method",
+            "deployment/native/xrefs.json#/result/0/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card.OnRecycle",
+          "address": "0x1806ecc70"
+        },
+        {
+          "index": 66909,
+          "mode": "metadata",
+          "records": [
+            "deployment/native/metadata.json#/result/0/methods/3",
+            "deployment/native/native.json#/result/10/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card.OnTick",
+          "address": "0x1806ed530"
+        },
+        {
+          "index": 67058,
+          "mode": "metadata",
+          "records": [
+            "deployment/native/metadata.json#/result/1/methods/0",
+            "deployment/native/native.json#/result/11/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/CharacterCard.get_cardPolicy",
+          "address": "0x180707aa0"
+        },
+        {
+          "index": 67060,
+          "mode": "metadata",
+          "records": [
+            "deployment/native/metadata.json#/result/1/methods/1",
+            "deployment/native/native.json#/result/12/method",
+            "deployment/native/xrefs.json#/result/1/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/CharacterCard.SpawnInternal",
+          "address": "0x180707820"
+        },
+        {
+          "index": 77135,
+          "mode": "metadata",
+          "records": [
+            "allocation/native/metadata.json#/result/4/methods/0",
+            "allocation/native/native.json#/result/3/method"
+          ],
+          "fullname": "Torappu.Battle.Character.get_cardUid",
+          "address": "0x180aaf750"
+        },
+        {
+          "index": 77136,
+          "mode": "metadata",
+          "records": [
+            "allocation/native/metadata.json#/result/4/methods/1",
+            "allocation/native/native.json#/result/4/method"
+          ],
+          "fullname": "Torappu.Battle.Character.set_cardUid",
+          "address": "0x180ab2b60"
+        },
+        {
+          "index": 77239,
+          "mode": "metadata",
+          "records": [
+            "deployment/native/metadata.json#/result/4/methods/0",
+            "deployment/native/native.json#/result/13/method"
+          ],
+          "fullname": "Torappu.Battle.Character.BuildAt",
+          "address": "0x180a9d3a0"
+        },
+        {
+          "index": 77251,
+          "mode": "metadata",
+          "records": [
+            "deployment/native/metadata.json#/result/4/methods/1",
+            "deployment/native/native.json#/result/14/method"
+          ],
+          "fullname": "Torappu.Battle.Character.Withdraw",
+          "address": "0x180aa94a0"
+        },
+        {
+          "index": 77278,
+          "mode": "metadata",
+          "records": [
+            "deployment/native/metadata.json#/result/4/methods/2",
+            "deployment/native/native.json#/result/15/method"
+          ],
+          "fullname": "Torappu.Battle.Character.FinishMe",
+          "address": "0x180a9efd0"
+        },
+        {
+          "index": 77293,
+          "mode": "metadata",
+          "records": [
+            "deployment/native/metadata.json#/result/4/methods/3",
+            "deployment/native/native.json#/result/16/method"
+          ],
+          "fullname": "Torappu.Battle.Character._BuildAtInternal",
+          "address": "0x180aaaaf0"
+        },
+        {
+          "index": 77328,
+          "mode": "metadata",
+          "records": [
+            "deployment/native/metadata.json#/result/4/methods/4",
+            "deployment/native/native.json#/result/17/method"
+          ],
+          "fullname": "Torappu.Battle.Character.OnRecycle",
+          "address": "0x180aa3dc0"
+        },
+        {
+          "index": 77340,
+          "mode": "metadata",
+          "records": [
+            "deployment/native/metadata.json#/result/4/methods/5",
+            "deployment/native/native.json#/result/18/method"
+          ],
+          "fullname": "Torappu.Battle.Character.OnFinish",
+          "address": "0x180aa32c0"
+        },
+        {
+          "index": 79216,
+          "mode": "metadata",
+          "records": [
+            "allocation/native/metadata.json#/result/5/methods/0",
+            "allocation/native/native.json#/result/5/method"
+          ],
+          "fullname": "Torappu.Battle.BattleDataConverter.TouchCharacterData",
+          "address": "0x180b0af50"
+        },
+        {
+          "index": 79217,
+          "mode": "metadata",
+          "records": [
+            "allocation/native/metadata.json#/result/5/methods/1",
+            "allocation/native/native.json#/result/6/method"
+          ],
+          "fullname": "Torappu.Battle.BattleDataConverter.ConvertToCharacterData",
+          "address": "0x180b09e40"
+        },
+        {
+          "index": 79227,
+          "mode": "metadata",
+          "records": [
+            "allocation/native/metadata.json#/result/5/methods/2",
+            "allocation/native/native.json#/result/7/method"
+          ],
+          "fullname": "Torappu.Battle.BattleDataConverter.ConvertToBattlePlayerData",
+          "address": "0x180b09410"
+        },
+        {
+          "index": 79231,
+          "mode": "metadata",
+          "records": [
+            "allocation/native/metadata.json#/result/5/methods/3",
+            "allocation/native/native.json#/result/8/method",
+            "allocation/native/xrefs.json#/result/0/method"
+          ],
+          "fullname": "Torappu.Battle.BattleDataConverter.Reset",
+          "address": "0x180b0ae10"
+        },
+        {
+          "index": 79232,
+          "mode": "metadata",
+          "records": [
+            "allocation/native/metadata.json#/result/5/methods/4",
+            "allocation/native/native.json#/result/9/method"
+          ],
+          "fullname": "Torappu.Battle.BattleDataConverter.GetCurUniqueId",
+          "address": "0x180b0a4b0"
+        },
+        {
+          "index": 79236,
+          "mode": "metadata",
+          "records": [
+            "allocation/native/metadata.json#/result/5/methods/5",
+            "allocation/native/native.json#/result/10/method"
+          ],
+          "fullname": "Torappu.Battle.BattleDataConverter._ConvertInternal",
+          "address": "0x180b0b0f0"
+        },
+        {
+          "index": 79238,
+          "mode": "metadata",
+          "records": [
+            "allocation/native/metadata.json#/result/5/methods/6",
+            "allocation/native/native.json#/result/11/method",
+            "allocation/native/xrefs.json#/result/1/method"
+          ],
+          "fullname": "Torappu.Battle.BattleDataConverter._GetUniqueIdByPlayerId",
+          "address": "0x180b0d230"
+        },
+        {
+          "index": 79239,
+          "mode": "metadata",
+          "records": [
+            "allocation/native/metadata.json#/result/5/methods/7",
+            "allocation/native/native.json#/result/12/method"
+          ],
+          "fullname": "Torappu.Battle.BattleDataConverter.ShiftByPlayerSide",
+          "address": "0x180b0aee0"
+        },
+        {
+          "index": 79469,
+          "mode": "metadata",
+          "records": [
+            "allocation/native/metadata.json#/result/6/methods/0",
+            "allocation/native/native.json#/result/13/method"
+          ],
+          "fullname": "Torappu.Battle.BattleCharacterData.Duplicate",
+          "address": "0x180b2bf50"
+        },
+        {
+          "index": 79470,
+          "mode": "metadata",
+          "records": [
+            "allocation/native/metadata.json#/result/6/methods/1",
+            "allocation/native/native.json#/result/14/method"
+          ],
+          "fullname": "Torappu.Battle.BattleCharacterData..ctor",
+          "address": "0x180b2c8c0"
+        }
+      ],
+      "blocks": [
+        {
+          "address": "0x18064ba60",
+          "records": [
+            "deployment/native/CreateCharacter-65677.asm"
+          ]
+        },
+        {
+          "address": "0x180658ea0",
+          "records": [
+            "deployment/native/OnCharacterFinished-65741.asm"
+          ]
+        },
+        {
+          "address": "0x18065d2d0",
+          "records": [
+            "deployment/native/RecycleCard-65742.asm"
+          ]
+        },
+        {
+          "address": "0x1806eb980",
+          "records": [
+            "deployment/native/Draw-66861.asm"
+          ]
+        },
+        {
+          "address": "0x1806ec670",
+          "records": [
+            "allocation/native/Init-66854.asm"
+          ]
+        },
+        {
+          "address": "0x1806ecc70",
+          "records": [
+            "deployment/native/OnRecycle-66867.asm"
+          ]
+        },
+        {
+          "address": "0x1806ed530",
+          "records": [
+            "deployment/native/OnTick-66909.asm"
+          ]
+        },
+        {
+          "address": "0x1806eeaa0",
+          "records": [
+            "deployment/native/SpawnPrefab-66857.asm"
+          ]
+        },
+        {
+          "address": "0x1806f1730",
+          "records": [
+            "allocation/native/ctor-66853.asm"
+          ]
+        },
+        {
+          "address": "0x1806f3f80",
+          "records": [
+            "allocation/native/get_uniqueId-66804.asm"
+          ]
+        },
+        {
+          "address": "0x1806fbed0",
+          "records": [
+            "deployment/native/RecycleCard-66748.asm"
+          ]
+        },
+        {
+          "address": "0x1806fcec0",
+          "records": [
+            "deployment/native/SpawnCharacterOrToken-66753.asm"
+          ]
+        },
+        {
+          "address": "0x1806fd000",
+          "records": [
+            "deployment/native/SpawnCharacterOrToken-66752.asm"
+          ]
+        },
+        {
+          "address": "0x1806fd140",
+          "records": [
+            "deployment/native/SpawnCharacterOrToken-66755.asm"
+          ]
+        },
+        {
+          "address": "0x180707820",
+          "records": [
+            "deployment/native/SpawnInternal-67060.asm"
+          ]
+        },
+        {
+          "address": "0x180707aa0",
+          "records": [
+            "deployment/native/get_cardPolicy-67058.asm"
+          ]
+        },
+        {
+          "address": "0x180a9d3a0",
+          "records": [
+            "deployment/native/BuildAt-77239.asm"
+          ]
+        },
+        {
+          "address": "0x180a9efd0",
+          "records": [
+            "deployment/native/FinishMe-77278.asm"
+          ]
+        },
+        {
+          "address": "0x180aa32c0",
+          "records": [
+            "deployment/native/OnFinish-77340.asm"
+          ]
+        },
+        {
+          "address": "0x180aa3dc0",
+          "records": [
+            "deployment/native/OnRecycle-77328.asm"
+          ]
+        },
+        {
+          "address": "0x180aa94a0",
+          "records": [
+            "deployment/native/Withdraw-77251.asm"
+          ]
+        },
+        {
+          "address": "0x180aaaaf0",
+          "records": [
+            "deployment/native/_BuildAtInternal-77293.asm"
+          ]
+        },
+        {
+          "address": "0x180aaf750",
+          "records": [
+            "allocation/native/get_cardUid-77135.asm"
+          ]
+        },
+        {
+          "address": "0x180ab2b60",
+          "records": [
+            "allocation/native/set_cardUid-77136.asm"
+          ]
+        },
+        {
+          "address": "0x180b09410",
+          "records": [
+            "allocation/native/ConvertToBattlePlayerData-79227.asm"
+          ]
+        },
+        {
+          "address": "0x180b09e40",
+          "records": [
+            "allocation/native/ConvertToCharacterData-79217.asm"
+          ]
+        },
+        {
+          "address": "0x180b0a4b0",
+          "records": [
+            "allocation/native/GetCurUniqueId-79232.asm"
+          ]
+        },
+        {
+          "address": "0x180b0ae10",
+          "records": [
+            "allocation/native/Reset-79231.asm"
+          ]
+        },
+        {
+          "address": "0x180b0aee0",
+          "records": [
+            "allocation/native/ShiftByPlayerSide-79239.asm"
+          ]
+        },
+        {
+          "address": "0x180b0af50",
+          "records": [
+            "allocation/native/TouchCharacterData-79216.asm"
+          ]
+        },
+        {
+          "address": "0x180b0b0f0",
+          "records": [
+            "allocation/native/_ConvertInternal-79236.asm"
+          ]
+        },
+        {
+          "address": "0x180b0d230",
+          "records": [
+            "allocation/native/_GetUniqueIdByPlayerId-79238.asm"
+          ]
+        },
+        {
+          "address": "0x180b2bf50",
+          "records": [
+            "allocation/native/Duplicate-79469.asm"
+          ]
+        },
+        {
+          "address": "0x180b2c8c0",
+          "records": [
+            "allocation/native/ctor-79470.asm"
+          ]
+        }
+      ],
+      "types": [
+        {
+          "name": "Torappu.AdvancedCharacterInst",
+          "records": [
+            "allocation/native/metadata.json#/result/2"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.BattleCharacterData",
+          "records": [
+            "allocation/native/metadata.json#/result/6"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.BattleDataConverter",
+          "records": [
+            "allocation/native/metadata.json#/result/5"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Character",
+          "records": [
+            "allocation/native/metadata.json#/result/4",
+            "deployment/native/metadata.json#/result/4"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Character/BuildParam",
+          "records": [
+            "deployment/native/metadata.json#/result/3"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Deck",
+          "records": [
+            "deployment/native/metadata.json#/result/2"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Deck/Card",
+          "records": [
+            "allocation/native/metadata.json#/result/3",
+            "deployment/native/metadata.json#/result/0"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Deck/CharacterCard",
+          "records": [
+            "deployment/native/metadata.json#/result/1"
+          ]
+        },
+        {
+          "name": "Torappu.CharacterInst",
+          "records": [
+            "allocation/native/metadata.json#/result/1"
+          ]
+        },
+        {
+          "name": "Torappu.CharacterInst/Metadata",
+          "records": [
+            "allocation/native/metadata.json#/result/0"
+          ]
+        }
+      ],
+      "constants": [],
+      "bundles": []
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

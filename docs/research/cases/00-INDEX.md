@@ -33,7 +33,7 @@
 | [21 蒂比与空中阻挡](21-tippi-air-blocking.md) | 蒂比实际起飞／落地 Buff 与原生对地规避分支，复用 Blocking 模式调查；补核风絮、可浮空区块及半径默认／倍率／覆盖 | 自身运动身份与阻挡层分离、切换清理、飞行目标停走；2026-10-30 通用 Blocking.layer／setLayer 接入与未实现内容的边界 |
 | [22 阻挡站位与中断](22-block-positioning-and-interruption.md) | 当前客户端的 BattleTween、解除／裁撤、离场、传送及失衡入口 | 确定性线性曲线、不同解除入口的取消语义、残留插值与自主移动调度，以及顺序重接敌与同步重入的区别 |
 | [23 Blocker、Blockable 与阵营](23-blocker-and-blockable-roles.md) | 原生角色／敌人资格与本机全部 Enemy bundle 初始掩码 | 区分双重角色执行能力与实际内容，核查 ALLY 限定是否成立 |
-| [24 待部署区、部署费用与卡牌供给](24-deployment-cost-and-supply.md) | 费用 getter／取整／独立截断上限、卡牌 Buff 进入角色与出生时序；PRTS 手牌顺序、场下资源、资格、供给及模式对照 | 卡牌与在场采样、共享消耗、当前／下次计时、显示／点选／部署的区别，以及原生阶段与多来源交互的证据边界 |
+| [24 待部署区、部署费用与卡牌供给](24-deployment-cost-and-supply.md) | 费用 getter／取整／独立截断上限、卡牌 Buff 进入角色与出生时序；cardUid 生成和普通重部署；PRTS 手牌顺序、场下资源、资格、供给及模式对照 | 卡牌与在场采样、共享消耗、当前／下次计时、显示／点选／部署的区别；来源身份跨普通重部署保留，以及原生阶段与多来源交互的证据边界 |
 | [25 元素爆发恢复与首次推进](25-elemental-burst-recovery-timing.md) | 当前客户端 EPController、同步 EP 耗尽触发及逐宿主更新链 | 首次恢复由实际调用顺序决定，无统一创建 Tick 跳过；恢复进度、真实 EP 写回及原生证据边界 |
 | [26 奥术法阵与链术师跳跃沉默](26-arcane-circle-chain-silence.md) | 本机 native 伤害事件与逐目标弹跳、本机模板／Prefab、固定赛季装备绑定及 PRTS | 普通攻击和二技能的后续跳跃也向本次伤害目标施加沉默；不覆盖零伤害等未核实边界 |
 | [27 一次攻击的索敌、弹道与伤害结算](27-attack-additions-and-damage-events.md) | 妮芙 S1 的目标取得、弹道身份与采样、前置 Buff、HP／EP、通知和普通死亡短链 | 区分攻击、命中、计算、受伤与击杀时点；已有爆发和本击新爆发、value 与 HP 变化、业务结束与物理回收 |

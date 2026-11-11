@@ -331,7 +331,7 @@ disableOverride=true → 基础键为空字符串
 | true | 来源能收窄为未被 Unity 判空的 Character | `基础键 + "^" + Character.cardUid` |
 | true | 来源为空、非 Character 或被 Unity 判空 | 先构造 `prefix = 基础键 + "^"`；取当前覆盖字典中首个 StartsWith(prefix) 的键，无命中则使用 prefix。 |
 
-Character 的动态类型、`"^"` 和拼接格式均由[本次静态 usage 解码](../evidence/buff-group-expiry-20261111/group/literals.json)确认。`0x1806d6b33` 调用 [Character.get_cardUid（77135）](../evidence/buff-group-expiry-20261111/group/native/get_cardUid-77135.asm)，不是 BObject／Unit 的实例 UID，也不是角色模板 key。本节不从 getter 名称额外推导跨部署的身份政策。
+Character 的动态类型、`"^"` 和拼接格式均由[本次静态 usage 解码](../evidence/buff-group-expiry-20261111/group/literals.json)确认。`0x1806d6b33` 调用 [Character.get_cardUid（77135）](../evidence/buff-group-expiry-20261111/group/native/get_cardUid-77135.asm)，不是 BObject／Unit 的实例 UID，也不是角色模板 key。其生成时机与普通重部署的保留关系另由 9.6 的生产者／回收链补证，不由 getter 名称推导。
 
 **N**：[GetOverrideKeyCandidate（66326）](../evidence/buff-group-expiry-20261111/group/native/GetOverrideKeyCandidate-66326.asm) 的回退直接枚举当前字典键并做字符串前缀判断，不比较组优先级或来源有效性；本批不为字典枚举顺序赋予额外玩法政策。
 
@@ -407,3 +407,9 @@ remainingTime >= 0
 麻痹 palsy[stack] 的两个创建节点均开启 loadFromDB，节点默认时长不能代替数据库解析后的配置；本批没有将它们当作普通有限寿命逐层减层的正例。PRTS BUFF 页能互证一般 STACK 到期政策，但其禁用覆盖概述没有解释上述来源独立组合；组合条件以 9.2 的实际指令为准。
 
 本次闭合的是覆盖组身份与 STACK 自然到期的普通原生架构。第 8 节仍缺的受支持普通内容 EXTEND+snapshot 完整执行正例不因本次调查自动解决；项目如何表达分组、来源与暂停时钟，也仍由后续架构讨论决定。
+
+### 9.6 cardUid 的生成与重部署保留
+
+同日沿生产者与回收链补核，见 [Case 24 第十三节](24-deployment-cost-and-supply.md#十三carduid-的生成与普通重部署2026-11-11)及[来源身份批次](../evidence/card-source-identity-20261111/README.md)。Card.get_uniqueId 转读 BattleCharacterData.uniqueId；该值在角色数据转换阶段形成，普通部署复制到 Character.cardUid。普通退场返回已有 Card，冷却和再次部署不重新分配该数据身份。因此普通同一卡牌重部署后，来源独立组构造仍使用相同 cardUid。
+
+这只回答**分组来源身份**。Effect／Buff 的实例身份、重复施加如何处理、组内如何竞争仍是不同问题。如果旧接收实例仍在原来的 Character 独立来源组，同一卡牌重部署后以有效的新 Character 为来源，使用同一基础键并开启 independentCharacterSource 再次施加 Buff，则最终组键相同；能否保留旧实例仍取决于对应生命周期。分组键相同也不表示 retained.source 自动改成新 Character，原有合并分支见 8.2。

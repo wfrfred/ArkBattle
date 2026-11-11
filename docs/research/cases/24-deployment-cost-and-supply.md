@@ -1,6 +1,6 @@
 # 待部署区、部署费用与卡牌供给
 
-研究日期：2026-10-31；2026-11-01 补查部署附加、出生时序、库存恢复预算及负 DP，并以更新后的客户端复核相关短链。初始项目审查基线 `b33bad5b9b5e74a30e3d0dc3d01253ee7d54847f`，恢复预算补查基线 `1724630`。本案核对部署费用的计算边界、待部署卡牌的顺序与状态、场下推进、部署资格、供给及场上实例之间的关系。只记录机制证据、限制和项目关联，不确定重构接口。
+研究日期：2026-10-31；2026-11-01 补查部署附加、出生时序、库存恢复预算及负 DP，并以更新后的客户端复核相关短链；2026-11-11 补核 cardUid 的生成与普通重部署保留。初始项目审查基线 `b33bad5b9b5e74a30e3d0dc3d01253ee7d54847f`，恢复预算补查基线 `1724630`。本案核对部署费用的计算边界、待部署卡牌的顺序与状态、场下推进、部署资格、供给及场上实例之间的关系。只记录机制证据、限制和项目关联，不确定重构接口。
 
 PRTS 检索以待部署区为入口，按费用与返还、左右与近邻选择、临时效果与共享消耗、当前／下次冷却、场下资源、点选与部署限制、补数与回收、宿主退场和模式差异系统展开，再沿干员、召唤物、敌人、装置及藏品链接交叉核对。按不同语义保留代表实例，不逐档复制数值，也不声称穷尽 PRTS 全站。前三节为费用客户端短链，第四节另列排序调查的范围与缺口，第十节为后续部署入场取证；其它机制表为对应日期查阅的社区资料。普通机制与卫戍协议、其它模式对照分别说明，不把调查覆盖视作项目接入承诺。
 
@@ -327,6 +327,57 @@ QUEUED 对应 `token_10070_aphris_pc`（中继器）；DEFAULT／有限份数中
 ### 对项目划分的约束
 
 现在有数据支持分别讨论 CD 策略、份数消耗／归还和回收惩罚，而不是用三个任意布尔组合替代行为定义。另一方面，具体类型能否收敛成“部署后 CD（0 为队列）／回收后 CD”，还必须保留队列计数及串行恢复这一事实；不能只删分支而丢掉已有可观察行为。本批只提供上述事实和边界，不自行修改 Core 类型或结算时序。
+
+## 十三、cardUid 的生成与普通重部署（2026-11-11）
+
+本节补核 [Buff 来源分组](01-buff-installation-and-parent-scope.md#92-基础键与最终键)所读取的 Character.cardUid。**N** 为当前普通原生分支直接证实，**I** 为这些分支接续后的推导。使用当前 Windows x64、metadata v29；输入、选中方法、字段、代码范围与复跑入口见[来源身份批次](../evidence/card-source-identity-20261111/README.md)。没有执行游戏或验证 XLua／hotfix。
+
+### 身份在角色数据转换时形成
+
+**N**：[Card.get_uniqueId（66804）](../evidence/card-source-identity-20261111/allocation/native/get_uniqueId-66804.asm) 读取 `Card.m_data.uniqueId`，数据类型为 BattleCharacterData，字段偏移为 `+0x6c`。Card 的构造与 Init 保存／使用这份数据，不在此分配新的 uniqueId；Character.cardUid 是部署时复制该值的另一个字段。
+
+**N**：[BattleDataConverter._ConvertInternal（79236）](../evidence/card-source-identity-20261111/allocation/native/_ConvertInternal-79236.asm) 在 `0x180b0baf9` 判断 generateUniqueId：为真时调用 _GetUniqueIdByPlayerId，再于 `0x180b0bb47` 写入 BattleCharacterData.uniqueId；为假时写零。[ConvertToCharacterData（79217）](../evidence/card-source-identity-20261111/allocation/native/ConvertToCharacterData-79217.asm) 的普通入口传 true，TouchCharacterData 的入口传 false。
+
+[生成 helper（79238）](../evidence/card-source-identity-20261111/allocation/native/_GetUniqueIdByPlayerId-79238.asm) 的普通分支分别为：
+
+| 输入 | 身份来源 |
+| --- | --- |
+| playerInstId > 0 | 用 playerInstId 与 playerSide 分区、Character／助战／非 Character 类别位构造值，不消耗递增计数。 |
+| playerInstId <= 0 | 先递增静态 s_uniqueId，再混入 playerSide 分区。 |
+
+这不是“每次创建 Card 都递增一次”。模板 key 也不是该 helper 的身份输入。[ConvertToBattlePlayerData（79227）](../evidence/card-source-identity-20261111/allocation/native/ConvertToBattlePlayerData-79227.asm) 在 resetIdCounterFlag=true 时重置该静态计数器；不能从中推出所有调用都重置，也不能把辅助计数器与正 playerInstId 的确定性构造混为一项。
+
+**N**：[BattleCharacterData.Duplicate（79469）](../evidence/card-source-identity-20261111/allocation/native/Duplicate-79469.asm) 在 `0x180b2c164–c167` 复制原 uniqueId，不重新分配。新建数据对象、相同模板和新身份是不同事实；具体复制流程是否需要另取身份，仍应检查调用者，不能仅按对象引用判断。
+
+### 部署复制数据身份，普通回收保留原 Card
+
+**N**：普通 CharacterCard 的完整身份链为：
+
+```text
+转换得到 BattleCharacterData.uniqueId
+  → Card 保存该数据
+  → CharacterCard.SpawnInternal 把自身 Card 传给 Controller.CreateCharacter
+  → Controller 读取 Card.data，创建 Character
+  → 把 data.uniqueId 写入 Character.cardUid
+  → BuildAt／_BuildAtInternal 仍使用同一 Card.data，接续写入相同身份
+
+普通退场
+  → Character.OnFinish
+  → Controller.OnCharacterFinished 读取 Character.cardUid
+  → Deck 按 m_cardMap 找已有 Card，调用 Card.OnRecycle
+  → 原 Card 进入并推进自己的恢复状态
+  → 再次部署时读取同一 Card.data.uniqueId
+```
+
+关键锚点：
+
+- [CharacterCard.SpawnInternal（67060）](../evidence/card-source-identity-20261111/deployment/native/SpawnInternal-67060.asm) 传递 this；[CreateCharacter（65677）](../evidence/card-source-identity-20261111/deployment/native/CreateCharacter-65677.asm) 在 `0x18064bb34` 取得 Card.data，`0x18064bb69–bb72` 读取 uniqueId 并调用 Character.set_cardUid。
+- [OnCharacterFinished（65741）](../evidence/card-source-identity-20261111/deployment/native/OnCharacterFinished-65741.asm) 在 `0x180658fa7–8fb4` 读取 cardUid 并交给 Deck；[Deck.RecycleCard（66748）](../evidence/card-source-identity-20261111/deployment/native/RecycleCard-66748.asm) 查已有映射项后调用其 OnRecycle，不在这条普通路径构造新卡。
+- [Card.OnRecycle（66867）](../evidence/card-source-identity-20261111/deployment/native/OnRecycle-66867.asm)、[Draw（66861）](../evidence/card-source-identity-20261111/deployment/native/Draw-66861.asm)与 [OnTick（66909）](../evidence/card-source-identity-20261111/deployment/native/OnTick-66909.asm) 接续该 Card 的状态、份数和恢复进度，不为本次普通重部署生成新的 uniqueId。
+
+**I**：普通同一 CharacterCard 撤退、冷却后再次部署，Character.cardUid 沿用原值。证明来自生成、字段赋值和原卡回收链，不来自 cardUid 的命名，也不依赖场上 Character 对象是否由池复用。
+
+本结论限定于上述普通路径。删除后重新建立 Card、TokenCard 的多库存、预置创建、变形／复活、术语移动及模式替换未因此一并闭合。同模板也不能单独证明同一身份；同一数据对象或 Duplicate 保留的值，则不能仅因对象新建就解释成新来源。
 
 ## 未决项与项目关联
 
