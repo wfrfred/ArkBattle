@@ -400,9 +400,9 @@ remainingTime >= 0
 | 阿斯卡纶第一天赋 | 角色 PassiveBuffAbility 携带 ascln_t_1；模板创建有限时长 STACK 的 ascln_t_1[debuff]，clearAllStackCntWhenTimeUp=true。 |
 | 妮芙第一天赋 | 角色 PassiveBuffAbility 携带 nymph_t_1；事件 61 的 listener 描述同时开启 disableOverride 和 independentCharacterSource，owner=MODIFIER_TARGET。模组版也有同样字段组合，本批只闭合普通版角色根绑定。 |
 | 某种天命 | 固定镜像 EnemyData 的 enemy_10111_ymgpck 指向同名 Prefab；本机 enm_pfb_26.ab 的 Talents/PushEnemy AuraAbility 携带 ymgpck_t[push_enemy]，模板条件分支创建有限时长 STACK 标记，clearAll=false、cap=1000。这是静态引用链；默认 lifeTime=0，durationKey=hit_count_duration 的非零最终值未定位，不能声称已观测正持续时长后的自然衰减。 |
-| pallas_s_3[peak] | 保留显式键＋来源独立的非默认描述；该模板的完整根启动链未补齐。 |
+| pallas_s_3[peak] | 显式键＋来源独立的非默认描述；2026-11-12 已补齐 char_485_pallas 的 S3 模式 Aura 根绑定，见 9.9。 |
 
-**N+G**：妮芙 listener 没有开启特殊 source；[CreateBuff.Execute（98388）](../evidence/buff-group-expiry-20261111/group/native/Execute-98388.asm) 的默认来源读取当前 `Snapshot.buff.source`，不是 owner 或一般 Context.source。如果父天赋 Buff 的来源是有效妮芙 Character，最终组键为 `"^" + cardUid`；本批没有单独重证父天赋的初始来源，所以只作条件结论。当前 holder 的 9054 个模板中，这两个 listener 是仅有的两项 disableOverride＋independentCharacterSource 同开描述；统计不覆盖全部 Prefab、BuffDB 或运行覆盖。
+**N**：妮芙 listener 没有开启特殊 source；[CreateBuff.Execute（98388）](../evidence/buff-group-expiry-20261111/group/native/Execute-98388.asm) 的默认来源读取当前 `Snapshot.buff.source`，不是 owner 或一般 Context.source。2026-11-12 补核的标准 PassiveBuffAbility 安装链确认父天赋 source 为宿主妮芙，因此普通有效来源下 listener 的最终组键为 `"^" + cardUid`，见 9.9。当前 holder 的 9054 个模板中，这两个 listener 是仅有的两项 disableOverride＋independentCharacterSource 同开描述；统计不覆盖全部 Prefab、BuffDB 或运行覆盖。
 
 麻痹 palsy[stack] 的两个创建节点均开启 loadFromDB，节点默认时长不能代替数据库解析后的配置；本批没有将它们当作普通有限寿命逐层减层的正例。PRTS BUFF 页能互证一般 STACK 到期政策，但其禁用覆盖概述没有解释上述来源独立组合；组合条件以 9.2 的实际指令为准。
 
@@ -431,3 +431,22 @@ TokenCard.SpawnInternal 将自身 Card 交给 BattleController.CreateToken；后
 该 Character.cardUid 仍由角色数据的 uniqueId 写入，具体分支与范围见 [Case 24](24-deployment-cost-and-supply.md#无-card-的预放置干员)。因此 cardUid 的存在不证明存在对应 Card 对象；它仍满足 9.2 的 Character 分支，不会因为没有 Card 而自动走非 Character 的前缀回退。
 
 项目关联：Card Ref 能表达同一卡牌多个场上实例共享来源，但不能把“没有来源 Card”和“非 Character 来源”当作同一个条件。本批记录这一实际内容需求，不自行增加 SourceIdentity、字段或初始化协议。
+
+### 9.9 候选分组简化的实际内容影响
+
+2026-11-12 按[内容与来源短链](../evidence/independent-group-impact-20261112/README.md)评估候选方案：不独立时用基础 group.id；来源独立时，关联 Card 的 Unit 用 `(group.id, Card 身份)`，无 Card 的 Unit 用 `(group.id, Unit 身份)`，空来源用 `(group.id, null)`。分组范围仍是同一接收者；此处只更换组身份，不更改真正的 source、按来源查询、接纳／竞争政策或父子生命周期。尚未修改 Core 或在此确定接口。
+
+下表的结果来自实际配置与普通调用链接续后的推导，不是实机 A／B 观测。
+
+| 实际内容 | 来源与可观察结果 |
+| --- | --- |
+| 浊心斯卡蒂与海嗣治疗 | 本体 AuraAbility 与海嗣 AuraWithHostAsSourceAbility 均施加来源独立的 skadi2_heal。后者明确把宿主 Character 作为 source，因此本体与自己海嗣的重叠治疗仍在同来源组，不因本表多算一份回血；不同 Card 的浊蒂仍分组。不能把执行光环的海嗣自动当成实际来源。 |
+| 帕拉斯 S3 | 当前角色 S3 模式 Aura 直接绑定 pallas_s_3[peak]；peak 与 stop 共用该基础组并按来源独立，stop 优先级为 1。Card／单个无 Card Character 的身份替换保留组分区，不会让一份帕拉斯的停止标记抑制另一份的效果。 |
+| 妮芙第一天赋 | 标准 PassiveBuffAbility 安装时把 Ability.owner 同时作为接收者与 source；listener 默认继承它，并派生绑定父天赋。后续 ep_damage 也查找并绑定父天赋，找不到则结束。因此本方案保留每份妮芙的监听／损伤来源分区；不能仅凭普通弹道可能 source=null，推导此处会额外创建一组持续损伤。 |
+| vampir 光照计数 | 敌人 GlobalAura 确有 vampir[light] 引用，但验证器选择 MEDIC；light_count 加到原 Buff 来源方，特殊 source 取被光照覆盖的 BUFF_OWNER。因此计数的来源是医疗干员，而非该敌人；本表保持各医疗来源独立，没有找到计数被改变的反例。 |
+| 次生预案伤害标记 | globalbuffs 中对应 GlobalBuff 选择我方干员职业，绑定 halfidle_damage_scale[stack]。ON_OUTPUT_DAMAGE 为受击目标添加以 MODIFIER_SOURCE 为来源的独立 mark。因此实际标记按攻击干员来源区分，Card／无 Card Unit 的替换保留该分区。 |
+| 普通无 Card 预放干员 | 9.8 的直接创建链为本实例转换独立角色数据，再写入 cardUid。以该 Unit 身份表示这一实际实例，仍与其它来源分开；此处没有据未调查的共享数据或特殊重建方式推导差异。 |
+
+扫描范围：完整 holder 的 9054 个模板中，97 项嵌入描述开启来源独立，分布于 69 个模板；本机 38 个 battle/enm_pfb 包的 53,528 个 MonoBehaviour 中，11,740 个含相关 BuffData 类型的对象完整解码，失败数为 0，直接开启来源独立的嵌入描述为 0。后一个结果不包含模板递归及 BuffDB 的全局证明；上述间接模板另行核对了实际 source。
+
+在已闭合的实际内容中，尚未找到这张表导致伤害、治疗、层数、计数或候补竞争改变的正例；没有把字典前缀回退差异本身当作玩法损失。空来源也未找到可执行的结果差异正例，候选弹道模板不等于已验证的来源回收后施加。现有证据支持将该简化作为项目选择，不因此声称与全部运行时／热更新路径严格等价，也不增加尚无具体内容需求的身份映射协议。

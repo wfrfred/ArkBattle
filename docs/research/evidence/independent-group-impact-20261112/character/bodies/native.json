@@ -1,0 +1,299 @@
+{
+  "provenance": {
+    "scope": "Static native branches; no game execution or runtime XLua verification.",
+    "client": {
+      "dll": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "bytes": 223112680,
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff"
+      },
+      "metadata": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "bytes": 46669332,
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5"
+      },
+      "metadataVersion": 29,
+      "imageBase": "0x180000000"
+    },
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/native.py",
+        "bytes": 18723,
+        "sha256": "1c6c16dc97e0dd9af0af4033c81a7534384dd65ebb1e604df3f4a3289df158e6"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]"
+    },
+    "location": {
+      "metadataRegistration": "0x187ee0630",
+      "modules": {
+        "Assembly-CSharp.dll": {
+          "address": 6564854272,
+          "methodPointers": 6585881040,
+          "count": 225427,
+          "fileBacked": true
+        },
+        "mscorlib.dll": {
+          "address": 6577364064,
+          "methodPointers": 6592131600,
+          "count": 13987,
+          "fileBacked": true
+        }
+      }
+    },
+    "collectedOn": "2026-11-12",
+    "extractionScript": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/independent-group-impact-20261112/character/extract.py",
+      "bytes": 5723,
+      "sha256": "6572e1ca6745fabcbb1ab03b69a44cf661d10efa6bf77b4894f213dceab326f7"
+    }
+  },
+  "result": [
+    {
+      "method": {
+        "nameIndex": 3354537,
+        "declaringType": 13448,
+        "returnType": 46024,
+        "parameterStart": 90383,
+        "genericContainerIndex": -1,
+        "token": 100757381,
+        "flags": 196,
+        "iflags": 0,
+        "slot": 105,
+        "parameterCount": 2,
+        "index": 94084,
+        "image": "Assembly-CSharp.dll",
+        "address": 6458801056,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.Battle.Abilities.AuraWithHostAsSourceAbility.DealTargetTouched",
+        "returnTypeName": "bool",
+        "parameters": [
+          {
+            "nameIndex": 6665,
+            "token": 134308128,
+            "typeIndex": 53921,
+            "index": 90383,
+            "name": "target",
+            "typeName": "Torappu.Battle.Entity"
+          },
+          {
+            "nameIndex": 20632,
+            "token": 134308129,
+            "typeIndex": 92030,
+            "index": 90384,
+            "name": "meta",
+            "typeName": "Torappu.Battle.Abilities.AuraAbility/TargetMeta"
+          }
+        ]
+      },
+      "followingMethodAddress": "0x180f97e20",
+      "parts": [
+        {
+          "method": null,
+          "address": "0x180f97ba0",
+          "aliases": [
+            94084
+          ],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x180f97c34",
+          "decodedEnd": "0x180f97c34",
+          "decodedBytes": 148,
+          "fullyDecoded": true,
+          "bytesSha256": "6b2bc22ee7a99a08b26f05fd4eda29e276280d0d32ce469b33f3c1e71d9b96a9",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 30
+        },
+        {
+          "method": null,
+          "address": "0x180f97c34",
+          "aliases": [],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x180f97dc5",
+          "decodedEnd": "0x180f97dc5",
+          "decodedBytes": 401,
+          "fullyDecoded": true,
+          "bytesSha256": "b85554b7f7aad4b2d8b16d43d93dfdb5d138fc0a9940c521c6f1958c712c408a",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 104
+        },
+        {
+          "method": null,
+          "address": "0x180f97dc5",
+          "aliases": [],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x180f97dec",
+          "decodedEnd": "0x180f97dec",
+          "decodedBytes": 39,
+          "fullyDecoded": true,
+          "bytesSha256": "4206809cd3e939aedf868c04dd054e920a293005d11aa4565cb9049eb7aa057f",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 9
+        },
+        {
+          "method": null,
+          "address": "0x180f97dec",
+          "aliases": [],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x180f97e0e",
+          "decodedEnd": "0x180f97e0e",
+          "decodedBytes": 34,
+          "fullyDecoded": true,
+          "bytesSha256": "ea397a8dbf7b51178e147b870a0dd2cdcfd58ab24726de954df04491078fc8d0",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 12
+        },
+        {
+          "method": null,
+          "address": "0x180f97e0e",
+          "aliases": [],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x180f97e14",
+          "decodedEnd": "0x180f97e14",
+          "decodedBytes": 6,
+          "fullyDecoded": true,
+          "bytesSha256": "ee67e26c8d0ab71103fe693f96a5221a5f95ac53fd912559a86a478f35b3bd5d",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 2
+        },
+        {
+          "method": null,
+          "address": "0x180f97e14",
+          "aliases": [],
+          "boundary": "next known method/section boundary; completeness unproven; explicit byte limit",
+          "end": "0x180f97e20",
+          "decodedEnd": "0x180f97e20",
+          "decodedBytes": 12,
+          "fullyDecoded": true,
+          "bytesSha256": "a0d08a155aa4e9aadd5da959565de99acc8dc9dbda96ec3852dde76c97330902",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 12
+        }
+      ]
+    },
+    {
+      "method": {
+        "nameIndex": 2432196,
+        "declaringType": 13448,
+        "returnType": 84484,
+        "parameterStart": 90385,
+        "genericContainerIndex": -1,
+        "token": 100757382,
+        "flags": 196,
+        "iflags": 0,
+        "slot": 32,
+        "parameterCount": 1,
+        "index": 94085,
+        "image": "Assembly-CSharp.dll",
+        "address": 6458801696,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.Battle.Abilities.AuraWithHostAsSourceAbility.DoAttach",
+        "returnTypeName": "void",
+        "parameters": [
+          {
+            "nameIndex": 485847,
+            "token": 134308130,
+            "typeIndex": 53921,
+            "index": 90385,
+            "name": "owner",
+            "typeName": "Torappu.Battle.Entity"
+          }
+        ]
+      },
+      "followingMethodAddress": "0x180f980f0",
+      "parts": [
+        {
+          "method": null,
+          "address": "0x180f97e20",
+          "aliases": [
+            94085
+          ],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x180f97ec7",
+          "decodedEnd": "0x180f97ec7",
+          "decodedBytes": 167,
+          "fullyDecoded": true,
+          "bytesSha256": "6d303e062db09c41acf2aeba90ca21af89ef886984c06d96d62b84549f3e9b12",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 31
+        },
+        {
+          "method": null,
+          "address": "0x180f97ec7",
+          "aliases": [],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x180f980a3",
+          "decodedEnd": "0x180f980a3",
+          "decodedBytes": 476,
+          "fullyDecoded": true,
+          "bytesSha256": "d184734f875f7cf41e767be9f4a4eab86723ed9cfe0f8776d517c540e58ba64d",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 117
+        },
+        {
+          "method": null,
+          "address": "0x180f980a3",
+          "aliases": [],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x180f980ae",
+          "decodedEnd": "0x180f980ae",
+          "decodedBytes": 11,
+          "fullyDecoded": true,
+          "bytesSha256": "6367aaff5c53f5779f0ba8ab88cdba8ba971558bf21420749a3b6c1f88da168f",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 4
+        },
+        {
+          "method": null,
+          "address": "0x180f980ae",
+          "aliases": [],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x180f980ce",
+          "decodedEnd": "0x180f980ce",
+          "decodedBytes": 32,
+          "fullyDecoded": true,
+          "bytesSha256": "aa854cd07384cb09c1fb9882c688ebf870183ef0449bbad897920977cb506fe6",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 7
+        },
+        {
+          "method": null,
+          "address": "0x180f980ce",
+          "aliases": [],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x180f980e6",
+          "decodedEnd": "0x180f980e6",
+          "decodedBytes": 24,
+          "fullyDecoded": true,
+          "bytesSha256": "053fb248bfb9a8e21a356dafe811c7942d4cc485a575249fbb0f448bae183659",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 7
+        },
+        {
+          "method": null,
+          "address": "0x180f980e6",
+          "aliases": [],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x180f980ec",
+          "decodedEnd": "0x180f980ec",
+          "decodedBytes": 6,
+          "fullyDecoded": true,
+          "bytesSha256": "00dbba21b688cd819295fd924f0e516cb339fb4e46df1193959a07a7f345afc4",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 2
+        },
+        {
+          "method": null,
+          "address": "0x180f980ec",
+          "aliases": [],
+          "boundary": "next known method/section boundary; completeness unproven; explicit byte limit",
+          "end": "0x180f980f0",
+          "decodedEnd": "0x180f980f0",
+          "decodedBytes": 4,
+          "fullyDecoded": true,
+          "bytesSha256": "8843b54d2df63ca265cf4a05d27dd2b29a74fb476d296dd44a0e171d74b441ca",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 4
+        }
+      ]
+    }
+  ]
+}

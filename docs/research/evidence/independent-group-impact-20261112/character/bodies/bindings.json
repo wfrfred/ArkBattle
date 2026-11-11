@@ -1,0 +1,804 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-12",
+    "scope": "Selected current static actor bindings; no client execution or XLua verification.",
+    "sources": [
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+        "bytes": 477255,
+        "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_485_pallas.ab",
+        "bytes": 25824,
+        "sha256": "613c8d5e47505ac6ef33d230c17e5f0f2558fd0634ba9d47b4d39d41d80a8d10"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_1012_skadi2.ab",
+        "bytes": 21407,
+        "sha256": "52662c7866015b345803272d3365e3403aa64becf07dbbc81a9b9043a8168a31"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_0.ab",
+        "bytes": 5089969,
+        "sha256": "adcf77f260748418d57e08d2539993232de53053bf4a5ec2292ff9a4c7865f1d"
+      }
+    ],
+    "readers": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/buff-group-expiry-20261111/content/extract.py",
+        "bytes": 11585,
+        "sha256": "4276c66bf5acfa14a3759cf8767e2d9c0c7e32271f62219a953f72529d55426d"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/attack-addon-order-20261102/content/decode_content.py",
+        "bytes": 8161,
+        "sha256": "d17abeee072576a29ca060884dcc0dd770fe0f8194ca7eed7b5c13b99b41e14e"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/nymph-action-settlement-20261103/projectile/decode_projectile.py",
+        "bytes": 6749,
+        "sha256": "dab13196fb726d06bd9094c29f09a12dc3677b2c129359a1f7c305e13a8157fb"
+      }
+    ],
+    "extractionScript": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/independent-group-impact-20261112/character/extract.py",
+      "bytes": 5723,
+      "sha256": "6572e1ca6745fabcbb1ab03b69a44cf661d10efa6bf77b4894f213dceab326f7"
+    }
+  },
+  "result": [
+    {
+      "relative": "charpack/char_485_pallas.ab",
+      "actor": "char_485_pallas",
+      "selected": [
+        {
+          "bundle": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_485_pallas.ab",
+          "cab": "CAB-385fdc0a4da58cbb331bbd61f8920bc7",
+          "pathId": "-6160245203358764180",
+          "typeId": 9,
+          "objectSha256": "95d726d12c9b409fc388b4a98cd8e319f405a465307e7e792384b737d8bcedc3",
+          "hierarchy": [
+            {
+              "name": "char_485_pallas",
+              "gameObjectPathId": "-6767970379924360340",
+              "transformPathId": "4806059360790786924"
+            }
+          ],
+          "scriptBinding": {
+            "externalReference": {
+              "fileId": 1,
+              "guid": "00000000000000000000000000000000",
+              "type": 0,
+              "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+            },
+            "file": "CAB-658d74aab777086fc32b93f385be999a",
+            "value": {
+              "id": "-1297314214590689040",
+              "name": "Character",
+              "cl": "Character",
+              "ns": "Torappu.Battle",
+              "asm": "Assembly-CSharp.dll"
+            }
+          },
+          "bindingFields": {
+            "common:349": true,
+            "common:490": {
+              "m_FileID": 1,
+              "m_PathID": -1297314214590689040
+            },
+            "_modes": {
+              "Array": [
+                {
+                  "m_FileID": 0,
+                  "m_PathID": -3485192652918869140
+                },
+                {
+                  "m_FileID": 0,
+                  "m_PathID": 7296427933037310828
+                },
+                {
+                  "m_FileID": 0,
+                  "m_PathID": -6027048513339903124
+                }
+              ]
+            }
+          },
+          "descriptors": [],
+          "lifecycleFields": {}
+        },
+        {
+          "bundle": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_485_pallas.ab",
+          "cab": "CAB-385fdc0a4da58cbb331bbd61f8920bc7",
+          "pathId": "6997388011893896044",
+          "typeId": 21,
+          "objectSha256": "3152bfe17369777c6f0569aeceefcd258e4ea31fa02b9371421e91fc3e5b1f96",
+          "hierarchy": [
+            {
+              "name": "Aura",
+              "gameObjectPathId": "1621861987336467308",
+              "transformPathId": "-5106533517705661588"
+            },
+            {
+              "name": "Body",
+              "gameObjectPathId": "8431564179305542508",
+              "transformPathId": "-5582619314647190676"
+            },
+            {
+              "name": "S3",
+              "gameObjectPathId": "-7453577785232706708",
+              "transformPathId": "1365557854787941228"
+            },
+            {
+              "name": "Modes",
+              "gameObjectPathId": "-8901529662915202196",
+              "transformPathId": "6782537640548905836"
+            },
+            {
+              "name": "char_485_pallas",
+              "gameObjectPathId": "-6767970379924360340",
+              "transformPathId": "4806059360790786924"
+            }
+          ],
+          "scriptBinding": {
+            "externalReference": {
+              "fileId": 1,
+              "guid": "00000000000000000000000000000000",
+              "type": 0,
+              "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+            },
+            "file": "CAB-658d74aab777086fc32b93f385be999a",
+            "value": {
+              "id": "9073738633337710967",
+              "name": "AuraAbility",
+              "cl": "AuraAbility",
+              "ns": "Torappu.Battle.Abilities",
+              "asm": "Assembly-CSharp.dll"
+            }
+          },
+          "bindingFields": {
+            "common:349": true,
+            "common:490": {
+              "m_FileID": 1,
+              "m_PathID": 9073738633337710967
+            },
+            "_metadata": {
+              "namedAsAlias": "",
+              "blackboardPrefix": ""
+            },
+            "_selector": {
+              "m_FileID": 0,
+              "m_PathID": 0
+            },
+            "_attachPassiveBuffsOnDummy": true,
+            "_ignoreIfOwnerDead": false
+          },
+          "descriptors": [
+            {
+              "pointer": "/_buffs/Array/0",
+              "value": {
+                "buffKey": "pallas_s_3[peak]",
+                "templateKey": "pallas_s_3[peak]",
+                "loadFromDB": false,
+                "overrideKey": "",
+                "disableOverride": false,
+                "independentCharacterSource": true,
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "maxValidStackCnt": -1,
+                "refreshRemainingTimeWhenStackMax": false,
+                "clearAllStackCntWhenTimeUp": false,
+                "lifeTime": 0.0,
+                "durationKey": "duration",
+                "remainingTimeKey": "",
+                "blackboard": {
+                  "Array": []
+                }
+              }
+            }
+          ],
+          "lifecycleFields": {
+            "_removeBuffWhenTargetLeave": true,
+            "_removeBuffWhenAbilityDetached": true,
+            "_onlyAddBuffOnceForEachTarget": false,
+            "_selfOption": 0
+          }
+        }
+      ]
+    },
+    {
+      "relative": "charpack/char_1012_skadi2.ab",
+      "actor": "char_1012_skadi2",
+      "selected": [
+        {
+          "bundle": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_1012_skadi2.ab",
+          "cab": "CAB-de44f421652e0f4c7a8828eb0b201805",
+          "pathId": "3275449461783078844",
+          "typeId": 16,
+          "objectSha256": "9ed058f158b8170ae88244b78eac3c93b15a2e1e651546320e780ca3f625c6b5",
+          "hierarchy": [
+            {
+              "name": "HealAura",
+              "gameObjectPathId": "2983586146475517884",
+              "transformPathId": "2036239305472092092"
+            },
+            {
+              "name": "Body",
+              "gameObjectPathId": "-8699092249168697412",
+              "transformPathId": "-7275903018827176004"
+            },
+            {
+              "name": "S1",
+              "gameObjectPathId": "-7100401826898630724",
+              "transformPathId": "-3371691411584636996"
+            },
+            {
+              "name": "Modes",
+              "gameObjectPathId": "-1171516170663024708",
+              "transformPathId": "-3960452496172832836"
+            },
+            {
+              "name": "char_1012_skadi2",
+              "gameObjectPathId": "-4299301317145974852",
+              "transformPathId": "-8231026042721065028"
+            }
+          ],
+          "scriptBinding": {
+            "externalReference": {
+              "fileId": 1,
+              "guid": "00000000000000000000000000000000",
+              "type": 0,
+              "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+            },
+            "file": "CAB-658d74aab777086fc32b93f385be999a",
+            "value": {
+              "id": "9073738633337710967",
+              "name": "AuraAbility",
+              "cl": "AuraAbility",
+              "ns": "Torappu.Battle.Abilities",
+              "asm": "Assembly-CSharp.dll"
+            }
+          },
+          "bindingFields": {
+            "common:349": true,
+            "common:490": {
+              "m_FileID": 1,
+              "m_PathID": 9073738633337710967
+            },
+            "_metadata": {
+              "namedAsAlias": "",
+              "blackboardPrefix": ""
+            },
+            "_selector": {
+              "m_FileID": 0,
+              "m_PathID": 6984810308451575740
+            },
+            "_attachPassiveBuffsOnDummy": true,
+            "_ignoreIfOwnerDead": false
+          },
+          "descriptors": [
+            {
+              "pointer": "/_buffs/Array/0",
+              "value": {
+                "buffKey": "skadi2_heal",
+                "templateKey": "atk_to_hp_recovery",
+                "loadFromDB": false,
+                "overrideKey": "",
+                "disableOverride": false,
+                "independentCharacterSource": true,
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "maxValidStackCnt": -1,
+                "refreshRemainingTimeWhenStackMax": false,
+                "clearAllStackCntWhenTimeUp": false,
+                "lifeTime": 0.0,
+                "durationKey": "",
+                "remainingTimeKey": "",
+                "blackboard": {
+                  "Array": []
+                }
+              }
+            }
+          ],
+          "lifecycleFields": {
+            "_removeBuffWhenTargetLeave": true,
+            "_removeBuffWhenAbilityDetached": true,
+            "_onlyAddBuffOnceForEachTarget": false,
+            "_selfOption": 0
+          }
+        },
+        {
+          "bundle": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_1012_skadi2.ab",
+          "cab": "CAB-de44f421652e0f4c7a8828eb0b201805",
+          "pathId": "4627089598482360252",
+          "typeId": 16,
+          "objectSha256": "9794eeb1042280951d21243c1e758f69e0fd7d133bb1d41cf12815fc62879efd",
+          "hierarchy": [
+            {
+              "name": "HealAura",
+              "gameObjectPathId": "-2465156812412409924",
+              "transformPathId": "6269792213547296700"
+            },
+            {
+              "name": "Body",
+              "gameObjectPathId": "2338730964636411836",
+              "transformPathId": "651188771267946428"
+            },
+            {
+              "name": "Default",
+              "gameObjectPathId": "8319650475987380156",
+              "transformPathId": "-1823331955465377860"
+            },
+            {
+              "name": "Modes",
+              "gameObjectPathId": "-1171516170663024708",
+              "transformPathId": "-3960452496172832836"
+            },
+            {
+              "name": "char_1012_skadi2",
+              "gameObjectPathId": "-4299301317145974852",
+              "transformPathId": "-8231026042721065028"
+            }
+          ],
+          "scriptBinding": {
+            "externalReference": {
+              "fileId": 1,
+              "guid": "00000000000000000000000000000000",
+              "type": 0,
+              "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+            },
+            "file": "CAB-658d74aab777086fc32b93f385be999a",
+            "value": {
+              "id": "9073738633337710967",
+              "name": "AuraAbility",
+              "cl": "AuraAbility",
+              "ns": "Torappu.Battle.Abilities",
+              "asm": "Assembly-CSharp.dll"
+            }
+          },
+          "bindingFields": {
+            "common:349": true,
+            "common:490": {
+              "m_FileID": 1,
+              "m_PathID": 9073738633337710967
+            },
+            "_metadata": {
+              "namedAsAlias": "",
+              "blackboardPrefix": ""
+            },
+            "_selector": {
+              "m_FileID": 0,
+              "m_PathID": -2892143203940620356
+            },
+            "_attachPassiveBuffsOnDummy": true,
+            "_ignoreIfOwnerDead": false
+          },
+          "descriptors": [
+            {
+              "pointer": "/_buffs/Array/0",
+              "value": {
+                "buffKey": "skadi2_heal",
+                "templateKey": "atk_to_hp_recovery",
+                "loadFromDB": false,
+                "overrideKey": "",
+                "disableOverride": false,
+                "independentCharacterSource": true,
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "maxValidStackCnt": -1,
+                "refreshRemainingTimeWhenStackMax": false,
+                "clearAllStackCntWhenTimeUp": false,
+                "lifeTime": 0.0,
+                "durationKey": "",
+                "remainingTimeKey": "",
+                "blackboard": {
+                  "Array": []
+                }
+              }
+            }
+          ],
+          "lifecycleFields": {
+            "_removeBuffWhenTargetLeave": true,
+            "_removeBuffWhenAbilityDetached": true,
+            "_onlyAddBuffOnceForEachTarget": false,
+            "_selfOption": 0
+          }
+        },
+        {
+          "bundle": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_1012_skadi2.ab",
+          "cab": "CAB-de44f421652e0f4c7a8828eb0b201805",
+          "pathId": "8202914524495423420",
+          "typeId": 16,
+          "objectSha256": "04a945522ce4372a3704f13808a44a8ab6d2db7cd6780bfbf6da35a4aa6ea2cd",
+          "hierarchy": [
+            {
+              "name": "HealAura",
+              "gameObjectPathId": "-1371316412790003780",
+              "transformPathId": "-5656474788506359876"
+            },
+            {
+              "name": "Body",
+              "gameObjectPathId": "2339267455507376060",
+              "transformPathId": "-3724247114956986436"
+            },
+            {
+              "name": "S2",
+              "gameObjectPathId": "3382673917207586748",
+              "transformPathId": "2737796417506715580"
+            },
+            {
+              "name": "Modes",
+              "gameObjectPathId": "-1171516170663024708",
+              "transformPathId": "-3960452496172832836"
+            },
+            {
+              "name": "char_1012_skadi2",
+              "gameObjectPathId": "-4299301317145974852",
+              "transformPathId": "-8231026042721065028"
+            }
+          ],
+          "scriptBinding": {
+            "externalReference": {
+              "fileId": 1,
+              "guid": "00000000000000000000000000000000",
+              "type": 0,
+              "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+            },
+            "file": "CAB-658d74aab777086fc32b93f385be999a",
+            "value": {
+              "id": "9073738633337710967",
+              "name": "AuraAbility",
+              "cl": "AuraAbility",
+              "ns": "Torappu.Battle.Abilities",
+              "asm": "Assembly-CSharp.dll"
+            }
+          },
+          "bindingFields": {
+            "common:349": true,
+            "common:490": {
+              "m_FileID": 1,
+              "m_PathID": 9073738633337710967
+            },
+            "_metadata": {
+              "namedAsAlias": "",
+              "blackboardPrefix": ""
+            },
+            "_selector": {
+              "m_FileID": 0,
+              "m_PathID": -3627747325710489668
+            },
+            "_attachPassiveBuffsOnDummy": true,
+            "_ignoreIfOwnerDead": false
+          },
+          "descriptors": [
+            {
+              "pointer": "/_buffs/Array/0",
+              "value": {
+                "buffKey": "skadi2_heal",
+                "templateKey": "atk_to_hp_recovery",
+                "loadFromDB": false,
+                "overrideKey": "",
+                "disableOverride": false,
+                "independentCharacterSource": true,
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "maxValidStackCnt": -1,
+                "refreshRemainingTimeWhenStackMax": false,
+                "clearAllStackCntWhenTimeUp": false,
+                "lifeTime": 0.0,
+                "durationKey": "",
+                "remainingTimeKey": "",
+                "blackboard": {
+                  "Array": []
+                }
+              }
+            }
+          ],
+          "lifecycleFields": {
+            "_removeBuffWhenTargetLeave": true,
+            "_removeBuffWhenAbilityDetached": true,
+            "_onlyAddBuffOnceForEachTarget": false,
+            "_selfOption": 0
+          }
+        }
+      ]
+    },
+    {
+      "relative": "pkgrps/btl_pfb_tokens_0.ab",
+      "actor": "token_10017_skadi2_dedant",
+      "selected": [
+        {
+          "bundle": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_0.ab",
+          "cab": "CAB-f68700761ef4b9b267b0af89309727d6",
+          "pathId": "-5032594144658003921",
+          "typeId": 82,
+          "objectSha256": "e1584c187f7bf5f17d2679760cc79dc3fc9fe3c47dc7437b19c7647d4cf39b84",
+          "hierarchy": [
+            {
+              "name": "HealAura",
+              "gameObjectPathId": "-8201472228552677329",
+              "transformPathId": "-1474339549625325521"
+            },
+            {
+              "name": "Body",
+              "gameObjectPathId": "-1062691349318801361",
+              "transformPathId": "143451615579727919"
+            },
+            {
+              "name": "S1",
+              "gameObjectPathId": "6821997552712149039",
+              "transformPathId": "6935409379848022063"
+            },
+            {
+              "name": "Modes",
+              "gameObjectPathId": "-6071399091090692049",
+              "transformPathId": "8442030003326806063"
+            },
+            {
+              "name": "token_10017_skadi2_dedant",
+              "gameObjectPathId": "-2568581355382839249",
+              "transformPathId": "-5618397770831763409"
+            }
+          ],
+          "scriptBinding": {
+            "externalReference": {
+              "fileId": 1,
+              "guid": "00000000000000000000000000000000",
+              "type": 0,
+              "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+            },
+            "file": "CAB-658d74aab777086fc32b93f385be999a",
+            "value": {
+              "id": "460419894799153084",
+              "name": "AuraWithHostAsSourceAbility",
+              "cl": "AuraWithHostAsSourceAbility",
+              "ns": "Torappu.Battle.Abilities",
+              "asm": "Assembly-CSharp.dll"
+            }
+          },
+          "bindingFields": {
+            "common:349": true,
+            "common:490": {
+              "m_FileID": 1,
+              "m_PathID": 460419894799153084
+            },
+            "_metadata": {
+              "namedAsAlias": "",
+              "blackboardPrefix": ""
+            },
+            "_selector": {
+              "m_FileID": 0,
+              "m_PathID": -8381944071453480913
+            },
+            "_attachPassiveBuffsOnDummy": true,
+            "_ignoreIfOwnerDead": false
+          },
+          "descriptors": [
+            {
+              "pointer": "/_buffs/Array/0",
+              "value": {
+                "buffKey": "skadi2_heal",
+                "templateKey": "atk_to_hp_recovery",
+                "loadFromDB": false,
+                "overrideKey": "",
+                "disableOverride": false,
+                "independentCharacterSource": true,
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "maxValidStackCnt": -1,
+                "refreshRemainingTimeWhenStackMax": false,
+                "clearAllStackCntWhenTimeUp": false,
+                "lifeTime": 0.0,
+                "durationKey": "",
+                "remainingTimeKey": "",
+                "blackboard": {
+                  "Array": []
+                }
+              }
+            }
+          ],
+          "lifecycleFields": {
+            "_removeBuffWhenTargetLeave": true,
+            "_removeBuffWhenAbilityDetached": true,
+            "_onlyAddBuffOnceForEachTarget": false,
+            "_selfOption": 0
+          }
+        },
+        {
+          "bundle": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_0.ab",
+          "cab": "CAB-f68700761ef4b9b267b0af89309727d6",
+          "pathId": "-94274031790462929",
+          "typeId": 82,
+          "objectSha256": "660f19b73d61320ac4a994a44161921b80de7f1b5582c1e0f0c64d661bceeb1e",
+          "hierarchy": [
+            {
+              "name": "HealAura",
+              "gameObjectPathId": "2206827092084254767",
+              "transformPathId": "-8486775837901199313"
+            },
+            {
+              "name": "Body",
+              "gameObjectPathId": "-4839076101098248145",
+              "transformPathId": "-5384968700492126161"
+            },
+            {
+              "name": "Default",
+              "gameObjectPathId": "-966752942557501393",
+              "transformPathId": "-3127403144535087057"
+            },
+            {
+              "name": "Modes",
+              "gameObjectPathId": "-6071399091090692049",
+              "transformPathId": "8442030003326806063"
+            },
+            {
+              "name": "token_10017_skadi2_dedant",
+              "gameObjectPathId": "-2568581355382839249",
+              "transformPathId": "-5618397770831763409"
+            }
+          ],
+          "scriptBinding": {
+            "externalReference": {
+              "fileId": 1,
+              "guid": "00000000000000000000000000000000",
+              "type": 0,
+              "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+            },
+            "file": "CAB-658d74aab777086fc32b93f385be999a",
+            "value": {
+              "id": "460419894799153084",
+              "name": "AuraWithHostAsSourceAbility",
+              "cl": "AuraWithHostAsSourceAbility",
+              "ns": "Torappu.Battle.Abilities",
+              "asm": "Assembly-CSharp.dll"
+            }
+          },
+          "bindingFields": {
+            "common:349": true,
+            "common:490": {
+              "m_FileID": 1,
+              "m_PathID": 460419894799153084
+            },
+            "_metadata": {
+              "namedAsAlias": "",
+              "blackboardPrefix": ""
+            },
+            "_selector": {
+              "m_FileID": 0,
+              "m_PathID": -8440441776443496401
+            },
+            "_attachPassiveBuffsOnDummy": true,
+            "_ignoreIfOwnerDead": false
+          },
+          "descriptors": [
+            {
+              "pointer": "/_buffs/Array/0",
+              "value": {
+                "buffKey": "skadi2_heal",
+                "templateKey": "atk_to_hp_recovery",
+                "loadFromDB": false,
+                "overrideKey": "",
+                "disableOverride": false,
+                "independentCharacterSource": true,
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "maxValidStackCnt": -1,
+                "refreshRemainingTimeWhenStackMax": false,
+                "clearAllStackCntWhenTimeUp": false,
+                "lifeTime": 0.0,
+                "durationKey": "",
+                "remainingTimeKey": "",
+                "blackboard": {
+                  "Array": []
+                }
+              }
+            }
+          ],
+          "lifecycleFields": {
+            "_removeBuffWhenTargetLeave": true,
+            "_removeBuffWhenAbilityDetached": true,
+            "_onlyAddBuffOnceForEachTarget": false,
+            "_selfOption": 0
+          }
+        },
+        {
+          "bundle": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_0.ab",
+          "cab": "CAB-f68700761ef4b9b267b0af89309727d6",
+          "pathId": "3856330290928019503",
+          "typeId": 82,
+          "objectSha256": "d85b006fde8759c3f44e7d39807fc778864240fcf4cd1d02240878b3702924b2",
+          "hierarchy": [
+            {
+              "name": "HealAura",
+              "gameObjectPathId": "175146263849003055",
+              "transformPathId": "3061928524289140783"
+            },
+            {
+              "name": "Body",
+              "gameObjectPathId": "9000028367228364847",
+              "transformPathId": "3491676652461418543"
+            },
+            {
+              "name": "S2",
+              "gameObjectPathId": "4822995042255890479",
+              "transformPathId": "6543529401873721391"
+            },
+            {
+              "name": "Modes",
+              "gameObjectPathId": "-6071399091090692049",
+              "transformPathId": "8442030003326806063"
+            },
+            {
+              "name": "token_10017_skadi2_dedant",
+              "gameObjectPathId": "-2568581355382839249",
+              "transformPathId": "-5618397770831763409"
+            }
+          ],
+          "scriptBinding": {
+            "externalReference": {
+              "fileId": 1,
+              "guid": "00000000000000000000000000000000",
+              "type": 0,
+              "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+            },
+            "file": "CAB-658d74aab777086fc32b93f385be999a",
+            "value": {
+              "id": "460419894799153084",
+              "name": "AuraWithHostAsSourceAbility",
+              "cl": "AuraWithHostAsSourceAbility",
+              "ns": "Torappu.Battle.Abilities",
+              "asm": "Assembly-CSharp.dll"
+            }
+          },
+          "bindingFields": {
+            "common:349": true,
+            "common:490": {
+              "m_FileID": 1,
+              "m_PathID": 460419894799153084
+            },
+            "_metadata": {
+              "namedAsAlias": "",
+              "blackboardPrefix": ""
+            },
+            "_selector": {
+              "m_FileID": 0,
+              "m_PathID": 1707571494144895023
+            },
+            "_attachPassiveBuffsOnDummy": true,
+            "_ignoreIfOwnerDead": false
+          },
+          "descriptors": [
+            {
+              "pointer": "/_buffs/Array/0",
+              "value": {
+                "buffKey": "skadi2_heal",
+                "templateKey": "atk_to_hp_recovery",
+                "loadFromDB": false,
+                "overrideKey": "",
+                "disableOverride": false,
+                "independentCharacterSource": true,
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "maxValidStackCnt": -1,
+                "refreshRemainingTimeWhenStackMax": false,
+                "clearAllStackCntWhenTimeUp": false,
+                "lifeTime": 0.0,
+                "durationKey": "",
+                "remainingTimeKey": "",
+                "blackboard": {
+                  "Array": []
+                }
+              }
+            }
+          ],
+          "lifecycleFields": {
+            "_removeBuffWhenTargetLeave": true,
+            "_removeBuffWhenAbilityDetached": true,
+            "_onlyAddBuffOnceForEachTarget": false,
+            "_selfOption": 0
+          }
+        }
+      ]
+    }
+  ]
+}

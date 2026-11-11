@@ -1,0 +1,3191 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-12",
+    "scope": "Static installed holder and selected serialized Prefabs; no game execution or runtime XLua verification.",
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/independent-group-impact-20261112/content/extract.py",
+      "bytes": 11738,
+      "sha256": "1652c3d0648f317d20ae63331ba42fe2a8d1b1bcdc2e323c9ffdc411195520d2"
+    },
+    "decoder": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/buff-group-expiry-20261111/content/extract.py",
+      "bytes": 11585,
+      "sha256": "4276c66bf5acfa14a3759cf8767e2d9c0c7e32271f62219a953f72529d55426d"
+    },
+    "typeTreeDecoder": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/attack-addon-order-20261102/content/decode_content.py",
+      "bytes": 8161,
+      "sha256": "d17abeee072576a29ca060884dcc0dd770fe0f8194ca7eed7b5c13b99b41e14e"
+    },
+    "serializedLayoutReader": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/nymph-action-settlement-20261103/projectile/decode_projectile.py",
+      "bytes": 6749,
+      "sha256": "dab13196fb726d06bd9094c29f09a12dc3677b2c129359a1f7c305e13a8157fb"
+    },
+    "scriptBundle": {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+      "bytes": 477255,
+      "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99"
+    },
+    "sources": [
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+        "bytes": 2151020,
+        "sha256": "8edcb8017c977cdf52c2593b58e21db96949f3ad1e6f904180ac1241f145ca79"
+      }
+    ]
+  },
+  "result": {
+    "templateCount": 9054,
+    "independentDescriptorCount": 97,
+    "independentTemplateCount": 69,
+    "loadFromDBCount": 0,
+    "descriptors": [
+      {
+        "origin": {
+          "templateKey": "whispr_t_1",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 384808,
+          "bytes": 2064,
+          "sha256": "11c1ad0140be237395a83276343427c2c24b7375b54415b7b76c19c8a5e55496"
+        },
+        "pointer": "/events/0/actions/0/_succeedNodes/2/_buff",
+        "descriptor": {
+          "buffKey": "whispr_t_1[derived]",
+          "templateKey": "atk_to_hp_recovery",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_buffOwner": "BUFF_OWNER",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": true,
+          "_finishDerivedBuffIfParentFinish": false,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "pasngr_t_1",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 633956,
+          "bytes": 1672,
+          "sha256": "a4823a19b0550759cb8841eb6a05a6a488ff36725edda6970926de909319fefb"
+        },
+        "pointer": "/events/0/actions/1/_buff",
+        "descriptor": {
+          "buffKey": "pasngr_t_1[enhance]",
+          "templateKey": "pasngr_t_1[enhance]",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "LIMITED",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_buffOwner": "BUFF_OWNER",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": false,
+          "_finishDerivedBuffIfParentFinish": false,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "flamtl_s_2",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 1171644,
+          "bytes": 2624,
+          "sha256": "d339291a6b0bc6b6115a3688dedb20d1ecf256700ccc5ea0ccc6bbb5757c0a4f"
+        },
+        "pointer": "/events/0/actions/0/_buffs/0",
+        "descriptor": {
+          "buffKey": "flamtl_s_2[evade]",
+          "templateKey": "evade_physical",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "UNIQUE",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_sourceType": "BUFF_SOURCE",
+          "_useHostAsSource": false,
+          "_isDerivedBuff": true,
+          "_finishDerivedBuffIfParentFinish": true,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuffInRange"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "chen2_s_debuff",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 1221676,
+          "bytes": 2372,
+          "sha256": "6b808219a2817184db543f775f6135e1a33cc8e663f908a8449138f64e0be885"
+        },
+        "pointer": "/events/0/actions/1/_buff",
+        "descriptor": {
+          "buffKey": "chen2_slime",
+          "templateKey": "empty",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "EXTEND",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "LIMITED",
+          "lifeTime": 0.1,
+          "durationKey": null
+        },
+        "creation": {
+          "_buffOwner": "BUFF_OWNER",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": false,
+          "_finishDerivedBuffIfParentFinish": false,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "pallas_s_3[peak]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 1271528,
+          "bytes": 4944,
+          "sha256": "e762d01e46b435562353e41c8c474bcac8694e46464988ddfd7d578d39fe5c9b"
+        },
+        "pointer": "/events/0/actions/2/_succeedNodes/0/_buff",
+        "descriptor": {
+          "buffKey": "pallas_s_3[peak][stop]",
+          "templateKey": "empty",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": "pallas_s_3[peak]",
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_buffOwner": "BUFF_SOURCE",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": true,
+          "_finishDerivedBuffIfParentFinish": false,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "pallas_s_3[peak]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 1271528,
+          "bytes": 4944,
+          "sha256": "e762d01e46b435562353e41c8c474bcac8694e46464988ddfd7d578d39fe5c9b"
+        },
+        "pointer": "/events/1/actions/1/_buff",
+        "descriptor": {
+          "buffKey": "pallas_s_3[effect]",
+          "templateKey": "empty",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_buffOwner": "BUFF_OWNER",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": true,
+          "_finishDerivedBuffIfParentFinish": false,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "gnosis_s_3[check_freeze]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 1422524,
+          "bytes": 4280,
+          "sha256": "45fcda8852ddaabc48b3b3819296fee24a009ff8b53c43d42f6eaa15eca78a08"
+        },
+        "pointer": "/events/0/actions/3/_buff",
+        "descriptor": {
+          "buffKey": "gnosis_s_3[checked]",
+          "templateKey": "empty",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_buffOwner": "BUFF_OWNER",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": true,
+          "_finishDerivedBuffIfParentFinish": false,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "gnosis_s_3[check_freeze]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 1422524,
+          "bytes": 4280,
+          "sha256": "45fcda8852ddaabc48b3b3819296fee24a009ff8b53c43d42f6eaa15eca78a08"
+        },
+        "pointer": "/events/1/actions/3/_buff",
+        "descriptor": {
+          "buffKey": "gnosis_s_3[checked]",
+          "templateKey": "empty",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_buffOwner": "BUFF_OWNER",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": true,
+          "_finishDerivedBuffIfParentFinish": false,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "halfidle_damage_scale[stack]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 5106616,
+          "bytes": 1500,
+          "sha256": "75c003b8bb9aa7e6e5c4fe83033eb837bafa50d9642564c2ba8fd12b15045675"
+        },
+        "pointer": "/events/0/actions/0/_buff",
+        "descriptor": {
+          "buffKey": "halfidle_damage_scale[mark]",
+          "templateKey": "halfidle_damage_scale[mark]",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "STACK",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_buffOwner": "MODIFIER_TARGET",
+          "_useSpecialBuffSource": true,
+          "_specialBuffSource": "MODIFIER_SOURCE",
+          "_isDerivedBuff": true,
+          "_finishDerivedBuffIfParentFinish": true,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "reed2_t_1[skill_3_diffuse]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 9164020,
+          "bytes": 7056,
+          "sha256": "2a9abae6dc846cd3a2f6d7d041237fc8340e1b18c4800ec107e57c940642774c"
+        },
+        "pointer": "/events/0/actions/2/_buffs/1",
+        "descriptor": {
+          "buffKey": "reed2_talent_1[skill_3_dot]",
+          "templateKey": "reed2_t_1[skill_3_dot]",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": "reed2_talent_1[skill_3_dot]",
+          "overrideType": "EXTEND",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": "talent_duration"
+        },
+        "creation": {
+          "_sourceType": "BUFF_SOURCE",
+          "_useHostAsSource": false,
+          "_isDerivedBuff": false,
+          "_finishDerivedBuffIfParentFinish": false,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuffInRange"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "excu2_s_3[mark][effect]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 9293904,
+          "bytes": 1476,
+          "sha256": "583ac78eaadaee49f7a881fcfb1aa4ed3302255e8db958e7324135a78e9cd10f"
+        },
+        "pointer": "/events/0/actions/0/_buff",
+        "descriptor": {
+          "buffKey": "excu2_s_3[mark]",
+          "templateKey": "empty",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "UNIQUE",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_buffOwner": "MODIFIER_TARGET",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": true,
+          "_finishDerivedBuffIfParentFinish": true,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "angel2_s_2[shield][trigger]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 9450256,
+          "bytes": 1848,
+          "sha256": "8be130310e6e3c741b4bdb91e87b4782c872ef117e72b740d45c3f89ef1cb23f"
+        },
+        "pointer": "/events/0/actions/1/_buff",
+        "descriptor": {
+          "buffKey": "angel2_s_2[shield]",
+          "templateKey": "angel2_s_2[shield]",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_buffOwner": "BUFF_OWNER",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": false,
+          "_finishDerivedBuffIfParentFinish": false,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "crosly_s_3[mode]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 9916424,
+          "bytes": 2052,
+          "sha256": "5894977f90717b697dd148622d5aa645fd6f143540bc16f82e7ffc4825c0ca8a"
+        },
+        "pointer": "/events/1/actions/0/_buff",
+        "descriptor": {
+          "buffKey": "crosly_s_3[mark]",
+          "templateKey": "empty",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "LIMITED",
+          "lifeTime": 0.0,
+          "durationKey": "mark_duration"
+        },
+        "creation": {
+          "_buffOwner": "MODIFIER_TARGET",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": true,
+          "_finishDerivedBuffIfParentFinish": true,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "chyue_t_1",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 9958648,
+          "bytes": 3312,
+          "sha256": "536791e0c3741be41d0d97f9b8a13e6b32c1c825bdd5392cae4969d8d3c5721c"
+        },
+        "pointer": "/events/0/actions/0/_succeedNodes/0/_buff",
+        "descriptor": {
+          "buffKey": "chyue_t_1_passive",
+          "templateKey": "chyue_t_1_passive",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "LIMITED",
+          "lifeTime": 0.0,
+          "durationKey": "up_duration"
+        },
+        "creation": {
+          "_buffOwner": "MODIFIER_TARGET",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": false,
+          "_finishDerivedBuffIfParentFinish": false,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "chyue_t_1",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 9958648,
+          "bytes": 3312,
+          "sha256": "536791e0c3741be41d0d97f9b8a13e6b32c1c825bdd5392cae4969d8d3c5721c"
+        },
+        "pointer": "/events/0/actions/0/_failNodes/2/_buff",
+        "descriptor": {
+          "buffKey": "chyue_t_1_passive",
+          "templateKey": "chyue_t_1_passive",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "LIMITED",
+          "lifeTime": 0.0,
+          "durationKey": "up_duration"
+        },
+        "creation": {
+          "_buffOwner": "MODIFIER_TARGET",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": false,
+          "_finishDerivedBuffIfParentFinish": false,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "shu_t_1[char]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 9983984,
+          "bytes": 4752,
+          "sha256": "7aae0f43d8b282fc68c0042c21772b5b511df129a5b4ab11452a540078bce40c"
+        },
+        "pointer": "/events/0/actions/5/_failNodes/3/_buff",
+        "descriptor": {
+          "buffKey": "shu_farm_buff[char]",
+          "templateKey": "shu_farm_buff[char]",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "UNIQUE",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_buffOwner": "BUFF_OWNER",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": false,
+          "_finishDerivedBuffIfParentFinish": true,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "etlchi_t_1[magic_dot]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 10060248,
+          "bytes": 2296,
+          "sha256": "77efedcd83c72a10305549caa9bd266fbf0e54ca0b779b5f4b2c46e415a85822"
+        },
+        "pointer": "/events/0/actions/4/_buff",
+        "descriptor": {
+          "buffKey": "etlchi_t_1[magic_dot_core]",
+          "templateKey": "etlchi_t_1[magic_dot_core]",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "EXTEND",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "LIMITED",
+          "lifeTime": 0.0,
+          "durationKey": "dot_duration"
+        },
+        "creation": {
+          "_buffOwner": "MODIFIER_TARGET",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": false,
+          "_finishDerivedBuffIfParentFinish": false,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "vulpis_t_1[timer]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 10176460,
+          "bytes": 1452,
+          "sha256": "a0f83586e48168d741d12c9a77ced376dcd439774ee026d1c10903725f9b4852"
+        },
+        "pointer": "/events/0/actions/0/_buff",
+        "descriptor": {
+          "buffKey": "vulpis_t_1[mark]",
+          "templateKey": "empty",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_buffOwner": "BUFF_OWNER",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": true,
+          "_finishDerivedBuffIfParentFinish": true,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "vulpis_t_1",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 10177912,
+          "bytes": 4712,
+          "sha256": "1c1ca87e7a230c049903c8fbe9b994a5514c178e232d4863f9781ebe53f83a0e"
+        },
+        "pointer": "/events/0/actions/8/_buff",
+        "descriptor": {
+          "buffKey": "vulpis_t_1[timer]",
+          "templateKey": "vulpis_t_1[timer]",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_buffOwner": "MODIFIER_TARGET",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": true,
+          "_finishDerivedBuffIfParentFinish": true,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "demetr_s3[elite_finish_listener]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 10214516,
+          "bytes": 3804,
+          "sha256": "d19209daa5e9034d4ab9c5162388f9142ee08a75ef15fe7d58f3319ca22a7e2a"
+        },
+        "pointer": "/events/0/actions/1/_succeedNodes/0/_buff",
+        "descriptor": {
+          "buffKey": "demetr_s3[elite_finish_listener_core]",
+          "templateKey": "demetr_s3[elite_finish_listener_core]",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "EXTEND",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "LIMITED",
+          "lifeTime": 0.0,
+          "durationKey": "finish_listener_duration"
+        },
+        "creation": {
+          "_buffOwner": "BUFF_OWNER",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": false,
+          "_finishDerivedBuffIfParentFinish": false,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "demetr_s3[elite_finish_listener]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 10214516,
+          "bytes": 3804,
+          "sha256": "d19209daa5e9034d4ab9c5162388f9142ee08a75ef15fe7d58f3319ca22a7e2a"
+        },
+        "pointer": "/events/0/actions/1/_failNodes/2/_buff",
+        "descriptor": {
+          "buffKey": "demetr_s3[elite_finish_listener_core]",
+          "templateKey": "demetr_s3[elite_finish_listener_core]",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "EXTEND",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "LIMITED",
+          "lifeTime": 0.0,
+          "durationKey": "finish_listener_duration"
+        },
+        "creation": {
+          "_buffOwner": "BUFF_OWNER",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": false,
+          "_finishDerivedBuffIfParentFinish": false,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "lin_t_1",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 10482504,
+          "bytes": 7508,
+          "sha256": "4ed88458109890090bd6e51d4ec392fa5ca6eb10b437190d145670fdea2daefa"
+        },
+        "pointer": "/events/0/actions/5/_buff",
+        "descriptor": {
+          "buffKey": "lin_t_1[disable]",
+          "templateKey": "lin_t_1[disable]",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_buffOwner": "BUFF_OWNER",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": false,
+          "_finishDerivedBuffIfParentFinish": false,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "lin_t_1",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 10482504,
+          "bytes": 7508,
+          "sha256": "4ed88458109890090bd6e51d4ec392fa5ca6eb10b437190d145670fdea2daefa"
+        },
+        "pointer": "/events/2/actions/2/_buff",
+        "descriptor": {
+          "buffKey": "lin_t_1[effect]",
+          "templateKey": "empty",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_buffOwner": "BUFF_OWNER",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": false,
+          "_finishDerivedBuffIfParentFinish": false,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "ines_t_1",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 10529940,
+          "bytes": 3860,
+          "sha256": "f143ad54d39a70e1203d9c0d2f3399a861d4c2c6cd2898d0485b7bc9179b2b49"
+        },
+        "pointer": "/events/0/actions/4/_buff",
+        "descriptor": {
+          "buffKey": "ines_t_1[enemy][mark]",
+          "templateKey": "empty",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "UNIQUE",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_buffOwner": "MODIFIER_TARGET",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": true,
+          "_finishDerivedBuffIfParentFinish": true,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "ines_t_1",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 10529940,
+          "bytes": 3860,
+          "sha256": "f143ad54d39a70e1203d9c0d2f3399a861d4c2c6cd2898d0485b7bc9179b2b49"
+        },
+        "pointer": "/events/0/actions/5/_buff",
+        "descriptor": {
+          "buffKey": "ines_t_1[enemy][unmove]",
+          "templateKey": "ines_t_1[enemy][unmove]",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "EXTEND",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "LIMITED",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_buffOwner": "MODIFIER_TARGET",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": false,
+          "_finishDerivedBuffIfParentFinish": true,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "hodrer_s_3[damage]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 10542976,
+          "bytes": 4700,
+          "sha256": "d159f0f28964c899027ed142eb2d749d35da61085e758183f110c9b4dcbeef2c"
+        },
+        "pointer": "/events/0/actions/4/_buff",
+        "descriptor": {
+          "buffKey": "hodrer_s_3[burn]",
+          "templateKey": "hodrer_s_3[periodic]",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_buffOwner": "MODIFIER_SOURCE",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": true,
+          "_finishDerivedBuffIfParentFinish": true,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "hodrer_s_3[damage]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 10542976,
+          "bytes": 4700,
+          "sha256": "d159f0f28964c899027ed142eb2d749d35da61085e758183f110c9b4dcbeef2c"
+        },
+        "pointer": "/events/1/actions/4/_buff",
+        "descriptor": {
+          "buffKey": "hodrer_s_3[burn]",
+          "templateKey": "hodrer_s_3[periodic]",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_buffOwner": "MODIFIER_TARGET",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": true,
+          "_finishDerivedBuffIfParentFinish": true,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "logos_s_2[lock]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 10802264,
+          "bytes": 2340,
+          "sha256": "4cdda0878f411389a5813b4df9986bae1343e7bc8a06e4037e1754ddbda0c6c0"
+        },
+        "pointer": "/events/0/actions/4/_buff",
+        "descriptor": {
+          "buffKey": "logos_s_2[lock][audio]",
+          "templateKey": "empty",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_buffOwner": "BUFF_OWNER",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": true,
+          "_finishDerivedBuffIfParentFinish": true,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "nymph_s_2",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 10966208,
+          "bytes": 1964,
+          "sha256": "846491c032753ae4e01d5346d24e8abcd7476615aa6389b33c8a06216e551cff"
+        },
+        "pointer": "/events/0/actions/0/_succeedNodes/0/_buff",
+        "descriptor": {
+          "buffKey": "nymph_t_1[ep_damage]",
+          "templateKey": "nymph_t_1[ep_damage]",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_buffOwner": "BUFF_OWNER",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": false,
+          "_finishDerivedBuffIfParentFinish": false,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "nymph_t_1[listener]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 10975276,
+          "bytes": 2432,
+          "sha256": "73c73caedcd5e11e1557d3973629cfb4a4143e4656d3f8e2340f2c96daa4421d"
+        },
+        "pointer": "/events/0/actions/0/_succeedNodes/0/_failNodes/0/_buff",
+        "descriptor": {
+          "buffKey": "nymph_t_1[ep_damage]",
+          "templateKey": "nymph_t_1[ep_damage]",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_buffOwner": "BUFF_OWNER",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": false,
+          "_finishDerivedBuffIfParentFinish": false,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "nymph_t_1",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 10977708,
+          "bytes": 2188,
+          "sha256": "4607c70b8758edf537ca9d54921c0982b28ae67fd594fdbe718265562e6e2ef8"
+        },
+        "pointer": "/events/0/actions/3/_buff",
+        "descriptor": {
+          "buffKey": "nymph_t_1[listener]",
+          "templateKey": "nymph_t_1[listener]",
+          "loadFromDB": false,
+          "disableOverride": true,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": ""
+        },
+        "creation": {
+          "_buffOwner": "MODIFIER_TARGET",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": true,
+          "_finishDerivedBuffIfParentFinish": true,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "monstr_t_2[atk_spd]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 11140360,
+          "bytes": 11220,
+          "sha256": "cd2d5e8e43a6271311cf58e5af42b453b19b2b26dae1e2f1eda4134e947135df"
+        },
+        "pointer": "/events/0/actions/1/_succeedNodes/0/_buff",
+        "descriptor": {
+          "buffKey": "monstr_t_2[atk_spd_up]",
+          "templateKey": "empty",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": "monstr_t_2[atk_spd_up]",
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "LIMITED",
+          "lifeTime": 0.0,
+          "durationKey": "buff_duration"
+        },
+        "creation": {
+          "_buffOwner": "MODIFIER_TARGET",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": false,
+          "_finishDerivedBuffIfParentFinish": false,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "monstr_t_2[atk_spd]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 11140360,
+          "bytes": 11220,
+          "sha256": "cd2d5e8e43a6271311cf58e5af42b453b19b2b26dae1e2f1eda4134e947135df"
+        },
+        "pointer": "/events/0/actions/1/_failNodes/0/_succeedNodes/0/_buff",
+        "descriptor": {
+          "buffKey": "monstr_t_2[atk_spd_up][m2]",
+          "templateKey": "empty",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": "monstr_t_2[atk_spd_up]",
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "LIMITED",
+          "lifeTime": 0.0,
+          "durationKey": "buff_duration"
+        },
+        "creation": {
+          "_buffOwner": "MODIFIER_TARGET",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": false,
+          "_finishDerivedBuffIfParentFinish": false,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "monstr_t_2[atk_spd]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 11140360,
+          "bytes": 11220,
+          "sha256": "cd2d5e8e43a6271311cf58e5af42b453b19b2b26dae1e2f1eda4134e947135df"
+        },
+        "pointer": "/events/0/actions/1/_failNodes/0/_failNodes/0/_buff",
+        "descriptor": {
+          "buffKey": "monstr_t_2[atk_spd_up]",
+          "templateKey": "empty",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": "monstr_t_2[atk_spd_up]",
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "LIMITED",
+          "lifeTime": 0.0,
+          "durationKey": "buff_duration"
+        },
+        "creation": {
+          "_buffOwner": "MODIFIER_TARGET",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": false,
+          "_finishDerivedBuffIfParentFinish": false,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "monstr_t_2[atk_spd]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 11140360,
+          "bytes": 11220,
+          "sha256": "cd2d5e8e43a6271311cf58e5af42b453b19b2b26dae1e2f1eda4134e947135df"
+        },
+        "pointer": "/events/0/actions/2/_failNodes/0/_buff",
+        "descriptor": {
+          "buffKey": "monstr_t_2[atk_spd_up]",
+          "templateKey": "empty",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": "monstr_t_2[atk_spd_up]",
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "LIMITED",
+          "lifeTime": 0.0,
+          "durationKey": "buff_duration"
+        },
+        "creation": {
+          "_buffOwner": "MODIFIER_SOURCE",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": false,
+          "_finishDerivedBuffIfParentFinish": false,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "mantra_s_3[enemy]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 11419132,
+          "bytes": 3164,
+          "sha256": "1ad2dfffffb90458b60492e1daa09e7065db0ad4ba6822be7d03f8cc1e119f8d"
+        },
+        "pointer": "/events/0/actions/2/_buff",
+        "descriptor": {
+          "buffKey": "mantra_s_3[enemy_trigger]",
+          "templateKey": "mantra_s_3[enemy_trigger]",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "UNIQUE",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_buffOwner": "BUFF_OWNER",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": true,
+          "_finishDerivedBuffIfParentFinish": true,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "buddy[try_add_boom]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 11591000,
+          "bytes": 6268,
+          "sha256": "3596dcd4348e83532865971c60b3041e87532b2f45d51db515c69294c420d578"
+        },
+        "pointer": "/events/0/actions/0/_failNodes/0/_failNodes/1/_buff",
+        "descriptor": {
+          "buffKey": "buddy[boom]",
+          "templateKey": "buddy[boom]",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "LIMITED",
+          "lifeTime": 0.0,
+          "durationKey": "boom_duration"
+        },
+        "creation": {
+          "_buffOwner": "BUFF_OWNER",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": false,
+          "_finishDerivedBuffIfParentFinish": false,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "buddy[try_add_boom]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 11591000,
+          "bytes": 6268,
+          "sha256": "3596dcd4348e83532865971c60b3041e87532b2f45d51db515c69294c420d578"
+        },
+        "pointer": "/events/0/actions/0/_failNodes/0/_failNodes/2/_buff",
+        "descriptor": {
+          "buffKey": "buddy[marker]",
+          "templateKey": "buddy[marker]",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_buffOwner": "BUFF_OWNER",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": false,
+          "_finishDerivedBuffIfParentFinish": false,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "makoto_on_enter_normal",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 11616160,
+          "bytes": 4264,
+          "sha256": "02c817fb1f70452d804707b9d082705ade79402e88adb7e5cc465f31d6494e65"
+        },
+        "pointer": "/events/0/actions/0/_succeedNodes/0/_buffData",
+        "descriptor": {
+          "buffKey": "makoto_allout_attack_damage",
+          "templateKey": "makoto_allout_attack_damage",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 2.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_isDerivedBuff": false,
+          "_finishDerivedBuffIfParentFinish": false,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuffToCertainGroupId"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "makoto_on_enter_normal",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 11616160,
+          "bytes": 4264,
+          "sha256": "02c817fb1f70452d804707b9d082705ade79402e88adb7e5cc465f31d6494e65"
+        },
+        "pointer": "/events/0/actions/0/_succeedNodes/1/_buffData",
+        "descriptor": {
+          "buffKey": "makoto_allout_attack_allow_effect",
+          "templateKey": "empty",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "EXTEND",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "LIMITED",
+          "lifeTime": 3.0,
+          "durationKey": "allow_fx_duration"
+        },
+        "creation": {
+          "_isDerivedBuff": false,
+          "_finishDerivedBuffIfParentFinish": false,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuffToCertainGroupId"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "makoto_on_enter_normal",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 11616160,
+          "bytes": 4264,
+          "sha256": "02c817fb1f70452d804707b9d082705ade79402e88adb7e5cc465f31d6494e65"
+        },
+        "pointer": "/events/0/actions/0/_succeedNodes/2/_buffData",
+        "descriptor": {
+          "buffKey": "makoto_allout_attack_effect",
+          "templateKey": "makoto_allout_attack_effect",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "IMMEDIATELY",
+          "lifeTime": 2.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_isDerivedBuff": false,
+          "_finishDerivedBuffIfParentFinish": false,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuffToCertainGroupId"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "makoto_s3_2_aura",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 11635196,
+          "bytes": 1556,
+          "sha256": "a9eb9f1f4b42a141d628e207231e0d0052563ae128268ffb72ae406670af48b6"
+        },
+        "pointer": "/events/0/actions/0/_buff",
+        "descriptor": {
+          "buffKey": "makoto_s3_2_evade",
+          "templateKey": "evade",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": "duration"
+        },
+        "creation": {
+          "_buffOwner": "BUFF_OWNER",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": true,
+          "_finishDerivedBuffIfParentFinish": true,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "veen_t_2_merged[damage]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 11756820,
+          "bytes": 1448,
+          "sha256": "6d9f23c5c6af10ad57b1a81c4bcba0a0d60729d7cab24162c23d4130e661c76b"
+        },
+        "pointer": "/events/0/actions/0/_buff",
+        "descriptor": {
+          "buffKey": "veen_t_2[damage]",
+          "templateKey": "veen_t_2[damage]",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "STACK",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "LIMITED",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_buffOwner": "BUFF_OWNER",
+          "_isDerivedBuff": false,
+          "_finishDerivedBuffIfParentFinish": false,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuffStacked"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "gallus_t_1",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 11761852,
+          "bytes": 1940,
+          "sha256": "aa79614a053c199513d0d4aaabc3db1456b3121c50d78c20c321b422f8a8baf3"
+        },
+        "pointer": "/events/0/actions/0/_succeedNodes/0/_buff",
+        "descriptor": {
+          "buffKey": "gallus_t_1[buff]",
+          "templateKey": "empty",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "EXTEND",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "LIMITED",
+          "lifeTime": 0.0,
+          "durationKey": "buff_duration"
+        },
+        "creation": {
+          "_buffOwner": "BUFF_OWNER",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": false,
+          "_finishDerivedBuffIfParentFinish": false,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "clemnt_s2[emit_projectile]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 11920100,
+          "bytes": 11372,
+          "sha256": "e879aadb8f2ef924535f57541c0c3cf2ffb523c5cad5b2ad0a32d8fc51b152b4"
+        },
+        "pointer": "/events/0/actions/0/_succeedNodes/0/_buffDataList/0",
+        "descriptor": {
+          "buffKey": "clemnt_s2[projectile_hit]",
+          "templateKey": "clemnt_s2[projectile_hit]",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_sourceType": "SOURCE",
+          "type": "Torappu.Battle.Action.Nodes+EmitProjectile"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "clemnt_s2[emit_projectile]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 11920100,
+          "bytes": 11372,
+          "sha256": "e879aadb8f2ef924535f57541c0c3cf2ffb523c5cad5b2ad0a32d8fc51b152b4"
+        },
+        "pointer": "/events/0/actions/0/_failNodes/0/_buffDataList/0",
+        "descriptor": {
+          "buffKey": "clemnt_s2[projectile_hit]",
+          "templateKey": "clemnt_s2[projectile_hit]",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_sourceType": "SOURCE",
+          "type": "Torappu.Battle.Action.Nodes+EmitProjectile"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "clemnt_s2[emit_projectile]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 11920100,
+          "bytes": 11372,
+          "sha256": "e879aadb8f2ef924535f57541c0c3cf2ffb523c5cad5b2ad0a32d8fc51b152b4"
+        },
+        "pointer": "/events/1/actions/1/_buffDataList/0",
+        "descriptor": {
+          "buffKey": "clemnt_s2[range_projectile_slow]",
+          "templateKey": "empty",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_sourceType": "SOURCE",
+          "type": "Torappu.Battle.Action.Nodes+EmitProjectile"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "clemnt_s2[emit_projectile]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 11920100,
+          "bytes": 11372,
+          "sha256": "e879aadb8f2ef924535f57541c0c3cf2ffb523c5cad5b2ad0a32d8fc51b152b4"
+        },
+        "pointer": "/events/1/actions/1/_buffDataList/1",
+        "descriptor": {
+          "buffKey": "clemnt_s2[damage]",
+          "templateKey": "clemnt_s2[damage]",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_sourceType": "SOURCE",
+          "type": "Torappu.Battle.Action.Nodes+EmitProjectile"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "clemnt_s3[ep_break_listener]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 11936080,
+          "bytes": 1668,
+          "sha256": "75be982877fd8e9e9ffe977cfee58f840841409a3a5636edf0f58470972120f6"
+        },
+        "pointer": "/events/0/actions/1/_buff",
+        "descriptor": {
+          "buffKey": "clemnt_s3[ep_break_mark]",
+          "templateKey": "empty",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "LIMITED",
+          "lifeTime": 0.0,
+          "durationKey": "ep_break_duration"
+        },
+        "creation": {
+          "_buffOwner": "BUFF_OWNER",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": true,
+          "_finishDerivedBuffIfParentFinish": true,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "thumpy_s_3[block]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 11973928,
+          "bytes": 2776,
+          "sha256": "ac80df61d4c66bd0858059614421a8ca3a14903928a6b5082780ef886640169e"
+        },
+        "pointer": "/events/0/actions/0/_buff",
+        "descriptor": {
+          "buffKey": "thumpy_s_3[trigger]",
+          "templateKey": "thumpy_s_3[trigger]",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_buffOwner": "BUFF_OWNER",
+          "_isDerivedBuff": true,
+          "_finishDerivedBuffIfParentFinish": true,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuffToBlockee"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "thumpy_s_3[block]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 11973928,
+          "bytes": 2776,
+          "sha256": "ac80df61d4c66bd0858059614421a8ca3a14903928a6b5082780ef886640169e"
+        },
+        "pointer": "/events/1/actions/1/_buff",
+        "descriptor": {
+          "buffKey": "thumpy_s_3[trigger]",
+          "templateKey": "thumpy_s_3[trigger]",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_buffOwner": "BUFF_OWNER",
+          "_isDerivedBuff": true,
+          "_finishDerivedBuffIfParentFinish": true,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuffToBlockee"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "thumpy_s_2[block]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 11976704,
+          "bytes": 2776,
+          "sha256": "3d6b8c803a457556d62f071c8312a0374e3aa93b369e9a78596f9454337cff88"
+        },
+        "pointer": "/events/0/actions/0/_buff",
+        "descriptor": {
+          "buffKey": "thumpy_s_2[trigger]",
+          "templateKey": "thumpy_s_2[trigger]",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_buffOwner": "BUFF_OWNER",
+          "_isDerivedBuff": true,
+          "_finishDerivedBuffIfParentFinish": true,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuffToBlockee"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "thumpy_s_2[block]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 11976704,
+          "bytes": 2776,
+          "sha256": "3d6b8c803a457556d62f071c8312a0374e3aa93b369e9a78596f9454337cff88"
+        },
+        "pointer": "/events/1/actions/1/_buff",
+        "descriptor": {
+          "buffKey": "thumpy_s_2[trigger]",
+          "templateKey": "thumpy_s_2[trigger]",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_buffOwner": "BUFF_OWNER",
+          "_isDerivedBuff": true,
+          "_finishDerivedBuffIfParentFinish": true,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuffToBlockee"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "thumpy[t_1]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 12004136,
+          "bytes": 2484,
+          "sha256": "d3c0e7bfe1bd72960a87f338b4c9d19173b6aba85013d1988b7c3e8e3ce95d91"
+        },
+        "pointer": "/events/0/actions/4/_buff",
+        "descriptor": {
+          "buffKey": "thumpy[water_break_detect]",
+          "templateKey": "thumpy[water_break_detect]",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_buffOwner": "MODIFIER_TARGET",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": true,
+          "_finishDerivedBuffIfParentFinish": true,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "jcinta_e_002[trigger]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 12014732,
+          "bytes": 2820,
+          "sha256": "39c59465bd9535b4090ab901b00e130389f8445014c4bdca7f19eeef115a6c03"
+        },
+        "pointer": "/events/0/actions/0/_buffs/0",
+        "descriptor": {
+          "buffKey": "jcinta_e_002[block_cnt]",
+          "templateKey": "empty",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "UNIQUE",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_sourceType": "BUFF_OWNER",
+          "_useHostAsSource": false,
+          "_isDerivedBuff": true,
+          "_finishDerivedBuffIfParentFinish": true,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuffInRange"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "tocka_s3[trigger]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 12026892,
+          "bytes": 20292,
+          "sha256": "cf172a7ebb16887dc0f3897e5d75d1c70f7f6dc260602b842bae016e9eb3e4dd"
+        },
+        "pointer": "/events/1/actions/0/_buff",
+        "descriptor": {
+          "buffKey": "tocka_s3[skill_add_sp]",
+          "templateKey": "tocka_s3[skill_add_sp]",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_buffOwner": "BUFF_OWNER",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": true,
+          "_finishDerivedBuffIfParentFinish": true,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "tocka_s3[trigger]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 12026892,
+          "bytes": 20292,
+          "sha256": "cf172a7ebb16887dc0f3897e5d75d1c70f7f6dc260602b842bae016e9eb3e4dd"
+        },
+        "pointer": "/events/2/actions/2/_buff",
+        "descriptor": {
+          "buffKey": "tocka_s3[bonus]",
+          "templateKey": "tocka_s3[bonus]",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "LIMITED",
+          "lifeTime": 0.0,
+          "durationKey": "bonus_duration"
+        },
+        "creation": {
+          "_buffOwner": "BUFF_OWNER",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": false,
+          "_finishDerivedBuffIfParentFinish": false,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "tocka_s3[trigger]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 12026892,
+          "bytes": 20292,
+          "sha256": "cf172a7ebb16887dc0f3897e5d75d1c70f7f6dc260602b842bae016e9eb3e4dd"
+        },
+        "pointer": "/events/2/actions/13/_failNodes/1/_buff",
+        "descriptor": {
+          "buffKey": "tocka_s3[bonus]",
+          "templateKey": "tocka_s3[bonus]",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "LIMITED",
+          "lifeTime": 0.0,
+          "durationKey": "bonus_duration"
+        },
+        "creation": {
+          "_buffOwner": "BUFF_SOURCE",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": false,
+          "_finishDerivedBuffIfParentFinish": false,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "tocka_s3[trigger_listener]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 12047184,
+          "bytes": 5112,
+          "sha256": "51403f74aa1d6c9310904b6351eb5d80238923374b40c8059e97a106399fcf87"
+        },
+        "pointer": "/events/1/actions/0/_succeedNodes/0/_succeedNodes/0/_buff",
+        "descriptor": {
+          "buffKey": "tocka_s3[trigger]",
+          "templateKey": "tocka_s3[trigger]",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_sourceType": "SOURCE",
+          "_overrideBuffSourceType": false,
+          "_buffSourceType": "SOURCE",
+          "_isDerivedBuff": true,
+          "_finishDerivedBuffIfParentFinish": true,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuffUseAbilitySelector"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "tocka_s3[trigger_listener]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 12047184,
+          "bytes": 5112,
+          "sha256": "51403f74aa1d6c9310904b6351eb5d80238923374b40c8059e97a106399fcf87"
+        },
+        "pointer": "/events/1/actions/0/_failNodes/1/_buff",
+        "descriptor": {
+          "buffKey": "tocka_s3[trigger]",
+          "templateKey": "tocka_s3[trigger]",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_sourceType": "SOURCE",
+          "_overrideBuffSourceType": false,
+          "_buffSourceType": "SOURCE",
+          "_isDerivedBuff": true,
+          "_finishDerivedBuffIfParentFinish": true,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuffUseAbilitySelector"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "tocka_s2[trigger]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 12054292,
+          "bytes": 6796,
+          "sha256": "70784d53e32e8d0527bd06864a43cfb7383dedd963b922f0f3fba2499ff2e0ac"
+        },
+        "pointer": "/events/0/actions/1/_buff",
+        "descriptor": {
+          "buffKey": "tocka_s2[auto_skill]",
+          "templateKey": "tocka_s2[auto_skill]",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "EXTEND",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "LIMITED",
+          "lifeTime": 0.0,
+          "durationKey": "buff_duration"
+        },
+        "creation": {
+          "_buffOwner": "BUFF_OWNER",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": false,
+          "_finishDerivedBuffIfParentFinish": false,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "tocka_s2[trigger]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 12054292,
+          "bytes": 6796,
+          "sha256": "70784d53e32e8d0527bd06864a43cfb7383dedd963b922f0f3fba2499ff2e0ac"
+        },
+        "pointer": "/events/2/actions/0/_buff",
+        "descriptor": {
+          "buffKey": "tocka_s2[auto_skill]",
+          "templateKey": "tocka_s2[auto_skill]",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "EXTEND",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "LIMITED",
+          "lifeTime": 0.0,
+          "durationKey": "buff_duration"
+        },
+        "creation": {
+          "_buffOwner": "BUFF_OWNER",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": false,
+          "_finishDerivedBuffIfParentFinish": false,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "tocka_s2[trigger]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 12054292,
+          "bytes": 6796,
+          "sha256": "70784d53e32e8d0527bd06864a43cfb7383dedd963b922f0f3fba2499ff2e0ac"
+        },
+        "pointer": "/events/3/actions/0/_buff",
+        "descriptor": {
+          "buffKey": "tocka_s2[auto_skill]",
+          "templateKey": "tocka_s2[auto_skill]",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "EXTEND",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "LIMITED",
+          "lifeTime": 0.0,
+          "durationKey": "buff_duration"
+        },
+        "creation": {
+          "_buffOwner": "BUFF_OWNER",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": false,
+          "_finishDerivedBuffIfParentFinish": false,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "tocka_mx_a[t2_aoe]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 12064140,
+          "bytes": 4632,
+          "sha256": "398c0e0e7b3db9d0907d3909dd4deb7d478696d231bbc0987a273fbe3fa9ec9e"
+        },
+        "pointer": "/events/0/actions/4/_buffs/0",
+        "descriptor": {
+          "buffKey": "tocka_mx_a[t2_dot]",
+          "templateKey": "tocka_mx_a[t2_dot]",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "EXTEND",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "LIMITED",
+          "lifeTime": 0.0,
+          "durationKey": "weak[limit]"
+        },
+        "creation": {
+          "_sourceType": "BUFF_SOURCE",
+          "_useHostAsSource": false,
+          "_isDerivedBuff": false,
+          "_finishDerivedBuffIfParentFinish": false,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuffInRange"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "tocka_s1[trigger]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 12072976,
+          "bytes": 9764,
+          "sha256": "7c61a4bd28d685231b3a29716739343729e596712deda85c0af418916085b67b"
+        },
+        "pointer": "/events/0/actions/3/_succeedNodes/5/_buff",
+        "descriptor": {
+          "buffKey": "tocka_s1[shield]",
+          "templateKey": "tocka_s1[shield]",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_buffOwner": "BUFF_OWNER",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": false,
+          "_finishDerivedBuffIfParentFinish": false,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "tocka_s1[trigger]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 12072976,
+          "bytes": 9764,
+          "sha256": "7c61a4bd28d685231b3a29716739343729e596712deda85c0af418916085b67b"
+        },
+        "pointer": "/events/0/actions/3/_failNodes/2/_buff",
+        "descriptor": {
+          "buffKey": "tocka_s1[shield]",
+          "templateKey": "tocka_s1[shield]",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_buffOwner": "BUFF_OWNER",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": false,
+          "_finishDerivedBuffIfParentFinish": false,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "alga_2",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 12085576,
+          "bytes": 2000,
+          "sha256": "f3a78d954d5e9cf88ea796b8c12cc15696e91d7e1afc18b2c0d402a2428bc5f9"
+        },
+        "pointer": "/events/0/actions/2/_buff",
+        "descriptor": {
+          "buffKey": "alga_2[taunt]",
+          "templateKey": "empty",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "EXTEND",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "LIMITED",
+          "lifeTime": 0.0,
+          "durationKey": "debuff_duration"
+        },
+        "creation": {
+          "_buffOwner": "BUFF_OWNER",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": false,
+          "_finishDerivedBuffIfParentFinish": false,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "dminon_t_1[target]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 12092208,
+          "bytes": 3068,
+          "sha256": "ed1d3f4c2509aaa9a5b9aeaa2329c9b34b09c4c516bb8f0a196cb5e6e6844bc6"
+        },
+        "pointer": "/events/0/actions/0/_buff",
+        "descriptor": {
+          "buffKey": "dminon_t_1[dmg]",
+          "templateKey": "dminon_t_1[dmg]",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "IMMEDIATELY",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_buffOwner": "BUFF_OWNER",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": true,
+          "_finishDerivedBuffIfParentFinish": true,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "dminon_s_1",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 12096716,
+          "bytes": 1960,
+          "sha256": "c50fdaacb9926114220c4940911e034e7a941e649840090312cd4102c13131bb"
+        },
+        "pointer": "/events/2/actions/0/_buff",
+        "descriptor": {
+          "buffKey": "dminon_s_1[mark]",
+          "templateKey": "dminon_s_1[mark]",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "UNIQUE",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.2,
+          "durationKey": ""
+        },
+        "creation": {
+          "_sourceType": "BUFF_OWNER",
+          "_overrideBuffSourceType": false,
+          "_buffSourceType": "BUFF_OWNER",
+          "_isDerivedBuff": true,
+          "_finishDerivedBuffIfParentFinish": true,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuffUseAbilitySelector"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "dminon_s_2",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 12099284,
+          "bytes": 3008,
+          "sha256": "1734341bfacf53363e68d181cfb8b962326797333622c446e3a54ebf409e7c0c"
+        },
+        "pointer": "/events/2/actions/0/_buffs/0",
+        "descriptor": {
+          "buffKey": "dminon_s_2[unevadeable]",
+          "templateKey": "dminon_s_2[unevadeable]",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "LIMITED",
+          "lifeTime": 0.2,
+          "durationKey": "_"
+        },
+        "creation": {
+          "_sourceType": "BUFF_OWNER",
+          "_useHostAsSource": false,
+          "_isDerivedBuff": false,
+          "_finishDerivedBuffIfParentFinish": true,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuffInRange"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "dminon_t_2",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 12104508,
+          "bytes": 4400,
+          "sha256": "355ca5ff0a94cc933c768e34d5973651ec2e0ed4d992c49faffdfee667705b2c"
+        },
+        "pointer": "/events/0/actions/1/_buffDataList/0",
+        "descriptor": {
+          "buffKey": "dminon_t_2[dead]",
+          "templateKey": "dminon_t_2[dead]",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "IMMEDIATELY",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_sourceType": "SOURCE",
+          "type": "Torappu.Battle.Action.Nodes+EmitProjectile"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "dminon_t_2",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 12104508,
+          "bytes": 4400,
+          "sha256": "355ca5ff0a94cc933c768e34d5973651ec2e0ed4d992c49faffdfee667705b2c"
+        },
+        "pointer": "/events/1/actions/1/_buffDataList/0",
+        "descriptor": {
+          "buffKey": "dminon_t_2[dead]",
+          "templateKey": "dminon_t_2[dead]",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "IMMEDIATELY",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_sourceType": "SOURCE",
+          "type": "Torappu.Battle.Action.Nodes+EmitProjectile"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "dminon_t_1",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 12114616,
+          "bytes": 1612,
+          "sha256": "15bb02e34b5657c895f9a5cdbf8bc3b4a00e6db6be57446e46c44306aab257ab"
+        },
+        "pointer": "/events/0/actions/0/_buff",
+        "descriptor": {
+          "buffKey": "dminon_t_1[target]",
+          "templateKey": "dminon_t_1[target]",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "LIMITED",
+          "lifeTime": 1.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_sourceType": "BUFF_OWNER",
+          "_overrideBuffSourceType": false,
+          "_buffSourceType": "BUFF_OWNER",
+          "_isDerivedBuff": true,
+          "_finishDerivedBuffIfParentFinish": true,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuffUseAbilitySelector"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "dminon_s_3[ally]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 12116228,
+          "bytes": 2640,
+          "sha256": "f433912b1f40550b75b2ed8f6dfa4d4cad5576bcc6a80497999df387eb278703"
+        },
+        "pointer": "/events/0/actions/0/_buffs/0",
+        "descriptor": {
+          "buffKey": "dminon_s_3[spread]",
+          "templateKey": "dminon_s_3[spread]",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "LIMITED",
+          "lifeTime": 0.2,
+          "durationKey": "_"
+        },
+        "creation": {
+          "_sourceType": "BUFF_OWNER",
+          "_useHostAsSource": false,
+          "_isDerivedBuff": true,
+          "_finishDerivedBuffIfParentFinish": true,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuffInRange"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "oxi_t_1_attack_completed",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 12120972,
+          "bytes": 2496,
+          "sha256": "9bfc726b0f2086817e86aac74af90d94a3d4572799f5f470ed701a435f979e13"
+        },
+        "pointer": "/events/0/actions/2/_buff",
+        "descriptor": {
+          "buffKey": "oxi_t_1_arcane_recent_attack",
+          "templateKey": "empty",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": "oxi_t_1_arcane_recent_attack",
+          "overrideType": "EXTEND",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "LIMITED",
+          "lifeTime": 3.0,
+          "durationKey": "arcane_idle_delay"
+        },
+        "creation": {
+          "_buffOwner": "BUFF_OWNER",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": false,
+          "_finishDerivedBuffIfParentFinish": false,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "oxi_shared_fire_field_damage",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 12128352,
+          "bytes": 2732,
+          "sha256": "854b533ebf16d26f9f564e5643a837ae96c3f383b8d604b556a344ec4d77183a"
+        },
+        "pointer": "/events/0/actions/1/_buff",
+        "descriptor": {
+          "buffKey": "oxi_shared_fire_field_damage",
+          "templateKey": "oxi_shared_fire_field_damage",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": "oxi_shared_fire_field_damage",
+          "overrideType": "EXTEND",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "LIMITED",
+          "lifeTime": 1.0,
+          "durationKey": "fire_field_damage_lifetime"
+        },
+        "creation": {
+          "_buffOwner": "BUFF_OWNER",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": false,
+          "_finishDerivedBuffIfParentFinish": false,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "oxi_t_2_fire_break_detector",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 12131084,
+          "bytes": 2356,
+          "sha256": "8a7d993d5580915f7d00fa1bf5bfddbb0a39332d1448ed35a806b578f614f695"
+        },
+        "pointer": "/events/0/actions/2/_buff",
+        "descriptor": {
+          "buffKey": "oxi_t_2_trail",
+          "templateKey": "oxi_t_2_trail",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "EXTEND",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "LIMITED",
+          "lifeTime": 5.0,
+          "durationKey": "duration"
+        },
+        "creation": {
+          "_buffOwner": "BUFF_OWNER",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": true,
+          "_finishDerivedBuffIfParentFinish": true,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "oxi_t_1_arcane_manager",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 12134796,
+          "bytes": 6016,
+          "sha256": "82f8b443d7626bc50a6c9aa4b53547b166c3978ddc01d7c3292f77282c552324"
+        },
+        "pointer": "/events/0/actions/0/_buff",
+        "descriptor": {
+          "buffKey": "oxi_t_1_arcane_recent_attack",
+          "templateKey": "empty",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": "oxi_t_1_arcane_recent_attack",
+          "overrideType": "EXTEND",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "LIMITED",
+          "lifeTime": 3.0,
+          "durationKey": "arcane_idle_delay"
+        },
+        "creation": {
+          "_buffOwner": "BUFF_OWNER",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": true,
+          "_finishDerivedBuffIfParentFinish": true,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "oxi_t_1_arcane_manager",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 12134796,
+          "bytes": 6016,
+          "sha256": "82f8b443d7626bc50a6c9aa4b53547b166c3978ddc01d7c3292f77282c552324"
+        },
+        "pointer": "/events/1/actions/3/_buff",
+        "descriptor": {
+          "buffKey": "oxi_t_1_arcane_stack",
+          "templateKey": "oxi_t_1_arcane_stack",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": "oxi_t_1_arcane_stack",
+          "overrideType": "STACK",
+          "maxStackCnt": 10,
+          "maxValidStackCnt": 10,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_buffOwner": "BUFF_OWNER",
+          "_isDerivedBuff": true,
+          "_finishDerivedBuffIfParentFinish": true,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuffStacked"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "vampir[light]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 12340880,
+          "bytes": 3052,
+          "sha256": "8527f9f521b6b3ad23116c4fd6d6ac58f085be997039da2e22f193131ed3a475"
+        },
+        "pointer": "/events/0/actions/0/_succeedNodes/3/_buff",
+        "descriptor": {
+          "buffKey": "vampir[light_count]",
+          "templateKey": "empty",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": -1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_buffOwner": "BUFF_SOURCE",
+          "_useSpecialBuffSource": true,
+          "_specialBuffSource": "BUFF_OWNER",
+          "_isDerivedBuff": true,
+          "_finishDerivedBuffIfParentFinish": true,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "electric_building[amplifier2]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 12706248,
+          "bytes": 3216,
+          "sha256": "621938a61950870a3acdd49b3709c57fd3213e413b2d0ab310b4bffd16f5fa95"
+        },
+        "pointer": "/events/0/actions/1/_buff",
+        "descriptor": {
+          "buffKey": "electric_building[amplifier_active]",
+          "templateKey": "empty",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_buffOwner": "BUFF_SOURCE",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": true,
+          "_finishDerivedBuffIfParentFinish": true,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "electric_building[amplifier]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 12714584,
+          "bytes": 3212,
+          "sha256": "aacff614ca8af8ae7b6027394c38a6517d835eeb368611065a7fab5dd7821919"
+        },
+        "pointer": "/events/0/actions/1/_buff",
+        "descriptor": {
+          "buffKey": "electric_building[amplifier_active]",
+          "templateKey": "empty",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_buffOwner": "BUFF_SOURCE",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": true,
+          "_finishDerivedBuffIfParentFinish": true,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "myrtle_trait_e[trigger]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 13018268,
+          "bytes": 2824,
+          "sha256": "c2cc7c1233f1b69e0c33056749292270315dfa80ceafe42b8d6208555b9be45d"
+        },
+        "pointer": "/events/0/actions/0/_buffs/0",
+        "descriptor": {
+          "buffKey": "myrtle_trait_e[block_cnt]",
+          "templateKey": "empty",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "UNIQUE",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_sourceType": "BUFF_OWNER",
+          "_useHostAsSource": false,
+          "_isDerivedBuff": true,
+          "_finishDerivedBuffIfParentFinish": true,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuffInRange"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "elysm_trait_e[trigger]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 13022660,
+          "bytes": 2820,
+          "sha256": "28a518e652103f7536fb7cb6a088046d98384f5e384587f71977ce1ae7e19294"
+        },
+        "pointer": "/events/0/actions/0/_buffs/0",
+        "descriptor": {
+          "buffKey": "elysm_trait_e[block_cnt]",
+          "templateKey": "empty",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "UNIQUE",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_sourceType": "BUFF_OWNER",
+          "_useHostAsSource": false,
+          "_isDerivedBuff": true,
+          "_finishDerivedBuffIfParentFinish": true,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuffInRange"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "sleach_trait_e[trigger]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 13027052,
+          "bytes": 2824,
+          "sha256": "1d087d5021752c00543defab07da2bc2e0002fc45942983965489fd51cd8535f"
+        },
+        "pointer": "/events/0/actions/0/_buffs/0",
+        "descriptor": {
+          "buffKey": "sleach_trait_e[block_cnt]",
+          "templateKey": "empty",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "UNIQUE",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_sourceType": "BUFF_OWNER",
+          "_useHostAsSource": false,
+          "_isDerivedBuff": true,
+          "_finishDerivedBuffIfParentFinish": true,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuffInRange"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "typhon_e_003_t[hit_marker]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 13408280,
+          "bytes": 7508,
+          "sha256": "346b6f258820e7234df35e53c9475b792138950488a821662d0e4752d88a1958"
+        },
+        "pointer": "/events/0/actions/1/_succeedNodes/0/_succeedNodes/1/_buff",
+        "descriptor": {
+          "buffKey": "typhon_e_003_t[hit_mark]",
+          "templateKey": "empty",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "STACK",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_buffOwner": "TARGET",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": true,
+          "_finishDerivedBuffIfParentFinish": true,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "typhon_e_003_t[hit_marker]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 13408280,
+          "bytes": 7508,
+          "sha256": "346b6f258820e7234df35e53c9475b792138950488a821662d0e4752d88a1958"
+        },
+        "pointer": "/events/0/actions/1/_failNodes/1/_buff",
+        "descriptor": {
+          "buffKey": "typhon_e_003_t[hit_mark]",
+          "templateKey": "empty",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "STACK",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_buffOwner": "TARGET",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": true,
+          "_finishDerivedBuffIfParentFinish": true,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "heyak_e_004_t_levitate",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 13526636,
+          "bytes": 6680,
+          "sha256": "a060e16bdd875358f23de311afead7258c69e453d7c271b75ccc70ac052e9abc"
+        },
+        "pointer": "/events/0/actions/0/_succeedNodes/0/_failNodes/0/_buff",
+        "descriptor": {
+          "buffKey": "heyak_e_004_t_levitate[on]",
+          "templateKey": "empty",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_buffOwner": "BUFF_SOURCE",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": false,
+          "_finishDerivedBuffIfParentFinish": false,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "heyak_e_004_tr",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 13533316,
+          "bytes": 2388,
+          "sha256": "92abf4169895f9164b13234cc99b50ece78bfd343fad8bc122f45984efd3f9b6"
+        },
+        "pointer": "/events/0/actions/0/_succeedNodes/0/_failNodes/0/_buff",
+        "descriptor": {
+          "buffKey": "heyak_e_004_tr_done",
+          "templateKey": "empty",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_buffOwner": "BUFF_OWNER",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": false,
+          "_finishDerivedBuffIfParentFinish": false,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "hodrer_e_003_t",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 13555028,
+          "bytes": 2208,
+          "sha256": "1d816f0e1ccced97df1f2d17eebfe6e18a8bd29d56ab47a8fe173dbe9ae1e747"
+        },
+        "pointer": "/events/0/actions/4/_buff",
+        "descriptor": {
+          "buffKey": "hodrer_e_003_t[mark]",
+          "templateKey": "hodrer_e_003_t[mark]",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "UNIQUE",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_buffOwner": "TARGET",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": true,
+          "_finishDerivedBuffIfParentFinish": true,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "nymph_e_003_t_1[listener]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 13608580,
+          "bytes": 2492,
+          "sha256": "0afc4d3544f28792d5af0c990fdfc5df992cd52bf33bb4ba150b7e490880e7bb"
+        },
+        "pointer": "/events/0/actions/0/_succeedNodes/0/_failNodes/0/_buff",
+        "descriptor": {
+          "buffKey": "nymph_t_1[ep_damage]",
+          "templateKey": "nymph_e_003_t_1[ep_damage]",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": "nymph_t_1[ep_damage]",
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_buffOwner": "BUFF_OWNER",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": false,
+          "_finishDerivedBuffIfParentFinish": false,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "nymph_e_003_t_1",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 13611072,
+          "bytes": 2236,
+          "sha256": "2d9be6de7a46b76e76183ce8055042b46a3b94180c4013f5f12216527be438ed"
+        },
+        "pointer": "/events/0/actions/3/_buff",
+        "descriptor": {
+          "buffKey": "nymph_e_003_t_1[listener]",
+          "templateKey": "nymph_e_003_t_1[listener]",
+          "loadFromDB": false,
+          "disableOverride": true,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": ""
+        },
+        "creation": {
+          "_buffOwner": "MODIFIER_TARGET",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": true,
+          "_finishDerivedBuffIfParentFinish": true,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "phenxi_echo_buff[modify]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 13709504,
+          "bytes": 3856,
+          "sha256": "17d163a1ef2cabe1a301b5106a85c594398146037542d0c339a953224ed7f358"
+        },
+        "pointer": "/events/0/actions/0/_succeedNodes/1/_buff",
+        "descriptor": {
+          "buffKey": "phenxi_latest[atk_up]",
+          "templateKey": "empty",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_buffOwner": "BUFF_OWNER",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": true,
+          "_finishDerivedBuffIfParentFinish": true,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "phenxi_echo_buff[modify]",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 13709504,
+          "bytes": 3856,
+          "sha256": "17d163a1ef2cabe1a301b5106a85c594398146037542d0c339a953224ed7f358"
+        },
+        "pointer": "/events/0/actions/0/_succeedNodes/3/_buff",
+        "descriptor": {
+          "buffKey": "phenxi_latest[atk_up]",
+          "templateKey": "empty",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_sourceType": "BUFF_OWNER",
+          "_isDerivedBuff": true,
+          "_finishDerivedBuffIfParentFinish": true,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuffToAnchorUidCharacter"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "qiubai_e_003_t",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 13727372,
+          "bytes": 6100,
+          "sha256": "e3e2a418ada3bad50b2ada976098c3c691df12a6e8870dec4154d075c3e4a588"
+        },
+        "pointer": "/events/0/actions/0/_failNodes/5/_buff",
+        "descriptor": {
+          "buffKey": "qiubai_e_003_t[mark]",
+          "templateKey": "empty",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": "duration"
+        },
+        "creation": {
+          "_buffOwner": "TARGET",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": true,
+          "_finishDerivedBuffIfParentFinish": true,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "rogue_5_first_attack_with_stun",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 15774484,
+          "bytes": 3196,
+          "sha256": "2d5add84baed5a28d1def9d69faecfa0a95ebc6c7ef4295c90de62a4a4e04f59"
+        },
+        "pointer": "/events/0/actions/3/_buff",
+        "descriptor": {
+          "buffKey": "rogue_5_first_attack_with_stun[flag]",
+          "templateKey": "empty",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_buffOwner": "MODIFIER_TARGET",
+          "_useSpecialBuffSource": false,
+          "_specialBuffSource": "BUFF_SOURCE",
+          "_isDerivedBuff": true,
+          "_finishDerivedBuffIfParentFinish": true,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      },
+      {
+        "origin": {
+          "templateKey": "sandbox_v3_food_13",
+          "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+          "pathId": "6070581171229484677",
+          "offset": 16981984,
+          "bytes": 3488,
+          "sha256": "9b78ca32c844a551580e0607a253d214b4e53d5039015497e67f3541f6c4edda"
+        },
+        "pointer": "/events/0/actions/0/_succeedNodes/0/_failNodes/1/_buff",
+        "descriptor": {
+          "buffKey": "sandbox_v3_food_13[first_flag]",
+          "templateKey": "empty",
+          "loadFromDB": false,
+          "disableOverride": false,
+          "overrideKey": null,
+          "overrideType": "DEFAULT",
+          "maxStackCnt": 1,
+          "maxValidStackCnt": -1,
+          "independentCharacterSource": true,
+          "lifeTimeType": "INFINITY",
+          "lifeTime": 0.0,
+          "durationKey": null
+        },
+        "creation": {
+          "_buffOwner": "MODIFIER_TARGET",
+          "_useSpecialBuffSource": true,
+          "_specialBuffSource": "BUFF_OWNER",
+          "_isDerivedBuff": true,
+          "_finishDerivedBuffIfParentFinish": true,
+          "type": "Torappu.Battle.Action.Nodes+CreateBuff"
+        }
+      }
+    ]
+  }
+}

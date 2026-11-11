@@ -42,6 +42,7 @@ uv run "$skill/scripts/archive.py" docs/research/evidence
 
 | 批次 | 调查主题 |
 | --- | --- |
+| [independent-group-impact-20261112](independent-group-impact-20261112/README.md) | 来源分组简化的实际影响：完整独立描述与敌人配置扫描、浊蒂海嗣来源转发、帕拉斯根绑定、妮芙父来源及清理 |
 | [predefined-source-20261112](predefined-source-20261112/README.md) | 普通无 Card 预放置干员的配置、独立卡牌注入与直接 Character 创建链，以及角色数据身份的写入 |
 | [device-source-20261111](device-source-20261111/README.md) | Trap／Token／Character 继承关系、TokenCard 部署的 cardUid 写入，以及装置参与 Character 独立来源分组的依据 |
 | [same-character-source-20261111](same-character-source-20261111/README.md) | 卫戍同名棋子的独立 instId、共享 Squad 配置与逐实例 cardUid 转换；区分来源身份与 Effect 分组政策 |
