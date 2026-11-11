@@ -1,0 +1,252 @@
+{
+  "provenance": {
+    "scope": "Metadata inheritance, field layout and signatures only; no selected method body was read or executed.",
+    "client": {
+      "dll": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "bytes": 223112680,
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff"
+      },
+      "metadata": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "bytes": 46669332,
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5"
+      },
+      "metadataVersion": 29,
+      "imageBase": "0x180000000"
+    },
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/native.py",
+        "bytes": 18723,
+        "sha256": "1c6c16dc97e0dd9af0af4033c81a7534384dd65ebb1e604df3f4a3289df158e6"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]"
+    },
+    "location": {
+      "metadataRegistration": "0x187ee0630",
+      "modules": {
+        "Assembly-CSharp.dll": {
+          "address": 6564854272,
+          "methodPointers": 6585881040,
+          "count": 225427,
+          "fileBacked": true
+        },
+        "mscorlib.dll": {
+          "address": 6577364064,
+          "methodPointers": 6592131600,
+          "count": 13987,
+          "fileBacked": true
+        }
+      }
+    },
+    "collectedOn": "2026-11-11",
+    "extractionScript": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/device-source-20261111/hierarchy/extract.py",
+      "bytes": 2771,
+      "sha256": "014fdfd4288fe8a745c1fbc92bb9c8830f466dff988d2f27cdbddfc0e94e3ee2"
+    }
+  },
+  "result": {
+    "types": [
+      {
+        "fullname": "Torappu.Battle.Character",
+        "index": 11491,
+        "parentIndex": 83419,
+        "parentName": "Torappu.Battle.Unit"
+      },
+      {
+        "fullname": "Torappu.Battle.Enemy",
+        "index": 11538,
+        "parentIndex": 83419,
+        "parentName": "Torappu.Battle.Unit"
+      },
+      {
+        "fullname": "Torappu.Battle.Token",
+        "index": 11590,
+        "parentIndex": 48460,
+        "parentName": "Torappu.Battle.Character"
+      },
+      {
+        "fullname": "Torappu.Battle.Trap",
+        "index": 11594,
+        "parentIndex": 80383,
+        "parentName": "Torappu.Battle.Token"
+      },
+      {
+        "fullname": "Torappu.Battle.Unit",
+        "index": 11603,
+        "parentIndex": 53921,
+        "parentName": "Torappu.Battle.Entity"
+      }
+    ],
+    "character": {
+      "fields": [
+        {
+          "nameIndex": 2885264,
+          "typeIndex": 83055,
+          "token": 67196221,
+          "index": 87356,
+          "name": "<cardUid>k__BackingField",
+          "typeName": "uint",
+          "static": false,
+          "offset": 1320,
+          "unboxedOffset": null
+        }
+      ],
+      "methods": [
+        {
+          "nameIndex": 2878313,
+          "declaringType": 11491,
+          "returnType": 83054,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100740432,
+          "flags": 2182,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 0,
+          "index": 77135,
+          "image": "Assembly-CSharp.dll",
+          "address": 6453655376,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.Character.get_cardUid",
+          "returnTypeName": "uint",
+          "parameters": []
+        },
+        {
+          "nameIndex": 2878325,
+          "declaringType": 11491,
+          "returnType": 84484,
+          "parameterStart": 76487,
+          "genericContainerIndex": -1,
+          "token": 100740433,
+          "flags": 2182,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 1,
+          "index": 77136,
+          "image": "Assembly-CSharp.dll",
+          "address": 6453668704,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.Character.set_cardUid",
+          "returnTypeName": "void",
+          "parameters": [
+            {
+              "nameIndex": 113,
+              "token": 134294221,
+              "typeIndex": 83054,
+              "index": 76487,
+              "name": "value",
+              "typeName": "uint"
+            }
+          ]
+        },
+        {
+          "nameIndex": 2880047,
+          "declaringType": 11491,
+          "returnType": 84484,
+          "parameterStart": 76504,
+          "genericContainerIndex": -1,
+          "token": 100740537,
+          "flags": 134,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 3,
+          "index": 77240,
+          "image": "Assembly-CSharp.dll",
+          "address": 6453579440,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.Character.BuildAsPredefined",
+          "returnTypeName": "void",
+          "parameters": [
+            {
+              "nameIndex": 1749,
+              "token": 134294238,
+              "typeIndex": 45448,
+              "index": 76504,
+              "name": "data",
+              "typeName": "Torappu.Battle.BattleCharacterData"
+            },
+            {
+              "nameIndex": 1957,
+              "token": 134294239,
+              "typeIndex": 80093,
+              "index": 76505,
+              "name": "tile",
+              "typeName": "Torappu.Battle.Tile"
+            },
+            {
+              "nameIndex": 523294,
+              "token": 134294240,
+              "typeIndex": 109140,
+              "index": 76506,
+              "name": "direction",
+              "typeName": "Torappu.SharedConsts/Direction"
+            }
+          ]
+        },
+        {
+          "nameIndex": 2880065,
+          "declaringType": 11491,
+          "returnType": 84484,
+          "parameterStart": 76507,
+          "genericContainerIndex": -1,
+          "token": 100740538,
+          "flags": 134,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 5,
+          "index": 77241,
+          "image": "Assembly-CSharp.dll",
+          "address": 6453580256,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.Character.BuildAsRuntimeInst",
+          "returnTypeName": "void",
+          "parameters": [
+            {
+              "nameIndex": 1749,
+              "token": 134294241,
+              "typeIndex": 45448,
+              "index": 76507,
+              "name": "data",
+              "typeName": "Torappu.Battle.BattleCharacterData"
+            },
+            {
+              "nameIndex": 1957,
+              "token": 134294242,
+              "typeIndex": 80093,
+              "index": 76508,
+              "name": "tile",
+              "typeName": "Torappu.Battle.Tile"
+            },
+            {
+              "nameIndex": 523294,
+              "token": 134294243,
+              "typeIndex": 109140,
+              "index": 76509,
+              "name": "direction",
+              "typeName": "Torappu.SharedConsts/Direction"
+            },
+            {
+              "nameIndex": 1228746,
+              "token": 134294244,
+              "typeIndex": 76299,
+              "index": 76510,
+              "name": "sideType",
+              "typeName": "Torappu.Battle.SideType"
+            },
+            {
+              "nameIndex": 2481381,
+              "token": 134294245,
+              "typeIndex": 65990,
+              "index": 76511,
+              "name": "pSide",
+              "typeName": "Torappu.PlayerSide"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

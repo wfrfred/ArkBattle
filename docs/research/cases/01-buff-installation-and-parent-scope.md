@@ -417,3 +417,9 @@ remainingTime >= 0
 [同名棋子补核](24-deployment-cost-and-supply.md#卫戍的同名副本)确认：AutoChess 普通加载逐份转换共享 Squad 配置的棋子，生成不同 cardUid。因此开启 independentCharacterSource、来源为有效 Character 时，同名副本按不同来源分组；未开启时最终键仍为基础键，为空则不进入覆盖组。不能仅从“同名”推出是否同组。
 
 项目关联：cardUid 是上述原生 Character 路径使用的来源身份，不是所有 Effect 的通用依赖。非干员也能施加 Effect；分组依据应由对应机制决定，并与执行程序读取的来源对象区分。调查只证明某些来源身份需要跨普通重部署保留，不在此规定项目的分组接口或身份类型。
+
+### 9.7 Character 包含召唤物与装置
+
+同日补核的[类型与部署证据](../evidence/device-source-20261111/README.md)确认当前客户端的继承链是 `Trap → Token → Character → Unit`，而 `Enemy → Unit`。因此 9.2 的 Character 判断包含原生 Trap 装置和 Token 召唤物，不能解释成仅普通干员，也不能把装置划入非 Character 的前缀回退。
+
+TokenCard.SpawnInternal 将自身 Card 交给 BattleController.CreateToken；后者用 Card.data 创建 Token，再将 data.uniqueId 写入继承的 Character.cardUid。故该手牌部署路径的装置／召唤物，开启 independentCharacterSource 时也以 cardUid 区分来源。完整字段写入见 [Case 24 的补核](24-deployment-cost-and-supply.md#召唤物与装置的部署身份)。本结论不依赖项目是否声明 Deployable，也不因此证明所有预置或特殊运行时创建都经过同一手卡。

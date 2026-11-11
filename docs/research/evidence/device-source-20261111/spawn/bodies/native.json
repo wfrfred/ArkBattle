@@ -1,0 +1,398 @@
+{
+  "provenance": {
+    "scope": "Static native branches; no game execution or runtime XLua verification.",
+    "client": {
+      "dll": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "bytes": 223112680,
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff"
+      },
+      "metadata": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "bytes": 46669332,
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5"
+      },
+      "metadataVersion": 29,
+      "imageBase": "0x180000000"
+    },
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/native.py",
+        "bytes": 18723,
+        "sha256": "1c6c16dc97e0dd9af0af4033c81a7534384dd65ebb1e604df3f4a3289df158e6"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]"
+    },
+    "location": {
+      "metadataRegistration": "0x187ee0630",
+      "modules": {
+        "Assembly-CSharp.dll": {
+          "address": 6564854272,
+          "methodPointers": 6585881040,
+          "count": 225427,
+          "fileBacked": true
+        },
+        "mscorlib.dll": {
+          "address": 6577364064,
+          "methodPointers": 6592131600,
+          "count": 13987,
+          "fileBacked": true
+        }
+      }
+    },
+    "collectedOn": "2026-11-11",
+    "extractionScript": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/device-source-20261111/spawn/extract.py",
+      "bytes": 2876,
+      "sha256": "9b8584c8e14e329f63db43a7c0e46f84d3959a717add954e92a987b91484694b"
+    }
+  },
+  "result": [
+    {
+      "method": {
+        "nameIndex": 2481297,
+        "declaringType": 10185,
+        "returnType": 48460,
+        "parameterStart": 66287,
+        "genericContainerIndex": -1,
+        "token": 100728975,
+        "flags": 134,
+        "iflags": 0,
+        "slot": 65535,
+        "parameterCount": 6,
+        "index": 65678,
+        "image": "Assembly-CSharp.dll",
+        "address": 6449075232,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.Battle.BattleController.CreateToken",
+        "returnTypeName": "Torappu.Battle.Character",
+        "parameters": [
+          {
+            "nameIndex": 2481287,
+            "token": 134284021,
+            "typeIndex": 96818,
+            "index": 66287,
+            "name": "tokenCard",
+            "typeName": "Torappu.Battle.Deck/Card"
+          },
+          {
+            "nameIndex": 523294,
+            "token": 134284022,
+            "typeIndex": 109140,
+            "index": 66288,
+            "name": "direction",
+            "typeName": "Torappu.SharedConsts/Direction"
+          },
+          {
+            "nameIndex": 1957,
+            "token": 134284023,
+            "typeIndex": 80093,
+            "index": 66289,
+            "name": "tile",
+            "typeName": "Torappu.Battle.Tile"
+          },
+          {
+            "nameIndex": 2481000,
+            "token": 134284024,
+            "typeIndex": 46024,
+            "index": 66290,
+            "name": "spawnManually",
+            "typeName": "bool"
+          },
+          {
+            "nameIndex": 2481236,
+            "token": 134284025,
+            "typeIndex": 46024,
+            "index": 66291,
+            "name": "freelyFromDeck",
+            "typeName": "bool"
+          },
+          {
+            "nameIndex": 2481251,
+            "token": 134284026,
+            "typeIndex": 96832,
+            "index": 66292,
+            "name": "spawnDetailsTracker",
+            "typeName": "Torappu.Battle.Deck/SpawnDetailsTracker"
+          }
+        ]
+      },
+      "followingMethodAddress": "0x1806516d0",
+      "parts": [
+        {
+          "method": null,
+          "address": "0x180651420",
+          "aliases": [
+            65678
+          ],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x18065149d",
+          "decodedEnd": "0x18065149d",
+          "decodedBytes": 125,
+          "fullyDecoded": true,
+          "bytesSha256": "046dfc51150ad0d63c3ed4d3aa7b4c5df838ca653be834f48d6d9c9c93003479",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 27
+        },
+        {
+          "method": null,
+          "address": "0x18065149d",
+          "aliases": [],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x18065152a",
+          "decodedEnd": "0x18065152a",
+          "decodedBytes": 141,
+          "fullyDecoded": true,
+          "bytesSha256": "02039c66d03a293ee1d7085aa411cc31b31961728de0b93f4eb6d100f401eb4a",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 32
+        },
+        {
+          "method": null,
+          "address": "0x18065152a",
+          "aliases": [],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x18065159d",
+          "decodedEnd": "0x18065159d",
+          "decodedBytes": 115,
+          "fullyDecoded": true,
+          "bytesSha256": "6805434afb25dfa2cb0089f4ec4976d68300881d70167bdbac0268869b321067",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 27
+        },
+        {
+          "method": null,
+          "address": "0x18065159d",
+          "aliases": [],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x1806515d8",
+          "decodedEnd": "0x1806515d8",
+          "decodedBytes": 59,
+          "fullyDecoded": true,
+          "bytesSha256": "5c35342951426af9affed37fccab0c773a27f8d76adbbb15c2828f7f4621e4d9",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 13
+        },
+        {
+          "method": null,
+          "address": "0x1806515d8",
+          "aliases": [],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x1806515eb",
+          "decodedEnd": "0x1806515eb",
+          "decodedBytes": 19,
+          "fullyDecoded": true,
+          "bytesSha256": "7bc5490b0cb88399bd9f51a2890edf4fa033d0407a529f0a7ff7e4d949d930b3",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 7
+        },
+        {
+          "method": null,
+          "address": "0x1806515eb",
+          "aliases": [],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x18065167b",
+          "decodedEnd": "0x18065167b",
+          "decodedBytes": 144,
+          "fullyDecoded": true,
+          "bytesSha256": "8a437a2d7b10a798ecac41538564f9291f3b1140bf1f5d567405029bb477eb61",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 37
+        },
+        {
+          "method": null,
+          "address": "0x18065167b",
+          "aliases": [],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x1806516bf",
+          "decodedEnd": "0x1806516bf",
+          "decodedBytes": 68,
+          "fullyDecoded": true,
+          "bytesSha256": "d68fe4758085d9108e0c9f29f624dd13f98fc27b44d46cd5cc56ae1735861940",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 14
+        },
+        {
+          "method": null,
+          "address": "0x1806516bf",
+          "aliases": [],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x1806516c5",
+          "decodedEnd": "0x1806516c5",
+          "decodedBytes": 6,
+          "fullyDecoded": true,
+          "bytesSha256": "064003478e638f8e8b462856e6b4ea0ca7c5d981a6ddb566c88fd1929b067951",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 2
+        },
+        {
+          "method": null,
+          "address": "0x1806516c5",
+          "aliases": [],
+          "boundary": "next known method/section boundary; completeness unproven; explicit byte limit",
+          "end": "0x1806516d0",
+          "decodedEnd": "0x1806516d0",
+          "decodedBytes": 11,
+          "fullyDecoded": true,
+          "bytesSha256": "3682c0a62515050101266cc639bf81f5d8c5395f49e7da93fcc22603018e0943",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 11
+        }
+      ]
+    },
+    {
+      "method": {
+        "nameIndex": 2537994,
+        "declaringType": 10266,
+        "returnType": 48460,
+        "parameterStart": 67737,
+        "genericContainerIndex": -1,
+        "token": 100730383,
+        "flags": 196,
+        "iflags": 0,
+        "slot": 28,
+        "parameterCount": 5,
+        "index": 67086,
+        "image": "Assembly-CSharp.dll",
+        "address": 6449912352,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.Battle.Deck/TokenCard.SpawnInternal",
+        "returnTypeName": "Torappu.Battle.Character",
+        "parameters": [
+          {
+            "nameIndex": 523294,
+            "token": 134285471,
+            "typeIndex": 109140,
+            "index": 67737,
+            "name": "direction",
+            "typeName": "Torappu.SharedConsts/Direction"
+          },
+          {
+            "nameIndex": 1957,
+            "token": 134285472,
+            "typeIndex": 80093,
+            "index": 67738,
+            "name": "tile",
+            "typeName": "Torappu.Battle.Tile"
+          },
+          {
+            "nameIndex": 2481000,
+            "token": 134285473,
+            "typeIndex": 46024,
+            "index": 67739,
+            "name": "spawnManually",
+            "typeName": "bool"
+          },
+          {
+            "nameIndex": 2481236,
+            "token": 134285474,
+            "typeIndex": 46024,
+            "index": 67740,
+            "name": "freelyFromDeck",
+            "typeName": "bool"
+          },
+          {
+            "nameIndex": 2481251,
+            "token": 134285475,
+            "typeIndex": 96832,
+            "index": 67741,
+            "name": "spawnDetailsTracker",
+            "typeName": "Torappu.Battle.Deck/SpawnDetailsTracker"
+          }
+        ]
+      },
+      "followingMethodAddress": "0x18071db10",
+      "parts": [
+        {
+          "method": null,
+          "address": "0x18071da20",
+          "aliases": [
+            67086
+          ],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x18071db0f",
+          "decodedEnd": "0x18071db0f",
+          "decodedBytes": 239,
+          "fullyDecoded": true,
+          "bytesSha256": "b65bf5b6e7711e5b7bd53b4e743780a698eee657449aa2d6060103639d97190e",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 55
+        },
+        {
+          "method": null,
+          "address": "0x18071db0f",
+          "aliases": [],
+          "boundary": "next known method/section boundary; completeness unproven; explicit byte limit",
+          "end": "0x18071db10",
+          "decodedEnd": "0x18071db10",
+          "decodedBytes": 1,
+          "fullyDecoded": true,
+          "bytesSha256": "1dd8312636f6a0bf3d21fa2855e63072507453e93a5ced4301b364e91c9d87d6",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 1
+        }
+      ]
+    },
+    {
+      "method": {
+        "nameIndex": 2481297,
+        "declaringType": 10920,
+        "returnType": 48460,
+        "parameterStart": 72657,
+        "genericContainerIndex": -1,
+        "token": 100736098,
+        "flags": 134,
+        "iflags": 0,
+        "slot": 65535,
+        "parameterCount": 1,
+        "index": 72801,
+        "image": "Assembly-CSharp.dll",
+        "address": 6452047184,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.Battle.BattleFactory.CreateToken",
+        "returnTypeName": "Torappu.Battle.Character",
+        "parameters": [
+          {
+            "nameIndex": 1749,
+            "token": 134290391,
+            "typeIndex": 45448,
+            "index": 72657,
+            "name": "data",
+            "typeName": "Torappu.Battle.BattleCharacterData"
+          }
+        ]
+      },
+      "followingMethodAddress": "0x180926ef0",
+      "parts": [
+        {
+          "method": null,
+          "address": "0x180926d50",
+          "aliases": [
+            72801
+          ],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x180926eee",
+          "decodedEnd": "0x180926eee",
+          "decodedBytes": 414,
+          "fullyDecoded": true,
+          "bytesSha256": "833e675c7ae6b0b3501396f813773ae3f91150304978833d6bb0497acbfa420a",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 99
+        },
+        {
+          "method": null,
+          "address": "0x180926eee",
+          "aliases": [],
+          "boundary": "next known method/section boundary; completeness unproven; explicit byte limit",
+          "end": "0x180926ef0",
+          "decodedEnd": "0x180926ef0",
+          "decodedBytes": 2,
+          "fullyDecoded": true,
+          "bytesSha256": "e3966e3275be536a16092ec0cadf1638f718218e616fbbe8ff1c5e67fff4def2",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 2
+        }
+      ]
+    }
+  ]
+}

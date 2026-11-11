@@ -1,0 +1,193 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-11-11"
+    ],
+    "collectionDateSource": "batch directory",
+    "organizedOn": "2026-11-11",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+        "records": [
+          "hierarchy/metadata.json#/provenance/client/dll",
+          "spawn/bodies/native.json#/provenance/client/dll"
+        ],
+        "bytes": 223112680
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        "records": [
+          "hierarchy/metadata.json#/provenance/client/metadata",
+          "spawn/bodies/native.json#/provenance/client/metadata"
+        ],
+        "bytes": 46669332
+      }
+    },
+    "sourceRecords": [
+      "hierarchy/metadata.json",
+      "spawn/bodies/native.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12895,
+        "sha256": "9c5b246859318caaec4aab5275ef0d2d49fce5d612c6b4e569973a9941ba621a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "hierarchy/extract.py",
+        "kind": "historical-script",
+        "bytes": 2771,
+        "sha256": "014fdfd4288fe8a745c1fbc92bb9c8830f466dff988d2f27cdbddfc0e94e3ee2"
+      },
+      {
+        "path": "hierarchy/metadata.json",
+        "kind": "record",
+        "bytes": 7672,
+        "sha256": "efe0dda8fcb8515a7d04c97f5ebafe73e3318d79c1a26e66ab1e4e159a3dbdce"
+      },
+      {
+        "path": "spawn/bodies/CreateToken-65678.asm",
+        "kind": "instructions",
+        "bytes": 5728,
+        "sha256": "16a24c78bcdf9b783cd93e2b87ed4fa44ca4f10d870fad531d9daf97a0522292"
+      },
+      {
+        "path": "spawn/bodies/CreateToken-72801.asm",
+        "kind": "instructions",
+        "bytes": 3577,
+        "sha256": "607190342459ae2c622efd9c0aef2dd04a88d7f7aab1e4b4ef17d251a0166945"
+      },
+      {
+        "path": "spawn/bodies/SpawnInternal-67086.asm",
+        "kind": "instructions",
+        "bytes": 2035,
+        "sha256": "25fd732bca5c0a5fd04508449e2ef54f84bc03c13f093a41e41ed35bc6b10603"
+      },
+      {
+        "path": "spawn/bodies/native.json",
+        "kind": "record",
+        "bytes": 13607,
+        "sha256": "a24f3dc3cd509e4e4f55396b01956c2924db9412fc5d7e11348c1afc63b1d4e8"
+      },
+      {
+        "path": "spawn/extract.py",
+        "kind": "historical-script",
+        "bytes": 2876,
+        "sha256": "9b8584c8e14e329f63db43a7c0e46f84d3959a717add954e92a987b91484694b"
+      },
+      {
+        "path": "spawn/extract.py.lock",
+        "kind": "artifact",
+        "bytes": 3739,
+        "sha256": "1ed9e3b399cf0743106d2124514970f3a3b5db6d9f1192fba528019ccbefdf04"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 65678,
+          "mode": "metadata",
+          "records": [
+            "spawn/bodies/native.json#/result/0/method"
+          ],
+          "fullname": "Torappu.Battle.BattleController.CreateToken",
+          "address": "0x180651420"
+        },
+        {
+          "index": 67086,
+          "mode": "metadata",
+          "records": [
+            "spawn/bodies/native.json#/result/1/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/TokenCard.SpawnInternal",
+          "address": "0x18071da20"
+        },
+        {
+          "index": 72801,
+          "mode": "metadata",
+          "records": [
+            "spawn/bodies/native.json#/result/2/method"
+          ],
+          "fullname": "Torappu.Battle.BattleFactory.CreateToken",
+          "address": "0x180926d50"
+        },
+        {
+          "index": 77135,
+          "mode": "metadata",
+          "records": [
+            "hierarchy/metadata.json#/result/character/methods/0"
+          ],
+          "fullname": "Torappu.Battle.Character.get_cardUid",
+          "address": "0x180aaf750"
+        },
+        {
+          "index": 77136,
+          "mode": "metadata",
+          "records": [
+            "hierarchy/metadata.json#/result/character/methods/1"
+          ],
+          "fullname": "Torappu.Battle.Character.set_cardUid",
+          "address": "0x180ab2b60"
+        },
+        {
+          "index": 77240,
+          "mode": "metadata",
+          "records": [
+            "hierarchy/metadata.json#/result/character/methods/2"
+          ],
+          "fullname": "Torappu.Battle.Character.BuildAsPredefined",
+          "address": "0x180a9ceb0"
+        },
+        {
+          "index": 77241,
+          "mode": "metadata",
+          "records": [
+            "hierarchy/metadata.json#/result/character/methods/3"
+          ],
+          "fullname": "Torappu.Battle.Character.BuildAsRuntimeInst",
+          "address": "0x180a9d1e0"
+        }
+      ],
+      "blocks": [
+        {
+          "address": "0x180651420",
+          "records": [
+            "spawn/bodies/CreateToken-65678.asm"
+          ]
+        },
+        {
+          "address": "0x18071da20",
+          "records": [
+            "spawn/bodies/SpawnInternal-67086.asm"
+          ]
+        },
+        {
+          "address": "0x180926d50",
+          "records": [
+            "spawn/bodies/CreateToken-72801.asm"
+          ]
+        }
+      ],
+      "types": [],
+      "constants": [],
+      "bundles": []
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

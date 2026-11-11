@@ -389,6 +389,14 @@ QUEUED 对应 `token_10070_aphris_pc`（中继器）；DEFAULT／有限份数中
 
 **I**：接续前述 playerInstId <= 0 的递增分支，每份同名棋子分别取得不同 cardUid。共享角色模板或 Squad 配置不使它们共享身份；已核对的逐份转换调用链未见 UID 计数器重置。此处不因此补齐卫戍自动再部署或特殊重建路径。
 
+### 召唤物与装置的部署身份
+
+同日补核 [Token／Trap 批次](../evidence/device-source-20261111/README.md)，解决 Buff 的 independentCharacterSource 是否包含装置这一问题。当前 metadata 的实际继承链为 `Trap → Token → Character → Unit`；Enemy 直接继承 Unit，不经过 Character。Token 和 Trap 均继承 Character.cardUid。
+
+**N**：TokenCard.SpawnInternal（67086）返回 Character，普通分支把自身 Card 传给 BattleController.CreateToken（65678）。CreateToken 在 `0x1806514b8` 读取 Card.data，`0x1806514d3` 调用 BattleFactory.CreateToken(data)，随后在 `0x1806514ed` 读取 data.uniqueId（+0x6c），于 `0x1806514f6` 调用 Character.set_cardUid；后续 `0x180651649` 调用的 Character.BuildAt 仍使用该 Card。不是按场上 Token／Trap 对象实例重新分配这个字段。
+
+**I**：使用同一 TokenCard.data 的场上实例取得同一 cardUid；该路径下的召唤物与装置均满足 Buff 的 Character 来源判断。普通干员和装置在本问题上的差别不是“是否参与 Character 独立来源分组”。本节只闭合这一部署写入链，没有将预置、特殊运行时创建或全部多库存回收政策一并认定为相同。
+
 ## 未决项与项目关联
 
 1. **费用上限与多来源计算。** `MAX_COST_CEIL` 的配置来源、与 `MAX_COST` 的动态同步，以及 `rawCostScale`、`costDelta` 的多来源写入、互斥、归并尚未取证。Getter 读取汇总值不能证明各来源如何组合；再部署属性修正、一次缩短与多阶段取整也没有完整统一公式。
