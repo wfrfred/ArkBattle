@@ -1,6 +1,6 @@
 # 来源分组简化的实际内容影响
 
-核查日期：2026-11-12。评估候选方案以 Card 身份、无 Card Unit 身份和固定空来源身份区分独立组，是否改变真实内容的伤害、治疗、计数、叠层或竞争。结论集中在 [Case 01 §9.9](../../cases/01-buff-installation-and-parent-scope.md#99-候选分组简化的实际内容影响)。没有修改 Core 或将候选接口写成既定架构。
+核查日期：2026-11-12。评估以 Card 身份、无 Card Unit 身份和固定空来源身份区分独立组，是否改变真实内容的伤害、治疗、计数、叠层或竞争。结论集中在 [Case 01 §9.9](../../cases/01-buff-installation-and-parent-scope.md#99-分组简化的实际内容影响)。该简化同日确认为 [Effect 来源分组](../../../architecture/effect.md#来源分组)项目契约；Core 实现及具体接口尚未接入。
 
 ## 输入与范围
 

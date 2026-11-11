@@ -15,7 +15,7 @@
 | 来源身份的生成与重部署 | cardUid 来自转换阶段形成的 BattleCharacterData.uniqueId，Card getter 转读它，普通部署写入 Character；普通退场返回原卡并在再次部署沿用该值。AutoChess 普通加载为同名棋子逐份转换并生成不同 cardUid。[Case 24 第十三节](cases/24-deployment-cost-and-supply.md#十三carduid-的生成与普通重部署2026-11-11)。普通重部署保留的结论不扩推到新建卡、TokenCard 或特殊移动，也不要求项目 Effect 通用依赖 Card。 |
 | 装置的 Character 来源资格 | 当前原生继承链为 Trap → Token → Character，装置也满足 independentCharacterSource 的 Character 判断；TokenCard 部署从 Card.data.uniqueId 写入 Character.cardUid。[Case 01 §9.7](cases/01-buff-installation-and-parent-scope.md#97-character-包含召唤物与装置)。不因此扩推全部预置、特殊创建或多库存回收政策。 |
 | 无 Card 的预放置干员 | 普通 characterInsts 直接创建 Character；卡牌注入只取独立的 characterCards 数组。没有 Card 的预放干员仍从角色数据取得 cardUid，属于 Character 独立来源分组，不等于非 Character 回退。[Case 01 §9.8](cases/01-buff-installation-and-parent-scope.md#98-无-card-的预放置干员)。没有据此增加项目身份协议。 |
-| 分组简化的实际内容影响 | 已核对浊蒂／海嗣、帕拉斯 S3、妮芙、vampir 光照计数及次生预案标记的真实来源；Card／无 Card Unit 身份替换保持这些来源分区，未找到实际结果改变正例。完整 holder 与 38 个敌人包的扫描范围、空来源证据限度见 [Case 01 §9.9](cases/01-buff-installation-and-parent-scope.md#99-候选分组简化的实际内容影响)。 |
+| 分组简化的实际内容影响 | 已核对浊蒂／海嗣、帕拉斯 S3、妮芙、vampir 光照计数及次生预案标记的真实来源，未找到实际结果改变正例。已确认为 [Effect 来源分组](../architecture/effect.md#来源分组)项目契约，待实现；完整扫描范围与证据限度见 [Case 01 §9.9](cases/01-buff-installation-and-parent-scope.md#99-分组简化的实际内容影响)。 |
 | 控制效果与普通多目标攻击 | 标准 stun 的资格／中断与真实多目标逐目标读取 ATK 分别核对；[Case 08](cases/08-action-eligibility-and-interruption.md)、[Case 07](cases/07-action-timing-and-animation.md)。不推广到预采样弹道或所有特化技能。 |
 | 地形与射击台 | 重新核对配置、模板及消费链，包含当前实现的相反证据；[空间研究](03-space-units-and-mechanisms.md)。 |
 | 坐标、数值范围与运动 | 当前 World→Tile 取偶舍入、属性元数据／最终限幅和公式保底已分开核对；[Case 15](cases/15-locomotion-native-semantics.md)、[属性研究](02-combat-buffs-and-effects.md)。原生避障缓存与 locator 基准不等于当前项目选择。 |

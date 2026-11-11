@@ -186,11 +186,13 @@ Blocker Definition 保存基础容量，State 保存 ADD／ZERO 容量贡献，�
 
 ## Effect、Hook 与生命周期
 
-Effect 直接持有 `Definition<S, H>` 与私有 State。S 描述实例状态，H 描述宿主需要的 Capability 结构。抽象 Effect 不依赖 Damage、Healing、Offense 等具体 Capability；具体 Definition 通过这些领域的公开操作登记与撤销输出。
+Effect 直接持有 `Definition<S, H>` 与私有 State。S 描述实例状态，H 描述宿主需要的 Capability 结构。Effect 运行层管理实例与分组；具体 Definition 通过 Damage、Healing 和 Capability 的公开操作登记与撤销输出。
 
 生命周期状态为 `INSTALLING`、`INACTIVE`、`ACTIVE`、`ENDING`，外部许可 `enabled` 独立保存。宿主实际退场必然结束其 Effect；安装输入 scopes 可以绑定 Unit、Action、Skill 激活或另一个 Effect，Burst 使用同一 Effect Lifetime。登记后关系只保存在 Lifetime 图中，任一依赖结束即结束实例。expiration 以互斥的 DURATION、DEADLINE、INFINITE 表达有效时长、绝对期限或无限期，时间不进入依赖图。source 使用 `Ref<Unit> | null` 记录施加者，不要求来源仍在场，也不隐含生命周期绑定。所有权与显式 Scope 的合并关系保持 DAG。
 
 同宿主覆写组先在未结束实例中选取最高优先级，同优先级保留较早取得的实例，再检查赢家的 enabled。禁用最强实例不会让弱者补位。Contribution 分组、Hook 调用顺序与具体业务条件分别由所属模块处理。
+
+来源独立分组已确定按来源 Unit 的既有 Card 关联、无 Card 的 Unit 身份或空来源区分，安装后保持组归属；这是待接入的项目契约，详见 [Effect 来源分组](effect.md#来源分组)。
 
 生命周期由完整领域操作推进：安装执行 onInstall 并重读当前实例；零时长或已到期时直接请求结束，不启用、不推进，也不执行 onDisable。生效切换执行 onEnable／onDisable；结束请求登记 Pending、发布 ENDING、执行 Prepare，再请求依赖者。Effect 在 Prepare 撤销已启用的输出并按当前资格协调 Group；最外层结算器在依赖者完整 Finalize 后执行本实例 onEnd 与移除。嵌套结束返回不保证注销或最终通知已完成；每项业务继续接续最新 BattleState。
 

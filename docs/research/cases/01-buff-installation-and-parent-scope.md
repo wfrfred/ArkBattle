@@ -432,9 +432,9 @@ TokenCard.SpawnInternal 将自身 Card 交给 BattleController.CreateToken；后
 
 项目关联：Card Ref 能表达同一卡牌多个场上实例共享来源，但不能把“没有来源 Card”和“非 Character 来源”当作同一个条件。本批记录这一实际内容需求，不自行增加 SourceIdentity、字段或初始化协议。
 
-### 9.9 候选分组简化的实际内容影响
+### 9.9 分组简化的实际内容影响
 
-2026-11-12 按[内容与来源短链](../evidence/independent-group-impact-20261112/README.md)评估候选方案：不独立时用基础 group.id；来源独立时，关联 Card 的 Unit 用 `(group.id, Card 身份)`，无 Card 的 Unit 用 `(group.id, Unit 身份)`，空来源用 `(group.id, null)`。分组范围仍是同一接收者；此处只更换组身份，不更改真正的 source、按来源查询、接纳／竞争政策或父子生命周期。尚未修改 Core 或在此确定接口。
+2026-11-12 根据[内容与来源短链](../evidence/independent-group-impact-20261112/README.md)确认采用以下项目简化：不独立时用基础 group.id；来源独立时，关联 Card 的 Unit 用 `(group.id, Card 身份)`，无 Card 的 Unit 用 `(group.id, Unit 身份)`，空来源用 `(group.id, null)`。分组范围仍是同一接收者，不更改真正的 source、按来源查询、接纳／竞争政策或父子生命周期。规范契约见 [Effect 来源分组](../../architecture/effect.md#来源分组)；实现及具体接口尚未接入。
 
 下表的结果来自实际配置与普通调用链接续后的推导，不是实机 A／B 观测。
 
@@ -449,4 +449,4 @@ TokenCard.SpawnInternal 将自身 Card 交给 BattleController.CreateToken；后
 
 扫描范围：完整 holder 的 9054 个模板中，97 项嵌入描述开启来源独立，分布于 69 个模板；本机 38 个 battle/enm_pfb 包的 53,528 个 MonoBehaviour 中，11,740 个含相关 BuffData 类型的对象完整解码，失败数为 0，直接开启来源独立的嵌入描述为 0。后一个结果不包含模板递归及 BuffDB 的全局证明；上述间接模板另行核对了实际 source。
 
-在已闭合的实际内容中，尚未找到这张表导致伤害、治疗、层数、计数或候补竞争改变的正例；没有把字典前缀回退差异本身当作玩法损失。空来源也未找到可执行的结果差异正例，候选弹道模板不等于已验证的来源回收后施加。现有证据支持将该简化作为项目选择，不因此声称与全部运行时／热更新路径严格等价，也不增加尚无具体内容需求的身份映射协议。
+在已闭合的实际内容中，尚未找到这张表导致伤害、治疗、层数、计数或候补竞争改变的正例；没有把字典前缀回退差异本身当作玩法损失。空来源也未找到可执行的结果差异正例，候选弹道模板不等于已验证的来源回收后施加。该简化已确认为项目选择；上述依据不等于与全部运行时／热更新路径严格等价的证明。

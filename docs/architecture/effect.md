@@ -200,6 +200,26 @@ stateDiagram-v2
 
 Hook 的 accepts 读取 Effect 的覆写结果；伤害阶段与优先级由 Damage 定义。
 
+### 来源分组
+
+以下是已确定、待接入的项目契约。来源独立配置及运行态组键的具体字段、类型和接口尚未定稿。
+
+未声明 group 的 Effect 不参与覆写组。已声明 group 时，分组范围限于同一个宿主；Definition 决定是否要求来源独立：
+
+| 情况 | 分组身份 |
+| --- | --- |
+| 不要求来源独立 | `group.id` |
+| 要求来源独立，来源 Unit 关联 Card | `(group.id, Card.id)` |
+| 要求来源独立，来源 Unit 没有 Card | `(group.id, Unit.id)` |
+| 要求来源独立，没有来源 | `(group.id, null)` |
+
+Card 关联沿实际 `source → Unit → deployable.card` 读取；无 Card 的来源使用该 Unit 身份，适用于任意来源 Unit。Card 与 Unit 属于不同身份域，数值相同也不表示同一来源。同一卡牌产生的多个 Unit（包括重新部署）共享来源身份，不同 Card 保持独立；无 Card 的预放干员仍按各自 Unit 区分。
+
+安装时确定组归属，此后来源退场不改变已存在实例的组归属。分组身份不替换 `Effect.source`，不改变内容的来源比较、重复施加／竞争政策或生命周期依赖。实际来源由具体机制确定；例如海嗣治疗以宿主浊心斯卡蒂为 source，而非执行光环的海嗣。
+
+该契约明确采用上述分区，不复刻原生的前缀查找、匿名组迁移或 Character 类别判断。不新增通用 SourceIdentity 字段或映射表，也不要求 install 调用者手工拼键或重复传递身份。机制依据与实际内容影响见[来源分组调查](../research/cases/01-buff-installation-and-parent-scope.md#99-分组简化的实际内容影响)。
+
+
 ## 5. 回调与同步操作
 
 | 回调      | 何时调用                         | 典型职责                            |
