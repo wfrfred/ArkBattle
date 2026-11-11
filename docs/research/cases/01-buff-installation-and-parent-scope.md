@@ -413,3 +413,7 @@ remainingTime >= 0
 同日沿生产者与回收链补核，见 [Case 24 第十三节](24-deployment-cost-and-supply.md#十三carduid-的生成与普通重部署2026-11-11)及[来源身份批次](../evidence/card-source-identity-20261111/README.md)。Card.get_uniqueId 转读 BattleCharacterData.uniqueId；该值在角色数据转换阶段形成，普通部署复制到 Character.cardUid。普通退场返回已有 Card，冷却和再次部署不重新分配该数据身份。因此普通同一卡牌重部署后，来源独立组构造仍使用相同 cardUid。
 
 这只回答**分组来源身份**。Effect／Buff 的实例身份、重复施加如何处理、组内如何竞争仍是不同问题。如果旧接收实例仍在原来的 Character 独立来源组，同一卡牌重部署后以有效的新 Character 为来源，使用同一基础键并开启 independentCharacterSource 再次施加 Buff，则最终组键相同；能否保留旧实例仍取决于对应生命周期。分组键相同也不表示 retained.source 自动改成新 Character，原有合并分支见 8.2。
+
+[同名棋子补核](24-deployment-cost-and-supply.md#卫戍的同名副本)确认：AutoChess 普通加载逐份转换共享 Squad 配置的棋子，生成不同 cardUid。因此开启 independentCharacterSource、来源为有效 Character 时，同名副本按不同来源分组；未开启时最终键仍为基础键，为空则不进入覆盖组。不能仅从“同名”推出是否同组。
+
+项目关联：cardUid 是上述原生 Character 路径使用的来源身份，不是所有 Effect 的通用依赖。非干员也能施加 Effect；分组依据应由对应机制决定，并与执行程序读取的来源对象区分。调查只证明某些来源身份需要跨普通重部署保留，不在此规定项目的分组接口或身份类型。

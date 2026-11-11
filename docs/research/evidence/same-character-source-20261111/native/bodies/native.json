@@ -1,0 +1,615 @@
+{
+  "provenance": {
+    "scope": "Static native branches; no game execution or runtime XLua verification.",
+    "client": {
+      "dll": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "bytes": 223112680,
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff"
+      },
+      "metadata": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "bytes": 46669332,
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5"
+      },
+      "metadataVersion": 29,
+      "imageBase": "0x180000000"
+    },
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/native.py",
+        "bytes": 18723,
+        "sha256": "1c6c16dc97e0dd9af0af4033c81a7534384dd65ebb1e604df3f4a3289df158e6"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]"
+    },
+    "location": {
+      "metadataRegistration": "0x187ee0630",
+      "modules": {
+        "Assembly-CSharp.dll": {
+          "address": 6564854272,
+          "methodPointers": 6585881040,
+          "count": 225427,
+          "fileBacked": true
+        },
+        "mscorlib.dll": {
+          "address": 6577364064,
+          "methodPointers": 6592131600,
+          "count": 13987,
+          "fileBacked": true
+        }
+      }
+    },
+    "collectedOn": "2026-11-11",
+    "extractionScript": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/same-character-source-20261111/native/extract.py",
+      "bytes": 3979,
+      "sha256": "d4afecae3b2ce387c3424d5e348d3777821796bc22bbbc040a2db0c3d9980c3a"
+    }
+  },
+  "result": [
+    {
+      "method": {
+        "nameIndex": 3032677,
+        "declaringType": 12029,
+        "returnType": 84484,
+        "parameterStart": 80174,
+        "genericContainerIndex": -1,
+        "token": 100745051,
+        "flags": 129,
+        "iflags": 0,
+        "slot": 65535,
+        "parameterCount": 4,
+        "index": 81754,
+        "image": "Assembly-CSharp.dll",
+        "address": 6455044528,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.Battle.AutoChess.AutoChessBattleDataModel._LoadBattlePlayerData",
+        "returnTypeName": "void",
+        "parameters": [
+          {
+            "nameIndex": 3032663,
+            "token": 134297908,
+            "typeIndex": 19948,
+            "index": 80174,
+            "name": "chessInstDict",
+            "typeName": "type(kind=0x15, data=0x188e09158)"
+          },
+          {
+            "nameIndex": 1413663,
+            "token": 134297909,
+            "typeIndex": 65990,
+            "index": 80175,
+            "name": "playerSide",
+            "typeName": "Torappu.PlayerSide"
+          },
+          {
+            "nameIndex": 1112951,
+            "token": 134297910,
+            "typeIndex": 21959,
+            "index": 80176,
+            "name": "characters",
+            "typeName": "type(kind=0x15, data=0x188dd00e8)"
+          },
+          {
+            "nameIndex": 1396671,
+            "token": 134297911,
+            "typeIndex": 21959,
+            "index": 80177,
+            "name": "tokens",
+            "typeName": "type(kind=0x15, data=0x188dd00e8)"
+          }
+        ]
+      },
+      "followingMethodAddress": "0x180c03010",
+      "parts": [
+        {
+          "method": null,
+          "address": "0x180c029b0",
+          "aliases": [
+            81754
+          ],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x180c03009",
+          "decodedEnd": "0x180c03009",
+          "decodedBytes": 1625,
+          "fullyDecoded": true,
+          "bytesSha256": "87a68b4800f8e1e199d5ef39770bc874ba7dca6ea0eab8d3ee3b375bf7071323",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 335
+        },
+        {
+          "method": null,
+          "address": "0x180c03009",
+          "aliases": [],
+          "boundary": "next known method/section boundary; completeness unproven; explicit byte limit",
+          "end": "0x180c03010",
+          "decodedEnd": "0x180c03010",
+          "decodedBytes": 7,
+          "fullyDecoded": true,
+          "bytesSha256": "f145eca66705de68ff53c6d80e34d8f9a5b535ffa157194aa98bdb68aea4368d",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 7
+        }
+      ]
+    },
+    {
+      "method": {
+        "nameIndex": 3032839,
+        "declaringType": 12029,
+        "returnType": 84484,
+        "parameterStart": -1,
+        "genericContainerIndex": -1,
+        "token": 100745057,
+        "flags": 129,
+        "iflags": 0,
+        "slot": 65535,
+        "parameterCount": 0,
+        "index": 81760,
+        "image": "Assembly-CSharp.dll",
+        "address": 6455048192,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.Battle.AutoChess.AutoChessBattleDataModel._LoadInstsBattlePlayerData",
+        "returnTypeName": "void",
+        "parameters": []
+      },
+      "followingMethodAddress": "0x180c03ca0",
+      "parts": [
+        {
+          "method": null,
+          "address": "0x180c03800",
+          "aliases": [
+            81760
+          ],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x180c03c9b",
+          "decodedEnd": "0x180c03c9b",
+          "decodedBytes": 1179,
+          "fullyDecoded": true,
+          "bytesSha256": "36a974ef57107614bb130b1a665bc47eb430afdd31bf3a6698d64ac0bf356934",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 244
+        },
+        {
+          "method": null,
+          "address": "0x180c03c9b",
+          "aliases": [],
+          "boundary": "next known method/section boundary; completeness unproven; explicit byte limit",
+          "end": "0x180c03ca0",
+          "decodedEnd": "0x180c03ca0",
+          "decodedBytes": 5,
+          "fullyDecoded": true,
+          "bytesSha256": "992cf51486f901aa1aa7d1f63e18c150c9156166e08e0b9e59cc3faf98177329",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 5
+        }
+      ]
+    },
+    {
+      "method": {
+        "nameIndex": 3032677,
+        "declaringType": 12029,
+        "returnType": 84484,
+        "parameterStart": -1,
+        "genericContainerIndex": -1,
+        "token": 100745059,
+        "flags": 129,
+        "iflags": 0,
+        "slot": 65535,
+        "parameterCount": 0,
+        "index": 81762,
+        "image": "Assembly-CSharp.dll",
+        "address": 6455046160,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.Battle.AutoChess.AutoChessBattleDataModel._LoadBattlePlayerData",
+        "returnTypeName": "void",
+        "parameters": []
+      },
+      "followingMethodAddress": "0x180c032f0",
+      "parts": [
+        {
+          "method": null,
+          "address": "0x180c03010",
+          "aliases": [
+            81762
+          ],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x180c032eb",
+          "decodedEnd": "0x180c032eb",
+          "decodedBytes": 731,
+          "fullyDecoded": true,
+          "bytesSha256": "353f88d26755d43ead324f5a7770014d71f6d310cb35090817c20637a589f298",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 158
+        },
+        {
+          "method": null,
+          "address": "0x180c032eb",
+          "aliases": [],
+          "boundary": "next known method/section boundary; completeness unproven; explicit byte limit",
+          "end": "0x180c032f0",
+          "decodedEnd": "0x180c032f0",
+          "decodedBytes": 5,
+          "fullyDecoded": true,
+          "bytesSha256": "992cf51486f901aa1aa7d1f63e18c150c9156166e08e0b9e59cc3faf98177329",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 5
+        }
+      ]
+    },
+    {
+      "method": {
+        "nameIndex": 3037085,
+        "declaringType": 12038,
+        "returnType": 41165,
+        "parameterStart": -1,
+        "genericContainerIndex": -1,
+        "token": 100745159,
+        "flags": 2182,
+        "iflags": 0,
+        "slot": 65535,
+        "parameterCount": 0,
+        "index": 81862,
+        "image": "Assembly-CSharp.dll",
+        "address": 6455222016,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.Battle.AutoChess.ChessInst.get_charInst",
+        "returnTypeName": "Torappu.AdvancedCharacterInst",
+        "parameters": []
+      },
+      "followingMethodAddress": "0x180c2dfa0",
+      "parts": [
+        {
+          "method": null,
+          "address": "0x180c2df00",
+          "aliases": [
+            81862
+          ],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x180c2df97",
+          "decodedEnd": "0x180c2df97",
+          "decodedBytes": 151,
+          "fullyDecoded": true,
+          "bytesSha256": "71285b6c4a861375d491c4759f67f29b5adfa69faf643ccaeae42575c5748524",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 40
+        },
+        {
+          "method": null,
+          "address": "0x180c2df97",
+          "aliases": [],
+          "boundary": "next known method/section boundary; completeness unproven; explicit byte limit",
+          "end": "0x180c2dfa0",
+          "decodedEnd": "0x180c2dfa0",
+          "decodedBytes": 9,
+          "fullyDecoded": true,
+          "bytesSha256": "57c1d0aaef1222fc7f655f011049271d3a843395335212156e61d3850beb51ce",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 9
+        }
+      ]
+    },
+    {
+      "method": {
+        "nameIndex": 3039811,
+        "declaringType": 12054,
+        "returnType": 84484,
+        "parameterStart": 80282,
+        "genericContainerIndex": -1,
+        "token": 100745233,
+        "flags": 129,
+        "iflags": 0,
+        "slot": 65535,
+        "parameterCount": 2,
+        "index": 81936,
+        "image": "Assembly-CSharp.dll",
+        "address": 6455217184,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.Battle.AutoChess.AutoChessSquadModel._PostProcessDB",
+        "returnTypeName": "void",
+        "parameters": [
+          {
+            "nameIndex": 3039798,
+            "token": 134298016,
+            "typeIndex": 20223,
+            "index": 80282,
+            "name": "chessSquadDB",
+            "typeName": "type(kind=0x15, data=0x188e52388)"
+          },
+          {
+            "nameIndex": 2970138,
+            "token": 134298017,
+            "typeIndex": 60309,
+            "index": 80283,
+            "name": "playerIndex",
+            "typeName": "int"
+          }
+        ]
+      },
+      "followingMethodAddress": "0x180c2d310",
+      "parts": [
+        {
+          "method": null,
+          "address": "0x180c2cc20",
+          "aliases": [
+            81936
+          ],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x180c2d302",
+          "decodedEnd": "0x180c2d302",
+          "decodedBytes": 1762,
+          "fullyDecoded": true,
+          "bytesSha256": "6a9a107814f6014a0569534d5a80718d4af6526b98ad38ad1d79ca912e671704",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 368
+        },
+        {
+          "method": null,
+          "address": "0x180c2d302",
+          "aliases": [],
+          "boundary": "next known method/section boundary; completeness unproven; explicit byte limit",
+          "end": "0x180c2d310",
+          "decodedEnd": "0x180c2d310",
+          "decodedBytes": 14,
+          "fullyDecoded": true,
+          "bytesSha256": "1e875c76536c8496bed8c8760b539327f24acffbcf0a4b941877b4bfb4c44356",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 14
+        }
+      ]
+    },
+    {
+      "method": {
+        "nameIndex": 3039897,
+        "declaringType": 12054,
+        "returnType": 48965,
+        "parameterStart": 80291,
+        "genericContainerIndex": -1,
+        "token": 100745238,
+        "flags": 129,
+        "iflags": 0,
+        "slot": 65535,
+        "parameterCount": 4,
+        "index": 81941,
+        "image": "Assembly-CSharp.dll",
+        "address": 6455215248,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.Battle.AutoChess.AutoChessSquadModel._GetChessSquadConfig",
+        "returnTypeName": "Torappu.Battle.AutoChess.ChessSquad",
+        "parameters": [
+          {
+            "nameIndex": 1092743,
+            "token": 134298025,
+            "typeIndex": 78546,
+            "index": 80291,
+            "name": "chessId",
+            "typeName": "string"
+          },
+          {
+            "nameIndex": 3039883,
+            "token": 134298026,
+            "typeIndex": 90089,
+            "index": 80292,
+            "name": "shopChessData",
+            "typeName": "Torappu.ActAutoChessData/ActAutoChessCharShopChessData"
+          },
+          {
+            "nameIndex": 524450,
+            "token": 134298027,
+            "typeIndex": 77612,
+            "index": 80293,
+            "name": "slot",
+            "typeName": "Torappu.Battle.AutoChess.SquadSlot"
+          },
+          {
+            "nameIndex": 1154293,
+            "token": 134298028,
+            "typeIndex": 46024,
+            "index": 80294,
+            "name": "isGolden",
+            "typeName": "bool"
+          }
+        ]
+      },
+      "followingMethodAddress": "0x180c2caf0",
+      "parts": [
+        {
+          "method": null,
+          "address": "0x180c2c490",
+          "aliases": [
+            81941
+          ],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x180c2c5c8",
+          "decodedEnd": "0x180c2c5c8",
+          "decodedBytes": 312,
+          "fullyDecoded": true,
+          "bytesSha256": "24844fede0ecf2bcdad0f8507906f287188612174b48536591a48d22d67f9f40",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 60
+        },
+        {
+          "method": null,
+          "address": "0x180c2c5c8",
+          "aliases": [],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x180c2caa5",
+          "decodedEnd": "0x180c2caa5",
+          "decodedBytes": 1245,
+          "fullyDecoded": true,
+          "bytesSha256": "6018bab4f72f80e695d0c085eafb97217b54105e3337db022ceca8bf676612bc",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 307
+        },
+        {
+          "method": null,
+          "address": "0x180c2caa5",
+          "aliases": [],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x180c2cabd",
+          "decodedEnd": "0x180c2cabd",
+          "decodedBytes": 24,
+          "fullyDecoded": true,
+          "bytesSha256": "749a458e6360d8889589bb079e74703fa06a5c7840e9c10e41c82fc58f12c414",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 8
+        },
+        {
+          "method": null,
+          "address": "0x180c2cabd",
+          "aliases": [],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x180c2cac1",
+          "decodedEnd": "0x180c2cac1",
+          "decodedBytes": 4,
+          "fullyDecoded": true,
+          "bytesSha256": "9e398d4c123dc1019b3a40b47af99f0f4e3e4b61451868c5f6ef16db0bd0d3c4",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 2
+        },
+        {
+          "method": null,
+          "address": "0x180c2cac1",
+          "aliases": [],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x180c2cae3",
+          "decodedEnd": "0x180c2cae3",
+          "decodedBytes": 34,
+          "fullyDecoded": true,
+          "bytesSha256": "a23201675f6aa2f65d8f2673f0eddba177b73bc04b72642af7b16f2df6e585d7",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 9
+        },
+        {
+          "method": null,
+          "address": "0x180c2cae3",
+          "aliases": [],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x180c2cae9",
+          "decodedEnd": "0x180c2cae9",
+          "decodedBytes": 6,
+          "fullyDecoded": true,
+          "bytesSha256": "ab7fe22f271d19efdde376185c4c67bc31276234f009609aca6396208e162019",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 2
+        },
+        {
+          "method": null,
+          "address": "0x180c2cae9",
+          "aliases": [],
+          "boundary": "next known method/section boundary; completeness unproven; explicit byte limit",
+          "end": "0x180c2caf0",
+          "decodedEnd": "0x180c2caf0",
+          "decodedBytes": 7,
+          "fullyDecoded": true,
+          "bytesSha256": "f145eca66705de68ff53c6d80e34d8f9a5b535ffa157194aa98bdb68aea4368d",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 7
+        }
+      ]
+    },
+    {
+      "method": {
+        "nameIndex": 3040693,
+        "declaringType": 12057,
+        "returnType": 84484,
+        "parameterStart": 80340,
+        "genericContainerIndex": -1,
+        "token": 100745282,
+        "flags": 150,
+        "iflags": 0,
+        "slot": 65535,
+        "parameterCount": 3,
+        "index": 81985,
+        "image": "Assembly-CSharp.dll",
+        "address": 6455151952,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.Battle.AutoChess.AutoChessBattleUtil.ApplyInstDataToSharedData",
+        "returnTypeName": "void",
+        "parameters": [
+          {
+            "nameIndex": 1127795,
+            "token": 134298074,
+            "typeIndex": 45448,
+            "index": 80340,
+            "name": "charData",
+            "typeName": "Torappu.Battle.BattleCharacterData"
+          },
+          {
+            "nameIndex": 531869,
+            "token": 134298075,
+            "typeIndex": 60309,
+            "index": 80341,
+            "name": "instId",
+            "typeName": "int"
+          },
+          {
+            "nameIndex": 1092743,
+            "token": 134298076,
+            "typeIndex": 78546,
+            "index": 80342,
+            "name": "chessId",
+            "typeName": "string"
+          }
+        ]
+      },
+      "followingMethodAddress": "0x180c1ce80",
+      "parts": [
+        {
+          "method": null,
+          "address": "0x180c1cd50",
+          "aliases": [
+            81985
+          ],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x180c1cda5",
+          "decodedEnd": "0x180c1cda5",
+          "decodedBytes": 85,
+          "fullyDecoded": true,
+          "bytesSha256": "969e20ee2086473ac375d934850671441969b12f2068b4cf37e08507982821bc",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 18
+        },
+        {
+          "method": null,
+          "address": "0x180c1cda5",
+          "aliases": [],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x180c1ce69",
+          "decodedEnd": "0x180c1ce69",
+          "decodedBytes": 196,
+          "fullyDecoded": true,
+          "bytesSha256": "e6f31646488172ea3a348039b211733ae499c37798da2aef54e08266aadf25dc",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 50
+        },
+        {
+          "method": null,
+          "address": "0x180c1ce69",
+          "aliases": [],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x180c1ce7a",
+          "decodedEnd": "0x180c1ce7a",
+          "decodedBytes": 17,
+          "fullyDecoded": true,
+          "bytesSha256": "022e70b5c7a22ff6409f151048108e14dc77845653c1a7ea2f14790d5e120125",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 5
+        },
+        {
+          "method": null,
+          "address": "0x180c1ce7a",
+          "aliases": [],
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x180c1ce80",
+          "decodedEnd": "0x180c1ce80",
+          "decodedBytes": 6,
+          "fullyDecoded": true,
+          "bytesSha256": "30d29aca1e43eed5de7476b2a86c67ad82ee21f76ea6d998fe2f8854165db60a",
+          "capstoneVersion": "5.0.7",
+          "instructionCount": 2
+        }
+      ]
+    }
+  ]
+}

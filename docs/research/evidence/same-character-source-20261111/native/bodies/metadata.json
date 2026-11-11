@@ -1,0 +1,1211 @@
+{
+  "provenance": {
+    "scope": "Static native branches; no game execution or runtime XLua verification.",
+    "client": {
+      "dll": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "bytes": 223112680,
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff"
+      },
+      "metadata": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "bytes": 46669332,
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5"
+      },
+      "metadataVersion": 29,
+      "imageBase": "0x180000000"
+    },
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/native.py",
+        "bytes": 18723,
+        "sha256": "1c6c16dc97e0dd9af0af4033c81a7534384dd65ebb1e604df3f4a3289df158e6"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]"
+    },
+    "location": {
+      "metadataRegistration": "0x187ee0630",
+      "modules": {
+        "Assembly-CSharp.dll": {
+          "address": 6564854272,
+          "methodPointers": 6585881040,
+          "count": 225427,
+          "fileBacked": true
+        },
+        "mscorlib.dll": {
+          "address": 6577364064,
+          "methodPointers": 6592131600,
+          "count": 13987,
+          "fileBacked": true
+        }
+      }
+    },
+    "collectedOn": "2026-11-11",
+    "extractionScript": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/same-character-source-20261111/native/extract.py",
+      "bytes": 3979,
+      "sha256": "d4afecae3b2ce387c3424d5e348d3777821796bc22bbbc040a2db0c3d9980c3a"
+    }
+  },
+  "result": [
+    {
+      "fullname": "Torappu.CharacterInst/Metadata",
+      "index": 4369,
+      "fields": [
+        {
+          "nameIndex": 1200502,
+          "typeIndex": 78551,
+          "token": 67133828,
+          "index": 24963,
+          "name": "characterKey",
+          "typeName": "string",
+          "static": false,
+          "offset": 16,
+          "unboxedOffset": 0
+        },
+        {
+          "nameIndex": 16455,
+          "typeIndex": 60314,
+          "token": 67133829,
+          "index": 24964,
+          "name": "level",
+          "typeName": "int",
+          "static": false,
+          "offset": 24,
+          "unboxedOffset": 8
+        },
+        {
+          "nameIndex": 74228,
+          "typeIndex": 54232,
+          "token": 67133830,
+          "index": 24965,
+          "name": "phase",
+          "typeName": "Torappu.EvolvePhase",
+          "static": false,
+          "offset": 28,
+          "unboxedOffset": 12
+        },
+        {
+          "nameIndex": 529814,
+          "typeIndex": 60314,
+          "token": 67133831,
+          "index": 24966,
+          "name": "favorBattlePhase",
+          "typeName": "int",
+          "static": false,
+          "offset": 32,
+          "unboxedOffset": 16
+        },
+        {
+          "nameIndex": 503144,
+          "typeIndex": 60314,
+          "token": 67133832,
+          "index": 24967,
+          "name": "potentialRank",
+          "typeName": "int",
+          "static": false,
+          "offset": 36,
+          "unboxedOffset": 20
+        },
+        {
+          "nameIndex": 1200515,
+          "typeIndex": 60330,
+          "token": 67133833,
+          "index": 24968,
+          "name": "playerInstId",
+          "typeName": "int",
+          "static": false,
+          "offset": 40,
+          "unboxedOffset": 24
+        }
+      ]
+    },
+    {
+      "fullname": "Torappu.CharacterInst",
+      "index": 4371,
+      "fields": [
+        {
+          "nameIndex": 540686,
+          "typeIndex": 94717,
+          "token": 67133821,
+          "index": 24956,
+          "name": "inst",
+          "typeName": "Torappu.CharacterInst/Metadata",
+          "static": false,
+          "offset": 16,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 503194,
+          "typeIndex": 60314,
+          "token": 67133822,
+          "index": 24957,
+          "name": "skillIndex",
+          "typeName": "int",
+          "static": false,
+          "offset": 48,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 503205,
+          "typeIndex": 60314,
+          "token": 67133823,
+          "index": 24958,
+          "name": "mainSkillLvl",
+          "typeName": "int",
+          "static": false,
+          "offset": 52,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 524896,
+          "typeIndex": 78551,
+          "token": 67133824,
+          "index": 24959,
+          "name": "skinId",
+          "typeName": "string",
+          "static": false,
+          "offset": 56,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1042349,
+          "typeIndex": 78551,
+          "token": 67133825,
+          "index": 24960,
+          "name": "tmplId",
+          "typeName": "string",
+          "static": false,
+          "offset": 64,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1200440,
+          "typeIndex": 45911,
+          "token": 67133826,
+          "index": 24961,
+          "name": "overrideSkillBlackboard",
+          "typeName": "Torappu.Blackboard",
+          "static": false,
+          "offset": 72,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1200464,
+          "typeIndex": 34827,
+          "token": 67133827,
+          "index": 24962,
+          "name": "overrideTalents",
+          "typeName": "Torappu.CharacterInst/TalentInst[]",
+          "static": false,
+          "offset": 80,
+          "unboxedOffset": null
+        }
+      ]
+    },
+    {
+      "fullname": "Torappu.AdvancedCharacterInst",
+      "index": 4372,
+      "fields": [
+        {
+          "nameIndex": 1200566,
+          "typeIndex": 34825,
+          "token": 67133836,
+          "index": 24971,
+          "name": "uniEquipIds",
+          "typeName": "Torappu.CharacterData/UniqueEquipPair[]",
+          "static": false,
+          "offset": 88,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1200578,
+          "typeIndex": 46029,
+          "token": 67133837,
+          "index": 24972,
+          "name": "showSpIllust",
+          "typeName": "bool",
+          "static": false,
+          "offset": 96,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1200591,
+          "typeIndex": 34813,
+          "token": 67133838,
+          "index": 24973,
+          "name": "masterInfos",
+          "typeName": "Torappu.CharacterData/MasterInfo[]",
+          "static": false,
+          "offset": 104,
+          "unboxedOffset": null
+        }
+      ]
+    },
+    {
+      "fullname": "Torappu.Battle.BattleCharacterData",
+      "index": 11657,
+      "fields": [
+        {
+          "nameIndex": 16455,
+          "typeIndex": 60314,
+          "token": 67198721,
+          "index": 89856,
+          "name": "level",
+          "typeName": "int",
+          "static": false,
+          "offset": 64,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 16434,
+          "typeIndex": 54232,
+          "token": 67198722,
+          "index": 89857,
+          "name": "evolvePhase",
+          "typeName": "Torappu.EvolvePhase",
+          "static": false,
+          "offset": 68,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 503144,
+          "typeIndex": 60314,
+          "token": 67198723,
+          "index": 89858,
+          "name": "potentialRank",
+          "typeName": "int",
+          "static": false,
+          "offset": 72,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 529814,
+          "typeIndex": 60314,
+          "token": 67198724,
+          "index": 89859,
+          "name": "favorBattlePhase",
+          "typeName": "int",
+          "static": false,
+          "offset": 76,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 899760,
+          "typeIndex": 78551,
+          "token": 67198725,
+          "index": 89860,
+          "name": "prefabKey",
+          "typeName": "string",
+          "static": false,
+          "offset": 80,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1042062,
+          "typeIndex": 78551,
+          "token": 67198726,
+          "index": 89861,
+          "name": "rangeId",
+          "typeName": "string",
+          "static": false,
+          "offset": 88,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1210225,
+          "typeIndex": 48413,
+          "token": 67198727,
+          "index": 89862,
+          "name": "skinData",
+          "typeName": "Torappu.CharSkinData",
+          "static": false,
+          "offset": 96,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1200578,
+          "typeIndex": 46029,
+          "token": 67198728,
+          "index": 89863,
+          "name": "showSpIllust",
+          "typeName": "bool",
+          "static": false,
+          "offset": 104,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2397005,
+          "typeIndex": 83058,
+          "token": 67198729,
+          "index": 89864,
+          "name": "uniqueId",
+          "typeName": "uint",
+          "static": false,
+          "offset": 108,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1035761,
+          "typeIndex": 66457,
+          "token": 67198730,
+          "index": 89865,
+          "name": "profession",
+          "typeName": "Torappu.ProfessionCategory",
+          "static": false,
+          "offset": 112,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2943113,
+          "typeIndex": 78774,
+          "token": 67198731,
+          "index": 89866,
+          "name": "subProfessionData",
+          "typeName": "Torappu.SubProfessionData",
+          "static": false,
+          "offset": 120,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1039625,
+          "typeIndex": 68314,
+          "token": 67198732,
+          "index": 89867,
+          "name": "rarity",
+          "typeName": "Torappu.RarityRank",
+          "static": false,
+          "offset": 128,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2943131,
+          "typeIndex": 46432,
+          "token": 67198733,
+          "index": 89868,
+          "name": "deployPositionFromData",
+          "typeName": "Torappu.BuildableType",
+          "static": false,
+          "offset": 132,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2943154,
+          "typeIndex": 78551,
+          "token": 67198734,
+          "index": 89869,
+          "name": "teamKey",
+          "typeName": "string",
+          "static": false,
+          "offset": 136,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 529121,
+          "typeIndex": 46029,
+          "token": 67198735,
+          "index": 89870,
+          "name": "isToken",
+          "typeName": "bool",
+          "static": false,
+          "offset": 144,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1200480,
+          "typeIndex": 46029,
+          "token": 67198736,
+          "index": 89871,
+          "name": "isPredefined",
+          "typeName": "bool",
+          "static": false,
+          "offset": 145,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1121915,
+          "typeIndex": 46029,
+          "token": 67198737,
+          "index": 89872,
+          "name": "isHidden",
+          "typeName": "bool",
+          "static": false,
+          "offset": 146,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2584472,
+          "typeIndex": 46029,
+          "token": 67198738,
+          "index": 89873,
+          "name": "isAssistChar",
+          "typeName": "bool",
+          "static": false,
+          "offset": 147,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2943162,
+          "typeIndex": 78551,
+          "token": 67198739,
+          "index": 89874,
+          "name": "tokenOrHostKey",
+          "typeName": "string",
+          "static": false,
+          "offset": 152,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2943177,
+          "typeIndex": 83058,
+          "token": 67198740,
+          "index": 89875,
+          "name": "tokenOrHostUniqueId",
+          "typeName": "uint",
+          "static": false,
+          "offset": 160,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2943197,
+          "typeIndex": 60314,
+          "token": 67198741,
+          "index": 89876,
+          "name": "tokenInitialCnt",
+          "typeName": "int",
+          "static": false,
+          "offset": 164,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2542459,
+          "typeIndex": 46388,
+          "token": 67198742,
+          "index": 89877,
+          "name": "buildCondition",
+          "typeName": "Torappu.Battle.BuildCondition",
+          "static": false,
+          "offset": 168,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2763234,
+          "typeIndex": 60314,
+          "token": 67198743,
+          "index": 89878,
+          "name": "mainSkillIndex",
+          "typeName": "int",
+          "static": false,
+          "offset": 264,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1041969,
+          "typeIndex": 76780,
+          "token": 67198744,
+          "index": 89879,
+          "name": "mainSkill",
+          "typeName": "Torappu.SkillData",
+          "static": false,
+          "offset": 272,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1199341,
+          "typeIndex": 24494,
+          "token": 67198745,
+          "index": 89880,
+          "name": "talents",
+          "typeName": "type(kind=0x15, data=0x188dc4748)",
+          "static": false,
+          "offset": 280,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1199318,
+          "typeIndex": 94625,
+          "token": 67198746,
+          "index": 89881,
+          "name": "trait",
+          "typeName": "Torappu.CharacterData/TraitData",
+          "static": false,
+          "offset": 288,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 529210,
+          "typeIndex": 25311,
+          "token": 67198747,
+          "index": 89882,
+          "name": "uniEquipQueries",
+          "typeName": "type(kind=0x15, data=0x188e8b918)",
+          "static": false,
+          "offset": 296,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2943213,
+          "typeIndex": 24708,
+          "token": 67198748,
+          "index": 89883,
+          "name": "uniEquips",
+          "typeName": "type(kind=0x15, data=0x188def3a8)",
+          "static": false,
+          "offset": 304,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2943223,
+          "typeIndex": 21988,
+          "token": 67198749,
+          "index": 89884,
+          "name": "uniEquipSettings",
+          "typeName": "type(kind=0x15, data=0x188dd5f38)",
+          "static": false,
+          "offset": 312,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1199202,
+          "typeIndex": 78551,
+          "token": 67198750,
+          "index": 89885,
+          "name": "nationId",
+          "typeName": "string",
+          "static": false,
+          "offset": 320,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 507055,
+          "typeIndex": 78551,
+          "token": 67198751,
+          "index": 89886,
+          "name": "groupId",
+          "typeName": "string",
+          "static": false,
+          "offset": 328,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1040646,
+          "typeIndex": 78551,
+          "token": 67198752,
+          "index": 89887,
+          "name": "teamId",
+          "typeName": "string",
+          "static": false,
+          "offset": 336,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1199221,
+          "typeIndex": 34819,
+          "token": 67198753,
+          "index": 89888,
+          "name": "subPower",
+          "typeName": "Torappu.CharacterData/PowerData[]",
+          "static": false,
+          "offset": 344,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2943240,
+          "typeIndex": 93056,
+          "token": 67198754,
+          "index": 89889,
+          "name": "shared",
+          "typeName": "Torappu.Battle.BattleCharacterData/SharedData",
+          "static": false,
+          "offset": 352,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2943247,
+          "typeIndex": 26964,
+          "token": 67198755,
+          "index": 89890,
+          "name": "attackRangeDesc",
+          "typeName": "type(kind=0x15, data=0x188e045c8)",
+          "static": false,
+          "offset": 360,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1227235,
+          "typeIndex": 93053,
+          "token": 67198756,
+          "index": 89891,
+          "name": "runtimeData",
+          "typeName": "Torappu.Battle.BattleCharacterData/RuntimeData",
+          "static": false,
+          "offset": 384,
+          "unboxedOffset": null
+        }
+      ]
+    },
+    {
+      "fullname": "Torappu.Battle.AutoChess.AutoChessBattleDataModel",
+      "index": 12029,
+      "fields": [
+        {
+          "nameIndex": 2974587,
+          "typeIndex": 48963,
+          "token": 67202288,
+          "index": 93423,
+          "name": "chessMapInfo",
+          "typeName": "Torappu.Battle.AutoChess.ChessMapInfo",
+          "static": false,
+          "offset": 24,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2994799,
+          "typeIndex": 19950,
+          "token": 67202289,
+          "index": 93424,
+          "name": "battleChessInsts",
+          "typeName": "type(kind=0x15, data=0x188e09158)",
+          "static": false,
+          "offset": 32,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3032885,
+          "typeIndex": 12903,
+          "token": 67202290,
+          "index": 93425,
+          "name": "battleMapChessInsts",
+          "typeName": "type(kind=0x15, data=0x188d97a18)",
+          "static": false,
+          "offset": 40,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2994400,
+          "typeIndex": 19950,
+          "token": 67202291,
+          "index": 93426,
+          "name": "handChessInsts",
+          "typeName": "type(kind=0x15, data=0x188e09158)",
+          "static": false,
+          "offset": 48,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3032905,
+          "typeIndex": 19945,
+          "token": 67202292,
+          "index": 93427,
+          "name": "predefinedPlayerDatas",
+          "typeName": "type(kind=0x15, data=0x188e080a8)",
+          "static": false,
+          "offset": 56,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2498512,
+          "typeIndex": 43941,
+          "token": 67202293,
+          "index": 93428,
+          "name": "runeManager",
+          "typeName": "Torappu.Battle.AutoChess.AutoChessBattleRuneManager",
+          "static": false,
+          "offset": 64,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3032927,
+          "typeIndex": 21980,
+          "token": 67202294,
+          "index": 93429,
+          "name": "battlePlayerDatas",
+          "typeName": "type(kind=0x15, data=0x188dd45c8)",
+          "static": false,
+          "offset": 72,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3032945,
+          "typeIndex": 100834,
+          "token": 67202295,
+          "index": 93430,
+          "name": "levelPredefineData",
+          "typeName": "Torappu.LevelData/PredefinedData",
+          "static": false,
+          "offset": 80,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3032964,
+          "typeIndex": 23089,
+          "token": 67202296,
+          "index": 93431,
+          "name": "originLevelRunes",
+          "typeName": "type(kind=0x15, data=0x188c88458)",
+          "static": false,
+          "offset": 88,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3032981,
+          "typeIndex": 61374,
+          "token": 67202297,
+          "index": 93432,
+          "name": "<levelData>k__BackingField",
+          "typeName": "Torappu.LevelData",
+          "static": false,
+          "offset": 96,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3033008,
+          "typeIndex": 20006,
+          "token": 67202298,
+          "index": 93433,
+          "name": "battleLevelDatas",
+          "typeName": "type(kind=0x15, data=0x188e16998)",
+          "static": false,
+          "offset": 104,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3033025,
+          "typeIndex": 23832,
+          "token": 67202299,
+          "index": 93434,
+          "name": "battleRoutes",
+          "typeName": "type(kind=0x15, data=0x188d337f8)",
+          "static": false,
+          "offset": 112,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3033038,
+          "typeIndex": 23832,
+          "token": 67202300,
+          "index": 93435,
+          "name": "battleExtraRoutes",
+          "typeName": "type(kind=0x15, data=0x188d337f8)",
+          "static": false,
+          "offset": 120,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3033056,
+          "typeIndex": 26309,
+          "token": 67202301,
+          "index": 93436,
+          "name": "battleExtraPredefinedTokens",
+          "typeName": "type(kind=0x15, data=0x188d51e68)",
+          "static": false,
+          "offset": 128,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3033084,
+          "typeIndex": 22549,
+          "token": 67202302,
+          "index": 93437,
+          "name": "effectInstEnemies",
+          "typeName": "type(kind=0x15, data=0x188e510f8)",
+          "static": false,
+          "offset": 136,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3033102,
+          "typeIndex": 61374,
+          "token": 67202303,
+          "index": 93438,
+          "name": "<enemyDataLevel>k__BackingField",
+          "typeName": "Torappu.LevelData",
+          "static": false,
+          "offset": 144,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3033134,
+          "typeIndex": 14751,
+          "token": 67202304,
+          "index": 93439,
+          "name": "m_originShowedPredifineLocations",
+          "typeName": "type(kind=0x15, data=0x188d28938)",
+          "static": false,
+          "offset": 152,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3033167,
+          "typeIndex": 14780,
+          "token": 67202305,
+          "index": 93440,
+          "name": "m_battlePlayerSides",
+          "typeName": "type(kind=0x15, data=0x188d2d838)",
+          "static": false,
+          "offset": 160,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3033187,
+          "typeIndex": 14800,
+          "token": 67202306,
+          "index": 93441,
+          "name": "m_predefineIdsNeedCard",
+          "typeName": "type(kind=0x15, data=0x188d331d8)",
+          "static": false,
+          "offset": 168,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3033210,
+          "typeIndex": 45656,
+          "token": 67202307,
+          "index": 93442,
+          "name": "m_commonEmptyPlayerData",
+          "typeName": "Torappu.Battle.BattlePlayerData",
+          "static": false,
+          "offset": 176,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3033234,
+          "typeIndex": 20079,
+          "token": 67202308,
+          "index": 93443,
+          "name": "m_playerSideCharDatas",
+          "typeName": "type(kind=0x15, data=0x188e2bb88)",
+          "static": false,
+          "offset": 184,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3033256,
+          "typeIndex": 20079,
+          "token": 67202309,
+          "index": 93444,
+          "name": "m_playerSideTokenDatas",
+          "typeName": "type(kind=0x15, data=0x188e2bb88)",
+          "static": false,
+          "offset": 192,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3033279,
+          "typeIndex": 23352,
+          "token": 67202310,
+          "index": 93445,
+          "name": "BATTLE_PLAYER_SIDES",
+          "typeName": "type(kind=0x15, data=0x188cc5f18)",
+          "static": true,
+          "offset": 0,
+          "unboxedOffset": null
+        }
+      ]
+    },
+    {
+      "fullname": "Torappu.Battle.AutoChess.ChessInst",
+      "index": 12038,
+      "fields": [
+        {
+          "nameIndex": 3037098,
+          "typeIndex": 60335,
+          "token": 67202452,
+          "index": 93587,
+          "name": "TOKEN_COMPARE_OFFSET",
+          "typeName": "int",
+          "static": true,
+          "offset": 0,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 531869,
+          "typeIndex": 60314,
+          "token": 67202453,
+          "index": 93588,
+          "name": "instId",
+          "typeName": "int",
+          "static": false,
+          "offset": 16,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1092743,
+          "typeIndex": 78551,
+          "token": 67202454,
+          "index": 93589,
+          "name": "chessId",
+          "typeName": "string",
+          "static": false,
+          "offset": 24,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 879336,
+          "typeIndex": 109142,
+          "token": 67202455,
+          "index": 93590,
+          "name": "dir",
+          "typeName": "Torappu.SharedConsts/Direction",
+          "static": false,
+          "offset": 32,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1384,
+          "typeIndex": 56289,
+          "token": 67202456,
+          "index": 93591,
+          "name": "pos",
+          "typeName": "Torappu.GridPosition",
+          "static": false,
+          "offset": 36,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1154712,
+          "typeIndex": 44454,
+          "token": 67202457,
+          "index": 93592,
+          "name": "chessType",
+          "typeName": "Torappu.AutoChessItemType",
+          "static": false,
+          "offset": 44,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2970138,
+          "typeIndex": 60314,
+          "token": 67202458,
+          "index": 93593,
+          "name": "playerIndex",
+          "typeName": "int",
+          "static": false,
+          "offset": 48,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1096220,
+          "typeIndex": 48966,
+          "token": 67202459,
+          "index": 93594,
+          "name": "chessSquad",
+          "typeName": "Torappu.Battle.AutoChess.ChessSquad",
+          "static": false,
+          "offset": 56,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1412069,
+          "typeIndex": 65993,
+          "token": 67202460,
+          "index": 93595,
+          "name": "side",
+          "typeName": "Torappu.PlayerSide",
+          "static": false,
+          "offset": 64,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2517458,
+          "typeIndex": 83058,
+          "token": 67202461,
+          "index": 93596,
+          "name": "cardUid",
+          "typeName": "uint",
+          "static": false,
+          "offset": 68,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2935125,
+          "typeIndex": 45451,
+          "token": 67202462,
+          "index": 93597,
+          "name": "battleCharacterData",
+          "typeName": "Torappu.Battle.BattleCharacterData",
+          "static": false,
+          "offset": 72,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1858,
+          "typeIndex": 27246,
+          "token": 67202463,
+          "index": 93598,
+          "name": "character",
+          "typeName": "type(kind=0x15, data=0x188e3ee58)",
+          "static": false,
+          "offset": 80,
+          "unboxedOffset": null
+        }
+      ]
+    },
+    {
+      "fullname": "Torappu.Battle.AutoChess.ChessSquad",
+      "index": 12053,
+      "fields": [
+        {
+          "nameIndex": 1092743,
+          "typeIndex": 78551,
+          "token": 67202626,
+          "index": 93761,
+          "name": "chessId",
+          "typeName": "string",
+          "static": false,
+          "offset": 16,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 5068,
+          "typeIndex": 48956,
+          "token": 67202627,
+          "index": 93762,
+          "name": "basicInfo",
+          "typeName": "Torappu.Battle.AutoChess.ChessBasicInfo",
+          "static": false,
+          "offset": 24,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 540686,
+          "typeIndex": 41167,
+          "token": 67202628,
+          "index": 93763,
+          "name": "inst",
+          "typeName": "Torappu.AdvancedCharacterInst",
+          "static": false,
+          "offset": 56,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2979967,
+          "typeIndex": 78551,
+          "token": 67202629,
+          "index": 93764,
+          "name": "cultivateEffectId",
+          "typeName": "string",
+          "static": false,
+          "offset": 64,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1210225,
+          "typeIndex": 48413,
+          "token": 67202630,
+          "index": 93765,
+          "name": "skinData",
+          "typeName": "Torappu.CharSkinData",
+          "static": false,
+          "offset": 72,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3039722,
+          "typeIndex": 46029,
+          "token": 67202631,
+          "index": 93766,
+          "name": "preloadAsCharacter",
+          "typeName": "bool",
+          "static": false,
+          "offset": 80,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1035761,
+          "typeIndex": 66457,
+          "token": 67202632,
+          "index": 93767,
+          "name": "profession",
+          "typeName": "Torappu.ProfessionCategory",
+          "static": false,
+          "offset": 84,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3039741,
+          "typeIndex": 90105,
+          "token": 67202633,
+          "index": 93768,
+          "name": "shopCharChessInfo",
+          "typeName": "Torappu.ActAutoChessData/ActAutoChessShopCharChessInfoData",
+          "static": false,
+          "offset": 88,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1169220,
+          "typeIndex": 48953,
+          "token": 67202634,
+          "index": 93769,
+          "name": "diff",
+          "typeName": "Torappu.Battle.AutoChess.ChessBackupCharDiff",
+          "static": false,
+          "offset": 96,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 102,
+          "typeIndex": 115701,
+          "token": 67202635,
+          "index": 93770,
+          "name": "type",
+          "typeName": "Torappu.PlayerActivity/PlayerActAutoChessActivity/AutoChessCharType",
+          "static": false,
+          "offset": 100,
+          "unboxedOffset": null
+        }
+      ]
+    },
+    {
+      "fullname": "Torappu.Battle.AutoChess.AutoChessSquadModel",
+      "index": 12054,
+      "fields": [
+        {
+          "nameIndex": 2112994,
+          "typeIndex": 39657,
+          "token": 67202636,
+          "index": 93771,
+          "name": "m_actData",
+          "typeName": "Torappu.ActAutoChessData",
+          "static": false,
+          "offset": 16,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3039946,
+          "typeIndex": 9309,
+          "token": 67202637,
+          "index": 93772,
+          "name": "m_chessSquadDB",
+          "typeName": "type(kind=0x15, data=0x188e0a398)",
+          "static": false,
+          "offset": 24,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3039961,
+          "typeIndex": 9307,
+          "token": 67202638,
+          "index": 93773,
+          "name": "m_charSquads",
+          "typeName": "type(kind=0x15, data=0x188e098e8)",
+          "static": false,
+          "offset": 32,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2974670,
+          "typeIndex": 25709,
+          "token": 67202639,
+          "index": 93774,
+          "name": "chessPoolConfigs",
+          "typeName": "type(kind=0x15, data=0x188cb13a8)",
+          "static": false,
+          "offset": 40,
+          "unboxedOffset": null
+        }
+      ]
+    }
+  ]
+}

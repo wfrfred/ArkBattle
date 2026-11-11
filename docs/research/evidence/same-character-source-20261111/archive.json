@@ -1,0 +1,408 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-11-11"
+    ],
+    "collectionDateSource": "batch directory",
+    "organizedOn": "2026-11-11",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+        "records": [
+          "content/metadata.json#/provenance/client/dll",
+          "content/native.json#/provenance/client/dll",
+          "native/bodies/metadata.json#/provenance/client/dll",
+          "native/bodies/native.json#/provenance/client/dll"
+        ],
+        "bytes": 223112680
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        "records": [
+          "content/metadata.json#/provenance/client/metadata",
+          "content/native.json#/provenance/client/metadata",
+          "native/bodies/metadata.json#/provenance/client/metadata",
+          "native/bodies/native.json#/provenance/client/metadata"
+        ],
+        "bytes": 46669332
+      }
+    },
+    "sourceRecords": [
+      "content/metadata.json",
+      "content/native.json",
+      "native/bodies/metadata.json",
+      "native/bodies/native.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12895,
+        "sha256": "9c5b246859318caaec4aab5275ef0d2d49fce5d612c6b4e569973a9941ba621a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "content/ReqBuyChess-80565.asm",
+        "kind": "instructions",
+        "bytes": 6507,
+        "sha256": "29fd11c6961ad1f5a5c84b4e569e73833b29bed931d8efe72c5d79f602405b29"
+      },
+      {
+        "path": "content/_AddOwnedChess-80609.asm",
+        "kind": "instructions",
+        "bytes": 11772,
+        "sha256": "40827a942b1d2164729ff61779a8574c906ad1fc80dcfd25ac7d8b2610dc86b1"
+      },
+      {
+        "path": "content/_CopyChess-80594.asm",
+        "kind": "instructions",
+        "bytes": 5044,
+        "sha256": "a15fa46b0ed61cb6ca225440325b7d1bb0cc241ef8314c25c9225bb64996c264"
+      },
+      {
+        "path": "content/ctor-80621.asm",
+        "kind": "instructions",
+        "bytes": 13417,
+        "sha256": "05f41acb404bd0e9b865f6223839aabc5788e52397312d431525f550a0c1ea04"
+      },
+      {
+        "path": "content/extract.py",
+        "kind": "historical-script",
+        "bytes": 3592,
+        "sha256": "193ccfe19c607f9c3cc8082fcbdb507414bebe1b27375ad3591cd52d89da4a3a"
+      },
+      {
+        "path": "content/metadata.json",
+        "kind": "record",
+        "bytes": 12786,
+        "sha256": "6a2b812e53aa720b5d968578fb427b5943bb10a9ac0765e7ebb8682fe5660b9c"
+      },
+      {
+        "path": "content/native.json",
+        "kind": "record",
+        "bytes": 14702,
+        "sha256": "c9fdf081e2fa67ebdae89cc406101b834bd49c90122a93b090e0f5a4ee0c2df2"
+      },
+      {
+        "path": "native/bodies/ApplyInstDataToSharedData-81985.asm",
+        "kind": "instructions",
+        "bytes": 2570,
+        "sha256": "c33b00ef17402a37785901fc0c846923d2c2113620dc6dddc43a717854857b93"
+      },
+      {
+        "path": "native/bodies/_GetChessSquadConfig-81941.asm",
+        "kind": "instructions",
+        "bytes": 14684,
+        "sha256": "834e74e3221a2003c4bb6e61977e3fe9127479f1282486742d47f0f85b5b85d2"
+      },
+      {
+        "path": "native/bodies/_LoadBattlePlayerData-81754.asm",
+        "kind": "instructions",
+        "bytes": 13231,
+        "sha256": "c41e7576aede47c73604a0181db0d48fc27c8e1f939cb63623039d8043b52de3"
+      },
+      {
+        "path": "native/bodies/_LoadBattlePlayerData-81762.asm",
+        "kind": "instructions",
+        "bytes": 5848,
+        "sha256": "81ec2b740eaacd0a5a290e04ba5d81f5e25808bc6a055621e59b54c64d1fdea9"
+      },
+      {
+        "path": "native/bodies/_LoadInstsBattlePlayerData-81760.asm",
+        "kind": "instructions",
+        "bytes": 9819,
+        "sha256": "8c7061131117e77269269834cc7544b5efc11598f57458250bbc108f722f59d8"
+      },
+      {
+        "path": "native/bodies/_PostProcessDB-81936.asm",
+        "kind": "instructions",
+        "bytes": 14106,
+        "sha256": "37fb238f3500704d216ec57ef57995714234d1929884aeb61dd35b9aa2aa9d25"
+      },
+      {
+        "path": "native/bodies/get_charInst-81862.asm",
+        "kind": "instructions",
+        "bytes": 1633,
+        "sha256": "3f8d831955d6cfc2d5be7281a8a8136da9b766c984fdd7b6fb29b9b334127552"
+      },
+      {
+        "path": "native/bodies/metadata.json",
+        "kind": "record",
+        "bytes": 33351,
+        "sha256": "b2baa313f043e288370db1f3508ed66b1fdcecb2bc513c73cb3698adf146b8ad"
+      },
+      {
+        "path": "native/bodies/native.json",
+        "kind": "record",
+        "bytes": 20949,
+        "sha256": "69d52de46a98f24c3a5c970050256482d332ff65d8c7ad65294eb9584b282288"
+      },
+      {
+        "path": "native/extract.py",
+        "kind": "historical-script",
+        "bytes": 3979,
+        "sha256": "d4afecae3b2ce387c3424d5e348d3777821796bc22bbbc040a2db0c3d9980c3a"
+      },
+      {
+        "path": "native/extract.py.lock",
+        "kind": "artifact",
+        "bytes": 3739,
+        "sha256": "1ed9e3b399cf0743106d2124514970f3a3b5db6d9f1192fba528019ccbefdf04"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 80565,
+          "mode": "metadata",
+          "records": [
+            "content/metadata.json#/result/1/methods/0",
+            "content/native.json#/result/0/method"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer.ReqBuyChess",
+          "address": "0x180b759f0"
+        },
+        {
+          "index": 80594,
+          "mode": "metadata",
+          "records": [
+            "content/metadata.json#/result/1/methods/1",
+            "content/native.json#/result/1/method"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer._CopyChess",
+          "address": "0x180b787e0"
+        },
+        {
+          "index": 80609,
+          "mode": "metadata",
+          "records": [
+            "content/metadata.json#/result/1/methods/2",
+            "content/native.json#/result/2/method"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer._AddOwnedChess",
+          "address": "0x180b77b10"
+        },
+        {
+          "index": 80621,
+          "mode": "metadata",
+          "records": [
+            "content/metadata.json#/result/1/methods/3",
+            "content/native.json#/result/3/method"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer..ctor",
+          "address": "0x180b7ec50"
+        },
+        {
+          "index": 81754,
+          "mode": "metadata",
+          "records": [
+            "native/bodies/native.json#/result/0/method"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessBattleDataModel._LoadBattlePlayerData",
+          "address": "0x180c029b0"
+        },
+        {
+          "index": 81760,
+          "mode": "metadata",
+          "records": [
+            "native/bodies/native.json#/result/1/method"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessBattleDataModel._LoadInstsBattlePlayerData",
+          "address": "0x180c03800"
+        },
+        {
+          "index": 81762,
+          "mode": "metadata",
+          "records": [
+            "native/bodies/native.json#/result/2/method"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessBattleDataModel._LoadBattlePlayerData",
+          "address": "0x180c03010"
+        },
+        {
+          "index": 81862,
+          "mode": "metadata",
+          "records": [
+            "native/bodies/native.json#/result/3/method"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.ChessInst.get_charInst",
+          "address": "0x180c2df00"
+        },
+        {
+          "index": 81936,
+          "mode": "metadata",
+          "records": [
+            "native/bodies/native.json#/result/4/method"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessSquadModel._PostProcessDB",
+          "address": "0x180c2cc20"
+        },
+        {
+          "index": 81941,
+          "mode": "metadata",
+          "records": [
+            "native/bodies/native.json#/result/5/method"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessSquadModel._GetChessSquadConfig",
+          "address": "0x180c2c490"
+        },
+        {
+          "index": 81985,
+          "mode": "metadata",
+          "records": [
+            "native/bodies/native.json#/result/6/method"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessBattleUtil.ApplyInstDataToSharedData",
+          "address": "0x180c1cd50"
+        }
+      ],
+      "blocks": [
+        {
+          "address": "0x180b759f0",
+          "records": [
+            "content/ReqBuyChess-80565.asm"
+          ]
+        },
+        {
+          "address": "0x180b77b10",
+          "records": [
+            "content/_AddOwnedChess-80609.asm"
+          ]
+        },
+        {
+          "address": "0x180b787e0",
+          "records": [
+            "content/_CopyChess-80594.asm"
+          ]
+        },
+        {
+          "address": "0x180b7ec50",
+          "records": [
+            "content/ctor-80621.asm"
+          ]
+        },
+        {
+          "address": "0x180c029b0",
+          "records": [
+            "native/bodies/_LoadBattlePlayerData-81754.asm"
+          ]
+        },
+        {
+          "address": "0x180c03010",
+          "records": [
+            "native/bodies/_LoadBattlePlayerData-81762.asm"
+          ]
+        },
+        {
+          "address": "0x180c03800",
+          "records": [
+            "native/bodies/_LoadInstsBattlePlayerData-81760.asm"
+          ]
+        },
+        {
+          "address": "0x180c1cd50",
+          "records": [
+            "native/bodies/ApplyInstDataToSharedData-81985.asm"
+          ]
+        },
+        {
+          "address": "0x180c2c490",
+          "records": [
+            "native/bodies/_GetChessSquadConfig-81941.asm"
+          ]
+        },
+        {
+          "address": "0x180c2cc20",
+          "records": [
+            "native/bodies/_PostProcessDB-81936.asm"
+          ]
+        },
+        {
+          "address": "0x180c2df00",
+          "records": [
+            "native/bodies/get_charInst-81862.asm"
+          ]
+        }
+      ],
+      "types": [
+        {
+          "name": "Torappu.AdvancedCharacterInst",
+          "records": [
+            "native/bodies/metadata.json#/result/2"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.AutoChess.AutoChessBattleDataModel",
+          "records": [
+            "native/bodies/metadata.json#/result/4"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer",
+          "records": [
+            "content/metadata.json#/result/1"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.AutoChess.AutoChessSquadModel",
+          "records": [
+            "native/bodies/metadata.json#/result/7"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.AutoChess.CharChess",
+          "records": [
+            "content/metadata.json#/result/0"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.AutoChess.ChessInst",
+          "records": [
+            "native/bodies/metadata.json#/result/5"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.AutoChess.ChessSquad",
+          "records": [
+            "native/bodies/metadata.json#/result/6"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.BattleCharacterData",
+          "records": [
+            "native/bodies/metadata.json#/result/3"
+          ]
+        },
+        {
+          "name": "Torappu.CharacterInst",
+          "records": [
+            "native/bodies/metadata.json#/result/1"
+          ]
+        },
+        {
+          "name": "Torappu.CharacterInst/Metadata",
+          "records": [
+            "native/bodies/metadata.json#/result/0"
+          ]
+        }
+      ],
+      "constants": [],
+      "bundles": []
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

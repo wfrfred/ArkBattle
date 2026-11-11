@@ -1,0 +1,433 @@
+{
+  "provenance": {
+    "scope": "Static native branches; no game execution or runtime XLua verification.",
+    "client": {
+      "dll": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "bytes": 223112680,
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff"
+      },
+      "metadata": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "bytes": 46669332,
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5"
+      },
+      "metadataVersion": 29,
+      "imageBase": "0x180000000"
+    },
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/native.py",
+        "bytes": 18723,
+        "sha256": "1c6c16dc97e0dd9af0af4033c81a7534384dd65ebb1e604df3f4a3289df158e6"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]"
+    },
+    "location": {
+      "metadataRegistration": "0x187ee0630",
+      "modules": {
+        "Assembly-CSharp.dll": {
+          "address": 6564854272,
+          "methodPointers": 6585881040,
+          "count": 225427,
+          "fileBacked": true
+        },
+        "mscorlib.dll": {
+          "address": 6577364064,
+          "methodPointers": 6592131600,
+          "count": 13987,
+          "fileBacked": true
+        }
+      }
+    },
+    "collectedOn": "2026-11-11",
+    "extractionScript": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/same-character-source-20261111/content/extract.py",
+      "bytes": 3592,
+      "sha256": "193ccfe19c607f9c3cc8082fcbdb507414bebe1b27375ad3591cd52d89da4a3a"
+    }
+  },
+  "result": [
+    {
+      "fullname": "Torappu.Battle.AutoChess.CharChess",
+      "index": 11891,
+      "fields": [
+        {
+          "nameIndex": 531869,
+          "typeIndex": 60314,
+          "token": 67200557,
+          "index": 91692,
+          "name": "instId",
+          "typeName": "int",
+          "static": false,
+          "offset": 16,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2981093,
+          "typeIndex": 23019,
+          "token": 67200558,
+          "index": 91693,
+          "name": "equipSlots",
+          "typeName": "type(kind=0x15, data=0x188c7a1d8)",
+          "static": false,
+          "offset": 24,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1092743,
+          "typeIndex": 78551,
+          "token": 67200559,
+          "index": 91694,
+          "name": "chessId",
+          "typeName": "string",
+          "static": false,
+          "offset": 32,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2981104,
+          "typeIndex": 60314,
+          "token": 67200560,
+          "index": 91695,
+          "name": "bondMaxAdd",
+          "typeName": "int",
+          "static": false,
+          "offset": 40,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2981115,
+          "typeIndex": 60314,
+          "token": 67200561,
+          "index": 91696,
+          "name": "soldPrice",
+          "typeName": "int",
+          "static": false,
+          "offset": 44,
+          "unboxedOffset": null
+        }
+      ],
+      "methods": []
+    },
+    {
+      "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer",
+      "index": 11921,
+      "fields": [
+        {
+          "nameIndex": 2983528,
+          "typeIndex": 60335,
+          "token": 67200647,
+          "index": 91782,
+          "name": "LOCAL_ID_START",
+          "typeName": "int",
+          "static": true,
+          "offset": 0,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2983543,
+          "typeIndex": 60310,
+          "token": 67200648,
+          "index": 91783,
+          "name": "m_generateId",
+          "typeName": "int",
+          "static": false,
+          "offset": 16,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2983556,
+          "typeIndex": 61653,
+          "token": 67200649,
+          "index": 91784,
+          "name": "m_localSave",
+          "typeName": "Torappu.Battle.AutoChess.LocalSave",
+          "static": false,
+          "offset": 24,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2983568,
+          "typeIndex": 92375,
+          "token": 67200650,
+          "index": 91785,
+          "name": "m_mockGarrisonEffectManager",
+          "typeName": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/MockGarrisonEffectManager",
+          "static": false,
+          "offset": 32,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2983596,
+          "typeIndex": 92377,
+          "token": 67200651,
+          "index": 91786,
+          "name": "m_mockGarrisonManager",
+          "typeName": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/MockGarrisonManager",
+          "static": false,
+          "offset": 40,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2983618,
+          "typeIndex": 92373,
+          "token": 67200652,
+          "index": 91787,
+          "name": "m_mockBossBattleManager",
+          "typeName": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/MockBossBattleManager",
+          "static": false,
+          "offset": 48,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2983642,
+          "typeIndex": 22572,
+          "token": 67200653,
+          "index": 91788,
+          "name": "m_escapedEnemyInfos",
+          "typeName": "type(kind=0x15, data=0x188e55608)",
+          "static": false,
+          "offset": 56,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2983662,
+          "typeIndex": 60310,
+          "token": 67200654,
+          "index": 91789,
+          "name": "m_selfPlayerIndex",
+          "typeName": "int",
+          "static": false,
+          "offset": 64,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2983680,
+          "typeIndex": 22221,
+          "token": 67200655,
+          "index": 91790,
+          "name": "m_cachedGoods",
+          "typeName": "type(kind=0x15, data=0x188e088d8)",
+          "static": false,
+          "offset": 72,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2983694,
+          "typeIndex": 24420,
+          "token": 67200656,
+          "index": 91791,
+          "name": "m_cachedStrs",
+          "typeName": "type(kind=0x15, data=0x188db70e8)",
+          "static": false,
+          "offset": 80,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2983707,
+          "typeIndex": 46025,
+          "token": 67200657,
+          "index": 91792,
+          "name": "m_dragLocked",
+          "typeName": "bool",
+          "static": false,
+          "offset": 88,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2983720,
+          "typeIndex": 46025,
+          "token": 67200658,
+          "index": 91793,
+          "name": "m_allowEquipWhileDragLocked",
+          "typeName": "bool",
+          "static": false,
+          "offset": 89,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2983748,
+          "typeIndex": 60310,
+          "token": 67200659,
+          "index": 91794,
+          "name": "m_shopIndex",
+          "typeName": "int",
+          "static": false,
+          "offset": 92,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2983760,
+          "typeIndex": 60310,
+          "token": 67200660,
+          "index": 91795,
+          "name": "m_selfStreak",
+          "typeName": "int",
+          "static": false,
+          "offset": 96,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2983773,
+          "typeIndex": 78547,
+          "token": 67200661,
+          "index": 91796,
+          "name": "m_modeId",
+          "typeName": "string",
+          "static": false,
+          "offset": 104,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1118079,
+          "typeIndex": 92379,
+          "token": 67200662,
+          "index": 91797,
+          "name": "m_data",
+          "typeName": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/TrainingData",
+          "static": false,
+          "offset": 112,
+          "unboxedOffset": null
+        }
+      ],
+      "methods": [
+        {
+          "nameIndex": 2981799,
+          "declaringType": 11921,
+          "returnType": 84484,
+          "parameterStart": 79104,
+          "genericContainerIndex": -1,
+          "token": 100743862,
+          "flags": 198,
+          "iflags": 0,
+          "slot": 9,
+          "parameterCount": 3,
+          "index": 80565,
+          "image": "Assembly-CSharp.dll",
+          "address": 6454467056,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer.ReqBuyChess",
+          "returnTypeName": "void",
+          "parameters": [
+            {
+              "nameIndex": 523886,
+              "token": 134296838,
+              "typeIndex": 60309,
+              "index": 79104,
+              "name": "slotId",
+              "typeName": "int"
+            },
+            {
+              "nameIndex": 1064220,
+              "token": 134296839,
+              "typeIndex": 46024,
+              "index": 79105,
+              "name": "isSpecial",
+              "typeName": "bool"
+            },
+            {
+              "nameIndex": 2981789,
+              "token": 134296840,
+              "typeIndex": 40685,
+              "index": 79106,
+              "name": "sucAction",
+              "typeName": "System.Action"
+            }
+          ]
+        },
+        {
+          "nameIndex": 2982970,
+          "declaringType": 11921,
+          "returnType": 46024,
+          "parameterStart": 79134,
+          "genericContainerIndex": -1,
+          "token": 100743891,
+          "flags": 129,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 2,
+          "index": 80594,
+          "image": "Assembly-CSharp.dll",
+          "address": 6454478816,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer._CopyChess",
+          "returnTypeName": "bool",
+          "parameters": [
+            {
+              "nameIndex": 392630,
+              "token": 134296868,
+              "typeIndex": 66018,
+              "index": 79134,
+              "name": "targetType",
+              "typeName": "Torappu.PlayerSkillTargetType"
+            },
+            {
+              "nameIndex": 2982321,
+              "token": 134296869,
+              "typeIndex": 23015,
+              "index": 79135,
+              "name": "skillParams",
+              "typeName": "type(kind=0x15, data=0x188c7a1d8)"
+            }
+          ]
+        },
+        {
+          "nameIndex": 2983284,
+          "declaringType": 11921,
+          "returnType": 60309,
+          "parameterStart": 79152,
+          "genericContainerIndex": -1,
+          "token": 100743906,
+          "flags": 129,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 2,
+          "index": 80609,
+          "image": "Assembly-CSharp.dll",
+          "address": 6454475536,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer._AddOwnedChess",
+          "returnTypeName": "int",
+          "parameters": [
+            {
+              "nameIndex": 1749,
+              "token": 134296886,
+              "typeIndex": 65525,
+              "index": 79152,
+              "name": "data",
+              "typeName": "Torappu.Battle.AutoChess.PlayerBattleData"
+            },
+            {
+              "nameIndex": 1092743,
+              "token": 134296887,
+              "typeIndex": 78546,
+              "index": 79153,
+              "name": "chessId",
+              "typeName": "string"
+            }
+          ]
+        },
+        {
+          "nameIndex": 107,
+          "declaringType": 11921,
+          "returnType": 84484,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100743918,
+          "flags": 6278,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 0,
+          "index": 80621,
+          "image": "Assembly-CSharp.dll",
+          "address": 6454504528,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer..ctor",
+          "returnTypeName": "void",
+          "parameters": []
+        }
+      ]
+    }
+  ]
+}

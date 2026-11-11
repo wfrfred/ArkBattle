@@ -379,6 +379,16 @@ QUEUED 对应 `token_10070_aphris_pc`（中继器）；DEFAULT／有限份数中
 
 本结论限定于上述普通路径。删除后重新建立 Card、TokenCard 的多库存、预置创建、变形／复活、术语移动及模式替换未因此一并闭合。同模板也不能单独证明同一身份；同一数据对象或 Duplicate 保留的值，则不能仅因对象新建就解释成新来源。
 
+### 卫戍的同名副本
+
+同日补核 AutoChess 的棋子创建与角色数据转换，见[同名副本批次](../evidence/same-character-source-20261111/README.md)。以下仍限定于静态普通分支，不包含 XLua 替代或运行观测。
+
+**N**：[本地训练的购买与复制](../evidence/same-character-source-20261111/content/README.md)把 chessId 交给 _AddOwnedChess；该方法递增 m_generateId，为新 CharChess 写入独立 instId。相同 chessId 可以对应不同棋子实例。这个 instId 不是直接写入 Character.cardUid 的值。
+
+**N**：[AutoChessSquadModel._GetChessSquadConfig（81941）](../evidence/same-character-source-20261111/native/bodies/_GetChessSquadConfig-81941.asm)创建 AdvancedCharacterInst，将其 Metadata.playerInstId 设为 0；ChessInst.get_charInst 的普通分支返回共享的 chessSquad.inst。[逐实例加载（81754）](../evidence/same-character-source-20261111/native/bodies/_LoadBattlePlayerData-81754.asm)对每份 ChessInst 分别调用 ConvertToCharacterData，再把结果 uniqueId 存入该棋子的 cardUid。ApplyInstDataToSharedData 只向 Blackboard 写入棋子 instId／chessId，不覆盖 uniqueId。
+
+**I**：接续前述 playerInstId <= 0 的递增分支，每份同名棋子分别取得不同 cardUid。共享角色模板或 Squad 配置不使它们共享身份；已核对的逐份转换调用链未见 UID 计数器重置。此处不因此补齐卫戍自动再部署或特殊重建路径。
+
 ## 未决项与项目关联
 
 1. **费用上限与多来源计算。** `MAX_COST_CEIL` 的配置来源、与 `MAX_COST` 的动态同步，以及 `rawCostScale`、`costDelta` 的多来源写入、互斥、归并尚未取证。Getter 读取汇总值不能证明各来源如何组合；再部署属性修正、一次缩短与多阶段取整也没有完整统一公式。

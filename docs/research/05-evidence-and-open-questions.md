@@ -12,7 +12,7 @@
 | --- | --- |
 | 原始 Attribute、Buff 合并与覆盖组 | 黑板缺值／显式 0、层数与 scaler 顺序、source 转槽、实际／有效层数、五类普通合并、priority／UID 选胜均有直接分支；[Case 01 §8](cases/01-buff-installation-and-parent-scope.md#8-2026-11-10-补核属性-descriptor合并与覆盖组)。 |
 | 覆盖组身份与 STACK 到期 | 基础键、Character.cardUid 独立键与无 Character 回退、disableOverride 联用、组政策重置，以及到期减层／实例清层标记、结束扫描和下一帧回收已闭合；[Case 01 §9](cases/01-buff-installation-and-parent-scope.md#9-2026-11-11-补核覆盖组身份与-stack-到期)。配置、原生分支和实战观测分别说明。 |
-| 来源身份的生成与重部署 | cardUid 来自转换阶段形成的 BattleCharacterData.uniqueId，Card getter 转读它，普通部署写入 Character；普通退场返回原卡并在再次部署沿用该值。[Case 24 第十三节](cases/24-deployment-cost-and-supply.md#十三carduid-的生成与普通重部署2026-11-11)。不扩推到新建卡、TokenCard 或特殊移动。 |
+| 来源身份的生成与重部署 | cardUid 来自转换阶段形成的 BattleCharacterData.uniqueId，Card getter 转读它，普通部署写入 Character；普通退场返回原卡并在再次部署沿用该值。AutoChess 普通加载为同名棋子逐份转换并生成不同 cardUid。[Case 24 第十三节](cases/24-deployment-cost-and-supply.md#十三carduid-的生成与普通重部署2026-11-11)。不扩推到新建卡、TokenCard 或特殊移动，也不要求项目 Effect 通用依赖 Card。 |
 | 控制效果与普通多目标攻击 | 标准 stun 的资格／中断与真实多目标逐目标读取 ATK 分别核对；[Case 08](cases/08-action-eligibility-and-interruption.md)、[Case 07](cases/07-action-timing-and-animation.md)。不推广到预采样弹道或所有特化技能。 |
 | 地形与射击台 | 重新核对配置、模板及消费链，包含当前实现的相反证据；[空间研究](03-space-units-and-mechanisms.md)。 |
 | 坐标、数值范围与运动 | 当前 World→Tile 取偶舍入、属性元数据／最终限幅和公式保底已分开核对；[Case 15](cases/15-locomotion-native-semantics.md)、[属性研究](02-combat-buffs-and-effects.md)。原生避障缓存与 locator 基准不等于当前项目选择。 |
