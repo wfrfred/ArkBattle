@@ -397,6 +397,16 @@ QUEUED 对应 `token_10070_aphris_pc`（中继器）；DEFAULT／有限份数中
 
 **I**：使用同一 TokenCard.data 的场上实例取得同一 cardUid；该路径下的召唤物与装置均满足 Buff 的 Character 来源判断。普通干员和装置在本问题上的差别不是“是否参与 Character 独立来源分组”。本节只闭合这一部署写入链，没有将预置、特殊运行时创建或全部多库存回收政策一并认定为相同。
 
+### 无 Card 的预放置干员
+
+2026-11-12 补核普通预置创建链与[固定关卡正例](../evidence/predefined-source-20261112/README.md)。镜像提交 bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d 的 level_main_08-09，在 `/predefines/characterInsts/0` 放置可见的迷迭香 char_391_rosmon；`/predefines/characterCards` 与 `/hardPredefines/characterCards` 均为空。配置与本机客户端分别注明版本，不将静态链解释为游戏运行观测。
+
+**N**：PredefinedData 的 characterInsts、tokenInsts、characterCards、tokenCards 是四个不同字段，分别位于 +0x10、+0x18、+0x20、+0x28。GenPredefinedCardsToInject（34447）的普通分支只返回所选预置数据的 characterCards 或 null，不把 characterInsts 转为卡牌；上述空数组不会在这个入口为预放实例补造隐藏 Card。
+
+**N**：_LoadPredefinedData（65763）读取实例数组，以 isToken=false 调用 _CreatePredefinedCharacter（65760）。普通无需预处理的路径直接调用 ConvertToCharacterData、BattleFactory.CreateCharacter 和 Character.BuildAsPredefined（77240），没有构造或登记本实例 Card；可选的现有 Card 查询分支不构造新 Card。BuildAsPredefined 以角色数据构造 BuildParam，再进入既有 _BuildAtInternal，由 data.uniqueId 写入 Character.cardUid。
+
+**I**：普通预放置干员可以没有对应 Card，却仍有自己的 Character.cardUid，并参与 Buff 的 Character 独立来源分组。cardUid 在这里是角色数据身份，不是“已关联 Card 对象”的证明。此处不因此归纳全部预处理玩法、运行时创建、重复出现或预置退场回收政策。
+
 ## 未决项与项目关联
 
 1. **费用上限与多来源计算。** `MAX_COST_CEIL` 的配置来源、与 `MAX_COST` 的动态同步，以及 `rawCostScale`、`costDelta` 的多来源写入、互斥、归并尚未取证。Getter 读取汇总值不能证明各来源如何组合；再部署属性修正、一次缩短与多阶段取整也没有完整统一公式。

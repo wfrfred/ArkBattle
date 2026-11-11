@@ -1,0 +1,62 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-12",
+    "scope": "Pinned static level configuration; no native call-chain or runtime observation.",
+    "repository": "Kengxxiao/ArknightsGameData",
+    "commit": "bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d",
+    "path": "zh_CN/gamedata/levels/obt/main/level_main_08-09.json",
+    "url": "https://github.com/Kengxxiao/ArknightsGameData/blob/bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d/zh_CN/gamedata/levels/obt/main/level_main_08-09.json",
+    "source": {
+      "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/checkpoint-nondefault-20261107/mirror/zh_CN/gamedata/levels/obt/main/level_main_08-09.json",
+      "bytes": 125864,
+      "sha256": "1321e847d9d2c4c873c72d0c108fe424fbcd38cc205583feb30f1b0b09adf9b3"
+    },
+    "rawSha256": "1321e847d9d2c4c873c72d0c108fe424fbcd38cc205583feb30f1b0b09adf9b3",
+    "gitBlobOid": "a4bc691b666cfb2ac7c2032b72cd537cd3db8edd",
+    "workingTreeMatchesPinnedBlob": true,
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/predefined-source-20261112/content/extract.py",
+        "bytes": 2690,
+        "sha256": "5596820b1501f36b8cfa70768c01105ac11ea333764db18f855ed2ec5e4e34ea"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]"
+    },
+    "selectors": [
+      "/predefines/characterInsts/0",
+      "/predefines/characterCards",
+      "/hardPredefines/characterCards"
+    ]
+  },
+  "result": {
+    "excerpts": {
+      "/predefines/characterInsts/0": {
+        "position": {
+          "row": 4,
+          "col": 1
+        },
+        "direction": "RIGHT",
+        "hidden": false,
+        "alias": null,
+        "uniEquipIds": null,
+        "showSpIllust": false,
+        "masterInfos": null,
+        "inst": {
+          "characterKey": "char_391_rosmon",
+          "level": 20,
+          "phase": "PHASE_2",
+          "favorPoint": 0,
+          "potentialRank": 0
+        },
+        "skillIndex": 1,
+        "mainSkillLvl": 7,
+        "skinId": null,
+        "tmplId": null,
+        "overrideSkillBlackboard": null,
+        "overrideTalents": null
+      },
+      "/predefines/characterCards": [],
+      "/hardPredefines/characterCards": []
+    }
+  }
+}

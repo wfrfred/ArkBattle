@@ -1,0 +1,646 @@
+{
+  "provenance": {
+    "scope": "Static native branches; no game execution or runtime XLua verification.",
+    "client": {
+      "dll": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "bytes": 223112680,
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff"
+      },
+      "metadata": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "bytes": 46669332,
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5"
+      },
+      "metadataVersion": 29,
+      "imageBase": "0x180000000"
+    },
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/native.py",
+        "bytes": 18723,
+        "sha256": "1c6c16dc97e0dd9af0af4033c81a7534384dd65ebb1e604df3f4a3289df158e6"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]"
+    },
+    "location": {
+      "metadataRegistration": "0x187ee0630",
+      "modules": {
+        "Assembly-CSharp.dll": {
+          "address": 6564854272,
+          "methodPointers": 6585881040,
+          "count": 225427,
+          "fileBacked": true
+        },
+        "mscorlib.dll": {
+          "address": 6577364064,
+          "methodPointers": 6592131600,
+          "count": 13987,
+          "fileBacked": true
+        }
+      }
+    },
+    "collectedOn": "2026-11-12",
+    "extractionScript": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/predefined-source-20261112/native/extract.py",
+      "bytes": 5196,
+      "sha256": "b289e66df1d7e26604c13dc8f733370506fb89402733ef1f0d7d961246e558c4"
+    }
+  },
+  "result": [
+    {
+      "method": {
+        "nameIndex": 2482947,
+        "declaringType": 10185,
+        "returnType": 48460,
+        "parameterStart": 66510,
+        "genericContainerIndex": -1,
+        "token": 100729057,
+        "flags": 129,
+        "iflags": 0,
+        "slot": 65535,
+        "parameterCount": 3,
+        "index": 65760,
+        "image": "Assembly-CSharp.dll",
+        "address": 6449155184,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.Battle.BattleController._CreatePredefinedCharacter",
+        "returnTypeName": "Torappu.Battle.Character",
+        "parameters": [
+          {
+            "nameIndex": 524450,
+            "token": 134284244,
+            "typeIndex": 115214,
+            "index": 66510,
+            "name": "slot",
+            "typeName": "Torappu.LevelData/PredefinedData/PredefinedCharacter"
+          },
+          {
+            "nameIndex": 529121,
+            "token": 134284245,
+            "typeIndex": 46024,
+            "index": 66511,
+            "name": "isToken",
+            "typeName": "bool"
+          },
+          {
+            "nameIndex": 2482936,
+            "token": 134284246,
+            "typeIndex": 31693,
+            "index": 66512,
+            "name": "isExcluded",
+            "typeName": "bool&"
+          }
+        ]
+      },
+      "xrefs": {
+        "target": "0x180664c70",
+        "scope": "Direct E8/E9 candidates only; excludes indirect/virtual calls; instruction boundaries require confirmation.",
+        "candidates": [
+          {
+            "address": "0x18064fa50",
+            "opcode": "e8",
+            "section": "il2cpp",
+            "precedingMethodCandidates": [
+              65658
+            ],
+            "precedingMethods": [
+              {
+                "nameIndex": 2480716,
+                "declaringType": 10185,
+                "returnType": 46024,
+                "parameterStart": 66216,
+                "genericContainerIndex": -1,
+                "token": 100728955,
+                "flags": 134,
+                "iflags": 0,
+                "slot": 65535,
+                "parameterCount": 2,
+                "index": 65658,
+                "image": "Assembly-CSharp.dll",
+                "address": 6449068480,
+                "addressStatus": "file-backed",
+                "fullname": "Torappu.Battle.BattleController.CreatePredefinedCharacter",
+                "returnTypeName": "bool",
+                "parameters": [
+                  {
+                    "nameIndex": 524450,
+                    "token": 134283950,
+                    "typeIndex": 115214,
+                    "index": 66216,
+                    "name": "slot",
+                    "typeName": "Torappu.LevelData/PredefinedData/PredefinedCharacter"
+                  },
+                  {
+                    "nameIndex": 529121,
+                    "token": 134283951,
+                    "typeIndex": 46024,
+                    "index": 66217,
+                    "name": "isToken",
+                    "typeName": "bool"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "address": "0x180660d06",
+            "opcode": "e8",
+            "section": "il2cpp",
+            "precedingMethodCandidates": [
+              65656
+            ],
+            "precedingMethods": [
+              {
+                "nameIndex": 2480649,
+                "declaringType": 10185,
+                "returnType": 46024,
+                "parameterStart": 66213,
+                "genericContainerIndex": -1,
+                "token": 100728953,
+                "flags": 134,
+                "iflags": 0,
+                "slot": 65535,
+                "parameterCount": 1,
+                "index": 65656,
+                "image": "Assembly-CSharp.dll",
+                "address": 6449138576,
+                "addressStatus": "file-backed",
+                "fullname": "Torappu.Battle.BattleController.SpawnPredefinedInstanceByAlias",
+                "returnTypeName": "bool",
+                "parameters": [
+                  {
+                    "nameIndex": 384103,
+                    "token": 134283947,
+                    "typeIndex": 78546,
+                    "index": 66213,
+                    "name": "alias",
+                    "typeName": "string"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "address": "0x180660e24",
+            "opcode": "e8",
+            "section": "il2cpp",
+            "precedingMethodCandidates": [
+              65656
+            ],
+            "precedingMethods": [
+              {
+                "nameIndex": 2480649,
+                "declaringType": 10185,
+                "returnType": 46024,
+                "parameterStart": 66213,
+                "genericContainerIndex": -1,
+                "token": 100728953,
+                "flags": 134,
+                "iflags": 0,
+                "slot": 65535,
+                "parameterCount": 1,
+                "index": 65656,
+                "image": "Assembly-CSharp.dll",
+                "address": 6449138576,
+                "addressStatus": "file-backed",
+                "fullname": "Torappu.Battle.BattleController.SpawnPredefinedInstanceByAlias",
+                "returnTypeName": "bool",
+                "parameters": [
+                  {
+                    "nameIndex": 384103,
+                    "token": 134283947,
+                    "typeIndex": 78546,
+                    "index": 66213,
+                    "name": "alias",
+                    "typeName": "string"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "address": "0x180660fc6",
+            "opcode": "e8",
+            "section": "il2cpp",
+            "precedingMethodCandidates": [
+              65659
+            ],
+            "precedingMethods": [
+              {
+                "nameIndex": 2480649,
+                "declaringType": 10185,
+                "returnType": 46024,
+                "parameterStart": 66218,
+                "genericContainerIndex": -1,
+                "token": 100728956,
+                "flags": 134,
+                "iflags": 0,
+                "slot": 65535,
+                "parameterCount": 2,
+                "index": 65659,
+                "image": "Assembly-CSharp.dll",
+                "address": 6449139344,
+                "addressStatus": "file-backed",
+                "fullname": "Torappu.Battle.BattleController.SpawnPredefinedInstanceByAlias",
+                "returnTypeName": "bool",
+                "parameters": [
+                  {
+                    "nameIndex": 384103,
+                    "token": 134283952,
+                    "typeIndex": 78546,
+                    "index": 66218,
+                    "name": "alias",
+                    "typeName": "string"
+                  },
+                  {
+                    "nameIndex": 1227155,
+                    "token": 134283953,
+                    "typeIndex": 100832,
+                    "index": 66219,
+                    "name": "predefines",
+                    "typeName": "Torappu.LevelData/PredefinedData"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "address": "0x1806610b6",
+            "opcode": "e8",
+            "section": "il2cpp",
+            "precedingMethodCandidates": [
+              65659
+            ],
+            "precedingMethods": [
+              {
+                "nameIndex": 2480649,
+                "declaringType": 10185,
+                "returnType": 46024,
+                "parameterStart": 66218,
+                "genericContainerIndex": -1,
+                "token": 100728956,
+                "flags": 134,
+                "iflags": 0,
+                "slot": 65535,
+                "parameterCount": 2,
+                "index": 65659,
+                "image": "Assembly-CSharp.dll",
+                "address": 6449139344,
+                "addressStatus": "file-backed",
+                "fullname": "Torappu.Battle.BattleController.SpawnPredefinedInstanceByAlias",
+                "returnTypeName": "bool",
+                "parameters": [
+                  {
+                    "nameIndex": 384103,
+                    "token": 134283952,
+                    "typeIndex": 78546,
+                    "index": 66218,
+                    "name": "alias",
+                    "typeName": "string"
+                  },
+                  {
+                    "nameIndex": 1227155,
+                    "token": 134283953,
+                    "typeIndex": 100832,
+                    "index": 66219,
+                    "name": "predefines",
+                    "typeName": "Torappu.LevelData/PredefinedData"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "address": "0x180661414",
+            "opcode": "e8",
+            "section": "il2cpp",
+            "precedingMethodCandidates": [
+              65661
+            ],
+            "precedingMethods": [
+              {
+                "nameIndex": 2480772,
+                "declaringType": 10185,
+                "returnType": 48460,
+                "parameterStart": 66221,
+                "genericContainerIndex": -1,
+                "token": 100728958,
+                "flags": 134,
+                "iflags": 0,
+                "slot": 65535,
+                "parameterCount": 3,
+                "index": 65661,
+                "image": "Assembly-CSharp.dll",
+                "address": 6449140016,
+                "addressStatus": "file-backed",
+                "fullname": "Torappu.Battle.BattleController.SpawnPredefinedInstanceWithTile",
+                "returnTypeName": "Torappu.Battle.Character",
+                "parameters": [
+                  {
+                    "nameIndex": 384103,
+                    "token": 134283955,
+                    "typeIndex": 78546,
+                    "index": 66221,
+                    "name": "alias",
+                    "typeName": "string"
+                  },
+                  {
+                    "nameIndex": 1957,
+                    "token": 134283956,
+                    "typeIndex": 80093,
+                    "index": 66222,
+                    "name": "tile",
+                    "typeName": "Torappu.Battle.Tile"
+                  },
+                  {
+                    "nameIndex": 523294,
+                    "token": 134283957,
+                    "typeIndex": 109140,
+                    "index": 66223,
+                    "name": "direction",
+                    "typeName": "Torappu.SharedConsts/Direction"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "address": "0x18066161e",
+            "opcode": "e8",
+            "section": "il2cpp",
+            "precedingMethodCandidates": [
+              65657
+            ],
+            "precedingMethods": [
+              {
+                "nameIndex": 2480692,
+                "declaringType": 10185,
+                "returnType": 46024,
+                "parameterStart": 66214,
+                "genericContainerIndex": -1,
+                "token": 100728954,
+                "flags": 134,
+                "iflags": 0,
+                "slot": 65535,
+                "parameterCount": 2,
+                "index": 65657,
+                "image": "Assembly-CSharp.dll",
+                "address": 6449140880,
+                "addressStatus": "file-backed",
+                "fullname": "Torappu.Battle.BattleController.SpawnPredefinedInstance",
+                "returnTypeName": "bool",
+                "parameters": [
+                  {
+                    "nameIndex": 2480680,
+                    "token": 134283948,
+                    "typeIndex": 46024,
+                    "index": 66214,
+                    "name": "isCharacter",
+                    "typeName": "bool"
+                  },
+                  {
+                    "nameIndex": 1384,
+                    "token": 134283949,
+                    "typeIndex": 56286,
+                    "index": 66215,
+                    "name": "pos",
+                    "typeName": "Torappu.GridPosition"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "address": "0x18066171b",
+            "opcode": "e8",
+            "section": "il2cpp",
+            "precedingMethodCandidates": [
+              65657
+            ],
+            "precedingMethods": [
+              {
+                "nameIndex": 2480692,
+                "declaringType": 10185,
+                "returnType": 46024,
+                "parameterStart": 66214,
+                "genericContainerIndex": -1,
+                "token": 100728954,
+                "flags": 134,
+                "iflags": 0,
+                "slot": 65535,
+                "parameterCount": 2,
+                "index": 65657,
+                "image": "Assembly-CSharp.dll",
+                "address": 6449140880,
+                "addressStatus": "file-backed",
+                "fullname": "Torappu.Battle.BattleController.SpawnPredefinedInstance",
+                "returnTypeName": "bool",
+                "parameters": [
+                  {
+                    "nameIndex": 2480680,
+                    "token": 134283948,
+                    "typeIndex": 46024,
+                    "index": 66214,
+                    "name": "isCharacter",
+                    "typeName": "bool"
+                  },
+                  {
+                    "nameIndex": 1384,
+                    "token": 134283949,
+                    "typeIndex": 56286,
+                    "index": 66215,
+                    "name": "pos",
+                    "typeName": "Torappu.GridPosition"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "address": "0x180669cb4",
+            "opcode": "e8",
+            "section": "il2cpp",
+            "precedingMethodCandidates": [
+              65763
+            ],
+            "precedingMethods": [
+              {
+                "nameIndex": 2483034,
+                "declaringType": 10185,
+                "returnType": 84484,
+                "parameterStart": 66517,
+                "genericContainerIndex": -1,
+                "token": 100729060,
+                "flags": 129,
+                "iflags": 0,
+                "slot": 65535,
+                "parameterCount": 1,
+                "index": 65763,
+                "image": "Assembly-CSharp.dll",
+                "address": 6449175392,
+                "addressStatus": "file-backed",
+                "fullname": "Torappu.Battle.BattleController._LoadPredefinedData",
+                "returnTypeName": "void",
+                "parameters": [
+                  {
+                    "nameIndex": 1227155,
+                    "token": 134284251,
+                    "typeIndex": 100832,
+                    "index": 66517,
+                    "name": "predefines",
+                    "typeName": "Torappu.LevelData/PredefinedData"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "address": "0x180669dbe",
+            "opcode": "e8",
+            "section": "il2cpp",
+            "precedingMethodCandidates": [
+              65763
+            ],
+            "precedingMethods": [
+              {
+                "nameIndex": 2483034,
+                "declaringType": 10185,
+                "returnType": 84484,
+                "parameterStart": 66517,
+                "genericContainerIndex": -1,
+                "token": 100729060,
+                "flags": 129,
+                "iflags": 0,
+                "slot": 65535,
+                "parameterCount": 1,
+                "index": 65763,
+                "image": "Assembly-CSharp.dll",
+                "address": 6449175392,
+                "addressStatus": "file-backed",
+                "fullname": "Torappu.Battle.BattleController._LoadPredefinedData",
+                "returnTypeName": "void",
+                "parameters": [
+                  {
+                    "nameIndex": 1227155,
+                    "token": 134284251,
+                    "typeIndex": 100832,
+                    "index": 66517,
+                    "name": "predefines",
+                    "typeName": "Torappu.LevelData/PredefinedData"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "method": {
+        "nameIndex": 2880047,
+        "declaringType": 11491,
+        "returnType": 84484,
+        "parameterStart": 76504,
+        "genericContainerIndex": -1,
+        "token": 100740537,
+        "flags": 134,
+        "iflags": 0,
+        "slot": 65535,
+        "parameterCount": 3,
+        "index": 77240,
+        "image": "Assembly-CSharp.dll",
+        "address": 6453579440,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.Battle.Character.BuildAsPredefined",
+        "returnTypeName": "void",
+        "parameters": [
+          {
+            "nameIndex": 1749,
+            "token": 134294238,
+            "typeIndex": 45448,
+            "index": 76504,
+            "name": "data",
+            "typeName": "Torappu.Battle.BattleCharacterData"
+          },
+          {
+            "nameIndex": 1957,
+            "token": 134294239,
+            "typeIndex": 80093,
+            "index": 76505,
+            "name": "tile",
+            "typeName": "Torappu.Battle.Tile"
+          },
+          {
+            "nameIndex": 523294,
+            "token": 134294240,
+            "typeIndex": 109140,
+            "index": 76506,
+            "name": "direction",
+            "typeName": "Torappu.SharedConsts/Direction"
+          }
+        ]
+      },
+      "xrefs": {
+        "target": "0x180a9ceb0",
+        "scope": "Direct E8/E9 candidates only; excludes indirect/virtual calls; instruction boundaries require confirmation.",
+        "candidates": [
+          {
+            "address": "0x180665070",
+            "opcode": "e8",
+            "section": "il2cpp",
+            "precedingMethodCandidates": [
+              65760
+            ],
+            "precedingMethods": [
+              {
+                "nameIndex": 2482947,
+                "declaringType": 10185,
+                "returnType": 48460,
+                "parameterStart": 66510,
+                "genericContainerIndex": -1,
+                "token": 100729057,
+                "flags": 129,
+                "iflags": 0,
+                "slot": 65535,
+                "parameterCount": 3,
+                "index": 65760,
+                "image": "Assembly-CSharp.dll",
+                "address": 6449155184,
+                "addressStatus": "file-backed",
+                "fullname": "Torappu.Battle.BattleController._CreatePredefinedCharacter",
+                "returnTypeName": "Torappu.Battle.Character",
+                "parameters": [
+                  {
+                    "nameIndex": 524450,
+                    "token": 134284244,
+                    "typeIndex": 115214,
+                    "index": 66510,
+                    "name": "slot",
+                    "typeName": "Torappu.LevelData/PredefinedData/PredefinedCharacter"
+                  },
+                  {
+                    "nameIndex": 529121,
+                    "token": 134284245,
+                    "typeIndex": 46024,
+                    "index": 66511,
+                    "name": "isToken",
+                    "typeName": "bool"
+                  },
+                  {
+                    "nameIndex": 2482936,
+                    "token": 134284246,
+                    "typeIndex": 31693,
+                    "index": 66512,
+                    "name": "isExcluded",
+                    "typeName": "bool&"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

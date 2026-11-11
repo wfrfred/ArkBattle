@@ -1,0 +1,134 @@
+{
+  "provenance": {
+    "scope": "Static native branches; no game execution or runtime XLua verification.",
+    "client": {
+      "dll": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "bytes": 223112680,
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff"
+      },
+      "metadata": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "bytes": 46669332,
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5"
+      },
+      "metadataVersion": 29,
+      "imageBase": "0x180000000"
+    },
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/native.py",
+        "bytes": 18723,
+        "sha256": "1c6c16dc97e0dd9af0af4033c81a7534384dd65ebb1e604df3f4a3289df158e6"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]"
+    },
+    "location": {
+      "metadataRegistration": "0x187ee0630",
+      "modules": {
+        "Assembly-CSharp.dll": {
+          "address": 6564854272,
+          "methodPointers": 6585881040,
+          "count": 225427,
+          "fileBacked": true
+        },
+        "mscorlib.dll": {
+          "address": 6577364064,
+          "methodPointers": 6592131600,
+          "count": 13987,
+          "fileBacked": true
+        }
+      }
+    },
+    "collectedOn": "2026-11-12",
+    "extractionScript": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/predefined-source-20261112/native/extract.py",
+      "bytes": 5196,
+      "sha256": "b289e66df1d7e26604c13dc8f733370506fb89402733ef1f0d7d961246e558c4"
+    }
+  },
+  "result": [
+    {
+      "fullname": "Torappu.LevelData/PredefinedData/PredefinedCharacter",
+      "index": 4749,
+      "parent": "Torappu.LevelData/PredefinedData/PredefinedInst",
+      "fields": [
+        {
+          "nameIndex": 10272,
+          "typeIndex": 56289,
+          "token": 67136129,
+          "index": 27264,
+          "name": "position",
+          "typeName": "Torappu.GridPosition",
+          "static": false,
+          "offset": 128,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 523294,
+          "typeIndex": 109142,
+          "token": 67136130,
+          "index": 27265,
+          "name": "direction",
+          "typeName": "Torappu.SharedConsts/Direction",
+          "static": false,
+          "offset": 136,
+          "unboxedOffset": null
+        }
+      ],
+      "methods": []
+    },
+    {
+      "fullname": "Torappu.LevelData/PredefinedData",
+      "index": 4752,
+      "parent": "object",
+      "fields": [
+        {
+          "nameIndex": 1228806,
+          "typeIndex": 35277,
+          "token": 67136123,
+          "index": 27258,
+          "name": "characterInsts",
+          "typeName": "Torappu.LevelData/PredefinedData/PredefinedCharacter[]",
+          "static": false,
+          "offset": 16,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1228821,
+          "typeIndex": 35277,
+          "token": 67136124,
+          "index": 27259,
+          "name": "tokenInsts",
+          "typeName": "Torappu.LevelData/PredefinedData/PredefinedCharacter[]",
+          "static": false,
+          "offset": 24,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1228832,
+          "typeIndex": 35274,
+          "token": 67136125,
+          "index": 27260,
+          "name": "characterCards",
+          "typeName": "Torappu.LevelData/PredefinedData/PredefinedCard[]",
+          "static": false,
+          "offset": 32,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1228847,
+          "typeIndex": 35278,
+          "token": 67136126,
+          "index": 27261,
+          "name": "tokenCards",
+          "typeName": "Torappu.LevelData/PredefinedData/PredefinedTokenCard[]",
+          "static": false,
+          "offset": 40,
+          "unboxedOffset": null
+        }
+      ],
+      "methods": []
+    }
+  ]
+}

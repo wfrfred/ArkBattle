@@ -423,3 +423,11 @@ remainingTime >= 0
 同日补核的[类型与部署证据](../evidence/device-source-20261111/README.md)确认当前客户端的继承链是 `Trap → Token → Character → Unit`，而 `Enemy → Unit`。因此 9.2 的 Character 判断包含原生 Trap 装置和 Token 召唤物，不能解释成仅普通干员，也不能把装置划入非 Character 的前缀回退。
 
 TokenCard.SpawnInternal 将自身 Card 交给 BattleController.CreateToken；后者用 Card.data 创建 Token，再将 data.uniqueId 写入继承的 Character.cardUid。故该手牌部署路径的装置／召唤物，开启 independentCharacterSource 时也以 cardUid 区分来源。完整字段写入见 [Case 24 的补核](24-deployment-cost-and-supply.md#召唤物与装置的部署身份)。本结论不依赖项目是否声明 Deployable，也不因此证明所有预置或特殊运行时创建都经过同一手卡。
+
+### 9.8 无 Card 的预放置干员
+
+2026-11-12 的[预置来源补核](../evidence/predefined-source-20261112/README.md)确认存在直接创建场上 Character、不为它创建 Card 的普通预置路径。固定关卡镜像 level_main_08-09 的迷迭香配置在 characterInsts，普通／困难 characterCards 均为空；原生卡牌注入函数只取独立的 characterCards 数组，不从 characterInsts 生成卡牌。实际创建链直接转换角色数据、调用 Factory 创建 Character，再执行 BuildAsPredefined。
+
+该 Character.cardUid 仍由角色数据的 uniqueId 写入，具体分支与范围见 [Case 24](24-deployment-cost-and-supply.md#无-card-的预放置干员)。因此 cardUid 的存在不证明存在对应 Card 对象；它仍满足 9.2 的 Character 分支，不会因为没有 Card 而自动走非 Character 的前缀回退。
+
+项目关联：Card Ref 能表达同一卡牌多个场上实例共享来源，但不能把“没有来源 Card”和“非 Character 来源”当作同一个条件。本批记录这一实际内容需求，不自行增加 SourceIdentity、字段或初始化协议。

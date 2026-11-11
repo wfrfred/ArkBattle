@@ -1,0 +1,336 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-11-12"
+    ],
+    "collectionDateSource": "batch directory",
+    "organizedOn": "2026-11-12",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+        "records": [
+          "native/bodies/metadata.json#/provenance/client/dll",
+          "native/bodies/native.json#/provenance/client/dll",
+          "native/bodies/xrefs.json#/provenance/client/dll"
+        ],
+        "bytes": 223112680
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        "records": [
+          "native/bodies/metadata.json#/provenance/client/metadata",
+          "native/bodies/native.json#/provenance/client/metadata",
+          "native/bodies/xrefs.json#/provenance/client/metadata"
+        ],
+        "bytes": 46669332
+      }
+    },
+    "sourceRecords": [
+      "content/level_main_08-09.json",
+      "native/bodies/metadata.json",
+      "native/bodies/native.json",
+      "native/bodies/xrefs.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12895,
+        "sha256": "9c5b246859318caaec4aab5275ef0d2d49fce5d612c6b4e569973a9941ba621a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "content/extract.py",
+        "kind": "historical-script",
+        "bytes": 2690,
+        "sha256": "5596820b1501f36b8cfa70768c01105ac11ea333764db18f855ed2ec5e4e34ea"
+      },
+      {
+        "path": "content/level_main_08-09.json",
+        "kind": "record",
+        "bytes": 2255,
+        "sha256": "1da4ce9254bd0cd74c45691ffc5a8c62cb6424dba08ea1016bb3b96e8af6181d"
+      },
+      {
+        "path": "native/bodies/BuildAsPredefined-77240.asm",
+        "kind": "instructions",
+        "bytes": 6694,
+        "sha256": "3d14a04438bfceaf7596353bbe3061a004b1edea3666b10836148ea9ea751388"
+      },
+      {
+        "path": "native/bodies/CheckStagePredefine-34446.asm",
+        "kind": "instructions",
+        "bytes": 1525,
+        "sha256": "b73ea3b31c4ced0aa2b0d484d29449f686a7bfda40ca181997de93cfa7cbaee0"
+      },
+      {
+        "path": "native/bodies/CreatePredefinedCharacter-65658.asm",
+        "kind": "instructions",
+        "bytes": 2052,
+        "sha256": "c93e61548997708f87446a31c8e63615bdf21483daabe4bbc9b2a5737613847f"
+      },
+      {
+        "path": "native/bodies/GenPredefinedCardsToInject-34447.asm",
+        "kind": "instructions",
+        "bytes": 1675,
+        "sha256": "d7653fff902feaace2eeb0201f040c4f1b5b201ba50a236ec3ae6f2885f6fbc4"
+      },
+      {
+        "path": "native/bodies/NeedPreprocessPredefinedCharacter-84127.asm",
+        "kind": "instructions",
+        "bytes": 888,
+        "sha256": "3570547d2d53a8ccfcff4c8ca061b13fd8c49b532d67c954c3fd72b61ae1e63e"
+      },
+      {
+        "path": "native/bodies/_CreatePredefinedCharacter-65760.asm",
+        "kind": "instructions",
+        "bytes": 12811,
+        "sha256": "95277747f2a0903ca81f907d296bf778cedf12d3422a06beb230e795806d8ea1"
+      },
+      {
+        "path": "native/bodies/_LoadPredefinedData-65763.asm",
+        "kind": "instructions",
+        "bytes": 6612,
+        "sha256": "5eb8ccb433b3e6c126c4c071cb025e76b71d801c71700fdf1d6128809d5f6880"
+      },
+      {
+        "path": "native/bodies/_PreprocessPredefinedCharacter-65762.asm",
+        "kind": "instructions",
+        "bytes": 10702,
+        "sha256": "12987c3ee6968e0c3fb5ed9b067c8196b7ea0e89f8fe776da5be30003aad4d72"
+      },
+      {
+        "path": "native/bodies/metadata.json",
+        "kind": "record",
+        "bytes": 4138,
+        "sha256": "c55990a7f8a79ceaeb0f4d629b86c3777075e1fd84f35b9fcbf6675e5651ca58"
+      },
+      {
+        "path": "native/bodies/native.json",
+        "kind": "record",
+        "bytes": 28603,
+        "sha256": "acf8adbb88322d1328e1f0a054a8db3423df97c04b39efd12aa8fd276fdd349b"
+      },
+      {
+        "path": "native/bodies/xrefs.json",
+        "kind": "record",
+        "bytes": 21654,
+        "sha256": "511d15f23f2f3fad5a6116b2c414565e3977eac02c43b7f57cc7e62474c49eb6"
+      },
+      {
+        "path": "native/extract.py",
+        "kind": "historical-script",
+        "bytes": 5196,
+        "sha256": "b289e66df1d7e26604c13dc8f733370506fb89402733ef1f0d7d961246e558c4"
+      },
+      {
+        "path": "native/extract.py.lock",
+        "kind": "artifact",
+        "bytes": 3739,
+        "sha256": "1ed9e3b399cf0743106d2124514970f3a3b5db6d9f1192fba528019ccbefdf04"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 34446,
+          "mode": "metadata",
+          "records": [
+            "native/bodies/native.json#/result/0/method"
+          ],
+          "fullname": "Torappu.DataConvertUtil.CheckStagePredefine",
+          "address": "0x18278a7d0"
+        },
+        {
+          "index": 34447,
+          "mode": "metadata",
+          "records": [
+            "native/bodies/native.json#/result/1/method"
+          ],
+          "fullname": "Torappu.DataConvertUtil.GenPredefinedCardsToInject",
+          "address": "0x18278b630"
+        },
+        {
+          "index": 65656,
+          "mode": "metadata",
+          "records": [
+            "native/bodies/xrefs.json#/result/0/xrefs/candidates/1/precedingMethods/0",
+            "native/bodies/xrefs.json#/result/0/xrefs/candidates/2/precedingMethods/0"
+          ],
+          "fullname": "Torappu.Battle.BattleController.SpawnPredefinedInstanceByAlias",
+          "address": "0x180660b90"
+        },
+        {
+          "index": 65657,
+          "mode": "metadata",
+          "records": [
+            "native/bodies/xrefs.json#/result/0/xrefs/candidates/6/precedingMethods/0",
+            "native/bodies/xrefs.json#/result/0/xrefs/candidates/7/precedingMethods/0"
+          ],
+          "fullname": "Torappu.Battle.BattleController.SpawnPredefinedInstance",
+          "address": "0x180661490"
+        },
+        {
+          "index": 65658,
+          "mode": "metadata",
+          "records": [
+            "native/bodies/native.json#/result/2/method",
+            "native/bodies/xrefs.json#/result/0/xrefs/candidates/0/precedingMethods/0"
+          ],
+          "fullname": "Torappu.Battle.BattleController.CreatePredefinedCharacter",
+          "address": "0x18064f9c0"
+        },
+        {
+          "index": 65659,
+          "mode": "metadata",
+          "records": [
+            "native/bodies/xrefs.json#/result/0/xrefs/candidates/3/precedingMethods/0",
+            "native/bodies/xrefs.json#/result/0/xrefs/candidates/4/precedingMethods/0"
+          ],
+          "fullname": "Torappu.Battle.BattleController.SpawnPredefinedInstanceByAlias",
+          "address": "0x180660e90"
+        },
+        {
+          "index": 65661,
+          "mode": "metadata",
+          "records": [
+            "native/bodies/xrefs.json#/result/0/xrefs/candidates/5/precedingMethods/0"
+          ],
+          "fullname": "Torappu.Battle.BattleController.SpawnPredefinedInstanceWithTile",
+          "address": "0x180661130"
+        },
+        {
+          "index": 65760,
+          "mode": "metadata",
+          "records": [
+            "native/bodies/native.json#/result/3/method",
+            "native/bodies/xrefs.json#/result/0/method",
+            "native/bodies/xrefs.json#/result/1/xrefs/candidates/0/precedingMethods/0"
+          ],
+          "fullname": "Torappu.Battle.BattleController._CreatePredefinedCharacter",
+          "address": "0x180664c70"
+        },
+        {
+          "index": 65762,
+          "mode": "metadata",
+          "records": [
+            "native/bodies/native.json#/result/4/method"
+          ],
+          "fullname": "Torappu.Battle.BattleController._PreprocessPredefinedCharacter",
+          "address": "0x18066c050"
+        },
+        {
+          "index": 65763,
+          "mode": "metadata",
+          "records": [
+            "native/bodies/native.json#/result/5/method",
+            "native/bodies/xrefs.json#/result/0/xrefs/candidates/8/precedingMethods/0",
+            "native/bodies/xrefs.json#/result/0/xrefs/candidates/9/precedingMethods/0"
+          ],
+          "fullname": "Torappu.Battle.BattleController._LoadPredefinedData",
+          "address": "0x180669b60"
+        },
+        {
+          "index": 77240,
+          "mode": "metadata",
+          "records": [
+            "native/bodies/native.json#/result/6/method",
+            "native/bodies/xrefs.json#/result/1/method"
+          ],
+          "fullname": "Torappu.Battle.Character.BuildAsPredefined",
+          "address": "0x180a9ceb0"
+        },
+        {
+          "index": 84127,
+          "mode": "metadata",
+          "records": [
+            "native/bodies/native.json#/result/7/method"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/DefaultGameMode.NeedPreprocessPredefinedCharacter",
+          "address": "0x180c9d9e0"
+        }
+      ],
+      "blocks": [
+        {
+          "address": "0x18064f9c0",
+          "records": [
+            "native/bodies/CreatePredefinedCharacter-65658.asm"
+          ]
+        },
+        {
+          "address": "0x180664c70",
+          "records": [
+            "native/bodies/_CreatePredefinedCharacter-65760.asm"
+          ]
+        },
+        {
+          "address": "0x180669b60",
+          "records": [
+            "native/bodies/_LoadPredefinedData-65763.asm"
+          ]
+        },
+        {
+          "address": "0x18066c050",
+          "records": [
+            "native/bodies/_PreprocessPredefinedCharacter-65762.asm"
+          ]
+        },
+        {
+          "address": "0x180a9ceb0",
+          "records": [
+            "native/bodies/BuildAsPredefined-77240.asm"
+          ]
+        },
+        {
+          "address": "0x180c9d9e0",
+          "records": [
+            "native/bodies/NeedPreprocessPredefinedCharacter-84127.asm"
+          ]
+        },
+        {
+          "address": "0x18278a7d0",
+          "records": [
+            "native/bodies/CheckStagePredefine-34446.asm"
+          ]
+        },
+        {
+          "address": "0x18278b630",
+          "records": [
+            "native/bodies/GenPredefinedCardsToInject-34447.asm"
+          ]
+        }
+      ],
+      "types": [
+        {
+          "name": "Torappu.LevelData/PredefinedData",
+          "records": [
+            "native/bodies/metadata.json#/result/1"
+          ]
+        },
+        {
+          "name": "Torappu.LevelData/PredefinedData/PredefinedCharacter",
+          "records": [
+            "native/bodies/metadata.json#/result/0"
+          ]
+        }
+      ],
+      "constants": [],
+      "bundles": []
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}
