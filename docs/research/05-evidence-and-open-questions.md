@@ -26,7 +26,7 @@
 
 EXTEND 的 snapshot 不等于重载属性 modifier；实际 Effect 接入仍需保持这一区别。此前仅测试消费的 Data planner 已删除，不能把其算法作为原生机制或运行接入依据。
 
-尚需收口的是具体支持或映射政策：Locomotion 的避障刷新与身体／locator 基准差异如何归入项目近似；地穴的原生 Enemy 类型资格如何映射到项目内容。现有 Effect 持久 enabled、group.id 和暂停时钟属项目接口，已证原生竞争、来源与计时分支不自动决定这些接口的全部语义。
+尚需收口的是具体支持或映射政策：Locomotion 的避障刷新与身体／locator 基准差异如何归入项目近似；地穴的原生 Enemy 类型资格如何映射到项目内容。Effect 的来源分组、重复施加与计时项目契约已确定、待接入，见 [Effect](../architecture/effect.md)。其中先决定重复施加结果、仅新建分支执行安装程序属于明确的项目选择；原生安装与合并顺序仍按 Case 01 记录。
 
 仍需补的具体内容证据包括：受支持普通内容中的 EXTEND+snapshot 完整执行正例，RO5 交错随机组示例中条件 Buff 的完整安装来源，以及 [Case 01 §9.5](cases/01-buff-installation-and-parent-scope.md#95-实际配置与范围) 注明的有限 STACK 非零时长绑定。妮芙父天赋来源已由标准安装链闭合，见 9.9。模板、条件分支与关卡覆盖已归档，未将它们冒充实战观测；也不因此否定已直接核实的普通分支。
 

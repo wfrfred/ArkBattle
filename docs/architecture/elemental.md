@@ -2,6 +2,8 @@
 
 Elemental 负责元素值的接收、资源提交、爆发触发与恢复预算；EP Damage／Healing 的 Calculate／Apply 由 Battle 编排。整轮 Burst 由 Core 标准效果库的 Effect 承载，复用 Effect 的身份、状态、时间推进与 Lifetime。标准爆发程序实现 HP 伤害、控制、属性变化和周期输出，Data 提供数值配置，Content 通过公开接口实现特殊单位机制。当前四型为 NEURAL、EROSION、BURN、NECROSIS；狂躁尚未接入。
 
+本文的 duration／remaining 表示与 [Effect 时间契约](effect.md#6-时间推进)一致，尚待代码接入；Burst 的恢复、输出与生命周期顺序保持既定契约。
+
 Unit Definition 直接关联共享的 Elemental Definition。bursts 按元素类型映射到实际的 Burst Effect Definition；Data 选择 Core 提供的具体 Effect 并绑定静态数值，不自行实现爆发执行程序。
 
 公开类型、查询和业务操作从 [elemental/index.ts](../../src/core/unit/capability/elemental/index.ts) 导入，包括只读的 available。Capability 的 Rule、Hook 与属性贡献 set／remove 不接收 Ref，返回 `Change<Unit & Elemental>`，交给 Unit.update 登记。资源提交复用对应业务的 CommitContext，爆发与恢复等操作保持 BattleState 协议，状态写回使用 Core 内部的 Unit.replace；query.ts 负责查询。
@@ -9,7 +11,7 @@ Unit Definition 直接关联共享的 Elemental Definition。bursts 按元素类
 ## 关键语义
 
 - EP 提交、burstStarted、onInstall 的一次性爆发输出、damaged、Battle Applied 依次发生。零恢复预算仍执行安装业务，随后由通用 Effect 安装流程正常结束，不补发周期输出。
-- 恢复进度只保存在根 Effect 的 DURATION expiration。根的 rate 为零，内容 onTick 按当前恢复速度推进同一 elapsed；Elemental 写回四型真实 EP，恢复进度通过 Effect.setExpiration 提交，周期业务前两项均已完成；自然到期交给 Effect 框架。
+- 恢复进度只保存在根 Effect 的 DURATION expiration。根的 rate 为零，内容 onTick 按当前恢复速度扣减 remaining；Elemental 写回四型真实 EP，剩余预算通过 Effect.setExpiration 提交，周期业务前两项均已完成；自然到期交给 Effect 框架。
 - 神经眩晕使用独立期限，不绑定根恢复时间；永久侵蚀减防与剩余麻痹也独立保留。灼燃减抗、封技与阻回依赖根结束。
 - 最后一次正常推进先结算预算内周期业务，再结束；取消、提前完成与离场不补未来输出。时间协议由 Effect 集中验收，Elemental 只验证这些资源与业务结果。
 
@@ -60,12 +62,12 @@ interface BurstState {
 
 type Duration = Extract<Expiration, { type: "DURATION" }>;
 
-interface Burst extends Effect<BurstState, Elemental> {
+interface Burst extends OrdinaryEffect<BurstState, Elemental> {
     readonly expiration: Duration;
 }
 ```
 
-Core 提供八个具体 Effect：神经眩晕／麻痹、物理／元素侵蚀、法术／元素灼燃，以及消耗 SP／恢复攻击力的凋亡。每个实现接收自身所需的数值参数。Data 使用静态数值调用这些工厂，构造共享 Definition，爆发时查表复用。initialize 返回 `{ type }`，state 只保存元素类型。BurstDefinition 是普通 Effect Definition 加共同的只读 durationTicks 恢复预算；onInstall 接收尚未初始化时间的普通 Effect，以此预算建立 DURATION 后形成 Burst，后续程序在领域回调边界恢复该类型。Burst 的 Typed Ref 保留 DURATION 写入约束；expiration 是恢复、周期边界与攻击力恢复共用的唯一进度。
+Core 提供八个具体 Effect：神经眩晕／麻痹、物理／元素侵蚀、法术／元素灼燃，以及消耗 SP／恢复攻击力的凋亡。每个实现接收自身所需的数值参数。Data 使用静态数值调用这些工厂，构造共享 Definition，爆发时查表复用。initialize 返回 `{ type }`，state 只保存元素类型。BurstDefinition 基于 OrdinaryDefinition，加共同的只读 durationTicks 恢复预算；onInstall 接收允许初始 INFINITE 的 OrdinaryEffect，以此预算建立 DURATION 后形成 Burst，后续程序在领域回调边界恢复该类型。Burst 基于普通分支收窄时间，不继承 Ordinary／STACK 联合。其 Typed Ref 保留 DURATION 写入约束；expiration 是恢复、周期边界与攻击力恢复共用的唯一进度。
 
 Burst 的 id、host、source、enabled、lifecycle 由 Effect 提供，Elemental 的 burst 槽位只保存它的 Typed Ref。`ref(self)` 复用 Effect Ref，地址为 host + Effect ID；没有独立 Burst ID 分配器或 Lifetime。旧引用不能操作后来的爆发。来源引用保存历史身份，不要求来源仍在场，也不隐含生命周期绑定；跨 Battle 使用 Ref 仍属于调用契约错误。
 
@@ -147,7 +149,7 @@ EP 损伤的爆发分支在同一次 commitDamage 内按以下顺序执行：
 ```text
 提交本次 EP 扣减并将四型归零，记录 ELEMENTAL_INJURY
 → effects.install 登记标准 Burst Effect 及 Unit owner
-    → onInstall 写入 Elemental 的 Burst 引用，再通过 Effect.setExpiration 提交 DURATION { elapsed: 0, total: durationTicks, rate: 0 }
+    → onInstall 写入 Elemental 的 Burst 引用，再通过 Effect.setExpiration 提交 DURATION { duration: durationTicks, remaining: durationTicks, rate: 0 }
     → 记录 ELEMENTAL_BURST，派发 burstStarted
     → 重新读取该次爆发实例，仍可执行时运行一次性爆发输出
     → 通用安装流程处理到期；未到期时启用持续输出
@@ -188,16 +190,17 @@ Unit 请求离场发布 LEAVING 后，通过所有权边自动结束根 Burst Ef
 
 原生恢复顺序与 EP 写回的证据见[案例 25](../research/cases/25-elemental-burst-recovery-timing.md)。Core 采用固定步长的全场阶段调度，按项目语义尺度忽略创建时点造成的帧内微时序差异，不增加创建 Tick 跳过或 lastAdvancedTick。
 
-根 Burst Effect 的 onTick 是唯一爆发推进入口。expiration 保存唯一有效进度，rate 固定为零，通用自动推进不另加一份时间。对正时长配置，每次宿主获准推进时，内容程序按当前 burstRecoverySpeed 计算 expiration.elapsed，并按最新有效上限回填全部 EP。Elemental 先提交 EP，再通过 Effect.setExpiration 提交恢复进度；两项在周期业务前均已完成：
+根 Burst Effect 的 onTick 是唯一爆发推进入口。expiration 保存唯一恢复预算，rate 固定为零，通用自动推进不另加一份时间。对正时长配置，每次宿主获准推进时，内容程序按当前 burstRecoverySpeed 扣减 remaining，并按最新有效上限回填全部 EP。Elemental 先提交 EP，再通过 Effect.setExpiration 提交剩余预算；两项在周期业务前均已完成：
 
 ```text
-elapsed' = min(duration, elapsed + currentBurstRecoverySpeed)
+remaining' = max(0, remaining - currentBurstRecoverySpeed)
+elapsed' = duration - remaining'
 allEP = currentMaxEP × elapsed' / duration
 ```
 
 恢复期间四型 EP 会逐步回填，不一直保持零值到结束；Burst 槽位存在期间仍拒绝新的 EP 损伤和显式回复。速度为零或宿主暂时不具备推进资格时暂停，后续只推进当前一步，不积攒补算。动态上限与恢复速度在各次实际推进时重新求值。
 
-同一份有效进度决定跨过的周期边界与凋亡攻击力恢复。内容程序完成预算内最后一次周期业务后返回，通用 Effect 框架按最新 expiration 处理自然到期；取消、提前 finish 或宿主离场不补未来输出。周期业务由根 Effect 的同一进度调度，onEnd 只负责资源收尾。
+Burst 不续期，由 `duration - remaining` 得到的已推进量决定跨过的周期边界与凋亡攻击力恢复。内容程序完成预算内最后一次周期业务后返回，通用 Effect 框架按最新 expiration 处理自然到期；取消、提前 finish 或宿主离场不补未来输出。周期业务由根 Effect 的同一进度调度，onEnd 只负责资源收尾。
 
 Elemental 的 Runtime 推进只负责无 Burst 时的自然回复，量为 `当前 recoverySpeed / TICKS_PER_SECOND`，保留小数，不派发显式 heal 的 healed Hook 或普通治疗通知。按当前有效 MaxEP 完成归一化与回复后，四型 EP 均未变化则返回原 BattleState；速度为零仍需处理上限降低。Effect 与自然回复分别由既有调度阶段安排；阶段之前创建的实例可以参与当次推进，阶段之后创建的实例等下一次候选，不新增首 Tick 特判。
 

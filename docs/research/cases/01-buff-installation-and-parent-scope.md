@@ -379,7 +379,7 @@ remainingTime >= 0
 
 `0x1806ced51–ced64` 直接重置时长后返回，OnTick 没有补处理循环。因此单次 delta 超过多个时长也只减一次，不结转超出时间；lifeTime=0 也没有一 Tick 保底，本次只处理一层，余层到后续 OnTick 再处理。这是静态分支事实，不自动要求项目采用相同的微时序。
 
-**N**：OnTick 的 isEnabled 判断只守卫周期 Trigger，扣时在其分支之外；[delta 预处理（66254）](../evidence/buff-group-expiry-20261111/expiry/native/_PreprocessDeltaTime-66254.asm) 根据状态抵抗、元素恢复速度与 slowdown 调整 delta，没有按 enabled 暂停。只要容器继续调度，有限时长的普通覆盖候补／停用实例仍倒计时；不能将原生“未生效”直接等同项目 DURATION 暂停。
+**N**：OnTick 的 isEnabled 判断只守卫周期 Trigger，扣时在其分支之外；[delta 预处理（66254）](../evidence/buff-group-expiry-20261111/expiry/native/_PreprocessDeltaTime-66254.asm) 根据状态抵抗、元素恢复速度与 slowdown 调整 delta，没有按 enabled 暂停。只要容器继续调度，有限时长的普通覆盖候补／停用实例仍倒计时；未生效只守卫相应周期业务，不暂停倒计时。
 
 **N**：层数归零后的收尾分三个时点：
 

@@ -164,12 +164,12 @@ LIMITED + duration = 0
 
 ## 5. 项目关联
 
-项目采用固定步长调度：Elemental 阶段只处理无 Burst 时的自然回复，每次恢复 `当前 recoverySpeed / TICKS_PER_SECOND`。标准 Burst 使用 Effect 的 DURATION Expiration，rate 为 0，由 onTick 将当前 `burstRecoverySpeed` 累加到唯一的 expiration.elapsed。执行到实例时使用当前状态，阶段之前创建的可以参与本次推进，阶段之后创建的等下一次候选；不设置统一的创建 Tick 跳过规则。
+项目采用固定步长调度：Elemental 阶段只处理无 Burst 时的自然回复，每次恢复 `当前 recoverySpeed / TICKS_PER_SECOND`。标准 Burst 使用 Effect 的 DURATION Expiration，rate 为 0，由 onTick 按当前 `burstRecoverySpeed` 扣减唯一的 remaining；已推进量由 `duration - remaining` 得到。此时间表示随已确定的 [Effect 契约](../../architecture/effect.md#6-时间推进)接入。执行到实例时使用当前状态，阶段之前创建的可以参与本次推进，阶段之后创建的等下一次候选；不设置统一的创建 Tick 跳过规则。
 
 该选择忽略原生逐宿主更新与项目全场阶段之间的帧内微时序差异，不追求每个触发入口的首帧映射。固定步长与首次参与由调度契约决定，Elemental State 不保存上次推进时点。它是项目工程取舍，不将原生的条件性调用顺序改写为全场统一阶段。
 
 标准 Burst Effect 使用同一有效进度确定恢复比例、周期输出和属性恢复，不另保存周期时钟。每次推进结算跨过的周期边界，自然预算耗尽时先完成预算内最后一次输出，再结束实例；取消、提前 finish 和宿主离场不补未来输出。这保留周期输出完整性，不增加原生首帧规则。
 
-恢复期间按原生已确认的公式逐步写回四型真实 EP：`当前有效 MaxEP × elapsed / total`，结束时写满并清空 Burst 引用。Burst 槽位存在期间仍拒绝新的 EP 损伤与显式回复；不能以准入受限为由把恢复中的真实 EP 一直保留为零。
+恢复期间按原生已确认的恢复比例逐步写回四型真实 EP，在项目的时间表示中为 `当前有效 MaxEP × (duration - remaining) / duration`；结束时写满并清空 Burst 引用。Burst 槽位存在期间仍拒绝新的 EP 损伤与显式回复；不能以准入受限为由把恢复中的真实 EP 一直保留为零。
 
 零预算处理与标准效果的全部持续时间不能直接等同。项目的标准 Burst 在 onInstall 中登记创建事实并执行一次性爆发业务，随后由通用 Effect 安装流程检查时间；零预算不进入根实例的 onEnable 或 onTick，而是请求正常结束。独立眩晕使用自己的期限，永久减防和麻痹保留独立生命周期，需要随根结束的产物通过 Lifetime 绑定。资源 damaged 通知安排在这些同步安装业务之后。这是结合上述证据明确的项目契约，不将一个恢复预算机械套用到全部子效果，也不宣称完整复刻所有原生模板与热更时序。

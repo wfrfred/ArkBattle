@@ -188,15 +188,15 @@ Blocker Definition 保存基础容量，State 保存 ADD／ZERO 容量贡献，�
 
 Effect 直接持有 `Definition<S, H>` 与私有 State。S 描述实例状态，H 描述宿主需要的 Capability 结构。Effect 运行层管理实例与分组；具体 Definition 通过 Damage、Healing 和 Capability 的公开操作登记与撤销输出。
 
-生命周期状态为 `INSTALLING`、`INACTIVE`、`ACTIVE`、`ENDING`，外部许可 `enabled` 独立保存。宿主实际退场必然结束其 Effect；安装输入 scopes 可以绑定 Unit、Action、Skill 激活或另一个 Effect，Burst 使用同一 Effect Lifetime。登记后关系只保存在 Lifetime 图中，任一依赖结束即结束实例。expiration 以互斥的 DURATION、DEADLINE、INFINITE 表达有效时长、绝对期限或无限期，时间不进入依赖图。source 使用 `Ref<Unit> | null` 记录施加者，不要求来源仍在场，也不隐含生命周期绑定。所有权与显式 Scope 的合并关系保持 DAG。
+生命周期状态为 `INSTALLING`、`INACTIVE`、`ACTIVE`、`ENDING`，外部许可 `enabled` 独立保存。宿主实际退场必然结束其 Effect；安装输入 scopes 可以绑定 Unit、Action、Skill 激活或另一个 Effect，Burst 使用同一 Effect Lifetime。登记后关系只保存在 Lifetime 图中，任一依赖结束即结束实例。expiration 以互斥的 DURATION、DEADLINE、INFINITE 表达持续计时、绝对期限或无限期，时间不进入依赖图。source 使用 `Ref<Unit> | null` 记录施加者，不要求来源仍在场，也不隐含生命周期绑定。所有权与显式 Scope 的合并关系保持 DAG。
 
 同宿主覆写组先在未结束实例中选取最高优先级，同优先级保留较早取得的实例，再检查赢家的 enabled。禁用最强实例不会让弱者补位。Contribution 分组、Hook 调用顺序与具体业务条件分别由所属模块处理。
 
-来源独立分组已确定按来源 Unit 的既有 Card 关联、无 Card 的 Unit 身份或空来源区分，安装后保持组归属；这是待接入的项目契约，详见 [Effect 来源分组](effect.md#来源分组)。
+来源分组、重复施加与剩余时间契约已确定、待接入。分组按来源 Unit 的既有 Card 关联、无 Card 的 Unit 身份或空来源区分，安装后保持组归属。同组施加由 Definition 的判别联合声明 DEFAULT／UNIQUE／STACK／EXTEND／EXTEND_TIME；STACK 分支配对内建层数状态，具体输出仍归内容程序。完整契约见 [Effect](effect.md#重复施加与叠层)。
 
-生命周期由完整领域操作推进：安装执行 onInstall 并重读当前实例；零时长或已到期时直接请求结束，不启用、不推进，也不执行 onDisable。生效切换执行 onEnable／onDisable；结束请求登记 Pending、发布 ENDING、执行 Prepare，再请求依赖者。Effect 在 Prepare 撤销已启用的输出并按当前资格协调 Group；最外层结算器在依赖者完整 Finalize 后执行本实例 onEnd 与移除。嵌套结束返回不保证注销或最终通知已完成；每项业务继续接续最新 BattleState。
+生命周期由完整领域操作推进：安装先确定拒绝、合并或新建；仅新建分支登记实例与 Lifetime，再执行 onInstall。回调后重读当前实例并结算到期，零时长新实例执行安装业务后结束，不启用、不推进，也不执行 onDisable。生效切换执行 onEnable／onDisable；结束请求登记 Pending、发布 ENDING、执行 Prepare，再请求依赖者。Effect 在 Prepare 撤销已启用的输出并按当前资格协调 Group；最外层结算器在依赖者完整 Finalize 后执行本实例 onEnd 与移除。嵌套结束返回不保证注销或最终通知已完成；每项业务继续接续最新 BattleState。
 
-每 Tick 只执行一次 Effect 时间推进。开始时固定 Unit 与 Effect 身份候选，轮到实例时读取当前状态；ACTIVE 的 DURATION 先自动推进并发布 elapsed，再执行 onTick，旧 expiration 作为第三参数传入。回调返回后按最新实例与 expiration 判断结束，允许回调续期；rate 为零仍调用 onTick。INACTIVE 暂停 DURATION 且不执行 onTick，DEADLINE 不因禁用而暂停，INFINITE 不因时间到期。新实例下次参与推进；周期触发与首次触发策略由具体 Definition 确定，完整协议见 [Effect 时间推进](effect.md#6-时间推进)。
+每 Tick 只执行一次 Effect 时间推进。开始时固定 Unit 与 Effect 身份候选，轮到实例时读取当前状态；ACTIVE／INACTIVE 的 DURATION 先自动扣减并发布 remaining，再仅对 ACTIVE 执行 onTick，旧 expiration 作为第三参数传入。回调返回后按最新时间结算到期：普通实例结束，STACK 按政策结束或减层重启。duration 保存一轮预算，remaining 保存当前剩余量，rate 为零允许内容手动推进；Burst 由 ACTIVE 的 onTick 推进，因此停用仍暂停恢复。DEADLINE 不因禁用而暂停，INFINITE 不因时间到期。周期业务由具体 Definition 确定，完整协议见 [Effect 时间推进](effect.md#6-时间推进)。
 
 Hook 是函数与资格开关的不可变登记项，由对应领域或 Capability 保存。Effect 可以在 onInstall 登记 Hook，资格闭包读取当前输入版本的 Effect，在 onEnd 撤销。执行 Hook 返回新状态及领域值；动态登记固定候选 ID 并逐项从返回版本重查登记与资格，嵌套操作使用自己的候选。公共 Hook 固定 Context、接续 battle 与 current；领域决定参与资格、排序及停止条件。
 

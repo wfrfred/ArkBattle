@@ -229,7 +229,7 @@ U 表示该身份存续期间稳定的结构 / Capability 约束。类型守卫�
 
 Query.filter 的结构守卫负责建立证明，ref 保留类型；get 内部从异构 Unit 存储恢复 U，依赖上述身份与稳定结构契约。TypeScript 不会自行证明 Map.get 返回 U，恢复集中在 Unit 查询模块，不要求业务调用方断言或重复筛选。
 
-Effect.install 返回 `Result<Ref<Effect<S, H>> | null>`，普通安装拒绝返回 null。返回的 Ref 表示本次创建事实，即使安装回调同步结束实例也保留该 Ref；是否仍存在由最新 State 查询。精确引用与 Definition 查询保留已有 S／H。普通 get(id)／values() 返回完整 Effect<object, object>，内部存储使用 Effect<any, any> 擦除异构参数；Core 统一通过 get(id) 取得默认 object 的完整实例并调用自身 Definition，不解释私有 state 或 H，不把内部 any 当作内容写回证明。
+Effect.install 使用 Result 返回接续状态与新建／保留实例的 Ref，普通拒绝返回 null。同步回调结束实例也保留该 Ref；是否仍存在由最新 State 查询。精确引用与 Definition 查询保留实例实际的 S／H，合并不能将旧实例冒认为传入 Definition 的私有类型。普通 get(id)／values() 返回完整 Effect<object, object>，内部存储使用 Effect<any, any> 擦除异构参数；Core 取得完整实例，在受信任边界恢复其与自身 Definition 程序的配对后执行，不解释私有 state 或 H，不把内部 any 当作内容写回证明。
 
 Projectile 使用 `create(battle, definition, { position, state }) → Result<Ref<Projectile<S>>>`；ref 保留已知实例类型，get 按引用读取当前对象。projectile/projectiles.ts 中的 Projectiles 以私有 Store 保存完整实例，Battlefield 持有容器状态，battle/projectile.ts 直接完成容器替换，普通查询返回默认 object 的完整 Projectile；精确 Ref 和 Definition 对象身份查询保留已有类型，内部擦除的完整实例用于自身程序派发，见 [Projectile 设计](projectile.md#3-异构集合与类型恢复)。
 
@@ -380,17 +380,29 @@ battlefield/unit.ts 的 add／update／remove 是纯存储与索引转换，Fiel
 
 ## 6. Effect self 的身份与宿主约束
 
-Effect 实例保存 `host: Ref<Unit> & Ref<Unit & H>`，使内部 H 擦除为 any 时仍保留 Unit 身份。安装入口使用 `Ref<Unit & NoInfer<H>>`，从最新 battle 读取宿主，并原样保存身份；H 由 Definition 决定，不能通过双方共同推导削弱能力要求。返回的 `Ref<Effect<S, H>>` 以 host + id 定位。
+Effect 实例保存 `host: Ref<Unit> & Ref<Unit & H>`，使内部 H 擦除为 any 时仍保留 Unit 身份。安装入口使用 `Ref<Unit & NoInfer<H>>`，从最新 battle 读取宿主，并原样保存身份；H 由 Definition 决定，不能通过双方共同推导削弱能力要求。返回 Ref 以 host + id 定位，并保持所指实例实际的 Definition／S／H 配对。
 
 `effect.ref(self)` 从已知实例保留完整类型，`effects.get(battle, ref)` 恢复 S / H；`units.get(battle, self.host)` 返回 `(Unit & H) | undefined`。同地址的不同 Ref 值可以使用。内容通过 `effects.setState(battle, ref, nextState)` 提交私有数据结果值，Core 保留当前身份、Definition、expiration 和生命周期；ENDING 中仍可完成私有清理。
 
+Definition／Effect 按 Ordinary 与 STACK 配对。STACK 的政策参数 P 分发为 END／DECAY 两支，DECAY 的 expiration 限于 DURATION／INFINITE；该约束贯穿回调 self、安装 Initial、返回 Ref 与 setExpiration。共同回调字段归 DefinitionFields，onTick.previous 使用 `Self["expiration"]`；EffectFields 只声明共同实例字段，definition／expiration 由各分支声明。Content 使用具体 P 的注解或 satisfies 取得回调上下文，按 Definition 身份查询也保留对应分支。完整声明见 [Effect 类型](effect.md#2-definition实例与泛型)。
+
+异构联合不依赖嵌套判别自动恢复回调与 self 的关系；Core 在统一的受信任边界恢复这项配对后执行实例自身程序，延续容器内部类型擦除的职责，不由具体内容逐项断言。容器仍只负责存储。
+
 Unit 初始化不接收预装 Effects，始终建立空容器；初始内容在 enter 键下的 Unit Hook 中调用 Effect.install。Effect 的 Initial.source、实例与诊断 Snapshot 均使用 `Ref<Unit> | null` 标注施加者；来源不要求仍在场，也不隐含 Scope 或存活依赖，需要绑定时显式提供生命周期 Scope。
 
-Effect.install 在入口检查宿主 PRESENT、输入 Scope 可用性与 expiration；Initial.expiration 省略时为 INFINITE。登记实例及 Lifetime owner／显式依赖后调用 onInstall，再重读当前实例；零有效时长或已到期的实例通过 Lifetime 结束，不进入 onEnable／onTick／onDisable。回调可提交新的时间状态，后继使用最新结果；准备启用实例的生效协调同样先处理到期。后续绑定使用 Lifetime.bind，由该入口检查两端资格与 DAG；owner 与显式 scopes 统一保存在 Lifetime 关系图。setExpiration 在写回入口校验时间状态。私有 replaceEffect(battle, unit, self) 信任已取得且配对的完整对象，只提交写回，不再次查找或验证存在性；updateLifecycle 用 Lifetime.available 检查自身及全部上游资格。Effects.replace 信任 Core 提供的 Ref／ID／host／Definition 配对，读取当前槽位以保留缺失实例及同引用时的 no-op，不重复校验身份。Effects.add 保留 id === nextId 的登记约束，身份直接递增；get(ref) 识别宿主，get(id, definition) 按 Definition 对象身份恢复类型。完整 Unit 更新或内容程序返回后，后继业务按最新 battle 重读；这与重复校验同一输入属于不同职责。
+Effect 的重复施加与剩余时间契约已确定、待接入，详见 [Effect](effect.md)。install 在入口检查宿主 PRESENT、输入 Scope 可用性与 expiration；Initial.expiration 省略时为 INFINITE。先确定拒绝、合并或新建；新建才登记实例及 Lifetime owner／显式依赖并调用 onInstall，再重读当前实例与时间。零时长的新实例执行安装业务后结束，不进入 onEnable／onTick／onDisable。回调可提交新的时间状态，后继使用最新结果；准备启用实例的生效协调同样先结算到期。后续绑定使用 Lifetime.bind，由该入口检查两端资格与 DAG；owner 与显式 scopes 统一保存在 Lifetime 关系图。setExpiration 在写回入口校验时间状态。私有 replaceEffect(battle, unit, self) 信任已取得且配对的完整对象，只提交写回，不再次查找或验证存在性；updateLifecycle 用 Lifetime.available 检查自身及全部上游资格。Effects.replace 信任 Core 提供的 Ref／ID／host／Definition 配对，读取当前槽位以保留缺失实例及同引用时的 no-op，不重复校验身份。Effects.add 保留 id === nextId 的登记约束，身份直接递增；get(ref) 识别宿主，get(id, definition) 按 Definition 对象身份恢复类型。完整 Unit 更新或内容程序返回后，后继业务按最新 battle 重读；这与重复校验同一输入属于不同职责。
 
-`Effect.setExpiration<T>(battle, ref: Ref<T>, expiration: NoInfer<T["expiration"]>)` 返回 BattleState，T 约束为 Effect，Ref 保留实例的具体泛型与时间类型，只替换时间状态，不修改 Lifetime 图或当前 lifecycle。Expiration 为 `DURATION { elapsed, total, rate }`、`DEADLINE { tick }` 或 `INFINITE`；普通 Effect 可以切换时间类型，Burst 的 Ref 只接受 DURATION。DURATION 三项在入口校验为有限非负数，tick 校验为非负安全整数，内部计算信任这些约束。非法输入及缺失宿主／实例均抛出 RangeError；同一 expiration 引用返回原 BattleState。ENDING 可写入但不会复活，Setter 不额外推进或立即结束。
+install 新建返回新实例 Ref，合并或续期返回保留实例 Ref，拒绝返回 null，接续状态使用同一 Result 协议。合并保留旧 Definition 与私有状态，返回类型不能直接沿用本次传入 Definition 的泛型证明。
 
-Effect.advance 对 ACTIVE 实例先采样旧 Expiration、自动推进并发布 DURATION，再调用 `onTick(battle, self, previousExpiration)`，最后重读当前实例与时间状态判断结束。rate 为零仍调用 onTick；INACTIVE 不推进有效时长、不调用 onTick，绝对期限仍会到期，INFINITE 无到期。回调通过 setExpiration 提交结果值，可以续期或转换类型。第三参数是本次推进的历史样本，不保存为另一份持久状态。完整时间与必要回归语义见 [Effect 时间推进](effect.md#6-时间推进)。
+安装重载在无 group／DEFAULT／UNIQUE 时保留 `OrdinaryEffect<S, H>`；STACK 擦除 S／H，但保留 END／DECAY 分支；EXTEND／EXTEND_TIME 返回普通 Effect 的基础 Ref。同组政策一致包含 expirationPolicy。DECAY 重载的 Initial.expiration 限于 DecayExpiration，其他分支使用 Expiration；这些分支均可省略并默认 INFINITE。具体重载返回表见 [Effect 公开 API](effect.md#公开-api)。
+
+`Effect.decreaseStack(battle, ref, amount): BattleState` 要求 STACK 实例的精确 Ref。仍有层数时先发布，再同步调用 STACK Definition 的 `onStackChange(battle, self, previous)`，previous 是旧实际层数，self 包含新层数；耗尽正常结束。变层回调同样用于叠加与自然衰减，满层仅刷新时间不触发；初次创建与最终结束使用各自生命周期。手动减层保留时间，自然 DECAY 在回调前一并重置 remaining。内容通过完整减层操作修改事实，回调执行具体业务。
+
+`Effect.setExpiration<T>(battle, ref: Ref<T>, expiration: NoInfer<T["expiration"]>)` 返回 BattleState，T 约束为 Effect，Ref 保留实例的具体泛型与时间类型，只替换时间状态，不修改 Lifetime 图或当前 lifecycle。Expiration 为 `DURATION { duration, remaining, rate }`、`DEADLINE { tick }` 或 `INFINITE`；普通 Effect 可以切换时间类型，Burst 的 Ref 只接受 DURATION，有限逐层衰减也使用 DURATION。DURATION 三项在入口校验为有限非负数，remaining 可以超过 duration；tick 校验为非负安全整数，内部计算信任这些约束。非法输入及缺失宿主／实例均抛出 RangeError；同一 expiration 引用返回原 BattleState。ENDING 可写入但不会复活，Setter 不额外推进或立即结算到期。
+
+手动续期或减时使用 setExpiration 替换 remaining，保留 duration 与 rate；写为零也在安装、生效协调或 advance 的既定检查点结算。
+
+Effect.advance 对 ACTIVE／INACTIVE 实例先采样旧 Expiration、自动扣时并发布 DURATION，仅 ACTIVE 调用 `onTick(battle, self, previousExpiration)`，最后重读当前实例与时间状态结算到期。rate 为零仍允许 ACTIVE 的 onTick 手动推进；绝对期限仍会到期，INFINITE 无自动到期。普通实例到期结束，STACK 按 END／DECAY 政策结束或减层重启。回调通过 setExpiration 提交结果值，可以续期或转换类型。第三参数是本次推进的历史样本，不保存为另一份持久状态。完整时间与必要回归语义见 [Effect 时间推进](effect.md#6-时间推进)。
 
 Action 的 `setExecutionState(battle, ref, nextState)` 通过 Execution Ref 只设置本轮 execution.state，缺失时抛出 RangeError，execution 为 ENDING 时抛出 TypeError。getAction、start、setState、setCooldown、resetCooldown 和 clearCooldown 使用持久 Action Ref；setState 和 setCooldown 分别设置持久 state／Cooldown，允许结束程序更新这些持久事实。getExecution、advance 和 cancel 使用本轮 Execution Ref；refreshCooldowns 仍按宿主批量刷新。各操作在字段引用未变时返回原 BattleState；完整聚合替换由 Core 内部完成。
 
@@ -402,5 +414,5 @@ Projectile 的 update 接收 `{ position?, state? }` 结果值，并从最新 ba
 
 Lifetime 使用各领域共享静态描述符与 Ref 配对，scope(lifetime, ref) 不读取 battle；getRef 通过匹配描述符恢复对应 Ref，available 查询 Pending 和当前领域资格。Action 绑定本轮 Execution，Skill 绑定本轮 Activation，标准 Burst 使用 Effect 的精确运行身份与描述符，不绑定持久配置。kind 与完整数值地址确定身份，不新增全局 ID 或动态注册器。BattleState.lifetime.dependencies 是 owner 与显式 scopes 的唯一关系权威；各领域创建／结束自行登记／注销，不由 Unit.update 或 replace 扫描投影。createBattleState 从空图开始，初始 Unit 必须经完整创建与 add 入场。直接子候选按边登记顺序，更新同一边保序、解绑后重绑追加。ENDING 关系保留到物理移除，Pending.parents 保留到完整 Finalize 返回。
 
-Lifetime 的 begin 是纯值转换，replace 接收完整结果值；prepare／finalize 是 Core 操作适配，Content 使用所属领域的 Definition 回调。Effect 的 onInstall／onEnable／onDisable 接收 `(battle, self: Effect<S, H>)`，onTick 额外接收本次推进前的 Expiration，onEnd 额外接收独立 reason。运行器不解释私有 state；私有写回通过 Typed Ref 与 NoInfer 保持类型配对。
+Lifetime 的 begin 是纯值转换，replace 接收完整结果值；prepare／finalize 是 Core 操作适配，Content 使用所属领域的 Definition 回调。Effect 的 onInstall／onEnable／onDisable 接收 `(battle, self: Self)`，Self 为对应 Definition 分支的实例类型；onTick.previous 为本次推进前的 `Self["expiration"]`，onStackChange.previous 为旧实际层数，onEnd 额外接收独立 reason。运行器不解释私有 state；私有写回通过 Typed Ref 与 NoInfer 保持类型配对。
 

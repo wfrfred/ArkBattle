@@ -85,7 +85,6 @@ calculateDamage(battle, request) → Result<CalculatedDamage | undefined>
 applyDamage(request, calculation) → Result<DamageOutcome>
 calculateHealing(battle, request) → Result<CalculatedHealing | undefined>
 applyHealing(request, calculation) → Result<HealingOutcome>
-install(battle, hostRef, definition, initial) → Result<Ref<Effect<S, H>> | null>
 effects.setState(battle, effectRef, nextState) → BattleState
 actions.start(battle, actionRef) → Result<Ref<Execution<P, E>> | null>
 skills.activate(battle, skillRef) → Result<Ref<Activation<S, A>> | null>
@@ -96,6 +95,8 @@ actions.advance(battle, executionRef) → BattleState
 ```
 
 `BattleState` 是不可变数据值。只需要返回状态的操作可以直接返回 BattleState；报告和 outcome 按各领域的真实需求决定。完整接口分类见[接口约定](api-conventions.md)；上面的 actions.advance 只由 Runtime 调度。Action.start 完成执行登记和冷却重置；Runtime 推进入口快照中的执行，并在自动选择启动成功后显式首次推进。内容直接或嵌套启动的执行按登记相对调度快照的时点，等待本次或后续调度推进。
+
+Effect.install 同样使用 Result，新建返回新实例 Ref，合并或续期返回保留实例 Ref，普通拒绝返回 null。返回引用保持所指实例实际的 Definition／私有状态类型关联，合并不把旧实例当作传入 Definition 的实例。
 
 Hook、生命周期和具体装备／技能程序同样遵守显式状态返回。它们可以调用 Damage、Healing、Effect、Skill 等纯结算函数，但不通过全局变量或捕获的旧执行上下文隐式写回。
 
@@ -233,7 +234,7 @@ candidates 每次派发调用一次并复制 ID 序列，顺序由领域决定�
 
 通用条目的 set／remove 位于 common/collection/entries.ts，按 ID 登记、替换与撤销，保留顺序与结构共享；Hook 模块提供类型化集合和 dispatch。领域持有登记集合，定义节点、排序、资格与停止条件。Effect 与 [Projectile](projectile.md) 的 Definition 回调直接接收完整 self；异构容器内部擦除私有参数，Core 调用同一实例自身 Definition 的程序，不解释未知 state。Definition 程序与本次 Hook 派发的固定 Context 分别定义。
 
-Unit 持有不可变 Effects 容器，内部 Store<Id, Effect<any, any>> 保存异构完整实例及 ID 进度。普通 get(id)／values() 返回默认 object／object 的完整 Effect，包含 state 与原 Definition；精确 Ref／Definition 查询保留已有类型证明。values／keys 返回绑定容器版本的 Query；Core 同样使用 get(id) 返回的默认 object 完整实例调用自身 Definition。Core 通过实例自身已配对的 Definition 执行程序，不解释未知 state 或 H；跨完整操作后仍读取最新实例。真实所有权保护结束中的宿主与存储；Departure 等明确历史载荷按本领域业务输入保存。
+Unit 持有不可变 Effects 容器，内部 Store<Id, Effect<any, any>> 保存异构完整实例及 ID 进度。普通 get(id)／values() 返回默认 object／object 的完整 Effect，包含 state 与原 Definition；精确 Ref／Definition 查询保留私有类型、STACK 与政策分支。values／keys 返回绑定容器版本的 Query；Core 取得完整实例，在统一的受信任边界恢复其与自身 Definition 程序的配对后执行，不依赖嵌套判别自动推导联合回调，也不解释未知 state 或 H。存储容器仍不派发业务；跨完整操作后仍读取最新实例。真实所有权保护结束中的宿主与存储；Departure 等明确历史载荷按本领域业务输入保存。
 
 Unit.initialize 始终创建空 Effects；初始内容在宿主登记后，通过 enter 键下的 Unit Hook 调用 install。各领域在完整创建／启动与结束操作中登记／注销关系，普通 Unit update／replace 只发布状态与结构索引。createBattleState 建立空 Lifetime 图，不扫描预置 Unit；初始对象通过完整 add 入场。Effect.source 仅以 `Ref<Unit> | null` 表达施加者，来源存活与生命周期 Scope 分开，来源离场本身不终结 Effect。
 
@@ -247,9 +248,9 @@ Projectile 的异构容器归 projectile/projectiles.ts，状态仍由 Battlefie
 
 self 是输入版本的值。嵌套调用返回后，遵守 [状态接续后的读取与续执行](#状态接续后的读取与续执行)：实时事实从返回 State 重新查询，明确采样与历史载荷保留。不使用动态 getter 偷偷追踪一个可变工作对象，也不以旧整份 Unit 覆盖新版本。
 
-安装先登记 INSTALLING，执行 onInstall 并接续其返回值，再读取当前实例；零时长或已到期时直接请求结束，不启用、不执行 onTick 或 onDisable。未到期的实例再决定是否 ACTIVE。结束请求发布 ENDING，Prepare 撤销已启用的输出、协调 Group 并展开依赖请求；Finalize 等全部真实依赖者完整完成，再调用结束程序与移除。关系权威归 Lifetime 图，包含各领域登记的 owner 与显式 scopes；Effect 独立保存 expiration，不重复保存依赖。合并图保持 DAG，兄弟按边登记顺序请求；source 只表达来源。
+Effect 安装先确定重复施加结果：拒绝或更新保留实例，或进入新建分支。新建先登记 INSTALLING 与 Lifetime，再执行 onInstall 并接续其返回值；重读当前实例后结算到期，零时长新实例执行安装业务后结束，不启用、不执行 onTick 或 onDisable。继续存在的实例再决定是否 ACTIVE。结束请求发布 ENDING，Prepare 撤销已启用的输出、协调 Group 并展开依赖请求；Finalize 等全部真实依赖者完整完成，再调用结束程序与移除。关系权威归 Lifetime 图，包含各领域登记的 owner 与显式 scopes；Effect 独立保存 expiration，不重复保存依赖。合并图保持 DAG，兄弟按边登记顺序请求；source 只表达来源。
 
-Effect 的 expiration 选择 DURATION、DEADLINE、INFINITE 之一。ACTIVE 实例先自动推进并发布 DURATION，再调用 onTick，第三参数保存本次推进前的 expiration；回调后重读最新时间状态判断结束。rate 为零仍调用 onTick，INACTIVE 暂停有效时长且不调用 onTick；DEADLINE 的绝对期限不暂停，INFINITE 不因时间到期。时间推进与到期判断归 Effect，Lifetime 只处理收到结束请求后的依赖析构，详见 [Effect 时间推进](effect.md#6-时间推进)。
+重复施加与剩余时间契约已确定、待接入。Effect 的 expiration 选择 DURATION、DEADLINE、INFINITE 之一；DURATION 保存 duration、remaining、rate。ACTIVE／INACTIVE 均先自动扣时并发布，仅 ACTIVE 调用 onTick，第三参数保存本次推进前的 expiration；回调后重读最新时间状态结算到期。rate 为零允许内容手动推进；DEADLINE 的绝对期限不暂停，INFINITE 不因时间到期。STACK 到期可以减层并重启一轮计时，只有结束实例才进入 Lifetime 析构。详见 [Effect 时间推进](effect.md#6-时间推进)。
 
 已经进入的内容程序按自身控制流继续，明确采样载荷可保留为本次函数局部值。需要槽位释放或最终通知的后继业务使用领域完成时点，不能从嵌套 end 返回推断 Finalize 已完成。Pending 只保存当前同步结算工作，不保存通用最后载荷表、恢复调度或跨 Tick 删除队列。
 

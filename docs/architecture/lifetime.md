@@ -34,7 +34,7 @@ Scope 公开 type: "LIFETIME"、kind 和只读数值 address，描述符／Ref �
 
 available 沿依赖图的父边检查目标自身及全部上游（实际 owner 与显式 Scope）：任一节点缺失、已 Pending 或结束中，目标均不可接纳新依赖。检查使用当前 BattleState；父对象已开始结束、子对象尚未收到结束请求的发布／Prepare 窗口也适用。Unit 要求 PRESENT，Action 要求 RUNNING，Skill 要求 ACTIVE；Effect（包括标准 Burst）的 INSTALLING／INACTIVE 和 Mechanism 的 INACTIVE 仍可成为依赖目标。HP、空间在场和 source 是否存活不属于这项判断。
 
-Scope 只表达 Lifetime 依赖。Effect 的 expiration 独立选择 DURATION、DEADLINE、INFINITE 之一，时间推进与到期判断由 Effect 执行，再通过正常结束请求进入 Lifetime；依赖图不保存时间。source 和普通私有 Ref 不自动产生关系。安装入口检查宿主与所给 Scope 的可用性；后续 bind 入口检查两端资格及合并图的闭环，内部传播与析构信任这些约束。
+Scope 只表达 Lifetime 依赖。Effect 的 expiration 独立选择 DURATION、DEADLINE、INFINITE 之一，时间推进与到期结算由 Effect 执行；STACK 可以减层重启计时，需要结束实例时才通过正常结束请求进入 Lifetime。重复施加与计时契约的接入状态见 [Effect](effect.md)。依赖图不保存时间，source 和普通私有 Ref 不自动产生关系。安装入口检查宿主与所给 Scope 的可用性；后续 bind 入口检查两端资格及合并图的闭环，内部传播与析构信任这些约束。
 
 公共导出不扩大调用权限：Content 可以构造 Scope 并调用已有业务入口；Action 的正常完成与推进仍归相应内容协议和调度器，不因描述符可见而允许任意执行完整实例写回。
 
