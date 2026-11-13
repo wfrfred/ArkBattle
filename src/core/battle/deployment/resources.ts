@@ -70,6 +70,7 @@ export function addCard<S extends object>(
     const value: Card<S> = {
         id,
         definition,
+        deployedUnits: [],
         unitHooks: definition.card.unitHooks,
         rules: [],
         state: initialized.value,

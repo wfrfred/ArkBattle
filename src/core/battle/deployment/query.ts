@@ -5,7 +5,8 @@ import { at } from "../../battlefield/occupancy.js";
 import { get as getTile } from "../../battlefield/map/map.js";
 import { hasDeployable } from "../../unit/capability/deployable/capability.js";
 import type { State as BattleState } from "../state.js";
-import type { Card } from "./card/card.js";
+import type { Unit } from "../../unit/unit.js";
+import { ref as cardRef, type Card } from "./card/card.js";
 import { get } from "./card/query.js";
 import { resolveCost } from "./card/state.js";
 import type { Rule as CardRule } from "./card/rule.js";
@@ -19,6 +20,14 @@ import {
 } from "./request.js";
 import { advanceResources } from "./resources.js";
 import { Hooks } from "../../hook.js";
+
+export function cardForUnit(battle: BattleState, reference: Ref<Unit>): Ref<Card> | null {
+    const self = battle.deployment.cards.find((card) =>
+        card.deployedUnits.some((unit) => unit.id === reference.id),
+    );
+
+    return self === undefined ? null : cardRef(self);
+}
 
 export function activeCount(battle: BattleState, reference: Ref<Card<any>>): number {
     let count = 0;

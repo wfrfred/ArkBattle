@@ -1,6 +1,9 @@
 import * as contribution from "../../../unit/contribution/contribution.js";
 import * as entries from "../../../common/collection/entries.js";
 import * as attribute from "../../../unit/contribution/attribute.js";
+import type { Ref } from "../../../common/ref.js";
+import type { Unit } from "../../../unit/unit.js";
+import type { Deployable } from "../../../unit/capability/deployable/capability.js";
 import type { Card, Clock, TimerTarget } from "./card.js";
 
 export function resolveBaseCost(card: Card<any>): number {
@@ -47,6 +50,10 @@ function createClock(tick: number, durationTicks: number): Clock {
 
 export function consume<T extends Card<any>>(card: T, count = 1): T {
     return count === 0 ? card : { ...card, stock: card.stock - count };
+}
+
+export function recordDeployment<T extends Card<any>>(card: T, unit: Ref<Unit & Deployable>): T {
+    return { ...card, deployedUnits: [...card.deployedUnits, unit] };
 }
 
 export function incrementCostStage<T extends Card<any>>(card: T): T {

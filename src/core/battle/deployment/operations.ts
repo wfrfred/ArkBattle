@@ -1,5 +1,6 @@
 import type { Ref } from "../../common/ref.js";
 import type { Unit } from "../../unit/unit.js";
+import { ref as unitRef } from "../../unit/query.js";
 import type { Deployable } from "../../unit/capability/deployable/capability.js";
 import { setDeployment, canRetreat, retreat } from "../../unit/capability/deployable/operations.js";
 import type { Command } from "../contract.js";
@@ -129,7 +130,9 @@ export function deploy<T extends Card<any>>(
         slots: request.quote.slots,
         refund,
     });
-    battle = add(initialized.state, unit);
+    battle = initialized.state;
+    battle = replaceCard(battle, card.recordDeployment(get(battle, request.card)!, unitRef(unit)));
+    battle = add(battle, unit);
 
     return {
         state: battle,

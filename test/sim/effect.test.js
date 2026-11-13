@@ -496,20 +496,31 @@ test("source grouping follows persistent Cards across redeployment and keeps Car
     const firstSource = units.ref(get(firstUnit.state, firstUnit.value.unitId));
     const installed = effects.install(firstUnit.state, owner, definition, { source: firstSource });
     state = deployment.retreat(installed.state, firstSource);
+    assert.equal(units.get(state, firstSource), undefined);
+    assert.equal(effects.install(state, owner, definition, { source: firstSource }).value, null);
+    state = effects.end(state, installed.value);
+    const delayed = {
+        ...definition,
+        id: "delayed-card-source",
+        group: { ...definition.group, id: "delayed-card-source" },
+    };
+    const lateInstall = effects.install(state, owner, delayed, { source: firstSource });
+    state = lateInstall.state;
+    assert.notEqual(lateInstall.value, null);
     state = deployment.advance(state);
     const redeployed = deployment.deploy(state, deployment.createRequest(state, a, [0, 0]));
     state = redeployed.state;
     assert.equal(redeployed.value.type, "DEPLOYED");
     const nextSource = units.ref(get(state, redeployed.value.unitId));
     assert.notEqual(nextSource.id, firstSource.id);
-    assert.equal(effects.install(state, owner, definition, { source: nextSource }).value, null);
+    assert.equal(effects.install(state, owner, delayed, { source: nextSource }).value, null);
     const otherUnit = deployment.deploy(state, deployment.createRequest(state, b, [0, 1]));
-    const other = effects.install(otherUnit.state, owner, definition, {
+    const other = effects.install(otherUnit.state, owner, delayed, {
         source: units.ref(get(otherUnit.state, otherUnit.value.unitId)),
     });
     assert.notEqual(other.value, null);
     assert.equal(owner.id, a.id);
-    const sameNumberUnit = effects.install(other.state, owner, definition, { source: owner });
+    const sameNumberUnit = effects.install(other.state, owner, delayed, { source: owner });
     assert.notEqual(sameNumberUnit.value, null);
-    assert.equal(effects.get(sameNumberUnit.state, installed.value).source, firstSource);
+    assert.equal(effects.get(sameNumberUnit.state, lateInstall.value).source, firstSource);
 });

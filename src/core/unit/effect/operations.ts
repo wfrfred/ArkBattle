@@ -1,10 +1,10 @@
 import { replace as replaceUnits, lifetime as unitLifetime } from "../../battle/unit.js";
+import { cardForUnit } from "../../battle/deployment/query.js";
 import { type State as BattleState, type Result } from "../../battle/state.js";
 import type { Unit } from "../unit.js";
 import type { Ref } from "../../common/ref.js";
 import { assertNonnegativeSafeInteger } from "../../common/assert.js";
 import * as units from "../query.js";
-import { hasDeployable } from "../capability/deployable/capability.js";
 import {
     available,
     create,
@@ -316,8 +316,7 @@ function resolveGroupSource(
         return null;
     }
 
-    const unit = units.get(battle, source);
-    const card = unit !== undefined && hasDeployable(unit) ? unit.deployable.card : null;
+    const card = cardForUnit(battle, source);
 
     return card === null ? { type: "UNIT", id: source.id } : { type: "CARD", id: card.id };
 }

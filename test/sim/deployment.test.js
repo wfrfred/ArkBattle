@@ -96,6 +96,7 @@ test("preview, evaluation and deployment use one request; rejection consumes not
                     assert.equal(cards.get(current, card).stock, 0);
                     assert.equal(current.deployment.usedSlots, 1);
                     assert.equal(get(current, self.id).deployable.card.id, card.id);
+                    assert.deepEqual(deployment.cardForUnit(current, units.ref(self)), card);
                     return { state: current, value: undefined };
                 },
             }),
@@ -151,8 +152,11 @@ test("retreat settles refund and the persistent Card before departure; confirmed
     });
     const card = cards.ref([...cards.all(state)][0]);
     const first = deployment.deploy(state, deployment.createRequest(state, card, [1, 2]));
-    state = deployment.retreat(first.state, units.ref(get(first.state, first.value.unitId)));
+    const firstUnit = units.ref(get(first.state, first.value.unitId));
+    state = deployment.retreat(first.state, firstUnit);
     assert.equal(get(state, first.value.unitId), undefined);
+    assert.deepEqual(deployment.cardForUnit(state, firstUnit), card);
+    assert.equal(deployment.activeCount(state, card), 0);
     assert.equal(state.deployment.usedSlots, 0);
     assert.deepEqual(departures, [{ reason: "RETREAT", dp: 45, stage: 1, pending: 1, slots: 0 }]);
 
@@ -162,6 +166,9 @@ test("retreat settles refund and the persistent Card before departure; confirmed
     state = second.state;
     assert.notEqual(second.value.unitId, first.value.unitId);
     assert.equal(get(state, second.value.unitId).deployable.card.id, card.id);
+    const secondUnit = units.ref(get(state, second.value.unitId));
+    assert.deepEqual(deployment.cardForUnit(state, firstUnit), card);
+    assert.equal(deployment.activeCount(state, card), 1);
     assert.equal(state.deployment.dp, 30);
     const request = {
         source: null,
@@ -170,6 +177,8 @@ test("retreat settles refund and the persistent Card before departure; confirmed
     };
     state = damage.applyDamage(request, damage.calculateDamage(state, request)).state;
     assert.equal(get(state, second.value.unitId), undefined);
+    assert.deepEqual(deployment.cardForUnit(state, secondUnit), card);
+    assert.equal(deployment.activeCount(state, card), 0);
     assert.equal(state.deployment.usedSlots, 0);
     assert.deepEqual(departures[1], { reason: "DEATH", dp: 30, stage: 2, pending: 1, slots: 0 });
 });

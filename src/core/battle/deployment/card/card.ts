@@ -1,6 +1,9 @@
 import type { Identified, Ref } from "../../../common/ref.js";
-import type { Definition as BaseDefinition } from "../../../unit/unit.js";
-import type { Definition as DeployableDefinition } from "../../../unit/capability/deployable/capability.js";
+import type { Definition as BaseDefinition, Unit } from "../../../unit/unit.js";
+import type {
+    Definition as DeployableDefinition,
+    Deployable,
+} from "../../../unit/capability/deployable/capability.js";
 import type { Definition as OccupancyDefinition } from "../../../unit/capability/occupancy/capability.js";
 import type { Contribution } from "../../../unit/contribution/contribution.js";
 import type { Modifier } from "../../../unit/contribution/attribute.js";
@@ -33,6 +36,7 @@ export type TimerTarget = "COOLDOWN" | "RECOVERY";
 export interface Card<S extends object = object> extends Identified<{ readonly id: Id }> {
     readonly id: Id;
     readonly definition: UnitDefinition<S>;
+    readonly deployedUnits: readonly Ref<Unit & Deployable>[];
     readonly unitHooks: Hooks;
     readonly rules: readonly Rule[];
     readonly state: S;

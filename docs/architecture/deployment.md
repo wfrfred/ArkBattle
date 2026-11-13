@@ -22,7 +22,7 @@ Deployment 完成一次部署的资格判断、资源消费、实例创建和部
 | 实例身份、真实位置、PRESENT／LEAVING | Unit |
 | 登记地块、摆放朝向、Support／乘员业务配对 | Occupancy |
 | 当前 DP、回复进度、部署位账户 usedSlots | Deployment |
-| 库存、计时、费用阶段、私有 state | Card |
+| 库存、计时、费用阶段、私有 state、曾成功部署的 Unit 引用 | Card |
 | 来源 Card、本次 COST、占用额度、退费依据、撤退规则 | Deployable |
 
 Capability 初始化时登记所需的普通生命周期程序，完整领域操作负责自身结算；Unit 负责通用登记、发布和已登记程序的执行。
@@ -69,7 +69,11 @@ Card 创建为 addCard(battle, definition)，Battle 输入的 cards 保存完整
 
 Card 的完整 Definition<S> 在内容声明处建立 initialize 与 onTick 的类型配对；Deployment.Input 按数组各项保留 S，Runtime 在进入内部异构执行后才擦除私有状态类型。
 
-实例保留 definition、state、当前 stock、cooldown、recovery、costStage、贡献、动态 rules 和 unitHooks；固定上限从 Definition 读取。unitHooks 使用[统一 Hooks 集合](hook.md)，注入以后部署的实例，通过 setUnitHook／removeUnitHook 按类型化键与 ID 登记、替换和移除。Card 的修改不追溯改变已创建 Unit；这些实例仍可独立通过通用 Hook Change 修改自身登记。
+实例保留 definition、state、当前 stock、cooldown、recovery、costStage、贡献、动态 rules 和 unitHooks；固定上限从 Definition 读取。deployedUnits 保存本场曾成功部署的 `Ref<Unit & Deployable>`，不保存历史 Unit 对象。Deployment 在完整 Unit 初始化后、add 与任何 Enter Hook 之前，接续最新 Card 登记本次引用；拒绝部署不登记。Unit 撤退、死亡或其他离场不删除历史，重新部署与同卡多实例继续追加。
+
+`cardForUnit(battle, source): Ref<Card> | null` 由 Deployment 根据 Card 的部署历史查询归属，来源 Unit 注销后仍可查询；没有对应记录时返回 null。历史引用不表示 Unit 仍在场，activeCount 继续按当前登记实例计算，不使用 deployedUnits 的数量。
+
+unitHooks 使用[统一 Hooks 集合](hook.md)，注入以后部署的实例，通过 setUnitHook／removeUnitHook 按类型化键与 ID 登记、替换和移除。Card 的修改不追溯改变已创建 Unit；这些实例仍可独立通过通用 Hook Change 修改自身登记。
 
 setState 接收计算后的状态值。普通 get 返回默认 object 私有状态，精确 Ref 或已知 Definition 查询保留具体私有类型；any 用于 Core 异构边界或泛型约束。activeCount(battle, Ref<Card<any>>) 仅按来源身份统计当前场上实例，接纳带具体私有状态的 Card Ref，不读取或返回其私有状态。
 
