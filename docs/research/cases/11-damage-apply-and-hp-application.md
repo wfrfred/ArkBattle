@@ -1,6 +1,6 @@
 # Damage Apply 与 HP Application 机制时序对照
 
-整理日期：2026-10-17。本文将客户端证据、PRTS 说明与 Stronghold 的设计选择分开记录，不实现接口。项目已确认的五个 Apply 时点和未定的 HP Application 工作值见 [Vitality / Damage 设计](../../architecture/vitality.md#3-apply-的结算时点)。
+整理日期：2026-10-17。本文将客户端证据、PRTS 说明与 ArkBattle 的设计选择分开记录，不实现接口。当前普通 Calculate／Apply、HP 资源提交与死亡顺序见 [Vitality / Damage 设计](../../architecture/vitality.md)；特殊生命干预协议仍延期。本页保留各次原生核对的证据边界。
 
 ## 1. 证据分层与边界
 
@@ -8,14 +8,14 @@
 | --- | --- | --- |
 | N | [damage-apply-20261017.json](../evidence/damage-apply-20261017/records.json) 与补充的 [hp-application-combinations-20261017.json](../evidence/hp-application-combinations-20261017/records.json) 中的本机原生方法与匹配 Buff 模板 | 所选普通原生分支的调用、判断及模板动作顺序；没有运行游戏或验证 XLua 热更新。 |
 | W | 下文直接链接的 PRTS 机制或角色说明 | Wiki 所述的行为与时点；本轮未核对相应角色模板／原生分支的项目不标为 N。 |
-| P | 用户已确认的 [Vitality 设计](../../architecture/vitality.md)、[公共 Hook 契约](../../architecture/functional-core.md#6-hook-和生命周期的纯契约)与[离场契约](../../architecture/deployment.md#离场清理的偏序) | Stronghold 选择的语义；不作为客户端事实。 |
+| P | 用户已确认的 [Vitality 设计](../../architecture/vitality.md)、[公共 Hook 契约](../../architecture/functional-core.md#6-hook-和生命周期的纯契约)与[离场契约](../../architecture/deployment.md#离场清理的偏序) | ArkBattle 选择的语义；不作为客户端事实。 |
 | 未定 | 尚缺足以判断的证据或尚未选择项目政策 | 不由当前测试、方法名或其他效果的类似描述补足。 |
 
 N 的输入版本与哈希保存在证据文件中；所选 DLL SHA256 为 `583b04ff4d1b1a4b35eaf09d77d936408c25447c9e345ef0463d814b6a123fc5`。本轮沿用该证据，不宣称完成所有生命机制或运行版本兼容验证。旧案例 03 的项目 Resources／Work 与祖先候选继承描述已被后续架构替代，不能反向覆盖 P。
 
 ## 2. 接收与伤判
 
-| 机制 | 客户端静态确认（N） | PRTS 说明（W） | Stronghold 政策／待定 | 可观测区分 |
+| 机制 | 客户端静态确认（N） | PRTS 说明（W） | ArkBattle 政策／待定 | 可观测区分 |
 | --- | --- | --- | --- | --- |
 | 初始零伤害 | get_isCancelled 包含零值判定；普通 ApplyModifier 在接收前拒绝已取消输入。 | 本表不据其他零伤害描述扩展此路径。 | Calculate 最终零输出在 Apply 入口拒绝，不进入本笔接收；零实际变化允许成功，与后来抵挡或取消分别处理。 | 是否回复 SP、触发受击响应。 |
 | 无敌 | OnTakeDamage 普通分支在 SP 检查前请求取消，随后存在 Buff 接收派发；不能由此概括全部无敌／忽略无敌路径。 | [特殊机制](https://prts.wiki/w/特殊机制)描述无敌及特殊绕过条件。 | 不将无敌直接等同于所有接收通知都未发生；具体参与资格与例外尚待核对。 | SP、计数、反伤是否发生。 |
@@ -32,18 +32,18 @@ N 的输入版本与哈希保存在证据文件中；所选 DLL SHA256 为 `583b
 
 ## 3. 生命应用与致命干预
 
-| 机制 | 客户端静态确认（N） | PRTS 说明（W） | Stronghold 政策／待定 | 可观测区分 |
+| 机制 | 客户端静态确认（N） | PRTS 说明（W） | ArkBattle 政策／待定 | 可观测区分 |
 | --- | --- | --- | --- | --- |
 | 每次只减少 1 HP | 本轮未完整核对小说卷轴的具体模板与 setter 组合。 | [特殊机制](https://prts.wiki/w/特殊机制)区分原伤害量与实际只降低 1 HP。 | HP Application 必须允许伤害数值与生命变化不同；工作值与报告未定。 | 受伤次数与按伤害量计算的其他效果。 |
 | 非致命与提前致命预判 | 当前 metadata 的 DAMAGE_IS_UNDEADABLE_THIS_TIME=8；普通 DoApplyModifier 在该标记下先将拟写 HP 限制为至少 1，再调用 set_hp，早于 setter 中的归零前回调。 | [衍生生命](https://prts.wiki/w/衍生生命)区分提前预判、非致命限制与归零前干预；其斯卡蒂示例存在下述当前模板冲突。 | 不由一次 candidateHp 推导所有致命机制的资格；具体组合另核对。 | 较早预判与实际尝试归零不是同一事件；非致命输入不会因此触发普通归零免死。 |
 | 不死与归零前干预 | SetHpInternal 中先存在归零前回调，后有不死处理；仅确认所选普通原生分支。 | [衍生生命](https://prts.wiki/w/衍生生命)给出相应顺序；部分保护会自行检查不死。 | 不写成所有机制共用的“不死优先于免死”，也不由该原生顺序规定项目必须复制同一调用结构。 | 是否消费保护、是否切形态与最终生命状态。 |
 | 多个普通免死 | ConsumeTrySetHpZeroModifier 自身拒绝已取消的归零请求，可配置已有不死时拒绝取得成功。Container 记录首个 consumer 后继续遍历；后续普通 Consume 自行失败。Post 的 IsConsumer 只允许成功者执行自己的后续。 | [特殊机制](https://prts.wiki/w/特殊机制)描述按优先级竞争、单次最多一个成功及成功后的后续。 | 普通免死的竞争只作用于该类业务；不自动包括不死、替身等。具体工作值未定。 | 一次伤害消费几个保护，谁执行后续；成功不等于停止整个派发。 |
 | 若叶睦与普通傀儡师 | 当前 makoto_tr 在归零前事件使用 _dontConsumeWhenUndeadable=false；surtr_t_2、skadi_e_muso 等模板为 true。 | [若叶睦](https://prts.wiki/w/睦)说明通常傀儡师与她在持有不死时的切换资格不同。 | 一项保护成立不能全局屏蔽其他致命干预；不将某个客户端节点或标记直接升级为项目统一竞争协议。 | 持有不死仍切替身、形态与持续状态。 |
-| HP 写入与成功通知 | DoApplyModifier 读取当时 HP；普通 SetHpInternal 先写 HP，再携带获胜 consumer 派发 Post，模板自行确认是否为成功者；普通 OnAppliedModifier 先通知目标，再通知来源 OnAfterOutputDamage。 | 不据“成功受到伤害后”文字推断所有死亡响应都已完成或都未开始。 | 五个时点已定；默认 HP 应用责任与普通免死成功归属分开。死亡通知的完整偏序待定。 | 回调治疗是否有效，能观察到哪些 HP／生命事实。 |
+| HP 写入与成功通知 | DoApplyModifier 读取当时 HP；普通 SetHpInternal 先写 HP，再携带获胜 consumer 派发 Post，模板自行确认是否为成功者；普通 OnAppliedModifier 先通知目标，再通知来源 OnAfterOutputDamage。 | 不据“成功受到伤害后”文字推断所有死亡响应都已完成或都未开始。 | 当前项目在目标／来源 Applied 后按最新 HP 确认死亡；特殊 HP 应用接管与普通免死成功归属的接口仍延期。此项目顺序不冒充原生顺序。 | 回调治疗是否有效，能观察到哪些 HP／生命事实。 |
 | 真实离场 | 本轮未穷尽原生死亡、复活与对象回收路径。 | 不从角色“被击倒”文案直接推导真实离场。 | 沿 P 的 LEAVING → 完整领域清理 → Unit 移除 → onLeave；生命保护成功不等于真实离场。 | 死亡触发、Effect 清理、依赖结束与旧实例是否还在。 |
-| 生命流失 | ApplyModifier 有跳过普通 Modifier 事件的原生路径；尚未穷尽各类流失与致命处理组合。 | [特殊机制](https://prts.wiki/w/特殊机制)列出不触发的普通伤害事件；[衍生生命](https://prts.wiki/w/衍生生命)仍讨论流失的致命预判。 | 两处说明的适用范围仍需核对，不能直接定成“跳过一切保护”或“走完整普通 Receiving”；输入与操作协议未定。 | 是否受盾、治疗、计数及致命保护影响。 |
+| 生命流失 | 2026-11-13 已补齐物理／法术／真实配置与公式、skip 接收、普通 HP setter；见第 6 节。 | [游戏数据基础](https://prts.wiki/w/游戏数据基础#伤害机制)说明物法流失仍受 DEF／RES；[衍生生命](https://prts.wiki/w/衍生生命)区分相关致命干预。 | 原生 skip 仍有专属接收、来源提交前和 setter 保护，不能概括成跳过一切保护或走完整普通 Receiving；项目尚未定生命流失操作协议。 | 防御公式、计算事件、护盾／SP 与致命保护是不同参与条件。 |
 
-2026-11-13 PRTS 复核：[游戏数据基础·伤害机制](https://prts.wiki/w/游戏数据基础#伤害机制)将生命流失说明为携带 SKIP_MODIFIER_EVENT 的伤害，默认类型为真实；物理流失仍受防御力影响，法术流失仍受法术抗性影响。数学公式与事件参与是两个维度，不能由跳过事件推导出跳过防御计算，也不能把所有生命流失直接等同于已确定数额的 HP 负增量。此项是社区规则说明，未新增客户端公式分支取证；各类流失与致命干预的组合仍按上表保留证据范围。
+2026-11-13 PRTS 复核：[游戏数据基础·伤害机制](https://prts.wiki/w/游戏数据基础#伤害机制)将生命流失说明为携带 SKIP_MODIFIER_EVENT 的伤害，默认类型为真实；物理流失仍受防御力影响，法术流失仍受法术抗性影响。数学公式与事件参与是两个维度，不能由跳过事件推导出跳过防御计算，也不能把所有生命流失直接等同于已确定数额的 HP 负增量。第 6 节已新增客户端公式分支与实际配置绑定；特殊生命机制的全部组合仍不在本轮已证范围。
 
 ## 4. HP Application 设计须回答的问题
 
@@ -81,8 +81,91 @@ N 的输入版本与哈希保存在证据文件中；所选 DLL SHA256 为 `583b
 
 普通免死本身也存在不同的应用政策。Consume 节点配置 _blockThisHpSet=true 时，保留给 setter 的本次 delta 为 0；false 时保留原变化，并在取消归零后至少保留 1。之后携带 consumer 派发 Post，模板确认自己成功后执行后续。当前 skadi_e_muso 采用 false，Post 安装恢复／属性效果并结束旧免死 Buff；这与先在 Receiving 治疗、再继续承受原伤害是两种不同顺序。项目需要保留这些可观测差异，不要求照搬客户端字段或统一全部致命干预。
 
-“前置治疗足够便不消耗免死”的推导限定于治疗发生在普通 DoApplyModifier 读取当前 HP 之前。如果治疗直接发生在 OnBeforeTrySetHpZero 回调中，当前普通 setter 并未承诺每个回调后都重算：未取消归零请求时沿用先前拟写值；取消后才读取当前 HP 并接续所保留的 delta。单纯治疗不能被视为已经改变这次待应用的生命变化。此项是静态控制流结论，尚未定位一个只治疗、不处理归零请求的真实内容组合；不据此给 Stronghold 选择覆盖治疗的政策。
+“前置治疗足够便不消耗免死”的推导限定于治疗发生在普通 DoApplyModifier 读取当前 HP 之前。如果治疗直接发生在 OnBeforeTrySetHpZero 回调中，当前普通 setter 并未承诺每个回调后都重算：未取消归零请求时沿用先前拟写值；取消后才读取当前 HP 并接续所保留的 delta。单纯治疗不能被视为已经改变这次待应用的生命变化。此项是静态控制流结论，尚未定位一个只治疗、不处理归零请求的真实内容组合；不据此给 ArkBattle 选择覆盖治疗的政策。
 
 ### 当前模板与旧 Wiki 案例的冲突
 
 [衍生生命](https://prts.wiki/w/衍生生命)把斯卡蒂 Y 模组举为 OnTakeDamage 提前致命预判的例子，但当前匹配模板 skadi_e_muso 在优先级 −3000 的事件 27 取得归零干预，事件 82 确认成功者并执行恢复／结束。本机普通 setter 也在 HP 提交后派发事件 82。本轮以这份静态证据描述当前模板，不继续用旧例证明“斯卡蒂复活甲会在非致命限制之前消耗”。其他真正的提前预判机制仍需分别定位，不能由这个旧例替代证据。
+
+## 6. 生命流失补核（2026-11-13）
+
+本轮补齐物理、法术、真实流失的配置与客户端应用链。证据为 [hp-loss-settlement-20261113](../evidence/hp-loss-settlement-20261113/README.md)：客户端 DLL `cf7956bf…`、metadata `e58fb854…`，关卡镜像固定为 `bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d`。这是配置绑定与普通原生分支的静态核对，没有运行游戏，也没有验证 XLua 是否替换这些方法。镜像与安装资源各自记录版本，不宣称二者来自同一次发布。
+
+### 6.1 实际配置与模板存在必须分开
+
+| 类型 | 实际配置链 | 本轮确认 |
+| --- | --- | --- |
+| 物理流失 | `act26side_tr02` 预置 `trap_118_rockfl`，黑板指定 `enemy_1343_ltrock`；同关卡实际 SPAWN `enemy_3005_lpeopl`。落石 Prefab 的 `Talents/HitLpeopl` 具有启用的 Talent、Aura 及受选验证器；Aura 登记 `ltrock_hit[lpeopl]`，验证器要求 `mark_neutral[lpeopl]`，居民 Prefab 的 `NeutralTag` 实际提供此标记。 | 模板事件 0 执行 `FixedValueDamage(PHYSICAL, skip=true)`，读取 `hit_value`；不是将普通物理伤害误叫流失。这里核对到关卡配置、Prefab 和动作节点绑定，未把关卡运行中的具体碰撞当作实测。 |
+| 法术流失 | `main_15-18` 实际 SPAWN `enemy_1565_mpprme`。其 Enemy 根组件的 `_modes` 引用 `FlyMode_Ray_P2`，该 Mode 的 `_generalAbilities` 引用名为 `Ray` 的能力。该 Mode 的 `FlyRay` 天赋登记 `enemy_mpprme_fly_ray`，其事件 32 同步触发 `Ray`；`Ray._activeBuffs` 登记 `enemy_mpprme_ray_damage`。 | 模板事件 2 执行 `AdvancedApplyDamage(MAGICAL, skip=true)`，比例键为 `ray_atk_scale`。这是已配置的实际模式／能力链；不声称本轮模拟了第 15 章模式切换机制。 |
+| 真实流失 | `act12side_09` 实际 SPAWN 无人爆破艇。`enemy_1164_bmbmot/Talents/Bleed` 登记 `bmbmot_bleed`，实际使用模板 `periodic_damage_by_hp_ratio[skip_modifier_fix]`。 | 模板使用 `DamageViaMaxHpRatio(PURE, skip=true, _getMaxHpFromTarget=false)`；每次触发按来源最大 HP 比例形成一笔数额，触发周期由 Buff 配置另决定。 |
+
+完整模板 Holder 共 9054 项，其中发现 196 个 `skip=true` 节点：8 个 PHYSICAL、6 个 MAGICAL，其余含 PURE 及非伤害节点。这个计数只描述当前 Holder，不证明每个模板均被实际内容使用。例如旧 `enemy_bmbmot_t` 虽含物理 skip 节点，当前无人爆破艇却绑定上表的 PURE 模板，因此不能拿旧模板当作该敌人的物理流失证据。归档仅保留选中的 13 个组件与 5 个模板；其余检索为紧凑索引。
+
+### 6.2 防御公式与计算事件先于 skip 标记
+
+选中节点的顺序为：
+
+```text
+读取固定数值、ATK 或最大 HP 比例
+→ BattleUtil.CalculateDamageBy…
+    → BattleFormula.CalculateDamage
+        → 按参数决定来源／目标计算事件
+        → CalculateDamageNoEvent → CalculateDamageInternal
+        → 按参数决定来源计算后事件
+    → NewDamageModifierAfterCalculate
+→ 设置 SKIP_MODIFIER_EVENT
+→ target.ApplyModifier
+```
+
+`CalculateDamageInternal`（65900，`0x180685790`）按 DamageType 分支：物理在 `0x180685b3a` 读取目标 `def`，法术在 `0x1806859ed` 读取 `magicResistance`；真实分支不使用这两项防御属性。`CalculateDamageNoEvent` 还根据来源及类型取得穿透参数。`FixedValueDamage` 在 `0x181102198/19f/1ca` 完成计算与 Modifier 构造，之后才在 `0x181102257` 设置 skip；`AdvancedApplyDamage` 同样在完成计算后设置标志。**跳过应用事件不等于跳过防御公式，也不等于跳过计算事件。**
+
+计算事件还必须按具体分支判断：
+
+- 落石配置 `_triggerOnCalculateDamage=false`，走 `CalculateDamageByAtkWithSourceNoOnCalDmg`：传给 `CalculateDamage` 的目标计算事件开关为 true、来源为 false。该名称中的 NoOnCalDmg 不能解释为目标计算事件也被关闭。
+- 拟态机械射线采用非缓存、保留来源的普通 `AdvancedApplyDamage` 分支，`0x1810f5794` 调用 `CalculateDamageBySource`。该入口的正式计算开启来源与目标计算事件，另算无来源基准；不能由模板 `_emitSourceOnCalculateDamage=false` 推导这个分支不派发来源计算事件，该字段在其他构造分支才决定相应选择。
+- 无人爆破艇的所选 `DamageViaMaxHpRatio` 在来源存在且 `_noSourceDamage=false` 时调用 `CalculateDamageByAtkWithSourceNoOnCalDmg`（`0x1811007bd`），否则调用 `CalculateDamageByAtkNoSource`（`0x181100823`）。两支的目标计算事件均开启、来源均关闭。节点不读取触发间隔，不能按旧 Bleeding 模板的每秒速率解释。
+
+因此，不能用“生命流失”这个名称推出统一的计算 Hook 清单；伤害数值的来源、公式类型、计算事件参数与应用事件政策是不同事实。
+
+### 6.3 skip 的精确接收与通知范围
+
+`Entity.ApplyModifier`（67665，`0x1807211a0`）的普通分支如下：
+
+```text
+目标 alive；输入尚未取消（原生也将零值视为取消）
+→ 检查 SKIP_MODIFIER_EVENT
+    → 若还具有 SKIP_MODIFIER_CONSIDER_UNHURTABLE，检查消失／不可受伤并可取消
+    → 目标 BuffContainer.OnApplyingSkippedModifier（事件 41）
+→ 再检查取消
+→ 来源存在时执行 BeforeTargetApplyModifier（事件 61）
+→ GameMode.OnEntityApplyModifier 资格
+→ 虚派发 DoApplyModifier
+→ skip 路径不执行普通 OnAppliedModifier
+```
+
+关键位置：skip／额外不可受伤标志分别在 `0x1807212c8`／`0x180721353` 检查；目标 skip 接收入口为 `0x18072140e`，其 `Buff.OnApplyingSkippedModifier` 明确运行事件 41；取消复核为 `0x1807218da`；来源提交前程序为 `0x180721984`；实际资源派发为 `0x180721b08`；提交后的 `0x180721b2e` 再次检查 skip，绕过 `OnAppliedModifier`。
+
+这条路径绕过目标普通应用前事件 5、来源输出事件 8、普通 `_OnApplyingModifier / OnTakeDamage`，也绕过普通应用后及来源伤害后通知。因此，普通受击 SP、在普通 OnTakeDamage 上登记的闪避／护盾／减伤／反伤不会仅因这笔流失自动参与；但事件 41 能修改／取消本笔 Modifier，来源事件 61 也仍可执行。不能把它概括成“无接收程序”或“无同步回调”。
+
+消失与无敌沿用[案例 18](18-projectile-source-and-target-lifecycles.md)已核实的区分：普通 skip 不进入常规不可受伤伤判；同时设置 `0x8000` 时仍进行该检查。`IsUnhurtableWithModifier` 又有自己的免疫与 `0x100` 旁路条件，而消失并不等价于可用同一标志穿过的无敌。节点的 `_considerUnhurtable`、Modifier 的其他标志及内容自己的事件 41 必须分别看待。
+
+### 6.4 HP 提交、致命干预与直接 setter
+
+skip 不改变 HP 目标仍进入 `Entity.DoApplyModifier`（67683）的事实。普通 HP 分支读取提交时当前 HP／ES，取得 `finalDelta`，按已有 ES 规则处理，再在 `0x18072340f` 调用普通 `set_hp`。它没有因为 skip 改走 `SetHpDirectly`。
+
+| 机制 | 所在阶段与边界 |
+| --- | --- |
+| 本次非致命标志 | `DAMAGE_IS_UNDEADABLE_THIS_TIME=8` 在 DoApplyModifier 中将拟写 HP 限制为至少 1，然后才进入 setter；不会因此产生一次实际归零请求。它与 skip 是不同标志。 |
+| 普通归零前干预 | `set_hp` 虚派发 `SetHpInternal`（67625）。拟写值到零且存在容器时仍构造 `TrySetHpZero`，执行 `OnBeforeTrySetHpZero`；skip 没有在此取消这些调用。 |
+| 不死下限 | 普通 setter 在归零前干预之后处理 `isUndeadable`，再限制最终 HP。不能把流失写成绕过不死，也不能把不死写成阻止全部前置生命程序。 |
+| 生命归零与死亡 | HP 写入后仍可能同步调用 `OnHpZero → FinishMe / OnFinish`；skip 只绕过之后的普通 Modifier 应用后通知，不抑制该死亡链。普通内容的完整离场／回收时序仍按案例 27 的证据范围，不推广到全部重生或 GameMode。 |
+| 提前致命预判、特殊 HP 改写 | 是否参与取决于具体程序登记在普通接收、事件 41、来源提交前还是 setter 上，不能仅凭 Wiki 的“生命流失”分类判定。本轮没有完成“每击只减 1 HP”等所有派生 DoApplyModifier 的特殊组合，也不将其冒称已闭合。 |
+| 直接 setter | `SetHpDirectly`／`SetHpInternalDirectly` 的所选普通分支跳过 Modifier 与 `OnBeforeTrySetHpZero`，但仍有 alive、不死下限和 HP 范围限制；写入值不大于零时仅将数值截为 0，不派发普通满值通知或 OnHpZero 死亡业务。它们既不等于普通生命流失，也不等于无条件写一个字段。 |
+
+`SetHpInternal` 的当前关键位置为：构造归零请求 `0x18072eb83`，归零前派发 `0x18072ed51/7e`，不死检查 `0x18072ef21/efbc`，HP 写入 `0x18072f02b`，归零处理 `0x18072f297`，存在成功 consumer 且宿主仍 unfinished 时执行 Post `0x18072f2c9`。负生命等扩展分支在同一方法内，但本轮不借此声称穷尽其所有内容组合。
+
+相邻核对：`OnFinish`（67653）在 `0x18072a16e` 读取 BattleContext，`0x18072a189..19d` 取其栈顶来源，并于 `0x18072a407` 调该来源的 `OnTargetKilled`。这里没有直接读取 Modifier 的 source／originalSource。本轮未追该栈全部入栈入口，所以不能进一步断言击杀归属总与其中某个字段相同。
+
+### 6.5 对项目选择的约束范围
+
+上述证据回答原生语义，不另定 ArkBattle API。已确认的项目 Calculate／Apply 划分、普通两侧 Applied 后再按最新 HP 确认死亡，以及同步重入规则保持不变。未来表达生命流失时需要分别保存公式与事件政策；不能以直接 HP 减法代替所有物理／法术流失，也不能机械复刻原生所有事件编号。特殊 HP 改写与提前致命预判的具体内容组合仍按各自证据决定，不以本次研究替换已定普通伤害时序。

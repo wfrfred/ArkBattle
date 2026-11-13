@@ -1,0 +1,1383 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-11-13"
+    ],
+    "collectionDateSource": "batch directory",
+    "organizedOn": "2026-11-13",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+        "records": [
+          "native.json#/provenance/client/dll"
+        ],
+        "bytes": 223112680
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        "records": [
+          "native.json#/provenance/client/metadata"
+        ],
+        "bytes": 46669332
+      }
+    },
+    "sourceRecords": [
+      "configuration.json",
+      "content/content.json",
+      "content-selection.json",
+      "native.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12895,
+        "sha256": "9c5b246859318caaec4aab5275ef0d2d49fce5d612c6b4e569973a9941ba621a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "configuration.json",
+        "kind": "record",
+        "bytes": 55449,
+        "sha256": "761e4386f31f73ec04cb9b0a477eb41c8427635d7b5ae9b8a3f384b8fbaadeb3"
+      },
+      {
+        "path": "content/content.json",
+        "kind": "record",
+        "bytes": 120278,
+        "sha256": "36d27501e339b77c08178107e20db2a4f67b46ba1209fcf9e3c5d84e8b76784d"
+      },
+      {
+        "path": "content/enm_pfb_14--238802773986143455.bin",
+        "kind": "artifact",
+        "bytes": 112,
+        "sha256": "d664d3922419222f79160b1791a91c75f7427e938926da96a1c653f4ce7ffd03"
+      },
+      {
+        "path": "content/enm_pfb_14--5393522090943474911.bin",
+        "kind": "artifact",
+        "bytes": 336,
+        "sha256": "f94a634d7062a0ff7f8e48a09a9a34490d3e45da10168cd681842a883712aa13"
+      },
+      {
+        "path": "content/enm_pfb_14--5486323580757109983.bin",
+        "kind": "artifact",
+        "bytes": 152,
+        "sha256": "51095bc74359f367873dac25e179aedb2182862da08389200ed3d82377f4194e"
+      },
+      {
+        "path": "content/enm_pfb_14-7351903220464194337.bin",
+        "kind": "artifact",
+        "bytes": 316,
+        "sha256": "fe920ed6f1ffd0b6f11e4fd936a209da3bda442944926e28c4140579e84c9b3a"
+      },
+      {
+        "path": "content/enm_pfb_19-2737471110818766044.bin",
+        "kind": "artifact",
+        "bytes": 112,
+        "sha256": "70b4c696e82f98a25a9d92342c1cfd76e1683f4bf60ccf21c5b7db1be7b09479"
+      },
+      {
+        "path": "content/enm_pfb_19-4403106368448830684.bin",
+        "kind": "artifact",
+        "bytes": 176,
+        "sha256": "950d6561038e90ecdcd5bfac1a515f36182a34a7566ab9ccd81807f50c69c5f2"
+      },
+      {
+        "path": "content/enm_pfb_19-4504930388386258140.bin",
+        "kind": "artifact",
+        "bytes": 544,
+        "sha256": "af2869171b07811e613289e9b363a872661a549ca15766fa9a95e423e19eb542"
+      },
+      {
+        "path": "content/enm_pfb_19-7132700517392325852.bin",
+        "kind": "artifact",
+        "bytes": 384,
+        "sha256": "3b77c1fe1292de9e3bee29a731479cce6fc6e7dc68faffe353dba38b14efc309"
+      },
+      {
+        "path": "content/enm_pfb_19-7889958315965160668.bin",
+        "kind": "artifact",
+        "bytes": 592,
+        "sha256": "f82409eee125f1170d7a307efe6f23f7c810b839314d3d3ffe4e4d68bfd799a0"
+      },
+      {
+        "path": "content/enm_pfb_20-3537400755111488780.bin",
+        "kind": "artifact",
+        "bytes": 292,
+        "sha256": "c9a66fa7a222f5201564184e88378fc8292efafdfbffa4e2d789a9ef996e055f"
+      },
+      {
+        "path": "content/enm_pfb_8--2389637207385448809.bin",
+        "kind": "artifact",
+        "bytes": 112,
+        "sha256": "58f3bda14c68d79d1aeea4cd9cadc16bfd0e70e84aca21cdcfe1bb53f1d76145"
+      },
+      {
+        "path": "content/enm_pfb_8--6117757028682441065.bin",
+        "kind": "artifact",
+        "bytes": 332,
+        "sha256": "9c521ae7ca3ec83a3d58e7347be847bd3f9da93415639c2e63aa9d6aa69c53cc"
+      },
+      {
+        "path": "content/enm_pfb_8-8857838488670363287.bin",
+        "kind": "artifact",
+        "bytes": 292,
+        "sha256": "dc45cc181f3640042c577799d8090acecc83d2dbc5e3eea6edfb99b7fc784e1d"
+      },
+      {
+        "path": "content-selection.json",
+        "kind": "record",
+        "bytes": 562,
+        "sha256": "026cfec9ef6810dfb2f8ce2ecc01f437e3aba5cf9c2933deab1cac20bc72f2ea"
+      },
+      {
+        "path": "extract_config.py",
+        "kind": "historical-script",
+        "bytes": 2970,
+        "sha256": "815b773206385a6c7a779af8e7dceb3df6df80e93f2d160611d539288960a2db"
+      },
+      {
+        "path": "extract_content.py",
+        "kind": "historical-script",
+        "bytes": 5061,
+        "sha256": "734f3b9e6de6745867909c3f3e97ded1405feffe9fa819bb8f22069ba1515ac5"
+      },
+      {
+        "path": "extract_native.py",
+        "kind": "historical-script",
+        "bytes": 4357,
+        "sha256": "7ddbc01be72131320be8495f374721b68bdf1275dee5ac3143e30c6569cddba7"
+      },
+      {
+        "path": "extract_native.py.lock",
+        "kind": "artifact",
+        "bytes": 3739,
+        "sha256": "1ed9e3b399cf0743106d2124514970f3a3b5db6d9f1192fba528019ccbefdf04"
+      },
+      {
+        "path": "native.json",
+        "kind": "record",
+        "bytes": 2359225,
+        "sha256": "1f34bade72df92358c826124969ebbe3c235f2a1cdc78ac831051d9b95ae2091"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 65898,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/0",
+            "native.json#/result/bodies/0/fragments/0",
+            "native.json#/result/bodies/0/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.BattleFormula.CalculateDamage",
+          "address": "0x180685fb0"
+        },
+        {
+          "index": 65899,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/1",
+            "native.json#/result/bodies/1/fragments/0",
+            "native.json#/result/bodies/1/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.BattleFormula.CalculateDamageNoEvent",
+          "address": "0x180685c40"
+        },
+        {
+          "index": 65900,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/2",
+            "native.json#/result/bodies/2/fragments/0",
+            "native.json#/result/bodies/2/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.BattleFormula.CalculateDamageInternal",
+          "address": "0x180685790"
+        },
+        {
+          "index": 65901,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/3",
+            "native.json#/result/bodies/3/fragments/0",
+            "native.json#/result/bodies/3/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.BattleFormula.CalculateDamage",
+          "address": "0x1806861d0"
+        },
+        {
+          "index": 66142,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/4",
+            "native.json#/result/bodies/4/fragments/0",
+            "native.json#/result/bodies/4/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnApplyingSkippedModifier",
+          "address": "0x1806d07a0"
+        },
+        {
+          "index": 66144,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/5",
+            "native.json#/result/bodies/5/fragments/0",
+            "native.json#/result/bodies/5/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnBeforeTargetApplyModifier",
+          "address": "0x1806d1340"
+        },
+        {
+          "index": 66375,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/6",
+            "native.json#/result/bodies/6/fragments/0",
+            "native.json#/result/bodies/6/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnApplyingSkippedModifier",
+          "address": "0x1806b9b10"
+        },
+        {
+          "index": 66377,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/7",
+            "native.json#/result/bodies/7/fragments/0",
+            "native.json#/result/bodies/7/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnBeforeTargetApplyModifier",
+          "address": "0x1806bbfd0"
+        },
+        {
+          "index": 67434,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/8",
+            "native.json#/result/bodies/8/fragments/0",
+            "native.json#/result/bodies/8/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.set_hp",
+          "address": "0x18073aef0"
+        },
+        {
+          "index": 67600,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/9",
+            "native.json#/result/bodies/9/fragments/0",
+            "native.json#/result/bodies/9/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.SetHpDirectly",
+          "address": "0x18072e590"
+        },
+        {
+          "index": 67625,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/10",
+            "native.json#/result/bodies/10/fragments/0",
+            "native.json#/result/bodies/10/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.SetHpInternal",
+          "address": "0x18072e970"
+        },
+        {
+          "index": 67626,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/11",
+            "native.json#/result/bodies/11/fragments/0",
+            "native.json#/result/bodies/11/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.SetHpInternalDirectly",
+          "address": "0x18072e7b0"
+        },
+        {
+          "index": 67633,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/12",
+            "native.json#/result/bodies/12/fragments/0",
+            "native.json#/result/bodies/12/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.FinishMe",
+          "address": "0x180724740"
+        },
+        {
+          "index": 67650,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/13",
+            "native.json#/result/bodies/13/fragments/0",
+            "native.json#/result/bodies/13/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.OnHpZero",
+          "address": "0x18072a590"
+        },
+        {
+          "index": 67653,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/14",
+            "native.json#/result/bodies/14/fragments/0",
+            "native.json#/result/bodies/14/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.OnFinish",
+          "address": "0x18072a060"
+        },
+        {
+          "index": 67664,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/15",
+            "native.json#/result/bodies/15/fragments/0",
+            "native.json#/result/bodies/15/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.IsUnhurtableWithModifier",
+          "address": "0x180727440"
+        },
+        {
+          "index": 67665,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/16",
+            "native.json#/result/bodies/16/fragments/0",
+            "native.json#/result/bodies/16/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.ApplyModifier",
+          "address": "0x1807211a0"
+        },
+        {
+          "index": 67667,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/17",
+            "native.json#/result/bodies/17/fragments/0",
+            "native.json#/result/bodies/17/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity._OnApplyingModifier",
+          "address": "0x1807314a0"
+        },
+        {
+          "index": 67669,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/18",
+            "native.json#/result/bodies/18/fragments/0",
+            "native.json#/result/bodies/18/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.OnAppliedModifier",
+          "address": "0x180727cb0"
+        },
+        {
+          "index": 67672,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/19",
+            "native.json#/result/bodies/19/fragments/0",
+            "native.json#/result/bodies/19/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.OnBeforeTargetApplyModifier",
+          "address": "0x180728ff0"
+        },
+        {
+          "index": 67683,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/20",
+            "native.json#/result/bodies/20/fragments/0",
+            "native.json#/result/bodies/20/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.DoApplyModifier",
+          "address": "0x180722fe0"
+        },
+        {
+          "index": 67709,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/21",
+            "native.json#/result/bodies/21/fragments/0",
+            "native.json#/result/bodies/21/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.OnTakeDamage",
+          "address": "0x18072b920"
+        },
+        {
+          "index": 72128,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/22"
+          ],
+          "fullname": "Torappu.Battle.Modifier.get_targetType",
+          "address": "0x18090dea0"
+        },
+        {
+          "index": 72129,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/23"
+          ],
+          "fullname": "Torappu.Battle.Modifier.set_targetType",
+          "address": "0x18090eb20"
+        },
+        {
+          "index": 72130,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/24"
+          ],
+          "fullname": "Torappu.Battle.Modifier.get_deltaType",
+          "address": "0x18090ce10"
+        },
+        {
+          "index": 72131,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/25"
+          ],
+          "fullname": "Torappu.Battle.Modifier.set_deltaType",
+          "address": "0x18090e5d0"
+        },
+        {
+          "index": 72132,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/26"
+          ],
+          "fullname": "Torappu.Battle.Modifier.get_isCancelled",
+          "address": "0x18090d200"
+        },
+        {
+          "index": 72133,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/27"
+          ],
+          "fullname": "Torappu.Battle.Modifier.get_isCritical",
+          "address": "0x18090d360"
+        },
+        {
+          "index": 72134,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/28"
+          ],
+          "fullname": "Torappu.Battle.Modifier.get_isDamage",
+          "address": "0x18090d4d0"
+        },
+        {
+          "index": 72135,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/29"
+          ],
+          "fullname": "Torappu.Battle.Modifier.get_isHeal",
+          "address": "0x18090d8b0"
+        },
+        {
+          "index": 72136,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/30"
+          ],
+          "fullname": "Torappu.Battle.Modifier.get_isElementDamage",
+          "address": "0x18090d630"
+        },
+        {
+          "index": 72137,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/31"
+          ],
+          "fullname": "Torappu.Battle.Modifier.get_isElementHeal",
+          "address": "0x18090d770"
+        },
+        {
+          "index": 72138,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/32"
+          ],
+          "fullname": "Torappu.Battle.Modifier.get_source",
+          "address": "0x18090dda0"
+        },
+        {
+          "index": 72139,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/33"
+          ],
+          "fullname": "Torappu.Battle.Modifier.get_target",
+          "address": "0x18090df90"
+        },
+        {
+          "index": 72140,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/34"
+          ],
+          "fullname": "Torappu.Battle.Modifier.get_originalSource",
+          "address": "0x18090dba0"
+        },
+        {
+          "index": 72141,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/35"
+          ],
+          "fullname": "Torappu.Battle.Modifier.get_damageType",
+          "address": "0x18090cd20"
+        },
+        {
+          "index": 72142,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/36"
+          ],
+          "fullname": "Torappu.Battle.Modifier.set_damageType",
+          "address": "0x18090e4c0"
+        },
+        {
+          "index": 72143,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/37"
+          ],
+          "fullname": "Torappu.Battle.Modifier.get_applyWay",
+          "address": "0x18090ca50"
+        },
+        {
+          "index": 72144,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/38"
+          ],
+          "fullname": "Torappu.Battle.Modifier.set_applyWay",
+          "address": "0x18090e190"
+        },
+        {
+          "index": 72145,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/39"
+          ],
+          "fullname": "Torappu.Battle.Modifier.get_cancelReason",
+          "address": "0x18090cc30"
+        },
+        {
+          "index": 72146,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/40"
+          ],
+          "fullname": "Torappu.Battle.Modifier.set_cancelReason",
+          "address": "0x18090e3b0"
+        },
+        {
+          "index": 72147,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/41"
+          ],
+          "fullname": "Torappu.Battle.Modifier.get_attackType",
+          "address": "0x18090cb40"
+        },
+        {
+          "index": 72148,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/42"
+          ],
+          "fullname": "Torappu.Battle.Modifier.set_attackType",
+          "address": "0x18090e2a0"
+        },
+        {
+          "index": 72149,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/43"
+          ],
+          "fullname": "Torappu.Battle.Modifier.get_elementType",
+          "address": "0x18090cf00"
+        },
+        {
+          "index": 72150,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/44"
+          ],
+          "fullname": "Torappu.Battle.Modifier.set_elementType",
+          "address": "0x18090e6e0"
+        },
+        {
+          "index": 72151,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/45"
+          ],
+          "fullname": "Torappu.Battle.Modifier.get_originAtk",
+          "address": "0x18090d9c0"
+        },
+        {
+          "index": 72152,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/46"
+          ],
+          "fullname": "Torappu.Battle.Modifier.set_originAtk",
+          "address": "0x18090e7f0"
+        },
+        {
+          "index": 72153,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/47"
+          ],
+          "fullname": "Torappu.Battle.Modifier.get_originValue",
+          "address": "0x18090dab0"
+        },
+        {
+          "index": 72154,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/48"
+          ],
+          "fullname": "Torappu.Battle.Modifier.set_originValue",
+          "address": "0x18090e900"
+        },
+        {
+          "index": 72155,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/49"
+          ],
+          "fullname": "Torappu.Battle.Modifier.get_finalDelta",
+          "address": "0x18090cff0"
+        },
+        {
+          "index": 72156,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/50"
+          ],
+          "fullname": "Torappu.Battle.Modifier.get_value",
+          "address": "0x18090e0a0"
+        },
+        {
+          "index": 72157,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/51"
+          ],
+          "fullname": "Torappu.Battle.Modifier.set_value",
+          "address": "0x18090ec30"
+        },
+        {
+          "index": 72158,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/52"
+          ],
+          "fullname": "Torappu.Battle.Modifier.get_playerSide",
+          "address": "0x18090dcb0"
+        },
+        {
+          "index": 72159,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/53"
+          ],
+          "fullname": "Torappu.Battle.Modifier.set_playerSide",
+          "address": "0x18090ea10"
+        },
+        {
+          "index": 72160,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/54"
+          ],
+          "fullname": "Torappu.Battle.Modifier.Cancel",
+          "address": "0x1809099f0"
+        },
+        {
+          "index": 72161,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/55"
+          ],
+          "fullname": "Torappu.Battle.Modifier.CheckIgnoreCancel",
+          "address": "0x180909ce0"
+        },
+        {
+          "index": 72162,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/56"
+          ],
+          "fullname": "Torappu.Battle.Modifier._CheckIgnoreMiss",
+          "address": "0x18090c360"
+        },
+        {
+          "index": 72163,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/57"
+          ],
+          "fullname": "Torappu.Battle.Modifier.Assign",
+          "address": "0x1809097a0"
+        },
+        {
+          "index": 72164,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/58"
+          ],
+          "fullname": "Torappu.Battle.Modifier.AssignSource",
+          "address": "0x180909680"
+        },
+        {
+          "index": 72165,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/59"
+          ],
+          "fullname": "Torappu.Battle.Modifier.AssignOriginalSource",
+          "address": "0x180909560"
+        },
+        {
+          "index": 72166,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/60"
+          ],
+          "fullname": "Torappu.Battle.Modifier.Split",
+          "address": "0x18090c140"
+        },
+        {
+          "index": 72167,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/61"
+          ],
+          "fullname": "Torappu.Battle.Modifier.SetSharedFlag",
+          "address": "0x18090bf00"
+        },
+        {
+          "index": 72168,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/62"
+          ],
+          "fullname": "Torappu.Battle.Modifier.SetSharedFlag",
+          "address": "0x18090c010"
+        },
+        {
+          "index": 72169,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/63"
+          ],
+          "fullname": "Torappu.Battle.Modifier.AddCustomKey",
+          "address": "0x180909390"
+        },
+        {
+          "index": 72170,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/64"
+          ],
+          "fullname": "Torappu.Battle.Modifier.RemoveSharedFlag",
+          "address": "0x18090ba90"
+        },
+        {
+          "index": 72171,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/65"
+          ],
+          "fullname": "Torappu.Battle.Modifier.RemoveSharedFlag",
+          "address": "0x18090bba0"
+        },
+        {
+          "index": 72172,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/66"
+          ],
+          "fullname": "Torappu.Battle.Modifier.CheckSharedFlag",
+          "address": "0x180909f50"
+        },
+        {
+          "index": 72173,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/67"
+          ],
+          "fullname": "Torappu.Battle.Modifier.CheckSharedFlag",
+          "address": "0x180909e20"
+        },
+        {
+          "index": 72174,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/68"
+          ],
+          "fullname": "Torappu.Battle.Modifier.CheckCustomKey",
+          "address": "0x180909b80"
+        },
+        {
+          "index": 72175,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/69"
+          ],
+          "fullname": "Torappu.Battle.Modifier.SetIgnoreMissFlag",
+          "address": "0x18090bde0"
+        },
+        {
+          "index": 72176,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/70"
+          ],
+          "fullname": "Torappu.Battle.Modifier.SetIgnoreCancelReasonMask",
+          "address": "0x18090bcd0"
+        },
+        {
+          "index": 72177,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/71"
+          ],
+          "fullname": "Torappu.Battle.Modifier..ctor",
+          "address": "0x18090c770"
+        },
+        {
+          "index": 72178,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/72"
+          ],
+          "fullname": "Torappu.Battle.Modifier..ctor",
+          "address": "0x18090c5e0"
+        },
+        {
+          "index": 72179,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/73",
+            "native.json#/result/bodies/22/fragments/0",
+            "native.json#/result/bodies/22/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Modifier.NewDamageModifierAfterCalculate",
+          "address": "0x18090a430"
+        },
+        {
+          "index": 72180,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/74",
+            "native.json#/result/bodies/23/fragments/0",
+            "native.json#/result/bodies/23/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Modifier.NewDamageModifierAfterCalculate",
+          "address": "0x18090a680"
+        },
+        {
+          "index": 72181,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/75"
+          ],
+          "fullname": "Torappu.Battle.Modifier.NewElementDamageModifierAfterCalculate",
+          "address": "0x18090a8e0"
+        },
+        {
+          "index": 72182,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/76"
+          ],
+          "fullname": "Torappu.Battle.Modifier.NewHeal",
+          "address": "0x18090ad20"
+        },
+        {
+          "index": 72183,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/77"
+          ],
+          "fullname": "Torappu.Battle.Modifier.NewElementHeal",
+          "address": "0x18090ab00"
+        },
+        {
+          "index": 72184,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/78"
+          ],
+          "fullname": "Torappu.Battle.Modifier.NewHp",
+          "address": "0x18090af40"
+        },
+        {
+          "index": 72185,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/79"
+          ],
+          "fullname": "Torappu.Battle.Modifier.NewSp",
+          "address": "0x18090b6d0"
+        },
+        {
+          "index": 72186,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/80"
+          ],
+          "fullname": "Torappu.Battle.Modifier.NewCost",
+          "address": "0x18090a250"
+        },
+        {
+          "index": 72187,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/81"
+          ],
+          "fullname": "Torappu.Battle.Modifier.NewMaxCost",
+          "address": "0x18090b310"
+        },
+        {
+          "index": 72188,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/82"
+          ],
+          "fullname": "Torappu.Battle.Modifier.NewMinCost",
+          "address": "0x18090b4f0"
+        },
+        {
+          "index": 72189,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/83"
+          ],
+          "fullname": "Torappu.Battle.Modifier.NewCharacterLimitDelta",
+          "address": "0x18090a060"
+        },
+        {
+          "index": 72190,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/84"
+          ],
+          "fullname": "Torappu.Battle.Modifier.NewLifePointDelta",
+          "address": "0x18090b120"
+        },
+        {
+          "index": 72191,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/85"
+          ],
+          "fullname": "Torappu.Battle.Modifier.NewTrySetHpZero",
+          "address": "0x18090b8b0"
+        },
+        {
+          "index": 72192,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/86"
+          ],
+          "fullname": "Torappu.Battle.Modifier..cctor",
+          "address": "0x18090c4a0"
+        },
+        {
+          "index": 79614,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/87",
+            "native.json#/result/bodies/24/fragments/0",
+            "native.json#/result/bodies/24/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.BattleUtil.CalculateDamageBySource",
+          "address": "0x180b3fff0"
+        },
+        {
+          "index": 79615,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/88",
+            "native.json#/result/bodies/25/fragments/0",
+            "native.json#/result/bodies/25/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.BattleUtil.CalculateDamageByAtkNoSource",
+          "address": "0x180b3f980"
+        },
+        {
+          "index": 79617,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/89",
+            "native.json#/result/bodies/26/fragments/0",
+            "native.json#/result/bodies/26/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.BattleUtil.CalculateDamageByAtkWithSourceNoOnCalDmg",
+          "address": "0x180b3fb90"
+        },
+        {
+          "index": 79618,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/90",
+            "native.json#/result/bodies/27/fragments/0",
+            "native.json#/result/bodies/27/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.BattleUtil.CalculateDamageByAtkWithSourceOnCalDmg",
+          "address": "0x180b3fdc0"
+        },
+        {
+          "index": 84161,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/91",
+            "native.json#/result/bodies/28/fragments/0",
+            "native.json#/result/bodies/28/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/DefaultGameMode.OnFinalizeEntityDamage",
+          "address": "0x180c9e0b0"
+        },
+        {
+          "index": 99139,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/92"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AdvancedApplyDamage.get_allowedSource",
+          "address": "0x1810f61d0"
+        },
+        {
+          "index": 99140,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/93"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AdvancedApplyDamage.get_purposeMask",
+          "address": "0x1810f6230"
+        },
+        {
+          "index": 99141,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/94",
+            "native.json#/result/bodies/29/fragments/0",
+            "native.json#/result/bodies/29/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AdvancedApplyDamage.Execute",
+          "address": "0x1810f53a0"
+        },
+        {
+          "index": 99142,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/95"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AdvancedApplyDamage._SetAtkScale",
+          "address": "0x1810f5e40"
+        },
+        {
+          "index": 99143,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/96",
+            "native.json#/result/bodies/30/fragments/0",
+            "native.json#/result/bodies/30/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AdvancedApplyDamage.PreprocessForProjectile",
+          "address": "0x1810f5d50"
+        },
+        {
+          "index": 99144,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/97"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AdvancedApplyDamage._TryGetAtkAsHostBased",
+          "address": "0x1810f5f30"
+        },
+        {
+          "index": 99145,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/98"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AdvancedApplyDamage..ctor",
+          "address": "0x1810f60a0"
+        },
+        {
+          "index": 99164,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/99"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/FixedValueDamage.get_allowedSource",
+          "address": "0x1811025f0"
+        },
+        {
+          "index": 99165,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/100"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/FixedValueDamage.get_purposeMask",
+          "address": "0x181102650"
+        },
+        {
+          "index": 99166,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/101",
+            "native.json#/result/bodies/31/fragments/0",
+            "native.json#/result/bodies/31/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/FixedValueDamage.Execute",
+          "address": "0x181101db0"
+        },
+        {
+          "index": 99167,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/102",
+            "native.json#/result/bodies/32/fragments/0",
+            "native.json#/result/bodies/32/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/FixedValueDamage.PreprocessForProjectile",
+          "address": "0x181102480"
+        },
+        {
+          "index": 99168,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/103"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/FixedValueDamage..ctor",
+          "address": "0x1811024e0"
+        },
+        {
+          "index": 99169,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/104"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/DamageViaMaxHpRatio.get_allowedSource",
+          "address": "0x181100aa0"
+        },
+        {
+          "index": 99170,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/105"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/DamageViaMaxHpRatio.get_purposeMask",
+          "address": "0x181100b00"
+        },
+        {
+          "index": 99171,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/106",
+            "native.json#/result/bodies/33/fragments/0",
+            "native.json#/result/bodies/33/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/DamageViaMaxHpRatio.Execute",
+          "address": "0x181100540"
+        },
+        {
+          "index": 99172,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/107",
+            "native.json#/result/bodies/34/fragments/0",
+            "native.json#/result/bodies/34/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/DamageViaMaxHpRatio.PreprocessForProjectile",
+          "address": "0x1811009a0"
+        },
+        {
+          "index": 99173,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/108"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/DamageViaMaxHpRatio..ctor",
+          "address": "0x181100a00"
+        },
+        {
+          "index": 99302,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/109"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/BleedingDamagePerSec.get_allowedSource",
+          "address": "0x1810f9d70"
+        },
+        {
+          "index": 99303,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/110"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/BleedingDamagePerSec.get_purposeMask",
+          "address": "0x1810f9dd0"
+        },
+        {
+          "index": 99304,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/111",
+            "native.json#/result/bodies/35/fragments/0",
+            "native.json#/result/bodies/35/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/BleedingDamagePerSec.Execute",
+          "address": "0x1810f9690"
+        },
+        {
+          "index": 99305,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/112",
+            "native.json#/result/bodies/36/fragments/0",
+            "native.json#/result/bodies/36/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/BleedingDamagePerSec.PreprocessForProjectile",
+          "address": "0x1810f9c50"
+        },
+        {
+          "index": 99306,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/113"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/BleedingDamagePerSec..ctor",
+          "address": "0x1810f9cb0"
+        }
+      ],
+      "blocks": [],
+      "types": [
+        {
+          "name": "Torappu.Battle.Action.Nodes/AdvancedApplyDamage",
+          "records": [
+            "native.json#/result/fieldOwners/3"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Action.Nodes/BleedingDamagePerSec",
+          "records": [
+            "native.json#/result/fieldOwners/6"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Action.Nodes/DamageViaMaxHpRatio",
+          "records": [
+            "native.json#/result/fieldOwners/5"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Action.Nodes/FixedValueDamage",
+          "records": [
+            "native.json#/result/fieldOwners/4"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Buff",
+          "records": [
+            "native.json#/result/fieldOwners/0"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Entity",
+          "records": [
+            "native.json#/result/fieldOwners/1"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Modifier",
+          "records": [
+            "native.json#/result/fieldOwners/2"
+          ]
+        }
+      ],
+      "constants": [],
+      "bundles": [
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "sha256": "8edcb8017c977cdf52c2593b58e21db96949f3ad1e6f904180ac1241f145ca79",
+          "records": [
+            "content/content.json#/provenance/sources/0"
+          ],
+          "bytes": 2151020
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_14.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_14.ab",
+          "sha256": "0563b3209d154cf3f8a08d5efcb267a71b291668f1a44a9f56664cb3f5866c5a",
+          "records": [
+            "content/content.json#/provenance/sources/1"
+          ],
+          "bytes": 337702
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_19.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_19.ab",
+          "sha256": "84fdb631abc524475d7d739652267c2f8af3282c0ed5675dc2c26eceaf50b2c5",
+          "records": [
+            "content/content.json#/provenance/sources/2"
+          ],
+          "bytes": 517235
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_20.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_20.ab",
+          "sha256": "a8691210052bd5668850ab7b08d0926f835f17abce02503efea0556e418017ee",
+          "records": [
+            "content/content.json#/provenance/sources/3"
+          ],
+          "bytes": 470562
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_8.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_8.ab",
+          "sha256": "df97a7de9e1da1404e46e99487e4a3a200a13d746df18cc5b5b356e1d875720e",
+          "records": [
+            "content/content.json#/provenance/sources/4"
+          ],
+          "bytes": 294968
+        }
+      ]
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

@@ -139,7 +139,7 @@ pure     = power
 }
 ```
 
-`Entity.ApplyModifier`（66079）为跳过常规 Modifier 事件的路径保留专门处理；它也不同于直接 `SetHpDirectly`。不能以一个“生命流失”名称承诺统一免疫、盾或反应政策。
+`Entity.ApplyModifier`（66079）为跳过常规 Modifier 事件的路径保留专门处理；它也不同于直接 `SetHpDirectly`。2026-11-13 已用实际物理／法术／真实内容补核公式、计算事件、skip 剩余回调与普通 setter，见[案例 11 第 6 节](cases/11-damage-apply-and-hp-application.md#6-生命流失补核2026-11-13)。流失仍可能计算 DEF／RES 并参与计算事件；不能以一个“生命流失”名称承诺统一免疫、盾或反应政策。
 
 ## 治疗、回复与元素
 

@@ -1,0 +1,3562 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-13",
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/hp-loss-settlement-20261113/extract_content.py",
+      "bytes": 5061,
+      "sha256": "734f3b9e6de6745867909c3f3e97ded1405feffe9fa819bb8f22069ba1515ac5"
+    },
+    "selection": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/hp-loss-settlement-20261113/content-selection.json",
+      "bytes": 562,
+      "sha256": "026cfec9ef6810dfb2f8ce2ecc01f437e3aba5cf9c2933deab1cac20bc72f2ea"
+    },
+    "reader": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/attack-addon-order-20261102/content/decode_content.py",
+      "bytes": 8161,
+      "sha256": "d17abeee072576a29ca060884dcc0dd770fe0f8194ca7eed7b5c13b99b41e14e"
+    },
+    "sources": [
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+        "bytes": 2151020,
+        "sha256": "8edcb8017c977cdf52c2593b58e21db96949f3ad1e6f904180ac1241f145ca79"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_14.ab",
+        "bytes": 337702,
+        "sha256": "0563b3209d154cf3f8a08d5efcb267a71b291668f1a44a9f56664cb3f5866c5a"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_19.ab",
+        "bytes": 517235,
+        "sha256": "84fdb631abc524475d7d739652267c2f8af3282c0ed5675dc2c26eceaf50b2c5"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_20.ab",
+        "bytes": 470562,
+        "sha256": "a8691210052bd5668850ab7b08d0926f835f17abce02503efea0556e418017ee"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_8.ab",
+        "bytes": 294968,
+        "sha256": "df97a7de9e1da1404e46e99487e4a3a200a13d746df18cc5b5b356e1d875720e"
+      }
+    ],
+    "scope": "Complete installed holder skip-node scan; only the explicit template and object selection is archived from five scouted enemy hierarchies. Static configuration binding, not in-game execution or XLua verification."
+  },
+  "result": {
+    "holder": {
+      "file": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+      "pathId": "6070581171229484677",
+      "objectSha256": "c03149251d47fa31e6f6cb5b696f9e93925f51a97bf9ee335593c888bdcb6fec"
+    },
+    "templateCount": 9054,
+    "skipNodes": [
+      {
+        "template": "huang_s_3",
+        "path": "/1/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "surtr_s_3[bleeding]",
+        "path": "/1/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+BleedingDamagePerSec",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "utage_s_2",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaCurHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": false,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "dslntc_pericdic_damage",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "akafyu_s_2[dmg_bubble]",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaCurHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": false,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "periodic_damage_by_hp_ratio[skip_modifier]",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "kalts_s_3[ratio_atk]",
+        "path": "/2/actions/1",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "periodic_damage_by_hp_ratio[skip_modifier_fix]",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "bena_s_2",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "HealViaMaxHpRatio",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+HealViaMaxHpRatio",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "enemy_bmbmot_t",
+        "path": "/1/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+BleedingDamagePerSec",
+        "damageType": "PHYSICAL",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "horn_t_1[reborn_effect]",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+HealViaMaxHpRatio",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "horn_s_3[overload_start]",
+        "path": "/1/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+BleedingDamagePerSec",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "horn_s_2[overload_self_instant]",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "phenxi_t_1[bleeding]",
+        "path": "/0/actions/1",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaCurHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": false,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "ling_soul3_evolution[self]",
+        "path": "/0/actions/3",
+        "type": "Torappu.Battle.Action.Nodes+HealViaMaxHpRatio",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "trap_bgarmn[sync_hp_from_trap]",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+EqualizeTargetHpRatio",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "gyuki_e_muso[heal]",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+HealViaMaxHpRatio",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "skadi_e_muso[heal]",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+HealViaMaxHpRatio",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "flameb_e_muso[heal]",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+HealViaMaxHpRatio",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "ghost2_s_3[attack]",
+        "path": "/0/actions/0/_failNodes/0",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "damage_via_hp_ratio[pure][undead]",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "kazema_s_2",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaCurHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": false,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "kazema_s_1",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "mizuki_s_3[damage]",
+        "path": "/0/actions/1",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "cshost_token_damage",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "ling_soul3_evolution[another]",
+        "path": "/0/actions/3",
+        "type": "Torappu.Battle.Action.Nodes+HealViaMaxHpRatio",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "rogue_1_damage_via_es[self]",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaEs",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "enemy_etouch_summon_buff",
+        "path": "/1/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "enemy_duchns_pericdic_damage",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "enemy_ristar_mode_heal",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+HealViaMaxHpRatio",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "enemy_ltniak[stunned_mark]",
+        "path": "/1/actions/2",
+        "type": "Torappu.Battle.Action.Nodes+FixedValueDamage",
+        "damageType": "MAGICAL",
+        "triggerOnCalculateDamage": false,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "trap_dhtl_s",
+        "path": "/2/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+HealViaMaxHpRatio",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "trap_amblls_select_amy[damage]",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "enemy_mmamiy_bleeding_buff",
+        "path": "/0/actions/2",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "enemy_mmleak_touched_rope[damage]",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "enemy_sggem_t[polluted]",
+        "path": "/1/actions/1/_succeedNodes/2",
+        "type": "Torappu.Battle.Action.Nodes+HealViaMaxHpRatio",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "enemy_trcerb_position_check",
+        "path": "/0/actions/0/_failNodes/6",
+        "type": "Torappu.Battle.Action.Nodes+HealViaMaxHpRatio",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "enemy_trdiam_recover",
+        "path": "/0/actions/1",
+        "type": "Torappu.Battle.Action.Nodes+HealViaMaxHpRatio",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "trap_trpot_no_food",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+FixedValueDamage",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": false,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "enemy_cjdoor_connect",
+        "path": "/0/actions/2",
+        "type": "Torappu.Battle.Action.Nodes+FixedValueDamage",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": false,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "trap_fttreant[eq]",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+EqualizeTargetHpRatio",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "trap_ftshad_passive[M0]",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+HealViaMaxHpRatio",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "trap_ftshad_passive[M1]",
+        "path": "/0/actions/1",
+        "type": "Torappu.Battle.Action.Nodes+HealViaMaxHpRatio",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "enemy_crblt[check]",
+        "path": "/1/actions/1/_failNodes/1",
+        "type": "Torappu.Battle.Action.Nodes+FixedValueDamage",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": false,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "trap_crprop_t[scale]",
+        "path": "/1/actions/1/_failNodes/1",
+        "type": "Torappu.Battle.Action.Nodes+FixedValueDamage",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": false,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "pckstp_a[display_hp]",
+        "path": "/0/actions/0/_succeedNodes/3/_succeedNodes/0",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "pckstp_a[display_hp]",
+        "path": "/0/actions/0/_succeedNodes/3/_failNodes/0",
+        "type": "Torappu.Battle.Action.Nodes+HealViaMaxHpRatio",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "pckstp_a[display_hp]",
+        "path": "/0/actions/0/_failNodes/3",
+        "type": "Torappu.Battle.Action.Nodes+HealViaMaxHpRatio",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "ymgbxm_a[init_hp_host]",
+        "path": "/0/actions/3",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "trap_boxnma_t[push]",
+        "path": "/0/actions/0/_succeedNodes/6",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "trap_boxnma_t[push]",
+        "path": "/0/actions/0/_failNodes/0/_succeedNodes/6",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "trap_boxnma_t[push]",
+        "path": "/0/actions/0/_failNodes/0/_failNodes/0/_succeedNodes/6",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "trap_boxnma_t[push]",
+        "path": "/0/actions/0/_failNodes/0/_failNodes/0/_failNodes/0/_succeedNodes/6",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "enemy_ldevil_damage_ally",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+FixedValueDamage",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": false,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "enemy_wlfmster_fearcage",
+        "path": "/1/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+BleedingDamagePerSec",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "enemy_ymmons_fake2_die",
+        "path": "/0/actions/1/_succeedNodes/0",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "[g]character_deploy_bleed",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+FixedValueDamage",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": false,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "blood_dec",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+FixedValueDamage",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": false,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "lpeopl_t[dec_blood_tri]",
+        "path": "/0/actions/0/_succeedNodes/0",
+        "type": "Torappu.Battle.Action.Nodes+FixedValueDamage",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": false,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "ltrock_hit[lpeopl]",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+FixedValueDamage",
+        "damageType": "PHYSICAL",
+        "triggerOnCalculateDamage": false,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "ltrock_lpeopl_damage",
+        "path": "/0/actions/1",
+        "type": "Torappu.Battle.Action.Nodes+FixedValueDamage",
+        "damageType": "PHYSICAL",
+        "triggerOnCalculateDamage": false,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "ltstat_invince",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+HealViaMaxHpRatio",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "enemy_dseed_hp_loss",
+        "path": "/0/actions/2",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "enemy_period_hp_recover",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+HealViaMaxHpRatio",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "enemy_mpascl_shield",
+        "path": "/2/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "enemy_mpascl_mark",
+        "path": "/0/actions/3",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "enemy_mpprme_ray_damage",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+AdvancedApplyDamage",
+        "damageType": "MAGICAL",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": false
+      },
+      {
+        "template": "racing_mode_lifesteal[core]",
+        "path": "/0/actions/2",
+        "type": "Torappu.Battle.Action.Nodes+FixedValueDamage",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": false,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "racing_mode_t_11",
+        "path": "/0/actions/0/_succeedNodes/3",
+        "type": "Torappu.Battle.Action.Nodes+HealViaMaxHpRatio",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "skzlwy_m3_a[to_skzhg]",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+HealViaMaxHpRatio",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "trap_skzwyx[init]",
+        "path": "/0/actions/0/_succeedNodes/0",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "skzth_a[init]",
+        "path": "/0/actions/0/_succeedNodes/0",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "rogue_4_recover_hp[life_point]",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+HealViaMaxHpRatio",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "enemy_lramia[capture]",
+        "path": "/0/actions/2",
+        "type": "Torappu.Battle.Action.Nodes+FixedValueDamage",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": false,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "enemy_lrccon[lock_core]",
+        "path": "/0/actions/1/_succeedNodes/2",
+        "type": "Torappu.Battle.Action.Nodes+FixedValueDamage",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": false,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "trap_lrcore[invincible_ctrl]",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+FixedValueDamage",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": false,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "enemy_block_damage_global_buff[damage]",
+        "path": "/0/actions/0/_succeedNodes/0",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "act1vautochess_time_out_bleeding",
+        "path": "/0/actions/4/_succeedNodes/0",
+        "type": "Torappu.Battle.Action.Nodes+FixedValueDamage",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": false,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "act1vautochess_acarm025_buff",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+HealViaMaxHpRatio",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "act1vautochess_acspell001_buff",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+HealViaMaxHpRatio",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "act1autochess_bond_eff_egir[eat_mark]",
+        "path": "/1/actions/2",
+        "type": "Torappu.Battle.Action.Nodes+FixedValueDamage",
+        "damageType": "PHYSICAL",
+        "triggerOnCalculateDamage": false,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "aclt[bleeding]",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "enemy_acstmr[check]",
+        "path": "/1/actions/1/_failNodes/1",
+        "type": "Torappu.Battle.Action.Nodes+FixedValueDamage",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": false,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "acstma_hp_trans",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+FixedValueDamage",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": false,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "acstmb_s_1[copy_health]",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+CopyHealth",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "acstma_s_1[copy_health]",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+CopyHealth",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "actrpa_hp_trans",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+FixedValueDamage",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": false,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "enemy_mnchrs_water",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+FixedValueDamage",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": false,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "enemy_mnggyl_blood",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+FixedValueDamage",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": false,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "enemy_mnlaur_steal",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+FixedValueDamage",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": false,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "trap_pirene_damage_init",
+        "path": "/0/actions/1",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "trap_pirene_regist",
+        "path": "/0/actions/2",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "morgan_s_2",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "morgan_s_1",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaCurHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": false,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "mlyss_wtrman_[summon_refresh]",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+HealViaMaxHpRatio",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "mlyss_wtrman_s_begin",
+        "path": "/2/actions/6",
+        "type": "Torappu.Battle.Action.Nodes+HealViaMaxHpRatio",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "vigil_wolf_s_1[enhance]",
+        "path": "/0/actions/0/_succeedNodes/0",
+        "type": "Torappu.Battle.Action.Nodes+HealViaMaxHpRatio",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "vigil_wolf_t_1[listener]",
+        "path": "/1/actions/8",
+        "type": "Torappu.Battle.Action.Nodes+HealViaMaxHpRatio",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "vigil_wolf_t_1[listener]",
+        "path": "/2/actions/3/_failNodes/0/_failNodes/0/_failNodes/0/_failNodes/0/_failNodes/0/_failNodes/3",
+        "type": "Torappu.Battle.Action.Nodes+HealViaMaxHpRatio",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "necras_t_1[upgrade]",
+        "path": "/0/actions/3",
+        "type": "Torappu.Battle.Action.Nodes+HealViaMaxHpRatio",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "necras_token_heal",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+HealViaMaxHpRatio",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "humus_t_1[damage_via_es]",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaEs",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "gvial2_s_3[bleed]",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+FixedValueDamage",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": false,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "texas2_t_1[conditional_atk]",
+        "path": "/1/actions/2",
+        "type": "Torappu.Battle.Action.Nodes+HealViaMaxHpRatio",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "blaze2_s_3[lose_hp]",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "blaze2_s_2[self_damage]",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "periodic_damage_by_hp_ratio[skip_modifier_fix][undeadable]",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "hsgma2_s_3[before_dead][aura][ref]",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+FixedValueDamage",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": false,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "hsgma2_s_3[heal]",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+HealViaMaxHpRatio",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "hsgma2_s_3[ally]",
+        "path": "/0/actions/3",
+        "type": "Torappu.Battle.Action.Nodes+FixedValueDamage",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": false,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "chen3_s2_t[hp_ratio_sync]",
+        "path": "/0/actions/0/_succeedNodes/2",
+        "type": "Torappu.Battle.Action.Nodes+FetchHpToBlackboard",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "kalts2_s3_restore_sync_hp",
+        "path": "/1/actions/2",
+        "type": "Torappu.Battle.Action.Nodes+FetchHpToBlackboard",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "rfalcn_apply_damage",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+FixedValueDamage",
+        "damageType": "MAGICAL",
+        "triggerOnCalculateDamage": false,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "demetr_s3_t[born_sync]",
+        "path": "/0/actions/0/_succeedNodes/0/_failNodes/3",
+        "type": "Torappu.Battle.Action.Nodes+FetchHpToBlackboard",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "demetr_s3_t[born_sync]",
+        "path": "/0/actions/0/_failNodes/3",
+        "type": "Torappu.Battle.Action.Nodes+FetchHpToBlackboard",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "ironmn_pile3_bleed",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "ironmn_pile_bleed",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "hodrer_s_3[damage]",
+        "path": "/2/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+FixedValueDamage",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": false,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "vrdant_s2",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "zuole_s_2[shield]",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaCurHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": false,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "rdoc_t2[damage_via_es]",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaEs",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "cetsyr_s_3[set_hp_ratio]",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+EqualizeTargetHpRatio",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "laios_e_trait[heal]",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+HealViaMaxHpRatio",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "ulpia_s3_hp_ratio_sync",
+        "path": "/1/actions/2",
+        "type": "Torappu.Battle.Action.Nodes+FetchHpToBlackboard",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "rosesa_s_2[bleed]",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+FixedValueDamage",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": false,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "tecno_token_heal",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+HealViaMaxHpRatio",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "varkis_s2[damage_via_es]",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaEs",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "monstr_s_3[bleeding]",
+        "path": "/0/actions/0/_failNodes/0",
+        "type": "Torappu.Battle.Action.Nodes+FixedValueDamage",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": false,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "monstr_s_3[sync_hp]",
+        "path": "/0/actions/2",
+        "type": "Torappu.Battle.Action.Nodes+FetchHpToBlackboard",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "prosts_t_1[born_charge]",
+        "path": "/2/actions/0/_failNodes/0",
+        "type": "Torappu.Battle.Action.Nodes+FixedValueDamage",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": false,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "nasti_nstbld_m2[heal_m456]",
+        "path": "/0/actions/0/_succeedNodes/2/_succeedNodes/1",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "nasti_nstchr_m2[dec_blood]",
+        "path": "/0/actions/2",
+        "type": "Torappu.Battle.Action.Nodes+FixedValueDamage",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": false,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "nasti_nstchr[blood_one]",
+        "path": "/0/actions/2",
+        "type": "Torappu.Battle.Action.Nodes+FixedValueDamage",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": false,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "nasti_nstbld_m1[heal_m456]",
+        "path": "/0/actions/0/_succeedNodes/2/_succeedNodes/1",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "nasti_nstdef_t[self_damage]",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "turdus_s2[self_damage]",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaCurHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": false,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "enemy_ubbplwq[reborn3][heal]",
+        "path": "/0/actions/0/_failNodes/0",
+        "type": "Torappu.Battle.Action.Nodes+HealViaMaxHpRatio",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "enemy_ubbphw[reborn3][heal]",
+        "path": "/0/actions/0/_failNodes/0",
+        "type": "Torappu.Battle.Action.Nodes+HealViaMaxHpRatio",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "enemy_pppdth[mode_reborn][duration]",
+        "path": "/2/actions/0/_failNodes/0",
+        "type": "Torappu.Battle.Action.Nodes+HealViaMaxHpRatio",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "enemy_pppdth[mode_reborn][heal]",
+        "path": "/0/actions/0/_failNodes/0",
+        "type": "Torappu.Battle.Action.Nodes+HealViaMaxHpRatio",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "xbchst[hp_ratio]",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "sharp2_e_t_1",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+AdvancedApplyDamage",
+        "damageType": "MAGICAL",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": false
+      },
+      {
+        "template": "phenxi_e_003_t[bleeding]",
+        "path": "/0/actions/1",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaCurHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": false,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "nearl2_3_003_tr[heal]",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+HealViaMaxHpRatio",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "halfIdle_split_damage",
+        "path": "/1/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+SplitDamageToNearbyOperators",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "halfIdle_lhmine_passive",
+        "path": "/0/actions/0/_succeedNodes/2",
+        "type": "Torappu.Battle.Action.Nodes+HealViaMaxHpRatio",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "legion_cdwalk_inverse_damage_via_def",
+        "path": "/0/actions/1",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaAttr",
+        "damageType": "PHYSICAL",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "legion_cdtank_inverse_damage_via_def",
+        "path": "/0/actions/1",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaAttr",
+        "damageType": "PHYSICAL",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "legion_trap_cdrone_heal",
+        "path": "/0/actions/0/_succeedNodes/1",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "legion_trap_cdrone_heal",
+        "path": "/0/actions/0/_succeedNodes/2",
+        "type": "Torappu.Battle.Action.Nodes+AverageHealViaHpUseAbilitySelector",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "legion_trap_cdrone_heal",
+        "path": "/0/actions/0/_failNodes/0/_failNodes/0",
+        "type": "Torappu.Battle.Action.Nodes+AverageHealViaHpUseAbilitySelector",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "legion_trap_cdrone_heal",
+        "path": "/0/actions/0/_failNodes/0/_failNodes/1",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "legion_cdheal_heal_overflow_to_shield",
+        "path": "/1/actions/3",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaEs",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "legion_planty_spray_tile",
+        "path": "/0/actions/1",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "legion_boxing_born_reduce_hp",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "legion_fystone_pericdic_damage",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "supctl_s1[self]",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "muruinf_target_free",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+HealViaMaxHpRatio",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "multi_fortress_s[sp]",
+        "path": "/2/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+HealViaMaxHpRatio",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "enemy_syboss_t[fetch_hp]",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "enemy_syskad_t[monster]",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+HealViaMaxHpRatio",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "trap_tooltower[loss_hp]",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "rogue_3_lossHP",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+FixedValueDamage",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": false,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "rogue_3_relic_hand_5",
+        "path": "/0/actions/0/_failNodes/2",
+        "type": "Torappu.Battle.Action.Nodes+HealViaMaxHpRatio",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "trap_dyldlz_steal_t[buff]",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+HealViaMaxHpRatio",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "enemy_dyspl2_inherit_hp[damage]",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+FixedValueDamage",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": false,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "enemy_dywqgs_kill_self",
+        "path": "/0/actions/1/_succeedNodes/0",
+        "type": "Torappu.Battle.Action.Nodes+FixedValueDamage",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": false,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "rogue_5_relic_legacy_142[recovery]",
+        "path": "/0/actions/2",
+        "type": "Torappu.Battle.Action.Nodes+HealViaMaxHpRatio",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "rogue_5_char_revive_and_heal",
+        "path": "/1/actions/1",
+        "type": "Torappu.Battle.Action.Nodes+HealViaMaxHpRatio",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "enemy_shjagr_block",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "rogue_6_shield_when_attack",
+        "path": "/0/actions/4",
+        "type": "Torappu.Battle.Action.Nodes+FixedValueDamage",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": false,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "rogue_6_warrior_reborn_like",
+        "path": "/1/actions/1",
+        "type": "Torappu.Battle.Action.Nodes+HealViaMaxHpRatio",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "enemy_xbtor_s",
+        "path": "/2/actions/3",
+        "type": "Torappu.Battle.Action.Nodes+InverseDamage",
+        "damageType": "PHYSICAL",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "sandbox_boss_hp_debuff",
+        "path": "/0/actions/0/_succeedNodes/0",
+        "type": "Torappu.Battle.Action.Nodes+EqualizeTargetHpRatio",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "trap_xbdiam[passive]",
+        "path": "/1/actions/1/_failNodes/1",
+        "type": "Torappu.Battle.Action.Nodes+FixedValueDamage",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": false,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "trap_xbhydr_mesh",
+        "path": "/1/actions/3/_failNodes/1",
+        "type": "Torappu.Battle.Action.Nodes+FixedValueDamage",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": false,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "sandbox_res_collector",
+        "path": "/0/actions/2",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "sandbox_v3_service[start]",
+        "path": "/2/actions/0/_succeedNodes/0",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "sandbox_v3_service[start]",
+        "path": "/3/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+HealViaMaxHpRatio",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "sandbox_v3_service[start]",
+        "path": "/4/actions/2/_succeedNodes/0",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "sandbox_v3_train[hit-crop]",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+FixedValueDamage",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": false,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "sandbox_v3_process[life-sp]",
+        "path": "/1/actions/1",
+        "type": "Torappu.Battle.Action.Nodes+HealViaMaxHpRatio",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "sandbox_v3_ep_break[dark-exdamage]",
+        "path": "/0/actions/1",
+        "type": "Torappu.Battle.Action.Nodes+FixedValueDamage",
+        "damageType": "PHYSICAL",
+        "triggerOnCalculateDamage": false,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "sandbox_v3_gather_res_damage",
+        "path": "/0/actions/0/_succeedNodes/1",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "sandbox_v3_gather_res_damage",
+        "path": "/0/actions/0/_failNodes/0/_succeedNodes/1",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "sandbox_v3_gather_res_damage",
+        "path": "/0/actions/0/_failNodes/0/_failNodes/0/_succeedNodes/1",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "sandbox_v3_gather_res_damage",
+        "path": "/0/actions/0/_failNodes/0/_failNodes/0/_failNodes/0/_failNodes/0/_succeedNodes/1",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "sandbox_v3_gather_res_damage",
+        "path": "/0/actions/0/_failNodes/0/_failNodes/0/_failNodes/0/_failNodes/0/_failNodes/0/_succeedNodes/1",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "sandbox_v3_food_20",
+        "path": "/0/actions/2",
+        "type": "Torappu.Battle.Action.Nodes+FixedValueDamage",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": false,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "sandbox_v3_relic[captive_animal_bleeding]",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+BleedingDamagePerSec",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "sandbox_v3_xb2cbp2[bleed]",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "sandbox_v3_xb2spk[periodic_damage]",
+        "path": "/0/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+FixedValueDamage",
+        "damageType": "PURE",
+        "triggerOnCalculateDamage": false,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "flmchn2_t_debuff",
+        "path": "/1/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+FixedValueDamage",
+        "damageType": "MAGICAL",
+        "triggerOnCalculateDamage": false,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "flmchn_t_debuff",
+        "path": "/0/actions/2",
+        "type": "Torappu.Battle.Action.Nodes+HealViaMaxHpRatio",
+        "damageType": null,
+        "triggerOnCalculateDamage": null,
+        "emitSourceOnCalculateDamage": null
+      },
+      {
+        "template": "flmchn_t_debuff",
+        "path": "/1/actions/0",
+        "type": "Torappu.Battle.Action.Nodes+FixedValueDamage",
+        "damageType": "MAGICAL",
+        "triggerOnCalculateDamage": false,
+        "emitSourceOnCalculateDamage": null
+      }
+    ],
+    "selectedTemplates": [
+      {
+        "templateKey": "periodic_damage_by_hp_ratio[skip_modifier_fix]",
+        "effectKey": "",
+        "onEventPriority": 0,
+        "templateIndex": 553,
+        "events": [
+          {
+            "event": 2,
+            "actions": [
+              {
+                "_targetType": "TARGET",
+                "_getMaxHpFromTarget": false,
+                "_damageType": "PURE",
+                "_applyWay": "NONE",
+                "_ignoreForSp": true,
+                "_isUndeadable": false,
+                "_attackType": "NORMAL",
+                "_skipModifierEvent": true,
+                "_multiplyByKey": false,
+                "_multiplierKey": "cnt",
+                "_noSourceDamage": false,
+                "$type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "templateKey": "enemy_bmbmot_t",
+        "effectKey": "",
+        "onEventPriority": 0,
+        "templateIndex": 582,
+        "events": [
+          {
+            "event": 3,
+            "actions": [
+              {
+                "_abnormalFlag": "SILENCED",
+                "_targetType": "BUFF_OWNER",
+                "_isUnset": true,
+                "_abnormalFlagKey": "",
+                "$type": "Torappu.Battle.Action.Nodes+CheckAbnormalFlag"
+              },
+              {
+                "_mountPoint": "FOOT",
+                "_emitOnRootTile": false,
+                "_ev": "ON_HIT_OBJECT",
+                "_actions": [],
+                "_overwriteActions": false,
+                "_buffDataList": [],
+                "_overwriteBuffs": false,
+                "_sourceType": "BUFF_OWNER",
+                "_targetType": "TARGET",
+                "_targetPosFromBB": false,
+                "_projectileKey": "",
+                "_useSourceAsProjectileSource": false,
+                "_useProjectileAsTarget": false,
+                "_useTargetAsStartPoint": false,
+                "_useSourceProjectileAsStartPoint": false,
+                "_startPosFromBB": false,
+                "_startPosRowKey": "",
+                "_startPosColKey": "",
+                "_checkPosAsTile": true,
+                "_extraBlackboard": false,
+                "_overwriteBlackboard": false,
+                "_useTileAsTarget": false,
+                "_cacheAtkToActions": false,
+                "_useSnapshotAbilityWhenFromBuff": false,
+                "_useTargetRootTile": false,
+                "_useAbilityTileSelector": false,
+                "_abilityName": "",
+                "_useAbilityFromOther": false,
+                "_abilityOwner": "SOURCE",
+                "_dealHitTargetAfterCreate": false,
+                "_forceDealHitTarget": true,
+                "$type": "Torappu.Battle.Action.Nodes+EmitProjectile"
+              }
+            ]
+          },
+          {
+            "event": 2,
+            "actions": [
+              {
+                "_damageType": "PHYSICAL",
+                "_damageKey": "hp_ratio",
+                "_baseDamageKey": null,
+                "_durationToIncreaseKey": "",
+                "_ignoreForSp": false,
+                "_attackType": "NORMAL",
+                "_isEnvDamage": false,
+                "_isRatioToMaxHp": true,
+                "_isIncreasingToCap": false,
+                "_skipModifierEvent": true,
+                "_elementDamageType": "NONE",
+                "$type": "Torappu.Battle.Action.Nodes+BleedingDamagePerSec"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "templateKey": "ltrock_hit[lpeopl]",
+        "effectKey": "",
+        "onEventPriority": 0,
+        "templateIndex": 2827,
+        "events": [
+          {
+            "event": 0,
+            "actions": [
+              {
+                "_damageType": "PHYSICAL",
+                "_damageKey": "hit_value",
+                "_atkScaleKey": "atk_scale",
+                "_ignoreForSp": true,
+                "_attackType": "NORMAL",
+                "_skipModifierEvent": true,
+                "_considerUnhurtable": false,
+                "_noSourceDamage": false,
+                "_targetType": "TARGET",
+                "_assignRealDamageToBB": false,
+                "_assignFinalDamageToBB": false,
+                "_multiplierByKey": false,
+                "_multiplierKey": "cnt",
+                "_damageSourceType": "SOURCE",
+                "_damageTargetType": "TARGET",
+                "_triggerOnCalculateDamage": false,
+                "_isEnvDamage": false,
+                "_ignoreCancelReasonMask": "NONE",
+                "_forceDisplayDamageNum": false,
+                "_undeadable": false,
+                "_modifierKey": "",
+                "_devideDamageFromAbilityCnt": false,
+                "$type": "Torappu.Battle.Action.Nodes+FixedValueDamage"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "templateKey": "enemy_mpprme_ray_damage",
+        "effectKey": "",
+        "onEventPriority": 0,
+        "templateIndex": 3016,
+        "events": [
+          {
+            "event": 2,
+            "actions": [
+              {
+                "_sourceType": "SOURCE",
+                "_targetType": "TARGET",
+                "_damageType": "MAGICAL",
+                "_atkScaleVar": "ray_atk_scale",
+                "_defaultAtkScale": 1.0,
+                "_applyWay": "NONE",
+                "_baseOnHostAtk": false,
+                "_emitSourceOnCalculateDamage": false,
+                "_attackType": "BUFF",
+                "_forceUseProjectileCachedAtk": false,
+                "_ignoreForSp": false,
+                "_ignoreMissFlag": "NONE",
+                "_ignoreCancelReasonMask": "NONE",
+                "_modifierKey": "",
+                "_assignRealDamageToBB": false,
+                "_assignFinalDamageToBB": false,
+                "_skipModifierEvent": true,
+                "_noSource": false,
+                "_onlyUseSourceOnCalculateDamage": false,
+                "_getCachedAtkFromBlackboard": false,
+                "_cachedAtkKey": "atk",
+                "_useSourceWhenUseCachedAtk": false,
+                "_setSharedFlag": false,
+                "_sharedFlagIndex": "IS_CONTINUOUS",
+                "$type": "Torappu.Battle.Action.Nodes+AdvancedApplyDamage"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "templateKey": "enemy_mpprme_fly_ray",
+        "effectKey": "",
+        "onEventPriority": 0,
+        "templateIndex": 3020,
+        "events": [
+          {
+            "event": 32,
+            "actions": [
+              {
+                "_conditionNode": {
+                  "_ownerType": "BUFF_OWNER",
+                  "_targetType": "BUFF_OWNER",
+                  "_abilityName": "Ray",
+                  "_checkCanUseAblityFlag": false,
+                  "_castDirectly": true,
+                  "_useFirstActiveAbility": false,
+                  "_useCastResult": true,
+                  "_triggerHostAbility": false,
+                  "_notInterruptAbilityIfCasting": false,
+                  "$type": "Torappu.Battle.Action.Nodes+TriggerAbility"
+                },
+                "_succeedNodes": [
+                  {
+                    "_sourceType": "BUFF_OWNER",
+                    "_buffKey": "enemy_mpprme_fly",
+                    "_loadFromBlackboard": false,
+                    "_finishDerivedBuffIfParentFinish": true,
+                    "_attachToSourceHost": false,
+                    "_finishDerivedBuffIfNoParent": false,
+                    "$type": "Torappu.Battle.Action.Nodes+AttachAsDerivedBuffById"
+                  }
+                ],
+                "_failNodes": [
+                  {
+                    "_decCntIfStack": false,
+                    "_updateOverrideMap": true,
+                    "$type": "Torappu.Battle.Action.Nodes+FinishBuff"
+                  },
+                  {
+                    "_buffKey": "enemy_mpprme_fly",
+                    "_loadFromBlackboard": false,
+                    "_decCntIfStack": false,
+                    "_updateOverrideMap": true,
+                    "_targetType": "BUFF_OWNER",
+                    "_checkBuffSource": false,
+                    "_sourceType": "BUFF_SOURCE",
+                    "_alsoClearNullSource": false,
+                    "_finishHostBuff": false,
+                    "_excludeThisBuff": false,
+                    "_decCntKey": null,
+                    "_decCnt": 1,
+                    "$type": "Torappu.Battle.Action.Nodes+FinishBuffsById"
+                  }
+                ],
+                "$type": "Torappu.Battle.Action.Nodes+IfElse"
+              }
+            ]
+          },
+          {
+            "event": 1,
+            "actions": [
+              {
+                "_targetType": "BUFF_OWNER",
+                "$type": "Torappu.Battle.Action.Nodes+FinishManagedProjectiles"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "prefabs": [
+      {
+        "bundle": "battle/enm_pfb_14.ab",
+        "file": "CAB-418be99595adfa1a3c8b4012fe22cb83",
+        "pathId": "-5486323580757109983",
+        "hierarchy": [
+          {
+            "name": "HitLpeopl",
+            "gameObjectPathId": "-4923904226439425247",
+            "transformPathId": "7847794594849461025"
+          },
+          {
+            "name": "Talents",
+            "gameObjectPathId": "-2033402527055113439",
+            "transformPathId": "87240771613004577"
+          },
+          {
+            "name": "enemy_1343_ltrock",
+            "gameObjectPathId": "9161095976436601633",
+            "transformPathId": "-2992868200438066399"
+          }
+        ],
+        "objectSha256": "51095bc74359f367873dac25e179aedb2182862da08389200ed3d82377f4194e",
+        "rawFile": "enm_pfb_14--5486323580757109983.bin",
+        "classId": 114,
+        "typeIndex": 44,
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": -4923904226439425247
+          },
+          "common:349": true,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": -5482140055134904783
+          },
+          "common:427": "",
+          "_targetOptions": {
+            "targetSide": 1,
+            "targetMotion": 3,
+            "targetCategory": 1,
+            "enableAdvancedOptions": true,
+            "ignoreTargetFree": true,
+            "ignoreAllyTargetFree": false,
+            "ignoreHealFree": false,
+            "ignoreMotionMode": false,
+            "ignoreTargetSide": false,
+            "excludeSomeAbnormalFlags": false,
+            "containSomeAbnormalFlags": false,
+            "excludeAbnormalFlag": 0,
+            "containAbnormalFlag": 0,
+            "purposeMask": 0,
+            "professionMask": 0,
+            "checkUnitType": false,
+            "unitTypeMask": 0,
+            "onlyIgnoreSomeOfTargetFreeCase": false,
+            "abnormalFlag": 0,
+            "abnormalCombo": 0
+          },
+          "_excludeKey": false,
+          "_buffs": {
+            "Array": [
+              "mark_neutral[lpeopl]"
+            ]
+          },
+          "_filterBuffSource": false,
+          "_hostAsTarget": false
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_14.ab",
+        "file": "CAB-418be99595adfa1a3c8b4012fe22cb83",
+        "pathId": "-5393522090943474911",
+        "hierarchy": [
+          {
+            "name": "HitLpeopl",
+            "gameObjectPathId": "-4923904226439425247",
+            "transformPathId": "7847794594849461025"
+          },
+          {
+            "name": "Talents",
+            "gameObjectPathId": "-2033402527055113439",
+            "transformPathId": "87240771613004577"
+          },
+          {
+            "name": "enemy_1343_ltrock",
+            "gameObjectPathId": "9161095976436601633",
+            "transformPathId": "-2992868200438066399"
+          }
+        ],
+        "objectSha256": "f94a634d7062a0ff7f8e48a09a9a34490d3e45da10168cd681842a883712aa13",
+        "rawFile": "enm_pfb_14--5393522090943474911.bin",
+        "classId": 114,
+        "typeIndex": 45,
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": -4923904226439425247
+          },
+          "common:349": true,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": 9073738633337710967
+          },
+          "common:427": "",
+          "_selector": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_metadata": {
+            "namedAsAlias": "",
+            "blackboardPrefix": ""
+          },
+          "_overrideSignalId": "",
+          "_interruptAbilityOnDetach": false,
+          "_attachPassiveBuffsOnDummy": true,
+          "_ignoreIfOwnerDead": false,
+          "_forceAsDmgOrHealAbility": false,
+          "_buffs": {
+            "Array": [
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "ltrock_hit[lpeopl]",
+                "loadFromDB": false,
+                "isDurableBuff": false,
+                "isDamageMissable": false,
+                "isSilenceable": false,
+                "isStunnable": false,
+                "isFreezable": false,
+                "isLevitatable": false,
+                "isGroundBoundable": false,
+                "statusResistable": true,
+                "templateKey": "ltrock_hit[lpeopl]",
+                "disableOverride": false,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": false,
+                "clearAllStackCntWhenTimeUp": false,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": false,
+                "overrideEffectKey": "",
+                "overrideOnEventPriority": false,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": false,
+                "takeSnapshotWhenExtend": false,
+                "durationKey": "",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": false,
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": true,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": false,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": false
+              }
+            ]
+          },
+          "_passiveBuffs": {
+            "Array": []
+          },
+          "_selfOption": 2,
+          "_removeBuffWhenTargetLeave": true,
+          "_removeBuffWhenAbilityDetached": true,
+          "_onlyAddBuffOnceForEachTarget": false,
+          "_effects": {
+            "Array": []
+          },
+          "_createEffectOnDummy": true,
+          "_targetValidator": {
+            "m_FileID": 0,
+            "m_PathID": -5486323580757109983
+          },
+          "_ignoreOwnerFakeDeath": false
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_14.ab",
+        "file": "CAB-418be99595adfa1a3c8b4012fe22cb83",
+        "pathId": "-238802773986143455",
+        "hierarchy": [
+          {
+            "name": "HitLpeopl",
+            "gameObjectPathId": "-4923904226439425247",
+            "transformPathId": "7847794594849461025"
+          },
+          {
+            "name": "Talents",
+            "gameObjectPathId": "-2033402527055113439",
+            "transformPathId": "87240771613004577"
+          },
+          {
+            "name": "enemy_1343_ltrock",
+            "gameObjectPathId": "9161095976436601633",
+            "transformPathId": "-2992868200438066399"
+          }
+        ],
+        "objectSha256": "d664d3922419222f79160b1791a91c75f7427e938926da96a1c653f4ce7ffd03",
+        "rawFile": "enm_pfb_14--238802773986143455.bin",
+        "classId": 114,
+        "typeIndex": 56,
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": -4923904226439425247
+          },
+          "common:349": true,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": -1398656344548769790
+          },
+          "common:427": "",
+          "_overwriteTalentKey": "",
+          "_overwriteParentRangeId": false,
+          "_checkValidBySkillIndex": {
+            "Array": []
+          },
+          "_attachInDummy": false,
+          "_defaultModeIndex": -1,
+          "_attackBlackboardModeIndex": -1,
+          "_extraAttackBlackboardModeIndices": {
+            "Array": []
+          },
+          "_overrideDefaultRangeId": false,
+          "_applyTalentScale": false,
+          "_influenceSkillBlackboard": false,
+          "_fromRawDataToSkill": false,
+          "_applyTalentRange": false,
+          "_applyBlackboardBySkill": false,
+          "_applyStrBlackboardBySkill": false,
+          "_writeRangeIdToProjectileBlackboard": false,
+          "_affectWhenNotRootTalent": false,
+          "_scaleCertainKeyFlag": false,
+          "_scaleCertainKeyList": {
+            "Array": []
+          },
+          "_scaleCertainMode": false,
+          "_scaleModeIndices": {
+            "Array": []
+          }
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_14.ab",
+        "file": "CAB-418be99595adfa1a3c8b4012fe22cb83",
+        "pathId": "7351903220464194337",
+        "hierarchy": [
+          {
+            "name": "enemy_1343_ltrock",
+            "gameObjectPathId": "9161095976436601633",
+            "transformPathId": "-2992868200438066399"
+          }
+        ],
+        "objectSha256": "fe920ed6f1ffd0b6f11e4fd936a209da3bda442944926e28c4140579e84c9b3a",
+        "rawFile": "enm_pfb_14-7351903220464194337.bin",
+        "classId": 114,
+        "typeIndex": 13,
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": 9161095976436601633
+          },
+          "common:349": true,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": -6629209555389654693
+          },
+          "common:427": "",
+          "_animator": {
+            "m_FileID": 0,
+            "m_PathID": 4299585714653860641
+          },
+          "_modes": {
+            "Array": [
+              {
+                "m_FileID": 0,
+                "m_PathID": 3555334220170171169
+              }
+            ]
+          },
+          "_commonAbilities": {
+            "Array": [
+              {
+                "m_FileID": 0,
+                "m_PathID": 2663346104972514081
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": -6572866038642207967
+              }
+            ]
+          },
+          "_uiMountPoint": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_effectTransform": {
+            "m_FileID": 0,
+            "m_PathID": 5074918263843230497
+          },
+          "_shadow": {
+            "m_FileID": 0,
+            "m_PathID": 824426055930057505
+          },
+          "_defaultBodyColor": {
+            "r": 1.0,
+            "g": 1.0,
+            "b": 1.0,
+            "a": 1.0
+          },
+          "_hideShadowOnRecycle": false,
+          "_overrideGraphicBound": -1.0,
+          "_hudPluginReplacePairs": {
+            "Array": []
+          },
+          "_showDebugName": false,
+          "_sideTypeIndex": 1,
+          "_locateRange": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_disableRenderLocateRange": false,
+          "_isFixedRotation": false,
+          "_bodyDirectionPolicy": 0,
+          "_useMoveDirAsFaceDir": false,
+          "_scaleMoveBySpeed": false,
+          "_scaleMoveAnimationRange": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "_showSpAsBulletMode": false,
+          "_hideBulletSpModes": {
+            "Array": []
+          },
+          "_alwaysShowHp": false,
+          "_alwaysHideHp": false,
+          "_keepMoveAnimScale": false,
+          "_useSpecificDeadAnim": false,
+          "_useSpecificReachExitAnim": false,
+          "_disableBornTweenColor": true,
+          "_height": 0.0,
+          "_groundBoundHeightZOffset": 0.10000000149011612,
+          "_useSpineLikeHeightUpdate": false,
+          "_spineLikeHeightUpdateRatio": 0.25,
+          "_delayToBorn": 0.0,
+          "_onlyDelayToBornOnTileStart": false,
+          "_audioSignalUseId": false,
+          "_startEffect": "",
+          "_deadEffect": "",
+          "_blockVolume": 1,
+          "_specialBlockCondition": {
+            "_type": 0,
+            "_buffKeyPairs": {
+              "Array": []
+            },
+            "_filterTags": {
+              "Array": []
+            }
+          },
+          "_dontSetEnemyFaceByCursorWhenBorn": true,
+          "_idleWhenBorn": false,
+          "_canNotExit": false,
+          "_hideShadowOnReset": false,
+          "_allowFalldownWhenReborn": false,
+          "_alwaysCheckCurrentPoint": false,
+          "_ignoreBlockMode": false,
+          "_specificBlockMask": 0
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_19.ab",
+        "file": "CAB-45917fb008d9d99f506436a9f5988d3d",
+        "pathId": "2737471110818766044",
+        "hierarchy": [
+          {
+            "name": "FlyRay",
+            "gameObjectPathId": "-415856599698236196",
+            "transformPathId": "-3934660153567798052"
+          },
+          {
+            "name": "Talents",
+            "gameObjectPathId": "-6565868042814677796",
+            "transformPathId": "1399847620019166428"
+          },
+          {
+            "name": "Body",
+            "gameObjectPathId": "7184675248783563996",
+            "transformPathId": "1024754857658096860"
+          },
+          {
+            "name": "FlyMode_Ray_P2",
+            "gameObjectPathId": "6370703761083931868",
+            "transformPathId": "-6847392978588459812"
+          },
+          {
+            "name": "Modes",
+            "gameObjectPathId": "-1377940556474016548",
+            "transformPathId": "-6985682423926874916"
+          },
+          {
+            "name": "enemy_1565_mpprme",
+            "gameObjectPathId": "-4549273365824398116",
+            "transformPathId": "5978077044915379420"
+          }
+        ],
+        "objectSha256": "70b4c696e82f98a25a9d92342c1cfd76e1683f4bf60ccf21c5b7db1be7b09479",
+        "rawFile": "enm_pfb_19-2737471110818766044.bin",
+        "classId": 114,
+        "typeIndex": 7,
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": -415856599698236196
+          },
+          "common:349": true,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": -2726233351382997147
+          },
+          "common:427": "",
+          "_overwriteTalentKey": "",
+          "_overwriteParentRangeId": false,
+          "_checkValidBySkillIndex": {
+            "Array": []
+          },
+          "_attachInDummy": false,
+          "_defaultModeIndex": -1,
+          "_attackBlackboardModeIndex": -1,
+          "_extraAttackBlackboardModeIndices": {
+            "Array": []
+          },
+          "_overrideDefaultRangeId": false,
+          "_applyTalentScale": false,
+          "_influenceSkillBlackboard": false,
+          "_fromRawDataToSkill": false,
+          "_applyTalentRange": false,
+          "_applyBlackboardBySkill": false,
+          "_applyStrBlackboardBySkill": false,
+          "_writeRangeIdToProjectileBlackboard": false,
+          "_affectWhenNotRootTalent": false,
+          "_scaleCertainKeyFlag": false,
+          "_scaleCertainKeyList": {
+            "Array": []
+          },
+          "_scaleCertainMode": false,
+          "_scaleModeIndices": {
+            "Array": []
+          }
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_19.ab",
+        "file": "CAB-45917fb008d9d99f506436a9f5988d3d",
+        "pathId": "4403106368448830684",
+        "hierarchy": [
+          {
+            "name": "FlyMode_Ray_P2",
+            "gameObjectPathId": "6370703761083931868",
+            "transformPathId": "-6847392978588459812"
+          },
+          {
+            "name": "Modes",
+            "gameObjectPathId": "-1377940556474016548",
+            "transformPathId": "-6985682423926874916"
+          },
+          {
+            "name": "enemy_1565_mpprme",
+            "gameObjectPathId": "-4549273365824398116",
+            "transformPathId": "5978077044915379420"
+          }
+        ],
+        "objectSha256": "950d6561038e90ecdcd5bfac1a515f36182a34a7566ab9ccd81807f50c69c5f2",
+        "rawFile": "enm_pfb_19-4403106368448830684.bin",
+        "classId": 114,
+        "typeIndex": 26,
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": 6370703761083931868
+          },
+          "common:349": true,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": 5390319429299248724
+          },
+          "common:427": "",
+          "_bodyTransform": {
+            "m_FileID": 0,
+            "m_PathID": 1024754857658096860
+          },
+          "_animatorHooker": {
+            "m_FileID": 0,
+            "m_PathID": 148968123606047964
+          },
+          "_overrideStartEffect": "",
+          "_overrideDeadEffect": "",
+          "_combat": {
+            "m_FileID": 0,
+            "m_PathID": 3011951242853096668
+          },
+          "_attack": {
+            "m_FileID": 0,
+            "m_PathID": 3011951242853096668
+          },
+          "_attackTrigger": {
+            "m_FileID": 0,
+            "m_PathID": 2713904694448823516
+          },
+          "_hideUIAttackRange": false,
+          "_updateAttackRangeExtendByAttributeDirty": false,
+          "_rangeToShow": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_extraRangesToShow": {
+            "Array": []
+          },
+          "_generalAbilities": {
+            "Array": [
+              {
+                "m_FileID": 0,
+                "m_PathID": 7889958315965160668
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": 7160887488401317084
+              }
+            ]
+          },
+          "_addIndexToSignalId": true,
+          "_includeIndexZero": true,
+          "_alwaysHideHp": {
+            "isDefined": false,
+            "value": false
+          },
+          "_alwaysHideSp": {
+            "isDefined": false,
+            "value": false
+          }
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_19.ab",
+        "file": "CAB-45917fb008d9d99f506436a9f5988d3d",
+        "pathId": "4504930388386258140",
+        "hierarchy": [
+          {
+            "name": "FlyRay",
+            "gameObjectPathId": "-415856599698236196",
+            "transformPathId": "-3934660153567798052"
+          },
+          {
+            "name": "Talents",
+            "gameObjectPathId": "-6565868042814677796",
+            "transformPathId": "1399847620019166428"
+          },
+          {
+            "name": "Body",
+            "gameObjectPathId": "7184675248783563996",
+            "transformPathId": "1024754857658096860"
+          },
+          {
+            "name": "FlyMode_Ray_P2",
+            "gameObjectPathId": "6370703761083931868",
+            "transformPathId": "-6847392978588459812"
+          },
+          {
+            "name": "Modes",
+            "gameObjectPathId": "-1377940556474016548",
+            "transformPathId": "-6985682423926874916"
+          },
+          {
+            "name": "enemy_1565_mpprme",
+            "gameObjectPathId": "-4549273365824398116",
+            "transformPathId": "5978077044915379420"
+          }
+        ],
+        "objectSha256": "af2869171b07811e613289e9b363a872661a549ca15766fa9a95e423e19eb542",
+        "rawFile": "enm_pfb_19-4504930388386258140.bin",
+        "classId": 114,
+        "typeIndex": 17,
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": -415856599698236196
+          },
+          "common:349": true,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": 3800760148018415462
+          },
+          "common:427": "",
+          "_selector": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_metadata": {
+            "namedAsAlias": "",
+            "blackboardPrefix": ""
+          },
+          "_overrideSignalId": "",
+          "_interruptAbilityOnDetach": true,
+          "_attachPassiveBuffsOnDummy": true,
+          "_ignoreIfOwnerDead": false,
+          "_forceAsDmgOrHealAbility": false,
+          "_buffs": {
+            "Array": [
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "enemy_mpprme_fly",
+                "loadFromDB": false,
+                "isDurableBuff": false,
+                "isDamageMissable": false,
+                "isSilenceable": false,
+                "isStunnable": false,
+                "isFreezable": false,
+                "isLevitatable": false,
+                "isGroundBoundable": false,
+                "statusResistable": true,
+                "templateKey": "enemy_mpprme_fly",
+                "disableOverride": false,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": false,
+                "clearAllStackCntWhenTimeUp": false,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": false,
+                "overrideEffectKey": "",
+                "overrideOnEventPriority": false,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": true,
+                "takeSnapshotWhenExtend": false,
+                "durationKey": "duration",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": false,
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": true,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": false,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": false
+              },
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "enemy_mpprme_fly_ray",
+                "loadFromDB": false,
+                "isDurableBuff": false,
+                "isDamageMissable": false,
+                "isSilenceable": false,
+                "isStunnable": false,
+                "isFreezable": false,
+                "isLevitatable": false,
+                "isGroundBoundable": false,
+                "statusResistable": true,
+                "templateKey": "enemy_mpprme_fly_ray",
+                "disableOverride": false,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": false,
+                "clearAllStackCntWhenTimeUp": false,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": false,
+                "overrideEffectKey": "enemy_mpprme_line_start_01",
+                "overrideOnEventPriority": false,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": true,
+                "takeSnapshotWhenExtend": false,
+                "durationKey": "duration",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": false,
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": true,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": false,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": false
+              }
+            ]
+          }
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_19.ab",
+        "file": "CAB-45917fb008d9d99f506436a9f5988d3d",
+        "pathId": "7132700517392325852",
+        "hierarchy": [
+          {
+            "name": "enemy_1565_mpprme",
+            "gameObjectPathId": "-4549273365824398116",
+            "transformPathId": "5978077044915379420"
+          }
+        ],
+        "objectSha256": "3b77c1fe1292de9e3bee29a731479cce6fc6e7dc68faffe353dba38b14efc309",
+        "rawFile": "enm_pfb_19-7132700517392325852.bin",
+        "classId": 114,
+        "typeIndex": 32,
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": -4549273365824398116
+          },
+          "common:349": true,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": -6629209555389654693
+          },
+          "common:427": "",
+          "_animator": {
+            "m_FileID": 0,
+            "m_PathID": -1236443732692099876
+          },
+          "_modes": {
+            "Array": [
+              {
+                "m_FileID": 0,
+                "m_PathID": -10172198822929188
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": 2206154438939253980
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": 8710135895751924956
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": 1245536538029989084
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": 4403106368448830684
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": 4286760446573157596
+              }
+            ]
+          },
+          "_commonAbilities": {
+            "Array": [
+              {
+                "m_FileID": 0,
+                "m_PathID": 371153405947288796
+              }
+            ]
+          },
+          "_uiMountPoint": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_effectTransform": {
+            "m_FileID": 0,
+            "m_PathID": -6458778135936688932
+          },
+          "_shadow": {
+            "m_FileID": 0,
+            "m_PathID": 1878943528081693916
+          },
+          "_defaultBodyColor": {
+            "r": 1.0,
+            "g": 1.0,
+            "b": 1.0,
+            "a": 1.0
+          },
+          "_hideShadowOnRecycle": false,
+          "_overrideGraphicBound": -1.0,
+          "_hudPluginReplacePairs": {
+            "Array": []
+          },
+          "_showDebugName": false,
+          "_sideTypeIndex": 1,
+          "_locateRange": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_disableRenderLocateRange": false,
+          "_isFixedRotation": false,
+          "_bodyDirectionPolicy": 0,
+          "_useMoveDirAsFaceDir": false,
+          "_scaleMoveBySpeed": false,
+          "_scaleMoveAnimationRange": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "_showSpAsBulletMode": false,
+          "_hideBulletSpModes": {
+            "Array": []
+          },
+          "_alwaysShowHp": false,
+          "_alwaysHideHp": false,
+          "_keepMoveAnimScale": false,
+          "_useSpecificDeadAnim": true,
+          "_useSpecificReachExitAnim": false,
+          "_disableBornTweenColor": false,
+          "_height": 0.0,
+          "_groundBoundHeightZOffset": 0.10000000149011612,
+          "_useSpineLikeHeightUpdate": false,
+          "_spineLikeHeightUpdateRatio": 0.25,
+          "_delayToBorn": 0.0,
+          "_onlyDelayToBornOnTileStart": false,
+          "_audioSignalUseId": false,
+          "_startEffect": "",
+          "_deadEffect": "enemy_mpprme_die_01",
+          "_blockVolume": 1,
+          "_specialBlockCondition": {
+            "_type": 0,
+            "_buffKeyPairs": {
+              "Array": []
+            },
+            "_filterTags": {
+              "Array": []
+            }
+          },
+          "_dontSetEnemyFaceByCursorWhenBorn": false,
+          "_idleWhenBorn": false,
+          "_canNotExit": false,
+          "_hideShadowOnReset": false,
+          "_allowFalldownWhenReborn": false,
+          "_alwaysCheckCurrentPoint": false,
+          "_ignoreBlockMode": false,
+          "_specificBlockMask": 0
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_19.ab",
+        "file": "CAB-45917fb008d9d99f506436a9f5988d3d",
+        "pathId": "7889958315965160668",
+        "hierarchy": [
+          {
+            "name": "Ray",
+            "gameObjectPathId": "7117020330931199196",
+            "transformPathId": "4049825254930521308"
+          },
+          {
+            "name": "GeneralAbilities",
+            "gameObjectPathId": "3601236856250178780",
+            "transformPathId": "-3964079505357660964"
+          },
+          {
+            "name": "Body",
+            "gameObjectPathId": "7184675248783563996",
+            "transformPathId": "1024754857658096860"
+          },
+          {
+            "name": "FlyMode_Ray_P2",
+            "gameObjectPathId": "6370703761083931868",
+            "transformPathId": "-6847392978588459812"
+          },
+          {
+            "name": "Modes",
+            "gameObjectPathId": "-1377940556474016548",
+            "transformPathId": "-6985682423926874916"
+          },
+          {
+            "name": "enemy_1565_mpprme",
+            "gameObjectPathId": "-4549273365824398116",
+            "transformPathId": "5978077044915379420"
+          }
+        ],
+        "objectSha256": "f82409eee125f1170d7a307efe6f23f7c810b839314d3d3ffe4e4d68bfd799a0",
+        "rawFile": "enm_pfb_19-7889958315965160668.bin",
+        "classId": 114,
+        "typeIndex": 28,
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": 7117020330931199196
+          },
+          "common:349": true,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": 4156651312234227407
+          },
+          "common:427": "",
+          "_selector": {
+            "m_FileID": 0,
+            "m_PathID": -5330045419161248548
+          },
+          "_metadata": {
+            "namedAsAlias": "Ray",
+            "blackboardPrefix": ""
+          },
+          "_overrideSignalId": "",
+          "_interruptAbilityOnDetach": true,
+          "_attachPassiveBuffsOnDummy": true,
+          "_ignoreIfOwnerDead": false,
+          "_forceAsDmgOrHealAbility": false,
+          "_waitForAttackEvent": true,
+          "_interuptIfTargetDead": false,
+          "_resetCdStrategy": 1,
+          "_selectTargetSource": 1,
+          "_selectTargetTiming": 0,
+          "_timeMode": 2,
+          "_alwaysIncludeTarget": true,
+          "_allowNoTarget": false,
+          "_animKey": "",
+          "_endAnimKey": "",
+          "_downAnimKey": "",
+          "_downEndAnimKey": "",
+          "_upAnimKey": "",
+          "_upEndAnimKey": "",
+          "_cooldown": 0.0,
+          "_cooldownKey": "duration",
+          "_preDelay": 0.0,
+          "_escapeTime": 0.0,
+          "_faceToTarget": true,
+          "_faceToDefault": false,
+          "_faceToFront": false,
+          "_faceToFirstCastTarget": false,
+          "_checkFaceToFirstCastTargetDownAttack": false,
+          "_forceFaceToDirection": false,
+          "_activeBuffs": {
+            "Array": [
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "enemy_mpprme_ray_damage",
+                "loadFromDB": false,
+                "isDurableBuff": false,
+                "isDamageMissable": false,
+                "isSilenceable": false,
+                "isStunnable": false,
+                "isFreezable": false,
+                "isLevitatable": false,
+                "isGroundBoundable": false,
+                "statusResistable": true,
+                "templateKey": "enemy_mpprme_ray_damage",
+                "disableOverride": false,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": false,
+                "clearAllStackCntWhenTimeUp": false,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": false,
+                "overrideEffectKey": "enemy_mpprme_line_hit_01",
+                "overrideOnEventPriority": false,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": true,
+                "takeSnapshotWhenExtend": false,
+                "durationKey": "duration",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": true,
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": false,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": false,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": false
+              }
+            ]
+          },
+          "_maxAnimScale": -1.0,
+          "_onlyPlayEndAnimWhenIsLastAbility": false,
+          "_ignorePalsyInterrupt": true,
+          "_affectedBySlowDown": false,
+          "_atkScale": 0.0,
+          "_atkScaleKey": "none",
+          "_attackType": 1,
+          "_elementDamageType": 0,
+          "_epDamageRatio": 0.0,
+          "_useDynamicAttackType": false,
+          "_deliveryParaWhenReplaceActionNode": false,
+          "_projectileKey": "projectile_enemy_mpprme_ray",
+          "_mountPointType": 2,
+          "_useMountGroup": false,
+          "_mountGroup": {
+            "loopType": 0,
+            "mountPoints": {
+              "Array": []
+            }
+          },
+          "_damageType": 2,
+          "_waitForProjectileInvalid": false,
+          "_notClearProjectileWhenCastEnd": false,
+          "_fireAttackFinishWhenProjectileInvalid": false,
+          "_minPostDelayWhenProjectileInvalid": 0.0,
+          "_waitForAnimEndWhenProjectileInvalid": false,
+          "_projectileDestination": 0,
+          "_extraDamageType": 0,
+          "_emitToInputPosWhenTargetIsInvalid": false,
+          "_emitToInputRootTileWhenTargetIsInvalid": false,
+          "_useCachedAtkOnly": false,
+          "_transferSource": false,
+          "_extraProjectileKeys": {
+            "Array": []
+          },
+          "_fireCreateProjectileEvent": false
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_20.ab",
+        "file": "CAB-d6fd4ca05b8201d765eb078efa151e40",
+        "pathId": "3537400755111488780",
+        "hierarchy": [
+          {
+            "name": "NeutralTag",
+            "gameObjectPathId": "8714038172334320908",
+            "transformPathId": "-8217800649942078196"
+          },
+          {
+            "name": "CommonAbilities",
+            "gameObjectPathId": "8156340715813956876",
+            "transformPathId": "6305174772738452748"
+          },
+          {
+            "name": "enemy_3005_lpeopl",
+            "gameObjectPathId": "-4992913846734328564",
+            "transformPathId": "-7307748498353918708"
+          }
+        ],
+        "objectSha256": "c9a66fa7a222f5201564184e88378fc8292efafdfbffa4e2d789a9ef996e055f",
+        "rawFile": "enm_pfb_20-3537400755111488780.bin",
+        "classId": 114,
+        "typeIndex": 16,
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": 8714038172334320908
+          },
+          "common:349": true,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": 3800760148018415462
+          },
+          "common:427": "",
+          "_selector": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_metadata": {
+            "namedAsAlias": "",
+            "blackboardPrefix": ""
+          },
+          "_overrideSignalId": "",
+          "_interruptAbilityOnDetach": false,
+          "_attachPassiveBuffsOnDummy": true,
+          "_ignoreIfOwnerDead": false,
+          "_forceAsDmgOrHealAbility": false,
+          "_buffs": {
+            "Array": [
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": [
+                      3,
+                      5
+                    ]
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": [
+                      0
+                    ]
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "mark_neutral[lpeopl]",
+                "loadFromDB": false,
+                "isDurableBuff": false,
+                "isDamageMissable": false,
+                "isSilenceable": false,
+                "isStunnable": false,
+                "isFreezable": false,
+                "isLevitatable": false,
+                "isGroundBoundable": false,
+                "statusResistable": true,
+                "templateKey": "empty",
+                "disableOverride": true,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": false,
+                "clearAllStackCntWhenTimeUp": false,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": false,
+                "overrideEffectKey": "",
+                "overrideOnEventPriority": false,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": true,
+                "takeSnapshotWhenExtend": false,
+                "durationKey": "",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": false,
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": true,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": false,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": false
+              }
+            ]
+          }
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_8.ab",
+        "file": "CAB-ebed69ff29aa63f68ff7b17160b28187",
+        "pathId": "-6117757028682441065",
+        "hierarchy": [
+          {
+            "name": "Bleed",
+            "gameObjectPathId": "4175264572140347031",
+            "transformPathId": "7480770852108230295"
+          },
+          {
+            "name": "Talents",
+            "gameObjectPathId": "5978258027291074199",
+            "transformPathId": "-5737770401628234089"
+          },
+          {
+            "name": "enemy_1164_bmbmot",
+            "gameObjectPathId": "6423944965368766103",
+            "transformPathId": "7686956983633436311"
+          }
+        ],
+        "objectSha256": "9c521ae7ca3ec83a3d58e7347be847bd3f9da93415639c2e63aa9d6aa69c53cc",
+        "rawFile": "enm_pfb_8--6117757028682441065.bin",
+        "classId": 114,
+        "typeIndex": 12,
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": 4175264572140347031
+          },
+          "common:349": true,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": 3800760148018415462
+          },
+          "common:427": "",
+          "_selector": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_metadata": {
+            "namedAsAlias": "",
+            "blackboardPrefix": ""
+          },
+          "_overrideSignalId": "",
+          "_interruptAbilityOnDetach": false,
+          "_attachPassiveBuffsOnDummy": true,
+          "_ignoreIfOwnerDead": false,
+          "_forceAsDmgOrHealAbility": false,
+          "_buffs": {
+            "Array": [
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "bmbmot_bleed",
+                "loadFromDB": false,
+                "isDurableBuff": false,
+                "isDamageMissable": false,
+                "isSilenceable": false,
+                "isStunnable": false,
+                "isFreezable": false,
+                "isLevitatable": false,
+                "isGroundBoundable": false,
+                "statusResistable": true,
+                "templateKey": "periodic_damage_by_hp_ratio[skip_modifier_fix]",
+                "disableOverride": true,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": false,
+                "clearAllStackCntWhenTimeUp": false,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": false,
+                "overrideEffectKey": "enemy_bmbmot_buff_01",
+                "overrideOnEventPriority": false,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": true,
+                "takeSnapshotWhenExtend": false,
+                "durationKey": "",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": true,
+                "triggerCnt": 2,
+                "triggerInterval": 1.0,
+                "waitFirstTriggerInterval": true,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": false,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": false
+              }
+            ]
+          }
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_8.ab",
+        "file": "CAB-ebed69ff29aa63f68ff7b17160b28187",
+        "pathId": "-2389637207385448809",
+        "hierarchy": [
+          {
+            "name": "Bleed",
+            "gameObjectPathId": "4175264572140347031",
+            "transformPathId": "7480770852108230295"
+          },
+          {
+            "name": "Talents",
+            "gameObjectPathId": "5978258027291074199",
+            "transformPathId": "-5737770401628234089"
+          },
+          {
+            "name": "enemy_1164_bmbmot",
+            "gameObjectPathId": "6423944965368766103",
+            "transformPathId": "7686956983633436311"
+          }
+        ],
+        "objectSha256": "58f3bda14c68d79d1aeea4cd9cadc16bfd0e70e84aca21cdcfe1bb53f1d76145",
+        "rawFile": "enm_pfb_8--2389637207385448809.bin",
+        "classId": 114,
+        "typeIndex": 11,
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": 4175264572140347031
+          },
+          "common:349": true,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": -2726233351382997147
+          },
+          "common:427": "",
+          "_overwriteTalentKey": "",
+          "_overwriteParentRangeId": false,
+          "_checkValidBySkillIndex": {
+            "Array": []
+          },
+          "_attachInDummy": false,
+          "_defaultModeIndex": -1,
+          "_attackBlackboardModeIndex": -1,
+          "_extraAttackBlackboardModeIndices": {
+            "Array": []
+          },
+          "_overrideDefaultRangeId": false,
+          "_applyTalentScale": false,
+          "_influenceSkillBlackboard": false,
+          "_fromRawDataToSkill": false,
+          "_applyTalentRange": false,
+          "_applyBlackboardBySkill": false,
+          "_applyStrBlackboardBySkill": false,
+          "_writeRangeIdToProjectileBlackboard": false,
+          "_affectWhenNotRootTalent": false,
+          "_scaleCertainKeyFlag": false,
+          "_scaleCertainKeyList": {
+            "Array": []
+          },
+          "_scaleCertainMode": false,
+          "_scaleModeIndices": {
+            "Array": []
+          }
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_8.ab",
+        "file": "CAB-ebed69ff29aa63f68ff7b17160b28187",
+        "pathId": "8857838488670363287",
+        "hierarchy": [
+          {
+            "name": "enemy_1164_bmbmot",
+            "gameObjectPathId": "6423944965368766103",
+            "transformPathId": "7686956983633436311"
+          }
+        ],
+        "objectSha256": "dc45cc181f3640042c577799d8090acecc83d2dbc5e3eea6edfb99b7fc784e1d",
+        "rawFile": "enm_pfb_8-8857838488670363287.bin",
+        "classId": 114,
+        "typeIndex": 10,
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": 6423944965368766103
+          },
+          "common:349": true,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": -6629209555389654693
+          },
+          "common:427": "",
+          "_animator": {
+            "m_FileID": 0,
+            "m_PathID": 6301382985805520535
+          },
+          "_modes": {
+            "Array": [
+              {
+                "m_FileID": 0,
+                "m_PathID": 2421620168621743767
+              }
+            ]
+          },
+          "_commonAbilities": {
+            "Array": []
+          },
+          "_uiMountPoint": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_effectTransform": {
+            "m_FileID": 0,
+            "m_PathID": -7809342215858299241
+          },
+          "_shadow": {
+            "m_FileID": 0,
+            "m_PathID": 7109380471186185879
+          },
+          "_defaultBodyColor": {
+            "r": 1.0,
+            "g": 1.0,
+            "b": 1.0,
+            "a": 1.0
+          },
+          "_hideShadowOnRecycle": false,
+          "_overrideGraphicBound": -1.0,
+          "_hudPluginReplacePairs": {
+            "Array": []
+          },
+          "_showDebugName": false,
+          "_sideTypeIndex": 1,
+          "_locateRange": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_disableRenderLocateRange": false,
+          "_isFixedRotation": false,
+          "_bodyDirectionPolicy": 0,
+          "_useMoveDirAsFaceDir": false,
+          "_scaleMoveBySpeed": false,
+          "_scaleMoveAnimationRange": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "_showSpAsBulletMode": false,
+          "_hideBulletSpModes": {
+            "Array": []
+          },
+          "_alwaysShowHp": false,
+          "_alwaysHideHp": false,
+          "_keepMoveAnimScale": false,
+          "_useSpecificDeadAnim": false,
+          "_useSpecificReachExitAnim": false,
+          "_disableBornTweenColor": false,
+          "_height": 0.0,
+          "_groundBoundHeightZOffset": 0.10000000149011612,
+          "_useSpineLikeHeightUpdate": false,
+          "_spineLikeHeightUpdateRatio": 0.25,
+          "_delayToBorn": 0.0,
+          "_onlyDelayToBornOnTileStart": false,
+          "_audioSignalUseId": false,
+          "_startEffect": "",
+          "_deadEffect": "",
+          "_blockVolume": 1,
+          "_specialBlockCondition": {
+            "_type": 0,
+            "_buffKeyPairs": {
+              "Array": []
+            },
+            "_filterTags": {
+              "Array": []
+            }
+          },
+          "_dontSetEnemyFaceByCursorWhenBorn": false,
+          "_idleWhenBorn": false,
+          "_canNotExit": false,
+          "_hideShadowOnReset": false,
+          "_allowFalldownWhenReborn": false,
+          "_alwaysCheckCurrentPoint": false,
+          "_ignoreBlockMode": false,
+          "_specificBlockMask": 0
+        }
+      }
+    ],
+    "prefabBundleScan": [
+      {
+        "bundle": "battle/enm_pfb_0.ab",
+        "selected": false
+      },
+      {
+        "bundle": "battle/enm_pfb_1.ab",
+        "selected": false
+      },
+      {
+        "bundle": "battle/enm_pfb_10.ab",
+        "selected": false
+      },
+      {
+        "bundle": "battle/enm_pfb_11.ab",
+        "selected": false
+      },
+      {
+        "bundle": "battle/enm_pfb_12.ab",
+        "selected": false
+      },
+      {
+        "bundle": "battle/enm_pfb_13.ab",
+        "selected": false
+      },
+      {
+        "bundle": "battle/enm_pfb_14.ab",
+        "selected": true
+      },
+      {
+        "bundle": "battle/enm_pfb_15.ab",
+        "selected": false
+      },
+      {
+        "bundle": "battle/enm_pfb_16.ab",
+        "selected": false
+      },
+      {
+        "bundle": "battle/enm_pfb_17.ab",
+        "selected": false
+      },
+      {
+        "bundle": "battle/enm_pfb_18.ab",
+        "selected": false
+      },
+      {
+        "bundle": "battle/enm_pfb_19.ab",
+        "selected": true
+      },
+      {
+        "bundle": "battle/enm_pfb_2.ab",
+        "selected": false
+      },
+      {
+        "bundle": "battle/enm_pfb_20.ab",
+        "selected": true
+      },
+      {
+        "bundle": "battle/enm_pfb_21.ab",
+        "selected": false
+      },
+      {
+        "bundle": "battle/enm_pfb_22.ab",
+        "selected": false
+      },
+      {
+        "bundle": "battle/enm_pfb_23.ab",
+        "selected": false
+      },
+      {
+        "bundle": "battle/enm_pfb_24.ab",
+        "selected": false
+      },
+      {
+        "bundle": "battle/enm_pfb_25.ab",
+        "selected": false
+      },
+      {
+        "bundle": "battle/enm_pfb_26.ab",
+        "selected": false
+      },
+      {
+        "bundle": "battle/enm_pfb_27.ab",
+        "selected": false
+      },
+      {
+        "bundle": "battle/enm_pfb_28.ab",
+        "selected": false
+      },
+      {
+        "bundle": "battle/enm_pfb_29.ab",
+        "selected": false
+      },
+      {
+        "bundle": "battle/enm_pfb_3.ab",
+        "selected": false
+      },
+      {
+        "bundle": "battle/enm_pfb_30.ab",
+        "selected": false
+      },
+      {
+        "bundle": "battle/enm_pfb_31.ab",
+        "selected": false
+      },
+      {
+        "bundle": "battle/enm_pfb_32.ab",
+        "selected": false
+      },
+      {
+        "bundle": "battle/enm_pfb_33.ab",
+        "selected": false
+      },
+      {
+        "bundle": "battle/enm_pfb_34.ab",
+        "selected": false
+      },
+      {
+        "bundle": "battle/enm_pfb_35.ab",
+        "selected": false
+      },
+      {
+        "bundle": "battle/enm_pfb_36.ab",
+        "selected": false
+      },
+      {
+        "bundle": "battle/enm_pfb_4.ab",
+        "selected": false
+      },
+      {
+        "bundle": "battle/enm_pfb_5.ab",
+        "selected": false
+      },
+      {
+        "bundle": "battle/enm_pfb_6.ab",
+        "selected": false
+      },
+      {
+        "bundle": "battle/enm_pfb_7.ab",
+        "selected": false
+      },
+      {
+        "bundle": "battle/enm_pfb_8.ab",
+        "selected": true
+      },
+      {
+        "bundle": "battle/enm_pfb_9.ab",
+        "selected": false
+      },
+      {
+        "bundle": "battle/enm_pfb_base_0.ab",
+        "selected": false
+      }
+    ]
+  }
+}
