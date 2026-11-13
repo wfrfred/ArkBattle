@@ -1,6 +1,6 @@
 import { update as updateUnit } from "../battle/unit.js";
 
-import type { Definition } from "../unit/effect/definition.js";
+import type { OrdinaryDefinition as Definition } from "../unit/effect/definition.js";
 import * as action from "../unit/capability/action/capability.js";
 import { hasBlocker } from "../unit/capability/blocking/blocker.js";
 import {

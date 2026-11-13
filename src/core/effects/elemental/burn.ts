@@ -3,7 +3,7 @@ import { scope } from "../../lifetime/operations.js";
 import * as attribute from "../../unit/contribution/attribute.js";
 import * as effects from "../../unit/effect/operations.js";
 import * as units from "../../unit/query.js";
-import type { Definition as EffectDefinition } from "../../unit/effect/definition.js";
+import type { OrdinaryDefinition as EffectDefinition } from "../../unit/effect/definition.js";
 import {
     hasVitality,
     setContribution,

@@ -2,8 +2,8 @@ import { update } from "../../battle/unit.js";
 import { TICKS_PER_SECOND } from "../../tick.js";
 import * as units from "../../unit/query.js";
 import * as effects from "../../unit/effect/operations.js";
-import { ref, type Effect } from "../../unit/effect/effect.js";
-import type { Definition as EffectDefinition } from "../../unit/effect/definition.js";
+import { ref, type OrdinaryEffect as Effect } from "../../unit/effect/effect.js";
+import type { OrdinaryDefinition as EffectDefinition } from "../../unit/effect/definition.js";
 import { stun } from "../control.js";
 import {
     hasAction,

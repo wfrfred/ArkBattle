@@ -1,6 +1,6 @@
 import { update as updateUnit } from "../battle/unit.js";
 
-import type { Definition } from "../unit/effect/index.js";
+import type { OrdinaryDefinition as Definition } from "../unit/effect/index.js";
 import * as units from "../unit/index.js";
 import { areHostile, hasAllegiance } from "../unit/capability/allegiance/capability.js";
 import * as targetable from "../unit/capability/targetable/capability.js";

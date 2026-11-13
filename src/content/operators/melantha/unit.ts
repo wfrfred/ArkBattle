@@ -29,7 +29,10 @@ import {
     removeAttackContribution,
     type Offense,
 } from "../../../core/unit/capability/offense/index.js";
-import { type Definition as EffectDefinition, install } from "../../../core/unit/effect/index.js";
+import {
+    type OrdinaryDefinition as EffectDefinition,
+    install,
+} from "../../../core/unit/effect/index.js";
 
 import * as attribute from "../../../core/unit/contribution/attribute.js";
 import { secondsToTicks } from "../../../data/time.js";

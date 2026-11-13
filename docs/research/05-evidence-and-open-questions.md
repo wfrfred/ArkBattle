@@ -15,7 +15,7 @@
 | 来源身份的生成与重部署 | cardUid 来自转换阶段形成的 BattleCharacterData.uniqueId，Card getter 转读它，普通部署写入 Character；普通退场返回原卡并在再次部署沿用该值。AutoChess 普通加载为同名棋子逐份转换并生成不同 cardUid。[Case 24 第十三节](cases/24-deployment-cost-and-supply.md#十三carduid-的生成与普通重部署2026-11-11)。普通重部署保留的结论不扩推到新建卡、TokenCard 或特殊移动，也不要求项目 Effect 通用依赖 Card。 |
 | 装置的 Character 来源资格 | 当前原生继承链为 Trap → Token → Character，装置也满足 independentCharacterSource 的 Character 判断；TokenCard 部署从 Card.data.uniqueId 写入 Character.cardUid。[Case 01 §9.7](cases/01-buff-installation-and-parent-scope.md#97-character-包含召唤物与装置)。不因此扩推全部预置、特殊创建或多库存回收政策。 |
 | 无 Card 的预放置干员 | 普通 characterInsts 直接创建 Character；卡牌注入只取独立的 characterCards 数组。没有 Card 的预放干员仍从角色数据取得 cardUid，属于 Character 独立来源分组，不等于非 Character 回退。[Case 01 §9.8](cases/01-buff-installation-and-parent-scope.md#98-无-card-的预放置干员)。没有据此增加项目身份协议。 |
-| 分组简化的实际内容影响 | 已核对浊蒂／海嗣、帕拉斯 S3、妮芙、vampir 光照计数及次生预案标记的真实来源，未找到实际结果改变正例。已确认为 [Effect 来源分组](../architecture/effect.md#来源分组)项目契约，待实现；完整扫描范围与证据限度见 [Case 01 §9.9](cases/01-buff-installation-and-parent-scope.md#99-分组简化的实际内容影响)。 |
+| 分组简化的实际内容影响 | 已核对浊蒂／海嗣、帕拉斯 S3、妮芙、vampir 光照计数及次生预案标记的真实来源，未找到实际结果改变正例。已确认为 [Effect 来源分组](../architecture/effect.md#来源分组)项目契约，Core 已接入；完整扫描范围与证据限度见 [Case 01 §9.9](cases/01-buff-installation-and-parent-scope.md#99-分组简化的实际内容影响)。 |
 | 控制效果与普通多目标攻击 | 标准 stun 的资格／中断与真实多目标逐目标读取 ATK 分别核对；[Case 08](cases/08-action-eligibility-and-interruption.md)、[Case 07](cases/07-action-timing-and-animation.md)。不推广到预采样弹道或所有特化技能。 |
 | 地形与射击台 | 重新核对配置、模板及消费链，包含当前实现的相反证据；[空间研究](03-space-units-and-mechanisms.md)。 |
 | 坐标、数值范围与运动 | 当前 World→Tile 取偶舍入、属性元数据／最终限幅和公式保底已分开核对；[Case 15](cases/15-locomotion-native-semantics.md)、[属性研究](02-combat-buffs-and-effects.md)。原生避障缓存与 locator 基准不等于当前项目选择。 |
@@ -26,7 +26,7 @@
 
 EXTEND 的 snapshot 不等于重载属性 modifier；实际 Effect 接入仍需保持这一区别。此前仅测试消费的 Data planner 已删除，不能把其算法作为原生机制或运行接入依据。
 
-尚需收口的是具体支持或映射政策：Locomotion 的避障刷新与身体／locator 基准差异如何归入项目近似；地穴的原生 Enemy 类型资格如何映射到项目内容。Effect 的来源分组、重复施加与计时项目契约已确定、待接入，见 [Effect](../architecture/effect.md)。其中先决定重复施加结果、仅新建分支执行安装程序属于明确的项目选择；原生安装与合并顺序仍按 Case 01 记录。
+尚需收口的是具体支持或映射政策：Locomotion 的避障刷新与身体／locator 基准差异如何归入项目近似；地穴的原生 Enemy 类型资格如何映射到项目内容。Effect 的来源分组、重复施加与计时已接入 Core，契约见 [Effect](../architecture/effect.md)。其中先决定重复施加结果、仅新建分支执行安装程序属于明确的项目选择；原生安装与合并顺序仍按 Case 01 记录。
 
 仍需补的具体内容证据包括：受支持普通内容中的 EXTEND+snapshot 完整执行正例，RO5 交错随机组示例中条件 Buff 的完整安装来源，以及 [Case 01 §9.5](cases/01-buff-installation-and-parent-scope.md#95-实际配置与范围) 注明的有限 STACK 非零时长绑定。妮芙父天赋来源已由标准安装链闭合，见 9.9。模板、条件分支与关卡覆盖已归档，未将它们冒充实战观测；也不因此否定已直接核实的普通分支。
 

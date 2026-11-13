@@ -36,7 +36,7 @@
 | [lifetime](sim/lifetime.test.js) | 依赖者完整结束后宿主才注销；首次原因和收尾唯一；祖先开始结束后拒收新依赖。 |
 | [action](sim/action.test.js) | 启动拒绝、持久与执行身份、静态时序贡献变更时同步保留冷却进度、攻击中断／释放／输出、Combat 推进及确定性；释放通知中消失保留前缀并停止旧输出，出现后可恢复行动，不推导弹药消费政策。 |
 | [skill](sim/skill.test.js) | 持久与本轮状态、SP 门槛／支付／回复许可、TIME 当轮延时、Ammo 公式／采样／补弹额度／耗尽；开始通知中消失仍 ACTIVE 时执行 onStart，既有持续期照常推进。 |
-| [effect](sim/effect.test.js) | 安装与启停输出、零时长安装、覆写赢家、三种互斥时间、手动推进、末次回调续期、来源与生命周期依赖分离；新分组、重复施加与剩余时间契约的实现及测试按 [Effect 验收清单](../docs/architecture/verification.md#effect-分组重复施加与计时已确定待接入)接入。 |
+| [effect](sim/effect.test.js) | 安装与启停输出、来源分组及真实Card再部署、五种重复施加政策、STACK有效层数与变层／衰减、三种计时及末次续期；按 [Effect 验收清单](../docs/architecture/verification.md#effect-分组重复施加与计时)集中保障。 |
 | [contribution](sim/contribution.test.js) | 先选互斥赢家再动态求值，真实 Offense 输出遵循属性公式、零下限并保留小数。实际输出与弹道负责各自采样时点。 |
 | [targeting](sim/targeting.test.js) | 标准 HP／EP 资格与目标限制、资源接收分开；独立空间原点使用 Hitbox，额外空地条件读取当前 Layer。有效 MaxHP 决定治疗需求与比例，联合治疗保留 HP 或 EP 需求，Burst 不抹掉 HP 需求。 |
 | [targetable](sim/targetable-restrictions.test.js) | 按 Restriction 定义对象身份的豁免在贡献竞争后检查，覆盖共享定义的所有有效来源且保留独立限制，固有与临时限制互不误删；有效嘲讽允许负值并决定显式优先级。 |

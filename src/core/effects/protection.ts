@@ -1,7 +1,7 @@
 import { compose, optional, type Change } from "../unit/change.js";
 import { update as updateUnit } from "../battle/unit.js";
 
-import type { Definition } from "../unit/effect/index.js";
+import type { OrdinaryDefinition as Definition } from "../unit/effect/index.js";
 import * as vitality from "../unit/capability/vitality/index.js";
 import * as elemental from "../unit/capability/elemental/index.js";
 import * as targetable from "../unit/capability/targetable/capability.js";

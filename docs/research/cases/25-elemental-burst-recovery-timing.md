@@ -164,7 +164,7 @@ LIMITED + duration = 0
 
 ## 5. 项目关联
 
-项目采用固定步长调度：Elemental 阶段只处理无 Burst 时的自然回复，每次恢复 `当前 recoverySpeed / TICKS_PER_SECOND`。标准 Burst 使用 Effect 的 DURATION Expiration，rate 为 0，由 onTick 按当前 `burstRecoverySpeed` 扣减唯一的 remaining；已推进量由 `duration - remaining` 得到。此时间表示随已确定的 [Effect 契约](../../architecture/effect.md#6-时间推进)接入。执行到实例时使用当前状态，阶段之前创建的可以参与本次推进，阶段之后创建的等下一次候选；不设置统一的创建 Tick 跳过规则。
+项目采用固定步长调度：Elemental 阶段只处理无 Burst 时的自然回复，每次恢复 `当前 recoverySpeed / TICKS_PER_SECOND`。标准 Burst 使用 Effect 的 DURATION Expiration，rate 为 0，由 onTick 按当前 `burstRecoverySpeed` 扣减唯一的 remaining；已推进量由 `duration - remaining` 得到。时间接口见 [Effect 契约](../../architecture/effect.md#6-时间推进)。执行到实例时使用当前状态，阶段之前创建的可以参与本次推进，阶段之后创建的等下一次候选；不设置统一的创建 Tick 跳过规则。
 
 该选择忽略原生逐宿主更新与项目全场阶段之间的帧内微时序差异，不追求每个触发入口的首帧映射。固定步长与首次参与由调度契约决定，Elemental State 不保存上次推进时点。它是项目工程取舍，不将原生的条件性调用顺序改写为全场统一阶段。
 

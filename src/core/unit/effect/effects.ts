@@ -1,8 +1,8 @@
 import { Store } from "../../common/collection/store.js";
 import type { Query } from "../../common/query.js";
 import type { Ref } from "../../common/ref.js";
-import type { Definition } from "./definition.js";
-import type { Effect, Id, Snapshot } from "./effect.js";
+import type { Definition, OrdinaryDefinition, StackDefinition } from "./definition.js";
+import type { Effect, OrdinaryEffect, StackEffect, Id, Snapshot } from "./effect.js";
 
 export class Effects {
     static readonly #empty = new Effects(Store.empty<Id, Effect<any, any>>(), 0);
@@ -27,11 +27,27 @@ export class Effects {
     get<E extends Effect<any, any>>(reference: Ref<E>): E | undefined;
     get<S extends object, H extends object>(
         id: Id,
+        definition: StackDefinition<S, H, "END">,
+    ): StackEffect<S, H, "END"> | undefined;
+    get<S extends object, H extends object>(
+        id: Id,
+        definition: StackDefinition<S, H, "DECAY">,
+    ): StackEffect<S, H, "DECAY"> | undefined;
+    get<S extends object, H extends object>(
+        id: Id,
+        definition: StackDefinition<S, H>,
+    ): StackEffect<S, H> | undefined;
+    get<S extends object, H extends object>(
+        id: Id,
+        definition: OrdinaryDefinition<S, H>,
+    ): OrdinaryEffect<S, H> | undefined;
+    get<S extends object, H extends object>(
+        id: Id,
         definition: Definition<S, H>,
     ): Effect<S, H> | undefined;
-    get<E extends Effect<any, any>, S extends object, H extends object>(
+    get<E extends Effect<any, any>>(
         identity: Id | Ref<E>,
-        definition?: Definition<S, H>,
+        definition?: Definition<any, any>,
     ): Effect<any, any> | undefined {
         const effect = this.#entries.get(typeof identity === "number" ? identity : identity.id);
         if (typeof identity !== "number" && effect?.host.id !== identity.host.id) {
@@ -57,7 +73,10 @@ export class Effects {
             throw new RangeError("invalid effect identity");
         }
 
-        return new Effects(this.#entries.add(effect.id, effect), this.nextId + 1);
+        return new Effects(
+            this.#entries.add(effect.id, effect as Effect<any, any>),
+            this.nextId + 1,
+        );
     }
 
     replace<T extends Effect<any, any>>(reference: Ref<T>, effect: NoInfer<T>): Effects {

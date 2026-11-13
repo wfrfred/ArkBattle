@@ -8,8 +8,6 @@ Effect 负责附着实例、生效状态、覆写组与生命周期。总体执�
 
 Effect 用于表达属性增益、护盾、周期伤害与治疗、技能附带状态、效果覆写和光环分发。核心负责附着实例与生命周期，具体 Definition 组合 Capability 的操作实现玩法。
 
-来源分组、重复施加、叠层与本文的剩余时间契约已确定，尚待代码接入。它们沿用现有 Effect 生命周期与 Lifetime；下文描述目标架构。
-
 ## 关键语义
 
 Effect 需要保障的结果是：
@@ -108,6 +106,10 @@ interface DefinitionFields<
     readonly onEnd?: (battle: BattleState, self: Self, reason: string) => BattleState;
 }
 
+type GroupSource =
+    | { readonly type: "CARD"; readonly id: number }
+    | { readonly type: "UNIT"; readonly id: number };
+
 interface EffectFields<S extends object, H extends object> extends Identified<{
     readonly host: Ref<Unit> & Ref<Unit & H>;
     readonly id: Id;
@@ -116,6 +118,7 @@ interface EffectFields<S extends object, H extends object> extends Identified<{
     readonly host: Ref<Unit> & Ref<Unit & H>;
     readonly state: S;
     readonly source: Ref<Unit> | null;
+    readonly groupSource: GroupSource | null;
     readonly enabled: boolean;
     readonly lifecycle: "INSTALLING" | "INACTIVE" | "ACTIVE" | "ENDING";
 }
@@ -167,6 +170,8 @@ type Effect<S extends object = object, H extends object = object> =
     | OrdinaryEffect<S, H>
     | StackEffect<S, H>;
 ```
+
+groupSource 由 Core 在安装时采样，保存 CARD／UNIT 身份域与编号；无独立来源时为 null。调用者只传实际 source，不直接提供组键。
 
 两个层数上限的 null 表示无限制。END 允许全部 Expiration；DECAY 允许 DURATION／INFINITE，拒绝没有重启预算的 DEADLINE。这个关联贯穿 Definition、Effect、安装 Initial、返回 Ref 与 setExpiration，具体数值在真正输入边界校验，内部信任已建立的类型配对。
 
@@ -301,7 +306,9 @@ Hook 的 accepts 读取 Effect 的覆写结果；伤害阶段与优先级由 Dam
 
 空组正常新建。未声明 group 的实例独立安装；同一完整组的重复施加政策保持一致，合并使用保留实例的规则。合并保留其 ID、Definition、source、私有 state 及 Lifetime 关系。
 
-STACK 分支包含实际层数上限、有效层数上限、满层刷新与到期政策。实际层数决定可积累数量；有效层数受有效上限截断，供具体业务使用。STACK 实例将内建层数保存在 stackCount，初始为一。
+续时按保留实例的时间形式写回：DURATION 保留其速率，DEADLINE 按当前 Tick 的剩余时长比较并写回整数截止 Tick；无限期参与补足时保持无限。EXTEND_TIME 只累加有限输入时长，DURATION 同时增加完整预算与剩余量。
+
+STACK 分支包含实际层数上限、有效层数上限、满层刷新与到期政策。实际层数决定可积累数量；有效层数受有效上限截断，供具体业务使用。STACK 实例将内建层数保存在 stackCount，初始为一；effectiveStackCount(self) 按有效上限计算当前有效层数。
 Definition 的 STACK 分支与带层数状态的 Effect 成对，其他分支不带通用层数状态；类型约束作用于完整实例，保持 Definition、回调与运行状态的关联。`state: S` 继续只保存具体内容数据。
 
 STACK 到期政策为 END 或 DECAY。END 结束整个实例；DECAY 在 stackCount 大于一时减一并令 `remaining = duration`，最后一层到期时结束。有限 DECAY 使用 DURATION；INFINITE 不会自然到期，仍可由业务消耗层数或结束。到期处理属于普通结算，不增加生命周期阶段。
@@ -329,7 +336,7 @@ Definition.group.independentSource 声明是否按来源独立分组，组归属
 
 Card 关联沿实际 `source → Unit → deployable.card` 读取；无 Card 的来源使用该 Unit 身份，适用于任意来源 Unit。Card 与 Unit 属于不同身份域，数值相同也不表示同一来源。同一卡牌产生的多个 Unit（包括重新部署）共享来源身份，不同 Card 保持独立；无 Card 的预放干员仍按各自 Unit 区分。
 
-安装时确定组归属，此后来源退场不改变已存在实例的组归属。分组身份不替换 `Effect.source`，不改变内容的来源比较、重复施加／竞争政策或生命周期依赖。实际来源由具体机制确定；例如海嗣治疗以宿主浊心斯卡蒂为 source，而非执行光环的海嗣。
+安装时将来源分区采样为 groupSource，与 definition.group.id 一同匹配组归属；此后来源退场不改变该样本。分组身份不替换 `Effect.source`，不改变内容的来源比较、重复施加／竞争政策或生命周期依赖。实际来源由具体机制确定；例如海嗣治疗以宿主浊心斯卡蒂为 source，而非执行光环的海嗣。
 
 该契约明确采用上述分区，不复刻原生的前缀查找、匿名组迁移或 Character 类别判断。不新增通用 SourceIdentity 字段或映射表，也不要求 install 调用者手工拼键或重复传递身份。机制依据与实际内容影响见[来源分组调查](../research/cases/01-buff-installation-and-parent-scope.md#99-分组简化的实际内容影响)。
 
@@ -363,6 +370,8 @@ Contribution 的登记／撤销与 Hook 的开关是两种自然接入方式，�
 | ------------------------------------------------- | -------------------------------------------------------- |
 | `install(battle, hostRef, definition, initial)` | 新建返回新实例 Ref，合并或续期返回保留实例 Ref，拒绝返回 null；同时返回接续后的 BattleState |
 | `get(battle, ref)`                    | 从明确输入版本查一个实例，不转换事实                     |
+| `hasStack(self)` | 保留输入类型并收窄为 STACK 实例 |
+| `effectiveStackCount(self)` | 由实际层数与有效上限计算有效层数 |
 | `setState(battle, ref, state)`                 | 设置指定实例的私有 state，返回相应战斗版本               |
 | `setEnabled(battle, ref, enabled)`               | 返回完成许可、生效变化与回调后的状态                     |
 | `setExpiration(battle, ref, expiration)`           | 替换当前实例的时间状态，返回 BattleState |
@@ -379,7 +388,7 @@ install 重载按 Definition 保证的行为保留返回证明，统一返回 `R
 | 普通，无 group／DEFAULT／UNIQUE | Expiration | `OrdinaryEffect<S, H>` |
 | STACK、END | Expiration | `StackEffect<object, object, "END">` |
 | STACK、DECAY | DecayExpiration | `StackEffect<object, object, "DECAY">` |
-| 普通，EXTEND／EXTEND_TIME | Expiration | `OrdinaryEffect` |
+| 普通，EXTEND／EXTEND_TIME 或只保留普通分支的宽 Definition | Expiration | `OrdinaryEffect` |
 
 只有保证不合并的分支保留传入 Definition 的 S／H。可能合并的重载擦除无法证明的私有类型，保留同组政策保证的 STACK 与 END／DECAY 事实；同一完整组的政策一致包括 expirationPolicy。具体私有类型由已有的 Definition 身份查询恢复。
 

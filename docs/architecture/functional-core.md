@@ -250,7 +250,7 @@ self 是输入版本的值。嵌套调用返回后，遵守 [状态接续后的�
 
 Effect 安装先确定重复施加结果：拒绝或更新保留实例，或进入新建分支。新建先登记 INSTALLING 与 Lifetime，再执行 onInstall 并接续其返回值；重读当前实例后结算到期，零时长新实例执行安装业务后结束，不启用、不执行 onTick 或 onDisable。继续存在的实例再决定是否 ACTIVE。结束请求发布 ENDING，Prepare 撤销已启用的输出、协调 Group 并展开依赖请求；Finalize 等全部真实依赖者完整完成，再调用结束程序与移除。关系权威归 Lifetime 图，包含各领域登记的 owner 与显式 scopes；Effect 独立保存 expiration，不重复保存依赖。合并图保持 DAG，兄弟按边登记顺序请求；source 只表达来源。
 
-重复施加与剩余时间契约已确定、待接入。Effect 的 expiration 选择 DURATION、DEADLINE、INFINITE 之一；DURATION 保存 duration、remaining、rate。ACTIVE／INACTIVE 均先自动扣时并发布，仅 ACTIVE 调用 onTick，第三参数保存本次推进前的 expiration；回调后重读最新时间状态结算到期。rate 为零允许内容手动推进；DEADLINE 的绝对期限不暂停，INFINITE 不因时间到期。STACK 到期可以减层并重启一轮计时，只有结束实例才进入 Lifetime 析构。详见 [Effect 时间推进](effect.md#6-时间推进)。
+Effect 的 expiration 选择 DURATION、DEADLINE、INFINITE 之一；DURATION 保存 duration、remaining、rate。ACTIVE／INACTIVE 均先自动扣时并发布，仅 ACTIVE 调用 onTick，第三参数保存本次推进前的 expiration；回调后重读最新时间状态结算到期。rate 为零允许内容手动推进；DEADLINE 的绝对期限不暂停，INFINITE 不因时间到期。STACK 到期可以减层并重启一轮计时，只有结束实例才进入 Lifetime 析构。详见 [Effect 时间推进](effect.md#6-时间推进)。
 
 已经进入的内容程序按自身控制流继续，明确采样载荷可保留为本次函数局部值。需要槽位释放或最终通知的后继业务使用领域完成时点，不能从嵌套 end 返回推断 Finalize 已完成。Pending 只保存当前同步结算工作，不保存通用最后载荷表、恢复调度或跨 Tick 删除队列。
 

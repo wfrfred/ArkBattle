@@ -5,7 +5,10 @@ import { update as updateUnit } from "../../core/battle/unit.js";
 import { applyDamage, calculateDamage } from "../../core/battle/damage/hp/index.js";
 
 import * as effects from "../../core/unit/effect/index.js";
-import { type Definition, ref as effectRef } from "../../core/unit/effect/index.js";
+import {
+    type OrdinaryDefinition as Definition,
+    ref as effectRef,
+} from "../../core/unit/effect/index.js";
 
 import * as units from "../../core/unit/index.js";
 import type { Unit } from "../../core/unit/index.js";
@@ -98,6 +101,8 @@ export function createInfectionEffect(params: InfectionParams): Definition<Infec
     return {
         id: "terrain/infection",
         group: {
+            type: "DEFAULT",
+            independentSource: false,
             id: "terrain/infection",
             priority: roundToEven(1000 * (params.attackBonusRatio + params.attackSpeedBonus)),
         },

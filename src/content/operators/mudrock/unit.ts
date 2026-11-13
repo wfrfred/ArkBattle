@@ -44,8 +44,8 @@ import {
 } from "../../../core/unit/capability/vitality/index.js";
 import { cancel } from "../../../core/battle/damage/hp/index.js";
 import {
-    type Definition as EffectDefinition,
-    type Effect,
+    type OrdinaryDefinition as EffectDefinition,
+    type OrdinaryEffect as Effect,
     ref as effectRef,
     get,
     install,

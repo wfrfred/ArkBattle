@@ -192,7 +192,7 @@ Effect 直接持有 `Definition<S, H>` 与私有 State。S 描述实例状态，
 
 同宿主覆写组先在未结束实例中选取最高优先级，同优先级保留较早取得的实例，再检查赢家的 enabled。禁用最强实例不会让弱者补位。Contribution 分组、Hook 调用顺序与具体业务条件分别由所属模块处理。
 
-来源分组、重复施加与剩余时间契约已确定、待接入。分组按来源 Unit 的既有 Card 关联、无 Card 的 Unit 身份或空来源区分，安装后保持组归属。同组施加由 Definition 的判别联合声明 DEFAULT／UNIQUE／STACK／EXTEND／EXTEND_TIME；STACK 分支配对内建层数状态，具体输出仍归内容程序。完整契约见 [Effect](effect.md#重复施加与叠层)。
+分组按来源 Unit 的既有 Card 关联、无 Card 的 Unit 身份或空来源区分，安装后保持组归属。同组施加由 Definition 的判别联合声明 DEFAULT／UNIQUE／STACK／EXTEND／EXTEND_TIME；STACK 分支配对内建层数状态，具体输出仍归内容程序。完整契约见 [Effect](effect.md#重复施加与叠层)。
 
 生命周期由完整领域操作推进：安装先确定拒绝、合并或新建；仅新建分支登记实例与 Lifetime，再执行 onInstall。回调后重读当前实例并结算到期，零时长新实例执行安装业务后结束，不启用、不推进，也不执行 onDisable。生效切换执行 onEnable／onDisable；结束请求登记 Pending、发布 ENDING、执行 Prepare，再请求依赖者。Effect 在 Prepare 撤销已启用的输出并按当前资格协调 Group；最外层结算器在依赖者完整 Finalize 后执行本实例 onEnd 与移除。嵌套结束返回不保证注销或最终通知已完成；每项业务继续接续最新 BattleState。
 

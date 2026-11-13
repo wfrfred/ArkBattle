@@ -6,8 +6,8 @@ import * as units from "../../query.js";
 import type { Unit } from "../../unit.js";
 import { get as getEffect } from "../../effect/query.js";
 import { setExpiration } from "../../effect/operations.js";
-import { ref, type Effect } from "../../effect/effect.js";
-import type { Definition as EffectDefinition } from "../../effect/definition.js";
+import { ref, type OrdinaryEffect } from "../../effect/effect.js";
+import type { OrdinaryDefinition as EffectDefinition } from "../../effect/definition.js";
 import type { Expiration } from "../../effect/expiration.js";
 import { elementValues, type Elemental, type Type } from "./capability.js";
 import { available, resolveMaxEp, resolveBurstRecoverySpeed } from "./query.js";
@@ -23,7 +23,7 @@ export interface Definition extends EffectDefinition<State, Elemental> {
 
 type Duration = Extract<Expiration, { type: "DURATION" }>;
 
-export interface Burst extends Effect<State, Elemental> {
+export interface Burst extends OrdinaryEffect<State, Elemental> {
     readonly expiration: Duration;
 }
 
@@ -32,14 +32,18 @@ export type End =
 
 export { ref };
 
-export function onInstall(battle: BattleState, self: Effect<State, Elemental>): BattleState {
+export function onInstall(
+    battle: BattleState,
+    self: OrdinaryEffect<State, Elemental>,
+): BattleState {
     const host = units.get(battle, self.host)!;
+    const duration = (self.definition as Definition).durationTicks;
     const current: Burst = {
         ...self,
         expiration: {
             type: "DURATION",
-            elapsed: 0,
-            total: (self.definition as Definition).durationTicks,
+            duration,
+            remaining: duration,
             rate: 0,
         },
     };
@@ -65,7 +69,7 @@ export function onInstall(battle: BattleState, self: Effect<State, Elemental>): 
 
 export function advance(
     battle: BattleState,
-    instance: Effect<State, Elemental>,
+    instance: OrdinaryEffect<State, Elemental>,
     onSecond?: (
         battle: BattleState,
         host: Unit & Elemental,
@@ -81,22 +85,22 @@ export function advance(
     }
 
     const expiration = self.expiration;
-    const elapsed = Math.min(
-        expiration.total,
-        expiration.elapsed + resolveBurstRecoverySpeed(battle, host),
-    );
+    const remaining = Math.max(0, expiration.remaining - resolveBurstRecoverySpeed(battle, host));
+    const elapsed = expiration.duration - remaining;
     const maximum = resolveMaxEp(battle, host);
-    const ep = elementValues((maximum * elapsed) / expiration.total);
+    const ep = elementValues((maximum * elapsed) / expiration.duration);
     battle = replace(battle, [
         {
             ...host,
             elemental: { ...host.elemental, ep },
         },
     ]);
-    battle = setExpiration(battle, reference, { ...expiration, elapsed });
+    battle = setExpiration(battle, reference, { ...expiration, remaining });
 
     if (onSecond !== undefined) {
-        const previousSecond = Math.floor((expiration.elapsed + 1e-8) / TICKS_PER_SECOND);
+        const previousSecond = Math.floor(
+            (expiration.duration - expiration.remaining + 1e-8) / TICKS_PER_SECOND,
+        );
         const currentSecond = Math.floor((elapsed + 1e-8) / TICKS_PER_SECOND);
 
         for (let second = previousSecond + 1; second <= currentSecond; second++) {
@@ -114,7 +118,7 @@ export function advance(
 
 export function onEnd(
     battle: BattleState,
-    instance: Effect<State, Elemental>,
+    instance: OrdinaryEffect<State, Elemental>,
     reason: string,
 ): BattleState {
     const self = instance as Burst;
@@ -139,7 +143,7 @@ export function onEnd(
 
 export function availableHost(
     battle: BattleState,
-    reference: Ref<Effect<State, Elemental>>,
+    reference: Ref<OrdinaryEffect<State, Elemental>>,
 ): (Unit & Elemental) | undefined {
     const host = units.get(battle, reference.host);
     const lifecycle = getEffect(battle, reference)?.lifecycle;

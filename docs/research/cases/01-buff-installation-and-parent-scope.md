@@ -434,7 +434,7 @@ TokenCard.SpawnInternal 将自身 Card 交给 BattleController.CreateToken；后
 
 ### 9.9 分组简化的实际内容影响
 
-2026-11-12 根据[内容与来源短链](../evidence/independent-group-impact-20261112/README.md)确认采用以下项目简化：不独立时用基础 group.id；来源独立时，关联 Card 的 Unit 用 `(group.id, Card 身份)`，无 Card 的 Unit 用 `(group.id, Unit 身份)`，空来源用 `(group.id, null)`。分组范围仍是同一接收者，不更改真正的 source、按来源查询、接纳／竞争政策或父子生命周期。规范契约见 [Effect 来源分组](../../architecture/effect.md#来源分组)；实现及具体接口尚未接入。
+2026-11-12 根据[内容与来源短链](../evidence/independent-group-impact-20261112/README.md)确认采用以下项目简化：不独立时用基础 group.id；来源独立时，关联 Card 的 Unit 用 `(group.id, Card 身份)`，无 Card 的 Unit 用 `(group.id, Unit 身份)`，空来源用 `(group.id, null)`。分组范围仍是同一接收者，不更改真正的 source、按来源查询、接纳／竞争政策或父子生命周期。规范契约见 [Effect 来源分组](../../architecture/effect.md#来源分组)；Core 按该契约保存分组来源采样并执行重复施加与竞争。
 
 下表的结果来自实际配置与普通调用链接续后的推导，不是实机 A／B 观测。
 

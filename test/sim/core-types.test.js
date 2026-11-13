@@ -100,23 +100,68 @@ if (started.value !== null) {
 declare const erased: Ref<actions.Execution>;
 // @ts-expect-error ordinary erased reads cannot invent private fields.
 actions.getExecution(battle, erased)!.execution.state.hits;
-const shield: effects.Definition<{ charges: number }, Offense> = {
+const shield = {
     id: 'shield', initialize: () => ({ charges: 1 }),
     onTick(state, self) {
         const attack: number = get(state, self.host)!.definition.offense.attack;
         return effects.setState(state, effects.ref(self), { charges: self.state.charges + attack });
     },
-};
+} satisfies effects.OrdinaryDefinition<{ charges: number }, Offense>;
 const installed = effects.install(battle, reference, shield);
 if (installed.value !== null) {
     const charges: number = effects.get(installed.state, installed.value)!.state.charges;
     effects.setExpiration(installed.state, installed.value, { type: 'DEADLINE', tick: 10 });
     // @ts-expect-error writes cannot widen the identity's private data pairing.
     effects.setState(installed.state, installed.value, { charges: 'wrong' });
+    // @ts-expect-error ordinary instances cannot be used for stack consumption.
+    effects.decreaseStack(installed.state, installed.value, 1);
+}
+const layered = {
+    id: 'layered',
+    group: {
+        type: 'STACK', id: 'layered', priority: 0, independentSource: false,
+        maxCount: 3, maxEffectiveCount: 2, refreshAtMax: true, expirationPolicy: 'DECAY',
+    },
+    initialize: () => ({ power: 1 }),
+    onTick(state, self, previous) {
+        const power: number = self.state.power;
+        const layerHost: Ref<Unit & Offense> = self.host;
+        const time: effects.DecayExpiration = previous;
+        // @ts-expect-error the callback's history excludes a DEADLINE.
+        const deadline: Extract<effects.Expiration, { type: 'DEADLINE' }> = previous;
+        return state;
+    },
+    onStackChange(state, self, previous) {
+        const count: number = self.stackCount;
+        const old: number = previous;
+        return effects.setState(state, effects.ref(self), { power: self.state.power + 1 });
+    },
+} satisfies effects.StackDefinition<{ power: number }, Offense, 'DECAY'>;
+const merged = effects.install(battle, reference, layered);
+// @ts-expect-error a DECAY Definition cannot use DEADLINE through another overload.
+effects.install(battle, reference, layered, { expiration: { type: 'DEADLINE', tick: 10 } });
+if (merged.value !== null) {
+    effects.decreaseStack(merged.state, merged.value, 1);
+    effects.setExpiration(merged.state, merged.value, { type: 'INFINITE' });
+    // @ts-expect-error a merged Ref preserves its DECAY policy.
+    effects.setExpiration(merged.state, merged.value, { type: 'DEADLINE', tick: 10 });
+    // @ts-expect-error the incoming private state does not prove the retained instance's state.
+    effects.get(merged.state, merged.value)!.state.power;
+    const known = get(merged.state, reference)!.effects.get(merged.value.id, layered)!;
+    const power: number = known.state.power;
+    const knownRef = effects.ref(known);
+    // @ts-expect-error Definition identity restoration also preserves the time constraint.
+    effects.setExpiration(merged.state, knownRef, { type: 'DEADLINE', tick: 10 });
+}
+declare const privateEffect: effects.Effect<{ power: number }, Offense>;
+if (effects.hasStack(privateEffect)) {
+    const power: number = privateEffect.state.power;
+    const layerHost: Ref<Unit & Offense> = privateEffect.host;
+    const count: number = privateEffect.stackCount;
 }
 declare const burstRef: Ref<elemental.Burst>;
 const burst = elemental.get(battle, burstRef)!;
-effects.setExpiration(battle, burstRef, { ...burst.expiration, elapsed: burst.expiration.elapsed + 1 });
+effects.setExpiration(battle, burstRef, { ...burst.expiration, remaining: burst.expiration.remaining - 1 });
 // @ts-expect-error writes retain the Burst identity's duration contract.
 effects.setExpiration(battle, burstRef, { type: 'DEADLINE', tick: 10 });
 const bare = initialize(battle, { id: 1, position: [0, 0], definition: { id: 'bare', hooks: Hooks.empty() } }).value;
