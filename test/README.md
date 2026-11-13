@@ -30,7 +30,7 @@
 | [hook](sim/hook.test.js) | 公共 Hook 固定候选、读取最新登记、独立嵌套派发。 |
 | [runtime](sim/runtime.test.js) | 初始化／出生事实先于 enter；正常预置替换接续最新绑定；Tick 阶段有序、失败不发布。 |
 | [route](sim/route-capability.test.js) | 首指令与重新进入、MOVE 采样、WAIT 时基与 ticking、即时循环让出、持续 TRACE、Main 出口及同步空间操作后的最新进度；距离查询采用导航几何长度、不计传送，并显式区分 Main 与 TRACE。 |
-| [schedule](sim/schedule.test.js) | 统一出生时间与偏移、等待先于 enter、超时只释放 wave、离场同步解除、Branch 整组抽选与同步重入、实际出生时基。 |
+| [schedule](sim/schedule.test.js) | 统一出生时间与偏移、等待先于 enter、超时和活 Unit 释放只解除相应 wave 等待、离场同步解除、Branch 整组抽选与同步重入、实际出生时基。 |
 | [路线与调度数据](content/route-schedule-data.test.js) | 原生路线控制流与等待编译、count／interval 展开、主线预选与 Branch 运行时选择，以及 Action／Enemy 的 notCountInTotal 合并到 NONE。 |
 | [Effect 静态数据](content/effect-data.test.js) | 真实重应用描述保留独立层数限制与续期配置，属性修正保留规范化运算位置和延迟取值标记；运行机制由实际 Effect 接入后验收。 |
 | [lifetime](sim/lifetime.test.js) | 依赖者完整结束后宿主才注销；首次原因和收尾唯一；祖先开始结束后拒收新依赖。 |

@@ -137,7 +137,7 @@ Hitbox 的 Targeting 接入只保留一个代表场景：显式范围使用受�
 以 [Route 回归清单](navigation.md#回归语义)与 [Schedule 回归清单](schedule.md#回归语义)确定代表场景，集中归属如下：
 
 - Route 保障 enter 同步进入首指令，MOVE 进入时采样且重新进入时重抽，长无环指令链完整执行、即时循环让出。activeId 与 ticking 独立，ENTER 等待可以暂停，绝对等待使用实际出生时捕获的时基。TRACE 到达后保留指令与最后目标格，支持同格重启；Main 出口独立于活动 Context，无终点不离场。同步空间操作返回后接续最新 Context，已移除或失去资格的执行停止。
-- Schedule 保障前延迟之后的出生时间、出生位置与 Route offset 共用样本，以及等待登记先于 enter。WAVE 同时进入 wave／final 集合，超时只释放 wave，完整离场在 Tick 内外均同步释放等待。Branch 每次按整组权重重抽，出生前发布索引、RNG 与实例，触发 Tick 与后续推进不重复出生，重入不丢失实例。Route 捕获实际出生时的主线时基；空计划、空 Wave 与调度完成后的查询和继续 step 具有明确结果。
+- Schedule 保障前延迟之后的出生时间、出生位置与 Route offset 共用样本，以及等待登记先于 enter。WAVE 同时进入 wave／final 集合，超时只释放 wave，完整离场在 Tick 内外均同步释放等待。活 Unit 单独解除 Wave 等待只移除指定关系，不影响其他 Unit／最终等待，也不隐式推进；下一次正常推进可以继续出怪，最终等待仍阻止调度完成。Branch 每次按整组权重重抽，出生前发布索引、RNG 与实例，触发 Tick 与后续推进不重复出生，重入不丢失实例。Route 捕获实际出生时的主线时基；空计划、空 Wave 与调度完成后的查询和继续 step 具有明确结果。
 
 原生 JSON 的路线编译、count／interval 展开、随机组预处理和 Action／Enemy 的 notCountInTotal 合并归 Data，使用实际配置与最少确定输入验证转换；Core 消费编译后的 Plan 与 Spawn。notCountInTotal 在主线和 Branch 中均对应 NONE，不进入 wave／final 等待。普通注册、Hook 派发、Typed Ref 与 Change 组合集中在公共套件；Core 类型入口集中证明 Route Initial 必需与 Spawn 的能力约束。
 

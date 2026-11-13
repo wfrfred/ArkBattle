@@ -126,15 +126,19 @@ function resolveUnits(
     battle: BattleState,
     removedUnitIds: readonly UnitId[],
 ): BattleState;
+
+function releaseFromWave(battle: BattleState, reference: Ref<Unit>): BattleState;
 ```
 
 initialize 建立主线初始位置、各 Branch 的下一 Phase 索引与空等待集合。有 Wave 时从索引 0 的 PRE_DELAY 开始；没有 Wave 时主线为 COMPLETED。初始时间字段为 0，尚无主线历史时 timing 返回零基准。
 
 isCompleted 由三个事实推导：主线为 COMPLETED、activePhases 为空、waiting.final 为空。它不决定 Battle 胜负，也不需要独立完成锁存位。
 
-advance、triggerBranch、resolveUnits 接续并返回完整 BattleState。triggerBranch.id 是 Definition.branches 的键；loop 仅允许选择位置到末尾后回到首项，每次调用仍只触发一个 Phase。
+advance、triggerBranch、resolveUnits、releaseFromWave 接续并返回完整 BattleState。triggerBranch.id 是 Definition.branches 的键；loop 仅允许选择位置到末尾后回到首项，每次调用仍只触发一个 Phase。
 
 resolveUnits 从 waiting.wave 和 waiting.final 移除给定 Unit 的关系，不隐式调用 advance。Battle 的组成初始化通过全局 leaveHook 登记离场反馈，任意完整 Unit 移除都同步释放等待；通用 Unit 生命周期不依赖 Schedule。
+
+releaseFromWave 只从 waiting.wave 移除指定 Unit，保留 waiting.final、Unit 与主线进度，不增加完成或击杀计数，也不隐式调用 advance。没有对应等待关系时返回原 BattleState。下一次正常推进按剩余等待决定是否继续主线。
 
 ## 出生时间
 
@@ -259,7 +263,7 @@ fragment 是最近进入过的主线 Fragment，分支出生也不采用 Branch 
 | FINAL | 不登记。 | 登记。 |
 | WAVE | 登记。 | 登记。 |
 
-WAVE 同时承担 Wave 等待和最终管理责任。Wave 等待超时只清 waiting.wave，不清 waiting.final，也不移除仍存在的 Unit。Unit 完整离场时，leaveHook 通过 resolveUnits 释放两个集合中的关系。
+WAVE 同时承担 Wave 等待和最终管理责任。Wave 等待超时只清 waiting.wave；活 Unit 可以通过 releaseFromWave 单独解除自己的当前 Wave 等待。两者都保留 waiting.final 和仍存在的 Unit。Unit 完整离场时，leaveHook 通过 resolveUnits 释放两个集合中的关系。
 
 主线进入 POST_DELAY 后不重开已经完成的 Wave 等待；后延迟期间新增的 WAVE 关系不回退主线。进入下一 Wave 时清空 waiting.wave，waiting.final 保留，不把旧 Wave 的等待转交给下一 Wave。
 
@@ -289,6 +293,7 @@ Schedule 只提供调度进度与等待事实，不处理统计、蓝门扣血�
 
 - Spawn.atTick 在前延迟之后计时；出生位置和 Route offset 使用同一次固定偏移加随机扰动，Unit.enter 能看到已登记的等待关系。
 - 主线零延迟连续推进，Fragment 完成不等 Unit 离场；WAVE 同时登记两个集合，超时仅释放 wave，完整离场同步释放二者。Data 合并 Action／Enemy 的 notCountInTotal，主线与 Branch 均将其转换为 NONE，不等待这些仍在场的 Unit。
+- 活 Unit 单独解除 Wave 等待不影响其他等待者、最终等待或 Unit；解除本身不推进主线，下次 advance 可以继续出怪，最终等待仍阻止调度完成。
 - Branch 零延迟出生同步发生，enter 重入同一 Branch 时看见新的索引与 RNG，外层继续后不覆盖内层实例或重复出生。
 - Branch 每次执行按整组权重重新抽选；触发 Tick 与后续常规推进各负其责，延迟出生只执行一次。
 - 分支出生使用实际出生时的主流程时间快照；空计划、空 Wave 与主线结束后的时间查询及完成条件保持明确。
@@ -296,3 +301,5 @@ Schedule 只提供调度进度与等待事实，不处理统计、蓝门扣血�
 ## 机制依据
 
 [案例 30：通用 Scheduler 字段消费与调用路径](../research/cases/30-scheduler-action-data-fields.md)记录主 Wave、Fragment、Branch Phase、随机预处理、管理集合与统计的原生证据及限制。[Route](navigation.md#route-定义与进度)规定初始化、等待和出口契约。机制研究提供证据，本页规定项目的职责与行为。
+
+活 Unit 解除当前 Wave 等待的原生操作与火龙返巢用例见[公共机制审计](../research/cases/34-prts-mechanism-coverage-audit.md#21-活-unit-独立解除当前-wave-等待公共操作缺失)；releaseFromWave 的不隐式推进政策与 resolveUnits 保持一致。

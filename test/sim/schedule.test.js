@@ -6,7 +6,7 @@ import { all, get, ref } from "../../dist/core/unit/query.js";
 import { remove } from "../../dist/core/battle/unit.js";
 import * as predefined from "../../dist/core/battle/steps/predefined.js";
 import { step } from "../../dist/core/battle/runtime.js";
-import { isCompleted, timing, triggerBranch } from "../../dist/core/battle/schedule/index.js";
+import { isCompleted, timing, triggerBranch, releaseFromWave } from "../../dist/core/battle/schedule/index.js";
 import { battle, get as getUnit } from "../helpers/battle.js";
 
 const plan = {
@@ -154,6 +154,39 @@ test("wait policies publish before enter; timeout leaves final waits until compl
         [...all(state)].map(({ id }) => id),
         [0, 4],
     );
+});
+
+test("a living Unit can release only its Wave wait without advancing the main program", () => {
+    let state = step(create({
+        waves: [
+            wave([fragment([
+                spawn(definition("returning"), 0, "WAVE"),
+                spawn(definition("other"), 0, "WAVE"),
+            ])]),
+            wave([fragment([spawn(definition("following"))])]),
+        ],
+        branches: {},
+    }), []);
+    const returning = getUnit(state, 0);
+    const other = getUnit(state, 1);
+
+    state = releaseFromWave(state, ref(returning));
+    assert.deepEqual(state.schedule.waiting, { wave: [1], final: [0, 1] });
+    assert.equal(getUnit(state, 0), returning);
+    assert.equal(getUnit(state, 1), other);
+    assert.equal(releaseFromWave(state, ref(returning)), state);
+
+    state = releaseFromWave(state, ref(other));
+    assert.deepEqual(state.schedule.waiting, { wave: [], final: [0, 1] });
+    assert.equal(state.schedule.main.type, "WAITING");
+    assert.equal(getUnit(state, 2), undefined);
+
+    state = step(state, []);
+    assert.equal(getUnit(state, 2).definition.id, "following");
+    assert.equal(state.schedule.main.type, "COMPLETED");
+    assert.equal(isCompleted(state.schedule), false);
+    assert.deepEqual(state.schedule.waiting.final, [0, 1]);
+    assert.equal(getUnit(state, 0).lifecycle, "PRESENT");
 });
 
 test("an enemy removed in enter releases its wait before the next wave starts", () => {

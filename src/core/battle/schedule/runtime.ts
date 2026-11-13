@@ -1,8 +1,9 @@
 import { createRng } from "../../common/rng.js";
 import { Vec2 } from "../../common/vector.js";
+import type { Ref } from "../../common/ref.js";
 import { Tile, type WorldPosition } from "../../geometry/coordinate.js";
 import { initialize as initializeUnit } from "../../unit/initialize.js";
-import type { Departure, Id as UnitId } from "../../unit/unit.js";
+import type { Departure, Id as UnitId, Unit } from "../../unit/unit.js";
 import type { State as BattleState } from "../state.js";
 import { add } from "../unit.js";
 import type { Hook } from "../unit-hook.js";
@@ -234,6 +235,21 @@ export function triggerBranch(battle: BattleState, id: string, loop: boolean): B
     };
 
     return advancePhase(battle, phase);
+}
+
+export function releaseFromWave(battle: BattleState, reference: Ref<Unit>): BattleState {
+    const { waiting } = battle.schedule;
+    const wave = waiting.wave.filter((id) => id !== reference.id);
+
+    return wave.length === waiting.wave.length
+        ? battle
+        : {
+              ...battle,
+              schedule: {
+                  ...battle.schedule,
+                  waiting: { ...waiting, wave },
+              },
+          };
 }
 
 export function resolveUnits(battle: BattleState, removedUnitIds: readonly UnitId[]): BattleState {

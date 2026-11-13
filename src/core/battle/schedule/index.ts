@@ -15,6 +15,6 @@ export type { State, MainProgress, ActivePhase } from "./state.js";
 
 export { initialize } from "./state.js";
 
-export { advance, triggerBranch, resolveUnits, leaveHook } from "./runtime.js";
+export { advance, triggerBranch, releaseFromWave, resolveUnits, leaveHook } from "./runtime.js";
 
 export { isCompleted, timing } from "./query.js";
