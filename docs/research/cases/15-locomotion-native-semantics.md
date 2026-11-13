@@ -145,7 +145,9 @@ if (!map.checkGridValid(currentGrid)) {
 
 **I：** 避障缓存、ticker、旧速度均会影响后续轨迹，属于单位的运动运行事实，不能放进语义不可观测的 Navigation WeakMap 缓存。每 Tick 重新计算避障也不是已经证明等价的实现替换。
 
-2026-11-10 补核：当前客户端的 `MoveController.OnStart`（72232）仍采样脚点偏移，`CalculateIsHanging`（72236，`0x18090f280`）仍先推进 `PeriodicTicker`，仅到期时读取 `Enemy.offsetMapPosition`、重算及缓存局部力，再调用 `Next`；构造器（72247）将周期设为 3。`Enemy.get_offsetMapPosition`（77675）有 Cursor 时调用 `GetLocatorPosition`，否则取身体位置。[当前指纹与方法原文](../evidence/unit-audit-20261110/coordinates-numeric/native.json)。因此，ArkBattle 每次以身体位置重算、忽略脚点安装偏移的行为属于会影响轨迹的项目差异；本轮未找到已明确批准该取舍的依据。应单独决定是否接受，不能以“查询当前地图”或纯避障公式测试证明与原生等价，也不要求照搬整个控制器结构。
+2026-11-10 补核：当前客户端的 `MoveController.OnStart`（72232）仍采样脚点偏移，`CalculateIsHanging`（72236，`0x18090f280`）仍先推进 `PeriodicTicker`，仅到期时读取 `Enemy.offsetMapPosition`、重算及缓存局部力，再调用 `Next`；构造器（72247）将周期设为 3。`Enemy.get_offsetMapPosition`（77675）有 Cursor 时调用 `GetLocatorPosition`，否则取身体位置。[当前指纹与方法原文](../evidence/unit-audit-20261110/coordinates-numeric/native.json)。
+
+**项目选择：** ArkBattle 已明确采用每次实际积分重新计算局部避障力，省略原生三次调用的更新周期与缓存。这是已确定的简化，不是原生等价声明，也不属于待决事项，见 [Locomotion](../../architecture/navigation.md#locomotion)。当前使用身体位置、未引入 locator 与脚点安装偏移，是另一项输入基准差异，应与刷新周期的决定分开核对。
 
 ### 世界坐标转地块的半整数规则
 

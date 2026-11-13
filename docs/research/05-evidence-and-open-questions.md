@@ -18,7 +18,7 @@
 | 分组简化的实际内容影响 | 已核对浊蒂／海嗣、帕拉斯 S3、妮芙、vampir 光照计数及次生预案标记的真实来源，未找到实际结果改变正例。已确认为 [Effect 来源分组](../architecture/effect.md#来源分组)项目契约，Core 已接入；完整扫描范围与证据限度见 [Case 01 §9.9](cases/01-buff-installation-and-parent-scope.md#99-分组简化的实际内容影响)。 |
 | 控制效果与普通多目标攻击 | 标准 stun 的资格／中断与真实多目标逐目标读取 ATK 分别核对；[Case 08](cases/08-action-eligibility-and-interruption.md)、[Case 07](cases/07-action-timing-and-animation.md)。不推广到预采样弹道或所有特化技能。 |
 | 地形与射击台 | 重新核对配置、模板及消费链，包含当前实现的相反证据；[空间研究](03-space-units-and-mechanisms.md)。 |
-| 坐标、数值范围与运动 | 当前 World→Tile 取偶舍入、属性元数据／最终限幅和公式保底已分开核对；[Case 15](cases/15-locomotion-native-semantics.md)、[属性研究](02-combat-buffs-and-effects.md)。原生避障缓存与 locator 基准不等于当前项目选择。 |
+| 坐标、数值范围与运动 | 当前 World→Tile 取偶舍入、属性元数据／最终限幅和公式保底已分开核对；[Case 15](cases/15-locomotion-native-semantics.md)、[属性研究](02-combat-buffs-and-effects.md)。避障每次实际积分重算是已确定的项目选择；身体／locator 定位基准差异单独核对。 |
 | Schedule 配置限制 | Pack 和交错 Branch 随机组有实际配置，原生归组消费也不要求连续；[Case 30](cases/30-scheduler-action-data-fields.md)。解析器拒绝属于当前支持范围，不能当作原生禁止。 |
 | 干员配置 | 等级／信赖字段写回、模组单阶段完整加值和真实字符串黑板正例；[Case 06](cases/06-talent-lifecycle-and-model.md#干员配置数据补核2026-11-10)。 |
 
@@ -26,7 +26,7 @@
 
 EXTEND 的 snapshot 不等于重载属性 modifier；实际 Effect 接入仍需保持这一区别。此前仅测试消费的 Data planner 已删除，不能把其算法作为原生机制或运行接入依据。
 
-尚需收口的是具体支持或映射政策：Locomotion 的避障刷新与身体／locator 基准差异如何归入项目近似；地穴的原生 Enemy 类型资格如何映射到项目内容。Effect 的来源分组、重复施加与计时已接入 Core，契约见 [Effect](../architecture/effect.md)。其中先决定重复施加结果、仅新建分支执行安装程序属于明确的项目选择；原生安装与合并顺序仍按 Case 01 记录。
+尚需收口的是具体支持或映射政策：Locomotion 的身体／locator 与脚点定位基准差异；地穴的原生 Enemy 类型资格如何映射到项目内容。避障在每次实际积分时重算、取消三次调用更新周期的政策已经确定，不属于待决项。Effect 的来源分组、重复施加与计时已接入 Core，契约见 [Effect](../architecture/effect.md)。其中先决定重复施加结果、仅新建分支执行安装程序属于明确的项目选择；原生安装与合并顺序仍按 Case 01 记录。
 
 仍需补的具体内容证据包括：受支持普通内容中的 EXTEND+snapshot 完整执行正例，RO5 交错随机组示例中条件 Buff 的完整安装来源，以及 [Case 01 §9.5](cases/01-buff-installation-and-parent-scope.md#95-实际配置与范围) 注明的有限 STACK 非零时长绑定。妮芙父天赋来源已由标准安装链闭合，见 9.9。模板、条件分支与关卡覆盖已归档，未将它们冒充实战观测；也不因此否定已直接核实的普通分支。
 

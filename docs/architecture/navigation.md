@@ -136,7 +136,7 @@ Navigation 提供导航建议，Route 解释路线，Locomotion 执行运动，�
 - 创建调用者处理出生偏移的配置与采样，通过 initial.route 传入 Plan 与本次 offset；初始 Unit.position 与路线计算使用同一样本。主路线与临时替代路线的样本各自配对，不将一个样本无条件应用于所有路线。
 - Plan 声明通行方式与路线指令；Route Context 和 Locomotion State 分别保存解释进度与运动状态，导航缓存只保存派生计算结果。
 
-Locomotion 使用原生 Steering、八邻域地形避障和目的格反射。局部力每次积分时计算，不保存刷新缓存或计数器；完整 Unity 刚体系统及推拉不属于普通自主移动。
+Locomotion 使用 Steering、八邻域地形避障和目的格反射。项目明确选择在每次实际积分时重新计算局部避障力，省略原生每三次调用更新的周期、缓存与计数器；完整 Unity 刚体系统及推拉不属于普通自主移动。
 
 ## Route 定义与进度
 
