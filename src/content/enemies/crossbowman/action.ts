@@ -1,4 +1,4 @@
-import { create as createAttack, type Attack } from "../../actions/attack.js";
+import { create as createAttack, faceTarget, type Attack } from "../../actions/attack.js";
 import {
     calculateDamage,
     applyDamage,
@@ -67,6 +67,7 @@ export function createArrow(): tracking.Definition {
 export function createMelee(profile: Profile, timing: Timing): Attack {
     return createAttack({
         id: "melee",
+        onStart: faceTarget,
         speed: profile.attackSpeed,
         triggerBindingId: "primary",
         intervalTicks: secondsToTicks(profile.baseAttackTime),
@@ -113,6 +114,7 @@ export function createRanged(profile: Profile, timing: Timing, projectile: Proje
 
     return createAttack({
         id: "ranged",
+        onStart: faceTarget,
         speed: profile.attackSpeed,
         triggerBindingId: "primary",
         intervalTicks: secondsToTicks(profile.baseAttackTime),

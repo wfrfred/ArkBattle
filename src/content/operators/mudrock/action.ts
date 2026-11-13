@@ -1,5 +1,6 @@
 import {
     create as createAttack,
+    faceTarget,
     type Attack,
     type Configuration as AttackConfiguration,
 } from "../../actions/attack.js";
@@ -131,7 +132,10 @@ function attackDefinition(
 }
 
 export function createNormal(profile: Profile, recoveryTicks: number): Attack {
-    return createAttack(attackDefinition(profile, false, recoveryTicks));
+    return createAttack({
+        ...attackDefinition(profile, false, recoveryTicks),
+        onStart: faceTarget,
+    });
 }
 
 export function createSkill(

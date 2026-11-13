@@ -48,6 +48,7 @@ export interface Definition
             | "blocker"
             | "deployable"
             | "elemental"
+            | "facing"
             | "hitbox"
             | "layer"
             | "occupancy"
@@ -130,6 +131,7 @@ export function create(profile: Profile): Definition {
         id: profile.id,
         profile,
         occupancy: { slot: "OCCUPANT" },
+        facing: { rules: [] },
         targetable: { taunt: profile.attributes.taunt, restrictions: [] },
         deployable: { retreatRules: [] },
         card: {

@@ -43,6 +43,7 @@ test("preview, evaluation and deployment use one request; rejection consumes not
     const constructions = [];
     const definition = {
         ...operator,
+        facing: { rules: [] },
         action: {
             initialize(current) {
                 constructions.push({
@@ -118,6 +119,7 @@ test("preview, evaluation and deployment use one request; rejection consumes not
     assert.equal(entered, true);
     assert.deepEqual(get(state, deployed.value.unitId).occupancy.tile, [0, 2]);
     assert.equal(get(state, deployed.value.unitId).occupancy.direction, "LEFT");
+    assert.equal(get(state, deployed.value.unitId).facing.direction, "LEFT");
 });
 
 test("retreat settles refund and the persistent Card before departure; confirmed death never refunds", () => {

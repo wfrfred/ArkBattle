@@ -306,7 +306,9 @@ advance(battle, ref) 由 operations.ts 实现，index.ts 导出供调度协作�
 
 ## 8. 普通攻击、释放 Hook 与移动
 
-可复用普通攻击程序位于 content/actions/attack.ts，直接调用 Damage、Healing 与 Elemental 的公开操作。它在 prepare 绑定目标并保存 releaseAtTick／finishAtTick、released 等执行进度；到点执行输出并在恢复结束后完成。create 提供空持久／执行数据的入口；createWithState<P, E> 明确区分 initialize(battle) → Result<P> 与 prepare(battle, source, self) → Result<E>。output／afterOutput／onEnd 接收显式 source 与 execution 非空的 Execution<P, State<E>>，模板私有数据位于 self.execution.state.data。
+可复用普通攻击程序位于 content/actions/attack.ts，直接调用 Damage、Healing 与 Elemental 的公开操作。它在 prepare 绑定目标并保存 releaseAtTick／finishAtTick、released 等执行进度；到点执行输出并在恢复结束后完成。create 提供空持久／执行数据的入口；createWithState<P, E> 明确区分 initialize(battle) → Result<P> 与 prepare(battle, source, self) → Result<E>。onStart／output／afterOutput／onEnd 接收显式 source 与 execution 非空的 Execution<P, State<E>>，模板私有数据位于 self.execution.state.data。
+
+模板的可选 onStart 是本轮首次 onTick 中、实际输出之前的开始程序，执行前先发布已经进入该程序的进度。回调后按同一执行身份重读当前状态，再判断后继释放资格；不在 prepare 执行业务，也不因后续 Tick 重复调用。具体攻击可在这里调用 [Facing.turn](capability.md#facing)：普通近战、远程和治疗按内容决定转向，泥岩 S2 等未请求转向的程序保留原值。通用 Action 的 start／advance 不统一推断面向。
 
 CD 补偿、cooldownAdjusted 与 released 的私有字段由完整 Action 操作经内部 replace 发布，这些写回不隐式触发 Blocking。Rule 可读取双方 Action 状态不表示自动订阅其所有字段；改变阻挡资格的内容在对应业务流程中显式复核关系。Attack 在真正执行 Hook、伤害等领域操作后按同一 Execution Ref 恢复当前 RUNNING 执行，并确认宿主 PRESENT；不重复读取 Presence，也不把原始发布本身当成内容回调。Combat 的 select 使用原有执行推进后重新读取的当前来源，并在选择前检查空间存在，避免已经消失的来源消费选择 RNG。
 

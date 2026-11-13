@@ -32,6 +32,8 @@ import { advance as advanceAction } from '../../dist/core/unit/action/index.js';
 import { advance as advanceCombat } from '../../dist/core/battle/steps/combat.js';
 import { advance as advanceProjectiles } from '../../dist/core/battle/projectile.js';
 import * as projectilesQuery from '../../dist/core/projectile/index.js';
+import { advance as advanceSchedule } from '../../dist/core/battle/schedule/index.js';
+import { battle as createBattle } from '../helpers/battle.js';
 
 const fixture = JSON.parse(readFileSync(new URL('../fixtures/arknights/main-mode-units.json', import.meta.url), 'utf8'));
 const rawEnemy = id => fixture.enemies.find(entry => entry.Key === id);
@@ -88,11 +90,41 @@ test('unimplemented enemy stun immunity is rejected at the content boundary', ()
 });
 
 function routeInitial(position) {
-  return { route: { plan: {
+  return { facing: { direction: 'RIGHT' }, route: { plan: {
     motionMode: 'WALK', startPosition: World.toTile(position), endPosition: null,
     checkpoints: [], requireAllCheckpoints: true,
   }, offset: [0, 0] } };
 }
+
+test('scheduled hound faces its route after the first checkpoint has changed its birth position', () => {
+  const { definition } = createHound(profile('enemy_1000_gopro'), {
+    windupTicks: 0, recoveryTicks: 0, hitRadius: 0.2,
+  }, houndMovement);
+  const plan = {
+    motionMode: 'WALK', startPosition: [1, 1], endPosition: null,
+    checkpoints: [
+      { type: 'APPEAR', position: [1, 5], offset: [0, 0] },
+      { type: 'MOVE', position: [1, 3], offset: [0, 0], randomizeOffset: false },
+    ],
+    requireAllCheckpoints: true,
+  };
+  const state = advanceSchedule(createBattle([], { schedule: {
+    waves: [{ preDelayTicks: 0, postDelayTicks: 0, maxWaitingTicks: null,
+      fragments: [{ preDelayTicks: 0, spawns: [{
+        definition, plan, offset: [0, 0], randomRange: [0, 0], atTick: 0, wait: 'WAVE',
+      }] }],
+    }],
+    branches: {},
+  } }));
+  const hound = getUnit(state, 0);
+
+  assert.deepEqual(hound.position, [5, 1]);
+  assert.equal(hound.presence.present, true);
+  assert.equal(hound.route.main.index, 1);
+  assert.equal(hound.route.main.current.type, 'MOVE');
+  assert.equal(hound.facing.direction, 'LEFT');
+  assert.deepEqual(hound.locomotion.velocity, [0, 0]);
+});
 
 test('a hound attacks its hidden blocker while still respecting invincibility', () => {
   const { definition, action } = createHound(profile('enemy_1000_gopro'), {

@@ -21,6 +21,7 @@ import { setMaxHpContribution } from "../../dist/core/unit/capability/vitality/i
 import { setType } from "../../dist/core/unit/capability/layer/index.js";
 import { create as modifier } from "../../dist/core/unit/contribution/attribute.js";
 import { Vec2 } from "../../dist/core/common/vector.js";
+import { turn } from "../../dist/core/unit/capability/facing/index.js";
 
 const data = JSON.parse(readFileSync(new URL("../fixtures/arknights/main-mode-units.json", import.meta.url), "utf8"));
 const moduleX = "uniequip_002_mudrok";
@@ -47,7 +48,7 @@ function setup(configuration = {}, targets = [], options = {}) {
     const prepared = profile(configuration);
     const content = create(prepared, options);
     const unit = initialize({ id: 0, position: [0, 0], definition: content.definition,
-        initial: { occupancy: { tile: [0, 0], direction: "RIGHT" } } });
+        initial: { occupancy: { tile: [0, 0], direction: "RIGHT" }, facing: { direction: "RIGHT" } } });
     let battle = add(createBattleState(fixtureBattlefieldState([])), unit);
     for (const target of targets) battle = add(battle, target);
     return { prepared, ...content, unit, battle: advanceBlocking(battle) };
@@ -127,9 +128,11 @@ test("S2 replaces normal recovery, heals once and revalidates its bound targets 
     const fixture = setup({}, [enemy(1, [1, 0]), enemy(2, [0.8, 0]),
         enemy(3, [1, 0], { layer: { type: "AIR" } })], { recoveryTicks: 2 });
     let battle = wound(fixture.battle);
+    battle = turn(battle, ref(fixture.unit), "LEFT");
     const normal = fixture.unit.action.actions.get("normal-attack").definition;
     const ordinary = start(battle, actionRef(ref(fixture.unit), normal));
     battle = advanceAction(ordinary.state, ordinary.value);
+    assert.equal(getUnit(battle, 0).facing.direction, "RIGHT");
     battle = modify(battle, ref(fixture.unit), 5).state;
     battle = update(battle, ref(fixture.unit), setAttackContribution({
         id: "attack", value: [modifier({ addition: 100 })],
@@ -138,10 +141,12 @@ test("S2 replaces normal recovery, heals once and revalidates its bound targets 
     const beforeSecond = getUnit(battle, 2).vitality.hp;
     battle = advanceSkill(battle, ref(fixture.unit));
     assert.equal(getUnit(battle, 0).action.actions.get(normal.id).cooldown.readyAtTick, 0);
+    battle = turn(battle, ref(fixture.unit), "LEFT");
     const started = start(battle, actionRef(ref(fixture.unit), fixture.action));
     battle = update(started.state, ref(getUnit(started.state, 2)), setType("AIR"));
     battle = update(battle, ref(getUnit(battle, 3)), setType("GROUND"));
     battle = advanceAction(battle, started.value);
+    assert.equal(getUnit(battle, 0).facing.direction, "LEFT");
     const amount = (fixture.prepared.attributes.attack + 100) * 2.1;
     approximate(getUnit(battle, 1).vitality.hp, beforeFirst - amount);
     assert.equal(getUnit(battle, 2).vitality.hp, beforeSecond);

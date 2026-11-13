@@ -30,7 +30,7 @@ PRTS 是社区资料。本次直接核对页面，但未为每项重新提取客
 
 原生至少区分 `m_faceTo` 目标向量、`m_direction` 身体四向和 Animator 保存的左右符号；Unit 的有效 `faceSign` 通常读取后者。摄像机投影只位于 `_CalculateFaceDirection` 的条件分支，并非所有移动都投影，也不能说永远只看世界 X。两篇 PRTS 简述不能直接互换，更不能据此要求逻辑内核实现摄像机。
 
-当前 Unit 只有位置；`Occupancy.direction` 是部署四向；`Locomotion.velocity` 不能表示攻击转向后、停止运动时仍保留的面向。现有事实因而不能无条件还原这项公共输入。单个内容的部位计量可私有保存，但共同面向的维护不能默认交给每个内容轮询速度。**事实遗漏已确认，具体归属、平面近似及接口尚未决定，不据此新增 Capability。**
+本次补核时 Unit 只有位置；`Occupancy.direction` 是部署四向；`Locomotion.velocity` 不能表示攻击转向后、停止运动时仍保留的面向。现有事实因而不能无条件还原这项公共输入。单个内容的部位计量可私有保存，但共同面向的维护不能默认交给每个内容轮询速度。后续[面向调查](35-facing-and-turning-conditions.md)补核资格、调用时点和实际内容，项目据此接入独立 [Facing](../../architecture/capability.md#facing)；世界 X 映射、初始化和动画边界为项目选择。
 
 证据仍分档：本批核验的是 generic native 部位消费者，没有完成火龙 Prefab 到该 Talent 的绑定；PRTS 火龙／手雷是实际内容需求资料，不把两者冒充同一条已完整验证的配置链。
 

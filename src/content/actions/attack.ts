@@ -1,4 +1,5 @@
 import type { Ref } from "../../core/common/ref.js";
+import { Vec2 } from "../../core/common/vector.js";
 import {
     assertNonnegativeNumber,
     assertNonnegativeSafeInteger,
@@ -27,6 +28,7 @@ import {
 } from "../../core/unit/capability/action/index.js";
 
 import { hasOffense, resolveAttack } from "../../core/unit/capability/offense/index.js";
+import { hasFacing, fromVector, turn } from "../../core/unit/capability/facing/index.js";
 
 import {
     calculateDamage,
@@ -94,6 +96,11 @@ export interface Definition<
     P extends object = object,
     E extends object = object,
 > extends Configuration {
+    readonly onStart?: (
+        battle: BattleState,
+        source: Ref<Unit & ActionCapability>,
+        self: Execution<P, State<E>>,
+    ) => BattleState;
     readonly output?: (
         battle: BattleState,
         source: Ref<Unit & ActionCapability>,
@@ -146,6 +153,27 @@ function sourcePresent(battle: BattleState, source: Ref<Unit>): boolean {
     const current = units.get(battle, source);
 
     return current?.lifecycle === "PRESENT";
+}
+
+export function faceTarget<P extends object, E extends object>(
+    battle: BattleState,
+    source: Ref<Unit & ActionCapability>,
+    self: Execution<P, State<E>>,
+): BattleState {
+    const host = units.get(battle, source);
+    const target = units.get(battle, self.execution.state.target);
+    if (
+        host === undefined ||
+        !hasFacing(host) ||
+        target === undefined ||
+        Vec2.distanceSquared(host.position, target.position) <= 0.04
+    ) {
+        return battle;
+    }
+
+    const direction = fromVector(Vec2.sub(target.position, host.position));
+
+    return direction === null ? battle : turn(battle, units.ref(host), direction);
 }
 
 export function chooseTargets(
@@ -372,6 +400,17 @@ export function createWithState<P extends object, E extends object>(
                         tick: battle.tick,
                     },
                 ]);
+                battle = definition.onStart?.(battle, source, self) ?? battle;
+
+                const current = actions.getExecution(battle, identity);
+                if (current?.execution.lifecycle !== "RUNNING" || !sourcePresent(battle, source)) {
+                    return {
+                        state: actions.cancel(battle, identity, "SOURCE_ABSENT"),
+                        value: true,
+                    };
+                }
+
+                self = current;
             }
 
             if (

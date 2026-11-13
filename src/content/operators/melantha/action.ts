@@ -1,4 +1,4 @@
-import { create as createAttack, type Attack } from "../../actions/attack.js";
+import { create as createAttack, faceTarget, type Attack } from "../../actions/attack.js";
 import * as targeting from "../../../core/battle/targeting/index.js";
 import * as units from "../../../core/unit/index.js";
 import { hasTargetable } from "../../../core/unit/capability/targetable/capability.js";
@@ -15,6 +15,7 @@ import { secondsToTicks } from "../../../data/time.js";
 export function create(profile: Profile): Attack {
     return createAttack({
         id: "normal-attack",
+        onStart: faceTarget,
         speed: profile.attributes.attackSpeed,
         triggerBindingId: "primary",
         intervalTicks: secondsToTicks(profile.attributes.baseAttackTime),

@@ -3,7 +3,7 @@ import { test } from "node:test";
 import { Hooks } from "../../dist/core/hook.js";
 import { createRng } from "../../dist/core/common/rng.js";
 import { topK } from "../../dist/core/common/collection.js";
-import { createWithState } from "../../dist/content/actions/attack.js";
+import { create, createWithState, faceTarget } from "../../dist/content/actions/attack.js";
 import * as targeting from "../../dist/core/battle/targeting/index.js";
 import { hasTargetable } from "../../dist/core/unit/capability/targetable/capability.js";
 import * as units from "../../dist/core/unit/query.js";
@@ -13,6 +13,8 @@ import * as effects from "../../dist/core/unit/effect/index.js";
 import { healFree } from "../../dist/core/effects/protection.js";
 import { battle as createBattle, get } from "../helpers/battle.js";
 import { unit, battle } from "../helpers/action-fixture.js";
+import * as facing from "../../dist/core/unit/capability/facing/index.js";
+import { actionCapability } from "../helpers/actions.js";
 
 function definition(groups, prepare = state => ({ state, value: {} })) {
     return createWithState({
@@ -38,6 +40,39 @@ function group(id, count = 1, accepts = () => true) {
         operations: [{ type: "DAMAGE", power: 7, damageType: "TRUE" }],
     };
 }
+
+test("an attack turns once at its started program, before output, without turning again on release", () => {
+    const program = create({
+        id: "facing-attack", intervalTicks: 10, windupTicks: 2, recoveryTicks: 1,
+        triggerBindingId: "primary", onStart: faceTarget,
+        targetGroups: [{
+            id: "primary", operations: [{ type: "DAMAGE", power: 7, damageType: "TRUE" }],
+            select: state => ({ state, value: [units.ref(get(state, 1))] }),
+        }],
+    });
+    let state = createBattle([
+        { definition: { id: "attacker", hooks: Hooks.empty(), facing: { rules: [] },
+            action: actionCapability(program),
+        }, position: [3, 1], initial: { facing: { direction: "RIGHT" } } },
+        { definition: { id: "target", hooks: Hooks.empty(),
+            vitality: { maxHp: 100, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
+        }, position: [1, 1] },
+    ]);
+    const host = units.ref(get(state, 0));
+    const started = actions.start(state, actions.ref(host, program));
+    assert.notEqual(started.value, null);
+    assert.equal(get(started.state, 0).facing.direction, "RIGHT");
+    state = actions.advance(started.state, started.value);
+    assert.equal(get(state, 0).facing.direction, "LEFT");
+    assert.equal(get(state, 1).vitality.hp, 100);
+
+    state = facing.turn(state, host, "RIGHT");
+    state = actions.advance({ ...state, tick: 1 }, started.value);
+    assert.equal(get(state, 0).facing.direction, "RIGHT");
+    state = actions.advance({ ...state, tick: 2 }, started.value);
+    assert.equal(get(state, 0).facing.direction, "RIGHT");
+    assert.equal(get(state, 1).vitality.hp, 93);
+});
 
 test("attack selection groups and prepare receive the state produced by earlier groups", () => {
     let observed;

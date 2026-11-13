@@ -91,6 +91,7 @@ export function deploy<T extends Card<any>>(
         definition: self.definition,
         position: Tile.center(request.tilePosition),
         initial: {
+            facing: { direction: request.direction === "LEFT" ? "LEFT" : "RIGHT" },
             occupancy: {
                 tile: request.tilePosition,
                 ...(request.direction === undefined ? {} : { direction: request.direction }),
