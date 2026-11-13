@@ -407,7 +407,7 @@ test("STACK separates effective output, manual consumption, and natural decay wh
     assert.equal(effects.get(state, consumed.value), undefined);
 });
 
-test("UNIQUE groups distinguish Unit and absent sources while source attribution remains independent of scope", () => {
+test("UNIQUE groups distinguish shared, Unit, and absent sources while source attribution remains independent of scope", () => {
     const definition = {
         id: "independent",
         group: { type: "UNIQUE", id: "independent", priority: 0, independentSource: true },
@@ -439,9 +439,12 @@ test("UNIQUE groups distinguish Unit and absent sources while source attribution
     assert.notEqual(absent.value, null);
     const shared = {
         ...definition,
-        group: { ...definition.group, id: "shared", independentSource: false },
+        group: { ...definition.group, independentSource: false },
     };
     const unpartitioned = effects.install(absent.state, owner, shared, { source: a });
+    assert.notEqual(unpartitioned.value, null);
+    assert.equal(effects.get(unpartitioned.state, unpartitioned.value).lifecycle, "ACTIVE");
+    assert.equal(effects.get(unpartitioned.state, absent.value).lifecycle, "ACTIVE");
     assert.equal(effects.install(unpartitioned.state, owner, shared, { source: b }).value, null);
     const bound = effects.install(
         unpartitioned.state,

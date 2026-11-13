@@ -325,6 +325,7 @@ function resolveGroupSource(
 function matchesGroup(self: Effect, group: Group, source: GroupSource | null): boolean {
     return (
         self.definition.group?.id === group.id &&
+        self.definition.group.independentSource === group.independentSource &&
         (self.groupSource === source ||
             (self.groupSource !== null &&
                 source !== null &&

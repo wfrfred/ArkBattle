@@ -334,6 +334,8 @@ Definition.group.independentSource 声明是否按来源独立分组，组归属
 | 要求来源独立，来源 Unit 没有 Card | `(group.id, Unit.id)` |
 | 要求来源独立，没有来源 | `(group.id, null)` |
 
+是否启用来源独立也是组身份的一部分；共享组 `x` 与无来源的独立组 `(x, null)` 分开匹配与竞争。
+
 Card 关联沿实际 `source → Unit → deployable.card` 读取；无 Card 的来源使用该 Unit 身份，适用于任意来源 Unit。Card 与 Unit 属于不同身份域，数值相同也不表示同一来源。同一卡牌产生的多个 Unit（包括重新部署）共享来源身份，不同 Card 保持独立；无 Card 的预放干员仍按各自 Unit 区分。
 
 安装时将来源分区采样为 groupSource，与 definition.group.id 一同匹配组归属；此后来源退场不改变该样本。分组身份不替换 `Effect.source`，不改变内容的来源比较、重复施加／竞争政策或生命周期依赖。实际来源由具体机制确定；例如海嗣治疗以宿主浊心斯卡蒂为 source，而非执行光环的海嗣。
