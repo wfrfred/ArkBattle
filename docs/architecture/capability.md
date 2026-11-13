@@ -158,6 +158,18 @@ Hitbox 几何、Blocker 阻挡半径和 Locomotion.halfBodyWidth 分别用于受
 
 Battlefield 的通用空间查询领域使用 battlefield/spatial/ 命名，与单位空地身份 Layer 分开。范围重叠与形状扫掠的接口及资格边界见 [Spatial Query](spatial.md)。
 
+## 左右面向的设计边界
+
+Facing 的左右面向与 Occupancy 的摆放四向是不同事实。以下语义已确定，能力与操作尚未接入：
+
+```typescript
+type Direction = "LEFT" | "RIGHT";
+```
+
+左右值是有效面向的唯一权威状态；需要数值时按 LEFT → -1、RIGHT → 1 推导 sign，不另存一份符号。面向变更经合法领域操作发布后，后续同步业务从最新 BattleState 读取新值；沿用既有 Change 批次与历史快照契约。
+
+动画消费 Core 的面向结果。Animator 类型、骨骼参数、翻转时长、动画回调及摄像机状态不决定 Core 面向的值或生效时点；不复制原生按动画后端设置不同阈值、延迟有效符号的行为。转向触发时点、控制状态下的资格等仍是独立业务语义。初始输入、方向向量到左右的映射、纯竖直输入与强制转向接口尚待确定，原生依据和项目选择见[面向调查](../research/cases/35-facing-and-turning-conditions.md#6-已确定的项目边界)。
+
 ## Presence
 
 [空间存在](presence.md)只保存身体的 present 事实；暂时消失保留身份、真实坐标及生命周期登记。appear／disappear 返回在调用时按当前宿主能力组合的 Change，自身叶子只修改空间事实，其余子项直接复用所属能力的 Rule 工厂；发布后按 previous 的稳定角色调用 Blockable.release 或 Blocker.releaseAll，并在消失时委托 Action.cancelForUnit 取消当前执行。各能力消费自己的 Rule，不反向读取 Presence；空间查询、普通索敌和接触程序直接使用空间存在事实。Skill、Effect 和 Burst 不因此统一结束或暂停。
