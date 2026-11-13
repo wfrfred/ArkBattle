@@ -5,6 +5,9 @@ import * as terrain from "../../dist/content/terrain/definition.js";
 import { createTerrainMechanism } from "../../dist/content/terrain/mechanism.js";
 import * as mechanisms from "../../dist/core/battle/mechanism.js";
 import * as units from "../../dist/core/unit/index.js";
+import * as skills from "../../dist/core/unit/skill/index.js";
+import * as vitality from "../../dist/core/unit/capability/vitality/index.js";
+import * as hpDamage from "../../dist/core/battle/damage/hp/index.js";
 import { create as createTile } from "../../dist/core/battlefield/map/tile.js";
 import { Tiles } from "../../dist/core/battlefield/map/tiles.js";
 import { create as createMap } from "../../dist/core/battlefield/map/map.js";
@@ -75,7 +78,13 @@ function until(battle, tick) {
     return battle;
 }
 
-test("infection keeps independent entry deadlines and resumes paused damage periods after overrides", () => {
+test("HP-06: infection keeps its entry clocks and ordinary reception while excluding HIT SP recovery", () => {
+    const resource = {
+        id: "terrain-hit-recovery", initialize: state => ({ state, value: {} }), activation: null,
+        sp: { initial: 0, capacity: 5, requirement: 1, recovery: { type: "HIT", amount: 1 } },
+    };
+    const receptions = [];
+    const applications = [];
     const first = terrain.infection.create({ ...infectionParams(80), durationTicks: 120 });
     const configured = setup([
         first, first,
@@ -83,8 +92,28 @@ test("infection keeps independent entry deadlines and resumes paused damage peri
             damage: 75, attackBonusRatio: 0.3, attackSpeedBonus: 30, durationTicks: 50,
         }),
         terrain.normal.create({}),
-    ], [unit(0, combat)], [terrain.infection]);
-    let battle = step(configured.battle, []);
+    ], [unit(0, {
+        ...combat,
+        skill: { initialize: state => skills.create(state, resource) },
+        hooks: Hooks.empty().set(hpDamage.targetApplied, {
+            id: "observe-environment-application",
+            invoke(state, { application }) {
+                applications.push(application.hpLoss);
+                return { state, value: undefined };
+            },
+        }),
+    })], [terrain.infection]);
+    let battle = update(configured.battle, units.ref(current(configured.battle)),
+        vitality.setHook("damageReceiving", {
+            id: "observe-environment-reception",
+            invoke(state, { request }, pending) {
+                assert.equal(request.nature, "DAMAGE");
+                assert.equal(request.hitRecovery, false);
+                receptions.push(pending.amount);
+                return { state, value: pending };
+            },
+        }));
+    battle = step(battle, []);
     assert.equal(resolveAttack(battle, current(battle)), 120);
     assert.equal(attackSpeed(battle), 120);
     battle = step(move(until(battle, 11), 0, 1), []);
@@ -110,6 +139,9 @@ test("infection keeps independent entry deadlines and resumes paused damage peri
     assert.equal(current(battle).vitality.hp, 765);
     assert.equal(resolveAttack(battle, current(battle)), 100);
     assert.equal(attackSpeed(battle), 100);
+    assert.deepEqual(receptions, [80, 75, 80]);
+    assert.deepEqual(applications, [80, 75, 80]);
+    assert.equal(current(battle).skill.sp.value, 0);
 });
 
 test("mire preserves its stacking clock across adjacent tiles and gives heavy enemies double stacks", () => {

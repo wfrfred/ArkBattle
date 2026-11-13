@@ -14,12 +14,13 @@ import * as blocking from "../../dist/core/battle/blocking/index.js";
 import * as skills from "../../dist/core/unit/skill/index.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import { invincible } from "../../dist/core/effects/protection.js";
+import * as presence from "../../dist/core/unit/capability/presence/index.js";
 import { createArknightsElementalDefinition } from "../../dist/data/effect/elemental.js";
 
 function damageRequest(source, target, power, type = "TRUE", penetration = { fixed: 0, proportional: 0 }) {
     const attack = { power, multiplier: 1, addition: 0 };
     return {
-        source, target,
+        source, target, nature: "DAMAGE", hitRecovery: true,
         parameters: type === "PHYSICAL" || type === "ARTS"
             ? { type, attack, penetration }
             : { type, attack },
@@ -483,6 +484,89 @@ test("APPLY-02: HP zero output rejects while excess receiving reduction still co
     assert.deepEqual(calls, ["output", "beforeCommit", "targetApplied", "sourceApplied"]);
 });
 
+test("HP-05/06: LOSS completes the shared pipeline against an invincible absent target without HIT recovery", () => {
+    const resource = {
+        id: "hit-recovery", initialize: state => ({ state, value: {} }), activation: null,
+        sp: { initial: 0, capacity: 5, requirement: 1, recovery: { type: "HIT", amount: 1 } },
+    };
+    const calls = [];
+    const observe = stage => ({
+        id: stage,
+        invoke(current, context) {
+            calls.push([stage, get(current, context.target.id).vitality.hp,
+                get(current, context.target.id).skill.sp.value]);
+            return { state: current, value: undefined };
+        },
+    });
+    let state = battle([
+        { definition: {
+            id: "source",
+            hooks: Hooks.empty()
+                .set(hpDamage.sourceFormula, {
+                    id: "source-formula",
+                    invoke(current, _context, parameters) {
+                        return { state: current, value: {
+                            ...parameters, attack: { ...parameters.attack, power: parameters.attack.power + 10 },
+                        } };
+                    },
+                })
+                .set(hpDamage.output, {
+                    id: "output", invoke: (current, _context, amount) => ({ state: current, value: amount - 10 }),
+                })
+                .set(hpDamage.beforeCommit, observe("beforeCommit"))
+                .set(hpDamage.sourceApplied, observe("sourceApplied")),
+        }, position: [0, 0] },
+        { definition: {
+            id: "target", presence: {}, targetable: { taunt: 0, restrictions: [] },
+            vitality: { maxHp: 35, defense: 20, resistance: 0 },
+            skill: { initialize: current => skills.create(current, resource) },
+            hooks: Hooks.empty()
+                .set(hpDamage.targetFormula, {
+                    id: "target-formula",
+                    invoke(current, _context, parameters) {
+                        return { state: current, value: {
+                            ...parameters, attack: { ...parameters.attack, multiplier: 2 },
+                        } };
+                    },
+                })
+                .set(hpDamage.beforeReceive, observe("beforeReceive"))
+                .set(hpDamage.targetApplied, observe("targetApplied")),
+        }, position: [1, 0] },
+    ]);
+    const source = units.ref(get(state, 0));
+    const target = units.ref(get(state, 1));
+    state = effects.install(state, target, invincible).state;
+    state = update(state, target, units.compose(
+        presence.disappear(),
+        units.compose(
+            vitality.setHook("damageReceivingStarted", observe("receivingStarted")),
+            vitality.setHook("damageReceiving", {
+                id: "receiving",
+                invoke(current, context, pending) {
+                    assert.equal(context.request.nature, "LOSS");
+                    assert.equal(pending.amount, 70);
+                    calls.push(["receiving", get(current, target.id).vitality.hp,
+                        get(current, target.id).skill.sp.value]);
+                    return { state: current, value: pending };
+                },
+            }),
+        ),
+    ));
+    const request = { ...damageRequest(source, target, 40, "PHYSICAL"), nature: "LOSS" };
+    const calculated = hpDamage.calculateDamage(state, request);
+    assert.equal(calculated.value.amount, 70);
+    assert.equal(get(calculated.state, target.id).vitality.hp, 35);
+    assert.deepEqual(calls, []);
+    const applied = hpDamage.applyDamage(request, calculated);
+    assert.equal(applied.value.type, "APPLIED");
+    assert.deepEqual(applied.value.application, { hpBefore: 35, hpAfter: 0, hpLoss: 35 });
+    assert.deepEqual(calls, [
+        ["beforeReceive", 35, 0], ["receivingStarted", 35, 0], ["receiving", 35, 0],
+        ["beforeCommit", 35, 0], ["targetApplied", 0, 0], ["sourceApplied", 0, 0],
+    ]);
+    assert.equal(get(applied.state, target.id), undefined);
+});
+
 test("HP-03: lethal HP remains present and blocking through both Applied roles, then death releases the relation", () => {
     let state = battle([
         { definition: { id: "source", hooks: Hooks.empty() }, position: [0, 0] },
@@ -587,7 +671,7 @@ test("EP-01: full resistance preserves formula floors and sampled EP output; HP 
     const hpRequest = {
         source: null,
         target,
-        parameters: { type: "ELEMENTAL", attack: { power: 100, multiplier: 1, addition: 0 } },
+        nature: "DAMAGE", hitRecovery: true, parameters: { type: "ELEMENTAL", attack: { power: 100, multiplier: 1, addition: 0 } },
     };
     const hp = hpDamage.applyDamage(hpRequest, hpDamage.calculateDamage(applied.state, hpRequest));
     assert.equal(hp.value.application.hpLoss, 5);

@@ -30,6 +30,7 @@ import { resolveCapacity as resolveAmmoCapacity } from "./ammo.js";
 const hitRecovery: ReceivingStartedHook = {
     id: "@skill/hit-recovery",
     priority: 0,
+    accepts: (_battle, { request }) => request.nature === "DAMAGE" && request.hitRecovery,
     invoke: (battle, { request }) => {
         const target = units.get(battle, request.target);
 

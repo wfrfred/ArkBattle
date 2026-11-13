@@ -7,6 +7,7 @@ import * as action from "../action/capability.js";
 import * as skill from "../skill/capability.js";
 import * as locomotion from "../locomotion/capability.js";
 import * as vitality from "../vitality/capability.js";
+import type { DamageReceptionRule } from "../vitality/rule.js";
 import * as elemental from "../elemental/capability.js";
 import { hasBlocker } from "../blocking/blocker.js";
 import { hasBlockable } from "../blocking/blockable.js";
@@ -15,6 +16,11 @@ import * as blockable from "../blocking/blockable-operations.js";
 import type { Presence } from "./capability.js";
 
 const restriction = { id: "@presence/absent", allows: () => false };
+
+const hpRestriction: DamageReceptionRule = {
+    id: restriction.id,
+    allows: (_battle, { request }) => request.nature === "LOSS",
+};
 
 export function disappear(): Change<Unit & Presence> {
     const presence = createChange<Unit & Presence>(
@@ -85,7 +91,7 @@ function restrictions(present: boolean): Change<Unit> {
         ),
         optional(
             vitality.hasVitality,
-            present ? vitality.removeRule(restriction.id) : vitality.setRule(restriction),
+            present ? vitality.removeRule(restriction.id) : vitality.setRule(hpRestriction),
         ),
         optional(
             elemental.hasElemental,

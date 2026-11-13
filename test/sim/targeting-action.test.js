@@ -109,7 +109,7 @@ test("bound healing keeps its receivers when a later selection restriction would
     for (const [id, amount] of [[1, 70], [2, 60]]) {
         const request = {
             source: null, target: units.ref(get(state, id)),
-            parameters: { type: "TRUE", attack: { power: amount, multiplier: 1, addition: 0 } },
+            nature: "DAMAGE", hitRecovery: true, parameters: { type: "TRUE", attack: { power: amount, multiplier: 1, addition: 0 } },
         };
         state = hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request)).state;
     }

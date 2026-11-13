@@ -54,7 +54,7 @@ test("fixed damage and healing do not require an Offense capability", () => {
     const sourceRef = units.ref(source);
     const wound = {
         source: null, target: sourceRef,
-        parameters: { type: "TRUE", attack: { power: 50, multiplier: 1, addition: 0 } },
+        nature: "DAMAGE", hitRecovery: true, parameters: { type: "TRUE", attack: { power: 50, multiplier: 1, addition: 0 } },
     };
     const initial = hpDamage.applyDamage(wound,
         hpDamage.calculateDamage(battle(source, target), wound)).state;

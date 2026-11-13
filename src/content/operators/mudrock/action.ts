@@ -176,6 +176,8 @@ export function createSkill(
                 const request: DamageRequest = {
                     source: unitRef(source),
                     target: unitRef(target),
+                    nature: "DAMAGE",
+                    hitRecovery: true,
                     parameters: {
                         type: "PHYSICAL",
                         attack: { power, multiplier: attackScale, addition: 0 },

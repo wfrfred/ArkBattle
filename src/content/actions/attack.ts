@@ -200,6 +200,8 @@ function apply(
             const request: DamageRequest = {
                 source,
                 target: units.ref(receiver),
+                nature: "DAMAGE",
+                hitRecovery: true,
                 parameters:
                     type === "PHYSICAL" || type === "ARTS"
                         ? { type, attack, penetration: { fixed: 0, proportional: 0 } }

@@ -5,6 +5,8 @@ import type { Vitality } from "../../../unit/capability/vitality/capability.js";
 
 export type DamageType = "PHYSICAL" | "ARTS" | "TRUE" | "ELEMENTAL";
 
+export type Nature = "DAMAGE" | "LOSS";
+
 export interface Event {
     readonly type: "DAMAGE";
     readonly targetUnitId: Id;
@@ -36,6 +38,8 @@ export type Parameters =
       };
 
 export interface Request {
+    readonly nature: Nature;
+    readonly hitRecovery: boolean;
     readonly source: Ref<Unit> | null;
     readonly target: Ref<Unit & Vitality>;
     readonly parameters: Parameters;

@@ -21,7 +21,7 @@ Presence 根据宿主实际拥有的能力，登记或撤销自己持有的限�
 | Skill | 禁止新的 Activation；已成立的 Activation、STOP／RETRIGGER、资源回复和持续程序仍遵守 Skill 自身的契约。 |
 | Locomotion | 禁止自主移动，保留 velocity。 |
 | Blocker／Blockable | 禁止取得或维持阻挡关系。 |
-| Vitality／Elemental | 拒收普通 HP／EP Damage；不附带普通 Healing 或资源自然恢复限制。 |
+| Vitality／Elemental | 拒收普通 HP／EP Damage；HP LOSS 不受这项空间接收限制，不附带普通 Healing 或资源自然恢复限制。 |
 
 两个入口返回的 Change 以 compose 排序，自身空间变更排在首位，随后用 optional 按当前宿主能力应用各能力的 setRule／removeRule Change，不手写其它能力的 Rule State 或结算列表。optional 在实际应用时读取前序变换的 next。全部变换共同参与一次发布，组合不增加发布或结算边界。恢复出现只移除 Presence 自己的登记，其它 Rule 继续生效。Capability 和 Action／Skill 的业务不反向读取 Presence。
 

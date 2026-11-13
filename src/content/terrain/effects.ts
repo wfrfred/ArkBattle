@@ -88,6 +88,8 @@ function damage(battle: BattleState, host: Ref<Unit>, amount: number): BattleSta
     const request = {
         source: null,
         target: units.ref(unit),
+        nature: "DAMAGE" as const,
+        hitRecovery: false,
         parameters: {
             type: "TRUE" as const,
             attack: { power: amount, multiplier: 1, addition: 0 },

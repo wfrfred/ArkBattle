@@ -29,7 +29,7 @@ const candidates = state => units.all(state).filter(targetable.hasTargetable);
 function wound(state, target, power) {
     const request = {
         source: null, target,
-        parameters: { type: "TRUE", attack: { power, multiplier: 1, addition: 0 } },
+        nature: "DAMAGE", hitRecovery: true, parameters: { type: "TRUE", attack: { power, multiplier: 1, addition: 0 } },
     };
     return hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request)).state;
 }

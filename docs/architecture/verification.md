@@ -152,7 +152,7 @@ Hitbox 的 Targeting 接入只保留一个代表场景：显式范围使用受�
 | 消失保留原 Unit、占格、部署额度及普通 Effect／Lifetime，不派发入场或离场；全部限制先发布，自身 Settlement 调用的 Blocking 操作先清理当前整组双端关系再通知，释放结束后委托 Action 领域取消宿主执行。appear 只移除 Presence 自身限制，其它来源的 Rule 仍生效，独立限制移除后可以正常启动。 | Presence 主场景；公共旧 Relation、Hook 候选和析构协议不重测。 |
 | 自身 Blockable 偏移随主动空间覆盖取消；Blocker 消失只解除关系，原目标的独立偏移继续。已 present 的 appear 仍执行位置覆盖及自身清理。 | Blocking 位置计划场景。 |
 | 消失禁止新的 Action／Activation，取消旧 Action 并停止旧输出；已完成释放前缀保留。开始通知中消失但仍 ACTIVE 的同次 Skill 执行 onStart，既有持续技能仍正常推进及到期。 | Action／Skill 代表场景；不据此增加弹药消费政策。 |
-| 消失期间普通 HP／EP Damage 拒收；明确目标的 HP／EP Healing 仍遵守各自条件。自然 EP 回复与已启动 Burst 的恢复预算继续，消失不取消其 Effect。 | 一次双资源接收场景及 Elemental 恢复场景，不重复四条管线的公式与通知矩阵。 |
+| 消失期间普通 HP／EP Damage 拒收，HP LOSS 仍可结算；明确目标的 HP／EP Healing 仍遵守各自条件。自然 EP 回复与已启动 Burst 的恢复预算继续，消失不取消其 Effect。 | 双资源接收场景及 HP-05／Elemental 恢复场景，不重复四条管线的公式与通知矩阵。 |
 | 普通空间查询、Targeting 与 Terrain 排除消失对象；已锁定 tracking 弹道仍追现存目标的真实位置，身份命中与 Damage 接收分开。 | 空间／目标／Terrain 场景与真实弩箭追踪场景，不增加 Projectile Rule 或每个消费者的隐藏版本。 |
 
 ## Hook 与伤害／治疗的回归语义
@@ -168,6 +168,8 @@ Hitbox 的 Targeting 接入只保留一个代表场景：显式范围使用受�
 | APPLY-02 | 四种业务在全部 Output Hook 后形成非负 Calculated；负输出截为零，与零输出一同在 Apply 入口拒绝，计算期间已经完成的业务保留。具有 Receiving 的业务在全部接收 Hook 后形成非负 Pending，BeforeCommit、提交与 Applied 使用同一接收量；正数输出被接收为零或实际变化为零仍可成功。来源无 Vitality 仍可执行输出 Hook；同源同目标的两个 Applied 角色分别执行。 | 以最小合法 Unit 组合集中验证最终输出与接收边界；治疗使用满资源，损伤使用固定减伤超过待接收量的代表，确认实际变化为零而成功。Formula 从请求原始参数开始，不另设 EP 负数入口异常。不按非法数值、Hook 阶段或资源种类展开防御矩阵。 |
 | HP-03 | HP 写入后先执行两侧 Applied，再按最新 HP 确认死亡，随后清理关系和注销。普通 Healing 不恢复零 HP；Core 不提供特殊生命干预协议。 | 真实致死场景观察两侧响应中的零 HP、仍在场及原关系，响应结束后才注销并释放；不伪造零 HP 回正或复制 Lifetime 的整套析构测试。 |
 | HP-04 | MaxHP 修正的登记、替换与撤销按比例接续当前 HP，不构成普通治疗；正常资源保留小数。 | 从合法构造与真实损伤形成受损对象，再通过 Contribution Change 验证资源比例。不用伪造零 HP、回调排列或逐字段构造校验矩阵。 |
+| HP-05 | DAMAGE／LOSS 共享完整 Calculate／Apply；LOSS 仍计算防御与 Formula／Output，并完成接收、两侧 Applied 及既定死亡后继。普通无敌、Presence 和普通受伤机制按性质筛选，不阻止 LOSS。 | 一个真实无敌／消失目标的流失结算场景，观察公式结果、共用 Hook 与提交／死亡事实。普通伤害的原有准入场景继续保留；不按阶段与伤害类型复制矩阵，也不在夹具另写一套盾或角色天赋。 |
+| HP-06 | HIT 回复要求 nature=DAMAGE 且 hitRecovery=true；hitRecovery=false 的普通伤害仍进入普通 Receiving 和 Applied。 | 真实 Skill 的 HIT 接入观察 LOSS 不回复；在已有活性源石代表场景核对实际 HP 损伤与普通接收仍发生、HIT SP 不增长。不为两个字段分别增加 Getter／非法组合测试。 |
 | EP-01 | HP 元素抗性与 EP 抗性分别在贡献后限制到 0–100，各自基础公式另设 5% 保底，之后正常执行 Output。EP 抗性在 Calculate 采样，Apply 使用实际元素类型和最新 EP；四型独立损伤，治疗对每型应用完整数额。损伤比例、恢复资格和 UI 使用同一有效 MaxEP。 | 复用抗性 100 的计算代表，同时检查属性查询和公式保底，Output 可低于基础保底；明确的公式转换／抗性贡献和多型损伤、恢复核对逐型结果。在已有恢复场景改变 MaxEP 贡献，验证损伤比例与元素圈一致，不另建 Getter 或 UI 矩阵，不以伪造运行状态准备场景。 |
 | EP-02 | EP 耗尽在 Commit 内同步安装标准 Burst Effect：登记引用后通知 burstStarted，在 onInstall 完成仍有效的该次爆发一次性业务，再通知 damaged，最后执行 Battle Applied；同步取消后不执行该实例的启动输出，原损失报告不被改写。 | 一个真实标准爆发与一个在创建事实中取消的代表场景；通过标准效果或正常 install／scope 验证依赖，不注入任意 Burst 启动回调模拟内容。 |
 | EP-03 | Burst 使用 rate 为零的 DURATION，在 onTick 按当前恢复速度手动扣减同一份 remaining，并由 duration − remaining 得到进度。进度决定恢复预算与周期边界，恢复期间四型 EP 按当前有效上限逐步回填，期间拒收损伤与治疗，动态速度与暂停不积攒补算。自然完成包含预算内最后一次周期输出，取消、提前结束与离场不补未来输出；结束先清依赖，再写满 EP、清槽并通知 burstEnded。零预算仍执行安装业务后结束，不补周期输出；永久减防、剩余麻痹和独立眩晕使用各自生命周期。自然恢复保持小数且不触发普通治疗通知。 | 通过真实损伤、贡献、结束和时间推进验证暂停、恢复中间值、完成／取消及作用生命周期；零预算只用实际标准效果验证一次性输出与独立产物，公共时间边界归 Effect。不检查内部身份递增或按每型配置逐字段展开。 |

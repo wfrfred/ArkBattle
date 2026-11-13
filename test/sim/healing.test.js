@@ -64,6 +64,7 @@ test("APPLY-02: Calculate normalizes final HP/EP output before Apply starts rece
             source: units.ref(get(state, 0)),
             target: units.ref(get(state, 1)),
             parameters,
+            ...(operation === hpDamage ? { nature: "DAMAGE", hitRecovery: true } : {}),
         };
         const calculate = operation.calculateDamage ?? operation.calculateHealing;
         const apply = operation.applyDamage ?? operation.applyHealing;
@@ -104,7 +105,7 @@ test("HP Healing accepts full resources and absent patients while damage require
     assert.deepEqual(full.value.application, { hpBefore: 100.5, hpAfter: 100.5, hpGain: 0 });
     assert.deepEqual(calls, ["receive", "target", "source"]);
 
-    const hpLoss = { source: null, target, parameters: {
+    const hpLoss = { source: null, target, nature: "DAMAGE", hitRecovery: true, parameters: {
         type: "TRUE", attack: { power: 30, multiplier: 1, addition: 0 },
     } };
     const epLoss = { target, source: null, parameters: { type: "NEURAL", power: 200 } };

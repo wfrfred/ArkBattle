@@ -4,7 +4,7 @@ Vitality 保存 HP、MaxHP、DEF、RES，以及伤害与治疗的专属接收 Ho
 
 Damage／Healing 顶层入口仅导出 hp、ep 命名空间。上层分别从 [vitality/index.ts](../../src/core/unit/capability/vitality/index.ts)、[damage/hp/index.ts](../../src/core/battle/damage/hp/index.ts) 与 [healing/hp/index.ts](../../src/core/battle/healing/hp/index.ts) 导入公共契约。Damage／Healing 保持 Calculate／Apply 两阶段；Hook 登记与公开类型可由入口取得，内部 dispatch 不公开。
 
-普通 Damage 覆盖物理、法术、真实与元素 HP 伤害。特殊生命机制、特殊恢复与伤害分类的支持边界见第 3.2、4.2、5 节；普通主路径不包含这些机制的占位字段。
+HP Damage 覆盖普通伤害与生命流失，两者均使用物理、法术、真实或元素 HP 公式及同一套 Calculate／Apply。特殊生命机制、特殊恢复与其余伤害分类的支持边界见第 3.2、4.2、5 节。
 
 ## 0. Vitality Capability
 
@@ -112,6 +112,8 @@ interface Penetration {
 
 type DamageType = "PHYSICAL" | "ARTS" | "TRUE" | "ELEMENTAL";
 
+type Nature = "DAMAGE" | "LOSS";
+
 type Parameters =
     | {
           readonly type: "PHYSICAL" | "ARTS";
@@ -124,6 +126,8 @@ type Parameters =
       };
 
 interface Request {
+    readonly nature: Nature;
+    readonly hitRecovery: boolean;
     readonly source: Ref<Unit> | null;
     readonly target: Ref<Unit & Vitality>;
     readonly parameters: Parameters;
@@ -136,6 +140,12 @@ interface Calculated {
 ```
 
 AttackParameters 表示用于本次计算的数值，不要求 power 一定来自来源的 ATK。基本数值为 `power * multiplier + addition`；具体伤害类型再决定防御公式。
+
+`nature` 是普通伤害／生命流失的业务性质，与 parameters.type 的数学类型正交；不得由是否自伤、是否周期输出或来源是否为空推断。`hitRecovery` 表示普通受击类 SP 回复许可，只有 nature 为 DAMAGE 且该字段为 true 才具备资格；LOSS 不论该许可均不产生 HIT。两项独立保存，例如拟态机械射线的原生配置同时具有 skip 与未禁用 SP 的标记，仍因流失不进入普通受击回复。普通攻击通常提供 true，活性源石和标准元素爆发的 HP 输出提供 false。它不抑制其他受伤程序，也不保证目标当前一定能够回复 SP。
+
+两种性质都完整执行来源 Formula、目标 Formula、公式和 Output，以及 Apply 的 BeforeReceive、ReceivingStarted、Receiving、BeforeCommit 和两侧 Applied。请求不配置阶段派发开关，不另建 LOSS 管线或 Hook 集合；机制通过 Rule／Hook 的资格表达自己的适用范围。普通护盾、闪避、减伤、受伤天赋只响应 DAMAGE；明确作用于流失的程序可以在相同 Hook 上响应 LOSS。通用 Applied 记录成功提交事实，因此 LOSS 也正常通知，最后仍按最新 HP 确认死亡。
+
+无敌和 Presence 的 HP 接收 Rule 拒绝 DAMAGE、允许 LOSS；它们对 EP 的规则保持各自既有语义。基本 Unit 生命周期与 HP 资格仍统一检查，LOSS 不绕过真实离场。未来特殊生命保护仍属于资源提交层，不因流失跳过。实际内容依据及已接受的原生差异见[流失交互研究](../research/cases/11-damage-apply-and-hp-application.md#7-统一管线的实际内容对照2026-11-13)。自然回复不进入 Damage，也不通过构造 LOSS 请求表达。
 
 物理／法术参数只携带当前类型所使用的一套穿透。类型转换必须同时保证新类型参数的业务含义正确；类型系统不负责证明采样来源与时点。跨类型计算需要的历史参数由发起该业务的 Content 保存，例如双分支各自取得完整的物理／法术穿透快照；普通 Request 不因此固定携带两套穿透，也不在来源失效后以实时查询冒充历史采样。
 
@@ -475,9 +485,9 @@ Apply 对最终计算量为零的治疗在入口返回 REJECTED，不派发本�
 实际内容对扩展时点与事件粒度的要求见[伤害 Hook 需求调查](../research/cases/28-damage-hooks-and-event-granularity.md)。当前公共接口的支持范围如下：
 
 - **死亡清理**：普通 Damage 在两侧 Applied 后同步确认死亡并请求离场，Finalize 遵循 Lifetime 的最外层完成边界。Runtime 的 Combat 阶段在推进 Action 前另扫描 HP 不大于零的 Unit 并请求死亡离场。绕过 Damage 的致死操作没有专属清理协议；该扫描的位置与适用政策仍是未定设计边界。
-- **特殊 HP 修改**：普通伤害通过 Damage 结算，HP 写入由 Vitality 拥有。生命流失及绕过普通受击的特殊 HP 修改尚无公开操作；Effect 不能直接重建 Vitality State 代替缺失的领域入口。这些操作的通知与死亡清理时点不属于当前普通提交协议。
-- **伤害分类**：Request 不携带 AttackType、ApplyWay 等固有分类。无视闪避、取消限制、非致命、生命流失、分担和特殊生命机制没有对应的普通主路径协议，也不能从目标状态或来源单位类型反推这些事实。
-- **受伤与 HIT 回复资格**：毒性雾霾、血雾等需要受伤响应但不提供普通受击 SP。元素爆发默认周期配置的阻回规则有效；自定义周期配置在不阻回时抑制 HIT 回复的差异尚未实现。Request 没有用于这些特例的 HIT 回复资格字段或替代调用上下文。
+- **特殊 HP 修改**：普通伤害与生命流失都通过 HP Damage 结算，HP 写入由 Vitality 拥有。再生、生命复原和直接 HP 设置仍没有完整公开操作；Effect 不能直接重建 Vitality State 代替缺失的领域入口。
+- **伤害分类**：Request 已表达 DAMAGE／LOSS 与 hitRecovery，不携带 AttackType、ApplyWay 等其余固有分类。无视闪避、取消限制、非致命、分担和特殊生命机制仍无完整协议，也不能从目标状态或来源单位类型反推这些事实。
+- **受伤与 HIT 回复资格**：Request.hitRecovery 与 nature 共同限定受击类 SP 回复；普通环境伤害与标准元素爆发可保留受伤响应而不提供 HIT 回复，不通过全局阻回伪装单笔资格。具体内容未全部接入不改变这项公共契约。
 - **指定 Hook 禁用**：Core 不提供按机制禁用指定 Hook 的公共协议。
 
 特殊机制的客户端事实、PRTS 说明与项目选择分别记录在[机制研究](../research/cases/11-damage-apply-and-hp-application.md)，不将未经确认的细节视为普通核心契约。

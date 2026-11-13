@@ -183,7 +183,7 @@ interface ActivationEnded {
 
 资源事件携带本次结算前后事实；阈值观察者订阅相关业务 Hook，不增加通用 changed 或阈值注册表。嵌套资源结算不重写外层报告。
 
-HIT 回复由 Skill 的 enter Hook 在 Damage 的 receivingStarted 扩展点登记，发生在接收准入后、Receiving Hook 和 HP 扣减前。Skill 自行监听受击事实并执行回复，Damage 与 Vitality 不依赖 Skill。
+HIT 回复由 Skill 的 enter Hook 在 Damage 的 receivingStarted 扩展点登记，发生在接收准入后、Receiving Hook 和 HP 扣减前；监听仅接受 request.nature 为 DAMAGE 且 hitRecovery=true 的请求。普通环境伤害可以继续 Receiving／Applied 而不授予 HIT，LOSS 也不授予 HIT。之后仍由 SP 的当前回复 Rule 与容量决定实际变化，Damage 与 Vitality 不依赖 Skill。
 
 ## 5. 发动与完整结束
 

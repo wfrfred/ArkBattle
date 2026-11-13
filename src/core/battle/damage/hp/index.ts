@@ -1,6 +1,7 @@
 export type {
     Event,
     DamageType,
+    Nature,
     AttackParameters,
     Penetration,
     Parameters,

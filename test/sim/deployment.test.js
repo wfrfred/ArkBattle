@@ -173,7 +173,7 @@ test("retreat settles refund and the persistent Card before departure; confirmed
     const request = {
         source: null,
         target: units.ref(get(state, second.value.unitId)),
-        parameters: { type: "TRUE", attack: { power: 100, multiplier: 1, addition: 0 } },
+        nature: "DAMAGE", hitRecovery: true, parameters: { type: "TRUE", attack: { power: 100, multiplier: 1, addition: 0 } },
     };
     state = damage.applyDamage(request, damage.calculateDamage(state, request)).state;
     assert.equal(get(state, second.value.unitId), undefined);

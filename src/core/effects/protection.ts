@@ -55,6 +55,10 @@ export const healFree: Definition<object> = {
 
 function receptionRules(id: string, enabled: boolean): Change<units.Unit> {
     const rule = { id, allows: () => false };
+    const hpRule: vitality.Rule = {
+        id,
+        allows: (_battle, { request }) => request.nature === "LOSS",
+    };
 
     return compose(
         optional(
@@ -63,6 +67,9 @@ function receptionRules(id: string, enabled: boolean): Change<units.Unit> {
                 ? elemental.setRule("damageRules", rule)
                 : elemental.removeRule("damageRules", id),
         ),
-        optional(vitality.hasVitality, enabled ? vitality.setRule(rule) : vitality.removeRule(id)),
+        optional(
+            vitality.hasVitality,
+            enabled ? vitality.setRule(hpRule) : vitality.removeRule(id),
+        ),
     );
 }

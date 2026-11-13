@@ -20,6 +20,8 @@ export function hurt(
     const request: Request = {
         source: null,
         target: units.ref(host),
+        nature: "DAMAGE",
+        hitRecovery: false,
         parameters:
             type === "PHYSICAL" || type === "ARTS"
                 ? { type, attack, penetration: { fixed: 0, proportional: 0 } }

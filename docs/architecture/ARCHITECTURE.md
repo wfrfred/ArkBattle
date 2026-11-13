@@ -134,7 +134,7 @@ Targeting 的查询资格与接收端是否接受某次作用分别判断。已�
 
 Targetable 以 Definition.taunt 和运行期贡献表达嘲讽，以必填 restrictions 声明固有限制；固有与动态限制共用 State 中的 Contribution 集合。限制以共享定义对象本身标识机制，提供只读 allows；能力先选择有效贡献，再按本次豁免谓词检查限制。Targeting 提供标准资格、显式范围与普通比较器，Content 通过 Query、common.topK 和 RNG.sample 组合选择。来源事实由调用者选定，入场优先使用 UID，路线剩余距离由 Route／Navigation 查询；仇恨只在比较时计算，不保存为单位状态。完整类型见 [Targeting 与 Targetable](targeting.md)。
 
-Damage 和 Healing 分别在 battle/damage、battle/healing 维护 Calculate／Apply 协议；Targeting 的谓词和比较器为普通 Query 提供游戏政策，候选存在性直接用 Query.some，选择程序显式返回并接续随机状态。领域 Hook 读取当前输入版本，通过公开的纯 Damage、Healing、Effect 等操作执行同步嵌套结算，再把返回版本交给外层。取消保留已完成的消耗、回复与后继；普通死亡和治疗使用各自完整操作；倒地复活、特殊生命机制、再生与生命复原仍待设计与接入。治疗不可选中不等于接收免疫，已选中后仍可直接治疗，不设置通用禁疗绕过或跳事件开关。
+Damage 和 Healing 分别在 battle/damage、battle/healing 维护 Calculate／Apply 协议；HP 普通伤害与生命流失共享完整流程，以 Request.nature 和机制资格区分，hitRecovery 独立限定受击类 SP 回复，不提供阶段派发开关。Targeting 的谓词和比较器为普通 Query 提供游戏政策，候选存在性直接用 Query.some，选择程序显式返回并接续随机状态。领域 Hook 读取当前输入版本，通过公开的纯 Damage、Healing、Effect 等操作执行同步嵌套结算，再把返回版本交给外层。取消保留已完成的消耗、回复与后继；普通死亡和治疗使用各自完整操作；倒地复活、特殊生命机制、再生与生命复原仍待设计与接入。治疗不可选中不等于接收免疫，已选中后仍可直接治疗，不设置通用禁疗绕过或跳事件开关。
 
 Skill 的 Definition／create、单槽聚合、Activation 非空视图、查询、资源与完整操作位于 unit/skill；unit/capability/skill 保留初始化工厂、能力状态、守卫及规则／Hook／预算贡献 Change 工厂。Unit Definition.skill.initialize 调用 create，接续持久数据初始化与 SP 初态；unit.skill 直接保存程序 Definition、state、SP 和可空 activation，能力状态再补规则等字段，不建 Instance 包装或集合。程序元数据从 unit.skill.definition 取得，两种 Ref 分别绑定持久 Skill 与本轮 Activation，宿主由回调第二参 source 提供。两个 index 按职责提供契约，SP 的贡献 Change 工厂仍在领域 sp.ts。自然回复按 tick 进度产生 SP；ACTION 回复通过成功释放通知，HIT 回复通过 Damage 的接收 Hook，由 Skill 自己登记和结算。默认激活阻回由 Rule 表达，上限、门槛和支付分别求值。普通攻击不依赖 Skill，具体技能行动通过公开扩展点组合，不修改基础 Definition。
 

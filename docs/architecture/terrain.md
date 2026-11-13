@@ -52,6 +52,7 @@ Runtime 依次推进 `Movement → Mechanism → Blocking`。Movement 先推进 
 - 活性源石每次进入格子都按该格参数登记独立 Effect，相邻同参数格也分别登记；离格后保留。每个实例的绝对截止时间从该次入格起算，被覆写时仍流逝，停留原格到期不重新附加。同组优先级为 `roundToEven(1000 × (attackBonusRatio + attackSpeedBonus))`，高者生效、同级先登记者生效；使用当前生效实例的伤害和增益参数。每个实例保存剩余触发 Tick，仅在 ACTIVE 时推进，首次伤害等待一秒；被覆写时暂停周期，恢复后沿用剩余预算，不补发等待期间的伤害。依据与优先级公式见[活性源石原生短链](../research/03-space-units-and-mechanisms.md#51-进入周期与资格的原生短链2026-11-10-补核)。必要代表场景串联同参数相邻格、不同参数格的覆盖与候补接替，检查实际伤害、增益与独立到期，不按每种参数组合增加矩阵。
 - 烟雾对具有 Targetable 的我方单位安装通用隐匿 Effect，离开时撤销；阻挡与解除阻挡不改变隐匿，也没有恢复延迟。必要代表场景检查阻挡期间仍不可被普通索敌选中、空中单位同样受益，以及离开后恢复受选；依据见[烟雾原生短链](../research/03-space-units-and-mechanisms.md#51-进入周期与资格的原生短链2026-11-10-补核)。
 - 沼泽、深水分开保存控制器扫描进度与宿主 Effect 的周期进度，不在每次轮询重建 Effect 或重置周期。
+- 活性源石、深水的周期 HP 输出使用 nature=DAMAGE、hitRecovery=false，仍走普通 Receiving 与 Applied；不因无来源或周期输出就把它们当成生命流失，也不为抑制本笔 HIT 安装全局阻回。
 - 非 retainOnLeave Effect 显式绑定控制器 Mechanism 的 lifetime，终止时由 DAG 清理并等待；控制器的 Contact 清理直接归 onDisable；Prepare 以 ENDING 调用它时只清 Contact，不手工结束这些 Effect，也不在 onEnd 重复清理。离格、换地形和可逆 Mechanism disable 继续按 Contact 业务请求结束。retainOnLeave 的活性源石等效果不自动建立绑定，避免错误缩短持续期。
 - 地穴由 Content 判断坠落资格，并通过完整 Unit 离场操作完成逻辑结算。
 

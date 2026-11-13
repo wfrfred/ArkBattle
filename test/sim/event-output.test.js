@@ -25,7 +25,7 @@ test("EVENT-01: real HP and EP operations emit display facts including zero chan
     const target = units.ref(get(state, 0));
     const hp = {
         source: null, target,
-        parameters: { type: "ELEMENTAL", attack: { power: 50, multiplier: 1, addition: 0 } },
+        nature: "DAMAGE", hitRecovery: true, parameters: { type: "ELEMENTAL", attack: { power: 50, multiplier: 1, addition: 0 } },
     };
     state = hpDamage.applyDamage(hp, hpDamage.calculateDamage(state, hp)).state;
     const elementalRecovery = { source: null, target, parameters: { power: 40 } };
@@ -67,7 +67,7 @@ test("EVENT-02: a Burst keeps its original position through movement and death i
     state = update(state, target, presence.appear([4, 1]));
     const lethal = {
         source: null, target,
-        parameters: { type: "TRUE", attack: { power: 2000, multiplier: 1, addition: 0 } },
+        nature: "DAMAGE", hitRecovery: true, parameters: { type: "TRUE", attack: { power: 2000, multiplier: 1, addition: 0 } },
     };
     state = hpDamage.applyDamage(lethal, hpDamage.calculateDamage(state, lethal)).state;
 

@@ -40,6 +40,8 @@ export function createArrow(): tracking.Definition {
             const request: DamageRequest = {
                 source: source !== null && units.get(state, source) !== undefined ? source : null,
                 target: units.ref(target),
+                nature: "DAMAGE",
+                hitRecovery: true,
                 parameters: {
                     type: "PHYSICAL",
                     attack: {
