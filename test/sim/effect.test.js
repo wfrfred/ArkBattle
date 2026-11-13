@@ -325,6 +325,9 @@ test("STACK separates effective output, manual consumption, and natural decay wh
         onStackChange(state, self, previous) {
             assert.equal(effects.get(state, effects.ref(self)).stackCount, self.stackCount);
             changes.push([previous, self.stackCount, self.expiration.remaining]);
+            if (self.lifecycle !== "ACTIVE") {
+                return state;
+            }
             return update(
                 state,
                 self.host,
@@ -364,11 +367,16 @@ test("STACK separates effective output, manual consumption, and natural decay wh
         [1, 2, 5],
         [2, 3, 5],
     ]);
+    state = effects.setEnabled(state, first.value, false);
+    assert.equal(offense.resolveAttack(state, units.get(state, owner)), 100);
     state = effects.decreaseStack(state, first.value, 1);
     assert.equal(effects.get(state, first.value).expiration.remaining, 6);
+    assert.equal(offense.resolveAttack(state, units.get(state, owner)), 100);
     for (let tick = 3; tick <= 8; tick++) state = effects.advance({ ...state, tick });
     assert.equal(effects.get(state, first.value).stackCount, 1);
     assert.equal(effects.get(state, first.value).expiration.remaining, 2);
+    assert.equal(offense.resolveAttack(state, units.get(state, owner)), 100);
+    state = effects.setEnabled(state, first.value, true);
     assert.equal(offense.resolveAttack(state, units.get(state, owner)), 110);
     for (let tick = 9; tick <= 10; tick++) state = effects.advance({ ...state, tick });
     assert.equal(effects.get(state, first.value), undefined);

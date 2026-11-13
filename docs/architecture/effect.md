@@ -315,7 +315,7 @@ STACK 到期政策为 END 或 DECAY。END 结束整个实例；DECAY 在 stackCo
 
 层数如何影响攻击力、伤害或其他输出，由具体 Definition 的程序和 Contribution 表达。Core 负责层数、有效层数、时间与到期结算，内容通过所属领域操作更新自身输出。
 
-STACK Definition 提供 `onStackChange(battle, self, previous): BattleState`。previous 是变化前实际层数的 number 样本，self 是已经发布新层数的 STACK 实例，保留对应私有状态与宿主类型。增加、手动减少和自然衰减共用这个回调；实际层数变化即调用，即使有效层数因上限而未变。INACTIVE 实例变层也执行回调，具体输出更新遵守当前生效资格。满层仅刷新时间不调用；初次创建由 onInstall／onEnable 处理，最后一层耗尽走正常结束流程。
+STACK Definition 提供 `onStackChange(battle, self, previous): BattleState`。previous 是变化前实际层数的 number 样本，self 是已经发布新层数的 STACK 实例，保留对应私有状态与宿主类型。增加、手动减少和自然衰减共用这个回调；实际层数变化即调用，即使有效层数因上限而未变。INACTIVE 实例变层也执行回调；内容只在 ACTIVE 时更新生效贡献，恢复时由 onEnable 按最新层数登记，独立的变层业务仍照常执行。满层仅刷新时间不调用；初次创建由 onInstall／onEnable 处理，最后一层耗尽走正常结束流程。
 
 `decreaseStack(battle, ref, amount): BattleState` 是公开的减层完整操作，ref 要求指向 STACK 实例。它从最新状态读取当前层数，仍有剩余时先发布新层数，再调用 onStackChange；耗尽则正常 end。手动减层保留 expiration，自然 DECAY 则先一起发布新层数和 `remaining = duration`，再调用回调。调用者通过该操作改变层数，回调只负责相应内容程序。回调返回后继续按最新 BattleState 读取后继事实，遵守公共同步重入契约。
 
