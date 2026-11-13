@@ -17,6 +17,8 @@ export interface Definition {
     readonly maxHp: number;
     readonly defense: number;
     readonly resistance: number;
+    readonly recoverySpeed: number;
+    readonly recoveryRatio: number;
 }
 
 export type Input = contribution.Input<attribute.Modifier, Unit & Vitality>;
@@ -24,7 +26,11 @@ export type Input = contribution.Input<attribute.Modifier, Unit & Vitality>;
 interface Contributions {
     readonly defense: readonly contribution.Contribution<Input>[];
     readonly resistance: readonly contribution.Contribution<Input>[];
+    readonly recoverySpeed: readonly contribution.Contribution<Input>[];
+    readonly recoveryRatio: readonly contribution.Contribution<Input>[];
 }
+
+export type Parameter = keyof Contributions;
 
 interface Rules {
     readonly damageRules: readonly DamageReceptionRule[];
@@ -60,6 +66,8 @@ export function initialize<U extends Unit & Pick<Vitality, "definition">>(
     assertNonnegativeNumber(definition.maxHp, "maxHp");
     assertNonnegativeNumber(definition.defense, "defense");
     assertNonnegativeNumber(definition.resistance, "resistance");
+    assertNonnegativeNumber(definition.recoverySpeed, "HP recovery per second");
+    assertNonnegativeNumber(definition.recoveryRatio, "HP recovery ratio per second");
 
     return {
         state: battle,
@@ -70,6 +78,8 @@ export function initialize<U extends Unit & Pick<Vitality, "definition">>(
                 maxHp: [],
                 defense: [],
                 resistance: [],
+                recoverySpeed: [],
+                recoveryRatio: [],
                 damageReceivingStarted: [],
                 damageReceiving: [],
                 healingReceiving: [],

@@ -18,7 +18,7 @@ import { createArknightsElementalDefinition } from "../../dist/data/effect/eleme
 
 const elementalReceiver = {
     id: "ep-receiver", hooks: Hooks.empty(), presence: {}, allegiance: { side: "ALLY" },
-    vitality: { maxHp: 10000, defense: 0, resistance: 50 },
+    vitality: { maxHp: 10000, defense: 0, resistance: 50, recoverySpeed: 0, recoveryRatio: 0 },
     elemental: createArknightsElementalDefinition({ receiver: "CHARACTER" }),
 };
 

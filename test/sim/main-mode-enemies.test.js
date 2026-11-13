@@ -52,7 +52,7 @@ function emptyBattle() {
 
 function guard(id, position, blockCapacity = 1, restrictions = []) {
   return initialize({ id, position, definition: { hooks: Hooks.empty(),
-    id: 'test-guard', targetable: { taunt: 0, restrictions }, vitality: { maxHp: 1000, defense: 40, resistance: 0 }, allegiance: { side: 'ALLY' }, layer: { type: 'GROUND' },
+    id: 'test-guard', targetable: { taunt: 0, restrictions }, vitality: { maxHp: 1000, defense: 40, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 }, allegiance: { side: 'ALLY' }, layer: { type: 'GROUND' },
     hitbox: { shape: { type: 'CIRCLE', offset: [0, 0], radius: 0.2 } },
     blocker: { layer: "GROUND", rules: [], capacity: blockCapacity },
   } });
@@ -64,21 +64,24 @@ test('main-mode enemy levels inherit individual defined fields and apply stage o
     maxHp: { m_defined: true, m_value: 4000 },
     atk: { m_defined: false, m_value: 9999 },
     moveSpeed: { m_defined: true, m_value: 1.1 },
+    hpRecoveryPerSec: { m_defined: true, m_value: 20 },
   } });
   assert.equal(base.maxHp, 820);
   assert.equal(base.attack, 190);
   assert.equal(advanced.maxHp, 4000);
   assert.equal(advanced.attack, 400);
   assert.equal(advanced.moveSpeedPerSecond, 1.1);
+  assert.equal(advanced.recoverySpeed, 20);
+  const regenerating = createHound(advanced, {
+    windupTicks: 0, recoveryTicks: 0, hitRadius: 0.2,
+  }, houndMovement);
+  assert.equal(regenerating.definition.vitality.recoverySpeed, 20);
   const bow = profile('enemy_1003_ncbow', 1);
   assert.equal(bow.attackSpeed, 0);
   assert.throws(() => profile('enemy_1000_gopro', 2));
 });
 
-test('unimplemented enemy mechanisms are rejected at the table and content boundaries', () => {
-  assert.throws(() => profile('enemy_1000_gopro', 0, {
-    attributes: { hpRecoveryPerSec: { m_defined: true, m_value: 20 } },
-  }), /unsupported enemy attribute hpRecoveryPerSec/);
+test('unimplemented enemy stun immunity is rejected at the content boundary', () => {
   const timing = { windupTicks: 0, recoveryTicks: 0, hitRadius: 0.2 };
 
   assert.throws(() => createHound({ ...profile('enemy_1000_gopro'), stunImmune: true }, timing, houndMovement), /stun immunity/);

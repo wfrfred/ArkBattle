@@ -20,7 +20,7 @@ const elemental = createArknightsElementalDefinition({ receiver: "CHARACTER" });
 test("EVENT-01: real HP and EP operations emit display facts including zero changes", () => {
     let state = battle([{ definition: {
         id: "receiver", hooks: Hooks.empty(), elemental,
-        vitality: { maxHp: 1000, defense: 0, resistance: 0 },
+        vitality: { maxHp: 1000, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
     }, position: [1, 1] }]);
     const target = units.ref(get(state, 0));
     const hp = {
@@ -59,7 +59,7 @@ test("EVENT-01: real HP and EP operations emit display facts including zero chan
 test("EVENT-02: a Burst keeps its original position through movement and death in the same Tick", () => {
     let state = battle([{ definition: {
         id: "receiver", hooks: Hooks.empty(), elemental, presence: {},
-        vitality: { maxHp: 2000, defense: 0, resistance: 0 },
+        vitality: { maxHp: 2000, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
     }, position: [1, 1] }]);
     const target = units.ref(get(state, 0));
     const injury = { source: null, target, parameters: { type: "BURN", power: 1000 } };

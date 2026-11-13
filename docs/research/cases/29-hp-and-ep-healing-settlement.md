@@ -125,7 +125,7 @@ R=\operatorname{HP\_RECOVERY\_PER\_SEC}
 
 真实非默认配置正例为普通关卡5-8的宿主士兵：固定镜像 EnemyDB 的 `enemy_1043_zomsbr`、level0 明确声明 `hpRecoveryPerSec=80`；关卡 `enemyDbRefs` 使用该等级、无覆盖，五条 SPAWN 实际引用该 key。EnemyDB 与关卡分别固定镜像修订、原始字节 SHA-256，见证据批次，不与本机资源版本混称。所扫 EnemyDB 的993个显式定义有13正值、980零值、0负值；有限配置扫描不证明所有内容绝无临时负值，但普通 native 的 `R>0` 门控也没有负速率扣血路径。
 
-以上是静态 native 与配置证据，未执行游戏或验证活跃 XLua。自然回复不派发普通 Healing Hook 是既定项目选择；本调查不决定是否采用原生每1HP脉冲作为项目数值推进方式。
+以上是静态 native 与配置证据，未执行游戏或验证活跃 XLua。项目选择由 Vitality 按当前有效速度逐 Tick 回复小数 HP，不采用每1HP脉冲或保存脉冲进度；不派发普通 Healing Hook。启停、变速时的脉冲时间差异按此近似处理，详见[自然 HP 回复契约](../../architecture/vitality.md#01-自然-hp-回复)。这项选择不改变上文原生事实。
 
 EP 自然回复与爆发恢复通过直接 EP setter 推进，不经过上表普通 EP Heal Modifier 链，复用[案例 25](25-elemental-burst-recovery-timing.md)证据。
 

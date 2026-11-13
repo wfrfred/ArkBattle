@@ -10,6 +10,10 @@ import * as epHealing from "../../dist/core/battle/healing/ep/index.js";
 import * as vitality from "../../dist/core/unit/capability/vitality/index.js";
 import * as elemental from "../../dist/core/unit/capability/elemental/index.js";
 import * as presence from "../../dist/core/unit/capability/presence/index.js";
+import * as effects from "../../dist/core/unit/effect/index.js";
+import * as actions from "../../dist/core/unit/action/index.js";
+import { healFree } from "../../dist/core/effects/protection.js";
+import { step } from "../../dist/core/battle/runtime.js";
 import { update } from "../../dist/core/battle/unit.js";
 import { create as modifier } from "../../dist/core/unit/contribution/attribute.js";
 import { elementHealing } from "../../dist/core/battle/targeting/index.js";
@@ -53,7 +57,7 @@ test("APPLY-02: Calculate normalizes final HP/EP output before Apply starts rece
             { definition: { id: "source", hooks }, position: [0, 0] },
             { definition: {
                 ...elementalReceiver,
-                vitality: { maxHp: 100, defense: 0, resistance: 0 },
+                vitality: { maxHp: 100, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
                 hooks: Hooks.empty().set(operation.beforeReceive, {
                     id: "receive",
                     invoke: () => assert.fail(`${name}: zero output cannot start receiving`),
@@ -79,7 +83,7 @@ test("HP Healing accepts full resources and absent patients while damage require
     const calls = [];
     let state = battle([{ definition: {
         id: "patient", hooks: Hooks.empty(), presence: {},
-        vitality: { maxHp: 100.5, defense: 0, resistance: 0 },
+        vitality: { maxHp: 100.5, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
         elemental: createArknightsElementalDefinition({ receiver: "CHARACTER", recoveryPerSecond: 15 }),
     }, position: [0, 0] }]);
     const target = units.ref(get(state, 0));
@@ -130,6 +134,94 @@ test("HP Healing accepts full resources and absent patients while damage require
     assert.equal(hpAccepted.value.application.hpLoss, 30);
     const epAccepted = epDamage.applyDamage(epLoss, epDamage.calculateDamage(hpAccepted.state, epLoss));
     assert.equal(epAccepted.value.application.epLoss, 200);
+});
+
+test("HP-07: natural recovery samples current attributes after Effects and before Action without ordinary healing", () => {
+    const observed = [];
+    const ordinaryHealing = () => assert.fail("natural recovery must not enter ordinary healing");
+    const observer = {
+        id: "observe-recovery", intervalTicks: 0, speed: 100,
+        initialize: state => ({ state, value: {} }),
+        prepare: state => ({ state, value: {} }),
+        onTick(state) {
+            observed.push(get(state, 0).vitality.hp);
+            return { state, value: true };
+        },
+    };
+    let state = battle([
+        { definition: {
+            id: "recovering", presence: {},
+            vitality: { maxHp: 100, defense: 0, resistance: 0, recoverySpeed: 3, recoveryRatio: 0.03 },
+            hooks: Hooks.empty()
+                .set(hpHealing.targetFormula, { id: "formula", invoke: ordinaryHealing })
+                .set(hpHealing.beforeReceive, { id: "before", invoke: ordinaryHealing })
+                .set(hpHealing.targetApplied, { id: "applied", invoke: ordinaryHealing }),
+        }, position: [0, 0] },
+        { definition: {
+            id: "observer", hooks: Hooks.empty(),
+            action: { initialize: state => actions.createActions(state, actions.create(observer)) },
+        }, position: [1, 0] },
+    ]);
+    const target = units.ref(get(state, 0));
+    const loss = amount => ({
+        source: null, target, nature: "LOSS", hitRecovery: false,
+        parameters: { type: "TRUE", attack: { power: amount, multiplier: 1, addition: 0 } },
+    });
+    const initialLoss = loss(60);
+    state = hpDamage.applyDamage(initialLoss, hpDamage.calculateDamage(state, initialLoss)).state;
+    state = effects.install(state, target, healFree).state;
+    state = effects.install(state, target, {
+        id: "recovery-contributions", initialize: () => ({}),
+        onTick(current, self) {
+            return update(current, self.host, units.compose(
+                vitality.setContribution("recoverySpeed", {
+                    id: "fixed", value: current => [modifier({ addition: current.tick * 3 })],
+                }),
+                vitality.setContribution("recoveryRatio", {
+                    id: "ratio", value: [modifier({ addition: 0.03 })],
+                }),
+            ));
+        },
+    }).state;
+    state = update(state, target, units.compose(
+        presence.disappear(),
+        vitality.setHook("healingReceiving", { id: "receive", invoke: ordinaryHealing }),
+    ));
+    state = step(state, []);
+    assert.equal(observed.length, 1);
+    assert.ok(Math.abs(observed[0] - 40.3) < 1e-10);
+    assert.equal(state.events.some(event => event.type === "HEAL"), false);
+
+    state = update(state, target, vitality.setMaxHpContribution({
+        id: "larger-pool", value: [modifier({ multiplier: 1 })],
+    }));
+    state = step(state, []);
+    assert.equal(vitality.resolveRecoverySpeed(state, get(state, 0)), 21);
+    assert.equal(observed.length, 2);
+    assert.ok(Math.abs(observed[1] - 81.2) < 1e-10);
+    assert.equal(state.events.some(event => event.type === "HEAL"), false);
+
+    state = update(state, target, vitality.setContribution("recoveryRatio", {
+        id: "ratio", value: [modifier({ addition: 2 })],
+    }));
+    assert.equal(vitality.resolveRecoverySpeed(state, get(state, 0)), 209);
+    state = update(state, target, vitality.setContribution("recoverySpeed", {
+        id: "fixed", value: [modifier({ addition: 10000 })],
+    }));
+    state = vitality.advance(state, target);
+    assert.equal(get(state, 0).vitality.hp, 200);
+    assert.equal(vitality.advance(state, target), state);
+
+    state = update(state, target, units.setHook(hpDamage.targetApplied, {
+        id: "zero-hp", invoke(current) {
+            assert.equal(get(current, 0).vitality.hp, 0);
+            assert.equal(vitality.advance(current, target), current);
+            return { state: current, value: undefined };
+        },
+    }));
+    const lethal = loss(200);
+    state = hpDamage.applyDamage(lethal, hpDamage.calculateDamage(state, lethal)).state;
+    assert.equal(get(state, 0), undefined);
 });
 
 test("EP-01/03: losses stay per element, healing gives every bar the full amount, and natural recovery is separate", () => {

@@ -34,7 +34,7 @@ function battle(firstTerrain = normal, firstCost = 2000) {
 function configuration(id, tileChanges = {}) {
     return { hooks: Hooks.empty(),
         id,
-        vitality: { maxHp: 100, defense: 0, resistance: 0 },
+        vitality: { maxHp: 100, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
         deployable: { retreatRules: [] },
         card: createCardDefinition({ cost: 0, redeployTicks: 0, slots: 0, placement: "ALL" }),
         tileChanges,

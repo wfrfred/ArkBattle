@@ -1,4 +1,5 @@
 import type { Ref } from "../../../common/ref.js";
+import { TICKS_PER_SECOND } from "../../../tick.js";
 import type { State as BattleState, Result } from "../../../battle/state.js";
 import { replace } from "../../../battle/unit.js";
 import type { Unit } from "../../unit.js";
@@ -7,6 +8,7 @@ import * as hooks from "../../../hook.js";
 import type * as damage from "../../../battle/damage/hp/index.js";
 import type * as healing from "../../../battle/healing/hp/index.js";
 import { resolveMaxHp, type Vitality } from "./capability.js";
+import { resolveRecoverySpeed } from "./query.js";
 
 export interface DamageApplication {
     readonly hpBefore: number;
@@ -105,9 +107,27 @@ export function commitHealing(
     context: healing.CommitContext,
 ): Result<HealingApplication> {
     const unit = units.get(battle, context.target)!;
+
+    return increaseHp(battle, unit, context.received.amount);
+}
+
+export function advance(battle: BattleState, reference: Ref<Unit & Vitality>): BattleState {
+    const unit = units.get(battle, reference);
+    if (unit?.lifecycle !== "PRESENT" || unit.vitality.hp <= 0) {
+        return battle;
+    }
+
+    return increaseHp(battle, unit, resolveRecoverySpeed(battle, unit) / TICKS_PER_SECOND).state;
+}
+
+function increaseHp(
+    battle: BattleState,
+    unit: Unit & Vitality,
+    amount: number,
+): Result<HealingApplication> {
     const hpBefore = unit.vitality.hp;
     const maxHp = resolveMaxHp(unit.definition.vitality, unit.vitality);
-    const hpAfter = hpBefore + Math.max(0, Math.min(context.received.amount, maxHp - hpBefore));
+    const hpAfter = hpBefore + Math.max(0, Math.min(amount, maxHp - hpBefore));
     const application = { hpBefore, hpAfter, hpGain: hpAfter - hpBefore };
 
     return {

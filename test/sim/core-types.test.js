@@ -311,7 +311,7 @@ for (const self of selectableActions.filter(targeting.elementHealing(battle, tar
 targeting.damage(battle, host);
 const patient = initialize(battle, { id: 2, position: [0, 0], definition: {
     id: 'patient', hooks: Hooks.empty(),
-    vitality: { maxHp: 100, defense: 10, resistance: 0 },
+    vitality: { maxHp: 100, defense: 10, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
 } }).value;
 const patientRef = ref(patient);
 update(battle, patientRef, vitality.setRule({

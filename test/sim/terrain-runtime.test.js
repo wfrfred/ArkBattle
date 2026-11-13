@@ -29,7 +29,7 @@ const mireParams = {
 };
 const deepseaParams = { damage: 40, attackSpeedModifier: -0.6, moveSpeedMultiplier: 0.6 };
 const combat = {
-    vitality: { maxHp: 1000, defense: 0, resistance: 0 },
+    vitality: { maxHp: 1000, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
     offense: { attack: 100 },
     action: actionCapability({
         id: "primary", intervalTicks: 30, speed: 100,

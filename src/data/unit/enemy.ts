@@ -211,6 +211,7 @@ export interface Profile {
     readonly attack: number;
     readonly defense: number;
     readonly resistance: number;
+    readonly recoverySpeed: number;
     readonly attackSpeed: number;
     readonly taunt: number;
     readonly baseAttackTime: number;
@@ -319,6 +320,7 @@ export function prepare(value: unknown, configuration: Configuration): Profile {
         "atk",
         "def",
         "magicResistance",
+        "hpRecoveryPerSec",
         "attackSpeed",
         "tauntLevel",
         "baseAttackTime",
@@ -394,6 +396,7 @@ export function prepare(value: unknown, configuration: Configuration): Profile {
         attack: numeric(attributes, "atk"),
         defense: numeric(attributes, "def", 0),
         resistance: numeric(attributes, "magicResistance", 0),
+        recoverySpeed: numeric(attributes, "hpRecoveryPerSec", 0),
         attackSpeed: numeric(attributes, "attackSpeed", 100),
         taunt,
         baseAttackTime,

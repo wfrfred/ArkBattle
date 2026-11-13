@@ -61,7 +61,7 @@ export function unit(
                 : action;
     const definition = { hooks: Hooks.empty(),
         id: `action-${id}`,
-        vitality: { maxHp: hp, defense: 0, resistance: 0 },
+        vitality: { maxHp: hp, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
         targetable: { taunt: 0, restrictions: [] }, presence: {},
         offense: { attack: 10 },
         allegiance: { side },

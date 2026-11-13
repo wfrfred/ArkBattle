@@ -48,7 +48,7 @@
 | [deployment](sim/deployment.test.js) | Request 预览与执行一致、拒绝不消费、消费先于入场；撤退／死亡账务与 Card 延续；离场注销、结构占格和部署额度释放先于本地内容通知，死亡 Card 先于 Card／Request 通知结算；旧 Occupancy 配对清理、逐份恢复预算及 DP。 |
 | [core-types](sim/core-types.test.js) | Typed Ref、Projectile 创建／更新、Query 守卫与构造输入保留私有状态／回调配对，Runtime 聚合不提供 `any` 私有状态上下文；预置 Unit 的 initial 对应其 Definition 能力。Change 能力逆变、compose 合并交集、optional 与 Query 守卫保留完整宿主；目标资格增加 Vitality／Elemental 证明并贯穿集合终端，Action 专属操作和查询要求 Action 能力；普通登记与派发均保持键和载荷的关联。 |
 | [damage](sim/damage.test.js) | 按[伤害／治疗回归清单](../docs/architecture/verification.md#hook-与伤害治疗的回归语义)保障 HP／EP 公式与采样、独立 Calculate 状态、接收与提交、零值和取消、最新资源、Applied 后死亡及同步 Burst。 |
-| [healing](sim/healing.test.js) | HP／EP 治疗公式、四型恢复、满资源仍成功、双侧 Applied 和自然恢复的区别；一次双资源场景区分消失期间 Damage 拒收与 Healing 接收。 |
+| [healing](sim/healing.test.js) | HP／EP 治疗公式、四型恢复、满资源仍成功、双侧 Applied 和自然恢复的区别；HP 自回场景保障当前固定／比例速度与 MaxHP、资源阶段和普通治疗分离；双资源场景区分消失期间 Damage 拒收与 Healing 接收。 |
 | [elemental](sim/elemental.test.js) | rate 为零的标准 Burst 手动推进唯一时间进度，恢复期间四型 EP 逐步回填；动态与暂停预算、完整周期、零预算的一次性输出和独立产物、完成／取消后的资源与作用生命周期；自然 EP 回复及既有 Burst 不因消失冻结，不复制公共时间或 Lifetime 矩阵。 |
 | [tracking 弹道](sim/projectile-tracking.test.js) | 已锁定目标消失后仍追真实位置；身份命中不依赖 Targetable／Hitbox，Damage 接收独立判断。保留原目标失效、来源采样和具体终止结果，不为 Presence 新增通用 Projectile Rule。 |
 | [UI瞬时输出](sim/event-output.test.js) | 按 EVENT 清单集中验证真实结算飘字、爆发位置与注销快照，以及 Tick 清空输出和旧版本保留；业务结算不依赖事件消费。 |

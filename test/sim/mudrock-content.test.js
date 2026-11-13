@@ -37,7 +37,7 @@ const profile = (fields = {}) => {
 };
 const enemy = (id, position, fields = {}) => initialize({ id, position, definition: {
     id: "enemy", hooks: Hooks.empty(), targetable: { taunt: 0, restrictions: [] },
-    vitality: { maxHp: 10000, defense: 0, resistance: 0 },
+    vitality: { maxHp: 10000, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
     allegiance: { side: "ENEMY" }, layer: { type: "GROUND" },
     hitbox: { shape: { type: "CIRCLE", offset: [0, 0], radius: 0.1 } },
     locomotion: { halfBodyWidth: 0, minSpeed: 0, speed: 0.1, steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 } },

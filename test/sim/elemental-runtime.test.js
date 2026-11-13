@@ -31,7 +31,7 @@ function action(interval = 1) {
 }
 function definition(receiver = 'CHARACTER', overrides = {}) {
   return { hooks: Hooks.empty(), id: `element-${receiver}`,
-    vitality: { maxHp: 100000, defense: 500, resistance: 50 },
+    vitality: { maxHp: 100000, defense: 500, resistance: 50, recoverySpeed: 0, recoveryRatio: 0 },
     offense: { attack: 100 },
     elemental: createArknightsElementalDefinition({ receiver }), ...overrides };
 }
@@ -132,7 +132,7 @@ function battle(receiver, type) {
     ] }],
   });
   const actor = (side, attack) => ({
-    id: side, hooks: Hooks.empty(), vitality: { maxHp: 100000, defense: 500, resistance: 50 },
+    id: side, hooks: Hooks.empty(), vitality: { maxHp: 100000, defense: 500, resistance: 50, recoverySpeed: 0, recoveryRatio: 0 },
     targetable: { taunt: 0, restrictions: [] }, allegiance: { side },
     hitbox: { shape: hit }, action: actionCapability(attack),
   });

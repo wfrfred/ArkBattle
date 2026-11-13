@@ -77,6 +77,8 @@ export function createDefinition(
             maxHp: profile.maxHp,
             defense: profile.defense,
             resistance: profile.resistance,
+            recoverySpeed: profile.recoverySpeed,
+            recoveryRatio: 0,
         },
         offense: { attack: profile.attack },
         allegiance: { side: "ENEMY" },

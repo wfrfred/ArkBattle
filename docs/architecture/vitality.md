@@ -1,6 +1,6 @@
 # Vitality、Damage 与 Healing
 
-Vitality 保存 HP、MaxHP、DEF、RES，以及伤害与治疗的专属接收 Hook 和伤害接收规则。通用结算 Hook 由对应领域定义，存于来源或目标的 Unit.hooks。`battle/damage/`、`battle/healing/` 提供 Calculate／Apply 操作，复用[公共 Hook 契约](functional-core.md#6-hook-和生命周期的纯契约)。
+Vitality 保存 HP、MaxHP、DEF、RES、自然回复属性，以及伤害与治疗的专属接收 Hook 和伤害接收规则。通用结算 Hook 由对应领域定义，存于来源或目标的 Unit.hooks。`battle/damage/`、`battle/healing/` 提供 Calculate／Apply 操作，复用[公共 Hook 契约](functional-core.md#6-hook-和生命周期的纯契约)。
 
 Damage／Healing 顶层入口仅导出 hp、ep 命名空间。上层分别从 [vitality/index.ts](../../src/core/unit/capability/vitality/index.ts)、[damage/hp/index.ts](../../src/core/battle/damage/hp/index.ts) 与 [healing/hp/index.ts](../../src/core/battle/healing/hp/index.ts) 导入公共契约。Damage／Healing 保持 Calculate／Apply 两阶段；Hook 登记与公开类型可由入口取得，内部 dispatch 不公开。
 
@@ -8,34 +8,52 @@ HP Damage 覆盖普通伤害与生命流失，两者均使用物理、法术、�
 
 ## 0. Vitality Capability
 
-`vitality/capability.ts` 提供定义、初始化和属性 Change 工厂，`vitality/query.ts` 提供依赖战场的防御查询；DEF／RES 属于 Vitality，不构成独立 Capability。
+`vitality/capability.ts` 提供定义、初始化和属性 Change 工厂，`vitality/query.ts` 提供依赖战场的属性查询；防御与自然 HP 回复属性均属于 Vitality。
 
 ```typescript
 interface Definition {
     readonly maxHp: number;
     readonly defense: number;
     readonly resistance: number;
+    readonly recoverySpeed: number;
+    readonly recoveryRatio: number;
 }
 
 initialize<U extends Unit & Pick<Vitality, "definition">>(battle, unit: U): Result<U & Vitality>;
 setMaxHpContribution(entry): Change<Unit & Vitality>;
 removeMaxHpContribution(id): Change<Unit & Vitality>;
 resolveMaxHp(definition, state): number;
-setContribution(key: "defense" | "resistance", entry): Change<Unit & Vitality>;
-removeContribution(key: "defense" | "resistance", id): Change<Unit & Vitality>;
+setContribution(key: "defense" | "resistance" | "recoverySpeed" | "recoveryRatio", entry): Change<Unit & Vitality>;
+removeContribution(key: "defense" | "resistance" | "recoverySpeed" | "recoveryRatio", id): Change<Unit & Vitality>;
 setHook(key, hook): Change<Unit & Vitality>;
 removeHook(key, id): Change<Unit & Vitality>;
 resolveDefense(battle, self: Unit & Vitality): number;
 resolveResistance(battle, self: Unit & Vitality): number;
+resolveRecoverySpeed(battle, self: Unit & Vitality): number;
+advance(battle, reference: Ref<Unit & Vitality>): BattleState;
 ```
 
-基础 MaxHP、DEF、RES 全部必填，由 initialize 校验为有限非负数，可以是小数。初始 HP 为 `Math.max(1, definition.maxHp)`，有效 MaxHP 的下限为 1。基础 RES 可以超过 100，有效值在属性修正后限制到 0～100；有效 DEF 的下限为 0。普通 HP 使用 0～有效 MaxHP 的范围，不在每次计算后取整。
+基础 MaxHP、DEF、RES、recoverySpeed、recoveryRatio 全部必填，由 initialize 校验为有限非负数，可以是小数。无自然回复时两项回复基础值均为零。初始 HP 为 `Math.max(1, definition.maxHp)`，有效 MaxHP 的下限为 1。基础 RES 可以超过 100，有效值在属性修正后限制到 0～100；有效 DEF 的下限为 0。普通 HP 使用 0～有效 MaxHP 的范围，不在每次计算后取整。
 
-MaxHP 保留静态 Modifier[]，set／remove 工厂分别负责贡献登记与移除，共用局部 HP 比例计算，在同一次纯 transform 中生成新贡献集合和新 HP。零 HP 不因属性变化复活；不附带治疗通知或 Blocking 后继。DEF／RES 的 Input 为静态修正或 `(battle, self: Unit & Vitality) => readonly Modifier[]`，由普通注册工厂生成 setContribution／removeContribution。专属接收 Hook 同样通过 setHook／removeHook 登记，字段与 Hook 类型保持配对。MaxHP 单独保留领域实现，不进入普通字段集合。resolveDefense／resolveResistance 接收已取得的当前宿主并返回 number，不重复定位或判空；Damage 在 Formula Hook 后确认当前目标，再按伤害类型求值，不提前缓存或混入穿透。
+MaxHP 保留静态 Modifier[]，set／remove 工厂分别负责贡献登记与移除，共用局部 HP 比例计算，在同一次纯 transform 中生成新贡献集合和新 HP。零 HP 不因属性变化复活；不附带治疗通知或 Blocking 后继。DEF／RES 与两项回复属性的 Input 为静态修正或 `(battle, self: Unit & Vitality) => readonly Modifier[]`，由普通注册工厂生成 setContribution／removeContribution。专属接收 Hook 同样通过 setHook／removeHook 登记，字段与 Hook 类型保持配对。MaxHP 单独保留领域实现，不进入普通字段集合。属性查询接收已取得的当前宿主并返回 number，不重复定位或判空；Damage 在 Formula Hook 后确认当前目标，再按伤害类型求值，不提前缓存或混入穿透。
 
 HP、Contribution、专属接收 Hook 与 Rule 共存于同一 Vitality State。DEF／RES 的修改保留其他字段；属性变化不派发普通治疗 Hook。治疗索敌默认 provider 与显式注入 provider 均读取有效 MaxHP，避免把基础值或未计修正的上限用于缺血判定和比例排序。
 
 Damage 接收 Rule 使用 `allows(battle, ReceivingContext)`；Rules 声明 damageRules，State 直接继承 Rules、Contributions、Hooks。单节点登记接口为 `setRule(rule)`／`removeRule(id)`，由普通登记工厂固定 damageRules 字段生成，返回 Change 交给 Unit.update 提交。普通治疗不设 Rule 数组，治疗干预由专属 Receiving Hook 表达。
+
+### 0.1 自然 HP 回复
+
+`recoverySpeed` 表示固定 HP／秒，`recoveryRatio` 表示每秒回复的 MaxHP 比例。两者先分别求值并限制到非负数，比例项再限制到 1；`resolveRecoverySpeed` 返回：
+
+```text
+有效固定回复速度 + 当前有效 MaxHP × 有效比例回复速度
+```
+
+Runtime 在 Effect 推进后、Elemental 资源推进前调用 Vitality.advance，再进入 Skill／Action。每次从当前 BattleState 读取宿主、有效 MaxHP 与回复贡献，按总速度除以 TICKS_PER_SECOND 增加 HP，保留小数并限制到当前有效 MaxHP。只对生命周期为 PRESENT 且 HP 大于零的 Unit 推进；空间消失和 healFree 不阻止自然回复，零 HP 不被复活。满血或回复量为零时不生成新的状态版本。
+
+自然回复由 Vitality 直接提交，与 commitHealing 共享内部 HP 增加和上限裁切，不伪造 Healing Request，不经过普通 Healing 的 Calculate、Receiving 或 Applied，也不输出 HEAL。当前不提供额外的 HP 满值通知。
+
+固定与比例属性、存活门控和不参与普通治疗的依据见[自然回复调查](../research/cases/29-hp-and-ep-healing-settlement.md#自然-hp-回复的完整普通路径)。**逐 Tick 小数回复是项目选择**：不采用原生每次增加 1 HP 的脉冲计时器，不保存脉冲进度；启停或变速时与原生脉冲的时间细节允许不同。
 
 ## 1. Calculate 与 Apply 的语义边界
 
@@ -478,14 +496,14 @@ Apply 对最终计算量为零的治疗在入口返回 REJECTED，不派发本�
 
 ### 4.2 特殊恢复机制
 
-普通 Healing 不提供再生、生命复原与特殊 HP 恢复的专属模式或入口；这些机制的修正、通知和统计语义尚无公共契约。
+自然 HP 回复由 Vitality 的属性推进处理，见第 0.1 节。普通 Healing 不提供生命复原与其他特殊 HP 恢复的专属模式或入口；这些机制的修正、通知和统计语义尚无公共契约。
 
 ## 5. 支持范围
 
 实际内容对扩展时点与事件粒度的要求见[伤害 Hook 需求调查](../research/cases/28-damage-hooks-and-event-granularity.md)。当前公共接口的支持范围如下：
 
 - **死亡清理**：普通 Damage 在两侧 Applied 后同步确认死亡并请求离场，Finalize 遵循 Lifetime 的最外层完成边界。Runtime 的 Combat 阶段在推进 Action 前另扫描 HP 不大于零的 Unit 并请求死亡离场。绕过 Damage 的致死操作没有专属清理协议；该扫描的位置与适用政策仍是未定设计边界。
-- **特殊 HP 修改**：普通伤害与生命流失都通过 HP Damage 结算，HP 写入由 Vitality 拥有。再生、生命复原和直接 HP 设置仍没有完整公开操作；Effect 不能直接重建 Vitality State 代替缺失的领域入口。
+- **特殊 HP 修改**：普通伤害与生命流失都通过 HP Damage 结算，自然回复由 Vitality.advance 推进，HP 写入由 Vitality 拥有。生命复原和直接 HP 设置仍没有完整公开操作；Effect 不能直接重建 Vitality State 代替缺失的领域入口。
 - **伤害分类**：Request 已表达 DAMAGE／LOSS 与 hitRecovery，不携带 AttackType、ApplyWay 等其余固有分类。无视闪避、取消限制、非致命、分担和特殊生命机制仍无完整协议，也不能从目标状态或来源单位类型反推这些事实。
 - **受伤与 HIT 回复资格**：Request.hitRecovery 与 nature 共同限定受击类 SP 回复；普通环境伤害与标准元素爆发可保留受伤响应而不提供 HIT 回复，不通过全局阻回伪装单笔资格。具体内容未全部接入不改变这项公共契约。
 - **指定 Hook 禁用**：Core 不提供按机制禁用指定 Hook 的公共协议。

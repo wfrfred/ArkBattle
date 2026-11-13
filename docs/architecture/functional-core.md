@@ -39,7 +39,7 @@ Meta 通过战斗输入、内容规则和输出状态接入。商店、跨回合
 | 业务 | 状态与执行边界 | 契约 |
 | --- | --- | --- |
 | 有序伤判与嵌套结算 | 每项接收前项的工作值；扣盾、回复等已完成前缀不因后续取消回滚。 | [伤害与治疗](vitality.md) |
-| HP 变化与死亡 | HP 写入、应用后响应和最终死亡确认分开；MaxHP 比例变化不构成普通治疗。 | [Vitality](vitality.md) |
+| HP 变化与死亡 | HP 写入、应用后响应和最终死亡确认分开；MaxHP 比例变化与自然回复不构成普通治疗。自然回复在 Effect 后、Skill／Action 前按当前有效速度逐 Tick 提交。 | [Vitality](vitality.md) |
 | EP 与爆发 | 损伤提交同步启动 Burst Effect，资源通知与两侧 Applied 按明确顺序执行。 | [Elemental](elemental.md) |
 | 附着实例与依赖 | 安装、生效、停用、请求结束和物理移除分别表达；来源身份不代替生命周期依赖。 | [Effect](effect.md)、[Lifetime](lifetime.md) |
 | 属性采样 | 静态、周期采样和实时查询分别表达；来源样本由产生它的内容或实例保存。 | [属性与贡献](capability.md#属性与贡献) |

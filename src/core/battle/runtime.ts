@@ -13,6 +13,7 @@ import { advanceProjectiles } from "./steps/projectiles.js";
 import { advance as advanceMechanisms } from "./mechanism.js";
 import * as projectiles from "../projectile/query.js";
 import { advanceElements } from "./steps/elemental.js";
+import { advanceVitality } from "./steps/vitality.js";
 import { advanceSkills } from "./steps/skills.js";
 import { initialize as initializeSchedule } from "./schedule/state.js";
 import { initializeBattlefield } from "./initialization.js";
@@ -91,6 +92,8 @@ export function step(
     state = unit.advance(state);
 
     state = advanceEffects(state);
+
+    state = advanceVitality(state);
 
     state = advanceElements(state);
 

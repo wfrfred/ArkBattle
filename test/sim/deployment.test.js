@@ -15,7 +15,7 @@ const operator = {
     hooks: Hooks.empty(),
     occupancy: { slot: "OCCUPANT" },
     deployable: { retreatRules: [] },
-    vitality: { maxHp: 100, defense: 0, resistance: 0 },
+    vitality: { maxHp: 100, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
     card: {
         cost: 10,
         redeployTicks: 10,

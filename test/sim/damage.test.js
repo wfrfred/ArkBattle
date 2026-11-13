@@ -47,7 +47,7 @@ test("HP-01: formulas use the calculated type and sampled defenses without begin
         { definition: { id: "source", hooks: Hooks.empty() }, position: [0, 0] },
         { definition: {
             id: "target", hooks: Hooks.empty(),
-            vitality: { maxHp: 1000, defense: 150, resistance: 80 },
+            vitality: { maxHp: 1000, defense: 150, resistance: 80, recoverySpeed: 0, recoveryRatio: 0 },
             elemental: {
                 ...createArknightsElementalDefinition({ receiver: "CHARACTER" }),
                 elementResistance: 95, damageResistance: 40,
@@ -147,8 +147,8 @@ test("HP-02: independent Calculate results retain their own business state and o
             invoke: (state, { type }, amount) => ({ state, value: type === "ARTS" ? amount * 2 : amount }),
         });
     let state = battle([
-        { definition: { id: "source", hooks: sourceHooks, vitality: { maxHp: 200, defense: 0, resistance: 0 } }, position: [0, 0] },
-        { definition: { id: "target", hooks: Hooks.empty(), vitality: { maxHp: 500, defense: 0, resistance: 10 } }, position: [1, 0] },
+        { definition: { id: "source", hooks: sourceHooks, vitality: { maxHp: 200, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 } }, position: [0, 0] },
+        { definition: { id: "target", hooks: Hooks.empty(), vitality: { maxHp: 500, defense: 0, resistance: 10, recoverySpeed: 0, recoveryRatio: 0 } }, position: [1, 0] },
     ]);
     const source = units.ref(get(state, 0));
     const target = units.ref(get(state, 1));
@@ -184,7 +184,7 @@ test("APPLY-01: invincibility installed before reception rejects HIT recovery un
     let state = battle([
         { definition: { id: "source", hooks: Hooks.empty() }, position: [0, 0] },
         { definition: {
-            id: "target", hooks: Hooks.empty(), targetable: { taunt: 0, restrictions: [] }, vitality: { maxHp: 100, defense: 0, resistance: 0 },
+            id: "target", hooks: Hooks.empty(), targetable: { taunt: 0, restrictions: [] }, vitality: { maxHp: 100, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
             skill: { initialize: state => skills.create(state, resource) },
         }, position: [1, 0] },
     ]);
@@ -245,7 +245,7 @@ test("APPLY-01: invincibility installed before reception rejects HIT recovery un
 test("APPLY-01: Receiving and BeforeCommit resource changes define the baseline while Applied preserves the report", () => {
     let state = battle([
         { definition: { id: "source", hooks: Hooks.empty() }, position: [0, 0] },
-        { definition: { id: "target", hooks: Hooks.empty(), vitality: { maxHp: 100, defense: 0, resistance: 0 } }, position: [1, 0] },
+        { definition: { id: "target", hooks: Hooks.empty(), vitality: { maxHp: 100, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 } }, position: [1, 0] },
     ]);
     const source = units.ref(get(state, 0));
     const target = units.ref(get(state, 1));
@@ -358,8 +358,8 @@ test("APPLY-01: Receiving and BeforeCommit resource changes define the baseline 
 
 test("APPLY-01: cancellation retains recovery and reflection but skips the original commit and Applied", () => {
     let state = battle([
-        { definition: { id: "source", hooks: Hooks.empty(), vitality: { maxHp: 100, defense: 0, resistance: 0 } }, position: [0, 0] },
-        { definition: { id: "target", hooks: Hooks.empty(), vitality: { maxHp: 100, defense: 0, resistance: 0 } }, position: [1, 0] },
+        { definition: { id: "source", hooks: Hooks.empty(), vitality: { maxHp: 100, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 } }, position: [0, 0] },
+        { definition: { id: "target", hooks: Hooks.empty(), vitality: { maxHp: 100, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 } }, position: [1, 0] },
     ]);
     const source = units.ref(get(state, 0));
     const target = units.ref(get(state, 1));
@@ -424,7 +424,7 @@ test("APPLY-02: HP zero output rejects while excess receiving reduction still co
         { definition: { id: "source-without-vitality", hooks: Hooks.empty().set(hpDamage.output, {
             id: "strong-output", invoke(current, _context, amount) { calls.push("output"); return { state: current, value: amount * 2 }; },
         }) }, position: [0, 0] },
-        { definition: { id: "target", hooks: Hooks.empty(), vitality: { maxHp: 100, defense: 0, resistance: 0 } }, position: [1, 0] },
+        { definition: { id: "target", hooks: Hooks.empty(), vitality: { maxHp: 100, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 } }, position: [1, 0] },
     ]);
     const source = units.ref(get(state, 0));
     const target = units.ref(get(state, 1));
@@ -518,7 +518,7 @@ test("HP-05/06: LOSS completes the shared pipeline against an invincible absent 
         }, position: [0, 0] },
         { definition: {
             id: "target", presence: {}, targetable: { taunt: 0, restrictions: [] },
-            vitality: { maxHp: 35, defense: 20, resistance: 0 },
+            vitality: { maxHp: 35, defense: 20, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
             skill: { initialize: current => skills.create(current, resource) },
             hooks: Hooks.empty()
                 .set(hpDamage.targetFormula, {
@@ -571,7 +571,7 @@ test("HP-03: lethal HP remains present and blocking through both Applied roles, 
     let state = battle([
         { definition: { id: "source", hooks: Hooks.empty() }, position: [0, 0] },
         { definition: {
-            id: "guard", hooks: Hooks.empty(), vitality: { maxHp: 40, defense: 0, resistance: 0 },
+            id: "guard", hooks: Hooks.empty(), vitality: { maxHp: 40, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
             blocker: { capacity: 1, layer: "GROUND", rules: [] },
         }, position: [2, 1] },
         { definition: { id: "enemy", hooks: Hooks.empty(), layer: { type: "GROUND" }, blockable: { volume: 1, rules: [] } }, position: [2.2, 1] },
@@ -641,7 +641,7 @@ test("EP-01: full resistance preserves formula floors and sampled EP output; HP 
     let state = battle([
         { definition: {
             ...elementalDefinition({ elementResistance: 100, damageResistance: 100 }),
-            vitality: { maxHp: 1000, defense: 1000, resistance: 99 },
+            vitality: { maxHp: 1000, defense: 1000, resistance: 99, recoverySpeed: 0, recoveryRatio: 0 },
         }, position: [0, 0] },
         { definition: { id: "resource-free-source", hooks: sourceHooks }, position: [1, 0] },
     ]);
@@ -693,7 +693,7 @@ test("EP-02: depletion registers the Burst and completes standard output before 
     let state = battle([
         { definition: {
             ...elementalDefinition({}, hooks),
-            vitality: { maxHp: 10000, defense: 0, resistance: 50 },
+            vitality: { maxHp: 10000, defense: 0, resistance: 50, recoverySpeed: 0, recoveryRatio: 0 },
         }, position: [0, 0] },
         { definition: { id: "source", hooks: Hooks.empty() }, position: [1, 0] },
     ]);
@@ -735,7 +735,7 @@ test("EP-02: cancelling a newly registered Burst suppresses standard output with
         });
     let state = battle([{ definition: {
         ...elementalDefinition({}, hooks),
-        vitality: { maxHp: 10000, defense: 0, resistance: 50 },
+        vitality: { maxHp: 10000, defense: 0, resistance: 50, recoverySpeed: 0, recoveryRatio: 0 },
     }, position: [0, 0] }]);
     const target = units.ref(get(state, 0));
     state = update(state, target, units.compose(units.compose(elemental.setHook("burstStarted", {

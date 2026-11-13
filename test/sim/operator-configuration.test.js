@@ -36,6 +36,7 @@ test("operator profiles use selected phase attributes, explicit table identity a
     const prepared = profile(mudrock, configuration);
     assert.equal(prepared.attributes.maxHp, 3928);
     assert.equal(prepared.attributes.attack, 882);
+    assert.equal(prepared.attributes.recoverySpeed, 0);
     assert.deepEqual(prepared.range, [[0, 0], [0, 1]]);
     assert.equal(prepared.skill.definition.id, "skchr_mudrok_2");
     assert.equal(prepared.skill.definition.sp.requirement, 5);

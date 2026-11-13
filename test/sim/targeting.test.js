@@ -21,7 +21,7 @@ import { createArknightsElementalDefinition } from "../../dist/data/effect/eleme
 const living = {
     id: "target", hooks: Hooks.empty(),
     targetable: { taunt: 0, restrictions: [] },
-    vitality: { maxHp: 100, defense: 0, resistance: 0 },
+    vitality: { maxHp: 100, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
     allegiance: { side: "ENEMY" }, layer: { type: "GROUND" },
 };
 const ids = candidates => Array.from(candidates, target => target.id);

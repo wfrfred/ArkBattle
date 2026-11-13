@@ -330,6 +330,8 @@ export function create(
             maxHp: profile.attributes.maxHp,
             defense: profile.attributes.defense,
             resistance: profile.attributes.resistance,
+            recoverySpeed: profile.attributes.recoverySpeed,
+            recoveryRatio: 0,
         },
         offense: { attack: profile.attributes.attack },
 

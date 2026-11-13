@@ -24,6 +24,7 @@ interface Attributes {
     attack: number;
     defense: number;
     resistance: number;
+    recoverySpeed: number;
     attackSpeed: number;
     taunt: number;
     baseAttackTime: number;
@@ -179,6 +180,7 @@ function readAttributes(value: unknown): Attributes {
         attack: number(data.atk, "operator attack"),
         defense: number(data.def, "operator defense"),
         resistance: number(data.magicResistance, "operator resistance"),
+        recoverySpeed: number(data.hpRecoveryPerSec, "operator HP recovery speed"),
         attackSpeed: number(data.attackSpeed, "operator attack speed"),
         taunt: number(data.tauntLevel, "operator taunt level"),
         baseAttackTime: number(data.baseAttackTime, "operator base attack time"),

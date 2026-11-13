@@ -20,7 +20,7 @@ function setup(targetHooks = Hooks.empty()) {
     id: 'source', offense: { attack: 40 },
   } });
   const target = initialize({ id: 1, position: [1, 0], definition: { hooks: targetHooks,
-    id: 'target', vitality: { maxHp: 1000, defense: 0, resistance: 0 },
+    id: 'target', vitality: { maxHp: 1000, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
     presence: {}, targetable: { taunt: 0, restrictions: [{ id: 'hidden', value: {
       allows: () => false,
     } }] },
@@ -128,7 +128,7 @@ test('a missing locked target does not redirect its arrow to another nearby unit
   const fixture = setup();
   const launched = projectiles.create(fixture.battle, createArrow(), { position: [0, 0], state: fixture.state });
   const other = initialize({ id: 2, position: [1, 0], definition: { hooks: Hooks.empty(),
-    id: 'nearby', vitality: { maxHp: 100, defense: 0, resistance: 0 },
+    id: 'nearby', vitality: { maxHp: 100, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
   } });
   const withoutTarget = addUnit(removeUnit(launched.state, fixture.state.target, "SCRIPT"), other);
   const after = step(withoutTarget, 1);

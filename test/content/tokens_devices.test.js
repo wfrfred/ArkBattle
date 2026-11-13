@@ -45,6 +45,7 @@ test("a real hidden predefine converts its alias, world position and occupancy t
     const [crate] = battle.battlefield.units.values();
     assert.deepEqual(crate.position, [4, 12]);
     assert.deepEqual(crate.occupancy.tile, [12, 4]);
+    assert.equal(crate.definition.vitality.recoverySpeed, 0);
     assert.equal(occupancyAt(battle.battlefield, [12, 4]).occupant.id, crate.id);
 });
 

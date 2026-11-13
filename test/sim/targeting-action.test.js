@@ -78,7 +78,7 @@ test("an empty trigger binding rejects the attack without losing later completed
 test("bound healing keeps its receivers when a later selection restriction would choose another patient", () => {
     const patient = {
         id: "patient", hooks: Hooks.empty(), targetable: { taunt: 0, restrictions: [] },
-        vitality: { maxHp: 100, defense: 0, resistance: 0 }, allegiance: { side: "ALLY" },
+        vitality: { maxHp: 100, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 }, allegiance: { side: "ALLY" },
     };
     const recipients = (state, source) => ({
         state,

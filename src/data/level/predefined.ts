@@ -99,6 +99,7 @@ function unitDefinition(
     }
 
     let maxHp: number | undefined;
+    let recoverySpeed: number | undefined;
     let cost: number | undefined;
     let respawnTime: number | undefined;
     let minimumLevel = Infinity;
@@ -111,15 +112,18 @@ function unitDefinition(
         assertPositiveSafeInteger(frame.level, "predefined keyframe level");
 
         const hp = attributes.maxHp;
+        const frameRecoverySpeed = attributes.hpRecoveryPerSec;
         const frameCost = attributes.cost;
         const frameRespawnTime = attributes.respawnTime;
 
         assertPositiveNumber(hp, "predefined maxHp");
+        assertNonnegativeNumber(frameRecoverySpeed, "predefined HP recovery speed");
         assertNonnegativeNumber(frameCost, "predefined deployment cost");
         assertNonnegativeNumber(frameRespawnTime, "predefined respawn time");
 
         if (
             (maxHp !== undefined && maxHp !== hp) ||
+            (recoverySpeed !== undefined && recoverySpeed !== frameRecoverySpeed) ||
             (cost !== undefined && cost !== frameCost) ||
             (respawnTime !== undefined && respawnTime !== frameRespawnTime)
         ) {
@@ -127,6 +131,7 @@ function unitDefinition(
         }
 
         maxHp = hp;
+        recoverySpeed = frameRecoverySpeed;
         cost = frameCost;
         respawnTime = frameRespawnTime;
         minimumLevel = Math.min(minimumLevel, frame.level);
@@ -139,7 +144,13 @@ function unitDefinition(
 
     const configuration: Configuration = {
         id: instance.inst.characterKey,
-        vitality: { defense: 0, resistance: 0, maxHp: maxHp! },
+        vitality: {
+            defense: 0,
+            resistance: 0,
+            maxHp: maxHp!,
+            recoverySpeed: recoverySpeed!,
+            recoveryRatio: 0,
+        },
         deployable: { retreatRules: [] },
         card: {
             cost: cost!,

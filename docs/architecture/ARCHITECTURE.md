@@ -71,6 +71,8 @@ initialize(input) / step(battle, commands)：创建与推进不可变状态
 
 runtime.initialize(input) 创建 BattleState；runtime.step(battle, commands) 直接按明确顺序调用纯领域操作，逐次接续并返回最终 State。commands 是必填只读数组，没有命令时传 []。本 Tick 的临时字段在开帧时通过新值清空或覆盖，未变的事实继续共享；不原地清空旧版本中的数组或集合。Schedule、Action 等跨 Tick 进度按所属领域保存为不可变值。行动的程序与调度契约见 [Action 设计](action.md)。
 
+资源阶段在 Effect 之后依次推进 Vitality 自然 HP 回复、Elemental 自然 EP 回复，再进入 Skill 与 Action。自然 HP 回复读取当前有效固定速度、比例速度和 MaxHP，逐 Tick 保留小数，不进入普通 Healing；具体政策见 [Vitality](vitality.md#01-自然-hp-回复)。
+
 调用方用 `battle = step(battle, commands)` 接续状态，并读取其中的领域事实和 events。每次成功调用推进一个 Tick，空计划或调度完成也不冻结状态；是否继续调用由外层决定。异常抛出时赋值未发生，原值保持不变。表现层直接接收 State 并使用领域查询生成所需的视觉数据，不复制 Unit、不展开核心容器，也不形成第二套完整 Snapshot 模型。
 
 State.definition 只保存推进需要的静态 predefines 与 routeMoveMultiplier；地图与 Schedule Definition 已由所属领域持有。关卡开场 Unit 由 predefines 中 initiallyPresent:true 的项创建，与后续出现／移除共用同一预置管理。Input 的初始机制、Card 创建配置与随机种子只在初始化时消费，不由另一个 Runtime 对象保存。Card.definition 直接持有包含顶层 card 配置的完整静态 Unit Definition；初始库存、持有及在场上限、基础费用与时长来自该配置，实例只保存当前库存、计时、费用阶段和跨部署私有 state。addCard 接收这一份定义，initialize 明确创建私有数据，Card 不因场上实例返手而重建。每份普通干员拥有独立 Card；库存和费用阶段的退出业务由主动撤退及被动死亡各自执行，不对所有 leave 自动回收。Card 的静态行为开关及资源时点见 [Deployment](deployment.md)。普通 Unit 每次部署仍从标准初态创建，特定资源由内容明确转换。
@@ -134,7 +136,7 @@ Targeting 的查询资格与接收端是否接受某次作用分别判断。已�
 
 Targetable 以 Definition.taunt 和运行期贡献表达嘲讽，以必填 restrictions 声明固有限制；固有与动态限制共用 State 中的 Contribution 集合。限制以共享定义对象本身标识机制，提供只读 allows；能力先选择有效贡献，再按本次豁免谓词检查限制。Targeting 提供标准资格、显式范围与普通比较器，Content 通过 Query、common.topK 和 RNG.sample 组合选择。来源事实由调用者选定，入场优先使用 UID，路线剩余距离由 Route／Navigation 查询；仇恨只在比较时计算，不保存为单位状态。完整类型见 [Targeting 与 Targetable](targeting.md)。
 
-Damage 和 Healing 分别在 battle/damage、battle/healing 维护 Calculate／Apply 协议；HP 普通伤害与生命流失共享完整流程，以 Request.nature 和机制资格区分，hitRecovery 独立限定受击类 SP 回复，不提供阶段派发开关。Targeting 的谓词和比较器为普通 Query 提供游戏政策，候选存在性直接用 Query.some，选择程序显式返回并接续随机状态。领域 Hook 读取当前输入版本，通过公开的纯 Damage、Healing、Effect 等操作执行同步嵌套结算，再把返回版本交给外层。取消保留已完成的消耗、回复与后继；普通死亡和治疗使用各自完整操作；倒地复活、特殊生命机制、再生与生命复原仍待设计与接入。治疗不可选中不等于接收免疫，已选中后仍可直接治疗，不设置通用禁疗绕过或跳事件开关。
+Damage 和 Healing 分别在 battle/damage、battle/healing 维护 Calculate／Apply 协议；HP 普通伤害与生命流失共享完整流程，以 Request.nature 和机制资格区分，hitRecovery 独立限定受击类 SP 回复，不提供阶段派发开关。Targeting 的谓词和比较器为普通 Query 提供游戏政策，候选存在性直接用 Query.some，选择程序显式返回并接续随机状态。领域 Hook 读取当前输入版本，通过公开的纯 Damage、Healing、Effect 等操作执行同步嵌套结算，再把返回版本交给外层。取消保留已完成的消耗、回复与后继；普通死亡和治疗使用各自完整操作；倒地复活、特殊生命机制与生命复原仍待设计与接入。治疗不可选中不等于接收免疫，已选中后仍可直接治疗，不设置通用禁疗绕过或跳事件开关。
 
 Skill 的 Definition／create、单槽聚合、Activation 非空视图、查询、资源与完整操作位于 unit/skill；unit/capability/skill 保留初始化工厂、能力状态、守卫及规则／Hook／预算贡献 Change 工厂。Unit Definition.skill.initialize 调用 create，接续持久数据初始化与 SP 初态；unit.skill 直接保存程序 Definition、state、SP 和可空 activation，能力状态再补规则等字段，不建 Instance 包装或集合。程序元数据从 unit.skill.definition 取得，两种 Ref 分别绑定持久 Skill 与本轮 Activation，宿主由回调第二参 source 提供。两个 index 按职责提供契约，SP 的贡献 Change 工厂仍在领域 sp.ts。自然回复按 tick 进度产生 SP；ACTION 回复通过成功释放通知，HIT 回复通过 Damage 的接收 Hook，由 Skill 自己登记和结算。默认激活阻回由 Rule 表达，上限、门槛和支付分别求值。普通攻击不依赖 Skill，具体技能行动通过公开扩展点组合，不修改基础 Definition。
 
