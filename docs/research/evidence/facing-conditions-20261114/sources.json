@@ -1,0 +1,41 @@
+{
+  "collectedOn": "2026-11-14",
+  "kind": "community-mechanism-reference",
+  "sources": [
+    {
+      "url": "https://prts.wiki/w/作战机制#敌人朝向与相对方位",
+      "access": "Page opened; relevant subsection supplied by targeted search result. Full-page find did not expose the subsection.",
+      "summary": "Distinguishes ordinary movement, attacks with facing exceptions, and force-induced movement; gives relative-side gameplay requirements.",
+      "limits": "The broad camera description is not substituted for the conditional native implementation. Excluded game modes remain outside scope."
+    },
+    {
+      "url": "https://prts.wiki/w/游戏数据基础#左右面向机制",
+      "access": "Page opened; targeted search result and enemy-page inclusion supplied the facing mechanism description, while full-page find returned no matching subsection.",
+      "summary": "Describes persistent left/right facing, movement/blocking/attack updates, control restrictions, and special facing locks.",
+      "limits": "Community overview, not proof of the exact native call order or unconditional birth default."
+    },
+    {
+      "url": "https://prts.wiki/w/眩光手雷",
+      "access": "Full device page opened.",
+      "summary": "The ordinary device applies stun according to whether an affected animal is facing away from the explosion reference tile.",
+      "limits": "Confirms a content requirement; no claim that this query decoded its prefab or every applied buff."
+    },
+    {
+      "url": "https://prts.wiki/w/警戒塔",
+      "access": "Full device page opened.",
+      "summary": "A fixed device rotates its four-direction attack area under its own mechanism.",
+      "limits": "This is a different direction policy; it is not used as evidence that all deployed direction or range rotation should be replaced by binary left/right facing."
+    },
+    {
+      "url": "https://prts.wiki/w/顺从内心的设计师",
+      "access": "Targeted search returned a facing-related content summary; full-page open timed out.",
+      "summary": "A content mechanism can force a facing change in response to a photography area.",
+      "limits": "Search summary only; not counted as a completed native or prefab binding."
+    }
+  ],
+  "notUsedAsFacingEvidence": [
+    "https://prts.wiki/w/特殊机制 was opened and declares client 2.7.91, but the requested facing subsection was not exposed by this retrieval.",
+    "The printable special-mechanism URL failed to open."
+  ],
+  "nativeComparison": "Native files are fingerprinted independently in gates/native.json and the other subdirectories. PRTS retrieval time and declared page client version do not identify the installed DLL."
+}

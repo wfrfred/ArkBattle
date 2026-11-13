@@ -1,0 +1,1948 @@
+{
+  "provenance": {
+    "scope": "Static native branches; no game execution or runtime XLua verification.",
+    "client": {
+      "dll": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "bytes": 223112680,
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff"
+      },
+      "metadata": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "bytes": 46669332,
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5"
+      },
+      "metadataVersion": 29,
+      "imageBase": "0x180000000"
+    },
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/native.py",
+        "bytes": 18723,
+        "sha256": "1c6c16dc97e0dd9af0af4033c81a7534384dd65ebb1e604df3f4a3289df158e6"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]"
+    },
+    "location": {
+      "metadataRegistration": "0x187ee0630",
+      "modules": {
+        "Assembly-CSharp.dll": {
+          "address": 6564854272,
+          "methodPointers": 6585881040,
+          "count": 225427,
+          "fileBacked": true
+        },
+        "Torappu.Common.dll": {
+          "address": 6577712928,
+          "methodPointers": 6592562080,
+          "count": 6004,
+          "fileBacked": true
+        },
+        "ThirdPartyAssembly.dll": {
+          "address": 6577712272,
+          "methodPointers": 6592454304,
+          "count": 12660,
+          "fileBacked": true
+        },
+        "mscorlib.dll": {
+          "address": 6577364064,
+          "methodPointers": 6592131600,
+          "count": 13987,
+          "fileBacked": true
+        },
+        "UnityEngine.UIElementsModule.dll": {
+          "address": 6577900992,
+          "methodPointers": 6592933968,
+          "count": 6132,
+          "fileBacked": true
+        },
+        "System.dll": {
+          "address": 6577628368,
+          "methodPointers": 6592396096,
+          "count": 7003,
+          "fileBacked": true
+        },
+        "Unity.InputSystem.dll": {
+          "address": 6577776016,
+          "methodPointers": 6592616544,
+          "count": 5703,
+          "fileBacked": true
+        },
+        "Unity.Mathematics.dll": {
+          "address": 6577838608,
+          "methodPointers": 6592682032,
+          "count": 9336,
+          "fileBacked": true
+        },
+        "UnityEngine.CoreModule.dll": {
+          "address": 6577886944,
+          "methodPointers": 6592866352,
+          "count": 4154,
+          "fileBacked": true
+        },
+        "System.Xml.dll": {
+          "address": 6577618416,
+          "methodPointers": 6592367840,
+          "count": 3283,
+          "fileBacked": true
+        },
+        "Newtonsoft.Json.dll": {
+          "address": 6577473344,
+          "methodPointers": 6592259616,
+          "count": 2998,
+          "fileBacked": true
+        },
+        "Unity.TextMeshPro.dll": {
+          "address": 6577852240,
+          "methodPointers": 6592835600,
+          "count": 1618,
+          "fileBacked": true
+        },
+        "Sirenix.Serialization.dll": {
+          "address": 6577530576,
+          "methodPointers": 6592309936,
+          "count": 1885,
+          "fileBacked": true
+        },
+        "spine-unity.dll": {
+          "address": 6577560208,
+          "methodPointers": 6592332928,
+          "count": 1982,
+          "fileBacked": true
+        },
+        "protobuf-net.Core.dll": {
+          "address": 6577475616,
+          "methodPointers": 6592285904,
+          "count": 1952,
+          "fileBacked": true
+        },
+        "CriMw.CriWare.Runtime.dll": {
+          "address": 6565019472,
+          "methodPointers": 6587703856,
+          "count": 2565,
+          "fileBacked": true
+        },
+        "UnityEngine.UI.dll": {
+          "address": 6577955760,
+          "methodPointers": 6592996064,
+          "count": 2041,
+          "fileBacked": true
+        },
+        "Cinemachine.dll": {
+          "address": 6564996672,
+          "methodPointers": 6587684464,
+          "count": 1160,
+          "fileBacked": true
+        },
+        "ICSharpCode.SharpZipLib.dll": {
+          "address": 6565040576,
+          "methodPointers": 6587747952,
+          "count": 1256,
+          "fileBacked": true
+        },
+        "DOTween.dll": {
+          "address": 6565028192,
+          "methodPointers": 6587727808,
+          "count": 1188,
+          "fileBacked": true
+        },
+        "System.Core.dll": {
+          "address": 6577602800,
+          "methodPointers": 6592356000,
+          "count": 1117,
+          "fileBacked": true
+        },
+        "UnityEngine.TextCoreTextEngineModule.dll": {
+          "address": 6577900064,
+          "methodPointers": 6592929888,
+          "count": 370,
+          "fileBacked": true
+        },
+        "Unity.Postprocessing.Runtime.dll": {
+          "address": 6577843136,
+          "methodPointers": 6592828752,
+          "count": 810,
+          "fileBacked": true
+        },
+        "Sirenix.Utilities.dll": {
+          "address": 6577549328,
+          "methodPointers": 6592325136,
+          "count": 968,
+          "fileBacked": true
+        },
+        "Mono.Security.dll": {
+          "address": 6577363904,
+          "methodPointers": 6592127104,
+          "count": 562,
+          "fileBacked": true
+        },
+        "UnityEngine.IMGUIModule.dll": {
+          "address": 6577890704,
+          "methodPointers": 6592908944,
+          "count": 724,
+          "fileBacked": true
+        },
+        "Unity.Timeline.dll": {
+          "address": 6577856512,
+          "methodPointers": 6592850304,
+          "count": 876,
+          "fileBacked": true
+        },
+        "Sirenix.OdinInspector.Attributes.dll": {
+          "address": 6577507296,
+          "methodPointers": 6592305952,
+          "count": 462,
+          "fileBacked": true
+        },
+        "System.Collections.Immutable.dll": {
+          "address": 6577584240,
+          "methodPointers": 6592349104,
+          "count": 825,
+          "fileBacked": true
+        },
+        "Hypergryph.OneChannel.dll": {
+          "address": 6565035376,
+          "methodPointers": 6587741424,
+          "count": 755,
+          "fileBacked": true
+        },
+        "ConsolePro.dll": {
+          "address": 6565008736,
+          "methodPointers": 6587697344,
+          "count": 793,
+          "fileBacked": true
+        },
+        "Assembly-CSharp-firstpass.dll": {
+          "address": 6563861904,
+          "methodPointers": 6585841648,
+          "count": 747,
+          "fileBacked": true
+        },
+        "P31RestKit.dll": {
+          "address": 6577475456,
+          "methodPointers": 6592283600,
+          "count": 287,
+          "fileBacked": true
+        },
+        "UnityEngine.ParticleSystemModule.dll": {
+          "address": 6577893824,
+          "methodPointers": 6592916384,
+          "count": 491,
+          "fileBacked": true
+        },
+        "clipper_library.dll": {
+          "address": 6564997696,
+          "methodPointers": 6587695360,
+          "count": 216,
+          "fileBacked": true
+        },
+        "torappu.CrashSight.Standalone.dll": {
+          "address": 6577764784,
+          "methodPointers": 6592613760,
+          "count": 280,
+          "fileBacked": true
+        },
+        "UnityEngine.AnimationModule.dll": {
+          "address": 6577860928,
+          "methodPointers": 6592861456,
+          "count": 366,
+          "fileBacked": true
+        },
+        "UnityEngine.AndroidJNIModule.dll": {
+          "address": 6577859152,
+          "methodPointers": 6592859440,
+          "count": 252,
+          "fileBacked": true
+        },
+        "UnityEngine.UIElementsNativeModule.dll": {
+          "address": 6577945600,
+          "methodPointers": 6592993088,
+          "count": 245,
+          "fileBacked": true
+        },
+        "UnityEngine.UnityWebRequestModule.dll": {
+          "address": 6577956752,
+          "methodPointers": 6593013680,
+          "count": 143,
+          "fileBacked": true
+        },
+        "DOTween.Modules.dll": {
+          "address": 6565020800,
+          "methodPointers": 6587725728,
+          "count": 235,
+          "fileBacked": true
+        },
+        "System.Xml.Linq.dll": {
+          "address": 6577604992,
+          "methodPointers": 6592365952,
+          "count": 210,
+          "fileBacked": true
+        },
+        "XNode.dll": {
+          "address": 6577960256,
+          "methodPointers": 6593016992,
+          "count": 199,
+          "fileBacked": true
+        },
+        "UnityEngine.PhysicsModule.dll": {
+          "address": 6577895584,
+          "methodPointers": 6592924848,
+          "count": 182,
+          "fileBacked": true
+        },
+        "UnityEngine.Physics2DModule.dll": {
+          "address": 6577894672,
+          "methodPointers": 6592923088,
+          "count": 168,
+          "fileBacked": true
+        },
+        "UnityEngine.TextCoreFontEngineModule.dll": {
+          "address": 6577898160,
+          "methodPointers": 6592927760,
+          "count": 121,
+          "fileBacked": true
+        },
+        "System.Numerics.dll": {
+          "address": 6577603280,
+          "methodPointers": 6592364992,
+          "count": 77,
+          "fileBacked": true
+        },
+        "UnityEngine.AIModule.dll": {
+          "address": 6577857296,
+          "methodPointers": 6592857856,
+          "count": 153,
+          "fileBacked": true
+        },
+        "UnityEngine.AudioModule.dll": {
+          "address": 6577861936,
+          "methodPointers": 6592865360,
+          "count": 96,
+          "fileBacked": true
+        },
+        "UnityEngine.UIModule.dll": {
+          "address": 6577946240,
+          "methodPointers": 6592995136,
+          "count": 116,
+          "fileBacked": true
+        },
+        "Hypergryph.Browser.dll": {
+          "address": 6565029568,
+          "methodPointers": 6587737712,
+          "count": 196,
+          "fileBacked": true
+        },
+        "UnityEngine.XRModule.dll": {
+          "address": 6577958704,
+          "methodPointers": 6593015712,
+          "count": 67,
+          "fileBacked": true
+        },
+        "Torappu.CETest.dll": {
+          "address": 6577712768,
+          "methodPointers": 6592561408,
+          "count": 84,
+          "fileBacked": true
+        },
+        "UnityEngine.TextRenderingModule.dll": {
+          "address": 6577900464,
+          "methodPointers": 6592933088,
+          "count": 50,
+          "fileBacked": true
+        },
+        "UnityEngine.InputLegacyModule.dll": {
+          "address": 6577891168,
+          "methodPointers": 6592915328,
+          "count": 71,
+          "fileBacked": true
+        },
+        "UnityEngine.TerrainModule.dll": {
+          "address": 6577897184,
+          "methodPointers": 6592927408,
+          "count": 41,
+          "fileBacked": true
+        },
+        "UnityEngine.SharedInternalsModule.dll": {
+          "address": 6577896208,
+          "methodPointers": 6592926640,
+          "count": 68,
+          "fileBacked": true
+        },
+        "UnityEngine.TilemapModule.dll": {
+          "address": 6577900816,
+          "methodPointers": 6592933536,
+          "count": 42,
+          "fileBacked": true
+        },
+        "UnityEngine.VFXModule.dll": {
+          "address": 6577957568,
+          "methodPointers": 6593015056,
+          "count": 33,
+          "fileBacked": true
+        },
+        "Sirenix.Serialization.Config.dll": {
+          "address": 6577507568,
+          "methodPointers": 6592309760,
+          "count": 22,
+          "fileBacked": true
+        },
+        "UnityEngine.AssetBundleModule.dll": {
+          "address": 6577861376,
+          "methodPointers": 6592865136,
+          "count": 28,
+          "fileBacked": true
+        },
+        "UnityEngine.SubsystemsModule.dll": {
+          "address": 6577896832,
+          "methodPointers": 6592927184,
+          "count": 28,
+          "fileBacked": true
+        },
+        "UnityEngine.UnityWebRequestWWWModule.dll": {
+          "address": 6577957232,
+          "methodPointers": 6593014928,
+          "count": 15,
+          "fileBacked": true
+        },
+        "UnityEngine.VideoModule.dll": {
+          "address": 6577957824,
+          "methodPointers": 6593015344,
+          "count": 18,
+          "fileBacked": true
+        },
+        "UnityEngine.DirectorModule.dll": {
+          "address": 6577887264,
+          "methodPointers": 6592908624,
+          "count": 34,
+          "fileBacked": true
+        },
+        "UnityEngine.InputModule.dll": {
+          "address": 6577891424,
+          "methodPointers": 6592916192,
+          "count": 17,
+          "fileBacked": true
+        },
+        "UnityEngine.UnityAnalyticsModule.dll": {
+          "address": 6577955968,
+          "methodPointers": 6593013584,
+          "count": 12,
+          "fileBacked": true
+        },
+        "Hypergryph.EventLogSDK.dll": {
+          "address": 6565030464,
+          "methodPointers": 6587739280,
+          "count": 181,
+          "fileBacked": true
+        },
+        "UnityEngine.JSONSerializeModule.dll": {
+          "address": 6577891680,
+          "methodPointers": 6592916328,
+          "count": 7,
+          "fileBacked": true
+        },
+        "UnityEngine.UnityWebRequestTextureModule.dll": {
+          "address": 6577956976,
+          "methodPointers": 6593014832,
+          "count": 12,
+          "fileBacked": true
+        },
+        "UnityEngine.VRModule.dll": {
+          "address": 6577958032,
+          "methodPointers": 6593015520,
+          "count": 10,
+          "fileBacked": true
+        },
+        "Torappu.Sofdec.dll": {
+          "address": 6577765232,
+          "methodPointers": 6592616000,
+          "count": 66,
+          "fileBacked": true
+        },
+        "UnityEngine.ImageConversionModule.dll": {
+          "address": 6577887632,
+          "methodPointers": 6592908904,
+          "count": 4,
+          "fileBacked": true
+        },
+        "UnityEngine.WindModule.dll": {
+          "address": 6577958256,
+          "methodPointers": 6593015600,
+          "count": 13,
+          "fileBacked": true
+        },
+        "UnityEngine.GridModule.dll": {
+          "address": 6577887440,
+          "methodPointers": 6592908896,
+          "count": 1,
+          "fileBacked": true
+        },
+        "UnityEngine.ScreenCaptureModule.dll": {
+          "address": 6577895760,
+          "methodPointers": 6592926624,
+          "count": 1,
+          "fileBacked": true
+        },
+        "Hypergryph.GameUpdate.dll": {
+          "address": 6565030928,
+          "methodPointers": 6587740736,
+          "count": 71,
+          "fileBacked": true
+        },
+        "Unity.Profiling.Core.dll": {
+          "address": 6577843520,
+          "methodPointers": 6592835264,
+          "count": 41,
+          "fileBacked": true
+        },
+        "System.Configuration.dll": {
+          "address": 6577584560,
+          "methodPointers": 6592355712,
+          "count": 35,
+          "fileBacked": true
+        },
+        "System.Runtime.Serialization.dll": {
+          "address": 6577603664,
+          "methodPointers": 6592365904,
+          "count": 6,
+          "fileBacked": true
+        },
+        "System.Runtime.CompilerServices.Unsafe.dll": {
+          "address": 6577603456,
+          "methodPointers": 6592365888,
+          "count": 2,
+          "fileBacked": true
+        },
+        "Unity.MemoryProfiler.dll": {
+          "address": 6577838800,
+          "methodPointers": 6592828688,
+          "count": 8,
+          "fileBacked": true
+        },
+        "CriMw.CriWare.Vp9.Runtime.dll": {
+          "address": 6565019680,
+          "methodPointers": 6587725648,
+          "count": 10,
+          "fileBacked": true
+        },
+        "Hypergryph.Log.dll": {
+          "address": 6565031152,
+          "methodPointers": 6587741312,
+          "count": 14,
+          "fileBacked": true
+        },
+        "XNode.Groups.dll": {
+          "address": 6577959056,
+          "methodPointers": 6593016960,
+          "count": 3,
+          "fileBacked": true
+        },
+        "AntiSDK.dll": {
+          "address": 6563858064,
+          "methodPointers": 6585841616,
+          "count": 3,
+          "fileBacked": true
+        },
+        "Torappu.UICommonEditor.dll": {
+          "address": 6577765408,
+          "methodPointers": 6592616528,
+          "count": 2,
+          "fileBacked": true
+        },
+        "enum2int.dll": {
+          "address": 6565028352,
+          "methodPointers": 6593280072,
+          "count": 2,
+          "fileBacked": false
+        },
+        "__Generated": {
+          "address": 6577960432,
+          "methodPointers": 6593018584,
+          "count": 3,
+          "fileBacked": true
+        }
+      }
+    }
+  },
+  "result": [
+    {
+      "nameIndex": 2717411,
+      "namespaceIndex": 2421372,
+      "byvalTypeIndex": 52616,
+      "declaringTypeIndex": -1,
+      "parentIndex": 45377,
+      "elementTypeIndex": 52616,
+      "genericContainerIndex": -1,
+      "flags": 1048577,
+      "fieldStart": 80126,
+      "methodStart": 71402,
+      "eventStart": -1,
+      "propertyStart": 8623,
+      "nestedTypesStart": -1,
+      "interfacesStart": -1,
+      "vtableStart": 85845,
+      "interfaceOffsetsStart": 9816,
+      "reserved": 0,
+      "methodCount": 34,
+      "propertyCount": 5,
+      "fieldCount": 37,
+      "eventCount": 0,
+      "nestedTypeCount": 0,
+      "vtableCount": 13,
+      "interfacesCount": 0,
+      "interfaceOffsetsCount": 1,
+      "bitfield": 3072,
+      "token": 33565221,
+      "index": 10788,
+      "name": "DirectionCursor",
+      "namespace": "Torappu.Battle",
+      "fullname": "Torappu.Battle.DirectionCursor",
+      "fields": [
+        {
+          "nameIndex": 2718152,
+          "typeIndex": 35318,
+          "token": 67188991,
+          "index": 80126,
+          "name": "m_visitedMap",
+          "typeName": "type(kind=0x14, data=0x188e3e738)",
+          "static": false,
+          "offset": 104,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 879751,
+          "typeIndex": 84139,
+          "token": 67188992,
+          "index": 80127,
+          "name": "m_offset",
+          "typeName": "UnityEngine.Vector2",
+          "static": false,
+          "offset": 112,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2718165,
+          "typeIndex": 56288,
+          "token": 67188993,
+          "index": 80128,
+          "name": "m_nextGrid",
+          "typeName": "Torappu.GridPosition",
+          "static": false,
+          "offset": 120,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2718176,
+          "typeIndex": 46025,
+          "token": 67188994,
+          "index": 80129,
+          "name": "m_alwaysCheckCurrentPoint",
+          "typeName": "bool",
+          "static": false,
+          "offset": 128,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2718202,
+          "typeIndex": 76378,
+          "token": 67188995,
+          "index": 80130,
+          "name": "<totalDist>k__BackingField",
+          "typeName": "float",
+          "static": false,
+          "offset": 132,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2715132,
+          "typeIndex": 52361,
+          "token": 67188996,
+          "index": 80131,
+          "name": "__Hotfix0_get_distToExit",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 0,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2715157,
+          "typeIndex": 52361,
+          "token": 67188997,
+          "index": 80132,
+          "name": "__Hotfix0_get_distToExitPrecise",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 8,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2718229,
+          "typeIndex": 52361,
+          "token": 67188998,
+          "index": 80133,
+          "name": "__Hotfix0_get_totalDist",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 16,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2718253,
+          "typeIndex": 52361,
+          "token": 67188999,
+          "index": 80134,
+          "name": "__Hotfix0_set_totalDist",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 24,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2718277,
+          "typeIndex": 52361,
+          "token": 67189000,
+          "index": 80135,
+          "name": "__Hotfix0_get_cursorIndex",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 32,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2716335,
+          "typeIndex": 52361,
+          "token": 67189001,
+          "index": 80136,
+          "name": "__Hotfix0_get_alwaysCheckCurrentPoint",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 40,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2718303,
+          "typeIndex": 52361,
+          "token": 67189002,
+          "index": 80137,
+          "name": "__Hotfix0_TryGetCurrentCheckpointType",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 48,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2718341,
+          "typeIndex": 52361,
+          "token": 67189003,
+          "index": 80138,
+          "name": "__Hotfix0_CheckObstacleLikeOrInvalid",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 56,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2718378,
+          "typeIndex": 52361,
+          "token": 67189004,
+          "index": 80139,
+          "name": "__Hotfix0_AssignHostRouteProgress",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 64,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 3062,
+          "typeIndex": 52361,
+          "token": 67189005,
+          "index": 80140,
+          "name": "_c__Hotfix0_ctor",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 72,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 547610,
+          "typeIndex": 52361,
+          "token": 67189006,
+          "index": 80141,
+          "name": "__Hotfix0_Reset",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 80,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 1927282,
+          "typeIndex": 52361,
+          "token": 67189007,
+          "index": 80142,
+          "name": "__Hotfix0_CheckReached",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 88,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2718412,
+          "typeIndex": 52361,
+          "token": 67189008,
+          "index": 80143,
+          "name": "__Hotfix0_PredictReached",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 96,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2718437,
+          "typeIndex": 52361,
+          "token": 67189009,
+          "index": 80144,
+          "name": "__Hotfix0_GetNextTarget",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 104,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2718461,
+          "typeIndex": 52361,
+          "token": 67189010,
+          "index": 80145,
+          "name": "__Hotfix0__GetNextTarget",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 112,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2718486,
+          "typeIndex": 52361,
+          "token": 67189011,
+          "index": 80146,
+          "name": "__Hotfix0_GetNextPosRelatedCheckPointGridPosition",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 120,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2715224,
+          "typeIndex": 52361,
+          "token": 67189012,
+          "index": 80147,
+          "name": "__Hotfix0_GetNextDirection",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 128,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2718536,
+          "typeIndex": 52361,
+          "token": 67189013,
+          "index": 80148,
+          "name": "__Hotfix0_GetNextTurn",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 136,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2718558,
+          "typeIndex": 52361,
+          "token": 67189014,
+          "index": 80149,
+          "name": "__Hotfix0_PredictFuturePosition",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 144,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2718590,
+          "typeIndex": 52361,
+          "token": 67189015,
+          "index": 80150,
+          "name": "__Hotfix0_PredictFuturePositionAlongPath",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 152,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2718631,
+          "typeIndex": 52361,
+          "token": 67189016,
+          "index": 80151,
+          "name": "__Hotfix0__ShouldStopBeforeCheckpointTarget",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 160,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2718675,
+          "typeIndex": 52361,
+          "token": 67189017,
+          "index": 80152,
+          "name": "__Hotfix0_TryGetDistanceToNextCheckpoint",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 168,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2718716,
+          "typeIndex": 52361,
+          "token": 67189018,
+          "index": 80153,
+          "name": "__Hotfix0_TryGetCheckpointTargetPos",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 176,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2718752,
+          "typeIndex": 52361,
+          "token": 67189019,
+          "index": 80154,
+          "name": "__Hotfix0_TryGetNextAppearCheckpoint",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 184,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2718789,
+          "typeIndex": 52361,
+          "token": 67189020,
+          "index": 80155,
+          "name": "__Hotfix0_TryGetDistanceToMapPosInCheckpointsAhead",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 192,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2718840,
+          "typeIndex": 52361,
+          "token": 67189021,
+          "index": 80156,
+          "name": "__Hotfix0__CheckNextCpShouldNotSkip",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 200,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 63342,
+          "typeIndex": 52361,
+          "token": 67189022,
+          "index": 80157,
+          "name": "__Hotfix0_OnTick",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 208,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2718876,
+          "typeIndex": 52361,
+          "token": 67189023,
+          "index": 80158,
+          "name": "__Hotfix0_GetCurCheckpointType",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 216,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2718907,
+          "typeIndex": 52361,
+          "token": 67189024,
+          "index": 80159,
+          "name": "__Hotfix0_TrySkipIfCurrentCheckpointIsWaitForSeconds",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 224,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2718960,
+          "typeIndex": 52361,
+          "token": 67189025,
+          "index": 80160,
+          "name": "__Hotfix0__GetNextGrid",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 232,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2718983,
+          "typeIndex": 52361,
+          "token": 67189026,
+          "index": 80161,
+          "name": "__Hotfix0_GetLocatorPosition",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 240,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2719012,
+          "typeIndex": 52361,
+          "token": 67189027,
+          "index": 80162,
+          "name": "__Hotfix0_GetNextGrid",
+          "typeName": "XLua.DelegateBridge",
+          "static": true,
+          "offset": 248,
+          "unboxedOffset": null
+        }
+      ],
+      "methods": [
+        {
+          "nameIndex": 2714845,
+          "declaringType": 10788,
+          "returnType": 76377,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100734699,
+          "flags": 2502,
+          "iflags": 0,
+          "slot": 7,
+          "parameterCount": 0,
+          "index": 71402,
+          "image": "Assembly-CSharp.dll",
+          "address": 6451712464,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.DirectionCursor.get_distToExit",
+          "returnTypeName": "float",
+          "parameters": []
+        },
+        {
+          "nameIndex": 2714860,
+          "declaringType": 10788,
+          "returnType": 76377,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100734700,
+          "flags": 2502,
+          "iflags": 0,
+          "slot": 8,
+          "parameterCount": 0,
+          "index": 71403,
+          "image": "Assembly-CSharp.dll",
+          "address": 6451711280,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.DirectionCursor.get_distToExitPrecise",
+          "returnTypeName": "float",
+          "parameters": []
+        },
+        {
+          "nameIndex": 2717427,
+          "declaringType": 10788,
+          "returnType": 76377,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100734701,
+          "flags": 2182,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 0,
+          "index": 71404,
+          "image": "Assembly-CSharp.dll",
+          "address": 6451712944,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.DirectionCursor.get_totalDist",
+          "returnTypeName": "float",
+          "parameters": []
+        },
+        {
+          "nameIndex": 2717441,
+          "declaringType": 10788,
+          "returnType": 84484,
+          "parameterStart": 71503,
+          "genericContainerIndex": -1,
+          "token": 100734702,
+          "flags": 2177,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 1,
+          "index": 71405,
+          "image": "Assembly-CSharp.dll",
+          "address": 6451713040,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.DirectionCursor.set_totalDist",
+          "returnTypeName": "void",
+          "parameters": [
+            {
+              "nameIndex": 113,
+              "token": 134289237,
+              "typeIndex": 76377,
+              "index": 71503,
+              "name": "value",
+              "typeName": "float"
+            }
+          ]
+        },
+        {
+          "nameIndex": 2717455,
+          "declaringType": 10788,
+          "returnType": 60309,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100734703,
+          "flags": 2182,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 0,
+          "index": 71406,
+          "image": "Assembly-CSharp.dll",
+          "address": 6451711184,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.DirectionCursor.get_cursorIndex",
+          "returnTypeName": "int",
+          "parameters": []
+        },
+        {
+          "nameIndex": 2715559,
+          "declaringType": 10788,
+          "returnType": 46024,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100734704,
+          "flags": 2246,
+          "iflags": 0,
+          "slot": 4,
+          "parameterCount": 0,
+          "index": 71407,
+          "image": "Assembly-CSharp.dll",
+          "address": 6451711088,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.DirectionCursor.get_alwaysCheckCurrentPoint",
+          "returnTypeName": "bool",
+          "parameters": []
+        },
+        {
+          "nameIndex": 2717478,
+          "declaringType": 10788,
+          "returnType": 46024,
+          "parameterStart": 71504,
+          "genericContainerIndex": -1,
+          "token": 100734705,
+          "flags": 134,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 1,
+          "index": 71408,
+          "image": "Assembly-CSharp.dll",
+          "address": 6451705264,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.DirectionCursor.TryGetCurrentCheckpointType",
+          "returnTypeName": "bool",
+          "parameters": [
+            {
+              "nameIndex": 2717471,
+              "token": 134289238,
+              "typeIndex": 31735,
+              "index": 71504,
+              "name": "cpType",
+              "typeName": "Torappu.CheckpointType&"
+            }
+          ]
+        },
+        {
+          "nameIndex": 2717506,
+          "declaringType": 10788,
+          "returnType": 46024,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100734706,
+          "flags": 134,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 0,
+          "index": 71409,
+          "image": "Assembly-CSharp.dll",
+          "address": 6451696960,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.DirectionCursor.CheckObstacleLikeOrInvalid",
+          "returnTypeName": "bool",
+          "parameters": []
+        },
+        {
+          "nameIndex": 2717549,
+          "declaringType": 10788,
+          "returnType": 84484,
+          "parameterStart": 71505,
+          "genericContainerIndex": -1,
+          "token": 100734707,
+          "flags": 134,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 1,
+          "index": 71410,
+          "image": "Assembly-CSharp.dll",
+          "address": 6451696848,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.DirectionCursor.AssignHostRouteProgress",
+          "returnTypeName": "void",
+          "parameters": [
+            {
+              "nameIndex": 2717533,
+              "token": 134289239,
+              "typeIndex": 60309,
+              "index": 71505,
+              "name": "hostCursorIndex",
+              "typeName": "int"
+            }
+          ]
+        },
+        {
+          "nameIndex": 107,
+          "declaringType": 10788,
+          "returnType": 84484,
+          "parameterStart": 71506,
+          "genericContainerIndex": -1,
+          "token": 100734708,
+          "flags": 6278,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 8,
+          "index": 71411,
+          "image": "Assembly-CSharp.dll",
+          "address": 6451710576,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.DirectionCursor..ctor",
+          "returnTypeName": "void",
+          "parameters": [
+            {
+              "nameIndex": 1073447,
+              "token": 134289240,
+              "typeIndex": 71683,
+              "index": 71506,
+              "name": "route",
+              "typeName": "Torappu.Battle.Route"
+            },
+            {
+              "nameIndex": 440684,
+              "token": 134289241,
+              "typeIndex": 108826,
+              "index": 71507,
+              "name": "snapshot",
+              "typeName": "Torappu.Battle.Scheduler/SchedulerSnapshot"
+            },
+            {
+              "nameIndex": 16035,
+              "token": 134289242,
+              "typeIndex": 84138,
+              "index": 71508,
+              "name": "offset",
+              "typeName": "UnityEngine.Vector2"
+            },
+            {
+              "nameIndex": 7039,
+              "token": 134289243,
+              "typeIndex": 45192,
+              "index": 71509,
+              "name": "obj",
+              "typeName": "Torappu.Battle.BObject"
+            },
+            {
+              "nameIndex": 2714907,
+              "token": 134289244,
+              "typeIndex": 46049,
+              "index": 71510,
+              "name": "ignoreAllButMoveCp",
+              "typeName": "bool"
+            },
+            {
+              "nameIndex": 1226826,
+              "token": 134289245,
+              "typeIndex": 46049,
+              "index": 71511,
+              "name": "visitEveryTileCenter",
+              "typeName": "bool"
+            },
+            {
+              "nameIndex": 1226847,
+              "token": 134289246,
+              "typeIndex": 46049,
+              "index": 71512,
+              "name": "visitEveryNodeCenter",
+              "typeName": "bool"
+            },
+            {
+              "nameIndex": 2716599,
+              "token": 134289247,
+              "typeIndex": 46049,
+              "index": 71513,
+              "name": "alwaysCheckCurrentPoint",
+              "typeName": "bool"
+            }
+          ]
+        },
+        {
+          "nameIndex": 3172,
+          "declaringType": 10788,
+          "returnType": 84484,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100734709,
+          "flags": 198,
+          "iflags": 0,
+          "slot": 5,
+          "parameterCount": 0,
+          "index": 71412,
+          "image": "Assembly-CSharp.dll",
+          "address": 6451704224,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.DirectionCursor.Reset",
+          "returnTypeName": "void",
+          "parameters": []
+        },
+        {
+          "nameIndex": 1927034,
+          "declaringType": 10788,
+          "returnType": 46024,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100734710,
+          "flags": 454,
+          "iflags": 0,
+          "slot": 9,
+          "parameterCount": 0,
+          "index": 71413,
+          "image": "Assembly-CSharp.dll",
+          "address": 6451697424,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.DirectionCursor.CheckReached",
+          "returnTypeName": "bool",
+          "parameters": []
+        },
+        {
+          "nameIndex": 1920977,
+          "declaringType": 10788,
+          "returnType": 46024,
+          "parameterStart": 71514,
+          "genericContainerIndex": -1,
+          "token": 100734711,
+          "flags": 454,
+          "iflags": 0,
+          "slot": 10,
+          "parameterCount": 3,
+          "index": 71414,
+          "image": "Assembly-CSharp.dll",
+          "address": 6451703824,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.DirectionCursor.PredictReached",
+          "returnTypeName": "bool",
+          "parameters": [
+            {
+              "nameIndex": 1920964,
+              "token": 134289248,
+              "typeIndex": 76377,
+              "index": 71514,
+              "name": "stepDistance",
+              "typeName": "float"
+            },
+            {
+              "nameIndex": 523294,
+              "token": 134289249,
+              "typeIndex": 32359,
+              "index": 71515,
+              "name": "direction",
+              "typeName": "UnityEngine.Vector2&"
+            },
+            {
+              "nameIndex": 2290279,
+              "token": 134289250,
+              "typeIndex": 32359,
+              "index": 71516,
+              "name": "nextPos",
+              "typeName": "UnityEngine.Vector2&"
+            }
+          ]
+        },
+        {
+          "nameIndex": 2717573,
+          "declaringType": 10788,
+          "returnType": 84138,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100734712,
+          "flags": 134,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 0,
+          "index": 71415,
+          "image": "Assembly-CSharp.dll",
+          "address": 6451700464,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.DirectionCursor.GetNextTarget",
+          "returnTypeName": "UnityEngine.Vector2",
+          "parameters": []
+        },
+        {
+          "nameIndex": 2717587,
+          "declaringType": 10788,
+          "returnType": 84138,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100734713,
+          "flags": 452,
+          "iflags": 0,
+          "slot": 11,
+          "parameterCount": 0,
+          "index": 71416,
+          "image": "Assembly-CSharp.dll",
+          "address": 6451708480,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.DirectionCursor._GetNextTarget",
+          "returnTypeName": "UnityEngine.Vector2",
+          "parameters": []
+        },
+        {
+          "nameIndex": 2717602,
+          "declaringType": 10788,
+          "returnType": 56286,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100734714,
+          "flags": 134,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 0,
+          "index": 71417,
+          "image": "Assembly-CSharp.dll",
+          "address": 6451700016,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.DirectionCursor.GetNextPosRelatedCheckPointGridPosition",
+          "returnTypeName": "Torappu.GridPosition",
+          "parameters": []
+        },
+        {
+          "nameIndex": 1920947,
+          "declaringType": 10788,
+          "returnType": 84138,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100734715,
+          "flags": 454,
+          "iflags": 0,
+          "slot": 12,
+          "parameterCount": 0,
+          "index": 71418,
+          "image": "Assembly-CSharp.dll",
+          "address": 6451697936,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.DirectionCursor.GetNextDirection",
+          "returnTypeName": "UnityEngine.Vector2",
+          "parameters": []
+        },
+        {
+          "nameIndex": 2716915,
+          "declaringType": 10788,
+          "returnType": 84138,
+          "parameterStart": 71517,
+          "genericContainerIndex": -1,
+          "token": 100734716,
+          "flags": 134,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 1,
+          "index": 71419,
+          "image": "Assembly-CSharp.dll",
+          "address": 6451700624,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.DirectionCursor.GetNextTurn",
+          "returnTypeName": "UnityEngine.Vector2",
+          "parameters": [
+            {
+              "nameIndex": 555008,
+              "token": 134289251,
+              "typeIndex": 84138,
+              "index": 71517,
+              "name": "moveDir",
+              "typeName": "UnityEngine.Vector2"
+            }
+          ]
+        },
+        {
+          "nameIndex": 2717679,
+          "declaringType": 10788,
+          "returnType": 84138,
+          "parameterStart": 71518,
+          "genericContainerIndex": -1,
+          "token": 100734717,
+          "flags": 134,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 3,
+          "index": 71420,
+          "image": "Assembly-CSharp.dll",
+          "address": 6451702960,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.DirectionCursor.PredictFuturePosition",
+          "returnTypeName": "UnityEngine.Vector2",
+          "parameters": [
+            {
+              "nameIndex": 2716951,
+              "token": 134289252,
+              "typeIndex": 76377,
+              "index": 71518,
+              "name": "predictDist",
+              "typeName": "float"
+            },
+            {
+              "nameIndex": 2717642,
+              "token": 134289253,
+              "typeIndex": 46049,
+              "index": 71519,
+              "name": "updateCursor",
+              "typeName": "bool"
+            },
+            {
+              "nameIndex": 2717655,
+              "token": 134289254,
+              "typeIndex": 46049,
+              "index": 71520,
+              "name": "skipDisappearCheckpoint",
+              "typeName": "bool"
+            }
+          ]
+        },
+        {
+          "nameIndex": 2717722,
+          "declaringType": 10788,
+          "returnType": 84138,
+          "parameterStart": 71521,
+          "genericContainerIndex": -1,
+          "token": 100734718,
+          "flags": 134,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 2,
+          "index": 71421,
+          "image": "Assembly-CSharp.dll",
+          "address": 6451702016,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.DirectionCursor.PredictFuturePositionAlongPath",
+          "returnTypeName": "UnityEngine.Vector2",
+          "parameters": [
+            {
+              "nameIndex": 2716951,
+              "token": 134289255,
+              "typeIndex": 76377,
+              "index": 71521,
+              "name": "predictDist",
+              "typeName": "float"
+            },
+            {
+              "nameIndex": 2717701,
+              "token": 134289256,
+              "typeIndex": 31928,
+              "index": 71522,
+              "name": "predictedCursorIndex",
+              "typeName": "int&"
+            }
+          ]
+        },
+        {
+          "nameIndex": 2717763,
+          "declaringType": 10788,
+          "returnType": 46024,
+          "parameterStart": 71523,
+          "genericContainerIndex": -1,
+          "token": 100734719,
+          "flags": 129,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 1,
+          "index": 71422,
+          "image": "Assembly-CSharp.dll",
+          "address": 6451710112,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.DirectionCursor._ShouldStopBeforeCheckpointTarget",
+          "returnTypeName": "bool",
+          "parameters": [
+            {
+              "nameIndex": 2717753,
+              "token": 134289257,
+              "typeIndex": 60309,
+              "index": 71523,
+              "name": "curCursor",
+              "typeName": "int"
+            }
+          ]
+        },
+        {
+          "nameIndex": 2717797,
+          "declaringType": 10788,
+          "returnType": 46024,
+          "parameterStart": 71524,
+          "genericContainerIndex": -1,
+          "token": 100734720,
+          "flags": 134,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 1,
+          "index": 71423,
+          "image": "Assembly-CSharp.dll",
+          "address": 6451706144,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.DirectionCursor.TryGetDistanceToNextCheckpoint",
+          "returnTypeName": "bool",
+          "parameters": [
+            {
+              "nameIndex": 492268,
+              "token": 134289258,
+              "typeIndex": 32190,
+              "index": 71524,
+              "name": "distance",
+              "typeName": "float&"
+            }
+          ]
+        },
+        {
+          "nameIndex": 2717841,
+          "declaringType": 10788,
+          "returnType": 46024,
+          "parameterStart": 71525,
+          "genericContainerIndex": -1,
+          "token": 100734721,
+          "flags": 134,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 2,
+          "index": 71424,
+          "image": "Assembly-CSharp.dll",
+          "address": 6451704816,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.DirectionCursor.TryGetCheckpointTargetPos",
+          "returnTypeName": "bool",
+          "parameters": [
+            {
+              "nameIndex": 2717828,
+              "token": 134289259,
+              "typeIndex": 60309,
+              "index": 71525,
+              "name": "cursorOffset",
+              "typeName": "int"
+            },
+            {
+              "nameIndex": 2716873,
+              "token": 134289260,
+              "typeIndex": 31861,
+              "index": 71526,
+              "name": "targetGrid",
+              "typeName": "Torappu.GridPosition&"
+            }
+          ]
+        },
+        {
+          "nameIndex": 2717878,
+          "declaringType": 10788,
+          "returnType": 46024,
+          "parameterStart": 71527,
+          "genericContainerIndex": -1,
+          "token": 100734722,
+          "flags": 134,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 2,
+          "index": 71425,
+          "image": "Assembly-CSharp.dll",
+          "address": 6451706640,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.DirectionCursor.TryGetNextAppearCheckpoint",
+          "returnTypeName": "bool",
+          "parameters": [
+            {
+              "nameIndex": 2717867,
+              "token": 134289261,
+              "typeIndex": 31928,
+              "index": 71527,
+              "name": "nextMoveCp",
+              "typeName": "int&"
+            },
+            {
+              "nameIndex": 2481804,
+              "token": 134289262,
+              "typeIndex": 32359,
+              "index": 71528,
+              "name": "mapPos",
+              "typeName": "UnityEngine.Vector2&"
+            }
+          ]
+        },
+        {
+          "nameIndex": 2717905,
+          "declaringType": 10788,
+          "returnType": 46024,
+          "parameterStart": 71529,
+          "genericContainerIndex": -1,
+          "token": 100734723,
+          "flags": 134,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 2,
+          "index": 71426,
+          "image": "Assembly-CSharp.dll",
+          "address": 6451705472,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.DirectionCursor.TryGetDistanceToMapPosInCheckpointsAhead",
+          "returnTypeName": "bool",
+          "parameters": [
+            {
+              "nameIndex": 1280555,
+              "token": 134289263,
+              "typeIndex": 56286,
+              "index": 71529,
+              "name": "gridPos",
+              "typeName": "Torappu.GridPosition"
+            },
+            {
+              "nameIndex": 492268,
+              "token": 134289264,
+              "typeIndex": 32190,
+              "index": 71530,
+              "name": "distance",
+              "typeName": "float&"
+            }
+          ]
+        },
+        {
+          "nameIndex": 2717946,
+          "declaringType": 10788,
+          "returnType": 46024,
+          "parameterStart": 71531,
+          "genericContainerIndex": -1,
+          "token": 100734724,
+          "flags": 129,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 1,
+          "index": 71427,
+          "image": "Assembly-CSharp.dll",
+          "address": 6451707424,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.DirectionCursor._CheckNextCpShouldNotSkip",
+          "returnTypeName": "bool",
+          "parameters": [
+            {
+              "nameIndex": 2716746,
+              "token": 134289265,
+              "typeIndex": 60309,
+              "index": 71531,
+              "name": "cur_cursor",
+              "typeName": "int"
+            }
+          ]
+        },
+        {
+          "nameIndex": 3165,
+          "declaringType": 10788,
+          "returnType": 84484,
+          "parameterStart": 71532,
+          "genericContainerIndex": -1,
+          "token": 100734725,
+          "flags": 134,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 2,
+          "index": 71428,
+          "image": "Assembly-CSharp.dll",
+          "address": 6451701680,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.DirectionCursor.OnTick",
+          "returnTypeName": "void",
+          "parameters": [
+            {
+              "nameIndex": 3876,
+              "token": 134289266,
+              "typeIndex": 54451,
+              "index": 71532,
+              "name": "deltaTime",
+              "typeName": "Torappu.FP"
+            },
+            {
+              "nameIndex": 2717972,
+              "token": 134289267,
+              "typeIndex": 46049,
+              "index": 71533,
+              "name": "checkReached",
+              "typeName": "bool"
+            }
+          ]
+        },
+        {
+          "nameIndex": 2717985,
+          "declaringType": 10788,
+          "returnType": 48943,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100734726,
+          "flags": 134,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 0,
+          "index": 71429,
+          "image": "Assembly-CSharp.dll",
+          "address": 6451697616,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.DirectionCursor.GetCurCheckpointType",
+          "returnTypeName": "Torappu.CheckpointType",
+          "parameters": []
+        },
+        {
+          "nameIndex": 2718033,
+          "declaringType": 10788,
+          "returnType": 46024,
+          "parameterStart": 71534,
+          "genericContainerIndex": -1,
+          "token": 100734727,
+          "flags": 134,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 1,
+          "index": 71430,
+          "image": "Assembly-CSharp.dll",
+          "address": 6451707024,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.DirectionCursor.TrySkipIfCurrentCheckpointIsWaitForSeconds",
+          "returnTypeName": "bool",
+          "parameters": [
+            {
+              "nameIndex": 2718006,
+              "token": 134289268,
+              "typeIndex": 46049,
+              "index": 71534,
+              "name": "_useSkipInsteadOfSetToZero",
+              "typeName": "bool"
+            }
+          ]
+        },
+        {
+          "nameIndex": 2718076,
+          "declaringType": 10788,
+          "returnType": 56286,
+          "parameterStart": 71535,
+          "genericContainerIndex": -1,
+          "token": 100734728,
+          "flags": 132,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 1,
+          "index": 71431,
+          "image": "Assembly-CSharp.dll",
+          "address": 6451707872,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.DirectionCursor._GetNextGrid",
+          "returnTypeName": "Torappu.GridPosition",
+          "parameters": [
+            {
+              "nameIndex": 1280555,
+              "token": 134289269,
+              "typeIndex": 56286,
+              "index": 71535,
+              "name": "gridPos",
+              "typeName": "Torappu.GridPosition"
+            }
+          ]
+        },
+        {
+          "nameIndex": 2718089,
+          "declaringType": 10788,
+          "returnType": 84138,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100734729,
+          "flags": 134,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 0,
+          "index": 71432,
+          "image": "Assembly-CSharp.dll",
+          "address": 6451697792,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.DirectionCursor.GetLocatorPosition",
+          "returnTypeName": "UnityEngine.Vector2",
+          "parameters": []
+        },
+        {
+          "nameIndex": 2716720,
+          "declaringType": 10788,
+          "returnType": 56286,
+          "parameterStart": 71536,
+          "genericContainerIndex": -1,
+          "token": 100734730,
+          "flags": 134,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 1,
+          "index": 71433,
+          "image": "Assembly-CSharp.dll",
+          "address": 6451699888,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.DirectionCursor.GetNextGrid",
+          "returnTypeName": "Torappu.GridPosition",
+          "parameters": [
+            {
+              "nameIndex": 1280555,
+              "token": 134289270,
+              "typeIndex": 56286,
+              "index": 71536,
+              "name": "gridPos",
+              "typeName": "Torappu.GridPosition"
+            }
+          ]
+        },
+        {
+          "nameIndex": 2718108,
+          "declaringType": 10788,
+          "returnType": 46024,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100734731,
+          "flags": 1,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 0,
+          "index": 71434,
+          "image": "Assembly-CSharp.dll",
+          "address": 6451683104,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.DirectionCursor.<>xLuaBaseProxy_get_alwaysCheckCurrentPoint",
+          "returnTypeName": "bool",
+          "parameters": []
+        },
+        {
+          "nameIndex": 2589198,
+          "declaringType": 10788,
+          "returnType": 84484,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100734732,
+          "flags": 1,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 0,
+          "index": 71435,
+          "image": "Assembly-CSharp.dll",
+          "address": 6451707408,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.DirectionCursor.<>xLuaBaseProxy_Reset",
+          "returnTypeName": "void",
+          "parameters": []
+        }
+      ]
+    }
+  ]
+}

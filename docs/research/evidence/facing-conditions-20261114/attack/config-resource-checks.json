@@ -1,0 +1,60 @@
+{
+  "collectedOn": "2026-11-14",
+  "scope": "Historical decoded witnesses; only unchanged Bundle bytes may be reused as current local configuration evidence.",
+  "script": {
+    "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/facing-conditions-20261114/attack/check-config-resources.py",
+    "bytes": 1617,
+    "sha256": "4dcadeeeb7fb1e1e4e7599299e759b00b507a6b7c7cdcdccfc59c55bc030e362"
+  },
+  "archives": [
+    {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/action-timing-20261014/records.json",
+      "bytes": 1249656,
+      "sha256": "23ef4428645c740aa4f6fb0859bc254920c5f93dcca688f49f099fef3fbfb664"
+    },
+    {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/healing-settlement-20261103/content/characters/decoded-content.json",
+      "bytes": 33191,
+      "sha256": "44632ccc565b2cc616c61e5f21ab58f52816cf91b952a38c964ff65e2929b196"
+    }
+  ],
+  "checks": [
+    {
+      "recorded": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_base_0.ab",
+        "sha256": "da7e5c5fd620eac9b7020f143423285b87eea861a0b6cf6534142db7dcf06b5b"
+      },
+      "current": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_base_0.ab",
+        "bytes": 147859,
+        "sha256": "8ad3f66ba83f9bd1b5b256009ff262eead54ac4d07bc921d1f5b7337226cf7df"
+      },
+      "identicalBytes": false
+    },
+    {
+      "recorded": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+        "sha256": "14306a31b1856f61b25812a69a2a057b7c4634561fb2c2bccc42fb37ee41a27e"
+      },
+      "current": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+        "bytes": 1367500,
+        "sha256": "0d0b4c0f9252c14a69a20d4bea09527403dd3eddfc2f7bcd757c3c30cf37ffc3"
+      },
+      "identicalBytes": false
+    },
+    {
+      "recorded": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_117_myrrh.ab",
+        "bytes": 17901,
+        "sha256": "e8df52d0fc058c98b4e1cc655adc20e157ecf3386dcd93be8a9b62708a1d8ef9"
+      },
+      "current": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_117_myrrh.ab",
+        "bytes": 17901,
+        "sha256": "e8df52d0fc058c98b4e1cc655adc20e157ecf3386dcd93be8a9b62708a1d8ef9"
+      },
+      "identicalBytes": true
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "provenance": {
+    "collectedAt": "2026-11-13T17:15:39.280044+00:00",
+    "scope": "Selected local JSON documents only. Value matches locate potential references; they do not resolve or validate bindings.",
+    "tool": {
+      "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/config.py",
+      "sha256": "67c2a913386059a57f9316f25e532c9dd20cdc4adb91d820065d09fd9dec76e4"
+    },
+    "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+    "argv": [
+      ".cache/native-research/checkpoint-nondefault-20261107/mirror-current/zh_CN/gamedata/levels/activities/act24side/level_act24side_09.json",
+      "--source-url",
+      "https://github.com/Kengxxiao/ArknightsGameData",
+      "--revision",
+      "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+      "--out",
+      "docs/research/evidence/facing-conditions-20261114/sign/fire-dragon-ref.json",
+      "select",
+      "/enemyDbRefs/*",
+      "--where",
+      "/id",
+      "\"enemy_1537_mhrors\"",
+      "--field",
+      "/id",
+      "--field",
+      "/level",
+      "--field",
+      "/overwrittenData/prefabKey"
+    ],
+    "sourceUrl": "https://github.com/Kengxxiao/ArknightsGameData",
+    "revision": "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+    "inputs": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/checkpoint-nondefault-20261107/mirror-current/zh_CN/gamedata/levels/activities/act24side/level_act24side_09.json",
+        "bytes": 272140,
+        "sha256": "bca200e5d536f5321a6153e046805a3269fa6a3e3587162d9b23000e0adc59a3",
+        "status": "ok",
+        "matched": 1
+      }
+    ]
+  },
+  "result": {
+    "matched": 1,
+    "matches": [
+      {
+        "source": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/checkpoint-nondefault-20261107/mirror-current/zh_CN/gamedata/levels/activities/act24side/level_act24side_09.json",
+        "pointer": "/enemyDbRefs/0",
+        "fields": {
+          "/id": "enemy_1537_mhrors",
+          "/level": 0,
+          "/overwrittenData/prefabKey": {
+            "m_defined": false,
+            "m_value": null
+          }
+        },
+        "missingFields": []
+      }
+    ],
+    "complete": true,
+    "scanned": 1,
+    "succeeded": 1,
+    "errors": []
+  }
+}

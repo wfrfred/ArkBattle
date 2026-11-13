@@ -1,0 +1,148 @@
+{
+  "collectedOn": "2026-11-14",
+  "scope": "AbstractAnimatedAbility普通施法起始转向、3个native覆盖及有限实际配置；不设计项目API。",
+  "confirmed": [
+    {
+      "id": "start-order",
+      "statement": "Ability.StartCastingInternal写入isCasting/启动帧，再虚调slot54 OnCastStart；AbstractAnimatedAbility先调用EasyToStartAbility.OnCastStart(包括AbilityStandard父程序)，再虚slot108 DealWithFaceDirection，最后GetAnimKey并启动动画。",
+      "proof": {
+        "activation.json": [
+          "0x1806042bb",
+          "0x1806042db",
+          "0x1806042f5",
+          "0x180604308"
+        ],
+        "ability.json": [
+          "0x180f912e2",
+          "0x180f912fe",
+          "0x180f9130c",
+          "0x180f91332",
+          "0x180f91389"
+        ]
+      }
+    },
+    {
+      "id": "not-every-tick",
+      "statement": "所查普通Ability.OnTick、AbilityStandard.OnTick/UpdateTargets、EasyToStartAbility及_DoCast迭代器没有重复调用DealWithFaceDirection或FaceTo；普通OnCastEnd亦无该调用。重新索敌、下一spell、命中不因此自动重转。该结论限普通基类，特殊子类/动画程序/XLua另论。",
+      "evidence": [
+        "ability.json",
+        "targeting-tick.json",
+        "cast-coroutine.json"
+      ]
+    },
+    {
+      "id": "base-policy",
+      "statement": "首个启用项依次为_faceToTarget(+0x190)、_faceToDefault(+0x191)、_faceToFront(+0x192)、_faceToFirstCastTarget(+0x193)。全部关闭直接返回；前面分支取得控制后不向后继续fallback。_forceFaceToDirection(+0x195)仅传下层force，不是独立触发。",
+      "evidence": "ability.json"
+    },
+    {
+      "id": "coordinates",
+      "statement": "target分支优先解析m_inputTarget内对象并读取当时mapPosition；该对象Unity无效时使用保存的输入位置。firstCastTarget分支要求m_castTargets有首项、其Ref有效且该Entity.get_alive为true，使用该对象mapPosition；不循环寻找后来可用的项。",
+      "proof": {
+        "ability.json": [
+          "0x180f90423",
+          "0x180f90468",
+          "0x180f904a4",
+          "0x180f904d3",
+          "0x180f90576",
+          "0x180f9059b",
+          "0x180f905f7",
+          "0x180f905d8"
+        ],
+        "slot-helper.json": [
+          "0x180005624",
+          "0x180005634",
+          "0x18000563e",
+          "0x180005651"
+        ],
+        "../gates/metadata.json": "Entity slot40=get_alive；不要混成get_isAlive。"
+      }
+    },
+    {
+      "id": "down-animation",
+      "statement": "_checkFaceToFirstCastTargetDownAttack(+0x194)仅在CheckDownAttack中配合firstCastTarget使用faceDirection==DOWN；GetAnimKey在转向后查询CheckDownAttack/CheckUpAttack以选动画。它不是额外的转向触发点，CheckUpAttack也没有对称使用这项标志。",
+      "evidence": "ability.json"
+    },
+    {
+      "id": "target-centered-override",
+      "statement": "TargetCenteredAreaMeleeAttack在faceToTarget关闭时回base；启用时要求宿主存在且alive，按_ResolveCenterTarget确定对象，存在则FaceToTarget，不存在则FaceToDirection；宿主不alive则返回。",
+      "proof": {
+        "overrides-start.json": [
+          "0x180f55281",
+          "0x180f552e8",
+          "0x180f552f6",
+          "0x180f55305",
+          "0x180f55349",
+          "0x180f55399",
+          "0x180f553b8"
+        ]
+      }
+    },
+    {
+      "id": "tile-override",
+      "statement": "CastOnTileAbility先执行base；随后仅_faceToTile(+0x1f0)启用且m_castTiles非空时朝第一个Tile的mapPosition FaceToTarget，因此可在一次起始中覆盖base方向。",
+      "evidence": [
+        "overrides-start.json",
+        "targeting-tick.json"
+      ]
+    },
+    {
+      "id": "pyczog-override",
+      "statement": "PyczogMultiRangedAttack不调用base，而是_UpdateTargetDirection后由m_targetDirection索引方向表，传force到Entity.FaceTo。不能将其转向归结为base四个face标志；本批未闭合该特化的实际Content绑定。",
+      "evidence": [
+        "overrides-start.json",
+        "targeting-tick.json"
+      ]
+    },
+    {
+      "id": "outer-distance",
+      "statement": "上述FaceToTarget仍须经过统一距离门控，再进入force/异常准入。约0.04平方距离阈值的精确常量由同批gates/target-threshold.json记录，force不越过这个外层条件。",
+      "evidence": "../gates/target-threshold.json"
+    }
+  ],
+  "configuration": {
+    "evidence": "current-config/decoded.json",
+    "sourceStatus": "旧归档只用于定位对象；本次按当前Bundle重新解码。config-resource-checks.json说明enemy/skills包已变化、myrrh包字节相同，未把旧Bundle数据冒充当前提取。",
+    "witnesses": [
+      {
+        "content": "enemy_1003_ncbow",
+        "binding": "Enemy(-5684249958478128563)._modes → Default(1127596193800444493)._attack/_combat",
+        "components": [
+          "1607977390229740109",
+          "-5603903004385289651"
+        ],
+        "configuration": "target=1；default/front/firstTarget/force=0；组件enabled=1。"
+      },
+      {
+        "content": "char_117_myrrh普通治疗",
+        "binding": "Character(-6208793881063593099)._modes → Default(6123565879521897333)._attack",
+        "components": [
+          "-4946051259289834635"
+        ],
+        "configuration": "target=1，其余模式与force=0；组件enabled=1。"
+      },
+      {
+        "content": "skchr_mudrok_2 RollAttack",
+        "binding": "CastSkill(-8621369842960336780)._extraAbilities直接引用RollAttack",
+        "components": [
+          "8290759946353997940"
+        ],
+        "configuration": "target/default/front/firstTarget/force均0；组件enabled=1。只证明该攻击程序不请求基类改向，不证明单位在整个技能期间绝不被其它程序改向。"
+      },
+      {
+        "content": "skchr_mostma_2 ChannelingMeleeAttack",
+        "binding": "已提取同GO的CastSkill、ChannelingMeleeAttack和ThreePartChannelingAnimation；未将m_Enabled等同某次实战已发动。",
+        "components": [
+          "1225678316375065974"
+        ],
+        "configuration": "default=1，target/front/firstTarget/force=0；同GO动画组件的front/default均0。"
+      }
+    ]
+  },
+  "limits": [
+    "本批是静态native与资源证据，未启动游戏、执行实际技能或核验XLua热更新。",
+    "有限配置不是全游普查；未给firstCastTarget/faceToTile/force每个模式寻找实际启用正例，不从未命中推导未使用。",
+    "三个DealWithFaceDirection native override按当前metadata同名/slot定位，不声称穷举所有方向写入程序；单独动画行为、显式节点、移动与受力见同批其它子目录。",
+    "TargetCenteredAreaMeleeAttack的_ResolveCenterTarget及Pyczog的完整选向业务不在本轮Content绑定结论内；这里只确认其与基类转向不同的调用分支。"
+  ]
+}

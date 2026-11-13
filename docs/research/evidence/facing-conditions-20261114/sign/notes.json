@@ -1,0 +1,76 @@
+{
+  "collectedOn": "2026-11-14",
+  "scope": "有效左右符号的下游准入、保留、同步及延迟路径；普通关卡火龙正例绑定。Entity.FaceTo公共准入由相邻gates批次负责。",
+  "facts": [
+    {
+      "id": "stun-blocks-publication",
+      "status": "NATIVE_CONFIRMED",
+      "statement": "Enemy.OnFaceChanged的普通native分支在isStunned时跳过Unit.OnFaceChanged和SetBodyDirectionWithPolicy；该检查不区分force。FaceTo目标向量已写不等于有效faceSign已变。",
+      "evidence": ["animator-conditions.json:77790@0x180abee68-0x180abeeab"]
+    },
+    {
+      "id": "single-spine-retains-vertical-sign",
+      "status": "NATIVE_CONFIRMED",
+      "statement": "SingleSpineAnimator先ParseDirection(newDir,0)。若不是LEFT/RIGHT，仅newDir.x<-0.05或>+0.05才能更新左右；否则保留。force不绕过选择。",
+      "evidence": ["animator-conditions.json:64692@0x180636784-0x1806367ea", "metadata.json:literals"]
+    },
+    {
+      "id": "character-threshold-differs",
+      "status": "NATIVE_CONFIRMED",
+      "statement": "CharacterAnimator的普通纵向分支用MathUtil.LT/GT与±0.2比较，夹区沿用当前左右；它计算四向时另有0.25偏置。不能统一套用SingleSpine的0.05。",
+      "evidence": ["animator-variants.json:64441@0x180618531-0x180618697", "metadata.json:literals"]
+    },
+    {
+      "id": "single-character-sign-is-synchronous",
+      "status": "NATIVE_CONFIRMED",
+      "statement": "SingleSpine/Character有FaceSwitcher时get_faceSign读m_currentLOrR；StartSwitch先同步写它再开始Tween，因此该符号不等视觉切换。LEFT=-1，RIGHT=+1。",
+      "evidence": ["animator-conditions.json:64426,64676,64515,64520"]
+    },
+    {
+      "id": "multi-sign-can-be-delayed",
+      "status": "NATIVE_CONFIRMED_WITHOUT_CONTENT_BINDING",
+      "statement": "MultiSpine→Spine→UnitAnimator没有get_faceSign覆写，读取m_faceSign；FaceSwitcher非立即分支经Tween回调_UpdateDirection→SetLeftOrRight写入，可延迟有效符号。首次或immediately分支直接回调。",
+      "evidence": ["metadata.json:animatorInheritance", "animator-variants.json:64631", "multi-spine-callbacks.json:64643,64536,64538,64532", "tween-constructor.json:64525", "animator-conditions.json:64520,64522,64982,65034"]
+    },
+    {
+      "id": "body-policy-separate",
+      "status": "NATIVE_CONFIRMED",
+      "statement": "BodyDirectionPolicy=DEFAULT_FOUR_WAYS(0)按向量设置身体四向，LEFT_OR_RIGHT(1)按当前有效faceLOrR。后者经Animator虚拟get_faceSign读取。Direction是UP0/RIGHT1/DOWN2/LEFT3。",
+      "evidence": ["metadata.json:types", "animator-conditions.json:77791", "body-facing.json:64985,67392,78887"]
+    },
+    {
+      "id": "empty-animator-exception",
+      "status": "NATIVE_CONFIRMED_BOUNDED",
+      "statement": "EmptyAnimator的普通get_faceSign恒返回+1；没有据此推论其所有内容的实际玩法需求。",
+      "evidence": ["animator-conditions.json:64485@0x18061e74c"]
+    }
+  ],
+  "content": {
+    "status": "STATIC_CONTENT_BINDING_CONFIRMED",
+    "unit": "enemy_1537_mhrors",
+    "level": "level_act24side_09.json",
+    "spawnPointer": "/waves/1/fragments/6/actions/1",
+    "spawnCount": 1,
+    "enemyLevel": 0,
+    "bornMode": 0,
+    "bundle": "battle/enm_pfb_18.ab",
+    "enemyPathId": "-7748510351821043559",
+    "animatorPathId": "7130553650164402329",
+    "faceSwitcherPathId": "-49800984984876903",
+    "talentPathId": "8187054859803166873",
+    "talentClass": "MhPartHpHudPluginTalent",
+    "talentHierarchy": ["enemy_1537_mhrors", "Talents", "TailCut"],
+    "validModeIndices": [0, 6],
+    "facePosition": -1,
+    "triggeredTemplate": "enemy_mhrors_tail_cut",
+    "consumerEvidence": "../../facing-semantics-20261113/part-application.json:75010,75013,75017",
+    "bindingEvidence": ["fire-dragon-level.json", "fire-dragon-ref.json", "fire-dragon-data.json", "fire-dragon-binding.json"],
+    "conclusion": "实际普通关卡火龙使用SingleSpine/FaceSwitcher，并由启用的TailCut组件按宿主faceSign改变部位HP和触发Buff；不是仅按类名推断。没有运行游戏。"
+  },
+  "limits": [
+    "未核实运行时XLua覆盖。",
+    "未穷举各Animator的实际Content配置；MultiSpine只有native类型与回调链证据。",
+    "不从眩晕时跳过发布推断解除后永久保留旧符号。",
+    "未设计项目面向Capability或摄像机近似。"
+  ]
+}

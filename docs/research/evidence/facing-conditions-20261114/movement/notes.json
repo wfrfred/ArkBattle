@@ -1,0 +1,118 @@
+{
+  "collectedOn": "2026-11-14",
+  "status": "STATIC_NATIVE_CONFIRMED_WITH_BOUNDED_GAPS",
+  "conclusions": [
+    {
+      "id": "birth",
+      "status": "NATIVE_CONFIRMED",
+      "statement": "Enemy.InitFaceTo与Enemy.OnBorn内联路径先检查_dontSetEnemyFaceByCursorWhenBorn；false时读取moveCursor.GetNextDirection，调用FaceTo(force=true,idle=false)，不经_CalculateFaceDirection。true时该段不改向。",
+      "evidence": [
+        "operations.json#InitFaceTo:0x180abc98b-0x180abca03",
+        "blocked-turn.json#OnBorn:0x180abe887-0x180abe8fc",
+        "cursor-type.json#slot12",
+        "blocked-wrappers.json#get_moveCursor"
+      ]
+    },
+    {
+      "id": "ordinary-move",
+      "status": "NATIVE_CONFIRMED",
+      "statement": "_MoveByRoute、_MoveInFearArea、_MoveInAttractArea均调用_MoveByCursor。改向段要求!m_disableSwitchFaceByMove、当前方向非零、PredictReached输出nextPos与当前位置差的平方模>0.0625，再_CalculateFaceDirection→FaceTo(force=false)。nextPos是局部导航目标（扣去本实例offset），不是每帧实际位移；距离当前目标不超过0.25时该段不转向。不可通格返回分支将比较向量写为零，因此该分支不尝试改向。",
+      "evidence": [
+        "initial-search.json#_MoveByCursor:0x180ac7a9c-0x180ac7af2",
+        "initial-search.json#_MoveByCursor:0x180ac7f0f-0x180ac7faf",
+        "callers.json#PredictReached:0x1808d30b2-0x1808d310b",
+        "constants.json#move-distance-squared-threshold"
+      ]
+    },
+    {
+      "id": "vertical-policy",
+      "status": "NATIVE_CONFIRMED",
+      "statement": "_useMoveDirAsFaceDir=true直接返回输入方向。否则，CheckAlmostVertical=true且非deterministic时才作摄像机投影；随后仍近竖直则请求moveCursor.GetNextTurn，非零使用它，否则保留当前方向。CheckAlmostVertical读取Vector2.up=(0,1)，比较abs(dot(direction,up))>0.99199998；该函数本身不归一化输入。",
+      "evidence": [
+        "initial-search.json#_CalculateFaceDirection:0x180ac679d-0x180ac6937",
+        "operations.json#CheckAlmostVertical",
+        "blocking.json#UnityEngine.Vector2..cctor:0x186dc030d-0x186dc0310",
+        "constants.json#almost-vertical-dot-threshold"
+      ]
+    },
+    {
+      "id": "fixed-direction",
+      "status": "NATIVE_CONFIRMED",
+      "statement": "_MoveToFixedDirection直接按传入方向移动并CalculateFaceDirection→FaceTo(false)，该函数没有_MoveByCursor的距离或m_disableSwitchFaceByMove门控；统一FaceTo准入仍独立生效。",
+      "evidence": [
+        "callers.json#_MoveToFixedDirection:0x180ac8822-0x180ac884c"
+      ]
+    },
+    {
+      "id": "reappear",
+      "status": "NATIVE_CONFIRMED",
+      "statement": "Enemy.OnDisappearChanged(false)从moveCursor.GetNextDirection取向量，经_CalculateFaceDirection后FaceTo(force=true)，不检查出生时dontSet开关；true分支切消失状态而不调用FaceTo。重新出现因而不能无条件解释为保留旧面向。",
+      "evidence": [
+        "callers.json#OnDisappearChanged:0x180abecbb-0x180abed6b"
+      ]
+    },
+    {
+      "id": "forced-position",
+      "status": "NATIVE_CONFIRMED",
+      "statement": "ForceSetPositionByWorldCoords计算归一化(targetPos-oldPosition)，提交位置后，方向非零才FaceTo(force=false)。不经_CalculateFaceDirection，也不检查m_disableSwitchFaceByMove。",
+      "evidence": [
+        "operations.json#ForceSetPositionByWorldCoords:0x180abc02b-0x180abc0c8",
+        "constants.json#safe-normalization-epsilon"
+      ]
+    },
+    {
+      "id": "blink",
+      "status": "NATIVE_CONFIRMED_BOUNDED",
+      "statement": "BlinkWithDirection在非零显式direction时FaceTo(false)。不切BlinkState的两个Blink辅助按预测/目标位置与旧位置差归一化，先SetPosition再非零FaceTo(false)。Blink(distance,...)的有效目的地路径也会先按未来位置差尝试FaceTo，随后按选项切状态或立即提交位置；Blink(grid,switchState=false)立即定位并改向，switchState=true改由BlinkState后续阶段处理；已提取BlinkState动画MoveNext中也有FaceTo(false)。不把所有Blink统一成保持面向，也不将动画具体帧时扩成通用结论。",
+      "evidence": [
+        "operations.json#Blink:0x180ab90b1-0x180ab90e3",
+        "operations.json#BlinkWithDirection:0x180ab8b66-0x180ab8b86",
+        "operations.json#BlinkWithoutSwitchToBlinkState:0x180ab8dd1-0x180ab8e1d",
+        "operations.json#BlinkToGridPositionWithoutSwitchToBlinkState:0x180ab89f7-0x180ab8a3b",
+        "operations.json#Blink(grid):0x180ab94d3-0x180ab9621",
+        "block-states.json#BlinkState.MoveNext:0x180aebeba"
+      ]
+    },
+    {
+      "id": "transport",
+      "status": "NATIVE_CONFIRMED",
+      "statement": "TransportInternal依次ReassignRoute、SetPosition(targetPos)、FaceTo(显式dir,force=false)，不从新旧位置计算取向。单独ReassignRoute与ChangePathMotionMode已提取函数本体无改向调用；不可由换路线推定立即改向，后续移动使用新Cursor。",
+      "evidence": [
+        "blocked-turn.json#TransportInternal:0x180ac3ec4-0x180ac3ef3",
+        "operations.json#ReassignRoute",
+        "operations.json#ChangePathMotionMode"
+      ]
+    },
+    {
+      "id": "calculate-horizontal-wrapper",
+      "status": "NATIVE_CONFIRMED",
+      "statement": "FaceToCalculateDirection先把moveDir.x>0映射为(1,0)，其余映射为(-1,0)，再CalculateFaceDirection→FaceTo(false)。直接调用者是RushAttack._moveByTarget两个分支，不是普通移动统一入口。",
+      "evidence": [
+        "operations.json#FaceToCalculateDirection:0x180abb267-0x180abb2af",
+        "callers.json#RushAttack._moveByTarget:0x180f6cd15,0x180f6cdab",
+        "constants.json#positive-horizontal",
+        "constants.json#negative-horizontal"
+      ]
+    },
+    {
+      "id": "blocking",
+      "status": "WIKI_NEED_NATIVE_NOT_CLOSED",
+      "statement": "有限追踪BlockManager.AddBlockee/UpdateBlockees/SearchBlockee、Enemy.RegisterBlocker/UnregisterBlocker/OnBlockeeChanged、_MoveToBlockPosition及Tween回调，未闭合阻挡建立时转向链。已检查直接调用和这些本体的虚slot90(0x6e0/0x6e8)候选；没有候选不证明其他状态/回调/热更新绝无改向。FaceToTarget候选78449实际GraphicFollowController._UpdateOwnerFace，不能充当阻挡证据。",
+      "evidence": [
+        "blocking-registration.json",
+        "blocker-owner.json",
+        "block-manager-tick.json",
+        "blocked-turn.json#OnBlockeeChanged",
+        "blocked-wrappers.json#FaceToDirection/Front/Back xrefs",
+        "blocking.json#GraphicFollowController._UpdateOwnerFace"
+      ]
+    }
+  ],
+  "limits": [
+    "本分工只判断调用者是否尝试改向及输入；Entity.FaceTo自身准入、force行为、OnFaceChanged发布与Animator有效符号另由同批gates及其他分工核验。",
+    "未执行游戏、验证活跃XLua或所有特化Prefab；字段开关的实际内容非默认值未在本分工穷举。",
+    "InitFaceTo关闭时保留此前字段事实；不凭这段代码决定Entity最初默认面向。",
+    "未逐个翻译football、control、trace等专属_CalculateFaceDirection调用者；原direct-xref候选在operations.json保留。",
+    "FaceToDirection等xrefs仅E8/E9直接候选；本次没有将未命中当作全局不存在证明。"
+  ]
+}

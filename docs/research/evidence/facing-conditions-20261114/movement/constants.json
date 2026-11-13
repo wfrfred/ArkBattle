@@ -1,0 +1,61 @@
+{
+  "provenance": {
+    "dll": {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+      "bytes": 223112680,
+      "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff"
+    },
+    "reference": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/facing-conditions-20261114/movement/operations.json",
+      "bytes": 717122,
+      "sha256": "28c7661923728b3dbaaca9cc9514580b8420a632515a1a74915ce5c9d68dbeba"
+    },
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/facing-conditions-20261114/movement/decode_constants.py",
+      "bytes": 1959,
+      "sha256": "0ceec2ba0ff2b0a191ae7d465a27f65e3df33377f1caee1533e75834ce3e2343"
+    }
+  },
+  "result": [
+    {
+      "label": "move-distance-squared-threshold",
+      "address": "0x1870afe58",
+      "format": "<f",
+      "rawHex": "0000803d",
+      "value": 0.0625,
+      "instruction": "0x180ac7f82"
+    },
+    {
+      "label": "almost-vertical-dot-threshold",
+      "address": "0x1870b03cc",
+      "format": "<f",
+      "rawHex": "b6f37d3f",
+      "value": 0.9919999837875366,
+      "instruction": "0x180b4bcc4"
+    },
+    {
+      "label": "positive-horizontal",
+      "address": "0x1870adbe0",
+      "format": "<f",
+      "rawHex": "0000803f",
+      "value": 1.0,
+      "instruction": "0x180abb275"
+    },
+    {
+      "label": "negative-horizontal",
+      "address": "0x1870addf8",
+      "format": "<f",
+      "rawHex": "000080bf",
+      "value": -1.0,
+      "instruction": "0x180abb27f"
+    },
+    {
+      "label": "safe-normalization-epsilon",
+      "address": "0x1870add88",
+      "format": "<f",
+      "rawHex": "acc52737",
+      "value": 9.999999747378752e-06,
+      "instruction": "0x180abc06d"
+    }
+  ]
+}

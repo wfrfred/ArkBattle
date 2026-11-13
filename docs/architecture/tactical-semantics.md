@@ -75,6 +75,7 @@ healFree 只限制治疗目标选择，明确 Ref 的 Healing 不重新检查选
 | SPACE-03 地穴与持续地形 | 地面进入地穴触发坠落；毒雾、沼泽、深水等按各自规则结算。[地穴](https://prts.wiki/w/作战机制#地穴) | 地穴、活性源石、烟雾、沼泽、深水已有 Data 装配、Mechanism 接触与 Effect／离场执行链，见 [Terrain 设计](terrain.md)。其他地形及完整原生变体尚未覆盖。 | 基础链路已实现；更多内容／P1 |
 | MOVE-01 路线与普通运动 | Plan、Context 与共享出生时基组织 MOVE、WAIT、GOTO、空间指令及持续 TRACE；计时与控制权分开，Main 终点独立请求完整离场。见 [Navigation、Route 与 Locomotion](navigation.md)。 | Route Initial、稳定 Context 身份、显式操作与直接 Navigation／Locomotion 已接入；恐惧、诱导与追踪来源等具体内容尚未接入。 | 基础已实现；特殊来源／P1 |
 | MOVE-02 位移与术语移动 | 推拉、浮空、传送和特殊撤退再部署分别表达；重建与继承规则由内容决定。[术语释义](https://prts.wiki/w/术语释义) | 路线传送可用；完整推拉及术语移动未接入。术语移动需要完整退出与重新部署业务。 | 部分实现／P1 |
+| MOVE-03 历史面向 | 移动、行动、受力与显式机制按各自条件尝试改向，统一资格与有效左右符号另有条件；玩法可读取正背面，见[面向调查](../research/cases/35-facing-and-turning-conditions.md)。 | 当前位置、控制器速度及 Occupancy 部署四向不能完整还原。持久面向与转向操作尚未实现，初始输入、资格和左右近似政策待定。 | 需求有证据；待设计／P1 |
 | PROJECTILE-01 飞行与命中 | 追踪、定时、沿途碰撞、附着、套索及到期处理按内容表达；已发射弹道不自动随 Action 结束。[弹道](https://prts.wiki/w/抛射物) | [执行内核](projectile.md) 已实现独立泛型实例、异构集合、position／state 更新边界、三个回调及 Lifetime 请求／Finalize；弩手内容提供追踪弩箭。沿途碰撞、附着、套索和到达后的周期业务等具体内容尚未接入。 | 基础已实现；特殊内容／P1 |
 | DEPLOY-02 关卡费用上限 | 实际部署费用按独立费用上限裁定，不与当前 DP 账户上限混为一个值。[数值范围](https://prts.wiki/w/数值范围) | rawCost 与运行费用分阶段取整，按 costCeiling 截断；多来源修正仍为明确项目组合，完整原生来源写入与动态同步未闭合。 | 基础已实现；来源公式待核实／P2 |
 | DEPLOY-03 部署方向 | 手动部署输入提供本次朝向，决定实例的方向相关范围与业务。[部署操作](https://prts.wiki/w/新人入门) | DeployRequest.direction 经 Occupancy 初始输入写入本次实例；调用者通过 hasDirection 取得当前朝向后生成几何范围，基础 Unit 与无朝向装置不伪造方向。 | 基础已实现；更多内容按需接入 |

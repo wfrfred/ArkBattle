@@ -44,6 +44,7 @@
 | [32 莱塔尼亚召唤物的阻挡与移动](32-leithanien-summons-blocking-and-movement.md) | 规程热更新召唤模板、两个实际 Enemy Prefab、BlockManager 与 Trace／作战状态机 | 区分我方阵营与实现类、仇恨追踪与阻挡交战、相对自身的默认地块；最终属性数值仍待确认 |
 | [33 Targeting／Targetable 通用调用链](33-targeting-and-targetable-pipeline.md) | 真实模式／Trigger／Selector／Validator、候选与优先级、Ability绑定与再验证、弹道及作用入口 | 资格与异常来源、三类排序分流、仇恨距离、HP／EP联合治疗、选中时点与本项目政策的差异 |
 | [34 PRTS 公共机制覆盖审计](34-prts-mechanism-coverage-audit.md) | PRTS 机制目录与代表内容，对照已归档原生证据及当前公共接口 | 区分真实遗漏、既有延期、可组合内容与待核实候选，不以具体内容数量代替公共机制覆盖 |
+| [35 面向与转向条件](35-facing-and-turning-conditions.md) | FaceTo 统一准入、出生／移动／攻击／受力／出现／待机时点、Animator 符号与实际内容绑定 | 区分目标向量、身体四向和有效左右面向；先确认触发、资格及发布条件，再决定 Facing 的项目契约 |
 
 证据文件及复现范围见[批次索引](../evidence/README.md)。案例负责维护问题、结论及适用条件、直接证据／调用链推断、未决项和项目关联；批次 README 负责版本、指纹、文件用途和实际复现入口。
 

@@ -1,0 +1,1278 @@
+{
+  "provenance": {
+    "collectedAt": "2026-11-13T17:13:10.786861+00:00",
+    "scope": "Selected local JSON documents only. Value matches locate potential references; they do not resolve or validate bindings.",
+    "tool": {
+      "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/config.py",
+      "sha256": "67c2a913386059a57f9316f25e532c9dd20cdc4adb91d820065d09fd9dec76e4"
+    },
+    "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+    "argv": [
+      ".cache/native-research/checkpoint-nondefault-20261107/mirror-current/zh_CN/gamedata/levels/enemydata/enemy_database.json",
+      "--source-url",
+      "https://github.com/Kengxxiao/ArknightsGameData",
+      "--revision",
+      "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+      "--out",
+      "docs/research/evidence/facing-conditions-20261114/sign/fire-dragon-data.json",
+      "select",
+      "/enemies/*",
+      "--where",
+      "/Key",
+      "\"enemy_1537_mhrors\""
+    ],
+    "sourceUrl": "https://github.com/Kengxxiao/ArknightsGameData",
+    "revision": "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+    "inputs": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/checkpoint-nondefault-20261107/mirror-current/zh_CN/gamedata/levels/enemydata/enemy_database.json",
+        "bytes": 15721552,
+        "sha256": "eb8559db76aecd92c37b3ac038de0e9aeb8b6d6c107adfaeadfe0fbc098e067b",
+        "status": "ok",
+        "matched": 1
+      }
+    ]
+  },
+  "result": {
+    "matched": 1,
+    "matches": [
+      {
+        "source": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/checkpoint-nondefault-20261107/mirror-current/zh_CN/gamedata/levels/enemydata/enemy_database.json",
+        "pointer": "/enemies/1431",
+        "value": {
+          "Key": "enemy_1537_mhrors",
+          "Value": [
+            {
+              "level": 0,
+              "enemyData": {
+                "name": {
+                  "m_defined": true,
+                  "m_value": "火龙"
+                },
+                "description": {
+                  "m_defined": true,
+                  "m_value": "身覆赤色甲壳，掌控火焰的火龙。由于其统治天空的惊人实力，它也被誉为“天空王者”"
+                },
+                "prefabKey": {
+                  "m_defined": true,
+                  "m_value": "enemy_1537_mhrors"
+                },
+                "attributes": {
+                  "maxHp": {
+                    "m_defined": true,
+                    "m_value": 20000
+                  },
+                  "atk": {
+                    "m_defined": true,
+                    "m_value": 900
+                  },
+                  "def": {
+                    "m_defined": true,
+                    "m_value": 200
+                  },
+                  "magicResistance": {
+                    "m_defined": true,
+                    "m_value": 0.0
+                  },
+                  "cost": {
+                    "m_defined": false,
+                    "m_value": 0
+                  },
+                  "blockCnt": {
+                    "m_defined": false,
+                    "m_value": 0
+                  },
+                  "moveSpeed": {
+                    "m_defined": true,
+                    "m_value": 0.65
+                  },
+                  "attackSpeed": {
+                    "m_defined": false,
+                    "m_value": 100.0
+                  },
+                  "baseAttackTime": {
+                    "m_defined": true,
+                    "m_value": 2.8
+                  },
+                  "respawnTime": {
+                    "m_defined": false,
+                    "m_value": 0
+                  },
+                  "hpRecoveryPerSec": {
+                    "m_defined": false,
+                    "m_value": 0.0
+                  },
+                  "spRecoveryPerSec": {
+                    "m_defined": false,
+                    "m_value": 0.0
+                  },
+                  "maxDeployCount": {
+                    "m_defined": false,
+                    "m_value": 0
+                  },
+                  "massLevel": {
+                    "m_defined": true,
+                    "m_value": 3
+                  },
+                  "baseForceLevel": {
+                    "m_defined": false,
+                    "m_value": 0
+                  },
+                  "tauntLevel": {
+                    "m_defined": false,
+                    "m_value": 0
+                  },
+                  "epDamageResistance": {
+                    "m_defined": false,
+                    "m_value": 0.0
+                  },
+                  "epResistance": {
+                    "m_defined": false,
+                    "m_value": 0.0
+                  },
+                  "damageHitratePhysical": {
+                    "m_defined": false,
+                    "m_value": 0.0
+                  },
+                  "damageHitrateMagical": {
+                    "m_defined": false,
+                    "m_value": 0.0
+                  },
+                  "epBreakRecoverSpeed": {
+                    "m_defined": false,
+                    "m_value": 0.0
+                  },
+                  "blockVolume": {
+                    "m_defined": false,
+                    "m_value": -1
+                  },
+                  "stunImmune": {
+                    "m_defined": true,
+                    "m_value": true
+                  },
+                  "silenceImmune": {
+                    "m_defined": true,
+                    "m_value": true
+                  },
+                  "sleepImmune": {
+                    "m_defined": true,
+                    "m_value": true
+                  },
+                  "frozenImmune": {
+                    "m_defined": true,
+                    "m_value": true
+                  },
+                  "levitateImmune": {
+                    "m_defined": true,
+                    "m_value": true
+                  },
+                  "disarmedCombatImmune": {
+                    "m_defined": false,
+                    "m_value": false
+                  },
+                  "fearedImmune": {
+                    "m_defined": false,
+                    "m_value": false
+                  },
+                  "palsyImmune": {
+                    "m_defined": false,
+                    "m_value": false
+                  },
+                  "attractImmune": {
+                    "m_defined": false,
+                    "m_value": false
+                  },
+                  "teleportImmune": {
+                    "m_defined": false,
+                    "m_value": false
+                  },
+                  "groundBoundImmune": {
+                    "m_defined": false,
+                    "m_value": false
+                  }
+                },
+                "applyWay": {
+                  "m_defined": true,
+                  "m_value": "ALL"
+                },
+                "motion": {
+                  "m_defined": true,
+                  "m_value": "WALK"
+                },
+                "enemyTags": {
+                  "m_defined": false,
+                  "m_value": null
+                },
+                "lifePointReduce": {
+                  "m_defined": true,
+                  "m_value": 2
+                },
+                "levelType": {
+                  "m_defined": true,
+                  "m_value": "BOSS"
+                },
+                "rangeRadius": {
+                  "m_defined": false,
+                  "m_value": 0.0
+                },
+                "numOfExtraDrops": {
+                  "m_defined": false,
+                  "m_value": 0
+                },
+                "viewRadius": {
+                  "m_defined": false,
+                  "m_value": 0.0
+                },
+                "notCountInTotal": {
+                  "m_defined": false,
+                  "m_value": false
+                },
+                "talentBlackboard": [
+                  {
+                    "key": "Reborn.duration",
+                    "value": 7.6,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "Reborn.rest_duration",
+                    "value": 3.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "Reborn.stun",
+                    "value": 5.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "Reborn.max_hp",
+                    "value": 320000.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "Reborn.atk",
+                    "value": 300.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "TailCut.max_hp_ratio",
+                    "value": 6.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "Stun.duration",
+                    "value": 12.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "Stun.duration_2",
+                    "value": 10.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "Stun.duration_3",
+                    "value": 8.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "Stun.damage_scale",
+                    "value": 2.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "SleepListener.check_point",
+                    "value": 999.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "EpDamage.attack@ep_damage_ratio",
+                    "value": 0.2,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "BornMode.mode",
+                    "value": 0.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "FlyMoveSpeed.move_speed",
+                    "value": 3.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "Reborn.atk_scale",
+                    "value": 0.6,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "Reborn.ep_damage_ratio",
+                    "value": 0.05,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "Reborn.continuousdamage.projectile_life_time",
+                    "value": 4.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "Reborn.continuousdamage.atk_scale",
+                    "value": 0.2,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "WeaknessUI.value",
+                    "value": 0.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "DamageCounter.hp",
+                    "value": 40000.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "WakeUp.wakeup_delay",
+                    "value": 600.0,
+                    "valueStr": null
+                  }
+                ],
+                "skills": [
+                  {
+                    "prefabKey": "LandSwingTail",
+                    "priority": 0,
+                    "cooldown": 10.0,
+                    "initCooldown": 10.0,
+                    "spCost": 0,
+                    "blackboard": [
+                      {
+                        "key": "atk_scale",
+                        "value": 1.5,
+                        "valueStr": null
+                      }
+                    ]
+                  },
+                  {
+                    "prefabKey": "LandSwingTail_Cut",
+                    "priority": 0,
+                    "cooldown": 10.0,
+                    "initCooldown": 10.0,
+                    "spCost": 0,
+                    "blackboard": [
+                      {
+                        "key": "atk_scale",
+                        "value": 0.6,
+                        "valueStr": null
+                      }
+                    ]
+                  },
+                  {
+                    "prefabKey": "LandFireBall",
+                    "priority": 0,
+                    "cooldown": 3.6,
+                    "initCooldown": 2.0,
+                    "spCost": 0,
+                    "blackboard": [
+                      {
+                        "key": "LandFireBall",
+                        "value": 0.8,
+                        "valueStr": null
+                      }
+                    ]
+                  },
+                  {
+                    "prefabKey": "Roar",
+                    "priority": 1,
+                    "cooldown": 9999.0,
+                    "initCooldown": 5.0,
+                    "spCost": 0,
+                    "blackboard": [
+                      {
+                        "key": "stun",
+                        "value": 5.0,
+                        "valueStr": null
+                      }
+                    ]
+                  },
+                  {
+                    "prefabKey": "FlyAttack",
+                    "priority": 0,
+                    "cooldown": 3.0,
+                    "initCooldown": 20.0,
+                    "spCost": 0,
+                    "blackboard": [
+                      {
+                        "key": "atk_scale",
+                        "value": 0.8,
+                        "valueStr": null
+                      },
+                      {
+                        "key": "ep_damage_ratio",
+                        "value": 0.03,
+                        "valueStr": null
+                      },
+                      {
+                        "key": "continuousdamage.projectile_life_time",
+                        "value": 4.0,
+                        "valueStr": null
+                      },
+                      {
+                        "key": "continuousdamage.atk_scale",
+                        "value": 0.2,
+                        "valueStr": null
+                      }
+                    ]
+                  },
+                  {
+                    "prefabKey": "FlySwingTail",
+                    "priority": 3,
+                    "cooldown": 13.0,
+                    "initCooldown": 8.0,
+                    "spCost": 0,
+                    "blackboard": [
+                      {
+                        "key": "atk_scale",
+                        "value": 1.6,
+                        "valueStr": null
+                      }
+                    ]
+                  },
+                  {
+                    "prefabKey": "FlySwingTail_Cut",
+                    "priority": 3,
+                    "cooldown": 13.0,
+                    "initCooldown": 8.0,
+                    "spCost": 0,
+                    "blackboard": [
+                      {
+                        "key": "atk_scale",
+                        "value": 0.9,
+                        "valueStr": null
+                      }
+                    ]
+                  },
+                  {
+                    "prefabKey": "FlyFireCircle",
+                    "priority": 2,
+                    "cooldown": 30.0,
+                    "initCooldown": 25.0,
+                    "spCost": 0,
+                    "blackboard": [
+                      {
+                        "key": "atk_scale",
+                        "value": 0.5,
+                        "valueStr": null
+                      },
+                      {
+                        "key": "ep_damage_ratio",
+                        "value": 0.5,
+                        "valueStr": null
+                      },
+                      {
+                        "key": "continuousdamage.projectile_life_time",
+                        "value": 8.0,
+                        "valueStr": null
+                      },
+                      {
+                        "key": "continuousdamage.atk_scale",
+                        "value": 0.3,
+                        "valueStr": null
+                      }
+                    ]
+                  },
+                  {
+                    "prefabKey": "FlyFireLane",
+                    "priority": 1,
+                    "cooldown": 40.0,
+                    "initCooldown": 35.0,
+                    "spCost": 0,
+                    "blackboard": [
+                      {
+                        "key": "atk_scale",
+                        "value": 0.8,
+                        "valueStr": null
+                      },
+                      {
+                        "key": "ep_damage_ratio",
+                        "value": 0.5,
+                        "valueStr": null
+                      },
+                      {
+                        "key": "continuousdamage.projectile_life_time",
+                        "value": 8.0,
+                        "valueStr": null
+                      },
+                      {
+                        "key": "continuousdamage.atk_scale",
+                        "value": 0.3,
+                        "valueStr": null
+                      }
+                    ]
+                  }
+                ],
+                "spData": null
+              }
+            },
+            {
+              "level": 1,
+              "enemyData": {
+                "name": {
+                  "m_defined": false,
+                  "m_value": null
+                },
+                "description": {
+                  "m_defined": false,
+                  "m_value": null
+                },
+                "prefabKey": {
+                  "m_defined": false,
+                  "m_value": null
+                },
+                "attributes": {
+                  "maxHp": {
+                    "m_defined": true,
+                    "m_value": 26000
+                  },
+                  "atk": {
+                    "m_defined": true,
+                    "m_value": 1050
+                  },
+                  "def": {
+                    "m_defined": true,
+                    "m_value": 205
+                  },
+                  "magicResistance": {
+                    "m_defined": true,
+                    "m_value": 3.0
+                  },
+                  "cost": {
+                    "m_defined": false,
+                    "m_value": 0
+                  },
+                  "blockCnt": {
+                    "m_defined": false,
+                    "m_value": 0
+                  },
+                  "moveSpeed": {
+                    "m_defined": false,
+                    "m_value": 0.0
+                  },
+                  "attackSpeed": {
+                    "m_defined": false,
+                    "m_value": 0.0
+                  },
+                  "baseAttackTime": {
+                    "m_defined": false,
+                    "m_value": 0.0
+                  },
+                  "respawnTime": {
+                    "m_defined": false,
+                    "m_value": 0
+                  },
+                  "hpRecoveryPerSec": {
+                    "m_defined": false,
+                    "m_value": 0.0
+                  },
+                  "spRecoveryPerSec": {
+                    "m_defined": false,
+                    "m_value": 0.0
+                  },
+                  "maxDeployCount": {
+                    "m_defined": false,
+                    "m_value": 0
+                  },
+                  "massLevel": {
+                    "m_defined": false,
+                    "m_value": 0
+                  },
+                  "baseForceLevel": {
+                    "m_defined": false,
+                    "m_value": 0
+                  },
+                  "tauntLevel": {
+                    "m_defined": false,
+                    "m_value": 0
+                  },
+                  "epDamageResistance": {
+                    "m_defined": false,
+                    "m_value": 0.0
+                  },
+                  "epResistance": {
+                    "m_defined": false,
+                    "m_value": 0.0
+                  },
+                  "damageHitratePhysical": {
+                    "m_defined": false,
+                    "m_value": 0.0
+                  },
+                  "damageHitrateMagical": {
+                    "m_defined": false,
+                    "m_value": 0.0
+                  },
+                  "epBreakRecoverSpeed": {
+                    "m_defined": false,
+                    "m_value": 0.0
+                  },
+                  "blockVolume": {
+                    "m_defined": false,
+                    "m_value": -1
+                  },
+                  "stunImmune": {
+                    "m_defined": false,
+                    "m_value": false
+                  },
+                  "silenceImmune": {
+                    "m_defined": false,
+                    "m_value": false
+                  },
+                  "sleepImmune": {
+                    "m_defined": false,
+                    "m_value": false
+                  },
+                  "frozenImmune": {
+                    "m_defined": false,
+                    "m_value": false
+                  },
+                  "levitateImmune": {
+                    "m_defined": false,
+                    "m_value": false
+                  },
+                  "disarmedCombatImmune": {
+                    "m_defined": false,
+                    "m_value": false
+                  },
+                  "fearedImmune": {
+                    "m_defined": false,
+                    "m_value": false
+                  },
+                  "palsyImmune": {
+                    "m_defined": false,
+                    "m_value": false
+                  },
+                  "attractImmune": {
+                    "m_defined": false,
+                    "m_value": false
+                  },
+                  "teleportImmune": {
+                    "m_defined": false,
+                    "m_value": false
+                  },
+                  "groundBoundImmune": {
+                    "m_defined": false,
+                    "m_value": false
+                  }
+                },
+                "applyWay": {
+                  "m_defined": false,
+                  "m_value": "NONE"
+                },
+                "motion": {
+                  "m_defined": false,
+                  "m_value": "WALK"
+                },
+                "enemyTags": {
+                  "m_defined": false,
+                  "m_value": null
+                },
+                "lifePointReduce": {
+                  "m_defined": false,
+                  "m_value": 0
+                },
+                "levelType": {
+                  "m_defined": false,
+                  "m_value": "NORMAL"
+                },
+                "rangeRadius": {
+                  "m_defined": false,
+                  "m_value": 0.0
+                },
+                "numOfExtraDrops": {
+                  "m_defined": false,
+                  "m_value": 0
+                },
+                "viewRadius": {
+                  "m_defined": false,
+                  "m_value": 0.0
+                },
+                "notCountInTotal": {
+                  "m_defined": false,
+                  "m_value": false
+                },
+                "talentBlackboard": [
+                  {
+                    "key": "DamageCounter.hp",
+                    "value": 40000.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "Reborn.max_hp",
+                    "value": 390000.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "TailCut.max_hp_ratio",
+                    "value": 5.5,
+                    "valueStr": null
+                  }
+                ],
+                "skills": [
+                  {
+                    "prefabKey": "LandSwingTail",
+                    "priority": 0,
+                    "cooldown": 10.0,
+                    "initCooldown": 10.0,
+                    "spCost": 0,
+                    "blackboard": [
+                      {
+                        "key": "atk_scale",
+                        "value": 1.5,
+                        "valueStr": null
+                      }
+                    ]
+                  },
+                  {
+                    "prefabKey": "LandSwingTail_Cut",
+                    "priority": 0,
+                    "cooldown": 10.0,
+                    "initCooldown": 10.0,
+                    "spCost": 0,
+                    "blackboard": [
+                      {
+                        "key": "atk_scale",
+                        "value": 0.6,
+                        "valueStr": null
+                      }
+                    ]
+                  },
+                  {
+                    "prefabKey": "LandFireBall",
+                    "priority": 0,
+                    "cooldown": 3.6,
+                    "initCooldown": 2.0,
+                    "spCost": 0,
+                    "blackboard": [
+                      {
+                        "key": "LandFireBall",
+                        "value": 0.8,
+                        "valueStr": null
+                      }
+                    ]
+                  },
+                  {
+                    "prefabKey": "Roar",
+                    "priority": 1,
+                    "cooldown": 9999.0,
+                    "initCooldown": 5.0,
+                    "spCost": 0,
+                    "blackboard": [
+                      {
+                        "key": "stun",
+                        "value": 5.0,
+                        "valueStr": null
+                      }
+                    ]
+                  },
+                  {
+                    "prefabKey": "FlyAttack",
+                    "priority": 0,
+                    "cooldown": 3.0,
+                    "initCooldown": 20.0,
+                    "spCost": 0,
+                    "blackboard": [
+                      {
+                        "key": "atk_scale",
+                        "value": 0.8,
+                        "valueStr": null
+                      },
+                      {
+                        "key": "ep_damage_ratio",
+                        "value": 0.03,
+                        "valueStr": null
+                      },
+                      {
+                        "key": "continuousdamage.projectile_life_time",
+                        "value": 4.0,
+                        "valueStr": null
+                      },
+                      {
+                        "key": "continuousdamage.atk_scale",
+                        "value": 0.2,
+                        "valueStr": null
+                      }
+                    ]
+                  },
+                  {
+                    "prefabKey": "FlySwingTail",
+                    "priority": 3,
+                    "cooldown": 13.0,
+                    "initCooldown": 8.0,
+                    "spCost": 0,
+                    "blackboard": [
+                      {
+                        "key": "atk_scale",
+                        "value": 1.6,
+                        "valueStr": null
+                      }
+                    ]
+                  },
+                  {
+                    "prefabKey": "FlySwingTail_Cut",
+                    "priority": 3,
+                    "cooldown": 13.0,
+                    "initCooldown": 8.0,
+                    "spCost": 0,
+                    "blackboard": [
+                      {
+                        "key": "atk_scale",
+                        "value": 0.9,
+                        "valueStr": null
+                      }
+                    ]
+                  },
+                  {
+                    "prefabKey": "FlyFireCircle",
+                    "priority": 2,
+                    "cooldown": 30.0,
+                    "initCooldown": 10.0,
+                    "spCost": 0,
+                    "blackboard": [
+                      {
+                        "key": "atk_scale",
+                        "value": 0.5,
+                        "valueStr": null
+                      },
+                      {
+                        "key": "ep_damage_ratio",
+                        "value": 0.5,
+                        "valueStr": null
+                      },
+                      {
+                        "key": "continuousdamage.projectile_life_time",
+                        "value": 8.0,
+                        "valueStr": null
+                      },
+                      {
+                        "key": "continuousdamage.atk_scale",
+                        "value": 0.3,
+                        "valueStr": null
+                      }
+                    ]
+                  },
+                  {
+                    "prefabKey": "FlyFireLane",
+                    "priority": 1,
+                    "cooldown": 40.0,
+                    "initCooldown": 35.0,
+                    "spCost": 0,
+                    "blackboard": [
+                      {
+                        "key": "atk_scale",
+                        "value": 0.8,
+                        "valueStr": null
+                      },
+                      {
+                        "key": "ep_damage_ratio",
+                        "value": 0.5,
+                        "valueStr": null
+                      },
+                      {
+                        "key": "continuousdamage.projectile_life_time",
+                        "value": 8.0,
+                        "valueStr": null
+                      },
+                      {
+                        "key": "continuousdamage.atk_scale",
+                        "value": 0.3,
+                        "valueStr": null
+                      }
+                    ]
+                  }
+                ],
+                "spData": null
+              }
+            },
+            {
+              "level": 2,
+              "enemyData": {
+                "name": {
+                  "m_defined": false,
+                  "m_value": null
+                },
+                "description": {
+                  "m_defined": false,
+                  "m_value": null
+                },
+                "prefabKey": {
+                  "m_defined": false,
+                  "m_value": null
+                },
+                "attributes": {
+                  "maxHp": {
+                    "m_defined": true,
+                    "m_value": 30000
+                  },
+                  "atk": {
+                    "m_defined": true,
+                    "m_value": 1150
+                  },
+                  "def": {
+                    "m_defined": true,
+                    "m_value": 210
+                  },
+                  "magicResistance": {
+                    "m_defined": true,
+                    "m_value": 5.0
+                  },
+                  "cost": {
+                    "m_defined": false,
+                    "m_value": 0
+                  },
+                  "blockCnt": {
+                    "m_defined": false,
+                    "m_value": 0
+                  },
+                  "moveSpeed": {
+                    "m_defined": false,
+                    "m_value": 0.0
+                  },
+                  "attackSpeed": {
+                    "m_defined": false,
+                    "m_value": 0.0
+                  },
+                  "baseAttackTime": {
+                    "m_defined": false,
+                    "m_value": 0.0
+                  },
+                  "respawnTime": {
+                    "m_defined": false,
+                    "m_value": 0
+                  },
+                  "hpRecoveryPerSec": {
+                    "m_defined": false,
+                    "m_value": 0.0
+                  },
+                  "spRecoveryPerSec": {
+                    "m_defined": false,
+                    "m_value": 0.0
+                  },
+                  "maxDeployCount": {
+                    "m_defined": false,
+                    "m_value": 0
+                  },
+                  "massLevel": {
+                    "m_defined": false,
+                    "m_value": 0
+                  },
+                  "baseForceLevel": {
+                    "m_defined": false,
+                    "m_value": 0
+                  },
+                  "tauntLevel": {
+                    "m_defined": false,
+                    "m_value": 0
+                  },
+                  "epDamageResistance": {
+                    "m_defined": false,
+                    "m_value": 0.0
+                  },
+                  "epResistance": {
+                    "m_defined": false,
+                    "m_value": 0.0
+                  },
+                  "damageHitratePhysical": {
+                    "m_defined": false,
+                    "m_value": 0.0
+                  },
+                  "damageHitrateMagical": {
+                    "m_defined": false,
+                    "m_value": 0.0
+                  },
+                  "epBreakRecoverSpeed": {
+                    "m_defined": false,
+                    "m_value": 0.0
+                  },
+                  "blockVolume": {
+                    "m_defined": false,
+                    "m_value": -1
+                  },
+                  "stunImmune": {
+                    "m_defined": false,
+                    "m_value": false
+                  },
+                  "silenceImmune": {
+                    "m_defined": false,
+                    "m_value": false
+                  },
+                  "sleepImmune": {
+                    "m_defined": false,
+                    "m_value": false
+                  },
+                  "frozenImmune": {
+                    "m_defined": false,
+                    "m_value": false
+                  },
+                  "levitateImmune": {
+                    "m_defined": false,
+                    "m_value": false
+                  },
+                  "disarmedCombatImmune": {
+                    "m_defined": false,
+                    "m_value": false
+                  },
+                  "fearedImmune": {
+                    "m_defined": false,
+                    "m_value": false
+                  },
+                  "palsyImmune": {
+                    "m_defined": false,
+                    "m_value": false
+                  },
+                  "attractImmune": {
+                    "m_defined": false,
+                    "m_value": false
+                  },
+                  "teleportImmune": {
+                    "m_defined": false,
+                    "m_value": false
+                  },
+                  "groundBoundImmune": {
+                    "m_defined": false,
+                    "m_value": false
+                  }
+                },
+                "applyWay": {
+                  "m_defined": false,
+                  "m_value": "NONE"
+                },
+                "motion": {
+                  "m_defined": false,
+                  "m_value": "WALK"
+                },
+                "enemyTags": {
+                  "m_defined": false,
+                  "m_value": null
+                },
+                "lifePointReduce": {
+                  "m_defined": false,
+                  "m_value": 0
+                },
+                "levelType": {
+                  "m_defined": false,
+                  "m_value": "NORMAL"
+                },
+                "rangeRadius": {
+                  "m_defined": false,
+                  "m_value": 0.0
+                },
+                "numOfExtraDrops": {
+                  "m_defined": false,
+                  "m_value": 0
+                },
+                "viewRadius": {
+                  "m_defined": false,
+                  "m_value": 0.0
+                },
+                "notCountInTotal": {
+                  "m_defined": false,
+                  "m_value": false
+                },
+                "talentBlackboard": [
+                  {
+                    "key": "DamageCounter.hp",
+                    "value": 45000.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "Reborn.max_hp",
+                    "value": 470000.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "TailCut.max_hp_ratio",
+                    "value": 5.0,
+                    "valueStr": null
+                  }
+                ],
+                "skills": [
+                  {
+                    "prefabKey": "LandSwingTail",
+                    "priority": 0,
+                    "cooldown": 10.0,
+                    "initCooldown": 10.0,
+                    "spCost": 0,
+                    "blackboard": [
+                      {
+                        "key": "atk_scale",
+                        "value": 1.5,
+                        "valueStr": null
+                      }
+                    ]
+                  },
+                  {
+                    "prefabKey": "LandSwingTail_Cut",
+                    "priority": 0,
+                    "cooldown": 10.0,
+                    "initCooldown": 10.0,
+                    "spCost": 0,
+                    "blackboard": [
+                      {
+                        "key": "atk_scale",
+                        "value": 0.6,
+                        "valueStr": null
+                      }
+                    ]
+                  },
+                  {
+                    "prefabKey": "LandFireBall",
+                    "priority": 0,
+                    "cooldown": 3.6,
+                    "initCooldown": 2.0,
+                    "spCost": 0,
+                    "blackboard": [
+                      {
+                        "key": "LandFireBall",
+                        "value": 0.8,
+                        "valueStr": null
+                      }
+                    ]
+                  },
+                  {
+                    "prefabKey": "Roar",
+                    "priority": 1,
+                    "cooldown": 9999.0,
+                    "initCooldown": 5.0,
+                    "spCost": 0,
+                    "blackboard": [
+                      {
+                        "key": "stun",
+                        "value": 5.0,
+                        "valueStr": null
+                      }
+                    ]
+                  },
+                  {
+                    "prefabKey": "FlyAttack",
+                    "priority": 0,
+                    "cooldown": 3.0,
+                    "initCooldown": 20.0,
+                    "spCost": 0,
+                    "blackboard": [
+                      {
+                        "key": "atk_scale",
+                        "value": 0.8,
+                        "valueStr": null
+                      },
+                      {
+                        "key": "ep_damage_ratio",
+                        "value": 0.03,
+                        "valueStr": null
+                      },
+                      {
+                        "key": "continuousdamage.projectile_life_time",
+                        "value": 4.0,
+                        "valueStr": null
+                      },
+                      {
+                        "key": "continuousdamage.atk_scale",
+                        "value": 0.2,
+                        "valueStr": null
+                      }
+                    ]
+                  },
+                  {
+                    "prefabKey": "FlySwingTail",
+                    "priority": 3,
+                    "cooldown": 13.0,
+                    "initCooldown": 8.0,
+                    "spCost": 0,
+                    "blackboard": [
+                      {
+                        "key": "atk_scale",
+                        "value": 1.6,
+                        "valueStr": null
+                      }
+                    ]
+                  },
+                  {
+                    "prefabKey": "FlySwingTail_Cut",
+                    "priority": 3,
+                    "cooldown": 13.0,
+                    "initCooldown": 8.0,
+                    "spCost": 0,
+                    "blackboard": [
+                      {
+                        "key": "atk_scale",
+                        "value": 0.9,
+                        "valueStr": null
+                      }
+                    ]
+                  },
+                  {
+                    "prefabKey": "FlyFireCircle",
+                    "priority": 2,
+                    "cooldown": 30.0,
+                    "initCooldown": 25.0,
+                    "spCost": 0,
+                    "blackboard": [
+                      {
+                        "key": "atk_scale",
+                        "value": 0.5,
+                        "valueStr": null
+                      },
+                      {
+                        "key": "ep_damage_ratio",
+                        "value": 0.5,
+                        "valueStr": null
+                      },
+                      {
+                        "key": "continuousdamage.projectile_life_time",
+                        "value": 8.0,
+                        "valueStr": null
+                      },
+                      {
+                        "key": "continuousdamage.atk_scale",
+                        "value": 0.3,
+                        "valueStr": null
+                      }
+                    ]
+                  },
+                  {
+                    "prefabKey": "FlyFireLane",
+                    "priority": 1,
+                    "cooldown": 40.0,
+                    "initCooldown": 15.0,
+                    "spCost": 0,
+                    "blackboard": [
+                      {
+                        "key": "atk_scale",
+                        "value": 0.8,
+                        "valueStr": null
+                      },
+                      {
+                        "key": "ep_damage_ratio",
+                        "value": 0.5,
+                        "valueStr": null
+                      },
+                      {
+                        "key": "continuousdamage.projectile_life_time",
+                        "value": 8.0,
+                        "valueStr": null
+                      },
+                      {
+                        "key": "continuousdamage.atk_scale",
+                        "value": 0.3,
+                        "valueStr": null
+                      }
+                    ]
+                  }
+                ],
+                "spData": null
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "complete": true,
+    "scanned": 1,
+    "succeeded": 1,
+    "errors": []
+  }
+}
