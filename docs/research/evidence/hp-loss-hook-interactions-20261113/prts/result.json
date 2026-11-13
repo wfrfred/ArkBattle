@@ -1,0 +1,56 @@
+{
+  "collectedOn": "2026-11-13",
+  "question": "统一HP Damage Calculate/Apply并用nature=DAMAGE|LOSS，是否已有真实内容反例要求再拆来源计算事件政策？",
+  "findings": [
+    {
+      "id": "damage-vs-loss-fragile",
+      "content": [
+        "YA",
+        "YA-DISCUSSION",
+        "SUZURAN"
+      ],
+      "status": "CURRENT_WIKI_RULE_AND_HISTORICAL_PLAYER_REPORT",
+      "fact": "睚的同一分身退场后继按本体是否消失，在35%最大生命的普通真实伤害和生命流失间切换；社区实际铃兰案例报告前者可由脆弱放大至49%。",
+      "modelImpact": "需要区分DAMAGE/LOSS与普通伤判参与；不反驳nature模型。",
+      "doesNotProve": "两个LOSS采用不同来源Formula派发会改变玩法。"
+    },
+    {
+      "id": "magical-loss-vs-shelter",
+      "content": [
+        "MIMIC",
+        "SILENCE",
+        "COMBAT"
+      ],
+      "status": "REAL_CONTENT_COMBINATION_DEDUCTION",
+      "fact": "拟态机械的法术流失射线可以和普通编队的赫默庇护共存；对应RES仍应参加公式，普通庇护不应再减流失。",
+      "modelImpact": "公式属性与Receiving伤判不能混为一个统一增减伤开关；Calculate/Apply+nature仍可表达。",
+      "doesNotProve": "本次实际运行过该配队，或LOSS内部一定需要额外计算模式。"
+    },
+    {
+      "id": "same-loss-calculation-counterexample",
+      "status": "NOT_FOUND_IN_SELECTED_SCOPE",
+      "fact": "没有找到已证真实内容链，使两笔LOSS仅因来源计算事件参与不同就造成重要数值或后继差异。",
+      "modelImpact": "不能以现有节点/事件参数差别为由直接拒绝统一接口，也不能把未找到反例说成全局不存在。"
+    },
+    {
+      "id": "sharp-limits",
+      "content": [
+        "SHARP"
+      ],
+      "status": "EXCLUDED_AS_PLAYABLE_WITNESS",
+      "fact": "模组备注可作流失性质辅助资料，但该页是卫戍原型且获得方式无；未取得实际可用入口。"
+    },
+    {
+      "id": "attribute-vs-formula-hook",
+      "status": "EVIDENCE_BOUNDARY",
+      "fact": "流失因ATK/DEF/RES变化而变化，仅证明读取了相关数值，不证明触发某个Formula Hook。",
+      "modelImpact": "本轮不据此添加新的模式枚举、阶段或API。"
+    }
+  ],
+  "reusedNativeEvidence": [
+    "../../hp-loss-settlement-20261113/README.md",
+    "../../../cases/11-damage-apply-and-hp-application.md#6-生命流失补核2026-11-13"
+  ],
+  "implementationChanged": false,
+  "testsRun": false
+}

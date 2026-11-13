@@ -1,0 +1,84 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [],
+    "collectionDateSource": "not recorded",
+    "organizedOn": "2026-11-13",
+    "client": {
+      "dll": null,
+      "metadata": null
+    },
+    "sourceRecords": [
+      "aak-loss-and-attack-scale.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12895,
+        "sha256": "9c5b246859318caaec4aab5275ef0d2d49fce5d612c6b4e569973a9941ba621a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "3868378729437944045.bin",
+        "kind": "artifact",
+        "bytes": 320,
+        "sha256": "8817e8deec0e7c4ca024e942d2f39bb9a1031f918c8a78a922b7243582d4efb9"
+      },
+      {
+        "path": "3956923551127066861.bin",
+        "kind": "artifact",
+        "bytes": 292,
+        "sha256": "d0f81e37bf0af3923afe23e48eb73d9bb6ce262baa69d146a6a2ec73398db8bf"
+      },
+      {
+        "path": "aak-loss-and-attack-scale.json",
+        "kind": "record",
+        "bytes": 71186,
+        "sha256": "601eaec2ee0a386f5743b4d9b1035ec171227a13437a4b5e48c4b290f132c96e"
+      },
+      {
+        "path": "extract.py",
+        "kind": "historical-script",
+        "bytes": 4127,
+        "sha256": "06cdefef1d0e4cb8f50391baff0498568c2f155974d171e525cefee7cae8ad0d"
+      }
+    ],
+    "replay": {
+      "methods": [],
+      "blocks": [],
+      "types": [],
+      "constants": [],
+      "bundles": [
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_225_haak.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_225_haak.ab",
+          "sha256": "95f081a133221722e6aed0070bd84db5ad6cbc6ee95d0710b337a59310294ea9",
+          "records": [
+            "aak-loss-and-attack-scale.json#/provenance/sources/0"
+          ],
+          "bytes": 22986
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "sha256": "8edcb8017c977cdf52c2593b58e21db96949f3ad1e6f904180ac1241f145ca79",
+          "records": [
+            "aak-loss-and-attack-scale.json#/provenance/sources/1"
+          ],
+          "bytes": 2151020
+        }
+      ]
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

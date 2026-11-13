@@ -42,6 +42,7 @@ uv run "$skill/scripts/archive.py" docs/research/evidence
 
 | 批次 | 调查主题 |
 | --- | --- |
+| [hp-loss-hook-interactions-20261113](hp-loss-hook-interactions-20261113/README.md) | 统一损伤管线的实际内容对照：华法琳／乌尔比安／雷蛇、睚与脆弱、法术流失与庇护、活性源石 HIT 资格及来源计算反例排查 |
 | [facing-semantics-20261113](facing-semantics-20261113/README.md) | 移动／攻击／受力的面向写入、身体四向与左右符号的区别、持久符号和部位伤害消费者；具体 Prefab 绑定另列证据限度 |
 | [hp-loss-settlement-20261113](hp-loss-settlement-20261113/README.md) | 物理／法术／真实流失的关卡与 Prefab 绑定、DEF／RES 计算、skip 剩余回调、HP 保护及直接 setter 区别 |
 | [prts-mechanism-audit-20261113](prts-mechanism-audit-20261113/README.md) | PRTS 机制目录的分类覆盖、真实公共操作遗漏与已有缺口细化；分别登记社区版本、既有原生依据和待核实项 |

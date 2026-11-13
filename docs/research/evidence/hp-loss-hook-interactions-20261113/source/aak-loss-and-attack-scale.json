@@ -1,0 +1,2352 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-13",
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/hp-loss-hook-interactions-20261113/source/extract.py",
+      "bytes": 4127,
+      "sha256": "06cdefef1d0e4cb8f50391baff0498568c2f155974d171e525cefee7cae8ad0d"
+    },
+    "reader": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/attack-addon-order-20261102/content/decode_content.py",
+      "bytes": 8161,
+      "sha256": "d17abeee072576a29ca060884dcc0dd770fe0f8194ca7eed7b5c13b99b41e14e"
+    },
+    "sources": [
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_225_haak.ab",
+        "bytes": 22986,
+        "sha256": "95f081a133221722e6aed0070bd84db5ad6cbc6ee95d0710b337a59310294ea9"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+        "bytes": 2151020,
+        "sha256": "8edcb8017c977cdf52c2593b58e21db96949f3ad1e6f904180ac1241f145ca79"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/unit-audit-20261110/operator-config/character_table.json",
+        "bytes": 15069101,
+        "sha256": "e523c7c83c36e2d76697121079e17d0282da1a94d59a55e1cc55616edf0b41c4"
+      }
+    ],
+    "characterTableRevision": "17759cc8cdf37388414145d16262a3a06f3ab25e",
+    "scope": "Fresh selected Aak Prefab and holder decoding, complete source event-14 template index, selected static character configuration; no in-game observation or new native extraction."
+  },
+  "result": {
+    "holder": {
+      "file": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+      "pathId": "6070581171229484677",
+      "sha256": "c03149251d47fa31e6f6cb5b696f9e93925f51a97bf9ee335593c888bdcb6fec"
+    },
+    "templateCount": 9054,
+    "sourceEvent14": [
+      {
+        "key": "glady_t_2",
+        "templateIndex": 9,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+FilterByTargetMassLevel",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "buff_yinyang[same]",
+        "templateIndex": 20,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfElse",
+          "Torappu.Battle.Action.Nodes+IfElse"
+        ]
+      },
+      {
+        "key": "buff_yinyang[diff]",
+        "templateIndex": 21,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfElse",
+          "Torappu.Battle.Action.Nodes+IfElse"
+        ]
+      },
+      {
+        "key": "enemy_spklr_t",
+        "templateIndex": 29,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfElse"
+        ]
+      },
+      {
+        "key": "amiya2_s_2[cirtical_cancel]",
+        "templateIndex": 56,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+SetAtkScaleZero"
+        ]
+      },
+      {
+        "key": "airforce_enhance",
+        "templateIndex": 61,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfTarget",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "aosta_tr",
+        "templateIndex": 67,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckContainsBuff",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "asnipe_t_1",
+        "templateIndex": 69,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+Dice",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "blemsh_t_2",
+        "templateIndex": 80,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckAbnormalCombo",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "bpipe_t_1",
+        "templateIndex": 89,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IsBlackboardZero",
+          "Torappu.Battle.Action.Nodes+Dice",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp",
+          "Torappu.Battle.Action.Nodes+SplashDamage"
+        ]
+      },
+      {
+        "key": "buster_t_1",
+        "templateIndex": 96,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckFilterTag",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "critical_atkscale",
+        "templateIndex": 113,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+Dice",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "critical_stun",
+        "templateIndex": 114,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+Dice",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp",
+          "Torappu.Battle.Action.Nodes+CreateBuff"
+        ]
+      },
+      {
+        "key": "e2c_frozen_atkscale",
+        "templateIndex": 142,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckAbnormalFlag",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "enemy_flking_ranged",
+        "templateIndex": 159,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+FilterAbilityApplyWay",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "excu_s_1",
+        "templateIndex": 192,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckModifierDirectionOffset",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "excu_tr",
+        "templateIndex": 193,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckContainsBuff",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "filtertag_enhance",
+        "templateIndex": 196,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckFilterTag",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "glacus_t_1",
+        "templateIndex": 211,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckFilterTag",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "haak_t_atk",
+        "templateIndex": 213,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "hp_ratio_to_atk_scale",
+        "templateIndex": 223,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+TargetHpRatioToAtkScale"
+        ]
+      },
+      {
+        "key": "leizi_t_1",
+        "templateIndex": 241,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckBlocked",
+          "Torappu.Battle.Action.Nodes+IfNot",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "milu_t_1",
+        "templateIndex": 257,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "peacok_s_1",
+        "templateIndex": 277,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+Dice",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp",
+          "Torappu.Battle.Action.Nodes+FinishBuff"
+        ]
+      },
+      {
+        "key": "poca_t_1",
+        "templateIndex": 288,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+FilterByTargetMassLevel",
+          "Torappu.Battle.Action.Nodes+CreateBuff"
+        ]
+      },
+      {
+        "key": "prove_t_1[a]",
+        "templateIndex": 292,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckModifierDirectionOffset",
+          "Torappu.Battle.Action.Nodes+Dice",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "prove_t_1[b]",
+        "templateIndex": 293,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckModifierDirectionOffset",
+          "Torappu.Battle.Action.Nodes+Dice",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "shwaz_t_1",
+        "templateIndex": 304,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+Dice",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp",
+          "Torappu.Battle.Action.Nodes+CreateBuff"
+        ]
+      },
+      {
+        "key": "spikes_t_1",
+        "templateIndex": 318,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckFilterTag",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "surtr_s_2[critical]",
+        "templateIndex": 326,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckContainsBuff",
+          "Torappu.Battle.Action.Nodes+IfNot",
+          "Torappu.Battle.Action.Nodes+FilterAbilityValidCastTargetCnt",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "tomimi_s_2[atk_scale_up]",
+        "templateIndex": 342,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+AtkScaleUp",
+          "Torappu.Battle.Action.Nodes+FinishBuff"
+        ]
+      },
+      {
+        "key": "waaifu_t_1",
+        "templateIndex": 357,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+Dice",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp",
+          "Torappu.Battle.Action.Nodes+Knockback"
+        ]
+      },
+      {
+        "key": "zumama_t_1[atk]",
+        "templateIndex": 362,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "pinecn_tr",
+        "templateIndex": 392,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckContainsBuff",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "f12yin_t_atk_scale",
+        "templateIndex": 398,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "bstalk_tr",
+        "templateIndex": 402,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckBlocked",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "nothin_t_1",
+        "templateIndex": 431,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "blitz_t_1",
+        "templateIndex": 449,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckAbnormalFlag",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "tachak_s_1[def_penetrate_fixed]",
+        "templateIndex": 456,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckContainsBuff",
+          "Torappu.Battle.Action.Nodes+CreateBuff"
+        ]
+      },
+      {
+        "key": "tachak_s_2[speed_up_random_attack_up]",
+        "templateIndex": 457,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+Dice",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "ash_s_2[atk_scale]",
+        "templateIndex": 479,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckAbnormalFlag",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "toddi_tal",
+        "templateIndex": 510,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckFilterTag",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "prove_e_t_1",
+        "templateIndex": 642,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfElse"
+        ]
+      },
+      {
+        "key": "erato_t_1",
+        "templateIndex": 652,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckAbnormalCombo",
+          "Torappu.Battle.Action.Nodes+CreateBuff"
+        ]
+      },
+      {
+        "key": "leizi_e_t_10",
+        "templateIndex": 657,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckBlocked",
+          "Torappu.Battle.Action.Nodes+IfNot",
+          "Torappu.Battle.Action.Nodes+ModifySp"
+        ]
+      },
+      {
+        "key": "cqbw_e_dmg",
+        "templateIndex": 743,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfElse"
+        ]
+      },
+      {
+        "key": "sesa_e_dmg",
+        "templateIndex": 744,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfElse"
+        ]
+      },
+      {
+        "key": "peacok_e_dmg",
+        "templateIndex": 761,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfElse"
+        ]
+      },
+      {
+        "key": "franka_e_dmg",
+        "templateIndex": 762,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfElse"
+        ]
+      },
+      {
+        "key": "nearl2_e_dmg",
+        "templateIndex": 765,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfElse"
+        ]
+      },
+      {
+        "key": "kroos2_s_2[warming]",
+        "templateIndex": 770,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CreateBuff"
+        ]
+      },
+      {
+        "key": "kroos2_t_1[critical]",
+        "templateIndex": 771,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+Dice",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp",
+          "Torappu.Battle.Action.Nodes+CreateBuff",
+          "Torappu.Battle.Action.Nodes+CreateBuff"
+        ]
+      },
+      {
+        "key": "irene_t_1",
+        "templateIndex": 775,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfElse"
+        ]
+      },
+      {
+        "key": "sddrag_e_atkscaleup",
+        "templateIndex": 798,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+FilterByTargetHpRatio",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "vigna_e_atkscaleup",
+        "templateIndex": 799,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+FilterByTargetHpRatio",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "aurora_s_2[freezeattack2]",
+        "templateIndex": 801,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfElse"
+        ]
+      },
+      {
+        "key": "chen2_tr",
+        "templateIndex": 925,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckContainsBuff",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "support_warrior_trait",
+        "templateIndex": 930,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckBlocked",
+          "Torappu.Battle.Action.Nodes+IfNot",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "enemy_blkswb_t_2",
+        "templateIndex": 991,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckBlocked",
+          "Torappu.Battle.Action.Nodes+UpdateBuffAttributeModifier"
+        ]
+      },
+      {
+        "key": "enemy_krgbsk_t[cold]",
+        "templateIndex": 997,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckAbnormalFlag",
+          "Torappu.Battle.Action.Nodes+CheckAbnormalFlag",
+          "Torappu.Battle.Action.Nodes+IfNot",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "atk_scale[frozen]",
+        "templateIndex": 1012,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckAbnormalFlag",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "blkngt_tr",
+        "templateIndex": 1034,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckBlocked",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "blkngt_hypnos_s_2[atk_scale]",
+        "templateIndex": 1046,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckAbnormalCombo",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "forcer_t_1",
+        "templateIndex": 1052,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IsAtkScaleZero",
+          "Torappu.Battle.Action.Nodes+IfNot",
+          "Torappu.Battle.Action.Nodes+FilterByTargetMassLevel",
+          "Torappu.Battle.Action.Nodes+CreateBuff"
+        ]
+      },
+      {
+        "key": "enemy_dsuply_t[aura]",
+        "templateIndex": 1061,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+ApplyElementDamage"
+        ]
+      },
+      {
+        "key": "enemy_dsuply_2_t[aura]",
+        "templateIndex": 1062,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+ApplyElementDamage"
+        ]
+      },
+      {
+        "key": "milu_e_t_1",
+        "templateIndex": 1134,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+AtkScaleUp",
+          "Torappu.Battle.Action.Nodes+IfNot",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "skadi_e_tr",
+        "templateIndex": 1140,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckBlocked",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "enemy_ncrmcr_atk_scale",
+        "templateIndex": 1296,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+FilterAbilityFamily",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "enemy_duskld_ep_damage",
+        "templateIndex": 1314,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+ApplyElementDamage"
+        ]
+      },
+      {
+        "key": "enemy_duskls_ep_damage",
+        "templateIndex": 1318,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+ApplyElementDamage"
+        ]
+      },
+      {
+        "key": "enemy_cnvlap[mark]",
+        "templateIndex": 1799,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfElse"
+        ]
+      },
+      {
+        "key": "enemy_crhro[inside]",
+        "templateIndex": 1964,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfElse"
+        ]
+      },
+      {
+        "key": "enemy_crvln[inside]",
+        "templateIndex": 1979,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfElse"
+        ]
+      },
+      {
+        "key": "enemy_dirctr_t[p2mark]",
+        "templateIndex": 1991,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+AssignBuffCountIntoBlackboard",
+          "Torappu.Battle.Action.Nodes+CalculateBlackboardValueViaParams",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "enemy_chghmr_t",
+        "templateIndex": 2554,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckContainsBuff",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "arkdex_element_type[B]",
+        "templateIndex": 2584,
+        "actions": []
+      },
+      {
+        "key": "arkdex_element_type[C]",
+        "templateIndex": 2585,
+        "actions": []
+      },
+      {
+        "key": "act2bossrush_laterano_buff",
+        "templateIndex": 2642,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfTarget",
+          "Torappu.Battle.Action.Nodes+CreateBuff"
+        ]
+      },
+      {
+        "key": "frtuna_fire[atk_scale]",
+        "templateIndex": 2811,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfElse"
+        ]
+      },
+      {
+        "key": "enemy_wdnjd[bonus_attack]",
+        "templateIndex": 2892,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckContainsBuff",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp",
+          "Torappu.Battle.Action.Nodes+FinishBuffsById",
+          "Torappu.Battle.Action.Nodes+FinishBuff"
+        ]
+      },
+      {
+        "key": "enemy_dfello_damge_up",
+        "templateIndex": 2983,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+AssignCurrentBlockNumToBB",
+          "Torappu.Battle.Action.Nodes+CalculateBlackboardValueViaParams",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "mirbst_m0_a[atk_scale]",
+        "templateIndex": 3057,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfTargetSide",
+          "Torappu.Battle.Action.Nodes+IfTarget",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "act1vautochess_band18_2_buff",
+        "templateIndex": 3998,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+AtkScaleUp",
+          "Torappu.Battle.Action.Nodes+CreateBuff"
+        ]
+      },
+      {
+        "key": "act1autochess_gar_eff_attack_enemy",
+        "templateIndex": 4046,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckFilterTag",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "acsgnt[frozen-break]",
+        "templateIndex": 4173,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfTarget",
+          "Torappu.Battle.Action.Nodes+CheckAbnormalFlag",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp",
+          "Torappu.Battle.Action.Nodes+FinishAllBuffsWithCertainAbnormalFlag"
+        ]
+      },
+      {
+        "key": "aceel[self-stack]",
+        "templateIndex": 4211,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfConditions",
+          "Torappu.Battle.Action.Nodes+AssignBuffCountIntoBlackboard",
+          "Torappu.Battle.Action.Nodes+CalculateBlackboardValueViaParams",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "enemy_wmshp_eff",
+        "templateIndex": 4324,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfElse"
+        ]
+      },
+      {
+        "key": "enemy_mnchrs_check",
+        "templateIndex": 4387,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfTargetEqual",
+          "Torappu.Battle.Action.Nodes+IfNot",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "dagda_t_1",
+        "templateIndex": 4455,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+Dice",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "mlyss_tr",
+        "templateIndex": 4505,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckBlocked",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "hamoni_t_1",
+        "templateIndex": 4514,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfElse"
+        ]
+      },
+      {
+        "key": "vigil_wolf_s_2",
+        "templateIndex": 4531,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+FilterAbilityName",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "vigil_wolf_t_2",
+        "templateIndex": 4539,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckBlocked",
+          "Torappu.Battle.Action.Nodes+CreateBuff"
+        ]
+      },
+      {
+        "key": "vigil_t_2",
+        "templateIndex": 4540,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckBlocked",
+          "Torappu.Battle.Action.Nodes+CreateBuff"
+        ]
+      },
+      {
+        "key": "vigil_tr",
+        "templateIndex": 4541,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckBlocked",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "acnipe_e_002_trait",
+        "templateIndex": 4633,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckMotionMode",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "acnipe_t_1",
+        "templateIndex": 4634,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+Dice",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "amiya3_s_1",
+        "templateIndex": 4806,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+FilterAbilityFamily",
+          "Torappu.Battle.Action.Nodes+CreateBuffUseAbilitySelector",
+          "Torappu.Battle.Action.Nodes+CreateEffect",
+          "Torappu.Battle.Action.Nodes+PlayAudio"
+        ]
+      },
+      {
+        "key": "leizi2_t_1[on_calcul]",
+        "templateIndex": 4920,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "common_weak_damage_buff",
+        "templateIndex": 5062,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+AssignValueToBB",
+          "Torappu.Battle.Action.Nodes+IfElse",
+          "Torappu.Battle.Action.Nodes+AlwaysNext",
+          "Torappu.Battle.Action.Nodes+FilterByBlackboardValue",
+          "Torappu.Battle.Action.Nodes+WeakDamage"
+        ]
+      },
+      {
+        "key": "headb2_e_002_trait",
+        "templateIndex": 5067,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfElse"
+        ]
+      },
+      {
+        "key": "typhon_t_2[first_damage]",
+        "templateIndex": 5125,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfTarget",
+          "Torappu.Battle.Action.Nodes+IfElse"
+        ]
+      },
+      {
+        "key": "typhon_t_1",
+        "templateIndex": 5126,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfElse"
+        ]
+      },
+      {
+        "key": "wang_t_2",
+        "templateIndex": 5181,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckModifierContainsKey",
+          "Torappu.Battle.Action.Nodes+CreateBuff"
+        ]
+      },
+      {
+        "key": "lessng_s3[atk_scale]",
+        "templateIndex": 5213,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckBlocked",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "puzzle_s_1[mul_atk]",
+        "templateIndex": 5225,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "puzzle_t_1",
+        "templateIndex": 5228,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+FilterByTargetHpRatio",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp",
+          "Torappu.Battle.Action.Nodes+ModifySp"
+        ]
+      },
+      {
+        "key": "rfalcn_t_1",
+        "templateIndex": 5231,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfElse"
+        ]
+      },
+      {
+        "key": "heyak_t_1[atk_scale_up]",
+        "templateIndex": 5252,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckMotionMode",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "demetr_s3[bonus]",
+        "templateIndex": 5272,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+Dice",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "malist_t_1",
+        "templateIndex": 5284,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+Dice",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp",
+          "Torappu.Battle.Action.Nodes+IfElse"
+        ]
+      },
+      {
+        "key": "malist_s_2",
+        "templateIndex": 5287,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+FilterAbilityName",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "bgsnow_s_3[base_atk_up]",
+        "templateIndex": 5288,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfElse"
+        ]
+      },
+      {
+        "key": "bgsnow_s_1[random_atk]",
+        "templateIndex": 5290,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+Dice",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "bgsnow_subbow_s3[atk_up]",
+        "templateIndex": 5293,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "bgsnow_subbow_token[debuff]",
+        "templateIndex": 5296,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfElse"
+        ]
+      },
+      {
+        "key": "bgsnow_s_3[atk_up]",
+        "templateIndex": 5297,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckContainsBuff",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "judge_s_1_enhance_checker",
+        "templateIndex": 5339,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckContainsBuff",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "qiubai_t_1",
+        "templateIndex": 5385,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CreateBuff"
+        ]
+      },
+      {
+        "key": "qiubai_t_2",
+        "templateIndex": 5387,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+Dice",
+          "Torappu.Battle.Action.Nodes+CreateBuff"
+        ]
+      },
+      {
+        "key": "hodrer_t_1",
+        "templateIndex": 5413,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfElse"
+        ]
+      },
+      {
+        "key": "delphn_t_2",
+        "templateIndex": 5457,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckFilterTag",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "blkkgt_t_1[check_disarmed]",
+        "templateIndex": 5469,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfElse"
+        ]
+      },
+      {
+        "key": "blkkgt_t_2[check]",
+        "templateIndex": 5470,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfElse"
+        ]
+      },
+      {
+        "key": "zuole_s_3",
+        "templateIndex": 5500,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+FilterByBlackboardValue",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "ela_t_2",
+        "templateIndex": 5510,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfElse"
+        ]
+      },
+      {
+        "key": "logos_t_2",
+        "templateIndex": 5555,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CreateBuff"
+        ]
+      },
+      {
+        "key": "laios_t_1",
+        "templateIndex": 5599,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckHasEnemyIdInCharacterSharedBlackboard",
+          "Torappu.Battle.Action.Nodes+CreateBuff"
+        ]
+      },
+      {
+        "key": "mitm_tr_1",
+        "templateIndex": 5635,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckBlocked",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "ctrail_t_1",
+        "templateIndex": 5677,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "varkis_t1[minos_atk_up]",
+        "templateIndex": 5685,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+AssignHpRatioToBB",
+          "Torappu.Battle.Action.Nodes+AssignHpRatioToBB",
+          "Torappu.Battle.Action.Nodes+FilterByBlackboardValue",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "alanna_t",
+        "templateIndex": 5709,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfConditions"
+        ]
+      },
+      {
+        "key": "oblvns_t_1[attr]",
+        "templateIndex": 5737,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+TriggerBuffsByKeys",
+          "Torappu.Battle.Action.Nodes+AssignHighestBlackboardValueFromBuffs",
+          "Torappu.Battle.Action.Nodes+AttributeModifierWithBB",
+          "Torappu.Battle.Action.Nodes+AttributeModifierWithBB"
+        ]
+      },
+      {
+        "key": "amoris_e_002_tr",
+        "templateIndex": 5788,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "kichi_tr[listener]",
+        "templateIndex": 5881,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckContainsBuff",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "snhunt_t[atk_scale]",
+        "templateIndex": 5902,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "buddy_tr_1",
+        "templateIndex": 6004,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckBlocked",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "makoto_s3_1_standin",
+        "templateIndex": 6022,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfElse"
+        ]
+      },
+      {
+        "key": "aigis_tr",
+        "templateIndex": 6049,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckCharSkillAffecting",
+          "Torappu.Battle.Action.Nodes+CheckMotionMode",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "ju_e_002[atk]",
+        "templateIndex": 6061,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+FilterByTargetAttribute",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "closur_tr",
+        "templateIndex": 6118,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfElse"
+        ]
+      },
+      {
+        "key": "mcnist_e_002_trait_atk",
+        "templateIndex": 6142,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfElse"
+        ]
+      },
+      {
+        "key": "clemnt_t1[dice_damage]",
+        "templateIndex": 6164,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+ModifyBlackboard",
+          "Torappu.Battle.Action.Nodes+CheckDamageType",
+          "Torappu.Battle.Action.Nodes+AssignAttributeToBB",
+          "Torappu.Battle.Action.Nodes+AssignAttributeRawDataIntoBlackboard",
+          "Torappu.Battle.Action.Nodes+IfElse"
+        ]
+      },
+      {
+        "key": "alga_tr",
+        "templateIndex": 6226,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckBlocked",
+          "Torappu.Battle.Action.Nodes+IfNot",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "enemy_ubdg_atk_scale",
+        "templateIndex": 6445,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfConditions"
+        ]
+      },
+      {
+        "key": "enemy_ubglmf_atk_scale",
+        "templateIndex": 6472,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfConditions"
+        ]
+      },
+      {
+        "key": "bgsnow_e_trait",
+        "templateIndex": 6643,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckContainsBuff",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "acguad_e_002_trait[blocked]",
+        "templateIndex": 6668,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckBlocked",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "shwaz_e_003[dmgup]",
+        "templateIndex": 6693,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckContainsBuff",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "totter_e_002[atk]",
+        "templateIndex": 6696,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+FilterByTargetAttribute",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "toddi_e_002[atk]",
+        "templateIndex": 6697,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+FilterByTargetAttribute",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "erato_e_002[atk]",
+        "templateIndex": 6700,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+FilterByTargetAttribute",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "poca_e_002[atk]",
+        "templateIndex": 6705,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+FilterByTargetAttribute",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "v035_common_addsp",
+        "templateIndex": 6707,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfElse"
+        ]
+      },
+      {
+        "key": "morgan_e_002_trait[blocked]",
+        "templateIndex": 6721,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckBlocked",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "trapper_e_trait[token_atk_scale]",
+        "templateIndex": 6723,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "melnte_e_002_tr",
+        "templateIndex": 6730,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckContainsBuff",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "spuria_t_atk",
+        "templateIndex": 6740,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "typhon_trait_e",
+        "templateIndex": 6747,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+FilterByTargetAttribute",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "attacker_trait[e_002]",
+        "templateIndex": 6757,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckBlocked",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "phenxi_e_003_tr",
+        "templateIndex": 6766,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfElse"
+        ]
+      },
+      {
+        "key": "ashlok_e_002[passive]",
+        "templateIndex": 6770,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckBlocked",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "firwhl_e_002[passive]",
+        "templateIndex": 6771,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckBlocked",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "horn_e_002[passive]",
+        "templateIndex": 6772,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckBlocked",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "bpipe_e_003_tr",
+        "templateIndex": 6775,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+FilterByTargetHpRatio",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "lessng_e_002_trait[blocked]",
+        "templateIndex": 6776,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckBlocked",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "ash_e_003_trait",
+        "templateIndex": 6803,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckMotionMode",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "ayer_e_002_tr",
+        "templateIndex": 6813,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfElse"
+        ]
+      },
+      {
+        "key": "frostl_e_002_tr",
+        "templateIndex": 6814,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+DamageViaAttr"
+        ]
+      },
+      {
+        "key": "qiubai_e_002_t",
+        "templateIndex": 6818,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CreateBuff"
+        ]
+      },
+      {
+        "key": "qiubai_e_002_tr",
+        "templateIndex": 6820,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+DamageViaAttr"
+        ]
+      },
+      {
+        "key": "svrash_e_002_t[atk]",
+        "templateIndex": 6822,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfTarget",
+          "Torappu.Battle.Action.Nodes+IfElse"
+        ]
+      },
+      {
+        "key": "svrash_e_002_tr",
+        "templateIndex": 6824,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfElse"
+        ]
+      },
+      {
+        "key": "thorns_e_002_tr",
+        "templateIndex": 6827,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+DamageViaAttr"
+        ]
+      },
+      {
+        "key": "whitew_e_002_tr",
+        "templateIndex": 6828,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+DamageViaAttr"
+        ]
+      },
+      {
+        "key": "lessng_e_003_talent",
+        "templateIndex": 6867,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckBlocked",
+          "Torappu.Battle.Action.Nodes+CreateBuff"
+        ]
+      },
+      {
+        "key": "zuole_e_003_talent",
+        "templateIndex": 6888,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfElse"
+        ]
+      },
+      {
+        "key": "odda_e_002_trait",
+        "templateIndex": 6893,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfElse"
+        ]
+      },
+      {
+        "key": "pepe_e_002_trait",
+        "templateIndex": 6894,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfElse"
+        ]
+      },
+      {
+        "key": "vigil_e_003[t]",
+        "templateIndex": 6908,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckBlocked"
+        ]
+      },
+      {
+        "key": "puzzle_e_t_1",
+        "templateIndex": 6916,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+FilterByTargetHpRatio",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp",
+          "Torappu.Battle.Action.Nodes+ModifySp",
+          "Torappu.Battle.Action.Nodes+CreateBuff"
+        ]
+      },
+      {
+        "key": "necras_e_002_tr",
+        "templateIndex": 6945,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfElse"
+        ]
+      },
+      {
+        "key": "typhon_e_003_t[hit_marker]",
+        "templateIndex": 6952,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfTarget",
+          "Torappu.Battle.Action.Nodes+IfElse"
+        ]
+      },
+      {
+        "key": "christ_e_002_t_2",
+        "templateIndex": 6961,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfConditions"
+        ]
+      },
+      {
+        "key": "narant_e_001",
+        "templateIndex": 6981,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckTargetInRange",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "hodrer_e_003_t",
+        "templateIndex": 7004,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfTarget",
+          "Torappu.Battle.Action.Nodes+CheckBlocked",
+          "Torappu.Battle.Action.Nodes+CheckContainsBuff",
+          "Torappu.Battle.Action.Nodes+IfNot",
+          "Torappu.Battle.Action.Nodes+CreateBuff"
+        ]
+      },
+      {
+        "key": "qiubai_e_003_t",
+        "templateIndex": 7078,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfElse"
+        ]
+      },
+      {
+        "key": "halfIdle_dmg_scale_up[attack_blocked_enemy]",
+        "templateIndex": 7152,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfElse"
+        ]
+      },
+      {
+        "key": "cooperate_buff_caster_sniper",
+        "templateIndex": 7576,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IsAtkScaleZero",
+          "Torappu.Battle.Action.Nodes+IfNot",
+          "Torappu.Battle.Action.Nodes+CheckBlockedPlayersideInCooperate",
+          "Torappu.Battle.Action.Nodes+CreateBuff"
+        ]
+      },
+      {
+        "key": "enemy_mucat_t",
+        "templateIndex": 7634,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckContainsBuff",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "enemy_mubsbl_enhance",
+        "templateIndex": 7649,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfElse"
+        ]
+      },
+      {
+        "key": "enemy_murgby_enhance",
+        "templateIndex": 7650,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckContainsBuff",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp",
+          "Torappu.Battle.Action.Nodes+PlayAudio"
+        ]
+      },
+      {
+        "key": "enemy_balftr_t",
+        "templateIndex": 7652,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckContainsBuff",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "rogue_3_dmgPenetrate[filter_tag]",
+        "templateIndex": 7938,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+FinishBuffsById",
+          "Torappu.Battle.Action.Nodes+CheckFilterTag",
+          "Torappu.Battle.Action.Nodes+CreateBuff"
+        ]
+      },
+      {
+        "key": "enemy_smedzi_damage_up",
+        "templateIndex": 7954,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckContainsBuff",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "enemy_smgrd_damage_up",
+        "templateIndex": 7969,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfElse"
+        ]
+      },
+      {
+        "key": "trap_skztxy_s",
+        "templateIndex": 8009,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "enemy_dylbhm_buff_yinyang[diff]",
+        "templateIndex": 8088,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfElse"
+        ]
+      },
+      {
+        "key": "enemy_dylbhm_buff_yinyang[same]",
+        "templateIndex": 8089,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfElse"
+        ]
+      },
+      {
+        "key": "rogue_6_sniper_book_2",
+        "templateIndex": 8534,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckContainsBuff",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      },
+      {
+        "key": "trap_xbaice[damage_scale]",
+        "templateIndex": 8600,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfElse"
+        ]
+      },
+      {
+        "key": "sandbox_res_collector",
+        "templateIndex": 8737,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+CheckFilterTag",
+          "Torappu.Battle.Action.Nodes+IfElse",
+          "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio"
+        ]
+      },
+      {
+        "key": "enemy_factory_slayer",
+        "templateIndex": 8784,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+IfElse"
+        ]
+      },
+      {
+        "key": "sandbox_v3_food_4",
+        "templateIndex": 8894,
+        "actions": [
+          "Torappu.Battle.Action.Nodes+AssignValueToBB",
+          "Torappu.Battle.Action.Nodes+AssignDistanceToBB",
+          "Torappu.Battle.Action.Nodes+CalculateBlackboardValueViaParams",
+          "Torappu.Battle.Action.Nodes+AtkScaleUp"
+        ]
+      }
+    ],
+    "selectedTemplates": [
+      {
+        "key": "haak_t_1",
+        "index": 212,
+        "events": [
+          {
+            "event": 0,
+            "actions": [
+              {
+                "_buffKey": "haak_t_atk",
+                "_loadFromBlackboard": false,
+                "_decCntIfStack": false,
+                "_updateOverrideMap": true,
+                "_targetType": "BUFF_SOURCE",
+                "_checkBuffSource": false,
+                "_sourceType": "BUFF_SOURCE",
+                "_alsoClearNullSource": false,
+                "_finishHostBuff": false,
+                "_excludeThisBuff": false,
+                "_decCntKey": null,
+                "_decCnt": 1,
+                "$type": "Torappu.Battle.Action.Nodes+FinishBuffsById"
+              },
+              {
+                "_datas": [
+                  {
+                    "buff": {
+                      "attributes": {
+                        "abnormalFlags": [],
+                        "abnormalImmunes": [],
+                        "abnormalAntis": null,
+                        "abnormalCombos": null,
+                        "abnormalComboImmunes": null,
+                        "attributeModifiers": []
+                      },
+                      "buffKey": "haak_t_atk",
+                      "loadFromDB": false,
+                      "isDurableBuff": false,
+                      "isDamageMissable": false,
+                      "isSilenceable": false,
+                      "isStunnable": false,
+                      "isFreezable": false,
+                      "isLevitatable": false,
+                      "isGroundBoundable": false,
+                      "statusResistable": "AUTOMATIC",
+                      "templateKey": "haak_t_atk",
+                      "disableOverride": false,
+                      "overrideKey": null,
+                      "overrideType": "DEFAULT",
+                      "maxStackCnt": 1,
+                      "refreshRemainingTimeWhenStackMax": false,
+                      "clearAllStackCntWhenTimeUp": false,
+                      "maxValidStackCnt": -1,
+                      "independentCharacterSource": false,
+                      "overrideEffectKey": null,
+                      "overrideOnEventPriority": false,
+                      "onEventPriority": "DEFAULT",
+                      "audioSignal": null,
+                      "lifeTimeType": "INFINITY",
+                      "takeSnapshotWhenExtend": false,
+                      "durationKey": null,
+                      "remainingTimeKey": null,
+                      "lifeTime": 0.0,
+                      "triggerLifeType": "IMMEDIATELY",
+                      "triggerCnt": 0,
+                      "triggerInterval": -1.0,
+                      "waitFirstTriggerInterval": true,
+                      "firstTriggerInterval": -1.0,
+                      "priority": -1,
+                      "priorityBBKeys": [],
+                      "stripBlackboardParamsWithBuffKey": false,
+                      "blackboard": [],
+                      "enableInitDirectionFromSource": false
+                    },
+                    "buffOwner": "BUFF_SOURCE",
+                    "weight": 1.0,
+                    "weightKey": null
+                  },
+                  {
+                    "buff": {
+                      "attributes": {
+                        "abnormalFlags": [],
+                        "abnormalImmunes": [],
+                        "abnormalAntis": null,
+                        "abnormalCombos": null,
+                        "abnormalComboImmunes": null,
+                        "attributeModifiers": []
+                      },
+                      "buffKey": "sluggish",
+                      "loadFromDB": true,
+                      "isDurableBuff": false,
+                      "isDamageMissable": false,
+                      "isSilenceable": false,
+                      "isStunnable": false,
+                      "isFreezable": false,
+                      "isLevitatable": false,
+                      "isGroundBoundable": false,
+                      "statusResistable": "AUTOMATIC",
+                      "templateKey": "empty",
+                      "disableOverride": false,
+                      "overrideKey": null,
+                      "overrideType": "DEFAULT",
+                      "maxStackCnt": 1,
+                      "refreshRemainingTimeWhenStackMax": false,
+                      "clearAllStackCntWhenTimeUp": false,
+                      "maxValidStackCnt": -1,
+                      "independentCharacterSource": false,
+                      "overrideEffectKey": null,
+                      "overrideOnEventPriority": false,
+                      "onEventPriority": "DEFAULT",
+                      "audioSignal": null,
+                      "lifeTimeType": "LIMITED",
+                      "takeSnapshotWhenExtend": false,
+                      "durationKey": null,
+                      "remainingTimeKey": null,
+                      "lifeTime": 0.0,
+                      "triggerLifeType": "IMMEDIATELY",
+                      "triggerCnt": 0,
+                      "triggerInterval": -1.0,
+                      "waitFirstTriggerInterval": true,
+                      "firstTriggerInterval": -1.0,
+                      "priority": -1,
+                      "priorityBBKeys": [],
+                      "stripBlackboardParamsWithBuffKey": false,
+                      "blackboard": [],
+                      "enableInitDirectionFromSource": false
+                    },
+                    "buffOwner": "BUFF_OWNER",
+                    "weight": 1.0,
+                    "weightKey": null
+                  },
+                  {
+                    "buff": {
+                      "attributes": {
+                        "abnormalFlags": [],
+                        "abnormalImmunes": [],
+                        "abnormalAntis": null,
+                        "abnormalCombos": null,
+                        "abnormalComboImmunes": null,
+                        "attributeModifiers": []
+                      },
+                      "buffKey": "stun",
+                      "loadFromDB": true,
+                      "isDurableBuff": false,
+                      "isDamageMissable": false,
+                      "isSilenceable": false,
+                      "isStunnable": false,
+                      "isFreezable": false,
+                      "isLevitatable": false,
+                      "isGroundBoundable": false,
+                      "statusResistable": "AUTOMATIC",
+                      "templateKey": "empty",
+                      "disableOverride": false,
+                      "overrideKey": null,
+                      "overrideType": "DEFAULT",
+                      "maxStackCnt": 1,
+                      "refreshRemainingTimeWhenStackMax": false,
+                      "clearAllStackCntWhenTimeUp": false,
+                      "maxValidStackCnt": -1,
+                      "independentCharacterSource": false,
+                      "overrideEffectKey": null,
+                      "overrideOnEventPriority": false,
+                      "onEventPriority": "DEFAULT",
+                      "audioSignal": null,
+                      "lifeTimeType": "LIMITED",
+                      "takeSnapshotWhenExtend": false,
+                      "durationKey": null,
+                      "remainingTimeKey": null,
+                      "lifeTime": 0.0,
+                      "triggerLifeType": "IMMEDIATELY",
+                      "triggerCnt": 0,
+                      "triggerInterval": -1.0,
+                      "waitFirstTriggerInterval": true,
+                      "firstTriggerInterval": -1.0,
+                      "priority": -1,
+                      "priorityBBKeys": [],
+                      "stripBlackboardParamsWithBuffKey": false,
+                      "blackboard": [],
+                      "enableInitDirectionFromSource": false
+                    },
+                    "buffOwner": "BUFF_OWNER",
+                    "weight": 1.0,
+                    "weightKey": null
+                  },
+                  {
+                    "buff": {
+                      "attributes": {
+                        "abnormalFlags": [],
+                        "abnormalImmunes": [],
+                        "abnormalAntis": null,
+                        "abnormalCombos": null,
+                        "abnormalComboImmunes": null,
+                        "attributeModifiers": []
+                      },
+                      "buffKey": "haak_t_heal",
+                      "loadFromDB": false,
+                      "isDurableBuff": false,
+                      "isDamageMissable": false,
+                      "isSilenceable": false,
+                      "isStunnable": false,
+                      "isFreezable": false,
+                      "isLevitatable": false,
+                      "isGroundBoundable": false,
+                      "statusResistable": "AUTOMATIC",
+                      "templateKey": "haak_t_heal",
+                      "disableOverride": false,
+                      "overrideKey": null,
+                      "overrideType": "DEFAULT",
+                      "maxStackCnt": 1,
+                      "refreshRemainingTimeWhenStackMax": false,
+                      "clearAllStackCntWhenTimeUp": false,
+                      "maxValidStackCnt": -1,
+                      "independentCharacterSource": false,
+                      "overrideEffectKey": null,
+                      "overrideOnEventPriority": false,
+                      "onEventPriority": "DEFAULT",
+                      "audioSignal": null,
+                      "lifeTimeType": "IMMEDIATELY",
+                      "takeSnapshotWhenExtend": false,
+                      "durationKey": null,
+                      "remainingTimeKey": null,
+                      "lifeTime": 0.0,
+                      "triggerLifeType": "IMMEDIATELY",
+                      "triggerCnt": 0,
+                      "triggerInterval": -1.0,
+                      "waitFirstTriggerInterval": true,
+                      "firstTriggerInterval": -1.0,
+                      "priority": -1,
+                      "priorityBBKeys": [],
+                      "stripBlackboardParamsWithBuffKey": false,
+                      "blackboard": [],
+                      "enableInitDirectionFromSource": false
+                    },
+                    "buffOwner": "BUFF_SOURCE",
+                    "weight": 1.0,
+                    "weightKey": null
+                  }
+                ],
+                "_buffWithWeight": false,
+                "_isDerivedBuff": false,
+                "_finishDerivedBuffIfParentFinish": false,
+                "$type": "Torappu.Battle.Action.Nodes+RandomCreateBuff"
+              },
+              {
+                "_decCntIfStack": false,
+                "_updateOverrideMap": true,
+                "$type": "Torappu.Battle.Action.Nodes+FinishBuff"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "haak_t_atk",
+        "index": 213,
+        "events": [
+          {
+            "event": 14,
+            "actions": [
+              {
+                "_filterApplyWay": false,
+                "_filterProjectileKey": "",
+                "_applyWay": "NONE",
+                "_defaultValue": 1.0,
+                "_filterNoneApplyWay": false,
+                "_cancelIfAtkScaleZero": false,
+                "_atkScaleKey": "atk_scale",
+                "_overwriteAtkScale": false,
+                "$type": "Torappu.Battle.Action.Nodes+AtkScaleUp"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "periodic_damage_by_hp_ratio[skip_modifier_fix][undeadable]",
+        "index": 4854,
+        "events": [
+          {
+            "event": 2,
+            "actions": [
+              {
+                "_targetType": "TARGET",
+                "_getMaxHpFromTarget": false,
+                "_damageType": "PURE",
+                "_applyWay": "NONE",
+                "_ignoreForSp": true,
+                "_isUndeadable": true,
+                "_attackType": "NORMAL",
+                "_skipModifierEvent": true,
+                "_multiplyByKey": false,
+                "_multiplierKey": "cnt",
+                "_noSourceDamage": false,
+                "$type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "components": [
+      {
+        "bundle": "charpack/char_225_haak.ab",
+        "file": "CAB-730af13ca16887ba52d183ec92e16cae",
+        "pathId": "3868378729437944045",
+        "hierarchy": "char_225_haak/Trait",
+        "rawFile": "3868378729437944045.bin",
+        "objectSha256": "8817e8deec0e7c4ca024e942d2f39bb9a1031f918c8a78a922b7243582d4efb9",
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": 5442721991423187181
+          },
+          "common:349": true,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": 3800760148018415462
+          },
+          "common:427": "",
+          "_selector": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_metadata": {
+            "namedAsAlias": "",
+            "blackboardPrefix": ""
+          },
+          "_overrideSignalId": "",
+          "_interruptAbilityOnDetach": false,
+          "_attachPassiveBuffsOnDummy": true,
+          "_ignoreIfOwnerDead": false,
+          "_forceAsDmgOrHealAbility": false,
+          "_buffs": {
+            "Array": [
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "haak_tr",
+                "loadFromDB": false,
+                "isDurableBuff": false,
+                "isDamageMissable": false,
+                "isSilenceable": false,
+                "isStunnable": false,
+                "isFreezable": false,
+                "isLevitatable": false,
+                "isGroundBoundable": false,
+                "statusResistable": true,
+                "templateKey": "periodic_damage_by_hp_ratio[skip_modifier_fix][undeadable]",
+                "disableOverride": false,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": false,
+                "clearAllStackCntWhenTimeUp": false,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": false,
+                "overrideEffectKey": "",
+                "overrideOnEventPriority": false,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": true,
+                "takeSnapshotWhenExtend": false,
+                "durationKey": "",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": true,
+                "triggerCnt": 0,
+                "triggerInterval": 1.0,
+                "waitFirstTriggerInterval": true,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": false,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": false
+              }
+            ]
+          }
+        }
+      },
+      {
+        "bundle": "charpack/char_225_haak.ab",
+        "file": "CAB-730af13ca16887ba52d183ec92e16cae",
+        "pathId": "3956923551127066861",
+        "hierarchy": "char_225_haak/Talents/1",
+        "rawFile": "3956923551127066861.bin",
+        "objectSha256": "d0f81e37bf0af3923afe23e48eb73d9bb6ce262baa69d146a6a2ec73398db8bf",
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": 6975561796760656109
+          },
+          "common:349": true,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": -8004000125733044417
+          },
+          "common:427": "",
+          "_selector": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_metadata": {
+            "namedAsAlias": "",
+            "blackboardPrefix": ""
+          },
+          "_overrideSignalId": "",
+          "_interruptAbilityOnDetach": false,
+          "_attachPassiveBuffsOnDummy": true,
+          "_ignoreIfOwnerDead": false,
+          "_forceAsDmgOrHealAbility": false,
+          "_buffs": {
+            "Array": []
+          },
+          "_additiveActiveBuffs": {
+            "Array": [
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "haak_t_1",
+                "loadFromDB": false,
+                "isDurableBuff": false,
+                "isDamageMissable": false,
+                "isSilenceable": false,
+                "isStunnable": false,
+                "isFreezable": false,
+                "isLevitatable": false,
+                "isGroundBoundable": false,
+                "statusResistable": true,
+                "templateKey": "haak_t_1",
+                "disableOverride": false,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": false,
+                "clearAllStackCntWhenTimeUp": false,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": false,
+                "overrideEffectKey": "",
+                "overrideOnEventPriority": false,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": true,
+                "takeSnapshotWhenExtend": false,
+                "durationKey": "",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": false,
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": true,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": false,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": false
+              }
+            ]
+          },
+          "_targetFamilyMask": 3,
+          "_targetValidator": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_probKey": ""
+        }
+      }
+    ],
+    "character": {
+      "id": "char_225_haak",
+      "trait": {
+        "candidates": [
+          {
+            "unlockCondition": {
+              "phase": "PHASE_0",
+              "level": 1
+            },
+            "requiredPotentialRank": 0,
+            "blackboard": [
+              {
+                "key": "hp_ratio",
+                "value": 0.01,
+                "valueStr": null
+              }
+            ],
+            "overrideDescripton": null,
+            "prefabKey": null,
+            "rangeId": null
+          }
+        ]
+      },
+      "talents": [
+        {
+          "candidates": [
+            {
+              "unlockCondition": {
+                "phase": "PHASE_0",
+                "level": 1
+              },
+              "requiredPotentialRank": 0,
+              "prefabKey": "1",
+              "name": "混合药物射击",
+              "description": "每次攻击时会随机触发下列效果之一：回复自身生命13%；当次攻击力提升至130%；目标<$ba.sluggish>停顿</>1秒；目标<$ba.stun>晕眩</>0.6秒",
+              "rangeId": null,
+              "blackboard": [
+                {
+                  "key": "hp_ratio",
+                  "value": 0.13,
+                  "valueStr": null
+                },
+                {
+                  "key": "atk_scale",
+                  "value": 1.3,
+                  "valueStr": null
+                },
+                {
+                  "key": "sluggish",
+                  "value": 1.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "stun",
+                  "value": 0.6,
+                  "valueStr": null
+                }
+              ],
+              "tokenKey": null,
+              "isHideTalent": false
+            },
+            {
+              "unlockCondition": {
+                "phase": "PHASE_1",
+                "level": 1
+              },
+              "requiredPotentialRank": 0,
+              "prefabKey": "1",
+              "name": "混合药物射击",
+              "description": "每次攻击时会随机触发下列效果之一：回复自身生命14%；当次攻击力提升至140%；目标<$ba.sluggish>停顿</>1.2秒；目标<$ba.stun>晕眩</>0.8秒",
+              "rangeId": null,
+              "blackboard": [
+                {
+                  "key": "hp_ratio",
+                  "value": 0.14,
+                  "valueStr": null
+                },
+                {
+                  "key": "atk_scale",
+                  "value": 1.4,
+                  "valueStr": null
+                },
+                {
+                  "key": "sluggish",
+                  "value": 1.2,
+                  "valueStr": null
+                },
+                {
+                  "key": "stun",
+                  "value": 0.8,
+                  "valueStr": null
+                }
+              ],
+              "tokenKey": null,
+              "isHideTalent": false
+            },
+            {
+              "unlockCondition": {
+                "phase": "PHASE_2",
+                "level": 1
+              },
+              "requiredPotentialRank": 0,
+              "prefabKey": "1",
+              "name": "混合药物射击",
+              "description": "每次攻击时会随机触发下列效果之一：回复自身生命15%；当次攻击力提升至150%；目标<$ba.sluggish>停顿</>1.4秒；目标<$ba.stun>晕眩</>1秒",
+              "rangeId": null,
+              "blackboard": [
+                {
+                  "key": "hp_ratio",
+                  "value": 0.15,
+                  "valueStr": null
+                },
+                {
+                  "key": "atk_scale",
+                  "value": 1.5,
+                  "valueStr": null
+                },
+                {
+                  "key": "sluggish",
+                  "value": 1.4,
+                  "valueStr": null
+                },
+                {
+                  "key": "stun",
+                  "value": 1.0,
+                  "valueStr": null
+                }
+              ],
+              "tokenKey": null,
+              "isHideTalent": false
+            }
+          ]
+        },
+        {
+          "candidates": [
+            {
+              "unlockCondition": {
+                "phase": "PHASE_2",
+                "level": 1
+              },
+              "requiredPotentialRank": 0,
+              "prefabKey": "2",
+              "name": "药剂扩散",
+              "description": "自身受到的治疗量+20%",
+              "rangeId": null,
+              "blackboard": [
+                {
+                  "key": "heal_scale",
+                  "value": 1.2,
+                  "valueStr": null
+                }
+              ],
+              "tokenKey": null,
+              "isHideTalent": false
+            },
+            {
+              "unlockCondition": {
+                "phase": "PHASE_2",
+                "level": 1
+              },
+              "requiredPotentialRank": 4,
+              "prefabKey": "2",
+              "name": "药剂扩散",
+              "description": "自身受到的治疗量+25%<@ba.talpu>（+5%）</>",
+              "rangeId": null,
+              "blackboard": [
+                {
+                  "key": "heal_scale",
+                  "value": 1.25,
+                  "valueStr": null
+                }
+              ],
+              "tokenKey": null,
+              "isHideTalent": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

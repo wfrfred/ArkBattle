@@ -1,0 +1,198 @@
+{
+  "collectedOn": "2026-11-13",
+  "scope": "PRTS针对生命流失、普通伤判与公式的实际内容比较；没有本次客户端运行或录像复现。",
+  "sources": [
+    {
+      "id": "YA",
+      "url": "https://prts.wiki/w/睚",
+      "title": "“睚”",
+      "kind": "COMMUNITY_MECHANISM_PAGE",
+      "readMode": "CURRENT_PAGE",
+      "reportedClientVersion": null,
+      "location": {
+        "heading": "级别0 → 天赋与能力 → 第二形态",
+        "browsingTextLines": [
+          271,
+          273
+        ]
+      },
+      "facts": [
+        "妄境退场，本体未消失时受到35%最大生命的真实伤害，消失时改为35%最大生命流失。"
+      ],
+      "limits": "页面中的同一机制在其他等级重复列出；本批不重新提取睚Prefab及节点。"
+    },
+    {
+      "id": "YA-DISCUSSION",
+      "url": "https://prts.wiki/w/话题:Xbcmlizcauhbcdc7",
+      "title": "“睚”以及“妄境”数值问题",
+      "kind": "COMMUNITY_PLAYER_REPORT",
+      "readMode": "SEARCH_BODY_EXCERPT",
+      "reportedClientVersion": null,
+      "discussionDate": "2023-01-25",
+      "location": {
+        "section": "WB-EX-8铃兰与能天使的扣血讨论",
+        "relevantReplyTime": "2023-01-25 17:56"
+      },
+      "facts": [
+        "玩家报告分身死亡时本体实际扣血超过其按35%估算的结果。",
+        "回复以铃兰40%脆弱将普通真实伤害放大至49%解释，并区分传送消失时的生命流失。"
+      ],
+      "limits": "没有重放帖中提及录像，没有将社区解释升格为本次客户端运行证明。"
+    },
+    {
+      "id": "SUZURAN",
+      "url": "https://prts.wiki/w/铃兰",
+      "title": "铃兰",
+      "kind": "COMMUNITY_CONTENT_PAGE",
+      "readMode": "CURRENT_PAGE",
+      "reportedClientVersion": null,
+      "location": {
+        "heading": "天赋 → 画地为牢",
+        "browsingTextLines": [
+          130,
+          170
+        ]
+      },
+      "facts": [
+        "提供作用于普通物理、法术、真实伤害的脆弱，附加与移除还受光环及停顿检测政策约束。"
+      ],
+      "limits": "不由此假设消失期间光环的全部时序已核验；49%数值作为历史讨论场景保存。"
+    },
+    {
+      "id": "MIMIC",
+      "url": "https://prts.wiki/w/拟态机械",
+      "title": "拟态机械",
+      "kind": "COMMUNITY_CONTENT_PAGE",
+      "readMode": "CURRENT_PAGE",
+      "reportedClientVersion": null,
+      "location": {
+        "heading": "级别0 → 技能 → 链式反应",
+        "browsingTextLines": [
+          250,
+          261
+        ]
+      },
+      "facts": [
+        "链式反应光线持续20秒，每秒对光线上的我方单位施加50%攻击力的法术生命流失。"
+      ],
+      "limits": "实际main_15-18配置/Prefab/AdvancedApplyDamage skip绑定复用相邻hp-loss-settlement批次；未现场测量一局战斗。"
+    },
+    {
+      "id": "SILENCE",
+      "url": "https://m.prts.wiki/w/淬羽赫默",
+      "canonicalUrl": "https://prts.wiki/w/淬羽赫默",
+      "title": "淬羽赫默",
+      "kind": "COMMUNITY_CONTENT_PAGE",
+      "readMode": "CURRENT_PAGE_MOBILE_FALLBACK",
+      "reportedClientVersion": null,
+      "location": {
+        "heading": "天赋 → 无声砥柱",
+        "browsingTextLines": [
+          140,
+          155
+        ]
+      },
+      "facts": [
+        "精二时使范围内友军获得10%庇护，并随其生命下降增强至24%。"
+      ],
+      "limits": "桌面页多次超时，移动版成功；普通可部署内容与主线流失射线组合是依已证规则的推导，非本次实测。"
+    },
+    {
+      "id": "COMBAT",
+      "url": "https://prts.wiki/w/作战机制#伤判效果与生命流失",
+      "title": "作战机制：伤判效果与生命流失",
+      "kind": "COMMUNITY_MECHANISM_PAGE",
+      "readMode": "CURRENT_PAGE",
+      "reportedClientVersion": "2.7.81",
+      "location": {
+        "heading": "伤判效果与生命流失",
+        "browsingTextLines": [
+          588,
+          634
+        ]
+      },
+      "facts": [
+        "将普通脆弱、庇护等归为接收中的伤判修正；生命流失不受这类增减伤，并仍区分物理/法术公式。"
+      ],
+      "limits": "来源计算事件概览不是逐节点证明；本轮native已发现入口参数差别。"
+    },
+    {
+      "id": "BASE",
+      "url": "https://prts.wiki/w/游戏数据基础#伤害机制",
+      "title": "游戏数据基础：伤害机制",
+      "kind": "COMMUNITY_MECHANISM_PAGE",
+      "readMode": "CURRENT_PAGE",
+      "reportedClientVersion": null,
+      "location": {
+        "heading": "伤害机制",
+        "browsingTextLines": [
+          1827,
+          1847
+        ]
+      },
+      "facts": [
+        "将流失归为带skip标签的伤害，物法流失仍计算对应防御；概览同时列举通常跳过的事件。"
+      ],
+      "limits": "本页笼统列出的来源计算跳过不能推翻已归档的不同节点参数，不据此认定所有LOSS公式Hook清单相同。"
+    },
+    {
+      "id": "SHARP",
+      "url": "https://prts.wiki/w/领主·Sharp#模组",
+      "title": "领主·Sharp",
+      "kind": "COMMUNITY_PROTOTYPE_CONTENT_PAGE",
+      "readMode": "CURRENT_PAGE",
+      "reportedClientVersion": null,
+      "location": {
+        "heading": "模组 → 领主·Sharp证章",
+        "browsingTextLines": [
+          186,
+          202
+        ]
+      },
+      "facts": [
+        "附加法术生命流失备注说明其跳过多种普通减伤与屏障。",
+        "页首为卫戍原型资料，获得方式为无。"
+      ],
+      "limits": "未验证可用内容入口，只作辅助资料；不作为普通关卡可共存反例。"
+    },
+    {
+      "id": "GAVIAL",
+      "url": "https://prts.wiki/w/百炼嘉维尔#技能",
+      "title": "百炼嘉维尔",
+      "kind": "COMMUNITY_CONTENT_PAGE",
+      "readMode": "CURRENT_PAGE",
+      "reportedClientVersion": null,
+      "location": {
+        "heading": "技能3 → 丛林之魂及备注",
+        "browsingTextLines": [
+          253,
+          271
+        ]
+      },
+      "facts": [
+        "减伤时记录实际减少量，结束后将总记录分20秒按流失返还。"
+      ],
+      "limits": "不据此假设一个未经验证的Buff组合会再次放大返还量。"
+    }
+  ],
+  "searches": [
+    "site:prts.wiki \"生命流失\" \"增伤\"",
+    "site:prts.wiki \"流失\" \"脆弱\"",
+    "site:prts.wiki \"流失\" \"庇护\"",
+    "site:prts.wiki \"法术流失\"",
+    "site:prts.wiki \"生命流失\" \"伤害提升\"",
+    "site:prts.wiki \"流失\" \"伤害倍率\"",
+    "site:prts.wiki \"流失\" \"伤害计算\"",
+    "site:prts.wiki \"生命流失\" \"攻击力倍率\"",
+    "site:prts.wiki \"生命流失\" \"明晦\"",
+    "site:prts.wiki \"流失\" \"弱点伤害\"",
+    "site:prts.wiki \"法术生命流失\"",
+    "site:prts.wiki \"物理流失\""
+  ],
+  "limitations": [
+    "定向检索而非全Wiki、全客户端的无遗漏证明。",
+    "未验证两笔同属LOSS仅来源计算事件不同就产生实际玩法差异。",
+    "来源计算事件参数差异只复用现有native报告，未将事件次数直接当玩法反例。",
+    "伤判效果、生命流失独立页请求失败时使用已成功打开的作战机制/游戏数据基础；失败不代表机制不存在。"
+  ]
+}

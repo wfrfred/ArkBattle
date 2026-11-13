@@ -1,0 +1,54 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-11-13"
+    ],
+    "collectionDateSource": "record fields",
+    "organizedOn": "2026-11-13",
+    "client": {
+      "dll": null,
+      "metadata": null
+    },
+    "sourceRecords": [
+      "result.json",
+      "sources.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12895,
+        "sha256": "9c5b246859318caaec4aab5275ef0d2d49fce5d612c6b4e569973a9941ba621a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "result.json",
+        "kind": "record",
+        "bytes": 2564,
+        "sha256": "5f8db474ce06840952a8c41c59b10b03016c85d26a9e25f2ddbd041ddc0c8d1d"
+      },
+      {
+        "path": "sources.json",
+        "kind": "record",
+        "bytes": 7409,
+        "sha256": "f8f51ab6c8843bc33704aa04e48e3ddc70f850521af883154c44da33332c6692"
+      }
+    ],
+    "replay": {
+      "methods": [],
+      "blocks": [],
+      "types": [],
+      "constants": [],
+      "bundles": []
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

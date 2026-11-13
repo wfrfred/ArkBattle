@@ -1,0 +1,646 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-11-13"
+    ],
+    "collectionDateSource": "record fields",
+    "organizedOn": "2026-11-14",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+        "records": [
+          "output/native.json#/provenance/client/dll"
+        ],
+        "bytes": 223112680
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        "records": [
+          "output/native.json#/provenance/client/metadata"
+        ],
+        "bytes": 46669332
+      }
+    },
+    "sourceRecords": [
+      "output/bindings.json",
+      "output/native.json",
+      "prts/result.json",
+      "prts/sources.json",
+      "source/aak-loss-and-attack-scale.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12895,
+        "sha256": "9c5b246859318caaec4aab5275ef0d2d49fce5d612c6b4e569973a9941ba621a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "output/[uc]skills--4455387707468489346.bin",
+        "kind": "artifact",
+        "bytes": 976,
+        "sha256": "a06b2ae7d6bcf6d700167affc5e3838f14fc69cb449f5987a660cf78fe7027e9"
+      },
+      {
+        "path": "output/[uc]skills--5238383241283510914.bin",
+        "kind": "artifact",
+        "bytes": 392,
+        "sha256": "200eb924fe96dc4fbda99767f4841079b3a80d0e2ca4006befe57b797ae94fdc"
+      },
+      {
+        "path": "output/[uc]skills--7788941006478189186.bin",
+        "kind": "artifact",
+        "bytes": 96,
+        "sha256": "aa0a71481fa3ebd47bd99258279fde377c4d646aa8daed0f73ff508b7e7bc029"
+      },
+      {
+        "path": "output/[uc]skills-3578763758270602622.bin",
+        "kind": "artifact",
+        "bytes": 284,
+        "sha256": "6083f5b9132db4302d4b3c8a2e380aa38d94b2afc04ff2e85d08b55575bd06c1"
+      },
+      {
+        "path": "output/[uc]skills-5932946623601271549.bin",
+        "kind": "artifact",
+        "bytes": 72,
+        "sha256": "aa8c016040a21e7c00714deefaa5137e8affc786de31efa0b2c90072e9eb8fc4"
+      },
+      {
+        "path": "output/[uc]skills-5978367411090055933.bin",
+        "kind": "artifact",
+        "bytes": 504,
+        "sha256": "f97425c632e7dda87ca27305ecc580342c3454b66cf27724bce32fe6725403ab"
+      },
+      {
+        "path": "output/[uc]skills-6211449136306283261.bin",
+        "kind": "artifact",
+        "bytes": 40,
+        "sha256": "e7883afd9d77673e1fa612dcc7465de0d37c40e661aeb35bbe2e46f3f50dc497"
+      },
+      {
+        "path": "output/[uc]skills-7235734245758493437.bin",
+        "kind": "artifact",
+        "bytes": 284,
+        "sha256": "ae76a411fdbad3ea1a6508f81f961af528efe1a08c9e7ac3256b761f58d552c1"
+      },
+      {
+        "path": "output/bindings.json",
+        "kind": "record",
+        "bytes": 109012,
+        "sha256": "c0c4c649b6a748710663acaf8cf1125c3652142b5ef1e60af7eed7c8da7999ab"
+      },
+      {
+        "path": "output/char_107_liskam--1825524403522757361.bin",
+        "kind": "artifact",
+        "bytes": 412,
+        "sha256": "5824d8cd21136d0e9af3d30b06f19e2df8ae158e0d8f790f399697c5e71cd5c9"
+      },
+      {
+        "path": "output/char_107_liskam--3509970960733692657.bin",
+        "kind": "artifact",
+        "bytes": 296,
+        "sha256": "1bec75ffaab38d5562ccd32f2c9f8b97858680e8cde56f3e259db5034ac4b6ae"
+      },
+      {
+        "path": "output/char_171_bldsk--8509029535651146911.bin",
+        "kind": "artifact",
+        "bytes": 400,
+        "sha256": "57b00ed912794e10834b0eb2d4cb49e50d357fb8e361fa252bfbfcea94539045"
+      },
+      {
+        "path": "output/char_4145_ulpia--320561100469243426.bin",
+        "kind": "artifact",
+        "bytes": 448,
+        "sha256": "4c5f9e0e9f5da6fc0f3a0946c7fd063f8acaa7198c8fb6b55ac46927bf1263de"
+      },
+      {
+        "path": "output/char_4145_ulpia--4043021218200161826.bin",
+        "kind": "artifact",
+        "bytes": 284,
+        "sha256": "844d058384939157263290d576b07be12a6e56c86e71e56fe23a4a620b666cd5"
+      },
+      {
+        "path": "output/char_4183_mortis--4364614045179441341.bin",
+        "kind": "artifact",
+        "bytes": 524,
+        "sha256": "0a23635e5696c236c3915265b074a789e5bdff80542f9a0c876428cf389a1b77"
+      },
+      {
+        "path": "output/char_4183_mortis-4491222975411326787.bin",
+        "kind": "artifact",
+        "bytes": 300,
+        "sha256": "f5ed100d6012a562251db1484838612b08d799480be6059bf67a2c3c9bc8cb0b"
+      },
+      {
+        "path": "output/extract.py",
+        "kind": "historical-script",
+        "bytes": 5361,
+        "sha256": "cff0e52b34c393a74893599ba7c41974a244a72b7780266363d55da227eec104"
+      },
+      {
+        "path": "output/extract_native.py",
+        "kind": "historical-script",
+        "bytes": 1803,
+        "sha256": "41f8b06fd3c82a9cb4f69d91ac6db5df8fb242a9a6fb3c7d2f9f1dd19fa49027"
+      },
+      {
+        "path": "output/extract_native.py.lock",
+        "kind": "artifact",
+        "bytes": 3739,
+        "sha256": "1ed9e3b399cf0743106d2124514970f3a3b5db6d9f1192fba528019ccbefdf04"
+      },
+      {
+        "path": "output/native.json",
+        "kind": "record",
+        "bytes": 362815,
+        "sha256": "ae93aabd6f4078df29c76bf6181106659bdef526acb5db9a1225fdae6ec10c05"
+      },
+      {
+        "path": "prts/result.json",
+        "kind": "record",
+        "bytes": 2564,
+        "sha256": "5f8db474ce06840952a8c41c59b10b03016c85d26a9e25f2ddbd041ddc0c8d1d"
+      },
+      {
+        "path": "prts/sources.json",
+        "kind": "record",
+        "bytes": 7409,
+        "sha256": "f8f51ab6c8843bc33704aa04e48e3ddc70f850521af883154c44da33332c6692"
+      },
+      {
+        "path": "source/3868378729437944045.bin",
+        "kind": "artifact",
+        "bytes": 320,
+        "sha256": "8817e8deec0e7c4ca024e942d2f39bb9a1031f918c8a78a922b7243582d4efb9"
+      },
+      {
+        "path": "source/3956923551127066861.bin",
+        "kind": "artifact",
+        "bytes": 292,
+        "sha256": "d0f81e37bf0af3923afe23e48eb73d9bb6ce262baa69d146a6a2ec73398db8bf"
+      },
+      {
+        "path": "source/aak-loss-and-attack-scale.json",
+        "kind": "record",
+        "bytes": 71186,
+        "sha256": "601eaec2ee0a386f5743b4d9b1035ec171227a13437a4b5e48c4b290f132c96e"
+      },
+      {
+        "path": "source/extract.py",
+        "kind": "historical-script",
+        "bytes": 4127,
+        "sha256": "06cdefef1d0e4cb8f50391baff0498568c2f155974d171e525cefee7cae8ad0d"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 94989,
+          "mode": "disasm",
+          "records": [
+            "output/native.json#/result/methods/0",
+            "output/native.json#/result/bodies/0/fragments/0",
+            "output/native.json#/result/bodies/0/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Abilities.TriggerWhenTakenDamageAbility.OnAttached",
+          "address": "0x180fce890"
+        },
+        {
+          "index": 94990,
+          "mode": "disasm",
+          "records": [
+            "output/native.json#/result/methods/1",
+            "output/native.json#/result/bodies/1/fragments/0",
+            "output/native.json#/result/bodies/1/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Abilities.TriggerWhenTakenDamageAbility.OnDetached",
+          "address": "0x180fce990"
+        },
+        {
+          "index": 94991,
+          "mode": "disasm",
+          "records": [
+            "output/native.json#/result/methods/2",
+            "output/native.json#/result/bodies/2/fragments/0",
+            "output/native.json#/result/bodies/2/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Abilities.TriggerWhenTakenDamageAbility._OnTakeDamage",
+          "address": "0x180fcea90"
+        },
+        {
+          "index": 94992,
+          "mode": "disasm",
+          "records": [
+            "output/native.json#/result/methods/3",
+            "output/native.json#/result/bodies/3/fragments/0",
+            "output/native.json#/result/bodies/3/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Abilities.TriggerWhenTakenDamageAbility..ctor",
+          "address": "0x180fcec30"
+        },
+        {
+          "index": 94993,
+          "mode": "disasm",
+          "records": [
+            "output/native.json#/result/methods/4",
+            "output/native.json#/result/bodies/4/fragments/0",
+            "output/native.json#/result/bodies/4/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Abilities.TriggerWhenTakenDamageAbility.<>xLuaBaseProxy_OnAttached",
+          "address": "0x18060f320"
+        },
+        {
+          "index": 94994,
+          "mode": "disasm",
+          "records": [
+            "output/native.json#/result/methods/5",
+            "output/native.json#/result/bodies/5/fragments/0",
+            "output/native.json#/result/bodies/5/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Abilities.TriggerWhenTakenDamageAbility.<>xLuaBaseProxy_OnDetached",
+          "address": "0x18060f330"
+        },
+        {
+          "index": 99149,
+          "mode": "disasm",
+          "records": [
+            "output/native.json#/result/methods/6",
+            "output/native.json#/result/bodies/6/fragments/0",
+            "output/native.json#/result/bodies/6/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/NoSourceDamage.get_allowedSource",
+          "address": "0x1811043f0"
+        },
+        {
+          "index": 99150,
+          "mode": "disasm",
+          "records": [
+            "output/native.json#/result/methods/7",
+            "output/native.json#/result/bodies/7/fragments/0",
+            "output/native.json#/result/bodies/7/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/NoSourceDamage.get_purposeMask",
+          "address": "0x181104450"
+        },
+        {
+          "index": 99151,
+          "mode": "disasm",
+          "records": [
+            "output/native.json#/result/methods/8",
+            "output/native.json#/result/bodies/8/fragments/0",
+            "output/native.json#/result/bodies/8/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/NoSourceDamage.Execute",
+          "address": "0x181103de0"
+        },
+        {
+          "index": 99152,
+          "mode": "disasm",
+          "records": [
+            "output/native.json#/result/methods/9",
+            "output/native.json#/result/bodies/9/fragments/0",
+            "output/native.json#/result/bodies/9/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/NoSourceDamage.PreprocessForProjectile",
+          "address": "0x1811042a0"
+        },
+        {
+          "index": 99153,
+          "mode": "disasm",
+          "records": [
+            "output/native.json#/result/methods/10",
+            "output/native.json#/result/bodies/10/fragments/0",
+            "output/native.json#/result/bodies/10/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/NoSourceDamage..ctor",
+          "address": "0x181104300"
+        },
+        {
+          "index": 100218,
+          "mode": "disasm",
+          "records": [
+            "output/native.json#/result/methods/11",
+            "output/native.json#/result/bodies/11/fragments/0",
+            "output/native.json#/result/bodies/11/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/IsDamage.get_allowedSource",
+          "address": "0x181177910"
+        },
+        {
+          "index": 100219,
+          "mode": "disasm",
+          "records": [
+            "output/native.json#/result/methods/12",
+            "output/native.json#/result/bodies/12/fragments/0",
+            "output/native.json#/result/bodies/12/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/IsDamage.Execute",
+          "address": "0x1811777f0"
+        },
+        {
+          "index": 100220,
+          "mode": "disasm",
+          "records": [
+            "output/native.json#/result/methods/13",
+            "output/native.json#/result/bodies/13/fragments/0",
+            "output/native.json#/result/bodies/13/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/IsDamage..ctor",
+          "address": "0x1811778b0"
+        },
+        {
+          "index": 101504,
+          "mode": "disasm",
+          "records": [
+            "output/native.json#/result/methods/14",
+            "output/native.json#/result/bodies/14/fragments/0",
+            "output/native.json#/result/bodies/14/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/FilterDamageModifer.get_filterModifierSource",
+          "address": "0x1811d5da0"
+        },
+        {
+          "index": 101505,
+          "mode": "disasm",
+          "records": [
+            "output/native.json#/result/methods/15",
+            "output/native.json#/result/bodies/15/fragments/0",
+            "output/native.json#/result/bodies/15/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/FilterDamageModifer.get_filterModifierSourceAndFilterBySourceId",
+          "address": "0x1811d5d30"
+        },
+        {
+          "index": 101506,
+          "mode": "disasm",
+          "records": [
+            "output/native.json#/result/methods/16",
+            "output/native.json#/result/bodies/16/fragments/0",
+            "output/native.json#/result/bodies/16/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/FilterDamageModifer.get_allowedSource",
+          "address": "0x1811d5cd0"
+        },
+        {
+          "index": 101507,
+          "mode": "disasm",
+          "records": [
+            "output/native.json#/result/methods/17",
+            "output/native.json#/result/bodies/17/fragments/0",
+            "output/native.json#/result/bodies/17/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/FilterDamageModifer.Execute",
+          "address": "0x1811d5840"
+        },
+        {
+          "index": 101508,
+          "mode": "disasm",
+          "records": [
+            "output/native.json#/result/methods/18",
+            "output/native.json#/result/bodies/18/fragments/0",
+            "output/native.json#/result/bodies/18/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/FilterDamageModifer..ctor",
+          "address": "0x1811d5c60"
+        }
+      ],
+      "blocks": [],
+      "types": [],
+      "constants": [],
+      "bundles": [
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99",
+          "records": [
+            "output/bindings.json#/provenance/sources/0"
+          ],
+          "bytes": 477255
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_171_bldsk.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_171_bldsk.ab",
+          "sha256": "91d49f7bcd68bdf28d198ea41362151527fe0942fe041b3c2f379693dcc5fd3c",
+          "records": [
+            "output/bindings.json#/provenance/sources/1"
+          ],
+          "bytes": 23571
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_4145_ulpia.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_4145_ulpia.ab",
+          "sha256": "bd0098b276de65b11d78a5566c6786391ced425bdafe3d0d15bb76e681585343",
+          "records": [
+            "output/bindings.json#/provenance/sources/2"
+          ],
+          "bytes": 27857
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_107_liskam.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_107_liskam.ab",
+          "sha256": "5e8111522ec2a27474a9e81da16587fd84180cdb347f4df3324c053b979fa2a0",
+          "records": [
+            "output/bindings.json#/provenance/sources/3"
+          ],
+          "bytes": 23731
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_4183_mortis.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_4183_mortis.ab",
+          "sha256": "6cc7b99e7e509d7b6a9a375d4a60691eb6b8a80737427e442ea386c5d2dc58ce",
+          "records": [
+            "output/bindings.json#/provenance/sources/4"
+          ],
+          "bytes": 34889
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "sha256": "0d0b4c0f9252c14a69a20d4bea09527403dd3eddfc2f7bcd757c3c30cf37ffc3",
+          "records": [
+            "output/bindings.json#/provenance/sources/5"
+          ],
+          "bytes": 1367500
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "sha256": "8edcb8017c977cdf52c2593b58e21db96949f3ad1e6f904180ac1241f145ca79",
+          "records": [
+            "output/bindings.json#/provenance/sources/6",
+            "source/aak-loss-and-attack-scale.json#/provenance/sources/1"
+          ],
+          "bytes": 2151020
+        },
+        {
+          "kind": "bundle",
+          "path": "charpack/char_171_bldsk.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_171_bldsk.ab",
+          "sha256": "57b00ed912794e10834b0eb2d4cb49e50d357fb8e361fa252bfbfcea94539045",
+          "records": [
+            "output/bindings.json#/result/objects/0"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "charpack/char_4145_ulpia.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_4145_ulpia.ab",
+          "sha256": "844d058384939157263290d576b07be12a6e56c86e71e56fe23a4a620b666cd5",
+          "records": [
+            "output/bindings.json#/result/objects/1"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "charpack/char_4145_ulpia.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_4145_ulpia.ab",
+          "sha256": "4c5f9e0e9f5da6fc0f3a0946c7fd063f8acaa7198c8fb6b55ac46927bf1263de",
+          "records": [
+            "output/bindings.json#/result/objects/2"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "charpack/char_107_liskam.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_107_liskam.ab",
+          "sha256": "1bec75ffaab38d5562ccd32f2c9f8b97858680e8cde56f3e259db5034ac4b6ae",
+          "records": [
+            "output/bindings.json#/result/objects/3"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "charpack/char_107_liskam.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_107_liskam.ab",
+          "sha256": "5824d8cd21136d0e9af3d30b06f19e2df8ae158e0d8f790f399697c5e71cd5c9",
+          "records": [
+            "output/bindings.json#/result/objects/4"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "charpack/char_4183_mortis.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_4183_mortis.ab",
+          "sha256": "0a23635e5696c236c3915265b074a789e5bdff80542f9a0c876428cf389a1b77",
+          "records": [
+            "output/bindings.json#/result/objects/5"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "charpack/char_4183_mortis.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_4183_mortis.ab",
+          "sha256": "f5ed100d6012a562251db1484838612b08d799480be6059bf67a2c3c9bc8cb0b",
+          "records": [
+            "output/bindings.json#/result/objects/6"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "battle/prefabs/[uc]skills.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "sha256": "aa0a71481fa3ebd47bd99258279fde377c4d646aa8daed0f73ff508b7e7bc029",
+          "records": [
+            "output/bindings.json#/result/objects/7"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "battle/prefabs/[uc]skills.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "sha256": "200eb924fe96dc4fbda99767f4841079b3a80d0e2ca4006befe57b797ae94fdc",
+          "records": [
+            "output/bindings.json#/result/objects/8"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "battle/prefabs/[uc]skills.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "sha256": "a06b2ae7d6bcf6d700167affc5e3838f14fc69cb449f5987a660cf78fe7027e9",
+          "records": [
+            "output/bindings.json#/result/objects/9"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "battle/prefabs/[uc]skills.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "sha256": "6083f5b9132db4302d4b3c8a2e380aa38d94b2afc04ff2e85d08b55575bd06c1",
+          "records": [
+            "output/bindings.json#/result/objects/10"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "battle/prefabs/[uc]skills.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "sha256": "aa8c016040a21e7c00714deefaa5137e8affc786de31efa0b2c90072e9eb8fc4",
+          "records": [
+            "output/bindings.json#/result/objects/11"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "battle/prefabs/[uc]skills.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "sha256": "f97425c632e7dda87ca27305ecc580342c3454b66cf27724bce32fe6725403ab",
+          "records": [
+            "output/bindings.json#/result/objects/12"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "battle/prefabs/[uc]skills.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "sha256": "e7883afd9d77673e1fa612dcc7465de0d37c40e661aeb35bbe2e46f3f50dc497",
+          "records": [
+            "output/bindings.json#/result/objects/13"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "battle/prefabs/[uc]skills.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "sha256": "ae76a411fdbad3ea1a6508f81f961af528efe1a08c9e7ac3256b761f58d552c1",
+          "records": [
+            "output/bindings.json#/result/objects/14"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_225_haak.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_225_haak.ab",
+          "sha256": "95f081a133221722e6aed0070bd84db5ad6cbc6ee95d0710b337a59310294ea9",
+          "records": [
+            "source/aak-loss-and-attack-scale.json#/provenance/sources/0"
+          ],
+          "bytes": 22986
+        }
+      ]
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}
