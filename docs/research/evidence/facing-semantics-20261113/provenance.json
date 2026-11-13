@@ -1,0 +1,50 @@
+{
+  "scope": "Focused static native facing writers and gameplay consumer; no client execution or full content binding.",
+  "client": {
+    "dll": {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+      "bytes": 223112680,
+      "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff"
+    },
+    "metadata": {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+      "bytes": 46669332,
+      "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5"
+    },
+    "metadataVersion": 29,
+    "imageBase": "0x180000000"
+  },
+  "tool": {
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/native.py",
+      "bytes": 18723,
+      "sha256": "1c6c16dc97e0dd9af0af4033c81a7534384dd65ebb1e604df3f4a3289df158e6"
+    },
+    "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]"
+  },
+  "location": {
+    "metadataRegistration": "0x187ee0630",
+    "modules": {
+      "Assembly-CSharp.dll": {
+        "address": 6564854272,
+        "methodPointers": 6585881040,
+        "count": 225427,
+        "fileBacked": true
+      }
+    }
+  },
+  "caseTool": {
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/facing-semantics-20261113/extract.py",
+      "bytes": 3755,
+      "sha256": "15825b674a4b9dbd7c434783773afcd319a9d6c0b7ed3a2eaaa3196622f7795d"
+    },
+    "lock": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/facing-semantics-20261113/extract.py.lock",
+      "sha256": "1ed9e3b399cf0743106d2124514970f3a3b5db6d9f1192fba528019ccbefdf04",
+      "bytes": 3739
+    }
+  },
+  "collectedOn": "2026-11-13",
+  "resourceManifestVersionId": "26-10-20-11-10-38-04170990"
+}

@@ -1,0 +1,509 @@
+{
+  "collectedOn": "2026-11-13",
+  "repositoryCommit": "408ab7cf7e4fb9aa0332312bf11621e0368c7912",
+  "scope": "分类审计而非全内容完成度证明；分类不自行决定新API。",
+  "items": [
+    {
+      "id": "wave-release",
+      "mechanism": "活Unit单独释放Wave等待",
+      "classification": "CONFIRMED_OPERATION_GAP",
+      "sources": [
+        "PRTS-RATHALOS"
+      ],
+      "code": [
+        "src/core/battle/schedule/runtime.ts",
+        "src/core/battle/schedule/state.ts"
+      ],
+      "reason": "resolveUnits同时删除wave/final；Wave超时又影响整组。两者不能选择性保留最终等待。",
+      "existingEvidence": [
+        "docs/research/cases/30-scheduler-action-data-fields.md",
+        "docs/research/evidence/scheduler-general-20261107/lifecycle/ReleaseEnemyFromCurrentWave-0x18097f830.txt"
+      ],
+      "followup": "仅接口设计待审查；公共行为本身已有客户端证据。"
+    },
+    {
+      "id": "kill-fact",
+      "mechanism": "真实击杀归属及旁观死亡",
+      "classification": "CONFIRMED_EXISTING_OMISSION",
+      "sources": [
+        "PRTS-DAMAGE",
+        "PRTS-KILL-CONTENT"
+      ],
+      "code": [
+        "src/core/unit/unit.ts",
+        "src/core/battle/damage/hp/apply.ts",
+        "src/core/battle/damage/hp/contract.ts"
+      ],
+      "reason": "Departure仅含Unit和离场原因；普通Applied不表示最终确认死亡与归属。",
+      "existingEvidence": [
+        "docs/research/cases/27-attack-additions-and-damage-events.md",
+        "docs/research/cases/28-damage-hooks-and-event-granularity.md",
+        "docs/research/cases/11-damage-apply-and-hp-application.md",
+        "docs/research/evidence/hp-loss-settlement-20261113/native.json"
+      ],
+      "followup": "一般击杀与旁观死亡已有证据；OnFinish读取BattleContext栈顶来源的短链已核对，但该栈入栈及无source独立killer路径未齐，不改变项目死亡通知顺序。"
+    },
+    {
+      "id": "facing",
+      "mechanism": "移动单位保留的面向与前背面",
+      "classification": "CONFIRMED_SHARED_FACT_GAP",
+      "sources": [
+        "PRTS-COMBAT",
+        "PRTS-FLASH",
+        "PRTS-RATHALOS"
+      ],
+      "code": [
+        "src/core/unit/unit.ts",
+        "src/core/unit/capability/occupancy/capability.ts",
+        "src/core/unit/capability/locomotion/capability.ts"
+      ],
+      "reason": "原生普通移动、攻击、受力会写入保存的有效面向；generic部位伤害消费者读取faceSign并可触发Buff。现有位置、速度及部署四向不能无条件还原。",
+      "existingEvidence": [
+        "docs/research/evidence/facing-semantics-20261113/README.md",
+        "docs/research/evidence/facing-semantics-20261113/result.json"
+      ],
+      "followup": "公共事实存在已确认；具体归属与平面近似未决定，未完成火龙Prefab到该Talent的绑定。"
+    },
+    {
+      "id": "damage-metadata",
+      "mechanism": "伤害分类、修改/取消权限、普通HIT资格",
+      "classification": "KNOWN_GAP_REFINED",
+      "sources": [
+        "PRTS-DAMAGE",
+        "PRTS-SPECIAL",
+        "PRTS-SKILL"
+      ],
+      "code": [
+        "src/core/battle/damage/hp/contract.ts",
+        "src/core/battle/damage/hp/calculate.ts",
+        "src/core/battle/damage/hp/apply.ts"
+      ],
+      "reason": "Request缺少通用元信息，cancel不接收请求政策；不能由DamageType/source/Projectile推断全部行为。",
+      "existingEvidence": [
+        "docs/architecture/tactical-semantics.md",
+        "docs/architecture/vitality.md"
+      ],
+      "followup": "细化DMG-02即可；不复制原生事件编号与全部标签。"
+    },
+    {
+      "id": "bounds",
+      "mechanism": "每Unit属性上下限覆写",
+      "classification": "KNOWN_GAP",
+      "sources": [
+        "PRTS-BOUNDS",
+        "PRTS-BOUNDS-CONTENT"
+      ],
+      "code": [
+        "src/core/unit/capability/vitality/query.ts",
+        "src/core/unit/capability/offense/query.ts",
+        "src/core/unit/capability/action/timing.ts"
+      ],
+      "reason": "属性查询仍固定限幅；普通加乘修正不能表达数值范围本身改变。",
+      "existingEvidence": [
+        "docs/architecture/tactical-semantics.md"
+      ],
+      "followup": "ATTR-02已登记，不能当新发现。"
+    },
+    {
+      "id": "hp-special",
+      "mechanism": "衍生HP、致死接管、保护与代受",
+      "classification": "KNOWN_DEFERRED",
+      "sources": [
+        "PRTS-HP",
+        "PRTS-DAMAGE"
+      ],
+      "code": [
+        "src/core/unit/capability/vitality/operations.ts"
+      ],
+      "reason": "普通HP提交不是特殊生命机制的接管协议。",
+      "existingEvidence": [
+        "docs/architecture/vitality.md",
+        "docs/research/cases/11-damage-apply-and-hp-application.md",
+        "docs/research/cases/28-damage-hooks-and-event-granularity.md"
+      ],
+      "followup": "按已延期的生命接管问题处理；不新建只换名称的系统。"
+    },
+    {
+      "id": "hp-recovery-loss",
+      "mechanism": "自然回复、复原及物理/法术流失",
+      "classification": "KNOWN_GAP_RESEARCHED_SEPARATELY",
+      "sources": [
+        "PRTS-DAMAGE",
+        "PRTS-HP",
+        "PRTS-BOUNDS"
+      ],
+      "code": [
+        "src/core/unit/capability/vitality/operations.ts",
+        "src/core/battle/damage/hp/apply.ts",
+        "src/core/battle/healing/hp/apply.ts"
+      ],
+      "reason": "有普通提交，不代表存在带明确跳过政策的自回/流失完整入口。",
+      "existingEvidence": [
+        "docs/research/cases/11-damage-apply-and-hp-application.md",
+        "docs/research/cases/29-hp-and-ep-healing-settlement.md"
+      ],
+      "followup": "本轮由相应案例补充客户端证据，本批不重复。"
+    },
+    {
+      "id": "classification",
+      "mechanism": "阵营、实体种类、职业、种族与攻击标签",
+      "classification": "KNOWN_DATA_FACT_GAP",
+      "sources": [
+        "PRTS-SPECIAL"
+      ],
+      "code": [
+        "src/core/unit/unit.ts",
+        "src/core/unit/capability/allegiance/capability.ts",
+        "src/content/operators/mudrock/unit.ts"
+      ],
+      "reason": "不能以阵营猜实体种类/种族；部分内容仍需读完整DataProfile。",
+      "existingEvidence": [
+        "docs/architecture/capability.md"
+      ],
+      "followup": "保留公共静态事实需求，不照搬原生Entity继承树。"
+    },
+    {
+      "id": "effect",
+      "mechanism": "重复施加、组竞争、stack与计时",
+      "classification": "PUBLIC_MECHANISM_PRESENT",
+      "sources": [
+        "PRTS-BUFF"
+      ],
+      "code": [
+        "src/core/unit/effect/definition.ts",
+        "src/core/unit/effect/operations.ts",
+        "src/core/unit/effect/expiration.ts"
+      ],
+      "reason": "已提供group、stack、onStackChange和Expiration；具体内容绑定仍需实现。",
+      "existingEvidence": [
+        "docs/architecture/effect.md"
+      ],
+      "followup": "不以历史Data模板或测试宣称全部效果已接入。"
+    },
+    {
+      "id": "aura",
+      "mechanism": "光环及进入/离开/实时/全局响应",
+      "classification": "CONTENT_COMPOSITION",
+      "sources": [
+        "PRTS-SPECIAL",
+        "PRTS-BUFF"
+      ],
+      "code": [
+        "src/core/unit/effect/definition.ts",
+        "src/core/unit/effect/operations.ts",
+        "src/core/unit/hook.ts"
+      ],
+      "reason": "私有接收关联、Hook、Query与scope足以表达，不需要新增Aura公共层。",
+      "existingEvidence": [
+        "docs/architecture/effect.md"
+      ],
+      "followup": "代表生产内容与具体周期仍需接入。"
+    },
+    {
+      "id": "periodic",
+      "mechanism": "抵抗时间缩放、周期触发与次数",
+      "classification": "CONTENT_COMPOSITION",
+      "sources": [
+        "PRTS-BUFF",
+        "PRTS-BOUNDS"
+      ],
+      "code": [
+        "src/core/unit/effect/expiration.ts",
+        "src/core/unit/effect/operations.ts"
+      ],
+      "reason": "expiration/rate和state可保存周期与剩余次数，现有未提供某个Effect不构成新Core缺口。",
+      "existingEvidence": [
+        "docs/architecture/effect.md"
+      ],
+      "followup": "具体采样时点和抵抗公式按对应内容核验。"
+    },
+    {
+      "id": "hitrate",
+      "mechanism": "攻击级命中与连击共用结果",
+      "classification": "CONTENT_COMPOSITION",
+      "sources": [
+        "PRTS-HITRATE"
+      ],
+      "code": [
+        "src/core/unit/action/action.ts",
+        "src/content/actions/attack.ts"
+      ],
+      "reason": "Action state和RNG可在一次攻击入口采样并共享；无需强制每笔Damage掷骰。",
+      "existingEvidence": [
+        "docs/architecture/action.md"
+      ],
+      "followup": "Wiki页施工中；Damage的选择性响应属于另一缺口。"
+    },
+    {
+      "id": "multi-output",
+      "mechanism": "附加HP/EP、多段、溅射与退场后命中",
+      "classification": "CONTENT_COMPOSITION",
+      "sources": [
+        "PRTS-DAMAGE",
+        "PRTS-BASE"
+      ],
+      "code": [
+        "src/core/projectile/projectile.ts",
+        "src/content/actions/attack.ts",
+        "src/core/battle/damage/hp/hook.ts"
+      ],
+      "reason": "Action/Projectile明确组合操作及样本；无需把整次攻击合并为Damage事务。",
+      "existingEvidence": [
+        "docs/research/cases/27-attack-additions-and-damage-events.md",
+        "docs/architecture/projectile.md"
+      ],
+      "followup": "已定Calculate/Apply、Card历史归属不重开。"
+    },
+    {
+      "id": "selection",
+      "mechanism": "普通仇恨、特殊排序、随机和分组选择",
+      "classification": "CONTENT_COMPOSITION",
+      "sources": [
+        "PRTS-COMBAT",
+        "PRTS-SPECIAL"
+      ],
+      "code": [
+        "src/core/battle/targeting",
+        "src/core/unit/capability/targetable",
+        "src/core/common/query.ts"
+      ],
+      "reason": "Query、谓词、比较器、TopK及RNG足以组合选择；重选/锁定归调用方。",
+      "existingEvidence": [
+        "docs/architecture/targeting.md"
+      ],
+      "followup": "普通Comparator内容尚未接齐不等于架构不能表达。"
+    },
+    {
+      "id": "geometry",
+      "mechanism": "碰撞体、中点、地格与动态范围",
+      "classification": "PARTIAL_KNOWN_GAP",
+      "sources": [
+        "PRTS-COMBAT",
+        "PRTS-BOUNDS"
+      ],
+      "code": [
+        "src/core/geometry",
+        "src/core/unit/capability/hitbox"
+      ],
+      "reason": "基础几何已有；完整范围扩展属性与资料还未接入。",
+      "existingEvidence": [
+        "docs/architecture/spatial.md",
+        "docs/architecture/tactical-semantics.md"
+      ],
+      "followup": "GEO-01/Data现有条目细化即可。"
+    },
+    {
+      "id": "abnormal",
+      "mechanism": "限制、异常、免疫、反制及组合",
+      "classification": "CONTENT_COMPOSITION",
+      "sources": [
+        "PRTS-ABNORMAL",
+        "PRTS-BUFF"
+      ],
+      "code": [
+        "src/core/unit/capability/targetable",
+        "src/core/unit/effect",
+        "src/core/effects"
+      ],
+      "reason": "限制定义身份、Effect有效状态、领域Rule/Hook可表达多数组合；不逐flag新增模型。",
+      "existingEvidence": [
+        "docs/architecture/targeting.md",
+        "docs/architecture/effect.md"
+      ],
+      "followup": "特殊HP接管和Damage政策另列；healFree项目政策保持。"
+    },
+    {
+      "id": "skill",
+      "mechanism": "充能、蓄力、弹药、主动操作",
+      "classification": "PUBLIC_BASE_WITH_KNOWN_EXTENSIONS",
+      "sources": [
+        "PRTS-SKILL"
+      ],
+      "code": [
+        "src/core/unit/skill",
+        "src/core/unit/capability/skill"
+      ],
+      "reason": "基础Skill资源、状态和激活可组合；运行SP配置切换/基础弹药容量变更仍为既有扩展。",
+      "existingEvidence": [
+        "docs/architecture/skill.md"
+      ],
+      "followup": "具体consume/check时序按真实内容核对。"
+    },
+    {
+      "id": "enemy-skill",
+      "mechanism": "敌人多技能、独立冷却和攻击竞争",
+      "classification": "CONTENT_COMPOSITION",
+      "sources": [
+        "PRTS-RATHALOS",
+        "PRTS-SPECIAL"
+      ],
+      "code": [
+        "src/core/unit/action",
+        "src/core/unit/capability/action",
+        "src/core/battle/steps/combat.ts"
+      ],
+      "reason": "多Action与条件/优先级可以表达，不需要多个Skill Capability。",
+      "existingEvidence": [
+        "docs/architecture/action.md"
+      ],
+      "followup": "实际敌人技能资料与程序覆盖另行接入。"
+    },
+    {
+      "id": "overflow",
+      "mechanism": "溢出治疗转屏障",
+      "classification": "CONTENT_COMPOSITION",
+      "sources": [
+        "PRTS-DAMAGE"
+      ],
+      "code": [
+        "src/core/battle/healing/hp/contract.ts",
+        "src/core/unit/capability/vitality/operations.ts"
+      ],
+      "reason": "从最终接收量与实际hpGain即可推导溢出；没有独立overflow字段不是缺提交能力。",
+      "existingEvidence": [
+        "docs/architecture/vitality.md"
+      ],
+      "followup": "具体屏障安装是内容程序。"
+    },
+    {
+      "id": "force",
+      "mechanism": "推拉、失衡与受力中陷落",
+      "classification": "KNOWN_DEFERRED",
+      "sources": [
+        "PRTS-COMBAT",
+        "PRTS-ABNORMAL"
+      ],
+      "code": [
+        "src/core/unit/capability/locomotion",
+        "src/core/battle/steps/movement.ts"
+      ],
+      "reason": "现有自主导航运动不是强制位移完整执行；重量/力度和失衡需实际调用链。",
+      "existingEvidence": [
+        "docs/architecture/tactical-semantics.md"
+      ],
+      "followup": "不把每种推拉特效再算新gap。"
+    },
+    {
+      "id": "route",
+      "mechanism": "恐惧、诱导、Trace、改道与缓存",
+      "classification": "PUBLIC_BASE_CONTENT_INCOMPLETE",
+      "sources": [
+        "PRTS-INDUCED"
+      ],
+      "code": [
+        "src/core/unit/capability/route"
+      ],
+      "reason": "多Context、ticking和显式指令可承载；缓存Plan/index由内容保存。",
+      "existingEvidence": [
+        "docs/architecture/navigation.md",
+        "docs/research/cases/31-route-operations-and-state.md"
+      ],
+      "followup": "更多内容尚未接入，不重开通用暂停栈。"
+    },
+    {
+      "id": "blocking",
+      "mechanism": "阻挡、空地、起飞和浮空",
+      "classification": "PUBLIC_BASE_CONTENT_INCOMPLETE",
+      "sources": [
+        "PRTS-SPECIAL",
+        "PRTS-ABNORMAL"
+      ],
+      "code": [
+        "src/core/unit/capability/blocking",
+        "src/core/unit/capability/layer",
+        "src/core/battle/blocking"
+      ],
+      "reason": "独立Blocker/Blockable/Layer及合法release、Rule可组合。",
+      "existingEvidence": [
+        "docs/architecture/blocking.md"
+      ],
+      "followup": "具体浮空/起飞效果与采样不是全部已完成。"
+    },
+    {
+      "id": "terrain",
+      "mechanism": "动态地块、连通区域与环境计量",
+      "classification": "CONTENT_COMPOSITION",
+      "sources": [
+        "PRTS-SPECIAL"
+      ],
+      "code": [
+        "src/core/battlefield",
+        "src/core/battle/mechanism.ts"
+      ],
+      "reason": "地图/导航操作与Mechanism私有状态可承载，未发现必须通用化全部活动地块的理由。",
+      "existingEvidence": [
+        "docs/architecture/battlefield.md"
+      ],
+      "followup": "具体地块规则按资料验证，不把所有名称列为Coregap。"
+    },
+    {
+      "id": "deployment",
+      "mechanism": "普通部署、免费来源、特殊撤退再部署、多格",
+      "classification": "PUBLIC_BASE_WITH_KNOWN_EXTENSIONS",
+      "sources": [
+        "PRTS-SPECIAL",
+        "PRTS-COMBAT"
+      ],
+      "code": [
+        "src/core/battle/deployment",
+        "src/core/unit/capability/deployable",
+        "src/core/unit/capability/occupancy"
+      ],
+      "reason": "Quote/Card/Occupancy已有基础；特殊再部署及多格登记已有明确延期。",
+      "existingEvidence": [
+        "docs/architecture/deployment.md",
+        "docs/architecture/occupancy.md"
+      ],
+      "followup": "瞬移不能代替完整撤退/再部署业务。"
+    },
+    {
+      "id": "statistics",
+      "mechanism": "计数、漏怪与胜负",
+      "classification": "KNOWN_DEFERRED_AND_PROJECT_POLICY",
+      "sources": [
+        "PRTS-COMBAT",
+        "PRTS-SPECIAL"
+      ],
+      "code": [
+        "src/core/battle/state.ts",
+        "src/core/battle/schedule/query.ts"
+      ],
+      "reason": "等待集合不是统计；Core不裁定胜负是项目边界，实际统计仍未接齐。",
+      "existingEvidence": [
+        "docs/architecture/schedule.md",
+        "docs/architecture/tactical-semantics.md"
+      ],
+      "followup": "不能以PRTS模式结算强迫Core保存终局结果。"
+    },
+    {
+      "id": "distance",
+      "mechanism": "按累计位移触发伤害",
+      "classification": "EVIDENCE_PENDING_NOT_YET_GAP",
+      "sources": [
+        "PRTS-SPECIAL"
+      ],
+      "code": [
+        "src/core/unit/capability/locomotion",
+        "src/core/unit/effect"
+      ],
+      "reason": "Effect可采样位置，但与原生公共累计距离/跳变过滤是否有不可合并差异尚未证明。",
+      "existingEvidence": [],
+      "followup": "需重叠实例/不同采样周期的内容证据，未证明前不新增累计路程模型。"
+    },
+    {
+      "id": "scope",
+      "mechanism": "剧情音画、局外及明确排除模式",
+      "classification": "OUT_OF_SCOPE",
+      "sources": [
+        "PRTS-COMBAT",
+        "PRTS-SPECIAL"
+      ],
+      "code": [],
+      "reason": "目录存在不表示Core有实现义务。",
+      "existingEvidence": [
+        "docs/architecture/tactical-semantics.md"
+      ],
+      "followup": "普通战斗最终输入仍需理解；不把范围排除当字段未知的借口。"
+    }
+  ]
+}

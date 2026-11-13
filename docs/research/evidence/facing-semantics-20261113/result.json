@@ -1,0 +1,307 @@
+{
+  "collectedOn": "2026-11-13",
+  "scope": "移动/攻击/受力的面向写入→持久状态→按方向改变部位生命并触发Buff；不设计Core API。",
+  "conclusions": [
+    {
+      "id": "persistent-combat-facing",
+      "status": "NATIVE_CONFIRMED",
+      "statement": "左右面向可作为跨时点的持久事实影响战斗；不能总由当前position或velocity推导。",
+      "evidence": [
+        "FaceTo写入m_faceTo",
+        "Animator左右状态存储",
+        "MhPartHpHudPluginTalent读取faceSign并更新部位HP和触发Buff"
+      ]
+    },
+    {
+      "id": "distinct-direction-layers",
+      "status": "NATIVE_CONFIRMED",
+      "statement": "Entity.m_faceTo、Entity.m_direction、Animator左右符号是相关但独立的数据，不应把部署四向、运动方向和战斗面向互换。"
+    },
+    {
+      "id": "camera-policy",
+      "status": "NATIVE_CONFIRMED_BOUNDED",
+      "statement": "_CalculateFaceDirection在_useMoveDirAsFaceDir为true时直返；否则近竖直且非deterministic时才进行camera投影，之后可询问下一转向。不能把任意Wiki简述当作无条件规则。"
+    },
+    {
+      "id": "content-binding",
+      "status": "NOT_VERIFIED",
+      "statement": "本批没有取得enemy_1537_mhrors到该Talent组件的Prefab绑定。PRTS火龙/眩光手雷为内容需求资料，generic native消费者另作直接证据；不将二者冒充完整绑定。"
+    },
+    {
+      "id": "project-need",
+      "status": "PROJECT_COMPARISON",
+      "statement": "当前Unit.position、Locomotion.velocity与Occupancy.direction不足以统一还原上述历史事实；单个部位计量属于内容私有状态，共同面向的存储归属和近似政策仍待选择。"
+    }
+  ],
+  "fields": [
+    {
+      "owner": "Torappu.Battle.Entity",
+      "name": "m_faceTo",
+      "offset": "0x8c",
+      "type": "UnityEngine.Vector2"
+    },
+    {
+      "owner": "Torappu.Battle.Entity",
+      "name": "m_direction",
+      "offset": "0xec",
+      "type": "Torappu.SharedConsts/Direction"
+    },
+    {
+      "owner": "Torappu.Battle.Enemy",
+      "name": "_bodyDirectionPolicy",
+      "offset": "0x2e4"
+    },
+    {
+      "owner": "Torappu.Battle.Enemy",
+      "name": "_useMoveDirAsFaceDir",
+      "offset": "0x2e8"
+    },
+    {
+      "owner": "Torappu.Battle.FaceSwitcher",
+      "name": "m_currentLOrR",
+      "offset": "0x24"
+    },
+    {
+      "owner": "Torappu.Battle.UnitAnimator",
+      "name": "m_faceSign",
+      "offset": "0x18"
+    },
+    {
+      "owner": "Torappu.Battle.MhPartHpHudPluginTalent",
+      "name": "_facePosition",
+      "offset": "0x80"
+    },
+    {
+      "owner": "Torappu.Battle.MhPartHpHudPluginTalent",
+      "name": "m_partHp",
+      "offset": "0xa0"
+    }
+  ],
+  "chains": [
+    {
+      "id": "move",
+      "file": "semantic-consumers.json",
+      "method": "Torappu.Battle.Enemy._MoveByCursor",
+      "proof": [
+        [
+          "0x180ac7f95",
+          "_CalculateFaceDirection"
+        ],
+        [
+          "0x180ac7faf",
+          "FaceTo"
+        ]
+      ]
+    },
+    {
+      "id": "attack",
+      "file": "writers-consumers.json",
+      "method": "Torappu.Battle.Abilities.AbstractAnimatedAbility.DealWithFaceDirection",
+      "proof": [
+        [
+          "0x180f90423",
+          "_faceToTarget/config gating"
+        ],
+        [
+          "0x180f905d8",
+          "FaceToTarget"
+        ],
+        [
+          "0x1807242ad",
+          "FaceToTarget→FaceTo",
+          "core.json"
+        ]
+      ],
+      "policyFieldsFile": "face-publication.json"
+    },
+    {
+      "id": "knockback",
+      "file": "semantic-consumers.json",
+      "method": "Torappu.Battle.Enemy.KnockBack",
+      "proof": [
+        [
+          "0x180abd82c",
+          "changeFaceByDirection及非零方向分支"
+        ],
+        [
+          "0x180abd837",
+          "向量反号"
+        ],
+        [
+          "0x180abd85f",
+          "FaceTo"
+        ]
+      ]
+    },
+    {
+      "id": "face-write",
+      "file": "core.json",
+      "method": "Torappu.Battle.Entity.FaceTo",
+      "proof": [
+        [
+          "0x1807244f7",
+          "m_faceTo向量写入"
+        ],
+        [
+          "0x180724540",
+          "虚调OnFaceChanged"
+        ]
+      ]
+    },
+    {
+      "id": "body-write",
+      "file": "core.json",
+      "method": "Torappu.Battle.Entity.SetBodyDirection",
+      "proof": [
+        [
+          "0x18072df4e",
+          "OnBeforeDirectionChange"
+        ],
+        [
+          "0x18072df55",
+          "m_direction写入"
+        ],
+        [
+          "0x18072df71",
+          "OnDirectionChanged"
+        ]
+      ]
+    },
+    {
+      "id": "enemy-publication",
+      "file": "face-publication.json",
+      "method": "Torappu.Battle.Enemy.OnFaceChanged",
+      "proof": [
+        [
+          "0x180abee97",
+          "Unit.OnFaceChanged"
+        ],
+        [
+          "0x180abeeab",
+          "SetBodyDirectionWithPolicy"
+        ]
+      ]
+    },
+    {
+      "id": "camera",
+      "file": "writers-consumers.json",
+      "method": "Torappu.Battle.Enemy._CalculateFaceDirection",
+      "proof": [
+        [
+          "0x180ac679d",
+          "读取_useMoveDirAsFaceDir"
+        ],
+        [
+          "0x180ac67b3",
+          "true直接返回"
+        ],
+        [
+          "0x180ac67da",
+          "CheckAlmostVertical"
+        ],
+        [
+          "0x180ac67fe",
+          "get_isDeterministic"
+        ],
+        [
+          "0x180ac6863",
+          "WorldToViewportDirectionV2"
+        ],
+        [
+          "0x180ac68e7",
+          "仍竖直时可取GetNextTurn"
+        ]
+      ]
+    },
+    {
+      "id": "effective-sign-read",
+      "file": "writers-consumers.json",
+      "method": "Torappu.Battle.Unit.get_faceSign",
+      "proof": [
+        [
+          "0x180b205bf",
+          "无Animator回Entity.get_faceSign"
+        ],
+        [
+          "0x180b2060a",
+          "Animator虚slot9"
+        ],
+        [
+          "0x180b2061d",
+          "返回Animator符号"
+        ]
+      ]
+    },
+    {
+      "id": "sign-persistence",
+      "file": "sign-storage.json",
+      "proof": [
+        [
+          "0x18061f031",
+          "FaceSwitcher.StartSwitch写m_currentLOrR"
+        ],
+        [
+          "0x18061f079",
+          "另一分支写m_currentLOrR"
+        ],
+        [
+          "0x180646558",
+          "UnitAnimator.SetLeftOrRight写m_faceSign"
+        ]
+      ]
+    },
+    {
+      "id": "part-application",
+      "file": "part-application.json",
+      "method": "Torappu.Battle.MhPartHpHudPluginTalent._OnApplyedModifier",
+      "proof": [
+        [
+          "0x1809e8625",
+          "读取Modifier.source"
+        ],
+        [
+          "0x1809e869b",
+          "来源mapPosition"
+        ],
+        [
+          "0x1809e86d2",
+          "宿主mapPosition"
+        ],
+        [
+          "0x1809e86e1",
+          "计算位置差X"
+        ],
+        [
+          "0x1809e87bf",
+          "虚slot45读取owner.faceSign"
+        ],
+        [
+          "0x1809e87c2",
+          "乘_facePosition"
+        ],
+        [
+          "0x1809e87e9",
+          "方向不符合跳过累计"
+        ],
+        [
+          "0x1809e8967",
+          "更新m_partHp"
+        ],
+        [
+          "0x1809e899e",
+          "生命阈值条件"
+        ],
+        [
+          "0x1809e8abe",
+          "Buff.Trigger"
+        ]
+      ]
+    }
+  ],
+  "exclusions": [
+    "MhPartHpHudPluginTalent名字中HUD不能证明纯表现；结论依赖其实际状态写入与Buff.Trigger。",
+    "CheckDirection的Enemy分支读lastMoveDirection，不用它冒充faceSign消费者。",
+    "此处不核定PRTS地格方位与generic组件mapPosition的所有映射；不把连续位置消费者直接说成按格规则。",
+    "未验证XLua热更新分支、全部Animator实现、所有方向锁定和全游戏Prefab。"
+  ]
+}

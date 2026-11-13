@@ -42,6 +42,9 @@ uv run "$skill/scripts/archive.py" docs/research/evidence
 
 | 批次 | 调查主题 |
 | --- | --- |
+| [facing-semantics-20261113](facing-semantics-20261113/README.md) | 移动／攻击／受力的面向写入、身体四向与左右符号的区别、持久符号和部位伤害消费者；具体 Prefab 绑定另列证据限度 |
+| [hp-loss-settlement-20261113](hp-loss-settlement-20261113/README.md) | 物理／法术／真实流失的关卡与 Prefab 绑定、DEF／RES 计算、skip 剩余回调、HP 保护及直接 setter 区别 |
+| [prts-mechanism-audit-20261113](prts-mechanism-audit-20261113/README.md) | PRTS 机制目录的分类覆盖、真实公共操作遗漏与已有缺口细化；分别登记社区版本、既有原生依据和待核实项 |
 | [hp-regeneration-20261113](hp-regeneration-20261113/README.md) | 自然 HP 回复的两项属性、正速率门控、精确单点计时、速率变更、普通 setter 与满值通知；宿主士兵关卡正例及负值检索范围 |
 | [independent-group-impact-20261112](independent-group-impact-20261112/README.md) | 来源分组简化的实际影响：完整独立描述与敌人配置扫描、浊蒂海嗣来源转发、帕拉斯根绑定、妮芙父来源及清理 |
 | [predefined-source-20261112](predefined-source-20261112/README.md) | 普通无 Card 预放置干员的配置、独立卡牌注入与直接 Character 创建链，以及角色数据身份的写入 |

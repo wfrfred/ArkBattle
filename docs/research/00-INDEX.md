@@ -13,6 +13,7 @@
 | [03 空间、单位与机制](03-space-units-and-mechanisms.md) | 地块、设备、空间贡献、阻挡、索敌与运动的职责；哪些对象不能简单等同 |
 | [04 领域边界与实现差距](04-domain-boundaries-and-gaps.md) | subsystem / effect / mechanism / hook / resource 各自是什么；当前实现的限制和真正不匹配点 |
 | [05 证据与待核对事项](05-evidence-and-open-questions.md) | 来源可信度、版本、复查入口，以及决定下一轮设计前还要调查什么 |
+| [机制目录覆盖审计](cases/34-prts-mechanism-coverage-audit.md) | 对照 PRTS 机制目录识别公共需求遗漏，区分已有能力、内容接入、延期设计与证据候选 |
 
 取证材料按批次归档于[证据目录](evidence/README.md)，每批次的 README 记录输入、文件用途、复现入口及尚未保存的专用解码。归档格式整理不代表重新核实了全部历史结论。
 

@@ -1,0 +1,2262 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-11-13"
+    ],
+    "collectionDateSource": "record fields",
+    "organizedOn": "2026-11-13",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+        "records": [
+          "core.json#/provenance/client/dll",
+          "face-publication.json#/provenance/client/dll",
+          "part-application.json#/provenance/client/dll",
+          "provenance.json#/client/dll",
+          "search.json#/provenance/client/dll",
+          "semantic-consumers.json#/provenance/client/dll",
+          "sign-storage.json#/provenance/client/dll",
+          "writers-consumers.json#/provenance/client/dll"
+        ],
+        "bytes": 223112680
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        "records": [
+          "core.json#/provenance/client/metadata",
+          "face-publication.json#/provenance/client/metadata",
+          "part-application.json#/provenance/client/metadata",
+          "provenance.json#/client/metadata",
+          "search.json#/provenance/client/metadata",
+          "semantic-consumers.json#/provenance/client/metadata",
+          "sign-storage.json#/provenance/client/metadata",
+          "writers-consumers.json#/provenance/client/metadata"
+        ],
+        "bytes": 46669332
+      }
+    },
+    "sourceRecords": [
+      "core.json",
+      "face-publication.json",
+      "part-application.json",
+      "provenance.json",
+      "result.json",
+      "search.json",
+      "semantic-consumers.json",
+      "sign-storage.json",
+      "writers-consumers.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12895,
+        "sha256": "9c5b246859318caaec4aab5275ef0d2d49fce5d612c6b4e569973a9941ba621a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "core.json",
+        "kind": "record",
+        "bytes": 485670,
+        "sha256": "8f79dc8afdbbbdd9c8ae7ac004938d1e4263ba18b8cd3e68d771e2a4db495cae"
+      },
+      {
+        "path": "extract.py",
+        "kind": "historical-script",
+        "bytes": 3755,
+        "sha256": "15825b674a4b9dbd7c434783773afcd319a9d6c0b7ed3a2eaaa3196622f7795d"
+      },
+      {
+        "path": "extract.py.lock",
+        "kind": "artifact",
+        "bytes": 3739,
+        "sha256": "1ed9e3b399cf0743106d2124514970f3a3b5db6d9f1192fba528019ccbefdf04"
+      },
+      {
+        "path": "face-publication.json",
+        "kind": "record",
+        "bytes": 133290,
+        "sha256": "24377df2592493a131b8c1836ead262fd64453eed0b1344b0a5bcc215c649696"
+      },
+      {
+        "path": "part-application.json",
+        "kind": "record",
+        "bytes": 482717,
+        "sha256": "96716db7425b10af4a09d4e8bc9ccf734e65b72f07ba3346555b040351130ca5"
+      },
+      {
+        "path": "provenance.json",
+        "kind": "record",
+        "bytes": 1879,
+        "sha256": "d24cc1ab9ed0c1f8d40f3673adf20dba971ad1f1d934de9f18eebf560c63f036"
+      },
+      {
+        "path": "result.json",
+        "kind": "record",
+        "bytes": 7857,
+        "sha256": "48b3e642e83dc53c73db33d35f86676a724eb9aea0b7c3fa0589e134950b0cb8"
+      },
+      {
+        "path": "search.json",
+        "kind": "record",
+        "bytes": 219336,
+        "sha256": "7bcee49f2f49cb7e7045cb510ade1f690a99e032fedca475b2f4f245bde6eea1"
+      },
+      {
+        "path": "semantic-consumers.json",
+        "kind": "record",
+        "bytes": 415211,
+        "sha256": "ba38c4cb1c6d66c8bb0487f10be0dcf45d1fd0c9889c26dd1c84a4c3f7e47f2e"
+      },
+      {
+        "path": "sign-storage.json",
+        "kind": "record",
+        "bytes": 65212,
+        "sha256": "2418226065ec9c91cdf32282d0ecb426815648db7f657e8992149a782f7887a3"
+      },
+      {
+        "path": "writers-consumers.json",
+        "kind": "record",
+        "bytes": 713746,
+        "sha256": "fc2a430496620c08aa1e9c95d0938d6618282f82b914f96d7f4eee5429914704"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 49018,
+          "mode": "metadata",
+          "records": [
+            "core.json#/result/methods/0"
+          ],
+          "fullname": "Torappu.Building.Vault.VCharacter.get_faceSign",
+          "address": "0x183f91a40"
+        },
+        {
+          "index": 49019,
+          "mode": "metadata",
+          "records": [
+            "core.json#/result/methods/1"
+          ],
+          "fullname": "Torappu.Building.Vault.VCharacter.set_faceSign",
+          "address": "0x183f929b0"
+        },
+        {
+          "index": 59839,
+          "mode": "metadata",
+          "records": [
+            "core.json#/result/methods/2"
+          ],
+          "fullname": "Torappu.Arkvent.ArkventStoryMachineGameplayComponent._TryGetFaceSignToTarget",
+          "address": "0x184292900"
+        },
+        {
+          "index": 59840,
+          "mode": "metadata",
+          "records": [
+            "core.json#/result/methods/3"
+          ],
+          "fullname": "Torappu.Arkvent.ArkventStoryMachineGameplayComponent._ApplySelfFaceSign",
+          "address": "0x184291970"
+        },
+        {
+          "index": 59841,
+          "mode": "metadata",
+          "records": [
+            "core.json#/result/methods/4"
+          ],
+          "fullname": "Torappu.Arkvent.ArkventStoryMachineGameplayComponent._ApplyUnitFaceSign",
+          "address": "0x184291ae0"
+        },
+        {
+          "index": 59842,
+          "mode": "metadata",
+          "records": [
+            "core.json#/result/methods/5"
+          ],
+          "fullname": "Torappu.Arkvent.ArkventStoryMachineGameplayComponent._SetUnitSyncFaceSign",
+          "address": "0x184292090"
+        },
+        {
+          "index": 61228,
+          "mode": "metadata",
+          "records": [
+            "core.json#/result/methods/6"
+          ],
+          "fullname": "Torappu.Arkvent.ArkventSelfPlayerUnit._ResolveFaceSign",
+          "address": "0x1842ebd90"
+        },
+        {
+          "index": 61591,
+          "mode": "metadata",
+          "records": [
+            "core.json#/result/methods/7"
+          ],
+          "fullname": "Torappu.Arkvent.ArkventSpineView.SetFaceSign",
+          "address": "0x184303300"
+        },
+        {
+          "index": 62566,
+          "mode": "metadata",
+          "records": [
+            "core.json#/result/methods/8"
+          ],
+          "fullname": "Torappu.Arkvent.PlayTest.PlayTestCrowdKccUnit._ResolveFaceSign",
+          "address": "0x180592b10"
+        },
+        {
+          "index": 62672,
+          "mode": "metadata",
+          "records": [
+            "core.json#/result/methods/9"
+          ],
+          "fullname": "Torappu.Arkvent.PlayTest.PlayTestCrowdKccSystem._ResolveFaceSign",
+          "address": "0x1805a82e0"
+        },
+        {
+          "index": 64378,
+          "mode": "metadata",
+          "records": [
+            "semantic-consumers.json#/result/methods/0"
+          ],
+          "fullname": "Torappu.Battle.RotateHandlerAnimatorBehaviour.OnFaceChanged",
+          "address": "0x180629600"
+        },
+        {
+          "index": 64425,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/0"
+          ],
+          "fullname": "Torappu.Battle.CharacterAnimator.get_faceToBack",
+          "address": "0x18061a6e0"
+        },
+        {
+          "index": 64426,
+          "mode": "disasm",
+          "records": [
+            "core.json#/result/methods/10",
+            "semantic-consumers.json#/result/methods/1",
+            "semantic-consumers.json#/result/bodies/0",
+            "semantic-consumers.json#/result/bodies/0/fragments/0",
+            "semantic-consumers.json#/result/bodies/0/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.CharacterAnimator.get_faceSign",
+          "address": "0x18061a5b0"
+        },
+        {
+          "index": 64427,
+          "mode": "metadata",
+          "records": [
+            "core.json#/result/methods/11"
+          ],
+          "fullname": "Torappu.Battle.CharacterAnimator.get_faceLOrR",
+          "address": "0x18061a4f0"
+        },
+        {
+          "index": 64441,
+          "mode": "metadata",
+          "records": [
+            "semantic-consumers.json#/result/methods/2"
+          ],
+          "fullname": "Torappu.Battle.CharacterAnimator.OnFaceChanged",
+          "address": "0x180618480"
+        },
+        {
+          "index": 64447,
+          "mode": "metadata",
+          "records": [
+            "core.json#/result/methods/12"
+          ],
+          "fullname": "Torappu.Battle.CharacterAnimator.DoUpdateFaceSign",
+          "address": "0x180617970"
+        },
+        {
+          "index": 64463,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/1"
+          ],
+          "fullname": "Torappu.Battle.CharacterAnimator.<>xLuaBaseProxy_get_faceToBack",
+          "address": "0x180619540"
+        },
+        {
+          "index": 64464,
+          "mode": "metadata",
+          "records": [
+            "core.json#/result/methods/13"
+          ],
+          "fullname": "Torappu.Battle.CharacterAnimator.<>xLuaBaseProxy_get_faceSign",
+          "address": "0x180619530"
+        },
+        {
+          "index": 64465,
+          "mode": "metadata",
+          "records": [
+            "core.json#/result/methods/14"
+          ],
+          "fullname": "Torappu.Battle.CharacterAnimator.<>xLuaBaseProxy_get_faceLOrR",
+          "address": "0x180619520"
+        },
+        {
+          "index": 64476,
+          "mode": "metadata",
+          "records": [
+            "core.json#/result/methods/15"
+          ],
+          "fullname": "Torappu.Battle.CharacterAnimator.<>xLuaBaseProxy_DoUpdateFaceSign",
+          "address": "0x180619430"
+        },
+        {
+          "index": 64485,
+          "mode": "metadata",
+          "records": [
+            "core.json#/result/methods/16"
+          ],
+          "fullname": "Torappu.Battle.EmptyAnimator.get_faceSign",
+          "address": "0x18061e710"
+        },
+        {
+          "index": 64501,
+          "mode": "metadata",
+          "records": [
+            "semantic-consumers.json#/result/methods/3"
+          ],
+          "fullname": "Torappu.Battle.EmptyAnimator.OnFaceChanged",
+          "address": "0x18061e050"
+        },
+        {
+          "index": 64508,
+          "mode": "metadata",
+          "records": [
+            "core.json#/result/methods/17"
+          ],
+          "fullname": "Torappu.Battle.EmptyAnimator.<>xLuaBaseProxy_get_faceSign",
+          "address": "0x180619530"
+        },
+        {
+          "index": 64515,
+          "mode": "disasm",
+          "records": [
+            "core.json#/result/methods/18",
+            "semantic-consumers.json#/result/methods/4",
+            "semantic-consumers.json#/result/bodies/1",
+            "semantic-consumers.json#/result/bodies/1/fragments/0",
+            "semantic-consumers.json#/result/bodies/1/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.FaceSwitcher.get_faceSign",
+          "address": "0x18061f960"
+        },
+        {
+          "index": 64520,
+          "mode": "disasm",
+          "records": [
+            "sign-storage.json#/result/methods/0",
+            "sign-storage.json#/result/bodies/0",
+            "sign-storage.json#/result/bodies/0/fragments/0",
+            "sign-storage.json#/result/bodies/0/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.FaceSwitcher.StartSwitch",
+          "address": "0x18061ef80"
+        },
+        {
+          "index": 64581,
+          "mode": "metadata",
+          "records": [
+            "core.json#/result/methods/19"
+          ],
+          "fullname": "Torappu.Battle.MeshAnimator.DoUpdateFaceSign",
+          "address": "0x180623700"
+        },
+        {
+          "index": 64583,
+          "mode": "metadata",
+          "records": [
+            "semantic-consumers.json#/result/methods/5"
+          ],
+          "fullname": "Torappu.Battle.MeshAnimator.OnFaceChanged",
+          "address": "0x180624060"
+        },
+        {
+          "index": 64599,
+          "mode": "metadata",
+          "records": [
+            "core.json#/result/methods/20"
+          ],
+          "fullname": "Torappu.Battle.MeshAnimator.<>xLuaBaseProxy_DoUpdateFaceSign",
+          "address": "0x180624e10"
+        },
+        {
+          "index": 64631,
+          "mode": "metadata",
+          "records": [
+            "semantic-consumers.json#/result/methods/6"
+          ],
+          "fullname": "Torappu.Battle.MultiSpineAnimator.OnFaceChanged",
+          "address": "0x180627830"
+        },
+        {
+          "index": 64636,
+          "mode": "metadata",
+          "records": [
+            "core.json#/result/methods/21"
+          ],
+          "fullname": "Torappu.Battle.MultiSpineAnimator.DoUpdateFaceSign",
+          "address": "0x180626780"
+        },
+        {
+          "index": 64654,
+          "mode": "metadata",
+          "records": [
+            "core.json#/result/methods/22"
+          ],
+          "fullname": "Torappu.Battle.MultiSpineAnimator.<>xLuaBaseProxy_DoUpdateFaceSign",
+          "address": "0x180619430"
+        },
+        {
+          "index": 64676,
+          "mode": "disasm",
+          "records": [
+            "core.json#/result/methods/23",
+            "semantic-consumers.json#/result/methods/7",
+            "semantic-consumers.json#/result/bodies/2",
+            "semantic-consumers.json#/result/bodies/2/fragments/0",
+            "semantic-consumers.json#/result/bodies/2/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.SingleSpineAnimator.get_faceSign",
+          "address": "0x1806370b0"
+        },
+        {
+          "index": 64692,
+          "mode": "disasm",
+          "records": [
+            "face-publication.json#/result/methods/0",
+            "face-publication.json#/result/bodies/0",
+            "face-publication.json#/result/bodies/0/fragments/0",
+            "face-publication.json#/result/bodies/0/fragments/0/method",
+            "semantic-consumers.json#/result/methods/8"
+          ],
+          "fullname": "Torappu.Battle.SingleSpineAnimator.OnFaceChanged",
+          "address": "0x180636680"
+        },
+        {
+          "index": 64694,
+          "mode": "metadata",
+          "records": [
+            "core.json#/result/methods/24"
+          ],
+          "fullname": "Torappu.Battle.SingleSpineAnimator.DoUpdateFaceSign",
+          "address": "0x180635e20"
+        },
+        {
+          "index": 64699,
+          "mode": "metadata",
+          "records": [
+            "core.json#/result/methods/25"
+          ],
+          "fullname": "Torappu.Battle.SingleSpineAnimator.<>xLuaBaseProxy_get_faceSign",
+          "address": "0x180636e20"
+        },
+        {
+          "index": 64707,
+          "mode": "metadata",
+          "records": [
+            "core.json#/result/methods/26"
+          ],
+          "fullname": "Torappu.Battle.SingleSpineAnimator.<>xLuaBaseProxy_DoUpdateFaceSign",
+          "address": "0x180619430"
+        },
+        {
+          "index": 64825,
+          "mode": "metadata",
+          "records": [
+            "core.json#/result/methods/27"
+          ],
+          "fullname": "Torappu.Battle.SpineAnimator.DoUpdateFaceSign",
+          "address": "0x180639c70"
+        },
+        {
+          "index": 64856,
+          "mode": "metadata",
+          "records": [
+            "core.json#/result/methods/28"
+          ],
+          "fullname": "Torappu.Battle.SpineAnimator.<>xLuaBaseProxy_DoUpdateFaceSign",
+          "address": "0x18063eaa0"
+        },
+        {
+          "index": 64928,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/2"
+          ],
+          "fullname": "Torappu.Battle.ThreeFaceAnimator.get_faceToDown",
+          "address": "0x180644570"
+        },
+        {
+          "index": 64935,
+          "mode": "metadata",
+          "records": [
+            "core.json#/result/methods/29"
+          ],
+          "fullname": "Torappu.Battle.ThreeFaceAnimator.DoUpdateFaceSign",
+          "address": "0x180642650"
+        },
+        {
+          "index": 64950,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/3"
+          ],
+          "fullname": "Torappu.Battle.ThreeFaceAnimator.<>xLuaBaseProxy_get_faceToDown",
+          "address": "0x180643b90"
+        },
+        {
+          "index": 64957,
+          "mode": "metadata",
+          "records": [
+            "core.json#/result/methods/30"
+          ],
+          "fullname": "Torappu.Battle.ThreeFaceAnimator.<>xLuaBaseProxy_DoUpdateFaceSign",
+          "address": "0x180643920"
+        },
+        {
+          "index": 64982,
+          "mode": "metadata",
+          "records": [
+            "core.json#/result/methods/31"
+          ],
+          "fullname": "Torappu.Battle.UnitAnimator.get_faceSign",
+          "address": "0x180636e20"
+        },
+        {
+          "index": 64983,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/4"
+          ],
+          "fullname": "Torappu.Battle.UnitAnimator.get_faceToBack",
+          "address": "0x180646af0"
+        },
+        {
+          "index": 64984,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/5"
+          ],
+          "fullname": "Torappu.Battle.UnitAnimator.get_faceToDown",
+          "address": "0x180643b90"
+        },
+        {
+          "index": 64985,
+          "mode": "metadata",
+          "records": [
+            "core.json#/result/methods/32"
+          ],
+          "fullname": "Torappu.Battle.UnitAnimator.get_faceLOrR",
+          "address": "0x180646a60"
+        },
+        {
+          "index": 65018,
+          "mode": "metadata",
+          "records": [
+            "semantic-consumers.json#/result/methods/9"
+          ],
+          "fullname": "Torappu.Battle.UnitAnimator.OnFaceChanged"
+        },
+        {
+          "index": 65034,
+          "mode": "disasm",
+          "records": [
+            "sign-storage.json#/result/methods/1",
+            "sign-storage.json#/result/bodies/1",
+            "sign-storage.json#/result/bodies/1/fragments/0",
+            "sign-storage.json#/result/bodies/1/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.UnitAnimator.SetLeftOrRight",
+          "address": "0x1806464f0"
+        },
+        {
+          "index": 65035,
+          "mode": "metadata",
+          "records": [
+            "core.json#/result/methods/33"
+          ],
+          "fullname": "Torappu.Battle.UnitAnimator.DoUpdateFaceSign",
+          "address": "0x18063eaa0"
+        },
+        {
+          "index": 66507,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/6"
+          ],
+          "fullname": "Torappu.Battle.CameraController.FaceToCamera",
+          "address": "0x1806e3380"
+        },
+        {
+          "index": 66508,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/7"
+          ],
+          "fullname": "Torappu.Battle.CameraController.FaceToCameraOnlyX",
+          "address": "0x1806e3160"
+        },
+        {
+          "index": 67362,
+          "mode": "disasm",
+          "records": [
+            "core.json#/result/methods/34",
+            "core.json#/result/bodies/0",
+            "core.json#/result/bodies/0/fragments/0",
+            "core.json#/result/bodies/0/fragments/0/method",
+            "search.json#/result/methods/8"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_faceTo",
+          "address": "0x180735590"
+        },
+        {
+          "index": 67363,
+          "mode": "disasm",
+          "records": [
+            "core.json#/result/methods/35",
+            "core.json#/result/bodies/1",
+            "core.json#/result/bodies/1/fragments/0",
+            "core.json#/result/bodies/1/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_faceDirection",
+          "address": "0x1807352a0"
+        },
+        {
+          "index": 67364,
+          "mode": "disasm",
+          "records": [
+            "core.json#/result/methods/36",
+            "core.json#/result/bodies/2",
+            "core.json#/result/bodies/2/fragments/0",
+            "core.json#/result/bodies/2/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_faceSign",
+          "address": "0x180735420"
+        },
+        {
+          "index": 67365,
+          "mode": "disasm",
+          "records": [
+            "core.json#/result/methods/37",
+            "core.json#/result/bodies/3",
+            "core.json#/result/bodies/3/fragments/0",
+            "core.json#/result/bodies/3/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_faceVector",
+          "address": "0x180735620"
+        },
+        {
+          "index": 67366,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/9"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_faceToBack",
+          "address": "0x1807354b0"
+        },
+        {
+          "index": 67367,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/10"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_faceToDown",
+          "address": "0x180735520"
+        },
+        {
+          "index": 67392,
+          "mode": "disasm",
+          "records": [
+            "core.json#/result/methods/38",
+            "core.json#/result/bodies/4",
+            "core.json#/result/bodies/4/fragments/0",
+            "core.json#/result/bodies/4/fragments/0/method",
+            "core.json#/result/xrefs/0/targetMethod"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_faceLOrR",
+          "address": "0x180735370"
+        },
+        {
+          "index": 67531,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/11"
+          ],
+          "fullname": "Torappu.Battle.Entity.FaceToDirection",
+          "address": "0x180723e50"
+        },
+        {
+          "index": 67532,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/12"
+          ],
+          "fullname": "Torappu.Battle.Entity.FaceToFront",
+          "address": "0x180723ff0"
+        },
+        {
+          "index": 67533,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/13"
+          ],
+          "fullname": "Torappu.Battle.Entity.FaceToBack",
+          "address": "0x180723c70"
+        },
+        {
+          "index": 67534,
+          "mode": "disasm",
+          "records": [
+            "core.json#/result/methods/39",
+            "core.json#/result/bodies/5",
+            "core.json#/result/bodies/5/fragments/0",
+            "core.json#/result/bodies/5/fragments/0/method",
+            "core.json#/result/xrefs/1/targetMethod",
+            "search.json#/result/methods/14"
+          ],
+          "fullname": "Torappu.Battle.Entity.FaceTo",
+          "address": "0x1807242f0"
+        },
+        {
+          "index": 67535,
+          "mode": "disasm",
+          "records": [
+            "core.json#/result/methods/40",
+            "core.json#/result/bodies/6",
+            "core.json#/result/bodies/6/fragments/0",
+            "core.json#/result/bodies/6/fragments/0/method",
+            "core.json#/result/xrefs/2/targetMethod",
+            "search.json#/result/methods/15"
+          ],
+          "fullname": "Torappu.Battle.Entity.FaceToTarget",
+          "address": "0x1807241d0"
+        },
+        {
+          "index": 67536,
+          "mode": "disasm",
+          "records": [
+            "core.json#/result/methods/41",
+            "core.json#/result/bodies/7",
+            "core.json#/result/bodies/7/fragments/0",
+            "core.json#/result/bodies/7/fragments/0/method",
+            "search.json#/result/methods/16"
+          ],
+          "fullname": "Torappu.Battle.Entity.SetBodyDirection",
+          "address": "0x18072db80"
+        },
+        {
+          "index": 67537,
+          "mode": "disasm",
+          "records": [
+            "core.json#/result/methods/42",
+            "core.json#/result/bodies/8",
+            "core.json#/result/bodies/8/fragments/0",
+            "core.json#/result/bodies/8/fragments/0/method",
+            "search.json#/result/methods/17"
+          ],
+          "fullname": "Torappu.Battle.Entity.SetBodyDirection",
+          "address": "0x18072dc70"
+        },
+        {
+          "index": 67538,
+          "mode": "disasm",
+          "records": [
+            "core.json#/result/methods/43",
+            "core.json#/result/bodies/9",
+            "core.json#/result/bodies/9/fragments/0",
+            "core.json#/result/bodies/9/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.SetBodyAndFaceDirection",
+          "address": "0x18072daa0"
+        },
+        {
+          "index": 67703,
+          "mode": "metadata",
+          "records": [
+            "semantic-consumers.json#/result/methods/10"
+          ],
+          "fullname": "Torappu.Battle.Entity.OnFaceChanged",
+          "address": "0x180729f30"
+        },
+        {
+          "index": 67727,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/18"
+          ],
+          "fullname": "Torappu.Battle.Entity.<>xLuaBaseProxy_get_faceTo",
+          "address": "0x180730340"
+        },
+        {
+          "index": 67842,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/19"
+          ],
+          "fullname": "Torappu.Battle.FixedPosition.get_faceTo",
+          "address": "0x180750570"
+        },
+        {
+          "index": 67843,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/20"
+          ],
+          "fullname": "Torappu.Battle.FixedPosition.set_faceTo",
+          "address": "0x180750610"
+        },
+        {
+          "index": 67864,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/21"
+          ],
+          "fullname": "Torappu.Battle.ILocatable.get_faceTo"
+        },
+        {
+          "index": 69279,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/22"
+          ],
+          "fullname": "Torappu.Battle.Act43SideBattleManager.CheckIfFaceToCamera",
+          "address": "0x1807bb000"
+        },
+        {
+          "index": 72221,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/23"
+          ],
+          "fullname": "Torappu.Battle.MountPoint.get_faceTo",
+          "address": "0x18090ef00"
+        },
+        {
+          "index": 75005,
+          "mode": "disasm",
+          "records": [
+            "part-application.json#/result/methods/0",
+            "part-application.json#/result/bodies/0",
+            "part-application.json#/result/bodies/0/fragments/0",
+            "part-application.json#/result/bodies/0/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.MhPartHpHudPluginTalent.get_type",
+          "address": "0x1809e8f60"
+        },
+        {
+          "index": 75006,
+          "mode": "disasm",
+          "records": [
+            "part-application.json#/result/methods/1",
+            "part-application.json#/result/bodies/1",
+            "part-application.json#/result/bodies/1/fragments/0",
+            "part-application.json#/result/bodies/1/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.MhPartHpHudPluginTalent.get_partHpRatio",
+          "address": "0x1809e8ec0"
+        },
+        {
+          "index": 75007,
+          "mode": "disasm",
+          "records": [
+            "part-application.json#/result/methods/2",
+            "part-application.json#/result/bodies/2",
+            "part-application.json#/result/bodies/2/fragments/0",
+            "part-application.json#/result/bodies/2/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.MhPartHpHudPluginTalent.get_validModeIndices",
+          "address": "0x1809e8fc0"
+        },
+        {
+          "index": 75008,
+          "mode": "disasm",
+          "records": [
+            "part-application.json#/result/methods/3",
+            "part-application.json#/result/bodies/3",
+            "part-application.json#/result/bodies/3/fragments/0",
+            "part-application.json#/result/bodies/3/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.MhPartHpHudPluginTalent.LoadPlugin",
+          "address": "0x1809e7f20"
+        },
+        {
+          "index": 75009,
+          "mode": "disasm",
+          "records": [
+            "part-application.json#/result/methods/4",
+            "part-application.json#/result/bodies/4",
+            "part-application.json#/result/bodies/4/fragments/0",
+            "part-application.json#/result/bodies/4/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.MhPartHpHudPluginTalent.AssignData",
+          "address": "0x1809e7830"
+        },
+        {
+          "index": 75010,
+          "mode": "disasm",
+          "records": [
+            "part-application.json#/result/methods/5",
+            "part-application.json#/result/bodies/5",
+            "part-application.json#/result/bodies/5/fragments/0",
+            "part-application.json#/result/bodies/5/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.MhPartHpHudPluginTalent.DoAttach",
+          "address": "0x1809e7a80"
+        },
+        {
+          "index": 75011,
+          "mode": "disasm",
+          "records": [
+            "part-application.json#/result/methods/6",
+            "part-application.json#/result/bodies/6",
+            "part-application.json#/result/bodies/6/fragments/0",
+            "part-application.json#/result/bodies/6/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.MhPartHpHudPluginTalent.DoDetach",
+          "address": "0x1809e7c90"
+        },
+        {
+          "index": 75012,
+          "mode": "disasm",
+          "records": [
+            "part-application.json#/result/methods/7",
+            "part-application.json#/result/bodies/7",
+            "part-application.json#/result/bodies/7/fragments/0",
+            "part-application.json#/result/bodies/7/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.MhPartHpHudPluginTalent.GatherBuffs",
+          "address": "0x1809e7e80"
+        },
+        {
+          "index": 75013,
+          "mode": "disasm",
+          "records": [
+            "part-application.json#/result/methods/8",
+            "part-application.json#/result/bodies/8",
+            "part-application.json#/result/bodies/8/fragments/0",
+            "part-application.json#/result/bodies/8/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.MhPartHpHudPluginTalent._OnApplyedModifier",
+          "address": "0x1809e82b0"
+        },
+        {
+          "index": 75014,
+          "mode": "disasm",
+          "records": [
+            "core.json#/result/methods/44",
+            "part-application.json#/result/methods/9",
+            "part-application.json#/result/bodies/9",
+            "part-application.json#/result/bodies/9/fragments/0",
+            "part-application.json#/result/bodies/9/fragments/0/method",
+            "writers-consumers.json#/result/methods/0",
+            "writers-consumers.json#/result/bodies/0",
+            "writers-consumers.json#/result/bodies/0/fragments/0",
+            "writers-consumers.json#/result/bodies/0/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.MhPartHpHudPluginTalent._CheckDirection",
+          "address": "0x1809e8020"
+        },
+        {
+          "index": 75015,
+          "mode": "disasm",
+          "records": [
+            "part-application.json#/result/methods/10",
+            "part-application.json#/result/bodies/10",
+            "part-application.json#/result/bodies/10/fragments/0",
+            "part-application.json#/result/bodies/10/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.MhPartHpHudPluginTalent._OnHudCreated",
+          "address": "0x1809e8b70"
+        },
+        {
+          "index": 75016,
+          "mode": "disasm",
+          "records": [
+            "part-application.json#/result/methods/11",
+            "part-application.json#/result/bodies/11",
+            "part-application.json#/result/bodies/11/fragments/0",
+            "part-application.json#/result/bodies/11/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.MhPartHpHudPluginTalent._OnPartHpZero",
+          "address": "0x1809e8c70"
+        },
+        {
+          "index": 75017,
+          "mode": "disasm",
+          "records": [
+            "part-application.json#/result/methods/12",
+            "part-application.json#/result/bodies/12",
+            "part-application.json#/result/bodies/12/fragments/0",
+            "part-application.json#/result/bodies/12/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.MhPartHpHudPluginTalent._CheckOwnerValidMode",
+          "address": "0x1809e8160"
+        },
+        {
+          "index": 75018,
+          "mode": "disasm",
+          "records": [
+            "part-application.json#/result/methods/13",
+            "part-application.json#/result/bodies/13",
+            "part-application.json#/result/bodies/13/fragments/0",
+            "part-application.json#/result/bodies/13/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.MhPartHpHudPluginTalent..ctor",
+          "address": "0x1809e8e10"
+        },
+        {
+          "index": 75019,
+          "mode": "disasm",
+          "records": [
+            "part-application.json#/result/methods/14",
+            "part-application.json#/result/bodies/14",
+            "part-application.json#/result/bodies/14/fragments/0",
+            "part-application.json#/result/bodies/14/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.MhPartHpHudPluginTalent.<>xLuaBaseProxy_AssignData",
+          "address": "0x1809c4220"
+        },
+        {
+          "index": 75020,
+          "mode": "disasm",
+          "records": [
+            "part-application.json#/result/methods/15",
+            "part-application.json#/result/bodies/15",
+            "part-application.json#/result/bodies/15/fragments/0",
+            "part-application.json#/result/bodies/15/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.MhPartHpHudPluginTalent.<>xLuaBaseProxy_DoAttach",
+          "address": "0x1809d5e10"
+        },
+        {
+          "index": 75021,
+          "mode": "disasm",
+          "records": [
+            "part-application.json#/result/methods/16",
+            "part-application.json#/result/bodies/16",
+            "part-application.json#/result/bodies/16/fragments/0",
+            "part-application.json#/result/bodies/16/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.MhPartHpHudPluginTalent.<>xLuaBaseProxy_DoDetach",
+          "address": "0x1809d5e20"
+        },
+        {
+          "index": 75022,
+          "mode": "disasm",
+          "records": [
+            "part-application.json#/result/methods/17",
+            "part-application.json#/result/bodies/17",
+            "part-application.json#/result/bodies/17/fragments/0",
+            "part-application.json#/result/bodies/17/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.MhPartHpHudPluginTalent.<>xLuaBaseProxy_GatherBuffs",
+          "address": "0x1809e6e60"
+        },
+        {
+          "index": 75033,
+          "mode": "disasm",
+          "records": [
+            "core.json#/result/methods/45",
+            "writers-consumers.json#/result/methods/1",
+            "writers-consumers.json#/result/bodies/1",
+            "writers-consumers.json#/result/bodies/1/fragments/0",
+            "writers-consumers.json#/result/bodies/1/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.MhWeaknessHudPluginTalent._CheckDirection",
+          "address": "0x1809e94b0"
+        },
+        {
+          "index": 77231,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/24"
+          ],
+          "fullname": "Torappu.Battle.Character.get_isIdleFaceToDisabled",
+          "address": "0x180ab0a60"
+        },
+        {
+          "index": 77320,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/25"
+          ],
+          "fullname": "Torappu.Battle.Character.TryFaceToIdleDirection",
+          "address": "0x180aa7e00"
+        },
+        {
+          "index": 77388,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/26"
+          ],
+          "fullname": "Torappu.Battle.Character.SetDisableFaceToIdleDirection",
+          "address": "0x180aa7030"
+        },
+        {
+          "index": 77604,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/27"
+          ],
+          "fullname": "Torappu.Battle.Enemy.get_bodyDirectionPolicy",
+          "address": "0x180aca7f0"
+        },
+        {
+          "index": 77748,
+          "mode": "disasm",
+          "records": [
+            "semantic-consumers.json#/result/methods/11",
+            "semantic-consumers.json#/result/bodies/3",
+            "semantic-consumers.json#/result/bodies/3/fragments/0",
+            "semantic-consumers.json#/result/bodies/3/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.KnockBack",
+          "address": "0x180abd6f0"
+        },
+        {
+          "index": 77765,
+          "mode": "disasm",
+          "records": [
+            "semantic-consumers.json#/result/methods/12",
+            "semantic-consumers.json#/result/bodies/4",
+            "semantic-consumers.json#/result/bodies/4/fragments/0",
+            "semantic-consumers.json#/result/bodies/4/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.ForceSetPositionByWorldCoords",
+          "address": "0x180abbf70"
+        },
+        {
+          "index": 77775,
+          "mode": "disasm",
+          "records": [
+            "semantic-consumers.json#/result/methods/13",
+            "semantic-consumers.json#/result/bodies/5",
+            "semantic-consumers.json#/result/bodies/5/fragments/0",
+            "semantic-consumers.json#/result/bodies/5/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.TransportInternal",
+          "address": "0x180ac3e10"
+        },
+        {
+          "index": 77785,
+          "mode": "disasm",
+          "records": [
+            "writers-consumers.json#/result/methods/2",
+            "writers-consumers.json#/result/bodies/2",
+            "writers-consumers.json#/result/bodies/2/fragments/0",
+            "writers-consumers.json#/result/bodies/2/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.OnBorn",
+          "address": "0x180abe720"
+        },
+        {
+          "index": 77786,
+          "mode": "disasm",
+          "records": [
+            "core.json#/result/methods/46",
+            "core.json#/result/bodies/10",
+            "core.json#/result/bodies/10/fragments/0",
+            "core.json#/result/bodies/10/fragments/0/method",
+            "search.json#/result/methods/28"
+          ],
+          "fullname": "Torappu.Battle.Enemy.InitFaceTo",
+          "address": "0x180abc930"
+        },
+        {
+          "index": 77788,
+          "mode": "disasm",
+          "records": [
+            "writers-consumers.json#/result/methods/3",
+            "writers-consumers.json#/result/bodies/3",
+            "writers-consumers.json#/result/bodies/3/fragments/0",
+            "writers-consumers.json#/result/bodies/3/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.SetBodyAndFaceDirection",
+          "address": "0x180ac2cb0"
+        },
+        {
+          "index": 77790,
+          "mode": "disasm",
+          "records": [
+            "face-publication.json#/result/methods/1",
+            "face-publication.json#/result/bodies/1",
+            "face-publication.json#/result/bodies/1/fragments/0",
+            "face-publication.json#/result/bodies/1/fragments/0/method",
+            "semantic-consumers.json#/result/methods/14"
+          ],
+          "fullname": "Torappu.Battle.Enemy.OnFaceChanged",
+          "address": "0x180abedf0"
+        },
+        {
+          "index": 77791,
+          "mode": "disasm",
+          "records": [
+            "core.json#/result/methods/47",
+            "core.json#/result/bodies/11",
+            "core.json#/result/bodies/11/fragments/0",
+            "core.json#/result/bodies/11/fragments/0/method",
+            "search.json#/result/methods/29"
+          ],
+          "fullname": "Torappu.Battle.Enemy.SetBodyDirectionWithPolicy",
+          "address": "0x180ac2e90"
+        },
+        {
+          "index": 77792,
+          "mode": "disasm",
+          "records": [
+            "writers-consumers.json#/result/methods/4",
+            "writers-consumers.json#/result/bodies/4",
+            "writers-consumers.json#/result/bodies/4/fragments/0",
+            "writers-consumers.json#/result/bodies/4/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.OnDisappearChanged",
+          "address": "0x180abec30"
+        },
+        {
+          "index": 77803,
+          "mode": "disasm",
+          "records": [
+            "writers-consumers.json#/result/methods/5",
+            "writers-consumers.json#/result/bodies/5",
+            "writers-consumers.json#/result/bodies/5/fragments/0",
+            "writers-consumers.json#/result/bodies/5/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy._MoveToFixedDirection",
+          "address": "0x180ac86f0"
+        },
+        {
+          "index": 77804,
+          "mode": "disasm",
+          "records": [
+            "semantic-consumers.json#/result/methods/15",
+            "semantic-consumers.json#/result/bodies/6",
+            "semantic-consumers.json#/result/bodies/6/fragments/0",
+            "semantic-consumers.json#/result/bodies/6/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy._MoveByCursor",
+          "address": "0x180ac7950"
+        },
+        {
+          "index": 77830,
+          "mode": "disasm",
+          "records": [
+            "core.json#/result/methods/48",
+            "core.json#/result/bodies/12",
+            "core.json#/result/bodies/12/fragments/0",
+            "core.json#/result/bodies/12/fragments/0/method",
+            "core.json#/result/xrefs/3/targetMethod",
+            "search.json#/result/methods/30"
+          ],
+          "fullname": "Torappu.Battle.Enemy.FaceToCalculateDirection",
+          "address": "0x180abb200"
+        },
+        {
+          "index": 77833,
+          "mode": "disasm",
+          "records": [
+            "writers-consumers.json#/result/methods/6",
+            "writers-consumers.json#/result/bodies/6",
+            "writers-consumers.json#/result/bodies/6/fragments/0",
+            "writers-consumers.json#/result/bodies/6/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy._CalculateFaceDirection",
+          "address": "0x180ac66c0"
+        },
+        {
+          "index": 77847,
+          "mode": "disasm",
+          "records": [
+            "writers-consumers.json#/result/methods/7",
+            "writers-consumers.json#/result/bodies/7",
+            "writers-consumers.json#/result/bodies/7/fragments/0",
+            "writers-consumers.json#/result/bodies/7/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.OnTickAfterDead",
+          "address": "0x180ac0700"
+        },
+        {
+          "index": 77908,
+          "mode": "metadata",
+          "records": [
+            "semantic-consumers.json#/result/methods/16"
+          ],
+          "fullname": "Torappu.Battle.Enemy.<>xLuaBaseProxy_OnFaceChanged",
+          "address": "0x180ac5290"
+        },
+        {
+          "index": 78449,
+          "mode": "disasm",
+          "records": [
+            "writers-consumers.json#/result/methods/8",
+            "writers-consumers.json#/result/bodies/8",
+            "writers-consumers.json#/result/bodies/8/fragments/0",
+            "writers-consumers.json#/result/bodies/8/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.GraphicFollowController._UpdateOwnerFace",
+          "address": "0x180af6bb0"
+        },
+        {
+          "index": 78884,
+          "mode": "disasm",
+          "records": [
+            "core.json#/result/methods/49",
+            "writers-consumers.json#/result/methods/9",
+            "writers-consumers.json#/result/bodies/9",
+            "writers-consumers.json#/result/bodies/9/fragments/0",
+            "writers-consumers.json#/result/bodies/9/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Unit.get_faceSign",
+          "address": "0x180b20510"
+        },
+        {
+          "index": 78885,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/31"
+          ],
+          "fullname": "Torappu.Battle.Unit.get_faceToBack",
+          "address": "0x180b20640"
+        },
+        {
+          "index": 78886,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/32"
+          ],
+          "fullname": "Torappu.Battle.Unit.get_faceToDown",
+          "address": "0x180b20770"
+        },
+        {
+          "index": 78887,
+          "mode": "disasm",
+          "records": [
+            "core.json#/result/methods/50",
+            "writers-consumers.json#/result/methods/10",
+            "writers-consumers.json#/result/bodies/10",
+            "writers-consumers.json#/result/bodies/10/fragments/0",
+            "writers-consumers.json#/result/bodies/10/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Unit.get_faceLOrR",
+          "address": "0x180b203e0"
+        },
+        {
+          "index": 79017,
+          "mode": "disasm",
+          "records": [
+            "face-publication.json#/result/methods/2",
+            "face-publication.json#/result/bodies/2",
+            "face-publication.json#/result/bodies/2/fragments/0",
+            "face-publication.json#/result/bodies/2/fragments/0/method",
+            "part-application.json#/result/methods/18",
+            "part-application.json#/result/bodies/18",
+            "part-application.json#/result/bodies/18/fragments/0",
+            "part-application.json#/result/bodies/18/fragments/0/method",
+            "semantic-consumers.json#/result/methods/17"
+          ],
+          "fullname": "Torappu.Battle.Unit.OnFaceChanged",
+          "address": "0x180b18c50"
+        },
+        {
+          "index": 79060,
+          "mode": "metadata",
+          "records": [
+            "core.json#/result/methods/51"
+          ],
+          "fullname": "Torappu.Battle.Unit.<>xLuaBaseProxy_get_faceSign",
+          "address": "0x180b1d470"
+        },
+        {
+          "index": 79061,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/33"
+          ],
+          "fullname": "Torappu.Battle.Unit.<>xLuaBaseProxy_get_faceToBack",
+          "address": "0x180b1d480"
+        },
+        {
+          "index": 79062,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/34"
+          ],
+          "fullname": "Torappu.Battle.Unit.<>xLuaBaseProxy_get_faceToDown",
+          "address": "0x180b1d490"
+        },
+        {
+          "index": 79063,
+          "mode": "metadata",
+          "records": [
+            "core.json#/result/methods/52"
+          ],
+          "fullname": "Torappu.Battle.Unit.<>xLuaBaseProxy_get_faceLOrR",
+          "address": "0x180b1d460"
+        },
+        {
+          "index": 79078,
+          "mode": "metadata",
+          "records": [
+            "semantic-consumers.json#/result/methods/18"
+          ],
+          "fullname": "Torappu.Battle.Unit.<>xLuaBaseProxy_OnFaceChanged",
+          "address": "0x180b1d350"
+        },
+        {
+          "index": 79199,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/35"
+          ],
+          "fullname": "Torappu.Battle.VisualObject.get_faceTo",
+          "address": "0x180b22e80"
+        },
+        {
+          "index": 79675,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/36"
+          ],
+          "fullname": "Torappu.Battle.MapUtil.FaceTo2d",
+          "address": "0x180b4bea0"
+        },
+        {
+          "index": 79676,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/37"
+          ],
+          "fullname": "Torappu.Battle.MapUtil.FaceTo3dUpwardMajor",
+          "address": "0x180b4c060"
+        },
+        {
+          "index": 79677,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/38"
+          ],
+          "fullname": "Torappu.Battle.MapUtil.FaceTo3dForwardMajor",
+          "address": "0x180b4bf40"
+        },
+        {
+          "index": 79678,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/39"
+          ],
+          "fullname": "Torappu.Battle.MapUtil.FaceToWithCameraForward",
+          "address": "0x180b4c180"
+        },
+        {
+          "index": 79784,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/40"
+          ],
+          "fullname": "Torappu.Battle.PreviewCursor._FaceTo",
+          "address": "0x180b50900"
+        },
+        {
+          "index": 92953,
+          "mode": "disasm",
+          "records": [
+            "writers-consumers.json#/result/methods/11",
+            "writers-consumers.json#/result/bodies/11",
+            "writers-consumers.json#/result/bodies/11/fragments/0",
+            "writers-consumers.json#/result/bodies/11/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Abilities.RushAttack._moveByTarget",
+          "address": "0x180f6caa0"
+        },
+        {
+          "index": 93876,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/41"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractAnimatedAbility.get_forceFaceToDirection",
+          "address": "0x180f92070"
+        },
+        {
+          "index": 93890,
+          "mode": "disasm",
+          "records": [
+            "writers-consumers.json#/result/methods/12",
+            "writers-consumers.json#/result/bodies/12",
+            "writers-consumers.json#/result/bodies/12/fragments/0",
+            "writers-consumers.json#/result/bodies/12/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractAnimatedAbility.DealWithFaceDirection",
+          "address": "0x180f90370"
+        },
+        {
+          "index": 97482,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/42"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/Act43SideFaceToLOrRViaShootingArea.get_allowedSource",
+          "address": "0x18106f160"
+        },
+        {
+          "index": 97483,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/43"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/Act43SideFaceToLOrRViaShootingArea.Execute",
+          "address": "0x18106ed90"
+        },
+        {
+          "index": 97484,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/44"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/Act43SideFaceToLOrRViaShootingArea..ctor",
+          "address": "0x18106f0b0"
+        },
+        {
+          "index": 98172,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/45"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AssignRelativeDirectionToBB.get_allowedSource",
+          "address": "0x1810b74f0"
+        },
+        {
+          "index": 98173,
+          "mode": "disasm",
+          "records": [
+            "search.json#/result/methods/46",
+            "semantic-consumers.json#/result/methods/19",
+            "semantic-consumers.json#/result/bodies/7",
+            "semantic-consumers.json#/result/bodies/7/fragments/0",
+            "semantic-consumers.json#/result/bodies/7/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AssignRelativeDirectionToBB.Execute",
+          "address": "0x1810b7170"
+        },
+        {
+          "index": 98174,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/47"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AssignRelativeDirectionToBB..ctor",
+          "address": "0x1810b7460"
+        },
+        {
+          "index": 98175,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/48"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AssignAxisRelativeDirectionToBB.get_allowedSource",
+          "address": "0x1810b0230"
+        },
+        {
+          "index": 98176,
+          "mode": "disasm",
+          "records": [
+            "search.json#/result/methods/49",
+            "semantic-consumers.json#/result/methods/20",
+            "semantic-consumers.json#/result/bodies/8",
+            "semantic-consumers.json#/result/bodies/8/fragments/0",
+            "semantic-consumers.json#/result/bodies/8/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AssignAxisRelativeDirectionToBB.Execute",
+          "address": "0x1810afe90"
+        },
+        {
+          "index": 98177,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/50"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AssignAxisRelativeDirectionToBB..ctor",
+          "address": "0x1810b01a0"
+        },
+        {
+          "index": 99762,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/51"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/FaceToTarget.get_allowedSource",
+          "address": "0x18115b240"
+        },
+        {
+          "index": 99763,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/52"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/FaceToTarget.Execute",
+          "address": "0x18115b0a0"
+        },
+        {
+          "index": 99764,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/53"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/FaceToTarget..ctor",
+          "address": "0x18115b1e0"
+        },
+        {
+          "index": 101518,
+          "mode": "metadata",
+          "records": [
+            "core.json#/result/methods/53"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/CheckDirection.get_allowedSource",
+          "address": "0x1811cc950"
+        },
+        {
+          "index": 101519,
+          "mode": "disasm",
+          "records": [
+            "core.json#/result/methods/54",
+            "writers-consumers.json#/result/methods/13",
+            "writers-consumers.json#/result/bodies/13",
+            "writers-consumers.json#/result/bodies/13/fragments/0",
+            "writers-consumers.json#/result/bodies/13/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/CheckDirection.Execute",
+          "address": "0x1811cc4a0"
+        },
+        {
+          "index": 101520,
+          "mode": "disasm",
+          "records": [
+            "core.json#/result/methods/55",
+            "writers-consumers.json#/result/methods/14",
+            "writers-consumers.json#/result/bodies/14",
+            "writers-consumers.json#/result/bodies/14/fragments/0",
+            "writers-consumers.json#/result/bodies/14/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/CheckDirection._GetDirectionVector",
+          "address": "0x1811cc710"
+        },
+        {
+          "index": 101521,
+          "mode": "metadata",
+          "records": [
+            "core.json#/result/methods/56"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/CheckDirection..ctor",
+          "address": "0x1811cc8f0"
+        },
+        {
+          "index": 101522,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/54"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/CheckAxisRelativeDirection.get_allowedSource",
+          "address": "0x1811c7c40"
+        },
+        {
+          "index": 101523,
+          "mode": "disasm",
+          "records": [
+            "search.json#/result/methods/55",
+            "writers-consumers.json#/result/methods/15",
+            "writers-consumers.json#/result/bodies/15",
+            "writers-consumers.json#/result/bodies/15/fragments/0",
+            "writers-consumers.json#/result/bodies/15/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/CheckAxisRelativeDirection.Execute",
+          "address": "0x1811c7190"
+        },
+        {
+          "index": 101524,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/56"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/CheckAxisRelativeDirection._GetPositionValue",
+          "address": "0x1811c7710"
+        },
+        {
+          "index": 101525,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/57"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/CheckAxisRelativeDirection._GetAxisValue",
+          "address": "0x1811c73d0"
+        },
+        {
+          "index": 101526,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/58"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/CheckAxisRelativeDirection._GetAxisValue",
+          "address": "0x1811c7570"
+        },
+        {
+          "index": 101527,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/59"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/CheckAxisRelativeDirection..ctor",
+          "address": "0x1811c7be0"
+        },
+        {
+          "index": 101528,
+          "mode": "metadata",
+          "records": [
+            "core.json#/result/methods/57"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/CheckDirectionWithBB.get_allowedSource",
+          "address": "0x1811cc440"
+        },
+        {
+          "index": 101529,
+          "mode": "metadata",
+          "records": [
+            "core.json#/result/methods/58"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/CheckDirectionWithBB.Execute",
+          "address": "0x1811cbfa0"
+        },
+        {
+          "index": 101530,
+          "mode": "disasm",
+          "records": [
+            "core.json#/result/methods/59",
+            "semantic-consumers.json#/result/methods/21",
+            "semantic-consumers.json#/result/bodies/9",
+            "semantic-consumers.json#/result/bodies/9/fragments/0",
+            "semantic-consumers.json#/result/bodies/9/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/CheckDirectionWithBB._GetDirectionVector",
+          "address": "0x1811cc1d0"
+        },
+        {
+          "index": 101531,
+          "mode": "metadata",
+          "records": [
+            "core.json#/result/methods/60"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/CheckDirectionWithBB..ctor",
+          "address": "0x1811cc3b0"
+        },
+        {
+          "index": 101541,
+          "mode": "metadata",
+          "records": [
+            "core.json#/result/methods/61"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/CheckFaceLOrR.get_allowedSource",
+          "address": "0x1811cf6a0"
+        },
+        {
+          "index": 101542,
+          "mode": "metadata",
+          "records": [
+            "core.json#/result/methods/62"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/CheckFaceLOrR.Execute",
+          "address": "0x1811cf530"
+        },
+        {
+          "index": 101543,
+          "mode": "metadata",
+          "records": [
+            "core.json#/result/methods/63"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/CheckFaceLOrR..ctor",
+          "address": "0x1811cf640"
+        },
+        {
+          "index": 102254,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/60"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/SetBodyDirectionByBuffTime.get_allowedSource",
+          "address": "0x181202e50"
+        },
+        {
+          "index": 102255,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/61"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/SetBodyDirectionByBuffTime.Execute",
+          "address": "0x181202850"
+        },
+        {
+          "index": 102256,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/62"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/SetBodyDirectionByBuffTime.SetDirection",
+          "address": "0x181202c50"
+        },
+        {
+          "index": 102257,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/63"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/SetBodyDirectionByBuffTime..ctor",
+          "address": "0x181202d90"
+        },
+        {
+          "index": 102439,
+          "mode": "metadata",
+          "records": [
+            "core.json#/result/methods/64"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/FaceLOrRToTarget.get_allowedSource",
+          "address": "0x18120d800"
+        },
+        {
+          "index": 102440,
+          "mode": "metadata",
+          "records": [
+            "core.json#/result/methods/65"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/FaceLOrRToTarget.Execute",
+          "address": "0x18120d420"
+        },
+        {
+          "index": 102441,
+          "mode": "metadata",
+          "records": [
+            "core.json#/result/methods/66"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/FaceLOrRToTarget..ctor",
+          "address": "0x18120d790"
+        },
+        {
+          "index": 102442,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/64"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/FaceToDirectionViaMoreTargets.get_allowedSource",
+          "address": "0x18120dea0"
+        },
+        {
+          "index": 102443,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/65"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/FaceToDirectionViaMoreTargets.Execute",
+          "address": "0x18120d860"
+        },
+        {
+          "index": 102444,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/66"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/FaceToDirectionViaMoreTargets..ctor",
+          "address": "0x18120de30"
+        },
+        {
+          "index": 102445,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/67"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/FaceToDirectionViaMoreTargets.<Execute>b__7_0",
+          "address": "0x18120dc50"
+        },
+        {
+          "index": 102446,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/68"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/FaceToLOrRViaMoreTargets.get_allowedSource",
+          "address": "0x18120e5a0"
+        },
+        {
+          "index": 102447,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/69"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/FaceToLOrRViaMoreTargets.Execute",
+          "address": "0x18120df00"
+        },
+        {
+          "index": 102448,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/70"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/FaceToLOrRViaMoreTargets..ctor",
+          "address": "0x18120e530"
+        },
+        {
+          "index": 102452,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/71"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/SetBodyDirection.get_allowedSource",
+          "address": "0x18121a2d0"
+        },
+        {
+          "index": 102453,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/72"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/SetBodyDirection.Execute",
+          "address": "0x181219f60"
+        },
+        {
+          "index": 102454,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/73"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/SetBodyDirection..ctor",
+          "address": "0x18121a230"
+        },
+        {
+          "index": 102469,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/74"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/SetDisableFaceToIdleDirection.get_allowedSource",
+          "address": "0x18121ada0"
+        },
+        {
+          "index": 102470,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/75"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/SetDisableFaceToIdleDirection.Execute",
+          "address": "0x18121aba0"
+        },
+        {
+          "index": 102471,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/76"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/SetDisableFaceToIdleDirection..ctor",
+          "address": "0x18121ad10"
+        },
+        {
+          "index": 103105,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/77"
+          ],
+          "fullname": "Torappu.Battle.Effects.Effect.get_useBodyDirection"
+        },
+        {
+          "index": 103144,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/78"
+          ],
+          "fullname": "Torappu.Battle.Effects.Effect.FaceTo",
+          "address": "0x18125e2e0"
+        },
+        {
+          "index": 103146,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/79"
+          ],
+          "fullname": "Torappu.Battle.Effects.Effect.BodyDirection",
+          "address": "0x18125e060"
+        },
+        {
+          "index": 103182,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/80"
+          ],
+          "fullname": "Torappu.Battle.Effects.Effect/Behaviour.FaceTo",
+          "address": "0x181258f50"
+        },
+        {
+          "index": 103353,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/81"
+          ],
+          "fullname": "Torappu.Battle.Effects.FaceToCamera.OnPlay",
+          "address": "0x1812705b0"
+        },
+        {
+          "index": 103354,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/82"
+          ],
+          "fullname": "Torappu.Battle.Effects.FaceToCamera.Update",
+          "address": "0x181270610"
+        },
+        {
+          "index": 103355,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/83"
+          ],
+          "fullname": "Torappu.Battle.Effects.FaceToCamera._FaceToCamera",
+          "address": "0x181270680"
+        },
+        {
+          "index": 103356,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/84"
+          ],
+          "fullname": "Torappu.Battle.Effects.FaceToCamera..ctor",
+          "address": "0x181270750"
+        },
+        {
+          "index": 103357,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/85"
+          ],
+          "fullname": "Torappu.Battle.Effects.FaceToCamera.<>xLuaBaseProxy_OnPlay",
+          "address": "0x18126e150"
+        },
+        {
+          "index": 103386,
+          "mode": "metadata",
+          "records": [
+            "core.json#/result/methods/67",
+            "search.json#/result/methods/86"
+          ],
+          "fullname": "Torappu.Battle.Effects.FollowDirection.get_useFaceToInsteadOfFaceVector",
+          "address": "0x181273700"
+        },
+        {
+          "index": 103390,
+          "mode": "metadata",
+          "records": [
+            "core.json#/result/methods/68"
+          ],
+          "fullname": "Torappu.Battle.Effects.FollowDirection.get_useFaceSwitcherFaceLORR",
+          "address": "0x1812736a0"
+        },
+        {
+          "index": 103396,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/87"
+          ],
+          "fullname": "Torappu.Battle.Effects.FollowDirection._FaceTo",
+          "address": "0x181272c90"
+        },
+        {
+          "index": 103540,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/88"
+          ],
+          "fullname": "Torappu.Battle.Effects.OnPlayEmitterIf.get__ownerSpineFaceToMatch",
+          "address": "0x18127c980"
+        },
+        {
+          "index": 103989,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/89"
+          ],
+          "fullname": "Torappu.Battle.Effects.EmptyEffect.get_useBodyDirection",
+          "address": "0x1812876b0"
+        },
+        {
+          "index": 104003,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/90"
+          ],
+          "fullname": "Torappu.Battle.Effects.MapEffect.get_useBodyDirection",
+          "address": "0x181288700"
+        },
+        {
+          "index": 104028,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/91"
+          ],
+          "fullname": "Torappu.Battle.Effects.ParticleEffect.get_useBodyDirection",
+          "address": "0x18128a9c0"
+        },
+        {
+          "index": 104043,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/92"
+          ],
+          "fullname": "Torappu.Battle.Effects.ParticleEffect.FaceTo",
+          "address": "0x1812888e0"
+        },
+        {
+          "index": 104064,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/93"
+          ],
+          "fullname": "Torappu.Battle.Effects.ParticleEffect.<>xLuaBaseProxy_FaceTo",
+          "address": "0x181289c80"
+        },
+        {
+          "index": 104080,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/94"
+          ],
+          "fullname": "Torappu.Battle.Effects.ProjectileEffect.get_useBodyDirection",
+          "address": "0x1812ab4b0"
+        },
+        {
+          "index": 104113,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/95"
+          ],
+          "fullname": "Torappu.Battle.Effects.SimpleEffect.get_useBodyDirection",
+          "address": "0x1812ac330"
+        },
+        {
+          "index": 225786,
+          "mode": "metadata",
+          "records": [
+            "core.json#/result/methods/69"
+          ],
+          "fullname": "Torappu.SharedConsts.CheckDirectionValid",
+          "address": "0x18694ae60"
+        },
+        {
+          "index": 228623,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/96"
+          ],
+          "fullname": "Torappu.Particle.ParticleGeometryUtils._ParticleGeomBillboardFacingOrVelocity",
+          "address": "0x1869d78e0"
+        },
+        {
+          "index": 313305,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/methods/97"
+          ],
+          "fullname": "System.Dynamic.Utils.TypeUtils.HasInterfaceToArrayConversion",
+          "address": "0x1863ca890"
+        }
+      ],
+      "blocks": [],
+      "types": [
+        {
+          "name": "Torappu.Battle.Abilities.AbstractAnimatedAbility",
+          "records": [
+            "face-publication.json#/result/fieldOwners/1"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Action.Nodes/AssignRelativeDirectionToBB",
+          "records": [
+            "semantic-consumers.json#/result/fieldOwners/2"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Enemy",
+          "records": [
+            "core.json#/result/fieldOwners/0"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Enemy/BodyDirectionPolicy",
+          "records": [
+            "writers-consumers.json#/result/fieldOwners/1"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Entity",
+          "records": [
+            "search.json#/result/fieldOwners/0",
+            "writers-consumers.json#/result/fieldOwners/0"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.FaceSwitcher",
+          "records": [
+            "part-application.json#/result/fieldOwners/0"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.MhPartHpHudPluginTalent",
+          "records": [
+            "semantic-consumers.json#/result/fieldOwners/0"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.MhWeaknessHudPluginTalent",
+          "records": [
+            "semantic-consumers.json#/result/fieldOwners/1"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.SingleSpineAnimator",
+          "records": [
+            "part-application.json#/result/fieldOwners/1"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.UnitAnimator",
+          "records": [
+            "face-publication.json#/result/fieldOwners/0",
+            "sign-storage.json#/result/fieldOwners/0"
+          ]
+        },
+        {
+          "name": "Torappu.SharedConsts/Direction",
+          "records": [
+            "core.json#/result/fieldOwners/1",
+            "writers-consumers.json#/result/fieldOwners/2"
+          ]
+        }
+      ],
+      "constants": [],
+      "bundles": []
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

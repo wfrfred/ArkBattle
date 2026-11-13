@@ -1,0 +1,300 @@
+{
+  "collectedOn": "2026-11-13",
+  "scope": "PRTS分类覆盖比较；无新增客户端实现证据；非全游戏内容完整性证明。",
+  "repositoryCommit": "408ab7cf7e4fb9aa0332312bf11621e0368c7912",
+  "sources": [
+    {
+      "id": "PRTS-BASE",
+      "title": "游戏数据基础",
+      "url": "https://prts.wiki/w/游戏数据基础",
+      "reportedClientVersion": null,
+      "revisionTarget": "https://prts.wiki/index.php?title=游戏数据基础&oldid=447894",
+      "pageLastEdited": "2026-11-04 01:26",
+      "reviewedSections": [
+        "基本属性及其边界",
+        "弹道与来源事实",
+        "伤害与 HP 应用概览"
+      ],
+      "notes": "按相关章节阅读；页面包含多个时期资料，未把局部版本声明当成整页统一版本。",
+      "revisionFetch": "站点验证跳转，未取到固定修订正文",
+      "accessedOn": "2026-11-13",
+      "evidenceKind": "COMMUNITY_PAGE",
+      "readStatus": "CURRENT_PAGE"
+    },
+    {
+      "id": "PRTS-COMBAT",
+      "title": "作战机制",
+      "url": "https://prts.wiki/w/作战机制",
+      "reportedClientVersion": null,
+      "revisionTarget": "https://prts.wiki/index.php?title=作战机制&oldid=441625",
+      "pageLastEdited": "2026-10-17 15:37",
+      "reviewedSections": [
+        "普通仇恨、攻击与目标锁定",
+        "路线与移动",
+        "碰撞体积与位置识别",
+        "敌人朝向与相对方位",
+        "波次与调度动作"
+      ],
+      "notes": "面向是会被攻击、运动与受力改变的历史事实；本批不据摄像机表现决定逻辑平面的实现。",
+      "revisionFetch": "站点验证跳转，未取到固定修订正文",
+      "accessedOn": "2026-11-13",
+      "evidenceKind": "COMMUNITY_PAGE",
+      "readStatus": "CURRENT_PAGE"
+    },
+    {
+      "id": "PRTS-SPECIAL",
+      "title": "特殊机制",
+      "url": "https://prts.wiki/w/特殊机制",
+      "reportedClientVersion": "2.7.91",
+      "revisionTarget": "https://prts.wiki/index.php?title=特殊机制&oldid=450402",
+      "pageLastEdited": "2026-11-13 20:17",
+      "reviewedSections": [
+        "实体种类、阵营与职业",
+        "阻挡与攻击",
+        "伤害判定的修改与取消权限",
+        "光环",
+        "移动触发伤害",
+        "特殊标记、免疫和控制",
+        "距离与选择",
+        "活动机制及环境",
+        "直接选择、死亡产物、部署及拆分伤害"
+      ],
+      "notes": "按玩法效果分类；不会因目录包含异常或活动名词就要求新增 Core 类型。",
+      "revisionFetch": "缓存缺失；保留当前页固定链接目标",
+      "accessedOn": "2026-11-13",
+      "evidenceKind": "COMMUNITY_PAGE",
+      "readStatus": "CURRENT_PAGE"
+    },
+    {
+      "id": "PRTS-DAMAGE",
+      "title": "伤害分类",
+      "url": "https://prts.wiki/w/伤害分类",
+      "reportedClientVersion": "2.7.91",
+      "revisionTarget": "https://prts.wiki/index.php?title=伤害分类&oldid=450401",
+      "pageLastEdited": "2026-11-13 20:15",
+      "reviewedSections": [
+        "伤害类型、攻击类型、施加途径",
+        "特殊标签",
+        "预计算与计算后伤害",
+        "无来源、致命与弱点",
+        "攻击附加效果"
+      ],
+      "notes": "直接打开当前正文为2.7.91；搜索结果仍可返回2.7.81缓存。页面概览数量与详细表项不完全一致，本批不据此固定枚举数量。",
+      "revisionFetch": "缓存缺失；保留当前页固定链接目标",
+      "accessedOn": "2026-11-13",
+      "evidenceKind": "COMMUNITY_PAGE",
+      "readStatus": "CURRENT_PAGE"
+    },
+    {
+      "id": "PRTS-HP",
+      "title": "衍生生命",
+      "url": "https://prts.wiki/w/衍生生命",
+      "reportedClientVersion": null,
+      "revisionTarget": "https://prts.wiki/index.php?title=衍生生命&oldid=407037",
+      "pageLastEdited": "2026-07-08 16:09",
+      "reviewedSections": [
+        "致命伤害与负生命阈值",
+        "致命相关时点与不死"
+      ],
+      "notes": "本页只覆盖致命与负生命阈值等部分，不声称已调查额外生命完整机制；既有特殊HP延期仍参考案例11、28。",
+      "revisionFetch": "缓存缺失",
+      "accessedOn": "2026-11-13",
+      "evidenceKind": "COMMUNITY_PAGE",
+      "readStatus": "CURRENT_PAGE"
+    },
+    {
+      "id": "PRTS-BOUNDS",
+      "title": "数值范围",
+      "url": "https://prts.wiki/w/数值范围",
+      "reportedClientVersion": "2.7.81",
+      "revisionTarget": "https://prts.wiki/index.php?title=数值范围&oldid=444062",
+      "pageLastEdited": "2026-10-28 15:32",
+      "reviewedSections": [
+        "基本属性上下限及其他变量",
+        "数值范围覆写"
+      ],
+      "notes": "不要把属性合法范围与公式保底、攻速间隔限幅混成一项。",
+      "revisionFetch": "缓存缺失",
+      "accessedOn": "2026-11-13",
+      "evidenceKind": "COMMUNITY_PAGE",
+      "readStatus": "CURRENT_PAGE"
+    },
+    {
+      "id": "PRTS-SKILL",
+      "title": "技能",
+      "url": "https://prts.wiki/w/技能",
+      "reportedClientVersion": null,
+      "revisionTarget": null,
+      "pageLastEdited": null,
+      "reviewedSections": [
+        "技力需求",
+        "触发条件",
+        "充能、蓄力、弹药与主动关闭"
+      ],
+      "notes": "比较公共状态和操作的表达力，不将具体技能缺失自动列为模型缺口。",
+      "revisionFetch": "未请求",
+      "accessedOn": "2026-11-13",
+      "evidenceKind": "COMMUNITY_PAGE",
+      "readStatus": "CURRENT_PAGE"
+    },
+    {
+      "id": "PRTS-BUFF",
+      "title": "BUFF",
+      "url": "https://prts.wiki/w/BUFF",
+      "reportedClientVersion": null,
+      "revisionTarget": null,
+      "pageLastEdited": null,
+      "reviewedSections": [
+        "持续与触发",
+        "抵抗",
+        "生效",
+        "叠加策略"
+      ],
+      "notes": "本批复查目录覆盖；重复施加的客户端证据由既有Effect研究维护。",
+      "revisionFetch": "未请求",
+      "accessedOn": "2026-11-13",
+      "evidenceKind": "COMMUNITY_PAGE",
+      "readStatus": "CURRENT_PAGE"
+    },
+    {
+      "id": "PRTS-ABNORMAL",
+      "title": "异常效果",
+      "url": "https://prts.wiki/w/异常效果",
+      "reportedClientVersion": "2.7.91",
+      "revisionTarget": null,
+      "pageLastEdited": null,
+      "reviewedSections": [
+        "异常、免疫、反制与组合",
+        "不可选择、沉默、禁疗、失衡免疫等限制"
+      ],
+      "notes": "数量只反映页面版本。已定healFree只影响选择的项目政策不重开。",
+      "revisionFetch": "未请求",
+      "accessedOn": "2026-11-13",
+      "evidenceKind": "COMMUNITY_PAGE",
+      "readStatus": "CURRENT_PAGE"
+    },
+    {
+      "id": "PRTS-HITRATE",
+      "title": "命中率",
+      "url": "https://prts.wiki/w/命中率",
+      "reportedClientVersion": null,
+      "revisionTarget": null,
+      "pageLastEdited": null,
+      "reviewedSections": [
+        "攻击级物理/法术命中",
+        "多次输出共享命中结果",
+        "附加输出与未命中的区别"
+      ],
+      "notes": "页面有施工警告，不能单凭该页把每一分支定为最终项目契约。",
+      "revisionFetch": "未请求",
+      "accessedOn": "2026-11-13",
+      "evidenceKind": "COMMUNITY_PAGE",
+      "readStatus": "CURRENT_PAGE"
+    },
+    {
+      "id": "PRTS-INDUCED",
+      "title": "诱发移动",
+      "url": "https://prts.wiki/w/诱发移动",
+      "reportedClientVersion": null,
+      "revisionTarget": null,
+      "pageLastEdited": null,
+      "reviewedSections": [
+        "恐惧",
+        "诱导与多来源控制",
+        "主路线的计时与切换"
+      ],
+      "notes": "Route已按Case13/14/31/32拆分Context与ticking；不重新引入暂停栈。",
+      "revisionFetch": "未请求",
+      "accessedOn": "2026-11-13",
+      "evidenceKind": "COMMUNITY_PAGE",
+      "readStatus": "CURRENT_PAGE"
+    },
+    {
+      "id": "PRTS-FLASH",
+      "title": "眩光手雷",
+      "url": "https://prts.wiki/w/眩光手雷",
+      "reportedClientVersion": null,
+      "revisionTarget": null,
+      "pageLastEdited": null,
+      "reviewedSections": [
+        "装置机制",
+        "技能：相对爆点背面资格",
+        "出场关卡"
+      ],
+      "notes": "正文直接打开；页面导航为较旧缓存，未从导航时间推断机制版本。",
+      "revisionFetch": "未请求",
+      "accessedOn": "2026-11-13",
+      "evidenceKind": "COMMUNITY_PAGE",
+      "readStatus": "CURRENT_PAGE"
+    },
+    {
+      "id": "PRTS-RATHALOS",
+      "title": "火龙",
+      "url": "https://prts.wiki/w/火龙",
+      "reportedClientVersion": null,
+      "revisionTarget": null,
+      "pageLastEdited": null,
+      "reviewedSections": [
+        "甩尾不改变面向",
+        "背面断尾",
+        "返巢释放当前波次且继续留场",
+        "活动关卡引用"
+      ],
+      "notes": "代表普通活动的实际需求；不表示本批核验了每个难度的Prefab/关卡开关。",
+      "revisionFetch": "未请求",
+      "accessedOn": "2026-11-13",
+      "evidenceKind": "COMMUNITY_PAGE",
+      "readStatus": "CURRENT_PAGE"
+    },
+    {
+      "id": "PRTS-BOUNDS-CONTENT",
+      "title": "信仰搅拌机",
+      "url": "https://prts.wiki/w/信仰搅拌机",
+      "reportedClientVersion": null,
+      "revisionTarget": null,
+      "pageLastEdited": null,
+      "reviewedSections": [
+        "第一天赋与X模组三阶：攻速下限覆写"
+      ],
+      "notes": "具体非默认范围覆写使用例。",
+      "revisionFetch": "未请求",
+      "accessedOn": "2026-11-13",
+      "evidenceKind": "COMMUNITY_PAGE",
+      "readStatus": "CURRENT_PAGE"
+    },
+    {
+      "id": "PRTS-KILL-CONTENT",
+      "title": "塑能基质",
+      "url": "https://prts.wiki/w/塑能基质",
+      "reportedClientVersion": null,
+      "revisionTarget": null,
+      "pageLastEdited": null,
+      "reviewedSections": [
+        "搜索结果的天赋与能力正文摘录"
+      ],
+      "notes": "实际已读搜索正文说明区域死亡与来源击杀的不同SP受益者；整页open超时，未声称读取全页。",
+      "revisionFetch": "未请求",
+      "readStatus": "SEARCH_EXCERPT_ONLY",
+      "accessedOn": "2026-11-13",
+      "evidenceKind": "COMMUNITY_PAGE"
+    }
+  ],
+  "failures": [
+    {
+      "url": "https://prts.wiki/w/基本属性",
+      "reason": "浏览工具不可访问；用游戏数据基础/数值范围核对，不推断机制不存在"
+    },
+    {
+      "url": "https://prts.wiki/w/伤判效果",
+      "reason": "请求超时；本轮伤判分类主要复用特殊机制及已有Case28"
+    },
+    {
+      "url": "https://prts.wiki/api.php",
+      "reason": "浏览工具不可访问API；通过当前页固定链接记录修订号，不补造正文快照"
+    },
+    {
+      "path": "shell HTTP access",
+      "reason": "环境DNS解析失败，改用浏览工具，未将其当作页面不存在"
+    }
+  ]
+}

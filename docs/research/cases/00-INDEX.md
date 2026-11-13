@@ -20,7 +20,7 @@
 | [08 Action 启动资格与中断](08-action-eligibility-and-interruption.md) | 当前客户端 Ability、单位攻击状态与 EnemySkill；霜星、圣堂射手及炎佑实际绑定 | 主动作互斥、启动／中断与结束；EnemySkill 触发计时、Ability 执行、宿主共享 SP 及模式差异 |
 | [09 Skill 机制与需求](09-skill-mechanisms-and-requirements.md) | PRTS 技力／特殊技能／模式策略；客户端 metadata、原生指令与实际资源；10-29 补核修正协议和原生公式，11-10 核对启动结果消费 | SP 与进度、支付与门槛、触发与持续、跨次状态、弹药与二次操作、结束后输出；2.7 闭合原生公式，2.8 收紧贡献范围，3.3 区分实际成败回退与尚无内容依据的启动失败原因分类 |
 | [10 弱点伤害与概率判定](10-weak-damage-and-critical.md) | 本机 WeakDamage、AtkScaleUp、CalculateDamage 与 Buff 模板 | 已有倍率与无事件试算的区别、事件先后、概率状态及原生／热更新证据边界 |
-| [11 Damage Apply 与 HP Application](11-damage-apply-and-hp-application.md) | 本机接收／HP 原生路径、泥岩盾／玛恩纳反伤／分担模板与 PRTS 致命机制 | 分列客户端证据、Wiki 说明与项目政策；取消后资格、同步反应、普通免死竞争与其他生命干预的边界 |
+| [11 Damage Apply 与 HP Application](11-damage-apply-and-hp-application.md) | 接收／HP 原生路径、盾／反伤／分担、物理／法术／真实流失的实际绑定及致命机制 | 取消后资格、同步反应、生命保护；区分防御公式、计算事件、skip 接收与直接 HP 设置 |
 | [12 SPFA、平滑与移动消费](12-navigation-native-algorithm.md) | 当前 DLL／metadata 原生指令、射线隔离仿真与 Stronghold 对照 | 原地后继更新、Bresenham 边界、运行时移动恢复、地图重规划与最终 Field 是否需要 rawNext |
 | [13 Route、等待与实际移动时序](13-route-and-movement-timing.md) | Enemy／Cursor／Checkpoint 原生分支、完整固定关卡目录与实际技能资源 | 两处推进、等待、不可达跳过、目标采样／半径；首路点时序；马特奥运行时随机 MOVE 正例 |
 | [14 RouteDefinition 字段消费](14-route-definition-fields.md) | 出生／Cursor／完成检查原生分支、固定版本关卡 JSON；11-07 补核运行时路线与时间快照 | 字段行为、持续路线偏移、提前终点完成；不同出生入口及实例初始化的事实边界 |
@@ -43,6 +43,7 @@
 | [31 Route 操作与状态保留](31-route-operations-and-state.md) | 完整类型／方法集合、槽写入与调用者、实际路线修改及临时控制内容 | 区分程序替换、索引接续、WAIT／样本保留、缓存恢复、临时接管及导航刷新；归纳最小需求而不照搬原生接口 |
 | [32 莱塔尼亚召唤物的阻挡与移动](32-leithanien-summons-blocking-and-movement.md) | 规程热更新召唤模板、两个实际 Enemy Prefab、BlockManager 与 Trace／作战状态机 | 区分我方阵营与实现类、仇恨追踪与阻挡交战、相对自身的默认地块；最终属性数值仍待确认 |
 | [33 Targeting／Targetable 通用调用链](33-targeting-and-targetable-pipeline.md) | 真实模式／Trigger／Selector／Validator、候选与优先级、Ability绑定与再验证、弹道及作用入口 | 资格与异常来源、三类排序分流、仇恨距离、HP／EP联合治疗、选中时点与本项目政策的差异 |
+| [34 PRTS 公共机制覆盖审计](34-prts-mechanism-coverage-audit.md) | PRTS 机制目录与代表内容，对照已归档原生证据及当前公共接口 | 区分真实遗漏、既有延期、可组合内容与待核实候选，不以具体内容数量代替公共机制覆盖 |
 
 证据文件及复现范围见[批次索引](../evidence/README.md)。案例负责维护问题、结论及适用条件、直接证据／调用链推断、未决项和项目关联；批次 README 负责版本、指纹、文件用途和实际复现入口。
 
