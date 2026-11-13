@@ -1,0 +1,796 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-11-13"
+    ],
+    "collectionDateSource": "batch directory",
+    "organizedOn": "2026-11-13",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+        "records": [
+          "native.json#/provenance/client/dll"
+        ],
+        "bytes": 223112680
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        "records": [
+          "native.json#/provenance/client/metadata"
+        ],
+        "bytes": 46669332
+      }
+    },
+    "sourceRecords": [
+      "configuration.json",
+      "native.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12895,
+        "sha256": "9c5b246859318caaec4aab5275ef0d2d49fce5d612c6b4e569973a9941ba621a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "configuration.json",
+        "kind": "record",
+        "bytes": 17509,
+        "sha256": "e79e7d775d6476ebfdfdf2c22451314d9891bb164b3be8c0084a75b9d3c7cb2f"
+      },
+      {
+        "path": "extract_native.py",
+        "kind": "historical-script",
+        "bytes": 7146,
+        "sha256": "64ce3a61ec35b6697ba682d2e52d3084be1b6602cfab8e3d2dd594ab10f13937"
+      },
+      {
+        "path": "extract_native.py.lock",
+        "kind": "artifact",
+        "bytes": 3739,
+        "sha256": "1ed9e3b399cf0743106d2124514970f3a3b5db6d9f1192fba528019ccbefdf04"
+      },
+      {
+        "path": "inspect_configuration.py",
+        "kind": "historical-script",
+        "bytes": 6915,
+        "sha256": "900e124d0f9c61747ab02bc0f4c24d2fccc6b62c26cdbe3d62e9370585d9b4dd"
+      },
+      {
+        "path": "native.json",
+        "kind": "record",
+        "bytes": 1372810,
+        "sha256": "a6d1d1d5e274141a741655c5c0a8b3bdb14c19ee7edda5185e838b1c6281c938"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 26416,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/scout/0"
+          ],
+          "fullname": "Torappu.PeriodicTimer.get_isValid",
+          "address": "0x181e4b5b0"
+        },
+        {
+          "index": 26417,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/0",
+            "native.json#/result/bodies/0/fragments/0",
+            "native.json#/result/bodies/0/fragments/0/method",
+            "native.json#/result/scout/1"
+          ],
+          "fullname": "Torappu.PeriodicTimer.get_isReady",
+          "address": "0x181e4b560"
+        },
+        {
+          "index": 26418,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/scout/2"
+          ],
+          "fullname": "Torappu.PeriodicTimer.get_remainingTime",
+          "address": "0x180519c50"
+        },
+        {
+          "index": 26419,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/scout/3"
+          ],
+          "fullname": "Torappu.PeriodicTimer.get_periodTime",
+          "address": "0x180524660"
+        },
+        {
+          "index": 26420,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/scout/4"
+          ],
+          "fullname": "Torappu.PeriodicTimer.get_progress",
+          "address": "0x181e4b640"
+        },
+        {
+          "index": 26421,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/scout/5"
+          ],
+          "fullname": "Torappu.PeriodicTimer..ctor",
+          "address": "0x181e4b4b0"
+        },
+        {
+          "index": 26422,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/scout/6"
+          ],
+          "fullname": "Torappu.PeriodicTimer..ctor",
+          "address": "0x181e4b440"
+        },
+        {
+          "index": 26423,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/1",
+            "native.json#/result/bodies/1/fragments/0",
+            "native.json#/result/bodies/1/fragments/0/method",
+            "native.json#/result/scout/7"
+          ],
+          "fullname": "Torappu.PeriodicTimer.Reset",
+          "address": "0x181e4b0b0"
+        },
+        {
+          "index": 26424,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/2",
+            "native.json#/result/bodies/2/fragments/0",
+            "native.json#/result/bodies/2/fragments/0/method",
+            "native.json#/result/scout/8"
+          ],
+          "fullname": "Torappu.PeriodicTimer.Reset",
+          "address": "0x181e4afc0"
+        },
+        {
+          "index": 26425,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/3",
+            "native.json#/result/bodies/3/fragments/0",
+            "native.json#/result/bodies/3/fragments/0/method",
+            "native.json#/result/scout/9"
+          ],
+          "fullname": "Torappu.PeriodicTimer.ResetButKeepPastTime",
+          "address": "0x181e4ad50"
+        },
+        {
+          "index": 26426,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/scout/10"
+          ],
+          "fullname": "Torappu.PeriodicTimer.ResetButKeepProgress",
+          "address": "0x181e4ae20"
+        },
+        {
+          "index": 26427,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/4",
+            "native.json#/result/bodies/4/fragments/0",
+            "native.json#/result/bodies/4/fragments/0/method",
+            "native.json#/result/scout/11"
+          ],
+          "fullname": "Torappu.PeriodicTimer.MarkInvalid",
+          "address": "0x181e4aca0"
+        },
+        {
+          "index": 26428,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/scout/12"
+          ],
+          "fullname": "Torappu.PeriodicTimer.SetProgress",
+          "address": "0x181e4b120"
+        },
+        {
+          "index": 26429,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/scout/13"
+          ],
+          "fullname": "Torappu.PeriodicTimer.SetRemainingTime",
+          "address": "0x181e4b1e0"
+        },
+        {
+          "index": 26430,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/scout/14"
+          ],
+          "fullname": "Torappu.PeriodicTimer.Update",
+          "address": "0x181e4b380"
+        },
+        {
+          "index": 26431,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/scout/15"
+          ],
+          "fullname": "Torappu.PeriodicTimer.Update",
+          "address": "0x181e4b250"
+        },
+        {
+          "index": 26432,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/scout/16"
+          ],
+          "fullname": "Torappu.PeriodicTimer.Next",
+          "address": "0x181e4ad00"
+        },
+        {
+          "index": 26433,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/5",
+            "native.json#/result/bodies/5/fragments/0",
+            "native.json#/result/bodies/5/fragments/0/method",
+            "native.json#/result/scout/17"
+          ],
+          "fullname": "Torappu.PrecisePeriodicTimer.get_isReady",
+          "address": "0x181e4c1a0"
+        },
+        {
+          "index": 26434,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/6",
+            "native.json#/result/bodies/6/fragments/0",
+            "native.json#/result/bodies/6/fragments/0/method",
+            "native.json#/result/scout/18"
+          ],
+          "fullname": "Torappu.PrecisePeriodicTimer..ctor",
+          "address": "0x181e4c0f0"
+        },
+        {
+          "index": 26435,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/7",
+            "native.json#/result/bodies/7/fragments/0",
+            "native.json#/result/bodies/7/fragments/0/method",
+            "native.json#/result/scout/19"
+          ],
+          "fullname": "Torappu.PrecisePeriodicTimer..ctor",
+          "address": "0x181e4b440"
+        },
+        {
+          "index": 26436,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/8",
+            "native.json#/result/bodies/8/fragments/0",
+            "native.json#/result/bodies/8/fragments/0/method",
+            "native.json#/result/scout/20"
+          ],
+          "fullname": "Torappu.PrecisePeriodicTimer.Update",
+          "address": "0x181e4c050"
+        },
+        {
+          "index": 26437,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/9",
+            "native.json#/result/bodies/9/fragments/0",
+            "native.json#/result/bodies/9/fragments/0/method",
+            "native.json#/result/scout/21"
+          ],
+          "fullname": "Torappu.PrecisePeriodicTimer.Next",
+          "address": "0x181e4be80"
+        },
+        {
+          "index": 26438,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/scout/22"
+          ],
+          "fullname": "Torappu.PrecisePeriodicTimer.UpdateMultiple",
+          "address": "0x181e4bf30"
+        },
+        {
+          "index": 26439,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/scout/23"
+          ],
+          "fullname": "Torappu.PrecisePeriodicTimer.NextMultiple",
+          "address": "0x181e4bdb0"
+        },
+        {
+          "index": 31428,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/attributeMetadata/0/decoded/constructor"
+          ],
+          "fullname": "Torappu.AttributeMetaAttribute..ctor",
+          "address": "0x182372d60"
+        },
+        {
+          "index": 31429,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/attributeMetadata/1/decoded/constructor"
+          ],
+          "fullname": "Torappu.AttributeMetaAttribute..ctor",
+          "address": "0x182372cc0"
+        },
+        {
+          "index": 65243,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/10",
+            "native.json#/result/bodies/10/fragments/0",
+            "native.json#/result/bodies/10/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Attributes.GetValue",
+          "address": "0x180678590"
+        },
+        {
+          "index": 65262,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/11",
+            "native.json#/result/bodies/11/fragments/0",
+            "native.json#/result/bodies/11/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Attributes._CalculateAttributeValue",
+          "address": "0x180679970"
+        },
+        {
+          "index": 66447,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/12",
+            "native.json#/result/bodies/12/fragments/0",
+            "native.json#/result/bodies/12/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnOwnerHpFull",
+          "address": "0x1806c3d60"
+        },
+        {
+          "index": 67341,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/virtualMethodSlots/0",
+            "native.json#/result/methods/13",
+            "native.json#/result/bodies/13/fragments/0",
+            "native.json#/result/bodies/13/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_isAlive",
+          "address": "0x180736b70"
+        },
+        {
+          "index": 67348,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/virtualMethodSlots/1",
+            "native.json#/result/methods/14",
+            "native.json#/result/bodies/14/fragments/0",
+            "native.json#/result/bodies/14/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_alive",
+          "address": "0x1807330c0"
+        },
+        {
+          "index": 67353,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/scout/24"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_hpIsFull",
+          "address": "0x180736300"
+        },
+        {
+          "index": 67407,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/15",
+            "native.json#/result/bodies/15/fragments/0",
+            "native.json#/result/bodies/15/fragments/0/method",
+            "native.json#/result/scout/25"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_canRecoverHp",
+          "address": "0x180733b50"
+        },
+        {
+          "index": 67433,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/scout/26"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_hp",
+          "address": "0x1807364b0"
+        },
+        {
+          "index": 67434,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/16",
+            "native.json#/result/bodies/16/fragments/0",
+            "native.json#/result/bodies/16/fragments/0/method",
+            "native.json#/result/scout/27"
+          ],
+          "fullname": "Torappu.Battle.Entity.set_hp",
+          "address": "0x18073aef0"
+        },
+        {
+          "index": 67437,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/scout/28"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_hpRatio",
+          "address": "0x1807363c0"
+        },
+        {
+          "index": 67443,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/scout/29"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_minusHp",
+          "address": "0x1807391c0"
+        },
+        {
+          "index": 67444,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/scout/30"
+          ],
+          "fullname": "Torappu.Battle.Entity.set_minusHp",
+          "address": "0x18073b290"
+        },
+        {
+          "index": 67445,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/scout/31"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_maxMinusHpRatio",
+          "address": "0x180738bd0"
+        },
+        {
+          "index": 67446,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/scout/32"
+          ],
+          "fullname": "Torappu.Battle.Entity.set_maxMinusHpRatio",
+          "address": "0x18073b170"
+        },
+        {
+          "index": 67447,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/scout/33"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_maxMinusHp",
+          "address": "0x180738c50"
+        },
+        {
+          "index": 67453,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/scout/34"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_maxHp",
+          "address": "0x180738b40"
+        },
+        {
+          "index": 67475,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/17",
+            "native.json#/result/bodies/17/fragments/0",
+            "native.json#/result/bodies/17/fragments/0/method",
+            "native.json#/result/scout/35"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_sumUpHpRecoveryPerSec",
+          "address": "0x18073a2c0"
+        },
+        {
+          "index": 67505,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/scout/36"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_initHp",
+          "address": "0x180736920"
+        },
+        {
+          "index": 67600,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/18",
+            "native.json#/result/bodies/18/fragments/0",
+            "native.json#/result/bodies/18/fragments/0/method",
+            "native.json#/result/scout/37"
+          ],
+          "fullname": "Torappu.Battle.Entity.SetHpDirectly",
+          "address": "0x18072e590"
+        },
+        {
+          "index": 67622,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/19",
+            "native.json#/result/bodies/19/fragments/0",
+            "native.json#/result/bodies/19/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity..ctor",
+          "address": "0x1807327e0"
+        },
+        {
+          "index": 67623,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/20",
+            "native.json#/result/bodies/20/fragments/0",
+            "native.json#/result/bodies/20/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.Init",
+          "address": "0x180726370"
+        },
+        {
+          "index": 67624,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/21",
+            "native.json#/result/bodies/21/fragments/0",
+            "native.json#/result/bodies/21/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.Init",
+          "address": "0x1807264b0"
+        },
+        {
+          "index": 67625,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/virtualMethodSlots/2",
+            "native.json#/result/methods/22",
+            "native.json#/result/bodies/22/fragments/0",
+            "native.json#/result/bodies/22/fragments/0/method",
+            "native.json#/result/scout/38"
+          ],
+          "fullname": "Torappu.Battle.Entity.SetHpInternal",
+          "address": "0x18072e970"
+        },
+        {
+          "index": 67626,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/23",
+            "native.json#/result/bodies/23/fragments/0",
+            "native.json#/result/bodies/23/fragments/0/method",
+            "native.json#/result/scout/39"
+          ],
+          "fullname": "Torappu.Battle.Entity.SetHpInternalDirectly",
+          "address": "0x18072e7b0"
+        },
+        {
+          "index": 67641,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/scout/40"
+          ],
+          "fullname": "Torappu.Battle.Entity._EnsureMaxHpNotZero",
+          "address": "0x180730db0"
+        },
+        {
+          "index": 67642,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/24",
+            "native.json#/result/bodies/24/fragments/0",
+            "native.json#/result/bodies/24/fragments/0/method",
+            "native.json#/result/scout/41"
+          ],
+          "fullname": "Torappu.Battle.Entity._UpdateHpRecovery",
+          "address": "0x180732280"
+        },
+        {
+          "index": 67650,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/virtualMethodSlots/3",
+            "native.json#/result/methods/25",
+            "native.json#/result/bodies/25/fragments/0",
+            "native.json#/result/bodies/25/fragments/0/method",
+            "native.json#/result/scout/42"
+          ],
+          "fullname": "Torappu.Battle.Entity.OnHpZero",
+          "address": "0x18072a590"
+        },
+        {
+          "index": 67651,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/scout/43"
+          ],
+          "fullname": "Torappu.Battle.Entity.OnHpFull",
+          "address": "0x18072a500"
+        },
+        {
+          "index": 67697,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/26",
+            "native.json#/result/bodies/26/fragments/0",
+            "native.json#/result/bodies/26/fragments/0/method",
+            "native.json#/result/scout/44"
+          ],
+          "fullname": "Torappu.Battle.Entity.OnTick",
+          "address": "0x18072c290"
+        },
+        {
+          "index": 67699,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/27",
+            "native.json#/result/bodies/27/fragments/0",
+            "native.json#/result/bodies/27/fragments/0/method",
+            "native.json#/result/scout/45"
+          ],
+          "fullname": "Torappu.Battle.Entity.OnAttributeDirty",
+          "address": "0x180728510"
+        },
+        {
+          "index": 67700,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/scout/46"
+          ],
+          "fullname": "Torappu.Battle.Entity._OnAbnormalFlagDirty",
+          "address": "0x1807312e0"
+        },
+        {
+          "index": 67702,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/scout/47"
+          ],
+          "fullname": "Torappu.Battle.Entity._OnAbnormalComboDirty",
+          "address": "0x180731240"
+        },
+        {
+          "index": 67714,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/scout/48"
+          ],
+          "fullname": "Torappu.Battle.Entity.IfReasonIsHpZero",
+          "address": "0x1807262f0"
+        },
+        {
+          "index": 67734,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/scout/49"
+          ],
+          "fullname": "Torappu.Battle.Entity.<>xLuaBaseProxy_OnTick",
+          "address": "0x1805420a0"
+        },
+        {
+          "index": 77129,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/virtualMethodSlots/4",
+            "native.json#/result/methods/28",
+            "native.json#/result/bodies/28/fragments/0",
+            "native.json#/result/bodies/28/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Character.get_alive",
+          "address": "0x180aae990"
+        },
+        {
+          "index": 77336,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/virtualMethodSlots/5"
+          ],
+          "fullname": "Torappu.Battle.Character.OnHpZero",
+          "address": "0x180aa3510"
+        },
+        {
+          "index": 77794,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/virtualMethodSlots/6"
+          ],
+          "fullname": "Torappu.Battle.Enemy.OnHpZero",
+          "address": "0x180abf460"
+        }
+      ],
+      "blocks": [],
+      "types": [
+        {
+          "name": "Torappu.AttributeType",
+          "records": [
+            "native.json#/result/fieldOwners/4",
+            "native.json#/result/fieldOwners/4/type"
+          ]
+        },
+        {
+          "name": "Torappu.AttributesData",
+          "records": [
+            "native.json#/result/fieldOwners/2",
+            "native.json#/result/fieldOwners/2/type"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Entity",
+          "records": [
+            "native.json#/result/fieldOwners/3",
+            "native.json#/result/fieldOwners/3/type"
+          ]
+        },
+        {
+          "name": "Torappu.PeriodicTimer",
+          "records": [
+            "native.json#/result/fieldOwners/0",
+            "native.json#/result/fieldOwners/0/type"
+          ]
+        },
+        {
+          "name": "Torappu.PrecisePeriodicTimer",
+          "records": [
+            "native.json#/result/fieldOwners/1",
+            "native.json#/result/fieldOwners/1/type"
+          ]
+        }
+      ],
+      "constants": [
+        {
+          "address": "0x1870adbe0",
+          "format": "<f",
+          "records": [
+            "native.json#/result/scalarLiterals/0"
+          ]
+        }
+      ],
+      "bundles": [
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "sha256": "8edcb8017c977cdf52c2593b58e21db96949f3ad1e6f904180ac1241f145ca79",
+          "records": [
+            "configuration.json#/provenance/holder"
+          ],
+          "bytes": 2151020
+        }
+      ]
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

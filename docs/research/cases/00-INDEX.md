@@ -38,7 +38,7 @@
 | [26 奥术法阵与链术师跳跃沉默](26-arcane-circle-chain-silence.md) | 本机 native 伤害事件与逐目标弹跳、本机模板／Prefab、固定赛季装备绑定及 PRTS | 普通攻击和二技能的后续跳跃也向本次伤害目标施加沉默；不覆盖零伤害等未核实边界 |
 | [27 一次攻击的索敌、弹道与伤害结算](27-attack-additions-and-damage-events.md) | 妮芙 S1 的目标取得、弹道身份与采样、前置 Buff、HP／EP、通知和普通死亡短链 | 区分攻击、命中、计算、受伤与击杀时点；已有爆发和本击新爆发、value 与 HP 变化、业务结束与物理回收 |
 | [28 伤害扩展时点与事件粒度](28-damage-hooks-and-event-granularity.md) | 计算、输出、接收、成功闪避、HP 应用、成功伤害与击杀的代表内容，复用前案并补核接收节点 | 用实际玩法判断 Hook 必要性；区分语义机会、直接编排、事实通知与暂缺依据的独立 API |
-| [29 HP 与 EP 治疗结算](29-hp-and-ep-healing-settlement.md) | HP／EP 治疗公式、共享 Modifier 与专属事件、末药／桑葚默认治疗资源 | 区分基本量与实际回复、满血正治疗、逐型 EP 回复、附件前置组合及 skip 与普通治疗的边界 |
+| [29 HP 与 EP 治疗结算](29-hp-and-ep-healing-settlement.md) | HP／EP 治疗公式与事件、医师／行医配置、自然 HP 回复的属性／计时／提交及普通关卡正例 | 基本量与实际回复、满血正治疗、逐型 EP 回复、附件组合；区分普通治疗、生命复原和自然回复 |
 | [30 通用 Scheduler 字段与调用路径](30-scheduler-action-data-fields.md) | 24 字段全链消费、主 Wave／Branch／外部召唤与预处理、跨玩法非默认样本 | 区分直接使用、间接后继和路径内结构保留；四项管理／计数／阻波语义独立，先查证据再分配职责与压缩类型 |
 | [31 Route 操作与状态保留](31-route-operations-and-state.md) | 完整类型／方法集合、槽写入与调用者、实际路线修改及临时控制内容 | 区分程序替换、索引接续、WAIT／样本保留、缓存恢复、临时接管及导航刷新；归纳最小需求而不照搬原生接口 |
 | [32 莱塔尼亚召唤物的阻挡与移动](32-leithanien-summons-blocking-and-movement.md) | 规程热更新召唤模板、两个实际 Enemy Prefab、BlockManager 与 Trace／作战状态机 | 区分我方阵营与实现类、仇恨追踪与阻挡交战、相对自身的默认地块；最终属性数值仍待确认 |

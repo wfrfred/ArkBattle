@@ -145,7 +145,7 @@ pure     = power
 
 **A。** `BattleFormula.CalculateHeal`（64352／64353）分别从来源当前 ATK 或明确给定的 ATK 构造 HEAL 数学输入。`Entity.OnTakeHeal`（66122）检查 `HEAL_FREE`，`force` 可绕过该检查，并另外发出治疗接收事件。数学结果、接收许可、最终实际回复量是不同事实。
 
-当前没有穷尽持续生命再生、强制回复、恢复 Modifier 的事件配置和作战统计归因。因此不能认为所有 HP 增加都等于医疗行动，也不能把展示 HEAL 事件数量或 amount 之和当成已核对的官方治疗统计。
+自然 HP 回复的普通客户端路径已补核：固定回复属性与最大生命比例合成速率，正速率驱动精确周期计时器，每次就绪通过普通 HP setter 增加 1 HP；它不创建治疗 Modifier。速率变化、满血计时、资源约束与满值通知见[案例 29 第 5 节](cases/29-hp-and-ep-healing-settlement.md#5-skip生命复原与自然回复)。这不等于穷尽强制回复、恢复 Modifier 和作战统计归因，也不能把展示 HEAL 事件数量或 amount 之和当成已核对的官方治疗统计。
 
 **A。** 普通官方 `Entity` 基类保存 `m_epArray` 与 `EPController`，`Entity.Init`（66038）初始化独立的各类 EP。默认 maxEp 为 1000；`Enemy.get_maxEp`（75471）另按敌人类别增加 `ENEMY_EXTRA_EP`，本机 BOSS 追加 1000。拥有存储与当前接收资格、UI 显示不是同一件事。
 

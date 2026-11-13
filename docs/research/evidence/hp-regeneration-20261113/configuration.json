@@ -1,0 +1,537 @@
+{
+  "provenance": {
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/hp-regeneration-20261113/inspect_configuration.py",
+      "bytes": 6915,
+      "sha256": "900e124d0f9c61747ab02bc0f4c24d2fccc6b62c26cdbe3d62e9370585d9b4dd"
+    },
+    "database": {
+      "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/leithanien-enemydata-20261109/enemy_database.json",
+      "bytes": 15721552,
+      "sha256": "eb8559db76aecd92c37b3ac038de0e9aeb8b6d6c107adfaeadfe0fbc098e067b",
+      "sourceUrl": "https://api.github.com/repos/Kengxxiao/ArknightsGameData/git/blobs/62ab806926b9c8ca5c80524730caf0066f6c2c2f",
+      "revision": "63c7cec73c3858d0ae913f85cc89af3cef4d744f"
+    },
+    "stageProfile": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/checkpoint-nondefault-20261107/config/pinned-profile.json",
+      "bytes": 1118215,
+      "sha256": "58b99b15cdfafc8884d05f8a5900fa4197e51d48ee2d6801ca463cebed6b86ec"
+    },
+    "stageRevision": "bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d",
+    "holder": {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+      "bytes": 2151020,
+      "sha256": "8edcb8017c977cdf52c2593b58e21db96949f3ad1e6f904180ac1241f145ca79"
+    },
+    "holderUnityVersion": "5.x.x",
+    "scope": "Enemy JSON declarations and actual ordinary-stage SPAWN reference; native Buff-template event 98 entries. Static configuration, not live battle observation."
+  },
+  "result": {
+    "enemyRecovery": {
+      "field": "enemyData.attributes.hpRecoveryPerSec",
+      "counts": {
+        "defined": 993,
+        "positive": 13,
+        "zero": 980,
+        "negative": 0,
+        "undefined": 1490,
+        "missing": 0
+      },
+      "positive": [
+        {
+          "pointer": "/enemies/521/Value/0/enemyData",
+          "id": "enemy_1043_zomsbr",
+          "level": 0,
+          "name": {
+            "m_defined": true,
+            "m_value": "宿主士兵"
+          },
+          "prefabKey": {
+            "m_defined": true,
+            "m_value": "enemy_1043_zomsbr"
+          },
+          "hpRecoveryPerSec": {
+            "m_defined": true,
+            "m_value": 80.0
+          }
+        },
+        {
+          "pointer": "/enemies/522/Value/0/enemyData",
+          "id": "enemy_1043_zomsbr_2",
+          "level": 0,
+          "name": {
+            "m_defined": true,
+            "m_value": "宿主士兵组长"
+          },
+          "prefabKey": {
+            "m_defined": true,
+            "m_value": "enemy_1043_zomsbr_2"
+          },
+          "hpRecoveryPerSec": {
+            "m_defined": true,
+            "m_value": 150.0
+          }
+        },
+        {
+          "pointer": "/enemies/523/Value/0/enemyData",
+          "id": "enemy_1044_zomstr",
+          "level": 0,
+          "name": {
+            "m_defined": true,
+            "m_value": "宿主拾荒者"
+          },
+          "prefabKey": {
+            "m_defined": true,
+            "m_value": "enemy_1044_zomstr"
+          },
+          "hpRecoveryPerSec": {
+            "m_defined": true,
+            "m_value": 200.0
+          }
+        },
+        {
+          "pointer": "/enemies/524/Value/0/enemyData",
+          "id": "enemy_1044_zomstr_2",
+          "level": 0,
+          "name": {
+            "m_defined": true,
+            "m_value": "宿主流浪者"
+          },
+          "prefabKey": {
+            "m_defined": true,
+            "m_value": "enemy_1044_zomstr_2"
+          },
+          "hpRecoveryPerSec": {
+            "m_defined": true,
+            "m_value": 250.0
+          }
+        },
+        {
+          "pointer": "/enemies/556/Value/0/enemyData",
+          "id": "enemy_1061_zomshd",
+          "level": 0,
+          "name": {
+            "m_defined": true,
+            "m_value": "宿主重装士兵"
+          },
+          "prefabKey": {
+            "m_defined": true,
+            "m_value": "enemy_1061_zomshd"
+          },
+          "hpRecoveryPerSec": {
+            "m_defined": true,
+            "m_value": 200.0
+          }
+        },
+        {
+          "pointer": "/enemies/557/Value/0/enemyData",
+          "id": "enemy_1061_zomshd_2",
+          "level": 0,
+          "name": {
+            "m_defined": true,
+            "m_value": "宿主重装组长"
+          },
+          "prefabKey": {
+            "m_defined": true,
+            "m_value": "enemy_1061_zomshd_2"
+          },
+          "hpRecoveryPerSec": {
+            "m_defined": true,
+            "m_value": 250.0
+          }
+        },
+        {
+          "pointer": "/enemies/1522/Value/0/enemyData",
+          "id": "enemy_19007_akplbt",
+          "level": 0,
+          "name": {
+            "m_defined": true,
+            "m_value": "“阿咬”"
+          },
+          "prefabKey": {
+            "m_defined": true,
+            "m_value": "enemy_19007_akplbt"
+          },
+          "hpRecoveryPerSec": {
+            "m_defined": true,
+            "m_value": 100.0
+          }
+        },
+        {
+          "pointer": "/enemies/1886/Value/0/enemyData",
+          "id": "enemy_5033_dqmstr_2",
+          "level": 0,
+          "name": {
+            "m_defined": true,
+            "m_value": "源石的腿脚"
+          },
+          "prefabKey": {
+            "m_defined": true,
+            "m_value": "enemy_5033_dqmstr_2"
+          },
+          "hpRecoveryPerSec": {
+            "m_defined": true,
+            "m_value": 250.0
+          }
+        },
+        {
+          "pointer": "/enemies/1986/Value/0/enemyData",
+          "id": "enemy_7005_xbbull",
+          "level": 0,
+          "name": {
+            "m_defined": true,
+            "m_value": "苔生兽"
+          },
+          "prefabKey": {
+            "m_defined": true,
+            "m_value": "enemy_7005_xbbull"
+          },
+          "hpRecoveryPerSec": {
+            "m_defined": true,
+            "m_value": 250.0
+          }
+        },
+        {
+          "pointer": "/enemies/1986/Value/1/enemyData",
+          "id": "enemy_7005_xbbull",
+          "level": 1,
+          "name": {
+            "m_defined": false,
+            "m_value": null
+          },
+          "prefabKey": {
+            "m_defined": false,
+            "m_value": null
+          },
+          "hpRecoveryPerSec": {
+            "m_defined": true,
+            "m_value": 200.0
+          }
+        },
+        {
+          "pointer": "/enemies/1987/Value/0/enemyData",
+          "id": "enemy_7005_xbbull_2",
+          "level": 0,
+          "name": {
+            "m_defined": true,
+            "m_value": "茂密苔生兽"
+          },
+          "prefabKey": {
+            "m_defined": true,
+            "m_value": "enemy_7005_xbbull_2"
+          },
+          "hpRecoveryPerSec": {
+            "m_defined": true,
+            "m_value": 350.0
+          }
+        },
+        {
+          "pointer": "/enemies/2023/Value/0/enemyData",
+          "id": "enemy_7037_xbbullb",
+          "level": 0,
+          "name": {
+            "m_defined": true,
+            "m_value": "苔生兽（家养版）"
+          },
+          "prefabKey": {
+            "m_defined": true,
+            "m_value": "enemy_7037_xbbullb"
+          },
+          "hpRecoveryPerSec": {
+            "m_defined": true,
+            "m_value": 250.0
+          }
+        },
+        {
+          "pointer": "/enemies/2024/Value/0/enemyData",
+          "id": "enemy_7037_xbbullb_2",
+          "level": 0,
+          "name": {
+            "m_defined": true,
+            "m_value": "茂密苔生兽（家养版）"
+          },
+          "prefabKey": {
+            "m_defined": true,
+            "m_value": "enemy_7037_xbbullb_2"
+          },
+          "hpRecoveryPerSec": {
+            "m_defined": true,
+            "m_value": 350.0
+          }
+        }
+      ]
+    },
+    "ordinaryStageExample": {
+      "file": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/checkpoint-nondefault-20261107/mirror/zh_CN/gamedata/levels/obt/main/level_main_05-08.json",
+        "bytes": 164879,
+        "sha256": "561cc82c44f1c3224b7fbfc5cf3c27873a70e5398065d3694d94201e335455a4"
+      },
+      "sourcePath": "zh_CN/gamedata/levels/obt/main/level_main_05-08.json",
+      "priorProfileMatches": [
+        {
+          "path": "zh_CN/gamedata/levels/obt/main/level_main_05-08.json",
+          "githubBlobSha": "996cb6cbba9d79b6957c1a8aeea12bcf785b13b1",
+          "bytes": 164879,
+          "sha256": "561cc82c44f1c3224b7fbfc5cf3c27873a70e5398065d3694d94201e335455a4"
+        }
+      ],
+      "enemyDbRefs": [
+        {
+          "pointer": "/enemyDbRefs/0",
+          "value": {
+            "useDb": true,
+            "id": "enemy_1043_zomsbr",
+            "level": 0,
+            "overwrittenData": null
+          }
+        }
+      ],
+      "spawnActions": [
+        {
+          "pointer": "/waves/0/fragments/0/actions/13",
+          "value": {
+            "actionType": "SPAWN",
+            "managedByScheduler": true,
+            "key": "enemy_1043_zomsbr",
+            "count": 1,
+            "preDelay": 40.0,
+            "interval": 1.0,
+            "routeIndex": 13,
+            "blockFragment": false,
+            "autoPreviewRoute": false,
+            "autoDisplayEnemyInfo": false,
+            "isUnharmfulAndAlwaysCountAsKilled": false,
+            "hiddenGroup": null,
+            "randomSpawnGroupKey": null,
+            "randomSpawnGroupPackKey": null,
+            "randomType": "ALWAYS",
+            "refreshType": "ALWAYS",
+            "weight": 0,
+            "dontBlockWave": false,
+            "forceBlockWaveInBranch": false
+          }
+        },
+        {
+          "pointer": "/waves/0/fragments/0/actions/14",
+          "value": {
+            "actionType": "SPAWN",
+            "managedByScheduler": true,
+            "key": "enemy_1043_zomsbr",
+            "count": 1,
+            "preDelay": 45.0,
+            "interval": 1.0,
+            "routeIndex": 14,
+            "blockFragment": false,
+            "autoPreviewRoute": false,
+            "autoDisplayEnemyInfo": false,
+            "isUnharmfulAndAlwaysCountAsKilled": false,
+            "hiddenGroup": null,
+            "randomSpawnGroupKey": null,
+            "randomSpawnGroupPackKey": null,
+            "randomType": "ALWAYS",
+            "refreshType": "ALWAYS",
+            "weight": 0,
+            "dontBlockWave": false,
+            "forceBlockWaveInBranch": false
+          }
+        },
+        {
+          "pointer": "/waves/0/fragments/0/actions/15",
+          "value": {
+            "actionType": "SPAWN",
+            "managedByScheduler": true,
+            "key": "enemy_1043_zomsbr",
+            "count": 1,
+            "preDelay": 47.0,
+            "interval": 1.0,
+            "routeIndex": 15,
+            "blockFragment": false,
+            "autoPreviewRoute": false,
+            "autoDisplayEnemyInfo": false,
+            "isUnharmfulAndAlwaysCountAsKilled": false,
+            "hiddenGroup": null,
+            "randomSpawnGroupKey": null,
+            "randomSpawnGroupPackKey": null,
+            "randomType": "ALWAYS",
+            "refreshType": "ALWAYS",
+            "weight": 0,
+            "dontBlockWave": false,
+            "forceBlockWaveInBranch": false
+          }
+        },
+        {
+          "pointer": "/waves/0/fragments/3/actions/8",
+          "value": {
+            "actionType": "SPAWN",
+            "managedByScheduler": true,
+            "key": "enemy_1043_zomsbr",
+            "count": 1,
+            "preDelay": 15.0,
+            "interval": 1.0,
+            "routeIndex": 35,
+            "blockFragment": false,
+            "autoPreviewRoute": true,
+            "autoDisplayEnemyInfo": false,
+            "isUnharmfulAndAlwaysCountAsKilled": false,
+            "hiddenGroup": null,
+            "randomSpawnGroupKey": null,
+            "randomSpawnGroupPackKey": null,
+            "randomType": "ALWAYS",
+            "refreshType": "ALWAYS",
+            "weight": 0,
+            "dontBlockWave": false,
+            "forceBlockWaveInBranch": false
+          }
+        },
+        {
+          "pointer": "/waves/0/fragments/3/actions/9",
+          "value": {
+            "actionType": "SPAWN",
+            "managedByScheduler": true,
+            "key": "enemy_1043_zomsbr",
+            "count": 4,
+            "preDelay": 38.0,
+            "interval": 3.0,
+            "routeIndex": 36,
+            "blockFragment": false,
+            "autoPreviewRoute": false,
+            "autoDisplayEnemyInfo": false,
+            "isUnharmfulAndAlwaysCountAsKilled": false,
+            "hiddenGroup": null,
+            "randomSpawnGroupKey": null,
+            "randomSpawnGroupPackKey": null,
+            "randomType": "ALWAYS",
+            "refreshType": "ALWAYS",
+            "weight": 0,
+            "dontBlockWave": false,
+            "forceBlockWaveInBranch": false
+          }
+        }
+      ]
+    },
+    "hpFullListeners": {
+      "templatesScanned": 9054,
+      "matchedTemplates": 2,
+      "templates": [
+        {
+          "templateKey": "titi_s_3[doze_indoze]",
+          "effect": "",
+          "priority": 0,
+          "events": [
+            {
+              "event": 98,
+              "actions": [
+                {
+                  "_decCntIfStack": false,
+                  "_updateOverrideMap": true,
+                  "$type": "Torappu.Battle.Action.Nodes+FinishBuff"
+                }
+              ],
+              "references": []
+            }
+          ],
+          "origin": {
+            "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+            "pathId": "6070581171229484677",
+            "objectSha256": "c03149251d47fa31e6f6cb5b696f9e93925f51a97bf9ee335593c888bdcb6fec",
+            "templateOffsetInObject": 10312024,
+            "templateBytes": 3876,
+            "templateSha256": "9ba4eff77cd9d28eb9d14628f77bd83afd0692a378902e34169244e40b74f920"
+          }
+        },
+        {
+          "templateKey": "sandbox_v3_service[start]",
+          "effect": "",
+          "priority": 0,
+          "events": [
+            {
+              "event": 98,
+              "actions": [
+                {
+                  "_targetType": "BUFF_OWNER",
+                  "_anotherBuff": false,
+                  "_buffKey": null,
+                  "_blackboardKey": "lock",
+                  "_blackboardKeyFromBb": null,
+                  "_valueToCompare": 0,
+                  "_anotherKeyToCompare": null,
+                  "_condType": "EQUALS",
+                  "$type": "Torappu.Battle.Action.Nodes+FilterByBlackboardValue"
+                },
+                {
+                  "_blackboardKey": "lock",
+                  "_blackboardSource": "CURRENT",
+                  "_keySource": "CONSTANT",
+                  "_keyTargetType": "TARGET",
+                  "_value": 1.0,
+                  "_copyFromKey": null,
+                  "_assignString": false,
+                  "$type": "Torappu.Battle.Action.Nodes+AssignValueToBB"
+                },
+                {
+                  "_conditionsNode": [
+                    {
+                      "_target": "BUFF_OWNER",
+                      "$type": "Torappu.Battle.Action.Nodes+SandboxV3TryMaintainService"
+                    }
+                  ],
+                  "_succeedNodes": [
+                    {
+                      "_targetType": "BUFF_OWNER",
+                      "_getMaxHpFromTarget": false,
+                      "_damageType": "PURE",
+                      "_applyWay": "NONE",
+                      "_ignoreForSp": true,
+                      "_isUndeadable": true,
+                      "_attackType": "NORMAL",
+                      "_skipModifierEvent": true,
+                      "_multiplyByKey": false,
+                      "_multiplierKey": "cnt",
+                      "_noSourceDamage": true,
+                      "$type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio"
+                    }
+                  ],
+                  "_failNodes": [
+                    {
+                      "_switchOutFromSkillState": false,
+                      "_interruptSkillSelf": true,
+                      "_charFrom": "BUFF_OWNER",
+                      "_resetAbilityCooldown": true,
+                      "_resetAbilityCooldownIgnoreAffecting": false,
+                      "$type": "Torappu.Battle.Action.Nodes+InterruptCharacterSkill"
+                    }
+                  ],
+                  "_isAnd": false,
+                  "$type": "Torappu.Battle.Action.Nodes+IfConditions"
+                },
+                {
+                  "$type": "Torappu.Battle.Action.Nodes+AlwaysNext"
+                },
+                {
+                  "_blackboardKey": "lock",
+                  "_blackboardSource": "CURRENT",
+                  "_keySource": "CONSTANT",
+                  "_keyTargetType": "TARGET",
+                  "_value": 0.0,
+                  "_copyFromKey": null,
+                  "_assignString": false,
+                  "$type": "Torappu.Battle.Action.Nodes+AssignValueToBB"
+                }
+              ],
+              "references": []
+            }
+          ],
+          "origin": {
+            "cab": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+            "pathId": "6070581171229484677",
+            "objectSha256": "c03149251d47fa31e6f6cb5b696f9e93925f51a97bf9ee335593c888bdcb6fec",
+            "templateOffsetInObject": 16884192,
+            "templateBytes": 3132,
+            "templateSha256": "637e46345ebac1ab54169685046192115fd03f45d950864fc5434158dff9381d"
+          }
+        }
+      ]
+    }
+  }
+}

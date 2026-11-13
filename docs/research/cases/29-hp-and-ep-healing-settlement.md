@@ -4,6 +4,8 @@
 
 2026-11-06 补核负治疗数值，基线 `92f76d2`；客户端指纹与原调查相同。新增构造器与数值读写证据见[补查批次](../evidence/healing-negative-values-20261106/README.md)，公式和提交链直接复用既有材料。
 
+2026-11-13 补核自然 HP 回复的属性、计时与 HP setter，见[证据批次](../evidence/hp-regeneration-20261113/README.md)。与普通治疗、生命复原分开记录，不改变项目的 Healing Hook 契约。
+
 ## 1. 问题与结论
 
 问题：HP 治疗、EP 回复经过哪些共同 Modifier 时点，哪些处理独立？行医的两种回复如何组合，EP 是否取决于实际 HP 恢复量？
@@ -95,7 +97,37 @@ Trait 的外部 MonoScript 引用为 fileID1、PathID `-8004000125733044417`。�
 
 社区[特殊机制·生命复原](https://prts.wiki/w/特殊机制#生命复原)对绕过禁疗和多种普通治疗事件的说明，与这条 skip 分支相符。本轮没有核对所有生命复原 Content，不将所有恢复形式统一等同于该分支。
 
-EP 自然回复与爆发恢复通过直接 EP setter 推进，不经过上表普通 EP Heal Modifier 链，复用[案例 25](25-elemental-burst-recovery-timing.md)证据。自然 HP 回复的完整链不在此次范围；项目既定“自然回复不派发普通治疗 Hook”不因本调查改变。
+### 自然 HP 回复的完整普通路径
+
+当前 native 的 `Entity.get_sumUpHpRecoveryPerSec` 67475 读取两项**有效属性**：
+
+\[
+R=\operatorname{HP\_RECOVERY\_PER\_SEC}
+  +\operatorname{MaxHP}\times\operatorname{HP\_RECOVERY\_PER\_SEC\_BY\_MAX\_HP\_RATIO}
+\]
+
+属性通过 `Attributes.GetValue` 65243 取得：缓存脏时进入普通属性归并，不是直接读取敌人表的基础值。当前字段元数据直接声明固定回复速率下限为0、无声明上限，比例回复范围为 `[0,1]`；不能把负自然回复当作原生生命流失的另一种写法。
+
+| 环节 | 直接证据与行为 |
+| --- | --- |
+| 初始化 | `Entity.Init` 67624 以 `canRecoverHp` 检查 `R>0`；正数以 `1/R` 为周期、等待首个完整周期重置 `PrecisePeriodicTimer`，否则使 timer 无效。 |
+| 每 Tick 门控 | `Entity.OnTick` 67697 在状态机与 Buff Tick 后，检查虚函数 `get_alive`，成立才推进 HP／EP 回复。Entity 的普通实现要求状态机正在运行且 HP>0；Character 的覆盖77129还要求不是 Dummy、未处于 Dying 状态。不使用身份有效性查询 `get_isAlive` 替代这个条件。 |
+| 计时 | `_UpdateHpRecovery` 67642 先检查 timer 有效，减去本 Tick 的 dt，再反复执行 `Next`；`PrecisePeriodicTimer` 在 remaining≤0 时就绪，`Next` 加回一个周期而保留超额时间。一个 Tick 可以产生多个脉冲。 |
+| 每个脉冲 | 调用普通 `set_hp(当前 HP + 1)`，不是构造治疗 Modifier，也不是把本 Tick 的 `R×dt` 直接加到 HP。 |
+| 属性变化 | `OnAttributeDirty` 67699 在 MaxHP、固定回复或比例回复变化时，先用 dt=0 处理旧 timer 已到期的脉冲，再读取新 `R`；非正数使 timer 无效，正数调用 `ResetButKeepPastTime(1/R)`。新 remaining 为 `max(0,新周期-(旧周期-旧remaining))`，不是按比例保留进度。 |
+| 资源提交 | `set_hp` 67434 调虚槽111的 `SetHpInternal` 67625。普通 setter 保留 HP 范围、生命干预及 HP 满值／归零业务；它不是无通知的字段写入。正回复脉冲本身不进入负值归零分支。 |
+
+外层与回复循环均没有满血、消失或 HEAL_FREE 检查。**满血仍推进 timer，并继续尝试每个 +1 脉冲。** 普通 setter 在 Clamp 并写入后，检查 `Clamp01(当前HP/MaxHP)` 是否等于1，成立则调用 `BuffContainer.OnOwnerHpFull` 66447。这里没有比较 previous HP 或实际回复量，所以已满血、实际变化为0也能通知；不能将它解释为只在“从非满变满”时触发。对应指令为 `SetHpInternal` 的 `0x18072f01f..0x18072f199`。
+
+`OnOwnerHpFull` 派发 Buff.Event98。当前9054项模板中两项配置了该事件，其中 `titi_s_3[doze_indoze]` 执行 `FinishBuff`，说明这项资源通知有配置消费者。本批只确认该模板程序，没有闭合缇缇 S3 的实际安装绑定或现场触发；另一项属于项目不支持的生息演算，不据此扩大需求。
+
+自然回复链没有经过 `CalculateHeal`、`ApplyModifier`、`OnTakeHeal`、普通目标 Applied 或来源 AfterOutputHeal。它与生命复原的区别不只是忽略禁疗：后者的所查 skip Modifier 仍执行独立 skipped 接收、取消检查和有效来源 BeforeTargetApply；自然回复直接由属性 timer 调用 HP setter。**不派发普通治疗事件不等于没有资源通知。**
+
+真实非默认配置正例为普通关卡5-8的宿主士兵：固定镜像 EnemyDB 的 `enemy_1043_zomsbr`、level0 明确声明 `hpRecoveryPerSec=80`；关卡 `enemyDbRefs` 使用该等级、无覆盖，五条 SPAWN 实际引用该 key。EnemyDB 与关卡分别固定镜像修订、原始字节 SHA-256，见证据批次，不与本机资源版本混称。所扫 EnemyDB 的993个显式定义有13正值、980零值、0负值；有限配置扫描不证明所有内容绝无临时负值，但普通 native 的 `R>0` 门控也没有负速率扣血路径。
+
+以上是静态 native 与配置证据，未执行游戏或验证活跃 XLua。自然回复不派发普通 Healing Hook 是既定项目选择；本调查不决定是否采用原生每1HP脉冲作为项目数值推进方式。
+
+EP 自然回复与爆发恢复通过直接 EP setter 推进，不经过上表普通 EP Heal Modifier 链，复用[案例 25](25-elemental-burst-recovery-timing.md)证据。
 
 ## 6. 项目关联与未决项
 
