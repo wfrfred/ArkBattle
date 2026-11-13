@@ -8,6 +8,7 @@ import {
     removeRule as removeBlockerRule,
 } from "../unit/capability/blocking/blocker-operations.js";
 import * as locomotion from "../unit/capability/locomotion/capability.js";
+import * as facing from "../unit/capability/facing/capability.js";
 
 import * as skill from "../unit/capability/skill/capability.js";
 import { cancelForUnit } from "../unit/action/operations.js";
@@ -96,6 +97,7 @@ function restrictions(id: string, enabled: boolean): Change<Unit> {
 
     return [
         optional(action.hasAction, enabled ? action.setRule(rule) : action.removeRule(id)),
+        optional(facing.hasFacing, enabled ? facing.setRule(rule) : facing.removeRule(id)),
         optional(
             locomotion.hasLocomotion,
             enabled ? locomotion.setRule(rule) : locomotion.removeRule(id),

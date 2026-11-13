@@ -158,17 +158,51 @@ Hitbox 几何、Blocker 阻挡半径和 Locomotion.halfBodyWidth 分别用于受
 
 Battlefield 的通用空间查询领域使用 battlefield/spatial/ 命名，与单位空地身份 Layer 分开。范围重叠与形状扫掠的接口及资格边界见 [Spatial Query](spatial.md)。
 
-## 左右面向的设计边界
+## Facing
 
-Facing 的左右面向与 Occupancy 的摆放四向是不同事实。以下语义已确定，能力与操作尚未接入：
+Facing 保存有效的左右面向，与 Occupancy 的摆放四向、Locomotion 的移动状态独立。单位可以静止转向，也可以移动而保持面向；两项 Capability 不互相要求存在。
 
 ```typescript
 type Direction = "LEFT" | "RIGHT";
+
+interface RuleContext {
+    readonly self: Unit & Facing;
+    readonly direction: Direction;
+}
+
+interface Definition {
+    readonly rules: readonly Rule<RuleContext>[];
+}
+
+interface Initial {
+    readonly direction: Direction;
+}
+
+interface State {
+    readonly direction: Direction;
+    readonly rules: readonly Rule<RuleContext>[];
+}
 ```
 
-左右值是有效面向的唯一权威状态；需要数值时按 LEFT → -1、RIGHT → 1 推导 sign，不另存一份符号。面向变更经合法领域操作发布后，后续同步业务从最新 BattleState 读取新值；沿用既有 Change 批次与历史快照契约。
+声明 Facing 的 Unit 必须提供 initial.facing，Catalog 与其他必填 Initial 使用同一套推导。direction 是唯一权威值，读取直接使用 self.facing.direction；sign(direction) 按 LEFT → -1、RIGHT → 1 派生数值，不另存一份符号。fromVector(vector) 只按世界坐标 X 的正负返回 RIGHT／LEFT；X 为零时返回 null，调用方保留当前面向。这是项目统一的方向映射，不采用动画后端或摄像机的判定。
 
-动画消费 Core 的面向结果。Animator 类型、骨骼参数、翻转时长、动画回调及摄像机状态不决定 Core 面向的值或生效时点；不复制原生按动画后端设置不同阈值、延迟有效符号的行为。转向触发时点、控制状态下的资格等仍是独立业务语义。初始输入、方向向量到左右的映射、纯竖直输入与强制转向接口尚待确定，原生依据和项目选择见[面向调查](../research/cases/35-facing-and-turning-conditions.md#6-已确定的项目边界)。
+turn(battle, Ref<Unit & Facing>, direction, mode = "NORMAL") 是完整操作。它读取当前宿主，要求 PRESENT；NORMAL 按当前 Rules 判断本次方向，FORCED 仅绕过这些转向 Rule。拒绝、宿主已不存在或方向相同均返回原 BattleState。成功只提交自身 direction，后续同步业务从最新 State 读取新值，历史快照不变。setRule／removeRule 使用普通注册工厂，返回 Change<Unit & Facing>；固定面向等机制通过规则表达。
+
+### 触发与跨领域交互
+
+- 自主移动先通过 Locomotion Rule 和有效正速度检查；具有 Facing 且距当前导航 nextPoint 超过 0.25 时，采样该导航方向。位移与速度发布后再请求普通 turn，转向 Rule 读取最新状态，完整移动操作返回两者的接续结果。转向被拒绝不撤销位移，速度和避障后的位移不反推持久面向。没有 Facing 的单位保持原移动流程。
+- 眩晕 Effect 分别登记 Facing 与 Locomotion 等能力的 Rule，停用时只撤销自身登记。禁止移动不自动等于禁止转向；强制转向也不绕过宿主生命周期。
+- 正背面等业务读取 Facing 的当前值。动画只消费模拟结果，Animator、骨骼、翻转时间与回调均不决定 Core 的方向或生效时点。
+
+### 初始化
+
+创建者明确提供 initial.facing.direction；Facing 初始化不从位置、速度或部署四向猜测左右值。世界 X 映射、竖直输入保留和有效面向同步发布属于项目选择，原生依据见[面向调查](../research/cases/35-facing-and-turning-conditions.md)。具体业务在规定时点调用 turn，能力本身不安排移动、攻击或待机程序。
+
+### 必要回归语义
+
+- FACE-01：实例保留必填初值；普通转向读取当前规则，强制仅绕过规则；同值无变更。类型约束要求 Facing 操作的宿主能力和所选 Initial，不增加独立的输入校验协议。
+- FACE-02：通过自主移动资格后按导航方向尝试转向，转向受阻不阻止移动；移动受阻或纯竖直方向不改面向，没有 Facing 仍可移动。
+- FACE-04：多个眩晕独立限制转向；停用或结束一个来源只撤销该来源，全部限制解除后普通转向恢复。
 
 ## Presence
 

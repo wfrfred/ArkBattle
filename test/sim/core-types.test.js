@@ -18,6 +18,7 @@ import * as effects from ${module("unit/effect/index")};
 import * as hpDamage from ${module("battle/damage/hp/index")};
 import * as vitality from ${module("unit/capability/vitality/index")};
 import * as elemental from ${module("unit/capability/elemental/index")};
+import * as facing from ${module("unit/capability/facing/index")};
 import * as skills from ${module("unit/skill/index")};
 import { hasSkill, type Skill as SkillCapability } from ${module("unit/capability/skill/index")};
 import { hasPresence, disappear } from ${module("unit/capability/presence/index")};
@@ -165,6 +166,20 @@ effects.setExpiration(battle, burstRef, { ...burst.expiration, remaining: burst.
 // @ts-expect-error writes retain the Burst identity's duration contract.
 effects.setExpiration(battle, burstRef, { type: 'DEADLINE', tick: 10 });
 const bare = initialize(battle, { id: 1, position: [0, 0], definition: { id: 'bare', hooks: Hooks.empty() } }).value;
+const facingDefinition = { ...bare.definition, facing: { rules: [] }, offense: { attack: 10 } };
+const facingHost = initialize(battle, {
+    id: 4, definition: facingDefinition, position: [0, 0], initial: { facing: { direction: 'LEFT' } },
+}).value;
+const facingAttack: number = facingHost.definition.offense.attack;
+facing.turn(battle, ref(facingHost), 'RIGHT');
+const facingChange: Change<Unit & facing.Facing> = facing.setRule({
+    id: 'fixed', allows: (_battle, { self, direction }) => self.facing.direction === direction,
+});
+const facingProduct: typeof facingHost = facingChange(facingHost).next;
+// @ts-expect-error Facing construction requires the instance direction.
+initialize(battle, { id: 4, definition: facingDefinition, position: [0, 0] });
+// @ts-expect-error facing operations require a Facing-capable Unit.
+facing.turn(battle, ref(bare), 'LEFT');
 const occupiedDefinition = { ...bare.definition, occupancy: { slot: 'OCCUPANT' as const } };
 const occupiedInput: UnitInput<typeof occupiedDefinition> = {
     id: 3, definition: occupiedDefinition, position: [0, 0],

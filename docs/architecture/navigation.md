@@ -437,11 +437,11 @@ export function removeSpeedContribution(id: string): Change<Unit & Locomotion>;
 
 SteeringParameters 是普通配置值，其数值约束由 Locomotion 初始化入口建立。Data 解析原始 Prefab 并完成 Tick 换算，Ground Enemy 内容工厂显式接收 halfBodyWidth 与 steeringParameters。
 
-推进读取最新 PRESENT 且 Rule 允许的 Unit；[空间消失](presence.md)由 Presence 登记 Locomotion Rule 禁止自主移动，不由 Locomotion 读取空间存在字段。Movement 先推进全部 Blockable 位置修正，再推进 Route 并读取当前关系，只限制自主移动；独立位置计划存在或刚完成不自动禁止自主移动。Locomotion 只经内部 replace 提交位置与速度，不依赖 Blocking 维护；Blockable 的偏移推进同样只发布位置与计划。依赖当前位置或其他 Battle 事实的阻挡 Rule 在后续 Blocking 检查点复核；明确要求解除旧关系的空间操作仍自行完成清理。Blocker／Blockable 在 Unit 初始化时至多选择一种，但该约束不决定是否具有 Route、Locomotion 或何种自身 Layer。
+推进读取最新 PRESENT 且 Rule 允许的 Unit；[空间消失](presence.md)由 Presence 登记 Locomotion Rule 禁止自主移动，不由 Locomotion 读取空间存在字段。Movement 先推进全部 Blockable 位置修正，再推进 Route 并读取当前关系，只限制自主移动；独立位置计划存在或刚完成不自动禁止自主移动。Locomotion 经内部 replace 提交位置与速度，不依赖 Blocking 维护；Blockable 的偏移推进同样只发布位置与计划。依赖当前位置或其他 Battle 事实的阻挡 Rule 在后续 Blocking 检查点复核；明确要求解除旧关系的空间操作仍自行完成清理。Blocker／Blockable 在 Unit 初始化时至多选择一种，但该约束不决定是否具有 Route、Locomotion 或何种自身 Layer。
 
 Presence Change 纯转换空间事实及所需限制，发布后按稳定能力角色调用 Blockable.release 或 Blocker.releaseAll，读取当前关系并完成清理；详细顺序见[空间存在](presence.md)。Route 在消失期间继续处理等待与出现指令；无 Presence 分支的 APPEAR 先发布位置，再调用相同完整操作。各释放操作自己的首个 RELEASED Hook 已可见新位置、所属计划清理和此次整批双端解除结果。release 不自动维护、搜索或取消目标计划，Blocker 的释放保留其原目标的偏移。阻挡关系由 Movement 在自主移动入口检查，见 [Blocking](blocking.md)。有效速度为 `max(minSpeed, attribute.apply(speed, contributions)) * speedMultiplier`；无目标不调 advance，速度为零或不可移动返回原 battle 并保留 velocity。
 
-如果当前位置到 goal 的距离不超过本 Tick 预算，直接设置位置为 goal，保留 velocity，跳过 Steering、避障及目的格反射。nextPoint 仅用于计算 Steering 方向，不因接近中间导航节点而吸附。
+如果当前位置到 goal 的距离不超过本 Tick 预算，直接设置位置为 goal，保留 velocity，跳过 Steering、避障及目的格反射。nextPoint 提供 Steering 方向，不因接近中间导航节点而吸附；它也为通过移动资格后的可选改向提供方向采样。位置与速度发布后，再通过 [Facing.turn](capability.md#facing) 接续转向，完整移动返回两者的状态结果。
 
 正常积分先根据实际 Unit.position、halfBodyWidth 和 Navigation 有效 Map 计算八邻域避障。WALK 考虑硬不可通及 cost>=1000 的邻格；FLY 只考虑硬不可通。保留原生几何阈值、最近可通邻格选择、方向投影与速度比例缩放；原生局部力乘 `1/tickRate²` 后进入每 Tick 积分。使用实际身体位置作为几何基准，不引入 Route offset 或原生脚点安装偏移。
 

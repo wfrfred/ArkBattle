@@ -13,6 +13,8 @@ import type { Locomotion, MovementContext, MovementTarget } from "./capability.j
 import { calculate as avoidance } from "./avoidance.js";
 import { reflect } from "./motion.js";
 import { integrate } from "./steering.js";
+import { hasFacing, fromVector } from "../facing/capability.js";
+import { turn } from "../facing/operations.js";
 
 function resolveSpeed(battle: BattleState, self: Unit & Locomotion): number {
     const definition = self.definition.locomotion;
@@ -83,18 +85,25 @@ export function advance(
         velocity = self.locomotion.velocity;
     }
 
-    if (position === self.position && velocity === self.locomotion.velocity) {
-        return battle;
+    if (position !== self.position || velocity !== self.locomotion.velocity) {
+        battle = replace(battle, [
+            {
+                ...self,
+                position,
+                locomotion:
+                    velocity === self.locomotion.velocity
+                        ? self.locomotion
+                        : { ...self.locomotion, velocity },
+            },
+        ]);
     }
 
-    return replace(battle, [
-        {
-            ...self,
-            position,
-            locomotion:
-                velocity === self.locomotion.velocity
-                    ? self.locomotion
-                    : { ...self.locomotion, velocity },
-        },
-    ]);
+    if (hasFacing(self) && Vec2.distanceSquared(self.position, target.nextPoint) > 0.25 * 0.25) {
+        const direction = fromVector(Vec2.sub(target.nextPoint, self.position));
+        if (direction !== null) {
+            battle = turn(battle, units.ref(self), direction);
+        }
+    }
+
+    return battle;
 }

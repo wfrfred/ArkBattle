@@ -4,6 +4,7 @@ import * as blockable from "./blocking/blockable.js";
 import * as blocker from "./blocking/blocker.js";
 import * as deployable from "./deployable/capability.js";
 import * as elemental from "./elemental/capability.js";
+import * as facing from "./facing/capability.js";
 import * as hitbox from "./hitbox/capability.js";
 import * as layer from "./layer/capability.js";
 import * as locomotion from "./locomotion/capability.js";
@@ -20,6 +21,7 @@ export const initializers = {
     deployable: deployable.initialize,
     vitality: vitality.initialize,
     offense: offense.initialize,
+    facing: facing.initialize,
     action: action.initialize,
     skill: skill.initialize,
     elemental: elemental.initialize,

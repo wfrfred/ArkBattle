@@ -9,6 +9,7 @@ import * as skills from "../../dist/core/unit/skill/index.js";
 import * as sp from "../../dist/core/unit/skill/sp.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import { advance as advanceLocomotion } from "../../dist/core/unit/capability/locomotion/index.js";
+import * as facing from "../../dist/core/unit/capability/facing/index.js";
 import { stun, silence, blockSpRecovery } from "../../dist/core/effects/control.js";
 
 function actor(onEnd = state => state) {
@@ -29,6 +30,7 @@ function actor(onEnd = state => state) {
         action: { initialize: state => actions.createActions(state, actions.create(action)) },
         skill: { initialize: state => skills.create(state, skill) },
         blocker: { layer: "GROUND", rules: [], capacity: 1, radius: 2 },
+        facing: { rules: [] },
         locomotion: { halfBodyWidth: 0, minSpeed: 0, speed: 1, steeringParameters: { steeringFactor: 1, maxSteeringForce: 1 } },
     };
     return { definition, action, skill };
@@ -41,11 +43,11 @@ function canMove(state, reference) {
     return units.get(moved, reference).position[0] > self.position[0];
 }
 
-test("stun interrupts the current action, suppresses four capabilities, and withdraws only its own rules", () => {
+test("stun interrupts the current action, suppresses its affected capabilities, and withdraws only its own rules", () => {
     const endings = [];
     const content = actor((state, _source, _self, end) => { endings.push(end); return state; });
     let state = battle([
-        { definition: content.definition, position: [1, 1] },
+        { definition: content.definition, position: [1, 1], initial: { facing: { direction: "RIGHT" } } },
         { definition: { id: "blockable", hooks: Hooks.empty(), layer: { type: "GROUND" }, blockable: { volume: 1, rules: [] } }, position: [1.5, 1] },
     ]);
     const source = units.ref(get(state, 0));
@@ -64,6 +66,7 @@ test("stun interrupts the current action, suppresses four capabilities, and with
     assert.equal(actions.getExecution(state, started.value), undefined);
     assert.equal(actions.start(state, action).value, null);
     assert.equal(canMove(state, source), false);
+    assert.equal(facing.turn(state, source, "LEFT"), state);
     assert.equal(blocking.blockerOf(state, target), undefined);
     state = sp.recover(state, source, "TIME", 5).state;
     assert.equal(get(state, 0).skill.sp.value, 10);
@@ -71,10 +74,13 @@ test("stun interrupts the current action, suppresses four capabilities, and with
 
     state = effects.setEnabled(state, first.value, false);
     assert.equal(actions.start(state, action).value, null);
+    assert.equal(facing.turn(state, source, "LEFT"), state);
     state = effects.end(state, second.value);
     state = { ...state, tick: 1 };
     assert.notEqual(actions.start(state, action).value, null);
     assert.equal(canMove(state, source), true);
+    state = facing.turn(state, source, "LEFT");
+    assert.equal(get(state, 0).facing.direction, "LEFT");
     assert.notEqual(skills.activate(state, skill).value, null);
     assert.equal(blocking.blockerOf(state, target), undefined);
     state = blocking.search(state, source);
@@ -83,7 +89,7 @@ test("stun interrupts the current action, suppresses four capabilities, and with
 
 test("silence blocks activation while SP prevention independently blocks recovery", () => {
     const content = actor();
-    let state = battle([{ definition: content.definition, position: [1, 1] }]);
+    let state = battle([{ definition: content.definition, position: [1, 1], initial: { facing: { direction: "RIGHT" } } }]);
     const source = units.ref(get(state, 0));
     const skill = skills.ref(source, content.skill);
     const silenced = effects.install(state, source, silence);
