@@ -31,10 +31,17 @@ export interface Cancellation<R extends Reason = Reason> {
     readonly reason: R;
 }
 
-export interface Pending<C extends Cancellation | null = Cancellation | null> {
-    readonly amount: number;
-    readonly cancellation: C;
-}
+export type Pending<C extends Cancellation | null = Cancellation | null> =
+    | {
+          readonly type: "MODIFIABLE";
+          readonly amount: number;
+          readonly cancellation: C;
+      }
+    | {
+          readonly type: "FIXED";
+          readonly amount: number;
+          readonly cancellation: C;
+      };
 
 export type Next<C extends Cancellation | null> = C | (null extends C ? Cancellation : never);
 

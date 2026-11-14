@@ -9,7 +9,8 @@ import { fixtureBattlefieldState } from "../helpers/battlefield.js";
 import { damage, parameters } from "../helpers/vitality.js";
 import { createBattleState } from "../../dist/core/battle/state.js";
 import { add, update } from "../../dist/core/battle/unit.js";
-import { ref } from "../../dist/core/unit/index.js";
+import { ref, compose, setHook } from "../../dist/core/unit/index.js";
+import * as hpDamage from "../../dist/core/battle/damage/hp/index.js";
 import { advance as advanceBlocking } from "../../dist/core/battle/blocking/index.js";
 import { advance as advanceEffects } from "../../dist/core/unit/effect/index.js";
 import { advance as advanceSkill, activate, modify } from "../../dist/core/unit/skill/index.js";
@@ -17,7 +18,7 @@ import { ref as skillRef } from "../helpers/skill.js";
 import { start, advance as advanceAction, ref as actionRef } from "../../dist/core/unit/action/index.js";
 import { advance as advanceLocomotion } from "../../dist/core/unit/capability/locomotion/index.js";
 import { setAttackContribution } from "../../dist/core/unit/capability/offense/index.js";
-import { setMaxHpContribution } from "../../dist/core/unit/capability/vitality/index.js";
+import { setMaxHpContribution, setHook as setVitalityHook } from "../../dist/core/unit/capability/vitality/index.js";
 import { setType } from "../../dist/core/unit/capability/layer/index.js";
 import { create as modifier } from "../../dist/core/unit/contribution/attribute.js";
 import { Vec2 } from "../../dist/core/common/vector.js";
@@ -114,6 +115,48 @@ test("module X uses current max HP for shield healing and distinguishes blocked 
     approximate(hit(shielded.state, 1).value.application.hpLoss, 59.5);
     approximate(hit(shielded.state, 2).value.application.hpLoss, 70);
     assert.equal(hit(shielded.state, 3).value.application.hpLoss, 100);
+});
+
+test("APPLY-03: fixed receiving skips Mudrock's reductions while retaining shield cancellation and recovery", () => {
+    const fixture = setup({ module: { id: moduleX, level: 3 } }, [
+        enemy(1, [0.6, 0], { blockable: { volume: 1, rules: [] }, profile: { tags: ["sarkaz"] } }),
+    ]);
+    const ready = advanceEffectsUntil(wound(fixture.battle), 270);
+    const observed = [];
+    const observe = stage => ({
+        id: stage,
+        invoke(state, { received }) {
+            observed.push([stage, received.type, received.amount]);
+            return { state, value: undefined };
+        },
+    });
+    let battle = update(ready, ref(fixture.unit), compose(
+        setVitalityHook("damageReceiving", {
+            id: "fix-amount", priority: 200,
+            invoke(state, _context, pending) {
+                assert.equal(pending.type, "MODIFIABLE");
+                return { state, value: { ...pending, type: "FIXED" } };
+            },
+        }),
+        setHook(hpDamage.targetApplied, observe("applied")),
+    ));
+    battle = update(battle, ref(getUnit(battle, 1)), setHook(hpDamage.beforeCommit, observe("commit")));
+
+    const shielded = hit(battle, 1);
+    assert.equal(shielded.value.type, "CANCELLED");
+    assert.deepEqual(shielded.value.received, {
+        type: "FIXED", amount: 100, cancellation: { reason: "MUDROCK_SHIELD" },
+    });
+    approximate(getUnit(shielded.state, 0).vitality.hp, 1000 + fixture.prepared.attributes.maxHp * 0.23);
+    assert.equal(getUnit(shielded.state, 0).skill.sp.value, 3);
+    assert.equal(readShield(getUnit(shielded.state, 0)).layers, 0);
+    assert.deepEqual(observed, []);
+
+    const unshielded = hit(shielded.state, 1);
+    assert.equal(unshielded.value.type, "APPLIED");
+    assert.deepEqual(unshielded.value.received, { type: "FIXED", amount: 100, cancellation: null });
+    assert.equal(unshielded.value.application.hpLoss, 100);
+    assert.deepEqual(observed, [["commit", "FIXED", 100], ["applied", "FIXED", 100]]);
 });
 
 test("S2 waits for an eligible target without spending its SP", () => {

@@ -59,6 +59,17 @@ const receivingKey = key<hpDamage.ReceivingHook>('receiving');
 const receivingHooks = Hooks.empty().set(receivingKey, {
     id: 'evade', invoke: (state, _context, current) => ({ state, value: hpDamage.cancel(current, 'EVADE') }),
 });
+const fixedReceiving: hpDamage.ReceivingHook = {
+    id: 'fixed-amount',
+    invoke(state, _context, current) {
+        if (current.type === 'FIXED') {
+            return { state, value: hpDamage.cancel(current, 'EVADE') };
+        }
+        const modifiable: Extract<hpDamage.Pending, { type: 'MODIFIABLE' }> = current;
+        return { state, value: { ...current, type: 'FIXED', amount: modifiable.amount / 2 } };
+    },
+};
+Hooks.empty().set(receivingKey, fixedReceiving);
 declare const receivingContext: hpDamage.ReceivingContext;
 declare const damageOutcome: hpDamage.Outcome;
 if (damageOutcome.type === 'APPLIED') {

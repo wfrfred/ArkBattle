@@ -266,7 +266,7 @@ Request 始终表示初始事实；公式参数、输出量和接收工作值只
 
 ReceivingStarted 只供 HP Damage 的普通受击 SP 等接收开始业务使用。EP Healing 不提供专属 Receiving，其 Pending.cancellation 固定为 null，也不导出取消构造器或 CANCELLED 结果。各业务分别提供自身使用的阶段。
 
-#### 接收工作值与取消
+#### 接收工作值、数值固定与取消
 
 以下 Reason 为 HP Damage 的取消原因示例，其他业务按自身机制定义，不统一强制相同原因集合。
 
@@ -277,12 +277,19 @@ interface Cancellation<R extends Reason = Reason> {
     readonly reason: R;
 }
 
-interface Pending<
+type Pending<
     C extends Cancellation | null = Cancellation | null,
-> {
-    readonly amount: number;
-    readonly cancellation: C;
-}
+> =
+    | {
+          readonly type: "MODIFIABLE";
+          readonly amount: number;
+          readonly cancellation: C;
+      }
+    | {
+          readonly type: "FIXED";
+          readonly amount: number;
+          readonly cancellation: C;
+      };
 
 type Next<C extends Cancellation | null> =
     C | (null extends C ? Cancellation : never);
@@ -301,13 +308,17 @@ declare function cancel<C extends Cancellation | null>(
 ): Pending<Next<C>>;
 ```
 
-amount 与 cancellation 独立：接收量可以归零而未取消，取消也可以保留非零数值。取消一旦成立，后续 Hook 保留已有取消及原因，仍可修改 amount 或按自身资格执行独立业务。Receiving 结束时若已取消，返回 CANCELLED，不执行 BeforeCommit、资源提交或 Applied；先前完成的业务仍接续，最终 Pending 保存在取消结果中。
+HP Damage、EP Damage 与 HP Healing 的初始 Pending 为 MODIFIABLE；Receiving Hook 可以返回 FIXED 工作值，表示后续普通改量程序须保留当前 amount。两种分支都直接携带 amount 与 cancellation，不将数值再包进另一层对象。FIXED 不取消请求，也不停止 Hook 派发或独立业务；取消构造函数原样保留数值状态。EP Healing 没有专属 Receiving，沿用自身的 Pending，不机械添加固定状态。
+
+amount 与 cancellation 独立：接收量可以归零而未取消，取消也可以保留非零数值。取消一旦成立，后续 Hook 保留已有取消及原因；MODIFIABLE 时仍可修改 amount，FIXED 时遵守数值固定约定，两者均可按自身资格执行独立业务。Receiving 结束时若已取消，返回 CANCELLED，不执行 BeforeCommit、资源提交或 Applied；先前完成的业务仍接续，最终 Pending 保存在取消结果中。
 
 Receiving 的各 Hook 按顺序接续原工作值，不在每项之后截零；全部 Hook 结束后，所属能力的 receive 操作以 `Math.max(0, amount)` 形成最终 Pending，保留 cancellation 及其原因。BeforeCommit、Commit、Applied 与 Outcome 使用这同一份非负接收量。负工作值不会反转损伤或治疗方向；最终接收量归零仍可正常提交，不等同于零计算输出的入口拒绝。
 
-Next 在输入未取消时允许首次取消，输入已有取消时只允许返回原取消类型；amount 始终为 number。ReceivingHook 可作为普通 `Hook<ReceivingContext, Pending>` 交给现有派发器，不增加运行时取消校验。
+Next 在输入未取消时允许首次取消，输入已有取消时只允许返回原取消类型；amount 始终为 number。类型表达工作值分支与取消转换，不证明 FIXED 输入／返回值数值相等。保留固定数值是 Hook 的明确契约，内核信任内容实现，不增加比较、纠正或其他运行时防御。ReceivingHook 继续只对取消状态使用现有泛型，可作为普通 `Hook<ReceivingContext, Pending>` 交给派发器。
 
-领域提供纯工作值构造函数 cancel，内容在 invoke 的返回值中使用 `value: cancel(current, "EVADE")`。cancel 保留当前 amount，已有 cancellation 则原样保留，否则写入新原因；必要的条件类型断言集中在此构造函数内部。内容不需要显式操作 Next 或编写类型断言，普通改量继续使用 `{ ...current, amount: nextAmount }`。
+领域提供纯工作值构造函数 cancel，内容在 invoke 的返回值中使用 `value: cancel(current, "EVADE")`。cancel 保留当前 type 与 amount，已有 cancellation 则原样保留，否则写入新原因；必要的条件类型断言集中在此构造函数内部。内容不需要显式操作 Next 或编写类型断言。普通改量程序在 MODIFIABLE 分支使用 `{ ...current, amount: nextAmount }`，FIXED 分支返回保留原数值的工作值。
+
+上述固定状态只用于接收工作值；Formula 的 Parameters 与 Output 的 number 继续使用现有接口。Calculate 到 Apply 的固定事实传递、调用方选择 Hook 的范围与入口尚未确定，不由本次新增类型代为决定。
 
 ### 1.7 Hook 登记、顺序与生命周期
 

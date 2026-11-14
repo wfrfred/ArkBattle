@@ -182,6 +182,10 @@ function shieldEffect(profile: Profile): EffectDefinition<ShieldState, Vitality>
                             };
                         }
 
+                        if (pending.type === "FIXED") {
+                            return { state, value: pending };
+                        }
+
                         const sourceId = context.request.source?.id ?? null;
                         const sarkazScale = hasSarkazTag(
                             sourceId === null ? undefined : state.battlefield.units.get(sourceId),

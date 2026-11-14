@@ -36,6 +36,7 @@ export function applyHealing(
     const receiving = vitality.receiveHealing(battle, context, {
         amount: calculation.amount,
         cancellation: null,
+        type: "MODIFIABLE",
     });
     battle = receiving.state;
     const received = receiving.value;

@@ -415,7 +415,7 @@ test("APPLY-01: cancellation retains recovery and reflection but skips the origi
     );
     const request = damageRequest(source, target, 20);
     const result = hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request));
-    assert.deepEqual(result.value, { type: "CANCELLED", received: { amount: 20, cancellation: { reason: "EVADE" } } });
+    assert.deepEqual(result.value, { type: "CANCELLED", received: { type: "MODIFIABLE", amount: 20, cancellation: { reason: "EVADE" } } });
     assert.equal(get(result.state, 0).vitality.hp, 56);
     assert.equal(get(result.state, 1).vitality.hp, 100);
 });

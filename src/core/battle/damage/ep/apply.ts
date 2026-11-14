@@ -26,6 +26,7 @@ export function applyDamage(
     const receiving = receiveDamage(battle, context, {
         amount: damage.amount,
         cancellation: null,
+        type: "MODIFIABLE",
     });
     battle = receiving.state;
     const received = receiving.value;

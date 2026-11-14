@@ -49,6 +49,8 @@ declare class Hooks {
 
 Key 参数化完整 Hook 类型 H，保留特殊 ReceivingHook 的泛型 invoke，不把它重新放宽成普通 Hook<C, T>。写入类型由键确定；读取由同一个键恢复对应类型。必要的异构擦除集中在容器内部，Content 不承担断言，不从普通查询取得 any。
 
+工作值的合法变化由所属领域定义。伤害／治疗 Receiving 的 MODIFIABLE／FIXED 分支表达是否允许普通改量，取消泛型约束取消后的返回形状；固定数值由 Hook 契约保证，派发器不比较或纠正返回的数值。具体类型见[接收工作值](vitality.md#接收工作值数值固定与取消)。
+
 get 对无登记的键返回空集合。同键同 ID 的 set 替换原项并保留位置；新 ID 追加，remove 只移除对应项。merge 按 other 的各键内登记顺序应用同一 set 规则。ID 作用域是 Unit 身份 × Hook 键 × Hook ID，不同键可以复用 ID。删除不恢复被替换的 Definition 旧项。
 
 容器只要求 id；Entry 与底层数组 set／remove 复用 [common/collection/entries.ts](../../src/core/common/collection/entries.ts)。需要优先级的领域在自己的实际 Hook 类型上声明 `priority?: number`：缺省为 0，按降序派发，同优先级保持登记顺序。生命周期 Hook 按登记顺序执行，不引入普遍优先级。排序由派发领域完成，不改变集合中的登记顺序。

@@ -40,6 +40,7 @@ export function applyDamage(
     const receiving = vitality.receiveDamage(battle, context, {
         amount: calculation.amount,
         cancellation: null,
+        type: "MODIFIABLE",
     });
     battle = receiving.state;
     const received = receiving.value;
