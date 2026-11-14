@@ -13,7 +13,7 @@ export interface Contribution<V> {
     readonly group?: Group;
 }
 
-export function resolve<V>(entries: readonly Contribution<V>[]): readonly V[] {
+export function resolveEntries<V>(entries: readonly Contribution<V>[]): readonly Contribution<V>[] {
     const ordered = [...entries].sort((a, b) => {
         if (a.id === b.id) {
             return 0;
@@ -34,13 +34,11 @@ export function resolve<V>(entries: readonly Contribution<V>[]): readonly V[] {
         }
     }
 
-    const values: V[] = [];
+    return ordered.filter(
+        (entry) => entry.group === undefined || winners.get(entry.group.id) === entry,
+    );
+}
 
-    for (const entry of ordered) {
-        if (entry.group === undefined || winners.get(entry.group.id) === entry) {
-            values.push(entry.value);
-        }
-    }
-
-    return values;
+export function resolve<V>(entries: readonly Contribution<V>[]): readonly V[] {
+    return resolveEntries(entries).map((entry) => entry.value);
 }
