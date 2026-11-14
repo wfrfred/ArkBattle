@@ -1,0 +1,1083 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-15",
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/resource-mechanisms-20261114/damage/mudrock-s2-classification/extract_content.py",
+      "bytes": 4493,
+      "sha256": "f84c3946621690a0a53c18efd92a5912709f346fa3c05d26542662511f31c830"
+    },
+    "reader": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/targeting-pipeline-20261109/content/extract_content.py",
+      "bytes": 12906,
+      "sha256": "37504c156e11e55c9c06174980fb1617281690ab3b01db9caa9dfd28937f5faa"
+    },
+    "sources": [
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+        "bytes": 1367500,
+        "sha256": "0d0b4c0f9252c14a69a20d4bea09527403dd3eddfc2f7bcd757c3c30cf37ffc3"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+        "bytes": 477255,
+        "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99"
+      }
+    ],
+    "profileSource": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/resource-mechanisms-20261114/damage/operator-bindings.json",
+      "bytes": 1510216,
+      "sha256": "950fd23e56c57304e7c0f71e4fd41afe3c702ad4d3a27786fae7302030938e17"
+    },
+    "scope": "Only the installed skchr_mudrok_2 root and descendants; actual PPtr and script identity, no gameplay execution or other character scan."
+  },
+  "result": {
+    "root": "skchr_mudrok_2",
+    "profile": {
+      "pointer": "/char_311_mudrok",
+      "id": "char_311_mudrok",
+      "name": "泥岩",
+      "talents": [
+        {
+          "candidates": [
+            {
+              "unlockCondition": {
+                "phase": "PHASE_0",
+                "level": 1
+              },
+              "requiredPotentialRank": 0,
+              "prefabKey": "1",
+              "name": "沃土予身",
+              "description": "每9秒获得1层<$ba.shield>护盾</>（最多2层，部署后立即获得1层），每层护盾破裂时恢复自身15%最大生命",
+              "rangeId": null,
+              "blackboard": [
+                {
+                  "key": "interval",
+                  "value": 9.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "times",
+                  "value": 1.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "max_times",
+                  "value": 2.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "hp_ratio",
+                  "value": 0.15,
+                  "valueStr": null
+                }
+              ],
+              "tokenKey": null,
+              "isHideTalent": false
+            },
+            {
+              "unlockCondition": {
+                "phase": "PHASE_0",
+                "level": 1
+              },
+              "requiredPotentialRank": 4,
+              "prefabKey": "1",
+              "name": "沃土予身",
+              "description": "每9秒获得1层<$ba.shield>护盾</>（最多2层，部署后立即获得1层），每层护盾破裂时恢复自身17%<@ba.talpu>（+2%）</>最大生命",
+              "rangeId": null,
+              "blackboard": [
+                {
+                  "key": "interval",
+                  "value": 9.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "times",
+                  "value": 1.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "max_times",
+                  "value": 2.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "hp_ratio",
+                  "value": 0.17,
+                  "valueStr": null
+                }
+              ],
+              "tokenKey": null,
+              "isHideTalent": false
+            },
+            {
+              "unlockCondition": {
+                "phase": "PHASE_1",
+                "level": 1
+              },
+              "requiredPotentialRank": 0,
+              "prefabKey": "1",
+              "name": "沃土予身",
+              "description": "每9秒获得1层<$ba.shield>护盾</>（最多2层，部署后立即获得1层），每层护盾破裂时恢复自身20%最大生命",
+              "rangeId": null,
+              "blackboard": [
+                {
+                  "key": "interval",
+                  "value": 9.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "times",
+                  "value": 1.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "max_times",
+                  "value": 2.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "hp_ratio",
+                  "value": 0.2,
+                  "valueStr": null
+                }
+              ],
+              "tokenKey": null,
+              "isHideTalent": false
+            },
+            {
+              "unlockCondition": {
+                "phase": "PHASE_1",
+                "level": 1
+              },
+              "requiredPotentialRank": 4,
+              "prefabKey": "1",
+              "name": "沃土予身",
+              "description": "每9秒获得1层<$ba.shield>护盾</>（最多2层，部署后立即获得1层），每层护盾破裂时恢复自身22%<@ba.talpu>（+2%）</>最大生命",
+              "rangeId": null,
+              "blackboard": [
+                {
+                  "key": "interval",
+                  "value": 9.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "times",
+                  "value": 1.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "max_times",
+                  "value": 2.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "hp_ratio",
+                  "value": 0.22,
+                  "valueStr": null
+                }
+              ],
+              "tokenKey": null,
+              "isHideTalent": false
+            },
+            {
+              "unlockCondition": {
+                "phase": "PHASE_2",
+                "level": 1
+              },
+              "requiredPotentialRank": 0,
+              "prefabKey": "1",
+              "name": "沃土予身",
+              "description": "每9秒获得1层<$ba.shield>护盾</>（最多3层，部署后立即获得1层），每层护盾破裂时恢复自身20%最大生命",
+              "rangeId": null,
+              "blackboard": [
+                {
+                  "key": "interval",
+                  "value": 9.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "times",
+                  "value": 1.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "max_times",
+                  "value": 3.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "hp_ratio",
+                  "value": 0.2,
+                  "valueStr": null
+                }
+              ],
+              "tokenKey": null,
+              "isHideTalent": false
+            },
+            {
+              "unlockCondition": {
+                "phase": "PHASE_2",
+                "level": 1
+              },
+              "requiredPotentialRank": 4,
+              "prefabKey": "1",
+              "name": "沃土予身",
+              "description": "每9秒获得1层<$ba.shield>护盾</>（最多3层，部署后立即获得1层），每层护盾破裂时恢复自身22%<@ba.talpu>（+2%）</>最大生命",
+              "rangeId": null,
+              "blackboard": [
+                {
+                  "key": "interval",
+                  "value": 9.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "times",
+                  "value": 1.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "max_times",
+                  "value": 3.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "hp_ratio",
+                  "value": 0.22,
+                  "valueStr": null
+                }
+              ],
+              "tokenKey": null,
+              "isHideTalent": false
+            }
+          ]
+        },
+        {
+          "candidates": [
+            {
+              "unlockCondition": {
+                "phase": "PHASE_2",
+                "level": 1
+              },
+              "requiredPotentialRank": 0,
+              "prefabKey": "2",
+              "name": "手足相惜",
+              "description": "受到来自【萨卡兹】敌人的伤害降低30%",
+              "rangeId": null,
+              "blackboard": [
+                {
+                  "key": "damage_resistance",
+                  "value": 0.3,
+                  "valueStr": null
+                }
+              ],
+              "tokenKey": null,
+              "isHideTalent": false
+            }
+          ]
+        }
+      ],
+      "skills": [
+        {
+          "skillId": "skcom_def_up[3]",
+          "overridePrefabKey": "skchr_mudrok_1",
+          "overrideTokenKey": null,
+          "levelUpCostCond": [
+            {
+              "unlockCond": {
+                "phase": "PHASE_2",
+                "level": 1
+              },
+              "lvlUpTime": 28800,
+              "levelUpCost": [
+                {
+                  "id": "3303",
+                  "count": 8,
+                  "type": "MATERIAL"
+                },
+                {
+                  "id": "30084",
+                  "count": 4,
+                  "type": "MATERIAL"
+                },
+                {
+                  "id": "30063",
+                  "count": 4,
+                  "type": "MATERIAL"
+                }
+              ]
+            },
+            {
+              "unlockCond": {
+                "phase": "PHASE_2",
+                "level": 1
+              },
+              "lvlUpTime": 57600,
+              "levelUpCost": [
+                {
+                  "id": "3303",
+                  "count": 12,
+                  "type": "MATERIAL"
+                },
+                {
+                  "id": "30014",
+                  "count": 4,
+                  "type": "MATERIAL"
+                },
+                {
+                  "id": "30094",
+                  "count": 9,
+                  "type": "MATERIAL"
+                }
+              ]
+            },
+            {
+              "unlockCond": {
+                "phase": "PHASE_2",
+                "level": 1
+              },
+              "lvlUpTime": 86400,
+              "levelUpCost": [
+                {
+                  "id": "3303",
+                  "count": 15,
+                  "type": "MATERIAL"
+                },
+                {
+                  "id": "30125",
+                  "count": 6,
+                  "type": "MATERIAL"
+                },
+                {
+                  "id": "31034",
+                  "count": 4,
+                  "type": "MATERIAL"
+                }
+              ]
+            }
+          ],
+          "unlockCond": {
+            "phase": "PHASE_0",
+            "level": 1
+          }
+        },
+        {
+          "skillId": "skchr_mudrok_2",
+          "overridePrefabKey": null,
+          "overrideTokenKey": null,
+          "levelUpCostCond": [
+            {
+              "unlockCond": {
+                "phase": "PHASE_2",
+                "level": 1
+              },
+              "lvlUpTime": 28800,
+              "levelUpCost": [
+                {
+                  "id": "3303",
+                  "count": 8,
+                  "type": "MATERIAL"
+                },
+                {
+                  "id": "31034",
+                  "count": 4,
+                  "type": "MATERIAL"
+                },
+                {
+                  "id": "31013",
+                  "count": 3,
+                  "type": "MATERIAL"
+                }
+              ]
+            },
+            {
+              "unlockCond": {
+                "phase": "PHASE_2",
+                "level": 1
+              },
+              "lvlUpTime": 57600,
+              "levelUpCost": [
+                {
+                  "id": "3303",
+                  "count": 12,
+                  "type": "MATERIAL"
+                },
+                {
+                  "id": "31014",
+                  "count": 4,
+                  "type": "MATERIAL"
+                },
+                {
+                  "id": "30014",
+                  "count": 10,
+                  "type": "MATERIAL"
+                }
+              ]
+            },
+            {
+              "unlockCond": {
+                "phase": "PHASE_2",
+                "level": 1
+              },
+              "lvlUpTime": 86400,
+              "levelUpCost": [
+                {
+                  "id": "3303",
+                  "count": 15,
+                  "type": "MATERIAL"
+                },
+                {
+                  "id": "30115",
+                  "count": 6,
+                  "type": "MATERIAL"
+                },
+                {
+                  "id": "31024",
+                  "count": 6,
+                  "type": "MATERIAL"
+                }
+              ]
+            }
+          ],
+          "unlockCond": {
+            "phase": "PHASE_1",
+            "level": 1
+          }
+        },
+        {
+          "skillId": "skchr_mudrok_3",
+          "overridePrefabKey": null,
+          "overrideTokenKey": null,
+          "levelUpCostCond": [
+            {
+              "unlockCond": {
+                "phase": "PHASE_2",
+                "level": 1
+              },
+              "lvlUpTime": 28800,
+              "levelUpCost": [
+                {
+                  "id": "3303",
+                  "count": 8,
+                  "type": "MATERIAL"
+                },
+                {
+                  "id": "30104",
+                  "count": 4,
+                  "type": "MATERIAL"
+                },
+                {
+                  "id": "30083",
+                  "count": 5,
+                  "type": "MATERIAL"
+                }
+              ]
+            },
+            {
+              "unlockCond": {
+                "phase": "PHASE_2",
+                "level": 1
+              },
+              "lvlUpTime": 57600,
+              "levelUpCost": [
+                {
+                  "id": "3303",
+                  "count": 12,
+                  "type": "MATERIAL"
+                },
+                {
+                  "id": "30044",
+                  "count": 4,
+                  "type": "MATERIAL"
+                },
+                {
+                  "id": "31024",
+                  "count": 7,
+                  "type": "MATERIAL"
+                }
+              ]
+            },
+            {
+              "unlockCond": {
+                "phase": "PHASE_2",
+                "level": 1
+              },
+              "lvlUpTime": 86400,
+              "levelUpCost": [
+                {
+                  "id": "3303",
+                  "count": 15,
+                  "type": "MATERIAL"
+                },
+                {
+                  "id": "30135",
+                  "count": 6,
+                  "type": "MATERIAL"
+                },
+                {
+                  "id": "31014",
+                  "count": 6,
+                  "type": "MATERIAL"
+                }
+              ]
+            }
+          ],
+          "unlockCond": {
+            "phase": "PHASE_2",
+            "level": 1
+          }
+        }
+      ]
+    },
+    "components": [
+      {
+        "bundle": "battle/prefabs/[uc]skills.ab",
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "pathId": "-8621369842960336780",
+        "hierarchy": [
+          "skchr_mudrok_2"
+        ],
+        "objectSha256": "24a4751635cb9487de582cac19c0ea1332e7763f7328b33320287d2ed59dbaed",
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": 6851783972288338031
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "6851783972288338031",
+          "name": "CastSkill",
+          "cl": "CastSkill",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "value": {
+          "_maxTriggerTime": -1,
+          "_allowSpRecoveryWhenAffecting": 0,
+          "_limitGlobalTriggerTime": 0,
+          "_hidden": 0,
+          "_showSpBarEvenHidden": 0,
+          "_showSpAsBulletMode": 0,
+          "_showSpRatioAsProgress": 0,
+          "_playCharWordVoice": 1,
+          "_playCharWordWithPassiveType": 0,
+          "_earlyVoice": 0,
+          "_canCastWithNoSp": 0,
+          "_canSilenced": 0,
+          "_canUseInAbnormalState": 0,
+          "_defaultModeIndex": -1,
+          "_attackBlackboardModeIndex": -1,
+          "_extraAttackBlackboardModeIndices": {
+            "Array": []
+          },
+          "_rangeIdModeIndex": -1,
+          "_extraRangeIdModeIndices": {
+            "Array": []
+          },
+          "_rangeIdUsageType": 7,
+          "_writeDurationToAttackBlackboard": 0,
+          "_attachSignalIds": 0,
+          "_extraAbilities": {
+            "Array": [
+              {
+                "m_FileID": 0,
+                "m_PathID": 8290759946353997940
+              }
+            ]
+          },
+          "_useEscapeTime": 0,
+          "_earlySkillFinishAtAttackFinished": 0,
+          "_stopAffectOnInterrupt": 0,
+          "_showProgressToNext": 0,
+          "_hideSkillStackCount": 0,
+          "_hideHudSkillStackCount": 0,
+          "_playSkillBeginAnim": 0,
+          "_forceAnimFaceToDefault": 0,
+          "_beginAnim": "",
+          "_beginAnimDown": "",
+          "_beginEffect": {
+            "Array": []
+          },
+          "_useFaceVector": 0,
+          "_beginAnimValidator": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_availableValidator": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_trigger": {
+            "m_FileID": 0,
+            "m_PathID": 854831876055136372
+          },
+          "_switchToState": 1,
+          "_uninterruptibleOnAbilityPredelay": 0,
+          "_canSwitchDuringBorn": 1,
+          "_canCastDuringBorn": 1,
+          "_checkHasTargetBeforeDoCast": 0,
+          "_useTriggerInManualMode": 0,
+          "_allowNoTarget": 1,
+          "_shouldCastLikeAttack": 0,
+          "_isRemoteControlled": 0,
+          "_hideRangeToShow": 0,
+          "_forceToShowRange": 0,
+          "_forceUseBaseShowRange": 0,
+          "_rangeToShow": {
+            "m_FileID": 0,
+            "m_PathID": -3867783893802977164
+          },
+          "_recoverSpIfNoTarget": 0,
+          "_resetAbilityCooldownWhenCastEnd": 0,
+          "_onlyAvailableWhenTokenValid": 0,
+          "_hasUniStackColor": 0,
+          "_skipSpCheckInSkillState": 0
+        }
+      },
+      {
+        "bundle": "battle/prefabs/[uc]skills.ab",
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "pathId": "-5182004071044777868",
+        "hierarchy": [
+          "skchr_mudrok_2",
+          "RollAttack"
+        ],
+        "objectSha256": "1cb6703225c1e4a0a23644a5ea36ef4d2dbc93b877a81ee23b650d85151edd04",
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": -550693537895634864
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "-550693537895634864",
+          "name": "UberEffectEmitter",
+          "cl": "UberEffectEmitter",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "value": {
+          "_hitEffects": {
+            "Array": [
+              {
+                "_directionType": 0,
+                "_effects": {
+                  "Array": [
+                    "mudrok_attack_01_hit",
+                    "",
+                    "",
+                    ""
+                  ]
+                },
+                "_oneshot": 1,
+                "_endEvent": 3,
+                "_onlyOnce": 0,
+                "_useFourDirectionalFace": 0,
+                "_useOwnerToTargetDirection": 0,
+                "_playIfNotInputTarget": 0,
+                "_playOnlyIfInputTarget": 0
+              }
+            ]
+          },
+          "_castEffects": {
+            "Array": []
+          },
+          "_attachEffects": {
+            "Array": []
+          },
+          "_inputTargetEffects": {
+            "Array": []
+          },
+          "_castTargetEffects": {
+            "Array": []
+          },
+          "_convertCastEndToAttachFinish": 0,
+          "_recalculatePlaybackSpeed": 0,
+          "_preDelayFactor": 0.0
+        }
+      },
+      {
+        "bundle": "battle/prefabs/[uc]skills.ab",
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "pathId": "-4140942944358533004",
+        "hierarchy": [
+          "skchr_mudrok_2",
+          "RollAttack",
+          "Selector"
+        ],
+        "objectSha256": "0261309d2ae9d389d4508479c3d0ee0019ee068caaf8b0c604dcfb8709353eb0",
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": -2891200616113119906
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "-2891200616113119906",
+          "name": "AutoLoadBoxRange",
+          "cl": "AutoLoadBoxRange",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "value": {
+          "_useBlackboardRangeId": 0,
+          "_extendable": 0
+        }
+      },
+      {
+        "bundle": "battle/prefabs/[uc]skills.ab",
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "pathId": "-3867783893802977164",
+        "hierarchy": [
+          "skchr_mudrok_2",
+          "RollAttack",
+          "Selector"
+        ],
+        "objectSha256": "2ca97dc67e844c61bba7ebc59da0aa5f9f2f113712c56e0a3472e6ee456985f7",
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": 7080728813803358465
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "7080728813803358465",
+          "name": "AdvancedSelector",
+          "cl": "AdvancedSelector",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "value": {
+          "_targetSide": 2,
+          "_targetMotion": 1,
+          "_targetCategory": 1,
+          "_postFilter": 0,
+          "_ignoreTargetFree": 0,
+          "_onlyIgnoreSomeOfTargetFreeCase": 0,
+          "_abnormalFlag": 20,
+          "_abnormalCombo": 1,
+          "_ignoreAllyTargetFree": 0,
+          "_ignoreHealFree": 0,
+          "_ignoreMotionMode": 0,
+          "_forceIgnoreCamouflage": 0,
+          "_needProfessionMask": 0,
+          "_professionMask": 0,
+          "_excludeSomeAbnormalFlags": 0,
+          "_excludeAbnormalFlag": 46,
+          "_limitTargetNum": 0,
+          "_maxTargetKey": "max_target",
+          "_maxTargetExtraKey": "",
+          "_maxNum": 1,
+          "_excludeOwner": 0,
+          "_sortByTauntAtLast": 0,
+          "_ignoreHitRange": 0,
+          "_checkUnitType": 0,
+          "_unitTypeMask": 0,
+          "_abilityInputTargetAsSortSource": 0,
+          "_targetOptionHookedKeys": {
+            "Array": []
+          }
+        }
+      },
+      {
+        "bundle": "battle/prefabs/[uc]skills.ab",
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "pathId": "854831876055136372",
+        "hierarchy": [
+          "skchr_mudrok_2",
+          "RollAttack",
+          "Selector"
+        ],
+        "objectSha256": "621e2b409d886d367b79540f3b04815487fea5a6fefa17e793c92219fd79bd10",
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": 8607874384982393801
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "8607874384982393801",
+          "name": "SelectorTrigger",
+          "cl": "SelectorTrigger",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "value": {
+          "_keepTarget": 0,
+          "_minTargetNum": 1,
+          "_overrideSearchTargetTick": -1
+        }
+      },
+      {
+        "bundle": "battle/prefabs/[uc]skills.ab",
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "pathId": "3130726341302253684",
+        "hierarchy": [
+          "skchr_mudrok_2"
+        ],
+        "objectSha256": "260b6627fb67a48c1f7234592a67ba4fc62c3f68b6a7afa5a888fe77aafb5d18",
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": 2702927552840241462
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "2702927552840241462",
+          "name": "AnimatedActionToOwnerAbility",
+          "cl": "AnimatedActionToOwnerAbility",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "value": {
+          "_selector": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_metadata": {
+            "namedAsAlias": "",
+            "blackboardPrefix": ""
+          },
+          "_overrideSignalId": "",
+          "_interruptAbilityOnDetach": 0,
+          "_attachPassiveBuffsOnDummy": 1,
+          "_ignoreIfOwnerDead": 0,
+          "_forceAsDmgOrHealAbility": 0,
+          "_waitForAttackEvent": 1,
+          "_interuptIfTargetDead": 0,
+          "_resetCdStrategy": 1,
+          "_selectTargetSource": 1,
+          "_selectTargetTiming": 1,
+          "_timeMode": 0,
+          "_alwaysIncludeTarget": 1,
+          "_allowNoTarget": 1,
+          "_animKey": "Skill_1",
+          "_endAnimKey": "",
+          "_downAnimKey": "",
+          "_downEndAnimKey": "",
+          "_upAnimKey": "",
+          "_upEndAnimKey": "",
+          "_cooldown": 0.0,
+          "_cooldownKey": "duration",
+          "_preDelay": 0.0,
+          "_escapeTime": 0.0,
+          "_faceToTarget": 0,
+          "_faceToDefault": 0,
+          "_faceToFront": 0,
+          "_faceToFirstCastTarget": 0,
+          "_checkFaceToFirstCastTargetDownAttack": 0,
+          "_forceFaceToDirection": 0,
+          "_activeBuffs": {
+            "Array": []
+          },
+          "_maxAnimScale": -1.0,
+          "_onlyPlayEndAnimWhenIsLastAbility": 0,
+          "_ignorePalsyInterrupt": 0,
+          "_affectedBySlowDown": 0,
+          "_actions": {
+            "SerializedState": "[{\"_ownerType\":\"SOURCE\",\"_targetType\":\"SOURCE\",\"_abilityName\":\"RollAttack\",\"_checkCanUseAblityFlag\":false,\"_castDirectly\":false,\"_useFirstActiveAbility\":false,\"_useCastResult\":false,\"_triggerHostAbility\":false,\"_notInterruptAbilityIfCasting\":false,\"$type\":\"Torappu.Battle.Action.Nodes+TriggerAbility\"},{\"_healTarget\":\"SOURCE\",\"_getMaxHpFromTarget\":false,\"_ignoreHealFree\":true,\"_skipModifierEvent\":false,\"$type\":\"Torappu.Battle.Action.Nodes+HealViaMaxHpRatio\"},{\"_targetType\":\"SOURCE\",\"_sourceType\":\"SOURCE\",\"_effectKey\":\"common_heal_hit_01\",\"_useSourceFaceVactor\":false,\"_useSourceToTargetDirection\":false,\"_useConstDirection\":false,\"_constDirection\":\"UP\",\"_createEffectHoldBySource\":false,\"_createEffectConstDirectionHoldBySource\":false,\"_useAttackPlaybackSpeed\":false,\"_manualSetPlaybackSpeed\":false,\"_blackboardKey\":\"\",\"_playbackSpeed\":1.0,\"$type\":\"Torappu.Battle.Action.Nodes+CreateEffect\"}]",
+            "SerializedObjectReferences": {
+              "Array": []
+            }
+          }
+        }
+      },
+      {
+        "bundle": "battle/prefabs/[uc]skills.ab",
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "pathId": "3578344524386498676",
+        "hierarchy": [
+          "skchr_mudrok_2"
+        ],
+        "objectSha256": "d27d3dea1ee8779e363fa43a9ff0f3c6242f9645f21f487f90bb0ecfd9fbdd41",
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": -550693537895634864
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "-550693537895634864",
+          "name": "UberEffectEmitter",
+          "cl": "UberEffectEmitter",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "value": {
+          "_hitEffects": {
+            "Array": []
+          },
+          "_castEffects": {
+            "Array": [
+              {
+                "_directionType": 0,
+                "_effects": {
+                  "Array": [
+                    "mudrok_skill_02_range",
+                    "",
+                    "",
+                    ""
+                  ]
+                },
+                "_oneshot": 0,
+                "_startEvent": 2,
+                "_endEvent": 3,
+                "_onlyOnce": 0,
+                "_useFourDirectionalFace": 0,
+                "_delayIfFirstAttack": 0.0,
+                "_hookEffectAfterFirstAttack": ""
+              }
+            ]
+          },
+          "_attachEffects": {
+            "Array": []
+          },
+          "_inputTargetEffects": {
+            "Array": []
+          },
+          "_castTargetEffects": {
+            "Array": []
+          },
+          "_convertCastEndToAttachFinish": 0,
+          "_recalculatePlaybackSpeed": 0,
+          "_preDelayFactor": 0.0
+        }
+      },
+      {
+        "bundle": "battle/prefabs/[uc]skills.ab",
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "pathId": "8290759946353997940",
+        "hierarchy": [
+          "skchr_mudrok_2",
+          "RollAttack"
+        ],
+        "objectSha256": "082f73eb207c90871f729e1bb45fa52fc08b28cf6e3027aa9ec88a45e9d63140",
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": 4381884627089348317
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "4381884627089348317",
+          "name": "MeleeAttack",
+          "cl": "MeleeAttack",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "value": {
+          "_selector": {
+            "m_FileID": 0,
+            "m_PathID": -3867783893802977164
+          },
+          "_metadata": {
+            "namedAsAlias": "RollAttack",
+            "blackboardPrefix": ""
+          },
+          "_overrideSignalId": "",
+          "_interruptAbilityOnDetach": 0,
+          "_attachPassiveBuffsOnDummy": 1,
+          "_ignoreIfOwnerDead": 0,
+          "_forceAsDmgOrHealAbility": 0,
+          "_waitForAttackEvent": 0,
+          "_interuptIfTargetDead": 0,
+          "_resetCdStrategy": 1,
+          "_selectTargetSource": 1,
+          "_selectTargetTiming": 0,
+          "_timeMode": 2,
+          "_alwaysIncludeTarget": 0,
+          "_allowNoTarget": 0,
+          "_animKey": "",
+          "_endAnimKey": "",
+          "_downAnimKey": "",
+          "_downEndAnimKey": "",
+          "_upAnimKey": "",
+          "_upEndAnimKey": "",
+          "_cooldown": 0.0,
+          "_cooldownKey": "duration",
+          "_preDelay": 0.0,
+          "_escapeTime": 0.0,
+          "_faceToTarget": 0,
+          "_faceToDefault": 0,
+          "_faceToFront": 0,
+          "_faceToFirstCastTarget": 0,
+          "_checkFaceToFirstCastTargetDownAttack": 0,
+          "_forceFaceToDirection": 0,
+          "_activeBuffs": {
+            "Array": [
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "stun",
+                "loadFromDB": 1,
+                "isDurableBuff": 0,
+                "isDamageMissable": 0,
+                "isSilenceable": 0,
+                "isStunnable": 0,
+                "isFreezable": 0,
+                "isLevitatable": 0,
+                "isGroundBoundable": 0,
+                "statusResistable": 2,
+                "templateKey": "empty",
+                "disableOverride": 0,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": 0,
+                "clearAllStackCntWhenTimeUp": 0,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": 0,
+                "overrideEffectKey": "",
+                "overrideOnEventPriority": 0,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": 1,
+                "takeSnapshotWhenExtend": 0,
+                "durationKey": "",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": 0,
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": 1,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": 0,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": 0
+              }
+            ]
+          },
+          "_maxAnimScale": -1.0,
+          "_onlyPlayEndAnimWhenIsLastAbility": 0,
+          "_ignorePalsyInterrupt": 0,
+          "_affectedBySlowDown": 0,
+          "_atkScale": 1.0,
+          "_atkScaleKey": "atk_scale",
+          "_attackType": 1,
+          "_elementDamageType": 0,
+          "_epDamageRatio": 0.0,
+          "_useDynamicAttackType": 0,
+          "_deliveryParaWhenReplaceActionNode": 0,
+          "_damageType": 1,
+          "_extraDamageType": 0,
+          "_alwaysPutIncludeTargetFirst": 0
+        }
+      }
+    ]
+  }
+}

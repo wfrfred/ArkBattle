@@ -1,0 +1,45 @@
+{
+  "scope": "Independent Mudrock S2 static re-extraction; no other content scan or client execution.",
+  "script": {
+    "path": "docs/research/evidence/resource-mechanisms-20261114/damage/mudrock-s2-classification/verify.py",
+    "sha256": "8bc4528f64c9334b9a3ea38c0217098b69cb7ae75d8090e156448a0f3d49e6f0"
+  },
+  "records": [
+    {
+      "record": "content.json",
+      "command": [
+        "/usr/sbin/python",
+        "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/resource-mechanisms-20261114/damage/mudrock-s2-classification/extract_content.py",
+        "--out",
+        ".cache/native-research/resource-mechanisms-20261114/damage/mudrock-s2-classification/replay/content.json"
+      ],
+      "equalResult": true,
+      "archivedSha256": "672a0f53aa88c2ba166b6df3d8c460b67882e72382da16b814a6d04bf599cfd4",
+      "reextractedSha256": "672a0f53aa88c2ba166b6df3d8c460b67882e72382da16b814a6d04bf599cfd4"
+    },
+    {
+      "record": "native.json",
+      "command": [
+        "uv",
+        "run",
+        "--offline",
+        "docs/research/evidence/facing-semantics-20261113/extract.py",
+        "--search",
+        "Torappu.Battle.Abilities.AbstractBasicAttack.",
+        "--body",
+        "Torappu.Battle.Abilities.AbstractAnimatedAbility.CreateDamageNode",
+        "--body",
+        "Torappu.Battle.Abilities.AbstractBasicAttack.CreateDamageNode",
+        "--body-prefix",
+        "Torappu.Battle.Abilities.MeleeAttack.",
+        "--owner",
+        "Torappu.Battle.Abilities.MeleeAttack",
+        "--out",
+        ".cache/native-research/resource-mechanisms-20261114/damage/mudrock-s2-classification/replay/native.json"
+      ],
+      "equalResult": true,
+      "archivedSha256": "c8380452dfa67d14ff34eb0c8a99885ea2b170f76dfd375eefe930255314c3ea",
+      "reextractedSha256": "6e776fe609016844510084082c29a679059e6b2ebd613a808a814f44c48cd1b9"
+    }
+  ]
+}

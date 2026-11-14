@@ -39,10 +39,32 @@
 - 仇白天赋：角色默认 Mode 的 PassiveBuffAbility `6278260286092620084` 安装 `qiubai_t_1`，事件 14 创建 `qiubai_t_1[damage]`；子模板 `DamageViaAttr` 明确为 ADDITION／NONE。S1 的 `qiubai_s_1[aoe]` 则是 SPLASH。
 - 响石 S2：实际技能根组件 `4953579350423322503` 安装 `cairn_s_2[damage]`，`AdvancedApplyDamage` 使用 BUFF／ALL。`ALL` 有非默认的实际技能配置，不能因常见路径只有近程／远程便删掉。
 - 佩佩、怒潮凛冬：实际攻击组件为 `MeleeAttackWithSplashDmg`。主目标和扩散节点分别写 shared flag 19／20。怒潮凛冬天赋 1 的 `headb2_t_1[damage_scale]` 只对 flag20 分支缩放，S3 也分别检查 19／20。
+- 泥岩S2：实际技能根动作显式触发 `RollAttack`；该子对象 **8290759946353997940** 的真实脚本是 `MeleeAttack`，`_attackType=1`（NORMAL）、`_useDynamicAttackType=0`。当前 `MeleeAttack.get_applyWay #92334` 普通分支在 `0x180f5099b` 返回1（MELEE）。所以这笔范围反击是 **NORMAL／MELEE**，不因AOE自动归入SPLASH或BUFF。完整技能根8组件与原体、复提见[定向证据](../evidence/resource-mechanisms-20261114/damage/mudrock-s2-classification/README.md)；没有实机或有效XLua验证。
 
 动态攻击类型并不是“当前是否发动技能”。`ApplyDamage._SetAttackTypeByMainTarget #99121`、`DamageApplyConfig._ResolveAttackType #102943` 在启用动态政策时比较本次目标与 mainTarget：相同为 NORMAL，不同或无 mainTarget 为 SPLASH；禁用则保留配置。
 
 不能从少数角色的默认值推断该开关未用。完整517资源文件中，5,630个具有相关类型字段的对象全部解码，74个true、5,556个false，0错误。实际普通干员正例是奥达：Character根 `5738367271359756278` 的 modes 引用 Default `-4614659544937121802` 与 S2 `2488778428770170870`，二者分别引用攻击 `4602251123936671734`、`-5563051550404888586`，均为 dynamic=true；S1资源根 `-1230062449438609090` 也启用。角色表实际技能引用为 `skchr_odda_1`。完整 Holder 另有10个 dynamic 字段配置，均为false。原生分支有实际使用，不能省略这个独立政策。
+
+### 现有标准爆发与地块输出的分类
+
+下表对应项目现有八套Burst输出。攻击类型来自[实际根／子模板](../evidence/resource-mechanisms-20261114/recovery-elemental/templates.json)，不是按“爆发”或“周期”统一猜值。
+
+| 当前输出入口 | 原生模板／子模板 | attackType／applyWay |
+| --- | --- | --- |
+| 角色神经，即时HP伤害 | `ep_break_sanity_char` | **NONE／NONE** |
+| 敌人神经，即时HP伤害 | `ep_break_sanity_enemy` | NORMAL／NONE |
+| 角色侵蚀，即时HP伤害 | `ep_break_water_char` | NORMAL／NONE |
+| 敌人侵蚀，即时HP伤害 | `ep_break_water_enemy` | NORMAL／NONE |
+| 角色灼燃，即时HP伤害 | `ep_break_fire_char` | NORMAL／NONE |
+| 敌人灼燃，即时HP伤害 | `ep_break_fire_enemy` | NORMAL／NONE |
+| 角色凋亡，周期HP伤害 | `ep_break_dark_char → periodic_magic_damage` | BUFF／NONE |
+| 敌人凋亡，周期HP伤害 | `ep_break_dark_enemy → periodic_element_damage` | BUFF／NONE |
+
+这些输出使用 `NoSourceDamage`；当前 #99151 在 `0x181103f1a` 置ESI为0，在 `0x181103ff1` 将其作为applyWay传给 `CalculateDamageByAtkNoSource`，所以是NONE途径。原体见 `damage/flag-callers.json`，不从“Effect产生”推定途径。
+
+活性源石实际绑定的 `periodic_damage → NoSourceDamage(PURE, attackType=BUFF, isEnvDamage=true)` 同样是 **BUFF／NONE**，见[地块模板](../evidence/unit-audit-20261110/control-terrain/templates.json)。
+
+深水存在现状差异：[现有原件](../evidence/resource-mechanisms-20261114/damage/holder-scan.json)中 `trap_sea_drown[ally]` 的周期节点是 `ApplyElementDamage(WATER, isEnvElementDamage=true)`，即侵蚀EP损伤；当前Content的深水仍实现为周期真实HP伤害。本次仅沿当前HP周期行为显式填写 **BUFF／NONE**，没有将它修成原生EP路径，也没有将这项HP行为冒充原生结论。
 
 ### 过滤器并不共用一种位运算含义
 
