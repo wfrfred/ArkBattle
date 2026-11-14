@@ -75,11 +75,13 @@ Hook 与领域操作按执行语义命名：
 | 内容状态写回 | 只接收已经计算好的结果值。Action.setExecutionState 设置 execution.state，setState／setCooldown 分别设置持久 state／Cooldown；Effect.setState 设置私有 state，Skill.setState／setActivationState 分别设置持久 state／本轮激活 state，Mechanism.setState 设置私有 state，Projectile.update 接收 `{ position?, state? }`。Core 读取当前实例，只替换允许字段并保留其他事实。 |
 | 完整实例写回 | Action 容器 `replace(definition, next)` 提交聚合条目，Effect／Projectile 容器按各自身份提交完整实例；均由 Core 内部使用。身份、Definition、执行进度与生命周期按对应领域契约维护。 |
 | 程序回调有额外结果 | 可以返回 `Result<T>`；例如 Action Definition.prepare 的准备结果、onTick 的完成指示和 Hook 的业务指令。 |
-| Damage／Healing 两阶段接续 | `applyDamage(request, calculation: Result<CalculatedDamage \| undefined>, options?: ApplyOptions)` 与 `applyHealing(request, calculation: Result<CalculatedHealing \| undefined>, options?: hooks.Options)` 通过计算 Result 显式接续 state 和数值，分别返回领域 Outcome。Calculate 同样接受独立的可选 Options；两阶段不自动传播排除项。四种 Request 的公式输入均放入 parameters，Outcome 均用 type 判别。插入其他操作时调用者须更新其中 state。 |
+| Damage／Healing 两阶段接续 | `applyDamage(request, calculation: Result<CalculatedDamage \| undefined>, options?: ApplyOptions)` 与 HP 的 `applyHealing(request, calculation: Result<CalculatedHealing \| undefined>, options?: ApplyOptions)` 通过计算 Result 显式接续 state 和数值，分别返回领域 Outcome。Calculate 同样接受独立的可选 Options；两阶段不自动传播排除项。HP Damage、EP Damage、HP Healing 的 ApplyOptions 可提供本业务 forbidden，Apply 将缺省空集合或所给只读集合固定在 ReceivingContext；EP Healing 仅使用 Hook Options。四种 Request 的公式输入均放入 parameters，Outcome 均用 type 判别。插入其他操作时调用者须更新其中 state。 |
 | Vitality／Elemental 资源提交 | `commitDamage(battle, context)`／`commitHealing(battle, context)` 复用对应业务的精确 CommitContext，返回 Capability 定义的 Application 报告；专属接收用 receiveDamage／receiveHealing，资格查询用 canReceiveDamage／canReceiveHealing。EP Healing 没有专属 receiveHealing 阶段；Battle 编排 BeforeCommit 与通用 Applied。见[接收与资源提交接口](vitality.md#18-接收与资源提交接口)。 |
 | Vitality／Elemental 自然回复 | `advance(battle, ref)` 要求对应 Capability 的 Typed Ref，由 Runtime 资源阶段调用；按当前有效速度逐 Tick 更新资源，不进入普通 Healing 的 Calculate／Apply 或派发其 Hook。 |
 
 生命周期结束的公开 end／cancel／stop／remove 委托 [Lifetime](lifetime.md)：无活动结算时，本次调用完成 request 与 drain，返回时 Pending 为空；有活动结算时，只同步完成首次请求和 Prepare，不承诺槽位释放、注销或最终通知。重复 PREPARING 请求不等待原 Prepare。Finalize 整体返回才解除依赖者对 owner 的等待；resource.hp.damage.completed 只报告本次伤害完成，不保证目标离场 Finalize 已完成。
+
+cancel 只提供 `cancel(current, reason, forbidden)` 一个签名，第三参数必须为本业务 Reason 的 ReadonlySet。已有取消或本次原因被禁止时返回原 current，否则形成 CANCELLED；返回类型保留原状态与取消结果的联合，调用方不能假定取消成功。HP Damage、EP Damage 和 HP Healing 的 ReceivingContext 都必填 forbidden，Hook 从 context 显式传入；Commit 与 Applied 继承同一集合，Request／Calculated 不携带它，Calculate 和嵌套操作不自动继承。
 
 ### Restriction 接口约定
 

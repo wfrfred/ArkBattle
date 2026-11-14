@@ -6,7 +6,7 @@ import * as units from "../../../../unit/query.js";
 import * as vitality from "../../../../unit/capability/vitality/operations.js";
 import { appendEvents, type Result, type State as BattleState } from "../../../state.js";
 import { remove } from "../../../unit.js";
-import type { Calculated, Outcome, Request } from "./contract.js";
+import type { Calculated, Outcome, Reason, Request } from "./contract.js";
 import {
     type CommitContext,
     dispatch,
@@ -19,6 +19,7 @@ import {
 
 export interface ApplyOptions extends Options {
     readonly ignore?: (restriction: Restriction) => boolean;
+    readonly forbidden?: ReadonlySet<Reason>;
 }
 
 export function applyDamage(
@@ -38,7 +39,12 @@ export function applyDamage(
         return complete(battle, request, calculation, { type: "REJECTED" }, options);
     }
 
-    const context = { target: request.target, request, calculated: calculation };
+    const context = {
+        target: request.target,
+        request,
+        calculated: calculation,
+        forbidden: options?.forbidden ?? new Set<Reason>(),
+    };
     battle = dispatch(battle, request.target, beforeReceive, context, undefined, options).state;
 
     if (!vitality.canReceiveDamage(battle, context, options?.ignore)) {

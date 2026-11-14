@@ -3,7 +3,7 @@ import type { Ref } from "../../../../common/ref.js";
 import type { Unit } from "../../../../unit/unit.js";
 import * as vitality from "../../../../unit/capability/vitality/operations.js";
 import { appendEvents, type Result, type State as BattleState } from "../../../state.js";
-import type { Calculated, Outcome, Request } from "./contract.js";
+import type { Calculated, Outcome, Reason, Request } from "./contract.js";
 import {
     type CommitContext,
     dispatch,
@@ -14,10 +14,14 @@ import {
     completed,
 } from "./hook.js";
 
+export interface ApplyOptions extends Options {
+    readonly forbidden?: ReadonlySet<Reason>;
+}
+
 export function applyHealing(
     request: Request,
     calculated: Result<Calculated | undefined>,
-    options?: Options,
+    options?: ApplyOptions,
 ): Result<Outcome> {
     let battle = calculated.state;
     const calculation = calculated.value;
@@ -29,7 +33,12 @@ export function applyHealing(
         return complete(battle, request, calculation, { type: "REJECTED" }, options);
     }
 
-    const context = { target: request.target, request, calculated: calculation };
+    const context = {
+        target: request.target,
+        request,
+        calculated: calculation,
+        forbidden: options?.forbidden ?? new Set<Reason>(),
+    };
     battle = dispatch(battle, request.target, beforeReceive, context, undefined, options).state;
 
     if (!vitality.canReceiveHealing(battle, request.target)) {

@@ -57,9 +57,11 @@ const mismatchedKey: typeof outputKey = textKey;
 // @ts-expect-error entries cannot widen the Hook type established by their key.
 Hooks.empty().set(outputKey, { id: 'wrong', invoke: (state, context: { text: string }, current) => ({ state, value: current }) });
 const receivingKey = hpDamage.receiving;
-const receivingHooks = Hooks.empty().set(receivingKey, {
-    id: 'evade', invoke: (state, _context, current) => ({ state, value: hpDamage.cancel(current, 'MISS') }),
-});
+const forbiddenReasons: ReadonlySet<hpDamage.Reason> = new Set(['MISS', 'BLOCKED']);
+const guardedReceiving: hpDamage.ReceivingHook = {
+    id: 'evade', invoke: (state, context, current) => ({ state, value: hpDamage.cancel(current, 'MISS', context.forbidden) }),
+};
+const receivingHooks = Hooks.empty().set(receivingKey, guardedReceiving);
 const fixedReceiving: hpDamage.ReceivingHook = {
     id: 'fixed-amount',
     invoke: (state, _context, current) => ({ state, value: hpDamage.fix(current) }),
@@ -72,12 +74,12 @@ Hooks.empty().set(receivingKey, {
 });
 setUnitHook(hpDamage.receiving, {
     id: 'conditional-receiving',
-    invoke(state, _context, current) {
+    invoke(state, context, current) {
         if (current.type === 'CANCELLED' || current.amount <= 0) {
             return { state, value: current };
         }
         if (current.amount > 10) {
-            return { state, value: hpDamage.cancel(current, 'BLOCKED') };
+            return { state, value: hpDamage.cancel(current, 'BLOCKED', context.forbidden) };
         }
         if (current.type === 'FIXED') {
             return { state, value: current };
@@ -97,24 +99,41 @@ declare const appliedContext: hpDamage.AppliedContext;
 appliedContext.killed;
 declare const cancelled: hpDamage.Pending<'MISS', 'CANCELLED'>;
 const selectedReason: 'MISS' = cancelled.reason;
-const aggregateReason: 'MISS' = resource.hp.damage.cancel(cancelled, 'BLOCKED').reason;
+const aggregateReason: 'MISS' = resource.hp.damage.cancel(cancelled, 'BLOCKED', forbiddenReasons).reason;
 // @ts-expect-error the aggregate entry retains HP Damage's finite reason set.
-resource.hp.damage.cancel(cancelled, 'OTHER');
+resource.hp.damage.cancel(cancelled, 'OTHER', forbiddenReasons);
 // @ts-expect-error shared receiving keeps EP's reason set narrower than HP's.
-resource.ep.damage.cancel({ type: 'NORMAL', amount: 10 }, 'MISS');
+resource.ep.damage.cancel({ type: 'NORMAL', amount: 10 }, 'MISS', new Set<resource.ep.damage.Reason>());
 // @ts-expect-error EP Healing has no dedicated Receiving Hook.
 type EpHealingReceiving = resource.ep.healing.ReceivingHook;
 const normalFixed: 'FIXED' = hpDamage.fix({ type: 'NORMAL', amount: 10 }).type;
 const alreadyFixed: 'FIXED' = hpDamage.fix({ type: 'FIXED', amount: 10 }).type;
 const fixedCancellation: 'MISS' = hpDamage.fix(cancelled).reason;
-const originalCancellation: 'MISS' = hpDamage.cancel(cancelled, 'BLOCKED').reason;
-const newCancellation: 'BLOCKED' = hpDamage.cancel({ type: 'NORMAL', amount: 10 }, 'BLOCKED').reason;
+// @ts-expect-error cancel always requires an explicit forbidden set.
+hpDamage.cancel(cancelled, 'BLOCKED');
+const guardedNormal = hpDamage.cancel({ type: 'NORMAL', amount: 10 }, 'BLOCKED', forbiddenReasons);
+const guardedNormalType: 'NORMAL' | 'CANCELLED' = guardedNormal.type;
+if (guardedNormal.type === 'CANCELLED') {
+    const guardedNormalReason: 'BLOCKED' = guardedNormal.reason;
+}
+const guardedFixed = hpDamage.cancel({ type: 'FIXED', amount: 10 }, 'BLOCKED', forbiddenReasons);
+const guardedFixedType: 'FIXED' | 'CANCELLED' = guardedFixed.type;
+if (guardedFixed.type === 'CANCELLED') {
+    const guardedFixedReason: 'BLOCKED' = guardedFixed.reason;
+}
+const guardedOriginalReason: 'MISS' = hpDamage.cancel(cancelled, 'BLOCKED', forbiddenReasons).reason;
+// @ts-expect-error forbidden reasons belong to this domain's finite Reason set.
+hpDamage.cancel({ type: 'NORMAL', amount: 10 }, 'BLOCKED', new Set(['OTHER']));
 declare const normalOrCancelled: hpDamage.Pending<'MISS', 'NORMAL' | 'CANCELLED'>;
 const fixedUnion = hpDamage.fix(normalOrCancelled);
 if (fixedUnion.type === 'CANCELLED') {
     const unionReason: 'MISS' = fixedUnion.reason;
 }
-const cancelledUnionReason: 'MISS' | 'BLOCKED' = hpDamage.cancel(normalOrCancelled, 'BLOCKED').reason;
+const cancelledUnion = hpDamage.cancel(normalOrCancelled, 'BLOCKED', forbiddenReasons);
+const cancelledUnionType: 'NORMAL' | 'CANCELLED' = cancelledUnion.type;
+if (cancelledUnion.type === 'CANCELLED') {
+    const cancelledUnionReason: 'MISS' | 'BLOCKED' = cancelledUnion.reason;
+}
 const reception = receivingHooks.get(receivingKey)[0]!.invoke(battle, receivingContext, cancelled);
 const cancelledType: 'CANCELLED' = reception.value.type;
 const preservedReason: 'MISS' = reception.value.reason;
@@ -129,9 +148,7 @@ Hooks.empty().set(receivingKey, { id: 'rewrite-reason', invoke: (state, _context
 // @ts-expect-error fixing a rewritten state cannot hide an illegal restoration.
 Hooks.empty().set(receivingKey, { id: 'restore-then-fix', invoke: (state, _context, current) => ({ state, value: hpDamage.fix({ ...current, type: 'NORMAL' as const }) }) });
 // @ts-expect-error cancelling again cannot hide replacement of an existing reason.
-Hooks.empty().set(receivingKey, { id: 'rewrite-then-cancel', invoke: (state, _context, current) => ({ state, value: current.type === 'CANCELLED' ? hpDamage.cancel({ ...current, reason: 'BLOCKED' as const }, 'MISS') : current }) });
-// @ts-expect-error cancellation reasons belong to the domain's finite union.
-hpDamage.cancel(cancelled, 'OTHER');
+Hooks.empty().set(receivingKey, { id: 'rewrite-then-cancel', invoke: (state, context, current) => ({ state, value: current.type === 'CANCELLED' ? hpDamage.cancel({ ...current, reason: 'BLOCKED' as const }, 'MISS', context.forbidden) : current }) });
 const program: actions.Definition<{ uses: number }, { hits: number }> = {
     id: 'attack', intervalTicks: 10, speed: 100,
     initialize: state => ({ state, value: { uses: 0 } }),
@@ -430,7 +447,7 @@ setUnitHook(hpDamage.receiving, {
         const amount: number = context.calculated.amount;
         // @ts-expect-error inline callbacks retain precise working values rather than any.
         const invalidAmount: string = pending.amount;
-        return { state, value: hpDamage.cancel(pending, 'MISS') };
+        return { state, value: hpDamage.cancel(pending, 'MISS', context.forbidden) };
     },
 });
 setUnitHook(actionCapability.beforeRelease, {

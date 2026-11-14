@@ -498,13 +498,17 @@ test("APPLY-01: Receiving and BeforeCommit resource changes define the baseline 
     assert.equal(healingNotifications, 2);
 });
 
-test("APPLY-01: cancellation retains recovery and reflection but skips the original commit and Applied", () => {
+test("APPLY-01: cancellation permissions retain recovery and reflection while only uncancelled work commits", () => {
     let state = battle([
         { definition: { id: "source", hooks: Hooks.empty(), vitality: { maxHp: 100, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 } }, position: [0, 0] },
         { definition: { id: "target", hooks: Hooks.empty(), vitality: { maxHp: 100, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 } }, position: [1, 0] },
     ]);
     const source = units.ref(get(state, 0));
     const target = units.ref(get(state, 1));
+    const forbidden = new Set(["MISS", "BLOCKED"]);
+    const receivingForbiddens = [];
+    let commits = 0;
+    let applied = 0;
     const preparation = damageRequest(null, source, 40);
     state = hpDamage.applyDamage(preparation, hpDamage.calculateDamage(state, preparation)).state;
     state = update(
@@ -515,50 +519,108 @@ test("APPLY-01: cancellation retains recovery and reflection but skips the origi
                 units.setHook(hpDamage.receiving, {
                     id: "evade",
                     priority: 10,
-                    invoke(current, _context, pending) {
+                    invoke(current, context, pending) {
+                        receivingForbiddens.push(context.forbidden);
                         const recovery = healingRequest(null, source, 6);
                         current = hpHealing.applyHealing(
                             recovery,
                             hpHealing.calculateHealing(current, recovery),
                         ).state;
-                        return { state: current, value: hpDamage.cancel(pending, "MISS") };
+                        const next = hpDamage.cancel(pending, "MISS", context.forbidden);
+                        if (context.forbidden.has("MISS")) {
+                            assert.equal(next, pending);
+                            assert.equal(next.type, "NORMAL");
+                        }
+                        return { state: current, value: next };
                     },
                 }),
                 units.setHook(hpDamage.receiving, {
                     id: "reflect",
-                    invoke(current, _context, pending) {
-                        assert.equal(pending.type, "CANCELLED");
-                        assert.equal(pending.reason, "MISS");
+                    invoke(current, context, pending) {
+                        assert.equal(context.forbidden, receivingForbiddens.at(-1));
+                        let next;
+                        if (pending.type === "CANCELLED") {
+                            assert.equal(pending.reason, "MISS");
+                            next = hpDamage.cancel(pending, "BLOCKED", context.forbidden);
+                            assert.equal(next, pending);
+                        } else {
+                            const fixed = hpDamage.fix(pending);
+                            next = hpDamage.cancel(fixed, "BLOCKED", context.forbidden);
+                            assert.equal(next, fixed);
+                            assert.equal(next.type, "FIXED");
+                        }
                         const reflection = damageRequest(target, source, 10);
                         return {
                             state: hpDamage.applyDamage(
                                 reflection,
                                 hpDamage.calculateDamage(current, reflection),
                             ).state,
-                            value: hpDamage.cancel(pending, "BLOCKED"),
+                            value: next,
                         };
                     },
                 }),
             ),
             units.setHook(hpDamage.targetApplied, {
                 id: "applied",
-                invoke: () => assert.fail("cancelled request cannot produce Applied"),
+                invoke(current, context) {
+                    assert.equal(context.forbidden, receivingForbiddens.at(-1));
+                    applied++;
+                    return { state: current, value: undefined };
+                },
             }),
         ),
     );
     state = update(
         state,
         source,
-        units.setHook(hpDamage.beforeCommit, {
-            id: "commit",
-            invoke: () => assert.fail("cancelled request cannot reach BeforeCommit"),
-        }),
+        units.compose(
+            units.setHook(hpDamage.beforeCommit, {
+                id: "commit",
+                invoke(current, context) {
+                    assert.equal(context.forbidden, receivingForbiddens.at(-1));
+                    commits++;
+                    return { state: current, value: undefined };
+                },
+            }),
+            units.setHook(hpDamage.receiving, {
+                id: "observe-reflection",
+                invoke(current, context, pending) {
+                    assert.notEqual(context.forbidden, receivingForbiddens.at(-1));
+                    assert.equal(context.forbidden.size, 0);
+                    return { state: current, value: pending };
+                },
+            }),
+        ),
     );
     const request = damageRequest(source, target, 20);
     const result = hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request));
     assert.deepEqual(result.value, { type: "CANCELLED", received: { type: "CANCELLED", amount: 20, reason: "MISS" } });
     assert.equal(get(result.state, 0).vitality.hp, 56);
     assert.equal(get(result.state, 1).vitality.hp, 100);
+    assert.equal(commits, 0);
+    assert.equal(applied, 0);
+    assert.equal(receivingForbiddens[0].size, 0);
+
+    const accepted = hpDamage.applyDamage(request, hpDamage.calculateDamage(result.state, request), { forbidden });
+    assert.equal(accepted.value.type, "APPLIED");
+    assert.equal(accepted.value.received.type, "FIXED");
+    assert.equal(accepted.value.application.hpLoss, 20);
+    assert.equal(get(accepted.state, 0).vitality.hp, 52);
+    assert.equal(get(accepted.state, 1).vitality.hp, 80);
+    assert.equal(commits, 1);
+    assert.equal(applied, 1);
+    assert.equal(receivingForbiddens[1], forbidden);
+
+    const independent = hpDamage.applyDamage(request, hpDamage.calculateDamage(accepted.state, request));
+    assert.equal(independent.value.type, "CANCELLED");
+    assert.equal(independent.value.received.reason, "MISS");
+    assert.equal(get(independent.state, 0).vitality.hp, 48);
+    assert.equal(get(independent.state, 1).vitality.hp, 80);
+    assert.equal(receivingForbiddens[2].size, 0);
+    assert.notEqual(receivingForbiddens[2], receivingForbiddens[0]);
+    assert.notEqual(receivingForbiddens[2], forbidden);
+    assert.equal(commits, 1);
+    assert.equal(applied, 1);
 });
 
 test("APPLY-02: HP zero output rejects while excess receiving reduction still commits and notifies", () => {

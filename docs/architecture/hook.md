@@ -116,4 +116,6 @@ interface Options {
 }
 ```
 
+HP Damage、EP Damage、HP Healing 的 ApplyOptions 可另带本业务 `forbidden?: ReadonlySet<Reason>`，它不是 Hook 排除项。Apply 将其或新建空集合固定为 ReceivingContext.forbidden，各 Hook 显式用于 cancel，Commit／Applied 继承；嵌套业务独立选择选项。EP Healing 不提供 Receiving 或 Reason，也不增加该字段。完整契约见 [接收工作值](vitality.md#接收工作值数值固定与取消)。
+
 同一 Key 若在本次操作的多个宿主上派发，匹配项作用于所有这些派发；不额外引入宿主筛选。sourceApplied／targetApplied 等已有不同键仍可独立排除。排除整个阶段不执行其 accepts／invoke，排除单项保留其他候选的顺序、资格与同步重入；它不等于取消伤害，也不绕过基础目标前提或接收 Restriction。

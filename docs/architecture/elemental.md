@@ -86,7 +86,7 @@ EP Healing.Request 同样为 `{ source, target, parameters }`，Parameters 为 `
 | 接口 | 形状与结果 |
 | --- | --- |
 | resource.ep.damage.calculateDamage | `(battle, request, options?: hooks.Options) => Result<Calculated \| undefined>` |
-| resource.ep.damage.applyDamage | `(request, calculation, options?: hooks.Options) => Result<Outcome>` |
+| resource.ep.damage.applyDamage | `(request, calculation, options?: ApplyOptions) => Result<Outcome>` |
 | resource.ep.healing.calculateHealing | `(battle, request, options?: hooks.Options) => Result<Calculated \| undefined>` |
 | resource.ep.healing.applyHealing | `(request, calculation, options?: hooks.Options) => Result<Outcome>` |
 | canReceiveDamage | `(battle, request, type = request.parameters.type) => boolean`；资格查询不要求 Calculated |
@@ -127,13 +127,13 @@ Damage 的 before／after／loss 描述本次元素类型，Burst 身份描述�
 
 报告在写入时采样；Battle 的 Application 直接引用同一类型，并放入 APPLIED Outcome。Outcome 统一以 type 判别：损伤有 REJECTED／CANCELLED／UNAVAILABLE／APPLIED；EP Healing 没有取消工作值阶段，只提供 REJECTED／UNAVAILABLE／APPLIED。成功但实际变化为零时，仍输出 amount 为零的 ELEMENTAL_INJURY／ELEMENTAL_INJURY_HEALED，Battle 仍派发通用 Applied；能力 damaged／healed 只通知实际变化大于零的业务。自然回复不经过该成功输出路径。
 
-EP Damage ApplyOptions 的 ignore 仅作用于本次 damageRestrictions，按实际 DamageContext 中的 self／request／type 判断；三次资格复检均重新解析当前登记并使用同一豁免谓词。PRESENT、正生命、Burst 槽位与中立默认前提不受豁免影响。EP Healing 与自然回复继续检查 healingRestrictions，不新增单次豁免；HP 治疗没有对应限制数组。共同契约见 [接收限制豁免](vitality.md#本次接收限制豁免)。
+EP Damage ApplyOptions 的 forbidden 接受本业务 Reason 的 ReadonlySet，Apply 缺省建立空集合并保存于 ReceivingContext，Commit／Applied 继承同一事实。EP Healing 不增加此字段。ignore 仅作用于本次 damageRestrictions，按实际 DamageContext 中的 self／request／type 判断；三次资格复检均重新解析当前登记并使用同一豁免谓词。PRESENT、正生命、Burst 槽位与中立默认前提不受豁免影响。EP Healing 与自然回复继续检查 healingRestrictions，不新增单次豁免；HP 治疗没有对应限制数组。共同契约见 [接收限制豁免](vitality.md#本次接收限制豁免)。
 
 ## 4. Hook、提交事实与同步重入
 
 通用 Formula、Output、BeforeReceive、BeforeCommit、targetApplied、sourceApplied 存于 [Unit.hooks](hook.md)，由对应 Battle 子域定义键与派发。基础目标资格成立后执行 beforeReceive，再读取最新 Restriction；取消、失效及已提交结果按各业务 Outcome 表达。
 
-EP Damage 的 receiving 键关联 Elemental 宿主，Elemental 的 damaged／healed／burstStarted／burstEnded 分别提供自己的 typed Key，全部通过 unit.setHook／removeHook 登记于 Unit.hooks。专属接收仍由 Elemental 执行，按优先级、固定候选与最新登记接续 battle 和 Pending；接收 Context 固定 `{ target, request, calculated }`，原因绑定本域 Reason。取消后继续后续 Hook，但保留取消事实和原因。全部接收 Hook 完成后，receiveDamage 将未取消的最终 amount 截为非负数，再交给 Battle 构造 CommitContext；BeforeCommit、资源提交及报告使用同一接收量，零接收量仍可成功，中间各 Hook 不单独截零。receiveDamage 接受 Apply 传入的 Options，按 EP Damage.receiving 键过滤本次候选；资源／Burst 事实通知不自动继承该选项。EP Healing 不提供专属 Receiving 或取消构造器。
+EP Damage 的 receiving 键关联 Elemental 宿主，Elemental 的 damaged／healed／burstStarted／burstEnded 分别提供自己的 typed Key，全部通过 unit.setHook／removeHook 登记于 Unit.hooks。专属接收仍由 Elemental 执行，按优先级、固定候选与最新登记接续 battle 和 Pending；接收 Context 固定 `{ target, request, calculated, forbidden }`，forbidden 为本次 Apply 从选项建立的 ReadonlySet<Reason>，各接收 Hook 调用 cancel 时显式传入 context.forbidden，原因绑定本域 Reason。取消后继续后续 Hook，但保留取消事实和原因。全部接收 Hook 完成后，receiveDamage 将未取消的最终 amount 截为非负数，再交给 Battle 构造 CommitContext；BeforeCommit、资源提交及报告使用同一接收量，零接收量仍可成功，中间各 Hook 不单独截零。receiveDamage 接受 Apply 传入的 Options，按 EP Damage.receiving 键过滤本次候选；资源／Burst 事实通知不自动继承该选项。EP Healing 不提供专属 Receiving 或取消构造器。
 
 事实通知固定 `{ host, event }`，T=void；以下 event 在资源写入或生命周期转移处确定：
 

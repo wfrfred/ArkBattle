@@ -45,3 +45,5 @@ export {
 export { calculateHealing } from "./calculate.js";
 
 export { applyHealing } from "./apply.js";
+
+export type { ApplyOptions } from "./apply.js";

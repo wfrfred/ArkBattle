@@ -29,7 +29,8 @@ export type Fix<A extends string> = <T extends State, R extends A>(
 export type Cancel<A extends string> = <T extends State, R extends A, N extends A>(
     current: Pending<R, T>,
     reason: N,
-) => CancelResult<T, R, N>;
+    forbidden: ReadonlySet<A>,
+) => Pending<R, T> | CancelResult<T, R, N>;
 
 export interface ReceivingHook<C, A extends string> extends Entry<C, Pending<A>> {
     readonly invoke: <T extends State, R extends A>(
@@ -48,10 +49,11 @@ export function fix<T extends State, R extends string>(current: Pending<R, T>): 
 export function cancel<T extends State, R extends string, N extends string>(
     current: Pending<R, T>,
     reason: N,
-): CancelResult<T, R, N> {
-    return (
-        current.type === "CANCELLED"
-            ? current
-            : { type: "CANCELLED", amount: current.amount, reason }
-    ) as CancelResult<T, R, N>;
+    forbidden: ReadonlySet<string>,
+): Pending<R, T> | CancelResult<T, R, N> {
+    if (current.type === "CANCELLED" || forbidden.has(reason)) {
+        return current;
+    }
+
+    return { type: "CANCELLED", amount: current.amount, reason } as CancelResult<T, R, N>;
 }

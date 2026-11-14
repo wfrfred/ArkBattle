@@ -21,6 +21,7 @@ export interface Context {
 
 export interface ReceivingContext extends Context {
     readonly calculated: Calculated;
+    readonly forbidden: ReadonlySet<Reason>;
 }
 
 export interface CommitContext extends ReceivingContext {

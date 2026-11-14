@@ -173,7 +173,7 @@ function shieldEffect(profile: Profile): EffectDefinition<ShieldState, Vitality>
 
                             return {
                                 state,
-                                value: cancel(pending, "BLOCKED"),
+                                value: cancel(pending, "BLOCKED", context.forbidden),
                             };
                         }
 

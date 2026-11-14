@@ -247,6 +247,7 @@ interface OutputContext extends Context {
 
 interface ReceivingContext extends Context {
     readonly calculated: Calculated;
+    readonly forbidden: ReadonlySet<Reason>;
 }
 
 interface CommitContext extends ReceivingContext {
@@ -323,7 +324,23 @@ Receiving 的各 Hook 按顺序接续原工作值，不在每项之后截零；�
 
 ReceivingHook 的泛型返回类型约束上述单向状态转换及取消原因；amount 始终为 number，不以类型证明数值相等。固定和取消后的数值保留由 Hook 契约保证，内核信任内容实现，不增加比较、纠正或其他运行时防御。特殊 Hook 仍可交给现有派发器。
 
-领域绑定共用的纯工作值构造函数 fix 与 cancel。fix 将 NORMAL 固定，其他状态原样保留；cancel 保留 amount，将未取消工作值变为 CANCELLED，已取消则原样返回。两者按本操作的实际行为精确返回，不从允许的全部后继反推：fix 对已知 NORMAL／FIXED 仅返回 FIXED，对 CANCELLED 保留原原因；cancel 对未取消输入保留本次原因字面量，对已取消输入保留原原因。状态转换的受信类型断言集中在 resource/receiving.ts 的两个构造函数中，Content 不需要断言或直接操作 Next。普通改量只在 NORMAL 分支通过 `{ ...current, amount: nextAmount }` 返回。
+领域绑定共用的纯工作值构造函数 fix 与 cancel。fix 将 NORMAL 固定，其他状态原样保留。cancel 只有 `cancel(current, reason, forbidden)` 一个签名，第三参数必须显式提供本业务原因的 ReadonlySet；Hook 使用 `context.forbidden`。已有取消原样返回；未取消且 reason 被禁止时也返回原 current，保留对象、状态和数值；其余情况产生本次 CANCELLED。
+
+```typescript
+type Cancel<A extends string> = <
+    T extends receiving.State,
+    R extends A,
+    N extends A,
+>(
+    current: receiving.Pending<R, T>,
+    reason: N,
+    forbidden: ReadonlySet<A>,
+) => receiving.Pending<R, T> | CancelResult<T, R, N>;
+```
+
+cancel 返回原状态或取消结果，不保证取消成功；调用方按 type 收窄。已知 CANCELLED 仍保留原原因，发生新取消时保留 N 的字面量。fix 对已知 NORMAL／FIXED 仅返回 FIXED，对 CANCELLED 保留原原因。ReceivingHook 的 Next 已包含这些合法后继，状态转换断言集中在 resource/receiving.ts；Content 不需要断言或操作 Next。普通改量只在 NORMAL 分支通过 `{ ...current, amount: nextAmount }` 返回。
+
+HP Damage、EP Damage 与 HP Healing 的 ApplyOptions 均可提供 `forbidden?: ReadonlySet<本业务Reason>`。Apply 建立一次 ReceivingContext：`forbidden: options?.forbidden ?? new Set<Reason>()`，本笔各 Hook 共享这份只读事实，CommitContext 与 AppliedContext 沿继承关系保留同一集合。不把它放进 Pending、Request 或 Calculated；Calculate 不接收该选项，嵌套业务独立构造自己的 Context。EP Healing 没有专属 Receiving 或取消原因，不添加 forbidden。
 
 共用 Pending 以完整判别联合与 `{ type: T }` 相交，按 T 收窄整个联合；已知 CANCELLED 时可直接读取精确 reason。fix／cancel 从这层外部状态约束推导 T，并分别保留原原因 R 或本次原因 N。Next 由保留当前值、固定及取消的实际结果组成；ReceivingHook 量化状态 T 和原因 R，不直接量化会使泛型 spread 掩盖字段改写的整对象 P。对应 typed Key 保留完整 ReceivingHook，通过 unit.setHook 登记，不要求 Content 添加类型断言。
 
@@ -353,10 +370,11 @@ HP ReceivingStarted、HP Damage／Healing Receiving、EP Damage Receiving 与 El
 
 ### 本次接收限制豁免
 
-HP Damage 与 EP Damage 的 ApplyOptions 扩展公共 Hook Options。HP 的本地声明为：
+HP Damage 与 EP Damage 的 ApplyOptions 扩展公共 Hook Options，并提供本业务的 forbidden 及精确接收限制的 ignore。HP Damage 的本地声明为：
 
 ```typescript
 interface ApplyOptions extends hooks.Options {
+    readonly forbidden?: ReadonlySet<Reason>;
     readonly ignore?: (restriction: vitality.Restriction) => boolean;
 }
 ```
@@ -365,7 +383,7 @@ EP 的 ignore 接收 Elemental.DamageRestriction。定义对象使用精确的 H
 
 Apply 在 BeforeReceive 后、Receiving 后及 BeforeCommit 后均使用同一 ignore 查询最新接收资格：每次先解析当前有效 Contribution，再豁免匹配定义，剩余项按 AND 判断。相同定义的多个登记都可豁免，独立无敌等其它定义仍可拒绝；豁免不恢复竞争落败项，也不能绕过 PRESENT、生命值、Burst 等固有前提。嵌套业务独立选择自己的选项。
 
-Hook exclude 决定本次是否执行响应，Restriction ignore 决定本次是否检查某个许可，Pending.reason 只报告取消事实，三者互不替代。HP Healing 不增加接收限制；EP Healing 保留既有 healingRestrictions，但不新增单次 ignore。标准机制通过共享定义对象提供身份，一个 Effect 可登记多个不同限制，Effect Definition 本身不是限制身份。
+Hook exclude 决定本次是否执行响应，Restriction ignore 决定本次是否检查某个许可，Pending.reason 只报告取消事实，三者互不替代。HP Healing 的 ApplyOptions 只在 Hook Options 上增加本业务 forbidden，不增加接收限制或 ignore；EP Healing 保留 Hook Options 与既有 healingRestrictions，不新增单次 ignore 或 forbidden。标准机制通过共享定义对象提供身份，一个 Effect 可登记多个不同限制，Effect Definition 本身不是限制身份。
 
 ### 1.8 接收与资源提交接口
 
@@ -545,7 +563,7 @@ interface Calculated {
 }
 
 calculateHealing(battle, request, options?: hooks.Options): Result<Calculated | undefined>;
-applyHealing(request, calculation, options?: hooks.Options): Result<Outcome>;
+applyHealing(request, calculation, options?: ApplyOptions): Result<Outcome>;
 ```
 
 Calculate 依次派发来源 Formula、目标 Formula，将当前 power 与 multiplier 相乘后截零，再派发来源数值 Output。Request 始终表示初始事实，当前 Parameters 与 Output 数值逐项接续；Formula 读取原始参数，全部 Output 之后再按第 1 节形成非负 Calculated，不要求中间工作值非负。输入及 Hook 数值遵守有限数值契约。目标缺失、LEAVING 或 HP 为零时无法计算，已完成的状态前缀仍返回。

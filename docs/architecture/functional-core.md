@@ -82,9 +82,9 @@ interface Result<A> {
 }
 
 calculateDamage(battle, request, options?: hooks.Options) → Result<CalculatedDamage | undefined>
-applyDamage(request, calculation, options?: hooks.Options) → Result<DamageOutcome>
+applyDamage(request, calculation, options?: ApplyOptions) → Result<DamageOutcome>
 calculateHealing(battle, request, options?: hooks.Options) → Result<CalculatedHealing | undefined>
-applyHealing(request, calculation, options?: hooks.Options) → Result<HealingOutcome>
+applyHealing(request, calculation, options?: ApplyOptions) → Result<HealingOutcome>
 effects.setState(battle, effectRef, nextState) → BattleState
 actions.start(battle, actionRef) → Result<Ref<Execution<P, E>> | null>
 skills.activate(battle, skillRef) → Result<Ref<Activation<S, A>> | null>
@@ -232,7 +232,7 @@ candidates 每次派发调用一次并复制 ID 序列，顺序由领域决定�
 
 不需要操作值的通知使用 T=void，仍返回 Result<void>，C 也可为 void。需要终止后续通知时，领域定义自己的控制值，不把业务取消、停止派发和生命周期终结混为同一个布尔值。Vitality 的阶段控制只在本节点生效，不能成为后续业务事实的一部分。
 
-通用条目的 set／remove 位于 common/collection/entries.ts，按 ID 登记、替换与撤销，保留顺序与结构共享；Hook 模块提供类型化集合和 dispatch。Unit 所属登记存于 Unit.hooks，Battle 所属登记存于各自 Hooks 集合；领域定义节点、排序、资格与停止条件。Skill／Elemental 结束通知不因宿主 LEAVING 被常规输出的 PRESENT 资格拦截。Resource 的四种业务共用 resource/hook.ts 的优先级 Unit Hook 派发和 resource/receiving.ts 的接收工作值协议，各自保留精确 Context、原因集合及执行阶段。Calculate／Apply 分别接收可选 Options.exclude，接收阶段接续 Apply 选项；不将选项写入 Request／Calculated，不自动传播至嵌套业务、资源事实或生命周期通知。Effect 与 [Projectile](projectile.md) 的 Definition 回调直接接收完整 self；异构容器内部擦除私有参数，Core 调用同一实例自身 Definition 的程序，不解释未知 state。Definition 程序与本次 Hook 派发的固定 Context 分别定义。
+通用条目的 set／remove 位于 common/collection/entries.ts，按 ID 登记、替换与撤销，保留顺序与结构共享；Hook 模块提供类型化集合和 dispatch。Unit 所属登记存于 Unit.hooks，Battle 所属登记存于各自 Hooks 集合；领域定义节点、排序、资格与停止条件。Skill／Elemental 结束通知不因宿主 LEAVING 被常规输出的 PRESENT 资格拦截。Resource 的四种业务共用 resource/hook.ts 的优先级 Unit Hook 派发和 resource/receiving.ts 的接收工作值协议，各自保留精确 Context、原因集合及执行阶段。Calculate／Apply 分别接收可选 Options.exclude，接收阶段接续 Apply 选项。HP Damage、EP Damage、HP Healing 的 ApplyOptions 另接受可选 forbidden，Apply 一次建立必填 ReceivingContext.forbidden，本笔接收、Commit 与 Applied 共用；Hook 显式将该集合传给必填三参数 cancel。EP Healing 保持仅有 Hook Options，不增加 Reason 或 forbidden；不将选项写入 Request／Calculated，不自动传播至嵌套业务、资源事实或生命周期通知。Effect 与 [Projectile](projectile.md) 的 Definition 回调直接接收完整 self；异构容器内部擦除私有参数，Core 调用同一实例自身 Definition 的程序，不解释未知 state。Definition 程序与本次 Hook 派发的固定 Context 分别定义。
 
 Unit 持有不可变 Effects 容器，内部 Store<Id, Effect<any, any>> 保存异构完整实例及 ID 进度。普通 get(id)／values() 返回默认 object／object 的完整 Effect，包含 state 与原 Definition；精确 Ref／Definition 查询保留私有类型、STACK 与政策分支。values／keys 返回绑定容器版本的 Query；Core 取得完整实例，在统一的受信任边界恢复其与自身 Definition 程序的配对后执行，不依赖嵌套判别自动推导联合回调，也不解释未知 state 或 H。存储容器仍不派发业务；跨完整操作后仍读取最新实例。真实所有权保护结束中的宿主与存储；Departure 等明确历史载荷按本领域业务输入保存。
 

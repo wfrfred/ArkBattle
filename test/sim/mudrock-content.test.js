@@ -157,6 +157,22 @@ test("APPLY-03: fixed receiving skips Mudrock's reductions while retaining shiel
     assert.deepEqual(unshielded.value.received, { type: "FIXED", amount: 100 });
     assert.equal(unshielded.value.application.hpLoss, 100);
     assert.deepEqual(observed, [["commit", "FIXED", 100], ["applied", "FIXED", 100]]);
+
+    observed.length = 0;
+    const request = {
+        source: ref(getUnit(battle, 1)), target: ref(getUnit(battle, 0)),
+        nature: "DAMAGE", hitRecovery: true, parameters: parameters(100, "TRUE"),
+    };
+    const accepted = hpDamage.applyDamage(request, hpDamage.calculateDamage(battle, request), {
+        forbidden: new Set(["BLOCKED"]),
+    });
+    assert.equal(accepted.value.type, "APPLIED");
+    assert.deepEqual(accepted.value.received, { type: "FIXED", amount: 100 });
+    assert.equal(accepted.value.application.hpLoss, 100);
+    approximate(getUnit(accepted.state, 0).vitality.hp, 1000 + fixture.prepared.attributes.maxHp * 0.23 - 100);
+    assert.equal(getUnit(accepted.state, 0).skill.sp.value, 3);
+    assert.equal(readShield(getUnit(accepted.state, 0)).layers, 0);
+    assert.deepEqual(observed, [["commit", "FIXED", 100], ["applied", "FIXED", 100]]);
 });
 
 test("S2 waits for an eligible target without spending its SP", () => {

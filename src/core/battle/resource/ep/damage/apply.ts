@@ -4,7 +4,7 @@ import type { Result } from "../../../state.js";
 import * as units from "../../../../unit/query.js";
 import { available, canReceiveDamage } from "../../../../unit/capability/elemental/query.js";
 import { receiveDamage, commitDamage } from "../../../../unit/capability/elemental/operations.js";
-import type { Calculated, Outcome, Request } from "./contract.js";
+import type { Calculated, Outcome, Reason, Request } from "./contract.js";
 import {
     type CommitContext,
     dispatch,
@@ -16,6 +16,7 @@ import {
 
 export interface ApplyOptions extends Options {
     readonly ignore?: (restriction: DamageRestriction) => boolean;
+    readonly forbidden?: ReadonlySet<Reason>;
 }
 
 export function applyDamage(
@@ -30,7 +31,12 @@ export function applyDamage(
         return { state: battle, value: { type: "REJECTED" } };
     }
 
-    const context = { target: request.target, request, calculated: damage };
+    const context = {
+        target: request.target,
+        request,
+        calculated: damage,
+        forbidden: options?.forbidden ?? new Set<Reason>(),
+    };
     battle = dispatch(battle, request.target, beforeReceive, context, undefined, options).state;
 
     if (!canReceiveDamage(battle, request, damage.type, options?.ignore)) {
