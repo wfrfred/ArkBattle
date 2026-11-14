@@ -1,0 +1,556 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-11-14"
+    ],
+    "collectionDateSource": "record fields",
+    "organizedOn": "2026-11-14",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+        "records": [
+          "logical-node.json#/provenance/client/dll",
+          "node-type.json#/provenance/client/dll"
+        ],
+        "bytes": 223112680
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        "records": [
+          "logical-node.json#/provenance/client/metadata",
+          "node-type.json#/provenance/client/metadata"
+        ],
+        "bytes": 46669332
+      }
+    },
+    "sourceRecords": [
+      "logical-node.json",
+      "node-type.json",
+      "sources.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12895,
+        "sha256": "9c5b246859318caaec4aab5275ef0d2d49fce5d612c6b4e569973a9941ba621a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "logical-node.json",
+        "kind": "record",
+        "bytes": 126355,
+        "sha256": "7c05745cb44ee12fd059d08c99d4e50c8914016d3bcad50dd0590626c0ce79c1"
+      },
+      {
+        "path": "node-type.json",
+        "kind": "record",
+        "bytes": 23857,
+        "sha256": "57fec145dad10a1e54172de685cef6c5a66f5c01b0ea28cfa2e46ff6df3ec5ed"
+      },
+      {
+        "path": "sources.json",
+        "kind": "record",
+        "bytes": 1223,
+        "sha256": "7f3cce92081b4548350cace585de5a73f47bf690f7244ae812a12be6b51644a5"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 17151,
+          "mode": "metadata",
+          "records": [
+            "logical-node.json#/result/methods/0"
+          ],
+          "fullname": "XLua.CSObjectWrap.DGTweeningDOTweenWrap._m_PlayBackwardsAll_xlua_st_",
+          "address": "0x184221490"
+        },
+        {
+          "index": 17152,
+          "mode": "metadata",
+          "records": [
+            "logical-node.json#/result/methods/1"
+          ],
+          "fullname": "XLua.CSObjectWrap.DGTweeningDOTweenWrap._m_PlayBackwards_xlua_st_",
+          "address": "0x184221550"
+        },
+        {
+          "index": 17351,
+          "mode": "metadata",
+          "records": [
+            "logical-node.json#/result/methods/2"
+          ],
+          "fullname": "XLua.CSObjectWrap.DGTweeningTweenWrap._m_PlayBackwards",
+          "address": "0x18056f700"
+        },
+        {
+          "index": 17372,
+          "mode": "metadata",
+          "records": [
+            "logical-node.json#/result/methods/3"
+          ],
+          "fullname": "XLua.CSObjectWrap.DGTweeningTweenWrap._m_IsBackwards",
+          "address": "0x18056d390"
+        },
+        {
+          "index": 17373,
+          "mode": "metadata",
+          "records": [
+            "logical-node.json#/result/methods/4"
+          ],
+          "fullname": "XLua.CSObjectWrap.DGTweeningTweenWrap._m_IsLoopingOrExecutingBackwards",
+          "address": "0x18056d810"
+        },
+        {
+          "index": 17411,
+          "mode": "metadata",
+          "records": [
+            "logical-node.json#/result/methods/5"
+          ],
+          "fullname": "XLua.CSObjectWrap.DGTweeningTweenWrap._g_get_isBackwards",
+          "address": "0x180569ec0"
+        },
+        {
+          "index": 17429,
+          "mode": "metadata",
+          "records": [
+            "logical-node.json#/result/methods/6"
+          ],
+          "fullname": "XLua.CSObjectWrap.DGTweeningTweenWrap._s_set_isBackwards",
+          "address": "0x180573f70"
+        },
+        {
+          "index": 20429,
+          "mode": "metadata",
+          "records": [
+            "logical-node.json#/result/methods/7"
+          ],
+          "fullname": "XLua.CSObjectWrap.UnityEngineComponentWrap._m_DOPlayBackwards",
+          "address": "0x181252540"
+        },
+        {
+          "index": 26263,
+          "mode": "metadata",
+          "records": [
+            "logical-node.json#/result/methods/8"
+          ],
+          "fullname": "Torappu.DoubleBufferedList`1._BackwardEnumeratorOnDispose"
+        },
+        {
+          "index": 26271,
+          "mode": "metadata",
+          "records": [
+            "logical-node.json#/result/methods/9"
+          ],
+          "fullname": "Torappu.DoubleBufferedList`1/BackwardEnumerator.get_Current"
+        },
+        {
+          "index": 26272,
+          "mode": "metadata",
+          "records": [
+            "logical-node.json#/result/methods/10"
+          ],
+          "fullname": "Torappu.DoubleBufferedList`1/BackwardEnumerator.System.Collections.IEnumerator.get_Current"
+        },
+        {
+          "index": 26273,
+          "mode": "metadata",
+          "records": [
+            "logical-node.json#/result/methods/11"
+          ],
+          "fullname": "Torappu.DoubleBufferedList`1/BackwardEnumerator..ctor"
+        },
+        {
+          "index": 26274,
+          "mode": "metadata",
+          "records": [
+            "logical-node.json#/result/methods/12"
+          ],
+          "fullname": "Torappu.DoubleBufferedList`1/BackwardEnumerator.MoveNext"
+        },
+        {
+          "index": 26275,
+          "mode": "metadata",
+          "records": [
+            "logical-node.json#/result/methods/13"
+          ],
+          "fullname": "Torappu.DoubleBufferedList`1/BackwardEnumerator.Reset"
+        },
+        {
+          "index": 26276,
+          "mode": "metadata",
+          "records": [
+            "logical-node.json#/result/methods/14"
+          ],
+          "fullname": "Torappu.DoubleBufferedList`1/BackwardEnumerator.Reset"
+        },
+        {
+          "index": 26277,
+          "mode": "metadata",
+          "records": [
+            "logical-node.json#/result/methods/15"
+          ],
+          "fullname": "Torappu.DoubleBufferedList`1/BackwardEnumerator.Dispose"
+        },
+        {
+          "index": 47393,
+          "mode": "metadata",
+          "records": [
+            "logical-node.json#/result/methods/16"
+          ],
+          "fullname": "Torappu.Building.DIY.Test.DIYTestScene.SwitchBackward",
+          "address": "0x183f26900"
+        },
+        {
+          "index": 47401,
+          "mode": "metadata",
+          "records": [
+            "logical-node.json#/result/methods/17"
+          ],
+          "fullname": "Torappu.Building.DIY.Test.DIYTestScene.<SwitchBackward>b__32_0",
+          "address": "0x183f26e00"
+        },
+        {
+          "index": 47402,
+          "mode": "metadata",
+          "records": [
+            "logical-node.json#/result/methods/18"
+          ],
+          "fullname": "Torappu.Building.DIY.Test.DIYTestScene.<SwitchBackward>b__32_1",
+          "address": "0x182473ca0"
+        },
+        {
+          "index": 77718,
+          "mode": "metadata",
+          "records": [
+            "logical-node.json#/result/methods/19"
+          ],
+          "fullname": "Torappu.Battle.Enemy.get_disableSwitchFaceByMove",
+          "address": "0x180acb330"
+        },
+        {
+          "index": 77719,
+          "mode": "metadata",
+          "records": [
+            "logical-node.json#/result/methods/20"
+          ],
+          "fullname": "Torappu.Battle.Enemy.set_disableSwitchFaceByMove",
+          "address": "0x180acfcb0"
+        },
+        {
+          "index": 102173,
+          "mode": "metadata",
+          "records": [
+            "logical-node.json#/result/methods/21"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AssignBackwardTileToBB.get_allowedSource",
+          "address": "0x1811f3d50"
+        },
+        {
+          "index": 102174,
+          "mode": "metadata",
+          "records": [
+            "logical-node.json#/result/methods/22"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AssignBackwardTileToBB.Execute",
+          "address": "0x1811f3790"
+        },
+        {
+          "index": 102175,
+          "mode": "metadata",
+          "records": [
+            "logical-node.json#/result/methods/23"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AssignBackwardTileToBB._TryGetBackwardTargetGrid",
+          "address": "0x1811f39f0"
+        },
+        {
+          "index": 102176,
+          "mode": "metadata",
+          "records": [
+            "logical-node.json#/result/methods/24"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AssignBackwardTileToBB..ctor",
+          "address": "0x1811f3ce0"
+        },
+        {
+          "index": 102442,
+          "mode": "metadata",
+          "records": [
+            "node-type.json#/result/0/methods/0"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/FaceToDirectionViaMoreTargets.get_allowedSource",
+          "address": "0x18120dea0"
+        },
+        {
+          "index": 102443,
+          "mode": "disasm",
+          "records": [
+            "logical-node.json#/result/methods/25",
+            "logical-node.json#/result/bodies/0",
+            "logical-node.json#/result/bodies/0/fragments/0",
+            "logical-node.json#/result/bodies/0/fragments/0/method",
+            "node-type.json#/result/0/methods/1"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/FaceToDirectionViaMoreTargets.Execute",
+          "address": "0x18120d860"
+        },
+        {
+          "index": 102444,
+          "mode": "metadata",
+          "records": [
+            "node-type.json#/result/0/methods/2"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/FaceToDirectionViaMoreTargets..ctor",
+          "address": "0x18120de30"
+        },
+        {
+          "index": 102445,
+          "mode": "disasm",
+          "records": [
+            "logical-node.json#/result/methods/26",
+            "logical-node.json#/result/bodies/1",
+            "logical-node.json#/result/bodies/1/fragments/0",
+            "logical-node.json#/result/bodies/1/fragments/0/method",
+            "node-type.json#/result/0/methods/3"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/FaceToDirectionViaMoreTargets.<Execute>b__7_0",
+          "address": "0x18120dc50"
+        },
+        {
+          "index": 159354,
+          "mode": "metadata",
+          "records": [
+            "logical-node.json#/result/methods/27"
+          ],
+          "fullname": "Torappu.UI.Roguelike.RoguelikeCommonShopController._EventOnBackward",
+          "address": "0x182237f90"
+        },
+        {
+          "index": 161852,
+          "mode": "metadata",
+          "records": [
+            "logical-node.json#/result/methods/28"
+          ],
+          "fullname": "Torappu.UI.Roguelike.RL06.RL06ScrapShopController._EventOnBackward",
+          "address": "0x1822fa990"
+        },
+        {
+          "index": 163274,
+          "mode": "metadata",
+          "records": [
+            "logical-node.json#/result/methods/29"
+          ],
+          "fullname": "Torappu.UI.Roguelike.RL05.RL05SpecialShopController._EventOnBackward",
+          "address": "0x182358e90"
+        },
+        {
+          "index": 201565,
+          "mode": "metadata",
+          "records": [
+            "logical-node.json#/result/methods/30"
+          ],
+          "fullname": "Torappu.UI.ActArchive.ArchiveRelicController.OnSwitchBackwardClicked",
+          "address": "0x182de26d0"
+        },
+        {
+          "index": 209724,
+          "mode": "metadata",
+          "records": [
+            "logical-node.json#/result/methods/31"
+          ],
+          "fullname": "Torappu.Activity.CommonActArcadeV2.ActArcadeV2BadgeBookDetailDialog._OnSwitchBackwardEvent",
+          "address": "0x1830130a0"
+        },
+        {
+          "index": 209737,
+          "mode": "metadata",
+          "records": [
+            "logical-node.json#/result/methods/32"
+          ],
+          "fullname": "Torappu.Activity.CommonActArcadeV2.ActArcadeV2BadgeBookDetailView.get_switchBackwardEvent",
+          "address": "0x183014f50"
+        },
+        {
+          "index": 209738,
+          "mode": "metadata",
+          "records": [
+            "logical-node.json#/result/methods/33"
+          ],
+          "fullname": "Torappu.Activity.CommonActArcadeV2.ActArcadeV2BadgeBookDetailView.set_switchBackwardEvent",
+          "address": "0x183015090"
+        },
+        {
+          "index": 209741,
+          "mode": "metadata",
+          "records": [
+            "logical-node.json#/result/methods/34"
+          ],
+          "fullname": "Torappu.Activity.CommonActArcadeV2.ActArcadeV2BadgeBookDetailView.OnSwitchBackwardEvent",
+          "address": "0x1830144c0"
+        },
+        {
+          "index": 244362,
+          "mode": "metadata",
+          "records": [
+            "logical-node.json#/result/methods/35"
+          ],
+          "fullname": "Mono.Globalization.Unicode.SimpleCollator.MatchesBackward",
+          "address": "0x185edfa10"
+        },
+        {
+          "index": 244363,
+          "mode": "metadata",
+          "records": [
+            "logical-node.json#/result/methods/36"
+          ],
+          "fullname": "Mono.Globalization.Unicode.SimpleCollator.MatchesBackwardCore",
+          "address": "0x185edf440"
+        },
+        {
+          "index": 265646,
+          "mode": "metadata",
+          "records": [
+            "logical-node.json#/result/methods/37"
+          ],
+          "fullname": "System.Text.RegularExpressions.RegexInterpreter.Backwardnext",
+          "address": "0x18655c290"
+        },
+        {
+          "index": 311225,
+          "mode": "metadata",
+          "records": [
+            "logical-node.json#/result/methods/38"
+          ],
+          "fullname": "DG.Tweening.DOTween.PlayBackwardsAll",
+          "address": "0x184426d40"
+        },
+        {
+          "index": 311226,
+          "mode": "metadata",
+          "records": [
+            "logical-node.json#/result/methods/39"
+          ],
+          "fullname": "DG.Tweening.DOTween.PlayBackwards",
+          "address": "0x184426db0"
+        },
+        {
+          "index": 311227,
+          "mode": "metadata",
+          "records": [
+            "logical-node.json#/result/methods/40"
+          ],
+          "fullname": "DG.Tweening.DOTween.PlayBackwards",
+          "address": "0x184426e30"
+        },
+        {
+          "index": 311310,
+          "mode": "metadata",
+          "records": [
+            "logical-node.json#/result/methods/41"
+          ],
+          "fullname": "DG.Tweening.TweenExtensions.PlayBackwards",
+          "address": "0x18443a5d0"
+        },
+        {
+          "index": 311331,
+          "mode": "metadata",
+          "records": [
+            "logical-node.json#/result/methods/42"
+          ],
+          "fullname": "DG.Tweening.TweenExtensions.IsBackwards",
+          "address": "0x184439a00"
+        },
+        {
+          "index": 311332,
+          "mode": "metadata",
+          "records": [
+            "logical-node.json#/result/methods/43"
+          ],
+          "fullname": "DG.Tweening.TweenExtensions.IsLoopingOrExecutingBackwards",
+          "address": "0x184439b50"
+        },
+        {
+          "index": 311447,
+          "mode": "metadata",
+          "records": [
+            "logical-node.json#/result/methods/44"
+          ],
+          "fullname": "DG.Tweening.ShortcutExtensions.DOPlayBackwards",
+          "address": "0x184434090"
+        },
+        {
+          "index": 311448,
+          "mode": "metadata",
+          "records": [
+            "logical-node.json#/result/methods/45"
+          ],
+          "fullname": "DG.Tweening.ShortcutExtensions.DOPlayBackwards",
+          "address": "0x184434140"
+        },
+        {
+          "index": 312236,
+          "mode": "metadata",
+          "records": [
+            "logical-node.json#/result/methods/46"
+          ],
+          "fullname": "DG.Tweening.Core.TweenManager.PlayBackwards",
+          "address": "0x184465460"
+        },
+        {
+          "index": 316827,
+          "mode": "metadata",
+          "records": [
+            "logical-node.json#/result/methods/47"
+          ],
+          "fullname": "UnityEngine.TextEditor.MoveParagraphBackward",
+          "address": "0x186e1ea90"
+        },
+        {
+          "index": 316860,
+          "mode": "metadata",
+          "records": [
+            "logical-node.json#/result/methods/48"
+          ],
+          "fullname": "UnityEngine.TextEditor.SelectParagraphBackward",
+          "address": "0x186e21b90"
+        },
+        {
+          "index": 318723,
+          "mode": "metadata",
+          "records": [
+            "logical-node.json#/result/methods/49"
+          ],
+          "fullname": "System.Collections.Immutable.ImmutableQueue`1.get_BackwardsReversed"
+        }
+      ],
+      "blocks": [],
+      "types": [
+        {
+          "name": "Torappu.Battle.Action.Nodes/FaceToDirectionViaMoreTargets",
+          "records": [
+            "node-type.json#/result/0"
+          ]
+        }
+      ],
+      "constants": [],
+      "bundles": []
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

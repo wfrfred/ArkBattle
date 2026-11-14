@@ -43,6 +43,7 @@ uv run "$skill/scripts/archive.py" docs/research/evidence
 | 批次 | 调查主题 |
 | --- | --- |
 | [facing-conditions-20261114](facing-conditions-20261114/README.md) | 统一转向资格、出生／移动／攻击／受力／重现／待机入口、实际符号发布、动画后端差别及火龙普通关卡部位机制绑定 |
+| [yuanzai-facing-check-20261114](yuanzai-facing-check-20261114/README.md) | 圆仔0.3秒采样、朝向锁定与倒走说明；通用原生候选节点，尚未绑定实际Prefab |
 | [hp-loss-hook-interactions-20261113](hp-loss-hook-interactions-20261113/README.md) | 统一损伤管线的实际内容对照：华法琳／乌尔比安／雷蛇、睚与脆弱、法术流失与庇护、活性源石 HIT 资格及来源计算反例排查 |
 | [facing-semantics-20261113](facing-semantics-20261113/README.md) | 移动／攻击／受力的面向写入、身体四向与左右符号的区别、持久符号和部位伤害消费者；具体 Prefab 绑定另列证据限度 |
 | [hp-loss-settlement-20261113](hp-loss-settlement-20261113/README.md) | 物理／法术／真实流失的关卡与 Prefab 绑定、DEF／RES 计算、skip 剩余回调、HP 保护及直接 setter 区别 |
