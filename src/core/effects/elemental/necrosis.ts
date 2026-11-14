@@ -67,7 +67,7 @@ export function createSpDrain(parameters: SpDrainParameters): Definition {
                     return current;
                 }
 
-                return hurt(current, unit, "ARTS", parameters.damagePerSecond);
+                return hurt(current, unit, "ARTS", parameters.damagePerSecond, "BUFF");
             }),
         onEnd,
     };
@@ -110,7 +110,7 @@ export function createAttackReduction(parameters: AttackReductionParameters): De
         },
         onTick: (battle, self) =>
             advance(battle, self, (current, host, reference, second) => {
-                current = hurt(current, host, "ELEMENTAL", parameters.damagePerSecond);
+                current = hurt(current, host, "ELEMENTAL", parameters.damagePerSecond, "BUFF");
                 const unit = availableHost(current, reference);
 
                 if (unit === undefined) {

@@ -18,7 +18,7 @@ test("source attack samples current Offense separately for each target after nes
         targetGroups: [{
             id: "primary",
             select: selectDamage({ geometry, canTargetAir: true, maxTargets: 2 }),
-            operations: [{ type: "DAMAGE", powerSource: "SOURCE_ATTACK", power: 1, damageType: "TRUE" }],
+            operations: [{ type: "DAMAGE", attackType: "NORMAL", applyWay: "MELEE", powerSource: "SOURCE_ATTACK", power: 1, damageType: "TRUE" }],
         }],
     });
     const source = unit(0, { action: definition });
@@ -29,7 +29,9 @@ test("source attack samples current Offense separately for each target after nes
         ...first,
         hooks: first.hooks.set(targetApplied, {
             id: "boost-next-target", priority: 0,
-            invoke(state) {
+            invoke(state, { request }) {
+                assert.equal(request.attackType, "NORMAL");
+                assert.equal(request.applyWay, "MELEE");
                 return {
                     state: applyUnitChanges(state, sourceRef, setAttackContribution({
                             id: "reaction", value: [modifier({ addition: 15 })],
@@ -54,7 +56,7 @@ test("fixed damage and healing do not require an Offense capability", () => {
     const sourceRef = units.ref(source);
     const wound = {
         source: null, target: sourceRef,
-        nature: "DAMAGE", hitRecovery: true, parameters: { type: "TRUE", attack: { power: 50, multiplier: 1, addition: 0 } },
+        attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE", hitRecovery: true, parameters: { type: "TRUE", attack: { power: 50, multiplier: 1, addition: 0 } },
     };
     const initial = hpDamage.applyDamage(wound,
         hpDamage.calculateDamage(battle(source, target), wound)).state;

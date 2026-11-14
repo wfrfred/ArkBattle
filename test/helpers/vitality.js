@@ -8,6 +8,6 @@ export function parameters(power, type = "PHYSICAL", penetration = { fixed: 0, p
 }
 
 export function damage(battle, request) {
-    const incoming = { nature: "DAMAGE", hitRecovery: true, ...request };
+    const incoming = { attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE", hitRecovery: true, ...request };
     return applyDamage(incoming, calculateDamage(battle, incoming));
 }

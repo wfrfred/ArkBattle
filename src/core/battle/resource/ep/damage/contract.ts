@@ -1,4 +1,5 @@
 import * as receiving from "../../receiving.js";
+import type { AttackType, ApplyWay } from "../../damage.js";
 import type { Ref } from "../../../../common/ref.js";
 import type { Unit, Id } from "../../../../unit/unit.js";
 import type { Elemental, Type } from "../../../../unit/capability/elemental/capability.js";
@@ -18,6 +19,8 @@ export interface Parameters {
 }
 
 export interface Request {
+    readonly attackType: AttackType;
+    readonly applyWay: ApplyWay;
     readonly source: Ref<Unit> | null;
     readonly target: Ref<Unit & Elemental>;
     readonly parameters: Parameters;

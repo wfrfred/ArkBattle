@@ -121,6 +121,8 @@ function attackDefinition(
                 operations: [
                     {
                         type: "DAMAGE",
+                        attackType: "NORMAL",
+                        applyWay: "MELEE",
                         power: 0,
                         powerSource: "SOURCE_ATTACK",
                         damageType: "PHYSICAL",
@@ -178,6 +180,8 @@ export function createSkill(
                 }
 
                 const request: DamageRequest = {
+                    attackType: "NORMAL",
+                    applyWay: "MELEE",
                     source: unitRef(source),
                     target: unitRef(target),
                     nature: "DAMAGE",

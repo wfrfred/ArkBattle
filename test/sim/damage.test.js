@@ -21,7 +21,7 @@ import { createArknightsElementalDefinition } from "../../dist/data/effect/eleme
 function damageRequest(source, target, power, type = "TRUE", penetration = { fixed: 0, proportional: 0 }) {
     const attack = { power, multiplier: 1, addition: 0 };
     return {
-        source, target, nature: "DAMAGE", hitRecovery: true,
+        source, target, attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE", hitRecovery: true,
         parameters: type === "PHYSICAL" || type === "ARTS"
             ? { type, attack, penetration }
             : { type, attack },
@@ -40,7 +40,7 @@ function elementalDefinition(config = {}, hooks = Hooks.empty()) {
 }
 
 function injuryRequest(target, type, power, source = null) {
-    return { target, source, parameters: { type, power } };
+    return { target, source, attackType: "NORMAL", applyWay: "NONE", parameters: { type, power } };
 }
 
 test("HOOK-02: exclusions are local to each operation and match a key or one ID across its hosts", () => {
@@ -163,13 +163,14 @@ test("HP-01: formulas use the calculated type and sampled defenses without begin
         units.compose(
             units.setHook(hpDamage.sourceFormula, {
                 id: "stronger-output",
-                invoke: (current, _context, parameters) => ({
-                    state: current,
-                    value: {
-                        ...parameters,
-                        attack: { ...parameters.attack, multiplier: 2 },
-                    },
-                }),
+                invoke(current, { request }, parameters) {
+                    assert.equal(request.attackType, "ADDITION");
+                    assert.equal(request.applyWay, "ALL");
+                    return {
+                        state: current,
+                        value: { ...parameters, attack: { ...parameters.attack, multiplier: 2 } },
+                    };
+                },
             }),
             units.setHook(hpDamage.output, {
                 id: "final-output",
@@ -203,11 +204,12 @@ test("HP-01: formulas use the calculated type and sampled defenses without begin
             ),
             vitality.setRestriction({
                 id: "arts-only",
-                value: { allows: (_current, context) => context.calculated.type === "ARTS" },
+                value: { allows: (_current, { request, calculated }) =>
+                    calculated.type === "ARTS" && request.attackType === "ADDITION" && request.applyWay === "ALL" },
             }),
         ),
     );
-    const request = damageRequest(source, target, 100, "PHYSICAL");
+    const request = { ...damageRequest(source, target, 100, "PHYSICAL"), attackType: "ADDITION", applyWay: "ALL" };
     const calculated = hpDamage.calculateDamage(state, request);
     assert.deepEqual(calculated.value, { type: "ARTS", amount: 200 });
     assert.equal(request.parameters.type, "PHYSICAL");
@@ -758,7 +760,7 @@ test("HP-05/06: LOSS completes the shared pipeline against an invincible absent 
             }),
         ),
     ));
-    const request = { ...damageRequest(source, target, 40, "PHYSICAL"), nature: "LOSS" };
+    const request = { ...damageRequest(source, target, 40, "PHYSICAL"), attackType: "NONE", nature: "LOSS" };
     const calculated = hpDamage.calculateDamage(state, request);
     assert.equal(calculated.value.amount, 70);
     assert.equal(get(calculated.state, target.id).vitality.hp, 35);
@@ -959,7 +961,7 @@ test("EP-01: full resistance preserves formula floors and sampled EP output; HP 
     const hpRequest = {
         source: null,
         target,
-        nature: "DAMAGE", hitRecovery: true, parameters: { type: "ELEMENTAL", attack: { power: 100, multiplier: 1, addition: 0 } },
+        attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE", hitRecovery: true, parameters: { type: "ELEMENTAL", attack: { power: 100, multiplier: 1, addition: 0 } },
     };
     const hp = hpDamage.applyDamage(hpRequest, hpDamage.calculateDamage(applied.state, hpRequest));
     assert.equal(hp.value.application.hpLoss, 5);

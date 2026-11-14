@@ -29,12 +29,12 @@ const candidates = state => units.all(state).filter(targetable.hasTargetable);
 function wound(state, target, power) {
     const request = {
         source: null, target,
-        nature: "DAMAGE", hitRecovery: true, parameters: { type: "TRUE", attack: { power, multiplier: 1, addition: 0 } },
+        attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE", hitRecovery: true, parameters: { type: "TRUE", attack: { power, multiplier: 1, addition: 0 } },
     };
     return hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request)).state;
 }
 function injure(state, target, power) {
-    const request = { source: null, target, parameters: { type: "NEURAL", power } };
+    const request = { source: null, target, attackType: "NORMAL", applyWay: "NONE", parameters: { type: "NEURAL", power } };
     return epDamage.applyDamage(request, epDamage.calculateDamage(state, request));
 }
 

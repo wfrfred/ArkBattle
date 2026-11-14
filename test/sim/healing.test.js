@@ -68,6 +68,7 @@ test("APPLY-02: Calculate normalizes final HP/EP output before Apply starts rece
             source: units.ref(get(state, 0)),
             target: units.ref(get(state, 1)),
             parameters,
+            ...(operation === hpDamage || operation === epDamage ? { attackType: "NORMAL", applyWay: "NONE" } : {}),
             ...(operation === hpDamage ? { nature: "DAMAGE", hitRecovery: true } : {}),
         };
         const calculate = operation.calculateDamage ?? operation.calculateHealing;
@@ -109,10 +110,10 @@ test("HP Healing accepts full resources and absent patients while damage require
     assert.deepEqual(full.value.application, { hpBefore: 100.5, hpAfter: 100.5, hpGain: 0 });
     assert.deepEqual(calls, ["receive", "target", "source"]);
 
-    const hpLoss = { source: null, target, nature: "DAMAGE", hitRecovery: true, parameters: {
+    const hpLoss = { source: null, target, attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE", hitRecovery: true, parameters: {
         type: "TRUE", attack: { power: 30, multiplier: 1, addition: 0 },
     } };
-    const epLoss = { target, source: null, parameters: { type: "NEURAL", power: 200 } };
+    const epLoss = { target, source: null, attackType: "NORMAL", applyWay: "NONE", parameters: { type: "NEURAL", power: 200 } };
     state = hpDamage.applyDamage(hpLoss, hpDamage.calculateDamage(full.state, hpLoss)).state;
     state = epDamage.applyDamage(epLoss, epDamage.calculateDamage(state, epLoss)).state;
     assert.equal(get(state, 0).vitality.hp, 70.5);
@@ -164,7 +165,7 @@ test("HP-07: natural recovery samples current attributes after Effects and befor
     ]);
     const target = units.ref(get(state, 0));
     const loss = amount => ({
-        source: null, target, nature: "LOSS", hitRecovery: false,
+        source: null, target, attackType: "NONE", applyWay: "NONE", nature: "LOSS", hitRecovery: false,
         parameters: { type: "TRUE", attack: { power: amount, multiplier: 1, addition: 0 } },
     });
     const initialLoss = loss(60);
@@ -236,7 +237,7 @@ test("EP-01/03: losses stay per element, healing gives every bar the full amount
     let state = battle([{ definition: { ...elementalReceiver, hooks }, position: [0, 0] }]);
     const target = units.ref(get(state, 0));
     for (const [type, power] of [["NEURAL", 200], ["EROSION", 80], ["BURN", 40]]) {
-        const incoming = { target, source: null, parameters: { type, power } };
+        const incoming = { target, source: null, attackType: "NORMAL", applyWay: "NONE", parameters: { type, power } };
         state = epDamage.applyDamage(incoming, epDamage.calculateDamage(state, incoming)).state;
     }
     assert.deepEqual(get(state, 0).elemental.ep, {

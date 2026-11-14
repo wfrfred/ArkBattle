@@ -38,7 +38,7 @@ export function actionDefinition(power = 7, configuration = {}) {
                         canTargetAir: true,
                         maxTargets: 1,
                     }),
-                    operations: [{ type: "DAMAGE", power, damageType: "TRUE" }],
+                    operations: [{ type: "DAMAGE", attackType: "NORMAL", applyWay: "MELEE", power, damageType: "TRUE" }],
                 },
             ],
             followUps: [],

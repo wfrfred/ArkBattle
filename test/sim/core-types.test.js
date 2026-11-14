@@ -17,6 +17,7 @@ import * as actions from ${module("unit/action/index")};
 import * as effects from ${module("unit/effect/index")};
 import * as hpDamage from ${module("battle/resource/hp/damage/index")};
 import * as resource from ${module("battle/resource/index")};
+import type { Operation as AttackOperation } from ${module("../content/actions/attack")};
 import * as vitality from ${module("unit/capability/vitality/index")};
 import * as elemental from ${module("unit/capability/elemental/index")};
 import * as facing from ${module("unit/capability/facing/index")};
@@ -418,6 +419,27 @@ const patient = initialize(battle, { id: 2, position: [0, 0], definition: {
     vitality: { maxHp: 100, defense: 10, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
 } }).value;
 const patientRef = ref(patient);
+const classifiedRequest: hpDamage.Request = {
+    source: null, target: patientRef, nature: 'DAMAGE', hitRecovery: true,
+    attackType: 'NONE', applyWay: 'ALL',
+    parameters: { type: 'TRUE', attack: { power: 10, multiplier: 1, addition: 0 } },
+};
+const { attackType: omittedAttackType, ...withoutAttackType } = classifiedRequest;
+const { applyWay: omittedApplyWay, ...withoutApplyWay } = classifiedRequest;
+// @ts-expect-error classification is explicit even when the request has no source.
+const missingAttackType: hpDamage.Request = withoutAttackType;
+// @ts-expect-error applyWay is independently required.
+const missingApplyWay: hpDamage.Request = withoutApplyWay;
+// @ts-expect-error classification is one value rather than an array of categories.
+const multipleAttackTypes: hpDamage.Request = { ...classifiedRequest, attackType: ['NORMAL', 'SPLASH'] };
+// @ts-expect-error a projectile does not introduce another ApplyWay value.
+const unknownApplyWay: hpDamage.Request = { ...classifiedRequest, applyWay: 'PROJECTILE' };
+const elementalOperation: AttackOperation = {
+    type: 'ELEMENTAL_INJURY', power: 10, elementType: 'NEURAL',
+    attackType: 'ADDITION', applyWay: 'NONE',
+};
+// @ts-expect-error attack operations provide classification before constructing resource requests.
+const unclassifiedOperation: AttackOperation = { type: 'DAMAGE', power: 10, damageType: 'TRUE' };
 update(battle, patientRef, receivingChange);
 update(battle, patientRef, vitality.setRestriction({
     id: 'damage-permission', value: { allows: (_state, context) => context.calculated.amount > 0 },

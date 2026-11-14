@@ -1,5 +1,6 @@
 import type { State as BattleState } from "../../battle/state.js";
 import type { DamageType, Request } from "../../battle/resource/hp/damage/contract.js";
+import type { AttackType } from "../../battle/resource/damage.js";
 import { calculateDamage } from "../../battle/resource/hp/damage/calculate.js";
 import { applyDamage } from "../../battle/resource/hp/damage/apply.js";
 import * as units from "../../unit/query.js";
@@ -11,6 +12,7 @@ export function hurt(
     host: Unit,
     type: DamageType,
     power: number,
+    attackType: AttackType,
 ): BattleState {
     if (!hasVitality(host)) {
         return battle;
@@ -18,6 +20,8 @@ export function hurt(
 
     const attack = { power, multiplier: 1, addition: 0 };
     const request: Request = {
+        attackType,
+        applyWay: "NONE",
         source: null,
         target: units.ref(host),
         nature: "DAMAGE",

@@ -37,7 +37,7 @@ function group(id, count = 1, accepts = () => true) {
                 value: selected,
             };
         },
-        operations: [{ type: "DAMAGE", power: 7, damageType: "TRUE" }],
+        operations: [{ type: "DAMAGE", attackType: "NORMAL", applyWay: "MELEE", power: 7, damageType: "TRUE" }],
     };
 }
 
@@ -46,7 +46,7 @@ test("an attack turns once at its started program, before output, without turnin
         id: "facing-attack", intervalTicks: 10, windupTicks: 2, recoveryTicks: 1,
         triggerBindingId: "primary", onStart: faceTarget,
         targetGroups: [{
-            id: "primary", operations: [{ type: "DAMAGE", power: 7, damageType: "TRUE" }],
+            id: "primary", operations: [{ type: "DAMAGE", attackType: "NORMAL", applyWay: "MELEE", power: 7, damageType: "TRUE" }],
             select: state => ({ state, value: [units.ref(get(state, 1))] }),
         }],
     });
@@ -144,7 +144,7 @@ test("bound healing keeps its receivers when a later selection restriction would
     for (const [id, amount] of [[1, 70], [2, 60]]) {
         const request = {
             source: null, target: units.ref(get(state, id)),
-            nature: "DAMAGE", hitRecovery: true, parameters: { type: "TRUE", attack: { power: amount, multiplier: 1, addition: 0 } },
+            attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE", hitRecovery: true, parameters: { type: "TRUE", attack: { power: amount, multiplier: 1, addition: 0 } },
         };
         state = hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request)).state;
     }

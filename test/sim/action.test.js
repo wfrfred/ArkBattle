@@ -146,7 +146,7 @@ test("interrupted attack, successful release, and damage output are separate bus
                             .toArray(),
                     };
                 },
-                operations: [{ type: "DAMAGE", power: 7, damageType: "TRUE" }],
+                operations: [{ type: "DAMAGE", attackType: "NORMAL", applyWay: "MELEE", power: 7, damageType: "TRUE" }],
             },
         ],
     });

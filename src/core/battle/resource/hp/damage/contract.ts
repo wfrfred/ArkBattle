@@ -1,4 +1,5 @@
 import * as receiving from "../../receiving.js";
+import type { AttackType, ApplyWay } from "../../damage.js";
 import type { DamageApplication } from "../../../../unit/capability/vitality/operations.js";
 import type { Ref } from "../../../../common/ref.js";
 import type { Unit, Id } from "../../../../unit/unit.js";
@@ -39,6 +40,8 @@ export type Parameters =
       };
 
 export interface Request {
+    readonly attackType: AttackType;
+    readonly applyWay: ApplyWay;
     readonly nature: Nature;
     readonly hitRecovery: boolean;
     readonly source: Ref<Unit> | null;

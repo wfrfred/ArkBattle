@@ -27,7 +27,7 @@ const hit = { type: 'CIRCLE', offset: [0, 0], radius: 0.1 };
 function action(interval = 1) {
   return createAttack({ id: 'normal-attack', triggerBindingId: 'primary', intervalTicks: interval, recoveryTicks: 0,
     targetGroups: [{ id: 'primary', select: selectDamage({ geometry: range, canTargetAir: true }),
-      operations: [{ type: 'DAMAGE', power: 1, damageType: 'TRUE' }] }], followUps: [] });
+      operations: [{ type: 'DAMAGE', attackType: 'NORMAL', applyWay: 'MELEE', power: 1, damageType: 'TRUE' }] }], followUps: [] });
 }
 function definition(receiver = 'CHARACTER', overrides = {}) {
   return { hooks: Hooks.empty(), id: `element-${receiver}`,
@@ -40,7 +40,7 @@ function receiverBattle(receiver = 'CHARACTER', overrides = {}) {
   return createBattle([{ position: [1, 0], definition: definition(receiver, overrides) }]);
 }
 function element(work, type, tick = work.tick, power = 1000) {
-  const request = { target: unitRef(getUnit(work, 0)), source: null, parameters: { type, power } };
+  const request = { target: unitRef(getUnit(work, 0)), source: null, attackType: "NORMAL", applyWay: "NONE", parameters: { type, power } };
   return epDamage.applyDamage(request, epDamage.calculateDamage({ ...work, tick }, request));
 }
 function advance(work, tick) {
@@ -127,7 +127,7 @@ test('elemental execution: necrosis shares its recovery budget with periodic dam
 function battle(receiver, type) {
   const casterAttack = createAttack({ ...action(10000).attack,
     targetGroups: [{ ...action().attack.targetGroups[0], operations: [
-      { type: 'ELEMENTAL_INJURY', elementType: type, power: 1000 },
+      { type: 'ELEMENTAL_INJURY', attackType: 'ADDITION', applyWay: 'MELEE', elementType: type, power: 1000 },
       ...action().attack.targetGroups[0].operations,
     ] }],
   });
@@ -158,7 +158,7 @@ test('elemental runtime: unused neural paralysis survives recovery and the next 
   events.push(...(runtime = stepBattle(runtime, [])).events);
   assert.equal(events.filter(event => event.type === 'ACTION_CANCELLED' && event.sourceUnitId === 1).length, 1);
 
-  const request = { target: unitRef(victim(runtime)), source: null, parameters: { type: 'NEURAL', power: 1000 } };
+  const request = { target: unitRef(victim(runtime)), source: null, attackType: "NORMAL", applyWay: "NONE", parameters: { type: 'NEURAL', power: 1000 } };
   runtime = epDamage.applyDamage(request, epDamage.calculateDamage(runtime, request)).state;
   while (runtime.tick <= 365) events.push(...(runtime = stepBattle(runtime, [])).events);
   const cancelled = events.filter(event => event.type === 'ACTION_CANCELLED' && event.sourceUnitId === 1);

@@ -35,6 +35,8 @@ import {
     applyDamage,
     type Request as DamageRequest,
     type DamageType,
+    type AttackType,
+    type ApplyWay,
 } from "../../core/battle/resource/hp/damage/index.js";
 
 import { hasVitality } from "../../core/unit/capability/vitality/index.js";
@@ -56,6 +58,8 @@ export type Operation =
           readonly type: "DAMAGE";
           readonly power: number;
           readonly damageType: DamageType;
+          readonly attackType: AttackType;
+          readonly applyWay: ApplyWay;
           readonly powerSource?: "SOURCE_ATTACK";
       }
     | { readonly type: "HEAL"; readonly power: number }
@@ -63,6 +67,8 @@ export type Operation =
           readonly type: "ELEMENTAL_INJURY";
           readonly power: number;
           readonly elementType: ElementType;
+          readonly attackType: AttackType;
+          readonly applyWay: ApplyWay;
       }
     | { readonly type: "ELEMENTAL_INJURY_HEALED"; readonly power: number };
 
@@ -226,6 +232,8 @@ function apply(
             const attack = { power, multiplier: 1, addition: 0 };
             const type = operation.damageType;
             const request: DamageRequest = {
+                attackType: operation.attackType,
+                applyWay: operation.applyWay,
                 source,
                 target: units.ref(receiver),
                 nature: "DAMAGE",
@@ -261,6 +269,8 @@ function apply(
             }
 
             const request: epDamage.Request = {
+                attackType: operation.attackType,
+                applyWay: operation.applyWay,
                 source,
                 target: units.ref(receiver),
                 parameters: { type: operation.elementType, power: operation.power },

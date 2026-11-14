@@ -2,7 +2,11 @@ import type { Ref } from "../../core/common/ref.js";
 import type { State as BattleState } from "../../core/battle/index.js";
 import { roundToEven } from "../../core/common/math.js";
 import { update as updateUnit } from "../../core/battle/unit.js";
-import { applyDamage, calculateDamage } from "../../core/battle/resource/hp/damage/index.js";
+import {
+    applyDamage,
+    calculateDamage,
+    type Request as DamageRequest,
+} from "../../core/battle/resource/hp/damage/index.js";
 
 import * as effects from "../../core/unit/effect/index.js";
 import {
@@ -85,13 +89,15 @@ function damage(battle: BattleState, host: Ref<Unit>, amount: number): BattleSta
         return battle;
     }
 
-    const request = {
+    const request: DamageRequest = {
+        attackType: "BUFF",
+        applyWay: "NONE",
         source: null,
         target: units.ref(unit),
-        nature: "DAMAGE" as const,
+        nature: "DAMAGE",
         hitRecovery: false,
         parameters: {
-            type: "TRUE" as const,
+            type: "TRUE",
             attack: { power: amount, multiplier: 1, addition: 0 },
         },
     };

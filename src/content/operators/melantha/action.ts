@@ -62,6 +62,8 @@ export function create(profile: Profile): Attack {
                 operations: [
                     {
                         type: "DAMAGE",
+                        attackType: "NORMAL",
+                        applyWay: "MELEE",
                         power: profile.attributes.attack,
                         powerSource: "SOURCE_ATTACK",
                         damageType: "PHYSICAL",

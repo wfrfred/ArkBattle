@@ -38,6 +38,8 @@ export function createArrow(): tracking.Definition {
         tracking.hit(battle, self, (state, current, target) => {
             const source = current.state.source;
             const request: DamageRequest = {
+                attackType: "NORMAL",
+                applyWay: "RANGED",
                 source: source !== null && units.get(state, source) !== undefined ? source : null,
                 target: units.ref(target),
                 nature: "DAMAGE",
@@ -98,6 +100,8 @@ export function createMelee(profile: Profile, timing: Timing): Attack {
                 operations: [
                     {
                         type: "DAMAGE",
+                        attackType: "NORMAL",
+                        applyWay: "MELEE",
                         power: profile.attack,
                         powerSource: "SOURCE_ATTACK",
                         damageType: "PHYSICAL",
@@ -153,6 +157,8 @@ export function createRanged(profile: Profile, timing: Timing, projectile: Proje
                 operations: [
                     {
                         type: "DAMAGE",
+                        attackType: "NORMAL",
+                        applyWay: "RANGED",
                         power: profile.attack,
                         powerSource: "SOURCE_ATTACK",
                         damageType: "PHYSICAL",

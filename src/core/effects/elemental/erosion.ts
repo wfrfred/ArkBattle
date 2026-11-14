@@ -65,7 +65,7 @@ export function createPhysical(parameters: Parameters): Definition {
             host = availableHost(battle, reference);
 
             if (host !== undefined) {
-                battle = hurt(battle, host, "PHYSICAL", parameters.damage);
+                battle = hurt(battle, host, "PHYSICAL", parameters.damage, "NORMAL");
             }
 
             return battle;
@@ -96,7 +96,7 @@ export function createElemental(parameters: Parameters): Definition {
             host = availableHost(battle, reference);
 
             if (host !== undefined) {
-                battle = hurt(battle, host, "ELEMENTAL", parameters.damage);
+                battle = hurt(battle, host, "ELEMENTAL", parameters.damage, "NORMAL");
             }
 
             return battle;
