@@ -24,6 +24,7 @@ import {
 } from "../../../battle/resource/ep/damage/hook.js";
 import type { Request as HealingRequest } from "../../../battle/resource/ep/healing/contract.js";
 import type { CommitContext as HealingCommitContext } from "../../../battle/resource/ep/healing/hook.js";
+import { allows } from "../../../restriction.js";
 
 export interface DamageApplication {
     readonly type: Type;
@@ -182,7 +183,7 @@ export function advance(battle: BattleState, host: Ref<Unit & Elemental>): Battl
 
     const power = query.resolveRecoverySpeed(battle, self) / TICKS_PER_SECOND;
     const request: HealingRequest = { target: host, source: null, parameters: { power } };
-    if (!self.elemental.healingRules.every((rule) => rule.allows(battle, { self, request }))) {
+    if (!allows(battle, { self, request }, self.elemental.healingRestrictions)) {
         return battle;
     }
 

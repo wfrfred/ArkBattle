@@ -9,7 +9,7 @@ import type { Contribution } from "../../../unit/contribution/contribution.js";
 import type { Modifier } from "../../../unit/contribution/attribute.js";
 import type { Hooks } from "../../../hook.js";
 import type { Definition } from "./definition.js";
-import type { Rule } from "./rule.js";
+import type { Restriction } from "./restriction.js";
 
 export type Id = number;
 
@@ -38,7 +38,7 @@ export interface Card<S extends object = object> extends Identified<{ readonly i
     readonly definition: UnitDefinition<S>;
     readonly deployedUnits: readonly Ref<Unit & Deployable>[];
     readonly unitHooks: Hooks;
-    readonly rules: readonly Rule[];
+    readonly restrictions: readonly Contribution<Restriction>[];
     readonly state: S;
     readonly stock: number;
     readonly cooldown: Clock | null;

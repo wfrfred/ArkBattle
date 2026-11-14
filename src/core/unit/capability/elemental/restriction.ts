@@ -1,4 +1,5 @@
-import type { Rule as BaseRule } from "../../../rule.js";
+import type * as contribution from "../../contribution/contribution.js";
+import type { Restriction as BaseRestriction } from "../../../restriction.js";
 import type { Unit } from "../../unit.js";
 import type { Elemental, Type } from "./capability.js";
 import type { Request as DamageRequest } from "../../../battle/resource/ep/damage/contract.js";
@@ -15,15 +16,11 @@ export interface HealingContext {
     readonly request: HealingRequest;
 }
 
-export type DamageRule = BaseRule<DamageContext>;
+export type DamageRestriction = BaseRestriction<DamageContext>;
 
-export type HealingRule = BaseRule<HealingContext>;
+export type HealingRestriction = BaseRestriction<HealingContext>;
 
-export interface Rules {
-    readonly damageRules: readonly DamageRule[];
-    readonly healingRules: readonly HealingRule[];
+export interface Restrictions {
+    readonly damageRestrictions: readonly contribution.Contribution<DamageRestriction>[];
+    readonly healingRestrictions: readonly contribution.Contribution<HealingRestriction>[];
 }
-
-export type Key = keyof Rules;
-
-export type Rule<K extends Key = Key> = Rules[K][number];

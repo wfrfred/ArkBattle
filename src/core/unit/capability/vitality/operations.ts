@@ -14,6 +14,8 @@ import {
 import { receiving as healingReceiving } from "../../../battle/resource/hp/healing/hook.js";
 import { resolveMaxHp, type Vitality } from "./capability.js";
 import { resolveRecoverySpeed } from "./query.js";
+import { allows } from "../../../restriction.js";
+import type { Restriction } from "./restriction.js";
 
 export interface DamageApplication {
     readonly hpBefore: number;
@@ -27,13 +29,17 @@ export interface HealingApplication {
     readonly hpGain: number;
 }
 
-export function canReceiveDamage(battle: BattleState, context: damage.ReceivingContext): boolean {
+export function canReceiveDamage(
+    battle: BattleState,
+    context: damage.ReceivingContext,
+    ignore?: (restriction: Restriction) => boolean,
+): boolean {
     const target = units.get(battle, context.target);
 
     return (
         target?.lifecycle === "PRESENT" &&
         target.vitality.hp > 0 &&
-        target.vitality.damageRules.every((rule) => rule.allows(battle, context))
+        allows(battle, context, target.vitality.damageRestrictions, ignore)
     );
 }
 

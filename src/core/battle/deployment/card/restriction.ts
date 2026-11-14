@@ -1,9 +1,9 @@
 import type { Ref } from "../../../common/ref.js";
-import type { Rule as BaseRule } from "../../../rule.js";
+import type { Restriction as BaseRestriction } from "../../../restriction.js";
 import type { DeployRequest } from "../request.js";
 import type { Card } from "./card.js";
 
-export type RuleContext<T extends Card<any> = Card> =
+export type RestrictionContext<T extends Card<any> = Card> =
     | {
           readonly purpose: "DISPLAY" | "SELECT";
           readonly ref: Ref<T>;
@@ -13,6 +13,6 @@ export type RuleContext<T extends Card<any> = Card> =
           readonly request: DeployRequest<T>;
       };
 
-export type Purpose = RuleContext["purpose"];
+export type Purpose = RestrictionContext["purpose"];
 
-export type Rule = BaseRule<RuleContext>;
+export type Restriction = BaseRestriction<RestrictionContext>;

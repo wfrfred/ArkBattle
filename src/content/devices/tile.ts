@@ -12,7 +12,7 @@ import type { Definition as OccupancyDefinition } from "../../core/unit/capabili
 import type { Definition as VitalityDefinition } from "../../core/unit/capability/vitality/index.js";
 import type { Definition as UnitDefinition } from "../../core/unit/index.js";
 import type { Definition as CardDefinition } from "../../core/battle/deployment/card/index.js";
-import type { Rule as DeploymentRule } from "../../core/battle/deployment/index.js";
+import type { Restriction as DeploymentRestriction } from "../../core/battle/deployment/index.js";
 import { hole } from "../terrain/definition.js";
 
 export interface Definition extends UnitDefinition {
@@ -26,12 +26,11 @@ export interface Configuration extends Pick<Definition, "id" | "vitality" | "dep
     readonly tileChanges: Partial<TileState>;
 }
 
-export function deploymentSiteRule(
+export function deploymentSiteRestriction(
     placement: Exclude<Placement, "NONE">,
     allowedSiteConditions: readonly SiteCondition[],
-): DeploymentRule {
+): DeploymentRestriction {
     return {
-        id: "deployment/site",
         allows(battle, { request }) {
             const tile = getTile(battle.battlefield.map, request.tilePosition);
 

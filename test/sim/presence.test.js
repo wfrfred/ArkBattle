@@ -15,7 +15,7 @@ import * as deployment from "../../dist/core/battle/deployment/index.js";
 import * as cards from "../../dist/core/battle/deployment/card/index.js";
 import { step } from "../../dist/core/battle/runtime.js";
 
-test("disappearance preserves deployment and lifetimes, releases blocking before cancelling actions, and removes only its rules", () => {
+test("disappearance preserves deployment and lifetimes, releases blocking before cancelling actions, and removes only its restrictions", () => {
     const departures = [];
     const ended = [];
     let entries = 0;
@@ -38,19 +38,19 @@ test("disappearance preserves deployment and lifetimes, releases blocking before
             id: "leave", invoke(state, departure) { departures.push(departure); return { state, value: undefined }; },
         }),
         occupancy: { slot: "OCCUPANT" },
-        deployable: { retreatRules: [] },
-        blocker: { capacity: 2, layer: "GROUND", rules: [] },
+        deployable: { retreatRestrictions: [] },
+        blocker: { capacity: 2, layer: "GROUND", restrictions: [] },
         action: { initialize: (state) => actions.createActions(state, actions.create(program), actions.create(idle)) },
         card: {
             cost: 10, redeployTicks: 10, slots: 1, stock: 1, stockLimit: 1, activeLimit: 1,
             cooldownOnDeploy: false, recoverOnRetreatOrDeath: true, increaseCostOnRetreatOrDeath: true,
-            refund: { rate: 0.5, limit: "BASE_COST" }, deploymentRules: [], unitHooks: Hooks.empty(),
+            refund: { rate: 0.5, limit: "BASE_COST" }, deploymentRestrictions: [], unitHooks: Hooks.empty(),
             initialize: (state) => ({ state, value: {} }),
         },
     };
     const enemy = {
         id: "enemy", hooks: Hooks.empty(), presence: {},
-        blockable: { volume: 1, rules: [] }, layer: { type: "GROUND" },
+        blockable: { volume: 1, restrictions: [] }, layer: { type: "GROUND" },
     };
     let state = battle([
         { definition: { id: "support", hooks: Hooks.empty(), occupancy: { slot: "SUPPORT" } }, position: [2, 1], initial: { occupancy: { tile: [1, 2] } } },
@@ -105,10 +105,10 @@ test("disappearance preserves deployment and lifetimes, releases blocking before
     assert.ok(effects.get(state, installed.value));
 
     state = step(state, []);
-    state = update(state, owner, action.setRule({ id: "other-source", allows: () => false }));
+    state = update(state, owner, action.setRestriction({ id: "other-source", value: { allows: () => false } }));
     state = update(state, owner, presence.appear([2, 1]));
     assert.equal(actions.start(state, actionRef).value, null);
-    state = update(state, owner, action.removeRule("other-source"));
+    state = update(state, owner, action.removeRestriction("other-source"));
     const restarted = actions.start(state, actionRef);
     assert.notEqual(restarted.value, null);
     assert.equal(actions.getExecution(restarted.state, restarted.value).execution.lifecycle, "RUNNING");

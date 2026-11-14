@@ -29,6 +29,7 @@ import * as query from "./query.js";
 import { ref as skillRef, type Skill } from "./skill.js";
 import * as sp from "./sp.js";
 import { resolveCapacity as resolveAmmoCapacity } from "./ammo.js";
+import { allows } from "../../restriction.js";
 
 const hitRecovery: ReceivingStartedHook = {
     id: "@skill/hit-recovery",
@@ -135,7 +136,7 @@ export function activate<S extends object, A extends object>(
         return { state: battle, value: null };
     }
     if (
-        !unit.skill.activationRules.every((rule) => rule.allows(battle, { self: unit })) ||
+        !allows(battle, { self: unit }, unit.skill.activationRestrictions) ||
         !(definition.accepts?.(battle, source, self) ?? true)
     ) {
         return { state: battle, value: null };
@@ -291,9 +292,7 @@ export function operate<X extends Activation<any, any>>(
     }
 
     const definition = self.definition.activation!;
-    if (
-        !unit.skill.operationRules.every((rule) => rule.allows(battle, { self: unit, operation }))
-    ) {
+    if (!allows(battle, { self: unit, operation }, unit.skill.operationRestrictions)) {
         return { state: battle, value: false };
     }
     if (definition.onOperation !== undefined) {

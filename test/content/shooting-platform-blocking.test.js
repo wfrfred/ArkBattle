@@ -20,7 +20,7 @@ function passenger(id = 10, tile = first, layer = "GROUND") {
         id, position: Tile.center(tile), initial: { occupancy: { tile } }, definition: {
             id: "passenger", hooks: Hooks.empty(), occupancy: { slot: "OCCUPANT" }, presence: {},
             allegiance: { side: "ALLY" }, vitality: { maxHp: 100, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
-            blocker: { layer, capacity: 1, rules: [sides("ENEMY")] },
+            blocker: { layer, capacity: 1, restrictions: [{ id: "opposing-side", value: sides("ENEMY") }] },
         },
     });
 }

@@ -4,17 +4,21 @@ import * as entries from "../../../common/collection/entries.js";
 import type { State as BattleState, Result } from "../../../battle/state.js";
 import type { Skill as SkillState } from "../../skill/skill.js";
 import type { Input as AmmoInput } from "../../skill/ammo.js";
-import type { Rules } from "./rule.js";
+import type { RecoveryRestriction, Restrictions } from "./restriction.js";
 import { createChange, type Change } from "../../change.js";
 import { createRegistrationOperations } from "../../registration.js";
 import { enter } from "../../skill/operations.js";
 import { enter as enterKey } from "../../hook.js";
 
+const activeRecoveryRestriction: RecoveryRestriction = {
+    allows: (_battle, { self }) => self.skill.activation === null,
+};
+
 export interface Definition {
     readonly initialize: (battle: BattleState) => Result<SkillState<any, any>>;
 }
 
-export interface State extends SkillState, Rules {
+export interface State extends SkillState, Restrictions {
     readonly nextActivationId: number;
     readonly ammo: readonly contribution.Contribution<AmmoInput>[];
 }
@@ -38,12 +42,12 @@ export function initialize<U extends Unit & Pick<Skill, "definition">>(
         ...skill,
         nextActivationId: 0,
         ammo: [],
-        activationRules: [],
-        operationRules: [],
-        recoveryRules: [
+        activationRestrictions: [],
+        operationRestrictions: [],
+        recoveryRestrictions: [
             {
                 id: "@skill/active-recovery",
-                allows: (_battle, { self }) => self.skill.activation === null,
+                value: activeRecoveryRestriction,
             },
         ],
     };
@@ -54,10 +58,10 @@ export function initialize<U extends Unit & Pick<Skill, "definition">>(
     };
 }
 
-export const { set: setRule, remove: removeRule } = createRegistrationOperations<
+export const { set: setRestriction, remove: removeRestriction } = createRegistrationOperations<
     Unit & Skill,
     "skill",
-    keyof Rules
+    keyof Restrictions
 >("skill");
 
 export function setAmmoContribution(

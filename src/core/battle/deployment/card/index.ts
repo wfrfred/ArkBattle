@@ -2,7 +2,7 @@ export type { Id, UnitDefinition, Clock, Recovery, TimerTarget, Card } from "./c
 
 export type { Definition, Refund } from "./definition.js";
 
-export type { RuleContext, Purpose, Rule } from "./rule.js";
+export type { RestrictionContext, Purpose, Restriction } from "./restriction.js";
 
 export { ref } from "./card.js";
 
@@ -23,8 +23,8 @@ export {
     resumeCooldown,
     setUnitHook,
     removeUnitHook,
-    setRule,
-    removeRule,
+    setRestriction,
+    removeRestriction,
     setCostContribution,
     removeCostContribution,
     setRedeployTimeContribution,

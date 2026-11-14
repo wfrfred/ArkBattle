@@ -7,7 +7,7 @@ import * as action from "../action/capability.js";
 import * as skill from "../skill/capability.js";
 import * as locomotion from "../locomotion/capability.js";
 import * as vitality from "../vitality/capability.js";
-import type { DamageReceptionRule } from "../vitality/rule.js";
+import type { Restriction } from "../vitality/restriction.js";
 import * as elemental from "../elemental/capability.js";
 import { hasBlocker } from "../blocking/blocker.js";
 import { hasBlockable } from "../blocking/blockable.js";
@@ -15,10 +15,11 @@ import * as blocker from "../blocking/blocker-operations.js";
 import * as blockable from "../blocking/blockable-operations.js";
 import type { Presence } from "./capability.js";
 
-const restriction = { id: "@presence/absent", allows: () => false };
+const restrictionId = "@presence/absent";
 
-const hpRestriction: DamageReceptionRule = {
-    id: restriction.id,
+const restriction = { allows: () => false };
+
+const hpRestriction: Restriction = {
     allows: (_battle, { request }) => request.nature === "LOSS",
 };
 
@@ -66,38 +67,44 @@ export function appear(position: WorldPosition): Change<Unit & Presence> {
 }
 
 function restrictions(present: boolean): Change<Unit> {
+    const entry = { id: restrictionId, value: restriction };
+
     return [
         optional(
             action.hasAction,
-            present ? action.removeRule(restriction.id) : action.setRule(restriction),
+            present ? action.removeRestriction(restrictionId) : action.setRestriction(entry),
         ),
         optional(
             skill.hasSkill,
             present
-                ? skill.removeRule("activationRules", restriction.id)
-                : skill.setRule("activationRules", restriction),
+                ? skill.removeRestriction("activationRestrictions", restrictionId)
+                : skill.setRestriction("activationRestrictions", entry),
         ),
         optional(
             locomotion.hasLocomotion,
-            present ? locomotion.removeRule(restriction.id) : locomotion.setRule(restriction),
+            present
+                ? locomotion.removeRestriction(restrictionId)
+                : locomotion.setRestriction(entry),
         ),
         optional(
             hasBlocker,
-            present ? blocker.removeRule(restriction.id) : blocker.setRule(restriction),
+            present ? blocker.removeRestriction(restrictionId) : blocker.setRestriction(entry),
         ),
         optional(
             hasBlockable,
-            present ? blockable.removeRule(restriction.id) : blockable.setRule(restriction),
+            present ? blockable.removeRestriction(restrictionId) : blockable.setRestriction(entry),
         ),
         optional(
             vitality.hasVitality,
-            present ? vitality.removeRule(restriction.id) : vitality.setRule(hpRestriction),
+            present
+                ? vitality.removeRestriction(restrictionId)
+                : vitality.setRestriction({ id: restrictionId, value: hpRestriction }),
         ),
         optional(
             elemental.hasElemental,
             present
-                ? elemental.removeRule("damageRules", restriction.id)
-                : elemental.setRule("damageRules", restriction),
+                ? elemental.removeRestriction("damageRestrictions", restrictionId)
+                : elemental.setRestriction("damageRestrictions", entry),
         ),
     ].reduce(compose);
 }

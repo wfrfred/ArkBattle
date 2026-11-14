@@ -1,19 +1,18 @@
-import type { Rule as BaseRule } from "../../../rule.js";
+import type { Restriction as BaseRestriction } from "../../../restriction.js";
 import type { Unit } from "../../unit.js";
 import type { Blocker } from "./blocker.js";
 import type { Blockable } from "./blockable.js";
 import { hasAllegiance, type Side } from "../allegiance/capability.js";
 
-export interface RuleContext {
+export interface RestrictionContext {
     readonly blocker: Unit & Blocker;
     readonly blockable: Unit & Blockable;
 }
 
-export type Rule = BaseRule<RuleContext>;
+export type Restriction = BaseRestriction<RestrictionContext>;
 
-export function sides(...sides: readonly Side[]): Rule {
+export function sides(...sides: readonly Side[]): Restriction {
     return {
-        id: "blocking/sides",
         allows: (_battle, { blockable }) =>
             hasAllegiance(blockable) && sides.includes(blockable.allegiance.side),
     };

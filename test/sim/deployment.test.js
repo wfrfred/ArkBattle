@@ -14,7 +14,7 @@ const operator = {
     id: "operator",
     hooks: Hooks.empty(),
     occupancy: { slot: "OCCUPANT" },
-    deployable: { retreatRules: [] },
+    deployable: { retreatRestrictions: [] },
     vitality: { maxHp: 100, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
     card: {
         cost: 10,
@@ -27,7 +27,7 @@ const operator = {
         recoverOnRetreatOrDeath: true,
         increaseCostOnRetreatOrDeath: true,
         refund: { rate: 0.5, limit: "BASE_COST" },
-        deploymentRules: [],
+        deploymentRestrictions: [],
         unitHooks: Hooks.empty(),
         initialize: (state) => ({ state, value: {} }),
     },
@@ -44,7 +44,7 @@ test("preview, evaluation and deployment use one request; rejection consumes not
     const deployments = [];
     const definition = {
         ...operator,
-        facing: { rules: [] },
+        facing: { restrictions: [] },
         action: {
             initialize(current) {
                 constructions.push({
@@ -75,10 +75,10 @@ test("preview, evaluation and deployment use one request; rejection consumes not
     }
     const rejected = {
         ...request,
-        rules: [
+        restrictions: [
             {
                 id: "front-row-only",
-                allows: (_current, { request: current }) => current.tilePosition[0] === 0,
+                value: { allows: (_current, { request: current }) => current.tilePosition[0] === 0 },
             },
         ],
     };
@@ -131,6 +131,40 @@ test("preview, evaluation and deployment use one request; rejection consumes not
     assert.deepEqual(get(state, deployed.value.unitId).occupancy.tile, [0, 2]);
     assert.equal(get(state, deployed.value.unitId).occupancy.direction, "LEFT");
     assert.equal(get(state, deployed.value.unitId).facing.direction, "LEFT");
+});
+
+test("DEPLOY-RESTRICTION-02: Definition, Card and Request replace IDs before group resolution and deterministic rejection", () => {
+    const permit = { allows: () => true };
+    const deny = { allows: () => false };
+    let state = battle([], { deployment: {
+        definition: { ...account, slotLimit: 0 }, cards: [{ ...operator, card: {
+            ...operator.card, activeLimit: 0,
+            deploymentRestrictions: [
+                { id: "@deployment/cooldown", value: deny },
+                { id: "@deployment/active-limit", value: deny, group: { id: "permission", priority: 1 } },
+            ],
+        } }],
+    } });
+    const card = cards.ref([...cards.all(state)][0]);
+    state = cards.startCooldown(state, card, 10);
+    state = cards.setRestriction(state, card, { id: "@deployment/cooldown", value: permit });
+    state = cards.setRestriction(state, card, {
+        id: "@deployment/slots", value: deny, group: { id: "permission", priority: 2 },
+    });
+    const request = deployment.createRequest(state, card, [0, 2]);
+    assert.deepEqual(deployment.evaluate(state, request), { type: "REJECTED", reason: "SLOT_LIMIT" });
+    const allowed = { ...request, restrictions: [
+        { id: "@deployment/slots", value: permit, group: { id: "permission", priority: 2 } },
+    ] };
+    assert.equal(deployment.evaluate(state, allowed), null);
+    assert.equal(deployment.preview(state, allowed).type, "ALLOWED");
+    const rejected = { ...allowed, restrictions: [
+        ...allowed.restrictions,
+        { id: "@deployment/cooldown", value: deny },
+        { id: "@deployment/active-limit", value: deny },
+    ] };
+    assert.deepEqual(deployment.evaluate(state, rejected), { type: "REJECTED", reason: "ACTIVE_LIMIT" });
+    assert.equal(deployment.deploy(state, allowed).value.type, "DEPLOYED");
 });
 
 test("retreat settles refund and the persistent Card before departure; confirmed death never refunds", () => {

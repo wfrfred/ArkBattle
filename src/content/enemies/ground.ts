@@ -11,7 +11,11 @@ import {
 import { Vec2 } from "../../core/common/vector.js";
 import { isCasting } from "../../core/unit/action/index.js";
 import { hasAction } from "../../core/unit/capability/action/index.js";
-import { hasLocomotion, setRule } from "../../core/unit/capability/locomotion/index.js";
+import {
+    hasLocomotion,
+    setRestriction,
+    type Restriction,
+} from "../../core/unit/capability/locomotion/index.js";
 import { hasFacing, fromVector, turn } from "../../core/unit/capability/facing/index.js";
 import { hasRoute, movementTarget } from "../../core/unit/capability/route/index.js";
 
@@ -20,6 +24,10 @@ import { perSecondToPerTick } from "../../data/time.js";
 import { assertPositiveNumber } from "../../core/common/assert.js";
 
 import type { Definitions as CapabilityDefinitions } from "../../core/unit/capability/catalog.js";
+
+const castingRestriction: Restriction = {
+    allows: (battle, { self }) => !hasAction(self) || !isCasting(battle, unitRef(self)),
+};
 
 export interface Definition
     extends
@@ -71,10 +79,9 @@ export function createDefinition(
                             : updateUnit(
                                   battle,
                                   unitRef(self),
-                                  setRule({
+                                  setRestriction({
                                       id: "attack-casting",
-                                      allows: (current, { self }) =>
-                                          !hasAction(self) || !isCasting(current, unitRef(self)),
+                                      value: castingRestriction,
                                   }),
                               ),
                         value: undefined,
@@ -101,7 +108,7 @@ export function createDefinition(
                 },
             }),
         elemental,
-        facing: { rules: [] },
+        facing: { restrictions: [] },
         vitality: {
             maxHp: profile.maxHp,
             defense: profile.defense,
@@ -115,7 +122,7 @@ export function createDefinition(
         hitbox: {
             shape: { type: "CIRCLE", offset: [0, 0], radius: hitRadius },
         },
-        blockable: { volume: profile.blockVolume, rules: [] },
+        blockable: { volume: profile.blockVolume, restrictions: [] },
         locomotion: {
             speed: perSecondToPerTick(profile.moveSpeedPerSecond),
             minSpeed: perSecondToPerTick(0.1),

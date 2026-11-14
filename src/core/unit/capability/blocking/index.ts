@@ -30,13 +30,13 @@ export type {
     PositionAdjustment,
 } from "./blockable.js";
 
-export { sides, type Rule, type RuleContext } from "./rule.js";
+export { sides, type Restriction, type RestrictionContext } from "./restriction.js";
 
 export type { Relation, Context, Hook } from "./contract.js";
 
 export {
-    setRule as setBlockerRule,
-    removeRule as removeBlockerRule,
+    setRestriction as setBlockerRestriction,
+    removeRestriction as removeBlockerRestriction,
     setCapacityContribution,
     removeCapacityContribution,
     setLayer,
@@ -44,8 +44,8 @@ export {
 } from "./blocker-operations.js";
 
 export {
-    setRule as setBlockableRule,
-    removeRule as removeBlockableRule,
+    setRestriction as setBlockableRestriction,
+    removeRestriction as removeBlockableRestriction,
     setVolumeContribution,
     removeVolumeContribution,
     release as releaseBlockable,

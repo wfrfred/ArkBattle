@@ -1,8 +1,8 @@
 export {
     hasVitality,
     initialize,
-    setRule,
-    removeRule,
+    setRestriction,
+    removeRestriction,
     setContribution,
     removeContribution,
     setMaxHpContribution,
@@ -12,9 +12,9 @@ export {
 
 export type { Definition, Input, Parameter, State, Vitality } from "./capability.js";
 
-export type { DamageReceptionRule as Rule } from "./rule.js";
+export type { Restriction } from "./restriction.js";
 
-export type { ReceivingContext as RuleContext } from "../../../battle/resource/hp/damage/hook.js";
+export type { ReceivingContext as RestrictionContext } from "../../../battle/resource/hp/damage/hook.js";
 
 export { resolveDefense, resolveResistance, resolveRecoverySpeed } from "./query.js";
 

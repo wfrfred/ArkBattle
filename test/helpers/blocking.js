@@ -34,7 +34,7 @@ export function holder(id = 10, { position = [2, 1], capacity = 1, radius = 1, l
             hooks: Hooks.empty(),
             ...(side === undefined ? {} : { allegiance: { side } }),
             presence: {}, vitality: { maxHp: 100, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
-            blocker: { layer, capacity, radius, rules: [blocker.sides("ENEMY")] },
+            blocker: { layer, capacity, radius, restrictions: [{ id: "opposing-side", value: blocker.sides("ENEMY") }] },
             ...definition,
         },
     });
@@ -48,7 +48,7 @@ export function target(id = 20, { position = [2.25, 1], volume = 1, layer = "GRO
             hooks: Hooks.empty(),
             ...(side === undefined ? {} : { allegiance: { side } }),
             presence: {}, vitality: { maxHp: 100, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
-            layer: { type: layer }, blockable: { volume, rules: [] },
+            layer: { type: layer }, blockable: { volume, restrictions: [] },
             ...definition,
         },
     });

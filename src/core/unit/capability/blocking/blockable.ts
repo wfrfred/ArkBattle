@@ -3,15 +3,18 @@ import { assertPositiveSafeInteger } from "../../../common/assert.js";
 import * as contribution from "../../contribution/contribution.js";
 import type { Unit } from "../../unit.js";
 import type { Relation, Hook } from "./contract.js";
-import type { Rule } from "./rule.js";
+import type { Restriction } from "./restriction.js";
 import type { WorldPosition } from "../../../geometry/coordinate.js";
 import { prepare } from "./blockable-operations.js";
 import { Hooks as UnitHooks, key } from "../../../hook.js";
 import { prepare as prepareKey } from "../../hook.js";
 
-export interface Definition {
+interface Restrictions {
+    readonly restrictions: readonly contribution.Contribution<Restriction>[];
+}
+
+export interface Definition extends Restrictions {
     readonly volume: number;
-    readonly rules: readonly Rule[];
 }
 
 export interface PositionAdjustment {
@@ -20,11 +23,10 @@ export interface PositionAdjustment {
     readonly startTick: number;
 }
 
-export interface State {
+export interface State extends Restrictions {
     readonly relation: Relation | null;
     readonly adjustment: PositionAdjustment | null;
     readonly volume: readonly contribution.Contribution<number>[];
-    readonly rules: readonly Rule[];
 }
 
 export interface Blockable {
@@ -57,7 +59,7 @@ export function initialize<U extends Unit & Pick<Blockable, "definition">>(
                 relation: null,
                 adjustment: null,
                 volume: [],
-                rules: unit.definition.blockable.rules,
+                restrictions: unit.definition.blockable.restrictions,
             },
         },
     };

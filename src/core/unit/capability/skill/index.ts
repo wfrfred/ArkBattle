@@ -1,8 +1,8 @@
 export {
     hasSkill,
     initialize,
-    setRule,
-    removeRule,
+    setRestriction,
+    removeRestriction,
     setAmmoContribution,
     removeAmmoContribution,
 } from "./capability.js";
@@ -22,13 +22,11 @@ export {
 export type { ActivationStarted, ActivationEnded, Context, Hook } from "./hook.js";
 
 export type {
-    ActivationRule,
-    OperationRule,
-    RecoveryRule,
-    ActivationContext as ActivationRuleContext,
-    OperationContext as OperationRuleContext,
-    RecoveryContext as RecoveryRuleContext,
-    Rule,
-    Key as RuleKey,
-    Rules,
-} from "./rule.js";
+    ActivationRestriction,
+    OperationRestriction,
+    RecoveryRestriction,
+    ActivationContext as ActivationRestrictionContext,
+    OperationContext as OperationRestrictionContext,
+    RecoveryContext as RecoveryRestrictionContext,
+    Restrictions,
+} from "./restriction.js";

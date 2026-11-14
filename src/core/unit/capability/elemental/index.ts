@@ -6,8 +6,8 @@ export {
     initialize,
     setContribution,
     removeContribution,
-    setRule,
-    removeRule,
+    setRestriction,
+    removeRestriction,
 } from "./capability.js";
 
 export type { Values, Input, Definition, Parameter, State, Elemental } from "./capability.js";
@@ -49,11 +49,9 @@ export { damaged, healed, burstStarted, burstEnded } from "./hook.js";
 export type { DamageReceivingHook, Damaged, Healed, Context, Hook } from "./hook.js";
 
 export type {
-    DamageRule,
-    HealingRule,
-    DamageContext as DamageRuleContext,
-    HealingContext as HealingRuleContext,
-    Rule,
-    Key as RuleKey,
-    Rules,
-} from "./rule.js";
+    DamageRestriction,
+    HealingRestriction,
+    DamageContext as DamageRestrictionContext,
+    HealingContext as HealingRestrictionContext,
+    Restrictions,
+} from "./restriction.js";

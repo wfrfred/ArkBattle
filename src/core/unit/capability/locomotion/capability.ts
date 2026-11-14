@@ -7,7 +7,7 @@ import type * as contribution from "../../contribution/contribution.js";
 import type * as attribute from "../../contribution/attribute.js";
 import type { SteeringParameters } from "./steering.js";
 import { createRegistrationOperations } from "../../registration.js";
-import type { Rule as BaseRule } from "../../../rule.js";
+import type { Restriction as BaseRestriction } from "../../../restriction.js";
 
 export interface Definition {
     readonly speed: number;
@@ -16,11 +16,11 @@ export interface Definition {
     readonly halfBodyWidth: number;
 }
 
-export interface RuleContext {
+export interface RestrictionContext {
     readonly self: Unit & Locomotion;
 }
 
-export type Rule = BaseRule<RuleContext>;
+export type Restriction = BaseRestriction<RestrictionContext>;
 
 export type Input = contribution.Input<attribute.Modifier, Unit & Locomotion>;
 
@@ -28,11 +28,11 @@ interface Contributions {
     readonly speed: readonly contribution.Contribution<Input>[];
 }
 
-interface Rules {
-    readonly rules: readonly Rule[];
+interface Restrictions {
+    readonly restrictions: readonly contribution.Contribution<Restriction>[];
 }
 
-export interface State extends Rules, Contributions {
+export interface State extends Restrictions, Contributions {
     readonly velocity: WorldPosition;
 }
 
@@ -68,15 +68,15 @@ export function initialize<U extends Unit & Pick<Locomotion, "definition">>(
 
     return {
         state: battle,
-        value: { ...unit, locomotion: { velocity: [0, 0], speed: [], rules: [] } },
+        value: { ...unit, locomotion: { velocity: [0, 0], speed: [], restrictions: [] } },
     };
 }
 
-export const { set: setRule, remove: removeRule } = createRegistrationOperations<
+export const { set: setRestriction, remove: removeRestriction } = createRegistrationOperations<
     Unit & Locomotion,
     "locomotion",
-    keyof Rules
->("locomotion", "rules");
+    keyof Restrictions
+>("locomotion", "restrictions");
 
 export const { set: setSpeedContribution, remove: removeSpeedContribution } =
     createRegistrationOperations<Unit & Locomotion, "locomotion", keyof Contributions>(

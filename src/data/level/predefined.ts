@@ -14,7 +14,7 @@ import { mire, deepsea } from "../../content/terrain/definition.js";
 import { create as createCrate } from "../../content/devices/crate.js";
 import { create as createShootingPlatform } from "../../content/devices/shooting-platform.js";
 import {
-    deploymentSiteRule,
+    deploymentSiteRestriction,
     type Definition as DeviceDefinition,
     type Configuration,
 } from "../../content/devices/tile.js";
@@ -151,7 +151,7 @@ function unitDefinition(
             recoverySpeed: recoverySpeed!,
             recoveryRatio: 0,
         },
-        deployable: { retreatRules: [] },
+        deployable: { retreatRestrictions: [] },
         card: {
             cost: cost!,
             redeployTicks: secondsToTicks(respawnTime!),
@@ -163,11 +163,14 @@ function unitDefinition(
             recoverOnRetreatOrDeath: false,
             increaseCostOnRetreatOrDeath: false,
             refund: { rate: 0.5, limit: "BASE_COST" },
-            deploymentRules: [
-                deploymentSiteRule(
-                    profile.deployable.placement,
-                    profile.deployable.allowedSiteConditions,
-                ),
+            deploymentRestrictions: [
+                {
+                    id: "deployment/site",
+                    value: deploymentSiteRestriction(
+                        profile.deployable.placement,
+                        profile.deployable.allowedSiteConditions,
+                    ),
+                },
             ],
             unitHooks: Hooks.empty(),
             initialize: (battle) => ({ state: battle, value: {} }),

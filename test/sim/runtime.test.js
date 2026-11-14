@@ -111,12 +111,12 @@ test("Tick phases publish their resource operations and failures preserve the in
     const operator = {
         id: "operator",
         occupancy: { slot: "OCCUPANT" },
-        deployable: { retreatRules: [] },
+        deployable: { retreatRestrictions: [] },
         card: {
             cost: 5, redeployTicks: 0, slots: 1,
             stock: 1, stockLimit: 1, activeLimit: 1,
             cooldownOnDeploy: false, recoverOnRetreatOrDeath: true, increaseCostOnRetreatOrDeath: false,
-            refund: null, deploymentRules: [], unitHooks: Hooks.empty(),
+            refund: null, deploymentRestrictions: [], unitHooks: Hooks.empty(),
             initialize: (current) => ({ state: current, value: {} }),
         },
         hooks: Hooks.empty().set(units.tick, {

@@ -7,7 +7,7 @@ import { replaceCard } from "../resources.js";
 import type { Card, TimerTarget } from "./card.js";
 import type { Key } from "../../../hook.js";
 import { type Entry, set, remove } from "../../../common/collection/entries.js";
-import type { Rule } from "./rule.js";
+import type { Restriction } from "./restriction.js";
 import { get } from "./query.js";
 import * as card from "./state.js";
 
@@ -152,22 +152,30 @@ export function removeUnitHook<H extends Entry, Owner extends object>(
     return unitHooks === self.unitHooks ? battle : replaceCard(battle, { ...self, unitHooks });
 }
 
-export function setRule(battle: BattleState, reference: Ref<Card<any>>, entry: Rule): BattleState {
+export function setRestriction(
+    battle: BattleState,
+    reference: Ref<Card<any>>,
+    entry: Contribution<Restriction>,
+): BattleState {
     const self = requireCard(battle, reference);
-    const rules = set(self.rules, entry);
+    const restrictions = set(self.restrictions, entry);
 
-    return rules === self.rules ? battle : replaceCard(battle, { ...self, rules });
+    return restrictions === self.restrictions
+        ? battle
+        : replaceCard(battle, { ...self, restrictions });
 }
 
-export function removeRule(
+export function removeRestriction(
     battle: BattleState,
     reference: Ref<Card<any>>,
     id: string,
 ): BattleState {
     const self = requireCard(battle, reference);
-    const rules = remove(self.rules, id);
+    const restrictions = remove(self.restrictions, id);
 
-    return rules === self.rules ? battle : replaceCard(battle, { ...self, rules });
+    return restrictions === self.restrictions
+        ? battle
+        : replaceCard(battle, { ...self, restrictions });
 }
 
 export function setCostContribution(

@@ -35,7 +35,7 @@ function configuration(id, tileChanges = {}) {
     return { hooks: Hooks.empty(),
         id,
         vitality: { maxHp: 100, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
-        deployable: { retreatRules: [] },
+        deployable: { retreatRestrictions: [] },
         card: createCardDefinition({ cost: 0, redeployTicks: 0, slots: 0, placement: "ALL" }),
         tileChanges,
     };
@@ -50,7 +50,7 @@ function place(battle, id, definition, tile, position = Tile.center(tile)) {
 }
 
 for (const [terrain, initialCost] of [[normal, 2000], [hole, 1000000]]) {
-    test(`device tile changes use the registered tile and preserve ${terrain === hole ? "hole" : "ordinary"} cost rules`, () => {
+    test(`device tile changes use the registered tile and preserve ${terrain === hole ? "hole" : "ordinary"} cost restrictions`, () => {
         const definition = createCrate(configuration("crate"));
         let state = battle(terrain, initialCost);
         const original = getTile(state.battlefield.map, [0, 0]);

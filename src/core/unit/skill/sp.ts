@@ -15,6 +15,7 @@ import { hasVitality } from "../capability/vitality/capability.js";
 import type { Skill } from "../capability/skill/capability.js";
 import { replace as replaceUnits } from "../../battle/unit.js";
 import { dispatch, spRecovered, spPaid, spModified } from "../capability/skill/hook.js";
+import { allows } from "../../restriction.js";
 import { createChange, type Change } from "../change.js";
 
 export type Source = "TIME" | "ACTION" | "HIT" | "EXTERNAL";
@@ -397,7 +398,7 @@ function resolve(battle: BattleState, self: WithSp, key: Parameter): number {
 }
 
 function allowsRecovery(battle: BattleState, self: Unit & Skill, source: Source): boolean {
-    return self.skill.recoveryRules.every((rule) => rule.allows(battle, { self, source }));
+    return allows(battle, { self, source }, self.skill.recoveryRestrictions);
 }
 
 function available(self: Unit): boolean {

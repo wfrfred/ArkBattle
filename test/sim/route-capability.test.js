@@ -210,10 +210,10 @@ test("spatial instructions publish consumption before hooks and resume the lates
     for (const operation of ["reassign", "ticking"]) {
         let state = battle([
             creation(plan([wait(20)]), {
-                layer: { type: "GROUND" }, blockable: { volume: 1, rules: [] },
+                layer: { type: "GROUND" }, blockable: { volume: 1, restrictions: [] },
             }),
             { definition: { id: "blocker", hooks: Hooks.empty(),
-                blocker: { layer: "GROUND", capacity: 1, radius: 1, rules: [] },
+                blocker: { layer: "GROUND", capacity: 1, radius: 1, restrictions: [] },
             }, position: [0, 0] },
         ]);
         const host = units.ref(get(state, 0));

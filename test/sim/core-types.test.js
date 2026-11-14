@@ -238,14 +238,14 @@ const receivingChange: Change<Unit & vitality.Vitality> = setUnitHook(hpDamage.r
 update(battle, ref(bare), receivingChange);
 // @ts-expect-error removal carries the same owner requirement as registration.
 update(battle, ref(bare), removeUnitHook(hpDamage.receiving, 'evade'));
-const facingDefinition = { ...bare.definition, facing: { rules: [] }, offense: { attack: 10 } };
+const facingDefinition = { ...bare.definition, facing: { restrictions: [] }, offense: { attack: 10 } };
 const facingHost = initialize(battle, {
     id: 4, definition: facingDefinition, position: [0, 0], initial: { facing: { direction: 'LEFT' } },
 }).value;
 const facingAttack: number = facingHost.definition.offense.attack;
 facing.turn(battle, ref(facingHost), 'RIGHT');
-const facingChange: Change<Unit & facing.Facing> = facing.setRule({
-    id: 'fixed', allows: (_battle, { self, direction }) => self.facing.direction === direction,
+const facingChange: Change<Unit & facing.Facing> = facing.setRestriction({
+    id: 'fixed', value: { allows: (_battle, { self, direction }) => self.facing.direction === direction },
 });
 const facingProduct: typeof facingHost = facingChange(facingHost).next;
 // @ts-expect-error Facing construction requires the instance direction.
@@ -337,7 +337,7 @@ actions.cancelForUnit(battle, ref(bare), 'SOURCE_ABSENT');
 // @ts-expect-error the host has not established the required capability.
 effects.install(battle, ref(bare), shield);
 const change: Change<Unit & Offense> = setAttackContribution({ id: 'bonus', value: [] });
-const actionChange = actionCapability.setRule({ id: 'ready', allows: () => true });
+const actionChange = actionCapability.setRestriction({ id: 'ready', value: { allows: () => true } });
 const optionalAction: Change<Unit> = optional(actionCapability.hasAction, actionChange);
 const optionalPresence: Change<Unit> = optional(hasPresence, disappear());
 update(battle, ref(bare), optionalAction);
@@ -402,22 +402,22 @@ const patient = initialize(battle, { id: 2, position: [0, 0], definition: {
 } }).value;
 const patientRef = ref(patient);
 update(battle, patientRef, receivingChange);
-update(battle, patientRef, vitality.setRule({
-    id: 'damage-permission', allows: (_state, context) => context.calculated.amount > 0,
+update(battle, patientRef, vitality.setRestriction({
+    id: 'damage-permission', value: { allows: (_state, context) => context.calculated.amount > 0 },
 }));
 const injuryType: elemental.Type = 'NEURAL';
-elemental.setRule('damageRules', {
-    id: 'injury-permission', allows: (_state, context) => context.type === 'NEURAL',
+elemental.setRestriction('damageRestrictions', {
+    id: 'injury-permission', value: { allows: (_state, context) => context.type === 'NEURAL' },
 });
-declare const elementalRule: elemental.DamageRule;
-declare const elementalRuleKey: 'damageRules' | 'healingRules';
-// @ts-expect-error a Rule cannot be registered against an unrelated field Context.
-elemental.setRule('healingRules', elementalRule);
-const fixedRule = createRegistrationOperations<
-    Unit & elemental.Elemental, 'elemental', typeof elementalRuleKey
->('elemental', elementalRuleKey);
+declare const elementalRestriction: elemental.DamageRestriction;
+declare const elementalRestrictionKey: 'damageRestrictions' | 'healingRestrictions';
+// @ts-expect-error a Restriction cannot be registered against an unrelated field Context.
+elemental.setRestriction('healingRestrictions', { id: 'damage-permission', value: elementalRestriction });
+const fixedRestriction = createRegistrationOperations<
+    Unit & elemental.Elemental, 'elemental', typeof elementalRestrictionKey
+>('elemental', elementalRestrictionKey);
 // @ts-expect-error fixing an uncertain field does not erase its Entry pairing.
-fixedRule.set(elementalRule);
+fixedRestriction.set({ id: 'damage-permission', value: elementalRestriction });
 vitality.setContribution('defense', {
     id: 'armor', value: (_state, self) => {
         const defense: number = self.definition.vitality.defense;

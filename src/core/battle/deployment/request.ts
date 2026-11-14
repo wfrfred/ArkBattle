@@ -1,10 +1,11 @@
+import type { Contribution } from "../../unit/contribution/contribution.js";
 import type { Ref } from "../../common/ref.js";
 import { assertNonnegativeNumber, assertNonnegativeSafeInteger } from "../../common/assert.js";
 import type { Direction } from "../../geometry/direction.js";
 import type { TilePosition } from "../../geometry/coordinate.js";
 import type { Hooks } from "../../hook.js";
 import type { Card } from "./card/card.js";
-import type { Rule } from "./rule.js";
+import type { Restriction } from "./restriction.js";
 
 export interface Quote {
     readonly dp: number | null;
@@ -26,7 +27,7 @@ export interface DeployRequest<T extends Card<any> = Card> {
     readonly tilePosition: TilePosition;
     readonly direction?: Direction;
     readonly quote: Quote;
-    readonly rules: readonly Rule[];
+    readonly restrictions: readonly Contribution<Restriction>[];
     readonly hooks: Hooks;
 }
 

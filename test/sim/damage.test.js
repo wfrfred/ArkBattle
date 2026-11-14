@@ -3,7 +3,7 @@ import { test } from "node:test";
 import { battle, get } from "../helpers/battle.js";
 import { Hooks, key } from "../../dist/core/hook.js";
 import * as units from "../../dist/core/unit/index.js";
-import { update } from "../../dist/core/battle/unit.js";
+import { update, remove } from "../../dist/core/battle/unit.js";
 import { advance as advanceCombat } from "../../dist/core/battle/steps/combat.js";
 import * as hpDamage from "../../dist/core/battle/resource/hp/damage/index.js";
 import * as epDamage from "../../dist/core/battle/resource/ep/damage/index.js";
@@ -14,7 +14,7 @@ import * as attribute from "../../dist/core/unit/contribution/attribute.js";
 import * as blocking from "../../dist/core/battle/blocking/index.js";
 import * as skills from "../../dist/core/unit/skill/index.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
-import { invincible } from "../../dist/core/effects/protection.js";
+import { invincible, invincibleHpDamageRestriction } from "../../dist/core/effects/protection.js";
 import * as presence from "../../dist/core/unit/capability/presence/index.js";
 import { createArknightsElementalDefinition } from "../../dist/data/effect/elemental.js";
 
@@ -201,9 +201,9 @@ test("HP-01: formulas use the calculated type and sampled defenses without begin
                     },
                 }),
             ),
-            vitality.setRule({
+            vitality.setRestriction({
                 id: "arts-only",
-                allows: (_current, context) => context.calculated.type === "ARTS",
+                value: { allows: (_current, context) => context.calculated.type === "ARTS" },
             }),
         ),
     );
@@ -667,9 +667,9 @@ test("HP-03: lethal HP remains present through nested Combat and both Applied ro
         { definition: { id: "source", hooks: Hooks.empty() }, position: [0, 0] },
         { definition: {
             id: "guard", hooks: Hooks.empty(), vitality: { maxHp: 40, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
-            blocker: { capacity: 1, layer: "GROUND", rules: [] },
+            blocker: { capacity: 1, layer: "GROUND", restrictions: [] },
         }, position: [2, 1] },
-        { definition: { id: "enemy", hooks: Hooks.empty(), layer: { type: "GROUND" }, blockable: { volume: 1, rules: [] } }, position: [2.2, 1] },
+        { definition: { id: "enemy", hooks: Hooks.empty(), layer: { type: "GROUND" }, blockable: { volume: 1, restrictions: [] } }, position: [2.2, 1] },
     ]);
     const source = units.ref(get(state, 0));
     const target = units.ref(get(state, 1));
@@ -835,8 +835,8 @@ test("EP-01: full resistance preserves formula floors and sampled EP output; HP 
     assert.deepEqual(get(calculated.state, 0).elemental.ep, elemental.elementValues(1000));
     state = update(calculated.state, target, units.compose(elemental.setContribution("elementResistance", {
             id: "changed-after-calculation", value: [attribute.create({ finalAddition: -50 })],
-        }), elemental.setRule("damageRules", {
-            id: "only-neural", allows: (_current, { type }) => type === "NEURAL",
+        }), elemental.setRestriction("damageRestrictions", {
+            id: "only-neural", value: { allows: (_current, { type }) => type === "NEURAL" },
         })));
     const preceding = injuryRequest(target, "NEURAL", 50);
     state = epDamage.applyDamage(preceding, epDamage.calculateDamage(state, preceding)).state;

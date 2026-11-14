@@ -1,29 +1,30 @@
+import type * as contribution from "../../contribution/contribution.js";
 import type { State as BattleState, Result } from "../../../battle/state.js";
 import type { WorldPosition } from "../../../geometry/coordinate.js";
-import type { Rule as BaseRule } from "../../../rule.js";
+import type { Restriction as BaseRestriction } from "../../../restriction.js";
 import type { Unit } from "../../unit.js";
 import { createRegistrationOperations } from "../../registration.js";
 
 export type Direction = "LEFT" | "RIGHT";
 
-export interface RuleContext {
+export interface RestrictionContext {
     readonly self: Unit & Facing;
     readonly direction: Direction;
 }
 
-export type Rule = BaseRule<RuleContext>;
+export type Restriction = BaseRestriction<RestrictionContext>;
 
-interface Rules {
-    readonly rules: readonly Rule[];
+interface Restrictions {
+    readonly restrictions: readonly contribution.Contribution<Restriction>[];
 }
 
-export interface Definition extends Rules {}
+export interface Definition extends Restrictions {}
 
 export interface Initial {
     readonly direction: Direction;
 }
 
-export interface State extends Rules {
+export interface State extends Restrictions {
     readonly direction: Direction;
 }
 
@@ -45,7 +46,10 @@ export function initialize<U extends Unit & Pick<Facing, "definition">>(
         state: battle,
         value: {
             ...unit,
-            facing: { direction: initial.direction, rules: unit.definition.facing.rules },
+            facing: {
+                direction: initial.direction,
+                restrictions: unit.definition.facing.restrictions,
+            },
         },
     };
 }
@@ -62,8 +66,8 @@ export function fromVector(vector: WorldPosition): Direction | null {
     return vector[0] > 0 ? "RIGHT" : "LEFT";
 }
 
-export const { set: setRule, remove: removeRule } = createRegistrationOperations<
+export const { set: setRestriction, remove: removeRestriction } = createRegistrationOperations<
     Unit & Facing,
     "facing",
-    keyof Rules
->("facing", "rules");
+    keyof Restrictions
+>("facing", "restrictions");

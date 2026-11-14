@@ -295,9 +295,9 @@ export function create(
         id: profile.id,
         profile,
         occupancy: { slot: "OCCUPANT" },
-        facing: { rules: [] },
+        facing: { restrictions: [] },
         targetable: { taunt: profile.attributes.taunt, restrictions: [] },
-        deployable: { retreatRules: [] },
+        deployable: { retreatRestrictions: [] },
         card: {
             cost: profile.attributes.cost,
             redeployTicks: secondsToTicks(profile.attributes.respawnTime),
@@ -309,18 +309,21 @@ export function create(
             recoverOnRetreatOrDeath: true,
             increaseCostOnRetreatOrDeath: true,
             refund: { rate: 0.5, limit: "BASE_COST" },
-            deploymentRules: [
+            deploymentRestrictions: [
                 {
                     id: "deployment/site",
-                    allows(battle, { request }) {
-                        const tile = getTile(battle.battlefield.map, request.tilePosition);
+                    value: {
+                        allows(battle, { request }) {
+                            const tile = getTile(battle.battlefield.map, request.tilePosition);
 
-                        return (
-                            tile !== undefined &&
-                            (tile.state.placement === "MELEE" || tile.state.placement === "ALL") &&
-                            (tile.state.siteCondition === null ||
-                                tile.state.siteCondition === normalSite)
-                        );
+                            return (
+                                tile !== undefined &&
+                                (tile.state.placement === "MELEE" ||
+                                    tile.state.placement === "ALL") &&
+                                (tile.state.siteCondition === null ||
+                                    tile.state.siteCondition === normalSite)
+                            );
+                        },
                     },
                 },
             ],
@@ -342,7 +345,7 @@ export function create(
         blocker: {
             capacity: profile.attributes.blockCapacity,
             layer: "GROUND",
-            rules: [sides("ENEMY")],
+            restrictions: [{ id: "blocking/sides", value: sides("ENEMY") }],
         },
         action: {
             initialize: (battle) => createActions(battle, initializeNormalAttack, initializeAction),

@@ -15,6 +15,7 @@ import { reflect } from "./motion.js";
 import { integrate } from "./steering.js";
 import { hasFacing, fromVector } from "../facing/capability.js";
 import { turn } from "../facing/operations.js";
+import { allows } from "../../../restriction.js";
 
 function resolveSpeed(battle: BattleState, self: Unit & Locomotion): number {
     const definition = self.definition.locomotion;
@@ -37,10 +38,7 @@ export function advance(
     context: MovementContext,
 ): BattleState {
     const self = units.get(battle, ref);
-    if (
-        self?.lifecycle !== "PRESENT" ||
-        !self.locomotion.rules.every((rule) => rule.allows(battle, { self }))
-    ) {
+    if (self?.lifecycle !== "PRESENT" || !allows(battle, { self }, self.locomotion.restrictions)) {
         return battle;
     }
 

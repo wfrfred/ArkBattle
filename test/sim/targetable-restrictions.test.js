@@ -27,7 +27,7 @@ test("restriction exemptions use effective definition identity without reviving 
         creation("ALLY"),
         creation("ENEMY", [{ id: "innate", value: invisibleRestriction }]),
         creation("ENEMY", [
-            { id: "hidden", value: invisibleRestriction, group: { id: "visibility", priority: 1 } },
+            { id: "hidden", value: invisibleRestriction, group: { id: "visibility", priority: 2 } },
             { id: "camouflage", value: camouflageRestriction, group: { id: "visibility", priority: 2 } },
         ]),
     ]);

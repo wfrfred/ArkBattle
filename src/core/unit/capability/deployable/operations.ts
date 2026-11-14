@@ -7,6 +7,7 @@ import { get as getCard } from "../../../battle/deployment/card/query.js";
 import type { Unit } from "../../unit.js";
 import * as units from "../../query.js";
 import type { Deployable, State } from "./capability.js";
+import { allows } from "../../../restriction.js";
 
 export function setDeployment<U extends Unit & Deployable>(
     self: U,
@@ -20,7 +21,7 @@ export function canRetreat(battle: BattleState, reference: Ref<Unit & Deployable
 
     return (
         self?.lifecycle === "PRESENT" &&
-        self.deployable.retreatRules.every((rule) => rule.allows(battle, { self }))
+        allows(battle, { self }, self.deployable.retreatRestrictions)
     );
 }
 

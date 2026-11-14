@@ -141,7 +141,7 @@ test("natural SP recovery pauses without backlog and uses current recovery speed
     let state = battle([{ definition, position: [1, 1] }]);
     const source = units.ref(get(state, 0));
     for (let tick = 0; tick <= 5; tick++) state = skills.advance({ ...state, tick }, source);
-    state = update(state, source, skill.setRule("recoveryRules", { id: "blocked", allows: () => false }));
+    state = update(state, source, skill.setRestriction("recoveryRestrictions", { id: "blocked", value: { allows: () => false } }));
     const payment = skills.pay(state, source, 2);
     state = payment.state;
     assert.deepEqual(payment.value, { type: "APPLIED", amount: 2 });
@@ -149,7 +149,7 @@ test("natural SP recovery pauses without backlog and uses current recovery speed
     assert.equal(skills.modify(state, source, 1).value.type, "REJECTED");
     for (let tick = 6; tick <= 10; tick++) state = skills.advance({ ...state, tick }, source);
     assert.equal(get(state, 0).skill.sp.value, 0);
-    state = update(state, source, skill.removeRule("recoveryRules", "blocked"));
+    state = update(state, source, skill.removeRestriction("recoveryRestrictions", "blocked"));
     for (let tick = 11; tick <= 13; tick++) state = skills.advance({ ...state, tick }, source);
     assert.equal(get(state, 0).skill.sp.value, 0);
     state = skills.advance({ ...state, tick: 14 }, source);

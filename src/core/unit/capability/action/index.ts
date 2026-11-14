@@ -1,6 +1,13 @@
-export { hasAction, initialize, setRule, removeRule } from "./capability.js";
+export { hasAction, initialize, setRestriction, removeRestriction } from "./capability.js";
 
-export type { Definition, RuleContext, Rule, Input, State, Action } from "./capability.js";
+export type {
+    Definition,
+    RestrictionContext,
+    Restriction,
+    Input,
+    State,
+    Action,
+} from "./capability.js";
 
 export { beforeRelease, released, dispatchBeforeRelease, dispatchReleased } from "./release.js";
 

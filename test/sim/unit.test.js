@@ -24,8 +24,8 @@ test("Unit construction rejects conflicting roles and installs entry effects on 
     assert.throws(() => units.initialize(battle(), {
         id: 0, position: [0, 0], definition: {
             id: "conflicting-roles", hooks: Hooks.empty(),
-            blocker: { capacity: 1, layer: "GROUND", rules: [] },
-            blockable: { volume: 1, rules: [] },
+            blocker: { capacity: 1, layer: "GROUND", restrictions: [] },
+            blockable: { volume: 1, restrictions: [] },
         },
     }), TypeError);
 

@@ -15,7 +15,7 @@ import type { Card } from "./card/card.js";
 import * as card from "./card/state.js";
 import * as cards from "./card/operations.js";
 import { advanceResources, replaceCard } from "./resources.js";
-import { evaluateRules, resolveRules, createRequest } from "./query.js";
+import { evaluateCurrent, resolveRestrictions, createRequest } from "./query.js";
 import { validateQuote, type DeployRequest, type DeployOutcome } from "./request.js";
 import { Hooks } from "../../hook.js";
 import * as lifecycle from "../../unit/hook.js";
@@ -47,7 +47,7 @@ export function deploy<T extends Card<any>>(
     }
 
     battle = advanceResources(battle, self);
-    const rejected = evaluateRules(battle, input, resolveRules(self, input));
+    const rejected = evaluateCurrent(battle, input, resolveRestrictions(self, input));
     if (rejected !== null) {
         return { state: previous, value: rejected };
     }

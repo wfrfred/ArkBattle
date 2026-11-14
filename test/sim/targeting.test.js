@@ -77,8 +77,8 @@ test("mixed healing keeps HP or EP demand while only an ACTIVE healFree marker r
     state = wound(state, enlarged, 300);
     state = injure(state, units.ref(get(state, 2)), 200).state;
     state = injure(state, units.ref(get(state, 4)), 1000).state;
-    state = update(state, enlarged, elemental.setRule("healingRules", {
-        id: "no-ep-healing", allows: () => false,
+    state = update(state, enlarged, elemental.setRestriction("healingRestrictions", {
+        id: "no-ep-healing", value: { allows: () => false },
     }));
     const source = get(state, 0);
     const hpRecipients = state => candidates(state).filter(targeting.healing(state, source));
@@ -104,7 +104,7 @@ test("mixed healing keeps HP or EP demand while only an ACTIVE healFree marker r
     assert.deepEqual(ids(recipients(state)), [1, 2, 4]);
 });
 
-test("EP selection checks current resource eligibility without executing reception Rules", () => {
+test("EP selection checks current resource eligibility without executing reception Restrictions", () => {
     const receiver = {
         id: "ep-receiver", hooks: Hooks.empty(), targetable: { taunt: 0, restrictions: [] },
         allegiance: { side: "ALLY" },
@@ -118,11 +118,11 @@ test("EP selection checks current resource eligibility without executing recepti
     const target = units.ref(get(state, 1));
     let damageChecks = 0;
     let healingChecks = 0;
-    state = update(state, target, elemental.setRule("damageRules", {
-        id: "receive-damage", allows() { damageChecks++; return false; },
+    state = update(state, target, elemental.setRestriction("damageRestrictions", {
+        id: "receive-damage", value: { allows() { damageChecks++; return false; } },
     }));
-    state = update(state, target, elemental.setRule("healingRules", {
-        id: "receive-healing", allows() { healingChecks++; return false; },
+    state = update(state, target, elemental.setRestriction("healingRestrictions", {
+        id: "receive-healing", value: { allows() { healingChecks++; return false; } },
     }));
     const damageCandidates = state => candidates(state).filter(targeting.elementDamage(state, get(state, 0)));
     const healingCandidates = state => candidates(state).filter(targeting.elementHealing(state, get(state, 1)));
@@ -133,7 +133,7 @@ test("EP selection checks current resource eligibility without executing recepti
     assert.equal(healingChecks, 0);
     assert.equal(injure(state, target, 200).value.type, "REJECTED");
     assert.ok(damageChecks > 0);
-    state = update(state, target, elemental.removeRule("damageRules", "receive-damage"));
+    state = update(state, target, elemental.removeRestriction("damageRestrictions", "receive-damage"));
     state = injure(state, target, 200).state;
     assert.deepEqual(ids(healingCandidates(state)), [1]);
     assert.equal(healingChecks, 0);

@@ -12,6 +12,14 @@ export const invincibleRestriction: targetable.Restriction = {
     allows: untargetableRestriction.allows,
 };
 
+export const invincibleHpDamageRestriction: vitality.Restriction = {
+    allows: (_battle, { request }) => request.nature === "LOSS",
+};
+
+export const invincibleEpDamageRestriction: elemental.DamageRestriction = {
+    allows: () => false,
+};
+
 export const invincible: Definition<object, targetable.Targetable> = {
     id: "protection/invincible",
     initialize: () => ({}),
@@ -28,7 +36,7 @@ export const invincible: Definition<object, targetable.Targetable> = {
             units.ref(unit),
             compose(
                 targetable.setRestriction({ id, value: invincibleRestriction }),
-                receptionRules(id, true),
+                receptionRestrictions(id, true),
             ),
         );
     },
@@ -43,7 +51,7 @@ export const invincible: Definition<object, targetable.Targetable> = {
         return updateUnit(
             state,
             units.ref(unit),
-            compose(targetable.removeRestriction(id), receptionRules(id, false)),
+            compose(targetable.removeRestriction(id), receptionRestrictions(id, false)),
         );
     },
 };
@@ -53,23 +61,22 @@ export const healFree: Definition<object> = {
     initialize: () => ({}),
 };
 
-function receptionRules(id: string, enabled: boolean): Change<units.Unit> {
-    const rule = { id, allows: () => false };
-    const hpRule: vitality.Rule = {
-        id,
-        allows: (_battle, { request }) => request.nature === "LOSS",
-    };
-
+function receptionRestrictions(id: string, enabled: boolean): Change<units.Unit> {
     return compose(
         optional(
             elemental.hasElemental,
             enabled
-                ? elemental.setRule("damageRules", rule)
-                : elemental.removeRule("damageRules", id),
+                ? elemental.setRestriction("damageRestrictions", {
+                      id,
+                      value: invincibleEpDamageRestriction,
+                  })
+                : elemental.removeRestriction("damageRestrictions", id),
         ),
         optional(
             vitality.hasVitality,
-            enabled ? vitality.setRule(hpRule) : vitality.removeRule(id),
+            enabled
+                ? vitality.setRestriction({ id, value: invincibleHpDamageRestriction })
+                : vitality.removeRestriction(id),
         ),
     );
 }

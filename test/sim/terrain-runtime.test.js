@@ -182,8 +182,8 @@ test("deepsea and holes affect ground enemies while leaving allies and airborne 
 test("smog keeps allied ground and airborne units invisible through blocking until they leave", () => {
     const configured = setup([terrain.smog.create({}), terrain.normal.create({})], [
         unit(0, { vitality: combat.vitality, allegiance: { side: "ALLY" }, targetable: { taunt: 0, restrictions: [] },
-            blocker: { layer: "GROUND", rules: [], capacity: 1, radius: 0.7 } }),
-        unit(0, { allegiance: { side: "ENEMY" }, layer: { type: "GROUND" }, blockable: { volume: 1, rules: [] } }),
+            blocker: { layer: "GROUND", restrictions: [], capacity: 1, radius: 0.7 } }),
+        unit(0, { allegiance: { side: "ENEMY" }, layer: { type: "GROUND" }, blockable: { volume: 1, restrictions: [] } }),
         unit(0, { vitality: combat.vitality, allegiance: { side: "ALLY" },
             layer: { type: "AIR" }, targetable: { taunt: 0, restrictions: [] } }),
     ], [terrain.smog]);

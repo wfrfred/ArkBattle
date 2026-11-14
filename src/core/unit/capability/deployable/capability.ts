@@ -1,8 +1,9 @@
+import type * as contribution from "../../contribution/contribution.js";
 import type { State as BattleState, Result } from "../../../battle/state.js";
 import type { Unit } from "../../unit.js";
 import type { Ref } from "../../../common/ref.js";
 import type { Card } from "../../../battle/deployment/card/card.js";
-import type { Rule as BaseRule } from "../../../rule.js";
+import type { Restriction as BaseRestriction } from "../../../restriction.js";
 import { hasOccupancy, type Occupancy } from "../occupancy/capability.js";
 import { Hooks } from "../../../hook.js";
 import { leave } from "../../hook.js";
@@ -14,26 +15,24 @@ export interface Refund {
     readonly limit: number;
 }
 
-export interface Definition {
-    readonly retreatRules: readonly Rule[];
+export interface Definition extends Restrictions {}
+
+export interface Restrictions {
+    readonly retreatRestrictions: readonly contribution.Contribution<Restriction>[];
 }
 
-export interface Rules {
-    readonly retreatRules: readonly Rule[];
-}
-
-export interface State extends Rules {
+export interface State extends Restrictions {
     readonly card: Ref<Card> | null;
     readonly cost: number;
     readonly slots: number;
     readonly refund: Refund | null;
 }
 
-export interface RuleContext {
+export interface RestrictionContext {
     readonly self: Unit & Deployable;
 }
 
-export type Rule = BaseRule<RuleContext>;
+export type Restriction = BaseRestriction<RestrictionContext>;
 
 export type Deployable = Occupancy & {
     readonly definition: { readonly deployable: Definition };
@@ -66,7 +65,7 @@ export function initialize<
                 cost: 0,
                 slots: 0,
                 refund: null,
-                retreatRules: unit.definition.deployable.retreatRules,
+                retreatRestrictions: unit.definition.deployable.retreatRestrictions,
             },
         },
     };
@@ -76,8 +75,8 @@ export function hasDeployable<U extends Unit>(unit: U): unit is U & Deployable {
     return "deployable" in unit && "deployable" in unit.definition;
 }
 
-export const { set: setRule, remove: removeRule } = createRegistrationOperations<
+export const { set: setRestriction, remove: removeRestriction } = createRegistrationOperations<
     Unit & Deployable,
     "deployable",
-    keyof Rules
->("deployable", "retreatRules");
+    keyof Restrictions
+>("deployable", "retreatRestrictions");

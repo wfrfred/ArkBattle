@@ -8,7 +8,7 @@ export { resolveBaseCost, resolveCost, resolveRedeployTicks } from "./card/state
 
 export type { Quote, DeployRequest, DeployOutcome, Rejection, Rejected } from "./request.js";
 
-export type { Rule, RuleContext } from "./rule.js";
+export type { Restriction, RestrictionContext } from "./restriction.js";
 
 export type { Hook, Deployed } from "./hook.js";
 
@@ -21,7 +21,7 @@ export {
     evaluate,
     preview,
     positions,
-    defaultRules,
+    defaultRestrictions,
 } from "./query.js";
 
 export { addCard, advance } from "./resources.js";

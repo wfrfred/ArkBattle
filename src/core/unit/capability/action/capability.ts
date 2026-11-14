@@ -5,27 +5,27 @@ import type { Actions } from "../../action/actions.js";
 import type * as contribution from "../../contribution/contribution.js";
 import type * as attribute from "../../contribution/attribute.js";
 import { createRegistrationOperations } from "../../registration.js";
-import type { Rule as BaseRule } from "../../../rule.js";
+import type { Restriction as BaseRestriction } from "../../../restriction.js";
 
 export interface Definition {
     readonly initialize: (battle: BattleState) => Result<Actions>;
     readonly select?: (battle: BattleState, self: Unit & Action) => Result<readonly DefinitionId[]>;
 }
 
-export interface RuleContext {
+export interface RestrictionContext {
     readonly self: Unit & Action;
     readonly definitionId: DefinitionId;
 }
 
-export type Rule = BaseRule<RuleContext>;
+export type Restriction = BaseRestriction<RestrictionContext>;
 
 export type Input = readonly attribute.Modifier[];
 
-interface Rules {
-    readonly rules: readonly Rule[];
+interface Restrictions {
+    readonly restrictions: readonly contribution.Contribution<Restriction>[];
 }
 
-export interface State extends Rules {
+export interface State extends Restrictions {
     readonly actions: Actions;
     readonly nextExecutionId: number;
     readonly interval: readonly contribution.Contribution<Input>[];
@@ -56,14 +56,14 @@ export function initialize<U extends Unit & Pick<Action, "definition">>(
                 nextExecutionId: 0,
                 interval: [],
                 speed: [],
-                rules: [],
+                restrictions: [],
             },
         },
     };
 }
 
-export const { set: setRule, remove: removeRule } = createRegistrationOperations<
+export const { set: setRestriction, remove: removeRestriction } = createRegistrationOperations<
     Unit & Action,
     "action",
-    keyof Rules
->("action", "rules");
+    keyof Restrictions
+>("action", "restrictions");

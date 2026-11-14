@@ -17,13 +17,13 @@ import { Vec2 } from "../../dist/core/common/vector.js";
 const blocker = {
     id: "guard",
     hooks: Hooks.empty(),
-    blocker: { capacity: 3, layer: "GROUND", rules: [] },
+    blocker: { capacity: 3, layer: "GROUND", restrictions: [] },
 };
 const enemy = {
     id: "enemy",
     presence: {},
     hooks: Hooks.empty(),
-    blockable: { volume: 1, rules: [] },
+    blockable: { volume: 1, restrictions: [] },
     layer: { type: "GROUND" },
     allegiance: { side: "ENEMY" },
 };
@@ -66,24 +66,24 @@ test("HOOK-03: a relation samples both sides before the first callback while rea
     assert.deepEqual(calls, ["blocker", "replacement"]);
 });
 
-test("search and maintenance use current pair rules, volume, layers and ground tile eligibility", () => {
+test("search and maintenance use effective pair restrictions, volume, layers and ground tile eligibility", () => {
     let state = battle([
         {
             definition: {
                 ...blocker,
-                blocker: { capacity: 2, layer: "GROUND", rules: [capability.sides("ENEMY")] },
+                blocker: { capacity: 2, layer: "GROUND", restrictions: [{ id: "opposing-side", value: capability.sides("ENEMY") }] },
             },
             position: [2, 1],
         },
         { definition: { ...enemy, allegiance: { side: "ALLY" } }, position: [2.1, 1] },
         { definition: { ...enemy, layer: { type: "AIR" } }, position: [2.15, 1] },
-        { definition: { ...enemy, blockable: { volume: 2, rules: [] } }, position: [2.2, 1] },
+        { definition: { ...enemy, blockable: { volume: 2, restrictions: [] } }, position: [2.2, 1] },
         {
             definition: {
                 ...enemy,
                 blockable: {
                     volume: 1,
-                    rules: [{ id: "cannot-be-held", allows: () => false }],
+                    restrictions: [{ id: "cannot-be-held", value: { allows: () => false } }],
                 },
             },
             position: [2.3, 1],
@@ -104,7 +104,7 @@ test("search and maintenance use current pair rules, volume, layers and ground t
     state = unit.update(
         state,
         units.ref(get(state, 4)),
-        capability.removeBlockableRule("cannot-be-held"),
+        capability.removeBlockableRestriction("cannot-be-held"),
     );
     state = blocking.search(state, owner);
     assert.deepEqual(
@@ -122,11 +122,23 @@ test("search and maintenance use current pair rules, volume, layers and ground t
         blocking.blocked(state, owner).map(({ id }) => id),
         [2],
     );
-    state = unit.update(state, units.ref(get(state, 2)), capability.setBlockableRule({
-        id: "first-tick-only", allows: (current) => current.tick === 0,
+    state = unit.update(state, units.ref(get(state, 2)), capability.setBlockableRestriction({
+        id: "first-tick-only", value: { allows: (current) => current.tick === 0 },
     }));
     state = blocking.advance({ ...state, tick: 1 });
     assert.deepEqual(blocking.blocked(state, owner), []);
+
+    const target = units.ref(get(state, 2));
+    state = unit.update(state, target, compose(
+        capability.setBlockableRestriction({ id: "first-tick-only", value: { allows: () => false }, group: { id: "permission", priority: 1 } }),
+        capability.setBlockableRestriction({ id: "permit", value: { allows: () => true }, group: { id: "permission", priority: 2 } }),
+    ));
+    state = blocking.search(state, owner);
+    assert.equal(blocking.blockerOf(state, target).id, owner.id);
+    state = unit.update(state, target, capability.setBlockableRestriction({
+        id: "first-tick-only", value: { allows: () => false }, group: { id: "permission", priority: 3 },
+    }));
+    assert.equal(blocking.blockerOf(state, target), undefined);
 });
 
 test("capacity shrink releases the newest relation and observes callback changes before continuing", () => {
@@ -209,7 +221,7 @@ test("layer settlements release current relations acquired by earlier settlement
         }));
 
         state = unit.update(state, owner, compose(
-            capability.setBlockerRule(capability.sides("ENEMY")),
+            capability.setBlockerRestriction({ id: "opposing-side", value: capability.sides("ENEMY") }),
             change,
         ));
 

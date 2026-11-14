@@ -7,11 +7,16 @@ import type { TilePosition } from "../../core/geometry/coordinate.js";
 import { hasOccupancy } from "../../core/unit/capability/occupancy/index.js";
 import {
     hasBlocker,
-    removeBlockerRule as removeRule,
-    setBlockerRule as setRule,
+    removeBlockerRestriction as removeRestriction,
+    setBlockerRestriction as setRestriction,
+    type Restriction,
 } from "../../core/unit/capability/blocking/index.js";
 import { ref as unitRef } from "../../core/unit/index.js";
 import { apply, restore, type Configuration, type Definition } from "./tile.js";
+
+const groundBlockingRestriction: Restriction = {
+    allows: (_battle, { blocker }) => blocker.blocker.layer === "AIR",
+};
 
 function clearOccupant(battle: BattleState, position: TilePosition): BattleState {
     const occupant = occupancyAt(battle.battlefield, position)?.occupant;
@@ -34,15 +39,15 @@ export function create(configuration: Configuration): Definition {
         occupancy: {
             slot: "SUPPORT",
             onOccupantAdded(battle, { support, occupant }) {
-                const ruleId = `shooting-platform/${support.id}/block-free`;
+                const restrictionId = `shooting-platform/${support.id}/block-free`;
 
                 return hasBlocker(occupant)
                     ? update(
                           battle,
                           unitRef(occupant),
-                          setRule({
-                              id: ruleId,
-                              allows: (_battle, { blocker }) => blocker.blocker.layer === "AIR",
+                          setRestriction({
+                              id: restrictionId,
+                              value: groundBlockingRestriction,
                           }),
                       )
                     : battle;
@@ -53,7 +58,7 @@ export function create(configuration: Configuration): Definition {
                     battle = update(
                         battle,
                         unitRef(current),
-                        removeRule(`shooting-platform/${support.id}/block-free`),
+                        removeRestriction(`shooting-platform/${support.id}/block-free`),
                     );
                 }
 

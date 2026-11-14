@@ -8,7 +8,7 @@ import type { Ref } from "../../../common/ref.js";
 import type { Unit } from "../../unit.js";
 import type { PrepareHook } from "../../hook.js";
 import * as units from "../../query.js";
-import type { Rule } from "./rule.js";
+import type { Restriction } from "./restriction.js";
 import {
     DEFAULT_RADIUS,
     resolveCapacity,
@@ -35,7 +35,7 @@ export function releaseAll(battle: BattleState, reference: Ref<Unit & Blocker>):
     return blocking.release(battle, self.blocker.relations);
 }
 
-function settleRules(battle: BattleState, reference: Ref<Unit & Blocker>): BattleState {
+function settleRestrictions(battle: BattleState, reference: Ref<Unit & Blocker>): BattleState {
     for (const relation of relations(battle, reference)) {
         battle = blocking.maintain(battle, relation);
     }
@@ -62,29 +62,31 @@ export function settleCapacity(battle: BattleState, reference: Ref<Unit & Blocke
     return battle;
 }
 
-export function setRule(rule: Rule): Change<Unit & Blocker> {
+export function setRestriction(
+    entry: contribution.Contribution<Restriction>,
+): Change<Unit & Blocker> {
     return createChange<Unit & Blocker>(
         (self) => {
-            const rules = entries.set(self.blocker.rules, rule);
+            const restrictions = entries.set(self.blocker.restrictions, entry);
 
-            return rules === self.blocker.rules
+            return restrictions === self.blocker.restrictions
                 ? self
-                : { ...self, blocker: { ...self.blocker, rules } };
+                : { ...self, blocker: { ...self.blocker, restrictions } };
         },
-        (battle, previous) => settleRules(battle, units.ref(previous)),
+        (battle, previous) => settleRestrictions(battle, units.ref(previous)),
     );
 }
 
-export function removeRule(id: string): Change<Unit & Blocker> {
+export function removeRestriction(id: string): Change<Unit & Blocker> {
     return createChange<Unit & Blocker>(
         (self) => {
-            const rules = entries.remove(self.blocker.rules, id);
+            const restrictions = entries.remove(self.blocker.restrictions, id);
 
-            return rules === self.blocker.rules
+            return restrictions === self.blocker.restrictions
                 ? self
-                : { ...self, blocker: { ...self.blocker, rules } };
+                : { ...self, blocker: { ...self.blocker, restrictions } };
         },
-        (battle, previous) => settleRules(battle, units.ref(previous)),
+        (battle, previous) => settleRestrictions(battle, units.ref(previous)),
     );
 }
 

@@ -1,9 +1,16 @@
-export { hasFacing, initialize, sign, fromVector, setRule, removeRule } from "./capability.js";
+export {
+    hasFacing,
+    initialize,
+    sign,
+    fromVector,
+    setRestriction,
+    removeRestriction,
+} from "./capability.js";
 
 export type {
     Direction,
-    RuleContext,
-    Rule,
+    RestrictionContext,
+    Restriction,
     Definition,
     Initial,
     State,

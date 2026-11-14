@@ -1,3 +1,4 @@
+import { allows } from "../../restriction.js";
 import { Vec2 } from "../../common/vector.js";
 import { replace } from "../unit.js";
 import type { Ref } from "../../common/ref.js";
@@ -55,10 +56,8 @@ function canRetain(
         allowsTile(battle, blocker) &&
         hasLayer(target) &&
         blocker.blocker.layer === target.layer.type &&
-        blocker.blocker.rules.every((rule) =>
-            rule.allows(battle, { blocker, blockable: target }),
-        ) &&
-        target.blockable.rules.every((rule) => rule.allows(battle, { blocker, blockable: target }))
+        allows(battle, { blocker, blockable: target }, blocker.blocker.restrictions) &&
+        allows(battle, { blocker, blockable: target }, target.blockable.restrictions)
     );
 }
 

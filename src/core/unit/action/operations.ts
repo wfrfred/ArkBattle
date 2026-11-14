@@ -13,6 +13,7 @@ import { ref, type Execution } from "./execution.js";
 import type { End } from "./definition.js";
 import * as cooldown from "./cooldown.js";
 import { executionRefs } from "./query.js";
+import { allows } from "../../restriction.js";
 
 export function setState<X extends Action<any, any>>(
     battle: BattleState,
@@ -56,9 +57,7 @@ export function start<P extends object, E extends object>(
             return null;
         }
         if (
-            !unit.action.rules.every((rule) =>
-                rule.allows(battle, { self: unit, definitionId: definition.id }),
-            )
+            !allows(battle, { self: unit, definitionId: definition.id }, unit.action.restrictions)
         ) {
             return null;
         }

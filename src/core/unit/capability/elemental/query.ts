@@ -10,6 +10,8 @@ import { ELEMENT_TYPES, type Elemental, type Parameter, type Type } from "./capa
 import type { Burst } from "./burst.js";
 import type { Request as DamageRequest } from "../../../battle/resource/ep/damage/contract.js";
 import type { Request as HealingRequest } from "../../../battle/resource/ep/healing/contract.js";
+import { allows } from "../../../restriction.js";
+import type { DamageRestriction } from "./restriction.js";
 
 export function get(battle: BattleState, reference: Ref<Burst>): Burst | undefined {
     const host = units.get(battle, reference.host);
@@ -63,6 +65,7 @@ export function canReceiveDamage(
     battle: BattleState,
     request: DamageRequest,
     type: Type = request.parameters.type,
+    ignore?: (restriction: DamageRestriction) => boolean,
 ): boolean {
     const self = units.get(battle, request.target);
 
@@ -71,7 +74,7 @@ export function canReceiveDamage(
         available(self) &&
         self.elemental.burst === null &&
         (!hasAllegiance(self) || self.allegiance.side !== "NEUTRAL") &&
-        self.elemental.damageRules.every((rule) => rule.allows(battle, { self, request, type }))
+        allows(battle, { self, request, type }, self.elemental.damageRestrictions, ignore)
     );
 }
 
@@ -82,7 +85,7 @@ export function canReceiveHealing(battle: BattleState, request: HealingRequest):
         self !== undefined &&
         available(self) &&
         self.elemental.burst === null &&
-        self.elemental.healingRules.every((rule) => rule.allows(battle, { self, request }))
+        allows(battle, { self, request }, self.elemental.healingRestrictions)
     );
 }
 

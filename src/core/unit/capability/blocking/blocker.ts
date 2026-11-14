@@ -4,7 +4,7 @@ import { roundToEven } from "../../../common/math.js";
 import * as contribution from "../../contribution/contribution.js";
 import type { Unit } from "../../unit.js";
 import type { Relation, Hook } from "./contract.js";
-import type { Rule } from "./rule.js";
+import type { Restriction } from "./restriction.js";
 import { prepare } from "./blocker-operations.js";
 import { Hooks as UnitHooks, key } from "../../../hook.js";
 import { prepare as prepareKey } from "../../hook.js";
@@ -18,19 +18,21 @@ export const DEFAULT_RADIUS: Readonly<Record<Layer, number>> = {
     AIR: 0.8944,
 };
 
-export interface Definition {
+interface Restrictions {
+    readonly restrictions: readonly contribution.Contribution<Restriction>[];
+}
+
+export interface Definition extends Restrictions {
     readonly capacity: number;
     readonly layer: Layer;
     readonly radius?: number;
-    readonly rules: readonly Rule[];
 }
 
-export interface State {
+export interface State extends Restrictions {
     readonly relations: readonly Relation[];
     readonly capacity: readonly contribution.Contribution<readonly Modifier[]>[];
     readonly layer: Layer;
     readonly radius: number;
-    readonly rules: readonly Rule[];
 }
 
 export interface Blocker {
@@ -71,7 +73,7 @@ export function initialize<U extends Unit & Pick<Blocker, "definition">>(
                 capacity: [],
                 layer: definition.layer,
                 radius,
-                rules: definition.rules,
+                restrictions: definition.restrictions,
             },
         },
     };

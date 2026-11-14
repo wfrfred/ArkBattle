@@ -6,7 +6,7 @@ import { Hooks } from "../../dist/core/hook.js";
 import { ref } from "../../dist/core/unit/query.js";
 import { update } from "../../dist/core/battle/unit.js";
 import { create } from "../../dist/core/unit/contribution/attribute.js";
-import { advance, setSpeedContribution, removeSpeedContribution, setRule, removeRule } from "../../dist/core/unit/capability/locomotion/index.js";
+import { advance, setSpeedContribution, removeSpeedContribution, setRestriction, removeRestriction } from "../../dist/core/unit/capability/locomotion/index.js";
 
 const close = (actual, expected) => assert.ok(Math.abs(actual - expected) < 1e-12);
 
@@ -36,11 +36,11 @@ test("current movement speed, its minimum and movement permission remain separat
     const velocity = get(state, 0).locomotion.velocity;
     state = move(state, 0);
     close(get(state, 0).position[0], 0.375);
-    state = update(state, host, setRule({ id: "stop", allows: () => false }));
+    state = update(state, host, setRestriction({ id: "stop", value: { allows: () => false } }));
     state = move(state);
     close(get(state, 0).position[0], 0.375);
     assert.deepEqual(get(state, 0).locomotion.velocity, velocity);
-    state = update(state, host, compose(removeRule("stop"), removeSpeedContribution("slow")));
+    state = update(state, host, compose(removeRestriction("stop"), removeSpeedContribution("slow")));
     state = move(state);
     close(get(state, 0).position[0], 0.575);
 });

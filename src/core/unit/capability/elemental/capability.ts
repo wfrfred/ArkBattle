@@ -10,7 +10,7 @@ import type * as contribution from "../../contribution/contribution.js";
 import type * as attribute from "../../contribution/attribute.js";
 import type { Burst, Definition as BurstDefinition } from "./burst.js";
 import type { Ref } from "../../../common/ref.js";
-import type { Rules } from "./rule.js";
+import type { Restrictions } from "./restriction.js";
 import { createRegistrationOperations } from "../../registration.js";
 
 export const Type = {
@@ -47,7 +47,7 @@ interface Contributions {
 
 export type Parameter = keyof Contributions;
 
-export interface State extends Rules, Contributions {
+export interface State extends Restrictions, Contributions {
     readonly ep: Values;
     readonly burst: Ref<Burst> | null;
 }
@@ -101,8 +101,8 @@ export function initialize<U extends Unit & Pick<Elemental, "definition">>(
                 elementResistance: [],
                 damageResistance: [],
                 burstRecoverySpeed: [],
-                damageRules: [],
-                healingRules: [],
+                damageRestrictions: [],
+                healingRestrictions: [],
             },
         },
     };
@@ -114,8 +114,8 @@ export const { set: setContribution, remove: removeContribution } = createRegist
     keyof Contributions
 >("elemental");
 
-export const { set: setRule, remove: removeRule } = createRegistrationOperations<
+export const { set: setRestriction, remove: removeRestriction } = createRegistrationOperations<
     Unit & Elemental,
     "elemental",
-    keyof Rules
+    keyof Restrictions
 >("elemental");

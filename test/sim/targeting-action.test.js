@@ -51,7 +51,7 @@ test("an attack turns once at its started program, before output, without turnin
         }],
     });
     let state = createBattle([
-        { definition: { id: "attacker", hooks: Hooks.empty(), facing: { rules: [] },
+        { definition: { id: "attacker", hooks: Hooks.empty(), facing: { restrictions: [] },
             action: actionCapability(program),
         }, position: [3, 1], initial: { facing: { direction: "RIGHT" } } },
         { definition: { id: "target", hooks: Hooks.empty(),

@@ -1,3 +1,4 @@
+import { resolveEntries, type Contribution } from "../../unit/contribution/contribution.js";
 import type { Ref } from "../../common/ref.js";
 import type { Direction } from "../../geometry/direction.js";
 import type { TilePosition } from "../../geometry/coordinate.js";
@@ -9,8 +10,8 @@ import type { Unit } from "../../unit/unit.js";
 import { ref as cardRef, type Card } from "./card/card.js";
 import { get } from "./card/query.js";
 import { resolveCost } from "./card/state.js";
-import type { Rule as CardRule } from "./card/rule.js";
-import type { Rule } from "./rule.js";
+import type { Restriction as CardRestriction } from "./card/restriction.js";
+import type { Restriction } from "./restriction.js";
 import {
     validateQuote,
     type DeployRequest,
@@ -61,35 +62,41 @@ export function createRequest<T extends Card<any>>(
             stock: 1,
             slots: self.definition.card.slots,
         },
-        rules: [],
+        restrictions: [],
         hooks: Hooks.empty(),
     };
 }
 
-const defaults: readonly [Rejection, Rule][] = [
+const defaults: readonly [Rejection, Contribution<Restriction>][] = [
     [
         "NO_STOCK",
         {
             id: "@deployment/stock",
-            allows: (battle, { request }) =>
-                get(battle, request.card)!.stock >= request.quote.stock,
+            value: {
+                allows: (battle, { request }) =>
+                    get(battle, request.card)!.stock >= request.quote.stock,
+            },
         },
     ],
     [
         "COOLDOWN",
         {
             id: "@deployment/cooldown",
-            allows: (battle, { request }) => get(battle, request.card)!.cooldown === null,
+            value: {
+                allows: (battle, { request }) => get(battle, request.card)!.cooldown === null,
+            },
         },
     ],
     [
         "ACTIVE_LIMIT",
         {
             id: "@deployment/active-limit",
-            allows: (battle, { request }) => {
-                const limit = get(battle, request.card)!.definition.card.activeLimit;
+            value: {
+                allows: (battle, { request }) => {
+                    const limit = get(battle, request.card)!.definition.card.activeLimit;
 
-                return limit === null || activeCount(battle, request.card) < limit;
+                    return limit === null || activeCount(battle, request.card) < limit;
+                },
             },
         },
     ],
@@ -97,36 +104,42 @@ const defaults: readonly [Rejection, Rule][] = [
         "SLOT_LIMIT",
         {
             id: "@deployment/slots",
-            allows: (battle, { request }) =>
-                battle.deployment.definition.slotLimit === null ||
-                battle.deployment.usedSlots + request.quote.slots <=
-                    battle.deployment.definition.slotLimit,
+            value: {
+                allows: (battle, { request }) =>
+                    battle.deployment.definition.slotLimit === null ||
+                    battle.deployment.usedSlots + request.quote.slots <=
+                        battle.deployment.definition.slotLimit,
+            },
         },
     ],
     [
         "INSUFFICIENT_DP",
         {
             id: "@deployment/dp",
-            allows: (battle, { request }) =>
-                request.quote.dp === null ||
-                battle.deployment.dp - request.quote.dp >= battle.deployment.minDp,
+            value: {
+                allows: (battle, { request }) =>
+                    request.quote.dp === null ||
+                    battle.deployment.dp - request.quote.dp >= battle.deployment.minDp,
+            },
         },
     ],
     [
         "OUTSIDE_MAP",
         {
             id: "@deployment/map",
-            allows: (battle, { request }) => {
-                const [row, column] = request.tilePosition;
+            value: {
+                allows: (battle, { request }) => {
+                    const [row, column] = request.tilePosition;
 
-                return (
-                    Number.isInteger(row) &&
-                    Number.isInteger(column) &&
-                    row >= 0 &&
-                    column >= 0 &&
-                    row < battle.battlefield.map.rows &&
-                    column < battle.battlefield.map.columns
-                );
+                    return (
+                        Number.isInteger(row) &&
+                        Number.isInteger(column) &&
+                        row >= 0 &&
+                        column >= 0 &&
+                        row < battle.battlefield.map.rows &&
+                        column < battle.battlefield.map.columns
+                    );
+                },
             },
         },
     ],
@@ -134,13 +147,15 @@ const defaults: readonly [Rejection, Rule][] = [
         "OCCUPIED",
         {
             id: "@deployment/occupancy",
-            allows: (battle, { request }) => {
-                const slot = get(battle, request.card)!.definition.occupancy.slot;
-                const occupancy = at(battle.battlefield, request.tilePosition);
+            value: {
+                allows: (battle, { request }) => {
+                    const slot = get(battle, request.card)!.definition.occupancy.slot;
+                    const occupancy = at(battle.battlefield, request.tilePosition);
 
-                return slot === "SUPPORT"
-                    ? occupancy?.support == null
-                    : occupancy?.occupant == null;
+                    return slot === "SUPPORT"
+                        ? occupancy?.support == null
+                        : occupancy?.occupant == null;
+                },
             },
         },
     ],
@@ -148,44 +163,49 @@ const defaults: readonly [Rejection, Rule][] = [
         "RULE",
         {
             id: "@deployment/placement",
-            allows: (battle, { request }) =>
-                getTile(battle.battlefield.map, request.tilePosition)?.state.placement !== "NONE",
+            value: {
+                allows: (battle, { request }) =>
+                    getTile(battle.battlefield.map, request.tilePosition)?.state.placement !==
+                    "NONE",
+            },
         },
     ],
 ];
 
-export const defaultRules: readonly Rule[] = defaults.map(([, rule]) => rule);
+export const defaultRestrictions: readonly Contribution<Restriction>[] = defaults.map(
+    ([, entry]) => entry,
+);
 
-export function resolveRules(
+export function resolveRestrictions(
     self: Card<any>,
     request: DeployRequest,
-): readonly (Rule | CardRule)[] {
-    const rules = new Map<string, Rule | CardRule>();
+): readonly Contribution<Restriction | CardRestriction>[] {
+    const restrictions = new Map<string, Contribution<Restriction | CardRestriction>>();
 
-    for (const rule of [
-        ...defaultRules,
-        ...self.definition.card.deploymentRules,
-        ...self.rules,
-        ...request.rules,
+    for (const entry of [
+        ...defaultRestrictions,
+        ...self.definition.card.deploymentRestrictions,
+        ...self.restrictions,
+        ...request.restrictions,
     ]) {
-        rules.set(rule.id, rule);
+        restrictions.set(entry.id, entry);
     }
 
-    return [...rules.values()];
+    return resolveEntries([...restrictions.values()]);
 }
 
-export function evaluateRules(
+export function evaluateCurrent(
     battle: BattleState,
     request: DeployRequest,
-    rules: readonly (Rule | CardRule)[],
+    restrictions: readonly Contribution<Restriction | CardRestriction>[],
 ): Rejected | null {
     const context = { purpose: "DEPLOY" as const, request };
 
-    for (const rule of rules) {
-        if (!rule.allows(battle, context)) {
+    for (const entry of restrictions) {
+        if (!entry.value.allows(battle, context)) {
             return {
                 type: "REJECTED",
-                reason: defaults.find(([, entry]) => entry.id === rule.id)?.[0] ?? "RULE",
+                reason: defaults.find(([, candidate]) => candidate.id === entry.id)?.[0] ?? "RULE",
             };
         }
     }
@@ -207,7 +227,7 @@ export function evaluate<T extends Card<any>>(
 
     battle = advanceResources(battle, self);
 
-    return evaluateRules(battle, input, resolveRules(self, input));
+    return evaluateCurrent(battle, input, resolveRestrictions(self, input));
 }
 
 export function preview<T extends Card<any>>(
@@ -229,7 +249,7 @@ export function preview<T extends Card<any>>(
     }
 
     battle = advanceResources(battle, self);
-    const rejected = evaluateRules(battle, input, resolveRules(self, input));
+    const rejected = evaluateCurrent(battle, input, resolveRestrictions(self, input));
     if (rejected !== null) {
         return rejected;
     }
@@ -258,13 +278,13 @@ export function positions<T extends Card<any>>(
     }
 
     battle = advanceResources(battle, self);
-    const rules = resolveRules(self, input);
+    const restrictions = resolveRestrictions(self, input);
     const { rows, columns } = battle.battlefield.map;
 
     for (let row = 0; row < rows; row++) {
         for (let column = 0; column < columns; column++) {
             const tilePosition: TilePosition = [row, column];
-            if (evaluateRules(battle, { ...input, tilePosition }, rules) === null) {
+            if (evaluateCurrent(battle, { ...input, tilePosition }, restrictions) === null) {
                 result.push(tilePosition);
             }
         }

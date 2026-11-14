@@ -4,6 +4,7 @@ import type { Ref } from "../../../common/ref.js";
 import type { Unit } from "../../unit.js";
 import * as units from "../../query.js";
 import type { Direction, Facing } from "./capability.js";
+import { allows } from "../../../restriction.js";
 
 export function turn(
     battle: BattleState,
@@ -15,10 +16,7 @@ export function turn(
     if (self?.lifecycle !== "PRESENT" || self.facing.direction === direction) {
         return battle;
     }
-    if (
-        mode === "NORMAL" &&
-        !self.facing.rules.every((rule) => rule.allows(battle, { self, direction }))
-    ) {
+    if (mode === "NORMAL" && !allows(battle, { self, direction }, self.facing.restrictions)) {
         return battle;
     }
 

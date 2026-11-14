@@ -72,7 +72,7 @@ export function addCard<S extends object>(
         definition,
         deployedUnits: [],
         unitHooks: definition.card.unitHooks,
-        rules: [],
+        restrictions: [],
         state: initialized.value,
         stock,
         cooldown: null,

@@ -1,8 +1,9 @@
+import * as restriction from "../../../restriction.js";
 import type { Ref } from "../../../common/ref.js";
 import { create, type Query } from "../../../common/query.js";
 import type { State as BattleState } from "../../state.js";
 import type { Card, UnitDefinition } from "./card.js";
-import type { RuleContext } from "./rule.js";
+import type { RestrictionContext } from "./restriction.js";
 
 export function get<T extends Card<any>>(battle: BattleState, reference: Ref<T>): T | undefined;
 export function get<S extends object>(
@@ -26,9 +27,9 @@ export function all(battle: BattleState): Query<Card> {
 
 export function allows<T extends Card<any>>(
     battle: BattleState,
-    context: Exclude<RuleContext<T>, { readonly purpose: "DEPLOY" }>,
+    context: Exclude<RestrictionContext<T>, { readonly purpose: "DEPLOY" }>,
 ): boolean {
     const self = get(battle, context.ref);
 
-    return self?.rules.every((rule) => rule.allows(battle, context)) ?? false;
+    return self !== undefined && restriction.allows(battle, context, self.restrictions);
 }

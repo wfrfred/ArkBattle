@@ -6,24 +6,30 @@ import { assertFiniteNumber } from "../../../common/assert.js";
 import { roundToEven } from "../../../common/math.js";
 import type { State as BattleState, Result } from "../../../battle/state.js";
 import { createRegistrationOperations } from "../../registration.js";
+import { allows, type Restriction as BaseRestriction } from "../../../restriction.js";
 
-export interface Definition {
+export interface Definition extends Restrictions {
     readonly taunt: number;
-    readonly restrictions: readonly Contribution<Restriction>[];
 }
 
 export type Input = contribution.Input<attribute.Modifier, Unit & Targetable>;
 
-export interface Restriction {
-    readonly allows: (battle: BattleState, source: Unit, target: Unit & Targetable) => boolean;
+export interface RestrictionContext {
+    readonly source: Unit;
+    readonly target: Unit & Targetable;
 }
+
+export type Restriction = BaseRestriction<RestrictionContext>;
 
 interface Contributions {
     readonly taunt: readonly Contribution<Input>[];
+}
+
+interface Restrictions {
     readonly restrictions: readonly Contribution<Restriction>[];
 }
 
-export interface State extends Contributions {}
+export interface State extends Contributions, Restrictions {}
 
 export interface Targetable {
     readonly definition: { readonly targetable: Definition };
@@ -59,7 +65,7 @@ export function initialize<U extends Unit & Pick<Targetable, "definition">>(
 export const { set: setRestriction, remove: removeRestriction } = createRegistrationOperations<
     Unit & Targetable,
     "targetable",
-    "restrictions"
+    keyof Restrictions
 >("targetable", "restrictions");
 
 export const { set: setTauntContribution, remove: removeTauntContribution } =
@@ -81,11 +87,5 @@ export function allowsRestrictions(
     source: Unit,
     ignore?: (restriction: Restriction) => boolean,
 ): (target: Unit & Targetable) => boolean {
-    return (target) =>
-        contribution
-            .resolve(target.targetable.restrictions)
-            .every(
-                (restriction) =>
-                    (ignore?.(restriction) ?? false) || restriction.allows(battle, source, target),
-            );
+    return (target) => allows(battle, { source, target }, target.targetable.restrictions, ignore);
 }

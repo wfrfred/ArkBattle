@@ -4,7 +4,7 @@ import * as contribution from "../../contribution/contribution.js";
 import * as entries from "../../../common/collection/entries.js";
 import * as attribute from "../../contribution/attribute.js";
 import type { Unit } from "../../unit.js";
-import type { DamageReceptionRule } from "./rule.js";
+import type { Restriction } from "./restriction.js";
 import { createChange, type Change } from "../../change.js";
 import { createRegistrationOperations } from "../../registration.js";
 
@@ -27,11 +27,11 @@ interface Contributions {
 
 export type Parameter = keyof Contributions;
 
-interface Rules {
-    readonly damageRules: readonly DamageReceptionRule[];
+interface Restrictions {
+    readonly damageRestrictions: readonly contribution.Contribution<Restriction>[];
 }
 
-export interface State extends Rules, Contributions {
+export interface State extends Restrictions, Contributions {
     readonly hp: number;
     readonly maxHp: readonly contribution.Contribution<readonly attribute.Modifier[]>[];
 }
@@ -69,17 +69,17 @@ export function initialize<U extends Unit & Pick<Vitality, "definition">>(
                 resistance: [],
                 recoverySpeed: [],
                 recoveryRatio: [],
-                damageRules: [],
+                damageRestrictions: [],
             },
         },
     };
 }
 
-export const { set: setRule, remove: removeRule } = createRegistrationOperations<
+export const { set: setRestriction, remove: removeRestriction } = createRegistrationOperations<
     Unit & Vitality,
     "vitality",
-    keyof Rules
->("vitality", "damageRules");
+    keyof Restrictions
+>("vitality", "damageRestrictions");
 
 function preserveHpRatio(hp: number, previousMax: number, nextMax: number): number {
     if (previousMax === nextMax || hp <= 0) {

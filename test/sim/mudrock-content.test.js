@@ -101,7 +101,7 @@ test("Mudrock's shield keeps recharging while capped", () => {
 
 test("module X uses current max HP for shield healing and distinguishes blocked Sarkaz sources", () => {
     const fixture = setup({ module: { id: moduleX, level: 3 } }, [
-        enemy(1, [0.6, 0], { blockable: { volume: 1, rules: [] }, profile: { tags: ["sarkaz"] } }),
+        enemy(1, [0.6, 0], { blockable: { volume: 1, restrictions: [] }, profile: { tags: ["sarkaz"] } }),
         enemy(2, [5, 0], { profile: { tags: ["sarkaz"] } }),
         enemy(3, [6, 0]),
     ]);
@@ -119,7 +119,7 @@ test("module X uses current max HP for shield healing and distinguishes blocked 
 
 test("APPLY-03: fixed receiving skips Mudrock's reductions while retaining shield cancellation and recovery", () => {
     const fixture = setup({ module: { id: moduleX, level: 3 } }, [
-        enemy(1, [0.6, 0], { blockable: { volume: 1, rules: [] }, profile: { tags: ["sarkaz"] } }),
+        enemy(1, [0.6, 0], { blockable: { volume: 1, restrictions: [] }, profile: { tags: ["sarkaz"] } }),
     ]);
     const ready = advanceEffectsUntil(wound(fixture.battle), 270);
     const observed = [];

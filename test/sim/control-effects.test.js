@@ -29,8 +29,8 @@ function actor(onEnd = state => state) {
         id: "controlled", hooks: Hooks.empty(),
         action: { initialize: state => actions.createActions(state, actions.create(action)) },
         skill: { initialize: state => skills.create(state, skill) },
-        blocker: { layer: "GROUND", rules: [], capacity: 1, radius: 2 },
-        facing: { rules: [] },
+        blocker: { layer: "GROUND", restrictions: [], capacity: 1, radius: 2 },
+        facing: { restrictions: [] },
         locomotion: { halfBodyWidth: 0, minSpeed: 0, speed: 1, steeringParameters: { steeringFactor: 1, maxSteeringForce: 1 } },
     };
     return { definition, action, skill };
@@ -43,12 +43,12 @@ function canMove(state, reference) {
     return units.get(moved, reference).position[0] > self.position[0];
 }
 
-test("stun interrupts the current action, suppresses its affected capabilities, and withdraws only its own rules", () => {
+test("stun interrupts the current action, suppresses its affected capabilities, and withdraws only its own restrictions", () => {
     const endings = [];
     const content = actor((state, _source, _self, end) => { endings.push(end); return state; });
     let state = battle([
         { definition: content.definition, position: [1, 1], initial: { facing: { direction: "RIGHT" } } },
-        { definition: { id: "blockable", hooks: Hooks.empty(), layer: { type: "GROUND" }, blockable: { volume: 1, rules: [] } }, position: [1.5, 1] },
+        { definition: { id: "blockable", hooks: Hooks.empty(), layer: { type: "GROUND" }, blockable: { volume: 1, restrictions: [] } }, position: [1.5, 1] },
     ]);
     const source = units.ref(get(state, 0));
     const target = units.ref(get(state, 1));

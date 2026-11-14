@@ -42,7 +42,7 @@ function restriction(
     };
 }
 
-const allowsSameSide: targetable.Restriction["allows"] = (_battle, source, owner) =>
+const allowsSameSide: targetable.Restriction["allows"] = (_battle, { source, target: owner }) =>
     !hasAllegiance(source) ||
     !hasAllegiance(owner) ||
     source.allegiance.side === owner.allegiance.side;
@@ -52,7 +52,7 @@ export const invisibleRestriction: targetable.Restriction = {
 };
 
 export const camouflageRestriction: targetable.Restriction = {
-    allows(_battle, source, owner) {
+    allows(_battle, { source, target: owner }) {
         return !hasAllegiance(source) || !hasAllegiance(owner) || !areHostile(source, owner);
     },
 };
@@ -62,7 +62,7 @@ export const untargetableRestriction: targetable.Restriction = {
 };
 
 export const allyUntargetableRestriction: targetable.Restriction = {
-    allows(_battle, source, owner) {
+    allows(_battle, { source, target: owner }) {
         return (
             !hasAllegiance(source) ||
             !hasAllegiance(owner) ||

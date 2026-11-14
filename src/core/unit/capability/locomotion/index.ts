@@ -1,16 +1,16 @@
 export {
     hasLocomotion,
     initialize,
-    setRule,
-    removeRule,
+    setRestriction,
+    removeRestriction,
     setSpeedContribution,
     removeSpeedContribution,
 } from "./capability.js";
 
 export type {
     Definition,
-    RuleContext,
-    Rule,
+    RestrictionContext,
+    Restriction,
     Input,
     State,
     Locomotion,
