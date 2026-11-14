@@ -51,7 +51,7 @@ export function receiveDamage(
         (unit) => unit.vitality.damageReceivingStarted,
     ).state;
 
-    const result = dispatchReceiving(
+    const result = dispatchReceiving<damage.ReceivingContext, damage.Pending>(
         battle,
         context.target,
         context,
@@ -61,7 +61,10 @@ export function receiveDamage(
 
     return {
         state: result.state,
-        value: { ...result.value, amount: Math.max(0, result.value.amount) },
+        value:
+            result.value.type === "CANCELLED"
+                ? result.value
+                : { ...result.value, amount: Math.max(0, result.value.amount) },
     };
 }
 
@@ -70,7 +73,7 @@ export function receiveHealing(
     context: healing.ReceivingContext,
     pending: healing.Pending,
 ): Result<healing.Pending> {
-    const result = dispatchReceiving(
+    const result = dispatchReceiving<healing.ReceivingContext, healing.Pending>(
         battle,
         context.target,
         context,
@@ -80,7 +83,10 @@ export function receiveHealing(
 
     return {
         state: result.state,
-        value: { ...result.value, amount: Math.max(0, result.value.amount) },
+        value:
+            result.value.type === "CANCELLED"
+                ? result.value
+                : { ...result.value, amount: Math.max(0, result.value.amount) },
     };
 }
 

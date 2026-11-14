@@ -7,10 +7,10 @@ import * as hooks from "../../../hook.js";
 import type {
     Application,
     Calculated,
-    Cancellation,
     Next,
     Parameters,
     Pending,
+    Reason,
     Request,
 } from "./contract.js";
 
@@ -48,11 +48,11 @@ export type OutputHook = Entry<OutputContext, number>;
 export type BeforeReceiveHook = Entry<ReceivingContext, void>;
 
 export interface ReceivingHook extends Entry<ReceivingContext, Pending> {
-    readonly invoke: <C extends Cancellation | null>(
+    readonly invoke: <T extends Pending["type"], R extends Reason>(
         battle: BattleState,
         context: ReceivingContext,
-        current: Pending<C>,
-    ) => Result<Pending<Next<C>>>;
+        current: Pending<R, T>,
+    ) => Result<Next<T, R>>;
 }
 
 export type BeforeCommitHook = Entry<CommitContext, void>;

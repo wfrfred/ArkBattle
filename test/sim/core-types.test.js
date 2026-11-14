@@ -61,15 +61,14 @@ const receivingHooks = Hooks.empty().set(receivingKey, {
 });
 const fixedReceiving: hpDamage.ReceivingHook = {
     id: 'fixed-amount',
-    invoke(state, _context, current) {
-        if (current.type === 'FIXED') {
-            return { state, value: hpDamage.cancel(current, 'EVADE') };
-        }
-        const modifiable: Extract<hpDamage.Pending, { type: 'MODIFIABLE' }> = current;
-        return { state, value: { ...current, type: 'FIXED', amount: modifiable.amount / 2 } };
-    },
+    invoke: (state, _context, current) => ({ state, value: hpDamage.fix(current) }),
 };
 Hooks.empty().set(receivingKey, fixedReceiving);
+Hooks.empty().set(receivingKey, {
+    id: 'reduce', invoke: (state, _context, current) => ({
+        state, value: current.type === 'NORMAL' ? { ...current, amount: current.amount / 2 } : current,
+    }),
+});
 declare const receivingContext: hpDamage.ReceivingContext;
 declare const damageOutcome: hpDamage.Outcome;
 if (damageOutcome.type === 'APPLIED') {
@@ -80,11 +79,18 @@ if (damageOutcome.type === 'APPLIED') {
 declare const appliedContext: hpDamage.AppliedContext;
 // @ts-expect-error Applied executes before death confirmation.
 appliedContext.killed;
-declare const cancelled: hpDamage.Pending<hpDamage.Cancellation<'EVADE'>>;
+declare const cancelled: Extract<hpDamage.Pending<'EVADE'>, { type: 'CANCELLED' }>;
 const reception = receivingHooks.get(receivingKey)[0]!.invoke(battle, receivingContext, cancelled);
-const preservedReason: 'EVADE' = reception.value.cancellation.reason;
-// @ts-expect-error erased storage preserves the specialized Receiving signature.
-Hooks.empty().set(receivingKey, { id: 'revive', invoke: (state, _context, current: hpDamage.Pending) => ({ state, value: { ...current, cancellation: null } }) });
+const cancelledType: 'CANCELLED' = reception.value.type;
+if (reception.value.type === 'CANCELLED') {
+    const preservedReason: 'EVADE' = reception.value.reason;
+}
+// @ts-expect-error fixed work cannot become NORMAL, including through erased Hook storage.
+Hooks.empty().set(receivingKey, { id: 'unfix', invoke: (state, _context, current) => ({ state, value: { ...current, type: 'NORMAL' } }) });
+// @ts-expect-error cancelled work cannot resume even as FIXED.
+Hooks.empty().set(receivingKey, { id: 'revive', invoke: (state, _context, current) => ({ state, value: { ...current, type: 'FIXED' } }) });
+// @ts-expect-error cancellation retains its original reason even when the replacement is a valid Reason.
+Hooks.empty().set(receivingKey, { id: 'rewrite-reason', invoke: (state, _context, current) => ({ state, value: current.type === 'CANCELLED' ? { ...current, reason: 'BLOCK' } : current }) });
 const program: actions.Definition<{ uses: number }, { hits: number }> = {
     id: 'attack', intervalTicks: 10, speed: 100,
     initialize: state => ({ state, value: { uses: 0 } }),

@@ -43,7 +43,7 @@ export function receiveDamage(
     context: ReceivingContext,
     pending: damage.Pending,
 ): Result<damage.Pending> {
-    const result = hooks.dispatch(battle, context, pending, {
+    const result = hooks.dispatch<ReceivingContext, damage.Pending>(battle, context, pending, {
         candidates: (current) =>
             [...(units.get(current, context.target)?.elemental.damageReceiving ?? [])]
                 .sort((left, right) => (right.priority ?? 0) - (left.priority ?? 0))
@@ -59,7 +59,10 @@ export function receiveDamage(
 
     return {
         state: result.state,
-        value: { ...result.value, amount: Math.max(0, result.value.amount) },
+        value:
+            result.value.type === "CANCELLED"
+                ? result.value
+                : { ...result.value, amount: Math.max(0, result.value.amount) },
     };
 }
 

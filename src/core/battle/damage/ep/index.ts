@@ -2,7 +2,7 @@ export { calculateDamage } from "./calculate.js";
 
 export { applyDamage } from "./apply.js";
 
-export { cancel } from "./contract.js";
+export { fix, cancel } from "./contract.js";
 
 export type {
     Event,
@@ -10,7 +10,6 @@ export type {
     Parameters,
     Calculated,
     Reason,
-    Cancellation,
     Pending,
     Next,
     Application,

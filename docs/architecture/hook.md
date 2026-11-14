@@ -49,7 +49,7 @@ declare class Hooks {
 
 Key 参数化完整 Hook 类型 H，保留特殊 ReceivingHook 的泛型 invoke，不把它重新放宽成普通 Hook<C, T>。写入类型由键确定；读取由同一个键恢复对应类型。必要的异构擦除集中在容器内部，Content 不承担断言，不从普通查询取得 any。
 
-工作值的合法变化由所属领域定义。伤害／治疗 Receiving 的 MODIFIABLE／FIXED 分支表达是否允许普通改量，取消泛型约束取消后的返回形状；固定数值由 Hook 契约保证，派发器不比较或纠正返回的数值。具体类型见[接收工作值](vitality.md#接收工作值数值固定与取消)。
+工作值的合法变化由所属领域定义。伤害／治疗 Receiving 使用 NORMAL／FIXED／CANCELLED 三态，泛型返回类型约束 FIXED 不恢复 NORMAL、CANCELLED 不恢复或改原因；固定及取消后的数值由 Hook 契约保证，派发器不比较或纠正返回的数值。具体类型见[接收工作值](vitality.md#接收工作值数值固定与取消)。
 
 get 对无登记的键返回空集合。同键同 ID 的 set 替换原项并保留位置；新 ID 追加，remove 只移除对应项。merge 按 other 的各键内登记顺序应用同一 set 规则。ID 作用域是 Unit 身份 × Hook 键 × Hook ID，不同键可以复用 ID。删除不恢复被替换的 Definition 旧项。
 

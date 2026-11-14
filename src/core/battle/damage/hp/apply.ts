@@ -6,6 +6,7 @@ import { appendEvents, type Result, type State as BattleState } from "../../stat
 import { remove } from "../../unit.js";
 import type { Calculated, Outcome, Request } from "./contract.js";
 import {
+    type CommitContext,
     dispatch,
     beforeReceive,
     beforeCommit,
@@ -39,19 +40,18 @@ export function applyDamage(
 
     const receiving = vitality.receiveDamage(battle, context, {
         amount: calculation.amount,
-        cancellation: null,
-        type: "MODIFIABLE",
+        type: "NORMAL",
     });
     battle = receiving.state;
     const received = receiving.value;
-    if (received.cancellation !== null) {
+    if (received.type === "CANCELLED") {
         return complete(battle, request, calculation, { type: "CANCELLED", received });
     }
     if (!vitality.canReceiveDamage(battle, context)) {
         return complete(battle, request, calculation, { type: "UNAVAILABLE", received });
     }
 
-    const commitContext = { ...context, received };
+    const commitContext: CommitContext = { ...context, received };
     battle = dispatch(battle, request.source, beforeCommit, commitContext, undefined).state;
 
     if (!vitality.canReceiveDamage(battle, context)) {

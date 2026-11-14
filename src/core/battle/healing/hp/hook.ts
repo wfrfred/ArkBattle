@@ -7,11 +7,11 @@ import * as hooks from "../../../hook.js";
 import type {
     Application,
     Calculated,
-    Cancellation,
     Next,
     Outcome,
     Parameters,
     Pending,
+    Reason,
     Request,
 } from "./contract.js";
 
@@ -56,11 +56,11 @@ export type AppliedHook = Entry<AppliedContext, void>;
 export type CompletedHook = Entry<CompletedContext, void>;
 
 export interface ReceivingHook extends Entry<ReceivingContext, Pending> {
-    readonly invoke: <C extends Cancellation | null>(
+    readonly invoke: <T extends Pending["type"], R extends Reason>(
         battle: BattleState,
         context: ReceivingContext,
-        current: Pending<C>,
-    ) => Result<Pending<Next<C>>>;
+        current: Pending<R, T>,
+    ) => Result<Next<T, R>>;
 }
 
 export const sourceFormula = hooks.key<SourceFormulaHook>("healing.hp.sourceFormula");

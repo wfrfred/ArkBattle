@@ -81,7 +81,7 @@ test("Mudrock's shield cancels a hit, consumes one layer, self-heals and retains
     const wounded = wound(fixture.battle);
     const restored = advanceEffectsUntil(wounded, 270);
     const result = hit(restored, null, 5000);
-    assert.deepEqual(result.value.received.cancellation, { reason: "MUDROCK_SHIELD" });
+    assert.equal(result.value.received.reason, "MUDROCK_SHIELD");
     approximate(getUnit(result.state, 0).vitality.hp, 1000 + fixture.prepared.attributes.maxHp * 0.2);
     assert.equal(getUnit(result.state, 0).skill.sp.value, 1);
     assert.equal(hit(result.state).value.application.hpLoss, 100);
@@ -96,7 +96,7 @@ test("Mudrock's shield keeps recharging while capped", () => {
     const beforeRecovery = hit(advanceEffectsUntil(battle, 1079));
     assert.equal(beforeRecovery.value.application.hpLoss, 100);
     const recovered = hit(advanceEffectsUntil(beforeRecovery.state, 1080));
-    assert.deepEqual(recovered.value.received.cancellation, { reason: "MUDROCK_SHIELD" });
+    assert.equal(recovered.value.received.reason, "MUDROCK_SHIELD");
 });
 
 test("module X uses current max HP for shield healing and distinguishes blocked Sarkaz sources", () => {
@@ -134,8 +134,8 @@ test("APPLY-03: fixed receiving skips Mudrock's reductions while retaining shiel
         setVitalityHook("damageReceiving", {
             id: "fix-amount", priority: 200,
             invoke(state, _context, pending) {
-                assert.equal(pending.type, "MODIFIABLE");
-                return { state, value: { ...pending, type: "FIXED" } };
+                assert.equal(pending.type, "NORMAL");
+                return { state, value: hpDamage.fix(pending) };
             },
         }),
         setHook(hpDamage.targetApplied, observe("applied")),
@@ -145,7 +145,7 @@ test("APPLY-03: fixed receiving skips Mudrock's reductions while retaining shiel
     const shielded = hit(battle, 1);
     assert.equal(shielded.value.type, "CANCELLED");
     assert.deepEqual(shielded.value.received, {
-        type: "FIXED", amount: 100, cancellation: { reason: "MUDROCK_SHIELD" },
+        type: "CANCELLED", amount: 100, reason: "MUDROCK_SHIELD",
     });
     approximate(getUnit(shielded.state, 0).vitality.hp, 1000 + fixture.prepared.attributes.maxHp * 0.23);
     assert.equal(getUnit(shielded.state, 0).skill.sp.value, 3);
@@ -154,7 +154,7 @@ test("APPLY-03: fixed receiving skips Mudrock's reductions while retaining shiel
 
     const unshielded = hit(shielded.state, 1);
     assert.equal(unshielded.value.type, "APPLIED");
-    assert.deepEqual(unshielded.value.received, { type: "FIXED", amount: 100, cancellation: null });
+    assert.deepEqual(unshielded.value.received, { type: "FIXED", amount: 100 });
     assert.equal(unshielded.value.application.hpLoss, 100);
     assert.deepEqual(observed, [["commit", "FIXED", 100], ["applied", "FIXED", 100]]);
 });

@@ -8,14 +8,13 @@ export type {
     Request,
     Calculated,
     Reason,
-    Cancellation,
     Pending,
     Next,
     Application,
     Outcome,
 } from "./contract.js";
 
-export { cancel } from "./contract.js";
+export { fix, cancel } from "./contract.js";
 
 export type {
     Context,

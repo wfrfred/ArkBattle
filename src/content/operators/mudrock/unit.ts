@@ -158,7 +158,7 @@ function shieldEffect(profile: Profile): EffectDefinition<ShieldState, Vitality>
                         const shield = get(state, ref);
                         const host = getCurrentUnit(state, self.host);
                         if (
-                            pending.cancellation !== null ||
+                            pending.type === "CANCELLED" ||
                             pending.amount <= 0 ||
                             shield?.lifecycle !== "ACTIVE" ||
                             host === undefined

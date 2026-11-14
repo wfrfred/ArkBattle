@@ -3,7 +3,14 @@ import * as units from "../../../unit/query.js";
 import { available, canReceiveDamage } from "../../../unit/capability/elemental/query.js";
 import { receiveDamage, commitDamage } from "../../../unit/capability/elemental/operations.js";
 import type { Calculated, Outcome, Request } from "./contract.js";
-import { dispatch, beforeReceive, beforeCommit, targetApplied, sourceApplied } from "./hook.js";
+import {
+    type CommitContext,
+    dispatch,
+    beforeReceive,
+    beforeCommit,
+    targetApplied,
+    sourceApplied,
+} from "./hook.js";
 
 export function applyDamage(
     request: Request,
@@ -25,19 +32,18 @@ export function applyDamage(
 
     const receiving = receiveDamage(battle, context, {
         amount: damage.amount,
-        cancellation: null,
-        type: "MODIFIABLE",
+        type: "NORMAL",
     });
     battle = receiving.state;
     const received = receiving.value;
-    if (received.cancellation !== null) {
+    if (received.type === "CANCELLED") {
         return { state: battle, value: { type: "CANCELLED", received } };
     }
     if (!canReceiveDamage(battle, request, damage.type)) {
         return { state: battle, value: { type: "UNAVAILABLE", received } };
     }
 
-    const commit = { ...context, received };
+    const commit: CommitContext = { ...context, received };
     battle = dispatch(battle, request.source, beforeCommit, commit, undefined).state;
 
     if (!canReceiveDamage(battle, request, damage.type)) {

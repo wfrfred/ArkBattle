@@ -4,6 +4,7 @@ import * as vitality from "../../../unit/capability/vitality/operations.js";
 import { appendEvents, type Result, type State as BattleState } from "../../state.js";
 import type { Calculated, Outcome, Request } from "./contract.js";
 import {
+    type CommitContext,
     dispatch,
     beforeReceive,
     beforeCommit,
@@ -35,19 +36,18 @@ export function applyHealing(
 
     const receiving = vitality.receiveHealing(battle, context, {
         amount: calculation.amount,
-        cancellation: null,
-        type: "MODIFIABLE",
+        type: "NORMAL",
     });
     battle = receiving.state;
     const received = receiving.value;
-    if (received.cancellation !== null) {
+    if (received.type === "CANCELLED") {
         return complete(battle, request, calculation, { type: "CANCELLED", received });
     }
     if (!vitality.canReceiveHealing(battle, request.target)) {
         return complete(battle, request, calculation, { type: "UNAVAILABLE", received });
     }
 
-    const commitContext = { ...context, received };
+    const commitContext: CommitContext = { ...context, received };
     battle = dispatch(battle, request.source, beforeCommit, commitContext, undefined).state;
 
     if (!vitality.canReceiveHealing(battle, request.target)) {

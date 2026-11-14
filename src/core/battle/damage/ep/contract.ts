@@ -29,23 +29,38 @@ export interface Calculated {
 
 export type Reason = string;
 
-export interface Cancellation<R extends Reason = Reason> {
-    readonly reason: R;
+export type Pending<R extends Reason = Reason, T extends keyof Transitions = keyof Transitions> =
+    | { readonly type: T & "NORMAL"; readonly amount: number }
+    | { readonly type: T & "FIXED"; readonly amount: number }
+    | { readonly type: T & "CANCELLED"; readonly amount: number; readonly reason: R };
+
+interface Transitions {
+    readonly NORMAL: "FIXED" | "CANCELLED";
+    readonly FIXED: "CANCELLED";
+    readonly CANCELLED: never;
 }
 
-export type Pending<C extends Cancellation | null = Cancellation | null> =
-    | {
-          readonly type: "MODIFIABLE";
-          readonly amount: number;
-          readonly cancellation: C;
-      }
-    | {
-          readonly type: "FIXED";
-          readonly amount: number;
-          readonly cancellation: C;
-      };
+export type Next<T extends Pending["type"], R extends Reason = Reason> =
+    Pending<R, T> | Pending<Reason, Transitions[T]>;
 
-export type Next<C extends Cancellation | null> = C | (null extends C ? Cancellation : never);
+export function fix<T extends Pending["type"], R extends Reason>(
+    current: Pending<R, T>,
+): Exclude<Next<T, R>, { readonly type: "NORMAL" }> {
+    return (
+        current.type === "NORMAL" ? { type: "FIXED", amount: current.amount } : current
+    ) as Exclude<Next<T, R>, { readonly type: "NORMAL" }>;
+}
+
+export function cancel<T extends Pending["type"], R extends Reason>(
+    current: Pending<R, T>,
+    reason: Reason,
+): Extract<Next<T, R>, { readonly type: "CANCELLED" }> {
+    return (
+        current.type === "CANCELLED"
+            ? current
+            : { type: "CANCELLED", amount: current.amount, reason }
+    ) as Extract<Next<T, R>, { readonly type: "CANCELLED" }>;
+}
 
 export type Application = DamageApplication;
 
@@ -54,13 +69,3 @@ export type Outcome =
     | { readonly type: "CANCELLED"; readonly received: Pending }
     | { readonly type: "UNAVAILABLE"; readonly received: Pending }
     | { readonly type: "APPLIED"; readonly received: Pending; readonly application: Application };
-
-export function cancel<C extends Cancellation | null>(
-    current: Pending<C>,
-    reason: Reason,
-): Pending<Next<C>> {
-    return {
-        ...current,
-        cancellation: (current.cancellation ?? { reason }) as Next<C>,
-    };
-}
