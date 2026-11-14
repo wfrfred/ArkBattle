@@ -47,7 +47,7 @@ Data 验证原始资料与本次配置到规范化静态数据、初始地图及
 | Unit 构造与能力 | 创建方确定静态 Definition，构造后配置与状态配对、组成稳定；所需实例输入必须存在，多余的已知输入允许并忽略，输入键与值遵守 Catalog 类型；初始 Effect 通过登记后的正常安装形成。 | [构造与装配](capability.md#初始化与装配) |
 | Occupancy 与 Support | 单格 OCCUPANT／SUPPORT 两槽各自排他，占格、身体位置、空间存在与朝向分开；两端先发布同一 Pair 再通知，任一端先入场均可配对。Pair 保留建立时采样的事实；离场只解除原 Pair，不能清除替代实例的新配对或重复通知旧组合。 | [Occupancy](occupancy.md#关键协作语义) |
 | Unit 组合变更 | update(battle, ref, change) 只更新一个目标。二元 compose 左到右接续同一 Unit，组合满足结合律但不交换；各项保留自己的 previous、no-op 与 Settlement 顺序。optional 在实际执行时判断当前输入，包括前序变换后的值；false 保留原对象且无后继，true 转发原 Change 的结果。全部纯应用完成后一次发布最终 next，再按序结算；Settlement 中的嵌套 update 可以改变其它 Unit，后续结算接续最新状态。 | [批量变更](api-conventions.md#51-unit-完整操作与批量变更) |
-| 普通注册 Change | Capability 用扁平 Rules／Contributions／Hooks 分组明确选择自动字段；工厂不绑定 Ref，按 Key 和固定字段两种接口均保持字段、Entry 与所需能力的类型关联，由 update 的目标 Ref 满足能力要求。注册遵守按 ID 替换保序和无变化不结算，特殊字段由领域完成自身变换与后继。 | [批量变更](api-conventions.md#51-unit-完整操作与批量变更) |
+| 普通注册 Change | Capability 用扁平 Rules／Contributions 分组明确选择自动字段；Hook 使用独立 typed Key 集合；工厂不绑定 Ref，按 Key 和固定字段两种接口均保持字段、Entry 与所需能力的类型关联，由 update 的目标 Ref 满足能力要求。注册遵守按 ID 替换保序和无变化不结算，特殊字段由领域完成自身变换与后继。 | [批量变更](api-conventions.md#51-unit-完整操作与批量变更) |
 | 状态接续与 Hook | 同步业务接续最新状态；有意采样的历史事实保留。一次派发不吸收后来新增的候选，执行时使用最新登记与资格，嵌套派发独立。 | [状态接续](functional-core.md#状态接续后的读取与续执行)、[同步候选](functional-core.md#7-同步候选范围) |
 | 身份与结束 | 持久对象与单次执行身份不同，旧执行引用不操作后来的执行；结束立即拒收新的依赖，依赖者完整结束后宿主才注销，收尾不重复执行或覆盖首次原因。 | [Lifetime](lifetime.md)、[Action](action.md#关键语义)、[Skill](skill.md#关键语义) |
 | Action | 启动受理、冷却、释放和输出保持各自含义；启动返回本次执行 Ref，普通拒绝返回 null，不创建执行且保留已发生的前缀业务。攻速与间隔使用静态修正列表，变更时同步按新周期保留完成比例，普通 Tick 不轮询刷新；释放前中断不伪造成功释放，已完成的输出与资源结算不回滚。 | [Action](action.md#关键语义) |
@@ -163,7 +163,9 @@ Resource 按 HP／EP，再按 Damage／Healing 提供四个精确业务入口。
 
 | 编号 | 必须保障的业务结果 | 定向场景 |
 | --- | --- | --- |
-| HOOK-01 | Unit 可以携带不同领域的精确 Hook，固有登记在首次 enter 前就绪；生命周期动态修改遵守固定候选、最新登记，leave 使用注销前最新程序及原 Departure。Resource 的共用派发保留优先级、登记顺序、固定候选及逐项读取最新状态。Capability 登记保留内联 Hook 各返回分支的泛型关联及 Key／Entry 配对。 | 公共集合／类型与一个实际 Unit 生命周期场景集中验证；类型代表通过真实 Capability 登记入口覆盖条件改量／取消回调与联合 Key 配对，不在四条管线重复候选矩阵。 |
+| HOOK-01 | 全部登记式 Hook 使用 typed Key。Unit 本地登记统一存于 Unit.hooks，Battle 观察各持有 Hooks 集合；固有登记在首次 enter 前就绪。Key 保留完整 ReceivingHook 泛型及最低宿主能力，unit.setHook／removeHook 返回相应 Change。候选固定、登记实时读取、替换保位及嵌套独立；Resource／Receiving 保留优先级，其他通知保持登记顺序。生命周期 leave 使用注销前最新程序与原 Departure；结束事实允许仍登记的 LEAVING 宿主参与。 | 公共集合／类型及实际生命周期场景集中验证；用接收 Hook 证明非法状态恢复、错配 Key／Entry 和能力不足的 update 被拒绝，不复制各 Capability 矩阵。 |
+| HOOK-02 | Calculate 与 Apply 的 Options.exclude 分别生效：按 Key 对象身份排除整阶段或指定 ID；同 Key 在本次多个宿主派发时一致匹配。排除不改登记，不豁免 Rule，不传入 Request／Calculated；嵌套操作及提交事实通知不自动继承。 | 一个 Calculate／Apply 代表场景组合整键、单 ID 与同名不同键，验证两次操作独立、后续正常调用及嵌套响应仍执行；不为四类资源复制排除矩阵。 |
+| HOOK-03 | Blocking 每条关系的双方候选在首个回调前同时固定，先 Blocker 后 Blockable；ACQUIRED 失效停止、RELEASED 保留历史通知。Skill／Elemental 的结束通知从仍登记的宿主读取 Hook，LEAVING 不丢失清理后的事实。 | 在既有关系重入与依赖结束场景验证这两项领域差异；公共候选与替换协议只测一次。 |
 | HP-01 | 物理、法术、真实及元素 HP 伤害采用各自公式；公式后类型与防御采样传到 Apply，初始 Request 不变。Calculate 不构成受击，也不写入本笔 HP。 | 合法基础属性与 Formula／Output 干预，核对最终数额、类型和接收前 HP。 |
 | HP-02 | 从同一输入分别执行 Calculate 时，各自业务状态独立，调用方接续其中一个结果后只发生该次 Apply。弱点选高属于尚未接入的具体内容组合。 | 验证真实 Calculate／Apply 的独立分支和状态接续；不在夹具手写“选高”算法来证明产品已支持弱点。 |
 | APPLY-01 | BeforeReceive 可改变准入；Receiving 的取消保留已完成业务并继续独立响应，取消后不提交。BeforeCommit 位于接收后与写入前，返回后使用最新资格及资源。 | 以真实无敌 Effect 与 Skill 的 HIT 回复接入、嵌套恢复等操作组合，核对准入先于受击回复、最终资源和固定提交报告；Hook 通用排序集中保障。 |

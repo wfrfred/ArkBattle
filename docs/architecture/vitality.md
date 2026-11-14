@@ -1,6 +1,6 @@
 # Vitality、Damage 与 Healing
 
-Vitality 保存 HP、MaxHP、DEF、RES、自然回复属性，以及伤害与治疗的专属接收 Hook 和伤害接收规则。通用结算 Hook 由对应领域定义，存于来源或目标的 Unit.hooks。`battle/resource/` 按 HP／EP，再按 Damage／Healing 提供 Calculate／Apply 操作，复用[公共 Hook 契约](functional-core.md#6-hook-和生命周期的纯契约)。
+Vitality 保存 HP、MaxHP、DEF、RES、自然回复属性和伤害接收规则，并负责 HP 专属接收的派发。所有结算 Hook 由对应领域定义 typed Key，存于来源或目标的 Unit.hooks。`battle/resource/` 按 HP／EP，再按 Damage／Healing 提供 Calculate／Apply 操作，复用[公共 Hook 契约](functional-core.md#6-hook-和生命周期的纯契约)。
 
 [resource/index.ts](../../src/core/battle/resource/index.ts) 导出 hp、ep 命名空间，各自导出 damage、healing。HP 业务也可直接从 [hp/damage/index.ts](../../src/core/battle/resource/hp/damage/index.ts) 与 [hp/healing/index.ts](../../src/core/battle/resource/hp/healing/index.ts) 导入公共契约；资源能力由 [vitality/index.ts](../../src/core/unit/capability/vitality/index.ts) 提供。四种业务保留 calculateDamage／applyDamage 或 calculateHealing／applyHealing 两阶段入口；Hook 键和精确公开类型由对应入口导出，共用派发保持内部实现。
 
@@ -51,9 +51,9 @@ advance(battle, reference: Ref<Unit & Vitality>): BattleState;
 
 MaxHP 保留静态 Modifier[]，set／remove 工厂分别负责贡献登记与移除，共用局部 HP 比例计算，在同一次纯 transform 中生成新贡献集合和新 HP。零 HP 不因属性变化复活；不附带治疗通知或 Blocking 后继。DEF／RES 与两项回复属性的 Input 为静态修正或 `(battle, self: Unit & Vitality) => readonly Modifier[]`，由普通注册工厂生成 setContribution／removeContribution。专属接收 Hook 同样通过 setHook／removeHook 登记，字段与 Hook 类型保持配对。MaxHP 单独保留领域实现，不进入普通字段集合。属性查询接收已取得的当前宿主并返回 number，不重复定位或判空；Damage 在 Formula Hook 后确认当前目标，再按伤害类型求值，不提前缓存或混入穿透。
 
-HP、Contribution、专属接收 Hook 与 Rule 共存于同一 Vitality State。DEF／RES 的修改保留其他字段；属性变化不派发普通治疗 Hook。治疗索敌默认 provider 与显式注入 provider 均读取有效 MaxHP，避免把基础值或未计修正的上限用于缺血判定和比例排序。
+HP、Contribution 与 Rule 共存于 Vitality State，专属接收登记存于 Unit.hooks。DEF／RES 的修改保留其他字段；属性变化不派发普通治疗 Hook。治疗索敌默认 provider 与显式注入 provider 均读取有效 MaxHP，避免把基础值或未计修正的上限用于缺血判定和比例排序。
 
-Damage 接收 Rule 使用 `allows(battle, ReceivingContext)`；Rules 声明 damageRules，State 直接继承 Rules、Contributions、Hooks。单节点登记接口为 `setRule(rule)`／`removeRule(id)`，由普通登记工厂固定 damageRules 字段生成，返回 Change 交给 Unit.update 提交。普通治疗不设 Rule 数组，治疗干预由专属 Receiving Hook 表达。
+Damage 接收 Rule 使用 `allows(battle, ReceivingContext)`；Rules 声明 damageRules，State 直接继承 Rules、Contributions。单节点登记接口为 `setRule(rule)`／`removeRule(id)`，由普通登记工厂固定 damageRules 字段生成，返回 Change 交给 Unit.update 提交。普通治疗不设 Rule 数组，治疗干预由专属 Receiving Hook 表达。
 
 ### 0.1 自然 HP 回复
 
@@ -274,7 +274,7 @@ type AppliedHook = Entry<AppliedContext, void>;
 
 Request 始终表示初始事实；公式参数、输出量和接收工作值只经对应 Hook 的 current 接续。OutputContext.type 是公式确定的类型，不重新读取 Request 的初始类型。BeforeReceive、ReceivingStarted、BeforeCommit 与 Applied 只接续 BattleState 业务；Applied 的报告在提交时确定，只对成功提交派发，零实际变化仍可成功。其余业务定义自己的 Application，不重复声明成功 Outcome 的另一份报告。
 
-各业务 Hook 键由相应子域导出。Vitality 专属接收使用 setHook(key, hook)，key 为 damageReceivingStarted／damageReceiving／healingReceiving；Elemental 专属接收使用同一接口登记到 damageReceiving 字段。撤销使用对应 removeHook 接口。
+各业务 Hook 键由相应子域导出，均登记在 Unit.hooks。HP Damage 提供 receivingStarted／receiving，HP Healing 和 EP Damage 各自提供 receiving；键分别关联 Vitality／Elemental 宿主要求。接收仍由对应 Capability 按原资格、优先级与停止条件派发，登记统一使用 unit.setHook／removeHook。
 
 ReceivingStarted 只供 HP Damage 的普通受击 SP 等接收开始业务使用。EP Healing 不提供专属 Receiving，其 Pending.cancellation 固定为 null，也不导出取消构造器或 CANCELLED 结果。各业务分别提供自身使用的阶段。
 
@@ -345,9 +345,9 @@ UNSPECIFIED 表示取消但未指定一种受击结果；它不表示未取消�
 
 使用[类型化键与 Unit 本地 Hooks 集合](hook.md)。HP Damage、EP Damage、HP Healing、EP Healing 分别导出自己的 sourceFormula、targetFormula、output、beforeReceive、beforeCommit、targetApplied、sourceApplied 等实际需要的精确键，不通过联合 Context 或中央事件目录描述。
 
-固有登记直接写入 Unit Definition.hooks，在任何 enter 程序之前完成装配。运行时统一使用 `unit.setHook(key, hook): Change<Unit>`／`unit.removeHook(key, id): Change<Unit>`，经 Unit.update 发布；生命周期键也允许修改，不另设登记权限或领域转发入口。集合本身只要求 id，priority 在上文结算域的实际 Hook 类型中声明，缺省为 0；同阶段按 priority 降序，相同时保留登记顺序。同键同 ID 替换保位，当前派发不因替换重新排序。
+固有登记直接写入 Unit Definition.hooks，在任何 enter 程序之前完成装配。运行时统一使用 `unit.setHook(key, hook)`／`unit.removeHook(key, id)`；`Key<H, Owner>` 保留完整 Hook 类型和最低宿主能力，返回 `Change<Unit & Owner>`，经 Unit.update 发布。生命周期键也允许修改，不另设领域转发入口。priority 缺省为 0；计算、应用及专属接收均按 priority 降序，相同时保留登记顺序。同键同 ID 替换保位，当前派发不因替换重新排序。
 
-HP ReceivingStarted、HP Damage／Healing Receiving 存于 Vitality，EP Damage Receiving 存于 Elemental，使用各自 Capability 的 Change API；EP Healing 没有专属 Receiving。Burst 与实际 EP 变化通知由 Elemental 负责。
+HP ReceivingStarted、HP Damage／Healing Receiving、EP Damage Receiving 与 Elemental 的资源／Burst 通知统一存于宿主 Unit.hooks。接收与通知的类型、时点和资格仍归对应业务，EP Healing 不增加专属 Receiving。
 
 本地登记随承载 Unit 注销而移除，不建立 BattleState 外置表或单独 Hook Lifetime。临时 Effect 在启停时登记、撤销自己的输出；跨 Unit 安装仍由机制拥有者管理撤销。通用集合不承担派发、接收资格或自动回滚。
 
@@ -371,12 +371,14 @@ receiveDamage(
     battle: BattleState,
     context: HpDamage.ReceivingContext,
     pending: HpDamage.Pending,
+    options?: hooks.Options,
 ): Result<HpDamage.Pending>;
 
 receiveHealing(
     battle: BattleState,
     context: HpHealing.ReceivingContext,
     pending: HpHealing.Pending,
+    options?: hooks.Options,
 ): Result<HpHealing.Pending>;
 ```
 
@@ -558,6 +560,6 @@ Apply 对最终计算量为零的治疗在入口返回 REJECTED，不派发本�
 - **特殊 HP 修改**：普通伤害与生命流失都通过 HP Damage 结算，自然回复由 Vitality.advance 推进，HP 写入由 Vitality 拥有。生命复原和直接 HP 设置仍没有完整公开操作；Effect 不能直接重建 Vitality State 代替缺失的领域入口。
 - **伤害分类**：Request 已表达 DAMAGE／LOSS 与 hitRecovery，不携带 AttackType、ApplyWay 等其余固有分类。无视闪避、取消限制、非致命、分担和特殊生命机制仍无完整协议，也不能从目标状态或来源单位类型反推这些事实。
 - **受伤与 HIT 回复资格**：Request.hitRecovery 与 nature 共同限定受击类 SP 回复；普通环境伤害与标准元素爆发可保留受伤响应而不提供 HIT 回复，不通过全局阻回伪装单笔资格。具体内容未全部接入不改变这项公共契约。
-- **指定 Hook 禁用**：Core 不提供按机制禁用指定 Hook 的公共协议。
+- **本次 Hook 排除**：Calculate 与 Apply 分别接收可选 Options.exclude，按键身份与可选登记 ID 排除当前操作的响应；专属接收接续 Apply 选项。不修改登记、不跳过公式或资源提交、不豁免 Rule，也不将选项保存进 Request／Calculated 或自动传给嵌套业务。契约见 [Hook 排除](hook.md#本次调用的-hook-排除)。
 
 特殊机制的客户端事实、PRTS 说明与项目选择分别记录在[机制研究](../research/cases/11-damage-apply-and-hp-application.md)，不将未经确认的细节视为普通核心契约。

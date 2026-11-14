@@ -26,7 +26,7 @@ Action 需要保障的结果是：
 | --- | --- |
 | unit/action/Definition | 行动身份、基础 intervalTicks／speed、持久 initialize、prepare／onTick 与可选 onEnd |
 | Unit Action Capability Definition | 创建本 Unit 行动的 initialize 程序和可选 select 程序 |
-| Unit Action Capability State | 单一 Actions 容器、宿主内 nextExecutionId、interval／speed 贡献、启动 Rule、释放前拦截与成功释放通知 |
+| Unit Action Capability State | 单一 Actions 容器、宿主内 nextExecutionId、interval／speed 贡献与启动 Rule；释放登记存于 Unit.hooks |
 | Action | 一种配置行动在某 Unit 上的 Definition、持久 state、Cooldown 和当前 execution |
 | Execution | 以本轮执行身份读取同一聚合条目的完整视图，execution 确定非空 |
 | execution.State | 聚合条目内本次执行的 id、startedAtTick、lifecycle 和私有 state |
@@ -38,7 +38,7 @@ Rule 只负责启动准入，不自动中断现有执行。眩晕等需要中断
 
 ## 2. 模块与导入
 
-聚合类型、Execution、Definition、创建程序、容器、Cooldown 和生命周期操作位于 unit/action/；Capability 配置、贡献、Rule、周期属性与释放 Hook 位于 unit/capability/action/。模块组织遵守[公共入口约定](api-conventions.md#模块与公共入口)，领域内使用 Definition、Action、Execution、Id 等局部名字。
+聚合类型、Execution、Definition、创建程序、容器、Cooldown 和生命周期操作位于 unit/action/；Capability 配置、贡献、Rule、周期属性与释放 Hook 键位于 unit/capability/action/；beforeRelease／released 统一存于 Unit.hooks，通过通用登记 Change 保留 Action Capability 约束。模块组织遵守[公共入口约定](api-conventions.md#模块与公共入口)，领域内使用 Definition、Action、Execution、Id 等局部名字。
 
 [unit/action/index.ts](../../src/core/unit/action/index.ts) 显式提供公共 API，上层默认从该入口导入：
 

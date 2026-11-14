@@ -242,7 +242,7 @@ Unit 执行已登记的生命周期程序；Lifetime 关系由各实例所属领
 
 ## 部署观察
 
-Deployment 自己持有 Hook 集合，setHook(battle, hook)／removeHook(battle, id) 登记、替换和撤销。观察者无需具有 Deployable；Effect／Mechanism 根据自身生命周期管理登记。
+Deployment 在 battle.deployment.hooks 保存独立 Hooks 集合，导出 deployed typed Key；领域 setHook(battle, key, hook)／removeHook(battle, key, id) 按同键同 ID 登记、替换和撤销。全局 Unit leave 观察同样使用 Battle.unitHooks 的独立 typed Key 集合。它们不转存到某个 Unit，观察者无需具有 Deployable；Effect／Mechanism 根据自身生命周期管理登记。
 
 Deployed 载荷为 { unit, request }，支付信息读取 request.quote。它是已登记新实例的部署事实；后续普通入场程序尚可能修改状态或移除实例，观察者需要当前事实时重新查询。部署结果通过 Outcome 返回，当前 Card 与场上 Unit 从 State 查询，不额外输出部署诊断 Event。
 

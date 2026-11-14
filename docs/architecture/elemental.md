@@ -6,7 +6,7 @@ Elemental 负责元素值的接收、资源提交、爆发触发与恢复预算�
 
 Unit Definition 直接关联共享的 Elemental Definition。bursts 按元素类型映射到实际的 Burst Effect Definition；Data 选择 Core 提供的具体 Effect 并绑定静态数值，不自行实现爆发执行程序。
 
-公开类型、查询和业务操作从 [elemental/index.ts](../../src/core/unit/capability/elemental/index.ts) 导入，包括只读的 available。Capability 的 Rule、Hook 与属性贡献 set／remove 不接收 Ref，返回 `Change<Unit & Elemental>`，交给 Unit.update 登记。资源提交复用对应业务的 CommitContext，爆发与恢复等操作保持 BattleState 协议，状态写回使用 Core 内部的 Unit.replace；query.ts 负责查询。
+公开类型、查询和业务操作从 [elemental/index.ts](../../src/core/unit/capability/elemental/index.ts) 导入，包括只读的 available。Capability 的 Rule 与属性贡献 set／remove 不接收 Ref，返回 `Change<Unit & Elemental>`；Hook 通过领域导出的 typed Key 和 unit.setHook／removeHook 取得相同宿主约束，交给 Unit.update 登记。资源提交复用对应业务的 CommitContext，爆发与恢复等操作保持 BattleState 协议，状态写回使用 Core 内部的 Unit.replace；query.ts 负责查询。
 
 ## 关键语义
 
@@ -39,9 +39,7 @@ interface Definition {
 | ep | 四型当前 EP，可以保存小数；初始化为基础上限 |
 | burst | 当前标准 Burst Effect 的 Typed Ref，或 null；同一宿主至多一个 |
 | maxEp／recoverySpeed／elementResistance／damageResistance／burstRecoverySpeed | 五个属性的 Contribution |
-| damageReceiving | 抗性计算后、本次提交前的 DamageReceivingHook，逐项接续 battle 与 Pending |
 | damageRules／healingRules | 损伤／回复各自的接收许可登记 |
-| damaged／healed／burstStarted／burstEnded | 各明确业务事实的 Hook |
 
 属性 Contribution 的动态 Input 为 `(battle, self) => readonly attribute.Modifier[]`。属性修正、资格 Rule、伤判和事实通知分别承担自己的职责。请求类型相关的减免通过 DamageReceivingHook 读取 calculated.type 并返回新 Pending，不复制四组基础抗性，也不在布尔 Rule 中执行副作用。
 
@@ -103,7 +101,7 @@ EP Healing.Request 同样为 `{ source, target, parameters }`，Parameters 为 `
 | currentType／damageRatio | `(self: Unit & Elemental, maxEp: number)`，显式接收有效上限，不回落到静态 Definition |
 | available | `(self: Unit & Elemental) => boolean`，已知 Elemental 宿主的基础生命周期与生命资格查询，不包含空间存在性 |
 
-接收要求宿主生命周期为 PRESENT，具有 Vitality 时 HP 大于零。Burst 存在期间，包括 ENDING，拒绝损伤和治疗；中立阵营默认拒绝损伤。Rules 声明 damageRules／healingRules 两个数组，State 直接继承 Rules、Contributions、Hooks。damageRules 使用 `allows(battle, { self, request, type })`，type 是本次实际元素类型；healingRules 使用 `{ self, request }`。两者均由普通登记工厂生成的 `setRule(key, rule)`／`removeRule(key, id)` 修改，key 与对应 Context 类型配对。无敌通过 damageRules 拒绝，不查询 Vitality 内部接收规则；HP 禁疗不隐式决定 EP 接收。[Presence](presence.md) 同样通过 damageRules 拒收消失宿主的普通 EP 损伤，不直接限制显式回复、自然回复或 Burst 推进；普通索敌仍独立检查空间存在。
+接收要求宿主生命周期为 PRESENT，具有 Vitality 时 HP 大于零。Burst 存在期间，包括 ENDING，拒绝损伤和治疗；中立阵营默认拒绝损伤。Rules 声明 damageRules／healingRules 两个数组，State 直接继承 Rules、Contributions；Hook 登记统一存于 Unit.hooks。damageRules 使用 `allows(battle, { self, request, type })`，type 是本次实际元素类型；healingRules 使用 `{ self, request }`。两者均由普通登记工厂生成的 `setRule(key, rule)`／`removeRule(key, id)` 修改，key 与对应 Context 类型配对。无敌通过 damageRules 拒绝，不查询 Vitality 内部接收规则；HP 禁疗不隐式决定 EP 接收。[Presence](presence.md) 同样通过 damageRules 拒收消失宿主的普通 EP 损伤，不直接限制显式回复、自然回复或 Burst 推进；普通索敌仍独立检查空间存在。
 
 Targeting 的 elementDamage／elementHealing 是 Query 谓词，检查 Elemental 能力、当前可用性、Burst、阵营与目标侧限制；elementHealing 还要求有 EP 恢复需求。候选选择不构造完整结算请求、不执行接收 Rule 或 Hook；实际 Apply 仍按真实 Request 检查。类型守卫保留输入能力并增加 Elemental 证明，保存 Ref 时延续该证明。普通 HP 行动附带 EP 输出，不自动套用 EP 候选条件。
 
@@ -133,7 +131,7 @@ Damage 的 before／after／loss 描述本次元素类型，Burst 身份描述�
 
 通用 Formula、Output、BeforeReceive、BeforeCommit、targetApplied、sourceApplied 存于 [Unit.hooks](hook.md)，由对应 Battle 子域定义键与派发。基础目标资格成立后执行 beforeReceive，再读取最新 Rule；取消、失效及已提交结果按各业务 Outcome 表达。
 
-Elemental 仅保存专属 DamageReceivingHook 和实际资源／Burst 通知，统一由 Hooks 分组声明。专属接收使用 `setHook("damageReceiving", hook)`／`removeHook("damageReceiving", id)`，与事实通知共用普通登记工厂并返回 Change。接收 Context 固定 `{ target, request, calculated }`，工作值为绑定本域 Reason 的共用 Pending；取消后仍派发后续 Hook，但保留已有取消及原因。全部接收 Hook 完成后，receiveDamage 将未取消的最终 amount 截为非负数，再交给 Battle 构造 CommitContext；BeforeCommit、资源提交及报告使用同一份接收量，零接收量仍可成功，取消则保留工作值快照。中间各 Hook 不单独截零。领域 cancel 绑定 resource/receiving.ts 的共用构造函数，类型断言集中在该实现中。EP Healing 没有专属 Receiving，不导出取消构造器。
+EP Damage 的 receiving 键关联 Elemental 宿主，Elemental 的 damaged／healed／burstStarted／burstEnded 分别提供自己的 typed Key，全部通过 unit.setHook／removeHook 登记于 Unit.hooks。专属接收仍由 Elemental 执行，按优先级、固定候选与最新登记接续 battle 和 Pending；接收 Context 固定 `{ target, request, calculated }`，原因绑定本域 Reason。取消后继续后续 Hook，但保留取消事实和原因。全部接收 Hook 完成后，receiveDamage 将未取消的最终 amount 截为非负数，再交给 Battle 构造 CommitContext；BeforeCommit、资源提交及报告使用同一接收量，零接收量仍可成功，中间各 Hook 不单独截零。receiveDamage 接受 Apply 传入的 Options，按 EP Damage.receiving 键过滤本次候选；资源／Burst 事实通知不自动继承该选项。EP Healing 不提供专属 Receiving 或取消构造器。
 
 事实通知固定 `{ host, event }`，T=void；以下 event 在资源写入或生命周期转移处确定：
 

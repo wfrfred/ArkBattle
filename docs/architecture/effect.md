@@ -530,7 +530,7 @@ interface Hook<C, T> {
 }
 ```
 
-Context 是本次派发固定的事件或操作事实；BattleState 与 current 逐项接续。Hook 存于 Unit.hooks 或专属 Capability State；提供扩展点的领域决定排序、资格和整次派发的停止条件。Damage 的阶段与 priority 不成为 Effect 的字段。
+Context 是本次派发固定的事件或操作事实；BattleState 与 current 逐项接续。Unit 所属 Hook 统一存于 Unit.hooks，Battle 全局观察使用所属领域的独立 Hooks 集合；提供扩展点的领域决定排序、资格和整次派发的停止条件。Damage 的阶段与 priority 不成为 Effect 的字段。
 
 具体 Effect 可以在 onInstall 登记 Hook，在 onEnd 撤销。闭包捕获稳定的 Effect Ref 与静态配置；accepts 和 invoke 从最新 battle 读取当前实例、覆写结果和私有 state。不能把安装时捕获的数据当作当前盾数。消耗等需要被嵌套观察的进度先写回，再进入其他领域操作。
 

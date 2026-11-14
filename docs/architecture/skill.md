@@ -45,7 +45,7 @@ SP 容量、门槛和默认费用直接读取 Skill Definition；发动实际费
 | self.sp | 当前 SP 或 null |
 | self.activation | 本轮 id、startedAtTick、lifecycle、Sustain、私有 state: A，或 null |
 | Capability.nextActivationId | 宿主内单调分配的轮次身份 |
-| Capability.ammo／Rules／Hooks | 持久登记的 Ammo 容量贡献、许可和通知 |
+| Capability.ammo／Rules；Unit.hooks | 持久登记的 Ammo 容量贡献、许可；资源与 Activation 通知 |
 
 Skill<S, A> 允许 activation 为 null；Activation<S, A> 是同一个聚合的非空运行视图，self.activation 确定存在。两者都通过 self.state 读取持久 S，本轮状态读取 self.activation.state。两个泛型均默认 object，只关心本轮 A 时使用 Activation<object, A>；具体私有类型由已知 Definition 或精确 Ref 保持。
 
@@ -61,7 +61,7 @@ skill: {
 }
 ```
 
-Definition.initialize(battle) 返回 Result<S>；create 接续其 state，建立 definition、state、初始 SP 和 activation: null，返回 Result<Skill<S, A>>。静态身份、SP 与持续预算配置在 create(battle, definition) 入口校验，校验通过后才调用私有初始化程序，sp.initialize 只建立初态，信任已校验的 Definition 和当前战斗 Tick。Capability.initialize 接续工厂结果，并补 nextActivationId、贡献、规则与 Hook 初态。Capability 工厂以 Result<Skill<any, any>> 接纳不同私有 S／A 的完整创建结果，公共 State 继承的 Skill 默认参数是 object；该创建组合边界通过类型配对保持私有数据的形状。共享程序不保存私有运行进度，Unit 尚未登记时不能查询自己或假设兄弟能力已经存在。
+Definition.initialize(battle) 返回 Result<S>；create 接续其 state，建立 definition、state、初始 SP 和 activation: null，返回 Result<Skill<S, A>>。静态身份、SP 与持续预算配置在 create(battle, definition) 入口校验，校验通过后才调用私有初始化程序，sp.initialize 只建立初态，信任已校验的 Definition 和当前战斗 Tick。Capability.initialize 接续工厂结果，并补 nextActivationId、贡献、规则，保留 Unit.hooks 中的登记。Capability 工厂以 Result<Skill<any, any>> 接纳不同私有 S／A 的完整创建结果，公共 State 继承的 Skill 默认参数是 object；该创建组合边界通过类型配对保持私有数据的形状。共享程序不保存私有运行进度，Unit 尚未登记时不能查询自己或假设兄弟能力已经存在。
 
 ### 引用、查询与写回
 
@@ -84,7 +84,7 @@ setActivationState<T extends Activation<any, any>>(
 ): BattleState;
 ```
 
-setState 只更新当前 Skill 的 state，setActivationState 只更新当前本轮 activation.state，保留 Definition、SP、Sustain、规则、Hook、槽位和 ID 进度。宿主缺失时抛出 RangeError；持久 Ref 的 Definition 不匹配时抛出 TypeError，本轮 Ref 过期时抛出 RangeError。持久 state 允许在 LEAVING 或结束程序中更新；普通本轮状态写入在 ENDING 时抛出 TypeError。数据同引用时返回原 battle，不执行完整更新。
+setState 只更新当前 Skill 的 state，setActivationState 只更新当前本轮 activation.state，保留 Definition、SP、Sustain、规则、槽位和 ID 进度，不改动 Unit.hooks。宿主缺失时抛出 RangeError；持久 Ref 的 Definition 不匹配时抛出 TypeError，本轮 Ref 过期时抛出 RangeError。持久 state 允许在 LEAVING 或结束程序中更新；普通本轮状态写入在 ENDING 时抛出 TypeError。数据同引用时返回原 battle，不执行完整更新。
 
 计算与提交之间不执行其他完整操作；跨领域调用后先接续 battle 并重读私有数据。字段写回保留其他当前字段，但不替调用者合并陈旧 state。NoInfer 阻止结果值反向扩大私有类型，完整聚合写回仅归 Core。
 
@@ -144,11 +144,11 @@ AMMO 描述资源和耗尽结束政策，不代表所有“弹药类技能”加
 
 ## 4. Rule、程序与 Hook
 
-Operation（STOP／RETRIGGER）归领域 activation.ts，由 unit/skill/index.ts 导出；Capability 的 rule.ts 只引用该类型。Rules 声明 activationRules／operationRules／recoveryRules，State 直接继承 Rules 和 Hooks。各 Rule 统一使用 `allows(battle, context)`：Context 都有 self，operationRules 另有 operation，recoveryRules 另有 source。普通登记工厂生成 `setRule(key, rule)`／`removeRule(key, id)`，返回 Change，key 保留具体 Context 类型；同 ID 在不同字段互不影响。它们提供额外业务许可；内部完成、到期结束及宿主离场清理不受主动操作 Rule 否决。
+Operation（STOP／RETRIGGER）归领域 activation.ts，由 unit/skill/index.ts 导出；Capability 的 rule.ts 只引用该类型。Rules 声明 activationRules／operationRules／recoveryRules，State 继承 Rules，通知登记存于 Unit.hooks。各 Rule 统一使用 `allows(battle, context)`：Context 都有 self，operationRules 另有 operation，recoveryRules 另有 source。普通登记工厂生成 `setRule(key, rule)`／`removeRule(key, id)`，返回 Change，key 保留具体 Context 类型；同 ID 在不同字段互不影响。它们提供额外业务许可；内部完成、到期结束及宿主离场清理不受主动操作 Rule 否决。
 
 activate 要求宿主 PRESENT，具有 Vitality 时 HP 大于零，并通过 activationRules；[Presence](presence.md) 在消失时登记这一启动限制，Skill 不直接读取空间存在字段。operate 则保留 PRESENT、同一 Activation ACTIVE 与 Rule 准入，不附加空间或 HP 条件。当前 Activation 已存在时，内部信任对应 Activation Definition 已配置。Skill 的 enter 是普通 Unit EnterHook，装配 Skill 能力时自动登记到实例 hooks；Unit.add 按统一注册序派发。该 Hook 从最新 BattleState 读取宿主，先登记回复监听，再执行 Definition.onEnter，最后重新读取仍为 PRESENT 的宿主并尝试发动 PASSIVE 技能；onEnter 同步移除宿主后不发动。与其它 Unit Hook 一样，本次派发的 Context 固定，后继需要当前 Skill／HP 时重新查询 BattleState。持久 Skill.onTick 按 PRESENT 推进，Activation.onTick 另要求本轮 ACTIVE；它们不自动采用自然 SP 回复的暂停条件。已有技能的 STOP／RETRIGGER、计时或内部进度可以在不具备新发动资格时继续，这是各入口明确的规则选择，不合并为通用 available。
 
-Hook 登记使用 capability/skill 的 `setHook(key, hook): Change<Unit & SkillCapability>`／`removeHook(key, id): Change<Unit & SkillCapability>`，Key 与事件载荷保持类型配对，由 Unit.update 提交。Rule 和 Ammo 贡献同样返回 `Change<Unit & SkillCapability>`；精确私有 state 写回、SP 消费、激活与结束使用各自领域操作。
+Skill 为 spRecovered／spPaid／spModified、ammoConsumed／ammoReplenished、activationStarted／activationEnded 导出关联 Skill Capability 的 typed Key。统一使用 unit.setHook／removeHook，返回 `Change<Unit & SkillCapability>`，由 Unit.update 提交。通知按登记顺序固定候选，逐项读取当前 Unit.hooks；宿主仍登记时可处理结束事实，不统一附加 PRESENT 条件。Rule 和 Ammo 贡献仍由对应 Capability 提供 Change；精确私有 state 写回、SP 消费、激活与结束使用各自完整操作。
 
 enter Hook 仅供 Unit 装配内部登记；完整入场由 battle/unit.add 负责。
 
