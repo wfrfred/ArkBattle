@@ -178,7 +178,7 @@ function shieldEffect(profile: Profile): EffectDefinition<ShieldState, Vitality>
 
                             return {
                                 state,
-                                value: cancel(pending, "MUDROCK_SHIELD"),
+                                value: cancel(pending, "BLOCKED"),
                             };
                         }
 

@@ -50,7 +50,7 @@ export interface Calculated {
     readonly amount: number;
 }
 
-export type Reason = string;
+export type Reason = "UNSPECIFIED" | "UNHURTABLE" | "MISS" | "BLOCKED" | "HIT_FAILED" | "INTERRUPT";
 
 export type Pending<R extends Reason = Reason, T extends keyof Transitions = keyof Transitions> =
     | { readonly type: T & "NORMAL"; readonly amount: number }

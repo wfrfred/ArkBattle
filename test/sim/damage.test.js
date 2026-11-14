@@ -381,21 +381,21 @@ test("APPLY-01: cancellation retains recovery and reflection but skips the origi
                             recovery,
                             hpHealing.calculateHealing(current, recovery),
                         ).state;
-                        return { state: current, value: hpDamage.cancel(pending, "EVADE") };
+                        return { state: current, value: hpDamage.cancel(pending, "MISS") };
                     },
                 }),
                 vitality.setHook("damageReceiving", {
                     id: "reflect",
                     invoke(current, _context, pending) {
                         assert.equal(pending.type, "CANCELLED");
-                        assert.equal(pending.reason, "EVADE");
+                        assert.equal(pending.reason, "MISS");
                         const reflection = damageRequest(target, source, 10);
                         return {
                             state: hpDamage.applyDamage(
                                 reflection,
                                 hpDamage.calculateDamage(current, reflection),
                             ).state,
-                            value: hpDamage.cancel(pending, "BLOCK"),
+                            value: hpDamage.cancel(pending, "BLOCKED"),
                         };
                     },
                 }),
@@ -416,7 +416,7 @@ test("APPLY-01: cancellation retains recovery and reflection but skips the origi
     );
     const request = damageRequest(source, target, 20);
     const result = hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request));
-    assert.deepEqual(result.value, { type: "CANCELLED", received: { type: "CANCELLED", amount: 20, reason: "EVADE" } });
+    assert.deepEqual(result.value, { type: "CANCELLED", received: { type: "CANCELLED", amount: 20, reason: "MISS" } });
     assert.equal(get(result.state, 0).vitality.hp, 56);
     assert.equal(get(result.state, 1).vitality.hp, 100);
 });

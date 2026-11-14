@@ -268,10 +268,16 @@ ReceivingStarted 只供 HP Damage 的普通受击 SP 等接收开始业务使用
 
 #### 接收工作值、数值固定与取消
 
-三种状态及允许的转换如下。Reason 的具体原因集合另按实际生产与消费语义审查，不由 Pending 的状态结构决定。
+三种状态及允许的转换如下。以下 Reason 为 HP Damage 的原因集合。
 
 ```typescript
-type Reason = string;
+type Reason =
+    | "UNSPECIFIED"
+    | "UNHURTABLE"
+    | "MISS"
+    | "BLOCKED"
+    | "HIT_FAILED"
+    | "INTERRUPT";
 
 type Pending<R extends Reason = Reason, T extends keyof Transitions = keyof Transitions> =
     | { readonly type: T & "NORMAL"; readonly amount: number }
@@ -311,6 +317,18 @@ Receiving 的各 Hook 按顺序接续原工作值，不在每项之后截零；�
 ReceivingHook 的泛型返回类型约束上述单向状态转换及取消原因；amount 始终为 number，不以类型证明数值相等。固定和取消后的数值保留由 Hook 契约保证，内核信任内容实现，不增加比较、纠正或其他运行时防御。特殊 Hook 仍可交给现有派发器。
 
 领域提供纯工作值构造函数 fix 与 cancel。fix 将 NORMAL 固定，其他状态原样保留；cancel 保留 amount，将未取消工作值变为 CANCELLED，已取消则原样返回。状态转换的受信类型断言集中在两个构造函数中，Content 不需要断言或直接操作 Next。普通改量只在 NORMAL 分支通过 `{ ...current, amount: nextAmount }` 返回。
+
+Reason 是业务原因的有限集合，不接受内容自造的字符串；机制身份仍由所属 Effect／Hook 保存，不使用干员名作为原因。
+
+| 业务 | 原因集合 |
+| --- | --- |
+| HP Damage | UNSPECIFIED、UNHURTABLE、MISS、BLOCKED、HIT_FAILED、INTERRUPT |
+| EP Damage | UNSPECIFIED、UNHURTABLE、INTERRUPT |
+| HP Healing | UNSPECIFIED |
+
+UNSPECIFIED 表示取消但未指定一种受击结果；它不表示未取消。MISS 是目标成功闪避，HIT_FAILED 是来源本次攻击的未命中事实，不能互换。BLOCKED 表示抵挡，不区分提供者或是否显示数值。INTERRUPT 表示内容显式终止本次应用，不恢复原生特定时点的事件早退顺序；Calculate／Apply 的项目边界、取消后继续派发及已有入口 Rule 政策保持不变。
+
+这些集合依据[取消原因的实际消费者](../research/cases/38-damage-classification-and-permissions.md#10-取消原因的实际生产与消费)确定。原生两种抵挡的显示差异属于表现输出，不作为两个业务原因；本次未增加该表现输出。MINUS_HEALTH 未定位实际生产路径，不纳入当前集合，也不标记为原生废弃。EP 与治疗不机械复制 HP 原因；原生 HEAL_FREE 的取消仍不覆盖项目仅限制 Targeting 的选择。
 
 上述固定状态只用于接收工作值；Formula 的 Parameters 与 Output 的 number 继续使用现有接口。Calculate 到 Apply 的固定事实传递、调用方选择 Hook 的范围与入口尚未确定，不由本次新增类型代为决定。
 
