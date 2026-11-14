@@ -1,0 +1,33 @@
+{
+  "provenance": {
+    "consultedOn": "2026-11-14",
+    "kind": "community secondary documentation",
+    "scope": "Bounded paraphrases, not page snapshots or runtime evidence"
+  },
+  "result": [
+    {
+      "title": "生命值",
+      "url": "https://prts.wiki/w/生命值",
+      "pageDeclaredClientVersion": "2.7.71",
+      "checkedTopic": "HP、ES及负生命资料；负生命累计和MaxHP交互以本批native分支限定，不能无条件沿用社区数值概括。"
+    },
+    {
+      "title": "特殊机制",
+      "url": "https://prts.wiki/index.php?title=特殊机制&oldid=450402",
+      "pageDeclaredClientVersion": "2.7.91",
+      "checkedTopic": "普通免死、数值改写、强制死亡与派生生命分类。"
+    },
+    {
+      "title": "伤害分类",
+      "url": "https://prts.wiki/w/伤害分类",
+      "pageDeclaredClientVersion": "2.7.91",
+      "checkedTopic": "伤害来源和击杀来源不等价；默认自身的概括未在本批OnFinish空来源分支复现。"
+    },
+    {
+      "title": "数值范围",
+      "url": "https://prts.wiki/index.php?title=数值范围&oldid=444062",
+      "pageDeclaredClientVersion": "2.7.81",
+      "checkedTopic": "属性默认范围与范围覆写；actual模组和native独立核对。"
+    }
+  ]
+}

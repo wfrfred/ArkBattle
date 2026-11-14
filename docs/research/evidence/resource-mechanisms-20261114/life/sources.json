@@ -1,0 +1,48 @@
+{
+  "provenance": {
+    "checkedOn": "2026-11-14",
+    "scope": "PRTS community cross-check. Native and configuration originals remain authoritative for the recorded client branch; these summaries are paraphrases."
+  },
+  "result": [
+    {
+      "url": "https://prts.wiki/w/生命值",
+      "claimsChecked": ["HP、额外生命与负生命分开", "斩业星熊使用负生命", "治疗溢出与额外生命"],
+      "limits": "页面对负生命逐次损失和MaxHP变更的概括不能直接代替当前setter及OnAttributeDirty的组合行为；差异见findings。"
+    },
+    {
+      "url": "https://prts.wiki/w/衍生生命",
+      "claimsChecked": ["普通免死竞争", "替身、复活及重新获得生命的不同路径"],
+      "limits": "旧Skadi模组提前预判的概括不能覆盖当前模板的事件27/82；makoto_tr与若叶睦身份须按原始角色表纠正。"
+    },
+    {
+      "url": "https://prts.wiki/w/斩业星熊",
+      "claimsChecked": ["负生命、自回及禁疗实际内容"],
+      "nativeBinding": "char_1044_hsgma2 → Talent 1 PassiveBuffAbility → hsgma2_t_1"
+    },
+    {
+      "url": "https://prts.wiki/w/小说卷轴",
+      "claimsChecked": ["每次受击固定损失生命的普通内容"],
+      "nativeBinding": "enemy_1198_msfshu / _2 → PropLikeEnemy.DoApplyModifier"
+    },
+    {
+      "url": "https://prts.wiki/w/若叶睦",
+      "claimsChecked": ["若叶睦与替身切换"],
+      "nativeBinding": "char_4183_mortis → mortis_tr；不是makoto_tr"
+    },
+    {
+      "url": "https://prts.wiki/w/结城理",
+      "claimsChecked": ["结城理的模式切换"],
+      "nativeBinding": "char_4217_makoto → makoto_tr"
+    },
+    {
+      "url": "https://prts.wiki/w/信仰搅拌机",
+      "claimsChecked": ["S2以弹药抵挡致命变化，弹药不足也消耗剩余量"],
+      "nativeBinding": "skchr_rmixer_2 → rmixer_sk2，_blockThisHpSet=true"
+    },
+    {
+      "url": "https://prts.wiki/w/霜星",
+      "claimsChecked": ["同实例第一次倒下后的复活与第二次死亡"],
+      "nativeBinding": "enemy_1505_frstar → RebornTalent → Enemy.RebornState"
+    }
+  ]
+}

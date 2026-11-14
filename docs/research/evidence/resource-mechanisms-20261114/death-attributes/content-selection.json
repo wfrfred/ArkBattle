@@ -1,0 +1,7 @@
+{
+  "charpack/char_362_saga.ab": ["char_362_saga"],
+  "charpack/char_002_amiya.ab": ["char_002_amiya"],
+  "charpack/char_4212_nasti.ab": ["char_4212_nasti", "token_10060_nasti_nstchr"],
+  "battle/prefabs/[uc]skills.ab": ["skchr_saga_2", "skchr_amiya_3", "skchr_nasti_"],
+  "battle/prefabs/[uc]equips.ab": ["rmixer_equip_1_"]
+}

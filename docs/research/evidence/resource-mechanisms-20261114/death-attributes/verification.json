@@ -1,0 +1,70 @@
+{
+  "provenance": {
+    "scope": "Independent extraction into cache/replay; result comparison ignores output path only for logical body selectors; product behavior was not executed."
+  },
+  "result": {
+    "checks": [
+      {
+        "record": "attribute-recomputation.json",
+        "equalResult": true
+      },
+      {
+        "record": "attribution-boundaries.json",
+        "equalResult": true
+      },
+      {
+        "record": "context-bodies.json",
+        "equalResult": true
+      },
+      {
+        "record": "context-discovery.json",
+        "equalResult": true
+      },
+      {
+        "record": "death-observers.json",
+        "equalResult": true
+      },
+      {
+        "record": "kill-observer-context.json",
+        "equalResult": true
+      },
+      {
+        "record": "mode-termination.json",
+        "equalResult": true
+      },
+      {
+        "record": "source-writers.json",
+        "equalResult": true
+      },
+      {
+        "record": "termination-attributes.json",
+        "equalResult": true
+      },
+      {
+        "record": "withdraw.json",
+        "equalResult": true
+      },
+      {
+        "record": "content.json",
+        "equalResult": true
+      },
+      {
+        "record": "templates.json",
+        "equalResult": true
+      },
+      {
+        "record": "static-inputs.json",
+        "equalResult": true
+      },
+      {
+        "record": "metadata.json",
+        "equalResult": true
+      },
+      {
+        "record": "inventory.json",
+        "equalResult": true
+      }
+    ],
+    "allEqual": true
+  }
+}

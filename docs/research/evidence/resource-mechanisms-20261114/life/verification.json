@@ -1,0 +1,52 @@
+{
+  "provenance": {
+    "scope": "Independent static re-extraction; no client execution.",
+    "reference": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/resource-mechanisms-20261114/life",
+    "output": ".cache/native-research/resource-mechanisms-20261114/life/verify"
+  },
+  "result": {
+    "pythonSyntax": true,
+    "comparisons": [
+      {
+        "file": "inventory.json",
+        "selectedResultEqual": true
+      },
+      {
+        "file": "content.json",
+        "selectedResultEqual": true
+      },
+      {
+        "file": "templates.json",
+        "selectedResultEqual": true
+      },
+      {
+        "file": "prefab-policy-scan.json",
+        "selectedResultEqual": true
+      },
+      {
+        "file": "native.json",
+        "selectedResultEqual": true
+      },
+      {
+        "file": "native-specializations.json",
+        "selectedResultEqual": true
+      },
+      {
+        "file": "native-overrides.json",
+        "selectedResultEqual": true
+      },
+      {
+        "file": "native-binding.json",
+        "selectedResultEqual": true
+      },
+      {
+        "file": "static-bindings.json",
+        "selectedResultEqual": true
+      },
+      {
+        "file": "literals.json",
+        "selectedResultEqual": true
+      }
+    ]
+  }
+}

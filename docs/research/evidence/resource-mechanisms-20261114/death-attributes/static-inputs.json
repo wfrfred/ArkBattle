@@ -1,0 +1,1551 @@
+{
+  "provenance": {
+    "sources": [
+      {
+        "url": "https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/17759cc8cdf37388414145d16262a3a06f3ab25e/zh_CN/gamedata/excel/character_table.json",
+        "revision": "17759cc8cdf37388414145d16262a3a06f3ab25e",
+        "bytes": 15069101,
+        "sha256": "e523c7c83c36e2d76697121079e17d0282da1a94d59a55e1cc55616edf0b41c4",
+        "gitBlobSha1": "f7284f66cfd87273a6805142b389aa314320968f"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/17759cc8cdf37388414145d16262a3a06f3ab25e/zh_CN/gamedata/excel/uniequip_table.json",
+        "revision": "17759cc8cdf37388414145d16262a3a06f3ab25e",
+        "bytes": 3392727,
+        "sha256": "c436d9ca672c8e8c3926d0ccbd496f7591004baf944f8cb47458572f4eaa8590",
+        "gitBlobSha1": "337a11c671c583a626f4ab14e0f92d8bcb49b8ab"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/17759cc8cdf37388414145d16262a3a06f3ab25e/zh_CN/gamedata/excel/battle_equip_table.json",
+        "revision": "17759cc8cdf37388414145d16262a3a06f3ab25e",
+        "bytes": 5763741,
+        "sha256": "991ce1a8cd76682704b7e95fb71de8c726fd9ff62038a2da31b8a3870dc48055",
+        "gitBlobSha1": "7039d6565ad74eb77128d2ea137837ef62800ffe"
+      }
+    ],
+    "reference": "docs/research/evidence/unit-audit-20261110/operator-config/configuration.json",
+    "scriptSha256": "bbaee17b7c9e21c376500259e2c2b6c5f4816a6b053b031f780921554ce3622c",
+    "scope": "Fixed mirror static selection, separate from installed prefab/client versions."
+  },
+  "result": {
+    "characters": [
+      {
+        "pointer": "/char_362_saga",
+        "id": "char_362_saga",
+        "record": {
+          "name": "嵯峨",
+          "profession": "PIONEER",
+          "talents": [
+            {
+              "candidates": [
+                {
+                  "unlockCondition": {
+                    "phase": "PHASE_0",
+                    "level": 1
+                  },
+                  "requiredPotentialRank": 0,
+                  "prefabKey": "1",
+                  "name": "劝善",
+                  "description": "造成致命伤害时使敌人保留1点生命并使其<$ba.dying>重伤</>（击杀者技力+1）；嵯峨不攻击<$ba.dying>重伤</>单位",
+                  "rangeId": null,
+                  "blackboard": [
+                    {
+                      "key": "move_speed",
+                      "value": -0.8,
+                      "valueStr": null
+                    },
+                    {
+                      "key": "sp",
+                      "value": 1.0,
+                      "valueStr": null
+                    },
+                    {
+                      "key": "interval",
+                      "value": 10.0,
+                      "valueStr": null
+                    }
+                  ],
+                  "tokenKey": null,
+                  "isHideTalent": false
+                },
+                {
+                  "unlockCondition": {
+                    "phase": "PHASE_1",
+                    "level": 1
+                  },
+                  "requiredPotentialRank": 0,
+                  "prefabKey": "1",
+                  "name": "劝善",
+                  "description": "造成致命伤害时使敌人保留1点生命并使其<$ba.dying>重伤</>（击杀者技力+2）；嵯峨不攻击<$ba.dying>重伤</>单位",
+                  "rangeId": null,
+                  "blackboard": [
+                    {
+                      "key": "move_speed",
+                      "value": -0.8,
+                      "valueStr": null
+                    },
+                    {
+                      "key": "sp",
+                      "value": 2.0,
+                      "valueStr": null
+                    },
+                    {
+                      "key": "interval",
+                      "value": 10.0,
+                      "valueStr": null
+                    }
+                  ],
+                  "tokenKey": null,
+                  "isHideTalent": false
+                }
+              ]
+            },
+            {
+              "candidates": [
+                {
+                  "unlockCondition": {
+                    "phase": "PHASE_2",
+                    "level": 1
+                  },
+                  "requiredPotentialRank": 0,
+                  "prefabKey": "2",
+                  "name": "清明",
+                  "description": "生命值低于40%时，仅一次获得70%物理闪避和每秒回复5%的最大生命，持续15秒",
+                  "rangeId": null,
+                  "blackboard": [
+                    {
+                      "key": "hp_ratio",
+                      "value": 0.4,
+                      "valueStr": null
+                    },
+                    {
+                      "key": "hp_recovery_per_sec_by_max_hp_ratio",
+                      "value": 0.05,
+                      "valueStr": null
+                    },
+                    {
+                      "key": "prob",
+                      "value": 0.7,
+                      "valueStr": null
+                    },
+                    {
+                      "key": "duration",
+                      "value": 15.0,
+                      "valueStr": null
+                    }
+                  ],
+                  "tokenKey": null,
+                  "isHideTalent": false
+                },
+                {
+                  "unlockCondition": {
+                    "phase": "PHASE_2",
+                    "level": 1
+                  },
+                  "requiredPotentialRank": 4,
+                  "prefabKey": "2",
+                  "name": "清明",
+                  "description": "生命值低于40%时，仅一次获得70%物理闪避和每秒回复6%<@ba.talpu>（+1%）</>的最大生命，持续17<@ba.talpu>（+2）</>秒",
+                  "rangeId": null,
+                  "blackboard": [
+                    {
+                      "key": "hp_ratio",
+                      "value": 0.4,
+                      "valueStr": null
+                    },
+                    {
+                      "key": "hp_recovery_per_sec_by_max_hp_ratio",
+                      "value": 0.06,
+                      "valueStr": null
+                    },
+                    {
+                      "key": "prob",
+                      "value": 0.7,
+                      "valueStr": null
+                    },
+                    {
+                      "key": "duration",
+                      "value": 17.0,
+                      "valueStr": null
+                    }
+                  ],
+                  "tokenKey": null,
+                  "isHideTalent": false
+                }
+              ]
+            }
+          ],
+          "skills": [
+            {
+              "skillId": "skcom_charge_cost[3]",
+              "overridePrefabKey": null,
+              "overrideTokenKey": null,
+              "levelUpCostCond": [
+                {
+                  "unlockCond": {
+                    "phase": "PHASE_2",
+                    "level": 1
+                  },
+                  "lvlUpTime": 28800,
+                  "levelUpCost": [
+                    {
+                      "id": "3303",
+                      "count": 8,
+                      "type": "MATERIAL"
+                    },
+                    {
+                      "id": "31034",
+                      "count": 4,
+                      "type": "MATERIAL"
+                    },
+                    {
+                      "id": "31013",
+                      "count": 3,
+                      "type": "MATERIAL"
+                    }
+                  ]
+                },
+                {
+                  "unlockCond": {
+                    "phase": "PHASE_2",
+                    "level": 1
+                  },
+                  "lvlUpTime": 57600,
+                  "levelUpCost": [
+                    {
+                      "id": "3303",
+                      "count": 12,
+                      "type": "MATERIAL"
+                    },
+                    {
+                      "id": "31014",
+                      "count": 4,
+                      "type": "MATERIAL"
+                    },
+                    {
+                      "id": "30014",
+                      "count": 10,
+                      "type": "MATERIAL"
+                    }
+                  ]
+                },
+                {
+                  "unlockCond": {
+                    "phase": "PHASE_2",
+                    "level": 1
+                  },
+                  "lvlUpTime": 86400,
+                  "levelUpCost": [
+                    {
+                      "id": "3303",
+                      "count": 15,
+                      "type": "MATERIAL"
+                    },
+                    {
+                      "id": "30125",
+                      "count": 6,
+                      "type": "MATERIAL"
+                    },
+                    {
+                      "id": "31024",
+                      "count": 5,
+                      "type": "MATERIAL"
+                    }
+                  ]
+                }
+              ],
+              "unlockCond": {
+                "phase": "PHASE_0",
+                "level": 1
+              }
+            },
+            {
+              "skillId": "skchr_saga_2",
+              "overridePrefabKey": null,
+              "overrideTokenKey": null,
+              "levelUpCostCond": [
+                {
+                  "unlockCond": {
+                    "phase": "PHASE_2",
+                    "level": 1
+                  },
+                  "lvlUpTime": 28800,
+                  "levelUpCost": [
+                    {
+                      "id": "3303",
+                      "count": 8,
+                      "type": "MATERIAL"
+                    },
+                    {
+                      "id": "30104",
+                      "count": 4,
+                      "type": "MATERIAL"
+                    },
+                    {
+                      "id": "30083",
+                      "count": 5,
+                      "type": "MATERIAL"
+                    }
+                  ]
+                },
+                {
+                  "unlockCond": {
+                    "phase": "PHASE_2",
+                    "level": 1
+                  },
+                  "lvlUpTime": 57600,
+                  "levelUpCost": [
+                    {
+                      "id": "3303",
+                      "count": 12,
+                      "type": "MATERIAL"
+                    },
+                    {
+                      "id": "30044",
+                      "count": 4,
+                      "type": "MATERIAL"
+                    },
+                    {
+                      "id": "31024",
+                      "count": 7,
+                      "type": "MATERIAL"
+                    }
+                  ]
+                },
+                {
+                  "unlockCond": {
+                    "phase": "PHASE_2",
+                    "level": 1
+                  },
+                  "lvlUpTime": 86400,
+                  "levelUpCost": [
+                    {
+                      "id": "3303",
+                      "count": 15,
+                      "type": "MATERIAL"
+                    },
+                    {
+                      "id": "30115",
+                      "count": 6,
+                      "type": "MATERIAL"
+                    },
+                    {
+                      "id": "31014",
+                      "count": 7,
+                      "type": "MATERIAL"
+                    }
+                  ]
+                }
+              ],
+              "unlockCond": {
+                "phase": "PHASE_1",
+                "level": 1
+              }
+            },
+            {
+              "skillId": "skchr_saga_3",
+              "overridePrefabKey": null,
+              "overrideTokenKey": null,
+              "levelUpCostCond": [
+                {
+                  "unlockCond": {
+                    "phase": "PHASE_2",
+                    "level": 1
+                  },
+                  "lvlUpTime": 28800,
+                  "levelUpCost": [
+                    {
+                      "id": "3303",
+                      "count": 8,
+                      "type": "MATERIAL"
+                    },
+                    {
+                      "id": "30094",
+                      "count": 4,
+                      "type": "MATERIAL"
+                    },
+                    {
+                      "id": "30073",
+                      "count": 7,
+                      "type": "MATERIAL"
+                    }
+                  ]
+                },
+                {
+                  "unlockCond": {
+                    "phase": "PHASE_2",
+                    "level": 1
+                  },
+                  "lvlUpTime": 57600,
+                  "levelUpCost": [
+                    {
+                      "id": "3303",
+                      "count": 12,
+                      "type": "MATERIAL"
+                    },
+                    {
+                      "id": "31024",
+                      "count": 4,
+                      "type": "MATERIAL"
+                    },
+                    {
+                      "id": "30104",
+                      "count": 8,
+                      "type": "MATERIAL"
+                    }
+                  ]
+                },
+                {
+                  "unlockCond": {
+                    "phase": "PHASE_2",
+                    "level": 1
+                  },
+                  "lvlUpTime": 86400,
+                  "levelUpCost": [
+                    {
+                      "id": "3303",
+                      "count": 15,
+                      "type": "MATERIAL"
+                    },
+                    {
+                      "id": "30135",
+                      "count": 6,
+                      "type": "MATERIAL"
+                    },
+                    {
+                      "id": "30014",
+                      "count": 7,
+                      "type": "MATERIAL"
+                    }
+                  ]
+                }
+              ],
+              "unlockCond": {
+                "phase": "PHASE_2",
+                "level": 1
+              }
+            }
+          ],
+          "trait": null
+        }
+      },
+      {
+        "pointer": "/char_002_amiya",
+        "id": "char_002_amiya",
+        "record": {
+          "name": "阿米娅",
+          "profession": "CASTER",
+          "talents": [
+            {
+              "candidates": [
+                {
+                  "unlockCondition": {
+                    "phase": "PHASE_0",
+                    "level": 1
+                  },
+                  "requiredPotentialRank": 0,
+                  "prefabKey": "#",
+                  "name": "？？？",
+                  "description": "？？？？？",
+                  "rangeId": null,
+                  "blackboard": [],
+                  "tokenKey": null,
+                  "isHideTalent": false
+                },
+                {
+                  "unlockCondition": {
+                    "phase": "PHASE_2",
+                    "level": 1
+                  },
+                  "requiredPotentialRank": 0,
+                  "prefabKey": "1",
+                  "name": "情绪吸收",
+                  "description": "攻击敌人时额外回复2点技力，消灭敌人后额外获得8点技力",
+                  "rangeId": null,
+                  "blackboard": [
+                    {
+                      "key": "amiya_t_1[atk].sp",
+                      "value": 2.0,
+                      "valueStr": null
+                    },
+                    {
+                      "key": "amiya_t_1[kill].sp",
+                      "value": 8.0,
+                      "valueStr": null
+                    }
+                  ],
+                  "tokenKey": null,
+                  "isHideTalent": false
+                },
+                {
+                  "unlockCondition": {
+                    "phase": "PHASE_2",
+                    "level": 1
+                  },
+                  "requiredPotentialRank": 5,
+                  "prefabKey": "1",
+                  "name": "情绪吸收",
+                  "description": "攻击敌人时额外回复3<@ba.talpu>（+1）</>点技力，消灭敌人后额外获得10<@ba.talpu>（+2）</>点技力",
+                  "rangeId": null,
+                  "blackboard": [
+                    {
+                      "key": "amiya_t_1[atk].sp",
+                      "value": 3.0,
+                      "valueStr": null
+                    },
+                    {
+                      "key": "amiya_t_1[kill].sp",
+                      "value": 10.0,
+                      "valueStr": null
+                    }
+                  ],
+                  "tokenKey": null,
+                  "isHideTalent": false
+                }
+              ]
+            }
+          ],
+          "skills": [
+            {
+              "skillId": "skcom_magic_rage[3]",
+              "overridePrefabKey": null,
+              "overrideTokenKey": null,
+              "levelUpCostCond": [
+                {
+                  "unlockCond": {
+                    "phase": "PHASE_2",
+                    "level": 1
+                  },
+                  "lvlUpTime": 28800,
+                  "levelUpCost": [
+                    {
+                      "id": "3303",
+                      "count": 5,
+                      "type": "MATERIAL"
+                    },
+                    {
+                      "id": "30074",
+                      "count": 3,
+                      "type": "MATERIAL"
+                    },
+                    {
+                      "id": "30053",
+                      "count": 5,
+                      "type": "MATERIAL"
+                    }
+                  ]
+                },
+                {
+                  "unlockCond": {
+                    "phase": "PHASE_2",
+                    "level": 1
+                  },
+                  "lvlUpTime": 57600,
+                  "levelUpCost": [
+                    {
+                      "id": "3303",
+                      "count": 6,
+                      "type": "MATERIAL"
+                    },
+                    {
+                      "id": "30094",
+                      "count": 3,
+                      "type": "MATERIAL"
+                    },
+                    {
+                      "id": "30074",
+                      "count": 6,
+                      "type": "MATERIAL"
+                    }
+                  ]
+                },
+                {
+                  "unlockCond": {
+                    "phase": "PHASE_2",
+                    "level": 1
+                  },
+                  "lvlUpTime": 86400,
+                  "levelUpCost": [
+                    {
+                      "id": "3303",
+                      "count": 10,
+                      "type": "MATERIAL"
+                    },
+                    {
+                      "id": "30135",
+                      "count": 4,
+                      "type": "MATERIAL"
+                    },
+                    {
+                      "id": "30014",
+                      "count": 5,
+                      "type": "MATERIAL"
+                    }
+                  ]
+                }
+              ],
+              "unlockCond": {
+                "phase": "PHASE_0",
+                "level": 1
+              }
+            },
+            {
+              "skillId": "skchr_amiya_2",
+              "overridePrefabKey": null,
+              "overrideTokenKey": null,
+              "levelUpCostCond": [
+                {
+                  "unlockCond": {
+                    "phase": "PHASE_2",
+                    "level": 1
+                  },
+                  "lvlUpTime": 28800,
+                  "levelUpCost": [
+                    {
+                      "id": "3303",
+                      "count": 5,
+                      "type": "MATERIAL"
+                    },
+                    {
+                      "id": "30084",
+                      "count": 3,
+                      "type": "MATERIAL"
+                    },
+                    {
+                      "id": "30063",
+                      "count": 2,
+                      "type": "MATERIAL"
+                    }
+                  ]
+                },
+                {
+                  "unlockCond": {
+                    "phase": "PHASE_2",
+                    "level": 1
+                  },
+                  "lvlUpTime": 57600,
+                  "levelUpCost": [
+                    {
+                      "id": "3303",
+                      "count": 6,
+                      "type": "MATERIAL"
+                    },
+                    {
+                      "id": "30104",
+                      "count": 3,
+                      "type": "MATERIAL"
+                    },
+                    {
+                      "id": "30084",
+                      "count": 5,
+                      "type": "MATERIAL"
+                    }
+                  ]
+                },
+                {
+                  "unlockCond": {
+                    "phase": "PHASE_2",
+                    "level": 1
+                  },
+                  "lvlUpTime": 86400,
+                  "levelUpCost": [
+                    {
+                      "id": "3303",
+                      "count": 10,
+                      "type": "MATERIAL"
+                    },
+                    {
+                      "id": "30115",
+                      "count": 4,
+                      "type": "MATERIAL"
+                    },
+                    {
+                      "id": "30074",
+                      "count": 5,
+                      "type": "MATERIAL"
+                    }
+                  ]
+                }
+              ],
+              "unlockCond": {
+                "phase": "PHASE_1",
+                "level": 1
+              }
+            },
+            {
+              "skillId": "skchr_amiya_3",
+              "overridePrefabKey": null,
+              "overrideTokenKey": null,
+              "levelUpCostCond": [
+                {
+                  "unlockCond": {
+                    "phase": "PHASE_2",
+                    "level": 1
+                  },
+                  "lvlUpTime": 28800,
+                  "levelUpCost": [
+                    {
+                      "id": "3303",
+                      "count": 5,
+                      "type": "MATERIAL"
+                    },
+                    {
+                      "id": "30094",
+                      "count": 3,
+                      "type": "MATERIAL"
+                    },
+                    {
+                      "id": "30073",
+                      "count": 4,
+                      "type": "MATERIAL"
+                    }
+                  ]
+                },
+                {
+                  "unlockCond": {
+                    "phase": "PHASE_2",
+                    "level": 1
+                  },
+                  "lvlUpTime": 57600,
+                  "levelUpCost": [
+                    {
+                      "id": "3303",
+                      "count": 6,
+                      "type": "MATERIAL"
+                    },
+                    {
+                      "id": "30014",
+                      "count": 3,
+                      "type": "MATERIAL"
+                    },
+                    {
+                      "id": "30094",
+                      "count": 6,
+                      "type": "MATERIAL"
+                    }
+                  ]
+                },
+                {
+                  "unlockCond": {
+                    "phase": "PHASE_2",
+                    "level": 1
+                  },
+                  "lvlUpTime": 86400,
+                  "levelUpCost": [
+                    {
+                      "id": "3303",
+                      "count": 10,
+                      "type": "MATERIAL"
+                    },
+                    {
+                      "id": "30125",
+                      "count": 4,
+                      "type": "MATERIAL"
+                    },
+                    {
+                      "id": "30034",
+                      "count": 4,
+                      "type": "MATERIAL"
+                    }
+                  ]
+                }
+              ],
+              "unlockCond": {
+                "phase": "PHASE_2",
+                "level": 1
+              }
+            }
+          ],
+          "trait": null
+        }
+      },
+      {
+        "pointer": "/char_4194_rmixer",
+        "id": "char_4194_rmixer",
+        "record": {
+          "name": "信仰搅拌机",
+          "profession": "TANK",
+          "talents": [
+            {
+              "candidates": [
+                {
+                  "unlockCondition": {
+                    "phase": "PHASE_1",
+                    "level": 1
+                  },
+                  "requiredPotentialRank": 0,
+                  "prefabKey": "1",
+                  "name": "扫射迎宾仪礼",
+                  "description": "每次造成伤害使自身10秒内防御力+20，攻击速度+2，最多可叠加3层",
+                  "rangeId": null,
+                  "blackboard": [
+                    {
+                      "key": "def",
+                      "value": 20.0,
+                      "valueStr": null
+                    },
+                    {
+                      "key": "attack_speed",
+                      "value": 2.0,
+                      "valueStr": null
+                    },
+                    {
+                      "key": "max_stack_cnt",
+                      "value": 3.0,
+                      "valueStr": null
+                    },
+                    {
+                      "key": "duration",
+                      "value": 10.0,
+                      "valueStr": null
+                    }
+                  ],
+                  "tokenKey": null,
+                  "isHideTalent": false
+                },
+                {
+                  "unlockCondition": {
+                    "phase": "PHASE_2",
+                    "level": 1
+                  },
+                  "requiredPotentialRank": 0,
+                  "prefabKey": "1",
+                  "name": "扫射迎宾仪礼",
+                  "description": "每次造成伤害使自身10秒内防御力+30，攻击速度+3，最多可叠加3层",
+                  "rangeId": null,
+                  "blackboard": [
+                    {
+                      "key": "def",
+                      "value": 30.0,
+                      "valueStr": null
+                    },
+                    {
+                      "key": "attack_speed",
+                      "value": 3.0,
+                      "valueStr": null
+                    },
+                    {
+                      "key": "max_stack_cnt",
+                      "value": 3.0,
+                      "valueStr": null
+                    },
+                    {
+                      "key": "duration",
+                      "value": 10.0,
+                      "valueStr": null
+                    }
+                  ],
+                  "tokenKey": null,
+                  "isHideTalent": false
+                }
+              ]
+            },
+            {
+              "candidates": [
+                {
+                  "unlockCondition": {
+                    "phase": "PHASE_2",
+                    "level": 1
+                  },
+                  "requiredPotentialRank": 0,
+                  "prefabKey": "2",
+                  "name": "架盾送客仪礼",
+                  "description": "若8秒内未主动攻击，获得相当于生命上限15%的<$ba.barrier>屏障</>，失去屏障后重新计时",
+                  "rangeId": null,
+                  "blackboard": [
+                    {
+                      "key": "interval",
+                      "value": 8.0,
+                      "valueStr": null
+                    },
+                    {
+                      "key": "shield",
+                      "value": 0.15,
+                      "valueStr": null
+                    }
+                  ],
+                  "tokenKey": null,
+                  "isHideTalent": false
+                },
+                {
+                  "unlockCondition": {
+                    "phase": "PHASE_2",
+                    "level": 1
+                  },
+                  "requiredPotentialRank": 4,
+                  "prefabKey": "2",
+                  "name": "架盾送客仪礼",
+                  "description": "若8秒内未主动攻击，获得相当于生命上限18%<@ba.talpu>（+3%）</>的<$ba.barrier>屏障</>，失去屏障后重新计时",
+                  "rangeId": null,
+                  "blackboard": [
+                    {
+                      "key": "interval",
+                      "value": 8.0,
+                      "valueStr": null
+                    },
+                    {
+                      "key": "shield",
+                      "value": 0.18,
+                      "valueStr": null
+                    }
+                  ],
+                  "tokenKey": null,
+                  "isHideTalent": false
+                }
+              ]
+            }
+          ],
+          "skills": [
+            {
+              "skillId": "skchr_rmixer_1",
+              "overridePrefabKey": null,
+              "overrideTokenKey": null,
+              "levelUpCostCond": [
+                {
+                  "unlockCond": {
+                    "phase": "PHASE_2",
+                    "level": 1
+                  },
+                  "lvlUpTime": 28800,
+                  "levelUpCost": [
+                    {
+                      "id": "3303",
+                      "count": 8,
+                      "type": "MATERIAL"
+                    },
+                    {
+                      "id": "31054",
+                      "count": 4,
+                      "type": "MATERIAL"
+                    },
+                    {
+                      "id": "30053",
+                      "count": 7,
+                      "type": "MATERIAL"
+                    }
+                  ]
+                },
+                {
+                  "unlockCond": {
+                    "phase": "PHASE_2",
+                    "level": 1
+                  },
+                  "lvlUpTime": 57600,
+                  "levelUpCost": [
+                    {
+                      "id": "3303",
+                      "count": 12,
+                      "type": "MATERIAL"
+                    },
+                    {
+                      "id": "31074",
+                      "count": 4,
+                      "type": "MATERIAL"
+                    },
+                    {
+                      "id": "30104",
+                      "count": 7,
+                      "type": "MATERIAL"
+                    }
+                  ]
+                },
+                {
+                  "unlockCond": {
+                    "phase": "PHASE_2",
+                    "level": 1
+                  },
+                  "lvlUpTime": 86400,
+                  "levelUpCost": [
+                    {
+                      "id": "3303",
+                      "count": 15,
+                      "type": "MATERIAL"
+                    },
+                    {
+                      "id": "30115",
+                      "count": 6,
+                      "type": "MATERIAL"
+                    },
+                    {
+                      "id": "31024",
+                      "count": 6,
+                      "type": "MATERIAL"
+                    }
+                  ]
+                }
+              ],
+              "unlockCond": {
+                "phase": "PHASE_0",
+                "level": 1
+              }
+            },
+            {
+              "skillId": "skchr_rmixer_2",
+              "overridePrefabKey": null,
+              "overrideTokenKey": null,
+              "levelUpCostCond": [
+                {
+                  "unlockCond": {
+                    "phase": "PHASE_2",
+                    "level": 1
+                  },
+                  "lvlUpTime": 28800,
+                  "levelUpCost": [
+                    {
+                      "id": "3303",
+                      "count": 8,
+                      "type": "MATERIAL"
+                    },
+                    {
+                      "id": "31014",
+                      "count": 4,
+                      "type": "MATERIAL"
+                    },
+                    {
+                      "id": "31013",
+                      "count": 7,
+                      "type": "MATERIAL"
+                    }
+                  ]
+                },
+                {
+                  "unlockCond": {
+                    "phase": "PHASE_2",
+                    "level": 1
+                  },
+                  "lvlUpTime": 57600,
+                  "levelUpCost": [
+                    {
+                      "id": "3303",
+                      "count": 12,
+                      "type": "MATERIAL"
+                    },
+                    {
+                      "id": "30094",
+                      "count": 4,
+                      "type": "MATERIAL"
+                    },
+                    {
+                      "id": "31034",
+                      "count": 7,
+                      "type": "MATERIAL"
+                    }
+                  ]
+                },
+                {
+                  "unlockCond": {
+                    "phase": "PHASE_2",
+                    "level": 1
+                  },
+                  "lvlUpTime": 86400,
+                  "levelUpCost": [
+                    {
+                      "id": "3303",
+                      "count": 15,
+                      "type": "MATERIAL"
+                    },
+                    {
+                      "id": "30135",
+                      "count": 6,
+                      "type": "MATERIAL"
+                    },
+                    {
+                      "id": "30054",
+                      "count": 5,
+                      "type": "MATERIAL"
+                    }
+                  ]
+                }
+              ],
+              "unlockCond": {
+                "phase": "PHASE_1",
+                "level": 1
+              }
+            },
+            {
+              "skillId": "skchr_rmixer_3",
+              "overridePrefabKey": null,
+              "overrideTokenKey": null,
+              "levelUpCostCond": [
+                {
+                  "unlockCond": {
+                    "phase": "PHASE_2",
+                    "level": 1
+                  },
+                  "lvlUpTime": 28800,
+                  "levelUpCost": [
+                    {
+                      "id": "3303",
+                      "count": 8,
+                      "type": "MATERIAL"
+                    },
+                    {
+                      "id": "31094",
+                      "count": 4,
+                      "type": "MATERIAL"
+                    },
+                    {
+                      "id": "31093",
+                      "count": 6,
+                      "type": "MATERIAL"
+                    }
+                  ]
+                },
+                {
+                  "unlockCond": {
+                    "phase": "PHASE_2",
+                    "level": 1
+                  },
+                  "lvlUpTime": 57600,
+                  "levelUpCost": [
+                    {
+                      "id": "3303",
+                      "count": 12,
+                      "type": "MATERIAL"
+                    },
+                    {
+                      "id": "30014",
+                      "count": 4,
+                      "type": "MATERIAL"
+                    },
+                    {
+                      "id": "31064",
+                      "count": 10,
+                      "type": "MATERIAL"
+                    }
+                  ]
+                },
+                {
+                  "unlockCond": {
+                    "phase": "PHASE_2",
+                    "level": 1
+                  },
+                  "lvlUpTime": 86400,
+                  "levelUpCost": [
+                    {
+                      "id": "3303",
+                      "count": 15,
+                      "type": "MATERIAL"
+                    },
+                    {
+                      "id": "30155",
+                      "count": 6,
+                      "type": "MATERIAL"
+                    },
+                    {
+                      "id": "31084",
+                      "count": 2,
+                      "type": "MATERIAL"
+                    }
+                  ]
+                }
+              ],
+              "unlockCond": {
+                "phase": "PHASE_2",
+                "level": 1
+              }
+            }
+          ],
+          "trait": null
+        }
+      }
+    ],
+    "module": {
+      "pointer": "/equipDict/uniequip_002_rmixer",
+      "record": {
+        "uniEquipId": "uniequip_002_rmixer",
+        "uniEquipName": "毛刷套装",
+        "typeName2": "X",
+        "charId": "char_4194_rmixer",
+        "unlockEvolvePhase": "PHASE_2",
+        "unlockLevel": 60
+      },
+      "battlePointer": "/uniequip_002_rmixer",
+      "battle": {
+        "phases": [
+          {
+            "equipLevel": 1,
+            "parts": [
+              {
+                "resKey": null,
+                "target": "DISPLAY",
+                "isToken": false,
+                "validInGameTag": null,
+                "validInMapTag": null,
+                "addOrOverrideTalentDataBundle": {
+                  "candidates": null
+                },
+                "overrideTraitDataBundle": {
+                  "candidates": [
+                    {
+                      "additionalDescription": "攻击范围内敌人的<$ba.invisible>隐匿</>效果失效",
+                      "unlockCondition": {
+                        "phase": "PHASE_2",
+                        "level": 60
+                      },
+                      "requiredPotentialRank": 0,
+                      "blackboard": [],
+                      "overrideDescripton": null,
+                      "prefabKey": null,
+                      "rangeId": null
+                    }
+                  ]
+                }
+              },
+              {
+                "resKey": "rmixer_equip_1_1_p1",
+                "target": "TALENT",
+                "isToken": false,
+                "validInGameTag": null,
+                "validInMapTag": null,
+                "addOrOverrideTalentDataBundle": {
+                  "candidates": [
+                    {
+                      "displayRangeId": false,
+                      "upgradeDescription": "",
+                      "talentIndex": -1,
+                      "validModeIndices": null,
+                      "unlockCondition": {
+                        "phase": "PHASE_2",
+                        "level": 60
+                      },
+                      "requiredPotentialRank": 0,
+                      "prefabKey": "11",
+                      "name": null,
+                      "description": null,
+                      "rangeId": null,
+                      "blackboard": [],
+                      "tokenKey": null,
+                      "isHideTalent": true
+                    }
+                  ]
+                },
+                "overrideTraitDataBundle": {
+                  "candidates": null
+                }
+              }
+            ],
+            "attributeBlackboard": [
+              {
+                "key": "max_hp",
+                "value": 210.0,
+                "valueStr": null
+              },
+              {
+                "key": "atk",
+                "value": 40.0,
+                "valueStr": null
+              },
+              {
+                "key": "def",
+                "value": 30.0,
+                "valueStr": null
+              }
+            ],
+            "tokenAttributeBlackboard": {}
+          },
+          {
+            "equipLevel": 2,
+            "parts": [
+              {
+                "resKey": null,
+                "target": "DISPLAY",
+                "isToken": false,
+                "validInGameTag": null,
+                "validInMapTag": null,
+                "addOrOverrideTalentDataBundle": {
+                  "candidates": null
+                },
+                "overrideTraitDataBundle": {
+                  "candidates": [
+                    {
+                      "additionalDescription": "攻击范围内敌人的<$ba.invisible>隐匿</>效果失效",
+                      "unlockCondition": {
+                        "phase": "PHASE_2",
+                        "level": 60
+                      },
+                      "requiredPotentialRank": 0,
+                      "blackboard": [],
+                      "overrideDescripton": null,
+                      "prefabKey": null,
+                      "rangeId": null
+                    }
+                  ]
+                }
+              },
+              {
+                "resKey": "rmixer_equip_1_2_p1",
+                "target": "TALENT",
+                "isToken": false,
+                "validInGameTag": null,
+                "validInMapTag": null,
+                "addOrOverrideTalentDataBundle": {
+                  "candidates": [
+                    {
+                      "displayRangeId": false,
+                      "upgradeDescription": "",
+                      "talentIndex": -1,
+                      "validModeIndices": null,
+                      "unlockCondition": {
+                        "phase": "PHASE_2",
+                        "level": 60
+                      },
+                      "requiredPotentialRank": 0,
+                      "prefabKey": "11",
+                      "name": null,
+                      "description": null,
+                      "rangeId": null,
+                      "blackboard": [],
+                      "tokenKey": null,
+                      "isHideTalent": true
+                    }
+                  ]
+                },
+                "overrideTraitDataBundle": {
+                  "candidates": null
+                }
+              },
+              {
+                "resKey": null,
+                "target": "TALENT_DATA_ONLY",
+                "isToken": false,
+                "validInGameTag": null,
+                "validInMapTag": null,
+                "addOrOverrideTalentDataBundle": {
+                  "candidates": [
+                    {
+                      "displayRangeId": false,
+                      "upgradeDescription": "每次造成伤害使自身10秒内防御力+40，攻击速度+4，最多可叠加3层",
+                      "talentIndex": 0,
+                      "validModeIndices": null,
+                      "unlockCondition": {
+                        "phase": "PHASE_2",
+                        "level": 60
+                      },
+                      "requiredPotentialRank": 0,
+                      "prefabKey": "1",
+                      "name": "扫射迎宾仪礼",
+                      "description": null,
+                      "rangeId": null,
+                      "blackboard": [
+                        {
+                          "key": "def",
+                          "value": 40.0,
+                          "valueStr": null
+                        },
+                        {
+                          "key": "attack_speed",
+                          "value": 4.0,
+                          "valueStr": null
+                        },
+                        {
+                          "key": "max_stack_cnt",
+                          "value": 3.0,
+                          "valueStr": null
+                        },
+                        {
+                          "key": "duration",
+                          "value": 10.0,
+                          "valueStr": null
+                        }
+                      ],
+                      "tokenKey": null,
+                      "isHideTalent": false
+                    }
+                  ]
+                },
+                "overrideTraitDataBundle": {
+                  "candidates": null
+                }
+              }
+            ],
+            "attributeBlackboard": [
+              {
+                "key": "max_hp",
+                "value": 250.0,
+                "valueStr": null
+              },
+              {
+                "key": "atk",
+                "value": 48.0,
+                "valueStr": null
+              },
+              {
+                "key": "def",
+                "value": 37.0,
+                "valueStr": null
+              }
+            ],
+            "tokenAttributeBlackboard": {}
+          },
+          {
+            "equipLevel": 3,
+            "parts": [
+              {
+                "resKey": null,
+                "target": "DISPLAY",
+                "isToken": false,
+                "validInGameTag": null,
+                "validInMapTag": null,
+                "addOrOverrideTalentDataBundle": {
+                  "candidates": null
+                },
+                "overrideTraitDataBundle": {
+                  "candidates": [
+                    {
+                      "additionalDescription": "攻击范围内敌人的<$ba.invisible>隐匿</>效果失效",
+                      "unlockCondition": {
+                        "phase": "PHASE_2",
+                        "level": 60
+                      },
+                      "requiredPotentialRank": 0,
+                      "blackboard": [],
+                      "overrideDescripton": null,
+                      "prefabKey": null,
+                      "rangeId": null
+                    }
+                  ]
+                }
+              },
+              {
+                "resKey": "rmixer_equip_1_3_p1",
+                "target": "TALENT",
+                "isToken": false,
+                "validInGameTag": null,
+                "validInMapTag": null,
+                "addOrOverrideTalentDataBundle": {
+                  "candidates": [
+                    {
+                      "displayRangeId": false,
+                      "upgradeDescription": "",
+                      "talentIndex": -1,
+                      "validModeIndices": null,
+                      "unlockCondition": {
+                        "phase": "PHASE_2",
+                        "level": 60
+                      },
+                      "requiredPotentialRank": 0,
+                      "prefabKey": "11",
+                      "name": null,
+                      "description": null,
+                      "rangeId": null,
+                      "blackboard": [],
+                      "tokenKey": null,
+                      "isHideTalent": true
+                    }
+                  ]
+                },
+                "overrideTraitDataBundle": {
+                  "candidates": null
+                }
+              },
+              {
+                "resKey": "rmixer_equip_1_3_p2",
+                "target": "TALENT",
+                "isToken": false,
+                "validInGameTag": null,
+                "validInMapTag": null,
+                "addOrOverrideTalentDataBundle": {
+                  "candidates": [
+                    {
+                      "displayRangeId": false,
+                      "upgradeDescription": "",
+                      "talentIndex": -1,
+                      "validModeIndices": null,
+                      "unlockCondition": {
+                        "phase": "PHASE_2",
+                        "level": 60
+                      },
+                      "requiredPotentialRank": 0,
+                      "prefabKey": "10_root",
+                      "name": null,
+                      "description": null,
+                      "rangeId": null,
+                      "blackboard": [],
+                      "tokenKey": null,
+                      "isHideTalent": true
+                    }
+                  ]
+                },
+                "overrideTraitDataBundle": {
+                  "candidates": null
+                }
+              },
+              {
+                "resKey": null,
+                "target": "TALENT_DATA_ONLY",
+                "isToken": false,
+                "validInGameTag": null,
+                "validInMapTag": null,
+                "addOrOverrideTalentDataBundle": {
+                  "candidates": [
+                    {
+                      "displayRangeId": false,
+                      "upgradeDescription": "每次造成伤害使自身10秒内防御力+50，攻击速度+5，最多可叠加3层；层数叠满时，使场上所有【拉特兰】干员的攻击速度不会低于战斗开始时的攻击速度",
+                      "talentIndex": 0,
+                      "validModeIndices": null,
+                      "unlockCondition": {
+                        "phase": "PHASE_2",
+                        "level": 60
+                      },
+                      "requiredPotentialRank": 0,
+                      "prefabKey": "1",
+                      "name": "扫射迎宾仪礼",
+                      "description": null,
+                      "rangeId": null,
+                      "blackboard": [
+                        {
+                          "key": "def",
+                          "value": 50.0,
+                          "valueStr": null
+                        },
+                        {
+                          "key": "attack_speed",
+                          "value": 5.0,
+                          "valueStr": null
+                        },
+                        {
+                          "key": "max_stack_cnt",
+                          "value": 3.0,
+                          "valueStr": null
+                        },
+                        {
+                          "key": "duration",
+                          "value": 10.0,
+                          "valueStr": null
+                        }
+                      ],
+                      "tokenKey": null,
+                      "isHideTalent": false
+                    }
+                  ]
+                },
+                "overrideTraitDataBundle": {
+                  "candidates": null
+                }
+              }
+            ],
+            "attributeBlackboard": [
+              {
+                "key": "max_hp",
+                "value": 280.0,
+                "valueStr": null
+              },
+              {
+                "key": "atk",
+                "value": 54.0,
+                "valueStr": null
+              },
+              {
+                "key": "def",
+                "value": 43.0,
+                "valueStr": null
+              }
+            ],
+            "tokenAttributeBlackboard": {}
+          }
+        ]
+      }
+    }
+  }
+}
