@@ -39,8 +39,8 @@ removeMaxHpContribution(id): Change<Unit & Vitality>;
 resolveMaxHp(definition, state): number;
 setContribution(key: "defense" | "resistance" | "recoverySpeed" | "recoveryRatio", entry): Change<Unit & Vitality>;
 removeContribution(key: "defense" | "resistance" | "recoverySpeed" | "recoveryRatio", id): Change<Unit & Vitality>;
-setHook(key, hook): Change<Unit & Vitality>;
-removeHook(key, id): Change<Unit & Vitality>;
+unit.setHook(key, hook): Change<Unit & Vitality>;
+unit.removeHook(key, id): Change<Unit & Vitality>;
 resolveDefense(battle, self: Unit & Vitality): number;
 resolveResistance(battle, self: Unit & Vitality): number;
 resolveRecoverySpeed(battle, self: Unit & Vitality): number;
@@ -49,7 +49,7 @@ advance(battle, reference: Ref<Unit & Vitality>): BattleState;
 
 基础 MaxHP、DEF、RES、recoverySpeed、recoveryRatio 全部必填，由 initialize 校验为有限非负数，可以是小数。无自然回复时两项回复基础值均为零。初始 HP 为 `Math.max(1, definition.maxHp)`，有效 MaxHP 的下限为 1。基础 RES 可以超过 100，有效值在属性修正后限制到 0～100；有效 DEF 的下限为 0。普通 HP 使用 0～有效 MaxHP 的范围，不在每次计算后取整。
 
-MaxHP 保留静态 Modifier[]，set／remove 工厂分别负责贡献登记与移除，共用局部 HP 比例计算，在同一次纯 transform 中生成新贡献集合和新 HP。零 HP 不因属性变化复活；不附带治疗通知或 Blocking 后继。DEF／RES 与两项回复属性的 Input 为静态修正或 `(battle, self: Unit & Vitality) => readonly Modifier[]`，由普通注册工厂生成 setContribution／removeContribution。专属接收 Hook 同样通过 setHook／removeHook 登记，字段与 Hook 类型保持配对。MaxHP 单独保留领域实现，不进入普通字段集合。属性查询接收已取得的当前宿主并返回 number，不重复定位或判空；Damage 在 Formula Hook 后确认当前目标，再按伤害类型求值，不提前缓存或混入穿透。
+MaxHP 保留静态 Modifier[]，set／remove 工厂分别负责贡献登记与移除，共用局部 HP 比例计算，在同一次纯 transform 中生成新贡献集合和新 HP。零 HP 不因属性变化复活；不附带治疗通知或 Blocking 后继。DEF／RES 与两项回复属性的 Input 为静态修正或 `(battle, self: Unit & Vitality) => readonly Modifier[]`，由普通注册工厂生成 setContribution／removeContribution。专属接收 Hook 通过 unit.setHook／removeHook 登记，Key 保留 Hook 类型与 Vitality 宿主约束。MaxHP 单独保留领域实现，不进入普通字段集合。属性查询接收已取得的当前宿主并返回 number，不重复定位或判空；Damage 在 Formula Hook 后确认当前目标，再按伤害类型求值，不提前缓存或混入穿透。
 
 HP、Contribution 与 Rule 共存于 Vitality State，专属接收登记存于 Unit.hooks。DEF／RES 的修改保留其他字段；属性变化不派发普通治疗 Hook。治疗索敌默认 provider 与显式注入 provider 均读取有效 MaxHP，避免把基础值或未计修正的上限用于缺血判定和比例排序。
 
@@ -204,8 +204,8 @@ Calculated 只保存最终伤害类型与计算后数值；来源、目标和初
 ### 1.5 操作与结果
 
 ```typescript
-calculateDamage(battle, request): Result<Calculated | undefined>;
-applyDamage(request, calculated: Result<Calculated | undefined>): Result<Outcome>;
+calculateDamage(battle, request, options?: hooks.Options): Result<Calculated | undefined>;
+applyDamage(request, calculated: Result<Calculated | undefined>, options?: hooks.Options): Result<Outcome>;
 
 type Outcome =
     | { readonly type: "REJECTED" }
@@ -325,7 +325,7 @@ ReceivingHook 的泛型返回类型约束上述单向状态转换及取消原因
 
 领域绑定共用的纯工作值构造函数 fix 与 cancel。fix 将 NORMAL 固定，其他状态原样保留；cancel 保留 amount，将未取消工作值变为 CANCELLED，已取消则原样返回。两者按本操作的实际行为精确返回，不从允许的全部后继反推：fix 对已知 NORMAL／FIXED 仅返回 FIXED，对 CANCELLED 保留原原因；cancel 对未取消输入保留本次原因字面量，对已取消输入保留原原因。状态转换的受信类型断言集中在 resource/receiving.ts 的两个构造函数中，Content 不需要断言或直接操作 Next。普通改量只在 NORMAL 分支通过 `{ ...current, amount: nextAmount }` 返回。
 
-共用 Pending 以完整判别联合与 `{ type: T }` 相交，按 T 收窄整个联合；已知 CANCELLED 时可直接读取精确 reason。fix／cancel 从这层外部状态约束推导 T，并分别保留原原因 R 或本次原因 N。Next 由保留当前值、固定及取消的实际结果组成；ReceivingHook 量化状态 T 和原因 R，不直接量化会使泛型 spread 掩盖字段改写的整对象 P。登记沿用现有入口，不要求 Content 添加类型断言。
+共用 Pending 以完整判别联合与 `{ type: T }` 相交，按 T 收窄整个联合；已知 CANCELLED 时可直接读取精确 reason。fix／cancel 从这层外部状态约束推导 T，并分别保留原原因 R 或本次原因 N。Next 由保留当前值、固定及取消的实际结果组成；ReceivingHook 量化状态 T 和原因 R，不直接量化会使泛型 spread 掩盖字段改写的整对象 P。对应 typed Key 保留完整 ReceivingHook，通过 unit.setHook 登记，不要求 Content 添加类型断言。
 
 Reason 是业务原因的有限集合，不接受内容自造的字符串；机制身份仍由所属 Effect／Hook 保存，不使用干员名作为原因。
 
@@ -339,7 +339,7 @@ UNSPECIFIED 表示取消但未指定一种受击结果；它不表示未取消�
 
 这些集合依据[取消原因的实际消费者](../research/cases/38-damage-classification-and-permissions.md#10-取消原因的实际生产与消费)确定。原生两种抵挡的显示差异属于表现输出，不作为两个业务原因；本次未增加该表现输出。MINUS_HEALTH 未定位实际生产路径，不纳入当前集合，也不标记为原生废弃。EP 与治疗不机械复制 HP 原因；原生 HEAL_FREE 的取消仍不覆盖项目仅限制 Targeting 的选择。
 
-上述固定状态只用于接收工作值；Formula 的 Parameters 与 Output 的 number 继续使用现有接口。Calculate 到 Apply 的固定事实传递、调用方选择 Hook 的范围与入口尚未确定，不由本次新增类型代为决定。
+上述固定状态只用于接收工作值；Formula 与 Output 的工作值分别为对应业务的 Parameters 和 number。
 
 ### 1.7 Hook 登记、顺序与生命周期
 
@@ -528,8 +528,8 @@ interface Calculated {
     readonly amount: number;
 }
 
-calculateHealing(battle, request): Result<Calculated | undefined>;
-applyHealing(request, calculation): Result<Outcome>;
+calculateHealing(battle, request, options?: hooks.Options): Result<Calculated | undefined>;
+applyHealing(request, calculation, options?: hooks.Options): Result<Outcome>;
 ```
 
 Calculate 依次派发来源 Formula、目标 Formula，将当前 power 与 multiplier 相乘后截零，再派发来源数值 Output。Request 始终表示初始事实，当前 Parameters 与 Output 数值逐项接续；Formula 读取原始参数，全部 Output 之后再按第 1 节形成非负 Calculated，不要求中间工作值非负。输入及 Hook 数值遵守有限数值契约。目标缺失、LEAVING 或 HP 为零时无法计算，已完成的状态前缀仍返回。

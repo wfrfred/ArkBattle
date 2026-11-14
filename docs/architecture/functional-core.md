@@ -81,10 +81,10 @@ interface Result<A> {
     readonly value: A;
 }
 
-calculateDamage(battle, request) → Result<CalculatedDamage | undefined>
-applyDamage(request, calculation) → Result<DamageOutcome>
-calculateHealing(battle, request) → Result<CalculatedHealing | undefined>
-applyHealing(request, calculation) → Result<HealingOutcome>
+calculateDamage(battle, request, options?: hooks.Options) → Result<CalculatedDamage | undefined>
+applyDamage(request, calculation, options?: hooks.Options) → Result<DamageOutcome>
+calculateHealing(battle, request, options?: hooks.Options) → Result<CalculatedHealing | undefined>
+applyHealing(request, calculation, options?: hooks.Options) → Result<HealingOutcome>
 effects.setState(battle, effectRef, nextState) → BattleState
 actions.start(battle, actionRef) → Result<Ref<Execution<P, E>> | null>
 skills.activate(battle, skillRef) → Result<Ref<Activation<S, A>> | null>

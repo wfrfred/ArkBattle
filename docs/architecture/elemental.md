@@ -85,13 +85,13 @@ EP Healing.Request 同样为 `{ source, target, parameters }`，Parameters 为 `
 
 | 接口 | 形状与结果 |
 | --- | --- |
-| resource.ep.damage.calculateDamage | `(battle, request) => Result<Calculated \| undefined>` |
-| resource.ep.damage.applyDamage | `(request, calculation) => Result<Outcome>` |
-| resource.ep.healing.calculateHealing | `(battle, request) => Result<Calculated \| undefined>` |
-| resource.ep.healing.applyHealing | `(request, calculation) => Result<Outcome>` |
+| resource.ep.damage.calculateDamage | `(battle, request, options?: hooks.Options) => Result<Calculated \| undefined>` |
+| resource.ep.damage.applyDamage | `(request, calculation, options?: hooks.Options) => Result<Outcome>` |
+| resource.ep.healing.calculateHealing | `(battle, request, options?: hooks.Options) => Result<Calculated \| undefined>` |
+| resource.ep.healing.applyHealing | `(request, calculation, options?: hooks.Options) => Result<Outcome>` |
 | canReceiveDamage | `(battle, request, type = request.parameters.type) => boolean`；资格查询不要求 Calculated |
 | canReceiveHealing | `(battle, request) => boolean` |
-| receiveDamage | `(battle, context: resource.ep.damage.ReceivingContext, pending) => Result<Pending>` |
+| receiveDamage | `(battle, context: resource.ep.damage.ReceivingContext, pending, options?: hooks.Options) => Result<Pending>` |
 | commitDamage／commitHealing | `(battle, context: 对应业务的 CommitContext) => Result<对应资源报告>` |
 | finish／cancel | `(battle, ref: Ref<Burst>, reason?) => BattleState`；finish 不接收原因 |
 | advance | `(battle, host: Ref<Unit & Elemental>) => BattleState`；Runtime 专用，只推进无 Burst 时的自然 EP 回复 |

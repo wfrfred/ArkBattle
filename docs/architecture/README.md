@@ -8,7 +8,7 @@
 - [Change 与 Unit 更新](api-conventions.md#51-unit-完整操作与批量变更)：同一宿主的纯变换有序组合，一次发布最终状态，再顺序执行 Settlement。跨领域状态只能通过所属领域操作修改。
 - [Lifetime](lifetime.md)：请求同步发布终止态并执行 Prepare；最外层结算器按依赖图完成 Finalize，宿主等待真实依赖者完整返回。嵌套结束返回不保证对象已注销或槽位已释放。
 - [Calculate 与 Apply](vitality.md#1-calculate-与-apply-的语义边界)：输出计算不构成受击，Apply 才开始接收。零计算输出拒绝，零实际变化允许成功；HP 死亡确认在两侧 Applied 后，EP Burst 随提交同步启动。
-- [Hook](hook.md) 与 [Event](event.md)：类型化的 Unit 本地 Hooks 承载同步业务，Capability 保存专属接收；Event 只提供 UI 需要的瞬时事实，不承担业务结算或统计。
+- [Hook](hook.md) 与 [Event](event.md)：类型化的 Unit.hooks 承载本地同步响应，各领域决定派发时点与资格；Event 只提供 UI 需要的瞬时事实，不承担业务结算或统计。
 - [Route](navigation.md#route-定义与进度) 与 [Schedule](schedule.md)：创建者提供静态 Unit Definition 和本次 `initial.route: { plan, offset }`；Route 解释路线并发起 Main 终点离场，Schedule 负责出生与等待关系。Core 每次 step 推进一个 Tick，由调用者决定是否继续。
 
 测试先从[语义验收](verification.md)选定重要结果，再选择最小代表场景。接口、字段和实现步骤不自动成为独立测试目标；公共契约集中保障，各领域只补充不同的业务后果。

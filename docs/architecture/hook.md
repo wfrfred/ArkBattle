@@ -37,10 +37,10 @@ declare function key<H extends Entry, Owner extends object = object>(
 declare class Hooks {
     static empty(): Hooks;
 
-    get<H extends Entry>(key: Key<H>): readonly H[];
-    find<H extends Entry>(key: Key<H>, id: string): H | undefined;
-    set<H extends Entry>(key: Key<H>, entry: NoInfer<H>): Hooks;
-    remove<H extends Entry>(key: Key<H>, id: string): Hooks;
+    get<H extends Entry, Owner extends object>(key: Key<H, Owner>): readonly H[];
+    find<H extends Entry, Owner extends object>(key: Key<H, Owner>, id: string): H | undefined;
+    set<H extends Entry, Owner extends object>(key: Key<H, Owner>, entry: NoInfer<H>): Hooks;
+    remove<H extends Entry, Owner extends object>(key: Key<H, Owner>, id: string): Hooks;
     merge(other: Hooks): Hooks;
 }
 ```

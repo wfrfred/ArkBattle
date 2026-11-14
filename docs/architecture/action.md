@@ -216,8 +216,6 @@ interface State {
     readonly interval: readonly Contribution<Input>[];
     readonly speed: readonly Contribution<Input>[];
     readonly rules: readonly Rule[];
-    readonly beforeRelease: readonly BeforeReleaseHook[];
-    readonly released: readonly ReleasedHook[];
 }
 ```
 
@@ -318,11 +316,11 @@ Skill 弹药行动在 prepare 采样当前 Activation Ref，不能提前到 Unit
 
 需要首次起手或连续会话的内容，可以在具体 Unit 扩展状态中保存跨轮事实，由 Unit 的 tick Hook 或相关业务 Hook 维护，成功登记后的 onTick 消费；失败启动不消费。通用 Action 不制造另一套共享起手阶段机。
 
-beforeRelease(battle, executionRef) 返回 CONTINUE 或 INTERRUPT／recoveryTicks。前置干预类型为 BeforeReleaseHook，使用公共 Hook<Context, Directive>；业务事实通知类型为 ReleasedHook，使用 Hook<Context, void>。Context 固定 source 与 execution: Ref<Execution>，后者明确绑定本轮执行。accepts／invoke 接收 battle、context、current 并返回统一 Result。候选 ID 固定，逐项重读最新登记；stop 在执行结束、宿主离场或首个中断时停止。Hook 程序负责返回合法的 recoveryTicks，派发器直接信任其 Directive，不重复校验恢复时长；来自配置的数值仍在相应创建入口校验。恢复信息交给具体程序，不写通用 Unit recoveryUntilTick。
+beforeRelease 与 released 是携带 Action Capability 宿主约束的 typed Key。dispatchBeforeRelease(battle, executionRef) 返回 CONTINUE 或 INTERRUPT／recoveryTicks。前置干预类型为 BeforeReleaseHook，使用公共 Hook<Context, Directive>；业务事实通知类型为 ReleasedHook，使用 Hook<Context, void>。Context 固定 source 与 execution: Ref<Execution>，后者明确绑定本轮执行。accepts／invoke 接收 battle、context、current 并返回统一 Result。候选 ID 固定，逐项重读最新登记；stop 在执行结束、宿主离场或首个中断时停止。Hook 程序负责返回合法的 recoveryTicks，派发器直接信任其 Directive，不重复校验恢复时长；来自配置的数值仍在相应创建入口校验。恢复信息交给具体程序，不写通用 Unit recoveryUntilTick。
 
 释放 Hook 返回后，普通攻击进入输出前重新确认本轮 execution.RUNNING 及宿主在场资格；已经完成输出后的消耗按实际业务和采样身份处理。不能把所有跨领域调用后的检查都机械化为同一个存活门槛。
 
-普通攻击通过拦截后写入 ACTION_RELEASED，再调用 released 通知，随后从最新执行取得本次输出载荷。Skill 的 enter Hook 通过该扩展点登记 ACTION 回复，通用 Action 调度器不自动通知或授予 SP。普通攻击本身不读取 Skill；content/actions/skill.ts 的组合器在本轮创建时采样 typed Activation Ref，在 afterOutput 调用 consume／check。旧攻击不消耗／结束新的 Activation。
+普通攻击通过拦截后写入 ACTION_RELEASED，再调用 dispatchReleased 派发 released 通知，随后从最新执行取得本次输出载荷。Skill 的 enter Hook 通过该扩展点登记 ACTION 回复，通用 Action 调度器不自动通知或授予 SP。普通攻击本身不读取 Skill；content/actions/skill.ts 的组合器在本轮创建时采样 typed Activation Ref，在 afterOutput 调用 consume／check。旧攻击不消耗／结束新的 Activation。
 
 released 表示已经到达成功释放点，发生在伤害／治疗输出之前，不表示输出已完成。回复 Hook 可以同步取消执行或使宿主离场，此后模板不执行旧输出，已写入的 ACTION_RELEASED 事实保留。通知逐项检查当前登记、本轮 execution.RUNNING 与宿主 PRESENT 资格。
 

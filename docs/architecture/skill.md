@@ -28,7 +28,7 @@ Skill 需要保障的结果是：
 | `unit/capability/skill/capability.ts` | 初始化工厂 Definition、Skill Capability、公共 State、结构守卫与 Change 工厂 |
 | `unit/capability/skill/rule.ts`、`hook.ts` | 能力 Rule、Hook 类型与事件契约 |
 
-领域 index 提供 create、Skill／Activation、ref／activationRef、getSkill／getActivation、字段写回及 SP／Ammo／激活业务，不转发能力守卫、Rule／Hook 与 Ammo 贡献登记。Capability index 提供对应能力 API。Core 已取得当前宿主时直接读取 unit.skill，不解释私有 state；完整聚合替换只供领域内部使用。
+领域 index 提供 create、Skill／Activation、ref／activationRef、getSkill／getActivation、字段写回及 SP／Ammo／激活业务，不转发能力守卫、Rule／Ammo 贡献 Change 与 typed Hook 键。Capability index 提供这些能力 API；Unit 本地 Hook 统一经 unit.setHook／removeHook 登记。Core 已取得当前宿主时直接读取 unit.skill，不解释私有 state；完整聚合替换只供领域内部使用。
 
 SP 的 setContribution／removeContribution 仅登记 recoverySpeed／recoveryMultiplier，不接收 Ref，返回 `Change<Unit & SkillCapability>`，经领域入口以 setSpContribution／removeSpContribution 导出。它们与 SP State／Input 位于同一模块，不附带资源支付或延时。容量、门槛、支付和 TIME 时长没有通用 Contribution 注册表。
 

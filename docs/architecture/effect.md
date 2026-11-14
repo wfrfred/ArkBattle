@@ -43,7 +43,7 @@ Effect 需要保障的结果是：
 | --------------- | ------------------------------------------------- | ---------------------------- |
 | Effect          | 安装、私有数据、生效状态、覆写组、时间、结束     | Unit.effects                 |
 | Effects         | 不可变异构实例存储、增删查改与宿主内 ID 进度      | Unit.effects                 |
-| Hook            | 不可变登记项、类型化集合及动态登记               | Unit.hooks 或事件专属 Capability |
+| Hook            | 不可变登记项、类型化集合及动态登记               | Unit.hooks；Battle 全局观察使用所属领域的 Hooks 集合 |
 | Contribution    | 不可变贡献类型与 resolve 有效来源选择     | 提供该属性的 Capability      |
 | Capability      | 属性读写、事件阶段、调用顺序、短路与修改响应      | 对应 Capability State        |
 | 具体 Definition | 将生命周期回调与 Capability 操作组合为玩法        | 实例 state 保存内容需要的进度 |
