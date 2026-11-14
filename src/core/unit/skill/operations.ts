@@ -6,12 +6,15 @@ import * as lifetimes from "../../lifetime/index.js";
 import { register, unregister } from "../../lifetime/operations.js";
 import * as units from "../query.js";
 import type { Unit } from "../unit.js";
-import type { EnterHook } from "../hook.js";
+import { setHook, type EnterHook } from "../hook.js";
 import * as contribution from "../contribution/contribution.js";
-import { hasVitality, setHook as setVitalityHook } from "../capability/vitality/capability.js";
-import { hasAction, setHook as setActionHook } from "../capability/action/capability.js";
-import type { ReleasedHook } from "../capability/action/release.js";
-import type { ReceivingStartedHook } from "../../battle/resource/hp/damage/hook.js";
+import { hasVitality } from "../capability/vitality/capability.js";
+import { hasAction } from "../capability/action/capability.js";
+import { released, type ReleasedHook } from "../capability/action/release.js";
+import {
+    receivingStarted,
+    type ReceivingStartedHook,
+} from "../../battle/resource/hp/damage/hook.js";
 import { hasSkill, type Skill as SkillCapability } from "../capability/skill/capability.js";
 import {
     ref as activationRef,
@@ -21,7 +24,7 @@ import {
     type Operation,
 } from "./activation.js";
 import type { State as SustainState } from "./sustain.js";
-import { dispatch } from "../capability/skill/hook.js";
+import { dispatch, activationStarted, spPaid, activationEnded } from "../capability/skill/hook.js";
 import * as query from "./query.js";
 import { ref as skillRef, type Skill } from "./skill.js";
 import * as sp from "./sp.js";
@@ -186,12 +189,12 @@ export function activate<S extends object, A extends object>(
             tick: battle.tick,
         },
     ]);
-    battle = dispatch(battle, source, "activationStarted", {
+    battle = dispatch(battle, source, activationStarted, {
         ref: activationRef<Activation<any, any>>(source, active),
     });
 
     if (previousSp !== null) {
-        battle = dispatch(battle, source, "spPaid", {
+        battle = dispatch(battle, source, spPaid, {
             amount: cost,
             previous: previousSp.value,
             current: previousSp.value - cost,
@@ -248,7 +251,7 @@ export const lifetime = lifetimes.create<Activation, Activation<any, any>, End>(
             },
         ]);
 
-        return dispatch(battle, reference.host, "activationEnded", {
+        return dispatch(battle, reference.host, activationEnded, {
             ref: reference,
             end: ending,
         });
@@ -345,13 +348,9 @@ export const enter: EnterHook = {
         let unit = units.get(battle, host)!;
         const definition = unit.skill.definition;
         if (hasVitality(unit) && definition.sp?.recovery.type === "HIT") {
-            battle = update(
-                battle,
-                units.ref(unit),
-                setVitalityHook("damageReceivingStarted", hitRecovery),
-            );
+            battle = update(battle, units.ref(unit), setHook(receivingStarted, hitRecovery));
         } else if (hasAction(unit) && definition.sp?.recovery.type === "ACTION") {
-            battle = update(battle, units.ref(unit), setActionHook("released", actionRecovery));
+            battle = update(battle, units.ref(unit), setHook(released, actionRecovery));
         }
 
         unit = units.get(battle, host)!;

@@ -1,4 +1,4 @@
-import type * as receiving from "../../receiving.js";
+import type * as receivingProtocol from "../../receiving.js";
 import type { Entry } from "../../hook.js";
 import type { Ref } from "../../../../common/ref.js";
 import type { Unit } from "../../../../unit/unit.js";
@@ -57,22 +57,34 @@ export type AppliedHook = Entry<AppliedContext, void>;
 
 export type CompletedHook = Entry<CompletedContext, void>;
 
-export type ReceivingHook = receiving.ReceivingHook<ReceivingContext, Reason>;
+export type ReceivingHook = receivingProtocol.ReceivingHook<ReceivingContext, Reason>;
 
-export const sourceFormula = hooks.key<SourceFormulaHook>("resource.hp.damage.sourceFormula");
+export const sourceFormula = hooks.key<SourceFormulaHook, Unit>("resource.hp.damage.sourceFormula");
 
-export const targetFormula = hooks.key<TargetFormulaHook>("resource.hp.damage.targetFormula");
+export const targetFormula = hooks.key<TargetFormulaHook, Unit & Vitality>(
+    "resource.hp.damage.targetFormula",
+);
 
-export const output = hooks.key<OutputHook>("resource.hp.damage.output");
+export const output = hooks.key<OutputHook, Unit>("resource.hp.damage.output");
 
-export const beforeReceive = hooks.key<BeforeReceiveHook>("resource.hp.damage.beforeReceive");
+export const beforeReceive = hooks.key<BeforeReceiveHook, Unit & Vitality>(
+    "resource.hp.damage.beforeReceive",
+);
 
-export const beforeCommit = hooks.key<BeforeCommitHook>("resource.hp.damage.beforeCommit");
+export const beforeCommit = hooks.key<BeforeCommitHook, Unit>("resource.hp.damage.beforeCommit");
 
-export const targetApplied = hooks.key<AppliedHook>("resource.hp.damage.targetApplied");
+export const targetApplied = hooks.key<AppliedHook, Unit & Vitality>(
+    "resource.hp.damage.targetApplied",
+);
 
-export const sourceApplied = hooks.key<AppliedHook>("resource.hp.damage.sourceApplied");
+export const sourceApplied = hooks.key<AppliedHook, Unit>("resource.hp.damage.sourceApplied");
 
-export const completed = hooks.key<CompletedHook>("resource.hp.damage.completed");
+export const completed = hooks.key<CompletedHook, Unit>("resource.hp.damage.completed");
+
+export const receivingStarted = hooks.key<ReceivingStartedHook, Unit & Vitality>(
+    "resource.hp.damage.receivingStarted",
+);
+
+export const receiving = hooks.key<ReceivingHook, Unit & Vitality>("resource.hp.damage.receiving");
 
 export { dispatch } from "../../hook.js";

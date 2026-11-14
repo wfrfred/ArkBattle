@@ -4,7 +4,6 @@ import type { Id as DefinitionId } from "../../action/definition.js";
 import type { Actions } from "../../action/actions.js";
 import type * as contribution from "../../contribution/contribution.js";
 import type * as attribute from "../../contribution/attribute.js";
-import type { BeforeReleaseHook, ReleasedHook } from "./release.js";
 import { createRegistrationOperations } from "../../registration.js";
 import type { Rule as BaseRule } from "../../../rule.js";
 
@@ -22,16 +21,11 @@ export type Rule = BaseRule<RuleContext>;
 
 export type Input = readonly attribute.Modifier[];
 
-interface Hooks {
-    readonly beforeRelease: readonly BeforeReleaseHook[];
-    readonly released: readonly ReleasedHook[];
-}
-
 interface Rules {
     readonly rules: readonly Rule[];
 }
 
-export interface State extends Rules, Hooks {
+export interface State extends Rules {
     readonly actions: Actions;
     readonly nextExecutionId: number;
     readonly interval: readonly contribution.Contribution<Input>[];
@@ -63,8 +57,6 @@ export function initialize<U extends Unit & Pick<Action, "definition">>(
                 interval: [],
                 speed: [],
                 rules: [],
-                beforeRelease: [],
-                released: [],
             },
         },
     };
@@ -75,9 +67,3 @@ export const { set: setRule, remove: removeRule } = createRegistrationOperations
     "action",
     keyof Rules
 >("action", "rules");
-
-export const { set: setHook, remove: removeHook } = createRegistrationOperations<
-    Unit & Action,
-    "action",
-    keyof Hooks
->("action");

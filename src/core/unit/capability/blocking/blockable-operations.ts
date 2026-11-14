@@ -3,13 +3,12 @@ import { relations } from "../../../battle/blocking/query.js";
 import * as entries from "../../../common/collection/entries.js";
 import type * as contribution from "../../contribution/contribution.js";
 import { createChange, type Change } from "../../change.js";
-import { createRegistrationOperations } from "../../registration.js";
 import type { Ref } from "../../../common/ref.js";
 import type { Unit } from "../../unit.js";
 import type { PrepareHook } from "../../hook.js";
 import type { Rule } from "./rule.js";
 import { assertSafeInteger } from "../../../common/assert.js";
-import type { Blockable, Hooks } from "./blockable.js";
+import type { Blockable } from "./blockable.js";
 import type { State as BattleState } from "../../../battle/state.js";
 import { replace } from "../../../battle/unit.js";
 import { TICKS_PER_SECOND } from "../../../tick.js";
@@ -152,9 +151,3 @@ export function removeVolumeContribution(id: string): Change<Unit & Blockable> {
         },
     );
 }
-
-export const { set: setHook, remove: removeHook } = createRegistrationOperations<
-    Unit & Blockable,
-    "blockable",
-    keyof Hooks
->("blockable");

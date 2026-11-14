@@ -5,8 +5,6 @@ export {
     removeRule,
     setContribution,
     removeContribution,
-    setHook,
-    removeHook,
     setMaxHpContribution,
     removeMaxHpContribution,
     resolveMaxHp,

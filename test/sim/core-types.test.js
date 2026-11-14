@@ -11,7 +11,7 @@ test("typed construction and identities retain private state and capability proo
 import type { Ref } from ${module("common/ref")};
 import type { State } from ${module("battle/state")};
 import { Hooks, key, type Hook } from ${module("hook")};
-import { initialize, ref, get, all as allUnits, compose, optional, type Unit, type Input as UnitInput, type Change } from ${module("unit/index")};
+import { initialize, ref, get, all as allUnits, compose, optional, setHook as setUnitHook, removeHook as removeUnitHook, type Unit, type Input as UnitInput, type Change } from ${module("unit/index")};
 import { update, remove as removeUnit } from ${module("battle/unit")};
 import * as actions from ${module("unit/action/index")};
 import * as effects from ${module("unit/effect/index")};
@@ -56,7 +56,7 @@ registered.get(outputKey)[0]!.invoke(battle, { amount: 1 }, 0);
 const mismatchedKey: typeof outputKey = textKey;
 // @ts-expect-error entries cannot widen the Hook type established by their key.
 Hooks.empty().set(outputKey, { id: 'wrong', invoke: (state, context: { text: string }, current) => ({ state, value: current }) });
-const receivingKey = key<hpDamage.ReceivingHook>('receiving');
+const receivingKey = hpDamage.receiving;
 const receivingHooks = Hooks.empty().set(receivingKey, {
     id: 'evade', invoke: (state, _context, current) => ({ state, value: hpDamage.cancel(current, 'MISS') }),
 });
@@ -70,7 +70,7 @@ Hooks.empty().set(receivingKey, {
         state, value: current.type === 'NORMAL' ? { ...current, amount: current.amount / 2 } : current,
     }),
 });
-vitality.setHook('damageReceiving', {
+setUnitHook(hpDamage.receiving, {
     id: 'conditional-receiving',
     invoke(state, _context, current) {
         if (current.type === 'CANCELLED' || current.amount <= 0) {
@@ -233,6 +233,11 @@ effects.setExpiration(battle, burstRef, { ...burst.expiration, remaining: burst.
 // @ts-expect-error writes retain the Burst identity's duration contract.
 effects.setExpiration(battle, burstRef, { type: 'DEADLINE', tick: 10 });
 const bare = initialize(battle, { id: 1, position: [0, 0], definition: { id: 'bare', hooks: Hooks.empty() } }).value;
+const receivingChange: Change<Unit & vitality.Vitality> = setUnitHook(hpDamage.receiving, receivingHooks.get(receivingKey)[0]!);
+// @ts-expect-error receiving keys retain their Vitality owner requirement through Change.
+update(battle, ref(bare), receivingChange);
+// @ts-expect-error removal carries the same owner requirement as registration.
+update(battle, ref(bare), removeUnitHook(hpDamage.receiving, 'evade'));
 const facingDefinition = { ...bare.definition, facing: { rules: [] }, offense: { attack: 10 } };
 const facingHost = initialize(battle, {
     id: 4, definition: facingDefinition, position: [0, 0], initial: { facing: { direction: 'LEFT' } },
@@ -396,6 +401,7 @@ const patient = initialize(battle, { id: 2, position: [0, 0], definition: {
     vitality: { maxHp: 100, defense: 10, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
 } }).value;
 const patientRef = ref(patient);
+update(battle, patientRef, receivingChange);
 update(battle, patientRef, vitality.setRule({
     id: 'damage-permission', allows: (_state, context) => context.calculated.amount > 0,
 }));
@@ -418,7 +424,7 @@ vitality.setContribution('defense', {
         return [];
     },
 });
-vitality.setHook('damageReceiving', {
+setUnitHook(hpDamage.receiving, {
     id: 'cancel',
     invoke: (state, context, pending) => {
         const amount: number = context.calculated.amount;
@@ -427,7 +433,7 @@ vitality.setHook('damageReceiving', {
         return { state, value: hpDamage.cancel(pending, 'MISS') };
     },
 });
-actionCapability.setHook('beforeRelease', {
+setUnitHook(actionCapability.beforeRelease, {
     id: 'interrupt',
     invoke: (state, context) => {
         const source: Ref<Unit> = context.source;
@@ -436,25 +442,15 @@ actionCapability.setHook('beforeRelease', {
 });
 // @ts-expect-error automatic operations cannot write a special field.
 vitality.setContribution('maxHp', { id: 'wrong', value: [] });
-declare const damageReceiving: hpDamage.ReceivingHook;
-declare const pairedRegistration:
-    | [key: 'damageReceiving', hook: hpDamage.ReceivingHook]
-    | [key: 'damageReceivingStarted', hook: hpDamage.ReceivingStartedHook];
-vitality.setHook(...pairedRegistration);
-declare const receivingStage: 'damageReceiving' | 'healingReceiving';
-// @ts-expect-error a union key and an unrelated Entry are not a paired argument.
-vitality.setHook(receivingStage, damageReceiving);
 // @ts-expect-error a numeric address alone does not establish a Unit proof.
 const forged: Ref<Unit> = { id: 0 };
 
 declare const elementalHost: Ref<Unit & elemental.Elemental>;
-declare const elementalStage: 'damaged' | 'burstStarted';
-declare const pairedElementalEvent:
-    | [stage: 'damaged', event: elemental.Damaged]
-    | [stage: 'burstStarted', event: elemental.Burst];
-dispatchElemental(battle, elementalHost, ...pairedElementalEvent);
-// @ts-expect-error an independent union stage cannot prove the event matches.
-dispatchElemental(battle, elementalHost, elementalStage, burst);
+declare const elementalDamage: elemental.Damaged;
+dispatchElemental(battle, elementalHost, elemental.damaged, elementalDamage);
+dispatchElemental(battle, elementalHost, elemental.burstStarted, burst);
+// @ts-expect-error the typed notification key determines the exact payload.
+dispatchElemental(battle, elementalHost, elemental.damaged, burst);
 
 declare const baseInput: Omit<BattleInput, 'deployment' | 'predefines' | 'initialMechanisms'>;
 declare const cardBase: Omit<CardDefinition, 'card'>;

@@ -1,3 +1,5 @@
+export type { Options, Exclusion } from "../../../../hook.js";
+
 export type {
     Event,
     DamageType,
@@ -39,6 +41,8 @@ export {
     targetFormula,
     output,
     beforeReceive,
+    receivingStarted,
+    receiving,
     beforeCommit,
     targetApplied,
     sourceApplied,

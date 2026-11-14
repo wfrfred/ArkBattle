@@ -88,7 +88,7 @@ test("HP Healing accepts full resources and absent patients while damage require
     }, position: [0, 0] }]);
     const target = units.ref(get(state, 0));
     assert.equal(get(state, 0).vitality.hp, 100.5);
-    state = update(state, target, units.compose(units.compose(vitality.setHook("healingReceiving", {
+    state = update(state, target, units.compose(units.compose(units.setHook(hpHealing.receiving, {
             id: "receive", invoke(current, _context, pending) {
                 calls.push("receive");
                 return { state: current, value: { ...pending, amount: pending.amount - 10 } };
@@ -185,7 +185,7 @@ test("HP-07: natural recovery samples current attributes after Effects and befor
     }).state;
     state = update(state, target, units.compose(
         presence.disappear(),
-        vitality.setHook("healingReceiving", { id: "receive", invoke: ordinaryHealing }),
+        units.setHook(hpHealing.receiving, { id: "receive", invoke: ordinaryHealing }),
     ));
     state = step(state, []);
     assert.equal(observed.length, 1);

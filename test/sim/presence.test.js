@@ -78,7 +78,7 @@ test("disappearance preserves deployment and lifetimes, releases blocking before
     state = installed.state;
     for (const target of targets) state = blocking.acquire(state, owner, target);
     let notifications = 0;
-    state = update(state, owner, units.compose(block.setBlockerHook("released", {
+    state = update(state, owner, units.compose(units.setHook(block.blockerReleased, {
         id: "observe-published-restrictions",
         invoke(current) {
             notifications++;

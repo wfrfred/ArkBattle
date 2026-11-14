@@ -23,8 +23,8 @@ import {
 import * as actions from "../../core/unit/action/index.js";
 import {
     type Action as ActionCapability,
-    beforeRelease,
-    released,
+    dispatchBeforeRelease,
+    dispatchReleased,
 } from "../../core/unit/capability/action/index.js";
 
 import { hasOffense, resolveAttack } from "../../core/unit/capability/offense/index.js";
@@ -421,7 +421,7 @@ export function createWithState<P extends object, E extends object>(
                     ...self.execution.state,
                     released: true,
                 });
-                const permission = beforeRelease(battle, identity);
+                const permission = dispatchBeforeRelease(battle, identity);
                 battle = permission.state;
                 const current = actions.getExecution(battle, identity);
                 if (current?.execution.lifecycle !== "RUNNING" || !sourcePresent(battle, source)) {
@@ -451,7 +451,7 @@ export function createWithState<P extends object, E extends object>(
                     },
                 ]);
 
-                battle = released(battle, identity);
+                battle = dispatchReleased(battle, identity);
 
                 const output = actions.getExecution(battle, identity);
                 if (output?.execution.lifecycle !== "RUNNING" || !sourcePresent(battle, source)) {

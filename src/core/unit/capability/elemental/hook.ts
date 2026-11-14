@@ -20,19 +20,6 @@ export interface Healed extends HealingApplication {
     readonly request: HealingRequest;
 }
 
-export interface Events {
-    readonly damaged: Damaged;
-    readonly healed: Healed;
-    readonly burstStarted: Burst;
-    readonly burstEnded: { readonly burst: Burst; readonly end: End };
-}
-
-export type Key = keyof Events;
-
-type DispatchArguments = {
-    [K in Key]: [key: K, event: Events[K]];
-}[Key];
-
 export interface Context<E> {
     readonly host: Ref<Unit & Elemental>;
     readonly event: E;
@@ -40,18 +27,29 @@ export interface Context<E> {
 
 export type Hook<E> = hooks.Hook<Context<E>, void>;
 
-export function dispatch<K extends Key>(
+export const damaged = hooks.key<Hook<Damaged>, Unit & Elemental>("elemental.damaged");
+
+export const healed = hooks.key<Hook<Healed>, Unit & Elemental>("elemental.healed");
+
+export const burstStarted = hooks.key<Hook<Burst>, Unit & Elemental>("elemental.burstStarted");
+
+export const burstEnded = hooks.key<
+    Hook<{ readonly burst: Burst; readonly end: End }>,
+    Unit & Elemental
+>("elemental.burstEnded");
+
+export function dispatch<E>(
     battle: BattleState,
     host: Ref<Unit & Elemental>,
-    ...[key, event]: [key: K, event: Events[K]] & DispatchArguments
+    key: hooks.Key<Hook<E>, Unit & Elemental>,
+    event: NoInfer<E>,
 ): BattleState {
     return hooks.dispatch(battle, { host, event }, undefined, {
-        candidates: (current) => units.get(current, host)?.elemental[key].map(({ id }) => id) ?? [],
-        find: (current, id) => {
-            const entries = units.get(current, host)?.elemental[key] as
-                readonly Hook<Events[K]>[] | undefined;
-
-            return entries?.find((entry) => entry.id === id);
-        },
+        candidates: (current) =>
+            units
+                .get(current, host)
+                ?.hooks.get(key)
+                .map(({ id }) => id) ?? [],
+        find: (current, id) => units.get(current, host)?.hooks.find(key, id),
     }).state;
 }

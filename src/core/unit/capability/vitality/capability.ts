@@ -4,11 +4,6 @@ import * as contribution from "../../contribution/contribution.js";
 import * as entries from "../../../common/collection/entries.js";
 import * as attribute from "../../contribution/attribute.js";
 import type { Unit } from "../../unit.js";
-import type {
-    ReceivingHook as DamageReceivingHook,
-    ReceivingStartedHook,
-} from "../../../battle/resource/hp/damage/hook.js";
-import type { ReceivingHook as HealingReceivingHook } from "../../../battle/resource/hp/healing/hook.js";
 import type { DamageReceptionRule } from "./rule.js";
 import { createChange, type Change } from "../../change.js";
 import { createRegistrationOperations } from "../../registration.js";
@@ -36,13 +31,7 @@ interface Rules {
     readonly damageRules: readonly DamageReceptionRule[];
 }
 
-interface Hooks {
-    readonly damageReceivingStarted: readonly ReceivingStartedHook[];
-    readonly damageReceiving: readonly DamageReceivingHook[];
-    readonly healingReceiving: readonly HealingReceivingHook[];
-}
-
-export interface State extends Rules, Contributions, Hooks {
+export interface State extends Rules, Contributions {
     readonly hp: number;
     readonly maxHp: readonly contribution.Contribution<readonly attribute.Modifier[]>[];
 }
@@ -80,9 +69,6 @@ export function initialize<U extends Unit & Pick<Vitality, "definition">>(
                 resistance: [],
                 recoverySpeed: [],
                 recoveryRatio: [],
-                damageReceivingStarted: [],
-                damageReceiving: [],
-                healingReceiving: [],
                 damageRules: [],
             },
         },
@@ -149,10 +135,4 @@ export const { set: setContribution, remove: removeContribution } = createRegist
     Unit & Vitality,
     "vitality",
     keyof Contributions
->("vitality");
-
-export const { set: setHook, remove: removeHook } = createRegistrationOperations<
-    Unit & Vitality,
-    "vitality",
-    keyof Hooks
 >("vitality");

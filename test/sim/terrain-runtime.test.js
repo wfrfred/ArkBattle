@@ -104,7 +104,7 @@ test("HP-06: infection keeps its entry clocks and ordinary reception while exclu
         }),
     })], [terrain.infection]);
     let battle = update(configured.battle, units.ref(current(configured.battle)),
-        vitality.setHook("damageReceiving", {
+        units.setHook(hpDamage.receiving, {
             id: "observe-environment-reception",
             invoke(state, { request }, pending) {
                 assert.equal(request.nature, "DAMAGE");

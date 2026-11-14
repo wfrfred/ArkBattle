@@ -3,15 +3,23 @@ export {
     initialize,
     setRule,
     removeRule,
-    setHook,
-    removeHook,
     setAmmoContribution,
     removeAmmoContribution,
 } from "./capability.js";
 
 export type { Definition, State, Skill } from "./capability.js";
 
-export type { ActivationStarted, ActivationEnded, Events, Key, Context, Hook } from "./hook.js";
+export {
+    spRecovered,
+    spPaid,
+    spModified,
+    ammoConsumed,
+    ammoReplenished,
+    activationStarted,
+    activationEnded,
+} from "./hook.js";
+
+export type { ActivationStarted, ActivationEnded, Context, Hook } from "./hook.js";
 
 export type {
     ActivationRule,

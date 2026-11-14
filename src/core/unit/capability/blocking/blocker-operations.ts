@@ -4,7 +4,6 @@ import type { State as BattleState } from "../../../battle/state.js";
 import * as entries from "../../../common/collection/entries.js";
 import type * as contribution from "../../contribution/contribution.js";
 import { createChange, type Change } from "../../change.js";
-import { createRegistrationOperations } from "../../registration.js";
 import type { Ref } from "../../../common/ref.js";
 import type { Unit } from "../../unit.js";
 import type { PrepareHook } from "../../hook.js";
@@ -14,7 +13,6 @@ import {
     DEFAULT_RADIUS,
     resolveCapacity,
     type Blocker,
-    type Hooks,
     type Layer,
     type Modifier,
 } from "./blocker.js";
@@ -134,9 +132,3 @@ export function setLayer(layer: Layer): Change<Unit & Blocker> {
         (battle, previous) => releaseAll(battle, units.ref(previous)),
     );
 }
-
-export const { set: setHook, remove: removeHook } = createRegistrationOperations<
-    Unit & Blocker,
-    "blocker",
-    keyof Hooks
->("blocker");

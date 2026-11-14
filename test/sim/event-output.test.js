@@ -37,7 +37,7 @@ test("EVENT-01: real HP and EP operations emit display facts including zero chan
     state = epHealing.applyHealing(elementalRecovery, epHealing.calculateHealing(state, elementalRecovery)).state;
     const recovery = { source: null, target, parameters: { power: 30, multiplier: 1 } };
     state = hpHealing.applyHealing(recovery, hpHealing.calculateHealing(state, recovery)).state;
-    state = update(state, target, elementalCapability.setHook("damageReceiving", {
+    state = update(state, target, units.setHook(epDamage.receiving, {
         id: "reduction",
         invoke: (current, _context, pending) => ({
             state: current,

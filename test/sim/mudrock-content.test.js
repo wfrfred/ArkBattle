@@ -18,7 +18,7 @@ import { ref as skillRef } from "../helpers/skill.js";
 import { start, advance as advanceAction, ref as actionRef } from "../../dist/core/unit/action/index.js";
 import { advance as advanceLocomotion } from "../../dist/core/unit/capability/locomotion/index.js";
 import { setAttackContribution } from "../../dist/core/unit/capability/offense/index.js";
-import { setMaxHpContribution, setHook as setVitalityHook } from "../../dist/core/unit/capability/vitality/index.js";
+import { setMaxHpContribution } from "../../dist/core/unit/capability/vitality/index.js";
 import { setType } from "../../dist/core/unit/capability/layer/index.js";
 import { create as modifier } from "../../dist/core/unit/contribution/attribute.js";
 import { Vec2 } from "../../dist/core/common/vector.js";
@@ -131,7 +131,7 @@ test("APPLY-03: fixed receiving skips Mudrock's reductions while retaining shiel
         },
     });
     let battle = update(ready, ref(fixture.unit), compose(
-        setVitalityHook("damageReceiving", {
+        setHook(hpDamage.receiving, {
             id: "fix-amount", priority: 200,
             invoke(state, _context, pending) {
                 assert.equal(pending.type, "NORMAL");

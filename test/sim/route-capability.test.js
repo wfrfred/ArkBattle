@@ -9,7 +9,7 @@ import { update } from "../../dist/core/battle/unit.js";
 import { step } from "../../dist/core/battle/runtime.js";
 import { appear } from "../../dist/core/unit/capability/presence/index.js";
 import { search } from "../../dist/core/battle/blocking/index.js";
-import { setHook } from "../../dist/core/unit/capability/blocking/blockable-operations.js";
+import { blockableReleased } from "../../dist/core/unit/capability/blocking/index.js";
 import * as navigation from "../../dist/core/battlefield/navigation/state.js";
 import { get as getTile } from "../../dist/core/battlefield/map/map.js";
 import { update as updateTile } from "../../dist/core/battle/tile.js";
@@ -219,7 +219,7 @@ test("spatial instructions publish consumption before hooks and resume the lates
         const host = units.ref(get(state, 0));
         const replacement = plan([wait(9), move([0, 2])]);
         let released = 0;
-        state = update(state, host, setHook("released", {
+        state = update(state, host, units.setHook(blockableReleased, {
             id: "change-route", invoke: (state) => {
                 released++;
                 assert.equal(current(state).index, 1);

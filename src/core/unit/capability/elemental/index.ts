@@ -8,8 +8,6 @@ export {
     removeContribution,
     setRule,
     removeRule,
-    setHook,
-    removeHook,
 } from "./capability.js";
 
 export type { Values, Input, Definition, Parameter, State, Elemental } from "./capability.js";
@@ -46,7 +44,9 @@ export {
     resolveDamageRatio,
 } from "./query.js";
 
-export type { DamageReceivingHook, Damaged, Healed, Events, Key, Context, Hook } from "./hook.js";
+export { damaged, healed, burstStarted, burstEnded } from "./hook.js";
+
+export type { DamageReceivingHook, Damaged, Healed, Context, Hook } from "./hook.js";
 
 export type {
     DamageRule,

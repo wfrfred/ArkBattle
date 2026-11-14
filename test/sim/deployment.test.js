@@ -41,6 +41,7 @@ const account = {
 
 test("preview, evaluation and deployment use one request; rejection consumes nothing and enter sees consumption", () => {
     const constructions = [];
+    const deployments = [];
     const definition = {
         ...operator,
         facing: { rules: [] },
@@ -56,6 +57,14 @@ test("preview, evaluation and deployment use one request; rejection consumes not
         },
     };
     let state = battle([], { deployment: { definition: account, cards: [definition] } });
+    state = deployment.setHook(state, deployment.deployed, {
+        id: "deployed",
+        invoke(current, { unit, request }) {
+            assert.notEqual(get(current, unit.id), undefined);
+            deployments.push({ id: unit.id, tile: request.tilePosition });
+            return { state: current, value: undefined };
+        },
+    });
     const card = cards.ref([...cards.all(state)][0]);
     const request = deployment.createRequest(state, card, [1, 2], "LEFT");
     const invalid = { ...request, quote: { ...request.quote, dp: -1 } };
@@ -83,6 +92,7 @@ test("preview, evaluation and deployment use one request; rejection consumes not
     assert.equal(cards.get(state, card).stock, 1);
     assert.equal(state.deployment.usedSlots, 0);
     assert.deepEqual(constructions, []);
+    assert.deepEqual(deployments, []);
 
     let entered = false;
     const allowed = {
@@ -115,6 +125,7 @@ test("preview, evaluation and deployment use one request; rejection consumes not
     const deployed = deployment.deploy(state, allowed);
     state = deployed.state;
     assert.equal(deployed.value.type, "DEPLOYED");
+    assert.deepEqual(deployments, [{ id: deployed.value.unitId, tile: [0, 2] }]);
     assert.deepEqual(constructions, [{ dp: 40, stock: 0, slots: 1 }]);
     assert.equal(entered, true);
     assert.deepEqual(get(state, deployed.value.unitId).occupancy.tile, [0, 2]);

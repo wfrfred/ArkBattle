@@ -11,7 +11,7 @@ import type { OrdinaryDefinition as EffectDefinition } from "../../effect/defini
 import type { Expiration } from "../../effect/expiration.js";
 import { elementValues, type Elemental, type Type } from "./capability.js";
 import { available, resolveMaxEp, resolveBurstRecoverySpeed } from "./query.js";
-import { dispatch } from "./hook.js";
+import { dispatch, burstStarted, burstEnded } from "./hook.js";
 
 export interface State {
     readonly type: Type;
@@ -64,7 +64,7 @@ export function onInstall(
         },
     ]);
 
-    return dispatch(battle, current.host, "burstStarted", current);
+    return dispatch(battle, current.host, burstStarted, current);
 }
 
 export function advance(
@@ -138,7 +138,7 @@ export function onEnd(
             ? { type: "FINISHED" }
             : { type: "CANCELLED", reason };
 
-    return dispatch(battle, self.host, "burstEnded", { burst: self, end });
+    return dispatch(battle, self.host, burstEnded, { burst: self, end });
 }
 
 export function availableHost(

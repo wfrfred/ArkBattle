@@ -14,12 +14,13 @@ import {
     type Values,
 } from "./capability.js";
 import type { Burst } from "./burst.js";
-import { dispatch } from "./hook.js";
+import { dispatch, damaged, healed } from "./hook.js";
 import * as query from "./query.js";
 import type * as damage from "../../../battle/resource/ep/damage/contract.js";
-import type {
-    ReceivingContext,
-    CommitContext as DamageCommitContext,
+import {
+    receiving,
+    type ReceivingContext,
+    type CommitContext as DamageCommitContext,
 } from "../../../battle/resource/ep/damage/hook.js";
 import type { Request as HealingRequest } from "../../../battle/resource/ep/healing/contract.js";
 import type { CommitContext as HealingCommitContext } from "../../../battle/resource/ep/healing/hook.js";
@@ -42,17 +43,19 @@ export function receiveDamage(
     battle: BattleState,
     context: ReceivingContext,
     pending: damage.Pending,
+    options?: hooks.Options,
 ): Result<damage.Pending> {
     const result = hooks.dispatch<ReceivingContext, damage.Pending>(battle, context, pending, {
         candidates: (current) =>
-            [...(units.get(current, context.target)?.elemental.damageReceiving ?? [])]
+            [...(units.get(current, context.target)?.hooks.get(receiving) ?? [])]
                 .sort((left, right) => (right.priority ?? 0) - (left.priority ?? 0))
-                .map(({ id }) => id),
+                .map(({ id }) => id)
+                .filter((id) => !hooks.excluded(options, receiving, id)),
         find(current, id) {
             const host = units.get(current, context.target);
 
             return host !== undefined && query.available(host)
-                ? host.elemental.damageReceiving.find((entry) => entry.id === id)
+                ? host.hooks.find(receiving, id)
                 : undefined;
         },
     });
@@ -112,7 +115,7 @@ export function commitDamage(
     }
 
     const application: DamageApplication = { type, epBefore, epAfter, epLoss, burst: reference };
-    battle = dispatch(battle, target, "damaged", { request, ...application });
+    battle = dispatch(battle, target, damaged, { request, ...application });
 
     return { state: battle, value: application };
 }
@@ -149,7 +152,7 @@ export function commitHealing(
     ]);
 
     if (amount > 0) {
-        battle = dispatch(battle, target, "healed", { request, ...application });
+        battle = dispatch(battle, target, healed, { request, ...application });
     }
 
     return { state: battle, value: application };

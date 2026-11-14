@@ -8,6 +8,56 @@ import { remove } from "../../dist/core/battle/unit.js";
 import * as lifetimes from "../../dist/core/lifetime/index.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import * as actions from "../../dist/core/unit/action/index.js";
+import * as skills from "../../dist/core/unit/skill/index.js";
+import * as skill from "../../dist/core/unit/capability/skill/index.js";
+import * as elemental from "../../dist/core/unit/capability/elemental/index.js";
+import * as epDamage from "../../dist/core/battle/resource/ep/damage/index.js";
+import { createArknightsElementalDefinition } from "../../dist/data/effect/elemental.js";
+
+test("HOOK-03: Skill and Burst end notifications observe their cleared state while the owner is LEAVING", () => {
+    const observed = [];
+    const program = {
+        id: "active-until-departure",
+        initialize: state => ({ state, value: {} }),
+        sp: { initial: 1, capacity: 1, requirement: 1, cost: 1, recovery: { type: "NONE" } },
+        activation: { trigger: "MANUAL", sustain: { type: "INFINITE" }, initialize: () => ({}) },
+    };
+    const definition = {
+        id: "owner",
+        vitality: { maxHp: 10000, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
+        elemental: createArknightsElementalDefinition({ receiver: "CHARACTER" }),
+        skill: { initialize: state => skills.create(state, program) },
+        hooks: Hooks.empty()
+            .set(skill.activationEnded, {
+                id: "activation-ended",
+                invoke(state, { host }) {
+                    const current = units.get(state, host);
+                    assert.equal(current.skill.activation, null);
+                    observed.push(["activation", current.lifecycle]);
+                    return { state, value: undefined };
+                },
+            })
+            .set(elemental.burstEnded, {
+                id: "burst-ended",
+                invoke(state, { host }) {
+                    const current = units.get(state, host);
+                    assert.equal(current.elemental.burst, null);
+                    observed.push(["burst", current.lifecycle]);
+                    return { state, value: undefined };
+                },
+            }),
+    };
+    let state = battle([{ definition, position: [1, 1] }]);
+    const owner = units.ref(units.all(state).find(() => true));
+    const activated = skills.activate(state, skills.ref(owner, program));
+    assert.notEqual(activated.value, null);
+    const request = { source: null, target: owner, parameters: { type: "NEURAL", power: 1000 } };
+    const burst = epDamage.applyDamage(request, epDamage.calculateDamage(activated.state, request));
+    assert.notEqual(burst.value.application.burst, null);
+    state = remove(burst.state, owner, "SCRIPT");
+    assert.equal(units.get(state, owner), undefined);
+    assert.deepEqual(observed.sort(), [["activation", "LEAVING"], ["burst", "LEAVING"]]);
+});
 
 test("an owner waits for dependent finalizers and repeated requests preserve the first reason", () => {
     const calls = [];

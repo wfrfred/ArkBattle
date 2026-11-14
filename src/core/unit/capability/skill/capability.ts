@@ -3,7 +3,6 @@ import type * as contribution from "../../contribution/contribution.js";
 import * as entries from "../../../common/collection/entries.js";
 import type { State as BattleState, Result } from "../../../battle/state.js";
 import type { Skill as SkillState } from "../../skill/skill.js";
-import type { Events, Hook } from "./hook.js";
 import type { Input as AmmoInput } from "../../skill/ammo.js";
 import type { Rules } from "./rule.js";
 import { createChange, type Change } from "../../change.js";
@@ -15,17 +14,7 @@ export interface Definition {
     readonly initialize: (battle: BattleState) => Result<SkillState<any, any>>;
 }
 
-interface Hooks {
-    readonly spRecovered: readonly Hook<Events["spRecovered"]>[];
-    readonly spPaid: readonly Hook<Events["spPaid"]>[];
-    readonly spModified: readonly Hook<Events["spModified"]>[];
-    readonly ammoConsumed: readonly Hook<Events["ammoConsumed"]>[];
-    readonly ammoReplenished: readonly Hook<Events["ammoReplenished"]>[];
-    readonly activationStarted: readonly Hook<Events["activationStarted"]>[];
-    readonly activationEnded: readonly Hook<Events["activationEnded"]>[];
-}
-
-export interface State extends SkillState, Rules, Hooks {
+export interface State extends SkillState, Rules {
     readonly nextActivationId: number;
     readonly ammo: readonly contribution.Contribution<AmmoInput>[];
 }
@@ -57,13 +46,6 @@ export function initialize<U extends Unit & Pick<Skill, "definition">>(
                 allows: (_battle, { self }) => self.skill.activation === null,
             },
         ],
-        spRecovered: [],
-        spPaid: [],
-        spModified: [],
-        ammoConsumed: [],
-        ammoReplenished: [],
-        activationStarted: [],
-        activationEnded: [],
     };
 
     return {
@@ -76,12 +58,6 @@ export const { set: setRule, remove: removeRule } = createRegistrationOperations
     Unit & Skill,
     "skill",
     keyof Rules
->("skill");
-
-export const { set: setHook, remove: removeHook } = createRegistrationOperations<
-    Unit & Skill,
-    "skill",
-    keyof Hooks
 >("skill");
 
 export function setAmmoContribution(

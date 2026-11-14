@@ -14,7 +14,7 @@ import * as attribute from "../contribution/attribute.js";
 import { hasVitality } from "../capability/vitality/capability.js";
 import type { Skill } from "../capability/skill/capability.js";
 import { replace as replaceUnits } from "../../battle/unit.js";
-import { dispatch } from "../capability/skill/hook.js";
+import { dispatch, spRecovered, spPaid, spModified } from "../capability/skill/hook.js";
 import { createChange, type Change } from "../change.js";
 
 export type Source = "TIME" | "ACTION" | "HIT" | "EXTERNAL";
@@ -226,7 +226,7 @@ export function recover(
         },
     ]);
 
-    return applied(dispatch(battle, units.ref(self), "spRecovered", event), gained);
+    return applied(dispatch(battle, units.ref(self), spRecovered, event), gained);
 }
 
 export function pay(battle: BattleState, ref: Ref<Unit & Skill>, amount?: number): Result<Outcome> {
@@ -266,7 +266,7 @@ export function pay(battle: BattleState, ref: Ref<Unit & Skill>, amount?: number
         },
     ]);
 
-    return applied(dispatch(battle, units.ref(self), "spPaid", event), cost);
+    return applied(dispatch(battle, units.ref(self), spPaid, event), cost);
 }
 
 export function modify(
@@ -310,7 +310,7 @@ export function modify(
         },
     ]);
 
-    return applied(dispatch(battle, units.ref(self), "spModified", event), amount);
+    return applied(dispatch(battle, units.ref(self), spModified, event), amount);
 }
 
 export function advance(battle: BattleState, ref: Ref<Unit & Skill>): BattleState {

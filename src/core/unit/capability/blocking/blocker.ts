@@ -6,7 +6,7 @@ import type { Unit } from "../../unit.js";
 import type { Relation, Hook } from "./contract.js";
 import type { Rule } from "./rule.js";
 import { prepare } from "./blocker-operations.js";
-import { Hooks as UnitHooks } from "../../../hook.js";
+import { Hooks as UnitHooks, key } from "../../../hook.js";
 import { prepare as prepareKey } from "../../hook.js";
 
 export type Layer = "GROUND" | "AIR";
@@ -25,12 +25,7 @@ export interface Definition {
     readonly rules: readonly Rule[];
 }
 
-export interface Hooks {
-    readonly acquired: readonly Hook<Unit & Blocker>[];
-    readonly released: readonly Hook<Unit & Blocker>[];
-}
-
-export interface State extends Hooks {
+export interface State {
     readonly relations: readonly Relation[];
     readonly capacity: readonly contribution.Contribution<readonly Modifier[]>[];
     readonly layer: Layer;
@@ -44,6 +39,10 @@ export interface Blocker {
     };
     readonly blocker: State;
 }
+
+export const acquired = key<Hook<Unit & Blocker>, Unit & Blocker>("blocker.acquired");
+
+export const released = key<Hook<Unit & Blocker>, Unit & Blocker>("blocker.released");
 
 export function hasBlocker<U extends Unit>(unit: U): unit is U & Blocker {
     return "blocker" in unit && "blocker" in unit.definition;
@@ -73,8 +72,6 @@ export function initialize<U extends Unit & Pick<Blocker, "definition">>(
                 layer: definition.layer,
                 radius,
                 rules: definition.rules,
-                acquired: [],
-                released: [],
             },
         },
     };

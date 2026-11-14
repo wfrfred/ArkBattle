@@ -175,7 +175,7 @@ test("interrupted attack, successful release, and damage output are separate bus
     ]);
     const source = units.ref(get(state, 0));
     const reference = actions.ref(source, program);
-    state = update(state, source, action.setHook("beforeRelease", {
+    state = update(state, source, units.setHook(action.beforeRelease, {
             id: "interrupt",
             invoke: (state) => ({ state, value: { type: "INTERRUPT", recoveryTicks: 2 } }),
         }));
@@ -185,7 +185,7 @@ test("interrupted attack, successful release, and damage output are separate bus
     assert.equal(get(state, 1).vitality.hp, 100);
 
 
-    state = update({ ...state, tick: 10 }, source, units.compose(action.removeHook("beforeRelease", "interrupt"), action.setHook("released", {
+    state = update({ ...state, tick: 10 }, source, units.compose(units.removeHook(action.beforeRelease, "interrupt"), units.setHook(action.released, {
             id: "hide-after-release",
             invoke: (state, { execution }) => ({
                 state: update(state, execution.host, presence.disappear()),
@@ -200,7 +200,7 @@ test("interrupted attack, successful release, and damage output are separate bus
 
     state = { ...state, tick: 20 };
     state = update(state, source, presence.appear([1, 1]));
-    state = update(state, source, action.removeHook("released", "hide-after-release"));
+    state = update(state, source, units.removeHook(action.released, "hide-after-release"));
     started = actions.start(state, reference);
     state = actions.advance(started.state, started.value);
     assert.equal(get(state, 0).skill.sp.value, 2);

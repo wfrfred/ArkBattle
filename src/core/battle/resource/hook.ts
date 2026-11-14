@@ -11,7 +11,7 @@ export interface Entry<C, T> extends hooks.Hook<C, T> {
 export function dispatch<C, T>(
     battle: BattleState,
     owner: Ref<Unit> | null,
-    key: hooks.Key<Entry<C, T>>,
+    key: hooks.Key<Entry<C, T>, any>,
     context: C,
     initial: T,
     stop?: (battle: BattleState) => boolean,

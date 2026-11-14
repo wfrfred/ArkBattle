@@ -47,10 +47,10 @@ test("activation publishes payment before onStart and clears only the completed 
     let state = battle([{ definition, position: [1, 1] }]);
     const source = units.ref(get(state, 0));
     const reference = skills.ref(source, program);
-    state = update(state, source, units.compose(skill.setHook("activationStarted", {
+    state = update(state, source, units.compose(units.setHook(skill.activationStarted, {
             id: "hide-on-start",
             invoke: (state, { host }) => ({ state: update(state, host, presence.disappear()), value: undefined }),
-        }), skill.setHook("activationEnded", {
+        }), units.setHook(skill.activationEnded, {
             id: "observe-end",
             invoke(state, { host, event }) {
                 observed.push({
@@ -102,7 +102,7 @@ test("cancellation during payment notification retains payment and suppresses th
     };
     let state = battle([{ definition, position: [1, 1] }]);
     const source = units.ref(get(state, 0));
-    state = update(state, source, skill.setHook("spPaid", {
+    state = update(state, source, units.setHook(skill.spPaid, {
             id: "stop",
             invoke(state, { host }) {
                 const current = get(state, host.id).skill;

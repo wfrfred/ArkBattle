@@ -10,7 +10,6 @@ import type * as contribution from "../../contribution/contribution.js";
 import type * as attribute from "../../contribution/attribute.js";
 import type { Burst, Definition as BurstDefinition } from "./burst.js";
 import type { Ref } from "../../../common/ref.js";
-import type { DamageReceivingHook, Events, Hook } from "./hook.js";
 import type { Rules } from "./rule.js";
 import { createRegistrationOperations } from "../../registration.js";
 
@@ -48,15 +47,7 @@ interface Contributions {
 
 export type Parameter = keyof Contributions;
 
-interface Hooks {
-    readonly damageReceiving: readonly DamageReceivingHook[];
-    readonly damaged: readonly Hook<Events["damaged"]>[];
-    readonly healed: readonly Hook<Events["healed"]>[];
-    readonly burstStarted: readonly Hook<Events["burstStarted"]>[];
-    readonly burstEnded: readonly Hook<Events["burstEnded"]>[];
-}
-
-export interface State extends Rules, Contributions, Hooks {
+export interface State extends Rules, Contributions {
     readonly ep: Values;
     readonly burst: Ref<Burst> | null;
 }
@@ -110,13 +101,8 @@ export function initialize<U extends Unit & Pick<Elemental, "definition">>(
                 elementResistance: [],
                 damageResistance: [],
                 burstRecoverySpeed: [],
-                damageReceiving: [],
                 damageRules: [],
                 healingRules: [],
-                damaged: [],
-                healed: [],
-                burstStarted: [],
-                burstEnded: [],
             },
         },
     };
@@ -132,10 +118,4 @@ export const { set: setRule, remove: removeRule } = createRegistrationOperations
     Unit & Elemental,
     "elemental",
     keyof Rules
->("elemental");
-
-export const { set: setHook, remove: removeHook } = createRegistrationOperations<
-    Unit & Elemental,
-    "elemental",
-    keyof Hooks
 >("elemental");

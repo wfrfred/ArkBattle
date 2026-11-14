@@ -7,6 +7,11 @@ import * as units from "../../query.js";
 import * as hooks from "../../../hook.js";
 import type * as damage from "../../../battle/resource/hp/damage/index.js";
 import type * as healing from "../../../battle/resource/hp/healing/index.js";
+import {
+    receivingStarted,
+    receiving as damageReceiving,
+} from "../../../battle/resource/hp/damage/hook.js";
+import { receiving as healingReceiving } from "../../../battle/resource/hp/healing/hook.js";
 import { resolveMaxHp, type Vitality } from "./capability.js";
 import { resolveRecoverySpeed } from "./query.js";
 
@@ -42,21 +47,25 @@ export function receiveDamage(
     battle: BattleState,
     context: damage.ReceivingContext,
     pending: damage.Pending,
+    options?: hooks.Options,
 ): Result<damage.Pending> {
-    battle = dispatchReceiving(
+    // eslint-disable-next-line @typescript-eslint/no-invalid-void-type -- This stage has a void work value.
+    battle = dispatchReceiving<damage.ReceivingContext, void, damage.ReceivingStartedHook>(
         battle,
         context.target,
         context,
         undefined,
-        (unit) => unit.vitality.damageReceivingStarted,
+        receivingStarted,
+        options,
     ).state;
 
-    const result = dispatchReceiving<damage.ReceivingContext, damage.Pending>(
+    const result = dispatchReceiving(
         battle,
         context.target,
         context,
         pending,
-        (unit) => unit.vitality.damageReceiving,
+        damageReceiving,
+        options,
     );
 
     return {
@@ -72,13 +81,15 @@ export function receiveHealing(
     battle: BattleState,
     context: healing.ReceivingContext,
     pending: healing.Pending,
+    options?: hooks.Options,
 ): Result<healing.Pending> {
-    const result = dispatchReceiving<healing.ReceivingContext, healing.Pending>(
+    const result = dispatchReceiving(
         battle,
         context.target,
         context,
         pending,
-        (unit) => unit.vitality.healingReceiving,
+        healingReceiving,
+        options,
     );
 
     return {
@@ -145,31 +156,29 @@ function increaseHp(
     };
 }
 
-function dispatchReceiving<C, T>(
+function dispatchReceiving<C, T, H extends hooks.Hook<C, T> & { readonly priority?: number }>(
     battle: BattleState,
     target: Ref<Unit & Vitality>,
     context: C,
     initial: T,
-    select: (
-        unit: Unit & Vitality,
-    ) => readonly (hooks.Hook<C, T> & { readonly priority?: number })[],
+    key: hooks.Key<H, Unit & Vitality>,
+    options?: hooks.Options,
 ): Result<T> {
     return hooks.dispatch(battle, context, initial, {
         candidates(current) {
             const unit = units.get(current, target);
 
             return unit?.lifecycle === "PRESENT"
-                ? [...select(unit)]
+                ? [...unit.hooks.get(key)]
                       .sort((left, right) => (right.priority ?? 0) - (left.priority ?? 0))
                       .map(({ id }) => id)
+                      .filter((id) => !hooks.excluded(options, key, id))
                 : [];
         },
         find(current, id) {
             const unit = units.get(current, target);
 
-            return unit?.lifecycle === "PRESENT"
-                ? select(unit).find((entry) => entry.id === id)
-                : undefined;
+            return unit?.lifecycle === "PRESENT" ? unit.hooks.find(key, id) : undefined;
         },
     });
 }

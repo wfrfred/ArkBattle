@@ -10,7 +10,7 @@ import * as units from "../query.js";
 import type * as contribution from "../contribution/contribution.js";
 import type { Activation } from "./activation.js";
 import type { Skill } from "../capability/skill/capability.js";
-import { dispatch } from "../capability/skill/hook.js";
+import { dispatch, ammoConsumed, ammoReplenished } from "../capability/skill/hook.js";
 import { finish } from "./operations.js";
 import * as query from "./query.js";
 import { replace as replaceUnits } from "../../battle/unit.js";
@@ -94,7 +94,7 @@ export function consume<X extends Activation<any, any>>(
             skill: { ...self.skill, activation: { ...active, sustain: current } },
         },
     ]);
-    battle = dispatch(battle, units.ref(self), "ammoConsumed", {
+    battle = dispatch(battle, units.ref(self), ammoConsumed, {
         ref: reference,
         amount,
         previous,
@@ -190,7 +190,7 @@ function add<X extends Activation<any, any>>(
     ]);
 
     if (replenishing) {
-        battle = dispatch(battle, units.ref(self), "ammoReplenished", {
+        battle = dispatch(battle, units.ref(self), ammoReplenished, {
             ref: reference,
             requested,
             amount,

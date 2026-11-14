@@ -18,7 +18,11 @@ export type BeforeReleaseHook = hook.Hook<Context, Directive>;
 
 export type ReleasedHook = hook.Hook<Context, void>;
 
-export function beforeRelease<X extends Execution<any, any>>(
+export const beforeRelease = hook.key<BeforeReleaseHook, Unit & Action>("action.beforeRelease");
+
+export const released = hook.key<ReleasedHook, Unit & Action>("action.released");
+
+export function dispatchBeforeRelease<X extends Execution<any, any>>(
     battle: BattleState,
     ref: Ref<X>,
 ): Result<Directive> {
@@ -30,18 +34,19 @@ export function beforeRelease<X extends Execution<any, any>>(
         { type: "CONTINUE" },
         {
             candidates: (current) =>
-                units.get(current, context.source)?.action.beforeRelease.map(({ id }) => id) ?? [],
-            find: (current, id) =>
                 units
                     .get(current, context.source)
-                    ?.action.beforeRelease.find((entry) => entry.id === id),
+                    ?.hooks.get(beforeRelease)
+                    .map(({ id }) => id) ?? [],
+            find: (current, id) =>
+                units.get(current, context.source)?.hooks.find(beforeRelease, id),
             stop: (current, directive) =>
                 directive.type === "INTERRUPT" || !running(current, context),
         },
     );
 }
 
-export function released<X extends Execution<any, any>>(
+export function dispatchReleased<X extends Execution<any, any>>(
     battle: BattleState,
     ref: Ref<X>,
 ): BattleState {
@@ -49,9 +54,11 @@ export function released<X extends Execution<any, any>>(
 
     return hook.dispatch(battle, context, undefined, {
         candidates: (current) =>
-            units.get(current, context.source)?.action.released.map(({ id }) => id) ?? [],
-        find: (current, id) =>
-            units.get(current, context.source)?.action.released.find((entry) => entry.id === id),
+            units
+                .get(current, context.source)
+                ?.hooks.get(released)
+                .map(({ id }) => id) ?? [],
+        find: (current, id) => units.get(current, context.source)?.hooks.find(released, id),
         stop: (current) => !running(current, context),
     }).state;
 }

@@ -1,3 +1,5 @@
+export type { Options, Exclusion } from "../../../../hook.js";
+
 export { calculateHealing } from "./calculate.js";
 
 export { applyHealing } from "./apply.js";

@@ -17,22 +17,6 @@ export interface ActivationEnded {
     readonly end: End;
 }
 
-export interface Events {
-    readonly spRecovered: Recovered;
-    readonly spPaid: Paid;
-    readonly spModified: Modified;
-    readonly ammoConsumed: Consumed;
-    readonly ammoReplenished: Replenished;
-    readonly activationStarted: ActivationStarted;
-    readonly activationEnded: ActivationEnded;
-}
-
-export type Key = keyof Events;
-
-type DispatchArguments = {
-    [K in Key]: [key: K, event: Events[K]];
-}[Key];
-
 export interface Context<E> {
     readonly host: Ref<Unit & Skill>;
     readonly event: E;
@@ -40,18 +24,36 @@ export interface Context<E> {
 
 export type Hook<E> = hooks.Hook<Context<E>, void>;
 
-export function dispatch<K extends Key>(
+export const spRecovered = hooks.key<Hook<Recovered>, Unit & Skill>("skill.spRecovered");
+
+export const spPaid = hooks.key<Hook<Paid>, Unit & Skill>("skill.spPaid");
+
+export const spModified = hooks.key<Hook<Modified>, Unit & Skill>("skill.spModified");
+
+export const ammoConsumed = hooks.key<Hook<Consumed>, Unit & Skill>("skill.ammoConsumed");
+
+export const ammoReplenished = hooks.key<Hook<Replenished>, Unit & Skill>("skill.ammoReplenished");
+
+export const activationStarted = hooks.key<Hook<ActivationStarted>, Unit & Skill>(
+    "skill.activationStarted",
+);
+
+export const activationEnded = hooks.key<Hook<ActivationEnded>, Unit & Skill>(
+    "skill.activationEnded",
+);
+
+export function dispatch<E>(
     battle: BattleState,
     host: Ref<Unit & Skill>,
-    ...[key, event]: [key: K, event: Events[K]] & DispatchArguments
+    key: hooks.Key<Hook<E>, Unit & Skill>,
+    event: NoInfer<E>,
 ): BattleState {
     return hooks.dispatch(battle, { host, event }, undefined, {
-        candidates: (current) => units.get(current, host)?.skill[key].map(({ id }) => id) ?? [],
-        find: (current, id) => {
-            const entries = units.get(current, host)?.skill[key] as
-                readonly Hook<Events[K]>[] | undefined;
-
-            return entries?.find((entry) => entry.id === id);
-        },
+        candidates: (current) =>
+            units
+                .get(current, host)
+                ?.hooks.get(key)
+                .map(({ id }) => id) ?? [],
+        find: (current, id) => units.get(current, host)?.hooks.find(key, id),
     }).state;
 }

@@ -5,12 +5,9 @@ import * as effects from "../../unit/effect/operations.js";
 import { ref, type OrdinaryEffect as Effect } from "../../unit/effect/effect.js";
 import type { OrdinaryDefinition as EffectDefinition } from "../../unit/effect/definition.js";
 import { stun } from "../control.js";
-import {
-    hasAction,
-    setHook,
-    removeHook,
-    type Action,
-} from "../../unit/capability/action/capability.js";
+import { hasAction, type Action } from "../../unit/capability/action/capability.js";
+import { beforeRelease } from "../../unit/capability/action/release.js";
+import { setHook, removeHook } from "../../unit/hook.js";
 import { Type } from "../../unit/capability/elemental/capability.js";
 import { hurt } from "./damage.js";
 import {
@@ -72,7 +69,7 @@ export function createParalysis(parameters: ParalysisParameters): Definition {
             return update(
                 battle,
                 self.host,
-                setHook("beforeRelease", {
+                setHook(beforeRelease, {
                     id: `@effect/${effectId}/paralysis`,
                     accepts(current) {
                         const active = units
@@ -113,7 +110,7 @@ export function createParalysis(parameters: ParalysisParameters): Definition {
             );
         },
         onEnd: (battle, self) =>
-            update(battle, self.host, removeHook("beforeRelease", `@effect/${self.id}/paralysis`)),
+            update(battle, self.host, removeHook(beforeRelease, `@effect/${self.id}/paralysis`)),
     };
 
     return {

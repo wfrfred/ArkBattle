@@ -9,8 +9,6 @@ export interface Relation {
     readonly blocked: Ref<Unit & Blockable>;
 }
 
-export type Key = "acquired" | "released";
-
 export interface Context<U extends Unit> {
     readonly host: Ref<U>;
     readonly relation: Relation;

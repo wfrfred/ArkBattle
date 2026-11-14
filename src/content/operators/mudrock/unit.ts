@@ -36,13 +36,8 @@ import type { Definition as CardDefinition } from "../../../core/battle/deployme
 import { get as getTile } from "../../../core/battlefield/map/map.js";
 
 import { healFree } from "../../../core/effects/protection.js";
-import {
-    hasVitality,
-    setHook as setVitalityHook,
-    removeHook as removeVitalityHook,
-    type Vitality,
-} from "../../../core/unit/capability/vitality/index.js";
-import { cancel } from "../../../core/battle/resource/hp/damage/index.js";
+import { hasVitality, type Vitality } from "../../../core/unit/capability/vitality/index.js";
+import { cancel, receiving } from "../../../core/battle/resource/hp/damage/index.js";
 import {
     type OrdinaryDefinition as EffectDefinition,
     type OrdinaryEffect as Effect,
@@ -150,7 +145,7 @@ function shieldEffect(profile: Profile): EffectDefinition<ShieldState, Vitality>
             return updateUnit(
                 state,
                 unitRef(unit),
-                setVitalityHook("damageReceiving", {
+                unitHooks.setHook(receiving, {
                     id: `${SHIELD_ID}/${self.id}`,
                     priority: 100,
                     accepts: (_battle, { request }) => request.nature === "DAMAGE",
@@ -218,7 +213,7 @@ function shieldEffect(profile: Profile): EffectDefinition<ShieldState, Vitality>
                 : updateUnit(
                       state,
                       unitRef(unit),
-                      removeVitalityHook("damageReceiving", `${SHIELD_ID}/${self.id}`),
+                      unitHooks.removeHook(receiving, `${SHIELD_ID}/${self.id}`),
                   );
         },
         onTick(state, self) {

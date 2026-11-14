@@ -1,8 +1,8 @@
-export { hasAction, initialize, setRule, removeRule, setHook, removeHook } from "./capability.js";
+export { hasAction, initialize, setRule, removeRule } from "./capability.js";
 
 export type { Definition, RuleContext, Rule, Input, State, Action } from "./capability.js";
 
-export { beforeRelease, released } from "./release.js";
+export { beforeRelease, released, dispatchBeforeRelease, dispatchReleased } from "./release.js";
 
 export type { Directive, Context, BeforeReleaseHook, ReleasedHook } from "./release.js";
 

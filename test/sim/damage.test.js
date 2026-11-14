@@ -104,7 +104,7 @@ test("HP-01: formulas use the calculated type and sampled defenses without begin
                         },
                     }),
                 }),
-                vitality.setHook("damageReceiving", {
+                units.setHook(hpDamage.receiving, {
                     id: "receive",
                     invoke(current, _context, pending) {
                         receptions++;
@@ -157,7 +157,7 @@ test("HP-02: independent Calculate results retain their own business state and o
     const preparation = damageRequest(null, source, 100);
     state = hpDamage.applyDamage(preparation, hpDamage.calculateDamage(state, preparation)).state;
     let receptions = 0;
-    state = update(state, target, vitality.setHook("damageReceivingStarted", {
+    state = update(state, target, units.setHook(hpDamage.receivingStarted, {
         id: "count-receptions",
         invoke(current) { receptions++; return { state: current, value: undefined }; },
     }));
@@ -207,7 +207,7 @@ test("APPLY-01: invincibility installed before reception rejects HIT recovery un
                     return { state: installed.state, value: undefined };
                 },
             }),
-            vitality.setHook("damageReceiving", {
+            units.setHook(hpDamage.receiving, {
                 id: "receiving",
                 invoke(current, _context, pending) {
                     receivedSp.push(get(current, 1).skill.sp.value);
@@ -269,7 +269,7 @@ test("APPLY-01: Receiving and BeforeCommit resource changes define the baseline 
                             return { state: current, value: undefined };
                         },
                     }),
-                    vitality.setHook("damageReceivingStarted", {
+                    units.setHook(hpDamage.receivingStarted, {
                         id: "started",
                         invoke(current) {
                             calls.push("started");
@@ -277,7 +277,7 @@ test("APPLY-01: Receiving and BeforeCommit resource changes define the baseline 
                         },
                     }),
                 ),
-                vitality.setHook("damageReceiving", {
+                units.setHook(hpDamage.receiving, {
                     id: "larger-hp-pool",
                     invoke(current, _context, pending) {
                         calls.push("receiving");
@@ -372,7 +372,7 @@ test("APPLY-01: cancellation retains recovery and reflection but skips the origi
         target,
         units.compose(
             units.compose(
-                vitality.setHook("damageReceiving", {
+                units.setHook(hpDamage.receiving, {
                     id: "evade",
                     priority: 10,
                     invoke(current, _context, pending) {
@@ -384,7 +384,7 @@ test("APPLY-01: cancellation retains recovery and reflection but skips the origi
                         return { state: current, value: hpDamage.cancel(pending, "MISS") };
                     },
                 }),
-                vitality.setHook("damageReceiving", {
+                units.setHook(hpDamage.receiving, {
                     id: "reflect",
                     invoke(current, _context, pending) {
                         assert.equal(pending.type, "CANCELLED");
@@ -435,7 +435,7 @@ test("APPLY-02: HP zero output rejects while excess receiving reduction still co
         state,
         target,
         units.compose(
-            vitality.setHook("damageReceiving", {
+            units.setHook(hpDamage.receiving, {
                 id: "absorb",
                 invoke: (current, _context, pending) => ({
                     state: current,
@@ -543,8 +543,8 @@ test("HP-05/06: LOSS completes the shared pipeline against an invincible absent 
     state = update(state, target, units.compose(
         presence.disappear(),
         units.compose(
-            vitality.setHook("damageReceivingStarted", observe("receivingStarted")),
-            vitality.setHook("damageReceiving", {
+            units.setHook(hpDamage.receivingStarted, observe("receivingStarted")),
+            units.setHook(hpDamage.receiving, {
                 id: "receiving",
                 invoke(current, context, pending) {
                     assert.equal(context.request.nature, "LOSS");
@@ -785,14 +785,14 @@ test("EP-02: depletion registers the Burst and completes standard output before 
     ]);
     const target = units.ref(get(state, 0));
     const source = units.ref(get(state, 1));
-    state = update(state, target, units.compose(elemental.setHook("burstStarted", {
+    state = update(state, target, units.compose(units.setHook(elemental.burstStarted, {
             id: "creation", invoke(current, { event }) {
                 order.push("started");
                 const reference = effects.ref(event);
                 assert.equal(get(current, 0).elemental.burst.id, reference.id);
                 return { state: current, value: undefined };
             },
-        }), elemental.setHook("damaged", {
+        }), units.setHook(elemental.damaged, {
             id: "loss", invoke(current) { order.push("damaged"); return { state: current, value: undefined }; },
         })));
     const preceding = injuryRequest(target, "NEURAL", 200);
@@ -824,14 +824,14 @@ test("EP-02: cancelling a newly registered Burst suppresses standard output with
         vitality: { maxHp: 10000, defense: 0, resistance: 50, recoverySpeed: 0, recoveryRatio: 0 },
     }, position: [0, 0] }]);
     const target = units.ref(get(state, 0));
-    state = update(state, target, units.compose(units.compose(elemental.setHook("burstStarted", {
+    state = update(state, target, units.compose(units.compose(units.setHook(elemental.burstStarted, {
             id: "cancel", invoke(current, { event }) {
                 order.push("started");
                 return { state: elemental.cancel(current, effects.ref(event), "CONTENT"), value: undefined };
             },
-        }), elemental.setHook("burstEnded", {
+        }), units.setHook(elemental.burstEnded, {
             id: "end", invoke(current) { order.push("ended"); return { state: current, value: undefined }; },
-        })), elemental.setHook("damaged", {
+        })), units.setHook(elemental.damaged, {
             id: "loss", invoke(current, { event }) {
                 order.push("damaged");
                 assert.equal(event.epLoss, 1000);
