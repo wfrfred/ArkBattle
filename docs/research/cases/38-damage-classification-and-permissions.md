@@ -171,3 +171,11 @@
 当前指纹WeakDamage／AtkScaleUp、山真实ProbAdditionNextAtkTalent与附件、赤刃明霄陈loadFromDB到完整定义的链已补齐，结论集中在[案例10](10-weak-damage-and-critical.md)。候选atkAddition仍为零，与Wiki理论比较存在版本／热更证据边界；本页不重复维护两套弱点解释。
 
 完整114条BuffDB按templateKey扫描未发现scale_damage_on_hp_less，补充了第7节flag4消费者的负搜索范围；普通弱点别名common_weak_damage则明确映射common_weak_damage_buff。二者不能只按同名buffKey查找。
+
+## 9. 附加输出与接收资格分别判断
+
+来源公式事件、攻击分类、是否进入普通接收及HIT回复许可是独立维度。附加伤害不能仅因名称就被解释为不受击，也不能仅因多一次Apply就推导所有计数均增加。
+
+当前仇白附伤的实际配置为ADDITION、MAGICAL、skip=false、ignoreForSp=false；来源公式事件不派发，目标公式仍可参与。普通Apply经 `_OnApplyingModifier → get_isDamage → slot131 → Unit/Entity.OnTakeDamage`，没有ADDITION统一排除；get_isDamage按HP目标及伤害数学类型判断。HIT机会另检查目标SP类型、取消、ignoreForSp及SP回复停止状态；随后目标Buff继续按自身资格接收。完整门控、字段传播与独立复提见[补核原件](../evidence/resource-mechanisms-20261114/damage/addition-reception/README.md)。
+
+攻击动作次数、每笔资源接收、HIT回复以及具体机制的计次分别由所观察的业务事实决定。原生没有在这条普通流程里提供一个可以统一代称这些含义的“段数”。架构审查应检查既有Calculate／Apply扩展点能否表达相应资格、是否收到必要事实；不根据原生字段数量增加项目开关，也不根据具体内容尚未接入判定流程缺失。

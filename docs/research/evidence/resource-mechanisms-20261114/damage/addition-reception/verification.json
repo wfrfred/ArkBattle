@@ -1,0 +1,77 @@
+{
+  "scope": "Independent static native re-extraction; no gameplay execution, content scan or product test.",
+  "script": {
+    "path": "docs/research/evidence/resource-mechanisms-20261114/damage/addition-reception/verify.py",
+    "sha256": "647f61f3d49b139d1aa125274418f916f2a464ff37f60d2118661836d203b1dd"
+  },
+  "records": [
+    {
+      "record": "native.json",
+      "command": [
+        "uv",
+        "run",
+        "--offline",
+        "docs/research/evidence/facing-semantics-20261113/extract.py",
+        "--search",
+        "Torappu.Battle.Entity/SpController.",
+        "--body",
+        "Torappu.Battle.Entity._OnApplyingModifier",
+        "--body-index",
+        "99187",
+        "--body-index",
+        "79615",
+        "--body-index",
+        "79617",
+        "--body-index",
+        "72179",
+        "--body-index",
+        "72180",
+        "--body-index",
+        "72134",
+        "--body-index",
+        "67665",
+        "--body-index",
+        "67709",
+        "--body-index",
+        "67748",
+        "--body-index",
+        "79019",
+        "--body-index",
+        "66383",
+        "--body-index",
+        "66152",
+        "--body-index",
+        "66091",
+        "--body-index",
+        "66232",
+        "--body-index",
+        "66233",
+        "--owner",
+        "Torappu.Battle.Action.Nodes/DamageViaAttr",
+        "--owner",
+        "Torappu.Battle.Modifier",
+        "--owner",
+        "Torappu.Battle.Entity/SpController",
+        "--out",
+        ".cache/native-research/resource-mechanisms-20261114/damage/addition-reception/replay/native.json"
+      ],
+      "equalResult": true,
+      "archivedSha256": "c4a44b92daaf1a2ef695d6666b0ad104155bf00fb94e2d45f492c64a75a5f6d9",
+      "reextractedSha256": "9abb9bcbbc3b8746454efd21cfdc59abf41e5274185c5e853df3d7725c3a32bc"
+    },
+    {
+      "record": "sp.json",
+      "command": [
+        "uv",
+        "run",
+        "--offline",
+        "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/resource-mechanisms-20261114/damage/addition-reception/extract_sp.py",
+        "--out",
+        ".cache/native-research/resource-mechanisms-20261114/damage/addition-reception/replay/sp.json"
+      ],
+      "equalResult": true,
+      "archivedSha256": "acf3bd5ef55c1684df6cf651cf0c177ed3d958926132cb42c2e15abd69a0e692",
+      "reextractedSha256": "acf3bd5ef55c1684df6cf651cf0c177ed3d958926132cb42c2e15abd69a0e692"
+    }
+  ]
+}

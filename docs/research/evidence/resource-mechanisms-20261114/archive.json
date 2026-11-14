@@ -13,6 +13,8 @@
         "gameRelativePath": "GameAssembly.dll",
         "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
         "records": [
+          "damage/addition-reception/native.json#/provenance/client/dll",
+          "damage/addition-reception/sp.json#/provenance/client/dll",
           "damage/buff-missable.json#/provenance/client/dll",
           "damage/classification-producers.json#/provenance/client/dll",
           "damage/flag-callers.json#/provenance/client/dll",
@@ -66,6 +68,8 @@
         "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
         "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
         "records": [
+          "damage/addition-reception/native.json#/provenance/client/metadata",
+          "damage/addition-reception/sp.json#/provenance/client/metadata",
           "damage/buff-missable.json#/provenance/client/metadata",
           "damage/classification-producers.json#/provenance/client/metadata",
           "damage/flag-callers.json#/provenance/client/metadata",
@@ -115,6 +119,9 @@
       }
     },
     "sourceRecords": [
+      "damage/addition-reception/native.json",
+      "damage/addition-reception/sp.json",
+      "damage/addition-reception/verification.json",
       "damage/buff-missable.json",
       "damage/classification-producers.json",
       "damage/dynamic-classification.json",
@@ -208,6 +215,36 @@
   },
   "result": {
     "artifacts": [
+      {
+        "path": "damage/addition-reception/extract_sp.py",
+        "kind": "historical-script",
+        "bytes": 2979,
+        "sha256": "40d36b95b71cfd6d575379f46f91e9974bcad16014c912a722b512ed134cabcc"
+      },
+      {
+        "path": "damage/addition-reception/native.json",
+        "kind": "record",
+        "bytes": 875708,
+        "sha256": "c4a44b92daaf1a2ef695d6666b0ad104155bf00fb94e2d45f492c64a75a5f6d9"
+      },
+      {
+        "path": "damage/addition-reception/sp.json",
+        "kind": "record",
+        "bytes": 61841,
+        "sha256": "acf3bd5ef55c1684df6cf651cf0c177ed3d958926132cb42c2e15abd69a0e692"
+      },
+      {
+        "path": "damage/addition-reception/verification.json",
+        "kind": "record",
+        "bytes": 2395,
+        "sha256": "61eb13f42bfc7494d971585314d6dd44bf720be8cfe705e0290f29efa9d594b9"
+      },
+      {
+        "path": "damage/addition-reception/verify.py",
+        "kind": "historical-script",
+        "bytes": 2439,
+        "sha256": "647f61f3d49b139d1aa125274418f916f2a464ff37f60d2118661836d203b1dd"
+      },
       {
         "path": "damage/buff-missable.json",
         "kind": "record",
@@ -7325,6 +7362,10 @@
           "index": 66091,
           "mode": "disasm",
           "records": [
+            "damage/addition-reception/native.json#/result/methods/0",
+            "damage/addition-reception/native.json#/result/bodies/0",
+            "damage/addition-reception/native.json#/result/bodies/0/fragments/0",
+            "damage/addition-reception/native.json#/result/bodies/0/fragments/0/method",
             "damage/receiving-actions.json#/result/methods/59",
             "damage/receiving-dispatch.json#/result/methods/0",
             "damage/receiving-dispatch.json#/result/bodies/0",
@@ -7959,6 +8000,10 @@
           "index": 66152,
           "mode": "disasm",
           "records": [
+            "damage/addition-reception/native.json#/result/methods/1",
+            "damage/addition-reception/native.json#/result/bodies/1",
+            "damage/addition-reception/native.json#/result/bodies/1/fragments/0",
+            "damage/addition-reception/native.json#/result/bodies/1/fragments/0/method",
             "damage/receiving-actions.json#/result/methods/120",
             "damage/receiving-dispatch.json#/result/methods/1",
             "damage/receiving-dispatch.json#/result/bodies/1",
@@ -8798,6 +8843,10 @@
           "index": 66232,
           "mode": "disasm",
           "records": [
+            "damage/addition-reception/native.json#/result/methods/2",
+            "damage/addition-reception/native.json#/result/bodies/2",
+            "damage/addition-reception/native.json#/result/bodies/2/fragments/0",
+            "damage/addition-reception/native.json#/result/bodies/2/fragments/0/method",
             "damage/receiving-actions.json#/result/methods/200",
             "damage/receiving-actions.json#/result/bodies/0",
             "damage/receiving-actions.json#/result/bodies/0/fragments/0",
@@ -8816,6 +8865,10 @@
           "index": 66233,
           "mode": "disasm",
           "records": [
+            "damage/addition-reception/native.json#/result/methods/3",
+            "damage/addition-reception/native.json#/result/bodies/3",
+            "damage/addition-reception/native.json#/result/bodies/3/fragments/0",
+            "damage/addition-reception/native.json#/result/bodies/3/fragments/0/method",
             "damage/receiving-actions.json#/result/methods/201",
             "damage/receiving-actions.json#/result/bodies/1",
             "damage/receiving-actions.json#/result/bodies/1/fragments/0",
@@ -10079,6 +10132,10 @@
           "index": 66383,
           "mode": "disasm",
           "records": [
+            "damage/addition-reception/native.json#/result/methods/4",
+            "damage/addition-reception/native.json#/result/bodies/4",
+            "damage/addition-reception/native.json#/result/bodies/4/fragments/0",
+            "damage/addition-reception/native.json#/result/bodies/4/fragments/0/method",
             "damage/receiving-dispatch.json#/result/methods/4",
             "damage/receiving-dispatch.json#/result/bodies/2",
             "damage/receiving-dispatch.json#/result/bodies/2/fragments/0",
@@ -14738,6 +14795,10 @@
           "index": 67665,
           "mode": "disasm",
           "records": [
+            "damage/addition-reception/native.json#/result/methods/5",
+            "damage/addition-reception/native.json#/result/bodies/5",
+            "damage/addition-reception/native.json#/result/bodies/5/fragments/0",
+            "damage/addition-reception/native.json#/result/bodies/5/fragments/0/method",
             "damage/flag-callers.json#/result/methods/75",
             "damage/flag-callers.json#/result/bodies/75",
             "damage/flag-callers.json#/result/bodies/75/fragments/0",
@@ -14759,8 +14820,12 @@
         },
         {
           "index": 67667,
-          "mode": "metadata",
+          "mode": "disasm",
           "records": [
+            "damage/addition-reception/native.json#/result/methods/6",
+            "damage/addition-reception/native.json#/result/bodies/6",
+            "damage/addition-reception/native.json#/result/bodies/6/fragments/0",
+            "damage/addition-reception/native.json#/result/bodies/6/fragments/0/method",
             "life/inventory.json#/result/types/4/methods/326"
           ],
           "fullname": "Torappu.Battle.Entity._OnApplyingModifier",
@@ -15192,6 +15257,10 @@
           "index": 67709,
           "mode": "disasm",
           "records": [
+            "damage/addition-reception/native.json#/result/methods/7",
+            "damage/addition-reception/native.json#/result/bodies/7",
+            "damage/addition-reception/native.json#/result/bodies/7/fragments/0",
+            "damage/addition-reception/native.json#/result/bodies/7/fragments/0/method",
             "damage/receiving-dispatch.json#/result/methods/5",
             "damage/receiving-dispatch.json#/result/bodies/3",
             "damage/receiving-dispatch.json#/result/bodies/3/fragments/0",
@@ -15407,9 +15476,130 @@
           "address": "0x180730350"
         },
         {
+          "index": 67735,
+          "mode": "metadata",
+          "records": [
+            "damage/addition-reception/native.json#/result/methods/8"
+          ],
+          "fullname": "Torappu.Battle.Entity/SpController.get_isFull",
+          "address": "0x18073c1a0"
+        },
+        {
+          "index": 67736,
+          "mode": "metadata",
+          "records": [
+            "damage/addition-reception/native.json#/result/methods/9"
+          ],
+          "fullname": "Torappu.Battle.Entity/SpController.get_isTimerValid",
+          "address": "0x18073c260"
+        },
+        {
+          "index": 67737,
+          "mode": "metadata",
+          "records": [
+            "damage/addition-reception/native.json#/result/methods/10"
+          ],
+          "fullname": "Torappu.Battle.Entity/SpController.get_spType",
+          "address": "0x18073ca80"
+        },
+        {
+          "index": 67738,
+          "mode": "metadata",
+          "records": [
+            "damage/addition-reception/native.json#/result/methods/11"
+          ],
+          "fullname": "Torappu.Battle.Entity/SpController.get_progressToFull",
+          "address": "0x18073c470"
+        },
+        {
+          "index": 67739,
+          "mode": "metadata",
+          "records": [
+            "damage/addition-reception/native.json#/result/methods/12"
+          ],
+          "fullname": "Torappu.Battle.Entity/SpController.get_progressToReady",
+          "address": "0x18073c790"
+        },
+        {
+          "index": 67740,
+          "mode": "metadata",
+          "records": [
+            "damage/addition-reception/native.json#/result/methods/13"
+          ],
+          "fullname": "Torappu.Battle.Entity/SpController.get_progressToNext",
+          "address": "0x18073c600"
+        },
+        {
+          "index": 67741,
+          "mode": "metadata",
+          "records": [
+            "damage/addition-reception/native.json#/result/methods/14"
+          ],
+          "fullname": "Torappu.Battle.Entity/SpController.get_progressLayer",
+          "address": "0x18073c2d0"
+        },
+        {
+          "index": 67742,
+          "mode": "metadata",
+          "records": [
+            "damage/addition-reception/native.json#/result/methods/15"
+          ],
+          "fullname": "Torappu.Battle.Entity/SpController.get_spCost",
+          "address": "0x18073ca00"
+        },
+        {
+          "index": 67743,
+          "mode": "metadata",
+          "records": [
+            "damage/addition-reception/native.json#/result/methods/16"
+          ],
+          "fullname": "Torappu.Battle.Entity/SpController.get_spCostZero",
+          "address": "0x18073c960"
+        },
+        {
+          "index": 67744,
+          "mode": "metadata",
+          "records": [
+            "damage/addition-reception/native.json#/result/methods/17"
+          ],
+          "fullname": "Torappu.Battle.Entity/SpController.MarkInvalid",
+          "address": "0x18073b6c0"
+        },
+        {
+          "index": 67745,
+          "mode": "metadata",
+          "records": [
+            "damage/addition-reception/native.json#/result/methods/18"
+          ],
+          "fullname": "Torappu.Battle.Entity/SpController.Reset",
+          "address": "0x18073bb00"
+        },
+        {
+          "index": 67746,
+          "mode": "metadata",
+          "records": [
+            "damage/addition-reception/native.json#/result/methods/19"
+          ],
+          "fullname": "Torappu.Battle.Entity/SpController.ResetSpTimer",
+          "address": "0x18073ba90"
+        },
+        {
+          "index": 67747,
+          "mode": "metadata",
+          "records": [
+            "damage/addition-reception/native.json#/result/methods/20"
+          ],
+          "fullname": "Torappu.Battle.Entity/SpController.UpdateSpData",
+          "address": "0x18073bc90"
+        },
+        {
           "index": 67748,
           "mode": "disasm",
           "records": [
+            "damage/addition-reception/native.json#/result/methods/21",
+            "damage/addition-reception/native.json#/result/bodies/8",
+            "damage/addition-reception/native.json#/result/bodies/8/fragments/0",
+            "damage/addition-reception/native.json#/result/bodies/8/fragments/0/method",
             "damage/receiving-dispatch.json#/result/methods/6",
             "damage/receiving-dispatch.json#/result/bodies/4",
             "damage/receiving-dispatch.json#/result/bodies/4/fragments/0",
@@ -15420,12 +15610,57 @@
         },
         {
           "index": 67749,
-          "mode": "metadata",
+          "mode": "disasm",
           "records": [
+            "damage/addition-reception/native.json#/result/methods/22",
+            "damage/addition-reception/sp.json#/result/methods/0",
+            "damage/addition-reception/sp.json#/result/bodies/0",
+            "damage/addition-reception/sp.json#/result/bodies/0/fragments/0",
+            "damage/addition-reception/sp.json#/result/bodies/0/fragments/0/method",
             "recovery-elemental/inventory.json#/result/methodNameMatches/56"
           ],
           "fullname": "Torappu.Battle.Entity/SpController.OnOutputAttackOrHeal",
           "address": "0x18073b730"
+        },
+        {
+          "index": 67750,
+          "mode": "metadata",
+          "records": [
+            "damage/addition-reception/native.json#/result/methods/23"
+          ],
+          "fullname": "Torappu.Battle.Entity/SpController.UpdateSpRecoveryPerSec",
+          "address": "0x18073be10"
+        },
+        {
+          "index": 67751,
+          "mode": "metadata",
+          "records": [
+            "damage/addition-reception/native.json#/result/methods/24"
+          ],
+          "fullname": "Torappu.Battle.Entity/SpController.OnTick",
+          "address": "0x18073b960"
+        },
+        {
+          "index": 67752,
+          "mode": "disasm",
+          "records": [
+            "damage/addition-reception/native.json#/result/methods/25",
+            "damage/addition-reception/sp.json#/result/methods/1",
+            "damage/addition-reception/sp.json#/result/bodies/1",
+            "damage/addition-reception/sp.json#/result/bodies/1/fragments/0",
+            "damage/addition-reception/sp.json#/result/bodies/1/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity/SpController._RecoverMp",
+          "address": "0x18073bfd0"
+        },
+        {
+          "index": 67753,
+          "mode": "metadata",
+          "records": [
+            "damage/addition-reception/native.json#/result/methods/26"
+          ],
+          "fullname": "Torappu.Battle.Entity/SpController..ctor",
+          "address": "0x18073c0d0"
         },
         {
           "index": 67754,
@@ -18513,8 +18748,12 @@
         },
         {
           "index": 72134,
-          "mode": "metadata",
+          "mode": "disasm",
           "records": [
+            "damage/addition-reception/native.json#/result/methods/27",
+            "damage/addition-reception/native.json#/result/bodies/9",
+            "damage/addition-reception/native.json#/result/bodies/9/fragments/0",
+            "damage/addition-reception/native.json#/result/bodies/9/fragments/0/method",
             "damage/inventory.json#/result/methods/10",
             "life/inventory.json#/result/types/15/methods/6"
           ],
@@ -19082,6 +19321,10 @@
           "index": 72179,
           "mode": "disasm",
           "records": [
+            "damage/addition-reception/native.json#/result/methods/28",
+            "damage/addition-reception/native.json#/result/bodies/10",
+            "damage/addition-reception/native.json#/result/bodies/10/fragments/0",
+            "damage/addition-reception/native.json#/result/bodies/10/fragments/0/method",
             "damage/flag-callers.json#/result/methods/88",
             "damage/flag-callers.json#/result/bodies/88",
             "damage/flag-callers.json#/result/bodies/88/fragments/0",
@@ -19100,6 +19343,10 @@
           "index": 72180,
           "mode": "disasm",
           "records": [
+            "damage/addition-reception/native.json#/result/methods/29",
+            "damage/addition-reception/native.json#/result/bodies/11",
+            "damage/addition-reception/native.json#/result/bodies/11/fragments/0",
+            "damage/addition-reception/native.json#/result/bodies/11/fragments/0/method",
             "damage/flag-callers.json#/result/methods/89",
             "damage/flag-callers.json#/result/bodies/89",
             "damage/flag-callers.json#/result/bodies/89/fragments/0",
@@ -31909,6 +32156,10 @@
           "index": 79019,
           "mode": "disasm",
           "records": [
+            "damage/addition-reception/native.json#/result/methods/30",
+            "damage/addition-reception/native.json#/result/bodies/12",
+            "damage/addition-reception/native.json#/result/bodies/12/fragments/0",
+            "damage/addition-reception/native.json#/result/bodies/12/fragments/0/method",
             "damage/receiving-dispatch.json#/result/methods/7",
             "damage/receiving-dispatch.json#/result/bodies/5",
             "damage/receiving-dispatch.json#/result/bodies/5/fragments/0",
@@ -32374,6 +32625,10 @@
           "index": 79615,
           "mode": "disasm",
           "records": [
+            "damage/addition-reception/native.json#/result/methods/31",
+            "damage/addition-reception/native.json#/result/bodies/13",
+            "damage/addition-reception/native.json#/result/bodies/13/fragments/0",
+            "damage/addition-reception/native.json#/result/bodies/13/fragments/0/method",
             "damage/classification-producers.json#/result/methods/13",
             "damage/classification-producers.json#/result/bodies/4",
             "damage/classification-producers.json#/result/bodies/4/fragments/0",
@@ -32400,6 +32655,10 @@
           "index": 79617,
           "mode": "disasm",
           "records": [
+            "damage/addition-reception/native.json#/result/methods/32",
+            "damage/addition-reception/native.json#/result/bodies/14",
+            "damage/addition-reception/native.json#/result/bodies/14/fragments/0",
+            "damage/addition-reception/native.json#/result/bodies/14/fragments/0/method",
             "damage/classification-producers.json#/result/methods/15",
             "damage/classification-producers.json#/result/bodies/6",
             "damage/classification-producers.json#/result/bodies/6/fragments/0",
@@ -47029,6 +47288,10 @@
           "index": 99187,
           "mode": "disasm",
           "records": [
+            "damage/addition-reception/native.json#/result/methods/33",
+            "damage/addition-reception/native.json#/result/bodies/15",
+            "damage/addition-reception/native.json#/result/bodies/15/fragments/0",
+            "damage/addition-reception/native.json#/result/bodies/15/fragments/0/method",
             "damage/flag-callers.json#/result/methods/20",
             "damage/flag-callers.json#/result/bodies/20",
             "damage/flag-callers.json#/result/bodies/20/fragments/0",
@@ -53798,6 +54061,12 @@
           ]
         },
         {
+          "name": "Torappu.Battle.Action.Nodes/DamageViaAttr",
+          "records": [
+            "damage/addition-reception/native.json#/result/fieldOwners/2"
+          ]
+        },
+        {
           "name": "Torappu.Battle.Action.Nodes/DamageViaEs",
           "records": [
             "recovery-elemental/metadata-details.json#/result/referencedTypeFields/34",
@@ -55255,6 +55524,12 @@
           ]
         },
         {
+          "name": "Torappu.Battle.Entity/SpController",
+          "records": [
+            "damage/addition-reception/native.json#/result/fieldOwners/0"
+          ]
+        },
+        {
           "name": "Torappu.Battle.FilterIsInEpBreakRecoveryValidator",
           "records": [
             "recovery-elemental/inventory.json#/result/types/11"
@@ -55433,6 +55708,7 @@
         {
           "name": "Torappu.Battle.Modifier",
           "records": [
+            "damage/addition-reception/native.json#/result/fieldOwners/1",
             "damage/inventory.json#/result/owners/8",
             "death-attributes/inventory.json#/result/types/43",
             "life/inventory.json#/result/types/15",
