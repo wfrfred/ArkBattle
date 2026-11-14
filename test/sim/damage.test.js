@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { battle, get } from "../helpers/battle.js";
-import { Hooks } from "../../dist/core/hook.js";
+import { Hooks, key } from "../../dist/core/hook.js";
 import * as units from "../../dist/core/unit/index.js";
 import { update } from "../../dist/core/battle/unit.js";
 import { advance as advanceCombat } from "../../dist/core/battle/steps/combat.js";
@@ -42,6 +42,95 @@ function elementalDefinition(config = {}, hooks = Hooks.empty()) {
 function injuryRequest(target, type, power, source = null) {
     return { target, source, parameters: { type, power } };
 }
+
+test("HOOK-02: exclusions are local to each operation and match a key or one ID across its hosts", () => {
+    const formulaCalls = [];
+    const receptions = [];
+    const completions = [];
+    const completion = (host, id) => ({
+        id,
+        invoke(state) { completions.push(`${host}:${id}`); return { state, value: undefined }; },
+    });
+    const receiving = host => ({
+        id: "receive",
+        invoke(state, _context, current) {
+            receptions.push(host);
+            return { state, value: current.type === "NORMAL" ? { ...current, amount: current.amount + 3 } : current };
+        },
+    });
+    const sourceHooks = Hooks.empty()
+        .set(hpDamage.sourceFormula, {
+            id: "formula",
+            invoke(state, _context, current) { formulaCalls.push("source"); return { state, value: current }; },
+        })
+        .set(hpDamage.output, {
+            id: "boost",
+            accepts() { formulaCalls.push("boost-accepts"); return true; },
+            invoke(state, _context, current) { formulaCalls.push("boost"); return { state, value: current + 100 }; },
+        })
+        .set(hpDamage.output, {
+            id: "keep",
+            invoke(state, _context, current) { formulaCalls.push("keep"); return { state, value: current + 1 }; },
+        })
+        .set(hpDamage.beforeCommit, {
+            id: "nested",
+            invoke(state) {
+                const inner = damageRequest(null, units.ref(get(state, 2)), 5);
+                return { state: hpDamage.applyDamage(inner, hpDamage.calculateDamage(state, inner)).state, value: undefined };
+            },
+        })
+        .set(hpDamage.completed, completion("source", "shared"))
+        .set(hpDamage.completed, completion("source", "kept"));
+    const targetHooks = Hooks.empty()
+        .set(hpDamage.targetFormula, {
+            id: "formula",
+            invoke(state, _context, current) {
+                formulaCalls.push("target");
+                return { state, value: { ...current, attack: { ...current.attack, power: current.attack.power * 2 } } };
+            },
+        })
+        .set(hpDamage.receiving, receiving("outer"))
+        .set(hpDamage.completed, completion("target", "shared"))
+        .set(hpDamage.completed, completion("target", "kept"));
+    const vitality = { maxHp: 1000, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 };
+    let state = battle([
+        { definition: { id: "source", hooks: sourceHooks }, position: [0, 0] },
+        { definition: { id: "target", hooks: targetHooks, vitality }, position: [1, 0] },
+        { definition: { id: "nested-target", vitality, hooks: Hooks.empty()
+            .set(hpDamage.receiving, receiving("nested"))
+            .set(hpDamage.completed, completion("nested", "shared")),
+        }, position: [2, 0] },
+    ]);
+    const request = damageRequest(units.ref(get(state, 0)), units.ref(get(state, 1)), 10);
+    const first = hpDamage.calculateDamage(state, request, {
+        exclude: [[hpDamage.targetFormula, null], [hpDamage.output, "boost"], [hpDamage.receiving, null]],
+    });
+    assert.equal(first.value.amount, 11);
+    assert.deepEqual(formulaCalls, ["source", "keep"]);
+    const applied = hpDamage.applyDamage(request, first);
+    assert.equal(applied.value.application.hpLoss, 14);
+    assert.deepEqual(receptions, ["outer", "nested"]);
+    assert.deepEqual(completions, ["nested:shared", "target:shared", "target:kept", "source:shared", "source:kept"]);
+
+    formulaCalls.length = receptions.length = completions.length = 0;
+    const sameName = key(hpDamage.targetFormula.name);
+    const second = hpDamage.calculateDamage(applied.state, request, { exclude: [[sameName, null]] });
+    assert.equal(second.value.amount, 121);
+    assert.deepEqual(formulaCalls, ["source", "target", "boost-accepts", "boost", "keep"]);
+    const excluded = hpDamage.applyDamage(request, second, {
+        exclude: [[hpDamage.receiving, null], [hpDamage.completed, "shared"]],
+    });
+    assert.equal(excluded.value.application.hpLoss, 121);
+    assert.deepEqual(receptions, ["nested"]);
+    assert.deepEqual(completions, ["nested:shared", "target:kept", "source:kept"]);
+
+    receptions.length = completions.length = 0;
+    const normal = hpDamage.applyDamage(request, { state: excluded.state, value: second.value });
+    assert.equal(normal.value.application.hpLoss, 124);
+    assert.deepEqual(receptions, ["outer", "nested"]);
+    assert.deepEqual(completions, ["nested:shared", "target:shared", "target:kept", "source:shared", "source:kept"]);
+    assert.equal(get(normal.state, 2).vitality.hp, 976);
+});
 
 test("HP-01: formulas use the calculated type and sampled defenses without beginning reception", () => {
     let state = battle([
@@ -228,7 +317,9 @@ test("APPLY-01: invincibility installed before reception rejects HIT recovery un
         }),
     );
     const request = damageRequest(source, target, 30);
-    const result = hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request));
+    const result = hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request), {
+        exclude: [[hpDamage.receivingStarted, null], [hpDamage.receiving, null]],
+    });
     assert.equal(result.value.type, "REJECTED");
     assert.equal(get(result.state, 1).vitality.hp, 100);
     assert.equal(get(result.state, 1).skill.sp.value, 0);

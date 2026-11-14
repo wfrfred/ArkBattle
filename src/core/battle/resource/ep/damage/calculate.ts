@@ -1,3 +1,4 @@
+import type { Options } from "../../../../hook.js";
 import type { State as BattleState, Result } from "../../../state.js";
 import * as units from "../../../../unit/query.js";
 import {
@@ -10,6 +11,7 @@ import { dispatch, sourceFormula, targetFormula, output } from "./hook.js";
 export function calculateDamage(
     battle: BattleState,
     request: Request,
+    options?: Options,
 ): Result<Calculated | undefined> {
     const unavailable = (current: BattleState) => {
         const target = units.get(current, request.target);
@@ -27,7 +29,7 @@ export function calculateDamage(
         [request.source, sourceFormula],
         [request.target, targetFormula],
     ] as const) {
-        const result = dispatch(battle, owner, key, context, parameters, unavailable);
+        const result = dispatch(battle, owner, key, context, parameters, options, unavailable);
         battle = result.state;
         parameters = result.value;
     }
@@ -46,6 +48,7 @@ export function calculateDamage(
         output,
         { ...context, type: parameters.type },
         amount,
+        options,
         unavailable,
     );
 

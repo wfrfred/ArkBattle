@@ -1,3 +1,4 @@
+import type { Options } from "../../../../hook.js";
 import type { Ref } from "../../../../common/ref.js";
 import type { Unit } from "../../../../unit/unit.js";
 import * as vitality from "../../../../unit/capability/vitality/operations.js";
@@ -16,6 +17,7 @@ import {
 export function applyHealing(
     request: Request,
     calculated: Result<Calculated | undefined>,
+    options?: Options,
 ): Result<Outcome> {
     let battle = calculated.state;
     const calculation = calculated.value;
@@ -24,34 +26,46 @@ export function applyHealing(
         calculation.amount === 0 ||
         !vitality.canReceiveHealing(battle, request.target)
     ) {
-        return complete(battle, request, calculation, { type: "REJECTED" });
+        return complete(battle, request, calculation, { type: "REJECTED" }, options);
     }
 
     const context = { target: request.target, request, calculated: calculation };
-    battle = dispatch(battle, request.target, beforeReceive, context, undefined).state;
+    battle = dispatch(battle, request.target, beforeReceive, context, undefined, options).state;
 
     if (!vitality.canReceiveHealing(battle, request.target)) {
-        return complete(battle, request, calculation, { type: "REJECTED" });
+        return complete(battle, request, calculation, { type: "REJECTED" }, options);
     }
 
-    const receiving = vitality.receiveHealing(battle, context, {
-        amount: calculation.amount,
-        type: "NORMAL",
-    });
+    const receiving = vitality.receiveHealing(
+        battle,
+        context,
+        {
+            amount: calculation.amount,
+            type: "NORMAL",
+        },
+        options,
+    );
     battle = receiving.state;
     const received = receiving.value;
     if (received.type === "CANCELLED") {
-        return complete(battle, request, calculation, { type: "CANCELLED", received });
+        return complete(battle, request, calculation, { type: "CANCELLED", received }, options);
     }
     if (!vitality.canReceiveHealing(battle, request.target)) {
-        return complete(battle, request, calculation, { type: "UNAVAILABLE", received });
+        return complete(battle, request, calculation, { type: "UNAVAILABLE", received }, options);
     }
 
     const commitContext: CommitContext = { ...context, received };
-    battle = dispatch(battle, request.source, beforeCommit, commitContext, undefined).state;
+    battle = dispatch(
+        battle,
+        request.source,
+        beforeCommit,
+        commitContext,
+        undefined,
+        options,
+    ).state;
 
     if (!vitality.canReceiveHealing(battle, request.target)) {
-        return complete(battle, request, calculation, { type: "UNAVAILABLE", received });
+        return complete(battle, request, calculation, { type: "UNAVAILABLE", received }, options);
     }
 
     const committed = vitality.commitHealing(battle, commitContext);
@@ -67,10 +81,30 @@ export function applyHealing(
     ]);
 
     const appliedContext = { ...commitContext, application };
-    battle = dispatch(battle, request.target, targetApplied, appliedContext, undefined).state;
-    battle = dispatch(battle, request.source, sourceApplied, appliedContext, undefined).state;
+    battle = dispatch(
+        battle,
+        request.target,
+        targetApplied,
+        appliedContext,
+        undefined,
+        options,
+    ).state;
+    battle = dispatch(
+        battle,
+        request.source,
+        sourceApplied,
+        appliedContext,
+        undefined,
+        options,
+    ).state;
 
-    return complete(battle, request, calculation, { type: "APPLIED", received, application });
+    return complete(
+        battle,
+        request,
+        calculation,
+        { type: "APPLIED", received, application },
+        options,
+    );
 }
 
 function complete(
@@ -78,6 +112,7 @@ function complete(
     request: Request,
     calculated: Calculated | undefined,
     outcome: Outcome,
+    options?: Options,
 ): Result<Outcome> {
     if (outcome.type === "CANCELLED" && calculated !== undefined) {
         battle = appendEvents(battle, [
@@ -97,7 +132,7 @@ function complete(
     const context = { target: request.target, request, calculated, outcome };
 
     for (const owner of observers) {
-        battle = dispatch(battle, owner, completed, context, undefined).state;
+        battle = dispatch(battle, owner, completed, context, undefined, options).state;
     }
 
     return { state: battle, value: outcome };

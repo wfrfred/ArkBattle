@@ -1,3 +1,4 @@
+import type { Options } from "../../../../hook.js";
 import type { Result } from "../../../state.js";
 import * as units from "../../../../unit/query.js";
 import { available, canReceiveDamage } from "../../../../unit/capability/elemental/query.js";
@@ -15,6 +16,7 @@ import {
 export function applyDamage(
     request: Request,
     calculated: Result<Calculated | undefined>,
+    options?: Options,
 ): Result<Outcome> {
     let battle = calculated.state;
     const damage = calculated.value;
@@ -24,16 +26,21 @@ export function applyDamage(
     }
 
     const context = { target: request.target, request, calculated: damage };
-    battle = dispatch(battle, request.target, beforeReceive, context, undefined).state;
+    battle = dispatch(battle, request.target, beforeReceive, context, undefined, options).state;
 
     if (!canReceiveDamage(battle, request, damage.type)) {
         return { state: battle, value: { type: "REJECTED" } };
     }
 
-    const receiving = receiveDamage(battle, context, {
-        amount: damage.amount,
-        type: "NORMAL",
-    });
+    const receiving = receiveDamage(
+        battle,
+        context,
+        {
+            amount: damage.amount,
+            type: "NORMAL",
+        },
+        options,
+    );
     battle = receiving.state;
     const received = receiving.value;
     if (received.type === "CANCELLED") {
@@ -44,7 +51,7 @@ export function applyDamage(
     }
 
     const commit: CommitContext = { ...context, received };
-    battle = dispatch(battle, request.source, beforeCommit, commit, undefined).state;
+    battle = dispatch(battle, request.source, beforeCommit, commit, undefined, options).state;
 
     if (!canReceiveDamage(battle, request, damage.type)) {
         return { state: battle, value: { type: "UNAVAILABLE", received } };
@@ -53,8 +60,8 @@ export function applyDamage(
     const result = commitDamage(battle, commit);
     battle = result.state;
     const applied = { ...commit, application: result.value };
-    battle = dispatch(battle, request.target, targetApplied, applied, undefined).state;
-    battle = dispatch(battle, request.source, sourceApplied, applied, undefined).state;
+    battle = dispatch(battle, request.target, targetApplied, applied, undefined, options).state;
+    battle = dispatch(battle, request.source, sourceApplied, applied, undefined, options).state;
 
     return {
         state: battle,

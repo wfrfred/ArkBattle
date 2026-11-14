@@ -1,3 +1,4 @@
+import type { Options } from "../../../../hook.js";
 import type { Result } from "../../../state.js";
 import * as units from "../../../../unit/query.js";
 import { available, canReceiveHealing } from "../../../../unit/capability/elemental/query.js";
@@ -8,6 +9,7 @@ import { dispatch, beforeReceive, beforeCommit, targetApplied, sourceApplied } f
 export function applyHealing(
     request: Request,
     calculated: Result<Calculated | undefined>,
+    options?: Options,
 ): Result<Outcome> {
     let battle = calculated.state;
     const healing = calculated.value;
@@ -22,7 +24,7 @@ export function applyHealing(
     }
 
     const context = { target: request.target, request, calculated: healing };
-    battle = dispatch(battle, request.target, beforeReceive, context, undefined).state;
+    battle = dispatch(battle, request.target, beforeReceive, context, undefined, options).state;
 
     if (!canReceiveHealing(battle, request)) {
         return { state: battle, value: { type: "REJECTED" } };
@@ -30,7 +32,7 @@ export function applyHealing(
 
     const received: Pending = { amount: healing.amount, cancellation: null };
     const commit = { ...context, received };
-    battle = dispatch(battle, request.source, beforeCommit, commit, undefined).state;
+    battle = dispatch(battle, request.source, beforeCommit, commit, undefined, options).state;
 
     if (!canReceiveHealing(battle, request)) {
         return { state: battle, value: { type: "UNAVAILABLE", received } };
@@ -39,8 +41,8 @@ export function applyHealing(
     const result = commitHealing(battle, commit);
     battle = result.state;
     const applied = { ...commit, application: result.value };
-    battle = dispatch(battle, request.target, targetApplied, applied, undefined).state;
-    battle = dispatch(battle, request.source, sourceApplied, applied, undefined).state;
+    battle = dispatch(battle, request.target, targetApplied, applied, undefined, options).state;
+    battle = dispatch(battle, request.source, sourceApplied, applied, undefined, options).state;
 
     return {
         state: battle,

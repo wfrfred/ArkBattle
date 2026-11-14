@@ -14,6 +14,7 @@ export function dispatch<C, T>(
     key: hooks.Key<Entry<C, T>, any>,
     context: C,
     initial: T,
+    options?: hooks.Options,
     stop?: (battle: BattleState) => boolean,
 ): Result<T> {
     if (owner === null) {
@@ -28,6 +29,7 @@ export function dispatch<C, T>(
                 ? [...unit.hooks.get(key)]
                       .sort((left, right) => (right.priority ?? 0) - (left.priority ?? 0))
                       .map(({ id }) => id)
+                      .filter((id) => !hooks.excluded(options, key, id))
                 : [];
         },
         find(current, id) {
