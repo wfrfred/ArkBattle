@@ -128,7 +128,7 @@ Calculate 不实行本次伤害的 HP 变化。Formula／Output Hook 可以消�
 
 Request 携带发起时已经确定、接收方无法自行推导的必要事实，以及初始 Parameters。请求描述本次伤害，不提供配置内部执行步骤的开关。
 
-来源和目标使用 Typed Ref；伤害分类的未完成设计见第 5 节。
+来源和目标使用 Typed Ref。
 
 ```typescript
 interface AttackParameters {
@@ -146,6 +146,9 @@ type DamageType = "PHYSICAL" | "ARTS" | "TRUE" | "ELEMENTAL";
 
 type Nature = "DAMAGE" | "LOSS";
 
+type AttackType = "NONE" | "NORMAL" | "SPLASH" | "BUFF" | "ADDITION";
+type ApplyWay = "NONE" | "MELEE" | "RANGED" | "ALL";
+
 type Parameters =
     | {
           readonly type: "PHYSICAL" | "ARTS";
@@ -158,6 +161,8 @@ type Parameters =
       };
 
 interface Request {
+    readonly attackType: AttackType;
+    readonly applyWay: ApplyWay;
     readonly nature: Nature;
     readonly hitRecovery: boolean;
     readonly source: Ref<Unit> | null;
@@ -172,6 +177,10 @@ interface Calculated {
 ```
 
 AttackParameters 表示用于本次计算的数值，不要求 power 一定来自来源的 ATK。基本数值为 `power * multiplier + addition`；具体伤害类型再决定防御公式。
+
+HP／EP Damage 共用 [resource/damage.ts](../../src/core/battle/resource/damage.ts) 的 AttackType 与 ApplyWay，并从各自 Damage 入口重导出。Request 顶层必填 attackType／applyWay，表示本笔输出的攻击类别与施加途径；它们独立于数学伤害类型、DAMAGE／LOSS 和 HIT 回复许可，不进入 Parameters 或 Calculated。Content 在构造请求时显式提供；Hook 与 Restriction 通过固定 request 读取，Core 不按这些类别新增阶段、公式或接收分支，也不从来源、距离、当前技能或来源仍在场与否推导分类。
+
+两项均为单值字符串联合，NONE 与 ALL 保留为合法单值，不使用数组或组合 mask。单值是项目选择：现有[伤害分类调查](../research/cases/38-damage-classification-and-permissions.md)未找到要求组合值的实际正例，但原生的 mask 结构与消费者仍存在，不能据此断言原生不支持组合。Hook exclude、Restriction ignore 与取消原因 forbidden 继续分别控制响应、资格与取消尝试，不由 attackType／applyWay 自动生成。Healing 不增加这两个字段。
 
 `nature` 是普通伤害／生命流失的业务性质，与 parameters.type 的数学类型正交；不得由是否自伤、是否周期输出或来源是否为空推断。`hitRecovery` 表示普通受击类 SP 回复许可，只有 nature 为 DAMAGE 且该字段为 true 才具备资格；LOSS 不论该许可均不产生 HIT。两项独立保存，例如拟态机械射线的原生配置同时具有 skip 与未禁用 SP 的标记，仍因流失不进入普通受击回复。普通攻击通常提供 true，活性源石和标准元素爆发的 HP 输出提供 false。它不抑制其他受伤程序，也不保证目标当前一定能够回复 SP。
 
@@ -592,7 +601,7 @@ Apply 对最终计算量为零的治疗在入口返回 REJECTED，不派发本�
 
 - **死亡清理**：普通伤害与生命流失由完整 HP Damage 在两侧 Applied 后确认死亡、请求离场并形成 killed；显式致死或退场由所属操作请求 Unit 结束。Finalize 遵循 Lifetime 的最外层完成边界。Combat 只推进 Action，不扫描 HP 或代为判定死亡；Applied 中同步调用 Combat 也不提前结束当前伤害的目标。
 - **特殊 HP 修改**：普通伤害与生命流失都通过 HP Damage 结算，自然回复由 Vitality.advance 推进，HP 写入由 Vitality 拥有。生命复原和直接 HP 设置仍没有完整公开操作；Effect 不能直接重建 Vitality State 代替缺失的领域入口。
-- **伤害分类**：Request 已表达 DAMAGE／LOSS 与 hitRecovery，不携带 AttackType、ApplyWay 等其余固有分类。选择性 Hook 排除与接收限制豁免由本次 Options 表达；非致命、分担和特殊生命机制仍无完整协议，也不能从目标状态或来源单位类型反推这些事实。
+- **伤害分类**：HP／EP Damage Request 顶层显式携带单值 attackType／applyWay；HP 另保留 DAMAGE／LOSS 与 hitRecovery。选择性 Hook 排除与接收限制豁免由本次 Options 表达；非致命、分担和特殊生命机制仍无完整协议，也不能从目标状态或来源单位类型反推这些事实。
 - **受伤与 HIT 回复资格**：Request.hitRecovery 与 nature 共同限定受击类 SP 回复；普通环境伤害与标准元素爆发可保留受伤响应而不提供 HIT 回复，不通过全局阻回伪装单笔资格。具体内容未全部接入不改变这项公共契约。
 - **本次 Hook 排除**：Calculate 与 Apply 分别接收可选 Options.exclude，按键身份与可选登记 ID 排除当前操作的响应；专属接收接续 Apply 选项。不修改登记、不跳过公式或资源提交、不豁免 Restriction，也不将选项保存进 Request／Calculated 或自动传给嵌套业务。契约见 [Hook 排除](hook.md#本次调用的-hook-排除)。
 

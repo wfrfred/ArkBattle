@@ -178,7 +178,7 @@ Resource 按 HP／EP，再按 Damage／Healing 提供四个精确业务入口。
 | HOOK-01 | 全部登记式 Hook 使用 typed Key。Unit 本地登记统一存于 Unit.hooks，Battle 观察各持有 Hooks 集合；固有登记在首次 enter 前就绪。Key 保留完整 ReceivingHook 泛型及最低宿主能力，unit.setHook／removeHook 返回相应 Change。候选固定、登记实时读取、替换保位及嵌套独立；Resource／Receiving 保留优先级，其他通知保持登记顺序。生命周期 leave 使用注销前最新程序与原 Departure；结束事实允许仍登记的 LEAVING 宿主参与。 | 公共集合／类型及实际生命周期场景集中验证；用接收 Hook 证明非法状态恢复、错配 Key／Entry 和能力不足的 update 被拒绝，不复制各 Capability 矩阵。 |
 | HOOK-02 | Calculate 与 Apply 的 Options.exclude 分别生效：按 Key 对象身份排除整阶段或指定 ID；同 Key 在本次多个宿主派发时一致匹配。排除不改登记，不豁免 Restriction，不传入 Request／Calculated；嵌套操作及提交事实通知不自动继承。 | 一个 Calculate／Apply 代表场景组合整键、单 ID 与同名不同键，验证两次操作独立、后续正常调用及嵌套响应仍执行；不为四类资源复制排除矩阵。 |
 | HOOK-03 | Blocking 每条关系的双方候选在首个回调前同时固定，先 Blocker 后 Blockable；ACQUIRED 失效停止、RELEASED 保留历史通知。Skill／Elemental 的结束通知从仍登记的宿主读取 Hook，LEAVING 不丢失清理后的事实。 | 在既有关系重入与依赖结束场景验证这两项领域差异；公共候选与替换协议只测一次。 |
-| HP-01 | 物理、法术、真实及元素 HP 伤害采用各自公式；公式后类型与防御采样传到 Apply，初始 Request 不变。Calculate 不构成受击，也不写入本笔 HP。 | 合法基础属性与 Formula／Output 干预，核对最终数额、类型和接收前 HP。 |
+| HP-01 | 物理、法术、真实及元素 HP 伤害采用各自公式；公式后类型与防御采样传到 Apply，初始 Request 不变。HP／EP Damage 的 attackType／applyWay 为调用方提供的固定单值事实，Hook／Restriction 可读取，公式转换不改写分类。Calculate 不构成受击，也不写入本笔 HP。 | 合法基础属性与 Formula／Output 干预，核对最终数额、类型和接收前 HP；在既有 Calculate／Apply 场景用自定义 Hook 或 Restriction 观察分类跨阶段保留及其业务判断，不按分类、阶段与资源展开矩阵。 |
 | HP-02 | 从同一输入分别执行 Calculate 时，各自业务状态独立，调用方接续其中一个结果后只发生该次 Apply。弱点选高属于尚未接入的具体内容组合。 | 验证真实 Calculate／Apply 的独立分支和状态接续；不在夹具手写“选高”算法来证明产品已支持弱点。 |
 | APPLY-01 | BeforeReceive 可改变准入；Receiving 的取消保留已完成业务并继续独立响应，取消后不提交。BeforeCommit 位于接收后与写入前，返回后使用最新资格及资源。 | 以真实无敌 Effect 与 Skill 的 HIT 回复接入、嵌套恢复等操作组合，核对准入先于受击回复、最终资源和固定提交报告；Hook 通用排序集中保障。 |
 | APPLY-02 | 四种业务在全部 Output Hook 后形成非负 Calculated；负输出截为零，与零输出一同在 Apply 入口拒绝，计算期间已经完成的业务保留。具有 Receiving 的业务在全部接收 Hook 后形成非负待提交量，取消则保留工作值快照；BeforeCommit、提交与 Applied 使用同一接收量。正数输出被接收为零或实际变化为零仍可成功。来源无 Vitality 仍可执行输出 Hook；同源同目标的两个 Applied 角色分别执行。 | 以最小合法 Unit 组合集中验证最终输出与接收边界；治疗使用满资源，损伤使用固定减伤超过待接收量的代表，确认实际变化为零而成功。Formula 从请求原始参数开始，不另设 EP 负数入口异常。不按非法数值、Hook 阶段或资源种类展开防御矩阵。 |
@@ -193,6 +193,8 @@ Resource 按 HP／EP，再按 Damage／Healing 提供四个精确业务入口。
 | EP-03 | Burst 使用 rate 为零的 DURATION，在 onTick 按当前恢复速度手动扣减同一份 remaining，并由 duration − remaining 得到进度。进度决定恢复预算与周期边界，恢复期间四型 EP 按当前有效上限逐步回填，期间拒收损伤与治疗，动态速度与暂停不积攒补算。自然完成包含预算内最后一次周期输出，取消、提前结束与离场不补未来输出；结束先清依赖，再写满 EP、清槽并通知 burstEnded。零预算仍执行安装业务后结束，不补周期输出；永久减防、剩余麻痹和独立眩晕使用各自生命周期。自然恢复保持小数且不触发普通治疗通知。 | 通过真实损伤、贡献、结束和时间推进验证暂停、恢复中间值、完成／取消及作用生命周期；零预算只用实际标准效果验证一次性输出与独立产物，公共时间边界归 Effect。不检查内部身份递增或按每型配置逐字段展开。 |
 
 标准爆发的伤害、异常、SP 与累计周期输出由 Core 的八个具体 Effect 执行，Data 选择已有实现并绑定静态数值。测试保留代表性的实际标准效果结果，不在夹具中重写爆发算法，也不为八套配置建立重复的字段或回调矩阵。
+
+HP／EP Damage Request 与攻击 Operation 的 DAMAGE／ELEMENTAL_INJURY 分类约束在 core-types 集中验证：缺少 attackType／applyWay、数组或未知值不通过，NONE 与 ALL 保留合法单值。Content 接入场景核对 Operation 分类原样传入请求，不为每种枚举值另建测试。
 
 公共阶段、Hook 派发和数值边界各有集中归属；四种结算只增加不同的资源或业务结果。夹具使用公开构造与领域操作，不定义平行的登记、接收或提交协议。
 

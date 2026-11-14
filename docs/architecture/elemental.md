@@ -79,9 +79,9 @@ Burst 的 id、host、source、enabled、lifecycle 由 Effect 提供，Elemental
 
 EP 损伤与治疗分别通过 [ep/damage/index.ts](../../src/core/battle/resource/ep/damage/index.ts) 和 [ep/healing/index.ts](../../src/core/battle/resource/ep/healing/index.ts) 使用两阶段接口。[resource/index.ts](../../src/core/battle/resource/index.ts) 按 hp／ep，再按 damage／healing 导出四个业务命名空间。Calculate 形成输出，Apply 才开始接收；零计算输出在 Apply 入口拒绝，零实际变化允许成功。完整边界见 [Vitality／Elemental 接口](vitality.md#18-接收与资源提交接口)。
 
-EP Damage.Request 为 `{ source, target, parameters }`，Parameters 为可变工作值 `{ type, power }`，Calculated 保存公式确定的 `{ type, amount }`。先来源 Formula、再目标 Formula，然后按当前元素损伤抗性计算数额，最后执行来源 Output。令 `power = max(0, parameters.power)`，基础公式为 `max(power × 0.05, power × (1 - elementResistance / 100))`；抗性有效值在 0～100，即使达到 100，基础公式仍保留 5%。Output 可以继续将数额降到保底以下，不在它之后再次套用保底。之后的状态变化不使 Apply 重算；实际元素类型来自 Calculated，不用初始 Request.parameters.type 代替。
+EP Damage.Request 为 `{ attackType, applyWay, source, target, parameters }`，两项分类必填并复用 resource/damage.ts 的单值 AttackType／ApplyWay，从 EP Damage 入口重导出。分类保存在 Request，不进入公式 Parameters 或 Calculated；Hook 和 Restriction 按固定 request 判断，Core 不按类别增加特殊分支。Parameters 为可变工作值 `{ type, power }`，Calculated 保存公式确定的 `{ type, amount }`。先来源 Formula、再目标 Formula，然后按当前元素损伤抗性计算数额，最后执行来源 Output。令 `power = max(0, parameters.power)`，基础公式为 `max(power × 0.05, power × (1 - elementResistance / 100))`；抗性有效值在 0～100，即使达到 100，基础公式仍保留 5%。Output 可以继续将数额降到保底以下，不在它之后再次套用保底。之后的状态变化不使 Apply 重算；实际元素类型来自 Calculated，不用初始 Request.parameters.type 代替。
 
-EP Healing.Request 同样为 `{ source, target, parameters }`，Parameters 为 `{ power }`，Calculated 为 `{ amount }`。它经过自己的 Formula／Output，不应用元素损伤抗性。两种 EP Calculate 均从原始 Parameters 开始，不对负数 power 单独抛异常；按[共同输出约束](vitality.md#1-calculate-与-apply-的语义边界)，在 Output Hook 全部执行后将最终输出截为非负数，零输出由 Apply 拒绝。
+EP Healing.Request 为 `{ source, target, parameters }`，不提供 attackType／applyWay。Parameters 为 `{ power }`，Calculated 为 `{ amount }`。它经过自己的 Formula／Output，不应用元素损伤抗性。两种 EP Calculate 均从原始 Parameters 开始，不对负数 power 单独抛异常；按[共同输出约束](vitality.md#1-calculate-与-apply-的语义边界)，在 Output Hook 全部执行后将最终输出截为非负数，零输出由 Apply 拒绝。
 
 | 接口 | 形状与结果 |
 | --- | --- |

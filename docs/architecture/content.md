@@ -18,6 +18,8 @@ Meta 可以选择配置或提供关卡输入。卫戍的普通／金色等政策
 
 Elemental Capability 负责 EP 接收与提交、爆发触发和当前爆发引用，共同的类型、进度、EP 恢复与结束收尾保留在 `core/unit/capability/elemental/burst.ts`。Data 按接收者类别选取 Core 的具体 Effect、绑定标准数值，构造元素到 Effect Definition 的映射；爆发执行程序由 Core 实现。标准效果按实际使用逐项实现，完整候选范围见[标准效果库](effect.md#10-标准效果库与候选范围)；清单不作为一次性实现计划，也不提前建立空文件。
 
+攻击 Operation 的 DAMAGE 与 ELEMENTAL_INJURY 都必须显式提供 attackType／applyWay，并原样传入 HP／EP Damage Request。它们是本笔输出的类别与施加途径，不由伤害公式类型、来源、距离或当前技能推断；普通攻击、扩散、持续效果和附加输出由具体内容选择分类。HEAL 与 ELEMENTAL_INJURY_HEALED 不携带这两项。完整取值与单值政策见 [Damage Request](vitality.md#12-请求与计算参数)。
+
 弩手的 action.ts 分别定义 melee 与 ranged，两者有各自的冷却和执行状态。unit.ts 按当前阻挡关系选择近战或远程，在已有主动作执行期间不并发启动另一主动作；选择和互斥属于内容策略。场景选择敌人和配置波次，不通过一个带敌人 ID 分支的中央工厂构造所有内容。确实共用的地面属性与能力装配由普通函数提供，具体攻击程序归各自内容。
 
 装置行为位于 `devices/`。`crate.ts`、`shooting-platform.ts` 接受类型化配置并构造 Unit Definition，通过 Unit 的 enter／leave Hook 处理改格和清理；实际共用的改格函数放在 Content 内。射击台在 Occupancy 的 SUPPORT Definition 中提供 onOccupantAdded／onOccupantRemoved 程序，在当前乘员的 blocker.restrictions 以平台实例独立 ID 登记 Contribution，value 为共享二元 Restriction，只禁止 GROUND 阻挡，AIR 仍由其余 Blocking 规则判断；配对解除时只清理该平台规则，不改写地块阻挡许可。Data 解析资源标识、数值和关卡实例，并调用这些现有工厂绑定静态配置。内部批量登记交换用于验证结构与同步通知，不能证明游戏允许自由搬动平台。
