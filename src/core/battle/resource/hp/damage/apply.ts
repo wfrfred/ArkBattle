@@ -1,4 +1,5 @@
 import type { Options } from "../../../../hook.js";
+import type { Restriction } from "../../../../unit/capability/vitality/restriction.js";
 import type { Ref } from "../../../../common/ref.js";
 import type { Unit } from "../../../../unit/unit.js";
 import * as units from "../../../../unit/query.js";
@@ -16,10 +17,14 @@ import {
     completed,
 } from "./hook.js";
 
+export interface ApplyOptions extends Options {
+    readonly ignore?: (restriction: Restriction) => boolean;
+}
+
 export function applyDamage(
     request: Request,
     calculated: Result<Calculated | undefined>,
-    options?: Options,
+    options?: ApplyOptions,
 ): Result<Outcome> {
     let battle = calculated.state;
     const calculation = calculated.value;
@@ -36,7 +41,7 @@ export function applyDamage(
     const context = { target: request.target, request, calculated: calculation };
     battle = dispatch(battle, request.target, beforeReceive, context, undefined, options).state;
 
-    if (!vitality.canReceiveDamage(battle, context)) {
+    if (!vitality.canReceiveDamage(battle, context, options?.ignore)) {
         return complete(battle, request, calculation, { type: "REJECTED" }, options);
     }
 
@@ -54,7 +59,7 @@ export function applyDamage(
     if (received.type === "CANCELLED") {
         return complete(battle, request, calculation, { type: "CANCELLED", received }, options);
     }
-    if (!vitality.canReceiveDamage(battle, context)) {
+    if (!vitality.canReceiveDamage(battle, context, options?.ignore)) {
         return complete(battle, request, calculation, { type: "UNAVAILABLE", received }, options);
     }
 
@@ -68,7 +73,7 @@ export function applyDamage(
         options,
     ).state;
 
-    if (!vitality.canReceiveDamage(battle, context)) {
+    if (!vitality.canReceiveDamage(battle, context, options?.ignore)) {
         return complete(battle, request, calculation, { type: "UNAVAILABLE", received }, options);
     }
 

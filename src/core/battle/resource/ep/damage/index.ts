@@ -4,6 +4,8 @@ export { calculateDamage } from "./calculate.js";
 
 export { applyDamage } from "./apply.js";
 
+export type { ApplyOptions } from "./apply.js";
+
 export { fix, cancel } from "./contract.js";
 
 export type {

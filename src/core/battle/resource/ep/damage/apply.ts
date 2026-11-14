@@ -1,4 +1,5 @@
 import type { Options } from "../../../../hook.js";
+import type { DamageRestriction } from "../../../../unit/capability/elemental/restriction.js";
 import type { Result } from "../../../state.js";
 import * as units from "../../../../unit/query.js";
 import { available, canReceiveDamage } from "../../../../unit/capability/elemental/query.js";
@@ -13,10 +14,14 @@ import {
     sourceApplied,
 } from "./hook.js";
 
+export interface ApplyOptions extends Options {
+    readonly ignore?: (restriction: DamageRestriction) => boolean;
+}
+
 export function applyDamage(
     request: Request,
     calculated: Result<Calculated | undefined>,
-    options?: Options,
+    options?: ApplyOptions,
 ): Result<Outcome> {
     let battle = calculated.state;
     const damage = calculated.value;
@@ -28,7 +33,7 @@ export function applyDamage(
     const context = { target: request.target, request, calculated: damage };
     battle = dispatch(battle, request.target, beforeReceive, context, undefined, options).state;
 
-    if (!canReceiveDamage(battle, request, damage.type)) {
+    if (!canReceiveDamage(battle, request, damage.type, options?.ignore)) {
         return { state: battle, value: { type: "REJECTED" } };
     }
 
@@ -46,14 +51,14 @@ export function applyDamage(
     if (received.type === "CANCELLED") {
         return { state: battle, value: { type: "CANCELLED", received } };
     }
-    if (!canReceiveDamage(battle, request, damage.type)) {
+    if (!canReceiveDamage(battle, request, damage.type, options?.ignore)) {
         return { state: battle, value: { type: "UNAVAILABLE", received } };
     }
 
     const commit: CommitContext = { ...context, received };
     battle = dispatch(battle, request.source, beforeCommit, commit, undefined, options).state;
 
-    if (!canReceiveDamage(battle, request, damage.type)) {
+    if (!canReceiveDamage(battle, request, damage.type, options?.ignore)) {
         return { state: battle, value: { type: "UNAVAILABLE", received } };
     }
 

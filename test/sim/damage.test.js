@@ -335,6 +335,55 @@ test("APPLY-01: invincibility installed before reception rejects HIT recovery un
     assert.equal(commits, 1);
 });
 
+test("RESTRICTION-02: damage exemptions cover one mechanism through reentrant checks without leaking to nested damage", () => {
+    let state = battle([
+        { definition: { id: "source", hooks: Hooks.empty() }, position: [0, 0] },
+        { definition: {
+            id: "target", hooks: Hooks.empty(), targetable: { taunt: 0, restrictions: [] },
+            vitality: { maxHp: 100, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
+        }, position: [1, 0] },
+    ]);
+    const source = units.ref(get(state, 0));
+    const target = units.ref(get(state, 1));
+    state = effects.install(state, target, invincible).state;
+    state = effects.install(state, target, invincible).state;
+    const separateMechanism = { allows: invincibleHpDamageRestriction.allows };
+    state = update(state, target, vitality.setRestriction({ id: "separate", value: separateMechanism }));
+    const request = damageRequest(source, target, 30);
+    const options = { ignore: restriction => restriction === invincibleHpDamageRestriction };
+    const rejected = hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request), options);
+    assert.equal(rejected.value.type, "REJECTED");
+    assert.equal(get(rejected.state, 1).vitality.hp, 100);
+
+    state = update(rejected.state, target, units.compose(
+        vitality.removeRestriction("separate"),
+        units.setHook(hpDamage.receiving, {
+            id: "protect-again",
+            invoke(current, _context, pending) {
+                return { state: effects.install(current, target, invincible).state, value: pending };
+            },
+        }),
+    ));
+    let nested;
+    state = update(state, source, units.setHook(hpDamage.beforeCommit, {
+        id: "protect-and-nest",
+        invoke(current) {
+            current = effects.install(current, target, invincible).state;
+            const next = damageRequest(source, target, 5);
+            const applied = hpDamage.applyDamage(next, hpDamage.calculateDamage(current, next));
+            nested = applied.value.type;
+            return { state: applied.state, value: undefined };
+        },
+    }));
+    const accepted = hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request), options);
+    assert.equal(accepted.value.application.hpLoss, 30);
+    assert.equal(nested, "REJECTED");
+    assert.equal(get(accepted.state, 1).vitality.hp, 70);
+    assert.equal(hpDamage.applyDamage(request, hpDamage.calculateDamage(accepted.state, request)).value.type, "REJECTED");
+    state = remove(accepted.state, target, "SCRIPT");
+    assert.equal(hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request), { ignore: () => true }).value.type, "REJECTED");
+});
+
 test("APPLY-01: Receiving and BeforeCommit resource changes define the baseline while Applied preserves the report", () => {
     let state = battle([
         { definition: { id: "source", hooks: Hooks.empty() }, position: [0, 0] },
