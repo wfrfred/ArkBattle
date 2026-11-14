@@ -2,14 +2,34 @@ import type { State as BattleState, Result } from "./battle/state.js";
 import { type Entry, set, remove } from "./common/collection/entries.js";
 
 declare const entryType: unique symbol;
+declare const ownerType: unique symbol;
 
-export interface Key<H extends Entry> {
+export interface Key<H extends Entry, Owner extends object = object> {
     readonly name: string;
     readonly [entryType]: (entry: H) => H;
+    readonly [ownerType]: (owner: Owner) => Owner;
 }
 
-export function key<H extends Entry>(name: string): Key<H> {
-    return { name } as Key<H>;
+export function key<H extends Entry, Owner extends object = object>(name: string): Key<H, Owner> {
+    return { name } as Key<H, Owner>;
+}
+
+export type Exclusion = readonly [key: Key<any, any>, id: string | null];
+
+export interface Options {
+    readonly exclude?: readonly Exclusion[];
+}
+
+export function excluded(
+    options: Options | undefined,
+    reference: Key<any, any>,
+    id: string,
+): boolean {
+    return (
+        options?.exclude?.some(
+            ([key, excludedId]) => key === reference && (excludedId === null || excludedId === id),
+        ) ?? false
+    );
 }
 
 export class Hooks {
@@ -23,15 +43,18 @@ export class Hooks {
         return new Hooks(new Map());
     }
 
-    get<H extends Entry>(reference: Key<H>): readonly H[] {
+    get<H extends Entry, Owner extends object>(reference: Key<H, Owner>): readonly H[] {
         return (this.#entries.get(reference) ?? []) as readonly H[];
     }
 
-    find<H extends Entry>(reference: Key<H>, id: string): H | undefined {
+    find<H extends Entry, Owner extends object>(
+        reference: Key<H, Owner>,
+        id: string,
+    ): H | undefined {
         return this.get(reference).find((entry) => entry.id === id);
     }
 
-    set<H extends Entry>(reference: Key<H>, entry: NoInfer<H>): Hooks {
+    set<H extends Entry, Owner extends object>(reference: Key<H, Owner>, entry: NoInfer<H>): Hooks {
         const previous = this.get(reference);
         const entries = set(previous, entry);
         if (entries === previous) {
@@ -44,7 +67,7 @@ export class Hooks {
         return new Hooks(next);
     }
 
-    remove<H extends Entry>(reference: Key<H>, id: string): Hooks {
+    remove<H extends Entry, Owner extends object>(reference: Key<H, Owner>, id: string): Hooks {
         const previous = this.get(reference);
         const entries = remove(previous, id);
         if (entries === previous) {

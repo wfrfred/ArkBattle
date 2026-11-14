@@ -128,10 +128,10 @@ export function resumeCooldown(
     );
 }
 
-export function setUnitHook<H extends Entry>(
+export function setUnitHook<H extends Entry, Owner extends object>(
     battle: BattleState,
     reference: Ref<Card<any>>,
-    key: Key<H>,
+    key: Key<H, Owner>,
     entry: NoInfer<H>,
 ): BattleState {
     const self = requireCard(battle, reference);
@@ -140,10 +140,10 @@ export function setUnitHook<H extends Entry>(
     return unitHooks === self.unitHooks ? battle : replaceCard(battle, { ...self, unitHooks });
 }
 
-export function removeUnitHook<H extends Entry>(
+export function removeUnitHook<H extends Entry, Owner extends object>(
     battle: BattleState,
     reference: Ref<Card<any>>,
-    key: Key<H>,
+    key: Key<H, Owner>,
     id: string,
 ): BattleState {
     const self = requireCard(battle, reference);

@@ -11,24 +11,30 @@ export type LeaveHook = TacticalHook<Departure, void>;
 
 export type PrepareHook = TacticalHook<Departure, void>;
 
-export const enter = key<EnterHook>("unit.enter");
+export const enter = key<EnterHook, Unit>("unit.enter");
 
-export const tick = key<TickHook>("unit.tick");
+export const tick = key<TickHook, Unit>("unit.tick");
 
-export const prepare = key<PrepareHook>("unit.prepare");
+export const prepare = key<PrepareHook, Unit>("unit.prepare");
 
-export const leave = key<LeaveHook>("unit.leave");
+export const leave = key<LeaveHook, Unit>("unit.leave");
 
-export function setHook<H extends Entry>(reference: Key<H>, entry: NoInfer<H>): Change<Unit> {
-    return createChange<Unit>((self) => {
+export function setHook<H extends Entry, Owner extends object>(
+    reference: Key<H, Owner>,
+    entry: NoInfer<H>,
+): Change<Unit & Owner> {
+    return createChange<Unit & Owner>((self) => {
         const hooks = self.hooks.set(reference, entry);
 
         return hooks === self.hooks ? self : { ...self, hooks };
     });
 }
 
-export function removeHook<H extends Entry>(reference: Key<H>, id: string): Change<Unit> {
-    return createChange<Unit>((self) => {
+export function removeHook<H extends Entry, Owner extends object>(
+    reference: Key<H, Owner>,
+    id: string,
+): Change<Unit & Owner> {
+    return createChange<Unit & Owner>((self) => {
         const hooks = self.hooks.remove(reference, id);
 
         return hooks === self.hooks ? self : { ...self, hooks };
