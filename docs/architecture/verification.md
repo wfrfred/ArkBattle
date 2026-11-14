@@ -161,7 +161,7 @@ Hitbox 的 Targeting 接入只保留一个代表场景：显式范围使用受�
 
 | 编号 | 必须保障的结果 | 定向场景 |
 | --- | --- | --- |
-| RESTRICTION-01 | Contribution.id 标识独立登记，value 定义对象标识机制。无 group 的多项限制按 AND 独立生效；同组按 priority 竞争，等优先级按 ID 决定，resolveEntries 保留赢家原登记和元数据，resolve 与其 value 一致。 | 公共套件用一个独立／互斥组合验证赢家及空集合；限制纯判断，不在夹具实现另一套竞争算法。 |
+| RESTRICTION-01 | Contribution.id 标识独立登记，value 定义对象标识机制。无 group 的多项限制按 AND 独立生效；同组按 priority 竞争，等优先级按 ID 决定，resolveEntries 保留赢家原登记和元数据，resolve 与其 value 一致。 | 通过 Targetable 的独立／互斥限制与 Deployment 的拒绝原因验证有效定义、空集合及登记元数据；不为 resolveEntries 或每个消费者新增重复场景，不在夹具实现竞争算法。 |
 | RESTRICTION-02 | 竞争后才按定义对象豁免；共享定义的多个来源可一起忽略，其它定义仍可拒绝；被压制项不因赢家获豁免而复活。HP／EP Damage 在三次接收复检使用同一 ignore，但读取各次最新登记；基础前提不豁免，嵌套操作不继承。 | 复用 Targetable 的竞争与身份代表；资源接收用最少独立限制与同步重入验证准入和复检，不为每个阶段、资源或标准 Effect 建矩阵。 |
 | RESTRICTION-03 | 各领域字段仍保持精确 Context、Entry 和宿主能力类型关联，普通 set／remove 修改登记；Blocking 限制变化发布后维护当前关系，Skill 启动／操作／回复等检查时点不变。 | core-types 集中证明错误载荷与能力不足被拒；运行行为复用已有 Blocking、Skill、Presence 场景，不新增字段或登记顺序矩阵。 |
 | DEPLOY-RESTRICTION-01 | Quote 非法值统一拒绝；Card 缺失、库存不足、支付越过 minDp、地图外及同 Slot 冲突属于固定前提，不能通过本次限制覆盖。合法 dp:null、stock:0、slots:0 保留各自免消耗事实和本次账务。 | 通过实际 Card 与合法部署建立资源、占用，集中核对 preview／evaluate／positions／deploy 一致；不将负库存或地图外部署视作正常可覆写政策。 |

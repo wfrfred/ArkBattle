@@ -160,7 +160,7 @@ Blocking 将资格与其他取得条件分开处理：
 | 阶段 | 检查内容 |
 | --- | --- |
 | `canSearch` | 不依赖具体目标的基础资格，包括阻挡者在场、存活；GROUND 另要求当前根格的阻挡许可，AIR 跳过该地块条件；不提前求值二元 Restriction。 |
-| `canRetain` | 双方 PRESENT，阻挡层与目标空地身份匹配，以及两端所有 `Restriction.allows(battle, { blocker, blockable })`；GROUND 还要求当前根格允许阻挡，AIR 豁免。临时 HP 为 0 不作为默认保持资格的退出条件。 |
+| `canRetain` | 双方 PRESENT，阻挡层与目标空地身份匹配，以及两端各自竞争后的有效 Restriction 按同一 `{ blocker, blockable }` Context 执行 AND；GROUND 还要求当前根格允许阻挡，AIR 豁免。临时 HP 为 0 不作为默认保持资格的退出条件。 |
 | 新关系取得 | 在搜索和关系资格之外，双方有 Vitality 时 HP 必须大于 0，确认目标尚无归属、双方在接敌距离内，且当前占用加目标 volume 不超过 capacity。 |
 | 容量裁撤 | 独立比较当前总占用与容量，超出时从既有有序关联末尾逐项解除；每项通知后接续最新状态。 |
 

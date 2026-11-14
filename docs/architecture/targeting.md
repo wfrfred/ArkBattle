@@ -72,12 +72,12 @@ interface Definition {
     readonly restrictions: readonly Contribution<Restriction>[];
 }
 
-interface Context {
+interface RestrictionContext {
     readonly source: Unit;
     readonly target: Unit & Targetable;
 }
 
-type Restriction = restriction.Restriction<Context>;
+type Restriction = restriction.Restriction<RestrictionContext>;
 
 interface State {
     readonly taunt: readonly Contribution<Input>[];
@@ -85,7 +85,7 @@ interface State {
 }
 ```
 
-Targetable 复用公共 Restriction<Context>，内部 Context 为 { source, target }；外部 allowsRestrictions(battle, source, ignore?) 仍返回目标谓词，不增加查询协议对象。限制只读地判断目标是否允许给定来源选择自己，不接收整次查询程序。来源输入可以由调用者从当前状态取得，也可以由具体延迟输出保留；Targetable 不自行解析失效 Ref 或猜测回退策略。
+Targetable 复用公共 Restriction<RestrictionContext>，内部 RestrictionContext 为 { source, target }；外部 allowsRestrictions(battle, source, ignore?) 仍返回目标谓词，不增加查询协议对象。限制只读地判断目标是否允许给定来源选择自己，不接收整次查询程序。来源输入可以由调用者从当前状态取得，也可以由具体延迟输出保留；Targetable 不自行解析失效 Ref 或猜测回退策略。
 
 Definition 的 taunt 和 restrictions 均显式提供。初始化建立空嘲讽贡献，并核对固有限制 ID 唯一性，重复 ID 拒绝构造。固有与动态限制进入同一 State 集合。
 

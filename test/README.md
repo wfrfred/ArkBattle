@@ -23,7 +23,7 @@
 | 套件 | 需要保障的结果 |
 | --- | --- |
 | [battlefield](sim/battlefield.test.js) | 不可变版本、全批最终占格；Tile／Overlay 决定导航和代价选择；身体位置、空间存在和命中几何分离。 |
-| [presence](sim/presence.test.js) | 暂时消失保留 Unit、部署与 Occupancy、普通 Effect／Lifetime；无 Ref 的 appear／disappear 工厂产生同目标 Change，经 compose 组合后先发布最终 Unit，再在自身 Settlement 调用 Blocking 的 releaseAll／release 清理当前关系及自身计划，释放结束后委托 Action.cancelForUnit 取消宿主执行。appear 只移除自身 Rule，其它限制仍生效；独立限制移除后正常启动，不重复公共 Rule／Hook／Ref 协议。 |
+| [presence](sim/presence.test.js) | 暂时消失保留 Unit、部署与 Occupancy、普通 Effect／Lifetime；无 Ref 的 appear／disappear 工厂产生同目标 Change，经 compose 组合后先发布最终 Unit，再在自身 Settlement 调用 Blocking 的 releaseAll／release 清理当前关系及自身计划，释放结束后委托 Action.cancelForUnit 取消宿主执行。appear 只移除自身 Restriction，其它限制仍生效；独立限制移除后正常启动，不重复公共 Restriction／Hook／Ref 协议。 |
 | [坐标](sim/coordinate.test.js)、[范围](sim/geometry-range.test.js)、[扫掠](sim/geometry-sweep.test.js) | 坐标旋转、连续范围并集、圆／盒／混合圆角的独立公式与首次接触边界集中验证，不向空间查询和具体内容复制数值矩阵。 |
 | [unit](sim/unit.test.js) | 正常构造建立能力配对并拒绝双重阻挡角色；初始 Effect 在登记后安装。 |
 | [unit-change](sim/unit-change.test.js) | update(battle, ref, change) 单目标写入；一个主场景集中验证二元 compose 的结合律与非交换、逐项 previous／no-op／Settlement，以及 optional 的 false 原对象／空后继和 guard 读取前序变换后的输入。最终 next 一次发布后才按序结算，嵌套 update 对第二 Unit 的结果不丢失，不建立跨 Unit 批次或守卫矩阵。 |
@@ -50,7 +50,7 @@
 | [damage](sim/damage.test.js) | 按[伤害／治疗回归清单](../docs/architecture/verification.md#hook-与伤害治疗的回归语义)保障 HP／EP 公式与采样、独立 Calculate 状态、接收与提交、零值和取消、最新资源、Applied 后死亡及同步 Burst。 |
 | [healing](sim/healing.test.js) | HP／EP 治疗公式、四型恢复、满资源仍成功、双侧 Applied 和自然恢复的区别；HP 自回场景保障当前固定／比例速度与 MaxHP、资源阶段和普通治疗分离；双资源场景区分消失期间 Damage 拒收与 Healing 接收。 |
 | [elemental](sim/elemental.test.js) | rate 为零的标准 Burst 手动推进唯一时间进度，恢复期间四型 EP 逐步回填；动态与暂停预算、完整周期、零预算的一次性输出和独立产物、完成／取消后的资源与作用生命周期；自然 EP 回复及既有 Burst 不因消失冻结，不复制公共时间或 Lifetime 矩阵。 |
-| [tracking 弹道](sim/projectile-tracking.test.js) | 已锁定目标消失后仍追真实位置；身份命中不依赖 Targetable／Hitbox，Damage 接收独立判断。保留原目标失效、来源采样和具体终止结果，不为 Presence 新增通用 Projectile Rule。 |
+| [tracking 弹道](sim/projectile-tracking.test.js) | 已锁定目标消失后仍追真实位置；身份命中不依赖 Targetable／Hitbox，Damage 接收独立判断。保留原目标失效、来源采样和具体终止结果，不为 Presence 新增通用 Projectile Restriction。 |
 | [UI瞬时输出](sim/event-output.test.js) | 按 EVENT 清单集中验证真实结算飘字、爆发位置与注销快照，以及 Tick 清空输出和旧版本保留；业务结算不依赖事件消费。 |
 | [标准元素爆发](sim/elemental-runtime.test.js) | Core 具体 Effect 使用 Data 绑定的真实数值产生伤害、异常、永久输出和周期累计结果；不重写夹具算法或按八套配置逐字段扩展。 |
 
