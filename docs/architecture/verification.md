@@ -47,7 +47,7 @@ Data 验证原始资料与本次配置到规范化静态数据、初始地图及
 | Unit 构造与能力 | 创建方确定静态 Definition，构造后配置与状态配对、组成稳定；所需实例输入必须存在，多余的已知输入允许并忽略，输入键与值遵守 Catalog 类型；初始 Effect 通过登记后的正常安装形成。 | [构造与装配](capability.md#初始化与装配) |
 | Occupancy 与 Support | 单格 OCCUPANT／SUPPORT 两槽各自排他，占格、身体位置、空间存在与朝向分开；两端先发布同一 Pair 再通知，任一端先入场均可配对。Pair 保留建立时采样的事实；离场只解除原 Pair，不能清除替代实例的新配对或重复通知旧组合。 | [Occupancy](occupancy.md#关键协作语义) |
 | Unit 组合变更 | update(battle, ref, change) 只更新一个目标。二元 compose 左到右接续同一 Unit，组合满足结合律但不交换；各项保留自己的 previous、no-op 与 Settlement 顺序。optional 在实际执行时判断当前输入，包括前序变换后的值；false 保留原对象且无后继，true 转发原 Change 的结果。全部纯应用完成后一次发布最终 next，再按序结算；Settlement 中的嵌套 update 可以改变其它 Unit，后续结算接续最新状态。 | [批量变更](api-conventions.md#51-unit-完整操作与批量变更) |
-| 普通注册 Change | Capability 用扁平 Rules／Contributions 分组明确选择自动字段；Hook 使用独立 typed Key 集合；工厂不绑定 Ref，按 Key 和固定字段两种接口均保持字段、Entry 与所需能力的类型关联，由 update 的目标 Ref 满足能力要求。注册遵守按 ID 替换保序和无变化不结算，特殊字段由领域完成自身变换与后继。 | [批量变更](api-conventions.md#51-unit-完整操作与批量变更) |
+| 普通注册 Change | Capability 用扁平 Restrictions／Contributions 分组明确选择自动字段；Hook 使用独立 typed Key 集合；工厂不绑定 Ref，按 Key 和固定字段两种接口均保持字段、Entry 与所需能力的类型关联，由 update 的目标 Ref 满足能力要求。注册遵守按 ID 替换保序和无变化不结算，特殊字段由领域完成自身变换与后继。 | [批量变更](api-conventions.md#51-unit-完整操作与批量变更) |
 | 状态接续与 Hook | 同步业务接续最新状态；有意采样的历史事实保留。一次派发不吸收后来新增的候选，执行时使用最新登记与资格，嵌套派发独立。 | [状态接续](functional-core.md#状态接续后的读取与续执行)、[同步候选](functional-core.md#7-同步候选范围) |
 | 身份与结束 | 持久对象与单次执行身份不同，旧执行引用不操作后来的执行；结束立即拒收新的依赖，依赖者完整结束后宿主才注销，收尾不重复执行或覆盖首次原因。 | [Lifetime](lifetime.md)、[Action](action.md#关键语义)、[Skill](skill.md#关键语义) |
 | Action | 启动受理、冷却、释放和输出保持各自含义；启动返回本次执行 Ref，普通拒绝返回 null，不创建执行且保留已发生的前缀业务。攻速与间隔使用静态修正列表，变更时同步按新周期保留完成比例，普通 Tick 不轮询刷新；释放前中断不伪造成功释放，已完成的输出与资源结算不回滚。 | [Action](action.md#关键语义) |
@@ -82,7 +82,7 @@ Data 验证原始资料与本次配置到规范化静态数据、初始地图及
 | Runtime 组合 | 集中验证完整初始化／出生等待登记先于 enter、通过 appear／remove 直接操作预置项并在离场重入时保留最新绑定，以及 Tick 的阶段顺序／不可变发布与失败不发布。Schedule 的离场等待释放归 Schedule，Runtime 只验证调度组合结果。以公开创建、部署、资源和离场操作构造，不另写身份进度或内部存储夹具。 |
 | HP／EP 接收与死亡 | 伤害／治疗回归清单。死亡确认前保留 Blocking 只归 HP-03，不在 Blocking／Combat 再做同构场景。 |
 | 阻挡及位置计划 | Blocking：资格与层、容量尾部裁撤、批量通知与旧身份、独立位置计划。自身空地设置的清理（含同值）复用批量解除与位置计划代表场景，通知读取已发布的新身份；主动空间覆盖取消计划并解除旧关系，首个通知可见新位置。不按字段、角色或切换方向另建矩阵。 |
-| 空间存在及其协作 | Presence 集中验证保留身份、部署与 Occupancy、Effect／Lifetime，以及全部限制先于自身批量解除通知、领域释放后取消行动、appear 只移除自身限制。Blocking 保留自身偏移与目标独立计划的区别；Action／Skill、资源接收、Burst 和 tracking 弹道只在各自主场景验证新增的业务结果，不复制 Rule 登记、Hook 或生命周期矩阵。 |
+| 空间存在及其协作 | Presence 集中验证保留身份、部署与 Occupancy、Effect／Lifetime，以及全部限制先于自身批量解除通知、领域释放后取消行动、appear 只移除自身限制。Blocking 保留自身偏移与目标独立计划的区别；Action／Skill、资源接收、Burst 和 tracking 弹道只在各自主场景验证新增的业务结果，不复制 Restriction 登记、Hook 或生命周期矩阵。 |
 | 自主运动 | Locomotion：纯算法集中验证转向、直邻／斜邻避障及反射公式；真实移动场景验证当前速度、最终目标吸附和暂停后的历史速度。半身宽、WALK 高代价格／FLY 硬障碍、方向投影与速度比例、不可通格恢复各保留独立结果，不枚举八方向及微小数值变体。历史速度通过实际推进建立，不直接注入 Unit；Route 只保障自身指令与运动协作结果。 |
 | Route 与 Schedule | 各自代表场景分别保障路线解释与调度等待，具体结果见下文回归语义。路线距离以导航几何段长和位置修正估计，不累计 APPEAR 跳跃；显式 Context 查询不随临时控制权改变。Route 不重复 Locomotion 公式；Schedule 不重复 Hook、RNG 算法或 Unit 生命周期矩阵。 |
 | Occupancy 配对 | 结构双槽登记由 Battlefield 保障；双方入场顺序、通知前发布与旧 Pair 保护集中在 Deployment 的 Occupancy 协作场景，具体平台只验证自身输出。 |
@@ -123,7 +123,7 @@ Hitbox 的 Targeting 接入只保留一个代表场景：显式范围使用受�
 | --- | --- |
 | 标准 HP 资格读取当前空间存在和生命；独立几何原点使用目标 Hitbox，不要求来源就是搜索中心。当前 Layer 的额外条件由查询明确组合。 | Targeting 一个选择与几何场景，复用真实 Presence 操作。 |
 | 治疗需求与比例使用有效 MaxHP；联合 HP／EP 需求采用或，Burst 不阻止其中的 HP 需求。 | Targeting 一个资源需求与比较场景。具体行医未接入的排序政策不靠夹具另写产品实现。 |
-| EP 候选不执行完整接收 Rule，实际 Apply 仍可拒绝；只有 EP 能力的合法 Unit 可以参与对应选择。 | Targeting 一个候选／接收分离场景，不重复 EP 公式或 Burst 生命周期矩阵。 |
+| EP 候选不执行完整接收 Restriction，实际 Apply 仍可拒绝；只有 EP 能力的合法 Unit 可以参与对应选择。 | Targeting 一个候选／接收分离场景，不重复 EP 公式或 Burst 生命周期矩阵。 |
 | 豁免谓词接收竞争后的有效定义；按定义对象身份选择豁免时，覆盖共享定义的多个来源，但保留其它定义，即使共用 allows 函数；不复活被压制项，固有与临时登记互不误删。 | Targetable 合并代表场景，公共注册与 Effect 竞争不逐项重测。 |
 | ACTIVE 的标准 healFree 使普通 HP 治疗选择拒绝目标，禁用或结束后恢复资格；独立 EP 回复与明确目标的 Healing 接收不因该标记拒绝。 | 复用资源需求与绑定治疗场景，Effect 生命周期协议集中保障。 |
 | 有效嘲讽经过贡献和整数求值，负值合法；优先级使用显式比较规则和 ID，不新增仇恨状态。 | Targetable／Targeting 一个贡献与选择场景；数值取整公式集中在公共算法。 |
@@ -149,11 +149,23 @@ Hitbox 的 Targeting 接入只保留一个代表场景：显式范围使用受�
 
 | 必须保障的业务结果 | 集中归属 |
 | --- | --- |
-| 消失保留原 Unit、占格、部署额度及普通 Effect／Lifetime，不派发入场或离场；全部限制先发布，自身 Settlement 调用的 Blocking 操作先清理当前整组双端关系再通知，释放结束后委托 Action 领域取消宿主执行。appear 只移除 Presence 自身限制，其它来源的 Rule 仍生效，独立限制移除后可以正常启动。 | Presence 主场景；公共旧 Relation、Hook 候选和析构协议不重测。 |
+| 消失保留原 Unit、占格、部署额度及普通 Effect／Lifetime，不派发入场或离场；全部限制先发布，自身 Settlement 调用的 Blocking 操作先清理当前整组双端关系再通知，释放结束后委托 Action 领域取消宿主执行。appear 只移除 Presence 自身限制，其它来源的 Restriction 仍生效，独立限制移除后可以正常启动。 | Presence 主场景；公共旧 Relation、Hook 候选和析构协议不重测。 |
 | 自身 Blockable 偏移随主动空间覆盖取消；Blocker 消失只解除关系，原目标的独立偏移继续。已 present 的 appear 仍执行位置覆盖及自身清理。 | Blocking 位置计划场景。 |
 | 消失禁止新的 Action／Activation，取消旧 Action 并停止旧输出；已完成释放前缀保留。开始通知中消失但仍 ACTIVE 的同次 Skill 执行 onStart，既有持续技能仍正常推进及到期。 | Action／Skill 代表场景；不据此增加弹药消费政策。 |
 | 消失期间普通 HP／EP Damage 拒收，HP LOSS 仍可结算；明确目标的 HP／EP Healing 仍遵守各自条件。自然 HP／EP 回复与已启动 Burst 的恢复预算继续，消失不取消其 Effect。 | 双资源接收场景及 HP-05／HP-07／Elemental 恢复场景，不重复四条管线的公式与通知矩阵。 |
-| 普通空间查询、Targeting 与 Terrain 排除消失对象；已锁定 tracking 弹道仍追现存目标的真实位置，身份命中与 Damage 接收分开。 | 空间／目标／Terrain 场景与真实弩箭追踪场景，不增加 Projectile Rule 或每个消费者的隐藏版本。 |
+| 普通空间查询、Targeting 与 Terrain 排除消失对象；已锁定 tracking 弹道仍追现存目标的真实位置，身份命中与 Damage 接收分开。 | 空间／目标／Terrain 场景与真实弩箭追踪场景，不增加 Projectile Restriction 或每个消费者的隐藏版本。 |
+
+## Restriction 与部署许可的回归语义
+
+依据[公共资格限制](capability.md#资格限制)和[部署请求](deployment.md)集中保障下列结果。限制定义不带登记 ID；同一协议不按 Capability 或字段复制用例。
+
+| 编号 | 必须保障的结果 | 定向场景 |
+| --- | --- | --- |
+| RESTRICTION-01 | Contribution.id 标识独立登记，value 定义对象标识机制。无 group 的多项限制按 AND 独立生效；同组按 priority 竞争，等优先级按 ID 决定，resolveEntries 保留赢家原登记和元数据，resolve 与其 value 一致。 | 公共套件用一个独立／互斥组合验证赢家及空集合；限制纯判断，不在夹具实现另一套竞争算法。 |
+| RESTRICTION-02 | 竞争后才按定义对象豁免；共享定义的多个来源可一起忽略，其它定义仍可拒绝；被压制项不因赢家获豁免而复活。HP／EP Damage 在三次接收复检使用同一 ignore，但读取各次最新登记；基础前提不豁免，嵌套操作不继承。 | 复用 Targetable 的竞争与身份代表；资源接收用最少独立限制与同步重入验证准入和复检，不为每个阶段、资源或标准 Effect 建矩阵。 |
+| RESTRICTION-03 | 各领域字段仍保持精确 Context、Entry 和宿主能力类型关联，普通 set／remove 修改登记；Blocking 限制变化发布后维护当前关系，Skill 启动／操作／回复等检查时点不变。 | core-types 集中证明错误载荷与能力不足被拒；运行行为复用已有 Blocking、Skill、Presence 场景，不新增字段或登记顺序矩阵。 |
+| DEPLOY-RESTRICTION-01 | Quote 非法值统一拒绝；Card 缺失、库存不足、支付越过 minDp、地图外及同 Slot 冲突属于固定前提，不能通过本次限制覆盖。合法 dp:null、stock:0、slots:0 保留各自免消耗事实和本次账务。 | 通过实际 Card 与合法部署建立资源、占用，集中核对 preview／evaluate／positions／deploy 一致；不将负库存或地图外部署视作正常可覆写政策。 |
+| DEPLOY-RESTRICTION-02 | 冷却、同 Card 在场上限、部署位上限和普通 placement 默认贡献可按同 ID 被 Definition、Card、Request 后者替换；合并后 resolveEntries，按有效登记的 ID 顺序返回首个拒绝的稳定原因。自定义拒绝使用 RULE，不按历史登记位置选原因。 | 一个分层覆盖与互斥代表验证有效政策及返回原因；不复制全部来源、默认字段或拒绝次序矩阵。 |
 
 ## Hook 与伤害／治疗的回归语义
 
@@ -164,7 +176,7 @@ Resource 按 HP／EP，再按 Damage／Healing 提供四个精确业务入口。
 | 编号 | 必须保障的业务结果 | 定向场景 |
 | --- | --- | --- |
 | HOOK-01 | 全部登记式 Hook 使用 typed Key。Unit 本地登记统一存于 Unit.hooks，Battle 观察各持有 Hooks 集合；固有登记在首次 enter 前就绪。Key 保留完整 ReceivingHook 泛型及最低宿主能力，unit.setHook／removeHook 返回相应 Change。候选固定、登记实时读取、替换保位及嵌套独立；Resource／Receiving 保留优先级，其他通知保持登记顺序。生命周期 leave 使用注销前最新程序与原 Departure；结束事实允许仍登记的 LEAVING 宿主参与。 | 公共集合／类型及实际生命周期场景集中验证；用接收 Hook 证明非法状态恢复、错配 Key／Entry 和能力不足的 update 被拒绝，不复制各 Capability 矩阵。 |
-| HOOK-02 | Calculate 与 Apply 的 Options.exclude 分别生效：按 Key 对象身份排除整阶段或指定 ID；同 Key 在本次多个宿主派发时一致匹配。排除不改登记，不豁免 Rule，不传入 Request／Calculated；嵌套操作及提交事实通知不自动继承。 | 一个 Calculate／Apply 代表场景组合整键、单 ID 与同名不同键，验证两次操作独立、后续正常调用及嵌套响应仍执行；不为四类资源复制排除矩阵。 |
+| HOOK-02 | Calculate 与 Apply 的 Options.exclude 分别生效：按 Key 对象身份排除整阶段或指定 ID；同 Key 在本次多个宿主派发时一致匹配。排除不改登记，不豁免 Restriction，不传入 Request／Calculated；嵌套操作及提交事实通知不自动继承。 | 一个 Calculate／Apply 代表场景组合整键、单 ID 与同名不同键，验证两次操作独立、后续正常调用及嵌套响应仍执行；不为四类资源复制排除矩阵。 |
 | HOOK-03 | Blocking 每条关系的双方候选在首个回调前同时固定，先 Blocker 后 Blockable；ACQUIRED 失效停止、RELEASED 保留历史通知。Skill／Elemental 的结束通知从仍登记的宿主读取 Hook，LEAVING 不丢失清理后的事实。 | 在既有关系重入与依赖结束场景验证这两项领域差异；公共候选与替换协议只测一次。 |
 | HP-01 | 物理、法术、真实及元素 HP 伤害采用各自公式；公式后类型与防御采样传到 Apply，初始 Request 不变。Calculate 不构成受击，也不写入本笔 HP。 | 合法基础属性与 Formula／Output 干预，核对最终数额、类型和接收前 HP。 |
 | HP-02 | 从同一输入分别执行 Calculate 时，各自业务状态独立，调用方接续其中一个结果后只发生该次 Apply。弱点选高属于尚未接入的具体内容组合。 | 验证真实 Calculate／Apply 的独立分支和状态接续；不在夹具手写“选高”算法来证明产品已支持弱点。 |

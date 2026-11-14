@@ -41,7 +41,7 @@ function damage(
 | elementDamage | 空间存在、Elemental 可用、无 Burst、目标非中立、敌对、目标受选限制允许。 |
 | elementHealing | 空间存在、Elemental 可用、无 Burst、同阵营、有 EP 恢复需求、目标受选限制允许。 |
 
-Elemental 可用要求 PRESENT；具有 Vitality 时还要求 HP>0，不要求所有 Elemental Unit 都具有 Vitality。EP 标准资格不构造 Damage／Healing Request，也不执行其完整接收 Rule。具体作用仍由 Apply 检查；选择成功不保证接收成功。
+Elemental 可用要求 PRESENT；具有 Vitality 时还要求 HP>0，不要求所有 Elemental Unit 都具有 Vitality。EP 标准资格不构造 Damage／Healing Request，也不执行其完整接收 Restriction。具体作用仍由 Apply 检查；选择成功不保证接收成功。
 
 标准谓词明确组合各自政策。普通 HP 治疗选择检查 healFree，独立 EP 回复不检查；特殊选择由内容直接组合目标限制和所属机制查询。
 
@@ -72,13 +72,12 @@ interface Definition {
     readonly restrictions: readonly Contribution<Restriction>[];
 }
 
-interface Restriction {
-    readonly allows: (
-        battle: BattleState,
-        source: Unit,
-        target: Unit & Targetable,
-    ) => boolean;
+interface Context {
+    readonly source: Unit;
+    readonly target: Unit & Targetable;
 }
+
+type Restriction = restriction.Restriction<Context>;
 
 interface State {
     readonly taunt: readonly Contribution<Input>[];
@@ -86,7 +85,7 @@ interface State {
 }
 ```
 
-Restriction 只读地判断目标是否允许给定来源选择自己，不接收整次查询程序。来源输入可以由调用者从当前状态取得，也可以由具体延迟输出保留；Targetable 不自行解析失效 Ref 或猜测回退策略。
+Targetable 复用公共 Restriction<Context>，内部 Context 为 { source, target }；外部 allowsRestrictions(battle, source, ignore?) 仍返回目标谓词，不增加查询协议对象。限制只读地判断目标是否允许给定来源选择自己，不接收整次查询程序。来源输入可以由调用者从当前状态取得，也可以由具体延迟输出保留；Targetable 不自行解析失效 Ref 或猜测回退策略。
 
 Definition 的 taunt 和 restrictions 均显式提供。初始化建立空嘲讽贡献，并核对固有限制 ID 唯一性，重复 ID 拒绝构造。固有与动态限制进入同一 State 集合。
 
@@ -118,7 +117,7 @@ healFree 是独立的标准 Effect，普通 HP healing 按 Definition 对象身�
 
 ## 关键语义与验收
 
-- 普通 HP／EP 选择采用对应标准资格；EP 候选不因完整接收 Rule 拒绝而提前消失，实际 Apply 仍可拒绝。
+- 普通 HP／EP 选择采用对应标准资格；EP 候选不因完整接收 Restriction 拒绝而提前消失，实际 Apply 仍可拒绝。
 - 来源与搜索原点独立；范围使用当前 Hitbox。空间消失、Layer 和绑定后的命中按各自业务判断。
 - 定义对象豁免覆盖共享定义的全部有效来源，保留其它定义；共用允许函数不合并豁免身份。竞争先于豁免，固有与临时登记互不误删。
 - ACTIVE 的标准 healFree 只影响普通 HP 治疗选择，禁用或结束后不再限制；明确目标的 Healing 和独立 EP 回复分别判断。

@@ -116,4 +116,4 @@ interface Options {
 }
 ```
 
-同一 Key 若在本次操作的多个宿主上派发，匹配项作用于所有这些派发；不额外引入宿主筛选。sourceApplied／targetApplied 等已有不同键仍可独立排除。排除整个阶段不执行其 accepts／invoke，排除单项保留其他候选的顺序、资格与同步重入；它不等于取消伤害，也不绕过基础目标前提或接收 Rule。
+同一 Key 若在本次操作的多个宿主上派发，匹配项作用于所有这些派发；不额外引入宿主筛选。sourceApplied／targetApplied 等已有不同键仍可独立排除。排除整个阶段不执行其 accepts／invoke，排除单项保留其他候选的顺序、资格与同步重入；它不等于取消伤害，也不绕过基础目标前提或接收 Restriction。

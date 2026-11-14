@@ -50,7 +50,7 @@ interface Definition<S extends object = object> {
     readonly cooldownOnDeploy: boolean;
     readonly recoverOnRetreatOrDeath: boolean;
     readonly increaseCostOnRetreatOrDeath: boolean;
-    readonly deploymentRules: readonly deployment.Rule[];
+    readonly deploymentRestrictions: readonly Contribution<deployment.Restriction>[];
     readonly unitHooks: Hooks;
     readonly initialize: (battle: BattleState) => Result<S>;
     readonly onTick?: (battle: BattleState, self: Card<S>) => BattleState;
@@ -69,7 +69,7 @@ Card 创建为 addCard(battle, definition)，Battle 输入的 cards 保存完整
 
 Card 的完整 Definition<S> 在内容声明处建立 initialize 与 onTick 的类型配对；Deployment.Input 按数组各项保留 S，Runtime 在进入内部异构执行后才擦除私有状态类型。
 
-实例保留 definition、state、当前 stock、cooldown、recovery、costStage、贡献、动态 rules 和 unitHooks；固定上限从 Definition 读取。deployedUnits 保存本场曾成功部署的 `Ref<Unit & Deployable>`，不保存历史 Unit 对象。Deployment 在完整 Unit 初始化后、add 与任何 Enter Hook 之前，接续最新 Card 登记本次引用；拒绝部署不登记。Unit 撤退、死亡或其他离场不删除历史，重新部署与同卡多实例继续追加。
+实例保留 definition、state、当前 stock、cooldown、recovery、costStage、贡献、动态 restrictions 和 unitHooks；固定上限从 Definition 读取。deployedUnits 保存本场曾成功部署的 `Ref<Unit & Deployable>`，不保存历史 Unit 对象。Deployment 在完整 Unit 初始化后、add 与任何 Enter Hook 之前，接续最新 Card 登记本次引用；拒绝部署不登记。Unit 撤退、死亡或其他离场不删除历史，重新部署与同卡多实例继续追加。
 
 `cardForUnit(battle, source): Ref<Card> | null` 由 Deployment 根据 Card 的部署历史查询归属，来源 Unit 注销后仍可查询；没有对应记录时返回 null。历史引用不表示 Unit 仍在场，activeCount 继续按当前登记实例计算，不使用 deployedUnits 的数量。
 
@@ -91,7 +91,7 @@ interface DeployRequest<T extends Card<any> = Card> {
     readonly tilePosition: TilePosition;
     readonly direction?: Direction;
     readonly quote: Quote;
-    readonly rules: readonly deployment.Rule[];
+    readonly restrictions: readonly Contribution<deployment.Restriction>[];
     readonly hooks: Hooks;
 }
 ```
@@ -100,20 +100,20 @@ createRequest(battle, cardRef, tilePosition, direction?) 生成普通请求；�
 
 Command 默认使用 Card；显式声明可以用 Command<Card<S>> 保留具体 Card 类型。step 与命令处理器在 Core 统一执行边界接纳不同私有类型的 Card 引用，不读取其私有 state。
 
-Quote 表示实际支付与消费。dp:null 跳过支付，dp:0 是正常零费支付；stock 和 slots 可以为 0。公开的 evaluate、preview、positions 和 deploy 在入口共用 validateQuote：dp 为 null 或有限非负数，stock／slots 为非负安全整数；非法报价统一抛出 RangeError，不进入可覆盖的业务 Rule。每次调用只校验一次，内部规则求值和消费信任该前提。合法请求引用不存在的 Card 时，evaluate／preview／deploy 仍按 UNKNOWN_CARD 拒绝，positions 返回空列表。本次 COST 与退费上限在消费前独立采样，分别保存在 Deployable 的部署事实中。
+Quote 表示实际支付与消费。dp:null 跳过支付，dp:0 是正常零费支付；stock 和 slots 可以为 0。公开的 evaluate、preview、positions 和 deploy 在入口共用 validateQuote：dp 为 null 或有限非负数，stock／slots 为非负安全整数；非法报价统一抛出 RangeError，不进入可配置限制求值。每次调用只校验一次，内部规则求值和消费信任该前提。合法请求引用不存在的 Card 时，evaluate／preview／deploy 仍按 UNKNOWN_CARD 拒绝，positions 返回空列表。本次 COST 与退费上限在消费前独立采样，分别保存在 Deployable 的部署事实中。
 
-Deployment Rule 为 { id, allows(battle, { request }) }。evaluate 按以下顺序合并并执行一次：
+Deployment 以 Contribution<Restriction<RestrictionContext>> 登记额外许可，RestrictionContext 携带本次 request；Card 的 DISPLAY／SELECT／DEPLOY Context 保持各自输入。Restriction 本身只定义 allows，不携带登记 ID。
 
-1. Core 默认规则。
-2. Card Definition 的 deploymentRules。
-3. Card 当前动态规则。
-4. Request 的规则。
+部署资格分成固定前提和可配置限制：
 
-Rule 同 ID 后者替换前者，保留首次登记的位置；Hooks 按同键同 ID 使用相同替换规则。默认规则覆盖库存、间隔、同 Card 在场上限、全场额度、DP、地图范围、同槽占用与禁部署地块。部署类型和特殊场地许可由内容规则表达，规则合并后统一决定部署资格。
+- 固定前提：Card 存在；Quote 数值合法；库存足以支付 quote.stock；DP 支付后不低于 minDp；落点是合法地块；同 Slot 没有其它占用。它们由 Deployment 明确检查，不能通过登记同 ID 限制或 group 覆盖。dp:null、stock:0、slots:0 分别表达本次不支付、不消耗库存与不占部署位，不通过绕过足额检查制造负资源。
+- 可配置限制：冷却、同 Card 在场上限、全场部署位上限、普通禁部署地块政策，以及 Content 自身的部署类型、场地许可等。四项 Core 默认限制使用独立、无 group 的 Contribution；内容可以按同 ID 替换对应政策，也可显式配置互斥组。
 
-Card 动态 Rule 按 DISPLAY／SELECT／DEPLOY 区分上下文；DEPLOY 时传入完整 request。Card.allows 查询展示和点选资格，evaluate／preview 合并全部部署规则并查询部署资格。
+合并顺序是默认限制、Card Definition.deploymentRestrictions、Card 当前 restrictions、Request.restrictions，同 ID 后者覆盖前者。合并后统一 resolveEntries，按 Contribution 的 priority 与 ID 选择有效项并按 ID 确定求值顺序，不把首次登记位置作为拒绝原因的优先级。求值返回首个拒绝的既有业务原因，自定义限制返回 RULE，原因不引入额外优先级。固定前提与可配置限制均由 evaluate／preview／positions／deploy 使用同一资格流程。
 
-求值前接续一次到期库存、时钟及 DP，让全部规则看到相同的当前事实；完整部署在该版本上判断并消费资源。evaluate／preview 只读该临时版本，不发布状态或创建实例，返回资格或预览结果。positions 接收完整请求，复用资源版本和合并后的规则集合，各落点完整执行规则，保留报价和规则覆盖。
+Card 动态限制的 DISPLAY／SELECT／DEPLOY Context 保持不变；Card.allows 对展示和点选解析有效 Contribution 后按 AND 判断，DEPLOY 时提供完整 request。判断过程不执行内容副作用。
+
+求值前接续一次到期库存、时钟及 DP，让全部规则看到相同的当前事实；完整部署在该版本上判断并消费资源。evaluate／preview 只读该临时版本，不发布状态或创建实例，返回资格或预览结果。positions 接收完整请求，复用资源版本和合并后的规则集合，各落点完整执行规则，保留报价和限制覆盖，逐落点检查固定前提及有效限制。
 
 规则通过后，内部消费按已确认的报价执行。单独公开的资源操作维护自己的入口契约。资格拒绝返回输入 BattleState。
 
@@ -170,7 +170,7 @@ Deployable 单向依赖 Occupancy；占格对象不反向要求可部署能力�
 
 ```typescript
 interface Definition {
-    readonly retreatRules: readonly Rule[];
+    readonly retreatRestrictions: readonly Contribution<Restriction>[];
 }
 
 interface Refund {
@@ -183,7 +183,7 @@ interface State {
     readonly cost: number;
     readonly slots: number;
     readonly refund: Refund | null;
-    readonly retreatRules: readonly Rule[];
+    readonly retreatRestrictions: readonly Contribution<Restriction>[];
 }
 
 type Deployable = Occupancy & {
@@ -205,7 +205,7 @@ function setDeployment<U extends Unit & Deployable>(
 
 Catalog 先构造 Occupancy、再构造 Deployable；Deployable 在初始化入口确认 Occupancy 依赖。初始化建立 card:null、cost:0、slots:0、refund:null 和固有撤退规则，表示尚未关联一次部署。Deployable 没有专属 Initial；部署事实在完整初始化后、登记前通过 setDeployment 设置。Deployment 预先登记的 Hook 保留原位置。
 
-公开入口为 hasDeployable、initialize、setDeployment、canRetreat、retreat、setRule、removeRule，以及相应模型类型。setDeployment 只负责未登记实例的部署事实构造，运行态规则仍经 Change 修改。Ref<Unit & Deployable> 已保证 Occupancy，无需内部重复能力检查。撤退 Rule 的 Context 提供当前 self: Unit & Deployable；普通登记工厂与能力类型同放 capability.ts，临时撤退规则按 ID 登记和移除，不清除其他来源。
+公开入口为 hasDeployable、initialize、setDeployment、canRetreat、retreat、setRestriction、removeRestriction，以及相应模型类型。setDeployment 只负责未登记实例的部署事实构造，运行态规则仍经 Change 修改。Ref<Unit & Deployable> 已保证 Occupancy，无需内部重复能力检查。撤退 Restriction 的 Context 提供当前 self: Unit & Deployable；普通登记工厂与能力类型同放 capability.ts，临时撤退规则按 ID 登记和移除，不清除其他来源。
 
 ## 主动操作与被动死亡
 

@@ -6,7 +6,7 @@ Elemental 负责元素值的接收、资源提交、爆发触发与恢复预算�
 
 Unit Definition 直接关联共享的 Elemental Definition。bursts 按元素类型映射到实际的 Burst Effect Definition；Data 选择 Core 提供的具体 Effect 并绑定静态数值，不自行实现爆发执行程序。
 
-公开类型、查询和业务操作从 [elemental/index.ts](../../src/core/unit/capability/elemental/index.ts) 导入，包括只读的 available。Capability 的 Rule 与属性贡献 set／remove 不接收 Ref，返回 `Change<Unit & Elemental>`；Hook 通过领域导出的 typed Key 和 unit.setHook／removeHook 取得相同宿主约束，交给 Unit.update 登记。资源提交复用对应业务的 CommitContext，爆发与恢复等操作保持 BattleState 协议，状态写回使用 Core 内部的 Unit.replace；query.ts 负责查询。
+公开类型、查询和业务操作从 [elemental/index.ts](../../src/core/unit/capability/elemental/index.ts) 导入，包括只读的 available。Capability 的 Restriction 与属性贡献 set／remove 不接收 Ref，返回 `Change<Unit & Elemental>`；Hook 通过领域导出的 typed Key 和 unit.setHook／removeHook 取得相同宿主约束，交给 Unit.update 登记。资源提交复用对应业务的 CommitContext，爆发与恢复等操作保持 BattleState 协议，状态写回使用 Core 内部的 Unit.replace；query.ts 负责查询。
 
 ## 关键语义
 
@@ -39,9 +39,9 @@ interface Definition {
 | ep | 四型当前 EP，可以保存小数；初始化为基础上限 |
 | burst | 当前标准 Burst Effect 的 Typed Ref，或 null；同一宿主至多一个 |
 | maxEp／recoverySpeed／elementResistance／damageResistance／burstRecoverySpeed | 五个属性的 Contribution |
-| damageRules／healingRules | 损伤／回复各自的接收许可登记 |
+| damageRestrictions／healingRestrictions | 损伤／回复各自的接收许可登记 |
 
-属性 Contribution 的动态 Input 为 `(battle, self) => readonly attribute.Modifier[]`。属性修正、资格 Rule、伤判和事实通知分别承担自己的职责。请求类型相关的减免通过 DamageReceivingHook 读取 calculated.type 并返回新 Pending，不复制四组基础抗性，也不在布尔 Rule 中执行副作用。
+属性 Contribution 的动态 Input 为 `(battle, self) => readonly attribute.Modifier[]`。属性修正、资格 Restriction、伤判和事实通知分别承担自己的职责。请求类型相关的减免通过 DamageReceivingHook 读取 calculated.type 并返回新 Pending，不复制四组基础抗性，也不在布尔 Restriction 中执行副作用。
 
 能力组合由内容装配决定。内容中的干员与地面敌人默认同时提供 Vitality 和 Elemental；Core 的 Unit 允许明确组合所需能力。免疫不通过删除 Elemental 表达。CHARACTER／ENEMY 仅用于静态配置选取与内容装配，不进入 Core 接收者枚举，也不由当前阵营推导。
 
@@ -101,9 +101,9 @@ EP Healing.Request 同样为 `{ source, target, parameters }`，Parameters 为 `
 | currentType／damageRatio | `(self: Unit & Elemental, maxEp: number)`，显式接收有效上限，不回落到静态 Definition |
 | available | `(self: Unit & Elemental) => boolean`，已知 Elemental 宿主的基础生命周期与生命资格查询，不包含空间存在性 |
 
-接收要求宿主生命周期为 PRESENT，具有 Vitality 时 HP 大于零。Burst 存在期间，包括 ENDING，拒绝损伤和治疗；中立阵营默认拒绝损伤。Rules 声明 damageRules／healingRules 两个数组，State 直接继承 Rules、Contributions；Hook 登记统一存于 Unit.hooks。damageRules 使用 `allows(battle, { self, request, type })`，type 是本次实际元素类型；healingRules 使用 `{ self, request }`。两者均由普通登记工厂生成的 `setRule(key, rule)`／`removeRule(key, id)` 修改，key 与对应 Context 类型配对。无敌通过 damageRules 拒绝，不查询 Vitality 内部接收规则；HP 禁疗不隐式决定 EP 接收。[Presence](presence.md) 同样通过 damageRules 拒收消失宿主的普通 EP 损伤，不直接限制显式回复、自然回复或 Burst 推进；普通索敌仍独立检查空间存在。
+接收要求宿主生命周期为 PRESENT，具有 Vitality 时 HP 大于零。Burst 存在期间，包括 ENDING，拒绝损伤和治疗；中立阵营默认拒绝损伤。Restrictions 声明 damageRestrictions／healingRestrictions 两个数组，State 直接继承 Restrictions、Contributions；Hook 登记统一存于 Unit.hooks。damageRestrictions 使用 `allows(battle, { self, request, type })`，type 是本次实际元素类型；healingRestrictions 使用 `{ self, request }`。两者保存各自精确 Context 的 Contribution<Restriction>，由普通登记工厂生成的 `setRestriction(key, entry)`／`removeRestriction(key, id)` 修改，key 与对应 Context 类型配对。无敌通过 damageRestrictions 拒绝，不查询 Vitality 内部接收规则；HP 禁疗不隐式决定 EP 接收。[Presence](presence.md) 同样通过 damageRestrictions 拒收消失宿主的普通 EP 损伤，不直接限制显式回复、自然回复或 Burst 推进；普通索敌仍独立检查空间存在。
 
-Targeting 的 elementDamage／elementHealing 是 Query 谓词，检查 Elemental 能力、当前可用性、Burst、阵营与目标侧限制；elementHealing 还要求有 EP 恢复需求。候选选择不构造完整结算请求、不执行接收 Rule 或 Hook；实际 Apply 仍按真实 Request 检查。类型守卫保留输入能力并增加 Elemental 证明，保存 Ref 时延续该证明。普通 HP 行动附带 EP 输出，不自动套用 EP 候选条件。
+Targeting 的 elementDamage／elementHealing 是 Query 谓词，检查 Elemental 能力、当前可用性、Burst、阵营与目标侧限制；elementHealing 还要求有 EP 恢复需求。候选选择不构造完整结算请求、不执行接收 Restriction 或 Hook；实际 Apply 仍按真实 Request 检查。类型守卫保留输入能力并增加 Elemental 证明，保存 Ref 时延续该证明。普通 HP 行动附带 EP 输出，不自动套用 EP 候选条件。
 
 Elemental 定义两种资源报告：
 
@@ -127,9 +127,11 @@ Damage 的 before／after／loss 描述本次元素类型，Burst 身份描述�
 
 报告在写入时采样；Battle 的 Application 直接引用同一类型，并放入 APPLIED Outcome。Outcome 统一以 type 判别：损伤有 REJECTED／CANCELLED／UNAVAILABLE／APPLIED；EP Healing 没有取消工作值阶段，只提供 REJECTED／UNAVAILABLE／APPLIED。成功但实际变化为零时，仍输出 amount 为零的 ELEMENTAL_INJURY／ELEMENTAL_INJURY_HEALED，Battle 仍派发通用 Applied；能力 damaged／healed 只通知实际变化大于零的业务。自然回复不经过该成功输出路径。
 
+EP Damage ApplyOptions 的 ignore 仅作用于本次 damageRestrictions，按实际 DamageContext 中的 self／request／type 判断；三次资格复检均重新解析当前登记并使用同一豁免谓词。PRESENT、正生命、Burst 槽位与中立默认前提不受豁免影响。EP Healing 与自然回复继续检查 healingRestrictions，不新增单次豁免；HP 治疗没有对应限制数组。共同契约见 [接收限制豁免](vitality.md#本次接收限制豁免)。
+
 ## 4. Hook、提交事实与同步重入
 
-通用 Formula、Output、BeforeReceive、BeforeCommit、targetApplied、sourceApplied 存于 [Unit.hooks](hook.md)，由对应 Battle 子域定义键与派发。基础目标资格成立后执行 beforeReceive，再读取最新 Rule；取消、失效及已提交结果按各业务 Outcome 表达。
+通用 Formula、Output、BeforeReceive、BeforeCommit、targetApplied、sourceApplied 存于 [Unit.hooks](hook.md)，由对应 Battle 子域定义键与派发。基础目标资格成立后执行 beforeReceive，再读取最新 Restriction；取消、失效及已提交结果按各业务 Outcome 表达。
 
 EP Damage 的 receiving 键关联 Elemental 宿主，Elemental 的 damaged／healed／burstStarted／burstEnded 分别提供自己的 typed Key，全部通过 unit.setHook／removeHook 登记于 Unit.hooks。专属接收仍由 Elemental 执行，按优先级、固定候选与最新登记接续 battle 和 Pending；接收 Context 固定 `{ target, request, calculated }`，原因绑定本域 Reason。取消后继续后续 Hook，但保留取消事实和原因。全部接收 Hook 完成后，receiveDamage 将未取消的最终 amount 截为非负数，再交给 Battle 构造 CommitContext；BeforeCommit、资源提交及报告使用同一接收量，零接收量仍可成功，中间各 Hook 不单独截零。receiveDamage 接受 Apply 传入的 Options，按 EP Damage.receiving 键过滤本次候选；资源／Burst 事实通知不自动继承该选项。EP Healing 不提供专属 Receiving 或取消构造器。
 

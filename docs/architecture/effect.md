@@ -548,7 +548,7 @@ interface Contribution<V> {
 }
 ```
 
-Contribution 模块只提供贡献类型与 resolve 有效来源选择，载荷求值由所属领域完成。Capability 的属性保存 Contribution 数组，通过领域 Change 复用 common/collection/entries.ts 完成登记、替换与移除，公开 `setAttackContribution()`、`removeAttackContribution()`、`resolveAttack()` 等操作；来源决定何时调用这些操作。
+Contribution 模块提供贡献类型、resolveEntries 与 resolve，选择有效登记或其 value，载荷求值由所属领域完成。Capability 的属性保存 Contribution 数组，通过领域 Change 复用 common/collection/entries.ts 完成登记、替换与移除，公开 `setAttackContribution()`、`removeAttackContribution()`、`resolveAttack()` 等操作；来源决定何时调用这些操作。
 
 Contribution 分组平局使用 ID 字典序，Effect 覆写平局使用安装先后，两者按各自领域规则独立结算。
 

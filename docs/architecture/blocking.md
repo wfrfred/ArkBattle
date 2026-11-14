@@ -4,13 +4,13 @@ Blocking 负责阻挡关系的建立、解除、站位计算及必要维护；Bl
 
 Blocker／Blockable 的数值、能力 Change 工厂与完整操作见 [Capability API](capability.md#blocking)。状态归属与同步返回契约见 [函数式内核](functional-core.md)。
 
-关系查询、acquire／release、maintain／maintainAll 与搜索从 [battle/blocking/index.ts](../../src/core/battle/blocking/index.ts) 导入；Layer、Rule、容量、volume 的 Change 工厂及两端 acquired／released Hook 键从 [capability/blocking/index.ts](../../src/core/unit/capability/blocking/index.ts) 导入；Hook 使用 unit.setHook／removeHook 登记。Blocking 自己定义 Layer 与容量 Modifier，公共类型也由 Capability 入口导出。工厂不接收 Ref，返回要求相应宿主能力的 Change，由 Unit.update 接收 Ref 后执行；完整关系业务由 battle/blocking/operations.ts 组织，hook.ts 只派发。Blocker 的 releaseAll、Blockable 的 advancePosition／releaseBlockable 完整操作及 stableBlockPosition 查询由 Capability 入口导出。关系解除统一使用接收 Relation 数组的 release，字段发布仍由所属领域负责。
+关系查询、acquire／release、maintain／maintainAll 与搜索从 [battle/blocking/index.ts](../../src/core/battle/blocking/index.ts) 导入；Layer、Restriction、容量、volume 的 Change 工厂及两端 acquired／released Hook 键从 [capability/blocking/index.ts](../../src/core/unit/capability/blocking/index.ts) 导入；Hook 使用 unit.setHook／removeHook 登记。Blocking 自己定义 Layer 与容量 Modifier，公共类型也由 Capability 入口导出。工厂不接收 Ref，返回要求相应宿主能力的 Change，由 Unit.update 接收 Ref 后执行；完整关系业务由 battle/blocking/operations.ts 组织，hook.ts 只派发。Blocker 的 releaseAll、Blockable 的 advancePosition／releaseBlockable 完整操作及 stableBlockPosition 查询由 Capability 入口导出。关系解除统一使用接收 Relation 数组的 release，字段发布仍由所属领域负责。
 
 ## 关键语义
 
 验收围绕以下独立结果选择代表场景；后文的类型、接口和内部步骤是接入说明，不逐项构成测试要求。
 
-1. **关系资格正确。** Blocker 与 Blockable 在构造入口互斥；阵营限制由二元 Rule 选择，空地、地块、存活及容量条件共同决定能否取得关系。临时 HP 归零后被 HP Applied 响应救活，不提前解除旧关系。
+1. **关系资格正确。** Blocker 与 Blockable 在构造入口互斥；阵营限制由二元 Restriction 选择，空地、地块、存活及容量条件共同决定能否取得关系。临时 HP 归零后被 HP Applied 响应救活，不提前解除旧关系。
 2. **关系完整且排他。** 一个目标至多属于一个阻挡者；双端关联和取得时的位置计划先一起发布，再通知。旧 Relation 只能结束对应旧关系，不能误解除后来重建的同双方关系。
 3. **容量缩减保留前序目标。** 从已阻挡列表末尾逐项裁撤；每项通知后按最新容量与占用决定是否继续，不提前冻结整组裁撤名单。
 4. **明确解除同步完成。** Layer 与 Blocker.setLayer 的 Settlement 清理当时的当前关系，包括较早 Settlement 已建立的关系。每次批量释放在操作入口固定本次集合，先发布整批双端解除结果再通知；本次通知中新建的关系不追溯清理，不自动搜索替代目标。后继业务遵守[状态接续契约](functional-core.md#状态接续后的读取与续执行)，不恢复旧关联。
@@ -22,10 +22,10 @@ Blocker／Blockable 的数值、能力 Change 工厂与完整操作见 [Capabili
 阻挡资格、容量裁撤和业务副作用依据原生机制确定；搜索候选与容量接续采用项目政策。普通接敌在 Movement 后的固定 Blocking 阶段执行，与原生按 UID 逐对象 OnTick 的交错调度有所区别。
 
 1. **Battlefield 负责不可变状态与索引一致性。** 阻挡归属与关联由 Unit 的 Blockable／Blocker State 保存，不维护额外的全局权威关系集合。底层存储转换不派发需要完整 BattleState 的业务 Hook；Runtime 组织调度，Blocking 完整操作负责有时序语义的关系变更。状态存于 Unit 不意味着 Battlefield 存储层负责解释阻挡业务。
-2. **关系业务只由 Blocking 明确操作执行。** acquire／release 构造双端、发布后通知；acquire 最后只复核本次取得的 Relation，release 只处理给定旧关系集合，不自动维护或搜索。Blocker／Blockable 的 Layer、Rule、容量及 volume 工厂返回 Change，由 Unit.update 一次发布全批字段，再原顺序执行其后继。Rule 后继复核自身相关关系，容量／volume 后继只结算当前阻挡组的容量。通用发布不推断关系、不派发通知；Hook 登记和私有 state 写回没有 Blocking 后继。嵌套局部后继不接管无关对象的外层待结算事实，同对象交叠则使用共同最新状态。
+2. **关系业务只由 Blocking 明确操作执行。** acquire／release 构造双端、发布后通知；acquire 最后只复核本次取得的 Relation，release 只处理给定旧关系集合，不自动维护或搜索。Blocker／Blockable 的 Layer、Restriction、容量及 volume 工厂返回 Change，由 Unit.update 一次发布全批字段，再原顺序执行其后继。Restriction 后继复核自身相关关系，容量／volume 后继只结算当前阻挡组的容量。通用发布不推断关系、不派发通知；Hook 登记和私有 state 写回没有 Blocking 后继。嵌套局部后继不接管无关对象的外层待结算事实，同对象交叠则使用共同最新状态。
 3. **每 Tick 在 Movement 后的固定 Blocking Step 先复核旧关系，再搜索。** advance() 先绑定阶段开始时的 Blocker 候选，再以 maintainAll 固定当时的旧关系，逐条读取最新状态复核资格，最后按既定 Unit 顺序调用候选的 search()。阶段内新建的 Blocker 等待下一 Tick 的普通搜索。不保存独立搜索周期或周期计数，也不反复全场复核、搜索到关系稳定。
-4. **按操作范围同步完成清理。** Rule、容量和 volume Change 的后继在返回前完成各自的关系复核或容量裁撤，不能等待普通阶段。Rule 可读取任意 Battle 事实；普通间接变化在 Blocking 检查点反映，不保证每次 Battle 写入后全部规则立即重算。需要同步生效的业务明确调用关系操作。release 在返回前完成给定旧集合的批量解除与通知，不额外复核剩余关系或搜索；有空余容量且附近仍有未接敌目标，可以是合法的返回状态。
-5. **阻挡变化同步通知，后继读取最新状态。** 取得关系将双端关联与目标的位置修正计划一起发布，再分别通知双方。Movement 先推进所有已有阻挡偏移，再在 Route 推进后查询当前关系决定是否执行普通自主移动；这一入口检查直接消费关系，不通过 Locomotion Rule 表达阻挡。阻挡不停止 Route 等待及即时指令，也不禁止强制位移。每次回调返回后接续其 BattleState；后续依赖阻挡者、目标、关系、资格或容量时重新读取，不用旧 Unit、旧关系或旧 remaining 覆盖嵌套修改。Hook 可同步解除关系、改变容量或使单位离场。
+4. **按操作范围同步完成清理。** Restriction、容量和 volume Change 的后继在返回前完成各自的关系复核或容量裁撤，不能等待普通阶段。Restriction 可读取任意 Battle 事实；普通间接变化在 Blocking 检查点反映，不保证每次 Battle 写入后全部规则立即重算。需要同步生效的业务明确调用关系操作。release 在返回前完成给定旧集合的批量解除与通知，不额外复核剩余关系或搜索；有空余容量且附近仍有未接敌目标，可以是合法的返回状态。
+5. **阻挡变化同步通知，后继读取最新状态。** 取得关系将双端关联与目标的位置修正计划一起发布，再分别通知双方。Movement 先推进所有已有阻挡偏移，再在 Route 推进后查询当前关系决定是否执行普通自主移动；这一入口检查直接消费关系，不通过 Locomotion Restriction 表达阻挡。阻挡不停止 Route 等待及即时指令，也不禁止强制位移。每次回调返回后接续其 BattleState；后续依赖阻挡者、目标、关系、资格或容量时重新读取，不用旧 Unit、旧关系或旧 remaining 覆盖嵌套修改。Hook 可同步解除关系、改变容量或使单位离场。
 6. **普通搜索与显式取得分开。** 具体内容需要立即搜索时调用 search，需要尝试取得指定双方时调用 acquire；不以每 Tick 去重吞掉合法的额外操作。search() 只固定开始时按距离稳定排序的候选 Ref 数组，同距离保留 Unit 登记顺序，不按起始容量预选接敌名单或冻结容量预算。每次 acquire() 从最新 BattleState 检查双方资格、目标当前阻挡关系及容量。Hook 增容可以使后续候选在本次搜索接敌，减容可以使后续尝试失败；新增单位不加入本次候选。关系变化以最新状态为准，不重复建立已被提前取得的关系，也不重新收集或重排候选。
 7. **存储优化遵守结算契约。** 复制、扫描与通知的实现方式必须保持以上结算结果及可见性。
 
@@ -35,7 +35,7 @@ Blocker／Blockable 的数值、能力 Change 工厂与完整操作见 [Capabili
 
 关系存于两端 Capability，字段含义如下：
 
-Unit 初始化时至多声明 Blocker、Blockable 之一，也允许两者皆无。组合约束在创建入口建立，内部操作信任能力身份保持稳定，不在各次查询或维护中重复校验互斥。这是当前项目的支持范围，不据此要求 Blocker 属于 ALLY、Blockable 属于 ENEMY，也不推导宿主的 Layer、Route 或 Locomotion。容量为 0 或暂时被 Rule 禁止参与不会移除能力。
+Unit 初始化时至多声明 Blocker、Blockable 之一，也允许两者皆无。组合约束在创建入口建立，内部操作信任能力身份保持稳定，不在各次查询或维护中重复校验互斥。这是当前项目的支持范围，不据此要求 Blocker 属于 ALLY、Blockable 属于 ENEMY，也不推导宿主的 Layer、Route 或 Locomotion。容量为 0 或暂时被 Restriction 禁止参与不会移除能力。
 
 - Blockable 的 relation 字段保存当前 Relation，未被取得时为 null；relation.blocker 定位唯一的阻挡者，该字段是排他归属的权威。
 - Blocker 的 relations 字段按建立顺序保存 Relation，解除保留其余关联的顺序，重新建立追加到末尾。
@@ -56,20 +56,20 @@ interface Definition {
     readonly capacity: number;
     readonly layer: Layer;
     readonly radius?: number;
-    readonly rules: readonly Rule[];
+    readonly restrictions: readonly Contribution<Restriction>[];
 }
 
 interface BlockableDefinition {
     readonly volume: number;
-    readonly rules: readonly Rule[];
+    readonly restrictions: readonly Contribution<Restriction>[];
 }
 ```
 
-layer 表示该 Blocker 能阻挡的目标层，与宿主自身的 Unit Layer 分开，类型由 Blocking 自己定义，不依赖 Unit Layer Capability。Blocker 的 Definition.layer 必填；两端 Definition.rules 都必填，初始化装配到各自的 rules，沿相同二元 Rule 契约求值。没有额外规则时明确写 rules: []。State.layer 与 State.radius 保存当前阻挡层及实际半径，不保存另一份派生层或通过查询临时恢复半径。
+layer 表示该 Blocker 能阻挡的目标层，与宿主自身的 Unit Layer 分开，类型由 Blocking 自己定义，不依赖 Unit Layer Capability。Blocker 的 Definition.layer 必填；两端 Definition.restrictions 都必填，初始化装配到各自的 restrictions，沿相同二元 Restriction 契约求值。没有额外规则时明确写 restrictions: []。State.layer 与 State.radius 保存当前阻挡层及实际半径，不保存另一份派生层或通过查询临时恢复半径。
 
 Core 提供 GROUND 半径 0.7071、AIR 半径 0.8944。初始化和 setLayer 切换时均选择 definition.radius ?? DEFAULT_RADIUS[layer]；Definition 显式提供的 radius 始终覆盖默认值，切层不改变该覆盖。DEFAULT_RADIUS 是类型为 Readonly<Record<Layer, number>> 的内部共享常量，不经过公共入口导出。普通干员省略 radius；特殊对象按需声明明确半径。
 
-两端关系字段如下；其他容量、占用与 Rule 字段保持各自职责：
+两端关系字段如下；其他容量、占用与 Restriction 字段保持各自职责：
 
 ```typescript
 interface PositionAdjustment {
@@ -91,7 +91,7 @@ interface BlockerState {
 }
 ```
 
-容量贡献使用 Blocking 自己的 Modifier：ADD 追加数值，ZERO 将最终容量置零。setCapacityContribution(entry) 接收 Contribution<readonly Modifier[]>，返回 Change，通过 common/collection/entries.ts 登记或替换来源，在发布后局部完成必要裁撤与通知；移除来源使用同一数组工具。Contribution 模块只提供贡献类型和选择有效来源的 resolve。Blocking 的 resolveCapacity 先选择生效来源，再展平其 Modifier 数组；出现任一有效 ZERO 时直接返回 0，否则在 Definition.capacity 上累加全部 ADD，再按 ties-to-even 整数化和下限 0 求值。未胜出来源里的 ZERO 不影响结果；撤销有效 ZERO 后按剩余生效贡献重新计算。
+容量贡献使用 Blocking 自己的 Modifier：ADD 追加数值，ZERO 将最终容量置零。setCapacityContribution(entry) 接收 Contribution<readonly Modifier[]>，返回 Change，通过 common/collection/entries.ts 登记或替换来源，在发布后局部完成必要裁撤与通知；移除来源使用同一数组工具。Contribution 模块通过 resolveEntries 保留有效登记，通过 resolve 取得有效 value。Blocking 的 resolveCapacity 先选择生效来源，再展平其 Modifier 数组；出现任一有效 ZERO 时直接返回 0，否则在 Definition.capacity 上累加全部 ADD，再按 ties-to-even 整数化和下限 0 求值。未胜出来源里的 ZERO 不影响结果；撤销有效 ZERO 后按剩余生效贡献重新计算。
 
 ADD／ZERO 是项目的容量修正协议，不代表原生全体阻挡数公式；其他领域按各自的 Attribute 协议求值。Blockable 的 volume 使用整数追加量与下限 1。
 
@@ -118,58 +118,55 @@ search() 固定候选数组，逐个 acquire()，每项接续最新 BattleState�
 
 例如初始剩余容量为 1、E1 和 E2 都在候选中，取得 E1 的 Hook 将容量提高到 2 后，E2 可以在同一次 search() 中接敌。若 Hook 已提前阻挡 E2，外层尝试跳过它；新创建的 E3 不加入本次候选。
 
-## 关系资格与 Rule
+## 关系资格与 Restriction
 
-两端使用同一个 [Rule](../../src/core/unit/capability/blocking/rule.ts)，从 [Capability 入口](../../src/core/unit/capability/blocking/index.ts) 导入：
+两端使用同一个 [Restriction](../../src/core/unit/capability/blocking/restriction.ts)，从 [Capability 入口](../../src/core/unit/capability/blocking/index.ts) 导入：
 
 ```typescript
-export interface RuleContext {
+export interface RestrictionContext {
     readonly blocker: Unit & Blocker;
     readonly blockable: Unit & Blockable;
 }
 
-export interface Rule {
-    readonly id: string;
-    readonly allows: (battle: BattleState, context: RuleContext) => boolean;
-}
+export type Restriction = restriction.Restriction<RestrictionContext>;
 ```
 
-Rule 是针对当前双方的纯查询，可以读取完整 Unit 的其他能力及 BattleState，不执行状态写入。`blocker.rules` 与 `blockable.rules` 只表示规则的登记所有者；两边都使用同一 `{ blocker, blockable }` Context，不把 Blockable 侧的角色反转，也不另定义各自的 Rule 类型。多个限制按独立 ID 登记与撤销。
+Restriction 是针对当前双方的纯查询，可以读取完整 Unit 的其他能力及 BattleState，不执行状态写入。`blocker.restrictions` 与 `blockable.restrictions` 只表示规则的登记所有者；两边都使用同一 `{ blocker, blockable }` Context，不把 Blockable 侧的角色反转，也不另定义各自的 Restriction 类型。双方分别保存 Contribution<Restriction>，按 Contribution 竞争后用同一 Context 执行 AND；多个来源按独立登记 ID 撤销。
 
-Rule 的读取范围不意味着自动订阅每个 Battle 字段。Rule Change 的 Settlement 同步复核所属单位的当前关系；时间、第三方单位等间接事实变化由每 Tick 的 Blocking 检查点统一复核。每次全场复核固定入口关系集合并只遍历一遍，Hook 返回后尚未访问的关系读取最新状态；已访问关系在后续 Hook 或搜索中受间接变化影响时，等待下一检查点，除非该业务明确执行即时复核。这是项目的调度契约，不声称原生存在相同全场阶段。
+Restriction 的读取范围不意味着自动订阅每个 Battle 字段。Restriction Change 的 Settlement 同步复核所属单位的当前关系；时间、第三方单位等间接事实变化由每 Tick 的 Blocking 检查点统一复核。每次全场复核固定入口关系集合并只遍历一遍，Hook 返回后尚未访问的关系读取最新状态；已访问关系在后续 Hook 或搜索中受间接变化影响时，等待下一检查点，除非该业务明确执行即时复核。这是项目的调度契约，不声称原生存在相同全场阶段。
 
-Blocking 结算不要求双方具有 Allegiance，也不内置 `areHostile` 条件。原生的阵营资格是阻挡者允许哪些目标阵营，普通 Character 允许 ENEMY 是标准策略，不是关系本身的公理。Capability 入口提供可选的标准 Rule：
+Blocking 结算不要求双方具有 Allegiance，也不内置 `areHostile` 条件。原生的阵营资格是阻挡者允许哪些目标阵营，普通 Character 允许 ENEMY 是标准策略，不是关系本身的公理。Capability 入口提供可选的标准 Restriction：
 
 ```typescript
-export function sides(...sides: readonly Side[]): Rule;
+export function sides(...sides: readonly Side[]): Restriction;
 ```
 
-它以 `blocking/sides` 为 ID，仅检查目标当前具有 Allegiance 且其 `allegiance.side` 在指定集合内，不要求阻挡者具有 Allegiance。多个阵营可在同一规则内声明，例如 `sides("ALLY", "NEUTRAL")`。`setBlockerRule(sides(...))` 生成替换策略的 Change，Unit.update 发布后同步维护自身旧关系。未选择该规则时，没有隐含的阵营限制。
+sides 只返回无 id 的限制定义，检查目标当前具有 Allegiance 且其 side 在指定集合内，不要求阻挡者具有 Allegiance。调用方提供登记身份，例如 `setBlockerRestriction({ id: "blocking/sides", value: sides("ALLY", "NEUTRAL") })`；变更发布后仍同步维护自身旧关系。未登记该定义时，没有隐含阵营限制。不同参数产生不同定义，不自动共享豁免身份。
 
-Blocker Definition 的必填 `rules` 在初始化时进入当前 State，之后只读取当前 `blocker.rules`。普通干员内容显式声明：
+Blocker Definition 的必填 `restrictions` 在初始化时进入当前 State，之后只读取当前 `blocker.restrictions`。普通干员内容显式声明：
 
 ```typescript
 blocker: {
     capacity,
     layer: "GROUND",
-    rules: [sides("ENEMY")],
+    restrictions: [{ id: "blocking/sides", value: sides("ENEMY") }],
 }
 ```
 
-Content 通过同一二元 Rule 类型提供其他资格策略；宿主的 Capability 组合与具体策略分别声明。
+Content 通过同一二元 Restriction 类型提供其他资格策略；宿主的 Capability 组合与具体策略分别声明。
 
 Blocking 将资格与其他取得条件分开处理：
 
 | 阶段 | 检查内容 |
 | --- | --- |
-| `canSearch` | 不依赖具体目标的基础资格，包括阻挡者在场、存活；GROUND 另要求当前根格的阻挡许可，AIR 跳过该地块条件；不提前求值二元 Rule。 |
-| `canRetain` | 双方 PRESENT，阻挡层与目标空地身份匹配，以及两端所有 `Rule.allows(battle, { blocker, blockable })`；GROUND 还要求当前根格允许阻挡，AIR 豁免。临时 HP 为 0 不作为默认保持资格的退出条件。 |
+| `canSearch` | 不依赖具体目标的基础资格，包括阻挡者在场、存活；GROUND 另要求当前根格的阻挡许可，AIR 跳过该地块条件；不提前求值二元 Restriction。 |
+| `canRetain` | 双方 PRESENT，阻挡层与目标空地身份匹配，以及两端所有 `Restriction.allows(battle, { blocker, blockable })`；GROUND 还要求当前根格允许阻挡，AIR 豁免。临时 HP 为 0 不作为默认保持资格的退出条件。 |
 | 新关系取得 | 在搜索和关系资格之外，双方有 Vitality 时 HP 必须大于 0，确认目标尚无归属、双方在接敌距离内，且当前占用加目标 volume 不超过 capacity。 |
 | 容量裁撤 | 独立比较当前总占用与容量，超出时从既有有序关联末尾逐项解除；每项通知后接续最新状态。 |
 
 距离只约束新取得，普通移动超出起始半径不使旧关系失效。目标是否已有归属在取得入口检查，不属于 `canRetain`；当前容量已满也不使每条既有关系分别变成不合格。取得与保持资格都按当前双方求值，不能压成单个 Unit 的启用标志。
 
-[空间消失](presence.md)通过两端已有的 Rule 限制关系资格，由 Presence Change 的 Settlement 按宿主能力角色调用 Blockable.release 或 Blocker.releaseAll，读取并释放当时的当前关系。Blocking 不直接读取 Presence。
+[空间消失](presence.md)通过两端已有的 Restriction 限制关系资格，由 Presence Change 的 Settlement 按宿主能力角色调用 Blockable.release 或 Blocker.releaseAll，读取并释放当时的当前关系。Blocking 不直接读取 Presence。
 
 正常空地匹配要求目标实际具有 Unit Layer，且 blocker.layer === target.layer.type；没有 Layer 的 Blockable 不参与正常阻挡，不隐式视为 GROUND。生产敌人装配均提供该身份，测试参与关系的对象也应明确配置；Blockable 自身的类型与构造不因此强制依赖 Layer Capability。
 
@@ -246,13 +243,13 @@ Blocker Capability 提供完整操作 `releaseAll(battle, reference: Ref<Unit & 
 | 工厂 | 主要对象与输入 |
 | --- | --- |
 | setLayer | `(Layer): Change<Unit & Blocker>` |
-| setBlockerRule／removeBlockerRule | `(Rule / id): Change<Unit & Blocker>` |
+| setBlockerRestriction／removeBlockerRestriction | `(Contribution<Restriction> / id): Change<Unit & Blocker>` |
 | setCapacityContribution／removeCapacityContribution | `(Contribution<readonly Modifier[]> / id): Change<Unit & Blocker>` |
-| setBlockableRule／removeBlockableRule | `(Rule / id): Change<Unit & Blockable>` |
+| setBlockableRestriction／removeBlockableRestriction | `(Contribution<Restriction> / id): Change<Unit & Blockable>` |
 | setVolumeContribution／removeVolumeContribution | `(Contribution<number> / id): Change<Unit & Blockable>` |
 | unit.setHook／removeHook | 使用两端各自的 acquired／released Key，分别返回 `Change<Unit & Blocker>`／`Change<Unit & Blockable>` |
 
-工厂不接收 Ref 或 battle，也不自行提交。Unit.update 从传入 Ref 确认宿主存在，缺失时抛出 RangeError；存储中的 LEAVING 宿主仍可清理。Rule、容量和 volume 附带各自的局部后继，Hook Change 只登记集合。相同条目或移除不存在 ID 的本项转换返回原 Unit，由 createChange 不登记 Settlement，不借无变化输入触发裁撤。
+工厂不接收 Ref 或 battle，也不自行提交。Unit.update 从传入 Ref 确认宿主存在，缺失时抛出 RangeError；存储中的 LEAVING 宿主仍可清理。Restriction、容量和 volume 附带各自的局部后继，Hook Change 只登记集合。相同条目或移除不存在 ID 的本项转换返回原 Unit，由 createChange 不登记 Settlement，不借无变化输入触发裁撤。
 
 工厂实现在 [blocker-operations.ts](../../src/core/unit/capability/blocking/blocker-operations.ts) 和 [blockable-operations.ts](../../src/core/unit/capability/blocking/blockable-operations.ts)。blocker.ts／blockable.ts 保留模型、初始化、守卫和数值查询，Catalog 与只读查询可精确依赖模型。公共入口直接导出工厂，不增加包装。
 
@@ -262,7 +259,7 @@ setLayer 的 Settlement 解除执行时的全部出向关系，包括在最终�
 
 ## 主动解除阻挡的空间操作
 
-[Presence](presence.md) 的 appear／disappear 返回组合 Change：自身叶子只修改空间事实，限制直接复用所属能力的 Rule Change；自身 Settlement 按 previous 的稳定角色调用 Blockable.release 或 Blocker.releaseAll，由完整操作读取当前关系、取消自身计划并释放。Blocker 不取消目标的独立计划。Route 主动覆盖位置时通过 unit.update 提交 Presence Change；没有该能力时先纯发布位置，再按角色调用相同完整操作。各释放操作在自己的首个 RELEASED Hook 前完成所属计划清理和整批双端解除，不向 Blocking.release 传入额外更新值。
+[Presence](presence.md) 的 appear／disappear 返回组合 Change：自身叶子只修改空间事实，限制直接复用所属能力的 Restriction Change；自身 Settlement 按 previous 的稳定角色调用 Blockable.release 或 Blocker.releaseAll，由完整操作读取当前关系、取消自身计划并释放。Blocker 不取消目标的独立计划。Route 主动覆盖位置时通过 unit.update 提交 Presence Change；没有该能力时先纯发布位置，再按角色调用相同完整操作。各释放操作在自己的首个 RELEASED Hook 前完成所属计划清理和整批双端解除，不向 Blocking.release 传入额外更新值。
 
 Blocker.layer 的 Change 先在全批发布时设置 layer／radius，等轮到自己的 settle 才通过 releaseAll 读取并批量清理当前集合。release 操作入口固定的全部候选，在它自己的首个 RELEASED Hook 前一并清除。若较早 settle 已解除部分关系，那些较早通知遵守自己的结算语义，不能承诺全批第一个 RELEASED 前切层旧关系已全清空。
 
@@ -276,12 +273,12 @@ Blocker.layer 的 Change 先在全批发布时设置 layer／radius，等轮到�
 
 | 后继来源 | 作用范围 |
 | --- | --- |
-| Blocker／Blockable Rule Change | settle 固定自身当前关系列表，逐条调用 `maintain(battle, relation)`；不裁容量或扩展到其他关系。 |
+| Blocker／Blockable Restriction Change | settle 固定自身当前关系列表，逐条调用 `maintain(battle, relation)`；不裁容量或扩展到其他关系。 |
 | Blocker 容量 Change | settle 结算本 Blocker 当前容量，从末尾逐条裁撤；不扫描资格失效关系。 |
 | Blockable volume Change | settle 读取执行时当前 owner，结算该阻挡组的当前容量；不在 Hook 后追随新的 owner。 |
 | acquire | 通知完成后只复核本次新 Relation。 |
 | release、setLayer、Presence／Unit.remove | release 仅解除各操作交入的关系集合，不附带维护或搜索。 |
-| Locomotion／Blockable 偏移位置提交 | 只推进位置或计划，不调用 Blocking；依赖位置的 Rule 在关系检查点求值。Route 主动覆盖位置则明确解除关系。 |
+| Locomotion／Blockable 偏移位置提交 | 只推进位置或计划，不调用 Blocking；依赖位置的 Restriction 在关系检查点求值。Route 主动覆盖位置则明确解除关系。 |
 | maintainAll、完整地块更新 | 固定入口关系列表，按 Unit 顺序及各 Blocker 内的关系顺序各复核一次资格，不裁容量。 |
 | 每 Tick 的 Blocking 阶段 | 先固定 Blocker 候选、执行 maintainAll，再搜索新关系。 |
 
@@ -291,11 +288,11 @@ Blocker.layer 的 Change 先在全批发布时设置 layer／radius，等轮到�
 
 容量／volume Change 的 Settlement 共享 blocker-operations.ts 内部的 `settleCapacity(battle, Ref<Unit & Blocker>)`，该函数不经过公共 index.ts 导出。它读取当前总占用与容量，超额时 release 当前列表末尾的一条关系，完成同步 Hook 后重新读取，再决定是否继续。容量后继不先挑选资格失效项，资格复核也不接管其他项尚未执行的容量后继。
 
-例如容量从 3 降为 1，先解除并通知 E3；该 Hook 把同一 owner 容量恢复为 2 后，E2 保留。若 Hook 先修改同一 owner 的 Rule／容量，嵌套后继可以按最新值先解除 E2，恢复容量不撤销既成事实。若修改的是无关 Blocker B，B 的局部后继不会顺便裁撤 A；外层仍在 Hook 返回后按最新 A 决定是否继续。
+例如容量从 3 降为 1，先解除并通知 E3；该 Hook 把同一 owner 容量恢复为 2 后，E2 保留。若 Hook 先修改同一 owner 的 Restriction／容量，嵌套后继可以按最新值先解除 E2，恢复容量不撤销既成事实。若修改的是无关 Blocker B，B 的局部后继不会顺便裁撤 A；外层仍在 Hook 返回后按最新 A 决定是否继续。
 
 嵌套 update 只执行自己的局部结算列表，不调度外层剩余项，不保存全局 pending 或更新锁。已经发布的同对象或同关联事实可以交叠，不能把局部队列误称为事务隔离。显式全场地块操作通过 maintainAll 复核已发布的资格事实；需要局部语义的工厂不能以全场复核代替自身后继。
 
-Unit 的真实离场由 Lifetime 先纯发布 LEAVING，再派发统一 prepare Hook。Blocker／Blockable 在自己的 initializer 中将清理 Hook 放在序列前部：Blockable 取消自身 adjustment，再解除当前 relation；Blocker 调用 releaseAll，读取当前关系并批量解除后才通知，不取消其原目标的计划。清理通过 Departure.unit 的身份读取最新宿主，不将离场入口快照中的 relations 当作当前关系。Unit 不导入 Blocking，Finalize 不扫描全场。主动撤退在请求离场前完成返费与 Card 结算，见[主动操作与被动死亡](deployment.md#主动操作与被动死亡)；Blocking 清理不重新决定本次账务。Damage／Healing 写 HP 不启动 Blocking，临时 HP 为 0 不使旧关系失效，普通 Damage 完成 HP Applied 后仍应死亡才请求上述离场清理。普通私有 state 写回和 Hook Change 不启动 Blocking，Rule 能读取其他能力不代表系统自动订阅任意字段。
+Unit 的真实离场由 Lifetime 先纯发布 LEAVING，再派发统一 prepare Hook。Blocker／Blockable 在自己的 initializer 中将清理 Hook 放在序列前部：Blockable 取消自身 adjustment，再解除当前 relation；Blocker 调用 releaseAll，读取当前关系并批量解除后才通知，不取消其原目标的计划。清理通过 Departure.unit 的身份读取最新宿主，不将离场入口快照中的 relations 当作当前关系。Unit 不导入 Blocking，Finalize 不扫描全场。主动撤退在请求离场前完成返费与 Card 结算，见[主动操作与被动死亡](deployment.md#主动操作与被动死亡)；Blocking 清理不重新决定本次账务。Damage／Healing 写 HP 不启动 Blocking，临时 HP 为 0 不使旧关系失效，普通 Damage 完成 HP Applied 后仍应死亡才请求上述离场清理。普通私有 state 写回和 Hook Change 不启动 Blocking，Restriction 能读取其他能力不代表系统自动订阅任意字段。
 
 ## 取得归属与通知时点
 
@@ -323,7 +320,7 @@ E 的 ACQUIRED Hook
 
 例如 A 的 ACQUIRED Hook 解除原关联条目，嵌套 RELEASED 通知同步完成；外层检查旧关联已失效，停止 A 剩余及 E 的 ACQUIRED 响应。同一双方重新建立的新条目属于另一次关系，不能恢复旧关系的派发。已完成的回调副作用保留；这里只停止已失效关系尚未执行的响应。RELEASED 是解除后的历史通知，不以原关系仍存在作为执行资格。
 
-Contribution 模块只提供贡献类型与 resolve，不处理自身生命周期，也不感知 Blocking 关系；列表修改由所属领域的 Change 通过 common/collection/entries.ts 完成。贡献何时安装、更新或移除，始终由外部 Effect／Content 或其他业务所有者负责，不向 Contribution 增加 Relation、owner、enabled 或生命周期绑定机制。
+Contribution 模块提供贡献类型、resolveEntries 与 resolve，不处理自身生命周期，也不感知 Blocking 关系；列表修改由所属领域的 Change 通过 common/collection/entries.ts 完成。贡献何时安装、更新或移除，始终由外部 Effect／Content 或其他业务所有者负责，不向 Contribution 增加 Relation、owner、enabled 或生命周期绑定机制。
 
 Blocking 保证每个 ACQUIRED Hook 开始时原 Relation 对象仍表示当前关系。已经进入的 Hook 如果调用了其他可重入领域操作，后续依赖关系或宿主时仍须重新检查当前事实。贡献的安装与清理由外部所有者执行；清理应定位属于原关系的资源，不能误删后来重建关系的贡献。
 
@@ -347,7 +344,7 @@ GROUND 的保持资格也要求当前根格允许阻挡，完整地块更新在�
 
 `Tile.get_isMeleeBlockable`（70673，`0x1808c6070`）先读黑板 `tile_blockable`，有值直接返回，未配置才取 `!isHighland`。`Tile.get_isHighland`（70670，`0x1808c5f10`）默认读取 TileData 的原始高度；它与读取当前 Options 的 `get_heightType` 不是同一字段语义。因此普通高地的显式阻挡许可不能被当前 elevation 的硬判断覆盖。
 
-射击台另有内容规则。原生 `trap_1106_achplat` 的 `trap_1106_achplat_passive` 在 `ON_OWNER_OVERLAPPED` 向乘员创建 `highland_common[block]`；后者对 WALK 阻挡模式施加带 `BLOCK_FREE` 的派生 Buff，并随阻挡模式变化维护。`Tile.RegisterCharacter`（70726，`0x1808c1eb0`）通知 `BuffContainer.OnOwnerOverlapped`（65410，`0x1806764e0`），`SearchBlockee` 再通过 `Entity.isBlockFree`（66511，`0x180705590`）拒绝接敌。这证明平台禁阻挡来自具体内容，不是所有高地的通用规则。射击台 Content 通过 Occupancy 的 SUPPORT Definition onOccupantAdded 程序在当前乘员的 blocker.rules 登记平台自己的 Rule，只禁止 GROUND 阻挡；该纯规则直接读取当前 blocker.layer，AIR 仍由其余 Blocking 规则判断。onOccupantRemoved 程序同步移除该平台规则，不改变地块 allowsBlocking，也不需要新的层变化通知。
+射击台另有内容规则。原生 `trap_1106_achplat` 的 `trap_1106_achplat_passive` 在 `ON_OWNER_OVERLAPPED` 向乘员创建 `highland_common[block]`；后者对 WALK 阻挡模式施加带 `BLOCK_FREE` 的派生 Buff，并随阻挡模式变化维护。`Tile.RegisterCharacter`（70726，`0x1808c1eb0`）通知 `BuffContainer.OnOwnerOverlapped`（65410，`0x1806764e0`），`SearchBlockee` 再通过 `Entity.isBlockFree`（66511，`0x180705590`）拒绝接敌。这证明平台禁阻挡来自具体内容，不是所有高地的通用规则。射击台 Content 通过 Occupancy 的 SUPPORT Definition onOccupantAdded 程序在当前乘员的 blocker.restrictions 登记平台自己的 Restriction，只禁止 GROUND 阻挡；该纯规则直接读取当前 blocker.layer，AIR 仍由其余 Blocking 规则判断。onOccupantRemoved 程序同步移除该平台规则，不改变地块 allowsBlocking，也不需要新的层变化通知。
 
 ## 阻挡层与其他领域的边界
 
@@ -358,11 +355,11 @@ GROUND 的保持资格也要求当前根格允许阻挡，完整地块更新在�
 | 目标当前运动身份 `changeableMotionMode` | 现有 `Layer.state.type` 的 GROUND／AIR 可表达目标当前空地身份，不需另存一份 Blockable motion。 |
 | 寻路模式 `pathMotionMode` | Route 当前 Context 的 Plan.motionMode 表达路线通行方式；不得用它代替阻挡资格。Locomotion 消费此方式处理运动，不保存第二份身份；修改通过 [Route](navigation.md#route-定义与进度) 的 reassign 重建相应执行。 |
 | 阻挡者 `blockMode` | 项目以 blocker.layer 表示能够阻挡的目标层，并由 blocking.setLayer 执行切换；不从宿主自身 Layer 推导，也不把原生名称引入项目状态。 |
-| `BlockFree` 等禁挡状态 | 现有双端二元 Rule 可表达，不需要第三个模式或新的 enabled 字段。 |
+| `BlockFree` 等禁挡状态 | 现有双端二元 Restriction 可表达，不需要第三个模式或新的 enabled 字段。 |
 
 Movement 在 `blockable.relation !== null` 时跳过该目标的自主 Locomotion 推进。阻挡状态直接由当前关系表达，Route 的计时与即时指令独立推进。
 
-通用 Blocking 支持 GROUND／AIR 目标匹配、Core 默认半径、AIR 地块豁免，以及切层时清除当前全部出向关系。Rule 处理阵营、禁挡与其他资格；具体干员的起降程序属于 Content。
+通用 Blocking 支持 GROUND／AIR 目标匹配、Core 默认半径、AIR 地块豁免，以及切层时清除当前全部出向关系。Restriction 处理阵营、禁挡与其他资格；具体干员的起降程序属于 Content。
 
 [蒂比案例调研](../research/cases/21-tippi-air-blocking.md)给出起飞与落地的 Prefab／Buff 依据：本人仍为 WALK，起飞切换阻挡层并独立施加对地规避；默认半径变为 0.8944、获得近战地块条件豁免，切换时清理旧关系。通用接口承接这些 Blocking 行为，蒂比具体内容尚未实现。飞行目标的自主移动同样由 Movement 根据当前关系限制。
 
@@ -376,7 +373,7 @@ Movement 在 `blockable.relation !== null` 时跳过该目标的自主 Locomotio
 
 `stableBlockPosition(unit)` 在当前仍有 blocker 时返回 `adjustment?.to ?? unit.position`，无关系时返回当前真实位置。后续取得因此使用先前目标的预定站位，而不只看它尚未完成的插值位置。稳定位置是查询结果，不在 State 中再保存一份。
 
-acquire 从当前 `Unit.position` 建立 `{ from, to, startTick }`，新计划覆盖旧计划。偏移按 0.2 秒推进，项目固定 30 Hz 对应 6 Tick；`advancePosition(battle, ref)` 以 `(tick - startTick) / 6` 计算线性位置，到达终点后清除 adjustment，不改变关系。`Unit.position` 始终是唯一真实坐标，不保存额外 progress／velocity，也不建立独立 Tween 对象或全局任务表。推进只提交位置与计划，依赖位置的关系资格在 Blocking 检查点复核；它不借用自主 Locomotion Rule，也不额外重置自主速度。
+acquire 从当前 `Unit.position` 建立 `{ from, to, startTick }`，新计划覆盖旧计划。偏移按 0.2 秒推进，项目固定 30 Hz 对应 6 Tick；`advancePosition(battle, ref)` 以 `(tick - startTick) / 6` 计算线性位置，到达终点后清除 adjustment，不改变关系。`Unit.position` 始终是唯一真实坐标，不保存额外 progress／velocity，也不建立独立 Tween 对象或全局任务表。推进只提交位置与计划，依赖位置的关系资格在 Blocking 检查点复核；它不借用自主 Locomotion Restriction，也不额外重置自主速度。
 
 Movement 复用绑定阶段起始 BattleState 的 Unit Query，先过滤 Blockable 并推进全部已有位置修正，再过滤 Route 并执行路线和自主移动。各步在调用时生成 Typed Ref，完整操作从最新 BattleState 读取当前计划、位置和资格。固定枚举来源不要求提前生成 Ref 数组或调用 toArray()。没有 Route 的 Blockable 也能推进偏移；偏移尚未结束或刚结束都不自动跳过自主移动，仍按当前关系、Route 与 Locomotion 资格决定。
 
@@ -432,6 +429,6 @@ Movement 后的固定阶段会改变部分接敌归属、目标选择、已执�
 - 第一只该类敌人被阻挡、产生容量贡献后，后续候选何时获得重新判断的机会；对照同轮实时容量行为及原生特殊条件。
 - 普通敌人与该类敌人混合、同类贡献达到 6 层上限时的实际容量、占用与选择顺序。
 - 敌人死亡、解除阻挡、转移阻挡者时撤销正确来源的容量贡献，并重新检查既有关系。
-- 基础 capacity 为 0、被 Rule 禁止阻挡与仅剩余额度为 0 分别核对，不因引入特殊尝试而绕过明确的资格限制。
+- 基础 capacity 为 0、被 Restriction 禁止阻挡与仅剩余额度为 0 分别核对，不因引入特殊尝试而绕过明确的资格限制。
 - 若接入同步关系回调，按跨领域状态失效契约重读宿主、目标、关系及当前容量，不继续使用回调前的 remaining。
 

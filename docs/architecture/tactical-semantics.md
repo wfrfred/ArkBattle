@@ -67,7 +67,7 @@ healFree 只限制治疗目标选择，明确 Ref 的 Healing 不重新检查选
 | ABNORMAL-02 沉默／静默 | 沉默只作用可沉默的技能、能力与 Buff；静默另有无条件限制。[异常效果](https://prts.wiki/w/异常效果) | [effects/control.ts](../../src/core/effects/control.ts) 的 silence 无条件禁止 Skill 激活，也未暂停已有可沉默 Effect。 | 明确不一致／P1 |
 | ABNORMAL-03 免疫、反制、抵抗 | 区分安装限制、使效果失效、清除相关 Buff 和持续时间变化；不能统一为删除实例。[BUFF](https://prts.wiki/w/BUFF)、[异常效果](https://prts.wiki/w/异常效果) | 通用行为尚未接入；当前地面敌人工厂拒绝未支持的 stunImmune 配置。 | 部分实现／P1 |
 | ABNORMAL-04 其他异常组合 | 寒冷、冻结、缴械、束缚、沉睡、浮空等按内容组合规则，并保留必要的可查询语义。[异常效果](https://prts.wiki/w/异常效果) | 现有 Capability / Effect 接口提供部分组合基础，具体机制未完整接入。 | 部分实现／P2 |
-| EP-03 元素免疫与恢复 | 元素免疫限制损失；爆发冷却对回复的限制独立。[元素](https://prts.wiki/w/元素)、[元素免疫](https://prts.wiki/w/异常效果) | [elemental/query.ts](../../src/core/unit/capability/elemental/query.ts) 分开损伤／治疗准入；damage 节点的 Rule 可表达元素免疫而不拒绝治疗，Burst 冷却同时限制两者。结论按 PRTS 定义推导，尚未客户端动态复核。 | 待客户端复核／P2 |
+| EP-03 元素免疫与恢复 | 元素免疫限制损失；爆发冷却对回复的限制独立。[元素](https://prts.wiki/w/元素)、[元素免疫](https://prts.wiki/w/异常效果) | [elemental/query.ts](../../src/core/unit/capability/elemental/query.ts) 分开损伤／治疗准入；damage 节点的 Restriction 可表达元素免疫而不拒绝治疗，Burst 冷却同时限制两者。结论按 PRTS 定义推导，尚未客户端动态复核。 | 待客户端复核／P2 |
 | EP-04 类型及属性扩展 | 按目标内容接入狂躁、元素回复、爆发恢复速度与其他动态修正。[元素](https://prts.wiki/w/元素) | 狂躁及相应特殊内容尚未接入；四型 EP 和动态属性契约见 [Elemental 设计](elemental.md)。 | 狂躁及特殊内容／P2 |
 | BLOCK-02 特殊阻挡 | 地面／空中阻挡、起飞、不可阻挡和强制解除关系按机制分别处理。[行动方式](https://prts.wiki/w/行动方式) | 通用 GROUND／AIR 阻挡、标准半径、AIR 地块豁免与 setLayer 完整切换已接入；具体起降内容、特殊目标层豁免及半径倍率仍待接入。 | 部分实现／P1 |
 | BLOCK-03 关系改变容量 | 大君之触、大君之赐使阻挡者阻挡数 +1，同类效果最多叠加 6 次。[大君之触](https://prts.wiki/w/大君之触)、[大君之赐](https://prts.wiki/w/大君之赐) | 当前已按固定候选和实时容量处理，关系 Hook 增容可用于后续候选；这些敌人的关系效果尚未接入。满阻挡时是否有特殊尝试／补偿，以及建立关系后的容量变化如何接续选择，见 [Blocking 专项记录](blocking.md#满阻挡筛选与关系引起的容量变化)。 | 机制已确认；特殊边界待核对／P1 |
@@ -79,8 +79,8 @@ healFree 只限制治疗目标选择，明确 Ref 的 Healing 不重新检查选
 | PROJECTILE-01 飞行与命中 | 追踪、定时、沿途碰撞、附着、套索及到期处理按内容表达；已发射弹道不自动随 Action 结束。[弹道](https://prts.wiki/w/抛射物) | [执行内核](projectile.md) 已实现独立泛型实例、异构集合、position／state 更新边界、三个回调及 Lifetime 请求／Finalize；弩手内容提供追踪弩箭。沿途碰撞、附着、套索和到达后的周期业务等具体内容尚未接入。 | 基础已实现；特殊内容／P1 |
 | DEPLOY-02 关卡费用上限 | 实际部署费用按独立费用上限裁定，不与当前 DP 账户上限混为一个值。[数值范围](https://prts.wiki/w/数值范围) | rawCost 与运行费用分阶段取整，按 costCeiling 截断；多来源修正仍为明确项目组合，完整原生来源写入与动态同步未闭合。 | 基础已实现；来源公式待核实／P2 |
 | DEPLOY-03 部署方向 | 手动部署输入提供本次朝向，决定实例的方向相关范围与业务。[部署操作](https://prts.wiki/w/新人入门) | DeployRequest.direction 经 Occupancy 初始输入写入本次实例；调用者通过 hasDirection 取得当前朝向后生成几何范围，基础 Unit 与无朝向装置不伪造方向。 | 基础已实现；更多内容按需接入 |
-| DEPLOY-04 手动撤退资格 | 手动撤退按可撤退性裁定，内容强退与实际离场使用各自入口。[异常效果](https://prts.wiki/w/异常效果) | retreat 使用已包含 Occupancy 契约的 Deployable Typed Ref，检查 PRESENT 与当前 Rule，在请求离场前直接结算退款、Card 费用阶段与库存恢复；被动死亡结算只响应确认死亡。控制者身份和网络授权留在外层，具体限制来源仍需接入。 | 通用入口已实现；来源待接入／P2 |
-| DEPLOY-05 免费与特殊部署 | 实际扣账、场上费用属性、返费资格与来源分别决定。[可返费](https://prts.wiki/w/部署费用#可返费) | 完整 Request 携带 Quote、附加 Rule 和普通 Unit Hook；规则合并后统一资格，先消费 DP／库存／部署位，再构造、登记并按登记序执行 enter。quote.dp 的 0 与 null 区分正常零费和无支付。卫戍及具体免费来源仍由 Content／Mechanism 实现，完整移动重部署尚未接入。 | 普通协议已实现；特殊来源待接入／P1 |
+| DEPLOY-04 手动撤退资格 | 手动撤退按可撤退性裁定，内容强退与实际离场使用各自入口。[异常效果](https://prts.wiki/w/异常效果) | retreat 使用已包含 Occupancy 契约的 Deployable Typed Ref，检查 PRESENT 与当前 Restriction，在请求离场前直接结算退款、Card 费用阶段与库存恢复；被动死亡结算只响应确认死亡。控制者身份和网络授权留在外层，具体限制来源仍需接入。 | 通用入口已实现；来源待接入／P2 |
+| DEPLOY-05 免费与特殊部署 | 实际扣账、场上费用属性、返费资格与来源分别决定。[可返费](https://prts.wiki/w/部署费用#可返费) | 完整 Request 携带 Quote、附加 Restriction 和普通 Unit Hook；规则合并后统一资格，先消费 DP／库存／部署位，再构造、登记并按登记序执行 enter。quote.dp 的 0 与 null 区分正常零费和无支付。卫戍及具体免费来源仍由 Content／Mechanism 实现，完整移动重部署尚未接入。 | 普通协议已实现；特殊来源待接入／P1 |
 | DEPLOY-06 Card 多实例回收 | 每个有效回收保留供给事实，来源明确选择冷却与补回方式。[待部署区](https://prts.wiki/w/待部署区) | 使用冷却与串行 recovery 分开；每次 enqueueRecovery 累加份数，下一段读取当前有效时长。追加保留本段是项目通用操作契约，特定原生 Reset 路径仍未闭合。 | 通用恢复已实现；来源特化待接入／P2 |
 | DEPLOY-07 场下属性与冷却 | 跨部署资源由 Card 保存，当前周期与未来时长分别操作。[待部署区](https://prts.wiki/w/待部署区) | Card 私有 Definition、Typed Ref、暂停及当前段操作已接入；负 DP 每次推进自然回复乘 0.5、跨零保留进度，主动加费不减半。特殊暂停组合及更多场下资源仍待具体内容。 | 通用能力已实现；特殊内容待接入／P2 |
 | SCHEDULE-01 波次与预置动作 | 主 Wave／Fragment 接收预处理 Spawn，Branch Phase 每次按权重选组；波次等待与最终等待分开，离场同步解除。见 [Schedule](schedule.md)。 | 已接入同步出生、随机与索引先发布、Enter 重入及超时政策；Predefined 使用独立领域操作。统计、STORY 与其他调度动作不由普通 Spawn 推断。 | 已实现普通 Spawn／P1 |
@@ -93,7 +93,7 @@ healFree 只限制治疗目标选择，明确 Ref 的 Healing 不重新检查选
 ## 待完成工作的补充说明
 
 1. **回收事实与实际来源分开验收。** 通用串行恢复已经保留每次归队份数；是否追加时重置、是否并行恢复、是否与使用冷却关联仍按真实来源选择，不从某种已存在的枚举或测试推导原生规则。
-2. **方向和手动资格不等于全部内容已接入。** 本次朝向与手动撤退 Rule 已有通用入口，具体限制、自动部署与术语移动仍应由内容组合，不增加通用权限系统或强制所有 Unit 有方向。
+2. **方向和手动资格不等于全部内容已接入。** 本次朝向与手动撤退 Restriction 已有通用入口，具体限制、自动部署与术语移动仍应由内容组合，不增加通用权限系统或强制所有 Unit 有方向。
 3. **攻击 SP 的基础入口不代表连击全覆盖。** 当前首次释放入口可用于普通攻击；每段伤害不自动等于一次攻击，必须用真实多次攻击和剑豪例外分别验证。
 4. **术语移动包含完整离场与重新部署。** 特殊撤退—再部署需要结束和重新进入、Buff / Skill 初态、HP 响应及失败后继，属于待接入的完整业务，不能只替换空间坐标。
 5. **低速攻速、回调微时序不先定为错误。** 当前基础 ASPD 下限 20 与间隔计算下限属于不同阶段；范围覆写是否使更低速度可达需另查。父子结束、满 SP 时的细微余量和单 Tick 响应也先证明实际影响。

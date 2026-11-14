@@ -13,7 +13,7 @@ battle = update(battle, reference, presence.disappear());
 battle = update(battle, reference, presence.appear(position));
 ```
 
-Presence 根据宿主实际拥有的能力，登记或撤销自己持有的限制 Rule：
+Presence 根据宿主实际拥有的能力，登记或撤销自己持有的限制 Restriction：
 
 | 所属能力 | 消失期间的限制 |
 | --- | --- |
@@ -23,18 +23,18 @@ Presence 根据宿主实际拥有的能力，登记或撤销自己持有的限�
 | Blocker／Blockable | 禁止取得或维持阻挡关系。 |
 | Vitality／Elemental | 拒收普通 HP／EP Damage；HP LOSS 不受这项空间接收限制，不附带普通 Healing 或资源自然恢复限制。 |
 
-两个入口返回的 Change 以 compose 排序，自身空间变更排在首位，随后用 optional 按当前宿主能力应用各能力的 setRule／removeRule Change，不手写其它能力的 Rule State 或结算列表。optional 在实际应用时读取前序变换的 next。全部变换共同参与一次发布，组合不增加发布或结算边界。恢复出现只移除 Presence 自己的登记，其它 Rule 继续生效。Capability 和 Action／Skill 的业务不反向读取 Presence。
+两个入口返回的 Change 以 compose 排序，自身空间变更排在首位，随后用 optional 按当前宿主能力应用各能力的 setRestriction／removeRestriction Change，不手写其它能力的 Restriction State 或结算列表。optional 在实际应用时读取前序变换的 next。全部变换共同参与一次发布，组合不增加发布或结算边界。恢复出现只移除 Presence 自己的登记，其它 Restriction 继续生效。Capability 和 Action／Skill 的业务不反向读取 Presence。
 
-空间查询、普通 Targeting 和 Terrain 接触直接消费空间存在事实。Combat 在执行可能消费 RNG 的目标选择程序之前排除消失来源，Action 的启动 Rule 则在执行入口判断资格。已经锁定的 tracking Projectile 继续读取现存目标的真实位置；身份失效后才使用记忆位置。命中、重新索敌和伤害接收分别判断。
+空间查询、普通 Targeting 和 Terrain 接触直接消费空间存在事实。Combat 在执行可能消费 RNG 的目标选择程序之前排除消失来源，Action 的启动 Restriction 则在执行入口判断资格。已经锁定的 tracking Projectile 继续读取现存目标的真实位置；身份失效后才使用记忆位置。命中、重新索敌和伤害接收分别判断。
 
 ## 发布与同步结算
 
 Presence Change 可以通过 compose 与同宿主的其它变更组合，遵守[统一变更协议](api-conventions.md#51-unit-完整操作与批量变更)：
 
 1. Change 函数读取当前位置的当前宿主；LEAVING 宿主返回原值与空结算列表，不产生空间变更。
-2. 自身叶子的 Transformation 只更新 present／position；后续所属能力的 Rule Change 各自完成纯登记或撤销。
+2. 自身叶子的 Transformation 只更新 present／position；后续所属能力的 Restriction Change 各自完成纯登记或撤销。
 3. 整个 Change 函数返回后一次发布，再按捕获的 settlements 顺序结算；不为 Presence 另设全批优先级。
-4. 自身叶子的 Settlement 按 `previous` 的稳定能力角色，调用 Blockable.release 或 Blocker.releaseAll；完整操作从最新 BattleState 读取当前关系，Blockable 同时取消自身位置计划。disappear 在释放后调用 Action.cancelForUnit，由 Action 从最新 BattleState 读取当前执行并取消；appear 不取消执行。后续 Rule Settlement 接续最新状态。
+4. 自身叶子的 Settlement 按 `previous` 的稳定能力角色，调用 Blockable.release 或 Blocker.releaseAll；完整操作从最新 BattleState 读取当前关系，Blockable 同时取消自身位置计划。disappear 在释放后调用 Action.cancelForUnit，由 Action 从最新 BattleState 读取当前执行并取消；appear 不取消执行。后续 Restriction Settlement 接续最新状态。
 
 Presence 调用的释放操作在自己的第一次 RELEASED 回调前完成当前关系的整批双端解除；Blockable 自身计划也已取消，Blocker 不取消其原目标的独立偏移。回调同时可以读取本批最终空间事实与限制。其它 Change 的先行 Settlement 仍遵守其自身契约。
 

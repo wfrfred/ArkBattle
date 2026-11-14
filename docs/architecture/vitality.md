@@ -51,9 +51,9 @@ advance(battle, reference: Ref<Unit & Vitality>): BattleState;
 
 MaxHP 保留静态 Modifier[]，set／remove 工厂分别负责贡献登记与移除，共用局部 HP 比例计算，在同一次纯 transform 中生成新贡献集合和新 HP。零 HP 不因属性变化复活；不附带治疗通知或 Blocking 后继。DEF／RES 与两项回复属性的 Input 为静态修正或 `(battle, self: Unit & Vitality) => readonly Modifier[]`，由普通注册工厂生成 setContribution／removeContribution。专属接收 Hook 通过 unit.setHook／removeHook 登记，Key 保留 Hook 类型与 Vitality 宿主约束。MaxHP 单独保留领域实现，不进入普通字段集合。属性查询接收已取得的当前宿主并返回 number，不重复定位或判空；Damage 在 Formula Hook 后确认当前目标，再按伤害类型求值，不提前缓存或混入穿透。
 
-HP、Contribution 与 Rule 共存于 Vitality State，专属接收登记存于 Unit.hooks。DEF／RES 的修改保留其他字段；属性变化不派发普通治疗 Hook。治疗索敌默认 provider 与显式注入 provider 均读取有效 MaxHP，避免把基础值或未计修正的上限用于缺血判定和比例排序。
+HP、Contribution 与 Restriction 共存于 Vitality State，专属接收登记存于 Unit.hooks。DEF／RES 的修改保留其他字段；属性变化不派发普通治疗 Hook。治疗索敌默认 provider 与显式注入 provider 均读取有效 MaxHP，避免把基础值或未计修正的上限用于缺血判定和比例排序。
 
-Damage 接收 Rule 使用 `allows(battle, ReceivingContext)`；Rules 声明 damageRules，State 直接继承 Rules、Contributions。单节点登记接口为 `setRule(rule)`／`removeRule(id)`，由普通登记工厂固定 damageRules 字段生成，返回 Change 交给 Unit.update 提交。普通治疗不设 Rule 数组，治疗干预由专属 Receiving Hook 表达。
+Damage 接收 Restriction 使用 `allows(battle, ReceivingContext)`；Restrictions 声明 damageRestrictions，State 直接继承 Restrictions、Contributions。登记保存 Contribution<Restriction<ReceivingContext>>；单节点接口为 `setRestriction(entry)`／`removeRestriction(id)`，由普通登记工厂固定 damageRestrictions 字段生成，返回 Change 交给 Unit.update 提交。普通治疗不设 Restriction 数组，治疗干预由专属 Receiving Hook 表达。
 
 ### 0.1 自然 HP 回复
 
@@ -175,9 +175,9 @@ AttackParameters 表示用于本次计算的数值，不要求 power 一定来�
 
 `nature` 是普通伤害／生命流失的业务性质，与 parameters.type 的数学类型正交；不得由是否自伤、是否周期输出或来源是否为空推断。`hitRecovery` 表示普通受击类 SP 回复许可，只有 nature 为 DAMAGE 且该字段为 true 才具备资格；LOSS 不论该许可均不产生 HIT。两项独立保存，例如拟态机械射线的原生配置同时具有 skip 与未禁用 SP 的标记，仍因流失不进入普通受击回复。普通攻击通常提供 true，活性源石和标准元素爆发的 HP 输出提供 false。它不抑制其他受伤程序，也不保证目标当前一定能够回复 SP。
 
-两种性质都完整执行来源 Formula、目标 Formula、公式和 Output，以及 Apply 的 BeforeReceive、ReceivingStarted、Receiving、BeforeCommit 和两侧 Applied。请求不配置阶段派发开关，不另建 LOSS 管线或 Hook 集合；机制通过 Rule／Hook 的资格表达自己的适用范围。普通护盾、闪避、减伤、受伤天赋只响应 DAMAGE；明确作用于流失的程序可以在相同 Hook 上响应 LOSS。通用 Applied 记录成功提交事实，因此 LOSS 也正常通知，最后仍按最新 HP 确认死亡。
+两种性质都完整执行来源 Formula、目标 Formula、公式和 Output，以及 Apply 的 BeforeReceive、ReceivingStarted、Receiving、BeforeCommit 和两侧 Applied。请求不配置阶段派发开关，不另建 LOSS 管线或 Hook 集合；机制通过 Restriction／Hook 的资格表达自己的适用范围。普通护盾、闪避、减伤、受伤天赋只响应 DAMAGE；明确作用于流失的程序可以在相同 Hook 上响应 LOSS。通用 Applied 记录成功提交事实，因此 LOSS 也正常通知，最后仍按最新 HP 确认死亡。
 
-无敌和 Presence 的 HP 接收 Rule 拒绝 DAMAGE、允许 LOSS；它们对 EP 的规则保持各自既有语义。基本 Unit 生命周期与 HP 资格仍统一检查，LOSS 不绕过真实离场。未来特殊生命保护仍属于资源提交层，不因流失跳过。实际内容依据及已接受的原生差异见[流失交互研究](../research/cases/11-damage-apply-and-hp-application.md#7-统一管线的实际内容对照2026-11-13)。自然回复不进入 Damage，也不通过构造 LOSS 请求表达。
+无敌和 Presence 的 HP 接收 Restriction 拒绝 DAMAGE、允许 LOSS；它们对 EP 的规则保持各自既有语义。基本 Unit 生命周期与 HP 资格仍统一检查，LOSS 不绕过真实离场。未来特殊生命保护仍属于资源提交层，不因流失跳过。实际内容依据及已接受的原生差异见[流失交互研究](../research/cases/11-damage-apply-and-hp-application.md#7-统一管线的实际内容对照2026-11-13)。自然回复不进入 Damage，也不通过构造 LOSS 请求表达。
 
 物理／法术参数只携带当前类型所使用的一套穿透。类型转换必须同时保证新类型参数的业务含义正确；类型系统不负责证明采样来源与时点。跨类型计算需要的历史参数由发起该业务的 Content 保存，例如双分支各自取得完整的物理／法术穿透快照；普通 Request 不因此固定携带两套穿透，也不在来源失效后以实时查询冒充历史采样。
 
@@ -205,7 +205,7 @@ Calculated 只保存最终伤害类型与计算后数值；来源、目标和初
 
 ```typescript
 calculateDamage(battle, request, options?: hooks.Options): Result<Calculated | undefined>;
-applyDamage(request, calculated: Result<Calculated | undefined>, options?: hooks.Options): Result<Outcome>;
+applyDamage(request, calculated: Result<Calculated | undefined>, options?: ApplyOptions): Result<Outcome>;
 
 type Outcome =
     | { readonly type: "REJECTED" }
@@ -229,7 +229,7 @@ HP Damage 的 APPLIED 另携带本笔 killed，表示本笔在两侧 Applied 后
 
 Formula 分来源与目标两个节点，Output 属于来源，BeforeReceive／ReceivingStarted／Receiving 属于目标，BeforeCommit 属于来源。Applied 分别通过 targetApplied 与 sourceApplied 键依次通知目标和来源，同一 Unit 承担两个角色时也分别执行各自登记；Completed 仍按既定终结通知契约，同一宿主不重复通知。每个节点、每个宿主的派发独立固定候选 ID，目标响应中新登记的来源 Hook 可进入随后独立的来源派发。登记、优先级和生命周期见第 1.7 节。
 
-DAMAGE 事件只携带飘字需要的目标、伤害类型、实际 HP 损失和发生 Tick。取消保留零值表现；接收量、取消原因和提交后的 HP 属于 Outcome／Application，不复制到 Event。零数值输入在 Apply 入口 REJECTED，不进入普通受击回复；无敌等入口 Rule 拒绝也不进入 Receiving。取消不停止后继 Receiving Hook，次数盾自行筛除取消或非正数值；反伤可继续。
+DAMAGE 事件只携带飘字需要的目标、伤害类型、实际 HP 损失和发生 Tick。取消保留零值表现；接收量、取消原因和提交后的 HP 属于 Outcome／Application，不复制到 Event。零数值输入在 Apply 入口 REJECTED，不进入普通受击回复；无敌等入口 Restriction 拒绝也不进入 Receiving。取消不停止后继 Receiving Hook，次数盾自行筛除取消或非正数值；反伤可继续。
 
 ### 1.6 结算 Hook 类型
 
@@ -335,7 +335,7 @@ Reason 是业务原因的有限集合，不接受内容自造的字符串；机�
 | EP Damage | UNSPECIFIED、UNHURTABLE、INTERRUPT |
 | HP Healing | UNSPECIFIED |
 
-UNSPECIFIED 表示取消但未指定一种受击结果；它不表示未取消。MISS 是目标成功闪避，HIT_FAILED 是来源本次攻击的未命中事实，不能互换。BLOCKED 表示抵挡，不区分提供者或是否显示数值。INTERRUPT 表示内容显式终止本次应用，不恢复原生特定时点的事件早退顺序；Calculate／Apply 的项目边界、取消后继续派发及已有入口 Rule 政策保持不变。
+UNSPECIFIED 表示取消但未指定一种受击结果；它不表示未取消。MISS 是目标成功闪避，HIT_FAILED 是来源本次攻击的未命中事实，不能互换。BLOCKED 表示抵挡，不区分提供者或是否显示数值。INTERRUPT 表示内容显式终止本次应用，不恢复原生特定时点的事件早退顺序；Calculate／Apply 的项目边界、取消后继续派发及已有入口 Restriction 政策保持不变。
 
 这些集合依据[取消原因的实际消费者](../research/cases/38-damage-classification-and-permissions.md#10-取消原因的实际生产与消费)确定。原生两种抵挡的显示差异属于表现输出，不作为两个业务原因；本次未增加该表现输出。MINUS_HEALTH 未定位实际生产路径，不纳入当前集合，也不标记为原生废弃。EP 与治疗不机械复制 HP 原因；原生 HEAL_FREE 的取消仍不覆盖项目仅限制 Targeting 的选择。
 
@@ -351,6 +351,22 @@ HP ReceivingStarted、HP Damage／Healing Receiving、EP Damage Receiving 与 El
 
 本地登记随承载 Unit 注销而移除，不建立 BattleState 外置表或单独 Hook Lifetime。临时 Effect 在启停时登记、撤销自己的输出；跨 Unit 安装仍由机制拥有者管理撤销。通用集合不承担派发、接收资格或自动回滚。
 
+### 本次接收限制豁免
+
+HP Damage 与 EP Damage 的 ApplyOptions 扩展公共 Hook Options。HP 的本地声明为：
+
+```typescript
+interface ApplyOptions extends hooks.Options {
+    readonly ignore?: (restriction: vitality.Restriction) => boolean;
+}
+```
+
+EP 的 ignore 接收 Elemental.DamageRestriction。定义对象使用精确的 HP ReceivingContext 或 EP DamageContext；Request、Calculated 与 Pending 不保存本次政策。Calculate 只接受 Hook Options，不检查或继承接收豁免。
+
+Apply 在 BeforeReceive 后、Receiving 后及 BeforeCommit 后均使用同一 ignore 查询最新接收资格：每次先解析当前有效 Contribution，再豁免匹配定义，剩余项按 AND 判断。相同定义的多个登记都可豁免，独立无敌等其它定义仍可拒绝；豁免不恢复竞争落败项，也不能绕过 PRESENT、生命值、Burst 等固有前提。嵌套业务独立选择自己的选项。
+
+Hook exclude 决定本次是否执行响应，Restriction ignore 决定本次是否检查某个许可，Pending.reason 只报告取消事实，三者互不替代。HP Healing 不增加接收限制；EP Healing 保留既有 healingRestrictions，但不新增单次 ignore。标准机制通过共享定义对象提供身份，一个 Effect 可登记多个不同限制，Effect Definition 本身不是限制身份。
+
 ### 1.8 接收与资源提交接口
 
 Battle 编排四种业务各自的 Calculate／Apply、通用 Hook 与 Outcome；Vitality／Elemental 提供资格查询、专属接收和资源提交。Capability 不执行来源 Formula、Output、通用 BeforeReceive／BeforeCommit／Applied，Battle 不直接写入 HP／EP。接口如下。
@@ -361,7 +377,7 @@ Battle 编排四种业务各自的 Calculate／Apply、通用 Hook 与 Outcome�
 | 专属接收 | receiveDamage、receiveHealing | receiveDamage；EP Healing 无专属接收接口 |
 | 资源提交 | commitDamage、commitHealing | commitDamage、commitHealing |
 
-canReceive 只查询当前资格与接收 Rule，不执行 Hook。它接收相应业务判断资格实际需要的事实，不统一要求完整 ReceivingContext：EP 索敌发生在 Calculate 前，不需要也不能伪造 Calculated。HP 接收规则需要计算后的实际伤害类型时，读取该次计算确定的事实，不以 Request 中的初始类型代替。各业务不为形式一致强制同形输入。
+canReceive 只查询当前资格与接收 Restriction，不执行 Hook。它接收相应业务判断资格实际需要的事实，不统一要求完整 ReceivingContext：EP 索敌发生在 Calculate 前，不需要也不能伪造 Calculated。HP 接收规则需要计算后的实际伤害类型时，读取该次计算确定的事实，不以 Request 中的初始类型代替。各业务不为形式一致强制同形输入。
 
 receive 接续当前 BattleState 和 Pending，执行该资源的专属接收阶段；目标由 ReceivingContext.target 提供：
 
@@ -398,7 +414,7 @@ commitHealing(battle: BattleState, context: EpHealing.CommitContext): Result<Hea
 
 DamageApplication／HealingApplication 由各自资源能力定义，Battle 的 Application 直接引用同一报告。HP 报告保存 hpBefore、hpAfter 和实际 hpLoss／hpGain；EP 报告保存本次实际变化及对应 Burst 创建事实，治疗逐型报告，不把数额在四型间分摊。报告在资源写入时确定，之后的嵌套业务不重算它。
 
-共享 CommitContext 表达结算事实，业务控制权归对应资源能力。commit 从最新 BattleState 读取资源，保留 Receiving 与 BeforeCommit 已完成的变化；进入前已经确认资格且其间没有回调时，内部信任该事实，不重复检查同一组 Rule。该接口只支持普通资源提交，不提供特殊生命写入接管协议。
+共享 CommitContext 表达结算事实，业务控制权归对应资源能力。commit 从最新 BattleState 读取资源，保留 Receiving 与 BeforeCommit 已完成的变化；进入前已经确认资格且其间没有回调时，内部信任该事实，不重复检查同一组 Restriction。该接口只支持普通资源提交，不提供特殊生命写入接管协议。
 
 Apply 的编排为：
 
@@ -558,8 +574,8 @@ Apply 对最终计算量为零的治疗在入口返回 REJECTED，不派发本�
 
 - **死亡清理**：普通伤害与生命流失由完整 HP Damage 在两侧 Applied 后确认死亡、请求离场并形成 killed；显式致死或退场由所属操作请求 Unit 结束。Finalize 遵循 Lifetime 的最外层完成边界。Combat 只推进 Action，不扫描 HP 或代为判定死亡；Applied 中同步调用 Combat 也不提前结束当前伤害的目标。
 - **特殊 HP 修改**：普通伤害与生命流失都通过 HP Damage 结算，自然回复由 Vitality.advance 推进，HP 写入由 Vitality 拥有。生命复原和直接 HP 设置仍没有完整公开操作；Effect 不能直接重建 Vitality State 代替缺失的领域入口。
-- **伤害分类**：Request 已表达 DAMAGE／LOSS 与 hitRecovery，不携带 AttackType、ApplyWay 等其余固有分类。无视闪避、取消限制、非致命、分担和特殊生命机制仍无完整协议，也不能从目标状态或来源单位类型反推这些事实。
+- **伤害分类**：Request 已表达 DAMAGE／LOSS 与 hitRecovery，不携带 AttackType、ApplyWay 等其余固有分类。选择性 Hook 排除与接收限制豁免由本次 Options 表达；非致命、分担和特殊生命机制仍无完整协议，也不能从目标状态或来源单位类型反推这些事实。
 - **受伤与 HIT 回复资格**：Request.hitRecovery 与 nature 共同限定受击类 SP 回复；普通环境伤害与标准元素爆发可保留受伤响应而不提供 HIT 回复，不通过全局阻回伪装单笔资格。具体内容未全部接入不改变这项公共契约。
-- **本次 Hook 排除**：Calculate 与 Apply 分别接收可选 Options.exclude，按键身份与可选登记 ID 排除当前操作的响应；专属接收接续 Apply 选项。不修改登记、不跳过公式或资源提交、不豁免 Rule，也不将选项保存进 Request／Calculated 或自动传给嵌套业务。契约见 [Hook 排除](hook.md#本次调用的-hook-排除)。
+- **本次 Hook 排除**：Calculate 与 Apply 分别接收可选 Options.exclude，按键身份与可选登记 ID 排除当前操作的响应；专属接收接续 Apply 选项。不修改登记、不跳过公式或资源提交、不豁免 Restriction，也不将选项保存进 Request／Calculated 或自动传给嵌套业务。契约见 [Hook 排除](hook.md#本次调用的-hook-排除)。
 
 特殊机制的客户端事实、PRTS 说明与项目选择分别记录在[机制研究](../research/cases/11-damage-apply-and-hp-application.md)，不将未经确认的细节视为普通核心契约。

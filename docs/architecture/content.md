@@ -20,7 +20,7 @@ Elemental Capability 负责 EP 接收与提交、爆发触发和当前爆发引�
 
 弩手的 action.ts 分别定义 melee 与 ranged，两者有各自的冷却和执行状态。unit.ts 按当前阻挡关系选择近战或远程，在已有主动作执行期间不并发启动另一主动作；选择和互斥属于内容策略。场景选择敌人和配置波次，不通过一个带敌人 ID 分支的中央工厂构造所有内容。确实共用的地面属性与能力装配由普通函数提供，具体攻击程序归各自内容。
 
-装置行为位于 `devices/`。`crate.ts`、`shooting-platform.ts` 接受类型化配置并构造 Unit Definition，通过 Unit 的 enter／leave Hook 处理改格和清理；实际共用的改格函数放在 Content 内。射击台在 Occupancy 的 SUPPORT Definition 中提供 onOccupantAdded／onOccupantRemoved 程序，在当前乘员的 blocker.rules 登记平台实例独占的共享二元 Rule，只禁止 GROUND 阻挡，AIR 仍由其余 Blocking 规则判断；配对解除时只清理该平台规则，不改写地块阻挡许可。Data 解析资源标识、数值和关卡实例，并调用这些现有工厂绑定静态配置。内部批量登记交换用于验证结构与同步通知，不能证明游戏允许自由搬动平台。
+装置行为位于 `devices/`。`crate.ts`、`shooting-platform.ts` 接受类型化配置并构造 Unit Definition，通过 Unit 的 enter／leave Hook 处理改格和清理；实际共用的改格函数放在 Content 内。射击台在 Occupancy 的 SUPPORT Definition 中提供 onOccupantAdded／onOccupantRemoved 程序，在当前乘员的 blocker.restrictions 以平台实例独立 ID 登记 Contribution，value 为共享二元 Restriction，只禁止 GROUND 阻挡，AIR 仍由其余 Blocking 规则判断；配对解除时只清理该平台规则，不改写地块阻挡许可。Data 解析资源标识、数值和关卡实例，并调用这些现有工厂绑定静态配置。内部批量登记交换用于验证结构与同步通知，不能证明游戏允许自由搬动平台。
 
 干员的分支共享模块表达共同特性和默认行为；具体干员显式组合这些函数，接入自己的天赋、技能及模组变化。不建立模板继承、中央分支注册表或逐层转发工厂。只有出现实际共享规则时才建立对应模块。
 
@@ -60,12 +60,12 @@ Occupancy 初始化自行登记 enter／leave 程序，直接调用 SUPPORT Defi
 
 具体角色 Definition 必须声明实际依赖的 Capability，工厂输出保留标准状态与配置的对应关系。Effect 的 Host 泛型用于表达回调读取哪些能力。
 
-可部署内容在完整静态 Unit Definition 的顶层分别声明 card、deployable 和 occupancy。card 明确提供基础费用、时长、初始库存与上限、退费策略、部署规则、Unit 附加 Hook，以及 initialize 和可选 onTick；没有私有逻辑时 initialize 显式返回空对象。Deployable Definition 只保存固有 retreatRules，单向依赖 Occupancy，本次来源 Card、COST、部署位份额和退费依据由 Deployment 在 Unit 初始化完成、登记之前写入。Card.definition 保留原静态定义，不另建或按次拼装内容对象。Card 的 state 跨部署保存，Unit 每次部署重新初始化；需要继承的具体资源由内容显式转换。Card 通过自身领域的 Typed Ref 操作写回。
+可部署内容在完整静态 Unit Definition 的顶层分别声明 card、deployable 和 occupancy。card 明确提供基础费用、时长、初始库存与上限、退费策略、部署规则、Unit 附加 Hook，以及 initialize 和可选 onTick；没有私有逻辑时 initialize 显式返回空对象。Deployable Definition 只保存固有 retreatRestrictions，单向依赖 Occupancy，本次来源 Card、COST、部署位份额和退费依据由 Deployment 在 Unit 初始化完成、登记之前写入。Card.definition 保留原静态定义，不另建或按次拼装内容对象。Card 的 state 跨部署保存，Unit 每次部署重新初始化；需要继承的具体资源由内容显式转换。Card 通过自身领域的 Typed Ref 操作写回。
 
-一次部署使用完整 Request，包含 Card Ref、落点、可选方向、Quote、附加 Rule 和普通 Unit Hook。默认规则、Card 的静态与当前规则、本次附加规则按 ID 合并后统一判断，UI 与实际部署复用相同资格；通过后先消费 DP／库存／部署位，再构造、登记并执行入场程序。quote.dp 为 null 表示跳过支付，0 表示正常零费。Card 显式配置部署间隔、离场库存恢复及费用阶段策略；主动撤退与被动死亡在各自路径使用这些策略，不对所有 leave 自动回收。主动撤退在请求 Unit 离场前直接结算退款、Card 费用阶段与库存恢复；slots 由本地 leave 归还。入场附着使用 Card 或 Request 携带的普通 Hook 调用 effects.install，不建立 Attachment 或 Card Effect 容器。共享一次机会由真正来源保存，不能复制到各 Card。完整契约见 [Deployment](deployment.md)，特殊移动重部署留待后续实现。
+一次部署使用完整 Request，包含 Card Ref、落点、可选方向、Quote、附加 Restriction 和普通 Unit Hook。默认规则、Card 的静态与当前规则、本次附加规则按 ID 合并后统一判断，UI 与实际部署复用相同资格；通过后先消费 DP／库存／部署位，再构造、登记并执行入场程序。quote.dp 为 null 表示跳过支付，0 表示正常零费。Card 显式配置部署间隔、离场库存恢复及费用阶段策略；主动撤退与被动死亡在各自路径使用这些策略，不对所有 leave 自动回收。主动撤退在请求 Unit 离场前直接结算退款、Card 费用阶段与库存恢复；slots 由本地 leave 归还。入场附着使用 Card 或 Request 携带的普通 Hook 调用 effects.install，不建立 Attachment 或 Card Effect 容器。共享一次机会由真正来源保存，不能复制到各 Card。完整契约见 [Deployment](deployment.md)，特殊移动重部署留待后续实现。
 
 四向摆放朝向归 Occupancy；方向不在静态 Definition 中声明，本次部署通过 initial.occupancy.direction 提供，方向相关攻击范围读取当前实例。没有朝向的装置使用 null，不伪造 RIGHT；基础 Unit 没有方向字段。选择 Occupancy 时，必须通过 initial.occupancy.tile 提供本次登记格，State.tile 非空，不通过通用 Partial<Unit> 预装运行状态。关卡开场 Unit 声明为 initiallyPresent:true 的 Predefined，直接提供静态 definition、position、所选能力要求的 initial 和可选 hooks。Predefined 与 Deployment 都直接调用 unit.initialize，不经过额外创建工厂、品牌或泛型配对层。
 
 基础 Unit 声明身份、生命周期、Definition、位置、Hooks 和 Effects。每个 Capability 同时声明自身的配置与运行状态；业务通过 `Unit & Vitality & Offense` 等组合表达需要的能力。初始化工厂由具体 Definition 推导所创建的标准状态，异构战场查询则通过 `hasX` 收窄为实际需要的能力。能力集合用于装配和结构收窄，不作为基础 Unit 的可选字段聚合。
 
-Content 通过 Rule／Hook／Contribution／Blocker.layer 工厂构造要求相应宿主能力的 Change，再调用 battle/unit.update(battle, ref, change)。同宿主的多项使用 compose 有序组合，全部纯应用完成后一次发布，再顺序结算后继；需要按能力选择时，用 optional 在实际应用时检查前序变换产生的当前宿主。Content 不手工重建 Unit、不传任意 Unit Transformation，也不调用 Core 内部 replace。精确私有 state 写回与完整生命周期操作保持各自业务契约。完整组合契约见 [Unit 批量变更](api-conventions.md#51-unit-完整操作与批量变更)。统一构造入口建立能力配对，登记后能力组成稳定，不为约束内部调用者增加所有权框架或防御复制。
+Content 通过 Restriction／Hook／Contribution／Blocker.layer 工厂构造要求相应宿主能力的 Change，再调用 battle/unit.update(battle, ref, change)。同宿主的多项使用 compose 有序组合，全部纯应用完成后一次发布，再顺序结算后继；需要按能力选择时，用 optional 在实际应用时检查前序变换产生的当前宿主。Content 不手工重建 Unit、不传任意 Unit Transformation，也不调用 Core 内部 replace。精确私有 state 写回与完整生命周期操作保持各自业务契约。完整组合契约见 [Unit 批量变更](api-conventions.md#51-unit-完整操作与批量变更)。统一构造入口建立能力配对，登记后能力组成稳定，不为约束内部调用者增加所有权框架或防御复制。

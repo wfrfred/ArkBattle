@@ -97,11 +97,11 @@ Occupancy 通过已登记的 Unit enter／leave 程序处理配对通知。普�
 
 ## 与其他领域协作
 
-Deployment 通过 Request／Rule 检查地块和槽位，落点和本次方向通过 unit.initialize 的 initial.occupancy 输入。具有 Occupancy 的 Definition 要求提供该输入及其 tile；关卡预置使用同一约束，开场 Unit 声明 initiallyPresent:true。实际部署通知与 Support 配对是不同事件，前者由 Deployment 登记的 enter 程序触发。
+Deployment 通过 Request／Restriction 检查地块和槽位，落点和本次方向通过 unit.initialize 的 initial.occupancy 输入。具有 Occupancy 的 Definition 要求提供该输入及其 tile；关卡预置使用同一约束，开场 Unit 声明 initiallyPresent:true。实际部署通知与 Support 配对是不同事件，前者由 Deployment 登记的 enter 程序触发。
 
 Blocking 对具有 Occupancy 的 Unit 使用其登记格作为根格，读取地块允许阻挡的事实；没有 Occupancy 时使用身体坐标。地块登记与世界位置仍是两个独立事实。
 
-平台对乘员的阻挡限制、平台销毁是否击倒乘员等，由具体内容程序表达。射击台在 onOccupantAdded 按平台实例 ID 登记自己的 Blocking Rule，只禁止 GROUND 阻挡，AIR 仍由其余 Blocking 规则判断；onOccupantRemoved 只撤销该平台的输出。
+平台对乘员的阻挡限制、平台销毁是否击倒乘员等，由具体内容程序表达。射击台在 onOccupantAdded 按平台实例 ID 登记自己的 Blocking Restriction，只禁止 GROUND 阻挡，AIR 仍由其余 Blocking 规则判断；onOccupantRemoved 只撤销该平台的输出。
 
 具体平台若需离场时击倒乘员，由自己的 leave 程序读取 Departure 的旧登记格并查询当前对象，再组合完整移除操作，不直接删除存储。地块属性修改与恢复也由具体内容调用完整 Tile 操作，不属于占格登记，不增加通用覆写栈。
 

@@ -26,19 +26,19 @@ Action 需要保障的结果是：
 | --- | --- |
 | unit/action/Definition | 行动身份、基础 intervalTicks／speed、持久 initialize、prepare／onTick 与可选 onEnd |
 | Unit Action Capability Definition | 创建本 Unit 行动的 initialize 程序和可选 select 程序 |
-| Unit Action Capability State | 单一 Actions 容器、宿主内 nextExecutionId、interval／speed 贡献与启动 Rule；释放登记存于 Unit.hooks |
+| Unit Action Capability State | 单一 Actions 容器、宿主内 nextExecutionId、interval／speed 贡献与启动 Restriction；释放登记存于 Unit.hooks |
 | Action | 一种配置行动在某 Unit 上的 Definition、持久 state、Cooldown 和当前 execution |
 | Execution | 以本轮执行身份读取同一聚合条目的完整视图，execution 确定非空 |
 | execution.State | 聚合条目内本次执行的 id、startedAtTick、lifecycle 和私有 state |
 | Runtime | 固定候选、逐项推进与启动、接续状态，成功后发布整 Tick |
 
-Cooldown 表达同种行动何时可以再次启动；execution 非空表示本轮尚未完成终止。同 Unit 同配置 Definition 同时最多有一个 Execution，RUNNING／ENDING 均占用该启动位置。不同 Definition 可以同时执行；互斥、抢占与等待由内容选择、启动 Rule 和明确取消表达。
+Cooldown 表达同种行动何时可以再次启动；execution 非空表示本轮尚未完成终止。同 Unit 同配置 Definition 同时最多有一个 Execution，RUNNING／ENDING 均占用该启动位置。不同 Definition 可以同时执行；互斥、抢占与等待由内容选择、启动 Restriction 和明确取消表达。
 
-Rule 只负责启动准入，不自动中断现有执行。眩晕等需要中断的内容显式调用 cancel／cancelForUnit。
+Restriction 只负责启动准入，不自动中断现有执行。眩晕等需要中断的内容显式调用 cancel／cancelForUnit。
 
 ## 2. 模块与导入
 
-聚合类型、Execution、Definition、创建程序、容器、Cooldown 和生命周期操作位于 unit/action/；Capability 配置、贡献、Rule、周期属性与释放 Hook 键位于 unit/capability/action/；beforeRelease／released 统一存于 Unit.hooks，通过通用登记 Change 保留 Action Capability 约束。模块组织遵守[公共入口约定](api-conventions.md#模块与公共入口)，领域内使用 Definition、Action、Execution、Id 等局部名字。
+聚合类型、Execution、Definition、创建程序、容器、Cooldown 和生命周期操作位于 unit/action/；Capability 配置、贡献、Restriction、周期属性与释放 Hook 键位于 unit/capability/action/；beforeRelease／released 统一存于 Unit.hooks，通过通用登记 Change 保留 Action Capability 约束。模块组织遵守[公共入口约定](api-conventions.md#模块与公共入口)，领域内使用 Definition、Action、Execution、Id 等局部名字。
 
 [unit/action/index.ts](../../src/core/unit/action/index.ts) 显式提供公共 API，上层默认从该入口导入：
 
@@ -198,15 +198,12 @@ interface Definition {
     readonly select?: (battle: BattleState, self: Unit & ActionCapability) => Result<readonly string[]>;
 }
 
-interface RuleContext {
+interface RestrictionContext {
     readonly self: Unit & ActionCapability;
     readonly definitionId: string;
 }
 
-interface Rule {
-    readonly id: string;
-    readonly allows: (battle: BattleState, context: RuleContext) => boolean;
-}
+type Restriction = restriction.Restriction<RestrictionContext>;
 
 type Input = readonly Modifier[];
 
@@ -215,13 +212,13 @@ interface State {
     readonly nextExecutionId: number;
     readonly interval: readonly Contribution<Input>[];
     readonly speed: readonly Contribution<Input>[];
-    readonly rules: readonly Rule[];
+    readonly restrictions: readonly Contribution<Restriction>[];
 }
 ```
 
 setIntervalContribution／setSpeedContribution 及对应 remove 不接收 Ref，返回 `Change<Unit & ActionCapability>`，实现在 capability/action/operations.ts。贡献只接收静态 Modifier 数组，不接收依赖 BattleState 的求值函数。transform 只修改贡献集合，无变化时返回原 Unit，由 createChange 不登记 settle；实际变化的 settle 从最新 battle 调用 refreshCooldowns，按全批最终周期及当前完成比例换算冷却。Content 不补一次手工刷新，Combat 也不每 Tick 刷新。依赖 HP、技能阶段等事实的速率变化，由拥有该机制的程序在相应业务时点提交新的修正列表。
 
-Rule／释放 Hook 登记也返回 Change，但不附带冷却或 Blocking 后继。属性查询使用 resolveBaseInterval／resolveSpeed／resolvePeriod(source: Unit & ActionCapability, self: Action)，直接接收已取得的宿主与具体 Action 并返回 number。共享贡献使用 source，基础时序取 self.definition。resolveBaseInterval 是速度换算前的间隔，resolvePeriod 是用于 Cooldown 的实际周期；创建实例前的初始冷却使用局部公式 period(intervalTicks, speed)。
+Restriction／释放 Hook 登记也返回 Change，但不附带冷却或 Blocking 后继。属性查询使用 resolveBaseInterval／resolveSpeed／resolvePeriod(source: Unit & ActionCapability, self: Action)，直接接收已取得的宿主与具体 Action 并返回 number。共享贡献使用 source，基础时序取 self.definition。resolveBaseInterval 是速度换算前的间隔，resolvePeriod 是用于 Cooldown 的实际周期；创建实例前的初始冷却使用局部公式 period(intervalTicks, speed)。
 
 普通攻击周期依据 [PRTS 攻速公式](https://prts.wiki/w/游戏数据基础#攻速公式)：修正间隔 × 100 / 限制后的速度。速度属性下限为 20，周期计算速度上限为 600，有效周期至少为 1 Tick。纯 Cooldown 支持非负连续周期，不在纯值函数中强加攻击的量化限制。
 
@@ -270,7 +267,7 @@ export declare function clearCooldown<T extends Action<any, any>>(
 ): BattleState;
 ```
 
-start 从当前 Action 检查配置对象身份、来源资格、execution 占用、Rule、Cooldown 和内容条件。未配置 Definition 属于调用／配置错误；普通拒绝返回 null，不分配执行 ID 或开始周期。成功时通过 prepare 构造 E、登记本轮 Execution 并重置 Cooldown，直接返回本轮 Ref；首次 onTick 由独立的 advance 入口执行。Ref 表达本次创建事实，使用时仍从最新 BattleState 确认其状态。
+start 从当前 Action 检查配置对象身份、来源资格、execution 占用、Restriction、Cooldown 和内容条件。未配置 Definition 属于调用／配置错误；普通拒绝返回 null，不分配执行 ID 或开始周期。成功时通过 prepare 构造 E、登记本轮 Execution 并重置 Cooldown，直接返回本轮 Ref；首次 onTick 由独立的 advance 入口执行。Ref 表达本次创建事实，使用时仍从最新 BattleState 确认其状态。
 
 prepare 前检查准入；prepare 成功返回后，从接续的 BattleState 重新读取宿主与聚合条目，按最新周期确认仍可启动。prepare 返回 null，或返回后已不具备启动资格时，结果为 null；Result.state 始终保留已经发生的修改。仍可启动时才基于最新宿主一次写回新 Cooldown、Execution 和 nextExecutionId，保留持久 state、兄弟行动及其他能力的修改，并登记 Execution→Unit 的 Lifetime owner 关系。
 
@@ -300,7 +297,7 @@ Runtime 采用以下候选政策：
 6. 本轮自动候选只尝试一次，不按“仍然就绪”循环重启即时完成的同一行动。
 7. 内容直接 start 或回调内嵌套 start 只登记执行，等待调度器推进。调度入口前已登记的执行可以在本次调度中推进；调度内嵌套登记的执行不在已固定快照中，等待后续调度。
 
-advance(battle, ref) 由 operations.ts 实现，index.ts 导出供调度协作；仅由调度器主动调用，start 不隐式推进。它通过同一 Actions 容器的 getExecution 直接取得当前执行，再调用该执行 Definition 的 onTick，并显式传入宿主引用；完成与取消直接调用 lifetime.end 请求结束，可选 onEnd 在 Finalize 中调用。Action Rule 控制新的执行；[Presence](presence.md) 登记启动限制，并在消失操作中委托 cancelForUnit 取消当前执行，advance 不直接读取 Presence。跨完整操作后的实时读取遵守状态接续约定。首次推进中的即时完成或同步取消按通常终止流程结算；内容不主动推进执行，不保存实例级同 Tick 去重字段。
+advance(battle, ref) 由 operations.ts 实现，index.ts 导出供调度协作；仅由调度器主动调用，start 不隐式推进。它通过同一 Actions 容器的 getExecution 直接取得当前执行，再调用该执行 Definition 的 onTick，并显式传入宿主引用；完成与取消直接调用 lifetime.end 请求结束，可选 onEnd 在 Finalize 中调用。Action Restriction 控制新的执行；[Presence](presence.md) 登记启动限制，并在消失操作中委托 cancelForUnit 取消当前执行，advance 不直接读取 Presence。跨完整操作后的实时读取遵守状态接续约定。首次推进中的即时完成或同步取消按通常终止流程结算；内容不主动推进执行，不保存实例级同 Tick 去重字段。
 
 ## 8. 普通攻击、释放 Hook 与移动
 
@@ -308,7 +305,7 @@ advance(battle, ref) 由 operations.ts 实现，index.ts 导出供调度协作�
 
 模板的可选 onStart 是本轮首次 onTick 中、实际输出之前的开始程序，执行前先发布已经进入该程序的进度。回调后按同一执行身份重读当前状态，再判断后继释放资格；不在 prepare 执行业务，也不因后续 Tick 重复调用。具体攻击可在这里调用 [Facing.turn](capability.md#facing)：普通近战、远程和治疗按内容决定转向，泥岩 S2 等未请求转向的程序保留原值。通用 Action 的 start／advance 不统一推断面向。
 
-CD 补偿、cooldownAdjusted 与 released 的私有字段由完整 Action 操作经内部 replace 发布，这些写回不隐式触发 Blocking。Rule 可读取双方 Action 状态不表示自动订阅其所有字段；改变阻挡资格的内容在对应业务流程中显式复核关系。Attack 在真正执行 Hook、伤害等领域操作后按同一 Execution Ref 恢复当前 RUNNING 执行，并确认宿主 PRESENT；不重复读取 Presence，也不把原始发布本身当成内容回调。Combat 的 select 使用原有执行推进后重新读取的当前来源，并在选择前检查空间存在，避免已经消失的来源消费选择 RNG。
+CD 补偿、cooldownAdjusted 与 released 的私有字段由完整 Action 操作经内部 replace 发布，这些写回不隐式触发 Blocking。Restriction 可读取双方 Action 状态不表示自动订阅其所有字段；改变阻挡资格的内容在对应业务流程中显式复核关系。Attack 在真正执行 Hook、伤害等领域操作后按同一 Execution Ref 恢复当前 RUNNING 执行，并确认宿主 PRESENT；不重复读取 Presence，也不把原始发布本身当成内容回调。Combat 的 select 使用原有执行推进后重新读取的当前来源，并在选择前检查空间存在，避免已经消失的来源消费选择 RNG。
 
 Attack 模板统一校验前后摇、操作数值和绑定关系，上层内容不重复校验原样传入的同一字段。只读配置直接共享，公开 attack 配置只投影配置字段，不携带程序私有回调，也不额外复制、冻结其子对象。
 
@@ -326,7 +323,7 @@ released 表示已经到达成功释放点，发生在伤害／治疗输出之�
 
 afterOutput 是模板中本轮执行的后继程序，进入前检查对应执行仍为 RUNNING；输出过程已经取消或结束它时，不再执行。afterOutput 自身也可以结束 Skill、取消执行或触发离场，返回后模板重新读取本轮执行，避免重复完成。它不是无条件清理回调；已进入程序承担的结算按内容自身的控制流接续。
 
-移动许可由 Locomotion Rule 查询当前 battle 与 Unit。具体敌人在 enter 生命周期节点登记 Casting 移动限制；已经发射的 Projectile 保持自己的生命周期。
+移动许可由 Locomotion Restriction 查询当前 battle 与 Unit。具体敌人在 enter 生命周期节点登记 Casting 移动限制；已经发射的 Projectile 保持自己的生命周期。
 
 ## 9. 机制依据与领域协作
 

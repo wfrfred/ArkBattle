@@ -201,7 +201,7 @@ activeId 同时选择跨路点推进和位移目标的 Context。ticking 独立�
 
 Fear／Attract／Trace 等控制的来源、目标选择、有效期与优先级属于 Content／Effect。Route 执行它们明确选择的 Context 与 ticking 政策，不保存控制来源的优先级、不建立通用暂停栈。切换运动来源不自动删除 Context，也不自动修改其他 Context 的 ticking。
 
-例如 Trace 接管时可以关闭 Main.ticking，使 Main 的相对 WAIT 保留剩余时长；Fear／Attract 接管位移期间也可以保留基础路线的计时。统一 battle.tick 只提供时间源，不决定每个 Context 是否积累经过时间。禁止自主移动的 Locomotion Rule 本身不改变 Route 计时。
+例如 Trace 接管时可以关闭 Main.ticking，使 Main 的相对 WAIT 保留剩余时长；Fear／Attract 接管位移期间也可以保留基础路线的计时。统一 battle.tick 只提供时间源，不决定每个 Context 是否积累经过时间。禁止自主移动的 Locomotion Restriction 本身不改变 Route 计时。
 
 ### Checkpoint 与进入
 
@@ -370,7 +370,7 @@ Locomotion 是独立 Capability。Definition 的 speed 与 minSpeed 使用格/Ti
 
 ### 关键语义
 
-- 当前速度贡献按属性公式求值，先应用 minSpeed，再乘本次运动倍率；Rule 独立决定是否允许自主移动。暂停或零速度不清除历史速度。
+- 当前速度贡献按属性公式求值，先应用 minSpeed，再乘本次运动倍率；Restriction 独立决定是否允许自主移动。暂停或零速度不清除历史速度。
 - Steering 使用历史速度、目标速度误差和局部避障力，合力先限幅，再积分并限速。接近最终 goal 时可直接到达并保留历史速度；中间 nextPoint 只提供方向。
 - WALK 的避障同时考虑硬障碍和高代价格，FLY 只考虑硬障碍；半身宽用于横向几何，避障力去除沿目标方向的分量，并按历史速度比例缩放。当前位置不可通时采用相邻可通格的恢复方向。
 - 普通积分只根据跨格后的目的格决定是否反射位移，反射不改写积分速度；不另加整段扫掠或反射后的二次通行检查。
@@ -391,17 +391,14 @@ export type Input = contribution.Input<attribute.Modifier, Unit & Locomotion>;
 export interface State {
     readonly velocity: WorldPosition;
     readonly speed: readonly Contribution<Input>[];
-    readonly rules: readonly Rule[];
+    readonly restrictions: readonly Contribution<Restriction>[];
 }
 
-export interface RuleContext {
+export interface RestrictionContext {
     readonly self: Unit & Locomotion;
 }
 
-export interface Rule {
-    readonly id: string;
-    readonly allows: (battle: BattleState, context: RuleContext) => boolean;
-}
+export type Restriction = restriction.Restriction<RestrictionContext>;
 
 export interface Locomotion {
     readonly definition: { readonly locomotion: Definition };
@@ -425,19 +422,19 @@ export function advance(
     context: MovementContext,
 ): BattleState;
 
-export function setRule(rule: Rule): Change<Unit & Locomotion>;
-export function removeRule(id: string): Change<Unit & Locomotion>;
+export function setRestriction(entry: Contribution<Restriction>): Change<Unit & Locomotion>;
+export function removeRestriction(id: string): Change<Unit & Locomotion>;
 export function setSpeedContribution(
     entry: Contribution<Input>,
 ): Change<Unit & Locomotion>;
 export function removeSpeedContribution(id: string): Change<Unit & Locomotion>;
 ```
 
-类型、初始化、守卫及 Rule／速度贡献 Change 工厂位于 locomotion/capability.ts；工厂不接收 Ref，返回 `Change<Unit & Locomotion>`，由 Unit.update 组合发布，不附带 Blocking 后继。operations.ts 提供完整推进，不转发工厂。初始化验证速度、下限、几何半宽和转向参数非负，不要求基础速度大于 minSpeed。
+类型、初始化、守卫及 Restriction／速度贡献 Change 工厂位于 locomotion/capability.ts；工厂不接收 Ref，返回 `Change<Unit & Locomotion>`，由 Unit.update 组合发布，不附带 Blocking 后继。operations.ts 提供完整推进，不转发工厂。初始化验证速度、下限、几何半宽和转向参数非负，不要求基础速度大于 minSpeed。
 
 SteeringParameters 是普通配置值，其数值约束由 Locomotion 初始化入口建立。Data 解析原始 Prefab 并完成 Tick 换算，Ground Enemy 内容工厂显式接收 halfBodyWidth 与 steeringParameters。
 
-推进读取最新 PRESENT 且 Rule 允许的 Unit；[空间消失](presence.md)由 Presence 登记 Locomotion Rule 禁止自主移动，不由 Locomotion 读取空间存在字段。Movement 先推进全部 Blockable 位置修正，再推进 Route 并读取当前关系，只限制自主移动；独立位置计划存在或刚完成不自动禁止自主移动。Locomotion 经内部 replace 提交位置与速度，不依赖 Blocking 维护；Blockable 的偏移推进同样只发布位置与计划。依赖当前位置或其他 Battle 事实的阻挡 Rule 在后续 Blocking 检查点复核；明确要求解除旧关系的空间操作仍自行完成清理。Blocker／Blockable 在 Unit 初始化时至多选择一种，但该约束不决定是否具有 Route、Locomotion 或何种自身 Layer。
+推进读取最新 PRESENT 且 Restriction 允许的 Unit；[空间消失](presence.md)由 Presence 登记 Locomotion Restriction 禁止自主移动，不由 Locomotion 读取空间存在字段。Movement 先推进全部 Blockable 位置修正，再推进 Route 并读取当前关系，只限制自主移动；独立位置计划存在或刚完成不自动禁止自主移动。Locomotion 经内部 replace 提交位置与速度，不依赖 Blocking 维护；Blockable 的偏移推进同样只发布位置与计划。依赖当前位置或其他 Battle 事实的阻挡 Restriction 在后续 Blocking 检查点复核；明确要求解除旧关系的空间操作仍自行完成清理。Blocker／Blockable 在 Unit 初始化时至多选择一种，但该约束不决定是否具有 Route、Locomotion 或何种自身 Layer。
 
 Presence Change 纯转换空间事实及所需限制，发布后按稳定能力角色调用 Blockable.release 或 Blocker.releaseAll，读取当前关系并完成清理；详细顺序见[空间存在](presence.md)。Route 在消失期间继续处理等待与出现指令；无 Presence 分支的 APPEAR 先发布位置，再调用相同完整操作。各释放操作自己的首个 RELEASED Hook 已可见新位置、所属计划清理和此次整批双端解除结果。release 不自动维护、搜索或取消目标计划，Blocker 的释放保留其原目标的偏移。阻挡关系由 Movement 在自主移动入口检查，见 [Blocking](blocking.md)。有效速度为 `max(minSpeed, attribute.apply(speed, contributions)) * speedMultiplier`；无目标不调 advance，速度为零或不可移动返回原 battle 并保留 velocity。
 
@@ -447,7 +444,7 @@ Presence Change 纯转换空间事实及所需限制，发布后按稳定能力�
 
 Steering 将局部力与目标速度误差产生的力相加后统一限幅，再更新速度并限制在有效移速内。仅当候选位移跨格且目的格不可通时，围绕当前位置指向目的格中心的法向量反射整次位移；不扫描完整线段，不因成本高而反射，也不再次检查反射后的目的格。最终位置可受反射修正，velocity 仍保存积分器得到的新速度。
 
-State 保存 velocity、速度贡献与 Rule；位置属于 Unit，运动目标由每次 advance 的参数提供。实际位置变化由展示或业务观察者按需要读取，不能从保留的历史速度直接推断本 Tick 是否发生移动。推拉与直接传送使用各自的领域契约。
+State 保存 velocity、速度贡献与 Restriction；位置属于 Unit，运动目标由每次 advance 的参数提供。实际位置变化由展示或业务观察者按需要读取，不能从保留的历史速度直接推断本 Tick 是否发生移动。推拉与直接传送使用各自的领域契约。
 
 ## Map
 
