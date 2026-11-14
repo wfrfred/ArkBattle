@@ -69,16 +69,6 @@ export function createRequest<T extends Card<any>>(
 
 const defaults: readonly [Rejection, Contribution<Restriction>][] = [
     [
-        "NO_STOCK",
-        {
-            id: "@deployment/stock",
-            value: {
-                allows: (battle, { request }) =>
-                    get(battle, request.card)!.stock >= request.quote.stock,
-            },
-        },
-    ],
-    [
         "COOLDOWN",
         {
             id: "@deployment/cooldown",
@@ -113,59 +103,12 @@ const defaults: readonly [Rejection, Contribution<Restriction>][] = [
         },
     ],
     [
-        "INSUFFICIENT_DP",
-        {
-            id: "@deployment/dp",
-            value: {
-                allows: (battle, { request }) =>
-                    request.quote.dp === null ||
-                    battle.deployment.dp - request.quote.dp >= battle.deployment.minDp,
-            },
-        },
-    ],
-    [
-        "OUTSIDE_MAP",
-        {
-            id: "@deployment/map",
-            value: {
-                allows: (battle, { request }) => {
-                    const [row, column] = request.tilePosition;
-
-                    return (
-                        Number.isInteger(row) &&
-                        Number.isInteger(column) &&
-                        row >= 0 &&
-                        column >= 0 &&
-                        row < battle.battlefield.map.rows &&
-                        column < battle.battlefield.map.columns
-                    );
-                },
-            },
-        },
-    ],
-    [
-        "OCCUPIED",
-        {
-            id: "@deployment/occupancy",
-            value: {
-                allows: (battle, { request }) => {
-                    const slot = get(battle, request.card)!.definition.occupancy.slot;
-                    const occupancy = at(battle.battlefield, request.tilePosition);
-
-                    return slot === "SUPPORT"
-                        ? occupancy?.support == null
-                        : occupancy?.occupant == null;
-                },
-            },
-        },
-    ],
-    [
         "RULE",
         {
             id: "@deployment/placement",
             value: {
                 allows: (battle, { request }) =>
-                    getTile(battle.battlefield.map, request.tilePosition)?.state.placement !==
+                    getTile(battle.battlefield.map, request.tilePosition)!.state.placement !==
                     "NONE",
             },
         },
@@ -199,6 +142,32 @@ export function evaluateCurrent(
     request: DeployRequest,
     restrictions: readonly Contribution<Restriction | CardRestriction>[],
 ): Rejected | null {
+    const self = get(battle, request.card)!;
+    if (self.stock < request.quote.stock) {
+        return { type: "REJECTED", reason: "NO_STOCK" };
+    }
+    if (
+        request.quote.dp !== null &&
+        battle.deployment.dp - request.quote.dp < battle.deployment.minDp
+    ) {
+        return { type: "REJECTED", reason: "INSUFFICIENT_DP" };
+    }
+
+    const [row, column] = request.tilePosition;
+    if (
+        !Number.isInteger(row) ||
+        !Number.isInteger(column) ||
+        getTile(battle.battlefield.map, request.tilePosition) === undefined
+    ) {
+        return { type: "REJECTED", reason: "OUTSIDE_MAP" };
+    }
+
+    const slot = self.definition.occupancy.slot;
+    const occupancy = at(battle.battlefield, request.tilePosition);
+    if ((slot === "SUPPORT" ? occupancy?.support : occupancy?.occupant) != null) {
+        return { type: "REJECTED", reason: "OCCUPIED" };
+    }
+
     const context = { purpose: "DEPLOY" as const, request };
 
     for (const entry of restrictions) {

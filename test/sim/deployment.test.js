@@ -133,6 +133,49 @@ test("preview, evaluation and deployment use one request; rejection consumes not
     assert.equal(get(state, deployed.value.unitId).facing.direction, "LEFT");
 });
 
+test("DEPLOY-RESTRICTION-01: policy overrides retain resource and occupancy prerequisites while zero quotes remain legal", () => {
+    let state = battle([], { deployment: {
+        definition: { ...account, initialDp: 0, minDp: -5, slotLimit: 0 }, cards: [operator],
+    } });
+    const card = cards.ref([...cards.all(state)][0]);
+    const permit = { allows: () => true };
+    const request = {
+        ...deployment.createRequest(state, card, [0, 2]),
+        restrictions: [
+            ...deployment.defaultRestrictions.map(({ id }) => ({ id, value: permit })),
+            ...["stock", "dp", "map", "occupancy"].map(name => ({ id: `@deployment/${name}`, value: permit })),
+        ],
+    };
+    const reject = (candidate, reason) => {
+        const expected = { type: "REJECTED", reason };
+        assert.deepEqual(deployment.evaluate(state, candidate), expected);
+        assert.deepEqual(deployment.preview(state, candidate), expected);
+        assert.deepEqual(deployment.deploy(state, candidate), { state, value: expected });
+        const positions = deployment.positions(state, candidate);
+        assert.equal(positions.some(tile => tile[0] === candidate.tilePosition[0] && tile[1] === candidate.tilePosition[1]), false);
+        if (reason === "NO_STOCK" || reason === "INSUFFICIENT_DP") assert.deepEqual(positions, []);
+    };
+    reject({ ...request, quote: { dp: null, stock: 2, slots: 0 } }, "NO_STOCK");
+    reject({ ...request, quote: { dp: 6, stock: 0, slots: 0 } }, "INSUFFICIENT_DP");
+    reject({ ...request, quote: { dp: null, stock: 0, slots: 0 }, tilePosition: [-1, 2] }, "OUTSIDE_MAP");
+
+    const free = { ...request, quote: { dp: null, stock: 0, slots: 0 } };
+    const first = deployment.deploy(state, free);
+    state = first.state;
+    assert.equal(first.value.type, "DEPLOYED");
+    reject(free, "OCCUPIED");
+    const zero = { ...free, tilePosition: [0, 3], quote: { dp: 0, stock: 0, slots: 0 } };
+    assert.equal(deployment.evaluate(state, zero), null);
+    const second = deployment.deploy(state, zero);
+    state = second.state;
+    assert.equal(second.value.type, "DEPLOYED");
+    assert.equal(cards.get(state, card).stock, 1);
+    assert.equal(state.deployment.dp, 0);
+    assert.equal(state.deployment.usedSlots, 0);
+    assert.equal(get(state, first.value.unitId).deployable.cost, 10);
+    assert.equal(get(state, second.value.unitId).deployable.slots, 0);
+});
+
 test("DEPLOY-RESTRICTION-02: Definition, Card and Request replace IDs before group resolution and deterministic rejection", () => {
     const permit = { allows: () => true };
     const deny = { allows: () => false };
