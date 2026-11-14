@@ -279,10 +279,18 @@ type Reason =
     | "HIT_FAILED"
     | "INTERRUPT";
 
-type Pending<R extends Reason = Reason, T extends keyof Transitions = keyof Transitions> =
-    | { readonly type: T & "NORMAL"; readonly amount: number }
-    | { readonly type: T & "FIXED"; readonly amount: number }
-    | { readonly type: T & "CANCELLED"; readonly amount: number; readonly reason: R };
+interface PendingFields<R extends Reason> {
+    readonly NORMAL: { readonly amount: number };
+    readonly FIXED: { readonly amount: number };
+    readonly CANCELLED: { readonly amount: number; readonly reason: R };
+}
+
+type Pending<
+    R extends Reason = Reason,
+    T extends keyof PendingFields<R> = keyof PendingFields<R>,
+> = {
+    [K in keyof PendingFields<R>]: { readonly type: T & K } & PendingFields<R>[K];
+}[keyof PendingFields<R>];
 
 interface Transitions {
     readonly NORMAL: "FIXED" | "CANCELLED";
@@ -316,7 +324,7 @@ Receiving 的各 Hook 按顺序接续原工作值，不在每项之后截零；�
 
 ReceivingHook 的泛型返回类型约束上述单向状态转换及取消原因；amount 始终为 number，不以类型证明数值相等。固定和取消后的数值保留由 Hook 契约保证，内核信任内容实现，不增加比较、纠正或其他运行时防御。特殊 Hook 仍可交给现有派发器。
 
-领域提供纯工作值构造函数 fix 与 cancel。fix 将 NORMAL 固定，其他状态原样保留；cancel 保留 amount，将未取消工作值变为 CANCELLED，已取消则原样返回。状态转换的受信类型断言集中在两个构造函数中，Content 不需要断言或直接操作 Next。普通改量只在 NORMAL 分支通过 `{ ...current, amount: nextAmount }` 返回。
+领域提供纯工作值构造函数 fix 与 cancel。fix 将 NORMAL 固定，其他状态原样保留；cancel 保留 amount，将未取消工作值变为 CANCELLED，已取消则原样返回。两者按本操作的实际行为精确返回，不从允许的全部后继反推：fix 对已知 NORMAL／FIXED 仅返回 FIXED，对 CANCELLED 保留原原因；cancel 对未取消输入保留本次原因字面量，对已取消输入保留原原因。状态转换的受信类型断言集中在两个构造函数中，Content 不需要断言或直接操作 Next。普通改量只在 NORMAL 分支通过 `{ ...current, amount: nextAmount }` 返回。状态字段由 PendingFields 映射统一声明；参数化 Receiving 输入仍保留 type 的交叉约束。构造函数的精确结果与 Next 相交只用于通用 Hook 的类型接续，不扩大本操作可能返回的状态，也不为输入的不可构造分支增加运行时检查。
 
 Reason 是业务原因的有限集合，不接受内容自造的字符串；机制身份仍由所属 Effect／Hook 保存，不使用干员名作为原因。
 

@@ -80,6 +80,11 @@ declare const appliedContext: hpDamage.AppliedContext;
 // @ts-expect-error Applied executes before death confirmation.
 appliedContext.killed;
 declare const cancelled: Extract<hpDamage.Pending<'MISS'>, { type: 'CANCELLED' }>;
+const normalFixed: 'FIXED' = hpDamage.fix({ type: 'NORMAL', amount: 10 }).type;
+const alreadyFixed: 'FIXED' = hpDamage.fix({ type: 'FIXED', amount: 10 }).type;
+const fixedCancellation: 'MISS' = hpDamage.fix(cancelled).reason;
+const originalCancellation: 'MISS' = hpDamage.cancel(cancelled, 'BLOCKED').reason;
+const newCancellation: 'BLOCKED' = hpDamage.cancel({ type: 'NORMAL', amount: 10 }, 'BLOCKED').reason;
 const reception = receivingHooks.get(receivingKey)[0]!.invoke(battle, receivingContext, cancelled);
 const cancelledType: 'CANCELLED' = reception.value.type;
 if (reception.value.type === 'CANCELLED') {
