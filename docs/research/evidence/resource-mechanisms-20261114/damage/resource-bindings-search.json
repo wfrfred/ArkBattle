@@ -1,0 +1,3764 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-14",
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/resource-mechanisms-20261114/damage/search_bindings.py",
+      "bytes": 4680,
+      "sha256": "7522c84c276416afb4f6d6fcb2df1ee7595c3a7000f26c41d628e6c6d26d4253"
+    },
+    "helper": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/targeting-pipeline-20261109/content/extract_content.py",
+      "bytes": 12906,
+      "sha256": "37504c156e11e55c9c06174980fb1617281690ab3b01db9caa9dfd28937f5faa"
+    },
+    "scope": "Complete byte search within the listed installed resource families, excluding the Holder itself; only matching object projections decoded. No hit is not proof of global non-use or dead native code."
+  },
+  "result": {
+    "selection": {
+      "patterns": [
+        "charpack/*.ab",
+        "battle/enm_pfb*.ab",
+        "battle/prefabs/*.ab",
+        "config/*.ab"
+      ],
+      "needles": [
+        "scale_damage_on_hp_less",
+        "entlec_a",
+        "tinman_t_2"
+      ]
+    },
+    "complete": true,
+    "scan": [
+      {
+        "bundle": "battle/enm_pfb_0.ab",
+        "fileSha256": "315c22a5cc58cd56522dd50266002383df0fd7efad606c5bac618c2e0db31785",
+        "matches": []
+      },
+      {
+        "bundle": "battle/enm_pfb_1.ab",
+        "fileSha256": "0a054a1f686b2f324168e5a4ffaa95b0e86d9701a0ce5c8a4366652fe181388b",
+        "matches": []
+      },
+      {
+        "bundle": "battle/enm_pfb_10.ab",
+        "fileSha256": "7d88a8815d0947b2836c8770c0ff3c2b92645696ec5e2c9d715d6d0b18148fbb",
+        "matches": []
+      },
+      {
+        "bundle": "battle/enm_pfb_11.ab",
+        "fileSha256": "80744dfb157e052387e5e1e6bd4fef4fc339e332f8a3e17218e8f5949fa7a45e",
+        "matches": []
+      },
+      {
+        "bundle": "battle/enm_pfb_12.ab",
+        "fileSha256": "2e9056a509d746f71fb22261f8f2daf8d41fbaebc7787f6d6a15d447576a2f2f",
+        "matches": []
+      },
+      {
+        "bundle": "battle/enm_pfb_13.ab",
+        "fileSha256": "0b3c936babb315fa9771a7e78e4cd2b1dfdee9ce80e043fdac65122d8b424a59",
+        "matches": []
+      },
+      {
+        "bundle": "battle/enm_pfb_14.ab",
+        "fileSha256": "0563b3209d154cf3f8a08d5efcb267a71b291668f1a44a9f56664cb3f5866c5a",
+        "matches": []
+      },
+      {
+        "bundle": "battle/enm_pfb_15.ab",
+        "fileSha256": "2c30b08ce50e3734f945ac8efcff4f9081bc168835bd779e959a477719cf77c6",
+        "matches": []
+      },
+      {
+        "bundle": "battle/enm_pfb_16.ab",
+        "fileSha256": "398041ca47947b74843a24bac1404175513ed25c75c7ddce915dfc0dd6946266",
+        "matches": []
+      },
+      {
+        "bundle": "battle/enm_pfb_17.ab",
+        "fileSha256": "5cab229230f1ad686df4048a44c7d0bfb719b0993ba38e25e66bce15c1e22e7a",
+        "matches": []
+      },
+      {
+        "bundle": "battle/enm_pfb_18.ab",
+        "fileSha256": "7bc74aef8fbb3cbc7ce86d7e4b789e2c0daaadf076d47b0e9989e83e7ff4eb69",
+        "matches": []
+      },
+      {
+        "bundle": "battle/enm_pfb_19.ab",
+        "fileSha256": "84fdb631abc524475d7d739652267c2f8af3282c0ed5675dc2c26eceaf50b2c5",
+        "matches": []
+      },
+      {
+        "bundle": "battle/enm_pfb_2.ab",
+        "fileSha256": "0337022537c8ea59e44173cb7bcdee8b0da8f8a4fbb30386171eb2b2c9b3d302",
+        "matches": []
+      },
+      {
+        "bundle": "battle/enm_pfb_20.ab",
+        "fileSha256": "a8691210052bd5668850ab7b08d0926f835f17abce02503efea0556e418017ee",
+        "matches": []
+      },
+      {
+        "bundle": "battle/enm_pfb_21.ab",
+        "fileSha256": "5366bf2b9a9c00c514c5dced0fc3780c9ebc499214aa46c66d00cd93e72338af",
+        "matches": []
+      },
+      {
+        "bundle": "battle/enm_pfb_22.ab",
+        "fileSha256": "32f9fdfa30d2ea0b6483365b0e6c0fd2916822a7d8c478ed84877707633b23c3",
+        "matches": []
+      },
+      {
+        "bundle": "battle/enm_pfb_23.ab",
+        "fileSha256": "b9c6f72eb80f3892aba3088697cc983345d665a75ee5b47dcc79848e69296bd2",
+        "matches": [
+          {
+            "file": "CAB-6d7a34b43017beee3aca1a0cb62b42aa",
+            "needles": [
+              "entlec_a"
+            ]
+          }
+        ]
+      },
+      {
+        "bundle": "battle/enm_pfb_24.ab",
+        "fileSha256": "32afebc6f67d2524fd17199003722e5a4a4d9c88d24f0f76ca1cf142cde9fa39",
+        "matches": []
+      },
+      {
+        "bundle": "battle/enm_pfb_25.ab",
+        "fileSha256": "6dc4d397912a6f2ced6c642c87fe87aa63bf42eb1e1398d2cc57096d3fc65c80",
+        "matches": []
+      },
+      {
+        "bundle": "battle/enm_pfb_26.ab",
+        "fileSha256": "382fad807781a318561cc1677cc883401c00f6bbd56b2bca6c58c2dbf86d62eb",
+        "matches": []
+      },
+      {
+        "bundle": "battle/enm_pfb_27.ab",
+        "fileSha256": "71ca2e2ea0b108a93414d1141f55901d4df325295d02b00f41357e4c8715db6a",
+        "matches": []
+      },
+      {
+        "bundle": "battle/enm_pfb_28.ab",
+        "fileSha256": "559485d435af0ebe0f4c5e3c02719db797cf691d736fd82cdaa382ec0718a0d9",
+        "matches": []
+      },
+      {
+        "bundle": "battle/enm_pfb_29.ab",
+        "fileSha256": "a45b8db9ce6c888fbb144000a8da3fdc0b142ca8e8152da352d0ddc22f997913",
+        "matches": []
+      },
+      {
+        "bundle": "battle/enm_pfb_3.ab",
+        "fileSha256": "c5ad2c22393decd0f59fb7bb7542cb342471ab8530e5b8de86a462ea9259e603",
+        "matches": []
+      },
+      {
+        "bundle": "battle/enm_pfb_30.ab",
+        "fileSha256": "aebb60e02a2cac41c6a240bcaa678130c8a529c81ca1834421fe531a5a146e36",
+        "matches": []
+      },
+      {
+        "bundle": "battle/enm_pfb_31.ab",
+        "fileSha256": "aa759aac50e6193311d7fac2a84e36109310e3711b7c8f9374bf4c6e03bb2bbf",
+        "matches": []
+      },
+      {
+        "bundle": "battle/enm_pfb_32.ab",
+        "fileSha256": "f3dec6b9a26e6fb65a91900faece32fae4d24a195acd78ccbcc719c41ea48c27",
+        "matches": []
+      },
+      {
+        "bundle": "battle/enm_pfb_33.ab",
+        "fileSha256": "64df05bb2d0a083aedbe724d23c1ede43a86ee1b8387f244965b056497000739",
+        "matches": []
+      },
+      {
+        "bundle": "battle/enm_pfb_34.ab",
+        "fileSha256": "f6bae238962bc330c6cc72734f788fe09be81dd6eae8eda1305312495899bafb",
+        "matches": []
+      },
+      {
+        "bundle": "battle/enm_pfb_35.ab",
+        "fileSha256": "144a51c4419a8d0bef7cb61b0a0452a5775051aedbd8fac5a89b3c5db5e84592",
+        "matches": []
+      },
+      {
+        "bundle": "battle/enm_pfb_36.ab",
+        "fileSha256": "2dd8bfa465ad4c957276fbb2107a09565f9191348f2bb9aa06c9e731a344b316",
+        "matches": []
+      },
+      {
+        "bundle": "battle/enm_pfb_4.ab",
+        "fileSha256": "eee56a7fcabb99b9464626aec0a8308e9a60fc7d3c888931ebfddfe0fcd8b66b",
+        "matches": []
+      },
+      {
+        "bundle": "battle/enm_pfb_5.ab",
+        "fileSha256": "1fe30c2cbcc54b4548ed23bea7ebad230e53eefb29ea7d8bdb64281fea92c88f",
+        "matches": []
+      },
+      {
+        "bundle": "battle/enm_pfb_6.ab",
+        "fileSha256": "ed001d5acdc94539ac062a3e8148a3e6ed52303442d60eae6ef4247537c4820f",
+        "matches": []
+      },
+      {
+        "bundle": "battle/enm_pfb_7.ab",
+        "fileSha256": "8ee31c5867a7da03f7b379f486a3f2253b1d40487b728587855619d93d9cca74",
+        "matches": []
+      },
+      {
+        "bundle": "battle/enm_pfb_8.ab",
+        "fileSha256": "df97a7de9e1da1404e46e99487e4a3a200a13d746df18cc5b5b356e1d875720e",
+        "matches": []
+      },
+      {
+        "bundle": "battle/enm_pfb_9.ab",
+        "fileSha256": "31f435cffff8870afc44c046504ebae472851ac0c5ff818e1565ee7e39c7aef8",
+        "matches": []
+      },
+      {
+        "bundle": "battle/enm_pfb_base_0.ab",
+        "fileSha256": "8ad3f66ba83f9bd1b5b256009ff262eead54ac4d07bc921d1f5b7337226cf7df",
+        "matches": []
+      },
+      {
+        "bundle": "battle/prefabs/[uc]dynamicabilities.ab",
+        "fileSha256": "107f69348d7515321c77d3553f1d963b1e3a0dd1643fc36efcec0d9e73d8251c",
+        "matches": []
+      },
+      {
+        "bundle": "battle/prefabs/[uc]envsystems.ab",
+        "fileSha256": "ad66947bec144849ca3f22237c28cea1639d9e5c746beae6f478831ebd93afcc",
+        "matches": []
+      },
+      {
+        "bundle": "battle/prefabs/[uc]equips.ab",
+        "fileSha256": "1698bc4166582fc953e54367e31cf46de2585fa94bdbeda8ab93256eb6cf5b4b",
+        "matches": []
+      },
+      {
+        "bundle": "battle/prefabs/[uc]globalbuffs.ab",
+        "fileSha256": "fdd08aa6cb289a9376a41ce2c4801608a438c7b8a9957896631c2d1ab1a5bc76",
+        "matches": []
+      },
+      {
+        "bundle": "battle/prefabs/[uc]projectiles.ab",
+        "fileSha256": "cc3f21b73b10fbc619a1ff8b099f31e678c883ddacb7bb6775fea960ffecb0e1",
+        "matches": []
+      },
+      {
+        "bundle": "battle/prefabs/[uc]skills.ab",
+        "fileSha256": "0d0b4c0f9252c14a69a20d4bea09527403dd3eddfc2f7bcd757c3c30cf37ffc3",
+        "matches": [
+          {
+            "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+            "needles": [
+              "tinman_t_2"
+            ]
+          }
+        ]
+      },
+      {
+        "bundle": "battle/prefabs/[uc]tiles.ab",
+        "fileSha256": "35dc9bf5673f176433a7f6e965b930c767c6c297925aa3315559bb11e730e4db",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_002_amiya.ab",
+        "fileSha256": "d22748e3b17f8742d68aeeae3ca435bbcba5f213f11e22e136010b363b480189",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_003_kalts.ab",
+        "fileSha256": "96d10f92fb6850838b8f4390291d451ff82e945a517ea6cb4265b3f4f0f5b7c5",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_008_owl.ab",
+        "fileSha256": "10aa73f661d2bafcab1978fdc71e5fbb3a286f3c58ec7c8b2664e13ced584071",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_009_12fce.ab",
+        "fileSha256": "0d99125e0b0c610cf51ec9d3bdbe18f88aceeab3f23d2305f1b0107d1667287a",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_010_chen.ab",
+        "fileSha256": "a437358d117536871d9f5e44cd79faf020e45e9968eca51e11c42a1587ba1a8e",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_017_huang.ab",
+        "fileSha256": "338dff3a9d2bb4dcfb2f153bc599e26d84b36fb142be7860287363c1174025eb",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_1001_amiya2.ab",
+        "fileSha256": "f2f53228a1089ebed3e6cd39251ef4728f086e571c871cf84e11716d7541979c",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_1011_lava2.ab",
+        "fileSha256": "d899fa01bacf3c91e7abb5049cc632a4ee962b334304f67f9e704829642892d0",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_1012_skadi2.ab",
+        "fileSha256": "52662c7866015b345803272d3365e3403aa64becf07dbbc81a9b9043a8168a31",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_1013_chen2.ab",
+        "fileSha256": "022e308a908d4ae622a231d3b34245bf9512298cd89d48d945449107a1208d3c",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_1014_nearl2.ab",
+        "fileSha256": "e395052d6042109b8ea7b07384b715cb5e539ad0fa47b5d8842cb489e6102f70",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_1015_aglna2.ab",
+        "fileSha256": "1d12075f7bbe0b4a0241cf51e280c95ccbba3d3d75719fb26465c806172de2f3",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_1016_agoat2.ab",
+        "fileSha256": "8fb9d23260be8d2c48215140475a73586992d154a7f2f2b8ec4217e84bcb7024",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_1019_siege2.ab",
+        "fileSha256": "fc8490af3a9a04aab7ad9106fdd2750ec806c40a49409d45583edb46cefab1d6",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_101_sora.ab",
+        "fileSha256": "b638a019d5a2080a7015660fb100bf0b21863455c4dce7760c14937f722eabcf",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_1020_reed2.ab",
+        "fileSha256": "3940e0b66f3377748b043511ce18ef447a65dfae83e9daab9ff396630bce62e9",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_1021_kroos2.ab",
+        "fileSha256": "0631c2edaa34aa326af4a13284176bc578d81e654c2b3255dcae74d321e0fa57",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_1022_flwr2.ab",
+        "fileSha256": "b9d1bc7ae541bf42aa8db9d63a24ba430de3c7588d29be8e70e9420052440105",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_1023_ghost2.ab",
+        "fileSha256": "c54be5a4204b099ea636d77216d50a2ba88a7e816beb6e5fd5c08f8725cf4b21",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_1024_hbisc2.ab",
+        "fileSha256": "0b7cbae56f91bf9eb36dd567dd463924e05d1604848b433915d76a4b63327e55",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_1026_gvial2.ab",
+        "fileSha256": "777dddcdc260c1b983eb4b0eb400f9354296ba7567449fbe816981bf64c13385",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_1027_greyy2.ab",
+        "fileSha256": "7d15f5a7b4889d3820992f6ee3df85bdac5fc90516d94ed53a1cde54c5ffb046",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_1028_texas2.ab",
+        "fileSha256": "0d7abf2343b35980fcbaf0b77b2e6bab001fdcc1f5dd75e4b4e331b317c37259",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_1029_yato2.ab",
+        "fileSha256": "7d0b4a23a1852629acd5cca2bb05de5d6873934adfec8c542d181f5176190d3c",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_102_texas.ab",
+        "fileSha256": "b2ce0bbd9f6ea0e038daca3e5bcd0246726101c40a696ed4cca70a1508635f9a",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_1030_noirc2.ab",
+        "fileSha256": "b6c044f1db1808e3e48a719130f73c8f3d4e9ae44f629fcdde986ff9aa78b7b7",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_1031_slent2.ab",
+        "fileSha256": "f19ca2d8c11c10493f3ce5e140051dfe6f1dd7366af170aa8020186870f880ea",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_1032_excu2.ab",
+        "fileSha256": "095f309692475e0cd14bea0f1880de7a9dd5f1637a0aec69d26584a7556c0d4a",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_1033_swire2.ab",
+        "fileSha256": "2237d149b07a24aa4239b7a53e56c6f2fc46ffa5f05020eb319295a16dd2ea5e",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_1034_jesca2.ab",
+        "fileSha256": "352283c8ac167561e7aed14347c2c8a3b4d18708b254411f34841cc5b185b7b0",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_1035_wisdel.ab",
+        "fileSha256": "86be3f333f6d83234cc9ca689cce60e3fa108903ce179e2b2e400ee8869a681b",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_1036_fang2.ab",
+        "fileSha256": "f411e2a5c85f4fae2af56899afa7df8cba41bbe33052619d9e1491f5ff1a5c6c",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_1037_amiya3.ab",
+        "fileSha256": "6337cc0c448f4840b11da8aa77f8898aaca589eb7b66ee28bf55fe0819b129d3",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_1038_whitw2.ab",
+        "fileSha256": "013db8178c7aa532cc8a392d0644e0afbb1fa9b4625a00de0f8c3f56eba15aa5",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_1039_thorn2.ab",
+        "fileSha256": "14e86c29231589a23fe1603410a73c73124fed2697fd760a9ba25662d578ba30",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_103_angel.ab",
+        "fileSha256": "8633d654a745b0d9feb0a240e94bf727618716161e7187f537fffcee21888719",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_1040_blaze2.ab",
+        "fileSha256": "dc89cef60e183f70dc8663b7bed65139ae9898f370abd27c8d05b94e8b79d970",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_1041_angel2.ab",
+        "fileSha256": "a35a6a37e01a34d3615540b0781a4ae5af75835921e15abdcd81d7a6b4f1d26a",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_1042_phatm2.ab",
+        "fileSha256": "2dbe490383f7e123be33968af5cc63d2dd642b64516cd7046e67235a1b81fdc6",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_1043_leizi2.ab",
+        "fileSha256": "e7e1ef13ef124586cc325fbd5e5a675a648ba3beab53ba03911fe756582a1a04",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_1044_hsgma2.ab",
+        "fileSha256": "047029cf76d9270d130e08afcb05d4264bf4fa065d56f8aa6d130a9bffc1e271",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_1045_svash2.ab",
+        "fileSha256": "4da58c3993d531490f90faa511dd8e0b314e89ffd5d081b1efb3b09d5f59130b",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_1046_sbell2.ab",
+        "fileSha256": "8a4b46258d3962c967fa51db90c8f598a5719a1a8a63722feb9b478afe696726",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_1047_halo2.ab",
+        "fileSha256": "8f789c3cef076aa0c31a605080e3b9a641319a5e5e1feb469615d4d908ff5a83",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_1048_orchd2.ab",
+        "fileSha256": "546d56c6c7f95602f0ba3653e0ec8f241654dcbf7293bd58af311c2de39f0cf6",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_1049_catap2.ab",
+        "fileSha256": "730cb2a93f5b6fa7371e085ae5ae242c7ad59752234c2aa340644b9b908f2ac8",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_1050_chen3.ab",
+        "fileSha256": "73aaf5013eceabbbd670450ed04cc4dda3b3b72e2eac7aa5eccf5d0ed6d0c07e",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_1051_headb2.ab",
+        "fileSha256": "a17b58581bcd512a757031ad2dfa33b4af37f64501d46588be64ceda915c1e17",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_1052_kalts2.ab",
+        "fileSha256": "97d58abead488de8af1aa40aa1eee8f3ddfa55e5d459140451f28ce05e142713",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_106_franka.ab",
+        "fileSha256": "0f9eb239629c7cfdc188b6603d6a05793767ff6cddbec63b938265c1860d3f66",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_107_liskam.ab",
+        "fileSha256": "5e8111522ec2a27474a9e81da16587fd84180cdb347f4df3324c053b979fa2a0",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_108_silent.ab",
+        "fileSha256": "5dca818fa162203fd82ad755427f92e075d972419575ae4f849a19bf5441ee67",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_109_fmout.ab",
+        "fileSha256": "6c03b8029ff040c968cd6388b5bcf8c66f2afc9de3d5eab11bc1310266a0abf0",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_110_deepcl.ab",
+        "fileSha256": "99649d6a04f1b6c4ce02f4b649f196e66c4dcd17ac23cb4a95c4f7725579c92e",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_112_siege.ab",
+        "fileSha256": "bf3fbf8d1846bf1ed23d496ac1f91dea6e880cdf8a9e4d926cd312e1e8643d9c",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_113_cqbw.ab",
+        "fileSha256": "8eed914ccc2f6c7f84dbac790f28c3daff9bae6887a3605cdb5b3dd409ba8c3f",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_115_headbr.ab",
+        "fileSha256": "ceb4dce343ee0fe1a69f7de4b55c00c7aaf868467ce8e3dfd50bc891b77679a6",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_117_myrrh.ab",
+        "fileSha256": "e8df52d0fc058c98b4e1cc655adc20e157ecf3386dcd93be8a9b62708a1d8ef9",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_118_yuki.ab",
+        "fileSha256": "a90f351c26f7878dc294ec34eec123adfbfb5c4453f04ddc356b8e7154aa1e3b",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_120_hibisc.ab",
+        "fileSha256": "f3777879ceb3a8a563dc6a6c857a3cae00e01a7a52c1875c22697e4ba42e101b",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_121_lava.ab",
+        "fileSha256": "3db84643784203db9745280c5d120058c634ddf49aa2096480966f0a75b3f62f",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_122_beagle.ab",
+        "fileSha256": "22534fb043b97e59a5f9a6e47b011bb3ae49deb8c6dd1f36de463a2e4aa23ec5",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_123_fang.ab",
+        "fileSha256": "bf51459ea43624c0a81fc6cc3a8777be561998d4ae2a9d134884a3dc9b1e7a60",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_124_kroos.ab",
+        "fileSha256": "cce77b8754667db622866b288ff3c4a6167c49cac25b5c86468b6b8b25575b1e",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_126_shotst.ab",
+        "fileSha256": "b81d54671f19f88b79252551a3103e267dcd2f9ddcb97f1ec422436c6dcd0f70",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_127_estell.ab",
+        "fileSha256": "f9887cb928bc555556c4eda3d28fec2da5dac33284adf6e71edbcff5b5f28479",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_128_plosis.ab",
+        "fileSha256": "4ef18ea50b05229cfa04a4abdd701a2412c0796c86e84ad95f3f5737b4582543",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_129_bluep.ab",
+        "fileSha256": "8ccbfd5d6b308e67e5e91ef81cb7fb2dc11ca17fee11c5856c2a447ae949715a",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_130_doberm.ab",
+        "fileSha256": "3001384439beff8e6c1ed57262c3629733a9ebbe4e1245033d2fa92b7581ec55",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_131_flameb.ab",
+        "fileSha256": "ac7e788ce9c82e771fc4b36e4e2f02a65cc5d77d5faee7d972aa8d795bb32076",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_133_mm.ab",
+        "fileSha256": "5f05e2b2be05f91e618a9083a5dca6aa6135e495aeef8085b4b0625d8ad0736d",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_134_ifrit.ab",
+        "fileSha256": "fa40c03d4cc14121b29590895ae44cbb9e3d48d749ca1231ef8278e300201b76",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_135_halo.ab",
+        "fileSha256": "b9d5721a31f15f070cf79d7f2b745fa5703e3ea51ad7ff986ba33906c55158eb",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_136_hsguma.ab",
+        "fileSha256": "9d3e4458c91d3fdf4caa9ad2aaa25348ae8e927539cc7875a23bf6b9838a72bb",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_137_brownb.ab",
+        "fileSha256": "ed20047efac77b8d4a535056d9c84ae8939bd9369802cddb4ab3a9eb0fa0c597",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_140_whitew.ab",
+        "fileSha256": "79f6f9fb6693a95ff9cb8a264af86665962abd3c3fb02606dabd728b752ca316",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_141_nights.ab",
+        "fileSha256": "2969bdd61eb426c35bab2146053cd873b583676064e2b12fa84749ad0e3a6e5c",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_143_ghost.ab",
+        "fileSha256": "73d987515bfab7942125a4eae44d32c91bb9b92951e14c88301f594f318041a7",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_144_red.ab",
+        "fileSha256": "bf54e9aa24f6e26d6abefa7ee0332e147826e9de2951491f2178c19bc1b3cb52",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_145_prove.ab",
+        "fileSha256": "94741c8581e6d03c45ef9bb66e83d4c67f915cff2851f4570e3e57eb1e134191",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_147_shining.ab",
+        "fileSha256": "2343e9aae98713a837cce3244214d4ec6a8b1267743e494cdf77c24fdd96eac1",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_148_nearl.ab",
+        "fileSha256": "371cf51d398d2dcf93f000568fa9fdcef4a1d589977ff679f8fb9db83734715a",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_149_scave.ab",
+        "fileSha256": "a21d927b84b312beef1d81238467087ff61172a4545ca4cbbef495d1a5166fda",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_1502_crosly.ab",
+        "fileSha256": "59a94f6b6e433434cd03dc68cbd94d6d90e4177c0d46b5abf07f16a9232607ba",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_150_snakek.ab",
+        "fileSha256": "198ec4fc10a1b501dd18006af06fa947ddf7f81ae0db876824725447c9ec7d73",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_151_myrtle.ab",
+        "fileSha256": "7838b257bd04789a15cb19a1d829f1ba1194c587c8f3d453881f51521df880fa",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_154_morgan.ab",
+        "fileSha256": "7faef3e6226aae7d61853a0ba0f750d1d5079c219ec7f5052a47b2f5b7cb234d",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_155_tiger.ab",
+        "fileSha256": "82209719aa227fcd9009df0351698f6bbc2b3a4aa0728b42919d821a47a9e759",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_157_dagda.ab",
+        "fileSha256": "a13f58e9b193ac8fc6d3711f25241f9328d2fe528f279ab6f3122fe582de2c7e",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_158_milu.ab",
+        "fileSha256": "3ae305290acd85f04d5618ef9399842386bf5afdbe416edbaadc34e32b3e6587",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_159_peacok.ab",
+        "fileSha256": "875407f6c415aa4a5a6afe7c932a1b390aa848fd30d70aab718f1eeb3835d16a",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_163_hpsts.ab",
+        "fileSha256": "a6e8364384f855d25ab28de3e37ebfe9f6e0f4e2cbfb1f50d985209ddb2f8ce0",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_164_nightm.ab",
+        "fileSha256": "7d7eeed186c97db77f3b12264ac55c57d1e5683b09370d8df21b7156d88dfc34",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_166_skfire.ab",
+        "fileSha256": "87cb0d404c098b9733a4d63c5324e8273f100d8502cda53c39264b5a8727adff",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_171_bldsk.ab",
+        "fileSha256": "91d49f7bcd68bdf28d198ea41362151527fe0942fe041b3c2f379693dcc5fd3c",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_172_svrash.ab",
+        "fileSha256": "09b1cb8b331cbc3e1ed160ac7a716139141221fb600c41ada0a4c1ab732f97b1",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_173_slchan.ab",
+        "fileSha256": "e7548604e68c5f88b932aaf5c8ad641c3e61264a279c080cd7ba722e90148bae",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_174_slbell.ab",
+        "fileSha256": "69cafd6c554b158cc9e3e51c6434de0fc2b0e9f58dda0408d88c0e1191958449",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_179_cgbird.ab",
+        "fileSha256": "f695aafa71a72a11fba6b11da931fbd6db1854aaf5de5ecf1b72c3b9dd39d7d3",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_180_amgoat.ab",
+        "fileSha256": "28cf2c8e64eabc2eaef08b561cc29300e8cd1b24056470343933a45ad2a2aefc",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_181_flower.ab",
+        "fileSha256": "7100d1051e91f62e5bd01a0af875d4c3d5b41836325993e8ebd4f4ddf8a13a3b",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_183_skgoat.ab",
+        "fileSha256": "2a146eb79a70c7931715a50e68f221e2f4ad06dcd75a2083e92383747c011e58",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_185_frncat.ab",
+        "fileSha256": "8a087918c4cf0a2b60814009dcf0c1c84b56d39a87dc2f0af2229d5fa5456843",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_187_ccheal.ab",
+        "fileSha256": "7a55301f27467f2ed1b4df6fa9412618ce31e6c8f3f9fa2d574e39ca5b1c40f2",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_188_helage.ab",
+        "fileSha256": "2a4a7f9b6f61e76db34c525c712cd4f5ef868172850b17fc0b5145f6641198a3",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_190_clour.ab",
+        "fileSha256": "dad5208d9f582614e99de2898f1178011353c73775f9d465fc1f3fc2bd0bf8fc",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_192_falco.ab",
+        "fileSha256": "bf4d8f886db96d3b32b0014be7498b5a05284f014d1e0e5cc39b1a39c962b7f2",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_193_frostl.ab",
+        "fileSha256": "dfc7b8d02abc0ef16c053d39fcbd906d586ec6201fb9e717765db819f1a25354",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_194_leto.ab",
+        "fileSha256": "eca14ea196dc8dc8970fcabad4c698db0c0c92ead6a75d3d032c52879b3c60cb",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_195_glassb.ab",
+        "fileSha256": "02236dc7f3811eadb42fd9f640cf0af69d24b7bd7475de1a0d2976419f172cd2",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_196_sunbr.ab",
+        "fileSha256": "375b689ae90a5a95f55d08a3e47644cf20594eae102aa057f2b5ca561cfaf5f7",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_197_poca.ab",
+        "fileSha256": "030ba24c2715665729a6d801ea57aa52bbb71dc2a4df1d0c600e7ded6879585f",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_198_blackd.ab",
+        "fileSha256": "e001f38c02243f685d9d98a1819c08df15a17a3630a5da86e244ca240d80a396",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_199_yak.ab",
+        "fileSha256": "56e9ae95338d92abca8d40d18bc892ef6c1e39217c2c902460bb7864636a9d23",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_2012_typhon.ab",
+        "fileSha256": "362f3b1073cd42251bdd712dd4dedcf61c7676cc72908c3974ac1b9aaca7dcaf",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_2013_cerber.ab",
+        "fileSha256": "c164be4df0f9bed9a603ae780e804fb57a332b770f216ab730b8b4470985d9e8",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_2014_nian.ab",
+        "fileSha256": "1ffee97496a055313d41c5800ddc788417da4fc598c0d92e71757e63ba27de4c",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_2015_dusk.ab",
+        "fileSha256": "8a4561aae0a8588c532035ccdfac633536badb128a8170a844c996b8b88cf3d7",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_201_moeshd.ab",
+        "fileSha256": "b1efd8a1b67e37fe8d34ae633b44a14130fe44b96862df5269623e35d8ef06ca",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_2023_ling.ab",
+        "fileSha256": "02567b83fcaf839cbeaf77074e54a711eaba3d0f5ac715168f56978a509c62f7",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_2024_chyue.ab",
+        "fileSha256": "841a0ba9b49f3d12ef6064ccf080002cc7f5a0b5644b1e676d610f44e2ba2c79",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_2025_shu.ab",
+        "fileSha256": "e51c88640c74abcff8892c0c4fa120ebe63afd425150318da2408c62389ca487",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_2026_yu.ab",
+        "fileSha256": "f2a228d69ee16b5aa4a08a9d340de4dfbf54816d26fd2cb4831a4bd664a4a698",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_2027_wang.ab",
+        "fileSha256": "3b88c3b79553aa43e4eac5ab0bfcd9076ce5e6ee46490863fe6863974a12c22b",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_202_demkni.ab",
+        "fileSha256": "1defbff0320e33f3a9560f53233d8a5a930d6c4ed0ce6d5c5df3b1ba4b3a9a05",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_204_platnm.ab",
+        "fileSha256": "f5be60b739b64879244ee3632841a6946139cab909c449d4399c51b5fb005f77",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_206_gnosis.ab",
+        "fileSha256": "82efddc0517432127ae35839d53a8a577b8c89a0370a161dc11703ff50ad5a34",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_208_melan.ab",
+        "fileSha256": "8729f4ba1cb6ce533657c6451ca0ce3602f552fce8a0fdfef12da0b7dcf530f8",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_209_ardign.ab",
+        "fileSha256": "97beb95c12b44acc48df3137c8d437c592c50c34ea138556966a8fa4c0d57ad6",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_210_stward.ab",
+        "fileSha256": "a25e014112e5b98bdd763933a9ca864c312f6e79e9546cc203164b465070efd8",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_211_adnach.ab",
+        "fileSha256": "0e4609f9e296c1e318d61253adbb59ee1839f746e2e5b7585182a40edee673f9",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_212_ansel.ab",
+        "fileSha256": "01005776dcc0c5c7fd924f33901c599a3eba5a81f2a4e5f98daf4debf1088c06",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_213_mostma.ab",
+        "fileSha256": "86baf6b2e709166382fbbc47fd959c730cf16d8e589e8a1c3373b1da76267b77",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_214_kafka.ab",
+        "fileSha256": "742fa946e42e19c80ac7fcbb140d4a288ed80692b08e9e25227393b192571506",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_215_mantic.ab",
+        "fileSha256": "8937a0130fe009f12993e39bb30d5574216424d21f626ed9bd0c6e33f9c994f9",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_218_cuttle.ab",
+        "fileSha256": "833d34af9e8dd3b02528929184bfd7846de551b4695f5a4fd2ddff48145df253",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_219_meteo.ab",
+        "fileSha256": "da8b8fb17ac9e6a797790f2c5fb7940c996e95fcff840e4b9cdb44099be5996d",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_220_grani.ab",
+        "fileSha256": "24c32b0e8be99745478e45ebf3ec4cbe979e6581f2b949b7ea88e4f48f7f397a",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_222_bpipe.ab",
+        "fileSha256": "369392d33db87b53043d37e454d473e73a4e0e4ccdec7adc05ea19c4eb4af6e4",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_225_haak.ab",
+        "fileSha256": "95f081a133221722e6aed0070bd84db5ad6cbc6ee95d0710b337a59310294ea9",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_226_hmau.ab",
+        "fileSha256": "8c45266fe272c8b27334b48dff35b771d9465d4d6e7fad6773804da55691aca2",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_230_savage.ab",
+        "fileSha256": "8959d60b14900eca91ba96a28d30b6eeb231f8f3d3f842a511d6a2728b06a566",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_235_jesica.ab",
+        "fileSha256": "8de20a1073e7483b6f75c2476bb5ac90723fe594c4ad7033eacacb8afd6a7164",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_236_rope.ab",
+        "fileSha256": "ebff887520a884a83bc60be550cb13be5c94d29e1442d38712dd6b5e33836da6",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_237_gravel.ab",
+        "fileSha256": "7fa72fd20b3fae0f4116e36458b95880084b8d76722a47fcacc62adf932e0249",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_240_wyvern.ab",
+        "fileSha256": "f77fda6e587a614e09550893e67643b93e49910ccd728450fd9c9e253f4b6a19",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_241_panda.ab",
+        "fileSha256": "2fb231ea6637dd4fd6518fc7322d64130c52dc8f02a1f6be4dece435c406cdbe",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_242_otter.ab",
+        "fileSha256": "061f5403ec90ab9aaa69ef2eb69ef663413d092258beaa7422a5d0ef12fd3f63",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_243_waaifu.ab",
+        "fileSha256": "a42ac6014b25d621272e2f986218755e50702f3a458a54b44882f570da4d7890",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_245_cello.ab",
+        "fileSha256": "da28ef50bba1496963d3084363610b727e7ac44b07a90878aa927fdaaf91e92e",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_248_mgllan.ab",
+        "fileSha256": "91a4db6e3b2ace8976c978f10afef30deba67ccd76be6c75a21b25c9457f9dac",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_249_mlyss.ab",
+        "fileSha256": "463c57ef965d5a871b93dd173484cc50506133808b951ecc3f78e7785e2b94cf",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_250_phatom.ab",
+        "fileSha256": "ffcc3ff84ff1f4d1e8e97c73262b717bc76c1893b6a63e4137e84a7c7479f21d",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_252_bibeak.ab",
+        "fileSha256": "0a94e48ee440bf6b32e890bd4184d66de6d2a9be8919239325149a0e36912683",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_253_greyy.ab",
+        "fileSha256": "1762cf50c0d0eac7cf20017dd91c2cf3d07ce052d0f4d208bbb3b027bfe10c8e",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_254_vodfox.ab",
+        "fileSha256": "77b7fd9b70052e4e265c17d33ad9f6baedc1e748e81c54588cf6ae93d9cb6537",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_258_podego.ab",
+        "fileSha256": "d5990cd30709a8a02c6c076a9019b1a601081a6fbbf1f9fe0d30f8495a883d5a",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_260_durnar.ab",
+        "fileSha256": "a19b1addeddf2d82ad466ad8897fad2c4156770357db376be9d52a9361b00996",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_261_sddrag.ab",
+        "fileSha256": "5b3d1442f34b518f8213f7fb247579840e7ed3b009eecfb69ac3614edc634501",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_263_skadi.ab",
+        "fileSha256": "d0cbab3efd829f85bd6a4817b89adb3361c2972cf5887390290eb387f5225711",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_264_f12yin.ab",
+        "fileSha256": "113403d55ec8bd5ab70f183ae51e78595b2d622bd6902ea55ff8056146b29977",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_265_sophia.ab",
+        "fileSha256": "fa6f6a84cbae3f0c53c51655b18043841c57a0ab84d1281c44aa8c46d589bee0",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_271_spikes.ab",
+        "fileSha256": "83a645c72d26d8933ab93fb75fabcdbb67764c37ebb969b42fbfc04e0ea68767",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_272_strong.ab",
+        "fileSha256": "475b7fa5124a2715909ba288a227c3ce636c3fd546db2b4e0c24def0d2b9b996",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_274_astesi.ab",
+        "fileSha256": "59a81dcb78c6b7b8a857bd84353d3ba169d7a77d47b2836eb4773edb70b410d6",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_275_breeze.ab",
+        "fileSha256": "fc25dd521e0583acb2ec60fa71f8b3bedde71d3ea0d9f1c4a76cfddecd3048fd",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_277_sqrrel.ab",
+        "fileSha256": "0ea640bba0f483bddf7a66e24b4bafbfe80741f9a936c8b3df5fb80a545aed6a",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_278_orchid.ab",
+        "fileSha256": "f722b5c21b5f2e5fff32d86487ee4f428b454782bc70520a905578725ceb5e22",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_279_excu.ab",
+        "fileSha256": "f025a3090c6e0f7ed83398735fd770a4ab607f1fdc77ac4d10059ff31806503d",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_279_knit3.ab",
+        "fileSha256": "16166db6430399b8e1c9e984a9bbc1b3623586abecde4929804301328296fc4f",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_281_popka.ab",
+        "fileSha256": "8799539b1ea2b39f50a083fa522100819984a6d22e73c57eada60de6af36dc83",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_282_catap.ab",
+        "fileSha256": "b667096661f060b75ec40a342c21f067765e45f6ad2982172623d1a7439e889a",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_283_midn.ab",
+        "fileSha256": "d9a2668609e93705d164086fc98daf27dd0015287a358b7c0cb1a4bbccdd1115",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_284_spot.ab",
+        "fileSha256": "f0808ce423c8052970f330bbed546f1dee7070ac1986656eee2f8131cdd8835b",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_285_medic2.ab",
+        "fileSha256": "6378199593d994cae052167a6a2ab2566ad700bf9cd4297a12439fc5fa593787",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_286_cast3.ab",
+        "fileSha256": "699ddb01c1c6b8f1a7c2286b274fa803a888db75555d4c07012f729d740b8bcb",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_289_gyuki.ab",
+        "fileSha256": "cb86893fa177706162b8e02a25013744989d18dabc47c3099295830e9ed92d8b",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_290_vigna.ab",
+        "fileSha256": "82995775c85e9df5c2a65ddf23b38dd7215278af061943e93745f925e45dc9f8",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_291_aglina.ab",
+        "fileSha256": "5d98f9387da485153fcd7649826313bc087b790f2b432ad0f800103a46d9ab8d",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_293_thorns.ab",
+        "fileSha256": "d1060d1e8762309ac459482e1ccac36a7d548bebe5bd5b5883372fd064d615d0",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_294_ayer.ab",
+        "fileSha256": "c69e5e6f494a42ad7f05eceb5f41d586e2695a76d9ee85374b9684fa1967fd12",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_297_hamoni.ab",
+        "fileSha256": "6f217ed2447bb026013356bb610430d7accb900707b65f07bc727deb57df5148",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_298_susuro.ab",
+        "fileSha256": "51ea90e28b361a369b3c8a0a109ce87a8a44b24d5e9ce25273c74f5a36a85206",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_300_phenxi.ab",
+        "fileSha256": "d7b2a1664fe5eed5cff7dabeacfbb5eb23afd8252f06c083491ff95e127a73e9",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_301_cutter.ab",
+        "fileSha256": "2b46767ee6b10ef413ec023705b94bddda8018536d18a1c632e9321aeb2ccd62",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_302_glaze.ab",
+        "fileSha256": "e29813232ba61875cc7958b9052fa1935214d772c829014d5f0ad3985f50bcc0",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_304_zebra.ab",
+        "fileSha256": "6893cba32ec566d7a7c3928631b4c834eba0bda46fea4570f9979eab975dfdef",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_306_leizi.ab",
+        "fileSha256": "4721b875fd444c8b4324cdf51e51146bf2f10537156de2d1cc71a135dadc5e51",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_308_swire.ab",
+        "fileSha256": "d788b5ba1a4ed7052fcad9d3f4cda9549ea296129f5bf3e93af70d27b0b884de",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_311_mudrok.ab",
+        "fileSha256": "4a778b6aefc00b405d5d32acffdf1d601cbec2d3a5dafe0bfaf3657eeed3992b",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_322_lmlee.ab",
+        "fileSha256": "378fa47aeb5e3d6c6173e3d689661a5afc0cb2668a27a07febff8ef905d14ece",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_325_bison.ab",
+        "fileSha256": "238a81617ce2072d7763a9bf44b147851f994afa1c2af31a030056c20c054cd0",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_326_glacus.ab",
+        "fileSha256": "dc49ecccce38b94f2534feb023cac0c709e1a1b040e30f9e4f12b099ece060b7",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_328_cammou.ab",
+        "fileSha256": "f5328ddf29b114ac73203f3e25924284a44f1109d12576d2eee16761a4d72d09",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_332_archet.ab",
+        "fileSha256": "0fd18ace5e6b0e31dc5ce7523195a1b7517d5cd6da1ce22d86756be37b768634",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_333_sidero.ab",
+        "fileSha256": "2805e12425c1a03e9de9dd1c09fc8b250b1e2f6eb6c9fb43b032e1ce68d7a882",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_336_folivo.ab",
+        "fileSha256": "2bcfc4eaafb7e1d21917ff0ee3919840d4537b43d86650721084d0fb23ffb609",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_337_utage.ab",
+        "fileSha256": "8b0d8472c2887ac88a327188c7083bd19d0b4ecfa3d9f48ebe2d612fd9bb45d8",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_338_iris.ab",
+        "fileSha256": "f28d5412ca6959ced18ac5fe1b72f4dfa0ac7c45b6224f0e23e44f76a9d40f85",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_340_shwaz.ab",
+        "fileSha256": "61fb2ba2e7a1ee4ff06ef0163e339bf1e00ea98a0d173283a6f039f8d2bb2eb7",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_341_sntlla.ab",
+        "fileSha256": "5d0a3edbd49f507da9663b9754ef55b6ca52b02cd0d86ad9ca18d442d9d538fb",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_343_tknogi.ab",
+        "fileSha256": "2c10d78b74e4ccc605725717b59d7ed7b4a25622b1ca11375f66eae0f16dd706",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_344_beewax.ab",
+        "fileSha256": "52451ff9941c6c01274579c782b0f36caa8e9249192aa8d53465fafe0f1a597c",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_345_folnic.ab",
+        "fileSha256": "11ad16290bbb44922258bae4ebdb85668a8c27ed6a74fc024003b3d29fc6f7ff",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_346_aosta.ab",
+        "fileSha256": "64cc8f9fcf2c02e66f85e453a76cfe86367703ec8c81e0ffa64a063d8abdc2f8",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_347_jaksel.ab",
+        "fileSha256": "e78dadfc78da43eed54bbe99864552509b119d30f7a8822c5602dc42b14c5bd4",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_348_ceylon.ab",
+        "fileSha256": "a49f6dbaea79bf83e3b56db018b7b7440433277853daa2556c636e50db5893c8",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_349_chiave.ab",
+        "fileSha256": "b302c79d12c22c70ac5516f25788dce1697e39c6f7de7b17aa48ab036a0943fe",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_350_surtr.ab",
+        "fileSha256": "e75b72f5a74b10958b60a44c056328859f07cdfe590ad095ec7db5e99a8c47c4",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_355_ethan.ab",
+        "fileSha256": "f1186c13f3d2471c94c7d17f939f85026eb6e0f1665ff043df9f4bfe77760b3e",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_356_broca.ab",
+        "fileSha256": "9fef7883009a8ab62e8c925a8667a9ca768610fe3e75fb19a5c996435d36d0d4",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_358_lisa.ab",
+        "fileSha256": "9b0da4d37c2df3a52d717bae7962c244e181b3c3859c93985c6968784d57d787",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_362_saga.ab",
+        "fileSha256": "36f2b0b8ee55fa781cf366190e66d93fd64d076f38d8435f8755ad1fc18eef2e",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_363_toddi.ab",
+        "fileSha256": "b37fa087b0b8c8197e9f79f3d3f6c293641b08ef9c2f64bb1e7f465ebcc64312",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_365_aprl.ab",
+        "fileSha256": "a3db18a64564e0977ffa13ac78f34200ac0069e06a6c2824ed135e79969bb413",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_366_acdrop.ab",
+        "fileSha256": "9eb305272854527ab1015fa4d28ac67f61365379560f577e0967cd5c16d1d22d",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_367_swllow.ab",
+        "fileSha256": "d26720ac7f3acf286404923a85e9a7016f503fee2a42929de9c3ef1b643b2929",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_369_bena.ab",
+        "fileSha256": "0976bc5a9d3c0c4ddcbebfacac10f6fe71f0b80e1ab0cb528bed7044686d27b6",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_373_lionhd.ab",
+        "fileSha256": "9f15ba8cc4c3a9533c050fc60ff15ba33a372a02b1754250bbfa6c23706e5365",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_376_therex.ab",
+        "fileSha256": "abb2d8bd30978be0f7a4212bbb2b66dc519b196f3b99c1fb7b40dc97c25cd586",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_377_gdglow.ab",
+        "fileSha256": "62035485850b83571452946317f7a2bdd50bcc7b3cd925d808465c5fd0318204",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_378_asbest.ab",
+        "fileSha256": "df5e55ffdab0258a87ed59449a38bcc64fa67815ee6b618d4034f14b41ee8f9c",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_379_sesa.ab",
+        "fileSha256": "5bbc9e68497c941204c149c3b7e60ddb59cbe80742e97bd9590e45853d971425",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_381_bubble.ab",
+        "fileSha256": "95411389a29ed579f6b27eefa512279f0dc7f8ef8d32e63119be77133a6f8bdc",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_383_snsant.ab",
+        "fileSha256": "e5d2c08e707cb5afcb23a6345168ccee19b32c55d9bb89814e5397f160d13391",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_385_finlpp.ab",
+        "fileSha256": "d650ed1b012512da9cf10ee820e670499c9b78ccfc55962ee5bc1d547b3d629c",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_388_mint.ab",
+        "fileSha256": "0b5b45619a87b3c21ca4113e61acf4e6db175b5e9db8d14f0564e87e33125ae3",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_391_rosmon.ab",
+        "fileSha256": "2a5d505fecb776c737d0f607d74155bfb577c3a33216641cc773f35d17dc9d2a",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_393_toledo.ab",
+        "fileSha256": "7fedc0aea9b12c96af8c8c9d1bef41e2d0587f4850a411596a1a38bc8389c80f",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_394_hadiya.ab",
+        "fileSha256": "82ee81fd3c52e046fde76fe5296112e18e9b5af530ea5c4342992d15719790f8",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4000_jnight.ab",
+        "fileSha256": "42ce473e394b5d8ed5b6e34a8e99ec30373ed00d0216aa247cafa0adbcc9cf9d",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4004_pudd.ab",
+        "fileSha256": "f1aae7bab555b009b76bea9874f5f26df49fa7d401425d057a2007e118fa6878",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4006_melnte.ab",
+        "fileSha256": "59169f28c47fea9fb3815715597b5dc036462542a9c312e7f9228ad5f756f225",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4009_irene.ab",
+        "fileSha256": "210abaafb6373cdb1d3c1a24a7f622192fa84263970a1da8722c3915df893e16",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_400_weedy.ab",
+        "fileSha256": "671d879c84c8956949362f5891aaacf3a648561b4fc511c44ab675837e5ff396",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4010_etlchi.ab",
+        "fileSha256": "54f172b1cb42dddbe257b6f6848a47daa072754715d169e1dff1165840b9b2a7",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4011_lessng.ab",
+        "fileSha256": "bf4404417577f68d8b910219477c6930dc181ba36bf5fca3c98a0700de9c9564",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4013_kjera.ab",
+        "fileSha256": "71d6dd3dd22396e22fe583e70c082475a80b1e3c7555627667539d19a4c07e86",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4014_lunacu.ab",
+        "fileSha256": "6a5a82f80f5f8952a75599247bded38cf6233dd21aa39336594032b31980de94",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4015_spuria.ab",
+        "fileSha256": "f30d0847b7f2d1479a1b23ad6350a58f51feadc71896df9d3f93ad70d9daaca6",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4016_kazema.ab",
+        "fileSha256": "8da76f4046b4bdd4ca88a45d5c0e0d77937206a6d245f907c35ca7fa6d1c19e2",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4017_puzzle.ab",
+        "fileSha256": "04dc13e5866c3dc1985e4f98d9ee0578cb55d31e947eb7fe2cc6c4a60a9c4758",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4019_ncdeer.ab",
+        "fileSha256": "fcc9f6e51a62e5ca6e1103a80ebc2a9235dc303b6145b38b929ba31abf272223",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_401_elysm.ab",
+        "fileSha256": "d8bdb2ce19aa77e93d4d9bccb001d9853035ac891c671bea1d2d46179c4f956f",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4023_rfalcn.ab",
+        "fileSha256": "cfa15fc7c5ba7313239865aa0b1e1de900a141c949309d30a847b0641de61845",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4025_aprot2.ab",
+        "fileSha256": "b9deeea4b4747761668bd76714378a73a8642213988a0875e7c3e34353e89294",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4026_vulpis.ab",
+        "fileSha256": "0b94a9d29944dcac4871d18e46e6ebec57b83958ef3dd5d05ca3576a99348992",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4027_heyak.ab",
+        "fileSha256": "c4f83882f7bd43ccd8a11d51fdc530eb977e92c8d380249aee41f0b71d2594bf",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_402_tuye.ab",
+        "fileSha256": "df296c99b28affd5667631108f6be81d415b876d00a7ce8261004f6d4412717d",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4031_liesel.ab",
+        "fileSha256": "0c9551fb18386edc529d607793544915fc42423e0cbc056f310a180b7639d8f7",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4032_provs.ab",
+        "fileSha256": "3c12cbbae52cf89fe747775893be75da522b1e46d349190cde1e33ac61443e70",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4036_forcer.ab",
+        "fileSha256": "342459200f6371d1bb36dab997f5fe71b8a33df6d9e357768fe2c4b1e2f0e538",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4037_demetr.ab",
+        "fileSha256": "b04c9d002daeb661b02d3ef78ed1891c7ee75152d2bab2c4d2e90312f1b48dd3",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4039_horn.ab",
+        "fileSha256": "c0801f565d5e75d7e3760d7ce3c045a8f5a4fd6652c9d62982fd85f2d805bd23",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4040_rockr.ab",
+        "fileSha256": "99f9d4c9b34e40791d4fb0131bdcaa37a9be730876ccdf8a74b5cfe2bfdd81a0",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4041_chnut.ab",
+        "fileSha256": "94102e5d32a8b7a23ef437774b6293222f9d794fe3b09b6ff56459df9190d988",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4042_lumen.ab",
+        "fileSha256": "5da58397804d1751133f7190941a925bd23856f663dcd757b14b19ec3ab15d2d",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4043_erato.ab",
+        "fileSha256": "acb9d99e2ae25451ced5da45f732fe2a57ecac8c9fe071ececd988a9d169cbbf",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4045_heidi.ab",
+        "fileSha256": "92c932897272ae5d6f5a58f7bd59660f86cc6af1dd1116b1a48b63692f71475f",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4046_ebnhlz.ab",
+        "fileSha256": "1080b4fc4a43c8f4aba77b0134168b1db2c62c578cb335df6b41e01600859dbb",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4047_pianst.ab",
+        "fileSha256": "f595e0fef2073d6ce40340ca09b445a09e3025be047329f25e647196e6511c19",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4048_doroth.ab",
+        "fileSha256": "e31274dc404de42196a9533e030a795cd65f399b93766db887272fb59480d201",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4051_akkord.ab",
+        "fileSha256": "79b993725e5ae2b71dedd4776ce5091d39573df4bed5e6130e962c6dd06db3c4",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4052_surfer.ab",
+        "fileSha256": "78e7ca264730f0a2fc9841bb3bf7ef9bf5618dd361be7067d8c9b30123a1a16a",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4054_malist.ab",
+        "fileSha256": "2d5fa74590c486497ab8ccffecc93c305a6fe0c0d52bec0fdab92faebc302459",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4055_bgsnow.ab",
+        "fileSha256": "6b0bda27d4bb98f6e112f77a9b51b42773dd415a998e1fc1b1dba848f99cc2c4",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4056_titi.ab",
+        "fileSha256": "296418e01710b49100572a222aff349bab9b81403d01fd5aa94d28f384fab955",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4058_pepe.ab",
+        "fileSha256": "f1e550255b4729a3a736a06038d25f7dab445197fcd82b1154802fea35bf038b",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_405_absin.ab",
+        "fileSha256": "95a5a4fde55e012499a2ee1f334d5cdd0c3dc627ffe0358e06e0579307d8e5c5",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4062_totter.ab",
+        "fileSha256": "6f71d1dff55e18639da550dc543758a92cbc75b0d54ced308c7a0aa4ab6dd100",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4063_quartz.ab",
+        "fileSha256": "f1878fc15f91282d4311741958e6973b339659e455f91b728b90d7c39d72f3e6",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4064_mlynar.ab",
+        "fileSha256": "33d3bfe3ea8adf211e753308b7cdec421921d38924d37a705da5be5517cf9016",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4065_judge.ab",
+        "fileSha256": "fd0e2d255d681e7cdca6134a4e1da760d74deebe503acdabe4a6d53ffeb27fe0",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4066_highmo.ab",
+        "fileSha256": "164020bc419bb8656dbcfff14ff1058f3758f116a0693e64b649656f7b78333d",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4067_lolxh.ab",
+        "fileSha256": "662c9afd44e3dae71a52b2861daeb98cfdbc186ab3e378bf118603e12c2d7277",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4071_peper.ab",
+        "fileSha256": "e28f5e051463c8bfc176b592aa17d12b307ea0b1478da81dba85de920254d638",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4072_ironmn.ab",
+        "fileSha256": "5e5897323afe232147d2ec44467bdfe0a7d25bdfa31ac3e3a8d97663fce005f0",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4077_palico.ab",
+        "fileSha256": "ac15daeb451f9cc9a90e51e68689cae86aa2e75acc1f312eaaeaca95dde94d4a",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4078_bdhkgt.ab",
+        "fileSha256": "68f52b9d920ae4713378961b2beb9ea77953f9c59f026b0f2130b3213e1aa407",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4079_haini.ab",
+        "fileSha256": "e1a9b5ea91fe784106fbf59166f595fcb8e699204178381758f8fc53b7b6d39a",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4080_lin.ab",
+        "fileSha256": "8c5663b93366038be89b8047fe9f65456878a0cf2698805d3684721579bdcd17",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4081_warmy.ab",
+        "fileSha256": "dfd0d3a5edc82b9f12ae080712d5745b27578cace28584f1425b2f18b957e6de",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4082_qiubai.ab",
+        "fileSha256": "c4132b0919d31266847da6280349cd29ed5cf50b6e54d2a895161bd8edf9abe0",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4083_chimes.ab",
+        "fileSha256": "e3a9dc940ab21028cca5a07933fc9144513fc2c47a4030d499bb0927056fe181",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4087_ines.ab",
+        "fileSha256": "a5db1c711fbdadc4e856fb18349e56bdd5153dad68dc73ce8f3ba4a1fd0a0a85",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4088_hodrer.ab",
+        "fileSha256": "afa012db09b596b9a953edddd0cc22e2a0eed77e5e33147edd0251b53d61d49b",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4091_ulika.ab",
+        "fileSha256": "fe798f41959a22082921c425c8b35ada4a9ac9cd0e6444cc5ab65a8dd1d162a8",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4093_frston.ab",
+        "fileSha256": "bf016b27a0825b650ab48780eb710868993d00dbea5de70bbe22d7782118e8a3",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4098_vvana.ab",
+        "fileSha256": "b213f3af6453591ab641fc34311967fad4453271c42b14b8d782c5ddaa04e387",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4100_caper.ab",
+        "fileSha256": "b3a0d9e4cc0da36134a438aff0e9e83da7d6d2c6d6569f5c62b3e55d5bc3e828",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4102_threye.ab",
+        "fileSha256": "c85326d02b48119c1573b6d923eefa7a6eb97ffcafa2b6d70e8aff731345e799",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4104_coldst.ab",
+        "fileSha256": "88d313d718bc095b3c557110b40440e0084cae8b9de37c76c2cda921066e916c",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4105_almond.ab",
+        "fileSha256": "d68b960fd5ef92569cb04fae8ba6449ea5abcde8589aaeb6b3adafd6ea873270",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4106_bryota.ab",
+        "fileSha256": "2415870fbb3582c9ca6ac6498234eb9331ceb50c242f968431d9ab414e20e73d",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4107_vrdant.ab",
+        "fileSha256": "32911aa266cda099433d33a0e3744b4e3b7d58530a17851c488c34edbc9b0f5f",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4109_baslin.ab",
+        "fileSha256": "58795055ead633c9263d7c4cc461e7e94d2d38c193860ae1ec87433590f68194",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4110_delphn.ab",
+        "fileSha256": "6e5720d64d4d75ff0077f3f641ab56b54766f3a1db7e6d3b28a690a9047b6c98",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4114_harold.ab",
+        "fileSha256": "096e61ea42df3a34b219680460c8894b00b061659775516675a586e491a0c3ec",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4116_blkkgt.ab",
+        "fileSha256": "61e591ac2f97ae415ae196e2ecbbb44cf08fe56e490c7315a09ca29409404eff",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4117_ray.ab",
+        "fileSha256": "d34e7792300981f3e5be98b50d9e71af98dffd0d70ea3956c328d8502f1776f8",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4119_wanqin.ab",
+        "fileSha256": "dcb06bff6c98f6f4dc84ec1b6477db047c807f5fac32fceb9fd47065427a116d",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_411_tomimi.ab",
+        "fileSha256": "dae1360a165212e2c8a36f86d2cd5bb6fc071d0fc5eb8db828da8fa8cab6776f",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4121_zuole.ab",
+        "fileSha256": "f698d5b0acc9ced968bbab8c3d6429be8eedc9cb33a437036bf1fdca049704b1",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4122_grabds.ab",
+        "fileSha256": "12f57c14ea89e3abb0befcbacdcaf1a56b09983d0cc2795564511d8f7febfb27",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4123_ela.ab",
+        "fileSha256": "1b9dca7a852f743c514daf226624b0c6a1cfe46be7e090c9f42a5843d1335cea",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4124_iana.ab",
+        "fileSha256": "3a7f3f2f676d573ede3c73958828d0bd162d0c86f025b94e4739025e096eedf7",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4125_rdoc.ab",
+        "fileSha256": "4e1d209121ef72f0aa8ed36c427d64bd5d80c0c8e786805b84d0d66f59c66930",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4126_fuze.ab",
+        "fileSha256": "96ca9270512a981ee33139936a0cd6a129697069637dd44382448e2cfcf3d83f",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4130_luton.ab",
+        "fileSha256": "2425f37177a00ba17c9f5f015cc88bc4bdea9a005a74bed09c931b39df35e0ae",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4131_odda.ab",
+        "fileSha256": "4663898dc10beb746490c5b88946f5f81d04fa4bfde5d1833d032a8a3eb9e404",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4132_ascln.ab",
+        "fileSha256": "6cffdcb6198996e9071ea2df8e20a0b96392174611e7ea5be9542bb80521df39",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4133_logos.ab",
+        "fileSha256": "86c5b1ea6e59b2230ba1157e6acc0de8365edb9ce2f94a7e928cc73a69d9e3c5",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4134_cetsyr.ab",
+        "fileSha256": "b4b73ff1667c89dd0d1378369e960ac3c812747331904918576fc9f912f39d40",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4136_phonor.ab",
+        "fileSha256": "be7c613c24f3f069e1cffc34eea60a0f64c58429db65e13e02f8803a3773c9f7",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4137_udflow.ab",
+        "fileSha256": "69595bf93ab627290e641f8721ea28ae364a0e2947fc2306df7aa73262336ed1",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4138_narant.ab",
+        "fileSha256": "5d1a3164c354dcc5cfbd5f550e0b5dcad501424d57c28021d2295bab5e2ac7bd",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4139_papyrs.ab",
+        "fileSha256": "8740f478f6e63a67d95a12057ae1848fc2624fa8d27658317cb3bb5795104714",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4140_lasher.ab",
+        "fileSha256": "d5e91e8d031891cc7353e9880f82d11ad4e548c3295f4177abe6439b09ac669d",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4141_marcil.ab",
+        "fileSha256": "e64b26747dc74aade4a3b06ac540a44a547372f1d6e2db38ecdaec4017ecc7e5",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4142_laios.ab",
+        "fileSha256": "61bc76c9142522faeaf8dec85e9d896713d321ba5cf45a7ae01d09c4db503bce",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4143_sensi.ab",
+        "fileSha256": "42e393215019af5b0a0bdeb72c932e5274f808d3277c05238ed656e734d48727",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4144_chilc.ab",
+        "fileSha256": "35057ae4be2cdc4e23ad074fbb09520ce8a71513aafc07bcd25c46fa445c0367",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4145_ulpia.ab",
+        "fileSha256": "bd0098b276de65b11d78a5566c6786391ced425bdafe3d0d15bb76e681585343",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4146_nymph.ab",
+        "fileSha256": "e5f8d7c626ebfbeedda9a968da977e8cf35c99f0b7c7861d72e6ff34aa710c28",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4147_mitm.ab",
+        "fileSha256": "c6f333c4a3cd389115626dacf231fdbebd51768f97cddf06ee4e8fa3ea3e39f7",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4148_philae.ab",
+        "fileSha256": "49c96c245aaa7d8ffaf75586fa15d2ef636a00cacdb67eee54e5b1f34cf88958",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4151_tinman.ab",
+        "fileSha256": "cd4317777115d3b7a20dea73c608c14d364251f4cccf12c549253d3cdae84969",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4155_talr.ab",
+        "fileSha256": "acedeb3eb7c169efe8123f417e317295f9c84befa4db92e06c936eae591d2c24",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_415_flint.ab",
+        "fileSha256": "8b8a4717e32ce5a836d287aea30eb09444a96784ac100aa5655c0731e48e4f1a",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4162_cathy.ab",
+        "fileSha256": "2e7dd14264ca43e7b76292a2499c346ee394179f4ecd91e19d892421603ca72d",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4163_rosesa.ab",
+        "fileSha256": "a180f3286eea9639e25763f44f0381e855125e055dfba55fe2dc40d85c7ad5b5",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4164_tecno.ab",
+        "fileSha256": "30358b9d2aee4331f05a8c1c62461b936f11f6be74195c7bc1173bbe3d10e929",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4165_ctrail.ab",
+        "fileSha256": "1ea3c7c9a71854f2f884e7cea27ca902b49a7b343cb9e097fc465f0dfc3d41ba",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4166_varkis.ab",
+        "fileSha256": "ba771078d0a43c1e871cb62c0eee2debef01cc6670b848ef5d2f83d00d5de70f",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4169_caledo.ab",
+        "fileSha256": "d2b5d694dd437bb927b1538d5d9dfd56dcbff14318d1497816c604b4ada5c122",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_416_zumama.ab",
+        "fileSha256": "007560542b54339afb869e1a6deb4c5cedf74ebc6ec85dd3cb604766c47a64b8",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4170_hdbell.ab",
+        "fileSha256": "7f5b59219b135021381577e9185ec342ec481e4d575b18687bd1a16765960203",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4171_wulfen.ab",
+        "fileSha256": "adb40b3f4831ee989d98b2d145295e61216721c47a9efebea7162e56991ec634",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4172_xingzh.ab",
+        "fileSha256": "af36d30b3ee0f39404da5a29751f3593ea03a72bf91b5e2313fd32eb228dd45d",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4173_nowell.ab",
+        "fileSha256": "cc45fb54a18002ac0365c61e7583de004a055bb1bc50ed986ff0dc4507373f21",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4177_brigid.ab",
+        "fileSha256": "14270c3659713b4d91c0bf06741195f49fa348b6a51dfbe6de464da2aed3b86c",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4178_alanna.ab",
+        "fileSha256": "b7c4c53869c5d854f88eec5de53f74148922f5906295156ea4827e25a40ce89a",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4179_monstr.ab",
+        "fileSha256": "fb08b38331a8f2d3e364ff58a706aa73b39420b74999638bac2044eedee3a7aa",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4182_oblvns.ab",
+        "fileSha256": "b6224ce8f63678bbd38252cff524646349f701bbd0e01b6b8b3625d2a441cf5b",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4183_mortis.ab",
+        "fileSha256": "6cc7b99e7e509d7b6a9a375d4a60691eb6b8a80737427e442ea386c5d2dc58ce",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4184_dolris.ab",
+        "fileSha256": "2376ad723309cc8df353d8c2fb4ce2942a57aee3622d87861cbb24c77032f65c",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4185_amoris.ab",
+        "fileSha256": "9420a8ae451b33b9f369258d0d4fcc455041be05ed55e122c6ebbe20dfa65fdd",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4186_tmoris.ab",
+        "fileSha256": "3fda1c21f27657bad2398c25f7578481dc065118f4c758674afb692879cf8071",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4187_graceb.ab",
+        "fileSha256": "45475ddf94fc253a7383a1157930982db44797e76c07b7a0d07fde9b788d3e29",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4188_confes.ab",
+        "fileSha256": "7c30f6ac61c588af5507f15ea59dd5f69f7c9f8288aed49a13fd77d1d103d84c",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4191_tippi.ab",
+        "fileSha256": "a05bcdc4d65c64b851284f65b3d8c852e61fbbc53ec8013c2ad0188e0ec4a3e2",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4193_lemuen.ab",
+        "fileSha256": "cd2b35d1198da00b5bdc9e2e57c4d3a2d9328dd6433d8cd4c2abe4dfcbe3d404",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4194_rmixer.ab",
+        "fileSha256": "0e61dc45eede679a4afb695187061fd6b913c1ff8f9da37fb1fe03b1a266ca15",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4195_radian.ab",
+        "fileSha256": "3c1c0fc72efa03e5f2f7608561b9a665d06ae2dbb821e8c0b9a62c6c2f087c75",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4196_reckpr.ab",
+        "fileSha256": "b905240278d73d0bceaf106964f7797a231af381b07fbed57d51fdc502fdb938",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4198_christ.ab",
+        "fileSha256": "19976ad502607accd0ae74fffa85c70700c0d0a7e23b7c9b75133fda93054e27",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4199_makiri.ab",
+        "fileSha256": "86c08d47d4482bee517553ca322a0327028aec74897cff3367346e439506efa1",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4202_haruka.ab",
+        "fileSha256": "f93aa8b9f846799aca9c3ab705092362555db9efefd7132d75746f7be0785eca",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4203_kichi.ab",
+        "fileSha256": "2854c57e3d4ac1742611f955be459a7142db8d27f16cf8b5dc0fed1fbed17bc7",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4204_mantra.ab",
+        "fileSha256": "f1ce86425cc6a1a49a73cb08d2ac2f537889a75b9a1101bea8d282ec3837aceb",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4207_branch.ab",
+        "fileSha256": "6e566f1e965a388858eccc6e36957296d5cdd20dc91aa760d00d3030a123d861",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4208_wintim.ab",
+        "fileSha256": "c2c7a6bc59e05502693bcddeeecbeb44b4dbd097820487432a97cf7fdb258071",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_420_flamtl.ab",
+        "fileSha256": "ea28009412a2f22a7539e3856c2c928f0e9493970765321fb2917a76447a4e68",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4211_snhunt.ab",
+        "fileSha256": "b2a1697bd554108fe09b5590e87f17e42bcbcfcc2292068fdd09d9d84e8eea8b",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4212_nasti.ab",
+        "fileSha256": "543bcc5318b0cf2ccd0be05eedf98ec3759435d81f7572b6a8f9f962425c90f7",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4213_skybx.ab",
+        "fileSha256": "cd8cf07947d6fcc26d968ea51312ffd87de67ab889f9c6057e03984082bc9eb9",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4214_cairn.ab",
+        "fileSha256": "dd21b08f8df06618e5b3fa53769c59d66e366faa1cb90372e9047da2b504b827",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4215_buddy.ab",
+        "fileSha256": "7cf1031c1d98066413efb14736b766bf1f57f699fba7a1783837b37d76286cf2",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4217_makoto.ab",
+        "fileSha256": "78e5cb91990f04b455fdff0f5fb5593a272f930aa657e7ca05a1bfc08e5001d4",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4218_aigis.ab",
+        "fileSha256": "f028c26c1bb105ced028c2491428f5efcc4af6b4012bd6b06c75a9490d2b211d",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4219_yukari.ab",
+        "fileSha256": "004da2cb8362a93d5a54bbc32666f605b910723ccb2157f97b6ce3d5f280b8b2",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_421_crow.ab",
+        "fileSha256": "df04e989102d84f030ca6697dea90efdaf81a273cbcd110978cc9b1ea5438031",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4220_kormr.ab",
+        "fileSha256": "f84c41619e554806f27da04c365c524f2bd2e47dd8e47564c9d543b309c3f3d8",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4221_ju.ab",
+        "fileSha256": "e985e7e259d9ea8cda8df9e92a6878c106ebe449b073a845dcee2987b4ec9cc6",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4222_taraxa.ab",
+        "fileSha256": "6d758a9b0ff36860f29738fa7121de04c65b4f282d9782edee64db8d005cd60a",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4223_botany.ab",
+        "fileSha256": "085ce5d19c3a7fd97d436d50028f0d6d2a2a698d7b0116efae3a82016c281192",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4224_turdus.ab",
+        "fileSha256": "aa55d40d18378b445618067e36697b12189f312bd67bc94306b7aa14bbd2805d",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4225_tanya.ab",
+        "fileSha256": "766807899bc8570c33df2f2598f74dcabfca208856d16afad81f0c540aec622b",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4226_veen.ab",
+        "fileSha256": "b39e51b1e9762e97455c0556a4ccafab99e7b774b9e18dace87302d7ee533369",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4227_gallus.ab",
+        "fileSha256": "06c79f968a5284a1048d588df74982fc193f2c1440527b0d6b2217a84c24624c",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4228_closur.ab",
+        "fileSha256": "3eecba0efbe8acd659688c5ed3b29bb72a0a2fc6c4746ea62e82f45b6ebd0293",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4229_aphris.ab",
+        "fileSha256": "8c34d9c3d1e6853071f9c877394b36b9d4ec192d8103e0ca7360461872255c4c",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_422_aurora.ab",
+        "fileSha256": "a002979a02037859e4c4040721cdaba2211a68b4db687170f9bb5c359532eec5",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4230_mcnist.ab",
+        "fileSha256": "9a7e6a62e1ef3e3121e1c158dac7789d3c99f6e77370af67f5a169a726ef882b",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4231_clemnt.ab",
+        "fileSha256": "7387acad6220bf79a84a29ec694356aa52046d3bc0f0a7ecf76c1f0c4e2e23a6",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4232_hbound.ab",
+        "fileSha256": "eefed1504bc35ef42c565f167fa68fc8e85ae1d5296b4248b2a295100f52b22c",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4234_pedro.ab",
+        "fileSha256": "f88f62b71257e772ad95bc5c0e2fd673745111fa0dde27bf5b86c11d898be87f",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4235_thumpy.ab",
+        "fileSha256": "1cb5ae5141606bcaa9c5c64e82a5cf8e5547b092c08234a828a4fe0784e43918",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4236_tmslot.ab",
+        "fileSha256": "1318ab0d7ec76bce4501508cd8ccae4bcdeab66d410bc0fa2e088acd1a60243f",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4237_jcinta.ab",
+        "fileSha256": "93c4c441a1de2a379100327d5d4ea3d4b78304e7dacb6d492ad711c5a2c266af",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_423_blemsh.ab",
+        "fileSha256": "516a47551b48fcff5cb736c337839cdc3d6d4484c6afef7e33f5f8b49152d7d6",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4244_tocka.ab",
+        "fileSha256": "9c70e4e7d6c950654b3b5b6b626a991b0035c1f0338f9410672794ef6882276c",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4245_alga.ab",
+        "fileSha256": "e71bd3ac2a11b58105ef268f558d3ce8b51978380ff1d4a798cb388f54ec73d7",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4246_dminon.ab",
+        "fileSha256": "5df9027e5bc2e91632e930bbac9c8fff84fc6ff8358126ea17560940b6ba68c9",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_4247_oxi.ab",
+        "fileSha256": "097194db8ad50c69a089086ca20f7f5b29e791dc36fbee21587f97468dcd0497",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_426_billro.ab",
+        "fileSha256": "3cfa6fa731ff48644c875a4d75f874f4fd679a9f64420fb5a230e1d90f300c4f",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_427_vigil.ab",
+        "fileSha256": "d6d7778119f108ae0ffcd5f1796eb2f7e7feacd302b7d59fd075560d150d65dc",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_430_fartth.ab",
+        "fileSha256": "0cbca7fa97986e8dbfe49c3a9ba7d5e9c5c3b74b5f3615b663b3a408aed4f245",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_431_ashlok.ab",
+        "fileSha256": "3b899b1652e823a0218a862b197f8e05cb0236745b5cc571c219081ddcb60437",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_433_windft.ab",
+        "fileSha256": "f362643f14bfba781e628d4facc07ea0dffc85b3adc603485d4ca81656a4c583",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_436_whispr.ab",
+        "fileSha256": "5acf68a323c983919e6fe97d2e1b5bc3c77fb03d63459e8b7779add2fe91a4d6",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_437_mizuki.ab",
+        "fileSha256": "4a7b50b73db6f504d9df0df89ef9e967307bfe3623a9f228aa9d69842a3ab7d1",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_440_pinecn.ab",
+        "fileSha256": "26010f7304ad8c1e969c50ddee6500ebb8f6a8c548cae074411befdda8917753",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_445_wscoot.ab",
+        "fileSha256": "77ae6e77a61fee0ebddac9faf903dc914ea8da3793463dbb14fe412be37acac3",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_446_aroma.ab",
+        "fileSha256": "9d58908ab6b57242aece82815957c08f8a63690e08d3cfcadc9eabc26c8b6c15",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_449_glider.ab",
+        "fileSha256": "0c7a486b2b5045db66135e90f5ec2cf26be9cc6f6de490522cddfd76f88f2814",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_450_necras.ab",
+        "fileSha256": "c02accb8debc9d674aa9ace1871f21d1d0f34d76ad5cb20ee03bda88f7f3239c",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_451_robin.ab",
+        "fileSha256": "0e8e73a9552aabacfb85ba65821bcfb42e0bf5bc01f4dd6ce1834425521e4675",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_452_bstalk.ab",
+        "fileSha256": "9a67a7ad3d3e468176432d6cec91e4c391f43d8d2e47f9288c883fb60f0f3683",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_455_nothin.ab",
+        "fileSha256": "13a9813ffe40342250d716c51bcaf67e54e3bbcf4c2656c00ded341333dc9034",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_456_ash.ab",
+        "fileSha256": "c675a7ba388ceb8f484558a7eae5ea9c96f66dd43b813a3b9f0ee3c63defdc43",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_457_blitz.ab",
+        "fileSha256": "cb989b132e6ebef240f28ab3eb68e7ea46e4d42c66b2e13a65f96dc27f23e9fa",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_458_rfrost.ab",
+        "fileSha256": "d69a5e2a6fac7ca9abb9a6de62bdcbd32b1ea569225cb2ce7d1a4a13c4132df2",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_459_tachak.ab",
+        "fileSha256": "a419f13853d41927cb647930a8dc75b85847c662f7cb6c48e79a32610b5fc108",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_464_cement.ab",
+        "fileSha256": "660037c3764458ff3d179dbb5dd0d29bf212c52661afb18d084231cf096fd230",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_466_qanik.ab",
+        "fileSha256": "d2af7c5b2646b831fc04fc7b1ea115f9cbfa3b2d9ecd9a79a2751c996bd9a214",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_469_indigo.ab",
+        "fileSha256": "546505b3b08ce6ba850cff8d0676f82a22638770e24c2ca60a9177c79d649c46",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_472_pasngr.ab",
+        "fileSha256": "8857fae7de6d16cd56c7db08ae312b31132a8b00b5c84e4db55c443e0822518b",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_473_mberry.ab",
+        "fileSha256": "ef53adb2b73899bf2db7b52102af86cb1612915f01f41a4e16e4a6417b204acb",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_474_glady.ab",
+        "fileSha256": "09bf3d049d194032ab998c2b7634dab44a3d917e4bbce7b979c566c29a9b7b55",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_475_akafyu.ab",
+        "fileSha256": "378871f8b1171882a1a878041576a6b6df5b60123874dc2a60b3350c988fc707",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_476_blkngt.ab",
+        "fileSha256": "b8d2d1fa2de6260f3978a415830f0c87d471e5be69a36ea530817207cbe35ee2",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_478_kirara.ab",
+        "fileSha256": "b8e9680d1d5d7441d1d1a5db55b55555342067be8dc87fb70756837bb04491e9",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_479_sleach.ab",
+        "fileSha256": "0b835f9622025e48ece9db924d9d88844d178c6b7473ee36a17d653862f9b388",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_484_robrta.ab",
+        "fileSha256": "16873c334d43c0df11bffc98b385a35730b983bc22d24340a59a9cf14eeb80b4",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_485_pallas.ab",
+        "fileSha256": "613c8d5e47505ac6ef33d230c17e5f0f2558fd0634ba9d47b4d39d41d80a8d10",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_486_takila.ab",
+        "fileSha256": "30d23d017e826f372dfdff0babc1bc3d25bb34c31149592c2627b74ba73911f5",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_487_bobb.ab",
+        "fileSha256": "d2bb50cc9845e99945f2ad7f5a47320758b605e5005b8b207b5a4fc8458d366c",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_488_buildr.ab",
+        "fileSha256": "fa56ccc342f8adc892a76b93fd30939ef94c30f6e5f7b425711af4494dbb73bd",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_489_serum.ab",
+        "fileSha256": "b11b556a8016e699ec32c87a40fa6f21c3b66e080f1a440bc3114ffb68b60c01",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_491_humus.ab",
+        "fileSha256": "5f3bd892d4623477886883c2e5863d048a6c72b95f8f0b5004b6402cfc23aa34",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_492_quercu.ab",
+        "fileSha256": "75914219e4f0562f0868fc271a0a94f59720cc911dc34d9a8e03f4b580a52784",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_493_firwhl.ab",
+        "fileSha256": "0a90817e12066e5be700678d32aeeb36b2bf9d698b41264e560056f9257a4738",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_494_vendla.ab",
+        "fileSha256": "3867644b009bc9c9d0261313a3196c998f5e01dab7e5ccfa58b0287e69bf0cde",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_496_wildmn.ab",
+        "fileSha256": "c73160ae6c0e00369efd9c36bd2a2fdf8e7784c6581e66e3f8cdf4960b9d9f60",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_497_ctable.ab",
+        "fileSha256": "380a1467ecd4a87b162e4b9325142e217c68f80160324da5c1cea8c0ba41d143",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_498_inside.ab",
+        "fileSha256": "4c8f4c98a4f152c135ac23e008375453fcc878a8300f96a51dfed465cc9a9dd7",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_499_kaitou.ab",
+        "fileSha256": "0cee1012a5878fa6917b69c9f5025d885b6feb297dd6957871b39dd7ba02eda4",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_500_noirc.ab",
+        "fileSha256": "690d772fae41768505b18d9ef15806ae5acdab924ce7fffece09d774947871ea",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_501_durin.ab",
+        "fileSha256": "3b44e5dc773a79242c4172231fd31fe54b0b26e4b0efa16becc584411b5bbd70",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_502_nblade.ab",
+        "fileSha256": "c2a69fde01be2d7feb2c41d619f6f0ba694e969e042295dbcf097619273fccbc",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_503_rang.ab",
+        "fileSha256": "a21eb35d212da2bf971644dbef5bb642c6f8a6742e595e7f9c2cc1c2f39a4cf1",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_504_rguard.ab",
+        "fileSha256": "49f015d901e7fa0ba8298eb6978962e192703b4275f00d4e87c4a046f94a8187",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_505_rcast.ab",
+        "fileSha256": "8711e3ce26e89a104efd78f06b1a440b423f474df2d5351e242a1ccd4de1b4f0",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_506_rmedic.ab",
+        "fileSha256": "9e9d4f9169a02470f4dc9e5210cfa05e307b72a1fdc9d554f33e2961c7fff622",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_507_rsnipe.ab",
+        "fileSha256": "408e951301484e039847adc03ac6685fa5b2f1390fde1f81965e2398934efc08",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_508_aguard.ab",
+        "fileSha256": "52e28941115ed4aeab39ec96a5ae487c9b4540d5d3171a25a10bbc79e6e73cf6",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_509_acast.ab",
+        "fileSha256": "0e148cc652d8d33dcdaae9d66d578b2e76306f305097af4dcc4247d3a871ad63",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_510_amedic.ab",
+        "fileSha256": "31e12011cab5c28aea82158e62eddbab24c202453185a4bc0b972c3a1ac412c2",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_511_asnipe.ab",
+        "fileSha256": "0d1187b4bdffc07f2a1a14f94de6bbd837306d5f922b39e9d803fc99e1cd7a5c",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_512_aprot.ab",
+        "fileSha256": "5da9ad3197bc9b2aec26fd1f2d62ff0145c4a7dfc6c07c62a60114d27ad24fb4",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_513_apionr.ab",
+        "fileSha256": "23e207a2c989c6106305ca66beff07e56a693437362ddd885a7f5f471f32f611",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_514_rdfend.ab",
+        "fileSha256": "f90653254157f91a8243253da75c4fa6430f31b4a6134d8f1b78282a94ddccb0",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_600_cpione.ab",
+        "fileSha256": "8c8f92badc136a0321da12367d9a240e9dc94e6adc34edc1b5bee4af9d0b38f9",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_601_cguard.ab",
+        "fileSha256": "464ac671453503e75017ede4117dba9dd599c62c5e57f77cd9bed2cf34e09015",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_602_cdfend.ab",
+        "fileSha256": "ab4f6507dcf3c23c1705a1fdce90defee37041dadfcfc845eec9d737aaf44db4",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_603_csnipe.ab",
+        "fileSha256": "bf6660956885c4e28fe49105ef616444326534b5a8901e511c1366f00f91bd82",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_604_ccast.ab",
+        "fileSha256": "1b61f3355dd0f52aa0f82a52e550c67d4c9b5e6a5f81cf1d02dc70f264b5b7db",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_605_cmedic.ab",
+        "fileSha256": "97a2e9b8ad156386d246256aee52815f6274117003f1a9fe502f4559043b6006",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_606_csuppo.ab",
+        "fileSha256": "192a822d7089c4213a7a20860719757f1f1fcd4f8d27a6612122fbcb858290bc",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_607_cspec.ab",
+        "fileSha256": "0e0a775781ada32dff39e2c6e72ea1b35b6a95fb5f2984000603abdc22ea557c",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_608_acpion.ab",
+        "fileSha256": "69b5bcb5d3a67ede9f68566e79edf42e5d309ed3350d75bd0d46e33f7035e594",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_609_acguad.ab",
+        "fileSha256": "224d324b5c17150e497dba3c04671ea9910ecbce93af24fda44206cd9fa5b532",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_610_acfend.ab",
+        "fileSha256": "5d9437e9c83ab875b87999bcbb5466f78abf0080cdcbbbf951ac73d899a0289f",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_611_acnipe.ab",
+        "fileSha256": "fe0440f249cc7c3942e49188b62b10309322db78171f8d9f4b809a0403afc499",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_612_accast.ab",
+        "fileSha256": "41ed769b3de90ec76ff6b67f8291ab5944baf276a5f49e6a531b139b80617af7",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_613_acmedc.ab",
+        "fileSha256": "e7910022c4334325b27b66d9c8b412a569bf7f2bf8de14bdc7e3acb1ab7ff70f",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_614_acsupo.ab",
+        "fileSha256": "49dc7ff5b0a91bc3decccf9249afced43599df062f893c10ed0e4616fdb3aef0",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_615_acspec.ab",
+        "fileSha256": "d47c701fc5e4930dc9c5eec4bc7f5a032177b8bb2a9d13dc48e204a06c4ebcde",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_616_pithst.ab",
+        "fileSha256": "cef141128b9d898898cd10e3c46027079cb3bb324fb295b68bf535d1391b94fb",
+        "matches": []
+      },
+      {
+        "bundle": "charpack/char_617_sharp2.ab",
+        "fileSha256": "ab33f6acf8353332c569cc922e7a0952585d451751a073cf71a881da264b0e17",
+        "matches": []
+      },
+      {
+        "bundle": "config/common.ab",
+        "fileSha256": "72e626133e9a6482a28111a326461ba2289f37f85ee678481ddb41efd6061d49",
+        "matches": []
+      }
+    ],
+    "hits": [
+      {
+        "bundle": "battle/enm_pfb_23.ab",
+        "file": "CAB-6d7a34b43017beee3aca1a0cb62b42aa",
+        "pathId": "-8608232659679835680",
+        "classId": 114,
+        "needles": [
+          "entlec_a"
+        ],
+        "hierarchy": [
+          "enemy_5601_entlec",
+          "Modes",
+          "Default",
+          "Body",
+          "GeneralAbilities",
+          "Passive"
+        ],
+        "objectSha256": "daff69f47cc72cfb9228f60138045ebf1c19aadc4193f0e6370b8eb42005bbc6",
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": 7110435285280492000
+          },
+          "common:349": 1,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": 3800760148018415462
+          },
+          "common:427": "",
+          "_selector": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_metadata": {
+            "namedAsAlias": "Passive",
+            "blackboardPrefix": ""
+          },
+          "_overrideSignalId": "",
+          "_interruptAbilityOnDetach": 1,
+          "_attachPassiveBuffsOnDummy": 1,
+          "_ignoreIfOwnerDead": 0,
+          "_forceAsDmgOrHealAbility": 0,
+          "_buffs": {
+            "Array": [
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": [
+                      2,
+                      15,
+                      22,
+                      3
+                    ]
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "entlec_a[passive]",
+                "loadFromDB": 0,
+                "isDurableBuff": 0,
+                "isDamageMissable": 0,
+                "isSilenceable": 0,
+                "isStunnable": 0,
+                "isFreezable": 0,
+                "isLevitatable": 0,
+                "isGroundBoundable": 0,
+                "statusResistable": 2,
+                "templateKey": "empty",
+                "disableOverride": 0,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": 0,
+                "clearAllStackCntWhenTimeUp": 0,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": 0,
+                "overrideEffectKey": "",
+                "overrideOnEventPriority": 0,
+                "onEventPriority": 0,
+                "audioSignal": "entlec_born_audio",
+                "lifeTimeType": 2,
+                "takeSnapshotWhenExtend": 0,
+                "durationKey": "duration",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": 0,
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": 1,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": 0,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": 0
+              },
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "enemy_entlec_self_mark",
+                "loadFromDB": 0,
+                "isDurableBuff": 0,
+                "isDamageMissable": 0,
+                "isSilenceable": 0,
+                "isStunnable": 0,
+                "isFreezable": 0,
+                "isLevitatable": 0,
+                "isGroundBoundable": 0,
+                "statusResistable": 2,
+                "templateKey": "empty",
+                "disableOverride": 0,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": 0,
+                "clearAllStackCntWhenTimeUp": 0,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": 0,
+                "overrideEffectKey": "",
+                "overrideOnEventPriority": 0,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": 2,
+                "takeSnapshotWhenExtend": 0,
+                "durationKey": "duration",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": 0,
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": 1,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": 0,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": 0
+              },
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "entlec_a[damage_listener]",
+                "loadFromDB": 0,
+                "isDurableBuff": 0,
+                "isDamageMissable": 0,
+                "isSilenceable": 0,
+                "isStunnable": 0,
+                "isFreezable": 0,
+                "isLevitatable": 0,
+                "isGroundBoundable": 0,
+                "statusResistable": 2,
+                "templateKey": "entlec_a[damage_listener]",
+                "disableOverride": 0,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": 0,
+                "clearAllStackCntWhenTimeUp": 0,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": 0,
+                "overrideEffectKey": "",
+                "overrideOnEventPriority": 0,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": 2,
+                "takeSnapshotWhenExtend": 0,
+                "durationKey": "duration",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": 0,
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": 1,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": 0,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": 0
+              },
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "entlec_a[line_effect]",
+                "loadFromDB": 0,
+                "isDurableBuff": 0,
+                "isDamageMissable": 0,
+                "isSilenceable": 0,
+                "isStunnable": 0,
+                "isFreezable": 0,
+                "isLevitatable": 0,
+                "isGroundBoundable": 0,
+                "statusResistable": 2,
+                "templateKey": "entlec_a[line_effect]",
+                "disableOverride": 0,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": 0,
+                "clearAllStackCntWhenTimeUp": 0,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": 0,
+                "overrideEffectKey": "",
+                "overrideOnEventPriority": 0,
+                "onEventPriority": 0,
+                "audioSignal": "entlec_born_line_audio",
+                "lifeTimeType": 0,
+                "takeSnapshotWhenExtend": 0,
+                "durationKey": "duration",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": 0,
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": 1,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": 0,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": 0
+              },
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "entlec_a[damage_etlchi_only]",
+                "loadFromDB": 0,
+                "isDurableBuff": 0,
+                "isDamageMissable": 0,
+                "isSilenceable": 0,
+                "isStunnable": 0,
+                "isFreezable": 0,
+                "isLevitatable": 0,
+                "isGroundBoundable": 0,
+                "statusResistable": 2,
+                "templateKey": "entlec_a[damage_etlchi_only]",
+                "disableOverride": 0,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": 0,
+                "clearAllStackCntWhenTimeUp": 0,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": 0,
+                "overrideEffectKey": "",
+                "overrideOnEventPriority": 0,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": 2,
+                "takeSnapshotWhenExtend": 0,
+                "durationKey": "",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": 0,
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": 1,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": 0,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": 0
+              },
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "entlec_a[ignore_buffs]",
+                "loadFromDB": 0,
+                "isDurableBuff": 0,
+                "isDamageMissable": 0,
+                "isSilenceable": 0,
+                "isStunnable": 0,
+                "isFreezable": 0,
+                "isLevitatable": 0,
+                "isGroundBoundable": 0,
+                "statusResistable": 2,
+                "templateKey": "entlec_a[ignore_buffs]",
+                "disableOverride": 1,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": 0,
+                "clearAllStackCntWhenTimeUp": 0,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": 0,
+                "overrideEffectKey": "",
+                "overrideOnEventPriority": 0,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": 2,
+                "takeSnapshotWhenExtend": 0,
+                "durationKey": "",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": 0,
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": 1,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": 0,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": 0
+              }
+            ]
+          }
+        }
+      },
+      {
+        "bundle": "battle/prefabs/[uc]skills.ab",
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "pathId": "-7652057504192749955",
+        "classId": 114,
+        "needles": [
+          "tinman_t_2"
+        ],
+        "hierarchy": [
+          "skchr_tinman_2",
+          "HitEnemy"
+        ],
+        "objectSha256": "c77b2f29756d7f135f2338c42a06f8edc16e5d77edc774d608a4a00424bb82c1",
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": 3276310368489021053
+          },
+          "common:349": 1,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": 4156651312234227407
+          },
+          "common:427": "",
+          "_selector": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_metadata": {
+            "namedAsAlias": "",
+            "blackboardPrefix": ""
+          },
+          "_overrideSignalId": "",
+          "_interruptAbilityOnDetach": 1,
+          "_attachPassiveBuffsOnDummy": 1,
+          "_ignoreIfOwnerDead": 0,
+          "_forceAsDmgOrHealAbility": 0,
+          "_waitForAttackEvent": 1,
+          "_interuptIfTargetDead": 0,
+          "_resetCdStrategy": 1,
+          "_selectTargetSource": 3,
+          "_selectTargetTiming": 1,
+          "_timeMode": 0,
+          "_alwaysIncludeTarget": 1,
+          "_allowNoTarget": 1,
+          "_animKey": "Skill_2",
+          "_endAnimKey": "Idle",
+          "_downAnimKey": "",
+          "_downEndAnimKey": "",
+          "_upAnimKey": "",
+          "_upEndAnimKey": "",
+          "_cooldown": 0.0,
+          "_cooldownKey": "duration",
+          "_preDelay": 0.0,
+          "_escapeTime": 0.0,
+          "_faceToTarget": 1,
+          "_faceToDefault": 0,
+          "_faceToFront": 0,
+          "_faceToFirstCastTarget": 0,
+          "_checkFaceToFirstCastTargetDownAttack": 0,
+          "_forceFaceToDirection": 0,
+          "_activeBuffs": {
+            "Array": [
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "tinman_s_2[buff]",
+                "loadFromDB": 0,
+                "isDurableBuff": 0,
+                "isDamageMissable": 0,
+                "isSilenceable": 0,
+                "isStunnable": 0,
+                "isFreezable": 0,
+                "isLevitatable": 0,
+                "isGroundBoundable": 0,
+                "statusResistable": 2,
+                "templateKey": "tinman_s_2[buff]",
+                "disableOverride": 1,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": 0,
+                "clearAllStackCntWhenTimeUp": 0,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": 0,
+                "overrideEffectKey": "",
+                "overrideOnEventPriority": 0,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": 2,
+                "takeSnapshotWhenExtend": 0,
+                "durationKey": "duration",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": 2,
+                "triggerCnt": 0,
+                "triggerInterval": 1.0,
+                "waitFirstTriggerInterval": 1,
+                "firstTriggerInterval": 0.8999999761581421,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": 0,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": 0
+              },
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "tinman_t_2",
+                "loadFromDB": 0,
+                "isDurableBuff": 0,
+                "isDamageMissable": 0,
+                "isSilenceable": 0,
+                "isStunnable": 0,
+                "isFreezable": 0,
+                "isLevitatable": 0,
+                "isGroundBoundable": 0,
+                "statusResistable": 2,
+                "templateKey": "tinman_t_2",
+                "disableOverride": 0,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": 0,
+                "clearAllStackCntWhenTimeUp": 0,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": 0,
+                "overrideEffectKey": "",
+                "overrideOnEventPriority": 0,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": 2,
+                "takeSnapshotWhenExtend": 0,
+                "durationKey": "duration",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": 0,
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": 1,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": 0,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": 0
+              }
+            ]
+          },
+          "_maxAnimScale": 1.0,
+          "_onlyPlayEndAnimWhenIsLastAbility": 0,
+          "_ignorePalsyInterrupt": 0,
+          "_affectedBySlowDown": 0,
+          "_atkScale": 0.0,
+          "_atkScaleKey": "atk_scale_invalid",
+          "_attackType": 1,
+          "_elementDamageType": 0,
+          "_epDamageRatio": 0.0,
+          "_useDynamicAttackType": 0,
+          "_deliveryParaWhenReplaceActionNode": 0,
+          "_projectileKey": "projectile_chr_tinman_s2",
+          "_mountPointType": 2,
+          "_useMountGroup": 0,
+          "_mountGroup": {
+            "loopType": 0,
+            "mountPoints": {
+              "Array": []
+            }
+          },
+          "_damageType": 1,
+          "_waitForProjectileInvalid": 0,
+          "_notClearProjectileWhenCastEnd": 0,
+          "_fireAttackFinishWhenProjectileInvalid": 0,
+          "_minPostDelayWhenProjectileInvalid": 0.0,
+          "_waitForAnimEndWhenProjectileInvalid": 0,
+          "_projectileDestination": 4,
+          "_extraDamageType": 0,
+          "_emitToInputPosWhenTargetIsInvalid": 1,
+          "_emitToInputRootTileWhenTargetIsInvalid": 0,
+          "_useCachedAtkOnly": 0,
+          "_transferSource": 0,
+          "_extraProjectileKeys": {
+            "Array": []
+          },
+          "_fireCreateProjectileEvent": 0
+        }
+      },
+      {
+        "bundle": "battle/prefabs/[uc]skills.ab",
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "pathId": "-3864122712601635940",
+        "classId": 114,
+        "needles": [
+          "tinman_t_2"
+        ],
+        "hierarchy": [
+          "skchr_tinman_1"
+        ],
+        "objectSha256": "c57a71a94e3f268e0e2f484b8a69915400943a94feec831403b2823186d156ff",
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": 7964956808642515868
+          },
+          "common:349": 1,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": 4156651312234227407
+          },
+          "common:427": "",
+          "_selector": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_metadata": {
+            "namedAsAlias": "",
+            "blackboardPrefix": ""
+          },
+          "_overrideSignalId": "",
+          "_interruptAbilityOnDetach": 1,
+          "_attachPassiveBuffsOnDummy": 1,
+          "_ignoreIfOwnerDead": 0,
+          "_forceAsDmgOrHealAbility": 0,
+          "_waitForAttackEvent": 1,
+          "_interuptIfTargetDead": 0,
+          "_resetCdStrategy": 1,
+          "_selectTargetSource": 3,
+          "_selectTargetTiming": 1,
+          "_timeMode": 0,
+          "_alwaysIncludeTarget": 1,
+          "_allowNoTarget": 1,
+          "_animKey": "Skill",
+          "_endAnimKey": "Idle",
+          "_downAnimKey": "",
+          "_downEndAnimKey": "",
+          "_upAnimKey": "",
+          "_upEndAnimKey": "",
+          "_cooldown": 0.0,
+          "_cooldownKey": "duration",
+          "_preDelay": 0.0,
+          "_escapeTime": 0.0,
+          "_faceToTarget": 1,
+          "_faceToDefault": 0,
+          "_faceToFront": 0,
+          "_faceToFirstCastTarget": 0,
+          "_checkFaceToFirstCastTargetDownAttack": 0,
+          "_forceFaceToDirection": 0,
+          "_activeBuffs": {
+            "Array": [
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "tinman_s_1[dot]",
+                "loadFromDB": 0,
+                "isDurableBuff": 0,
+                "isDamageMissable": 0,
+                "isSilenceable": 0,
+                "isStunnable": 0,
+                "isFreezable": 0,
+                "isLevitatable": 0,
+                "isGroundBoundable": 0,
+                "statusResistable": 2,
+                "templateKey": "tinman_s_1[dot]",
+                "disableOverride": 1,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": 0,
+                "clearAllStackCntWhenTimeUp": 0,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": 0,
+                "overrideEffectKey": "",
+                "overrideOnEventPriority": 0,
+                "onEventPriority": 0,
+                "audioSignal": "tinman_s_1[audio]",
+                "lifeTimeType": 2,
+                "takeSnapshotWhenExtend": 0,
+                "durationKey": "duration",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": 2,
+                "triggerCnt": 0,
+                "triggerInterval": 1.0,
+                "waitFirstTriggerInterval": 1,
+                "firstTriggerInterval": 0.8999999761581421,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": 0,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": 0
+              },
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "tinman_t_2",
+                "loadFromDB": 0,
+                "isDurableBuff": 0,
+                "isDamageMissable": 0,
+                "isSilenceable": 0,
+                "isStunnable": 0,
+                "isFreezable": 0,
+                "isLevitatable": 0,
+                "isGroundBoundable": 0,
+                "statusResistable": 2,
+                "templateKey": "tinman_t_2",
+                "disableOverride": 0,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": 0,
+                "clearAllStackCntWhenTimeUp": 0,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": 0,
+                "overrideEffectKey": "",
+                "overrideOnEventPriority": 0,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": 2,
+                "takeSnapshotWhenExtend": 0,
+                "durationKey": "duration",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": 0,
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": 1,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": 0,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": 0
+              }
+            ]
+          },
+          "_maxAnimScale": 1.0,
+          "_onlyPlayEndAnimWhenIsLastAbility": 0,
+          "_ignorePalsyInterrupt": 0,
+          "_affectedBySlowDown": 0,
+          "_atkScale": 0.0,
+          "_atkScaleKey": "atk_scale_invalid",
+          "_attackType": 1,
+          "_elementDamageType": 0,
+          "_epDamageRatio": 0.0,
+          "_useDynamicAttackType": 0,
+          "_deliveryParaWhenReplaceActionNode": 0,
+          "_projectileKey": "projectile_chr_tinman_s1",
+          "_mountPointType": 2,
+          "_useMountGroup": 0,
+          "_mountGroup": {
+            "loopType": 0,
+            "mountPoints": {
+              "Array": []
+            }
+          },
+          "_damageType": 1,
+          "_waitForProjectileInvalid": 0,
+          "_notClearProjectileWhenCastEnd": 0,
+          "_fireAttackFinishWhenProjectileInvalid": 0,
+          "_minPostDelayWhenProjectileInvalid": 0.0,
+          "_waitForAnimEndWhenProjectileInvalid": 0,
+          "_projectileDestination": 4,
+          "_extraDamageType": 0,
+          "_emitToInputPosWhenTargetIsInvalid": 1,
+          "_emitToInputRootTileWhenTargetIsInvalid": 0,
+          "_useCachedAtkOnly": 0,
+          "_transferSource": 0,
+          "_extraProjectileKeys": {
+            "Array": []
+          },
+          "_fireCreateProjectileEvent": 0
+        }
+      },
+      {
+        "bundle": "battle/prefabs/[uc]skills.ab",
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "pathId": "8539393682184380029",
+        "classId": 114,
+        "needles": [
+          "tinman_t_2"
+        ],
+        "hierarchy": [
+          "skchr_tinman_2",
+          "HitTile"
+        ],
+        "objectSha256": "d0b6240b0a3b67991854634a6711374280d6fb776eceff9e683f5f8b9893e5eb",
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": -8492163275032322435
+          },
+          "common:349": 1,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": -8222068601188727010
+          },
+          "common:427": "",
+          "_selector": {
+            "m_FileID": 0,
+            "m_PathID": -6219421552040567171
+          },
+          "_metadata": {
+            "namedAsAlias": "",
+            "blackboardPrefix": ""
+          },
+          "_overrideSignalId": "",
+          "_interruptAbilityOnDetach": 1,
+          "_attachPassiveBuffsOnDummy": 1,
+          "_ignoreIfOwnerDead": 0,
+          "_forceAsDmgOrHealAbility": 0,
+          "_waitForAttackEvent": 1,
+          "_interuptIfTargetDead": 0,
+          "_resetCdStrategy": 1,
+          "_selectTargetSource": 1,
+          "_selectTargetTiming": 0,
+          "_timeMode": 0,
+          "_alwaysIncludeTarget": 0,
+          "_allowNoTarget": 0,
+          "_animKey": "Skill_2",
+          "_endAnimKey": "Idle",
+          "_downAnimKey": "",
+          "_downEndAnimKey": "",
+          "_upAnimKey": "",
+          "_upEndAnimKey": "",
+          "_cooldown": 0.0,
+          "_cooldownKey": "duration",
+          "_preDelay": 0.0,
+          "_escapeTime": 0.0,
+          "_faceToTarget": 1,
+          "_faceToDefault": 0,
+          "_faceToFront": 0,
+          "_faceToFirstCastTarget": 0,
+          "_checkFaceToFirstCastTargetDownAttack": 0,
+          "_forceFaceToDirection": 0,
+          "_activeBuffs": {
+            "Array": [
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "tinman_s_2[buff]",
+                "loadFromDB": 0,
+                "isDurableBuff": 0,
+                "isDamageMissable": 0,
+                "isSilenceable": 0,
+                "isStunnable": 0,
+                "isFreezable": 0,
+                "isLevitatable": 0,
+                "isGroundBoundable": 0,
+                "statusResistable": 2,
+                "templateKey": "tinman_s_2[buff]",
+                "disableOverride": 1,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": 0,
+                "clearAllStackCntWhenTimeUp": 0,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": 0,
+                "overrideEffectKey": "",
+                "overrideOnEventPriority": 0,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": 2,
+                "takeSnapshotWhenExtend": 0,
+                "durationKey": "duration",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": 2,
+                "triggerCnt": 0,
+                "triggerInterval": 1.0,
+                "waitFirstTriggerInterval": 1,
+                "firstTriggerInterval": 0.8999999761581421,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": 0,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": 0
+              },
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "tinman_t_2",
+                "loadFromDB": 0,
+                "isDurableBuff": 0,
+                "isDamageMissable": 0,
+                "isSilenceable": 0,
+                "isStunnable": 0,
+                "isFreezable": 0,
+                "isLevitatable": 0,
+                "isGroundBoundable": 0,
+                "statusResistable": 2,
+                "templateKey": "tinman_t_2",
+                "disableOverride": 0,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": 0,
+                "clearAllStackCntWhenTimeUp": 0,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": 0,
+                "overrideEffectKey": "",
+                "overrideOnEventPriority": 0,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": 2,
+                "takeSnapshotWhenExtend": 0,
+                "durationKey": "duration",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": 0,
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": 1,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": 0,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": 0
+              }
+            ]
+          },
+          "_maxAnimScale": 1.0,
+          "_onlyPlayEndAnimWhenIsLastAbility": 0,
+          "_ignorePalsyInterrupt": 0,
+          "_affectedBySlowDown": 0,
+          "_tileEffect": "",
+          "_tileHoldEffect": 0,
+          "_startEffect": "",
+          "_extraStartEffects": {
+            "Array": []
+          },
+          "_faceToTile": 0,
+          "_finishStartEffectsOnCastOnTile": 0,
+          "_castTileEffectsOnCastStart": 0,
+          "_finishTileEffectsOnCastOnTile": 0,
+          "_finishTileEffectsOnCastEnd": 0,
+          "_finishTileStartEffectWhenCast": 0,
+          "_finishStartEffectsOnDetached": 0,
+          "_finishTileEffectsOnDetached": 0,
+          "_useDynamicAttackType": 0,
+          "_alwaysIncludeInputTargetRootTile": 0,
+          "_useOwnerRootTileAsTargetSource": 0,
+          "_projectileKey": "projectile_chr_tinman_s2",
+          "_mountPointType": 2,
+          "_damageType": 1,
+          "_atkScale": 0.0,
+          "_atkScaleKey": "atk_scale_invalid",
+          "_elementDamageType": 0,
+          "_epDamageRatio": 0.0,
+          "_useCachedAtkOnly": 0,
+          "_transferSource": 0,
+          "_finishProjectileWhenCastStart": 0,
+          "_notClearProjectileOnCastStart": 0,
+          "_waitForProjectileInvalid": 0,
+          "_fireAttackFinishWhenProjectileInvalid": 0,
+          "_minPostDelayWhenProjectileInvalid": 0.0,
+          "_attackType": 1
+        }
+      }
+    ],
+    "errors": []
+  }
+}

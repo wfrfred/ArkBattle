@@ -1,0 +1,197 @@
+{
+  "scope": "Independent current-version native and actual-content WeakDamage re-extraction; no product tests or live client execution.",
+  "script": {
+    "path": "docs/research/evidence/resource-mechanisms-20261114/damage/verify_weak.py",
+    "sha256": "9c75187d144269db45a661f561e4eb215bc1f47d9a6ec536994253977f4f7018"
+  },
+  "records": [
+    {
+      "record": "weak-content.json",
+      "command": [
+        "/usr/sbin/python",
+        "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/resource-mechanisms-20261114/damage/extract_weak_content.py",
+        "--out",
+        ".cache/native-research/resource-mechanisms-20261114/damage/weak-replay/weak-content.json"
+      ],
+      "equalResult": true,
+      "archivedSha256": "12c358067dc2a904e9f0e17fc010c5f59d9c5ed958356e8671e44a6350559620",
+      "reextractedSha256": "12c358067dc2a904e9f0e17fc010c5f59d9c5ed958356e8671e44a6350559620"
+    },
+    {
+      "record": "weak-templates.json",
+      "command": [
+        "/usr/sbin/python",
+        "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/resource-mechanisms-20261114/damage/scan_holder.py",
+        "--select",
+        "common_weak_damage_buff",
+        "--select",
+        "f12yin_t_atk_scale",
+        "--out",
+        ".cache/native-research/resource-mechanisms-20261114/damage/weak-replay/weak-templates.json"
+      ],
+      "equalResult": true,
+      "archivedSha256": "72150ec1620dc67a450e81bac539f7514bb10753594b6cb47cde0ff38ee955c9",
+      "reextractedSha256": "72150ec1620dc67a450e81bac539f7514bb10753594b6cb47cde0ff38ee955c9"
+    },
+    {
+      "record": "weak-flag-bindings.json",
+      "command": [
+        "/usr/sbin/python",
+        "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/resource-mechanisms-20261114/damage/search_bindings.py",
+        "--needle",
+        "common_weak_damage_flag",
+        "--out",
+        ".cache/native-research/resource-mechanisms-20261114/damage/weak-replay/weak-flag-bindings.json"
+      ],
+      "equalResult": true,
+      "archivedSha256": "4c8effab1b5db5fd8d93452db3cb64bb28831864131e6c6f739b9c6b156752f9",
+      "reextractedSha256": "4c8effab1b5db5fd8d93452db3cb64bb28831864131e6c6f739b9c6b156752f9"
+    },
+    {
+      "record": "weak-native.json",
+      "command": [
+        "uv",
+        "run",
+        "--offline",
+        "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/facing-semantics-20261113/extract.py",
+        "--search",
+        "Torappu.Battle.AttackInfo.",
+        "--body-prefix",
+        "Torappu.Battle.Action.Nodes/WeakDamage.",
+        "--body-prefix",
+        "Torappu.Battle.Action.Nodes/AtkScaleUp.",
+        "--owner",
+        "Torappu.Battle.Action.Nodes/WeakDamage",
+        "--owner",
+        "Torappu.Battle.Action.Nodes/AtkScaleUp",
+        "--out",
+        ".cache/native-research/resource-mechanisms-20261114/damage/weak-replay/weak-native.json"
+      ],
+      "equalResult": true,
+      "archivedSha256": "9f01b0d3e9f7480f01a89a71538f48c76d9cd08abe371a2d2671206add342fff",
+      "reextractedSha256": "147d2793a74f846569782c93424cbf5b3e977e44aeea19c4fc68648fbb6569ad"
+    },
+    {
+      "record": "weak-attack-info.json",
+      "command": [
+        "uv",
+        "run",
+        "--offline",
+        "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/facing-semantics-20261113/extract.py",
+        "--search",
+        "ProbAdditionNextAtkTalent",
+        "--search",
+        "ProbabilityAddition",
+        "--search",
+        "ProbAdd",
+        "--body-prefix",
+        "Torappu.Battle.BattleFormula/AttackInfo.",
+        "--owner",
+        "Torappu.Battle.BattleFormula/AttackInfo",
+        "--out",
+        ".cache/native-research/resource-mechanisms-20261114/damage/weak-replay/weak-attack-info.json"
+      ],
+      "equalResult": true,
+      "archivedSha256": "8275f1c6d7bafdda2bb5c79a9d767d733ea32be3bc829d706fec13c1185b17cc",
+      "reextractedSha256": "4dd0a1aae0ca31276375b5b4e92de3318bd1c29113679b31c3c7071a46dcbdd5"
+    },
+    {
+      "record": "weak-rng.json",
+      "command": [
+        "uv",
+        "run",
+        "--offline",
+        "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/facing-semantics-20261113/extract.py",
+        "--search",
+        "Torappu.BuffDB",
+        "--search",
+        "GetBuffData",
+        "--search",
+        "GetBuffFromDB",
+        "--search",
+        "Torappu.Battle.Buff/BuffContainer.AddBuff",
+        "--search",
+        "Torappu.Battle.Buff/BuffContainer._AddBuff",
+        "--body-prefix",
+        "Torappu.Battle.ProbAdditionNextAtkTalent.",
+        "--owner",
+        "Torappu.Battle.ProbAdditionNextAtkTalent",
+        "--out",
+        ".cache/native-research/resource-mechanisms-20261114/damage/weak-replay/weak-rng.json"
+      ],
+      "equalResult": true,
+      "archivedSha256": "cc2995504814d77b7dec26b9e652c036feb240c1112cf64932fabf7f122e091c",
+      "reextractedSha256": "1bac8fb5378e5187d48dc029e04525a9f4caf0995ff94790e48b899189d9c51f"
+    },
+    {
+      "record": "weak-database.json",
+      "command": [
+        "uv",
+        "run",
+        "--offline",
+        "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/facing-semantics-20261113/extract.py",
+        "--body-index",
+        "79645",
+        "--owner",
+        "Torappu.FP",
+        "--owner",
+        "Torappu.Battle.BuffDBUtil",
+        "--out",
+        ".cache/native-research/resource-mechanisms-20261114/damage/weak-replay/weak-database.json"
+      ],
+      "equalResult": true,
+      "archivedSha256": "a8d4675704c87ea57f2e33d910bd17af3dd4ebaea2346a46b2ada00d8200faa4",
+      "reextractedSha256": "f6e58b7f6fbedddab612169c82480e76ac1339434e36074e2a9f054e73279ed2"
+    }
+  ],
+  "pythonSyntax": [
+    {
+      "path": "docs/research/evidence/resource-mechanisms-20261114/damage/extract_bindings.py",
+      "sha256": "f52f4a4da80ca6f8d115aacec5a339cce0f921c1ffbf4036729e7024226ed4a1"
+    },
+    {
+      "path": "docs/research/evidence/resource-mechanisms-20261114/damage/extract_entlec_origin.py",
+      "sha256": "a5a8eb40e2d944df6b8f61b756407a9f68cbf91fb2e009caa9271ddd2f51c534"
+    },
+    {
+      "path": "docs/research/evidence/resource-mechanisms-20261114/damage/extract_weak_content.py",
+      "sha256": "0b4da88eefa1ce949d300bd4d3346263cd26bb54a7ba8531c17285ba09c9c242"
+    },
+    {
+      "path": "docs/research/evidence/resource-mechanisms-20261114/damage/inventory.py",
+      "sha256": "e90843f8c6c185563f94b83e18025c7ef4cfa0d2e56ddd2f3db59a5374cda087"
+    },
+    {
+      "path": "docs/research/evidence/resource-mechanisms-20261114/damage/scan_dynamic_classification.py",
+      "sha256": "44846d7c0d32de76ab45975da595fc99353c4e12e75163d6820e7223e5df39a2"
+    },
+    {
+      "path": "docs/research/evidence/resource-mechanisms-20261114/damage/scan_holder.py",
+      "sha256": "76a1a71efe726109ce57e66f280a44f4c4074719b88aee79366db401cb461384"
+    },
+    {
+      "path": "docs/research/evidence/resource-mechanisms-20261114/damage/search_bindings.py",
+      "sha256": "7522c84c276416afb4f6d6fcb2df1ee7595c3a7000f26c41d628e6c6d26d4253"
+    },
+    {
+      "path": "docs/research/evidence/resource-mechanisms-20261114/damage/trace_buff_missable.py",
+      "sha256": "28cb331ac45646b60592276a1d9268e104548133fe5a37531d566ec5f67035ce"
+    },
+    {
+      "path": "docs/research/evidence/resource-mechanisms-20261114/damage/trace_flags.py",
+      "sha256": "faedb38c1963fa0103890c7e0181627c3f32452513a17ba9d6f451d1ed577cfb"
+    },
+    {
+      "path": "docs/research/evidence/resource-mechanisms-20261114/damage/trace_literals.py",
+      "sha256": "3fd013997df219dd5f791c17e278a775f0ca7f0c070f90760bd1b70444362e45"
+    },
+    {
+      "path": "docs/research/evidence/resource-mechanisms-20261114/damage/verify.py",
+      "sha256": "0e50702a7abc8a59aca3fb2c792c479a76bba4b5de948e3d8e42bc1dd6caf3c7"
+    },
+    {
+      "path": "docs/research/evidence/resource-mechanisms-20261114/damage/verify_weak.py",
+      "sha256": "9c75187d144269db45a661f561e4eb215bc1f47d9a6ec536994253977f4f7018"
+    }
+  ]
+}

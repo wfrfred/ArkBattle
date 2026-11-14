@@ -1,0 +1,79 @@
+{
+  "scope": "Independent additional resource-chain re-extraction after main thirteen-record replay; no native extractor/source changed. Commands executed separately; compare full result.",
+  "commands": [
+    [
+      "python",
+      "docs/research/evidence/resource-mechanisms-20261114/damage/extract_entlec_origin.py",
+      "--out",
+      ".cache/native-research/resource-mechanisms-20261114/damage/entlec-replay/entlec-origin.json"
+    ],
+    [
+      "python",
+      "docs/research/evidence/resource-mechanisms-20261114/damage/scan_holder.py",
+      "--select",
+      "etlchi_s3[create_entlec]",
+      "--select",
+      "etlchi_s3[to_enemy]",
+      "--select",
+      "etlchi_s_3[switch_mode]",
+      "--out",
+      ".cache/native-research/resource-mechanisms-20261114/damage/entlec-replay/entlec-templates.json"
+    ]
+  ],
+  "records": [
+    {
+      "record": "entlec-origin.json",
+      "equalResult": true,
+      "archivedSha256": "de3c5073807b7cc08710185041b4f65cdcc7655dd188af83b7e3e3f514c34987",
+      "reextractedSha256": "de3c5073807b7cc08710185041b4f65cdcc7655dd188af83b7e3e3f514c34987"
+    },
+    {
+      "record": "entlec-templates.json",
+      "equalResult": true,
+      "archivedSha256": "8af07b53afa9534aabddcc1cef63160336c000a83c6b3707dfdb403386c1fa81",
+      "reextractedSha256": "8af07b53afa9534aabddcc1cef63160336c000a83c6b3707dfdb403386c1fa81"
+    }
+  ],
+  "pythonSyntax": [
+    {
+      "path": "docs/research/evidence/resource-mechanisms-20261114/damage/trace_literals.py",
+      "sha256": "3fd013997df219dd5f791c17e278a775f0ca7f0c070f90760bd1b70444362e45"
+    },
+    {
+      "path": "docs/research/evidence/resource-mechanisms-20261114/damage/scan_holder.py",
+      "sha256": "76a1a71efe726109ce57e66f280a44f4c4074719b88aee79366db401cb461384"
+    },
+    {
+      "path": "docs/research/evidence/resource-mechanisms-20261114/damage/scan_dynamic_classification.py",
+      "sha256": "44846d7c0d32de76ab45975da595fc99353c4e12e75163d6820e7223e5df39a2"
+    },
+    {
+      "path": "docs/research/evidence/resource-mechanisms-20261114/damage/trace_buff_missable.py",
+      "sha256": "28cb331ac45646b60592276a1d9268e104548133fe5a37531d566ec5f67035ce"
+    },
+    {
+      "path": "docs/research/evidence/resource-mechanisms-20261114/damage/extract_entlec_origin.py",
+      "sha256": "a5a8eb40e2d944df6b8f61b756407a9f68cbf91fb2e009caa9271ddd2f51c534"
+    },
+    {
+      "path": "docs/research/evidence/resource-mechanisms-20261114/damage/trace_flags.py",
+      "sha256": "faedb38c1963fa0103890c7e0181627c3f32452513a17ba9d6f451d1ed577cfb"
+    },
+    {
+      "path": "docs/research/evidence/resource-mechanisms-20261114/damage/search_bindings.py",
+      "sha256": "7522c84c276416afb4f6d6fcb2df1ee7595c3a7000f26c41d628e6c6d26d4253"
+    },
+    {
+      "path": "docs/research/evidence/resource-mechanisms-20261114/damage/extract_bindings.py",
+      "sha256": "f52f4a4da80ca6f8d115aacec5a339cce0f921c1ffbf4036729e7024226ed4a1"
+    },
+    {
+      "path": "docs/research/evidence/resource-mechanisms-20261114/damage/verify.py",
+      "sha256": "0e50702a7abc8a59aca3fb2c792c479a76bba4b5de948e3d8e42bc1dd6caf3c7"
+    },
+    {
+      "path": "docs/research/evidence/resource-mechanisms-20261114/damage/inventory.py",
+      "sha256": "e90843f8c6c185563f94b83e18025c7ef4cfa0d2e56ddd2f3db59a5374cda087"
+    }
+  ]
+}

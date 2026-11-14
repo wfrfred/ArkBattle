@@ -1,0 +1,36 @@
+{
+  "checkedOn": "2026-11-14",
+  "scope": "Web cross-checks, separate from installed native/config evidence; descriptions below are paraphrases rather than archived page bodies.",
+  "sources": [
+    {
+      "title": "伤害分类",
+      "url": "https://prts.wiki/w/伤害分类",
+      "revisionUrl": "https://prts.wiki/index.php?title=伤害分类&oldid=450401",
+      "statedClientVersion": "2.7.91",
+      "use": "Cross-check independent damageType, attackType, applyWay and labels; ELEMENT means HP elemental damage. Rechecked WeakDamage section: the stated inclusion of atkAddition differs from both old and current inspected native candidate constructors; preserve the version/XLua conflict."
+    },
+    {
+      "title": "特殊机制",
+      "url": "https://prts.wiki/w/特殊机制",
+      "statedClientVersion": "2.7.91",
+      "use": "Cached projectile ATK, loss/recovery routes and miss exemption. The no-probability claim for ignoreMiss conflicts with the inspected current ordinary fallback and is retained as a conflict, not silently overwritten."
+    },
+    {
+      "title": "骋风",
+      "url": "https://prts.wiki/w/骋风",
+      "use": "S2 notes distinguish MISS cancellation immunity from ignoring evasion. Actual S2 resource independently selects SetIgnoreCancelReasonMask(MISS)."
+    },
+    {
+      "title": "远牙",
+      "url": "https://prts.wiki/w/远牙",
+      "use": "Cross-check second talent; native resource independently selects physical SetIgnoreMissFlag."
+    },
+    {
+      "title": "伤判效果",
+      "url": "https://prts.wiki/w/伤判效果",
+      "statedClientVersion": "2.7.81",
+      "pageWarning": "Page marked unfinished and potentially erroneous.",
+      "use": "Examples showing order-sensitive evasion/shields, Mudrock shield maintenance and successful damage notifications. Content-specific node programs are the authority for each inspected chain."
+    }
+  ]
+}
