@@ -1,8 +1,8 @@
 import type { Rule as BaseRule } from "../../../rule.js";
 import type { Unit } from "../../unit.js";
 import type { Elemental, Type } from "./capability.js";
-import type { Request as DamageRequest } from "../../../battle/damage/ep/contract.js";
-import type { Request as HealingRequest } from "../../../battle/healing/ep/contract.js";
+import type { Request as DamageRequest } from "../../../battle/resource/ep/damage/contract.js";
+import type { Request as HealingRequest } from "../../../battle/resource/ep/healing/contract.js";
 
 export interface DamageContext {
     readonly self: Unit & Elemental;

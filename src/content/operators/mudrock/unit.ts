@@ -42,7 +42,7 @@ import {
     removeHook as removeVitalityHook,
     type Vitality,
 } from "../../../core/unit/capability/vitality/index.js";
-import { cancel } from "../../../core/battle/damage/hp/index.js";
+import { cancel } from "../../../core/battle/resource/hp/damage/index.js";
 import {
     type OrdinaryDefinition as EffectDefinition,
     type OrdinaryEffect as Effect,

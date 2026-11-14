@@ -8,7 +8,7 @@ import * as targeting from "../../dist/core/battle/targeting/index.js";
 import { hasTargetable } from "../../dist/core/unit/capability/targetable/capability.js";
 import * as units from "../../dist/core/unit/query.js";
 import * as actions from "../../dist/core/unit/action/index.js";
-import * as hpDamage from "../../dist/core/battle/damage/hp/index.js";
+import * as hpDamage from "../../dist/core/battle/resource/hp/damage/index.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import { healFree } from "../../dist/core/effects/protection.js";
 import { battle as createBattle, get } from "../helpers/battle.js";

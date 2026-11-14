@@ -1,7 +1,7 @@
-import type { Result } from "../../state.js";
-import * as units from "../../../unit/query.js";
-import { available, canReceiveHealing } from "../../../unit/capability/elemental/query.js";
-import { commitHealing } from "../../../unit/capability/elemental/operations.js";
+import type { Result } from "../../../state.js";
+import * as units from "../../../../unit/query.js";
+import { available, canReceiveHealing } from "../../../../unit/capability/elemental/query.js";
+import { commitHealing } from "../../../../unit/capability/elemental/operations.js";
 import type { Calculated, Outcome, Pending, Request } from "./contract.js";
 import { dispatch, beforeReceive, beforeCommit, targetApplied, sourceApplied } from "./hook.js";
 

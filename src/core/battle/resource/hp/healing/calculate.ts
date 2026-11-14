@@ -1,5 +1,5 @@
-import type { Result, State as BattleState } from "../../state.js";
-import * as units from "../../../unit/query.js";
+import type { Result, State as BattleState } from "../../../state.js";
+import * as units from "../../../../unit/query.js";
 import type { Calculated, Request } from "./contract.js";
 import { dispatch, sourceFormula, targetFormula, output as outputKey } from "./hook.js";
 

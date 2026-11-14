@@ -11,7 +11,7 @@ import * as contribution from "../contribution/contribution.js";
 import { hasVitality, setHook as setVitalityHook } from "../capability/vitality/capability.js";
 import { hasAction, setHook as setActionHook } from "../capability/action/capability.js";
 import type { ReleasedHook } from "../capability/action/release.js";
-import type { ReceivingStartedHook } from "../../battle/damage/hp/hook.js";
+import type { ReceivingStartedHook } from "../../battle/resource/hp/damage/hook.js";
 import { hasSkill, type Skill as SkillCapability } from "../capability/skill/capability.js";
 import {
     ref as activationRef,

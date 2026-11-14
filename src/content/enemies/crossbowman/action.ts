@@ -3,7 +3,7 @@ import {
     calculateDamage,
     applyDamage,
     type Request as DamageRequest,
-} from "../../../core/battle/damage/hp/index.js";
+} from "../../../core/battle/resource/hp/damage/index.js";
 
 import * as units from "../../../core/unit/index.js";
 import type { Profile } from "../../../data/unit/enemy.js";

@@ -49,11 +49,11 @@ declare class Hooks {
 
 Key 参数化完整 Hook 类型 H，保留特殊 ReceivingHook 的泛型 invoke，不把它重新放宽成普通 Hook<C, T>。写入类型由键确定；读取由同一个键恢复对应类型。必要的异构擦除集中在容器内部，Content 不承担断言，不从普通查询取得 any。
 
-工作值的合法变化由所属领域定义。伤害／治疗 Receiving 使用 NORMAL／FIXED／CANCELLED 三态，泛型返回类型约束 FIXED 不恢复 NORMAL、CANCELLED 不恢复或改原因；固定及取消后的数值由 Hook 契约保证，派发器不比较或纠正返回的数值。具体类型见[接收工作值](vitality.md#接收工作值数值固定与取消)。
+工作值的合法变化由所属领域定义。Resource 的 [receiving.ts](../../src/core/battle/resource/receiving.ts) 共用 NORMAL／FIXED／CANCELLED 三态及转换构造函数，各业务绑定自己的原因集合和接收 Context。泛型返回类型约束 FIXED 不恢复 NORMAL、CANCELLED 不恢复或改原因；固定及取消后的数值由 Hook 契约保证，派发器不比较或纠正返回的数值。具体类型见[接收工作值](vitality.md#接收工作值数值固定与取消)。
 
 get 对无登记的键返回空集合。同键同 ID 的 set 替换原项并保留位置；新 ID 追加，remove 只移除对应项。merge 按 other 的各键内登记顺序应用同一 set 规则。ID 作用域是 Unit 身份 × Hook 键 × Hook ID，不同键可以复用 ID。删除不恢复被替换的 Definition 旧项。
 
-容器只要求 id；Entry 与底层数组 set／remove 复用 [common/collection/entries.ts](../../src/core/common/collection/entries.ts)。需要优先级的领域在自己的实际 Hook 类型上声明 `priority?: number`：缺省为 0，按降序派发，同优先级保持登记顺序。生命周期 Hook 按登记顺序执行，不引入普遍优先级。排序由派发领域完成，不改变集合中的登记顺序。
+容器只要求 id；Entry 与底层数组 set／remove 复用 [common/collection/entries.ts](../../src/core/common/collection/entries.ts)。Resource 的阶段 Hook 共用 [resource/hook.ts](../../src/core/battle/resource/hook.ts) 的 `Entry<C, T>` 与按 Unit 派发实现，声明 `priority?: number`：缺省为 0，按降序派发，同优先级保持登记顺序。其他领域按自身 Hook 语义确定排序；生命周期 Hook 按登记顺序执行，不引入普遍优先级。排序不改变集合中的登记顺序。
 
 ## 固有声明与初始化
 
@@ -69,7 +69,7 @@ interface Unit {
 }
 ```
 
-领域导出静态键，例如 `hpDamage.sourceApplied = key<AppliedHook>("damage.hp.sourceApplied")`。Content 直接组合完整 Definition：
+领域导出静态键，例如 `hpDamage.sourceApplied = key<AppliedHook>("resource.hp.damage.sourceApplied")`。Content 直接组合完整 Definition：
 
 ```typescript
 hooks: Hooks.empty().set(hpDamage.sourceApplied, {
@@ -107,6 +107,8 @@ declare function removeHook<H extends Entry>(
 ## 派发与生命周期
 
 可查询宿主的派发遵守公共协议：阶段开始时固定该键下的候选 ID 与执行顺序，每项执行前从最新 BattleState 读取当前 Unit 和对应登记，再检查资格与 accepts。同 ID 替换读取新版本，移除则跳过，新 ID 不进入已开始的派发。优先级变更不重排本次派发的候选；嵌套派发独立取候选。
+
+Resource 的四种业务在各自阶段调用同一个 Unit Hook 派发器，由它固定优先级顺序、逐项重读当前登记，并只为生命周期仍为 PRESENT 的宿主执行节点。领域阶段和 Context 仍由对应业务确定，接收能力的专属 Hook 集合仍由各 Capability 读取。
 
 Unit 的 enter／tick／prepare 同样使用上述动态登记协议。enter／tick 的 Context 固定为本阶段开始时采样的 Unit，每项前要求宿主仍为 PRESENT；prepare 在已发布 LEAVING 后执行。Context 始终保留本次既定事实，prepare／leave 的 Departure 不因登记变化而改写。阶段已由键表达，条目无需再携带同义 stage 字段。
 

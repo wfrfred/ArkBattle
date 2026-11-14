@@ -5,7 +5,7 @@ import { Hooks } from "../../dist/core/hook.js";
 import * as units from "../../dist/core/unit/index.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import { update, remove } from "../../dist/core/battle/unit.js";
-import { output as damageOutput } from "../../dist/core/battle/damage/hp/index.js";
+import { output as damageOutput } from "../../dist/core/battle/resource/hp/damage/index.js";
 import { hasOccupancy } from "../../dist/core/unit/capability/occupancy/index.js";
 
 test("Unit construction rejects conflicting roles and installs entry effects on the registered host", () => {

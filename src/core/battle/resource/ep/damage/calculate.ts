@@ -1,10 +1,13 @@
-import type { State as BattleState, Result } from "../../state.js";
-import * as units from "../../../unit/query.js";
-import { available } from "../../../unit/capability/elemental/query.js";
+import type { State as BattleState, Result } from "../../../state.js";
+import * as units from "../../../../unit/query.js";
+import {
+    available,
+    resolveElementResistance,
+} from "../../../../unit/capability/elemental/query.js";
 import type { Calculated, Request } from "./contract.js";
 import { dispatch, sourceFormula, targetFormula, output } from "./hook.js";
 
-export function calculateHealing(
+export function calculateDamage(
     battle: BattleState,
     request: Request,
 ): Result<Calculated | undefined> {
@@ -29,21 +32,27 @@ export function calculateHealing(
         parameters = result.value;
     }
 
-    if (unavailable(battle)) {
+    const target = units.get(battle, request.target);
+    if (target === undefined || !available(target)) {
         return { state: battle, value: undefined };
     }
 
+    const resistance = resolveElementResistance(battle, target);
+    const power = Math.max(0, parameters.power);
+    const amount = Math.max(power * 0.05, power * (1 - resistance / 100));
     const result = dispatch(
         battle,
         request.source,
         output,
-        context,
-        Math.max(0, parameters.power),
+        { ...context, type: parameters.type },
+        amount,
         unavailable,
     );
 
     return {
         state: result.state,
-        value: unavailable(result.state) ? undefined : { amount: Math.max(0, result.value) },
+        value: unavailable(result.state)
+            ? undefined
+            : { type: parameters.type, amount: Math.max(0, result.value) },
     };
 }

@@ -10,7 +10,7 @@ import { damage, parameters } from "../helpers/vitality.js";
 import { createBattleState } from "../../dist/core/battle/state.js";
 import { add, update } from "../../dist/core/battle/unit.js";
 import { ref, compose, setHook } from "../../dist/core/unit/index.js";
-import * as hpDamage from "../../dist/core/battle/damage/hp/index.js";
+import * as hpDamage from "../../dist/core/battle/resource/hp/damage/index.js";
 import { advance as advanceBlocking } from "../../dist/core/battle/blocking/index.js";
 import { advance as advanceEffects } from "../../dist/core/unit/effect/index.js";
 import { advance as advanceSkill, activate, modify } from "../../dist/core/unit/skill/index.js";

@@ -15,7 +15,8 @@ import { initialize, ref, get, all as allUnits, compose, optional, type Unit, ty
 import { update, remove as removeUnit } from ${module("battle/unit")};
 import * as actions from ${module("unit/action/index")};
 import * as effects from ${module("unit/effect/index")};
-import * as hpDamage from ${module("battle/damage/hp/index")};
+import * as hpDamage from ${module("battle/resource/hp/damage/index")};
+import * as resource from ${module("battle/resource/index")};
 import * as vitality from ${module("unit/capability/vitality/index")};
 import * as elemental from ${module("unit/capability/elemental/index")};
 import * as facing from ${module("unit/capability/facing/index")};
@@ -96,6 +97,13 @@ declare const appliedContext: hpDamage.AppliedContext;
 appliedContext.killed;
 declare const cancelled: hpDamage.Pending<'MISS', 'CANCELLED'>;
 const selectedReason: 'MISS' = cancelled.reason;
+const aggregateReason: 'MISS' = resource.hp.damage.cancel(cancelled, 'BLOCKED').reason;
+// @ts-expect-error the aggregate entry retains HP Damage's finite reason set.
+resource.hp.damage.cancel(cancelled, 'OTHER');
+// @ts-expect-error shared receiving keeps EP's reason set narrower than HP's.
+resource.ep.damage.cancel({ type: 'NORMAL', amount: 10 }, 'MISS');
+// @ts-expect-error EP Healing has no dedicated Receiving Hook.
+type EpHealingReceiving = resource.ep.healing.ReceivingHook;
 const normalFixed: 'FIXED' = hpDamage.fix({ type: 'NORMAL', amount: 10 }).type;
 const alreadyFixed: 'FIXED' = hpDamage.fix({ type: 'FIXED', amount: 10 }).type;
 const fixedCancellation: 'MISS' = hpDamage.fix(cancelled).reason;

@@ -20,7 +20,7 @@ import * as elemental from "../../dist/core/unit/capability/elemental/index.js";
 import { elementValues, setContribution } from "../../dist/core/unit/capability/elemental/index.js";
 import { createArknightsElementalDefinition } from "../../dist/data/effect/elemental.js";
 import { stun } from "../../dist/core/effects/control.js";
-import * as epDamage from "../../dist/core/battle/damage/ep/index.js";
+import * as epDamage from "../../dist/core/battle/resource/ep/damage/index.js";
 
 const range = [{ type: 'CIRCLE', offset: [0, 0], radius: 20 }];
 const hit = { type: 'CIRCLE', offset: [0, 0], radius: 0.1 };

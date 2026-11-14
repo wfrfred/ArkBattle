@@ -8,8 +8,8 @@ import { hasAllegiance } from "../allegiance/capability.js";
 import { hasVitality } from "../vitality/capability.js";
 import { ELEMENT_TYPES, type Elemental, type Parameter, type Type } from "./capability.js";
 import type { Burst } from "./burst.js";
-import type { Request as DamageRequest } from "../../../battle/damage/ep/contract.js";
-import type { Request as HealingRequest } from "../../../battle/healing/ep/contract.js";
+import type { Request as DamageRequest } from "../../../battle/resource/ep/damage/contract.js";
+import type { Request as HealingRequest } from "../../../battle/resource/ep/healing/contract.js";
 
 export function get(battle: BattleState, reference: Ref<Burst>): Burst | undefined {
     const host = units.get(battle, reference.host);

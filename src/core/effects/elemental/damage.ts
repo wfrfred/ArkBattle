@@ -1,7 +1,7 @@
 import type { State as BattleState } from "../../battle/state.js";
-import type { DamageType, Request } from "../../battle/damage/hp/contract.js";
-import { calculateDamage } from "../../battle/damage/hp/calculate.js";
-import { applyDamage } from "../../battle/damage/hp/apply.js";
+import type { DamageType, Request } from "../../battle/resource/hp/damage/contract.js";
+import { calculateDamage } from "../../battle/resource/hp/damage/calculate.js";
+import { applyDamage } from "../../battle/resource/hp/damage/apply.js";
 import * as units from "../../unit/query.js";
 import type { Unit } from "../../unit/unit.js";
 import { hasVitality } from "../../unit/capability/vitality/capability.js";

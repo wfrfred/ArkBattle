@@ -117,7 +117,7 @@ Pending 的阶段是 PREPARING、READY、FINALIZING。READY 表示 Prepare 与�
 
 嵌套 end／cancel／stop／remove 返回时，实例可能仍能通过 get／all 查询、仍占格或占用槽位，最终事件及通知可能尚未发生。普通目标、推进和绑定资格不能仅凭对象存在判断。在同一结算范围内 cancel 后立即 start 同一槽位可能被拒绝；依赖槽位释放的业务放在已有完成通知，不强行嵌套 drain。
 
-damage.hp.completed 表达该次 HP 伤害结算完成，不承诺目标的全部离场 Finalize 已完成。Effect Group 候补在 Prepare 协调，早于结束实例的 onEnd。
+resource.hp.damage.completed 表达该次 HP 伤害结算完成，不承诺目标的全部离场 Finalize 已完成。Effect Group 候补在 Prepare 协调，早于结束实例的 onEnd。
 
 业务调用不自动生成等待边。例如 Effect.onEnd 请求 Unit.remove，Unit 等待已有 Effect→Unit 关系，但 Effect 不因为调用了 remove 又反向等待 Unit。独立 Projectile 不随来源 Unit／Action 自动结束，普通 source、目标跟踪、Occupancy、Blocking、Card 冷却不自动转为 Lifetime 关系。
 

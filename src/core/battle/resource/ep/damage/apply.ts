@@ -1,7 +1,7 @@
-import type { Result } from "../../state.js";
-import * as units from "../../../unit/query.js";
-import { available, canReceiveDamage } from "../../../unit/capability/elemental/query.js";
-import { receiveDamage, commitDamage } from "../../../unit/capability/elemental/operations.js";
+import type { Result } from "../../../state.js";
+import * as units from "../../../../unit/query.js";
+import { available, canReceiveDamage } from "../../../../unit/capability/elemental/query.js";
+import { receiveDamage, commitDamage } from "../../../../unit/capability/elemental/operations.js";
 import type { Calculated, Outcome, Request } from "./contract.js";
 import {
     type CommitContext,

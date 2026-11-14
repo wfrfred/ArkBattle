@@ -2,7 +2,7 @@ import type { Ref } from "../../core/common/ref.js";
 import type { State as BattleState } from "../../core/battle/index.js";
 import { roundToEven } from "../../core/common/math.js";
 import { update as updateUnit } from "../../core/battle/unit.js";
-import { applyDamage, calculateDamage } from "../../core/battle/damage/hp/index.js";
+import { applyDamage, calculateDamage } from "../../core/battle/resource/hp/damage/index.js";
 
 import * as effects from "../../core/unit/effect/index.js";
 import {

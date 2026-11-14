@@ -232,7 +232,7 @@ candidates 每次派发调用一次并复制 ID 序列，顺序由领域决定�
 
 不需要操作值的通知使用 T=void，仍返回 Result<void>，C 也可为 void。需要终止后续通知时，领域定义自己的控制值，不把业务取消、停止派发和生命周期终结混为同一个布尔值。Vitality 的阶段控制只在本节点生效，不能成为后续业务事实的一部分。
 
-通用条目的 set／remove 位于 common/collection/entries.ts，按 ID 登记、替换与撤销，保留顺序与结构共享；Hook 模块提供类型化集合和 dispatch。领域持有登记集合，定义节点、排序、资格与停止条件。Effect 与 [Projectile](projectile.md) 的 Definition 回调直接接收完整 self；异构容器内部擦除私有参数，Core 调用同一实例自身 Definition 的程序，不解释未知 state。Definition 程序与本次 Hook 派发的固定 Context 分别定义。
+通用条目的 set／remove 位于 common/collection/entries.ts，按 ID 登记、替换与撤销，保留顺序与结构共享；Hook 模块提供类型化集合和 dispatch。领域持有登记集合，定义节点、排序、资格与停止条件。Resource 的四种业务共用 resource/hook.ts 的优先级 Unit Hook 派发和 resource/receiving.ts 的接收工作值协议，各自保留精确 Context、原因集合及执行阶段。Effect 与 [Projectile](projectile.md) 的 Definition 回调直接接收完整 self；异构容器内部擦除私有参数，Core 调用同一实例自身 Definition 的程序，不解释未知 state。Definition 程序与本次 Hook 派发的固定 Context 分别定义。
 
 Unit 持有不可变 Effects 容器，内部 Store<Id, Effect<any, any>> 保存异构完整实例及 ID 进度。普通 get(id)／values() 返回默认 object／object 的完整 Effect，包含 state 与原 Definition；精确 Ref／Definition 查询保留私有类型、STACK 与政策分支。values／keys 返回绑定容器版本的 Query；Core 取得完整实例，在统一的受信任边界恢复其与自身 Definition 程序的配对后执行，不依赖嵌套判别自动推导联合回调，也不解释未知 state 或 H。存储容器仍不派发业务；跨完整操作后仍读取最新实例。真实所有权保护结束中的宿主与存储；Departure 等明确历史载荷按本领域业务输入保存。
 
@@ -286,7 +286,7 @@ Effect 的 expiration 选择 DURATION、DEADLINE、INFINITE 之一；DURATION �
 
 `effects.setState` 只写私有 state，不自动刷新 Contribution；需要修改已登记贡献的内容显式执行对应刷新。安装／启停／绑定／结束仍由生命周期操作完成，不通过私有数据转换绕过这些规则。
 
-Healing 中若嵌套 Damage，Damage 必须把冷却消耗、HP、致死裁决与已执行的退场请求／Effect Prepare 返回给 Healing，再返回外层盾程序。若当前已有 Lifetime 结算范围，Damage.completed 不保证目标的离场 Finalize 已完成；最外层结算器随后完成这些工作。每层报告描述本次操作，不用最终 HP 净变化反推本次伤害／治疗量。
+Healing 中若嵌套 Damage，Damage 必须把冷却消耗、HP、致死裁决与已执行的退场请求／Effect Prepare 返回给 Healing，再返回外层盾程序。若当前已有 Lifetime 结算范围，resource.hp.damage.completed 不保证目标的离场 Finalize 已完成；最外层结算器随后完成这些工作。每层报告描述本次操作，不用最终 HP 净变化反推本次伤害／治疗量。
 
 同样的组合可以表达治疗后给其他 Unit 装盾、灼痕死亡爆炸、技能结束补 SP、共享复活额度消耗。普通函数调用、if 和 for 足够，不要求通用指令解释器。
 

@@ -7,7 +7,7 @@ import * as mechanisms from "../../dist/core/battle/mechanism.js";
 import * as units from "../../dist/core/unit/index.js";
 import * as skills from "../../dist/core/unit/skill/index.js";
 import * as vitality from "../../dist/core/unit/capability/vitality/index.js";
-import * as hpDamage from "../../dist/core/battle/damage/hp/index.js";
+import * as hpDamage from "../../dist/core/battle/resource/hp/damage/index.js";
 import { create as createTile } from "../../dist/core/battlefield/map/tile.js";
 import { Tiles } from "../../dist/core/battlefield/map/tiles.js";
 import { create as createMap } from "../../dist/core/battlefield/map/map.js";

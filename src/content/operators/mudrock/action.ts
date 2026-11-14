@@ -33,7 +33,7 @@ import {
     calculateDamage,
     applyDamage,
     type Request as DamageRequest,
-} from "../../../core/battle/damage/hp/index.js";
+} from "../../../core/battle/resource/hp/damage/index.js";
 
 import * as targeting from "../../../core/battle/targeting/index.js";
 import { hasBlockable, hasBlocker } from "../../../core/unit/capability/blocking/index.js";

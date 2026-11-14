@@ -16,7 +16,7 @@ export type { Definition, Input, Parameter, State, Vitality } from "./capability
 
 export type { DamageReceptionRule as Rule } from "./rule.js";
 
-export type { ReceivingContext as RuleContext } from "../../../battle/damage/hp/hook.js";
+export type { ReceivingContext as RuleContext } from "../../../battle/resource/hp/damage/hook.js";
 
 export { resolveDefense, resolveResistance, resolveRecoverySpeed } from "./query.js";
 

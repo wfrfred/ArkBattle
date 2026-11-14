@@ -7,8 +7,8 @@ import type { Unit } from "../../unit.js";
 import type {
     ReceivingHook as DamageReceivingHook,
     ReceivingStartedHook,
-} from "../../../battle/damage/hp/hook.js";
-import type { ReceivingHook as HealingReceivingHook } from "../../../battle/healing/hp/hook.js";
+} from "../../../battle/resource/hp/damage/hook.js";
+import type { ReceivingHook as HealingReceivingHook } from "../../../battle/resource/hp/healing/hook.js";
 import type { DamageReceptionRule } from "./rule.js";
 import { createChange, type Change } from "../../change.js";
 import { createRegistrationOperations } from "../../registration.js";

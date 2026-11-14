@@ -16,13 +16,13 @@ import {
 import type { Burst } from "./burst.js";
 import { dispatch } from "./hook.js";
 import * as query from "./query.js";
-import type * as damage from "../../../battle/damage/ep/contract.js";
+import type * as damage from "../../../battle/resource/ep/damage/contract.js";
 import type {
     ReceivingContext,
     CommitContext as DamageCommitContext,
-} from "../../../battle/damage/ep/hook.js";
-import type { Request as HealingRequest } from "../../../battle/healing/ep/contract.js";
-import type { CommitContext as HealingCommitContext } from "../../../battle/healing/ep/hook.js";
+} from "../../../battle/resource/ep/damage/hook.js";
+import type { Request as HealingRequest } from "../../../battle/resource/ep/healing/contract.js";
+import type { CommitContext as HealingCommitContext } from "../../../battle/resource/ep/healing/hook.js";
 
 export interface DamageApplication {
     readonly type: Type;

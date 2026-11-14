@@ -79,7 +79,7 @@ Burst 的 id、host、source、enabled、lifecycle 由 Effect 提供，Elemental
 
 ## 3. 查询、结算与资源提交
 
-EP 损伤与治疗分别通过 [damage/ep/index.ts](../../src/core/battle/damage/ep/index.ts) 和 [healing/ep/index.ts](../../src/core/battle/healing/ep/index.ts) 使用两阶段接口。Damage／Healing 顶层仅导出 hp、ep 命名空间。Calculate 形成输出，Apply 才开始接收；零计算输出在 Apply 入口拒绝，零实际变化允许成功。完整边界见 [Vitality／Elemental 接口](vitality.md#18-接收与资源提交接口)。
+EP 损伤与治疗分别通过 [ep/damage/index.ts](../../src/core/battle/resource/ep/damage/index.ts) 和 [ep/healing/index.ts](../../src/core/battle/resource/ep/healing/index.ts) 使用两阶段接口。[resource/index.ts](../../src/core/battle/resource/index.ts) 按 hp／ep，再按 damage／healing 导出四个业务命名空间。Calculate 形成输出，Apply 才开始接收；零计算输出在 Apply 入口拒绝，零实际变化允许成功。完整边界见 [Vitality／Elemental 接口](vitality.md#18-接收与资源提交接口)。
 
 EP Damage.Request 为 `{ source, target, parameters }`，Parameters 为可变工作值 `{ type, power }`，Calculated 保存公式确定的 `{ type, amount }`。先来源 Formula、再目标 Formula，然后按当前元素损伤抗性计算数额，最后执行来源 Output。令 `power = max(0, parameters.power)`，基础公式为 `max(power × 0.05, power × (1 - elementResistance / 100))`；抗性有效值在 0～100，即使达到 100，基础公式仍保留 5%。Output 可以继续将数额降到保底以下，不在它之后再次套用保底。之后的状态变化不使 Apply 重算；实际元素类型来自 Calculated，不用初始 Request.parameters.type 代替。
 
@@ -87,13 +87,13 @@ EP Healing.Request 同样为 `{ source, target, parameters }`，Parameters 为 `
 
 | 接口 | 形状与结果 |
 | --- | --- |
-| damage.ep.calculateDamage | `(battle, request) => Result<Calculated \| undefined>` |
-| damage.ep.applyDamage | `(request, calculation) => Result<Outcome>` |
-| healing.ep.calculateHealing | `(battle, request) => Result<Calculated \| undefined>` |
-| healing.ep.applyHealing | `(request, calculation) => Result<Outcome>` |
+| resource.ep.damage.calculateDamage | `(battle, request) => Result<Calculated \| undefined>` |
+| resource.ep.damage.applyDamage | `(request, calculation) => Result<Outcome>` |
+| resource.ep.healing.calculateHealing | `(battle, request) => Result<Calculated \| undefined>` |
+| resource.ep.healing.applyHealing | `(request, calculation) => Result<Outcome>` |
 | canReceiveDamage | `(battle, request, type = request.parameters.type) => boolean`；资格查询不要求 Calculated |
 | canReceiveHealing | `(battle, request) => boolean` |
-| receiveDamage | `(battle, context: damage.ep.ReceivingContext, pending) => Result<Pending>` |
+| receiveDamage | `(battle, context: resource.ep.damage.ReceivingContext, pending) => Result<Pending>` |
 | commitDamage／commitHealing | `(battle, context: 对应业务的 CommitContext) => Result<对应资源报告>` |
 | finish／cancel | `(battle, ref: Ref<Burst>, reason?) => BattleState`；finish 不接收原因 |
 | advance | `(battle, host: Ref<Unit & Elemental>) => BattleState`；Runtime 专用，只推进无 Burst 时的自然 EP 回复 |
@@ -133,7 +133,7 @@ Damage 的 before／after／loss 描述本次元素类型，Burst 身份描述�
 
 通用 Formula、Output、BeforeReceive、BeforeCommit、targetApplied、sourceApplied 存于 [Unit.hooks](hook.md)，由对应 Battle 子域定义键与派发。基础目标资格成立后执行 beforeReceive，再读取最新 Rule；取消、失效及已提交结果按各业务 Outcome 表达。
 
-Elemental 仅保存专属 DamageReceivingHook 和实际资源／Burst 通知，统一由 Hooks 分组声明。专属接收使用 `setHook("damageReceiving", hook)`／`removeHook("damageReceiving", id)`，与事实通知共用普通登记工厂并返回 Change。接收 Context 固定 `{ target, request, calculated }`，工作值为 Pending；取消后仍派发后续 Hook，但保留已有取消及原因。全部接收 Hook 完成后，receiveDamage 将最终 amount 截为非负数，再交给 Battle 构造 CommitContext；BeforeCommit、资源提交及报告使用同一份接收量，零接收量仍可成功。中间各 Hook 不单独截零。领域 cancel 构造函数封装类型断言，取消保持约束由类型表达。EP Healing 没有专属 Receiving，不导出取消构造器。
+Elemental 仅保存专属 DamageReceivingHook 和实际资源／Burst 通知，统一由 Hooks 分组声明。专属接收使用 `setHook("damageReceiving", hook)`／`removeHook("damageReceiving", id)`，与事实通知共用普通登记工厂并返回 Change。接收 Context 固定 `{ target, request, calculated }`，工作值为绑定本域 Reason 的共用 Pending；取消后仍派发后续 Hook，但保留已有取消及原因。全部接收 Hook 完成后，receiveDamage 将未取消的最终 amount 截为非负数，再交给 Battle 构造 CommitContext；BeforeCommit、资源提交及报告使用同一份接收量，零接收量仍可成功，取消则保留工作值快照。中间各 Hook 不单独截零。领域 cancel 绑定 resource/receiving.ts 的共用构造函数，类型断言集中在该实现中。EP Healing 没有专属 Receiving，不导出取消构造器。
 
 事实通知固定 `{ host, event }`，T=void；以下 event 在资源写入或生命周期转移处确定：
 

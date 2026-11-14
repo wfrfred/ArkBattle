@@ -5,8 +5,8 @@ import { replace } from "../../../battle/unit.js";
 import type { Unit } from "../../unit.js";
 import * as units from "../../query.js";
 import * as hooks from "../../../hook.js";
-import type * as damage from "../../../battle/damage/hp/index.js";
-import type * as healing from "../../../battle/healing/hp/index.js";
+import type * as damage from "../../../battle/resource/hp/damage/index.js";
+import type * as healing from "../../../battle/resource/hp/healing/index.js";
 import { resolveMaxHp, type Vitality } from "./capability.js";
 import { resolveRecoverySpeed } from "./query.js";
 

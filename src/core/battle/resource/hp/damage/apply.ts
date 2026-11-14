@@ -1,9 +1,9 @@
-import type { Ref } from "../../../common/ref.js";
-import type { Unit } from "../../../unit/unit.js";
-import * as units from "../../../unit/query.js";
-import * as vitality from "../../../unit/capability/vitality/operations.js";
-import { appendEvents, type Result, type State as BattleState } from "../../state.js";
-import { remove } from "../../unit.js";
+import type { Ref } from "../../../../common/ref.js";
+import type { Unit } from "../../../../unit/unit.js";
+import * as units from "../../../../unit/query.js";
+import * as vitality from "../../../../unit/capability/vitality/operations.js";
+import { appendEvents, type Result, type State as BattleState } from "../../../state.js";
+import { remove } from "../../../unit.js";
 import type { Calculated, Outcome, Request } from "./contract.js";
 import {
     type CommitContext,

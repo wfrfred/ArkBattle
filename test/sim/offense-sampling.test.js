@@ -1,5 +1,5 @@
-import * as hpDamage from "../../dist/core/battle/damage/hp/index.js";
-import { targetApplied } from "../../dist/core/battle/damage/hp/index.js";
+import * as hpDamage from "../../dist/core/battle/resource/hp/damage/index.js";
+import { targetApplied } from "../../dist/core/battle/resource/hp/damage/index.js";
 import { update as applyUnitChanges } from "../../dist/core/battle/unit.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";

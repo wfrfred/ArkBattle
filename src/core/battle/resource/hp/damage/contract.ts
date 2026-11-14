@@ -1,7 +1,8 @@
-import type { DamageApplication } from "../../../unit/capability/vitality/operations.js";
-import type { Ref } from "../../../common/ref.js";
-import type { Unit, Id } from "../../../unit/unit.js";
-import type { Vitality } from "../../../unit/capability/vitality/capability.js";
+import * as receiving from "../../receiving.js";
+import type { DamageApplication } from "../../../../unit/capability/vitality/operations.js";
+import type { Ref } from "../../../../common/ref.js";
+import type { Unit, Id } from "../../../../unit/unit.js";
+import type { Vitality } from "../../../../unit/capability/vitality/capability.js";
 
 export type DamageType = "PHYSICAL" | "ARTS" | "TRUE" | "ELEMENTAL";
 
@@ -52,43 +53,16 @@ export interface Calculated {
 
 export type Reason = "UNSPECIFIED" | "UNHURTABLE" | "MISS" | "BLOCKED" | "HIT_FAILED" | "INTERRUPT";
 
-type State = "NORMAL" | "FIXED" | "CANCELLED";
+export type Pending<
+    R extends Reason = Reason,
+    T extends receiving.State = receiving.State,
+> = receiving.Pending<R, T>;
 
-export type Pending<R extends Reason = Reason, T extends State = State> = (
-    | { readonly type: "NORMAL"; readonly amount: number }
-    | { readonly type: "FIXED"; readonly amount: number }
-    | { readonly type: "CANCELLED"; readonly amount: number; readonly reason: R }
-) & { readonly type: T };
+export type Next<T extends receiving.State, R extends Reason> = receiving.Next<T, R, Reason>;
 
-type FixResult<T extends State, R extends Reason> = Extract<
-    Pending<R>,
-    { readonly type: T extends "CANCELLED" ? "CANCELLED" : "FIXED" }
->;
+export const fix: receiving.Fix<Reason> = receiving.fix;
 
-type CancelResult<T extends State, R extends Reason, N extends Reason> = Extract<
-    Pending<T extends "CANCELLED" ? R : N>,
-    { readonly type: "CANCELLED" }
->;
-
-export type Next<T extends State, R extends Reason> =
-    Pending<R, T> | FixResult<T, R> | CancelResult<T, R, Reason>;
-
-export function fix<T extends State, R extends Reason>(current: Pending<R, T>): FixResult<T, R> {
-    return (
-        current.type === "NORMAL" ? { type: "FIXED", amount: current.amount } : current
-    ) as FixResult<T, R>;
-}
-
-export function cancel<T extends State, R extends Reason, N extends Reason>(
-    current: Pending<R, T>,
-    reason: N,
-): CancelResult<T, R, N> {
-    return (
-        current.type === "CANCELLED"
-            ? current
-            : { type: "CANCELLED", amount: current.amount, reason }
-    ) as CancelResult<T, R, N>;
-}
+export const cancel: receiving.Cancel<Reason> = receiving.cancel;
 
 export type Application = DamageApplication;
 

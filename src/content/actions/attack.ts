@@ -35,21 +35,21 @@ import {
     applyDamage,
     type Request as DamageRequest,
     type DamageType,
-} from "../../core/battle/damage/hp/index.js";
+} from "../../core/battle/resource/hp/damage/index.js";
 
 import { hasVitality } from "../../core/unit/capability/vitality/index.js";
 import {
     calculateHealing,
     applyHealing,
     type Request as HealingRequest,
-} from "../../core/battle/healing/hp/index.js";
+} from "../../core/battle/resource/hp/healing/index.js";
 
 import {
     hasElemental,
     type Type as ElementType,
 } from "../../core/unit/capability/elemental/index.js";
-import * as epDamage from "../../core/battle/damage/ep/index.js";
-import * as epHealing from "../../core/battle/healing/ep/index.js";
+import * as epDamage from "../../core/battle/resource/ep/damage/index.js";
+import * as epHealing from "../../core/battle/resource/ep/healing/index.js";
 
 export type Operation =
     | {

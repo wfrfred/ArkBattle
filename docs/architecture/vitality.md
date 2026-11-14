@@ -1,8 +1,20 @@
 # Vitality、Damage 与 Healing
 
-Vitality 保存 HP、MaxHP、DEF、RES、自然回复属性，以及伤害与治疗的专属接收 Hook 和伤害接收规则。通用结算 Hook 由对应领域定义，存于来源或目标的 Unit.hooks。`battle/damage/`、`battle/healing/` 提供 Calculate／Apply 操作，复用[公共 Hook 契约](functional-core.md#6-hook-和生命周期的纯契约)。
+Vitality 保存 HP、MaxHP、DEF、RES、自然回复属性，以及伤害与治疗的专属接收 Hook 和伤害接收规则。通用结算 Hook 由对应领域定义，存于来源或目标的 Unit.hooks。`battle/resource/` 按 HP／EP，再按 Damage／Healing 提供 Calculate／Apply 操作，复用[公共 Hook 契约](functional-core.md#6-hook-和生命周期的纯契约)。
 
-Damage／Healing 顶层入口仅导出 hp、ep 命名空间。上层分别从 [vitality/index.ts](../../src/core/unit/capability/vitality/index.ts)、[damage/hp/index.ts](../../src/core/battle/damage/hp/index.ts) 与 [healing/hp/index.ts](../../src/core/battle/healing/hp/index.ts) 导入公共契约。Damage／Healing 保持 Calculate／Apply 两阶段；Hook 登记与公开类型可由入口取得，内部 dispatch 不公开。
+[resource/index.ts](../../src/core/battle/resource/index.ts) 导出 hp、ep 命名空间，各自导出 damage、healing。HP 业务也可直接从 [hp/damage/index.ts](../../src/core/battle/resource/hp/damage/index.ts) 与 [hp/healing/index.ts](../../src/core/battle/resource/hp/healing/index.ts) 导入公共契约；资源能力由 [vitality/index.ts](../../src/core/unit/capability/vitality/index.ts) 提供。四种业务保留 calculateDamage／applyDamage 或 calculateHealing／applyHealing 两阶段入口；Hook 键和精确公开类型由对应入口导出，共用派发保持内部实现。
+
+```text
+battle/resource/
+├── receiving.ts
+├── hook.ts
+├── hp/
+│   ├── damage/
+│   └── healing/
+└── ep/
+    ├── damage/
+    └── healing/
+```
 
 HP Damage 覆盖普通伤害与生命流失，两者均使用物理、法术、真实或元素 HP 公式及同一套 Calculate／Apply。特殊生命机制、特殊恢复与其余伤害分类的支持边界见第 3.2、4.2、5 节。
 
@@ -221,7 +233,7 @@ DAMAGE 事件只携带飘字需要的目标、伤害类型、实际 HP 损失和
 
 ### 1.6 结算 Hook 类型
 
-HP Damage、EP Damage、HP Healing 与 EP Healing 各自定义 Request、Context、Parameters、Calculated、Pending、Application 与 Hook，不建立四种业务的联合 Request／Context。四者共用 `Hook<C, T>` 与派发协议；某内容同时响应多种结算时，分别登记精确 Hook，再调用共享的内容程序。以下使用 HP Damage 子域内的局部类型名。
+HP Damage、EP Damage、HP Healing 与 EP Healing 各自定义 Request、Context、Parameters、Calculated、Application 与阶段 Hook，不建立四种业务的联合 Request／Context。共用的接收工作值协议位于 [resource/receiving.ts](../../src/core/battle/resource/receiving.ts)，由三个具有专属 Receiving 的业务绑定各自 Reason 和 Context；EP Healing 保留自己的简单 Pending。按 Unit 执行优先级 Hook 的实现位于 [resource/hook.ts](../../src/core/battle/resource/hook.ts)，四种业务共用同一派发器。某内容同时响应多种结算时，分别登记精确 Hook，再调用共享的内容程序。以下使用 HP Damage 子域内的局部类型名。
 
 ```typescript
 interface Context {
@@ -268,9 +280,11 @@ ReceivingStarted 只供 HP Damage 的普通受击 SP 等接收开始业务使用
 
 #### 接收工作值、数值固定与取消
 
-三种状态及允许的转换如下。以下 Reason 为 HP Damage 的原因集合。
+接收协议只在 [resource/receiving.ts](../../src/core/battle/resource/receiving.ts) 实现一次，包含三态 Pending、合法后继 Next、ReceivingHook 和 fix／cancel。各业务保留自己的原因集合和接收 Context，以下以 HP Damage 的绑定为例：
 
 ```typescript
+import * as receiving from "../../receiving.js";
+
 type Reason =
     | "UNSPECIFIED"
     | "UNHURTABLE"
@@ -279,38 +293,21 @@ type Reason =
     | "HIT_FAILED"
     | "INTERRUPT";
 
-type State = "NORMAL" | "FIXED" | "CANCELLED";
+type Pending<
+    R extends Reason = Reason,
+    T extends receiving.State = receiving.State,
+> = receiving.Pending<R, T>;
 
-type Pending<R extends Reason = Reason, T extends State = State> = (
-    | { readonly type: "NORMAL"; readonly amount: number }
-    | { readonly type: "FIXED"; readonly amount: number }
-    | { readonly type: "CANCELLED"; readonly amount: number; readonly reason: R }
-) & { readonly type: T };
+type Next<T extends receiving.State, R extends Reason> =
+    receiving.Next<T, R, Reason>;
 
-type FixResult<T extends State, R extends Reason> = Extract<
-    Pending<R>,
-    { readonly type: T extends "CANCELLED" ? "CANCELLED" : "FIXED" }
->;
+const fix: receiving.Fix<Reason> = receiving.fix;
+const cancel: receiving.Cancel<Reason> = receiving.cancel;
 
-type CancelResult<T extends State, R extends Reason, N extends Reason> = Extract<
-    Pending<T extends "CANCELLED" ? R : N>,
-    { readonly type: "CANCELLED" }
->;
-
-type Next<T extends State, R extends Reason> =
-    | Pending<R, T>
-    | FixResult<T, R>
-    | CancelResult<T, R, Reason>;
-
-
-interface ReceivingHook extends Entry<ReceivingContext, Pending> {
-    readonly invoke: <T extends Pending["type"], R extends Reason>(
-        battle: BattleState,
-        context: ReceivingContext,
-        current: Pending<R, T>,
-    ) => Result<Next<T, R>>;
-}
+type ReceivingHook = receiving.ReceivingHook<ReceivingContext, Reason>;
 ```
+
+共用 Next 的第三参数是本业务允许的完整原因集合，第二参数 R 是当前已有原因。领域绑定完整集合，允许首次取消选择本域原因，同时保持已有取消的精确原因；不把三个业务的原因合成一个公共枚举。
 
 HP Damage、EP Damage 与 HP Healing 使用 NORMAL／FIXED／CANCELLED 三种 Pending，初始为 NORMAL。NORMAL 和 FIXED 保存 amount；CANCELLED 保存取消时的 amount 与 reason，不再另设可空 cancellation。EP Healing 没有专属 Receiving，沿用自身的 Pending，不机械添加三态。
 
@@ -326,9 +323,9 @@ Receiving 的各 Hook 按顺序接续原工作值，不在每项之后截零；�
 
 ReceivingHook 的泛型返回类型约束上述单向状态转换及取消原因；amount 始终为 number，不以类型证明数值相等。固定和取消后的数值保留由 Hook 契约保证，内核信任内容实现，不增加比较、纠正或其他运行时防御。特殊 Hook 仍可交给现有派发器。
 
-领域提供纯工作值构造函数 fix 与 cancel。fix 将 NORMAL 固定，其他状态原样保留；cancel 保留 amount，将未取消工作值变为 CANCELLED，已取消则原样返回。两者按本操作的实际行为精确返回，不从允许的全部后继反推：fix 对已知 NORMAL／FIXED 仅返回 FIXED，对 CANCELLED 保留原原因；cancel 对未取消输入保留本次原因字面量，对已取消输入保留原原因。状态转换的受信类型断言集中在两个构造函数中，Content 不需要断言或直接操作 Next。普通改量只在 NORMAL 分支通过 `{ ...current, amount: nextAmount }` 返回。
+领域绑定共用的纯工作值构造函数 fix 与 cancel。fix 将 NORMAL 固定，其他状态原样保留；cancel 保留 amount，将未取消工作值变为 CANCELLED，已取消则原样返回。两者按本操作的实际行为精确返回，不从允许的全部后继反推：fix 对已知 NORMAL／FIXED 仅返回 FIXED，对 CANCELLED 保留原原因；cancel 对未取消输入保留本次原因字面量，对已取消输入保留原原因。状态转换的受信类型断言集中在 resource/receiving.ts 的两个构造函数中，Content 不需要断言或直接操作 Next。普通改量只在 NORMAL 分支通过 `{ ...current, amount: nextAmount }` 返回。
 
-Pending 以完整判别联合与 `{ type: T }` 相交，只保留所选状态，不生成 type 为 never 的分支。fix／cancel 从这层外部状态约束推导 T，并分别保留原原因 R 或本次原因 N。Next<T, R> 由保留当前值、固定及取消的实际结果组成；ReceivingHook 量化状态 T 和原因 R，不直接量化会使泛型 spread 掩盖字段改写的整对象 P。登记沿用现有入口，不要求 Content 添加类型断言。
+共用 Pending 以完整判别联合与 `{ type: T }` 相交，按 T 收窄整个联合；已知 CANCELLED 时可直接读取精确 reason。fix／cancel 从这层外部状态约束推导 T，并分别保留原原因 R 或本次原因 N。Next 由保留当前值、固定及取消的实际结果组成；ReceivingHook 量化状态 T 和原因 R，不直接量化会使泛型 spread 掩盖字段改写的整对象 P。登记沿用现有入口，不要求 Content 添加类型断言。
 
 Reason 是业务原因的有限集合，不接受内容自造的字符串；机制身份仍由所属 Effect／Hook 保存，不使用干员名作为原因。
 
@@ -383,7 +380,7 @@ receiveHealing(
 ): Result<HpHealing.Pending>;
 ```
 
-HP Damage 的 receive 包含 ReceivingStarted 和有序 Receiving，HP Healing 只执行自己的 Receiving；EP Damage 执行 EP 专属 Receiving。它们都可能发生同步业务，返回值包含接续后的 BattleState 与 Pending。receive 返回前统一将最终接收量截为非负数，Commit 信任该边界建立的约束。取消遵守第 1.6 节的 Pending 契约。
+HP Damage 的 receive 包含 ReceivingStarted 和有序 Receiving，HP Healing 只执行自己的 Receiving；EP Damage 执行 EP 专属 Receiving。它们都可能发生同步业务，返回值包含接续后的 BattleState 与 Pending。receive 返回前将未取消的最终接收量截为非负数，Commit 信任该边界建立的约束；取消则保留工作值快照，遵守第 1.6 节的 Pending 契约。
 
 commit 接收对应业务的精确 CommitContext，其中 target、request、calculated 与 received 提供资源写入、Burst 归因和能力通知所需的事实。两种能力分别提供：
 

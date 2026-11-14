@@ -6,7 +6,7 @@ import { battle, get } from "../helpers/battle.js";
 import * as deployment from "../../dist/core/battle/deployment/index.js";
 import * as cards from "../../dist/core/battle/deployment/card/index.js";
 import * as units from "../../dist/core/unit/query.js";
-import * as damage from "../../dist/core/battle/damage/hp/index.js";
+import * as damage from "../../dist/core/battle/resource/hp/damage/index.js";
 import * as attribute from "../../dist/core/unit/contribution/attribute.js";
 import * as actions from "../../dist/core/unit/action/index.js";
 
