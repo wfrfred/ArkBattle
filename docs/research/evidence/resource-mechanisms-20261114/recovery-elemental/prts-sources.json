@@ -1,0 +1,70 @@
+{
+  "provenance": {
+    "checkedOn": "2026-11-14",
+    "sourceKind": "Community wiki, current pages accessed via web search/open; this batch did not pin oldid. No verbatim page reproduction. Native/client data are separate primary evidence."
+  },
+  "result": {
+    "sources": [
+      {
+        "url": "https://prts.wiki/w/元素",
+        "purpose": "五类损伤、元素伤害/损伤区别、标准爆发与恢复概述；与当前native/表独立核对。",
+        "status": "locator_and_crosscheck",
+        "limits": "No live-client observation; page may change and is not proof of assembly order."
+      },
+      {
+        "url": "https://prts.wiki/w/生命值",
+        "purpose": "ES、负生命与治疗溢出相关定位；医生描述以当前模板实际清理链校验，网页不单独证明内部时序。",
+        "status": "locator_and_crosscheck",
+        "limits": "No live-client observation; page may change and is not proof of assembly order."
+      },
+      {
+        "url": "https://prts.wiki/w/特殊机制",
+        "purpose": "生命复原、自然回复与普通治疗区别的社区定位；实际回调分支另有native。",
+        "status": "locator_and_crosscheck",
+        "limits": "No live-client observation; page may change and is not proof of assembly order."
+      },
+      {
+        "url": "https://prts.wiki/w/游戏数据基础",
+        "purpose": "普通治疗公式、元素抗性及相应属性语义入口。",
+        "status": "locator_and_crosscheck",
+        "limits": "No live-client observation; page may change and is not proof of assembly order."
+      },
+      {
+        "url": "https://prts.wiki/w/休谟斯",
+        "purpose": "自疗/屏障天赋实际内容，进一步闭合Charpack与Holder。",
+        "status": "locator_and_crosscheck",
+        "limits": "No live-client observation; page may change and is not proof of assembly order."
+      },
+      {
+        "url": "https://prts.wiki/w/“Touch”，再生之流",
+        "purpose": "狂躁损伤实际使用对象；实际关卡与EnemyDB覆盖另外固定提取。",
+        "status": "locator_and_crosscheck",
+        "limits": "No live-client observation; page may change and is not proof of assembly order."
+      },
+      {
+        "url": "https://prts.wiki/w/余",
+        "purpose": "第二天赋恢复HP和元素损伤；实际正数来源与属性更新链另行核对。",
+        "status": "locator_and_crosscheck",
+        "limits": "No live-client observation; page may change and is not proof of assembly order."
+      },
+      {
+        "url": "https://prts.wiki/w/酒神",
+        "purpose": "S3神经恢复速度+50%与其附带EP来源；实际黑板和本机模板另行核对。",
+        "status": "locator_and_crosscheck",
+        "limits": "No live-client observation; page may change and is not proof of assembly order."
+      },
+      {
+        "url": "https://prts.wiki/w/结晶",
+        "purpose": "ELEMENT_FREE_ALL实际单位定位；本机PassiveBuff与真实act35side关卡另核。",
+        "status": "locator_and_crosscheck",
+        "limits": "No live-client observation; page may change and is not proof of assembly order."
+      },
+      {
+        "url": "https://prts.wiki/w/镜匠",
+        "purpose": "损伤爆发回复相关定位；不把该网页概括成所有单位通用规则。",
+        "status": "locator_and_crosscheck",
+        "limits": "No live-client observation; page may change and is not proof of assembly order."
+      }
+    ]
+  }
+}

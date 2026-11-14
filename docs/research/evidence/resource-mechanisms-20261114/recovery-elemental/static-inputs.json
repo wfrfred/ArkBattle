@@ -1,0 +1,5070 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-14",
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/resource-mechanisms-20261114/recovery-elemental/extract_static.py",
+      "bytes": 3848,
+      "sha256": "bfc246f7db13a636fd0f65f0030e394bd15350c3a7b4cdc17a703cb6a3fe75ac"
+    },
+    "sources": [
+      {
+        "url": "https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d/zh_CN/gamedata/battle/ep_breakbuff_table.json",
+        "revision": "bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d",
+        "pointer": "",
+        "bytes": 709,
+        "sha256": "5d2df31b72546fe0b320173311b44231473080a788a0ac9575eeec58f1c7e8a4",
+        "gitBlobSha1": "2ea61a0f9471cb183d141117d8e086a4aea2ed80"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/17759cc8cdf37388414145d16262a3a06f3ab25e/zh_CN/gamedata/excel/character_table.json",
+        "revision": "17759cc8cdf37388414145d16262a3a06f3ab25e",
+        "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/unit-audit-20261110/operator-config/character_table.json",
+        "bytes": 15069101,
+        "sha256": "e523c7c83c36e2d76697121079e17d0282da1a94d59a55e1cc55616edf0b41c4"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/63c7cec73c3858d0ae913f85cc89af3cef4d744f/zh_CN/gamedata/excel/skill_table.json",
+        "revision": "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+        "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/route-operations-20261107/data/skill_table.json",
+        "bytes": 11766431,
+        "sha256": "492900f6b957233296c9736c86bb4e5f3ab4b4d7f5055a0f973c5acec3d174b1"
+      }
+    ],
+    "scope": "Pinned extracted static game data; table configuration and character resource selection, not live battle observation."
+  },
+  "result": {
+    "elementBreakTable": {
+      "SANITY": {
+        "elementBreakDuration": 10.0,
+        "enemyElementBreakDuration": 10.0,
+        "elementBuffs": [
+          "ep_break_sanity"
+        ]
+      },
+      "WATER": {
+        "elementBreakDuration": 10.0,
+        "enemyElementBreakDuration": 8.0,
+        "elementBuffs": [
+          "ep_break_water"
+        ]
+      },
+      "FIRE": {
+        "elementBreakDuration": 10.0,
+        "enemyElementBreakDuration": 10.0,
+        "elementBuffs": [
+          "ep_break_fire"
+        ]
+      },
+      "DARK": {
+        "elementBreakDuration": 15.0,
+        "enemyElementBreakDuration": 15.0,
+        "elementBuffs": [
+          "ep_break_dark"
+        ]
+      },
+      "ANGER": {
+        "elementBreakDuration": 15.0,
+        "enemyElementBreakDuration": 15.0,
+        "elementBuffs": [
+          "ep_break_anger"
+        ]
+      }
+    },
+    "characters": {
+      "char_491_humus": {
+        "pointer": "/char_491_humus",
+        "name": "休谟斯",
+        "trait": {
+          "candidates": [
+            {
+              "unlockCondition": {
+                "phase": "PHASE_0",
+                "level": 1
+              },
+              "requiredPotentialRank": 0,
+              "blackboard": [
+                {
+                  "key": "value",
+                  "value": 50.0,
+                  "valueStr": null
+                }
+              ],
+              "overrideDescripton": "无法被友方角色治疗，攻击造成<@ba.kw>群体伤害</>，每攻击到一个敌人回复自身<@ba.kw>{value}</>生命，最大生效数等于阻挡数",
+              "prefabKey": null,
+              "rangeId": null
+            }
+          ]
+        },
+        "talents": [
+          {
+            "candidates": [
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_1",
+                  "level": 1
+                },
+                "requiredPotentialRank": 0,
+                "prefabKey": "1",
+                "name": "再回收",
+                "description": "超出自身生命上限的生命值可转化为<$ba.barrier>屏障</>；最多不超过自身最大生命值的60%",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "max_hp_ratio",
+                    "value": 0.6,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "def",
+                    "value": 0.0,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_1",
+                  "level": 1
+                },
+                "requiredPotentialRank": 4,
+                "prefabKey": "1",
+                "name": "再回收",
+                "description": "超出自身生命上限的生命值可转化为<$ba.barrier>屏障</>；最多不超过自身最大生命值的64%<@ba.talpu>（+4%）</>",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "max_hp_ratio",
+                    "value": 0.64,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "def",
+                    "value": 0.0,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "requiredPotentialRank": 0,
+                "prefabKey": "1",
+                "name": "再回收",
+                "description": "超出自身生命上限的生命值可转化为<$ba.barrier>屏障</>；最多不超过自身最大生命值的100%",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "max_hp_ratio",
+                    "value": 1.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "def",
+                    "value": 0.0,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "requiredPotentialRank": 4,
+                "prefabKey": "1",
+                "name": "再回收",
+                "description": "超出自身生命上限的生命值可转化为<$ba.barrier>屏障</>；最多不超过自身最大生命值的104%<@ba.talpu>（+4%）</>",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "max_hp_ratio",
+                    "value": 1.04,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "def",
+                    "value": 0.0,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              }
+            ]
+          }
+        ],
+        "skills": [
+          {
+            "skillId": "skchr_humus_1",
+            "overridePrefabKey": null,
+            "overrideTokenKey": null,
+            "levelUpCostCond": [
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 28800,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 2,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31034",
+                    "count": 1,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30083",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 57600,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31054",
+                    "count": 2,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30044",
+                    "count": 2,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 86400,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30125",
+                    "count": 2,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30104",
+                    "count": 2,
+                    "type": "MATERIAL"
+                  }
+                ]
+              }
+            ],
+            "unlockCond": {
+              "phase": "PHASE_0",
+              "level": 1
+            }
+          },
+          {
+            "skillId": "skchr_humus_2",
+            "overridePrefabKey": null,
+            "overrideTokenKey": null,
+            "levelUpCostCond": [
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 28800,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 2,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31014",
+                    "count": 1,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31053",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 57600,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31044",
+                    "count": 2,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30054",
+                    "count": 2,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 86400,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30135",
+                    "count": 2,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31034",
+                    "count": 2,
+                    "type": "MATERIAL"
+                  }
+                ]
+              }
+            ],
+            "unlockCond": {
+              "phase": "PHASE_1",
+              "level": 1
+            }
+          }
+        ]
+      },
+      "char_4125_rdoc": {
+        "pointer": "/char_4125_rdoc",
+        "name": "医生",
+        "trait": {
+          "candidates": [
+            {
+              "unlockCondition": {
+                "phase": "PHASE_0",
+                "level": 1
+              },
+              "requiredPotentialRank": 0,
+              "blackboard": [
+                {
+                  "key": "atk_scale",
+                  "value": 1.2,
+                  "valueStr": null
+                }
+              ],
+              "overrideDescripton": null,
+              "prefabKey": null,
+              "rangeId": null
+            }
+          ]
+        },
+        "talents": [
+          {
+            "candidates": [
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_0",
+                  "level": 1
+                },
+                "requiredPotentialRank": 0,
+                "prefabKey": "1",
+                "name": "军医",
+                "description": "自身生命上限+3%，攻击无视目标30的防御力",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "max_hp",
+                    "value": 0.03,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "def_penetrate_fixed",
+                    "value": 30.0,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_0",
+                  "level": 1
+                },
+                "requiredPotentialRank": 4,
+                "prefabKey": "1",
+                "name": "军医",
+                "description": "自身生命上限+3%，攻击无视目标50<@ba.talpu>（+20）</>的防御力",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "max_hp",
+                    "value": 0.03,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "def_penetrate_fixed",
+                    "value": 50.0,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_1",
+                  "level": 1
+                },
+                "requiredPotentialRank": 0,
+                "prefabKey": "1",
+                "name": "军医",
+                "description": "自身生命上限+6%，攻击无视目标60的防御力",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "max_hp",
+                    "value": 0.06,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "def_penetrate_fixed",
+                    "value": 60.0,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_1",
+                  "level": 1
+                },
+                "requiredPotentialRank": 4,
+                "prefabKey": "1",
+                "name": "军医",
+                "description": "自身生命上限+6%，攻击无视目标80<@ba.talpu>（+20）</>的防御力",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "max_hp",
+                    "value": 0.06,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "def_penetrate_fixed",
+                    "value": 80.0,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "requiredPotentialRank": 0,
+                "prefabKey": "1",
+                "name": "军医",
+                "description": "自身生命上限+12%，攻击无视目标120的防御力",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "max_hp",
+                    "value": 0.12,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "def_penetrate_fixed",
+                    "value": 120.0,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "requiredPotentialRank": 4,
+                "prefabKey": "1",
+                "name": "军医",
+                "description": "自身生命上限+12%，攻击无视目标140<@ba.talpu>（+20）</>的防御力",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "max_hp",
+                    "value": 0.12,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "def_penetrate_fixed",
+                    "value": 140.0,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              }
+            ]
+          },
+          {
+            "candidates": [
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_1",
+                  "level": 1
+                },
+                "requiredPotentialRank": 0,
+                "prefabKey": "2",
+                "name": "交感神经激活",
+                "description": "治疗友方单位生命时，超过目标生命上限的治疗量可转化为不断快速衰减的<$ba.barrier>屏障</>",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "dec_rate",
+                    "value": -0.2,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "scale",
+                    "value": 50.0,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "requiredPotentialRank": 0,
+                "prefabKey": "2",
+                "name": "交感神经激活",
+                "description": "治疗友方单位生命时，超过目标生命上限的治疗量可转化为不断衰减的<$ba.barrier>屏障</>",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "dec_rate",
+                    "value": -0.1,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "scale",
+                    "value": 50.0,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              }
+            ]
+          }
+        ],
+        "skills": [
+          {
+            "skillId": "skchr_rdoc_1",
+            "overridePrefabKey": null,
+            "overrideTokenKey": null,
+            "levelUpCostCond": [
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 28800,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 5,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31084",
+                    "count": 3,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30053",
+                    "count": 3,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 57600,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31064",
+                    "count": 3,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31084",
+                    "count": 5,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 86400,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 10,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30125",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30094",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  }
+                ]
+              }
+            ],
+            "unlockCond": {
+              "phase": "PHASE_0",
+              "level": 1
+            }
+          },
+          {
+            "skillId": "skchr_rdoc_2",
+            "overridePrefabKey": null,
+            "overrideTokenKey": null,
+            "levelUpCostCond": [
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 28800,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 5,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31054",
+                    "count": 3,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30093",
+                    "count": 3,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 57600,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30064",
+                    "count": 3,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31064",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 86400,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 10,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30135",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31064",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  }
+                ]
+              }
+            ],
+            "unlockCond": {
+              "phase": "PHASE_1",
+              "level": 1
+            }
+          }
+        ]
+      },
+      "char_4235_thumpy": {
+        "pointer": "/char_4235_thumpy",
+        "name": "珊比",
+        "trait": null,
+        "talents": [
+          {
+            "candidates": [
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_1",
+                  "level": 1
+                },
+                "requiredPotentialRank": 0,
+                "prefabKey": "1",
+                "name": "探险理论",
+                "description": "珊比受到的<$ba.dt.element>元素损伤</>降低5%；珊比造成物理伤害时，附带攻击力8%的<$ba.dt.erosion2>侵蚀损伤</>，并使目标的<$ba.dt.erosion2>侵蚀损伤</>冷却减少1秒",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "ep_damage_scale",
+                    "value": 0.95,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "duration_dec",
+                    "value": 1.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "ep_damage_ratio[trigger]",
+                    "value": 0.08,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_1",
+                  "level": 1
+                },
+                "requiredPotentialRank": 2,
+                "prefabKey": "1",
+                "name": "探险理论",
+                "description": "珊比受到的<$ba.dt.element>元素损伤</>降低10%<@ba.talpu>（+5%）</>；珊比造成物理伤害时，附带攻击力10%<@ba.talpu>（+2%）</>的<$ba.dt.erosion2>侵蚀损伤</>，并使目标的<$ba.dt.erosion2>侵蚀损伤</>冷却减少1.2<@ba.talpu>（+0.2）</>秒",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "ep_damage_scale",
+                    "value": 0.9,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "duration_dec",
+                    "value": 1.2,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "ep_damage_ratio[trigger]",
+                    "value": 0.1,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "requiredPotentialRank": 0,
+                "prefabKey": "1",
+                "name": "探险理论",
+                "description": "珊比受到的<$ba.dt.element>元素损伤</>降低15%；珊比造成物理伤害时，附带攻击力10%的<$ba.dt.erosion2>侵蚀损伤</>，并使目标的<$ba.dt.erosion2>侵蚀损伤</>冷却减少1秒",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "ep_damage_scale",
+                    "value": 0.85,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "duration_dec",
+                    "value": 1.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "ep_damage_ratio[trigger]",
+                    "value": 0.1,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "requiredPotentialRank": 2,
+                "prefabKey": "1",
+                "name": "探险理论",
+                "description": "珊比受到的<$ba.dt.element>元素损伤</>降低20%<@ba.talpu>（+5%）</>；珊比造成物理伤害时，附带攻击力12%<@ba.talpu>（+2%）</>的<$ba.dt.erosion2>侵蚀损伤</>，并使目标的<$ba.dt.erosion2>侵蚀损伤</>冷却减少1.2<@ba.talpu>（+0.2）</>秒",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "ep_damage_scale",
+                    "value": 0.8,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "duration_dec",
+                    "value": 1.2,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "ep_damage_ratio[trigger]",
+                    "value": 0.12,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              }
+            ]
+          },
+          {
+            "candidates": [
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "requiredPotentialRank": 0,
+                "prefabKey": "2",
+                "name": "坚硬脚板",
+                "description": "受到过来自珊比伤害的敌人<$ba.dt.erosion2>侵蚀损伤</>爆发时，珊比获得8点防御力（最多叠加30层）和250点<$ba.barrier>屏障</>（不超过最大生命值的300%）",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "def",
+                    "value": 8.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "atk",
+                    "value": 0.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "shield_value",
+                    "value": 250.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "max_stack_cnt",
+                    "value": 30.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "scale",
+                    "value": 3.0,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "requiredPotentialRank": 4,
+                "prefabKey": "2",
+                "name": "坚硬脚板",
+                "description": "受到过来自珊比伤害的敌人<$ba.dt.erosion2>侵蚀损伤</>爆发时，珊比获得11<@ba.talpu>（+3）</>点防御力（最多叠加30层）和330<@ba.talpu>（+80）</>点<$ba.barrier>屏障</>（不超过最大生命值的300%）",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "def",
+                    "value": 11.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "atk",
+                    "value": 0.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "shield_value",
+                    "value": 330.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "max_stack_cnt",
+                    "value": 30.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "scale",
+                    "value": 3.0,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              }
+            ]
+          },
+          {
+            "candidates": [
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_0",
+                  "level": 1
+                },
+                "requiredPotentialRank": 0,
+                "prefabKey": "3",
+                "name": null,
+                "description": null,
+                "rangeId": null,
+                "blackboard": [],
+                "tokenKey": null,
+                "isHideTalent": true
+              }
+            ]
+          },
+          {
+            "candidates": [
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_0",
+                  "level": 1
+                },
+                "requiredPotentialRank": 0,
+                "prefabKey": "4",
+                "name": null,
+                "description": null,
+                "rangeId": null,
+                "blackboard": [],
+                "tokenKey": null,
+                "isHideTalent": true
+              }
+            ]
+          }
+        ],
+        "skills": [
+          {
+            "skillId": "skchr_thumpy_1",
+            "overridePrefabKey": null,
+            "overrideTokenKey": null,
+            "levelUpCostCond": [
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 28800,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 8,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31034",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30033",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 57600,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 12,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30054",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31104",
+                    "count": 8,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 86400,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 15,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30115",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31024",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  }
+                ]
+              }
+            ],
+            "unlockCond": {
+              "phase": "PHASE_0",
+              "level": 1
+            }
+          },
+          {
+            "skillId": "skchr_thumpy_2",
+            "overridePrefabKey": null,
+            "overrideTokenKey": null,
+            "levelUpCostCond": [
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 28800,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 8,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31064",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31063",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 57600,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 12,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31084",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31074",
+                    "count": 8,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 86400,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 15,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30155",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30054",
+                    "count": 2,
+                    "type": "MATERIAL"
+                  }
+                ]
+              }
+            ],
+            "unlockCond": {
+              "phase": "PHASE_1",
+              "level": 1
+            }
+          },
+          {
+            "skillId": "skchr_thumpy_3",
+            "overridePrefabKey": null,
+            "overrideTokenKey": null,
+            "levelUpCostCond": [
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 28800,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 8,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30044",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30103",
+                    "count": 3,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 57600,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 12,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31044",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31094",
+                    "count": 9,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 86400,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 15,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30145",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31084",
+                    "count": 1,
+                    "type": "MATERIAL"
+                  }
+                ]
+              }
+            ],
+            "unlockCond": {
+              "phase": "PHASE_2",
+              "level": 1
+            }
+          }
+        ]
+      },
+      "char_1016_agoat2": {
+        "pointer": "/char_1016_agoat2",
+        "name": "纯烬艾雅法拉",
+        "trait": {
+          "candidates": [
+            {
+              "unlockCondition": {
+                "phase": "PHASE_0",
+                "level": 1
+              },
+              "requiredPotentialRank": 0,
+              "blackboard": [
+                {
+                  "key": "ep_heal_ratio",
+                  "value": 0.5,
+                  "valueStr": null
+                }
+              ],
+              "overrideDescripton": "恢复友方单位生命，并回复相当于攻击力<@ba.kw>{ep_heal_ratio:0%}</>的<$ba.dt.element>元素损伤</>（可以回复未受伤友方单位的<$ba.dt.element>元素损伤</>）",
+              "prefabKey": null,
+              "rangeId": null
+            }
+          ]
+        },
+        "talents": [
+          {
+            "candidates": [
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_1",
+                  "level": 1
+                },
+                "requiredPotentialRank": 0,
+                "prefabKey": "1",
+                "name": "氤氲",
+                "description": "普通治疗使目标每秒额外受到一次治疗量和<$ba.dt.element>元素损伤</>回复量为8%的增益治疗，持续4秒（最多叠加3层）",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "heal_scale",
+                    "value": 0.08,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "duration",
+                    "value": 4.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "max_stack_cnt",
+                    "value": 3.0,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "requiredPotentialRank": 0,
+                "prefabKey": "1",
+                "name": "氤氲",
+                "description": "普通治疗使目标每秒额外受到一次治疗量和<$ba.dt.element>元素损伤</>回复量为10%的增益治疗，持续6秒（最多叠加3层）",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "heal_scale",
+                    "value": 0.1,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "duration",
+                    "value": 6.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "max_stack_cnt",
+                    "value": 3.0,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              }
+            ]
+          },
+          {
+            "candidates": [
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "requiredPotentialRank": 0,
+                "prefabKey": "2",
+                "name": "火山灰疗愈",
+                "description": "攻击范围内的友方单位生命上限+6%，且受到的<$ba.dt.element>元素损伤</>降低12%",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "max_hp",
+                    "value": 0.06,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "ep_damage_resistance",
+                    "value": 0.12,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "requiredPotentialRank": 4,
+                "prefabKey": "2",
+                "name": "火山灰疗愈",
+                "description": "攻击范围内的友方单位生命上限+8%<@ba.talpu>（+2%）</>，且受到的<$ba.dt.element>元素损伤</>降低12%",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "max_hp",
+                    "value": 0.08,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "ep_damage_resistance",
+                    "value": 0.12,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              }
+            ]
+          }
+        ],
+        "skills": [
+          {
+            "skillId": "skchr_agoat2_1",
+            "overridePrefabKey": null,
+            "overrideTokenKey": null,
+            "levelUpCostCond": [
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 28800,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 8,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30014",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30053",
+                    "count": 8,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 57600,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 12,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30064",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31034",
+                    "count": 5,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 86400,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 15,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30155",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30054",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  }
+                ]
+              }
+            ],
+            "unlockCond": {
+              "phase": "PHASE_0",
+              "level": 1
+            }
+          },
+          {
+            "skillId": "skchr_agoat2_2",
+            "overridePrefabKey": null,
+            "overrideTokenKey": null,
+            "levelUpCostCond": [
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 28800,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 8,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30094",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30033",
+                    "count": 7,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 57600,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 12,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30014",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30054",
+                    "count": 8,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 86400,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 15,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30115",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31044",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  }
+                ]
+              }
+            ],
+            "unlockCond": {
+              "phase": "PHASE_1",
+              "level": 1
+            }
+          },
+          {
+            "skillId": "skchr_agoat2_3",
+            "overridePrefabKey": null,
+            "overrideTokenKey": null,
+            "levelUpCostCond": [
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 28800,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 8,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31044",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30013",
+                    "count": 9,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 57600,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 12,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31034",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31014",
+                    "count": 8,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 86400,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 15,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30125",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30094",
+                    "count": 5,
+                    "type": "MATERIAL"
+                  }
+                ]
+              }
+            ],
+            "unlockCond": {
+              "phase": "PHASE_2",
+              "level": 1
+            }
+          }
+        ]
+      },
+      "char_4056_titi": {
+        "pointer": "/char_4056_titi",
+        "name": "缇缇",
+        "trait": {
+          "candidates": [
+            {
+              "unlockCondition": {
+                "phase": "PHASE_0",
+                "level": 1
+              },
+              "requiredPotentialRank": 0,
+              "blackboard": [
+                {
+                  "key": "scale",
+                  "value": 0.5,
+                  "valueStr": null
+                }
+              ],
+              "overrideDescripton": "攻击造成<@ba.kw>法术伤害</>，攻击敌人时为攻击范围内一名友方干员治疗相当于<@ba.kw>{scale:0%}</>伤害的生命值",
+              "prefabKey": null,
+              "rangeId": null
+            }
+          ]
+        },
+        "talents": [
+          {
+            "candidates": [
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_1",
+                  "level": 1
+                },
+                "requiredPotentialRank": 0,
+                "prefabKey": "1",
+                "name": "凝固的时光",
+                "description": "自身可以攻击<$ba.sleep>沉睡</>的敌人，且攻击非移动敌人时对其额外造成相当于攻击力10%的法术伤害，在场时<$ba.sleep>沉睡</>中的敌人每秒受到缇缇攻击力18%的法术伤害",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "damage_atk_scale",
+                    "value": 0.18,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "extra_atk_scale",
+                    "value": 0.1,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_1",
+                  "level": 1
+                },
+                "requiredPotentialRank": 2,
+                "prefabKey": "1",
+                "name": "凝固的时光",
+                "description": "自身可以攻击<$ba.sleep>沉睡</>的敌人，且攻击非移动敌人时对其额外造成相当于攻击力11%<@ba.talpu>（+1%）</>的法术伤害，在场时<$ba.sleep>沉睡</>中的敌人每秒受到缇缇攻击力20%<@ba.talpu>（+2%）</>的法术伤害",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "damage_atk_scale",
+                    "value": 0.2,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "extra_atk_scale",
+                    "value": 0.11,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "requiredPotentialRank": 0,
+                "prefabKey": "1",
+                "name": "凝固的时光",
+                "description": "自身可以攻击<$ba.sleep>沉睡</>的敌人，且攻击非移动敌人时对其额外造成相当于攻击力15%的法术伤害，在场时<$ba.sleep>沉睡</>中的敌人每秒受到缇缇攻击力30%的法术伤害",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "damage_atk_scale",
+                    "value": 0.3,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "extra_atk_scale",
+                    "value": 0.15,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "requiredPotentialRank": 2,
+                "prefabKey": "1",
+                "name": "凝固的时光",
+                "description": "自身可以攻击<$ba.sleep>沉睡</>的敌人，且攻击非移动敌人时对其额外造成相当于攻击力16%<@ba.talpu>（+1%）</>的法术伤害，在场时<$ba.sleep>沉睡</>中的敌人每秒受到缇缇攻击力32%<@ba.talpu>（+2%）</>的法术伤害",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "damage_atk_scale",
+                    "value": 0.32,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "extra_atk_scale",
+                    "value": 0.16,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              }
+            ]
+          },
+          {
+            "candidates": [
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "requiredPotentialRank": 0,
+                "prefabKey": "2",
+                "name": "勇气的报偿",
+                "description": "场上的【米诺斯】或【萨尔贡】干员生命值高于50%时，获得+20攻速的<$ba.strong>精力充沛</>",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "attack_speed",
+                    "value": 20.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "hp_ratio",
+                    "value": 0.5,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "requiredPotentialRank": 5,
+                "prefabKey": "2",
+                "name": "勇气的报偿",
+                "description": "场上的【米诺斯】或【萨尔贡】干员生命值高于50%时，获得+22<@ba.talpu>（+2）</>攻速的<$ba.strong>精力充沛</>",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "attack_speed",
+                    "value": 22.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "hp_ratio",
+                    "value": 0.5,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              }
+            ]
+          }
+        ],
+        "skills": [
+          {
+            "skillId": "skchr_titi_1",
+            "overridePrefabKey": null,
+            "overrideTokenKey": null,
+            "levelUpCostCond": [
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 28800,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 8,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31024",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31033",
+                    "count": 7,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 57600,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 12,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31034",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30044",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 86400,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 15,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30155",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31074",
+                    "count": 2,
+                    "type": "MATERIAL"
+                  }
+                ]
+              }
+            ],
+            "unlockCond": {
+              "phase": "PHASE_0",
+              "level": 1
+            }
+          },
+          {
+            "skillId": "skchr_titi_2",
+            "overridePrefabKey": null,
+            "overrideTokenKey": null,
+            "levelUpCostCond": [
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 28800,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 8,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30054",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30053",
+                    "count": 5,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 57600,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 12,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31064",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31054",
+                    "count": 9,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 86400,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 15,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30145",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31094",
+                    "count": 1,
+                    "type": "MATERIAL"
+                  }
+                ]
+              }
+            ],
+            "unlockCond": {
+              "phase": "PHASE_1",
+              "level": 1
+            }
+          },
+          {
+            "skillId": "skchr_titi_3",
+            "overridePrefabKey": null,
+            "overrideTokenKey": null,
+            "levelUpCostCond": [
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 28800,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 8,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31084",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31013",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 57600,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 12,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30044",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31014",
+                    "count": 8,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 86400,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 15,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30165",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30104",
+                    "count": 1,
+                    "type": "MATERIAL"
+                  }
+                ]
+              }
+            ],
+            "unlockCond": {
+              "phase": "PHASE_2",
+              "level": 1
+            }
+          }
+        ]
+      },
+      "char_1042_phatm2": {
+        "pointer": "/char_1042_phatm2",
+        "name": "酒神",
+        "trait": null,
+        "talents": [
+          {
+            "candidates": [
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_0",
+                  "level": 1
+                },
+                "requiredPotentialRank": 0,
+                "prefabKey": "1",
+                "name": "形为心役",
+                "description": "攻击附带相当于攻击力20%的<$ba.dt.neural2>神经损伤</>，并对目标周围其他敌人造成一次相当于攻击力10%的<$ba.dt.neural2>神经损伤</>",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "attack@ep_damage_ratio",
+                    "value": 0.2,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "ep_damage_ratio",
+                    "value": 0.1,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "range_radius",
+                    "value": 1.3,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_0",
+                  "level": 1
+                },
+                "requiredPotentialRank": 2,
+                "prefabKey": "1",
+                "name": "形为心役",
+                "description": "攻击附带相当于攻击力23%<@ba.talpu>（+3%）</>的<$ba.dt.neural2>神经损伤</>，并对目标周围其他敌人造成一次相当于攻击力13%<@ba.talpu>（+3%）</>的<$ba.dt.neural2>神经损伤</>",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "attack@ep_damage_ratio",
+                    "value": 0.23,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "ep_damage_ratio",
+                    "value": 0.13,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "range_radius",
+                    "value": 1.3,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_1",
+                  "level": 1
+                },
+                "requiredPotentialRank": 0,
+                "prefabKey": "1",
+                "name": "形为心役",
+                "description": "攻击附带相当于攻击力25%的<$ba.dt.neural2>神经损伤</>，并对目标周围其他敌人造成一次相当于攻击力15%的<$ba.dt.neural2>神经损伤</>",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "attack@ep_damage_ratio",
+                    "value": 0.25,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "ep_damage_ratio",
+                    "value": 0.15,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "range_radius",
+                    "value": 1.3,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_1",
+                  "level": 1
+                },
+                "requiredPotentialRank": 2,
+                "prefabKey": "1",
+                "name": "形为心役",
+                "description": "攻击附带相当于攻击力28%<@ba.talpu>（+3%）</>的<$ba.dt.neural2>神经损伤</>，并对目标周围其他敌人造成一次相当于攻击力18%<@ba.talpu>（+3%）</>的<$ba.dt.neural2>神经损伤</>",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "attack@ep_damage_ratio",
+                    "value": 0.28,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "ep_damage_ratio",
+                    "value": 0.18,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "range_radius",
+                    "value": 1.3,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "requiredPotentialRank": 0,
+                "prefabKey": "1",
+                "name": "形为心役",
+                "description": "攻击附带相当于攻击力30%的<$ba.dt.neural2>神经损伤</>，并对目标周围其他敌人造成一次相当于攻击力20%的<$ba.dt.neural2>神经损伤</>",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "attack@ep_damage_ratio",
+                    "value": 0.3,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "ep_damage_ratio",
+                    "value": 0.2,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "range_radius",
+                    "value": 1.3,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "requiredPotentialRank": 2,
+                "prefabKey": "1",
+                "name": "形为心役",
+                "description": "攻击附带相当于攻击力33%<@ba.talpu>（+3%）</>的<$ba.dt.neural2>神经损伤</>，并对目标周围其他敌人造成一次相当于攻击力23%<@ba.talpu>（+3%）</>的<$ba.dt.neural2>神经损伤</>",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "attack@ep_damage_ratio",
+                    "value": 0.33,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "ep_damage_ratio",
+                    "value": 0.23,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "range_radius",
+                    "value": 1.3,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              }
+            ]
+          },
+          {
+            "candidates": [
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "requiredPotentialRank": 0,
+                "prefabKey": "2",
+                "name": "堕梦",
+                "description": "在场时，全场处于<$ba.dt.neural2>神经损伤</>爆发期间的敌人攻击速度-12；攻击范围内的敌人普通攻击时受到70点<$ba.dt.neural2>神经损伤</>",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "attack_speed",
+                    "value": -12.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "value",
+                    "value": 70.0,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "requiredPotentialRank": 4,
+                "prefabKey": "2",
+                "name": "堕梦",
+                "description": "在场时，全场处于<$ba.dt.neural2>神经损伤</>爆发期间的敌人攻击速度-16<@ba.talpu>（+4）</>；攻击范围内的敌人普通攻击时受到70点<$ba.dt.neural2>神经损伤</>",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "attack_speed",
+                    "value": -16.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "value",
+                    "value": 70.0,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              }
+            ]
+          }
+        ],
+        "skills": [
+          {
+            "skillId": "skchr_phatm2_1",
+            "overridePrefabKey": null,
+            "overrideTokenKey": null,
+            "levelUpCostCond": [
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 28800,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 8,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30104",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31053",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 57600,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 12,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31024",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30044",
+                    "count": 7,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 86400,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 15,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30145",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31044",
+                    "count": 1,
+                    "type": "MATERIAL"
+                  }
+                ]
+              }
+            ],
+            "unlockCond": {
+              "phase": "PHASE_0",
+              "level": 1
+            }
+          },
+          {
+            "skillId": "skchr_phatm2_2",
+            "overridePrefabKey": null,
+            "overrideTokenKey": "token_10054_phatm2_encdool",
+            "levelUpCostCond": [
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 28800,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 8,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31034",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30063",
+                    "count": 2,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 57600,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 12,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30054",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31054",
+                    "count": 8,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 86400,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 15,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30165",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31074",
+                    "count": 1,
+                    "type": "MATERIAL"
+                  }
+                ]
+              }
+            ],
+            "unlockCond": {
+              "phase": "PHASE_1",
+              "level": 1
+            }
+          },
+          {
+            "skillId": "skchr_phatm2_3",
+            "overridePrefabKey": null,
+            "overrideTokenKey": "token_10055_phatm2_mndclv",
+            "levelUpCostCond": [
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 28800,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 8,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31064",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30073",
+                    "count": 9,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 57600,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 12,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31084",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31014",
+                    "count": 9,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 86400,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 15,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30115",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30094",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  }
+                ]
+              }
+            ],
+            "unlockCond": {
+              "phase": "PHASE_2",
+              "level": 1
+            }
+          }
+        ]
+      },
+      "char_2026_yu": {
+        "pointer": "/char_2026_yu",
+        "name": "余",
+        "trait": null,
+        "talents": [
+          {
+            "candidates": [
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_1",
+                  "level": 1
+                },
+                "requiredPotentialRank": 0,
+                "prefabKey": "1",
+                "name": "礼尚往来",
+                "description": "阻挡敌人时自身获得15%的<$ba.protect>庇护</>，并使阻挡的目标每秒受到相当于攻击力25%的法术伤害和相当于攻击力8%的<$ba.dt.burning2>灼燃损伤</>",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "damage_resistance",
+                    "value": 0.15,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "yu_t_1[enemy].atk_scale",
+                    "value": 0.25,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "yu_t_1[enemy].ep_damage_ratio",
+                    "value": 0.08,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "yu_t_1[enemy].interval",
+                    "value": 1.0,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_1",
+                  "level": 1
+                },
+                "requiredPotentialRank": 2,
+                "prefabKey": "1",
+                "name": "礼尚往来",
+                "description": "阻挡敌人时自身获得20%<@ba.talpu>（+5%）</>的<$ba.protect>庇护</>，并使阻挡的目标每秒受到相当于攻击力25%的法术伤害和相当于攻击力8%的<$ba.dt.burning2>灼燃损伤</>",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "damage_resistance",
+                    "value": 0.2,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "yu_t_1[enemy].atk_scale",
+                    "value": 0.25,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "yu_t_1[enemy].ep_damage_ratio",
+                    "value": 0.08,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "yu_t_1[enemy].interval",
+                    "value": 1.0,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "requiredPotentialRank": 0,
+                "prefabKey": "1",
+                "name": "礼尚往来",
+                "description": "阻挡敌人时自身获得25%的<$ba.protect>庇护</>，并使阻挡的目标每秒受到相当于攻击力40%的法术伤害和相当于攻击力12%的<$ba.dt.burning2>灼燃损伤</>",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "damage_resistance",
+                    "value": 0.25,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "yu_t_1[enemy].atk_scale",
+                    "value": 0.4,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "yu_t_1[enemy].ep_damage_ratio",
+                    "value": 0.12,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "yu_t_1[enemy].interval",
+                    "value": 1.0,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "requiredPotentialRank": 2,
+                "prefabKey": "1",
+                "name": "礼尚往来",
+                "description": "阻挡敌人时自身获得30%<@ba.talpu>（+5%）</>的<$ba.protect>庇护</>，并使阻挡的目标每秒受到相当于攻击力40%的法术伤害和相当于攻击力12%的<$ba.dt.burning2>灼燃损伤</>",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "damage_resistance",
+                    "value": 0.3,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "yu_t_1[enemy].atk_scale",
+                    "value": 0.4,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "yu_t_1[enemy].ep_damage_ratio",
+                    "value": 0.12,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "yu_t_1[enemy].interval",
+                    "value": 1.0,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              }
+            ]
+          },
+          {
+            "candidates": [
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "requiredPotentialRank": 0,
+                "prefabKey": "2",
+                "name": "闲云隐市",
+                "description": "场上干员数量不低于4时，自身每秒回复相当于生命上限1.5%的生命与<$ba.dt.element>元素损伤</>",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "cnt",
+                    "value": 4.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "ep_heal_ratio",
+                    "value": 0.015,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "hp_recovery_per_sec_by_max_hp_ratio",
+                    "value": 0.015,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "interval",
+                    "value": 1.0,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "requiredPotentialRank": 4,
+                "prefabKey": "2",
+                "name": "闲云隐市",
+                "description": "场上干员数量不低于4时，自身每秒回复相当于生命上限2%<@ba.talpu>（+0.5%）</>的生命与<$ba.dt.element>元素损伤</>",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "cnt",
+                    "value": 4.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "ep_heal_ratio",
+                    "value": 0.02,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "hp_recovery_per_sec_by_max_hp_ratio",
+                    "value": 0.02,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "interval",
+                    "value": 1.0,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              }
+            ]
+          }
+        ],
+        "skills": [
+          {
+            "skillId": "skchr_yu_1",
+            "overridePrefabKey": null,
+            "overrideTokenKey": null,
+            "levelUpCostCond": [
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 28800,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 8,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30044",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30103",
+                    "count": 3,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 57600,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 12,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31044",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30094",
+                    "count": 8,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 86400,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 15,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30135",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30014",
+                    "count": 7,
+                    "type": "MATERIAL"
+                  }
+                ]
+              }
+            ],
+            "unlockCond": {
+              "phase": "PHASE_0",
+              "level": 1
+            }
+          },
+          {
+            "skillId": "skchr_yu_2",
+            "overridePrefabKey": null,
+            "overrideTokenKey": null,
+            "levelUpCostCond": [
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 28800,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 8,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31054",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31043",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 57600,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 12,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31074",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30104",
+                    "count": 7,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 86400,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 15,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30155",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31024",
+                    "count": 2,
+                    "type": "MATERIAL"
+                  }
+                ]
+              }
+            ],
+            "unlockCond": {
+              "phase": "PHASE_1",
+              "level": 1
+            }
+          },
+          {
+            "skillId": "skchr_yu_3",
+            "overridePrefabKey": null,
+            "overrideTokenKey": null,
+            "levelUpCostCond": [
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 28800,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 8,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31014",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30023",
+                    "count": 10,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 57600,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 12,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30094",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31034",
+                    "count": 7,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 86400,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 15,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30145",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30054",
+                    "count": 1,
+                    "type": "MATERIAL"
+                  }
+                ]
+              }
+            ],
+            "unlockCond": {
+              "phase": "PHASE_2",
+              "level": 1
+            }
+          }
+        ]
+      },
+      "char_4119_wanqin": {
+        "pointer": "/char_4119_wanqin",
+        "name": "万顷",
+        "trait": null,
+        "talents": [
+          {
+            "candidates": [
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_1",
+                  "level": 1
+                },
+                "requiredPotentialRank": 0,
+                "prefabKey": "1",
+                "name": "看天时",
+                "description": "周围8格的干员最大生命值+3%，若部署方向与万顷相同，改为+5%",
+                "rangeId": "x-4",
+                "blackboard": [
+                  {
+                    "key": "wanqin_t_1[hp_common].max_hp",
+                    "value": 0.03,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "wanqin_t_1[hp_common].wanqin_t_1[hp_extra].max_hp",
+                    "value": 0.02,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_1",
+                  "level": 1
+                },
+                "requiredPotentialRank": 4,
+                "prefabKey": "1",
+                "name": "看天时",
+                "description": "周围8格的干员最大生命值+4%<@ba.talpu>（+1%）</>，若部署方向与万顷相同，改为+6%<@ba.talpu>（+1%）</>",
+                "rangeId": "x-4",
+                "blackboard": [
+                  {
+                    "key": "wanqin_t_1[hp_common].max_hp",
+                    "value": 0.04,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "wanqin_t_1[hp_common].wanqin_t_1[hp_extra].max_hp",
+                    "value": 0.02,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "requiredPotentialRank": 0,
+                "prefabKey": "1",
+                "name": "看天时",
+                "description": "周围8格的干员最大生命值+5%，若部署方向与万顷相同，改为+9%",
+                "rangeId": "x-4",
+                "blackboard": [
+                  {
+                    "key": "wanqin_t_1[hp_common].max_hp",
+                    "value": 0.05,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "wanqin_t_1[hp_common].wanqin_t_1[hp_extra].max_hp",
+                    "value": 0.04,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "requiredPotentialRank": 4,
+                "prefabKey": "1",
+                "name": "看天时",
+                "description": "周围8格的干员最大生命值+6%<@ba.talpu>（+1%）</>，若部署方向与万顷相同，改为+10%<@ba.talpu>（+1%）</>",
+                "rangeId": "x-4",
+                "blackboard": [
+                  {
+                    "key": "wanqin_t_1[hp_common].max_hp",
+                    "value": 0.06,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "wanqin_t_1[hp_common].wanqin_t_1[hp_extra].max_hp",
+                    "value": 0.04,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              }
+            ]
+          }
+        ],
+        "skills": [
+          {
+            "skillId": "skcom_assist_cost[3]",
+            "overridePrefabKey": "skchr_wanqin_1",
+            "overrideTokenKey": null,
+            "levelUpCostCond": [
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 28800,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 5,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31054",
+                    "count": 3,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30083",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 57600,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30104",
+                    "count": 3,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31024",
+                    "count": 5,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 86400,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 10,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30115",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31044",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  }
+                ]
+              }
+            ],
+            "unlockCond": {
+              "phase": "PHASE_0",
+              "level": 1
+            }
+          },
+          {
+            "skillId": "skchr_wanqin_2",
+            "overridePrefabKey": null,
+            "overrideTokenKey": null,
+            "levelUpCostCond": [
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 28800,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 5,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30104",
+                    "count": 3,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31023",
+                    "count": 2,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 57600,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31014",
+                    "count": 3,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31074",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 86400,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 10,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30125",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30104",
+                    "count": 3,
+                    "type": "MATERIAL"
+                  }
+                ]
+              }
+            ],
+            "unlockCond": {
+              "phase": "PHASE_1",
+              "level": 1
+            }
+          }
+        ]
+      },
+      "char_1012_skadi2": {
+        "pointer": "/char_1012_skadi2",
+        "name": "浊心斯卡蒂",
+        "trait": {
+          "candidates": [
+            {
+              "unlockCondition": {
+                "phase": "PHASE_0",
+                "level": 1
+              },
+              "requiredPotentialRank": 0,
+              "blackboard": [
+                {
+                  "key": "attack@atk_to_hp_recovery_ratio",
+                  "value": 0.1,
+                  "valueStr": null
+                }
+              ],
+              "overrideDescripton": "不攻击，持续恢复范围内所有友军<@ba.kw>生命</>（每秒相当于自身攻击力<@ba.kw>{attack@atk_to_hp_recovery_ratio:0%}</>的生命），自身不受<$ba.inspire>鼓舞</>影响",
+              "prefabKey": "-1",
+              "rangeId": null
+            }
+          ]
+        },
+        "talents": [
+          {
+            "candidates": [
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_1",
+                  "level": 1
+                },
+                "requiredPotentialRank": 0,
+                "prefabKey": "1",
+                "name": "远古血亲",
+                "description": "可以使用一个持续15秒的海嗣，海嗣的攻击范围视为自身攻击范围的延伸",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "cnt",
+                    "value": 1.0,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": "token_10017_skadi2_dedant",
+                "isHideTalent": false
+              },
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "requiredPotentialRank": 0,
+                "prefabKey": "1",
+                "name": "远古血亲",
+                "description": "可以使用一个持续25秒的海嗣，海嗣的攻击范围视为自身攻击范围的延伸",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "cnt",
+                    "value": 1.0,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": "token_10017_skadi2_dedant",
+                "isHideTalent": false
+              }
+            ]
+          },
+          {
+            "candidates": [
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "requiredPotentialRank": 0,
+                "prefabKey": "2",
+                "name": "捕食习性",
+                "description": "自身或海嗣攻击范围内存在我方干员时，自身攻击力+6%；存在【深海猎人】干员时改为攻击力+15%",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "skadi2_t_2[atk][1].atk",
+                    "value": 0.06,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "skadi2_t_2[atk][2].atk",
+                    "value": 0.15,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "requiredPotentialRank": 4,
+                "prefabKey": "2",
+                "name": "捕食习性",
+                "description": "自身或海嗣攻击范围内存在我方干员时，自身攻击力+9%<@ba.talpu>（+3%）</>；存在【深海猎人】干员时改为攻击力+18%<@ba.talpu>（+3%）</>",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "skadi2_t_2[atk][1].atk",
+                    "value": 0.09,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "skadi2_t_2[atk][2].atk",
+                    "value": 0.18,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              }
+            ]
+          }
+        ],
+        "skills": [
+          {
+            "skillId": "skchr_skadi2_1",
+            "overridePrefabKey": null,
+            "overrideTokenKey": null,
+            "levelUpCostCond": [
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 28800,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 8,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30104",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30083",
+                    "count": 5,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 57600,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 12,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30044",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31024",
+                    "count": 7,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 86400,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 15,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30115",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31014",
+                    "count": 7,
+                    "type": "MATERIAL"
+                  }
+                ]
+              }
+            ],
+            "unlockCond": {
+              "phase": "PHASE_0",
+              "level": 1
+            }
+          },
+          {
+            "skillId": "skchr_skadi2_2",
+            "overridePrefabKey": null,
+            "overrideTokenKey": null,
+            "levelUpCostCond": [
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 28800,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 8,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30094",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30073",
+                    "count": 7,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 57600,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 12,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31024",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30104",
+                    "count": 8,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 86400,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 15,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30125",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31034",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  }
+                ]
+              }
+            ],
+            "unlockCond": {
+              "phase": "PHASE_1",
+              "level": 1
+            }
+          },
+          {
+            "skillId": "skchr_skadi2_3",
+            "overridePrefabKey": null,
+            "overrideTokenKey": null,
+            "levelUpCostCond": [
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 28800,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 8,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30014",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30093",
+                    "count": 7,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 57600,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 12,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30054",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31014",
+                    "count": 9,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 86400,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 15,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30115",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31024",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  }
+                ]
+              }
+            ],
+            "unlockCond": {
+              "phase": "PHASE_2",
+              "level": 1
+            }
+          }
+        ]
+      },
+      "char_473_mberry": {
+        "pointer": "/char_473_mberry",
+        "name": "桑葚",
+        "trait": {
+          "candidates": [
+            {
+              "unlockCondition": {
+                "phase": "PHASE_0",
+                "level": 1
+              },
+              "requiredPotentialRank": 0,
+              "blackboard": [
+                {
+                  "key": "ep_heal_ratio",
+                  "value": 0.5,
+                  "valueStr": null
+                }
+              ],
+              "overrideDescripton": "恢复友方单位生命，并回复相当于攻击力<@ba.kw>{ep_heal_ratio:0%}</>的<$ba.dt.element>元素损伤</>（可以回复未受伤友方单位的<$ba.dt.element>元素损伤</>）",
+              "prefabKey": null,
+              "rangeId": null
+            }
+          ]
+        },
+        "talents": [
+          {
+            "candidates": [
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_1",
+                  "level": 1
+                },
+                "requiredPotentialRank": 0,
+                "prefabKey": "1",
+                "name": "助手",
+                "description": "场上存在桑葚和另外至少一名【医疗】干员时，所有【医疗】干员的攻击力+6%",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "atk",
+                    "value": 0.06,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_1",
+                  "level": 1
+                },
+                "requiredPotentialRank": 4,
+                "prefabKey": "1",
+                "name": "助手",
+                "description": "场上存在桑葚和另外至少一名【医疗】干员时，所有【医疗】干员的攻击力+7%<@ba.talpu>（+1%）</>",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "atk",
+                    "value": 0.07,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "requiredPotentialRank": 0,
+                "prefabKey": "1",
+                "name": "助手",
+                "description": "场上存在桑葚和另外至少一名【医疗】干员时，所有【医疗】干员的攻击力+10%",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "atk",
+                    "value": 0.1,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "requiredPotentialRank": 4,
+                "prefabKey": "1",
+                "name": "助手",
+                "description": "场上存在桑葚和另外至少一名【医疗】干员时，所有【医疗】干员的攻击力+11%<@ba.talpu>（+1%）</>",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "atk",
+                    "value": 0.11,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              }
+            ]
+          }
+        ],
+        "skills": [
+          {
+            "skillId": "skchr_mberry_1",
+            "overridePrefabKey": null,
+            "overrideTokenKey": null,
+            "levelUpCostCond": [
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 28800,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 5,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30094",
+                    "count": 3,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30073",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 57600,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30044",
+                    "count": 3,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31024",
+                    "count": 5,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 86400,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 10,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30115",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30074",
+                    "count": 5,
+                    "type": "MATERIAL"
+                  }
+                ]
+              }
+            ],
+            "unlockCond": {
+              "phase": "PHASE_0",
+              "level": 1
+            }
+          },
+          {
+            "skillId": "skchr_mberry_2",
+            "overridePrefabKey": null,
+            "overrideTokenKey": null,
+            "levelUpCostCond": [
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 28800,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 5,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30104",
+                    "count": 3,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30083",
+                    "count": 2,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 57600,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30054",
+                    "count": 3,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31044",
+                    "count": 5,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 86400,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 10,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30135",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30104",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  }
+                ]
+              }
+            ],
+            "unlockCond": {
+              "phase": "PHASE_1",
+              "level": 1
+            }
+          }
+        ]
+      }
+    },
+    "skills": {
+      "skchr_phatm2_3": {
+        "pointer": "/skchr_phatm2_3",
+        "definition": {
+          "skillId": "skchr_phatm2_3",
+          "iconId": null,
+          "hidden": false,
+          "levels": [
+            {
+              "name": "空剧场",
+              "rangeId": "y-8",
+              "description": "攻击范围扩大，攻击力<@ba.vup>+{atk:0%}</>，优先攻击未处于损伤爆发期间的敌人，技能期间酒神造成过<$ba.dt.neural2>神经损伤</>的敌人每秒受到攻击力<@ba.vup>{ep_damage_ratio:0%}</>的<$ba.dt.neural2>神经损伤</>直至爆发；范围内敌人<$ba.dt.neural2>神经损伤</>冷却恢复速度<@ba.vup>+{talent@ep_break_recover_speed:0%}</>，<$ba.dt.neural2>神经损伤</>爆发时在其地面位置生成/刷新一个迷狂牢笼",
+              "skillType": "MANUAL",
+              "durationType": "NONE",
+              "spData": {
+                "spType": "INCREASE_WITH_TIME",
+                "levelUpCost": null,
+                "maxChargeTime": 1,
+                "spCost": 40,
+                "initSp": 0,
+                "increment": 1.0
+              },
+              "prefabId": "skchr_phatm2_3",
+              "duration": 30.0,
+              "blackboard": [
+                {
+                  "key": "atk",
+                  "value": 0.6,
+                  "valueStr": null
+                },
+                {
+                  "key": "ep_damage_ratio",
+                  "value": 0.1,
+                  "valueStr": null
+                },
+                {
+                  "key": "interval",
+                  "value": 1.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "phatm2_s_3[token_cooldown].interval",
+                  "value": 30.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "talent@ep_break_recover_speed",
+                  "value": 0.5,
+                  "valueStr": null
+                }
+              ]
+            },
+            {
+              "name": "空剧场",
+              "rangeId": "y-8",
+              "description": "攻击范围扩大，攻击力<@ba.vup>+{atk:0%}</>，优先攻击未处于损伤爆发期间的敌人，技能期间酒神造成过<$ba.dt.neural2>神经损伤</>的敌人每秒受到攻击力<@ba.vup>{ep_damage_ratio:0%}</>的<$ba.dt.neural2>神经损伤</>直至爆发；范围内敌人<$ba.dt.neural2>神经损伤</>冷却恢复速度<@ba.vup>+{talent@ep_break_recover_speed:0%}</>，<$ba.dt.neural2>神经损伤</>爆发时在其地面位置生成/刷新一个迷狂牢笼",
+              "skillType": "MANUAL",
+              "durationType": "NONE",
+              "spData": {
+                "spType": "INCREASE_WITH_TIME",
+                "levelUpCost": null,
+                "maxChargeTime": 1,
+                "spCost": 40,
+                "initSp": 3,
+                "increment": 1.0
+              },
+              "prefabId": "skchr_phatm2_3",
+              "duration": 30.0,
+              "blackboard": [
+                {
+                  "key": "atk",
+                  "value": 0.65,
+                  "valueStr": null
+                },
+                {
+                  "key": "ep_damage_ratio",
+                  "value": 0.1,
+                  "valueStr": null
+                },
+                {
+                  "key": "interval",
+                  "value": 1.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "phatm2_s_3[token_cooldown].interval",
+                  "value": 30.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "talent@ep_break_recover_speed",
+                  "value": 0.5,
+                  "valueStr": null
+                }
+              ]
+            },
+            {
+              "name": "空剧场",
+              "rangeId": "y-8",
+              "description": "攻击范围扩大，攻击力<@ba.vup>+{atk:0%}</>，优先攻击未处于损伤爆发期间的敌人，技能期间酒神造成过<$ba.dt.neural2>神经损伤</>的敌人每秒受到攻击力<@ba.vup>{ep_damage_ratio:0%}</>的<$ba.dt.neural2>神经损伤</>直至爆发；范围内敌人<$ba.dt.neural2>神经损伤</>冷却恢复速度<@ba.vup>+{talent@ep_break_recover_speed:0%}</>，<$ba.dt.neural2>神经损伤</>爆发时在其地面位置生成/刷新一个迷狂牢笼",
+              "skillType": "MANUAL",
+              "durationType": "NONE",
+              "spData": {
+                "spType": "INCREASE_WITH_TIME",
+                "levelUpCost": null,
+                "maxChargeTime": 1,
+                "spCost": 40,
+                "initSp": 6,
+                "increment": 1.0
+              },
+              "prefabId": "skchr_phatm2_3",
+              "duration": 30.0,
+              "blackboard": [
+                {
+                  "key": "atk",
+                  "value": 0.7,
+                  "valueStr": null
+                },
+                {
+                  "key": "ep_damage_ratio",
+                  "value": 0.1,
+                  "valueStr": null
+                },
+                {
+                  "key": "interval",
+                  "value": 1.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "phatm2_s_3[token_cooldown].interval",
+                  "value": 30.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "talent@ep_break_recover_speed",
+                  "value": 0.5,
+                  "valueStr": null
+                }
+              ]
+            },
+            {
+              "name": "空剧场",
+              "rangeId": "y-8",
+              "description": "攻击范围扩大，攻击力<@ba.vup>+{atk:0%}</>，优先攻击未处于损伤爆发期间的敌人，技能期间酒神造成过<$ba.dt.neural2>神经损伤</>的敌人每秒受到攻击力<@ba.vup>{ep_damage_ratio:0%}</>的<$ba.dt.neural2>神经损伤</>直至爆发；范围内敌人<$ba.dt.neural2>神经损伤</>冷却恢复速度<@ba.vup>+{talent@ep_break_recover_speed:0%}</>，<$ba.dt.neural2>神经损伤</>爆发时在其地面位置生成/刷新一个迷狂牢笼",
+              "skillType": "MANUAL",
+              "durationType": "NONE",
+              "spData": {
+                "spType": "INCREASE_WITH_TIME",
+                "levelUpCost": null,
+                "maxChargeTime": 1,
+                "spCost": 40,
+                "initSp": 9,
+                "increment": 1.0
+              },
+              "prefabId": "skchr_phatm2_3",
+              "duration": 30.0,
+              "blackboard": [
+                {
+                  "key": "atk",
+                  "value": 0.75,
+                  "valueStr": null
+                },
+                {
+                  "key": "ep_damage_ratio",
+                  "value": 0.1,
+                  "valueStr": null
+                },
+                {
+                  "key": "interval",
+                  "value": 1.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "phatm2_s_3[token_cooldown].interval",
+                  "value": 30.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "talent@ep_break_recover_speed",
+                  "value": 0.5,
+                  "valueStr": null
+                }
+              ]
+            },
+            {
+              "name": "空剧场",
+              "rangeId": "y-8",
+              "description": "攻击范围扩大，攻击力<@ba.vup>+{atk:0%}</>，优先攻击未处于损伤爆发期间的敌人，技能期间酒神造成过<$ba.dt.neural2>神经损伤</>的敌人每秒受到攻击力<@ba.vup>{ep_damage_ratio:0%}</>的<$ba.dt.neural2>神经损伤</>直至爆发；范围内敌人<$ba.dt.neural2>神经损伤</>冷却恢复速度<@ba.vup>+{talent@ep_break_recover_speed:0%}</>，<$ba.dt.neural2>神经损伤</>爆发时在其地面位置生成/刷新一个迷狂牢笼",
+              "skillType": "MANUAL",
+              "durationType": "NONE",
+              "spData": {
+                "spType": "INCREASE_WITH_TIME",
+                "levelUpCost": null,
+                "maxChargeTime": 1,
+                "spCost": 40,
+                "initSp": 12,
+                "increment": 1.0
+              },
+              "prefabId": "skchr_phatm2_3",
+              "duration": 30.0,
+              "blackboard": [
+                {
+                  "key": "atk",
+                  "value": 0.8,
+                  "valueStr": null
+                },
+                {
+                  "key": "ep_damage_ratio",
+                  "value": 0.1,
+                  "valueStr": null
+                },
+                {
+                  "key": "interval",
+                  "value": 1.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "phatm2_s_3[token_cooldown].interval",
+                  "value": 30.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "talent@ep_break_recover_speed",
+                  "value": 0.5,
+                  "valueStr": null
+                }
+              ]
+            },
+            {
+              "name": "空剧场",
+              "rangeId": "y-8",
+              "description": "攻击范围扩大，攻击力<@ba.vup>+{atk:0%}</>，优先攻击未处于损伤爆发期间的敌人，技能期间酒神造成过<$ba.dt.neural2>神经损伤</>的敌人每秒受到攻击力<@ba.vup>{ep_damage_ratio:0%}</>的<$ba.dt.neural2>神经损伤</>直至爆发；范围内敌人<$ba.dt.neural2>神经损伤</>冷却恢复速度<@ba.vup>+{talent@ep_break_recover_speed:0%}</>，<$ba.dt.neural2>神经损伤</>爆发时在其地面位置生成/刷新一个迷狂牢笼",
+              "skillType": "MANUAL",
+              "durationType": "NONE",
+              "spData": {
+                "spType": "INCREASE_WITH_TIME",
+                "levelUpCost": null,
+                "maxChargeTime": 1,
+                "spCost": 40,
+                "initSp": 15,
+                "increment": 1.0
+              },
+              "prefabId": "skchr_phatm2_3",
+              "duration": 30.0,
+              "blackboard": [
+                {
+                  "key": "atk",
+                  "value": 0.85,
+                  "valueStr": null
+                },
+                {
+                  "key": "ep_damage_ratio",
+                  "value": 0.1,
+                  "valueStr": null
+                },
+                {
+                  "key": "interval",
+                  "value": 1.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "phatm2_s_3[token_cooldown].interval",
+                  "value": 30.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "talent@ep_break_recover_speed",
+                  "value": 0.5,
+                  "valueStr": null
+                }
+              ]
+            },
+            {
+              "name": "空剧场",
+              "rangeId": "y-8",
+              "description": "攻击范围扩大，攻击力<@ba.vup>+{atk:0%}</>，优先攻击未处于损伤爆发期间的敌人，技能期间酒神造成过<$ba.dt.neural2>神经损伤</>的敌人每秒受到攻击力<@ba.vup>{ep_damage_ratio:0%}</>的<$ba.dt.neural2>神经损伤</>直至爆发；范围内敌人<$ba.dt.neural2>神经损伤</>冷却恢复速度<@ba.vup>+{talent@ep_break_recover_speed:0%}</>，<$ba.dt.neural2>神经损伤</>爆发时在其地面位置生成/刷新一个迷狂牢笼",
+              "skillType": "MANUAL",
+              "durationType": "NONE",
+              "spData": {
+                "spType": "INCREASE_WITH_TIME",
+                "levelUpCost": null,
+                "maxChargeTime": 1,
+                "spCost": 40,
+                "initSp": 18,
+                "increment": 1.0
+              },
+              "prefabId": "skchr_phatm2_3",
+              "duration": 30.0,
+              "blackboard": [
+                {
+                  "key": "atk",
+                  "value": 0.95,
+                  "valueStr": null
+                },
+                {
+                  "key": "ep_damage_ratio",
+                  "value": 0.1,
+                  "valueStr": null
+                },
+                {
+                  "key": "interval",
+                  "value": 1.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "phatm2_s_3[token_cooldown].interval",
+                  "value": 30.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "talent@ep_break_recover_speed",
+                  "value": 0.5,
+                  "valueStr": null
+                }
+              ]
+            },
+            {
+              "name": "空剧场",
+              "rangeId": "y-8",
+              "description": "攻击范围扩大，攻击力<@ba.vup>+{atk:0%}</>，优先攻击未处于损伤爆发期间的敌人，技能期间酒神造成过<$ba.dt.neural2>神经损伤</>的敌人每秒受到攻击力<@ba.vup>{ep_damage_ratio:0%}</>的<$ba.dt.neural2>神经损伤</>直至爆发；范围内敌人<$ba.dt.neural2>神经损伤</>冷却恢复速度<@ba.vup>+{talent@ep_break_recover_speed:0%}</>，<$ba.dt.neural2>神经损伤</>爆发时在其地面位置生成/刷新一个迷狂牢笼",
+              "skillType": "MANUAL",
+              "durationType": "NONE",
+              "spData": {
+                "spType": "INCREASE_WITH_TIME",
+                "levelUpCost": null,
+                "maxChargeTime": 1,
+                "spCost": 40,
+                "initSp": 22,
+                "increment": 1.0
+              },
+              "prefabId": "skchr_phatm2_3",
+              "duration": 30.0,
+              "blackboard": [
+                {
+                  "key": "atk",
+                  "value": 1.05,
+                  "valueStr": null
+                },
+                {
+                  "key": "ep_damage_ratio",
+                  "value": 0.1,
+                  "valueStr": null
+                },
+                {
+                  "key": "interval",
+                  "value": 1.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "phatm2_s_3[token_cooldown].interval",
+                  "value": 30.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "talent@ep_break_recover_speed",
+                  "value": 0.5,
+                  "valueStr": null
+                }
+              ]
+            },
+            {
+              "name": "空剧场",
+              "rangeId": "y-8",
+              "description": "攻击范围扩大，攻击力<@ba.vup>+{atk:0%}</>，优先攻击未处于损伤爆发期间的敌人，技能期间酒神造成过<$ba.dt.neural2>神经损伤</>的敌人每秒受到攻击力<@ba.vup>{ep_damage_ratio:0%}</>的<$ba.dt.neural2>神经损伤</>直至爆发；范围内敌人<$ba.dt.neural2>神经损伤</>冷却恢复速度<@ba.vup>+{talent@ep_break_recover_speed:0%}</>，<$ba.dt.neural2>神经损伤</>爆发时在其地面位置生成/刷新一个迷狂牢笼",
+              "skillType": "MANUAL",
+              "durationType": "NONE",
+              "spData": {
+                "spType": "INCREASE_WITH_TIME",
+                "levelUpCost": null,
+                "maxChargeTime": 1,
+                "spCost": 40,
+                "initSp": 26,
+                "increment": 1.0
+              },
+              "prefabId": "skchr_phatm2_3",
+              "duration": 30.0,
+              "blackboard": [
+                {
+                  "key": "atk",
+                  "value": 1.15,
+                  "valueStr": null
+                },
+                {
+                  "key": "ep_damage_ratio",
+                  "value": 0.1,
+                  "valueStr": null
+                },
+                {
+                  "key": "interval",
+                  "value": 1.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "phatm2_s_3[token_cooldown].interval",
+                  "value": 30.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "talent@ep_break_recover_speed",
+                  "value": 0.5,
+                  "valueStr": null
+                }
+              ]
+            },
+            {
+              "name": "空剧场",
+              "rangeId": "y-8",
+              "description": "攻击范围扩大，攻击力<@ba.vup>+{atk:0%}</>，优先攻击未处于损伤爆发期间的敌人，技能期间酒神造成过<$ba.dt.neural2>神经损伤</>的敌人每秒受到攻击力<@ba.vup>{ep_damage_ratio:0%}</>的<$ba.dt.neural2>神经损伤</>直至爆发；范围内敌人<$ba.dt.neural2>神经损伤</>冷却恢复速度<@ba.vup>+{talent@ep_break_recover_speed:0%}</>，<$ba.dt.neural2>神经损伤</>爆发时在其地面位置生成/刷新一个迷狂牢笼",
+              "skillType": "MANUAL",
+              "durationType": "NONE",
+              "spData": {
+                "spType": "INCREASE_WITH_TIME",
+                "levelUpCost": null,
+                "maxChargeTime": 1,
+                "spCost": 40,
+                "initSp": 30,
+                "increment": 1.0
+              },
+              "prefabId": "skchr_phatm2_3",
+              "duration": 30.0,
+              "blackboard": [
+                {
+                  "key": "atk",
+                  "value": 1.25,
+                  "valueStr": null
+                },
+                {
+                  "key": "ep_damage_ratio",
+                  "value": 0.1,
+                  "valueStr": null
+                },
+                {
+                  "key": "interval",
+                  "value": 1.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "phatm2_s_3[token_cooldown].interval",
+                  "value": 30.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "talent@ep_break_recover_speed",
+                  "value": 0.5,
+                  "valueStr": null
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "skchr_titi_3": {
+        "pointer": "/skchr_titi_3",
+        "definition": {
+          "skillId": "skchr_titi_3",
+          "iconId": null,
+          "hidden": false,
+          "levels": [
+            {
+              "name": "旧日绽放",
+              "rangeId": null,
+              "description": "攻击力<@ba.vup>+{atk:0%}</>，同时攻击两名敌人，攻击非<$ba.sleep>沉睡</>目标时使其<$ba.sleep>沉睡</><@ba.vup>{attack@sleep}</>秒，技能期间，全场敌人从<$ba.sleep>沉睡</>状态醒来或于<$ba.sleep>沉睡</>中被击倒时，受到法术伤害（随<$ba.sleep>沉睡</>时长提高至攻击力<@ba.vup>{max_atk_scale:0%}</>），并使周围一名其他敌人<$ba.sleep>沉睡</><@ba.vup>{sleep}</>秒，攻击范围内的其他友方干员受到致命伤害时，陷入<$ba.sleep>沉睡</>至生命值完全恢复或技能结束",
+              "skillType": "MANUAL",
+              "durationType": "NONE",
+              "spData": {
+                "spType": "INCREASE_WITH_TIME",
+                "levelUpCost": null,
+                "maxChargeTime": 1,
+                "spCost": 50,
+                "initSp": 18,
+                "increment": 1.0
+              },
+              "prefabId": "skchr_titi_3",
+              "duration": 25.0,
+              "blackboard": [
+                {
+                  "key": "atk",
+                  "value": 0.7,
+                  "valueStr": null
+                },
+                {
+                  "key": "attack@max_target",
+                  "value": 2.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "attack@sleep",
+                  "value": 5.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "max_target",
+                  "value": 1.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "min_atk_scale",
+                  "value": 1.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "max_atk_scale",
+                  "value": 3.4,
+                  "valueStr": null
+                },
+                {
+                  "key": "sleep",
+                  "value": 5.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "range_radius",
+                  "value": 1.5,
+                  "valueStr": null
+                }
+              ]
+            },
+            {
+              "name": "旧日绽放",
+              "rangeId": null,
+              "description": "攻击力<@ba.vup>+{atk:0%}</>，同时攻击两名敌人，攻击非<$ba.sleep>沉睡</>目标时使其<$ba.sleep>沉睡</><@ba.vup>{attack@sleep}</>秒，技能期间，全场敌人从<$ba.sleep>沉睡</>状态醒来或于<$ba.sleep>沉睡</>中被击倒时，受到法术伤害（随<$ba.sleep>沉睡</>时长提高至攻击力<@ba.vup>{max_atk_scale:0%}</>），并使周围一名其他敌人<$ba.sleep>沉睡</><@ba.vup>{sleep}</>秒，攻击范围内的其他友方干员受到致命伤害时，陷入<$ba.sleep>沉睡</>至生命值完全恢复或技能结束",
+              "skillType": "MANUAL",
+              "durationType": "NONE",
+              "spData": {
+                "spType": "INCREASE_WITH_TIME",
+                "levelUpCost": null,
+                "maxChargeTime": 1,
+                "spCost": 50,
+                "initSp": 18,
+                "increment": 1.0
+              },
+              "prefabId": "skchr_titi_3",
+              "duration": 25.0,
+              "blackboard": [
+                {
+                  "key": "atk",
+                  "value": 0.8,
+                  "valueStr": null
+                },
+                {
+                  "key": "attack@max_target",
+                  "value": 2.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "attack@sleep",
+                  "value": 5.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "max_target",
+                  "value": 1.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "min_atk_scale",
+                  "value": 1.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "max_atk_scale",
+                  "value": 3.5,
+                  "valueStr": null
+                },
+                {
+                  "key": "sleep",
+                  "value": 5.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "range_radius",
+                  "value": 1.5,
+                  "valueStr": null
+                }
+              ]
+            },
+            {
+              "name": "旧日绽放",
+              "rangeId": null,
+              "description": "攻击力<@ba.vup>+{atk:0%}</>，同时攻击两名敌人，攻击非<$ba.sleep>沉睡</>目标时使其<$ba.sleep>沉睡</><@ba.vup>{attack@sleep}</>秒，技能期间，全场敌人从<$ba.sleep>沉睡</>状态醒来或于<$ba.sleep>沉睡</>中被击倒时，受到法术伤害（随<$ba.sleep>沉睡</>时长提高至攻击力<@ba.vup>{max_atk_scale:0%}</>），并使周围一名其他敌人<$ba.sleep>沉睡</><@ba.vup>{sleep}</>秒，攻击范围内的其他友方干员受到致命伤害时，陷入<$ba.sleep>沉睡</>至生命值完全恢复或技能结束",
+              "skillType": "MANUAL",
+              "durationType": "NONE",
+              "spData": {
+                "spType": "INCREASE_WITH_TIME",
+                "levelUpCost": null,
+                "maxChargeTime": 1,
+                "spCost": 50,
+                "initSp": 18,
+                "increment": 1.0
+              },
+              "prefabId": "skchr_titi_3",
+              "duration": 25.0,
+              "blackboard": [
+                {
+                  "key": "atk",
+                  "value": 0.9,
+                  "valueStr": null
+                },
+                {
+                  "key": "attack@max_target",
+                  "value": 2.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "attack@sleep",
+                  "value": 5.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "max_target",
+                  "value": 1.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "min_atk_scale",
+                  "value": 1.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "max_atk_scale",
+                  "value": 3.6,
+                  "valueStr": null
+                },
+                {
+                  "key": "sleep",
+                  "value": 5.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "range_radius",
+                  "value": 1.5,
+                  "valueStr": null
+                }
+              ]
+            },
+            {
+              "name": "旧日绽放",
+              "rangeId": null,
+              "description": "攻击力<@ba.vup>+{atk:0%}</>，同时攻击两名敌人，攻击非<$ba.sleep>沉睡</>目标时使其<$ba.sleep>沉睡</><@ba.vup>{attack@sleep}</>秒，技能期间，全场敌人从<$ba.sleep>沉睡</>状态醒来或于<$ba.sleep>沉睡</>中被击倒时，受到法术伤害（随<$ba.sleep>沉睡</>时长提高至攻击力<@ba.vup>{max_atk_scale:0%}</>），并使周围一名其他敌人<$ba.sleep>沉睡</><@ba.vup>{sleep}</>秒，攻击范围内的其他友方干员受到致命伤害时，陷入<$ba.sleep>沉睡</>至生命值完全恢复或技能结束",
+              "skillType": "MANUAL",
+              "durationType": "NONE",
+              "spData": {
+                "spType": "INCREASE_WITH_TIME",
+                "levelUpCost": null,
+                "maxChargeTime": 1,
+                "spCost": 45,
+                "initSp": 20,
+                "increment": 1.0
+              },
+              "prefabId": "skchr_titi_3",
+              "duration": 25.0,
+              "blackboard": [
+                {
+                  "key": "atk",
+                  "value": 1.1,
+                  "valueStr": null
+                },
+                {
+                  "key": "attack@max_target",
+                  "value": 2.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "attack@sleep",
+                  "value": 5.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "max_target",
+                  "value": 1.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "min_atk_scale",
+                  "value": 1.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "max_atk_scale",
+                  "value": 3.7,
+                  "valueStr": null
+                },
+                {
+                  "key": "sleep",
+                  "value": 5.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "range_radius",
+                  "value": 1.5,
+                  "valueStr": null
+                }
+              ]
+            },
+            {
+              "name": "旧日绽放",
+              "rangeId": null,
+              "description": "攻击力<@ba.vup>+{atk:0%}</>，同时攻击两名敌人，攻击非<$ba.sleep>沉睡</>目标时使其<$ba.sleep>沉睡</><@ba.vup>{attack@sleep}</>秒，技能期间，全场敌人从<$ba.sleep>沉睡</>状态醒来或于<$ba.sleep>沉睡</>中被击倒时，受到法术伤害（随<$ba.sleep>沉睡</>时长提高至攻击力<@ba.vup>{max_atk_scale:0%}</>），并使周围一名其他敌人<$ba.sleep>沉睡</><@ba.vup>{sleep}</>秒，攻击范围内的其他友方干员受到致命伤害时，陷入<$ba.sleep>沉睡</>至生命值完全恢复或技能结束",
+              "skillType": "MANUAL",
+              "durationType": "NONE",
+              "spData": {
+                "spType": "INCREASE_WITH_TIME",
+                "levelUpCost": null,
+                "maxChargeTime": 1,
+                "spCost": 45,
+                "initSp": 20,
+                "increment": 1.0
+              },
+              "prefabId": "skchr_titi_3",
+              "duration": 25.0,
+              "blackboard": [
+                {
+                  "key": "atk",
+                  "value": 1.2,
+                  "valueStr": null
+                },
+                {
+                  "key": "attack@max_target",
+                  "value": 2.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "attack@sleep",
+                  "value": 5.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "max_target",
+                  "value": 1.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "min_atk_scale",
+                  "value": 1.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "max_atk_scale",
+                  "value": 3.8,
+                  "valueStr": null
+                },
+                {
+                  "key": "sleep",
+                  "value": 5.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "range_radius",
+                  "value": 1.5,
+                  "valueStr": null
+                }
+              ]
+            },
+            {
+              "name": "旧日绽放",
+              "rangeId": null,
+              "description": "攻击力<@ba.vup>+{atk:0%}</>，同时攻击两名敌人，攻击非<$ba.sleep>沉睡</>目标时使其<$ba.sleep>沉睡</><@ba.vup>{attack@sleep}</>秒，技能期间，全场敌人从<$ba.sleep>沉睡</>状态醒来或于<$ba.sleep>沉睡</>中被击倒时，受到法术伤害（随<$ba.sleep>沉睡</>时长提高至攻击力<@ba.vup>{max_atk_scale:0%}</>），并使周围一名其他敌人<$ba.sleep>沉睡</><@ba.vup>{sleep}</>秒，攻击范围内的其他友方干员受到致命伤害时，陷入<$ba.sleep>沉睡</>至生命值完全恢复或技能结束",
+              "skillType": "MANUAL",
+              "durationType": "NONE",
+              "spData": {
+                "spType": "INCREASE_WITH_TIME",
+                "levelUpCost": null,
+                "maxChargeTime": 1,
+                "spCost": 45,
+                "initSp": 20,
+                "increment": 1.0
+              },
+              "prefabId": "skchr_titi_3",
+              "duration": 25.0,
+              "blackboard": [
+                {
+                  "key": "atk",
+                  "value": 1.3,
+                  "valueStr": null
+                },
+                {
+                  "key": "attack@max_target",
+                  "value": 2.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "attack@sleep",
+                  "value": 5.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "max_target",
+                  "value": 1.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "min_atk_scale",
+                  "value": 1.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "max_atk_scale",
+                  "value": 3.9,
+                  "valueStr": null
+                },
+                {
+                  "key": "sleep",
+                  "value": 5.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "range_radius",
+                  "value": 1.5,
+                  "valueStr": null
+                }
+              ]
+            },
+            {
+              "name": "旧日绽放",
+              "rangeId": null,
+              "description": "攻击力<@ba.vup>+{atk:0%}</>，同时攻击两名敌人，攻击非<$ba.sleep>沉睡</>目标时使其<$ba.sleep>沉睡</><@ba.vup>{attack@sleep}</>秒，技能期间，全场敌人从<$ba.sleep>沉睡</>状态醒来或于<$ba.sleep>沉睡</>中被击倒时，受到法术伤害（随<$ba.sleep>沉睡</>时长提高至攻击力<@ba.vup>{max_atk_scale:0%}</>），并使周围一名其他敌人<$ba.sleep>沉睡</><@ba.vup>{sleep}</>秒，攻击范围内的其他友方干员受到致命伤害时，陷入<$ba.sleep>沉睡</>至生命值完全恢复或技能结束",
+              "skillType": "MANUAL",
+              "durationType": "NONE",
+              "spData": {
+                "spType": "INCREASE_WITH_TIME",
+                "levelUpCost": null,
+                "maxChargeTime": 1,
+                "spCost": 40,
+                "initSp": 22,
+                "increment": 1.0
+              },
+              "prefabId": "skchr_titi_3",
+              "duration": 25.0,
+              "blackboard": [
+                {
+                  "key": "atk",
+                  "value": 1.5,
+                  "valueStr": null
+                },
+                {
+                  "key": "attack@max_target",
+                  "value": 2.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "attack@sleep",
+                  "value": 5.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "max_target",
+                  "value": 1.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "min_atk_scale",
+                  "value": 1.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "max_atk_scale",
+                  "value": 4.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "sleep",
+                  "value": 5.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "range_radius",
+                  "value": 1.5,
+                  "valueStr": null
+                }
+              ]
+            },
+            {
+              "name": "旧日绽放",
+              "rangeId": null,
+              "description": "攻击力<@ba.vup>+{atk:0%}</>，同时攻击两名敌人，攻击非<$ba.sleep>沉睡</>目标时使其<$ba.sleep>沉睡</><@ba.vup>{attack@sleep}</>秒，技能期间，全场敌人从<$ba.sleep>沉睡</>状态醒来或于<$ba.sleep>沉睡</>中被击倒时，受到法术伤害（随<$ba.sleep>沉睡</>时长提高至攻击力<@ba.vup>{max_atk_scale:0%}</>），并使周围一名其他敌人<$ba.sleep>沉睡</><@ba.vup>{sleep}</>秒，攻击范围内的其他友方干员受到致命伤害时，陷入<$ba.sleep>沉睡</>至生命值完全恢复或技能结束",
+              "skillType": "MANUAL",
+              "durationType": "NONE",
+              "spData": {
+                "spType": "INCREASE_WITH_TIME",
+                "levelUpCost": null,
+                "maxChargeTime": 1,
+                "spCost": 39,
+                "initSp": 24,
+                "increment": 1.0
+              },
+              "prefabId": "skchr_titi_3",
+              "duration": 25.0,
+              "blackboard": [
+                {
+                  "key": "atk",
+                  "value": 1.6,
+                  "valueStr": null
+                },
+                {
+                  "key": "attack@max_target",
+                  "value": 2.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "attack@sleep",
+                  "value": 5.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "max_target",
+                  "value": 1.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "min_atk_scale",
+                  "value": 1.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "max_atk_scale",
+                  "value": 4.2,
+                  "valueStr": null
+                },
+                {
+                  "key": "sleep",
+                  "value": 5.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "range_radius",
+                  "value": 1.5,
+                  "valueStr": null
+                }
+              ]
+            },
+            {
+              "name": "旧日绽放",
+              "rangeId": null,
+              "description": "攻击力<@ba.vup>+{atk:0%}</>，同时攻击两名敌人，攻击非<$ba.sleep>沉睡</>目标时使其<$ba.sleep>沉睡</><@ba.vup>{attack@sleep}</>秒，技能期间，全场敌人从<$ba.sleep>沉睡</>状态醒来或于<$ba.sleep>沉睡</>中被击倒时，受到法术伤害（随<$ba.sleep>沉睡</>时长提高至攻击力<@ba.vup>{max_atk_scale:0%}</>），并使周围一名其他敌人<$ba.sleep>沉睡</><@ba.vup>{sleep}</>秒，攻击范围内的其他友方干员受到致命伤害时，陷入<$ba.sleep>沉睡</>至生命值完全恢复或技能结束",
+              "skillType": "MANUAL",
+              "durationType": "NONE",
+              "spData": {
+                "spType": "INCREASE_WITH_TIME",
+                "levelUpCost": null,
+                "maxChargeTime": 1,
+                "spCost": 38,
+                "initSp": 26,
+                "increment": 1.0
+              },
+              "prefabId": "skchr_titi_3",
+              "duration": 25.0,
+              "blackboard": [
+                {
+                  "key": "atk",
+                  "value": 1.7,
+                  "valueStr": null
+                },
+                {
+                  "key": "attack@max_target",
+                  "value": 2.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "attack@sleep",
+                  "value": 5.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "max_target",
+                  "value": 1.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "min_atk_scale",
+                  "value": 1.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "max_atk_scale",
+                  "value": 4.4,
+                  "valueStr": null
+                },
+                {
+                  "key": "sleep",
+                  "value": 5.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "range_radius",
+                  "value": 1.5,
+                  "valueStr": null
+                }
+              ]
+            },
+            {
+              "name": "旧日绽放",
+              "rangeId": null,
+              "description": "攻击力<@ba.vup>+{atk:0%}</>，同时攻击两名敌人，攻击非<$ba.sleep>沉睡</>目标时使其<$ba.sleep>沉睡</><@ba.vup>{attack@sleep}</>秒，技能期间，全场敌人从<$ba.sleep>沉睡</>状态醒来或于<$ba.sleep>沉睡</>中被击倒时，受到法术伤害（随<$ba.sleep>沉睡</>时长提高至攻击力<@ba.vup>{max_atk_scale:0%}</>），并使周围一名其他敌人<$ba.sleep>沉睡</><@ba.vup>{sleep}</>秒，攻击范围内的其他友方干员受到致命伤害时，陷入<$ba.sleep>沉睡</>至生命值完全恢复或技能结束",
+              "skillType": "MANUAL",
+              "durationType": "NONE",
+              "spData": {
+                "spType": "INCREASE_WITH_TIME",
+                "levelUpCost": null,
+                "maxChargeTime": 1,
+                "spCost": 37,
+                "initSp": 28,
+                "increment": 1.0
+              },
+              "prefabId": "skchr_titi_3",
+              "duration": 25.0,
+              "blackboard": [
+                {
+                  "key": "atk",
+                  "value": 1.8,
+                  "valueStr": null
+                },
+                {
+                  "key": "attack@max_target",
+                  "value": 2.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "attack@sleep",
+                  "value": 5.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "max_target",
+                  "value": 1.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "min_atk_scale",
+                  "value": 1.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "max_atk_scale",
+                  "value": 4.6,
+                  "valueStr": null
+                },
+                {
+                  "key": "sleep",
+                  "value": 5.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "range_radius",
+                  "value": 1.5,
+                  "valueStr": null
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
+}

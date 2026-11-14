@@ -1,0 +1,121 @@
+{
+  "provenance": {
+    "checkedOn": "2026-11-14",
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/resource-mechanisms-20261114/recovery-elemental/verify_configuration.py",
+      "bytes": 2124,
+      "sha256": "b51862880f1eef0a2a9e74ca37a9e35f720d530b2d260d4f317bcf191e9332e1"
+    },
+    "commands": [
+      [
+        "/usr/sbin/python",
+        "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/resource-mechanisms-20261114/recovery-elemental/extract_static.py",
+        "--ep-table",
+        ".cache/native-research/resource-mechanisms-20261114/recovery-elemental/ep_breakbuff_table.json",
+        "--out",
+        ".cache/native-research/resource-mechanisms-20261114/recovery-elemental/replay-configuration-final/static-inputs.json"
+      ],
+      [
+        "/usr/sbin/python",
+        "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/resource-mechanisms-20261114/recovery-elemental/extract_levels.py",
+        "--out",
+        ".cache/native-research/resource-mechanisms-20261114/recovery-elemental/replay-configuration-final/level-examples.json"
+      ],
+      [
+        "/usr/sbin/python",
+        "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/resource-mechanisms-20261114/recovery-elemental/extract_content.py",
+        "--out",
+        ".cache/native-research/resource-mechanisms-20261114/recovery-elemental/replay-configuration-final/content"
+      ],
+      [
+        "/usr/sbin/python",
+        "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/resource-mechanisms-20261114/recovery-elemental/scan_recovery_inputs.py",
+        "--out",
+        ".cache/native-research/resource-mechanisms-20261114/recovery-elemental/replay-configuration-final/rare-inputs.json"
+      ]
+    ]
+  },
+  "result": {
+    "complete": true,
+    "comparisons": [
+      {
+        "historical": {
+          "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/resource-mechanisms-20261114/recovery-elemental/static-inputs.json",
+          "bytes": 167155,
+          "sha256": "e12bc89167d9c1638bcfd806703683bad74caa59223032bd81a8fb1ad9ee5439"
+        },
+        "fresh": {
+          "path": ".cache/native-research/resource-mechanisms-20261114/recovery-elemental/replay-configuration-final/static-inputs.json",
+          "bytes": 167155,
+          "sha256": "e12bc89167d9c1638bcfd806703683bad74caa59223032bd81a8fb1ad9ee5439"
+        },
+        "resultEqual": true
+      },
+      {
+        "historical": {
+          "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/resource-mechanisms-20261114/recovery-elemental/level-examples.json",
+          "bytes": 99417,
+          "sha256": "2998e4d87e9875eb440eade6365e6a3cbe51acee28004a0e106db7e3932c5901"
+        },
+        "fresh": {
+          "path": ".cache/native-research/resource-mechanisms-20261114/recovery-elemental/replay-configuration-final/level-examples.json",
+          "bytes": 99417,
+          "sha256": "2998e4d87e9875eb440eade6365e6a3cbe51acee28004a0e106db7e3932c5901"
+        },
+        "resultEqual": true
+      },
+      {
+        "historical": {
+          "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/resource-mechanisms-20261114/recovery-elemental/content.json",
+          "bytes": 1740817,
+          "sha256": "ff6e1ad53a1ebe64debf60df82a4e8dea56400bc00c6607413ba4d584ea6dd97"
+        },
+        "fresh": {
+          "path": ".cache/native-research/resource-mechanisms-20261114/recovery-elemental/replay-configuration-final/content/content.json",
+          "bytes": 1740817,
+          "sha256": "ff6e1ad53a1ebe64debf60df82a4e8dea56400bc00c6607413ba4d584ea6dd97"
+        },
+        "resultEqual": true
+      },
+      {
+        "historical": {
+          "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/resource-mechanisms-20261114/recovery-elemental/templates.json",
+          "bytes": 718398,
+          "sha256": "802f392ea9c2a80de5d504b9f97bc5d571897d03aa7bc3408261fbbe449130a7"
+        },
+        "fresh": {
+          "path": ".cache/native-research/resource-mechanisms-20261114/recovery-elemental/replay-configuration-final/content/templates.json",
+          "bytes": 718398,
+          "sha256": "b800be1ee4d115ad4dd8d7c6605199505990db9473b2bc9735f584f8a46e00b8"
+        },
+        "resultEqual": true
+      },
+      {
+        "historical": {
+          "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/resource-mechanisms-20261114/recovery-elemental/holder-usage.json",
+          "bytes": 308011,
+          "sha256": "d77a2f6d6b02b9a1a670ce10119f94e1296ec78210dc07aa2f0986ce8d99cad5"
+        },
+        "fresh": {
+          "path": ".cache/native-research/resource-mechanisms-20261114/recovery-elemental/replay-configuration-final/content/holder-usage.json",
+          "bytes": 308011,
+          "sha256": "d77a2f6d6b02b9a1a670ce10119f94e1296ec78210dc07aa2f0986ce8d99cad5"
+        },
+        "resultEqual": true
+      },
+      {
+        "historical": {
+          "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/resource-mechanisms-20261114/recovery-elemental/rare-inputs.json",
+          "bytes": 462991,
+          "sha256": "5390de0fdb0e013d3b7cdaf8004b45773711da10bac2000a5b0ac79664fbbb8f"
+        },
+        "fresh": {
+          "path": ".cache/native-research/resource-mechanisms-20261114/recovery-elemental/replay-configuration-final/rare-inputs.json",
+          "bytes": 462991,
+          "sha256": "5390de0fdb0e013d3b7cdaf8004b45773711da10bac2000a5b0ac79664fbbb8f"
+        },
+        "resultEqual": true
+      }
+    ]
+  }
+}

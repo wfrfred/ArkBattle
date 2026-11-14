@@ -1,0 +1,1101 @@
+{
+  "provenance": {
+    "checkedOn": "2026-11-14",
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/resource-mechanisms-20261114/recovery-elemental/verify_native.py",
+      "bytes": 2247,
+      "sha256": "4e298011ebfc2db23758feb4e978780c959173a8ad9cc7f705e755abab863aec"
+    },
+    "inputs": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/resource-mechanisms-20261114/recovery-elemental/core-operations.json",
+        "bytes": 2180191,
+        "sha256": "9ba577ed07f58b20b2020c7695ff06761b1b303f3b10393b8e5d5fb1c1855d1c"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/resource-mechanisms-20261114/recovery-elemental/overflow-operations.json",
+        "bytes": 229287,
+        "sha256": "8fca22ed37c448739dc352a13203f0e2fee5ff0944991cb5e1ebaac406853024"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/resource-mechanisms-20261114/recovery-elemental/attack-ep-source.json",
+        "bytes": 500197,
+        "sha256": "797f56a5ca5cb9bac062d34e158807b2d93957d90ee016c192f6c6da279f79a5"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/resource-mechanisms-20261114/recovery-elemental/formula-operations.json",
+        "bytes": 156638,
+        "sha256": "7e5bcb18a2fe07a47f05b0e7d9deceea8879aed51f08afe18f108145077d43c0"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/resource-mechanisms-20261114/recovery-elemental/constants.json",
+        "bytes": 86672,
+        "sha256": "b90207e95a37354eb566523379c40ab0a80db54e57c0ed106f7c139e4b1439f1"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/resource-mechanisms-20261114/recovery-elemental/maximum-ep.json",
+        "bytes": 41418,
+        "sha256": "6eb25ff342dd4f3808e3c5eac0f9803b3b0f487a561d11abe5225773440d8328"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/resource-mechanisms-20261114/recovery-elemental/prezero-operations.json",
+        "bytes": 185712,
+        "sha256": "4e2fec1ee78ad6571e05c9468171935aaf82edf222e5292fcdb5b37d782ae5e4"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/resource-mechanisms-20261114/recovery-elemental/special-recovery.json",
+        "bytes": 189602,
+        "sha256": "4dccd795a74d690c71327aa722f1e6cb175ca337dc3ae3e1628dc4809e781641"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/resource-mechanisms-20261114/recovery-elemental/burst-controller.json",
+        "bytes": 437719,
+        "sha256": "8d0a4cd0b4cddef36255c432f276e28f26781b3a89beeb1a4b1ebadd8b921a06"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/resource-mechanisms-20261114/recovery-elemental/ep-regeneration-content.json",
+        "bytes": 523762,
+        "sha256": "81936549a2df0ec22f90ec5d31520ee8fb5780648ec3b58965afbcc9184196f9"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/resource-mechanisms-20261114/recovery-elemental/hp-synchronization.json",
+        "bytes": 101408,
+        "sha256": "00b6d6c3d0c8480e40e27171a3ad9c8a6e4daeeba214ccc7944bdeac5585bf13"
+      }
+    ],
+    "command": [
+      "uv",
+      "run",
+      "--offline",
+      "docs/research/evidence/facing-semantics-20261113/extract.py",
+      "--out",
+      ".cache/native-research/resource-mechanisms-20261114/recovery-elemental/replay-native-final/native-bodies.json",
+      "--body-index",
+      "63907",
+      "--body-index",
+      "65902",
+      "--body-index",
+      "65903",
+      "--body-index",
+      "65904",
+      "--body-index",
+      "65905",
+      "--body-index",
+      "65906",
+      "--body-index",
+      "65915",
+      "--body-index",
+      "66176",
+      "--body-index",
+      "66190",
+      "--body-index",
+      "66425",
+      "--body-index",
+      "66440",
+      "--body-index",
+      "67354",
+      "--body-index",
+      "67355",
+      "--body-index",
+      "67356",
+      "--body-index",
+      "67409",
+      "--body-index",
+      "67449",
+      "--body-index",
+      "67450",
+      "--body-index",
+      "67451",
+      "--body-index",
+      "67460",
+      "--body-index",
+      "67461",
+      "--body-index",
+      "67477",
+      "--body-index",
+      "67517",
+      "--body-index",
+      "67629",
+      "--body-index",
+      "67630",
+      "--body-index",
+      "67643",
+      "--body-index",
+      "67649",
+      "--body-index",
+      "67652",
+      "--body-index",
+      "67684",
+      "--body-index",
+      "67710",
+      "--body-index",
+      "67711",
+      "--body-index",
+      "67754",
+      "--body-index",
+      "67755",
+      "--body-index",
+      "67756",
+      "--body-index",
+      "67757",
+      "--body-index",
+      "67758",
+      "--body-index",
+      "67759",
+      "--body-index",
+      "67760",
+      "--body-index",
+      "67761",
+      "--body-index",
+      "67762",
+      "--body-index",
+      "67763",
+      "--body-index",
+      "67764",
+      "--body-index",
+      "67765",
+      "--body-index",
+      "67766",
+      "--body-index",
+      "67767",
+      "--body-index",
+      "67768",
+      "--body-index",
+      "67769",
+      "--body-index",
+      "67770",
+      "--body-index",
+      "67771",
+      "--body-index",
+      "67772",
+      "--body-index",
+      "72184",
+      "--body-index",
+      "77644",
+      "--body-index",
+      "78299",
+      "--body-index",
+      "79843",
+      "--body-index",
+      "92284",
+      "--body-index",
+      "92285",
+      "--body-index",
+      "92286",
+      "--body-index",
+      "92287",
+      "--body-index",
+      "92288",
+      "--body-index",
+      "92289",
+      "--body-index",
+      "92292",
+      "--body-index",
+      "92293",
+      "--body-index",
+      "92294",
+      "--body-index",
+      "92295",
+      "--body-index",
+      "92296",
+      "--body-index",
+      "92297",
+      "--body-index",
+      "92298",
+      "--body-index",
+      "92299",
+      "--body-index",
+      "92300",
+      "--body-index",
+      "92301",
+      "--body-index",
+      "92302",
+      "--body-index",
+      "92303",
+      "--body-index",
+      "92304",
+      "--body-index",
+      "92305",
+      "--body-index",
+      "92306",
+      "--body-index",
+      "92307",
+      "--body-index",
+      "92308",
+      "--body-index",
+      "92833",
+      "--body-index",
+      "93055",
+      "--body-index",
+      "93056",
+      "--body-index",
+      "93059",
+      "--body-index",
+      "93894",
+      "--body-index",
+      "93895",
+      "--body-index",
+      "94809",
+      "--body-index",
+      "94810",
+      "--body-index",
+      "94811",
+      "--body-index",
+      "94812",
+      "--body-index",
+      "94813",
+      "--body-index",
+      "94814",
+      "--body-index",
+      "94815",
+      "--body-index",
+      "94816",
+      "--body-index",
+      "94817",
+      "--body-index",
+      "94818",
+      "--body-index",
+      "94819",
+      "--body-index",
+      "94820",
+      "--body-index",
+      "94821",
+      "--body-index",
+      "97152",
+      "--body-index",
+      "98081",
+      "--body-index",
+      "98087",
+      "--body-index",
+      "98128",
+      "--body-index",
+      "98129",
+      "--body-index",
+      "98130",
+      "--body-index",
+      "98548",
+      "--body-index",
+      "98549",
+      "--body-index",
+      "98550",
+      "--body-index",
+      "98951",
+      "--body-index",
+      "98997",
+      "--body-index",
+      "99011",
+      "--body-index",
+      "99012",
+      "--body-index",
+      "99013",
+      "--body-index",
+      "99015",
+      "--body-index",
+      "99192",
+      "--body-index",
+      "99225",
+      "--body-index",
+      "99251",
+      "--body-index",
+      "99329",
+      "--body-index",
+      "99332",
+      "--body-index",
+      "99337",
+      "--body-index",
+      "99339",
+      "--body-index",
+      "99347",
+      "--body-index",
+      "99352",
+      "--body-index",
+      "99857",
+      "--body-index",
+      "99864",
+      "--body-index",
+      "99869",
+      "--body-index",
+      "99873",
+      "--body-index",
+      "99880",
+      "--body-index",
+      "99885",
+      "--body-index",
+      "99890",
+      "--body-index",
+      "99895",
+      "--body-index",
+      "99896",
+      "--body-index",
+      "99897",
+      "--body-index",
+      "99901",
+      "--body-index",
+      "99906",
+      "--body-index",
+      "99914",
+      "--body-index",
+      "99919",
+      "--body-index",
+      "99925",
+      "--body-index",
+      "99928",
+      "--body-index",
+      "99932",
+      "--body-index",
+      "101608",
+      "--body-index",
+      "101609",
+      "--body-index",
+      "101876",
+      "--body-index",
+      "101900",
+      "--body-index",
+      "102039",
+      "--body-index",
+      "102150",
+      "--body-index",
+      "102151",
+      "--body-index",
+      "102152",
+      "--body-index",
+      "102185"
+    ],
+    "freshOutput": {
+      "path": ".cache/native-research/resource-mechanisms-20261114/recovery-elemental/replay-native-final/native-bodies.json",
+      "bytes": 4345183,
+      "sha256": "4fa808ca27e54b8e113520d9a46e3609717a5757b47c5d5b1505398410b1e78b"
+    }
+  },
+  "result": {
+    "complete": true,
+    "bodyCount": 145,
+    "comparisons": [
+      {
+        "methodIndex": 63907,
+        "fullname": "Torappu.Battle.Consts..cctor",
+        "equal": true
+      },
+      {
+        "methodIndex": 65902,
+        "fullname": "Torappu.Battle.BattleFormula.CalculateElementDamage",
+        "equal": true
+      },
+      {
+        "methodIndex": 65903,
+        "fullname": "Torappu.Battle.BattleFormula.CalculateElementDamage",
+        "equal": true
+      },
+      {
+        "methodIndex": 65904,
+        "fullname": "Torappu.Battle.BattleFormula.CalculateElementDamage",
+        "equal": true
+      },
+      {
+        "methodIndex": 65905,
+        "fullname": "Torappu.Battle.BattleFormula.CalculateHeal",
+        "equal": true
+      },
+      {
+        "methodIndex": 65906,
+        "fullname": "Torappu.Battle.BattleFormula.CalculateHeal",
+        "equal": true
+      },
+      {
+        "methodIndex": 65915,
+        "fullname": "Torappu.Battle.BattleFormula..cctor",
+        "equal": true
+      },
+      {
+        "methodIndex": 66176,
+        "fullname": "Torappu.Battle.Buff.OnBeforeTrySetEpZero",
+        "equal": true
+      },
+      {
+        "methodIndex": 66190,
+        "fullname": "Torappu.Battle.Buff.OnEsOverZero",
+        "equal": true
+      },
+      {
+        "methodIndex": 66425,
+        "fullname": "Torappu.Battle.Buff/BuffContainer.OnBeforeTrySetEpZero",
+        "equal": true
+      },
+      {
+        "methodIndex": 66440,
+        "fullname": "Torappu.Battle.Buff/BuffContainer.OnEsOverZero",
+        "equal": true
+      },
+      {
+        "methodIndex": 67354,
+        "fullname": "Torappu.Battle.Entity.get_epIsFull",
+        "equal": true
+      },
+      {
+        "methodIndex": 67355,
+        "fullname": "Torappu.Battle.Entity.get_isInEpBreakRecovery",
+        "equal": true
+      },
+      {
+        "methodIndex": 67356,
+        "fullname": "Torappu.Battle.Entity.get_epRecoveryType",
+        "equal": true
+      },
+      {
+        "methodIndex": 67409,
+        "fullname": "Torappu.Battle.Entity.get_canRecoverEp",
+        "equal": true
+      },
+      {
+        "methodIndex": 67449,
+        "fullname": "Torappu.Battle.Entity.get_minEpType",
+        "equal": true
+      },
+      {
+        "methodIndex": 67450,
+        "fullname": "Torappu.Battle.Entity.get_minEpRatio",
+        "equal": true
+      },
+      {
+        "methodIndex": 67451,
+        "fullname": "Torappu.Battle.Entity.get_maxEp",
+        "equal": true
+      },
+      {
+        "methodIndex": 67460,
+        "fullname": "Torappu.Battle.Entity.get_epDamageResistance",
+        "equal": true
+      },
+      {
+        "methodIndex": 67461,
+        "fullname": "Torappu.Battle.Entity.get_epResistance",
+        "equal": true
+      },
+      {
+        "methodIndex": 67477,
+        "fullname": "Torappu.Battle.Entity.get_sumUpEpRecoveryPerSec",
+        "equal": true
+      },
+      {
+        "methodIndex": 67517,
+        "fullname": "Torappu.Battle.Entity.get_isEPFreeAll",
+        "equal": true
+      },
+      {
+        "methodIndex": 67629,
+        "fullname": "Torappu.Battle.Entity.SetAllEpInternal",
+        "equal": true
+      },
+      {
+        "methodIndex": 67630,
+        "fullname": "Torappu.Battle.Entity.SetEpInternal",
+        "equal": true
+      },
+      {
+        "methodIndex": 67643,
+        "fullname": "Torappu.Battle.Entity._UpdateEpRecovery",
+        "equal": true
+      },
+      {
+        "methodIndex": 67649,
+        "fullname": "Torappu.Battle.Entity.OnEsOverZero",
+        "equal": true
+      },
+      {
+        "methodIndex": 67652,
+        "fullname": "Torappu.Battle.Entity.OnEpZero",
+        "equal": true
+      },
+      {
+        "methodIndex": 67684,
+        "fullname": "Torappu.Battle.Entity._DoApplyEPModifierInternal",
+        "equal": true
+      },
+      {
+        "methodIndex": 67710,
+        "fullname": "Torappu.Battle.Entity.OnTakeHeal",
+        "equal": true
+      },
+      {
+        "methodIndex": 67711,
+        "fullname": "Torappu.Battle.Entity.OnTakeEPDamage",
+        "equal": true
+      },
+      {
+        "methodIndex": 67754,
+        "fullname": "Torappu.Battle.Entity/EPController.get_isInBreakRecovery",
+        "equal": true
+      },
+      {
+        "methodIndex": 67755,
+        "fullname": "Torappu.Battle.Entity/EPController.set_isInBreakRecovery",
+        "equal": true
+      },
+      {
+        "methodIndex": 67756,
+        "fullname": "Torappu.Battle.Entity/EPController.Reset",
+        "equal": true
+      },
+      {
+        "methodIndex": 67757,
+        "fullname": "Torappu.Battle.Entity/EPController.OnFinish",
+        "equal": true
+      },
+      {
+        "methodIndex": 67758,
+        "fullname": "Torappu.Battle.Entity/EPController.OnTick",
+        "equal": true
+      },
+      {
+        "methodIndex": 67759,
+        "fullname": "Torappu.Battle.Entity/EPController.ReduceEpBreakCooldownDuration",
+        "equal": true
+      },
+      {
+        "methodIndex": 67760,
+        "fullname": "Torappu.Battle.Entity/EPController._RefreshEpRecoverAfterCooldownReduced",
+        "equal": true
+      },
+      {
+        "methodIndex": 67761,
+        "fullname": "Torappu.Battle.Entity/EPController._CreateBrokenBuff",
+        "equal": true
+      },
+      {
+        "methodIndex": 67762,
+        "fullname": "Torappu.Battle.Entity/EPController._StartEPRecovery",
+        "equal": true
+      },
+      {
+        "methodIndex": 67763,
+        "fullname": "Torappu.Battle.Entity/EPController.OnElementBreak",
+        "equal": true
+      },
+      {
+        "methodIndex": 67764,
+        "fullname": "Torappu.Battle.Entity/EPController._GetEpBreakDuration",
+        "equal": true
+      },
+      {
+        "methodIndex": 67765,
+        "fullname": "Torappu.Battle.Entity/EPController.get_attributeMask",
+        "equal": true
+      },
+      {
+        "methodIndex": 67766,
+        "fullname": "Torappu.Battle.Entity/EPController.get_abnormalFlagMask",
+        "equal": true
+      },
+      {
+        "methodIndex": 67767,
+        "fullname": "Torappu.Battle.Entity/EPController.get_abnormalImmuneMask",
+        "equal": true
+      },
+      {
+        "methodIndex": 67768,
+        "fullname": "Torappu.Battle.Entity/EPController.get_abnormalAntiMask",
+        "equal": true
+      },
+      {
+        "methodIndex": 67769,
+        "fullname": "Torappu.Battle.Entity/EPController.get_abnormalComboMask",
+        "equal": true
+      },
+      {
+        "methodIndex": 67770,
+        "fullname": "Torappu.Battle.Entity/EPController.get_abnormalComboImmuneMask",
+        "equal": true
+      },
+      {
+        "methodIndex": 67771,
+        "fullname": "Torappu.Battle.Entity/EPController.GetValue",
+        "equal": true
+      },
+      {
+        "methodIndex": 67772,
+        "fullname": "Torappu.Battle.Entity/EPController..ctor",
+        "equal": true
+      },
+      {
+        "methodIndex": 72184,
+        "fullname": "Torappu.Battle.Modifier.NewHp",
+        "equal": true
+      },
+      {
+        "methodIndex": 77644,
+        "fullname": "Torappu.Battle.Enemy.get_maxEp",
+        "equal": true
+      },
+      {
+        "methodIndex": 78299,
+        "fullname": "Torappu.Battle.EnemyGiantBoss.get_maxEp",
+        "equal": true
+      },
+      {
+        "methodIndex": 79843,
+        "fullname": "Torappu.Battle.EPBreakBuffDB.GetBreakData",
+        "equal": true
+      },
+      {
+        "methodIndex": 92284,
+        "fullname": "Torappu.Battle.Abilities.AbstractBasicAttack.get_hasEpDamage",
+        "equal": true
+      },
+      {
+        "methodIndex": 92285,
+        "fullname": "Torappu.Battle.Abilities.AbstractBasicAttack.get_atkScale",
+        "equal": true
+      },
+      {
+        "methodIndex": 92286,
+        "fullname": "Torappu.Battle.Abilities.AbstractBasicAttack.get_damageNodeAtkScale",
+        "equal": true
+      },
+      {
+        "methodIndex": 92287,
+        "fullname": "Torappu.Battle.Abilities.AbstractBasicAttack.get_elementDamageType",
+        "equal": true
+      },
+      {
+        "methodIndex": 92288,
+        "fullname": "Torappu.Battle.Abilities.AbstractBasicAttack.get_attackType",
+        "equal": true
+      },
+      {
+        "methodIndex": 92289,
+        "fullname": "Torappu.Battle.Abilities.AbstractBasicAttack.get_useDynamicAttackType",
+        "equal": true
+      },
+      {
+        "methodIndex": 92292,
+        "fullname": "Torappu.Battle.Abilities.AbstractBasicAttack.ApplyAtkScale",
+        "equal": true
+      },
+      {
+        "methodIndex": 92293,
+        "fullname": "Torappu.Battle.Abilities.AbstractBasicAttack.ReplaceDamageNode",
+        "equal": true
+      },
+      {
+        "methodIndex": 92294,
+        "fullname": "Torappu.Battle.Abilities.AbstractBasicAttack.ApplyElementDamageScale",
+        "equal": true
+      },
+      {
+        "methodIndex": 92295,
+        "fullname": "Torappu.Battle.Abilities.AbstractBasicAttack.CreateAndReplaceDamageNode",
+        "equal": true
+      },
+      {
+        "methodIndex": 92296,
+        "fullname": "Torappu.Battle.Abilities.AbstractBasicAttack.DoSetData",
+        "equal": true
+      },
+      {
+        "methodIndex": 92297,
+        "fullname": "Torappu.Battle.Abilities.AbstractBasicAttack.CheckIsDamageOrHealSource",
+        "equal": true
+      },
+      {
+        "methodIndex": 92298,
+        "fullname": "Torappu.Battle.Abilities.AbstractBasicAttack.GeneratePurposeMask",
+        "equal": true
+      },
+      {
+        "methodIndex": 92299,
+        "fullname": "Torappu.Battle.Abilities.AbstractBasicAttack.OnCastStart",
+        "equal": true
+      },
+      {
+        "methodIndex": 92300,
+        "fullname": "Torappu.Battle.Abilities.AbstractBasicAttack.OnCastEnd",
+        "equal": true
+      },
+      {
+        "methodIndex": 92301,
+        "fullname": "Torappu.Battle.Abilities.AbstractBasicAttack..ctor",
+        "equal": true
+      },
+      {
+        "methodIndex": 92302,
+        "fullname": "Torappu.Battle.Abilities.AbstractBasicAttack.<>xLuaBaseProxy_get_attackType",
+        "equal": true
+      },
+      {
+        "methodIndex": 92303,
+        "fullname": "Torappu.Battle.Abilities.AbstractBasicAttack.<>xLuaBaseProxy_get_useDynamicAttackType",
+        "equal": true
+      },
+      {
+        "methodIndex": 92304,
+        "fullname": "Torappu.Battle.Abilities.AbstractBasicAttack.<>xLuaBaseProxy_DoSetData",
+        "equal": true
+      },
+      {
+        "methodIndex": 92305,
+        "fullname": "Torappu.Battle.Abilities.AbstractBasicAttack.<>xLuaBaseProxy_CheckIsDamageOrHealSource",
+        "equal": true
+      },
+      {
+        "methodIndex": 92306,
+        "fullname": "Torappu.Battle.Abilities.AbstractBasicAttack.<>xLuaBaseProxy_GeneratePurposeMask",
+        "equal": true
+      },
+      {
+        "methodIndex": 92307,
+        "fullname": "Torappu.Battle.Abilities.AbstractBasicAttack.<>xLuaBaseProxy_OnCastStart",
+        "equal": true
+      },
+      {
+        "methodIndex": 92308,
+        "fullname": "Torappu.Battle.Abilities.AbstractBasicAttack.<>xLuaBaseProxy_OnCastEnd",
+        "equal": true
+      },
+      {
+        "methodIndex": 92833,
+        "fullname": "Torappu.Battle.Abilities.RangedAttack.GetProjectileActions",
+        "equal": true
+      },
+      {
+        "methodIndex": 93055,
+        "fullname": "Torappu.Battle.Abilities.Heal.ApplyElementHealScale",
+        "equal": true
+      },
+      {
+        "methodIndex": 93056,
+        "fullname": "Torappu.Battle.Abilities.Heal.ApplyElementHealScaleForElementHealNode",
+        "equal": true
+      },
+      {
+        "methodIndex": 93059,
+        "fullname": "Torappu.Battle.Abilities.Heal.NewElementHealNode",
+        "equal": true
+      },
+      {
+        "methodIndex": 93894,
+        "fullname": "Torappu.Battle.Abilities.AbstractAnimatedAbility.CreateElementDamageNode",
+        "equal": true
+      },
+      {
+        "methodIndex": 93895,
+        "fullname": "Torappu.Battle.Abilities.AbstractAnimatedAbility.NewElementDamageNode",
+        "equal": true
+      },
+      {
+        "methodIndex": 94809,
+        "fullname": "Torappu.Battle.Abilities.ProfessionCntToggleChecker.CheckInitialToggled",
+        "equal": true
+      },
+      {
+        "methodIndex": 94810,
+        "fullname": "Torappu.Battle.Abilities.ProfessionCntToggleChecker.LoadData",
+        "equal": true
+      },
+      {
+        "methodIndex": 94811,
+        "fullname": "Torappu.Battle.Abilities.ProfessionCntToggleChecker.OnAttached",
+        "equal": true
+      },
+      {
+        "methodIndex": 94812,
+        "fullname": "Torappu.Battle.Abilities.ProfessionCntToggleChecker.OnDetached",
+        "equal": true
+      },
+      {
+        "methodIndex": 94813,
+        "fullname": "Torappu.Battle.Abilities.ProfessionCntToggleChecker._CheckCondition",
+        "equal": true
+      },
+      {
+        "methodIndex": 94814,
+        "fullname": "Torappu.Battle.Abilities.ProfessionCntToggleChecker._CheckProfessionCount",
+        "equal": true
+      },
+      {
+        "methodIndex": 94815,
+        "fullname": "Torappu.Battle.Abilities.ProfessionCntToggleChecker._CheckMaxSameProfessionCount",
+        "equal": true
+      },
+      {
+        "methodIndex": 94816,
+        "fullname": "Torappu.Battle.Abilities.ProfessionCntToggleChecker._CheckMaxDifferentProfessionCount",
+        "equal": true
+      },
+      {
+        "methodIndex": 94817,
+        "fullname": "Torappu.Battle.Abilities.ProfessionCntToggleChecker._OnCharacterChanged",
+        "equal": true
+      },
+      {
+        "methodIndex": 94818,
+        "fullname": "Torappu.Battle.Abilities.ProfessionCntToggleChecker._CheckProfession",
+        "equal": true
+      },
+      {
+        "methodIndex": 94819,
+        "fullname": "Torappu.Battle.Abilities.ProfessionCntToggleChecker..ctor",
+        "equal": true
+      },
+      {
+        "methodIndex": 94820,
+        "fullname": "Torappu.Battle.Abilities.ProfessionCntToggleChecker.<>xLuaBaseProxy_OnAttached",
+        "equal": true
+      },
+      {
+        "methodIndex": 94821,
+        "fullname": "Torappu.Battle.Abilities.ProfessionCntToggleChecker.<>xLuaBaseProxy_OnDetached",
+        "equal": true
+      },
+      {
+        "methodIndex": 97152,
+        "fullname": "Torappu.Battle.Abilities.UpdateHealScaleByTraitData.get_usedToEPHeal",
+        "equal": true
+      },
+      {
+        "methodIndex": 98081,
+        "fullname": "Torappu.Battle.Action.Nodes/AssignEntityEsIntoBlackboard.Execute",
+        "equal": true
+      },
+      {
+        "methodIndex": 98087,
+        "fullname": "Torappu.Battle.Action.Nodes/AssignCharacterMaxEsIntoBlackBoard.Execute",
+        "equal": true
+      },
+      {
+        "methodIndex": 98128,
+        "fullname": "Torappu.Battle.Action.Nodes/AssignAttributeAsDynamicVarToBB.get_allowedSource",
+        "equal": true
+      },
+      {
+        "methodIndex": 98129,
+        "fullname": "Torappu.Battle.Action.Nodes/AssignAttributeAsDynamicVarToBB.Execute",
+        "equal": true
+      },
+      {
+        "methodIndex": 98130,
+        "fullname": "Torappu.Battle.Action.Nodes/AssignAttributeAsDynamicVarToBB..ctor",
+        "equal": true
+      },
+      {
+        "methodIndex": 98548,
+        "fullname": "Torappu.Battle.Action.Nodes/UpdateBuffAttributeModifier.get_allowedSource",
+        "equal": true
+      },
+      {
+        "methodIndex": 98549,
+        "fullname": "Torappu.Battle.Action.Nodes/UpdateBuffAttributeModifier.Execute",
+        "equal": true
+      },
+      {
+        "methodIndex": 98550,
+        "fullname": "Torappu.Battle.Action.Nodes/UpdateBuffAttributeModifier..ctor",
+        "equal": true
+      },
+      {
+        "methodIndex": 98951,
+        "fullname": "Torappu.Battle.Action.Nodes/SetCharacterMaxEs.Execute",
+        "equal": true
+      },
+      {
+        "methodIndex": 98997,
+        "fullname": "Torappu.Battle.Action.Nodes/AtkToHpRecovery.Execute",
+        "equal": true
+      },
+      {
+        "methodIndex": 99011,
+        "fullname": "Torappu.Battle.Action.Nodes/AttributeModifierWithBB.get_allowedSource",
+        "equal": true
+      },
+      {
+        "methodIndex": 99012,
+        "fullname": "Torappu.Battle.Action.Nodes/AttributeModifierWithBB.Execute",
+        "equal": true
+      },
+      {
+        "methodIndex": 99013,
+        "fullname": "Torappu.Battle.Action.Nodes/AttributeModifierWithBB..ctor",
+        "equal": true
+      },
+      {
+        "methodIndex": 99015,
+        "fullname": "Torappu.Battle.Action.Nodes/CopyHealth.Execute",
+        "equal": true
+      },
+      {
+        "methodIndex": 99192,
+        "fullname": "Torappu.Battle.Action.Nodes/DamageViaEs.Execute",
+        "equal": true
+      },
+      {
+        "methodIndex": 99225,
+        "fullname": "Torappu.Battle.Action.Nodes/BlockElementDamage.Execute",
+        "equal": true
+      },
+      {
+        "methodIndex": 99251,
+        "fullname": "Torappu.Battle.Action.Nodes/EpDamageScale.Execute",
+        "equal": true
+      },
+      {
+        "methodIndex": 99329,
+        "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage.Execute",
+        "equal": true
+      },
+      {
+        "methodIndex": 99332,
+        "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamage.CreateElementDamageModifier",
+        "equal": true
+      },
+      {
+        "methodIndex": 99337,
+        "fullname": "Torappu.Battle.Action.Nodes/AOEElementDamage.Execute",
+        "equal": true
+      },
+      {
+        "methodIndex": 99339,
+        "fullname": "Torappu.Battle.Action.Nodes/AOEElementDamage._DealEpDamage",
+        "equal": true
+      },
+      {
+        "methodIndex": 99347,
+        "fullname": "Torappu.Battle.Action.Nodes/ApplyElementDamageBasedOnDamageValue.Execute",
+        "equal": true
+      },
+      {
+        "methodIndex": 99352,
+        "fullname": "Torappu.Battle.Action.Nodes/ApplyFixedElementDamage.Execute",
+        "equal": true
+      },
+      {
+        "methodIndex": 99857,
+        "fullname": "Torappu.Battle.Action.Nodes/ApplyHeal.Execute",
+        "equal": true
+      },
+      {
+        "methodIndex": 99864,
+        "fullname": "Torappu.Battle.Action.Nodes/FixedValueHeal.Execute",
+        "equal": true
+      },
+      {
+        "methodIndex": 99869,
+        "fullname": "Torappu.Battle.Action.Nodes/AdvancedApplyHeal.Execute",
+        "equal": true
+      },
+      {
+        "methodIndex": 99873,
+        "fullname": "Torappu.Battle.Action.Nodes/AOEHeal.Execute",
+        "equal": true
+      },
+      {
+        "methodIndex": 99880,
+        "fullname": "Torappu.Battle.Action.Nodes/HealViaDamage.Execute",
+        "equal": true
+      },
+      {
+        "methodIndex": 99885,
+        "fullname": "Torappu.Battle.Action.Nodes/AdvancedHealViaDamage.Execute",
+        "equal": true
+      },
+      {
+        "methodIndex": 99890,
+        "fullname": "Torappu.Battle.Action.Nodes/HealViaMaxHpRatio.Execute",
+        "equal": true
+      },
+      {
+        "methodIndex": 99895,
+        "fullname": "Torappu.Battle.Action.Nodes/HealCurrentGiantBossViaMaxHpRatio.Execute",
+        "equal": true
+      },
+      {
+        "methodIndex": 99896,
+        "fullname": "Torappu.Battle.Action.Nodes/HealCurrentGiantBossViaMaxHpRatio.PreprocessForProjectile",
+        "equal": true
+      },
+      {
+        "methodIndex": 99897,
+        "fullname": "Torappu.Battle.Action.Nodes/HealCurrentGiantBossViaMaxHpRatio._GetCurrentGiantBoss",
+        "equal": true
+      },
+      {
+        "methodIndex": 99901,
+        "fullname": "Torappu.Battle.Action.Nodes/HealToken.Execute",
+        "equal": true
+      },
+      {
+        "methodIndex": 99906,
+        "fullname": "Torappu.Battle.Action.Nodes/ApplyElementHeal.Execute",
+        "equal": true
+      },
+      {
+        "methodIndex": 99914,
+        "fullname": "Torappu.Battle.Action.Nodes/ElementHealViaMaxHpRatio.Execute",
+        "equal": true
+      },
+      {
+        "methodIndex": 99919,
+        "fullname": "Torappu.Battle.Action.Nodes/FixedValueElementHeal.Execute",
+        "equal": true
+      },
+      {
+        "methodIndex": 99925,
+        "fullname": "Torappu.Battle.Action.Nodes/AverageHealViaHpUseAbilitySelector.Execute",
+        "equal": true
+      },
+      {
+        "methodIndex": 99928,
+        "fullname": "Torappu.Battle.Action.Nodes/HealSplitToUnionFindMembers.Execute",
+        "equal": true
+      },
+      {
+        "methodIndex": 99932,
+        "fullname": "Torappu.Battle.Action.Nodes/HealSplitToUnionFindMembers._CreateSplitModifier",
+        "equal": true
+      },
+      {
+        "methodIndex": 101608,
+        "fullname": "Torappu.Battle.Action.Nodes/FilterEPBreakRecoveryType._IsNotInBreakRecoveryCheck",
+        "equal": true
+      },
+      {
+        "methodIndex": 101609,
+        "fullname": "Torappu.Battle.Action.Nodes/FilterEPBreakRecoveryType.Execute",
+        "equal": true
+      },
+      {
+        "methodIndex": 101876,
+        "fullname": "Torappu.Battle.Action.Nodes/CheckEntityEquals.Execute",
+        "equal": true
+      },
+      {
+        "methodIndex": 101900,
+        "fullname": "Torappu.Battle.Action.Nodes/IsTargetInEPBreakRecovery.Execute",
+        "equal": true
+      },
+      {
+        "methodIndex": 102039,
+        "fullname": "Torappu.Battle.Action.Nodes/ReduceEpBreakCooldownDuration.Execute",
+        "equal": true
+      },
+      {
+        "methodIndex": 102150,
+        "fullname": "Torappu.Battle.Action.Nodes/SetHpSameToSource.get_allowedSource",
+        "equal": true
+      },
+      {
+        "methodIndex": 102151,
+        "fullname": "Torappu.Battle.Action.Nodes/SetHpSameToSource.Execute",
+        "equal": true
+      },
+      {
+        "methodIndex": 102152,
+        "fullname": "Torappu.Battle.Action.Nodes/SetHpSameToSource..ctor",
+        "equal": true
+      },
+      {
+        "methodIndex": 102185,
+        "fullname": "Torappu.Battle.Action.Nodes/AssignEPBreakRecoveryToBB.Execute",
+        "equal": true
+      }
+    ]
+  }
+}
