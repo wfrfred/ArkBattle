@@ -12,7 +12,7 @@ export type { Rule, RuleContext } from "./rule.js";
 
 export type { Hook, Deployed } from "./hook.js";
 
-export { setHook, removeHook } from "./hook.js";
+export { deployed, setHook, removeHook } from "./hook.js";
 
 export {
     cardForUnit,

@@ -1,5 +1,5 @@
 import * as hooks from "../../hook.js";
-import { set, remove } from "../../common/collection/entries.js";
+import type { Entry } from "../../common/collection/entries.js";
 import type { Unit } from "../../unit/unit.js";
 import type { Deployable } from "../../unit/capability/deployable/capability.js";
 import type { State as BattleState } from "../state.js";
@@ -12,8 +12,14 @@ export interface Deployed {
 
 export type Hook = hooks.Hook<Deployed, void>;
 
-export function setHook(battle: BattleState, entry: Hook): BattleState {
-    const next = set(battle.deployment.hooks, entry);
+export const deployed = hooks.key<Hook, BattleState>("deployment.deployed");
+
+export function setHook<H extends Entry>(
+    battle: BattleState,
+    key: hooks.Key<H, BattleState>,
+    entry: NoInfer<H>,
+): BattleState {
+    const next = battle.deployment.hooks.set(key, entry);
 
     return next === battle.deployment.hooks
         ? battle
@@ -23,8 +29,12 @@ export function setHook(battle: BattleState, entry: Hook): BattleState {
           };
 }
 
-export function removeHook(battle: BattleState, id: string): BattleState {
-    const next = remove(battle.deployment.hooks, id);
+export function removeHook<H extends Entry>(
+    battle: BattleState,
+    key: hooks.Key<H, BattleState>,
+    id: string,
+): BattleState {
+    const next = battle.deployment.hooks.remove(key, id);
 
     return next === battle.deployment.hooks
         ? battle
@@ -36,7 +46,7 @@ export function removeHook(battle: BattleState, id: string): BattleState {
 
 export function dispatch(battle: BattleState, event: Deployed): BattleState {
     return hooks.dispatch(battle, event, undefined, {
-        candidates: (current) => current.deployment.hooks.map(({ id }) => id),
-        find: (current, id) => current.deployment.hooks.find((entry) => entry.id === id),
+        candidates: (current) => current.deployment.hooks.get(deployed).map(({ id }) => id),
+        find: (current, id) => current.deployment.hooks.find(deployed, id),
     }).state;
 }

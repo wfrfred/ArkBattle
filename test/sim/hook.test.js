@@ -1,11 +1,25 @@
-import { Hooks } from "../../dist/core/hook.js";
+import { Hooks, key } from "../../dist/core/hook.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { battle } from "../helpers/battle.js";
 import * as units from "../../dist/core/unit/index.js";
 import { remove } from "../../dist/core/battle/unit.js";
 import * as hooks from "../../dist/core/hook.js";
-import { setHook, removeHook } from "../../dist/core/battle/unit-hook.js";
+import { leave, setHook, removeHook } from "../../dist/core/battle/unit-hook.js";
+
+test("HOOK-01: registration reuses identical entries and replaces an ID without changing its position", () => {
+    const stage = key("test.stage");
+    const sameName = key("test.stage");
+    const first = { id: "first" };
+    const second = { id: "second" };
+    const registered = Hooks.empty().set(stage, first).set(stage, second);
+    assert.equal(registered.set(stage, first), registered);
+    const replacement = { id: "first", revised: true };
+    const replaced = registered.set(stage, replacement);
+    assert.deepEqual(replaced.get(stage), [replacement, second]);
+    assert.deepEqual(registered.get(stage), [first, second]);
+    assert.deepEqual(replaced.get(sameName), []);
+});
 
 test("Hook dispatch fixes its candidates, reads current registrations and gives nested dispatch its own candidates", () => {
     let state = battle([{ definition: { id: "observed", hooks: Hooks.empty() }, position: [0, 0] }]);
@@ -13,8 +27,8 @@ test("Hook dispatch fixes its candidates, reads current registrations and gives 
     const calls = [];
     let nested = false;
     const options = {
-        candidates: (current) => current.unitHooks.leave.map((entry) => entry.id),
-        find: (current, id) => current.unitHooks.leave.find((entry) => entry.id === id),
+        candidates: (current) => current.unitHooks.get(leave).map((entry) => entry.id),
+        find: (current, id) => current.unitHooks.find(leave, id),
     };
     const record = (id) => ({
         id,
@@ -23,23 +37,23 @@ test("Hook dispatch fixes its candidates, reads current registrations and gives 
             return { state: current, value: undefined };
         },
     });
-    state = setHook(state, "leave", {
+    state = setHook(state, leave, {
         id: "first",
         invoke(current, departure) {
             calls.push([nested ? "nested" : "outer", "first"]);
             if (nested) return { state: current, value: undefined };
             assert.equal(units.get(current, units.ref(departure.unit)), undefined);
-            current = removeHook(current, "leave", "removed");
-            current = setHook(current, "leave", record("replacement"));
-            current = setHook(current, "leave", record("added"));
+            current = removeHook(current, leave, "removed");
+            current = setHook(current, leave, record("replacement"));
+            current = setHook(current, leave, record("added"));
             nested = true;
             const result = hooks.dispatch(current, departure, undefined, options);
             nested = false;
             return result;
         },
     });
-    state = setHook(state, "leave", record("removed"));
-    state = setHook(state, "leave", {
+    state = setHook(state, leave, record("removed"));
+    state = setHook(state, leave, {
         id: "replacement",
         invoke() {
             assert.fail("the old registration must not run");

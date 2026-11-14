@@ -7,7 +7,7 @@ import {
 import type * as card from "./card/card.js";
 import type { Ref } from "../../common/ref.js";
 import type { Ordering } from "./order.js";
-import type { Hook } from "./hook.js";
+import { Hooks } from "../../hook.js";
 
 export interface Definition {
     readonly initialDp: number;
@@ -28,7 +28,7 @@ export interface State {
     readonly cards: readonly card.Card[];
     readonly order: readonly Ref<card.Card>[];
     readonly ordering: Ordering | null;
-    readonly hooks: readonly Hook[];
+    readonly hooks: Hooks;
     readonly usedSlots: number;
     readonly dp: number;
     readonly minDp: number;
@@ -68,7 +68,7 @@ export function initialize(definition: Definition = emptyDefinition, tick = 0): 
         cards: [],
         order: [],
         ordering: null,
-        hooks: [],
+        hooks: Hooks.empty(),
         usedSlots: 0,
         dp: definition.initialDp,
         minDp,

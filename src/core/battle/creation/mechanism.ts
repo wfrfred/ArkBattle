@@ -2,7 +2,7 @@ import { assertNonnegativeSafeInteger } from "../../common/assert.js";
 import type { Ref } from "../../common/ref.js";
 import type { Mechanism, MechanismDefinition } from "../mechanism.js";
 import type { Result, State as BattleState } from "../state.js";
-import { setHook } from "../unit-hook.js";
+import { setHook, leave } from "../unit-hook.js";
 
 export interface MechanismPlacementDefinition<S extends object = object> {
     readonly definition: MechanismDefinition<S>;
@@ -29,7 +29,7 @@ export function instantiateMechanismPlacement<S extends object>(
     const self = created.mechanisms.get(created.reference)!;
     if (self.definition.onUnitLeave !== undefined) {
         const reference = created.reference;
-        battle = setHook(battle, "leave", {
+        battle = setHook(battle, leave, {
             id: `@mechanism/${id}/unit-leave`,
             invoke: (current, departure) => {
                 const mechanism = current.mechanisms.get(reference);

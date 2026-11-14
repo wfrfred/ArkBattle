@@ -3,7 +3,7 @@ import { Vec2 } from "../../common/vector.js";
 import type { Ref } from "../../common/ref.js";
 import { Tile, type WorldPosition } from "../../geometry/coordinate.js";
 import { initialize as initializeUnit } from "../../unit/initialize.js";
-import type { Departure, Id as UnitId, Unit } from "../../unit/unit.js";
+import type { Id as UnitId, Unit } from "../../unit/unit.js";
 import type { State as BattleState } from "../state.js";
 import { add } from "../unit.js";
 import type { Hook } from "../unit-hook.js";
@@ -275,7 +275,7 @@ export function resolveUnits(battle: BattleState, removedUnitIds: readonly UnitI
           };
 }
 
-export const leaveHook: Hook<Departure> = {
+export const leaveHook: Hook = {
     id: "@schedule/resolve-unit",
     invoke: (battle, { unit }) => ({ state: resolveUnits(battle, [unit.id]), value: undefined }),
 };

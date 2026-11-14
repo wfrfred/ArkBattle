@@ -4,7 +4,7 @@ import type { Query } from "../common/query.js";
 import type { Departure } from "../unit/unit.js";
 import { instantiateMechanismPlacement } from "./creation/mechanism.js";
 import type { Result, State as BattleState } from "./state.js";
-import { removeHook } from "./unit-hook.js";
+import { removeHook, leave } from "./unit-hook.js";
 
 export type MechanismId = number;
 
@@ -122,7 +122,7 @@ export const lifetime = createLifetime<Mechanism, Mechanism<any>, string>({
 
         battle = { ...battle, mechanisms: battle.mechanisms.remove(reference.id) };
 
-        return removeHook(battle, "leave", `@mechanism/${reference.id}/unit-leave`);
+        return removeHook(battle, leave, `@mechanism/${reference.id}/unit-leave`);
     },
     reason: (reason) => reason,
 });

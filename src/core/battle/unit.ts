@@ -5,7 +5,7 @@ import * as units from "../unit/query.js";
 import { appendEvents, type State as BattleState } from "./state.js";
 import { create as createLifetime } from "../lifetime/operations.js";
 import type { Ref } from "../common/ref.js";
-import { dispatch as dispatchObservers } from "./unit-hook.js";
+import { dispatch as dispatchObservers, leave as unitLeave } from "./unit-hook.js";
 import type { Change } from "../unit/change.js";
 import * as lifecycle from "../unit/hook.js";
 import { dispatch } from "../hook.js";
@@ -89,7 +89,7 @@ export const lifetime = createLifetime<Unit, Unit, Departure>({
             }
         }
 
-        return dispatchObservers(battle, "leave", departure);
+        return dispatchObservers(battle, unitLeave, departure);
     },
     reason: (departure) => departure.reason,
 });
