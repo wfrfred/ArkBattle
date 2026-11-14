@@ -1,0 +1,71 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-14",
+    "scope": "Research validation summary; detailed independent extraction commands and full inputs are in each referenced report. No product simulation tests were run."
+  },
+  "result": {
+    "independentExtraction": [
+      {
+        "record": "life/verification.json",
+        "sha256": "2bb4a3e791831204bb882f919a36d33ff9ab432bc25ba3ff5ee647009e1081a9",
+        "comparisons": 10,
+        "allEqual": true
+      },
+      {
+        "record": "death-attributes/verification.json",
+        "sha256": "0ee51ed93ba5172acd10d22bcdc60e422aef135794c424a4e9dd92fad0f5fb8b",
+        "comparisons": 15,
+        "allEqual": true
+      },
+      {
+        "record": "damage/verification.json",
+        "sha256": "faad02f6e97f5af6f4a0c1cda3f75e66c24eb21dfbfe883dca4216f01cae04db",
+        "comparisons": 13,
+        "allEqual": true
+      },
+      {
+        "record": "damage/verification-additional.json",
+        "sha256": "301cff6ddd4012791754d65d86dc0367e1408fd1dc59ddd4aea2abf6f0f6d251",
+        "comparisons": 2,
+        "allEqual": true
+      },
+      {
+        "record": "damage/verification-weak.json",
+        "sha256": "d038c5985fcadd2ceb48b7db11b9a6344f646b68455024f90ae7a6ab82f787d3",
+        "comparisons": 7,
+        "allEqual": true
+      },
+      {
+        "record": "recovery-elemental/native-verification.json",
+        "sha256": "1b9de470bf1081c8e0a564b46eba83859f84fb44322ba6569c4a966c454973b0",
+        "comparisons": 145,
+        "allEqual": true
+      },
+      {
+        "record": "recovery-elemental/configuration-verification.json",
+        "sha256": "50b4fbef6c342e21b61bfb6d3bf77586fe9cc49b9856e307b6db2b6b73e1e32c",
+        "comparisons": 6,
+        "allEqual": true
+      }
+    ],
+    "documentCheck": {
+      "counts": {
+        "json": 79,
+        "python": 33,
+        "scriptReferences": 34,
+        "markdownLinks": 333
+      },
+      "errors": []
+    },
+    "sharedReplay": {
+      "selector": {
+        "methodIndex": 67653
+      },
+      "out": ".cache/native-research/resource-mechanisms-20261114/shared-replay/replay.json",
+      "sha256": "81268ff938e18d74f38e2b07a019e953f9b122ee0546d89120a601e512a9386a",
+      "methods": 1,
+      "unavailable": 0
+    },
+    "productCodeChanged": false
+  }
+}

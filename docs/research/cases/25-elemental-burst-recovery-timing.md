@@ -1,4 +1,6 @@
-# 元素爆发恢复：首次推进与宿主更新顺序
+# 元素损伤、标准爆发与恢复
+
+2026-11-14 补齐五型全局配置、实际来源、EP免疫／屏障、自然回复及恢复修改入口，见[本轮证据](../evidence/resource-mechanisms-20261114/recovery-elemental/README.md)。全领域覆盖见[案例37](37-resource-mechanism-coverage.md)。以下首次推进与零参数的原体继续适用，新增内容集中在第6–9节。
 
 研究日期：2026-11-02；项目基线 `635617b`。2026-11-05 补核零时长参数进入 Buff 的启动、结束与子效果路径，项目基线 `2f8612d`。核对范围为官方 Windows IL2CPP 客户端普通 native 分支，没有运行完整游戏或核实活跃 XLua；不据此决定 Core 的调度或接口设计。
 
@@ -157,9 +159,9 @@ LIMITED + duration = 0
 
 - 未运行完整客户端或做实机逐帧观测；静态分支的条件性结论不代表具体战斗中的每次爆发都在触发当 Tick 推进。
 - 方法存在 XLua 分派入口，未核实当前运行环境的热更 delegate，结论限定无对应覆盖的普通 native 分支。
-- 没有在本轮穷尽特殊单位、强制 EP 写入或全部爆发 Buff 的内容程序，也不据此宣称全部元素机制已核实。
+- 五型标准配置、恢复变速／缩时及实际正例见第6–9节；特化分支与活跃XLua仍按具体证据限定，不宣称任意内容组合已经运行验证。
 - 零参数补查已展开 Buff 安装、开始、启用、结束和派生创建链；没有穷尽动作执行器的全部节点或活跃 XLua 覆盖，不能把开始程序可执行概括成所有业务效果必然成功。
-- 尚未找到初始时长为零的正式标准爆发配置；本机 `EPBreakBuffData.elementBuffs` 到所列四个根模板键的全局配置选择尚未独立定位。当前 Holder 内部的 Character／Enemy 子模板绑定已核对，BuffDB 数值来自单独注明版本与哈希的第三方提取镜像。
+- 当前五型全局配置到根／子模板选择已补齐，见第6节；五型时长均正，仍未找到0秒正式标准配置。旧零参数批次使用单独版本的提取镜像，不能与本轮全局表混成同一发布。
 - 未以固定 30 Hz 数值模拟证明客户端 FP 舍入、持续输出次数与项目逐 Tick 结果完全等价。
 
 ## 5. 项目关联
@@ -173,3 +175,56 @@ LIMITED + duration = 0
 恢复期间按原生已确认的恢复比例逐步写回四型真实 EP，在项目的时间表示中为 `当前有效 MaxEP × (duration - remaining) / duration`；结束时写满并清空 Burst 引用。Burst 槽位存在期间仍拒绝新的 EP 损伤与显式回复；不能以准入受限为由把恢复中的真实 EP 一直保留为零。
 
 零预算处理与标准效果的全部持续时间不能直接等同。项目的标准 Burst 在 onInstall 中登记创建事实并执行一次性爆发业务，随后由通用 Effect 安装流程检查时间；零预算不进入根实例的 onEnable 或 onTick，而是请求正常结束。独立眩晕使用自己的期限，永久减防和麻痹保留独立生命周期，需要随根结束的产物通过 Lifetime 绑定。资源 damaged 通知安排在这些同步安装业务之后。这是结合上述证据明确的项目契约，不将一个恢复预算机械套用到全部子效果，也不宣称完整复刻所有原生模板与热更时序。
+
+## 6. 五型配置、接收者分流及实际来源
+
+当前 `ElementType` 为 NONE=0、SANITY=1、WATER=2、FIRE=3、DARK=4、ANGER=5、E_NUM=6。五型分别对应神经、侵蚀、灼燃、凋亡、狂躁；不是四型枚举外一个无用途预留。固定 `ep_breakbuff_table.json` 的五项、各自角色／其他时长和根效果key已完整归档到[static-inputs.json](../evidence/resource-mechanisms-20261114/recovery-elemental/static-inputs.json)。根／子动作见[templates.json](../evidence/resource-mechanisms-20261114/recovery-elemental/templates.json)。
+
+`EPController._GetEpBreakDuration` #67764／`OnElementBreak` #67763 的分流为：宿主可转换为 Character，且 side=ALLY，才取 elementBreakDuration；其余取 enemyElementBreakDuration。根模板先判断 IsCharacterOrTokenOrTrap，再判断ALLY，选择子程序。两套政策不等同于我方／敌方二分，也不要求Core保存Character类结构。
+
+实际狂躁来源为 `enemy_8018_etouch`：`act3break_04` 等关卡真实SPAWN其等级对象；攻击组件 `_elementDamageType=5`，EnemyDB 的 Attack／Reborn `ep_damage_ratio=.5/.6` 经 `AbstractBasicAttack.DoSetData` #92296 覆盖Prefab默认0，进入附加损伤节点。关卡、Prefab、参数消费完整链见[level-examples.json](../evidence/resource-mechanisms-20261114/recovery-elemental/level-examples.json)、[content.json](../evidence/resource-mechanisms-20261114/recovery-elemental/content.json)、[attack-ep-source.json](../evidence/resource-mechanisms-20261114/recovery-elemental/attack-ep-source.json)。不能用Prefab默认比率0否定实际输出，也不能把狂躁视作已获准排除内容。
+
+神经独立眩晕／麻痹、侵蚀独立减防、灼燃派生减抗、凋亡周期与衰减、狂躁程序各有配置，不仅是换一个持续时间。恢复控制器、根Buff和独立子效果分别保存时间；“结束恢复”不等于所有独立子效果自动结束。零参数行为仍按第3节的实际安装／派生语义解释。
+
+## 7. 公式、上限、接收与特殊输出
+
+`BattleFormula.CalculateElementDamage` #65902–65904 支持当前ATK／显式输入，读取目标EP损伤抗性；基础式是 `max(base×MIN_ATK_FACTOR, base×max(0,1−max(0,r)×.01))`。本轮独立核对静态初始化常量约.05，见[formula-operations.json](../evidence/resource-mechanisms-20261114/recovery-elemental/formula-operations.json)、[metadata-details.json](../evidence/resource-mechanisms-20261114/recovery-elemental/metadata-details.json)。`EP_RESISTANCE=32`、元素HP伤害抗性 `EP_DAMAGE_RESISTANCE=31` 分别限0..100；5%是公式保底，不是95属性上限。
+
+`Enemy.get_maxEp` #77644 返回当前基础属性28，加 `ENEMY_EXTRA_EP[levelType]`。当前数组长度3，前两项0、index2为1000；通常领袖基础1000得到2000，但不能对任意基础覆盖都固定返回2000。完整getter／常量见[maximum-ep.json](../evidence/resource-mechanisms-20261114/recovery-elemental/maximum-ep.json)、[constants.json](../evidence/resource-mechanisms-20261114/recovery-elemental/constants.json)。
+
+EP不只有ATK附带：固定量、按HP伤害量、AOE及是否经过公式各有输入。酒神S2实际 `phatm2_s_2[damage]` 使用固定损伤节点；不能仅按“固定”推定是否忽略抗性，按节点参数及完整体判断。通用Modifier前置、EP专属接收及成功后置见[案例27](27-attack-additions-and-damage-events.md)，本轮[core-operations.json](../evidence/resource-mechanisms-20261114/recovery-elemental/core-operations.json)保留相关输入与体。
+
+| 接收机制 | 实际使用与消费者 |
+| --- | --- |
+| EPFreeAll | `act35side_01` 的 `enemy_10009_sggem` 实际Buff带异常21；get_isEPFreeAll／OnTakeEPDamage在非force路径取消，仍继续其专属通知 |
+| EP接收量护盾 | 纯烬艾雅法拉S2实际 `agoat2_s_2` 在event6检查IsElementDamage后执行BlockElementDamage，消耗来源的独立池；不是ES或HP次数盾 |
+| 环境EP | 与HP环境标记独立；齐尔查克实际条件光环分别检查两个flag并取消，见[案例38](38-damage-classification-and-permissions.md) |
+| EP归零前 | SetEpInternal在输入≤0时先通知event46再限幅写入；当前Holder唯一消费者为 `trap_creep_sanity_break[log]` 的日志程序，不把void通知推成可取消免死协议 |
+
+`force`在不同入口不是同一个万能权限。`OnTakeEPDamage` #67711 的force=true跳过EPFreeAll与IsUnhurtableWithModifier两项取消，仍派发专属接收；但`DoApplyModifier` #67683提交EP前无条件检查EPFreeAll，命中仍不写入，没有相应force例外。`SetEpInternal` #67630的force则允许在alive检查失败后继续Clamp／写入；它不重复上述Modifier准入。已闭合内部调用为恢复启动`SetAllEpInternal(0,true)`。因此不能从“强制接收”推出“无视所有提交限制”，也不能把两个同名参数合成统一政策。原体在本批core-operations／burst-controller及[生命native](../evidence/resource-mechanisms-20261114/life/native.json)。
+
+实际调用参数也已追到：ApplyElementDamage／ApplyFixedElementDamage传force=false；ApplyElementHeal把自身`m_ignoreHealFree`传作ApplyModifier的force，固定EP回复及按MaxHP回复节点也有对应字段。其序列化名字不能证明能绕过后续EPFreeAll提交检查。skip是shared flag0x80，改变事件分支，也不自动绕过该提交检查。
+
+`OnElementBreak` #67763在`0x18074e141..154`检查`m_isInBreakRecovery`；已经恢复时直接返回。强制直接写零不会因此在已恢复状态下再建第二轮或重置控制器。本批未找到普通实际Content要求并存多轮爆发；开始程序／BeforeStart早于恢复状态建立的静态重入窗口仍保留，不把未找到实例写成原生绝不可能重入，也不据该假设推翻项目已有单Burst选择。
+
+## 8. 自然EP回复的实际非零配置
+
+完整安装输入扫描覆盖1180包／33411个相关MonoBehaviour，0失败，见[rare-inputs.json](../evidence/resource-mechanisms-20261114/recovery-elemental/rare-inputs.json)。扫描包含数字属性29、字符串属性名和内联节点；只看attributeModifiers数组会漏掉模板程序更新的真实属性。
+
+余 `char_2026_yu` 第二天赋的ToggleablePassiveBuffAbility（7714492335250386474）实际装 `yu_t_2[heal]`，ProfessionCntToggleChecker（-4131437825277186518）由黑板cnt覆盖阈值。角色表的 `ep_heal_ratio=.015`，潜能提升 `.02`。模板每.2秒重新采样当前MaxHP×比例，写黑板再更新EP自然回复属性；S3另以Aura为其他干员安装同一程序。配置、checker消费、实际Talent／模板见[ep-regeneration-content.json](../evidence/resource-mechanisms-20261114/recovery-elemental/ep-regeneration-content.json)。
+
+属性29生效后，Entity的普通timer每到期给各型EP加1，走SetEpInternal，不构造ElementHeal。OnAttributeDirty先以dt=0接续旧timer，再按新速率重设间隔或使timer无效。与自然HP相同，原生按每资源单位脉冲；项目已选择逐Tick小数回复，本轮不改回脉冲或三帧刷新。
+
+`ElementHealViaMaxHpRatio`虽有完整native体，本次1180包／9054Holder未找到引用；这不能证明废弃，更不能否定上述余的自然EP回复。该节点与自然回复的属性路径不是一回事。
+
+## 9. 恢复变速与直接缩时有不同语义
+
+酒神S3的Talent2（-263653456522888950）实际安装 `phatm2_t_2[s3]`，黑板增量.5；模板按神经恢复状态增加 `EP_BREAK_RECOVER_SPEED`，条件结束撤销。控制器每次读取当前速度。没有由此证明所有独立子Buff也按同一速度推进。
+
+珊比天赋2（-3045388504718096767）实际装 `thumpy[t_2]`，物理伤害来源后置event21在目标处于WATER恢复时调用ReduceEpBreakCooldownDuration，潜能配置1.2秒。它的完整操作顺序是：
+
+1. 对仍有效的本次追踪爆发Buff调用SubtractRemainingTime，移除失效引用。
+2. `total=max(0,total−delta)`；elapsed不变。
+3. `_RefreshEpRecoverAfterCooldownReduced`当场重写全部EP比例；新total≤0或elapsed达到新total则当场写满并结束恢复。
+
+说明用例：total10、elapsed4，减2后EP由40%即时变为4/8=50%；不是只改未来速度或只缩倒计时。实际绑定及方法#67759/60见[content.json](../evidence/resource-mechanisms-20261114/recovery-elemental/content.json)、[core-operations.json](../evidence/resource-mechanisms-20261114/recovery-elemental/core-operations.json)。当前项目Effect只推进remaining的接口没有自动表达这项完整操作；本研究没有批准省略即时EP重算或以别的时间公式替代。

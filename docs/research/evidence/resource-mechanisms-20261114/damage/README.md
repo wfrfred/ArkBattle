@@ -47,7 +47,7 @@ python docs/research/evidence/resource-mechanisms-20261114/damage/verify_weak.py
   --out .cache/native-research/resource-mechanisms-20261114/damage/weak-replay
 ```
 
-7份记录的独立重提结果见 `verification-weak.json`。DB镜像与安装资源分开标版本，已关闭“loadFromDB最终定义未恢复”的旧缺口；atkAddition与Wiki的差异仍保留，见findings第8节。
+7份记录的独立重提结果见 `verification-weak.json`。DB镜像与安装资源分开标版本，已关闭“loadFromDB最终定义未恢复”的旧缺口；atkAddition与Wiki的差异仍保留，见[案例10第4节](../../../cases/10-weak-damage-and-critical.md#4-atkaddition差异仍存在不能伪造热更新结论)。
 
 ## 覆盖与未证矩阵
 

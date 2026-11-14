@@ -2,6 +2,8 @@
 
 Elemental 负责元素值的接收、资源提交、爆发触发与恢复预算；EP Damage／Healing 的 Calculate／Apply 由 Battle 编排。整轮 Burst 由 Core 标准效果库的 Effect 承载，复用 Effect 的身份、状态、时间推进与 Lifetime。标准爆发程序实现 HP 伤害、控制、属性变化和周期输出，Data 提供数值配置，Content 通过公开接口实现特殊单位机制。当前四型为 NEURAL、EROSION、BURN、NECROSIS；狂躁尚未接入。
 
+原生五型配置、真实输出、接收与恢复修改入口见[案例25](../research/cases/25-elemental-burst-recovery-timing.md)，四领域完整范围见[覆盖表](../research/cases/37-resource-mechanism-coverage.md)。狂躁有实际普通战斗输入，尚未接入属于实现差距，不是已批准的排除。珊比的爆发缩时会保留 elapsed、减少 total 并立即重算 EP；当前只推进 Effect.remaining 的实现也不自动覆盖该操作。控制器与独立子效果的时间差异仍须按原生需求整体评估，本页不把未实现写成完成。
+
 Unit Definition 直接关联共享的 Elemental Definition。bursts 按元素类型映射到实际的 Burst Effect Definition；Data 选择 Core 提供的具体 Effect 并绑定静态数值，不自行实现爆发执行程序。
 
 公开类型、查询和业务操作从 [elemental/index.ts](../../src/core/unit/capability/elemental/index.ts) 导入，包括只读的 available。Capability 的 Rule、Hook 与属性贡献 set／remove 不接收 Ref，返回 `Change<Unit & Elemental>`，交给 Unit.update 登记。资源提交复用对应业务的 CommitContext，爆发与恢复等操作保持 BattleState 协议，状态写回使用 Core 内部的 Unit.replace；query.ts 负责查询。

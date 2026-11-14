@@ -6,6 +6,8 @@ Damage／Healing 顶层入口仅导出 hp、ep 命名空间。上层分别从 [v
 
 HP Damage 覆盖普通伤害与生命流失，两者均使用物理、法术、真实或元素 HP 公式及同一套 Calculate／Apply。特殊生命机制、特殊恢复与其余伤害分类的支持边界见第 3.2、4.2、5 节。
 
+完整原生需求与实际内容依据见[资源机制覆盖表](../research/cases/37-resource-mechanism-coverage.md)，分类／权限见[案例38](../research/cases/38-damage-classification-and-permissions.md)，生命／复活见[案例11](../research/cases/11-damage-apply-and-hp-application.md)，归属／属性范围见[案例39](../research/cases/39-death-attribution-and-attribute-ranges.md)。本页描述当前普通实现；尚无公共接口的真实需求仍是架构差距，不构成已批准的不实现或简化。
+
 ## 0. Vitality Capability
 
 `vitality/capability.ts` 提供定义、初始化和属性 Change 工厂，`vitality/query.ts` 提供依赖战场的属性查询；防御与自然 HP 回复属性均属于 Vitality。
@@ -433,6 +435,8 @@ Receiving 内不按“先所有闪避、再所有护盾、再所有减伤”建�
 
 非致命、不死、免死、替身、形态转换及 HP Application 接管尚未实现。普通扣血没有对应状态、接管 Hook 或占位字段，也没有下列特殊生命事实的公共协议：
 
+原生还具有独立 ES、负生命债务、派生目标的固定扣血、同实例复活和战术点恢复；实际绑定与区别已在[案例11](../research/cases/11-damage-apply-and-hp-application.md)核对。这些需求不能仅靠当前 hpBefore／hpAfter／hpLoss 报告推定已覆盖，也不能把所有恢复统一为普通治疗。
+
 | 事实 | 含义与边界 |
 | --- | --- |
 | 本次 HP 变化的默认应用责任 | 本次变化是否仍需由 Vitality 默认路径实行、具体还待应用什么；其他机制接管默认应用不等于停止所有 HP Application Hook。 |
@@ -512,7 +516,7 @@ Apply 对最终计算量为零的治疗在入口返回 REJECTED，不派发本�
 
 ### 4.2 特殊恢复机制
 
-自然 HP 回复由 Vitality 的属性推进处理，见第 0.1 节。普通 Healing 不提供生命复原与其他特殊 HP 恢复的专属模式或入口；这些机制的修正、通知和统计语义尚无公共契约。
+自然 HP 回复由 Vitality 的属性推进处理，见第 0.1 节。普通 Healing 不提供生命复原、ES／债务恢复和持续 HP 同步的完整公共契约。原生实际来源、提交及通知已分别核对到[案例29](../research/cases/29-hp-and-ep-healing-settlement.md)，不能因尚无接口将其当作未经调查的内容细节。
 
 ## 5. 支持范围
 

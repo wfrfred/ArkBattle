@@ -62,4 +62,4 @@ python "$batch/verify_native.py" --out "$work/native"
 - 同批 `damage`：完整ApplyModifier、flags及环境EP的齐尔查克消费者。
 - 同批 `life`：ES／负生命提交、号角生命复原、巨型Boss特殊生命规则。
 
-本批未知均明确列在findings第9节；它们未被自动判作延期、废弃或可简化。
+本批未知见[覆盖矩阵](coverage.md)及[案例37第4节](../../../cases/37-resource-mechanism-coverage.md#4-没有被当作废弃或批准简化的项目)；它们未被自动判作延期、废弃或可简化。

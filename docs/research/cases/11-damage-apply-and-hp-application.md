@@ -1,91 +1,160 @@
-# Damage Apply 与 HP Application 机制时序对照
+# HP 应用、生命干预与生命流失
 
-整理日期：2026-10-17。本文将客户端证据、PRTS 说明与 ArkBattle 的设计选择分开记录，不实现接口。当前普通 Calculate／Apply、HP 资源提交与死亡顺序见 [Vitality / Damage 设计](../../architecture/vitality.md)；特殊生命干预协议仍延期。本页保留各次原生核对的证据边界。
+核对日期：2026-11-14。本文集中记录 HP、额外生命、负生命、免死竞争、不死、替身、复活、特殊提交与生命流失。普通 native 原体与实际内容绑定见[本轮生命证据](../evidence/resource-mechanisms-20261114/life/README.md)；调用分类／权限见[案例38](38-damage-classification-and-permissions.md)，最终死亡归属及属性范围见[案例39](39-death-attribution-and-attribute-ranges.md)。完整覆盖与证据边界见[案例37](37-resource-mechanism-coverage.md)。
 
-## 1. 证据分层与边界
+当前客户端 DLL 为 `cf7956bf…cf76ff`、metadata 为 `e58fb854…f9caa5`。旧版方法／模板原件保留在各自批次，但本文以当前匹配绑定解释机制；不以旧角色归属或 Wiki 概括覆盖当前原体。所有客户端结论均为静态 native 分支，未运行游戏、未验证活跃 XLua。程序绑定、控制流推导、实机观测不混称。研究没有批准简化或排除普通玩法机制。
 
-| 标记 | 依据 | 可证明的范围 |
+## 1. 常规 HP、额外生命与负生命分别保存
+
+当前 `Entity` 保存 `m_hp`（`+0x40`）、`m_es`（`+0x48`）、`minusHp`（`+0x180`）及 `maxMinusHpRatio`（`+0x188`）。负生命是独立的非负债务量，不是将 `hp` 字段允许为负。
+
+- `get_maxMinusHp` #67447：当前 `get_maxHp() × maxMinusHpRatio`。
+- `set_minusHp` #67444、`set_maxMinusHpRatio` #67446：各自写入对应字段；setter 本体不额外调整普通 HP。
+- `Entity.alive` #67348：普通分支检查状态机运行和普通 HP 大于零；因此负生命路径会保留普通 HP，而不能把 debt 与普通 HP 合并后沿用这一资格判断。
+- `SetHpInternal` #67625：启用负生命时，导致拟写 HP 非正的变化先进入债务累计；债务达到上限才派发该路径的归零前干预。正向 HP 变化先偿还债务，超过债务的部分才增加普通 HP。
+- 不死处理发生在归零前干预后。负生命启用时，非 force 写入将债务限制到 `maxMinusHp − 1`，普通 HP 保留至少 1；普通路径则对 HP 使用相应下限。
+- 最终归零判断同时检查普通 HP 与债务是否到上限。债务耗尽时把普通 HP 置零，再虚派发 `OnHpZero(noSource, skipReborn)`。不能只检查先前普通 HP 是否已经变成零。
+
+直接位置：#67625 的 `0x18072eaa3` 读取债务上限；`0x18072ece4` 写债务；`0x18072ed21` 比较债务上限；`0x18072ed51/7e` 进入归零干预；`0x18072ee16–eee4` 处理正向恢复与偿债；`0x18072ef21–efa4` 处理负生命的不死下限；`0x18072f205–297` 判定终结并进入归零回调。完整方法见 [native.json](../evidence/resource-mechanisms-20261114/life/native.json)，字段布局见 [inventory.json](../evidence/resource-mechanisms-20261114/life/inventory.json)。
+
+实际使用已从 `char_1044_hsgma2` 的 Talent 1 PassiveBuffAbility（PathID `2269239921198506466`）闭合到 `hsgma2_t_1` 模板。模板开始时执行 `SetMaxMinusHpRatio(BUFF_OWNER, 1)`；周期通过 `CheckIfAtMinusHpState` 决定安装自回／禁疗效果。对应执行节点为 #102154、#102124；不是仅因 metadata 存在该字段而推定需求。
+
+债务累计不能概括成“普通 HP 允许为负”或“每一击固定少损失 1”。对 #67625 此分支中的归零请求量 `d = abs(requestedHp − oldHp)`：旧普通 HP 大于 1 时写入 `minusHp = d − oldHp`；旧普通 HP 不大于 1 时写入 `minusHp = oldMinusHp + d`。之后普通 HP 的非 force 下限为 1。PRTS 生命值页的每击数值概括不足以代替这两条分支；本批没有用实机数字实验宣称两者完全等价。
+
+债务写入位于归零前回调**之前**；该分支也不经过普通无债务路径读取 `isCancelled`、重新合成拟写 HP 的那一段。因而不能用“归零请求被取消”概括为先前债务写入自动回滚；本次回调新增不死后的债务上限处理仍是另一步。
+
+MaxHP 变更也不能直接推成债务永远不变。[属性变更原体](../evidence/resource-mechanisms-20261114/death-attributes/attribute-recomputation.json) 的 `Entity.OnAttributeDirty` #67699 通过普通 `set_hp(currentHp / oldMaxHp × newMaxHp)` 同步 HP；而普通 setter 会先偿债。因此“HP 为 1、最大生命翻倍时拟恢复到 2，可能先偿还 1 债务”是两段原生代码的组合推导，尚非实机观测。债务 setter 本体不按比例缩放，与完整 MaxHP 变更没有后继影响，是两种不同结论。
+
+额外生命的治疗来源、溢出许可及实际休谟斯／医生例由本批 recovery-elemental 专项记录。生命提交端 #67683 先以 ES 抵扣负向 Modifier，剩余变化才进入 HP setter；治疗超额路径另受独立的共享标记限制。ES 不是次数盾或伤判屏障的另一名称。
+
+## 2. 普通免死的竞争及专属后继
+
+`ConsumeTrySetHpZeroModifier.Execute` #100294 先要求本次目标类别正确且尚未取消，再按 `_dontConsumeWhenUndeadable` 检查宿主已有不死；成功时取消归零请求。`_blockThisHpSet` 决定是否将本次保留的 HP 变化改成零。
+
+`BuffContainer.OnBeforeTrySetHpZero` #66423 记录首个成功 consumer，仍继续派发后续候选；后续普通 Consume 自身因已取消而失败。`OnPostTrySetHpZero` #66424 携带该 consumer，`IsConsumerOfTrySetHpZeroModifier` #100291 供程序判断自己是否成功。它们不构成全部生命干预共用的“处理完毕”开关。
+
+当前实际内容至少存在两种普通免死 HP 应用政策：
+
+| 内容 | 实际程序 | 应用区别 |
 | --- | --- | --- |
-| N | [damage-apply-20261017.json](../evidence/damage-apply-20261017/records.json) 与补充的 [hp-application-combinations-20261017.json](../evidence/hp-application-combinations-20261017/records.json) 中的本机原生方法与匹配 Buff 模板 | 所选普通原生分支的调用、判断及模板动作顺序；没有运行游戏或验证 XLua 热更新。 |
-| W | 下文直接链接的 PRTS 机制或角色说明 | Wiki 所述的行为与时点；本轮未核对相应角色模板／原生分支的项目不标为 N。 |
-| P | 用户已确认的 [Vitality 设计](../../architecture/vitality.md)、[公共 Hook 契约](../../architecture/functional-core.md#6-hook-和生命周期的纯契约)与[离场契约](../../architecture/deployment.md#离场清理的偏序) | ArkBattle 选择的语义；不作为客户端事实。 |
-| 未定 | 尚缺足以判断的证据或尚未选择项目政策 | 不由当前测试、方法名或其他效果的类似描述补足。 |
+| 史尔特尔天赋 | `char_350_surtr/Talents/2` → `surtr_t_2` | `_blockThisHpSet=false`、`_dontConsumeWhenUndeadable=true`；Post 成功者安装不死并结束旧保护 |
+| 号角天赋 | `char_4039_horn/Others/Direction/Talents/1` → `horn_t_1[muso]` | 同样保留本次变化，成功者结束一次性保护后安装变更 MaxHP／攻速／防御与恢复的后继 |
+| 斯卡蒂 Y 模组 | `skadi_equip_1_*_p1` → `skadi_e_muso` | 相应模块资源实际安装该保护，不能用旧 Wiki 的提前预判例子代替其当前事件 27／82 程序 |
+| 信仰搅拌机 S2 | `skchr_rmixer_2` ActiveBuffAbility → `rmixer_sk2` | `_blockThisHpSet=true`；成功时保留原 HP，消耗弹药；不是先承受原伤害再回复 |
 
-N 的输入版本与哈希保存在证据文件中；所选 DLL SHA256 为 `583b04ff4d1b1a4b35eaf09d77d936408c25447c9e345ef0463d814b6a123fc5`。本轮沿用该证据，不宣称完成所有生命机制或运行版本兼容验证。旧案例 03 的项目 Resources／Work 与祖先候选继承描述已被后续架构替代，不能反向覆盖 P。
+上述实际组件、同一 GameObject 身份与 PPtr→MonoScript 绑定保存在 [content.json](../evidence/resource-mechanisms-20261114/life/content.json)；完整模板保存在 [templates.json](../evidence/resource-mechanisms-20261114/life/templates.json)。HP setter 的取消续接、force 与不死分支保存在 [native.json](../evidence/resource-mechanisms-20261114/life/native.json)。
 
-## 2. 接收与伤判
+锁血另有修改权限语义。`HpNoLessThanCertainPercentModifier.Execute` #100255 调整数值时还管理共享标记 16；`Modifier.set_value` #72157 在该标记有效时拒绝普通写值。煌 `huang_t_1` 是实际使用例，不能从“仍派发后续伤判”推导“后续一定能够改写该值”。数值改写权限及标记精确分支由本批 damage 专项继续记录。
 
-| 机制 | 客户端静态确认（N） | PRTS 说明（W） | ArkBattle 政策／待定 | 可观测区分 |
-| --- | --- | --- | --- | --- |
-| 初始零伤害 | get_isCancelled 包含零值判定；普通 ApplyModifier 在接收前拒绝已取消输入。 | 本表不据其他零伤害描述扩展此路径。 | Calculate 最终零输出在 Apply 入口拒绝，不进入本笔接收；零实际变化允许成功，与后来抵挡或取消分别处理。 | 是否回复 SP、触发受击响应。 |
-| 无敌 | OnTakeDamage 普通分支在 SP 检查前请求取消，随后存在 Buff 接收派发；不能由此概括全部无敌／忽略无敌路径。 | [特殊机制](https://prts.wiki/w/特殊机制)描述无敌及特殊绕过条件。 | 不将无敌直接等同于所有接收通知都未发生；具体参与资格与例外尚待核对。 | SP、计数、反伤是否发生。 |
-| 普通受击回复 SP | OnTakeDamage 先检查当前取消与 ignoreForSp，再尝试回复，随后调用 BuffContainer.OnTakeDamage。 | 不能把所有“受击回复”天赋都当作这一普通 SP 路径。 | 放入接收开始的职责；Skill 通过公开 Hook 接入，Vitality 不依赖 Skill。 | 正伤害后来被盾挡掉，仍可能已完成普通回复。 |
-| 有序伤判与取消 | Cancel 保留数值并单独标记取消；Evade／BlockDamage 检查取消状态，InverseDamage 可不筛除已取消伤害。 | [伤判效果](https://prts.wiki/w/伤判效果)说明优先级、获得顺序与各效果自己的伤判条件。 | 取消不停止整次 Receiving；排序由领域决定，资格逐项读取最新状态。 | 盾次数、反伤、计数，以及减伤与屏障组合结果。 |
-| 成功闪避／抵挡 | Evade 仅在 Cancel(EVADE) 成功后同步调用 OnEvadeDamage；BlockDamage 有对应即时响应。 | [事件](https://prts.wiki/w/事件)将成功响应描述为插入处理。 | 在成功节点同步响应；尝试、成功与后续派发资格分别表达。 | 闪避成功后补弹等业务是否先于后续伤判。 |
-| 泥岩盾与治疗 | mudrok_t_1[shield_a] 的事件 10 依次执行 BlockDamage、HealViaMaxHpRatio、表现与 FinishBuff。 | 不将这一模板扩展为所有护盾的固定治疗或消耗顺序。 | Receiving 允许同步治疗；外层取消保留已经完成的盾消耗与治疗。 | 不掉 HP 仍可消耗盾并治疗。 |
-| 煌半血保护 | huang_t_1[lock] 在事件 10 执行 HpNoLessThanCertainPercentModifier；原生节点读取当前 HP／maxHP，必要时将本次伤害限制为 max(当前 HP − 指定比例 maxHP, 0)。 | [煌](https://prts.wiki/w/煌)说明半血保护通过伤判减少本次伤害实现。 | 这是 Receiving 的限损机制，不直接定义所有 HP 写入的下限；尚未选定特殊组合的简化政策。 | 后继伤判仍可改变伤害；不能把限损实现为额外治疗。 |
-| 受击时先治疗 | 本轮未核对乌尔比安／三角初华的角色模板。 | [乌尔比安](https://prts.wiki/w/乌尔比安)与[三角初华](https://prts.wiki/w/初华)均说明相应治疗发生在正式应用伤害前；前者允许伤害被闪避／抵挡后触发。 | 此类治疗属于 Receiving，和生命变化已应用后的治疗分别表达。 | 同一伤害能否致死，治疗量使用哪个时点的 HP。 |
-| 玛恩纳反伤 | mlynar_t_2[inverse] 在事件 10 执行 InverseDamage，filterModifierCancelled=false；原生动作同步调用独立 ApplyModifier。 | 不将该结论推广为所有反伤的时点。 | 允许外层扣 HP 前反伤；已取消的外层伤害不自动排除此 Hook。 | 外层未扣血也可反伤；嵌套返回影响后续状态。 |
-| 斯卡蒂 S1 分担 | skadi2_s_1[protect] 先 DamageSplit，再缩放外层伤害；被分担部分走特殊接收路径。 | 此案是协议压力样例，不按当前棋子默认 S3 限缩领域要求。 | 保留同步分担能力；特殊接收输入如何表达未定，不直接暴露 SKIP 字段。 | 是否重复分担、嵌套生命变化与外层先后。 |
+## 3. 替身切换与普通免死不是同一种执行程序
 
-无视闪避的 Wiki 描述与已读普通原生路径存在范围差别，详见 N 的 limits；不由名称直接决定是否抽样或消耗资源。项目无须复制无语义影响的官方 RNG 消费轨迹，但概率、次数与成功响应仍须有明确规则。
+### 若叶睦与结城理必须分别记录
 
-## 3. 生命应用与致命干预
+固定角色表明确：`char_4183_mortis` 是若叶睦，`char_4217_makoto` 是结城理。此前把 `makoto_tr` 写成若叶睦的原生模板是身份归属错误。
 
-| 机制 | 客户端静态确认（N） | PRTS 说明（W） | ArkBattle 政策／待定 | 可观测区分 |
-| --- | --- | --- | --- | --- |
-| 每次只减少 1 HP | 本轮未完整核对小说卷轴的具体模板与 setter 组合。 | [特殊机制](https://prts.wiki/w/特殊机制)区分原伤害量与实际只降低 1 HP。 | HP Application 必须允许伤害数值与生命变化不同；工作值与报告未定。 | 受伤次数与按伤害量计算的其他效果。 |
-| 非致命与提前致命预判 | 当前 metadata 的 DAMAGE_IS_UNDEADABLE_THIS_TIME=8；普通 DoApplyModifier 在该标记下先将拟写 HP 限制为至少 1，再调用 set_hp，早于 setter 中的归零前回调。 | [衍生生命](https://prts.wiki/w/衍生生命)区分提前预判、非致命限制与归零前干预；其斯卡蒂示例存在下述当前模板冲突。 | 不由一次 candidateHp 推导所有致命机制的资格；具体组合另核对。 | 较早预判与实际尝试归零不是同一事件；非致命输入不会因此触发普通归零免死。 |
-| 不死与归零前干预 | SetHpInternal 中先存在归零前回调，后有不死处理；仅确认所选普通原生分支。 | [衍生生命](https://prts.wiki/w/衍生生命)给出相应顺序；部分保护会自行检查不死。 | 不写成所有机制共用的“不死优先于免死”，也不由该原生顺序规定项目必须复制同一调用结构。 | 是否消费保护、是否切形态与最终生命状态。 |
-| 多个普通免死 | ConsumeTrySetHpZeroModifier 自身拒绝已取消的归零请求，可配置已有不死时拒绝取得成功。Container 记录首个 consumer 后继续遍历；后续普通 Consume 自行失败。Post 的 IsConsumer 只允许成功者执行自己的后续。 | [特殊机制](https://prts.wiki/w/特殊机制)描述按优先级竞争、单次最多一个成功及成功后的后续。 | 普通免死的竞争只作用于该类业务；不自动包括不死、替身等。具体工作值未定。 | 一次伤害消费几个保护，谁执行后续；成功不等于停止整个派发。 |
-| 若叶睦与普通傀儡师 | 当前 makoto_tr 在归零前事件使用 _dontConsumeWhenUndeadable=false；surtr_t_2、skadi_e_muso 等模板为 true。 | [若叶睦](https://prts.wiki/w/睦)说明通常傀儡师与她在持有不死时的切换资格不同。 | 一项保护成立不能全局屏蔽其他致命干预；不将某个客户端节点或标记直接升级为项目统一竞争协议。 | 持有不死仍切替身、形态与持续状态。 |
-| HP 写入与成功通知 | DoApplyModifier 读取当时 HP；普通 SetHpInternal 先写 HP，再携带获胜 consumer 派发 Post，模板自行确认是否为成功者；普通 OnAppliedModifier 先通知目标，再通知来源 OnAfterOutputDamage。 | 不据“成功受到伤害后”文字推断所有死亡响应都已完成或都未开始。 | 当前项目在目标／来源 Applied 后按最新 HP 确认死亡；特殊 HP 应用接管与普通免死成功归属的接口仍延期。此项目顺序不冒充原生顺序。 | 回调治疗是否有效，能观察到哪些 HP／生命事实。 |
-| 真实离场 | 本轮未穷尽原生死亡、复活与对象回收路径。 | 不从角色“被击倒”文案直接推导真实离场。 | 沿 P 的 LEAVING → 完整领域清理 → Unit 移除 → onLeave；生命保护成功不等于真实离场。 | 死亡触发、Effect 清理、依赖结束与旧实例是否还在。 |
-| 生命流失 | 2026-11-13 已补齐物理／法术／真实配置与公式、skip 接收、普通 HP setter；见第 6 节。 | [游戏数据基础](https://prts.wiki/w/游戏数据基础#伤害机制)说明物法流失仍受 DEF／RES；[衍生生命](https://prts.wiki/w/衍生生命)区分相关致命干预。 | 原生 skip 不等于跳过一切保护；项目以统一 Calculate／Apply、nature 与机制资格表达流失，HIT 许可独立，见当前 Vitality 契约。 | 防御公式、计算事件、护盾／SP 与致命保护是不同参与条件。 |
+- 若叶睦实际 `char_4183_mortis/Others/Direction/Talents/-1` 的 PassiveBuffAbility（PathID `-796464561225199805`）安装 **`mortis_tr`**。该模板在事件 27 的本体分支中**没有 Consume 节点**：直接创建派生不死 `mortis_tr_undead`，再尝试触发 `mortis[switch2stand]`。已有不死不是这条模板进入切换尝试前的 Consume 排除条件。
+- 结城理实际 `char_4217_makoto/Others/Direction/Talents/-1` 的 PassiveBuffAbility（PathID `361641197296733733`）安装 **`makoto_tr`**。该模板根据模式和技能选择设置切换资格，使用 `_dontConsumeWhenUndeadable=false` 的 Consume，再选择相应的 `makoto[switch2stand_s1/s2/s3_*]`。这才能证明这个非默认 Consume 配置在实际角色中使用。
+- 贝娜 `bena_tr` 则使用 `_dontConsumeWhenUndeadable=true` 的普通 Consume，再安装派生不死并尝试切换。不能把三者归成完全相同的免死竞争关系。
 
-2026-11-13 PRTS 复核：[游戏数据基础·伤害机制](https://prts.wiki/w/游戏数据基础#伤害机制)将生命流失说明为携带 SKIP_MODIFIER_EVENT 的伤害，默认类型为真实；物理流失仍受防御力影响，法术流失仍受法术抗性影响。数学公式与事件参与是两个维度，不能由跳过事件推导出跳过防御计算，也不能把所有生命流失直接等同于已确定数额的 HP 负增量。第 6 节已新增客户端公式分支与实际配置绑定；特殊生命机制的全部组合仍不在本轮已证范围。
+### 切换有明确的保留与重建
 
-## 4. HP Application 设计须回答的问题
+贝娜与若叶睦的实际开始／结束切换程序调用 `ClearAllBuffs`，但并非字面上的“清除所有 Buff”：
 
-当前已确认的是下列事实须可分别表达，不是某个字段、统一竞争组或状态机已获确认：
+- 贝娜 `bena_switchbegin/end` 有各自 `_retainedBuffsWhenClear` 白名单；`_alsoRemoveDurableBuff=false`。
+- 若叶睦 `mortis_switchbegin`、`mortis_switchbegin_2`、`mortis_switchend` 也有白名单，保留 trait、部分 S1 核心、自身标记、暗盾、fever 等指定效果，并保留 durable Buff。
+- 开始程序还执行具体技能／能力中断、技力清空和 `OnRallyPointLikeReborn`；结束程序再次清理后切换模式。程序与当前技能／模式相关，不能用 Unit 完整离场替代。
+- `ClearAllBuffs.Execute` #98537 根据白名单进入 `BuffContainer.ClearWithWhiteList`，否则进入 `Clear`；`OnRallyPointLikeReborn.Execute` #102356 的 Character 路径调用 #77383，后者包含外部关系通知、重新启用主碰撞体和重新生成 Deck Buff。
 
-1. 哪项 HP 变化仍待默认路径应用；其他机制何时已经接管或完成这一责任。
-2. 某次普通免死是否已有成功者；它的成功、后续与消耗不等同于所有生命干预停止。
-3. 当前真实 HP、形态与生命状态是什么；通过最新 BattleState 查询，不由前两项反推。
+是否进入同一个 Ability、是否拒绝重启正在施放的切换、具体动画事件何时恢复 HP，按实际所选 Ability 及事件程序分别核对；不把模板的 TriggerAbility 尝试直接写成无条件完成切换。
 
-后续 Hook 可在默认应用被接管后继续观察或干预；普通免死已有成功者也不自动排除替身等其他机制。致命预判事实与“现在是否仍会归零”还需区分；哪部分属于固定 Context、哪部分接续为 current，留待机制组合验证。
+## 4. 每击固定减少 HP 的实际派生实现
 
-需要用以下区分轨迹审查工作值，再定类型：
+小说卷轴 `enemy_1198_msfshu` 与诗画卷轴 `enemy_1198_msfshu_2` 的实际脚本都是 `PropLikeEnemy`，不是普通 Enemy setter 的纯配置变体。
 
-| 区分轨迹 | 必须避免的错误 |
-| --- | --- |
-| 受击治疗结束后继续应用原伤害 | 以旧 HP 覆盖治疗，或把治疗当成整次伤害已处理。 |
-| 生命保护已接管本次应用，后续 Hook 仍观察该决定 | 自动停止全体 Hook，或再次默认扣血。 |
-| 多个普通免死，同时还有不死／替身机制 | 把所有干预塞进一个 protected 布尔值，导致额外消耗或漏掉形态转换。 |
-| 回调嵌套终结宿主，然后返回外层 | 根据旧对象继续写 HP、治疗或重复离场。 |
+`PropLikeEnemy.DoApplyModifier` #78593 在所配置模式下处理 HP Modifier：先按 `_acceptSpecificDamageType`／`_acceptDamageType` 筛选，负向 `finalDelta` 通过后调用普通 `set_hp(currentHp − 1)`，将该 Modifier 的 `realDelta` 写为 `−1`。它没有把原 `value` 改成 1，也没有改写来源计算结果。非负 HP Modifier 在该分支不增加普通 HP；不在所配置模式时可回退普通 `Entity.DoApplyModifier`。
 
-表中的轨迹是项目设计验收要求，不冒充已观测到的具体客户端完整执行记录。示意数值与最终项目类型均未在此确定；具有可观测差异的简化须单独列为项目政策后再使用。
+当前小说卷轴 Prefab `_acceptSpecificDamageType=false`、`_onlyAffectSpecificModeIndex=false`，所以这两个过滤开关不会在本例限制为单一伤害类型或模式。Setter 仍可进入普通不死／归零干预，不能将固定损失解释为跳过所有生命机制。
 
-## 5. 生命限损、前置治疗与免死的组合核对
+实际根对象 PathID `2025451907330735734`／`8739512195532306877` 及脚本 PPtr 在 [content.json](../evidence/resource-mechanisms-20261114/life/content.json)；完整派生方法和字段在 [native-specializations.json](../evidence/resource-mechanisms-20261114/life/native-specializations.json)。其他 HP 应用派生实现与配置分布在 [native-overrides.json](../evidence/resource-mechanisms-20261114/life/native-overrides.json)、[prefab-policy-scan.json](../evidence/resource-mechanisms-20261114/life/prefab-policy-scan.json) 单独核对，不由这两个对象推断所有物件行为相同。
 
-本节核对普通 HP 路径，不将结论推广到负生命值、额外生命值和特殊派生单位。数字均是区分语义的假设，不是官方参数；组合结果按已证实单项规则推导，未进行游戏内组合实测。项目尚未在这些组合上另选简化政策。
+额外派生实现已找到实际资源，而不是只留下类名：`PropLikeStaticBlockToken` #78604 对应 `token_10055_phatm2_mndclv`（迷狂牢笼，PathID `6352044219529720151`），有来源属于自己阻挡列表的接收条件，再走每击减 1；酒神原始角色配置将其绑定为 S1／S3 的 `overrideTokenKey`。`PropLikeTrap` #78622 对应 `trap_246_bigbtle`，也有 HP 负向 Modifier 的每击减 1 分支。后者本批仅闭合到实际 Prefab，不把此资源存在写成某一关卡已执行。它们都不能由次数盾代替；完整正文见 [native-overrides.json](../evidence/resource-mechanisms-20261114/life/native-overrides.json)。
 
-| 组合 | 执行与结果 | 证据边界 |
+## 5. HP 归零后的复活是同一实例的另一条生命周期
+
+### 从归零入口到复活状态
+
+`Unit.OnHpZero` #79030 并不无条件进入最终死亡。`skipReborn=false` 时调用 `Unit.CheckReborn` #79009；后者遍历当前天赋，取得第一个成功的复活数据。没有成功数据，或 `skipReborn=true`，才调用 `Entity.OnHpZero`。这条分流发生在同一 Unit 上，不是先完整注销后再创建新 Unit。
+
+`RebornTalent.CheckReborn` #74763 检查可选的 `_validWhenContainsBuff`、剩余次数，成功后增加天赋自己的计数及 `Entity.respawnCnt`，返回本次的 `RebornData`。负最大次数表示不受次数上限限制。首轮和后续轮可取不同的模式、处理能力及恢复配置；不能只保存一个“已复活过”布尔值。
+
+成功后虚派发 slot 188。实际 Character／Enemy 使用各自覆盖：
+
+```text
+Unit.OnHpZero
+  → CheckReborn
+  → Character.OnReborn #77335 / Enemy.OnReborn #77787
+      → DoFakeDeath（slot 184）
+      → 构造 RebornState，并切入状态机
+  → RebornState 推进等待
+  → DoReborn（slot 185）
+```
+
+不能把基类 `Unit.OnReborn` #79031 的 `DoFakeDeath → 立即 DoReborn` 用来描述这两个真实派生对象。`Character.DoFakeDeath` #77279 先清空出向阻挡；`Enemy.DoFakeDeath` #77798 调用 `ReleaseBlock`。随后 `Unit.DoFakeDeath` #79010 按本次 `buffsRetainedWhenReborn` 白名单清 Buff，清理持有的表现 Effect，通知外部事件并派发保留 Buff 的 `OnOwnerReborn`。这不是 Unit 正常离场的全部业务。
+
+### 复活等待和最终恢复
+
+`Character/States/RebornState` 与 Enemy 同名状态各自保存 `remainingTime`、本次 `RebornData`。状态提供的普通异常掩码分别为 `0x28` 和 `0x128`，即包含 BLOCK_FREE、INVINCIBLE，Enemy 另含 UNBALANCE_IMMUNE；这些是该状态的贡献，不能忽略其他有效反制后称它们为不可覆盖的最终资格。
+
+普通计时比较使用严格 `remainingTime < deltaTime` 才完成，否则减去本次 delta。Enemy 另支持波次门控：进入时保存 `Scheduler.spawnedWavesCnt`，推进时只有当前计数 **大于** `entryCount + rebornAfterWaveCnt` 才继续剩余时间判断。应保留这里的原始比较，不在不了解 Scheduler 计数起点时直接翻译成“等一波”。
+
+Enemy 的 `keepAlive` 路径在进入复活状态时以 force 将 HP 置 1；普通路径不作这次写入。状态退出清理自己添加的属性贡献及所持有的表现产物。`clearEffectsAfterReborn` 指向状态保存的表现 Effect 列表，不是另一项“清除所有战斗 Buff”的政策。
+
+`_PlayAnimation` #77560／#78146 的名称不能作为纯表现的证据：它还建立真正写 HP 的恢复插值。持续时间为 `Clamp01(hpRechargeRatio) × rebornTime`，延迟到本次复活时间的最后这一段开始。非确定性路径使用 DOTween，确定性路径使用 BattleTween；回调 #77562/63、#78148/50 均会把当前 MaxHP 乘插值比例，虚调用 `SetHpInternal(force=true)`。因此原生复活期间可已有渐进 HP 写入，不能只记录结束时的一次恢复。如何在项目中分离动画与实际恢复，是后续设计问题，本批不自行删除该状态语义。
+
+`Unit.DoReborn` #79011 才派发复活后事件、以本次 `hpRatio × 当前MaxHP` 强制写回 HP、切换本次 mode 并添加指定 Buff。`Character.DoReborn` #77280 随后启动普通状态机；`Enemy.DoReborn` #77799 还重新初始化敌人技能并通知 BattleController。这里的 mode、当前 MaxHP、Buff 与技能初始化有真实顺序，不等同于任意 HP 恢复。
+
+### 实际配置说明这些分支确实有用
+
+| 实际内容 | 绑定与非默认配置 | 证据范围 |
 | --- | --- | --- |
-| 单次最多扣 30 HP ＋ 不死 | 当前 HP 100、原伤害 150，限损后扣 30 得到 70；当前 HP 20 时，同样的限损仍可导致归零尝试，最终不死保留 1。 | 纯数值上限示例；实际限制若在 Receiving 发生，之后仍可能有其他伤判，不把此上限当作最后写入下限。 |
-| 非致命伤害 ＋ 不死 | 当前 HP 100、伤害 150，普通 DoApplyModifier 先把拟写 HP 限制为 1，setter 不需要对本次写入派发归零前免死。已有不死不因此消耗普通免死。 | N 已确认标记、限制公式与 setter 调用顺序；不排除更早有独立致命预判效果。 |
-| 每击只减 1 HP ＋ 不死 | 当前 HP 2，单次 HP 变化为 −1 后剩 1；再次扣 1 的归零尝试受不死限制，仍为 1。原伤害事实不因只扣 1 改成 1。 | 单项规则的组合推导，未验证小说卷轴实际获得不死的场景。 |
-| 前置治疗足够 ＋ 普通免死 | 当前 HP 100、伤害 150；Receiving 实际治疗 100 后，HP 200；DoApplyModifier 读取该 HP，扣 150 得 50，没有普通归零免死的成功与消耗。 | W 确认相关治疗在伤害应用前；N 确认后续 DoApplyModifier 读取当时 HP。组合为时序推导。 |
-| 前置治疗不足 ＋ 普通免死 | 同例只实际治疗 20，则 HP 120，本次伤害仍导致归零尝试；成功者按自己的保护方式处理该次变化，再执行自己的后续。不能一概指定最终 HP。 | 实际治疗量可能受禁疗、上限、目标重定向影响；免死成功后的恢复不再重复应用原伤害。 |
-| 已有不死 ＋ 普通免死 | 当前模板中配置 _dontConsumeWhenUndeadable=true 的普通 Consume 节点，读取到已有不死后不取得本次成功；setter 之后以不死下限处理。 | N 的资格检查先于最终不死下限；不是“不死已经终止所有致命回调”。若叶睦模板显式采用不同资格。 |
+| 霜星／霜星“冬痕” | `enemy_1505_frstar`／`enemy_1510_frstar2` 的 RebornTalent；最多 1 次，冬痕改到 mode 1；原始黑板分别有 `reborn.duration=5/10` | Prefab、原始 EnemyData、4-10 的真实 DB／SPAWN 引用 |
+| 屠谕者，大群意志 | `enemy_1529_dsdevr/Talents/Reborn`，PathID `1481962230876378660`；`rebornAfterWave=true`、`MarkP2`，后续 presets 改用 MarkP3/4 与 mode 3/5 | Prefab 完整组件、ExtraAbilities 引用、不同等级黑板的最大复活次数 1／3、实际关卡引用 |
+| `enemy_1562_cjtaot` | RebornTalent PathID `8023359325304706546`；`keepAlive=true`、白名单保留地块标记、处理能力 Reborn | Prefab 实际同对象能力、原始黑板 `Reborn.duration=30`；不靠普通霜星分支推测此参数 |
+| 酣睡飞行员 | `enemy_1595_agbmes`，PathID `-2824917765930982313`；实际设置 `detachAbilityWhenReborn=true`、保留两个指定 Buff，黑板 `hp_ratio=.01`、`duration=1.87` | Prefab／同对象处理能力与 EnemyData；不是全扫描中随便一个模板名 |
 
-普通免死本身也存在不同的应用政策。Consume 节点配置 _blockThisHpSet=true 时，保留给 setter 的本次 delta 为 0；false 时保留原变化，并在取消归零后至少保留 1。之后携带 consumer 派发 Post，模板确认自己成功后执行后续。当前 skadi_e_muso 采用 false，Post 安装恢复／属性效果并结束旧免死 Buff；这与先在 Receiving 治疗、再继续承受原伤害是两种不同顺序。项目需要保留这些可观测差异，不要求照搬客户端字段或统一全部致命干预。
+`RebornTalent.AssignData` #74760 消费原始黑板 `duration`、`hp_ratio`、`max_respawn_cnt`、`after_wave_cnt`、`min_hp_ratio`，因此不能只统计 Prefab 序列化默认值就判断某项一直为默认或无用。`_OnRebornAfterFakeDeath` #74767 根据当前轮选择已附着处理 Ability，按配置触发／分离；`_OnAfterReborn` #74768 可结束仍在施放的处理 Ability。完整体及字符串解析见 [native.json](../evidence/resource-mechanisms-20261114/life/native.json)、[literals.json](../evidence/resource-mechanisms-20261114/life/literals.json)。
 
-“前置治疗足够便不消耗免死”的推导限定于治疗发生在普通 DoApplyModifier 读取当前 HP 之前。如果治疗直接发生在 OnBeforeTrySetHpZero 回调中，当前普通 setter 并未承诺每个回调后都重算：未取消归零请求时沿用先前拟写值；取消后才读取当前 HP 并接续所保留的 delta。单纯治疗不能被视为已经改变这次待应用的生命变化。此项是静态控制流结论，尚未定位一个只治疗、不处理归零请求的真实内容组合；不据此给 ArkBattle 选择覆盖治疗的政策。
+### 主动复活与集结点恢复的独立入口
 
-### 当前模板与旧 Wiki 案例的冲突
+#### ManualTriggerRebornTalent
 
-[衍生生命](https://prts.wiki/w/衍生生命)把斯卡蒂 Y 模组举为 OnTakeDamage 提前致命预判的例子，但当前匹配模板 skadi_e_muso 在优先级 −3000 的事件 27 取得归零干预，事件 82 确认成功者并执行恢复／结束。本机普通 setter 也在 HP 提交后派发事件 82。本轮以这份静态证据描述当前模板，不继续用旧例证明“斯卡蒂复活甲会在非致命限制之前消耗”。其他真正的提前预判机制仍需分别定位，不能由这个旧例替代证据。
+该类普通 `CheckReborn` #74716 总是失败；主动 `CanBeManualTriggered` #74717 才检查和消耗次数、返回数据。`SwitchToRebornState.Execute` #102430 找当前有效的该类天赋，成功后调用同一 Unit 的虚 `OnReborn`。因此“HP 归零时不自动复活”不能推成“对象没有复活能力”。
+
+实际 `enemy_1288_duskls` 主模式有普通 RebornTalent（mode 1），道具模式有 ManualTriggerRebornTalent（mode 0，PathID `-4178707869654469388`）。道具模式实际登记的 `enemy_duskls_revive_listener` 在事件 2 进入 `SwitchToRebornState` 并恢复原 MaxHP；开始时会先保存原 MaxHP 并改为道具用值。完整模式、PassiveBuffAbility、原始程序已保存，不能仅根据名为“复活”的技能概括这条路。
+
+本指纹 #102430 普通 native 完整体只读取节点的 `_targetType`（偏移 `+0x10`），未读取 `_isForce`（`+0x14`）。Holder 的实际 duskls 程序该字段为 true，spnwiz 程序为 false。该事实只支持“此 native 分支未消费该字段”，不支持擅自宣布字段在全部热更／客户端中废弃。
+
+#### RallyPoint 不是 Unit 完整死亡
+
+真实豆苗配置关联 `token_10014_bstalk_crab`；物理 Prefab 在 `pkgrps/btl_pfb_tokens_0.ab`，根脚本为 RallyPoint。完整链为：
+
+```text
+Crab 模式 PassiveBuffAbility → crab_s_1[listener]
+  → 事件 27 切 Flower 模式
+  → common passive crab_state_1 重新有效（包含 UNDEADABLE 等标记）
+  → 普通 HP setter 后续按当前不死资格保留生命
+Flower 首个计时 passive + RallyPointRebornTalent
+  → crab_switch
+  → crab_t_1[start]
+  → RallyPoint.RecoverHpLikeReborn #78635
+      → force 写回当前 MaxHP
+      → Character.OnRallyPointLikeReborn
+  → 切 Crab 模式
+```
+
+实际 RebornTalent PathID `5244788638733915618`、首个 passive `-2084070266286156318`、`crab_switch` Ability `2351807352474260962` 和全部 PPtr 都在 [content.json](../evidence/resource-mechanisms-20261114/life/content.json)。`RallyPointRebornTalent` #74751/52 绑定的是宿主 Ability 首个 passive Buff 身份，用它提供恢复进度；不是借用 RebornTalent 的 HP 归零计数器。
+
+伺夜狼群另有生命层数和较早取消致命 Modifier 的程序，不应仅因为根脚本同为 RallyPoint 就与豆苗逐节点合并。`vigil_wolf_t_1[listener]`、`vigil_wolf_t_1[reborn]` 全文已保留；本批用豆苗闭合基础入口，不宣称已逐一验证所有召唤物技能。
 
 ## 6. 生命流失补核（2026-11-13）
 
@@ -159,12 +228,12 @@ skip 不改变 HP 目标仍进入 `Entity.DoApplyModifier`（67683）的事实�
 | 普通归零前干预 | `set_hp` 虚派发 `SetHpInternal`（67625）。拟写值到零且存在容器时仍构造 `TrySetHpZero`，执行 `OnBeforeTrySetHpZero`；skip 没有在此取消这些调用。 |
 | 不死下限 | 普通 setter 在归零前干预之后处理 `isUndeadable`，再限制最终 HP。不能把流失写成绕过不死，也不能把不死写成阻止全部前置生命程序。 |
 | 生命归零与死亡 | HP 写入后仍可能同步调用 `OnHpZero → FinishMe / OnFinish`；skip 只绕过之后的普通 Modifier 应用后通知，不抑制该死亡链。普通内容的完整离场／回收时序仍按案例 27 的证据范围，不推广到全部重生或 GameMode。 |
-| 提前致命预判、特殊 HP 改写 | 是否参与取决于具体程序登记在普通接收、事件 41、来源提交前还是 setter 上，不能仅凭 Wiki 的“生命流失”分类判定。本轮没有完成“每击只减 1 HP”等所有派生 DoApplyModifier 的特殊组合，也不将其冒称已闭合。 |
+| 提前致命预判、特殊 HP 改写 | 是否参与取决于具体程序登记在普通接收、事件 41、来源提交前还是 setter 上，不能仅凭 Wiki 的“生命流失”分类判定。本轮已补小说卷轴等派生提交，见第4节；具体归零组合由其真实setter调用判断，不以普通Entity分支替代。 |
 | 直接 setter | `SetHpDirectly`／`SetHpInternalDirectly` 的所选普通分支跳过 Modifier 与 `OnBeforeTrySetHpZero`，但仍有 alive、不死下限和 HP 范围限制；写入值不大于零时仅将数值截为 0，不派发普通满值通知或 OnHpZero 死亡业务。它们既不等于普通生命流失，也不等于无条件写一个字段。 |
 
 `SetHpInternal` 的当前关键位置为：构造归零请求 `0x18072eb83`，归零前派发 `0x18072ed51/7e`，不死检查 `0x18072ef21/efbc`，HP 写入 `0x18072f02b`，归零处理 `0x18072f297`，存在成功 consumer 且宿主仍 unfinished 时执行 Post `0x18072f2c9`。负生命等扩展分支在同一方法内，但本轮不借此声称穷尽其所有内容组合。
 
-相邻核对：`OnFinish`（67653）在 `0x18072a16e` 读取 BattleContext，`0x18072a189..19d` 取其栈顶来源，并于 `0x18072a407` 调该来源的 `OnTargetKilled`。这里没有直接读取 Modifier 的 source／originalSource。本轮未追该栈全部入栈入口，所以不能进一步断言击杀归属总与其中某个字段相同。
+相邻核对：`OnFinish`（67653）在 `0x18072a16e` 读取 Torappu.Battle.Context，`0x18072a189..19d` 取其栈顶来源，并于 `0x18072a407` 调该来源的 `OnTargetKilled`。这里没有直接读取 Modifier 的 source／originalSource。来源栈写入、恢复与真实内容归属已在[案例39](39-death-attribution-and-attribute-ranges.md)补核；不能进一步将其等同其中某个Modifier字段。
 
 ### 6.5 对项目选择的约束范围
 
@@ -187,3 +256,17 @@ skip 不改变 HP 目标仍进入 `Entity.DoApplyModifier`（67683）的事实�
 来源 Formula 另做了定向排查：9054 个模板中定位到 205 项来源计算事件 14 配置，再检查阿、华法琳、史尔特尔、红隼及 Sharp 的相关入口；**未找到能够闭合到实际执行、证明统一 Calculate 必须增加来源／目标派发开关的反例**。阿的倍率配置与周期自损虽均已定位，但倍率的实际存续窗口未闭合，不能声称自损会由 1% 变为 1.5%。排除条件与检索边界见证据中的 `source/README.md`。
 
 这些实例支持统一管线与机制资格的设计方向。当前接口区分普通伤害／流失，并保留独立的普通 HIT 回复许可；“未找到来源计算反例”不是所有内容全局等价的证明。普通死亡顺序继续按既定项目选择，本节不重开其时序。
+
+## 8. force 与最终结束
+
+`SetHpInternal(value, force, noSource, skipReborn)` 的 force 不等于跳过全部免死：普通体仍可构造归零前请求，force 改变入口门控、取消续接与下限处理。noSource、skipReborn 继续传入虚 OnHpZero；同实例复活和最终 FinishMe 不等价。原体见本批 `native.json`，完整实际处决、撤退、来源通知和物理回收见[案例39](39-death-attribution-and-attribute-ranges.md)。
+
+项目采用 Calculate 输出／Apply 接收、Applied 后确认死亡、Outcome.killed；这些已确认选择没有因此被更改。它们也没有自动表达 consumer、不死资格、债务、ES、替身或复活。后续架构必须据上述真实需求一起评估，不能用“已延期”证明普通 HP 提交完整。
+
+## 9. 限定与实际使用边界
+
+- 生命方法清单、HP相关派生覆盖、普通／主动复活与资源绑定已分别核对；不是仅按旧 TODO 搜索几种免死。
+- Prefab政策扫描覆盖517包，零解码失败，包含 charpack、enemy 和 token 物理分包。零命中的 `TakeDamageMoveBackEnemy` 只说明该范围未找到实例，不证明废弃。
+- 生息演算专属 HP 改写、保全派驻专属恢复与船运寻路属于既有排除范围；同节点是否在普通玩法使用仍分别检查，不按名字统一排除。
+- 部分工具参数在 native 未被消费、部分只有未绑定候选；详见[覆盖表中的证据边界](37-resource-mechanism-coverage.md#4-没有被当作废弃或批准简化的项目)。未绑定不构成自行不实现的授权。
+- 原生复活动画回调会写实际HP，本文保留了该事实。如何以逻辑时钟表达属于后续项目设计，不能以“不依赖动画”为由悄悄删除这项业务。

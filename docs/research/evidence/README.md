@@ -42,6 +42,7 @@ uv run "$skill/scripts/archive.py" docs/research/evidence
 
 | 批次 | 调查主题 |
 | --- | --- |
+| [resource-mechanisms-20261114](resource-mechanisms-20261114/README.md) | HP／ES／负生命、生命干预与复活、Modifier分类／权限、HP／EP回复、五型爆发／恢复修改、死亡归属及属性范围的完整调用链与实际Content绑定 |
 | [facing-conditions-20261114](facing-conditions-20261114/README.md) | 统一转向资格、出生／移动／攻击／受力／重现／待机入口、实际符号发布、动画后端差别及火龙普通关卡部位机制绑定 |
 | [yuanzai-facing-check-20261114](yuanzai-facing-check-20261114/README.md) | 圆仔0.3秒采样、朝向锁定与倒走说明；通用原生候选节点，尚未绑定实际Prefab |
 | [hp-loss-hook-interactions-20261113](hp-loss-hook-interactions-20261113/README.md) | 统一损伤管线的实际内容对照：华法琳／乌尔比安／雷蛇、睚与脆弱、法术流失与庇护、活性源石 HIT 资格及来源计算反例排查 |

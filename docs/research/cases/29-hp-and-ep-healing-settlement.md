@@ -1,4 +1,6 @@
-# HP 与 EP 治疗的结算与事件
+# HP 与 EP 治疗、自然回复及资源同步
+
+2026-11-14 补齐溢出ES／屏障、自然EP真实正例、满血通知实际安装与特殊HP同步；完整来源见[本轮回复证据](../evidence/resource-mechanisms-20261114/recovery-elemental/README.md)，覆盖和项目选择见[案例37](37-resource-mechanism-coverage.md)。
 
 研究日期：2026-11-03；基线 `a85aaa4`。复用[案例 27](27-attack-additions-and-damage-events.md)、[案例 25](25-elemental-burst-recovery-timing.md)与 [EP 事件补查](../evidence/ep-modifier-events-20261103/README.md)的同指纹主体，只补治疗公式、分类、接收、来源后置和末药／桑葚普通模式的内容绑定。定位、指纹与复跑命令见[证据批次](../evidence/healing-settlement-20261103/README.md)。
 
@@ -48,7 +50,7 @@ H=\max(0,\operatorname{ATK}\times\operatorname{healScale})
 
 这段计算不应用 DEF／RES。通用 Modifier.value getter 只读取当前数值；finalDelta 72155 只处理方向和非负量，没有在这两个 getter 或 OnTakeHeal 中额外乘算通用治疗加成。具体内容仍可改变传入倍率或在前置程序修改 value，本轮不穷尽所有治疗加成的来源。
 
-普通、没有 ES／HP override 或额外同步干预时，DoApplyModifier 先读取当时 HP，再调用 setter，最后读取新 HP，原生 realDelta 是本次实际差值。它不能无条件替代基本量或当前接收量；带过量转额外生命的分支还可能把 ES 变化计入 realDelta，本轮不展开。
+普通、没有 ES／HP override 或额外同步干预时，DoApplyModifier 先读取当时 HP，再调用 setter，最后读取新 HP，原生 realDelta 是本次实际差值。它不能无条件替代基本量或当前接收量；带过量转额外生命的分支还可能把 ES 变化计入 realDelta，精确ES与债务顺序见第7节。
 
 一个直接控制流支持的区分例子：已满 HP 的目标接收正数治疗100，最终 HP 不变、实际回复0，但 DoApply 仍可成功，继续目标 Applied7 和来源 AfterOutputHeal85。初始数值为0则会在原生入口被取消判断排除。**满血的正数治疗与初始零治疗不同，普通后置并不统一要求实际回复大于0。** 该例是静态分支推导，没有实机执行。
 
@@ -58,16 +60,16 @@ H=\max(0,\operatorname{ATK}\times\operatorname{healScale})
 
 所查 `ApplyElementHeal.Execute` 99906 在 `_maxEpHeal=false` 时，读取当前或弹道缓存 ATK，乘节点黑板可覆盖的 epHealRatio，然后直接构造 EP Modifier 并应用。不调用 HP CalculateHeal，不读取主 HP 的理论量或实际恢复量，也没有在该节点公式中应用 EP 损伤抗性。通用前置程序仍可修改或取消这次数值。
 
-节点默认比例为1.0；不能将其当成桑葚实际配置。桑葚分支50%有社区资料支持，本机外部 TraitData 的0.5条目未在本轮闭合。
+节点默认比例为1.0；不能将其当成桑葚实际配置。本轮固定原始角色表已补齐桑葚Trait的 `ep_heal_ratio=.5`，完整记录见[static-inputs.json](../evidence/resource-mechanisms-20261114/recovery-elemental/static-inputs.json)；不以Prefab序列化默认1替代实际参数。
 
-当前客户端正向 EP 提交循环元素 ID 1～5，每型各恢复同一数额并独立截断，realDelta 累加各型的实际变化。它既不是只恢复最低的一型，也不是把一个总预算分摊给各型。ArkBattle 当前支持四型，本调查不增加第五型支持。
+当前客户端正向 EP 提交循环元素 ID 1～5，每型各恢复同一数额并独立截断，realDelta 累加各型的实际变化。它既不是只恢复最低的一型，也不是把一个总预算分摊给各型。当前原生确有第五型狂躁实际内容，见[案例25第6节](25-elemental-burst-recovery-timing.md#6-五型配置接收者分流及实际来源)；ArkBattle当前只支持四型是实现缺口，本研究没有批准排除第五型。
 
 ### 负数：基础求值、Modifier 数值与提交量
 
 2026-11-06 先复查 [PRTS 治疗量](https://prts.wiki/w/游戏数据基础#治疗量)与[特殊机制](https://prts.wiki/w/特殊机制)，社区资料没有闭合负数 EP 输入的行为，因而补查普通 native 分支：
 
 - HP 基础治疗的裁零发生在 ATK 与 healScale 相乘之后，即上式 `max(0, ATK × healScale)`；不能改述为先将输入 ATK 裁零。`GetFinalAtk` 65919 在乘法、附加项之后才与零取 Max，治疗构造的附加项为零。
-- 普通 EP 治疗节点直接传入 `ATK × epHealRatio`。`NewHeal` 72182 与 `NewElementHeal` 72183 均固定正向修改；`set_value` 72157 与 `get_value` 72156 的普通分支原样保存、读取数值，没有取绝对值、按负号改成损伤或负值异常。
+- 普通 EP 治疗节点直接传入 `ATK × epHealRatio`。`NewHeal` 72182 与 `NewElementHeal` 72183 均固定正向修改；未启用独立数值写保护时，`set_value` 72157 与 `get_value` 72156 的普通分支原样保存、读取数值，没有取绝对值、按负号改成损伤或负值异常。
 - 两者共用 `finalDelta` 72155：先取 `max(0, value)`，再乘声明的方向。因此，若提交时治疗 Modifier 的 value 仍为负，最终资源增量为零，不会变成伤害。
 - 这不意味着负数输入在入口就作为零取消。`get_isCancelled` 72132 检查方向 NONE 或 `MathUtil.IsZero(value)`，没有 `value < 0` 分支；不属于该零值判定的负数仍可能进入接收程序，其数值也可能被后续程序改变。最终提交量为零不能证明整次调用没有 Hook 或其他副作用。
 
@@ -87,7 +89,7 @@ H=\max(0,\operatorname{ATK}\times\operatorname{healScale})
 
 Trait 的外部 MonoScript 引用为 fileID1、PathID `-8004000125733044417`。按角色 externals 定位到 SerializedFile `CAB-658d74aab777086fc32b93f385be999a`，对应脚本对象直接记录 `Torappu.Battle.Abilities.PassiveAttachmentAbility`、程序集 `Assembly-CSharp.dll`。其 DoAttach 94559 把 `_additiveActiveBuffs`、来源和 Ability 黑板放入 attachment 并登记到 Entity。精确 PPtr、外部文件、类名及脚本小对象见 `content/script-binding/trait-script-binding.json`；不是仅凭相似字段推定实际类型。
 
-50%的数值与实际基数分开记录：社区说明按 ATK 的50%；节点指令证明按自己的 ATK×比例求值、没有 HP 恢复量接续。不能把“主 HP gain=0”解释为“因此 EP 数额为0”。普通选择仍受禁疗等限制，不能由 EP 前置直接推导行医能正常锁定禁疗目标；发射后条件变化的全部组合本轮未穷尽。
+50%的数值已从实际原始Trait黑板补齐；节点指令独立证明按自己的 ATK×比例求值、没有 HP 恢复量接续。不能把“主 HP gain=0”解释为“因此 EP 数额为0”。普通选择仍受禁疗等限制，不能由 EP 前置直接推导行医能正常锁定禁疗目标；发射后条件变化的全部组合本轮未穷尽。
 
 以上限定所选默认内容和附件实际参与的路径，不推广到所有行医、技能或外部装备，也不把两次回复变成原子操作。
 
@@ -119,7 +121,7 @@ R=\operatorname{HP\_RECOVERY\_PER\_SEC}
 
 外层与回复循环均没有满血、消失或 HEAL_FREE 检查。**满血仍推进 timer，并继续尝试每个 +1 脉冲。** 普通 setter 在 Clamp 并写入后，检查 `Clamp01(当前HP/MaxHP)` 是否等于1，成立则调用 `BuffContainer.OnOwnerHpFull` 66447。这里没有比较 previous HP 或实际回复量，所以已满血、实际变化为0也能通知；不能将它解释为只在“从非满变满”时触发。对应指令为 `SetHpInternal` 的 `0x18072f01f..0x18072f199`。
 
-`OnOwnerHpFull` 派发 Buff.Event98。当前9054项模板中两项配置了该事件，其中 `titi_s_3[doze_indoze]` 执行 `FinishBuff`，说明这项资源通知有配置消费者。本批只确认该模板程序，没有闭合缇缇 S3 的实际安装绑定或现场触发；另一项属于项目不支持的生息演算，不据此扩大需求。
+`OnOwnerHpFull` 派发 Buff.Event98。当前9054项模板中两项配置了该事件，其中 `titi_s_3[doze_indoze]` 执行 `FinishBuff`，说明这项资源通知有配置消费者。本轮已闭合实际S3 Aura→doze→致命预处理event27安装doze_indoze；后者另有.2秒满血检查。正常入口是濒死，没有证明它能合法保留在满血状态且必须靠重复no-op脉冲结束。因此实际消费者成立，不等于已证明每个满血重复通知有额外玩法差异；也不据另一项生息演算候选扩大需求。
 
 自然回复链没有经过 `CalculateHeal`、`ApplyModifier`、`OnTakeHeal`、普通目标 Applied 或来源 AfterOutputHeal。它与生命复原的区别不只是忽略禁疗：后者的所查 skip Modifier 仍执行独立 skipped 接收、取消检查和有效来源 BeforeTargetApply；自然回复直接由属性 timer 调用 HP setter。**不派发普通治疗事件不等于没有资源通知。**
 
@@ -141,4 +143,35 @@ EP 自然回复与爆发恢复通过直接 EP setter 推进，不经过上表普
 
 其余政策保持：healFree 只限制 Targeting；显式治疗不因此新增接收免疫；自然回复不派发普通治疗 Hook；既定死亡通知顺序、弱点完整双 Calculate 与 Burst 生命周期不变。上述政策与原生的差异已分别标明，不通过调查静默修改。
 
-未知项包括活跃 XLua、特化 GameMode／force／skip组合、额外生命和 HP override、全部治疗加成来源、桑葚外部 TraitData 的0.5参数与所有动态资格组合。研究限定普通 native 与所选资源，没有运行完整客户端；不据字段名称补齐未知结论。
+普通接收、skip、ES、自然回复与特殊同步已分别追踪，不再将它们统称未调查的特殊恢复。活跃XLua和所有内容任意组合没有运行验证；资源层例外及范围见第7–9节。桑葚0.5参数和缇缇实际安装已补齐。
+
+## 7. 溢出治疗、ES与屏障的真实交接
+
+`HEAL_CAN_GENERAL_SHIELD` 是独立shared mask0x400。NewHeal／NewElementHeal构造器的bool为IS_CONTINUOUS，不是溢出许可。DoApplyModifier读取溢出flag和当前maxEs；普通HP增量、偿还负生命、ES增量和屏障池增量不可混为一个量。生命setter的偿债优先级与ES抵扣见[案例11](11-damage-apply-and-hp-application.md)，构造／通知体见[overflow-operations.json](../evidence/resource-mechanisms-20261114/recovery-elemental/overflow-operations.json)。
+
+| 实际内容链 | 程序与结束语义 |
+| --- | --- |
+| 休谟斯Talent1（7941709051775367590）→humus_t_1 | 开始event0设置maxEsRatio；目标event6先IsHeal再加许可；event47取ES加入自身屏障池，DamageViaEs清临时ES。后继受击消耗的是BlockDamage池 |
+| 医生Talent2（7486918287888683052）→rdoc_t2[heal] | 来源提交前event61给治疗加许可并装临时listener；listener保存旧maxEsRatio并提高容量，event47转换ES；目标event7在IsHeal且BUFF_SOURCE==MODIFIER_SOURCE时结束listener，恢复旧上限 |
+
+`CheckEntityEquals` #101876比较实际Entity身份，不是Card或Effect分组身份。event47为OnEsOverZero（Entity→BuffContainer→Buff），不是“本次治疗溢出量”报告。医生临时ES监听的结束、实际屏障池耗尽及周期衰减是三件事，当前模板不支持笼统写成“屏障耗尽才关闭ES”。完整Actual PPtr／模板见[content.json](../evidence/resource-mechanisms-20261114/recovery-elemental/content.json)、[templates.json](../evidence/resource-mechanisms-20261114/recovery-elemental/templates.json)。
+
+当存在债务、ES或同步回调时，`received − hpGain` 不能无条件当作可转换溢出；必须保留实际提交的资源责任。这是公共资源语义需求，不以具体护盾Effect尚未实现为由忽略。
+
+## 8. 特殊回复和HP同步不是一个操作
+
+| 入口 | 实际绑定与运算 |
+| --- | --- |
+| CopyHealth #99015 | 实际dsdivi创建、卫戍acstma／acstmb转换链。取来源缺失HP，或目标MaxHP×来源缺失比例，再构造无来源真实伤害；没有读目标当前HP求同步差。新目标通常满血是调用场景的一部分 |
+| SetHpSameToSource #102151 | 喷口enemy_4053_muejet CommonAbility→Aura→enemy_muejet_mark→enemy_muejet_hp，目标validator指定trap_259_murjet。周期event2先同步MaxHP再同步HP；不是开始event0一次执行 |
+| HealCurrentGiantBossViaMaxHpRatio #99895 | 实际trap_056_sfsuifire Aura装trap_sfsuiball_devour，validator指定enemy_msfsui_mask；最终仍构造NewHeal并ApplyModifier，不另造一种生命资源 |
+| AtkToHpRecovery #98997 | 万顷S2实际wanqin_s_2[hp_recover]，将ATK×比例变成自然回复属性，不是瞬时Heal |
+
+SetHpSameToSource读取 `source.hp−target.hp`，零差直接返回；非零用NewHp #72184按正负选择deltaType，value取Abs，再按实际参数加非致命、skip标记并ApplyModifier。因此它可增加或减少HP，进入HP资源语义；既不同于CopyHealth的缺失量伤害，也不是裸字段复制。完整体及实际绑定见[hp-synchronization.json](../evidence/resource-mechanisms-20261114/recovery-elemental/hp-synchronization.json)。当前喷口／装置链已到实际Prefab，关卡引用的种类在原件分别记录，不把EnemyDbRef声明冒称已执行SPAWN。
+
+## 9. 剩余证据边界
+
+- ElementHealViaMaxHpRatio有完整native，但1180包与9054Holder没有找到引用；普通EP自然回复另有余的实际天赋，见[案例25](25-elemental-burst-recovery-timing.md#8-自然ep回复的实际非零配置)。没有据零命中批准弃用。
+- AverageHealViaHpUseAbilitySelector与HealSplitToUnionFindMembers的当前Holder命中分别是legion／sandbox命名的模板；完整体与定位已保存。若没有独立模式绑定，只记候选，不能靠名字宣布全客户端只在排除模式使用。
+- 满血重复setter通知的native行为已证，实际缇缇消费者已闭合；尚无该重复no-op改变结果的可达实例，故不推翻已定逐Tick自然回复近似，也不凭字段存在新增Hook。
+- 本轮不把“任意组合没实机跑过”用作省略上述实际资源机制的理由。新的不实现／简化须另获用户确认；当前四条普通接口并未自动表达ES、债务、同步复制和特殊复活恢复。

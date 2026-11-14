@@ -19,8 +19,8 @@
 | [07 攻击周期、动画与执行占用](07-action-timing-and-animation.md) | 玫兰莎、能天使、泥岩、弩手、安洁莉娜与莫斯提马 | Cooldown 与 Casting、缓存等待、逻辑动画事件、起手／续轮与后继释放 |
 | [08 Action 启动资格与中断](08-action-eligibility-and-interruption.md) | 当前客户端 Ability、单位攻击状态与 EnemySkill；霜星、圣堂射手及炎佑实际绑定 | 主动作互斥、启动／中断与结束；EnemySkill 触发计时、Ability 执行、宿主共享 SP 及模式差异 |
 | [09 Skill 机制与需求](09-skill-mechanisms-and-requirements.md) | PRTS 技力／特殊技能／模式策略；客户端 metadata、原生指令与实际资源；10-29 补核修正协议和原生公式，11-10 核对启动结果消费 | SP 与进度、支付与门槛、触发与持续、跨次状态、弹药与二次操作、结束后输出；2.7 闭合原生公式，2.8 收紧贡献范围，3.3 区分实际成败回退与尚无内容依据的启动失败原因分类 |
-| [10 弱点伤害与概率判定](10-weak-damage-and-critical.md) | 本机 WeakDamage、AtkScaleUp、CalculateDamage 与 Buff 模板 | 已有倍率与无事件试算的区别、事件先后、概率状态及原生／热更新证据边界 |
-| [11 Damage Apply 与 HP Application](11-damage-apply-and-hp-application.md) | 接收／HP 原生路径、盾／反伤／分担、物理／法术／真实流失的实际绑定及致命机制 | 取消后资格、同步反应、生命保护；区分防御公式、计算事件、skip 接收与直接 HP 设置 |
+| [10 弱点伤害与概率判定](10-weak-damage-and-critical.md) | 当前WeakDamage／AtkScaleUp／AttackInfo、山实际概率能力、赤刃明霄陈完整DB别名 | 同一倍率静默试算、攻击级概率、实际选择链；当前atkAddition置零与Wiki的证据冲突 |
+| [11 HP应用、生命干预与流失](11-damage-apply-and-hp-application.md) | HP／ES／负生命、免死竞争、替身、同实例／主动复活、战术点及实际流失 | 固定扣血、动态不死、consumer后继、复活恢复与模式交接；修正若叶睦模板归属 |
 | [12 SPFA、平滑与移动消费](12-navigation-native-algorithm.md) | 当前 DLL／metadata 原生指令、射线隔离仿真与 Stronghold 对照 | 原地后继更新、Bresenham 边界、运行时移动恢复、地图重规划与最终 Field 是否需要 rawNext |
 | [13 Route、等待与实际移动时序](13-route-and-movement-timing.md) | Enemy／Cursor／Checkpoint 原生分支、完整固定关卡目录与实际技能资源 | 两处推进、等待、不可达跳过、目标采样／半径；首路点时序；马特奥运行时随机 MOVE 正例 |
 | [14 RouteDefinition 字段消费](14-route-definition-fields.md) | 出生／Cursor／完成检查原生分支、固定版本关卡 JSON；11-07 补核运行时路线与时间快照 | 字段行为、持续路线偏移、提前终点完成；不同出生入口及实例初始化的事实边界 |
@@ -34,7 +34,7 @@
 | [22 阻挡站位与中断](22-block-positioning-and-interruption.md) | 当前客户端的 BattleTween、解除／裁撤、离场、传送及失衡入口 | 确定性线性曲线、不同解除入口的取消语义、残留插值与自主移动调度，以及顺序重接敌与同步重入的区别 |
 | [23 Blocker、Blockable 与阵营](23-blocker-and-blockable-roles.md) | 原生角色／敌人资格与本机全部 Enemy bundle 初始掩码 | 区分双重角色执行能力与实际内容，核查 ALLY 限定是否成立 |
 | [24 待部署区、部署费用与卡牌供给](24-deployment-cost-and-supply.md) | 费用 getter／取整／独立截断上限、卡牌 Buff 进入角色与出生时序；cardUid 生成和普通重部署；PRTS 手牌顺序、场下资源、资格、供给及模式对照 | 卡牌与在场采样、共享消耗、当前／下次计时、显示／点选／部署的区别；来源身份跨普通重部署保留，以及原生阶段与多来源交互的证据边界 |
-| [25 元素爆发恢复与首次推进](25-elemental-burst-recovery-timing.md) | 当前客户端 EPController、同步 EP 耗尽触发及逐宿主更新链 | 首次恢复由实际调用顺序决定，无统一创建 Tick 跳过；恢复进度、真实 EP 写回及原生证据边界 |
+| [25 元素损伤、标准爆发与恢复](25-elemental-burst-recovery-timing.md) | 五型全局表／实际来源、接收与抗性、EPController、余／酒神／珊比绑定 | 首次参与、真实EP写回、零参数子效果；自然EP、动态速度与即时缩时重算 |
 | [26 奥术法阵与链术师跳跃沉默](26-arcane-circle-chain-silence.md) | 本机 native 伤害事件与逐目标弹跳、本机模板／Prefab、固定赛季装备绑定及 PRTS | 普通攻击和二技能的后续跳跃也向本次伤害目标施加沉默；不覆盖零伤害等未核实边界 |
 | [27 一次攻击的索敌、弹道与伤害结算](27-attack-additions-and-damage-events.md) | 妮芙 S1 的目标取得、弹道身份与采样、前置 Buff、HP／EP、通知和普通死亡短链 | 区分攻击、命中、计算、受伤与击杀时点；已有爆发和本击新爆发、value 与 HP 变化、业务结束与物理回收 |
 | [28 伤害扩展时点与事件粒度](28-damage-hooks-and-event-granularity.md) | 计算、输出、接收、成功闪避、HP 应用、成功伤害与击杀的代表内容，复用前案并补核接收节点 | 用实际玩法判断 Hook 必要性；区分语义机会、直接编排、事实通知与暂缺依据的独立 API |
@@ -46,6 +46,10 @@
 | [34 PRTS 公共机制覆盖审计](34-prts-mechanism-coverage-audit.md) | PRTS 机制目录与代表内容，对照已归档原生证据及当前公共接口 | 区分真实遗漏、既有延期、可组合内容与待核实候选，不以具体内容数量代替公共机制覆盖 |
 | [35 面向与转向条件](35-facing-and-turning-conditions.md) | FaceTo 统一准入、出生／移动／攻击／受力／出现／待机时点、Animator 符号与实际内容绑定 | 区分目标向量、身体四向和有效左右面向；先确认触发、资格及发布条件，再决定 Facing 的项目契约 |
 | [36 单位分类与战斗标签](36-unit-classification-and-combat-tags.md) | 实现类／类型掩码、职业、FilterTag／GroupTag、敌人级别与攻击方式；泥岩、守林人、迷迭香及维娜模组绑定 | 分开初始化来源、查询对象与实际内容，核对附加职业及标签预处理，不将展示资料或 Profile 转换当作原生规则 |
+
+| [37 HP／EP资源机制全链覆盖](37-resource-mechanism-coverage.md) | 字段／方法清单、真实Content绑定、全Holder与资源扫描、既有项目选择 | Vitality／Elemental／Damage／Healing统一证据入口；实际需求、实现差距、未绑定候选与冲突分别列明，不默认批准简化 |
+| [38 Damage分类与权限](38-damage-classification-and-permissions.md) | Modifier、22项标志、公式／接收完整体、实际干员与召唤链 | 数学类型、攻击分类、施加途径、数值／取消权限、环境、分担／反伤与传播区别 |
+| [39 最终死亡归属与属性范围](39-death-attribution-and-attribute-ranges.md) | Context栈生产与恢复、FinishMe／OnFinish／两方向通知、实际角色／模组 | 区分伤害与程序来源、noSource原因、最终回收，属性覆写与MaxHP普通setter后继 |
 
 证据文件及复现范围见[批次索引](../evidence/README.md)。案例负责维护问题、结论及适用条件、直接证据／调用链推断、未决项和项目关联；批次 README 负责版本、指纹、文件用途和实际复现入口。
 
