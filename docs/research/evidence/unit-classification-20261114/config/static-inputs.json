@@ -1,0 +1,4246 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-14",
+    "sources": [
+      {
+        "file": ".cache/native-research/unit-audit-20261110/operator-config/character_table.json",
+        "revision": "17759cc8cdf37388414145d16262a3a06f3ab25e",
+        "path": "zh_CN/gamedata/excel/character_table.json",
+        "sha256": "e523c7c83c36e2d76697121079e17d0282da1a94d59a55e1cc55616edf0b41c4",
+        "gitBlobSha1": "f7284f66cfd87273a6805142b389aa314320968f",
+        "bytes": 15069101,
+        "url": "https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/17759cc8cdf37388414145d16262a3a06f3ab25e/zh_CN/gamedata/excel/character_table.json"
+      },
+      {
+        "file": ".cache/native-research/leithanien-enemydata-20261109/enemy_database.json",
+        "revision": "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+        "path": "zh_CN/gamedata/levels/enemydata/enemy_database.json",
+        "sha256": "eb8559db76aecd92c37b3ac038de0e9aeb8b6d6c107adfaeadfe0fbc098e067b",
+        "gitBlobSha1": "62ab806926b9c8ca5c80524730caf0066f6c2c2f",
+        "bytes": 15721552,
+        "url": "https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/63c7cec73c3858d0ae913f85cc89af3cef4d744f/zh_CN/gamedata/levels/enemydata/enemy_database.json"
+      },
+      {
+        "file": ".cache/native-research/unit-audit-20261110/operator-config/battle_equip_table.json",
+        "revision": "17759cc8cdf37388414145d16262a3a06f3ab25e",
+        "path": "zh_CN/gamedata/excel/battle_equip_table.json",
+        "sha256": "991ce1a8cd76682704b7e95fb71de8c726fd9ff62038a2da31b8a3870dc48055",
+        "gitBlobSha1": "7039d6565ad74eb77128d2ea137837ef62800ffe",
+        "bytes": 5763741,
+        "url": "https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/17759cc8cdf37388414145d16262a3a06f3ab25e/zh_CN/gamedata/excel/battle_equip_table.json"
+      }
+    ],
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/unit-classification-20261114/config/extract_static.py",
+      "sha256": "50d24e2a49cec17e82d0dcb86bdc783fa8e9fe55b9cac20e6ac27bd31330d22b"
+    },
+    "scope": "Full table inventory; selected original fields. Raw m_defined/m_value preserved, no assumed effective inheritance."
+  },
+  "result": {
+    "characterCount": 1382,
+    "characterTopLevelFields": [
+      "name",
+      "description",
+      "sortIndex",
+      "spTargetType",
+      "spTargetId",
+      "canUseGeneralPotentialItem",
+      "canUseActivityPotentialItem",
+      "potentialItemId",
+      "activityPotentialItemId",
+      "classicPotentialItemId",
+      "nationId",
+      "groupId",
+      "teamId",
+      "mainPower",
+      "subPower",
+      "displayNumber",
+      "appellation",
+      "position",
+      "tagList",
+      "itemUsage",
+      "itemDesc",
+      "itemObtainApproach",
+      "isNotObtainable",
+      "isSpChar",
+      "maxPotentialLevel",
+      "rarity",
+      "profession",
+      "subProfessionId",
+      "trait",
+      "phases",
+      "skills",
+      "displayTokenDict",
+      "talents",
+      "potentialRanks",
+      "favorKeyFrames",
+      "allSkillLvlup"
+    ],
+    "characterDistributions": {
+      "profession": [
+        {
+          "value": "CASTER",
+          "count": 64
+        },
+        {
+          "value": "MEDIC",
+          "count": 42
+        },
+        {
+          "value": "PIONEER",
+          "count": 46
+        },
+        {
+          "value": "SNIPER",
+          "count": 63
+        },
+        {
+          "value": "SPECIAL",
+          "count": 53
+        },
+        {
+          "value": "SUPPORT",
+          "count": 52
+        },
+        {
+          "value": "TANK",
+          "count": 52
+        },
+        {
+          "value": "TOKEN",
+          "count": 75
+        },
+        {
+          "value": "TRAP",
+          "count": 846
+        },
+        {
+          "value": "WARRIOR",
+          "count": 89
+        }
+      ],
+      "subProfessionId": [
+        {
+          "value": "agent",
+          "count": 6
+        },
+        {
+          "value": "alchemist",
+          "count": 3
+        },
+        {
+          "value": "aoesniper",
+          "count": 7
+        },
+        {
+          "value": "artsfghter",
+          "count": 7
+        },
+        {
+          "value": "artsprotector",
+          "count": 6
+        },
+        {
+          "value": "bard",
+          "count": 6
+        },
+        {
+          "value": "bearer",
+          "count": 5
+        },
+        {
+          "value": "blastcaster",
+          "count": 5
+        },
+        {
+          "value": "blessing",
+          "count": 7
+        },
+        {
+          "value": "bombarder",
+          "count": 4
+        },
+        {
+          "value": "centurion",
+          "count": 9
+        },
+        {
+          "value": "chain",
+          "count": 4
+        },
+        {
+          "value": "chainhealer",
+          "count": 4
+        },
+        {
+          "value": "charger",
+          "count": 7
+        },
+        {
+          "value": "closerange",
+          "count": 6
+        },
+        {
+          "value": "corecaster",
+          "count": 15
+        },
+        {
+          "value": "counsellor",
+          "count": 2
+        },
+        {
+          "value": "craftsman",
+          "count": 6
+        },
+        {
+          "value": "crusher",
+          "count": 4
+        },
+        {
+          "value": "dollkeeper",
+          "count": 7
+        },
+        {
+          "value": "duelist",
+          "count": 3
+        },
+        {
+          "value": "executor",
+          "count": 12
+        },
+        {
+          "value": "fastshot",
+          "count": 21
+        },
+        {
+          "value": "fearless",
+          "count": 14
+        },
+        {
+          "value": "fighter",
+          "count": 8
+        },
+        {
+          "value": "fortress",
+          "count": 3
+        },
+        {
+          "value": "funnel",
+          "count": 7
+        },
+        {
+          "value": "geek",
+          "count": 3
+        },
+        {
+          "value": "guardian",
+          "count": 9
+        },
+        {
+          "value": "hammer",
+          "count": 4
+        },
+        {
+          "value": "healer",
+          "count": 5
+        },
+        {
+          "value": "hookmaster",
+          "count": 5
+        },
+        {
+          "value": "hunter",
+          "count": 3
+        },
+        {
+          "value": "incantationmedic",
+          "count": 4
+        },
+        {
+          "value": "instructor",
+          "count": 6
+        },
+        {
+          "value": "librator",
+          "count": 4
+        },
+        {
+          "value": "longrange",
+          "count": 6
+        },
+        {
+          "value": "loopshooter",
+          "count": 3
+        },
+        {
+          "value": "lord",
+          "count": 12
+        },
+        {
+          "value": "mercenary",
+          "count": 2
+        },
+        {
+          "value": "merchant",
+          "count": 5
+        },
+        {
+          "value": "musha",
+          "count": 5
+        },
+        {
+          "value": "mystic",
+          "count": 6
+        },
+        {
+          "value": "notchar1",
+          "count": 73
+        },
+        {
+          "value": "notchar2",
+          "count": 846
+        },
+        {
+          "value": "phalanx",
+          "count": 5
+        },
+        {
+          "value": "physician",
+          "count": 17
+        },
+        {
+          "value": "pioneer",
+          "count": 20
+        },
+        {
+          "value": "primcaster",
+          "count": 6
+        },
+        {
+          "value": "primguard",
+          "count": 2
+        },
+        {
+          "value": "primprotector",
+          "count": 5
+        },
+        {
+          "value": "protector",
+          "count": 15
+        },
+        {
+          "value": "pusher",
+          "count": 4
+        },
+        {
+          "value": "reaper",
+          "count": 5
+        },
+        {
+          "value": "reaperrange",
+          "count": 5
+        },
+        {
+          "value": "ringhealer",
+          "count": 5
+        },
+        {
+          "value": "ritualist",
+          "count": 7
+        },
+        {
+          "value": "shotprotector",
+          "count": 6
+        },
+        {
+          "value": "siegesniper",
+          "count": 6
+        },
+        {
+          "value": "skybreaker",
+          "count": 2
+        },
+        {
+          "value": "skywalker",
+          "count": 3
+        },
+        {
+          "value": "slower",
+          "count": 12
+        },
+        {
+          "value": "soulcaster",
+          "count": 2
+        },
+        {
+          "value": "splashcaster",
+          "count": 14
+        },
+        {
+          "value": "stalker",
+          "count": 6
+        },
+        {
+          "value": "summoner",
+          "count": 7
+        },
+        {
+          "value": "supportiveranger",
+          "count": 2
+        },
+        {
+          "value": "sword",
+          "count": 7
+        },
+        {
+          "value": "tactician",
+          "count": 7
+        },
+        {
+          "value": "traper",
+          "count": 6
+        },
+        {
+          "value": "underminer",
+          "count": 5
+        },
+        {
+          "value": "unyield",
+          "count": 5
+        },
+        {
+          "value": "wandermedic",
+          "count": 5
+        },
+        {
+          "value": "watchman",
+          "count": 2
+        }
+      ],
+      "position": [
+        {
+          "value": "ALL",
+          "count": 22
+        },
+        {
+          "value": "MELEE",
+          "count": 275
+        },
+        {
+          "value": "NONE",
+          "count": 844
+        },
+        {
+          "value": "RANGED",
+          "count": 241
+        }
+      ],
+      "tagList": [
+        {
+          "value": [
+            "位移",
+            "减速"
+          ],
+          "count": 2
+        },
+        {
+          "value": [
+            "位移",
+            "控场"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "位移",
+            "输出",
+            "控场"
+          ],
+          "count": 2
+        },
+        {
+          "value": [
+            "位移",
+            "输出"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "位移"
+          ],
+          "count": 3
+        },
+        {
+          "value": [
+            "元素",
+            "控场"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "元素",
+            "支援"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "元素",
+            "爆发"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "元素",
+            "生存"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "元素",
+            "输出",
+            "控场"
+          ],
+          "count": 2
+        },
+        {
+          "value": [
+            "元素",
+            "输出",
+            "群攻"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "元素",
+            "输出"
+          ],
+          "count": 2
+        },
+        {
+          "value": [
+            "元素",
+            "防护"
+          ],
+          "count": 4
+        },
+        {
+          "value": [
+            "元素"
+          ],
+          "count": 4
+        },
+        {
+          "value": [
+            "减速",
+            "控场"
+          ],
+          "count": 2
+        },
+        {
+          "value": [
+            "减速",
+            "支援",
+            "输出"
+          ],
+          "count": 2
+        },
+        {
+          "value": [
+            "减速",
+            "支援"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "减速",
+            "治疗"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "减速",
+            "输出",
+            "支援"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "减速",
+            "输出"
+          ],
+          "count": 3
+        },
+        {
+          "value": [
+            "减速"
+          ],
+          "count": 3
+        },
+        {
+          "value": [
+            "削弱",
+            "减速"
+          ],
+          "count": 2
+        },
+        {
+          "value": [
+            "削弱",
+            "快速复活"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "削弱",
+            "支援"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "削弱"
+          ],
+          "count": 5
+        },
+        {
+          "value": [
+            "召唤",
+            "位移"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "召唤",
+            "减速"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "召唤",
+            "削弱"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "召唤",
+            "控场",
+            "输出"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "召唤",
+            "控场"
+          ],
+          "count": 3
+        },
+        {
+          "value": [
+            "召唤",
+            "支援",
+            "控场"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "召唤",
+            "支援"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "召唤",
+            "治疗"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "召唤",
+            "输出",
+            "支援"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "召唤",
+            "输出"
+          ],
+          "count": 2
+        },
+        {
+          "value": [
+            "召唤"
+          ],
+          "count": 2
+        },
+        {
+          "value": [
+            "快速复活",
+            ""
+          ],
+          "count": 2
+        },
+        {
+          "value": [
+            "快速复活",
+            "削弱"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "快速复活",
+            "控场",
+            "输出"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "快速复活",
+            "控场"
+          ],
+          "count": 3
+        },
+        {
+          "value": [
+            "快速复活",
+            "爆发"
+          ],
+          "count": 2
+        },
+        {
+          "value": [
+            "快速复活",
+            "生存",
+            "输出"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "快速复活",
+            "输出"
+          ],
+          "count": 3
+        },
+        {
+          "value": [
+            "快速复活",
+            "防护"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "快速复活"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "控场"
+          ],
+          "count": 2
+        },
+        {
+          "value": [
+            "支援",
+            "减速",
+            "输出"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "支援",
+            "治疗"
+          ],
+          "count": 3
+        },
+        {
+          "value": [
+            "支援",
+            "生存",
+            "治疗"
+          ],
+          "count": 2
+        },
+        {
+          "value": [
+            "支援",
+            "生存",
+            "输出"
+          ],
+          "count": 2
+        },
+        {
+          "value": [
+            "支援",
+            "生存"
+          ],
+          "count": 5
+        },
+        {
+          "value": [
+            "支援",
+            "输出"
+          ],
+          "count": 3
+        },
+        {
+          "value": [
+            "支援",
+            "防护"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "支援机械",
+            "元素"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "支援机械",
+            "削弱"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "支援机械",
+            "控场"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "支援机械",
+            "支援"
+          ],
+          "count": 2
+        },
+        {
+          "value": [
+            "支援机械",
+            "治疗"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "支援机械",
+            "爆发"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "支援机械",
+            "防护"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "新手"
+          ],
+          "count": 5
+        },
+        {
+          "value": [
+            "治疗",
+            "支援"
+          ],
+          "count": 9
+        },
+        {
+          "value": [
+            "治疗",
+            "输出",
+            "削弱"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "治疗",
+            "输出",
+            "支援"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "治疗",
+            "输出"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "治疗",
+            "防护",
+            "控场"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "治疗"
+          ],
+          "count": 27
+        },
+        {
+          "value": [
+            "爆发",
+            "控场"
+          ],
+          "count": 2
+        },
+        {
+          "value": [
+            "爆发",
+            "输出",
+            "削弱"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "爆发",
+            "输出",
+            "控场"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "爆发",
+            "输出",
+            "生存"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "爆发",
+            "输出"
+          ],
+          "count": 6
+        },
+        {
+          "value": [
+            "爆发"
+          ],
+          "count": 3
+        },
+        {
+          "value": [
+            "生存",
+            "召唤",
+            "输出"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "生存",
+            "快速复活"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "生存",
+            "输出"
+          ],
+          "count": 5
+        },
+        {
+          "value": [
+            "生存",
+            "防护",
+            "输出"
+          ],
+          "count": 2
+        },
+        {
+          "value": [
+            "生存",
+            "防护"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "群攻",
+            "减速"
+          ],
+          "count": 3
+        },
+        {
+          "value": [
+            "群攻",
+            "削弱"
+          ],
+          "count": 4
+        },
+        {
+          "value": [
+            "群攻",
+            "控场"
+          ],
+          "count": 6
+        },
+        {
+          "value": [
+            "群攻",
+            "支援",
+            "控场"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "群攻",
+            "治疗",
+            "控场"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "群攻",
+            "爆发"
+          ],
+          "count": 2
+        },
+        {
+          "value": [
+            "群攻",
+            "生存"
+          ],
+          "count": 6
+        },
+        {
+          "value": [
+            "群攻",
+            "输出",
+            "削弱"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "群攻",
+            "输出",
+            "控场"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "群攻",
+            "输出",
+            "爆发"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "群攻",
+            "输出"
+          ],
+          "count": 5
+        },
+        {
+          "value": [
+            "群攻",
+            "防护"
+          ],
+          "count": 3
+        },
+        {
+          "value": [
+            "群攻"
+          ],
+          "count": 9
+        },
+        {
+          "value": [
+            "费用回复",
+            "召唤"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "费用回复",
+            "快速复活"
+          ],
+          "count": 6
+        },
+        {
+          "value": [
+            "费用回复",
+            "控场"
+          ],
+          "count": 6
+        },
+        {
+          "value": [
+            "费用回复",
+            "支援"
+          ],
+          "count": 6
+        },
+        {
+          "value": [
+            "费用回复",
+            "治疗"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "费用回复",
+            "爆发"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "费用回复",
+            "生存"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "费用回复",
+            "输出"
+          ],
+          "count": 13
+        },
+        {
+          "value": [
+            "费用回复",
+            "防护"
+          ],
+          "count": 4
+        },
+        {
+          "value": [
+            "费用回复"
+          ],
+          "count": 2
+        },
+        {
+          "value": [
+            "输出",
+            "减速"
+          ],
+          "count": 4
+        },
+        {
+          "value": [
+            "输出",
+            "削弱"
+          ],
+          "count": 6
+        },
+        {
+          "value": [
+            "输出",
+            "快速复活",
+            "治疗"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "输出",
+            "快速复活"
+          ],
+          "count": 4
+        },
+        {
+          "value": [
+            "输出",
+            "控场",
+            ""
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "输出",
+            "控场"
+          ],
+          "count": 16
+        },
+        {
+          "value": [
+            "输出",
+            "支援",
+            "削弱"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "输出",
+            "支援"
+          ],
+          "count": 12
+        },
+        {
+          "value": [
+            "输出",
+            "治疗",
+            "减速"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "输出",
+            "爆发"
+          ],
+          "count": 6
+        },
+        {
+          "value": [
+            "输出",
+            "生存",
+            "控场",
+            "爆发"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "输出",
+            "生存",
+            "防护"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "输出",
+            "生存"
+          ],
+          "count": 23
+        },
+        {
+          "value": [
+            "输出",
+            "群攻"
+          ],
+          "count": 2
+        },
+        {
+          "value": [
+            "输出",
+            "费用回复"
+          ],
+          "count": 2
+        },
+        {
+          "value": [
+            "输出",
+            "防护"
+          ],
+          "count": 8
+        },
+        {
+          "value": [
+            "输出"
+          ],
+          "count": 74
+        },
+        {
+          "value": [
+            "防护",
+            "位移"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "防护",
+            "快速复活"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "防护",
+            "支援"
+          ],
+          "count": 4
+        },
+        {
+          "value": [
+            "防护",
+            "治疗",
+            "支援"
+          ],
+          "count": 2
+        },
+        {
+          "value": [
+            "防护",
+            "治疗",
+            "输出"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "防护",
+            "治疗"
+          ],
+          "count": 6
+        },
+        {
+          "value": [
+            "防护",
+            "生存",
+            "输出"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "防护",
+            "生存"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "防护",
+            "输出",
+            "减速"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "防护",
+            "输出",
+            "支援"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "防护",
+            "输出"
+          ],
+          "count": 6
+        },
+        {
+          "value": [
+            "防护"
+          ],
+          "count": 11
+        },
+        {
+          "value": [
+            "高空",
+            "控场"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "高空",
+            "治疗",
+            "支援"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "高空",
+            "生存"
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            "高空",
+            "输出",
+            "控场"
+          ],
+          "count": 1
+        },
+        {
+          "value": null,
+          "count": 921
+        }
+      ],
+      "nationId": [
+        {
+          "value": "bolivar",
+          "count": 8
+        },
+        {
+          "value": "columbia",
+          "count": 49
+        },
+        {
+          "value": "egir",
+          "count": 11
+        },
+        {
+          "value": "higashi",
+          "count": 12
+        },
+        {
+          "value": "iberia",
+          "count": 12
+        },
+        {
+          "value": "kazimierz",
+          "count": 13
+        },
+        {
+          "value": "kjerag",
+          "count": 12
+        },
+        {
+          "value": "laterano",
+          "count": 15
+        },
+        {
+          "value": "leithanien",
+          "count": 11
+        },
+        {
+          "value": "lungmen",
+          "count": 22
+        },
+        {
+          "value": "minos",
+          "count": 6
+        },
+        {
+          "value": "rhodes",
+          "count": 92
+        },
+        {
+          "value": "rim",
+          "count": 15
+        },
+        {
+          "value": "sami",
+          "count": 6
+        },
+        {
+          "value": "sargon",
+          "count": 22
+        },
+        {
+          "value": "siracusa",
+          "count": 18
+        },
+        {
+          "value": "ursus",
+          "count": 15
+        },
+        {
+          "value": "victoria",
+          "count": 39
+        },
+        {
+          "value": "yan",
+          "count": 26
+        },
+        {
+          "value": null,
+          "count": 978
+        }
+      ],
+      "groupId": [
+        {
+          "value": "abyssal",
+          "count": 6
+        },
+        {
+          "value": "babel",
+          "count": 4
+        },
+        {
+          "value": "blacksteel",
+          "count": 7
+        },
+        {
+          "value": "elite",
+          "count": 7
+        },
+        {
+          "value": "glasgow",
+          "count": 4
+        },
+        {
+          "value": "karlan",
+          "count": 5
+        },
+        {
+          "value": "lgd",
+          "count": 4
+        },
+        {
+          "value": "penguin",
+          "count": 6
+        },
+        {
+          "value": "pinus",
+          "count": 5
+        },
+        {
+          "value": "rhine",
+          "count": 12
+        },
+        {
+          "value": "siesta",
+          "count": 4
+        },
+        {
+          "value": "sui",
+          "count": 7
+        },
+        {
+          "value": "sweep",
+          "count": 3
+        },
+        {
+          "value": "tara",
+          "count": 4
+        },
+        {
+          "value": null,
+          "count": 1304
+        }
+      ],
+      "teamId": [
+        {
+          "value": "action4",
+          "count": 6
+        },
+        {
+          "value": "chiave",
+          "count": 3
+        },
+        {
+          "value": "followers",
+          "count": 3
+        },
+        {
+          "value": "laios",
+          "count": 4
+        },
+        {
+          "value": "lee",
+          "count": 4
+        },
+        {
+          "value": "mujica",
+          "count": 5
+        },
+        {
+          "value": "rainbow",
+          "count": 8
+        },
+        {
+          "value": "reserve1",
+          "count": 5
+        },
+        {
+          "value": "reserve4",
+          "count": 5
+        },
+        {
+          "value": "reserve6",
+          "count": 7
+        },
+        {
+          "value": "sees",
+          "count": 4
+        },
+        {
+          "value": "student",
+          "count": 7
+        },
+        {
+          "value": null,
+          "count": 1321
+        }
+      ],
+      "mainPower": [
+        {
+          "value": {
+            "groupId": "abyssal",
+            "nationId": "egir",
+            "teamId": null
+          },
+          "count": 6
+        },
+        {
+          "value": {
+            "groupId": "babel",
+            "nationId": null,
+            "teamId": null
+          },
+          "count": 4
+        },
+        {
+          "value": {
+            "groupId": "blacksteel",
+            "nationId": "columbia",
+            "teamId": null
+          },
+          "count": 7
+        },
+        {
+          "value": {
+            "groupId": "elite",
+            "nationId": "rhodes",
+            "teamId": null
+          },
+          "count": 7
+        },
+        {
+          "value": {
+            "groupId": "glasgow",
+            "nationId": "victoria",
+            "teamId": null
+          },
+          "count": 4
+        },
+        {
+          "value": {
+            "groupId": "karlan",
+            "nationId": "kjerag",
+            "teamId": null
+          },
+          "count": 5
+        },
+        {
+          "value": {
+            "groupId": "lgd",
+            "nationId": "lungmen",
+            "teamId": null
+          },
+          "count": 4
+        },
+        {
+          "value": {
+            "groupId": "penguin",
+            "nationId": "lungmen",
+            "teamId": null
+          },
+          "count": 6
+        },
+        {
+          "value": {
+            "groupId": "pinus",
+            "nationId": "kazimierz",
+            "teamId": null
+          },
+          "count": 5
+        },
+        {
+          "value": {
+            "groupId": "rhine",
+            "nationId": "columbia",
+            "teamId": null
+          },
+          "count": 12
+        },
+        {
+          "value": {
+            "groupId": "siesta",
+            "nationId": "columbia",
+            "teamId": null
+          },
+          "count": 4
+        },
+        {
+          "value": {
+            "groupId": "sui",
+            "nationId": "yan",
+            "teamId": null
+          },
+          "count": 7
+        },
+        {
+          "value": {
+            "groupId": "sweep",
+            "nationId": "rhodes",
+            "teamId": null
+          },
+          "count": 3
+        },
+        {
+          "value": {
+            "groupId": "tara",
+            "nationId": "victoria",
+            "teamId": null
+          },
+          "count": 4
+        },
+        {
+          "value": {
+            "groupId": null,
+            "nationId": "bolivar",
+            "teamId": null
+          },
+          "count": 8
+        },
+        {
+          "value": {
+            "groupId": null,
+            "nationId": "columbia",
+            "teamId": null
+          },
+          "count": 26
+        },
+        {
+          "value": {
+            "groupId": null,
+            "nationId": "egir",
+            "teamId": null
+          },
+          "count": 5
+        },
+        {
+          "value": {
+            "groupId": null,
+            "nationId": "higashi",
+            "teamId": null
+          },
+          "count": 12
+        },
+        {
+          "value": {
+            "groupId": null,
+            "nationId": "iberia",
+            "teamId": null
+          },
+          "count": 12
+        },
+        {
+          "value": {
+            "groupId": null,
+            "nationId": "kazimierz",
+            "teamId": null
+          },
+          "count": 8
+        },
+        {
+          "value": {
+            "groupId": null,
+            "nationId": "kjerag",
+            "teamId": null
+          },
+          "count": 7
+        },
+        {
+          "value": {
+            "groupId": null,
+            "nationId": "laterano",
+            "teamId": null
+          },
+          "count": 15
+        },
+        {
+          "value": {
+            "groupId": null,
+            "nationId": "leithanien",
+            "teamId": null
+          },
+          "count": 11
+        },
+        {
+          "value": {
+            "groupId": null,
+            "nationId": "lungmen",
+            "teamId": "lee"
+          },
+          "count": 4
+        },
+        {
+          "value": {
+            "groupId": null,
+            "nationId": "lungmen",
+            "teamId": null
+          },
+          "count": 8
+        },
+        {
+          "value": {
+            "groupId": null,
+            "nationId": "minos",
+            "teamId": null
+          },
+          "count": 6
+        },
+        {
+          "value": {
+            "groupId": null,
+            "nationId": "rhodes",
+            "teamId": "action4"
+          },
+          "count": 6
+        },
+        {
+          "value": {
+            "groupId": null,
+            "nationId": "rhodes",
+            "teamId": "reserve1"
+          },
+          "count": 5
+        },
+        {
+          "value": {
+            "groupId": null,
+            "nationId": "rhodes",
+            "teamId": "reserve4"
+          },
+          "count": 5
+        },
+        {
+          "value": {
+            "groupId": null,
+            "nationId": "rhodes",
+            "teamId": "reserve6"
+          },
+          "count": 7
+        },
+        {
+          "value": {
+            "groupId": null,
+            "nationId": "rhodes",
+            "teamId": null
+          },
+          "count": 59
+        },
+        {
+          "value": {
+            "groupId": null,
+            "nationId": "rim",
+            "teamId": null
+          },
+          "count": 15
+        },
+        {
+          "value": {
+            "groupId": null,
+            "nationId": "sami",
+            "teamId": null
+          },
+          "count": 6
+        },
+        {
+          "value": {
+            "groupId": null,
+            "nationId": "sargon",
+            "teamId": null
+          },
+          "count": 22
+        },
+        {
+          "value": {
+            "groupId": null,
+            "nationId": "siracusa",
+            "teamId": "chiave"
+          },
+          "count": 3
+        },
+        {
+          "value": {
+            "groupId": null,
+            "nationId": "siracusa",
+            "teamId": null
+          },
+          "count": 15
+        },
+        {
+          "value": {
+            "groupId": null,
+            "nationId": "ursus",
+            "teamId": "student"
+          },
+          "count": 7
+        },
+        {
+          "value": {
+            "groupId": null,
+            "nationId": "ursus",
+            "teamId": null
+          },
+          "count": 8
+        },
+        {
+          "value": {
+            "groupId": null,
+            "nationId": "victoria",
+            "teamId": null
+          },
+          "count": 31
+        },
+        {
+          "value": {
+            "groupId": null,
+            "nationId": "yan",
+            "teamId": null
+          },
+          "count": 19
+        },
+        {
+          "value": {
+            "groupId": null,
+            "nationId": null,
+            "teamId": "followers"
+          },
+          "count": 3
+        },
+        {
+          "value": {
+            "groupId": null,
+            "nationId": null,
+            "teamId": "laios"
+          },
+          "count": 4
+        },
+        {
+          "value": {
+            "groupId": null,
+            "nationId": null,
+            "teamId": "mujica"
+          },
+          "count": 5
+        },
+        {
+          "value": {
+            "groupId": null,
+            "nationId": null,
+            "teamId": "rainbow"
+          },
+          "count": 8
+        },
+        {
+          "value": {
+            "groupId": null,
+            "nationId": null,
+            "teamId": "sees"
+          },
+          "count": 4
+        },
+        {
+          "value": {
+            "groupId": null,
+            "nationId": null,
+            "teamId": null
+          },
+          "count": 950
+        }
+      ],
+      "subPower": [
+        {
+          "value": [
+            {
+              "groupId": "babel",
+              "nationId": null,
+              "teamId": null
+            },
+            {
+              "groupId": null,
+              "nationId": "sargon",
+              "teamId": null
+            }
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            {
+              "groupId": "babel",
+              "nationId": null,
+              "teamId": null
+            }
+          ],
+          "count": 7
+        },
+        {
+          "value": [
+            {
+              "groupId": "glasgow",
+              "nationId": "victoria",
+              "teamId": null
+            }
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            {
+              "groupId": "karlan",
+              "nationId": "kjerag",
+              "teamId": null
+            }
+          ],
+          "count": 4
+        },
+        {
+          "value": [
+            {
+              "groupId": "penguin",
+              "nationId": "lungmen",
+              "teamId": null
+            }
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            {
+              "groupId": "tara",
+              "nationId": "victoria",
+              "teamId": null
+            }
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            {
+              "groupId": null,
+              "nationId": "bolivar",
+              "teamId": null
+            }
+          ],
+          "count": 6
+        },
+        {
+          "value": [
+            {
+              "groupId": null,
+              "nationId": "columbia",
+              "teamId": null
+            }
+          ],
+          "count": 10
+        },
+        {
+          "value": [
+            {
+              "groupId": null,
+              "nationId": "egir",
+              "teamId": null
+            }
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            {
+              "groupId": null,
+              "nationId": "higashi",
+              "teamId": null
+            }
+          ],
+          "count": 8
+        },
+        {
+          "value": [
+            {
+              "groupId": null,
+              "nationId": "iberia",
+              "teamId": null
+            }
+          ],
+          "count": 3
+        },
+        {
+          "value": [
+            {
+              "groupId": null,
+              "nationId": "kazimierz",
+              "teamId": null
+            },
+            {
+              "groupId": null,
+              "nationId": "leithanien",
+              "teamId": null
+            }
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            {
+              "groupId": null,
+              "nationId": "kazimierz",
+              "teamId": null
+            },
+            {
+              "groupId": null,
+              "nationId": "rhodes",
+              "teamId": null
+            }
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            {
+              "groupId": null,
+              "nationId": "kazimierz",
+              "teamId": null
+            }
+          ],
+          "count": 6
+        },
+        {
+          "value": [
+            {
+              "groupId": null,
+              "nationId": "kjerag",
+              "teamId": null
+            }
+          ],
+          "count": 2
+        },
+        {
+          "value": [
+            {
+              "groupId": null,
+              "nationId": "laterano",
+              "teamId": null
+            }
+          ],
+          "count": 11
+        },
+        {
+          "value": [
+            {
+              "groupId": null,
+              "nationId": "leithanien",
+              "teamId": null
+            }
+          ],
+          "count": 2
+        },
+        {
+          "value": [
+            {
+              "groupId": null,
+              "nationId": "minos",
+              "teamId": null
+            }
+          ],
+          "count": 3
+        },
+        {
+          "value": [
+            {
+              "groupId": null,
+              "nationId": "rhodes",
+              "teamId": null
+            }
+          ],
+          "count": 6
+        },
+        {
+          "value": [
+            {
+              "groupId": null,
+              "nationId": "rim",
+              "teamId": null
+            },
+            {
+              "groupId": "babel",
+              "nationId": null,
+              "teamId": null
+            }
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            {
+              "groupId": null,
+              "nationId": "rim",
+              "teamId": null
+            }
+          ],
+          "count": 5
+        },
+        {
+          "value": [
+            {
+              "groupId": null,
+              "nationId": "sargon",
+              "teamId": null
+            }
+          ],
+          "count": 7
+        },
+        {
+          "value": [
+            {
+              "groupId": null,
+              "nationId": "siracusa",
+              "teamId": null
+            },
+            {
+              "groupId": null,
+              "nationId": "ursus",
+              "teamId": null
+            }
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            {
+              "groupId": null,
+              "nationId": "siracusa",
+              "teamId": null
+            }
+          ],
+          "count": 5
+        },
+        {
+          "value": [
+            {
+              "groupId": null,
+              "nationId": "ursus",
+              "teamId": null
+            }
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            {
+              "groupId": null,
+              "nationId": "victoria",
+              "teamId": null
+            }
+          ],
+          "count": 8
+        },
+        {
+          "value": [
+            {
+              "groupId": null,
+              "nationId": "yan",
+              "teamId": null
+            },
+            {
+              "groupId": null,
+              "nationId": "victoria",
+              "teamId": null
+            }
+          ],
+          "count": 2
+        },
+        {
+          "value": [
+            {
+              "groupId": null,
+              "nationId": "yan",
+              "teamId": null
+            }
+          ],
+          "count": 1
+        },
+        {
+          "value": [
+            {
+              "groupId": null,
+              "nationId": null,
+              "teamId": "followers"
+            },
+            {
+              "groupId": null,
+              "nationId": "rhodes",
+              "teamId": null
+            }
+          ],
+          "count": 1
+        },
+        {
+          "value": null,
+          "count": 1275
+        }
+      ]
+    },
+    "characterExamples": [
+      {
+        "pointer": "/char_208_melan",
+        "id": "char_208_melan",
+        "fields": {
+          "name": "玫兰莎",
+          "profession": "WARRIOR",
+          "subProfessionId": "fearless",
+          "position": "MELEE",
+          "tagList": [
+            "输出",
+            "生存"
+          ],
+          "nationId": "rhodes",
+          "groupId": null,
+          "teamId": "reserve4",
+          "mainPower": {
+            "nationId": "rhodes",
+            "groupId": null,
+            "teamId": "reserve4"
+          },
+          "subPower": [
+            {
+              "nationId": "victoria",
+              "groupId": null,
+              "teamId": null
+            }
+          ],
+          "rarity": "TIER_3",
+          "isNotObtainable": false
+        }
+      },
+      {
+        "pointer": "/char_311_mudrok",
+        "id": "char_311_mudrok",
+        "fields": {
+          "name": "泥岩",
+          "profession": "TANK",
+          "subProfessionId": "unyield",
+          "position": "MELEE",
+          "tagList": [
+            "生存",
+            "防护",
+            "输出"
+          ],
+          "nationId": "rhodes",
+          "groupId": null,
+          "teamId": null,
+          "mainPower": {
+            "nationId": "rhodes",
+            "groupId": null,
+            "teamId": null
+          },
+          "subPower": null,
+          "rarity": "TIER_6",
+          "isNotObtainable": false
+        }
+      },
+      {
+        "pointer": "/char_158_milu",
+        "id": "char_158_milu",
+        "fields": {
+          "name": "守林人",
+          "profession": "SNIPER",
+          "subProfessionId": "longrange",
+          "position": "RANGED",
+          "tagList": [
+            "输出",
+            "爆发"
+          ],
+          "nationId": "rhodes",
+          "groupId": null,
+          "teamId": null,
+          "mainPower": {
+            "nationId": "rhodes",
+            "groupId": null,
+            "teamId": null
+          },
+          "subPower": [
+            {
+              "nationId": "kazimierz",
+              "groupId": null,
+              "teamId": null
+            }
+          ],
+          "rarity": "TIER_5",
+          "isNotObtainable": false
+        }
+      },
+      {
+        "pointer": "/char_102_texas",
+        "id": "char_102_texas",
+        "fields": {
+          "name": "德克萨斯",
+          "profession": "PIONEER",
+          "subProfessionId": "pioneer",
+          "position": "MELEE",
+          "tagList": [
+            "费用回复",
+            "控场"
+          ],
+          "nationId": "lungmen",
+          "groupId": "penguin",
+          "teamId": null,
+          "mainPower": {
+            "nationId": "lungmen",
+            "groupId": "penguin",
+            "teamId": null
+          },
+          "subPower": [
+            {
+              "nationId": "siracusa",
+              "groupId": null,
+              "teamId": null
+            }
+          ],
+          "rarity": "TIER_5",
+          "isNotObtainable": false
+        }
+      },
+      {
+        "pointer": "/char_263_skadi",
+        "id": "char_263_skadi",
+        "fields": {
+          "name": "斯卡蒂",
+          "profession": "WARRIOR",
+          "subProfessionId": "fearless",
+          "position": "MELEE",
+          "tagList": [
+            "输出",
+            "生存"
+          ],
+          "nationId": "egir",
+          "groupId": "abyssal",
+          "teamId": null,
+          "mainPower": {
+            "nationId": "egir",
+            "groupId": "abyssal",
+            "teamId": null
+          },
+          "subPower": null,
+          "rarity": "TIER_6",
+          "isNotObtainable": false
+        }
+      },
+      {
+        "pointer": "/token_10001_deepcl_tentac",
+        "id": "token_10001_deepcl_tentac",
+        "fields": {
+          "name": "触手",
+          "profession": "TOKEN",
+          "subProfessionId": "notchar1",
+          "position": "MELEE",
+          "tagList": null,
+          "nationId": null,
+          "groupId": null,
+          "teamId": null,
+          "mainPower": {
+            "nationId": null,
+            "groupId": null,
+            "teamId": null
+          },
+          "subPower": null,
+          "rarity": "TIER_4",
+          "isNotObtainable": false
+        }
+      },
+      {
+        "pointer": "/token_10007_phatom_twin",
+        "id": "token_10007_phatom_twin",
+        "fields": {
+          "name": "镜中虚影",
+          "profession": "TOKEN",
+          "subProfessionId": "executor",
+          "position": "MELEE",
+          "tagList": null,
+          "nationId": null,
+          "groupId": null,
+          "teamId": null,
+          "mainPower": {
+            "nationId": null,
+            "groupId": null,
+            "teamId": null
+          },
+          "subPower": null,
+          "rarity": "TIER_6",
+          "isNotObtainable": false
+        }
+      },
+      {
+        "pointer": "/trap_001_crate",
+        "id": "trap_001_crate",
+        "fields": {
+          "name": "障碍物",
+          "profession": "TRAP",
+          "subProfessionId": "notchar2",
+          "position": "NONE",
+          "tagList": null,
+          "nationId": null,
+          "groupId": null,
+          "teamId": null,
+          "mainPower": {
+            "nationId": null,
+            "groupId": null,
+            "teamId": null
+          },
+          "subPower": null,
+          "rarity": "TIER_1",
+          "isNotObtainable": false
+        }
+      },
+      {
+        "pointer": "/trap_007_ballis",
+        "id": "trap_007_ballis",
+        "fields": {
+          "name": "弩炮",
+          "profession": "TRAP",
+          "subProfessionId": "notchar2",
+          "position": "NONE",
+          "tagList": null,
+          "nationId": null,
+          "groupId": null,
+          "teamId": null,
+          "mainPower": {
+            "nationId": null,
+            "groupId": null,
+            "teamId": null
+          },
+          "subPower": null,
+          "rarity": "TIER_1",
+          "isNotObtainable": false
+        }
+      }
+    ],
+    "talentBindings": [
+      {
+        "pointer": "/char_158_milu/talents/0/candidates/3",
+        "id": "char_158_milu",
+        "candidate": {
+          "prefabKey": "1",
+          "blackboard": [
+            {
+              "key": "atk_scale",
+              "value": 1.45,
+              "valueStr": null
+            }
+          ],
+          "rangeId": null,
+          "tokenKey": null
+        }
+      },
+      {
+        "pointer": "/char_311_mudrok/talents/0/candidates/5",
+        "id": "char_311_mudrok",
+        "candidate": {
+          "prefabKey": "1",
+          "blackboard": [
+            {
+              "key": "interval",
+              "value": 9.0,
+              "valueStr": null
+            },
+            {
+              "key": "times",
+              "value": 1.0,
+              "valueStr": null
+            },
+            {
+              "key": "max_times",
+              "value": 3.0,
+              "valueStr": null
+            },
+            {
+              "key": "hp_ratio",
+              "value": 0.22,
+              "valueStr": null
+            }
+          ],
+          "rangeId": null,
+          "tokenKey": null
+        }
+      },
+      {
+        "pointer": "/char_311_mudrok/talents/1/candidates/0",
+        "id": "char_311_mudrok",
+        "candidate": {
+          "prefabKey": "2",
+          "blackboard": [
+            {
+              "key": "damage_resistance",
+              "value": 0.3,
+              "valueStr": null
+            }
+          ],
+          "rangeId": null,
+          "tokenKey": null
+        }
+      }
+    ],
+    "equipmentExamples": [
+      {
+        "pointer": "/uniequip_003_siege2/phases/0/parts/0/overrideTraitDataBundle/candidates/0",
+        "equipId": "uniequip_003_siege2",
+        "equipLevel": 1,
+        "resKey": "siege2_equip_2_1_p1",
+        "target": "TRAIT",
+        "isToken": false,
+        "candidate": {
+          "prefabKey": null,
+          "blackboard": [
+            {
+              "key": "damage_scale",
+              "value": 1.1,
+              "valueStr": null
+            }
+          ],
+          "rangeId": null
+        }
+      },
+      {
+        "pointer": "/uniequip_003_siege2/phases/0/parts/1/overrideTraitDataBundle/candidates/0",
+        "equipId": "uniequip_003_siege2",
+        "equipLevel": 1,
+        "resKey": "siege2_equip_2_1_p2",
+        "target": "TRAIT",
+        "isToken": true,
+        "candidate": {
+          "prefabKey": null,
+          "blackboard": [
+            {
+              "key": "damage_scale",
+              "value": 1.1,
+              "valueStr": null
+            }
+          ],
+          "rangeId": null
+        }
+      },
+      {
+        "pointer": "/uniequip_003_siege2/phases/1/parts/0/overrideTraitDataBundle/candidates/0",
+        "equipId": "uniequip_003_siege2",
+        "equipLevel": 2,
+        "resKey": "siege2_equip_2_2_p1",
+        "target": "TRAIT",
+        "isToken": false,
+        "candidate": {
+          "prefabKey": null,
+          "blackboard": [
+            {
+              "key": "damage_scale",
+              "value": 1.1,
+              "valueStr": null
+            }
+          ],
+          "rangeId": null
+        }
+      },
+      {
+        "pointer": "/uniequip_003_siege2/phases/1/parts/1/overrideTraitDataBundle/candidates/0",
+        "equipId": "uniequip_003_siege2",
+        "equipLevel": 2,
+        "resKey": "siege2_equip_2_2_p2",
+        "target": "TRAIT",
+        "isToken": true,
+        "candidate": {
+          "prefabKey": null,
+          "blackboard": [
+            {
+              "key": "damage_scale",
+              "value": 1.1,
+              "valueStr": null
+            }
+          ],
+          "rangeId": null
+        }
+      },
+      {
+        "pointer": "/uniequip_003_siege2/phases/1/parts/2/addOrOverrideTalentDataBundle/candidates/0",
+        "equipId": "uniequip_003_siege2",
+        "equipLevel": 2,
+        "resKey": "siege2_equip_2_2_p3",
+        "target": "TALENT",
+        "isToken": false,
+        "candidate": {
+          "prefabKey": "10_root",
+          "blackboard": [
+            {
+              "key": "damage_scale",
+              "value": 1.1,
+              "valueStr": null
+            }
+          ],
+          "rangeId": null
+        }
+      },
+      {
+        "pointer": "/uniequip_003_siege2/phases/1/parts/2/addOrOverrideTalentDataBundle/candidates/1",
+        "equipId": "uniequip_003_siege2",
+        "equipLevel": 2,
+        "resKey": "siege2_equip_2_2_p3",
+        "target": "TALENT",
+        "isToken": false,
+        "candidate": {
+          "prefabKey": "10_root",
+          "blackboard": [
+            {
+              "key": "damage_scale",
+              "value": 1.1,
+              "valueStr": null
+            }
+          ],
+          "rangeId": null
+        }
+      },
+      {
+        "pointer": "/uniequip_003_siege2/phases/1/parts/3/addOrOverrideTalentDataBundle/candidates/0",
+        "equipId": "uniequip_003_siege2",
+        "equipLevel": 2,
+        "resKey": "siege2_equip_2_2_p4",
+        "target": "TALENT",
+        "isToken": true,
+        "candidate": {
+          "prefabKey": "10_root",
+          "blackboard": [
+            {
+              "key": "damage_scale",
+              "value": 1.1,
+              "valueStr": null
+            }
+          ],
+          "rangeId": null
+        }
+      },
+      {
+        "pointer": "/uniequip_003_siege2/phases/1/parts/3/addOrOverrideTalentDataBundle/candidates/1",
+        "equipId": "uniequip_003_siege2",
+        "equipLevel": 2,
+        "resKey": "siege2_equip_2_2_p4",
+        "target": "TALENT",
+        "isToken": true,
+        "candidate": {
+          "prefabKey": "10_root",
+          "blackboard": [
+            {
+              "key": "damage_scale",
+              "value": 1.1,
+              "valueStr": null
+            }
+          ],
+          "rangeId": null
+        }
+      },
+      {
+        "pointer": "/uniequip_003_siege2/phases/1/parts/4/addOrOverrideTalentDataBundle/candidates/0",
+        "equipId": "uniequip_003_siege2",
+        "equipLevel": 2,
+        "resKey": "siege2_equip_2_2_p5",
+        "target": "TALENT",
+        "isToken": false,
+        "candidate": {
+          "prefabKey": "2",
+          "blackboard": [
+            {
+              "key": "not_combat_normal",
+              "value": 4.0,
+              "valueStr": null
+            },
+            {
+              "key": "not_combat_elite",
+              "value": 8.0,
+              "valueStr": null
+            }
+          ],
+          "rangeId": null
+        }
+      },
+      {
+        "pointer": "/uniequip_003_siege2/phases/1/parts/4/addOrOverrideTalentDataBundle/candidates/1",
+        "equipId": "uniequip_003_siege2",
+        "equipLevel": 2,
+        "resKey": "siege2_equip_2_2_p5",
+        "target": "TALENT",
+        "isToken": false,
+        "candidate": {
+          "prefabKey": "2",
+          "blackboard": [
+            {
+              "key": "not_combat_normal",
+              "value": 5.0,
+              "valueStr": null
+            },
+            {
+              "key": "not_combat_elite",
+              "value": 8.0,
+              "valueStr": null
+            }
+          ],
+          "rangeId": null
+        }
+      },
+      {
+        "pointer": "/uniequip_003_siege2/phases/2/parts/0/overrideTraitDataBundle/candidates/0",
+        "equipId": "uniequip_003_siege2",
+        "equipLevel": 3,
+        "resKey": "siege2_equip_2_3_p1",
+        "target": "TRAIT",
+        "isToken": false,
+        "candidate": {
+          "prefabKey": null,
+          "blackboard": [
+            {
+              "key": "damage_scale",
+              "value": 1.1,
+              "valueStr": null
+            }
+          ],
+          "rangeId": null
+        }
+      },
+      {
+        "pointer": "/uniequip_003_siege2/phases/2/parts/1/overrideTraitDataBundle/candidates/0",
+        "equipId": "uniequip_003_siege2",
+        "equipLevel": 3,
+        "resKey": "siege2_equip_2_3_p2",
+        "target": "TRAIT",
+        "isToken": true,
+        "candidate": {
+          "prefabKey": null,
+          "blackboard": [
+            {
+              "key": "damage_scale",
+              "value": 1.1,
+              "valueStr": null
+            }
+          ],
+          "rangeId": null
+        }
+      },
+      {
+        "pointer": "/uniequip_003_siege2/phases/2/parts/2/addOrOverrideTalentDataBundle/candidates/0",
+        "equipId": "uniequip_003_siege2",
+        "equipLevel": 3,
+        "resKey": "siege2_equip_2_3_p3",
+        "target": "TALENT",
+        "isToken": false,
+        "candidate": {
+          "prefabKey": "10_root",
+          "blackboard": [
+            {
+              "key": "damage_scale",
+              "value": 1.15,
+              "valueStr": null
+            }
+          ],
+          "rangeId": null
+        }
+      },
+      {
+        "pointer": "/uniequip_003_siege2/phases/2/parts/2/addOrOverrideTalentDataBundle/candidates/1",
+        "equipId": "uniequip_003_siege2",
+        "equipLevel": 3,
+        "resKey": "siege2_equip_2_3_p3",
+        "target": "TALENT",
+        "isToken": false,
+        "candidate": {
+          "prefabKey": "10_root",
+          "blackboard": [
+            {
+              "key": "damage_scale",
+              "value": 1.15,
+              "valueStr": null
+            }
+          ],
+          "rangeId": null
+        }
+      },
+      {
+        "pointer": "/uniequip_003_siege2/phases/2/parts/3/addOrOverrideTalentDataBundle/candidates/0",
+        "equipId": "uniequip_003_siege2",
+        "equipLevel": 3,
+        "resKey": "siege2_equip_2_3_p4",
+        "target": "TALENT",
+        "isToken": true,
+        "candidate": {
+          "prefabKey": "10_root",
+          "blackboard": [
+            {
+              "key": "damage_scale",
+              "value": 1.15,
+              "valueStr": null
+            }
+          ],
+          "rangeId": null
+        }
+      },
+      {
+        "pointer": "/uniequip_003_siege2/phases/2/parts/3/addOrOverrideTalentDataBundle/candidates/1",
+        "equipId": "uniequip_003_siege2",
+        "equipLevel": 3,
+        "resKey": "siege2_equip_2_3_p4",
+        "target": "TALENT",
+        "isToken": true,
+        "candidate": {
+          "prefabKey": "10_root",
+          "blackboard": [
+            {
+              "key": "damage_scale",
+              "value": 1.15,
+              "valueStr": null
+            }
+          ],
+          "rangeId": null
+        }
+      },
+      {
+        "pointer": "/uniequip_003_siege2/phases/2/parts/4/addOrOverrideTalentDataBundle/candidates/0",
+        "equipId": "uniequip_003_siege2",
+        "equipLevel": 3,
+        "resKey": "siege2_equip_2_3_p5",
+        "target": "TALENT",
+        "isToken": false,
+        "candidate": {
+          "prefabKey": "2",
+          "blackboard": [
+            {
+              "key": "not_combat_normal",
+              "value": 6.0,
+              "valueStr": null
+            },
+            {
+              "key": "not_combat_elite",
+              "value": 12.0,
+              "valueStr": null
+            }
+          ],
+          "rangeId": null
+        }
+      },
+      {
+        "pointer": "/uniequip_003_siege2/phases/2/parts/4/addOrOverrideTalentDataBundle/candidates/1",
+        "equipId": "uniequip_003_siege2",
+        "equipLevel": 3,
+        "resKey": "siege2_equip_2_3_p5",
+        "target": "TALENT",
+        "isToken": false,
+        "candidate": {
+          "prefabKey": "2",
+          "blackboard": [
+            {
+              "key": "not_combat_normal",
+              "value": 7.0,
+              "valueStr": null
+            },
+            {
+              "key": "not_combat_elite",
+              "value": 12.0,
+              "valueStr": null
+            }
+          ],
+          "rangeId": null
+        }
+      },
+      {
+        "pointer": "/uniequip_003_rosmon/phases/0/parts/0/overrideTraitDataBundle/candidates/0",
+        "equipId": "uniequip_003_rosmon",
+        "equipLevel": 1,
+        "resKey": null,
+        "target": "DISPLAY",
+        "isToken": false,
+        "candidate": {
+          "prefabKey": null,
+          "blackboard": [],
+          "rangeId": null
+        }
+      },
+      {
+        "pointer": "/uniequip_003_rosmon/phases/0/parts/1/addOrOverrideTalentDataBundle/candidates/0",
+        "equipId": "uniequip_003_rosmon",
+        "equipLevel": 1,
+        "resKey": "rosmon_equip_2_1_p1",
+        "target": "TALENT",
+        "isToken": false,
+        "candidate": {
+          "prefabKey": "10",
+          "blackboard": [
+            {
+              "key": "equip_atk_scale",
+              "value": 1.0,
+              "valueStr": null
+            }
+          ],
+          "rangeId": null
+        }
+      },
+      {
+        "pointer": "/uniequip_003_rosmon/phases/1/parts/0/overrideTraitDataBundle/candidates/0",
+        "equipId": "uniequip_003_rosmon",
+        "equipLevel": 2,
+        "resKey": null,
+        "target": "DISPLAY",
+        "isToken": false,
+        "candidate": {
+          "prefabKey": null,
+          "blackboard": [],
+          "rangeId": null
+        }
+      },
+      {
+        "pointer": "/uniequip_003_rosmon/phases/1/parts/1/overrideTraitDataBundle/candidates/0",
+        "equipId": "uniequip_003_rosmon",
+        "equipLevel": 2,
+        "resKey": null,
+        "target": "OVERWRITE_BATTLE_DATA",
+        "isToken": false,
+        "candidate": {
+          "prefabKey": null,
+          "blackboard": [
+            {
+              "key": "game_tag_meta",
+              "value": 0.0,
+              "valueStr": "roguelike"
+            },
+            {
+              "key": "extra_profession",
+              "value": 0.0,
+              "valueStr": "caster"
+            }
+          ],
+          "rangeId": null
+        }
+      },
+      {
+        "pointer": "/uniequip_003_rosmon/phases/1/parts/2/addOrOverrideTalentDataBundle/candidates/0",
+        "equipId": "uniequip_003_rosmon",
+        "equipLevel": 2,
+        "resKey": "rosmon_equip_2_2_p1",
+        "target": "TALENT",
+        "isToken": false,
+        "candidate": {
+          "prefabKey": "10",
+          "blackboard": [
+            {
+              "key": "equip_atk_scale",
+              "value": 1.0,
+              "valueStr": null
+            }
+          ],
+          "rangeId": null
+        }
+      },
+      {
+        "pointer": "/uniequip_003_rosmon/phases/1/parts/3/addOrOverrideTalentDataBundle/candidates/0",
+        "equipId": "uniequip_003_rosmon",
+        "equipLevel": 2,
+        "resKey": "rosmon_equip_2_2_p2",
+        "target": "TALENT",
+        "isToken": false,
+        "candidate": {
+          "prefabKey": "11_root",
+          "blackboard": [],
+          "rangeId": null
+        }
+      },
+      {
+        "pointer": "/uniequip_003_rosmon/phases/2/parts/0/overrideTraitDataBundle/candidates/0",
+        "equipId": "uniequip_003_rosmon",
+        "equipLevel": 3,
+        "resKey": null,
+        "target": "DISPLAY",
+        "isToken": false,
+        "candidate": {
+          "prefabKey": null,
+          "blackboard": [],
+          "rangeId": null
+        }
+      },
+      {
+        "pointer": "/uniequip_003_rosmon/phases/2/parts/1/overrideTraitDataBundle/candidates/0",
+        "equipId": "uniequip_003_rosmon",
+        "equipLevel": 3,
+        "resKey": "rosmon_equip_2_3_p3",
+        "target": "TRAIT",
+        "isToken": true,
+        "candidate": {
+          "prefabKey": null,
+          "blackboard": [
+            {
+              "key": "def",
+              "value": -400.0,
+              "valueStr": null
+            },
+            {
+              "key": "magic_resistance",
+              "value": -20.0,
+              "valueStr": null
+            },
+            {
+              "key": "stun",
+              "value": 5.0,
+              "valueStr": null
+            },
+            {
+              "key": "rosmon_e_003_token[passive].max_hp",
+              "value": 1750.0,
+              "valueStr": null
+            },
+            {
+              "key": "rosmon_e_003_token[passive].def",
+              "value": 330.0,
+              "valueStr": null
+            },
+            {
+              "key": "rosmon_e_003_token[passive].magic_resistance",
+              "value": 35.0,
+              "valueStr": null
+            }
+          ],
+          "rangeId": null
+        }
+      },
+      {
+        "pointer": "/uniequip_003_rosmon/phases/2/parts/2/overrideTraitDataBundle/candidates/0",
+        "equipId": "uniequip_003_rosmon",
+        "equipLevel": 3,
+        "resKey": null,
+        "target": "OVERWRITE_BATTLE_DATA",
+        "isToken": false,
+        "candidate": {
+          "prefabKey": null,
+          "blackboard": [
+            {
+              "key": "game_tag_meta",
+              "value": 0.0,
+              "valueStr": "roguelike"
+            },
+            {
+              "key": "extra_profession",
+              "value": 0.0,
+              "valueStr": "caster"
+            }
+          ],
+          "rangeId": null
+        }
+      },
+      {
+        "pointer": "/uniequip_003_rosmon/phases/2/parts/3/addOrOverrideTalentDataBundle/candidates/0",
+        "equipId": "uniequip_003_rosmon",
+        "equipLevel": 3,
+        "resKey": "rosmon_equip_2_3_p1",
+        "target": "TALENT",
+        "isToken": false,
+        "candidate": {
+          "prefabKey": "10",
+          "blackboard": [
+            {
+              "key": "equip_atk_scale",
+              "value": 1.0,
+              "valueStr": null
+            }
+          ],
+          "rangeId": null
+        }
+      },
+      {
+        "pointer": "/uniequip_003_rosmon/phases/2/parts/4/addOrOverrideTalentDataBundle/candidates/0",
+        "equipId": "uniequip_003_rosmon",
+        "equipLevel": 3,
+        "resKey": "rosmon_equip_2_3_p2",
+        "target": "TALENT",
+        "isToken": false,
+        "candidate": {
+          "prefabKey": "11_root",
+          "blackboard": [],
+          "rangeId": null
+        }
+      }
+    ],
+    "enemyCount": 2216,
+    "enemyLevelRowCount": 2483,
+    "enemyFields": [
+      "name",
+      "prefabKey",
+      "enemyTags",
+      "applyWay",
+      "motion",
+      "levelType"
+    ],
+    "enemyDistributions": {
+      "enemyTags": {
+        "totalLevelRows": 2483,
+        "definedRows": 1544,
+        "undefinedRows": 939,
+        "definedValues": [
+          {
+            "value": [
+              "animated"
+            ],
+            "count": 158
+          },
+          {
+            "value": [
+              "collapsal"
+            ],
+            "count": 19
+          },
+          {
+            "value": [
+              "drone"
+            ],
+            "count": 66
+          },
+          {
+            "value": [
+              "infection"
+            ],
+            "count": 108
+          },
+          {
+            "value": [
+              "machine"
+            ],
+            "count": 90
+          },
+          {
+            "value": [
+              "mutant"
+            ],
+            "count": 15
+          },
+          {
+            "value": [
+              "origen"
+            ],
+            "count": 35
+          },
+          {
+            "value": [
+              "originiumartscraft"
+            ],
+            "count": 38
+          },
+          {
+            "value": [
+              "sarkaz"
+            ],
+            "count": 155
+          },
+          {
+            "value": [
+              "seamonster"
+            ],
+            "count": 74
+          },
+          {
+            "value": [
+              "wildanimal"
+            ],
+            "count": 66
+          },
+          {
+            "value": [],
+            "count": 525
+          },
+          {
+            "value": null,
+            "count": 195
+          }
+        ],
+        "undefinedStoredValues": [
+          {
+            "value": [
+              "machine"
+            ],
+            "count": 1
+          },
+          {
+            "value": [],
+            "count": 27
+          },
+          {
+            "value": null,
+            "count": 911
+          }
+        ],
+        "nonzeroLevelDefinitions": [
+          {
+            "pointer": "/enemies/1473/Value/1/enemyData/enemyTags",
+            "id": "enemy_1570_ymgscm",
+            "level": 1,
+            "raw": {
+              "m_defined": true,
+              "m_value": []
+            },
+            "baseline": {
+              "m_defined": true,
+              "m_value": []
+            },
+            "valueDiffersFromFirstRow": false
+          }
+        ]
+      },
+      "applyWay": {
+        "totalLevelRows": 2483,
+        "definedRows": 2170,
+        "undefinedRows": 313,
+        "definedValues": [
+          {
+            "value": "ALL",
+            "count": 109
+          },
+          {
+            "value": "MELEE",
+            "count": 1013
+          },
+          {
+            "value": "NONE",
+            "count": 354
+          },
+          {
+            "value": "RANGED",
+            "count": 694
+          }
+        ],
+        "undefinedStoredValues": [
+          {
+            "value": "MELEE",
+            "count": 6
+          },
+          {
+            "value": "NONE",
+            "count": 307
+          }
+        ],
+        "nonzeroLevelDefinitions": [
+          {
+            "pointer": "/enemies/1443/Value/1/enemyData/applyWay",
+            "id": "enemy_1544_cledub",
+            "level": 1,
+            "raw": {
+              "m_defined": true,
+              "m_value": "NONE"
+            },
+            "baseline": {
+              "m_defined": true,
+              "m_value": "NONE"
+            },
+            "valueDiffersFromFirstRow": false
+          }
+        ]
+      },
+      "motion": {
+        "totalLevelRows": 2483,
+        "definedRows": 2040,
+        "undefinedRows": 443,
+        "definedValues": [
+          {
+            "value": "FLY",
+            "count": 185
+          },
+          {
+            "value": "WALK",
+            "count": 1855
+          }
+        ],
+        "undefinedStoredValues": [
+          {
+            "value": "WALK",
+            "count": 443
+          }
+        ],
+        "nonzeroLevelDefinitions": [
+          {
+            "pointer": "/enemies/1443/Value/1/enemyData/motion",
+            "id": "enemy_1544_cledub",
+            "level": 1,
+            "raw": {
+              "m_defined": true,
+              "m_value": "WALK"
+            },
+            "baseline": {
+              "m_defined": true,
+              "m_value": "WALK"
+            },
+            "valueDiffersFromFirstRow": false
+          }
+        ]
+      },
+      "levelType": {
+        "totalLevelRows": 2483,
+        "definedRows": 1653,
+        "undefinedRows": 830,
+        "definedValues": [
+          {
+            "value": "BOSS",
+            "count": 320
+          },
+          {
+            "value": "ELITE",
+            "count": 867
+          },
+          {
+            "value": "NORMAL",
+            "count": 466
+          }
+        ],
+        "undefinedStoredValues": [
+          {
+            "value": "NORMAL",
+            "count": 830
+          }
+        ],
+        "nonzeroLevelDefinitions": [
+          {
+            "pointer": "/enemies/1443/Value/1/enemyData/levelType",
+            "id": "enemy_1544_cledub",
+            "level": 1,
+            "raw": {
+              "m_defined": true,
+              "m_value": "BOSS"
+            },
+            "baseline": {
+              "m_defined": true,
+              "m_value": "BOSS"
+            },
+            "valueDiffersFromFirstRow": false
+          },
+          {
+            "pointer": "/enemies/1473/Value/1/enemyData/levelType",
+            "id": "enemy_1570_ymgscm",
+            "level": 1,
+            "raw": {
+              "m_defined": true,
+              "m_value": "BOSS"
+            },
+            "baseline": {
+              "m_defined": true,
+              "m_value": "BOSS"
+            },
+            "valueDiffersFromFirstRow": false
+          },
+          {
+            "pointer": "/enemies/1489/Value/1/enemyData/levelType",
+            "id": "enemy_1586_suiy",
+            "level": 1,
+            "raw": {
+              "m_defined": true,
+              "m_value": "BOSS"
+            },
+            "baseline": {
+              "m_defined": true,
+              "m_value": "BOSS"
+            },
+            "valueDiffersFromFirstRow": false
+          },
+          {
+            "pointer": "/enemies/1652/Value/1/enemyData/levelType",
+            "id": "enemy_2084_skzcan",
+            "level": 1,
+            "raw": {
+              "m_defined": true,
+              "m_value": "BOSS"
+            },
+            "baseline": {
+              "m_defined": true,
+              "m_value": "BOSS"
+            },
+            "valueDiffersFromFirstRow": false
+          }
+        ]
+      }
+    },
+    "enemyExamples": [
+      {
+        "pointer": "/enemies/17",
+        "id": "enemy_1000_gopro",
+        "levels": [
+          {
+            "level": 0,
+            "pointer": "/enemies/17/Value/0/enemyData",
+            "enemyData": {
+              "name": {
+                "m_defined": true,
+                "m_value": "猎狗"
+              },
+              "prefabKey": {
+                "m_defined": true,
+                "m_value": "enemy_1000_gopro"
+              },
+              "enemyTags": {
+                "m_defined": true,
+                "m_value": [
+                  "infection"
+                ]
+              },
+              "applyWay": {
+                "m_defined": true,
+                "m_value": "MELEE"
+              },
+              "motion": {
+                "m_defined": true,
+                "m_value": "WALK"
+              },
+              "levelType": {
+                "m_defined": false,
+                "m_value": "NORMAL"
+              }
+            }
+          },
+          {
+            "level": 1,
+            "pointer": "/enemies/17/Value/1/enemyData",
+            "enemyData": {
+              "name": {
+                "m_defined": false,
+                "m_value": null
+              },
+              "prefabKey": {
+                "m_defined": false,
+                "m_value": null
+              },
+              "enemyTags": {
+                "m_defined": false,
+                "m_value": null
+              },
+              "applyWay": {
+                "m_defined": false,
+                "m_value": "NONE"
+              },
+              "motion": {
+                "m_defined": false,
+                "m_value": "WALK"
+              },
+              "levelType": {
+                "m_defined": false,
+                "m_value": "NORMAL"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "pointer": "/enemies/57",
+        "id": "enemy_1002_nsabr",
+        "levels": [
+          {
+            "level": 0,
+            "pointer": "/enemies/57/Value/0/enemyData",
+            "enemyData": {
+              "name": {
+                "m_defined": true,
+                "m_value": "士兵"
+              },
+              "prefabKey": {
+                "m_defined": true,
+                "m_value": "enemy_1002_nsabr"
+              },
+              "enemyTags": {
+                "m_defined": false,
+                "m_value": null
+              },
+              "applyWay": {
+                "m_defined": true,
+                "m_value": "MELEE"
+              },
+              "motion": {
+                "m_defined": true,
+                "m_value": "WALK"
+              },
+              "levelType": {
+                "m_defined": false,
+                "m_value": "NORMAL"
+              }
+            }
+          },
+          {
+            "level": 1,
+            "pointer": "/enemies/57/Value/1/enemyData",
+            "enemyData": {
+              "name": {
+                "m_defined": false,
+                "m_value": null
+              },
+              "prefabKey": {
+                "m_defined": false,
+                "m_value": null
+              },
+              "enemyTags": {
+                "m_defined": false,
+                "m_value": null
+              },
+              "applyWay": {
+                "m_defined": false,
+                "m_value": "NONE"
+              },
+              "motion": {
+                "m_defined": false,
+                "m_value": "WALK"
+              },
+              "levelType": {
+                "m_defined": false,
+                "m_value": "NORMAL"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "pointer": "/enemies/77",
+        "id": "enemy_1003_ncbow",
+        "levels": [
+          {
+            "level": 0,
+            "pointer": "/enemies/77/Value/0/enemyData",
+            "enemyData": {
+              "name": {
+                "m_defined": true,
+                "m_value": "弩手"
+              },
+              "prefabKey": {
+                "m_defined": true,
+                "m_value": "enemy_1003_ncbow"
+              },
+              "enemyTags": {
+                "m_defined": false,
+                "m_value": null
+              },
+              "applyWay": {
+                "m_defined": true,
+                "m_value": "RANGED"
+              },
+              "motion": {
+                "m_defined": true,
+                "m_value": "WALK"
+              },
+              "levelType": {
+                "m_defined": false,
+                "m_value": "NORMAL"
+              }
+            }
+          },
+          {
+            "level": 1,
+            "pointer": "/enemies/77/Value/1/enemyData",
+            "enemyData": {
+              "name": {
+                "m_defined": false,
+                "m_value": null
+              },
+              "prefabKey": {
+                "m_defined": false,
+                "m_value": null
+              },
+              "enemyTags": {
+                "m_defined": false,
+                "m_value": null
+              },
+              "applyWay": {
+                "m_defined": false,
+                "m_value": "NONE"
+              },
+              "motion": {
+                "m_defined": false,
+                "m_value": "WALK"
+              },
+              "levelType": {
+                "m_defined": false,
+                "m_value": "NORMAL"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "pointer": "/enemies/119",
+        "id": "enemy_1005_yokai",
+        "levels": [
+          {
+            "level": 0,
+            "pointer": "/enemies/119/Value/0/enemyData",
+            "enemyData": {
+              "name": {
+                "m_defined": true,
+                "m_value": "妖怪"
+              },
+              "prefabKey": {
+                "m_defined": true,
+                "m_value": "enemy_1005_yokai"
+              },
+              "enemyTags": {
+                "m_defined": true,
+                "m_value": [
+                  "drone"
+                ]
+              },
+              "applyWay": {
+                "m_defined": true,
+                "m_value": "NONE"
+              },
+              "motion": {
+                "m_defined": true,
+                "m_value": "FLY"
+              },
+              "levelType": {
+                "m_defined": false,
+                "m_value": "NORMAL"
+              }
+            }
+          },
+          {
+            "level": 1,
+            "pointer": "/enemies/119/Value/1/enemyData",
+            "enemyData": {
+              "name": {
+                "m_defined": false,
+                "m_value": null
+              },
+              "prefabKey": {
+                "m_defined": false,
+                "m_value": null
+              },
+              "enemyTags": {
+                "m_defined": false,
+                "m_value": null
+              },
+              "applyWay": {
+                "m_defined": false,
+                "m_value": "NONE"
+              },
+              "motion": {
+                "m_defined": false,
+                "m_value": "WALK"
+              },
+              "levelType": {
+                "m_defined": false,
+                "m_value": "NORMAL"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "pointer": "/enemies/161",
+        "id": "enemy_1007_slime",
+        "levels": [
+          {
+            "level": 0,
+            "pointer": "/enemies/161/Value/0/enemyData",
+            "enemyData": {
+              "name": {
+                "m_defined": true,
+                "m_value": "源石虫"
+              },
+              "prefabKey": {
+                "m_defined": true,
+                "m_value": "enemy_1007_slime"
+              },
+              "enemyTags": {
+                "m_defined": true,
+                "m_value": [
+                  "infection"
+                ]
+              },
+              "applyWay": {
+                "m_defined": true,
+                "m_value": "MELEE"
+              },
+              "motion": {
+                "m_defined": true,
+                "m_value": "WALK"
+              },
+              "levelType": {
+                "m_defined": false,
+                "m_value": "NORMAL"
+              }
+            }
+          },
+          {
+            "level": 1,
+            "pointer": "/enemies/161/Value/1/enemyData",
+            "enemyData": {
+              "name": {
+                "m_defined": false,
+                "m_value": null
+              },
+              "prefabKey": {
+                "m_defined": false,
+                "m_value": null
+              },
+              "enemyTags": {
+                "m_defined": false,
+                "m_value": null
+              },
+              "applyWay": {
+                "m_defined": false,
+                "m_value": "NONE"
+              },
+              "motion": {
+                "m_defined": false,
+                "m_value": "WALK"
+              },
+              "levelType": {
+                "m_defined": false,
+                "m_value": "NORMAL"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "pointer": "/enemies/226",
+        "id": "enemy_1010_demon",
+        "levels": [
+          {
+            "level": 0,
+            "pointer": "/enemies/226/Value/0/enemyData",
+            "enemyData": {
+              "name": {
+                "m_defined": true,
+                "m_value": "萨卡兹大剑手"
+              },
+              "prefabKey": {
+                "m_defined": true,
+                "m_value": "enemy_1010_demon"
+              },
+              "enemyTags": {
+                "m_defined": true,
+                "m_value": [
+                  "sarkaz"
+                ]
+              },
+              "applyWay": {
+                "m_defined": true,
+                "m_value": "MELEE"
+              },
+              "motion": {
+                "m_defined": true,
+                "m_value": "WALK"
+              },
+              "levelType": {
+                "m_defined": true,
+                "m_value": "ELITE"
+              }
+            }
+          },
+          {
+            "level": 1,
+            "pointer": "/enemies/226/Value/1/enemyData",
+            "enemyData": {
+              "name": {
+                "m_defined": false,
+                "m_value": null
+              },
+              "prefabKey": {
+                "m_defined": false,
+                "m_value": null
+              },
+              "enemyTags": {
+                "m_defined": false,
+                "m_value": null
+              },
+              "applyWay": {
+                "m_defined": false,
+                "m_value": "NONE"
+              },
+              "motion": {
+                "m_defined": false,
+                "m_value": "WALK"
+              },
+              "levelType": {
+                "m_defined": false,
+                "m_value": "NORMAL"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "pointer": "/enemies/521",
+        "id": "enemy_1043_zomsbr",
+        "levels": [
+          {
+            "level": 0,
+            "pointer": "/enemies/521/Value/0/enemyData",
+            "enemyData": {
+              "name": {
+                "m_defined": true,
+                "m_value": "宿主士兵"
+              },
+              "prefabKey": {
+                "m_defined": true,
+                "m_value": "enemy_1043_zomsbr"
+              },
+              "enemyTags": {
+                "m_defined": true,
+                "m_value": [
+                  "mutant"
+                ]
+              },
+              "applyWay": {
+                "m_defined": true,
+                "m_value": "MELEE"
+              },
+              "motion": {
+                "m_defined": true,
+                "m_value": "WALK"
+              },
+              "levelType": {
+                "m_defined": false,
+                "m_value": "NORMAL"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "pointer": "/enemies/687",
+        "id": "enemy_1126_spslme",
+        "levels": [
+          {
+            "level": 0,
+            "pointer": "/enemies/687/Value/0/enemyData",
+            "enemyData": {
+              "name": {
+                "m_defined": true,
+                "m_value": "“得意”"
+              },
+              "prefabKey": {
+                "m_defined": true,
+                "m_value": "enemy_1126_spslme"
+              },
+              "enemyTags": {
+                "m_defined": true,
+                "m_value": [
+                  "animated"
+                ]
+              },
+              "applyWay": {
+                "m_defined": true,
+                "m_value": "MELEE"
+              },
+              "motion": {
+                "m_defined": true,
+                "m_value": "WALK"
+              },
+              "levelType": {
+                "m_defined": false,
+                "m_value": "NORMAL"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "pointer": "/enemies/734",
+        "id": "enemy_1151_dslntc",
+        "levels": [
+          {
+            "level": 0,
+            "pointer": "/enemies/734/Value/0/enemyData",
+            "enemyData": {
+              "name": {
+                "m_defined": true,
+                "m_value": "钵海收割者"
+              },
+              "prefabKey": {
+                "m_defined": true,
+                "m_value": "enemy_1151_dslntc"
+              },
+              "enemyTags": {
+                "m_defined": true,
+                "m_value": [
+                  "seamonster"
+                ]
+              },
+              "applyWay": {
+                "m_defined": true,
+                "m_value": "MELEE"
+              },
+              "motion": {
+                "m_defined": true,
+                "m_value": "WALK"
+              },
+              "levelType": {
+                "m_defined": true,
+                "m_value": "ELITE"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "pointer": "/enemies/1403",
+        "id": "enemy_1511_mdrock",
+        "levels": [
+          {
+            "level": 0,
+            "pointer": "/enemies/1403/Value/0/enemyData",
+            "enemyData": {
+              "name": {
+                "m_defined": true,
+                "m_value": "泥岩"
+              },
+              "prefabKey": {
+                "m_defined": true,
+                "m_value": "enemy_1511_mdrock"
+              },
+              "enemyTags": {
+                "m_defined": true,
+                "m_value": [
+                  "sarkaz"
+                ]
+              },
+              "applyWay": {
+                "m_defined": true,
+                "m_value": "MELEE"
+              },
+              "motion": {
+                "m_defined": true,
+                "m_value": "WALK"
+              },
+              "levelType": {
+                "m_defined": true,
+                "m_value": "BOSS"
+              }
+            }
+          },
+          {
+            "level": 1,
+            "pointer": "/enemies/1403/Value/1/enemyData",
+            "enemyData": {
+              "name": {
+                "m_defined": false,
+                "m_value": null
+              },
+              "prefabKey": {
+                "m_defined": false,
+                "m_value": null
+              },
+              "enemyTags": {
+                "m_defined": false,
+                "m_value": null
+              },
+              "applyWay": {
+                "m_defined": false,
+                "m_value": "NONE"
+              },
+              "motion": {
+                "m_defined": false,
+                "m_value": "WALK"
+              },
+              "levelType": {
+                "m_defined": false,
+                "m_value": "NORMAL"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "pointer": "/enemies/1443",
+        "id": "enemy_1544_cledub",
+        "levels": [
+          {
+            "level": 0,
+            "pointer": "/enemies/1443/Value/0/enemyData",
+            "enemyData": {
+              "name": {
+                "m_defined": true,
+                "m_value": "“花匠”"
+              },
+              "prefabKey": {
+                "m_defined": true,
+                "m_value": "enemy_1544_cledub"
+              },
+              "enemyTags": {
+                "m_defined": false,
+                "m_value": null
+              },
+              "applyWay": {
+                "m_defined": true,
+                "m_value": "NONE"
+              },
+              "motion": {
+                "m_defined": true,
+                "m_value": "WALK"
+              },
+              "levelType": {
+                "m_defined": true,
+                "m_value": "BOSS"
+              }
+            }
+          },
+          {
+            "level": 1,
+            "pointer": "/enemies/1443/Value/1/enemyData",
+            "enemyData": {
+              "name": {
+                "m_defined": false,
+                "m_value": null
+              },
+              "prefabKey": {
+                "m_defined": false,
+                "m_value": null
+              },
+              "enemyTags": {
+                "m_defined": false,
+                "m_value": null
+              },
+              "applyWay": {
+                "m_defined": true,
+                "m_value": "NONE"
+              },
+              "motion": {
+                "m_defined": true,
+                "m_value": "WALK"
+              },
+              "levelType": {
+                "m_defined": true,
+                "m_value": "BOSS"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "pointer": "/enemies/1473",
+        "id": "enemy_1570_ymgscm",
+        "levels": [
+          {
+            "level": 0,
+            "pointer": "/enemies/1473/Value/0/enemyData",
+            "enemyData": {
+              "name": {
+                "m_defined": true,
+                "m_value": "三船光平"
+              },
+              "prefabKey": {
+                "m_defined": true,
+                "m_value": "enemy_1570_ymgscm"
+              },
+              "enemyTags": {
+                "m_defined": true,
+                "m_value": []
+              },
+              "applyWay": {
+                "m_defined": true,
+                "m_value": "MELEE"
+              },
+              "motion": {
+                "m_defined": false,
+                "m_value": "WALK"
+              },
+              "levelType": {
+                "m_defined": true,
+                "m_value": "BOSS"
+              }
+            }
+          },
+          {
+            "level": 1,
+            "pointer": "/enemies/1473/Value/1/enemyData",
+            "enemyData": {
+              "name": {
+                "m_defined": false,
+                "m_value": null
+              },
+              "prefabKey": {
+                "m_defined": false,
+                "m_value": null
+              },
+              "enemyTags": {
+                "m_defined": true,
+                "m_value": []
+              },
+              "applyWay": {
+                "m_defined": false,
+                "m_value": "MELEE"
+              },
+              "motion": {
+                "m_defined": false,
+                "m_value": "WALK"
+              },
+              "levelType": {
+                "m_defined": true,
+                "m_value": "BOSS"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "pointer": "/enemies/1563",
+        "id": "enemy_19064_akflwr",
+        "levels": [
+          {
+            "level": 0,
+            "pointer": "/enemies/1563/Value/0/enemyData",
+            "enemyData": {
+              "name": {
+                "m_defined": true,
+                "m_value": "钵海收割者"
+              },
+              "prefabKey": {
+                "m_defined": true,
+                "m_value": "enemy_19064_akflwr"
+              },
+              "enemyTags": {
+                "m_defined": true,
+                "m_value": [
+                  "seamonster"
+                ]
+              },
+              "applyWay": {
+                "m_defined": true,
+                "m_value": "MELEE"
+              },
+              "motion": {
+                "m_defined": true,
+                "m_value": "WALK"
+              },
+              "levelType": {
+                "m_defined": true,
+                "m_value": "NORMAL"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "multiTagRows": [],
+    "limits": [
+      "Mirror inventory includes modes outside ArkBattle support; distributions are not scope claims.",
+      "No multi-tag row was found in this fixed mirror. This does not establish a native single-tag invariant.",
+      "Classification value changes were not found among nonzero-level explicit definitions in this snapshot.",
+      "m_defined=false stored values are not treated as configured overrides.",
+      "Character race/profile text and enemy handbook table are not inputs to this extraction."
+    ]
+  }
+}

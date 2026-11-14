@@ -1,0 +1,268 @@
+{
+  "provenance": {
+    "metadata": {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+      "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5"
+    },
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/unit-classification-20261114/tags/metadata_structs.py",
+      "sha256": "d24dc4abd1911ffa57694c7aabd6b75d5bf09cc1d9ac54d13d8f042af35f5c8d"
+    },
+    "scope": "Metadata field order and accessor names only; no runtime field offsets inferred."
+  },
+  "result": [
+    {
+      "fullname": "Torappu.CharacterData/PowerData",
+      "index": 4367,
+      "fields": [
+        {
+          "name": "nationId",
+          "typeIndex": 78551,
+          "token": 67133818,
+          "index": 24953
+        },
+        {
+          "name": "groupId",
+          "typeIndex": 78551,
+          "token": 67133819,
+          "index": 24954
+        },
+        {
+          "name": "teamId",
+          "typeIndex": 78551,
+          "token": 67133820,
+          "index": 24955
+        }
+      ],
+      "methods": []
+    },
+    {
+      "fullname": "Torappu.IUndefinable",
+      "index": 4582,
+      "fields": [],
+      "methods": [
+        {
+          "name": "GetValue",
+          "declaringType": 4582,
+          "returnType": 64329,
+          "parameterStart": -1,
+          "generic": -1,
+          "token": 100695257,
+          "flags": 1478,
+          "iflags": 0,
+          "slot": 0,
+          "parameterCount": 0,
+          "index": 31960
+        },
+        {
+          "name": "get_isDefined",
+          "declaringType": 4582,
+          "returnType": 46024,
+          "parameterStart": -1,
+          "generic": -1,
+          "token": 100695258,
+          "flags": 3526,
+          "iflags": 0,
+          "slot": 1,
+          "parameterCount": 0,
+          "index": 31961
+        }
+      ]
+    },
+    {
+      "fullname": "Torappu.Undefinable`1",
+      "index": 4583,
+      "fields": [
+        {
+          "name": "DEFAULT",
+          "typeIndex": 30224,
+          "token": 67135000,
+          "index": 26135
+        },
+        {
+          "name": "m_defined",
+          "typeIndex": 46025,
+          "token": 67135001,
+          "index": 26136
+        },
+        {
+          "name": "m_value",
+          "typeIndex": 3320,
+          "token": 67135002,
+          "index": 26137
+        }
+      ],
+      "methods": [
+        {
+          "name": "get_FBOnly_m_defined",
+          "declaringType": 4583,
+          "returnType": 46024,
+          "parameterStart": -1,
+          "generic": -1,
+          "token": 100695259,
+          "flags": 2182,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 0,
+          "index": 31962
+        },
+        {
+          "name": "set_FBOnly_m_defined",
+          "declaringType": 4583,
+          "returnType": 84484,
+          "parameterStart": 42764,
+          "generic": -1,
+          "token": 100695260,
+          "flags": 2182,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 1,
+          "index": 31963
+        },
+        {
+          "name": "get_FBOnly_m_value",
+          "declaringType": 4583,
+          "returnType": 3319,
+          "parameterStart": -1,
+          "generic": -1,
+          "token": 100695261,
+          "flags": 2182,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 0,
+          "index": 31964
+        },
+        {
+          "name": "set_FBOnly_m_value",
+          "declaringType": 4583,
+          "returnType": 84484,
+          "parameterStart": 42765,
+          "generic": -1,
+          "token": 100695262,
+          "flags": 2182,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 1,
+          "index": 31965
+        },
+        {
+          "name": "get_isDefined",
+          "declaringType": 4583,
+          "returnType": 46024,
+          "parameterStart": -1,
+          "generic": -1,
+          "token": 100695263,
+          "flags": 2534,
+          "iflags": 0,
+          "slot": 5,
+          "parameterCount": 0,
+          "index": 31966
+        },
+        {
+          "name": "set_isDefined",
+          "declaringType": 4583,
+          "returnType": 84484,
+          "parameterStart": 42766,
+          "generic": -1,
+          "token": 100695264,
+          "flags": 2182,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 1,
+          "index": 31967
+        },
+        {
+          "name": "get_value",
+          "declaringType": 4583,
+          "returnType": 3319,
+          "parameterStart": -1,
+          "generic": -1,
+          "token": 100695265,
+          "flags": 2182,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 0,
+          "index": 31968
+        },
+        {
+          "name": "set_value",
+          "declaringType": 4583,
+          "returnType": 84484,
+          "parameterStart": 42767,
+          "generic": -1,
+          "token": 100695266,
+          "flags": 2182,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 1,
+          "index": 31969
+        },
+        {
+          "name": "GetValue",
+          "declaringType": 4583,
+          "returnType": 64329,
+          "parameterStart": -1,
+          "generic": -1,
+          "token": 100695267,
+          "flags": 486,
+          "iflags": 0,
+          "slot": 4,
+          "parameterCount": 0,
+          "index": 31970
+        },
+        {
+          "name": "ToString",
+          "declaringType": 4583,
+          "returnType": 78546,
+          "parameterStart": -1,
+          "generic": -1,
+          "token": 100695268,
+          "flags": 198,
+          "iflags": 0,
+          "slot": 3,
+          "parameterCount": 0,
+          "index": 31971
+        },
+        {
+          "name": ".ctor",
+          "declaringType": 4583,
+          "returnType": 84484,
+          "parameterStart": 42768,
+          "generic": -1,
+          "token": 100695269,
+          "flags": 6278,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 2,
+          "index": 31972
+        },
+        {
+          "name": "op_Implicit",
+          "declaringType": 4583,
+          "returnType": 30223,
+          "parameterStart": 42770,
+          "generic": -1,
+          "token": 100695270,
+          "flags": 2198,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 1,
+          "index": 31973
+        },
+        {
+          "name": ".cctor",
+          "declaringType": 4583,
+          "returnType": 84484,
+          "parameterStart": -1,
+          "generic": -1,
+          "token": 100695271,
+          "flags": 6289,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 0,
+          "index": 31974
+        }
+      ]
+    }
+  ]
+}

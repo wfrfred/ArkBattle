@@ -1,0 +1,136 @@
+{
+  "provenance": {
+    "collectedAt": "2026-11-14T11:13:36.811190+00:00",
+    "scope": "Selected local JSON documents only. Value matches locate potential references; they do not resolve or validate bindings.",
+    "tool": {
+      "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/config.py",
+      "sha256": "67c2a913386059a57f9316f25e532c9dd20cdc4adb91d820065d09fd9dec76e4"
+    },
+    "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+    "argv": [
+      ".cache/native-research/leithanien-enemydata-20261109/enemy_database.json",
+      "--out",
+      "docs/research/evidence/unit-classification-20261114/config/enemy-tags-query.json",
+      "--source-url",
+      "https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/63c7cec73c3858d0ae913f85cc89af3cef4d744f/zh_CN/gamedata/levels/enemydata/enemy_database.json",
+      "--revision",
+      "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+      "stats",
+      "/enemies/*/Value/*/enemyData/enemyTags",
+      "--by",
+      "/m_value"
+    ],
+    "sourceUrl": "https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/63c7cec73c3858d0ae913f85cc89af3cef4d744f/zh_CN/gamedata/levels/enemydata/enemy_database.json",
+    "revision": "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+    "inputs": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/leithanien-enemydata-20261109/enemy_database.json",
+        "bytes": 15721552,
+        "sha256": "eb8559db76aecd92c37b3ac038de0e9aeb8b6d6c107adfaeadfe0fbc098e067b",
+        "status": "ok",
+        "matched": 2483
+      }
+    ]
+  },
+  "result": {
+    "matched": 2483,
+    "types": {
+      "object": 2483
+    },
+    "sums": {},
+    "missing": {},
+    "groups": [
+      {
+        "value": [
+          "infection"
+        ],
+        "count": 108,
+        "sums": {}
+      },
+      {
+        "value": null,
+        "count": 1106,
+        "sums": {}
+      },
+      {
+        "value": [
+          "collapsal"
+        ],
+        "count": 19,
+        "sums": {}
+      },
+      {
+        "value": [
+          "animated"
+        ],
+        "count": 158,
+        "sums": {}
+      },
+      {
+        "value": [
+          "seamonster"
+        ],
+        "count": 74,
+        "sums": {}
+      },
+      {
+        "value": [],
+        "count": 552,
+        "sums": {}
+      },
+      {
+        "value": [
+          "drone"
+        ],
+        "count": 66,
+        "sums": {}
+      },
+      {
+        "value": [
+          "machine"
+        ],
+        "count": 91,
+        "sums": {}
+      },
+      {
+        "value": [
+          "origen"
+        ],
+        "count": 35,
+        "sums": {}
+      },
+      {
+        "value": [
+          "sarkaz"
+        ],
+        "count": 155,
+        "sums": {}
+      },
+      {
+        "value": [
+          "originiumartscraft"
+        ],
+        "count": 38,
+        "sums": {}
+      },
+      {
+        "value": [
+          "mutant"
+        ],
+        "count": 15,
+        "sums": {}
+      },
+      {
+        "value": [
+          "wildanimal"
+        ],
+        "count": 66,
+        "sums": {}
+      }
+    ],
+    "complete": true,
+    "scanned": 1,
+    "succeeded": 1,
+    "errors": []
+  }
+}

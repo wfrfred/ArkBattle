@@ -1,0 +1,515 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-14",
+    "scope": "Reused static component records; same current local bundle bytes verified. Not runtime observation.",
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/unit-classification-20261114/identity/select_content.py",
+      "bytes": 2610,
+      "sha256": "59a94f8832a5a6607088f514e82aca8a21047d813b894fb75df5ff401bcdaa2a"
+    },
+    "sources": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/targeting-pipeline-20261109/content/selected-prefabs.json",
+        "bytes": 778409,
+        "sha256": "8f70905dc422f11eaff0519fbe6d2a46ccf09f09783cb7f246b7daabe51b4c64"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/targeting-pipeline-20261109/content/selected-data.json",
+        "bytes": 699306,
+        "sha256": "0624ccb7fc9bfe8eccbb76f24a346c2ddeeeb223a5e1bf3182747fc5eb3f51af"
+      }
+    ],
+    "currentResourceVerification": [
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+        "bytes": 477255,
+        "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+        "bytes": 1367500,
+        "sha256": "0d0b4c0f9252c14a69a20d4bea09527403dd3eddfc2f7bcd757c3c30cf37ffc3"
+      }
+    ],
+    "originalPrefabProvenance": {
+      "collectedOn": "2026-11-09",
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/targeting-pipeline-20261109/content/extract_content.py",
+        "bytes": 12906,
+        "sha256": "37504c156e11e55c9c06174980fb1617281690ab3b01db9caa9dfd28937f5faa"
+      },
+      "helper": {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/nymph-action-settlement-20261103/projectile/decode_projectile.py",
+        "bytes": 6749,
+        "sha256": "dab13196fb726d06bd9094c29f09a12dc3677b2c129359a1f7c305e13a8157fb"
+      },
+      "tools": [
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/native.py",
+          "bytes": 18723,
+          "sha256": "1c6c16dc97e0dd9af0af4033c81a7534384dd65ebb1e604df3f4a3289df158e6"
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/unity_assets.py",
+          "bytes": 3542,
+          "sha256": "cece612435569ab6162594a9b42cbdbdab420579719f099a3b705ab4adaf7e25"
+        }
+      ],
+      "sources": [
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "bytes": 477255,
+          "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_208_melan.ab",
+          "bytes": 20655,
+          "sha256": "8729f4ba1cb6ce533657c6451ca0ce3602f552fce8a0fdfef12da0b7dcf530f8"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_124_kroos.ab",
+          "bytes": 19859,
+          "sha256": "cce77b8754667db622866b288ff3c4a6167c49cac25b5c86468b6b8b25575b1e"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_210_stward.ab",
+          "bytes": 19797,
+          "sha256": "a25e014112e5b98bdd763933a9ca864c312f6e79e9546cc203164b465070efd8"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_117_myrrh.ab",
+          "bytes": 17901,
+          "sha256": "e8df52d0fc058c98b4e1cc655adc20e157ecf3386dcd93be8a9b62708a1d8ef9"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_473_mberry.ab",
+          "bytes": 26199,
+          "sha256": "ef53adb2b73899bf2db7b52102af86cb1612915f01f41a4e16e4a6417b204acb"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_121_lava.ab",
+          "bytes": 20464,
+          "sha256": "3db84643784203db9745280c5d120058c634ddf49aa2096480966f0a75b3f62f"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_101_sora.ab",
+          "bytes": 19174,
+          "sha256": "b638a019d5a2080a7015660fb100bf0b21863455c4dce7760c14937f722eabcf"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_1012_skadi2.ab",
+          "bytes": 21407,
+          "sha256": "52662c7866015b345803272d3365e3403aa64becf07dbbc81a9b9043a8168a31"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_4191_tippi.ab",
+          "bytes": 29131,
+          "sha256": "a05bcdc4d65c64b851284f65b3d8c852e61fbbc53ec8013c2ad0188e0ec4a3e2"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_325_bison.ab",
+          "bytes": 23775,
+          "sha256": "238a81617ce2072d7763a9bf44b147851f994afa1c2af31a030056c20c054cd0"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_4062_totter.ab",
+          "bytes": 23574,
+          "sha256": "6f71d1dff55e18639da550dc543758a92cbc75b0d54ced308c7a0aa4ab6dd100"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_423_blemsh.ab",
+          "bytes": 26010,
+          "sha256": "516a47551b48fcff5cb736c337839cdc3d6d4484c6afef7e33f5f8b49152d7d6"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_1039_thorn2.ab",
+          "bytes": 29065,
+          "sha256": "14e86c29231589a23fe1603410a73c73124fed2697fd760a9ba25662d578ba30"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_1045_svash2.ab",
+          "bytes": 34030,
+          "sha256": "4da58c3993d531490f90faa511dd8e0b314e89ffd5d081b1efb3b09d5f59130b"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_base_0.ab",
+          "bytes": 147859,
+          "sha256": "8ad3f66ba83f9bd1b5b256009ff262eead54ac4d07bc921d1f5b7337226cf7df"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "bytes": 1367500,
+          "sha256": "0d0b4c0f9252c14a69a20d4bea09527403dd3eddfc2f7bcd757c3c30cf37ffc3"
+        }
+      ],
+      "selection": {
+        "characters": [
+          "char_208_melan",
+          "char_124_kroos",
+          "char_210_stward",
+          "char_117_myrrh",
+          "char_473_mberry",
+          "char_121_lava",
+          "char_101_sora",
+          "char_1012_skadi2",
+          "char_4191_tippi",
+          "char_325_bison",
+          "char_4062_totter",
+          "char_423_blemsh",
+          "char_1039_thorn2",
+          "char_1045_svash2"
+        ],
+        "shared": {
+          "battle/enm_pfb_base_0.ab": [
+            "enemy_1003_ncbow",
+            "enemy_1002_nsabr"
+          ],
+          "battle/prefabs/[uc]skills.ab": [
+            "skchr_iris_2",
+            "skchr_kafka_1",
+            "skchr_shining_3",
+            "skchr_cgbird_3",
+            "skchr_sora_1",
+            "skchr_sora_2",
+            "skchr_skadi2_2",
+            "skchr_skadi2_3",
+            "skchr_bison_2",
+            "skchr_monstr_1",
+            "skchr_blemsh_3",
+            "skchr_tocka_3",
+            "skchr_horn_1",
+            "skchr_yukari_1",
+            "skchr_amiya2_2",
+            "skchr_oxi_2",
+            "skchr_thorn2_1",
+            "skchr_haak_2",
+            "skchr_totter_1",
+            "skchr_haak_3",
+            "skchr_blemsh_2",
+            "skchr_yukari_2",
+            "skchr_thorn2_3",
+            "skchr_chen3_2",
+            "skchr_apionr_1",
+            "skchr_acpion_3",
+            "skchr_chen_3",
+            "skchr_svash2_2",
+            "skchr_snhunt_2"
+          ]
+        }
+      },
+      "scope": "Selected installed prefab components plus nondefault-option witnesses in the shared skills bundle, exact external MonoScript resolution where available; static configuration and references, not runtime execution or active XLua."
+    },
+    "originalDataProvenance": {
+      "collectedOn": "2026-11-09",
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/targeting-pipeline-20261109/content/extract_data.py",
+        "bytes": 3886,
+        "sha256": "fe5bea486214e36bae54d2e16d0ac50589b23a97f42b763a8a7039c62aa1a42e"
+      },
+      "verification": {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/route-operations-20261107/data-source-verification.json",
+        "bytes": 1413,
+        "sha256": "4fcd255faa2fb1d1aa996243fb608b0bb75f6bf855c8daff6bdbc5a3380396bb"
+      },
+      "observedPrefabs": {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/targeting-pipeline-20261109/content/selected-prefabs.json",
+        "bytes": 778409,
+        "sha256": "8f70905dc422f11eaff0519fbe6d2a46ccf09f09783cb7f246b7daabe51b4c64"
+      },
+      "sourceUrl": "https://github.com/Kengxxiao/ArknightsGameData",
+      "revision": "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+      "sources": [
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/route-operations-20261107/data/character_table.json",
+          "bytes": 15468242,
+          "sha256": "6a61f54802ee194dbb21968976eb99e2a4050e38928bd24bd2b770479076cea1",
+          "sourcePath": "zh_CN/gamedata/excel/character_table.json",
+          "revision": "63c7cec73c3858d0ae913f85cc89af3cef4d744f"
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/route-operations-20261107/data/skill_table.json",
+          "bytes": 11766431,
+          "sha256": "492900f6b957233296c9736c86bb4e5f3ab4b4d7f5055a0f973c5acec3d174b1",
+          "sourcePath": "zh_CN/gamedata/excel/skill_table.json",
+          "revision": "63c7cec73c3858d0ae913f85cc89af3cef4d744f"
+        }
+      ],
+      "scope": "Selected raw entries from a previously Git-blob-verified public mirror; not an official document or installed-client runtime observation."
+    }
+  },
+  "result": {
+    "character": {
+      "sourcePointer": "/result/characters/char_4244_tocka",
+      "id": "char_4244_tocka",
+      "name": "冻河",
+      "skills": [
+        {
+          "skillId": "skchr_tocka_1",
+          "overridePrefabKey": null
+        },
+        {
+          "skillId": "skchr_tocka_2",
+          "overridePrefabKey": null
+        },
+        {
+          "skillId": "skchr_tocka_3",
+          "overridePrefabKey": null
+        }
+      ]
+    },
+    "skill": {
+      "sourcePointer": "/result/skills/skchr_tocka_3",
+      "id": "skchr_tocka_3",
+      "name": "踽踽独行之春",
+      "prefabId": "skchr_tocka_3"
+    },
+    "selectors": [
+      {
+        "sourcePointer": "/result/334",
+        "component": {
+          "bundle": "battle/prefabs/[uc]skills.ab",
+          "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+          "pathId": "-3968825468230666268",
+          "hierarchy": [
+            "skchr_tocka_3",
+            "SelectCharacter",
+            "Selector",
+            "Selector_1"
+          ],
+          "objectSha256": "a6be3d7f44d38347d4639a015d31d7c21d67f4b9270418d45d979b30379bd1d2",
+          "scriptPPtr": {
+            "m_FileID": 1,
+            "m_PathID": -8393423638938299372
+          },
+          "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+          "script": {
+            "bundle": "anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+            "value": {
+              "id": "-8393423638938299372",
+              "name": "AdvancedSelectorWithValidatorFilter",
+              "cl": "AdvancedSelectorWithValidatorFilter",
+              "ns": "Torappu.Battle",
+              "asm": "Assembly-CSharp.dll"
+            }
+          },
+          "enabled": 1,
+          "value": {
+            "_targetSide": 1,
+            "_targetMotion": 1,
+            "_targetCategory": 1,
+            "_postFilter": 81,
+            "_ignoreTargetFree": 0,
+            "_onlyIgnoreSomeOfTargetFreeCase": 0,
+            "_abnormalFlag": 46,
+            "_abnormalCombo": 3,
+            "_ignoreAllyTargetFree": 0,
+            "_ignoreHealFree": 0,
+            "_ignoreMotionMode": 0,
+            "_forceIgnoreCamouflage": 0,
+            "_needProfessionMask": 1,
+            "_professionMask": 639,
+            "_excludeSomeAbnormalFlags": 0,
+            "_excludeAbnormalFlag": 46,
+            "_limitTargetNum": 1,
+            "_maxTargetKey": "select_max_target",
+            "_maxTargetExtraKey": "max_target_extra",
+            "_maxNum": 1,
+            "_excludeOwner": 1,
+            "_sortByTauntAtLast": 0,
+            "_ignoreHitRange": 0,
+            "_checkUnitType": 1,
+            "_unitTypeMask": 1,
+            "_abilityInputTargetAsSortSource": 0,
+            "_targetOptionHookedKeys": {
+              "Array": []
+            },
+            "_validatorFilterSettings": {
+              "Array": [
+                {
+                  "validator": {
+                    "m_FileID": 0,
+                    "m_PathID": -1206857193446606876
+                  },
+                  "isMatched": 1,
+                  "ignoreTargetSide": 0
+                },
+                {
+                  "validator": {
+                    "m_FileID": 0,
+                    "m_PathID": -2615473994392504348
+                  },
+                  "isMatched": 0,
+                  "ignoreTargetSide": 0
+                },
+                {
+                  "validator": {
+                    "m_FileID": 0,
+                    "m_PathID": -2963880533666793500
+                  },
+                  "isMatched": 1,
+                  "ignoreTargetSide": 0
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "sourcePointer": "/result/347",
+        "component": {
+          "bundle": "battle/prefabs/[uc]skills.ab",
+          "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+          "pathId": "-3253970991914911772",
+          "hierarchy": [
+            "skchr_tocka_3",
+            "SelectCharacter",
+            "Selector",
+            "Selector_3"
+          ],
+          "objectSha256": "b64d5fb38543fffa69fbd200bf4fc0e46f753b600f536bb6c4ebd960ef48de03",
+          "scriptPPtr": {
+            "m_FileID": 1,
+            "m_PathID": -8393423638938299372
+          },
+          "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+          "script": {
+            "bundle": "anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+            "value": {
+              "id": "-8393423638938299372",
+              "name": "AdvancedSelectorWithValidatorFilter",
+              "cl": "AdvancedSelectorWithValidatorFilter",
+              "ns": "Torappu.Battle",
+              "asm": "Assembly-CSharp.dll"
+            }
+          },
+          "enabled": 1,
+          "value": {
+            "_targetSide": 1,
+            "_targetMotion": 1,
+            "_targetCategory": 1,
+            "_postFilter": 81,
+            "_ignoreTargetFree": 0,
+            "_onlyIgnoreSomeOfTargetFreeCase": 0,
+            "_abnormalFlag": 46,
+            "_abnormalCombo": 3,
+            "_ignoreAllyTargetFree": 0,
+            "_ignoreHealFree": 0,
+            "_ignoreMotionMode": 0,
+            "_forceIgnoreCamouflage": 0,
+            "_needProfessionMask": 1,
+            "_professionMask": 639,
+            "_excludeSomeAbnormalFlags": 0,
+            "_excludeAbnormalFlag": 46,
+            "_limitTargetNum": 1,
+            "_maxTargetKey": "select_max_target",
+            "_maxTargetExtraKey": "max_target_extra",
+            "_maxNum": 1,
+            "_excludeOwner": 1,
+            "_sortByTauntAtLast": 0,
+            "_ignoreHitRange": 0,
+            "_checkUnitType": 1,
+            "_unitTypeMask": 1,
+            "_abilityInputTargetAsSortSource": 0,
+            "_targetOptionHookedKeys": {
+              "Array": []
+            },
+            "_validatorFilterSettings": {
+              "Array": [
+                {
+                  "validator": {
+                    "m_FileID": 0,
+                    "m_PathID": -3192772691721553948
+                  },
+                  "isMatched": 1,
+                  "ignoreTargetSide": 0
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "sourcePointer": "/result/451",
+        "component": {
+          "bundle": "battle/prefabs/[uc]skills.ab",
+          "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+          "pathId": "7464141954615375844",
+          "hierarchy": [
+            "skchr_tocka_3",
+            "SelectCharacter",
+            "Selector",
+            "Selector_2"
+          ],
+          "objectSha256": "dba07a7d3e16877ec9db9443fd10e9d91b62706c0fd753888e858dfb08d76356",
+          "scriptPPtr": {
+            "m_FileID": 1,
+            "m_PathID": -8393423638938299372
+          },
+          "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+          "script": {
+            "bundle": "anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+            "value": {
+              "id": "-8393423638938299372",
+              "name": "AdvancedSelectorWithValidatorFilter",
+              "cl": "AdvancedSelectorWithValidatorFilter",
+              "ns": "Torappu.Battle",
+              "asm": "Assembly-CSharp.dll"
+            }
+          },
+          "enabled": 1,
+          "value": {
+            "_targetSide": 1,
+            "_targetMotion": 1,
+            "_targetCategory": 1,
+            "_postFilter": 81,
+            "_ignoreTargetFree": 0,
+            "_onlyIgnoreSomeOfTargetFreeCase": 0,
+            "_abnormalFlag": 46,
+            "_abnormalCombo": 3,
+            "_ignoreAllyTargetFree": 0,
+            "_ignoreHealFree": 0,
+            "_ignoreMotionMode": 0,
+            "_forceIgnoreCamouflage": 0,
+            "_needProfessionMask": 1,
+            "_professionMask": 639,
+            "_excludeSomeAbnormalFlags": 0,
+            "_excludeAbnormalFlag": 46,
+            "_limitTargetNum": 1,
+            "_maxTargetKey": "select_max_target",
+            "_maxTargetExtraKey": "max_target_extra",
+            "_maxNum": 1,
+            "_excludeOwner": 1,
+            "_sortByTauntAtLast": 0,
+            "_ignoreHitRange": 0,
+            "_checkUnitType": 1,
+            "_unitTypeMask": 1,
+            "_abilityInputTargetAsSortSource": 0,
+            "_targetOptionHookedKeys": {
+              "Array": []
+            },
+            "_validatorFilterSettings": {
+              "Array": [
+                {
+                  "validator": {
+                    "m_FileID": 0,
+                    "m_PathID": -7444934619566999580
+                  },
+                  "isMatched": 1,
+                  "ignoreTargetSide": 0
+                },
+                {
+                  "validator": {
+                    "m_FileID": 0,
+                    "m_PathID": 6979165171217102820
+                  },
+                  "isMatched": 1,
+                  "ignoreTargetSide": 0
+                }
+              ]
+            }
+          }
+        }
+      }
+    ]
+  }
+}

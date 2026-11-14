@@ -105,6 +105,8 @@ Core 不提供干员或敌人 Archetype 层；内容直接组合 Unit Definition
 
 当前跨内容标签查询仍依赖 Profile，独立的战斗标签接口尚未提供。名称、外观等展示信息与构造时已分配到各能力的基础属性分别按其职责处理；萨卡兹减伤继续使用实际攻击者的标签。
 
+原生来源与查询需求见[单位分类调查](../research/cases/36-unit-classification-and-combat-tags.md)：实现类、阵营、职业、FilterTag／GroupTag、敌人级别及攻击方式分别有消费者，不能统称为一套种族标签。该调查尚未变成新的公共字段或接口。
+
 ## 构造、校验与命名
 
 合法构造入口建立 Definition／State 配对、能力依赖和身份约束；登记后的内部操作信任这些不变量，不把内容私有状态重新视作未知 JSON，也不重复检查 Typed Ref 已证明的能力。初值与写回遵守所属领域的职责，不能绕过领域操作，靠任意 State 覆写补出缺失能力或部署事实。Deployment 在 Unit 初始化后、登记前调用 Deployable.setDeployment 构造本次部署事实，保留完整宿主类型；构造阶段同样通过状态所属领域的接口写入。测试夹具同样遵守这些边界。

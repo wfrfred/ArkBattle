@@ -1,0 +1,96 @@
+{
+  "provenance": {
+    "dll": {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+      "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff"
+    },
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/unit-classification-20261114/tags/read_switch_tables.py",
+      "sha256": "4c533baf307d2967357a5c6e8b85c58e6121ef92cfaac4ca936c2616d6b11889"
+    },
+    "scope": "Exact switch data referenced by decoded code in group-tag-timing.json method #65762."
+  },
+  "result": [
+    {
+      "tableRva": "0x66c568",
+      "targetRvas": [
+        "0x66c16e",
+        "0x66c17a"
+      ],
+      "mapRva": "0x66c570",
+      "map27": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      "rawHex": "6ec166007ac16600000000000000000000000000000000000000000001010100000000",
+      "loads": "0x18066c158/0x18066c161",
+      "indirectBranch": "0x18066c16c"
+    },
+    {
+      "tableRva": "0x66c58c",
+      "targetRvas": [
+        "0x66c44a",
+        "0x66c41e",
+        "0x66c434"
+      ],
+      "mapRva": "0x66c598",
+      "map27": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        2,
+        0,
+        0,
+        0
+      ],
+      "rawHex": "4ac466001ec4660034c46600000000000000000000000000000000000000000001010102000000",
+      "loads": "0x18066c408/0x18066c411",
+      "indirectBranch": "0x18066c41c"
+    }
+  ]
+}

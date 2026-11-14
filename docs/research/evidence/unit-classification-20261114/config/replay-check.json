@@ -1,0 +1,23 @@
+{
+  "provenance": {
+    "checkedOn": "2026-11-14",
+    "scope": "Three independent extractor replays into .cache/native-research/unit-classification-20261114/config/replay; compared full result objects, excluding provenance/output path."
+  },
+  "result": [
+    {
+      "file": "static-inputs.json",
+      "resultEqual": true,
+      "resultSha256": "0ae16f26512a8af5d298984c7a4d321b656ae7052fd66a6bdd527f5b7023f697"
+    },
+    {
+      "file": "prefabs.json",
+      "resultEqual": true,
+      "resultSha256": "021dbde910fc6fb50d6c8ae0b67fd77462b2668eca093860a3aaef940977df3e"
+    },
+    {
+      "file": "templates.json",
+      "resultEqual": true,
+      "resultSha256": "7b705efe35add899ea020b9bc1126ad03654fce035d1e3a55b91c955249282d5"
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "provenance": {
+    "checkedOn": "2026-11-14",
+    "method": "Web search, open and in-page find; bounded quotations plus paraphrased findings",
+    "limits": "Community-maintained explanations, no MediaWiki oldid pinned; native implementation and fixed configuration are archived separately. No live battle observation."
+  },
+  "result": [
+    {
+      "url": "https://prts.wiki/w/游戏数据基础",
+      "sections": ["特殊机制/单位分类", "阵营", "职业"],
+      "quotedExcerpt": "目前敌人类单位均无职业",
+      "paraphrase": "Distinguishes native Character/Enemy classes, side and profession. Ordinary profession-restricted target selection commonly lets no-profession units pass; named exceptions exist. Description text saying enemy or operator is not a universal native type predicate.",
+      "limit": "These are community defaults and descriptions; exact selector-specific policy needs native consumer proof. Page refers to client 2.7.71 in its special-mechanism preface."
+    },
+    {
+      "url": "https://prts.wiki/w/作战机制#职业与分支",
+      "sections": ["职业与分支"],
+      "quotedExcerpt": "职业与分支没有任何必然联系",
+      "paraphrase": "Documents eight operator professions plus summon/device professions. Phantom's clone has executor subprofession. Enemy-class units have no profession; examples distinguish no-profession acceptance and explicit exclusion.",
+      "limit": "Does not by itself prove a serialized Prefab type, UnitTypeMask membership or all consumer policies."
+    },
+    {
+      "url": "https://prts.wiki/w/敌人一览",
+      "sections": ["关于敌人筛选"],
+      "quotedExcerpt": "而非战斗中属性数据",
+      "paraphrase": "The list warns that filters other than enemy-kind filtering use handbook data. Combat attributes can vary with stage. Level, movement, kind and attack method are separate filtering dimensions.",
+      "limit": "UI list data cannot prove actual battle values or their initialization timing."
+    },
+    {
+      "url": "https://prts.wiki/w/泥岩",
+      "sections": ["第二天赋/手足相惜", "干员档案"],
+      "quotedExcerpt": "受到来自〖萨卡兹〗敌人的伤害降低30%",
+      "paraphrase": "The base second talent reduces damage from Sarkaz enemies; its Y module also raises damage against non-Sarkaz targets. This is a category-sensitive gameplay use, not evidence that operator dossier race is automatically an enemy battle tag.",
+      "limit": "This batch closes only the base second-talent Prefab/template binding, not every module branch."
+    },
+    {
+      "url": "https://prts.wiki/w/守林人",
+      "sections": ["第一天赋/暗杀者"],
+      "quotedExcerpt": "攻击使用远程武器的敌人时",
+      "paraphrase": "Explains attack-method based amplification. The Y module extends it to non-attacking targets and can affect enemy-side Character units with no attack-method tag.",
+      "limit": "The archived concrete binding is the ordinary talent with filterNoneApplyWay=false; module extension is a separate configured program."
+    }
+  ]
+}

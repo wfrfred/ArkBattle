@@ -1,0 +1,99 @@
+{
+  "provenance": {
+    "collectedAt": "2026-11-14T11:13:36.805338+00:00",
+    "scope": "Selected local JSON documents only. Value matches locate potential references; they do not resolve or validate bindings.",
+    "tool": {
+      "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/config.py",
+      "sha256": "67c2a913386059a57f9316f25e532c9dd20cdc4adb91d820065d09fd9dec76e4"
+    },
+    "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+    "argv": [
+      ".cache/native-research/unit-audit-20261110/operator-config/character_table.json",
+      "--out",
+      "docs/research/evidence/unit-classification-20261114/config/professions-query.json",
+      "--source-url",
+      "https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/17759cc8cdf37388414145d16262a3a06f3ab25e/zh_CN/gamedata/excel/character_table.json",
+      "--revision",
+      "17759cc8cdf37388414145d16262a3a06f3ab25e",
+      "stats",
+      "/*",
+      "--by",
+      "/profession"
+    ],
+    "sourceUrl": "https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/17759cc8cdf37388414145d16262a3a06f3ab25e/zh_CN/gamedata/excel/character_table.json",
+    "revision": "17759cc8cdf37388414145d16262a3a06f3ab25e",
+    "inputs": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/unit-audit-20261110/operator-config/character_table.json",
+        "bytes": 15069101,
+        "sha256": "e523c7c83c36e2d76697121079e17d0282da1a94d59a55e1cc55616edf0b41c4",
+        "status": "ok",
+        "matched": 1382
+      }
+    ]
+  },
+  "result": {
+    "matched": 1382,
+    "types": {
+      "object": 1382
+    },
+    "sums": {},
+    "missing": {},
+    "groups": [
+      {
+        "value": "MEDIC",
+        "count": 42,
+        "sums": {}
+      },
+      {
+        "value": "WARRIOR",
+        "count": 89,
+        "sums": {}
+      },
+      {
+        "value": "SPECIAL",
+        "count": 53,
+        "sums": {}
+      },
+      {
+        "value": "SNIPER",
+        "count": 63,
+        "sums": {}
+      },
+      {
+        "value": "SUPPORT",
+        "count": 52,
+        "sums": {}
+      },
+      {
+        "value": "TANK",
+        "count": 52,
+        "sums": {}
+      },
+      {
+        "value": "PIONEER",
+        "count": 46,
+        "sums": {}
+      },
+      {
+        "value": "CASTER",
+        "count": 64,
+        "sums": {}
+      },
+      {
+        "value": "TOKEN",
+        "count": 75,
+        "sums": {}
+      },
+      {
+        "value": "TRAP",
+        "count": 846,
+        "sums": {}
+      }
+    ],
+    "complete": true,
+    "scanned": 1,
+    "succeeded": 1,
+    "errors": []
+  }
+}

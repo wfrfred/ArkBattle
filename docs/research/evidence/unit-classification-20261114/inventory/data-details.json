@@ -1,0 +1,4322 @@
+{
+  "provenance": {
+    "scope": "Static native branches; no game execution or runtime XLua verification.",
+    "client": {
+      "dll": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "bytes": 223112680,
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff"
+      },
+      "metadata": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "bytes": 46669332,
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5"
+      },
+      "metadataVersion": 29,
+      "imageBase": "0x180000000"
+    },
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/native.py",
+        "bytes": 18723,
+        "sha256": "1c6c16dc97e0dd9af0af4033c81a7534384dd65ebb1e604df3f4a3289df158e6"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]"
+    },
+    "location": {
+      "metadataRegistration": "0x187ee0630",
+      "modules": {
+        "Assembly-CSharp.dll": {
+          "address": 6564854272,
+          "methodPointers": 6585881040,
+          "count": 225427,
+          "fileBacked": true
+        }
+      }
+    },
+    "caseTool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/facing-semantics-20261113/extract.py",
+        "bytes": 3755,
+        "sha256": "15825b674a4b9dbd7c434783773afcd319a9d6c0b7ed3a2eaaa3196622f7795d"
+      }
+    }
+  },
+  "result": {
+    "selection": {
+      "game": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game",
+      "out": "docs/research/evidence/unit-classification-20261114/inventory/data-details.json",
+      "search": [
+        "Torappu.EnemyDB.TryGet",
+        "Torappu.LevelData/EnemyData.get_isBoss"
+      ],
+      "body": [
+        "Torappu.LevelData/EnemyData.get_isBoss"
+      ],
+      "body_index": [
+        64000,
+        92334,
+        92819,
+        93050,
+        101572
+      ],
+      "body_prefix": [],
+      "owner": [
+        "Torappu.LevelData/EnemyData",
+        "Torappu.Battle.Ability",
+        "Torappu.Battle.UnitMode",
+        "Torappu.Battle.BObject",
+        "Torappu.Battle.Action.Nodes/CheckEnemyLevelMask",
+        "Torappu.Battle.Action.Nodes/CheckEnemyApplyWay"
+      ],
+      "xref": []
+    },
+    "methods": [
+      {
+        "nameIndex": 1037499,
+        "declaringType": 1554,
+        "returnType": 46024,
+        "parameterStart": 41996,
+        "genericContainerIndex": -1,
+        "token": 100691619,
+        "flags": 134,
+        "iflags": 0,
+        "slot": 65535,
+        "parameterCount": 3,
+        "index": 28322,
+        "image": "Assembly-CSharp.dll",
+        "address": 6476359024,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.EnemyDB.TryGet",
+        "returnTypeName": "bool",
+        "parameters": [
+          {
+            "nameIndex": 4551,
+            "token": 134259728,
+            "typeIndex": 78546,
+            "index": 41996,
+            "name": "id",
+            "typeName": "string"
+          },
+          {
+            "nameIndex": 16455,
+            "token": 134259729,
+            "typeIndex": 60309,
+            "index": 41997,
+            "name": "level",
+            "typeName": "int"
+          },
+          {
+            "nameIndex": 458580,
+            "token": 134259730,
+            "typeIndex": 32633,
+            "index": 41998,
+            "name": "output",
+            "typeName": "Torappu.LevelData/EnemyData&"
+          }
+        ]
+      },
+      {
+        "nameIndex": 1037499,
+        "declaringType": 1554,
+        "returnType": 46024,
+        "parameterStart": 41999,
+        "genericContainerIndex": -1,
+        "token": 100691620,
+        "flags": 134,
+        "iflags": 0,
+        "slot": 65535,
+        "parameterCount": 2,
+        "index": 28323,
+        "image": "Assembly-CSharp.dll",
+        "address": 6476358464,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.EnemyDB.TryGet",
+        "returnTypeName": "bool",
+        "parameters": [
+          {
+            "nameIndex": 1037506,
+            "token": 134259731,
+            "typeIndex": 100827,
+            "index": 41999,
+            "name": "dbRef",
+            "typeName": "Torappu.LevelData/EnemyDataDbReference"
+          },
+          {
+            "nameIndex": 458580,
+            "token": 134259732,
+            "typeIndex": 32633,
+            "index": 42000,
+            "name": "output",
+            "typeName": "Torappu.LevelData/EnemyData&"
+          }
+        ]
+      },
+      {
+        "nameIndex": 1037525,
+        "declaringType": 1554,
+        "returnType": 46024,
+        "parameterStart": 42002,
+        "genericContainerIndex": -1,
+        "token": 100691622,
+        "flags": 134,
+        "iflags": 0,
+        "slot": 65535,
+        "parameterCount": 3,
+        "index": 28325,
+        "image": "Assembly-CSharp.dll",
+        "address": 6476357520,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.EnemyDB.TryGetHandbookEnemyData",
+        "returnTypeName": "bool",
+        "parameters": [
+          {
+            "nameIndex": 4551,
+            "token": 134259734,
+            "typeIndex": 78546,
+            "index": 42002,
+            "name": "id",
+            "typeName": "string"
+          },
+          {
+            "nameIndex": 16455,
+            "token": 134259735,
+            "typeIndex": 60309,
+            "index": 42003,
+            "name": "level",
+            "typeName": "int"
+          },
+          {
+            "nameIndex": 458580,
+            "token": 134259736,
+            "typeIndex": 31937,
+            "index": 42004,
+            "name": "output",
+            "typeName": "Torappu.InternalEnemyHBData&"
+          }
+        ]
+      },
+      {
+        "nameIndex": 1037525,
+        "declaringType": 1554,
+        "returnType": 46024,
+        "parameterStart": 42005,
+        "genericContainerIndex": -1,
+        "token": 100691623,
+        "flags": 134,
+        "iflags": 0,
+        "slot": 65535,
+        "parameterCount": 3,
+        "index": 28326,
+        "image": "Assembly-CSharp.dll",
+        "address": 6476357872,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.EnemyDB.TryGetHandbookEnemyData",
+        "returnTypeName": "bool",
+        "parameters": [
+          {
+            "nameIndex": 1037506,
+            "token": 134259737,
+            "typeIndex": 100827,
+            "index": 42005,
+            "name": "dbRef",
+            "typeName": "Torappu.LevelData/EnemyDataDbReference"
+          },
+          {
+            "nameIndex": 458580,
+            "token": 134259738,
+            "typeIndex": 31937,
+            "index": 42006,
+            "name": "output",
+            "typeName": "Torappu.InternalEnemyHBData&"
+          },
+          {
+            "nameIndex": 1037549,
+            "token": 134259739,
+            "typeIndex": 31693,
+            "index": 42007,
+            "name": "isSp",
+            "typeName": "bool&"
+          }
+        ]
+      },
+      {
+        "nameIndex": 1227608,
+        "declaringType": 4732,
+        "returnType": 46024,
+        "parameterStart": -1,
+        "genericContainerIndex": -1,
+        "token": 100695465,
+        "flags": 2182,
+        "iflags": 0,
+        "slot": 65535,
+        "parameterCount": 0,
+        "index": 32168,
+        "image": "Assembly-CSharp.dll",
+        "address": 6480624064,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.LevelData/EnemyData.get_isBoss",
+        "returnTypeName": "bool",
+        "parameters": []
+      },
+      {
+        "nameIndex": 2431979,
+        "declaringType": 10009,
+        "returnType": 77159,
+        "parameterStart": -1,
+        "genericContainerIndex": -1,
+        "token": 100727297,
+        "flags": 2502,
+        "iflags": 0,
+        "slot": 23,
+        "parameterCount": 0,
+        "index": 64000,
+        "image": "Assembly-CSharp.dll",
+        "address": 6448762160,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.Battle.Ability.get_applyWay",
+        "returnTypeName": "Torappu.SourceApplyWay",
+        "parameters": []
+      },
+      {
+        "nameIndex": 2431979,
+        "declaringType": 13304,
+        "returnType": 77159,
+        "parameterStart": -1,
+        "genericContainerIndex": -1,
+        "token": 100755631,
+        "flags": 2246,
+        "iflags": 0,
+        "slot": 23,
+        "parameterCount": 0,
+        "index": 92334,
+        "image": "Assembly-CSharp.dll",
+        "address": 6458509664,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.Battle.Abilities.MeleeAttack.get_applyWay",
+        "returnTypeName": "Torappu.SourceApplyWay",
+        "parameters": []
+      },
+      {
+        "nameIndex": 2431979,
+        "declaringType": 13343,
+        "returnType": 77159,
+        "parameterStart": -1,
+        "genericContainerIndex": -1,
+        "token": 100756116,
+        "flags": 2246,
+        "iflags": 0,
+        "slot": 23,
+        "parameterCount": 0,
+        "index": 92819,
+        "image": "Assembly-CSharp.dll",
+        "address": 6458620096,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.Battle.Abilities.RangedAttack.get_applyWay",
+        "returnTypeName": "Torappu.SourceApplyWay",
+        "parameters": []
+      },
+      {
+        "nameIndex": 2431979,
+        "declaringType": 13364,
+        "returnType": 77159,
+        "parameterStart": -1,
+        "genericContainerIndex": -1,
+        "token": 100756347,
+        "flags": 2246,
+        "iflags": 0,
+        "slot": 23,
+        "parameterCount": 0,
+        "index": 93050,
+        "image": "Assembly-CSharp.dll",
+        "address": 6458568592,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.Battle.Abilities.Heal.get_applyWay",
+        "returnTypeName": "Torappu.SourceApplyWay",
+        "parameters": []
+      },
+      {
+        "nameIndex": 397673,
+        "declaringType": 15072,
+        "returnType": 46024,
+        "parameterStart": 96756,
+        "genericContainerIndex": -1,
+        "token": 100764869,
+        "flags": 198,
+        "iflags": 0,
+        "slot": 6,
+        "parameterCount": 3,
+        "index": 101572,
+        "image": "Assembly-CSharp.dll",
+        "address": 6461121472,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.Battle.Action.Nodes/CheckEnemyLevelMask.Execute",
+        "returnTypeName": "bool",
+        "parameters": [
+          {
+            "nameIndex": 3124,
+            "token": 134314501,
+            "typeIndex": 45909,
+            "index": 96756,
+            "name": "blackboard",
+            "typeName": "Torappu.Blackboard"
+          },
+          {
+            "nameIndex": 440673,
+            "token": 134314502,
+            "typeIndex": 90650,
+            "index": 96757,
+            "name": "sourceType",
+            "typeName": "Torappu.Battle.Action.ActionNode/SourceType"
+          },
+          {
+            "nameIndex": 440684,
+            "token": 134314503,
+            "typeIndex": 32502,
+            "index": 96758,
+            "name": "snapshot",
+            "typeName": "Torappu.Battle.Context/Snapshot&"
+          }
+        ]
+      }
+    ],
+    "fieldOwners": [
+      {
+        "index": 4732,
+        "fullname": "Torappu.LevelData/EnemyData",
+        "fields": [
+          {
+            "nameIndex": 6872,
+            "typeIndex": 78551,
+            "token": 67136004,
+            "index": 27139,
+            "name": "name",
+            "typeName": "string",
+            "static": false,
+            "offset": 16,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 522898,
+            "typeIndex": 78551,
+            "token": 67136005,
+            "index": 27140,
+            "name": "description",
+            "typeName": "string",
+            "static": false,
+            "offset": 24,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 4691,
+            "typeIndex": 78551,
+            "token": 67136006,
+            "index": 27141,
+            "name": "key",
+            "typeName": "string",
+            "static": false,
+            "offset": 32,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 529052,
+            "typeIndex": 43596,
+            "token": 67136007,
+            "index": 27142,
+            "name": "attributes",
+            "typeName": "Torappu.AttributesData",
+            "static": false,
+            "offset": 40,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 1213411,
+            "typeIndex": 77162,
+            "token": 67136008,
+            "index": 27143,
+            "name": "applyWay",
+            "typeName": "Torappu.SourceApplyWay",
+            "static": false,
+            "offset": 48,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 1213420,
+            "typeIndex": 63398,
+            "token": 67136009,
+            "index": 27144,
+            "name": "motion",
+            "typeName": "Torappu.MotionMode",
+            "static": false,
+            "offset": 52,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 1213427,
+            "typeIndex": 34395,
+            "token": 67136010,
+            "index": 27145,
+            "name": "enemyTags",
+            "typeName": "string[]",
+            "static": false,
+            "offset": 56,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 1213492,
+            "typeIndex": 46029,
+            "token": 67136011,
+            "index": 27146,
+            "name": "notCountInTotal",
+            "typeName": "bool",
+            "static": false,
+            "offset": 64,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 384103,
+            "typeIndex": 78551,
+            "token": 67136012,
+            "index": 27147,
+            "name": "alias",
+            "typeName": "string",
+            "static": false,
+            "offset": 72,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 1213437,
+            "typeIndex": 60314,
+            "token": 67136013,
+            "index": 27148,
+            "name": "lifePointReduce",
+            "typeName": "int",
+            "static": false,
+            "offset": 80,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 1213453,
+            "typeIndex": 76381,
+            "token": 67136014,
+            "index": 27149,
+            "name": "rangeRadius",
+            "typeName": "float",
+            "static": false,
+            "offset": 84,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 1213465,
+            "typeIndex": 60314,
+            "token": 67136015,
+            "index": 27150,
+            "name": "numOfExtraDrops",
+            "typeName": "int",
+            "static": false,
+            "offset": 88,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 1213481,
+            "typeIndex": 76381,
+            "token": 67136016,
+            "index": 27151,
+            "name": "viewRadius",
+            "typeName": "float",
+            "static": false,
+            "offset": 92,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 1203679,
+            "typeIndex": 53887,
+            "token": 67136017,
+            "index": 27152,
+            "name": "levelType",
+            "typeName": "Torappu.EnemyLevelType",
+            "static": false,
+            "offset": 96,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 1213508,
+            "typeIndex": 45911,
+            "token": 67136018,
+            "index": 27153,
+            "name": "talentBlackboard",
+            "typeName": "Torappu.Blackboard",
+            "static": false,
+            "offset": 104,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 1085985,
+            "typeIndex": 35271,
+            "token": 67136019,
+            "index": 27154,
+            "name": "skills",
+            "typeName": "Torappu.LevelData/EnemyData/ESkillData[]",
+            "static": false,
+            "offset": 112,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 1213525,
+            "typeIndex": 115208,
+            "token": 67136020,
+            "index": 27155,
+            "name": "spData",
+            "typeName": "Torappu.LevelData/EnemyData/ESpData",
+            "static": false,
+            "offset": 120,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 1227635,
+            "typeIndex": 115210,
+            "token": 67136021,
+            "index": 27156,
+            "name": "m_runtimeData",
+            "typeName": "Torappu.LevelData/EnemyData/RuntimeData",
+            "static": false,
+            "offset": 128,
+            "unboxedOffset": null
+          }
+        ]
+      },
+      {
+        "index": 10009,
+        "fullname": "Torappu.Battle.Ability",
+        "fields": [
+          {
+            "nameIndex": 2432979,
+            "typeIndex": 40696,
+            "token": 67178306,
+            "index": 69441,
+            "name": "onCastStart",
+            "typeName": "System.Action",
+            "static": false,
+            "offset": 24,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2432991,
+            "typeIndex": 87549,
+            "token": 67178307,
+            "index": 69442,
+            "name": "onCastFinish",
+            "typeName": "Torappu.Battle.Ability/FinishCallbackDelegate",
+            "static": false,
+            "offset": 32,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2433004,
+            "typeIndex": 79160,
+            "token": 67178308,
+            "index": 69443,
+            "name": "_selector",
+            "typeName": "Torappu.Battle.TargetSelector",
+            "static": false,
+            "offset": 40,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2433014,
+            "typeIndex": 87555,
+            "token": 67178309,
+            "index": 69444,
+            "name": "_metadata",
+            "typeName": "Torappu.Battle.Ability/Metadata",
+            "static": false,
+            "offset": 48,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2433024,
+            "typeIndex": 78547,
+            "token": 67178310,
+            "index": 69445,
+            "name": "_overrideSignalId",
+            "typeName": "string",
+            "static": false,
+            "offset": 64,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2433042,
+            "typeIndex": 46025,
+            "token": 67178311,
+            "index": 69446,
+            "name": "_interruptAbilityOnDetach",
+            "typeName": "bool",
+            "static": false,
+            "offset": 72,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2433068,
+            "typeIndex": 46025,
+            "token": 67178312,
+            "index": 69447,
+            "name": "_attachPassiveBuffsOnDummy",
+            "typeName": "bool",
+            "static": false,
+            "offset": 73,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2234315,
+            "typeIndex": 27259,
+            "token": 67178313,
+            "index": 69448,
+            "name": "m_owner",
+            "typeName": "type(kind=0x15, data=0x188e41128)",
+            "static": false,
+            "offset": 80,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2433095,
+            "typeIndex": 46025,
+            "token": 67178314,
+            "index": 69449,
+            "name": "m_isCasting",
+            "typeName": "bool",
+            "static": false,
+            "offset": 96,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2433107,
+            "typeIndex": 83055,
+            "token": 67178315,
+            "index": 69450,
+            "name": "m_castStartFrameCnt",
+            "typeName": "uint",
+            "static": false,
+            "offset": 100,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2433127,
+            "typeIndex": 87548,
+            "token": 67178316,
+            "index": 69451,
+            "name": "m_onCastedOnce",
+            "typeName": "Torappu.Battle.Ability/FinishCallbackDelegate",
+            "static": false,
+            "offset": 104,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2433142,
+            "typeIndex": 65204,
+            "token": 67178317,
+            "index": 69452,
+            "name": "m_cooldownTimer",
+            "typeName": "Torappu.PeriodicTimer",
+            "static": false,
+            "offset": 112,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2433158,
+            "typeIndex": 24700,
+            "token": 67178318,
+            "index": 69453,
+            "name": "m_passiveBuffUids",
+            "typeName": "type(kind=0x15, data=0x188dedee8)",
+            "static": false,
+            "offset": 120,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2433176,
+            "typeIndex": 83055,
+            "token": 67178319,
+            "index": 69454,
+            "name": "<abilityUniqueId>k__BackingField",
+            "typeName": "uint",
+            "static": false,
+            "offset": 128,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2433209,
+            "typeIndex": 45910,
+            "token": 67178320,
+            "index": 69455,
+            "name": "<blackboard>k__BackingField",
+            "typeName": "Torappu.Blackboard",
+            "static": false,
+            "offset": 136,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2433237,
+            "typeIndex": 46025,
+            "token": 67178321,
+            "index": 69456,
+            "name": "<isAttached>k__BackingField",
+            "typeName": "bool",
+            "static": false,
+            "offset": 144,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 64098,
+            "typeIndex": 87557,
+            "token": 67178322,
+            "index": 69457,
+            "name": "<options>k__BackingField",
+            "typeName": "Torappu.Battle.Ability/Options",
+            "static": false,
+            "offset": 152,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2433265,
+            "typeIndex": 46025,
+            "token": 67178323,
+            "index": 69458,
+            "name": "<damageMissFlag>k__BackingField",
+            "typeName": "bool",
+            "static": false,
+            "offset": 184,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2433297,
+            "typeIndex": 87552,
+            "token": 67178324,
+            "index": 69459,
+            "name": "<abilityFinishReason>k__BackingField",
+            "typeName": "Torappu.Battle.Ability/FinishReason",
+            "static": false,
+            "offset": 188,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2433334,
+            "typeIndex": 46033,
+            "token": 67178325,
+            "index": 69460,
+            "name": "<ignorePalsyInterrupt>k__BackingField",
+            "typeName": "bool",
+            "static": false,
+            "offset": 192,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2433372,
+            "typeIndex": 46025,
+            "token": 67178326,
+            "index": 69461,
+            "name": "m_isPRDEntityHashAllocated",
+            "typeName": "bool",
+            "static": false,
+            "offset": 193,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2433399,
+            "typeIndex": 105855,
+            "token": 67178327,
+            "index": 69462,
+            "name": "m_prdEntityHash",
+            "typeName": "Torappu.RandomExtensions/PRDEntityHash",
+            "static": false,
+            "offset": 196,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2433415,
+            "typeIndex": 52361,
+            "token": 67178328,
+            "index": 69463,
+            "name": "__Hotfix0_get_affectedBySlowDown",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 0,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2433448,
+            "typeIndex": 52361,
+            "token": 67178329,
+            "index": 69464,
+            "name": "__Hotfix0_get_instanceUid",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 8,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2433474,
+            "typeIndex": 52361,
+            "token": 67178330,
+            "index": 69465,
+            "name": "__Hotfix0_get_playerSide",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 16,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2433499,
+            "typeIndex": 52361,
+            "token": 67178331,
+            "index": 69466,
+            "name": "__Hotfix0_get_abilityUniqueId",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 24,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2433529,
+            "typeIndex": 52361,
+            "token": 67178332,
+            "index": 69467,
+            "name": "__Hotfix0_set_abilityUniqueId",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 32,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2431018,
+            "typeIndex": 52361,
+            "token": 67178333,
+            "index": 69468,
+            "name": "__Hotfix0_get_familyGroup",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 40,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2433559,
+            "typeIndex": 52361,
+            "token": 67178334,
+            "index": 69469,
+            "name": "__Hotfix0_get_blackboard",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 48,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2433584,
+            "typeIndex": 52361,
+            "token": 67178335,
+            "index": 69470,
+            "name": "__Hotfix0_set_blackboard",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 56,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2433609,
+            "typeIndex": 52361,
+            "token": 67178336,
+            "index": 69471,
+            "name": "__Hotfix0_get_signalId",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 64,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2433632,
+            "typeIndex": 52361,
+            "token": 67178337,
+            "index": 69472,
+            "name": "__Hotfix0_get_extraDataId",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 72,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2433658,
+            "typeIndex": 52361,
+            "token": 67178338,
+            "index": 69473,
+            "name": "__Hotfix0_get_rangeId",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 80,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2433680,
+            "typeIndex": 52361,
+            "token": 67178339,
+            "index": 69474,
+            "name": "__Hotfix0_get_searchName",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 88,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 1927172,
+            "typeIndex": 52361,
+            "token": 67178340,
+            "index": 69475,
+            "name": "__Hotfix0_get_owner",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 96,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2279102,
+            "typeIndex": 52361,
+            "token": 67178341,
+            "index": 69476,
+            "name": "__Hotfix0_get_context",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 104,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2433705,
+            "typeIndex": 52361,
+            "token": 67178342,
+            "index": 69477,
+            "name": "__Hotfix0_get_selector",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 112,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2433728,
+            "typeIndex": 52361,
+            "token": 67178343,
+            "index": 69478,
+            "name": "__Hotfix0_get_rangeToShow",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 120,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2433754,
+            "typeIndex": 52361,
+            "token": 67178344,
+            "index": 69479,
+            "name": "__Hotfix0_get_remainingTime",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 128,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2433782,
+            "typeIndex": 52361,
+            "token": 67178345,
+            "index": 69480,
+            "name": "__Hotfix0_get_cooldownProgress",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 136,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2433813,
+            "typeIndex": 52361,
+            "token": 67178346,
+            "index": 69481,
+            "name": "__Hotfix0_get_periodTime",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 144,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2433838,
+            "typeIndex": 52361,
+            "token": 67178347,
+            "index": 69482,
+            "name": "__Hotfix0_get_isCastable",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 152,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2433863,
+            "typeIndex": 52361,
+            "token": 67178348,
+            "index": 69483,
+            "name": "__Hotfix0_get_isReady",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 160,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2433885,
+            "typeIndex": 52361,
+            "token": 67178349,
+            "index": 69484,
+            "name": "__Hotfix0_get_isReadyIgnoreAttachAndCooldown",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 168,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2433930,
+            "typeIndex": 52361,
+            "token": 67178350,
+            "index": 69485,
+            "name": "__Hotfix0_get_isCooledDown",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 176,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2433957,
+            "typeIndex": 52361,
+            "token": 67178351,
+            "index": 69486,
+            "name": "__Hotfix0_get_isAffecting",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 184,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2433983,
+            "typeIndex": 52361,
+            "token": 67178352,
+            "index": 69487,
+            "name": "__Hotfix0_get_isCasting",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 192,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2434007,
+            "typeIndex": 52361,
+            "token": 67178353,
+            "index": 69488,
+            "name": "__Hotfix0_set_isCasting",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 200,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2434031,
+            "typeIndex": 52361,
+            "token": 67178354,
+            "index": 69489,
+            "name": "__Hotfix0_get_isAttached",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 208,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2434056,
+            "typeIndex": 52361,
+            "token": 67178355,
+            "index": 69490,
+            "name": "__Hotfix0_set_isAttached",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 216,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2434081,
+            "typeIndex": 52361,
+            "token": 67178356,
+            "index": 69491,
+            "name": "__Hotfix0_get_canSelectCamouflageTarget",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 224,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2434121,
+            "typeIndex": 52361,
+            "token": 67178357,
+            "index": 69492,
+            "name": "__Hotfix0_get_passiveBuffUids",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 232,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2434151,
+            "typeIndex": 52361,
+            "token": 67178358,
+            "index": 69493,
+            "name": "__Hotfix0_get_escapeTime",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 240,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2434176,
+            "typeIndex": 52361,
+            "token": 67178359,
+            "index": 69494,
+            "name": "__Hotfix0_get_applyWay",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 248,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 64187,
+            "typeIndex": 52361,
+            "token": 67178360,
+            "index": 69495,
+            "name": "__Hotfix0_get_options",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 256,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 64209,
+            "typeIndex": 52361,
+            "token": 67178361,
+            "index": 69496,
+            "name": "__Hotfix0_set_options",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 264,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2434199,
+            "typeIndex": 52361,
+            "token": 67178362,
+            "index": 69497,
+            "name": "__Hotfix0_get_isPredelay",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 272,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2434224,
+            "typeIndex": 52361,
+            "token": 67178363,
+            "index": 69498,
+            "name": "__Hotfix0_get_damageMissFlag",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 280,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2434253,
+            "typeIndex": 52361,
+            "token": 67178364,
+            "index": 69499,
+            "name": "__Hotfix0_set_damageMissFlag",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 288,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2434282,
+            "typeIndex": 52361,
+            "token": 67178365,
+            "index": 69500,
+            "name": "__Hotfix0_get_abilityFinishReason",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 296,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2434316,
+            "typeIndex": 52361,
+            "token": 67178366,
+            "index": 69501,
+            "name": "__Hotfix0_set_abilityFinishReason",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 304,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2430512,
+            "typeIndex": 52361,
+            "token": 67178367,
+            "index": 69502,
+            "name": "__Hotfix0_get_ignorePalsyInterrupt",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 312,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 1515136,
+            "typeIndex": 52361,
+            "token": 67178368,
+            "index": 69503,
+            "name": "__Hotfix0_SetData",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 320,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2430925,
+            "typeIndex": 52361,
+            "token": 67178369,
+            "index": 69504,
+            "name": "__Hotfix0_DoSetData",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 328,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2434350,
+            "typeIndex": 52361,
+            "token": 67178370,
+            "index": 69505,
+            "name": "__Hotfix0_UpdateBlackboard",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 336,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2434377,
+            "typeIndex": 52361,
+            "token": 67178371,
+            "index": 69506,
+            "name": "__Hotfix0_AssignBlackboard",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 344,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2434404,
+            "typeIndex": 52361,
+            "token": 67178372,
+            "index": 69507,
+            "name": "__Hotfix1_AssignBlackboard",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 352,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2434431,
+            "typeIndex": 52361,
+            "token": 67178373,
+            "index": 69508,
+            "name": "__Hotfix0_UpdateSelector",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 360,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2434456,
+            "typeIndex": 52361,
+            "token": 67178374,
+            "index": 69509,
+            "name": "__Hotfix0_Attach",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 368,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2434473,
+            "typeIndex": 52361,
+            "token": 67178375,
+            "index": 69510,
+            "name": "__Hotfix0_Detach",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 376,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2434490,
+            "typeIndex": 52361,
+            "token": 67178376,
+            "index": 69511,
+            "name": "__Hotfix0_DoReset",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 384,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2434508,
+            "typeIndex": 52361,
+            "token": 67178377,
+            "index": 69512,
+            "name": "__Hotfix0_DoAttach",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 392,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2434527,
+            "typeIndex": 52361,
+            "token": 67178378,
+            "index": 69513,
+            "name": "__Hotfix0_DoDetach",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 400,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2434546,
+            "typeIndex": 52361,
+            "token": 67178379,
+            "index": 69514,
+            "name": "__Hotfix0_OnOwnerLocated",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 408,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2434571,
+            "typeIndex": 52361,
+            "token": 67178380,
+            "index": 69515,
+            "name": "__Hotfix0_InterruptIfNot",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 416,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2434596,
+            "typeIndex": 52361,
+            "token": 67178381,
+            "index": 69516,
+            "name": "__Hotfix0_DoFinish",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 424,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2434615,
+            "typeIndex": 52361,
+            "token": 67178382,
+            "index": 69517,
+            "name": "__Hotfix0_ResetCooldown",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 432,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2434639,
+            "typeIndex": 52361,
+            "token": 67178383,
+            "index": 69518,
+            "name": "__Hotfix0_UpdateCooldown",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 440,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2434664,
+            "typeIndex": 52361,
+            "token": 67178384,
+            "index": 69519,
+            "name": "__Hotfix1_UpdateCooldown",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 448,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2434689,
+            "typeIndex": 52361,
+            "token": 67178385,
+            "index": 69520,
+            "name": "__Hotfix0_TrySetCooldownRemainingProgress",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 456,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2434731,
+            "typeIndex": 52361,
+            "token": 67178386,
+            "index": 69521,
+            "name": "__Hotfix0_UpdateCooldownToMatch",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 464,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2434763,
+            "typeIndex": 52361,
+            "token": 67178387,
+            "index": 69522,
+            "name": "__Hotfix0_StopAffect",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 472,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2434784,
+            "typeIndex": 52361,
+            "token": 67178388,
+            "index": 69523,
+            "name": "__Hotfix0_UpdateCooldownWhenFinish",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 480,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2434819,
+            "typeIndex": 52361,
+            "token": 67178389,
+            "index": 69524,
+            "name": "__Hotfix0_IsOnFirstCastFrame",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 488,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 547610,
+            "typeIndex": 52361,
+            "token": 67178390,
+            "index": 69525,
+            "name": "__Hotfix0_Reset",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 496,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2434848,
+            "typeIndex": 52361,
+            "token": 67178391,
+            "index": 69526,
+            "name": "__Hotfix0_CleanupForNextCast",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 504,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2434877,
+            "typeIndex": 52361,
+            "token": 67178392,
+            "index": 69527,
+            "name": "__Hotfix0_GetAbilityAttachments",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 512,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2434909,
+            "typeIndex": 52361,
+            "token": 67178393,
+            "index": 69528,
+            "name": "__Hotfix0_GatherEffects",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 520,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2434933,
+            "typeIndex": 52361,
+            "token": 67178394,
+            "index": 69529,
+            "name": "__Hotfix0_GatherProjectiles",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 528,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2434961,
+            "typeIndex": 52361,
+            "token": 67178395,
+            "index": 69530,
+            "name": "__Hotfix0_GatherBuffs",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 536,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2434983,
+            "typeIndex": 52361,
+            "token": 67178396,
+            "index": 69531,
+            "name": "__Hotfix0_OnCastStart",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 544,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 63342,
+            "typeIndex": 52361,
+            "token": 67178397,
+            "index": 69532,
+            "name": "__Hotfix0_OnTick",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 552,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2435005,
+            "typeIndex": 52361,
+            "token": 67178398,
+            "index": 69533,
+            "name": "__Hotfix0_OnOverload",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 560,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2435026,
+            "typeIndex": 52361,
+            "token": 67178399,
+            "index": 69534,
+            "name": "__Hotfix0_OnAttackTimeChanged",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 568,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2435056,
+            "typeIndex": 52361,
+            "token": 67178400,
+            "index": 69535,
+            "name": "__Hotfix0_OnSlowDownChanged",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 576,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2435084,
+            "typeIndex": 52361,
+            "token": 67178401,
+            "index": 69536,
+            "name": "__Hotfix0_OnAbilityExtendUpdated",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 584,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2435117,
+            "typeIndex": 52361,
+            "token": 67178402,
+            "index": 69537,
+            "name": "__Hotfix0_PreloadSpecialAudioSignals",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 592,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2435154,
+            "typeIndex": 52361,
+            "token": 67178403,
+            "index": 69538,
+            "name": "__Hotfix0_CheckAtPreCastPhase",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 600,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 1512288,
+            "typeIndex": 52361,
+            "token": 67178404,
+            "index": 69539,
+            "name": "__Hotfix0_FinishIfNot",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 608,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2435184,
+            "typeIndex": 52361,
+            "token": 67178405,
+            "index": 69540,
+            "name": "__Hotfix0_AddPassiveBuffs",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 616,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2435210,
+            "typeIndex": 52361,
+            "token": 67178406,
+            "index": 69541,
+            "name": "__Hotfix0_ClearPassiveBuffs",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 624,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2435238,
+            "typeIndex": 52361,
+            "token": 67178407,
+            "index": 69542,
+            "name": "__Hotfix0_PreprocessActionsForProjectile",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 632,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2435279,
+            "typeIndex": 52361,
+            "token": 67178408,
+            "index": 69543,
+            "name": "__Hotfix0_RegisterFinishCallbackOnce",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 640,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2435316,
+            "typeIndex": 52361,
+            "token": 67178409,
+            "index": 69544,
+            "name": "__Hotfix0_ClearFinishCallbackOnce",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 648,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2435350,
+            "typeIndex": 52361,
+            "token": 67178410,
+            "index": 69545,
+            "name": "__Hotfix0_StartCastingInternal",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 656,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2435381,
+            "typeIndex": 52361,
+            "token": 67178411,
+            "index": 69546,
+            "name": "__Hotfix0_ClearProjectile",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 664,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2435407,
+            "typeIndex": 52361,
+            "token": 67178412,
+            "index": 69547,
+            "name": "__Hotfix0_GetPRDEntityHash",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 672,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2435434,
+            "typeIndex": 52361,
+            "token": 67178413,
+            "index": 69548,
+            "name": "__Hotfix0_AllocatePRDEntitySubHash",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 680,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2435469,
+            "typeIndex": 52361,
+            "token": 67178414,
+            "index": 69549,
+            "name": "__Hotfix0_ResetPRDEntity",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 688,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2435494,
+            "typeIndex": 52361,
+            "token": 67178415,
+            "index": 69550,
+            "name": "__Hotfix0_ModifyOptions",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 696,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 3062,
+            "typeIndex": 52361,
+            "token": 67178416,
+            "index": 69551,
+            "name": "_c__Hotfix0_ctor",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 704,
+            "unboxedOffset": null
+          }
+        ]
+      },
+      {
+        "index": 10200,
+        "fullname": "Torappu.Battle.BObject",
+        "fields": [
+          {
+            "nameIndex": 4675,
+            "typeIndex": 83059,
+            "token": 67180972,
+            "index": 72107,
+            "name": "s_globalCounter",
+            "typeName": "uint",
+            "static": true,
+            "offset": 0,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 4775,
+            "typeIndex": 83055,
+            "token": 67180973,
+            "index": 72108,
+            "name": "<instanceUid>k__BackingField",
+            "typeName": "uint",
+            "static": false,
+            "offset": 24,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 1941609,
+            "typeIndex": 76300,
+            "token": 67180974,
+            "index": 72109,
+            "name": "<side>k__BackingField",
+            "typeName": "Torappu.Battle.SideType",
+            "static": false,
+            "offset": 28,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2484358,
+            "typeIndex": 65991,
+            "token": 67180975,
+            "index": 72110,
+            "name": "<playerSide>k__BackingField",
+            "typeName": "Torappu.PlayerSide",
+            "static": false,
+            "offset": 32,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 1928165,
+            "typeIndex": 46025,
+            "token": 67180976,
+            "index": 72111,
+            "name": "<inited>k__BackingField",
+            "typeName": "bool",
+            "static": false,
+            "offset": 36,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2504202,
+            "typeIndex": 46025,
+            "token": 67180977,
+            "index": 72112,
+            "name": "<borned>k__BackingField",
+            "typeName": "bool",
+            "static": false,
+            "offset": 37,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2504226,
+            "typeIndex": 46025,
+            "token": 67180978,
+            "index": 72113,
+            "name": "<isDisappeared>k__BackingField",
+            "typeName": "bool",
+            "static": false,
+            "offset": 38,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2504257,
+            "typeIndex": 60310,
+            "token": 67180979,
+            "index": 72114,
+            "name": "m_prdCounter",
+            "typeName": "int",
+            "static": false,
+            "offset": 40,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2504270,
+            "typeIndex": 25778,
+            "token": 67180980,
+            "index": 72115,
+            "name": "m_prdSubEntities",
+            "typeName": "type(kind=0x15, data=0x188cc3eb8)",
+            "static": false,
+            "offset": 48,
+            "unboxedOffset": null
+          }
+        ]
+      },
+      {
+        "index": 11605,
+        "fullname": "Torappu.Battle.UnitMode",
+        "fields": [
+          {
+            "nameIndex": 2933913,
+            "typeIndex": 78578,
+            "token": 67198348,
+            "index": 89483,
+            "name": "COMBAT_DESCRIPTION_SUFFIX",
+            "typeName": "string",
+            "static": true,
+            "offset": 0,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2933939,
+            "typeIndex": 78578,
+            "token": 67198349,
+            "index": 89484,
+            "name": "ATTACK_DESCRIPTION_SUFFIX",
+            "typeName": "string",
+            "static": true,
+            "offset": 0,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 1511393,
+            "typeIndex": 80927,
+            "token": 67198350,
+            "index": 89485,
+            "name": "_bodyTransform",
+            "typeName": "UnityEngine.Transform",
+            "static": false,
+            "offset": 24,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2933965,
+            "typeIndex": 83429,
+            "token": 67198351,
+            "index": 89486,
+            "name": "_animatorHooker",
+            "typeName": "Torappu.Battle.UnitAnimatorHooker",
+            "static": false,
+            "offset": 32,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2788785,
+            "typeIndex": 78547,
+            "token": 67198352,
+            "index": 89487,
+            "name": "_overrideStartEffect",
+            "typeName": "string",
+            "static": false,
+            "offset": 40,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2933981,
+            "typeIndex": 78547,
+            "token": 67198353,
+            "index": 89488,
+            "name": "_overrideDeadEffect",
+            "typeName": "string",
+            "static": false,
+            "offset": 48,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2934001,
+            "typeIndex": 35759,
+            "token": 67198354,
+            "index": 89489,
+            "name": "_combat",
+            "typeName": "Torappu.Battle.Ability",
+            "static": false,
+            "offset": 56,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2934009,
+            "typeIndex": 35759,
+            "token": 67198355,
+            "index": 89490,
+            "name": "_attack",
+            "typeName": "Torappu.Battle.Ability",
+            "static": false,
+            "offset": 64,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2934017,
+            "typeIndex": 79165,
+            "token": 67198356,
+            "index": 89491,
+            "name": "_attackTrigger",
+            "typeName": "Torappu.Battle.TargetTrigger",
+            "static": false,
+            "offset": 72,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2934032,
+            "typeIndex": 46025,
+            "token": 67198357,
+            "index": 89492,
+            "name": "_hideUIAttackRange",
+            "typeName": "bool",
+            "static": false,
+            "offset": 80,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2934051,
+            "typeIndex": 46025,
+            "token": 67198358,
+            "index": 89493,
+            "name": "_updateAttackRangeExtendByAttributeDirty",
+            "typeName": "bool",
+            "static": false,
+            "offset": 81,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2801280,
+            "typeIndex": 79160,
+            "token": 67198359,
+            "index": 89494,
+            "name": "_rangeToShow",
+            "typeName": "Torappu.Battle.TargetSelector",
+            "static": false,
+            "offset": 88,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2934092,
+            "typeIndex": 34443,
+            "token": 67198360,
+            "index": 89495,
+            "name": "_extraRangesToShow",
+            "typeName": "Torappu.Battle.TargetSelector[]",
+            "static": false,
+            "offset": 96,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2934111,
+            "typeIndex": 33403,
+            "token": 67198361,
+            "index": 89496,
+            "name": "_generalAbilities",
+            "typeName": "Torappu.Battle.Ability[]",
+            "static": false,
+            "offset": 104,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2934129,
+            "typeIndex": 46025,
+            "token": 67198362,
+            "index": 89497,
+            "name": "_addIndexToSignalId",
+            "typeName": "bool",
+            "static": false,
+            "offset": 112,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2934149,
+            "typeIndex": 46025,
+            "token": 67198363,
+            "index": 89498,
+            "name": "_includeIndexZero",
+            "typeName": "bool",
+            "static": false,
+            "offset": 113,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2898630,
+            "typeIndex": 75640,
+            "token": 67198364,
+            "index": 89499,
+            "name": "_alwaysHideHp",
+            "typeName": "Torappu.Battle.SerializedBool",
+            "static": false,
+            "offset": 120,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2923332,
+            "typeIndex": 75640,
+            "token": 67198365,
+            "index": 89500,
+            "name": "_alwaysHideSp",
+            "typeName": "Torappu.Battle.SerializedBool",
+            "static": false,
+            "offset": 128,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 8687,
+            "typeIndex": 46025,
+            "token": 67198366,
+            "index": 89501,
+            "name": "m_inited",
+            "typeName": "bool",
+            "static": false,
+            "offset": 136,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2560270,
+            "typeIndex": 21188,
+            "token": 67198367,
+            "index": 89502,
+            "name": "m_abilities",
+            "typeName": "type(kind=0x15, data=0x188d120c8)",
+            "static": false,
+            "offset": 144,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2934167,
+            "typeIndex": 21031,
+            "token": 67198368,
+            "index": 89503,
+            "name": "m_dynaimcAbilites",
+            "typeName": "type(kind=0x15, data=0x188cf0088)",
+            "static": false,
+            "offset": 152,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2620041,
+            "typeIndex": 78547,
+            "token": 67198369,
+            "index": 89504,
+            "name": "m_rangeId",
+            "typeName": "string",
+            "static": false,
+            "offset": 160,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 1498815,
+            "typeIndex": 83420,
+            "token": 67198370,
+            "index": 89505,
+            "name": "<host>k__BackingField",
+            "typeName": "Torappu.Battle.Unit",
+            "static": false,
+            "offset": 168,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2934185,
+            "typeIndex": 60310,
+            "token": 67198371,
+            "index": 89506,
+            "name": "<index>k__BackingField",
+            "typeName": "int",
+            "static": false,
+            "offset": 176,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2934208,
+            "typeIndex": 33924,
+            "token": 67198372,
+            "index": 89507,
+            "name": "m_extraRangesToShow",
+            "typeName": "Torappu.Battle.IDrawableRange[]",
+            "static": false,
+            "offset": 184,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2934228,
+            "typeIndex": 77160,
+            "token": 67198373,
+            "index": 89508,
+            "name": "<allApplyWay>k__BackingField",
+            "typeName": "Torappu.SourceApplyWay",
+            "static": false,
+            "offset": 192,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2929069,
+            "typeIndex": 33563,
+            "token": 67198374,
+            "index": 89509,
+            "name": "<talents>k__BackingField",
+            "typeName": "Torappu.Battle.BasicTalent[]",
+            "static": false,
+            "offset": 200,
+            "unboxedOffset": null
+          }
+        ]
+      },
+      {
+        "index": 15072,
+        "fullname": "Torappu.Battle.Action.Nodes/CheckEnemyLevelMask",
+        "fields": [
+          {
+            "nameIndex": 3364437,
+            "typeIndex": 102368,
+            "token": 67229963,
+            "index": 121098,
+            "name": "_targetType",
+            "typeName": "Torappu.Battle.Action.Nodes/ActionTargetType",
+            "static": false,
+            "offset": 16,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 3476606,
+            "typeIndex": 53881,
+            "token": 67229964,
+            "index": 121099,
+            "name": "_targetLevelMask",
+            "typeName": "Torappu.EnemyLevelMask",
+            "static": false,
+            "offset": 20,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 3408389,
+            "typeIndex": 52361,
+            "token": 67229965,
+            "index": 121100,
+            "name": "__Hotfix0_get_allowedSource",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 0,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2149314,
+            "typeIndex": 52361,
+            "token": 67229966,
+            "index": 121101,
+            "name": "__Hotfix0_Execute",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 8,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 3062,
+            "typeIndex": 52361,
+            "token": 67229967,
+            "index": 121102,
+            "name": "_c__Hotfix0_ctor",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 16,
+            "unboxedOffset": null
+          }
+        ]
+      },
+      {
+        "index": 15364,
+        "fullname": "Torappu.Battle.Action.Nodes/CheckEnemyApplyWay",
+        "fields": [
+          {
+            "nameIndex": 3364437,
+            "typeIndex": 102368,
+            "token": 67231825,
+            "index": 122960,
+            "name": "_targetType",
+            "typeName": "Torappu.Battle.Action.Nodes/ActionTargetType",
+            "static": false,
+            "offset": 16,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2835834,
+            "typeIndex": 77160,
+            "token": 67231826,
+            "index": 122961,
+            "name": "_applyWay",
+            "typeName": "Torappu.SourceApplyWay",
+            "static": false,
+            "offset": 20,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 3408389,
+            "typeIndex": 52361,
+            "token": 67231827,
+            "index": 122962,
+            "name": "__Hotfix0_get_allowedSource",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 0,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2149314,
+            "typeIndex": 52361,
+            "token": 67231828,
+            "index": 122963,
+            "name": "__Hotfix0_Execute",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 8,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 3062,
+            "typeIndex": 52361,
+            "token": 67231829,
+            "index": 122964,
+            "name": "_c__Hotfix0_ctor",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 16,
+            "unboxedOffset": null
+          }
+        ]
+      }
+    ],
+    "bodies": [
+      {
+        "methodIndex": 32168,
+        "fullname": "Torappu.LevelData/EnemyData.get_isBoss",
+        "logicalEnd": "0x1824679d0",
+        "fragments": [
+          {
+            "method": {
+              "nameIndex": 1227608,
+              "declaringType": 4732,
+              "returnType": 46024,
+              "parameterStart": -1,
+              "genericContainerIndex": -1,
+              "token": 100695465,
+              "flags": 2182,
+              "iflags": 0,
+              "slot": 65535,
+              "parameterCount": 0,
+              "index": 32168,
+              "image": "Assembly-CSharp.dll",
+              "address": 6480624064,
+              "addressStatus": "file-backed",
+              "fullname": "Torappu.LevelData/EnemyData.get_isBoss",
+              "returnTypeName": "bool",
+              "parameters": []
+            },
+            "address": "0x1824679c0",
+            "aliases": [
+              32168
+            ],
+            "boundary": "next known method/section boundary; completeness unproven; explicit byte limit",
+            "end": "0x1824679d0",
+            "decodedEnd": "0x1824679d0",
+            "decodedBytes": 16,
+            "fullyDecoded": true,
+            "bytesSha256": "d1d05e1549e2d1b8894ad0659e88601a428025b03c1682be84b992200cb757f2",
+            "capstoneVersion": "5.0.7",
+            "instructions": [
+              {
+                "address": "0x1824679c0",
+                "bytes": "83796002",
+                "mnemonic": "cmp",
+                "operands": "dword ptr [rcx + 0x60], 2"
+              },
+              {
+                "address": "0x1824679c4",
+                "bytes": "0f94c0",
+                "mnemonic": "sete",
+                "operands": "al"
+              },
+              {
+                "address": "0x1824679c7",
+                "bytes": "c3",
+                "mnemonic": "ret",
+                "operands": ""
+              },
+              {
+                "address": "0x1824679c8",
+                "bytes": "cc",
+                "mnemonic": "int3",
+                "operands": ""
+              },
+              {
+                "address": "0x1824679c9",
+                "bytes": "cc",
+                "mnemonic": "int3",
+                "operands": ""
+              },
+              {
+                "address": "0x1824679ca",
+                "bytes": "cc",
+                "mnemonic": "int3",
+                "operands": ""
+              },
+              {
+                "address": "0x1824679cb",
+                "bytes": "cc",
+                "mnemonic": "int3",
+                "operands": ""
+              },
+              {
+                "address": "0x1824679cc",
+                "bytes": "cc",
+                "mnemonic": "int3",
+                "operands": ""
+              },
+              {
+                "address": "0x1824679cd",
+                "bytes": "cc",
+                "mnemonic": "int3",
+                "operands": ""
+              },
+              {
+                "address": "0x1824679ce",
+                "bytes": "cc",
+                "mnemonic": "int3",
+                "operands": ""
+              },
+              {
+                "address": "0x1824679cf",
+                "bytes": "cc",
+                "mnemonic": "int3",
+                "operands": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "methodIndex": 64000,
+        "fullname": "Torappu.Battle.Ability.get_applyWay",
+        "logicalEnd": "0x180604d90",
+        "fragments": [
+          {
+            "method": {
+              "nameIndex": 2431979,
+              "declaringType": 10009,
+              "returnType": 77159,
+              "parameterStart": -1,
+              "genericContainerIndex": -1,
+              "token": 100727297,
+              "flags": 2502,
+              "iflags": 0,
+              "slot": 23,
+              "parameterCount": 0,
+              "index": 64000,
+              "image": "Assembly-CSharp.dll",
+              "address": 6448762160,
+              "addressStatus": "file-backed",
+              "fullname": "Torappu.Battle.Ability.get_applyWay",
+              "returnTypeName": "Torappu.SourceApplyWay",
+              "parameters": []
+            },
+            "address": "0x180604d30",
+            "aliases": [
+              64000
+            ],
+            "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+            "end": "0x180604d87",
+            "decodedEnd": "0x180604d87",
+            "decodedBytes": 87,
+            "fullyDecoded": true,
+            "bytesSha256": "547c972c3fcb81531bcdbb2bb504bd7f5d49a34c18b8e9daf52f8cce333760e0",
+            "capstoneVersion": "5.0.7",
+            "instructions": [
+              {
+                "address": "0x180604d30",
+                "bytes": "4053",
+                "mnemonic": "push",
+                "operands": "rbx"
+              },
+              {
+                "address": "0x180604d32",
+                "bytes": "4883ec20",
+                "mnemonic": "sub",
+                "operands": "rsp, 0x20"
+              },
+              {
+                "address": "0x180604d36",
+                "bytes": "803dc55e990800",
+                "mnemonic": "cmp",
+                "operands": "byte ptr [rip + 0x8995ec5], 0",
+                "ripReferences": [
+                  "0x188f9ac02"
+                ]
+              },
+              {
+                "address": "0x180604d3d",
+                "bytes": "488bd9",
+                "mnemonic": "mov",
+                "operands": "rbx, rcx"
+              },
+              {
+                "address": "0x180604d40",
+                "bytes": "7513",
+                "mnemonic": "jne",
+                "operands": "0x180604d55",
+                "target": "0x180604d55",
+                "targetOutsideRange": false,
+                "methods": []
+              },
+              {
+                "address": "0x180604d42",
+                "bytes": "488d0d87be5208",
+                "mnemonic": "lea",
+                "operands": "rcx, [rip + 0x852be87]",
+                "ripReferences": [
+                  "0x188b30bd0"
+                ]
+              },
+              {
+                "address": "0x180604d49",
+                "bytes": "e8c274e9ff",
+                "mnemonic": "call",
+                "operands": "0x18049c210",
+                "target": "0x18049c210",
+                "methods": []
+              },
+              {
+                "address": "0x180604d4e",
+                "bytes": "c605ad5e990801",
+                "mnemonic": "mov",
+                "operands": "byte ptr [rip + 0x8995ead], 1",
+                "ripReferences": [
+                  "0x188f9ac02"
+                ]
+              },
+              {
+                "address": "0x180604d55",
+                "bytes": "488b0574be5208",
+                "mnemonic": "mov",
+                "operands": "rax, qword ptr [rip + 0x852be74]",
+                "ripReferences": [
+                  "0x188b30bd0"
+                ]
+              },
+              {
+                "address": "0x180604d5c",
+                "bytes": "488b90b8000000",
+                "mnemonic": "mov",
+                "operands": "rdx, qword ptr [rax + 0xb8]"
+              },
+              {
+                "address": "0x180604d63",
+                "bytes": "488b8af8000000",
+                "mnemonic": "mov",
+                "operands": "rcx, qword ptr [rdx + 0xf8]"
+              },
+              {
+                "address": "0x180604d6a",
+                "bytes": "4885c9",
+                "mnemonic": "test",
+                "operands": "rcx, rcx"
+              },
+              {
+                "address": "0x180604d6d",
+                "bytes": "7508",
+                "mnemonic": "jne",
+                "operands": "0x180604d77",
+                "target": "0x180604d77",
+                "targetOutsideRange": false,
+                "methods": []
+              },
+              {
+                "address": "0x180604d6f",
+                "bytes": "33c0",
+                "mnemonic": "xor",
+                "operands": "eax, eax"
+              },
+              {
+                "address": "0x180604d71",
+                "bytes": "4883c420",
+                "mnemonic": "add",
+                "operands": "rsp, 0x20"
+              },
+              {
+                "address": "0x180604d75",
+                "bytes": "5b",
+                "mnemonic": "pop",
+                "operands": "rbx"
+              },
+              {
+                "address": "0x180604d76",
+                "bytes": "c3",
+                "mnemonic": "ret",
+                "operands": ""
+              },
+              {
+                "address": "0x180604d77",
+                "bytes": "4533c0",
+                "mnemonic": "xor",
+                "operands": "r8d, r8d"
+              },
+              {
+                "address": "0x180604d7a",
+                "bytes": "488bd3",
+                "mnemonic": "mov",
+                "operands": "rdx, rbx"
+              },
+              {
+                "address": "0x180604d7d",
+                "bytes": "4883c420",
+                "mnemonic": "add",
+                "operands": "rsp, 0x20"
+              },
+              {
+                "address": "0x180604d81",
+                "bytes": "5b",
+                "mnemonic": "pop",
+                "operands": "rbx"
+              },
+              {
+                "address": "0x180604d82",
+                "bytes": "e9395ddb02",
+                "mnemonic": "jmp",
+                "operands": "0x1833baac0",
+                "target": "0x1833baac0",
+                "targetOutsideRange": true,
+                "methods": [
+                  "XLua.DelegateBridge.__Gen_Delegate_Imp2700"
+                ]
+              }
+            ]
+          },
+          {
+            "method": null,
+            "address": "0x180604d87",
+            "aliases": [],
+            "boundary": "next known method/section boundary; completeness unproven; explicit byte limit",
+            "end": "0x180604d90",
+            "decodedEnd": "0x180604d90",
+            "decodedBytes": 9,
+            "fullyDecoded": true,
+            "bytesSha256": "57c1d0aaef1222fc7f655f011049271d3a843395335212156e61d3850beb51ce",
+            "capstoneVersion": "5.0.7",
+            "instructions": [
+              {
+                "address": "0x180604d87",
+                "bytes": "cc",
+                "mnemonic": "int3",
+                "operands": ""
+              },
+              {
+                "address": "0x180604d88",
+                "bytes": "cc",
+                "mnemonic": "int3",
+                "operands": ""
+              },
+              {
+                "address": "0x180604d89",
+                "bytes": "cc",
+                "mnemonic": "int3",
+                "operands": ""
+              },
+              {
+                "address": "0x180604d8a",
+                "bytes": "cc",
+                "mnemonic": "int3",
+                "operands": ""
+              },
+              {
+                "address": "0x180604d8b",
+                "bytes": "cc",
+                "mnemonic": "int3",
+                "operands": ""
+              },
+              {
+                "address": "0x180604d8c",
+                "bytes": "cc",
+                "mnemonic": "int3",
+                "operands": ""
+              },
+              {
+                "address": "0x180604d8d",
+                "bytes": "cc",
+                "mnemonic": "int3",
+                "operands": ""
+              },
+              {
+                "address": "0x180604d8e",
+                "bytes": "cc",
+                "mnemonic": "int3",
+                "operands": ""
+              },
+              {
+                "address": "0x180604d8f",
+                "bytes": "cc",
+                "mnemonic": "int3",
+                "operands": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "methodIndex": 92334,
+        "fullname": "Torappu.Battle.Abilities.MeleeAttack.get_applyWay",
+        "logicalEnd": "0x180f509c0",
+        "fragments": [
+          {
+            "method": {
+              "nameIndex": 2431979,
+              "declaringType": 13304,
+              "returnType": 77159,
+              "parameterStart": -1,
+              "genericContainerIndex": -1,
+              "token": 100755631,
+              "flags": 2246,
+              "iflags": 0,
+              "slot": 23,
+              "parameterCount": 0,
+              "index": 92334,
+              "image": "Assembly-CSharp.dll",
+              "address": 6458509664,
+              "addressStatus": "file-backed",
+              "fullname": "Torappu.Battle.Abilities.MeleeAttack.get_applyWay",
+              "returnTypeName": "Torappu.SourceApplyWay",
+              "parameters": []
+            },
+            "address": "0x180f50960",
+            "aliases": [
+              92334
+            ],
+            "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+            "end": "0x180f509b6",
+            "decodedEnd": "0x180f509b6",
+            "decodedBytes": 86,
+            "fullyDecoded": true,
+            "bytesSha256": "21425ae68d0dd38f35b703323fb47170bb58925fa567c8bae272cb9d26fdf6e3",
+            "capstoneVersion": "5.0.7",
+            "instructions": [
+              {
+                "address": "0x180f50960",
+                "bytes": "4053",
+                "mnemonic": "push",
+                "operands": "rbx"
+              },
+              {
+                "address": "0x180f50962",
+                "bytes": "4883ec20",
+                "mnemonic": "sub",
+                "operands": "rsp, 0x20"
+              },
+              {
+                "address": "0x180f50966",
+                "bytes": "803d57fc040800",
+                "mnemonic": "cmp",
+                "operands": "byte ptr [rip + 0x804fc57], 0",
+                "ripReferences": [
+                  "0x188fa05c4"
+                ]
+              },
+              {
+                "address": "0x180f5096d",
+                "bytes": "488bd9",
+                "mnemonic": "mov",
+                "operands": "rbx, rcx"
+              },
+              {
+                "address": "0x180f50970",
+                "bytes": "7513",
+                "mnemonic": "jne",
+                "operands": "0x180f50985",
+                "target": "0x180f50985",
+                "targetOutsideRange": false,
+                "methods": []
+              },
+              {
+                "address": "0x180f50972",
+                "bytes": "488d0dbf28cf07",
+                "mnemonic": "lea",
+                "operands": "rcx, [rip + 0x7cf28bf]",
+                "ripReferences": [
+                  "0x188c43238"
+                ]
+              },
+              {
+                "address": "0x180f50979",
+                "bytes": "e892b854ff",
+                "mnemonic": "call",
+                "operands": "0x18049c210",
+                "target": "0x18049c210",
+                "methods": []
+              },
+              {
+                "address": "0x180f5097e",
+                "bytes": "c6053ffc040801",
+                "mnemonic": "mov",
+                "operands": "byte ptr [rip + 0x804fc3f], 1",
+                "ripReferences": [
+                  "0x188fa05c4"
+                ]
+              },
+              {
+                "address": "0x180f50985",
+                "bytes": "488b05ac28cf07",
+                "mnemonic": "mov",
+                "operands": "rax, qword ptr [rip + 0x7cf28ac]",
+                "ripReferences": [
+                  "0x188c43238"
+                ]
+              },
+              {
+                "address": "0x180f5098c",
+                "bytes": "488b90b8000000",
+                "mnemonic": "mov",
+                "operands": "rdx, qword ptr [rax + 0xb8]"
+              },
+              {
+                "address": "0x180f50993",
+                "bytes": "488b0a",
+                "mnemonic": "mov",
+                "operands": "rcx, qword ptr [rdx]"
+              },
+              {
+                "address": "0x180f50996",
+                "bytes": "4885c9",
+                "mnemonic": "test",
+                "operands": "rcx, rcx"
+              },
+              {
+                "address": "0x180f50999",
+                "bytes": "750b",
+                "mnemonic": "jne",
+                "operands": "0x180f509a6",
+                "target": "0x180f509a6",
+                "targetOutsideRange": false,
+                "methods": []
+              },
+              {
+                "address": "0x180f5099b",
+                "bytes": "b801000000",
+                "mnemonic": "mov",
+                "operands": "eax, 1"
+              },
+              {
+                "address": "0x180f509a0",
+                "bytes": "4883c420",
+                "mnemonic": "add",
+                "operands": "rsp, 0x20"
+              },
+              {
+                "address": "0x180f509a4",
+                "bytes": "5b",
+                "mnemonic": "pop",
+                "operands": "rbx"
+              },
+              {
+                "address": "0x180f509a5",
+                "bytes": "c3",
+                "mnemonic": "ret",
+                "operands": ""
+              },
+              {
+                "address": "0x180f509a6",
+                "bytes": "4533c0",
+                "mnemonic": "xor",
+                "operands": "r8d, r8d"
+              },
+              {
+                "address": "0x180f509a9",
+                "bytes": "488bd3",
+                "mnemonic": "mov",
+                "operands": "rdx, rbx"
+              },
+              {
+                "address": "0x180f509ac",
+                "bytes": "4883c420",
+                "mnemonic": "add",
+                "operands": "rsp, 0x20"
+              },
+              {
+                "address": "0x180f509b0",
+                "bytes": "5b",
+                "mnemonic": "pop",
+                "operands": "rbx"
+              },
+              {
+                "address": "0x180f509b1",
+                "bytes": "e90aa14602",
+                "mnemonic": "jmp",
+                "operands": "0x1833baac0",
+                "target": "0x1833baac0",
+                "targetOutsideRange": true,
+                "methods": [
+                  "XLua.DelegateBridge.__Gen_Delegate_Imp2700"
+                ]
+              }
+            ]
+          },
+          {
+            "method": null,
+            "address": "0x180f509b6",
+            "aliases": [],
+            "boundary": "next known method/section boundary; completeness unproven; explicit byte limit",
+            "end": "0x180f509c0",
+            "decodedEnd": "0x180f509c0",
+            "decodedBytes": 10,
+            "fullyDecoded": true,
+            "bytesSha256": "22e52bba61da8ad6732be550205a10b89a1bb3b0ea491be07de9294f0eb6f045",
+            "capstoneVersion": "5.0.7",
+            "instructions": [
+              {
+                "address": "0x180f509b6",
+                "bytes": "cc",
+                "mnemonic": "int3",
+                "operands": ""
+              },
+              {
+                "address": "0x180f509b7",
+                "bytes": "cc",
+                "mnemonic": "int3",
+                "operands": ""
+              },
+              {
+                "address": "0x180f509b8",
+                "bytes": "cc",
+                "mnemonic": "int3",
+                "operands": ""
+              },
+              {
+                "address": "0x180f509b9",
+                "bytes": "cc",
+                "mnemonic": "int3",
+                "operands": ""
+              },
+              {
+                "address": "0x180f509ba",
+                "bytes": "cc",
+                "mnemonic": "int3",
+                "operands": ""
+              },
+              {
+                "address": "0x180f509bb",
+                "bytes": "cc",
+                "mnemonic": "int3",
+                "operands": ""
+              },
+              {
+                "address": "0x180f509bc",
+                "bytes": "cc",
+                "mnemonic": "int3",
+                "operands": ""
+              },
+              {
+                "address": "0x180f509bd",
+                "bytes": "cc",
+                "mnemonic": "int3",
+                "operands": ""
+              },
+              {
+                "address": "0x180f509be",
+                "bytes": "cc",
+                "mnemonic": "int3",
+                "operands": ""
+              },
+              {
+                "address": "0x180f509bf",
+                "bytes": "cc",
+                "mnemonic": "int3",
+                "operands": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "methodIndex": 92819,
+        "fullname": "Torappu.Battle.Abilities.RangedAttack.get_applyWay",
+        "logicalEnd": "0x180f6b920",
+        "fragments": [
+          {
+            "method": {
+              "nameIndex": 2431979,
+              "declaringType": 13343,
+              "returnType": 77159,
+              "parameterStart": -1,
+              "genericContainerIndex": -1,
+              "token": 100756116,
+              "flags": 2246,
+              "iflags": 0,
+              "slot": 23,
+              "parameterCount": 0,
+              "index": 92819,
+              "image": "Assembly-CSharp.dll",
+              "address": 6458620096,
+              "addressStatus": "file-backed",
+              "fullname": "Torappu.Battle.Abilities.RangedAttack.get_applyWay",
+              "returnTypeName": "Torappu.SourceApplyWay",
+              "parameters": []
+            },
+            "address": "0x180f6b8c0",
+            "aliases": [
+              92819
+            ],
+            "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+            "end": "0x180f6b917",
+            "decodedEnd": "0x180f6b917",
+            "decodedBytes": 87,
+            "fullyDecoded": true,
+            "bytesSha256": "fd56d95004a477fa2621395431978dbe11d81e53d27b54da7b399bf76845eb6c",
+            "capstoneVersion": "5.0.7",
+            "instructions": [
+              {
+                "address": "0x180f6b8c0",
+                "bytes": "4053",
+                "mnemonic": "push",
+                "operands": "rbx"
+              },
+              {
+                "address": "0x180f6b8c2",
+                "bytes": "4883ec20",
+                "mnemonic": "sub",
+                "operands": "rsp, 0x20"
+              },
+              {
+                "address": "0x180f6b8c6",
+                "bytes": "803d194e030800",
+                "mnemonic": "cmp",
+                "operands": "byte ptr [rip + 0x8034e19], 0",
+                "ripReferences": [
+                  "0x188fa06e6"
+                ]
+              },
+              {
+                "address": "0x180f6b8cd",
+                "bytes": "488bd9",
+                "mnemonic": "mov",
+                "operands": "rbx, rcx"
+              },
+              {
+                "address": "0x180f6b8d0",
+                "bytes": "7513",
+                "mnemonic": "jne",
+                "operands": "0x180f6b8e5",
+                "target": "0x180f6b8e5",
+                "targetOutsideRange": false,
+                "methods": []
+              },
+              {
+                "address": "0x180f6b8d2",
+                "bytes": "488d0da7b0cb07",
+                "mnemonic": "lea",
+                "operands": "rcx, [rip + 0x7cbb0a7]",
+                "ripReferences": [
+                  "0x188c26980"
+                ]
+              },
+              {
+                "address": "0x180f6b8d9",
+                "bytes": "e8320953ff",
+                "mnemonic": "call",
+                "operands": "0x18049c210",
+                "target": "0x18049c210",
+                "methods": []
+              },
+              {
+                "address": "0x180f6b8de",
+                "bytes": "c605014e030801",
+                "mnemonic": "mov",
+                "operands": "byte ptr [rip + 0x8034e01], 1",
+                "ripReferences": [
+                  "0x188fa06e6"
+                ]
+              },
+              {
+                "address": "0x180f6b8e5",
+                "bytes": "488b0594b0cb07",
+                "mnemonic": "mov",
+                "operands": "rax, qword ptr [rip + 0x7cbb094]",
+                "ripReferences": [
+                  "0x188c26980"
+                ]
+              },
+              {
+                "address": "0x180f6b8ec",
+                "bytes": "488b90b8000000",
+                "mnemonic": "mov",
+                "operands": "rdx, qword ptr [rax + 0xb8]"
+              },
+              {
+                "address": "0x180f6b8f3",
+                "bytes": "488b4a10",
+                "mnemonic": "mov",
+                "operands": "rcx, qword ptr [rdx + 0x10]"
+              },
+              {
+                "address": "0x180f6b8f7",
+                "bytes": "4885c9",
+                "mnemonic": "test",
+                "operands": "rcx, rcx"
+              },
+              {
+                "address": "0x180f6b8fa",
+                "bytes": "750b",
+                "mnemonic": "jne",
+                "operands": "0x180f6b907",
+                "target": "0x180f6b907",
+                "targetOutsideRange": false,
+                "methods": []
+              },
+              {
+                "address": "0x180f6b8fc",
+                "bytes": "b802000000",
+                "mnemonic": "mov",
+                "operands": "eax, 2"
+              },
+              {
+                "address": "0x180f6b901",
+                "bytes": "4883c420",
+                "mnemonic": "add",
+                "operands": "rsp, 0x20"
+              },
+              {
+                "address": "0x180f6b905",
+                "bytes": "5b",
+                "mnemonic": "pop",
+                "operands": "rbx"
+              },
+              {
+                "address": "0x180f6b906",
+                "bytes": "c3",
+                "mnemonic": "ret",
+                "operands": ""
+              },
+              {
+                "address": "0x180f6b907",
+                "bytes": "4533c0",
+                "mnemonic": "xor",
+                "operands": "r8d, r8d"
+              },
+              {
+                "address": "0x180f6b90a",
+                "bytes": "488bd3",
+                "mnemonic": "mov",
+                "operands": "rdx, rbx"
+              },
+              {
+                "address": "0x180f6b90d",
+                "bytes": "4883c420",
+                "mnemonic": "add",
+                "operands": "rsp, 0x20"
+              },
+              {
+                "address": "0x180f6b911",
+                "bytes": "5b",
+                "mnemonic": "pop",
+                "operands": "rbx"
+              },
+              {
+                "address": "0x180f6b912",
+                "bytes": "e9a9f14402",
+                "mnemonic": "jmp",
+                "operands": "0x1833baac0",
+                "target": "0x1833baac0",
+                "targetOutsideRange": true,
+                "methods": [
+                  "XLua.DelegateBridge.__Gen_Delegate_Imp2700"
+                ]
+              }
+            ]
+          },
+          {
+            "method": null,
+            "address": "0x180f6b917",
+            "aliases": [],
+            "boundary": "next known method/section boundary; completeness unproven; explicit byte limit",
+            "end": "0x180f6b920",
+            "decodedEnd": "0x180f6b920",
+            "decodedBytes": 9,
+            "fullyDecoded": true,
+            "bytesSha256": "57c1d0aaef1222fc7f655f011049271d3a843395335212156e61d3850beb51ce",
+            "capstoneVersion": "5.0.7",
+            "instructions": [
+              {
+                "address": "0x180f6b917",
+                "bytes": "cc",
+                "mnemonic": "int3",
+                "operands": ""
+              },
+              {
+                "address": "0x180f6b918",
+                "bytes": "cc",
+                "mnemonic": "int3",
+                "operands": ""
+              },
+              {
+                "address": "0x180f6b919",
+                "bytes": "cc",
+                "mnemonic": "int3",
+                "operands": ""
+              },
+              {
+                "address": "0x180f6b91a",
+                "bytes": "cc",
+                "mnemonic": "int3",
+                "operands": ""
+              },
+              {
+                "address": "0x180f6b91b",
+                "bytes": "cc",
+                "mnemonic": "int3",
+                "operands": ""
+              },
+              {
+                "address": "0x180f6b91c",
+                "bytes": "cc",
+                "mnemonic": "int3",
+                "operands": ""
+              },
+              {
+                "address": "0x180f6b91d",
+                "bytes": "cc",
+                "mnemonic": "int3",
+                "operands": ""
+              },
+              {
+                "address": "0x180f6b91e",
+                "bytes": "cc",
+                "mnemonic": "int3",
+                "operands": ""
+              },
+              {
+                "address": "0x180f6b91f",
+                "bytes": "cc",
+                "mnemonic": "int3",
+                "operands": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "methodIndex": 93050,
+        "fullname": "Torappu.Battle.Abilities.Heal.get_applyWay",
+        "logicalEnd": "0x180f5eff0",
+        "fragments": [
+          {
+            "method": {
+              "nameIndex": 2431979,
+              "declaringType": 13364,
+              "returnType": 77159,
+              "parameterStart": -1,
+              "genericContainerIndex": -1,
+              "token": 100756347,
+              "flags": 2246,
+              "iflags": 0,
+              "slot": 23,
+              "parameterCount": 0,
+              "index": 93050,
+              "image": "Assembly-CSharp.dll",
+              "address": 6458568592,
+              "addressStatus": "file-backed",
+              "fullname": "Torappu.Battle.Abilities.Heal.get_applyWay",
+              "returnTypeName": "Torappu.SourceApplyWay",
+              "parameters": []
+            },
+            "address": "0x180f5ef90",
+            "aliases": [
+              93050
+            ],
+            "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+            "end": "0x180f5efe4",
+            "decodedEnd": "0x180f5efe4",
+            "decodedBytes": 84,
+            "fullyDecoded": true,
+            "bytesSha256": "9182a8f690220fc0f4ae1a6322ea6a1cd91e72ab1f1bc2eb89cb17a0a4c31c54",
+            "capstoneVersion": "5.0.7",
+            "instructions": [
+              {
+                "address": "0x180f5ef90",
+                "bytes": "4053",
+                "mnemonic": "push",
+                "operands": "rbx"
+              },
+              {
+                "address": "0x180f5ef92",
+                "bytes": "4883ec20",
+                "mnemonic": "sub",
+                "operands": "rsp, 0x20"
+              },
+              {
+                "address": "0x180f5ef96",
+                "bytes": "803dcf17040800",
+                "mnemonic": "cmp",
+                "operands": "byte ptr [rip + 0x80417cf], 0",
+                "ripReferences": [
+                  "0x188fa076c"
+                ]
+              },
+              {
+                "address": "0x180f5ef9d",
+                "bytes": "488bd9",
+                "mnemonic": "mov",
+                "operands": "rbx, rcx"
+              },
+              {
+                "address": "0x180f5efa0",
+                "bytes": "7513",
+                "mnemonic": "jne",
+                "operands": "0x180f5efb5",
+                "target": "0x180f5efb5",
+                "targetOutsideRange": false,
+                "methods": []
+              },
+              {
+                "address": "0x180f5efa2",
+                "bytes": "488d0d3f29d107",
+                "mnemonic": "lea",
+                "operands": "rcx, [rip + 0x7d1293f]",
+                "ripReferences": [
+                  "0x188c718e8"
+                ]
+              },
+              {
+                "address": "0x180f5efa9",
+                "bytes": "e862d253ff",
+                "mnemonic": "call",
+                "operands": "0x18049c210",
+                "target": "0x18049c210",
+                "methods": []
+              },
+              {
+                "address": "0x180f5efae",
+                "bytes": "c605b717040801",
+                "mnemonic": "mov",
+                "operands": "byte ptr [rip + 0x80417b7], 1",
+                "ripReferences": [
+                  "0x188fa076c"
+                ]
+              },
+              {
+                "address": "0x180f5efb5",
+                "bytes": "488b052c29d107",
+                "mnemonic": "mov",
+                "operands": "rax, qword ptr [rip + 0x7d1292c]",
+                "ripReferences": [
+                  "0x188c718e8"
+                ]
+              },
+              {
+                "address": "0x180f5efbc",
+                "bytes": "488b90b8000000",
+                "mnemonic": "mov",
+                "operands": "rdx, qword ptr [rax + 0xb8]"
+              },
+              {
+                "address": "0x180f5efc3",
+                "bytes": "488b4a18",
+                "mnemonic": "mov",
+                "operands": "rcx, qword ptr [rdx + 0x18]"
+              },
+              {
+                "address": "0x180f5efc7",
+                "bytes": "4885c9",
+                "mnemonic": "test",
+                "operands": "rcx, rcx"
+              },
+              {
+                "address": "0x180f5efca",
+                "bytes": "7508",
+                "mnemonic": "jne",
+                "operands": "0x180f5efd4",
+                "target": "0x180f5efd4",
+                "targetOutsideRange": false,
+                "methods": []
+              },
+              {
+                "address": "0x180f5efcc",
+                "bytes": "33c0",
+                "mnemonic": "xor",
+                "operands": "eax, eax"
+              },
+              {
+                "address": "0x180f5efce",
+                "bytes": "4883c420",
+                "mnemonic": "add",
+                "operands": "rsp, 0x20"
+              },
+              {
+                "address": "0x180f5efd2",
+                "bytes": "5b",
+                "mnemonic": "pop",
+                "operands": "rbx"
+              },
+              {
+                "address": "0x180f5efd3",
+                "bytes": "c3",
+                "mnemonic": "ret",
+                "operands": ""
+              },
+              {
+                "address": "0x180f5efd4",
+                "bytes": "4533c0",
+                "mnemonic": "xor",
+                "operands": "r8d, r8d"
+              },
+              {
+                "address": "0x180f5efd7",
+                "bytes": "488bd3",
+                "mnemonic": "mov",
+                "operands": "rdx, rbx"
+              },
+              {
+                "address": "0x180f5efda",
+                "bytes": "4883c420",
+                "mnemonic": "add",
+                "operands": "rsp, 0x20"
+              },
+              {
+                "address": "0x180f5efde",
+                "bytes": "5b",
+                "mnemonic": "pop",
+                "operands": "rbx"
+              },
+              {
+                "address": "0x180f5efdf",
+                "bytes": "e9dcba4502",
+                "mnemonic": "jmp",
+                "operands": "0x1833baac0",
+                "target": "0x1833baac0",
+                "targetOutsideRange": true,
+                "methods": [
+                  "XLua.DelegateBridge.__Gen_Delegate_Imp2700"
+                ]
+              }
+            ]
+          },
+          {
+            "method": null,
+            "address": "0x180f5efe4",
+            "aliases": [],
+            "boundary": "next known method/section boundary; completeness unproven; explicit byte limit",
+            "end": "0x180f5eff0",
+            "decodedEnd": "0x180f5eff0",
+            "decodedBytes": 12,
+            "fullyDecoded": true,
+            "bytesSha256": "a0d08a155aa4e9aadd5da959565de99acc8dc9dbda96ec3852dde76c97330902",
+            "capstoneVersion": "5.0.7",
+            "instructions": [
+              {
+                "address": "0x180f5efe4",
+                "bytes": "cc",
+                "mnemonic": "int3",
+                "operands": ""
+              },
+              {
+                "address": "0x180f5efe5",
+                "bytes": "cc",
+                "mnemonic": "int3",
+                "operands": ""
+              },
+              {
+                "address": "0x180f5efe6",
+                "bytes": "cc",
+                "mnemonic": "int3",
+                "operands": ""
+              },
+              {
+                "address": "0x180f5efe7",
+                "bytes": "cc",
+                "mnemonic": "int3",
+                "operands": ""
+              },
+              {
+                "address": "0x180f5efe8",
+                "bytes": "cc",
+                "mnemonic": "int3",
+                "operands": ""
+              },
+              {
+                "address": "0x180f5efe9",
+                "bytes": "cc",
+                "mnemonic": "int3",
+                "operands": ""
+              },
+              {
+                "address": "0x180f5efea",
+                "bytes": "cc",
+                "mnemonic": "int3",
+                "operands": ""
+              },
+              {
+                "address": "0x180f5efeb",
+                "bytes": "cc",
+                "mnemonic": "int3",
+                "operands": ""
+              },
+              {
+                "address": "0x180f5efec",
+                "bytes": "cc",
+                "mnemonic": "int3",
+                "operands": ""
+              },
+              {
+                "address": "0x180f5efed",
+                "bytes": "cc",
+                "mnemonic": "int3",
+                "operands": ""
+              },
+              {
+                "address": "0x180f5efee",
+                "bytes": "cc",
+                "mnemonic": "int3",
+                "operands": ""
+              },
+              {
+                "address": "0x180f5efef",
+                "bytes": "cc",
+                "mnemonic": "int3",
+                "operands": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "methodIndex": 101572,
+        "fullname": "Torappu.Battle.Action.Nodes/CheckEnemyLevelMask.Execute",
+        "logicalEnd": "0x1811ce530",
+        "fragments": [
+          {
+            "method": {
+              "nameIndex": 397673,
+              "declaringType": 15072,
+              "returnType": 46024,
+              "parameterStart": 96756,
+              "genericContainerIndex": -1,
+              "token": 100764869,
+              "flags": 198,
+              "iflags": 0,
+              "slot": 6,
+              "parameterCount": 3,
+              "index": 101572,
+              "image": "Assembly-CSharp.dll",
+              "address": 6461121472,
+              "addressStatus": "file-backed",
+              "fullname": "Torappu.Battle.Action.Nodes/CheckEnemyLevelMask.Execute",
+              "returnTypeName": "bool",
+              "parameters": [
+                {
+                  "nameIndex": 3124,
+                  "token": 134314501,
+                  "typeIndex": 45909,
+                  "index": 96756,
+                  "name": "blackboard",
+                  "typeName": "Torappu.Blackboard"
+                },
+                {
+                  "nameIndex": 440673,
+                  "token": 134314502,
+                  "typeIndex": 90650,
+                  "index": 96757,
+                  "name": "sourceType",
+                  "typeName": "Torappu.Battle.Action.ActionNode/SourceType"
+                },
+                {
+                  "nameIndex": 440684,
+                  "token": 134314503,
+                  "typeIndex": 32502,
+                  "index": 96758,
+                  "name": "snapshot",
+                  "typeName": "Torappu.Battle.Context/Snapshot&"
+                }
+              ]
+            },
+            "address": "0x1811ce3c0",
+            "aliases": [
+              101572
+            ],
+            "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+            "end": "0x1811ce52b",
+            "decodedEnd": "0x1811ce52b",
+            "decodedBytes": 363,
+            "fullyDecoded": true,
+            "bytesSha256": "d8afd815de9bd4a8a4ce6acfa58ac0232b57683adca9a6eab5a61c9451a43643",
+            "capstoneVersion": "5.0.7",
+            "instructions": [
+              {
+                "address": "0x1811ce3c0",
+                "bytes": "48896c2410",
+                "mnemonic": "mov",
+                "operands": "qword ptr [rsp + 0x10], rbp"
+              },
+              {
+                "address": "0x1811ce3c5",
+                "bytes": "4889742418",
+                "mnemonic": "mov",
+                "operands": "qword ptr [rsp + 0x18], rsi"
+              },
+              {
+                "address": "0x1811ce3ca",
+                "bytes": "48897c2420",
+                "mnemonic": "mov",
+                "operands": "qword ptr [rsp + 0x20], rdi"
+              },
+              {
+                "address": "0x1811ce3cf",
+                "bytes": "4156",
+                "mnemonic": "push",
+                "operands": "r14"
+              },
+              {
+                "address": "0x1811ce3d1",
+                "bytes": "4883ec30",
+                "mnemonic": "sub",
+                "operands": "rsp, 0x30"
+              },
+              {
+                "address": "0x1811ce3d5",
+                "bytes": "803da741dd0700",
+                "mnemonic": "cmp",
+                "operands": "byte ptr [rip + 0x7dd41a7], 0",
+                "ripReferences": [
+                  "0x188fa2583"
+                ]
+              },
+              {
+                "address": "0x1811ce3dc",
+                "bytes": "498bf9",
+                "mnemonic": "mov",
+                "operands": "rdi, r9"
+              },
+              {
+                "address": "0x1811ce3df",
+                "bytes": "418be8",
+                "mnemonic": "mov",
+                "operands": "ebp, r8d"
+              },
+              {
+                "address": "0x1811ce3e2",
+                "bytes": "4c8bf2",
+                "mnemonic": "mov",
+                "operands": "r14, rdx"
+              },
+              {
+                "address": "0x1811ce3e5",
+                "bytes": "488bf1",
+                "mnemonic": "mov",
+                "operands": "rsi, rcx"
+              },
+              {
+                "address": "0x1811ce3e8",
+                "bytes": "752b",
+                "mnemonic": "jne",
+                "operands": "0x1811ce415",
+                "target": "0x1811ce415",
+                "targetOutsideRange": false,
+                "methods": []
+              },
+              {
+                "address": "0x1811ce3ea",
+                "bytes": "488d0d5f8ba007",
+                "mnemonic": "lea",
+                "operands": "rcx, [rip + 0x7a08b5f]",
+                "ripReferences": [
+                  "0x188bd6f50"
+                ]
+              },
+              {
+                "address": "0x1811ce3f1",
+                "bytes": "e81ade2cff",
+                "mnemonic": "call",
+                "operands": "0x18049c210",
+                "target": "0x18049c210",
+                "methods": []
+              },
+              {
+                "address": "0x1811ce3f6",
+                "bytes": "488d0dc36d9b07",
+                "mnemonic": "lea",
+                "operands": "rcx, [rip + 0x79b6dc3]",
+                "ripReferences": [
+                  "0x188b851c0"
+                ]
+              },
+              {
+                "address": "0x1811ce3fd",
+                "bytes": "e80ede2cff",
+                "mnemonic": "call",
+                "operands": "0x18049c210",
+                "target": "0x18049c210",
+                "methods": []
+              },
+              {
+                "address": "0x1811ce402",
+                "bytes": "488d0d471c9507",
+                "mnemonic": "lea",
+                "operands": "rcx, [rip + 0x7951c47]",
+                "ripReferences": [
+                  "0x188b20050"
+                ]
+              },
+              {
+                "address": "0x1811ce409",
+                "bytes": "e802de2cff",
+                "mnemonic": "call",
+                "operands": "0x18049c210",
+                "target": "0x18049c210",
+                "methods": []
+              },
+              {
+                "address": "0x1811ce40e",
+                "bytes": "c6056e41dd0701",
+                "mnemonic": "mov",
+                "operands": "byte ptr [rip + 0x7dd416e], 1",
+                "ripReferences": [
+                  "0x188fa2583"
+                ]
+              },
+              {
+                "address": "0x1811ce415",
+                "bytes": "488b05348ba007",
+                "mnemonic": "mov",
+                "operands": "rax, qword ptr [rip + 0x7a08b34]",
+                "ripReferences": [
+                  "0x188bd6f50"
+                ]
+              },
+              {
+                "address": "0x1811ce41c",
+                "bytes": "48895c2440",
+                "mnemonic": "mov",
+                "operands": "qword ptr [rsp + 0x40], rbx"
+              },
+              {
+                "address": "0x1811ce421",
+                "bytes": "488b88b8000000",
+                "mnemonic": "mov",
+                "operands": "rcx, qword ptr [rax + 0xb8]"
+              },
+              {
+                "address": "0x1811ce428",
+                "bytes": "488b4908",
+                "mnemonic": "mov",
+                "operands": "rcx, qword ptr [rcx + 8]"
+              },
+              {
+                "address": "0x1811ce42c",
+                "bytes": "4885c9",
+                "mnemonic": "test",
+                "operands": "rcx, rcx"
+              },
+              {
+                "address": "0x1811ce42f",
+                "bytes": "0f85bb000000",
+                "mnemonic": "jne",
+                "operands": "0x1811ce4f0",
+                "target": "0x1811ce4f0",
+                "targetOutsideRange": false,
+                "methods": []
+              },
+              {
+                "address": "0x1811ce435",
+                "bytes": "8b5610",
+                "mnemonic": "mov",
+                "operands": "edx, dword ptr [rsi + 0x10]"
+              },
+              {
+                "address": "0x1811ce438",
+                "bytes": "4533c0",
+                "mnemonic": "xor",
+                "operands": "r8d, r8d"
+              },
+              {
+                "address": "0x1811ce43b",
+                "bytes": "488bcf",
+                "mnemonic": "mov",
+                "operands": "rcx, rdi"
+              },
+              {
+                "address": "0x1811ce43e",
+                "bytes": "e86dc8eaff",
+                "mnemonic": "call",
+                "operands": "0x18107acb0",
+                "target": "0x18107acb0",
+                "methods": [
+                  "Torappu.Battle.Action.Nodes.GetActionTarget"
+                ]
+              },
+              {
+                "address": "0x1811ce443",
+                "bytes": "488b15766d9b07",
+                "mnemonic": "mov",
+                "operands": "rdx, qword ptr [rip + 0x79b6d76]",
+                "ripReferences": [
+                  "0x188b851c0"
+                ]
+              },
+              {
+                "address": "0x1811ce44a",
+                "bytes": "488bf8",
+                "mnemonic": "mov",
+                "operands": "rdi, rax"
+              },
+              {
+                "address": "0x1811ce44d",
+                "bytes": "4885c0",
+                "mnemonic": "test",
+                "operands": "rax, rax"
+              },
+              {
+                "address": "0x1811ce450",
+                "bytes": "7504",
+                "mnemonic": "jne",
+                "operands": "0x1811ce456",
+                "target": "0x1811ce456",
+                "targetOutsideRange": false,
+                "methods": []
+              },
+              {
+                "address": "0x1811ce452",
+                "bytes": "33db",
+                "mnemonic": "xor",
+                "operands": "ebx, ebx"
+              },
+              {
+                "address": "0x1811ce454",
+                "bytes": "eb4a",
+                "mnemonic": "jmp",
+                "operands": "0x1811ce4a0",
+                "target": "0x1811ce4a0",
+                "targetOutsideRange": false,
+                "methods": []
+              },
+              {
+                "address": "0x1811ce456",
+                "bytes": "803d13a6e00700",
+                "mnemonic": "cmp",
+                "operands": "byte ptr [rip + 0x7e0a613], 0",
+                "ripReferences": [
+                  "0x188fd8a70"
+                ]
+              },
+              {
+                "address": "0x1811ce45d",
+                "bytes": "4c8b00",
+                "mnemonic": "mov",
+                "operands": "r8, qword ptr [rax]"
+              },
+              {
+                "address": "0x1811ce460",
+                "bytes": "760e",
+                "mnemonic": "jbe",
+                "operands": "0x1811ce470",
+                "target": "0x1811ce470",
+                "targetOutsideRange": false,
+                "methods": []
+              },
+              {
+                "address": "0x1811ce462",
+                "bytes": "498bc8",
+                "mnemonic": "mov",
+                "operands": "rcx, r8"
+              },
+              {
+                "address": "0x1811ce465",
+                "bytes": "e8868228ff",
+                "mnemonic": "call",
+                "operands": "0x1804566f0",
+                "target": "0x1804566f0",
+                "methods": []
+              },
+              {
+                "address": "0x1811ce46a",
+                "bytes": "33db",
+                "mnemonic": "xor",
+                "operands": "ebx, ebx"
+              },
+              {
+                "address": "0x1811ce46c",
+                "bytes": "84c0",
+                "mnemonic": "test",
+                "operands": "al, al"
+              },
+              {
+                "address": "0x1811ce46e",
+                "bytes": "eb2c",
+                "mnemonic": "jmp",
+                "operands": "0x1811ce49c",
+                "target": "0x1811ce49c",
+                "targetOutsideRange": false,
+                "methods": []
+              },
+              {
+                "address": "0x1811ce470",
+                "bytes": "0fb68230010000",
+                "mnemonic": "movzx",
+                "operands": "eax, byte ptr [rdx + 0x130]"
+              },
+              {
+                "address": "0x1811ce477",
+                "bytes": "33db",
+                "mnemonic": "xor",
+                "operands": "ebx, ebx"
+              },
+              {
+                "address": "0x1811ce479",
+                "bytes": "41388030010000",
+                "mnemonic": "cmp",
+                "operands": "byte ptr [r8 + 0x130], al"
+              },
+              {
+                "address": "0x1811ce480",
+                "bytes": "7216",
+                "mnemonic": "jb",
+                "operands": "0x1811ce498",
+                "target": "0x1811ce498",
+                "targetOutsideRange": false,
+                "methods": []
+              },
+              {
+                "address": "0x1811ce482",
+                "bytes": "0fb6c8",
+                "mnemonic": "movzx",
+                "operands": "ecx, al"
+              },
+              {
+                "address": "0x1811ce485",
+                "bytes": "498b80c8000000",
+                "mnemonic": "mov",
+                "operands": "rax, qword ptr [r8 + 0xc8]"
+              },
+              {
+                "address": "0x1811ce48c",
+                "bytes": "483954c8f8",
+                "mnemonic": "cmp",
+                "operands": "qword ptr [rax + rcx*8 - 8], rdx"
+              },
+              {
+                "address": "0x1811ce491",
+                "bytes": "b801000000",
+                "mnemonic": "mov",
+                "operands": "eax, 1"
+              },
+              {
+                "address": "0x1811ce496",
+                "bytes": "7402",
+                "mnemonic": "je",
+                "operands": "0x1811ce49a",
+                "target": "0x1811ce49a",
+                "targetOutsideRange": false,
+                "methods": []
+              },
+              {
+                "address": "0x1811ce498",
+                "bytes": "8bc3",
+                "mnemonic": "mov",
+                "operands": "eax, ebx"
+              },
+              {
+                "address": "0x1811ce49a",
+                "bytes": "85c0",
+                "mnemonic": "test",
+                "operands": "eax, eax"
+              },
+              {
+                "address": "0x1811ce49c",
+                "bytes": "480f45df",
+                "mnemonic": "cmovne",
+                "operands": "rbx, rdi"
+              },
+              {
+                "address": "0x1811ce4a0",
+                "bytes": "488b0da91b9507",
+                "mnemonic": "mov",
+                "operands": "rcx, qword ptr [rip + 0x7951ba9]",
+                "ripReferences": [
+                  "0x188b20050"
+                ]
+              },
+              {
+                "address": "0x1811ce4a7",
+                "bytes": "83b9e000000000",
+                "mnemonic": "cmp",
+                "operands": "dword ptr [rcx + 0xe0], 0"
+              },
+              {
+                "address": "0x1811ce4ae",
+                "bytes": "7505",
+                "mnemonic": "jne",
+                "operands": "0x1811ce4b5",
+                "target": "0x1811ce4b5",
+                "targetOutsideRange": false,
+                "methods": []
+              },
+              {
+                "address": "0x1811ce4b0",
+                "bytes": "e89bdf2cff",
+                "mnemonic": "call",
+                "operands": "0x18049c450",
+                "target": "0x18049c450",
+                "methods": []
+              },
+              {
+                "address": "0x1811ce4b5",
+                "bytes": "4533c0",
+                "mnemonic": "xor",
+                "operands": "r8d, r8d"
+              },
+              {
+                "address": "0x1811ce4b8",
+                "bytes": "33d2",
+                "mnemonic": "xor",
+                "operands": "edx, edx"
+              },
+              {
+                "address": "0x1811ce4ba",
+                "bytes": "488bcb",
+                "mnemonic": "mov",
+                "operands": "rcx, rbx"
+              },
+              {
+                "address": "0x1811ce4bd",
+                "bytes": "e8ce0dc005",
+                "mnemonic": "call",
+                "operands": "0x186dcf290",
+                "target": "0x186dcf290",
+                "methods": [
+                  "UnityEngine.Object.op_Equality"
+                ]
+              },
+              {
+                "address": "0x1811ce4c2",
+                "bytes": "84c0",
+                "mnemonic": "test",
+                "operands": "al, al"
+              },
+              {
+                "address": "0x1811ce4c4",
+                "bytes": "7526",
+                "mnemonic": "jne",
+                "operands": "0x1811ce4ec",
+                "target": "0x1811ce4ec",
+                "targetOutsideRange": false,
+                "methods": []
+              },
+              {
+                "address": "0x1811ce4c6",
+                "bytes": "8b7e14",
+                "mnemonic": "mov",
+                "operands": "edi, dword ptr [rsi + 0x14]"
+              },
+              {
+                "address": "0x1811ce4c9",
+                "bytes": "4885db",
+                "mnemonic": "test",
+                "operands": "rbx, rbx"
+              },
+              {
+                "address": "0x1811ce4cc",
+                "bytes": "7457",
+                "mnemonic": "je",
+                "operands": "0x1811ce525",
+                "target": "0x1811ce525",
+                "targetOutsideRange": false,
+                "methods": []
+              },
+              {
+                "address": "0x1811ce4ce",
+                "bytes": "33d2",
+                "mnemonic": "xor",
+                "operands": "edx, edx"
+              },
+              {
+                "address": "0x1811ce4d0",
+                "bytes": "488bcb",
+                "mnemonic": "mov",
+                "operands": "rcx, rbx"
+              },
+              {
+                "address": "0x1811ce4d3",
+                "bytes": "e838c78fff",
+                "mnemonic": "call",
+                "operands": "0x180acac10",
+                "target": "0x180acac10",
+                "methods": [
+                  "Torappu.Battle.Enemy.get_data"
+                ]
+              },
+              {
+                "address": "0x1811ce4d8",
+                "bytes": "4885c0",
+                "mnemonic": "test",
+                "operands": "rax, rax"
+              },
+              {
+                "address": "0x1811ce4db",
+                "bytes": "7448",
+                "mnemonic": "je",
+                "operands": "0x1811ce525",
+                "target": "0x1811ce525",
+                "targetOutsideRange": false,
+                "methods": []
+              },
+              {
+                "address": "0x1811ce4dd",
+                "bytes": "8b4860",
+                "mnemonic": "mov",
+                "operands": "ecx, dword ptr [rax + 0x60]"
+              },
+              {
+                "address": "0x1811ce4e0",
+                "bytes": "d3ff",
+                "mnemonic": "sar",
+                "operands": "edi, cl"
+              },
+              {
+                "address": "0x1811ce4e2",
+                "bytes": "4080e701",
+                "mnemonic": "and",
+                "operands": "dil, 1"
+              },
+              {
+                "address": "0x1811ce4e6",
+                "bytes": "400fb6c7",
+                "mnemonic": "movzx",
+                "operands": "eax, dil"
+              },
+              {
+                "address": "0x1811ce4ea",
+                "bytes": "eb1e",
+                "mnemonic": "jmp",
+                "operands": "0x1811ce50a",
+                "target": "0x1811ce50a",
+                "targetOutsideRange": false,
+                "methods": []
+              },
+              {
+                "address": "0x1811ce4ec",
+                "bytes": "32c0",
+                "mnemonic": "xor",
+                "operands": "al, al"
+              },
+              {
+                "address": "0x1811ce4ee",
+                "bytes": "eb1a",
+                "mnemonic": "jmp",
+                "operands": "0x1811ce50a",
+                "target": "0x1811ce50a",
+                "targetOutsideRange": false,
+                "methods": []
+              },
+              {
+                "address": "0x1811ce4f0",
+                "bytes": "33db",
+                "mnemonic": "xor",
+                "operands": "ebx, ebx"
+              },
+              {
+                "address": "0x1811ce4f2",
+                "bytes": "448bcd",
+                "mnemonic": "mov",
+                "operands": "r9d, ebp"
+              },
+              {
+                "address": "0x1811ce4f5",
+                "bytes": "48895c2428",
+                "mnemonic": "mov",
+                "operands": "qword ptr [rsp + 0x28], rbx"
+              },
+              {
+                "address": "0x1811ce4fa",
+                "bytes": "4d8bc6",
+                "mnemonic": "mov",
+                "operands": "r8, r14"
+              },
+              {
+                "address": "0x1811ce4fd",
+                "bytes": "488bd6",
+                "mnemonic": "mov",
+                "operands": "rdx, rsi"
+              },
+              {
+                "address": "0x1811ce500",
+                "bytes": "48897c2420",
+                "mnemonic": "mov",
+                "operands": "qword ptr [rsp + 0x20], rdi"
+              },
+              {
+                "address": "0x1811ce505",
+                "bytes": "e876fefe01",
+                "mnemonic": "call",
+                "operands": "0x1831be380",
+                "target": "0x1831be380",
+                "methods": [
+                  "XLua.DelegateBridge.__Gen_Delegate_Imp11420"
+                ]
+              },
+              {
+                "address": "0x1811ce50a",
+                "bytes": "488b5c2440",
+                "mnemonic": "mov",
+                "operands": "rbx, qword ptr [rsp + 0x40]"
+              },
+              {
+                "address": "0x1811ce50f",
+                "bytes": "488b6c2448",
+                "mnemonic": "mov",
+                "operands": "rbp, qword ptr [rsp + 0x48]"
+              },
+              {
+                "address": "0x1811ce514",
+                "bytes": "488b742450",
+                "mnemonic": "mov",
+                "operands": "rsi, qword ptr [rsp + 0x50]"
+              },
+              {
+                "address": "0x1811ce519",
+                "bytes": "488b7c2458",
+                "mnemonic": "mov",
+                "operands": "rdi, qword ptr [rsp + 0x58]"
+              },
+              {
+                "address": "0x1811ce51e",
+                "bytes": "4883c430",
+                "mnemonic": "add",
+                "operands": "rsp, 0x30"
+              },
+              {
+                "address": "0x1811ce522",
+                "bytes": "415e",
+                "mnemonic": "pop",
+                "operands": "r14"
+              },
+              {
+                "address": "0x1811ce524",
+                "bytes": "c3",
+                "mnemonic": "ret",
+                "operands": ""
+              },
+              {
+                "address": "0x1811ce525",
+                "bytes": "e896de2cff",
+                "mnemonic": "call",
+                "operands": "0x18049c3c0",
+                "target": "0x18049c3c0",
+                "methods": []
+              },
+              {
+                "address": "0x1811ce52a",
+                "bytes": "cc",
+                "mnemonic": "int3",
+                "operands": ""
+              }
+            ]
+          },
+          {
+            "method": null,
+            "address": "0x1811ce52b",
+            "aliases": [],
+            "boundary": "next known method/section boundary; completeness unproven; explicit byte limit",
+            "end": "0x1811ce530",
+            "decodedEnd": "0x1811ce530",
+            "decodedBytes": 5,
+            "fullyDecoded": true,
+            "bytesSha256": "992cf51486f901aa1aa7d1f63e18c150c9156166e08e0b9e59cc3faf98177329",
+            "capstoneVersion": "5.0.7",
+            "instructions": [
+              {
+                "address": "0x1811ce52b",
+                "bytes": "cc",
+                "mnemonic": "int3",
+                "operands": ""
+              },
+              {
+                "address": "0x1811ce52c",
+                "bytes": "cc",
+                "mnemonic": "int3",
+                "operands": ""
+              },
+              {
+                "address": "0x1811ce52d",
+                "bytes": "cc",
+                "mnemonic": "int3",
+                "operands": ""
+              },
+              {
+                "address": "0x1811ce52e",
+                "bytes": "cc",
+                "mnemonic": "int3",
+                "operands": ""
+              },
+              {
+                "address": "0x1811ce52f",
+                "bytes": "cc",
+                "mnemonic": "int3",
+                "operands": ""
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "xrefs": []
+  }
+}
