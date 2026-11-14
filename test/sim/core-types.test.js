@@ -60,6 +60,15 @@ const receivingHooks = Hooks.empty().set(receivingKey, {
     id: 'evade', invoke: (state, _context, current) => ({ state, value: hpDamage.cancel(current, 'EVADE') }),
 });
 declare const receivingContext: hpDamage.ReceivingContext;
+declare const damageOutcome: hpDamage.Outcome;
+if (damageOutcome.type === 'APPLIED') {
+    const killed: boolean = damageOutcome.killed;
+    // @ts-expect-error the HP commit report does not predict the final kill result.
+    damageOutcome.application.killed;
+}
+declare const appliedContext: hpDamage.AppliedContext;
+// @ts-expect-error Applied executes before death confirmation.
+appliedContext.killed;
 declare const cancelled: hpDamage.Pending<hpDamage.Cancellation<'EVADE'>>;
 const reception = receivingHooks.get(receivingKey)[0]!.invoke(battle, receivingContext, cancelled);
 const preservedReason: 'EVADE' = reception.value.cancellation.reason;

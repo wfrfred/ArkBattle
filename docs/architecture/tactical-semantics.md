@@ -45,7 +45,7 @@ healFree 只限制治疗目标选择，明确 Ref 的 Healing 不重新检查选
 | --- | --- | --- | --- |
 | ATTR-02 属性范围 | 常规攻击、防御、法抗使用相应范围；内容可有范围覆写。[数值范围](https://prts.wiki/w/数值范围) | 默认范围已有；通用范围覆写未接入。 | 部分实现／P2 |
 | ATTR-04 数值竞争 | 数值候选的组选择、Effect 整体覆写、Hook 裁决、业务条件分别处理。具体内容确定哪些修正互斥。[BUFF](https://prts.wiki/w/BUFF) | Contribution Group 已有，不能据此宣称所有 Buff 覆写规则已实现。 | 部分实现／P2 |
-| DMG-02 伤害阶段与分类 | [Calculate 负责输出计算，Apply 负责目标接收](vitality.md#1-calculate-与-apply-的语义边界)，不以复刻原生 Hook 时序为目标；攻击类型、途径、特殊标签按内容参与规则。[伤害分类](https://prts.wiki/w/伤害分类) | HP／EP 均采用 Calculate／Apply；HP 请求已表达 nature 与 hitRecovery，其余完整攻击分类、途径和特殊标签尚未覆盖。 | 部分实现／P1 |
+| DMG-02 伤害阶段与分类 | [Calculate 负责输出计算，Apply 负责目标接收](vitality.md#1-calculate-与-apply-的语义边界)，不以复刻原生 Hook 时序为目标；攻击类型、途径、特殊标签按内容参与规则。[伤害分类](https://prts.wiki/w/伤害分类) | HP／EP 均采用 Calculate／Apply；HP 请求表达 nature 与 hitRecovery，最终 APPLIED.killed 报告单笔确认的击杀，由 Content 使用结果，不增加 Kill Hook；其余完整攻击分类、途径和特殊标签尚未覆盖。 | 部分实现／P1 |
 | DMG-03 生命流失 | 防御、接收、受击回复和反应政策独立于伤害数学类别。[伤害处理](https://prts.wiki/w/作战机制#伤害及其处理) | HP LOSS 使用统一 Calculate／Apply、公共 Hook 与 Vitality 提交；普通受伤机制按性质筛选，无敌／Presence 不拒收 LOSS，HIT 资格独立。具体流失技能按需接入，特殊生命保护仍归 DMG-04。 | 公共协议已实现；具体内容／P1 |
 | DMG-04 不死、免死与特殊 HP | 区分常规不死、一次性免死、锁血、恢复和实际离场；致死业务读取最新返回版本。[伤害机制](https://prts.wiki/w/游戏数据基础#伤害机制) | 普通 HP 应用之外的负生命、一次性保护竞争、成功消耗及 HP Application 接管协议尚未实现，见 [Vitality 设计](vitality.md)。 | 待设计／P1 |
 | DMG-05 弱点伤害（项目规则） | 从同一 BattleState 分别执行带 Hook 的物理、法术 calculate，选较高计算结果及其完整状态，再 apply 一次；有意区别于官方无额外计算事件的理论比较。见 [Damage 设计](vitality.md#2-弱点伤害的项目规则)。 | 弱点的双分支 Content 尚未接入两阶段 Damage API。 | 项目规则已定，待实现 |

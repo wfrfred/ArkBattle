@@ -201,6 +201,7 @@ type Outcome =
           readonly type: "APPLIED";
           readonly received: Pending;
           readonly application: Application;
+          readonly killed: boolean;
       };
 ```
 
@@ -209,6 +210,8 @@ Apply 接续计算返回的 state；调用间若有其他状态转换，调用�
 Parameters Hook 使用固定 Context 中的 Request 和当前 Parameters；HP Damage 的 Output 使用固定 `{ target, request, type }` 和可修改的 number，HP Healing 的 Output 使用其 Context。type 是公式阶段已确定的类型，输出 Hook 不重新分类或重算防御。
 
 AppliedContext 保留 request、calculated、Receiving 最终 received 和本次 application，不重复携带 Outcome；Outcome 的 APPLIED 分支引用同一个 Application 类型。CompletedContext 保留 request、可能 undefined 的 calculated 和同一份 outcome。application 的 hpBefore／hpAfter／hpLoss 在普通 HP 写入处确定，不受之后治疗、嵌套伤害或离场影响。
+
+HP Damage 的 APPLIED 另携带本笔 killed，表示本笔在两侧 Applied 后确认目标死亡并发起 DEATH。它属于最终 Outcome，不加入资源提交的 Application 或提前执行的 AppliedContext；Completed 观察同一份已确定结果。单笔归属、内容聚合及必要回归见第 3.4 节。
 
 Formula 分来源与目标两个节点，Output 属于来源，BeforeReceive／ReceivingStarted／Receiving 属于目标，BeforeCommit 属于来源。Applied 分别通过 targetApplied 与 sourceApplied 键依次通知目标和来源，同一 Unit 承担两个角色时也分别执行各自登记；Completed 仍按既定终结通知契约，同一宿主不重复通知。每个节点、每个宿主的派发独立固定候选 ID，目标响应中新登记的来源 Hook 可进入随后独立的来源派发。登记、优先级和生命周期见第 1.7 节。
 
@@ -452,6 +455,19 @@ HP 变化、死亡确定、Unit 仍存在和离场完成分别处理。已确定
 
 真实离场沿用 [Lifetime 偏序](lifetime.md)：请求发布 LEAVING，再派发能力自行登记的 prepare Hook 完成 Blocking 清理，通过 Lifetime 已登记的 owner 与 Scope 请求子项；子项整个 Finalize 返回后才注销 Unit，再执行本地 leave 与全局 leave，不在 Finalize 兜底扫描全场关系。Occupancy 清理已通知的旧配对，Deployable 本地 leave 归还实际占用；部署来源预装的死亡程序只响应已确认 DEATH，按 Card 策略处理费用阶段与库存恢复。主动撤退由对应领域操作在请求离场前直接结算退款、Card 费用阶段与库存恢复，不由 Damage 或通用 Unit 推导部署业务。成功保护、替身或复活是否进入真实离场由对应机制决定。资源时点见 [Deployment](deployment.md)。
 
+### 3.4 单笔击杀结果
+
+两侧 Applied 完成后，最新目标仍为 PRESENT 且 HP 不大于 0 时，本笔确认死亡并请求 DEATH，APPLIED.killed 为 true；其余情况为 false。HP 写入时归零不提前构成击杀，Applied 中被救回的目标不计入本笔；目标已由嵌套伤害确认死亡、已离场或仍有生命时，外层不重复报告。已有 Lifetime 结算而使 Finalize 延后，不改变已经确认的 killed。
+
+killed 记录本笔请求的死亡确认事实，来源沿用 request.source，不以来源当前是否仍在场重新裁定；source 为 null 也不否定本笔造成死亡。它不另行选择击杀者，不增加独立 killSource 或全局击杀记录。Completed 响应之后发生的新伤害或离场不追溯改写本笔结果。
+
+发起者从 applyDamage 返回的 APPLIED 结果使用 killed。范围、多段和附加伤害仍是多笔请求；逐目标增加、累计后结算或整次最多触发一次，由具体 Content 使用这些结果编排。公共 Damage 不聚合整次攻击，不增加 Kill Hook；本字段是项目已确认的返回契约，不声称原生采用相同接口。
+
+必要回归语义：
+
+- KILL-01：两侧 Applied 后目标仍存活时 killed 为 false；本笔真正确认死亡时为 true，Application 继续保留原 HP 提交报告。
+- KILL-02：嵌套结算完成击杀时只有取得死亡确认的内层报告 true；Finalize 延后不丢失已确认结果，Completed 中后发的死亡不回写此前结果。
+
 ## 4. Healing 的两阶段契约
 
 普通治疗沿用 Damage 的状态接续与派发结构，但不引入伤害类型、穿透、防御公式或默认死亡处理。
@@ -482,7 +498,7 @@ Calculate 依次派发来源 Formula、目标 Formula，将当前 power 与 mult
 
 Apply 对最终计算量为零的治疗在入口返回 REJECTED，不派发本笔接收与 Applied。正数治疗确认目标当前存在、PRESENT 且 HP 大于零，按第 1 节的接收与提交边界执行，读取最新 HP、MaxHP 截断恢复量并提交；该 HP 发布不附带 Blocking 维护。随后依次派发 targetApplied 与 sourceApplied，即使来源与目标为同一 Unit 也分别执行；Completed 保持同一宿主不重复通知。HP Healing 不另设 ReceivingStarted。来源缺失或 LEAVING 时不运行其 Hook，但不因此取消仍可作用于有效目标的已采样治疗。
 
-结果与 Damage 使用相同的 REJECTED、CANCELLED、UNAVAILABLE、APPLIED 区分。Pending 保存 amount 与可空 cancellation；取消不停止剩余 Receiving Hook。Application 保存 hpBefore、hpAfter、hpGain，后续嵌套业务不追溯修改这次恢复事实。Received amount 与实际 hpGain 分开；完整恢复量不在 Calculate 提前按缺失 HP 截断。
+结果与 Damage 使用相同的 REJECTED、CANCELLED、UNAVAILABLE、APPLIED 区分，治疗不携带击杀结果。Pending 保存 amount 与可空 cancellation；取消不停止剩余 Receiving Hook。Application 保存 hpBefore、hpAfter、hpGain，后续嵌套业务不追溯修改这次恢复事实。Received amount 与实际 hpGain 分开；完整恢复量不在 Calculate 提前按缺失 HP 截断。
 
 **满血不自动拒绝正数治疗。** 普通索敌是否排除满血对象由选择器决定；已明确目标的正数治疗仍经过正常 Hook，可形成 APPLIED、hpGain 为零。事件 HEAL 只携带目标、实际恢复量和发生 Tick，取消保留零值表现；接收量与取消报告通过 Outcome／Application 返回。普通治疗不能复活 HP 为零的对象。
 

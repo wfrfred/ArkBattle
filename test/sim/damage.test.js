@@ -129,6 +129,7 @@ test("HP-01: formulas use the calculated type and sampled defenses without begin
     }));
     const applied = hpDamage.applyDamage(request, { ...calculated, state });
     assert.equal(applied.value.application.hpLoss, 200);
+    assert.equal(applied.value.killed, false);
     assert.equal(get(applied.state, 1).vitality.hp, 800);
     assert.equal(receptions, 1);
 });
@@ -480,6 +481,7 @@ test("APPLY-02: HP zero output rejects while excess receiving reduction still co
     assert.equal(absorbed.value.type, "APPLIED");
     assert.equal(absorbed.value.received.amount, 0);
     assert.equal(absorbed.value.application.hpLoss, 0);
+    assert.equal(absorbed.value.killed, false);
     assert.equal(get(absorbed.state, 1).vitality.hp, 100);
     assert.deepEqual(calls, ["output", "beforeCommit", "targetApplied", "sourceApplied"]);
 });
@@ -623,8 +625,88 @@ test("HP-03: lethal HP remains present and blocking through both Applied roles, 
     const result = hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request));
     assert.deepEqual(calls, [["target", 0, "PRESENT", 1], ["source", 0, "PRESENT", 1]]);
     assert.deepEqual(result.value.application, { hpBefore: 40, hpAfter: 0, hpLoss: 40 });
+    assert.equal(result.value.killed, true);
     assert.equal(get(result.state, 1), undefined);
     assert.equal(get(result.state, 2).blockable.relation, null);
+});
+
+test("KILL-02: nested damage owns its kill even while Lifetime defers the victim's final removal", () => {
+    const reports = [];
+    const observe = {
+        id: "kill-result",
+        invoke(current, { request, outcome }) {
+            reports.push([request.source.id, outcome.killed]);
+            return { state: current, value: undefined };
+        },
+    };
+    let state = battle([
+        { definition: { id: "outer-source", hooks: Hooks.empty().set(hpDamage.completed, observe) }, position: [0, 0] },
+        { definition: {
+            id: "target", hooks: Hooks.empty(),
+            vitality: { maxHp: 40, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
+        }, position: [1, 0] },
+        { definition: { id: "inner-source", hooks: Hooks.empty().set(hpDamage.completed, observe) }, position: [2, 0] },
+    ]);
+    const source = units.ref(get(state, 0));
+    const target = units.ref(get(state, 1));
+    const otherSource = units.ref(get(state, 2));
+    let nested;
+    let outer;
+    state = update(state, source, units.setHook(hpDamage.sourceApplied, {
+        id: "additional-damage",
+        invoke(current) {
+            const request = damageRequest(otherSource, target, 40);
+            nested = hpDamage.applyDamage(request, hpDamage.calculateDamage(current, request));
+            assert.equal(get(nested.state, target.id).lifecycle, "LEAVING");
+            return { state: nested.state, value: undefined };
+        },
+    }));
+    const installed = effects.install(state, source, {
+        id: "damage-on-end", initialize: () => ({}),
+        onEnd(current) {
+            const request = damageRequest(source, target, 10);
+            outer = hpDamage.applyDamage(request, hpDamage.calculateDamage(current, request));
+            assert.equal(get(outer.state, target.id).lifecycle, "LEAVING");
+            return outer.state;
+        },
+    });
+    state = effects.end(installed.state, installed.value);
+
+    assert.equal(nested.value.killed, true);
+    assert.equal(outer.value.killed, false);
+    assert.deepEqual(outer.value.application, { hpBefore: 40, hpAfter: 30, hpLoss: 10 });
+    assert.deepEqual(reports, [[otherSource.id, true], [source.id, false]]);
+    assert.equal(get(state, target.id), undefined);
+});
+
+test("KILL-02: damage started by Completed cannot change the already determined outer kill result", () => {
+    let nested;
+    let observed;
+    let state = battle([
+        { definition: { id: "source", hooks: Hooks.empty() }, position: [0, 0] },
+        { definition: {
+            id: "target", hooks: Hooks.empty(),
+            vitality: { maxHp: 40, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
+        }, position: [1, 0] },
+    ]);
+    const source = units.ref(get(state, 0));
+    const target = units.ref(get(state, 1));
+    state = update(state, source, units.setHook(hpDamage.completed, {
+        id: "late-damage",
+        invoke(current, { outcome }) {
+            observed = outcome;
+            const request = damageRequest(null, target, 40);
+            nested = hpDamage.applyDamage(request, hpDamage.calculateDamage(current, request));
+            return { state: nested.state, value: undefined };
+        },
+    }));
+    const request = damageRequest(source, target, 10);
+    const result = hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request));
+
+    assert.equal(observed.killed, false);
+    assert.equal(result.value.killed, false);
+    assert.equal(nested.value.killed, true);
+    assert.equal(get(result.state, target.id), undefined);
 });
 
 test("EP-01: full resistance preserves formula floors and sampled EP output; HP elemental resistance is independent", () => {

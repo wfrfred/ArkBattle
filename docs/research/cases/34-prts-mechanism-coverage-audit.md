@@ -36,11 +36,11 @@ PRTS 是社区资料。本次直接核对页面，但未为每项重新提取客
 
 转向条件、实际调用时点与火龙绑定的后续补核集中在[案例35](35-facing-and-turning-conditions.md)，不再以本节的初始缺口清单代替后续结论。
 
-### 2.3 真实击杀事实：既有证据未完整落实；独立归属仍需补核
+### 2.3 单笔击杀结果已落实；原生独立归属仍需补核
 
-[案例 28](28-damage-hooks-and-event-granularity.md)已结合案例 27 的客户端死亡链、苇草与炎客模组，确认来源击杀和旁观死亡是实际需要的不同事实。当前 HP Request 的 `source` 表示伤害来源；`Unit.Departure` 仅有 Unit 快照和离场原因，没有完整落实这项归属与通知需求。
+[案例 28](28-damage-hooks-and-event-granularity.md)已结合案例 27 的客户端死亡链、苇草与炎客模组，确认来源击杀和旁观死亡是不同事实。项目的 HP Request.source 表示本笔伤害来源；最终 APPLIED.killed 报告本笔是否确认并请求目标死亡，Content 据此编排逐目标、累计或整次攻击的后继，不增加 Kill Hook。Unit.Departure 仍提供 Unit 快照和离场原因，既有生命周期观察承担相应死亡响应。
 
-普通 Applied Hook 观察一次 HP 变化，不等同于已经确认该 Unit 的最终死亡及归属，尤其仍可能同步重入或由其他业务强制结束。这部分属于**已有研究未落实的公共事实传递缺口**，不是只因 Wiki 新出现一个名词。
+普通 Applied Hook 观察一次 HP 变化，仍早于本笔死亡确认；保护或嵌套结算可以改变其后结果。killed 位于完整 Apply 返回的 Outcome，不加入 Application 或 AppliedContext。其精确定义与必要回归见[单笔击杀契约](../../architecture/vitality.md#34-单笔击杀结果)，这是项目返回协议，不将其等同于下列原生事件实现。
 
 本轮[生命流失补查](11-damage-apply-and-hp-application.md#64-hp-提交致命干预与直接-setter)还直接核对到：`Entity.OnFinish` 读取 BattleContext 栈顶来源，再调用其 `OnTargetKilled`，没有在该方法中直接读取 Modifier 的 source／originalSource。这里只确认最终通知的读取者，尚未追齐该栈的入栈路径，不能根据两个字段名认定归属。
 

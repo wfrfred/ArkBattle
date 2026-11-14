@@ -75,11 +75,17 @@ export function applyDamage(
     battle = dispatch(battle, request.source, sourceApplied, appliedContext, undefined).state;
 
     const current = units.get(battle, request.target);
-    if (current?.lifecycle === "PRESENT" && current.vitality.hp <= 0) {
+    const killed = current?.lifecycle === "PRESENT" && current.vitality.hp <= 0;
+    if (killed) {
         battle = remove(battle, request.target, "DEATH");
     }
 
-    return complete(battle, request, calculation, { type: "APPLIED", received, application });
+    return complete(battle, request, calculation, {
+        type: "APPLIED",
+        received,
+        application,
+        killed,
+    });
 }
 
 function complete(

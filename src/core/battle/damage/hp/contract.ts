@@ -80,4 +80,5 @@ export type Outcome =
           readonly type: "APPLIED";
           readonly received: Pending;
           readonly application: Application;
+          readonly killed: boolean;
       };
