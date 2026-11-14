@@ -1,0 +1,24 @@
+{
+  "checkedOn": "2026-11-14",
+  "sourceKind": "Community wiki, read through web tooling; paraphrases below are cross-checks, not client execution evidence.",
+  "sources": [
+    {
+      "url": "https://prts.wiki/w/阿斯卡纶",
+      "section": "技能3：降临",
+      "observed": "技能降低范围内地面敌人的物理和法术命中率；敌人未命中自身或自身闪避时恢复自身生命。",
+      "relevance": "Both failed hit and successful evade are real restoration triggers. The exact native reason/event split is established separately by the bound template."
+    },
+    {
+      "url": "https://prts.wiki/w/塔露拉",
+      "section": "技能2：阂断骤雪，备注",
+      "observed": "技能就绪且没有技能效果时，满足来源等限制的伤害可以触发技能；已取消伤害一般不触发，但闪避、未命中两种取消是例外。",
+      "relevance": "Matches the real FilterDamageCancellation configuration accepting uncancelled damage and the MISS/HIT_FAILED list."
+    },
+    {
+      "url": "https://prts.wiki/w/伺夜",
+      "section": "天赋／模组：狼群领袖",
+      "observed": "狼影损失与生命层数处理有实际玩法；X模组在损失狼影后提供一段物理闪避。",
+      "relevance": "Cross-check for the actual wolf listener Content. It does not itself establish any cancellation-reason filter."
+    }
+  ]
+}

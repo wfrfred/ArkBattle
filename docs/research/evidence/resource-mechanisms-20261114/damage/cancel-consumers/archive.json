@@ -1,0 +1,824 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [],
+    "collectionDateSource": "not recorded",
+    "organizedOn": "2026-11-14",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+        "records": [
+          "consumers.json#/provenance/client/dll",
+          "field-scan.json#/provenance/client/dll",
+          "getter.json#/provenance/client/dll",
+          "ui-literals.json#/provenance/client/dll"
+        ],
+        "bytes": 223112680
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        "records": [
+          "consumers.json#/provenance/client/metadata",
+          "field-scan.json#/provenance/client/metadata",
+          "getter.json#/provenance/client/metadata",
+          "ui-literals.json#/provenance/client/metadata"
+        ],
+        "bytes": 46669332
+      }
+    },
+    "sourceRecords": [
+      "consumers.json",
+      "field-scan.json",
+      "getter.json",
+      "ui-literals.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12895,
+        "sha256": "9c5b246859318caaec4aab5275ef0d2d49fce5d612c6b4e569973a9941ba621a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "consumers.json",
+        "kind": "record",
+        "bytes": 343254,
+        "sha256": "c662b3149eb66f94ec89e75d5d4ebaa4f120f9ce1de216943b2c3b5747c4de5d"
+      },
+      {
+        "path": "decode_ui_literals.py",
+        "kind": "historical-script",
+        "bytes": 2451,
+        "sha256": "68f679c8ac0ea07f62b19bec2b42543405a029a9e2e6d9816ba6769ea22f8994"
+      },
+      {
+        "path": "field-scan.json",
+        "kind": "record",
+        "bytes": 34990,
+        "sha256": "3b9551ecb345434c4f0eade4eb32be29d9abbc1ae191aee75a8b2c5fbd4974f1"
+      },
+      {
+        "path": "getter.json",
+        "kind": "record",
+        "bytes": 64398,
+        "sha256": "f36a24a99d556355760cc5440f31314bf6ac86d5982371c65fac0874e626cdac"
+      },
+      {
+        "path": "summarize_field_scan.py",
+        "kind": "historical-script",
+        "bytes": 1987,
+        "sha256": "131b28beb85bc13f00973193dfa210f8970f3aca1b26afce695664bd51350863"
+      },
+      {
+        "path": "ui-literals.json",
+        "kind": "record",
+        "bytes": 79014,
+        "sha256": "cf77f57880e6f12d4329e94eb4d2f5140846be0ee292bd5303f8eeeda33a3b8c"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 18331,
+          "mode": "metadata",
+          "records": [
+            "getter.json#/result/methods/0"
+          ],
+          "fullname": "XLua.CSObjectWrap.TorappuBattleModifierWrap._m_SetIgnoreCancelReasonMask",
+          "address": "0x180a63800"
+        },
+        {
+          "index": 18357,
+          "mode": "metadata",
+          "records": [
+            "getter.json#/result/methods/1"
+          ],
+          "fullname": "XLua.CSObjectWrap.TorappuBattleModifierWrap._g_get_cancelReason",
+          "address": "0x180a5c620"
+        },
+        {
+          "index": 18368,
+          "mode": "metadata",
+          "records": [
+            "getter.json#/result/methods/2"
+          ],
+          "fullname": "XLua.CSObjectWrap.TorappuBattleModifierWrap._g_get_ignoreCancelReasonMask",
+          "address": "0x180a5d1f0"
+        },
+        {
+          "index": 18379,
+          "mode": "metadata",
+          "records": [
+            "getter.json#/result/methods/3"
+          ],
+          "fullname": "XLua.CSObjectWrap.TorappuBattleModifierWrap._s_set_ignoreCancelReasonMask",
+          "address": "0x180a64c70"
+        },
+        {
+          "index": 67665,
+          "mode": "disasm",
+          "records": [
+            "consumers.json#/result/methods/0",
+            "consumers.json#/result/bodies/0",
+            "consumers.json#/result/bodies/0/fragments/0",
+            "consumers.json#/result/bodies/0/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.ApplyModifier",
+          "address": "0x1807211a0"
+        },
+        {
+          "index": 72128,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/0"
+          ],
+          "fullname": "Torappu.Battle.Modifier.get_targetType"
+        },
+        {
+          "index": 72129,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/1"
+          ],
+          "fullname": "Torappu.Battle.Modifier.set_targetType"
+        },
+        {
+          "index": 72130,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/2"
+          ],
+          "fullname": "Torappu.Battle.Modifier.get_deltaType"
+        },
+        {
+          "index": 72131,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/3"
+          ],
+          "fullname": "Torappu.Battle.Modifier.set_deltaType"
+        },
+        {
+          "index": 72132,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/4"
+          ],
+          "fullname": "Torappu.Battle.Modifier.get_isCancelled"
+        },
+        {
+          "index": 72133,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/5"
+          ],
+          "fullname": "Torappu.Battle.Modifier.get_isCritical"
+        },
+        {
+          "index": 72134,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/6"
+          ],
+          "fullname": "Torappu.Battle.Modifier.get_isDamage"
+        },
+        {
+          "index": 72135,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/7"
+          ],
+          "fullname": "Torappu.Battle.Modifier.get_isHeal"
+        },
+        {
+          "index": 72136,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/8"
+          ],
+          "fullname": "Torappu.Battle.Modifier.get_isElementDamage"
+        },
+        {
+          "index": 72137,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/9"
+          ],
+          "fullname": "Torappu.Battle.Modifier.get_isElementHeal"
+        },
+        {
+          "index": 72138,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/10"
+          ],
+          "fullname": "Torappu.Battle.Modifier.get_source"
+        },
+        {
+          "index": 72139,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/11"
+          ],
+          "fullname": "Torappu.Battle.Modifier.get_target"
+        },
+        {
+          "index": 72140,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/12"
+          ],
+          "fullname": "Torappu.Battle.Modifier.get_originalSource"
+        },
+        {
+          "index": 72141,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/13"
+          ],
+          "fullname": "Torappu.Battle.Modifier.get_damageType"
+        },
+        {
+          "index": 72142,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/14"
+          ],
+          "fullname": "Torappu.Battle.Modifier.set_damageType"
+        },
+        {
+          "index": 72143,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/15"
+          ],
+          "fullname": "Torappu.Battle.Modifier.get_applyWay"
+        },
+        {
+          "index": 72144,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/16"
+          ],
+          "fullname": "Torappu.Battle.Modifier.set_applyWay"
+        },
+        {
+          "index": 72145,
+          "mode": "disasm",
+          "records": [
+            "field-scan.json#/result/accesses/17",
+            "field-scan.json#/result/accesses/18",
+            "getter.json#/result/methods/4",
+            "getter.json#/result/bodies/0",
+            "getter.json#/result/bodies/0/fragments/0",
+            "getter.json#/result/bodies/0/fragments/0/method",
+            "getter.json#/result/xrefs/0/targetMethod"
+          ],
+          "fullname": "Torappu.Battle.Modifier.get_cancelReason",
+          "address": "0x18090cc30"
+        },
+        {
+          "index": 72146,
+          "mode": "metadata",
+          "records": [
+            "consumers.json#/result/methods/1",
+            "consumers.json#/result/xrefs/0/targetMethod",
+            "field-scan.json#/result/accesses/19",
+            "field-scan.json#/result/accesses/20",
+            "getter.json#/result/methods/5"
+          ],
+          "fullname": "Torappu.Battle.Modifier.set_cancelReason",
+          "address": "0x18090e3b0"
+        },
+        {
+          "index": 72147,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/21"
+          ],
+          "fullname": "Torappu.Battle.Modifier.get_attackType"
+        },
+        {
+          "index": 72148,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/22"
+          ],
+          "fullname": "Torappu.Battle.Modifier.set_attackType"
+        },
+        {
+          "index": 72149,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/23"
+          ],
+          "fullname": "Torappu.Battle.Modifier.get_elementType"
+        },
+        {
+          "index": 72150,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/24"
+          ],
+          "fullname": "Torappu.Battle.Modifier.set_elementType"
+        },
+        {
+          "index": 72151,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/25"
+          ],
+          "fullname": "Torappu.Battle.Modifier.get_originAtk"
+        },
+        {
+          "index": 72152,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/26"
+          ],
+          "fullname": "Torappu.Battle.Modifier.set_originAtk"
+        },
+        {
+          "index": 72153,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/27"
+          ],
+          "fullname": "Torappu.Battle.Modifier.get_originValue"
+        },
+        {
+          "index": 72154,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/28"
+          ],
+          "fullname": "Torappu.Battle.Modifier.set_originValue"
+        },
+        {
+          "index": 72155,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/29"
+          ],
+          "fullname": "Torappu.Battle.Modifier.get_finalDelta"
+        },
+        {
+          "index": 72156,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/30"
+          ],
+          "fullname": "Torappu.Battle.Modifier.get_value"
+        },
+        {
+          "index": 72157,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/31"
+          ],
+          "fullname": "Torappu.Battle.Modifier.set_value"
+        },
+        {
+          "index": 72158,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/32"
+          ],
+          "fullname": "Torappu.Battle.Modifier.get_playerSide"
+        },
+        {
+          "index": 72159,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/33"
+          ],
+          "fullname": "Torappu.Battle.Modifier.set_playerSide"
+        },
+        {
+          "index": 72160,
+          "mode": "metadata",
+          "records": [
+            "consumers.json#/result/methods/2",
+            "consumers.json#/result/xrefs/1/targetMethod",
+            "field-scan.json#/result/accesses/34"
+          ],
+          "fullname": "Torappu.Battle.Modifier.Cancel",
+          "address": "0x1809099f0"
+        },
+        {
+          "index": 72161,
+          "mode": "disasm",
+          "records": [
+            "consumers.json#/result/methods/3",
+            "consumers.json#/result/bodies/1",
+            "consumers.json#/result/bodies/1/fragments/0",
+            "consumers.json#/result/bodies/1/fragments/0/method",
+            "field-scan.json#/result/accesses/35"
+          ],
+          "fullname": "Torappu.Battle.Modifier.CheckIgnoreCancel",
+          "address": "0x180909ce0"
+        },
+        {
+          "index": 72162,
+          "mode": "disasm",
+          "records": [
+            "consumers.json#/result/methods/4",
+            "consumers.json#/result/bodies/2",
+            "consumers.json#/result/bodies/2/fragments/0",
+            "consumers.json#/result/bodies/2/fragments/0/method",
+            "field-scan.json#/result/accesses/36"
+          ],
+          "fullname": "Torappu.Battle.Modifier._CheckIgnoreMiss",
+          "address": "0x18090c360"
+        },
+        {
+          "index": 72163,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/37",
+            "field-scan.json#/result/accesses/38"
+          ],
+          "fullname": "Torappu.Battle.Modifier.Assign"
+        },
+        {
+          "index": 72164,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/39"
+          ],
+          "fullname": "Torappu.Battle.Modifier.AssignSource"
+        },
+        {
+          "index": 72165,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/40"
+          ],
+          "fullname": "Torappu.Battle.Modifier.AssignOriginalSource"
+        },
+        {
+          "index": 72166,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/41",
+            "field-scan.json#/result/accesses/42",
+            "field-scan.json#/result/accesses/43",
+            "field-scan.json#/result/accesses/44"
+          ],
+          "fullname": "Torappu.Battle.Modifier.Split"
+        },
+        {
+          "index": 72167,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/45"
+          ],
+          "fullname": "Torappu.Battle.Modifier.SetSharedFlag"
+        },
+        {
+          "index": 72168,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/46"
+          ],
+          "fullname": "Torappu.Battle.Modifier.SetSharedFlag"
+        },
+        {
+          "index": 72169,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/47"
+          ],
+          "fullname": "Torappu.Battle.Modifier.AddCustomKey"
+        },
+        {
+          "index": 72170,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/48"
+          ],
+          "fullname": "Torappu.Battle.Modifier.RemoveSharedFlag"
+        },
+        {
+          "index": 72171,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/49"
+          ],
+          "fullname": "Torappu.Battle.Modifier.RemoveSharedFlag"
+        },
+        {
+          "index": 72172,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/50"
+          ],
+          "fullname": "Torappu.Battle.Modifier.CheckSharedFlag"
+        },
+        {
+          "index": 72173,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/51"
+          ],
+          "fullname": "Torappu.Battle.Modifier.CheckSharedFlag"
+        },
+        {
+          "index": 72174,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/52"
+          ],
+          "fullname": "Torappu.Battle.Modifier.CheckCustomKey"
+        },
+        {
+          "index": 72175,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/53"
+          ],
+          "fullname": "Torappu.Battle.Modifier.SetIgnoreMissFlag"
+        },
+        {
+          "index": 72176,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/54",
+            "getter.json#/result/methods/6"
+          ],
+          "fullname": "Torappu.Battle.Modifier.SetIgnoreCancelReasonMask",
+          "address": "0x18090bcd0"
+        },
+        {
+          "index": 72177,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/55",
+            "field-scan.json#/result/accesses/56"
+          ],
+          "fullname": "Torappu.Battle.Modifier..ctor"
+        },
+        {
+          "index": 72178,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/57"
+          ],
+          "fullname": "Torappu.Battle.Modifier..ctor"
+        },
+        {
+          "index": 72179,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/58",
+            "field-scan.json#/result/accesses/59",
+            "field-scan.json#/result/accesses/60"
+          ],
+          "fullname": "Torappu.Battle.Modifier.NewDamageModifierAfterCalculate"
+        },
+        {
+          "index": 72180,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/61",
+            "field-scan.json#/result/accesses/62",
+            "field-scan.json#/result/accesses/63"
+          ],
+          "fullname": "Torappu.Battle.Modifier.NewDamageModifierAfterCalculate"
+        },
+        {
+          "index": 72181,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/64",
+            "field-scan.json#/result/accesses/65",
+            "field-scan.json#/result/accesses/66"
+          ],
+          "fullname": "Torappu.Battle.Modifier.NewElementDamageModifierAfterCalculate"
+        },
+        {
+          "index": 72182,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/67",
+            "field-scan.json#/result/accesses/68",
+            "field-scan.json#/result/accesses/69"
+          ],
+          "fullname": "Torappu.Battle.Modifier.NewHeal"
+        },
+        {
+          "index": 72183,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/70",
+            "field-scan.json#/result/accesses/71",
+            "field-scan.json#/result/accesses/72"
+          ],
+          "fullname": "Torappu.Battle.Modifier.NewElementHeal"
+        },
+        {
+          "index": 72184,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/73",
+            "field-scan.json#/result/accesses/74",
+            "field-scan.json#/result/accesses/75"
+          ],
+          "fullname": "Torappu.Battle.Modifier.NewHp"
+        },
+        {
+          "index": 72185,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/76",
+            "field-scan.json#/result/accesses/77",
+            "field-scan.json#/result/accesses/78"
+          ],
+          "fullname": "Torappu.Battle.Modifier.NewSp"
+        },
+        {
+          "index": 72186,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/79",
+            "field-scan.json#/result/accesses/80",
+            "field-scan.json#/result/accesses/81"
+          ],
+          "fullname": "Torappu.Battle.Modifier.NewCost"
+        },
+        {
+          "index": 72187,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/82",
+            "field-scan.json#/result/accesses/83",
+            "field-scan.json#/result/accesses/84"
+          ],
+          "fullname": "Torappu.Battle.Modifier.NewMaxCost"
+        },
+        {
+          "index": 72188,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/85",
+            "field-scan.json#/result/accesses/86",
+            "field-scan.json#/result/accesses/87"
+          ],
+          "fullname": "Torappu.Battle.Modifier.NewMinCost"
+        },
+        {
+          "index": 72189,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/88",
+            "field-scan.json#/result/accesses/89",
+            "field-scan.json#/result/accesses/90"
+          ],
+          "fullname": "Torappu.Battle.Modifier.NewCharacterLimitDelta"
+        },
+        {
+          "index": 72190,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/91",
+            "field-scan.json#/result/accesses/92",
+            "field-scan.json#/result/accesses/93"
+          ],
+          "fullname": "Torappu.Battle.Modifier.NewLifePointDelta"
+        },
+        {
+          "index": 72191,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/94",
+            "field-scan.json#/result/accesses/95",
+            "field-scan.json#/result/accesses/96"
+          ],
+          "fullname": "Torappu.Battle.Modifier.NewTrySetHpZero"
+        },
+        {
+          "index": 72192,
+          "mode": "metadata",
+          "records": [
+            "field-scan.json#/result/accesses/97"
+          ],
+          "fullname": "Torappu.Battle.Modifier..cctor"
+        },
+        {
+          "index": 100266,
+          "mode": "metadata",
+          "records": [
+            "getter.json#/result/methods/7"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/SetIgnoreCancelReasonMask.get_allowedSource",
+          "address": "0x181181f30"
+        },
+        {
+          "index": 100267,
+          "mode": "metadata",
+          "records": [
+            "getter.json#/result/methods/8"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/SetIgnoreCancelReasonMask.Execute",
+          "address": "0x181181e10"
+        },
+        {
+          "index": 100268,
+          "mode": "metadata",
+          "records": [
+            "getter.json#/result/methods/9"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/SetIgnoreCancelReasonMask..ctor",
+          "address": "0x181181ed0"
+        },
+        {
+          "index": 100275,
+          "mode": "metadata",
+          "records": [
+            "getter.json#/result/methods/10"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/FilterModifierCancelReason.get_allowedSource",
+          "address": "0x181176480"
+        },
+        {
+          "index": 100276,
+          "mode": "disasm",
+          "records": [
+            "consumers.json#/result/methods/5",
+            "consumers.json#/result/bodies/3",
+            "consumers.json#/result/bodies/3/fragments/0",
+            "consumers.json#/result/bodies/3/fragments/0/method",
+            "getter.json#/result/methods/11"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/FilterModifierCancelReason.Execute",
+          "address": "0x181176340"
+        },
+        {
+          "index": 100277,
+          "mode": "metadata",
+          "records": [
+            "getter.json#/result/methods/12"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/FilterModifierCancelReason..ctor",
+          "address": "0x181176420"
+        },
+        {
+          "index": 101496,
+          "mode": "disasm",
+          "records": [
+            "consumers.json#/result/methods/6",
+            "consumers.json#/result/bodies/4",
+            "consumers.json#/result/bodies/4/fragments/0",
+            "consumers.json#/result/bodies/4/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/FilterDamageCancellation.Execute",
+          "address": "0x1811d5550"
+        },
+        {
+          "index": 105936,
+          "mode": "disasm",
+          "records": [
+            "consumers.json#/result/methods/7",
+            "consumers.json#/result/bodies/5",
+            "consumers.json#/result/bodies/5/fragments/0",
+            "consumers.json#/result/bodies/5/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.UI.UIController.ShowModifierText",
+          "address": "0x181326320"
+        }
+      ],
+      "blocks": [],
+      "types": [
+        {
+          "name": "Torappu.Battle.Action.Nodes/FilterModifierCancelReason",
+          "records": [
+            "consumers.json#/result/fieldOwners/0"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Modifier",
+          "records": [
+            "getter.json#/result/fieldOwners/0"
+          ]
+        }
+      ],
+      "constants": [],
+      "bundles": []
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

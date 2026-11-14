@@ -1,0 +1,2881 @@
+{
+  "provenance": {
+    "scope": "Static native branches; no game execution or runtime XLua verification.",
+    "client": {
+      "dll": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "bytes": 223112680,
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff"
+      },
+      "metadata": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "bytes": 46669332,
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5"
+      },
+      "metadataVersion": 29,
+      "imageBase": "0x180000000"
+    },
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/native.py",
+        "bytes": 18723,
+        "sha256": "1c6c16dc97e0dd9af0af4033c81a7534384dd65ebb1e604df3f4a3289df158e6"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]"
+    },
+    "location": {
+      "metadataRegistration": "0x187ee0630",
+      "modules": {
+        "Assembly-CSharp.dll": {
+          "address": 6564854272,
+          "methodPointers": 6585881040,
+          "count": 225427,
+          "fileBacked": true
+        },
+        "Torappu.Common.dll": {
+          "address": 6577712928,
+          "methodPointers": 6592562080,
+          "count": 6004,
+          "fileBacked": true
+        },
+        "ThirdPartyAssembly.dll": {
+          "address": 6577712272,
+          "methodPointers": 6592454304,
+          "count": 12660,
+          "fileBacked": true
+        },
+        "mscorlib.dll": {
+          "address": 6577364064,
+          "methodPointers": 6592131600,
+          "count": 13987,
+          "fileBacked": true
+        },
+        "UnityEngine.UIElementsModule.dll": {
+          "address": 6577900992,
+          "methodPointers": 6592933968,
+          "count": 6132,
+          "fileBacked": true
+        },
+        "System.dll": {
+          "address": 6577628368,
+          "methodPointers": 6592396096,
+          "count": 7003,
+          "fileBacked": true
+        },
+        "Unity.InputSystem.dll": {
+          "address": 6577776016,
+          "methodPointers": 6592616544,
+          "count": 5703,
+          "fileBacked": true
+        },
+        "Unity.Mathematics.dll": {
+          "address": 6577838608,
+          "methodPointers": 6592682032,
+          "count": 9336,
+          "fileBacked": true
+        },
+        "UnityEngine.CoreModule.dll": {
+          "address": 6577886944,
+          "methodPointers": 6592866352,
+          "count": 4154,
+          "fileBacked": true
+        },
+        "System.Xml.dll": {
+          "address": 6577618416,
+          "methodPointers": 6592367840,
+          "count": 3283,
+          "fileBacked": true
+        },
+        "Newtonsoft.Json.dll": {
+          "address": 6577473344,
+          "methodPointers": 6592259616,
+          "count": 2998,
+          "fileBacked": true
+        },
+        "Unity.TextMeshPro.dll": {
+          "address": 6577852240,
+          "methodPointers": 6592835600,
+          "count": 1618,
+          "fileBacked": true
+        },
+        "Sirenix.Serialization.dll": {
+          "address": 6577530576,
+          "methodPointers": 6592309936,
+          "count": 1885,
+          "fileBacked": true
+        },
+        "spine-unity.dll": {
+          "address": 6577560208,
+          "methodPointers": 6592332928,
+          "count": 1982,
+          "fileBacked": true
+        },
+        "protobuf-net.Core.dll": {
+          "address": 6577475616,
+          "methodPointers": 6592285904,
+          "count": 1952,
+          "fileBacked": true
+        },
+        "CriMw.CriWare.Runtime.dll": {
+          "address": 6565019472,
+          "methodPointers": 6587703856,
+          "count": 2565,
+          "fileBacked": true
+        },
+        "UnityEngine.UI.dll": {
+          "address": 6577955760,
+          "methodPointers": 6592996064,
+          "count": 2041,
+          "fileBacked": true
+        },
+        "Cinemachine.dll": {
+          "address": 6564996672,
+          "methodPointers": 6587684464,
+          "count": 1160,
+          "fileBacked": true
+        },
+        "ICSharpCode.SharpZipLib.dll": {
+          "address": 6565040576,
+          "methodPointers": 6587747952,
+          "count": 1256,
+          "fileBacked": true
+        },
+        "DOTween.dll": {
+          "address": 6565028192,
+          "methodPointers": 6587727808,
+          "count": 1188,
+          "fileBacked": true
+        },
+        "System.Core.dll": {
+          "address": 6577602800,
+          "methodPointers": 6592356000,
+          "count": 1117,
+          "fileBacked": true
+        },
+        "UnityEngine.TextCoreTextEngineModule.dll": {
+          "address": 6577900064,
+          "methodPointers": 6592929888,
+          "count": 370,
+          "fileBacked": true
+        },
+        "Unity.Postprocessing.Runtime.dll": {
+          "address": 6577843136,
+          "methodPointers": 6592828752,
+          "count": 810,
+          "fileBacked": true
+        },
+        "Sirenix.Utilities.dll": {
+          "address": 6577549328,
+          "methodPointers": 6592325136,
+          "count": 968,
+          "fileBacked": true
+        },
+        "Mono.Security.dll": {
+          "address": 6577363904,
+          "methodPointers": 6592127104,
+          "count": 562,
+          "fileBacked": true
+        },
+        "UnityEngine.IMGUIModule.dll": {
+          "address": 6577890704,
+          "methodPointers": 6592908944,
+          "count": 724,
+          "fileBacked": true
+        },
+        "Unity.Timeline.dll": {
+          "address": 6577856512,
+          "methodPointers": 6592850304,
+          "count": 876,
+          "fileBacked": true
+        },
+        "Sirenix.OdinInspector.Attributes.dll": {
+          "address": 6577507296,
+          "methodPointers": 6592305952,
+          "count": 462,
+          "fileBacked": true
+        },
+        "System.Collections.Immutable.dll": {
+          "address": 6577584240,
+          "methodPointers": 6592349104,
+          "count": 825,
+          "fileBacked": true
+        },
+        "Hypergryph.OneChannel.dll": {
+          "address": 6565035376,
+          "methodPointers": 6587741424,
+          "count": 755,
+          "fileBacked": true
+        },
+        "ConsolePro.dll": {
+          "address": 6565008736,
+          "methodPointers": 6587697344,
+          "count": 793,
+          "fileBacked": true
+        },
+        "Assembly-CSharp-firstpass.dll": {
+          "address": 6563861904,
+          "methodPointers": 6585841648,
+          "count": 747,
+          "fileBacked": true
+        },
+        "P31RestKit.dll": {
+          "address": 6577475456,
+          "methodPointers": 6592283600,
+          "count": 287,
+          "fileBacked": true
+        },
+        "UnityEngine.ParticleSystemModule.dll": {
+          "address": 6577893824,
+          "methodPointers": 6592916384,
+          "count": 491,
+          "fileBacked": true
+        },
+        "clipper_library.dll": {
+          "address": 6564997696,
+          "methodPointers": 6587695360,
+          "count": 216,
+          "fileBacked": true
+        },
+        "torappu.CrashSight.Standalone.dll": {
+          "address": 6577764784,
+          "methodPointers": 6592613760,
+          "count": 280,
+          "fileBacked": true
+        },
+        "UnityEngine.AnimationModule.dll": {
+          "address": 6577860928,
+          "methodPointers": 6592861456,
+          "count": 366,
+          "fileBacked": true
+        },
+        "UnityEngine.AndroidJNIModule.dll": {
+          "address": 6577859152,
+          "methodPointers": 6592859440,
+          "count": 252,
+          "fileBacked": true
+        },
+        "UnityEngine.UIElementsNativeModule.dll": {
+          "address": 6577945600,
+          "methodPointers": 6592993088,
+          "count": 245,
+          "fileBacked": true
+        },
+        "UnityEngine.UnityWebRequestModule.dll": {
+          "address": 6577956752,
+          "methodPointers": 6593013680,
+          "count": 143,
+          "fileBacked": true
+        },
+        "DOTween.Modules.dll": {
+          "address": 6565020800,
+          "methodPointers": 6587725728,
+          "count": 235,
+          "fileBacked": true
+        },
+        "System.Xml.Linq.dll": {
+          "address": 6577604992,
+          "methodPointers": 6592365952,
+          "count": 210,
+          "fileBacked": true
+        },
+        "XNode.dll": {
+          "address": 6577960256,
+          "methodPointers": 6593016992,
+          "count": 199,
+          "fileBacked": true
+        },
+        "UnityEngine.PhysicsModule.dll": {
+          "address": 6577895584,
+          "methodPointers": 6592924848,
+          "count": 182,
+          "fileBacked": true
+        },
+        "UnityEngine.Physics2DModule.dll": {
+          "address": 6577894672,
+          "methodPointers": 6592923088,
+          "count": 168,
+          "fileBacked": true
+        },
+        "UnityEngine.TextCoreFontEngineModule.dll": {
+          "address": 6577898160,
+          "methodPointers": 6592927760,
+          "count": 121,
+          "fileBacked": true
+        },
+        "System.Numerics.dll": {
+          "address": 6577603280,
+          "methodPointers": 6592364992,
+          "count": 77,
+          "fileBacked": true
+        },
+        "UnityEngine.AIModule.dll": {
+          "address": 6577857296,
+          "methodPointers": 6592857856,
+          "count": 153,
+          "fileBacked": true
+        },
+        "UnityEngine.AudioModule.dll": {
+          "address": 6577861936,
+          "methodPointers": 6592865360,
+          "count": 96,
+          "fileBacked": true
+        },
+        "UnityEngine.UIModule.dll": {
+          "address": 6577946240,
+          "methodPointers": 6592995136,
+          "count": 116,
+          "fileBacked": true
+        },
+        "Hypergryph.Browser.dll": {
+          "address": 6565029568,
+          "methodPointers": 6587737712,
+          "count": 196,
+          "fileBacked": true
+        },
+        "UnityEngine.XRModule.dll": {
+          "address": 6577958704,
+          "methodPointers": 6593015712,
+          "count": 67,
+          "fileBacked": true
+        },
+        "Torappu.CETest.dll": {
+          "address": 6577712768,
+          "methodPointers": 6592561408,
+          "count": 84,
+          "fileBacked": true
+        },
+        "UnityEngine.TextRenderingModule.dll": {
+          "address": 6577900464,
+          "methodPointers": 6592933088,
+          "count": 50,
+          "fileBacked": true
+        },
+        "UnityEngine.InputLegacyModule.dll": {
+          "address": 6577891168,
+          "methodPointers": 6592915328,
+          "count": 71,
+          "fileBacked": true
+        },
+        "UnityEngine.TerrainModule.dll": {
+          "address": 6577897184,
+          "methodPointers": 6592927408,
+          "count": 41,
+          "fileBacked": true
+        },
+        "UnityEngine.SharedInternalsModule.dll": {
+          "address": 6577896208,
+          "methodPointers": 6592926640,
+          "count": 68,
+          "fileBacked": true
+        },
+        "UnityEngine.TilemapModule.dll": {
+          "address": 6577900816,
+          "methodPointers": 6592933536,
+          "count": 42,
+          "fileBacked": true
+        },
+        "UnityEngine.VFXModule.dll": {
+          "address": 6577957568,
+          "methodPointers": 6593015056,
+          "count": 33,
+          "fileBacked": true
+        },
+        "Sirenix.Serialization.Config.dll": {
+          "address": 6577507568,
+          "methodPointers": 6592309760,
+          "count": 22,
+          "fileBacked": true
+        },
+        "UnityEngine.AssetBundleModule.dll": {
+          "address": 6577861376,
+          "methodPointers": 6592865136,
+          "count": 28,
+          "fileBacked": true
+        },
+        "UnityEngine.SubsystemsModule.dll": {
+          "address": 6577896832,
+          "methodPointers": 6592927184,
+          "count": 28,
+          "fileBacked": true
+        },
+        "UnityEngine.UnityWebRequestWWWModule.dll": {
+          "address": 6577957232,
+          "methodPointers": 6593014928,
+          "count": 15,
+          "fileBacked": true
+        },
+        "UnityEngine.VideoModule.dll": {
+          "address": 6577957824,
+          "methodPointers": 6593015344,
+          "count": 18,
+          "fileBacked": true
+        },
+        "UnityEngine.DirectorModule.dll": {
+          "address": 6577887264,
+          "methodPointers": 6592908624,
+          "count": 34,
+          "fileBacked": true
+        },
+        "UnityEngine.InputModule.dll": {
+          "address": 6577891424,
+          "methodPointers": 6592916192,
+          "count": 17,
+          "fileBacked": true
+        },
+        "UnityEngine.UnityAnalyticsModule.dll": {
+          "address": 6577955968,
+          "methodPointers": 6593013584,
+          "count": 12,
+          "fileBacked": true
+        },
+        "Hypergryph.EventLogSDK.dll": {
+          "address": 6565030464,
+          "methodPointers": 6587739280,
+          "count": 181,
+          "fileBacked": true
+        },
+        "UnityEngine.JSONSerializeModule.dll": {
+          "address": 6577891680,
+          "methodPointers": 6592916328,
+          "count": 7,
+          "fileBacked": true
+        },
+        "UnityEngine.UnityWebRequestTextureModule.dll": {
+          "address": 6577956976,
+          "methodPointers": 6593014832,
+          "count": 12,
+          "fileBacked": true
+        },
+        "UnityEngine.VRModule.dll": {
+          "address": 6577958032,
+          "methodPointers": 6593015520,
+          "count": 10,
+          "fileBacked": true
+        },
+        "Torappu.Sofdec.dll": {
+          "address": 6577765232,
+          "methodPointers": 6592616000,
+          "count": 66,
+          "fileBacked": true
+        },
+        "UnityEngine.ImageConversionModule.dll": {
+          "address": 6577887632,
+          "methodPointers": 6592908904,
+          "count": 4,
+          "fileBacked": true
+        },
+        "UnityEngine.WindModule.dll": {
+          "address": 6577958256,
+          "methodPointers": 6593015600,
+          "count": 13,
+          "fileBacked": true
+        },
+        "UnityEngine.GridModule.dll": {
+          "address": 6577887440,
+          "methodPointers": 6592908896,
+          "count": 1,
+          "fileBacked": true
+        },
+        "UnityEngine.ScreenCaptureModule.dll": {
+          "address": 6577895760,
+          "methodPointers": 6592926624,
+          "count": 1,
+          "fileBacked": true
+        },
+        "Hypergryph.GameUpdate.dll": {
+          "address": 6565030928,
+          "methodPointers": 6587740736,
+          "count": 71,
+          "fileBacked": true
+        },
+        "Unity.Profiling.Core.dll": {
+          "address": 6577843520,
+          "methodPointers": 6592835264,
+          "count": 41,
+          "fileBacked": true
+        },
+        "System.Configuration.dll": {
+          "address": 6577584560,
+          "methodPointers": 6592355712,
+          "count": 35,
+          "fileBacked": true
+        },
+        "System.Runtime.Serialization.dll": {
+          "address": 6577603664,
+          "methodPointers": 6592365904,
+          "count": 6,
+          "fileBacked": true
+        },
+        "System.Runtime.CompilerServices.Unsafe.dll": {
+          "address": 6577603456,
+          "methodPointers": 6592365888,
+          "count": 2,
+          "fileBacked": true
+        },
+        "Unity.MemoryProfiler.dll": {
+          "address": 6577838800,
+          "methodPointers": 6592828688,
+          "count": 8,
+          "fileBacked": true
+        },
+        "CriMw.CriWare.Vp9.Runtime.dll": {
+          "address": 6565019680,
+          "methodPointers": 6587725648,
+          "count": 10,
+          "fileBacked": true
+        },
+        "Hypergryph.Log.dll": {
+          "address": 6565031152,
+          "methodPointers": 6587741312,
+          "count": 14,
+          "fileBacked": true
+        },
+        "XNode.Groups.dll": {
+          "address": 6577959056,
+          "methodPointers": 6593016960,
+          "count": 3,
+          "fileBacked": true
+        },
+        "AntiSDK.dll": {
+          "address": 6563858064,
+          "methodPointers": 6585841616,
+          "count": 3,
+          "fileBacked": true
+        },
+        "Torappu.UICommonEditor.dll": {
+          "address": 6577765408,
+          "methodPointers": 6592616528,
+          "count": 2,
+          "fileBacked": true
+        },
+        "enum2int.dll": {
+          "address": 6565028352,
+          "methodPointers": 6593280072,
+          "count": 2,
+          "fileBacked": false
+        },
+        "__Generated": {
+          "address": 6577960432,
+          "methodPointers": 6593018584,
+          "count": 3,
+          "fileBacked": true
+        }
+      }
+    },
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/resource-mechanisms-20261114/damage/cancel-consumers/decode_ui_literals.py",
+      "bytes": 2451,
+      "sha256": "68f679c8ac0ea07f62b19bec2b42543405a029a9e2e6d9816ba6769ea22f8994"
+    },
+    "inputBodies": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/resource-mechanisms-20261114/damage/cancel-consumers/consumers.json",
+      "bytes": 343254,
+      "sha256": "c662b3149eb66f94ec89e75d5d4ebaa4f120f9ce1de216943b2c3b5747c4de5d"
+    }
+  },
+  "result": {
+    "methodIndex": 105936,
+    "literalReads": [
+      {
+        "instruction": {
+          "address": "0x181326389",
+          "bytes": "488d0d88268f07",
+          "mnemonic": "lea",
+          "operands": "rcx, [rip + 0x78f2688]",
+          "ripReferences": [
+            "0x188c18a18"
+          ]
+        },
+        "slot": "0x188c18a18",
+        "encodedUsage": "0xa000fe7f",
+        "literalIndex": 32575,
+        "value": "miss"
+      },
+      {
+        "instruction": {
+          "address": "0x181326395",
+          "bytes": "488d0d2c098b07",
+          "mnemonic": "lea",
+          "operands": "rcx, [rip + 0x78b092c]",
+          "ripReferences": [
+            "0x188bd6cc8"
+          ]
+        },
+        "slot": "0x188bd6cc8",
+        "encodedUsage": "0xa000d03f",
+        "literalIndex": 26655,
+        "value": "block"
+      },
+      {
+        "instruction": {
+          "address": "0x181326503",
+          "bytes": "488b150e258f07",
+          "mnemonic": "mov",
+          "operands": "rdx, qword ptr [rip + 0x78f250e]",
+          "ripReferences": [
+            "0x188c18a18"
+          ]
+        },
+        "slot": "0x188c18a18",
+        "encodedUsage": "0xa000fe7f",
+        "literalIndex": 32575,
+        "value": "miss"
+      },
+      {
+        "instruction": {
+          "address": "0x181326573",
+          "bytes": "4c8b359e248f07",
+          "mnemonic": "mov",
+          "operands": "r14, qword ptr [rip + 0x78f249e]",
+          "ripReferences": [
+            "0x188c18a18"
+          ]
+        },
+        "slot": "0x188c18a18",
+        "encodedUsage": "0xa000fe7f",
+        "literalIndex": 32575,
+        "value": "miss"
+      },
+      {
+        "instruction": {
+          "address": "0x1813267a1",
+          "bytes": "488b1520058b07",
+          "mnemonic": "mov",
+          "operands": "rdx, qword ptr [rip + 0x78b0520]",
+          "ripReferences": [
+            "0x188bd6cc8"
+          ]
+        },
+        "slot": "0x188bd6cc8",
+        "encodedUsage": "0xa000d03f",
+        "literalIndex": 26655,
+        "value": "block"
+      }
+    ],
+    "uiFields": [
+      {
+        "nameIndex": 3573762,
+        "typeIndex": 78573,
+        "token": 67237287,
+        "index": 128422,
+        "name": "COST_PANEL_TUTORIAL_TARGET",
+        "typeName": "string",
+        "static": true,
+        "offset": 0,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3573789,
+        "typeIndex": 76400,
+        "token": 67237288,
+        "index": 128423,
+        "name": "ALERT_INFO_POPUP_TIME",
+        "typeName": "float",
+        "static": true,
+        "offset": 0,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3573811,
+        "typeIndex": 76397,
+        "token": 67237289,
+        "index": 128424,
+        "name": "ENEMY_INFO_TOAST_TIME",
+        "typeName": "float",
+        "static": true,
+        "offset": 0,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3573833,
+        "typeIndex": 76397,
+        "token": 67237290,
+        "index": 128425,
+        "name": "LEGION_BLAST_CARD_TOAST_TIME",
+        "typeName": "float",
+        "static": true,
+        "offset": 0,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3573862,
+        "typeIndex": 76397,
+        "token": 67237291,
+        "index": 128426,
+        "name": "LEGION_TRAP_EFFECT_TOAST_TIME",
+        "typeName": "float",
+        "static": true,
+        "offset": 0,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3573892,
+        "typeIndex": 78573,
+        "token": 67237292,
+        "index": 128427,
+        "name": "MISS_TEXT",
+        "typeName": "string",
+        "static": true,
+        "offset": 0,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3573902,
+        "typeIndex": 78573,
+        "token": 67237293,
+        "index": 128428,
+        "name": "BLOCKED_TEXT",
+        "typeName": "string",
+        "static": true,
+        "offset": 0,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3573915,
+        "typeIndex": 84182,
+        "token": 67237294,
+        "index": 128429,
+        "name": "PREDEFINED_LOCATION_COST_OFFSET",
+        "typeName": "UnityEngine.Vector3",
+        "static": true,
+        "offset": 0,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3573947,
+        "typeIndex": 84182,
+        "token": 67237295,
+        "index": 128430,
+        "name": "PREDEFINED_LOCATION_LEGION_CARD_PENDING_OFFSET",
+        "typeName": "UnityEngine.Vector3",
+        "static": true,
+        "offset": 12,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3573994,
+        "typeIndex": 84182,
+        "token": 67237296,
+        "index": 128431,
+        "name": "PREDEFINED_LOCATION_FUNLIVE_PHOTO_PENDING_OFFSET",
+        "typeName": "UnityEngine.Vector3",
+        "static": true,
+        "offset": 24,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 1511383,
+        "typeIndex": 47534,
+        "token": 67237297,
+        "index": 128432,
+        "name": "_uiCamera",
+        "typeName": "UnityEngine.Camera",
+        "static": false,
+        "offset": 24,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3531479,
+        "typeIndex": 47802,
+        "token": 67237298,
+        "index": 128433,
+        "name": "_rootCanvas",
+        "typeName": "UnityEngine.Canvas",
+        "static": false,
+        "offset": 32,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3574043,
+        "typeIndex": 47802,
+        "token": 67237299,
+        "index": 128434,
+        "name": "_perspectiveCanvas",
+        "typeName": "UnityEngine.Canvas",
+        "static": false,
+        "offset": 40,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3574062,
+        "typeIndex": 82991,
+        "token": 67237300,
+        "index": 128435,
+        "name": "_topBar",
+        "typeName": "Torappu.Battle.UI.UITopBar",
+        "static": false,
+        "offset": 48,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 1517294,
+        "typeIndex": 81896,
+        "token": 67237301,
+        "index": 128436,
+        "name": "_characterInfo",
+        "typeName": "Torappu.Battle.UI.UICharacterInfoPanel",
+        "static": false,
+        "offset": 56,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3574070,
+        "typeIndex": 82263,
+        "token": 67237302,
+        "index": 128437,
+        "name": "_fakeBlur",
+        "typeName": "Torappu.Battle.UI.UIFakeBlur",
+        "static": false,
+        "offset": 64,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3289876,
+        "typeIndex": 81842,
+        "token": 67237303,
+        "index": 128438,
+        "name": "_cardList",
+        "typeName": "Torappu.Battle.UI.UICardList",
+        "static": false,
+        "offset": 72,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3574080,
+        "typeIndex": 82986,
+        "token": 67237304,
+        "index": 128439,
+        "name": "_toastController",
+        "typeName": "Torappu.Battle.UI.UIToastController",
+        "static": false,
+        "offset": 80,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3574097,
+        "typeIndex": 82355,
+        "token": 67237305,
+        "index": 128440,
+        "name": "_hintController",
+        "typeName": "Torappu.Battle.UI.UIHintController",
+        "static": false,
+        "offset": 88,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3574113,
+        "typeIndex": 81617,
+        "token": 67237306,
+        "index": 128441,
+        "name": "_autoBattlePanel",
+        "typeName": "Torappu.Battle.UI.UIAutoBattlePanel",
+        "static": false,
+        "offset": 96,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3574130,
+        "typeIndex": 81752,
+        "token": 67237307,
+        "index": 128442,
+        "name": "_systemMenuPanel",
+        "typeName": "Torappu.Battle.UI.UIBattleSystemMenuPanel",
+        "static": false,
+        "offset": 104,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3574147,
+        "typeIndex": 59803,
+        "token": 67237308,
+        "index": 128443,
+        "name": "_bottomMask",
+        "typeName": "UnityEngine.UI.Image",
+        "static": false,
+        "offset": 112,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3574159,
+        "typeIndex": 82127,
+        "token": 67237309,
+        "index": 128444,
+        "name": "_costPanel",
+        "typeName": "Torappu.Battle.UI.UICostPanel",
+        "static": false,
+        "offset": 120,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3574170,
+        "typeIndex": 68714,
+        "token": 67237310,
+        "index": 128445,
+        "name": "_hudPanel",
+        "typeName": "UnityEngine.RectTransform",
+        "static": false,
+        "offset": 128,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3574180,
+        "typeIndex": 68714,
+        "token": 67237311,
+        "index": 128446,
+        "name": "_tempPanel",
+        "typeName": "UnityEngine.RectTransform",
+        "static": false,
+        "offset": 136,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3574191,
+        "typeIndex": 68714,
+        "token": 67237312,
+        "index": 128447,
+        "name": "_tempPanelPerspective",
+        "typeName": "UnityEngine.RectTransform",
+        "static": false,
+        "offset": 144,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3574213,
+        "typeIndex": 83012,
+        "token": 67237313,
+        "index": 128448,
+        "name": "_unitHud",
+        "typeName": "Torappu.Battle.UI.UIUnitHUD",
+        "static": false,
+        "offset": 152,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3574222,
+        "typeIndex": 83014,
+        "token": 67237314,
+        "index": 128449,
+        "name": "_hudPluginHolder",
+        "typeName": "Torappu.Battle.UI.UIUnitHudPluginHolder",
+        "static": false,
+        "offset": 160,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3574239,
+        "typeIndex": 82584,
+        "token": 67237315,
+        "index": 128450,
+        "name": "_damageText",
+        "typeName": "Torappu.Battle.UI.UINumericText",
+        "static": false,
+        "offset": 168,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3574251,
+        "typeIndex": 82584,
+        "token": 67237316,
+        "index": 128451,
+        "name": "_healText",
+        "typeName": "Torappu.Battle.UI.UINumericText",
+        "static": false,
+        "offset": 176,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3574261,
+        "typeIndex": 82584,
+        "token": 67237317,
+        "index": 128452,
+        "name": "_blockText",
+        "typeName": "Torappu.Battle.UI.UINumericText",
+        "static": false,
+        "offset": 184,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3574272,
+        "typeIndex": 82547,
+        "token": 67237318,
+        "index": 128453,
+        "name": "_messageText",
+        "typeName": "Torappu.Battle.UI.UIMessageText",
+        "static": false,
+        "offset": 192,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3574285,
+        "typeIndex": 82547,
+        "token": 67237319,
+        "index": 128454,
+        "name": "_messageTextSlow",
+        "typeName": "Torappu.Battle.UI.UIMessageText",
+        "static": false,
+        "offset": 200,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3574302,
+        "typeIndex": 81572,
+        "token": 67237320,
+        "index": 128455,
+        "name": "_retriggerSkillCostText",
+        "typeName": "Torappu.Battle.UI.UIAnimationText",
+        "static": false,
+        "offset": 208,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3574326,
+        "typeIndex": 82241,
+        "token": 67237321,
+        "index": 128456,
+        "name": "_enemyBossInfo",
+        "typeName": "Torappu.Battle.UI.UIEnemyGiantBossInfoPanel",
+        "static": false,
+        "offset": 216,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3574341,
+        "typeIndex": 81561,
+        "token": 67237322,
+        "index": 128457,
+        "name": "_battleAccomplishedPerform",
+        "typeName": "Torappu.Battle.UI.UIAnimationPerform",
+        "static": false,
+        "offset": 224,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3570841,
+        "typeIndex": 82190,
+        "token": 67237323,
+        "index": 128458,
+        "name": "_directionSelector",
+        "typeName": "Torappu.Battle.UI.UIDirectionSelector",
+        "static": false,
+        "offset": 232,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3574368,
+        "typeIndex": 35035,
+        "token": 67237324,
+        "index": 128459,
+        "name": "_additionalPreloads",
+        "typeName": "Torappu.ObjectPool.PoolManager/ObjectConfig[]",
+        "static": false,
+        "offset": 240,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 51290,
+        "typeIndex": 34539,
+        "token": 67237325,
+        "index": 128460,
+        "name": "_states",
+        "typeName": "Torappu.Battle.UI.UIStateNode[]",
+        "static": false,
+        "offset": 248,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3574388,
+        "typeIndex": 81921,
+        "token": 67237326,
+        "index": 128461,
+        "name": "_characterMenuState",
+        "typeName": "Torappu.Battle.UI.UICharacterMenuState",
+        "static": false,
+        "offset": 256,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3574408,
+        "typeIndex": 82755,
+        "token": 67237327,
+        "index": 128462,
+        "name": "_remainingCharacter",
+        "typeName": "Torappu.Battle.UI.UIRemainingAvailableCharacter",
+        "static": false,
+        "offset": 264,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3574428,
+        "typeIndex": 23538,
+        "token": 67237328,
+        "index": 128463,
+        "name": "_hideWhenDialog",
+        "typeName": "type(kind=0x15, data=0x188cf0c08)",
+        "static": false,
+        "offset": 272,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3574444,
+        "typeIndex": 68714,
+        "token": 67237329,
+        "index": 128464,
+        "name": "_groupRoot",
+        "typeName": "UnityEngine.RectTransform",
+        "static": false,
+        "offset": 280,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3574455,
+        "typeIndex": 68714,
+        "token": 67237330,
+        "index": 128465,
+        "name": "_groupStatic",
+        "typeName": "UnityEngine.RectTransform",
+        "static": false,
+        "offset": 288,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3574468,
+        "typeIndex": 68714,
+        "token": 67237331,
+        "index": 128466,
+        "name": "_groupTop",
+        "typeName": "UnityEngine.RectTransform",
+        "static": false,
+        "offset": 296,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3574478,
+        "typeIndex": 68714,
+        "token": 67237332,
+        "index": 128467,
+        "name": "_groupTopBar",
+        "typeName": "UnityEngine.RectTransform",
+        "static": false,
+        "offset": 304,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3574491,
+        "typeIndex": 68714,
+        "token": 67237333,
+        "index": 128468,
+        "name": "_groupDialogue",
+        "typeName": "UnityEngine.RectTransform",
+        "static": false,
+        "offset": 312,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3574506,
+        "typeIndex": 68714,
+        "token": 67237334,
+        "index": 128469,
+        "name": "_groupEnemy",
+        "typeName": "UnityEngine.RectTransform",
+        "static": false,
+        "offset": 320,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3574518,
+        "typeIndex": 82241,
+        "token": 67237335,
+        "index": 128470,
+        "name": "m_enemyBossInfo",
+        "typeName": "Torappu.Battle.UI.UIEnemyGiantBossInfoPanel",
+        "static": false,
+        "offset": 328,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3574534,
+        "typeIndex": 46025,
+        "token": 67237336,
+        "index": 128471,
+        "name": "m_isPerspectiveCanvasOn",
+        "typeName": "bool",
+        "static": false,
+        "offset": 336,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3574558,
+        "typeIndex": 47534,
+        "token": 67237337,
+        "index": 128472,
+        "name": "m_uiPerspectiveCamera",
+        "typeName": "UnityEngine.Camera",
+        "static": false,
+        "offset": 344,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 51492,
+        "typeIndex": 82910,
+        "token": 67237338,
+        "index": 128473,
+        "name": "m_stateMachine",
+        "typeName": "Torappu.Battle.UI.UIStateMachine",
+        "static": false,
+        "offset": 352,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3574580,
+        "typeIndex": 20654,
+        "token": 67237339,
+        "index": 128474,
+        "name": "m_stateParams",
+        "typeName": "type(kind=0x15, data=0x188c82328)",
+        "static": false,
+        "offset": 360,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 1384936,
+        "typeIndex": 13308,
+        "token": 67237340,
+        "index": 128475,
+        "name": "m_eventPool",
+        "typeName": "type(kind=0x15, data=0x188e046a8)",
+        "static": false,
+        "offset": 368,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3574594,
+        "typeIndex": 11909,
+        "token": 67237341,
+        "index": 128476,
+        "name": "m_hudMap",
+        "typeName": "type(kind=0x15, data=0x188c76198)",
+        "static": false,
+        "offset": 376,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3574603,
+        "typeIndex": 45597,
+        "token": 67237342,
+        "index": 128477,
+        "name": "m_functionDisableMask",
+        "typeName": "Torappu.BattleFunctionDisableMask",
+        "static": false,
+        "offset": 384,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3574625,
+        "typeIndex": 81830,
+        "token": 67237343,
+        "index": 128478,
+        "name": "m_canvasScalerHelper",
+        "typeName": "Torappu.UI.UICanvasScalerHelper",
+        "static": false,
+        "offset": 392,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3574646,
+        "typeIndex": 76378,
+        "token": 67237344,
+        "index": 128479,
+        "name": "m_cameraHudScale",
+        "typeName": "float",
+        "static": false,
+        "offset": 400,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3574663,
+        "typeIndex": 80119,
+        "token": 67237345,
+        "index": 128480,
+        "name": "_tileInfoController",
+        "typeName": "Torappu.Battle.UI.TileInfoController",
+        "static": false,
+        "offset": 408,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3574683,
+        "typeIndex": 84436,
+        "token": 67237346,
+        "index": 128481,
+        "name": "m_voicePlayer",
+        "typeName": "Torappu.Battle.UI.VoicePlayer",
+        "static": false,
+        "offset": 416,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3574697,
+        "typeIndex": 20096,
+        "token": 67237347,
+        "index": 128482,
+        "name": "m_hideCache",
+        "typeName": "type(kind=0x15, data=0x188e310a8)",
+        "static": false,
+        "offset": 424,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3574709,
+        "typeIndex": 10735,
+        "token": 67237348,
+        "index": 128483,
+        "name": "m_loadedUIPlugins",
+        "typeName": "type(kind=0x15, data=0x188d623c8)",
+        "static": false,
+        "offset": 432,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3574727,
+        "typeIndex": 10537,
+        "token": 67237349,
+        "index": 128484,
+        "name": "m_runTimeUIPluginRefCount",
+        "typeName": "type(kind=0x15, data=0x188d2a568)",
+        "static": false,
+        "offset": 440,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3574753,
+        "typeIndex": 81617,
+        "token": 67237350,
+        "index": 128485,
+        "name": "m_autoBattlePanel",
+        "typeName": "Torappu.Battle.UI.UIAutoBattlePanel",
+        "static": false,
+        "offset": 448,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3574771,
+        "typeIndex": 46025,
+        "token": 67237351,
+        "index": 128486,
+        "name": "<isGuideMode>k__BackingField",
+        "typeName": "bool",
+        "static": false,
+        "offset": 456,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 1826183,
+        "typeIndex": 45459,
+        "token": 67237352,
+        "index": 128487,
+        "name": "<controller>k__BackingField",
+        "typeName": "Torappu.Battle.BattleController",
+        "static": false,
+        "offset": 464,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3574800,
+        "typeIndex": 82552,
+        "token": 67237353,
+        "index": 128488,
+        "name": "m_minCostIndicatorManager",
+        "typeName": "Torappu.Battle.UI.UIMinCostIndicatorManager",
+        "static": false,
+        "offset": 472,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3574826,
+        "typeIndex": 87518,
+        "token": 67237354,
+        "index": 128489,
+        "name": "<avgTutorialPlugin>k__BackingField",
+        "typeName": "Torappu.AVG.AVGTutorialPanel/IAVGTutorialPanelPlugin",
+        "static": false,
+        "offset": 480,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 2524918,
+        "typeIndex": 112112,
+        "token": 67237355,
+        "index": 128490,
+        "name": "<plugin>k__BackingField",
+        "typeName": "Torappu.Battle.UI.UIController/Plugin",
+        "static": false,
+        "offset": 488,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3574861,
+        "typeIndex": 52361,
+        "token": 67237356,
+        "index": 128491,
+        "name": "__Hotfix0_get_remainingCharacter",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 40,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 63250,
+        "typeIndex": 52361,
+        "token": 67237357,
+        "index": 128492,
+        "name": "__Hotfix0_get_stateMachine",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 48,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 2328125,
+        "typeIndex": 52361,
+        "token": 67237358,
+        "index": 128493,
+        "name": "__Hotfix0_get_currentState",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 56,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 1414595,
+        "typeIndex": 52361,
+        "token": 67237359,
+        "index": 128494,
+        "name": "__Hotfix0_get_eventPool",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 64,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3574894,
+        "typeIndex": 52361,
+        "token": 67237360,
+        "index": 128495,
+        "name": "__Hotfix0_get_topbar",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 72,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3574915,
+        "typeIndex": 52361,
+        "token": 67237361,
+        "index": 128496,
+        "name": "__Hotfix0_get_bottomMask",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 80,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3574940,
+        "typeIndex": 52361,
+        "token": 67237362,
+        "index": 128497,
+        "name": "__Hotfix0_get_characterMenuState",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 88,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3574973,
+        "typeIndex": 52361,
+        "token": 67237363,
+        "index": 128498,
+        "name": "__Hotfix0_get_fakeBlur",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 96,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3529137,
+        "typeIndex": 52361,
+        "token": 67237364,
+        "index": 128499,
+        "name": "__Hotfix0_get_directionSelector",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 104,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3574996,
+        "typeIndex": 52361,
+        "token": 67237365,
+        "index": 128500,
+        "name": "__Hotfix0_get_battleAccomplishedPerform",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 112,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3575036,
+        "typeIndex": 52361,
+        "token": 67237366,
+        "index": 128501,
+        "name": "__Hotfix0_get_hudPanel",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 120,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3575059,
+        "typeIndex": 52361,
+        "token": 67237367,
+        "index": 128502,
+        "name": "__Hotfix0_get_toastController",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 128,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3529086,
+        "typeIndex": 52361,
+        "token": 67237368,
+        "index": 128503,
+        "name": "__Hotfix0_get_characterInfo",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 136,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3575089,
+        "typeIndex": 52361,
+        "token": 67237369,
+        "index": 128504,
+        "name": "__Hotfix0_get_systemMenuPanel",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 144,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3575119,
+        "typeIndex": 52361,
+        "token": 67237370,
+        "index": 128505,
+        "name": "__Hotfix0_get_perspectiveCanvas",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 152,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3529114,
+        "typeIndex": 52361,
+        "token": 67237371,
+        "index": 128506,
+        "name": "__Hotfix0_get_cardList",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 160,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3575151,
+        "typeIndex": 52361,
+        "token": 67237372,
+        "index": 128507,
+        "name": "__Hotfix0_get_scalerHelper",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 168,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3575178,
+        "typeIndex": 52361,
+        "token": 67237373,
+        "index": 128508,
+        "name": "__Hotfix0_get_autoBattlePanel",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 176,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3575208,
+        "typeIndex": 52361,
+        "token": 67237374,
+        "index": 128509,
+        "name": "__Hotfix0_get_groupRoot",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 184,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3575232,
+        "typeIndex": 52361,
+        "token": 67237375,
+        "index": 128510,
+        "name": "__Hotfix0_get_groupStatic",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 192,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3575258,
+        "typeIndex": 52361,
+        "token": 67237376,
+        "index": 128511,
+        "name": "__Hotfix0_get_groupTop",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 200,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3575281,
+        "typeIndex": 52361,
+        "token": 67237377,
+        "index": 128512,
+        "name": "__Hotfix0_get_groupTopBar",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 208,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3575307,
+        "typeIndex": 52361,
+        "token": 67237378,
+        "index": 128513,
+        "name": "__Hotfix0_get_hideWhenDialog",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 216,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3575336,
+        "typeIndex": 52361,
+        "token": 67237379,
+        "index": 128514,
+        "name": "__Hotfix0_get_groupDialogue",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 224,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3575364,
+        "typeIndex": 52361,
+        "token": 67237380,
+        "index": 128515,
+        "name": "__Hotfix0_get_tempPanel",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 232,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3575388,
+        "typeIndex": 52361,
+        "token": 67237381,
+        "index": 128516,
+        "name": "__Hotfix0_get_tempPanelPerspective",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 240,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 1935000,
+        "typeIndex": 52361,
+        "token": 67237382,
+        "index": 128517,
+        "name": "__Hotfix0_get_camera",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 248,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 2266841,
+        "typeIndex": 52361,
+        "token": 67237383,
+        "index": 128518,
+        "name": "__Hotfix0_get_isPaused",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 256,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3575423,
+        "typeIndex": 52361,
+        "token": 67237384,
+        "index": 128519,
+        "name": "__Hotfix0_get_isPausedButNotInGuideMode",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 264,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3575463,
+        "typeIndex": 52361,
+        "token": 67237385,
+        "index": 128520,
+        "name": "__Hotfix0_get_isCameraDragValidState",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 272,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3575500,
+        "typeIndex": 52361,
+        "token": 67237386,
+        "index": 128521,
+        "name": "__Hotfix0_get_enableUIShowCardState",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 280,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3575536,
+        "typeIndex": 52361,
+        "token": 67237387,
+        "index": 128522,
+        "name": "__Hotfix0_get_isGuideMode",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 288,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3575562,
+        "typeIndex": 52361,
+        "token": 67237388,
+        "index": 128523,
+        "name": "__Hotfix0_set_isGuideMode",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 296,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3575588,
+        "typeIndex": 52361,
+        "token": 67237389,
+        "index": 128524,
+        "name": "__Hotfix0_get_isPerspectiveCanvasOn",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 304,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3575624,
+        "typeIndex": 52361,
+        "token": 67237390,
+        "index": 128525,
+        "name": "__Hotfix0_set_isPerspectiveCanvasOn",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 312,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 1869066,
+        "typeIndex": 52361,
+        "token": 67237391,
+        "index": 128526,
+        "name": "__Hotfix0_get_controller",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 320,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 2116262,
+        "typeIndex": 52361,
+        "token": 67237392,
+        "index": 128527,
+        "name": "__Hotfix0_set_controller",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 328,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3575660,
+        "typeIndex": 52361,
+        "token": 67237393,
+        "index": 128528,
+        "name": "__Hotfix0_get_avgTutorialPlugin",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 336,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3575692,
+        "typeIndex": 52361,
+        "token": 67237394,
+        "index": 128529,
+        "name": "__Hotfix0_set_avgTutorialPlugin",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 344,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 1950535,
+        "typeIndex": 52361,
+        "token": 67237395,
+        "index": 128530,
+        "name": "__Hotfix0_get_plugin",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 352,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 1950556,
+        "typeIndex": 52361,
+        "token": 67237396,
+        "index": 128531,
+        "name": "__Hotfix0_set_plugin",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 360,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3575724,
+        "typeIndex": 52361,
+        "token": 67237397,
+        "index": 128532,
+        "name": "__Hotfix0_get_enemyBossInfo",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 368,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3575752,
+        "typeIndex": 52361,
+        "token": 67237398,
+        "index": 128533,
+        "name": "__Hotfix0_get_showCharacterStatusInDummy",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 376,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3575793,
+        "typeIndex": 52361,
+        "token": 67237399,
+        "index": 128534,
+        "name": "__Hotfix0_get_needReleaseIllust",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 384,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3575825,
+        "typeIndex": 52361,
+        "token": 67237400,
+        "index": 128535,
+        "name": "__Hotfix0_get_costPanel",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 392,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3575849,
+        "typeIndex": 52361,
+        "token": 67237401,
+        "index": 128536,
+        "name": "__Hotfix0_HideEnemyBossInfo",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 400,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3289239,
+        "typeIndex": 52361,
+        "token": 67237402,
+        "index": 128537,
+        "name": "__Hotfix0_OnCardMenuShow",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 408,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3575877,
+        "typeIndex": 52361,
+        "token": 67237403,
+        "index": 128538,
+        "name": "__Hotfix0_CanPluginPressBackButton",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 416,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 2097993,
+        "typeIndex": 52361,
+        "token": 67237404,
+        "index": 128539,
+        "name": "__Hotfix0_OnCharacterMenuShow",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 424,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3289264,
+        "typeIndex": 52361,
+        "token": 67237405,
+        "index": 128540,
+        "name": "__Hotfix0_OnCharacterMenuHide",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 432,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 2731,
+        "typeIndex": 52361,
+        "token": 67237406,
+        "index": 128541,
+        "name": "__Hotfix0_OnFixedUpdate",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 440,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 2490976,
+        "typeIndex": 52361,
+        "token": 67237407,
+        "index": 128542,
+        "name": "__Hotfix0_SetPaused",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 448,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3575912,
+        "typeIndex": 52361,
+        "token": 67237408,
+        "index": 128543,
+        "name": "__Hotfix0_CheckPauseBtnInteractable",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 456,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3575948,
+        "typeIndex": 52361,
+        "token": 67237409,
+        "index": 128544,
+        "name": "__Hotfix0_TrySetPausedIfPauseBtnInteractable",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 464,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3575993,
+        "typeIndex": 52361,
+        "token": 67237410,
+        "index": 128545,
+        "name": "__Hotfix0_RaiseTutorialSignal",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 472,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3576023,
+        "typeIndex": 52361,
+        "token": 67237411,
+        "index": 128546,
+        "name": "__Hotfix0_RaiseTutorialSignalIfRuning",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 480,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3576061,
+        "typeIndex": 52361,
+        "token": 67237412,
+        "index": 128547,
+        "name": "__Hotfix0_RegisterTutorialExtraBattleTarget",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 488,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3576105,
+        "typeIndex": 52361,
+        "token": 67237413,
+        "index": 128548,
+        "name": "__Hotfix0__RegisterTutorialTargets",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 496,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3576140,
+        "typeIndex": 52361,
+        "token": 67237414,
+        "index": 128549,
+        "name": "__Hotfix0_TryMatchingTutorialWaitSignalStringParam",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 504,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3576191,
+        "typeIndex": 52361,
+        "token": 67237415,
+        "index": 128550,
+        "name": "__Hotfix0_OnCardBeginDrag",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 512,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3576217,
+        "typeIndex": 52361,
+        "token": 67237416,
+        "index": 128551,
+        "name": "__Hotfix0_OnCardEndDrag",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 520,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3543939,
+        "typeIndex": 52361,
+        "token": 67237417,
+        "index": 128552,
+        "name": "__Hotfix0_OnCardToggled",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 528,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3576241,
+        "typeIndex": 52361,
+        "token": 67237418,
+        "index": 128553,
+        "name": "__Hotfix0_HideCharacterInfo",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 536,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3576269,
+        "typeIndex": 52361,
+        "token": 67237419,
+        "index": 128554,
+        "name": "__Hotfix0_UpdateCardListToggleGroup",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 544,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3576305,
+        "typeIndex": 52361,
+        "token": 67237420,
+        "index": 128555,
+        "name": "__Hotfix0_OnBottomMaskClicked",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 552,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3576335,
+        "typeIndex": 52361,
+        "token": 67237421,
+        "index": 128556,
+        "name": "__Hotfix0_OnBottomMaskDrag",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 560,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3576362,
+        "typeIndex": 52361,
+        "token": 67237422,
+        "index": 128557,
+        "name": "__Hotfix0_OnBottomMaskBeginDrag",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 568,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3576394,
+        "typeIndex": 52361,
+        "token": 67237423,
+        "index": 128558,
+        "name": "__Hotfix0_OnBottomMaskEndDrag",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 576,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3576424,
+        "typeIndex": 52361,
+        "token": 67237424,
+        "index": 128559,
+        "name": "__Hotfix0_OnBottomMaskDown",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 584,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3576451,
+        "typeIndex": 52361,
+        "token": 67237425,
+        "index": 128560,
+        "name": "__Hotfix0_OnBottomMaskUp",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 592,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3576476,
+        "typeIndex": 52361,
+        "token": 67237426,
+        "index": 128561,
+        "name": "__Hotfix0_PrepareThenRestartGame",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 600,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 2396349,
+        "typeIndex": 52361,
+        "token": 67237427,
+        "index": 128562,
+        "name": "__Hotfix0_RestartGame",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 608,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3576509,
+        "typeIndex": 52361,
+        "token": 67237428,
+        "index": 128563,
+        "name": "__Hotfix0_GameToUIWorldPos",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 616,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3576536,
+        "typeIndex": 52361,
+        "token": 67237429,
+        "index": 128564,
+        "name": "__Hotfix0_GameToUIPixel",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 624,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3576560,
+        "typeIndex": 52361,
+        "token": 67237430,
+        "index": 128565,
+        "name": "__Hotfix0_EnableFunction",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 632,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3576585,
+        "typeIndex": 52361,
+        "token": 67237431,
+        "index": 128566,
+        "name": "__Hotfix0_DisableFunction",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 640,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3576611,
+        "typeIndex": 52361,
+        "token": 67237432,
+        "index": 128567,
+        "name": "__Hotfix0_HasFunction",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 648,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 507883,
+        "typeIndex": 52361,
+        "token": 67237433,
+        "index": 128568,
+        "name": "__Hotfix0_OnApplicationPause",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 656,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3576633,
+        "typeIndex": 52361,
+        "token": 67237434,
+        "index": 128569,
+        "name": "__Hotfix0__TriggerPauseWhenApplicationPaused",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 664,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3576678,
+        "typeIndex": 52361,
+        "token": 67237435,
+        "index": 128570,
+        "name": "__Hotfix0__UpdateDisableMask",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 672,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 2497120,
+        "typeIndex": 52361,
+        "token": 67237436,
+        "index": 128571,
+        "name": "__Hotfix0__UpdateGameInfo",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 680,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3576707,
+        "typeIndex": 52361,
+        "token": 67237437,
+        "index": 128572,
+        "name": "__Hotfix0__UpdateHudScaleIfNot",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 688,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3576738,
+        "typeIndex": 52361,
+        "token": 67237438,
+        "index": 128573,
+        "name": "__Hotfix0__LoadRuntimeUIPluginIfNot",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 696,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3576774,
+        "typeIndex": 52361,
+        "token": 67237439,
+        "index": 128574,
+        "name": "__Hotfix0_AddRuntimeUIPlugin",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 704,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3576803,
+        "typeIndex": 52361,
+        "token": 67237440,
+        "index": 128575,
+        "name": "__Hotfix0_RemoveRuntimeUIPlugin",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 712,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3576835,
+        "typeIndex": 52361,
+        "token": 67237441,
+        "index": 128576,
+        "name": "__Hotfix0_SetPlayerSide",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 720,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 2367079,
+        "typeIndex": 52361,
+        "token": 67237442,
+        "index": 128577,
+        "name": "__Hotfix0__InitStateMachine",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 728,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 2526195,
+        "typeIndex": 52361,
+        "token": 67237443,
+        "index": 128578,
+        "name": "__Hotfix0__TryCreatePlugin",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 736,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3576859,
+        "typeIndex": 52361,
+        "token": 67237444,
+        "index": 128579,
+        "name": "__Hotfix0__CreatePluginByLevelData",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 744,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3576894,
+        "typeIndex": 52361,
+        "token": 67237445,
+        "index": 128580,
+        "name": "__Hotfix0_SetUIStateParam",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 752,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3576920,
+        "typeIndex": 52361,
+        "token": 67237446,
+        "index": 128581,
+        "name": "__Hotfix0_GetUIStateParam",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 760,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3576946,
+        "typeIndex": 52361,
+        "token": 67237447,
+        "index": 128582,
+        "name": "__Hotfix0_UIPixelToWorldVector",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 768,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3576977,
+        "typeIndex": 52361,
+        "token": 67237448,
+        "index": 128583,
+        "name": "__Hotfix0_ShowModifierText",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 776,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3577004,
+        "typeIndex": 52361,
+        "token": 67237449,
+        "index": 128584,
+        "name": "__Hotfix0_ShowNumericText",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 784,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3577030,
+        "typeIndex": 52361,
+        "token": 67237450,
+        "index": 128585,
+        "name": "__Hotfix0_ShowMessageText",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 792,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3577056,
+        "typeIndex": 52361,
+        "token": 67237451,
+        "index": 128586,
+        "name": "__Hotfix1_ShowMessageText",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 800,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3577082,
+        "typeIndex": 52361,
+        "token": 67237452,
+        "index": 128587,
+        "name": "__Hotfix0_ShowSlowMessageText",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 808,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3577112,
+        "typeIndex": 52361,
+        "token": 67237453,
+        "index": 128588,
+        "name": "__Hotfix0_ShowRetriggerSkillCost",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 816,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3577145,
+        "typeIndex": 52361,
+        "token": 67237454,
+        "index": 128589,
+        "name": "__Hotfix0_ShowGameModeNumericPopup",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 824,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3577180,
+        "typeIndex": 52361,
+        "token": 67237455,
+        "index": 128590,
+        "name": "__Hotfix0_SwitchToBattleFinishService",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 832,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3577218,
+        "typeIndex": 52361,
+        "token": 67237456,
+        "index": 128591,
+        "name": "__Hotfix0_SwitchToBattleFailedState",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 840,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3577254,
+        "typeIndex": 52361,
+        "token": 67237457,
+        "index": 128592,
+        "name": "__Hotfix0_SwitchToBattleAccomplishedState",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 848,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3577296,
+        "typeIndex": 52361,
+        "token": 67237458,
+        "index": 128593,
+        "name": "__Hotfix0_SwitchToDialogState",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 856,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3298441,
+        "typeIndex": 52361,
+        "token": 67237459,
+        "index": 128594,
+        "name": "__Hotfix0_OnSystemMenuCancel",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 864,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3577326,
+        "typeIndex": 52361,
+        "token": 67237460,
+        "index": 128595,
+        "name": "__Hotfix0_ShowDynamicHUDGroup",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 872,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3577356,
+        "typeIndex": 52361,
+        "token": 67237461,
+        "index": 128596,
+        "name": "__Hotfix0_ShowHint",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 880,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3577375,
+        "typeIndex": 52361,
+        "token": 67237462,
+        "index": 128597,
+        "name": "__Hotfix0_AttachHudPlugin",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 888,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3577401,
+        "typeIndex": 52361,
+        "token": 67237463,
+        "index": 128598,
+        "name": "__Hotfix0_PrepareHideForDialog",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 896,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3577432,
+        "typeIndex": 52361,
+        "token": 67237464,
+        "index": 128599,
+        "name": "__Hotfix0_RestoreHideForDialog",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 904,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 1818839,
+        "typeIndex": 52361,
+        "token": 67237465,
+        "index": 128600,
+        "name": "__Hotfix0_OnGameReset",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 912,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 1818861,
+        "typeIndex": 52361,
+        "token": 67237466,
+        "index": 128601,
+        "name": "__Hotfix0_OnGameInit",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 920,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 1818882,
+        "typeIndex": 52361,
+        "token": 67237467,
+        "index": 128602,
+        "name": "__Hotfix0_OnGameReady",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 928,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 1818904,
+        "typeIndex": 52361,
+        "token": 67237468,
+        "index": 128603,
+        "name": "__Hotfix0_OnGameStart",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 936,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 1818926,
+        "typeIndex": 52361,
+        "token": 67237469,
+        "index": 128604,
+        "name": "__Hotfix0_OnGameOver",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 944,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3577463,
+        "typeIndex": 52361,
+        "token": 67237470,
+        "index": 128605,
+        "name": "__Hotfix0_OnSwitchToBattleFinish",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 952,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 2960083,
+        "typeIndex": 52361,
+        "token": 67237471,
+        "index": 128606,
+        "name": "__Hotfix0_OnUIStateChanged",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 960,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3577496,
+        "typeIndex": 52361,
+        "token": 67237472,
+        "index": 128607,
+        "name": "__Hotfix0_GetPredefinedLocationByUI",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 968,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 2491930,
+        "typeIndex": 52361,
+        "token": 67237473,
+        "index": 128608,
+        "name": "__Hotfix0_TryGetCardPositionByUI",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 976,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 2590373,
+        "typeIndex": 52361,
+        "token": 67237474,
+        "index": 128609,
+        "name": "__Hotfix0__OnUnitBorn",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 984,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3577532,
+        "typeIndex": 52361,
+        "token": 67237475,
+        "index": 128610,
+        "name": "__Hotfix0__GetDefaultHud",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 992,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3577557,
+        "typeIndex": 52361,
+        "token": 67237476,
+        "index": 128611,
+        "name": "__Hotfix0__OnGiantBossHudUsed",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 1000,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 2590349,
+        "typeIndex": 52361,
+        "token": 67237477,
+        "index": 128612,
+        "name": "__Hotfix0__OnUnitFinish",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 1008,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 1939855,
+        "typeIndex": 52361,
+        "token": 67237478,
+        "index": 128613,
+        "name": "__Hotfix0__OnStateChanged",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 1016,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3577587,
+        "typeIndex": 52361,
+        "token": 67237479,
+        "index": 128614,
+        "name": "__Hotfix0__OnDisplayEnemyInfo",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 1024,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3577617,
+        "typeIndex": 52361,
+        "token": 67237480,
+        "index": 128615,
+        "name": "__Hotfix0__OnBlockAnyRoutes",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 1032,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3577645,
+        "typeIndex": 52361,
+        "token": 67237481,
+        "index": 128616,
+        "name": "__Hotfix0__OnDisplayLegionBlastCard",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 1040,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3577681,
+        "typeIndex": 52361,
+        "token": 67237482,
+        "index": 128617,
+        "name": "__Hotfix0__OnDisplayDeckBuffEffect",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 1048,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3577716,
+        "typeIndex": 52361,
+        "token": 67237483,
+        "index": 128618,
+        "name": "__Hotfix0__OnAutoReplayModeChanged",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 1056,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3577751,
+        "typeIndex": 52361,
+        "token": 67237484,
+        "index": 128619,
+        "name": "__Hotfix0__OnAutoReplayFinished",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 1064,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 6324,
+        "typeIndex": 52361,
+        "token": 67237485,
+        "index": 128620,
+        "name": "__Hotfix0_Awake",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 1072,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 19426,
+        "typeIndex": 52361,
+        "token": 67237486,
+        "index": 128621,
+        "name": "__Hotfix0_OnDestroy",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 1080,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 32182,
+        "typeIndex": 52361,
+        "token": 67237487,
+        "index": 128622,
+        "name": "__Hotfix0_Update",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 1088,
+        "unboxedOffset": null
+      },
+      {
+        "nameIndex": 3062,
+        "typeIndex": 52361,
+        "token": 67237488,
+        "index": 128623,
+        "name": "_c__Hotfix0_ctor",
+        "typeName": "XLua.DelegateBridge",
+        "static": true,
+        "offset": 1096,
+        "unboxedOffset": null
+      }
+    ],
+    "scope": "Only recorded RIP references in the full ShowModifierText body; encoded literal slots only."
+  }
+}

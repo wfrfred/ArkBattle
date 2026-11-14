@@ -1,0 +1,1155 @@
+{
+  "provenance": {
+    "scope": "Static native branches; no game execution or runtime XLua verification.",
+    "client": {
+      "dll": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "bytes": 223112680,
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff"
+      },
+      "metadata": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "bytes": 46669332,
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5"
+      },
+      "metadataVersion": 29,
+      "imageBase": "0x180000000"
+    },
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/native.py",
+        "bytes": 18723,
+        "sha256": "1c6c16dc97e0dd9af0af4033c81a7534384dd65ebb1e604df3f4a3289df158e6"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]"
+    },
+    "location": {
+      "metadataRegistration": "0x187ee0630",
+      "modules": {
+        "Assembly-CSharp.dll": {
+          "address": 6564854272,
+          "methodPointers": 6585881040,
+          "count": 225427,
+          "fileBacked": true
+        }
+      }
+    },
+    "caseTool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/facing-semantics-20261113/extract.py",
+        "bytes": 3755,
+        "sha256": "15825b674a4b9dbd7c434783773afcd319a9d6c0b7ed3a2eaaa3196622f7795d"
+      }
+    },
+    "summaryScript": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/resource-mechanisms-20261114/damage/cancel-consumers/summarize_field_scan.py",
+      "bytes": 1987,
+      "sha256": "131b28beb85bc13f00973193dfa210f8970f3aca1b26afce695664bd51350863"
+    },
+    "input": {
+      "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/cancel-modifier-field-bodies.json",
+      "bytes": 1434808,
+      "sha256": "5bf7ece9ef72d7444bdb195a8f879162e4dcbbf76609896821d754c18d8d0f6b"
+    }
+  },
+  "result": {
+    "selection": {
+      "game": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game",
+      "out": ".cache/native-research/cancel-modifier-field-bodies.json",
+      "search": [],
+      "body": [],
+      "body_index": [],
+      "body_prefix": [
+        "Torappu.Battle.Modifier."
+      ],
+      "owner": [
+        "Torappu.Battle.Modifier"
+      ],
+      "xref": []
+    },
+    "methodCount": 65,
+    "unboxedReasonOffset": 112,
+    "accesses": [
+      {
+        "methodIndex": 72128,
+        "fullname": "Torappu.Battle.Modifier.get_targetType",
+        "instruction": {
+          "address": "0x18090df47",
+          "bytes": "0f104b70",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rbx + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72129,
+        "fullname": "Torappu.Battle.Modifier.set_targetType",
+        "instruction": {
+          "address": "0x18090ebd8",
+          "bytes": "0f104b70",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rbx + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72130,
+        "fullname": "Torappu.Battle.Modifier.get_deltaType",
+        "instruction": {
+          "address": "0x18090ceb7",
+          "bytes": "0f104b70",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rbx + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72131,
+        "fullname": "Torappu.Battle.Modifier.set_deltaType",
+        "instruction": {
+          "address": "0x18090e688",
+          "bytes": "0f104b70",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rbx + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72132,
+        "fullname": "Torappu.Battle.Modifier.get_isCancelled",
+        "instruction": {
+          "address": "0x18090d317",
+          "bytes": "0f104b70",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rbx + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72133,
+        "fullname": "Torappu.Battle.Modifier.get_isCritical",
+        "instruction": {
+          "address": "0x18090d48b",
+          "bytes": "0f104f70",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rdi + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72134,
+        "fullname": "Torappu.Battle.Modifier.get_isDamage",
+        "instruction": {
+          "address": "0x18090d5e3",
+          "bytes": "0f104b70",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rbx + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72135,
+        "fullname": "Torappu.Battle.Modifier.get_isHeal",
+        "instruction": {
+          "address": "0x18090d972",
+          "bytes": "0f104b70",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rbx + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72136,
+        "fullname": "Torappu.Battle.Modifier.get_isElementDamage",
+        "instruction": {
+          "address": "0x18090d721",
+          "bytes": "0f104b70",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rbx + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72137,
+        "fullname": "Torappu.Battle.Modifier.get_isElementHeal",
+        "instruction": {
+          "address": "0x18090d861",
+          "bytes": "0f104b70",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rbx + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72138,
+        "fullname": "Torappu.Battle.Modifier.get_source",
+        "instruction": {
+          "address": "0x18090de5e",
+          "bytes": "0f104b70",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rbx + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72139,
+        "fullname": "Torappu.Battle.Modifier.get_target",
+        "instruction": {
+          "address": "0x18090e04f",
+          "bytes": "0f104b70",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rbx + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72140,
+        "fullname": "Torappu.Battle.Modifier.get_originalSource",
+        "instruction": {
+          "address": "0x18090dc5f",
+          "bytes": "0f104b70",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rbx + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72141,
+        "fullname": "Torappu.Battle.Modifier.get_damageType",
+        "instruction": {
+          "address": "0x18090cdc7",
+          "bytes": "0f104b70",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rbx + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72142,
+        "fullname": "Torappu.Battle.Modifier.set_damageType",
+        "instruction": {
+          "address": "0x18090e578",
+          "bytes": "0f104b70",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rbx + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72143,
+        "fullname": "Torappu.Battle.Modifier.get_applyWay",
+        "instruction": {
+          "address": "0x18090caf7",
+          "bytes": "0f104b70",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rbx + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72144,
+        "fullname": "Torappu.Battle.Modifier.set_applyWay",
+        "instruction": {
+          "address": "0x18090e248",
+          "bytes": "0f104b70",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rbx + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72145,
+        "fullname": "Torappu.Battle.Modifier.get_cancelReason",
+        "instruction": {
+          "address": "0x18090cc8a",
+          "bytes": "8b4370",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [rbx + 0x70]"
+        },
+        "scalarDword": true
+      },
+      {
+        "methodIndex": 72145,
+        "fullname": "Torappu.Battle.Modifier.get_cancelReason",
+        "instruction": {
+          "address": "0x18090ccd7",
+          "bytes": "0f104b70",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rbx + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72146,
+        "fullname": "Torappu.Battle.Modifier.set_cancelReason",
+        "instruction": {
+          "address": "0x18090e410",
+          "bytes": "897b70",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rbx + 0x70], edi"
+        },
+        "scalarDword": true
+      },
+      {
+        "methodIndex": 72146,
+        "fullname": "Torappu.Battle.Modifier.set_cancelReason",
+        "instruction": {
+          "address": "0x18090e468",
+          "bytes": "0f104b70",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rbx + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72147,
+        "fullname": "Torappu.Battle.Modifier.get_attackType",
+        "instruction": {
+          "address": "0x18090cbe7",
+          "bytes": "0f104b70",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rbx + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72148,
+        "fullname": "Torappu.Battle.Modifier.set_attackType",
+        "instruction": {
+          "address": "0x18090e358",
+          "bytes": "0f104b70",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rbx + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72149,
+        "fullname": "Torappu.Battle.Modifier.get_elementType",
+        "instruction": {
+          "address": "0x18090cfa7",
+          "bytes": "0f104b70",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rbx + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72150,
+        "fullname": "Torappu.Battle.Modifier.set_elementType",
+        "instruction": {
+          "address": "0x18090e798",
+          "bytes": "0f104b70",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rbx + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72151,
+        "fullname": "Torappu.Battle.Modifier.get_originAtk",
+        "instruction": {
+          "address": "0x18090da6b",
+          "bytes": "0f104b70",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rbx + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72152,
+        "fullname": "Torappu.Battle.Modifier.set_originAtk",
+        "instruction": {
+          "address": "0x18090e8ad",
+          "bytes": "0f104f70",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rdi + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72153,
+        "fullname": "Torappu.Battle.Modifier.get_originValue",
+        "instruction": {
+          "address": "0x18090db5b",
+          "bytes": "0f104b70",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rbx + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72154,
+        "fullname": "Torappu.Battle.Modifier.set_originValue",
+        "instruction": {
+          "address": "0x18090e9bd",
+          "bytes": "0f104f70",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rdi + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72155,
+        "fullname": "Torappu.Battle.Modifier.get_finalDelta",
+        "instruction": {
+          "address": "0x18090d1bc",
+          "bytes": "0f104e70",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rsi + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72156,
+        "fullname": "Torappu.Battle.Modifier.get_value",
+        "instruction": {
+          "address": "0x18090e148",
+          "bytes": "0f104b70",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rbx + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72157,
+        "fullname": "Torappu.Battle.Modifier.set_value",
+        "instruction": {
+          "address": "0x18090ed10",
+          "bytes": "0f104f70",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rdi + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72158,
+        "fullname": "Torappu.Battle.Modifier.get_playerSide",
+        "instruction": {
+          "address": "0x18090dd5a",
+          "bytes": "0f104b70",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rbx + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72159,
+        "fullname": "Torappu.Battle.Modifier.set_playerSide",
+        "instruction": {
+          "address": "0x18090eacb",
+          "bytes": "0f104b70",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rbx + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72160,
+        "fullname": "Torappu.Battle.Modifier.Cancel",
+        "instruction": {
+          "address": "0x180909b2f",
+          "bytes": "0f104b70",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rbx + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72161,
+        "fullname": "Torappu.Battle.Modifier.CheckIgnoreCancel",
+        "instruction": {
+          "address": "0x180909dd3",
+          "bytes": "0f104b70",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rbx + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72162,
+        "fullname": "Torappu.Battle.Modifier._CheckIgnoreMiss",
+        "instruction": {
+          "address": "0x18090c451",
+          "bytes": "0f104b70",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rbx + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72163,
+        "fullname": "Torappu.Battle.Modifier.Assign",
+        "instruction": {
+          "address": "0x18090994d",
+          "bytes": "0f104b70",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rbx + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72163,
+        "fullname": "Torappu.Battle.Modifier.Assign",
+        "instruction": {
+          "address": "0x1809099a9",
+          "bytes": "0f104f70",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rdi + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72164,
+        "fullname": "Torappu.Battle.Modifier.AssignSource",
+        "instruction": {
+          "address": "0x18090974f",
+          "bytes": "0f104370",
+          "mnemonic": "movups",
+          "operands": "xmm0, xmmword ptr [rbx + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72165,
+        "fullname": "Torappu.Battle.Modifier.AssignOriginalSource",
+        "instruction": {
+          "address": "0x180909631",
+          "bytes": "0f104370",
+          "mnemonic": "movups",
+          "operands": "xmm0, xmmword ptr [rbx + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72166,
+        "fullname": "Torappu.Battle.Modifier.Split",
+        "instruction": {
+          "address": "0x18090c1ef",
+          "bytes": "0f104b70",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rbx + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72166,
+        "fullname": "Torappu.Battle.Modifier.Split",
+        "instruction": {
+          "address": "0x18090c2b8",
+          "bytes": "0f114f70",
+          "mnemonic": "movups",
+          "operands": "xmmword ptr [rdi + 0x70], xmm1"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72166,
+        "fullname": "Torappu.Battle.Modifier.Split",
+        "instruction": {
+          "address": "0x18090c30f",
+          "bytes": "0f104870",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rax + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72166,
+        "fullname": "Torappu.Battle.Modifier.Split",
+        "instruction": {
+          "address": "0x18090c31e",
+          "bytes": "0f114f70",
+          "mnemonic": "movups",
+          "operands": "xmmword ptr [rdi + 0x70], xmm1"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72167,
+        "fullname": "Torappu.Battle.Modifier.SetSharedFlag",
+        "instruction": {
+          "address": "0x18090bfb8",
+          "bytes": "0f104b70",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rbx + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72168,
+        "fullname": "Torappu.Battle.Modifier.SetSharedFlag",
+        "instruction": {
+          "address": "0x18090c0ed",
+          "bytes": "0f104b70",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rbx + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72169,
+        "fullname": "Torappu.Battle.Modifier.AddCustomKey",
+        "instruction": {
+          "address": "0x180909503",
+          "bytes": "0f104b70",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rbx + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72170,
+        "fullname": "Torappu.Battle.Modifier.RemoveSharedFlag",
+        "instruction": {
+          "address": "0x18090bb4a",
+          "bytes": "0f104b70",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rbx + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72171,
+        "fullname": "Torappu.Battle.Modifier.RemoveSharedFlag",
+        "instruction": {
+          "address": "0x18090bc7d",
+          "bytes": "0f104b70",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rbx + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72172,
+        "fullname": "Torappu.Battle.Modifier.CheckSharedFlag",
+        "instruction": {
+          "address": "0x18090a00f",
+          "bytes": "0f104b70",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rbx + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72173,
+        "fullname": "Torappu.Battle.Modifier.CheckSharedFlag",
+        "instruction": {
+          "address": "0x180909efd",
+          "bytes": "0f104b70",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rbx + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72174,
+        "fullname": "Torappu.Battle.Modifier.CheckCustomKey",
+        "instruction": {
+          "address": "0x180909c90",
+          "bytes": "0f104b70",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rbx + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72175,
+        "fullname": "Torappu.Battle.Modifier.SetIgnoreMissFlag",
+        "instruction": {
+          "address": "0x18090beaf",
+          "bytes": "0f104b70",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rbx + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72176,
+        "fullname": "Torappu.Battle.Modifier.SetIgnoreCancelReasonMask",
+        "instruction": {
+          "address": "0x18090bd88",
+          "bytes": "0f104b70",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rbx + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72177,
+        "fullname": "Torappu.Battle.Modifier..ctor",
+        "instruction": {
+          "address": "0x18090c7ef",
+          "bytes": "0f114670",
+          "mnemonic": "movups",
+          "operands": "xmmword ptr [rsi + 0x70], xmm0"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72177,
+        "fullname": "Torappu.Battle.Modifier..ctor",
+        "instruction": {
+          "address": "0x18090c9e7",
+          "bytes": "0f104e70",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rsi + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72178,
+        "fullname": "Torappu.Battle.Modifier..ctor",
+        "instruction": {
+          "address": "0x18090c70a",
+          "bytes": "0f104f70",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rdi + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72179,
+        "fullname": "Torappu.Battle.Modifier.NewDamageModifierAfterCalculate",
+        "instruction": {
+          "address": "0x18090a5ab",
+          "bytes": "0f114f70",
+          "mnemonic": "movups",
+          "operands": "xmmword ptr [rdi + 0x70], xmm1"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72179,
+        "fullname": "Torappu.Battle.Modifier.NewDamageModifierAfterCalculate",
+        "instruction": {
+          "address": "0x18090a633",
+          "bytes": "0f104870",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rax + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72179,
+        "fullname": "Torappu.Battle.Modifier.NewDamageModifierAfterCalculate",
+        "instruction": {
+          "address": "0x18090a642",
+          "bytes": "0f114f70",
+          "mnemonic": "movups",
+          "operands": "xmmword ptr [rdi + 0x70], xmm1"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72180,
+        "fullname": "Torappu.Battle.Modifier.NewDamageModifierAfterCalculate",
+        "instruction": {
+          "address": "0x18090a802",
+          "bytes": "0f114e70",
+          "mnemonic": "movups",
+          "operands": "xmmword ptr [rsi + 0x70], xmm1"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72180,
+        "fullname": "Torappu.Battle.Modifier.NewDamageModifierAfterCalculate",
+        "instruction": {
+          "address": "0x18090a895",
+          "bytes": "0f104870",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rax + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72180,
+        "fullname": "Torappu.Battle.Modifier.NewDamageModifierAfterCalculate",
+        "instruction": {
+          "address": "0x18090a8a4",
+          "bytes": "0f114e70",
+          "mnemonic": "movups",
+          "operands": "xmmword ptr [rsi + 0x70], xmm1"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72181,
+        "fullname": "Torappu.Battle.Modifier.NewElementDamageModifierAfterCalculate",
+        "instruction": {
+          "address": "0x18090aa51",
+          "bytes": "0f114f70",
+          "mnemonic": "movups",
+          "operands": "xmmword ptr [rdi + 0x70], xmm1"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72181,
+        "fullname": "Torappu.Battle.Modifier.NewElementDamageModifierAfterCalculate",
+        "instruction": {
+          "address": "0x18090aab3",
+          "bytes": "0f104870",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rax + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72181,
+        "fullname": "Torappu.Battle.Modifier.NewElementDamageModifierAfterCalculate",
+        "instruction": {
+          "address": "0x18090aac2",
+          "bytes": "0f114f70",
+          "mnemonic": "movups",
+          "operands": "xmmword ptr [rdi + 0x70], xmm1"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72182,
+        "fullname": "Torappu.Battle.Modifier.NewHeal",
+        "instruction": {
+          "address": "0x18090ae88",
+          "bytes": "0f114f70",
+          "mnemonic": "movups",
+          "operands": "xmmword ptr [rdi + 0x70], xmm1"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72182,
+        "fullname": "Torappu.Battle.Modifier.NewHeal",
+        "instruction": {
+          "address": "0x18090aeeb",
+          "bytes": "0f104870",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rax + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72182,
+        "fullname": "Torappu.Battle.Modifier.NewHeal",
+        "instruction": {
+          "address": "0x18090aefa",
+          "bytes": "0f114f70",
+          "mnemonic": "movups",
+          "operands": "xmmword ptr [rdi + 0x70], xmm1"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72183,
+        "fullname": "Torappu.Battle.Modifier.NewElementHeal",
+        "instruction": {
+          "address": "0x18090ac68",
+          "bytes": "0f114f70",
+          "mnemonic": "movups",
+          "operands": "xmmword ptr [rdi + 0x70], xmm1"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72183,
+        "fullname": "Torappu.Battle.Modifier.NewElementHeal",
+        "instruction": {
+          "address": "0x18090accb",
+          "bytes": "0f104870",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rax + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72183,
+        "fullname": "Torappu.Battle.Modifier.NewElementHeal",
+        "instruction": {
+          "address": "0x18090acda",
+          "bytes": "0f114f70",
+          "mnemonic": "movups",
+          "operands": "xmmword ptr [rdi + 0x70], xmm1"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72184,
+        "fullname": "Torappu.Battle.Modifier.NewHp",
+        "instruction": {
+          "address": "0x18090b062",
+          "bytes": "0f114770",
+          "mnemonic": "movups",
+          "operands": "xmmword ptr [rdi + 0x70], xmm0"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72184,
+        "fullname": "Torappu.Battle.Modifier.NewHp",
+        "instruction": {
+          "address": "0x18090b0d8",
+          "bytes": "0f104870",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rax + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72184,
+        "fullname": "Torappu.Battle.Modifier.NewHp",
+        "instruction": {
+          "address": "0x18090b0dc",
+          "bytes": "0f114f70",
+          "mnemonic": "movups",
+          "operands": "xmmword ptr [rdi + 0x70], xmm1"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72185,
+        "fullname": "Torappu.Battle.Modifier.NewSp",
+        "instruction": {
+          "address": "0x18090b7f5",
+          "bytes": "0f114770",
+          "mnemonic": "movups",
+          "operands": "xmmword ptr [rdi + 0x70], xmm0"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72185,
+        "fullname": "Torappu.Battle.Modifier.NewSp",
+        "instruction": {
+          "address": "0x18090b86b",
+          "bytes": "0f104870",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rax + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72185,
+        "fullname": "Torappu.Battle.Modifier.NewSp",
+        "instruction": {
+          "address": "0x18090b86f",
+          "bytes": "0f114f70",
+          "mnemonic": "movups",
+          "operands": "xmmword ptr [rdi + 0x70], xmm1"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72186,
+        "fullname": "Torappu.Battle.Modifier.NewCost",
+        "instruction": {
+          "address": "0x18090a375",
+          "bytes": "0f114770",
+          "mnemonic": "movups",
+          "operands": "xmmword ptr [rdi + 0x70], xmm0"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72186,
+        "fullname": "Torappu.Battle.Modifier.NewCost",
+        "instruction": {
+          "address": "0x18090a3ea",
+          "bytes": "0f104870",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rax + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72186,
+        "fullname": "Torappu.Battle.Modifier.NewCost",
+        "instruction": {
+          "address": "0x18090a3ee",
+          "bytes": "0f114f70",
+          "mnemonic": "movups",
+          "operands": "xmmword ptr [rdi + 0x70], xmm1"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72187,
+        "fullname": "Torappu.Battle.Modifier.NewMaxCost",
+        "instruction": {
+          "address": "0x18090b435",
+          "bytes": "0f114770",
+          "mnemonic": "movups",
+          "operands": "xmmword ptr [rdi + 0x70], xmm0"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72187,
+        "fullname": "Torappu.Battle.Modifier.NewMaxCost",
+        "instruction": {
+          "address": "0x18090b4aa",
+          "bytes": "0f104870",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rax + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72187,
+        "fullname": "Torappu.Battle.Modifier.NewMaxCost",
+        "instruction": {
+          "address": "0x18090b4ae",
+          "bytes": "0f114f70",
+          "mnemonic": "movups",
+          "operands": "xmmword ptr [rdi + 0x70], xmm1"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72188,
+        "fullname": "Torappu.Battle.Modifier.NewMinCost",
+        "instruction": {
+          "address": "0x18090b615",
+          "bytes": "0f114770",
+          "mnemonic": "movups",
+          "operands": "xmmword ptr [rdi + 0x70], xmm0"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72188,
+        "fullname": "Torappu.Battle.Modifier.NewMinCost",
+        "instruction": {
+          "address": "0x18090b68a",
+          "bytes": "0f104870",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rax + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72188,
+        "fullname": "Torappu.Battle.Modifier.NewMinCost",
+        "instruction": {
+          "address": "0x18090b68e",
+          "bytes": "0f114f70",
+          "mnemonic": "movups",
+          "operands": "xmmword ptr [rdi + 0x70], xmm1"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72189,
+        "fullname": "Torappu.Battle.Modifier.NewCharacterLimitDelta",
+        "instruction": {
+          "address": "0x18090a187",
+          "bytes": "0f114370",
+          "mnemonic": "movups",
+          "operands": "xmmword ptr [rbx + 0x70], xmm0"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72189,
+        "fullname": "Torappu.Battle.Modifier.NewCharacterLimitDelta",
+        "instruction": {
+          "address": "0x18090a205",
+          "bytes": "0f104870",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rax + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72189,
+        "fullname": "Torappu.Battle.Modifier.NewCharacterLimitDelta",
+        "instruction": {
+          "address": "0x18090a209",
+          "bytes": "0f114b70",
+          "mnemonic": "movups",
+          "operands": "xmmword ptr [rbx + 0x70], xmm1"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72190,
+        "fullname": "Torappu.Battle.Modifier.NewLifePointDelta",
+        "instruction": {
+          "address": "0x18090b247",
+          "bytes": "0f114370",
+          "mnemonic": "movups",
+          "operands": "xmmword ptr [rbx + 0x70], xmm0"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72190,
+        "fullname": "Torappu.Battle.Modifier.NewLifePointDelta",
+        "instruction": {
+          "address": "0x18090b2c5",
+          "bytes": "0f104870",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rax + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72190,
+        "fullname": "Torappu.Battle.Modifier.NewLifePointDelta",
+        "instruction": {
+          "address": "0x18090b2c9",
+          "bytes": "0f114b70",
+          "mnemonic": "movups",
+          "operands": "xmmword ptr [rbx + 0x70], xmm1"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72191,
+        "fullname": "Torappu.Battle.Modifier.NewTrySetHpZero",
+        "instruction": {
+          "address": "0x18090b9d5",
+          "bytes": "0f114770",
+          "mnemonic": "movups",
+          "operands": "xmmword ptr [rdi + 0x70], xmm0"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72191,
+        "fullname": "Torappu.Battle.Modifier.NewTrySetHpZero",
+        "instruction": {
+          "address": "0x18090ba4a",
+          "bytes": "0f104870",
+          "mnemonic": "movups",
+          "operands": "xmm1, xmmword ptr [rax + 0x70]"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72191,
+        "fullname": "Torappu.Battle.Modifier.NewTrySetHpZero",
+        "instruction": {
+          "address": "0x18090ba4e",
+          "bytes": "0f114f70",
+          "mnemonic": "movups",
+          "operands": "xmmword ptr [rdi + 0x70], xmm1"
+        },
+        "scalarDword": false
+      },
+      {
+        "methodIndex": 72192,
+        "fullname": "Torappu.Battle.Modifier..cctor",
+        "instruction": {
+          "address": "0x18090c5a9",
+          "bytes": "0f114970",
+          "mnemonic": "movups",
+          "operands": "xmmword ptr [rcx + 0x70], xmm1"
+        },
+        "scalarDword": false
+      }
+    ],
+    "scalarAccessCount": 2,
+    "scope": "Modifier methods only; offset locators do not prove arbitrary register provenance. Vector copies of a whole Modifier are not reason-specific consumers. Not a whole-module alias analysis."
+  }
+}

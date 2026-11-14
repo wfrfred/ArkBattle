@@ -1,0 +1,517 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [],
+    "collectionDateSource": "not recorded",
+    "organizedOn": "2026-11-14",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+        "records": [
+          "direct-cancel-producers.json#/provenance/client/dll",
+          "hit-failed-native.json#/provenance/client/dll",
+          "hitrate-attributes.json#/provenance/client/dll",
+          "miss-flag-caller-bodies.json#/provenance/client/dll",
+          "miss-flag-producers.json#/provenance/client/dll"
+        ],
+        "bytes": 223112680
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        "records": [
+          "direct-cancel-producers.json#/provenance/client/metadata",
+          "hit-failed-native.json#/provenance/client/metadata",
+          "hitrate-attributes.json#/provenance/client/metadata",
+          "miss-flag-caller-bodies.json#/provenance/client/metadata",
+          "miss-flag-producers.json#/provenance/client/metadata"
+        ],
+        "bytes": 46669332
+      }
+    },
+    "sourceRecords": [
+      "cancel-holder.json",
+      "direct-cancel-producers.json",
+      "hit-failed-native.json",
+      "hitrate-attributes.json",
+      "miss-flag-caller-bodies.json",
+      "miss-flag-producers.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12895,
+        "sha256": "9c5b246859318caaec4aab5275ef0d2d49fce5d612c6b4e569973a9941ba621a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "cancel-holder.json",
+        "kind": "record",
+        "bytes": 75458,
+        "sha256": "22ebd7bc064617636dc419068fb3194426dd935d700171f70711cfd6167d33c0"
+      },
+      {
+        "path": "direct-cancel-producers.json",
+        "kind": "record",
+        "bytes": 1187221,
+        "sha256": "ff317a7d25ba38e41f055c61e99af07e2ce2adbeb5bd66a9444335d1aac9ecea"
+      },
+      {
+        "path": "hit-failed-native.json",
+        "kind": "record",
+        "bytes": 180477,
+        "sha256": "69884fe9e8483a6860f7ec7add1b1129d190bdd7fdad867aa2cc9c178fe85519"
+      },
+      {
+        "path": "hitrate-attributes.json",
+        "kind": "record",
+        "bytes": 42715,
+        "sha256": "e8d8ad05298440861780158cf50461b693c1ae95b3f2a10946b020c4e5337667"
+      },
+      {
+        "path": "miss-flag-caller-bodies.json",
+        "kind": "record",
+        "bytes": 315663,
+        "sha256": "e8d52f1fcc1ce786166592a0245217c4cd8ada2269daa6dd9a0be16abb7ebff5"
+      },
+      {
+        "path": "miss-flag-producers.json",
+        "kind": "record",
+        "bytes": 56342,
+        "sha256": "50350a79a7c629293060ac465e4141cafe8d29a39192bdd8ebf39f9164d6a072"
+      },
+      {
+        "path": "scan_cancel_nodes.py",
+        "kind": "historical-script",
+        "bytes": 2671,
+        "sha256": "b31d67a323d234e02f6757dc985c12398ceeb833fa3c6d1e71c8c654fd7a2d69"
+      },
+      {
+        "path": "trace.py",
+        "kind": "historical-script",
+        "bytes": 1856,
+        "sha256": "f8d3275d11af8fb57ac0d8ce1b7a038c31675d817bac850c95e469ea730492c5"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 64006,
+          "mode": "metadata",
+          "records": [
+            "miss-flag-producers.json#/result/methods/0",
+            "miss-flag-producers.json#/result/xrefs/0/targetMethod"
+          ],
+          "fullname": "Torappu.Battle.Ability.set_damageMissFlag",
+          "address": "0x180605e90"
+        },
+        {
+          "index": 67462,
+          "mode": "disasm",
+          "records": [
+            "hitrate-attributes.json#/result/methods/0",
+            "hitrate-attributes.json#/result/bodies/0",
+            "hitrate-attributes.json#/result/bodies/0/fragments/0",
+            "hitrate-attributes.json#/result/bodies/0/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_damageHitratePhysical",
+          "address": "0x1807344e0"
+        },
+        {
+          "index": 67463,
+          "mode": "disasm",
+          "records": [
+            "hitrate-attributes.json#/result/methods/1",
+            "hitrate-attributes.json#/result/bodies/1",
+            "hitrate-attributes.json#/result/bodies/1/fragments/0",
+            "hitrate-attributes.json#/result/bodies/1/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_damageHitrateMagical",
+          "address": "0x180734440"
+        },
+        {
+          "index": 67665,
+          "mode": "disasm",
+          "records": [
+            "direct-cancel-producers.json#/result/bodies/0",
+            "direct-cancel-producers.json#/result/bodies/0/fragments/0",
+            "direct-cancel-producers.json#/result/bodies/0/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.ApplyModifier",
+          "address": "0x1807211a0"
+        },
+        {
+          "index": 67667,
+          "mode": "disasm",
+          "records": [
+            "direct-cancel-producers.json#/result/bodies/5",
+            "direct-cancel-producers.json#/result/bodies/5/fragments/0",
+            "direct-cancel-producers.json#/result/bodies/5/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity._OnApplyingModifier",
+          "address": "0x1807314a0"
+        },
+        {
+          "index": 67668,
+          "mode": "disasm",
+          "records": [
+            "direct-cancel-producers.json#/result/bodies/1",
+            "direct-cancel-producers.json#/result/bodies/1/fragments/0",
+            "direct-cancel-producers.json#/result/bodies/1/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.OnApplyingSkippedModifer",
+          "address": "0x1807282a0"
+        },
+        {
+          "index": 67708,
+          "mode": "disasm",
+          "records": [
+            "hit-failed-native.json#/result/methods/0",
+            "hit-failed-native.json#/result/bodies/0",
+            "hit-failed-native.json#/result/bodies/0/fragments/0",
+            "hit-failed-native.json#/result/bodies/0/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity._VerifyAbilityDamageMiss",
+          "address": "0x1807324b0"
+        },
+        {
+          "index": 67709,
+          "mode": "disasm",
+          "records": [
+            "direct-cancel-producers.json#/result/bodies/2",
+            "direct-cancel-producers.json#/result/bodies/2/fragments/0",
+            "direct-cancel-producers.json#/result/bodies/2/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.OnTakeDamage",
+          "address": "0x18072b920"
+        },
+        {
+          "index": 67710,
+          "mode": "disasm",
+          "records": [
+            "direct-cancel-producers.json#/result/bodies/4",
+            "direct-cancel-producers.json#/result/bodies/4/fragments/0",
+            "direct-cancel-producers.json#/result/bodies/4/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.OnTakeHeal",
+          "address": "0x18072bff0"
+        },
+        {
+          "index": 67711,
+          "mode": "disasm",
+          "records": [
+            "direct-cancel-producers.json#/result/bodies/3",
+            "direct-cancel-producers.json#/result/bodies/3/fragments/0",
+            "direct-cancel-producers.json#/result/bodies/3/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.OnTakeEPDamage",
+          "address": "0x18072be40"
+        },
+        {
+          "index": 72132,
+          "mode": "disasm",
+          "records": [
+            "miss-flag-caller-bodies.json#/result/methods/0",
+            "miss-flag-caller-bodies.json#/result/bodies/0",
+            "miss-flag-caller-bodies.json#/result/bodies/0/fragments/0",
+            "miss-flag-caller-bodies.json#/result/bodies/0/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Modifier.get_isCancelled",
+          "address": "0x18090d200"
+        },
+        {
+          "index": 72145,
+          "mode": "disasm",
+          "records": [
+            "miss-flag-producers.json#/result/methods/1",
+            "miss-flag-producers.json#/result/bodies/0",
+            "miss-flag-producers.json#/result/bodies/0/fragments/0",
+            "miss-flag-producers.json#/result/bodies/0/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Modifier.get_cancelReason",
+          "address": "0x18090cc30"
+        },
+        {
+          "index": 72160,
+          "mode": "metadata",
+          "records": [
+            "direct-cancel-producers.json#/result/target"
+          ],
+          "fullname": "Torappu.Battle.Modifier.Cancel",
+          "address": "0x1809099f0"
+        },
+        {
+          "index": 72181,
+          "mode": "disasm",
+          "records": [
+            "direct-cancel-producers.json#/result/bodies/6",
+            "direct-cancel-producers.json#/result/bodies/6/fragments/0",
+            "direct-cancel-producers.json#/result/bodies/6/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Modifier.NewElementDamageModifierAfterCalculate",
+          "address": "0x18090a8e0"
+        },
+        {
+          "index": 72508,
+          "mode": "metadata",
+          "records": [
+            "miss-flag-producers.json#/result/methods/2",
+            "miss-flag-producers.json#/result/xrefs/1/targetMethod"
+          ],
+          "fullname": "Torappu.Battle.Projectile.set_damageMissFlag",
+          "address": "0x18091c7c0"
+        },
+        {
+          "index": 72512,
+          "mode": "disasm",
+          "records": [
+            "miss-flag-caller-bodies.json#/result/methods/1",
+            "miss-flag-caller-bodies.json#/result/bodies/1",
+            "miss-flag-caller-bodies.json#/result/bodies/1/fragments/0",
+            "miss-flag-caller-bodies.json#/result/bodies/1/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Projectile.Init",
+          "address": "0x180916cb0"
+        },
+        {
+          "index": 72514,
+          "mode": "disasm",
+          "records": [
+            "miss-flag-caller-bodies.json#/result/methods/2",
+            "miss-flag-caller-bodies.json#/result/bodies/2",
+            "miss-flag-caller-bodies.json#/result/bodies/2/fragments/0",
+            "miss-flag-caller-bodies.json#/result/bodies/2/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Projectile.Init",
+          "address": "0x180916540"
+        },
+        {
+          "index": 81611,
+          "mode": "disasm",
+          "records": [
+            "direct-cancel-producers.json#/result/bodies/7",
+            "direct-cancel-producers.json#/result/bodies/7/fragments/0",
+            "direct-cancel-producers.json#/result/bodies/7/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessStepModeManager._OnBossEnemyTakeDamage",
+          "address": "0x180c0c9a0"
+        },
+        {
+          "index": 82686,
+          "mode": "disasm",
+          "records": [
+            "direct-cancel-producers.json#/result/bodies/8",
+            "direct-cancel-producers.json#/result/bodies/8/fragments/0",
+            "direct-cancel-producers.json#/result/bodies/8/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/Act7FunGameMode.OnApplyingGlobalModifier",
+          "address": "0x180c52e70"
+        },
+        {
+          "index": 83336,
+          "mode": "disasm",
+          "records": [
+            "direct-cancel-producers.json#/result/bodies/17",
+            "direct-cancel-producers.json#/result/bodies/17/fragments/0",
+            "direct-cancel-producers.json#/result/bodies/17/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/CooperateGameMode.OnApplyingGlobalModifier",
+          "address": "0x180c71bb0"
+        },
+        {
+          "index": 83491,
+          "mode": "disasm",
+          "records": [
+            "direct-cancel-producers.json#/result/bodies/18",
+            "direct-cancel-producers.json#/result/bodies/18/fragments/0",
+            "direct-cancel-producers.json#/result/bodies/18/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/CooperateGameMode/CooperateNormalModeManager.OnApplyingGlobalModifier",
+          "address": "0x180c8d770"
+        },
+        {
+          "index": 83906,
+          "mode": "disasm",
+          "records": [
+            "direct-cancel-producers.json#/result/bodies/19",
+            "direct-cancel-producers.json#/result/bodies/19/fragments/0",
+            "direct-cancel-producers.json#/result/bodies/19/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/FootballCupGameMode.OnApplyingGlobalModifier",
+          "address": "0x180ca9110"
+        },
+        {
+          "index": 83999,
+          "mode": "disasm",
+          "records": [
+            "direct-cancel-producers.json#/result/bodies/20",
+            "direct-cancel-producers.json#/result/bodies/20/fragments/0",
+            "direct-cancel-producers.json#/result/bodies/20/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/GameCityGameMode.OnApplyingGlobalModifier",
+          "address": "0x180cb0db0"
+        },
+        {
+          "index": 84625,
+          "mode": "disasm",
+          "records": [
+            "direct-cancel-producers.json#/result/bodies/9",
+            "direct-cancel-producers.json#/result/bodies/9/fragments/0",
+            "direct-cancel-producers.json#/result/bodies/9/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/RoguelikeDeifyGameMode.OnApplyingGlobalModifier",
+          "address": "0x180cf17d0"
+        },
+        {
+          "index": 84655,
+          "mode": "disasm",
+          "records": [
+            "direct-cancel-producers.json#/result/bodies/10",
+            "direct-cancel-producers.json#/result/bodies/10/fragments/0",
+            "direct-cancel-producers.json#/result/bodies/10/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/RoguelikeDuelGameMode.OnApplyingGlobalModifier",
+          "address": "0x180cf4140"
+        },
+        {
+          "index": 92299,
+          "mode": "disasm",
+          "records": [
+            "miss-flag-caller-bodies.json#/result/methods/3",
+            "miss-flag-caller-bodies.json#/result/bodies/3",
+            "miss-flag-caller-bodies.json#/result/bodies/3/fragments/0",
+            "miss-flag-caller-bodies.json#/result/bodies/3/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractBasicAttack.OnCastStart",
+          "address": "0x180f3f6b0"
+        },
+        {
+          "index": 92300,
+          "mode": "disasm",
+          "records": [
+            "miss-flag-caller-bodies.json#/result/methods/4",
+            "miss-flag-caller-bodies.json#/result/bodies/4",
+            "miss-flag-caller-bodies.json#/result/bodies/4/fragments/0",
+            "miss-flag-caller-bodies.json#/result/bodies/4/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractBasicAttack.OnCastEnd",
+          "address": "0x180f3f630"
+        },
+        {
+          "index": 98879,
+          "mode": "disasm",
+          "records": [
+            "direct-cancel-producers.json#/result/bodies/12",
+            "direct-cancel-producers.json#/result/bodies/12/fragments/0",
+            "direct-cancel-producers.json#/result/bodies/12/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/Evade.Execute",
+          "address": "0x1810e66f0"
+        },
+        {
+          "index": 98883,
+          "mode": "disasm",
+          "records": [
+            "direct-cancel-producers.json#/result/bodies/11",
+            "direct-cancel-producers.json#/result/bodies/11/fragments/0",
+            "direct-cancel-producers.json#/result/bodies/11/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/EvadeByRemainingRatio.Execute",
+          "address": "0x1810e6090"
+        },
+        {
+          "index": 99230,
+          "mode": "disasm",
+          "records": [
+            "direct-cancel-producers.json#/result/bodies/13",
+            "direct-cancel-producers.json#/result/bodies/13/fragments/0",
+            "direct-cancel-producers.json#/result/bodies/13/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/BlockDamage.Execute",
+          "address": "0x1810f9e30"
+        },
+        {
+          "index": 99383,
+          "mode": "disasm",
+          "records": [
+            "direct-cancel-producers.json#/result/bodies/14",
+            "direct-cancel-producers.json#/result/bodies/14/fragments/0",
+            "direct-cancel-producers.json#/result/bodies/14/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ChaosModifierSwitch.Execute",
+          "address": "0x1810fb350"
+        },
+        {
+          "index": 100273,
+          "mode": "disasm",
+          "records": [
+            "direct-cancel-producers.json#/result/bodies/15",
+            "direct-cancel-producers.json#/result/bodies/15/fragments/0",
+            "direct-cancel-producers.json#/result/bodies/15/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/CancelModifier.Execute",
+          "address": "0x18116d290"
+        },
+        {
+          "index": 100294,
+          "mode": "disasm",
+          "records": [
+            "direct-cancel-producers.json#/result/bodies/16",
+            "direct-cancel-producers.json#/result/bodies/16/fragments/0",
+            "direct-cancel-producers.json#/result/bodies/16/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ConsumeTrySetHpZeroModifier.Execute",
+          "address": "0x18116f440"
+        }
+      ],
+      "blocks": [],
+      "types": [
+        {
+          "name": "Torappu.AttributeType",
+          "records": [
+            "hitrate-attributes.json#/result/fieldOwners/0"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Entity",
+          "records": [
+            "hit-failed-native.json#/result/fieldOwners/0"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Modifier",
+          "records": [
+            "miss-flag-producers.json#/result/fieldOwners/0"
+          ]
+        }
+      ],
+      "constants": [],
+      "bundles": [
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "sha256": "8edcb8017c977cdf52c2593b58e21db96949f3ad1e6f904180ac1241f145ca79",
+          "records": [
+            "cancel-holder.json#/provenance/source"
+          ],
+          "bytes": 2151020
+        }
+      ]
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

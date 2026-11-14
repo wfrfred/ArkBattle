@@ -179,3 +179,48 @@
 当前仇白附伤的实际配置为ADDITION、MAGICAL、skip=false、ignoreForSp=false；来源公式事件不派发，目标公式仍可参与。普通Apply经 `_OnApplyingModifier → get_isDamage → slot131 → Unit/Entity.OnTakeDamage`，没有ADDITION统一排除；get_isDamage按HP目标及伤害数学类型判断。HIT机会另检查目标SP类型、取消、ignoreForSp及SP回复停止状态；随后目标Buff继续按自身资格接收。完整门控、字段传播与独立复提见[补核原件](../evidence/resource-mechanisms-20261114/damage/addition-reception/README.md)。
 
 攻击动作次数、每笔资源接收、HIT回复以及具体机制的计次分别由所观察的业务事实决定。原生没有在这条普通流程里提供一个可以统一代称这些含义的“段数”。架构审查应检查既有Calculate／Apply扩展点能否表达相应资格、是否收到必要事实；不根据原生字段数量增加项目开关，也不根据具体内容尚未接入判定流程缺失。
+
+## 10. 取消原因的实际生产与消费
+
+2026-11-14 补核当前客户端及完整9,054个 Holder 模板。原生原因枚举、成功写入、取消后的业务筛选、取消尝试权限和 UI 是不同证据，不能只因枚举存在就要求项目保留同名原因。原件及复跑命令分为[消费端](../evidence/resource-mechanisms-20261114/damage/cancel-consumers/README.md)、[实际内容](../evidence/resource-mechanisms-20261114/damage/cancel-content/README.md)、[特殊原因与未命中生产](../evidence/resource-mechanisms-20261114/damage/cancel-specials/README.md)。
+
+### 直接消费者
+
+| 消费者 | 已证判断 | 范围 |
+| --- | --- | --- |
+| `Entity.ApplyModifier #67665` | `0x18072163d` 在目标 BeforeApplying 返回后仅对 INTERRUPT(5) 提前返回。 | 该门之前的中断；在来源输出或接收阶段才写5，不会倒退到此门。 |
+| `FilterModifierCancelReason #100276` | 与所配置的原因精确相等。 | 本体不限定资源，必须另核实际事件和绑定。 |
+| `FilterDamageCancellation #101496` | 先检查 isDamage；未取消按 acceptUncancelled，取消按原因列表。 | HP 数学伤害，不是 HP Healing 或 EP 的统一消费者。 |
+| `Modifier.CheckIgnoreCancel #72161` | MISS 专属忽略闪避政策，再检查具体原因 mask。 | 取消尝试的权限，不是已经发生的取消结果。通用 mask 能分别配置，不证明内容真的区分。 |
+| `UIController.ShowModifierText #105936` | 入口限定 HP；MISS、HIT_FAILED 都显示 `miss`，但走不同呈现路径；BLOCKED 显示 `block`，BLOCKED_WITH_DAMAGE_NUMBER 显示 abs(value) 的数值。 | 这是 HP 表现差异，不是 EP UI 或独立玩法后继的证明。 |
+
+getter 的直接调用核对上述消费者及 XLua 包装。Modifier 本类65个方法的取消字段 `+0x70` 扫描中，98处定位只有 getter／setter 两处标量访问，其余为整份 Modifier 的向量复制。本范围不等于全模块指针别名分析，也不排除有效 XLua。
+
+### 已闭合的内容差别
+
+- **阿斯卡纶 S3**：实际技能 → Mode2 → Aura／自身监听绑定闭合。敌方命中率属性33／34降低；自身 `ascln_s_3[self]` 在事件10仅对 HIT_FAILED 自疗，事件15另对成功闪避自疗。因此 MISS 与 HIT_FAILED 不能合并成同一类闪避。
+- **塔露拉 S2**：`skchr_oxi_2` 的额外 PassiveBuffAbility 安装 `oxi_s_2_guard_manager`，接受未取消伤害及 MISS／HIT_FAILED 两种取消；抵挡、不可伤等不在允许列表。此处有实际技能和当前资源绑定，不只是通用过滤器可配置。
+- **逻各斯 S1**：实际 Aura 处决模板的忽略原因 mask 包含 MISS、两种 BLOCKED 及 HIT_FAILED。权限与取消结果的不同用途分别存在。
+- **伺夜狼影**：增强持有者存在且当前伤害达到 HP 时，监听先执行 `Cancel(NONE)`，再检查六类既有取消原因；若早已取消，Cancel 不能覆盖旧原因，后继被筛掉；本节点成功取消时，才继续自身狼层／恢复程序。这证明无指定原因的取消确有使用，不证明原生存在一套通用“HP 应用已被接管”协议。
+
+完整 Holder 中共定位8个精确原因 Filter、1个列表 Filter、10个非默认忽略原因配置、131个 BlockDamage（17个显示数值）。已核对的狼影过滤把两种 BLOCKED 同样排除，相关忽略 mask 也同时包含二者；未定位只因两种 BLOCKED 的区别而产生不同玩法后继的实际配置。因此不能从通用 mask 能分别区分或显示数字的模板存在，推导它们必须成为两个领域原因；两者的表现差异仍真实存在。
+
+### HIT_FAILED 的采样属于来源攻击
+
+`AbstractBasicAttack.OnCastStart #92299` 按攻击类型读取来源的物理／法术命中率，低于1时抽样，失败写入 Ability.damageMissFlag；`OnCastEnd #92300` 清除。`Projectile.Init #72512/#72514` 复制该标志。`Entity.OnTakeDamage → _VerifyAbilityDamageMiss` 读取当前 Ability／Projectile 的标志，取消为 HIT_FAILED(6)。
+
+物理／法术命中率 getter 分别读取属性33／34，与阿斯卡纶 S3 实际降低的两项属性对应。这是来源本次攻击的未命中，采样范围和目标 Evade 节点的 MISS 不同；不能在每笔 Damage 中把两者重新抽成同一种概率。
+
+### NONE、INTERRUPT 与 MINUS_HEALTH
+
+`CancelModifier.Execute #100273` 原样把节点 `_reason` 传给 Cancel，不把 NONE 改成其他原因，且该节点返回 true，不以 Cancel 是否成功决定返回。Cancel 普通路径把 deltaType 设为0并写入原因；`get_isCancelled #72132` 对 deltaType 为0返回 true。因此 **NONE 不表示未取消**。上述狼影就是实际使用。
+
+INTERRUPT 有具体写入：`enemy_wdsdw[loss_hp]` 在目标事件5对特定来源的 EP Modifier 中断；`immune_env_damage` 在事件5中断环境伤害；普通活动关卡实际生成的小号手，其来源事件8中断原输出后自行产生 AOE；另有目标事件10中断后切换模式／触发敌人技能。只有在前述早退门之前写入，才享有该门的后继省略；不能将枚举5统一解释为任意时点都停止同一套事件。项目既定 Calculate／Apply 边界不由这些原生时序覆盖。
+
+MINUS_HEALTH(7) 出现在枚举和狼影未排除的剩余空间中，但本次全部 Cancel 直接调用生产者（30个调用、21个方法）及完整 Holder 的 CancelModifier 配置，未定位实际写7的普通路径。未排除一个值不是该值被生产的证据，也不能据此解释成狼影的普通扣血结果。当前不宣称它已废弃或全客户端不可达；间接调用、其他字段写入和有效 XLua 仍是证据范围之外。
+
+### 资源边界
+
+- HP Damage：上述具体内容的 MISS、HIT_FAILED、抵挡、无指定原因取消，以及不可伤与中断均有对应证据。
+- EP Damage：`OnTakeEPDamage #67711` 对 EPFreeAll 取消为 NONE、对不可伤取消为 UNHURTABLE；另有上面的事件5中断正例。未定位 EP 专属按具体取消原因分支的实际内容，不把 HP 的 MISS／HIT_FAILED／抵挡直接移入 EP。
+- HP Healing：`OnTakeHeal #67710` 的 HEAL_FREE 路径取消为 NONE。项目已明确 HEAL_FREE 只限制 Targeting，本证据不恢复普通治疗的禁疗接收检查，也不证明 HP Healing 需要全部伤害原因。

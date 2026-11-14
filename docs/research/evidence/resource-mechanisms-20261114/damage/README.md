@@ -27,6 +27,7 @@
 | `entlec-origin.json`、`entlec-templates.json` | `extract_entlec_origin.py`复用资源读取器，另保留隐德来希S3实际召唤链、固定版本skill／level片段；模板由`scan_holder.py --select`提取。 |
 | `weak-native.json`、`weak-attack-info.json`、`weak-rng.json`、`weak-database.json` | 当前指纹WeakDamage／AtkScaleUp、AttackInfo构造、山概率Talent与DB查找完整体。 |
 | `weak-content.json`、`weak-templates.json`、`weak-flag-bindings.json` | `extract_weak_content.py`：山／赤刃明霄陈120组件、完整DB别名、114条templateKey扫描；当前Holder完整程序及固定弱点flag的517资源负搜索。 |
+| `cancel-consumers/`、`cancel-content/`、`cancel-specials/` | 取消原因的实际消费者、9,054模板及角色绑定、特殊原因与来源命中率生产。各子目录 README 记录独立复跑命令；不由父目录 verify.py 自动覆盖。 |
 
 在仓库根目录执行：
 

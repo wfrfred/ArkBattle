@@ -1,0 +1,2153 @@
+{
+  "provenance": {
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/resource-mechanisms-20261114/damage/cancel-specials/scan_cancel_nodes.py",
+      "bytes": 2671,
+      "sha256": "b31d67a323d234e02f6757dc985c12398ceeb833fa3c6d1e71c8c654fd7a2d69"
+    },
+    "reader": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/attack-addon-order-20261102/content/decode_content.py",
+      "bytes": 8161,
+      "sha256": "d17abeee072576a29ca060884dcc0dd770fe0f8194ca7eed7b5c13b99b41e14e"
+    },
+    "source": {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+      "bytes": 2151020,
+      "sha256": "8edcb8017c977cdf52c2593b58e21db96949f3ad1e6f904180ac1241f145ca79"
+    },
+    "collectedOn": "2026-11-14",
+    "scope": "Complete current Holder CancelModifier scan; configured template presence is not proof of live content binding."
+  },
+  "result": {
+    "selection": {
+      "nodeType": "Torappu.Battle.Action.Nodes+CancelModifier",
+      "selectedReasons": [
+        "INTERRUPT",
+        "MINUS_HEALTH"
+      ]
+    },
+    "templateCount": 9054,
+    "nodeCount": 125,
+    "reasonCounts": {
+      "NONE": 44,
+      "INTERRUPT": 8,
+      "UNHURTABLE": 67,
+      "MISS": 1,
+      "BLOCKED": 5
+    },
+    "nodes": [
+      {
+        "template": "trap_dupilr_trait",
+        "templateIndex": 944,
+        "pointer": "/events/0/actions/0/_succeedNodes/3",
+        "node": {
+          "_reason": "NONE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "trap_dupilr_trait",
+        "templateIndex": 944,
+        "pointer": "/events/0/actions/0/_failNodes/0/_succeedNodes/2",
+        "node": {
+          "_reason": "NONE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "trap_dupilr_trait",
+        "templateIndex": 944,
+        "pointer": "/events/0/actions/0/_failNodes/0/_failNodes/0",
+        "node": {
+          "_reason": "INTERRUPT",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "enemy_ristar_star_mode",
+        "templateIndex": 1413,
+        "pointer": "/events/0/actions/1/_succeedNodes/0",
+        "node": {
+          "_reason": "NONE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "enemy_ristar_star_mode",
+        "templateIndex": 1413,
+        "pointer": "/events/1/actions/0/_succeedNodes/0",
+        "node": {
+          "_reason": "NONE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "enemy_ristar_star_mode_2",
+        "templateIndex": 1414,
+        "pointer": "/events/0/actions/1/_succeedNodes/0",
+        "node": {
+          "_reason": "NONE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "enemy_ristar_star_mode_2",
+        "templateIndex": 1414,
+        "pointer": "/events/1/actions/0/_succeedNodes/0",
+        "node": {
+          "_reason": "NONE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "trap_eradio_eradio_trait",
+        "templateIndex": 1492,
+        "pointer": "/events/0/actions/0",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "trap_eradio_eradio_trait",
+        "templateIndex": 1492,
+        "pointer": "/events/1/actions/1",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "enemy_ltniak[side_shield]",
+        "templateIndex": 1508,
+        "pointer": "/events/0/actions/5/_succeedNodes/1",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "enemy_ltntpt[aoe_attack]",
+        "templateIndex": 1548,
+        "pointer": "/events/0/actions/2",
+        "node": {
+          "_reason": "INTERRUPT",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "enemy_ltntpt[aoe_attack_magic]",
+        "templateIndex": 1549,
+        "pointer": "/events/0/actions/2",
+        "node": {
+          "_reason": "INTERRUPT",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "trap_condtr[side_shield]",
+        "templateIndex": 1583,
+        "pointer": "/events/0/actions/5/_succeedNodes/5",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "enemy_sggem_t[clear]",
+        "templateIndex": 1703,
+        "pointer": "/events/1/actions/1",
+        "node": {
+          "_reason": "NONE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "enemy_sggem_t[clear]",
+        "templateIndex": 1703,
+        "pointer": "/events/2/actions/1",
+        "node": {
+          "_reason": "NONE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "enemy_sggem_t[polluted]",
+        "templateIndex": 1706,
+        "pointer": "/events/0/actions/1/_failNodes/0",
+        "node": {
+          "_reason": "NONE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "enemy_sggem_t[polluted]",
+        "templateIndex": 1706,
+        "pointer": "/events/1/actions/1/_succeedNodes/1",
+        "node": {
+          "_reason": "NONE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "enemy_sggem_t[polluted]",
+        "templateIndex": 1706,
+        "pointer": "/events/1/actions/1/_failNodes/0",
+        "node": {
+          "_reason": "NONE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "enemy_trtrsl_passive",
+        "templateIndex": 1747,
+        "pointer": "/events/0/actions/1/_succeedNodes/0",
+        "node": {
+          "_reason": "INTERRUPT",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "enemy_trtrsl_passive",
+        "templateIndex": 1747,
+        "pointer": "/events/0/actions/1/_failNodes/0/_succeedNodes/0",
+        "node": {
+          "_reason": "INTERRUPT",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "trap_cnvfwks[undeadable]",
+        "templateIndex": 1814,
+        "pointer": "/events/0/actions/1",
+        "node": {
+          "_reason": "NONE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "trap_cnvfwks[undeadable]",
+        "templateIndex": 1814,
+        "pointer": "/events/1/actions/2",
+        "node": {
+          "_reason": "NONE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "enemy_hlslp[end_sleep]",
+        "templateIndex": 1945,
+        "pointer": "/events/0/actions/0",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "enemy_crblt[check]",
+        "templateIndex": 1957,
+        "pointer": "/events/1/actions/1/_failNodes/0",
+        "node": {
+          "_reason": "NONE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "enemy_crblt[check]",
+        "templateIndex": 1957,
+        "pointer": "/events/2/actions/1/_failNodes/0",
+        "node": {
+          "_reason": "NONE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "trap_crfilm_p[m0]",
+        "templateIndex": 2000,
+        "pointer": "/events/1/actions/0/_succeedNodes/0",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "trap_crfilm_p[m0]",
+        "templateIndex": 2000,
+        "pointer": "/events/1/actions/0/_failNodes/0/_succeedNodes/0",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "trap_crfilm_p[m0]",
+        "templateIndex": 2000,
+        "pointer": "/events/2/actions/0",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "trap_crfilm_p[m0]",
+        "templateIndex": 2000,
+        "pointer": "/events/3/actions/1",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "trap_crfilm_p[m0]",
+        "templateIndex": 2000,
+        "pointer": "/events/4/actions/0",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "trap_crfilm_p[m1]",
+        "templateIndex": 2001,
+        "pointer": "/events/1/actions/0/_succeedNodes/0",
+        "node": {
+          "_reason": "NONE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "trap_crfilm_p[m1]",
+        "templateIndex": 2001,
+        "pointer": "/events/2/actions/0/_succeedNodes/0",
+        "node": {
+          "_reason": "NONE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "trap_crprop_t[scale]",
+        "templateIndex": 2004,
+        "pointer": "/events/0/actions/1/_failNodes/0",
+        "node": {
+          "_reason": "NONE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "trap_crprop_t[scale]",
+        "templateIndex": 2004,
+        "pointer": "/events/1/actions/1/_failNodes/0",
+        "node": {
+          "_reason": "NONE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "enemy_ymgpck_passive",
+        "templateIndex": 2056,
+        "pointer": "/events/0/actions/0",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "enemy_idevil_shield",
+        "templateIndex": 2081,
+        "pointer": "/events/0/actions/2",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "enemy_idevil_shield_advance",
+        "templateIndex": 2082,
+        "pointer": "/events/0/actions/2",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "enemy_mjcppp_sleep",
+        "templateIndex": 2110,
+        "pointer": "/events/2/actions/3",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "enemy_xdagt_t_free",
+        "templateIndex": 2117,
+        "pointer": "/events/0/actions/1/_failNodes/0",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "enemy_xdagt_t_free",
+        "templateIndex": 2117,
+        "pointer": "/events/1/actions/1",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "enemy_xdmon_s_1[p2_shield_dyn]",
+        "templateIndex": 2118,
+        "pointer": "/events/0/actions/1",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "enemy_xdmon_s_1[p2_shield_dyn]",
+        "templateIndex": 2118,
+        "pointer": "/events/1/actions/1",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "trap_xdice2_p[m1]",
+        "templateIndex": 2191,
+        "pointer": "/events/1/actions/0/_succeedNodes/0",
+        "node": {
+          "_reason": "NONE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "trap_xdice2_p[m1]",
+        "templateIndex": 2191,
+        "pointer": "/events/2/actions/0/_succeedNodes/0",
+        "node": {
+          "_reason": "NONE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "trap_xdice2_p[m0]",
+        "templateIndex": 2193,
+        "pointer": "/events/1/actions/0/_succeedNodes/0",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "trap_xdice2_p[m0]",
+        "templateIndex": 2193,
+        "pointer": "/events/1/actions/0/_failNodes/0/_succeedNodes/0",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "trap_xdice2_p[m0]",
+        "templateIndex": 2193,
+        "pointer": "/events/2/actions/0",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "trap_xdice2_p[m0]",
+        "templateIndex": 2193,
+        "pointer": "/events/3/actions/1",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "trap_xdice2_p[m0]",
+        "templateIndex": 2193,
+        "pointer": "/events/4/actions/0",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "agbmal_a[passive]",
+        "templateIndex": 2471,
+        "pointer": "/events/0/actions/0",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "agbmes_t12[land_manager]",
+        "templateIndex": 2478,
+        "pointer": "/events/3/actions/1",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "agpack_a[passive]",
+        "templateIndex": 2512,
+        "pointer": "/events/0/actions/0",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "trap_ads_t_1",
+        "templateIndex": 2560,
+        "pointer": "/events/0/actions/0",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "arkdex_trait_3",
+        "templateIndex": 2591,
+        "pointer": "/events/0/actions/0/_succeedNodes/0",
+        "node": {
+          "_reason": "MISS",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "enemy_wlrage_t_check",
+        "templateIndex": 2602,
+        "pointer": "/events/0/actions/0/_succeedNodes/1/_succeedNodes/0",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "enemy_wlrage_t_check",
+        "templateIndex": 2602,
+        "pointer": "/events/2/actions/0/_succeedNodes/1/_succeedNodes/0",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "enemy_wlshd_t_shield",
+        "templateIndex": 2607,
+        "pointer": "/events/1/actions/0/_succeedNodes/0/_succeedNodes/1",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "enemy_wdsdw[loss_hp]",
+        "templateIndex": 2896,
+        "pointer": "/events/1/actions/2",
+        "node": {
+          "_reason": "INTERRUPT",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "enemy_wdrrl[AOE_attack]",
+        "templateIndex": 2898,
+        "pointer": "/events/0/actions/2",
+        "node": {
+          "_reason": "INTERRUPT",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "enemy_bmbcar2_sp[add]",
+        "templateIndex": 2980,
+        "pointer": "/events/0/actions/0",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "enemy_mpascl_shield",
+        "templateIndex": 3005,
+        "pointer": "/events/1/actions/0",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "enemy_mpascl_mark",
+        "templateIndex": 3006,
+        "pointer": "/events/0/actions/2",
+        "node": {
+          "_reason": "NONE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "trap_mptxs_shield",
+        "templateIndex": 3009,
+        "pointer": "/events/0/actions/2",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "trap_mptxs_shield_effect",
+        "templateIndex": 3010,
+        "pointer": "/events/0/actions/3",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "enemy_mpplai_passive_p0",
+        "templateIndex": 3029,
+        "pointer": "/events/0/actions/0",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "enemy_muwiz_t[shield]",
+        "templateIndex": 3135,
+        "pointer": "/events/0/actions/1/_succeedNodes/1/_failNodes/0",
+        "node": {
+          "_reason": "BLOCKED",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "enemy_skzamf_unhurtable",
+        "templateIndex": 3366,
+        "pointer": "/events/0/actions/0",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "enemy_ro4dlc2_bounceBall_passive",
+        "templateIndex": 3371,
+        "pointer": "/events/0/actions/0",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "trap_winfire_t",
+        "templateIndex": 3447,
+        "pointer": "/events/0/actions/0",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "enemy_lramiy[block_spw_dmg]",
+        "templateIndex": 3450,
+        "pointer": "/events/0/actions/2",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "enemy_lrccon[block_no_source_dmg]",
+        "templateIndex": 3510,
+        "pointer": "/events/0/actions/2",
+        "node": {
+          "_reason": "NONE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "acloon_gather_attribute",
+        "templateIndex": 4134,
+        "pointer": "/events/1/actions/1",
+        "node": {
+          "_reason": "NONE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "enemy_acstmr[check]",
+        "templateIndex": 4225,
+        "pointer": "/events/1/actions/1/_failNodes/0",
+        "node": {
+          "_reason": "NONE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "enemy_acstmr[check]",
+        "templateIndex": 4225,
+        "pointer": "/events/2/actions/1/_failNodes/0",
+        "node": {
+          "_reason": "NONE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "shpvas_invi",
+        "templateIndex": 4315,
+        "pointer": "/events/0/actions/0/_succeedNodes/0/_succeedNodes/0/_failNodes/0",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "enemy_mnmblx_passive",
+        "templateIndex": 4383,
+        "pointer": "/events/0/actions/3",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "vigil_wolf_t_1[listener]",
+        "templateIndex": 4547,
+        "pointer": "/events/1/actions/4",
+        "node": {
+          "_reason": "NONE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "vigil_wolf_t_1[listener]",
+        "templateIndex": 4547,
+        "pointer": "/events/2/actions/2",
+        "node": {
+          "_reason": "NONE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "entlec_a[damage_etlchi_only]",
+        "templateIndex": 5208,
+        "pointer": "/events/0/actions/2",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "entlec_a[damage_etlchi_only]",
+        "templateIndex": 5208,
+        "pointer": "/events/1/actions/2",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "ironmn_pile3_trait",
+        "templateIndex": 5359,
+        "pointer": "/events/0/actions/0",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "char_chilc[immune_env_dmg][include_element]",
+        "templateIndex": 5607,
+        "pointer": "/events/0/actions/0/_succeedNodes/0",
+        "node": {
+          "_reason": "NONE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "char_chilc[immune_env_dmg][include_element]",
+        "templateIndex": 5607,
+        "pointer": "/events/0/actions/0/_failNodes/1",
+        "node": {
+          "_reason": "NONE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "graceb_sk2",
+        "templateIndex": 5802,
+        "pointer": "/events/0/actions/3",
+        "node": {
+          "_reason": "NONE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "mcnist_e_002_shield",
+        "templateIndex": 6140,
+        "pointer": "/events/2/actions/5",
+        "node": {
+          "_reason": "BLOCKED",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "mcnist_s_2_shield",
+        "templateIndex": 6149,
+        "pointer": "/events/1/actions/1/_succeedNodes/1/_succeedNodes/2",
+        "node": {
+          "_reason": "BLOCKED",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "mcnist_s_2_shield",
+        "templateIndex": 6149,
+        "pointer": "/events/1/actions/1/_failNodes/0",
+        "node": {
+          "_reason": "BLOCKED",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "mcnist_t_2",
+        "templateIndex": 6151,
+        "pointer": "/events/1/actions/2/_succeedNodes/1",
+        "node": {
+          "_reason": "BLOCKED",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "pasngr_e_004[aura]",
+        "templateIndex": 7012,
+        "pointer": "/events/0/actions/1",
+        "node": {
+          "_reason": "NONE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "phenxi_e_004_tr",
+        "templateIndex": 7075,
+        "pointer": "/events/0/actions/3",
+        "node": {
+          "_reason": "NONE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "halfIdle_lhmine_passive",
+        "templateIndex": 7194,
+        "pointer": "/events/0/actions/0/_succeedNodes/0",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "giacan_t_1",
+        "templateIndex": 7336,
+        "pointer": "/events/0/actions/0/_succeedNodes/0",
+        "node": {
+          "_reason": "NONE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "giacan_t_1",
+        "templateIndex": 7336,
+        "pointer": "/events/1/actions/1/_succeedNodes/0",
+        "node": {
+          "_reason": "NONE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "legion_platre_a[heal_only]",
+        "templateIndex": 7382,
+        "pointer": "/events/0/actions/1",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "legion_trap_cdbeacon_passive",
+        "templateIndex": 7461,
+        "pointer": "/events/0/actions/0",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "supctl_t_3",
+        "templateIndex": 7532,
+        "pointer": "/events/0/actions/0",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "trap_muruinw_s_active",
+        "templateIndex": 7654,
+        "pointer": "/events/3/actions/2",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "trap_muruinw_s_passive",
+        "templateIndex": 7655,
+        "pointer": "/events/0/actions/0",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "enemy_fotball_passive",
+        "templateIndex": 7665,
+        "pointer": "/events/0/actions/0",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "multi_fortress_s[sp]",
+        "templateIndex": 7727,
+        "pointer": "/events/0/actions/0/_succeedNodes/0",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "multi_fortress_s[sp]",
+        "templateIndex": 7727,
+        "pointer": "/events/0/actions/0/_failNodes/0/_succeedNodes/0",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "multi_fortress_s[sp]",
+        "templateIndex": 7727,
+        "pointer": "/events/3/actions/0",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "trap_murjet_skill",
+        "templateIndex": 7748,
+        "pointer": "/events/0/actions/2",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "trap_murbox_passive",
+        "templateIndex": 7749,
+        "pointer": "/events/0/actions/1",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "rogue_3_relic_hand_5",
+        "templateIndex": 7991,
+        "pointer": "/events/0/actions/0/_failNodes/1",
+        "node": {
+          "_reason": "NONE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "duelwal_t[to_all]",
+        "templateIndex": 8016,
+        "pointer": "/events/0/actions/0",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "enemy_shsggd_passive",
+        "templateIndex": 8432,
+        "pointer": "/events/0/actions/0",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "trap_shmbmb[init]",
+        "templateIndex": 8450,
+        "pointer": "/events/2/actions/2",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "trap_shadvt_passive_log_kill",
+        "templateIndex": 8458,
+        "pointer": "/events/3/actions/1",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "rogue_6_ep_anger_fix",
+        "templateIndex": 8510,
+        "pointer": "/events/0/actions/1",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "trap_xbabal[no_damage]",
+        "templateIndex": 8594,
+        "pointer": "/events/0/actions/1/_failNodes/0",
+        "node": {
+          "_reason": "NONE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "trap_xbabal[no_damage]",
+        "templateIndex": 8594,
+        "pointer": "/events/1/actions/1/_failNodes/0",
+        "node": {
+          "_reason": "NONE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "enemy_xbtor_s",
+        "templateIndex": 8683,
+        "pointer": "/events/2/actions/2/_succeedNodes/0",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "trap_xbdiam[passive]",
+        "templateIndex": 8693,
+        "pointer": "/events/0/actions/1/_failNodes/0",
+        "node": {
+          "_reason": "NONE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "trap_xbdiam[passive]",
+        "templateIndex": 8693,
+        "pointer": "/events/1/actions/1/_failNodes/0",
+        "node": {
+          "_reason": "NONE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "trap_xbhydr_mesh",
+        "templateIndex": 8700,
+        "pointer": "/events/0/actions/1/_failNodes/0",
+        "node": {
+          "_reason": "NONE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "trap_xbhydr_mesh",
+        "templateIndex": 8700,
+        "pointer": "/events/1/actions/3/_failNodes/0",
+        "node": {
+          "_reason": "NONE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "immune_env_damage",
+        "templateIndex": 8765,
+        "pointer": "/events/0/actions/1",
+        "node": {
+          "_reason": "INTERRUPT",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "sandbox_v3_process_nodmg",
+        "templateIndex": 8850,
+        "pointer": "/events/0/actions/0",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "sandbox_v3_process_nodmg",
+        "templateIndex": 8850,
+        "pointer": "/events/1/actions/1",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "sandbox_v3_relic[paddy-share-heal]",
+        "templateIndex": 8903,
+        "pointer": "/events/0/actions/1/_failNodes/0/_succeedNodes/0",
+        "node": {
+          "_reason": "NONE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "sandbox_v3_xb2pwr",
+        "templateIndex": 8925,
+        "pointer": "/events/0/actions/2",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "sandbox_v3_xb2pwr",
+        "templateIndex": 8925,
+        "pointer": "/events/1/actions/3",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "sandbox_v3_xb2ltr",
+        "templateIndex": 8928,
+        "pointer": "/events/0/actions/1",
+        "node": {
+          "_reason": "UNHURTABLE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      },
+      {
+        "template": "sandbox_v3_xb2fmr2",
+        "templateIndex": 8953,
+        "pointer": "/events/0/actions/1/_failNodes/0/_succeedNodes/0",
+        "node": {
+          "_reason": "NONE",
+          "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+        }
+      }
+    ],
+    "selectedTemplates": [
+      {
+        "templateKey": "trap_dupilr_trait",
+        "templateIndex": 944,
+        "events": [
+          {
+            "event": 5,
+            "actions": [
+              {
+                "_conditionNode": {
+                  "_targetType": "MODIFIER_TARGET",
+                  "_includeSourceContext": false,
+                  "_sourceType": "SOURCE",
+                  "_purposeMask": "NONE",
+                  "$type": "Torappu.Battle.Action.Nodes+CheckSourceInHitRange"
+                },
+                "_succeedNodes": [
+                  {
+                    "$type": "Torappu.Battle.Action.Nodes+IsDamage"
+                  },
+                  {
+                    "_targetType": "MODIFIER_SOURCE",
+                    "_filterTag": "dupilr",
+                    "_bbKey": "tag",
+                    "$type": "Torappu.Battle.Action.Nodes+CheckFilterTag"
+                  },
+                  {
+                    "_buff": {
+                      "attributes": {
+                        "abnormalFlags": [],
+                        "abnormalImmunes": [],
+                        "abnormalAntis": [],
+                        "abnormalCombos": [],
+                        "abnormalComboImmunes": [],
+                        "attributeModifiers": []
+                      },
+                      "buffKey": "dupilr_trait[candead]",
+                      "loadFromDB": false,
+                      "isDurableBuff": false,
+                      "isDamageMissable": false,
+                      "isSilenceable": false,
+                      "isStunnable": false,
+                      "isFreezable": false,
+                      "isLevitatable": false,
+                      "isGroundBoundable": false,
+                      "statusResistable": "AUTOMATIC",
+                      "templateKey": "empty",
+                      "disableOverride": true,
+                      "overrideKey": null,
+                      "overrideType": "DEFAULT",
+                      "maxStackCnt": 1,
+                      "refreshRemainingTimeWhenStackMax": false,
+                      "clearAllStackCntWhenTimeUp": false,
+                      "maxValidStackCnt": -1,
+                      "independentCharacterSource": false,
+                      "overrideEffectKey": null,
+                      "overrideOnEventPriority": false,
+                      "onEventPriority": "DEFAULT",
+                      "audioSignal": null,
+                      "lifeTimeType": "INFINITY",
+                      "takeSnapshotWhenExtend": false,
+                      "durationKey": null,
+                      "remainingTimeKey": null,
+                      "lifeTime": 0.0,
+                      "triggerLifeType": "IMMEDIATELY",
+                      "triggerCnt": 0,
+                      "triggerInterval": -1.0,
+                      "waitFirstTriggerInterval": true,
+                      "firstTriggerInterval": -1.0,
+                      "priority": -1,
+                      "priorityBBKeys": [],
+                      "stripBlackboardParamsWithBuffKey": false,
+                      "blackboard": [],
+                      "enableInitDirectionFromSource": false
+                    },
+                    "_buffOwner": "BUFF_OWNER",
+                    "_useSpecialBuffSource": false,
+                    "_specialBuffSource": "BUFF_SOURCE",
+                    "_isDerivedBuff": false,
+                    "_finishDerivedBuffIfParentFinish": false,
+                    "_inherateSourceProjectileFromParentBuff": false,
+                    "_hookEffectKeyFromSourceProjectile": false,
+                    "$type": "Torappu.Battle.Action.Nodes+CreateBuff"
+                  },
+                  {
+                    "_reason": "NONE",
+                    "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+                  }
+                ],
+                "_failNodes": [
+                  {
+                    "_conditionNode": {
+                      "_targetType": "MODIFIER_SOURCE",
+                      "_filterTag": "dupilr",
+                      "_bbKey": "tag",
+                      "$type": "Torappu.Battle.Action.Nodes+CheckFilterTag"
+                    },
+                    "_succeedNodes": [
+                      {
+                        "_targetType": "MODIFIER_SOURCE",
+                        "_filterTag": "dupilr",
+                        "_bbKey": "tag",
+                        "$type": "Torappu.Battle.Action.Nodes+CheckFilterTag"
+                      },
+                      {
+                        "_buff": {
+                          "attributes": {
+                            "abnormalFlags": [],
+                            "abnormalImmunes": [],
+                            "abnormalAntis": [],
+                            "abnormalCombos": [],
+                            "abnormalComboImmunes": [],
+                            "attributeModifiers": []
+                          },
+                          "buffKey": "dupilr_trait[candead]",
+                          "loadFromDB": false,
+                          "isDurableBuff": false,
+                          "isDamageMissable": false,
+                          "isSilenceable": false,
+                          "isStunnable": false,
+                          "isFreezable": false,
+                          "isLevitatable": false,
+                          "isGroundBoundable": false,
+                          "statusResistable": "AUTOMATIC",
+                          "templateKey": "empty",
+                          "disableOverride": true,
+                          "overrideKey": null,
+                          "overrideType": "DEFAULT",
+                          "maxStackCnt": 1,
+                          "refreshRemainingTimeWhenStackMax": false,
+                          "clearAllStackCntWhenTimeUp": false,
+                          "maxValidStackCnt": -1,
+                          "independentCharacterSource": false,
+                          "overrideEffectKey": null,
+                          "overrideOnEventPriority": false,
+                          "onEventPriority": "DEFAULT",
+                          "audioSignal": null,
+                          "lifeTimeType": "INFINITY",
+                          "takeSnapshotWhenExtend": false,
+                          "durationKey": null,
+                          "remainingTimeKey": null,
+                          "lifeTime": 0.0,
+                          "triggerLifeType": "IMMEDIATELY",
+                          "triggerCnt": 0,
+                          "triggerInterval": -1.0,
+                          "waitFirstTriggerInterval": true,
+                          "firstTriggerInterval": -1.0,
+                          "priority": -1,
+                          "priorityBBKeys": [],
+                          "stripBlackboardParamsWithBuffKey": false,
+                          "blackboard": [],
+                          "enableInitDirectionFromSource": false
+                        },
+                        "_buffOwner": "BUFF_OWNER",
+                        "_useSpecialBuffSource": false,
+                        "_specialBuffSource": "BUFF_SOURCE",
+                        "_isDerivedBuff": false,
+                        "_finishDerivedBuffIfParentFinish": false,
+                        "_inherateSourceProjectileFromParentBuff": false,
+                        "_hookEffectKeyFromSourceProjectile": false,
+                        "$type": "Torappu.Battle.Action.Nodes+CreateBuff"
+                      },
+                      {
+                        "_reason": "NONE",
+                        "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+                      }
+                    ],
+                    "_failNodes": [
+                      {
+                        "_reason": "INTERRUPT",
+                        "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+                      }
+                    ],
+                    "$type": "Torappu.Battle.Action.Nodes+IfElse"
+                  }
+                ],
+                "$type": "Torappu.Battle.Action.Nodes+IfElse"
+              }
+            ]
+          },
+          {
+            "event": 7,
+            "actions": [
+              {
+                "_targetType": "TARGET",
+                "_condType": "LE",
+                "_hpValue": {
+                  "_serializedValue": 0
+                },
+                "$type": "Torappu.Battle.Action.Nodes+FilterByTargetHp"
+              },
+              {
+                "_targetType": "BUFF_OWNER",
+                "_buffKeys": [
+                  "dupilr_trait[candead]"
+                ],
+                "isAND": true,
+                "_loadFromBlackboard": false,
+                "_checkBuffSource": false,
+                "_buffSourceType": "BUFF_SOURCE",
+                "_checkSourceHost": false,
+                "$type": "Torappu.Battle.Action.Nodes+CheckContainsBuff"
+              },
+              {
+                "$type": "Torappu.Battle.Action.Nodes+IfNot"
+              },
+              {
+                "_buff": {
+                  "attributes": {
+                    "abnormalFlags": [
+                      "INVINCIBLE",
+                      "TARGET_FREE",
+                      "ALLY_TARGET_FREE"
+                    ],
+                    "abnormalImmunes": [],
+                    "abnormalAntis": [],
+                    "abnormalCombos": [],
+                    "abnormalComboImmunes": [],
+                    "attributeModifiers": []
+                  },
+                  "buffKey": "dupilr_trait[startdead]",
+                  "loadFromDB": false,
+                  "isDurableBuff": false,
+                  "isDamageMissable": false,
+                  "isSilenceable": false,
+                  "isStunnable": false,
+                  "isFreezable": false,
+                  "isLevitatable": false,
+                  "isGroundBoundable": false,
+                  "statusResistable": "AUTOMATIC",
+                  "templateKey": "trap_dupilr_trait[startdead]",
+                  "disableOverride": true,
+                  "overrideKey": null,
+                  "overrideType": "DEFAULT",
+                  "maxStackCnt": 1,
+                  "refreshRemainingTimeWhenStackMax": false,
+                  "clearAllStackCntWhenTimeUp": false,
+                  "maxValidStackCnt": -1,
+                  "independentCharacterSource": false,
+                  "overrideEffectKey": "stonePillar_idle_01_buff",
+                  "overrideOnEventPriority": false,
+                  "onEventPriority": "DEFAULT",
+                  "audioSignal": null,
+                  "lifeTimeType": "LIMITED",
+                  "takeSnapshotWhenExtend": false,
+                  "durationKey": "",
+                  "remainingTimeKey": null,
+                  "lifeTime": 0.0,
+                  "triggerLifeType": "IMMEDIATELY",
+                  "triggerCnt": 0,
+                  "triggerInterval": -1.0,
+                  "waitFirstTriggerInterval": true,
+                  "firstTriggerInterval": -1.0,
+                  "priority": -1,
+                  "priorityBBKeys": [],
+                  "stripBlackboardParamsWithBuffKey": true,
+                  "blackboard": [],
+                  "enableInitDirectionFromSource": false
+                },
+                "_buffOwner": "BUFF_OWNER",
+                "_useSpecialBuffSource": false,
+                "_specialBuffSource": "BUFF_SOURCE",
+                "_isDerivedBuff": false,
+                "_finishDerivedBuffIfParentFinish": false,
+                "_inherateSourceProjectileFromParentBuff": false,
+                "_hookEffectKeyFromSourceProjectile": false,
+                "$type": "Torappu.Battle.Action.Nodes+CreateBuff"
+              },
+              {
+                "_targetType": "TARGET",
+                "_retainedBuffsWhenClear": [
+                  "dupilr_trait",
+                  "dupilr_trait[startdead]",
+                  "dupilr_trait[candead]",
+                  "dupilr_trait[ondead]",
+                  "dupilr_trait[undead]",
+                  "dupilr_abnormalimmunes",
+                  "duplir_s[has_ally_in_range]"
+                ],
+                "_alsoRemoveDurableBuff": false,
+                "$type": "Torappu.Battle.Action.Nodes+ClearAllBuffs"
+              },
+              {
+                "_buff": {
+                  "attributes": {
+                    "abnormalFlags": [],
+                    "abnormalImmunes": [],
+                    "abnormalAntis": [],
+                    "abnormalCombos": [],
+                    "abnormalComboImmunes": [],
+                    "attributeModifiers": []
+                  },
+                  "buffKey": "dupilr_effect[candead]",
+                  "loadFromDB": false,
+                  "isDurableBuff": false,
+                  "isDamageMissable": false,
+                  "isSilenceable": false,
+                  "isStunnable": false,
+                  "isFreezable": false,
+                  "isLevitatable": false,
+                  "isGroundBoundable": false,
+                  "statusResistable": "AUTOMATIC",
+                  "templateKey": "empty",
+                  "disableOverride": false,
+                  "overrideKey": null,
+                  "overrideType": "DEFAULT",
+                  "maxStackCnt": 1,
+                  "refreshRemainingTimeWhenStackMax": false,
+                  "clearAllStackCntWhenTimeUp": false,
+                  "maxValidStackCnt": -1,
+                  "independentCharacterSource": false,
+                  "overrideEffectKey": "stonePillar_idle_01_buff",
+                  "overrideOnEventPriority": false,
+                  "onEventPriority": "DEFAULT",
+                  "audioSignal": null,
+                  "lifeTimeType": "INFINITY",
+                  "takeSnapshotWhenExtend": false,
+                  "durationKey": null,
+                  "remainingTimeKey": null,
+                  "lifeTime": 0.0,
+                  "triggerLifeType": "IMMEDIATELY",
+                  "triggerCnt": 0,
+                  "triggerInterval": -1.0,
+                  "waitFirstTriggerInterval": true,
+                  "firstTriggerInterval": -1.0,
+                  "priority": -1,
+                  "priorityBBKeys": [],
+                  "stripBlackboardParamsWithBuffKey": false,
+                  "blackboard": [],
+                  "enableInitDirectionFromSource": false
+                },
+                "_buffOwner": "BUFF_OWNER",
+                "_useSpecialBuffSource": false,
+                "_specialBuffSource": "BUFF_SOURCE",
+                "_isDerivedBuff": false,
+                "_finishDerivedBuffIfParentFinish": false,
+                "_inherateSourceProjectileFromParentBuff": false,
+                "_hookEffectKeyFromSourceProjectile": false,
+                "$type": "Torappu.Battle.Action.Nodes+CreateBuff"
+              }
+            ]
+          },
+          {
+            "event": 12,
+            "actions": [
+              {
+                "_ownerType": "BUFF_OWNER",
+                "_rendererIndex": -1,
+                "_enable": true,
+                "_exclusive": false,
+                "_rendererCurModeIndex": false,
+                "$type": "Torappu.Battle.Action.Nodes+ChangeAnimatorMeshRenderer"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "templateKey": "enemy_ltntpt[aoe_attack]",
+        "templateIndex": 1548,
+        "events": [
+          {
+            "event": 8,
+            "actions": [
+              {
+                "_targetType": "BUFF_OWNER",
+                "_buffKeys": [
+                  "enemy_ltntpt[first_attack_flag]"
+                ],
+                "isAND": true,
+                "_loadFromBlackboard": false,
+                "_checkBuffSource": false,
+                "_buffSourceType": "BUFF_SOURCE",
+                "_checkSourceHost": false,
+                "$type": "Torappu.Battle.Action.Nodes+CheckContainsBuff"
+              },
+              {
+                "_filterAttackType": false,
+                "_attackTypeFilter": "NONE",
+                "_filterDamageType": false,
+                "_damageMask": "NONE",
+                "_filterSharedMask": false,
+                "_sharedFlag": "IS_CONTINUOUS",
+                "_filterModifierSource": false,
+                "_source": "BUFF_OWNER",
+                "_filterBySourceId": false,
+                "_sourceId": null,
+                "_checkHasScource": false,
+                "_isNoSource": false,
+                "_filterModifierCancelled": false,
+                "_filterApplyWay": false,
+                "_applyWay": "NONE",
+                "$type": "Torappu.Battle.Action.Nodes+FilterDamageModifer"
+              },
+              {
+                "_reason": "INTERRUPT",
+                "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+              },
+              {
+                "_buffKey": "enemy_ltntpt[first_attack_flag]",
+                "_loadFromBlackboard": false,
+                "_decCntIfStack": false,
+                "_updateOverrideMap": true,
+                "_targetType": "BUFF_OWNER",
+                "_checkBuffSource": false,
+                "_sourceType": "BUFF_SOURCE",
+                "_alsoClearNullSource": false,
+                "_finishHostBuff": false,
+                "_excludeThisBuff": false,
+                "_decCntKey": null,
+                "_decCnt": 1,
+                "$type": "Torappu.Battle.Action.Nodes+FinishBuffsById"
+              },
+              {
+                "_useAbilitySourceSide": true,
+                "_sourceType": "BUFF_OWNER",
+                "_targetType": "MODIFIER_TARGET",
+                "_damageType": "PHYSICAL",
+                "_sourceApplyWay": "MELEE",
+                "_targetOptions": {
+                  "targetSide": "ENEMY",
+                  "targetMotion": "WALK_ONLY",
+                  "targetCategory": "NONE,DEFAULT",
+                  "enableAdvancedOptions": false,
+                  "ignoreTargetFree": false,
+                  "ignoreAllyTargetFree": false,
+                  "ignoreHealFree": false,
+                  "ignoreMotionMode": false,
+                  "ignoreTargetSide": false,
+                  "excludeSomeAbnormalFlags": false,
+                  "containSomeAbnormalFlags": false,
+                  "excludeAbnormalFlag": "STUNNED",
+                  "containAbnormalFlag": "STUNNED",
+                  "purposeMask": "NONE",
+                  "professionMask": "NONE",
+                  "checkUnitType": false,
+                  "unitTypeMask": "NONE",
+                  "onlyIgnoreSomeOfTargetFreeCase": false,
+                  "abnormalFlag": "STUNNED",
+                  "abnormalCombo": "SLEEPING"
+                },
+                "_excludeTarget": false,
+                "_rangeId": "x-5",
+                "_useRadius": false,
+                "_useDynamicTreeForRadius": false,
+                "_radius": 0.0,
+                "_useAbilitySelector": false,
+                "_abilityName": null,
+                "_damageScale": "atk_scale",
+                "_buffs": [],
+                "_attackType": "NORMAL",
+                "_createEffect": true,
+                "_hitEffectKey": "enemy_ltntpt_attack_hit_01",
+                "_hitEffectUseSourceFaceTo": false,
+                "_useDamageFromBB": false,
+                "_damageKey": "value",
+                "_isNoSourceDamage": false,
+                "_checkTargetAlive": false,
+                "_modifierKey": "",
+                "_maxTargetCountKey": "",
+                "_filterType": "ALL",
+                "$type": "Torappu.Battle.Action.Nodes+AOEDamage"
+              },
+              {
+                "_targetType": "MODIFIER_TARGET",
+                "_sourceType": "SOURCE",
+                "_effectKey": "enemy_ltntpt_attack_hit_02",
+                "_useSourceFaceVactor": false,
+                "_useSourceToTargetDirection": false,
+                "_useConstDirection": false,
+                "_constDirection": "UP",
+                "_createEffectHoldBySource": false,
+                "_createEffectConstDirectionHoldBySource": false,
+                "_useAttackPlaybackSpeed": false,
+                "_manualSetPlaybackSpeed": false,
+                "_blackboardKey": "",
+                "_playbackSpeed": 1.0,
+                "$type": "Torappu.Battle.Action.Nodes+CreateEffect"
+              },
+              {
+                "_decCntIfStack": false,
+                "_updateOverrideMap": true,
+                "$type": "Torappu.Battle.Action.Nodes+FinishBuff"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "templateKey": "enemy_ltntpt[aoe_attack_magic]",
+        "templateIndex": 1549,
+        "events": [
+          {
+            "event": 8,
+            "actions": [
+              {
+                "_targetType": "BUFF_OWNER",
+                "_buffKeys": [
+                  "enemy_ltntpt[first_attack_flag]"
+                ],
+                "isAND": true,
+                "_loadFromBlackboard": false,
+                "_checkBuffSource": false,
+                "_buffSourceType": "BUFF_SOURCE",
+                "_checkSourceHost": false,
+                "$type": "Torappu.Battle.Action.Nodes+CheckContainsBuff"
+              },
+              {
+                "_filterAttackType": false,
+                "_attackTypeFilter": "NONE",
+                "_filterDamageType": false,
+                "_damageMask": "NONE",
+                "_filterSharedMask": false,
+                "_sharedFlag": "IS_CONTINUOUS",
+                "_filterModifierSource": false,
+                "_source": "BUFF_OWNER",
+                "_filterBySourceId": false,
+                "_sourceId": null,
+                "_checkHasScource": false,
+                "_isNoSource": false,
+                "_filterModifierCancelled": false,
+                "_filterApplyWay": false,
+                "_applyWay": "NONE",
+                "$type": "Torappu.Battle.Action.Nodes+FilterDamageModifer"
+              },
+              {
+                "_reason": "INTERRUPT",
+                "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+              },
+              {
+                "_buffKey": "enemy_ltntpt[first_attack_flag]",
+                "_loadFromBlackboard": false,
+                "_decCntIfStack": false,
+                "_updateOverrideMap": true,
+                "_targetType": "BUFF_OWNER",
+                "_checkBuffSource": false,
+                "_sourceType": "BUFF_SOURCE",
+                "_alsoClearNullSource": false,
+                "_finishHostBuff": false,
+                "_excludeThisBuff": false,
+                "_decCntKey": null,
+                "_decCnt": 1,
+                "$type": "Torappu.Battle.Action.Nodes+FinishBuffsById"
+              },
+              {
+                "_useAbilitySourceSide": true,
+                "_sourceType": "BUFF_OWNER",
+                "_targetType": "MODIFIER_TARGET",
+                "_damageType": "MAGICAL",
+                "_sourceApplyWay": "MELEE",
+                "_targetOptions": {
+                  "targetSide": "ENEMY",
+                  "targetMotion": "WALK_ONLY",
+                  "targetCategory": "NONE,DEFAULT",
+                  "enableAdvancedOptions": false,
+                  "ignoreTargetFree": false,
+                  "ignoreAllyTargetFree": false,
+                  "ignoreHealFree": false,
+                  "ignoreMotionMode": false,
+                  "ignoreTargetSide": false,
+                  "excludeSomeAbnormalFlags": false,
+                  "containSomeAbnormalFlags": false,
+                  "excludeAbnormalFlag": "STUNNED",
+                  "containAbnormalFlag": "STUNNED",
+                  "purposeMask": "NONE",
+                  "professionMask": "NONE",
+                  "checkUnitType": false,
+                  "unitTypeMask": "NONE",
+                  "onlyIgnoreSomeOfTargetFreeCase": false,
+                  "abnormalFlag": "STUNNED",
+                  "abnormalCombo": "SLEEPING"
+                },
+                "_excludeTarget": false,
+                "_rangeId": "x-5",
+                "_useRadius": false,
+                "_useDynamicTreeForRadius": false,
+                "_radius": 0.0,
+                "_useAbilitySelector": false,
+                "_abilityName": null,
+                "_damageScale": "atk_scale",
+                "_buffs": [],
+                "_attackType": "NORMAL",
+                "_createEffect": true,
+                "_hitEffectKey": "enemy_ltntpt_attack_ap_hit_01",
+                "_hitEffectUseSourceFaceTo": false,
+                "_useDamageFromBB": false,
+                "_damageKey": "value",
+                "_isNoSourceDamage": false,
+                "_checkTargetAlive": false,
+                "_modifierKey": "",
+                "_maxTargetCountKey": "",
+                "_filterType": "ALL",
+                "$type": "Torappu.Battle.Action.Nodes+AOEDamage"
+              },
+              {
+                "_targetType": "MODIFIER_TARGET",
+                "_sourceType": "SOURCE",
+                "_effectKey": "enemy_ltntpt_attack_ap_hit_02",
+                "_useSourceFaceVactor": false,
+                "_useSourceToTargetDirection": false,
+                "_useConstDirection": false,
+                "_constDirection": "UP",
+                "_createEffectHoldBySource": false,
+                "_createEffectConstDirectionHoldBySource": false,
+                "_useAttackPlaybackSpeed": false,
+                "_manualSetPlaybackSpeed": false,
+                "_blackboardKey": "",
+                "_playbackSpeed": 1.0,
+                "$type": "Torappu.Battle.Action.Nodes+CreateEffect"
+              },
+              {
+                "_decCntIfStack": false,
+                "_updateOverrideMap": true,
+                "$type": "Torappu.Battle.Action.Nodes+FinishBuff"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "templateKey": "enemy_trtrsl_passive",
+        "templateIndex": 1747,
+        "events": [
+          {
+            "event": 10,
+            "actions": [
+              {
+                "_target": "TARGET",
+                "$type": "Torappu.Battle.Action.Nodes+ReleaseFromBlocker"
+              },
+              {
+                "_conditionNode": {
+                  "_targetType": "MODIFIER_SOURCE",
+                  "_buffKeys": [
+                    "enemy_trsmsb_mark"
+                  ],
+                  "isAND": false,
+                  "_loadFromBlackboard": false,
+                  "_checkBuffSource": false,
+                  "_buffSourceType": "BUFF_SOURCE",
+                  "_checkSourceHost": false,
+                  "$type": "Torappu.Battle.Action.Nodes+CheckContainsBuff"
+                },
+                "_succeedNodes": [
+                  {
+                    "_reason": "INTERRUPT",
+                    "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+                  },
+                  {
+                    "_modeIndex": 2,
+                    "_loadModeFromBlackboard": false,
+                    "_restoreDefault": false,
+                    "_restartFSM": true,
+                    "_targetType": "TARGET",
+                    "$type": "Torappu.Battle.Action.Nodes+SwitchMode"
+                  },
+                  {
+                    "_skillName": "ShineEx",
+                    "_checkSkillActive": false,
+                    "_checkSkillReady": false,
+                    "_ownerType": "TARGET",
+                    "_targetType": "BUFF_OWNER",
+                    "_interruptCurAbility": true,
+                    "_interruptCurAbilityUnlessItIsExpectedAbility": false,
+                    "_assignCombatAbility": false,
+                    "_forceFindTargetBySkillSelector": false,
+                    "_clearPalsyingBuffBeforeTrigger": true,
+                    "_tryCastDirectlyWhenNoTarget": false,
+                    "$type": "Torappu.Battle.Action.Nodes+TriggerEnemySkill"
+                  },
+                  {
+                    "_buff": {
+                      "attributes": {
+                        "abnormalFlags": [],
+                        "abnormalImmunes": [],
+                        "abnormalAntis": [],
+                        "abnormalCombos": [],
+                        "abnormalComboImmunes": [],
+                        "attributeModifiers": []
+                      },
+                      "buffKey": "enemy_trtrsl_collapse",
+                      "loadFromDB": false,
+                      "isDurableBuff": false,
+                      "isDamageMissable": false,
+                      "isSilenceable": false,
+                      "isStunnable": false,
+                      "isFreezable": false,
+                      "isLevitatable": false,
+                      "isGroundBoundable": false,
+                      "statusResistable": "AUTOMATIC",
+                      "templateKey": "empty",
+                      "disableOverride": false,
+                      "overrideKey": null,
+                      "overrideType": "UNIQUE",
+                      "maxStackCnt": 1,
+                      "refreshRemainingTimeWhenStackMax": false,
+                      "clearAllStackCntWhenTimeUp": false,
+                      "maxValidStackCnt": -1,
+                      "independentCharacterSource": false,
+                      "overrideEffectKey": "",
+                      "overrideOnEventPriority": false,
+                      "onEventPriority": "DEFAULT",
+                      "audioSignal": null,
+                      "lifeTimeType": "INFINITY",
+                      "takeSnapshotWhenExtend": false,
+                      "durationKey": null,
+                      "remainingTimeKey": null,
+                      "lifeTime": 0.0,
+                      "triggerLifeType": "IMMEDIATELY",
+                      "triggerCnt": 0,
+                      "triggerInterval": -1.0,
+                      "waitFirstTriggerInterval": true,
+                      "firstTriggerInterval": -1.0,
+                      "priority": -1,
+                      "priorityBBKeys": [],
+                      "stripBlackboardParamsWithBuffKey": false,
+                      "blackboard": [],
+                      "enableInitDirectionFromSource": false
+                    },
+                    "_buffOwner": "BUFF_OWNER",
+                    "_useSpecialBuffSource": false,
+                    "_specialBuffSource": "BUFF_SOURCE",
+                    "_isDerivedBuff": false,
+                    "_finishDerivedBuffIfParentFinish": false,
+                    "_inherateSourceProjectileFromParentBuff": false,
+                    "_hookEffectKeyFromSourceProjectile": false,
+                    "$type": "Torappu.Battle.Action.Nodes+CreateBuff"
+                  }
+                ],
+                "_failNodes": [
+                  {
+                    "_conditionNode": {
+                      "_targetType": "MODIFIER_SOURCE",
+                      "_buffKeys": [
+                        "enemy_trcerb_strong"
+                      ],
+                      "isAND": false,
+                      "_loadFromBlackboard": false,
+                      "_checkBuffSource": false,
+                      "_buffSourceType": "BUFF_SOURCE",
+                      "_checkSourceHost": false,
+                      "$type": "Torappu.Battle.Action.Nodes+CheckContainsBuff"
+                    },
+                    "_succeedNodes": [
+                      {
+                        "_reason": "INTERRUPT",
+                        "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+                      }
+                    ],
+                    "_failNodes": null,
+                    "$type": "Torappu.Battle.Action.Nodes+IfElse"
+                  },
+                  {
+                    "_modeIndex": 1,
+                    "_loadModeFromBlackboard": false,
+                    "_restoreDefault": false,
+                    "_restartFSM": true,
+                    "_targetType": "TARGET",
+                    "$type": "Torappu.Battle.Action.Nodes+SwitchMode"
+                  },
+                  {
+                    "_skillName": "Shine",
+                    "_checkSkillActive": false,
+                    "_checkSkillReady": false,
+                    "_ownerType": "TARGET",
+                    "_targetType": "BUFF_OWNER",
+                    "_interruptCurAbility": true,
+                    "_interruptCurAbilityUnlessItIsExpectedAbility": false,
+                    "_assignCombatAbility": false,
+                    "_forceFindTargetBySkillSelector": false,
+                    "_clearPalsyingBuffBeforeTrigger": true,
+                    "_tryCastDirectlyWhenNoTarget": false,
+                    "$type": "Torappu.Battle.Action.Nodes+TriggerEnemySkill"
+                  }
+                ],
+                "$type": "Torappu.Battle.Action.Nodes+IfElse"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "templateKey": "enemy_wdsdw[loss_hp]",
+        "templateIndex": 2896,
+        "events": [
+          {
+            "event": 2,
+            "actions": [
+              {
+                "_damageType": "PURE",
+                "_damageKey": "value",
+                "_atkScaleKey": "atk_scale",
+                "_ignoreForSp": false,
+                "_attackType": "NORMAL",
+                "_skipModifierEvent": false,
+                "_considerUnhurtable": false,
+                "_noSourceDamage": false,
+                "_targetType": "TARGET",
+                "_assignRealDamageToBB": false,
+                "_assignFinalDamageToBB": false,
+                "_multiplierByKey": false,
+                "_multiplierKey": "cnt",
+                "_damageSourceType": "SOURCE",
+                "_damageTargetType": "TARGET",
+                "_triggerOnCalculateDamage": false,
+                "_isEnvDamage": false,
+                "_ignoreCancelReasonMask": "NONE",
+                "_forceDisplayDamageNum": false,
+                "_undeadable": false,
+                "_modifierKey": "",
+                "_devideDamageFromAbilityCnt": false,
+                "$type": "Torappu.Battle.Action.Nodes+FixedValueDamage"
+              }
+            ]
+          },
+          {
+            "event": 5,
+            "actions": [
+              {
+                "_sideMask": "ENEMY",
+                "_targetType": "MODIFIER_SOURCE",
+                "$type": "Torappu.Battle.Action.Nodes+IfTargetSide"
+              },
+              {
+                "_modifierTargetType": "EP",
+                "$type": "Torappu.Battle.Action.Nodes+FilterModifierTargetType"
+              },
+              {
+                "_reason": "INTERRUPT",
+                "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "templateKey": "enemy_wdrrl[AOE_attack]",
+        "templateIndex": 2898,
+        "events": [
+          {
+            "event": 8,
+            "actions": [
+              {
+                "_filterAttackType": false,
+                "_attackTypeFilter": "NONE",
+                "_filterDamageType": false,
+                "_damageMask": "NONE",
+                "_filterSharedMask": false,
+                "_sharedFlag": "IS_CONTINUOUS",
+                "_filterModifierSource": false,
+                "_source": "BUFF_OWNER",
+                "_filterBySourceId": false,
+                "_sourceId": null,
+                "_checkHasScource": false,
+                "_isNoSource": false,
+                "_filterModifierCancelled": false,
+                "_filterApplyWay": false,
+                "_applyWay": "NONE",
+                "$type": "Torappu.Battle.Action.Nodes+FilterDamageModifer"
+              },
+              {
+                "_targetType": "BUFF_OWNER",
+                "_buffKeys": [
+                  "enemy_wdrrl[first_attack_flag]"
+                ],
+                "isAND": true,
+                "_loadFromBlackboard": false,
+                "_checkBuffSource": false,
+                "_buffSourceType": "BUFF_SOURCE",
+                "_checkSourceHost": false,
+                "$type": "Torappu.Battle.Action.Nodes+CheckContainsBuff"
+              },
+              {
+                "_reason": "INTERRUPT",
+                "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+              },
+              {
+                "_buffKey": "enemy_wdrrl[first_attack_flag]",
+                "_loadFromBlackboard": false,
+                "_decCntIfStack": false,
+                "_updateOverrideMap": true,
+                "_targetType": "BUFF_OWNER",
+                "_checkBuffSource": false,
+                "_sourceType": "BUFF_SOURCE",
+                "_alsoClearNullSource": false,
+                "_finishHostBuff": false,
+                "_excludeThisBuff": false,
+                "_decCntKey": null,
+                "_decCnt": 1,
+                "$type": "Torappu.Battle.Action.Nodes+FinishBuffsById"
+              },
+              {
+                "_useAbilitySourceSide": true,
+                "_sourceType": "BUFF_OWNER",
+                "_targetType": "MODIFIER_TARGET",
+                "_damageType": "PHYSICAL",
+                "_sourceApplyWay": "MELEE",
+                "_targetOptions": {
+                  "targetSide": "ENEMY",
+                  "targetMotion": "WALK_ONLY",
+                  "targetCategory": "NONE,DEFAULT",
+                  "enableAdvancedOptions": false,
+                  "ignoreTargetFree": false,
+                  "ignoreAllyTargetFree": false,
+                  "ignoreHealFree": false,
+                  "ignoreMotionMode": false,
+                  "ignoreTargetSide": false,
+                  "excludeSomeAbnormalFlags": false,
+                  "containSomeAbnormalFlags": false,
+                  "excludeAbnormalFlag": "STUNNED",
+                  "containAbnormalFlag": "STUNNED",
+                  "purposeMask": "NONE",
+                  "professionMask": "NONE",
+                  "checkUnitType": false,
+                  "unitTypeMask": "NONE",
+                  "onlyIgnoreSomeOfTargetFreeCase": false,
+                  "abnormalFlag": "STUNNED",
+                  "abnormalCombo": "SLEEPING"
+                },
+                "_excludeTarget": false,
+                "_rangeId": "x-5",
+                "_useRadius": false,
+                "_useDynamicTreeForRadius": false,
+                "_radius": 0.0,
+                "_useAbilitySelector": false,
+                "_abilityName": null,
+                "_damageScale": "atk_scale",
+                "_buffs": [],
+                "_attackType": "NORMAL",
+                "_createEffect": true,
+                "_hitEffectKey": "enemy_wdrrl_skill_hit_01",
+                "_hitEffectUseSourceFaceTo": false,
+                "_useDamageFromBB": false,
+                "_damageKey": "value",
+                "_isNoSourceDamage": false,
+                "_checkTargetAlive": false,
+                "_modifierKey": "",
+                "_maxTargetCountKey": "",
+                "_filterType": "ALL",
+                "$type": "Torappu.Battle.Action.Nodes+AOEDamage"
+              },
+              {
+                "_targetType": "MODIFIER_TARGET",
+                "_sourceType": "SOURCE",
+                "_effectKey": "enemy_wdrrl_skill_hit_rangre_01",
+                "_useSourceFaceVactor": false,
+                "_useSourceToTargetDirection": false,
+                "_useConstDirection": false,
+                "_constDirection": "UP",
+                "_createEffectHoldBySource": false,
+                "_createEffectConstDirectionHoldBySource": false,
+                "_useAttackPlaybackSpeed": false,
+                "_manualSetPlaybackSpeed": false,
+                "_blackboardKey": "",
+                "_playbackSpeed": 1.0,
+                "$type": "Torappu.Battle.Action.Nodes+CreateEffect"
+              },
+              {
+                "_decCntIfStack": false,
+                "_updateOverrideMap": true,
+                "$type": "Torappu.Battle.Action.Nodes+FinishBuff"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "templateKey": "immune_env_damage",
+        "templateIndex": 8765,
+        "events": [
+          {
+            "event": 5,
+            "actions": [
+              {
+                "_sharedFlags": "IS_ENVIRONMENT_DAMAGE",
+                "_isUnset": false,
+                "$type": "Torappu.Battle.Action.Nodes+CheckIfDamageHasSharedFlags"
+              },
+              {
+                "_reason": "INTERRUPT",
+                "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
