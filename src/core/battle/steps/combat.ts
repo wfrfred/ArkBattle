@@ -4,8 +4,6 @@ import { ref as actionRef } from "../../unit/action/action.js";
 import * as units from "../../unit/query.js";
 import { hasAction } from "../../unit/capability/action/capability.js";
 import * as presence from "../../unit/capability/presence/capability.js";
-import { hasVitality } from "../../unit/capability/vitality/capability.js";
-import { remove } from "../unit.js";
 import type { State as BattleState } from "../state.js";
 import type { Command } from "../contract.js";
 
@@ -22,14 +20,6 @@ export function prepare(battle: BattleState, commands: readonly Command[]): Batt
 export function advance(battle: BattleState): BattleState {
     const initial = battle;
     const candidates = units.all(initial);
-
-    for (const candidate of candidates) {
-        const source = units.ref(candidate);
-        const unit = units.get(battle, source);
-        if (unit !== undefined && hasVitality(unit) && unit.vitality.hp <= 0) {
-            battle = remove(battle, source, "DEATH");
-        }
-    }
 
     for (const candidate of candidates.filter(hasAction)) {
         const source = units.ref(candidate);

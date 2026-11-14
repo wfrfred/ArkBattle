@@ -166,7 +166,7 @@ Hitbox 的 Targeting 接入只保留一个代表场景：显式范围使用受�
 | HP-02 | 从同一输入分别执行 Calculate 时，各自业务状态独立，调用方接续其中一个结果后只发生该次 Apply。弱点选高属于尚未接入的具体内容组合。 | 验证真实 Calculate／Apply 的独立分支和状态接续；不在夹具手写“选高”算法来证明产品已支持弱点。 |
 | APPLY-01 | BeforeReceive 可改变准入；Receiving 的取消保留已完成业务并继续独立响应，取消后不提交。BeforeCommit 位于接收后与写入前，返回后使用最新资格及资源。 | 以真实无敌 Effect 与 Skill 的 HIT 回复接入、嵌套恢复等操作组合，核对准入先于受击回复、最终资源和固定提交报告；Hook 通用排序集中保障。 |
 | APPLY-02 | 四种业务在全部 Output Hook 后形成非负 Calculated；负输出截为零，与零输出一同在 Apply 入口拒绝，计算期间已经完成的业务保留。具有 Receiving 的业务在全部接收 Hook 后形成非负 Pending，BeforeCommit、提交与 Applied 使用同一接收量；正数输出被接收为零或实际变化为零仍可成功。来源无 Vitality 仍可执行输出 Hook；同源同目标的两个 Applied 角色分别执行。 | 以最小合法 Unit 组合集中验证最终输出与接收边界；治疗使用满资源，损伤使用固定减伤超过待接收量的代表，确认实际变化为零而成功。Formula 从请求原始参数开始，不另设 EP 负数入口异常。不按非法数值、Hook 阶段或资源种类展开防御矩阵。 |
-| HP-03 | HP 写入后先执行两侧 Applied，再按最新 HP 确认死亡，随后清理关系和注销。普通 Healing 不恢复零 HP；Core 不提供特殊生命干预协议。 | 真实致死场景观察两侧响应中的零 HP、仍在场及原关系，响应结束后才注销并释放；不伪造零 HP 回正或复制 Lifetime 的整套析构测试。 |
+| HP-03 | HP 写入后先执行两侧 Applied，再按最新 HP 确认死亡，随后清理关系和注销；嵌套 Combat 不代为判死。普通 Healing 不恢复零 HP；Core 不提供特殊生命干预协议。 | 真实致死场景在目标 Applied 内调用 Combat，来源 Applied 仍观察零 HP、目标在场及原关系；响应结束后才由本笔确认死亡、注销并释放，最终返回 killed。不伪造零 HP 回正或复制 Lifetime 的整套析构测试。 |
 | HP-04 | MaxHP 修正的登记、替换与撤销按比例接续当前 HP，不构成普通治疗；正常资源保留小数。 | 从合法构造与真实损伤形成受损对象，再通过 Contribution Change 验证资源比例。不用伪造零 HP、回调排列或逐字段构造校验矩阵。 |
 | HP-05 | DAMAGE／LOSS 共享完整 Calculate／Apply；LOSS 仍计算防御与 Formula／Output，并完成接收、两侧 Applied 及既定死亡后继。普通无敌、Presence 和普通受伤机制按性质筛选，不阻止 LOSS。 | 一个真实无敌／消失目标的流失结算场景，观察公式结果、共用 Hook 与提交／死亡事实。普通伤害的原有准入场景继续保留；不按阶段与伤害类型复制矩阵，也不在夹具另写一套盾或角色天赋。 |
 | HP-06 | HIT 回复要求 nature=DAMAGE 且 hitRecovery=true；hitRecovery=false 的普通伤害仍进入普通 Receiving 和 Applied。 | 真实 Skill 的 HIT 接入观察 LOSS 不回复；在已有活性源石代表场景核对实际 HP 损伤与普通接收仍发生、HIT SP 不增长。不为两个字段分别增加 Getter／非法组合测试。 |

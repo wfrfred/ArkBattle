@@ -4,6 +4,7 @@ import { battle, get } from "../helpers/battle.js";
 import { Hooks } from "../../dist/core/hook.js";
 import * as units from "../../dist/core/unit/index.js";
 import { update } from "../../dist/core/battle/unit.js";
+import { advance as advanceCombat } from "../../dist/core/battle/steps/combat.js";
 import * as hpDamage from "../../dist/core/battle/damage/hp/index.js";
 import * as epDamage from "../../dist/core/battle/damage/ep/index.js";
 import * as hpHealing from "../../dist/core/battle/healing/hp/index.js";
@@ -569,7 +570,7 @@ test("HP-05/06: LOSS completes the shared pipeline against an invincible absent 
     assert.equal(get(applied.state, target.id), undefined);
 });
 
-test("HP-03: lethal HP remains present and blocking through both Applied roles, then death releases the relation", () => {
+test("HP-03: lethal HP remains present through nested Combat and both Applied roles before death releases blocking", () => {
     let state = battle([
         { definition: { id: "source", hooks: Hooks.empty() }, position: [0, 0] },
         { definition: {
@@ -601,7 +602,9 @@ test("HP-03: lethal HP remains present and blocking through both Applied roles, 
                     hpHealing.calculateHealing(current, recovery),
                 );
                 assert.equal(attempted.value.type, "REJECTED");
-                return { state: attempted.state, value: undefined };
+                const resumed = advanceCombat(attempted.state);
+                assert.equal(get(resumed, 1)?.lifecycle, "PRESENT");
+                return { state: resumed, value: undefined };
             },
         }),
     );

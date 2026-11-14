@@ -518,7 +518,7 @@ Apply 对最终计算量为零的治疗在入口返回 REJECTED，不派发本�
 
 实际内容对扩展时点与事件粒度的要求见[伤害 Hook 需求调查](../research/cases/28-damage-hooks-and-event-granularity.md)。当前公共接口的支持范围如下：
 
-- **死亡清理**：普通 Damage 在两侧 Applied 后同步确认死亡并请求离场，Finalize 遵循 Lifetime 的最外层完成边界。Runtime 的 Combat 阶段在推进 Action 前另扫描 HP 不大于零的 Unit 并请求死亡离场。绕过 Damage 的致死操作没有专属清理协议；该扫描的位置与适用政策仍是未定设计边界。
+- **死亡清理**：普通伤害与生命流失由完整 HP Damage 在两侧 Applied 后确认死亡、请求离场并形成 killed；显式致死或退场由所属操作请求 Unit 结束。Finalize 遵循 Lifetime 的最外层完成边界。Combat 只推进 Action，不扫描 HP 或代为判定死亡；Applied 中同步调用 Combat 也不提前结束当前伤害的目标。
 - **特殊 HP 修改**：普通伤害与生命流失都通过 HP Damage 结算，自然回复由 Vitality.advance 推进，HP 写入由 Vitality 拥有。生命复原和直接 HP 设置仍没有完整公开操作；Effect 不能直接重建 Vitality State 代替缺失的领域入口。
 - **伤害分类**：Request 已表达 DAMAGE／LOSS 与 hitRecovery，不携带 AttackType、ApplyWay 等其余固有分类。无视闪避、取消限制、非致命、分担和特殊生命机制仍无完整协议，也不能从目标状态或来源单位类型反推这些事实。
 - **受伤与 HIT 回复资格**：Request.hitRecovery 与 nature 共同限定受击类 SP 回复；普通环境伤害与标准元素爆发可保留受伤响应而不提供 HIT 回复，不通过全局阻回伪装单笔资格。具体内容未全部接入不改变这项公共契约。
