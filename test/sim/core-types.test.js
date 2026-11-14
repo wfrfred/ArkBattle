@@ -69,6 +69,21 @@ Hooks.empty().set(receivingKey, {
         state, value: current.type === 'NORMAL' ? { ...current, amount: current.amount / 2 } : current,
     }),
 });
+vitality.setHook('damageReceiving', {
+    id: 'conditional-receiving',
+    invoke(state, _context, current) {
+        if (current.type === 'CANCELLED' || current.amount <= 0) {
+            return { state, value: current };
+        }
+        if (current.amount > 10) {
+            return { state, value: hpDamage.cancel(current, 'BLOCKED') };
+        }
+        if (current.type === 'FIXED') {
+            return { state, value: current };
+        }
+        return { state, value: { ...current, amount: current.amount / 2 } };
+    },
+});
 declare const receivingContext: hpDamage.ReceivingContext;
 declare const damageOutcome: hpDamage.Outcome;
 if (damageOutcome.type === 'APPLIED') {
@@ -79,23 +94,34 @@ if (damageOutcome.type === 'APPLIED') {
 declare const appliedContext: hpDamage.AppliedContext;
 // @ts-expect-error Applied executes before death confirmation.
 appliedContext.killed;
-declare const cancelled: Extract<hpDamage.Pending<'MISS'>, { type: 'CANCELLED' }>;
+declare const cancelled: hpDamage.Pending<'MISS', 'CANCELLED'>;
+const selectedReason: 'MISS' = cancelled.reason;
 const normalFixed: 'FIXED' = hpDamage.fix({ type: 'NORMAL', amount: 10 }).type;
 const alreadyFixed: 'FIXED' = hpDamage.fix({ type: 'FIXED', amount: 10 }).type;
 const fixedCancellation: 'MISS' = hpDamage.fix(cancelled).reason;
 const originalCancellation: 'MISS' = hpDamage.cancel(cancelled, 'BLOCKED').reason;
 const newCancellation: 'BLOCKED' = hpDamage.cancel({ type: 'NORMAL', amount: 10 }, 'BLOCKED').reason;
+declare const normalOrCancelled: hpDamage.Pending<'MISS', 'NORMAL' | 'CANCELLED'>;
+const fixedUnion = hpDamage.fix(normalOrCancelled);
+if (fixedUnion.type === 'CANCELLED') {
+    const unionReason: 'MISS' = fixedUnion.reason;
+}
+const cancelledUnionReason: 'MISS' | 'BLOCKED' = hpDamage.cancel(normalOrCancelled, 'BLOCKED').reason;
 const reception = receivingHooks.get(receivingKey)[0]!.invoke(battle, receivingContext, cancelled);
 const cancelledType: 'CANCELLED' = reception.value.type;
-if (reception.value.type === 'CANCELLED') {
-    const preservedReason: 'MISS' = reception.value.reason;
-}
+const preservedReason: 'MISS' = reception.value.reason;
+// @ts-expect-error the Hook interface itself rejects restoration, independently of storage.
+const invalidDirect: hpDamage.ReceivingHook = { id: 'invalid-direct', invoke: (state, _context, current) => ({ state, value: { ...current, type: 'NORMAL' as const } }) };
 // @ts-expect-error fixed work cannot become NORMAL, including through erased Hook storage.
-Hooks.empty().set(receivingKey, { id: 'unfix', invoke: (state, _context, current) => ({ state, value: { ...current, type: 'NORMAL' } }) });
+Hooks.empty().set(receivingKey, { id: 'unfix', invoke: (state, _context, current) => ({ state, value: { ...current, type: 'NORMAL' as const } }) });
 // @ts-expect-error cancelled work cannot resume even as FIXED.
-Hooks.empty().set(receivingKey, { id: 'revive', invoke: (state, _context, current) => ({ state, value: { ...current, type: 'FIXED' } }) });
+Hooks.empty().set(receivingKey, { id: 'revive', invoke: (state, _context, current) => ({ state, value: { ...current, type: 'FIXED' as const } }) });
 // @ts-expect-error cancellation retains its original reason even when the replacement is a valid Reason.
-Hooks.empty().set(receivingKey, { id: 'rewrite-reason', invoke: (state, _context, current) => ({ state, value: current.type === 'CANCELLED' ? { ...current, reason: 'BLOCKED' } : current }) });
+Hooks.empty().set(receivingKey, { id: 'rewrite-reason', invoke: (state, _context, current) => ({ state, value: current.type === 'CANCELLED' ? { ...current, reason: 'BLOCKED' as const } : current }) });
+// @ts-expect-error fixing a rewritten state cannot hide an illegal restoration.
+Hooks.empty().set(receivingKey, { id: 'restore-then-fix', invoke: (state, _context, current) => ({ state, value: hpDamage.fix({ ...current, type: 'NORMAL' as const }) }) });
+// @ts-expect-error cancelling again cannot hide replacement of an existing reason.
+Hooks.empty().set(receivingKey, { id: 'rewrite-then-cancel', invoke: (state, _context, current) => ({ state, value: current.type === 'CANCELLED' ? hpDamage.cancel({ ...current, reason: 'BLOCKED' as const }, 'MISS') : current }) });
 // @ts-expect-error cancellation reasons belong to the domain's finite union.
 hpDamage.cancel(cancelled, 'OTHER');
 const program: actions.Definition<{ uses: number }, { hits: number }> = {
