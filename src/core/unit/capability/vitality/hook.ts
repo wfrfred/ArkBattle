@@ -3,13 +3,15 @@ import { key, type Hook } from "../../../hook.js";
 import type { Unit } from "../../unit.js";
 import type { Vitality } from "./capability.js";
 
-export interface CommittingContext {
+export interface DamageCommittingContext {
     readonly target: Ref<Unit & Vitality>;
     readonly hpBefore: number;
 }
 
-export interface CommittingHook extends Hook<CommittingContext, number> {
+export interface DamageCommittingHook extends Hook<DamageCommittingContext, number> {
     readonly priority?: number;
 }
 
-export const committing = key<CommittingHook, Unit & Vitality>("vitality.committing");
+export const damageCommitting = key<DamageCommittingHook, Unit & Vitality>(
+    "vitality.damageCommitting",
+);

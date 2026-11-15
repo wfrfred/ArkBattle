@@ -428,7 +428,7 @@ const patient = initialize(battle, { id: 2, position: [0, 0], definition: {
     vitality: { maxHp: 100, defense: 10, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
 } }).value;
 const patientRef = ref(patient);
-const committingChange = setUnitHook(vitality.committing, {
+const damageCommittingChange = setUnitHook(vitality.damageCommitting, {
     id: 'protect-hp',
     invoke(state, context, hp) {
         const target: Ref<Unit & vitality.Vitality> = context.target;
@@ -436,11 +436,11 @@ const committingChange = setUnitHook(vitality.committing, {
         return { state, value: Math.max(hp, 1) };
     },
 });
-update(battle, patientRef, committingChange);
-// @ts-expect-error HP writing hooks require Vitality on the host.
-update(battle, ref(bare), committingChange);
-// @ts-expect-error committing carries an HP number rather than a Receiving Pending.
-Hooks.empty().set(vitality.committing, { id: 'pending', invoke: (state, _context, hp) => ({ state, value: { amount: hp } }) });
+update(battle, patientRef, damageCommittingChange);
+// @ts-expect-error damage committing hooks require Vitality on the host.
+update(battle, ref(bare), damageCommittingChange);
+// @ts-expect-error damage committing carries an HP number rather than a Receiving Pending.
+Hooks.empty().set(vitality.damageCommitting, { id: 'pending', invoke: (state, _context, hp) => ({ state, value: { amount: hp } }) });
 const classifiedRequest: hpDamage.Request = {
     source: null, target: patientRef, nature: 'DAMAGE', hitRecovery: true,
     attackType: 'NONE', applyWay: 'ALL',

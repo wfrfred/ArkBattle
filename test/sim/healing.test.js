@@ -82,13 +82,13 @@ test("APPLY-02: Calculate normalizes final HP/EP output before Apply starts rece
 
 test("HP Healing accepts full resources and absent patients while damage requires presence", () => {
     const calls = [];
-    const hpCommits = [];
+    const damageCommits = [];
     let state = battle([{ definition: {
         id: "patient", presence: {},
-        hooks: Hooks.empty().set(vitality.committing, {
-            id: "observe-hp-write",
+        hooks: Hooks.empty().set(vitality.damageCommitting, {
+            id: "observe-damage-commit",
             invoke(current, context, hp) {
-                hpCommits.push([context.hpBefore, hp]);
+                damageCommits.push([context.hpBefore, hp]);
                 return { state: current, value: hp };
             },
         }),
@@ -112,13 +112,12 @@ test("HP Healing accepts full resources and absent patients while damage require
     assert.equal(calculated.value.amount, 50);
     assert.equal(get(calculated.state, 0).vitality.hp, 100.5);
     assert.deepEqual(calls, []);
-    assert.deepEqual(hpCommits, []);
     const full = hpHealing.applyHealing(request, calculated);
     assert.equal(full.value.type, "APPLIED");
     assert.equal(full.value.received.amount, 40);
     assert.deepEqual(full.value.application, { hpBefore: 100.5, hpAfter: 100.5, hpGain: 0 });
     assert.deepEqual(calls, ["receive", "target", "source"]);
-    assert.deepEqual(hpCommits, [[100.5, 140.5]]);
+    assert.deepEqual(damageCommits, []);
 
     const hpLoss = { source: null, target, attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE", hitRecovery: true, parameters: {
         type: "TRUE", attack: { power: 30, multiplier: 1, addition: 0 },
@@ -134,7 +133,7 @@ test("HP Healing accepts full resources and absent patients while damage require
     assert.equal(epDamage.applyDamage(epLoss, epDamage.calculateDamage(state, epLoss)).value.type, "REJECTED");
     const hpRestored = hpHealing.applyHealing(request, hpHealing.calculateHealing(state, request));
     assert.equal(hpRestored.value.application.hpGain, 30);
-    assert.deepEqual(hpCommits.at(-1), [70.5, 110.5]);
+    assert.deepEqual(damageCommits, [[100.5, 70.5]]);
     const epRequest = { target, source: null, parameters: { power: 100 } };
     const epRestored = epHealing.applyHealing(epRequest, epHealing.calculateHealing(hpRestored.state, epRequest));
     assert.equal(epRestored.value.application.epGain.NEURAL, 100);
@@ -150,7 +149,7 @@ test("HP Healing accepts full resources and absent patients while damage require
 
 test("HP-07: natural recovery samples current attributes after Effects and before Action without ordinary healing", () => {
     const observed = [];
-    const hpCommits = [];
+    const damageCommits = [];
     const ordinaryHealing = () => assert.fail("natural recovery must not enter ordinary healing");
     const observer = {
         id: "observe-recovery", intervalTicks: 0, speed: 100,
@@ -169,10 +168,10 @@ test("HP-07: natural recovery samples current attributes after Effects and befor
                 .set(hpHealing.targetFormula, { id: "formula", invoke: ordinaryHealing })
                 .set(hpHealing.beforeReceive, { id: "before", invoke: ordinaryHealing })
                 .set(hpHealing.targetApplied, { id: "applied", invoke: ordinaryHealing })
-                .set(vitality.committing, {
-                    id: "observe-hp-write",
+                .set(vitality.damageCommitting, {
+                    id: "observe-damage-commit",
                     invoke(current, context, hp) {
-                        hpCommits.push([context.hpBefore, hp]);
+                        damageCommits.push([context.hpBefore, hp]);
                         return { state: current, value: hp };
                     },
                 }),
@@ -182,7 +181,6 @@ test("HP-07: natural recovery samples current attributes after Effects and befor
             action: { initialize: state => actions.createActions(state, actions.create(observer)) },
         }, position: [1, 0] },
     ]);
-    assert.deepEqual(hpCommits, []);
     const target = units.ref(get(state, 0));
     const loss = amount => ({
         source: null, target, attackType: "NONE", applyWay: "NONE", nature: "LOSS", hitRecovery: false,
@@ -190,7 +188,7 @@ test("HP-07: natural recovery samples current attributes after Effects and befor
     });
     const initialLoss = loss(60);
     state = hpDamage.applyDamage(initialLoss, hpDamage.calculateDamage(state, initialLoss)).state;
-    hpCommits.length = 0;
+    assert.deepEqual(damageCommits, [[100, 40]]);
     state = effects.install(state, target, healFree).state;
     state = effects.install(state, target, {
         id: "recovery-contributions", initialize: () => ({}),
@@ -212,15 +210,11 @@ test("HP-07: natural recovery samples current attributes after Effects and befor
     state = step(state, []);
     assert.equal(observed.length, 1);
     assert.ok(Math.abs(observed[0] - 40.3) < 1e-10);
-    assert.equal(hpCommits.length, 1);
-    assert.equal(hpCommits[0][0], 40);
-    assert.ok(Math.abs(hpCommits[0][1] - 40.3) < 1e-10);
     assert.equal(state.events.some(event => event.type === "HEAL"), false);
 
     state = update(state, target, vitality.setMaxHpContribution({
         id: "larger-pool", value: [modifier({ multiplier: 1 })],
     }));
-    assert.equal(hpCommits.length, 1);
     state = step(state, []);
     assert.equal(vitality.resolveRecoverySpeed(state, get(state, 0)), 21);
     assert.equal(observed.length, 2);
@@ -236,17 +230,8 @@ test("HP-07: natural recovery samples current attributes after Effects and befor
     }));
     state = vitality.advance(state, target);
     assert.equal(get(state, 0).vitality.hp, 200);
-    const beforeFullRecovery = hpCommits.length;
     assert.equal(vitality.advance(state, target), state);
-    assert.equal(hpCommits.length, beforeFullRecovery + 1);
-
-    state = update(state, target, units.compose(
-        vitality.setContribution("recoverySpeed", { id: "stop", value: [modifier({ finalScaler: 0 })] }),
-        vitality.setContribution("recoveryRatio", { id: "stop", value: [modifier({ finalScaler: 0 })] }),
-    ));
-    const beforeStoppedRecovery = hpCommits.length;
-    assert.equal(vitality.advance(state, target), state);
-    assert.equal(hpCommits.length, beforeStoppedRecovery);
+    assert.deepEqual(damageCommits, [[100, 40]]);
 
     state = update(state, target, units.setHook(hpDamage.targetApplied, {
         id: "zero-hp", invoke(current) {

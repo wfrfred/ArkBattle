@@ -13,18 +13,17 @@ import { resolveMaxHp, type Vitality } from "./capability.js";
 import { resolveRecoverySpeed } from "./query.js";
 import { allows } from "../../../restriction.js";
 import type { Restriction } from "./restriction.js";
-import { committing, type CommittingContext } from "./hook.js";
+import { damageCommitting, type DamageCommittingContext } from "./hook.js";
 
-interface Application {
+export interface DamageApplication {
     readonly hpBefore: number;
     readonly hpAfter: number;
-}
-
-export interface DamageApplication extends Application {
     readonly hpLoss: number;
 }
 
-export interface HealingApplication extends Application {
+export interface HealingApplication {
+    readonly hpBefore: number;
+    readonly hpAfter: number;
     readonly hpGain: number;
 }
 
@@ -86,60 +85,14 @@ export function commitDamage(
     battle: BattleState,
     context: damage.CommitContext,
 ): Result<DamageApplication | null> {
-    const unit = units.get(battle, context.request.target)!;
-    const committed = commitHp(battle, unit, unit.vitality.hp - context.received.amount);
-    const application = committed.value;
-
-    return {
-        state: committed.state,
-        value:
-            application === null
-                ? null
-                : {
-                      ...application,
-                      hpLoss: Math.max(0, application.hpBefore - application.hpAfter),
-                  },
-    };
-}
-
-export function commitHealing(
-    battle: BattleState,
-    context: healing.CommitContext,
-): Result<HealingApplication | null> {
-    const unit = units.get(battle, context.request.target)!;
-    const committed = commitHp(battle, unit, unit.vitality.hp + context.received.amount);
-    const application = committed.value;
-
-    return {
-        state: committed.state,
-        value:
-            application === null
-                ? null
-                : {
-                      ...application,
-                      hpGain: Math.max(0, application.hpAfter - application.hpBefore),
-                  },
-    };
-}
-
-export function advance(battle: BattleState, reference: Ref<Unit & Vitality>): BattleState {
-    const unit = units.get(battle, reference);
-    if (unit?.lifecycle !== "PRESENT" || unit.vitality.hp <= 0) {
-        return battle;
-    }
-
-    const amount = resolveRecoverySpeed(battle, unit) / TICKS_PER_SECOND;
-
-    return amount === 0 ? battle : commitHp(battle, unit, unit.vitality.hp + amount).state;
-}
-
-function commitHp(
-    battle: BattleState,
-    unit: Unit & Vitality,
-    hp: number,
-): Result<Application | null> {
-    const target = units.ref(unit);
-    const committed = dispatchHook(battle, { target, hpBefore: unit.vitality.hp }, hp, committing);
+    const target = context.request.target;
+    const unit = units.get(battle, target)!;
+    const committed = dispatchHook(
+        battle,
+        { target, hpBefore: unit.vitality.hp },
+        unit.vitality.hp - context.received.amount,
+        damageCommitting,
+    );
     battle = committed.state;
     const current = units.get(battle, target);
     if (current?.lifecycle !== "PRESENT" || current.vitality.hp <= 0) {
@@ -149,18 +102,56 @@ function commitHp(
     const hpBefore = current.vitality.hp;
     const maxHp = resolveMaxHp(current.definition.vitality, current.vitality);
     const hpAfter = Math.max(0, Math.min(committed.value, maxHp));
+    const application = { hpBefore, hpAfter, hpLoss: Math.max(0, hpBefore - hpAfter) };
 
     return {
         state:
             hpAfter === hpBefore
                 ? battle
                 : replace(battle, [{ ...current, vitality: { ...current.vitality, hp: hpAfter } }]),
-        value: { hpBefore, hpAfter },
+        value: application,
+    };
+}
+
+export function commitHealing(
+    battle: BattleState,
+    context: healing.CommitContext,
+): Result<HealingApplication> {
+    const unit = units.get(battle, context.request.target)!;
+
+    return increaseHp(battle, unit, context.received.amount);
+}
+
+export function advance(battle: BattleState, reference: Ref<Unit & Vitality>): BattleState {
+    const unit = units.get(battle, reference);
+    if (unit?.lifecycle !== "PRESENT" || unit.vitality.hp <= 0) {
+        return battle;
+    }
+
+    return increaseHp(battle, unit, resolveRecoverySpeed(battle, unit) / TICKS_PER_SECOND).state;
+}
+
+function increaseHp(
+    battle: BattleState,
+    unit: Unit & Vitality,
+    amount: number,
+): Result<HealingApplication> {
+    const hpBefore = unit.vitality.hp;
+    const maxHp = resolveMaxHp(unit.definition.vitality, unit.vitality);
+    const hpAfter = hpBefore + Math.max(0, Math.min(amount, maxHp - hpBefore));
+    const application = { hpBefore, hpAfter, hpGain: hpAfter - hpBefore };
+
+    return {
+        state:
+            hpAfter === hpBefore
+                ? battle
+                : replace(battle, [{ ...unit, vitality: { ...unit.vitality, hp: hpAfter } }]),
+        value: application,
     };
 }
 
 function dispatchHook<
-    C extends damage.ReceivingContext | healing.ReceivingContext | CommittingContext,
+    C extends damage.ReceivingContext | healing.ReceivingContext | DamageCommittingContext,
     T,
     H extends hooks.Hook<C, T> & { readonly priority?: number },
 >(

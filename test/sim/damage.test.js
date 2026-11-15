@@ -544,7 +544,7 @@ test("APPLY-01: Receiving and BeforeCommit resource changes define the baseline 
     assert.equal(healingNotifications, 2);
 });
 
-test("HP-08: committing chains proposed HP against current state and does not revive a removed host", () => {
+test("HP-08: damage committing chains proposed HP against current state and does not revive a removed host", () => {
     let state = battle([
         { definition: { id: "source", hooks: Hooks.empty() }, position: [0, 0] },
         { definition: {
@@ -564,14 +564,14 @@ test("HP-08: committing chains proposed HP against current state and does not re
             invoke: (current, _context, pending) => ({ state: current, value: hpDamage.fix(pending) }),
         }),
         units.compose(
-            units.setHook(vitality.committing, {
+            units.setHook(vitality.damageCommitting, {
                 id: "last",
                 invoke(current, context, hp) {
                     calls.push(["last", context.hpBefore, hp]);
                     return { state: current, value: hp + 250 };
                 },
             }),
-            units.setHook(vitality.committing, {
+            units.setHook(vitality.damageCommitting, {
                 id: "first", priority: 10,
                 invoke(current, context, hp) {
                     calls.push(["first", context.hpBefore, hp]);
@@ -591,7 +591,7 @@ test("HP-08: committing chains proposed HP against current state and does not re
     }));
     const request = damageRequest(source, target, 150);
     const protectedHit = hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request), {
-        exclude: [[vitality.committing, null]],
+        exclude: [[vitality.damageCommitting, null]],
     });
     assert.equal(protectedHit.value.type, "APPLIED");
     assert.deepEqual(protectedHit.value.received, { type: "FIXED", amount: 150 });
@@ -602,7 +602,7 @@ test("HP-08: committing chains proposed HP against current state and does not re
     assert.equal(get(protectedHit.state, target.id).vitality.hp, 200);
     assert.equal(applied, 1);
 
-    state = update(protectedHit.state, target, units.setHook(vitality.committing, {
+    state = update(protectedHit.state, target, units.setHook(vitality.damageCommitting, {
         id: "remove-host", priority: 10000,
         invoke(current, context, value) {
             return { state: remove(current, context.target, "SCRIPT"), value };

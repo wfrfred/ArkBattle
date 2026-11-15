@@ -1,6 +1,6 @@
 # Vitality、Damage 与 Healing
 
-Vitality 保存 HP、MaxHP、DEF、RES、自然回复属性和伤害接收规则，并负责 HP 专属接收及写入前 committing 的派发。所有结算 Hook 由对应领域定义 typed Key，存于来源或目标的 Unit.hooks。`battle/resource/` 按 HP／EP，再按 Damage／Healing 提供 Calculate／Apply 操作，复用[公共 Hook 契约](functional-core.md#6-hook-和生命周期的纯契约)。
+Vitality 保存 HP、MaxHP、DEF、RES、自然回复属性和伤害接收规则，并负责 HP 专属接收及伤害写入前 damageCommitting 的派发。所有结算 Hook 由对应领域定义 typed Key，存于来源或目标的 Unit.hooks。`battle/resource/` 按 HP／EP，再按 Damage／Healing 提供 Calculate／Apply 操作，复用[公共 Hook 契约](functional-core.md#6-hook-和生命周期的纯契约)。
 
 [resource/index.ts](../../src/core/battle/resource/index.ts) 导出 hp、ep 命名空间，各自导出 damage、healing。HP 业务也可直接从 [hp/damage/index.ts](../../src/core/battle/resource/hp/damage/index.ts) 与 [hp/healing/index.ts](../../src/core/battle/resource/hp/healing/index.ts) 导入公共契约；资源能力由 [vitality/index.ts](../../src/core/unit/capability/vitality/index.ts) 提供。四种业务保留 calculateDamage／applyDamage 或 calculateHealing／applyHealing 两阶段入口；Hook 键和精确公开类型由对应入口导出，共用派发保持内部实现。
 
@@ -63,36 +63,36 @@ Damage 接收 Restriction 使用 `allows(battle, ReceivingContext)`；Restrictio
 有效固定回复速度 + 当前有效 MaxHP × 有效比例回复速度
 ```
 
-Runtime 在 Effect 推进后、Elemental 资源推进前调用 Vitality.advance，再进入 Skill／Action。每次从当前 BattleState 读取宿主、有效 MaxHP 与回复贡献，按总速度除以 TICKS_PER_SECOND 增加 HP，保留小数并限制到当前有效 MaxHP。只对生命周期为 PRESENT 且 HP 大于零的 Unit 推进；空间消失和 healFree 不阻止自然回复，零 HP 不被复活。回复量为零时不发起 HP 提交；正数回复通过 committing 后完成上限裁切，最终 HP 及其他状态均不变时返回原状态。
+Runtime 在 Effect 推进后、Elemental 资源推进前调用 Vitality.advance，再进入 Skill／Action。每次从当前 BattleState 读取宿主、有效 MaxHP 与回复贡献，按总速度除以 TICKS_PER_SECOND 增加 HP，保留小数并限制到当前有效 MaxHP。只对生命周期为 PRESENT 且 HP 大于零的 Unit 推进；空间消失和 healFree 不阻止自然回复，零 HP 不被复活。满血或回复量为零时不生成新的状态版本。
 
-自然回复由 Vitality 直接提交，与 commitDamage／commitHealing 共用 HP 写入及 committing，不伪造 Healing Request，不经过普通 Healing 的 Calculate、Receiving 或 Applied，也不输出 HEAL。当前不提供额外的 HP 满值通知。
+自然回复由 Vitality 直接提交，与 commitHealing 共用内部 HP 增加与上限裁切，不伪造 Healing Request，不经过普通 Healing 的 Calculate、Receiving 或 Applied，也不输出 HEAL。当前不提供额外的 HP 满值通知。
 
 固定与比例属性、存活门控和不参与普通治疗的依据见[自然回复调查](../research/cases/29-hp-and-ep-healing-settlement.md#自然-hp-回复的完整普通路径)。**逐 Tick 小数回复是项目选择**：不采用原生每次增加 1 HP 的脉冲计时器，不保存脉冲进度；启停或变速时与原生脉冲的时间细节允许不同。
 
 ### 0.2 HP 写入前修改
 
-Vitality 在伤害提交、显式治疗与正数自然回复的 HP 写入前派发 `committing`，不依赖 Damage 的 Request、Pending 或取消原因。Hook 定义于 `vitality/hook.ts`，通过 Unit 的公共 Hook 接口登记：
+Vitality 在 commitDamage 的 HP 写入前派发 `damageCommitting`，普通伤害与生命流失共用这个修改机会；保护程序自行判断本次应用是否致命。治疗与自然回复保持各自正向恢复路径。Hook 载荷不携带 Damage 的 Request、Pending 或取消原因。Hook 定义于 `vitality/hook.ts`，通过 Unit 的公共 Hook 接口登记：
 
 ```typescript
-interface CommittingContext {
+interface DamageCommittingContext {
     readonly target: Ref<Unit & Vitality>;
     readonly hpBefore: number;
 }
 
-interface CommittingHook extends Hook<CommittingContext, number> {
+interface DamageCommittingHook extends Hook<DamageCommittingContext, number> {
     readonly priority?: number;
 }
 
-const committing: Key<CommittingHook, Unit & Vitality>;
+const damageCommitting: Key<DamageCommittingHook, Unit & Vitality>;
 ```
 
-Context.hpBefore 是本次进入提交时的 HP。current 是本次待写入的绝对 HP：伤害从 `hpBefore - received.amount` 开始，治疗和自然回复从 `hpBefore + amount` 开始。派发前不截零或按 MaxHP 裁切，各 Hook 逐项接续有限数值和 BattleState；例如 100 HP 接收 150 伤害时，首项收到 -50，可改成 1。数值固定的 Damage Pending 仍正常进入这个 HP 应用机会，原 received 不被改写。
+Context.hpBefore 是本次进入提交时的 HP。current 是本次待写入的绝对 HP，从 `hpBefore - received.amount` 开始。派发前不截零或按 MaxHP 裁切，各 Hook 逐项接续有限数值和 BattleState；例如 100 HP 接收 150 伤害时，首项收到 -50，可改成 1。数值固定的 Damage Pending 仍正常进入这个 HP 应用机会，原 received 不被改写。
 
-Hook 按 priority 降序执行，相同时保留登记顺序，候选固定、登记实时读取。它属于 Vitality 的完整资源提交，不自动继承 Damage／Healing Apply 的 exclude、ignore 或 forbidden。初始化与 MaxHP Contribution Change 内的纯比例校准保留各自构造／Transformation 契约，不派发运行时 committing，不在纯 Transformation 内调用业务程序。
+Hook 按 priority 降序执行，相同时保留登记顺序，候选固定、登记实时读取。它属于 Vitality 的伤害资源提交，不自动继承 Damage Apply 的 exclude、ignore 或 forbidden。初始化与 MaxHP Contribution Change 内的纯比例校准保留各自构造／Transformation 契约，不派发 damageCommitting，不在纯 Transformation 内调用业务程序。
 
 派发后从最新 BattleState 重新读取目标、HP 和有效 MaxHP；目标已离场、结束中或生命已归零时不再提交，返回 null，已完成的回调业务保留。否则将最终待写值限制到 0～当前有效 MaxHP，仅修改最新 Unit 的 HP，保留回调产生的其他状态。待写值是明确接续的绝对值，不自动改为对回调后 HP 再加减一遍。
 
-Application 的 hpBefore 在实际写入前读取，hpAfter 是本次最终写入值，不使用 Context.hpBefore 覆盖回调产生的新状态。Damage 的 hpLoss 为 `max(0, hpBefore - hpAfter)`，Healing 的 hpGain 为 `max(0, hpAfter - hpBefore)`，保持各自报告和飘字的非负含义。写入前的数值干预不等于 Receiving 取消；仍可形成 APPLIED 且实际损失为零。提交不提前执行 Unit 离场，Damage 继续在两侧 Applied 后确认死亡。
+Application 的 hpBefore 在实际写入前读取，hpAfter 是本次最终写入值，不使用 Context.hpBefore 覆盖回调产生的新状态。hpLoss 为 `max(0, hpBefore - hpAfter)`，保持伤害报告和飘字的非负含义。写入前的数值干预不等于 Receiving 取消；仍可形成 APPLIED 且实际损失为零。提交不提前执行 Unit 离场，Damage 继续在两侧 Applied 后确认死亡。
 
 ## 1. Calculate 与 Apply 的语义边界
 
@@ -449,14 +449,14 @@ receiveHealing(
 ): Result<HpHealing.Pending>;
 ```
 
-HP Damage、HP Healing 与 EP Damage 的 receive 各执行自己的一轮有序 Receiving，接续 BeforeReceive 返回的 Pending。Vitality 的内部派发接口从已有接收 Context 或 CommittingContext 取得目标，不另接收一份目标参数。它们都可能发生同步业务，返回值包含接续后的 BattleState 与 Pending。receive 返回前将未取消的最终接收量截为非负数，Commit 信任该边界建立的约束；取消则保留工作值快照，遵守第 1.6 节的 Pending 契约。
+HP Damage、HP Healing 与 EP Damage 的 receive 各执行自己的一轮有序 Receiving，接续 BeforeReceive 返回的 Pending。Vitality 的内部派发接口从已有接收 Context 或 DamageCommittingContext 取得目标，不另接收一份目标参数。它们都可能发生同步业务，返回值包含接续后的 BattleState 与 Pending。receive 返回前将未取消的最终接收量截为非负数，Commit 信任该边界建立的约束；取消则保留工作值快照，遵守第 1.6 节的 Pending 契约。
 
 commit 接收对应业务的精确 CommitContext，其中 request、calculated 与 received 提供资源写入、Burst 归因和能力通知所需的事实。两种能力分别提供：
 
 ```typescript
 // Vitality
 commitDamage(battle: BattleState, context: HpDamage.CommitContext): Result<DamageApplication | null>;
-commitHealing(battle: BattleState, context: HpHealing.CommitContext): Result<HealingApplication | null>;
+commitHealing(battle: BattleState, context: HpHealing.CommitContext): Result<HealingApplication>;
 
 // Elemental
 commitDamage(battle: BattleState, context: EpDamage.CommitContext): Result<DamageApplication>;
@@ -465,7 +465,7 @@ commitHealing(battle: BattleState, context: EpHealing.CommitContext): Result<Hea
 
 DamageApplication／HealingApplication 由各自资源能力定义，Battle 的 Application 直接引用同一报告。HP 报告保存 hpBefore、hpAfter 和实际 hpLoss／hpGain；EP 报告保存本次实际变化及对应 Burst 创建事实，治疗逐型报告，不把数额在四型间分摊。报告在资源写入时确定，之后的嵌套业务不重算它。
 
-共享 CommitContext 表达结算事实，业务控制权归对应资源能力。commit 从最新 BattleState 读取资源，保留 Receiving 与 BeforeCommit 已完成的变化；进入前已经确认资格，内部不重复检查同一组 Restriction；HP 提交的 committing 返回后按第 0.2 节重查当前目标，无法写入时返回 null，Apply 形成 UNAVAILABLE，不输出本笔成功 Event 或 Applied。该数值扩展点不增加独立的免死竞争或写入接管协议。
+共享 CommitContext 表达结算事实，业务控制权归对应资源能力。commit 从最新 BattleState 读取资源，保留 Receiving 与 BeforeCommit 已完成的变化；进入前已经确认资格，内部不重复检查同一组 Restriction；HP 伤害提交的 damageCommitting 返回后按第 0.2 节重查当前目标，无法写入时返回 null，Apply 形成 UNAVAILABLE，不输出本笔成功 Event 或 Applied。该数值扩展点不增加独立的免死竞争或写入接管协议。
 
 Apply 的编排为：
 
@@ -539,7 +539,7 @@ Receiving 内不按“先所有闪避、再所有护盾、再所有减伤”建�
 
 ### 3.2 特殊 HP Application 的支持边界
 
-Vitality.committing 提供 HP 写入前的数值干预。具体非致命、不死、免死、替身及形态转换效果尚未接入；不因有这个扩展点就宣称已实现全部原生生命机制。以下事实是具体机制需要分别表达的业务语义，不要求将它们逐项翻译成 committing 的字段或独立 Hook：
+Vitality.damageCommitting 提供伤害写入前的数值干预。具体非致命、不死、免死、替身及形态转换效果尚未接入；不因有这个扩展点就宣称已实现全部原生生命机制。以下事实是具体机制需要分别表达的业务语义，不要求将它们逐项翻译成 damageCommitting 的字段或独立 Hook：
 
 原生还具有独立 ES、负生命债务、派生目标的固定扣血、同实例复活和战术点恢复；实际绑定与区别已在[案例11](../research/cases/11-damage-apply-and-hp-application.md)核对。这些需求不能仅靠当前 hpBefore／hpAfter／hpLoss 报告推定已覆盖，也不能把所有恢复统一为普通治疗。
 
@@ -555,7 +555,7 @@ Vitality.committing 提供 HP 写入前的数值干预。具体非致命、不�
 
 某机制接管默认 HP 应用后，后续 Hook 仍可按自身条件观察该决定或执行另一种干预。默认应用责任改变、普通免死成功、伤害取消和停止派发不是同一件事，不以全局 protected 或 handled 布尔值将它们合并。
 
-committing 的 Context 保留本次进入提交时的 HP，工作值明确为待写入的绝对 HP，实际写入接续最新 BattleState。具体机制若需要成功竞争、保留某次变化量或写入后的专属后继，应按实际内容组织这些事实；回调后 HP 大于零本身不证明本次伤害已经完成，number 工作值也不自动提供原生所有保护程序。
+damageCommitting 的 Context 保留本次进入提交时的 HP，工作值明确为待写入的绝对 HP，实际写入接续最新 BattleState。具体机制若需要成功竞争、保留某次变化量或写入后的专属后继，应按实际内容组织这些事实；回调后 HP 大于零本身不证明本次伤害已经完成，number 工作值也不自动提供原生所有保护程序。
 
 ### 3.3 生命状态、通知与离场
 
