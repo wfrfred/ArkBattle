@@ -81,6 +81,8 @@ Hook 与领域操作按执行语义命名：
 
 生命周期结束的公开 end／cancel／stop／remove 委托 [Lifetime](lifetime.md)：无活动结算时，本次调用完成 request 与 drain，返回时 Pending 为空；有活动结算时，只同步完成首次请求和 Prepare，不承诺槽位释放、注销或最终通知。重复 PREPARING 请求不等待原 Prepare。Finalize 整体返回才解除依赖者对 owner 的等待；resource.hp.damage.completed 只报告本次伤害完成，不保证目标离场 Finalize 已完成。
 
+Vitality 的[Health 接入计划](vitality.md#03-health-与负生命接入计划)已确定 `State.health: Health` 和 damageCommitting 的 Health 工作值，当前接口尚未迁移。普通 HP 与债务的分配归 Vitality，屏障额度归 Effect；不新增 ES 或非致命专用请求字段。精确资源报告和容量操作接口随接入收口，不在公共约定中预设未实现签名。
+
 cancel 只提供 `cancel(current, reason, forbidden)` 一个签名，第三参数必须为本业务 Reason 的 ReadonlySet。已有取消或本次原因被禁止时返回原 current，否则形成 CANCELLED；返回类型保留原状态与取消结果的联合，调用方不能假定取消成功。HP Damage、EP Damage 和 HP Healing 的 ReceivingContext 都必填 forbidden，Hook 从 context 显式传入；Commit 与 Applied 继承同一集合，Request／Calculated 不携带它，Calculate 和嵌套操作不自动继承。
 
 ### Restriction 接口约定

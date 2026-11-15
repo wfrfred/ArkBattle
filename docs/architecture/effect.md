@@ -8,6 +8,8 @@ Effect 负责附着实例、生效状态、覆写组与生命周期。总体执�
 
 Effect 用于表达属性增益、护盾、周期伤害与治疗、技能附带状态、效果覆写和光环分发。核心负责附着实例与生命周期，具体 Definition 组合 Capability 的操作实现玩法。
 
+已确认的[Health 接入计划](vitality.md#03-health-与负生命接入计划)将普通 HP 与负生命债务统一交给 Vitality；Effect 负责启用、配置与“我执”等专属行为，不另存一份债务。屏障及独立吸收额度由 Effect 私有状态和 Hook 实现；过量治疗转屏障计划使用提交报告与 Applied，不复制原生临时 ES 中转，也不向 Vitality 添加 es／maxEsRatio。该计划尚未实现，不表示屏障及相关内容已完整接入。
+
 ## 关键语义
 
 Effect 需要保障的结果是：
