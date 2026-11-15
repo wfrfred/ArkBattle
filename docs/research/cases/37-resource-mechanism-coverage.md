@@ -87,6 +87,7 @@
 | 弱点双分支完整Calculate，选一支Apply | 原生有无事件试算；项目不因此让目标响应两次接收 |
 | Calculate最终非负、零计算输出拒绝；零实际变化允许成功 | 原生Modifier负数和最终delta处理时点不同；不把后者重新移入项目Commit |
 | Receiving取消后继续，取消及原因不恢复 | 每项仍判断自身资格，已发生的独立业务不回滚 |
+| 成功闪避的通用后继由目标侧Completed观察CANCELLED／MISS | 原生Evade成功时立即通知；项目在剩余Receiving后、同次Apply返回前同步执行。监听者确认自身为目标，HIT_FAILED不算自身闪避；契约见[Vitality](../../architecture/vitality.md#31-普通伤害流程) |
 | healFree仅影响Targeting | 原生普通OnTakeHeal另检查；项目不自动新增这项治疗接收禁用 |
 | 自然HP／EP按当前速度逐Tick加小数 | 不复刻每+1脉冲、已积累timer或三帧刷新；不派发普通Healing Hook |
 | 目标Applied→来源Applied→最新资格确认死亡→Completed／Outcome.killed | 不把原生Context来源通知机械映射为新Kill Hook；特殊生命归属尚须完整设计 |
