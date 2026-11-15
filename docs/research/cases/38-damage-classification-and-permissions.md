@@ -64,7 +64,9 @@
 
 活性源石实际绑定的 `periodic_damage → NoSourceDamage(PURE, attackType=BUFF, isEnvDamage=true)` 同样是 **BUFF／NONE**，见[地块模板](../evidence/unit-audit-20261110/control-terrain/templates.json)。
 
-深水存在现状差异：[现有原件](../evidence/resource-mechanisms-20261114/damage/holder-scan.json)中 `trap_sea_drown[ally]` 的周期节点是 `ApplyElementDamage(WATER, isEnvElementDamage=true)`，即侵蚀EP损伤；当前Content的深水仍实现为周期真实HP伤害。本次仅沿当前HP周期行为显式填写 **BUFF／NONE**，没有将它修成原生EP路径，也没有将这项HP行为冒充原生结论。
+深水敌方HP分支有实际绑定依据：[控制器原件](../evidence/unit-audit-20261110/control-terrain/components.json) `/result/26` 是 `sktok_tidectrl_3/Enemy` 的 GlobalAuraAbility（PPtr **3698421838164534390**），其 Buff key 为 `sea_drown[enemy]`，实际 template 为 `periodic_damage_without_modify_no_fx`，`triggerInterval=1`；不能将 Buff key 当成 `trap_sea_drown[enemy]` 模板名。[Holder原件](../evidence/resource-mechanisms-20261114/damage/holder-scan.json)中该实际模板明确配置 `NoSourceDamage(PURE, attackType=BUFF, ignoreForSp=true, damageWithoutModify=true, isEnvDamage=false, isNotChangeableValue=false)`，因此为周期真实HP伤害，分类 **BUFF／NONE**。**原生 `isEnvDamage=false`，不能仅因来自地形就认定为环境伤害标签。**
+
+我方分支 `trap_sea_drown[ally]` 的周期节点另为 `ApplyElementDamage(WATER, isEnvElementDamage=true)`，即侵蚀EP损伤；它不能用于否定上述敌方HP分支。[DC-3](https://prts.wiki/w/DC-3)亦明确记载敌方每秒40点真实伤害、攻击速度降低60%、移动速度降至60%，与这类敌方深水行为相符。
 
 ### 过滤器并不共用一种位运算含义
 
