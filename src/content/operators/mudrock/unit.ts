@@ -160,7 +160,12 @@ function shieldEffect(profile: Profile): EffectDefinition<ShieldState, Vitality>
                         ) {
                             return { state, value: pending };
                         }
-                        if (shield.state.layers > 0) {
+
+                        const received =
+                            shield.state.layers > 0
+                                ? cancel(pending, "BLOCKED", context.forbidden)
+                                : pending;
+                        if (received.type === "CANCELLED") {
                             state = setState(state, ref, {
                                 ...shield.state,
                                 layers: shield.state.layers - 1,
@@ -173,7 +178,7 @@ function shieldEffect(profile: Profile): EffectDefinition<ShieldState, Vitality>
 
                             return {
                                 state,
-                                value: cancel(pending, "BLOCKED", context.forbidden),
+                                value: received,
                             };
                         }
 

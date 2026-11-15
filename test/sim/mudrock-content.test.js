@@ -9,7 +9,7 @@ import { fixtureBattlefieldState } from "../helpers/battlefield.js";
 import { damage, parameters } from "../helpers/vitality.js";
 import { createBattleState } from "../../dist/core/battle/state.js";
 import { add, update } from "../../dist/core/battle/unit.js";
-import { ref, compose, setHook } from "../../dist/core/unit/index.js";
+import { ref, compose, setHook, removeHook } from "../../dist/core/unit/index.js";
 import * as hpDamage from "../../dist/core/battle/resource/hp/damage/index.js";
 import { advance as advanceBlocking } from "../../dist/core/battle/blocking/index.js";
 import { advance as advanceEffects } from "../../dist/core/unit/effect/index.js";
@@ -117,7 +117,7 @@ test("module X uses current max HP for shield healing and distinguishes blocked 
     assert.equal(hit(shielded.state, 3).value.application.hpLoss, 100);
 });
 
-test("APPLY-03: fixed receiving skips Mudrock's reductions while retaining shield cancellation and recovery", () => {
+test("APPLY-03: Mudrock requires a successful block for shield costs and benefits", () => {
     const fixture = setup({ module: { id: moduleX, level: 3 } }, [
         enemy(1, [0.6, 0], { blockable: { volume: 1, restrictions: [] }, profile: { tags: ["sarkaz"] } }),
     ]);
@@ -169,10 +169,36 @@ test("APPLY-03: fixed receiving skips Mudrock's reductions while retaining shiel
     assert.equal(accepted.value.type, "APPLIED");
     assert.deepEqual(accepted.value.received, { type: "FIXED", amount: 100 });
     assert.equal(accepted.value.application.hpLoss, 100);
-    approximate(getUnit(accepted.state, 0).vitality.hp, 1000 + fixture.prepared.attributes.maxHp * 0.23 - 100);
-    assert.equal(getUnit(accepted.state, 0).skill.sp.value, 3);
-    assert.equal(readShield(getUnit(accepted.state, 0)).layers, 0);
+    assert.equal(getUnit(accepted.state, 0).vitality.hp, 900);
+    assert.equal(getUnit(accepted.state, 0).skill.sp.value, 1);
+    assert.equal(readShield(getUnit(accepted.state, 0)).layers, 1);
     assert.deepEqual(observed, [["commit", "FIXED", 100], ["applied", "FIXED", 100]]);
+
+    const ordinary = update(battle, ref(fixture.unit), removeHook(hpDamage.receiving, "fix-amount"));
+    const reduced = hpDamage.applyDamage(request, hpDamage.calculateDamage(ordinary, request), {
+        forbidden: new Set(["BLOCKED"]),
+    });
+    assert.equal(reduced.value.type, "APPLIED");
+    assert.equal(reduced.value.received.type, "NORMAL");
+    approximate(reduced.value.application.hpLoss, 59.5);
+    approximate(getUnit(reduced.state, 0).vitality.hp, 940.5);
+    assert.equal(getUnit(reduced.state, 0).skill.sp.value, 1);
+    assert.equal(readShield(getUnit(reduced.state, 0)).layers, 1);
+
+    observed.length = 0;
+    const missed = update(ordinary, ref(fixture.unit), setHook(hpDamage.receiving, {
+        id: "evade", priority: 200,
+        invoke(state, context, pending) {
+            return { state, value: hpDamage.cancel(pending, "MISS", context.forbidden) };
+        },
+    }));
+    const cancelled = hpDamage.applyDamage(request, hpDamage.calculateDamage(missed, request));
+    assert.equal(cancelled.value.type, "CANCELLED");
+    assert.equal(cancelled.value.received.reason, "MISS");
+    assert.equal(getUnit(cancelled.state, 0).vitality.hp, 1000);
+    assert.equal(getUnit(cancelled.state, 0).skill.sp.value, 1);
+    assert.equal(readShield(getUnit(cancelled.state, 0)).layers, 1);
+    assert.deepEqual(observed, []);
 });
 
 test("S2 waits for an eligible target without spending its SP", () => {
