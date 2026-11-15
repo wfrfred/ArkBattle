@@ -11,7 +11,7 @@ import { stop, update } from "../../core/battle/projectile.js";
 import { type WorldPosition } from "../../core/geometry/coordinate.js";
 import { hasOffense, resolveAttack } from "../../core/unit/capability/offense/index.js";
 
-import type { Vitality } from "../../core/unit/capability/vitality/index.js";
+import { isAlive, type Vitality } from "../../core/unit/capability/vitality/index.js";
 import * as units from "../../core/unit/index.js";
 import type { Unit } from "../../core/unit/index.js";
 
@@ -89,7 +89,7 @@ export function hit<S extends State>(
     });
     const marked = projectiles.get(battle, reference)!;
     const target = units.get(battle, marked.state.target);
-    if (target?.lifecycle !== "PRESENT" || target.vitality.hp <= 0) {
+    if (target?.lifecycle !== "PRESENT" || !isAlive(target)) {
         return battle;
     }
 

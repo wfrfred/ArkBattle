@@ -18,7 +18,7 @@ source 是调用者选定版本的 Unit。采用标准敌我资格时，来源�
 
 `common.topK` 负责稳定排序与截取，比较相同保留源顺序。`Query.take` 只取当前顺序的前若干项。`rng.sample(candidates, count)` 立即消费候选并无放回抽样；调用者显式接续 RNG 状态，不能在惰性谓词或比较器中消费随机数。
 
-标准谓词直接适配 `Query.filter`，不要求所有查询经过同一选择入口。简单的身份、Layer 或资源条件直接读取已有对象；敌我关系、阻挡关系与属性求值复用所属领域查询。
+标准谓词直接适配 `Query.filter`，不要求所有查询经过同一选择入口。简单的身份、Layer 或资源条件直接读取已有对象；敌我关系、阻挡关系、生命状态与属性求值复用所属领域查询。
 
 ## 标准资格
 
@@ -41,7 +41,7 @@ function damage(
 | elementDamage | 空间存在、Elemental 可用、无 Burst、目标非中立、敌对、目标受选限制允许。 |
 | elementHealing | 空间存在、Elemental 可用、无 Burst、同阵营、有 EP 恢复需求、目标受选限制允许。 |
 
-Elemental 可用要求 PRESENT；具有 Vitality 时还要求 HP>0，不要求所有 Elemental Unit 都具有 Vitality。EP 标准资格不构造 Damage／Healing Request，也不执行其完整接收 Restriction。具体作用仍由 Apply 检查；选择成功不保证接收成功。
+HP 标准资格复用 Vitality.isAlive，治疗缺血使用 Vitality.hpRatio < 1，不在 Targeting 内直接解释 HP 字段。Elemental 可用要求 PRESENT；具有 Vitality 时还要求 Vitality.isAlive，不要求所有 Elemental Unit 都具有 Vitality。EP 标准资格不构造 Damage／Healing Request，也不执行其完整接收 Restriction。具体作用仍由 Apply 检查；选择成功不保证接收成功。
 
 标准谓词明确组合各自政策。普通 HP 治疗选择检查 healFree，独立 EP 回复不检查；特殊选择由内容直接组合目标限制和所属机制查询。
 
@@ -54,7 +54,7 @@ Elemental 可用要求 PRESENT；具有 Vitality 时还要求 HP>0，不要求�
 比较器使用普通 `(left, right) => number`：
 
 - `distance(origin)` 比较距离平方。
-- `hpRatio(left, right)` 要求双方具有 Vitality，比较当前 HP 与有效 MaxHP 的比例。
+- `hpRatio(left, right)` 要求双方具有 Vitality，比较 Vitality.hpRatio 的返回值；普通生命比例由 Vitality 解释。
 - `taunt(battle)` 要求双方具有 Targetable，有效嘲讽越高越优先。
 - `blockedFirst(source)` 按该来源的实际阻挡关系列表顺序排列相关目标；来源要求 Blocker 或 Blockable。
 

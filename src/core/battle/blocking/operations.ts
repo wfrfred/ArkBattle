@@ -18,6 +18,7 @@ import {
 import { hasLayer } from "../../unit/capability/layer/capability.js";
 import { hasOccupancy } from "../../unit/capability/occupancy/capability.js";
 import { hasVitality } from "../../unit/capability/vitality/capability.js";
+import { isAlive } from "../../unit/capability/vitality/query.js";
 import * as units from "../../unit/query.js";
 import type { Id, Unit } from "../../unit/unit.js";
 import type { State as BattleState } from "../state.js";
@@ -40,7 +41,7 @@ function allowsTile(battle: BattleState, unit: Unit & Blocker): boolean {
 function canSearch(battle: BattleState, unit: Unit & Blocker): boolean {
     return (
         unit.lifecycle === "PRESENT" &&
-        (!hasVitality(unit) || unit.vitality.hp > 0) &&
+        (!hasVitality(unit) || isAlive(unit)) &&
         allowsTile(battle, unit)
     );
 }
@@ -68,8 +69,8 @@ function canAcquire(
 ): boolean {
     if (
         !canRetain(battle, blocker, target) ||
-        (hasVitality(blocker) && blocker.vitality.hp <= 0) ||
-        (hasVitality(target) && target.vitality.hp <= 0)
+        (hasVitality(blocker) && !isAlive(blocker)) ||
+        (hasVitality(target) && !isAlive(target))
     ) {
         return false;
     }

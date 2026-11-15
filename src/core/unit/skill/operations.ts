@@ -9,6 +9,7 @@ import type { Unit } from "../unit.js";
 import { setHook, type EnterHook } from "../hook.js";
 import * as contribution from "../contribution/contribution.js";
 import { hasVitality } from "../capability/vitality/capability.js";
+import { isAlive } from "../capability/vitality/query.js";
 import { hasAction } from "../capability/action/capability.js";
 import { released, type ReleasedHook } from "../capability/action/release.js";
 import { receiving, type ReceivingHook } from "../../battle/resource/hp/damage/hook.js";
@@ -114,7 +115,7 @@ export function activate<S extends object, A extends object>(
 ): Result<Ref<Activation<S, A>> | null> {
     const source = reference.host;
     const unit = units.get(battle, source);
-    if (unit?.lifecycle !== "PRESENT" || (hasVitality(unit) && unit.vitality.hp <= 0)) {
+    if (unit?.lifecycle !== "PRESENT" || (hasVitality(unit) && !isAlive(unit))) {
         return { state: battle, value: null };
     }
 
@@ -207,7 +208,7 @@ export function activate<S extends object, A extends object>(
     const currentUnit = units.get(battle, source);
     if (
         currentUnit?.lifecycle === "PRESENT" &&
-        (!hasVitality(currentUnit) || currentUnit.vitality.hp > 0) &&
+        (!hasVitality(currentUnit) || isAlive(currentUnit)) &&
         current?.activation.lifecycle === "ACTIVE" &&
         definition.onStart !== undefined
     ) {
@@ -378,7 +379,7 @@ export function extendTime<X extends Activation<any, any>>(
     }
 
     const unit = units.get(battle, reference.host);
-    if (unit?.lifecycle !== "PRESENT" || (hasVitality(unit) && unit.vitality.hp <= 0)) {
+    if (unit?.lifecycle !== "PRESENT" || (hasVitality(unit) && !isAlive(unit))) {
         return battle;
     }
 

@@ -22,7 +22,7 @@ HP Damage 覆盖普通伤害与生命流失，两者均使用物理、法术、�
 
 ## 0. Vitality Capability
 
-`vitality/capability.ts` 提供定义、初始化和属性 Change 工厂，`vitality/query.ts` 提供依赖战场的属性查询；防御与自然 HP 回复属性均属于 Vitality。
+`vitality/capability.ts` 提供定义、初始化和属性 Change 工厂，`vitality/query.ts` 提供生命状态、生命比例与依赖战场的属性查询；防御与自然 HP 回复属性均属于 Vitality。
 
 ```typescript
 interface Definition {
@@ -37,6 +37,8 @@ initialize<U extends Unit & Pick<Vitality, "definition">>(battle, unit: U): Resu
 setMaxHpContribution(entry): Change<Unit & Vitality>;
 removeMaxHpContribution(id): Change<Unit & Vitality>;
 resolveMaxHp(definition, state): number;
+isAlive(self: Unit & Vitality): boolean;
+hpRatio(self: Unit & Vitality): number;
 setContribution(key: "defense" | "resistance" | "recoverySpeed" | "recoveryRatio", entry): Change<Unit & Vitality>;
 removeContribution(key: "defense" | "resistance" | "recoverySpeed" | "recoveryRatio", id): Change<Unit & Vitality>;
 unit.setHook(key, hook): Change<Unit & Vitality>;
@@ -52,6 +54,8 @@ advance(battle, reference: Ref<Unit & Vitality>): BattleState;
 MaxHP 保留静态 Modifier[]，set／remove 工厂分别负责贡献登记与移除，共用局部 HP 比例计算，在同一次纯 transform 中生成新贡献集合和新 HP。零 HP 不因属性变化复活；不附带治疗通知或 Blocking 后继。DEF／RES 与两项回复属性的 Input 为静态修正或 `(battle, self: Unit & Vitality) => readonly Modifier[]`，由普通注册工厂生成 setContribution／removeContribution。专属接收 Hook 通过 unit.setHook／removeHook 登记，Key 保留 Hook 类型与 Vitality 宿主约束。MaxHP 单独保留领域实现，不进入普通字段集合。属性查询接收已取得的当前宿主并返回 number，不重复定位或判空；Damage 在 Formula Hook 后确认当前目标，再按伤害类型求值，不提前缓存或混入穿透。
 
 HP、Contribution 与 Restriction 共存于 Vitality State，专属接收登记存于 Unit.hooks。DEF／RES 的修改保留其他字段；属性变化不派发普通治疗 Hook。治疗索敌默认 provider 与显式注入 provider 均读取有效 MaxHP，避免把基础值或未计修正的上限用于缺血判定和比例排序。
+
+isAlive 与 hpRatio 接收已经取得的 `Unit & Vitality`，不接收 BattleState 或 Ref，不在内部放宽能力要求或重复查找。isAlive 只判断生命状态，不包含 Unit.lifecycle 或 Presence；普通 HP 已归零但仍处于 Applied 的 Unit 返回 false，主动离场中仍持有正 HP 的 Unit 可返回 true。hpRatio 为普通 HP 除以有效 MaxHP，不计屏障或计划中的负生命债务。其他领域的存活、缺血与比例排序复用这两个查询，生命周期和空间资格仍由各自业务判断；具体数值计算与提交报告仍可读取 HP。
 
 Damage 接收 Restriction 使用 `allows(battle, ReceivingContext)`；Restrictions 声明 damageRestrictions，State 直接继承 Restrictions、Contributions。登记保存 Contribution<Restriction<ReceivingContext>>；单节点接口为 `setRestriction(entry)`／`removeRestriction(id)`，由普通登记工厂固定 damageRestrictions 字段生成，返回 Change 交给 Unit.update 提交。普通治疗不设 Restriction 数组，治疗干预由专属 Receiving Hook 表达。
 

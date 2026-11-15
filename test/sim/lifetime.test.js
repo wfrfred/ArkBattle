@@ -11,6 +11,7 @@ import * as actions from "../../dist/core/unit/action/index.js";
 import * as skills from "../../dist/core/unit/skill/index.js";
 import * as skill from "../../dist/core/unit/capability/skill/index.js";
 import * as elemental from "../../dist/core/unit/capability/elemental/index.js";
+import * as vitality from "../../dist/core/unit/capability/vitality/index.js";
 import * as epDamage from "../../dist/core/battle/resource/ep/damage/index.js";
 import { createArknightsElementalDefinition } from "../../dist/data/effect/elemental.js";
 
@@ -33,6 +34,8 @@ test("HOOK-03: Skill and Burst end notifications observe their cleared state whi
                 invoke(state, { host }) {
                     const current = units.get(state, host);
                     assert.equal(current.skill.activation, null);
+                    assert.equal(vitality.isAlive(current), true);
+                    assert.ok(vitality.hpRatio(current) > 0);
                     observed.push(["activation", current.lifecycle]);
                     return { state, value: undefined };
                 },

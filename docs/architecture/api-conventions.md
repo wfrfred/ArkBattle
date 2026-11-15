@@ -83,6 +83,8 @@ Hook 与领域操作按执行语义命名：
 
 Vitality 的[Health 接入计划](vitality.md#03-health-与负生命接入计划)已确定 `State.health: Health` 和 damageCommitting 的 Health 工作值，当前接口尚未迁移。普通 HP 与债务的分配归 Vitality，屏障额度归 Effect；不新增 ES 或非致命专用请求字段。精确资源报告和容量操作接口随接入收口，不在公共约定中预设未实现签名。
 
+生命状态与比例使用 `vitality.isAlive(self: Unit & Vitality)`／`hpRatio(self: Unit & Vitality)`，属于已取得实体上的局部查询，不接收 BattleState／Ref。isAlive 不合并 Unit.lifecycle 或 Presence，hpRatio 使用普通 HP 与有效 MaxHP；跨领域业务复用这些语义查询，具体资源数值仍可用于明确的公式或提交快照。
+
 cancel 只提供 `cancel(current, reason, forbidden)` 一个签名，第三参数必须为本业务 Reason 的 ReadonlySet。已有取消或本次原因被禁止时返回原 current，否则形成 CANCELLED；返回类型保留原状态与取消结果的联合，调用方不能假定取消成功。HP Damage、EP Damage 和 HP Healing 的 ReceivingContext 都必填 forbidden，Hook 从 context 显式传入；Commit 与 Applied 继承同一集合，Request／Calculated 不携带它，Calculate 和嵌套操作不自动继承。
 
 ### Restriction 接口约定

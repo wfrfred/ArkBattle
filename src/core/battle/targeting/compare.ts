@@ -2,7 +2,8 @@ import { Vec2 } from "../../common/vector.js";
 
 import type { WorldPosition } from "../../geometry/coordinate.js";
 import type { Unit } from "../../unit/unit.js";
-import { resolveMaxHp, type Vitality } from "../../unit/capability/vitality/capability.js";
+import type { Vitality } from "../../unit/capability/vitality/capability.js";
+import * as vitality from "../../unit/capability/vitality/query.js";
 import { hasBlocker, type Blocker } from "../../unit/capability/blocking/blocker.js";
 import { hasBlockable, type Blockable } from "../../unit/capability/blocking/blockable.js";
 import { resolveTaunt, type Targetable } from "../../unit/capability/targetable/capability.js";
@@ -14,10 +15,7 @@ export function distance(origin: WorldPosition): (left: Unit, right: Unit) => nu
 }
 
 export function hpRatio(left: Unit & Vitality, right: Unit & Vitality): number {
-    const leftRatio = left.vitality.hp / resolveMaxHp(left.definition.vitality, left.vitality);
-    const rightRatio = right.vitality.hp / resolveMaxHp(right.definition.vitality, right.vitality);
-
-    return leftRatio - rightRatio;
+    return vitality.hpRatio(left) - vitality.hpRatio(right);
 }
 
 export function taunt(

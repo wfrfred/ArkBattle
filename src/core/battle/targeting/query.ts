@@ -11,11 +11,8 @@ import {
     type Restriction,
     type Targetable,
 } from "../../unit/capability/targetable/capability.js";
-import {
-    hasVitality,
-    resolveMaxHp,
-    type Vitality,
-} from "../../unit/capability/vitality/capability.js";
+import { hasVitality, type Vitality } from "../../unit/capability/vitality/capability.js";
+import { isAlive, hpRatio } from "../../unit/capability/vitality/query.js";
 import { hasElemental, type Elemental } from "../../unit/capability/elemental/capability.js";
 import { available, resolveDamageRatio } from "../../unit/capability/elemental/query.js";
 import { healFree } from "../../effects/protection.js";
@@ -35,7 +32,7 @@ export function damage(
         target.lifecycle === "PRESENT" &&
         presence.isPresent(target) &&
         hasVitality(target) &&
-        target.vitality.hp > 0 &&
+        isAlive(target) &&
         hasAllegiance(target) &&
         areHostile(source, target) &&
         allows(target);
@@ -52,10 +49,10 @@ export function healing(
         target.lifecycle === "PRESENT" &&
         presence.isPresent(target) &&
         hasVitality(target) &&
-        target.vitality.hp > 0 &&
+        isAlive(target) &&
         hasAllegiance(target) &&
         source.allegiance.side === target.allegiance.side &&
-        target.vitality.hp < resolveMaxHp(target.definition.vitality, target.vitality) &&
+        hpRatio(target) < 1 &&
         !target.effects
             .values()
             .some((effect) => effect.definition === healFree && effect.lifecycle === "ACTIVE") &&

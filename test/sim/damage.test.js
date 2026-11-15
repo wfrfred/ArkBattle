@@ -923,6 +923,7 @@ test("HP-03: lethal HP remains present through nested Combat and both Applied ro
                     get(current, 1).lifecycle,
                     blocking.blockerOf(current, enemy).id,
                 ]);
+                assert.equal(vitality.isAlive(get(current, 1)), false);
                 const recovery = healingRequest(null, target, 20);
                 const attempted = hpHealing.applyHealing(
                     recovery,
@@ -947,6 +948,7 @@ test("HP-03: lethal HP remains present through nested Combat and both Applied ro
                     get(current, 1).lifecycle,
                     blocking.blockerOf(current, enemy).id,
                 ]);
+                assert.equal(vitality.isAlive(get(current, 1)), false);
                 return { state: current, value: undefined };
             },
         }),

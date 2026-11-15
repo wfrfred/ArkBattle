@@ -20,7 +20,13 @@ export { damageCommitting } from "./hook.js";
 
 export type { DamageCommittingContext, DamageCommittingHook } from "./hook.js";
 
-export { resolveDefense, resolveResistance, resolveRecoverySpeed } from "./query.js";
+export {
+    isAlive,
+    hpRatio,
+    resolveDefense,
+    resolveResistance,
+    resolveRecoverySpeed,
+} from "./query.js";
 
 export {
     canReceiveDamage,

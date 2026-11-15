@@ -90,6 +90,7 @@ test("mixed healing keeps HP or EP demand while only an ACTIVE healFree marker r
     };
 
     assert.ok(get(state, 4).elemental.burst);
+    assert.equal(vitality.hpRatio(get(state, 1)), 0.25);
     assert.deepEqual(ids(topK(hpRecipients(state), 3, targeting.hpRatio)), [1, 4]);
     assert.deepEqual(ids(recipients(state)), [1, 2, 4]);
 

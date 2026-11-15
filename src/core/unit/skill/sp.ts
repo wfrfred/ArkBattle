@@ -12,6 +12,7 @@ import * as contribution from "../contribution/contribution.js";
 import * as entries from "../../common/collection/entries.js";
 import * as attribute from "../contribution/attribute.js";
 import { hasVitality } from "../capability/vitality/capability.js";
+import { isAlive } from "../capability/vitality/query.js";
 import type { Skill } from "../capability/skill/capability.js";
 import { replace as replaceUnits } from "../../battle/unit.js";
 import { dispatch, spRecovered, spPaid, spModified } from "../capability/skill/hook.js";
@@ -402,7 +403,7 @@ function allowsRecovery(battle: BattleState, self: Unit & Skill, source: Source)
 }
 
 function available(self: Unit): boolean {
-    return self.lifecycle === "PRESENT" && (!hasVitality(self) || self.vitality.hp > 0);
+    return self.lifecycle === "PRESENT" && (!hasVitality(self) || isAlive(self));
 }
 function applied(state: BattleState, amount: number): Result<Outcome> {
     return { state, value: { type: "APPLIED", amount } };

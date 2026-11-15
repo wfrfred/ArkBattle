@@ -7,6 +7,7 @@ import * as units from "../query.js";
 import type { Unit } from "../unit.js";
 import type { Action as ActionCapability } from "../capability/action/capability.js";
 import { hasVitality } from "../capability/vitality/capability.js";
+import { isAlive } from "../capability/vitality/query.js";
 import { resolvePeriod } from "../capability/action/timing.js";
 import type { Action } from "./action.js";
 import { ref, type Execution } from "./execution.js";
@@ -45,7 +46,7 @@ export function start<P extends object, E extends object>(
 
     function check(battle: BattleState) {
         const unit = units.get(battle, source);
-        if (unit?.lifecycle !== "PRESENT" || (hasVitality(unit) && unit.vitality.hp <= 0)) {
+        if (unit?.lifecycle !== "PRESENT" || (hasVitality(unit) && !isAlive(unit))) {
             return null;
         }
 

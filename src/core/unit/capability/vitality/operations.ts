@@ -10,7 +10,7 @@ import type * as healing from "../../../battle/resource/hp/healing/index.js";
 import { receiving as damageReceiving } from "../../../battle/resource/hp/damage/hook.js";
 import { receiving as healingReceiving } from "../../../battle/resource/hp/healing/hook.js";
 import { resolveMaxHp, type Vitality } from "./capability.js";
-import { resolveRecoverySpeed } from "./query.js";
+import { isAlive, resolveRecoverySpeed } from "./query.js";
 import { allows } from "../../../restriction.js";
 import type { Restriction } from "./restriction.js";
 import { damageCommitting } from "./hook.js";
@@ -36,7 +36,7 @@ export function canReceiveDamage(
 
     return (
         target?.lifecycle === "PRESENT" &&
-        target.vitality.hp > 0 &&
+        isAlive(target) &&
         allows(battle, context, target.vitality.damageRestrictions, ignore)
     );
 }
@@ -44,7 +44,7 @@ export function canReceiveDamage(
 export function canReceiveHealing(battle: BattleState, target: Ref<Unit & Vitality>): boolean {
     const unit = units.get(battle, target);
 
-    return unit?.lifecycle === "PRESENT" && unit.vitality.hp > 0;
+    return unit?.lifecycle === "PRESENT" && isAlive(unit);
 }
 
 export function receiveDamage(
@@ -95,7 +95,7 @@ export function commitDamage(
     );
     battle = committed.state;
     const current = units.get(battle, target);
-    if (current?.lifecycle !== "PRESENT" || current.vitality.hp <= 0) {
+    if (current?.lifecycle !== "PRESENT" || !isAlive(current)) {
         return { state: battle, value: null };
     }
 
@@ -124,7 +124,7 @@ export function commitHealing(
 
 export function advance(battle: BattleState, reference: Ref<Unit & Vitality>): BattleState {
     const unit = units.get(battle, reference);
-    if (unit?.lifecycle !== "PRESENT" || unit.vitality.hp <= 0) {
+    if (unit?.lifecycle !== "PRESENT" || !isAlive(unit)) {
         return battle;
     }
 

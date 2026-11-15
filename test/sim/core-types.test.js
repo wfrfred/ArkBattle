@@ -393,6 +393,10 @@ const usableWithAction: Change<Unit & actionCapability.Action> = general;
 const attack: number = resolveAttack(battle, host);
 // @ts-expect-error value computation requires the relevant capability.
 resolveAttack(battle, bare);
+// @ts-expect-error life queries require the Vitality capability.
+vitality.isAlive(bare);
+// @ts-expect-error HP proportions require the Vitality capability.
+vitality.hpRatio(bare);
 declare const skillHost: Unit & SkillCapability;
 // @ts-expect-error a Skill can legitimately have no SP resource.
 skills.resolveRecoverySpeed(battle, skillHost);
@@ -413,6 +417,8 @@ const selectableActions = allUnits(battle).filter(actionCapability.hasAction).fi
 declare const targetingSource: Unit & Allegiance;
 const damagedCandidates = selectableActions.filter(targeting.damage(battle, targetingSource));
 const nearestPatient = topK(damagedCandidates, 1, targeting.hpRatio)[0]!;
+const patientAlive: boolean = vitality.isAlive(nearestPatient);
+const patientHpRatio: number = vitality.hpRatio(nearestPatient);
 const preservedAction: actionCapability.Action = nearestPatient;
 const establishedVitality: vitality.Vitality = nearestPatient;
 const establishedAllegiance: Allegiance = nearestPatient;

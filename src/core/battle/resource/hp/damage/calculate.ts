@@ -3,7 +3,11 @@ import type { Result, State as BattleState } from "../../../state.js";
 import * as units from "../../../../unit/query.js";
 import type { Unit } from "../../../../unit/unit.js";
 import type { Vitality } from "../../../../unit/capability/vitality/capability.js";
-import { resolveDefense, resolveResistance } from "../../../../unit/capability/vitality/query.js";
+import {
+    isAlive,
+    resolveDefense,
+    resolveResistance,
+} from "../../../../unit/capability/vitality/query.js";
 import { hasElemental } from "../../../../unit/capability/elemental/capability.js";
 import { resolveDamageResistance } from "../../../../unit/capability/elemental/query.js";
 import type { Calculated, Parameters, Request } from "./contract.js";
@@ -17,7 +21,7 @@ export function calculateDamage(
     const unavailable = (current: BattleState) => {
         const target = units.get(current, request.target);
 
-        return target?.lifecycle !== "PRESENT" || target.vitality.hp <= 0;
+        return target?.lifecycle !== "PRESENT" || !isAlive(target);
     };
     if (unavailable(battle)) {
         return { state: battle, value: undefined };
@@ -37,7 +41,7 @@ export function calculateDamage(
     }
 
     const target = units.get(battle, request.target);
-    if (target?.lifecycle !== "PRESENT" || target.vitality.hp <= 0) {
+    if (target?.lifecycle !== "PRESENT" || !isAlive(target)) {
         return { state: battle, value: undefined };
     }
 

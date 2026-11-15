@@ -4,6 +4,7 @@ import type { Ref } from "../../../../common/ref.js";
 import type { Unit } from "../../../../unit/unit.js";
 import * as units from "../../../../unit/query.js";
 import * as vitality from "../../../../unit/capability/vitality/operations.js";
+import { isAlive } from "../../../../unit/capability/vitality/query.js";
 import { appendEvents, type Result, type State as BattleState } from "../../../state.js";
 import { remove } from "../../../unit.js";
 import type { Calculated, Outcome, Pending, Reason, Request } from "./contract.js";
@@ -36,7 +37,7 @@ export function applyDamage(
         calculation === undefined ||
         calculation.amount === 0 ||
         target?.lifecycle !== "PRESENT" ||
-        target.vitality.hp <= 0
+        !isAlive(target)
     ) {
         return complete(battle, request, calculation, { type: "REJECTED" }, options);
     }
@@ -128,7 +129,7 @@ export function applyDamage(
     ).state;
 
     const current = units.get(battle, request.target);
-    const killed = current?.lifecycle === "PRESENT" && current.vitality.hp <= 0;
+    const killed = current?.lifecycle === "PRESENT" && !isAlive(current);
     if (killed) {
         battle = remove(battle, request.target, "DEATH");
     }
