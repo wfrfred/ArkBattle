@@ -92,7 +92,7 @@ test("HOOK-02: exclusions are local to each operation and match a key or one ID 
         })
         .set(hpDamage.beforeReceive, {
             id: "receive",
-            invoke(state, { target }, current) {
+            invoke(state, { request: { target } }, current) {
                 receptions.push("before");
                 if (!expanded) {
                     expanded = true;
@@ -826,8 +826,8 @@ test("HP-05/06: LOSS completes the shared pipeline against an invincible absent 
     const observe = stage => ({
         id: stage,
         invoke(current, context, pending) {
-            calls.push([stage, get(current, context.target.id).vitality.hp,
-                get(current, context.target.id).skill.sp.value]);
+            calls.push([stage, get(current, context.request.target.id).vitality.hp,
+                get(current, context.request.target.id).skill.sp.value]);
             return { state: current, value: pending };
         },
     });

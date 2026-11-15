@@ -6,7 +6,6 @@ import * as hooks from "../../../../hook.js";
 import type { Application, Calculated, Parameters, Pending, Reason, Request } from "./contract.js";
 
 export interface Context {
-    readonly target: Request["target"];
     readonly request: Request;
 }
 

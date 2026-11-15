@@ -25,7 +25,7 @@ export function calculateDamage(
 
     let parameters = request.parameters;
 
-    const context = { target: request.target, request };
+    const context = { request };
 
     for (const [owner, key] of [
         [request.source, sourceFormula],

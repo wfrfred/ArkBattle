@@ -31,7 +31,7 @@ export function applyHealing(
         return { state: battle, value: { type: "REJECTED" } };
     }
 
-    const context = { target: request.target, request, calculated: healing };
+    const context = { request, calculated: healing };
     const before = dispatch<ReceivingContext, Pending, ReceivingHook>(
         battle,
         request.target,

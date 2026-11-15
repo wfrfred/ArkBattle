@@ -221,7 +221,7 @@ Calculate 的参数派发使用三个通道：
 
 | 通道 | 本阶段含义 |
 | --- | --- |
-| 固定 Context | `{ target, request }`，request.parameters 是初始参数。 |
+| 固定 Context | `{ request }`，request.parameters 是初始参数。 |
 | 动态 BattleState | 前一个 Hook 返回的最新战斗状态。 |
 | 可接续 current | 前一个 Hook 返回的当前 Parameters。 |
 
@@ -255,7 +255,7 @@ type Outcome =
 
 Apply 接续计算返回的 state；调用间若有其他状态转换，调用者须把最新 state 接回计算 Result。计算失败返回 undefined 时保留已经完成的状态前缀，Apply 形成 REJECTED 并通知仍符合资格的 Completed 观察者。
 
-Parameters Hook 使用固定 Context 中的 Request 和当前 Parameters；HP Damage 的 Output 使用固定 `{ target, request, type }` 和可修改的 number，HP Healing 的 Output 使用其 Context。type 是公式阶段已确定的类型，输出 Hook 不重新分类或重算防御。
+Parameters Hook 使用固定 Context 中的 Request 和当前 Parameters；HP Damage 的 Output 使用固定 `{ request, type }` 和可修改的 number，HP Healing 的 Output 使用其 Context。type 是公式阶段已确定的类型，输出 Hook 不重新分类或重算防御。
 
 AppliedContext 保留 request、calculated、Receiving 最终 received 和本次 application，不重复携带 Outcome；Outcome 的 APPLIED 分支引用同一个 Application 类型。CompletedContext 保留 request、可能 undefined 的 calculated 和同一份 outcome。application 的 hpBefore／hpAfter／hpLoss 在普通 HP 写入处确定，不受之后治疗、嵌套伤害或离场影响。
 
@@ -271,7 +271,6 @@ HP Damage、EP Damage、HP Healing 与 EP Healing 各自定义 Request、Context
 
 ```typescript
 interface Context {
-    readonly target: Ref<Unit & Vitality>;
     readonly request: Request;
 }
 
@@ -307,7 +306,7 @@ type AppliedHook = Entry<AppliedContext, void>;
 
 Request 始终表示初始事实；公式参数、输出量和接收工作值只经对应 Hook 的 current 接续。OutputContext.type 是公式确定的类型，不重新读取 Request 的初始类型。BeforeReceive 与 Receiving 使用相同的 ReceivingHook 类型，接续 BattleState 和 Pending；BeforeCommit 与 Applied 只接续 BattleState 业务；Applied 的报告在提交时确定，只对成功提交派发，零实际变化仍可成功。其余业务定义自己的 Application，不重复声明成功 Outcome 的另一份报告。
 
-各业务 Hook 键由相应子域导出，均登记在 Unit.hooks。beforeReceive 与 receiving 使用不同 Key，前者位于接收准入前，后者位于准入后，各自独立固定候选。HP Damage、HP Healing 与 EP Damage 均提供这两个键，关联 Vitality／Elemental 宿主要求。登记统一使用 unit.setHook／removeHook。
+基础 Context 只保存 request，目标从 request.target 取得；派生 Context 保留各阶段独立的计算、接收和提交事实。各业务 Hook 键由相应子域导出，均登记在 Unit.hooks。beforeReceive 与 receiving 使用不同 Key，前者位于接收准入前，后者位于准入后，各自独立固定候选。HP Damage、HP Healing 与 EP Damage 均提供这两个键，关联 Vitality／Elemental 宿主要求。登记统一使用 unit.setHook／removeHook。
 
 EP Healing 只提供 beforeReceive，不增加准入后的专属 receiving 键。其 ReceivingHook 是 Entry<ReceivingContext, Pending>，Pending.cancellation 固定为 null，不导出取消构造器或 CANCELLED 结果。普通 HIT 回复使用 HP Damage.receiving 的高优先级登记，不设额外开始通知。
 
@@ -431,7 +430,7 @@ Battle 编排四种业务各自的 Calculate／Apply、通用 Hook 与 Outcome�
 
 canReceive 只查询当前资格与接收 Restriction，不执行 Hook。它接收相应业务判断资格实际需要的事实，不统一要求完整 ReceivingContext：EP 索敌发生在 Calculate 前，不需要也不能伪造 Calculated。HP 接收规则需要计算后的实际伤害类型时，读取该次计算确定的事实，不以 Request 中的初始类型代替。各业务不为形式一致强制同形输入。
 
-receive 接续当前 BattleState 和 Pending，执行该资源的专属接收阶段；目标由 ReceivingContext.target 提供：
+receive 接续当前 BattleState 和 Pending，执行该资源的专属接收阶段；目标由 ReceivingContext.request.target 提供：
 
 ```typescript
 // Vitality；Elemental 的损伤接收使用 EpDamage 的精确类型。
@@ -450,9 +449,9 @@ receiveHealing(
 ): Result<HpHealing.Pending>;
 ```
 
-HP Damage、HP Healing 与 EP Damage 的 receive 各执行自己的一轮有序 Receiving，接续 BeforeReceive 返回的 Pending。它们都可能发生同步业务，返回值包含接续后的 BattleState 与 Pending。receive 返回前将未取消的最终接收量截为非负数，Commit 信任该边界建立的约束；取消则保留工作值快照，遵守第 1.6 节的 Pending 契约。
+HP Damage、HP Healing 与 EP Damage 的 receive 各执行自己的一轮有序 Receiving，接续 BeforeReceive 返回的 Pending。Vitality 的内部派发接口从已有接收 Context 或 CommittingContext 取得目标，不另接收一份目标参数。它们都可能发生同步业务，返回值包含接续后的 BattleState 与 Pending。receive 返回前将未取消的最终接收量截为非负数，Commit 信任该边界建立的约束；取消则保留工作值快照，遵守第 1.6 节的 Pending 契约。
 
-commit 接收对应业务的精确 CommitContext，其中 target、request、calculated 与 received 提供资源写入、Burst 归因和能力通知所需的事实。两种能力分别提供：
+commit 接收对应业务的精确 CommitContext，其中 request、calculated 与 received 提供资源写入、Burst 归因和能力通知所需的事实。两种能力分别提供：
 
 ```typescript
 // Vitality

@@ -78,6 +78,7 @@ Hooks.empty().set(receivingKey, {
 setUnitHook(hpDamage.receiving, {
     id: 'conditional-receiving',
     invoke(state, context, current) {
+        const target: Ref<Unit & vitality.Vitality> = context.request.target;
         if (current.type === 'CANCELLED' || current.amount <= 0) {
             return { state, value: current };
         }

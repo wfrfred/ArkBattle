@@ -48,12 +48,12 @@ export function receiveDamage(
 ): Result<damage.Pending> {
     const result = hooks.dispatch<ReceivingContext, damage.Pending>(battle, context, pending, {
         candidates: (current) =>
-            [...(units.get(current, context.target)?.hooks.get(receiving) ?? [])]
+            [...(units.get(current, context.request.target)?.hooks.get(receiving) ?? [])]
                 .sort((left, right) => (right.priority ?? 0) - (left.priority ?? 0))
                 .map(({ id }) => id)
                 .filter((id) => !hooks.excluded(options, receiving, id)),
         find(current, id) {
-            const host = units.get(current, context.target);
+            const host = units.get(current, context.request.target);
 
             return host !== undefined && query.available(host)
                 ? host.hooks.find(receiving, id)
@@ -74,7 +74,8 @@ export function commitDamage(
     battle: BattleState,
     context: DamageCommitContext,
 ): Result<DamageApplication> {
-    const { target, request, calculated, received } = context;
+    const { request, calculated, received } = context;
+    const target = request.target;
     const type = calculated.type;
     const self = units.get(battle, target)!;
     const maximum = query.resolveMaxEp(battle, self);
@@ -125,7 +126,8 @@ export function commitHealing(
     battle: BattleState,
     context: HealingCommitContext,
 ): Result<HealingApplication> {
-    const { target, request, received } = context;
+    const { request, received } = context;
+    const target = request.target;
     const self = units.get(battle, target)!;
     const maximum = query.resolveMaxEp(battle, self);
     const epBefore = normalizedEp(self, maximum);

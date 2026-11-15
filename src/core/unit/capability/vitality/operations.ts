@@ -13,7 +13,7 @@ import { resolveMaxHp, type Vitality } from "./capability.js";
 import { resolveRecoverySpeed } from "./query.js";
 import { allows } from "../../../restriction.js";
 import type { Restriction } from "./restriction.js";
-import { committing } from "./hook.js";
+import { committing, type CommittingContext } from "./hook.js";
 
 interface Application {
     readonly hpBefore: number;
@@ -33,7 +33,7 @@ export function canReceiveDamage(
     context: damage.ReceivingContext,
     ignore?: (restriction: Restriction) => boolean,
 ): boolean {
-    const target = units.get(battle, context.target);
+    const target = units.get(battle, context.request.target);
 
     return (
         target?.lifecycle === "PRESENT" &&
@@ -54,7 +54,7 @@ export function receiveDamage(
     pending: damage.Pending,
     options?: hooks.Options,
 ): Result<damage.Pending> {
-    const result = dispatchHook(battle, context.target, context, pending, damageReceiving, options);
+    const result = dispatchHook(battle, context, pending, damageReceiving, options);
 
     return {
         state: result.state,
@@ -71,14 +71,7 @@ export function receiveHealing(
     pending: healing.Pending,
     options?: hooks.Options,
 ): Result<healing.Pending> {
-    const result = dispatchHook(
-        battle,
-        context.target,
-        context,
-        pending,
-        healingReceiving,
-        options,
-    );
+    const result = dispatchHook(battle, context, pending, healingReceiving, options);
 
     return {
         state: result.state,
@@ -93,7 +86,7 @@ export function commitDamage(
     battle: BattleState,
     context: damage.CommitContext,
 ): Result<DamageApplication | null> {
-    const unit = units.get(battle, context.target)!;
+    const unit = units.get(battle, context.request.target)!;
     const committed = commitHp(battle, unit, unit.vitality.hp - context.received.amount);
     const application = committed.value;
 
@@ -113,7 +106,7 @@ export function commitHealing(
     battle: BattleState,
     context: healing.CommitContext,
 ): Result<HealingApplication | null> {
-    const unit = units.get(battle, context.target)!;
+    const unit = units.get(battle, context.request.target)!;
     const committed = commitHp(battle, unit, unit.vitality.hp + context.received.amount);
     const application = committed.value;
 
@@ -146,13 +139,7 @@ function commitHp(
     hp: number,
 ): Result<Application | null> {
     const target = units.ref(unit);
-    const committed = dispatchHook(
-        battle,
-        target,
-        { target, hpBefore: unit.vitality.hp },
-        hp,
-        committing,
-    );
+    const committed = dispatchHook(battle, { target, hpBefore: unit.vitality.hp }, hp, committing);
     battle = committed.state;
     const current = units.get(battle, target);
     if (current?.lifecycle !== "PRESENT" || current.vitality.hp <= 0) {
@@ -172,14 +159,19 @@ function commitHp(
     };
 }
 
-function dispatchHook<C, T, H extends hooks.Hook<C, T> & { readonly priority?: number }>(
+function dispatchHook<
+    C extends damage.ReceivingContext | healing.ReceivingContext | CommittingContext,
+    T,
+    H extends hooks.Hook<C, T> & { readonly priority?: number },
+>(
     battle: BattleState,
-    target: Ref<Unit & Vitality>,
     context: C,
     initial: T,
     key: hooks.Key<H, Unit & Vitality>,
     options?: hooks.Options,
 ): Result<T> {
+    const target = "request" in context ? context.request.target : context.target;
+
     return hooks.dispatch(battle, context, initial, {
         candidates(current) {
             const unit = units.get(current, target);

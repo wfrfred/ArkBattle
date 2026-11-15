@@ -19,7 +19,7 @@ export function calculateHealing(
         return { state: battle, value: undefined };
     }
 
-    const context = { target: request.target, request };
+    const context = { request };
     let parameters = request.parameters;
 
     for (const [owner, key] of [

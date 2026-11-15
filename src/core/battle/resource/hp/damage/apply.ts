@@ -42,7 +42,6 @@ export function applyDamage(
     }
 
     const context = {
-        target: request.target,
         request,
         calculated: calculation,
         forbidden: options?.forbidden ?? new Set<Reason>(),
@@ -171,7 +170,7 @@ function complete(
         request.source !== null && request.source.id !== request.target.id
             ? [request.target, request.source]
             : [request.target];
-    const context = { target: request.target, request, calculated, outcome };
+    const context = { request, calculated, outcome };
 
     for (const owner of observers) {
         battle = dispatch(battle, owner, completed, context, undefined, options).state;

@@ -175,7 +175,7 @@ Resource 按 HP／EP，再按 Damage／Healing 提供四个精确业务入口。
 
 | 编号 | 必须保障的业务结果 | 定向场景 |
 | --- | --- | --- |
-| HOOK-01 | 全部登记式 Hook 使用 typed Key。Unit 本地登记统一存于 Unit.hooks，Battle 观察各持有 Hooks 集合；固有登记在首次 enter 前就绪。Key 保留完整 ReceivingHook 泛型及最低宿主能力，unit.setHook／removeHook 返回相应 Change。候选固定、登记实时读取、替换保位及嵌套独立；Resource／Receiving 保留优先级，其他通知保持登记顺序。生命周期 leave 使用注销前最新程序与原 Departure；结束事实允许仍登记的 LEAVING 宿主参与。 | 公共集合／类型及实际生命周期场景集中验证；用接收 Hook 证明非法状态恢复、错配 Key／Entry 和能力不足的 update 被拒绝，不复制各 Capability 矩阵。 |
+| HOOK-01 | 全部登记式 Hook 使用 typed Key。Unit 本地登记统一存于 Unit.hooks，Battle 观察各持有 Hooks 集合；固有登记在首次 enter 前就绪。资源 Context 的目标统一从 request.target 取得，Vitality 内部派发不重复接收目标参数；Key 保留完整 ReceivingHook 泛型及最低宿主能力，unit.setHook／removeHook 返回相应 Change。候选固定、登记实时读取、替换保位及嵌套独立；Resource／Receiving 保留优先级，其他通知保持登记顺序。生命周期 leave 使用注销前最新程序与原 Departure；结束事实允许仍登记的 LEAVING 宿主参与。 | 公共集合／类型及实际生命周期场景集中验证；用接收 Hook 证明非法状态恢复、错配 Key／Entry 和能力不足的 update 被拒绝，不复制各 Capability 矩阵。 |
 | HOOK-02 | Calculate 与 Apply 的 Options.exclude 分别生效：按 Key 对象身份排除整阶段或指定 ID；同 Key 在本次多个宿主派发时一致匹配。排除不改登记，不豁免 Restriction，不传入 Request／Calculated；嵌套操作及提交事实通知不自动继承。 | 一个 Calculate／Apply 代表场景组合整键、单 ID 与同名不同键，验证两次操作独立、后续正常调用及嵌套响应仍执行；不为四类资源复制排除矩阵。 |
 | HOOK-03 | Blocking 每条关系的双方候选在首个回调前同时固定，先 Blocker 后 Blockable；ACQUIRED 失效停止、RELEASED 保留历史通知。Skill／Elemental 的结束通知从仍登记的宿主读取 Hook，LEAVING 不丢失清理后的事实。 | 在既有关系重入与依赖结束场景验证这两项领域差异；公共候选与替换协议只测一次。 |
 | HP-01 | 物理、法术、真实及元素 HP 伤害采用各自公式；公式后类型与防御采样传到 Apply，初始 Request 不变。HP／EP Damage 的 attackType／applyWay 为调用方提供的固定单值事实，Hook／Restriction 可读取，公式转换不改写分类。Calculate 不构成受击，也不写入本笔 HP。 | 合法基础属性与 Formula／Output 干预，核对最终数额、类型和接收前 HP；在既有 Calculate／Apply 场景用自定义 Hook 或 Restriction 观察分类跨阶段保留及其业务判断，不按分类、阶段与资源展开矩阵。 |

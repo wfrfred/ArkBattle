@@ -34,7 +34,6 @@ export function applyDamage(
     }
 
     const context = {
-        target: request.target,
         request,
         calculated: damage,
         forbidden: options?.forbidden ?? new Set<Reason>(),
