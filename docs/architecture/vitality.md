@@ -71,11 +71,10 @@ Runtime 在 Effect 推进后、Elemental 资源推进前调用 Vitality.advance�
 
 ### 0.2 HP 写入前修改
 
-Vitality 在 commitDamage 的 HP 写入前派发 `damageCommitting`，普通伤害与生命流失共用这个修改机会；保护程序自行判断本次应用是否致命。治疗与自然回复保持各自正向恢复路径。Hook 载荷不携带 Damage 的 Request、Pending 或取消原因。Hook 定义于 `vitality/hook.ts`，通过 Unit 的公共 Hook 接口登记：
+Vitality 在 commitDamage 的 HP 写入前派发 `damageCommitting`，普通伤害与生命流失共用这个修改机会；保护程序自行判断本次应用是否致命。治疗与自然回复保持各自正向恢复路径。Context 沿用 Damage 的 request，并保存本次进入提交时的 HP；数值工作值独立于 Receiving Pending 与取消协议。Hook 定义于 `vitality/hook.ts`，通过 Unit 的公共 Hook 接口登记：
 
 ```typescript
-interface DamageCommittingContext {
-    readonly target: Ref<Unit & Vitality>;
+interface DamageCommittingContext extends HpDamage.Context {
     readonly hpBefore: number;
 }
 
@@ -449,7 +448,7 @@ receiveHealing(
 ): Result<HpHealing.Pending>;
 ```
 
-HP Damage、HP Healing 与 EP Damage 的 receive 各执行自己的一轮有序 Receiving，接续 BeforeReceive 返回的 Pending。Vitality 的内部派发接口从已有接收 Context 或 DamageCommittingContext 取得目标，不另接收一份目标参数。它们都可能发生同步业务，返回值包含接续后的 BattleState 与 Pending。receive 返回前将未取消的最终接收量截为非负数，Commit 信任该边界建立的约束；取消则保留工作值快照，遵守第 1.6 节的 Pending 契约。
+HP Damage、HP Healing 与 EP Damage 的 receive 各执行自己的一轮有序 Receiving，接续 BeforeReceive 返回的 Pending。Vitality 的内部派发接口统一从 Context.request.target 取得目标，不另接收一份目标参数。它们都可能发生同步业务，返回值包含接续后的 BattleState 与 Pending。receive 返回前将未取消的最终接收量截为非负数，Commit 信任该边界建立的约束；取消则保留工作值快照，遵守第 1.6 节的 Pending 契约。
 
 commit 接收对应业务的精确 CommitContext，其中 request、calculated 与 received 提供资源写入、Burst 归因和能力通知所需的事实。两种能力分别提供：
 

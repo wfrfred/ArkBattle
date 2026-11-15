@@ -1,10 +1,9 @@
-import type { Ref } from "../../../common/ref.js";
+import type { Context as DamageContext } from "../../../battle/resource/hp/damage/hook.js";
 import { key, type Hook } from "../../../hook.js";
 import type { Unit } from "../../unit.js";
 import type { Vitality } from "./capability.js";
 
-export interface DamageCommittingContext {
-    readonly target: Ref<Unit & Vitality>;
+export interface DamageCommittingContext extends DamageContext {
     readonly hpBefore: number;
 }
 

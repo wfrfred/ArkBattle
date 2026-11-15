@@ -576,7 +576,7 @@ test("HP-08: damage committing chains proposed HP against current state and does
                 invoke(current, context, hp) {
                     calls.push(["first", context.hpBefore, hp]);
                     return {
-                        state: update(current, context.target, units.compose(
+                        state: update(current, context.request.target, units.compose(
                             vitality.setMaxHpContribution({ id: "more-hp", value: [attribute.create({ multiplier: 1 })] }),
                             vitality.setContribution("defense", { id: "armor", value: [attribute.create({ addition: 20 })] }),
                         )),
@@ -605,7 +605,7 @@ test("HP-08: damage committing chains proposed HP against current state and does
     state = update(protectedHit.state, target, units.setHook(vitality.damageCommitting, {
         id: "remove-host", priority: 10000,
         invoke(current, context, value) {
-            return { state: remove(current, context.target, "SCRIPT"), value };
+            return { state: remove(current, context.request.target, "SCRIPT"), value };
         },
     }));
     const unavailable = hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request));

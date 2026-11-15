@@ -13,7 +13,7 @@ import { resolveMaxHp, type Vitality } from "./capability.js";
 import { resolveRecoverySpeed } from "./query.js";
 import { allows } from "../../../restriction.js";
 import type { Restriction } from "./restriction.js";
-import { damageCommitting, type DamageCommittingContext } from "./hook.js";
+import { damageCommitting } from "./hook.js";
 
 export interface DamageApplication {
     readonly hpBefore: number;
@@ -89,7 +89,7 @@ export function commitDamage(
     const unit = units.get(battle, target)!;
     const committed = dispatchHook(
         battle,
-        { target, hpBefore: unit.vitality.hp },
+        { request: context.request, hpBefore: unit.vitality.hp },
         unit.vitality.hp - context.received.amount,
         damageCommitting,
     );
@@ -151,7 +151,7 @@ function increaseHp(
 }
 
 function dispatchHook<
-    C extends damage.ReceivingContext | healing.ReceivingContext | DamageCommittingContext,
+    C extends damage.Context | healing.Context,
     T,
     H extends hooks.Hook<C, T> & { readonly priority?: number },
 >(
@@ -161,7 +161,7 @@ function dispatchHook<
     key: hooks.Key<H, Unit & Vitality>,
     options?: hooks.Options,
 ): Result<T> {
-    const target = "request" in context ? context.request.target : context.target;
+    const target = context.request.target;
 
     return hooks.dispatch(battle, context, initial, {
         candidates(current) {

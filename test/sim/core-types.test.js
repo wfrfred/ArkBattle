@@ -431,7 +431,7 @@ const patientRef = ref(patient);
 const damageCommittingChange = setUnitHook(vitality.damageCommitting, {
     id: 'protect-hp',
     invoke(state, context, hp) {
-        const target: Ref<Unit & vitality.Vitality> = context.target;
+        const target: Ref<Unit & vitality.Vitality> = context.request.target;
         const previous: number = context.hpBefore;
         return { state, value: Math.max(hp, 1) };
     },
