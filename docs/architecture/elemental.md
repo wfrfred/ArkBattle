@@ -131,7 +131,7 @@ EP Damage ApplyOptions 的 forbidden 接受本业务 Reason 的 ReadonlySet，Ap
 
 ## 4. Hook、提交事实与同步重入
 
-通用 Formula、Output、BeforeReceive、BeforeCommit、targetApplied、sourceApplied 存于 [Unit.hooks](hook.md)，由对应 Battle 子域定义键与派发。基础目标资格成立后执行 beforeReceive，再读取最新 Restriction；取消、失效及已提交结果按各业务 Outcome 表达。
+通用 Formula、Output、BeforeReceive、BeforeCommit、targetApplied、sourceApplied 存于 [Unit.hooks](hook.md)，由对应 Battle 子域定义键与派发。基础目标资格成立后，以计算量建立 Pending，beforeReceive 接续该工作值并执行业务，再读取最新接收资格。EP Damage 的 beforeReceive 与 receiving 使用同一个 ReceivingHook 类型、不同 Key；前者的数值、固定和取消结果传入后者，前置已取消而准入不成立时仍返回 CANCELLED。EP Healing 的 beforeReceive 使用简单 Pending，准入后截零再提交，不增加取消协议。取消、失效及已提交结果按各业务 Outcome 表达。
 
 EP Damage 的 receiving 键关联 Elemental 宿主，Elemental 的 damaged／healed／burstStarted／burstEnded 分别提供自己的 typed Key，全部通过 unit.setHook／removeHook 登记于 Unit.hooks。专属接收仍由 Elemental 执行，按优先级、固定候选与最新登记接续 battle 和 Pending；接收 Context 固定 `{ target, request, calculated, forbidden }`，forbidden 为本次 Apply 从选项建立的 ReadonlySet<Reason>，各接收 Hook 调用 cancel 时显式传入 context.forbidden，原因绑定本域 Reason。取消后继续后续 Hook，但保留取消事实和原因。全部接收 Hook 完成后，receiveDamage 将未取消的最终 amount 截为非负数，再交给 Battle 构造 CommitContext；BeforeCommit、资源提交及报告使用同一接收量，零接收量仍可成功，中间各 Hook 不单独截零。receiveDamage 接受 Apply 传入的 Options，按 EP Damage.receiving 键过滤本次候选；资源／Burst 事实通知不自动继承该选项。EP Healing 不提供专属 Receiving 或取消构造器。
 

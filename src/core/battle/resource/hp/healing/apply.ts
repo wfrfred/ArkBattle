@@ -3,9 +3,11 @@ import type { Ref } from "../../../../common/ref.js";
 import type { Unit } from "../../../../unit/unit.js";
 import * as vitality from "../../../../unit/capability/vitality/operations.js";
 import { appendEvents, type Result, type State as BattleState } from "../../../state.js";
-import type { Calculated, Outcome, Reason, Request } from "./contract.js";
+import type { Calculated, Outcome, Pending, Reason, Request } from "./contract.js";
 import {
     type CommitContext,
+    type ReceivingContext,
+    type ReceivingHook,
     dispatch,
     beforeReceive,
     beforeCommit,
@@ -39,21 +41,29 @@ export function applyHealing(
         calculated: calculation,
         forbidden: options?.forbidden ?? new Set<Reason>(),
     };
-    battle = dispatch(battle, request.target, beforeReceive, context, undefined, options).state;
-
-    if (!vitality.canReceiveHealing(battle, request.target)) {
-        return complete(battle, request, calculation, { type: "REJECTED" }, options);
-    }
-
-    const receiving = vitality.receiveHealing(
+    const before = dispatch<ReceivingContext, Pending, ReceivingHook>(
         battle,
+        request.target,
+        beforeReceive,
         context,
-        {
-            amount: calculation.amount,
-            type: "NORMAL",
-        },
+        { amount: calculation.amount, type: "NORMAL" },
         options,
     );
+    battle = before.state;
+
+    if (!vitality.canReceiveHealing(battle, request.target)) {
+        return complete(
+            battle,
+            request,
+            calculation,
+            before.value.type === "CANCELLED"
+                ? { type: "CANCELLED", received: before.value }
+                : { type: "REJECTED" },
+            options,
+        );
+    }
+
+    const receiving = vitality.receiveHealing(battle, context, before.value, options);
     battle = receiving.state;
     const received = receiving.value;
     if (received.type === "CANCELLED") {

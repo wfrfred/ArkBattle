@@ -42,7 +42,6 @@ export type {
     SourceFormulaHook,
     TargetFormulaHook,
     OutputHook,
-    BeforeReceiveHook,
     ReceivingHook,
     BeforeCommitHook,
     AppliedHook,

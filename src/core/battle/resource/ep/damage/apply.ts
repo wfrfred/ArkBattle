@@ -4,9 +4,11 @@ import type { Result } from "../../../state.js";
 import * as units from "../../../../unit/query.js";
 import { available, canReceiveDamage } from "../../../../unit/capability/elemental/query.js";
 import { receiveDamage, commitDamage } from "../../../../unit/capability/elemental/operations.js";
-import type { Calculated, Outcome, Reason, Request } from "./contract.js";
+import type { Calculated, Outcome, Pending, Reason, Request } from "./contract.js";
 import {
     type CommitContext,
+    type ReceivingContext,
+    type ReceivingHook,
     dispatch,
     beforeReceive,
     beforeCommit,
@@ -37,21 +39,27 @@ export function applyDamage(
         calculated: damage,
         forbidden: options?.forbidden ?? new Set<Reason>(),
     };
-    battle = dispatch(battle, request.target, beforeReceive, context, undefined, options).state;
-
-    if (!canReceiveDamage(battle, request, damage.type, options?.ignore)) {
-        return { state: battle, value: { type: "REJECTED" } };
-    }
-
-    const receiving = receiveDamage(
+    const before = dispatch<ReceivingContext, Pending, ReceivingHook>(
         battle,
+        request.target,
+        beforeReceive,
         context,
-        {
-            amount: damage.amount,
-            type: "NORMAL",
-        },
+        { amount: damage.amount, type: "NORMAL" },
         options,
     );
+    battle = before.state;
+
+    if (!canReceiveDamage(battle, request, damage.type, options?.ignore)) {
+        return {
+            state: battle,
+            value:
+                before.value.type === "CANCELLED"
+                    ? { type: "CANCELLED", received: before.value }
+                    : { type: "REJECTED" },
+        };
+    }
+
+    const receiving = receiveDamage(battle, context, before.value, options);
     battle = receiving.state;
     const received = receiving.value;
     if (received.type === "CANCELLED") {

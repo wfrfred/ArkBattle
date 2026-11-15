@@ -131,7 +131,7 @@ test("APPLY-03: Mudrock requires a successful block for shield costs and benefit
         },
     });
     let battle = update(ready, ref(fixture.unit), compose(
-        setHook(hpDamage.receiving, {
+        setHook(hpDamage.beforeReceive, {
             id: "fix-amount", priority: 200,
             invoke(state, _context, pending) {
                 assert.equal(pending.type, "NORMAL");
@@ -174,7 +174,7 @@ test("APPLY-03: Mudrock requires a successful block for shield costs and benefit
     assert.equal(readShield(getUnit(accepted.state, 0)).layers, 1);
     assert.deepEqual(observed, [["commit", "FIXED", 100], ["applied", "FIXED", 100]]);
 
-    const ordinary = update(battle, ref(fixture.unit), removeHook(hpDamage.receiving, "fix-amount"));
+    const ordinary = update(battle, ref(fixture.unit), removeHook(hpDamage.beforeReceive, "fix-amount"));
     const reduced = hpDamage.applyDamage(request, hpDamage.calculateDamage(ordinary, request), {
         forbidden: new Set(["BLOCKED"]),
     });
@@ -186,7 +186,7 @@ test("APPLY-03: Mudrock requires a successful block for shield costs and benefit
     assert.equal(readShield(getUnit(reduced.state, 0)).layers, 1);
 
     observed.length = 0;
-    const missed = update(ordinary, ref(fixture.unit), setHook(hpDamage.receiving, {
+    const missed = update(ordinary, ref(fixture.unit), setHook(hpDamage.beforeReceive, {
         id: "evade", priority: 200,
         invoke(state, context, pending) {
             return { state, value: hpDamage.cancel(pending, "MISS", context.forbidden) };
@@ -196,7 +196,7 @@ test("APPLY-03: Mudrock requires a successful block for shield costs and benefit
     assert.equal(cancelled.value.type, "CANCELLED");
     assert.equal(cancelled.value.received.reason, "MISS");
     assert.equal(getUnit(cancelled.state, 0).vitality.hp, 1000);
-    assert.equal(getUnit(cancelled.state, 0).skill.sp.value, 1);
+    assert.equal(getUnit(cancelled.state, 0).skill.sp.value, 0);
     assert.equal(readShield(getUnit(cancelled.state, 0)).layers, 1);
     assert.deepEqual(observed, []);
 });

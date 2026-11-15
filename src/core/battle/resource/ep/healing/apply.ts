@@ -4,7 +4,15 @@ import * as units from "../../../../unit/query.js";
 import { available, canReceiveHealing } from "../../../../unit/capability/elemental/query.js";
 import { commitHealing } from "../../../../unit/capability/elemental/operations.js";
 import type { Calculated, Outcome, Pending, Request } from "./contract.js";
-import { dispatch, beforeReceive, beforeCommit, targetApplied, sourceApplied } from "./hook.js";
+import {
+    type ReceivingContext,
+    type ReceivingHook,
+    dispatch,
+    beforeReceive,
+    beforeCommit,
+    targetApplied,
+    sourceApplied,
+} from "./hook.js";
 
 export function applyHealing(
     request: Request,
@@ -24,13 +32,21 @@ export function applyHealing(
     }
 
     const context = { target: request.target, request, calculated: healing };
-    battle = dispatch(battle, request.target, beforeReceive, context, undefined, options).state;
+    const before = dispatch<ReceivingContext, Pending, ReceivingHook>(
+        battle,
+        request.target,
+        beforeReceive,
+        context,
+        { amount: healing.amount, cancellation: null },
+        options,
+    );
+    battle = before.state;
 
     if (!canReceiveHealing(battle, request)) {
         return { state: battle, value: { type: "REJECTED" } };
     }
 
-    const received: Pending = { amount: healing.amount, cancellation: null };
+    const received: Pending = { ...before.value, amount: Math.max(0, before.value.amount) };
     const commit = { ...context, received };
     battle = dispatch(battle, request.source, beforeCommit, commit, undefined, options).state;
 

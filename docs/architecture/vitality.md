@@ -184,7 +184,7 @@ HP／EP Damage 共用 [resource/damage.ts](../../src/core/battle/resource/damage
 
 `nature` 是普通伤害／生命流失的业务性质，与 parameters.type 的数学类型正交；不得由是否自伤、是否周期输出或来源是否为空推断。`hitRecovery` 表示普通受击类 SP 回复许可，只有 nature 为 DAMAGE 且该字段为 true 才具备资格；LOSS 不论该许可均不产生 HIT。两项独立保存，例如拟态机械射线的原生配置同时具有 skip 与未禁用 SP 的标记，仍因流失不进入普通受击回复。普通攻击通常提供 true，活性源石和标准元素爆发的 HP 输出提供 false。它不抑制其他受伤程序，也不保证目标当前一定能够回复 SP。
 
-两种性质都完整执行来源 Formula、目标 Formula、公式和 Output，以及 Apply 的 BeforeReceive、ReceivingStarted、Receiving、BeforeCommit 和两侧 Applied。请求不配置阶段派发开关，不另建 LOSS 管线或 Hook 集合；机制通过 Restriction／Hook 的资格表达自己的适用范围。普通护盾、闪避、减伤、受伤天赋只响应 DAMAGE；明确作用于流失的程序可以在相同 Hook 上响应 LOSS。通用 Applied 记录成功提交事实，因此 LOSS 也正常通知，最后仍按最新 HP 确认死亡。
+两种性质都完整执行来源 Formula、目标 Formula、公式和 Output，以及 Apply 的 BeforeReceive、Receiving、BeforeCommit 和两侧 Applied。请求不配置阶段派发开关，不另建 LOSS 管线或 Hook 集合；机制通过 Restriction／Hook 的资格表达自己的适用范围。普通护盾、闪避、减伤、受伤天赋只响应 DAMAGE；明确作用于流失的程序可以在相同 Hook 上响应 LOSS。通用 Applied 记录成功提交事实，因此 LOSS 也正常通知，最后仍按最新 HP 确认死亡。
 
 无敌和 Presence 的 HP 接收 Restriction 拒绝 DAMAGE、允许 LOSS；它们对 EP 的规则保持各自既有语义。基本 Unit 生命周期与 HP 资格仍统一检查，LOSS 不绕过真实离场。未来特殊生命保护仍属于资源提交层，不因流失跳过。实际内容依据及已接受的原生差异见[流失交互研究](../research/cases/11-damage-apply-and-hp-application.md#7-统一管线的实际内容对照2026-11-13)。自然回复不进入 Damage，也不通过构造 LOSS 请求表达。
 
@@ -236,7 +236,7 @@ AppliedContext 保留 request、calculated、Receiving 最终 received 和本次
 
 HP Damage 的 APPLIED 另携带本笔 killed，表示本笔在两侧 Applied 后确认目标死亡并发起 DEATH。它属于最终 Outcome，不加入资源提交的 Application 或提前执行的 AppliedContext；Completed 观察同一份已确定结果。单笔归属、内容聚合及必要回归见第 3.4 节。
 
-Formula 分来源与目标两个节点，Output 属于来源，BeforeReceive／ReceivingStarted／Receiving 属于目标，BeforeCommit 属于来源。Applied 分别通过 targetApplied 与 sourceApplied 键依次通知目标和来源，同一 Unit 承担两个角色时也分别执行各自登记；Completed 仍按既定终结通知契约，同一宿主不重复通知。每个节点、每个宿主的派发独立固定候选 ID，目标响应中新登记的来源 Hook 可进入随后独立的来源派发。登记、优先级和生命周期见第 1.7 节。
+Formula 分来源与目标两个节点，Output 属于来源，BeforeReceive／Receiving 属于目标，BeforeCommit 属于来源。Applied 分别通过 targetApplied 与 sourceApplied 键依次通知目标和来源，同一 Unit 承担两个角色时也分别执行各自登记；Completed 仍按既定终结通知契约，同一宿主不重复通知。每个节点、每个宿主的派发独立固定候选 ID，目标响应中新登记的来源 Hook 可进入随后独立的来源派发。登记、优先级和生命周期见第 1.7 节。
 
 DAMAGE 事件只携带飘字需要的目标、伤害类型、实际 HP 损失和发生 Tick。取消保留零值表现；接收量、取消原因和提交后的 HP 属于 Outcome／Application，不复制到 Event。零数值输入在 Apply 入口 REJECTED，不进入普通受击回复；无敌等入口 Restriction 拒绝也不进入 Receiving。取消不停止后继 Receiving Hook，次数盾自行筛除取消或非正数值；反伤可继续。
 
@@ -276,17 +276,15 @@ interface Entry<C, T> extends Hook<C, T> {
 type SourceFormulaHook = Entry<Context, Parameters>;
 type TargetFormulaHook = Entry<Context, Parameters>;
 type OutputHook = Entry<OutputContext, number>;
-type BeforeReceiveHook = Entry<ReceivingContext, void>;
-type ReceivingStartedHook = Entry<ReceivingContext, void>;
 type BeforeCommitHook = Entry<CommitContext, void>;
 type AppliedHook = Entry<AppliedContext, void>;
 ```
 
-Request 始终表示初始事实；公式参数、输出量和接收工作值只经对应 Hook 的 current 接续。OutputContext.type 是公式确定的类型，不重新读取 Request 的初始类型。BeforeReceive、ReceivingStarted、BeforeCommit 与 Applied 只接续 BattleState 业务；Applied 的报告在提交时确定，只对成功提交派发，零实际变化仍可成功。其余业务定义自己的 Application，不重复声明成功 Outcome 的另一份报告。
+Request 始终表示初始事实；公式参数、输出量和接收工作值只经对应 Hook 的 current 接续。OutputContext.type 是公式确定的类型，不重新读取 Request 的初始类型。BeforeReceive 与 Receiving 使用相同的 ReceivingHook 类型，接续 BattleState 和 Pending；BeforeCommit 与 Applied 只接续 BattleState 业务；Applied 的报告在提交时确定，只对成功提交派发，零实际变化仍可成功。其余业务定义自己的 Application，不重复声明成功 Outcome 的另一份报告。
 
-各业务 Hook 键由相应子域导出，均登记在 Unit.hooks。HP Damage 提供 receivingStarted／receiving，HP Healing 和 EP Damage 各自提供 receiving；键分别关联 Vitality／Elemental 宿主要求。接收仍由对应 Capability 按原资格、优先级与停止条件派发，登记统一使用 unit.setHook／removeHook。
+各业务 Hook 键由相应子域导出，均登记在 Unit.hooks。beforeReceive 与 receiving 使用不同 Key，前者位于接收准入前，后者位于准入后，各自独立固定候选。HP Damage、HP Healing 与 EP Damage 均提供这两个键，关联 Vitality／Elemental 宿主要求。登记统一使用 unit.setHook／removeHook。
 
-ReceivingStarted 只供 HP Damage 的普通受击 SP 等接收开始业务使用。EP Healing 不提供专属 Receiving，其 Pending.cancellation 固定为 null，也不导出取消构造器或 CANCELLED 结果。各业务分别提供自身使用的阶段。
+EP Healing 只提供 beforeReceive，不增加准入后的专属 receiving 键。其 ReceivingHook 是 Entry<ReceivingContext, Pending>，Pending.cancellation 固定为 null，不导出取消构造器或 CANCELLED 结果。普通 HIT 回复使用 HP Damage.receiving 的高优先级登记，不设额外开始通知。
 
 #### 接收工作值、数值固定与取消
 
@@ -373,7 +371,9 @@ UNSPECIFIED 表示取消但未指定一种受击结果；它不表示未取消�
 
 固有登记直接写入 Unit Definition.hooks，在任何 enter 程序之前完成装配。运行时统一使用 `unit.setHook(key, hook)`／`unit.removeHook(key, id)`；`Key<H, Owner>` 保留完整 Hook 类型和最低宿主能力，返回 `Change<Unit & Owner>`，经 Unit.update 发布。生命周期键也允许修改，不另设领域转发入口。priority 缺省为 0；计算、应用及专属接收均按 priority 降序，相同时保留登记顺序。同键同 ID 替换保位，当前派发不因替换重新排序。
 
-HP ReceivingStarted、HP Damage／Healing Receiving、EP Damage Receiving 与 Elemental 的资源／Burst 通知统一存于宿主 Unit.hooks。接收与通知的类型、时点和资格仍归对应业务，EP Healing 不增加专属 Receiving。
+HP Damage／Healing Receiving、EP Damage Receiving 与 Elemental 的资源／Burst 通知统一存于宿主 Unit.hooks。接收与通知的类型、时点和资格仍归对应业务，EP Healing 不增加专属 Receiving。
+
+普通 HIT 回复由 Skill 登记在 HP Damage.receiving，约定使用 10000 量级的高优先级；普通伤判通常使用缺省 0 或各自明确的优先级，不增加强制优先级分区。该回复只接受未取消且 amount 大于零、nature=DAMAGE、hitRecovery=true 的当前工作值，原样返回 Pending。前置取消或归零不授予 HIT；后续闪避、抵挡不回滚已经完成的回复。同轮新增 ID 不进入本轮，需在准入前完成的程序应使用 beforeReceive。
 
 本地登记随承载 Unit 注销而移除，不建立 BattleState 外置表或单独 Hook Lifetime。临时 Effect 在启停时登记、撤销自己的输出；跨 Unit 安装仍由机制拥有者管理撤销。通用集合不承担派发、接收资格或自动回滚。
 
@@ -425,7 +425,7 @@ receiveHealing(
 ): Result<HpHealing.Pending>;
 ```
 
-HP Damage 的 receive 包含 ReceivingStarted 和有序 Receiving，HP Healing 只执行自己的 Receiving；EP Damage 执行 EP 专属 Receiving。它们都可能发生同步业务，返回值包含接续后的 BattleState 与 Pending。receive 返回前将未取消的最终接收量截为非负数，Commit 信任该边界建立的约束；取消则保留工作值快照，遵守第 1.6 节的 Pending 契约。
+HP Damage、HP Healing 与 EP Damage 的 receive 各执行自己的一轮有序 Receiving，接续 BeforeReceive 返回的 Pending。它们都可能发生同步业务，返回值包含接续后的 BattleState 与 Pending。receive 返回前将未取消的最终接收量截为非负数，Commit 信任该边界建立的约束；取消则保留工作值快照，遵守第 1.6 节的 Pending 契约。
 
 commit 接收对应业务的精确 CommitContext，其中 target、request、calculated 与 received 提供资源写入、Burst 归因和能力通知所需的事实。两种能力分别提供：
 
@@ -447,9 +447,10 @@ Apply 的编排为：
 
 ```text
 非零计算输出与目标基础资格
-→ 通用 BeforeReceive
+→ 以计算量建立初始 Pending
+→ BeforeReceive 接续 Pending
 → 最新 canReceive
-→ 专属 receive（该业务具有时）
+→ 专属 receive 接续同一 Pending（该业务具有时）
 → 确认取消与当前资格
 → 来源 BeforeCommit
 → 确认当前资格
@@ -459,6 +460,8 @@ Apply 的编排为：
 → HP Damage 按当前 HP 确认死亡
 → Outcome
 ```
+
+BeforeReceive 可以改量、固定、取消并执行同步业务；后续准入查询读取最新状态。项目约定：具有取消协议的业务若在前置阶段已经取消，仍将该工作值交给资格允许的 Receiving，后续 Hook 不得恢复；若准入不成立，则跳过 Receiving，已取消的请求仍返回 CANCELLED，其他请求返回 REJECTED。EP Healing 的 BeforeReceive 只接续自己的简单 Pending，准入通过后将最终 amount 截为非负数。
 
 只在同步业务可能改变续执行条件的边界重查资格，无回调的连续步骤不追加防御。取消不执行 BeforeCommit、commit 或 Applied；正数计算输出在接收后归零、或实际变化为零，仍可成功提交并派发 Applied。
 
@@ -579,7 +582,7 @@ applyHealing(request, calculation, options?: ApplyOptions): Result<Outcome>;
 
 Calculate 依次派发来源 Formula、目标 Formula，将当前 power 与 multiplier 相乘后截零，再派发来源数值 Output。Request 始终表示初始事实，当前 Parameters 与 Output 数值逐项接续；Formula 读取原始参数，全部 Output 之后再按第 1 节形成非负 Calculated，不要求中间工作值非负。输入及 Hook 数值遵守有限数值契约。目标缺失、LEAVING 或 HP 为零时无法计算，已完成的状态前缀仍返回。
 
-Apply 对最终计算量为零的治疗在入口返回 REJECTED，不派发本笔接收与 Applied。正数治疗确认目标当前存在、PRESENT 且 HP 大于零，按第 1 节的接收与提交边界执行，读取最新 HP、MaxHP 截断恢复量并提交；该 HP 发布不附带 Blocking 维护。随后依次派发 targetApplied 与 sourceApplied，即使来源与目标为同一 Unit 也分别执行；Completed 保持同一宿主不重复通知。HP Healing 不另设 ReceivingStarted。来源缺失或 LEAVING 时不运行其 Hook，但不因此取消仍可作用于有效目标的已采样治疗。
+Apply 对最终计算量为零的治疗在入口返回 REJECTED，不派发本笔接收与 Applied。正数治疗确认目标当前存在、PRESENT 且 HP 大于零，按第 1 节的接收与提交边界执行，读取最新 HP、MaxHP 截断恢复量并提交；该 HP 发布不附带 Blocking 维护。随后依次派发 targetApplied 与 sourceApplied，即使来源与目标为同一 Unit 也分别执行；Completed 保持同一宿主不重复通知。来源缺失或 LEAVING 时不运行其 Hook，但不因此取消仍可作用于有效目标的已采样治疗。
 
 结果与 Damage 使用相同的 REJECTED、CANCELLED、UNAVAILABLE、APPLIED 区分，治疗不携带击杀结果。Pending 使用同样的 NORMAL／FIXED／CANCELLED 三态；取消不停止剩余 Receiving Hook。Application 保存 hpBefore、hpAfter、hpGain，后续嵌套业务不追溯修改这次恢复事实。Received amount 与实际 hpGain 分开；完整恢复量不在 Calculate 提前按缺失 HP 截断。
 

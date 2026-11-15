@@ -16,6 +16,24 @@ export function dispatch<C, T>(
     initial: T,
     options?: hooks.Options,
     stop?: (battle: BattleState) => boolean,
+): Result<T>;
+export function dispatch<C, T, H extends Entry<C, T>>(
+    battle: BattleState,
+    owner: Ref<Unit> | null,
+    key: hooks.Key<H, any>,
+    context: C,
+    initial: T,
+    options?: hooks.Options,
+    stop?: (battle: BattleState) => boolean,
+): Result<T>;
+export function dispatch<C, T, H extends Entry<C, T>>(
+    battle: BattleState,
+    owner: Ref<Unit> | null,
+    key: hooks.Key<H, any>,
+    context: C,
+    initial: T,
+    options?: hooks.Options,
+    stop?: (battle: BattleState) => boolean,
 ): Result<T> {
     if (owner === null) {
         return { state: battle, value: initial };

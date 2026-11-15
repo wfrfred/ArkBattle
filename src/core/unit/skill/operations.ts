@@ -11,10 +11,7 @@ import * as contribution from "../contribution/contribution.js";
 import { hasVitality } from "../capability/vitality/capability.js";
 import { hasAction } from "../capability/action/capability.js";
 import { released, type ReleasedHook } from "../capability/action/release.js";
-import {
-    receivingStarted,
-    type ReceivingStartedHook,
-} from "../../battle/resource/hp/damage/hook.js";
+import { receiving, type ReceivingHook } from "../../battle/resource/hp/damage/hook.js";
 import { hasSkill, type Skill as SkillCapability } from "../capability/skill/capability.js";
 import {
     ref as activationRef,
@@ -31,11 +28,15 @@ import * as sp from "./sp.js";
 import { resolveCapacity as resolveAmmoCapacity } from "./ammo.js";
 import { allows } from "../../restriction.js";
 
-const hitRecovery: ReceivingStartedHook = {
+const hitRecovery: ReceivingHook = {
     id: "@skill/hit-recovery",
-    priority: 0,
-    accepts: (_battle, { request }) => request.nature === "DAMAGE" && request.hitRecovery,
-    invoke: (battle, { request }) => {
+    priority: 10000,
+    accepts: (_battle, { request }, current) =>
+        current.type !== "CANCELLED" &&
+        current.amount > 0 &&
+        request.nature === "DAMAGE" &&
+        request.hitRecovery,
+    invoke: (battle, { request }, current) => {
         const target = units.get(battle, request.target);
 
         return {
@@ -43,7 +44,7 @@ const hitRecovery: ReceivingStartedHook = {
                 target !== undefined && hasSkill(target)
                     ? sp.recover(battle, units.ref(target), "HIT").state
                     : battle,
-            value: undefined,
+            value: current,
         };
     },
 };
@@ -347,7 +348,7 @@ export const enter: EnterHook = {
         let unit = units.get(battle, host)!;
         const definition = unit.skill.definition;
         if (hasVitality(unit) && definition.sp?.recovery.type === "HIT") {
-            battle = update(battle, units.ref(unit), setHook(receivingStarted, hitRecovery));
+            battle = update(battle, units.ref(unit), setHook(receiving, hitRecovery));
         } else if (hasAction(unit) && definition.sp?.recovery.type === "ACTION") {
             battle = update(battle, units.ref(unit), setHook(released, actionRecovery));
         }

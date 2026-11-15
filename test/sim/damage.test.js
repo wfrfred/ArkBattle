@@ -46,6 +46,7 @@ function injuryRequest(target, type, power, source = null) {
 test("HOOK-02: exclusions are local to each operation and match a key or one ID across its hosts", () => {
     const formulaCalls = [];
     const receptions = [];
+    let expanded = false;
     const completions = [];
     const completion = (host, id) => ({
         id,
@@ -89,6 +90,30 @@ test("HOOK-02: exclusions are local to each operation and match a key or one ID 
                 return { state, value: { ...current, attack: { ...current.attack, power: current.attack.power * 2 } } };
             },
         })
+        .set(hpDamage.beforeReceive, {
+            id: "receive",
+            invoke(state, { target }, current) {
+                receptions.push("before");
+                if (!expanded) {
+                    expanded = true;
+                    const late = stage => ({
+                        id: "late",
+                        invoke(next, _context, pending) {
+                            receptions.push(stage);
+                            return { state: next, value: pending };
+                        },
+                    });
+                    state = update(state, target, units.compose(
+                        units.setHook(hpDamage.beforeReceive, late("late-before")),
+                        units.setHook(hpDamage.receiving, late("late-receiving")),
+                    ));
+                }
+                return {
+                    state,
+                    value: current.type === "NORMAL" ? { ...current, amount: current.amount + 2 } : current,
+                };
+            },
+        })
         .set(hpDamage.receiving, receiving("outer"))
         .set(hpDamage.completed, completion("target", "shared"))
         .set(hpDamage.completed, completion("target", "kept"));
@@ -103,13 +128,13 @@ test("HOOK-02: exclusions are local to each operation and match a key or one ID 
     ]);
     const request = damageRequest(units.ref(get(state, 0)), units.ref(get(state, 1)), 10);
     const first = hpDamage.calculateDamage(state, request, {
-        exclude: [[hpDamage.targetFormula, null], [hpDamage.output, "boost"], [hpDamage.receiving, null]],
+        exclude: [[hpDamage.targetFormula, null], [hpDamage.output, "boost"], [hpDamage.beforeReceive, null], [hpDamage.receiving, null]],
     });
     assert.equal(first.value.amount, 11);
     assert.deepEqual(formulaCalls, ["source", "keep"]);
     const applied = hpDamage.applyDamage(request, first);
-    assert.equal(applied.value.application.hpLoss, 14);
-    assert.deepEqual(receptions, ["outer", "nested"]);
+    assert.equal(applied.value.application.hpLoss, 16);
+    assert.deepEqual(receptions, ["before", "outer", "late-receiving", "nested"]);
     assert.deepEqual(completions, ["nested:shared", "target:shared", "target:kept", "source:shared", "source:kept"]);
 
     formulaCalls.length = receptions.length = completions.length = 0;
@@ -120,14 +145,16 @@ test("HOOK-02: exclusions are local to each operation and match a key or one ID 
     const excluded = hpDamage.applyDamage(request, second, {
         exclude: [[hpDamage.receiving, null], [hpDamage.completed, "shared"]],
     });
-    assert.equal(excluded.value.application.hpLoss, 121);
-    assert.deepEqual(receptions, ["nested"]);
+    assert.equal(excluded.value.application.hpLoss, 123);
+    assert.deepEqual(receptions, ["before", "late-before", "nested"]);
     assert.deepEqual(completions, ["nested:shared", "target:kept", "source:kept"]);
 
     receptions.length = completions.length = 0;
-    const normal = hpDamage.applyDamage(request, { state: excluded.state, value: second.value });
+    const normal = hpDamage.applyDamage(request, { state: excluded.state, value: second.value }, {
+        exclude: [[hpDamage.beforeReceive, null]],
+    });
     assert.equal(normal.value.application.hpLoss, 124);
-    assert.deepEqual(receptions, ["outer", "nested"]);
+    assert.deepEqual(receptions, ["outer", "late-receiving", "nested"]);
     assert.deepEqual(completions, ["nested:shared", "target:shared", "target:kept", "source:shared", "source:kept"]);
     assert.equal(get(normal.state, 2).vitality.hp, 976);
 });
@@ -248,9 +275,9 @@ test("HP-02: independent Calculate results retain their own business state and o
     const preparation = damageRequest(null, source, 100);
     state = hpDamage.applyDamage(preparation, hpDamage.calculateDamage(state, preparation)).state;
     let receptions = 0;
-    state = update(state, target, units.setHook(hpDamage.receivingStarted, {
+    state = update(state, target, units.setHook(hpDamage.receiving, {
         id: "count-receptions",
-        invoke(current) { receptions++; return { state: current, value: undefined }; },
+        invoke(current, _context, pending) { receptions++; return { state: current, value: pending }; },
     }));
 
     const physicalRequest = damageRequest(source, target, 100, "PHYSICAL");
@@ -269,7 +296,7 @@ test("HP-02: independent Calculate results retain their own business state and o
     assert.equal(get(physical.state, 1).vitality.hp, 500);
 });
 
-test("APPLY-01: invincibility installed before reception rejects HIT recovery until protection ends", () => {
+test("APPLY-01: cancellation before immunity preserves its outcome and suppresses HIT until protection ends", () => {
     const resource = {
         id: "hit-recovery", initialize: state => ({ state, value: {} }), activation: null,
         sp: { initial: 0, capacity: 5, requirement: 1, recovery: { type: "HIT", amount: 1 } },
@@ -292,10 +319,13 @@ test("APPLY-01: invincibility installed before reception rejects HIT recovery un
         units.compose(
             units.setHook(hpDamage.beforeReceive, {
                 id: "enable-immunity",
-                invoke(current) {
+                invoke(current, context, pending) {
                     const installed = effects.install(current, target, invincible);
                     protection = installed.value;
-                    return { state: installed.state, value: undefined };
+                    return {
+                        state: installed.state,
+                        value: hpDamage.cancel(pending, "MISS", context.forbidden),
+                    };
                 },
             }),
             units.setHook(hpDamage.receiving, {
@@ -319,22 +349,45 @@ test("APPLY-01: invincibility installed before reception rejects HIT recovery un
         }),
     );
     const request = damageRequest(source, target, 30);
-    const result = hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request), {
-        exclude: [[hpDamage.receivingStarted, null], [hpDamage.receiving, null]],
-    });
-    assert.equal(result.value.type, "REJECTED");
+    const result = hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request));
+    assert.equal(result.value.type, "CANCELLED");
+    assert.deepEqual(result.value.received, { type: "CANCELLED", amount: 30, reason: "MISS" });
     assert.equal(get(result.state, 1).vitality.hp, 100);
     assert.equal(get(result.state, 1).skill.sp.value, 0);
     assert.deepEqual(receivedSp, []);
     assert.equal(commits, 0);
 
-    state = update(result.state, target, units.removeHook(hpDamage.beforeReceive, "enable-immunity"));
+    const rejected = hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request), {
+        forbidden: new Set(["MISS"]),
+    });
+    assert.equal(rejected.value.type, "REJECTED");
+    assert.equal(get(rejected.state, 1).skill.sp.value, 0);
+    assert.deepEqual(receivedSp, []);
+    assert.equal(commits, 0);
+
+    state = update(rejected.state, target, units.removeHook(hpDamage.beforeReceive, "enable-immunity"));
     state = effects.end(state, protection);
     const accepted = hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request));
     assert.equal(accepted.value.application.hpLoss, 30);
     assert.equal(get(accepted.state, 1).skill.sp.value, 1);
     assert.deepEqual(receivedSp, [1]);
     assert.equal(commits, 1);
+
+    state = update(accepted.state, target, units.setHook(hpDamage.beforeReceive, {
+        id: "zero-reception",
+        invoke(current, _context, pending) {
+            return {
+                state: current,
+                value: pending.type === "NORMAL" ? { ...pending, amount: 0 } : pending,
+            };
+        },
+    }));
+    const zeroed = hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request));
+    assert.equal(zeroed.value.type, "APPLIED");
+    assert.equal(zeroed.value.application.hpLoss, 0);
+    assert.equal(get(zeroed.state, 1).skill.sp.value, 1);
+    assert.deepEqual(receivedSp, [1, 1]);
+    assert.equal(commits, 2);
 });
 
 test("RESTRICTION-02: damage exemptions cover one mechanism through reentrant checks without leaking to nested damage", () => {
@@ -403,22 +456,13 @@ test("APPLY-01: Receiving and BeforeCommit resource changes define the baseline 
         target,
         units.compose(
             units.compose(
-                units.compose(
-                    units.setHook(hpHealing.targetApplied, {
-                        id: "ordinary-healing",
-                        invoke(current) {
-                            healingNotifications++;
-                            return { state: current, value: undefined };
-                        },
-                    }),
-                    units.setHook(hpDamage.receivingStarted, {
-                        id: "started",
-                        invoke(current) {
-                            calls.push("started");
-                            return { state: current, value: undefined };
-                        },
-                    }),
-                ),
+                units.setHook(hpHealing.targetApplied, {
+                    id: "ordinary-healing",
+                    invoke(current) {
+                        healingNotifications++;
+                        return { state: current, value: undefined };
+                    },
+                }),
                 units.setHook(hpDamage.receiving, {
                     id: "larger-hp-pool",
                     invoke(current, _context, pending) {
@@ -484,7 +528,7 @@ test("APPLY-01: Receiving and BeforeCommit resource changes define the baseline 
     );
     const request = damageRequest(source, target, 30);
     const result = hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request));
-    assert.deepEqual(calls, ["started", "receiving", "beforeCommit", "targetApplied", "sourceApplied"]);
+    assert.deepEqual(calls, ["receiving", "beforeCommit", "targetApplied", "sourceApplied"]);
     assert.deepEqual(result.value.application, { hpBefore: 145, hpAfter: 115, hpLoss: 30 });
     assert.equal(get(result.state, 1).vitality.hp, 125);
     assert.equal(healingNotifications, 2);
@@ -613,12 +657,21 @@ test("APPLY-01: cancellation permissions retain recovery and reflection while on
     assert.equal(applied, 1);
     assert.equal(receivingForbiddens[1], forbidden);
 
-    const independent = hpDamage.applyDamage(request, hpDamage.calculateDamage(accepted.state, request));
+    let earlyForbidden;
+    state = update(accepted.state, target, units.setHook(hpDamage.beforeReceive, {
+        id: "cancel-before",
+        invoke(current, context, pending) {
+            earlyForbidden = context.forbidden;
+            return { state: current, value: hpDamage.cancel(pending, "MISS", context.forbidden) };
+        },
+    }));
+    const independent = hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request));
     assert.equal(independent.value.type, "CANCELLED");
     assert.equal(independent.value.received.reason, "MISS");
     assert.equal(get(independent.state, 0).vitality.hp, 48);
     assert.equal(get(independent.state, 1).vitality.hp, 80);
     assert.equal(receivingForbiddens[2].size, 0);
+    assert.equal(receivingForbiddens[2], earlyForbidden);
     assert.notEqual(receivingForbiddens[2], receivingForbiddens[0]);
     assert.notEqual(receivingForbiddens[2], forbidden);
     assert.equal(commits, 1);
@@ -700,10 +753,10 @@ test("HP-05/06: LOSS completes the shared pipeline against an invincible absent 
     const calls = [];
     const observe = stage => ({
         id: stage,
-        invoke(current, context) {
+        invoke(current, context, pending) {
             calls.push([stage, get(current, context.target.id).vitality.hp,
                 get(current, context.target.id).skill.sp.value]);
-            return { state: current, value: undefined };
+            return { state: current, value: pending };
         },
     });
     let state = battle([
@@ -746,19 +799,16 @@ test("HP-05/06: LOSS completes the shared pipeline against an invincible absent 
     state = effects.install(state, target, invincible).state;
     state = update(state, target, units.compose(
         presence.disappear(),
-        units.compose(
-            units.setHook(hpDamage.receivingStarted, observe("receivingStarted")),
-            units.setHook(hpDamage.receiving, {
-                id: "receiving",
-                invoke(current, context, pending) {
-                    assert.equal(context.request.nature, "LOSS");
-                    assert.equal(pending.amount, 70);
-                    calls.push(["receiving", get(current, target.id).vitality.hp,
-                        get(current, target.id).skill.sp.value]);
-                    return { state: current, value: pending };
-                },
-            }),
-        ),
+        units.setHook(hpDamage.receiving, {
+            id: "receiving",
+            invoke(current, context, pending) {
+                assert.equal(context.request.nature, "LOSS");
+                assert.equal(pending.amount, 70);
+                calls.push(["receiving", get(current, target.id).vitality.hp,
+                    get(current, target.id).skill.sp.value]);
+                return { state: current, value: pending };
+            },
+        }),
     ));
     const request = { ...damageRequest(source, target, 40, "PHYSICAL"), attackType: "NONE", nature: "LOSS" };
     const calculated = hpDamage.calculateDamage(state, request);
@@ -769,7 +819,7 @@ test("HP-05/06: LOSS completes the shared pipeline against an invincible absent 
     assert.equal(applied.value.type, "APPLIED");
     assert.deepEqual(applied.value.application, { hpBefore: 35, hpAfter: 0, hpLoss: 35 });
     assert.deepEqual(calls, [
-        ["beforeReceive", 35, 0], ["receivingStarted", 35, 0], ["receiving", 35, 0],
+        ["beforeReceive", 35, 0], ["receiving", 35, 0],
         ["beforeCommit", 35, 0], ["targetApplied", 0, 0], ["sourceApplied", 0, 0],
     ]);
     assert.equal(get(applied.state, target.id), undefined);
@@ -972,9 +1022,9 @@ test("EP-02: depletion registers the Burst and completes standard output before 
     const order = [];
     const hooks = Hooks.empty()
         .set(hpDamage.beforeReceive, {
-            id: "standard-output", invoke: current => {
+            id: "standard-output", invoke: (current, _context, pending) => {
                 order.push("program");
-                return { state: current, value: undefined };
+                return { state: current, value: pending };
             },
         })
         .set(epDamage.targetApplied, {
@@ -1016,8 +1066,8 @@ test("EP-02: cancelling a newly registered Burst suppresses standard output with
     const order = [];
     const hooks = Hooks.empty()
         .set(hpDamage.beforeReceive, {
-            id: "standard-output", invoke: current => {
-                order.push("program"); return { state: current, value: undefined };
+            id: "standard-output", invoke: (current, _context, pending) => {
+                order.push("program"); return { state: current, value: pending };
             },
         })
         .set(epDamage.targetApplied, {

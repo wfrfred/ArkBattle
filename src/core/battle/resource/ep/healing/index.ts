@@ -32,7 +32,7 @@ export type {
     SourceFormulaHook,
     TargetFormulaHook,
     OutputHook,
-    BeforeReceiveHook,
+    ReceivingHook,
     BeforeCommitHook,
     AppliedHook,
 } from "./hook.js";

@@ -33,8 +33,6 @@ export type TargetFormulaHook = Entry<Context, Parameters>;
 
 export type OutputHook = Entry<OutputContext, number>;
 
-export type BeforeReceiveHook = Entry<ReceivingContext, void>;
-
 export type ReceivingHook = receivingProtocol.ReceivingHook<ReceivingContext, Reason>;
 
 export type BeforeCommitHook = Entry<CommitContext, void>;
@@ -49,7 +47,7 @@ export const targetFormula = hooks.key<TargetFormulaHook, Unit & Elemental>(
 
 export const output = hooks.key<OutputHook, Unit>("resource.ep.damage.output");
 
-export const beforeReceive = hooks.key<BeforeReceiveHook, Unit & Elemental>(
+export const beforeReceive = hooks.key<ReceivingHook, Unit & Elemental>(
     "resource.ep.damage.beforeReceive",
 );
 

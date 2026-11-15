@@ -7,10 +7,7 @@ import * as units from "../../query.js";
 import * as hooks from "../../../hook.js";
 import type * as damage from "../../../battle/resource/hp/damage/index.js";
 import type * as healing from "../../../battle/resource/hp/healing/index.js";
-import {
-    receivingStarted,
-    receiving as damageReceiving,
-} from "../../../battle/resource/hp/damage/hook.js";
+import { receiving as damageReceiving } from "../../../battle/resource/hp/damage/hook.js";
 import { receiving as healingReceiving } from "../../../battle/resource/hp/healing/hook.js";
 import { resolveMaxHp, type Vitality } from "./capability.js";
 import { resolveRecoverySpeed } from "./query.js";
@@ -55,16 +52,6 @@ export function receiveDamage(
     pending: damage.Pending,
     options?: hooks.Options,
 ): Result<damage.Pending> {
-    // eslint-disable-next-line @typescript-eslint/no-invalid-void-type -- This stage has a void work value.
-    battle = dispatchReceiving<damage.ReceivingContext, void, damage.ReceivingStartedHook>(
-        battle,
-        context.target,
-        context,
-        undefined,
-        receivingStarted,
-        options,
-    ).state;
-
     const result = dispatchReceiving(
         battle,
         context.target,

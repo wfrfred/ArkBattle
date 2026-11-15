@@ -12,7 +12,7 @@
 | --- | --- | --- |
 | Unit 的 enter／tick／prepare／leave | Unit.hooks | Unit 生命周期操作 |
 | 伤害／治疗的 Formula、Output、BeforeReceive、BeforeCommit、Applied、Completed | 来源或目标的 Unit.hooks | 对应 Resource 业务 |
-| HP ReceivingStarted、HP Damage／Healing Receiving | 目标 Unit.hooks | Vitality 接收接口 |
+| HP Damage／Healing Receiving | 目标 Unit.hooks | Vitality 接收接口 |
 | EP Damage Receiving | 目标 Unit.hooks | Elemental 接收接口 |
 | Action beforeRelease／released | 宿主 Unit.hooks | Action 释放操作 |
 | Skill 资源与 Activation 通知 | 宿主 Unit.hooks | Skill 业务 |
@@ -49,7 +49,7 @@ Key 保留特殊 ReceivingHook 的泛型 invoke，不将其放宽成普通 Hook<
 
 get 对未登记的键返回空集合。同键同 ID 的 set 替换原项并保留位置；新 ID 追加，remove 只移除对应项。merge 按 other 的键内顺序应用同一 set 规则。ID 的范围是所属集合 × Key × ID；不同键和宿主可以复用 ID。删除不恢复被覆盖的 Definition 旧项。
 
-容器只要求 id；Entry 与数组 set／remove 复用 [common/collection/entries.ts](../../src/core/common/collection/entries.ts)。Resource 的计算与应用阶段，以及专属 Receiving 使用 `priority?: number`：缺省 0，降序执行，同优先级保持登记顺序。其他登记按原有登记顺序执行，不引入普遍优先级。排序不改变存储顺序。
+容器只要求 id；Entry 与数组 set／remove 复用 [common/collection/entries.ts](../../src/core/common/collection/entries.ts)。Resource 的计算与应用阶段，以及专属 Receiving 使用 `priority?: number`：缺省 0，降序执行，同优先级保持登记顺序。普通 HIT 回复与伤判共用 HP Damage.receiving，前者约定使用 10000 量级的高优先级并原样返回 Pending，普通伤判通常使用缺省 0；不增加独立派发轮次或强制分区。beforeReceive 与 receiving 使用所属业务相同的 ReceivingHook 类型、不同 Key，分别在准入前后派发，接续同一 Pending。其他登记按原有登记顺序执行，不引入普遍优先级。排序不改变存储顺序。
 
 ## 固有声明与初始化
 
@@ -116,6 +116,6 @@ interface Options {
 }
 ```
 
-HP Damage、EP Damage、HP Healing 的 ApplyOptions 可另带本业务 `forbidden?: ReadonlySet<Reason>`，它不是 Hook 排除项。Apply 将其或新建空集合固定为 ReceivingContext.forbidden，各 Hook 显式用于 cancel，Commit／Applied 继承；嵌套业务独立选择选项。EP Healing 不提供 Receiving 或 Reason，也不增加该字段。完整契约见 [接收工作值](vitality.md#接收工作值数值固定与取消)。
+HP Damage、EP Damage、HP Healing 的 ApplyOptions 可另带本业务 `forbidden?: ReadonlySet<Reason>`，它不是 Hook 排除项。Apply 将其或新建空集合固定为 ReceivingContext.forbidden，各 Hook 显式用于 cancel，Commit／Applied 继承；嵌套业务独立选择选项。EP Healing 的 beforeReceive 使用简单 Pending，不提供专属 receiving 键或 Reason，也不增加该字段。完整契约见 [接收工作值](vitality.md#接收工作值数值固定与取消)。
 
-同一 Key 若在本次操作的多个宿主上派发，匹配项作用于所有这些派发；不额外引入宿主筛选。sourceApplied／targetApplied 等已有不同键仍可独立排除。排除整个阶段不执行其 accepts／invoke，排除单项保留其他候选的顺序、资格与同步重入；它不等于取消伤害，也不绕过基础目标前提或接收 Restriction。
+同一 Key 若在本次操作的多个宿主上派发，匹配项作用于所有这些派发；不额外引入宿主筛选。sourceApplied／targetApplied 等已有不同键仍可独立排除。排除 HP Damage.receiving 整轮也排除普通 HIT 回复；只排除某项时使用对应 ID。排除整个阶段不执行其 accepts／invoke，排除单项保留其他候选的顺序、资格与同步重入；它不等于取消伤害，也不绕过基础目标前提或接收 Restriction。

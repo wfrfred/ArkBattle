@@ -62,12 +62,14 @@ const forbiddenReasons: ReadonlySet<hpDamage.Reason> = new Set(['MISS', 'BLOCKED
 const guardedReceiving: hpDamage.ReceivingHook = {
     id: 'evade', invoke: (state, context, current) => ({ state, value: hpDamage.cancel(current, 'MISS', context.forbidden) }),
 };
-const receivingHooks = Hooks.empty().set(receivingKey, guardedReceiving);
+const receivingHooks = Hooks.empty()
+    .set(receivingKey, guardedReceiving)
+    .set(hpDamage.beforeReceive, guardedReceiving);
 const fixedReceiving: hpDamage.ReceivingHook = {
     id: 'fixed-amount',
     invoke: (state, _context, current) => ({ state, value: hpDamage.fix(current) }),
 };
-Hooks.empty().set(receivingKey, fixedReceiving);
+Hooks.empty().set(hpDamage.beforeReceive, fixedReceiving);
 Hooks.empty().set(receivingKey, {
     id: 'reduce', invoke: (state, _context, current) => ({
         state, value: current.type === 'NORMAL' ? { ...current, amount: current.amount / 2 } : current,
@@ -105,8 +107,12 @@ const aggregateReason: 'MISS' = resource.hp.damage.cancel(cancelled, 'BLOCKED', 
 resource.hp.damage.cancel(cancelled, 'OTHER', forbiddenReasons);
 // @ts-expect-error shared receiving keeps EP's reason set narrower than HP's.
 resource.ep.damage.cancel({ type: 'NORMAL', amount: 10 }, 'MISS', new Set<resource.ep.damage.Reason>());
-// @ts-expect-error EP Healing has no dedicated Receiving Hook.
-type EpHealingReceiving = resource.ep.healing.ReceivingHook;
+Hooks.empty().set(resource.ep.healing.beforeReceive, {
+    id: 'ep-healing',
+    invoke: (state, _context, current) => ({ state, value: { ...current, amount: current.amount / 2 } }),
+});
+// @ts-expect-error EP Healing has no receiving key after admission.
+resource.ep.healing.receiving;
 const normalFixed: 'FIXED' = hpDamage.fix({ type: 'NORMAL', amount: 10 }).type;
 const alreadyFixed: 'FIXED' = hpDamage.fix({ type: 'FIXED', amount: 10 }).type;
 const fixedCancellation: 'MISS' = hpDamage.fix(cancelled).reason;
@@ -138,14 +144,16 @@ if (cancelledUnion.type === 'CANCELLED') {
 const reception = receivingHooks.get(receivingKey)[0]!.invoke(battle, receivingContext, cancelled);
 const cancelledType: 'CANCELLED' = reception.value.type;
 const preservedReason: 'MISS' = reception.value.reason;
+const beforeReception = receivingHooks.get(hpDamage.beforeReceive)[0]!.invoke(battle, receivingContext, cancelled);
+const beforeReason: 'MISS' = beforeReception.value.reason;
 // @ts-expect-error the Hook interface itself rejects restoration, independently of storage.
 const invalidDirect: hpDamage.ReceivingHook = { id: 'invalid-direct', invoke: (state, _context, current) => ({ state, value: { ...current, type: 'NORMAL' as const } }) };
 // @ts-expect-error fixed work cannot become NORMAL, including through erased Hook storage.
-Hooks.empty().set(receivingKey, { id: 'unfix', invoke: (state, _context, current) => ({ state, value: { ...current, type: 'NORMAL' as const } }) });
+Hooks.empty().set(hpDamage.beforeReceive, { id: 'unfix', invoke: (state, _context, current) => ({ state, value: { ...current, type: 'NORMAL' as const } }) });
 // @ts-expect-error cancelled work cannot resume even as FIXED.
 Hooks.empty().set(receivingKey, { id: 'revive', invoke: (state, _context, current) => ({ state, value: { ...current, type: 'FIXED' as const } }) });
 // @ts-expect-error cancellation retains its original reason even when the replacement is a valid Reason.
-Hooks.empty().set(receivingKey, { id: 'rewrite-reason', invoke: (state, _context, current) => ({ state, value: current.type === 'CANCELLED' ? { ...current, reason: 'BLOCKED' as const } : current }) });
+Hooks.empty().set(hpDamage.beforeReceive, { id: 'rewrite-reason', invoke: (state, _context, current) => ({ state, value: current.type === 'CANCELLED' ? { ...current, reason: 'BLOCKED' as const } : current }) });
 // @ts-expect-error fixing a rewritten state cannot hide an illegal restoration.
 Hooks.empty().set(receivingKey, { id: 'restore-then-fix', invoke: (state, _context, current) => ({ state, value: hpDamage.fix({ ...current, type: 'NORMAL' as const }) }) });
 // @ts-expect-error cancelling again cannot hide replacement of an existing reason.

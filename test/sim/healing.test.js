@@ -227,7 +227,12 @@ test("HP-07: natural recovery samples current attributes after Effects and befor
 
 test("EP-01/03: losses stay per element, healing gives every bar the full amount, and natural recovery is separate", () => {
     let healingNotices = 0;
-    const hooks = Hooks.empty().set(epHealing.targetApplied, {
+    const hooks = Hooks.empty().set(epHealing.beforeReceive, {
+        id: "healing-reduction",
+        invoke(state, _context, pending) {
+            return { state, value: { ...pending, amount: pending.amount - 100 } };
+        },
+    }).set(epHealing.targetApplied, {
         id: "ordinary-healing",
         invoke(state) {
             healingNotices++;
@@ -243,8 +248,9 @@ test("EP-01/03: losses stay per element, healing gives every bar the full amount
     assert.deepEqual(get(state, 0).elemental.ep, {
         NEURAL: 800, EROSION: 920, BURN: 960, NECROSIS: 1000,
     });
-    const incoming = { target, source: null, parameters: { power: 100 } };
+    const incoming = { target, source: null, parameters: { power: 200 } };
     const restored = epHealing.applyHealing(incoming, epHealing.calculateHealing(state, incoming));
+    assert.deepEqual(restored.value.received, { amount: 100, cancellation: null });
     assert.deepEqual(restored.value.application.epGain, {
         NEURAL: 100, EROSION: 80, BURN: 40, NECROSIS: 0,
     });
@@ -273,4 +279,11 @@ test("EP-01/03: losses stay per element, healing gives every bar the full amount
     assert.equal(maximum, 2000);
     assert.equal(elemental.resolveDamageRatio(state, current), 0.5);
     assert.deepEqual(recipients(state).map(reference => reference.id), [0]);
+
+    const reducedRequest = { target, source: null, parameters: { power: 50 } };
+    const reduced = epHealing.applyHealing(reducedRequest, epHealing.calculateHealing(state, reducedRequest));
+    assert.equal(reduced.value.type, "APPLIED");
+    assert.deepEqual(reduced.value.received, { amount: 0, cancellation: null });
+    assert.deepEqual(reduced.value.application.epGain, elemental.elementValues(0));
+    assert.deepEqual(get(reduced.state, 0).elemental.ep, current.elemental.ep);
 });

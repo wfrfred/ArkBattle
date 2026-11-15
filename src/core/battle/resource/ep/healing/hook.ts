@@ -27,7 +27,7 @@ export type TargetFormulaHook = Entry<Context, Parameters>;
 
 export type OutputHook = Entry<Context, number>;
 
-export type BeforeReceiveHook = Entry<ReceivingContext, void>;
+export type ReceivingHook = Entry<ReceivingContext, Pending>;
 
 export type BeforeCommitHook = Entry<CommitContext, void>;
 
@@ -43,7 +43,7 @@ export const targetFormula = hooks.key<TargetFormulaHook, Unit & Elemental>(
 
 export const output = hooks.key<OutputHook, Unit>("resource.ep.healing.output");
 
-export const beforeReceive = hooks.key<BeforeReceiveHook, Unit & Elemental>(
+export const beforeReceive = hooks.key<ReceivingHook, Unit & Elemental>(
     "resource.ep.healing.beforeReceive",
 );
 
