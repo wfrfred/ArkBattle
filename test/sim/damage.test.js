@@ -544,6 +544,78 @@ test("APPLY-01: Receiving and BeforeCommit resource changes define the baseline 
     assert.equal(healingNotifications, 2);
 });
 
+test("HP-08: committing chains proposed HP against current state and does not revive a removed host", () => {
+    let state = battle([
+        { definition: { id: "source", hooks: Hooks.empty() }, position: [0, 0] },
+        { definition: {
+            id: "target", hooks: Hooks.empty(),
+            vitality: { maxHp: 100, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
+        }, position: [1, 0] },
+    ]);
+    const source = units.ref(get(state, 0));
+    const target = units.ref(get(state, 1));
+    const wound = damageRequest(source, target, 60);
+    state = hpDamage.applyDamage(wound, hpDamage.calculateDamage(state, wound)).state;
+    const calls = [];
+    let applied = 0;
+    state = update(state, target, units.compose(
+        units.setHook(hpDamage.beforeReceive, {
+            id: "fixed-reception",
+            invoke: (current, _context, pending) => ({ state: current, value: hpDamage.fix(pending) }),
+        }),
+        units.compose(
+            units.setHook(vitality.committing, {
+                id: "last",
+                invoke(current, context, hp) {
+                    calls.push(["last", context.hpBefore, hp]);
+                    return { state: current, value: hp + 250 };
+                },
+            }),
+            units.setHook(vitality.committing, {
+                id: "first", priority: 10,
+                invoke(current, context, hp) {
+                    calls.push(["first", context.hpBefore, hp]);
+                    return {
+                        state: update(current, context.target, units.compose(
+                            vitality.setMaxHpContribution({ id: "more-hp", value: [attribute.create({ multiplier: 1 })] }),
+                            vitality.setContribution("defense", { id: "armor", value: [attribute.create({ addition: 20 })] }),
+                        )),
+                        value: 1,
+                    };
+                },
+            }),
+        ),
+    ));
+    state = update(state, source, units.setHook(hpDamage.sourceApplied, {
+        id: "applied", invoke(current) { applied++; return { state: current, value: undefined }; },
+    }));
+    const request = damageRequest(source, target, 150);
+    const protectedHit = hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request), {
+        exclude: [[vitality.committing, null]],
+    });
+    assert.equal(protectedHit.value.type, "APPLIED");
+    assert.deepEqual(protectedHit.value.received, { type: "FIXED", amount: 150 });
+    assert.deepEqual(calls, [["first", 40, -110], ["last", 40, 1]]);
+    assert.deepEqual(protectedHit.value.application, { hpBefore: 80, hpAfter: 200, hpLoss: 0 });
+    assert.equal(protectedHit.value.killed, false);
+    assert.equal(vitality.resolveDefense(protectedHit.state, get(protectedHit.state, target.id)), 20);
+    assert.equal(get(protectedHit.state, target.id).vitality.hp, 200);
+    assert.equal(applied, 1);
+
+    state = update(protectedHit.state, target, units.setHook(vitality.committing, {
+        id: "remove-host", priority: 10000,
+        invoke(current, context, value) {
+            return { state: remove(current, context.target, "SCRIPT"), value };
+        },
+    }));
+    const unavailable = hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request));
+    assert.deepEqual(unavailable.value, { type: "UNAVAILABLE", received: { type: "FIXED", amount: 150 } });
+    assert.equal(get(unavailable.state, target.id), undefined);
+    assert.equal(applied, 1);
+    assert.equal(unavailable.state.events.filter(event => event.type === "DAMAGE").length,
+        protectedHit.state.events.filter(event => event.type === "DAMAGE").length);
+});
+
 test("APPLY-01: cancellation permissions retain recovery and reflection while only uncancelled work commits", () => {
     let state = battle([
         { definition: { id: "source", hooks: Hooks.empty(), vitality: { maxHp: 100, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 } }, position: [0, 0] },

@@ -14,6 +14,7 @@
 | 伤害／治疗的 Formula、Output、BeforeReceive、BeforeCommit、Applied、Completed | 来源或目标的 Unit.hooks | 对应 Resource 业务 |
 | HP Damage／Healing Receiving | 目标 Unit.hooks | Vitality 接收接口 |
 | EP Damage Receiving | 目标 Unit.hooks | Elemental 接收接口 |
+| HP committing | 目标 Unit.hooks | Vitality HP 写入 |
 | Action beforeRelease／released | 宿主 Unit.hooks | Action 释放操作 |
 | Skill 资源与 Activation 通知 | 宿主 Unit.hooks | Skill 业务 |
 | Blocking acquired／released | 双方各自的 Unit.hooks | Blocking 关系操作 |
@@ -49,7 +50,7 @@ Key 保留特殊 ReceivingHook 的泛型 invoke，不将其放宽成普通 Hook<
 
 get 对未登记的键返回空集合。同键同 ID 的 set 替换原项并保留位置；新 ID 追加，remove 只移除对应项。merge 按 other 的键内顺序应用同一 set 规则。ID 的范围是所属集合 × Key × ID；不同键和宿主可以复用 ID。删除不恢复被覆盖的 Definition 旧项。
 
-容器只要求 id；Entry 与数组 set／remove 复用 [common/collection/entries.ts](../../src/core/common/collection/entries.ts)。Resource 的计算与应用阶段，以及专属 Receiving 使用 `priority?: number`：缺省 0，降序执行，同优先级保持登记顺序。普通 HIT 回复与伤判共用 HP Damage.receiving，前者约定使用 10000 量级的高优先级并原样返回 Pending，普通伤判通常使用缺省 0；不增加独立派发轮次或强制分区。beforeReceive 与 receiving 使用所属业务相同的 ReceivingHook 类型、不同 Key，分别在准入前后派发，接续同一 Pending。其他登记按原有登记顺序执行，不引入普遍优先级。排序不改变存储顺序。
+容器只要求 id；Entry 与数组 set／remove 复用 [common/collection/entries.ts](../../src/core/common/collection/entries.ts)。Resource 的计算与应用阶段，以及专属 Receiving、Vitality.committing 使用 `priority?: number`：缺省 0，降序执行，同优先级保持登记顺序。普通 HIT 回复与伤判共用 HP Damage.receiving，前者约定使用 10000 量级的高优先级并原样返回 Pending，普通伤判通常使用缺省 0；不增加独立派发轮次或强制分区。beforeReceive 与 receiving 使用所属业务相同的 ReceivingHook 类型、不同 Key，分别在准入前后派发，接续同一 Pending。其他登记按原有登记顺序执行，不引入普遍优先级。排序不改变存储顺序。
 
 ## 固有声明与初始化
 
@@ -106,7 +107,7 @@ Unit 的 enter／tick／prepare 同样固定候选和本次 Context。enter／ti
 
 公共 Hook 模块提供 `Exclusion`、可选 `exclude` 的 `Options` 和匹配函数 `excluded(options, key, id)`，公共 dispatch 不解释键或排除政策。Exclusion 是 `[key, id]`：key 使用键对象身份，id 为 string 或 null。null 排除该键的整个阶段，string 只排除同键的指定登记；未匹配项正常派发。不按 name 匹配，也不修改登记、current、Request 或计算结果。
 
-四种 Resource 的 Calculate 与 Apply 分别接受可选 `Options.exclude`。选项仅对这次操作负责派发的 Hook 生效：Calculate 不把选项保存进 Calculated，Apply 不继承 Calculate 的选项；嵌套业务也不会自动继承。Apply 将选项传给自己调用的专属接收阶段；其余提交事实通知和生命周期操作不自动继承排除，保持原有完整业务。
+四种 Resource 的 Calculate 与 Apply 分别接受可选 `Options.exclude`。选项仅对这次操作负责派发的 Hook 生效：Calculate 不把选项保存进 Calculated，Apply 不继承 Calculate 的选项；嵌套业务也不会自动继承。Apply 将选项传给自己调用的专属接收阶段；Vitality 内部 committing、其余提交事实通知和生命周期操作不自动继承排除，保持原有完整业务。
 
 ```typescript
 type Exclusion = readonly [key: Key<any, any>, id: string | null];

@@ -96,6 +96,10 @@ export function applyDamage(
     const committed = vitality.commitDamage(battle, commitContext);
     battle = committed.state;
     const application = committed.value;
+    if (application === null) {
+        return complete(battle, request, calculation, { type: "UNAVAILABLE", received }, options);
+    }
+
     battle = appendEvents(battle, [
         {
             type: "DAMAGE",

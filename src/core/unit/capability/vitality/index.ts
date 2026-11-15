@@ -16,6 +16,10 @@ export type { Restriction } from "./restriction.js";
 
 export type { ReceivingContext as RestrictionContext } from "../../../battle/resource/hp/damage/hook.js";
 
+export { committing } from "./hook.js";
+
+export type { CommittingContext, CommittingHook } from "./hook.js";
+
 export { resolveDefense, resolveResistance, resolveRecoverySpeed } from "./query.js";
 
 export {
