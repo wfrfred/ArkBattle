@@ -1,0 +1,45 @@
+{
+  "provenance": {
+    "checkedOn": "2026-11-15",
+    "sourceKind": "community documentation",
+    "scope": "Cross-checking reception stages and their observable effects; native order and actual Content activation require the accompanying client and configuration evidence."
+  },
+  "sources": [
+    {
+      "url": "https://prts.wiki/w/事件",
+      "title": "事件",
+      "findings": [
+        "Separates the target's before-applying, applying and take-damage callbacks.",
+        "Describes changing adjustment values and handling more than one resource before damage-specific reception.",
+        "Marks the ordering as indicative and the page as incomplete; this is not proof of the client's exact dispatch or early-return conditions."
+      ]
+    },
+    {
+      "url": "https://prts.wiki/w/伤判效果",
+      "title": "伤判效果",
+      "findings": [
+        "Distinguishes invulnerability from ordered take-damage effects such as evasion, blocking, barriers, scaling and reflection.",
+        "Describes per-effect eligibility and priority, with some independent responses continuing after cancellation.",
+        "Uses client version 2.7.81 as its reference; comparisons with the installed client must retain version and evidence boundaries."
+      ]
+    },
+    {
+      "url": "https://prts.wiki/w/蒂比",
+      "title": "蒂比",
+      "findings": [
+        "S2 is described as activating during pre-damage processing and then evading physical or arts damage before ordinary take-damage effects.",
+        "Successful S2 evasion is described as skipping the ordinary take-damage stage, including the talent's timer reset.",
+        "The page contrasts S2 with ordinary talent evasion and blocking, which it says still reset the timer. The claimed S2 timer difference is not yet reproduced by the archived current native fallback and serialized talent configuration.",
+        "The skill is listed with time-based SP recovery."
+      ]
+    },
+    {
+      "url": "https://prts.wiki/w/话题:Ytavkwvywob1ug8x",
+      "title": "关于蒂比天赋",
+      "findings": [
+        "Community discussion distinguishes the talent's take-damage timer reset from S2's earlier evasion.",
+        "Reports that ordinary barriers or evasion do not prevent the talent timer reset; this is community feedback rather than an independently reproduced client execution."
+      ]
+    }
+  ]
+}

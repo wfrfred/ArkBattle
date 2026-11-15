@@ -13,6 +13,7 @@
 | 证据批次 | 本轮范围与产物 |
 | --- | --- |
 | [Damage分类、权限与接收](../evidence/resource-mechanisms-20261114/damage/README.md) | Modifier字段／枚举与完整helper调用者、公式和接收体；9054个Holder模板；实际干员、技能、敌人组件；动态攻击分类完整资源字段扫描 |
+| [接收前置、普通HIT与伤判](../evidence/reception-stages-20261115/README.md) | 84个完整方法及接收／SP虚覆盖；9054模板三个接收时点全扫、524包精确引用、实际技能与关卡绑定；区分资格前业务与公开Hook组织 |
 | [HP与生命](../evidence/resource-mechanisms-20261114/life/README.md) | HP／ES／债务、免死竞争、派生提交、替身、普通／主动复活与战术点恢复；charpack／enemy／token共517包政策扫描，实际非默认绑定 |
 | [回复与元素](../evidence/resource-mechanisms-20261114/recovery-elemental/README.md) | 普通与特殊回复、五类EP、爆发配置／恢复／缩时、自然回复、溢出ES、满血通知；1180包／33411个相关组件，零解码失败 |
 | [归属与属性](../evidence/resource-mechanisms-20261114/death-attributes/README.md) | Context来源栈写入者／恢复、最终结束与两种击杀通知、属性范围声明及覆写、MaxHP同步setter；实际锡人、嵯峨、阿米娅、信仰搅拌机 |
@@ -33,6 +34,7 @@
 | 共同Modifier与HP／EP专属事件 | 妮芙S1、末药／桑葚普通治疗 | [27](27-attack-additions-and-damage-events.md)、[29](29-hp-and-ep-healing-settlement.md)：多笔输出各自结算，非整次攻击事务 |
 | skip／流失仍算防御并进入HP setter | 实际物理落石、拟态机械射线、无人爆破艇 | [11 §6](11-damage-apply-and-hp-application.md#6-生命流失补核2026-11-13)：公式、普通接收事件和致命保护是不同参与条件 |
 | 普通HIT回复许可 | 雷蛇、活性源石、华法琳S2流失 | [11 §7](11-damage-apply-and-hp-application.md#7-统一管线的实际内容对照2026-11-13)：ignoreForSp不等于跳过一切受伤程序 |
+| 资格前接收与HIT先后 | 浮空信件计数／无敌／改道，纯烬艾雅法拉S2元素屏障 | [38 §11](38-damage-classification-and-permissions.md#11-接收前置普通-hit-与伤判)：资格前确有状态与数值业务；普通HIT先于伤判不等于必须独立公开Key |
 | 无敌／不可伤／睡眠权限 | 瑕光天赋、实际无敌单位及齐尔查克 | [38](38-damage-classification-and-permissions.md)：入口不可伤、取消权限及接收规则分别存在 |
 | 忽略闪避、忽略取消原因 | 远牙天赋、骋风S2、焰尾闪避及成功后继 | [38](38-damage-classification-and-permissions.md)：两权限有实际生产／消费；当前native与Wiki的RNG描述冲突保留，见第4节 |
 | 抵挡次数／额度与同步成功程序 | 泥岩盾、砾S2屏障 | [38](38-damage-classification-and-permissions.md)：先检查取消权限，再执行该节点资源处理；屏障不等于ES |

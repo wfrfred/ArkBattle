@@ -1,0 +1,20 @@
+{
+  "scope": "Independent complete static method-body and enum re-extraction; no gameplay execution or product test.",
+  "script": {
+    "path": "docs/research/evidence/reception-stages-20261115/pipeline/verify.py",
+    "sha256": "9b7bd85385a9bde5b6951ab02c780995009cfbf2d75e86c15814d0aeb1716a7d"
+  },
+  "command": [
+    "uv",
+    "run",
+    "--offline",
+    "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/reception-stages-20261115/pipeline/extract.py",
+    "--out",
+    ".cache/native-research/reception-stages-20261115/pipeline/replay-final/native.json"
+  ],
+  "equalResult": true,
+  "archivedSha256": "73873ab29b03a9c5fae4f700e0f6be04216d375b0edcb961f0184c71790b90c1",
+  "reextractedSha256": "73873ab29b03a9c5fae4f700e0f6be04216d375b0edcb961f0184c71790b90c1",
+  "bodyCount": 84,
+  "enumCount": 1
+}

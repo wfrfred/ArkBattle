@@ -248,3 +248,57 @@ MINUS_HEALTH(7) 出现在枚举和狼影未排除的剩余空间中，但本次�
 - HP Damage：上述具体内容的 MISS、HIT_FAILED、抵挡、无指定原因取消，以及不可伤与中断均有对应证据。
 - EP Damage：`OnTakeEPDamage #67711` 对 EPFreeAll 取消为 NONE、对不可伤取消为 UNHURTABLE；另有上面的事件5中断正例。未定位 EP 专属按具体取消原因分支的实际内容，不把 HP 的 MISS／HIT_FAILED／抵挡直接移入 EP。
 - HP Healing：`OnTakeHeal #67710` 的 HEAL_FREE 路径取消为 NONE。项目已明确 HEAL_FREE 只限制 Targeting，本证据不恢复普通治疗的禁疗接收检查，也不证明 HP Healing 需要全部伤害原因。
+
+## 11. 接收前置、普通 HIT 与伤判
+
+2026-11-15 补核。问题是原生机制要求哪些接收机会及顺序，不从 ArkBattle 当前 Content 接入数量或公开 Hook 名称推导必要性。[专项证据](../evidence/reception-stages-20261115/README.md)包含当前指纹84个完整方法、全metadata接收／SP虚派发覆盖，以及完整9,054模板的事件5／6／10扫描；三个时点分别有20／59／650个程序，3,107个节点，0解析错误。配置存在、实际绑定及方法控制流分别核实，未执行游戏或有效XLua。
+
+### 原生的实际边界
+
+普通入口先要求目标 alive、输入尚未取消；force不绕过这两个条件。后续链为：
+
+```text
+目标事件5：接收前程序
+→ 若此时为INTERRUPT，整次Apply早退
+→ 来源事件8；本笔为HP伤害时再执行来源事件11
+→ 目标事件6：通用接收程序
+→ 各资源专属资格与接收
+    HP伤害：消失则提前退出；否则不可伤／来源未命中 → 普通HIT回复 → 目标事件10
+    HP治疗：禁疗检查与受疗通知
+    EP损伤：EPFreeAll／不可伤 → 目标事件68
+    EP治疗：没有独立专属接收分支
+→ 取消复核
+→ 来源事件61
+→ 提交与后置
+```
+
+事件5、6接续的是同一份可变 Modifier，能改变数值、取消、分类和权限，也能执行业务；它们不是纯 void 通知。来源输出位于这两轮目标程序之间，不能把原生各阶段仅按名称直接映射为项目接口。完整地址、参数传播、force／skip及四类资源差异见[调用链说明](../evidence/reception-stages-20261115/pipeline/findings.md)。项目已有的 Calculate／Apply 分离、取消后继续、HEAL_FREE仅限制Targeting等选择，不由此静默撤销。
+
+### 普通 HIT 与 Receiving 的组织
+
+`Entity.OnTakeDamage #67709` 先处理不可伤、来源HIT_FAILED，再由SP controller判断当前伤害未取消、允许回SP及回复类型，随后派发目标事件10。因而早期取消可阻止普通HIT回复，事件10中的闪避／抵挡则不回滚此前回复。原生普通不可伤取消后仍派发事件10；消失路径提前返回，两者不能按同一资格结果概括。
+
+沿 `SpController._RecoverMp #67752 → Entity.set_sp #67439 → SetSpInternal(slot113)` 补取全部虚覆盖：普通Entity只检查资格、按MaxSP限幅并写SP，Trap覆盖可转发关联对象；未见在该恢复路径同步触发技能、安装Buff或通知Content。因此这里证明的是“HIT先于普通伤判”，没有证明必须存在独立公开的 receivingStarted Key。项目可以用同轮高优先级Receiving表达这项先行业务；不能凭假设的候选新增或同步回调保留另一轮派发。
+
+### 实际内容及可观察区别
+
+实际组件、Buff key与template对应、原表和关卡见[配置调查](../evidence/reception-stages-20261115/content/README.md)。以下不以模板名称猜测角色、模式或是否实际启用。
+
+| 实际内容 | 已闭合的执行链 | 对时点的约束 |
+| --- | --- | --- |
+| 浮空信件 `enemy_10231_agpack` | 实际Talent／PassiveBuffAbility安装 `agpack_t[record_damage_cnt]`；原表MaxSP=5、初始0、自然增量0。事件5对符合来源、位置等条件的HP／EP请求加计数，满5时安装无敌、插入消失／出现／等待路线并清SP。`act53side_01`等23关有实际SPAWN。 | 达阈值这一笔先改变宿主资格，再进入后续专属接收检查；不能先按旧状态完成准入，再把这项前置业务当成普通伤判。 |
+| 纯烬艾雅法拉S2的范围元素屏障 | 实际Aura安装事件6反应与公共盾池；其目标Validator没有EPFreeAll／Burst排除，反应Buff也无对应停用配置。事件6的 `BlockElementDamage #99225` 在后续EPFreeAll检查前扣盾池、改变本笔value，自身不检查Burst或EPFreeAll。 | 取侵蚀恢复中的存活干员，在范围内新获得有效正额度屏障，再接收超过剩余盾量的正EP请求：先扣盾、减小本笔value，剩余部分随后被EPFreeAll拒收，EP不变。若把屏障统一移到准入后，就会漏掉这次消耗。完全吸收时则由value归零成为取消，不能将其误说成EPFreeAll才取消。此为实际配置与完整fallback的组合推导，未作实机观测。 |
+| 菲莱S1、S2及天赋 | 实际Skill／Talent绑定事件6程序：S1提供元素屏障；S2收到元素请求后安装攻击增益；天赋对元素请求减量、对凋亡请求另尝试回SP。 | 资格前接收既有数值处理，也有独立业务，不能把所有前置程序统一当成纯资格谓词，或只保留VOID通知。各程序自己的类型／取消／SP资格仍须执行。 |
+| 蒂比S2 | 实际S2 CastSkill与同根ActiveBuffAbility的被动Buff安装 `tippi_s_2[trigger]`；事件6依次检查伤害和模式、尝试发动技能，再对物理／法术执行Evade。天赋1另安装 `tippi_t`，其事件10无取消过滤，直接操作计时Buff。 | 技能触发与闪避确实配置在普通HIT和伤判之前；但不能仅据此声称整个事件10被跳过，见下述来源差异。 |
+
+EP恢复资格的组合依据复用[当前控制器原件](../evidence/resource-mechanisms-20261114/recovery-elemental/burst-controller.json)：`_StartEPRecovery #67762 → set_isInBreakRecovery(true) #67755` 登记EPController属性修饰，其 `get_abnormalFlagMask #67766` 提供 `1 << 21`（EPFreeAll）；恢复结束只移除自身修饰，不清理外来Aura。屏障例要求Aura正常有效、盾池仍有正额度，不能以已经耗尽的屏障构造例子。
+
+### 来源差异与范围边界
+
+[PRTS蒂比](https://prts.wiki/w/蒂比)记载S2闪避后不再执行伤判，包括第一天赋计时；[社区讨论](https://prts.wiki/w/话题:Ytavkwvywob1ug8x)也区分它与普通闪避。但当前完整fallback在事件6后没有统一取消早退，`get_isDamage`只看目标与数学类型，Unit及其接收虚覆盖也没有能撤销先前事件10的前置门。实际 `tippi_t` 的事件10本身没有取消过滤。该具体计时表现尚未由当前静态链复现，不能把社区概括直接补成当前fallback中未见的统一早退；有效XLua及实机结果保留为明确证据边界，不以此否定其已绑定的早期技能程序。
+
+部分候选没有被用来证明普通玩法必须支持某种额外分支：`enemy_wdsdw[loss_hp]` 实际绑在 `enemy_1323_wdbshd`，当前只闭合原表／关卡引用，未闭合召唤或直接出场链；`enemy_wlrage_t_check`也未闭合直接出场。`immune_env_damage`绑定巨翼兽，既有sandbox也有玩法归属未核实的act1arkhub记录，不能简单视为普通玩法正例，也不能宣称全为排除模式。完整索引与未闭合项保留于配置记录，不由“未闭合”推导可删除。
+
+### 架构审查约束
+
+原生真实内容的接收前处理必须按实际绑定审查，不能因为项目未接入对应角色就删去能力。当前 beforeReceive 为 void 工作值，也不能仅凭保留同名 Hook 就认定已经覆盖可改值、可取消的前置程序。普通HIT和伤判能否共用一个公开扩展点，与资格前是否存在必要业务，是两个独立问题。
