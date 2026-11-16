@@ -232,7 +232,7 @@ interface Penetration {
 
 type DamageType = "PHYSICAL" | "ARTS" | "TRUE" | "ELEMENTAL";
 
-type Nature = "DAMAGE" | "LOSS";
+type Nature = "DAMAGE" | "ENVIRONMENT" | "LOSS";
 
 type AttackType = "NONE" | "NORMAL" | "SPLASH" | "BUFF" | "ADDITION";
 type ApplyWay = "NONE" | "MELEE" | "RANGED" | "ALL";
@@ -269,15 +269,17 @@ AttackParameters 表示用于本次计算的数值，不要求 power 一定来�
 
 HP Damage.Request 的 source 与 killer 分别表示伤害来源和本笔确认死亡时使用的击杀者。killer 必填，由调用者按内容语义显式提供；普通攻击通常两者相同，无伤害来源的输出也可指定已知击杀者，无归属则明确传 null。Core 不从 source、当前仍在场的对象或 Effect／Projectile 来源关系猜测 killer。它不参与公式、接收资格或来源 Hook 选择，也不要求该 Ref 当前仍可解析。显式 killer 是项目选择，原生来源与死亡上下文的区别见[归属调查](../research/cases/39-death-attribution-and-attribute-ranges.md)。EP Damage 与 Healing 不增加该字段。
 
-HP／EP Damage 共用 [resource/damage.ts](../../src/core/battle/resource/damage.ts) 的 AttackType 与 ApplyWay，并从各自 Damage 入口重导出。Request 顶层必填 attackType／applyWay，表示本笔输出的攻击类别与施加途径；它们独立于数学伤害类型、DAMAGE／LOSS 和 HIT 回复许可，不进入 Parameters 或 Calculated。Content 在构造请求时显式提供；Hook 与 Restriction 通过固定 request 读取，Core 不按这些类别新增阶段、公式或接收分支，也不从来源、距离、当前技能或来源仍在场与否推导分类。
+HP／EP Damage 共用 [resource/damage.ts](../../src/core/battle/resource/damage.ts) 的 AttackType 与 ApplyWay，并从各自 Damage 入口重导出。Request 顶层必填 attackType／applyWay，表示本笔输出的攻击类别与施加途径；它们独立于数学伤害类型、三种 Nature 和 HIT 回复许可，不进入 Parameters 或 Calculated。Content 在构造请求时显式提供；Hook 与 Restriction 通过固定 request 读取，Core 不按这些类别新增阶段、公式或接收分支，也不从来源、距离、当前技能或来源仍在场与否推导分类。
 
 两项均为单值字符串联合，NONE 与 ALL 保留为合法单值，不使用数组或组合 mask。单值是项目选择：现有[伤害分类调查](../research/cases/38-damage-classification-and-permissions.md)未找到要求组合值的实际正例，但原生的 mask 结构与消费者仍存在，不能据此断言原生不支持组合。Hook exclude、Restriction ignore 与取消原因 forbidden 继续分别控制响应、资格与取消尝试，不由 attackType／applyWay 自动生成。Healing 不增加这两个字段。
 
-`nature` 是普通伤害／生命流失的业务性质，与 parameters.type 的数学类型正交；不得由是否自伤、是否周期输出或来源是否为空推断。`hitRecovery` 表示普通受击类 SP 回复许可，只有 nature 为 DAMAGE 且该字段为 true 才具备资格；LOSS 不论该许可均不产生 HIT。两项独立保存，例如拟态机械射线的原生配置同时具有 skip 与未禁用 SP 的标记，仍因流失不进入普通受击回复。普通攻击通常提供 true，活性源石和标准元素爆发的 HP 输出提供 false。它不抑制其他受伤程序，也不保证目标当前一定能够回复 SP。
+`nature` 区分 DAMAGE、ENVIRONMENT 和 LOSS，与 parameters.type 的数学类型正交，由调用者按实际机制显式提供；不由自伤、周期、地形来源或 source=null 推断。ENVIRONMENT 标签本身不跳过 Hook、不固定输出量，也不改变伤害公式。
 
-两种性质都完整执行来源 Formula、目标 Formula、公式和 Output，以及 Apply 的 BeforeReceive、Receiving、BeforeCommit 和两侧 Applied。请求不配置阶段派发开关，不另建 LOSS 管线或 Hook 集合；机制通过 Restriction／Hook 的资格表达自己的适用范围。普通护盾、闪避、减伤、受伤天赋只响应 DAMAGE；明确作用于流失的程序可以在相同 Hook 上响应 LOSS。通用 Applied 记录成功提交事实，因此 LOSS 也正常通知，最后仍按最新 HP 确认死亡。
+`source` 决定来源身份及其 Hook 查找，`hitRecovery` 单独提供受击类 SP 回复许可，`Options.exclude` 只排除本次明确指定的 Hook，三者不由 ENVIRONMENT 自动产生。HIT 要求 nature!==LOSS 且 hitRecovery=true；LOSS 不论许可均不产生 HIT，例如拟态机械射线同时具有 skip 与未禁用 SP 的原生标记，仍因流失不进入普通受击回复。普通攻击通常提供 true；活性源石为 ENVIRONMENT，敌方深水与标准元素爆发为 DAMAGE，这三类当前 HP 输出均提供 false。来源分类与字段依据见[分类与权限调查](../research/cases/38-damage-classification-and-permissions.md)。
 
-无敌和 Presence 的 HP 接收 Restriction 拒绝 DAMAGE、允许 LOSS；它们对 EP 的规则保持各自既有语义。基本 Unit 生命周期与 HP 资格仍统一检查，LOSS 不绕过真实离场。未来特殊生命保护仍属于资源提交层，不因流失跳过。实际内容依据及已接受的原生差异见[流失交互研究](../research/cases/11-damage-apply-and-hp-application.md#7-统一管线的实际内容对照2026-11-13)。自然回复不进入 Damage，也不通过构造 LOSS 请求表达。
+三种 Nature 共用来源 Formula、目标 Formula、公式和 Output，以及 Apply 的 BeforeReceive、Receiving、BeforeCommit 和两侧 Applied。标签不配置阶段派发开关，也不建立额外管线或 Hook 集合；机制通过 Restriction／Hook 资格表达适用范围。普通护盾、闪避、减伤及受伤天赋可按 nature!==LOSS 响应 DAMAGE 与 ENVIRONMENT，例如泥岩的既有受伤程序；具体环境免疫可单独检查 ENVIRONMENT，明确作用于流失的程序可在同一 Hook 响应 LOSS。通用 Applied 仍记录三类成功提交，最后按最新 HP 确认死亡。
+
+无敌和 Presence 的 HP 接收 Restriction 拒绝 DAMAGE 与 ENVIRONMENT，仅允许 LOSS；它们对 EP 的规则保持各自既有语义。基本 Unit 生命周期与 HP 资格仍统一检查，LOSS 不绕过真实离场。未来特殊生命保护仍属于资源提交层，不因流失跳过。实际内容依据及已接受的原生差异见[流失交互研究](../research/cases/11-damage-apply-and-hp-application.md#7-统一管线的实际内容对照2026-11-13)。自然回复不进入 Damage，也不通过构造 LOSS 请求表达。
 
 物理／法术参数只携带当前类型所使用的一套穿透。类型转换必须同时保证新类型参数的业务含义正确；类型系统不负责证明采样来源与时点。跨类型计算需要的历史参数由发起该业务的 Content 保存，例如双分支各自取得完整的物理／法术穿透快照；普通 Request 不因此固定携带两套穿透，也不在来源失效后以实时查询冒充历史采样。
 
@@ -465,7 +467,7 @@ UNSPECIFIED 表示取消但未指定一种受击结果；它不表示未取消�
 
 HP Damage／Healing Receiving、EP Damage Receiving 与 Elemental 的资源／Burst 通知统一存于宿主 Unit.hooks。接收与通知的类型、时点和资格仍归对应业务，EP Healing 不增加专属 Receiving。
 
-普通 HIT 回复由 Skill 登记在 HP Damage.receiving，约定使用 10000 量级的高优先级；普通伤判通常使用缺省 0 或各自明确的优先级，不增加强制优先级分区。该回复只接受未取消且 amount 大于零、nature=DAMAGE、hitRecovery=true 的当前工作值，原样返回 Pending。前置取消或归零不授予 HIT；后续闪避、抵挡不回滚已经完成的回复。同轮新增 ID 不进入本轮，需在准入前完成的程序应使用 beforeReceive。
+普通 HIT 回复由 Skill 登记在 HP Damage.receiving，约定使用 10000 量级的高优先级；普通伤判通常使用缺省 0 或各自明确的优先级，不增加强制优先级分区。该回复只接受未取消且 amount 大于零、nature!==LOSS、hitRecovery=true 的当前工作值，原样返回 Pending。前置取消或归零不授予 HIT；后续闪避、抵挡不回滚已经完成的回复。同轮新增 ID 不进入本轮，需在准入前完成的程序应使用 beforeReceive。
 
 本地登记随承载 Unit 注销而移除，不建立 BattleState 外置表或单独 Hook Lifetime。临时 Effect 在启停时登记、撤销自己的输出；跨 Unit 安装仍由机制拥有者管理撤销。通用集合不承担派发、接收资格或自动回滚。
 
@@ -704,8 +706,8 @@ Apply 对最终计算量为零的治疗在入口返回 REJECTED，不派发本�
 
 - **死亡清理**：普通伤害与生命流失由完整 HP Damage 在两侧 Applied 后确认死亡、请求离场并形成 killed；显式致死或退场由所属操作请求 Unit 结束。Finalize 遵循 Lifetime 的最外层完成边界。Combat 只推进 Action，不扫描 HP 或代为判定死亡；Applied 中同步调用 Combat 也不提前结束当前伤害的目标。
 - **特殊 HP 修改**：普通伤害与生命流失都通过 HP Damage 结算，自然回复由 Vitality.advance 推进，直接恢复使用 increaseHp，HP 写入由 Vitality 拥有。具体 Content 通过公开操作组合恢复与同步，不直接重建 Vitality State；当前不提供任意 HP 赋值操作。
-- **伤害分类**：HP／EP Damage Request 顶层显式携带单值 attackType／applyWay；HP 另保留 DAMAGE／LOSS 与 hitRecovery。选择性 Hook 排除与接收限制豁免由本次 Options 表达；非致命由 Content 组合 Effect 与 Hook，不新增专用请求分类，具体内容尚未接入。分担等其余特殊生命业务仍按实际机制设计，不能从目标状态或来源单位类型反推本笔事实。
-- **受伤与 HIT 回复资格**：Request.hitRecovery 与 nature 共同限定受击类 SP 回复；普通环境伤害与标准元素爆发可保留受伤响应而不提供 HIT 回复，不通过全局阻回伪装单笔资格。具体内容未全部接入不改变这项公共契约。
+- **伤害分类**：HP／EP Damage Request 顶层显式携带单值 attackType／applyWay；HP 另保留 DAMAGE／ENVIRONMENT／LOSS 与 hitRecovery。选择性 Hook 排除与接收限制豁免由本次 Options 表达；非致命由 Content 组合 Effect 与 Hook，不新增专用请求分类，具体内容尚未接入。分担等其余特殊生命业务仍按实际机制设计，不能从目标状态或来源单位类型反推本笔事实。
+- **受伤与 HIT 回复资格**：Request.hitRecovery 与 nature 共同限定受击类 SP 回复；ENVIRONMENT 不自动授予或禁止 HIT；当前活性源石、敌方深水与标准元素爆发均以 hitRecovery=false 保留受伤响应而不提供 HIT 回复，不通过全局阻回伪装单笔资格。具体内容未全部接入不改变这项公共契约。
 - **本次 Hook 排除**：Calculate 与 Apply 分别接收可选 Options.exclude，按键身份与可选登记 ID 排除当前操作的响应；专属接收接续 Apply 选项。不修改登记、不跳过公式或资源提交、不豁免 Restriction，也不将选项保存进 Request／Calculated 或自动传给嵌套业务。契约见 [Hook 排除](hook.md#本次调用的-hook-排除)。
 
 特殊机制的客户端事实、PRTS 说明与项目选择分别记录在[机制研究](../research/cases/11-damage-apply-and-hp-application.md)，不将未经确认的细节视为普通核心契约。

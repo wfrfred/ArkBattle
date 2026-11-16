@@ -7,7 +7,7 @@ import type { Vitality } from "../../../../unit/capability/vitality/capability.j
 
 export type DamageType = "PHYSICAL" | "ARTS" | "TRUE" | "ELEMENTAL";
 
-export type Nature = "DAMAGE" | "LOSS";
+export type Nature = "DAMAGE" | "ENVIRONMENT" | "LOSS";
 
 export interface Event {
     readonly type: "DAMAGE";

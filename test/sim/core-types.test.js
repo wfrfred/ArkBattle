@@ -500,7 +500,7 @@ update(battle, ref(bare), damageCommittedChange);
 // @ts-expect-error committed notifications cannot replace the already applied Health.
 Hooks.empty().set(vitality.damageCommitted, { id: 'rewrite', invoke: state => ({ state, value: { hp: 1, minusHp: 0 } }) });
 const classifiedRequest: hpDamage.Request = {
-    source: null, killer: null, target: patientRef, nature: 'DAMAGE', hitRecovery: true,
+    source: null, killer: null, target: patientRef, nature: 'ENVIRONMENT', hitRecovery: true,
     attackType: 'NONE', applyWay: 'ALL',
     parameters: { type: 'TRUE', attack: { power: 10, multiplier: 1, addition: 0 } },
 };

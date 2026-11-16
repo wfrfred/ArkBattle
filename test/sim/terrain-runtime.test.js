@@ -97,7 +97,8 @@ test("HP-06: infection keeps its entry clocks and ordinary reception while exclu
         skill: { initialize: state => skills.create(state, resource) },
         hooks: Hooks.empty().set(hpDamage.targetApplied, {
             id: "observe-environment-application",
-            invoke(state, { application }) {
+            invoke(state, { request, application }) {
+                assert.equal(request.nature, "ENVIRONMENT");
                 applications.push(application.hpLoss);
                 return { state, value: undefined };
             },
@@ -107,7 +108,7 @@ test("HP-06: infection keeps its entry clocks and ordinary reception while exclu
         units.setHook(hpDamage.receiving, {
             id: "observe-environment-reception",
             invoke(state, { request }, pending) {
-                assert.equal(request.nature, "DAMAGE");
+                assert.equal(request.nature, "ENVIRONMENT");
                 assert.equal(request.hitRecovery, false);
                 receptions.push(pending.amount);
                 return { state, value: pending };
@@ -161,12 +162,22 @@ test("mire preserves its stacking clock across adjacent tiles and gives heavy en
 });
 
 test("deepsea and holes affect ground enemies while leaving allies and airborne enemies untouched", () => {
+    const natures = [];
     const configured = setup([terrain.deepsea.create(deepseaParams), terrain.hole.create({})], [
-        unit(0, { ...combat, allegiance: { side: "ENEMY" }, layer: { type: "GROUND" } }),
+        unit(0, { ...combat, allegiance: { side: "ENEMY" }, layer: { type: "GROUND" },
+            hooks: Hooks.empty().set(hpDamage.receiving, {
+                id: "observe-deepsea-nature",
+                invoke(state, { request }, pending) {
+                    natures.push(request.nature);
+                    return { state, value: pending };
+                },
+            }),
+        }),
         unit(0, { ...combat, allegiance: { side: "ALLY" }, layer: { type: "GROUND" } }),
         unit(0, { ...combat, allegiance: { side: "ENEMY" }, layer: { type: "AIR" } }),
     ], [terrain.deepsea, terrain.hole]);
     let battle = until(configured.battle, 2);
+    assert.deepEqual(natures, ["DAMAGE"]);
     assert.deepEqual([0, 1, 2].map(id => current(battle, id).vitality.health.hp), [960, 1000, 1000]);
     assert.deepEqual([0, 1, 2].map(id => attackSpeed(battle, id)), [40, 100, 100]);
     for (const id of [0, 1, 2]) battle = move(battle, id, 1);

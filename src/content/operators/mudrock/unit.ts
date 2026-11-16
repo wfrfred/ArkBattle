@@ -148,7 +148,7 @@ function shieldEffect(profile: Profile): EffectDefinition<ShieldState, Vitality>
                 unitHooks.setHook(receiving, {
                     id: `${SHIELD_ID}/${self.id}`,
                     priority: 100,
-                    accepts: (_battle, { request }) => request.nature === "DAMAGE",
+                    accepts: (_battle, { request }) => request.nature !== "LOSS",
                     invoke(state, context, pending) {
                         const shield = get(state, ref);
                         const host = getCurrentUnit(state, self.host);

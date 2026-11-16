@@ -76,11 +76,15 @@ function canMove(battle, unit) {
     return !Vec2.equal(getUnit(moved, unit.id).position, unit.position);
 }
 
-test("Mudrock's shield cancels a hit, consumes one layer, self-heals and retains HIT recovery", () => {
+test("Mudrock's shield cancels environmental damage, self-heals and retains eligible HIT recovery", () => {
     const fixture = setup();
     const wounded = wound(fixture.battle);
     const restored = advanceEffectsUntil(wounded, 270);
-    const result = hit(restored, null, 5000);
+    const result = damage(restored, {
+        source: null, target: ref(getUnit(restored, 0)),
+        nature: "ENVIRONMENT", hitRecovery: true,
+        parameters: parameters(5000, "TRUE"),
+    });
     assert.equal(result.value.received.reason, "BLOCKED");
     approximate(getUnit(result.state, 0).vitality.health.hp, 1000 + fixture.prepared.attributes.maxHp * 0.2);
     assert.equal(getUnit(result.state, 0).skill.sp.value, 1);

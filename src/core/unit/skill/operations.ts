@@ -35,7 +35,7 @@ const hitRecovery: ReceivingHook = {
     accepts: (_battle, { request }, current) =>
         current.type !== "CANCELLED" &&
         current.amount > 0 &&
-        request.nature === "DAMAGE" &&
+        request.nature !== "LOSS" &&
         request.hitRecovery,
     invoke: (battle, { request }, current) => {
         const target = units.get(battle, request.target);

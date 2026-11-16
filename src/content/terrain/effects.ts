@@ -83,7 +83,12 @@ function changeModifiers(
     );
 }
 
-function damage(battle: BattleState, host: Ref<Unit>, amount: number): BattleState {
+function damage(
+    battle: BattleState,
+    host: Ref<Unit>,
+    amount: number,
+    nature: DamageRequest["nature"],
+): BattleState {
     const unit = units.get(battle, host);
     if (unit === undefined || !hasVitality(unit)) {
         return battle;
@@ -95,7 +100,7 @@ function damage(battle: BattleState, host: Ref<Unit>, amount: number): BattleSta
         source: null,
         killer: null,
         target: units.ref(unit),
-        nature: "DAMAGE",
+        nature,
         hitRecovery: false,
         parameters: {
             type: "TRUE",
@@ -130,7 +135,9 @@ export function createInfectionEffect(params: InfectionParams): Definition<Infec
                 remainingTicks: remainingTicks === 0 ? TICKS_PER_SECOND : remainingTicks,
             });
 
-            return remainingTicks === 0 ? damage(battle, self.host, params.damage) : battle;
+            return remainingTicks === 0
+                ? damage(battle, self.host, params.damage, "ENVIRONMENT")
+                : battle;
         },
     };
 }
@@ -156,7 +163,7 @@ export function createDeepseaEffect(params: DeepseaParams): Definition<PeriodicS
                 nextTick: battle.tick + TICKS_PER_SECOND,
             });
 
-            return damage(battle, self.host, params.damage);
+            return damage(battle, self.host, params.damage, "DAMAGE");
         },
     };
 }
