@@ -435,18 +435,34 @@ const patient = initialize(battle, { id: 2, position: [0, 0], definition: {
 } }).value;
 const patientRef = ref(patient);
 const damageCommittingChange = setUnitHook(vitality.damageCommitting, {
-    id: 'protect-hp',
-    invoke(state, context, hp) {
+    id: 'protect-health',
+    invoke(state, context, health) {
         const target: Ref<Unit & vitality.Vitality> = context.request.target;
-        const previous: number = context.hpBefore;
-        return { state, value: Math.max(hp, 1) };
+        const previous: vitality.Health = context.previous;
+        const proposed: vitality.Health = health;
+        return { state, value: { hp: Math.max(health.hp, 1), minusHp: Math.max(0, health.minusHp - 1) } };
     },
 });
 update(battle, patientRef, damageCommittingChange);
 // @ts-expect-error damage committing hooks require Vitality on the host.
 update(battle, ref(bare), damageCommittingChange);
-// @ts-expect-error damage committing carries an HP number rather than a Receiving Pending.
-Hooks.empty().set(vitality.damageCommitting, { id: 'pending', invoke: (state, _context, hp) => ({ state, value: { amount: hp } }) });
+// @ts-expect-error damage committing carries Health rather than a scalar HP.
+Hooks.empty().set(vitality.damageCommitting, { id: 'number', invoke: state => ({ state, value: 1 }) });
+const damageCommittedChange = setUnitHook(vitality.damageCommitted, {
+    id: 'observe-health',
+    invoke(state, context, current) {
+        const request: hpDamage.Request = context.request;
+        const application: vitality.DamageApplication = context.application;
+        const after: vitality.Health = application.after;
+        const notification: void = current;
+        return { state, value: undefined };
+    },
+});
+update(battle, patientRef, damageCommittedChange);
+// @ts-expect-error committed notifications retain the Vitality owner requirement.
+update(battle, ref(bare), damageCommittedChange);
+// @ts-expect-error committed notifications cannot replace the already applied Health.
+Hooks.empty().set(vitality.damageCommitted, { id: 'rewrite', invoke: state => ({ state, value: { hp: 1, minusHp: 0 } }) });
 const classifiedRequest: hpDamage.Request = {
     source: null, target: patientRef, nature: 'DAMAGE', hitRecovery: true,
     attackType: 'NONE', applyWay: 'ALL',

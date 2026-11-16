@@ -1,7 +1,7 @@
 import type { Ref } from "../../../common/ref.js";
 import { TICKS_PER_SECOND } from "../../../tick.js";
 import type { State as BattleState, Result } from "../../../battle/state.js";
-import { replace } from "../../../battle/unit.js";
+import { remove, replace } from "../../../battle/unit.js";
 import type { Unit } from "../../unit.js";
 import * as units from "../../query.js";
 import * as hooks from "../../../hook.js";
@@ -9,22 +9,31 @@ import type * as damage from "../../../battle/resource/hp/damage/index.js";
 import type * as healing from "../../../battle/resource/hp/healing/index.js";
 import { receiving as damageReceiving } from "../../../battle/resource/hp/damage/hook.js";
 import { receiving as healingReceiving } from "../../../battle/resource/hp/healing/hook.js";
-import { resolveMaxHp, type Vitality } from "./capability.js";
+import { resolveMaxHp, resolveMaxMinusHp, type Vitality } from "./capability.js";
 import { isAlive, resolveRecoverySpeed } from "./query.js";
 import { allows } from "../../../restriction.js";
 import type { Restriction } from "./restriction.js";
-import { damageCommitting } from "./hook.js";
+import {
+    damageCommitting,
+    damageCommitted,
+    type DamageCommittedContext,
+    type DamageCommittedHook,
+} from "./hook.js";
+import { change, normalize, type Health } from "./health.js";
 
 export interface DamageApplication {
-    readonly hpBefore: number;
-    readonly hpAfter: number;
+    readonly before: Health;
+    readonly after: Health;
     readonly hpLoss: number;
+    readonly minusHpGain: number;
 }
 
 export interface HealingApplication {
-    readonly hpBefore: number;
-    readonly hpAfter: number;
+    readonly before: Health;
+    readonly after: Health;
     readonly hpGain: number;
+    readonly minusHpLoss: number;
+    readonly overflow: number;
 }
 
 export function canReceiveDamage(
@@ -87,10 +96,15 @@ export function commitDamage(
 ): Result<DamageApplication | null> {
     const target = context.request.target;
     const unit = units.get(battle, target)!;
+    const previous = unit.vitality.health;
     const committed = dispatchHook(
         battle,
-        { request: context.request, hpBefore: unit.vitality.hp },
-        unit.vitality.hp - context.received.amount,
+        { request: context.request, previous },
+        change(
+            previous,
+            previous.hp - context.received.amount,
+            resolveMaxMinusHp(unit.definition.vitality, unit.vitality),
+        ),
         damageCommitting,
     );
     battle = committed.state;
@@ -99,16 +113,36 @@ export function commitDamage(
         return { state: battle, value: null };
     }
 
-    const hpBefore = current.vitality.hp;
+    const before = current.vitality.health;
     const maxHp = resolveMaxHp(current.definition.vitality, current.vitality);
-    const hpAfter = Math.max(0, Math.min(committed.value, maxHp));
-    const application = { hpBefore, hpAfter, hpLoss: Math.max(0, hpBefore - hpAfter) };
+    const after = normalize(
+        committed.value,
+        maxHp,
+        resolveMaxMinusHp(current.definition.vitality, current.vitality),
+    );
+    const application = {
+        before,
+        after,
+        hpLoss: Math.max(0, before.hp - after.hp),
+        minusHpGain: Math.max(0, after.minusHp - before.minusHp),
+    };
+
+    if (after.hp !== before.hp || after.minusHp !== before.minusHp) {
+        battle = replace(battle, [
+            { ...current, vitality: { ...current.vitality, health: after } },
+        ]);
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-invalid-void-type -- The hook's work type is void.
+    const notified = dispatchHook<DamageCommittedContext, void, DamageCommittedHook>(
+        battle,
+        { request: context.request, application },
+        undefined,
+        damageCommitted,
+    );
 
     return {
-        state:
-            hpAfter === hpBefore
-                ? battle
-                : replace(battle, [{ ...current, vitality: { ...current.vitality, hp: hpAfter } }]),
+        state: notified.state,
         value: application,
     };
 }
@@ -128,7 +162,9 @@ export function advance(battle: BattleState, reference: Ref<Unit & Vitality>): B
         return battle;
     }
 
-    return increaseHp(battle, unit, resolveRecoverySpeed(battle, unit) / TICKS_PER_SECOND).state;
+    const amount = resolveRecoverySpeed(battle, unit) / TICKS_PER_SECOND;
+
+    return amount === 0 ? battle : increaseHp(battle, unit, amount).state;
 }
 
 function increaseHp(
@@ -136,16 +172,27 @@ function increaseHp(
     unit: Unit & Vitality,
     amount: number,
 ): Result<HealingApplication> {
-    const hpBefore = unit.vitality.hp;
+    const before = unit.vitality.health;
     const maxHp = resolveMaxHp(unit.definition.vitality, unit.vitality);
-    const hpAfter = hpBefore + Math.max(0, Math.min(amount, maxHp - hpBefore));
-    const application = { hpBefore, hpAfter, hpGain: hpAfter - hpBefore };
+    const maxMinusHp = resolveMaxMinusHp(unit.definition.vitality, unit.vitality);
+    const after = normalize(change(before, before.hp + amount, maxMinusHp), maxHp, maxMinusHp);
+    const hpGain = Math.max(0, after.hp - before.hp);
+    const minusHpLoss = Math.max(0, before.minusHp - after.minusHp);
+    const application = {
+        before,
+        after,
+        hpGain,
+        minusHpLoss,
+        overflow: Math.max(0, amount - minusHpLoss - hpGain),
+    };
+
+    const state =
+        after.hp === before.hp && after.minusHp === before.minusHp
+            ? battle
+            : replace(battle, [{ ...unit, vitality: { ...unit.vitality, health: after } }]);
 
     return {
-        state:
-            hpAfter === hpBefore
-                ? battle
-                : replace(battle, [{ ...unit, vitality: { ...unit.vitality, hp: hpAfter } }]),
+        state: after.hp <= 0 ? remove(state, units.ref(unit), "DEATH") : state,
         value: application,
     };
 }

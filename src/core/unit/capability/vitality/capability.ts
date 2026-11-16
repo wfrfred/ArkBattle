@@ -7,6 +7,9 @@ import type { Unit } from "../../unit.js";
 import type { Restriction } from "./restriction.js";
 import { createChange, type Change } from "../../change.js";
 import { createRegistrationOperations } from "../../registration.js";
+import * as units from "../../query.js";
+import { remove } from "../../../battle/unit.js";
+import { change, normalize, type Health } from "./health.js";
 
 export interface Definition {
     readonly maxHp: number;
@@ -32,7 +35,8 @@ interface Restrictions {
 }
 
 export interface State extends Restrictions, Contributions {
-    readonly hp: number;
+    readonly health: Health;
+    readonly maxMinusHpRatio: number;
     readonly maxHp: readonly contribution.Contribution<readonly attribute.Modifier[]>[];
 }
 
@@ -63,7 +67,8 @@ export function initialize<U extends Unit & Pick<Vitality, "definition">>(
         value: {
             ...unit,
             vitality: {
-                hp: Math.max(1, definition.maxHp),
+                health: { hp: Math.max(1, definition.maxHp), minusHp: 0 },
+                maxMinusHpRatio: 0,
                 maxHp: [],
                 defense: [],
                 resistance: [],
@@ -81,12 +86,36 @@ export const { set: setRestriction, remove: removeRestriction } = createRegistra
     keyof Restrictions
 >("vitality", "damageRestrictions");
 
-function preserveHpRatio(hp: number, previousMax: number, nextMax: number): number {
-    if (previousMax === nextMax || hp <= 0) {
-        return hp;
+function preserveHpRatio(
+    health: Health,
+    previousMax: number,
+    nextMax: number,
+    maxMinusHpRatio: number,
+): Health {
+    if (previousMax === nextMax || health.hp <= 0) {
+        return health;
     }
 
-    return Math.min(nextMax, (hp / previousMax) * nextMax);
+    const maxMinusHp = nextMax * maxMinusHpRatio;
+
+    return normalize(
+        change(health, (health.hp / previousMax) * nextMax, maxMinusHp),
+        nextMax,
+        maxMinusHp,
+    );
+}
+
+function settleHealth(battle: BattleState, previous: Unit & Vitality): BattleState {
+    if (previous.vitality.health.hp <= 0) {
+        return battle;
+    }
+
+    const reference = units.ref(previous);
+    const current = units.get(battle, reference);
+
+    return current?.lifecycle === "PRESENT" && current.vitality.health.hp <= 0
+        ? remove(battle, reference, "DEATH")
+        : battle;
 }
 
 export function setMaxHpContribution(
@@ -99,14 +128,15 @@ export function setMaxHpContribution(
         }
 
         const vitality = { ...self.vitality, maxHp };
-        const hp = preserveHpRatio(
-            self.vitality.hp,
+        const health = preserveHpRatio(
+            self.vitality.health,
             resolveMaxHp(self.definition.vitality, self.vitality),
             resolveMaxHp(self.definition.vitality, vitality),
+            vitality.maxMinusHpRatio,
         );
 
-        return { ...self, vitality: { ...vitality, hp } };
-    });
+        return { ...self, vitality: { ...vitality, health } };
+    }, settleHealth);
 }
 
 export function removeMaxHpContribution(id: string): Change<Unit & Vitality> {
@@ -117,18 +147,33 @@ export function removeMaxHpContribution(id: string): Change<Unit & Vitality> {
         }
 
         const vitality = { ...self.vitality, maxHp };
-        const hp = preserveHpRatio(
-            self.vitality.hp,
+        const health = preserveHpRatio(
+            self.vitality.health,
             resolveMaxHp(self.definition.vitality, self.vitality),
             resolveMaxHp(self.definition.vitality, vitality),
+            vitality.maxMinusHpRatio,
         );
 
-        return { ...self, vitality: { ...vitality, hp } };
-    });
+        return { ...self, vitality: { ...vitality, health } };
+    }, settleHealth);
 }
 
 export function resolveMaxHp(definition: Definition, state: State): number {
     return Math.max(1, attribute.apply(definition.maxHp, contribution.resolve(state.maxHp).flat()));
+}
+
+export function resolveMaxMinusHp(definition: Definition, state: State): number {
+    return resolveMaxHp(definition, state) * state.maxMinusHpRatio;
+}
+
+export function setMaxMinusHpRatio(ratio: number): Change<Unit & Vitality> {
+    assertNonnegativeNumber(ratio, "maxMinusHpRatio");
+
+    return createChange<Unit & Vitality>((self) =>
+        ratio === self.vitality.maxMinusHpRatio
+            ? self
+            : { ...self, vitality: { ...self.vitality, maxMinusHpRatio: ratio } },
+    );
 }
 
 export const { set: setContribution, remove: removeContribution } = createRegistrationOperations<

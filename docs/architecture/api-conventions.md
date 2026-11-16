@@ -76,12 +76,12 @@ Hook 与领域操作按执行语义命名：
 | 完整实例写回 | Action 容器 `replace(definition, next)` 提交聚合条目，Effect／Projectile 容器按各自身份提交完整实例；均由 Core 内部使用。身份、Definition、执行进度与生命周期按对应领域契约维护。 |
 | 程序回调有额外结果 | 可以返回 `Result<T>`；例如 Action Definition.prepare 的准备结果、onTick 的完成指示和 Hook 的业务指令。 |
 | Damage／Healing 两阶段接续 | `applyDamage(request, calculation: Result<CalculatedDamage \| undefined>, options?: ApplyOptions)` 与 HP 的 `applyHealing(request, calculation: Result<CalculatedHealing \| undefined>, options?: ApplyOptions)` 通过计算 Result 显式接续 state 和数值，分别返回领域 Outcome。Calculate 同样接受独立的可选 Options；两阶段不自动传播排除项。HP Damage、EP Damage、HP Healing 的 ApplyOptions 可提供本业务 forbidden，Apply 将缺省空集合或所给只读集合固定在 ReceivingContext；EP Healing 仅使用 Hook Options。四种 Request 的公式输入均放入 parameters；HP／EP Damage 另在 Request 顶层必填单值 attackType／applyWay，类型共用 resource/damage.ts 并从各自 Damage 入口重导出，不进入 Parameters／Calculated，也不添加到 Healing。Outcome 均用 type 判别。插入其他操作时调用者须更新其中 state。 |
-| Vitality／Elemental 资源提交 | `commitDamage(battle, context)`／`commitHealing(battle, context)` 复用对应业务的精确 CommitContext，返回 Capability 定义的 Application 报告；Vitality.commitDamage 在内部 damageCommitting 后无法继续写入时返回 null，由 Apply 形成 UNAVAILABLE；commitHealing 保持无回调的普通恢复并返回报告。damageCommitting 接续待写入的绝对 HP，类型见 [Vitality](vitality.md#02-hp-写入前修改)。专属接收用 receiveDamage／receiveHealing，资格查询用 canReceiveDamage／canReceiveHealing。EP Healing 没有专属 receiveHealing 阶段；Battle 编排 BeforeCommit 与通用 Applied。见[接收与资源提交接口](vitality.md#18-接收与资源提交接口)。 |
+| Vitality／Elemental 资源提交 | `commitDamage(battle, context)`／`commitHealing(battle, context)` 复用对应业务的精确 CommitContext，返回 Capability 定义的 Application 报告；Vitality.commitDamage 在内部 damageCommitting 后无法继续写入时返回 null，由 Apply 形成 UNAVAILABLE；commitHealing 共用恢复分配并返回报告；缩减容量使本次恢复写入归零时，资源写点请求正常 DEATH，报告仍保留。damageCommitting 接续待写入的 Health，damageCommitted 在写入与报告固定后接续 void；后继不改写本次 Application，类型见 [Vitality](vitality.md#02-伤害写入前后)。专属接收用 receiveDamage／receiveHealing，资格查询用 canReceiveDamage／canReceiveHealing。EP Healing 没有专属 receiveHealing 阶段；Battle 编排 BeforeCommit 与通用 Applied。见[接收与资源提交接口](vitality.md#18-接收与资源提交接口)。 |
 | Vitality／Elemental 自然回复 | `advance(battle, ref)` 要求对应 Capability 的 Typed Ref，由 Runtime 资源阶段调用；按当前有效速度逐 Tick 更新资源，不进入普通 Healing 的 Calculate／Apply 或派发其 Hook。 |
 
 生命周期结束的公开 end／cancel／stop／remove 委托 [Lifetime](lifetime.md)：无活动结算时，本次调用完成 request 与 drain，返回时 Pending 为空；有活动结算时，只同步完成首次请求和 Prepare，不承诺槽位释放、注销或最终通知。重复 PREPARING 请求不等待原 Prepare。Finalize 整体返回才解除依赖者对 owner 的等待；resource.hp.damage.completed 只报告本次伤害完成，不保证目标离场 Finalize 已完成。
 
-Vitality 的[Health 接入计划](vitality.md#03-health-与负生命接入计划)已确定 `State.health: Health`、damageCommitting 的 Health 工作值，以及提交后接续 void 的 damageCommitted，当前接口尚未迁移。damageCommitted 使用 Result<void> 接续状态，在报告固定后执行后继，不改变本次报告。普通 HP 与债务的分配归 Vitality，屏障额度归 Effect；不新增 ES 或非致命专用请求字段。精确资源报告和容量操作接口随接入收口，不在公共约定中预设未实现签名。
+Vitality 通过 `State.health: Health` 聚合普通 HP 与非负债务，maxMinusHpRatio 初始为零。`setMaxMinusHpRatio(ratio): Change<Unit & Vitality>` 仅设置容量比例，不即时清债或发起死亡；`resolveMaxMinusHp(definition, state)` 返回有效容量。damageCommitting 使用 Context.previous 与 Health 工作值；damageCommitted 使用 Context.application 与 Result<void> 接续状态。DamageApplication 保存 before／after、hpLoss、minusHpGain；HealingApplication 保存 before／after、hpGain、minusHpLoss、overflow。普通 HP 与债务的分配归 Vitality，屏障额度归 Effect，不新增 ES 或非致命专用请求字段。见[资源分配与报告](vitality.md#03-负生命与资源分配)。
 
 生命状态与比例使用 `vitality.isAlive(self: Unit & Vitality)`／`hpRatio(self: Unit & Vitality)`，属于已取得实体上的局部查询，不接收 BattleState／Ref。isAlive 不合并 Unit.lifecycle 或 Presence，hpRatio 使用普通 HP 与有效 MaxHP；跨领域业务复用这些语义查询，具体资源数值仍可用于明确的公式或提交快照。
 
@@ -351,7 +351,7 @@ optional 用能力守卫限定已有 Change 的应用：实际调用时检查当
 
 普通数组注册由内部 [registration.ts](../../src/core/unit/registration.ts) 的 `createRegistrationOperations<U, P, K>(property)` 生成 set／remove Change。Capability 用 Restrictions、Contributions 分组声明普通登记字段，State 直接继承这些分组；K 取 keyof 分组，Entry 从真实 U[P][K] 提取。set 保留 Key／Entry 配对及内联回调类型，单字段重载固定字段。工厂只完成纯变换与不可变复制，不负责初始化、求值或派发。所有登记式 Hook 使用 typed Key 与 Hooks 集合，Unit Hook 由通用 unit.setHook／removeHook 生成 Change，不进入 Capability 数组工厂。通用 Entry 和按 ID 替换保序的 set／remove 归 [common/collection/entries.ts](../../src/core/common/collection/entries.ts)。
 
-Vitality 的 damageRestrictions 与普通贡献、Elemental 的 Restrictions／Contributions、Skill 的 Restrictions、Action 的 Restrictions，以及 Deployable、Facing、Locomotion、Offense、Targetable 的普通数组登记共用该工厂。MaxHP 在变换中保持 HP 比例；Ammo 保留 AMMO 适用条件；Action interval／speed 和 Blocking Restriction／容量／体积保留领域 Settlement。Hook 统一使用 typed Key 的集合操作，具体派发与资格仍归领域。工厂不从 Unit 公共入口导出。
+Vitality 的 damageRestrictions 与普通贡献、Elemental 的 Restrictions／Contributions、Skill 的 Restrictions、Action 的 Restrictions，以及 Deployable、Facing、Locomotion、Offense、Targetable 的普通数组登记共用该工厂。MaxHP 在变换中按比例分配 Health，容量耗尽的死亡由 Settlement 处理；Ammo 保留 AMMO 适用条件；Action interval／speed 和 Blocking Restriction／容量／体积保留领域 Settlement。Hook 统一使用 typed Key 的集合操作，具体派发与资格仍归领域。工厂不从 Unit 公共入口导出。
 
 update 每次只处理 Ref 指向的一个 Unit：
 
@@ -367,7 +367,7 @@ Restriction 可读取任意 Battle 事实，但读取范围不表示自动订阅
 
 Core 内部 `replace(battle, readonly Unit[])` 仅发布已合法构造的完整对象与派生索引，信任身份、Definition 和能力配对，不重复校验或派发内容 Hook。它不是公开原始 Unit 写回协议；生命周期、精确私有 state 写回及关系双端构造由各领域使用。Field 保留地图边界与最终双槽冲突校验。通用 update／replace 均不派发 Occupancy 或 Blocking 通知；add／remove 在各自业务时点改变占格登记并通知 SUPPORT。当前没有运行中的占格重定位操作。
 
-Action.interval／speed Change 的 settle 调用 refreshCooldowns，按最终静态贡献重算当前冷却并保留完成比例；Combat 不逐 Tick 调用该刷新。Blocker.layer 的 transform 只改 layer／radius，createChange 根据该项 transform 的引用变化决定是否登记 settle，再由 settle 调用 releaseAll(battle, ref(previous)) 批量解除当前关系，不能重新调用 setLayer 或写回旧 Unit。MaxHP 的比例响应属于纯 transform，不附带治疗通知。Stun 先通过一批 Change 发布各能力限制，再由 Blocking 后继清理关系，update 返回后才取消 Action。
+Action.interval／speed Change 的 settle 调用 refreshCooldowns，按最终静态贡献重算当前冷却并保留完成比例；Combat 不逐 Tick 调用该刷新。Blocker.layer 的 transform 只改 layer／radius，createChange 根据该项 transform 的引用变化决定是否登记 settle，再由 settle 调用 releaseAll(battle, ref(previous)) 批量解除当前关系，不能重新调用 setLayer 或写回旧 Unit。MaxHP 的比例与偿债分配属于纯 transform，不附带治疗通知；容量耗尽后的正常死亡由 Settlement 基于最新状态处理。Stun 先通过一批 Change 发布各能力限制，再由 Blocking 后继清理关系，update 返回后才取消 Action。
 
 Layer 的 `setType(type: Type): Change<Unit & Layer>` 是设置自身身份并主动脱离阻挡的完整请求，同值也要结算。transform 每次建立新的 Layer State 和 Unit，只写 layer.type；全批发布后，settle 依据 previous 的稳定角色分支。Blocker 调用 releaseAll(battle, ref(previous))，Blockable 调用自身 release，均清理结算时当前关系；Blockable 同时取消位置计划。释放操作在入口固定候选，保留本次通知中新建的关系；后续另一项请求可再次脱离新取得的关系；无角色则无阻挡后继。操作不自动搜索，不修改 Definition、position、Route 或 Blocker.layer／radius；宿主的存在性由通用 update 及复用的关系操作处理，不在 Layer 重复读取判空。此类完整请求的字段同值不等于整项无业务动作，通用 Change／update 不增加例外协议。
 

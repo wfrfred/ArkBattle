@@ -50,7 +50,7 @@ test('locked arrows follow a disappeared target position and separate identity h
   state = step(state, 2);
   state = step(state, 3);
   assert.equal(projectilesQuery.get(state, launched.value).state.hitAttempted, true);
-  assert.equal(getUnit(state, 1).vitality.hp, 1000);
+  assert.equal(getUnit(state, 1).vitality.health.hp, 1000);
   state = step(state, 4);
   assert.equal(projectilesQuery.get(state, launched.value), undefined);
 
@@ -59,13 +59,13 @@ test('locked arrows follow a disappeared target position and separate identity h
     position: [3, 0], state: { ...fixture.state, stopDelayTicks: 2 },
   });
   state = step(visible.state, 5);
-  assert.equal(getUnit(state, 1).vitality.hp, 960);
+  assert.equal(getUnit(state, 1).vitality.health.hp, 960);
   state = step(state, 6);
   assert.equal(projectilesQuery.get(state, visible.value).lifecycle, 'ACTIVE');
-  assert.equal(getUnit(state, 1).vitality.hp, 960);
+  assert.equal(getUnit(state, 1).vitality.health.hp, 960);
   state = step(state, 7);
   assert.equal(projectilesQuery.get(state, visible.value), undefined);
-  assert.equal(getUnit(state, 1).vitality.hp, 960);
+  assert.equal(getUnit(state, 1).vitality.health.hp, 960);
 });
 
 test('dispel skips the ordinary arrow fallback hit while explicit stop performs it once', () => {
@@ -74,8 +74,8 @@ test('dispel skips the ordinary arrow fallback hit while explicit stop performs 
   const dispelled = projectiles.stop(launched.state, launched.value, 'DISPEL');
   const stopped = projectiles.stop(launched.state, launched.value);
 
-  assert.equal(getUnit(dispelled, 1).vitality.hp, 1000);
-  assert.equal(getUnit(stopped, 1).vitality.hp, 960);
+  assert.equal(getUnit(dispelled, 1).vitality.health.hp, 1000);
+  assert.equal(getUnit(stopped, 1).vitality.health.hp, 960);
   assert.equal(dispelled.battlefield.projectiles.size, 0);
   assert.equal(stopped.battlefield.projectiles.size, 0);
 });
@@ -97,7 +97,7 @@ test('an arrow cannot hit twice when its damage response stops the projectile', 
   const after = step(launched.state, 1);
 
   assert.equal(hits, 1);
-  assert.equal(getUnit(after, 1).vitality.hp, 960);
+  assert.equal(getUnit(after, 1).vitality.health.hp, 960);
   assert.equal(projectilesQuery.get(after, arrow), undefined);
 });
 
@@ -117,10 +117,10 @@ test('tracking reads current source attack and falls back to its launch sample a
     id: 'after-launch', value: [modifier({ addition: 20 })],
   }));
   const withSource = step(boosted, 1);
-  assert.equal(getUnit(withSource, 1).vitality.hp, 940);
+  assert.equal(getUnit(withSource, 1).vitality.health.hp, 940);
   const withoutSource = removeUnit(boosted, fixture.state.source, "SCRIPT");
   const after = step(withoutSource, 1);
-  assert.equal(getUnit(after, 1).vitality.hp, 960);
+  assert.equal(getUnit(after, 1).vitality.health.hp, 960);
   assert.deepEqual(sources, [ref(fixture.source), null]);
 });
 
@@ -133,6 +133,6 @@ test('a missing locked target does not redirect its arrow to another nearby unit
   const withoutTarget = addUnit(removeUnit(launched.state, fixture.state.target, "SCRIPT"), other);
   const after = step(withoutTarget, 1);
 
-  assert.equal(getUnit(after, 2).vitality.hp, 100);
+  assert.equal(getUnit(after, 2).vitality.health.hp, 100);
   assert.equal(after.battlefield.projectiles.size, 0);
 });

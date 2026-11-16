@@ -5,6 +5,7 @@ import { Hooks, key } from "../../dist/core/hook.js";
 import * as units from "../../dist/core/unit/index.js";
 import { update, remove } from "../../dist/core/battle/unit.js";
 import { advance as advanceCombat } from "../../dist/core/battle/steps/combat.js";
+import { TICKS_PER_SECOND } from "../../dist/core/tick.js";
 import * as hpDamage from "../../dist/core/battle/resource/hp/damage/index.js";
 import * as epDamage from "../../dist/core/battle/resource/ep/damage/index.js";
 import * as hpHealing from "../../dist/core/battle/resource/hp/healing/index.js";
@@ -156,7 +157,7 @@ test("HOOK-02: exclusions are local to each operation and match a key or one ID 
     assert.equal(normal.value.application.hpLoss, 124);
     assert.deepEqual(receptions, ["outer", "late-receiving", "nested"]);
     assert.deepEqual(completions, ["nested:shared", "target:shared", "target:kept", "source:shared", "source:kept"]);
-    assert.equal(get(normal.state, 2).vitality.hp, 976);
+    assert.equal(get(normal.state, 2).vitality.health.hp, 976);
 });
 
 test("HP-01: formulas use the calculated type and sampled defenses without beginning reception", () => {
@@ -241,7 +242,7 @@ test("HP-01: formulas use the calculated type and sampled defenses without begin
     assert.deepEqual(calculated.value, { type: "ARTS", amount: 200 });
     assert.equal(request.parameters.type, "PHYSICAL");
     assert.equal(request.parameters.attack.multiplier, 1);
-    assert.equal(get(calculated.state, 1).vitality.hp, 1000);
+    assert.equal(get(calculated.state, 1).vitality.health.hp, 1000);
     assert.equal(receptions, 0);
     state = update(calculated.state, target, vitality.setContribution("resistance", {
         id: "later-resistance", value: [attribute.create({ finalAddition: 20 })],
@@ -249,7 +250,7 @@ test("HP-01: formulas use the calculated type and sampled defenses without begin
     const applied = hpDamage.applyDamage(request, { ...calculated, state });
     assert.equal(applied.value.application.hpLoss, 200);
     assert.equal(applied.value.killed, false);
-    assert.equal(get(applied.state, 1).vitality.hp, 800);
+    assert.equal(get(applied.state, 1).vitality.health.hp, 800);
     assert.equal(receptions, 1);
 });
 
@@ -284,16 +285,16 @@ test("HP-02: independent Calculate results retain their own business state and o
     const artsRequest = damageRequest(source, target, 100, "ARTS");
     const physical = hpDamage.calculateDamage(state, physicalRequest);
     const arts = hpDamage.calculateDamage(state, artsRequest);
-    assert.equal(get(state, 0).vitality.hp, 100);
-    assert.equal(get(physical.state, 0).vitality.hp, 110);
-    assert.equal(get(arts.state, 0).vitality.hp, 120);
+    assert.equal(get(state, 0).vitality.health.hp, 100);
+    assert.equal(get(physical.state, 0).vitality.health.hp, 110);
+    assert.equal(get(arts.state, 0).vitality.health.hp, 120);
     assert.equal(receptions, 0);
     const result = hpDamage.applyDamage(artsRequest, arts);
     assert.equal(result.value.application.hpLoss, 180);
-    assert.equal(get(result.state, 0).vitality.hp, 120);
-    assert.equal(get(result.state, 1).vitality.hp, 320);
+    assert.equal(get(result.state, 0).vitality.health.hp, 120);
+    assert.equal(get(result.state, 1).vitality.health.hp, 320);
     assert.equal(receptions, 1);
-    assert.equal(get(physical.state, 1).vitality.hp, 500);
+    assert.equal(get(physical.state, 1).vitality.health.hp, 500);
 });
 
 test("APPLY-01: cancellation before immunity preserves its outcome and suppresses HIT until protection ends", () => {
@@ -352,7 +353,7 @@ test("APPLY-01: cancellation before immunity preserves its outcome and suppresse
     const result = hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request));
     assert.equal(result.value.type, "CANCELLED");
     assert.deepEqual(result.value.received, { type: "CANCELLED", amount: 30, reason: "MISS" });
-    assert.equal(get(result.state, 1).vitality.hp, 100);
+    assert.equal(get(result.state, 1).vitality.health.hp, 100);
     assert.equal(get(result.state, 1).skill.sp.value, 0);
     assert.deepEqual(receivedSp, []);
     assert.equal(commits, 0);
@@ -408,7 +409,7 @@ test("RESTRICTION-02: damage exemptions cover one mechanism through reentrant ch
     const options = { ignore: restriction => restriction === invincibleHpDamageRestriction };
     const rejected = hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request), options);
     assert.equal(rejected.value.type, "REJECTED");
-    assert.equal(get(rejected.state, 1).vitality.hp, 100);
+    assert.equal(get(rejected.state, 1).vitality.health.hp, 100);
 
     state = update(rejected.state, target, units.compose(
         vitality.removeRestriction("separate"),
@@ -433,7 +434,7 @@ test("RESTRICTION-02: damage exemptions cover one mechanism through reentrant ch
     const accepted = hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request), options);
     assert.equal(accepted.value.application.hpLoss, 30);
     assert.equal(nested, "REJECTED");
-    assert.equal(get(accepted.state, 1).vitality.hp, 70);
+    assert.equal(get(accepted.state, 1).vitality.health.hp, 70);
     assert.equal(hpDamage.applyDamage(request, hpDamage.calculateDamage(accepted.state, request)).value.type, "REJECTED");
     state = remove(accepted.state, target, "SCRIPT");
     assert.equal(hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request), { ignore: () => true }).value.type, "REJECTED");
@@ -529,77 +530,112 @@ test("APPLY-01: Receiving and BeforeCommit resource changes define the baseline 
     const request = damageRequest(source, target, 30);
     const result = hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request));
     assert.deepEqual(calls, ["receiving", "beforeCommit", "targetApplied", "sourceApplied"]);
-    assert.deepEqual(result.value.application, { hpBefore: 145, hpAfter: 115, hpLoss: 30 });
-    assert.equal(get(result.state, 1).vitality.hp, 125);
+    assert.deepEqual(result.value.application, { before: { hp: 145, minusHp: 0 }, after: { hp: 115, minusHp: 0 }, hpLoss: 30, minusHpGain: 0 });
+    assert.equal(get(result.state, 1).vitality.health.hp, 125);
     assert.equal(healingNotifications, 2);
 
     state = update(result.state, target, vitality.setMaxHpContribution({
         id: "larger-hp", value: [attribute.create({ multiplier: 2 })],
     }));
-    assert.equal(get(state, 1).vitality.hp, 187.5);
+    assert.equal(get(state, 1).vitality.health.hp, 187.5);
     assert.equal(vitality.resolveMaxHp(get(state, 1).definition.vitality, get(state, 1).vitality), 300);
     state = update(state, target, vitality.removeMaxHpContribution("larger-hp"));
-    assert.equal(get(state, 1).vitality.hp, 62.5);
+    assert.equal(get(state, 1).vitality.health.hp, 62.5);
     assert.equal(vitality.resolveMaxHp(get(state, 1).definition.vitality, get(state, 1).vitality), 100);
     assert.equal(healingNotifications, 2);
 });
 
-test("HP-08: damage committing chains proposed HP against current state and does not revive a removed host", () => {
+test("HP-08: Health protection commits before its consequences and preserves the original report", () => {
+    const calls = [];
+    let committed = 0;
+    let applied = 0;
+    let observed;
     let state = battle([
         { definition: { id: "source", hooks: Hooks.empty() }, position: [0, 0] },
         { definition: {
-            id: "target", hooks: Hooks.empty(),
+            id: "target",
             vitality: { maxHp: 100, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
+            hooks: Hooks.empty()
+                .set(hpDamage.beforeReceive, {
+                    id: "fixed-reception",
+                    invoke: (current, _context, pending) => ({ state: current, value: hpDamage.fix(pending) }),
+                })
+                .set(vitality.damageCommitting, {
+                    id: "last",
+                    invoke(current, context, health) {
+                        calls.push("last");
+                        assert.deepEqual(context.previous, { hp: 100, minusHp: 0 });
+                        assert.deepEqual(health, { hp: 1, minusHp: 10 });
+                        return { state: current, value: { hp: 10, minusHp: 0 } };
+                    },
+                })
+                .set(vitality.damageCommitting, {
+                    id: "first", priority: 10,
+                    invoke(current, context, health) {
+                        calls.push("first");
+                        assert.deepEqual(context.previous, { hp: 100, minusHp: 0 });
+                        assert.deepEqual(health, { hp: 1, minusHp: 50 });
+                        return {
+                            state: update(current, context.request.target, vitality.setContribution("defense", {
+                                id: "armor", value: [attribute.create({ addition: 20 })],
+                            })),
+                            value: { ...health, minusHp: 10 },
+                        };
+                    },
+                })
+                .set(vitality.damageCommitted, {
+                    id: "commit-consequences",
+                    invoke(current, { request, application }) {
+                        calls.push("committed");
+                        committed++;
+                        observed = application;
+                        assert.deepEqual(get(current, request.target.id).vitality.health, application.after);
+                        current = update(current, request.target, vitality.setMaxHpContribution({
+                            id: "larger-pool", value: [attribute.create({ multiplier: 1 })],
+                        }));
+                        const recovery = healingRequest(null, request.target, 10);
+                        return {
+                            state: hpHealing.applyHealing(recovery, hpHealing.calculateHealing(current, recovery)).state,
+                            value: undefined,
+                        };
+                    },
+                })
+                .set(hpDamage.targetApplied, {
+                    id: "target-observer",
+                    invoke(current, { request, application }) {
+                        calls.push("targetApplied");
+                        assert.equal(application, observed);
+                        assert.deepEqual(get(current, request.target.id).vitality.health, { hp: 30, minusHp: 0 });
+                        return { state: current, value: undefined };
+                    },
+                }),
         }, position: [1, 0] },
     ]);
     const source = units.ref(get(state, 0));
     const target = units.ref(get(state, 1));
-    const wound = damageRequest(source, target, 60);
-    state = hpDamage.applyDamage(wound, hpDamage.calculateDamage(state, wound)).state;
-    const calls = [];
-    let applied = 0;
-    state = update(state, target, units.compose(
-        units.setHook(hpDamage.beforeReceive, {
-            id: "fixed-reception",
-            invoke: (current, _context, pending) => ({ state: current, value: hpDamage.fix(pending) }),
-        }),
-        units.compose(
-            units.setHook(vitality.damageCommitting, {
-                id: "last",
-                invoke(current, context, hp) {
-                    calls.push(["last", context.hpBefore, hp]);
-                    return { state: current, value: hp + 250 };
-                },
-            }),
-            units.setHook(vitality.damageCommitting, {
-                id: "first", priority: 10,
-                invoke(current, context, hp) {
-                    calls.push(["first", context.hpBefore, hp]);
-                    return {
-                        state: update(current, context.request.target, units.compose(
-                            vitality.setMaxHpContribution({ id: "more-hp", value: [attribute.create({ multiplier: 1 })] }),
-                            vitality.setContribution("defense", { id: "armor", value: [attribute.create({ addition: 20 })] }),
-                        )),
-                        value: 1,
-                    };
-                },
-            }),
-        ),
-    ));
+    state = update(state, target, vitality.setMaxMinusHpRatio(1));
     state = update(state, source, units.setHook(hpDamage.sourceApplied, {
-        id: "applied", invoke(current) { applied++; return { state: current, value: undefined }; },
+        id: "source-observer",
+        invoke(current, { application }) {
+            calls.push("sourceApplied");
+            applied++;
+            assert.equal(application, observed);
+            return { state: current, value: undefined };
+        },
     }));
     const request = damageRequest(source, target, 150);
     const protectedHit = hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request), {
-        exclude: [[vitality.damageCommitting, null]],
+        exclude: [[vitality.damageCommitting, null], [vitality.damageCommitted, null]],
     });
     assert.equal(protectedHit.value.type, "APPLIED");
     assert.deepEqual(protectedHit.value.received, { type: "FIXED", amount: 150 });
-    assert.deepEqual(calls, [["first", 40, -110], ["last", 40, 1]]);
-    assert.deepEqual(protectedHit.value.application, { hpBefore: 80, hpAfter: 200, hpLoss: 0 });
+    assert.deepEqual(calls, ["first", "last", "committed", "targetApplied", "sourceApplied"]);
+    assert.deepEqual(protectedHit.value.application, {
+        before: { hp: 100, minusHp: 0 }, after: { hp: 10, minusHp: 0 }, hpLoss: 90, minusHpGain: 0,
+    });
     assert.equal(protectedHit.value.killed, false);
     assert.equal(vitality.resolveDefense(protectedHit.state, get(protectedHit.state, target.id)), 20);
-    assert.equal(get(protectedHit.state, target.id).vitality.hp, 200);
+    assert.equal(committed, 1);
     assert.equal(applied, 1);
 
     state = update(protectedHit.state, target, units.setHook(vitality.damageCommitting, {
@@ -611,9 +647,102 @@ test("HP-08: damage committing chains proposed HP against current state and does
     const unavailable = hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request));
     assert.deepEqual(unavailable.value, { type: "UNAVAILABLE", received: { type: "FIXED", amount: 150 } });
     assert.equal(get(unavailable.state, target.id), undefined);
+    assert.equal(committed, 1);
     assert.equal(applied, 1);
     assert.equal(unavailable.state.events.filter(event => event.type === "DAMAGE").length,
         protectedHit.state.events.filter(event => event.type === "DAMAGE").length);
+});
+
+test("HP-09: Vitality settles life debt across damage, recovery and MaxHP changes", () => {
+    let committing = 0;
+    let committed = 0;
+    let healing = 0;
+    let state = battle([{ definition: {
+        id: "life-debt",
+        vitality: { maxHp: 100, defense: 0, resistance: 0, recoverySpeed: TICKS_PER_SECOND, recoveryRatio: 0 },
+        hooks: Hooks.empty()
+            .set(vitality.damageCommitting, {
+                id: "observe-committing",
+                invoke(current, _context, health) {
+                    committing++;
+                    return { state: current, value: health };
+                },
+            })
+            .set(vitality.damageCommitted, {
+                id: "observe-committed",
+                invoke(current) {
+                    committed++;
+                    return { state: current, value: undefined };
+                },
+            })
+            .set(hpHealing.targetApplied, {
+                id: "observe-healing",
+                invoke(current) {
+                    healing++;
+                    return { state: current, value: undefined };
+                },
+            }),
+    }, position: [0, 0] }]);
+    const target = units.ref(get(state, 0));
+    assert.equal(vitality.resolveMaxMinusHp(get(state, 0).definition.vitality, get(state, 0).vitality), 0);
+    state = update(state, target, vitality.setMaxMinusHpRatio(1));
+
+    const initial = damageRequest(null, target, 150);
+    const first = hpDamage.applyDamage(initial, hpDamage.calculateDamage(state, initial));
+    assert.deepEqual(first.value.application, {
+        before: { hp: 100, minusHp: 0 }, after: { hp: 1, minusHp: 50 }, hpLoss: 99, minusHpGain: 50,
+    });
+    assert.equal(first.value.killed, false);
+    const followUp = damageRequest(null, target, 30);
+    const second = hpDamage.applyDamage(followUp, hpDamage.calculateDamage(first.state, followUp));
+    assert.deepEqual(get(second.state, 0).vitality.health, { hp: 1, minusHp: 80 });
+    assert.equal(second.value.application.hpLoss, 0);
+    assert.equal(second.value.application.minusHpGain, 30);
+    assert.equal(vitality.isAlive(get(second.state, 0)), true);
+    assert.equal(vitality.hpRatio(get(second.state, 0)), 0.01);
+
+    const naturallyRecovered = vitality.advance(second.state, target);
+    assert.deepEqual(get(naturallyRecovered, 0).vitality.health, { hp: 1, minusHp: 79 });
+    assert.equal(naturallyRecovered.events.some(event => event.type === "HEAL"), false);
+    const enlarged = update(second.state, target, vitality.setMaxHpContribution({
+        id: "larger-pool", value: [attribute.create({ multiplier: 1 })],
+    }));
+    assert.deepEqual(get(enlarged, 0).vitality.health, { hp: 1, minusHp: 79 });
+    assert.equal(vitality.resolveMaxMinusHp(get(enlarged, 0).definition.vitality, get(enlarged, 0).vitality), 200);
+    const lowerCapacity = update(second.state, target, vitality.setMaxMinusHpRatio(0.5));
+    assert.deepEqual(get(lowerCapacity, 0).vitality.health, { hp: 1, minusHp: 80 });
+    assert.equal(vitality.resolveMaxMinusHp(get(lowerCapacity, 0).definition.vitality, get(lowerCapacity, 0).vitality), 50);
+    const pausedRecovery = update(lowerCapacity, target, vitality.setContribution("recoverySpeed", {
+        id: "pause-recovery", value: [attribute.create({ addition: -TICKS_PER_SECOND })],
+    }));
+    assert.equal(vitality.advance(pausedRecovery, target), pausedRecovery);
+    assert.equal(get(vitality.advance(lowerCapacity, target), 0), undefined);
+    assert.deepEqual([committing, committed, healing], [2, 2, 0]);
+
+    const recovery = healingRequest(null, target, 100);
+    const restored = hpHealing.applyHealing(recovery, hpHealing.calculateHealing(second.state, recovery));
+    assert.deepEqual(restored.value.application, {
+        before: { hp: 1, minusHp: 80 }, after: { hp: 21, minusHp: 0 }, hpGain: 20, minusHpLoss: 80, overflow: 0,
+    });
+    const excess = healingRequest(null, target, 200);
+    const overflowing = hpHealing.applyHealing(excess, hpHealing.calculateHealing(restored.state, excess));
+    assert.deepEqual(overflowing.value.application, {
+        before: { hp: 21, minusHp: 0 }, after: { hp: 100, minusHp: 0 }, hpGain: 79, minusHpLoss: 0, overflow: 121,
+    });
+
+    const lethal = damageRequest(null, target, 20);
+    const ended = hpDamage.applyDamage(lethal, hpDamage.calculateDamage(second.state, lethal));
+    assert.deepEqual(ended.value.application, {
+        before: { hp: 1, minusHp: 80 }, after: { hp: 0, minusHp: 100 }, hpLoss: 1, minusHpGain: 20,
+    });
+    assert.equal(ended.value.killed, true);
+    assert.equal(get(ended.state, 0), undefined);
+    const reducedCapacity = update(second.state, target, vitality.setMaxHpContribution({
+        id: "smaller-pool", value: [attribute.create({ multiplier: -0.5 })],
+    }));
+    assert.equal(get(reducedCapacity, 0), undefined);
+    assert.deepEqual([committing, committed, healing], [3, 3, 2]);
+    assert.deepEqual(get(second.state, 0).vitality.health, { hp: 1, minusHp: 80 });
 });
 
 test("APPLY-01: cancellation permissions retain recovery and reflection while only uncancelled work commits", () => {
@@ -713,8 +842,8 @@ test("APPLY-01: cancellation permissions retain recovery and reflection while on
     const request = damageRequest(source, target, 20);
     const result = hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request));
     assert.deepEqual(result.value, { type: "CANCELLED", received: { type: "CANCELLED", amount: 20, reason: "MISS" } });
-    assert.equal(get(result.state, 0).vitality.hp, 56);
-    assert.equal(get(result.state, 1).vitality.hp, 100);
+    assert.equal(get(result.state, 0).vitality.health.hp, 56);
+    assert.equal(get(result.state, 1).vitality.health.hp, 100);
     assert.equal(commits, 0);
     assert.equal(applied, 0);
     assert.equal(receivingForbiddens[0].size, 0);
@@ -723,8 +852,8 @@ test("APPLY-01: cancellation permissions retain recovery and reflection while on
     assert.equal(accepted.value.type, "APPLIED");
     assert.equal(accepted.value.received.type, "FIXED");
     assert.equal(accepted.value.application.hpLoss, 20);
-    assert.equal(get(accepted.state, 0).vitality.hp, 52);
-    assert.equal(get(accepted.state, 1).vitality.hp, 80);
+    assert.equal(get(accepted.state, 0).vitality.health.hp, 52);
+    assert.equal(get(accepted.state, 1).vitality.health.hp, 80);
     assert.equal(commits, 1);
     assert.equal(applied, 1);
     assert.equal(receivingForbiddens[1], forbidden);
@@ -740,8 +869,8 @@ test("APPLY-01: cancellation permissions retain recovery and reflection while on
     const independent = hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request));
     assert.equal(independent.value.type, "CANCELLED");
     assert.equal(independent.value.received.reason, "MISS");
-    assert.equal(get(independent.state, 0).vitality.hp, 48);
-    assert.equal(get(independent.state, 1).vitality.hp, 80);
+    assert.equal(get(independent.state, 0).vitality.health.hp, 48);
+    assert.equal(get(independent.state, 1).vitality.health.hp, 80);
     assert.equal(receivingForbiddens[2].size, 0);
     assert.equal(receivingForbiddens[2], earlyForbidden);
     assert.notEqual(receivingForbiddens[2], receivingForbiddens[0]);
@@ -752,11 +881,26 @@ test("APPLY-01: cancellation permissions retain recovery and reflection while on
 
 test("APPLY-02: HP zero output rejects while excess receiving reduction still commits and notifies", () => {
     const calls = [];
+    let committedReport;
     let state = battle([
         { definition: { id: "source-without-vitality", hooks: Hooks.empty().set(hpDamage.output, {
             id: "strong-output", invoke(current, _context, amount) { calls.push("output"); return { state: current, value: amount * 2 }; },
         }) }, position: [0, 0] },
-        { definition: { id: "target", hooks: Hooks.empty(), vitality: { maxHp: 100, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 } }, position: [1, 0] },
+        { definition: {
+            id: "target",
+            vitality: { maxHp: 100, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
+            hooks: Hooks.empty().set(vitality.damageCommitted, {
+                id: "observe-committed",
+                invoke(current, { application }) {
+                    calls.push("committed");
+                    committedReport = application;
+                    assert.deepEqual(application, {
+                        before: { hp: 100, minusHp: 0 }, after: { hp: 100, minusHp: 0 }, hpLoss: 0, minusHpGain: 0,
+                    });
+                    return { state: current, value: undefined };
+                },
+            }),
+        }, position: [1, 0] },
     ]);
     const source = units.ref(get(state, 0));
     const target = units.ref(get(state, 1));
@@ -773,8 +917,9 @@ test("APPLY-02: HP zero output rejects while excess receiving reduction still co
             }),
             units.setHook(hpDamage.targetApplied, {
                 id: "target",
-                invoke(current, { received }) {
+                invoke(current, { received, application }) {
                     assert.equal(received.amount, 0);
+                    assert.equal(application, committedReport);
                     calls.push("targetApplied");
                     return { state: current, value: undefined };
                 },
@@ -795,8 +940,9 @@ test("APPLY-02: HP zero output rejects while excess receiving reduction still co
             }),
             units.setHook(hpDamage.sourceApplied, {
                 id: "source",
-                invoke(current, { received }) {
+                invoke(current, { received, application }) {
                     assert.equal(received.amount, 0);
+                    assert.equal(application, committedReport);
                     calls.push("sourceApplied");
                     return { state: current, value: undefined };
                 },
@@ -813,8 +959,25 @@ test("APPLY-02: HP zero output rejects while excess receiving reduction still co
     assert.equal(absorbed.value.received.amount, 0);
     assert.equal(absorbed.value.application.hpLoss, 0);
     assert.equal(absorbed.value.killed, false);
-    assert.equal(get(absorbed.state, 1).vitality.hp, 100);
-    assert.deepEqual(calls, ["output", "beforeCommit", "targetApplied", "sourceApplied"]);
+    assert.equal(get(absorbed.state, 1).vitality.health.hp, 100);
+    assert.deepEqual(calls, ["output", "beforeCommit", "committed", "targetApplied", "sourceApplied"]);
+
+    calls.length = 0;
+    state = update(absorbed.state, target, units.setHook(vitality.damageCommitted, {
+        id: "observe-committed",
+        invoke(current, { request, application }) {
+            calls.push("committed");
+            committedReport = application;
+            return { state: remove(current, request.target, "SCRIPT"), value: undefined };
+        },
+    }));
+    const departed = hpDamage.applyDamage(positiveDamage, hpDamage.calculateDamage(state, positiveDamage));
+    assert.equal(departed.value.type, "APPLIED");
+    assert.equal(departed.value.application, committedReport);
+    assert.deepEqual(departed.value.application, absorbed.value.application);
+    assert.equal(departed.value.killed, false);
+    assert.equal(get(departed.state, 1), undefined);
+    assert.deepEqual(calls, ["output", "beforeCommit", "committed", "sourceApplied"]);
 });
 
 test("HP-05/06: LOSS completes the shared pipeline against an invincible absent target without HIT recovery", () => {
@@ -826,7 +989,7 @@ test("HP-05/06: LOSS completes the shared pipeline against an invincible absent 
     const observe = stage => ({
         id: stage,
         invoke(current, context, pending) {
-            calls.push([stage, get(current, context.request.target.id).vitality.hp,
+            calls.push([stage, get(current, context.request.target.id).vitality.health.hp,
                 get(current, context.request.target.id).skill.sp.value]);
             return { state: current, value: pending };
         },
@@ -876,7 +1039,7 @@ test("HP-05/06: LOSS completes the shared pipeline against an invincible absent 
             invoke(current, context, pending) {
                 assert.equal(context.request.nature, "LOSS");
                 assert.equal(pending.amount, 70);
-                calls.push(["receiving", get(current, target.id).vitality.hp,
+                calls.push(["receiving", get(current, target.id).vitality.health.hp,
                     get(current, target.id).skill.sp.value]);
                 return { state: current, value: pending };
             },
@@ -885,11 +1048,11 @@ test("HP-05/06: LOSS completes the shared pipeline against an invincible absent 
     const request = { ...damageRequest(source, target, 40, "PHYSICAL"), attackType: "NONE", nature: "LOSS" };
     const calculated = hpDamage.calculateDamage(state, request);
     assert.equal(calculated.value.amount, 70);
-    assert.equal(get(calculated.state, target.id).vitality.hp, 35);
+    assert.equal(get(calculated.state, target.id).vitality.health.hp, 35);
     assert.deepEqual(calls, []);
     const applied = hpDamage.applyDamage(request, calculated);
     assert.equal(applied.value.type, "APPLIED");
-    assert.deepEqual(applied.value.application, { hpBefore: 35, hpAfter: 0, hpLoss: 35 });
+    assert.deepEqual(applied.value.application, { before: { hp: 35, minusHp: 0 }, after: { hp: 0, minusHp: 0 }, hpLoss: 35, minusHpGain: 0 });
     assert.deepEqual(calls, [
         ["beforeReceive", 35, 0], ["receiving", 35, 0],
         ["beforeCommit", 35, 0], ["targetApplied", 0, 0], ["sourceApplied", 0, 0],
@@ -919,7 +1082,7 @@ test("HP-03: lethal HP remains present through nested Combat and both Applied ro
             invoke(current) {
                 calls.push([
                     "target",
-                    get(current, 1).vitality.hp,
+                    get(current, 1).vitality.health.hp,
                     get(current, 1).lifecycle,
                     blocking.blockerOf(current, enemy).id,
                 ]);
@@ -944,7 +1107,7 @@ test("HP-03: lethal HP remains present through nested Combat and both Applied ro
             invoke(current) {
                 calls.push([
                     "source",
-                    get(current, 1).vitality.hp,
+                    get(current, 1).vitality.health.hp,
                     get(current, 1).lifecycle,
                     blocking.blockerOf(current, enemy).id,
                 ]);
@@ -956,7 +1119,7 @@ test("HP-03: lethal HP remains present through nested Combat and both Applied ro
     const request = damageRequest(source, target, 100);
     const result = hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request));
     assert.deepEqual(calls, [["target", 0, "PRESENT", 1], ["source", 0, "PRESENT", 1]]);
-    assert.deepEqual(result.value.application, { hpBefore: 40, hpAfter: 0, hpLoss: 40 });
+    assert.deepEqual(result.value.application, { before: { hp: 40, minusHp: 0 }, after: { hp: 0, minusHp: 0 }, hpLoss: 40, minusHpGain: 0 });
     assert.equal(result.value.killed, true);
     assert.equal(get(result.state, 1), undefined);
     assert.equal(get(result.state, 2).blockable.relation, null);
@@ -1006,7 +1169,7 @@ test("KILL-02: nested damage owns its kill even while Lifetime defers the victim
 
     assert.equal(nested.value.killed, true);
     assert.equal(outer.value.killed, false);
-    assert.deepEqual(outer.value.application, { hpBefore: 40, hpAfter: 30, hpLoss: 10 });
+    assert.deepEqual(outer.value.application, { before: { hp: 40, minusHp: 0 }, after: { hp: 30, minusHp: 0 }, hpLoss: 10, minusHpGain: 0 });
     assert.deepEqual(reports, [[otherSource.id, true], [source.id, false]]);
     assert.equal(get(state, target.id), undefined);
 });
@@ -1130,7 +1293,7 @@ test("EP-02: depletion registers the Burst and completes standard output before 
     const result = epDamage.applyDamage(incoming, epDamage.calculateDamage(state, incoming));
     assert.deepEqual(order, ["started", "program", "damaged", "applied"]);
     assert.deepEqual(get(result.state, 0).elemental.ep, elemental.elementValues(0));
-    assert.equal(get(result.state, 0).vitality.hp, 9160);
+    assert.equal(get(result.state, 0).vitality.health.hp, 9160);
     assert.equal(vitality.resolveResistance(result.state, get(result.state, 0)), 30);
     assert.deepEqual(elemental.get(result.state, result.value.application.burst).source, source);
 
@@ -1172,6 +1335,6 @@ test("EP-02: cancelling a newly registered Burst suppresses standard output with
     assert.equal(result.value.application.epAfter, 0);
     assert.deepEqual(get(result.state, 0).elemental.ep, elemental.elementValues(1000));
     assert.equal(get(result.state, 0).elemental.burst, null);
-    assert.equal(get(result.state, 0).vitality.hp, 10000);
+    assert.equal(get(result.state, 0).vitality.health.hp, 10000);
     assert.equal(vitality.resolveResistance(result.state, get(result.state, 0)), 50);
 });

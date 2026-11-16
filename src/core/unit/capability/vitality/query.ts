@@ -5,11 +5,11 @@ import * as attribute from "../../contribution/attribute.js";
 import { resolveMaxHp, type Parameter, type Vitality } from "./capability.js";
 
 export function isAlive(self: Unit & Vitality): boolean {
-    return self.vitality.hp > 0;
+    return self.vitality.health.hp > 0;
 }
 
 export function hpRatio(self: Unit & Vitality): number {
-    return self.vitality.hp / resolveMaxHp(self.definition.vitality, self.vitality);
+    return self.vitality.health.hp / resolveMaxHp(self.definition.vitality, self.vitality);
 }
 
 export function resolveDefense(battle: BattleState, self: Unit & Vitality): number {

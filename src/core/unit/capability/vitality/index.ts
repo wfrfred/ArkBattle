@@ -8,17 +8,26 @@ export {
     setMaxHpContribution,
     removeMaxHpContribution,
     resolveMaxHp,
+    resolveMaxMinusHp,
+    setMaxMinusHpRatio,
 } from "./capability.js";
 
 export type { Definition, Input, Parameter, State, Vitality } from "./capability.js";
+
+export type { Health } from "./health.js";
 
 export type { Restriction } from "./restriction.js";
 
 export type { ReceivingContext as RestrictionContext } from "../../../battle/resource/hp/damage/hook.js";
 
-export { damageCommitting } from "./hook.js";
+export { damageCommitting, damageCommitted } from "./hook.js";
 
-export type { DamageCommittingContext, DamageCommittingHook } from "./hook.js";
+export type {
+    DamageCommittingContext,
+    DamageCommittingHook,
+    DamageCommittedContext,
+    DamageCommittedHook,
+} from "./hook.js";
 
 export {
     isAlive,

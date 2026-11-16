@@ -138,12 +138,12 @@ test('a hound attacks its hidden blocker while still respecting invincibility', 
   assert.deepEqual(selectTargets(before, unitRef(hound)).value.map(ref => ref.id), [0]);
   const started = startAction(before, actionRef(unitRef(hound), action));
   const hit = advanceAction(started.state, started.value);
-  assert.equal(getUnit(hit, 0).vitality.hp, 850);
+  assert.equal(getUnit(hit, 0).vitality.health.hp, 850);
 
   const protectedState = install(before, unitRef(blocker), invincible).state;
   const protectedStart = startAction(protectedState, actionRef(unitRef(hound), action));
   assert.notEqual(protectedStart.value, null);
-  assert.equal(getUnit(advanceAction(protectedStart.state, protectedStart.value), 0).vitality.hp, 1000);
+  assert.equal(getUnit(advanceAction(protectedStart.state, protectedStart.value), 0).vitality.health.hp, 1000);
 });
 
 test('crossbow selects melee for its actual blocker while ranged targeting keeps ordinary restrictions', () => {
@@ -165,7 +165,7 @@ test('crossbow selects melee for its actual blocker while ranged targeting keeps
   assert.deepEqual(definition.action.select(state, getUnit(state, 1)).value, ['melee']);
   const started = advanceCombat(state);
   const released = advanceCombat({ ...started, tick: 1 });
-  assert.equal(getUnit(released, 0).vitality.hp, 800);
+  assert.equal(getUnit(released, 0).vitality.health.hp, 800);
   assert.equal(released.battlefield.projectiles.size, 0);
   assert.deepEqual(definition.action.select(released, getUnit(released, 1)).value, []);
 
@@ -192,14 +192,14 @@ test('crossbow uses explicit windup and arrow speed, then settles damage on cont
   const started = startAction(before, actionRef(unitRef(bow), attack));
   let state = started.state;
   assert.equal(state.battlefield.projectiles.size, 0);
-  assert.equal(getUnit(state, 0).vitality.hp, 1000);
+  assert.equal(getUnit(state, 0).vitality.health.hp, 1000);
   state = advanceAction({ ...state, tick: 1 }, started.value);
   assert.equal(state.battlefield.projectiles.size, 1);
-  assert.equal(getUnit(state, 0).vitality.hp, 1000);
+  assert.equal(getUnit(state, 0).vitality.health.hp, 1000);
   for (let tick = 2; tick <= 10; tick++) {
     state = advanceProjectiles({ ...state, tick }, projectilesQuery.all(state).map(projectilesQuery.ref));
   }
-  assert.equal(getUnit(state, 0).vitality.hp, 800);
+  assert.equal(getUnit(state, 0).vitality.health.hp, 800);
 });
 
 test('crossbow switching between ranged and blocker melee preserves independent cooldowns', () => {
@@ -220,7 +220,7 @@ test('crossbow switching between ranged and blocker melee preserves independent 
   const blocked = advanceBlocking({ ...ranged, tick: 1 });
   assert.deepEqual(blockingQueries.relations(blocked).map(({ blocked }) => blocked.id), [1]);
   const melee = advanceCombat(blocked);
-  assert.equal(getUnit(melee, 0).vitality.hp, 800);
+  assert.equal(getUnit(melee, 0).vitality.health.hp, 800);
   assert.equal(melee.battlefield.projectiles.size, 1);
   assert.equal(cooldown(melee, actions.melee), period + 1);
   assert.equal(cooldown(melee, actions.ranged), period);

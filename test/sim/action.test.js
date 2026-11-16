@@ -182,7 +182,7 @@ test("interrupted attack, successful release, and damage output are separate bus
     let started = actions.start(state, reference);
     state = actions.advance(started.state, started.value);
     assert.equal(get(state, 0).skill.sp.value, 0);
-    assert.equal(get(state, 1).vitality.hp, 100);
+    assert.equal(get(state, 1).vitality.health.hp, 100);
 
 
     state = update({ ...state, tick: 10 }, source, units.compose(units.removeHook(action.beforeRelease, "interrupt"), units.setHook(action.released, {
@@ -195,7 +195,7 @@ test("interrupted attack, successful release, and damage output are separate bus
     started = actions.start(state, reference);
     state = actions.advance(started.state, started.value);
     assert.equal(get(state, 0).skill.sp.value, 1);
-    assert.equal(get(state, 1).vitality.hp, 100);
+    assert.equal(get(state, 1).vitality.health.hp, 100);
     assert.equal(actions.getExecution(state, started.value), undefined);
 
     state = { ...state, tick: 20 };
@@ -204,7 +204,7 @@ test("interrupted attack, successful release, and damage output are separate bus
     started = actions.start(state, reference);
     state = actions.advance(started.state, started.value);
     assert.equal(get(state, 0).skill.sp.value, 2);
-    assert.equal(get(state, 1).vitality.hp, 93);
+    assert.equal(get(state, 1).vitality.health.hp, 93);
 });
 
 test("Combat advances an instantaneous action once per Tick and skips selection while absent", () => {

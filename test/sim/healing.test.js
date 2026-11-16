@@ -87,16 +87,16 @@ test("HP Healing accepts full resources and absent patients while damage require
         id: "patient", presence: {},
         hooks: Hooks.empty().set(vitality.damageCommitting, {
             id: "observe-damage-commit",
-            invoke(current, context, hp) {
-                damageCommits.push([context.hpBefore, hp]);
-                return { state: current, value: hp };
+            invoke(current, context, health) {
+                damageCommits.push([context.previous.hp, health.hp]);
+                return { state: current, value: health };
             },
         }),
         vitality: { maxHp: 100.5, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
         elemental: createArknightsElementalDefinition({ receiver: "CHARACTER", recoveryPerSecond: 15 }),
     }, position: [0, 0] }]);
     const target = units.ref(get(state, 0));
-    assert.equal(get(state, 0).vitality.hp, 100.5);
+    assert.equal(get(state, 0).vitality.health.hp, 100.5);
     state = update(state, target, units.compose(units.compose(units.setHook(hpHealing.receiving, {
             id: "receive", invoke(current, _context, pending) {
                 calls.push("receive");
@@ -110,12 +110,12 @@ test("HP Healing accepts full resources and absent patients while damage require
     const request = { source: target, target, parameters: { power: 25, multiplier: 2 } };
     const calculated = hpHealing.calculateHealing(state, request);
     assert.equal(calculated.value.amount, 50);
-    assert.equal(get(calculated.state, 0).vitality.hp, 100.5);
+    assert.equal(get(calculated.state, 0).vitality.health.hp, 100.5);
     assert.deepEqual(calls, []);
     const full = hpHealing.applyHealing(request, calculated);
     assert.equal(full.value.type, "APPLIED");
     assert.equal(full.value.received.amount, 40);
-    assert.deepEqual(full.value.application, { hpBefore: 100.5, hpAfter: 100.5, hpGain: 0 });
+    assert.deepEqual(full.value.application, { before: { hp: 100.5, minusHp: 0 }, after: { hp: 100.5, minusHp: 0 }, hpGain: 0, minusHpLoss: 0, overflow: 40 });
     assert.deepEqual(calls, ["receive", "target", "source"]);
     assert.deepEqual(damageCommits, []);
 
@@ -125,7 +125,7 @@ test("HP Healing accepts full resources and absent patients while damage require
     const epLoss = { target, source: null, attackType: "NORMAL", applyWay: "NONE", parameters: { type: "NEURAL", power: 200 } };
     state = hpDamage.applyDamage(hpLoss, hpDamage.calculateDamage(full.state, hpLoss)).state;
     state = epDamage.applyDamage(epLoss, epDamage.calculateDamage(state, epLoss)).state;
-    assert.equal(get(state, 0).vitality.hp, 70.5);
+    assert.equal(get(state, 0).vitality.health.hp, 70.5);
     assert.equal(get(state, 0).elemental.ep.NEURAL, 800);
 
     state = update(state, target, presence.disappear());
@@ -156,7 +156,7 @@ test("HP-07: natural recovery samples current attributes after Effects and befor
         initialize: state => ({ state, value: {} }),
         prepare: state => ({ state, value: {} }),
         onTick(state) {
-            observed.push(get(state, 0).vitality.hp);
+            observed.push(get(state, 0).vitality.health.hp);
             return { state, value: true };
         },
     };
@@ -170,9 +170,9 @@ test("HP-07: natural recovery samples current attributes after Effects and befor
                 .set(hpHealing.targetApplied, { id: "applied", invoke: ordinaryHealing })
                 .set(vitality.damageCommitting, {
                     id: "observe-damage-commit",
-                    invoke(current, context, hp) {
-                        damageCommits.push([context.hpBefore, hp]);
-                        return { state: current, value: hp };
+                    invoke(current, context, health) {
+                        damageCommits.push([context.previous.hp, health.hp]);
+                        return { state: current, value: health };
                     },
                 }),
         }, position: [0, 0] },
@@ -229,13 +229,13 @@ test("HP-07: natural recovery samples current attributes after Effects and befor
         id: "fixed", value: [modifier({ addition: 10000 })],
     }));
     state = vitality.advance(state, target);
-    assert.equal(get(state, 0).vitality.hp, 200);
+    assert.equal(get(state, 0).vitality.health.hp, 200);
     assert.equal(vitality.advance(state, target), state);
     assert.deepEqual(damageCommits, [[100, 40]]);
 
     state = update(state, target, units.setHook(hpDamage.targetApplied, {
         id: "zero-hp", invoke(current) {
-            assert.equal(get(current, 0).vitality.hp, 0);
+            assert.equal(get(current, 0).vitality.health.hp, 0);
             assert.equal(vitality.advance(current, target), current);
             return { state: current, value: undefined };
         },

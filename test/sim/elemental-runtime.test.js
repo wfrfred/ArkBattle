@@ -65,10 +65,10 @@ test('elemental execution: erosion defense loss survives recovery and stacks on 
     firstState = advance(firstState, duration);
     assert.equal(defense(firstState), 500 - reduction);
     assert.equal(getUnit(firstState, 0).elemental.burst, null);
-    const recoveredHp = getUnit(firstState, 0).vitality.hp;
+    const recoveredHp = getUnit(firstState, 0).vitality.health.hp;
     firstState = element(firstState, 'EROSION', duration).state;
     assert.equal(defense(firstState), 500 - 2 * reduction);
-    assert.equal(recoveredHp - getUnit(firstState, 0).vitality.hp, secondHpLoss);
+    assert.equal(recoveredHp - getUnit(firstState, 0).vitality.health.hp, secondHpLoss);
   }
 });
 
@@ -76,17 +76,17 @@ test('elemental execution: character necrosis settles fifteen magical pulses, dr
   const skill = createSkillDefinition({ id: 'necrosis-sp', sp: { initial: 20, capacity: 30, requirement: 1, cost: 1, recovery: { type: 'TIME', intervalTicks: 30 } } });
   let work = receiverBattle('CHARACTER', { skill: { initialize: state => createSkill(state, skill) } });
   work = element(work, 'NECROSIS').state;
-  assert.equal(getUnit(work, 0).vitality.hp, 100000);
+  assert.equal(getUnit(work, 0).vitality.health.hp, 100000);
   assert.equal(activateSkill(work, skillRef(getUnit(work, 0))).value, null);
   work = recover(work, unitRef(getUnit(work, 0)), 'TIME', 3).state;
   assert.equal(getUnit(work, 0).skill.sp.value, 20);
   work = advance(work, 30);
-  assert.equal(getUnit(work, 0).vitality.hp, 99950);
+  assert.equal(getUnit(work, 0).vitality.health.hp, 99950);
   assert.equal(getUnit(work, 0).skill.sp.value, 19);
   work = advanceSkill(work, unitRef(getUnit(work, 0)));
   assert.equal(getUnit(work, 0).skill.sp.value, 19);
   work = advance(work, 450);
-  assert.equal(getUnit(work, 0).vitality.hp, 99250);
+  assert.equal(getUnit(work, 0).vitality.health.hp, 99250);
   assert.equal(getUnit(work, 0).skill.sp.value, 5);
   work = recover(work, unitRef(getUnit(work, 0)), 'TIME', 3).state;
   assert.equal(getUnit(work, 0).skill.sp.value, 8);
@@ -98,29 +98,29 @@ test('elemental execution: necrosis shares its recovery budget with periodic dam
   assert.equal(power(work), 50);
   work = advance(work, 150);
   near(power(work), 100 * (1 - 0.5 * 10 / 15));
-  assert.equal(getUnit(work, 0).vitality.hp, 96000);
+  assert.equal(getUnit(work, 0).vitality.health.hp, 96000);
 
   const speed = value => setContribution('burstRecoverySpeed', {
     id: 'burst-speed', value: [modifier({ finalScaler: value })],
   });
   work = applyUnitChanges(work, unitRef(getUnit(work, 0)), speed(0));
   work = advance(work, 210);
-  assert.equal(getUnit(work, 0).vitality.hp, 96000);
+  assert.equal(getUnit(work, 0).vitality.health.hp, 96000);
   near(power(work), 100 * (1 - 0.5 * 10 / 15));
   work = applyUnitChanges(work, unitRef(getUnit(work, 0)), speed(2));
   work = advance(work, 285);
   near(power(work), 100 * (1 - 0.5 * 5 / 15));
-  assert.equal(getUnit(work, 0).vitality.hp, 92000);
+  assert.equal(getUnit(work, 0).vitality.health.hp, 92000);
   work = advance(work, 360);
   assert.equal(power(work), 100);
-  assert.equal(getUnit(work, 0).vitality.hp, 88000);
+  assert.equal(getUnit(work, 0).vitality.health.hp, 88000);
   const damage = work.events.filter(event => event.type === 'DAMAGE');
   assert.equal(damage.length, 15);
   assert.equal(damage.every(event => event.amount === 800 && event.damageType === 'ELEMENTAL'), true);
 
   const started = element(receiverBattle('ENEMY'), 'NECROSIS');
   const ended = elemental.cancel(advance(started.state, 29), started.value.application.burst);
-  assert.equal(getUnit(ended, 0).vitality.hp, 100000);
+  assert.equal(getUnit(ended, 0).vitality.health.hp, 100000);
   assert.deepEqual(getUnit(ended, 0).elemental.ep, elementValues(1000));
 });
 

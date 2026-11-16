@@ -87,7 +87,7 @@ test("EP-03: zero recovery budgets keep installation output and independent stun
     const neural = { target, source: null, attackType: "NORMAL", applyWay: "NONE", parameters: { type: "NEURAL", power: 1000 } };
     const result = epDamage.applyDamage(neural, epDamage.calculateDamage(state, neural));
     state = result.state;
-    assert.equal(get(state, 0).vitality.hp, 9000);
+    assert.equal(get(state, 0).vitality.health.hp, 9000);
     assert.equal(elemental.get(state, result.value.application.burst), undefined);
     assert.equal(get(state, 0).elemental.burst, null);
     assert.deepEqual(get(state, 0).elemental.ep, elemental.elementValues(1000));
@@ -102,7 +102,7 @@ test("EP-03: zero recovery budgets keep installation output and independent stun
     const necrosis = { target, source: null, attackType: "NORMAL", applyWay: "NONE", parameters: { type: "NECROSIS", power: 1000 } };
     state = epDamage.applyDamage(necrosis, epDamage.calculateDamage(state, necrosis)).state;
     state = effects.advance({ ...state, tick: 750 });
-    assert.equal(get(state, 0).vitality.hp, 9000);
+    assert.equal(get(state, 0).vitality.health.hp, 9000);
     assert.equal(get(state, 0).elemental.burst, null);
     assert.equal(state.events.filter(event => event.type === "DAMAGE").length, 1);
 });

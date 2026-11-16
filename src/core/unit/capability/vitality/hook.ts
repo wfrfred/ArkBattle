@@ -2,15 +2,29 @@ import type { Context as DamageContext } from "../../../battle/resource/hp/damag
 import { key, type Hook } from "../../../hook.js";
 import type { Unit } from "../../unit.js";
 import type { Vitality } from "./capability.js";
+import type { Health } from "./health.js";
+import type { DamageApplication } from "./operations.js";
 
 export interface DamageCommittingContext extends DamageContext {
-    readonly hpBefore: number;
+    readonly previous: Health;
 }
 
-export interface DamageCommittingHook extends Hook<DamageCommittingContext, number> {
+export interface DamageCommittingHook extends Hook<DamageCommittingContext, Health> {
     readonly priority?: number;
 }
 
 export const damageCommitting = key<DamageCommittingHook, Unit & Vitality>(
     "vitality.damageCommitting",
+);
+
+export interface DamageCommittedContext extends DamageContext {
+    readonly application: DamageApplication;
+}
+
+export interface DamageCommittedHook extends Hook<DamageCommittedContext, void> {
+    readonly priority?: number;
+}
+
+export const damageCommitted = key<DamageCommittedHook, Unit & Vitality>(
+    "vitality.damageCommitted",
 );

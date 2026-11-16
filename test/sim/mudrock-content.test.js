@@ -66,7 +66,7 @@ function advanceEffectsUntil(battle, tick) {
 }
 function wound(battle) {
     battle = hit(battle, null, 1).state;
-    battle = hit(battle, null, getUnit(battle, 0).vitality.hp - 1000).state;
+    battle = hit(battle, null, getUnit(battle, 0).vitality.health.hp - 1000).state;
     return modify(battle, ref(getUnit(battle, 0)), -getUnit(battle, 0).skill.sp.value).state;
 }
 const approximate = (actual, expected) => assert.ok(Math.abs(actual - expected) < 1e-8, String(actual) + " != " + expected);
@@ -82,7 +82,7 @@ test("Mudrock's shield cancels a hit, consumes one layer, self-heals and retains
     const restored = advanceEffectsUntil(wounded, 270);
     const result = hit(restored, null, 5000);
     assert.equal(result.value.received.reason, "BLOCKED");
-    approximate(getUnit(result.state, 0).vitality.hp, 1000 + fixture.prepared.attributes.maxHp * 0.2);
+    approximate(getUnit(result.state, 0).vitality.health.hp, 1000 + fixture.prepared.attributes.maxHp * 0.2);
     assert.equal(getUnit(result.state, 0).skill.sp.value, 1);
     assert.equal(hit(result.state).value.application.hpLoss, 100);
 });
@@ -110,7 +110,7 @@ test("module X uses current max HP for shield healing and distinguishes blocked 
     }));
     battle = advanceEffectsUntil(wound(battle), 270);
     const shielded = hit(battle);
-    approximate(getUnit(shielded.state, 0).vitality.hp, 1000 + (fixture.prepared.attributes.maxHp + 1000) * 0.23);
+    approximate(getUnit(shielded.state, 0).vitality.health.hp, 1000 + (fixture.prepared.attributes.maxHp + 1000) * 0.23);
     assert.equal(getUnit(shielded.state, 0).skill.sp.value, 3);
     approximate(hit(shielded.state, 1).value.application.hpLoss, 59.5);
     approximate(hit(shielded.state, 2).value.application.hpLoss, 70);
@@ -147,7 +147,7 @@ test("APPLY-03: Mudrock requires a successful block for shield costs and benefit
     assert.deepEqual(shielded.value.received, {
         type: "CANCELLED", amount: 100, reason: "BLOCKED",
     });
-    approximate(getUnit(shielded.state, 0).vitality.hp, 1000 + fixture.prepared.attributes.maxHp * 0.23);
+    approximate(getUnit(shielded.state, 0).vitality.health.hp, 1000 + fixture.prepared.attributes.maxHp * 0.23);
     assert.equal(getUnit(shielded.state, 0).skill.sp.value, 3);
     assert.equal(readShield(getUnit(shielded.state, 0)).layers, 0);
     assert.deepEqual(observed, []);
@@ -169,7 +169,7 @@ test("APPLY-03: Mudrock requires a successful block for shield costs and benefit
     assert.equal(accepted.value.type, "APPLIED");
     assert.deepEqual(accepted.value.received, { type: "FIXED", amount: 100 });
     assert.equal(accepted.value.application.hpLoss, 100);
-    assert.equal(getUnit(accepted.state, 0).vitality.hp, 900);
+    assert.equal(getUnit(accepted.state, 0).vitality.health.hp, 900);
     assert.equal(getUnit(accepted.state, 0).skill.sp.value, 1);
     assert.equal(readShield(getUnit(accepted.state, 0)).layers, 1);
     assert.deepEqual(observed, [["commit", "FIXED", 100], ["applied", "FIXED", 100]]);
@@ -181,7 +181,7 @@ test("APPLY-03: Mudrock requires a successful block for shield costs and benefit
     assert.equal(reduced.value.type, "APPLIED");
     assert.equal(reduced.value.received.type, "NORMAL");
     approximate(reduced.value.application.hpLoss, 59.5);
-    approximate(getUnit(reduced.state, 0).vitality.hp, 940.5);
+    approximate(getUnit(reduced.state, 0).vitality.health.hp, 940.5);
     assert.equal(getUnit(reduced.state, 0).skill.sp.value, 1);
     assert.equal(readShield(getUnit(reduced.state, 0)).layers, 1);
 
@@ -195,7 +195,7 @@ test("APPLY-03: Mudrock requires a successful block for shield costs and benefit
     const cancelled = hpDamage.applyDamage(request, hpDamage.calculateDamage(missed, request));
     assert.equal(cancelled.value.type, "CANCELLED");
     assert.equal(cancelled.value.received.reason, "MISS");
-    assert.equal(getUnit(cancelled.state, 0).vitality.hp, 1000);
+    assert.equal(getUnit(cancelled.state, 0).vitality.health.hp, 1000);
     assert.equal(getUnit(cancelled.state, 0).skill.sp.value, 0);
     assert.equal(readShield(getUnit(cancelled.state, 0)).layers, 1);
     assert.deepEqual(observed, []);
@@ -222,8 +222,8 @@ test("S2 replaces normal recovery, heals once and revalidates its bound targets 
     battle = update(battle, ref(fixture.unit), setAttackContribution({
         id: "attack", value: [modifier({ addition: 100 })],
     }));
-    const beforeFirst = getUnit(battle, 1).vitality.hp;
-    const beforeSecond = getUnit(battle, 2).vitality.hp;
+    const beforeFirst = getUnit(battle, 1).vitality.health.hp;
+    const beforeSecond = getUnit(battle, 2).vitality.health.hp;
     battle = advanceSkill(battle, ref(fixture.unit));
     assert.equal(getUnit(battle, 0).action.actions.get(normal.id).cooldown.readyAtTick, 0);
     battle = turn(battle, ref(fixture.unit), "LEFT");
@@ -233,10 +233,10 @@ test("S2 replaces normal recovery, heals once and revalidates its bound targets 
     battle = advanceAction(battle, started.value);
     assert.equal(getUnit(battle, 0).facing.direction, "LEFT");
     const amount = (fixture.prepared.attributes.attack + 100) * 2.1;
-    approximate(getUnit(battle, 1).vitality.hp, beforeFirst - amount);
-    assert.equal(getUnit(battle, 2).vitality.hp, beforeSecond);
-    assert.equal(getUnit(battle, 3).vitality.hp, 10000);
-    approximate(getUnit(battle, 0).vitality.hp, 1000 + fixture.prepared.attributes.maxHp * 0.05);
+    approximate(getUnit(battle, 1).vitality.health.hp, beforeFirst - amount);
+    assert.equal(getUnit(battle, 2).vitality.health.hp, beforeSecond);
+    assert.equal(getUnit(battle, 3).vitality.health.hp, 10000);
+    approximate(getUnit(battle, 0).vitality.health.hp, 1000 + fixture.prepared.attributes.maxHp * 0.05);
     assert.equal(getUnit(battle, 0).skill.sp.value, 0);
     assert.notEqual(getUnit(battle, 0).skill.activation, null);
     battle = advanceAction({ ...battle, tick: 2 }, started.value);

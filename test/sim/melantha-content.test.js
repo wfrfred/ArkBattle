@@ -47,7 +47,7 @@ test("Melantha's talent and S1 affect real attacks, and the talent remains after
     const attack = actor.action.actions.get("normal-attack").definition;
     const started = start(battle, actionRef(ref(actor), attack));
     battle = advanceAction(started.state, started.value);
-    assert.ok(Math.abs(getUnit(battle, 1).vitality.hp - (10000 - (738 + 25 + 65) * 1.58)) < 1e-6);
+    assert.ok(Math.abs(getUnit(battle, 1).vitality.health.hp - (10000 - (738 + 25 + 65) * 1.58)) < 1e-6);
 
     battle = advance({ ...battle, tick: 600 }, ref(actor));
     assert.equal(resolveAttack(battle, getUnit(battle, actor.id)), base);

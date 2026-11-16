@@ -64,14 +64,14 @@ test("an attack turns once at its started program, before output, without turnin
     assert.equal(get(started.state, 0).facing.direction, "RIGHT");
     state = actions.advance(started.state, started.value);
     assert.equal(get(state, 0).facing.direction, "LEFT");
-    assert.equal(get(state, 1).vitality.hp, 100);
+    assert.equal(get(state, 1).vitality.health.hp, 100);
 
     state = facing.turn(state, host, "RIGHT");
     state = actions.advance({ ...state, tick: 1 }, started.value);
     assert.equal(get(state, 0).facing.direction, "RIGHT");
     state = actions.advance({ ...state, tick: 2 }, started.value);
     assert.equal(get(state, 0).facing.direction, "RIGHT");
-    assert.equal(get(state, 1).vitality.hp, 93);
+    assert.equal(get(state, 1).vitality.health.hp, 93);
 });
 
 test("attack selection groups and prepare receive the state produced by earlier groups", () => {
@@ -155,6 +155,6 @@ test("bound healing keeps its receivers when a later selection restriction would
     assert.notEqual(started.value, null);
     assert.deepEqual(recipients(started.state, source).value.map(target => target.id), [2]);
     state = actions.advance(started.state, started.value);
-    assert.equal(get(state, 1).vitality.hp, 55);
-    assert.equal(get(state, 2).vitality.hp, 40);
+    assert.equal(get(state, 1).vitality.health.hp, 55);
+    assert.equal(get(state, 2).vitality.health.hp, 40);
 });
