@@ -25,6 +25,8 @@
 
 这条周期程序本身由 Buff 动作执行，Buff._RunActionsCore 的 source 栈仍按 Buff.source 设置。**“本笔伤害无来源”不能推出“同步死亡没有程序来源”**；也不能把 originalSource 默认认作击杀字段。最终读取哪项事实见下一节。这里是实际绑定与普通静态调用链推导，不是实机击杀计数实验。
 
+这条普通 HP 提交由 `Entity.DoApplyModifier` #67683 调用 `set_hp`。后者在 `0x18073af61..85` 以 `force=false, noSource=false, skipReborn=false` 虚派发 SetHpInternal，见[普通 HP setter 原体](../evidence/hp-regeneration-20261113/native.json)。因此 Modifier.source 为空不会自动选择 HP_ZERO_WITH_NO_SOURCE；不能将 NoSourceDamage 节点名称与死亡入口的 noSource 参数等同。
+
 ## 2. 最终死亡怎样读取归属
 
 `Entity.SetHpInternal` 最后通过虚 `OnHpZero(noSource, skipReborn)` 分流。先前的普通免死、替身、不死、同实例复活见[生命应用](11-damage-apply-and-hp-application.md)。成功进入这些机制不等于已经执行最终 OnFinish。
@@ -46,6 +48,18 @@
 来源通知之后，普通链同步执行受害者 OnOwnerFinish、Buff 清理及其他内部收尾，再进入 GameMode 的物理销毁／回收政策。实际 Character／Enemy 的 FinishMe 覆盖也已展开，不把基类一个方法等同于所有对象的完整最终结束。
 
 `BuffContainer.OnOwnerFinish` 原样转交 source；`Buff.OnOwnerFinish` #66135 在 `0x1806d407d` 排除 reason8，之后检查来源有效，再决定 Event29。本链没有发现“来源为空便在这里替换为受害者自身”的分支。PRTS 的无击杀来源默认自身概括不能直接替代本指纹；若要主张其他入口有该政策，须找到那个入口。本批不据此新增或省略项目归属字段。
+
+受害者 Buff 如何取得击杀者也已闭合：`Buff.OnOwnerFinish` 在 `0x1806d40c2..40f2` 将传入的 source 压入 mainTarget 栈，再派发事件29，结束后恢复栈。对锡人持续伤害与嵯峨重伤的组合，静态调用链为：
+
+```text
+锡人 Buff 执行周期程序：Context.source = 锡人
+→ NoSourceDamage 扣血：Modifier.source = null
+→ 最终死亡：捕获 Context.source = 锡人
+→ 重伤 Buff 的事件29：MAIN_TARGET = 锡人，BUFF_SOURCE 仍为嵯峨
+→ ModifySp(MAIN_TARGET)：给锡人回复技力
+```
+
+重伤不重新猜测击杀者，也不读取自己的 Buff.source 作为奖励接收者。传参原体见[kill-observer-context.json](../evidence/resource-mechanisms-20261114/death-attributes/kill-observer-context.json)，实际 `cripple` 的事件29与 ModifySp 目标见[templates.json](../evidence/resource-mechanisms-20261114/death-attributes/templates.json)。这仍是两条实际内容与普通 native 的组合推导，没有进行实机组合验证。
 
 ### 实际内容区分
 
