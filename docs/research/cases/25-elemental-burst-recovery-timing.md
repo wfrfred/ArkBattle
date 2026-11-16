@@ -220,3 +220,33 @@ EP不只有ATK附带：固定量、按HP伤害量、AOE及是否经过公式各�
 3. `_RefreshEpRecoverAfterCooldownReduced`当场重写全部EP比例；新total≤0或elapsed达到新total则当场写满并结束恢复。
 
 说明用例：total10、elapsed4，减2后EP由40%即时变为4/8=50%；不是只改未来速度或只缩倒计时。实际绑定及方法#67759/60见[content.json](../evidence/resource-mechanisms-20261114/recovery-elemental/content.json)、[core-operations.json](../evidence/resource-mechanisms-20261114/recovery-elemental/core-operations.json)。即时 EP 重算与剩余恢复时长必须分别记录；项目对应操作见 [Elemental](../../architecture/elemental.md)。
+
+## 10. 狂躁的两套程序与能力计数
+
+2026-11-16 按同一客户端指纹补核，见[证据与复跑](../evidence/anger-20261116/README.md)。全局表两种时长均为15秒；根 `ep_break_anger` 按第6节的接收者条件分流，不按阵营单独推断。
+
+| 程序 | 开始与周期输出 | 输出分类 |
+| --- | --- | --- |
+| `ep_break_anger_char` | 开始即加50攻速；没有即时HP伤害。每1秒输出当前 `value`，初始100；合格能力本轮首次施放使其加50，默认序列最高600。 | 无来源、无途径真实HP伤害，NORMAL、非环境、非skip，`ignoreForSp=false`。 |
+| `ep_break_anger_enemy` | 开始即加20攻速、累积值清零；没有即时HP伤害。每1秒先累积加130，再输出 `(160+累积值)×本次Buff周期`；默认首跳290，后续420、550……，没有硬编码2110上限。 | 无来源、无途径元素HP伤害，BUFF、非环境、非skip，`ignoreForSp=true`。 |
+
+参数及完整程序在 [content.json](../evidence/anger-20261116/content.json)：两套BuffDB和攻速子项均无额外异常标志，攻速是 ADDITION。角色程序的增量节点只在旧值低于 `value_max` 时执行；当前固定参数100／50／600恰好到达600，不能把该节点误写成任意黑板配置下都执行最终截断。
+
+### 能力计数发生在作用之前
+
+[native.json](../evidence/anger-20261116/native.json) 重新展开相关普通分支：
+
+- `AbilityStandard.OnCastStart` #64121 在 `0x1805ff283` 通知宿主；经 Entity／BuffContainer 到 `Buff.OnAbilityStart` #66160，运行事件16 `ON_ABILITY_START`。
+- `AbilityStandard.ExecuteSpell` #64119 在 `0x1805fd766` 通知事件18 `ON_ABILITY_SPELL_ON`，之后才在 `0x1805fd866` 调用 `DoCastOnTargets` 虚slot91。因此它不是成功命中或成功Apply后的计数。
+- char事件18要求能力 family 属于 ATTACK_OR_SKILL、`ignorePalsyInterrupt=false`，且没有本程序派生的mark，才登记mark并增加周期伤害；事件16清除mark。多段施放可重复发事件18，但同轮已登记的mark阻止重复加量，下一次开始才清除；未到施放节点的中断不因开始而加量。
+- `FilterByAbilityIgnorePalsyInterrupt` #101292 使用能力虚slot26。当前配置 `_unset=true, _skipUnitCheck=true`：只对能力的 `ignorePalsyInterrupt` 取反，不查询宿主是否可被麻痹或本次是否真被打断。基类与动画能力分别读取自身有效字段；本批有限组件没有该值为true的实际正例，未据此删除原生过滤条件，也未穷尽所有派生覆盖。
+
+角色周期的 HIT 许可由节点明确保留。[NoSourceDamage #99151](../evidence/resource-mechanisms-20261114/damage/flag-callers.json) 在 `0x18110408b..08f` 将 `_ignoreForSp` 写入 Modifier；其 modifierKey 仅登记自定义键，不自动禁止HIT。[Entity.OnTakeDamage #67709](../evidence/reception-stages-20261115/pipeline/native.json) 在 `0x18072bb2f..bb44` 检查取消与 `ignoreForSp` 后执行HIT回复，普通分支不附加来源非空、分类或该键过滤。实际能否回复仍服从技能自身的回复与阻回资格。
+
+### 根、角色程序与攻速的寿命不同
+
+BuffDB的根为 LIMITED／`ep_break_duration`。char程序也是相同参数的 LIMITED，但创建时明确**非派生**；它的攻速与mark才是自己的派生子项，随char程序结束撤销。enemy程序为 INFINITY，明确作为根的派生项并随根结束，其攻速再随enemy程序结束。正常15秒不能掩盖这一不对称：提前结束根不依据派生关系清掉char程序，而普通恢复控制器结束也不逐项MarkFinish（见第3节）。本批未做活跃XLua或实机取消实验，不把全部外部清理概括成只受这一条关系控制。
+
+### 两侧的实际输入
+
+Touch 的普通关卡SPAWN与非零攻击狂躁链见第6节。敌方承受狂躁也有真实内容：镜匠 `char_4169_caledo` 的角色表绑定 S1／S2；当前本机 S1 MeleeAttack（`-140292495467368530`）装 `caledo_s_1[damage]`，S2模式攻击（`-7093683942422699028`）装 `caledo_s_2[damage]`，两模板实际执行 ANGER ApplyElementDamage。固定技能表的对应比例分别为0.5／0.25；S2另实际安装接收转狂躁程序。完整组件、技能参数和模板均在本批content，证明不依赖“存在一个未绑定模板”。[PRTS元素](https://prts.wiki/index.php?title=元素&oldid=450215)与[镜匠](https://prts.wiki/w/Caleido)作为社区交叉说明，不替代上述配置与原体。

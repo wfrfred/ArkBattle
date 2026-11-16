@@ -1,0 +1,25 @@
+{
+  "provenance": {
+    "checkedOn": "2026-11-16",
+    "sourceKind": "Community documentation, distinct from client native and configuration evidence"
+  },
+  "result": {
+    "sources": [
+      {
+        "title": "元素",
+        "url": "https://prts.wiki/index.php?title=元素&oldid=450215",
+        "observations": "ANGER has separate character/other effects: character +50 attack speed, true pulses increasing on qualifying ability spells; other +20 speed, elemental pulses with +130 per second. The page states ability spell timing and the ignore-palsy exclusion."
+      },
+      {
+        "title": "镜匠",
+        "url": "https://prts.wiki/w/Caleido",
+        "observations": "Ordinary playable operator: S1 applies ANGER to blocked enemies; S2 also applies ANGER and converts part of incoming physical/magical damage to self ANGER. Used only as a community cross-check; concrete bindings and nonzero values are archived in content.json."
+      },
+      {
+        "title": "术语释义",
+        "url": "https://prts.wiki/w/术语释义",
+        "observations": "Explicitly corrects the nominal enemy 2110 cap: actual damage has no fixed cap and follows 160 + 130 times elapsed seconds. Native producer confirms increment-before-pulse."
+      }
+    ]
+  }
+}

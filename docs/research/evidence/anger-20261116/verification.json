@@ -1,0 +1,62 @@
+{
+  "provenance": {
+    "checkedOn": "2026-11-16",
+    "script": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/anger-20261116/verify.py",
+    "freshDirectory": ".cache/native-research/anger-20261116/verification",
+    "nativeCommand": [
+      "uv",
+      "run",
+      "--offline",
+      "docs/research/evidence/facing-semantics-20261113/extract.py",
+      "--out",
+      ".cache/native-research/anger-20261116/verification/native.json",
+      "--body-index",
+      "64009",
+      "--body-index",
+      "64119",
+      "--body-index",
+      "64121",
+      "--body-index",
+      "66160",
+      "--body-index",
+      "66165",
+      "--body-index",
+      "66397",
+      "--body-index",
+      "66414",
+      "--body-index",
+      "67692",
+      "--body-index",
+      "67695",
+      "--body-index",
+      "93882",
+      "--body-index",
+      "101280",
+      "--body-index",
+      "101292",
+      "--owner",
+      "Torappu.Battle.Ability",
+      "--owner",
+      "Torappu.Battle.Modifier",
+      "--owner",
+      "Torappu.Battle.Abilities.AbstractAnimatedAbility",
+      "--owner",
+      "Torappu.Battle.Action.Nodes/NoSourceDamage",
+      "--owner",
+      "Torappu.Battle.Action.Nodes/BleedingDamagePerSec",
+      "--owner",
+      "Torappu.Battle.Action.Nodes/FilterByAbilityIgnorePalsyInterrupt"
+    ]
+  },
+  "result": {
+    "complete": true,
+    "checks": {
+      "nativeClientIdentity": true,
+      "nativeBodies": true,
+      "nativeFields": true,
+      "configurationResult": true
+    },
+    "nativeBodyCount": 12,
+    "componentCount": 26
+  }
+}
