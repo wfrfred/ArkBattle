@@ -1,0 +1,77 @@
+{
+  "provenance": {
+    "checkedOn": "2026-11-17",
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/anger-exclusions-20261117/verify.py",
+      "bytes": 3557,
+      "sha256": "a2e46c7e6d96567428d97f5e0ab0d6cd98311dc88a7ebc91230ab12256f1b622"
+    },
+    "sources": [
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_19.ab",
+        "bytes": 517235,
+        "sha256": "84fdb631abc524475d7d739652267c2f8af3282c0ed5675dc2c26eceaf50b2c5"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_26.ab",
+        "bytes": 456609,
+        "sha256": "382fad807781a318561cc1677cc883401c00f6bbd56b2bca6c58c2dbf86d62eb"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_27.ab",
+        "bytes": 494044,
+        "sha256": "71ca2e2ea0b108a93414d1141f55901d4df325295d02b00f41357e4c8715db6a"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_28.ab",
+        "bytes": 450799,
+        "sha256": "559485d435af0ebe0f4c5e3c02719db797cf691d736fd82cdaa382ec0718a0d9"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_29.ab",
+        "bytes": 412923,
+        "sha256": "a45b8db9ce6c888fbb144000a8da3fdc0b142ca8e8152da352d0ddc22f997913"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_30.ab",
+        "bytes": 398250,
+        "sha256": "aebb60e02a2cac41c6a240bcaa678130c8a529c81ca1834421fe531a5a146e36"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_31.ab",
+        "bytes": 465984,
+        "sha256": "aa759aac50e6193311d7fac2a84e36109310e3711b7c8f9374bf4c6e03bb2bbf"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_33.ab",
+        "bytes": 449718,
+        "sha256": "64df05bb2d0a083aedbe724d23c1ede43a86ee1b8387f244965b056497000739"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_35.ab",
+        "bytes": 382837,
+        "sha256": "144a51c4419a8d0bef7cb61b0a0452a5775051aedbd8fac5a89b3c5db5e84592"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_36.ab",
+        "bytes": 431502,
+        "sha256": "2dd8bfa465ad4c957276fbb2107a09565f9191348f2bb9aa06c9e731a344b316"
+      }
+    ],
+    "scope": "Native instruction/enum bytes and identities re-read from current client; all 55 positive objects independently decoded. Does not repeat the full negative-field scan or prove runtime activation."
+  },
+  "result": {
+    "complete": true,
+    "checks": {
+      "nativeClient": true,
+      "methodIdentity": true,
+      "nativeInstructions": true,
+      "enumBytes": true,
+      "allPositiveObjects": true
+    },
+    "methods": 8,
+    "instructions": 248,
+    "enumConstants": 16,
+    "positiveObjects": 55
+  }
+}

@@ -1,0 +1,2529 @@
+{
+  "provenance": {
+    "scope": "Static native branches; no game execution or runtime XLua verification.",
+    "client": {
+      "dll": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "bytes": 223112680,
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff"
+      },
+      "metadata": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "bytes": 46669332,
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5"
+      },
+      "metadataVersion": 29,
+      "imageBase": "0x180000000"
+    },
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/native.py",
+        "bytes": 18723,
+        "sha256": "1c6c16dc97e0dd9af0af4033c81a7534384dd65ebb1e604df3f4a3289df158e6"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]"
+    },
+    "location": {
+      "metadataRegistration": "0x187ee0630",
+      "modules": {
+        "Assembly-CSharp.dll": {
+          "address": 6564854272,
+          "methodPointers": 6585881040,
+          "count": 225427,
+          "fileBacked": true
+        },
+        "Torappu.Common.dll": {
+          "address": 6577712928,
+          "methodPointers": 6592562080,
+          "count": 6004,
+          "fileBacked": true
+        },
+        "ThirdPartyAssembly.dll": {
+          "address": 6577712272,
+          "methodPointers": 6592454304,
+          "count": 12660,
+          "fileBacked": true
+        },
+        "mscorlib.dll": {
+          "address": 6577364064,
+          "methodPointers": 6592131600,
+          "count": 13987,
+          "fileBacked": true
+        },
+        "UnityEngine.UIElementsModule.dll": {
+          "address": 6577900992,
+          "methodPointers": 6592933968,
+          "count": 6132,
+          "fileBacked": true
+        },
+        "System.dll": {
+          "address": 6577628368,
+          "methodPointers": 6592396096,
+          "count": 7003,
+          "fileBacked": true
+        },
+        "Unity.InputSystem.dll": {
+          "address": 6577776016,
+          "methodPointers": 6592616544,
+          "count": 5703,
+          "fileBacked": true
+        },
+        "Unity.Mathematics.dll": {
+          "address": 6577838608,
+          "methodPointers": 6592682032,
+          "count": 9336,
+          "fileBacked": true
+        },
+        "UnityEngine.CoreModule.dll": {
+          "address": 6577886944,
+          "methodPointers": 6592866352,
+          "count": 4154,
+          "fileBacked": true
+        },
+        "System.Xml.dll": {
+          "address": 6577618416,
+          "methodPointers": 6592367840,
+          "count": 3283,
+          "fileBacked": true
+        },
+        "Newtonsoft.Json.dll": {
+          "address": 6577473344,
+          "methodPointers": 6592259616,
+          "count": 2998,
+          "fileBacked": true
+        },
+        "Unity.TextMeshPro.dll": {
+          "address": 6577852240,
+          "methodPointers": 6592835600,
+          "count": 1618,
+          "fileBacked": true
+        },
+        "Sirenix.Serialization.dll": {
+          "address": 6577530576,
+          "methodPointers": 6592309936,
+          "count": 1885,
+          "fileBacked": true
+        },
+        "spine-unity.dll": {
+          "address": 6577560208,
+          "methodPointers": 6592332928,
+          "count": 1982,
+          "fileBacked": true
+        },
+        "protobuf-net.Core.dll": {
+          "address": 6577475616,
+          "methodPointers": 6592285904,
+          "count": 1952,
+          "fileBacked": true
+        },
+        "CriMw.CriWare.Runtime.dll": {
+          "address": 6565019472,
+          "methodPointers": 6587703856,
+          "count": 2565,
+          "fileBacked": true
+        },
+        "UnityEngine.UI.dll": {
+          "address": 6577955760,
+          "methodPointers": 6592996064,
+          "count": 2041,
+          "fileBacked": true
+        },
+        "Cinemachine.dll": {
+          "address": 6564996672,
+          "methodPointers": 6587684464,
+          "count": 1160,
+          "fileBacked": true
+        },
+        "ICSharpCode.SharpZipLib.dll": {
+          "address": 6565040576,
+          "methodPointers": 6587747952,
+          "count": 1256,
+          "fileBacked": true
+        },
+        "DOTween.dll": {
+          "address": 6565028192,
+          "methodPointers": 6587727808,
+          "count": 1188,
+          "fileBacked": true
+        },
+        "System.Core.dll": {
+          "address": 6577602800,
+          "methodPointers": 6592356000,
+          "count": 1117,
+          "fileBacked": true
+        },
+        "UnityEngine.TextCoreTextEngineModule.dll": {
+          "address": 6577900064,
+          "methodPointers": 6592929888,
+          "count": 370,
+          "fileBacked": true
+        },
+        "Unity.Postprocessing.Runtime.dll": {
+          "address": 6577843136,
+          "methodPointers": 6592828752,
+          "count": 810,
+          "fileBacked": true
+        },
+        "Sirenix.Utilities.dll": {
+          "address": 6577549328,
+          "methodPointers": 6592325136,
+          "count": 968,
+          "fileBacked": true
+        },
+        "Mono.Security.dll": {
+          "address": 6577363904,
+          "methodPointers": 6592127104,
+          "count": 562,
+          "fileBacked": true
+        },
+        "UnityEngine.IMGUIModule.dll": {
+          "address": 6577890704,
+          "methodPointers": 6592908944,
+          "count": 724,
+          "fileBacked": true
+        },
+        "Unity.Timeline.dll": {
+          "address": 6577856512,
+          "methodPointers": 6592850304,
+          "count": 876,
+          "fileBacked": true
+        },
+        "Sirenix.OdinInspector.Attributes.dll": {
+          "address": 6577507296,
+          "methodPointers": 6592305952,
+          "count": 462,
+          "fileBacked": true
+        },
+        "System.Collections.Immutable.dll": {
+          "address": 6577584240,
+          "methodPointers": 6592349104,
+          "count": 825,
+          "fileBacked": true
+        },
+        "Hypergryph.OneChannel.dll": {
+          "address": 6565035376,
+          "methodPointers": 6587741424,
+          "count": 755,
+          "fileBacked": true
+        },
+        "ConsolePro.dll": {
+          "address": 6565008736,
+          "methodPointers": 6587697344,
+          "count": 793,
+          "fileBacked": true
+        },
+        "Assembly-CSharp-firstpass.dll": {
+          "address": 6563861904,
+          "methodPointers": 6585841648,
+          "count": 747,
+          "fileBacked": true
+        },
+        "P31RestKit.dll": {
+          "address": 6577475456,
+          "methodPointers": 6592283600,
+          "count": 287,
+          "fileBacked": true
+        },
+        "UnityEngine.ParticleSystemModule.dll": {
+          "address": 6577893824,
+          "methodPointers": 6592916384,
+          "count": 491,
+          "fileBacked": true
+        },
+        "clipper_library.dll": {
+          "address": 6564997696,
+          "methodPointers": 6587695360,
+          "count": 216,
+          "fileBacked": true
+        },
+        "torappu.CrashSight.Standalone.dll": {
+          "address": 6577764784,
+          "methodPointers": 6592613760,
+          "count": 280,
+          "fileBacked": true
+        },
+        "UnityEngine.AnimationModule.dll": {
+          "address": 6577860928,
+          "methodPointers": 6592861456,
+          "count": 366,
+          "fileBacked": true
+        },
+        "UnityEngine.AndroidJNIModule.dll": {
+          "address": 6577859152,
+          "methodPointers": 6592859440,
+          "count": 252,
+          "fileBacked": true
+        },
+        "UnityEngine.UIElementsNativeModule.dll": {
+          "address": 6577945600,
+          "methodPointers": 6592993088,
+          "count": 245,
+          "fileBacked": true
+        },
+        "UnityEngine.UnityWebRequestModule.dll": {
+          "address": 6577956752,
+          "methodPointers": 6593013680,
+          "count": 143,
+          "fileBacked": true
+        },
+        "DOTween.Modules.dll": {
+          "address": 6565020800,
+          "methodPointers": 6587725728,
+          "count": 235,
+          "fileBacked": true
+        },
+        "System.Xml.Linq.dll": {
+          "address": 6577604992,
+          "methodPointers": 6592365952,
+          "count": 210,
+          "fileBacked": true
+        },
+        "XNode.dll": {
+          "address": 6577960256,
+          "methodPointers": 6593016992,
+          "count": 199,
+          "fileBacked": true
+        },
+        "UnityEngine.PhysicsModule.dll": {
+          "address": 6577895584,
+          "methodPointers": 6592924848,
+          "count": 182,
+          "fileBacked": true
+        },
+        "UnityEngine.Physics2DModule.dll": {
+          "address": 6577894672,
+          "methodPointers": 6592923088,
+          "count": 168,
+          "fileBacked": true
+        },
+        "UnityEngine.TextCoreFontEngineModule.dll": {
+          "address": 6577898160,
+          "methodPointers": 6592927760,
+          "count": 121,
+          "fileBacked": true
+        },
+        "System.Numerics.dll": {
+          "address": 6577603280,
+          "methodPointers": 6592364992,
+          "count": 77,
+          "fileBacked": true
+        },
+        "UnityEngine.AIModule.dll": {
+          "address": 6577857296,
+          "methodPointers": 6592857856,
+          "count": 153,
+          "fileBacked": true
+        },
+        "UnityEngine.AudioModule.dll": {
+          "address": 6577861936,
+          "methodPointers": 6592865360,
+          "count": 96,
+          "fileBacked": true
+        },
+        "UnityEngine.UIModule.dll": {
+          "address": 6577946240,
+          "methodPointers": 6592995136,
+          "count": 116,
+          "fileBacked": true
+        },
+        "Hypergryph.Browser.dll": {
+          "address": 6565029568,
+          "methodPointers": 6587737712,
+          "count": 196,
+          "fileBacked": true
+        },
+        "UnityEngine.XRModule.dll": {
+          "address": 6577958704,
+          "methodPointers": 6593015712,
+          "count": 67,
+          "fileBacked": true
+        },
+        "Torappu.CETest.dll": {
+          "address": 6577712768,
+          "methodPointers": 6592561408,
+          "count": 84,
+          "fileBacked": true
+        },
+        "UnityEngine.TextRenderingModule.dll": {
+          "address": 6577900464,
+          "methodPointers": 6592933088,
+          "count": 50,
+          "fileBacked": true
+        },
+        "UnityEngine.InputLegacyModule.dll": {
+          "address": 6577891168,
+          "methodPointers": 6592915328,
+          "count": 71,
+          "fileBacked": true
+        },
+        "UnityEngine.TerrainModule.dll": {
+          "address": 6577897184,
+          "methodPointers": 6592927408,
+          "count": 41,
+          "fileBacked": true
+        },
+        "UnityEngine.SharedInternalsModule.dll": {
+          "address": 6577896208,
+          "methodPointers": 6592926640,
+          "count": 68,
+          "fileBacked": true
+        },
+        "UnityEngine.TilemapModule.dll": {
+          "address": 6577900816,
+          "methodPointers": 6592933536,
+          "count": 42,
+          "fileBacked": true
+        },
+        "UnityEngine.VFXModule.dll": {
+          "address": 6577957568,
+          "methodPointers": 6593015056,
+          "count": 33,
+          "fileBacked": true
+        },
+        "Sirenix.Serialization.Config.dll": {
+          "address": 6577507568,
+          "methodPointers": 6592309760,
+          "count": 22,
+          "fileBacked": true
+        },
+        "UnityEngine.AssetBundleModule.dll": {
+          "address": 6577861376,
+          "methodPointers": 6592865136,
+          "count": 28,
+          "fileBacked": true
+        },
+        "UnityEngine.SubsystemsModule.dll": {
+          "address": 6577896832,
+          "methodPointers": 6592927184,
+          "count": 28,
+          "fileBacked": true
+        },
+        "UnityEngine.UnityWebRequestWWWModule.dll": {
+          "address": 6577957232,
+          "methodPointers": 6593014928,
+          "count": 15,
+          "fileBacked": true
+        },
+        "UnityEngine.VideoModule.dll": {
+          "address": 6577957824,
+          "methodPointers": 6593015344,
+          "count": 18,
+          "fileBacked": true
+        },
+        "UnityEngine.DirectorModule.dll": {
+          "address": 6577887264,
+          "methodPointers": 6592908624,
+          "count": 34,
+          "fileBacked": true
+        },
+        "UnityEngine.InputModule.dll": {
+          "address": 6577891424,
+          "methodPointers": 6592916192,
+          "count": 17,
+          "fileBacked": true
+        },
+        "UnityEngine.UnityAnalyticsModule.dll": {
+          "address": 6577955968,
+          "methodPointers": 6593013584,
+          "count": 12,
+          "fileBacked": true
+        },
+        "Hypergryph.EventLogSDK.dll": {
+          "address": 6565030464,
+          "methodPointers": 6587739280,
+          "count": 181,
+          "fileBacked": true
+        },
+        "UnityEngine.JSONSerializeModule.dll": {
+          "address": 6577891680,
+          "methodPointers": 6592916328,
+          "count": 7,
+          "fileBacked": true
+        },
+        "UnityEngine.UnityWebRequestTextureModule.dll": {
+          "address": 6577956976,
+          "methodPointers": 6593014832,
+          "count": 12,
+          "fileBacked": true
+        },
+        "UnityEngine.VRModule.dll": {
+          "address": 6577958032,
+          "methodPointers": 6593015520,
+          "count": 10,
+          "fileBacked": true
+        },
+        "Torappu.Sofdec.dll": {
+          "address": 6577765232,
+          "methodPointers": 6592616000,
+          "count": 66,
+          "fileBacked": true
+        },
+        "UnityEngine.ImageConversionModule.dll": {
+          "address": 6577887632,
+          "methodPointers": 6592908904,
+          "count": 4,
+          "fileBacked": true
+        },
+        "UnityEngine.WindModule.dll": {
+          "address": 6577958256,
+          "methodPointers": 6593015600,
+          "count": 13,
+          "fileBacked": true
+        },
+        "UnityEngine.GridModule.dll": {
+          "address": 6577887440,
+          "methodPointers": 6592908896,
+          "count": 1,
+          "fileBacked": true
+        },
+        "UnityEngine.ScreenCaptureModule.dll": {
+          "address": 6577895760,
+          "methodPointers": 6592926624,
+          "count": 1,
+          "fileBacked": true
+        },
+        "Hypergryph.GameUpdate.dll": {
+          "address": 6565030928,
+          "methodPointers": 6587740736,
+          "count": 71,
+          "fileBacked": true
+        },
+        "Unity.Profiling.Core.dll": {
+          "address": 6577843520,
+          "methodPointers": 6592835264,
+          "count": 41,
+          "fileBacked": true
+        },
+        "System.Configuration.dll": {
+          "address": 6577584560,
+          "methodPointers": 6592355712,
+          "count": 35,
+          "fileBacked": true
+        },
+        "System.Runtime.Serialization.dll": {
+          "address": 6577603664,
+          "methodPointers": 6592365904,
+          "count": 6,
+          "fileBacked": true
+        },
+        "System.Runtime.CompilerServices.Unsafe.dll": {
+          "address": 6577603456,
+          "methodPointers": 6592365888,
+          "count": 2,
+          "fileBacked": true
+        },
+        "Unity.MemoryProfiler.dll": {
+          "address": 6577838800,
+          "methodPointers": 6592828688,
+          "count": 8,
+          "fileBacked": true
+        },
+        "CriMw.CriWare.Vp9.Runtime.dll": {
+          "address": 6565019680,
+          "methodPointers": 6587725648,
+          "count": 10,
+          "fileBacked": true
+        },
+        "Hypergryph.Log.dll": {
+          "address": 6565031152,
+          "methodPointers": 6587741312,
+          "count": 14,
+          "fileBacked": true
+        },
+        "XNode.Groups.dll": {
+          "address": 6577959056,
+          "methodPointers": 6593016960,
+          "count": 3,
+          "fileBacked": true
+        },
+        "AntiSDK.dll": {
+          "address": 6563858064,
+          "methodPointers": 6585841616,
+          "count": 3,
+          "fileBacked": true
+        },
+        "Torappu.UICommonEditor.dll": {
+          "address": 6577765408,
+          "methodPointers": 6592616528,
+          "count": 2,
+          "fileBacked": true
+        },
+        "enum2int.dll": {
+          "address": 6565028352,
+          "methodPointers": 6593280072,
+          "count": 2,
+          "fileBacked": false
+        },
+        "__Generated": {
+          "address": 6577960432,
+          "methodPointers": 6593018584,
+          "count": 3,
+          "fileBacked": true
+        }
+      }
+    },
+    "checkedOn": "2026-11-17",
+    "caseTool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/anger-exclusions-20261117/group_inventory.py",
+        "bytes": 1605,
+        "sha256": "6a203d26c91e4501789cfcb8b5bc6d0fade1d962422192085a1c824c1f59ece9"
+      }
+    }
+  },
+  "result": {
+    "types": [
+      {
+        "fullname": "Torappu.Battle.Abilities.EmptyAnimatedAbility",
+        "index": 13292,
+        "parent": "Torappu.Battle.Abilities.AbstractAnimatedAbility",
+        "methods": [
+          {
+            "nameIndex": 2430292,
+            "declaringType": 13292,
+            "returnType": 17579,
+            "parameterStart": 88952,
+            "genericContainerIndex": -1,
+            "token": 100755522,
+            "flags": 198,
+            "iflags": 0,
+            "slot": 48,
+            "parameterCount": 2,
+            "index": 92225,
+            "image": "Assembly-CSharp.dll",
+            "address": 6458473104,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.Abilities.EmptyAnimatedAbility.GetProjectileActions",
+            "returnTypeName": "type(kind=0x15, data=0x188dd3b98)",
+            "parameters": [
+              {
+                "nameIndex": 66664,
+                "token": 134306697,
+                "typeIndex": 104918,
+                "index": 88952,
+                "name": "ev",
+                "typeName": "Torappu.Battle.Projectile/Event"
+              },
+              {
+                "nameIndex": 2430281,
+                "token": 134306698,
+                "typeIndex": 66507,
+                "index": 88953,
+                "name": "projectile",
+                "typeName": "Torappu.Battle.Projectile"
+              }
+            ]
+          },
+          {
+            "nameIndex": 2430265,
+            "declaringType": 13292,
+            "returnType": 17579,
+            "parameterStart": 88954,
+            "genericContainerIndex": -1,
+            "token": 100755523,
+            "flags": 196,
+            "iflags": 0,
+            "slot": 77,
+            "parameterCount": 1,
+            "index": 92226,
+            "image": "Assembly-CSharp.dll",
+            "address": 6458472992,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.Abilities.EmptyAnimatedAbility.GetEventActions",
+            "returnTypeName": "type(kind=0x15, data=0x188dd3b98)",
+            "parameters": [
+              {
+                "nameIndex": 66664,
+                "token": 134306699,
+                "typeIndex": 87585,
+                "index": 88954,
+                "name": "ev",
+                "typeName": "Torappu.Battle.AbilityStandard/Event"
+              }
+            ]
+          },
+          {
+            "nameIndex": 2430240,
+            "declaringType": 13292,
+            "returnType": 46024,
+            "parameterStart": -1,
+            "genericContainerIndex": -1,
+            "token": 100755524,
+            "flags": 2246,
+            "iflags": 0,
+            "slot": 26,
+            "parameterCount": 0,
+            "index": 92227,
+            "image": "Assembly-CSharp.dll",
+            "address": 6458473360,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.Abilities.EmptyAnimatedAbility.get_ignorePalsyInterrupt",
+            "returnTypeName": "bool",
+            "parameters": []
+          },
+          {
+            "nameIndex": 107,
+            "declaringType": 13292,
+            "returnType": 84484,
+            "parameterStart": -1,
+            "genericContainerIndex": -1,
+            "token": 100755525,
+            "flags": 6278,
+            "iflags": 0,
+            "slot": 65535,
+            "parameterCount": 0,
+            "index": 92228,
+            "image": "Assembly-CSharp.dll",
+            "address": 6458473264,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.Abilities.EmptyAnimatedAbility..ctor",
+            "returnTypeName": "void",
+            "parameters": []
+          },
+          {
+            "nameIndex": 2430381,
+            "declaringType": 13292,
+            "returnType": 46024,
+            "parameterStart": -1,
+            "genericContainerIndex": -1,
+            "token": 100755526,
+            "flags": 1,
+            "iflags": 0,
+            "slot": 65535,
+            "parameterCount": 0,
+            "index": 92229,
+            "image": "Assembly-CSharp.dll",
+            "address": 6458473248,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.Abilities.EmptyAnimatedAbility.<>xLuaBaseProxy_get_ignorePalsyInterrupt",
+            "returnTypeName": "bool",
+            "parameters": []
+          }
+        ],
+        "fields": [
+          {
+            "nameIndex": 2430573,
+            "typeIndex": 52361,
+            "token": 67215596,
+            "index": 106731,
+            "name": "__Hotfix0_GetProjectileActions",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 0,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2430547,
+            "typeIndex": 52361,
+            "token": 67215597,
+            "index": 106732,
+            "name": "__Hotfix0_GetEventActions",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 8,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2430512,
+            "typeIndex": 52361,
+            "token": 67215598,
+            "index": 106733,
+            "name": "__Hotfix0_get_ignorePalsyInterrupt",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 16,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 3062,
+            "typeIndex": 52361,
+            "token": 67215599,
+            "index": 106734,
+            "name": "_c__Hotfix0_ctor",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 24,
+            "unboxedOffset": null
+          }
+        ]
+      },
+      {
+        "fullname": "Torappu.Battle.EmptyAbility",
+        "index": 9996,
+        "parent": "Torappu.Battle.AbilityStandard",
+        "methods": [
+          {
+            "nameIndex": 2430180,
+            "declaringType": 9996,
+            "returnType": 54451,
+            "parameterStart": -1,
+            "genericContainerIndex": -1,
+            "token": 100727217,
+            "flags": 2246,
+            "iflags": 0,
+            "slot": 17,
+            "parameterCount": 0,
+            "index": 63920,
+            "image": "Assembly-CSharp.dll",
+            "address": 6448785088,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.EmptyAbility.get_cooldown",
+            "returnTypeName": "Torappu.FP",
+            "parameters": []
+          },
+          {
+            "nameIndex": 1119242,
+            "declaringType": 9996,
+            "returnType": 87538,
+            "parameterStart": -1,
+            "genericContainerIndex": -1,
+            "token": 100727218,
+            "flags": 2246,
+            "iflags": 0,
+            "slot": 14,
+            "parameterCount": 0,
+            "index": 63921,
+            "image": "Assembly-CSharp.dll",
+            "address": 6448784992,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.EmptyAbility.get_category",
+            "returnTypeName": "Torappu.Battle.Ability/Category",
+            "parameters": []
+          },
+          {
+            "nameIndex": 2430193,
+            "declaringType": 9996,
+            "returnType": 87590,
+            "parameterStart": -1,
+            "genericContainerIndex": -1,
+            "token": 100727219,
+            "flags": 2246,
+            "iflags": 0,
+            "slot": 70,
+            "parameterCount": 0,
+            "index": 63922,
+            "image": "Assembly-CSharp.dll",
+            "address": 6448785312,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.EmptyAbility.get_selectTargetSource",
+            "returnTypeName": "Torappu.Battle.AbilityStandard/SelectTargetSource",
+            "parameters": []
+          },
+          {
+            "nameIndex": 2430216,
+            "declaringType": 9996,
+            "returnType": 46024,
+            "parameterStart": -1,
+            "genericContainerIndex": -1,
+            "token": 100727220,
+            "flags": 2244,
+            "iflags": 0,
+            "slot": 72,
+            "parameterCount": 0,
+            "index": 63923,
+            "image": "Assembly-CSharp.dll",
+            "address": 6448784896,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.EmptyAbility.get_alwaysIncludeTarget",
+            "returnTypeName": "bool",
+            "parameters": []
+          },
+          {
+            "nameIndex": 2430240,
+            "declaringType": 9996,
+            "returnType": 46024,
+            "parameterStart": -1,
+            "genericContainerIndex": -1,
+            "token": 100727221,
+            "flags": 2246,
+            "iflags": 0,
+            "slot": 26,
+            "parameterCount": 0,
+            "index": 63924,
+            "image": "Assembly-CSharp.dll",
+            "address": 6448785216,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.EmptyAbility.get_ignorePalsyInterrupt",
+            "returnTypeName": "bool",
+            "parameters": []
+          },
+          {
+            "nameIndex": 2430265,
+            "declaringType": 9996,
+            "returnType": 17579,
+            "parameterStart": 64853,
+            "genericContainerIndex": -1,
+            "token": 100727222,
+            "flags": 196,
+            "iflags": 0,
+            "slot": 77,
+            "parameterCount": 1,
+            "index": 63925,
+            "image": "Assembly-CSharp.dll",
+            "address": 6448783776,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.EmptyAbility.GetEventActions",
+            "returnTypeName": "type(kind=0x15, data=0x188dd3b98)",
+            "parameters": [
+              {
+                "nameIndex": 66664,
+                "token": 134282587,
+                "typeIndex": 87585,
+                "index": 64853,
+                "name": "ev",
+                "typeName": "Torappu.Battle.AbilityStandard/Event"
+              }
+            ]
+          },
+          {
+            "nameIndex": 2430292,
+            "declaringType": 9996,
+            "returnType": 17579,
+            "parameterStart": 64854,
+            "genericContainerIndex": -1,
+            "token": 100727223,
+            "flags": 198,
+            "iflags": 0,
+            "slot": 48,
+            "parameterCount": 2,
+            "index": 63926,
+            "image": "Assembly-CSharp.dll",
+            "address": 6448783984,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.EmptyAbility.GetProjectileActions",
+            "returnTypeName": "type(kind=0x15, data=0x188dd3b98)",
+            "parameters": [
+              {
+                "nameIndex": 66664,
+                "token": 134282588,
+                "typeIndex": 104918,
+                "index": 64854,
+                "name": "ev",
+                "typeName": "Torappu.Battle.Projectile/Event"
+              },
+              {
+                "nameIndex": 2430281,
+                "token": 134282589,
+                "typeIndex": 66507,
+                "index": 64855,
+                "name": "projectile",
+                "typeName": "Torappu.Battle.Projectile"
+              }
+            ]
+          },
+          {
+            "nameIndex": 2430313,
+            "declaringType": 9996,
+            "returnType": 17602,
+            "parameterStart": -1,
+            "genericContainerIndex": -1,
+            "token": 100727224,
+            "flags": 196,
+            "iflags": 0,
+            "slot": 46,
+            "parameterCount": 0,
+            "index": 63927,
+            "image": "Assembly-CSharp.dll",
+            "address": 6448783888,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.EmptyAbility.GetPassiveBuffs",
+            "returnTypeName": "type(kind=0x15, data=0x188dd84f8)",
+            "parameters": []
+          },
+          {
+            "nameIndex": 2430329,
+            "declaringType": 9996,
+            "returnType": 17602,
+            "parameterStart": -1,
+            "genericContainerIndex": -1,
+            "token": 100727225,
+            "flags": 198,
+            "iflags": 0,
+            "slot": 47,
+            "parameterCount": 0,
+            "index": 63928,
+            "image": "Assembly-CSharp.dll",
+            "address": 6448783680,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.EmptyAbility.GetActiveBuffs",
+            "returnTypeName": "type(kind=0x15, data=0x188dd84f8)",
+            "parameters": []
+          },
+          {
+            "nameIndex": 2430344,
+            "declaringType": 9996,
+            "returnType": 58531,
+            "parameterStart": -1,
+            "genericContainerIndex": -1,
+            "token": 100727226,
+            "flags": 196,
+            "iflags": 0,
+            "slot": 80,
+            "parameterCount": 0,
+            "index": 63929,
+            "image": "Assembly-CSharp.dll",
+            "address": 6448784272,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.EmptyAbility.OnWaitForPreDelay",
+            "returnTypeName": "System.Collections.IEnumerator",
+            "parameters": []
+          },
+          {
+            "nameIndex": 2430362,
+            "declaringType": 9996,
+            "returnType": 58531,
+            "parameterStart": -1,
+            "genericContainerIndex": -1,
+            "token": 100727227,
+            "flags": 196,
+            "iflags": 0,
+            "slot": 81,
+            "parameterCount": 0,
+            "index": 63930,
+            "image": "Assembly-CSharp.dll",
+            "address": 6448784128,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.EmptyAbility.OnWaitForPostDelay",
+            "returnTypeName": "System.Collections.IEnumerator",
+            "parameters": []
+          },
+          {
+            "nameIndex": 107,
+            "declaringType": 9996,
+            "returnType": 84484,
+            "parameterStart": -1,
+            "genericContainerIndex": -1,
+            "token": 100727228,
+            "flags": 6278,
+            "iflags": 0,
+            "slot": 65535,
+            "parameterCount": 0,
+            "index": 63931,
+            "image": "Assembly-CSharp.dll",
+            "address": 6448784416,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.EmptyAbility..ctor",
+            "returnTypeName": "void",
+            "parameters": []
+          },
+          {
+            "nameIndex": 2430381,
+            "declaringType": 9996,
+            "returnType": 46024,
+            "parameterStart": -1,
+            "genericContainerIndex": -1,
+            "token": 100727229,
+            "flags": 1,
+            "iflags": 0,
+            "slot": 65535,
+            "parameterCount": 0,
+            "index": 63932,
+            "image": "Assembly-CSharp.dll",
+            "address": 6448763216,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.EmptyAbility.<>xLuaBaseProxy_get_ignorePalsyInterrupt",
+            "returnTypeName": "bool",
+            "parameters": []
+          }
+        ],
+        "fields": [
+          {
+            "nameIndex": 2430422,
+            "typeIndex": 52361,
+            "token": 67178271,
+            "index": 69406,
+            "name": "__Hotfix0_get_cooldown",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 0,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 1119467,
+            "typeIndex": 52361,
+            "token": 67178272,
+            "index": 69407,
+            "name": "__Hotfix0_get_category",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 8,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2430445,
+            "typeIndex": 52361,
+            "token": 67178273,
+            "index": 69408,
+            "name": "__Hotfix0_get_selectTargetSource",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 16,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2430478,
+            "typeIndex": 52361,
+            "token": 67178274,
+            "index": 69409,
+            "name": "__Hotfix0_get_alwaysIncludeTarget",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 24,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2430512,
+            "typeIndex": 52361,
+            "token": 67178275,
+            "index": 69410,
+            "name": "__Hotfix0_get_ignorePalsyInterrupt",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 32,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2430547,
+            "typeIndex": 52361,
+            "token": 67178276,
+            "index": 69411,
+            "name": "__Hotfix0_GetEventActions",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 40,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2430573,
+            "typeIndex": 52361,
+            "token": 67178277,
+            "index": 69412,
+            "name": "__Hotfix0_GetProjectileActions",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 48,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2430604,
+            "typeIndex": 52361,
+            "token": 67178278,
+            "index": 69413,
+            "name": "__Hotfix0_GetPassiveBuffs",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 56,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2430630,
+            "typeIndex": 52361,
+            "token": 67178279,
+            "index": 69414,
+            "name": "__Hotfix0_GetActiveBuffs",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 64,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2430655,
+            "typeIndex": 52361,
+            "token": 67178280,
+            "index": 69415,
+            "name": "__Hotfix0_OnWaitForPreDelay",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 72,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2430683,
+            "typeIndex": 52361,
+            "token": 67178281,
+            "index": 69416,
+            "name": "__Hotfix0_OnWaitForPostDelay",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 80,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 3062,
+            "typeIndex": 52361,
+            "token": 67178282,
+            "index": 69417,
+            "name": "_c__Hotfix0_ctor",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 88,
+            "unboxedOffset": null
+          }
+        ]
+      },
+      {
+        "fullname": "Torappu.Battle.Abilities.AbilityFirstSucceedGroup",
+        "index": 13414,
+        "parent": "Torappu.Battle.AbilityStandard",
+        "methods": [
+          {
+            "nameIndex": 1119242,
+            "declaringType": 13414,
+            "returnType": 87538,
+            "parameterStart": -1,
+            "genericContainerIndex": -1,
+            "token": 100756942,
+            "flags": 2246,
+            "iflags": 0,
+            "slot": 14,
+            "parameterCount": 0,
+            "index": 93645,
+            "image": "Assembly-CSharp.dll",
+            "address": 6458739488,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.Abilities.AbilityFirstSucceedGroup.get_category",
+            "returnTypeName": "Torappu.Battle.Ability/Category",
+            "parameters": []
+          },
+          {
+            "nameIndex": 2430193,
+            "declaringType": 13414,
+            "returnType": 87590,
+            "parameterStart": -1,
+            "genericContainerIndex": -1,
+            "token": 100756943,
+            "flags": 2246,
+            "iflags": 0,
+            "slot": 70,
+            "parameterCount": 0,
+            "index": 93646,
+            "image": "Assembly-CSharp.dll",
+            "address": 6458740080,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.Abilities.AbilityFirstSucceedGroup.get_selectTargetSource",
+            "returnTypeName": "Torappu.Battle.AbilityStandard/SelectTargetSource",
+            "parameters": []
+          },
+          {
+            "nameIndex": 2430180,
+            "declaringType": 13414,
+            "returnType": 54451,
+            "parameterStart": -1,
+            "genericContainerIndex": -1,
+            "token": 100756944,
+            "flags": 2246,
+            "iflags": 0,
+            "slot": 17,
+            "parameterCount": 0,
+            "index": 93647,
+            "image": "Assembly-CSharp.dll",
+            "address": 6458739584,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.Abilities.AbilityFirstSucceedGroup.get_cooldown",
+            "returnTypeName": "Torappu.FP",
+            "parameters": []
+          },
+          {
+            "nameIndex": 2431964,
+            "declaringType": 13414,
+            "returnType": 54451,
+            "parameterStart": -1,
+            "genericContainerIndex": -1,
+            "token": 100756945,
+            "flags": 2246,
+            "iflags": 0,
+            "slot": 22,
+            "parameterCount": 0,
+            "index": 93648,
+            "image": "Assembly-CSharp.dll",
+            "address": 6458739680,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.Abilities.AbilityFirstSucceedGroup.get_escapeTime",
+            "returnTypeName": "Torappu.FP",
+            "parameters": []
+          },
+          {
+            "nameIndex": 2430216,
+            "declaringType": 13414,
+            "returnType": 46024,
+            "parameterStart": -1,
+            "genericContainerIndex": -1,
+            "token": 100756946,
+            "flags": 2244,
+            "iflags": 0,
+            "slot": 72,
+            "parameterCount": 0,
+            "index": 93649,
+            "image": "Assembly-CSharp.dll",
+            "address": 6458739392,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.Abilities.AbilityFirstSucceedGroup.get_alwaysIncludeTarget",
+            "returnTypeName": "bool",
+            "parameters": []
+          },
+          {
+            "nameIndex": 2431840,
+            "declaringType": 13414,
+            "returnType": 46024,
+            "parameterStart": -1,
+            "genericContainerIndex": -1,
+            "token": 100756947,
+            "flags": 2246,
+            "iflags": 0,
+            "slot": 20,
+            "parameterCount": 0,
+            "index": 93650,
+            "image": "Assembly-CSharp.dll",
+            "address": 6458739776,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.Abilities.AbilityFirstSucceedGroup.get_isAffecting",
+            "returnTypeName": "bool",
+            "parameters": []
+          },
+          {
+            "nameIndex": 3349689,
+            "declaringType": 13414,
+            "returnType": 46024,
+            "parameterStart": -1,
+            "genericContainerIndex": -1,
+            "token": 100756948,
+            "flags": 2182,
+            "iflags": 0,
+            "slot": 65535,
+            "parameterCount": 0,
+            "index": 93651,
+            "image": "Assembly-CSharp.dll",
+            "address": 6458739968,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.Abilities.AbilityFirstSucceedGroup.get_needUpdateAttackTime",
+            "returnTypeName": "bool",
+            "parameters": []
+          },
+          {
+            "nameIndex": 2430329,
+            "declaringType": 13414,
+            "returnType": 17602,
+            "parameterStart": -1,
+            "genericContainerIndex": -1,
+            "token": 100756949,
+            "flags": 198,
+            "iflags": 0,
+            "slot": 47,
+            "parameterCount": 0,
+            "index": 93652,
+            "image": "Assembly-CSharp.dll",
+            "address": 6458736480,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.Abilities.AbilityFirstSucceedGroup.GetActiveBuffs",
+            "returnTypeName": "type(kind=0x15, data=0x188dd84f8)",
+            "parameters": []
+          },
+          {
+            "nameIndex": 2430292,
+            "declaringType": 13414,
+            "returnType": 17579,
+            "parameterStart": 90114,
+            "genericContainerIndex": -1,
+            "token": 100756950,
+            "flags": 198,
+            "iflags": 0,
+            "slot": 48,
+            "parameterCount": 2,
+            "index": 93653,
+            "image": "Assembly-CSharp.dll",
+            "address": 6458736784,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.Abilities.AbilityFirstSucceedGroup.GetProjectileActions",
+            "returnTypeName": "type(kind=0x15, data=0x188dd3b98)",
+            "parameters": [
+              {
+                "nameIndex": 66664,
+                "token": 134307859,
+                "typeIndex": 104918,
+                "index": 90114,
+                "name": "ev",
+                "typeName": "Torappu.Battle.Projectile/Event"
+              },
+              {
+                "nameIndex": 2430281,
+                "token": 134307860,
+                "typeIndex": 66507,
+                "index": 90115,
+                "name": "projectile",
+                "typeName": "Torappu.Battle.Projectile"
+              }
+            ]
+          },
+          {
+            "nameIndex": 2430265,
+            "declaringType": 13414,
+            "returnType": 17579,
+            "parameterStart": 90116,
+            "genericContainerIndex": -1,
+            "token": 100756951,
+            "flags": 196,
+            "iflags": 0,
+            "slot": 77,
+            "parameterCount": 1,
+            "index": 93654,
+            "image": "Assembly-CSharp.dll",
+            "address": 6458736576,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.Abilities.AbilityFirstSucceedGroup.GetEventActions",
+            "returnTypeName": "type(kind=0x15, data=0x188dd3b98)",
+            "parameters": [
+              {
+                "nameIndex": 66664,
+                "token": 134307861,
+                "typeIndex": 87585,
+                "index": 90116,
+                "name": "ev",
+                "typeName": "Torappu.Battle.AbilityStandard/Event"
+              }
+            ]
+          },
+          {
+            "nameIndex": 2430313,
+            "declaringType": 13414,
+            "returnType": 17602,
+            "parameterStart": -1,
+            "genericContainerIndex": -1,
+            "token": 100756952,
+            "flags": 196,
+            "iflags": 0,
+            "slot": 46,
+            "parameterCount": 0,
+            "index": 93655,
+            "image": "Assembly-CSharp.dll",
+            "address": 6458736688,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.Abilities.AbilityFirstSucceedGroup.GetPassiveBuffs",
+            "returnTypeName": "type(kind=0x15, data=0x188dd84f8)",
+            "parameters": []
+          },
+          {
+            "nameIndex": 2430889,
+            "declaringType": 13414,
+            "returnType": 84484,
+            "parameterStart": 90117,
+            "genericContainerIndex": -1,
+            "token": 100756953,
+            "flags": 196,
+            "iflags": 0,
+            "slot": 27,
+            "parameterCount": 2,
+            "index": 93656,
+            "image": "Assembly-CSharp.dll",
+            "address": 6458735696,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.Abilities.AbilityFirstSucceedGroup.DoSetData",
+            "returnTypeName": "void",
+            "parameters": [
+              {
+                "nameIndex": 485847,
+                "token": 134307862,
+                "typeIndex": 53921,
+                "index": 90117,
+                "name": "owner",
+                "typeName": "Torappu.Battle.Entity"
+              },
+              {
+                "nameIndex": 18830,
+                "token": 134307863,
+                "typeIndex": 87556,
+                "index": 90118,
+                "name": "options",
+                "typeName": "Torappu.Battle.Ability/Options"
+              }
+            ]
+          },
+          {
+            "nameIndex": 2432241,
+            "declaringType": 13414,
+            "returnType": 46024,
+            "parameterStart": 90119,
+            "genericContainerIndex": -1,
+            "token": 100756954,
+            "flags": 198,
+            "iflags": 0,
+            "slot": 35,
+            "parameterCount": 3,
+            "index": 93657,
+            "image": "Assembly-CSharp.dll",
+            "address": 6458734464,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.Abilities.AbilityFirstSucceedGroup.CastToTarget",
+            "returnTypeName": "bool",
+            "parameters": [
+              {
+                "nameIndex": 6665,
+                "token": 134307864,
+                "typeIndex": 53921,
+                "index": 90119,
+                "name": "target",
+                "typeName": "Torappu.Battle.Entity"
+              },
+              {
+                "nameIndex": 1949318,
+                "token": 134307865,
+                "typeIndex": 87550,
+                "index": 90120,
+                "name": "finishCb",
+                "typeName": "Torappu.Battle.Ability/FinishCallbackDelegate"
+              },
+              {
+                "nameIndex": 2432229,
+                "token": 134307866,
+                "typeIndex": 46049,
+                "index": 90121,
+                "name": "firstAttack",
+                "typeName": "bool"
+              }
+            ]
+          },
+          {
+            "nameIndex": 2432254,
+            "declaringType": 13414,
+            "returnType": 46024,
+            "parameterStart": 90122,
+            "genericContainerIndex": -1,
+            "token": 100756955,
+            "flags": 198,
+            "iflags": 0,
+            "slot": 36,
+            "parameterCount": 2,
+            "index": 93658,
+            "image": "Assembly-CSharp.dll",
+            "address": 6458733968,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.Abilities.AbilityFirstSucceedGroup.CastDirectly",
+            "returnTypeName": "bool",
+            "parameters": [
+              {
+                "nameIndex": 1949318,
+                "token": 134307867,
+                "typeIndex": 87550,
+                "index": 90122,
+                "name": "finishCb",
+                "typeName": "Torappu.Battle.Ability/FinishCallbackDelegate"
+              },
+              {
+                "nameIndex": 2432229,
+                "token": 134307868,
+                "typeIndex": 46049,
+                "index": 90123,
+                "name": "firstAttack",
+                "typeName": "bool"
+              }
+            ]
+          },
+          {
+            "nameIndex": 2432196,
+            "declaringType": 13414,
+            "returnType": 84484,
+            "parameterStart": 90124,
+            "genericContainerIndex": -1,
+            "token": 100756956,
+            "flags": 196,
+            "iflags": 0,
+            "slot": 32,
+            "parameterCount": 1,
+            "index": 93659,
+            "image": "Assembly-CSharp.dll",
+            "address": 6458734976,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.Abilities.AbilityFirstSucceedGroup.DoAttach",
+            "returnTypeName": "void",
+            "parameters": [
+              {
+                "nameIndex": 485847,
+                "token": 134307869,
+                "typeIndex": 53921,
+                "index": 90124,
+                "name": "owner",
+                "typeName": "Torappu.Battle.Entity"
+              }
+            ]
+          },
+          {
+            "nameIndex": 2432205,
+            "declaringType": 13414,
+            "returnType": 84484,
+            "parameterStart": -1,
+            "genericContainerIndex": -1,
+            "token": 100756957,
+            "flags": 196,
+            "iflags": 0,
+            "slot": 33,
+            "parameterCount": 0,
+            "index": 93660,
+            "image": "Assembly-CSharp.dll",
+            "address": 6458735488,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.Abilities.AbilityFirstSucceedGroup.DoDetach",
+            "returnTypeName": "void",
+            "parameters": []
+          },
+          {
+            "nameIndex": 2430344,
+            "declaringType": 13414,
+            "returnType": 58531,
+            "parameterStart": -1,
+            "genericContainerIndex": -1,
+            "token": 100756958,
+            "flags": 196,
+            "iflags": 0,
+            "slot": 80,
+            "parameterCount": 0,
+            "index": 93661,
+            "image": "Assembly-CSharp.dll",
+            "address": 6458737760,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.Abilities.AbilityFirstSucceedGroup.OnWaitForPreDelay",
+            "returnTypeName": "System.Collections.IEnumerator",
+            "parameters": []
+          },
+          {
+            "nameIndex": 2430362,
+            "declaringType": 13414,
+            "returnType": 58531,
+            "parameterStart": -1,
+            "genericContainerIndex": -1,
+            "token": 100756959,
+            "flags": 196,
+            "iflags": 0,
+            "slot": 81,
+            "parameterCount": 0,
+            "index": 93662,
+            "image": "Assembly-CSharp.dll",
+            "address": 6458737616,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.Abilities.AbilityFirstSucceedGroup.OnWaitForPostDelay",
+            "returnTypeName": "System.Collections.IEnumerator",
+            "parameters": []
+          },
+          {
+            "nameIndex": 2432645,
+            "declaringType": 13414,
+            "returnType": 84484,
+            "parameterStart": 90125,
+            "genericContainerIndex": -1,
+            "token": 100756960,
+            "flags": 196,
+            "iflags": 0,
+            "slot": 55,
+            "parameterCount": 1,
+            "index": 93663,
+            "image": "Assembly-CSharp.dll",
+            "address": 6458737152,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.Abilities.AbilityFirstSucceedGroup.OnCastEnd",
+            "returnTypeName": "void",
+            "parameters": [
+              {
+                "nameIndex": 16408,
+                "token": 134307870,
+                "typeIndex": 87551,
+                "index": 90125,
+                "name": "reason",
+                "typeName": "Torappu.Battle.Ability/FinishReason"
+              }
+            ]
+          },
+          {
+            "nameIndex": 2432666,
+            "declaringType": 13414,
+            "returnType": 84484,
+            "parameterStart": 90126,
+            "genericContainerIndex": -1,
+            "token": 100756961,
+            "flags": 198,
+            "iflags": 0,
+            "slot": 60,
+            "parameterCount": 1,
+            "index": 93664,
+            "image": "Assembly-CSharp.dll",
+            "address": 6458736928,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.Abilities.AbilityFirstSucceedGroup.OnAttackTimeChanged",
+            "returnTypeName": "void",
+            "parameters": [
+              {
+                "nameIndex": 1078043,
+                "token": 134307871,
+                "typeIndex": 54451,
+                "index": 90126,
+                "name": "newValue",
+                "typeName": "Torappu.FP"
+              }
+            ]
+          },
+          {
+            "nameIndex": 3349714,
+            "declaringType": 13414,
+            "returnType": 84484,
+            "parameterStart": -1,
+            "genericContainerIndex": -1,
+            "token": 100756962,
+            "flags": 129,
+            "iflags": 0,
+            "slot": 65535,
+            "parameterCount": 0,
+            "index": 93665,
+            "image": "Assembly-CSharp.dll",
+            "address": 6458738880,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.Abilities.AbilityFirstSucceedGroup._UpdateCooldownFromSubAbility",
+            "returnTypeName": "void",
+            "parameters": []
+          },
+          {
+            "nameIndex": 3349744,
+            "declaringType": 13414,
+            "returnType": 84484,
+            "parameterStart": 90127,
+            "genericContainerIndex": -1,
+            "token": 100756963,
+            "flags": 129,
+            "iflags": 0,
+            "slot": 65535,
+            "parameterCount": 3,
+            "index": 93666,
+            "image": "Assembly-CSharp.dll",
+            "address": 6458738688,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.Abilities.AbilityFirstSucceedGroup._OnSubAbilityFinished",
+            "returnTypeName": "void",
+            "parameters": [
+              {
+                "nameIndex": 1214225,
+                "token": 134307872,
+                "typeIndex": 35758,
+                "index": 90127,
+                "name": "ability",
+                "typeName": "Torappu.Battle.Ability"
+              },
+              {
+                "nameIndex": 16408,
+                "token": 134307873,
+                "typeIndex": 87551,
+                "index": 90128,
+                "name": "reason",
+                "typeName": "Torappu.Battle.Ability/FinishReason"
+              },
+              {
+                "nameIndex": 2432311,
+                "token": 134307874,
+                "typeIndex": 46024,
+                "index": 90129,
+                "name": "resetCd",
+                "typeName": "bool"
+              }
+            ]
+          },
+          {
+            "nameIndex": 3349779,
+            "declaringType": 13414,
+            "returnType": 84484,
+            "parameterStart": 90130,
+            "genericContainerIndex": -1,
+            "token": 100756964,
+            "flags": 129,
+            "iflags": 0,
+            "slot": 65535,
+            "parameterCount": 1,
+            "index": 93667,
+            "image": "Assembly-CSharp.dll",
+            "address": 6458738464,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.Abilities.AbilityFirstSucceedGroup._OnSubAbilityCasted",
+            "returnTypeName": "void",
+            "parameters": [
+              {
+                "nameIndex": 3349766,
+                "token": 134307875,
+                "typeIndex": 60309,
+                "index": 90130,
+                "name": "abilityIndex",
+                "typeName": "int"
+              }
+            ]
+          },
+          {
+            "nameIndex": 2432754,
+            "declaringType": 13414,
+            "returnType": 84484,
+            "parameterStart": 90131,
+            "genericContainerIndex": -1,
+            "token": 100756965,
+            "flags": 198,
+            "iflags": 0,
+            "slot": 63,
+            "parameterCount": 3,
+            "index": 93668,
+            "image": "Assembly-CSharp.dll",
+            "address": 6458737904,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.Abilities.AbilityFirstSucceedGroup.PreloadSpecialAudioSignals",
+            "returnTypeName": "void",
+            "parameters": [
+              {
+                "nameIndex": 2432734,
+                "token": 134307876,
+                "typeIndex": 78546,
+                "index": 90131,
+                "name": "abilityId",
+                "typeName": "string"
+              },
+              {
+                "nameIndex": 1042349,
+                "token": 134307877,
+                "typeIndex": 78546,
+                "index": 90132,
+                "name": "tmplId",
+                "typeName": "string"
+              },
+              {
+                "nameIndex": 2432744,
+                "token": 134307878,
+                "typeIndex": 6823,
+                "index": 90133,
+                "name": "preloader",
+                "typeName": "type(kind=0x15, data=0x188d87678)"
+              }
+            ]
+          },
+          {
+            "nameIndex": 107,
+            "declaringType": 13414,
+            "returnType": 84484,
+            "parameterStart": -1,
+            "genericContainerIndex": -1,
+            "token": 100756966,
+            "flags": 6278,
+            "iflags": 0,
+            "slot": 65535,
+            "parameterCount": 0,
+            "index": 93669,
+            "image": "Assembly-CSharp.dll",
+            "address": 6458739168,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.Abilities.AbilityFirstSucceedGroup..ctor",
+            "returnTypeName": "void",
+            "parameters": []
+          },
+          {
+            "nameIndex": 3337834,
+            "declaringType": 13414,
+            "returnType": 54451,
+            "parameterStart": -1,
+            "genericContainerIndex": -1,
+            "token": 100756967,
+            "flags": 1,
+            "iflags": 0,
+            "slot": 65535,
+            "parameterCount": 0,
+            "index": 93670,
+            "image": "Assembly-CSharp.dll",
+            "address": 6458538992,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.Abilities.AbilityFirstSucceedGroup.<>xLuaBaseProxy_get_escapeTime",
+            "returnTypeName": "Torappu.FP",
+            "parameters": []
+          },
+          {
+            "nameIndex": 2788334,
+            "declaringType": 13414,
+            "returnType": 46024,
+            "parameterStart": -1,
+            "genericContainerIndex": -1,
+            "token": 100756968,
+            "flags": 1,
+            "iflags": 0,
+            "slot": 65535,
+            "parameterCount": 0,
+            "index": 93671,
+            "image": "Assembly-CSharp.dll",
+            "address": 6458539008,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.Abilities.AbilityFirstSucceedGroup.<>xLuaBaseProxy_get_isAffecting",
+            "returnTypeName": "bool",
+            "parameters": []
+          },
+          {
+            "nameIndex": 2430899,
+            "declaringType": 13414,
+            "returnType": 84484,
+            "parameterStart": 90134,
+            "genericContainerIndex": -1,
+            "token": 100756969,
+            "flags": 1,
+            "iflags": 0,
+            "slot": 65535,
+            "parameterCount": 2,
+            "index": 93672,
+            "image": "Assembly-CSharp.dll",
+            "address": 6448783536,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.Abilities.AbilityFirstSucceedGroup.<>xLuaBaseProxy_DoSetData",
+            "returnTypeName": "void",
+            "parameters": [
+              {
+                "nameIndex": 2172,
+                "token": 134307879,
+                "typeIndex": 53921,
+                "index": 90134,
+                "name": "P0",
+                "typeName": "Torappu.Battle.Entity"
+              },
+              {
+                "nameIndex": 2175,
+                "token": 134307880,
+                "typeIndex": 87556,
+                "index": 90135,
+                "name": "P1",
+                "typeName": "Torappu.Battle.Ability/Options"
+              }
+            ]
+          },
+          {
+            "nameIndex": 3328594,
+            "declaringType": 13414,
+            "returnType": 46024,
+            "parameterStart": 90136,
+            "genericContainerIndex": -1,
+            "token": 100756970,
+            "flags": 1,
+            "iflags": 0,
+            "slot": 65535,
+            "parameterCount": 3,
+            "index": 93673,
+            "image": "Assembly-CSharp.dll",
+            "address": 6458463312,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.Abilities.AbilityFirstSucceedGroup.<>xLuaBaseProxy_CastToTarget",
+            "returnTypeName": "bool",
+            "parameters": [
+              {
+                "nameIndex": 2172,
+                "token": 134307881,
+                "typeIndex": 53921,
+                "index": 90136,
+                "name": "P0",
+                "typeName": "Torappu.Battle.Entity"
+              },
+              {
+                "nameIndex": 2175,
+                "token": 134307882,
+                "typeIndex": 87547,
+                "index": 90137,
+                "name": "P1",
+                "typeName": "Torappu.Battle.Ability/FinishCallbackDelegate"
+              },
+              {
+                "nameIndex": 1965770,
+                "token": 134307883,
+                "typeIndex": 46024,
+                "index": 90138,
+                "name": "P2",
+                "typeName": "bool"
+              }
+            ]
+          },
+          {
+            "nameIndex": 3323466,
+            "declaringType": 13414,
+            "returnType": 46024,
+            "parameterStart": 90139,
+            "genericContainerIndex": -1,
+            "token": 100756971,
+            "flags": 1,
+            "iflags": 0,
+            "slot": 65535,
+            "parameterCount": 2,
+            "index": 93674,
+            "image": "Assembly-CSharp.dll",
+            "address": 6458492240,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.Abilities.AbilityFirstSucceedGroup.<>xLuaBaseProxy_CastDirectly",
+            "returnTypeName": "bool",
+            "parameters": [
+              {
+                "nameIndex": 2172,
+                "token": 134307884,
+                "typeIndex": 87547,
+                "index": 90139,
+                "name": "P0",
+                "typeName": "Torappu.Battle.Ability/FinishCallbackDelegate"
+              },
+              {
+                "nameIndex": 2175,
+                "token": 134307885,
+                "typeIndex": 46024,
+                "index": 90140,
+                "name": "P1",
+                "typeName": "bool"
+              }
+            ]
+          },
+          {
+            "nameIndex": 2810830,
+            "declaringType": 13414,
+            "returnType": 84484,
+            "parameterStart": 90141,
+            "genericContainerIndex": -1,
+            "token": 100756972,
+            "flags": 1,
+            "iflags": 0,
+            "slot": 65535,
+            "parameterCount": 1,
+            "index": 93675,
+            "image": "Assembly-CSharp.dll",
+            "address": 6458641552,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.Abilities.AbilityFirstSucceedGroup.<>xLuaBaseProxy_DoAttach",
+            "returnTypeName": "void",
+            "parameters": [
+              {
+                "nameIndex": 2172,
+                "token": 134307886,
+                "typeIndex": 53921,
+                "index": 90141,
+                "name": "P0",
+                "typeName": "Torappu.Battle.Entity"
+              }
+            ]
+          },
+          {
+            "nameIndex": 2810855,
+            "declaringType": 13414,
+            "returnType": 84484,
+            "parameterStart": -1,
+            "genericContainerIndex": -1,
+            "token": 100756973,
+            "flags": 1,
+            "iflags": 0,
+            "slot": 65535,
+            "parameterCount": 0,
+            "index": 93676,
+            "image": "Assembly-CSharp.dll",
+            "address": 6458485808,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.Abilities.AbilityFirstSucceedGroup.<>xLuaBaseProxy_DoDetach",
+            "returnTypeName": "void",
+            "parameters": []
+          },
+          {
+            "nameIndex": 3324327,
+            "declaringType": 13414,
+            "returnType": 84484,
+            "parameterStart": 90142,
+            "genericContainerIndex": -1,
+            "token": 100756974,
+            "flags": 1,
+            "iflags": 0,
+            "slot": 65535,
+            "parameterCount": 1,
+            "index": 93677,
+            "image": "Assembly-CSharp.dll",
+            "address": 6458738432,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.Abilities.AbilityFirstSucceedGroup.<>xLuaBaseProxy_OnCastEnd",
+            "returnTypeName": "void",
+            "parameters": [
+              {
+                "nameIndex": 2172,
+                "token": 134307887,
+                "typeIndex": 87551,
+                "index": 90142,
+                "name": "P0",
+                "typeName": "Torappu.Battle.Ability/FinishReason"
+              }
+            ]
+          },
+          {
+            "nameIndex": 3196453,
+            "declaringType": 13414,
+            "returnType": 84484,
+            "parameterStart": 90143,
+            "genericContainerIndex": -1,
+            "token": 100756975,
+            "flags": 1,
+            "iflags": 0,
+            "slot": 65535,
+            "parameterCount": 1,
+            "index": 93678,
+            "image": "Assembly-CSharp.dll",
+            "address": 6458738416,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.Abilities.AbilityFirstSucceedGroup.<>xLuaBaseProxy_OnAttackTimeChanged",
+            "returnTypeName": "void",
+            "parameters": [
+              {
+                "nameIndex": 2172,
+                "token": 134307888,
+                "typeIndex": 54451,
+                "index": 90143,
+                "name": "P0",
+                "typeName": "Torappu.FP"
+              }
+            ]
+          },
+          {
+            "nameIndex": 2437276,
+            "declaringType": 13414,
+            "returnType": 84484,
+            "parameterStart": 90144,
+            "genericContainerIndex": -1,
+            "token": 100756976,
+            "flags": 1,
+            "iflags": 0,
+            "slot": 65535,
+            "parameterCount": 3,
+            "index": 93679,
+            "image": "Assembly-CSharp.dll",
+            "address": 6458738448,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.Abilities.AbilityFirstSucceedGroup.<>xLuaBaseProxy_PreloadSpecialAudioSignals",
+            "returnTypeName": "void",
+            "parameters": [
+              {
+                "nameIndex": 2172,
+                "token": 134307889,
+                "typeIndex": 78546,
+                "index": 90144,
+                "name": "P0",
+                "typeName": "string"
+              },
+              {
+                "nameIndex": 2175,
+                "token": 134307890,
+                "typeIndex": 78546,
+                "index": 90145,
+                "name": "P1",
+                "typeName": "string"
+              },
+              {
+                "nameIndex": 1965770,
+                "token": 134307891,
+                "typeIndex": 6823,
+                "index": 90146,
+                "name": "P2",
+                "typeName": "type(kind=0x15, data=0x188d87678)"
+              }
+            ]
+          }
+        ],
+        "fields": [
+          {
+            "nameIndex": 2068010,
+            "typeIndex": 87539,
+            "token": 67217134,
+            "index": 108269,
+            "name": "_category",
+            "typeName": "Torappu.Battle.Ability/Category",
+            "static": false,
+            "offset": 280,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 3349799,
+            "typeIndex": 60310,
+            "token": 67217135,
+            "index": 108270,
+            "name": "_coolDownAbilityIndex",
+            "typeName": "int",
+            "static": false,
+            "offset": 284,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 3349821,
+            "typeIndex": 46025,
+            "token": 67217136,
+            "index": 108271,
+            "name": "_fixAffectingAbilityParam",
+            "typeName": "bool",
+            "static": false,
+            "offset": 288,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 3349847,
+            "typeIndex": 46025,
+            "token": 67217137,
+            "index": 108272,
+            "name": "_alsoInterruptCurrentSubAbility",
+            "typeName": "bool",
+            "static": false,
+            "offset": 289,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 3349879,
+            "typeIndex": 46025,
+            "token": 67217138,
+            "index": 108273,
+            "name": "_clearInternalCooldownWhenFinish",
+            "typeName": "bool",
+            "static": false,
+            "offset": 290,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 3349912,
+            "typeIndex": 46025,
+            "token": 67217139,
+            "index": 108274,
+            "name": "_useEscaptime",
+            "typeName": "bool",
+            "static": false,
+            "offset": 291,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 3349214,
+            "typeIndex": 33403,
+            "token": 67217140,
+            "index": 108275,
+            "name": "_abilities",
+            "typeName": "Torappu.Battle.Ability[]",
+            "static": false,
+            "offset": 296,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 3349926,
+            "typeIndex": 87602,
+            "token": 67217141,
+            "index": 108276,
+            "name": "_timeMode",
+            "typeName": "Torappu.Battle.Abilities.AbstractAnimatedAbility/TimeMode",
+            "static": false,
+            "offset": 304,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 3349936,
+            "typeIndex": 46025,
+            "token": 67217142,
+            "index": 108277,
+            "name": "_updateCooldownAfterSubAbilitiesAttached",
+            "typeName": "bool",
+            "static": false,
+            "offset": 308,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 3349977,
+            "typeIndex": 54452,
+            "token": 67217143,
+            "index": 108278,
+            "name": "m_cooldown",
+            "typeName": "Torappu.FP",
+            "static": false,
+            "offset": 312,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 3349988,
+            "typeIndex": 54452,
+            "token": 67217144,
+            "index": 108279,
+            "name": "m_escapeTime",
+            "typeName": "Torappu.FP",
+            "static": false,
+            "offset": 320,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 3350001,
+            "typeIndex": 60310,
+            "token": 67217145,
+            "index": 108280,
+            "name": "m_affectingAbilityIndex",
+            "typeName": "int",
+            "static": false,
+            "offset": 328,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 1119467,
+            "typeIndex": 52361,
+            "token": 67217146,
+            "index": 108281,
+            "name": "__Hotfix0_get_category",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 0,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2430445,
+            "typeIndex": 52361,
+            "token": 67217147,
+            "index": 108282,
+            "name": "__Hotfix0_get_selectTargetSource",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 8,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2430422,
+            "typeIndex": 52361,
+            "token": 67217148,
+            "index": 108283,
+            "name": "__Hotfix0_get_cooldown",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 16,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2434151,
+            "typeIndex": 52361,
+            "token": 67217149,
+            "index": 108284,
+            "name": "__Hotfix0_get_escapeTime",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 24,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2430478,
+            "typeIndex": 52361,
+            "token": 67217150,
+            "index": 108285,
+            "name": "__Hotfix0_get_alwaysIncludeTarget",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 32,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2433957,
+            "typeIndex": 52361,
+            "token": 67217151,
+            "index": 108286,
+            "name": "__Hotfix0_get_isAffecting",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 40,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 3350025,
+            "typeIndex": 52361,
+            "token": 67217152,
+            "index": 108287,
+            "name": "__Hotfix0_get_needUpdateAttackTime",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 48,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2430630,
+            "typeIndex": 52361,
+            "token": 67217153,
+            "index": 108288,
+            "name": "__Hotfix0_GetActiveBuffs",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 56,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2430573,
+            "typeIndex": 52361,
+            "token": 67217154,
+            "index": 108289,
+            "name": "__Hotfix0_GetProjectileActions",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 64,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2430547,
+            "typeIndex": 52361,
+            "token": 67217155,
+            "index": 108290,
+            "name": "__Hotfix0_GetEventActions",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 72,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2430604,
+            "typeIndex": 52361,
+            "token": 67217156,
+            "index": 108291,
+            "name": "__Hotfix0_GetPassiveBuffs",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 80,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2430925,
+            "typeIndex": 52361,
+            "token": 67217157,
+            "index": 108292,
+            "name": "__Hotfix0_DoSetData",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 88,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2437962,
+            "typeIndex": 52361,
+            "token": 67217158,
+            "index": 108293,
+            "name": "__Hotfix0_CastToTarget",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 96,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2437985,
+            "typeIndex": 52361,
+            "token": 67217159,
+            "index": 108294,
+            "name": "__Hotfix0_CastDirectly",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 104,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2434508,
+            "typeIndex": 52361,
+            "token": 67217160,
+            "index": 108295,
+            "name": "__Hotfix0_DoAttach",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 112,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2434527,
+            "typeIndex": 52361,
+            "token": 67217161,
+            "index": 108296,
+            "name": "__Hotfix0_DoDetach",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 120,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2430655,
+            "typeIndex": 52361,
+            "token": 67217162,
+            "index": 108297,
+            "name": "__Hotfix0_OnWaitForPreDelay",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 128,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2430683,
+            "typeIndex": 52361,
+            "token": 67217163,
+            "index": 108298,
+            "name": "__Hotfix0_OnWaitForPostDelay",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 136,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2438348,
+            "typeIndex": 52361,
+            "token": 67217164,
+            "index": 108299,
+            "name": "__Hotfix0_OnCastEnd",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 144,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2435026,
+            "typeIndex": 52361,
+            "token": 67217165,
+            "index": 108300,
+            "name": "__Hotfix0_OnAttackTimeChanged",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 152,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 3350060,
+            "typeIndex": 52361,
+            "token": 67217166,
+            "index": 108301,
+            "name": "__Hotfix0__UpdateCooldownFromSubAbility",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 160,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 3350100,
+            "typeIndex": 52361,
+            "token": 67217167,
+            "index": 108302,
+            "name": "__Hotfix0__OnSubAbilityFinished",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 168,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 3350132,
+            "typeIndex": 52361,
+            "token": 67217168,
+            "index": 108303,
+            "name": "__Hotfix0__OnSubAbilityCasted",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 176,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 2435117,
+            "typeIndex": 52361,
+            "token": 67217169,
+            "index": 108304,
+            "name": "__Hotfix0_PreloadSpecialAudioSignals",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 184,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 3062,
+            "typeIndex": 52361,
+            "token": 67217170,
+            "index": 108305,
+            "name": "_c__Hotfix0_ctor",
+            "typeName": "XLua.DelegateBridge",
+            "static": true,
+            "offset": 192,
+            "unboxedOffset": null
+          }
+        ]
+      }
+    ]
+  }
+}

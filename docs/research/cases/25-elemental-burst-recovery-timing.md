@@ -239,7 +239,7 @@ EP不只有ATK附带：固定量、按HP伤害量、AOE及是否经过公式各�
 - `AbilityStandard.OnCastStart` #64121 在 `0x1805ff283` 通知宿主；经 Entity／BuffContainer 到 `Buff.OnAbilityStart` #66160，运行事件16 `ON_ABILITY_START`。
 - `AbilityStandard.ExecuteSpell` #64119 在 `0x1805fd766` 通知事件18 `ON_ABILITY_SPELL_ON`，之后才在 `0x1805fd866` 调用 `DoCastOnTargets` 虚slot91。因此它不是成功命中或成功Apply后的计数。
 - char事件18要求能力 family 属于 ATTACK_OR_SKILL、`ignorePalsyInterrupt=false`，且没有本程序派生的mark，才登记mark并增加周期伤害；事件16清除mark。多段施放可重复发事件18，但同轮已登记的mark阻止重复加量，下一次开始才清除；未到施放节点的中断不因开始而加量。
-- `FilterByAbilityIgnorePalsyInterrupt` #101292 使用能力虚slot26。当前配置 `_unset=true, _skipUnitCheck=true`：只对能力的 `ignorePalsyInterrupt` 取反，不查询宿主是否可被麻痹或本次是否真被打断。基类与动画能力分别读取自身有效字段；本批有限组件没有该值为true的实际正例，未据此删除原生过滤条件，也未穷尽所有派生覆盖。
+- `FilterByAbilityIgnorePalsyInterrupt` #101292 使用能力虚slot26。当前配置 `_unset=true, _skipUnitCheck=true`：只对能力的 `ignorePalsyInterrupt` 取反，不查询宿主是否可被麻痹或本次是否真被打断。基类与普通动画能力读取有效字段，另有固定返回true的派生getter；全资源字段正例及覆盖边界见第11节，不能只读Prefab字段判断资格。
 
 角色周期的 HIT 许可由节点明确保留。[NoSourceDamage #99151](../evidence/resource-mechanisms-20261114/damage/flag-callers.json) 在 `0x18110408b..08f` 将 `_ignoreForSp` 写入 Modifier；其 modifierKey 仅登记自定义键，不自动禁止HIT。[Entity.OnTakeDamage #67709](../evidence/reception-stages-20261115/pipeline/native.json) 在 `0x18072bb2f..bb44` 检查取消与 `ignoreForSp` 后执行HIT回复，普通分支不附加来源非空、分类或该键过滤。实际能否回复仍服从技能自身的回复与阻回资格。
 
@@ -250,3 +250,24 @@ BuffDB的根为 LIMITED／`ep_break_duration`。char程序也是相同参数的 
 ### 两侧的实际输入
 
 Touch 的普通关卡SPAWN与非零攻击狂躁链见第6节。敌方承受狂躁也有真实内容：镜匠 `char_4169_caledo` 的角色表绑定 S1／S2；当前本机 S1 MeleeAttack（`-140292495467368530`）装 `caledo_s_1[damage]`，S2模式攻击（`-7093683942422699028`）装 `caledo_s_2[damage]`，两模板实际执行 ANGER ApplyElementDamage。固定技能表的对应比例分别为0.5／0.25；S2另实际安装接收转狂躁程序。完整组件、技能参数和模板均在本批content，证明不依赖“存在一个未绑定模板”。[PRTS元素](https://prts.wiki/index.php?title=元素&oldid=450215)与[镜匠](https://prts.wiki/w/Caleido)作为社区交叉说明，不替代上述配置与原体。
+
+## 11. 狂躁计数的原生排除范围
+
+2026-11-17 定向补核见[本批证据](../evidence/anger-exclusions-20261117/README.md)。这里区分原生筛选条件、实际资源配置，以及项目两个通知入口；不把能力类型的存在当成已经发生的狂躁计数。
+
+### 分类过滤实际包含三类
+
+[枚举原始编码](../evidence/anger-exclusions-20261117/inventory.json)中，FamilyGroup依次为ATTACK=0、COMBAT=1、SKILL=2、TALENT=3、GENERAL=4，`ATTACK_OR_SKILL`值为7。FilterAbilityFamily #101280先取当前Ability的familyGroup，再调用[位测试](../evidence/anger-exclusions-20261117/policy-native.json) #227256：`((1 << family) & mask) == (1 << family)`。因此该命名实际**包含ATTACK、COMBAT和SKILL**，排除TALENT与GENERAL；不能按名字漏掉COMBAT，也不能将任意Effect程序算成技能施放。
+
+### 忽略麻痹不只来自序列化字段
+
+| 来源 | 直接证据与范围 |
+| --- | --- |
+| `_ignorePalsyInterrupt=true` | [全字段扫描](../evidence/anger-exclusions-20261117/field-scan.json)覆盖1180包、10253候选组件，得到7970个false／55个true，0失败；55个true都在Enemy Prefab，没有角色／共享技能／token的序列化true。 |
+| 固定getter覆盖 | `EmptyAbility.get_ignorePalsyInterrupt` #63924和`EmptyAnimatedAbility` #92227的普通体均直接返回true，不读取继承的序列化字段。因此上面的有限字段统计不能排除角色能力的实际例外。 |
+
+字段正例并非只有被动光环。当前靳天师 `enemy_2104_dycast` 根的 `_modes[0]` 指向UnitMode `1360663280617572055`，该模式的Attack与Combat均指向AnimatedActionToOwnerAbility `1655792081401464535`，其字段为true；完整当前配对在[content.json](../evidence/anger-exclusions-20261117/content.json)。另有“Misery”治疗形态的Attack／Combat、拟态机械的FireBall／CardBoom等组件定位，完整名单保留在扫描结果。这些Enemy通常使用按时间增长的另一套狂躁程序，不能把55个组件直接当作55个角色计数例外或已观测的实战结果。
+
+角色也确有固定true的能力：郁金香的角色／技能表绑定 `skchr_apionr_1`，当前根AbilityFirstSucceedGroup依次引用不允许空目标的MultiMeleeAttack及允许空目标的EmptyAnimatedAbility（`-4887580023928719155`）。后者字段虽为false，getter仍为true。郁金香属于支持范围内的集成战略支援干员。不过，本批**尚未闭合组合父能力是否另发满足资格的SpellOn**；不能仅因空子能力被过滤，就宣称整次技能不增加狂躁数值。普通组合选择链的既有证据见[Case09 §3.3](09-skill-mechanisms-and-requirements.md#33-启动结果与失败后继实际需求核对)。
+
+当前已接入玫兰莎／泥岩与项目Action释放、Skill启动双监听之间，没有已证的具体冲突。这个结果不等于所有Skill激活都与原生SpellOn一一对应，也没有抹掉上述分类和getter过滤。完整资格向项目内容入口的映射仍是支持边界；本批没有据未闭合例子新增Core字段或规定所有技能统一加量。
