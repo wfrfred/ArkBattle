@@ -240,7 +240,7 @@ Effect.install 使用 Result 返回接续状态与新建／保留实例的 Ref�
 
 Projectile 使用 `create(battle, definition, { position, state }) → Result<Ref<Projectile<S>>>`；ref 保留已知实例类型，get 按引用读取当前对象。projectile/projectiles.ts 中的 Projectiles 以私有 Store 保存完整实例，Battlefield 持有容器状态，battle/projectile.ts 直接完成容器替换，普通查询返回默认 object 的完整 Projectile；精确 Ref 和 Definition 对象身份查询保留已有类型，内部擦除的完整实例用于自身程序派发，见 [Projectile 设计](projectile.md#3-异构集合与类型恢复)。
 
-存储 Map、关系表和 UI 输出事件可以使用数字 ID；实体操作与 Command 中的实体目标统一使用 Typed Ref。Unit 查询由 unit/index.ts 公开 all／get，实现在 unit/query.ts。已有 Ref 的业务直接传递身份；`battle/unit.remove(battle, ref, reason)` 接收 `Ref<Unit>` 请求完整离场。Predefined 的 Unit 与 Mechanism 实例绑定各自保存对应 Ref，预置定义 ID 仍使用数字。
+存储 Map、关系表和 UI 输出事件可以使用数字 ID；实体操作与 Command 中的实体目标统一使用 Typed Ref。Unit 查询由 unit/index.ts 公开 all／get，实现在 unit/query.ts。已有 Ref 的业务直接传递身份；`battle/unit.remove(battle, ref, end)` 接收 `Ref<Unit>` 请求完整离场。Predefined 的 Unit 与 Mechanism 实例绑定各自保存对应 Ref，预置定义 ID 仍使用数字。
 
 ## 3. 固定 Hook Context 与状态接续
 
@@ -290,7 +290,7 @@ Skill 的 ref(source, definition) 返回持久 Ref<Skill<S, A>>，用于 getSkil
 
 Skill.state 保存跨次玩法事实，Activation.state 保存本轮事实，由 Definition 程序解释；若模式就是激活存在，不重复保存 mode。SP Core 不解释私有字段，私有 state 不重复保存 SP.value。SP 容量、门槛和默认费用读取静态 Definition，目前没有运行时配置切换入口或动态有效参数回调；本次费用可由 Activation.cost 求值。发动资格和支付早于 Activation 创建，不能读取尚未建立的本轮 state。
 
-SP setContribution／removeContribution 位于 unit/skill/sp.ts，只接受 recoverySpeed／recoveryMultiplier 两项属性，并返回所需宿主为 Skill Capability 的 Change；它们使用 Attribute 修正数据与公式。Ammo 的 Input 使用独立 Modifier 和容量公式，来源直接登记在 Capability.ammo。capacity／requirement／cost 与 TIME duration 没有通用 Contribution 接口；消费与当前轮次延时使用明确资源操作，运行时 SP 配置切换尚未提供完整入口。共享 Input<M, H> 只统一数据提供形式，不决定这些操作或其公式。Contribution.group.priority 只负责互斥选择。非 TIME 的 sp.advance 直接 no-op，不更新 lastTick。Elemental 的完整宿主写回由领域操作通过内部 Unit.replace 完成，query.ts 负责查询；完整静态 Definition 的数值与爆发时长在 initialize 入口校验。两者均不向内容提供完整实例写回。Action 按 Definition 聚合持久 state、Cooldown 和当前 Execution；内容分别用 setState、setCooldown、setExecutionState 设置对应字段，不提交完整旧条目。Unit 的 leave Hook 以 Departure 为固定终止历史载荷，保留开始离场时的 Unit 与 reason。
+SP setContribution／removeContribution 位于 unit/skill/sp.ts，只接受 recoverySpeed／recoveryMultiplier 两项属性，并返回所需宿主为 Skill Capability 的 Change；它们使用 Attribute 修正数据与公式。Ammo 的 Input 使用独立 Modifier 和容量公式，来源直接登记在 Capability.ammo。capacity／requirement／cost 与 TIME duration 没有通用 Contribution 接口；消费与当前轮次延时使用明确资源操作，运行时 SP 配置切换尚未提供完整入口。共享 Input<M, H> 只统一数据提供形式，不决定这些操作或其公式。Contribution.group.priority 只负责互斥选择。非 TIME 的 sp.advance 直接 no-op，不更新 lastTick。Elemental 的完整宿主写回由领域操作通过内部 Unit.replace 完成，query.ts 负责查询；完整静态 Definition 的数值与爆发时长在 initialize 入口校验。两者均不向内容提供完整实例写回。Action 按 Definition 聚合持久 state、Cooldown 和当前 Execution；内容分别用 setState、setCooldown、setExecutionState 设置对应字段，不提交完整旧条目。Unit 的 leave Hook 以 Departure 为固定终止历史载荷，保留开始离场时的 Unit 与完整 End；DEATH 分支另有必填 killer。
 
 Card 的 state.ts 与 Action 的局部 Cooldown 计算只处理显式传入的局部值，保留必要的 tick 参数。Card 公共写回接收 BattleState 与 Card Typed Ref，setState 接收结果值；unitHooks、setUnitHook／removeUnitHook 管理后续部署实例的 Unit 生命周期程序。setRedeployTimeContribution 影响以后启动的周期，reduceCooldown／clearCooldown／pauseCooldown／resumeCooldown 必须指定 COOLDOWN 或 RECOVERY，只操作所选当前段；enqueueRecovery 追加待恢复份数并保留已有计时。普通干员使用库存恢复；剩余库存的部署资格不受恢复队列存在影响。暂停操作保存剩余时间，来源特化由具体内容组合。Deployment.advance(battle) 使用 battle.tick 推进 Card 与 DP。部署资格查询先接续一次当前资源，再用完整 Request 求值；evaluate／preview 只读临时版本，deploy 在同一版本上判断并消费，positions 复用资源与规则集合。activeCount 接收 Ref<Card<any>>，仅按身份统计，接纳具体私有状态的 Card Ref。实例创建复用静态 Definition。Projectile 的发射时点、到期时点等采样事实由内容私有 state 保存。
 
@@ -299,13 +299,21 @@ Card 的 state.ts 与 Action 的局部 Cooldown 计算只处理显式传入的�
 `battle/unit.ts` 提供完整 Unit 操作；`unit/index.ts` 导出 Change、compose 与 optional，update 不由该入口转发：
 
 ```typescript
+type LeaveReason = "DEATH" | "RETREAT" | "EXPIRED" | "SCRIPT";
+
+type End =
+    | { readonly reason: "DEATH"; readonly killer: Ref<Unit> | null }
+    | { readonly reason: Exclude<LeaveReason, "DEATH"> };
+
+type Departure = End & { readonly unit: Unit };
+
 add(battle: BattleState, unit: Unit): BattleState;
 update<U extends Unit>(
     battle: BattleState,
     ref: Ref<U>,
     change: Change<NoInfer<U>>,
 ): BattleState;
-remove(battle: BattleState, ref: Ref<Unit>, reason: LeaveReason): BattleState;
+remove(battle: BattleState, ref: Ref<Unit>, end: End): BattleState;
 advance(battle: BattleState): BattleState;
 ```
 
@@ -381,7 +389,7 @@ add 接收创建方完成初始化的完整 Unit，登记后按公共 priority �
 
 能力创建输入由 Catalog 按所选 Definition 与 initializer 的参数推导。创建方确定具体 Definition 后提供对应 Initial。当前 Occupancy 的 `{ tile, direction? }` 与 Route 的 `{ plan, offset }` 是必填 Initial；选择这些能力时，Unit.initialize 的 initial 及对应字段必填。其余能力按自己的可选输入与默认值初始化。未选择能力的已知输入允许提供并忽略，键与值按 Inputs 的普通对象类型检查。Deployable 在初始化入口要求已有 Occupancy。实际部署在初始化前提交 DP／库存／额度，通过 Deployable.setDeployment 在未登记 Unit 上构造本次部署事实，再由 add 登记并执行已组装的 enter 程序。
 
-remove 接收 Unit Ref 请求 Lifetime 结束，首次请求保存 Departure、发布 LEAVING，再执行已登记 prepare。Blocking 自行清理关系与位置计划。真实依赖者完整 Finalize 后才注销 Unit、记录移除事实，执行本地 leave，最后派发全局 leave；Unit 不识别能力或扫描领域状态补救。主动撤退由 Deployable 接口在 remove 前直接结算退款、Card 费用阶段与库存恢复；被动死亡程序只接受已确认死亡，不对所有 leave 无条件回收。Occupancy 用已通知的旧 pair 清理，不把同格新实例当旧对端；Deployable 在本地 leave 调用 Deployment 的内部 releaseSlots 操作归还该实例额度；主动撤退退款调用 DP.recover，不直接修改账户 State。嵌套 remove 只保证请求／Prepare，最外层结算结束才保证完成；主动撤退的资源结算不等待物理注销。advance 固定入口候选，再逐项读取最新 PRESENT Unit 执行 tick。
+remove 接收 Unit Ref 与 End 请求 Lifetime 结束。End 的 DEATH 分支必须提供 killer，其他原因不携带该字段；调用者没有击杀者时明确传 null，不从当前世界反查。首次有效请求固定 Departure、发布 LEAVING，再按公共 priority 执行已登记 prepare；重复请求不改原因或 killer，也不重复 Prepare。Prepare 完成后才自动请求 Effect 等已登记依赖者结束。Blocking 自行清理关系与位置计划。真实依赖者完整 Finalize 后才注销 Unit、记录移除事实，执行本地 leave，最后派发全局 leave；Unit 不识别能力或扫描领域状态补救。主动撤退由 Deployable 接口在 remove 前直接结算退款、Card 费用阶段与库存恢复；被动死亡程序只接受已确认死亡，不对所有 leave 无条件回收。Occupancy 用已通知的旧 pair 清理，不把同格新实例当旧对端；Deployable 在本地 leave 调用 Deployment 的内部 releaseSlots 操作归还该实例额度；主动撤退退款调用 DP.recover，不直接修改账户 State。嵌套 remove 只保证请求／Prepare，最外层结算结束才保证完成；主动撤退的资源结算不等待物理注销。advance 固定入口候选，再逐项读取最新 PRESENT Unit 执行 tick。
 
 battlefield/unit.ts 的 add／update／remove 是纯存储与索引转换，Field.update 接收完整 Unit 数组，battle/unit.update 接收一个 Unit Ref 和一个 Change，同宿主组合由 compose 表达。特殊撤退—再部署的支持范围见 [Deployment](deployment.md#支持范围)。
 

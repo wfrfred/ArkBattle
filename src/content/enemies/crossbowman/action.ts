@@ -41,6 +41,7 @@ export function createArrow(): tracking.Definition {
                 attackType: "NORMAL",
                 applyWay: "RANGED",
                 source: source !== null && units.get(state, source) !== undefined ? source : null,
+                killer: source,
                 target: units.ref(target),
                 nature: "DAMAGE",
                 hitRecovery: true,

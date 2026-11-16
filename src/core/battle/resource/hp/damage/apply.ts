@@ -131,7 +131,7 @@ export function applyDamage(
     const current = units.get(battle, request.target);
     const killed = current?.lifecycle === "PRESENT" && !isAlive(current);
     if (killed) {
-        battle = remove(battle, request.target, "DEATH");
+        battle = remove(battle, request.target, { reason: "DEATH", killer: request.killer });
     }
 
     return complete(

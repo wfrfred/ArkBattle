@@ -235,6 +235,7 @@ function apply(
                 attackType: operation.attackType,
                 applyWay: operation.applyWay,
                 source,
+                killer: source,
                 target: units.ref(receiver),
                 nature: "DAMAGE",
                 hitRecovery: true,

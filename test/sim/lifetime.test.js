@@ -57,7 +57,7 @@ test("HOOK-03: Skill and Burst end notifications observe their cleared state whi
     const request = { source: null, target: owner, attackType: "NORMAL", applyWay: "NONE", parameters: { type: "NEURAL", power: 1000 } };
     const burst = epDamage.applyDamage(request, epDamage.calculateDamage(activated.state, request));
     assert.notEqual(burst.value.application.burst, null);
-    state = remove(burst.state, owner, "SCRIPT");
+    state = remove(burst.state, owner, { reason: "SCRIPT" });
     assert.equal(units.get(state, owner), undefined);
     assert.deepEqual(observed.sort(), [["activation", "LEAVING"], ["burst", "LEAVING"]]);
 });
@@ -95,7 +95,7 @@ test("an owner waits for dependent finalizers and repeated requests preserve the
             assert.equal(self.state.total, 3);
             assert.equal(units.get(current, owner).lifecycle, "LEAVING");
             calls.push("parent-ended");
-            return remove(current, owner, "SCRIPT");
+            return remove(current, owner, { reason: "SCRIPT" });
         },
     });
     state = installed.state;
@@ -109,7 +109,7 @@ test("an owner waits for dependent finalizers and repeated requests preserve the
             onEnd(current, _self, reason) {
                 assert.equal(reason, "FIRST");
                 current = effects.end(current, parent, "SECOND");
-                current = remove(current, owner, "DEATH");
+                current = remove(current, owner, { reason: "DEATH", killer: null });
                 assert.equal(units.get(current, owner).lifecycle, "LEAVING");
                 assert.equal(effects.get(current, parent).lifecycle, "ENDING");
                 const previous = effects.get(current, parent);
@@ -189,7 +189,7 @@ test("an ending ancestor rejects new dependents before its running Action receiv
     state = started.state;
     execution = started.value;
 
-    const after = remove(state, units.ref(source), "DEATH");
+    const after = remove(state, units.ref(source), { reason: "DEATH", killer: null });
 
     assert.equal(attempted, null);
     assert.equal(businessCalls, 0);

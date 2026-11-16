@@ -145,10 +145,10 @@ test("wait policies publish before enter; timeout leaves final waits until compl
     assert.equal(state.schedule.main.type, "COMPLETED");
     assert.equal(isCompleted(state.schedule), false);
 
-    state = remove(state, ref(getUnit(state, 2)), "SCRIPT");
+    state = remove(state, ref(getUnit(state, 2)), { reason: "SCRIPT" });
     assert.deepEqual(state.schedule.waiting.final, [1, 3]);
-    state = remove(state, ref(getUnit(state, 1)), "SCRIPT");
-    state = remove(state, ref(getUnit(state, 3)), "SCRIPT");
+    state = remove(state, ref(getUnit(state, 1)), { reason: "SCRIPT" });
+    state = remove(state, ref(getUnit(state, 3)), { reason: "SCRIPT" });
     assert.equal(isCompleted(state.schedule), true);
     assert.deepEqual(
         [...all(state)].map(({ id }) => id),
@@ -193,7 +193,7 @@ test("an enemy removed in enter releases its wait before the next wave starts", 
     const births = [];
     const departing = definition("departing", (state, self) => {
         births.push([self.definition.id, state.tick]);
-        return remove(state, ref(self), "SCRIPT");
+        return remove(state, ref(self), { reason: "SCRIPT" });
     });
     const following = definition("following", (state, self) => {
         births.push([self.definition.id, state.tick]);

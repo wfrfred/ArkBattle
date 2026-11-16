@@ -183,6 +183,7 @@ export function createSkill(
                     attackType: "NORMAL",
                     applyWay: "MELEE",
                     source: unitRef(source),
+                    killer: unitRef(source),
                     target: unitRef(target),
                     nature: "DAMAGE",
                     hitRecovery: true,

@@ -19,7 +19,7 @@ function fixture(action, place, rewardAt) {
  let source, target;
  function consequence(current) {
    trace.push({ stage: `target.${place}`, sourceLifecycle: get(current, source.id)?.lifecycle });
-   if (action === 'remove-source') return remove(current, source, 'SCRIPT');
+   if (action === 'remove-source') return remove(current, source, { reason: 'SCRIPT' });
    return update(current, source, skillCapability.setRestriction('recoveryRestrictions', {
      id: 'death-forbids-sp', value: { allows: () => false },
    }));
@@ -59,7 +59,7 @@ function fixture(action, place, rewardAt) {
    id: 'victim-cleanup', initialize: () => ({}),
    onEnd: current => consequence(current),
  }).state;
- const request = { source, target, nature: 'DAMAGE', hitRecovery: false, attackType: 'NORMAL', applyWay: 'NONE',
+ const request = { source, killer: source, target, nature: 'DAMAGE', hitRecovery: false, attackType: 'NORMAL', applyWay: 'NONE',
    parameters: { type: 'TRUE', attack: { power: 100, multiplier: 1, addition: 0 } } };
  return { state, source, target, trace, request };
 }

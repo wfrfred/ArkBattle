@@ -21,7 +21,9 @@ const groundBlockingRestriction: Restriction = {
 function clearOccupant(battle: BattleState, position: TilePosition): BattleState {
     const occupant = occupancyAt(battle.battlefield, position)?.occupant;
 
-    return occupant == null ? battle : removeUnit(battle, occupant, "DEATH");
+    return occupant == null
+        ? battle
+        : removeUnit(battle, occupant, { reason: "DEATH", killer: null });
 }
 
 export function create(configuration: Configuration): Definition {

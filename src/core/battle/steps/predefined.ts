@@ -1,5 +1,5 @@
 import { assertNonnegativeSafeInteger } from "../../common/assert.js";
-import type { Definition as UnitDefinition, LeaveReason, Unit } from "../../unit/unit.js";
+import type { Definition as UnitDefinition, End, Unit } from "../../unit/unit.js";
 import { initialize as initializeUnit, type Input as UnitInput } from "../../unit/initialize.js";
 import { get as getUnit, ref as unitRef } from "../../unit/query.js";
 import {
@@ -120,11 +120,7 @@ export function appear(battle: BattleState, id: PredefinedDefinition["id"]): Bat
     return reconcile(battle);
 }
 
-export function remove(
-    battle: BattleState,
-    id: PredefinedDefinition["id"],
-    reason: LeaveReason,
-): BattleState {
+export function remove(battle: BattleState, id: PredefinedDefinition["id"], end: End): BattleState {
     if (!battle.definition.predefines.some((definition) => definition.id === id)) {
         throw new RangeError(`unknown predefined definition: ${id}`);
     }
@@ -143,7 +139,7 @@ export function remove(
     };
     battle =
         binding.source.type === "UNIT"
-            ? removeUnit(battle, binding.source.ref, reason)
+            ? removeUnit(battle, binding.source.ref, end)
             : removeMechanism(battle, binding.source.ref);
 
     return reconcile(battle);

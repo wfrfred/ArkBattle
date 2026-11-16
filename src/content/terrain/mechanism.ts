@@ -291,7 +291,7 @@ export function createTerrainMechanism(
             accepts: (unit) =>
                 onGround(unit) && hasAllegiance(unit) && unit.allegiance.side === "ENEMY",
             enter: (battle, unit) => ({
-                state: removeUnit(battle, units.ref(unit), "DEATH"),
+                state: removeUnit(battle, units.ref(unit), { reason: "DEATH", killer: null }),
                 value: null,
             }),
         });

@@ -195,7 +195,10 @@ export function increaseHp(
             : replace(battle, [{ ...unit, vitality: { ...unit.vitality, health: after } }]);
 
     return {
-        state: after.hp <= 0 ? remove(state, units.ref(unit), "DEATH") : state,
+        state:
+            after.hp <= 0
+                ? remove(state, units.ref(unit), { reason: "DEATH", killer: null })
+                : state,
         value: application,
     };
 }

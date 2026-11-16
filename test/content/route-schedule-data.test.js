@@ -139,7 +139,7 @@ test("Action and Enemy notCountInTotal release scheduling from still-present uni
     assert.deepEqual(state.schedule.waiting, { wave: [1], final: [1] });
     state = triggerBranch(state, "uncounted", false);
     assert.deepEqual(state.schedule.waiting, { wave: [1], final: [1] });
-    state = step(remove(state, ref(get(state, 1)), "DEATH"), []);
+    state = step(remove(state, ref(get(state, 1)), { reason: "DEATH", killer: null }), []);
     assert.equal(isCompleted(state.schedule), true);
     assert.deepEqual(all(state).map(({ id }) => id).toArray(), [0, 2]);
 });

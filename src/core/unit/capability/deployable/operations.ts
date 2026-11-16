@@ -51,5 +51,5 @@ export function retreat(battle: BattleState, reference: Ref<Unit & Deployable>):
         }
     }
 
-    return remove(battle, reference, "RETREAT");
+    return remove(battle, reference, { reason: "RETREAT" });
 }

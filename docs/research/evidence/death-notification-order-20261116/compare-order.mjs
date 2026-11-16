@@ -19,7 +19,7 @@ function run(order) {
     const trace = [];
     const hp = (state, from, to, amount, type = 'TRUE') => {
         const request = {
-            source: from, target: to, attackType: 'SPLASH', applyWay: 'MELEE', nature: 'DAMAGE', hitRecovery: false,
+            source: from, killer: from, target: to, attackType: 'SPLASH', applyWay: 'MELEE', nature: 'DAMAGE', hitRecovery: false,
             parameters: { type, attack: { power: amount, multiplier: 1, addition: 0 },
                 ...(type === 'ARTS' ? { penetration: { fixed: 0, proportional: 0 } } : {}) },
         };

@@ -22,7 +22,7 @@ import { createArknightsElementalDefinition } from "../../dist/data/effect/eleme
 function damageRequest(source, target, power, type = "TRUE", penetration = { fixed: 0, proportional: 0 }) {
     const attack = { power, multiplier: 1, addition: 0 };
     return {
-        source, target, attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE", hitRecovery: true,
+        source, killer: source, target, attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE", hitRecovery: true,
         parameters: type === "PHYSICAL" || type === "ARTS"
             ? { type, attack, penetration }
             : { type, attack },
@@ -436,7 +436,7 @@ test("RESTRICTION-02: damage exemptions cover one mechanism through reentrant ch
     assert.equal(nested, "REJECTED");
     assert.equal(get(accepted.state, 1).vitality.health.hp, 70);
     assert.equal(hpDamage.applyDamage(request, hpDamage.calculateDamage(accepted.state, request)).value.type, "REJECTED");
-    state = remove(accepted.state, target, "SCRIPT");
+    state = remove(accepted.state, target, { reason: "SCRIPT" });
     assert.equal(hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request), { ignore: () => true }).value.type, "REJECTED");
 });
 
@@ -641,7 +641,7 @@ test("HP-08: Health protection commits before its consequences and preserves the
     state = update(protectedHit.state, target, units.setHook(vitality.damageCommitting, {
         id: "remove-host", priority: 10000,
         invoke(current, context, value) {
-            return { state: remove(current, context.request.target, "SCRIPT"), value };
+            return { state: remove(current, context.request.target, { reason: "SCRIPT" }), value };
         },
     }));
     const unavailable = hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request));
@@ -979,7 +979,7 @@ test("APPLY-02: HP zero output rejects while excess receiving reduction still co
         invoke(current, { request, application }) {
             calls.push("committed");
             committedReport = application;
-            return { state: remove(current, request.target, "SCRIPT"), value: undefined };
+            return { state: remove(current, request.target, { reason: "SCRIPT" }), value: undefined };
         },
     }));
     const departed = hpDamage.applyDamage(positiveDamage, hpDamage.calculateDamage(state, positiveDamage));
@@ -1138,6 +1138,7 @@ test("HP-03: lethal HP remains present through nested Combat and both Applied ro
 
 test("KILL-02: nested damage owns its kill even while Lifetime defers the victim's final removal", () => {
     const reports = [];
+    const departures = [];
     const observe = {
         id: "kill-result",
         invoke(current, { request, outcome }) {
@@ -1156,6 +1157,26 @@ test("KILL-02: nested damage owns its kill even while Lifetime defers the victim
     const source = units.ref(get(state, 0));
     const target = units.ref(get(state, 1));
     const otherSource = units.ref(get(state, 2));
+    state = update(state, target, units.compose(
+        units.setHook(units.prepare, {
+            id: "preserve-first-death",
+            invoke(current, departure) {
+                assert.deepEqual(departure.killer, otherSource);
+                departures.push(["prepare", departure.killer.id]);
+                return {
+                    state: remove(current, target, { reason: "DEATH", killer: source }),
+                    value: undefined,
+                };
+            },
+        }),
+        units.setHook(units.leave, {
+            id: "preserve-first-death",
+            invoke(current, departure) {
+                departures.push(["leave", departure.killer.id]);
+                return { state: current, value: undefined };
+            },
+        }),
+    ));
     let nested;
     let outer;
     state = update(state, source, units.setHook(hpDamage.sourceApplied, {
@@ -1182,6 +1203,7 @@ test("KILL-02: nested damage owns its kill even while Lifetime defers the victim
     assert.equal(outer.value.killed, false);
     assert.deepEqual(outer.value.application, { before: { hp: 40, minusHp: 0 }, after: { hp: 30, minusHp: 0 }, hpLoss: 10, minusHpGain: 0 });
     assert.deepEqual(reports, [[otherSource.id, true], [source.id, false]]);
+    assert.deepEqual(departures, [["prepare", otherSource.id], ["leave", otherSource.id]]);
     assert.equal(get(state, target.id), undefined);
 });
 
@@ -1259,7 +1281,7 @@ test("EP-01: full resistance preserves formula floors and sampled EP output; HP 
     const hpRequest = {
         source: null,
         target,
-        attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE", hitRecovery: true, parameters: { type: "ELEMENTAL", attack: { power: 100, multiplier: 1, addition: 0 } },
+        attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE", hitRecovery: true, killer: null, parameters: { type: "ELEMENTAL", attack: { power: 100, multiplier: 1, addition: 0 } },
     };
     const hp = hpDamage.applyDamage(hpRequest, hpDamage.calculateDamage(applied.state, hpRequest));
     assert.equal(hp.value.application.hpLoss, 5);

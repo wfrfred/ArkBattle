@@ -69,7 +69,7 @@ test("APPLY-02: Calculate normalizes final HP/EP output before Apply starts rece
             target: units.ref(get(state, 1)),
             parameters,
             ...(operation === hpDamage || operation === epDamage ? { attackType: "NORMAL", applyWay: "NONE" } : {}),
-            ...(operation === hpDamage ? { nature: "DAMAGE", hitRecovery: true } : {}),
+            ...(operation === hpDamage ? { nature: "DAMAGE", hitRecovery: true, killer: units.ref(get(state, 0)) } : {}),
         };
         const calculate = operation.calculateDamage ?? operation.calculateHealing;
         const apply = operation.applyDamage ?? operation.applyHealing;
@@ -119,7 +119,7 @@ test("HP Healing accepts full resources and absent patients while damage require
     assert.deepEqual(calls, ["receive", "target", "source"]);
     assert.deepEqual(damageCommits, []);
 
-    const hpLoss = { source: null, target, attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE", hitRecovery: true, parameters: {
+    const hpLoss = { source: null, target, attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE", hitRecovery: true, killer: null, parameters: {
         type: "TRUE", attack: { power: 30, multiplier: 1, addition: 0 },
     } };
     const epLoss = { target, source: null, attackType: "NORMAL", applyWay: "NONE", parameters: { type: "NEURAL", power: 200 } };
@@ -183,7 +183,7 @@ test("HP-07: natural recovery samples current attributes after Effects and befor
     ]);
     const target = units.ref(get(state, 0));
     const loss = amount => ({
-        source: null, target, attackType: "NONE", applyWay: "NONE", nature: "LOSS", hitRecovery: false,
+        source: null, target, attackType: "NONE", applyWay: "NONE", nature: "LOSS", hitRecovery: false, killer: null,
         parameters: { type: "TRUE", attack: { power: amount, multiplier: 1, addition: 0 } },
     });
     const initialLoss = loss(60);

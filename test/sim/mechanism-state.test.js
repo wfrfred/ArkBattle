@@ -54,7 +54,7 @@ test("onTick and nested unit departure preserve the latest mechanism state", () 
             state = mechanisms.setState(state, mechanisms.ref(self), {
                 ...currentState, contacts: [0],
             });
-            return removeUnit(state, ref(get(state, 0)), "SCRIPT");
+            return removeUnit(state, ref(get(state, 0)), { reason: "SCRIPT" });
         },
         onUnitLeave(state, self, departure) {
             assert.deepEqual(self.state.contacts, [departure.unit.id]);

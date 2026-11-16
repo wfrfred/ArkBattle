@@ -1,6 +1,6 @@
 import * as battlefield from "../battlefield/unit.js";
 import type { State as BattlefieldState } from "../battlefield/state.js";
-import type { LeaveReason, Unit, Departure } from "../unit/unit.js";
+import type { End, Unit, Departure } from "../unit/unit.js";
 import * as units from "../unit/query.js";
 import { appendEvents, type State as BattleState } from "./state.js";
 import { create as createLifetime } from "../lifetime/operations.js";
@@ -89,17 +89,13 @@ export const lifetime = createLifetime<Unit, Unit, Departure>({
     reason: (departure) => departure.reason,
 });
 
-export function remove(
-    battle: BattleState,
-    reference: Ref<Unit>,
-    reason: LeaveReason,
-): BattleState {
+export function remove(battle: BattleState, reference: Ref<Unit>, end: End): BattleState {
     const unit = units.get(battle, reference);
     if (unit === undefined) {
         return battle;
     }
 
-    return lifetime.end(battle, reference, { unit, reason });
+    return lifetime.end(battle, reference, { ...end, unit });
 }
 
 export function advance(battle: BattleState): BattleState {

@@ -23,6 +23,7 @@ export function hurt(
         attackType,
         applyWay: "NONE",
         source: null,
+        killer: null,
         target: units.ref(host),
         nature: "DAMAGE",
         hitRecovery: false,

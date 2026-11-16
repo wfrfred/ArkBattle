@@ -103,7 +103,7 @@ Battle 归属的全局观察使用对应领域的 typed Key 与 Hooks 集合，�
 
 Blocking 每条关系在第一个业务回调前同时采样双方候选及 priority，分别固定各自顺序，随后始终先 Blocker、后 Blockable，逐项读取最新登记；Blockable 的高优先级不越过 Blocker 阶段。ACQUIRED 只继续仍属于原 Relation 的响应；RELEASED 是解除后的历史通知。后续关系到轮到它时再取候选，不提前冻结整批通知的登记。
 
-Unit 的 enter／tick／prepare 同样固定优先级排序后的候选和本次 Context。enter／tick 每项前要求宿主 PRESENT；prepare 在发布 LEAVING 后执行，保留原 Departure。leave 在注销前从最新 Unit 捕获 Hook 对象快照及其优先级顺序，注销后执行这些程序并检查 accepts，不查询已删除宿主。登记快照与 Departure.unit 的历史采样分别处理。
+Unit 的 enter／tick／prepare 同样固定优先级排序后的候选和本次 Context。enter／tick 每项前要求宿主 PRESENT；prepare 在发布 LEAVING 后、自动请求依赖者结束前执行，保留原 Departure；DEATH 分支携带调用者给定的 killer。leave 在注销前从最新 Unit 捕获 Hook 对象快照及其优先级顺序，注销后执行这些程序并检查 accepts，不查询已删除宿主。登记快照与 Departure.unit 的历史采样分别处理。
 
 动态登记不重放已完成阶段。sourceApplied 与 targetApplied 使用不同键，按目标、来源顺序执行；同一 Unit 承担两个角色时仍分别通知。
 

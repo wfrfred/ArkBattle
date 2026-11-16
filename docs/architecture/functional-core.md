@@ -176,11 +176,11 @@ fieldUnit.remove(field, ref) → nextField
 
 unit.add(battle, unit) → nextBattle
 unit.update(battle, ref, change) → nextBattle
-unit.remove(battle, ref, reason) → nextBattle
+unit.remove(battle, ref, end) → nextBattle
 unit.advance(battle) → nextBattle
 ```
 
-battlefield/unit.ts 的 add／update／remove 只完成纯状态转换；完整 Unit 业务统一位于 battle/unit.ts，提供 add／update／remove／advance。Blocking 在自身构造入口建立 Blocker／Blockable 至多一种的约束，内部信任，不由角色推导阵营、Layer 或移动能力。remove 委托 Unit Lifetime，在请求阶段纯发布 LEAVING，再派发能力自行登记的 prepare Hook，由 Blocking 清理本 Unit 的关系与自身计划。已登记 owner 与 Scope 依赖者完整 Finalize 后，Unit 注销并输出携带最终 Unit 历史快照的 UNIT_REMOVED，再派发本地 leave，随后派发全局 leave；各自按公共 priority 排序，同级保留登记顺序。Occupancy 自己处理旧配对，Deployable 的本地 leave 归还实际占用；部署时预装的死亡响应只处理确认死亡。主动撤退由其领域操作在请求离场前直接结算退款、Card 费用阶段与库存恢复。Unit 不识别具体能力，也不全场扫描补救领域清理；调用方不拼接这些内部步骤，BattleState 不另提供 Unit 登记或注销入口。部署契约见 [Deployment](deployment.md)。
+battlefield/unit.ts 的 add／update／remove 只完成纯状态转换；完整 Unit 业务统一位于 battle/unit.ts，提供 add／update／remove／advance。Blocking 在自身构造入口建立 Blocker／Blockable 至多一种的约束，内部信任，不由角色推导阵营、Layer 或移动能力。remove 将 End 与入口 Unit 固定为 Departure 后委托 Unit Lifetime；DEATH 明确携带调用者给定的 killer，重复请求不覆盖首次结束事实。在请求阶段纯发布 LEAVING，再派发能力自行登记的 prepare Hook，由 Blocking 清理本 Unit 的关系与自身计划。已登记 owner 与 Scope 依赖者完整 Finalize 后，Unit 注销并输出携带最终 Unit 历史快照的 UNIT_REMOVED，再派发本地 leave，随后派发全局 leave；各自按公共 priority 排序，同级保留登记顺序。Occupancy 自己处理旧配对，Deployable 的本地 leave 归还实际占用；部署时预装的死亡响应只处理确认死亡。主动撤退由其领域操作在请求离场前直接结算退款、Card 费用阶段与库存恢复。Unit 不识别具体能力，也不全场扫描补救领域清理；调用方不拼接这些内部步骤，BattleState 不另提供 Unit 登记或注销入口。部署契约见 [Deployment](deployment.md)。
 
 add 拒绝重复身份。公开 Unit.update 接收单个 Typed Ref 与 Change；Ref 证明目标的稳定能力，Change 不绑定身份。Change 函数保留输入宿主的完整类型，返回 next 与已捕获各项 previous 的 settlements；compose 将两个 Change 从左到右应用于同一宿主，并顺序连接结算列表。目标缺失时抛出 RangeError。全部纯应用完成后一次发布 Field，再逐项接续最新 BattleState 结算；此阶段之前不执行业务回调。各项无变化时不登记结算，不能因为最终 next 恢复入口引用而丢弃此前真实变换的结算。Field 内部 update 仍接收完整 Unit 数组，信任 Core 构造的身份与 Definition，不重复校验；替换保持登记顺序。Unit 身体所属格由 position 与 Presence 查询，不另存位置索引或空间依赖分类。
 

@@ -175,7 +175,12 @@ const host = initialize(battle, { id: 0, position: [0, 0], definition: {
     action: { initialize: state => actions.createActions(state, actions.create(program)) },
 } }).value;
 const reference = ref(host);
-removeUnit(battle, reference, 'SCRIPT');
+removeUnit(battle, reference, { reason: 'SCRIPT' });
+removeUnit(battle, reference, { reason: 'DEATH', killer: null });
+// @ts-expect-error every death explicitly declares its attribution.
+removeUnit(battle, reference, { reason: 'DEATH' });
+// @ts-expect-error other departure reasons do not carry death attribution.
+removeUnit(battle, reference, { reason: 'SCRIPT', killer: null });
 const currentAction = host.action.actions.get(program.id, program)!;
 const currentPeriod: number = actionCapability.resolvePeriod(host, currentAction);
 actionCapability.setSpeedContribution({ id: 'fixed-speed', value: [] });
@@ -479,12 +484,16 @@ update(battle, ref(bare), damageCommittedChange);
 // @ts-expect-error committed notifications cannot replace the already applied Health.
 Hooks.empty().set(vitality.damageCommitted, { id: 'rewrite', invoke: state => ({ state, value: { hp: 1, minusHp: 0 } }) });
 const classifiedRequest: hpDamage.Request = {
-    source: null, target: patientRef, nature: 'DAMAGE', hitRecovery: true,
+    source: null, killer: null, target: patientRef, nature: 'DAMAGE', hitRecovery: true,
     attackType: 'NONE', applyWay: 'ALL',
     parameters: { type: 'TRUE', attack: { power: 10, multiplier: 1, addition: 0 } },
 };
 const { attackType: omittedAttackType, ...withoutAttackType } = classifiedRequest;
 const { applyWay: omittedApplyWay, ...withoutApplyWay } = classifiedRequest;
+const { killer: omittedKiller, ...withoutKiller } = classifiedRequest;
+const independentAttribution: hpDamage.Request = { ...classifiedRequest, source: reference, killer: patientRef };
+// @ts-expect-error HP damage declares attribution independently of its participating source.
+const missingKiller: hpDamage.Request = withoutKiller;
 // @ts-expect-error classification is explicit even when the request has no source.
 const missingAttackType: hpDamage.Request = withoutAttackType;
 // @ts-expect-error applyWay is independently required.

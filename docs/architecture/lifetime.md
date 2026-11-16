@@ -61,7 +61,7 @@ Lifetime<V, S, E> 的 V 是公开完整实体类型，通常使用实体自身�
 
 prepare／finalize 是 Core 的完整操作适配，不是 Content Definition 的生命周期回调；Content 回调接收其领域定义的 self。prepare 的 initial 是标记前的同一不可变对象，供 Effect 判断标记前是否 ACTIVE 等业务使用；需要实时值时从当前 battle 查询，不把 initial 整体写回。
 
-finalize 只接收 Ref 和 E，从当前存储读取实例。完整 owner 边保护宿主，Skill 从当前 unit.skill.definition、Burst 从仍存在的 Unit 取得对应 Definition。领域在自己注销后仍要通知时，可以使用 Finalize 内明确取得的历史值。Unit 的 Departure.unit 则是离场开始时的业务事实，由 remove 入口构造一次并随 E 保留。
+finalize 只接收 Ref 和 E，从当前存储读取实例。完整 owner 边保护宿主，Skill 从当前 unit.skill.definition、Burst 从仍存在的 Unit 取得对应 Definition。领域在自己注销后仍要通知时，可以使用 Finalize 内明确取得的历史值。Unit 的 Departure 则由 remove 入口构造一次：End 保留原因，DEATH 分支必含显式 killer，unit 保留离场开始时的历史对象。它们随 E 固定，不在后续 Finalize 重新推导。
 
 描述符提供的结束操作为：
 
@@ -69,7 +69,7 @@ finalize 只接收 Ref 和 E，从当前存储读取实例。完整 owner 边保
 end(battle, ref, end, dependencyReason?): BattleState;
 ```
 
-业务 End 与依赖传播原因是两条通道；默认传播原因取 reason(end)。Pending 保留本次业务 End，不保存 dependencyReason；传播原因由 end／request 参数沿同步请求传递，在 Prepare 返回后通过 fromDependency 展开子请求。重复请求不重新 Prepare 或展开依赖，因此首次原因不被覆盖。例如 Unit 死亡时，Action.onEnd 接收 `{ type: "CANCELLED", reason: "SOURCE_ABSENT" }`，依赖 Effect 接收 DEATH。fromDependency 只在允许成为依赖者的领域提供；Unit 描述符不提供它，不能绑定上游。
+业务 End 与依赖传播原因是两条通道；默认传播原因取 reason(end)。Pending 保留本次业务 End，不保存 dependencyReason；传播原因由 end／request 参数沿同步请求传递，在 Prepare 返回后通过 fromDependency 展开子请求。重复请求不重新 Prepare 或展开依赖，因此首次原因不被覆盖；Unit 的首次 Departure.killer 也不被后来的结束请求改写。例如 Unit 死亡时，Action.onEnd 接收 `{ type: "CANCELLED", reason: "SOURCE_ABSENT" }`，依赖 Effect 接收 DEATH。fromDependency 只在允许成为依赖者的领域提供；Unit 描述符不提供它，不能绑定上游。
 
 ## 状态归属与关系权威
 

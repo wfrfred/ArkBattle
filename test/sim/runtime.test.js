@@ -94,7 +94,7 @@ test("a predefined departure can create its successor without losing that bindin
     ];
     const before = battle([], { predefines });
     const original = units.all(before).find((self) => self.definition === reappearing);
-    const after = predefined.appear(predefined.remove(before, 10, "SCRIPT"), 11);
+    const after = predefined.appear(predefined.remove(before, 10, { reason: "SCRIPT" }), 11);
     const replacement = after.predefinedPresence.find(({ definitionId }) => definitionId === 10).source.ref.id;
     const next = after.predefinedPresence.find(({ definitionId }) => definitionId === 11).source.ref.id;
     assert.notEqual(replacement, original.id);

@@ -288,7 +288,7 @@ test("EXTEND and EXTEND_TIME renew the retained instance without creating incomi
         remaining: 6,
         rate: 1,
     });
-    state = remove(extended.state, source, "SCRIPT");
+    state = remove(extended.state, source, { reason: "SCRIPT" });
     assert.equal(effects.get(state, first.value), undefined);
     assert.notEqual(effects.get(state, original.value), undefined);
 });
@@ -463,11 +463,11 @@ test("UNIQUE groups distinguish shared, Unit, and absent sources while source at
         },
         { source: a, scopes: [scope(unitLifetime, a)] },
     );
-    state = remove(bound.state, a, "SCRIPT");
+    state = remove(bound.state, a, { reason: "SCRIPT" });
     assert.equal(effects.get(state, bound.value), undefined);
     assert.equal(effects.get(state, first.value).source, a);
     assert.equal(effects.install(state, owner, definition, { source: a }).value, null);
-    state = remove(state, owner, "SCRIPT");
+    state = remove(state, owner, { reason: "SCRIPT" });
     assert.equal(effects.get(state, first.value), undefined);
     assert.equal(effects.get(state, other.value), undefined);
 });

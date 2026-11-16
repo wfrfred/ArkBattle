@@ -93,6 +93,7 @@ function damage(battle: BattleState, host: Ref<Unit>, amount: number): BattleSta
         attackType: "BUFF",
         applyWay: "NONE",
         source: null,
+        killer: null,
         target: units.ref(unit),
         nature: "DAMAGE",
         hitRecovery: false,

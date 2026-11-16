@@ -64,7 +64,7 @@ test("Hook priority fixes this dispatch's order while replacement and nested dis
             return result;
         },
     });
-    remove(state, units.ref(subject), "SCRIPT");
+    remove(state, units.ref(subject), { reason: "SCRIPT" });
 
     assert.deepEqual(calls, [
         ["outer", "first"],
@@ -135,6 +135,6 @@ test("Unit prepare prioritizes responses while leave orders the latest captured 
         ),
     ));
 
-    remove(state, subject, "DEATH");
+    remove(state, subject, { reason: "DEATH", killer: null });
     assert.deepEqual(calls, ["earlier-response", "death-output", "effect-end", "latest-leave", "high-leave"]);
 });

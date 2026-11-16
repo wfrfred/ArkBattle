@@ -161,7 +161,7 @@ test("APPLY-03: Mudrock requires a successful block for shield costs and benefit
     observed.length = 0;
     const request = {
         source: ref(getUnit(battle, 1)), target: ref(getUnit(battle, 0)),
-        attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE", hitRecovery: true, parameters: parameters(100, "TRUE"),
+        attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE", hitRecovery: true, killer: ref(getUnit(battle, 1)), parameters: parameters(100, "TRUE"),
     };
     const accepted = hpDamage.applyDamage(request, hpDamage.calculateDamage(battle, request), {
         forbidden: new Set(["BLOCKED"]),

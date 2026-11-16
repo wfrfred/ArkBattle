@@ -65,7 +65,7 @@ advance(battle, reference: Ref<Unit & Vitality>): BattleState;
 
 基础 MaxHP、DEF、RES、recoverySpeed、recoveryRatio 全部必填，由 initialize 校验为有限非负数，可以是小数。无自然回复时两项回复基础值均为零。初始 Health 为 `{ hp: Math.max(1, definition.maxHp), minusHp: 0 }`，maxMinusHpRatio 初始为 0，有效 MaxHP 的下限为 1。基础 RES 可以超过 100，有效值在属性修正后限制到 0～100；有效 DEF 的下限为 0。普通 HP 使用 0～有效 MaxHP 的范围，不在每次计算后取整。
 
-MaxHP 保留静态 Modifier[]，set／remove 分别登记与移除，共用局部比例计算：以 `旧普通HP / 旧MaxHP × 新MaxHP` 作为拟写 HP，再按新容量分配 Health，在同一次纯 Transformation 中发布贡献与生命状态。零 HP 不因属性变化复活，不派发治疗或伤害提交 Hook。若容量变化后的债务已耗尽生命，Settlement 从最新状态确认后请求正常 DEATH；其余关系由 Unit Lifetime 清理。DEF／RES 与两项回复属性的 Input 为静态修正或 `(battle, self: Unit & Vitality) => readonly Modifier[]`，由普通注册工厂生成 setContribution／removeContribution。专属接收 Hook 通过 unit.setHook／removeHook 登记，Key 保留 Hook 类型与 Vitality 宿主约束。MaxHP 单独保留领域实现，不进入普通字段集合。属性查询接收已取得的当前宿主并返回 number，不重复定位或判空；Damage 在 Formula Hook 后确认当前目标，再按伤害类型求值，不提前缓存或混入穿透。
+MaxHP 保留静态 Modifier[]，set／remove 分别登记与移除，共用局部比例计算：以 `旧普通HP / 旧MaxHP × 新MaxHP` 作为拟写 HP，再按新容量分配 Health，在同一次纯 Transformation 中发布贡献与生命状态。零 HP 不因属性变化复活，不派发治疗或伤害提交 Hook。若容量变化后的债务已耗尽生命，Settlement 从最新状态确认后以 killer:null 请求正常 DEATH；其余关系由 Unit Lifetime 清理。DEF／RES 与两项回复属性的 Input 为静态修正或 `(battle, self: Unit & Vitality) => readonly Modifier[]`，由普通注册工厂生成 setContribution／removeContribution。专属接收 Hook 通过 unit.setHook／removeHook 登记，Key 保留 Hook 类型与 Vitality 宿主约束。MaxHP 单独保留领域实现，不进入普通字段集合。属性查询接收已取得的当前宿主并返回 number，不重复定位或判空；Damage 在 Formula Hook 后确认当前目标，再按伤害类型求值，不提前缓存或混入穿透。
 
 Health、容量配置、Contribution 与 Restriction 共存于 Vitality State，专属接收登记存于 Unit.hooks。DEF／RES 的修改保留其他字段；属性变化不派发普通治疗 Hook。治疗索敌默认 provider 与显式注入 provider 均读取有效 MaxHP，避免把基础值或未计修正的上限用于缺血判定和比例排序。
 
@@ -254,6 +254,7 @@ interface Request {
     readonly nature: Nature;
     readonly hitRecovery: boolean;
     readonly source: Ref<Unit> | null;
+    readonly killer: Ref<Unit> | null;
     readonly target: Ref<Unit & Vitality>;
     readonly parameters: Parameters;
 }
@@ -265,6 +266,8 @@ interface Calculated {
 ```
 
 AttackParameters 表示用于本次计算的数值，不要求 power 一定来自来源的 ATK。基本数值为 `power * multiplier + addition`；具体伤害类型再决定防御公式。
+
+HP Damage.Request 的 source 与 killer 分别表示伤害来源和本笔确认死亡时使用的击杀者。killer 必填，由调用者按内容语义显式提供；普通攻击通常两者相同，无伤害来源的输出也可指定已知击杀者，无归属则明确传 null。Core 不从 source、当前仍在场的对象或 Effect／Projectile 来源关系猜测 killer。它不参与公式、接收资格或来源 Hook 选择，也不要求该 Ref 当前仍可解析。显式 killer 是项目选择，原生来源与死亡上下文的区别见[归属调查](../research/cases/39-death-attribution-and-attribute-ranges.md)。EP Damage 与 Healing 不增加该字段。
 
 HP／EP Damage 共用 [resource/damage.ts](../../src/core/battle/resource/damage.ts) 的 AttackType 与 ApplyWay，并从各自 Damage 入口重导出。Request 顶层必填 attackType／applyWay，表示本笔输出的攻击类别与施加途径；它们独立于数学伤害类型、DAMAGE／LOSS 和 HIT 回复许可，不进入 Parameters 或 Calculated。Content 在构造请求时显式提供；Hook 与 Restriction 通过固定 request 读取，Core 不按这些类别新增阶段、公式或接收分支，也不从来源、距离、当前技能或来源仍在场与否推导分类。
 
@@ -620,22 +623,24 @@ damageCommitting 的 Context.previous 保留进入提交时的 Health，工作�
 
 HP 变化、死亡确定、Unit 仍存在和离场完成分别处理。已确定死亡时，普通治疗不能仅因 Unit 尚在集合中就获得执行资格；普通治疗与明确的免死、复活、形态转换也不共用这一推断。
 
-普通 Damage 提交 Health、执行 damageCommitted 后不维护 Blocking，再按目标、来源顺序完成全部 HP Applied 响应，再读取当前目标：仍为 PRESENT 且 HP 不大于 0 时才请求 Unit.remove，最后派发 Completed。既有关系的默认保持资格不因临时 HP 为 0 失效，保护响应恢复生命后可以保留原阻挡；新关系取得仍要求双方存活。确实离场时，由 Unit Lifetime 先发布 LEAVING，再派发能力自行登记的 prepare Hook，由 Blocking 清理本 Unit 的关系，而不是由 HP 写入或全场扫描提前推断死亡。已有 Lifetime 结算时，remove 返回只保证请求／Prepare，Completed 不承诺目标全部离场 Finalize 已完成；没有活动结算时，remove 在当前调用内完成 drain。伤害通知保留本次已发生事实，响应按需要读取最新资格。特殊生命干预的支持边界见第 3.2 节。
+普通 Damage 提交 Health、执行 damageCommitted 后不维护 Blocking，再按目标、来源顺序完成全部 HP Applied 响应，再读取当前目标：仍为 PRESENT 且 HP 不大于 0 时才请求 `Unit.remove(battle, target, { reason: "DEATH", killer: request.killer })`，最后派发 Completed。既有关系的默认保持资格不因临时 HP 为 0 失效，保护响应恢复生命后可以保留原阻挡；新关系取得仍要求双方存活。确实离场时，由 Unit Lifetime 先发布 LEAVING，再派发能力自行登记的 prepare Hook，由 Blocking 清理本 Unit 的关系，而不是由 HP 写入或全场扫描提前推断死亡。已有 Lifetime 结算时，remove 返回只保证请求／Prepare，Completed 不承诺目标全部离场 Finalize 已完成；没有活动结算时，remove 在当前调用内完成 drain。伤害通知保留本次已发生事实，响应按需要读取最新资格。特殊生命干预的支持边界见第 3.2 节。
 
 真实离场沿用 [Lifetime 偏序](lifetime.md)：请求发布 LEAVING，再派发能力自行登记的 prepare Hook 完成 Blocking 清理，通过 Lifetime 已登记的 owner 与 Scope 请求子项；子项整个 Finalize 返回后才注销 Unit，再执行本地 leave 与全局 leave，不在 Finalize 兜底扫描全场关系。Occupancy 清理已通知的旧配对，Deployable 本地 leave 归还实际占用；部署来源预装的死亡程序只响应已确认 DEATH，按 Card 策略处理费用阶段与库存恢复。主动撤退由对应领域操作在请求离场前直接结算退款、Card 费用阶段与库存恢复，不由 Damage 或通用 Unit 推导部署业务。成功保护、替身或复活是否进入真实离场由对应机制决定。资源时点见 [Deployment](deployment.md)。
 
 ### 3.4 单笔击杀结果
 
-两侧 Applied 完成后，最新目标仍为 PRESENT 且 HP 不大于 0 时，本笔确认死亡并请求 DEATH，APPLIED.killed 为 true；其余情况为 false。Health 写入时归零不提前构成击杀，damageCommitted 或 Applied 中被救回的目标不计入本笔；目标已由嵌套伤害确认死亡、已离场或仍有生命时，外层不重复报告。已有 Lifetime 结算而使 Finalize 延后，不改变已经确认的 killed。
+两侧 Applied 完成后，最新目标仍为 PRESENT 且 HP 不大于 0 时，本笔确认死亡，将 `{ reason: "DEATH", killer: request.killer }` 交给 Unit.remove，APPLIED.killed 为 true；其余情况为 false。Health 写入时归零不提前构成击杀，damageCommitted 或 Applied 中被救回的目标不计入本笔；目标已由嵌套伤害确认死亡、已离场或仍有生命时，外层不重复报告。已有 Lifetime 结算而使 Finalize 延后，不改变已经确认的 killed。
 
-killed 记录本笔请求的死亡确认事实，来源沿用 request.source，不以来源当前是否仍在场重新裁定；source 为 null 也不否定本笔造成死亡。它不另行选择击杀者，不增加独立 killSource 或全局击杀记录。Completed 响应之后发生的新伤害或离场不追溯改写本笔结果。
+killed 只记录本笔请求是否取得死亡确认，不选取或保存另一份击杀者。死亡归属使用 request.killer，即使 source 为 null、两者不同或击杀者已离场，也不重新裁定。Unit 首次有效结束请求固定包含 killer 的 Departure，prepare 与 leave 使用同一死亡事实；重复请求不覆盖归属，不重复 Prepare。Completed 响应之后发生的新伤害或离场不追溯改写本笔结果。
+
+Unit 先发布 LEAVING，再按公共 priority 执行 prepare，随后才自动请求依赖 Effect 等子项结束。受害者的 Effect 可在仍存在的 Prepare 阶段读取 DEATH 与 killer 执行自己的后继；priority 只控制本轮 prepare 内部顺序，不改变 Lifetime 偏序。具体重伤奖励等内容尚未接入。
 
 发起者从 applyDamage 返回的 APPLIED 结果使用 killed。范围、多段和附加伤害仍是多笔请求；逐目标增加、累计后结算或整次最多触发一次，由具体 Content 使用这些结果编排。公共 Damage 不聚合整次攻击，不增加 Kill Hook；本字段是项目已确认的返回契约，不声称原生采用相同接口。
 
 必要回归语义：
 
-- KILL-01：两侧 Applied 后目标仍存活时 killed 为 false；本笔真正确认死亡时为 true，Application 继续保留原 HP 提交报告。
-- KILL-02：嵌套结算完成击杀时只有取得死亡确认的内层报告 true；Finalize 延后不丢失已确认结果，Completed 中后发的死亡不回写此前结果。
+- KILL-01：两侧 Applied 后目标仍存活时 killed 为 false；本笔真正确认死亡时为 true，Application 继续保留原 HP 提交报告。source 与 killer 独立传递，含无来源和无归属；目标 Prepare 在依赖 Effect 结束前读取固定 killer，leave 保留同一归属。
+- KILL-02：嵌套结算完成击杀时只有取得死亡确认的内层报告 true；首次有效 End 固定 reason 与 killer，重复结束不覆盖或重复 Prepare。Finalize 延后不丢失已确认结果，Completed 中后发的死亡不回写此前结果。
 
 ## 4. Healing 的两阶段契约
 
@@ -667,7 +672,7 @@ Calculate 依次派发来源 Formula、目标 Formula，将当前 power 与 mult
 
 Apply 对最终计算量为零的治疗在入口返回 REJECTED，不派发本笔接收与 Applied。正数治疗确认目标当前存在、PRESENT 且 HP 大于零，按第 1 节的接收与提交边界执行，读取最新 Health、MaxHP 先偿债，再按剩余容量增加普通 HP，并固定实际溢出报告；该 HP 发布不附带 Blocking 维护。随后依次派发 targetApplied 与 sourceApplied，即使来源与目标为同一 Unit 也分别执行；Completed 保持同一宿主不重复通知。来源缺失或 LEAVING 时不运行其 Hook，但不因此取消仍可作用于有效目标的已采样治疗。
 
-若恢复写入因缩减后的容量形成满债与零 HP，Vitality 在该写点请求 DEATH，并返回原 Application；Apply 保留这次成功提交，后继 Hook 按各自宿主资格派发，不将结果改为 UNAVAILABLE。Healing 不另做一般死亡判定，也不产生 killed。
+若恢复写入因缩减后的容量形成满债与零 HP，Vitality 在该写点以 killer:null 请求 DEATH，并返回原 Application；Apply 保留这次成功提交，后继 Hook 按各自宿主资格派发，不将结果改为 UNAVAILABLE。Healing 不另做一般死亡判定，也不产生 killed。
 
 结果与 Damage 使用相同的 REJECTED、CANCELLED、UNAVAILABLE、APPLIED 区分，治疗不携带击杀结果。Pending 使用同样的 NORMAL／FIXED／CANCELLED 三态；取消不停止剩余 Receiving Hook。Application 保存 before、after、hpGain、minusHpLoss 和 overflow，后续嵌套业务不追溯修改这次恢复事实。Received amount 与实际 HP 增加、偿债及溢出分开；完整恢复量不在 Calculate 提前按缺失 HP 截断。
 

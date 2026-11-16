@@ -45,6 +45,7 @@ export interface Request {
     readonly nature: Nature;
     readonly hitRecovery: boolean;
     readonly source: Ref<Unit> | null;
+    readonly killer: Ref<Unit> | null;
     readonly target: Ref<Unit & Vitality>;
     readonly parameters: Parameters;
 }
