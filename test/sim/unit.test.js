@@ -70,6 +70,10 @@ test("Unit death preserves its attribution through Effect responses and the orig
             .set(units.prepare, {
                 id: "prepare",
                 invoke(state, departure) {
+                    assert.equal(skills.getSkill(state, skills.ref(killer, rewardSkill)).sp.value, 1);
+                    assert.equal(effects.get(state, victimEffect).lifecycle, "ACTIVE");
+                    assert.equal(departure, killedDeparture);
+                    observed.push("victim-prepare");
                     return {
                         state: update(state, units.ref(departure.unit), units.setHook(units.leave, {
                             id: "late-leave",
@@ -107,16 +111,18 @@ test("Unit death preserves its attribution through Effect responses and the orig
     const current = units.all(state).find((unit) => unit.definition === definition);
     const victim = units.ref(current);
     const killer = units.ref(units.all(state).find(unit => unit.definition.id === "killer"));
+    let killedDeparture;
     const response = {
         id: "death-response", initialize: () => ({}),
         onEnable(current, self) {
-            return update(current, self.host, units.setHook(units.prepare, {
-                id: "death-response", priority: 10,
+            return update(current, self.host, units.setHook(hpDamage.targetKilled, {
+                id: "death-response",
                 invoke(state, departure) {
                     assert.equal(departure.reason, "DEATH");
                     assert.deepEqual(departure.killer, killer);
                     assert.equal(units.get(state, victim).lifecycle, "LEAVING");
                     assert.equal(effects.get(state, effects.ref(self)).lifecycle, "ACTIVE");
+                    killedDeparture = departure;
                     observed.push("death-response");
                     const recovered = skills.recover(state, departure.killer, "EXTERNAL", 1);
                     assert.deepEqual(recovered.value, { type: "APPLIED", amount: 1 });
@@ -125,15 +131,23 @@ test("Unit death preserves its attribution through Effect responses and the orig
             }));
         },
         onDisable(current, self) {
+            return update(current, self.host, units.removeHook(hpDamage.targetKilled, "death-response"));
+        },
+    };
+    state = effects.install(state, killer, response).state;
+    const installed = effects.install(state, victim, {
+        id: "victim-effect", initialize: () => ({}),
+        onDisable(current) {
             observed.push("effect-disabled");
-            return update(current, self.host, units.removeHook(units.prepare, "death-response"));
+            return current;
         },
         onEnd(current) {
             observed.push("effect-ended");
             return current;
         },
-    };
-    state = effects.install(state, victim, response).state;
+    });
+    state = installed.state;
+    const victimEffect = installed.value;
     const request = {
         source: null, killer, target: victim,
         attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE", hitRecovery: true,
@@ -142,5 +156,5 @@ test("Unit death preserves its attribution through Effect responses and the orig
     const ended = hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request));
     assert.equal(ended.value.killed, true);
     assert.equal(skills.getSkill(ended.state, skills.ref(killer, rewardSkill)).sp.value, 1);
-    assert.deepEqual(observed, ["first", "replacement", "death-response", "effect-disabled", "effect-ended", "late-leave"]);
+    assert.deepEqual(observed, ["first", "replacement", "death-response", "victim-prepare", "effect-disabled", "effect-ended", "late-leave"]);
 });

@@ -1,7 +1,9 @@
 import type * as receivingProtocol from "../../receiving.js";
-import type { Unit } from "../../../../unit/unit.js";
+import type { Departure, Unit } from "../../../../unit/unit.js";
 import type { Vitality } from "../../../../unit/capability/vitality/capability.js";
 import * as hooks from "../../../../hook.js";
+import * as units from "../../../../unit/query.js";
+import type { Result, State as BattleState } from "../../../state.js";
 import type {
     Application,
     Calculated,
@@ -39,6 +41,8 @@ export interface CompletedContext extends Context {
     readonly outcome: Outcome;
 }
 
+export type TargetKilledContext = Extract<Departure, { readonly reason: "DEATH" }>;
+
 export type SourceFormulaHook = hooks.Hook<Context, Parameters>;
 
 export type TargetFormulaHook = hooks.Hook<Context, Parameters>;
@@ -50,6 +54,8 @@ export type BeforeCommitHook = hooks.Hook<CommitContext, void>;
 export type AppliedHook = hooks.Hook<AppliedContext, void>;
 
 export type CompletedHook = hooks.Hook<CompletedContext, void>;
+
+export type TargetKilledHook = hooks.Hook<TargetKilledContext, void>;
 
 export type ReceivingHook = receivingProtocol.ReceivingHook<ReceivingContext, Reason>;
 
@@ -75,6 +81,27 @@ export const sourceApplied = hooks.key<AppliedHook, Unit>("resource.hp.damage.so
 
 export const completed = hooks.key<CompletedHook, Unit>("resource.hp.damage.completed");
 
+export const targetKilled = hooks.key<TargetKilledHook, Unit>("resource.hp.damage.targetKilled");
+
 export const receiving = hooks.key<ReceivingHook, Unit & Vitality>("resource.hp.damage.receiving");
+
+export function dispatchTargetKilled(
+    battle: BattleState,
+    context: TargetKilledContext,
+    options?: hooks.Options,
+): Result<void> {
+    const killer = context.killer;
+    if (killer === null) {
+        return { state: battle, value: undefined };
+    }
+
+    return hooks.dispatch(battle, context, undefined, {
+        candidates: (current) =>
+            (units.get(current, killer)?.hooks.get(targetKilled) ?? []).filter(
+                ({ id }) => !hooks.excluded(options, targetKilled, id),
+            ),
+        find: (current, id) => units.get(current, killer)?.hooks.find(targetKilled, id),
+    });
+}
 
 export { dispatch } from "../../hook.js";

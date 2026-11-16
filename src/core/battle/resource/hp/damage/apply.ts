@@ -3,10 +3,11 @@ import type { Restriction } from "../../../../unit/capability/vitality/restricti
 import type { Ref } from "../../../../common/ref.js";
 import type { Unit } from "../../../../unit/unit.js";
 import * as units from "../../../../unit/query.js";
+import { prepare, setHook } from "../../../../unit/hook.js";
 import * as vitality from "../../../../unit/capability/vitality/operations.js";
 import { isAlive } from "../../../../unit/capability/vitality/query.js";
 import { appendEvents, type Result, type State as BattleState } from "../../../state.js";
-import { remove } from "../../../unit.js";
+import { remove, update } from "../../../unit.js";
 import type { Calculated, Outcome, Pending, Reason, Request } from "./contract.js";
 import {
     type CommitContext,
@@ -18,6 +19,7 @@ import {
     targetApplied,
     sourceApplied,
     completed,
+    dispatchTargetKilled,
 } from "./hook.js";
 
 export interface ApplyOptions extends Options {
@@ -131,6 +133,21 @@ export function applyDamage(
     const current = units.get(battle, request.target);
     const killed = current?.lifecycle === "PRESENT" && !isAlive(current);
     if (killed) {
+        if (request.killer !== null) {
+            battle = update(
+                battle,
+                request.target,
+                setHook(prepare, {
+                    id: "@damage/targetKilled",
+                    priority: 10000,
+                    invoke: (state, departure) =>
+                        departure.reason === "DEATH"
+                            ? dispatchTargetKilled(state, departure, options)
+                            : { state, value: undefined },
+                }),
+            );
+        }
+
         battle = remove(battle, request.target, { reason: "DEATH", killer: request.killer });
     }
 

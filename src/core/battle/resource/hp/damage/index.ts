@@ -27,6 +27,7 @@ export type {
     CommitContext,
     AppliedContext,
     CompletedContext,
+    TargetKilledContext,
     SourceFormulaHook,
     TargetFormulaHook,
     OutputHook,
@@ -34,6 +35,7 @@ export type {
     ReceivingHook,
     AppliedHook,
     CompletedHook,
+    TargetKilledHook,
 } from "./hook.js";
 
 export {
@@ -46,6 +48,7 @@ export {
     targetApplied,
     sourceApplied,
     completed,
+    targetKilled,
 } from "./hook.js";
 
 export { calculateDamage } from "./calculate.js";

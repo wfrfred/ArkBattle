@@ -15,6 +15,7 @@
 | HP Damage／Healing Receiving | 目标 Unit.hooks | Vitality 接收接口 |
 | EP Damage Receiving | 目标 Unit.hooks | Elemental 接收接口 |
 | HP damageCommitting／damageCommitted | 目标 Unit.hooks | Vitality.commitDamage |
+| HP Damage targetKilled | 击杀者 Unit.hooks | 本笔 Apply 登记的目标临时 prepare Hook |
 | Action beforeRelease／released | 宿主 Unit.hooks | Action 释放操作 |
 | Skill 资源与 Activation 通知 | 宿主 Unit.hooks | Skill 业务 |
 | Blocking acquired／released | 双方各自的 Unit.hooks | Blocking 关系操作 |
@@ -99,11 +100,13 @@ Battle 归属的全局观察使用对应领域的 typed Key 与 Hooks 集合，�
 
 公共 dispatch 接收固定 Context、初始 current、candidates／find 与可选 stop。candidates 返回本次候选 Hook 条目，领域按本次 Options 过滤排除项；公共派发器在入口一并采样 ID 与 priority，稳定降序排序后固定本轮顺序；逐项判断停止条件，从最新 BattleState 查登记及资格、检查 accepts、执行 invoke。新增 ID 不进入本轮，替换同 ID 使用最新版本，删除则跳过；替换后的 priority 不重排本轮。嵌套派发独立取候选。
 
-公共集合不规定 PRESENT 资格。Resource 常规阶段要求宿主 PRESENT；专属接收保留所属能力的资格与停止条件。Skill、Elemental 的结束事实通知允许仍登记的 LEAVING 宿主参与，不能套用来源输出的 PRESENT 限制。
+公共集合不规定 PRESENT 资格。Resource 常规阶段要求宿主 PRESENT；专属接收保留所属能力的资格与停止条件。Skill、Elemental 的结束事实通知与 HP Damage.targetKilled 允许仍登记的 LEAVING 宿主参与，不能套用来源输出的 PRESENT 限制。
 
 Blocking 每条关系在第一个业务回调前同时采样双方候选及 priority，分别固定各自顺序，随后始终先 Blocker、后 Blockable，逐项读取最新登记；Blockable 的高优先级不越过 Blocker 阶段。ACQUIRED 只继续仍属于原 Relation 的响应；RELEASED 是解除后的历史通知。后续关系到轮到它时再取候选，不提前冻结整批通知的登记。
 
 Unit 的 enter／tick／prepare 同样固定优先级排序后的候选和本次 Context。enter／tick 每项前要求宿主 PRESENT；prepare 在发布 LEAVING 后、自动请求依赖者结束前执行，保留原 Departure；DEATH 分支携带调用者给定的 killer。leave 在注销前从最新 Unit 捕获 Hook 对象快照及其优先级顺序，注销后执行这些程序并检查 accepts，不查询已删除宿主。登记快照与 Departure.unit 的历史采样分别处理。
+
+HP Damage 确认本笔死亡且 killer 非 null 后，在受害者临时登记 priority=10000 的 Unit.prepare Hook，由其 invoke 派发 killer 本地 targetKilled；普通 prepare 业务约定低于 10000，来源后继先于受害者普通准备业务；10000 仅是顺序约定，更高优先级及同级先登记项仍按公共规则执行。只在本笔确认死亡时登记，不预装于 Unit 或 Vitality，不增加全局 Prepare。targetKilled 使用完整死亡 Departure，首次结束与 Prepare 去重仍归 Lifetime。
 
 动态登记不重放已完成阶段。sourceApplied 与 targetApplied 使用不同键，按目标、来源顺序执行；同一 Unit 承担两个角色时仍分别通知。
 
@@ -111,7 +114,7 @@ Unit 的 enter／tick／prepare 同样固定优先级排序后的候选和本次
 
 公共 Hook 模块提供 `Exclusion`、可选 `exclude` 的 `Options` 和匹配函数 `excluded(options, key, id)`，公共 dispatch 不解释键或排除政策。Exclusion 是 `[key, id]`：key 使用键对象身份，id 为 string 或 null。null 排除该键的整个阶段，string 只排除同键的指定登记；未匹配项正常派发。不按 name 匹配，也不修改登记、current、Request 或计算结果。
 
-四种 Resource 的 Calculate 与 Apply 分别接受可选 `Options.exclude`。选项仅对这次操作负责派发的 Hook 生效：Calculate 不把选项保存进 Calculated，Apply 不继承 Calculate 的选项；嵌套业务也不会自动继承。Apply 将选项传给自己调用的专属接收阶段；Vitality 内部 damageCommitting／damageCommitted、其余提交事实通知和生命周期操作不自动继承排除，保持原有完整业务。
+四种 Resource 的 Calculate 与 Apply 分别接受可选 `Options.exclude`。选项仅对这次操作负责派发的 Hook 生效：Calculate 不把选项保存进 Calculated，Apply 不继承 Calculate 的选项；嵌套业务也不会自动继承。Apply 将选项传给自己调用的专属接收阶段；HP Damage 的临时 Prepare 闭包还将本笔排除项用于 killer 本地 targetKilled，按其 Key／ID 过滤；临时 Unit.prepare 登记本身不受该排除影响，也不改变其他生命周期或嵌套操作。Vitality 内部 damageCommitting／damageCommitted、其余提交事实通知和生命周期操作不自动继承排除，保持原有完整业务。
 
 ```typescript
 type Exclusion = readonly [key: Key<any, any>, id: string | null];

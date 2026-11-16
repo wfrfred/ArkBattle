@@ -364,11 +364,17 @@ type TargetFormulaHook = Hook<Context, Parameters>;
 type OutputHook = Hook<OutputContext, number>;
 type BeforeCommitHook = Hook<CommitContext, void>;
 type AppliedHook = Hook<AppliedContext, void>;
+
+type TargetKilledContext = Extract<Departure, { readonly reason: "DEATH" }>;
+type TargetKilledHook = Hook<TargetKilledContext, void>;
+const targetKilled: Key<TargetKilledHook, Unit>;
 ```
 
 Request 始终表示初始事实；公式参数、输出量和接收工作值只经对应 Hook 的 current 接续。OutputContext.type 是公式确定的类型，不重新读取 Request 的初始类型。BeforeReceive 与 Receiving 使用相同的 ReceivingHook 类型，接续 BattleState 和 Pending；BeforeCommit 与 Applied 只接续 BattleState 业务；Applied 的报告在提交时确定，只对成功提交派发，零实际变化仍可成功。其余业务定义自己的 Application，不重复声明成功 Outcome 的另一份报告。
 
 基础 Context 只保存 request，目标从 request.target 取得；派生 Context 保留各阶段独立的计算、接收和提交事实。各业务 Hook 键由相应子域导出，均登记在 Unit.hooks。beforeReceive 与 receiving 使用不同 Key，前者位于接收准入前，后者位于准入后，各自独立固定候选。HP Damage、HP Healing 与 EP Damage 均提供这两个键，关联 Vitality／Elemental 宿主要求。登记统一使用 unit.setHook／removeHook。
+
+HP Damage 另提供击杀者本地的 targetKilled。Context 直接使用死亡 Departure，包含受害者 unit、reason:"DEATH" 与 killer，不携带本笔 Request、Calculated 或 Application。它表示已确认的死亡事实，仍登记的 LEAVING 击杀者可以响应；无 killer 或击杀者已注销时跳过。每项仍读取最新登记，Effect 自身的生效与参与资格由其 Hook 判断。
 
 EP Healing 只提供 beforeReceive，不增加准入后的专属 receiving 键。其 ReceivingHook 是 Hook<ReceivingContext, Pending>，Pending.cancellation 固定为 null，不导出取消构造器或 CANCELLED 结果。普通 HIT 回复使用 HP Damage.receiving 的高优先级登记，不设额外开始通知。
 
@@ -453,7 +459,7 @@ UNSPECIFIED 表示取消但未指定一种受击结果；它不表示未取消�
 
 ### 1.7 Hook 登记、顺序与生命周期
 
-使用[类型化键与 Unit 本地 Hooks 集合](hook.md)。HP Damage、EP Damage、HP Healing、EP Healing 分别导出自己的 sourceFormula、targetFormula、output、beforeReceive、beforeCommit、targetApplied、sourceApplied 等实际需要的精确键，不通过联合 Context 或中央事件目录描述。
+使用[类型化键与 Unit 本地 Hooks 集合](hook.md)。HP Damage、EP Damage、HP Healing、EP Healing 分别导出自己的 sourceFormula、targetFormula、output、beforeReceive、beforeCommit、targetApplied、sourceApplied 等实际需要的精确键，HP Damage 另提供 targetKilled，不通过联合 Context 或中央事件目录描述。
 
 固有登记直接写入 Unit Definition.hooks，在任何 enter 程序之前完成装配。运行时统一使用 `unit.setHook(key, hook)`／`unit.removeHook(key, id)`；`Key<H, Owner>` 保留完整 Hook 类型和最低宿主能力，返回 `Change<Unit & Owner>`，经 Unit.update 发布。生命周期键也允许修改，不另设领域转发入口。priority 继承公共 Hook，缺省为 0；计算、应用及专属接收均按 priority 降序，相同时保留登记顺序。候选采样同时固定 priority，同键同 ID 替换保留存储位置、使用最新程序，但不重排本轮。
 
@@ -623,24 +629,26 @@ damageCommitting 的 Context.previous 保留进入提交时的 Health，工作�
 
 HP 变化、死亡确定、Unit 仍存在和离场完成分别处理。已确定死亡时，普通治疗不能仅因 Unit 尚在集合中就获得执行资格；普通治疗与明确的免死、复活、形态转换也不共用这一推断。
 
-普通 Damage 提交 Health、执行 damageCommitted 后不维护 Blocking，再按目标、来源顺序完成全部 HP Applied 响应，再读取当前目标：仍为 PRESENT 且 HP 不大于 0 时才请求 `Unit.remove(battle, target, { reason: "DEATH", killer: request.killer })`，最后派发 Completed。既有关系的默认保持资格不因临时 HP 为 0 失效，保护响应恢复生命后可以保留原阻挡；新关系取得仍要求双方存活。确实离场时，由 Unit Lifetime 先发布 LEAVING，再派发能力自行登记的 prepare Hook，由 Blocking 清理本 Unit 的关系，而不是由 HP 写入或全场扫描提前推断死亡。已有 Lifetime 结算时，remove 返回只保证请求／Prepare，Completed 不承诺目标全部离场 Finalize 已完成；没有活动结算时，remove 在当前调用内完成 drain。伤害通知保留本次已发生事实，响应按需要读取最新资格。特殊生命干预的支持边界见第 3.2 节。
+普通 Damage 提交 Health、执行 damageCommitted 后不维护 Blocking，再按目标、来源顺序完成全部 HP Applied 响应，再读取当前目标：仍为 PRESENT 且 HP 不大于 0 时确认本笔死亡；killer 非 null 则先为目标登记本笔临时高优先级 prepare Hook，随后请求 `Unit.remove(battle, target, { reason: "DEATH", killer: request.killer })`；该 Hook 派发击杀者本地 targetKilled，最后派发 Completed。既有关系的默认保持资格不因临时 HP 为 0 失效，保护响应恢复生命后可以保留原阻挡；新关系取得仍要求双方存活。确实离场时，由 Unit Lifetime 先发布 LEAVING，再派发能力自行登记的 prepare Hook，由 Blocking 清理本 Unit 的关系，而不是由 HP 写入或全场扫描提前推断死亡。已有 Lifetime 结算时，remove 返回只保证请求／Prepare，Completed 不承诺目标全部离场 Finalize 已完成；没有活动结算时，remove 在当前调用内完成 drain。伤害通知保留本次已发生事实，响应按需要读取最新资格。特殊生命干预的支持边界见第 3.2 节。
 
 真实离场沿用 [Lifetime 偏序](lifetime.md)：请求发布 LEAVING，再派发能力自行登记的 prepare Hook 完成 Blocking 清理，通过 Lifetime 已登记的 owner 与 Scope 请求子项；子项整个 Finalize 返回后才注销 Unit，再执行本地 leave 与全局 leave，不在 Finalize 兜底扫描全场关系。Occupancy 清理已通知的旧配对，Deployable 本地 leave 归还实际占用；部署来源预装的死亡程序只响应已确认 DEATH，按 Card 策略处理费用阶段与库存恢复。主动撤退由对应领域操作在请求离场前直接结算退款、Card 费用阶段与库存恢复，不由 Damage 或通用 Unit 推导部署业务。成功保护、替身或复活是否进入真实离场由对应机制决定。资源时点见 [Deployment](deployment.md)。
 
 ### 3.4 单笔击杀结果
 
-两侧 Applied 完成后，最新目标仍为 PRESENT 且 HP 不大于 0 时，本笔确认死亡，将 `{ reason: "DEATH", killer: request.killer }` 交给 Unit.remove，APPLIED.killed 为 true；其余情况为 false。Health 写入时归零不提前构成击杀，damageCommitted 或 Applied 中被救回的目标不计入本笔；目标已由嵌套伤害确认死亡、已离场或仍有生命时，外层不重复报告。已有 Lifetime 结算而使 Finalize 延后，不改变已经确认的 killed。
+两侧 Applied 完成后，最新目标仍为 PRESENT 且 HP 不大于 0 时，本笔确认死亡，killer 非 null 时为目标临时登记 priority=10000 的 Unit.prepare Hook，再将 `{ reason: "DEATH", killer: request.killer }` 交给 Unit.remove，APPLIED.killed 为 true；其余情况为 false。Health 写入时归零不提前构成击杀，damageCommitted 或 Applied 中被救回的目标不计入本笔；目标已由嵌套伤害确认死亡、已离场或仍有生命时，外层不重复报告。已有 Lifetime 结算而使 Finalize 延后，不改变已经确认的 killed。
 
 killed 只记录本笔请求是否取得死亡确认，不选取或保存另一份击杀者。死亡归属使用 request.killer，即使 source 为 null、两者不同或击杀者已离场，也不重新裁定。Unit 首次有效结束请求固定包含 killer 的 Departure，prepare 与 leave 使用同一死亡事实；重复请求不覆盖归属，不重复 Prepare。Completed 响应之后发生的新伤害或离场不追溯改写本笔结果。
 
-Unit 先发布 LEAVING，再按公共 priority 执行 prepare，随后才自动请求依赖 Effect 等子项结束。受害者的 Effect 可在仍存在的 Prepare 阶段读取 DEATH 与 killer 执行自己的后继；priority 只控制本轮 prepare 内部顺序，不改变 Lifetime 偏序。具体重伤奖励等内容尚未接入。
+Unit 先发布 LEAVING，再按公共 priority 执行 prepare。HP Damage 临时 Hook 的 invoke 从最新 State 派发 killer 的本地 targetKilled，闭包接续本笔 Apply 的排除项；普通 prepare 业务约定低于 10000，因此逐击杀后继先于受害者普通 prepare；显式更高 priority 或更早登记的同级 Hook 仍遵守公共排序规则。随后 Lifetime 才自动请求依赖 Effect 等子项结束。受害者的 Effect 仍可在 Prepare 中读取 DEATH 与 killer，完成自己的后继。priority 不跨越这些阶段，也不改变真实依赖的偏序。
 
-发起者从 applyDamage 返回的 APPLIED 结果使用 killed。范围、多段和附加伤害仍是多笔请求；逐目标增加、累计后结算或整次最多触发一次，由具体 Content 使用这些结果编排。公共 Damage 不聚合整次攻击，不增加 Kill Hook；本字段是项目已确认的返回契约，不声称原生采用相同接口。
+临时 Hook 仅由确认死亡且 killer 非 null 的这一笔 Apply 登记，使用本轮固定的死亡 Departure，不在 Unit 或 Vitality 预装击杀业务，不增加全局 Prepare 监听。Lifetime 的首次有效结束与 Prepare 去重保证本笔通知不重复；嵌套伤害已经确认死亡时，外层不再登记。直接 Unit.remove 即使携带 killer，也不自动产生 targetKilled。该接入是项目选择，来源后继先于受害者死亡业务的依据见[原生归属调查](../research/cases/39-death-attribution-and-attribute-ranges.md)；具体重伤奖励等内容尚未接入。
+
+需要在受害者普通 Prepare 前执行的逐击杀业务登记 targetKilled。发起者仍可从 applyDamage 返回的 APPLIED 结果使用 killed，编排范围、多段和附加伤害的累计或整次限额；公共 Damage 不聚合整次攻击。本笔结果与死亡通知各有用途，不声称原生采用相同接口。
 
 必要回归语义：
 
-- KILL-01：两侧 Applied 后目标仍存活时 killed 为 false；本笔真正确认死亡时为 true，Application 继续保留原 HP 提交报告。source 与 killer 独立传递，含无来源和无归属；目标 Prepare 在依赖 Effect 结束前读取固定 killer，leave 保留同一归属。
-- KILL-02：嵌套结算完成击杀时只有取得死亡确认的内层报告 true；首次有效 End 固定 reason 与 killer，重复结束不覆盖或重复 Prepare。Finalize 延后不丢失已确认结果，Completed 中后发的死亡不回写此前结果。
+- KILL-01：两侧 Applied 后目标仍存活时 killed 为 false；本笔真正确认死亡时为 true，Application 继续保留原 HP 提交报告。source 与 killer 独立传递，含无来源和无归属；targetKilled 通过本笔临时 Prepare 先于目标普通 Prepare，后者在依赖 Effect 结束前读取固定 killer，leave 保留同一归属。
+- KILL-02：嵌套结算完成击杀时只有取得死亡确认的内层报告 true；首次有效 End 固定 reason 与 killer，重复结束不覆盖或重复 Prepare。Finalize 延后不丢失已确认结果，Completed 中后发的死亡不回写此前结果。targetKilled 按本笔 Apply.exclude 过滤具体键／ID；排除不阻止临时 Prepare、目标离场或其他后继，也不传播到嵌套操作。仍登记的 LEAVING 击杀者可响应，已注销或 null 则跳过。
 
 ## 4. Healing 的两阶段契约
 

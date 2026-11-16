@@ -1072,6 +1072,7 @@ test("HP-05/06: LOSS completes the shared pipeline against an invincible absent 
 });
 
 test("HP-03: lethal HP remains present through nested Combat and both Applied roles before death releases blocking", () => {
+    let prepared = false;
     let state = battle([
         { definition: { id: "source", hooks: Hooks.empty() }, position: [0, 0] },
         { definition: {
@@ -1127,11 +1128,25 @@ test("HP-03: lethal HP remains present through nested Combat and both Applied ro
             },
         }),
     );
+    state = update(state, source, units.setHook(hpDamage.targetKilled, {
+        id: "kill-reward",
+        invoke() { assert.fail("the excluded death response must not run"); },
+    }));
+    state = update(state, target, units.setHook(units.prepare, {
+        id: "kill-reward",
+        invoke(current) {
+            prepared = true;
+            return { state: current, value: undefined };
+        },
+    }));
     const request = damageRequest(source, target, 100);
-    const result = hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request));
+    const result = hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request), {
+        exclude: [[hpDamage.targetKilled, "kill-reward"]],
+    });
     assert.deepEqual(calls, [["target", 0, "PRESENT", 1], ["source", 0, "PRESENT", 1]]);
     assert.deepEqual(result.value.application, { before: { hp: 40, minusHp: 0 }, after: { hp: 0, minusHp: 0 }, hpLoss: 40, minusHpGain: 0 });
     assert.equal(result.value.killed, true);
+    assert.equal(prepared, true);
     assert.equal(get(result.state, 1), undefined);
     assert.equal(get(result.state, 2).blockable.relation, null);
 });
@@ -1139,6 +1154,7 @@ test("HP-03: lethal HP remains present through nested Combat and both Applied ro
 test("KILL-02: nested damage owns its kill even while Lifetime defers the victim's final removal", () => {
     const reports = [];
     const departures = [];
+    let leavingNotified = false;
     const observe = {
         id: "kill-result",
         invoke(current, { request, outcome }) {
@@ -1153,15 +1169,34 @@ test("KILL-02: nested damage owns its kill even while Lifetime defers the victim
             vitality: { maxHp: 40, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
         }, position: [1, 0] },
         { definition: { id: "inner-source", hooks: Hooks.empty().set(hpDamage.completed, observe) }, position: [2, 0] },
+        { definition: { id: "death-attribution", hooks: Hooks.empty() }, position: [3, 0] },
     ]);
     const source = units.ref(get(state, 0));
     const target = units.ref(get(state, 1));
     const otherSource = units.ref(get(state, 2));
+    const killer = units.ref(get(state, 3));
+    state = update(state, killer, units.compose(
+        units.setHook(hpDamage.targetKilled, {
+            id: "start-leaving", priority: 1,
+            invoke(current, departure) {
+                departures.push(["killed", departure.killer.id]);
+                return { state: remove(current, killer, { reason: "SCRIPT" }), value: undefined };
+            },
+        }),
+        units.setHook(hpDamage.targetKilled, {
+            id: "fact-after-leaving",
+            invoke(current) {
+                assert.equal(get(current, killer.id).lifecycle, "LEAVING");
+                leavingNotified = true;
+                return { state: current, value: undefined };
+            },
+        }),
+    ));
     state = update(state, target, units.compose(
         units.setHook(units.prepare, {
             id: "preserve-first-death",
             invoke(current, departure) {
-                assert.deepEqual(departure.killer, otherSource);
+                assert.deepEqual(departure.killer, killer);
                 departures.push(["prepare", departure.killer.id]);
                 return {
                     state: remove(current, target, { reason: "DEATH", killer: source }),
@@ -1182,7 +1217,7 @@ test("KILL-02: nested damage owns its kill even while Lifetime defers the victim
     state = update(state, source, units.setHook(hpDamage.sourceApplied, {
         id: "additional-damage",
         invoke(current) {
-            const request = damageRequest(otherSource, target, 40);
+            const request = { ...damageRequest(otherSource, target, 40), killer };
             nested = hpDamage.applyDamage(request, hpDamage.calculateDamage(current, request));
             assert.equal(get(nested.state, target.id).lifecycle, "LEAVING");
             return { state: nested.state, value: undefined };
@@ -1203,7 +1238,8 @@ test("KILL-02: nested damage owns its kill even while Lifetime defers the victim
     assert.equal(outer.value.killed, false);
     assert.deepEqual(outer.value.application, { before: { hp: 40, minusHp: 0 }, after: { hp: 30, minusHp: 0 }, hpLoss: 10, minusHpGain: 0 });
     assert.deepEqual(reports, [[otherSource.id, true], [source.id, false]]);
-    assert.deepEqual(departures, [["prepare", otherSource.id], ["leave", otherSource.id]]);
+    assert.deepEqual(departures, [["killed", killer.id], ["prepare", killer.id], ["leave", killer.id]]);
+    assert.equal(leavingNotified, true);
     assert.equal(get(state, target.id), undefined);
 });
 

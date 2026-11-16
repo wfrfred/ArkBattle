@@ -58,6 +58,21 @@ const prioritizedLifecycle: Change<Unit> = setUnitHook(unitPrepare, {
     id: 'before-cleanup', priority: 100,
     invoke: state => ({ state, value: undefined }),
 });
+const killedNotice: hpDamage.TargetKilledHook = {
+    id: 'kill-reward',
+    invoke(state, departure) {
+        const reason: 'DEATH' = departure.reason;
+        const victim: Unit = departure.unit;
+        const killer: Ref<Unit> | null = departure.killer;
+        return { state, value: undefined };
+    },
+};
+const killedChange: Change<Unit> = setUnitHook(hpDamage.targetKilled, killedNotice);
+// @ts-expect-error the death fact notification cannot replace its payload.
+Hooks.empty().set(hpDamage.targetKilled, { id: 'rewrite-death', invoke: state => ({ state, value: 1 }) });
+declare const departedUnit: Unit;
+// @ts-expect-error the key always supplies a DEATH Departure.
+const wrongDeathContext: hpDamage.TargetKilledContext = { reason: 'SCRIPT', unit: departedUnit };
 // @ts-expect-error a key preserves its exact Hook type through storage.
 const mismatchedKey: typeof outputKey = textKey;
 // @ts-expect-error entries cannot widen the Hook type established by their key.
@@ -270,6 +285,7 @@ effects.setExpiration(battle, burstRef, { ...burst.expiration, remaining: burst.
 // @ts-expect-error writes retain the Burst identity's duration contract.
 effects.setExpiration(battle, burstRef, { type: 'DEADLINE', tick: 10 });
 const bare = initialize(battle, { id: 1, position: [0, 0], definition: { id: 'bare', hooks: Hooks.empty() } }).value;
+update(battle, ref(bare), killedChange);
 const receivingChange: Change<Unit & vitality.Vitality> = setUnitHook(hpDamage.receiving, receivingHooks.get(receivingKey)[0]!);
 // @ts-expect-error receiving keys retain their Vitality owner requirement through Change.
 update(battle, ref(bare), receivingChange);
