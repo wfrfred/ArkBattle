@@ -1,12 +1,12 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { battle } from "../helpers/battle.js";
-import { Hooks } from "../../dist/core/hook.js";
+import { Hooks, dispatch } from "../../dist/core/hook.js";
 import * as units from "../../dist/core/unit/index.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import * as skills from "../../dist/core/unit/skill/index.js";
 import * as hpDamage from "../../dist/core/battle/resource/hp/damage/index.js";
-import { update } from "../../dist/core/battle/unit.js";
+import { add, update, remove } from "../../dist/core/battle/unit.js";
 import { output as damageOutput } from "../../dist/core/battle/resource/hp/damage/index.js";
 import { hasOccupancy } from "../../dist/core/unit/capability/occupancy/index.js";
 
@@ -120,7 +120,7 @@ test("Unit death preserves its attribution through Effect responses and the orig
                 invoke(state, departure) {
                     assert.equal(departure.reason, "DEATH");
                     assert.deepEqual(departure.killer, killer);
-                    assert.equal(units.get(state, victim).lifecycle, "LEAVING");
+                    assert.equal(units.get(state, units.ref(departure.unit)).lifecycle, "LEAVING");
                     assert.equal(effects.get(state, effects.ref(self)).lifecycle, "ACTIVE");
                     killedDeparture = departure;
                     observed.push("death-response");
@@ -157,4 +157,34 @@ test("Unit death preserves its attribution through Effect responses and the orig
     assert.equal(ended.value.killed, true);
     assert.equal(skills.getSkill(ended.state, skills.ref(killer, rewardSkill)).sp.value, 1);
     assert.deepEqual(observed, ["first", "replacement", "death-response", "victim-prepare", "effect-disabled", "effect-ended", "late-leave"]);
+
+    const created = units.initialize(ended.state, {
+        id: 2, position: [0, 0],
+        definition: {
+            ...definition, id: "instant-target",
+            hooks: Hooks.empty().set(units.prepare, {
+                id: "observe-direct-death",
+                invoke(current, departure) {
+                    assert.equal(departure, killedDeparture);
+                    assert.equal(departure.unit.vitality.health.hp, 40);
+                    assert.equal(skills.getSkill(current, skills.ref(killer, rewardSkill)).sp.value, 2);
+                    return { state: current, value: undefined };
+                },
+            }),
+        },
+    });
+    const directTarget = units.ref(created.value);
+    state = update(add(created.state, created.value), directTarget, units.setHook(units.prepare, {
+        id: "direct-death-notification", priority: 10000,
+        invoke(current, departure) {
+            assert.equal(units.get(current, directTarget).lifecycle, "LEAVING");
+            return dispatch(current, departure, undefined, {
+                candidates: next => units.get(next, killer).hooks.get(hpDamage.targetKilled),
+                find: (next, id) => units.get(next, killer)?.hooks.find(hpDamage.targetKilled, id),
+            });
+        },
+    }));
+    state = remove(state, directTarget, { reason: "DEATH", killer });
+    assert.equal(units.get(state, directTarget), undefined);
+    assert.equal(skills.getSkill(state, skills.ref(killer, rewardSkill)).sp.value, 2);
 });

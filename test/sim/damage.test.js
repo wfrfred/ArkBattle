@@ -657,6 +657,7 @@ test("HP-09: Vitality settles life debt across damage, recovery and MaxHP change
     let committing = 0;
     let committed = 0;
     let healing = 0;
+    let capacityReport;
     let state = battle([{ definition: {
         id: "life-debt",
         vitality: { maxHp: 100, defense: 0, resistance: 0, recoverySpeed: TICKS_PER_SECOND, recoveryRatio: 0 },
@@ -682,7 +683,17 @@ test("HP-09: Vitality settles life debt across damage, recovery and MaxHP change
                     return { state: current, value: undefined };
                 },
             }),
-    }, position: [0, 0] }]);
+    }, position: [0, 0] }, { definition: {
+        id: "recovery-source",
+        hooks: Hooks.empty().set(hpHealing.sourceApplied, {
+            id: "observe-finished-recovery",
+            invoke(current, { request, application }) {
+                assert.equal(get(current, request.target.id), undefined);
+                capacityReport = application;
+                return { state: current, value: undefined };
+            },
+        }),
+    }, position: [1, 0] }]);
     const target = units.ref(get(state, 0));
     assert.equal(vitality.resolveMaxMinusHp(get(state, 0).definition.vitality, get(state, 0).vitality), 0);
     state = update(state, target, vitality.setMaxMinusHpRatio(1));
@@ -729,6 +740,16 @@ test("HP-09: Vitality settles life debt across damage, recovery and MaxHP change
     assert.equal(vitality.advance(pausedRecovery, target), pausedRecovery);
     assert.equal(get(vitality.advance(lowerCapacity, target), 0), undefined);
     assert.deepEqual([committing, committed, healing], [2, 2, 0]);
+
+    const capacityRecovery = healingRequest(units.ref(get(lowerCapacity, 1)), target, 1);
+    const departedRecovery = hpHealing.applyHealing(capacityRecovery,
+        hpHealing.calculateHealing(lowerCapacity, capacityRecovery));
+    assert.equal(departedRecovery.value.type, "APPLIED");
+    assert.equal(departedRecovery.value.application, capacityReport);
+    assert.deepEqual(capacityReport.before, { hp: 1, minusHp: 80 });
+    assert.deepEqual(capacityReport.after, { hp: 0, minusHp: 50 });
+    assert.equal(get(departedRecovery.state, 0), undefined);
+    assert.equal(departedRecovery.state.events.find(event => event.type === "HEAL").amount, 0);
 
     const recovery = healingRequest(null, target, 100);
     const restored = hpHealing.applyHealing(recovery, hpHealing.calculateHealing(second.state, recovery));
