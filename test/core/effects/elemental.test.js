@@ -13,7 +13,7 @@ import { create as createAttack } from "../../../dist/content/actions/attack.js"
 import { actionCapability } from "../../helpers/actions.js";
 import { ref as unitRef } from "../../../dist/core/unit/index.js";
 import { ref as skillRef, definition as createSkillDefinition } from "../../helpers/skill.js";
-import { create as createSkill, activate as activateSkill, advance as advanceSkill } from "../../../dist/core/unit/skill/index.js";
+import { create as createSkill, activate as activateSkill, advance as advanceSkill, finish as finishSkill } from "../../../dist/core/unit/skill/index.js";
 import { recover } from "../../../dist/core/unit/skill/sp.js";
 import { resolveAttack } from "../../../dist/core/unit/capability/offense/index.js";
 import { create as modifier } from "../../../dist/core/unit/contribution/attribute.js";
@@ -173,7 +173,7 @@ test('elemental runtime: unused neural paralysis survives recovery and the next 
   assert.equal(cancelled.every(event => event.tick < hits[0].tick), true);
 });
 
-test('mania counts each released action once, caps self-damage and keeps its independent character program after recovery cancellation', () => {
+test('mania counts each released action once and each skill activation, caps self-damage and keeps its independent character program after recovery cancellation', () => {
   const attack = createAttack({
     id: 'mania-attack', triggerBindingId: 'primary', intervalTicks: 30, recoveryTicks: 0,
     targetGroups: [{ id: 'primary', select: selectDamage({ geometry: range, canTargetAir: true }),
@@ -181,8 +181,9 @@ test('mania counts each released action once, caps self-damage and keeps its ind
     afterOutput: (work, source, self) => dispatchReleased(work, actions.executionRef(source, self)),
   });
   const skill = createSkillDefinition({
-    id: 'mania-hit', activation: null,
-    sp: { initial: 0, capacity: 30, requirement: 1, recovery: { type: 'HIT', amount: 1 } },
+    id: 'mania-hit',
+    activation: { trigger: 'MANUAL', sustain: { type: 'TIME', durationTicks: 0 }, initialize: () => ({}) },
+    sp: { initial: 0, capacity: 30, requirement: 0, cost: 0, recovery: { type: 'HIT', amount: 1 } },
   });
   let work = createBattle([
     { position: [0, 0], definition: definition('CHARACTER', {
@@ -217,16 +218,41 @@ test('mania counts each released action once, caps self-damage and keeps its ind
   assert.equal(getUnit(work, 1).vitality.health.hp, 100000);
   assert.equal(getUnit(work, 0).skill.sp.value, 1);
 
+  const activated = activateSkill(work, skillRef(getUnit(work, 0)));
+  assert.notEqual(activated.value, null);
+  work = activated.state;
   work = elemental.cancel(work, burst);
   assert.equal(getUnit(work, 0).elemental.burst, null);
   assert.deepEqual(getUnit(work, 0).elemental.ep, elementValues(1000));
   assert.equal(speed(work), 150);
   while (work.tick <= 450) next();
-  assert.deepEqual(pulses.slice(0, 6), [200, 250, 350, 400, 500, 550]);
+  assert.deepEqual(pulses.slice(0, 6), [200, 300, 400, 450, 550, 600]);
   assert.equal(pulses.length, 15);
   assert.equal(pulses.slice(6).every(amount => amount === 600), true);
   assert.equal(getUnit(work, 0).skill.sp.value, 15);
   assert.equal(speed(work), 100);
+});
+
+test('mania counts successful skill activations on a host without Action', () => {
+  const skill = createSkillDefinition({
+    id: 'mania-skill-only', sp: null,
+    activation: { trigger: 'MANUAL', sustain: { type: 'INFINITE' }, initialize: () => ({}) },
+  });
+  let work = element(receiverBattle('CHARACTER', {
+    skill: { initialize: state => createSkill(state, skill) },
+  }), 'MANIA').state;
+  const first = activateSkill(work, skillRef(getUnit(work, 0)));
+  assert.notEqual(first.value, null);
+  const rejected = activateSkill(first.state, skillRef(getUnit(first.state, 0)));
+  assert.equal(rejected.value, null);
+  work = advance(rejected.state, 30);
+  assert.equal(getUnit(work, 0).vitality.health.hp, 99850);
+
+  work = finishSkill(work, first.value);
+  const second = activateSkill(work, skillRef(getUnit(work, 0)));
+  assert.notEqual(second.value, null);
+  work = advance(second.state, 60);
+  assert.equal(getUnit(work, 0).vitality.health.hp, 99650);
 });
 
 test('enemy mania ramps on its own Tick clock, stops with recovery and includes the final pulse', () => {

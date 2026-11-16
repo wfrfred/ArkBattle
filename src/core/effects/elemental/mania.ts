@@ -9,6 +9,7 @@ import { get as getEffect } from "../../unit/effect/query.js";
 import { ref } from "../../unit/effect/effect.js";
 import type { OrdinaryDefinition as EffectDefinition } from "../../unit/effect/definition.js";
 import { setHook, removeHook } from "../../unit/hook.js";
+import { compose, optional } from "../../unit/change.js";
 import * as attribute from "../../unit/contribution/attribute.js";
 import { hasAction } from "../../unit/capability/action/capability.js";
 import {
@@ -16,6 +17,8 @@ import {
     removeSpeedContribution,
 } from "../../unit/capability/action/operations.js";
 import { released } from "../../unit/capability/action/release.js";
+import { hasSkill } from "../../unit/capability/skill/capability.js";
+import { activationStarted } from "../../unit/capability/skill/hook.js";
 import { Type } from "../../unit/capability/elemental/capability.js";
 import {
     onInstall as registerBurst,
@@ -92,42 +95,71 @@ export function createActionScaledDamage(parameters: ActionScaledDamageParameter
         }),
         onInstall(battle, self) {
             const host = units.get(battle, self.host)!;
-            if (!hasAction(host)) {
-                return battle;
-            }
-
             const reference = ref(self);
 
             return update(
                 battle,
                 units.ref(host),
-                setHook(released, {
-                    id: `@effect/${self.id}/mania`,
-                    accepts(current, { execution }) {
-                        const active = getEffect(current, reference);
+                compose(
+                    optional(
+                        hasAction,
+                        setHook(released, {
+                            id: `@effect/${self.id}/mania`,
+                            accepts(current, { execution }) {
+                                const active = getEffect(current, reference);
 
-                        return (
-                            active?.lifecycle === "ACTIVE" &&
-                            active.state.damage < parameters.maxDamagePerSecond &&
-                            !active.state.executions.includes(execution.id)
-                        );
-                    },
-                    invoke(current, { execution }) {
-                        const active = getEffect(current, reference)!;
+                                return (
+                                    active?.lifecycle === "ACTIVE" &&
+                                    active.state.damage < parameters.maxDamagePerSecond &&
+                                    !active.state.executions.includes(execution.id)
+                                );
+                            },
+                            invoke(current, { execution }) {
+                                const active = getEffect(current, reference)!;
 
-                        return {
-                            state: effects.setState(current, reference, {
-                                ...active.state,
-                                damage: Math.min(
-                                    parameters.maxDamagePerSecond,
-                                    active.state.damage + parameters.damagePerAction,
-                                ),
-                                executions: [...active.state.executions, execution.id],
-                            }),
-                            value: undefined,
-                        };
-                    },
-                }),
+                                return {
+                                    state: effects.setState(current, reference, {
+                                        ...active.state,
+                                        damage: Math.min(
+                                            parameters.maxDamagePerSecond,
+                                            active.state.damage + parameters.damagePerAction,
+                                        ),
+                                        executions: [...active.state.executions, execution.id],
+                                    }),
+                                    value: undefined,
+                                };
+                            },
+                        }),
+                    ),
+                    optional(
+                        hasSkill,
+                        setHook(activationStarted, {
+                            id: `@effect/${self.id}/mania`,
+                            accepts(current) {
+                                const active = getEffect(current, reference);
+
+                                return (
+                                    active?.lifecycle === "ACTIVE" &&
+                                    active.state.damage < parameters.maxDamagePerSecond
+                                );
+                            },
+                            invoke(current) {
+                                const active = getEffect(current, reference)!;
+
+                                return {
+                                    state: effects.setState(current, reference, {
+                                        ...active.state,
+                                        damage: Math.min(
+                                            parameters.maxDamagePerSecond,
+                                            active.state.damage + parameters.damagePerAction,
+                                        ),
+                                    }),
+                                    value: undefined,
+                                };
+                            },
+                        }),
+                    ),
+                ),
             );
         },
         onEnable: (battle, self) => setSpeed(battle, self.host, self.id, parameters.attackSpeed),
@@ -153,9 +185,14 @@ export function createActionScaledDamage(parameters: ActionScaledDamageParameter
         onEnd(battle, self) {
             const host = units.get(battle, self.host)!;
 
-            return hasAction(host)
-                ? update(battle, units.ref(host), removeHook(released, `@effect/${self.id}/mania`))
-                : battle;
+            return update(
+                battle,
+                units.ref(host),
+                compose(
+                    optional(hasAction, removeHook(released, `@effect/${self.id}/mania`)),
+                    optional(hasSkill, removeHook(activationStarted, `@effect/${self.id}/mania`)),
+                ),
+            );
         },
     };
 

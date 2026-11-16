@@ -162,7 +162,7 @@ Elemental 拥有 EP 与当前 Burst 引用；标准元素 Effect 实现伤害、
 
 ### 支持范围
 
-当前标准元素库实现五型十套效果。狂躁使用具体 Effect 的私有 State、Action Hook 与独立周期；根与子程序的计时及清理关系见 [Elemental](elemental.md#狂躁的行动与时间累加)，不改变通用 Effect 到期协议。control.silence 仅限制 Skill 发动，不代表完整沉默／静默。
+当前标准元素库实现五型十套效果。狂躁使用具体 Effect 的私有 State、Action／Skill Hook 与独立周期；根与子程序的计时及清理关系见 [Elemental](elemental.md#狂躁的行动与时间累加)，不改变通用 Effect 到期协议。control.silence 仅限制 Skill 发动，不代表完整沉默／静默。
 
 stun 向已有 Action、Locomotion、Skill、Blocking 与 Facing 登记各自限制并取消当前 Action；停用只撤销自身登记。Facing 强制转向只绕过转向限制，不恢复其他能力。
 
