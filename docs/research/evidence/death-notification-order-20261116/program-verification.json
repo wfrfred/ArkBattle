@@ -1,0 +1,12 @@
+{
+  "comparison": "Four selected complete event programs independently re-extracted with the archived selector; provenance and selection annotations excluded.",
+  "equalPrograms": true,
+  "templates": [
+    "enemy_duchns_boom",
+    "flameb_t_1",
+    "judge_t_1",
+    "kill_to_add_cost"
+  ],
+  "recordSha256": "f89b97a211730c44bc241e0e6a50576facbf1faa23511dc797f63b828f8c309e",
+  "replaySha256": "bd72a7f03a0f9cd5c56c588c2834dba7bfe8431a3afe431f9c7ce1955449dc11"
+}

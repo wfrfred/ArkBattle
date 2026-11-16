@@ -1,0 +1,20 @@
+{
+  "scope": "Independent repeat of selected full prefabs and six native methods, excluding invocation output path only",
+  "checks": [
+    {
+      "first": "prefabs.json",
+      "repeat": "prefabs-check.json",
+      "resultEqual": true
+    },
+    {
+      "first": "judge-prefabs.json",
+      "repeat": "judge-prefabs-check.json",
+      "resultEqual": true
+    },
+    {
+      "first": "maxhp-sync.json",
+      "repeat": "maxhp-sync-check.json",
+      "resultEqual": true
+    }
+  ]
+}

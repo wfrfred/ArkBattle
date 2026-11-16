@@ -1,0 +1,31 @@
+{
+  "source": "https://github.com/Kengxxiao/ArknightsGameData/blob/63c7cec73c3858d0ae913f85cc89af3cef4d744f/zh_CN/gamedata/excel/range_table.json",
+  "ref": "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+  "gitBlobSha": "f5241bc6bcba4c8bf45d64b1308d2d53e91a83f4",
+  "range": {
+    "id": "x-5",
+    "direction": 1,
+    "grids": [
+      {
+        "row": 1,
+        "col": 0
+      },
+      {
+        "row": 0,
+        "col": -1
+      },
+      {
+        "row": 0,
+        "col": 0
+      },
+      {
+        "row": 0,
+        "col": 1
+      },
+      {
+        "row": -1,
+        "col": 0
+      }
+    ]
+  }
+}

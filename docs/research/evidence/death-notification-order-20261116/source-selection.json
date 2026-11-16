@@ -1,0 +1,26 @@
+{
+  "charpack/char_131_flameb.ab": [
+    "char_131_flameb"
+  ],
+  "charpack/char_261_sddrag.ab": [
+    "char_261_sddrag"
+  ],
+  "battle/prefabs/[uc]equips.ab": [
+    "flameb_equip_"
+  ],
+  "battle/enm_pfb_12.ab": [
+    "enemy_1294_duchns"
+  ],
+  "battle/enm_pfb_18.ab": [
+    "enemy_1294_duchns"
+  ],
+  "battle/enm_pfb_3.ab": [
+    "enemy_1021_bslime"
+  ],
+  "battle/enm_pfb_4.ab": [
+    "enemy_1067_snslime"
+  ],
+  "battle/enm_pfb_5.ab": [
+    "enemy_1067_snslime"
+  ]
+}

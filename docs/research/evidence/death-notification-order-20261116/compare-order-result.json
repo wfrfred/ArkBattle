@@ -1,0 +1,42 @@
+{
+  "maximum": 4655,
+  "oldHp": 1800,
+  "early": {
+    "order": "BEFORE_VICTIM",
+    "killed": true,
+    "survivingHp": 345.5,
+    "trace": [
+      {
+        "stage": "kill barrier",
+        "amount": 465.5
+      },
+      {
+        "stage": "death arts",
+        "hp": 1545.5
+      },
+      {
+        "stage": "death burn",
+        "hp": 345.5
+      }
+    ]
+  },
+  "late": {
+    "order": "AFTER_APPLY",
+    "killed": true,
+    "survivingHp": null,
+    "trace": [
+      {
+        "stage": "death arts",
+        "hp": 1080
+      },
+      {
+        "stage": "death burn",
+        "hp": 0
+      },
+      {
+        "stage": "caller kill reward",
+        "result": "source already left"
+      }
+    ]
+  }
+}

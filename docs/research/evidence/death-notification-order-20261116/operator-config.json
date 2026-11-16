@@ -1,0 +1,461 @@
+{
+  "provenance": {
+    "source": {
+      "path": ".cache/native-research/unit-audit-20261110/operator-config/character_table.json",
+      "bytes": 15069101,
+      "sha256": "e523c7c83c36e2d76697121079e17d0282da1a94d59a55e1cc55616edf0b41c4"
+    },
+    "script": {
+      "path": "/tmp/arkbattle-kill-order-20261116/project_config.py",
+      "bytes": 1531,
+      "sha256": "52c1e494fd61e84b0f62a79067fba371f81409dab69cc5f3b3a3d5c0fb4b8afa"
+    },
+    "selection": "Actual three operator entries, talents and trait; raw values preserved"
+  },
+  "result": {
+    "char_131_flameb": {
+      "name": "炎客",
+      "talents": [
+        {
+          "candidates": [
+            {
+              "unlockCondition": {
+                "phase": "PHASE_1",
+                "level": 1
+              },
+              "requiredPotentialRank": 0,
+              "prefabKey": "1",
+              "name": "血戮",
+              "description": "每击杀一名敌人后自身的生命上限提高20，最多可以叠加30次",
+              "rangeId": null,
+              "blackboard": [
+                {
+                  "key": "max_hp",
+                  "value": 20.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "max_stack_cnt",
+                  "value": 30.0,
+                  "valueStr": null
+                }
+              ],
+              "tokenKey": null,
+              "isHideTalent": false
+            },
+            {
+              "unlockCondition": {
+                "phase": "PHASE_1",
+                "level": 1
+              },
+              "requiredPotentialRank": 4,
+              "prefabKey": "1",
+              "name": "血戮",
+              "description": "每击杀一名敌人后自身的生命上限提高30<@ba.talpu>（+10）</>，最多可以叠加30次",
+              "rangeId": null,
+              "blackboard": [
+                {
+                  "key": "max_hp",
+                  "value": 30.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "max_stack_cnt",
+                  "value": 30.0,
+                  "valueStr": null
+                }
+              ],
+              "tokenKey": null,
+              "isHideTalent": false
+            },
+            {
+              "unlockCondition": {
+                "phase": "PHASE_2",
+                "level": 1
+              },
+              "requiredPotentialRank": 0,
+              "prefabKey": "1",
+              "name": "血戮",
+              "description": "每击杀一名敌人后自身的生命上限提高40，最多可以叠加30次",
+              "rangeId": null,
+              "blackboard": [
+                {
+                  "key": "max_hp",
+                  "value": 40.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "max_stack_cnt",
+                  "value": 30.0,
+                  "valueStr": null
+                }
+              ],
+              "tokenKey": null,
+              "isHideTalent": false
+            },
+            {
+              "unlockCondition": {
+                "phase": "PHASE_2",
+                "level": 1
+              },
+              "requiredPotentialRank": 4,
+              "prefabKey": "1",
+              "name": "血戮",
+              "description": "每击杀一名敌人后自身的生命上限提高50<@ba.talpu>（+10）</>，最多可以叠加30次",
+              "rangeId": null,
+              "blackboard": [
+                {
+                  "key": "max_hp",
+                  "value": 50.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "max_stack_cnt",
+                  "value": 30.0,
+                  "valueStr": null
+                }
+              ],
+              "tokenKey": null,
+              "isHideTalent": false
+            }
+          ]
+        }
+      ],
+      "trait": null
+    },
+    "char_4065_judge": {
+      "name": "斥罪",
+      "talents": [
+        {
+          "candidates": [
+            {
+              "unlockCondition": {
+                "phase": "PHASE_0",
+                "level": 1
+              },
+              "requiredPotentialRank": 0,
+              "prefabKey": "1",
+              "name": "律法卫士",
+              "description": "部署后立即获得相当于生命上限30%的<$ba.barrier>屏障</>",
+              "rangeId": null,
+              "blackboard": [
+                {
+                  "key": "max_hp_ratio",
+                  "value": 3.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "kill_hp_ratio",
+                  "value": 0.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "born_hp_ratio",
+                  "value": 0.3,
+                  "valueStr": null
+                },
+                {
+                  "key": "higher_effect_hp_ratio",
+                  "value": 1.0,
+                  "valueStr": null
+                }
+              ],
+              "tokenKey": null,
+              "isHideTalent": false
+            },
+            {
+              "unlockCondition": {
+                "phase": "PHASE_0",
+                "level": 1
+              },
+              "requiredPotentialRank": 2,
+              "prefabKey": "1",
+              "name": "律法卫士",
+              "description": "部署后立即获得相当于生命上限35%<@ba.talpu>（+5%）</>的<$ba.barrier>屏障</>",
+              "rangeId": null,
+              "blackboard": [
+                {
+                  "key": "max_hp_ratio",
+                  "value": 3.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "kill_hp_ratio",
+                  "value": 0.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "born_hp_ratio",
+                  "value": 0.35,
+                  "valueStr": null
+                },
+                {
+                  "key": "higher_effect_hp_ratio",
+                  "value": 1.0,
+                  "valueStr": null
+                }
+              ],
+              "tokenKey": null,
+              "isHideTalent": false
+            },
+            {
+              "unlockCondition": {
+                "phase": "PHASE_1",
+                "level": 1
+              },
+              "requiredPotentialRank": 0,
+              "prefabKey": "1",
+              "name": "律法卫士",
+              "description": "部署后立即获得相当于生命上限30%的<$ba.barrier>屏障</>，每击倒一名敌人时获得相当于生命上限6%的<$ba.barrier>屏障</>（最多不超过生命上限300%）",
+              "rangeId": null,
+              "blackboard": [
+                {
+                  "key": "max_hp_ratio",
+                  "value": 3.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "kill_hp_ratio",
+                  "value": 0.06,
+                  "valueStr": null
+                },
+                {
+                  "key": "born_hp_ratio",
+                  "value": 0.3,
+                  "valueStr": null
+                },
+                {
+                  "key": "higher_effect_hp_ratio",
+                  "value": 1.0,
+                  "valueStr": null
+                }
+              ],
+              "tokenKey": null,
+              "isHideTalent": false
+            },
+            {
+              "unlockCondition": {
+                "phase": "PHASE_1",
+                "level": 1
+              },
+              "requiredPotentialRank": 2,
+              "prefabKey": "1",
+              "name": "律法卫士",
+              "description": "部署后立即获得相当于生命上限35%<@ba.talpu>（+5%）</>的<$ba.barrier>屏障</>，每击倒一名敌人时获得相当于生命上限6%的<$ba.barrier>屏障</>（最多不超过生命上限300%）",
+              "rangeId": null,
+              "blackboard": [
+                {
+                  "key": "max_hp_ratio",
+                  "value": 3.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "kill_hp_ratio",
+                  "value": 0.06,
+                  "valueStr": null
+                },
+                {
+                  "key": "born_hp_ratio",
+                  "value": 0.35,
+                  "valueStr": null
+                },
+                {
+                  "key": "higher_effect_hp_ratio",
+                  "value": 1.0,
+                  "valueStr": null
+                }
+              ],
+              "tokenKey": null,
+              "isHideTalent": false
+            },
+            {
+              "unlockCondition": {
+                "phase": "PHASE_2",
+                "level": 1
+              },
+              "requiredPotentialRank": 0,
+              "prefabKey": "1",
+              "name": "律法卫士",
+              "description": "部署后立即获得相当于生命上限50%的<$ba.barrier>屏障</>，每击倒一名敌人时获得相当于生命上限10%的<$ba.barrier>屏障</>（最多不超过生命上限300%）",
+              "rangeId": null,
+              "blackboard": [
+                {
+                  "key": "max_hp_ratio",
+                  "value": 3.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "kill_hp_ratio",
+                  "value": 0.1,
+                  "valueStr": null
+                },
+                {
+                  "key": "born_hp_ratio",
+                  "value": 0.5,
+                  "valueStr": null
+                },
+                {
+                  "key": "higher_effect_hp_ratio",
+                  "value": 1.0,
+                  "valueStr": null
+                }
+              ],
+              "tokenKey": null,
+              "isHideTalent": false
+            },
+            {
+              "unlockCondition": {
+                "phase": "PHASE_2",
+                "level": 1
+              },
+              "requiredPotentialRank": 2,
+              "prefabKey": "1",
+              "name": "律法卫士",
+              "description": "部署后立即获得相当于生命上限55%<@ba.talpu>（+5%）</>的<$ba.barrier>屏障</>，每击倒一名敌人时获得相当于生命上限10%的<$ba.barrier>屏障</>（最多不超过生命上限300%）",
+              "rangeId": null,
+              "blackboard": [
+                {
+                  "key": "max_hp_ratio",
+                  "value": 3.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "kill_hp_ratio",
+                  "value": 0.1,
+                  "valueStr": null
+                },
+                {
+                  "key": "born_hp_ratio",
+                  "value": 0.55,
+                  "valueStr": null
+                },
+                {
+                  "key": "higher_effect_hp_ratio",
+                  "value": 1.0,
+                  "valueStr": null
+                }
+              ],
+              "tokenKey": null,
+              "isHideTalent": false
+            }
+          ]
+        },
+        {
+          "candidates": [
+            {
+              "unlockCondition": {
+                "phase": "PHASE_2",
+                "level": 1
+              },
+              "requiredPotentialRank": 0,
+              "prefabKey": "2",
+              "name": "荆棘环身",
+              "description": "拥有来源于自身的<$ba.barrier>屏障</>时，每次受到攻击对目标造成相当于斥罪攻击力50%的法术伤害",
+              "rangeId": null,
+              "blackboard": [
+                {
+                  "key": "atk_scale",
+                  "value": 0.5,
+                  "valueStr": null
+                }
+              ],
+              "tokenKey": null,
+              "isHideTalent": false
+            },
+            {
+              "unlockCondition": {
+                "phase": "PHASE_2",
+                "level": 1
+              },
+              "requiredPotentialRank": 4,
+              "prefabKey": "2",
+              "name": "荆棘环身",
+              "description": "拥有来源于自身的<$ba.barrier>屏障</>时，每次受到攻击对目标造成相当于斥罪攻击力53%<@ba.talpu>（+3%）</>的法术伤害",
+              "rangeId": null,
+              "blackboard": [
+                {
+                  "key": "atk_scale",
+                  "value": 0.53,
+                  "valueStr": null
+                }
+              ],
+              "tokenKey": null,
+              "isHideTalent": false
+            }
+          ]
+        }
+      ],
+      "trait": null
+    },
+    "char_261_sddrag": {
+      "name": "苇草",
+      "talents": [
+        {
+          "candidates": [
+            {
+              "unlockCondition": {
+                "phase": "PHASE_1",
+                "level": 1
+              },
+              "requiredPotentialRank": 0,
+              "prefabKey": "1",
+              "name": "枯法之血",
+              "description": "法术抗性+10",
+              "rangeId": null,
+              "blackboard": [
+                {
+                  "key": "magic_resistance",
+                  "value": 10.0,
+                  "valueStr": null
+                }
+              ],
+              "tokenKey": null,
+              "isHideTalent": false
+            },
+            {
+              "unlockCondition": {
+                "phase": "PHASE_2",
+                "level": 1
+              },
+              "requiredPotentialRank": 0,
+              "prefabKey": "1",
+              "name": "枯法之血",
+              "description": "法术抗性+20",
+              "rangeId": null,
+              "blackboard": [
+                {
+                  "key": "magic_resistance",
+                  "value": 20.0,
+                  "valueStr": null
+                }
+              ],
+              "tokenKey": null,
+              "isHideTalent": false
+            }
+          ]
+        }
+      ],
+      "trait": {
+        "candidates": [
+          {
+            "unlockCondition": {
+              "phase": "PHASE_0",
+              "level": 1
+            },
+            "requiredPotentialRank": 0,
+            "blackboard": [
+              {
+                "key": "cost",
+                "value": 1.0,
+                "valueStr": null
+              }
+            ],
+            "overrideDescripton": null,
+            "prefabKey": null,
+            "rangeId": null
+          }
+        ]
+      }
+    }
+  }
+}

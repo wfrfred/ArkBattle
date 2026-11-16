@@ -1,0 +1,1839 @@
+{
+  "scope": "Static actual level + Prefab + Buff-template + native-call-chain evidence; not runtime game execution.",
+  "checkedOn": "2026-11-16",
+  "level": {
+    "source": {
+      "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/checkpoint-nondefault-20261107/mirror/zh_CN/gamedata/levels/activities/act22side/level_act22side_08.json",
+      "bytes": 106758,
+      "sha256": "9f976203be6a58fc158fd2c11bf1b745d7572c0ad13edb13734a44e6c3eb6c8f"
+    },
+    "enemyDbRefs": [
+      {
+        "useDb": true,
+        "id": "enemy_1536_ncrmcr",
+        "level": 0,
+        "overwrittenData": null
+      },
+      {
+        "useDb": true,
+        "id": "enemy_1294_duchns",
+        "level": 0,
+        "overwrittenData": null
+      }
+    ],
+    "bossSpawn": {
+      "actionType": "SPAWN",
+      "managedByScheduler": true,
+      "key": "enemy_1536_ncrmcr",
+      "count": 1,
+      "preDelay": 60.0,
+      "interval": 1.0,
+      "routeIndex": 6,
+      "blockFragment": false,
+      "autoPreviewRoute": true,
+      "autoDisplayEnemyInfo": false,
+      "isUnharmfulAndAlwaysCountAsKilled": false,
+      "hiddenGroup": null,
+      "randomSpawnGroupKey": null,
+      "randomSpawnGroupPackKey": null,
+      "randomType": "ALWAYS",
+      "refreshType": "ALWAYS",
+      "weight": 0,
+      "dontBlockWave": false,
+      "forceBlockWaveInBranch": false
+    }
+  },
+  "enemyDb": {
+    "source": {
+      "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/leithanien-enemydata-20261109/enemy_database.json",
+      "bytes": 15721552,
+      "sha256": "eb8559db76aecd92c37b3ac038de0e9aeb8b6d6c107adfaeadfe0fbc098e067b"
+    },
+    "ref": "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+    "rows": [
+      {
+        "Key": "enemy_1294_duchns",
+        "Value": [
+          {
+            "level": 0,
+            "enemyData": {
+              "name": {
+                "m_defined": true,
+                "m_value": "焦竭之火"
+              },
+              "description": {
+                "m_defined": true,
+                "m_value": ""
+              },
+              "prefabKey": {
+                "m_defined": true,
+                "m_value": "enemy_1294_duchns"
+              },
+              "attributes": {
+                "maxHp": {
+                  "m_defined": true,
+                  "m_value": 10000
+                },
+                "atk": {
+                  "m_defined": true,
+                  "m_value": 800
+                },
+                "def": {
+                  "m_defined": true,
+                  "m_value": 0
+                },
+                "magicResistance": {
+                  "m_defined": true,
+                  "m_value": 60.0
+                },
+                "cost": {
+                  "m_defined": false,
+                  "m_value": 0
+                },
+                "blockCnt": {
+                  "m_defined": false,
+                  "m_value": 0
+                },
+                "moveSpeed": {
+                  "m_defined": true,
+                  "m_value": 0.0
+                },
+                "attackSpeed": {
+                  "m_defined": true,
+                  "m_value": 100.0
+                },
+                "baseAttackTime": {
+                  "m_defined": true,
+                  "m_value": 2.5
+                },
+                "respawnTime": {
+                  "m_defined": false,
+                  "m_value": 0
+                },
+                "hpRecoveryPerSec": {
+                  "m_defined": false,
+                  "m_value": 0.0
+                },
+                "spRecoveryPerSec": {
+                  "m_defined": false,
+                  "m_value": 0.0
+                },
+                "maxDeployCount": {
+                  "m_defined": false,
+                  "m_value": 0
+                },
+                "massLevel": {
+                  "m_defined": true,
+                  "m_value": 7
+                },
+                "baseForceLevel": {
+                  "m_defined": false,
+                  "m_value": 0
+                },
+                "tauntLevel": {
+                  "m_defined": true,
+                  "m_value": 1
+                },
+                "epDamageResistance": {
+                  "m_defined": false,
+                  "m_value": 0.0
+                },
+                "epResistance": {
+                  "m_defined": false,
+                  "m_value": 0.0
+                },
+                "damageHitratePhysical": {
+                  "m_defined": false,
+                  "m_value": 0.0
+                },
+                "damageHitrateMagical": {
+                  "m_defined": false,
+                  "m_value": 0.0
+                },
+                "epBreakRecoverSpeed": {
+                  "m_defined": false,
+                  "m_value": 0.0
+                },
+                "blockVolume": {
+                  "m_defined": false,
+                  "m_value": -1
+                },
+                "stunImmune": {
+                  "m_defined": true,
+                  "m_value": true
+                },
+                "silenceImmune": {
+                  "m_defined": true,
+                  "m_value": true
+                },
+                "sleepImmune": {
+                  "m_defined": true,
+                  "m_value": true
+                },
+                "frozenImmune": {
+                  "m_defined": true,
+                  "m_value": true
+                },
+                "levitateImmune": {
+                  "m_defined": true,
+                  "m_value": true
+                },
+                "disarmedCombatImmune": {
+                  "m_defined": false,
+                  "m_value": false
+                },
+                "fearedImmune": {
+                  "m_defined": false,
+                  "m_value": false
+                },
+                "palsyImmune": {
+                  "m_defined": false,
+                  "m_value": false
+                },
+                "attractImmune": {
+                  "m_defined": false,
+                  "m_value": false
+                },
+                "teleportImmune": {
+                  "m_defined": false,
+                  "m_value": false
+                },
+                "groundBoundImmune": {
+                  "m_defined": false,
+                  "m_value": false
+                }
+              },
+              "applyWay": {
+                "m_defined": true,
+                "m_value": "NONE"
+              },
+              "motion": {
+                "m_defined": true,
+                "m_value": "WALK"
+              },
+              "enemyTags": {
+                "m_defined": true,
+                "m_value": []
+              },
+              "lifePointReduce": {
+                "m_defined": false,
+                "m_value": 0
+              },
+              "levelType": {
+                "m_defined": true,
+                "m_value": "NORMAL"
+              },
+              "rangeRadius": {
+                "m_defined": false,
+                "m_value": 0.0
+              },
+              "numOfExtraDrops": {
+                "m_defined": false,
+                "m_value": 0
+              },
+              "viewRadius": {
+                "m_defined": false,
+                "m_value": 0.0
+              },
+              "notCountInTotal": {
+                "m_defined": false,
+                "m_value": false
+              },
+              "talentBlackboard": [
+                {
+                  "key": "Bleed.hp_ratio",
+                  "value": 0.05,
+                  "valueStr": null
+                },
+                {
+                  "key": "Boom.ep_damage_ratio",
+                  "value": 1.25,
+                  "valueStr": null
+                },
+                {
+                  "key": "Boom.range_id",
+                  "value": 0.0,
+                  "valueStr": "x-5"
+                }
+              ],
+              "skills": null,
+              "spData": null
+            }
+          }
+        ]
+      },
+      {
+        "Key": "enemy_1536_ncrmcr",
+        "Value": [
+          {
+            "level": 0,
+            "enemyData": {
+              "name": {
+                "m_defined": true,
+                "m_value": "“领袖” "
+              },
+              "description": {
+                "m_defined": true,
+                "m_value": "深池的“领袖”，焚烧生命的德拉克，一个令人恐惧的影子。不要被她困住。"
+              },
+              "prefabKey": {
+                "m_defined": true,
+                "m_value": "enemy_1536_ncrmcr"
+              },
+              "attributes": {
+                "maxHp": {
+                  "m_defined": true,
+                  "m_value": 30000
+                },
+                "atk": {
+                  "m_defined": true,
+                  "m_value": 800
+                },
+                "def": {
+                  "m_defined": true,
+                  "m_value": 750
+                },
+                "magicResistance": {
+                  "m_defined": true,
+                  "m_value": 60.0
+                },
+                "cost": {
+                  "m_defined": false,
+                  "m_value": 0
+                },
+                "blockCnt": {
+                  "m_defined": false,
+                  "m_value": 0
+                },
+                "moveSpeed": {
+                  "m_defined": true,
+                  "m_value": 0.5
+                },
+                "attackSpeed": {
+                  "m_defined": true,
+                  "m_value": 100.0
+                },
+                "baseAttackTime": {
+                  "m_defined": true,
+                  "m_value": 4.5
+                },
+                "respawnTime": {
+                  "m_defined": false,
+                  "m_value": 0
+                },
+                "hpRecoveryPerSec": {
+                  "m_defined": false,
+                  "m_value": 0.0
+                },
+                "spRecoveryPerSec": {
+                  "m_defined": false,
+                  "m_value": 0.0
+                },
+                "maxDeployCount": {
+                  "m_defined": false,
+                  "m_value": 0
+                },
+                "massLevel": {
+                  "m_defined": true,
+                  "m_value": 7
+                },
+                "baseForceLevel": {
+                  "m_defined": false,
+                  "m_value": 0
+                },
+                "tauntLevel": {
+                  "m_defined": false,
+                  "m_value": 0
+                },
+                "epDamageResistance": {
+                  "m_defined": false,
+                  "m_value": 0.0
+                },
+                "epResistance": {
+                  "m_defined": false,
+                  "m_value": 0.0
+                },
+                "damageHitratePhysical": {
+                  "m_defined": false,
+                  "m_value": 0.0
+                },
+                "damageHitrateMagical": {
+                  "m_defined": false,
+                  "m_value": 0.0
+                },
+                "epBreakRecoverSpeed": {
+                  "m_defined": false,
+                  "m_value": 0.0
+                },
+                "blockVolume": {
+                  "m_defined": false,
+                  "m_value": -1
+                },
+                "stunImmune": {
+                  "m_defined": true,
+                  "m_value": true
+                },
+                "silenceImmune": {
+                  "m_defined": true,
+                  "m_value": true
+                },
+                "sleepImmune": {
+                  "m_defined": true,
+                  "m_value": true
+                },
+                "frozenImmune": {
+                  "m_defined": true,
+                  "m_value": true
+                },
+                "levitateImmune": {
+                  "m_defined": true,
+                  "m_value": true
+                },
+                "disarmedCombatImmune": {
+                  "m_defined": false,
+                  "m_value": false
+                },
+                "fearedImmune": {
+                  "m_defined": false,
+                  "m_value": false
+                },
+                "palsyImmune": {
+                  "m_defined": false,
+                  "m_value": false
+                },
+                "attractImmune": {
+                  "m_defined": false,
+                  "m_value": false
+                },
+                "teleportImmune": {
+                  "m_defined": false,
+                  "m_value": false
+                },
+                "groundBoundImmune": {
+                  "m_defined": false,
+                  "m_value": false
+                }
+              },
+              "applyWay": {
+                "m_defined": true,
+                "m_value": "ALL"
+              },
+              "motion": {
+                "m_defined": true,
+                "m_value": "WALK"
+              },
+              "enemyTags": {
+                "m_defined": false,
+                "m_value": null
+              },
+              "lifePointReduce": {
+                "m_defined": true,
+                "m_value": 2
+              },
+              "levelType": {
+                "m_defined": true,
+                "m_value": "BOSS"
+              },
+              "rangeRadius": {
+                "m_defined": true,
+                "m_value": 2.0
+              },
+              "numOfExtraDrops": {
+                "m_defined": false,
+                "m_value": 0
+              },
+              "viewRadius": {
+                "m_defined": false,
+                "m_value": 0.0
+              },
+              "notCountInTotal": {
+                "m_defined": false,
+                "m_value": false
+              },
+              "talentBlackboard": [
+                {
+                  "key": "Aura.enemy_key",
+                  "value": 0.0,
+                  "valueStr": "enemy_1288_duskls"
+                },
+                {
+                  "key": "Reborn.duration",
+                  "value": 5.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "Reborn.invincible",
+                  "value": 15.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "AtkUp.atk",
+                  "value": 0.3,
+                  "valueStr": null
+                },
+                {
+                  "key": "Combat_scale.atk_scale",
+                  "value": 0.8,
+                  "valueStr": null
+                }
+              ],
+              "skills": [
+                {
+                  "prefabKey": "Chain_1",
+                  "priority": 0,
+                  "cooldown": 30.0,
+                  "initCooldown": 5.0,
+                  "spCost": 0,
+                  "blackboard": [
+                    {
+                      "key": "range_radius",
+                      "value": 2.0,
+                      "valueStr": null
+                    },
+                    {
+                      "key": "enemy_key",
+                      "value": 0.0,
+                      "valueStr": "enemy_1294_duchns"
+                    }
+                  ]
+                },
+                {
+                  "prefabKey": "Sacrifice_1",
+                  "priority": 1,
+                  "cooldown": 70.0,
+                  "initCooldown": 5.0,
+                  "spCost": 0,
+                  "blackboard": [
+                    {
+                      "key": "max_target",
+                      "value": 5.0,
+                      "valueStr": null
+                    },
+                    {
+                      "key": "scale",
+                      "value": 0.5,
+                      "valueStr": null
+                    },
+                    {
+                      "key": "duration",
+                      "value": 60.0,
+                      "valueStr": null
+                    },
+                    {
+                      "key": "enemy_key",
+                      "value": 0.0,
+                      "valueStr": "enemy_1288_duskls"
+                    }
+                  ]
+                },
+                {
+                  "prefabKey": "Chain_2",
+                  "priority": 0,
+                  "cooldown": 30.0,
+                  "initCooldown": 5.0,
+                  "spCost": 0,
+                  "blackboard": [
+                    {
+                      "key": "range_radius",
+                      "value": 2.0,
+                      "valueStr": null
+                    },
+                    {
+                      "key": "atk",
+                      "value": 0.0,
+                      "valueStr": null
+                    },
+                    {
+                      "key": "enemy_key",
+                      "value": 0.0,
+                      "valueStr": "enemy_1294_duchns"
+                    }
+                  ]
+                },
+                {
+                  "prefabKey": "Sacrifice_2",
+                  "priority": 1,
+                  "cooldown": 60.0,
+                  "initCooldown": 5.0,
+                  "spCost": 0,
+                  "blackboard": [
+                    {
+                      "key": "max_target",
+                      "value": 5.0,
+                      "valueStr": null
+                    },
+                    {
+                      "key": "scale",
+                      "value": 0.5,
+                      "valueStr": null
+                    },
+                    {
+                      "key": "duration",
+                      "value": 60.0,
+                      "valueStr": null
+                    },
+                    {
+                      "key": "enemy_key",
+                      "value": 0.0,
+                      "valueStr": "enemy_1288_duskls"
+                    }
+                  ]
+                },
+                {
+                  "prefabKey": "Arson",
+                  "priority": 5,
+                  "cooldown": 0.0,
+                  "initCooldown": 0.0,
+                  "spCost": 0,
+                  "blackboard": null
+                }
+              ],
+              "spData": null
+            }
+          },
+          {
+            "level": 1,
+            "enemyData": {
+              "name": {
+                "m_defined": false,
+                "m_value": null
+              },
+              "description": {
+                "m_defined": false,
+                "m_value": null
+              },
+              "prefabKey": {
+                "m_defined": false,
+                "m_value": null
+              },
+              "attributes": {
+                "maxHp": {
+                  "m_defined": true,
+                  "m_value": 50000
+                },
+                "atk": {
+                  "m_defined": true,
+                  "m_value": 1000
+                },
+                "def": {
+                  "m_defined": true,
+                  "m_value": 800
+                },
+                "magicResistance": {
+                  "m_defined": false,
+                  "m_value": 0.0
+                },
+                "cost": {
+                  "m_defined": false,
+                  "m_value": 0
+                },
+                "blockCnt": {
+                  "m_defined": false,
+                  "m_value": 0
+                },
+                "moveSpeed": {
+                  "m_defined": false,
+                  "m_value": 0.0
+                },
+                "attackSpeed": {
+                  "m_defined": false,
+                  "m_value": 0.0
+                },
+                "baseAttackTime": {
+                  "m_defined": false,
+                  "m_value": 0.0
+                },
+                "respawnTime": {
+                  "m_defined": false,
+                  "m_value": 0
+                },
+                "hpRecoveryPerSec": {
+                  "m_defined": false,
+                  "m_value": 0.0
+                },
+                "spRecoveryPerSec": {
+                  "m_defined": false,
+                  "m_value": 0.0
+                },
+                "maxDeployCount": {
+                  "m_defined": false,
+                  "m_value": 0
+                },
+                "massLevel": {
+                  "m_defined": false,
+                  "m_value": 0
+                },
+                "baseForceLevel": {
+                  "m_defined": false,
+                  "m_value": 0
+                },
+                "tauntLevel": {
+                  "m_defined": false,
+                  "m_value": 0
+                },
+                "epDamageResistance": {
+                  "m_defined": false,
+                  "m_value": 0.0
+                },
+                "epResistance": {
+                  "m_defined": false,
+                  "m_value": 0.0
+                },
+                "damageHitratePhysical": {
+                  "m_defined": false,
+                  "m_value": 0.0
+                },
+                "damageHitrateMagical": {
+                  "m_defined": false,
+                  "m_value": 0.0
+                },
+                "epBreakRecoverSpeed": {
+                  "m_defined": false,
+                  "m_value": 0.0
+                },
+                "blockVolume": {
+                  "m_defined": false,
+                  "m_value": -1
+                },
+                "stunImmune": {
+                  "m_defined": false,
+                  "m_value": false
+                },
+                "silenceImmune": {
+                  "m_defined": false,
+                  "m_value": false
+                },
+                "sleepImmune": {
+                  "m_defined": false,
+                  "m_value": false
+                },
+                "frozenImmune": {
+                  "m_defined": false,
+                  "m_value": false
+                },
+                "levitateImmune": {
+                  "m_defined": false,
+                  "m_value": false
+                },
+                "disarmedCombatImmune": {
+                  "m_defined": false,
+                  "m_value": false
+                },
+                "fearedImmune": {
+                  "m_defined": false,
+                  "m_value": false
+                },
+                "palsyImmune": {
+                  "m_defined": false,
+                  "m_value": false
+                },
+                "attractImmune": {
+                  "m_defined": false,
+                  "m_value": false
+                },
+                "teleportImmune": {
+                  "m_defined": false,
+                  "m_value": false
+                },
+                "groundBoundImmune": {
+                  "m_defined": false,
+                  "m_value": false
+                }
+              },
+              "applyWay": {
+                "m_defined": false,
+                "m_value": "NONE"
+              },
+              "motion": {
+                "m_defined": false,
+                "m_value": "WALK"
+              },
+              "enemyTags": {
+                "m_defined": false,
+                "m_value": null
+              },
+              "lifePointReduce": {
+                "m_defined": false,
+                "m_value": 0
+              },
+              "levelType": {
+                "m_defined": false,
+                "m_value": "NORMAL"
+              },
+              "rangeRadius": {
+                "m_defined": false,
+                "m_value": 0.0
+              },
+              "numOfExtraDrops": {
+                "m_defined": false,
+                "m_value": 0
+              },
+              "viewRadius": {
+                "m_defined": false,
+                "m_value": 0.0
+              },
+              "notCountInTotal": {
+                "m_defined": false,
+                "m_value": false
+              },
+              "talentBlackboard": [
+                {
+                  "key": "Aura.enemy_key",
+                  "value": 0.0,
+                  "valueStr": "enemy_1288_duskls_2"
+                }
+              ],
+              "skills": [
+                {
+                  "prefabKey": "Chain_1",
+                  "priority": 0,
+                  "cooldown": 30.0,
+                  "initCooldown": 5.0,
+                  "spCost": 0,
+                  "blackboard": [
+                    {
+                      "key": "range_radius",
+                      "value": 2.0,
+                      "valueStr": null
+                    },
+                    {
+                      "key": "enemy_key",
+                      "value": 0.0,
+                      "valueStr": "enemy_1294_duchns_2"
+                    }
+                  ]
+                },
+                {
+                  "prefabKey": "Chain_2",
+                  "priority": 0,
+                  "cooldown": 30.0,
+                  "initCooldown": 0.0,
+                  "spCost": 0,
+                  "blackboard": [
+                    {
+                      "key": "range_radius",
+                      "value": 2.0,
+                      "valueStr": null
+                    },
+                    {
+                      "key": "atk",
+                      "value": 0.0,
+                      "valueStr": null
+                    },
+                    {
+                      "key": "enemy_key",
+                      "value": 0.0,
+                      "valueStr": "enemy_1294_duchns_2"
+                    }
+                  ]
+                },
+                {
+                  "prefabKey": "Sacrifice_1",
+                  "priority": 1,
+                  "cooldown": 70.0,
+                  "initCooldown": 5.0,
+                  "spCost": 0,
+                  "blackboard": [
+                    {
+                      "key": "max_target",
+                      "value": 5.0,
+                      "valueStr": null
+                    },
+                    {
+                      "key": "scale",
+                      "value": 0.5,
+                      "valueStr": null
+                    },
+                    {
+                      "key": "duration",
+                      "value": 60.0,
+                      "valueStr": null
+                    },
+                    {
+                      "key": "enemy_key",
+                      "value": 0.0,
+                      "valueStr": "enemy_1288_duskls_2"
+                    }
+                  ]
+                },
+                {
+                  "prefabKey": "Sacrifice_2",
+                  "priority": 1,
+                  "cooldown": 60.0,
+                  "initCooldown": 5.0,
+                  "spCost": 0,
+                  "blackboard": [
+                    {
+                      "key": "max_target",
+                      "value": 5.0,
+                      "valueStr": null
+                    },
+                    {
+                      "key": "scale",
+                      "value": 0.5,
+                      "valueStr": null
+                    },
+                    {
+                      "key": "duration",
+                      "value": 60.0,
+                      "valueStr": null
+                    },
+                    {
+                      "key": "enemy_key",
+                      "value": 0.0,
+                      "valueStr": "enemy_1288_duskls_2"
+                    }
+                  ]
+                },
+                {
+                  "prefabKey": "Arson",
+                  "priority": 5,
+                  "cooldown": 0.0,
+                  "initCooldown": 0.0,
+                  "spCost": 0,
+                  "blackboard": null
+                }
+              ],
+              "spData": null
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "bossComponents": [
+    {
+      "bundle": "battle/enm_pfb_18.ab",
+      "file": "CAB-0df5f4c8c8dade07e2ee475a972da576",
+      "pathId": "7395758536139435081",
+      "gameObjectPathId": "1733567622724807753",
+      "hierarchy": [
+        "enemy_1536_ncrmcr",
+        "Modes",
+        "Reborn",
+        "Skills",
+        "Chain_2"
+      ],
+      "objectSha256": "22e4db4291280d50072bb61bebd0a0ec13e27cadc23bcd539c552e04cb9dcf01",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 551713621458524560
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "551713621458524560",
+        "name": "RangedAttackWithExtraActions",
+        "cl": "RangedAttackWithExtraActions",
+        "ns": "Torappu.Battle.Abilities",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_selector": {
+          "m_FileID": 0,
+          "m_PathID": -5593358983402132407
+        },
+        "_metadata": {
+          "namedAsAlias": "",
+          "blackboardPrefix": ""
+        },
+        "_overrideSignalId": "",
+        "_interruptAbilityOnDetach": 0,
+        "_attachPassiveBuffsOnDummy": 1,
+        "_ignoreIfOwnerDead": 0,
+        "_forceAsDmgOrHealAbility": 0,
+        "_waitForAttackEvent": 1,
+        "_interuptIfTargetDead": 0,
+        "_resetCdStrategy": 1,
+        "_selectTargetSource": 1,
+        "_selectTargetTiming": 0,
+        "_timeMode": 0,
+        "_alwaysIncludeTarget": 1,
+        "_allowNoTarget": 0,
+        "_animKey": "Skill_b_1",
+        "_endAnimKey": "Idle",
+        "_downAnimKey": "",
+        "_downEndAnimKey": "",
+        "_upAnimKey": "",
+        "_upEndAnimKey": "",
+        "_cooldown": 0.0,
+        "_cooldownKey": "duration",
+        "_preDelay": 0.0,
+        "_escapeTime": 0.0,
+        "_faceToTarget": 1,
+        "_faceToDefault": 0,
+        "_faceToFront": 0,
+        "_faceToFirstCastTarget": 0,
+        "_checkFaceToFirstCastTargetDownAttack": 0,
+        "_forceFaceToDirection": 0,
+        "_activeBuffs": {
+          "Array": []
+        },
+        "_maxAnimScale": 1.0,
+        "_onlyPlayEndAnimWhenIsLastAbility": 0,
+        "_ignorePalsyInterrupt": 0,
+        "_affectedBySlowDown": 1,
+        "_atkScale": 0.0,
+        "_atkScaleKey": "atk_scale",
+        "_attackType": 4,
+        "_elementDamageType": 0,
+        "_epDamageRatio": 0.0,
+        "_useDynamicAttackType": 0,
+        "_deliveryParaWhenReplaceActionNode": 0,
+        "_projectileKey": "projectile_enemy_ncrmcr_2",
+        "_mountPointType": 2,
+        "_useMountGroup": 0,
+        "_mountGroup": {
+          "loopType": 0,
+          "mountPoints": {
+            "Array": []
+          }
+        },
+        "_damageType": 1,
+        "_waitForProjectileInvalid": 0,
+        "_notClearProjectileWhenCastEnd": 0,
+        "_fireAttackFinishWhenProjectileInvalid": 0,
+        "_minPostDelayWhenProjectileInvalid": 0.0,
+        "_waitForAnimEndWhenProjectileInvalid": 0,
+        "_projectileDestination": 0,
+        "_extraDamageType": 0,
+        "_emitToInputPosWhenTargetIsInvalid": 0,
+        "_emitToInputRootTileWhenTargetIsInvalid": 0,
+        "_useCachedAtkOnly": 0,
+        "_transferSource": 0,
+        "_extraProjectileKeys": {
+          "Array": []
+        },
+        "_fireCreateProjectileEvent": 0,
+        "_actionEvent": 2,
+        "_actions": {
+          "SerializedState": "[{\"_source\":\"SOURCE\",\"_target\":\"SOURCE\",\"_useSpecialHost\":false,\"_host\":\"SOURCE\",\"_useRandomEnemy\":false,\"_enemyKey\":\"enemy_1294_duchns\",\"_motionMode\":\"WALK\",\"_unharmful\":true,\"_alwaysCountAsKilled\":false,\"_waitTime\":9999.0,\"_spawnOffset\":0.0,\"_selectTileInSnapshot\":true,\"_sourceTileViaBb\":false,\"_sourceRowKey\":\"\",\"_sourceColKey\":\"\",\"_summonOnNearestPassableTile\":false,\"_buffs\":[],\"_useSourceEndPosition\":false,\"_targetTileViaBb\":false,\"_targetRowKey\":\"\",\"_targetColKey\":\"\",\"_avoidHighland\":false,\"_noEndPosition\":false,\"_force\":false,\"_addBuffsSource\":\"SOURCE\",\"_changeSpawnCertainPos\":false,\"_spawnCertainOffsetX\":0,\"_spawnCertainOffsetY\":0,\"$type\":\"Torappu.Battle.Action.Nodes+SummonEnemyWithRuntimeRoute\"}]",
+          "SerializedObjectReferences": {
+            "Array": []
+          }
+        },
+        "_overwriteAbilityActions": 0
+      }
+    },
+    {
+      "bundle": "battle/enm_pfb_18.ab",
+      "file": "CAB-0df5f4c8c8dade07e2ee475a972da576",
+      "pathId": "9182474993649478729",
+      "gameObjectPathId": "-1613558480860451767",
+      "hierarchy": [
+        "enemy_1536_ncrmcr",
+        "Modes",
+        "Default",
+        "Skills",
+        "Chain_1"
+      ],
+      "objectSha256": "6bcb7c2745ae5a704540a5c992d9a950df144d6b3e6c209595567c0833bb42b4",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 551713621458524560
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "551713621458524560",
+        "name": "RangedAttackWithExtraActions",
+        "cl": "RangedAttackWithExtraActions",
+        "ns": "Torappu.Battle.Abilities",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_selector": {
+          "m_FileID": 0,
+          "m_PathID": -3170228896957633463
+        },
+        "_metadata": {
+          "namedAsAlias": "",
+          "blackboardPrefix": ""
+        },
+        "_overrideSignalId": "",
+        "_interruptAbilityOnDetach": 0,
+        "_attachPassiveBuffsOnDummy": 1,
+        "_ignoreIfOwnerDead": 0,
+        "_forceAsDmgOrHealAbility": 0,
+        "_waitForAttackEvent": 1,
+        "_interuptIfTargetDead": 0,
+        "_resetCdStrategy": 1,
+        "_selectTargetSource": 1,
+        "_selectTargetTiming": 0,
+        "_timeMode": 0,
+        "_alwaysIncludeTarget": 1,
+        "_allowNoTarget": 0,
+        "_animKey": "Skill_a_1",
+        "_endAnimKey": "Idle",
+        "_downAnimKey": "",
+        "_downEndAnimKey": "",
+        "_upAnimKey": "",
+        "_upEndAnimKey": "",
+        "_cooldown": 0.0,
+        "_cooldownKey": "duration",
+        "_preDelay": 0.0,
+        "_escapeTime": 0.0,
+        "_faceToTarget": 1,
+        "_faceToDefault": 0,
+        "_faceToFront": 0,
+        "_faceToFirstCastTarget": 0,
+        "_checkFaceToFirstCastTargetDownAttack": 0,
+        "_forceFaceToDirection": 0,
+        "_activeBuffs": {
+          "Array": []
+        },
+        "_maxAnimScale": 1.0,
+        "_onlyPlayEndAnimWhenIsLastAbility": 0,
+        "_ignorePalsyInterrupt": 0,
+        "_affectedBySlowDown": 1,
+        "_atkScale": 0.0,
+        "_atkScaleKey": "atk_scale",
+        "_attackType": 4,
+        "_elementDamageType": 0,
+        "_epDamageRatio": 0.0,
+        "_useDynamicAttackType": 0,
+        "_deliveryParaWhenReplaceActionNode": 0,
+        "_projectileKey": "projectile_enemy_ncrmcr_2",
+        "_mountPointType": 2,
+        "_useMountGroup": 0,
+        "_mountGroup": {
+          "loopType": 0,
+          "mountPoints": {
+            "Array": []
+          }
+        },
+        "_damageType": 1,
+        "_waitForProjectileInvalid": 0,
+        "_notClearProjectileWhenCastEnd": 0,
+        "_fireAttackFinishWhenProjectileInvalid": 0,
+        "_minPostDelayWhenProjectileInvalid": 0.0,
+        "_waitForAnimEndWhenProjectileInvalid": 0,
+        "_projectileDestination": 0,
+        "_extraDamageType": 0,
+        "_emitToInputPosWhenTargetIsInvalid": 0,
+        "_emitToInputRootTileWhenTargetIsInvalid": 0,
+        "_useCachedAtkOnly": 0,
+        "_transferSource": 0,
+        "_extraProjectileKeys": {
+          "Array": []
+        },
+        "_fireCreateProjectileEvent": 0,
+        "_actionEvent": 2,
+        "_actions": {
+          "SerializedState": "[{\"_source\":\"SOURCE\",\"_target\":\"SOURCE\",\"_useSpecialHost\":false,\"_host\":\"SOURCE\",\"_useRandomEnemy\":false,\"_enemyKey\":\"enemy_1294_duchns\",\"_motionMode\":\"WALK\",\"_unharmful\":true,\"_alwaysCountAsKilled\":false,\"_waitTime\":9999.0,\"_spawnOffset\":0.0,\"_selectTileInSnapshot\":true,\"_sourceTileViaBb\":false,\"_sourceRowKey\":\"\",\"_sourceColKey\":\"\",\"_summonOnNearestPassableTile\":false,\"_buffs\":[],\"_useSourceEndPosition\":false,\"_targetTileViaBb\":false,\"_targetRowKey\":\"\",\"_targetColKey\":\"\",\"_avoidHighland\":false,\"_noEndPosition\":false,\"_force\":false,\"_addBuffsSource\":\"SOURCE\",\"_changeSpawnCertainPos\":false,\"_spawnCertainOffsetX\":0,\"_spawnCertainOffsetY\":0,\"$type\":\"Torappu.Battle.Action.Nodes+SummonEnemyWithRuntimeRoute\"}]",
+          "SerializedObjectReferences": {
+            "Array": []
+          }
+        },
+        "_overwriteAbilityActions": 0
+      }
+    }
+  ],
+  "fireComponents": [
+    {
+      "bundle": "battle/enm_pfb_12.ab",
+      "file": "CAB-39e1b2e5768b3ccda9d22135c681ed56",
+      "pathId": "-6455244610907907549",
+      "gameObjectPathId": "6249903517929396771",
+      "hierarchy": [
+        "enemy_1294_duchns",
+        "Talent",
+        "Boom"
+      ],
+      "objectSha256": "f234aec67ba8268aff4fbcd9eabf921444c61c72f952aa75ef41a69167c29f3b",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 3800760148018415462
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "3800760148018415462",
+        "name": "PassiveBuffAbility",
+        "cl": "PassiveBuffAbility",
+        "ns": "Torappu.Battle.Abilities",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_selector": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_metadata": {
+          "namedAsAlias": "",
+          "blackboardPrefix": ""
+        },
+        "_overrideSignalId": "",
+        "_interruptAbilityOnDetach": 0,
+        "_attachPassiveBuffsOnDummy": 1,
+        "_ignoreIfOwnerDead": 0,
+        "_forceAsDmgOrHealAbility": 0,
+        "_buffs": {
+          "Array": [
+            {
+              "attributes": {
+                "abnormalFlags": {
+                  "Array": [
+                    8,
+                    13
+                  ]
+                },
+                "abnormalImmunes": {
+                  "Array": []
+                },
+                "abnormalAntis": {
+                  "Array": [
+                    25,
+                    0,
+                    12,
+                    23,
+                    16
+                  ]
+                },
+                "abnormalCombos": {
+                  "Array": []
+                },
+                "abnormalComboImmunes": {
+                  "Array": [
+                    0
+                  ]
+                },
+                "attributeModifiers": {
+                  "Array": []
+                }
+              },
+              "buffKey": "enemy_duchns_boom",
+              "loadFromDB": 0,
+              "isDurableBuff": 0,
+              "isDamageMissable": 0,
+              "isSilenceable": 0,
+              "isStunnable": 0,
+              "isFreezable": 0,
+              "isLevitatable": 0,
+              "isGroundBoundable": 0,
+              "statusResistable": 2,
+              "templateKey": "enemy_duchns_boom",
+              "disableOverride": 0,
+              "overrideKey": "",
+              "overrideType": 0,
+              "maxStackCnt": 1,
+              "refreshRemainingTimeWhenStackMax": 0,
+              "clearAllStackCntWhenTimeUp": 0,
+              "maxValidStackCnt": -1,
+              "independentCharacterSource": 0,
+              "overrideEffectKey": "",
+              "overrideOnEventPriority": 0,
+              "onEventPriority": 0,
+              "audioSignal": "",
+              "lifeTimeType": 2,
+              "takeSnapshotWhenExtend": 0,
+              "durationKey": "",
+              "remainingTimeKey": "",
+              "lifeTime": 0.0,
+              "triggerLifeType": 0,
+              "triggerCnt": 0,
+              "triggerInterval": -1.0,
+              "waitFirstTriggerInterval": 1,
+              "firstTriggerInterval": -1.0,
+              "priority": -1,
+              "priorityBBKeys": {
+                "Array": []
+              },
+              "stripBlackboardParamsWithBuffKey": 0,
+              "blackboard": {
+                "Array": []
+              },
+              "enableInitDirectionFromSource": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "bundle": "battle/enm_pfb_12.ab",
+      "file": "CAB-39e1b2e5768b3ccda9d22135c681ed56",
+      "pathId": "3820466781382072867",
+      "gameObjectPathId": "6249903517929396771",
+      "hierarchy": [
+        "enemy_1294_duchns",
+        "Talent",
+        "Boom"
+      ],
+      "objectSha256": "e8178b7df4903dca82f5453b38135c81772b214ae9212609426465e784921ac4",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -2726233351382997147
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-2726233351382997147",
+        "name": "Talent",
+        "cl": "Talent",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_overwriteTalentKey": "",
+        "_overwriteParentRangeId": 0,
+        "_checkValidBySkillIndex": {
+          "Array": []
+        },
+        "_attachInDummy": 1,
+        "_defaultModeIndex": -1,
+        "_attackBlackboardModeIndex": -1,
+        "_extraAttackBlackboardModeIndices": {
+          "Array": []
+        },
+        "_overrideDefaultRangeId": 0,
+        "_applyTalentScale": 0,
+        "_influenceSkillBlackboard": 0,
+        "_fromRawDataToSkill": 0,
+        "_applyTalentRange": 0,
+        "_applyBlackboardBySkill": 0,
+        "_applyStrBlackboardBySkill": 0,
+        "_writeRangeIdToProjectileBlackboard": 0,
+        "_affectWhenNotRootTalent": 0,
+        "_scaleCertainKeyFlag": 0,
+        "_scaleCertainKeyList": {
+          "Array": []
+        },
+        "_scaleCertainMode": 0,
+        "_scaleModeIndices": {
+          "Array": []
+        }
+      }
+    }
+  ],
+  "flameComponents": [
+    {
+      "bundle": "charpack/char_131_flameb.ab",
+      "file": "CAB-2ed8d3418ca724312b4c87fc281c2593",
+      "pathId": "-6180691397127938357",
+      "gameObjectPathId": "-2929320812975530293",
+      "hierarchy": [
+        "char_131_flameb",
+        "Talents",
+        "1"
+      ],
+      "objectSha256": "90b41de6e950880003dba0df103600848ea7316cb9627c4f03cfc87d8ffd4d63",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -2726233351382997147
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-2726233351382997147",
+        "name": "Talent",
+        "cl": "Talent",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_overwriteTalentKey": "",
+        "_overwriteParentRangeId": 0,
+        "_checkValidBySkillIndex": {
+          "Array": []
+        },
+        "_attachInDummy": 0,
+        "_defaultModeIndex": -1,
+        "_attackBlackboardModeIndex": -1,
+        "_extraAttackBlackboardModeIndices": {
+          "Array": []
+        },
+        "_overrideDefaultRangeId": 0,
+        "_applyTalentScale": 0,
+        "_influenceSkillBlackboard": 0,
+        "_fromRawDataToSkill": 0,
+        "_applyTalentRange": 0,
+        "_applyBlackboardBySkill": 0,
+        "_applyStrBlackboardBySkill": 0,
+        "_writeRangeIdToProjectileBlackboard": 0,
+        "_affectWhenNotRootTalent": 0,
+        "_scaleCertainKeyFlag": 0,
+        "_scaleCertainKeyList": {
+          "Array": []
+        },
+        "_scaleCertainMode": 0,
+        "_scaleModeIndices": {
+          "Array": []
+        }
+      }
+    },
+    {
+      "bundle": "charpack/char_131_flameb.ab",
+      "file": "CAB-2ed8d3418ca724312b4c87fc281c2593",
+      "pathId": "4123227869325778635",
+      "gameObjectPathId": "-2929320812975530293",
+      "hierarchy": [
+        "char_131_flameb",
+        "Talents",
+        "1"
+      ],
+      "objectSha256": "b645f95f0f462f0439a309c70ac9a36fc1ef590b193099afc9a5a469bea4373d",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 3800760148018415462
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "3800760148018415462",
+        "name": "PassiveBuffAbility",
+        "cl": "PassiveBuffAbility",
+        "ns": "Torappu.Battle.Abilities",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_selector": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_metadata": {
+          "namedAsAlias": "",
+          "blackboardPrefix": ""
+        },
+        "_overrideSignalId": "",
+        "_interruptAbilityOnDetach": 0,
+        "_attachPassiveBuffsOnDummy": 1,
+        "_ignoreIfOwnerDead": 0,
+        "_forceAsDmgOrHealAbility": 0,
+        "_buffs": {
+          "Array": [
+            {
+              "attributes": {
+                "abnormalFlags": {
+                  "Array": []
+                },
+                "abnormalImmunes": {
+                  "Array": []
+                },
+                "abnormalAntis": {
+                  "Array": []
+                },
+                "abnormalCombos": {
+                  "Array": []
+                },
+                "abnormalComboImmunes": {
+                  "Array": []
+                },
+                "attributeModifiers": {
+                  "Array": []
+                }
+              },
+              "buffKey": "flameb_t_1",
+              "loadFromDB": 0,
+              "isDurableBuff": 0,
+              "isDamageMissable": 0,
+              "isSilenceable": 0,
+              "isStunnable": 0,
+              "isFreezable": 0,
+              "isLevitatable": 0,
+              "isGroundBoundable": 0,
+              "statusResistable": 2,
+              "templateKey": "flameb_t_1",
+              "disableOverride": 0,
+              "overrideKey": "",
+              "overrideType": 0,
+              "maxStackCnt": 1,
+              "refreshRemainingTimeWhenStackMax": 0,
+              "clearAllStackCntWhenTimeUp": 0,
+              "maxValidStackCnt": -1,
+              "independentCharacterSource": 0,
+              "overrideEffectKey": "",
+              "overrideOnEventPriority": 0,
+              "onEventPriority": 0,
+              "audioSignal": "",
+              "lifeTimeType": 2,
+              "takeSnapshotWhenExtend": 0,
+              "durationKey": "",
+              "remainingTimeKey": "",
+              "lifeTime": 0.0,
+              "triggerLifeType": 0,
+              "triggerCnt": 0,
+              "triggerInterval": -1.0,
+              "waitFirstTriggerInterval": 1,
+              "firstTriggerInterval": -1.0,
+              "priority": -1,
+              "priorityBBKeys": {
+                "Array": []
+              },
+              "stripBlackboardParamsWithBuffKey": 0,
+              "blackboard": {
+                "Array": []
+              },
+              "enableInitDirectionFromSource": 0
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "templates": [
+    {
+      "templateKey": "flameb_t_1",
+      "effectKey": "",
+      "onEventPriority": 0,
+      "index": 202,
+      "events": [
+        {
+          "event": 9,
+          "actions": [
+            {
+              "_buff": {
+                "attributes": {
+                  "abnormalFlags": [],
+                  "abnormalImmunes": null,
+                  "abnormalAntis": null,
+                  "abnormalCombos": null,
+                  "abnormalComboImmunes": null,
+                  "attributeModifiers": [
+                    {
+                      "attributeType": "MAX_HP",
+                      "formulaItem": "ADDITION",
+                      "value": 0.0,
+                      "loadFromBlackboard": true,
+                      "fetchBaseValueFromSourceEntity": false
+                    }
+                  ]
+                },
+                "buffKey": "flame_t_1[max_hp]",
+                "loadFromDB": false,
+                "isDurableBuff": false,
+                "isDamageMissable": false,
+                "isSilenceable": false,
+                "isStunnable": false,
+                "isFreezable": false,
+                "isLevitatable": false,
+                "isGroundBoundable": false,
+                "statusResistable": "AUTOMATIC",
+                "templateKey": "empty",
+                "disableOverride": false,
+                "overrideKey": null,
+                "overrideType": "STACK",
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": false,
+                "clearAllStackCntWhenTimeUp": false,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": false,
+                "overrideEffectKey": null,
+                "overrideOnEventPriority": false,
+                "onEventPriority": "DEFAULT",
+                "audioSignal": null,
+                "lifeTimeType": "INFINITY",
+                "takeSnapshotWhenExtend": false,
+                "durationKey": null,
+                "remainingTimeKey": null,
+                "lifeTime": 0.0,
+                "triggerLifeType": "IMMEDIATELY",
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": true,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": null,
+                "stripBlackboardParamsWithBuffKey": false,
+                "blackboard": [],
+                "enableInitDirectionFromSource": false
+              },
+              "_buffOwner": "BUFF_OWNER",
+              "_useSpecialBuffSource": false,
+              "_specialBuffSource": "BUFF_SOURCE",
+              "_isDerivedBuff": false,
+              "_finishDerivedBuffIfParentFinish": false,
+              "_inherateSourceProjectileFromParentBuff": false,
+              "_hookEffectKeyFromSourceProjectile": false,
+              "$type": "Torappu.Battle.Action.Nodes+CreateBuff"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "templateKey": "enemy_duchns_boom",
+      "effectKey": "",
+      "onEventPriority": 0,
+      "index": 1307,
+      "events": [
+        {
+          "event": 3,
+          "actions": [
+            {
+              "_useAbilitySourceSide": true,
+              "_sourceType": "BUFF_OWNER",
+              "_targetType": "BUFF_OWNER",
+              "_damageType": "MAGICAL",
+              "_sourceApplyWay": "MELEE",
+              "_targetOptions": {
+                "targetSide": "ENEMY",
+                "targetMotion": "ALL",
+                "targetCategory": "NONE,DEFAULT",
+                "enableAdvancedOptions": true,
+                "ignoreTargetFree": false,
+                "ignoreAllyTargetFree": false,
+                "ignoreHealFree": false,
+                "ignoreMotionMode": false,
+                "ignoreTargetSide": false,
+                "excludeSomeAbnormalFlags": false,
+                "containSomeAbnormalFlags": false,
+                "excludeAbnormalFlag": "STUNNED",
+                "containAbnormalFlag": "STUNNED",
+                "purposeMask": "DAMAGE",
+                "professionMask": "NONE,WARRIOR,SNIPER,TANK,MEDIC,SUPPORT,CASTER,SPECIAL,TOKEN,PIONEER",
+                "checkUnitType": false,
+                "unitTypeMask": "NONE",
+                "onlyIgnoreSomeOfTargetFreeCase": false,
+                "abnormalFlag": "STUNNED",
+                "abnormalCombo": "SLEEPING"
+              },
+              "_excludeTarget": false,
+              "_rangeId": null,
+              "_useRadius": false,
+              "_useDynamicTreeForRadius": false,
+              "_radius": 0.0,
+              "_useAbilitySelector": false,
+              "_abilityName": null,
+              "_damageScale": null,
+              "_buffs": [],
+              "_attackType": "SPLASH",
+              "_createEffect": false,
+              "_hitEffectKey": null,
+              "_hitEffectUseSourceFaceTo": false,
+              "_useDamageFromBB": false,
+              "_damageKey": "value",
+              "_isNoSourceDamage": false,
+              "_checkTargetAlive": false,
+              "_modifierKey": "",
+              "_maxTargetCountKey": "",
+              "_filterType": "ALL",
+              "$type": "Torappu.Battle.Action.Nodes+AOEDamage"
+            },
+            {
+              "_elementDamageType": "FIRE",
+              "_sourceType": "BUFF_OWNER",
+              "_targetType": "BUFF_OWNER",
+              "_isFixedEpDamage": false,
+              "_fixedEpDamageKey": null,
+              "_fixedEpDamage": 0.0,
+              "_useRadius": false,
+              "_rangeId": null,
+              "_excludeTarget": false,
+              "_targetOptions": {
+                "targetSide": "ENEMY",
+                "targetMotion": "ALL",
+                "targetCategory": "NONE,DEFAULT",
+                "enableAdvancedOptions": true,
+                "ignoreTargetFree": false,
+                "ignoreAllyTargetFree": false,
+                "ignoreHealFree": false,
+                "ignoreMotionMode": false,
+                "ignoreTargetSide": false,
+                "excludeSomeAbnormalFlags": false,
+                "containSomeAbnormalFlags": false,
+                "excludeAbnormalFlag": "STUNNED",
+                "containAbnormalFlag": "STUNNED",
+                "purposeMask": "EP_DAMAGE",
+                "professionMask": "NONE,WARRIOR,SNIPER,TANK,MEDIC,SUPPORT,CASTER,SPECIAL,TOKEN,PIONEER",
+                "checkUnitType": false,
+                "unitTypeMask": "NONE",
+                "onlyIgnoreSomeOfTargetFreeCase": false,
+                "abnormalFlag": "STUNNED",
+                "abnormalCombo": "SLEEPING"
+              },
+              "$type": "Torappu.Battle.Action.Nodes+AOEElementDamage"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_12.ab",
+      "bytes": 309580,
+      "sha256": "2e9056a509d746f71fb22261f8f2daf8d41fbaebc7787f6d6a15d447576a2f2f"
+    },
+    {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_18.ab",
+      "bytes": 895456,
+      "sha256": "7bc74aef8fbb3cbc7ce86d7e4b789e2c0daaadf076d47b0e9989e83e7ff4eb69"
+    },
+    {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_131_flameb.ab",
+      "bytes": 21239,
+      "sha256": "ac7e788ce9c82e771fc4b36e4e2f02a65cc5d77d5faee7d972aa8d795bb32076"
+    },
+    {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+      "sha256": "8edcb8017c977cdf52c2593b58e21db96949f3ad1e6f904180ac1241f145ca79"
+    }
+  ],
+  "nativeClient": {
+    "dll": {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+      "bytes": 223112680,
+      "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff"
+    },
+    "metadata": {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+      "bytes": 46669332,
+      "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5"
+    },
+    "metadataVersion": 29,
+    "imageBase": "0x180000000"
+  },
+  "nativeChain": [
+    {
+      "address": "0x1810f2ed3",
+      "operation": "AOEDamage.Execute calls _DoAoeBuffAndDamage synchronously"
+    },
+    {
+      "address": "0x1810f3889",
+      "operation": "_DoAoeBuffAndDamage calls _DealDamageAndEffect per selected target"
+    },
+    {
+      "address": "0x1810f329f",
+      "operation": "_DealDamageAndEffect calls _GetModifier"
+    },
+    {
+      "address": "0x1810f336e",
+      "operation": "_DealDamageAndEffect calls Entity.ApplyModifier directly"
+    },
+    {
+      "address": "0x1810f3e7c",
+      "operation": "_TryGetEntities_DISPOSE reads Blackboard range string fallback"
+    },
+    {
+      "address": "0x1810f3e92",
+      "operation": "uses explosion entity gridPosition as box range origin"
+    },
+    {
+      "address": "0x1810f3f5d",
+      "operation": "calls FindTargetsInBox_DISPOSE"
+    }
+  ],
+  "range": {
+    "source": "https://github.com/Kengxxiao/ArknightsGameData/blob/63c7cec73c3858d0ae913f85cc89af3cef4d744f/zh_CN/gamedata/excel/range_table.json",
+    "ref": "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+    "gitBlobSha": "f5241bc6bcba4c8bf45d64b1308d2d53e91a83f4",
+    "range": {
+      "id": "x-5",
+      "direction": 1,
+      "grids": [
+        {
+          "row": 1,
+          "col": 0
+        },
+        {
+          "row": 0,
+          "col": -1
+        },
+        {
+          "row": 0,
+          "col": 0
+        },
+        {
+          "row": 0,
+          "col": 1
+        },
+        {
+          "row": -1,
+          "col": 0
+        }
+      ]
+    }
+  },
+  "interpretation": {
+    "fireDirectDamage": "ordinary level0 ATK800; PRTS confirms 100% arts MELEE SPLASH, plus 125% FIRE EP. Death template direct actions have no projectile/delay wrapper; native direct ApplyModifier closes sync path.",
+    "fireElementDamage": "800*1.25=1000, equal to normal operator burn threshold. A counterexample only isolating 800 arts must explicitly choose existing burn burst cooldown (or a qualified EP restriction); do not ignore the elemental follow-up.",
+    "applicability": "Fire is runtime summoned by boss Chain_1/Chain_2; level does not directly SPAWN it. An adjacent killer lies in x-5 and can attack it; the fire host itself is disarmed so do not position killer on its own tile.",
+    "ordering": "Combine native source OnTargetKilled(Event9) before victim OnDead(Event3), independently established in Case39, with flameb_t_1 maxHP additive STACK on Event9; fire OnDead applies synchronous damage. Moving source on-kill after full victim cleanup can change HP before fire damage."
+  },
+  "prts": [
+    "https://prts.wiki/w/焦竭之火",
+    "https://prts.wiki/w/FC-8_她的影子"
+  ],
+  "artifacts": [
+    {
+      "path": "/tmp/death-hook-content-20261116/aoe-body.json",
+      "bytes": 62717,
+      "sha256": "1b65b37262c384bc0289d8d9824cd26d60f9b8001169bb193539a6920397aae3"
+    },
+    {
+      "path": "/tmp/death-hook-content-20261116/aoe-children.json",
+      "bytes": 18605,
+      "sha256": "3181b36073cdd596c6a3aad862f1f8dbb10d3e95ebab243f62031efd4fbe8f8b"
+    },
+    {
+      "path": "/tmp/death-hook-content-20261116/aoe-regions.json",
+      "bytes": 496852,
+      "sha256": "8c3b8d7ca0d30a26ca4aab5dc807efde504242f2ad35260b1195c45439a92c3d"
+    },
+    {
+      "path": "/tmp/death-hook-content-20261116/aoe-deal-regions.json",
+      "bytes": 31695,
+      "sha256": "b1b990486787b838c98dfb80719a7c3f0f67b494bd48e819036898f168749dac"
+    },
+    {
+      "path": "/tmp/death-hook-content-20261116/range-x5-pinned.json",
+      "bytes": 599,
+      "sha256": "aca1cd336c256c1af51bc6f66cc9d575914cea81dc47c84eee47f5f74e840591"
+    },
+    {
+      "path": "/tmp/death-hook-content-20261116/owner-finished-check.json",
+      "bytes": 39503,
+      "sha256": "e1521fd1107384fc927a5533921ce65dc4cf6bb26394ec232f43772cb3a94913"
+    },
+    {
+      "path": "/tmp/death-hook-content-20261116/owner-calc-regions.json",
+      "bytes": 44346,
+      "sha256": "2f28040ffffbd92011d5cc8d5b9a45311d313dcdb63e5fe043ddc0cedb35fd2c"
+    }
+  ],
+  "finalChecks": {
+    "buffOwnerAfterFinish": {
+      "result": "No alive/finished early return in these directly checked nodes. Object/null checks preserve actual owner object through the death event.",
+      "chain": [
+        [
+          "0x18107ad41",
+          "GetActionTarget BUFF_OWNER checks snapshot.buff non-null only"
+        ],
+        [
+          "0x18107ad5c",
+          "tailcall Buff.get_owner"
+        ],
+        [
+          "0x1806de3b1",
+          "Buff.get_owner reads stored Entity owner pointer"
+        ],
+        [
+          "0x1810f2c6f",
+          "AOEDamage useAbilitySourceSide branch checks Unity.Object existence"
+        ],
+        [
+          "0x180b4009c",
+          "CalculateDamageBySource requires non-null source"
+        ],
+        [
+          "0x180b400c0",
+          "read source.atk; no alive/finished gate"
+        ],
+        [
+          "0x180b40162",
+          "CalculateDamage"
+        ],
+        [
+          "0x180b401f0",
+          "NewDamageModifierAfterCalculate"
+        ]
+      ]
+    },
+    "attackableFire": {
+      "selfFlags": {
+        "8": "UNBALANCE_IMMUNE",
+        "13": "UNMOVABLE"
+      },
+      "absentFlags": {
+        "2": "TARGET_FREE",
+        "5": "INVINCIBLE"
+      },
+      "source": "docs/research/evidence/targeting-pipeline-20261109/qualification.json enum Torappu.AbnormalFlag",
+      "qualification": "Boom/Bleed only apply self flags8/13; empty Mark; Aura has no self-passiveBuffs. Attachment disarm/silence applies on its same-tile target; a four-adjacent-tile Penance can select/attack fire and also lies in death AoE."
+    }
+  }
+}

@@ -45,7 +45,7 @@
 | 受害者 Buff.Event34（到达出口） | reason1；不是死亡事件 |
 | 受害者 Buff.Event4（结束） | 通用完成路径，不等同于死亡或被击杀 |
 
-来源通知之后，普通链同步执行受害者 OnOwnerFinish、Buff 清理及其他内部收尾，再进入 GameMode 的物理销毁／回收政策。实际 Character／Enemy 的 FinishMe 覆盖也已展开，不把基类一个方法等同于所有对象的完整最终结束。
+来源通知完成后，BuffContainer.OnOwnerFinish 对受害者 Buff 作一次遍历；每个 Buff 内按条件执行死亡、被击杀、通用结束响应，再处理下一个 Buff，并非整个容器分别广播三轮。全部响应返回后才清 Buff及其他附属内容，再进入 GameMode 的物理销毁／回收政策。实际 Character／Enemy 的 FinishMe 覆盖也已展开，不把基类一个方法等同于所有对象的完整最终结束。
 
 `BuffContainer.OnOwnerFinish` 原样转交 source；`Buff.OnOwnerFinish` #66135 在 `0x1806d407d` 排除 reason8，之后检查来源有效，再决定 Event29。本链没有发现“来源为空便在这里替换为受害者自身”的分支。PRTS 的无击杀来源默认自身概括不能直接替代本指纹；若要主张其他入口有该政策，须找到那个入口。本批不据此新增或省略项目归属字段。
 
@@ -71,6 +71,27 @@
 | 阿米娅 S3 实际另装模板 `suicide`，其开始动作是 `Withdraw(withdrawSource=true,switchToDeadState=true,force=false)` | 名为 suicide 的模板并不调用 InstantKill。实际 Character.Withdraw 以 reason5 调虚 FinishMe；不是普通可保护的 HP Damage |
 
 上述角色选择、完整模板与 PPtr 在 `static-inputs.json`、`content.json`、`templates.json`；Withdraw 原体在 `withdraw.json`。事件名与编号属于 Buff.Event，不与 Entity.Event 或 UI Event 混用。
+
+### 来源后继与死者输出的顺序会改变生死
+
+2026-11-16 定向补核的实际配置、完整原体和可执行对照见[死亡通知顺序证据](../evidence/death-notification-order-20261116/README.md)。这不是实机组合测试，原生事实与项目探针分别记录。
+
+- 斥罪固有天赋实际登记 `judge_t_1`。精二无模组每次击杀先给同一 Buff 黑板增加 `10% MaxHP` 屏障；接收伤害时直接读取该额度，无需等待下一 Tick。
+- 炎客实际天赋 `flameb_t_1` 在击杀响应中登记 MaxHP 叠层。属性登记同步通知 Entity，当前 HP 当场按新旧 MaxHP 比例更新。
+- FC-8 实际出生的“领袖”召唤 `enemy_1294_duchns`（焦竭之火）；火的固有死亡程序直接执行范围法术伤害，再执行灼燃损伤，没有先生成延时弹道。普通配置为 800 法术输出、1000 灼燃损伤，范围为中心及四邻格。四邻格斥罪可攻击它，不受仅作用于同格宿主的附着缴械／静默限制。
+
+可达配置的组合推导：取精二满级满信赖、潜能1、无模组斥罪，MaxHP=4655、RES=10，击杀前剩1800 HP、屏障已耗尽，灼燃条未积累。她击杀四邻格的焦竭之火：
+
+| 来源后继时点 | 数值过程 | 结果 |
+| --- | --- | --- |
+| 死者死亡输出前补盾 | 获得465.5屏障；800法术输出经RES成为720，扣盾后损失254.5 HP；随后1000灼燃引发爆发，降RES后造成1200法术伤害 | 剩345.5 HP |
+| 完整伤害返回后补盾 | 先损失720 HP，剩1080；随后灼燃爆发造成1200伤害 | 先被击倒，无法等到补盾 |
+
+`compare-order.mjs` 用当前 Core 公开操作验证这两个顺序，并包含1000灼燃损伤及标准爆发，没有把元素后继省略；它只实现本例必要步骤，不是完整斥罪或FC-8实装。原生绑定、普通结束顺序与这些数值规则支持上述组合推导，不将项目运行结果当成原生实机观测。
+
+`lifetime-order.mjs` 另验证了返回时点的边界：无外层 Lifetime 结算时，死者 Effect 的 Finalize 通常已先于 Apply 返回；伤害发生在其他 Effect.onEnd 内时，Finalize 会延后。因此，把来源业务放在返回后，不保证它相对死者清理的稳定先后。该探针通过清理中登记禁回SP得到0／1 SP的差异，是公开API执行示例，不冒充实际角色配置。
+
+这些依据证明来源后继不能整体视为可以任意后置的返回后业务。Outcome.killed 仍可表示本笔请求确认死亡；来源后继如何在死亡协议中获得明确时点，属于后续架构决定，不据原生事件编号自动新增Hook。
 
 ## 3. 死亡原因、强制设零和回收不能合并
 
