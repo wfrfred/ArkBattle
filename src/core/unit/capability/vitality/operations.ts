@@ -200,11 +200,7 @@ export function increaseHp(
     };
 }
 
-function dispatchHook<
-    C extends damage.Context | healing.Context,
-    T,
-    H extends hooks.Hook<C, T> & { readonly priority?: number },
->(
+function dispatchHook<C extends damage.Context | healing.Context, T, H extends hooks.Hook<C, T>>(
     battle: BattleState,
     context: C,
     initial: T,
@@ -218,10 +214,7 @@ function dispatchHook<
             const unit = units.get(current, target);
 
             return unit?.lifecycle === "PRESENT"
-                ? [...unit.hooks.get(key)]
-                      .sort((left, right) => (right.priority ?? 0) - (left.priority ?? 0))
-                      .map(({ id }) => id)
-                      .filter((id) => !hooks.excluded(options, key, id))
+                ? unit.hooks.get(key).filter(({ id }) => !hooks.excluded(options, key, id))
                 : [];
         },
         find(current, id) {

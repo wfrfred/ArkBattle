@@ -9,9 +9,7 @@ export interface DamageCommittingContext extends DamageContext {
     readonly previous: Health;
 }
 
-export interface DamageCommittingHook extends Hook<DamageCommittingContext, Health> {
-    readonly priority?: number;
-}
+export type DamageCommittingHook = Hook<DamageCommittingContext, Health>;
 
 export const damageCommitting = key<DamageCommittingHook, Unit & Vitality>(
     "vitality.damageCommitting",
@@ -21,9 +19,7 @@ export interface DamageCommittedContext extends DamageContext {
     readonly application: DamageApplication;
 }
 
-export interface DamageCommittedHook extends Hook<DamageCommittedContext, void> {
-    readonly priority?: number;
-}
+export type DamageCommittedHook = Hook<DamageCommittedContext, void>;
 
 export const damageCommitted = key<DamageCommittedHook, Unit & Vitality>(
     "vitality.damageCommitted",

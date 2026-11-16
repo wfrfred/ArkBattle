@@ -171,13 +171,13 @@ Hitbox 的 Targeting 接入只保留一个代表场景：显式范围使用受�
 
 以下结果依据 [Hook 契约](hook.md)、[输出与接收](vitality.md#1-calculate-与-apply-的语义边界)、[资源提交](vitality.md#18-接收与资源提交接口)和 [Elemental](elemental.md)确定。代表场景按独立结果组织，不按接口或阶段扩展，也不以现有测试的预期反推要求。
 
-Resource 按 HP／EP，再按 Damage／Healing 提供四个精确业务入口。接收工作值协议和按 Unit 派发的优先级 Hook 各共用一份实现；具体 Request、Context、Reason、公式及资源后继仍由对应业务定义。目录与实现复用不改变阶段顺序、同步重入或资格语义，继续使用下表既有代表场景，不增加四条路径的重复矩阵。
+Resource 按 HP／EP，再按 Damage／Healing 提供四个精确业务入口。接收工作值协议和按 Unit 派发的 Hook 各共用一份实现，优先级排序集中在公共 dispatch；具体 Request、Context、Reason、公式及资源后继仍由对应业务定义。目录与实现复用不改变阶段顺序、同步重入或资格语义，继续使用下表既有代表场景，不增加四条路径的重复矩阵。
 
 | 编号 | 必须保障的业务结果 | 定向场景 |
 | --- | --- | --- |
-| HOOK-01 | 全部登记式 Hook 使用 typed Key。Unit 本地登记统一存于 Unit.hooks，Battle 观察各持有 Hooks 集合；固有登记在首次 enter 前就绪。资源 Context 的目标统一从 request.target 取得，Vitality 内部派发不重复接收目标参数；Key 保留完整 ReceivingHook 泛型及最低宿主能力，unit.setHook／removeHook 返回相应 Change。候选固定、登记实时读取、替换保位及嵌套独立；Resource／Receiving 保留优先级，其他通知保持登记顺序。生命周期 leave 使用注销前最新程序与原 Departure；结束事实允许仍登记的 LEAVING 宿主参与。 | 公共集合／类型及实际生命周期场景集中验证；用接收 Hook 证明非法状态恢复、错配 Key／Entry 和能力不足的 update 被拒绝，不复制各 Capability 矩阵。 |
+| HOOK-01 | 全部登记式 Hook 使用 typed Key。Unit 本地登记统一存于 Unit.hooks，Battle 观察各持有 Hooks 集合；固有登记在首次 enter 前就绪。资源 Context 的目标统一从 request.target 取得，Vitality 内部派发不重复接收目标参数；Key 保留完整 ReceivingHook 泛型及最低宿主能力，unit.setHook／removeHook 返回相应 Change。候选固定、登记实时读取、替换保位及嵌套独立；全部登记式 Hook 的 priority 缺省为 0，同一集合降序、同级登记顺序。候选快照同时固定 priority，替换后的程序即时生效但不重排本轮，新登记不加入本轮。生命周期 leave 在注销前捕获最新程序及 priority，注销后按确定顺序使用原 Departure；结束事实允许仍登记的 LEAVING 宿主参与。 | 公共集合／类型集中验证跨类型 priority、同级稳定、替换不重排与嵌套独立，生命周期场景保留 leave 注销前程序快照；用接收 Hook 证明非法状态恢复、错配 Key／Entry 和能力不足的 update 被拒绝，不复制各 Capability 矩阵。 |
 | HOOK-02 | Calculate 与 Apply 的 Options.exclude 分别生效：按 Key 对象身份排除整阶段或指定 ID；同 Key 在本次多个宿主派发时一致匹配。排除不改登记，不豁免 Restriction，不传入 Request／Calculated；嵌套操作及提交事实通知不自动继承。 | 一个 Calculate／Apply 代表场景组合整键、单 ID 与同名不同键，验证两次操作独立、后续正常调用及嵌套响应仍执行；不为四类资源复制排除矩阵。 |
-| HOOK-03 | Blocking 每条关系的双方候选在首个回调前同时固定，先 Blocker 后 Blockable；ACQUIRED 失效停止、RELEASED 保留历史通知。Skill／Elemental 的结束通知从仍登记的宿主读取 Hook，LEAVING 不丢失清理后的事实。 | 在既有关系重入与依赖结束场景验证这两项领域差异；公共候选与替换协议只测一次。 |
+| HOOK-03 | Blocking 每条关系的双方候选及 priority 在首个回调前同时固定、各自排序，始终先 Blocker 后 Blockable，前半轮修改 priority 不重排后半轮；ACQUIRED 失效停止、RELEASED 保留历史通知。Skill／Elemental 的结束通知从仍登记的宿主读取 Hook，LEAVING 不丢失清理后的事实。 | 在既有关系重入与依赖结束场景验证这两项领域差异；公共候选与替换协议只测一次。 |
 | HP-01 | 物理、法术、真实及元素 HP 伤害采用各自公式；公式后类型与防御采样传到 Apply，初始 Request 不变。HP／EP Damage 的 attackType／applyWay 为调用方提供的固定单值事实，Hook／Restriction 可读取，公式转换不改写分类。Calculate 不构成受击，也不写入本笔 HP。 | 合法基础属性与 Formula／Output 干预，核对最终数额、类型和接收前 HP；在既有 Calculate／Apply 场景用自定义 Hook 或 Restriction 观察分类跨阶段保留及其业务判断，不按分类、阶段与资源展开矩阵。 |
 | HP-02 | 从同一输入分别执行 Calculate 时，各自业务状态独立，调用方接续其中一个结果后只发生该次 Apply。弱点选高属于尚未接入的具体内容组合。 | 验证真实 Calculate／Apply 的独立分支和状态接续；不在夹具手写“选高”算法来证明产品已支持弱点。 |
 | APPLY-01 | BeforeReceive 与 Receiving 使用同一业务的 ReceivingHook 类型、不同 Key，前置工作值接续至准入后的接收，可改量、固定、取消及改变准入；前置已取消而准入失败仍返回 CANCELLED。Receiving 的取消保留已完成业务并继续独立响应，取消后不提交。成功闪避的通用后继由目标侧 Completed 观察 CANCELLED／MISS，在剩余 Receiving 后、同次 Apply 返回前同步执行；来源未命中 HIT_FAILED 不算自身闪避。BeforeCommit 位于接收后与写入前，返回后使用最新资格及资源。 | 以真实无敌 Effect 与 Skill 的 HIT 回复接入、嵌套恢复等操作组合，核对前置工作值接续、准入先于受击回复、最终资源和固定提交报告；普通 HIT 与伤判同轮，使用 10000 量级高优先级，前置取消／归零不回复，后续闪避／抵挡不回滚回复；闪避内容接入时集中验证目标身份、最终原因及后继顺序，不按提供者或阶段复制矩阵。Hook 通用排序集中保障。 |

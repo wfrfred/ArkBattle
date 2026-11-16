@@ -12,6 +12,7 @@ import type { Ref } from ${module("common/ref")};
 import type { State } from ${module("battle/state")};
 import { Hooks, key, type Hook } from ${module("hook")};
 import { initialize, ref, get, all as allUnits, compose, optional, setHook as setUnitHook, removeHook as removeUnitHook, type Unit, type Input as UnitInput, type Change } from ${module("unit/index")};
+import { prepare as unitPrepare } from ${module("unit/hook")};
 import { update, remove as removeUnit } from ${module("battle/unit")};
 import * as actions from ${module("unit/action/index")};
 import * as effects from ${module("unit/effect/index")};
@@ -22,7 +23,7 @@ import * as vitality from ${module("unit/capability/vitality/index")};
 import * as elemental from ${module("unit/capability/elemental/index")};
 import * as facing from ${module("unit/capability/facing/index")};
 import * as skills from ${module("unit/skill/index")};
-import { hasSkill, type Skill as SkillCapability } from ${module("unit/capability/skill/index")};
+import { hasSkill, spRecovered, type Skill as SkillCapability } from ${module("unit/capability/skill/index")};
 import { hasPresence, disappear } from ${module("unit/capability/presence/index")};
 import { dispatch as dispatchElemental } from ${module("unit/capability/elemental/hook")};
 import * as runtime from ${module("battle/runtime")};
@@ -50,9 +51,13 @@ declare const battle: State;
 const outputKey = key<Hook<{ amount: number }, number>>('output');
 const textKey = key<Hook<{ text: string }, number>>('text');
 const registered = Hooks.empty().set(outputKey, {
-    id: 'output', invoke: (state, context, current) => ({ state, value: current + context.amount }),
+    id: 'output', priority: 5, invoke: (state, context, current) => ({ state, value: current + context.amount }),
 });
 registered.get(outputKey)[0]!.invoke(battle, { amount: 1 }, 0);
+const prioritizedLifecycle: Change<Unit> = setUnitHook(unitPrepare, {
+    id: 'before-cleanup', priority: 100,
+    invoke: state => ({ state, value: undefined }),
+});
 // @ts-expect-error a key preserves its exact Hook type through storage.
 const mismatchedKey: typeof outputKey = textKey;
 // @ts-expect-error entries cannot widen the Hook type established by their key.
@@ -60,7 +65,7 @@ Hooks.empty().set(outputKey, { id: 'wrong', invoke: (state, context: { text: str
 const receivingKey = hpDamage.receiving;
 const forbiddenReasons: ReadonlySet<hpDamage.Reason> = new Set(['MISS', 'BLOCKED']);
 const guardedReceiving: hpDamage.ReceivingHook = {
-    id: 'evade', invoke: (state, context, current) => ({ state, value: hpDamage.cancel(current, 'MISS', context.forbidden) }),
+    id: 'evade', priority: 10, invoke: (state, context, current) => ({ state, value: hpDamage.cancel(current, 'MISS', context.forbidden) }),
 };
 const receivingHooks = Hooks.empty()
     .set(receivingKey, guardedReceiving)
@@ -398,6 +403,13 @@ vitality.isAlive(bare);
 // @ts-expect-error HP proportions require the Vitality capability.
 vitality.hpRatio(bare);
 declare const skillHost: Unit & SkillCapability;
+const prioritizedSpRecovery = setUnitHook(spRecovered, {
+    id: 'resource-reaction', priority: 10,
+    invoke: state => ({ state, value: undefined }),
+});
+update(battle, ref(skillHost), prioritizedSpRecovery);
+// @ts-expect-error priority does not weaken a Skill Hook's host requirement.
+update(battle, ref(bare), prioritizedSpRecovery);
 // @ts-expect-error a Skill can legitimately have no SP resource.
 skills.resolveRecoverySpeed(battle, skillHost);
 if (skills.hasSp(skillHost)) {

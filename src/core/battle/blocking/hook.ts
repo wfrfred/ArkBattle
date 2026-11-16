@@ -13,12 +13,12 @@ export function dispatch(battle: BattleState, key: Notification, relation: Relat
     const blocked = units.get(battle, relation.blocked);
     const blockerKey = blockerHooks[key];
     const blockableKey = blockableHooks[key];
-    const blockerIds = blocker?.hooks.get(blockerKey).map(({ id }) => id) ?? [];
-    const blockedIds = blocked?.hooks.get(blockableKey).map(({ id }) => id) ?? [];
+    const blockerCandidates = blocker?.hooks.get(blockerKey) ?? [];
+    const blockedCandidates = blocked?.hooks.get(blockableKey) ?? [];
     const stop = (current: BattleState) => key === "acquired" && !hasRelation(current, relation);
 
     battle = hooks.dispatch(battle, { host: relation.blocker, relation }, undefined, {
-        candidates: () => blockerIds,
+        candidates: () => blockerCandidates,
         find: (current, id) => {
             const host = units.get(current, relation.blocker);
 
@@ -28,7 +28,7 @@ export function dispatch(battle: BattleState, key: Notification, relation: Relat
     }).state;
 
     return hooks.dispatch(battle, { host: relation.blocked, relation }, undefined, {
-        candidates: () => blockedIds,
+        candidates: () => blockedCandidates,
         find: (current, id) => {
             const host = units.get(current, relation.blocked);
 

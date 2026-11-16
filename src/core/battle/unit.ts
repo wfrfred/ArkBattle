@@ -17,7 +17,7 @@ export function add<U extends Unit>(battle: BattleState, unit: U): BattleState {
     const reference = units.ref(unit);
 
     return dispatch(battle, unit, undefined, {
-        candidates: () => unit.hooks.get(lifecycle.enter).map(({ id }) => id),
+        candidates: () => unit.hooks.get(lifecycle.enter),
         find: (current, id) => {
             const self = units.get(current, reference);
 
@@ -60,11 +60,7 @@ export const lifetime = createLifetime<Unit, Unit, Departure>({
     replace: (battle, _reference, next) => replace(battle, [next]),
     prepare: (battle, reference, _initial, departure) =>
         dispatch(battle, departure, undefined, {
-            candidates: (current) =>
-                units
-                    .get(current, reference)!
-                    .hooks.get(lifecycle.prepare)
-                    .map(({ id }) => id),
+            candidates: (current) => units.get(current, reference)!.hooks.get(lifecycle.prepare),
             find: (current, id) => units.get(current, reference)!.hooks.find(lifecycle.prepare, id),
         }).state,
     finalize: (battle, reference, departure) => {
@@ -83,11 +79,10 @@ export const lifetime = createLifetime<Unit, Unit, Departure>({
             },
         ]);
 
-        for (const entry of entries) {
-            if (entry.accepts?.(battle, departure, undefined) !== false) {
-                battle = entry.invoke(battle, departure, undefined).state;
-            }
-        }
+        battle = dispatch(battle, departure, undefined, {
+            candidates: () => entries,
+            find: (_current, id) => entries.find((entry) => entry.id === id),
+        }).state;
 
         return dispatchObservers(battle, unitLeave, departure);
     },
@@ -118,7 +113,7 @@ export function advance(battle: BattleState): BattleState {
         }
 
         battle = dispatch(battle, self, undefined, {
-            candidates: () => self.hooks.get(lifecycle.tick).map(({ id }) => id),
+            candidates: () => self.hooks.get(lifecycle.tick),
             find: (current, id) => {
                 const unit = units.get(current, reference);
 

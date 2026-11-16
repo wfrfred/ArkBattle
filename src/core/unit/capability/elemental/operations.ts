@@ -48,10 +48,9 @@ export function receiveDamage(
 ): Result<damage.Pending> {
     const result = hooks.dispatch<ReceivingContext, damage.Pending>(battle, context, pending, {
         candidates: (current) =>
-            [...(units.get(current, context.request.target)?.hooks.get(receiving) ?? [])]
-                .sort((left, right) => (right.priority ?? 0) - (left.priority ?? 0))
-                .map(({ id }) => id)
-                .filter((id) => !hooks.excluded(options, receiving, id)),
+            (units.get(current, context.request.target)?.hooks.get(receiving) ?? []).filter(
+                ({ id }) => !hooks.excluded(options, receiving, id),
+            ),
         find(current, id) {
             const host = units.get(current, context.request.target);
 

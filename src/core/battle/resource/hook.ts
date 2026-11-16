@@ -4,20 +4,16 @@ import type { Unit } from "../../unit/unit.js";
 import * as units from "../../unit/query.js";
 import type { Result, State as BattleState } from "../state.js";
 
-export interface Entry<C, T> extends hooks.Hook<C, T> {
-    readonly priority?: number;
-}
-
 export function dispatch<C, T>(
     battle: BattleState,
     owner: Ref<Unit> | null,
-    key: hooks.Key<Entry<C, T>, any>,
+    key: hooks.Key<hooks.Hook<C, T>, any>,
     context: C,
     initial: T,
     options?: hooks.Options,
     stop?: (battle: BattleState) => boolean,
 ): Result<T>;
-export function dispatch<C, T, H extends Entry<C, T>>(
+export function dispatch<C, T, H extends hooks.Hook<C, T>>(
     battle: BattleState,
     owner: Ref<Unit> | null,
     key: hooks.Key<H, any>,
@@ -26,7 +22,7 @@ export function dispatch<C, T, H extends Entry<C, T>>(
     options?: hooks.Options,
     stop?: (battle: BattleState) => boolean,
 ): Result<T>;
-export function dispatch<C, T, H extends Entry<C, T>>(
+export function dispatch<C, T, H extends hooks.Hook<C, T>>(
     battle: BattleState,
     owner: Ref<Unit> | null,
     key: hooks.Key<H, any>,
@@ -44,10 +40,7 @@ export function dispatch<C, T, H extends Entry<C, T>>(
             const unit = units.get(current, owner);
 
             return unit?.lifecycle === "PRESENT"
-                ? [...unit.hooks.get(key)]
-                      .sort((left, right) => (right.priority ?? 0) - (left.priority ?? 0))
-                      .map(({ id }) => id)
-                      .filter((id) => !hooks.excluded(options, key, id))
+                ? unit.hooks.get(key).filter(({ id }) => !hooks.excluded(options, key, id))
                 : [];
         },
         find(current, id) {

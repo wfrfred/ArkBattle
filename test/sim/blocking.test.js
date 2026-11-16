@@ -28,7 +28,7 @@ const enemy = {
     allegiance: { side: "ENEMY" },
 };
 
-test("HOOK-03: a relation samples both sides before the first callback while reading replacements live", () => {
+test("HOOK-03: a relation fixes both sides' priority order before notifying either side and reads replacements live", () => {
     const calls = [];
     let state = battle([
         { definition: blocker, position: [2, 1] },
@@ -37,6 +37,10 @@ test("HOOK-03: a relation samples both sides before the first callback while rea
             hooks: Hooks.empty().set(capability.blockableAcquired, {
                 id: "existing",
                 invoke: () => assert.fail("the replaced registration cannot run"),
+            }).set(capability.blockableAcquired, {
+                id: "target-priority",
+                priority: 10,
+                invoke(current) { calls.push("target-priority"); return { state: current, value: undefined }; },
             }),
         }, position: [2.1, 1] },
     ]);
@@ -44,16 +48,19 @@ test("HOOK-03: a relation samples both sides before the first callback while rea
     const target = units.ref(get(state, 1));
     state = unit.update(state, owner, units.setHook(capability.blockerAcquired, {
         id: "change-target-hooks",
+        priority: -10,
         invoke(current) {
             calls.push("blocker");
             return {
                 state: unit.update(current, target, compose(
                     units.setHook(capability.blockableAcquired, {
                         id: "existing",
+                        priority: 100,
                         invoke(next) { calls.push("replacement"); return { state: next, value: undefined }; },
                     }),
                     units.setHook(capability.blockableAcquired, {
                         id: "late",
+                        priority: 1000,
                         invoke(next) { calls.push("late"); return { state: next, value: undefined }; },
                     }),
                 )),
@@ -61,9 +68,13 @@ test("HOOK-03: a relation samples both sides before the first callback while rea
             };
         },
     }));
+    state = unit.update(state, owner, units.setHook(capability.blockerAcquired, {
+        id: "blocker-priority",
+        invoke(current) { calls.push("blocker-priority"); return { state: current, value: undefined }; },
+    }));
     state = blocking.acquire(state, owner, target);
     assert.equal(blocking.blockerOf(state, target).id, owner.id);
-    assert.deepEqual(calls, ["blocker", "replacement"]);
+    assert.deepEqual(calls, ["blocker-priority", "blocker", "target-priority", "replacement"]);
 });
 
 test("search and maintenance use effective pair restrictions, volume, layers and ground tile eligibility", () => {

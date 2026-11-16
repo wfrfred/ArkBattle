@@ -47,7 +47,7 @@ interface Initial {
 
 Slot 来自静态 Definition，实例生命周期内不变。SUPPORT 按内容需要提供配对建立与解除程序。选择 Occupancy 的 Unit 必须通过 Initial 提供本次 tile，State.tile 始终非空；方向可省略，缺省为 null。静态 Definition 不包含本次方向，占格不意味着一定具有方向，基础 Unit 不增加方向字段。不占格的 Unit 不选择 Occupancy。
 
-Catalog 先初始化 Occupancy，再初始化依赖它的 Deployable。Occupancy 保留已有程序并追加自己的 enter／leave。Deployment 在 fold 前已经登记的程序仍先执行；这里遵守普通登记顺序，不引入能力优先级。
+Catalog 先初始化 Occupancy，再初始化依赖它的 Deployable。Occupancy 保留已有程序并追加自己的 enter／leave。所有程序按公共 Hook priority 排序；同级时，Deployment 在 fold 前登记的程序仍先执行，不另设能力阶段。
 
 setDirection 只接收方向，返回只改方向的 `Change<Unit & Occupancy>`，不修改地块或产生配对通知。hasDirection 仅缩窄 direction 非 null 的对象。调用者通过 hasDirection 取得有效朝向，再由 Geometry.fromTiles 旋转范围。
 

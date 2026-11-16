@@ -328,7 +328,7 @@ Blocking 保证每个 ACQUIRED Hook 开始时原 Relation 对象仍表示当前�
 
 battle/blocking/query.ts 提供 blockerOf(battle, ref)、blocked(battle, ref)、usedCapacity(battle, ref)；输入保留相应 Capability 的 Typed Ref。按 Ref 读取后检查对象是否仍存在，不重复检查 Ref 已证明的稳定能力。`relations(battle, reference?)` 返回只读 Relation 数组：省略 reference 时按 Unit 顺序汇集全场当前 Relation；提供 Unit Ref 时直接读取该 Unit 的角色与关联，不扫描全场。Blocker 按自身 relations 顺序返回原对象，Blockable 直接返回自身保存的 Relation；无能力、无关系或宿主已不存在时返回空数组。hasRelation 按 Relation 对象身份判断旧关联是否仍有效，区分解除后重建的同双方关系。blockerOf 读取 relation.blocker，blocked 从 relations 投影普通目标 Ref，不将端点引用作为关系身份。
 
-Blocker／Blockable 分别导出 acquired／released typed Key，关联各自最低宿主能力；全部登记存于 Unit.hooks，使用 unit.setHook／removeHook 返回对应 Change。每条关系在其第一个业务回调前同时固定两侧候选 ID，逐项恢复最新同 ID 登记并检查 accepts；新增 ID 不参加该条通知，同 ID 替换使用最新登记。先 Blocker，后 Blockable；Context 固定原关系事实，BattleState 逐项接续。ACQUIRED 每项前通过原 Relation 身份确认关系仍存在；RELEASED 是历史通知，不要求旧关系仍存在，允许仍登记的 LEAVING 宿主处理。取得和解除直接派发业务 Hook，不输出诊断 Event；release 整批发布后逐条开始通知，各条的双方候选在轮到该条时同时固定，不提前冻结后续关系。
+Blocker／Blockable 分别导出 acquired／released typed Key，关联各自最低宿主能力；全部登记存于 Unit.hooks，使用 unit.setHook／removeHook 返回对应 Change。每条关系在其第一个业务回调前同时采样两侧候选 ID 与 priority，分别按公共规则固定顺序，逐项恢复最新同 ID 登记并检查 accepts；新增 ID 不参加该条通知，同 ID 替换使用最新登记。始终先 Blocker，后 Blockable，不跨两方阶段比较 priority；Context 固定原关系事实，BattleState 逐项接续。ACQUIRED 每项前通过原 Relation 身份确认关系仍存在；RELEASED 是历史通知，不要求旧关系仍存在，允许仍登记的 LEAVING 宿主处理。取得和解除直接派发业务 Hook，不输出诊断 Event；release 整批发布后逐条开始通知，各条的双方候选及 priority 在轮到该条时同时固定，不提前冻结后续关系；Blocker 回调改变 Blockable 的 priority 也不重排该条的后半轮。
 
 Runtime 执行 Movement → Mechanism.advance → Blocking.advance。Movement 中 Route.advance 先推进指令并独立检查 Main 终点，满足条件便请求完整离场；其后 Locomotion 只处理仍在场的单位。消费侧通过 relations(battle) 从两端状态取得共享的 Relation 对象，按其中的 Typed Ref 读取端点；不保存额外的全局权威关系。Movement 根据 Blockable 的当前归属决定是否推进自主 Locomotion。
 

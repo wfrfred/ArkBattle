@@ -98,17 +98,13 @@ interface DamageCommittingContext extends HpDamage.Context {
     readonly previous: Health;
 }
 
-interface DamageCommittingHook extends Hook<DamageCommittingContext, Health> {
-    readonly priority?: number;
-}
+type DamageCommittingHook = Hook<DamageCommittingContext, Health>;
 
 interface DamageCommittedContext extends HpDamage.Context {
     readonly application: DamageApplication;
 }
 
-interface DamageCommittedHook extends Hook<DamageCommittedContext, void> {
-    readonly priority?: number;
-}
+type DamageCommittedHook = Hook<DamageCommittedContext, void>;
 
 const damageCommitting: Key<DamageCommittingHook, Unit & Vitality>;
 const damageCommitted: Key<DamageCommittedHook, Unit & Vitality>;
@@ -334,7 +330,7 @@ DAMAGE 事件只携带飘字需要的目标、伤害类型、实际 HP 损失和
 
 ### 1.6 结算 Hook 类型
 
-HP Damage、EP Damage、HP Healing 与 EP Healing 各自定义 Request、Context、Parameters、Calculated、Application 与阶段 Hook，不建立四种业务的联合 Request／Context。共用的接收工作值协议位于 [resource/receiving.ts](../../src/core/battle/resource/receiving.ts)，由三个具有专属 Receiving 的业务绑定各自 Reason 和 Context；EP Healing 保留自己的简单 Pending。按 Unit 执行优先级 Hook 的实现位于 [resource/hook.ts](../../src/core/battle/resource/hook.ts)，四种业务共用同一派发器。某内容同时响应多种结算时，分别登记精确 Hook，再调用共享的内容程序。以下使用 HP Damage 子域内的局部类型名。
+HP Damage、EP Damage、HP Healing 与 EP Healing 各自定义 Request、Context、Parameters、Calculated、Application 与阶段 Hook，不建立四种业务的联合 Request／Context。共用的接收工作值协议位于 [resource/receiving.ts](../../src/core/battle/resource/receiving.ts)，由三个具有专属 Receiving 的业务绑定各自 Reason 和 Context；EP Healing 保留自己的简单 Pending。按 Unit 读取最新登记与资格的实现位于 [resource/hook.ts](../../src/core/battle/resource/hook.ts)，四种业务共用同一派发器；priority 来自公共 Hook，排序统一由公共 dispatch 执行。某内容同时响应多种结算时，分别登记精确 Hook，再调用共享的内容程序。以下使用 HP Damage 子域内的局部类型名。
 
 ```typescript
 interface Context {
@@ -360,22 +356,18 @@ interface AppliedContext extends CommitContext {
     readonly application: Application;
 }
 
-interface Entry<C, T> extends Hook<C, T> {
-    readonly priority?: number;
-}
-
-type SourceFormulaHook = Entry<Context, Parameters>;
-type TargetFormulaHook = Entry<Context, Parameters>;
-type OutputHook = Entry<OutputContext, number>;
-type BeforeCommitHook = Entry<CommitContext, void>;
-type AppliedHook = Entry<AppliedContext, void>;
+type SourceFormulaHook = Hook<Context, Parameters>;
+type TargetFormulaHook = Hook<Context, Parameters>;
+type OutputHook = Hook<OutputContext, number>;
+type BeforeCommitHook = Hook<CommitContext, void>;
+type AppliedHook = Hook<AppliedContext, void>;
 ```
 
 Request 始终表示初始事实；公式参数、输出量和接收工作值只经对应 Hook 的 current 接续。OutputContext.type 是公式确定的类型，不重新读取 Request 的初始类型。BeforeReceive 与 Receiving 使用相同的 ReceivingHook 类型，接续 BattleState 和 Pending；BeforeCommit 与 Applied 只接续 BattleState 业务；Applied 的报告在提交时确定，只对成功提交派发，零实际变化仍可成功。其余业务定义自己的 Application，不重复声明成功 Outcome 的另一份报告。
 
 基础 Context 只保存 request，目标从 request.target 取得；派生 Context 保留各阶段独立的计算、接收和提交事实。各业务 Hook 键由相应子域导出，均登记在 Unit.hooks。beforeReceive 与 receiving 使用不同 Key，前者位于接收准入前，后者位于准入后，各自独立固定候选。HP Damage、HP Healing 与 EP Damage 均提供这两个键，关联 Vitality／Elemental 宿主要求。登记统一使用 unit.setHook／removeHook。
 
-EP Healing 只提供 beforeReceive，不增加准入后的专属 receiving 键。其 ReceivingHook 是 Entry<ReceivingContext, Pending>，Pending.cancellation 固定为 null，不导出取消构造器或 CANCELLED 结果。普通 HIT 回复使用 HP Damage.receiving 的高优先级登记，不设额外开始通知。
+EP Healing 只提供 beforeReceive，不增加准入后的专属 receiving 键。其 ReceivingHook 是 Hook<ReceivingContext, Pending>，Pending.cancellation 固定为 null，不导出取消构造器或 CANCELLED 结果。普通 HIT 回复使用 HP Damage.receiving 的高优先级登记，不设额外开始通知。
 
 #### 接收工作值、数值固定与取消
 
@@ -460,7 +452,7 @@ UNSPECIFIED 表示取消但未指定一种受击结果；它不表示未取消�
 
 使用[类型化键与 Unit 本地 Hooks 集合](hook.md)。HP Damage、EP Damage、HP Healing、EP Healing 分别导出自己的 sourceFormula、targetFormula、output、beforeReceive、beforeCommit、targetApplied、sourceApplied 等实际需要的精确键，不通过联合 Context 或中央事件目录描述。
 
-固有登记直接写入 Unit Definition.hooks，在任何 enter 程序之前完成装配。运行时统一使用 `unit.setHook(key, hook)`／`unit.removeHook(key, id)`；`Key<H, Owner>` 保留完整 Hook 类型和最低宿主能力，返回 `Change<Unit & Owner>`，经 Unit.update 发布。生命周期键也允许修改，不另设领域转发入口。priority 缺省为 0；计算、应用及专属接收均按 priority 降序，相同时保留登记顺序。同键同 ID 替换保位，当前派发不因替换重新排序。
+固有登记直接写入 Unit Definition.hooks，在任何 enter 程序之前完成装配。运行时统一使用 `unit.setHook(key, hook)`／`unit.removeHook(key, id)`；`Key<H, Owner>` 保留完整 Hook 类型和最低宿主能力，返回 `Change<Unit & Owner>`，经 Unit.update 发布。生命周期键也允许修改，不另设领域转发入口。priority 继承公共 Hook，缺省为 0；计算、应用及专属接收均按 priority 降序，相同时保留登记顺序。候选采样同时固定 priority，同键同 ID 替换保留存储位置、使用最新程序，但不重排本轮。
 
 HP Damage／Healing Receiving、EP Damage Receiving 与 Elemental 的资源／Burst 通知统一存于宿主 Unit.hooks。接收与通知的类型、时点和资格仍归对应业务，EP Healing 不增加专属 Receiving。
 
@@ -602,7 +594,7 @@ Receiving 取消当前伤害不自动终止整个 Hook 派发。每项从最新 
 
 成功闪避的通用后继通过目标侧 Completed 观察 `outcome.type === "CANCELLED"` 且 `outcome.received.reason === "MISS"`，例如焰尾的下一击标记、阿斯卡纶 S3 的闪避自疗。监听者须确认自身是 request.target，避免把来源观察到的 MISS 当作自身闪避；HIT_FAILED 仍表示来源未命中。取消及原因不可恢复或覆盖，因此最终结果足以辨认成功闪避。这是明确的项目时点选择：原生在 Evade 成功节点立即通知，项目在剩余 Receiving 执行后、同次 Apply 返回前同步执行这些后继，沿用 Completed 的登记、排除与宿主资格。
 
-Receiving 内不按“先所有闪避、再所有护盾、再所有减伤”建立固定分类顺序。具体节点按业务优先级及稳定的登记先后组织；公共派发器仍只消费领域给出的固定候选 ID 序列，并在逐项执行时读取最新登记和资格。排序、参与资格、业务成功与整次派发停止分别表达。
+Receiving 内不按“先所有闪避、再所有护盾、再所有减伤”建立固定分类顺序。具体节点按业务优先级及稳定的登记先后组织；公共派发器从领域提供的 Hook 候选一次采样 ID 与 priority，固定排序后的候选序列，并在逐项执行时读取最新登记和资格。排序、参与资格、业务成功与整次派发停止分别表达。
 
 ### 3.2 特殊 HP Application 的支持边界
 

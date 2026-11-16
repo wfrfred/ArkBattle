@@ -1,5 +1,5 @@
 import type { Result, State as BattleState } from "../state.js";
-import type { Entry } from "./hook.js";
+import type { Hook } from "../../hook.js";
 
 export type State = "NORMAL" | "FIXED" | "CANCELLED";
 
@@ -32,7 +32,7 @@ export type Cancel<A extends string> = <T extends State, R extends A, N extends 
     forbidden: ReadonlySet<A>,
 ) => Pending<R, T> | CancelResult<T, R, N>;
 
-export interface ReceivingHook<C, A extends string> extends Entry<C, Pending<A>> {
+export interface ReceivingHook<C, A extends string> extends Hook<C, Pending<A>> {
     readonly invoke: <T extends State, R extends A>(
         battle: BattleState,
         context: C,

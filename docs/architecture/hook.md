@@ -52,7 +52,9 @@ Key 保留特殊 ReceivingHook 的泛型 invoke，不将其放宽成普通 Hook<
 
 get 对未登记的键返回空集合。同键同 ID 的 set 替换原项并保留位置；新 ID 追加，remove 只移除对应项。merge 按 other 的键内顺序应用同一 set 规则。ID 的范围是所属集合 × Key × ID；不同键和宿主可以复用 ID。删除不恢复被覆盖的 Definition 旧项。
 
-容器只要求 id；Entry 与数组 set／remove 复用 [common/collection/entries.ts](../../src/core/common/collection/entries.ts)。Resource 的计算与应用阶段，以及专属 Receiving、Vitality.damageCommitting／damageCommitted 使用 `priority?: number`：缺省 0，降序执行，同优先级保持登记顺序。普通 HIT 回复与伤判共用 HP Damage.receiving，前者约定使用 10000 量级的高优先级并原样返回 Pending，普通伤判通常使用缺省 0；不增加独立派发轮次或强制分区。beforeReceive 与 receiving 使用所属业务相同的 ReceivingHook 类型、不同 Key，分别在准入前后派发，接续同一 Pending。其他登记按原有登记顺序执行，不引入普遍优先级。排序不改变存储顺序。
+容器只要求 id；Entry 与数组 set／remove 复用 [common/collection/entries.ts](../../src/core/common/collection/entries.ts)。公共 `Hook<C, T>` 提供 `priority?: number`，所有登记式 Hook 缺省为 0；同一派发集合按 priority 降序，同优先级保持登记顺序。排序不改变存储顺序，也不跨领域阶段重排。Definition 的单一回调不增加 priority。
+
+普通 HIT 回复与伤判共用 HP Damage.receiving，前者约定使用 10000 量级的高优先级并原样返回 Pending，普通伤判通常使用缺省 0；不增加独立派发轮次或强制分区。beforeReceive 与 receiving 使用所属业务相同的 ReceivingHook 类型、不同 Key，分别在准入前后派发，接续同一 Pending。
 
 ## 固有声明与初始化
 
@@ -95,13 +97,13 @@ Battle 归属的全局观察使用对应领域的 typed Key 与 Hooks 集合，�
 
 ## 派发与生命周期
 
-公共 dispatch 接收固定 Context、初始 current、candidates／find 与可选 stop。领域在构造候选时按本次 Options 过滤排除项，再固定候选 ID 和执行顺序；逐项判断停止条件，从最新 BattleState 查登记及资格、检查 accepts、执行 invoke。新增 ID 不进入本轮，替换同 ID 使用最新版本，删除则跳过；优先级变化不重排当前候选。嵌套派发独立取候选。
+公共 dispatch 接收固定 Context、初始 current、candidates／find 与可选 stop。candidates 返回本次候选 Hook 条目，领域按本次 Options 过滤排除项；公共派发器在入口一并采样 ID 与 priority，稳定降序排序后固定本轮顺序；逐项判断停止条件，从最新 BattleState 查登记及资格、检查 accepts、执行 invoke。新增 ID 不进入本轮，替换同 ID 使用最新版本，删除则跳过；替换后的 priority 不重排本轮。嵌套派发独立取候选。
 
 公共集合不规定 PRESENT 资格。Resource 常规阶段要求宿主 PRESENT；专属接收保留所属能力的资格与停止条件。Skill、Elemental 的结束事实通知允许仍登记的 LEAVING 宿主参与，不能套用来源输出的 PRESENT 限制。
 
-Blocking 每条关系在第一个业务回调前同时固定双方候选，随后先 Blocker、后 Blockable，逐项读取最新登记。ACQUIRED 只继续仍属于原 Relation 的响应；RELEASED 是解除后的历史通知。后续关系到轮到它时再取候选，不提前冻结整批通知的登记。
+Blocking 每条关系在第一个业务回调前同时采样双方候选及 priority，分别固定各自顺序，随后始终先 Blocker、后 Blockable，逐项读取最新登记；Blockable 的高优先级不越过 Blocker 阶段。ACQUIRED 只继续仍属于原 Relation 的响应；RELEASED 是解除后的历史通知。后续关系到轮到它时再取候选，不提前冻结整批通知的登记。
 
-Unit 的 enter／tick／prepare 同样固定候选和本次 Context。enter／tick 每项前要求宿主 PRESENT；prepare 在发布 LEAVING 后执行，保留原 Departure。leave 在注销前从最新 Unit 捕获 Hook 对象快照，注销后按序执行并检查 accepts，不查询已删除宿主。登记快照与 Departure.unit 的历史采样分别处理。
+Unit 的 enter／tick／prepare 同样固定优先级排序后的候选和本次 Context。enter／tick 每项前要求宿主 PRESENT；prepare 在发布 LEAVING 后执行，保留原 Departure。leave 在注销前从最新 Unit 捕获 Hook 对象快照及其优先级顺序，注销后执行这些程序并检查 accepts，不查询已删除宿主。登记快照与 Departure.unit 的历史采样分别处理。
 
 动态登记不重放已完成阶段。sourceApplied 与 targetApplied 使用不同键，按目标、来源顺序执行；同一 Unit 承担两个角色时仍分别通知。
 

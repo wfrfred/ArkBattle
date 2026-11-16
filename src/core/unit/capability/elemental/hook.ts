@@ -45,11 +45,7 @@ export function dispatch<E>(
     event: NoInfer<E>,
 ): BattleState {
     return hooks.dispatch(battle, { host, event }, undefined, {
-        candidates: (current) =>
-            units
-                .get(current, host)
-                ?.hooks.get(key)
-                .map(({ id }) => id) ?? [],
+        candidates: (current) => units.get(current, host)?.hooks.get(key) ?? [],
         find: (current, id) => units.get(current, host)?.hooks.find(key, id),
     }).state;
 }

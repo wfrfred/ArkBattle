@@ -46,7 +46,7 @@ export function removeHook<H extends Entry>(
 
 export function dispatch(battle: BattleState, event: Deployed): BattleState {
     return hooks.dispatch(battle, event, undefined, {
-        candidates: (current) => current.deployment.hooks.get(deployed).map(({ id }) => id),
+        candidates: (current) => current.deployment.hooks.get(deployed),
         find: (current, id) => current.deployment.hooks.find(deployed, id),
     }).state;
 }

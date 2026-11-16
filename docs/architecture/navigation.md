@@ -352,7 +352,7 @@ const created = unit.initialize(battle, {
 
 Route initializer 通过 [Capability 初始化通道](capability.md#初始化与装配)读取必需 Initial，建立 Main ID 0、activeId=0、nextContextId=1、index=0、current=null、ticking=true，并捕获 Schedule 时间基准。Plan、offset 或时间快照不重新合成 UnitDefinition，也不接收调用者预装的执行状态。
 
-首条指令在完整 Unit 与结构索引发布后，由普通 Unit.enter Hook 同步进入，遵守 Hook 登记顺序；unit.add 只登记并执行 enter，不特判 Route。Schedule 在 unit.add 前发布等待关系，使首指令及其同步 Hook 可见完整出生事实。动态 Context 使用同一指令进入逻辑。
+首条指令在完整 Unit 与结构索引发布后，由普通 Unit.enter Hook 同步进入，遵守公共 Hook 的优先级顺序，同级保留登记顺序；unit.add 只登记并执行 enter，不特判 Route。Schedule 在 unit.add 前发布等待关系，使首指令及其同步 Hook 可见完整出生事实。动态 Context 使用同一指令进入逻辑。
 
 已有 Unit 新建 Context 共享其 Route State 的出生时基；新建 Unit 则在实际初始化时从当前 Schedule 取样，不从召唤者继承。技能、Buff 与机制创建者各自组织出生业务，无需强制使用统一的 Schedule Spawn 包装。
 

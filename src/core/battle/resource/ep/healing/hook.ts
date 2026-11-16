@@ -1,6 +1,5 @@
 import type { Unit } from "../../../../unit/unit.js";
 import type { Elemental } from "../../../../unit/capability/elemental/capability.js";
-import type { Entry } from "../../hook.js";
 import * as hooks from "../../../../hook.js";
 import type { Application, Calculated, Parameters, Pending, Request } from "./contract.js";
 
@@ -20,17 +19,17 @@ export interface AppliedContext extends CommitContext {
     readonly application: Application;
 }
 
-export type SourceFormulaHook = Entry<Context, Parameters>;
+export type SourceFormulaHook = hooks.Hook<Context, Parameters>;
 
-export type TargetFormulaHook = Entry<Context, Parameters>;
+export type TargetFormulaHook = hooks.Hook<Context, Parameters>;
 
-export type OutputHook = Entry<Context, number>;
+export type OutputHook = hooks.Hook<Context, number>;
 
-export type ReceivingHook = Entry<ReceivingContext, Pending>;
+export type ReceivingHook = hooks.Hook<ReceivingContext, Pending>;
 
-export type BeforeCommitHook = Entry<CommitContext, void>;
+export type BeforeCommitHook = hooks.Hook<CommitContext, void>;
 
-export type AppliedHook = Entry<AppliedContext, void>;
+export type AppliedHook = hooks.Hook<AppliedContext, void>;
 
 export const sourceFormula = hooks.key<SourceFormulaHook, Unit>(
     "resource.ep.healing.sourceFormula",

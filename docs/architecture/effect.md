@@ -189,7 +189,7 @@ S 是实例私有数据的类型，例如护盾次数、周期进度或 Aura 的
 
 Unit 初始化始终建立空 Effects，不接收预装容器。初始 Buff、护盾等由 Unit Definition 的 enter 键下的 Hook 在宿主登记后调用 install，按正常安装流程执行 onInstall、生效协调与依赖登记。
 
-当前 battle/unit.add 先登记宿主，再按实例 hooks 的登记顺序统一派发 enter Hook，不推断部署事实或扫描全场 Blocking。Skill 的入场处理也是其中一个 Hook；初始 Effect 与技能入场业务的先后由装配顺序决定，不另设 Effect 入场阶段。默认装配先登记 Skill，再追加 Definition 中的内容 Hook。
+当前 battle/unit.add 先登记宿主，再按公共 Hook 优先级顺序统一派发 enter Hook，不推断部署事实或扫描全场 Blocking。Skill 的入场处理也是其中一个 Hook；初始 Effect 与技能入场业务的先后由 Hook priority 决定，同优先级保留装配顺序，不另设 Effect 入场阶段。默认装配先登记 Skill，再追加 Definition 中的内容 Hook。
 
 ### 不可变 Effects 容器
 
@@ -289,10 +289,10 @@ stateDiagram-v2
 | ------------------------------------ | -------------------------- |
 | 多个 Effect 哪个整体生效             | Effect 管理                |
 | 一个属性的多项 Contribution 哪些计入 | Capability 数值结算        |
-| 本次事件 Hook 如何排序、何时中止     | 提供扩展点的领域           |
+| 本次事件 Hook 如何排序、何时中止     | 公共 dispatch 按 priority 排序；领域决定阶段与停止条件 |
 | 已生效 Effect 本次是否执行具体动作   | 具体 Definition 的业务函数 |
 
-Hook 的 accepts 读取 Effect 的覆写结果；伤害阶段与优先级由 Damage 定义。
+Hook 的 accepts 读取 Effect 的覆写结果；伤害阶段由 Damage 定义，登记项通过公共 priority 表达阶段内顺序。
 
 ### 重复施加与叠层
 
@@ -527,12 +527,13 @@ Hook 使用公共协议，具体阶段与工作值由提供扩展点的领域定
 ```typescript
 interface Hook<C, T> {
     readonly id: string;
+    readonly priority?: number;
     readonly accepts?: (battle: BattleState, context: C, current: T) => boolean;
     readonly invoke: (battle: BattleState, context: C, current: T) => Result<T>;
 }
 ```
 
-Context 是本次派发固定的事件或操作事实；BattleState 与 current 逐项接续。Unit 所属 Hook 统一存于 Unit.hooks，Battle 全局观察使用所属领域的独立 Hooks 集合；提供扩展点的领域决定排序、资格和整次派发的停止条件。Damage 的阶段与 priority 不成为 Effect 的字段。
+Context 是本次派发固定的事件或操作事实；BattleState 与 current 逐项接续。Unit 所属 Hook 统一存于 Unit.hooks，Battle 全局观察使用所属领域的独立 Hooks 集合；公共派发器按 priority 降序、同级登记顺序执行，提供扩展点的领域决定阶段、资格和整次派发的停止条件。Hook 的 priority 不成为 Effect 实例的字段，Definition 单一回调也不增加该字段。
 
 具体 Effect 可以在 onInstall 登记 Hook，在 onEnd 撤销。闭包捕获稳定的 Effect Ref 与静态配置；accepts 和 invoke 从最新 battle 读取当前实例、覆写结果和私有 state。不能把安装时捕获的数据当作当前盾数。消耗等需要被嵌套观察的进度先写回，再进入其他领域操作。
 

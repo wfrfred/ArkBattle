@@ -103,12 +103,13 @@ export class Hooks {
 
 export interface Hook<C, T> {
     readonly id: string;
+    readonly priority?: number;
     readonly accepts?: (battle: BattleState, context: C, current: T) => boolean;
     readonly invoke: (battle: BattleState, context: C, current: T) => Result<T>;
 }
 
 export interface DispatchOptions<C, T> {
-    readonly candidates: (battle: BattleState) => readonly string[];
+    readonly candidates: (battle: BattleState) => readonly Hook<C, T>[];
     readonly find: (battle: BattleState, id: string) => Hook<C, T> | undefined;
     readonly stop?: (battle: BattleState, current: T) => boolean;
 }
@@ -120,7 +121,9 @@ export function dispatch<C, T>(
     options: DispatchOptions<C, T>,
 ): Result<T> {
     let current = initial;
-    const candidates = [...options.candidates(battle)];
+    const candidates = [...options.candidates(battle)]
+        .sort((left, right) => (right.priority ?? 0) - (left.priority ?? 0))
+        .map(({ id }) => id);
 
     for (const id of candidates) {
         if (options.stop?.(battle, current)) {

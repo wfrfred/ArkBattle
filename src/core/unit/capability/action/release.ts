@@ -34,10 +34,7 @@ export function dispatchBeforeRelease<X extends Execution<any, any>>(
         { type: "CONTINUE" },
         {
             candidates: (current) =>
-                units
-                    .get(current, context.source)
-                    ?.hooks.get(beforeRelease)
-                    .map(({ id }) => id) ?? [],
+                units.get(current, context.source)?.hooks.get(beforeRelease) ?? [],
             find: (current, id) =>
                 units.get(current, context.source)?.hooks.find(beforeRelease, id),
             stop: (current, directive) =>
@@ -53,11 +50,7 @@ export function dispatchReleased<X extends Execution<any, any>>(
     const context: Context = { execution: ref, source: ref.host };
 
     return hook.dispatch(battle, context, undefined, {
-        candidates: (current) =>
-            units
-                .get(current, context.source)
-                ?.hooks.get(released)
-                .map(({ id }) => id) ?? [],
+        candidates: (current) => units.get(current, context.source)?.hooks.get(released) ?? [],
         find: (current, id) => units.get(current, context.source)?.hooks.find(released, id),
         stop: (current) => !running(current, context),
     }).state;

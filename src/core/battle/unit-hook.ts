@@ -33,7 +33,7 @@ export function dispatch(
     event: Departure,
 ): BattleState {
     return hooks.dispatch(battle, event, undefined, {
-        candidates: (current) => current.unitHooks.get(key).map(({ id }) => id),
+        candidates: (current) => current.unitHooks.get(key),
         find: (current, id) => current.unitHooks.find(key, id),
     }).state;
 }

@@ -180,7 +180,7 @@ unit.remove(battle, ref, reason) → nextBattle
 unit.advance(battle) → nextBattle
 ```
 
-battlefield/unit.ts 的 add／update／remove 只完成纯状态转换；完整 Unit 业务统一位于 battle/unit.ts，提供 add／update／remove／advance。Blocking 在自身构造入口建立 Blocker／Blockable 至多一种的约束，内部信任，不由角色推导阵营、Layer 或移动能力。remove 委托 Unit Lifetime，在请求阶段纯发布 LEAVING，再派发能力自行登记的 prepare Hook，由 Blocking 清理本 Unit 的关系与自身计划。已登记 owner 与 Scope 依赖者完整 Finalize 后，Unit 注销并输出携带最终 Unit 历史快照的 UNIT_REMOVED，再按登记序执行本地 leave 与全局 leave。Occupancy 自己处理旧配对，Deployable 的本地 leave 归还实际占用；部署时预装的死亡响应只处理确认死亡。主动撤退由其领域操作在请求离场前直接结算退款、Card 费用阶段与库存恢复。Unit 不识别具体能力，也不全场扫描补救领域清理；调用方不拼接这些内部步骤，BattleState 不另提供 Unit 登记或注销入口。部署契约见 [Deployment](deployment.md)。
+battlefield/unit.ts 的 add／update／remove 只完成纯状态转换；完整 Unit 业务统一位于 battle/unit.ts，提供 add／update／remove／advance。Blocking 在自身构造入口建立 Blocker／Blockable 至多一种的约束，内部信任，不由角色推导阵营、Layer 或移动能力。remove 委托 Unit Lifetime，在请求阶段纯发布 LEAVING，再派发能力自行登记的 prepare Hook，由 Blocking 清理本 Unit 的关系与自身计划。已登记 owner 与 Scope 依赖者完整 Finalize 后，Unit 注销并输出携带最终 Unit 历史快照的 UNIT_REMOVED，再派发本地 leave，随后派发全局 leave；各自按公共 priority 排序，同级保留登记顺序。Occupancy 自己处理旧配对，Deployable 的本地 leave 归还实际占用；部署时预装的死亡响应只处理确认死亡。主动撤退由其领域操作在请求离场前直接结算退款、Card 费用阶段与库存恢复。Unit 不识别具体能力，也不全场扫描补救领域清理；调用方不拼接这些内部步骤，BattleState 不另提供 Unit 登记或注销入口。部署契约见 [Deployment](deployment.md)。
 
 add 拒绝重复身份。公开 Unit.update 接收单个 Typed Ref 与 Change；Ref 证明目标的稳定能力，Change 不绑定身份。Change 函数保留输入宿主的完整类型，返回 next 与已捕获各项 previous 的 settlements；compose 将两个 Change 从左到右应用于同一宿主，并顺序连接结算列表。目标缺失时抛出 RangeError。全部纯应用完成后一次发布 Field，再逐项接续最新 BattleState 结算；此阶段之前不执行业务回调。各项无变化时不登记结算，不能因为最终 next 恢复入口引用而丢弃此前真实变换的结算。Field 内部 update 仍接收完整 Unit 数组，信任 Core 构造的身份与 Definition，不重复校验；替换保持登记顺序。Unit 身体所属格由 position 与 Presence 查询，不另存位置索引或空间依赖分类。
 
@@ -188,7 +188,7 @@ Capability 的 Restriction、Contribution 与 Blocker.layer 工厂，以及通�
 
 一次 update 只针对一个 Unit；有序组合满足结合律，不满足交换律，组合本身不增加发布或结算边界。较早后继的 Hook 可见较晚变换的最终字段和未完成的清理。业务回调中的嵌套 update 只执行自己的结算，不调度外层剩余项；领域后继按受影响对象限定范围，同对象交叠则读取共同最新事实。Tick 成功后 Runtime 发布最终 BattleState，不需要调用方另行执行 settle。
 
-初始化、刷怪和预定义出现逐个完成创建、登记与入场，接续 Hook 返回的最新 BattleState 后才处理下一个对象，不预先分配后续实例身份。刷怪逐个登记本次 Spawn 对应的等待关系后再执行 enter Hook；计划中的执行时刻由 Schedule 的阶段与时间基准解释。纯集合批量写入不定义批量入场语义。Unit.add 只登记并派发普通 enter Hook；Deployment 预先登记部署通知，Occupancy 初始化随后追加配对程序，先登记先执行；Occupancy 的程序负责业务配对。Unit 不识别这些具体能力或扫描全场 Blocking。入场内容需要取得、搜索或修改资格时，调用明确的 Blocking 操作。
+初始化、刷怪和预定义出现逐个完成创建、登记与入场，接续 Hook 返回的最新 BattleState 后才处理下一个对象，不预先分配后续实例身份。刷怪逐个登记本次 Spawn 对应的等待关系后再执行 enter Hook；计划中的执行时刻由 Schedule 的阶段与时间基准解释。纯集合批量写入不定义批量入场语义。Unit.add 只登记并派发普通 enter Hook；Deployment 预先登记部署通知，Occupancy 初始化随后追加配对程序；公共 priority 决定本轮顺序，同级按装配先后执行；Occupancy 的程序负责业务配对。Unit 不识别这些具体能力或扫描全场 Blocking。入场内容需要取得、搜索或修改资格时，调用明确的 Blocking 操作。
 
 unit.update 与内部 replace 不准备、校验或推断 Blocking 关系，也不派发 Blocking／Occupancy 通知。acquire／release 明确构造关系双端并发布，acquire 通知后只复核本次新 Relation；release 统一接收 Relation 数组，入口过滤旧身份与重复项，整批解除，再按输入顺序通知，不附加维护、搜索或计划取消。Capacity 的 Settlement 只按当前容量从本 Blocker 的末尾裁撤；volume 在 settle 读取当前 owner，结算该阻挡组，不追随 Hook 中的新归属；两者共享内部 settleCapacity，每条通知后重新读取容量与占用，不夹带资格扫描。Restriction 的 Settlement 固定自身相关关系，逐条 maintain 复核资格，不维护其他关系或裁容量。setLayer 的 Settlement 通过 releaseAll 清理当时当前关系，previous 只提供稳定身份，不回填旧 Unit。普通私有 state 写回与 Hook Change 没有 Blocking 后继。
 
@@ -209,12 +209,13 @@ Hook 使用统一的泛型状态转换与动态派发协议。领域定义类型
 ```typescript
 interface Hook<C, T> {
     readonly id: string;
+    readonly priority?: number;
     readonly accepts?: (battle: BattleState, context: C, current: T) => boolean;
     readonly invoke: (battle: BattleState, context: C, current: T) => Result<T>;
 }
 
 interface DispatchOptions<C, T> {
-    readonly candidates: (battle: BattleState) => readonly string[];
+    readonly candidates: (battle: BattleState) => readonly Hook<C, T>[];
     readonly find: (battle: BattleState, id: string) => Hook<C, T> | undefined;
     readonly stop?: (battle: BattleState, current: T) => boolean;
 }
@@ -226,13 +227,13 @@ dispatch(battle, fixedContext, initialValue, options): Result<T>;
 
 业务 Hook 通知只提供该业务需要的事实。Skill 的 activationStarted／activationEnded 分别携带 `{ ref }`／`{ ref, end }`，不暴露完整 Definition 或私有 state；宿主由 Context.host 提供。activationEnded 清空槽位后通知，Ref 保留已结束轮次的身份，不保证还能查询对象。具体私有数据由自身已配对的 Definition 程序解释，观察者保存自己的计数、首次标记与其他玩法 state。
 
-candidates 每次派发调用一次并复制 ID 序列，顺序由领域决定。本次排除由领域按 typed Key 身份及 ID 在 candidates 中过滤；null ID 排除整键。每项依次检查 stop、find、accepts，再 invoke；三个查询只读，不消费 RNG。find 重新读取最新登记并确认节点／阶段资格。accepts 缺省为允许，返回 false 则跳过；stop 结束整次派发，保留已完成的状态和值，不自动取消业务或回滚。嵌套派发独立取得 Context、current 和候选；返回后接续其 Battle，外层 Context 不变，外层 current 由当前 Hook 返回值决定。
+candidates 每次派发调用一次，返回候选 Hook 条目。本次排除由领域按 typed Key 身份及 ID 在 candidates 中过滤；null ID 排除整键。公共 dispatch 同时采样 ID 和 priority，以缺省 0 的 priority 稳定降序排序，同优先级保持登记顺序，再固定本轮候选。每项依次检查 stop、find、accepts，再 invoke；三个查询只读，不消费 RNG。find 重新读取最新登记并确认节点／阶段资格，替换后的 priority 不重排本轮。accepts 缺省为允许，返回 false 则跳过；stop 结束整次派发，保留已完成的状态和值，不自动取消业务或回滚。嵌套派发独立取得 Context、current 和候选；返回后接续其 Battle，外层 Context 不变，外层 current 由当前 Hook 返回值决定。
 
-上述候选 ID 协议同样用于 Unit 的 enter／tick／prepare。固有 Hooks 在构造期全部装配，运行时可经通用 Change 登记、替换和撤销生命周期键；每次派发固定 Context，逐项接续 BattleState、读取最新登记并判断 accepts。enter／tick 的 Context 是本阶段采样的 Unit，每项前确认宿主仍为 PRESENT；prepare 使用固定 Departure。leave 在物理注销前从最新 Unit 捕获本轮 Hook 对象快照，注销后按序执行并检查 accepts，不查询已删除宿主。leave 登记快照与 Departure 的历史事实分别采样。同键同 ID 替换保留位置，不重放已完成阶段。
+上述优先级与候选 ID 协议同样用于 Unit 的 enter／tick／prepare。固有 Hooks 在构造期全部装配，运行时可经通用 Change 登记、替换和撤销生命周期键；每次派发固定 Context，逐项接续 BattleState、读取最新登记并判断 accepts。enter／tick 的 Context 是本阶段采样的 Unit，每项前确认宿主仍为 PRESENT；prepare 使用固定 Departure。leave 在物理注销前从最新 Unit 捕获本轮 Hook 对象及 priority，固定排序后的快照，注销后执行并检查 accepts，不查询已删除宿主。leave 登记快照与 Departure 的历史事实分别采样。同键同 ID 替换保留位置，不重放已完成阶段。
 
 不需要操作值的通知使用 T=void，仍返回 Result<void>，C 也可为 void。需要终止后续通知时，领域定义自己的控制值，不把业务取消、停止派发和生命周期终结混为同一个布尔值。Vitality 的阶段控制只在本节点生效，不能成为后续业务事实的一部分。
 
-通用条目的 set／remove 位于 common/collection/entries.ts，按 ID 登记、替换与撤销，保留顺序与结构共享；Hook 模块提供类型化集合和 dispatch。Unit 所属登记存于 Unit.hooks，Battle 所属登记存于各自 Hooks 集合；领域定义节点、排序、资格与停止条件。Skill／Elemental 结束通知不因宿主 LEAVING 被常规输出的 PRESENT 资格拦截。Resource 的四种业务共用 resource/hook.ts 的优先级 Unit Hook 派发和 resource/receiving.ts 的接收工作值协议，各自保留精确 Context、原因集合及执行阶段。Calculate／Apply 分别接收可选 Options.exclude，接收阶段接续 Apply 选项。HP Damage、EP Damage、HP Healing 的 ApplyOptions 另接受可选 forbidden，Apply 一次建立必填 ReceivingContext.forbidden，本笔接收、Commit 与 Applied 共用；Hook 显式将该集合传给必填三参数 cancel。EP Healing 保持仅有 Hook Options，不增加 Reason 或 forbidden；不将选项写入 Request／Calculated，不自动传播至嵌套业务、资源事实或生命周期通知。Effect 与 [Projectile](projectile.md) 的 Definition 回调直接接收完整 self；异构容器内部擦除私有参数，Core 调用同一实例自身 Definition 的程序，不解释未知 state。Definition 程序与本次 Hook 派发的固定 Context 分别定义。
+通用条目的 set／remove 位于 common/collection/entries.ts，按 ID 登记、替换与撤销，保留顺序与结构共享；Hook 模块提供类型化集合和统一优先级排序的 dispatch。Unit 所属登记存于 Unit.hooks，Battle 所属登记存于各自 Hooks 集合；领域定义节点、候选范围、资格与停止条件。Skill／Elemental 结束通知不因宿主 LEAVING 被常规输出的 PRESENT 资格拦截。Resource 的四种业务共用 resource/hook.ts 的 Unit Hook 派发和 resource/receiving.ts 的接收工作值协议，各自保留精确 Context、原因集合及执行阶段。Calculate／Apply 分别接收可选 Options.exclude，接收阶段接续 Apply 选项。HP Damage、EP Damage、HP Healing 的 ApplyOptions 另接受可选 forbidden，Apply 一次建立必填 ReceivingContext.forbidden，本笔接收、Commit 与 Applied 共用；Hook 显式将该集合传给必填三参数 cancel。EP Healing 保持仅有 Hook Options，不增加 Reason 或 forbidden；不将选项写入 Request／Calculated，不自动传播至嵌套业务、资源事实或生命周期通知。Effect 与 [Projectile](projectile.md) 的 Definition 回调直接接收完整 self；异构容器内部擦除私有参数，Core 调用同一实例自身 Definition 的程序，不解释未知 state。Definition 程序与本次 Hook 派发的固定 Context 分别定义。
 
 Unit 持有不可变 Effects 容器，内部 Store<Id, Effect<any, any>> 保存异构完整实例及 ID 进度。普通 get(id)／values() 返回默认 object／object 的完整 Effect，包含 state 与原 Definition；精确 Ref／Definition 查询保留私有类型、STACK 与政策分支。values／keys 返回绑定容器版本的 Query；Core 取得完整实例，在统一的受信任边界恢复其与自身 Definition 程序的配对后执行，不依赖嵌套判别自动推导联合回调，也不解释未知 state 或 H。存储容器仍不派发业务；跨完整操作后仍读取最新实例。真实所有权保护结束中的宿主与存储；Departure 等明确历史载荷按本领域业务输入保存。
 
@@ -266,7 +267,7 @@ Effect 的 expiration 选择 DURATION、DEADLINE、INFINITE 之一；DURATION �
 4. 候选集合由派发领域管理，不作为所有操作的通用参数。
 5. 嵌套 Damage / Healing 是新操作，其每个派发从最新状态取得候选。外层后续独立阶段同样重新取候选；外层当前尚未完成的派发继续使用原候选。
 
-对 Hook 集合，候选身份是登记 ID。每项执行前按 ID 从最新集合读取当前 Hook，再执行其 accepts／invoke；同 ID 替换在本轮使用新版本，移除则跳过，新 ID 不加入已开始的派发。初始优先级决定本轮候选顺序，替换不重排；阶段改变后不符合本轮阶段的登记跳过。该身份约定不以 Hook、Unit 或 Effect 对象引用是否变化决定参与。
+对 Hook 集合，候选身份是登记 ID。每项执行前按 ID 从最新集合读取当前 Hook，再执行其 accepts／invoke；同 ID 替换在本轮使用新版本，移除则跳过，新 ID 不加入已开始的派发。所有登记式 Hook 的 priority 缺省为 0；候选采样时确定降序，同级保持登记顺序，替换不重排；阶段改变后不符合本轮阶段的登记跳过。该身份约定不以 Hook、Unit 或 Effect 对象引用是否变化决定参与。
 
 例如 H1 安装新 Effect 并登记 H2 后发起嵌套伤害，H2 可以参加该新伤害中符合阶段条件的派发；它不补进外层正在执行的派发。候选身份和实际资格分别处理。
 

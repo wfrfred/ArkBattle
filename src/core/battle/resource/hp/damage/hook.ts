@@ -1,5 +1,4 @@
 import type * as receivingProtocol from "../../receiving.js";
-import type { Entry } from "../../hook.js";
 import type { Unit } from "../../../../unit/unit.js";
 import type { Vitality } from "../../../../unit/capability/vitality/capability.js";
 import * as hooks from "../../../../hook.js";
@@ -40,17 +39,17 @@ export interface CompletedContext extends Context {
     readonly outcome: Outcome;
 }
 
-export type SourceFormulaHook = Entry<Context, Parameters>;
+export type SourceFormulaHook = hooks.Hook<Context, Parameters>;
 
-export type TargetFormulaHook = Entry<Context, Parameters>;
+export type TargetFormulaHook = hooks.Hook<Context, Parameters>;
 
-export type OutputHook = Entry<OutputContext, number>;
+export type OutputHook = hooks.Hook<OutputContext, number>;
 
-export type BeforeCommitHook = Entry<CommitContext, void>;
+export type BeforeCommitHook = hooks.Hook<CommitContext, void>;
 
-export type AppliedHook = Entry<AppliedContext, void>;
+export type AppliedHook = hooks.Hook<AppliedContext, void>;
 
-export type CompletedHook = Entry<CompletedContext, void>;
+export type CompletedHook = hooks.Hook<CompletedContext, void>;
 
 export type ReceivingHook = receivingProtocol.ReceivingHook<ReceivingContext, Reason>;
 
