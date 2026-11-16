@@ -22,6 +22,10 @@ import { elementValues, setContribution } from "../../../dist/core/unit/capabili
 import { createArknightsElementalDefinition } from "../../../dist/data/effect/elemental.js";
 import { stun } from "../../../dist/core/effects/control.js";
 import * as epDamage from "../../../dist/core/battle/resource/ep/damage/index.js";
+import * as hpDamage from "../../../dist/core/battle/resource/hp/damage/index.js";
+import * as actions from "../../../dist/core/unit/action/index.js";
+import { dispatchReleased } from "../../../dist/core/unit/capability/action/release.js";
+import { resolveSpeed } from "../../../dist/core/unit/capability/action/timing.js";
 
 const range = [{ type: 'CIRCLE', offset: [0, 0], radius: 20 }];
 const hit = { type: 'CIRCLE', offset: [0, 0], radius: 0.1 };
@@ -167,4 +171,101 @@ test('elemental runtime: unused neural paralysis survives recovery and the next 
   const hits = events.filter(event => event.type === 'DAMAGE' && event.targetUnitId === 0);
   assert.equal(hits.length > 0, true);
   assert.equal(cancelled.every(event => event.tick < hits[0].tick), true);
+});
+
+test('mania counts each released action once, caps self-damage and keeps its independent character program after recovery cancellation', () => {
+  const attack = createAttack({
+    id: 'mania-attack', triggerBindingId: 'primary', intervalTicks: 30, recoveryTicks: 0,
+    targetGroups: [{ id: 'primary', select: selectDamage({ geometry: range, canTargetAir: true }),
+      operations: [{ type: 'DAMAGE', attackType: 'NORMAL', applyWay: 'MELEE', power: 1, damageType: 'TRUE' }] }],
+    afterOutput: (work, source, self) => dispatchReleased(work, actions.executionRef(source, self)),
+  });
+  const skill = createSkillDefinition({
+    id: 'mania-hit', activation: null,
+    sp: { initial: 0, capacity: 30, requirement: 1, recovery: { type: 'HIT', amount: 1 } },
+  });
+  let work = createBattle([
+    { position: [0, 0], definition: definition('CHARACTER', {
+      allegiance: { side: 'ALLY' }, action: actionCapability(attack),
+      skill: { initialize: state => createSkill(state, skill) },
+    }) },
+    { position: [1, 0], definition: {
+      id: 'blocked-output', allegiance: { side: 'ENEMY' },
+      vitality: { maxHp: 100000, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
+      targetable: { taunt: 0, restrictions: [] }, hitbox: { shape: hit },
+      hooks: Hooks.empty().set(hpDamage.receiving, {
+        id: 'block-output',
+        invoke: (state, context, pending) => ({
+          state, value: hpDamage.cancel(pending, 'BLOCKED', context.forbidden),
+        }),
+      }),
+    } },
+  ]);
+  const started = element(work, 'MANIA');
+  const burst = started.value.application.burst;
+  work = started.state;
+  const speed = state => resolveSpeed(getUnit(state, 0), getUnit(state, 0).action.actions.get('mania-attack'));
+  assert.equal(speed(work), 150);
+  assert.equal(getUnit(work, 0).vitality.health.hp, 100000);
+  const pulses = [];
+  const next = () => {
+    work = stepBattle(work, []);
+    pulses.push(...work.events.filter(event => event.type === 'DAMAGE' && event.targetUnitId === 0).map(event => event.amount));
+  };
+  while (work.tick < 30) next();
+  assert.deepEqual(pulses, [200]);
+  assert.equal(getUnit(work, 1).vitality.health.hp, 100000);
+  assert.equal(getUnit(work, 0).skill.sp.value, 1);
+
+  work = elemental.cancel(work, burst);
+  assert.equal(getUnit(work, 0).elemental.burst, null);
+  assert.deepEqual(getUnit(work, 0).elemental.ep, elementValues(1000));
+  assert.equal(speed(work), 150);
+  while (work.tick <= 450) next();
+  assert.deepEqual(pulses.slice(0, 6), [200, 250, 350, 400, 500, 550]);
+  assert.equal(pulses.length, 15);
+  assert.equal(pulses.slice(6).every(amount => amount === 600), true);
+  assert.equal(getUnit(work, 0).skill.sp.value, 15);
+  assert.equal(speed(work), 100);
+});
+
+test('enemy mania ramps on its own Tick clock, stops with recovery and includes the final pulse', () => {
+  const attack = action(10000);
+  const skill = createSkillDefinition({
+    id: 'enemy-mania-hit', activation: null,
+    sp: { initial: 0, capacity: 30, requirement: 1, recovery: { type: 'HIT', amount: 1 } },
+  });
+  const setup = () => receiverBattle('ENEMY', {
+    action: actionCapability(attack), skill: { initialize: state => createSkill(state, skill) },
+  });
+  const speed = state => resolveSpeed(getUnit(state, 0), getUnit(state, 0).action.actions.get('normal-attack'));
+  const damage = state => state.events.filter(event => event.type === 'DAMAGE');
+  const started = element(setup(), 'MANIA');
+  let work = started.state;
+  assert.equal(speed(work), 120);
+  assert.equal(damage(work).length, 0);
+  work = advance(work, 30);
+  assert.deepEqual(damage(work).map(event => [event.amount, event.damageType]), [[290, 'ELEMENTAL']]);
+  const ep = getUnit(work, 0).elemental.ep;
+  const recoverySpeed = value => setContribution('burstRecoverySpeed', {
+    id: 'mania-clock', value: [modifier({ finalScaler: value })],
+  });
+  work = applyUnitChanges(work, unitRef(getUnit(work, 0)), recoverySpeed(0));
+  work = advance(work, 60);
+  assert.deepEqual(getUnit(work, 0).elemental.ep, ep);
+  work = applyUnitChanges(work, unitRef(getUnit(work, 0)), recoverySpeed(2));
+  work = advance(work, 90);
+  assert.deepEqual(damage(work).map(event => event.amount), [290, 420, 550]);
+  assert.equal(getUnit(work, 0).skill.sp.value, 0);
+  work = elemental.cancel(work, started.value.application.burst);
+  assert.equal(speed(work), 100);
+  work = advance(work, 120);
+  assert.equal(damage(work).length, 3);
+
+  work = advance(element(setup(), 'MANIA').state, 450);
+  assert.equal(damage(work).length, 15);
+  assert.equal(damage(work).at(-1).amount, 2110);
+  assert.equal(getUnit(work, 0).vitality.health.hp, 82000);
+  assert.equal(getUnit(work, 0).elemental.burst, null);
+  assert.equal(speed(work), 100);
 });

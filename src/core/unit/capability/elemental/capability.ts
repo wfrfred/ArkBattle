@@ -18,6 +18,7 @@ export const Type = {
     EROSION: "EROSION",
     BURN: "BURN",
     NECROSIS: "NECROSIS",
+    MANIA: "MANIA",
 } as const;
 
 export type Type = (typeof Type)[keyof typeof Type];
@@ -67,6 +68,7 @@ export function elementValues(value: number): Values {
         EROSION: value,
         BURN: value,
         NECROSIS: value,
+        MANIA: value,
     };
 }
 

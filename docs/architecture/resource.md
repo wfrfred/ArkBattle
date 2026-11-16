@@ -51,7 +51,7 @@ HP／EP Damage 顶层必填单值 `attackType` 与 `applyWay`：
 
 这些事实由调用者提供，不从阵营、距离、周期、Effect、地形或空来源推导，不改变数学伤害类型。分类采用字符串联合而非组合 mask 是项目选择；不据此断言原生禁止组合。Healing 不携带这些 Damage 分类。
 
-三种 Nature 使用同一管线。ENVIRONMENT 标签本身不跳过 Hook、固定数值或改变公式；source、hitRecovery 与本次 exclude 分别控制来源、HIT 许可与响应排除。普通无敌和 Presence 的 HP 接收规则只允许 LOSS；流失仍计算防御并进入提交和死亡后继。具体护盾、闪避、减伤或受伤机制按自身资格处理，泥岩接受 nature!==LOSS。活性源石为 ENVIRONMENT，敌方深水与标准爆发 HP 输出为 DAMAGE，三者当前均为 hitRecovery=false。
+三种 Nature 使用同一管线。ENVIRONMENT 标签本身不跳过 Hook、固定数值或改变公式；source、hitRecovery 与本次 exclude 分别控制来源、HIT 许可与响应排除。普通无敌和 Presence 的 HP 接收规则只允许 LOSS；流失仍计算防御并进入提交和死亡后继。具体护盾、闪避、减伤或受伤机制按自身资格处理，泥岩接受 nature!==LOSS。活性源石为 ENVIRONMENT，敌方深水与标准爆发 HP 输出为 DAMAGE。角色狂躁周期明确允许 HIT；其它标准爆发、活性源石与敌方深水不允许，见 [Elemental](elemental.md#狂躁的行动与时间累加)。
 
 普通 HIT 回复与伤判共用 HP Damage.receiving，Skill 的监听约定 priority=10000，普通伤判通常为 0。它仅接受未取消、amount>0、nature!==LOSS 且 hitRecovery=true 的工作值，回复后原样返回；前置取消或归零不授予 HIT，后续抵挡或闪避不回滚已完成回复。实际回复仍受 SP 自身资格与容量限制，详见 [Skill](skill.md)。
 
@@ -137,4 +137,4 @@ APPLIED.killed 表示本笔取得死亡确认，不加入 Application 或提前�
 
 满 HP 的正数治疗仍可成功、报告零增加和实际溢出；普通选目标时是否排除满血由 [Targeting](targeting.md) 决定。标准 healFree 只限制 HP 治疗选择，不构成接收免疫；独立 EP 回复不检查该标记，明确目标的 Healing 不携带选择豁免开关。这与原生 HEAL_FREE 的接收检查存在明确项目差异。
 
-基础结算和真实内容是否接入分别记录：[Vitality](vitality.md#特殊-hp-application-的支持边界) 说明生命干预与特殊恢复，[Elemental](elemental.md#支持边界) 说明狂躁、EP 环境分类及缩时缺口。研究覆盖见[案例37](../research/cases/37-resource-mechanism-coverage.md)，验收结果与集中归属见[语义验收](verification.md#hook-与伤害治疗的回归语义)。
+基础结算和真实内容是否接入分别记录：[Vitality](vitality.md#特殊-hp-application-的支持边界) 说明生命干预与特殊恢复，[Elemental](elemental.md#支持边界) 说明 EP 环境分类及缩时缺口。研究覆盖见[案例37](../research/cases/37-resource-mechanism-coverage.md)，验收结果与集中归属见[语义验收](verification.md#hook-与伤害治疗的回归语义)。

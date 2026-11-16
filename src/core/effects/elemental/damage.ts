@@ -13,6 +13,7 @@ export function hurt(
     type: DamageType,
     power: number,
     attackType: AttackType,
+    hitRecovery: boolean,
 ): BattleState {
     if (!hasVitality(host)) {
         return battle;
@@ -26,7 +27,7 @@ export function hurt(
         killer: null,
         target: units.ref(host),
         nature: "DAMAGE",
-        hitRecovery: false,
+        hitRecovery,
         parameters:
             type === "PHYSICAL" || type === "ARTS"
                 ? { type, attack, penetration: { fixed: 0, proportional: 0 } }

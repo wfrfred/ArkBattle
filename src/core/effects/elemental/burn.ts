@@ -76,7 +76,7 @@ export function createArts(parameters: Parameters): Definition {
                 return battle;
             }
 
-            return hurt(battle, unit, "ARTS", parameters.damage, "NORMAL");
+            return hurt(battle, unit, "ARTS", parameters.damage, "NORMAL", false);
         },
         onTick: (battle, self) => advance(battle, self),
         onEnd,
@@ -110,7 +110,7 @@ export function createElemental(parameters: Parameters): Definition {
                 return battle;
             }
 
-            return hurt(battle, unit, "ELEMENTAL", parameters.damage, "NORMAL");
+            return hurt(battle, unit, "ELEMENTAL", parameters.damage, "NORMAL", false);
         },
         onTick: (battle, self) => advance(battle, self),
         onEnd,

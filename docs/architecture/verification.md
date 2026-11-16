@@ -127,9 +127,10 @@ Prefab、范围读取和换算由实际业务使用；目录移动、提取工�
 | HEAL-01 | 恢复先偿债，真正溢出与 HP 增益分开；容量缩减后的 Healing 写入即使引发 DEATH，仍返回 APPLIED 和固定报告。 | [Vitality](../../test/core/vitality.test.js)债务恢复与容量缩减，核对离场和固定报告。 |
 | EP-01 | EP 与 HP 元素抗性独立；最新 MaxEP 的规范化真实写入 State，与报告写点一致。显式恢复逐型全量；healed 只通知正增益，零增益仍可成功 Applied。 | [资源公式](../../test/core/resource/calculation.test.js)与[Elemental](../../test/core/elemental.test.js)的实际提交。 |
 | EP-02 | 耗尽同步创建 Burst，创建通知先于仍有效的一次性输出，随后 damaged／Applied；启动取消不改旧损失报告。 | [Elemental](../../test/core/elemental.test.js)的耗尽与启动取消。 |
-| EP-03 | 唯一恢复预算、动态上限／速度、暂停、末次周期、零预算输出与产物期限正确；自然 EP 回复不派发 healed 或普通治疗。 | [Elemental](../../test/core/elemental.test.js)与[标准成品](../../test/core/effects/elemental.test.js)，不重写恢复算法或展开八套参数矩阵。 |
+| EP-03 | 唯一恢复预算、动态上限／速度、暂停、末次周期、零预算输出与产物期限正确；自然 EP 回复不派发 healed 或普通治疗。 | [Elemental](../../test/core/elemental.test.js)与[标准成品](../../test/core/effects/elemental.test.js)，不重写恢复算法或展开标准参数矩阵。 |
+| EP-04 | MANIA 接收与全型回填正确；角色程序按 Execution 首次释放、作用前增加伤害，允许 HIT 且取消根后独立保留；敌方周期按实际 ACTIVE Tick 增伤，不被恢复倍率加速，末次输出与攻速清理正确。 | [Data 映射](../../test/data/effect.test.js)与[Elemental](../../test/core/elemental.test.js)保障第五型接入和全型资源；[标准成品](../../test/core/effects/elemental.test.js)保障两套时钟、释放与根结束的差异。 |
 
-具体过量转屏障、非致命、保护、复活和其它特殊内容接入后，再验证其新增玩法结果；已有资源报告或 Hook 不构成这些内容已实现的证明。狂躁、EP 环境分类和直接缩时的缺口不因文档收敛而排除，见 [Elemental 支持边界](elemental.md#支持边界)。
+具体过量转屏障、非致命、保护、复活和其它特殊内容接入后，再验证其新增玩法结果；已有资源报告或 Hook 不构成这些内容已实现的证明。EP 环境分类、直接缩时和独立时钟的剩余缺口不因文档收敛而排除，见 [Elemental 支持边界](elemental.md#支持边界)。
 
 ## Event 的回归语义
 

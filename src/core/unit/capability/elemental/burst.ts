@@ -17,13 +17,13 @@ export interface State {
     readonly type: Type;
 }
 
-export interface Definition extends EffectDefinition<State, Elemental> {
+export interface Definition<S extends State = State> extends EffectDefinition<S, Elemental> {
     readonly durationTicks: number;
 }
 
 type Duration = Extract<Expiration, { type: "DURATION" }>;
 
-export interface Burst extends OrdinaryEffect<State, Elemental> {
+export interface Burst<S extends State = State> extends OrdinaryEffect<S, Elemental> {
     readonly expiration: Duration;
 }
 
@@ -32,13 +32,13 @@ export type End =
 
 export { ref };
 
-export function onInstall(
+export function onInstall<S extends State>(
     battle: BattleState,
-    self: OrdinaryEffect<State, Elemental>,
+    self: OrdinaryEffect<S, Elemental>,
 ): BattleState {
     const host = units.get(battle, self.host)!;
-    const duration = (self.definition as Definition).durationTicks;
-    const current: Burst = {
+    const duration = (self.definition as Definition<S>).durationTicks;
+    const current: Burst<S> = {
         ...self,
         expiration: {
             type: "DURATION",
@@ -67,17 +67,17 @@ export function onInstall(
     return dispatch(battle, current.host, burstStarted, current);
 }
 
-export function advance(
+export function advance<S extends State>(
     battle: BattleState,
-    instance: OrdinaryEffect<State, Elemental>,
+    instance: OrdinaryEffect<S, Elemental>,
     onSecond?: (
         battle: BattleState,
         host: Unit & Elemental,
-        reference: Ref<Burst>,
+        reference: Ref<Burst<S>>,
         second: number,
     ) => BattleState,
 ): BattleState {
-    const self = instance as Burst;
+    const self = instance as Burst<S>;
     const reference = ref(self);
     const host = availableHost(battle, reference);
     if (host === undefined) {
@@ -116,12 +116,12 @@ export function advance(
     return battle;
 }
 
-export function onEnd(
+export function onEnd<S extends State>(
     battle: BattleState,
-    instance: OrdinaryEffect<State, Elemental>,
+    instance: OrdinaryEffect<S, Elemental>,
     reason: string,
 ): BattleState {
-    const self = instance as Burst;
+    const self = instance as Burst<S>;
     const host = units.get(battle, self.host)!;
     battle = replace(battle, [
         {
@@ -141,9 +141,9 @@ export function onEnd(
     return dispatch(battle, self.host, burstEnded, { burst: self, end });
 }
 
-export function availableHost(
+export function availableHost<S extends State>(
     battle: BattleState,
-    reference: Ref<OrdinaryEffect<State, Elemental>>,
+    reference: Ref<OrdinaryEffect<S, Elemental>>,
 ): (Unit & Elemental) | undefined {
     const host = units.get(battle, reference.host);
     const lifecycle = getEffect(battle, reference)?.lifecycle;

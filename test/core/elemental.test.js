@@ -233,13 +233,13 @@ test("EP-01/03: losses stay per element, healing gives every bar the full amount
         state = epDamage.applyDamage(incoming, epDamage.calculateDamage(state, incoming)).state;
     }
     assert.deepEqual(get(state, 0).elemental.ep, {
-        NEURAL: 800, EROSION: 920, BURN: 960, NECROSIS: 1000,
+        NEURAL: 800, EROSION: 920, BURN: 960, NECROSIS: 1000, MANIA: 1000,
     });
     const incoming = { target, source: null, parameters: { power: 200 } };
     const restored = epHealing.applyHealing(incoming, epHealing.calculateHealing(state, incoming));
     assert.deepEqual(restored.value.received, { amount: 100, cancellation: null });
     assert.deepEqual(restored.value.application.epGain, {
-        NEURAL: 100, EROSION: 80, BURN: 40, NECROSIS: 0,
+        NEURAL: 100, EROSION: 80, BURN: 40, NECROSIS: 0, MANIA: 0,
     });
     state = elemental.advance({ ...restored.state, tick: 1 }, target);
     assert.equal(get(state, 0).elemental.ep.NEURAL, 900.5);

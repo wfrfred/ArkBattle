@@ -49,7 +49,7 @@ export function createStun(parameters: StunParameters): Definition {
             host = availableHost(battle, reference);
 
             if (host !== undefined) {
-                battle = hurt(battle, host, "TRUE", parameters.damage, "NONE");
+                battle = hurt(battle, host, "TRUE", parameters.damage, "NONE", false);
             }
 
             return battle;
@@ -146,7 +146,7 @@ export function createParalysis(parameters: ParalysisParameters): Definition {
             host = availableHost(battle, reference);
 
             if (host !== undefined) {
-                battle = hurt(battle, host, "ELEMENTAL", parameters.damage, "NORMAL");
+                battle = hurt(battle, host, "ELEMENTAL", parameters.damage, "NORMAL", false);
             }
 
             return battle;

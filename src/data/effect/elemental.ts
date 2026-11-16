@@ -13,6 +13,10 @@ import {
     createElemental as createElementalBurn,
 } from "../../core/effects/elemental/burn.js";
 import { createSpDrain, createAttackReduction } from "../../core/effects/elemental/necrosis.js";
+import {
+    createActionScaledDamage,
+    createTimeScaledDamage,
+} from "../../core/effects/elemental/mania.js";
 import { secondsToTicks } from "../time.js";
 
 const elements = {
@@ -20,6 +24,7 @@ const elements = {
     WATER: Type.EROSION,
     FIRE: Type.BURN,
     DARK: Type.NECROSIS,
+    ANGER: Type.MANIA,
 } as const;
 
 export type Receiver = "CHARACTER" | "ENEMY";
@@ -36,6 +41,14 @@ export interface ArknightsElementalOptions {
 
 const bursts: Readonly<Record<Receiver, Readonly<Record<Type, BurstDefinition>>>> = {
     CHARACTER: {
+        [Type.MANIA]: createActionScaledDamage({
+            durationTicks: secondsToTicks(15),
+            effectDurationTicks: secondsToTicks(15),
+            attackSpeed: 50,
+            damagePerSecond: 100,
+            damagePerAction: 50,
+            maxDamagePerSecond: 600,
+        }),
         [Type.NEURAL]: createStun({
             durationTicks: secondsToTicks(10),
             stunDurationTicks: secondsToTicks(10),
@@ -58,6 +71,13 @@ const bursts: Readonly<Record<Receiver, Readonly<Record<Type, BurstDefinition>>>
         }),
     },
     ENEMY: {
+        // Erase only after the factory has paired its private state with its callbacks.
+        [Type.MANIA]: createTimeScaledDamage({
+            durationTicks: secondsToTicks(15),
+            attackSpeed: 20,
+            damagePerSecond: 160,
+            damageIncreasePerSecond: 130,
+        }) as unknown as BurstDefinition,
         [Type.NEURAL]: createParalysis({
             durationTicks: secondsToTicks(10),
             damage: 6000,
