@@ -82,10 +82,11 @@ export function commitDamage(
     const epLoss = Math.min(epBefore, received.amount);
     const epAfter = epBefore - epLoss;
     const depleted = epAfter === 0;
-    if (epLoss > 0) {
-        const ep = depleted
+    const ep =
+        epLoss > 0 && depleted
             ? elementValues(0)
             : { ...normalizedEp(self, maximum), [type]: epAfter };
+    if (ELEMENT_TYPES.some((type) => ep[type] !== self.elemental.ep[type])) {
         battle = replaceUnits(battle, [{ ...self, elemental: { ...self.elemental, ep } }]);
     }
 
@@ -140,7 +141,7 @@ export function commitHealing(
 
     const application: HealingApplication = { epBefore, epAfter, epGain };
     const amount = Object.values(epGain).reduce((total, gain) => total + gain, 0);
-    if (amount > 0) {
+    if (ELEMENT_TYPES.some((type) => epAfter[type] !== self.elemental.ep[type])) {
         battle = replaceUnits(battle, [{ ...self, elemental: { ...self.elemental, ep: epAfter } }]);
     }
 

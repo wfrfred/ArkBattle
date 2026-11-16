@@ -250,10 +250,17 @@ test("HP-07: natural recovery samples current attributes after Effects and befor
 
 test("EP-01/03: losses stay per element, healing gives every bar the full amount, and natural recovery is separate", () => {
     let healingNotices = 0;
+    let resourceNotices = 0;
     const hooks = Hooks.empty().set(epHealing.beforeReceive, {
         id: "healing-reduction",
         invoke(state, _context, pending) {
             return { state, value: { ...pending, amount: pending.amount - 100 } };
+        },
+    }).set(elemental.healed, {
+        id: "actual-recovery",
+        invoke(state) {
+            resourceNotices++;
+            return { state, value: undefined };
         },
     }).set(epHealing.targetApplied, {
         id: "ordinary-healing",
@@ -280,6 +287,7 @@ test("EP-01/03: losses stay per element, healing gives every bar the full amount
     state = elemental.advance({ ...restored.state, tick: 1 }, target);
     assert.equal(get(state, 0).elemental.ep.NEURAL, 900.5);
     assert.equal(healingNotices, 1);
+    assert.equal(resourceNotices, 1);
     assert.equal("vitality" in get(state, 0), false);
 
     const toppedUp = epHealing.applyHealing(incoming, epHealing.calculateHealing(state, incoming));
@@ -287,6 +295,7 @@ test("EP-01/03: losses stay per element, healing gives every bar the full amount
     assert.equal(full.value.type, "APPLIED");
     assert.deepEqual(full.value.application.epGain, elemental.elementValues(0));
     assert.equal(healingNotices, 3);
+    assert.equal(resourceNotices, 2);
 
     const recipients = state => units.all(state)
         .filter(hasTargetable)
@@ -309,4 +318,24 @@ test("EP-01/03: losses stay per element, healing gives every bar the full amount
     assert.deepEqual(reduced.value.received, { amount: 0, cancellation: null });
     assert.deepEqual(reduced.value.application.epGain, elemental.elementValues(0));
     assert.deepEqual(get(reduced.state, 0).elemental.ep, current.elemental.ep);
+    assert.equal(resourceNotices, 2);
+
+    const smaller = update(full.state, target, elemental.setContribution("maxEp", {
+        id: "smaller-pool", value: [modifier({ multiplier: -0.5 })],
+    }));
+    const zeroDamage = update(smaller, target, units.setHook(epDamage.receiving, {
+        id: "zero-reception",
+        invoke: (state, _context, pending) => ({ state, value: { ...pending, amount: 0 } }),
+    }));
+    const injury = { target, source: null, attackType: "BUFF", applyWay: "NONE", parameters: { type: "NEURAL", power: 1 } };
+    const damaged = epDamage.applyDamage(injury, epDamage.calculateDamage(zeroDamage, injury));
+    const healed = epHealing.applyHealing(incoming, epHealing.calculateHealing(smaller, incoming));
+    assert.equal(damaged.value.type, "APPLIED");
+    assert.equal(healed.value.type, "APPLIED");
+    assert.equal(damaged.value.application.epAfter, 500);
+    assert.deepEqual(healed.value.application.epAfter, elemental.elementValues(500));
+    assert.deepEqual([get(damaged.state, 0).elemental.ep, get(healed.state, 0).elemental.ep], [
+        elemental.elementValues(500), elemental.elementValues(500),
+    ]);
+    assert.equal(resourceNotices, 2);
 });
