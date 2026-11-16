@@ -1,4 +1,5 @@
 import type { Ref } from "../../../common/ref.js";
+import { assert, assertNonnegativeNumber } from "../../../common/assert.js";
 import { TICKS_PER_SECOND } from "../../../tick.js";
 import type { State as BattleState, Result } from "../../../battle/state.js";
 import { remove, replace } from "../../../battle/unit.js";
@@ -151,9 +152,7 @@ export function commitHealing(
     battle: BattleState,
     context: healing.CommitContext,
 ): Result<HealingApplication> {
-    const unit = units.get(battle, context.request.target)!;
-
-    return increaseHp(battle, unit, context.received.amount);
+    return increaseHp(battle, context.request.target, context.received.amount);
 }
 
 export function advance(battle: BattleState, reference: Ref<Unit & Vitality>): BattleState {
@@ -164,14 +163,18 @@ export function advance(battle: BattleState, reference: Ref<Unit & Vitality>): B
 
     const amount = resolveRecoverySpeed(battle, unit) / TICKS_PER_SECOND;
 
-    return amount === 0 ? battle : increaseHp(battle, unit, amount).state;
+    return amount === 0 ? battle : increaseHp(battle, reference, amount).state;
 }
 
-function increaseHp(
+export function increaseHp(
     battle: BattleState,
-    unit: Unit & Vitality,
+    reference: Ref<Unit & Vitality>,
     amount: number,
 ): Result<HealingApplication> {
+    assertNonnegativeNumber(amount, "HP recovery amount");
+    const unit = units.get(battle, reference);
+    assert(unit?.lifecycle === "PRESENT", "HP recovery target is not present", RangeError);
+
     const before = unit.vitality.health;
     const maxHp = resolveMaxHp(unit.definition.vitality, unit.vitality);
     const maxMinusHp = resolveMaxMinusHp(unit.definition.vitality, unit.vitality);

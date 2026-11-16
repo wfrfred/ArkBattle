@@ -434,6 +434,9 @@ const patient = initialize(battle, { id: 2, position: [0, 0], definition: {
     vitality: { maxHp: 100, defense: 10, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
 } }).value;
 const patientRef = ref(patient);
+const directRecovery: vitality.HealingApplication = vitality.increaseHp(battle, patientRef, 10).value;
+// @ts-expect-error direct HP recovery requires Vitality on its target.
+vitality.increaseHp(battle, ref(bare), 10);
 const damageCommittingChange = setUnitHook(vitality.damageCommitting, {
     id: 'protect-health',
     invoke(state, context, health) {

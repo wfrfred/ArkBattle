@@ -59,6 +59,7 @@ unit.removeHook(key, id): Change<Unit & Vitality>;
 resolveDefense(battle, self: Unit & Vitality): number;
 resolveResistance(battle, self: Unit & Vitality): number;
 resolveRecoverySpeed(battle, self: Unit & Vitality): number;
+increaseHp(battle, reference: Ref<Unit & Vitality>, amount: number): Result<HealingApplication>;
 advance(battle, reference: Ref<Unit & Vitality>): BattleState;
 ```
 
@@ -82,7 +83,9 @@ Damage 接收 Restriction 使用 `allows(battle, ReceivingContext)`；Restrictio
 
 Runtime 在 Effect 推进后、Elemental 资源推进前调用 Vitality.advance，再进入 Skill／Action。每次从当前 BattleState 读取宿主、有效 MaxHP 与回复贡献，按总速度除以 TICKS_PER_SECOND 分配恢复量，先偿还负生命债务，余额增加普通 HP，保留小数并限制到当前有效 MaxHP。只对生命周期为 PRESENT 且 HP 大于零的 Unit 推进；空间消失和 healFree 不阻止自然回复，零 HP 不被复活。普通 HP 已满且没有待偿债务时不生成新的状态版本；回复速度为零时直接返回，不顺带清算容量变化。
 
-自然回复由 Vitality 直接提交，与 commitHealing 共用内部偿债、HP 增加与上限裁切，不伪造 Healing Request，不经过普通 Healing 的 Calculate、Receiving 或 Applied，也不输出 HEAL。当前不提供额外的 HP 满值通知。
+increaseHp 是公开的直接生命恢复操作，接收目标 Ref 与有限非负恢复量，从最新 BattleState 取得目标；目标必须仍为 PRESENT，不要求恢复前 HP 大于零，缺失或已开始离场时抛出 RangeError。它先偿还负生命债务，再增加普通 HP 并按当前上限裁切，返回固定的 HealingApplication；不构造 Healing Request，不派发普通治疗或伤害提交 Hook，也不输出 HEAL。具体 Content 可用它表达生命复原和复活中的恢复，调用方自行决定恢复时点与数量，不直接修改 Vitality State。
+
+自然回复与 commitHealing 共用 increaseHp。自然回复保留自身的存活与零速门控，普通治疗保留 Calculate／Apply 的接收资格与 Hook；直接恢复不因此继承这些门控。资源均未变化时保留原 BattleState，不提供额外的 HP 满值通知。
 
 固定与比例属性、存活门控和不参与普通治疗的依据见[自然回复调查](../research/cases/29-hp-and-ep-healing-settlement.md#自然-hp-回复的完整普通路径)。**逐 Tick 小数回复是项目选择**：不采用原生每次增加 1 HP 的脉冲计时器，不保存脉冲进度；启停或变速时与原生脉冲的时间细节允许不同。
 
@@ -688,14 +691,14 @@ Apply 对最终计算量为零的治疗在入口返回 REJECTED，不派发本�
 
 ### 4.2 特殊恢复机制
 
-自然 HP 回复由 Vitality 的属性推进处理，见第 0.1 节；普通 Healing 已统一处理偿债并报告实际溢出，见第 0.3 节。生命复原、直接设置与持续 HP 同步仍没有完整公开操作，过量治疗转屏障的具体 Effect 尚未接入，不增加 Core ES。原生实际来源、提交及通知已分别核对到[案例29](../research/cases/29-hp-and-ep-healing-settlement.md)，不能因尚无接口将其当作未经调查的内容细节。
+自然 HP 回复由 Vitality 的属性推进处理，生命复原可由 Content 调用 increaseHp 直接恢复，见第 0.1 节；普通 Healing 已统一处理偿债并报告实际溢出，见第 0.3 节。具体恢复程序决定是否采用普通治疗、阶段排除或直接恢复；持续 HP 同步按实际正负差额组合恢复或 Damage，不提供任意赋值接口。过量治疗转屏障的具体 Effect 尚未接入，不增加 Core ES。原生实际来源、提交及通知见[案例29](../research/cases/29-hp-and-ep-healing-settlement.md)。
 
 ## 5. 支持范围
 
 实际内容对扩展时点与事件粒度的要求见[伤害 Hook 需求调查](../research/cases/28-damage-hooks-and-event-granularity.md)。当前公共接口的支持范围如下：
 
 - **死亡清理**：普通伤害与生命流失由完整 HP Damage 在两侧 Applied 后确认死亡、请求离场并形成 killed；显式致死或退场由所属操作请求 Unit 结束。Finalize 遵循 Lifetime 的最外层完成边界。Combat 只推进 Action，不扫描 HP 或代为判定死亡；Applied 中同步调用 Combat 也不提前结束当前伤害的目标。
-- **特殊 HP 修改**：普通伤害与生命流失都通过 HP Damage 结算，自然回复由 Vitality.advance 推进，HP 写入由 Vitality 拥有。生命复原和直接 HP 设置仍没有完整公开操作；Effect 不能直接重建 Vitality State 代替缺失的领域入口。
+- **特殊 HP 修改**：普通伤害与生命流失都通过 HP Damage 结算，自然回复由 Vitality.advance 推进，直接恢复使用 increaseHp，HP 写入由 Vitality 拥有。具体 Content 通过公开操作组合恢复与同步，不直接重建 Vitality State；当前不提供任意 HP 赋值操作。
 - **伤害分类**：HP／EP Damage Request 顶层显式携带单值 attackType／applyWay；HP 另保留 DAMAGE／LOSS 与 hitRecovery。选择性 Hook 排除与接收限制豁免由本次 Options 表达；非致命由 Content 组合 Effect 与 Hook，不新增专用请求分类，具体内容尚未接入。分担等其余特殊生命业务仍按实际机制设计，不能从目标状态或来源单位类型反推本笔事实。
 - **受伤与 HIT 回复资格**：Request.hitRecovery 与 nature 共同限定受击类 SP 回复；普通环境伤害与标准元素爆发可保留受伤响应而不提供 HIT 回复，不通过全局阻回伪装单笔资格。具体内容未全部接入不改变这项公共契约。
 - **本次 Hook 排除**：Calculate 与 Apply 分别接收可选 Options.exclude，按键身份与可选登记 ID 排除当前操作的响应；专属接收接续 Apply 选项。不修改登记、不跳过公式或资源提交、不豁免 Restriction，也不将选项保存进 Request／Calculated 或自动传给嵌套业务。契约见 [Hook 排除](hook.md#本次调用的-hook-排除)。

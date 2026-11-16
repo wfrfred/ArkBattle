@@ -44,6 +44,7 @@ export {
     receiveHealing,
     commitDamage,
     commitHealing,
+    increaseHp,
     advance,
 } from "./operations.js";
 

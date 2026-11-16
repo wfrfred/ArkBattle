@@ -701,6 +701,17 @@ test("HP-09: Vitality settles life debt across damage, recovery and MaxHP change
     assert.equal(vitality.isAlive(get(second.state, 0)), true);
     assert.equal(vitality.hpRatio(get(second.state, 0)), 0.01);
 
+    const directRecoveryState = update(second.state, target, units.setHook(hpHealing.receiving, {
+        id: "reject-ordinary-healing",
+        invoke: () => assert.fail("direct HP recovery must not enter Healing"),
+    }));
+    const directlyRecovered = vitality.increaseHp(directRecoveryState, target, 200);
+    assert.deepEqual(directlyRecovered.value, {
+        before: { hp: 1, minusHp: 80 }, after: { hp: 100, minusHp: 0 }, hpGain: 99, minusHpLoss: 80, overflow: 21,
+    });
+    assert.equal(directlyRecovered.state.events.some(event => event.type === "HEAL"), false);
+    assert.deepEqual([committing, committed, healing], [2, 2, 0]);
+
     const naturallyRecovered = vitality.advance(second.state, target);
     assert.deepEqual(get(naturallyRecovered, 0).vitality.health, { hp: 1, minusHp: 79 });
     assert.equal(naturallyRecovered.events.some(event => event.type === "HEAL"), false);

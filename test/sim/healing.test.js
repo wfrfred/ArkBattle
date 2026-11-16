@@ -237,6 +237,9 @@ test("HP-07: natural recovery samples current attributes after Effects and befor
         id: "zero-hp", invoke(current) {
             assert.equal(get(current, 0).vitality.health.hp, 0);
             assert.equal(vitality.advance(current, target), current);
+            const restored = vitality.increaseHp(current, target, 30);
+            assert.equal(get(restored.state, 0).vitality.health.hp, 30);
+            assert.equal(restored.state.events.some(event => event.type === "HEAL"), false);
             return { state: current, value: undefined };
         },
     }));
