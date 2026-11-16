@@ -1,0 +1,1456 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-17",
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/anger-family-20261117/content/extract_bindings.py",
+      "bytes": 6896,
+      "sha256": "b264e379fe1498e13cd9d17ecef9385043d22cf68c1ec091e7500a045d826031"
+    },
+    "decoder": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/targeting-pipeline-20261109/content/extract_content.py",
+      "bytes": 12906,
+      "sha256": "37504c156e11e55c9c06174980fb1617281690ab3b01db9caa9dfd28937f5faa"
+    },
+    "treeReader": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/nymph-action-settlement-20261103/projectile/decode_projectile.py",
+      "bytes": 6749,
+      "sha256": "dab13196fb726d06bd9094c29f09a12dc3677b2c129359a1f7c305e13a8157fb"
+    },
+    "tools": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/unity_assets.py",
+        "bytes": 3542,
+        "sha256": "cece612435569ab6162594a9b42cbdbdab420579719f099a3b705ab4adaf7e25"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/native.py",
+        "bytes": 18723,
+        "sha256": "1c6c16dc97e0dd9af0af4033c81a7534384dd65ebb1e604df3f4a3289df158e6"
+      }
+    ],
+    "installedSources": [
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+        "bytes": 477255,
+        "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_208_melan.ab",
+        "bytes": 20655,
+        "sha256": "8729f4ba1cb6ce533657c6451ca0ce3602f552fce8a0fdfef12da0b7dcf530f8"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_1012_skadi2.ab",
+        "bytes": 21407,
+        "sha256": "52662c7866015b345803272d3365e3403aa64becf07dbbc81a9b9043a8168a31"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_494_vendla.ab",
+        "bytes": 22204,
+        "sha256": "3867644b009bc9c9d0261313a3196c998f5e01dab7e5ccfa58b0287e69bf0cde"
+      }
+    ],
+    "mirroredDataExcerpt": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/targeting-pipeline-20261109/content/selected-data.json",
+      "bytes": 699306,
+      "sha256": "0624ccb7fc9bfe8eccbb76f24a346c2ddeeeb223a5e1bf3182747fc5eb3f51af"
+    },
+    "mirroredDataProvenance": {
+      "collectedOn": "2026-11-09",
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/targeting-pipeline-20261109/content/extract_data.py",
+        "bytes": 3886,
+        "sha256": "fe5bea486214e36bae54d2e16d0ac50589b23a97f42b763a8a7039c62aa1a42e"
+      },
+      "verification": {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/route-operations-20261107/data-source-verification.json",
+        "bytes": 1413,
+        "sha256": "4fcd255faa2fb1d1aa996243fb608b0bb75f6bf855c8daff6bdbc5a3380396bb"
+      },
+      "observedPrefabs": {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/targeting-pipeline-20261109/content/selected-prefabs.json",
+        "bytes": 778409,
+        "sha256": "8f70905dc422f11eaff0519fbe6d2a46ccf09f09783cb7f246b7daabe51b4c64"
+      },
+      "sourceUrl": "https://github.com/Kengxxiao/ArknightsGameData",
+      "revision": "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+      "sources": [
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/route-operations-20261107/data/character_table.json",
+          "bytes": 15468242,
+          "sha256": "6a61f54802ee194dbb21968976eb99e2a4050e38928bd24bd2b770479076cea1",
+          "sourcePath": "zh_CN/gamedata/excel/character_table.json",
+          "revision": "63c7cec73c3858d0ae913f85cc89af3cef4d744f"
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/route-operations-20261107/data/skill_table.json",
+          "bytes": 11766431,
+          "sha256": "492900f6b957233296c9736c86bb4e5f3ab4b4d7f5055a0f973c5acec3d174b1",
+          "sourcePath": "zh_CN/gamedata/excel/skill_table.json",
+          "revision": "63c7cec73c3858d0ae913f85cc89af3cef4d744f"
+        }
+      ],
+      "scope": "Selected raw entries from a previously Git-blob-verified public mirror; not an official document or installed-client runtime observation."
+    },
+    "vendlaProfileExcerpt": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/reception-stages-20261115/content/profiles.json",
+      "bytes": 264398,
+      "sha256": "5d415f70b9e33973570b134f940e9f5e1ec3ec51c5bed5e5822d024ea3ef88c8"
+    },
+    "vendlaProfilePointer": "/result/characters/char_494_vendla",
+    "vendlaProfileSource": {
+      "characterTable": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/unit-audit-20261110/operator-config/character_table.json",
+        "bytes": 15069101,
+        "sha256": "e523c7c83c36e2d76697121079e17d0282da1a94d59a55e1cc55616edf0b41c4"
+      },
+      "characterTableRevision": "17759cc8cdf37388414145d16262a3a06f3ab25e"
+    },
+    "selection": {
+      "char_208_melan": [
+        -7356919617350662683,
+        -1353240200450669083,
+        -1757267164089940507
+      ],
+      "char_1012_skadi2": [
+        -3662291628995893316,
+        -3551814154833287236
+      ],
+      "char_494_vendla": [
+        -5727053032967838823,
+        3830709308923437977,
+        7110607010283185049
+      ]
+    },
+    "scope": "Installed Character, Talent and PassiveBuffAbility references plus same-GameObject and ancestor components. Family classification requires the separate native initialization chain. Mirrored character data is separately versioned; no live execution or active XLua observation."
+  },
+  "result": {
+    "components": [
+      {
+        "characterKey": "char_208_melan",
+        "bundle": "charpack/char_208_melan.ab",
+        "file": "CAB-c518fbd9711849842012b25373a79182",
+        "pathId": "-7356919617350662683",
+        "objectSha256": "3b1dd2a84e2289e3eaf92d21b278b22050f1b740a807237e4c6633dd8f0a40c2",
+        "ownerPPtr": {
+          "m_FileID": 0,
+          "m_PathID": -4610240308966193691
+        },
+        "ancestry": [
+          {
+            "gameObject": {
+              "pathId": "-4610240308966193691",
+              "name": "char_208_melan",
+              "layer": 10,
+              "components": [
+                {
+                  "m_FileID": 0,
+                  "m_PathID": -4867204761180109339
+                },
+                {
+                  "m_FileID": 0,
+                  "m_PathID": -7356919617350662683
+                },
+                {
+                  "m_FileID": 0,
+                  "m_PathID": 8242139313634412005
+                },
+                {
+                  "m_FileID": 0,
+                  "m_PathID": 1920661825286440421
+                }
+              ]
+            },
+            "transformPathId": "-4867204761180109339",
+            "father": {
+              "m_FileID": 0,
+              "m_PathID": 0
+            }
+          }
+        ],
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": -1297314214590689040
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "-1297314214590689040",
+          "name": "Character",
+          "cl": "Character",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "enabled": 1,
+        "value": {
+          "_modes": {
+            "Array": [
+              {
+                "m_FileID": 0,
+                "m_PathID": -5914577341071358491
+              }
+            ]
+          },
+          "_commonAbilities": {
+            "Array": []
+          },
+          "_traitAbility": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          }
+        }
+      },
+      {
+        "characterKey": "char_208_melan",
+        "bundle": "charpack/char_208_melan.ab",
+        "file": "CAB-c518fbd9711849842012b25373a79182",
+        "pathId": "-1353240200450669083",
+        "objectSha256": "1506d1abb0662883fcd1a7e627c577d70df44dfdda5ab637c5770a89db773fe3",
+        "ownerPPtr": {
+          "m_FileID": 0,
+          "m_PathID": -6550878888601582107
+        },
+        "ancestry": [
+          {
+            "gameObject": {
+              "pathId": "-4610240308966193691",
+              "name": "char_208_melan",
+              "layer": 10,
+              "components": [
+                {
+                  "m_FileID": 0,
+                  "m_PathID": -4867204761180109339
+                },
+                {
+                  "m_FileID": 0,
+                  "m_PathID": -7356919617350662683
+                },
+                {
+                  "m_FileID": 0,
+                  "m_PathID": 8242139313634412005
+                },
+                {
+                  "m_FileID": 0,
+                  "m_PathID": 1920661825286440421
+                }
+              ]
+            },
+            "transformPathId": "-4867204761180109339",
+            "father": {
+              "m_FileID": 0,
+              "m_PathID": 0
+            }
+          },
+          {
+            "gameObject": {
+              "pathId": "3468315941306893797",
+              "name": "Talents",
+              "layer": 0,
+              "components": [
+                {
+                  "m_FileID": 0,
+                  "m_PathID": 4943647306418423269
+                }
+              ]
+            },
+            "transformPathId": "4943647306418423269",
+            "father": {
+              "m_FileID": 0,
+              "m_PathID": -4867204761180109339
+            }
+          },
+          {
+            "gameObject": {
+              "pathId": "-6550878888601582107",
+              "name": "1",
+              "layer": 0,
+              "components": [
+                {
+                  "m_FileID": 0,
+                  "m_PathID": -999622020509858331
+                },
+                {
+                  "m_FileID": 0,
+                  "m_PathID": -1757267164089940507
+                },
+                {
+                  "m_FileID": 0,
+                  "m_PathID": -1353240200450669083
+                }
+              ]
+            },
+            "transformPathId": "-999622020509858331",
+            "father": {
+              "m_FileID": 0,
+              "m_PathID": 4943647306418423269
+            }
+          }
+        ],
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": -2726233351382997147
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "-2726233351382997147",
+          "name": "Talent",
+          "cl": "Talent",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "enabled": 1,
+        "value": {
+          "_overwriteTalentKey": "",
+          "_overwriteParentRangeId": 0,
+          "_checkValidBySkillIndex": {
+            "Array": []
+          },
+          "_attachInDummy": 1,
+          "_defaultModeIndex": -1,
+          "_attackBlackboardModeIndex": -1,
+          "_extraAttackBlackboardModeIndices": {
+            "Array": []
+          },
+          "_overrideDefaultRangeId": 0,
+          "_applyTalentScale": 0,
+          "_influenceSkillBlackboard": 0,
+          "_fromRawDataToSkill": 0,
+          "_applyTalentRange": 0,
+          "_applyBlackboardBySkill": 0,
+          "_applyStrBlackboardBySkill": 0,
+          "_writeRangeIdToProjectileBlackboard": 0,
+          "_affectWhenNotRootTalent": 0,
+          "_scaleCertainKeyFlag": 0,
+          "_scaleCertainKeyList": {
+            "Array": []
+          },
+          "_scaleCertainMode": 0,
+          "_scaleModeIndices": {
+            "Array": []
+          }
+        }
+      },
+      {
+        "characterKey": "char_208_melan",
+        "bundle": "charpack/char_208_melan.ab",
+        "file": "CAB-c518fbd9711849842012b25373a79182",
+        "pathId": "-1757267164089940507",
+        "objectSha256": "4d39ff682ec4c47b1c0f7e122949165940d40341581b5ab5b2e979c4a49b0d50",
+        "ownerPPtr": {
+          "m_FileID": 0,
+          "m_PathID": -6550878888601582107
+        },
+        "ancestry": [
+          {
+            "gameObject": {
+              "pathId": "-4610240308966193691",
+              "name": "char_208_melan",
+              "layer": 10,
+              "components": [
+                {
+                  "m_FileID": 0,
+                  "m_PathID": -4867204761180109339
+                },
+                {
+                  "m_FileID": 0,
+                  "m_PathID": -7356919617350662683
+                },
+                {
+                  "m_FileID": 0,
+                  "m_PathID": 8242139313634412005
+                },
+                {
+                  "m_FileID": 0,
+                  "m_PathID": 1920661825286440421
+                }
+              ]
+            },
+            "transformPathId": "-4867204761180109339",
+            "father": {
+              "m_FileID": 0,
+              "m_PathID": 0
+            }
+          },
+          {
+            "gameObject": {
+              "pathId": "3468315941306893797",
+              "name": "Talents",
+              "layer": 0,
+              "components": [
+                {
+                  "m_FileID": 0,
+                  "m_PathID": 4943647306418423269
+                }
+              ]
+            },
+            "transformPathId": "4943647306418423269",
+            "father": {
+              "m_FileID": 0,
+              "m_PathID": -4867204761180109339
+            }
+          },
+          {
+            "gameObject": {
+              "pathId": "-6550878888601582107",
+              "name": "1",
+              "layer": 0,
+              "components": [
+                {
+                  "m_FileID": 0,
+                  "m_PathID": -999622020509858331
+                },
+                {
+                  "m_FileID": 0,
+                  "m_PathID": -1757267164089940507
+                },
+                {
+                  "m_FileID": 0,
+                  "m_PathID": -1353240200450669083
+                }
+              ]
+            },
+            "transformPathId": "-999622020509858331",
+            "father": {
+              "m_FileID": 0,
+              "m_PathID": 4943647306418423269
+            }
+          }
+        ],
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": 3800760148018415462
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "3800760148018415462",
+          "name": "PassiveBuffAbility",
+          "cl": "PassiveBuffAbility",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "enabled": 1,
+        "value": {
+          "_selector": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_metadata": {
+            "namedAsAlias": "",
+            "blackboardPrefix": ""
+          },
+          "_overrideSignalId": "",
+          "_interruptAbilityOnDetach": 0,
+          "_attachPassiveBuffsOnDummy": 1,
+          "_ignoreIfOwnerDead": 0,
+          "_forceAsDmgOrHealAbility": 0,
+          "_buffs": {
+            "Array": [
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": [
+                      {
+                        "attributeType": 1,
+                        "formulaItem": 1,
+                        "value": 0.0,
+                        "loadFromBlackboard": 1,
+                        "fetchBaseValueFromSourceEntity": 0
+                      }
+                    ]
+                  }
+                },
+                "buffKey": "melan_t_1",
+                "loadFromDB": 0,
+                "isDurableBuff": 0,
+                "isDamageMissable": 0,
+                "isSilenceable": 0,
+                "isStunnable": 0,
+                "isFreezable": 0,
+                "isLevitatable": 0,
+                "isGroundBoundable": 0,
+                "statusResistable": 2,
+                "templateKey": "empty",
+                "disableOverride": 1,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": 0,
+                "clearAllStackCntWhenTimeUp": 0,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": 0,
+                "overrideEffectKey": "",
+                "overrideOnEventPriority": 0,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": 2,
+                "takeSnapshotWhenExtend": 0,
+                "durationKey": "",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": 0,
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": 1,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": 0,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": 0
+              }
+            ]
+          }
+        }
+      },
+      {
+        "characterKey": "char_1012_skadi2",
+        "bundle": "charpack/char_1012_skadi2.ab",
+        "file": "CAB-de44f421652e0f4c7a8828eb0b201805",
+        "pathId": "-3662291628995893316",
+        "objectSha256": "57be4949ed98b29b055c25c5b52197f77cc63375692824f1a7d91fe0c8f646d1",
+        "ownerPPtr": {
+          "m_FileID": 0,
+          "m_PathID": -4299301317145974852
+        },
+        "ancestry": [
+          {
+            "gameObject": {
+              "pathId": "-4299301317145974852",
+              "name": "char_1012_skadi2",
+              "layer": 10,
+              "components": [
+                {
+                  "m_FileID": 0,
+                  "m_PathID": -8231026042721065028
+                },
+                {
+                  "m_FileID": 0,
+                  "m_PathID": -3662291628995893316
+                },
+                {
+                  "m_FileID": 0,
+                  "m_PathID": -6242993906953607236
+                },
+                {
+                  "m_FileID": 0,
+                  "m_PathID": -1066655967700310084
+                }
+              ]
+            },
+            "transformPathId": "-8231026042721065028",
+            "father": {
+              "m_FileID": 0,
+              "m_PathID": 0
+            }
+          }
+        ],
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": -1297314214590689040
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "-1297314214590689040",
+          "name": "Character",
+          "cl": "Character",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "enabled": 1,
+        "value": {
+          "_modes": {
+            "Array": [
+              {
+                "m_FileID": 0,
+                "m_PathID": 1871851819788019644
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": -5104467303407540292
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": -1024069903138543684
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": 8825135342413883324
+              }
+            ]
+          },
+          "_commonAbilities": {
+            "Array": [
+              {
+                "m_FileID": 0,
+                "m_PathID": -3551814154833287236
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": 4671706916198754236
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": 2521174442785843132
+              }
+            ]
+          },
+          "_traitAbility": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          }
+        }
+      },
+      {
+        "characterKey": "char_1012_skadi2",
+        "bundle": "charpack/char_1012_skadi2.ab",
+        "file": "CAB-de44f421652e0f4c7a8828eb0b201805",
+        "pathId": "-3551814154833287236",
+        "objectSha256": "04f2a8a06405208475ccdbd2ac09b2080d039d1872d4b6a691920de859fba974",
+        "ownerPPtr": {
+          "m_FileID": 0,
+          "m_PathID": -4794604558231918660
+        },
+        "ancestry": [
+          {
+            "gameObject": {
+              "pathId": "-4299301317145974852",
+              "name": "char_1012_skadi2",
+              "layer": 10,
+              "components": [
+                {
+                  "m_FileID": 0,
+                  "m_PathID": -8231026042721065028
+                },
+                {
+                  "m_FileID": 0,
+                  "m_PathID": -3662291628995893316
+                },
+                {
+                  "m_FileID": 0,
+                  "m_PathID": -6242993906953607236
+                },
+                {
+                  "m_FileID": 0,
+                  "m_PathID": -1066655967700310084
+                }
+              ]
+            },
+            "transformPathId": "-8231026042721065028",
+            "father": {
+              "m_FileID": 0,
+              "m_PathID": 0
+            }
+          },
+          {
+            "gameObject": {
+              "pathId": "8847166449426966460",
+              "name": "PassiveAbilities",
+              "layer": 10,
+              "components": [
+                {
+                  "m_FileID": 0,
+                  "m_PathID": 7313402010918266812
+                }
+              ]
+            },
+            "transformPathId": "7313402010918266812",
+            "father": {
+              "m_FileID": 0,
+              "m_PathID": -8231026042721065028
+            }
+          },
+          {
+            "gameObject": {
+              "pathId": "-4794604558231918660",
+              "name": "ImmuneToEncourage",
+              "layer": 10,
+              "components": [
+                {
+                  "m_FileID": 0,
+                  "m_PathID": 5507593547197327292
+                },
+                {
+                  "m_FileID": 0,
+                  "m_PathID": -3551814154833287236
+                }
+              ]
+            },
+            "transformPathId": "5507593547197327292",
+            "father": {
+              "m_FileID": 0,
+              "m_PathID": 7313402010918266812
+            }
+          }
+        ],
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": 3800760148018415462
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "3800760148018415462",
+          "name": "PassiveBuffAbility",
+          "cl": "PassiveBuffAbility",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "enabled": 1,
+        "value": {
+          "_selector": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_metadata": {
+            "namedAsAlias": "",
+            "blackboardPrefix": ""
+          },
+          "_overrideSignalId": "",
+          "_interruptAbilityOnDetach": 0,
+          "_attachPassiveBuffsOnDummy": 1,
+          "_ignoreIfOwnerDead": 0,
+          "_forceAsDmgOrHealAbility": 0,
+          "_buffs": {
+            "Array": [
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "immune_to_encourage",
+                "loadFromDB": 0,
+                "isDurableBuff": 0,
+                "isDamageMissable": 0,
+                "isSilenceable": 0,
+                "isStunnable": 0,
+                "isFreezable": 0,
+                "isLevitatable": 0,
+                "isGroundBoundable": 0,
+                "statusResistable": 2,
+                "templateKey": "empty",
+                "disableOverride": 0,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": 0,
+                "clearAllStackCntWhenTimeUp": 0,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": 0,
+                "overrideEffectKey": "",
+                "overrideOnEventPriority": 0,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": 2,
+                "takeSnapshotWhenExtend": 0,
+                "durationKey": "",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": 0,
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": 1,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": 0,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": 0
+              }
+            ]
+          }
+        }
+      },
+      {
+        "characterKey": "char_494_vendla",
+        "bundle": "charpack/char_494_vendla.ab",
+        "file": "CAB-54f8ed169ae3a2fedee5052fe9ff7e32",
+        "pathId": "-5727053032967838823",
+        "objectSha256": "55d88ccbf86bb6fec8e95c8d4dbe348176d47e74679030fbdb143f3ac6c888fd",
+        "ownerPPtr": {
+          "m_FileID": 0,
+          "m_PathID": 3753222876035605401
+        },
+        "ancestry": [
+          {
+            "gameObject": {
+              "pathId": "3753222876035605401",
+              "name": "char_494_vendla",
+              "layer": 10,
+              "components": [
+                {
+                  "m_FileID": 0,
+                  "m_PathID": -4204838838989429863
+                },
+                {
+                  "m_FileID": 0,
+                  "m_PathID": -5727053032967838823
+                },
+                {
+                  "m_FileID": 0,
+                  "m_PathID": 3823837017171747737
+                },
+                {
+                  "m_FileID": 0,
+                  "m_PathID": -8697887334182493287
+                }
+              ]
+            },
+            "transformPathId": "-4204838838989429863",
+            "father": {
+              "m_FileID": 0,
+              "m_PathID": 0
+            }
+          }
+        ],
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": -1297314214590689040
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "-1297314214590689040",
+          "name": "Character",
+          "cl": "Character",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "enabled": 1,
+        "value": {
+          "_modes": {
+            "Array": [
+              {
+                "m_FileID": 0,
+                "m_PathID": -891800139620883559
+              }
+            ]
+          },
+          "_commonAbilities": {
+            "Array": [
+              {
+                "m_FileID": 0,
+                "m_PathID": -8316368210124741735
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": -112535885824334951
+              }
+            ]
+          },
+          "_traitAbility": {
+            "m_FileID": 0,
+            "m_PathID": -192633859850443879
+          }
+        }
+      },
+      {
+        "characterKey": "char_494_vendla",
+        "bundle": "charpack/char_494_vendla.ab",
+        "file": "CAB-54f8ed169ae3a2fedee5052fe9ff7e32",
+        "pathId": "3830709308923437977",
+        "objectSha256": "326811c27a9a9471af85d9eaa3b2eaa0c686615054c42c2636c3cce86bb80dde",
+        "ownerPPtr": {
+          "m_FileID": 0,
+          "m_PathID": 6136287853142336409
+        },
+        "ancestry": [
+          {
+            "gameObject": {
+              "pathId": "3753222876035605401",
+              "name": "char_494_vendla",
+              "layer": 10,
+              "components": [
+                {
+                  "m_FileID": 0,
+                  "m_PathID": -4204838838989429863
+                },
+                {
+                  "m_FileID": 0,
+                  "m_PathID": -5727053032967838823
+                },
+                {
+                  "m_FileID": 0,
+                  "m_PathID": 3823837017171747737
+                },
+                {
+                  "m_FileID": 0,
+                  "m_PathID": -8697887334182493287
+                }
+              ]
+            },
+            "transformPathId": "-4204838838989429863",
+            "father": {
+              "m_FileID": 0,
+              "m_PathID": 0
+            }
+          },
+          {
+            "gameObject": {
+              "pathId": "659921584920978329",
+              "name": "Others",
+              "layer": 0,
+              "components": [
+                {
+                  "m_FileID": 0,
+                  "m_PathID": -3781882110179875943
+                }
+              ]
+            },
+            "transformPathId": "-3781882110179875943",
+            "father": {
+              "m_FileID": 0,
+              "m_PathID": -4204838838989429863
+            }
+          },
+          {
+            "gameObject": {
+              "pathId": "-8790091889618984039",
+              "name": "Direction",
+              "layer": 0,
+              "components": [
+                {
+                  "m_FileID": 0,
+                  "m_PathID": 4663663466484458393
+                }
+              ]
+            },
+            "transformPathId": "4663663466484458393",
+            "father": {
+              "m_FileID": 0,
+              "m_PathID": -3781882110179875943
+            }
+          },
+          {
+            "gameObject": {
+              "pathId": "-570029725254884455",
+              "name": "Talents",
+              "layer": 0,
+              "components": [
+                {
+                  "m_FileID": 0,
+                  "m_PathID": 7830330614056936345
+                }
+              ]
+            },
+            "transformPathId": "7830330614056936345",
+            "father": {
+              "m_FileID": 0,
+              "m_PathID": 4663663466484458393
+            }
+          },
+          {
+            "gameObject": {
+              "pathId": "6136287853142336409",
+              "name": "1",
+              "layer": 12,
+              "components": [
+                {
+                  "m_FileID": 0,
+                  "m_PathID": 2300134004149773209
+                },
+                {
+                  "m_FileID": 0,
+                  "m_PathID": 3830709308923437977
+                },
+                {
+                  "m_FileID": 0,
+                  "m_PathID": 7110607010283185049
+                }
+              ]
+            },
+            "transformPathId": "2300134004149773209",
+            "father": {
+              "m_FileID": 0,
+              "m_PathID": 7830330614056936345
+            }
+          }
+        ],
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": 3694607632642821622
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "3694607632642821622",
+          "name": "AppearTalent",
+          "cl": "AppearTalent",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "enabled": 1,
+        "value": {
+          "_overwriteTalentKey": "",
+          "_overwriteParentRangeId": 0,
+          "_checkValidBySkillIndex": {
+            "Array": []
+          },
+          "_attachInDummy": 0,
+          "_defaultModeIndex": -1,
+          "_attackBlackboardModeIndex": -1,
+          "_extraAttackBlackboardModeIndices": {
+            "Array": []
+          },
+          "_overrideDefaultRangeId": 0,
+          "_applyTalentScale": 0,
+          "_influenceSkillBlackboard": 0,
+          "_fromRawDataToSkill": 0,
+          "_applyTalentRange": 0,
+          "_applyBlackboardBySkill": 0,
+          "_applyStrBlackboardBySkill": 0,
+          "_writeRangeIdToProjectileBlackboard": 0,
+          "_affectWhenNotRootTalent": 0,
+          "_scaleCertainKeyFlag": 0,
+          "_scaleCertainKeyList": {
+            "Array": []
+          },
+          "_scaleCertainMode": 0,
+          "_scaleModeIndices": {
+            "Array": []
+          },
+          "_castOnLocate": 0
+        }
+      },
+      {
+        "characterKey": "char_494_vendla",
+        "bundle": "charpack/char_494_vendla.ab",
+        "file": "CAB-54f8ed169ae3a2fedee5052fe9ff7e32",
+        "pathId": "7110607010283185049",
+        "objectSha256": "bbf2d910ca2a17090a7502f40bc045229feb45ab97fe091371eab65fd61f253a",
+        "ownerPPtr": {
+          "m_FileID": 0,
+          "m_PathID": 6136287853142336409
+        },
+        "ancestry": [
+          {
+            "gameObject": {
+              "pathId": "3753222876035605401",
+              "name": "char_494_vendla",
+              "layer": 10,
+              "components": [
+                {
+                  "m_FileID": 0,
+                  "m_PathID": -4204838838989429863
+                },
+                {
+                  "m_FileID": 0,
+                  "m_PathID": -5727053032967838823
+                },
+                {
+                  "m_FileID": 0,
+                  "m_PathID": 3823837017171747737
+                },
+                {
+                  "m_FileID": 0,
+                  "m_PathID": -8697887334182493287
+                }
+              ]
+            },
+            "transformPathId": "-4204838838989429863",
+            "father": {
+              "m_FileID": 0,
+              "m_PathID": 0
+            }
+          },
+          {
+            "gameObject": {
+              "pathId": "659921584920978329",
+              "name": "Others",
+              "layer": 0,
+              "components": [
+                {
+                  "m_FileID": 0,
+                  "m_PathID": -3781882110179875943
+                }
+              ]
+            },
+            "transformPathId": "-3781882110179875943",
+            "father": {
+              "m_FileID": 0,
+              "m_PathID": -4204838838989429863
+            }
+          },
+          {
+            "gameObject": {
+              "pathId": "-8790091889618984039",
+              "name": "Direction",
+              "layer": 0,
+              "components": [
+                {
+                  "m_FileID": 0,
+                  "m_PathID": 4663663466484458393
+                }
+              ]
+            },
+            "transformPathId": "4663663466484458393",
+            "father": {
+              "m_FileID": 0,
+              "m_PathID": -3781882110179875943
+            }
+          },
+          {
+            "gameObject": {
+              "pathId": "-570029725254884455",
+              "name": "Talents",
+              "layer": 0,
+              "components": [
+                {
+                  "m_FileID": 0,
+                  "m_PathID": 7830330614056936345
+                }
+              ]
+            },
+            "transformPathId": "7830330614056936345",
+            "father": {
+              "m_FileID": 0,
+              "m_PathID": 4663663466484458393
+            }
+          },
+          {
+            "gameObject": {
+              "pathId": "6136287853142336409",
+              "name": "1",
+              "layer": 12,
+              "components": [
+                {
+                  "m_FileID": 0,
+                  "m_PathID": 2300134004149773209
+                },
+                {
+                  "m_FileID": 0,
+                  "m_PathID": 3830709308923437977
+                },
+                {
+                  "m_FileID": 0,
+                  "m_PathID": 7110607010283185049
+                }
+              ]
+            },
+            "transformPathId": "2300134004149773209",
+            "father": {
+              "m_FileID": 0,
+              "m_PathID": 7830330614056936345
+            }
+          }
+        ],
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": 1234981161564995557
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "1234981161564995557",
+          "name": "GloballUniqueBuffAbility",
+          "cl": "GloballUniqueBuffAbility",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "enabled": 1,
+        "value": {
+          "_selector": {
+            "m_FileID": 0,
+            "m_PathID": 3393556555833009049
+          },
+          "_metadata": {
+            "namedAsAlias": "",
+            "blackboardPrefix": ""
+          },
+          "_overrideSignalId": "",
+          "_interruptAbilityOnDetach": 1,
+          "_attachPassiveBuffsOnDummy": 1,
+          "_ignoreIfOwnerDead": 0,
+          "_forceAsDmgOrHealAbility": 0,
+          "_waitForAttackEvent": 0,
+          "_interuptIfTargetDead": 0,
+          "_resetCdStrategy": 1,
+          "_selectTargetSource": 1,
+          "_selectTargetTiming": 0,
+          "_timeMode": 0,
+          "_alwaysIncludeTarget": 0,
+          "_allowNoTarget": 1,
+          "_animKey": "",
+          "_endAnimKey": "",
+          "_downAnimKey": "",
+          "_downEndAnimKey": "",
+          "_upAnimKey": "",
+          "_upEndAnimKey": "",
+          "_cooldown": 0.0,
+          "_cooldownKey": "duration",
+          "_preDelay": 0.0,
+          "_escapeTime": 0.0,
+          "_faceToTarget": 1,
+          "_faceToDefault": 0,
+          "_faceToFront": 0,
+          "_faceToFirstCastTarget": 0,
+          "_checkFaceToFirstCastTargetDownAttack": 0,
+          "_forceFaceToDirection": 0,
+          "_activeBuffs": {
+            "Array": []
+          },
+          "_maxAnimScale": -1.0,
+          "_onlyPlayEndAnimWhenIsLastAbility": 0,
+          "_ignorePalsyInterrupt": 0,
+          "_affectedBySlowDown": 0,
+          "_uniqueBuff": {
+            "attributes": {
+              "abnormalFlags": {
+                "Array": []
+              },
+              "abnormalImmunes": {
+                "Array": []
+              },
+              "abnormalAntis": {
+                "Array": []
+              },
+              "abnormalCombos": {
+                "Array": []
+              },
+              "abnormalComboImmunes": {
+                "Array": []
+              },
+              "attributeModifiers": {
+                "Array": []
+              }
+            },
+            "buffKey": "vendla_t_1",
+            "loadFromDB": 0,
+            "isDurableBuff": 0,
+            "isDamageMissable": 0,
+            "isSilenceable": 0,
+            "isStunnable": 0,
+            "isFreezable": 0,
+            "isLevitatable": 0,
+            "isGroundBoundable": 0,
+            "statusResistable": 2,
+            "templateKey": "vendla_t_1",
+            "disableOverride": 0,
+            "overrideKey": "",
+            "overrideType": 0,
+            "maxStackCnt": 1,
+            "refreshRemainingTimeWhenStackMax": 0,
+            "clearAllStackCntWhenTimeUp": 0,
+            "maxValidStackCnt": -1,
+            "independentCharacterSource": 0,
+            "overrideEffectKey": "",
+            "overrideOnEventPriority": 0,
+            "onEventPriority": 0,
+            "audioSignal": "",
+            "lifeTimeType": 2,
+            "takeSnapshotWhenExtend": 0,
+            "durationKey": "duration",
+            "remainingTimeKey": "",
+            "lifeTime": 0.0,
+            "triggerLifeType": 0,
+            "triggerCnt": 0,
+            "triggerInterval": -1.0,
+            "waitFirstTriggerInterval": 1,
+            "firstTriggerInterval": -1.0,
+            "priority": -1,
+            "priorityBBKeys": {
+              "Array": []
+            },
+            "stripBlackboardParamsWithBuffKey": 0,
+            "blackboard": {
+              "Array": []
+            },
+            "enableInitDirectionFromSource": 0
+          },
+          "_interruptible": 0,
+          "_removeBuffsIfNoValidTarget": 1,
+          "_useTileSelectorForSearchCharacter": 0
+        }
+      }
+    ],
+    "characterData": {
+      "char_208_melan": {
+        "name": "玫兰莎",
+        "skills": [
+          "skcom_atk_up[1]"
+        ],
+        "talents": [
+          {
+            "candidates": [
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_1",
+                  "level": 1
+                },
+                "requiredPotentialRank": 0,
+                "prefabKey": "1",
+                "name": "攻击提升",
+                "description": "攻击力+4%",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "atk",
+                    "value": 0.04,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_1",
+                  "level": 55
+                },
+                "requiredPotentialRank": 0,
+                "prefabKey": "1",
+                "name": "攻击提升",
+                "description": "攻击力+8%",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "atk",
+                    "value": 0.08,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              }
+            ]
+          }
+        ]
+      },
+      "char_1012_skadi2": {
+        "name": "浊心斯卡蒂",
+        "skills": [
+          "skchr_skadi2_1",
+          "skchr_skadi2_2",
+          "skchr_skadi2_3"
+        ],
+        "talents": null
+      },
+      "char_494_vendla": {
+        "name": "刺玫",
+        "skills": [
+          "skcom_magic_rage[3]",
+          "skchr_vendla_2"
+        ],
+        "talents": [
+          {
+            "candidates": [
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_1",
+                  "level": 1
+                },
+                "requiredPotentialRank": 0,
+                "prefabKey": "1",
+                "name": "土壤基肥改良",
+                "description": "攻击范围内生命上限最高的友方角色受到的治疗效果提升8%",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "heal_scale",
+                    "value": 1.08,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_1",
+                  "level": 1
+                },
+                "requiredPotentialRank": 4,
+                "prefabKey": "1",
+                "name": "土壤基肥改良",
+                "description": "攻击范围内生命上限最高的友方角色受到的治疗效果提升11%<@ba.talpu>（+3%）</>",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "heal_scale",
+                    "value": 1.11,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "requiredPotentialRank": 0,
+                "prefabKey": "1",
+                "name": "土壤基肥改良",
+                "description": "攻击范围内生命上限最高的友方角色受到的治疗效果提升15%",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "heal_scale",
+                    "value": 1.15,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "requiredPotentialRank": 4,
+                "prefabKey": "1",
+                "name": "土壤基肥改良",
+                "description": "攻击范围内生命上限最高的友方角色受到的治疗效果提升18%<@ba.talpu>（+3%）</>",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "heal_scale",
+                    "value": 1.18,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "provenance": {
+    "scope": "Independent metadata/byte reread; no client execution or runtime XLua verification.",
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/anger-family-20261117/native/verify.py",
+      "bytes": 3493,
+      "sha256": "65fec3912d876de3194ddf0d2fbba1e76dc906328e525841bf6515a8da6abfb5"
+    },
+    "sources": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/anger-family-20261117/native/appear.json",
+        "bytes": 52500,
+        "sha256": "e74b41f1a6bcac3c138d3de9c85db70dbac90fef110099be1c36ce364205a838"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/anger-family-20261117/native/assignment.json",
+        "bytes": 421688,
+        "sha256": "09ff31daa1e164790b8c28bde97f154c9effdbd1af676a6e415fb48da53ea97f"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/anger-family-20261117/native/attachment.json",
+        "bytes": 156755,
+        "sha256": "682016873ae9b5687d0f2aa6c02ec263207738d65a25c328cb756302d00c2929"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/anger-family-20261117/native/discovery.json",
+        "bytes": 469758,
+        "sha256": "c2a64d77d918a8292c38930c1cb8dfcb26db44823c59a5446a308f44519410fb"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/anger-family-20261117/native/dispatch.json",
+        "bytes": 289597,
+        "sha256": "2f26e54505b2b9f032c82734892829d9c7f29e01ca3719f0050c72a64a49d836"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/anger-family-20261117/native/metadata.json",
+        "bytes": 520347,
+        "sha256": "901e8112e9ecd8179115f743c3b741e730ae15b5b2e04f663f3e894282c85f75"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/anger-family-20261117/native/spell.json",
+        "bytes": 112006,
+        "sha256": "889d58ce04559d2d612e63d17a240b66745223adcb71d819191a092619cc7375"
+      }
+    ]
+  },
+  "result": {
+    "complete": true,
+    "checks": {
+      "clientFingerprint": true,
+      "methodIdentity": true,
+      "nativeInstructions": true,
+      "fieldLayouts": true,
+      "typeParents": true,
+      "bodyIntervals": true
+    },
+    "files": 7,
+    "methodChecks": 1091,
+    "instructions": 2995,
+    "fieldOwners": 20,
+    "parentChecks": 10
+  }
+}

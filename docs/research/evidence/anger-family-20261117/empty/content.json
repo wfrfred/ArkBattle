@@ -1,0 +1,1291 @@
+{
+  "provenance": {
+    "checkedOn": "2026-11-17",
+    "scope": "Projection of archived component decoding, not a second bundle decoding; current Bundle and table fingerprints checked.",
+    "sourceEvidence": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/anger-exclusions-20261117/content.json",
+      "bytes": 108014,
+      "sha256": "d05e166773649febcee182824a4362f798e8628dcb09febac56fc7d31160ae25"
+    },
+    "tool": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/anger-family-20261117/empty/content.py",
+      "bytes": 2428,
+      "sha256": "c02f0f2766efaea72b7d216ddb2074324bd2f8451017c47e4fdd72bdf0151a19"
+    },
+    "sourceVerification": [
+      {
+        "previous": {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "bytes": 1367500,
+          "sha256": "0d0b4c0f9252c14a69a20d4bea09527403dd3eddfc2f7bcd757c3c30cf37ffc3"
+        },
+        "current": {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "bytes": 1367500,
+          "sha256": "0d0b4c0f9252c14a69a20d4bea09527403dd3eddfc2f7bcd757c3c30cf37ffc3"
+        },
+        "sha256Matches": true
+      },
+      {
+        "previous": {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/route-operations-20261107/data/character_table.json",
+          "bytes": 15468242,
+          "sha256": "6a61f54802ee194dbb21968976eb99e2a4050e38928bd24bd2b770479076cea1"
+        },
+        "current": {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/route-operations-20261107/data/character_table.json",
+          "bytes": 15468242,
+          "sha256": "6a61f54802ee194dbb21968976eb99e2a4050e38928bd24bd2b770479076cea1"
+        },
+        "sha256Matches": true
+      },
+      {
+        "previous": {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/route-operations-20261107/data/skill_table.json",
+          "bytes": 11766431,
+          "sha256": "492900f6b957233296c9736c86bb4e5f3ab4b4d7f5055a0f973c5acec3d174b1"
+        },
+        "current": {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/route-operations-20261107/data/skill_table.json",
+          "bytes": 11766431,
+          "sha256": "492900f6b957233296c9736c86bb4e5f3ab4b4d7f5055a0f973c5acec3d174b1"
+        },
+        "sha256Matches": true
+      }
+    ],
+    "configurationSource": "Kengxxiao/ArknightsGameData@63c7cec73c3858d0ae913f85cc89af3cef4d744f"
+  },
+  "result": {
+    "components": [
+      {
+        "bundle": "battle/prefabs/[uc]skills.ab",
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "pathId": "-7255645184481953587",
+        "hierarchy": [
+          "skchr_apionr_1",
+          "Skill"
+        ],
+        "objectSha256": "0c745a6baff24d89b65443b764a00f7a5cda9a9220afdd18b80ccd284155a36e",
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": -3743768687136578186
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "-3743768687136578186",
+          "name": "MultiHitUberEffectEmitter",
+          "cl": "MultiHitUberEffectEmitter",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "value": {
+          "_hitEffects": {
+            "Array": []
+          },
+          "_castEffects": {
+            "Array": [
+              {
+                "_directionType": 0,
+                "_effects": {
+                  "Array": [
+                    "common_charge_cost_start_01"
+                  ]
+                },
+                "_oneshot": 1,
+                "_startEvent": 2,
+                "_endEvent": 3,
+                "_onlyOnce": 0,
+                "_useFourDirectionalFace": 0,
+                "_delayIfFirstAttack": 0.0,
+                "_hookEffectAfterFirstAttack": ""
+              }
+            ]
+          },
+          "_attachEffects": {
+            "Array": []
+          },
+          "_inputTargetEffects": {
+            "Array": []
+          },
+          "_castTargetEffects": {
+            "Array": []
+          },
+          "_convertCastEndToAttachFinish": 0,
+          "_recalculatePlaybackSpeed": 0,
+          "_preDelayFactor": 0.0,
+          "_useRandomHitEffect": 0,
+          "_useLoopHitEffect": 0,
+          "_keepBaseHitEffect": 0,
+          "_hitGroups": {
+            "Array": [
+              {
+                "effects": {
+                  "Array": [
+                    {
+                      "_directionType": 0,
+                      "_effects": {
+                        "Array": [
+                          "apionr_skill_01_hit_01"
+                        ]
+                      },
+                      "_oneshot": 0,
+                      "_endEvent": 3,
+                      "_onlyOnce": 0,
+                      "_useFourDirectionalFace": 0,
+                      "_useOwnerToTargetDirection": 0,
+                      "_playIfNotInputTarget": 0,
+                      "_playOnlyIfInputTarget": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "effects": {
+                  "Array": [
+                    {
+                      "_directionType": 0,
+                      "_effects": {
+                        "Array": [
+                          "apionr_skill_01_hit_02"
+                        ]
+                      },
+                      "_oneshot": 0,
+                      "_endEvent": 3,
+                      "_onlyOnce": 0,
+                      "_useFourDirectionalFace": 0,
+                      "_useOwnerToTargetDirection": 0,
+                      "_playIfNotInputTarget": 0,
+                      "_playOnlyIfInputTarget": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "effects": {
+                  "Array": [
+                    {
+                      "_directionType": 0,
+                      "_effects": {
+                        "Array": [
+                          "apionr_skill_01_hit_03"
+                        ]
+                      },
+                      "_oneshot": 0,
+                      "_endEvent": 3,
+                      "_onlyOnce": 0,
+                      "_useFourDirectionalFace": 0,
+                      "_useOwnerToTargetDirection": 0,
+                      "_playIfNotInputTarget": 0,
+                      "_playOnlyIfInputTarget": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "effects": {
+                  "Array": [
+                    {
+                      "_directionType": 0,
+                      "_effects": {
+                        "Array": [
+                          "apionr_skill_01_hit_04"
+                        ]
+                      },
+                      "_oneshot": 0,
+                      "_endEvent": 3,
+                      "_onlyOnce": 0,
+                      "_useFourDirectionalFace": 0,
+                      "_useOwnerToTargetDirection": 0,
+                      "_playIfNotInputTarget": 0,
+                      "_playOnlyIfInputTarget": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "effects": {
+                  "Array": [
+                    {
+                      "_directionType": 0,
+                      "_effects": {
+                        "Array": [
+                          "apionr_skill_01_hit_05"
+                        ]
+                      },
+                      "_oneshot": 0,
+                      "_endEvent": 3,
+                      "_onlyOnce": 0,
+                      "_useFourDirectionalFace": 0,
+                      "_useOwnerToTargetDirection": 0,
+                      "_playIfNotInputTarget": 0,
+                      "_playOnlyIfInputTarget": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "effects": {
+                  "Array": [
+                    {
+                      "_directionType": 0,
+                      "_effects": {
+                        "Array": [
+                          "apionr_skill_01_hit_06"
+                        ]
+                      },
+                      "_oneshot": 0,
+                      "_endEvent": 3,
+                      "_onlyOnce": 0,
+                      "_useFourDirectionalFace": 0,
+                      "_useOwnerToTargetDirection": 0,
+                      "_playIfNotInputTarget": 0,
+                      "_playOnlyIfInputTarget": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "effects": {
+                  "Array": [
+                    {
+                      "_directionType": 0,
+                      "_effects": {
+                        "Array": [
+                          "apionr_skill_01_hit_07"
+                        ]
+                      },
+                      "_oneshot": 0,
+                      "_endEvent": 3,
+                      "_onlyOnce": 0,
+                      "_useFourDirectionalFace": 0,
+                      "_useOwnerToTargetDirection": 0,
+                      "_playIfNotInputTarget": 0,
+                      "_playOnlyIfInputTarget": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "effects": {
+                  "Array": [
+                    {
+                      "_directionType": 0,
+                      "_effects": {
+                        "Array": [
+                          "apionr_skill_01_hit_08"
+                        ]
+                      },
+                      "_oneshot": 0,
+                      "_endEvent": 3,
+                      "_onlyOnce": 0,
+                      "_useFourDirectionalFace": 0,
+                      "_useOwnerToTargetDirection": 0,
+                      "_playIfNotInputTarget": 0,
+                      "_playOnlyIfInputTarget": 0
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "_castGroups": {
+            "Array": []
+          },
+          "_useTimesBasedHitEffect": 0,
+          "_timesBasedHitEffects": {
+            "Array": []
+          },
+          "_oncePerTarget": 0
+        }
+      },
+      {
+        "bundle": "battle/prefabs/[uc]skills.ab",
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "pathId": "-6279946826522363699",
+        "hierarchy": [
+          "skchr_apionr_1",
+          "Empty"
+        ],
+        "objectSha256": "64a8e56f47ff2c612735281aaa509c4a83300589a95af703878986974f617203",
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": 1339719624887862345
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "1339719624887862345",
+          "name": "BuffDuringCastingFixed",
+          "cl": "BuffDuringCastingFixed",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "value": {
+          "_buffs": {
+            "Array": [
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": [
+                      3,
+                      5
+                    ]
+                  },
+                  "abnormalImmunes": {
+                    "Array": [
+                      0,
+                      16
+                    ]
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": [
+                      {
+                        "attributeType": 17,
+                        "formulaItem": 0,
+                        "value": 0.0,
+                        "loadFromBlackboard": 1,
+                        "fetchBaseValueFromSourceEntity": 0
+                      }
+                    ]
+                  }
+                },
+                "buffKey": "apionr_s",
+                "loadFromDB": 0,
+                "isDurableBuff": 0,
+                "isDamageMissable": 0,
+                "isSilenceable": 0,
+                "isStunnable": 0,
+                "isFreezable": 0,
+                "isLevitatable": 0,
+                "isGroundBoundable": 0,
+                "statusResistable": 2,
+                "templateKey": "empty",
+                "disableOverride": 0,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": 0,
+                "clearAllStackCntWhenTimeUp": 0,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": 0,
+                "overrideEffectKey": "",
+                "overrideOnEventPriority": 0,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": 2,
+                "takeSnapshotWhenExtend": 0,
+                "durationKey": "duration",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": 0,
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": 1,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": 0,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": 0
+              }
+            ]
+          }
+        }
+      },
+      {
+        "bundle": "battle/prefabs/[uc]skills.ab",
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "pathId": "-4887580023928719155",
+        "hierarchy": [
+          "skchr_apionr_1",
+          "Empty"
+        ],
+        "objectSha256": "e5b404c5b16ed3762169fbac0bbc0bce00cd8244282411a9430c666a00249e1f",
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": 8145049199648393782
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "8145049199648393782",
+          "name": "EmptyAnimatedAbility",
+          "cl": "EmptyAnimatedAbility",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "value": {
+          "_selector": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_metadata": {
+            "namedAsAlias": "",
+            "blackboardPrefix": ""
+          },
+          "_overrideSignalId": "",
+          "_interruptAbilityOnDetach": 0,
+          "_attachPassiveBuffsOnDummy": 1,
+          "_ignoreIfOwnerDead": 0,
+          "_forceAsDmgOrHealAbility": 0,
+          "_waitForAttackEvent": 0,
+          "_interuptIfTargetDead": 0,
+          "_resetCdStrategy": 1,
+          "_selectTargetSource": 1,
+          "_selectTargetTiming": 0,
+          "_timeMode": 1,
+          "_alwaysIncludeTarget": 0,
+          "_allowNoTarget": 1,
+          "_animKey": "Skill_2",
+          "_endAnimKey": "Skill_End",
+          "_downAnimKey": "",
+          "_downEndAnimKey": "",
+          "_upAnimKey": "",
+          "_upEndAnimKey": "",
+          "_cooldown": 0.0,
+          "_cooldownKey": "duration",
+          "_preDelay": 0.0,
+          "_escapeTime": 0.2329999953508377,
+          "_faceToTarget": 0,
+          "_faceToDefault": 0,
+          "_faceToFront": 0,
+          "_faceToFirstCastTarget": 0,
+          "_checkFaceToFirstCastTargetDownAttack": 0,
+          "_forceFaceToDirection": 0,
+          "_activeBuffs": {
+            "Array": []
+          },
+          "_maxAnimScale": 1.0,
+          "_onlyPlayEndAnimWhenIsLastAbility": 0,
+          "_ignorePalsyInterrupt": 0,
+          "_affectedBySlowDown": 0
+        }
+      },
+      {
+        "bundle": "battle/prefabs/[uc]skills.ab",
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "pathId": "-4456235443137087283",
+        "hierarchy": [
+          "skchr_apionr_1",
+          "Skill"
+        ],
+        "objectSha256": "ceec6170f339b4721b05e47e3f69e5265e6b7ced0631c3d092843fb6eb374237",
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": -8109327635834973011
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "-8109327635834973011",
+          "name": "BuffToOwner",
+          "cl": "BuffToOwner",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "value": {
+          "_extraCondition": 0,
+          "_extraConditionTiming": 4,
+          "_maxTarget": 1,
+          "_loadMaxTargetFromBlackboard": 1,
+          "_runActionOnEvent": 2,
+          "_buffs": {
+            "Array": [
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "apionr_charge_cost",
+                "loadFromDB": 0,
+                "isDurableBuff": 0,
+                "isDamageMissable": 0,
+                "isSilenceable": 0,
+                "isStunnable": 0,
+                "isFreezable": 0,
+                "isLevitatable": 0,
+                "isGroundBoundable": 0,
+                "statusResistable": 2,
+                "templateKey": "charge_cost",
+                "disableOverride": 0,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": 0,
+                "clearAllStackCntWhenTimeUp": 0,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": 0,
+                "overrideEffectKey": "",
+                "overrideOnEventPriority": 0,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": 0,
+                "takeSnapshotWhenExtend": 0,
+                "durationKey": "duration",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": 0,
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": 1,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": 0,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": 0
+              }
+            ]
+          },
+          "_onlyRunOnce": 1
+        }
+      },
+      {
+        "bundle": "battle/prefabs/[uc]skills.ab",
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "pathId": "768270179598530765",
+        "hierarchy": [
+          "skchr_apionr_1",
+          "Skill",
+          "Selector"
+        ],
+        "objectSha256": "bb3672a66c70143e8fa8435d36d941e615ab27d4b6c4c1b07f814118b808876f",
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": -2891200616113119906
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "-2891200616113119906",
+          "name": "AutoLoadBoxRange",
+          "cl": "AutoLoadBoxRange",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "value": {
+          "_useBlackboardRangeId": 0,
+          "_extendable": 0
+        }
+      },
+      {
+        "bundle": "battle/prefabs/[uc]skills.ab",
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "pathId": "2525665371410266317",
+        "hierarchy": [
+          "skchr_apionr_1",
+          "Skill"
+        ],
+        "objectSha256": "d1a77732dab4d539110d1f855b3fb6fce111d6e735ba5984726b6eb5e363fd99",
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": 1339719624887862345
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "1339719624887862345",
+          "name": "BuffDuringCastingFixed",
+          "cl": "BuffDuringCastingFixed",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "value": {
+          "_buffs": {
+            "Array": [
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": [
+                      3,
+                      5
+                    ]
+                  },
+                  "abnormalImmunes": {
+                    "Array": [
+                      0,
+                      16
+                    ]
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": [
+                      {
+                        "attributeType": 17,
+                        "formulaItem": 0,
+                        "value": 0.0,
+                        "loadFromBlackboard": 1,
+                        "fetchBaseValueFromSourceEntity": 0
+                      }
+                    ]
+                  }
+                },
+                "buffKey": "apionr_s",
+                "loadFromDB": 0,
+                "isDurableBuff": 0,
+                "isDamageMissable": 0,
+                "isSilenceable": 0,
+                "isStunnable": 0,
+                "isFreezable": 0,
+                "isLevitatable": 0,
+                "isGroundBoundable": 0,
+                "statusResistable": 2,
+                "templateKey": "empty",
+                "disableOverride": 0,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": 0,
+                "clearAllStackCntWhenTimeUp": 0,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": 0,
+                "overrideEffectKey": "",
+                "overrideOnEventPriority": 0,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": 2,
+                "takeSnapshotWhenExtend": 0,
+                "durationKey": "duration",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": 0,
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": 1,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": 0,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": 0
+              }
+            ]
+          }
+        }
+      },
+      {
+        "bundle": "battle/prefabs/[uc]skills.ab",
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "pathId": "4144251088405657805",
+        "hierarchy": [
+          "skchr_apionr_1",
+          "Skill",
+          "Selector"
+        ],
+        "objectSha256": "10a7777129bceb975b1e01b2a22cc99ccf6586c39f5d3f84026a8fa0b1bb2b56",
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": 7080728813803358465
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "7080728813803358465",
+          "name": "AdvancedSelector",
+          "cl": "AdvancedSelector",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "value": {
+          "_targetSide": 2,
+          "_targetMotion": 3,
+          "_targetCategory": 1,
+          "_postFilter": 4,
+          "_ignoreTargetFree": 0,
+          "_onlyIgnoreSomeOfTargetFreeCase": 0,
+          "_abnormalFlag": 27,
+          "_abnormalCombo": 2,
+          "_ignoreAllyTargetFree": 0,
+          "_ignoreHealFree": 0,
+          "_ignoreMotionMode": 0,
+          "_forceIgnoreCamouflage": 0,
+          "_needProfessionMask": 0,
+          "_professionMask": 0,
+          "_excludeSomeAbnormalFlags": 0,
+          "_excludeAbnormalFlag": 46,
+          "_limitTargetNum": 1,
+          "_maxTargetKey": "max_target",
+          "_maxTargetExtraKey": "",
+          "_maxNum": 1,
+          "_excludeOwner": 0,
+          "_sortByTauntAtLast": 0,
+          "_ignoreHitRange": 0,
+          "_checkUnitType": 0,
+          "_unitTypeMask": 0,
+          "_abilityInputTargetAsSortSource": 0,
+          "_targetOptionHookedKeys": {
+            "Array": []
+          }
+        }
+      },
+      {
+        "bundle": "battle/prefabs/[uc]skills.ab",
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "pathId": "4788542200948062413",
+        "hierarchy": [
+          "skchr_apionr_1",
+          "Empty"
+        ],
+        "objectSha256": "16c578e5d2139950b2e44f97caebe6bfaa2d5daf19f32609837236541edb1115",
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": -8109327635834973011
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "-8109327635834973011",
+          "name": "BuffToOwner",
+          "cl": "BuffToOwner",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "value": {
+          "_extraCondition": 0,
+          "_extraConditionTiming": 4,
+          "_maxTarget": 1,
+          "_loadMaxTargetFromBlackboard": 1,
+          "_runActionOnEvent": 2,
+          "_buffs": {
+            "Array": [
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "apionr_charge_cost",
+                "loadFromDB": 0,
+                "isDurableBuff": 0,
+                "isDamageMissable": 0,
+                "isSilenceable": 0,
+                "isStunnable": 0,
+                "isFreezable": 0,
+                "isLevitatable": 0,
+                "isGroundBoundable": 0,
+                "statusResistable": 2,
+                "templateKey": "charge_cost",
+                "disableOverride": 0,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": 0,
+                "clearAllStackCntWhenTimeUp": 0,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": 0,
+                "overrideEffectKey": "",
+                "overrideOnEventPriority": 0,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": 0,
+                "takeSnapshotWhenExtend": 0,
+                "durationKey": "duration",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": 0,
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": 1,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": 0,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": 0
+              }
+            ]
+          },
+          "_onlyRunOnce": 1
+        }
+      },
+      {
+        "bundle": "battle/prefabs/[uc]skills.ab",
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "pathId": "5117273669797411021",
+        "hierarchy": [
+          "skchr_apionr_1"
+        ],
+        "objectSha256": "caefb4b32d5c38ade70103b9b6d1dc5aee0ad8d35e2ee6553f8ad4040bdd3d57",
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": 9054077595100407899
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "9054077595100407899",
+          "name": "AbilityFirstSucceedGroup",
+          "cl": "AbilityFirstSucceedGroup",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "value": {
+          "_selector": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_metadata": {
+            "namedAsAlias": "",
+            "blackboardPrefix": ""
+          },
+          "_overrideSignalId": "",
+          "_interruptAbilityOnDetach": 0,
+          "_attachPassiveBuffsOnDummy": 1,
+          "_ignoreIfOwnerDead": 0,
+          "_forceAsDmgOrHealAbility": 0,
+          "_category": 4,
+          "_coolDownAbilityIndex": 0,
+          "_fixAffectingAbilityParam": 0,
+          "_alsoInterruptCurrentSubAbility": 0,
+          "_clearInternalCooldownWhenFinish": 1,
+          "_useEscaptime": 1,
+          "_abilities": {
+            "Array": [
+              {
+                "m_FileID": 0,
+                "m_PathID": 7343246726752041165
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": -4887580023928719155
+              }
+            ]
+          },
+          "_timeMode": 1,
+          "_updateCooldownAfterSubAbilitiesAttached": 0
+        }
+      },
+      {
+        "bundle": "battle/prefabs/[uc]skills.ab",
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "pathId": "5795613169874368717",
+        "hierarchy": [
+          "skchr_apionr_1",
+          "Empty"
+        ],
+        "objectSha256": "a8b393ae5c85347e9147e982ebab40d9b483ff2ddb7ac8900b676f357e1503f2",
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": -550693537895634864
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "-550693537895634864",
+          "name": "UberEffectEmitter",
+          "cl": "UberEffectEmitter",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "value": {
+          "_hitEffects": {
+            "Array": []
+          },
+          "_castEffects": {
+            "Array": [
+              {
+                "_directionType": 0,
+                "_effects": {
+                  "Array": [
+                    "common_charge_cost_start_01"
+                  ]
+                },
+                "_oneshot": 1,
+                "_startEvent": 2,
+                "_endEvent": 3,
+                "_onlyOnce": 0,
+                "_useFourDirectionalFace": 0,
+                "_delayIfFirstAttack": 0.0,
+                "_hookEffectAfterFirstAttack": ""
+              }
+            ]
+          },
+          "_attachEffects": {
+            "Array": []
+          },
+          "_inputTargetEffects": {
+            "Array": []
+          },
+          "_castTargetEffects": {
+            "Array": []
+          },
+          "_convertCastEndToAttachFinish": 0,
+          "_recalculatePlaybackSpeed": 0,
+          "_preDelayFactor": 0.0
+        }
+      },
+      {
+        "bundle": "battle/prefabs/[uc]skills.ab",
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "pathId": "7014566040663161037",
+        "hierarchy": [
+          "skchr_apionr_1"
+        ],
+        "objectSha256": "87e0b3dbf54f281997c44565ae6ed03d31c1700ae3c2b0e6992d57fb45caf101",
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": 6851783972288338031
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "6851783972288338031",
+          "name": "CastSkill",
+          "cl": "CastSkill",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "value": {
+          "_maxTriggerTime": -1,
+          "_allowSpRecoveryWhenAffecting": 0,
+          "_limitGlobalTriggerTime": 0,
+          "_hidden": 0,
+          "_showSpBarEvenHidden": 0,
+          "_showSpAsBulletMode": 0,
+          "_showSpRatioAsProgress": 0,
+          "_playCharWordVoice": 1,
+          "_playCharWordWithPassiveType": 0,
+          "_earlyVoice": 0,
+          "_canCastWithNoSp": 0,
+          "_canSilenced": 0,
+          "_canUseInAbnormalState": 0,
+          "_defaultModeIndex": -1,
+          "_attackBlackboardModeIndex": -1,
+          "_extraAttackBlackboardModeIndices": {
+            "Array": []
+          },
+          "_rangeIdModeIndex": -1,
+          "_extraRangeIdModeIndices": {
+            "Array": []
+          },
+          "_rangeIdUsageType": 7,
+          "_writeDurationToAttackBlackboard": 0,
+          "_attachSignalIds": 0,
+          "_extraAbilities": {
+            "Array": []
+          },
+          "_useEscapeTime": 1,
+          "_earlySkillFinishAtAttackFinished": 0,
+          "_stopAffectOnInterrupt": 0,
+          "_showProgressToNext": 0,
+          "_hideSkillStackCount": 0,
+          "_hideHudSkillStackCount": 0,
+          "_playSkillBeginAnim": 0,
+          "_forceAnimFaceToDefault": 0,
+          "_beginAnim": "",
+          "_beginAnimDown": "",
+          "_beginEffect": {
+            "Array": []
+          },
+          "_useFaceVector": 0,
+          "_beginAnimValidator": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_availableValidator": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_trigger": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_switchToState": 1,
+          "_uninterruptibleOnAbilityPredelay": 0,
+          "_canSwitchDuringBorn": 1,
+          "_canCastDuringBorn": 1,
+          "_checkHasTargetBeforeDoCast": 0,
+          "_useTriggerInManualMode": 1,
+          "_allowNoTarget": 1,
+          "_shouldCastLikeAttack": 0,
+          "_isRemoteControlled": 0,
+          "_hideRangeToShow": 0,
+          "_forceToShowRange": 0,
+          "_forceUseBaseShowRange": 0,
+          "_rangeToShow": {
+            "m_FileID": 0,
+            "m_PathID": 4144251088405657805
+          },
+          "_recoverSpIfNoTarget": 0,
+          "_resetAbilityCooldownWhenCastEnd": 0,
+          "_onlyAvailableWhenTokenValid": 0,
+          "_hasUniStackColor": 0,
+          "_skipSpCheckInSkillState": 0
+        }
+      },
+      {
+        "bundle": "battle/prefabs/[uc]skills.ab",
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "pathId": "7343246726752041165",
+        "hierarchy": [
+          "skchr_apionr_1",
+          "Skill"
+        ],
+        "objectSha256": "956009d4db075c6673c7b047ada9403702a17e27df4ed14c3c96594113fd9918",
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": -5349745400011864685
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "-5349745400011864685",
+          "name": "MultiMeleeAttack",
+          "cl": "MultiMeleeAttack",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "value": {
+          "_selector": {
+            "m_FileID": 0,
+            "m_PathID": 4144251088405657805
+          },
+          "_metadata": {
+            "namedAsAlias": "",
+            "blackboardPrefix": ""
+          },
+          "_overrideSignalId": "",
+          "_interruptAbilityOnDetach": 0,
+          "_attachPassiveBuffsOnDummy": 1,
+          "_ignoreIfOwnerDead": 0,
+          "_forceAsDmgOrHealAbility": 0,
+          "_waitForAttackEvent": 1,
+          "_interuptIfTargetDead": 0,
+          "_resetCdStrategy": 1,
+          "_selectTargetSource": 1,
+          "_selectTargetTiming": 2,
+          "_timeMode": 1,
+          "_alwaysIncludeTarget": 0,
+          "_allowNoTarget": 0,
+          "_animKey": "Skill",
+          "_endAnimKey": "Skill_End",
+          "_downAnimKey": "",
+          "_downEndAnimKey": "",
+          "_upAnimKey": "",
+          "_upEndAnimKey": "",
+          "_cooldown": 0.0,
+          "_cooldownKey": "duration",
+          "_preDelay": 0.0,
+          "_escapeTime": 0.2329999953508377,
+          "_faceToTarget": 0,
+          "_faceToDefault": 0,
+          "_faceToFront": 1,
+          "_faceToFirstCastTarget": 0,
+          "_checkFaceToFirstCastTargetDownAttack": 0,
+          "_forceFaceToDirection": 0,
+          "_activeBuffs": {
+            "Array": []
+          },
+          "_maxAnimScale": 1.0,
+          "_onlyPlayEndAnimWhenIsLastAbility": 0,
+          "_ignorePalsyInterrupt": 0,
+          "_affectedBySlowDown": 0,
+          "_atkScale": 1.0,
+          "_atkScaleKey": "atk_scale",
+          "_attackType": 1,
+          "_elementDamageType": 0,
+          "_epDamageRatio": 0.0,
+          "_useDynamicAttackType": 0,
+          "_deliveryParaWhenReplaceActionNode": 0,
+          "_damageType": 1,
+          "_extraDamageType": 0,
+          "_alwaysPutIncludeTargetFirst": 0,
+          "_additionalTimes": 1,
+          "_triggerDelta": 0.0,
+          "_waitAttackEventForAllAttacks": 1,
+          "_splitDamage": 0,
+          "_minPostDelay": 0.0,
+          "_onlyFeedActiveBuffToLastOne": 0,
+          "_onlyFeedActiveBuffToFirstOne": 0,
+          "_addSpellCntToAllSignalId": 0,
+          "_addSpellCntToLastSignalId": 1,
+          "_onlyTrigAudioSignalForFirstSpell": 0,
+          "_onlyTrigAudioSignalForFirstHit": 0,
+          "_addSpellCntToAllHitSignalId": 0,
+          "_refreshInputTargetOnCheckSpell": 0,
+          "_refreshInputTargetTrigger": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_refreshTimesOnCastStart": 0,
+          "_refreshTimesOnCheckAnotherSpell": 0
+        }
+      }
+    ],
+    "character": {
+      "id": "char_513_apionr",
+      "name": "郁金香",
+      "skills": [
+        {
+          "skillId": "skchr_apionr_1",
+          "overridePrefabKey": null,
+          "overrideTokenKey": null,
+          "levelUpCostCond": [
+            {
+              "unlockCond": {
+                "phase": "PHASE_2",
+                "level": 1
+              },
+              "lvlUpTime": 0,
+              "levelUpCost": null
+            },
+            {
+              "unlockCond": {
+                "phase": "PHASE_2",
+                "level": 1
+              },
+              "lvlUpTime": 0,
+              "levelUpCost": null
+            },
+            {
+              "unlockCond": {
+                "phase": "PHASE_2",
+                "level": 1
+              },
+              "lvlUpTime": 0,
+              "levelUpCost": null
+            }
+          ],
+          "unlockCond": {
+            "phase": "PHASE_0",
+            "level": 1
+          }
+        }
+      ]
+    },
+    "skill": {
+      "skillId": "skchr_apionr_1",
+      "firstLevel": {
+        "name": "只余芬芳",
+        "rangeId": "x-1",
+        "description": "立即获得<@ba.vup>{cost}</>点费用；对周围的敌人发动<@ba.vup>{times}</>次连续斩击，每次造成相当于攻击力<@ba.vup>{atk_scale:0%}</>的物理伤害，并无视目标<@ba.vup>{def_penetrate:0%}</>防御力",
+        "skillType": "MANUAL",
+        "durationType": "NONE",
+        "spData": {
+          "spType": "INCREASE_WITH_TIME",
+          "levelUpCost": null,
+          "maxChargeTime": 1,
+          "spCost": 25,
+          "initSp": 0,
+          "increment": 1.0
+        },
+        "prefabId": "skchr_apionr_1",
+        "duration": -1.0,
+        "blackboard": [
+          {
+            "key": "cost",
+            "value": 7.0,
+            "valueStr": null
+          },
+          {
+            "key": "atk_scale",
+            "value": 1.4,
+            "valueStr": null
+          },
+          {
+            "key": "def_penetrate",
+            "value": 0.5,
+            "valueStr": null
+          },
+          {
+            "key": "times",
+            "value": 8.0,
+            "valueStr": null
+          }
+        ]
+      },
+      "maxLevel": {
+        "name": "只余芬芳",
+        "rangeId": "x-1",
+        "description": "立即获得<@ba.vup>{cost}</>点费用；对周围的敌人发动<@ba.vup>{times}</>次连续斩击，每次造成相当于攻击力<@ba.vup>{atk_scale:0%}</>的物理伤害，并无视目标<@ba.vup>{def_penetrate:0%}</>防御力",
+        "skillType": "MANUAL",
+        "durationType": "NONE",
+        "spData": {
+          "spType": "INCREASE_WITH_TIME",
+          "levelUpCost": null,
+          "maxChargeTime": 1,
+          "spCost": 25,
+          "initSp": 13,
+          "increment": 1.0
+        },
+        "prefabId": "skchr_apionr_1",
+        "duration": -1.0,
+        "blackboard": [
+          {
+            "key": "cost",
+            "value": 8.0,
+            "valueStr": null
+          },
+          {
+            "key": "atk_scale",
+            "value": 2.0,
+            "valueStr": null
+          },
+          {
+            "key": "def_penetrate",
+            "value": 0.5,
+            "valueStr": null
+          },
+          {
+            "key": "times",
+            "value": 8.0,
+            "valueStr": null
+          }
+        ]
+      }
+    }
+  }
+}

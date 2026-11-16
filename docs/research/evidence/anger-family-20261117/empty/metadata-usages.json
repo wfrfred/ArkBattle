@@ -1,0 +1,184 @@
+{
+  "provenance": {
+    "scope": "Static uninitialized MethodDef usages; not runtime delegate inspection.",
+    "dll": {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+      "bytes": 223112680,
+      "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff"
+    },
+    "metadata": {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+      "bytes": 46669332,
+      "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5"
+    },
+    "nativeEvidence": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/anger-family-20261117/empty/native.json",
+      "bytes": 2234685,
+      "sha256": "7f8a468d0ebb7e9c54fc24c57f0ded61df39d4bc76edcb9131784688abc99036"
+    },
+    "tool": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/anger-family-20261117/empty/decode_usages.py",
+      "bytes": 3398,
+      "sha256": "d79ed422b5439ee36396aee2ca7cf4cc2ac1e8955d165c4be875f4107231332f"
+    }
+  },
+  "result": {
+    "decode": "IL2CPP tagged odd metadata usage; MethodDef kind=3, index=(encoded & 0x1ffffffe)>>1",
+    "usages": [
+      {
+        "instruction": "0x180992742",
+        "global": "0x188c66b18",
+        "encoded": "0x60024111",
+        "kind": 3,
+        "methodIndex": 73864,
+        "fullname": "Torappu.Battle.BasicSkill.OnSkillStart"
+      },
+      {
+        "instruction": "0x180992d8e",
+        "global": "0x188c66b18",
+        "encoded": "0x60024111",
+        "kind": 3,
+        "methodIndex": 73864,
+        "fullname": "Torappu.Battle.BasicSkill.OnSkillStart"
+      }
+    ],
+    "notFileBacked": [
+      {
+        "instruction": "0x18099271d",
+        "global": "0x188f9cc2d"
+      },
+      {
+        "instruction": "0x180992802",
+        "global": "0x188f9cc2d"
+      },
+      {
+        "instruction": "0x1809928e4",
+        "global": "0x188fd8a70"
+      },
+      {
+        "instruction": "0x18099290b",
+        "global": "0x188f9cc06"
+      },
+      {
+        "instruction": "0x180992924",
+        "global": "0x188f9cc06"
+      },
+      {
+        "instruction": "0x18099299d",
+        "global": "0x188f9cc58"
+      },
+      {
+        "instruction": "0x1809929cd",
+        "global": "0x188f9cc58"
+      },
+      {
+        "instruction": "0x180992a85",
+        "global": "0x188f9cc56"
+      },
+      {
+        "instruction": "0x180992a9a",
+        "global": "0x188f9cc56"
+      },
+      {
+        "instruction": "0x180992bfb",
+        "global": "0x188f9cc08"
+      },
+      {
+        "instruction": "0x180992c10",
+        "global": "0x188f9cc08"
+      },
+      {
+        "instruction": "0x180992c48",
+        "global": "0x188f9cc06"
+      },
+      {
+        "instruction": "0x180992c69",
+        "global": "0x188f9cc06"
+      },
+      {
+        "instruction": "0x180992ccf",
+        "global": "0x188fd8a70"
+      },
+      {
+        "instruction": "0x180992d29",
+        "global": "0x188f9cc08"
+      },
+      {
+        "instruction": "0x180992d3e",
+        "global": "0x188f9cc08"
+      },
+      {
+        "instruction": "0x180992dbc",
+        "global": "0x188f9cc08"
+      },
+      {
+        "instruction": "0x180992dd1",
+        "global": "0x188f9cc08"
+      },
+      {
+        "instruction": "0x180992e21",
+        "global": "0x188fd8a70"
+      },
+      {
+        "instruction": "0x180992fb4",
+        "global": "0x188f9cc06"
+      },
+      {
+        "instruction": "0x180992fda",
+        "global": "0x188f9cc06"
+      },
+      {
+        "instruction": "0x180993033",
+        "global": "0x188f9cc06"
+      },
+      {
+        "instruction": "0x18099304e",
+        "global": "0x188f9cc06"
+      },
+      {
+        "instruction": "0x1809930a9",
+        "global": "0x188f9cc06"
+      },
+      {
+        "instruction": "0x1809930c4",
+        "global": "0x188f9cc06"
+      },
+      {
+        "instruction": "0x18099314c",
+        "global": "0x188f9cc06"
+      },
+      {
+        "instruction": "0x180993168",
+        "global": "0x188f9cc06"
+      },
+      {
+        "instruction": "0x1809931a9",
+        "global": "0x188fd8a70"
+      },
+      {
+        "instruction": "0x18099321a",
+        "global": "0x188f9cc06"
+      },
+      {
+        "instruction": "0x180993233",
+        "global": "0x188f9cc06"
+      },
+      {
+        "instruction": "0x180993274",
+        "global": "0x188fd8a70"
+      },
+      {
+        "instruction": "0x1809932c1",
+        "global": "0x188f9cc06"
+      },
+      {
+        "instruction": "0x1809932d6",
+        "global": "0x188f9cc06"
+      },
+      {
+        "instruction": "0x18099330e",
+        "global": "0x188fd8a70"
+      }
+    ]
+  }
+}

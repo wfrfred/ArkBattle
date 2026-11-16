@@ -253,21 +253,35 @@ Touch 的普通关卡SPAWN与非零攻击狂躁链见第6节。敌方承受狂�
 
 ## 11. 狂躁计数的原生排除范围
 
-2026-11-17 定向补核见[本批证据](../evidence/anger-exclusions-20261117/README.md)。这里区分原生筛选条件、实际资源配置，以及项目两个通知入口；不把能力类型的存在当成已经发生的狂躁计数。
+2026-11-17 定向补核见[资格字段与枚举](../evidence/anger-exclusions-20261117/README.md)、[实际分类与空分支调用链](../evidence/anger-family-20261117/README.md)。以下区分内部分类、实际执行程序和技能整体结果。
 
-### 分类过滤实际包含三类
+### 分类的赋值入口和实际程序
 
-[枚举原始编码](../evidence/anger-exclusions-20261117/inventory.json)中，FamilyGroup依次为ATTACK=0、COMBAT=1、SKILL=2、TALENT=3、GENERAL=4，`ATTACK_OR_SKILL`值为7。FilterAbilityFamily #101280先取当前Ability的familyGroup，再调用[位测试](../evidence/anger-exclusions-20261117/policy-native.json) #227256：`((1 << family) & mask) == (1 << family)`。因此该命名实际**包含ATTACK、COMBAT和SKILL**，排除TALENT与GENERAL；不能按名字漏掉COMBAT，也不能将任意Effect程序算成技能施放。
+[原始枚举与消费者](../evidence/anger-exclusions-20261117/policy-native.json)确认：`ATTACK_OR_SKILL=7` 接受 ATTACK、COMBAT、SKILL，排除 TALENT、GENERAL。Filter 读取本次事件中 Ability 自身的 Options，不按伤害来源追溯天赋。
 
-### 忽略麻痹不只来自序列化字段
+| 实际程序 | 原生分类与执行 | 项目对应职责 |
+| --- | --- | --- |
+| 玫兰莎天赋 `melan_t_1` 常驻攻击加成 | Talent 与 PassiveBuffAbility 同对象；`BasicTalent.AssignData` 为内部 Ability 写入 TALENT。挂载时直接添加 Buff，不发施放通知。 | enter 安装属性 Effect；不属于 Action 释放或 Skill 激活。 |
+| 浊心斯卡蒂的 `immune_to_encourage` 标记 | 根对象 `_commonAbilities[0]` 直接引用 PassiveBuffAbility；`Unit.InitCommonAbilities` 写入 GENERAL。挂载时直接添加 Buff。 | 安装标记 Effect；不属于一次技能施放。 |
+| 刺玫天赋“土壤基肥改良” | AppearTalent 与 GloballUniqueBuffAbility 同对象；继承天赋装配的 TALENT，登场调用 CastDirectly，为所选友方施加受治疗提升。即使产生施放通知，也不属于狂躁接受的分类。 | enter 安装相应 Effect，不作为普通攻击或主动技能计数。 |
 
-| 来源 | 直接证据与范围 |
-| --- | --- |
-| `_ignorePalsyInterrupt=true` | [全字段扫描](../evidence/anger-exclusions-20261117/field-scan.json)覆盖1180包、10253候选组件，得到7970个false／55个true，0失败；55个true都在Enemy Prefab，没有角色／共享技能／token的序列化true。 |
-| 固定getter覆盖 | `EmptyAbility.get_ignorePalsyInterrupt` #63924和`EmptyAnimatedAbility` #92227的普通体均直接返回true，不读取继承的序列化字段。因此上面的有限字段统计不能排除角色能力的实际例外。 |
+三个程序的根对象、同对象组件表、角色表候选和 Buff 参数见[绑定原件](../evidence/anger-family-20261117/content/bindings.json)。[赋值与挂载原体](../evidence/anger-family-20261117/native/README.md)确认：`Ability.DoSetData` 保存 Options，基类 `get_familyGroup` 直接读取其中的分类，不因父 caster 或 `_forceAsDmgOrHealAbility` 改写。前两项是被动挂载；刺玫已证登场调用 CastDirectly，但不据此断言其 Buff 更新过程发出标准 SpellOn。三者均不是实机狂躁计数观测。这些原生载体不要求项目增加同名分类，当前内容职责见 [Content](../../architecture/content.md)。
 
-字段正例并非只有被动光环。当前靳天师 `enemy_2104_dycast` 根的 `_modes[0]` 指向UnitMode `1360663280617572055`，该模式的Attack与Combat均指向AnimatedActionToOwnerAbility `1655792081401464535`，其字段为true；完整当前配对在[content.json](../evidence/anger-exclusions-20261117/content.json)。另有“Misery”治疗形态的Attack／Combat、拟态机械的FireBall／CardBoom等组件定位，完整名单保留在扫描结果。这些Enemy通常使用按时间增长的另一套狂躁程序，不能把55个组件直接当作55个角色计数例外或已观测的实战结果。
+### “无视麻痹打断”的实际范围
 
-角色也确有固定true的能力：郁金香的角色／技能表绑定 `skchr_apionr_1`，当前根AbilityFirstSucceedGroup依次引用不允许空目标的MultiMeleeAttack及允许空目标的EmptyAnimatedAbility（`-4887580023928719155`）。后者字段虽为false，getter仍为true。郁金香属于支持范围内的集成战略支援干员。不过，本批**尚未闭合组合父能力是否另发满足资格的SpellOn**；不能仅因空子能力被过滤，就宣称整次技能不增加狂躁数值。普通组合选择链的既有证据见[Case09 §3.3](09-skill-mechanisms-and-requirements.md#33-启动结果与失败后继实际需求核对)。
+[全字段扫描](../evidence/anger-exclusions-20261117/field-scan.json)覆盖1180包、10253候选组件，得到7970个false／55个true，0失败。55个true都在 Enemy Prefab，包括靳天师普通攻击、“Misery”治疗形态及拟态机械的部分技能，不能概括为只有被动或光环。这些 Enemy 默认使用按时间增长的狂躁程序，不能把55个组件视作55个角色计数例外。
 
-当前已接入玫兰莎／泥岩与项目Action释放、Skill启动双监听之间，没有已证的具体冲突。这个结果不等于所有Skill激活都与原生SpellOn一一对应，也没有抹掉上述分类和getter过滤。完整资格向项目内容入口的映射仍是支持边界；本批没有据未闭合例子新增Core字段或规定所有技能统一加量。
+`EmptyAbility`／`EmptyAnimatedAbility` 的 getter 固定返回 true，即使继承的 Prefab 字段为 false；资格不能只从字段扫描推导。它是能力自身的配置，与宿主是否具有麻痹免疫无关。
+
+### 郁金香 S1：成功发动但不计数的空目标分支
+
+角色／技能绑定与组件见[前批原件](../evidence/anger-exclusions-20261117/content.json)，完整分支见[本次调用链](../evidence/anger-family-20261117/empty/README.md)：
+
+| 分支 | 技能发动 | 狂躁计数 |
+| --- | --- | --- |
+| 有目标，MultiMeleeAttack 成功 | 成功并扣除 SP。 | 子能力的施放通知通过资格，增加一次。 |
+| 无目标，回退 EmptyAnimatedAbility | 同样成功并扣除 SP，不是发动失败。 | 子能力的固定 true getter 使其被过滤，不增加。 |
+
+父 FirstSucceedGroup 成功后登记所选子能力、发布开始并维护冷却；它不另执行 `ExecuteSpell`，结束 delegate 也只结束父程序。子 `ExecuteSpell` 将自身作为通知参数，未替换成父 Group；共同 Options 保留 SKILL 分类。因此空分支不会由父程序补一次合格施放。此结论来自普通 native 分支与已绑定配置，未作实机／XLua 热更新观测。
+
+项目双监听自然排除了上述 Effect 挂载／天赋程序；技能已成立却选择空施放的资格仍需接入，不能以“发动失败不计数”替代。当前实现范围见 [Elemental](../../architecture/elemental.md#支持边界)。

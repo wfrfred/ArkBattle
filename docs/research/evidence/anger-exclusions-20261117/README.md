@@ -14,7 +14,7 @@
 
 `ATTACK_OR_SKILL=7`实际接受ATTACK、COMBAT、SKILL，排除TALENT、GENERAL；位测试消费者已核。`EmptyAbility`／`EmptyAnimatedAbility`的普通getter固定true，不能只读取其继承序列化字段判断资格。
 
-郁金香的空目标fallback确为EmptyAnimatedAbility，但本批没有闭合组合父能力是否另发满足资格的SpellOn；不能从子能力被过滤推出整次技能不计。55个字段正例也不是55个已观测的狂躁排除案例：这些Enemy通常使用另一套按时间增长的爆发程序。当前已接入玫兰莎／泥岩与项目双监听没有已证的具体冲突；也没有因此证明任意Skill激活都与原生施放等价。完整原生资格尚未映射到项目两个入口，继续保留这一支持边界。
+本批仅定位郁金香的 EmptyAnimatedAbility 子项，完整父子通知、普通发动入口与成功扣费路径见[调用链补核](../anger-family-20261117/empty/README.md)。55个字段正例也不是55个已观测的狂躁排除案例：这些Enemy通常使用另一套按时间增长的爆发程序。具体分类程序与项目支持边界统一见 [Case25 §11](../../cases/25-elemental-burst-recovery-timing.md#11-狂躁计数的原生排除范围)。
 
 ## 复跑与验证
 

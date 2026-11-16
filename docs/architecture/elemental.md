@@ -29,7 +29,7 @@ Burst 是普通 Effect：state 至少保存元素类型，Definition 增加 dura
 
 ### 狂躁的行动与时间累加
 
-依据[案例25第10节](../research/cases/25-elemental-burst-recovery-timing.md#10-狂躁的两套程序与能力计数)，`createActionScaledDamage` 的根仅负责恢复；独立程序使用 DEADLINE，默认持续15秒，保存周期 timer、当前伤害及已计数的 Execution ID。生效时增加50攻速，每30次 ACTIVE Tick 造成一次当前伤害，初始100。Action 每次 Execution 首次 released、Skill 每次 activationStarted 各增加50，默认最高600；未释放的行动、失败的技能发动不加，多段释放不重复计数。两项监听按宿主能力分别安装，技能激活与期间的攻击分别计数。输出为无来源、无途径的 TRUE／NORMAL，hitRecovery=true；实际回复仍服从 Skill 资格。取消根不清除此独立程序，其到期自行撤销攻速和两项 Hook。
+依据[案例25第10节](../research/cases/25-elemental-burst-recovery-timing.md#10-狂躁的两套程序与能力计数)，`createActionScaledDamage` 的根仅负责恢复；独立程序使用 DEADLINE，默认持续15秒，保存周期 timer、当前伤害及已计数的 Execution ID。生效时增加50攻速，每30次 ACTIVE Tick 造成一次当前伤害，初始100。Action 每次 Execution 首次 released、Skill 每次 activationStarted 各增加50，默认最高600；未释放的行动、失败的技能发动不加，多段释放不重复计数。两项监听按宿主能力分别安装，技能激活与期间的攻击分别计数。天赋与通用被动程序由 Effect／回调表达，安装和推进本身不算施放。输出为无来源、无途径的 TRUE／NORMAL，hitRecovery=true；实际回复仍服从 Skill 资格。取消根不清除此独立程序，其到期自行撤销攻速和两项 Hook。
 
 `createTimeScaledDamage` 由根保存私有 timer／damage，生效时增加20攻速；每30次 ACTIVE Tick 先增加130，再造成当前伤害，默认160起步，首跳290。输出为无来源、无途径的 ELEMENTAL／BUFF，hitRecovery=false。根结束即撤销输出；周期不随恢复倍率加速。每次先推进恢复，再处理当次周期，整个 onTick 返回后才结算到期，因此正常15秒的末次脉冲保留。
 
@@ -95,7 +95,7 @@ elapsed' = duration - remaining'
 ## 支持边界
 
 - 同一宿主当前只允许一个 Burst；特殊内容可组合输出与生命周期，不由标准库提供通用多阶段爆发或启动免疫窗口。
-- 狂躁当前通过 Action／Skill 通知计数，尚未映射原生的能力分类与“无视麻痹打断”资格筛选；不能据双监听推定全部特殊能力均已覆盖，实际配置和证据边界见[案例25第11节](../research/cases/25-elemental-burst-recovery-timing.md#11-狂躁计数的原生排除范围)。
+- 狂躁尚未区分技能成功发动后的空施放资格。原生郁金香 S1 无目标时成功发动并扣除 SP，但空动画分支不增加狂躁；该内容分支尚未接入。原生天赋／通用分类由上述职责划分表达，不另设 Core 枚举。具体依据见[案例25第11节](../research/cases/25-elemental-burst-recovery-timing.md#11-狂躁计数的原生排除范围)。
 - EP 环境损伤分类及相应实际免疫交互尚未接入，不能因 HP 已有 ENVIRONMENT 就宣称 EP 已覆盖，也不能从地形来源猜测。
 - 珊比直接缩短爆发预算的原生行为保留已推进量、降低总预算并立即重算 EP；当前仅修改 Effect.remaining 不自动完成这项资源操作。根与独立子效果的时间交互仍须闭合。
 
