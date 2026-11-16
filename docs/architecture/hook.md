@@ -24,7 +24,7 @@
 
 HP Damage、EP Damage、HP Healing、EP Healing 各自定义精确键，不建立四种 Context 的联合。接收与能力事实通知仍由对应领域定义和派发；存储一致不合并它们的业务时点。
 
-当前 Vitality.damageCommitting 接续 number；已确认的[Health 接入计划](vitality.md#03-health-与负生命接入计划)将其工作值改为 `Health { hp, minusHp }`。Key 的宿主约束、存储、排序和临时排除边界保持；恢复与 MaxHP Change 不因此进入伤害 Hook。计划尚未实现，不新增负生命专用 Hook。
+当前 Vitality.damageCommitting 接续 number；已确认的[Health 接入计划](vitality.md#03-health-与负生命接入计划)将其工作值改为 `Health { hp, minusHp }`，并增加接续 void 的 damageCommitted。后者在实际写入与报告固定后、普通 Applied 前执行，不自动继承 Apply 的排除项；Context 提供 request 与 application。恢复与 MaxHP Change 不进入这两个伤害 Hook。计划尚未实现，不新增负生命专用 Hook。
 
 ## 类型化键与集合
 

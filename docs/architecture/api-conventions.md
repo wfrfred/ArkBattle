@@ -81,7 +81,7 @@ Hook 与领域操作按执行语义命名：
 
 生命周期结束的公开 end／cancel／stop／remove 委托 [Lifetime](lifetime.md)：无活动结算时，本次调用完成 request 与 drain，返回时 Pending 为空；有活动结算时，只同步完成首次请求和 Prepare，不承诺槽位释放、注销或最终通知。重复 PREPARING 请求不等待原 Prepare。Finalize 整体返回才解除依赖者对 owner 的等待；resource.hp.damage.completed 只报告本次伤害完成，不保证目标离场 Finalize 已完成。
 
-Vitality 的[Health 接入计划](vitality.md#03-health-与负生命接入计划)已确定 `State.health: Health` 和 damageCommitting 的 Health 工作值，当前接口尚未迁移。普通 HP 与债务的分配归 Vitality，屏障额度归 Effect；不新增 ES 或非致命专用请求字段。精确资源报告和容量操作接口随接入收口，不在公共约定中预设未实现签名。
+Vitality 的[Health 接入计划](vitality.md#03-health-与负生命接入计划)已确定 `State.health: Health`、damageCommitting 的 Health 工作值，以及提交后接续 void 的 damageCommitted，当前接口尚未迁移。damageCommitted 使用 Result<void> 接续状态，在报告固定后执行后继，不改变本次报告。普通 HP 与债务的分配归 Vitality，屏障额度归 Effect；不新增 ES 或非致命专用请求字段。精确资源报告和容量操作接口随接入收口，不在公共约定中预设未实现签名。
 
 生命状态与比例使用 `vitality.isAlive(self: Unit & Vitality)`／`hpRatio(self: Unit & Vitality)`，属于已取得实体上的局部查询，不接收 BattleState／Ref。isAlive 不合并 Unit.lifecycle 或 Presence，hpRatio 使用普通 HP 与有效 MaxHP；跨领域业务复用这些语义查询，具体资源数值仍可用于明确的公式或提交快照。
 

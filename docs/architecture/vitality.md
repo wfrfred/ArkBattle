@@ -115,6 +115,14 @@ interface State {
 interface DamageCommittingHook extends Hook<DamageCommittingContext, Health> {
     readonly priority?: number;
 }
+
+interface DamageCommittedContext extends HpDamage.Context {
+    readonly application: DamageApplication;
+}
+
+interface DamageCommittedHook extends Hook<DamageCommittedContext, void> {
+    readonly priority?: number;
+}
 ```
 
 Vitality State 通过 `health: Health` 持有完整生命值，不继承 Health，也不另存一份顶层 hp。hp 是普通生命；minusHp 是非负的生命债务，不是允许 hp 为负。债务初始为零，未启用负生命时不参与分配。负生命容量由 Vitality 拥有，按有效 MaxHP 与容量配置求值，不混入 Health 工作值。
@@ -126,6 +134,10 @@ Vitality State 通过 `health: Health` 持有完整生命值，不继承 Health�
 - MaxHP Change：容量随有效 MaxHP 变化；比例调整产生的 HP 变化也要处理偿债交互。局部资源计算保持纯转换，不在 Transformation 中派发业务 Hook，不把属性变更伪装成治疗。依据及推导边界见[案例39](../research/cases/39-death-attribution-and-attribute-ranges.md#maxhp-变化会进入普通-hp-setter)。
 
 damageCommitting 计划接续待提交的 Health 和 BattleState，使保护程序能够共同调整普通 HP 与债务。Vitality 负责默认分配、最终校验与写回；容量耗尽最终通过普通 HP 归零进入既有 Applied 后死亡确认、Outcome.killed 与 Unit Lifetime，不另建负生命死亡流程。恢复与 MaxHP Change 不因此派发 damageCommitting。
+
+damageCommitted 计划在 Vitality.commitDamage 写入 Health、固定本次 Application 后同步派发，然后返回 Apply 执行 targetApplied、sourceApplied 与死亡确认。其工作值为 void，invoke 仍通过 Result<void> 接续 BattleState，不改写本次报告；Context 只有 request 与 application，不重复传目标。成功提交包括零实际变化，提交失败不派发。它与 damageCommitting 均不自动继承 Apply 的排除项，恢复与 MaxHP Change 不派发这两个伤害提交 Hook。
+
+号角、斯卡蒂模组等成功保护由 Effect 自己记录本次 Request 与使用状态，在 damageCommitted 按内容顺序更改 MaxHP、恢复和更替效果，不由 Core 保存成功者 Effect。后继可独立修改生命或结束宿主，本笔报告仍保留已完成的提交事实，不被改成提交失败，也不再用旧候选覆盖后继。普通伤后响应继续使用 Applied。保护中的常规生命调整通过 Health 工作值返回；若独立提交同一目标的生命变化，由内容明确接续候选，不自动重算或合并差值。
 
 非致命由 Content 通过 Effect 与 Hook 组合，不新增 Damage Request 的非致命字段或枚举。嵯峨的保护按来源或具体 Request 限定，重伤在成功应用后另行处理，明确处决是独立业务。接入时需保留非致命在债务累计前生效、不死同时限制普通 HP 与债务的语义；具体派发位置和优先级在实现时收口，不由一个最终 HP 数字推定全部交互已覆盖。
 
