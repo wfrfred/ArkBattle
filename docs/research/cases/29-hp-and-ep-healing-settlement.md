@@ -62,7 +62,7 @@ H=\max(0,\operatorname{ATK}\times\operatorname{healScale})
 
 节点默认比例为1.0；不能将其当成桑葚实际配置。本轮固定原始角色表已补齐桑葚Trait的 `ep_heal_ratio=.5`，完整记录见[static-inputs.json](../evidence/resource-mechanisms-20261114/recovery-elemental/static-inputs.json)；不以Prefab序列化默认1替代实际参数。
 
-当前客户端正向 EP 提交循环元素 ID 1～5，每型各恢复同一数额并独立截断，realDelta 累加各型的实际变化。它既不是只恢复最低的一型，也不是把一个总预算分摊给各型。当前原生确有第五型狂躁实际内容，见[案例25第6节](25-elemental-burst-recovery-timing.md#6-五型配置接收者分流及实际来源)；ArkBattle当前只支持四型是实现缺口，本研究没有批准排除第五型。
+当前客户端正向 EP 提交循环元素 ID 1～5，每型各恢复同一数额并独立截断，realDelta 累加各型的实际变化。它既不是只恢复最低的一型，也不是把一个总预算分摊给各型。当前原生确有第五型狂躁实际内容，见[案例25第6节](25-elemental-burst-recovery-timing.md#6-五型配置接收者分流及实际来源)；第五型的实际使用不能因已有四型概览而忽略。
 
 ### 负数：基础求值、Modifier 数值与提交量
 
@@ -127,23 +127,15 @@ R=\operatorname{HP\_RECOVERY\_PER\_SEC}
 
 真实非默认配置正例为普通关卡5-8的宿主士兵：固定镜像 EnemyDB 的 `enemy_1043_zomsbr`、level0 明确声明 `hpRecoveryPerSec=80`；关卡 `enemyDbRefs` 使用该等级、无覆盖，五条 SPAWN 实际引用该 key。EnemyDB 与关卡分别固定镜像修订、原始字节 SHA-256，见证据批次，不与本机资源版本混称。所扫 EnemyDB 的993个显式定义有13正值、980零值、0负值；有限配置扫描不证明所有内容绝无临时负值，但普通 native 的 `R>0` 门控也没有负速率扣血路径。
 
-以上是静态 native 与配置证据，未执行游戏或验证活跃 XLua。项目选择由 Vitality 按当前有效速度逐 Tick 回复小数 HP，不采用每1HP脉冲或保存脉冲进度；不派发普通 Healing Hook。启停、变速时的脉冲时间差异按此近似处理，详见[自然 HP 回复契约](../../architecture/vitality.md#01-自然-hp-回复)。这项选择不改变上文原生事实。
+以上是静态 native 与配置证据，未执行游戏或验证活跃 XLua；项目自然回复的近似与 Hook 边界见 [Vitality](../../architecture/vitality.md)。
 
 EP 自然回复与爆发恢复通过直接 EP setter 推进，不经过上表普通 EP Heal Modifier 链，复用[案例 25](25-elemental-burst-recovery-timing.md)证据。
 
-## 6. 项目关联与未决项
+## 6. 相关专题与项目契约
 
-这些事实支持一个协调领域组织 HP Damage、EP Damage、HP Healing、EP Healing，但不直接决定领域命名、共同 Request 或最终 Hook API。可以复用应用阶段的语义和状态接续协议，分别保留公式、接收规则、提交与后继。一次 Action／命中中的多次结算仍由内容编排，不能预设所有附加恢复都在主 HP 返回之后。
+普通医师与行医的启动选择、混合 HP／EP 排序及 Selector／Heal 同名 ignoreHealFree 的不同消费者见 [Case 33](33-targeting-and-targetable-pipeline.md#53-混合-hpep-治疗)。本案治疗作用顺序不能代替选择政策，也不能把选择豁免与最终 force 接收合并。
 
-项目已确认[Calculate 输出计算、Apply 目标接收](../../architecture/vitality.md#1-calculate-与-apply-的语义边界)的共同边界；本节原生事件顺序是机制证据，不是逐项迁移 Hook 的目标。
-
-普通医师与行医的启动选择、混合 HP／EP 排序，以及 Selector 与 Heal 能力同名 ignoreHealFree 字段的不同消费者，已在[案例33](33-targeting-and-targetable-pipeline.md#53-混合-hpep-治疗)补核。本案的治疗作用顺序不能代替这些选择政策；选择豁免和最终 force 接收也不合并。
-
-**零值项目决策（2026-11-03，用户确认）：** 四种业务的最终计算输出为零时，在 Apply 入口拒绝，不进入本笔接收或 Applied；实际资源变化为零则允许成功。满血目标接收正数治疗属于后者。具体契约见[Calculate 与 Apply 的语义边界](../../architecture/vitality.md#1-calculate-与-apply-的语义边界)。
-
-其余政策保持：healFree 只限制 Targeting；显式治疗不因此新增接收免疫；自然回复不派发普通治疗 Hook；既定死亡通知顺序、弱点完整双 Calculate 与 Burst 生命周期不变。上述政策与原生的差异已分别标明，不通过调查静默修改。
-
-普通接收、skip、ES、自然回复与特殊同步已分别追踪，不再将它们统称未调查的特殊恢复。活跃XLua和所有内容任意组合没有运行验证；资源层例外及范围见第7–9节。桑葚0.5参数和缇缇实际安装已补齐。
+四种业务的计算／接收、零输出、零实际变化与 HEAL_FREE 项目选择集中于 [Resource](../../architecture/resource.md)；资源分配见 [Vitality](../../architecture/vitality.md)和[Elemental](../../architecture/elemental.md)。普通接收、skip、ES、自然回复与特殊同步已分别追踪，剩余原生证据边界见第 7–9 节。
 
 ## 7. 溢出治疗、ES与屏障的真实交接
 
@@ -174,4 +166,4 @@ SetHpSameToSource读取 `source.hp−target.hp`，零差直接返回；非零用
 - ElementHealViaMaxHpRatio有完整native，但1180包与9054Holder没有找到引用；普通EP自然回复另有余的实际天赋，见[案例25](25-elemental-burst-recovery-timing.md#8-自然ep回复的实际非零配置)。没有据零命中批准弃用。
 - AverageHealViaHpUseAbilitySelector与HealSplitToUnionFindMembers的当前Holder命中分别是legion／sandbox命名的模板；完整体与定位已保存。若没有独立模式绑定，只记候选，不能靠名字宣布全客户端只在排除模式使用。
 - 满血重复setter通知的native行为已证，实际缇缇消费者已闭合；尚无该重复no-op改变结果的可达实例，故不推翻已定逐Tick自然回复近似，也不凭字段存在新增Hook。
-- 本轮不把“任意组合没实机跑过”用作省略上述实际资源机制的理由。新的不实现／简化须另获用户确认；当前四条普通接口并未自动表达ES、债务、同步复制和特殊复活恢复。
+- 本轮不把“任意组合没实机跑过”用作省略上述实际资源机制的理由。新的不实现／简化须另获用户确认；原生 ES、债务、同步复制与复活恢复的项目组织各见对应架构，不在本案维护旧接口差距。

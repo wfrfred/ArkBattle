@@ -2,7 +2,7 @@
 
 `BattleState.events` 是模拟内核提供给 UI 的瞬时输出契约。State 驱动位置、资源条和当前执行等持续展示；Event 补充飘字、动画时点、爆发和离场表现需要的发生事实。具体动画、资源与颜色由 UI 选择。
 
-UI 的实际需要决定输出哪些事实与字段。领域操作没有记录全部业务变化的义务；业务结果通过 Outcome／Application 返回，同步响应通过 Hook 执行。调试日志转发不构成保留 Event 的理由。内核不读取 Event 执行业务、累计统计或派发 Hook。
+UI 的实际需要决定输出哪些事实与字段。领域操作没有记录全部业务变化的义务；业务结果通过 [Resource](resource.md) 等领域的 Outcome／Application 返回，同步响应通过 Hook 执行。调试日志转发不构成保留 Event 的理由。内核不读取 Event 执行业务、累计统计或派发 Hook。
 
 ## 类型归属与收集
 

@@ -97,9 +97,9 @@ getter自身没有0.1 clamp，也没有canMove检查。MoveController.get_moveSp
 
 **N** BattleOptions..cctor62950从0x186e3fda4读取0.5f初始化MOVE_MULTIPLIER（指令0x1805daa19）。GridPosition.get_asLocalPosition28039直接返回(float col,float row)，无0.5缩放；FromVectorPosition28047直接round两个坐标，也无缩放。因此0.5是实际地图坐标速度因子，不是tile尺寸转换。普通默认总速度floor约0.05格/s（在仍允许移动且确实请求位移时），不是0.1格/s的硬最终下限。
 
-**I/仓库核对** root已核实真实关卡加载经movement-fragment.ts/ movement-scenario.ts读取level.options.moveMultiplier并在runtime乘入；新adapter中的`minimumMoveSpeedPerTick=perSecondToPerTick(0.1)`不能单独视作遗漏0.5。应保留“属性默认下限在全局倍率之前”的事实，不把整个项目的最终速度认定为2倍错。
+属性默认下限与关卡最终 MOVE_MULTIPLIER 是不同层次；不能只由 0.1 属性下限推出实际每秒最低位移。项目有效速度与换算见 [Locomotion](../../../../architecture/navigation.md#locomotion)。
 
-**N/跨agent补充** 当前相关真实level adapter要求options.steeringEnabled=true；BattleOptions.LoadOptions62946会按关卡options覆盖MOVE_MULTIPLIER与STEERING_ENABLED（collision agent保存对应证据），BattleOptions静态构造false不是实际关卡最终配置。此点避免把静态初值误写成此内容采用的实际分支，与速度floor是独立事项。
+**N** BattleOptions.LoadOptions62946按关卡 options 覆盖 MOVE_MULTIPLIER 与 STEERING_ENABLED；本批所选配置的 steeringEnabled=true。静态构造初值不能代替具体关卡的最终配置，该边界与速度下限分别成立。
 
 ## 6. moving、hanging、速度、实际位移是不同观察值
 

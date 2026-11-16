@@ -8,33 +8,8 @@ Unit.position 保存实际世界位置，Hitbox Definition 的 shape 保存单�
 
 Spatial 在传入的 BattlefieldState 上枚举 Unit，用类型守卫保留 Capability 信息，在公开结果边界形成 Ref 和数组。它不要求完整 BattleState，不维护另一份空间索引；结果始终属于本次查询的输入版本。
 
-单位身体所属格通过 World.toTile 的 ties-to-even 规则计算；它与连续 Shape 的包含判定有不同的边界语义。Spatial 的公开查询接口如下：
+单位身体所属格通过 World.toTile 的 ties-to-even 规则计算；它与连续 Shape 的包含判定有不同的边界语义。Spatial 提供位置包含、Hitbox 相交和扫掠接触三种查询，具体签名见[公共入口](../../src/core/battlefield/spatial/query.ts)。
 
-```typescript
-export function within(
-    field: BattlefieldState,
-    range: Range,
-    origin: WorldPosition,
-): readonly Ref<Unit>[];
-
-export function overlap(
-    field: BattlefieldState,
-    range: Range,
-    origin: WorldPosition,
-): readonly Ref<Unit & Hitbox>[];
-
-export interface Contact {
-    readonly target: Ref<Unit & Hitbox>;
-    readonly fraction: number;
-}
-
-export function sweep(
-    field: BattlefieldState,
-    shape: Shape,
-    from: WorldPosition,
-    to: WorldPosition,
-): readonly Contact[];
-```
 
 within 检查 Unit.position 是否在 Range 内，不要求 Hitbox，也不使用 Hitbox 的 offset 替代单位位置。overlap 检查 Range 与目标 Hitbox 的相交，使用 Unit.position 作为目标 Shape 的原点。Range 是 Shape 数组表示的并集；空 Range 不匹配任何对象。
 

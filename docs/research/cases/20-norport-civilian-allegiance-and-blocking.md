@@ -1,6 +1,6 @@
 # 诺伯特平民：阵营、可选性与阻挡
 
-研究日期：2026-10-29；项目对照 `45a5cb2`。本轮核实诺伯特平民能被我方阻挡、却不被普通攻击选中的原因，不修改 Core API 或内容实现。
+研究日期：2026-10-29。本轮核实诺伯特平民能被我方阻挡、却不被普通攻击选中的原因，不修改 Core API 或内容实现。
 
 ## 1. 客户端配置：初始阵营是 ENEMY
 
@@ -29,42 +29,22 @@
 
 上述鉴定、无敌和终点奖励细节来自 Wiki 机制记录。本轮没有闭合对应热更新／Buff 的完整原生调用链，不把 Wiki 解释写成已经逐条复核的客户端指令事实。
 
-## 3. 对 Allegiance 的影响
-
-当前 `allegiance.areHostile` 判断阵营关系，`targeting.filter.damage` 再组合在场、存活、阵营和 Targetable 限制。这个分工可以保留：
+## 3. 阵营、选中与阻挡分别判断
 
 | 判断 | 我方干员与初始诺伯特平民 |
 | --- | --- |
-| 阵营关系 | ALLY 与 ENEMY，满足敌对阵营条件 |
-| 普通攻击可选性 | 无敌的异阵营禁选使其不可选 |
-| 伤害接收 | 无敌另行使伤害归零，不能只靠此前没有被索敌保证免伤 |
-| 阻挡资格 | 不经过普通攻击的可选性筛选，仍可建立阻挡 |
+| 阵营字段 | 普通 ALLY 与 ENEMY；友好标签不等于运行时 ALLY。 |
+| 普通攻击可选性 | 无敌的异阵营禁选使其不可选。 |
+| 伤害接收 | 无敌另行限制接收，不能只靠此前没有被索敌保证免伤。 |
+| 阻挡资格 | 不经过普通攻击的可选性筛选，初始仍可建立阻挡；鉴定完成后按内容禁挡。 |
 
-因此不应为了“友好单位”标签把平民改成 ALLY／NEUTRAL，也不需要新增 FRIENDLY_CIVILIAN 阵营。`areHostile` 不能解释成“现在可以攻击”，阵营也不承担故事身份、鉴定进度或关卡奖励。
-
-本案不验证所有 NEUTRAL 组合的原生主观阵营算法；现有项目对照表仍以 [PRTS 选择器](https://prts.wiki/w/选择器#目标阵营（targetSide）) 为来源。
-
-## 4. 对 Blocking 的影响
-
-现有统一二元 `Rule.allows(battle, blocker, blockable)` 足以表达平民鉴定完成后的禁挡。鉴定状态由 Content 保存；完成时提交禁挡 Rule，完整 Unit 更新维护现有关系并派发解除通知。不需要为平民增加特殊 Blocking 状态机、第二种 Rule 或“友好目标可阻挡”例外。
-
-阵营资格还须保留一个既有证据边界：[原生阻挡调查](../evidence/blocking-native-20261023/modes/report.txt) 证明原生检查的是阻挡者的定向 `blockSideMask`，普通 Character 的掩码为 ENEMY：
+[原生阻挡调查](../evidence/blocking-native-20261023/modes/report.txt)的普通掩码判断是：
 
 ```text
 candidate.sideType != NONE
 && (blocker.blockSideMask & candidate.sideType) == candidate.sideType
 ```
 
-所以 `areHostile` 不是完整原生阻挡允许关系的通用替代。当前 Core 将它作为两端所有 Rule 之前的必要条件，Rule 只能进一步拒绝，不能越过该条件授权同阵营阻挡。
+普通 Character 使用 ENEMY 掩码；这不是一项统一的来源与目标 areHostile 判断。诺伯特平民恰好符合该普通掩码，不足以证明所有阻挡者都使用同一政策。
 
-但**诺伯特平民本身不要求改变这个条件**：其初始 ENEMY 阵营已经满足普通我方阻挡者的原生掩码，也满足当前项目的 `areHostile`。以后支持明确使用其他掩码的内容时，再调整阻挡的阵营资格；不能用本案为依据预先增加掩码 API 或多套授权协议。
-
-鉴定进度、无敌和禁挡的安装、终点奖励分别由内容程序组织。Allegiance、Targetable、伤害接收和 Blocking 保留各自的公共事实与操作，不根据其中一个结果推断其余结果。
-
-## 5. 后续设计决定：根据已确认的原生机制移出阵营策略
-
-同日重新审查后，项目决定直接根据已有 `blockSideMask` 证据修正领域边界，不再等待特殊单位证明：Blocking 结算删除强制 Allegiance／`areHostile` 条件，提供可选标准二元 Rule `sides(...sides: readonly Side[])`。普通干员显式选择 `sides("ENEMY")`；其他阻挡者可以选择其他阵营集合或自己的 Rule。这个决定使用现有 Rule，不新增原生掩码 API。
-
-上述第 4 节关于 `45a5cb2` 的必要条件及“本案不要求改变”的判断是历史基线；不能理解成该硬编码符合完整原生语义。修正依据是既有原生资格调查，而非诺伯特平民的新抽象需求。
-
-同时审查阻挡模式：目标当前运动身份可复用 Layer，寻路模式已由 Route 独立表达，BlockFree 可由 Rule 表达。被阻挡后停走已经由 Movement 根据现有关系处理；原生 BlockMode 则描述允许阻挡的目标运动模式，两者不同。当前地面硬限制没有覆盖完整模式兼容，但这个行为差距不等于必须新增 BlockMode 字段；后续先用现有 Layer、二元 Rule 和内容状态表达，不预设新的共享状态。当前规则、内容选择和模式边界见 [Blocking 设计](../../architecture/blocking.md#关系资格与-rule)。
+鉴定进度、无敌、禁挡和终点奖励的完整原生调用链仍未在本案闭合。项目如何组合这些事实见 [Targeting](../../architecture/targeting.md)、[Blocking](../../architecture/blocking.md)与[Content](../../architecture/content.md)，不在研究中保留旧阵营硬条件或 Rule 草案。

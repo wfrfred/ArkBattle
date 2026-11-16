@@ -1,6 +1,6 @@
 # 空间、单位与机制边界
 
-更新于 2026-10-07。本篇记录卫戍协议所需空间规则的研究结论，不冻结最终 API，也不把客户端继承体系作为 core 的模块划分。
+初始核查：2026-10-07；后续批次分别注明来源。本篇保留地图、设备、地形、几何与全局分发的独有证据；专题原生结论链接到案例，项目职责见[总体架构](../architecture/ARCHITECTURE.md)。
 
 范围包含卫戍协议场景及其使用的普通战斗规则；排除生息演算、保全派驻、船运寻路和 WORD／辞岁行机制。普通箱子只用于对照通用设备规则，不据此扩大卫戍内容范围。
 
@@ -89,7 +89,7 @@ START／END 不能自行创建敌人或判断路线完成。TELEPORT_IN／OUT �
 
 `Tile.get_moveCost`（69846）把普通成本与 obstacle-like 成本区分为 1 和 1000；FLY 搜索使用成本 1。**证实**：所选工事／平台通过高成本改变 WALK 路线，仍保留基础 passage。
 
-[旧 waves 研究](../../external/upstream/docs/research/08-waves-official.md)中的“射击台阻断地面 [ASSUMED]”不能继续作为规则依据；真实 prefab 已支持相反结论。当前 core 的 WALK costFloor 1000 投影与该证据一致。
+真实 Prefab 表明射击台通过高成本影响 WALK 搜索，不能仅凭平台／障碍名称推导不可通行。
 
 **未核对**：普通箱子的完整闭路部署检查、卫戍工事“敌人接触后破坏”的技能／受击调用链、全部 mode 切换与销毁时序。`ignoreBlockAnyRoutes` 的实际取值差异已证实，不能仅凭字段名宣称其完整执行政策。
 
@@ -128,8 +128,6 @@ START／END 不能自行创建敌人或判断路线完成。TELEPORT_IN／OUT �
 
 技能等级需沿 character.skills、phase、skillIndex、mainSkillLvl 选择；`SkillDataBundle.TryGetSkill` 会夹到已有 levels 范围。`Blackboard.Assign` 按大小写无关键覆写，保留未覆写的基础项。
 
-当前加载器已解析所选 MIRE／DEEPSEA 参数，并按项目 30 Hz 表达时间或每 tick 量；这是加载结果，不是完整效果执行或客户端数值逐位兼容证明。
-
 **推断**：静态 Tile 可以保存已归一化的地形配置，当前叠层、状态贡献、周期伤害和控制器开关仍必须有独立运行事实及转换。一个 INFECTION 标签或参数对象不能替代这些事实。
 
 参数加载与运行行为是两层证据；不能把加载器已经解析参数当成完整运行时兼容证明。以下补核只描述原生所选普通分支，不据此宣称项目已实现全部机制。
@@ -158,13 +156,13 @@ priority = RoundToInt_FP(1000 × (atk + attack_speed))
 
 **沼泽。** 实际 `tile_mire` 安装 `buff_mire`；可见控制器提供 `buff_mire[mark]` 和每 0.1 秒的 `[checker]`。`buff_mire` 的开始程序仅在没有 `[trigger]` 时创建一个独立的每秒 trigger；它不是派生随格结束的 Buff，首次周期配置为不等待，具体首帧落点仍受原生 Buff 调度时点影响。trigger 主动触发 mark；mark 对 ENEMY 再检查重量 `>= value`，普通敌人加一层、达门槛加两层，角色类分支只加攻速层，均受 max_stack_cnt 限制。实际地图覆写门槛为 3、上限为 10。
 
-相邻格的旧地块 Buff 结束不会直接结束这个 trigger；进入下一沼泽时又因已有 trigger 而不重建周期。checker 只在定期发现已无 `buff_mire` 时结束 trigger、属性和表现 Buff。因此“相邻连续沼泽不重置叠层周期”有具体内容链支持；真正离开后清理是 checker 周期观察，不是原生每次出格都同步清空全部层数。项目当前安装沼泽 Effect 时传入 `nextTick=battle.tick`，首次 Effect Tick 即可加层，没有另外等待一整秒；这里仍须区分首次可调度微相位与一秒周期预算。特殊敌人的免疫标记等分支保留在模板原件中，没有泛化成所有单位免疫规则。
+相邻格的旧地块 Buff 结束不会直接结束这个 trigger；进入下一沼泽时又因已有 trigger 而不重建周期。checker 只在定期发现已无 `buff_mire` 时结束 trigger、属性和表现 Buff。因此“相邻连续沼泽不重置叠层周期”有具体内容链支持；真正离开后清理是 checker 周期观察，不是原生每次出格都同步清空全部层数。首次可调度微相位与一秒周期预算应分别理解。特殊敌人的免疫标记等分支保留在模板原件中，没有泛化成所有单位免疫规则。
 
 **深水与地穴。** `tile_deepsea` 的 `under_sea[tile]` 只是地块 marker，甚至启用了 ignoreTargetSide；真正伤害／减速由 `sktok_tidectrl_3/Enemy` 的 ENEMY、WALK、普通类别 FilterBuffTargetValidator 识别 marker 后施加。不能把 marker 资格当成最终受伤资格，也不能仅凭 Tile 的 ALL passage 推出飞行单位受水蚀。
 
 地穴由 `HoleTile.OnEnemyEnter`、`OnEnemyMotionModeChanged` 调用 Enemy 虚槽 236 的 `FallDown`（77754）。该操作检查存活／复活状态、当前 changeableMotionMode 与传入 WALK 一致，再请求 FALL 状态；没有阵营检查。故其原生边界是 Enemy 客户端类型和运动资格，不是任意 Unit 的 ENEMY 阵营。我方 Enemy 类单位不能仅因阵营为 ALLY 就由这条链推导免疫；项目如何映射客户端类型须另行决定。
 
-**烟雾。** 当前 `tile_smog` 的 BuffTile 对 ALLY、ALL motion 的普通类别目标直接登记 INVISIBLE，模板为 empty，离开清除。实际组件没有 blocked checker、派生破隐 Buff 或三秒恢复程序。[一般隐匿说明](https://prts.wiki/w/作战机制)也区分了多数敌人的阻挡破隐与我方干员隐匿。所选原生烟雾链不支持“我方阻挡时失去隐匿，解除阻挡三秒后恢复”；若项目继续采用，必须明示为项目政策，不能用通用隐匿通说替代该地块证据。未检查实际 XLua 覆盖。
+**烟雾。** 当前 `tile_smog` 的 BuffTile 对 ALLY、ALL motion 的普通类别目标直接登记 INVISIBLE，模板为 empty，离开清除。实际组件没有 blocked checker、派生破隐 Buff 或三秒恢复程序。[一般隐匿说明](https://prts.wiki/w/作战机制)也区分了多数敌人的阻挡破隐与我方干员隐匿。所选原生烟雾链不支持“我方阻挡时失去隐匿，解除阻挡三秒后恢复”；项目地形行为见 [Terrain](../architecture/terrain.md)，不能用通用隐匿通说替代该地块证据。未检查实际 XLua 覆盖。
 
 ## 6. 阻挡、受击体、作用范围和物理 Body
 
@@ -182,13 +180,13 @@ priority = RoundToInt_FP(1000 × (atk + attack_speed))
 
 `Character._SearchBlockee`（75132）先检查容量、状态和 Tile.isMeleeBlockable，再寻找候选；Enemy.CheckBlockableWithoutCheckRange（75569）独立处理 BLOCK_FREE、运动／阻挡模式与特殊条件。
 
-**证实**：几何接近不是完整阻挡资格。当前 core 已检查静态 WALK 许可、当前 BlockerState radius 和容量；不能宣称已覆盖所有官方 blockMode、状态免疫和 specialBlockCondition。
+**证实**：几何接近不是完整阻挡资格。blockMode、状态免疫和 specialBlockCondition 必须结合实际消费者核对。
 
 `Box2dPhysicsUtil.FindTargets_DISPOSE`（73085）先进行 collider 查询，再调用 TargetOptions 验证。`EntityLocateRange.CheckTargetIn`（73188）和 `PhysicsRange.CheckTargetInOriginRange`（73280）包含 bounds／圆半径判断。Unity 绑定已确认 OverlapCircle／OverlapBox 入口。
 
 **证实**：范围查询不普遍等价于“目标中心是否位于某个格”。**未核对**：全部 selector 的 shape 细节、Unity 相切容差、旋转／缩放、多 collider 的动态更新与高速扫掠。
 
-当前 Circle／Box 并集、相切包含与 GRID 的连续来源锚点是明确的项目几何规则；尚未完整加载真实 hitColliders、Collider 开关和 Body，不能宣称这些有限规则复现所有客户端范围。
+项目几何规则见 [Geometry](../architecture/geometry.md)；上述证据不覆盖全部 hitColliders、Collider 开关或 Body。
 
 物理对照已取得真实 root prefab：slime 为 Dynamic／mass 1，yokai 为 Kinematic／mass 1，acloon 为 Dynamic／mass 1；后两者均为 FLY。原始 massLevel 又分别为 0、0、10。
 
@@ -206,23 +204,11 @@ priority = RoundToInt_FP(1000 × (atk + attack_speed))
 
 **证实：特定领域操作能够立即搜索。** `Character.SearchBlockeeImmediate`（75955）将 force=true 传入 `_SearchBlockee`，绕过普通 ready 检查，但保留搜索中的资格和容量检查。`PullHitTargetBehaviour.OnProjectileStop`（86413）以及 `Action.Nodes.CharSearchBlockeeImmediate.Execute`（99962）具有直接调用点。它证明拉拽结束等操作可以要求立即接住目标，不能把普通周期搜索当成所有操作都必须等待的唯一时点。尚未逐一核对所有部署动画／行动数据何时触发该节点，不据此宣称所有部署都会立即建立关系。
 
-**证实：重新阻挡包含位置结算。** `BlockManager.AddBlockee`（77191）经 `BlockBalancer.CalculateBlockOffset` 计算偏移，调用 `Enemy.RegisterBlocker`（76432）；后者在记录关系和派发通知后调用 `_MoveToBlockPosition`（76515），把敌人调整到阻挡位置。该函数同时具有普通 Tween 和确定性 BattleTween 分支。项目当前 `advanceBlocking` 只写关系，没有这个位置调整。因此轮换阻挡是否最终让敌人通过，不仅与搜索顺序有关，还与每次接住时的位置结算有关。不能仅凭一次快照中的关系相同判定长期结果等价。
+**证实：重新阻挡包含位置结算。** `BlockManager.AddBlockee`（77191）经 `BlockBalancer.CalculateBlockOffset` 计算偏移，调用 `Enemy.RegisterBlocker`（76432）；后者在记录关系和派发通知后调用 `_MoveToBlockPosition`（76515），把敌人调整到阻挡位置。该函数同时具有普通 Tween 和确定性 BattleTween 分支。轮换阻挡是否最终让敌人通过，不仅与搜索顺序有关，还与每次接住时的位置结算有关。不能仅凭一次快照中的关系相同判定长期结果等价。
 
 **证实：部分资格变化会释放旧关系。** 普通 `Character.OnTick` 在相应原生分支检测到 STUNNED／BLOCK_FREE 时调用 `ClearAllBlockees`，`SearchBlockee` 也拒绝这些状态。`OnBlockModeChanged`（75970）会清空关系。阻挡容量下降经 `OnAttributeDirty`（76035）同步调用 `UpdateBlockees`（77192），后者从接收列表尾部移除，直到总占用不超限，不是重新选择最近的一组敌人。强制设置敌人位置具有显式 `ReleaseBlock` 路径；这些释放规则不能用“每帧检测是否仍在半径内”替代。
 
-与当前 TS Core 的对照：
-
-| 情形 | 当前实现 | 本次已核对的官方语义及影响 |
-| --- | --- | --- |
-| A 在 Combat 中死亡，B 仍能接住 E | Battlefield 更新立即解除 A–E，下一次获取在 Movement 之后；E 可能移动，或在路线终点直接完成移除 | 原生没有同一全场 Combat-before-Movement 结构；释放后是否能先被 B 搜索到依赖具体时点，不能默认项目这段空窗等价 |
-| 现有 blocker 仍有效 | 保留关系，不每轮换给最近者 | 与普通原生关系持续性方向一致；未证明所有特殊失效条件均已覆盖 |
-| 多个 blocker 范围重叠 | 依敌人 ID 顺序，给每个敌人选择最近 blocker | 官方由各 blocker 执行搜索，候选是附近敌人；分配结果可能不同 |
-| 阻挡者被眩晕 | `readBlockingFacts` 未读取 STUNNED；纯状态更新及后续 Blocking 都保留关系 | 普通原生路径会清空并拒绝重新获取，这是可复现的资格缺口，不能归为一帧近似 |
-| 重新阻挡 | 只建立关系，敌人位置不变 | 原生会调整到阻挡位置，可能改变轮换与长期通行结果 |
-
-眩晕问题已用当前构建复现：创建一个具有 Status／Blocker 的干员和一个敌人，获取关系后仅给干员添加 STUNNED contribution，再调用 `Battlefield.advance(UPDATE_UNIT)` 和 `advanceBlocking`；两次之后 `blockerOf(enemy)` 都仍指向该干员。旧 `server/sim` 的“眩晕解除阻挡”测试不证明 TS Core 已具备此行为。
-
-后续应分别确定并验证：阻挡资格与释放条件；多个候选的分配规则；普通与显式立即获取的时点；重新获取的位置结算；既有 Action 是否继续执行。至少覆盖 A 死亡／退场而 B 在范围内、眩晕及恢复、容量下降／恢复、重叠范围、拉拽后接住、路线终点和多轮轮换。持续接住敌人本身不能直接判为 Bug；真正要避免的是遗漏失效条件或人为时序空窗改变战斗规则。本次只补查和记录，没有修改源码。
+阻挡取得、保持、主动解除和重新搜索是不同的原生操作；它们的位置与资格后继分别见 [Case 21](cases/21-tippi-air-blocking.md)、[Case 22](cases/22-block-positioning-and-interruption.md)与[Case 23](cases/23-blocker-and-blockable-roles.md)。项目政策维护在 [Blocking](../architecture/blocking.md)。
 
 ## 7. 索敌资格属于具体查询与效果
 
@@ -236,13 +222,11 @@ native `ActionPurposeMask` 明确有 DAMAGE=1、HEAL=2、EP_DAMAGE=4、EP_HEAL=8
 
 实际 `char_491_humus`／`char_188_helage` trait prefab 含 abnormalFlags=[7]，即 HEAL_FREE；休谟斯在卫戍池 `chess_char_2_09` 的特性同时描述无法被友方治疗和攻击恢复自身生命。
 
-**证实**：需要区分普通治疗与其他恢复政策。**未核对**：休谟斯自恢复的完整调用链，以及各种再生／溢出屏障是否走 force 或其他 HP 入口，不能仅从文字把它们统一成忽略禁疗。
+**证实**：需要区分普通治疗与其他恢复政策。休谟斯恢复、自然回复和溢出屏障的后续完整链见 [Case 29](cases/29-hp-and-ep-healing-settlement.md)，不能仅凭文字将它们统一成忽略禁疗。
 
 `enemy_9012_acloon` 的实际常见能力模板 `acloon_enable` 含 abnormalFlags=[15]，即 ALLY_TARGET_FREE；它也不能从敌人身份自动推导全部索敌资格。
 
-**推断**：状态保存事实，查询用途／来源关系／形状与当前状态共同形成 eligibility，接收端保留自己的政策。QueryPurpose 应是独立语义，不直接别名为 Effect 类型。
-
-当前 DAMAGE／HEAL 查询已实现有限资格与确定性优先选择，混合绑定组聚合用途；完整官方 selector、职业限制、嘲讽／出生顺序、部分不可选原因和状态免疫仍未加载。
+查询资格与最终接收不能相互替代；原生完整选择链见 [Case 33](cases/33-targeting-and-targetable-pipeline.md)，项目边界见 [Targeting](../architecture/targeting.md)。
 
 ## 8. Route、Navigation、Locomotion 与临时控制
 
@@ -274,7 +258,7 @@ Route 描述路线脚本，Navigation 回答当前移动意图如何经过有效
 
 **证实**：临时控制改变活动行进上下文，不要求把整份主脚本改写，也不是一个相反速度向量就能复现。
 
-当前 mainRoute／alternativeRoute 已保留独立执行上下文和主路线意图，显式 SET／CLEAR 可以演示接管恢复；实际 Buff 来源、候选生成、优先级、到达重选、到期移除及官方数值尚未接入。
+后续完整创建、操作与临时控制结论见 [Case 13](cases/13-route-and-movement-timing.md)、[Case 31](cases/31-route-operations-and-state.md)与[Case 32](cases/32-leithanien-summons-blocking-and-movement.md)。
 
 初始连续运动／路线核查只留下本文摘录，完整旧报告没有归档；其项目实施或范围外建议不作为当前缺口清单。后续独立证据见[导航批次](evidence/navigation-native-20261018/README.md)、[路线时序批次](evidence/route-movement-20261018/README.md)和[Locomotion 批次](evidence/locomotion-native-20261019/README.md)，不可混用原生索引。
 
@@ -285,14 +269,6 @@ Route 描述路线脚本，Navigation 回答当前移动意图如何经过有效
 实际预置控制器仍由官方 Token prefab／技能承载，保留配置位置；trap_098_mire／trap_042_tidectrl 的根对象 disableUIHub、unwithdrawable，且 rewriteTileOptions=false，核心效果来自技能模板。
 
 **推断**：项目可以把所需的全局启停／关卡进度投影为非空间 Mechanism，不必保留没有规则用途的位置。**证据限度**：这不证明官方控制器本来就没有空间对象，也不证明全部设备可以丢弃位置或生命。
-
-当前 MechanismRuntime 只有 id、definition、active；所选 controller 的参数加载和实例登记不等于技能、地形 Buff 或周期伤害已经执行。
-
-当前俗称 SpatialEffect 的实际类型是 NavigationSpatialEffect。它只提供 WALK／FLY 通行、departure 和 WALK costFloor 贡献，支持 UNIT／MECHANISM 来源及 FIXED／FOLLOW_UNIT 区域。
-
-**当前实现事实**：空间索引按有效来源、锚点与区域构建导航投影；FOLLOW_UNIT 以量化格展开。这与行动 RangeGeometry 的连续锚点 overlap 是不同空间语义。
-
-尚无通用区域伤害／Buff／视野运行支持，不能因已有 effectsAt／effectsFrom 索引便宣称这些机制已实现。单位附着 Effects 也不收编导航贡献或非空间 Mechanism。
 
 ### 光环分发与接收实例
 
@@ -320,33 +296,11 @@ Route 描述路线脚本，Navigation 回答当前移动意图如何经过有效
 | 卡莱莎 `act1autochess_band15_buff`，`atk=0.2`、`max_stack_cnt=10` | 己方击倒触发，对场上剩余单位分别叠 ATK；全局触发状态与接收者贡献分开 | 动态出生、重复触发及各接收实例结束的完整调用链 |
 | 桑葚 `act1autochess_band17_buff`，`prob=0.25` | 描述指定战斗开始时选最右边单位，不能默认改成持续覆盖后来出生单位 | 开始时选择入口、后续资格和盾反应程序 |
 
-这些数据都使用 `env_gbuff_new_with_verify`。**证实**：该字段连到具体内容 key；字段名不能自行决定内容是持续分发、一次目标采样还是全局事件机制。[盟约研究](../../external/upstream/docs/research/02-bonds.md)中关于层数变化后立即重算全部 Buff 的 ASSUMED 条目也不能当作已确认的刷新协议。
+这些数据都使用 `env_gbuff_new_with_verify`。**证实**：该字段连到具体内容 key；字段名不能自行决定内容是持续分发、一次目标采样还是全局事件机制。不能仅凭描述认定层数变化会立即重算全部 Buff。
 
 `GlobalEnvSystem` 独立保存 executors、managers、blackboard、身份与寿命设置，由 `GlobalEnvSystemController` 创建、Tick、移除，并提供环境变更和 Action／Projectile 等入口。**推断**：全局周期、共享计数、阶段与环境启停自然属于非 Unit 的机制事实；不能强制全部环境规则都展开成每个 Unit 的属性 Buff。
 
-### 对当前架构的约束
-
-Effect 实例负责自身生命周期和安装关联；接收端 Capability 保存已安装的本领域贡献与参与事实，由领域 operation 修改和合成。全局共享额度、源周期和分发进度保留在来源作用域，不能复制到接收端，也不需要重新引入统合的 Attributes 管理器。数值贡献、状态贡献和导航投影分别交给对应领域消费。
-
-当前导航区域索引可作为纯空间投影，但尚无 Aura／GlobalBuff 分发过程与接收实例关联。现有 `MechanismRuntime` 的 active 不足以承担全局共享额度或周期进度；单位 Effects 容器也不能代替源到接收者的安装关系。
-
-投射物的跨 tick 行进、命中去重和 continuation 已确认是独立执行事实，见 [Case B](cases/02-action-and-projectile-phases.md)。这不自动决定全部投射物是否要组合成 Unit；应按具体内容的碰撞、引用与能力需求判断。
-
-## 10. 当前实现与准确缺口
-
-| 领域 | 当前已具备 | 仍需内容或行为核查 |
-| --- | --- | --- |
-| 静态地图 | marker、通行／部署基础值、静态边、所选 prefab 掩码 | HOLE 键到真实组件绑定、更多 prefab 及动态有效地块政策 |
-| 工事／平台 | 固定生命实例、导航贡献、所选部署覆写、支撑／占位关系 | 工事接触破坏、全部地图演变触发、完整平台移除内容政策 |
-| 部署生命周期 | 明确创建、重定位、撤退及预置出现／移除命令 | 原始卡牌供给、返回／再部署、隐藏配方与实际技能触发链 |
-| 几何 | 当前阻挡半径、Circle／Box／GRID 纯查询 | 真实多 hitCollider、Body、旋转缩放、物理避障与扫掠 |
-| 索敌／接收 | 有限 DAMAGE／HEAL、状态贡献、独立禁疗／无敌接收 | 特殊 selector、职业及状态免疫内容、更多恢复政策 |
-| 行进 | 30 Hz、主／临时上下文、等待与移动许可分开 | 完整 steering／物理衔接、特殊敌人覆盖、恐惧／诱导控制器 |
-| 地形机制 | 四类静态配置、所选 controller／skill 参数 | 感染、烟雾、沼泽叠层、深水 Buff／周期伤害的运行转换 |
-| 非空间机制 | id／definition／active 及来源清理 | 全局共享额度、周期、触发、分发关联与机制生命周期 |
-| 区域与投射物 | 导航区域投影；基本即时行动 | Aura／GlobalBuff 接收实例与成员维护、区域伤害、独立投射物执行及具体采样政策 |
-
-这些缺口不要求重新合并 Tile、设备、单位和机制；它们要求在已有边界内补足具体规则、当前事实与内容编译，并保持加载支持范围可核查。
+全局过程与接收 Buff 的身份、安装关联、共享额度和来源清理分别核实；不能仅从当前几何恢复已发生的安装。项目组织见 [Effect](../architecture/effect.md)与[总体架构](../architecture/ARCHITECTURE.md)。
 
 ## 11. 可复查证据入口
 
@@ -357,4 +311,3 @@ Effect 实例负责自身生命周期和安装关联；接收端 Capability 保�
 - 路线、导航和运动：[导航算法](cases/12-navigation-native-algorithm.md)、[路线时序](cases/13-route-and-movement-timing.md)、[Locomotion](cases/15-locomotion-native-semantics.md)各自链接对应取证批次；旧地图／运动／路线报告全文未归档，船运／WORD 等历史范围不纳入本文。
 - 受击与物理区别：本文保留 yokai 根组件及 bodyType／mass 的初始摘录；免疫、失衡与地图碰撞的后续独立证据见[Locomotion 案例](cases/15-locomotion-native-semantics.md)，原位移报告全文未归档。
 - 光环与全局分发：关键方法、调用与字段投影保存在[持久证据](evidence/client-excerpts-20261007/records.json)，来源与复查范围见[批次说明](evidence/client-excerpts-20261007/README.md)；完整旧报告没有归档。
-- 当前源码边界：[navigation-effect.ts](../../src/core/battlefield/navigation/effect.ts)、[mechanism.ts](../../src/core/battlefield/mechanism.ts)、[blocking.ts](../../src/core/battlefield/blocking/relations.ts)、[shape.ts](../../src/core/geometry/shape.ts)、[targeting.ts](../../src/core/unit/targeting/compile.ts)、[locomotion](../../src/core/unit/capability/locomotion/capability.ts)。

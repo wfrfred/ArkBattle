@@ -63,4 +63,4 @@ uv run --offline docs/research/evidence/elemental-zero-duration-20261105/templat
 
 本批证明给定零参数时的普通分支，不证明正式配置中存在零秒标准爆发。开始程序可以生成有独立参数的子 Buff，因此零父寿命既不表示所有效果跳过，也不表示所有效果完整持续。真正的开始／结束动作、派生标记、子项寿命、接收资格和显式触发仍分别决定结果。
 
-当前 Holder 内部的根到 Character／Enemy 子模板绑定已读取；本机全局 EPBreakBuffData 的 elementBuffs 配置选择尚未独立定位。没有以项目测试或人工模拟代替这一缺口。具体机制结论及对项目零时长契约的影响只在案例 25 维护。
+本批读取 Holder 内部根到 Character／Enemy 子模板绑定，未独立定位全局 EPBreakBuffData；后续[回复与元素批次](../resource-mechanisms-20261114/recovery-elemental/README.md)已补五型全局表和实际选择。完整机制结论与零参数证据边界统一在 [Case 25](../../cases/25-elemental-burst-recovery-timing.md)维护。

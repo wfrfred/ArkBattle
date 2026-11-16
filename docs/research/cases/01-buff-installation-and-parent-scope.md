@@ -1,8 +1,8 @@
 # Case A：Buff 安装、有效性与父作用域
 
-研究日期：2026-10-07；当前实现基线 `3f35bfd` 及当前目录整理工作树。本篇只确定影响游戏结果的实例与调用顺序，不冻结 API，不要求复刻官方容器、回收时机或浮点轨迹。
+初始研究：2026-10-07；后续补核分别记录来源。本篇只确定影响游戏结果的实例与调用顺序，不冻结 API，不要求复刻官方容器、回收时机或浮点轨迹。
 
-**范围**：维什戴尔残影是用户此前提出的协议压力样例；当前 `data/chess.json` 未包含该干员，不能据此增加本季角色支持承诺。鼓舞对照采用本季 `chess_char_6_04_a/b → char_1012_skadi2 → skchr_skadi2_3`；S2 不作为本季默认技能证据。
+**范围**：维什戴尔残影是用户此前提出的协议压力样例；该批卫戍棋子池未包含该干员，不将协议样例当成卫戍实际入池证据。鼓舞对照采用本季 `chess_char_6_04_a/b → char_1012_skadi2 → skchr_skadi2_3`；S2 不作为本季默认技能证据。
 
 **证据**：首轮客户端版本与哈希沿用 [05](../05-evidence-and-open-questions.md)。以下“证实”指本机常规原生分支与真实模板；未运行客户端，也未排除 Lua 覆盖。“推断”是据此得到的项目约束，“待核对”是尚未闭合的行为。关键短摘录保留在本文及[初始客户端批次](../evidence/client-excerpts-20261007/README.md)；当时完整新增转储与专用解码脚本未归档。2026-11-10 的属性、合并与覆盖组补核见第 8 节，使用该批次独立记录的输入指纹与当前方法索引。
 
@@ -200,7 +200,7 @@ CreateBuff 的 modifier 描述为 `ATK / FINAL_SCALER / fetchBaseValueFromSource
 
 鼓舞与残影的共同点是独立实例与父关系；差异是鼓舞还保存采样结果并参与属性组合。**推断**：仅在 Resources 缓存程序、每次查询用最新源 ATK 动态计算，并不能保留上述刷新节律；采样值必须是可恢复的实例事实。
 
-## 6. 有限协议结论与当前差距
+## 6. 原生调用结论与范围
 
 | 结论 | 证据与限度 |
 | --- | --- |
@@ -211,9 +211,9 @@ CreateBuff 的 modifier 描述为 `ATK / FINAL_SCALER / fetchBaseValueFromSource
 | 来源值采样与刷新由内容过程决定，属性查询消费当前贡献 | **证实**：本季 S3 的周期父与采样子；其他属性刷新政策不自动相同 |
 | 局部生效与权威发布可以分开 | **推断**：工作状态保存同步步骤结果，成功后整体发布；不必直接改公开 Battlefield |
 
-当前 EffectInstance 的纯数据／资源分离方向可保留；`lifetimeOwner` 只有 UNIT／EXECUTION，缺少父实例关联。当前 install/remove/expire 也没有开始、禁用、结束程序及覆盖接纳阶段。这些是本案证实的未覆盖路径，不证明现有有限直接效果实现本身错误。
+项目的实例、父关系、安装与结束契约见 [Effect](../../architecture/effect.md)与[Lifetime](../../architecture/lifetime.md)。
 
-首轮没有落定完整 override 状态机；第 8 节补齐普通合并与覆盖组选胜分支。来源分组、源退场与父暂停的全部传播政策、Buff 图循环处理、所有安装免疫、全局结束动作队列、范围成员刷新及多鼓舞的完整内容链仍未穷尽，不能用一个统一 owner 或 `group {id,strength}` 自动推导。
+普通合并、覆盖选胜、来源分组和 STACK 到期见第 8、9 节。所有安装免疫、源退场与父暂停的特化传播、范围成员刷新及多鼓舞的完整内容链仍未穷尽；不由已核实的普通分支自动推广。
 
 ## 7. 复查锚点
 
@@ -289,13 +289,13 @@ source 非空时先读取来源的当前有效属性，四种写槽分别为：
 
 证据见本批 [`CompareTo`](../evidence/unit-audit-20261110/buff-attributes/native/CompareTo-66089.asm)、[queue Add helper](../evidence/unit-audit-20261110/buff-attributes/native/helper-0x1853ff1d0.asm)、[`_DoUpdateInternal`](../evidence/unit-audit-20261110/buff-attributes/native/_DoUpdateInternal-66292.asm)和 [`Remove`](../evidence/unit-audit-20261110/buff-attributes/native/Remove-66284.asm)。[PRTS 术语释义固定版本](https://prts.wiki/index.php?title=术语释义&oldid=448536)区分先获得者生效与高效果优先，可作内容层互证，不独立证明通用队列算法。
 
-**P 边界**：Core `Effect.enabled=false` 是调用方的持久启用意图；原生 group 会重写 manuallyEnabled，实际生效还受其他条件控制。原生支持“当前未生效者仍占组位置”的竞争形状，不能单独证明项目 setter 的持续性、重入时序，或任意 group.id 与原生 key／来源分组的完整映射。整体竞争也不替代 UNIQUE 接纳、STACK 合并等其他政策。
+原生 group 会重写 manuallyEnabled，实际生效还受其他条件控制；“当前未生效者仍占组位置”的竞争不能代替 UNIQUE 接纳或 STACK 合并。项目启用意图与分组接口见 [Effect](../../architecture/effect.md)。
 
 ### 8.4 配置证据与尚未决定的范围
 
 当前[选中配置](../evidence/unit-audit-20261110/buff-attributes/configurations.json)分别含 `astesi_t_1[Stack]` 的实际 cap=5、`sbell2_e_002_trait[interval]` 的实际无限／有效 cap=5、`enemy_shushu_support` 的 cap=20／有效 cap=1、`ascln_t_1[debuff]` 的达上限刷新，以及 EXTEND、EXTEND_TIME 的非默认实例。这些是 **N-配置**；本批没有逐个补齐其 prefab→Ability→模板启动条件，不能全部提升为已闭合的实战链。
 
-全部 9054 个当前 holder 模板中，EXTEND+snapshot=true 仅命中 `gamecity_miner_byokai_archook_reward`。**G**：本批没有受支持常规内容的完整可执行正例；该有限集合的命中不能证明全游戏有无此需求。**P**：独立 Data Buff planner 的支持范围、公开协议及其期限表示仍需项目决定，算法有证据不等于该中间接口必须保留。本次补证不要求恢复人工动态 cap 或任意 null／0 时间测试矩阵。
+全部 9054 个当前 holder 模板中，EXTEND+snapshot=true 仅命中 `gamecity_miner_byokai_archook_reward`。**G**：本批没有受支持常规内容的完整可执行正例；该有限集合的命中不能证明全游戏有无此需求。
 
 ## 9. 2026-11-11 补核：覆盖组身份与 STACK 到期
 
@@ -406,7 +406,7 @@ remainingTime >= 0
 
 麻痹 palsy[stack] 的两个创建节点均开启 loadFromDB，节点默认时长不能代替数据库解析后的配置；本批没有将它们当作普通有限寿命逐层减层的正例。PRTS BUFF 页能互证一般 STACK 到期政策，但其禁用覆盖概述没有解释上述来源独立组合；组合条件以 9.2 的实际指令为准。
 
-本次闭合的是覆盖组身份与 STACK 自然到期的普通原生架构。第 8 节仍缺的受支持普通内容 EXTEND+snapshot 完整执行正例不因本次调查自动解决；项目如何表达分组、来源与暂停时钟，也仍由后续架构讨论决定。
+本次闭合的是覆盖组身份与 STACK 自然到期的普通原生架构。第 8 节仍缺的受支持普通内容 EXTEND+snapshot 完整执行正例不因本次调查自动解决；项目分组与计时契约见 [Effect](../../architecture/effect.md)。
 
 ### 9.6 cardUid 的生成与重部署保留
 
@@ -434,7 +434,7 @@ TokenCard.SpawnInternal 将自身 Card 交给 BattleController.CreateToken；后
 
 ### 9.9 分组简化的实际内容影响
 
-2026-11-12 根据[内容与来源短链](../evidence/independent-group-impact-20261112/README.md)确认采用以下项目简化：不独立时用基础 group.id；来源独立时，关联 Card 的 Unit 用 `(group.id, Card 身份)`，无 Card 的 Unit 用 `(group.id, Unit 身份)`，空来源用 `(group.id, null)`。分组范围仍是同一接收者，不更改真正的 source、按来源查询、接纳／竞争政策或父子生命周期。规范契约见 [Effect 来源分组](../../architecture/effect.md#来源分组)；Core 按该契约保存分组来源采样并执行重复施加与竞争。
+[Effect 来源分组](../../architecture/effect.md#来源分组)记录已批准的项目简化；2026-11-12 的[内容与来源短链](../evidence/independent-group-impact-20261112/README.md)专门评估该选择的实际影响，以下保留正例、范围及限制。
 
 下表的结果来自实际配置与普通调用链接续后的推导，不是实机 A／B 观测。
 

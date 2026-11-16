@@ -2,7 +2,7 @@
 
 采集日期：2026-11-13；完成核对：2026-11-14。问题是：生命流失能否使用 ArkBattle 已选定的 Calculate／Apply 和 Hook 协议，通过业务性质与机制资格表达原生内容，而无需复制原生阶段开关。
 
-结论维护在[案例 11 第 7 节](../../cases/11-damage-apply-and-hp-application.md#7-统一管线的实际内容对照2026-11-13)。本批未修改 Core、测试或既定两阶段／死亡契约，新增请求字段仍属于待定方案。
+结论维护在[案例 11 第 7 节](../../cases/11-damage-apply-and-hp-application.md#7-不同接收路径的实际内容对照2026-11-13)。项目请求、Nature 与选择性响应的当前契约见 [Resource](../../../architecture/resource.md)，本批不另存待定字段方案。
 
 ## 材料与范围
 

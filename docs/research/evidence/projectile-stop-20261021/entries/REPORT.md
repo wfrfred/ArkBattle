@@ -1,6 +1,6 @@
 # Projectile Stop 入口与命中政策
 
-日期：2026-10-21。仅研究停止/终结入口；不研究来源或目标离场，不修改项目源码。原生 DLL 与 Metadata SHA256 同 `docs/tactical-research/evidence/projectile-boundaries-20261021/manifest.json`。本报告读取当前本机原生代码；未执行客户端注入或审计活跃 XLua 替换。
+日期：2026-10-21。仅研究停止/终结入口；不研究来源或目标离场，不修改项目源码。原生 DLL 与 Metadata SHA256 见[运动与命中清单](../../projectile-boundaries-20261021/manifest.json)。本报告读取当前本机原生代码；未执行客户端注入或审计活跃 XLua 替换。
 
 ## 核心结论
 

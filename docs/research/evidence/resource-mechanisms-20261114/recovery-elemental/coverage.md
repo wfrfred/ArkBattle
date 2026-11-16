@@ -17,10 +17,10 @@
 | EP自然回复 | N+D闭合 | 余非零天赋、人数checker、当前MaxHP采样→属性29→timer；另有恐鱼铃／globalbuff／触手locator。 |
 | HP普通治疗公式、输出与通用事件 | N+D闭合，复用Case29 | CalculateHeal两重载、末药RangedHeal实际绑定、主ApplyModifier通用前后置。 |
 | 行医HP／EP组合、满HP仍EP | N+D闭合 | 桑葚Trait附件先EP后HP、.5黑板；两笔求值提交独立。 |
-| HP／EP普通回复禁疗差异 | N+D闭合，项目另有选择 | HP OnTakeHeal检查HEAL_FREE；EP不复用HP接收；休谟斯Trait显式force；项目healFree仅Targeting不被研究覆盖。 |
-| 初始0、正量实际0、负数 | N条件分支闭合，项目政策已确认 | Modifier入口取消与finalDelta截零分开；满HP正Heal可成功；没有找到实际负数普通治疗Content，不能推HP／EP错误策略不同。 |
+| HP／EP普通回复禁疗差异 | N+D闭合 | HP OnTakeHeal检查HEAL_FREE；EP不复用HP接收；休谟斯Trait显式force；项目接收政策见 [Resource](../../../../architecture/resource.md)。 |
+| 初始0、正量实际0、负数 | N条件分支闭合 | Modifier入口取消与finalDelta截零分开；满HP正Heal可成功；没有找到实际负数普通治疗Content，不能推HP／EP错误策略不同。 |
 | HP溢出、ES、屏障转换、来源相等 | N+D闭合来源，资源提交与life合并 | 休谟斯／医生、flag0x400、临时监听、Entity同一性比较、ES事件47；ES／负生命详细顺序以life原体为准。 |
-| 生命复原与自然HP回复 | N+D闭合，项目近似单列 | 号角skip治疗、原生自然回复timer、缇缇满血通知；已有逐Tick小数回复选择不因消费者存在自动失效。 |
+| 生命复原与自然HP回复 | N+D闭合 | 号角skip治疗、原生自然回复timer、缇缇满血通知；原生脉冲与项目回复近似分别见 [Case 29](../../../cases/29-hp-and-ep-healing-settlement.md)及 [Vitality](../../../../architecture/vitality.md)。 |
 | CopyHealth与HP差量同步 | N+D资源图闭合 | 幻影创建链缺失HP伤害；喷口→目标装置Aura→.03秒同步MaxHP/HP。两种实现不能当作同一个公共操作。 |
 | Atk转自然回复／巨型Boss治疗 | N+D闭合节点／配置 | 万顷S2；岁相产物trap_056_sfsuifire→HealCurrentGiantBoss。Boss生命策略由life合并。 |
 

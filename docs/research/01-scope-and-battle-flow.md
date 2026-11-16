@@ -1,11 +1,10 @@
-# 卫戍协议内容范围与战斗推进
+# 战斗时间、推进与关卡样本
 
-核查日期：2026-10-07。本文记录机制事实、来源边界和当前实现差距，不确定最终类型或 API。
+初始核查：2026-10-07；后续批次分别注明来源。本文保留时间、对象推进与关卡取样的原生依据。调度字段结论集中于 [Case 30](cases/30-scheduler-action-data-fields.md)，项目推进契约见[总体架构](../architecture/ARCHITECTURE.md)。
 
 ## 1. 范围与证据强度
 
 本文以本仓库选择的 `act2autochess`（卫戍协议：盟约下半）作为重点调查样本。ArkBattle 是通用明日方舟战斗模拟器；本篇样本与当前实现优先级不限定 Core 的通用战斗语义。
-当前整理配置包含单人／联合模拟各四种难度，训练模式标为 `inScope=false`。
 生息演算、保全派驻等特殊模式及船运寻路暂不考虑；这不排除普通关卡的通用战斗机制。
 客户端存在 `LhshipSPFA` 等类，不能据此把对应寻路模式加入卫戍协议。
 
@@ -15,7 +14,6 @@
 | --- | --- | --- |
 | 原生确认 | 本机客户端普通原生分支的字段、调用和条件 | Lua 热更新后的完整现场行为 |
 | 原始配置确认 | 指定关卡、角色、技能及实际引用 prefab 的描述和绑定 | 所有条件分支都会激活，或某隐藏实例已经出场 |
-| 项目事实／设计选择 | 当前代码、整理数据和授权的确定性契约 | 官方客户端具有相同架构和精确帧顺序 |
 
 本机来源是 `GameAssembly.dll`、`global-metadata.dat` 与实际 Unity bundle；metadata 格式为 IL2CPP 29，Unity 为 `2021.3.39f1`。
 资源清单 `hot_update_list.json` 的 `versionId=26-08-16-14-00-43_415873`、`manifestVersion=V077`；这是资源清单版本，不等于可执行程序版本号。
@@ -27,41 +25,6 @@
 - [初始客户端摘录](evidence/client-excerpts-20261007/README.md)：保留逻辑推进的所选方法及初始输入记录；Scheduler、出生账本等其余锚点见本文，当时完整报告没有归档。
 - [Blocking 推进时序批次](evidence/blocking-timing-native-20261023/README.md)：后续客户端的 BattleController／对象推进指令；索引只适用于该批次指纹。
 - 工事、平台与深水的引用及摘录见 [空间研究第 11 节](03-space-units-and-mechanisms.md#11-可复查证据入口)。旧部署报告未入仓，不能将当前客户端重提结果冒充原报告。
-- [旧波次调研](../../external/upstream/docs/research/08-waves-official.md)、[限伤调研](../../external/upstream/docs/research/11-limits-official.md)：内容生成与特殊玩法边界。
-
-## 2. 整理数据的实际规模
-
-`data/` 是 `tools/build-data.mjs` 汇总客户端数据、研究 JSON 和项目选择后的输出，不是未经解释的原始客户端格式。
-标有 `assumed` 的经济、模式倍率或玩家数量缩放，不因进入该目录就成为官方已确认规则。
-
-| 文件 | 本次读取的条目数 | 解释 |
-| --- | ---: | --- |
-| `chess.json` | 266 | 133 套普通／精英棋子配置；对应 122 个不同 `charId` |
-| `enemies.json` | 249 | 包含占位模板、召唤等角色；其中 `tokenOnly` 为真的有 8 条 |
-| `tokens.json` | 22 | 整理分类为 19 个 summon、1 个 bondSummon、2 个 mapChar |
-| `garrisons.json` | 249 | 棋子特质配置，含战斗与整局玩法事件 |
-| `effects.json` | 361 | 共用内容描述，横跨羁绊、装备、策略、机变等入口 |
-| `items.json` | 115 | 112 个装备配置，加 3 个术式配置 |
-| `bonds.json`／`bands.json` | 23／40 | 盟约与策略配置，并非普通单位列表 |
-| `bosses.json` | 10 | 领袖内容及模式关联 |
-| `waves.json` | 38 | 13 normal、2 escaped、14 boss、6 hidden、3 training 模板 |
-| `stages.json` | 11 | 本季选择中 8 个 active，另外 3 个为遗留地图 |
-
-数量描述的是当前文件，不是“core 已支持多少内容”；旧研究中 enemy 的 326 条统计使用不同集合，不应混用。
-本次整理数据指纹为 SHA-256 前 16 位：`waves=80cb535958f22a1b`、`chess=9eee03961114ea86`、`enemies=7361604e47bd3954`。
-另外 `config=a8e1fc4cf9bd3362`、`bonds=73fe3949e97a5107`、`items=6122a3cd75531f55`、`effects=96e28be614f04da6`。
-
-内容覆盖至少要走完这条证据链：
-
-```text
-本季／模式选择
-→ 关卡、棋子、装备或玩法事件引用
-→ 实际选用的技能、prefab、模式及条件
-→ 已编译并可执行的行为
-→ 对应行为验证
-```
-
-全局 Buff 模板存在只证明定义可用，不能跳过上述引用与激活链。
 
 ## 3. 战斗之前、战斗之中、战斗之后
 
@@ -79,7 +42,7 @@
 | 持续 Buff、装备战斗效果 | 实例身份、局部状态、来源和时限 | 效果实例及所属领域；资源保存行为 |
 | 击杀、漏怪、战斗结束 | 领域报告、统计与玩法反馈 | Battle 汇总，外层玩法解释 LP、奖励及后续阶段 |
 
-当前 `garrisons.json` 中 121 条属于 `IN_BATTLE`；其余为 `SERVER_PRICE`、`SERVER_CHESS_SOLD`、`SERVER_GAIN`、`SERVER_PREP_FIN`、`SERVER_PREP_START` 和 `SERVER_REFRESH_SHOP`。
+该批整理资料中的 garrison 事件分为 `IN_BATTLE` 和 `SERVER_PRICE`、`SERVER_CHESS_SOLD`、`SERVER_GAIN`、`SERVER_PREP_FIN`、`SERVER_PREP_START` 和 `SERVER_REFRESH_SHOP`。
 例如 `garrison_25_a` 是获得棋子时加盟约层数，`garrison_123_a` 是休整期首次刷新相关；不能为它们创建普通战斗攻击 hook。
 `garrison_01_a` 的弱点伤害则通过 `env_gbuff_new_with_verify` 和具体效果键进入战斗内容。
 “同一效果表”不代表“同一个生命周期”。这些例子目前以整理数据为引用证据，原生事件到模板的完整链仍按具体内容补证。
@@ -114,9 +77,7 @@
 服务步进 `ServerStepModeHelper.Tick` 按播放速度尝试多个 `NextFrame`，还受可用同步帧限制。
 [Unity 2021.3 timeScale 文档](https://docs.unity3d.com/2021.3/Documentation/ScriptReference/Time-timeScale.html)说明 FixedUpdate 的调用频率受其影响；这是引擎语义佐证，不替代游戏模式分支。
 
-项目已经选择固定 **30 tick/s**，core 不读取 clock；倍速由外部驱动多次 step。
-这是授权的模拟规则，不能写作“严格复现官方所有阶段固定 30 Hz”。
-当前 `secondsToTicks` 按项目时间转换且消除接近整数的浮点误差，不模拟官方 Q32.32 每次扣减残余。
+项目时间表达见[总体架构](../architecture/ARCHITECTURE.md)，不能将其固定 Tick 选择倒推为原生所有阶段的频率。
 例如本机默认 raw delta 下 1 秒 WAIT 连续扣减的静态推算需 31 次；步进 delta 下需 21 次。
 这些数字不包含 checkpoint 进入位置与 coroutine 唤醒阶段，尚不是运行客户端确认的最终到达帧。
 此推算只记录来源差异，不作为项目兼容验收或设计前置；项目按已选择的 30 tick/s 表达等待语义。
@@ -149,73 +110,28 @@ ObjectManager 的普通原生遍历已在 [Case B](cases/02-action-and-projectil
 这个结论属于一次领域派发，不能扩展成整场所有事件共享同一排序。
 Buff 派发期间增删实例的完整可见性、延迟命中与技能切换同帧采样，仍需具体程序和调用链核查。
 
-## 6. 官方 Scheduler 已确认的语义
+## 6. Scheduler 专题与配置来源
 
-ActionData 的逐字段证据、配置覆盖与 Data 接入前缺口集中维护在[案例 30](cases/30-scheduler-action-data-fields.md)。以下执行链摘要不表示所有字段已完成调查。
+通用构造、预处理、队列、出生、销毁／回收及等待账本的结论集中于 [Case 30](cases/30-scheduler-action-data-fields.md)。新批次版本与完整原体见 [scheduler-native](evidence/scheduler-native-20261107/README.md)及 [scheduler-general](evidence/scheduler-general-20261107/README.md)，不能混用下列初始客户端索引。
 
-主波次 `_DealWave`（71369）记录 `userFixedPlayTime`，执行 preDelay，逐片段执行，之后检查波次阻塞，最后执行 postDelay。
-`maxTimeWaitingForNextWave` 的计时起点是片段／队列执行完成后进入等待时，不是 wave 开始时。
-最后一波不靠该最大等待时间提前放行；超时只释放本波阻塞集合，不移除存活敌人。
+| 初始锚点 | 记录范围 |
+| --- | --- |
+| _DealWave 71369、_DealFragment 71380、ExecuteActionQueue 71343、比较器71375 | 前后延迟、队列与片段完成后的波次等待；原始比较器只比较时间，没有据此证明同刻稳定排序。 |
+| _DealAction 71258、_DoSpawn 71398、_OnActionExecuted 71292 | count 展开、delayToBorn 修正及动作完成回调，动作完成不等于敌人死亡。 |
+| _NotCountInTotal 71224、_OnUnitDestroyed 71295、_OnEnemyRecycled 71297、_CheckFinalNotFinish 71294 | 总数、波次／最终等待、销毁／回收及模式结束条件分别存在。 |
+| TryMoveNextBranch 71235、BranchRuntime.TryPickNextPhase 71309 | 逐次选取 Phase、游标与循环；分支存在不表示自动开始。 |
+| RandomEnemyGenerater._DoReplaceLevelDataClient 79011、_DoReplaceActionDataClient 79012 | 卫戍准备层替换占位动作；不代表通用 Scheduler 自行决定阵容。 |
 
-片段 `_DealFragment`（71380）记录 `fragmentStartTime=userFixedPlayTime+preDelay`，排队动作并等待整个队列执行完。
-空队列没有独立的无条件 preDelay 等待；有未来动作的队列即使无 blockFragment，也不能提前跳过。
-`ExecuteActionQueue`（71343）按相邻 offset 等待并执行；比较器（71375）仅比较时间，未证明同 offset 的 List.Sort 稳定。
-项目可以采用自己的确定性同刻顺序；只有动作之间存在改变结果的状态依赖，才需要继续核对相应先后语义，不要求复刻内部排序实现。
+本节早期完整转储没有归档，来源限度见[初始批次](evidence/client-excerpts-20261007/README.md)；后续相同机制以各新批次的原件与独立指纹复核。
 
-`_DealAction`（71258）将 count 展开并计算出生偏移；SPAWN 会扣 prefab 的 `delayToBorn` 并限制非负。
-`_DoSpawn`（71398）创建／登记后回调 `_OnActionExecuted`（71292），释放的是动作完成计数，不等待敌人死亡。
-实例创建、出生动画结束、可操作并非同一时点；不能把 blockFragment 理解成“片段敌人全部被击杀”。
-
-| 账本 | 进入与退出依据 | 不等同于 |
-| --- | --- | --- |
-| 本波 managedWave | managed、计数资格、主／分支阻塞标志 | 当前场上所有敌人 |
-| 全场 managedFinal | managed 且计入调度；销毁或回收策略决定退出 | 本波集合是否为空 |
-| blockCounter | 排队动作与执行完成 callback | 战场活单位数 |
-| 击杀／漏怪统计 | 对应生命周期与玩法规则 | 单纯减少任何一个账本 |
-
-`_NotCountInTotal`（71224）组合 EnemyData 与 ActionData 标志；与 unharmful 不是同义开关。
-`_OnUnitDestroyed`（71295）和 `_OnEnemyRecycled`（71297）揭示销毁／回收退出 final 的配置差异。
-`_CheckFinalNotFinish`（71294）还检查模式与 finish-blocker；final 集合为空不是所有模式的完整胜利条件。
-`TryMoveNextBranch`（71235）一次取下一 phase；`BranchRuntime.TryPickNextPhase`（71309）管理游标与 loop。
-分支存在不表示自动开始，分支路线使用 extraRoutes；出生时沿用当时主波／片段计时快照。
-
-原始 `act1autochess_01` 的 dragon 分支包含 `enemy_9012_acloon`，但主 waves 没有对应触发动作。
-既有 native 调用扫描尚不能证明普通回合的触发时点；显式触发测试不能替代真实玩法触发证据。
-`h08_01` 的两个本地随机动作有相同 packKey，不能简化成互斥的两敌人随机选择。
-Branch Phase 的随机组与关联包规则补核见下文；其他模式的按日／按季刷新不在项目调查范围。内部随机调用轨迹与 coroutine 精确量化不作为兼容目标。
-
-卫戍 `RandomEnemyGenerater._DoReplaceLevelDataClient`（79011）与 `_DoReplaceActionDataClient`（79012）改写占位动作。
-普通回合选定特训条目后保留相应移动类别，并按战斗效能计算 count；另一移动类别占位动作不生成。
-此投影属于卫戍内容准备，通用 Scheduler 不能自己猜 N／NF 模板的替换结果。
-
-### 2026-11-06：两份关卡的主线与分支结构
-
-**原始配置确认：** 对照 PRTS [作战机制·波次](https://prts.wiki/w/作战机制#扩展阅读：波次)，读取客户端配置镜像固定提交 `bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d` 的两份文件。选择器、完整源 JSON 的规范化指纹与必要原值摘录归档于[本批证据](evidence/schedule-level-structure-20261106/README.md)。
+[两份完整关卡摘录](evidence/schedule-level-structure-20261106/README.md)固定镜像提交 bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d：
 
 | 样本 | 主线 | 分支 |
 | --- | --- | --- |
-| `level_hard_08-01.json`（H8-1） | 一波、六个 Fragment；Fragment 使用 preDelay 与 actions | branches 为 null |
-| `level_act1autochess_h07_02.json` | 一波、一个 Fragment，七条出生动作 | dragon、boss_escaped_walk、boss_escaped_fly、boss_battle_multi_player，各有一个 phase |
+| H8-1，level_hard_08-01 | 一波六个 Fragment；片段1前延迟5，动作偏移5／15／25；片段5动作4为 count2、preDelay20、interval8。 | branches=null。 |
+| level_act1autochess_h07_02 | 一波一个 Fragment，七条出生动作。 | dragon、boss_escaped_walk、boss_escaped_fly、boss_battle_multi_player各一Phase。 |
 
-H8-1 的 `/waves/0/fragments/1` 有 preDelay=5，三条出生动作的 preDelay 分别为 5、15、25，分别使用 routes[5]、routes[6]、routes[7]。`/waves/0/fragments/5/actions/4` 则为 count=2、preDelay=20、interval=8，展示同一动作重复出生的静态配置；按项目 30 Hz，配置层的两次名义动作偏移可转换为相对该片段时间锚点 600、840 Tick，片段本身的前延迟另外处理。实际客户端的 delayToBorn 修正及 coroutine 唤醒时点见前文，不能用这组配置数字冒充最终出生帧。
-
-卫戍模板的 `/branches/dragon/phases/0` 使用 preDelay=0，包含一条 enemy_9012_acloon 的 SPAWN，count=1、preDelay=0、routeIndex=0；其路线对应 extraRoutes[0]，主线动作的 routeIndex 则指向 routes。四个 Branch 的结构键都是 phases，phase 的键都是 preDelay、actions。分支配置未携带触发器；本次仍未核实这四个具体分支在实际玩法中的调用来源，不能将配置存在写成必然出生。
-
-**项目关联：** 两份原始 JSON 都没有顶层 timeline 字段；现有 Core 的 TIMELINE 是项目输入接口，不能当作已证实的原生关卡结构。主线与命名 Branch 可以同时存在，Branch 的 phase 与主线 Fragment 共享配置形状。是否统一项目输入形式、如何提供分支领域操作属于架构选择，本调查不代为确定。
-
-### 2026-11-07：分支执行、组选择与调度账本补核
-
-本批只补通用执行链与卫戍所需边界，不扩展到生息演算、保全派驻。当前客户端的字段、方法与完整相邻代码段见[证据批次](evidence/scheduler-native-20261107/README.md)；下列索引属于该批指纹。静态普通分支不代表已执行全部 XLua 热更新。
-
-- `TryMoveNextBranch`（73273）查找分支，调用 `BranchRuntime.TryPickNextPhase`（73348）立即推进游标，再用 `StartBattleCoroutine` 启动本次 Phase。未检查此前 Phase 是否完成；`CheckBranchIsReadyToMoveNext`（73269）只比较游标与 phases 数量。因此机制允许多次触发的 Phase 重叠，不需要为主线同时推进多个 Fragment。
-- loop 表示顺序游标耗尽后可重新从头取；一次调用仍只取一个 Phase，不会自动循环播放整个 Branch。另有随机 Phase 与不重复随机 Phase 两种入口（73274、73275），不能与 Phase 内的随机 Action 选择混为一谈。
-- `_DealBranchPhase.MoveNext`（73430）为本次调用新建队列，先取得 Phase 的有效动作，再调用 `_DealAction`，按 offset 排队执行。`blockGameFinish` 路径按 branchId 增减结束阻塞计数；它阻止的是调度结束，不表示这些敌人必然阻塞当前主波。
-- `PhaseData.FetchActionsWithRandomSpawn(true)`（32193）先将具有 groupKey／packKey 的动作设为无效；`get_randomActionGroups`（32192）按 groupKey 收集候选。每组调用一个按权重选择的辅助程序（本批 VA `0x18477e830`），把选中项设为有效，并收集其非空 packKey。随后按原动作列表重建有效列表：选中项及 packKey 命中的关联项加入。之后 `_DealAction` 才展开 count。因此选择粒度是 Action，Pack 能连带多项，不是每只出生各抽一次，也不是所有同 Pack 项互斥。此结论仅覆盖已追踪的 Branch Phase 路径，不证明主线预处理或其他模式刷新完全相同。
-- `Scheduler.Init`（73262）建立启用隐藏组集合；`CheckActionEnabled`（73337）对 hiddenGroup 为 null 的动作放行，否则检查组是否启用。hiddenGroup 控制动作是否参加调度，不是实例已出生后的隐匿状态。
-- 新批 `_DealWave.MoveNext`（73413）再次确认：先逐个执行 Fragment，再等待波次阻塞；只有存在 nextWave 且最大等待值非负时采用有时限等待。放行后清空本波集合、通知波次结束并执行 postDelay；存活实例不因此被删除。
-- `_DoSpawn.MoveNext`（73442）、`_OnUnitDestroyed`（73333）、`_OnEnemyRecycled`（73335）再次确认主波阻塞、全场结束集合及击杀／漏怪统计分离；销毁与回收是否释放 final 集合受配置控制。`_CheckFinalNotFinish`（73332）还读取游戏模式条件和结束阻塞项，不能仅凭场上无敌人判断结束。
-
-卫戍的占位出怪替换继续由模式准备程序负责，复用本节已有证据。dragon 等具体分支的真实触发来源、主线随机预处理、advancedWaveTag 的具体消费仍未在本批闭合，不能用方法或字段存在代替玩法可达性证据。
+主线 routeIndex 指 routes，Branch 指 extraRoutes。dragon 的 Phase0含 enemy_9012_acloon、count1、preDelay0、routeIndex0；具体触发来源未由该配置证明。两份文件均没有顶层 timeline；Branch 配置只有 phases，各项为 preDelay／actions，不携带触发器。配置名义时刻不能冒充实际出生帧，仍受 delayToBorn 与 coroutine 调度影响。
 
 ## 7. 地图、设备与隐藏内容的可达性
 
@@ -236,34 +152,3 @@ H8-1 的 `/waves/0/fragments/1` 有 preDelay=5，三条出生动作的 preDelay 
 原始角色表中 `trap_1112_acblzd` 的技能配置有 `overridePrefabKey=sktok_empty`。
 所以地图里统一存在“寒风”控制器，不能直接证明默认执行寒冷；还要确认所选程序以及盟约等入口的激活链。
 这也说明 prefab 目录中的技能模板、角色表技能名称和战斗实际执行程序不能混为一项。
-
-## 8. 当前 TS 实现与官方事实的对应
-
-当前 [BattleRuntime](../../src/core/battle/runtime.ts) 复制工作容器，所有阶段与结果构造成功后才替换公开状态。
-其 [系统阶段](../../src/core/battle/systems.ts) 顺序为：
-
-```text
-预置／空间效果到期 → 战斗效果准备 → 部署 → 出生
-→ 重寻路 → 阻挡 → 交战 → 运动 → 阻挡
-→ 预置反馈 → 调度反馈 → 完成／时限结果
-```
-
-阶段内提交给后续阶段可见，整 tick 失败则不发布；这是项目的确定性与事务契约，不是从官方原生列表复刻出的全序。
-交战阶段按 UnitId 排序，单位与效果事实逐笔更新，Blocking 查询沿用阶段开始关系。
-反应通过最新工作状态同步结算；这也是已选择并测试的项目契约，尚无证据宣称官方完全相同。
-
-| 已有能力 | 官方依据／当前限制 |
-| --- | --- |
-| 波次状态机、pre/postDelay、maxWait、独立 wave/final 账本 | 对应已核对的 Scheduler 语义；同 tick 连续推进是项目策略 |
-| 显式分支触发、出生时 RouteTiming | 保留主／分支来源；未自动接入所有官方技能／玩法触发 |
-| 出生、死亡、路线完成与调度反馈 | 已有最小生命周期通知；官方 recycle 与统计政策仍需扩展 |
-| 地图与设备空间投影 | 工事／平台和选定控制器支持明确；不等于全技能执行 |
-| Action、有效属性、Damage／Healing、局部效果规则 | 已有闭环；未覆盖所有角色、投射物、元素爆发和技能状态机 |
-| `SCHEDULE_COMPLETED`／`TIME_LIMIT` | 当前单场结果；不等于完整卫戍 LP、联防、领袖共享血池结算 |
-
-[Data 调度边界](../../src/data/schedule.ts) 当前明确拒绝随机 pack、特殊计杀、非 ALWAYS 条件和非零出生延迟等未实现组合。
-所以“原始数据可解析”与“所选内容可模拟”要分别报告；整季内容替换、Buff 安装、技能触发和结束反馈不能留给通用 runtime 用内容分支兜底。
-
-后续核查重点是内容触发到执行链、出生／退场各时点、派发增删可见性、投射物采样及联防／领袖共享状态。
-BattleRuntime 负责稳定推进和协调；Battlefield 管空间事实与关系；领域 subsystem 拥有公式与状态转换；关卡机制与内容程序负责具体条件和顺序。
-上述边界是根据事实得到的职责建议，不是声称官方客户端已经采用同样的模块或最终接口。

@@ -1,126 +1,71 @@
 # Lifetime 与依赖析构
 
-Lifetime 统一实例的结束请求、依赖传播和最终析构。领域拥有实例、Definition、私有状态、创建与存储；公共协议不解释内容数据，也不统一 start。具体领域入口为 end、cancel、stop、remove 等业务操作。
+Lifetime 统一结束请求、依赖传播与最终析构。领域拥有实例、创建、私有状态和存储，以 end／cancel／stop／remove 等完整业务入口适配公共协议，不统一启动或解释内容数据。
 
-状态和接口遵守[函数式内核](functional-core.md)与[接口约定](api-conventions.md)。结束请求同步执行 Prepare，单个最外层结算器再按依赖完成顺序执行 Finalize。所有真实依赖者完整完成后，所属 owner 才能最终注销。
+请求同步执行 Prepare；单个最外层结算器按依赖完成顺序 Finalize。所有真实依赖者的整个 Finalize 返回后，owner 才可完成。
 
 ## 身份、Scope 与公共入口
 
-公共入口为 `core/lifetime/index.ts`，显式导出 create、scope、getRef、available、dependencies、bind、unbind 及公开类型。dependencies 只查询显式依赖，不包含 owner；bind(battle, target, parent) 返回 Result<boolean>，拒绝不可用目标、发现闭环则抛错；unbind 只解除对应显式依赖，不解除 owner。领域创建／结束操作通过内部 register／unregister 维护自身 owner 与依赖；这些写入、request、drain、Pending 和异构擦除不作为 Content API。领域从自己的操作模块或 index 导出共享静态 lifetime 描述符。
+[公共入口](../../src/core/lifetime/index.ts)提供静态描述符、Scope 构造／恢复、可用性、显式依赖查询及绑定／解绑；登记、注销和结算器属于内部协作。
 
-每种生命周期的描述符提供稳定 kind 与数值地址，不分配另一套全局 ID：
+身份使用领域 kind 与完整数值地址：Unit／Projectile／Mechanism 使用自身 ID，Execution／Activation／Effect 使用宿主与局部 ID。值相同的地址表达同一身份，不依赖 Scope 对象引用，也不分配另一套全局 ID。
 
-| 实例 | 地址 |
-| --- | --- |
-| Unit | unitId |
-| Action Execution | hostId、executionId |
-| Skill Activation | hostId、activationId |
-| Effect | hostId、effectId |
-| Projectile | projectileId |
-| Mechanism | mechanismId |
+Scope 保留描述符与 Ref 的领域配对。getRef 仅在描述符匹配时恢复公开实体类型，不凭 Scope 恢复未知私有参数；Burst 使用 Effect 的描述符，不另建类型。dependencies 只查询显式 Scope，不包含 owner；解绑不能解除 owner。
 
-Key 由 kind 与整个数值地址作无歧义编码。相同地址的 Ref 值表达同一个身份，不依赖 Scope 对象引用相等。描述符是共享静态程序，不使用动态注册器。
+available 沿实际 owner 与显式 Scope 父边检查本节点及全部上游：缺失、Pending 或结束中均拒绝新依赖。Unit 要求 PRESENT，Execution 要求 RUNNING，Activation 要求 ACTIVE；INSTALLING／INACTIVE Effect 与 INACTIVE Mechanism 仍可绑定。HP、空间存在、普通 source 与时间都不属于这项资格。
 
-```typescript
-import { scope, getRef, available } from "../../lifetime/index.js";
-import { lifetime as effectLifetime } from "../effect/index.js";
-
-const binding = scope(effectLifetime, burstRef);
-const ref = getRef(binding, effectLifetime);
-const usable = available(battle, binding);
-```
-
-Scope 公开 type: "LIFETIME"、kind 和只读数值 address，描述符／Ref 的配对保存在内部受信边界，不向内容暴露存储容器。scope 保持描述符与 Ref 的领域配对，不查询 battle。getRef 仅在描述符匹配时返回 Ref<V>，恢复描述符的公开完整类型而不推断 Scope 原始私有参数；Burst 的 Typed Ref 可以直接作为 Effect Lifetime 的依赖目标；getRef 恢复的是公开 Effect 类型，已有精确 Burst Ref 的调用方仍可按其原类型查询，不为 Burst 建立另一种描述符。异构配对只在公共模块内部擦除，调用方不能把别的领域 Ref 配给描述符。
-
-available 沿依赖图的父边检查目标自身及全部上游（实际 owner 与显式 Scope）：任一节点缺失、已 Pending 或结束中，目标均不可接纳新依赖。检查使用当前 BattleState；父对象已开始结束、子对象尚未收到结束请求的发布／Prepare 窗口也适用。Unit 要求 PRESENT，Action 要求 RUNNING，Skill 要求 ACTIVE；Effect（包括标准 Burst）的 INSTALLING／INACTIVE 和 Mechanism 的 INACTIVE 仍可成为依赖目标。HP、空间在场和 source 是否存活不属于这项判断。
-
-Scope 只表达 Lifetime 依赖。Effect 的 expiration 独立选择 DURATION、DEADLINE、INFINITE 之一，时间推进与到期结算由 Effect 执行；STACK 可以减层重启计时，需要结束实例时才通过正常结束请求进入 Lifetime。重复施加与计时契约的接入状态见 [Effect](effect.md)。依赖图不保存时间，source 和普通私有 Ref 不自动产生关系。安装入口检查宿主与所给 Scope 的可用性；后续 bind 入口检查两端资格及合并图的闭环，内部传播与析构信任这些约束。
-
-公共导出不扩大调用权限：Content 可以构造 Scope 并调用已有业务入口；Action 的正常完成与推进仍归相应内容协议和调度器，不因描述符可见而允许任意执行完整实例写回。
+绑定入口拒绝不可用端点，合并图闭环抛错；内部传播信任已建立的 DAG。公共描述符不授予 Content 绕过领域推进或私有写回协议的权限。
 
 ## 静态析构适配
 
-```typescript
-interface Definition<V extends Identified<object>, S extends V, E> {
-    readonly kind: string;
-    readonly address: (ref: Ref<V>) => readonly number[];
-    readonly get: (battle: BattleState, ref: Ref<V>) => S | undefined;
-    readonly isEnding: (self: S) => boolean;
-    readonly begin: (self: S) => S;
-    readonly replace: (battle: BattleState, ref: Ref<V>, next: S) => BattleState;
-    readonly prepare?: (
-        battle: BattleState, ref: Ref<V>, initial: S, end: E,
-    ) => BattleState;
-    readonly finalize: (battle: BattleState, ref: Ref<V>, end: E) => BattleState;
-    readonly reason: (end: E) => string;
-    readonly fromDependency?: (reason: string) => E;
-}
-```
+描述符提供稳定身份、查询、结束态判断、纯 begin、发布、Prepare、Finalize 与原因转换。公开实体类型、内部异构上界和结束载荷在这个受信边界配对，具体声明以源码为准。
 
-Lifetime<V, S, E> 的 V 是公开完整实体类型，通常使用实体自身默认的 object 参数；S 是 Core 内部接纳不同私有形状的完整类型上界，E 是业务结束输入。例如 Effect 使用公开 Effect 与内部 Effect<any, any>。描述符的内部 [paired] 保留真实 Definition<V, S, E>，维持参数推导；scope 与 end 接纳 T extends S 的精确 Ref，getRef 仅恢复公开 Ref<V>。begin 是纯值转换，只把原状态改为 ENDING／LEAVING。replace 接收已经算好的完整值，由各领域适配器发布实例。Unit 只派发统一 prepare Hook；Blocking 能力自行登记清理程序，在 LEAVING 发布后解除关系。Unit 不依赖具体能力，通用更新也不推断阻挡业务。
+begin 只形成 ENDING／LEAVING；发布后再 Prepare。Prepare 可以读取标记前 initial 以决定撤销哪些输出，需要实时事实时另查最新状态。Finalize 只按 Ref 和固定结束载荷从当前存储取得实例，不回填入口快照。
 
-prepare／finalize 是 Core 的完整操作适配，不是 Content Definition 的生命周期回调；Content 回调接收其领域定义的 self。prepare 的 initial 是标记前的同一不可变对象，供 Effect 判断标记前是否 ACTIVE 等业务使用；需要实时值时从当前 battle 查询，不把 initial 整体写回。
+Unit Departure 在 remove 入口固定：历史 unit 与 End；DEATH 明确带 killer，其他原因不带。后续 Finalize 不重推原因或归属。业务结束载荷与向依赖者传播的原因是两条通道：例如 Unit 死亡对 Action 表达 SOURCE_ABSENT 取消，对其依赖者仍传播 DEATH。首次请求同时固定两者，重复请求不覆盖。
 
-finalize 只接收 Ref 和 E，从当前存储读取实例。完整 owner 边保护宿主，Skill 从当前 unit.skill.definition、Burst 从仍存在的 Unit 取得对应 Definition。领域在自己注销后仍要通知时，可以使用 Finalize 内明确取得的历史值。Unit 的 Departure 则由 remove 入口构造一次：End 保留原因，DEATH 分支必含显式 killer，unit 保留离场开始时的历史对象。它们随 E 固定，不在后续 Finalize 重新推导。
-
-描述符提供的结束操作为：
-
-```typescript
-end(battle, ref, end, dependencyReason?): BattleState;
-```
-
-业务 End 与依赖传播原因是两条通道；默认传播原因取 reason(end)。Pending 保留本次业务 End，不保存 dependencyReason；传播原因由 end／request 参数沿同步请求传递，在 Prepare 返回后通过 fromDependency 展开子请求。重复请求不重新 Prepare 或展开依赖，因此首次原因不被覆盖；Unit 的首次 Departure.killer 也不被后来的结束请求改写。例如 Unit 死亡时，Action.onEnd 接收 `{ type: "CANCELLED", reason: "SOURCE_ABSENT" }`，依赖 Effect 接收 DEATH。fromDependency 只在允许成为依赖者的领域提供；Unit 描述符不提供它，不能绑定上游。
+Unit 不是可依赖结束的子节点，不提供 fromDependency；各能力自行登记 Unit.prepare 清理程序。来源击杀响应的编排归 [Resource](resource.md)，不是通用 Lifetime 的常设业务。
 
 ## 状态归属与关系权威
 
-`BattleState.lifetime` 保存 dependencies、endings 和 settling。dependencies 是 owner 与显式 scopes 的唯一关系权威，同时保存反向 children；endings 是本次结算的未完成工作，Pending 仅含 target、end、parents、phase；settling 表示已有最外层结算器。正常对外稳定状态的 endings 为空，settling 为 false。
+BattleState.lifetime 保存关系图、未完成 endings 和最外层 settling 标记。关系图是 owner／显式 Scope 唯一权威；槽位、普通私有 Ref 或 source 不投影成关系，字段更新也不重建图。
 
-每个关系条目保存 target、单个 owner 与显式 scopes；parent→children 合并两类父边，同一父子身份只出现一次。领域创建实例时登记关系，最终移除时注销；普通私有状态写回不重建关系。Unit 虽持有 Execution、Activation 和 Effects 的存储，关系图不从这些槽位扫描或投影，也不在 Effect 上重复保存 scopes；Elemental 的 Burst 引用指向同一 Effects 容器中的标准实例。图不保存第二份实例或生命周期状态。
+每个实例有一个 owner 和显式 scopes，反向 children 合并两种边并按身份去重。创建时登记，最终移除时注销。图不保存另一份实例、存活状态或时间。
 
-createBattleState 建立空关系图，不扫描传入 Battlefield 的 Unit 或能力槽位。初始 Unit 通过完整创建和 add 进入战场，其后各领域在启动／安装及 Finalize 内维护自己的关系。纯 Unit update／replace 只发布对象与 Field 结构索引，不修改 Lifetime 图。公共 Lifetime 不导入具体领域，也不全场扫描。
+Pending 保存本次结束载荷、父等待与阶段。实例物理移除可撤去活索引，但 Pending.parents 保留到整个 Finalize 返回；查询子项同时合并活关系与未完成工作，保证子项末尾通知请求 owner 时仍有保护。
 
-ENDING 对象在物理移除前仍保留关系。关闭资格由 Pending 与原领域状态共同表达，不靠提前丢弃关系实现。物理移除可以撤去活索引，但 Pending.parents 一直保留到整个 Finalize 返回。查询直接依赖者合并活索引与未完成 Pending 的 parents 并按 Key 去重，覆盖子项已注销、末尾通知才请求 owner 的情况。
-
-图中 child→parent 表示 child 依赖 parent；parent 完成析构必须晚于 child。Scope 绑定入口先检查目标及全部上游的可用性，再针对所有权与显式 Scope 的合并图检查闭环。available 信任已建立的 DAG，不在检查上游资格时重复检测环；request／drain 仍按已有关系执行结束，不重新验证整图。
+初始 Battle 建空图，各领域通过正常创建登记，不扫描预装容器。稳定的最外层返回状态无未完成结算。
 
 ## 请求与 Prepare
 
-父节点已 Pending 不代表每个子节点已收到结束请求。以下顺序中，Prepare 显式先请求子节点结束，仍由该子节点首次有效请求确定 End 与传播原因；上游可用性限制新绑定，不拒绝结束请求或覆盖其原因。
+首次有效请求依次执行：
 
-首次有效请求按以下顺序同步执行：
+1. 检查 Pending 防重；实例缺失则不创建工作。
+2. 固定当前父关系与直接子候选，登记 PREPARING 和结算标记。
+3. begin 并发布领域结束态。
+4. 执行自身 Prepare，接续返回状态。
+5. 按父子边登记顺序请求依赖者，再置 READY。
 
-1. 先查 Pending；重复请求不覆盖首次 End／传播原因，不重复 Prepare。随后从领域查询实例，缺失时不创建工作。
-2. 固定当前 parents 和直接子候选，建立结算标记及 PREPARING 节点。
-3. 调用纯 begin，经 replace 发布终止态。后续 Prepare 中的回调同时看到 Pending、settling 和领域终止态。
-4. 执行本实例 Prepare，接续返回状态。
-5. 按确定顺序请求直接依赖者，接续每项状态，再把当前节点置为 READY。
+Prepare 早于自动请求依赖者；它可先主动结束子项，从而确定子项首次原因。父节点已经 Pending 不代表每个子节点已收到请求。相同边更新保序，解除重绑追加；兄弟请求顺序与真实依赖决定的完成偏序分别成立。
 
-Prepare 先于自动请求依赖者。它主动请求子项时可以确定该子项的首次原因，后续传播不覆盖。直接子候选统一按父子边的登记顺序；同一父子边更新保序，解除后重新建立则追加。未完成 Pending 与活关系按身份去重。兄弟的请求顺序由登记顺序决定，真实依赖决定 Finalize 的偏序。
+首次嵌套请求返回保证自身 Prepare 完成，不保证 Finalize；重复 PREPARING 请求也不等待原 Prepare。Prepare 是多个完整业务的序列，不是任意回调原子事务，需要随标记失效的事实应在对应发布中建立。
 
-首次嵌套请求返回保证自身 Prepare 已完成，不保证 Finalize 已执行；重复请求 PREPARING 节点不等待原 Prepare。Prepare 是多步完整操作，不是原子业务事务：其中同步调用的 Hook 可能观察到尚未全部完成的清理。需要随标记原子失效的具体事实必须一起纯提交，不能把任意 Content 回调宣称为原子执行。
-
-结束中的实例立即拒绝新的依赖和正常推进。Unit Prepare 按公共 priority 派发 prepare Hook，同级保留装配顺序，Blocking 的清理由自身登记的程序处理；Departure.unit 表示离场历史。主动撤退在请求 Unit 结束前直接结算返费、Card 费用阶段与库存恢复，不依赖 Prepare 或离场完成通知。Effect 的 onDisable 在 Prepare 撤销输出；Group 在此时协调候补，但仍检查 enabled、Lifetime 上游资格和既有竞争规则。LEAVING 宿主不会重新启用弱 Buff。
+结束态立即阻止正常推进与新依赖。Unit.prepare 使用[公共 Hook](hook.md)顺序；Effect 在 Prepare 撤销输出、协调候补，但 LEAVING 宿主不能重新启用弱者。主动撤退的退款等前置业务归 Deployment，不由通用 Prepare 推导。
 
 ## Finalize 与完成边界
 
-没有活动结算时，业务结束入口建立范围，执行 request，再 drain，清空标记后返回。有活动结算时只执行请求阶段，不递归开启另一个 drain。
+无活动结算时，结束入口请求后 drain 到全部完成再返回；已有结算时只请求，不递归 drain。
 
-Pending 的阶段是 PREPARING、READY、FINALIZING。READY 表示 Prepare 与依赖请求展开完成，不表示依赖者已完成。drain 每次从最新 Map 选择最早登记且没有未完成直接依赖者的 READY 节点，先标 FINALIZING，再调用领域 finalize。接续整个返回状态后才删除该 Pending，然后重新选择；不沿入口时固定的拓扑序循环。
+阶段为 PREPARING、READY、FINALIZING。READY 表示准备与子请求展开完成。drain 每次从最新状态选择最早登记、没有未完成子项的 READY，标记 FINALIZING 后调用领域收尾；整个返回后才删除 Pending 并重新选择，不使用入口固定的拓扑列表。
 
-物理删除、清空槽位和写入事件都不是公共完成信号。Finalize 的所有内容程序和末尾通知返回，才解除 parents 的等待约束。未完成工作非空却没有可执行节点表示关系或阶段合同错误，直接抛错；不强制删边或注销，不增加循环次数上限。
-
-结算工作只保存在不可变 BattleState.lifetime 中并显式接续；最外层结束入口在同一次同步操作中排空 endings。异常直接传播，不在 finally 中补做 Finalize；外部未发布的新版本不成为已提交状态。
+物理删除、槽位清空或事件写入不是公共完成信号；所有末尾回调返回才解除父等待。尚有工作却无可执行节点是关系／阶段错误，直接抛出，不强制删边或增加循环预算。异常传播，不在 finally 补做收尾；不可变发布规则见 [Functional Core](functional-core.md)。
 
 ## 可观察顺序与领域责任
 
-请求顺序与完成顺序分别规定。兄弟可以都先成为 ENDING，前一个兄弟的 onEnd 不保证其他兄弟仍在运行。多个上游共享同一依赖者时，首次原因不变，Finalize 只执行一次。
+兄弟可以都先进入 ENDING，某个 onEnd 不保证其他兄弟仍正常运行。共享依赖只 Finalize 一次，首次原因保持不变。
 
-嵌套 end／cancel／stop／remove 返回时，实例可能仍能通过 get／all 查询、仍占格或占用槽位，最终事件及通知可能尚未发生。普通目标、推进和绑定资格不能仅凭对象存在判断。在同一结算范围内 cancel 后立即 start 同一槽位可能被拒绝；依赖槽位释放的业务放在已有完成通知，不强行嵌套 drain。
+嵌套结束返回时，实例可能仍可查询、占格或占槽。后继资格不能只看存在；依赖槽位释放的业务使用领域完成通知，不强行开启嵌套 drain。Damage 的 Completed／Outcome 不承诺目标所有离场 Finalize 已完成，见 [Resource](resource.md)。
 
-resource.hp.damage.completed 表达该次 HP 伤害结算完成，不承诺目标的全部离场 Finalize 已完成。Effect Group 候补在 Prepare 协调，早于结束实例的 onEnd。
+等待只来自真实关系，普通函数调用不生成反向等待。例如 Effect.onEnd 请求 Unit.remove 时 Unit 等已有子 Effect 完成，Effect 不因为调用 remove 又等待 Unit。独立 Projectile 不随来源／Action 自动结束；Blocking、Occupancy 与 Card 冷却也不自动成为生命周期依赖。
 
-业务调用不自动生成等待边。例如 Effect.onEnd 请求 Unit.remove，Unit 等待已有 Effect→Unit 关系，但 Effect 不因为调用了 remove 又反向等待 Unit。独立 Projectile 不随来源 Unit／Action 自动结束，普通 source、目标跟踪、Occupancy、Blocking、Card 冷却不自动转为 Lifetime 关系。
-
-字段写回遵守各领域合同：Effect 私有 state／expiration、Projectile 位置／state 和 Action 持久 state／Cooldown 可供清理使用；Action ENDING 的 execution.state 不接受普通写入。Mechanism disable 是可逆参与变化，与最终析构分开：ACTIVE remove 的 Prepare 以 ENDING self 调用 onDisable，INACTIVE remove 不重复调用，Finalize 再执行 onEnd。
-
-实现职责分别位于 `core/lifetime/lifetime.ts`（模型与类型）、`dependency.ts`（关系图与反向查询）、`operations.ts`（登记、绑定、描述符构造、请求与析构）、`index.ts`（显式公共入口）。各领域在自身模块中提供静态描述符与操作适配。
+清理期间允许哪些字段写回由领域决定。Mechanism.disable 可逆，remove 不可逆；ACTIVE remove 的 Prepare 以 ENDING 调用 onDisable，INACTIVE remove 不重复停用，Finalize 再 onEnd。领域只能使用自身合法操作修改状态。

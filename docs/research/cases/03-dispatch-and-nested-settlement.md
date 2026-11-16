@@ -178,31 +178,10 @@ BlockDamage
 尚未核对：各死亡状态机的移除时点、死亡反应中重新回复／生成对象的完整规则，以及外层持有已结束目标时各节点的资格判断。
 不能仅从同步调用推导“原生会无条件完成外层攻击”，也不能统一在 HP 到零时删除对象并中断全部后继。
 
-## 8. 对照当前 Work／Resources 的边界
+## 8. 证据边界
 
-下表记录项目目前选择的有限实现，不把代码与测试当成新的原生证据。
+同一 Buff 容器的共享枚举范围、按 UID 查询、逐项有效性与已进入动作的控制流分别成立；不能推广为所有领域都复用同一个候选缓存。嵌套调用完成后，外层 Modifier 仍是本次工作对象，生命等领域事实则可能已变化。
 
-| 当前实现事实 | 协议范围与限制 |
-| --- | --- |
-| `CombatWork` 保存当前 Unit、创建／移除结果、事件与 execution；同步操作返回后立即接续最新工作事实 | 不冻结整个事件世界；Blocking 等仍读取已选阶段基线；整 tick 成功后才权威发布 |
-| `EffectDispatchScope` 在每个接收 Unit 的活跃事件中捕获全部登记身份，含当前停用候选；同容器嵌套和参与查询共享范围 | 新身份可按 UID 取得，但不加入该活跃候选；另一接收 Unit 若没有活跃事件，建立自己的当前范围；不固定整次 Damage 的候选 |
-| Damage／Healing 的领域 dispatch 在候选轮到前重新读取当前实例与参与事实，再按领域排序和规则资格执行 | 候选身份冻结，载荷与有效性 live；Damage 的分组胜者按当前参与项判定，不等同完整 Buff 覆盖状态机 |
-| 统一 Effect 生命周期协调实例及领域 bindings；start、participation、finish、finalize 分开，父结束同步传播 | Status 也通过领域 binding 接入；停止参与保留旧载荷，finalize 先删除 UID，再执行结束程序及清理 binding；完整覆盖与未初始化接收路径仍未实现 |
-| 每个领域事件返回后清理接收者的 finished 实例，嵌套 cleanup 可以先于外层事件结束 | 若外层同容器仍活跃，cleanup 的嵌套安装仍共享旧候选；自动安装在清理连锁后读取最新分配计数器 |
-| 已进入 callback 在当前 scope 内保留实例最后事实；finalize 删除 UID 前更新这些活跃 continuation 的暂存 | 程序可继续读取最后载荷，但 UID 查询已 absent；退出 callback 后清除，不进入 Unit／Resources／snapshot，不延迟 cleanup |
-| Hook 只获得阶段事实及明确注入的 Effect／Damage／Healing operation；嵌套完成后才返回 report | 没有通用世界写入或完整资源入口；公式阶段只提供 Effect 操作；跨 tick Action／Projectile 不因此改成同步调用 |
-| 领域取消保留已完成 transition，剩余候选仍可执行；独立 `stopDispatch` 才停止该事件后续候选 | 伤害为零、取消 HP 应用、停止派发和取消内容程序分别解释；实例消耗、嵌套回复及允许的后继不回滚 |
-| Damage 先确认本次 HP 结果，再按来源、目标顺序分派 report 反应，最后按当前项目退场契约处理致死对象 | 报告只描述本次请求，不汇总嵌套净变化；这不是对原生所有零生命、死亡通知、移除与回收阶段的完整映射 |
-| DamageType 与接收政策分离；Damage／Healing 均有独立 `skippedReception` 入口，Healing Core 的 skip 与 ignoreHealFree 独立 | 已核对的原生 skip 回复绕过 `OnTakeHeal`／HEAL_FREE，由数据适配显式生成 ignoreHealFree=true；Core 仍可表达 skip 而遵守禁疗；不能据此统一所有接收事件与回复类别 |
+各死亡状态机和特殊目标失效分支的后续证据见 [Case 11](11-damage-apply-and-hp-application.md)、[Case 18](18-projectile-source-and-target-lifecycles.md)与[Case 39](39-death-attribution-and-attribute-ranges.md)。本案没有证明原生无条件完成所有外层攻击，也没有把 HP 到零等同物理移除。
 
-Buff 领域拥有实例有效性、生命周期传播和调用期身份范围；Damage／Healing 拥有内部结算、排序与正常领域结果。内容程序组合这些公开操作，Resources 只保存可重建程序与登记。完整攻击阶段、投射物、死亡状态机和非 Unit 来源过程继续保持各自研究边界。
-
-## 9. 尚需区分的最小验证
-
-1. 同一集合外层 A 安装并启用 C，再发起嵌套事件：C 不参加旧候选；UID 查询可见，嵌套按 key 查询仍用旧候选；全部退出后按 key 查询可取新候选。
-2. A 结束尚未执行的 B：外层和嵌套跳过 B，但已进入 B 的动作后继按内容条件继续。
-3. A 在另一单位安装 C 再结算伤害：那个容器若未枚举，应从其当前集合建立候选。
-4. 分担／回复使接收者到零或满血：分别记录本次 Modifier 结果、嵌套变化、生命周期通知与后继可见性。
-5. 嵌套 `_CheckFinishedBuffs` 新建 Buff 的 ON_START／ON_FINISH 连锁：确认结束通知次数与覆盖组更新，不把语义简化为一次 delete。
-
-这些是协议的可区分例子，不要求用相同 seed 对齐原生结果，也不要求复刻对象池、枚举器布局或所有内部调用顺序。
+项目采用的候选捕获、嵌套派发与前缀保留契约见 [Hook](../../architecture/hook.md)、[Resource](../../architecture/resource.md)与[Lifetime](../../architecture/lifetime.md)。

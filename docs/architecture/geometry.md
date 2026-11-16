@@ -1,97 +1,29 @@
 # 几何与坐标 API
 
-`src/core/common/vector.ts` 提供通用二维向量，不依赖 Tactical 几何领域。`geometry/coordinate.ts` 只负责格子坐标与世界坐标的语义、旋转和转换。位置、偏移、速度与力统一使用二维向量，通过字段和参数名表达用途。
+通用二维向量位于 [common/vector.ts](../../src/core/common/vector.ts)，坐标转换位于 [geometry/coordinate.ts](../../src/core/geometry/coordinate.ts)，形状和相交算法位于 `geometry/`。几何不读取 Unit、BattleState、生命周期或业务资格。
 
 ## 通用二维向量
 
-```typescript
-// common/vector.ts
-export type Vec2 = readonly [number, number];
+位置、偏移、速度与力使用 readonly 二元数值元组，以字段名表达用途。真实未知输入边界检查有限分量；内部算术信任已经建立的约束，不冻结对象或重复构造包装。
 
-export declare const Vec2: {
-    is(value: unknown): value is Vec2;
-    equal(a: Vec2, b: Vec2): boolean;
-    add(a: Vec2, b: Vec2): Vec2;
-    sub(a: Vec2, b: Vec2): Vec2;
-    negate(v: Vec2): Vec2;
-    scale(v: Vec2, factor: number): Vec2;
-    lerp(from: Vec2, to: Vec2, progress: number): Vec2;
-    length(v: Vec2): number;
-    distanceSquared(a: Vec2, b: Vec2): number;
-    clampLength(v: Vec2, maxLength: number): Vec2;
-};
-```
-
-`Vec2.is` 判断输入是否为两个有限数构成的数组。其余操作直接计算已建立约束的数据，不执行内部校验、冻结或包装构造。`equal` 逐分量精确比较；`add`、`sub`、`negate`、`scale` 返回新元组；`lerp` 按 progress 线性插值，不限制其范围；`length` 使用欧氏范数，`distanceSquared` 返回平方距离。`clampLength` 超限时保持方向，未超限时可直接返回输入；调用方保证 `maxLength` 为非负有限数。
+向量提供精确比较、四则运算、线性插值、欧氏长度和平方距离；插值不限制进度范围，限长保持方向。通用算术不在坐标模块重复实现。
 
 ## 坐标语义与转换
 
-```typescript
-// geometry/coordinate.ts
-import type { Vec2 } from "../common/vector.js";
-import type { Direction } from "./direction.js";
+TilePosition 按 `[row, col]` 解释，WorldPosition 按 `[x, y]` 解释。格子分量为安全整数，连续坐标分量为有限数；两者复用向量表示。
 
-export type TilePosition = Vec2;
-export type WorldPosition = Vec2;
-
-export declare const Tile: {
-    is(value: unknown): value is TilePosition;
-    rotate(vector: TilePosition, direction: Direction): TilePosition;
-    center(position: TilePosition): WorldPosition;
-};
-
-export declare const World: {
-    toTile(position: WorldPosition): TilePosition;
-};
-```
-
-`TilePosition` 按 `[row, col]` 解释，`WorldPosition` 按 `[x, y]` 解释；两个名称都复用 `Vec2` 表示，格式约束在真实输入边界建立。`Tile.is` 检查两个分量均为安全整数；接收未知连续坐标时使用 `Vec2.is`。已明确坐标分量的构造处直接使用元组字面量，需要数值校验的创建或解析入口使用 assert 工具。
-
-`Tile.center([row, col])` 返回 `[col, row]`。`World.toTile()` 按 ties-to-even 舍入并直接返回元组，信任输入的坐标约束。`Tile.rotate()` 按四向 Direction 旋转格子向量。`Direction.vector()` 返回 `Vec2`，Direction 模块只依赖通用向量类型。
-
-通用算术统一调用 `Vec2`，`Tile` 与 `World` 不重复提供向量运算。内部 typed 数据直接共享，通过 TypeScript `readonly` 遵守不可变约定，不归一化 `-0`，不执行 `Object.freeze()`。
+Tile.center 将 `[row, col]` 转为 `[col, row]`；World.toTile 使用 ties-to-even 舍入。Tile.rotate 按四向 Direction 旋转相对格子向量。方向是几何值，不意味着每个 Unit 都具有朝向：摆放方向归 Occupancy，左右面向归 Facing。
 
 ## Shape 与 Range
 
-Shape 是单个连续几何图元，offset 相对使用方传入的世界原点。Circle 使用非负有限 radius，轴对齐 Box 使用非负有限 halfExtents；不包含旋转或递归 Union。
+Shape 为圆或轴对齐矩形，offset 相对调用方传入的世界原点。圆半径、矩形半宽高非负且有限，不支持旋转或递归 Union。
 
-```typescript
-export type Shape =
-    | { readonly type: "CIRCLE"; readonly offset: WorldPosition; readonly radius: number }
-    | { readonly type: "BOX"; readonly offset: WorldPosition; readonly halfExtents: WorldPosition };
-
-export function validateShape(shape: Shape): void;
-
-export type Range = readonly Shape[];
-
-export function fromTiles(tiles: readonly TilePosition[], direction: Direction): Range;
-```
-
-Range 表示形状并集，空数组表示空范围。fromTiles 将相对原点的格子坐标绕 [0, 0] 按 direction 旋转，再转换成半宽高均为 0.5 的 Box；查询时决定实际世界原点。它不执行目标所属格查询，需要格心原点的调用方使用 Tile.center(originTile)。单个 Hitbox 直接保存 Shape，并遵守 readonly 约定。
-
-四向 Direction 是几何值，不意味着所有 Unit 都拥有方向。固定地块摆放的朝向由 Occupancy 保存为 direction，允许 null；创建时通过 initial.occupancy.direction 指定，省略时为 null。Targeting.inRange 接收明确的世界原点和 Range；调用者取得有效朝向后，以 fromTiles 旋转相对格子列表。几何模块不查询 Unit 或 Battle。
+Range 是 Shape 并集，空列表为空范围。fromTiles 先按指定朝向旋转相对格子，再将其转换为半宽高 0.5 的矩形；查询时另传实际世界原点。单个 Hitbox 保存一个 Shape，身体所属格查询不替代连续几何判定。
 
 ## 几何计算
 
-```typescript
-export function contains(range: Range, origin: WorldPosition, point: WorldPosition): boolean;
+contains 检查点，overlaps 检查形状；任意成员命中即满足 Range，相切视为相交。
 
-export function overlaps(
-    range: Range,
-    origin: WorldPosition,
-    shape: Shape,
-    shapeOrigin: WorldPosition,
-): boolean;
+sweep 返回形状沿直线平移的首次接触比例，范围为 0–1；初始重叠或相切为 0，无接触为 null。起终点相同退化为静态相交。计算期间双方尺寸、偏移和目标位置不变，不计算旋转或目标轨迹。
 
-export function sweep(
-    moving: Shape,
-    from: WorldPosition,
-    to: WorldPosition,
-    target: Shape,
-    targetOrigin: WorldPosition,
-): number | null;
-```
-
-contains 和 overlaps 按 Range 中任意 Shape 满足判定；空 Range 返回 false，相切视为相交。sweep 返回线性平移的首次接触比例 [0, 1]，初始重叠或相切返回 0，无接触返回 null；from、to 的坐标分量相等时退化为静态相交。尺寸、offset 和目标位置在计算期间保持不变，不计算旋转。
-
-intersection.ts 不认识 Unit、Hitbox、BattleState、Ref 或生命周期，只封装圆与轴对齐矩形的几何算法。
+几何公式及边界由[几何与空间验收](verification.md)集中保障；战场筛选与命中业务另见[Spatial](spatial.md)和[Projectile](projectile.md)。

@@ -1,330 +1,90 @@
 # 函数式内核
 
-内容支持、机制证据与当前缺口见 [内容支持与缺口](tactical-semantics.md)。本文规定这些规则如何通过纯状态契约组合，不以工程结构替代玩法完成度。
-
-本文规定 Tactical 的函数契约与状态归属。领域计算与结算显式接续不可变状态，外部驱动负责状态发布与 I/O。
-
-每个逻辑领域只修改自己拥有的业务状态；跨领域协作必须使用状态所属领域提供的合法 Change 或完整操作，Core 没有直接修改其它领域 State 的例外。内部 replace 仅发布合法构造的结果，不能把跨领域手写字段变成合法业务。初始化按各领域构造协议装配状态，存储层维护自身存储与索引，均不代替运行态领域操作。
-
-总体领域划分见 [总体架构](ARCHITECTURE.md)，行动接口见 [Action 设计](action.md)，附着实例模型见 [Effect 设计](effect.md)。Action 推进只由调度器调用，内容通过启动、取消与具体结算接口交互。
+本文规定不可变状态、完整操作和同步重入。Tick 顺序见[总体架构](ARCHITECTURE.md#战斗状态的层级)，接口形式见[接口约定](api-conventions.md)。
 
 ## 状态接续后的读取与续执行
 
-> **可能执行同步业务回调的完整操作是续执行边界。回调允许重入，可以终结外层正在执行的实例或其宿主。操作返回后，后续若依赖自己或宿主的存在性、生命周期或资格，必须从最新 BattleState 查询并确认。此前明确采样的数值继续保留。**
+**完整操作返回后，后续实时事实从最新 BattleState 读取；此前按业务规则明确采样的事实继续保留。**
 
-这是所有同步领域结算与内容程序共同遵守的契约，不只适用于 Action。同领域的完整操作如果可能触发同步回调，也遵守这条规则。只读查询与局部计算不推进战斗版本；内部 replace 只发布已知的新值与结构索引，不执行内容回调，不能据此假设实例可能在发布期间消失。没有业务回调介入时，不重复读取或验证已经确定的事实。Typed Ref 保留身份与稳定类型，不保证完整结算之后对象仍存在、仍在运行或宿主仍在场。
+1. 旧 Unit、Effect 或执行对象仍是有效的历史快照，不证明它现在仍存在或有资格。
+2. 需要当前资源、阶段或私有数据时，按身份重新查询。不得用旧整份对象覆盖嵌套结算，也不得重新插入已移除实例。
+3. 完整操作检查自己的资格；调用方只检查其后续步骤所需的条件，无需重做整套下层规则。
+4. 发射属性、动作预算、离场事实等明确样本不随重入改写。已完成业务是否还有结算责任，由业务语义决定，不能仅因宿主结束而遗漏。
+5. 回调需要观察的中间进度先提交，再执行可能重入的业务。返回后重新取得实时实例，不把计算前的私有状态自动写回。
 
-1. **旧引用是历史快照。** 先前取得的对象仍是输入版本中的有效值，可以表示已发生的事实，例如离场载荷；不能据此假设对象仍在最新战斗中存在、运行或具备资格。
-2. **实时事实从最新版本读取。** 后续需要当前 HP、执行进度、Effect 状态等事实时，从接续后的 BattleState 重新查询。不得用嵌套前保留的整份 Unit、Action 或 Effect 覆盖嵌套结算产生的新版本，也不得重新插入已经结束或移除的实例。
-3. **续执行条件由具体业务确认。** 后续步骤要求当前实例仍存在、仍在执行或仍有资格时，重新确认这些条件。伤害、治疗、启动等完整操作负责本领域的执行资格，调用方只检查自己续执行所需的条件，无需重复整套下层规则。
-4. **明确采样的事实继续保留。** 发射时攻击力、固定动作预算、已进入等待等按业务规则确定的历史事实，可以继续使用；是否需要采样或实时读取由具体规则决定，不由值的类型决定。
-5. **中间进度先提交，再进入观察它的业务。** 若同步回调需要看到已经释放、已经扣除次数等事实，先把它们纳入后继 BattleState，再调用伤害、治疗等结算。完整操作接续返回状态，避免另一次自动私有状态写回覆盖嵌套更新。
+例如护盾先确认本次成功抵挡，再提交额度消耗，然后执行治疗；治疗可能结束护盾，后继需要护盾仍存在时才重新查询。抵挡失败不能先消费额度或执行成功奖励。
 
-例如 Action 的一次攻击触发反击，反击又导致来源离场：嵌套结算返回后，已经发生的伤害与采样仍保留；后续步骤若要求原 Action 仍在执行，就从最新版本查询并决定是否继续。两次状态推进之间可以使用一次取得的当前对象完成连续局部计算，不要求每次读取字段都重新查询。
+## 范围与依据
 
-终止使用 [Lifetime 请求与 DAG 析构](lifetime.md)。首次请求同步登记 Pending、发布 ENDING／LEAVING、执行 Prepare 并请求依赖者；只有最外层结算器执行 Finalize。嵌套 end／cancel／stop／remove 返回不保证对象已注销、槽位已释放或最终通知已派发；重复请求 PREPARING 节点也不等待原 Prepare。真实 owner 与显式 Scope 保护依赖者，父实例等待其整个 Finalize 返回；普通业务调用不生成等待边，也不等待所有无关 JavaScript 调用栈退出。
+这是项目选择的执行模型：同步调用、显式状态返回、固定版本隔离。原生机制决定业务结果，不要求复制客户端的可变对象和回调调度结构。
 
-## 1. 范围与依据
+## 跨领域契约
 
-ArkBattle 表达通用明日方舟战斗语义。卫戍协议是重点接入玩法，不限制 Core 对普通关卡、角色、召唤物与地图机制的支持；生息演算、保全派驻等特殊模式与船运寻路不在当前范围。具体机制依据保存在[研究索引](../research/00-INDEX.md)，当前支持边界见[内容支持与缺口](tactical-semantics.md)。
+领域只能通过所属领域的合法 Change 或完整操作修改业务状态。协调层也不能直接 spread 另一能力的 State，再借底层 replace 发布。底层存储维护对象与索引一致性，不推断业务意图或补发通知。
 
-Meta 通过战斗输入、内容规则和输出状态接入。商店、跨回合经济与状态机归外层玩法；本场 Card、库存、部署间隔和 DP 归 Deployment。装备、盟约、策略的研究用于验证 Tactical 能否执行它们提供的战斗行为，不要求 Tactical 理解整个 Meta 数据模型。
+完整操作逐次接续状态；不存在隐式全局事务。嵌套操作不会代为执行外层尚未开始的步骤，也不会自动继承外层候选、Hook 排除或豁免。
 
-普通一 Tick 左右的差异按明确项目政策处理；重要离散结果、可察觉表现和显著累计数值偏差按具体内容验证。固定 30 Hz、线性的 Tick 顺序及 `Combat → Projectile → Movement → Blocking` 是项目选择；其中 Movement 内先推进 Route 及 Main 出口，再执行 Locomotion；之后复核已有 Blocking 关系并执行普通搜索。固定阶段可能改变接敌归属与漏怪等结果，按[Blocking 对照验收](blocking.md#与原生的差异及对照验收)判断影响，不预先认定只是一个 Tick。客户端对象队列、无业务影响的 RNG 消费轨迹或 coroutine 实现不决定领域 API。
+## 三个职责层次
 
-## 2. 跨领域契约
+### 查询与局部计算
 
-公共协议承担以下语义，具体角色与特殊机制的接入范围由所属文档说明。
+查询读取明确输入版本，不推进状态。局部数值转换返回结果值；Change 工厂描述待应用变更，不自行发布。查询可以返回惰性 Query，但回调必须绑定同一不可变版本，不能借遍历推进 RNG 或世界。
 
-| 业务 | 状态与执行边界 | 契约 |
-| --- | --- | --- |
-| 有序伤判与嵌套结算 | 每项接收前项的工作值；扣盾、回复等已完成前缀不因后续取消回滚。 | [伤害与治疗](vitality.md) |
-| HP 变化与死亡 | HP 写入、应用后响应和最终死亡确认分开；MaxHP 比例变化与自然回复不构成普通治疗。自然回复在 Effect 后、Skill／Action 前按当前有效速度逐 Tick 提交。 | [Vitality](vitality.md) |
-| EP 与爆发 | 损伤提交同步启动 Burst Effect，资源通知与两侧 Applied 按明确顺序执行。 | [Elemental](elemental.md) |
-| 附着实例与依赖 | 安装、生效、停用、请求结束和物理移除分别表达；来源身份不代替生命周期依赖。 | [Effect](effect.md)、[Lifetime](lifetime.md) |
-| 属性采样 | 静态、周期采样和实时查询分别表达；来源样本由产生它的内容或实例保存。 | [属性与贡献](capability.md#属性与贡献) |
-| 行动、技能与弹体 | 运行身份、持续预算与输出分别保存；弹体不因行动结束自动终结，耗弹由具体内容安排。 | [Action](action.md)、[Skill](skill.md)、[Projectile](projectile.md) |
-| 路线与运动 | 等待计时、指令切换和移动控制权分别决定；导航更新不重新采样已进入指令。 | [Route 与 Locomotion](navigation.md) |
-| 出生与调度等待 | 出生动作、Wave 等待和最终等待分开；等待在 Unit 的真实 leave 中同步解除。 | [Schedule](schedule.md) |
-| 部署、占格与阻挡 | 资源先消费再创建入场；结构索引与业务配对分开；阻挡资格、容量与主动释放各自结算。 | [Deployment](deployment.md)、[Occupancy](occupancy.md)、[Blocking](blocking.md) |
-| 共享资源 | 同一额度、锁和来源过程只保存一份权威事实，使用 Mechanism 或真正拥有该事实的实例。 | [Terrain 与 Mechanism](terrain.md) |
-
-这些协议使用明确的状态版本、读取时点和跨 Tick 事实。同步后继直接调用领域操作，不依赖共享对象或事件重放。
+排序、筛选和目标资格是查询；随机选择显式返回下一 RNG，由调用者接续。具体边界见[Targeting](targeting.md)与[查询约定](api-conventions.md#查询与候选)。
 
-## 3. 三个职责层次
+### 领域结算与具体内容程序
 
-下文从局部计算、领域结算和外部驱动说明分工；具体函数接口按[职责约定](api-conventions.md#1-基本分类)划分。
+完整操作接收 BattleState，返回下一 State；有实际业务结果时使用 `Result<T> = { state, value }`。Hook 和 Definition 程序同样显式接续状态，不捕获可变当前世界。
 
-### 3.1 查询与局部计算
+“完整”表示按该操作契约完成结算，不保证任意嵌套实例已经注销。Lifetime 已在结算时，嵌套结束只保证首次请求与 Prepare，Finalize 按依赖继续执行，见[Lifetime](lifetime.md)。
 
-输入不可变值和必要的只读事实，返回结果；不推进世界、RNG、ID、周期或贡献刷新。
+### 调用方持有状态
 
-```typescript
-absorb(shieldState, incoming) → { state: shieldState, value: incoming }
-attribute.apply(base, modifiers) → number
-resolveAttack(battle, source) → number
-sort(candidates, compare) → T[]
-topK(candidates, k, compare) → T[]
-```
+调用者以 `battle = step(battle, commands)` 接续，每次成功调用推进一个 Tick。领域程序可以调用其他完整操作，但不能递归调用 step。Core 不保存终局结果；调用者读取返回状态决定是否继续。
 
-名称示意实际职责，不要求所有函数使用同一 Result 类型，也不要求通过大量 Pick 表达最小依赖。对已登记 Unit 的 `setAttackContribution(contribution) → Change<Unit & Offense>` 属于变更工厂，需交给 Unit.update 发布，不是本节的局部 State 写回。
+输入版本保留，因此调用者可以保留历史或分支模拟，无需额外提交、回滚或重放协议。
 
-Targeting 提供直接适配 Query 的资格谓词和普通比较器，集合终端保留候选类型。Targetable 查询解释目标侧限制，来源值由调用方选定；排序使用 common.topK，随机抽样使用 RNG.sample 并由调用方显式接续状态。谓词、惰性遍历和逐次比较不消费 RNG。契约见 [Targeting 与 Targetable](targeting.md)。
+## 状态归属
 
-### 3.2 领域结算与具体内容程序
+| 事实 | 保存位置 |
+| --- | --- |
+| 基础配置、行为程序 | 共享的不可变 Definition |
+| 跨 Tick 资源、计时、身份、进度、归属 | 所属领域 State |
+| 固定事件载荷、Pending、候选范围 | 本次调用的工作值 |
+| Lifetime 结束工作 | BattleState.lifetime，最外层结算成功返回前清空 |
+| 可由当前事实重建的结果 | 不影响语义的派生缓存 |
+| 表现所需瞬时事实 | 本 Tick events |
 
-需要组合多个事实的操作接收当前战斗状态，返回下一版本及实际结果。同步嵌套直接调用领域函数。生命周期结束的嵌套返回保证以请求／Prepare 为界，完整 Finalize 在最外层 Lifetime 结算范围返回前完成；领域报告仍表达本次业务事实。
+闭包可以保存静态参数或明确的本次样本，不能代替 State 保存跨 Tick 权威进度。派生缓存不得使同一输入版本因调用历史产生不同结果。索引、缓存与领域主状态的具体归属由各专题说明。
 
-```typescript
-interface Result<A> {
-    readonly state: BattleState;
-    readonly value: A;
-}
+## Battlefield 的状态一致性与阻挡结算
 
-calculateDamage(battle, request, options?: hooks.Options) → Result<CalculatedDamage | undefined>
-applyDamage(request, calculation, options?: ApplyOptions) → Result<DamageOutcome>
-calculateHealing(battle, request, options?: hooks.Options) → Result<CalculatedHealing | undefined>
-applyHealing(request, calculation, options?: ApplyOptions) → Result<HealingOutcome>
-effects.setState(battle, effectRef, nextState) → BattleState
-actions.start(battle, actionRef) → Result<Ref<Execution<P, E>> | null>
-skills.activate(battle, skillRef) → Result<Ref<Activation<S, A>> | null>
-actions.setState(battle, actionRef, nextState) → BattleState
-actions.setExecutionState(battle, executionRef, nextState) → BattleState
-end(battle, ref, reason?) → BattleState
-actions.advance(battle, executionRef) → BattleState
-```
+纯存储操作同步维护 Unit 和 Occupancy 索引；完整关系操作负责双端一致性与通知。Change 先完成同一宿主全部纯转换并一次发布，再按顺序结算，具体见 [Unit 更新](api-conventions.md#51-unit-完整操作与批量变更)。
 
-`BattleState` 是不可变数据值。只需要返回状态的操作可以直接返回 BattleState；报告和 outcome 按各领域的真实需求决定。完整接口分类见[接口约定](api-conventions.md)；上面的 actions.advance 只由 Runtime 调度。Action.start 完成执行登记和冷却重置；Runtime 推进入口快照中的执行，并在自动选择启动成功后显式首次推进。内容直接或嵌套启动的执行按登记相对调度快照的时点，等待本次或后续调度推进。
+关系维护具有明确范围，不因读取某个字段就订阅其所有变化。Blocking 的资格、容量裁撤、批量解除和搜索是不同操作，不靠通用 update 扫描补救，见 [Blocking](blocking.md)。
 
-Effect.install 同样使用 Result，新建返回新实例 Ref，合并或续期返回保留实例 Ref，普通拒绝返回 null。返回引用保持所指实例实际的 Definition／私有状态类型关联，合并不把旧实例当作传入 Definition 的实例。
+## Hook 和生命周期的纯契约
 
-Hook、生命周期和具体装备／技能程序同样遵守显式状态返回。它们可以调用 Damage、Healing、Effect、Skill 等纯结算函数，但不通过全局变量或捕获的旧执行上下文隐式写回。
+Hook 的 Context 固定本次输入与历史事实，BattleState 和工作值逐项接续。公共派发器统一优先级及登记读取；领域决定时点、资格与停止条件，见 [Hook](hook.md)。实例自身的 onInstall、onTick、onEnd 等程序直接由所属领域调用。
 
-Capability 可以承担完整领域结算，例如 Locomotion.advance。对已登记 Unit 的 Restriction、Hook、Contribution、Blocker.layer 与 Presence.appear／disappear 写入统一为声明最低宿主能力的 Change 工厂，由 Unit.update 接收 Ref 后先纯应用、一次发布，再原顺序结算必要后继；Hook Change 只登记，不启动业务维护。职责由实际语义决定，不以目录名或 set／remove 动词判断。
+结束请求立即发布 ENDING／LEAVING，不保证任意正在运行的程序仍保持业务资格。Lifetime 依赖保护的是结束结算顺序，不是所有普通回调的执行事务；不能为保护一个调用栈而全局推迟无关对象的 Finalize。
 
-### 3.3 调用方持有状态
+## 同步候选范围
 
-initialize(input) 返回包含领域状态、Schedule 和预置绑定的完整 battle.State。关卡开场 Unit 由 initiallyPresent:true 的 Predefined 创建，与后续出现／移除共用预置机制；创建直接调用 unit.initialize，再登记与 enter。step(battle, commands) 开帧以新值清空本 Tick 的 events，按明确顺序调用领域函数，最后推进 Tick 并返回新 State。Schedule 等待通过全局 Unit leave Hook 同步解除，Tick 外离场也在操作内完成，不依赖输出的后续扫描。commands 必填，无命令时传 []。网络、文件、渲染、现实时间和日志输出由外层处理。
+一次派发或批量推进先固定自己的候选身份，每项执行前读取最新登记和实时资格。新增身份留给嵌套或后续操作，删除的候选跳过；替换同身份使用最新对象。
 
-```text
-step(battle, commands)
-    ├─ 形成清空本 Tick 临时事实的新值
-    ├─ Deployment 时间推进 → 接续状态
-    ├─ Combat.prepare → 接续状态
-    ├─ Deployment → 接续状态
-    ├─ Schedule → 按时出生并接续等待关系
-    ├─ Unit → 接续状态
-    ├─ Effects → 接续状态
-    ├─ Elemental → 接续状态
-    ├─ Skills → 接续状态
-    ├─ Combat → 接续状态
-    ├─ Projectile → 接续状态
-    ├─ Movement → 接续状态
-    ├─ Mechanism → 地形接触与控制器扫描 → 接续状态
-    ├─ Blocking 固定候选 → 复核旧关系 → 统一搜索 → 接续状态
-    ├─ 刷新预置绑定并推进 Tick，形成整体 State
-    └─ 返回 State，由调用方接续
-```
+候选不等于全部实时输入的快照。例如 Hook 固定 ID 与 priority，却逐项重查程序；Blocking 固定一次搜索的目标，却根据最新容量继续接敌。快照范围由真实业务决定，不建立统一的冻结世界协议。
 
-Tick 的执行顺序在 step() 中直接可读。Unit 完整离场通过已登记的全局 leave Hook 同步释放 Schedule 等待，不等到下一个 Tick 扫描。Core 不保存终局结果；调用者读取返回状态自行决定是否继续推进。Combat、Movement 沿 Unit Query 的登记顺序遍历入口快照，不为固定候选额外生成数组或 Ref 列表；Combat 的 Execution Ref 惰性查询始终使用保存的阶段初始 BattleState。实际操作逐项接续最新 BattleState，快照用于对象来源和静态能力证明，动态资格由完整操作读取当前状态。Movement 内先推进全体 Blockable 站位计划，再逐 Unit 推进 Route 与符合资格的 Locomotion；计划存在不排斥自主移动，完成当 Tick 也不额外停走。领域函数负责各自的纯结算；函数式契约不要求再建立一个完整的 Tick 入口或执行文件。
+## 正常取消与失败
 
-函数内部用局部 `let state` 顺序接续，调用方用 `battle = step(battle, commands)` 保存结果，不重放操作或已执行的回调。函数抛出时输入值仍完整保留；没有额外提交、发布或回滚协议。
+正常拒绝、取消、零作用通过领域结果表达，保留已经完成的转换。非法输入或程序错误直接抛出，不用 catch 或默认值掩盖。
 
-## 4. 状态归属
+异常时调用者未取得下一版本，旧 State 保持完整；失败的模拟不继续推进。函数式隔离依赖内容程序不修改输入或外部状态，不提供环境副作用的自动回滚。
 
-| 所属领域                           | 权威事实                                                                 |
-| ---------------------------------- | ------------------------------------------------------------------------ |
-| Battlefield                        | Units、Navigation、Projectiles、占格结构索引及其他派生索引      |
-| Unit.occupancy | 当前登记格、实例朝向、已通知的 pair 绑定；绑定快照不代表实时 Unit 数据 |
-| Unit.blocker／Unit.blockable | 初始化至多选择一种，也允许两者皆无；保存唯一归属或有序关联，Blockable 另有独立站位计划；接敌、解除及维护由 Blocking 执行，真实坐标仍只有 Unit.position |
-| Unit／Capability                   | HP、控制状态、行动就绪、技能状态、路线、Restriction 与 Contribution；登记式 Hook 统一存于 Unit.hooks   |
-| Unit.effects                       | Effects 容器保存实例身份、Definition、私有 state、生效状态、来源 Ref 与 expiration；DURATION／DEADLINE／INFINITE 互斥，Scope 关系归 Lifetime |
-| Unit.route | Plan 描述路线方案，Context 保存偏移、index、current 与 ticking；State 组织 main、others、activeId 及出生时间基准，临时 Context 具有宿主内唯一 ID，见 [Route 设计](navigation.md#route-定义与进度) |
-| Battle.deployment | DP、usedSlots 账户、Card 记录与手牌顺序、部署观察 Hook；各 Card 保存当前库存、计时及私有 state |
-| Schedule                           | 静态调度计划、主线阶段、活动 Branch Phase、时间锚点及实际等待关系，见 [Schedule](schedule.md) |
-| Unit.action.actions                | 按配置 ID 聚合 Definition、持久 state、Cooldown 和当前 Execution；执行身份进度由 Capability.nextExecutionId 保存 |
-| PredefinedPresence                 | 预置 Definition 到实际实例的绑定                                         |
-| Execution | RNG 与 Card、Unit、Projectile、Mechanism、Overlay 的全局 ID 进度；Effect 与其他宿主内实例由所属领域分配 |
-| Battle.mechanisms：非空间 Mechanism | 共享额度、共享生命、周期、一次性锁和来源过程进度                         |
-| Battle | Tick、各领域状态，以及本 Tick 的 UI 瞬时输出和 Unit 移除事实；不保存终局结果 |
-| Battle.lifetime                    | 从所有权／Scope 派生的 dependencies，以及本次结算的 endings／settling |
+## 从语义推导验收
 
-Main Context 随 Unit 初始化建立，不走动态分配。其他 Context 运行时创建、更新与移除；对外 `Ref<Context>` 使用 `{ host: Ref<Unit & Route>, id: ContextId }`，内部使用同一个 ContextId。Context 不需要保存 host 运行字段，重建 Plan 或推进指令保留原 id；不能用数组位置或更新后新建的 Context 对象代替稳定身份。
+每项保留的关键结果应有原生依据或明确项目选择，再确定最小代表测试。公共协议集中验证，领域测试只补充不同的可观察后果；字段、函数、内部步骤和历史测试数量不是验收目标。具体归属见[语义验收](verification.md)。
 
-战斗状态组合这些值，没有第二份 Unit 覆盖层，也不复制 Battlefield 的索引维护职责。全局规则只有需要独立状态时才创建 Mechanism；不把所有特殊技能归成一种通用机制对象。
+## 支持边界
 
-实例直接共享不可变 Definition，异构条目的类型配对与恢复由所属集合封装。Typed Ref 与生命周期地址表达运行身份；跨进程恢复在序列化入口重新关联定义。Skill 的 Definition、单槽 Skill 聚合、非空 Activation 视图、SP／Ammo 与完整业务归 unit/skill，能力状态、初始化和 Restriction／Ammo 贡献 Change 工厂及通知键归 capability/skill；状态仍存于 Unit.skill。类型与行为见 [Skill 设计](skill.md)。
-
-UI 瞬时输出在 Tick 工作值的 events 中按顺序累积，step() 返回时供外部消费。它们是结果数据，不是随后重放的修改指令。纯函数可以内部使用本次新建的数组／Map 构建结果，不能修改输入版本或已经返回的共享值。
-
-调用期候选与只读资源不进入长期状态：
-
-- Definition、编译后的内容、地图及静态规则可以共享引用。
-- 当前事件参数、接收 Pending、候选身份范围属于本次调用。
-- Lifetime 的 Pending 与结算标记通过当前 BattleState 显式接续，最外层成功返回前清空；不保存模块级 busy、共享可变工作队列或同步调用栈。
-- 跨 Tick 的计时、次数、RNG、绑定、执行游标不能放在资源或闭包里。
-- 缓存只保存可重建结果，内部可变缓存不得改变领域结果；跨 Tick 的权威进度保存在 State。Navigation 的缓存契约见 [Navigation 设计](navigation.md#职责与状态归属)。
-
-## 5. Battlefield 的状态一致性与阻挡结算
-
-Battlefield 提供不可变 State 与直接的集合操作。create(map: Map) 直接接收地图，不为单个参数提供 Input 包装。State 的 units 统一为 ReadonlyMap<Id, Unit>，不为异构集合声明共同的具体 Unit 类型；精确类型由 Typed Ref 与查询守卫恢复。普通操作直接返回已经维护一致性的下一版本：
-
-```typescript
-fieldUnit.add(field, unit) → nextField
-fieldUnit.update(field, units) → nextField
-fieldUnit.remove(field, ref) → nextField
-
-unit.add(battle, unit) → nextBattle
-unit.update(battle, ref, change) → nextBattle
-unit.remove(battle, ref, end) → nextBattle
-unit.advance(battle) → nextBattle
-```
-
-battlefield/unit.ts 的 add／update／remove 只完成纯状态转换；完整 Unit 业务统一位于 battle/unit.ts，提供 add／update／remove／advance。Blocking 在自身构造入口建立 Blocker／Blockable 至多一种的约束，内部信任，不由角色推导阵营、Layer 或移动能力。remove 将 End 与入口 Unit 固定为 Departure 后委托 Unit Lifetime；DEATH 明确携带调用者给定的 killer，重复请求不覆盖首次结束事实。在请求阶段纯发布 LEAVING，再派发能力自行登记的 prepare Hook，由 Blocking 清理本 Unit 的关系与自身计划。已登记 owner 与 Scope 依赖者完整 Finalize 后，Unit 注销并输出携带最终 Unit 历史快照的 UNIT_REMOVED，再派发本地 leave，随后派发全局 leave；各自按公共 priority 排序，同级保留登记顺序。Occupancy 自己处理旧配对，Deployable 的本地 leave 归还实际占用；部署时预装的死亡响应只处理确认死亡。主动撤退由其领域操作在请求离场前直接结算退款、Card 费用阶段与库存恢复。Unit 不识别具体能力，也不全场扫描补救领域清理；调用方不拼接这些内部步骤，BattleState 不另提供 Unit 登记或注销入口。部署契约见 [Deployment](deployment.md)。
-
-add 拒绝重复身份。公开 Unit.update 接收单个 Typed Ref 与 Change；Ref 证明目标的稳定能力，Change 不绑定身份。Change 函数保留输入宿主的完整类型，返回 next 与已捕获各项 previous 的 settlements；compose 将两个 Change 从左到右应用于同一宿主，并顺序连接结算列表。目标缺失时抛出 RangeError。全部纯应用完成后一次发布 Field，再逐项接续最新 BattleState 结算；此阶段之前不执行业务回调。各项无变化时不登记结算，不能因为最终 next 恢复入口引用而丢弃此前真实变换的结算。Field 内部 update 仍接收完整 Unit 数组，信任 Core 构造的身份与 Definition，不重复校验；替换保持登记顺序。Unit 身体所属格由 position 与 Presence 查询，不另存位置索引或空间依赖分类。
-
-Capability 的 Restriction、Contribution 与 Blocker.layer 工厂，以及通用 Unit Hook 工厂，只接收业务输入，返回要求最低宿主能力的 Change；Content 将其与 Ref 交给 unit.update，不手工重建 Unit。纯应用不读取 battle、不调用业务程序，必要后继由所属领域捕获 previous 后附带；结算始终从最新 battle 继续，不能回填整份 previous。内部 replace 接收合法完整 Unit 数组，仅发布数据与派生索引，不执行内容 Hook。Field 的私有变更记录继续负责 Unit 存储与 Occupancy 双槽维护，与公开 Change 分别承担存储和业务职责。详细签名见 [Unit 批量变更](api-conventions.md#51-unit-完整操作与批量变更)。
-
-一次 update 只针对一个 Unit；有序组合满足结合律，不满足交换律，组合本身不增加发布或结算边界。较早后继的 Hook 可见较晚变换的最终字段和未完成的清理。业务回调中的嵌套 update 只执行自己的结算，不调度外层剩余项；领域后继按受影响对象限定范围，同对象交叠则读取共同最新事实。Tick 成功后 Runtime 发布最终 BattleState，不需要调用方另行执行 settle。
-
-初始化、刷怪和预定义出现逐个完成创建、登记与入场，接续 Hook 返回的最新 BattleState 后才处理下一个对象，不预先分配后续实例身份。刷怪逐个登记本次 Spawn 对应的等待关系后再执行 enter Hook；计划中的执行时刻由 Schedule 的阶段与时间基准解释。纯集合批量写入不定义批量入场语义。Unit.add 只登记并派发普通 enter Hook；Deployment 预先登记部署通知，Occupancy 初始化随后追加配对程序；公共 priority 决定本轮顺序，同级按装配先后执行；Occupancy 的程序负责业务配对。Unit 不识别这些具体能力或扫描全场 Blocking。入场内容需要取得、搜索或修改资格时，调用明确的 Blocking 操作。
-
-unit.update 与内部 replace 不准备、校验或推断 Blocking 关系，也不派发 Blocking／Occupancy 通知。acquire／release 明确构造关系双端并发布，acquire 通知后只复核本次新 Relation；release 统一接收 Relation 数组，入口过滤旧身份与重复项，整批解除，再按输入顺序通知，不附加维护、搜索或计划取消。Capacity 的 Settlement 只按当前容量从本 Blocker 的末尾裁撤；volume 在 settle 读取当前 owner，结算该阻挡组，不追随 Hook 中的新归属；两者共享内部 settleCapacity，每条通知后重新读取容量与占用，不夹带资格扫描。Restriction 的 Settlement 固定自身相关关系，逐条 maintain 复核资格，不维护其他关系或裁容量。setLayer 的 Settlement 通过 releaseAll 清理当时当前关系，previous 只提供稳定身份，不回填旧 Unit。普通私有 state 写回与 Hook Change 没有 Blocking 后继。
-
-[Presence](presence.md) 返回在调用时按当前宿主能力组合的 Change：自身叶子只处理空间事实，随后复用各能力的 Restriction 工厂，遵守全批发布后按序结算的协议。自身 Settlement 按 previous 的稳定角色调用 Blockable.release 或 Blocker.releaseAll，由完整操作读取并释放当前关系，Blockable 同时取消自身位置计划。disappear 在释放后委托 Action.cancelForUnit，由 Action 完整操作读取当前执行并取消。各释放操作在自己的首个 RELEASED 前完成本次计划清理和整批双端解除，通知中新建的关系不属于该次释放候选。Route 无 Presence 分支的主动位置覆盖先纯发布位置，再按角色调用相同完整操作。
-
-Locomotion 和阻挡站位推进只发布位置、速度或计划，不调用 Blocking 维护；依赖位置的 Restriction 在关系检查点求值。Route 的 APPEAR 是主动空间覆盖，明确解除当前关系。地块完整更新调用 maintainAll，固定入口旧关系、按 Unit 登记顺序及 Blocker.relations 的建立顺序各复核一次资格，不重新收集候选、回头重扫或裁容量。maintain 接收 Relation，确认原身份仍存在后读取最新双方并复核资格；失效时仅解除这一条。Damage／Healing 的 HP 写入不启动 Blocking；旧关系不因临时 HP 为 0 失效，普通 Damage 在全部 HP Applied 响应后仍满足死亡条件才进入 Unit.remove 的显式释放。
-
-每 Tick 在 Movement 后的固定 Blocking 阶段先固定阶段初 Blocker 候选，再通过 maintainAll 复核旧关系，最后统一搜索；不保存独立搜索周期，不随每次 Unit 修改全局搜索。Restriction 可以读取任意 Battle 事实，普通间接变化在该检查点反映；晚于已访问关系的后续 Hook 或搜索所产生的间接变化留到下一检查点，需要同步生效的业务明确调用关系操作。阶段不反复全场收敛，也不保证每次 Battle 写入后所有 Restriction 都立即重算。各领域操作按自己的范围完成业务：release 保证给定旧集合的双端解除，maintain／maintainAll 负责关系资格，容量／volume 的 Settlement 负责裁撤，Content 无需补内部步骤。尚未取得的新关系允许等待下一次普通搜索，有真实业务要求时可显式立即搜索。归属与关联保存在 Blockable／Blocker State；关系两侧在同一批写入中就绪，再按 Blocker、Blockable 顺序同步通知。后续接续 Hook 返回的最新状态，不自动扩充名单。详见[职责与调度政策](blocking.md#职责与调度政策)。
-
-查询直接使用所属领域的接口：Unit 的 all／get、Blocking 的关系查询、Occupancy 的 at，以及 Projectile 的实例查询；map 与 navigation 直接从 Field 读取。relations(battle) 汇集全场原 Relation，relations(battle, ref) 直接从该 Unit 的唯一角色读取局部关联并保留原 Relation 对象，不全场扫描后过滤。Navigation 的状态与查询接口见 [Navigation 设计](navigation.md)。HP 到零后的业务裁决、Effect 回调和 Meta 内容后继由相应领域负责，不能让 storage 一致性维护隐式执行任意游戏程序。
-
-## 6. Hook 和生命周期的纯契约
-
-Hook 使用统一的泛型状态转换与动态派发协议。领域定义类型化键与执行时点，Unit 本地登记保存在不可变 Hooks 集合；接收、能力事实通知及生命周期登记统一存于 Unit.hooks，Battle 全局观察使用所属领域的独立 Hooks 集合。Key<H, Owner> 保留完整条目类型与最低宿主约束，通用登记返回 Change<Unit & Owner>。公共集合只要求条目 ID，不认识具体 Capability，完整契约见 [Hook 集合与登记](hook.md)。
-
-实例自身的 Definition 程序按实际阶段使用 onStart／onInstall／onEnable／onDisable／onTick／onEnd 等；公共生命周期通知使用对象名＋Started／Ended，业务事实使用对象名＋过去分词，前置干预使用 beforeXxx。具体 Hook 类型使用对应名称＋Hook，通用 Hook<C, T> 协议不变。start／end、finish、cancel 分别表达生命周期、正常完成与取消，completed 只表达一次业务结算完成；不同语义阶段不为名称一致而合并。完整约定见 [接口命名规则](api-conventions.md#1-基本分类)。
-
-```typescript
-interface Hook<C, T> {
-    readonly id: string;
-    readonly priority?: number;
-    readonly accepts?: (battle: BattleState, context: C, current: T) => boolean;
-    readonly invoke: (battle: BattleState, context: C, current: T) => Result<T>;
-}
-
-interface DispatchOptions<C, T> {
-    readonly candidates: (battle: BattleState) => readonly Hook<C, T>[];
-    readonly find: (battle: BattleState, id: string) => Hook<C, T> | undefined;
-    readonly stop?: (battle: BattleState, current: T) => boolean;
-}
-
-dispatch(battle, fixedContext, initialValue, options): Result<T>;
-```
-
-三个通道分别是固定 Context、动态 Battle、可接续 current。Context 保留本次事件身份、历史事实和明确采样值，不因实例结束或替换而改写。实时状态从最新 Battle 按身份查询；Context 内的历史对象不被当成持续最新的对象。需要当前 Effect 私有数据的程序通过捕获的 typed Ref 查询，不捕获可变运行进度。
-
-业务 Hook 通知只提供该业务需要的事实。Skill 的 activationStarted／activationEnded 分别携带 `{ ref }`／`{ ref, end }`，不暴露完整 Definition 或私有 state；宿主由 Context.host 提供。activationEnded 清空槽位后通知，Ref 保留已结束轮次的身份，不保证还能查询对象。具体私有数据由自身已配对的 Definition 程序解释，观察者保存自己的计数、首次标记与其他玩法 state。
-
-candidates 每次派发调用一次，返回候选 Hook 条目。本次排除由领域按 typed Key 身份及 ID 在 candidates 中过滤；null ID 排除整键。公共 dispatch 同时采样 ID 和 priority，以缺省 0 的 priority 稳定降序排序，同优先级保持登记顺序，再固定本轮候选。每项依次检查 stop、find、accepts，再 invoke；三个查询只读，不消费 RNG。find 重新读取最新登记并确认节点／阶段资格，替换后的 priority 不重排本轮。accepts 缺省为允许，返回 false 则跳过；stop 结束整次派发，保留已完成的状态和值，不自动取消业务或回滚。嵌套派发独立取得 Context、current 和候选；返回后接续其 Battle，外层 Context 不变，外层 current 由当前 Hook 返回值决定。
-
-上述优先级与候选 ID 协议同样用于 Unit 的 enter／tick／prepare。固有 Hooks 在构造期全部装配，运行时可经通用 Change 登记、替换和撤销生命周期键；每次派发固定 Context，逐项接续 BattleState、读取最新登记并判断 accepts。enter／tick 的 Context 是本阶段采样的 Unit，每项前确认宿主仍为 PRESENT；prepare 使用固定 Departure。leave 在物理注销前从最新 Unit 捕获本轮 Hook 对象及 priority，固定排序后的快照，注销后执行并检查 accepts，不查询已删除宿主。leave 登记快照与 Departure 的历史事实分别采样。同键同 ID 替换保留位置，不重放已完成阶段。
-
-不需要操作值的通知使用 T=void，仍返回 Result<void>，C 也可为 void。需要终止后续通知时，领域定义自己的控制值，不把业务取消、停止派发和生命周期终结混为同一个布尔值。Vitality 的阶段控制只在本节点生效，不能成为后续业务事实的一部分。
-
-通用条目的 set／remove 位于 common/collection/entries.ts，按 ID 登记、替换与撤销，保留顺序与结构共享；Hook 模块提供类型化集合和统一优先级排序的 dispatch。Unit 所属登记存于 Unit.hooks，Battle 所属登记存于各自 Hooks 集合；领域定义节点、候选范围、资格与停止条件。Skill／Elemental 结束通知与 HP Damage.targetKilled 不因宿主 LEAVING 被常规输出的 PRESENT 资格拦截。Resource 的四种业务共用 resource/hook.ts 的 Unit Hook 派发和 resource/receiving.ts 的接收工作值协议，各自保留精确 Context、原因集合及执行阶段。Calculate／Apply 分别接收可选 Options.exclude，接收阶段接续 Apply 选项。HP Damage、EP Damage、HP Healing 的 ApplyOptions 另接受可选 forbidden，Apply 一次建立必填 ReceivingContext.forbidden，本笔接收、Commit 与 Applied 共用；Hook 显式将该集合传给必填三参数 cancel。EP Healing 保持仅有 Hook Options，不增加 Reason 或 forbidden；不将选项写入 Request／Calculated，不自动传播至嵌套业务、资源事实或生命周期通知。Effect 与 [Projectile](projectile.md) 的 Definition 回调直接接收完整 self；异构容器内部擦除私有参数，Core 调用同一实例自身 Definition 的程序，不解释未知 state。Definition 程序与本次 Hook 派发的固定 Context 分别定义。
-
-Unit 持有不可变 Effects 容器，内部 Store<Id, Effect<any, any>> 保存异构完整实例及 ID 进度。普通 get(id)／values() 返回默认 object／object 的完整 Effect，包含 state 与原 Definition；精确 Ref／Definition 查询保留私有类型、STACK 与政策分支。values／keys 返回绑定容器版本的 Query；Core 取得完整实例，在统一的受信任边界恢复其与自身 Definition 程序的配对后执行，不依赖嵌套判别自动推导联合回调，也不解释未知 state 或 H。存储容器仍不派发业务；跨完整操作后仍读取最新实例。真实所有权保护结束中的宿主与存储；Departure 等明确历史载荷按本领域业务输入保存。
-
-Unit.initialize 始终创建空 Effects；初始内容在宿主登记后，通过 enter 键下的 Unit Hook 调用 install。各领域在完整创建／启动与结束操作中登记／注销关系，普通 Unit update／replace 只发布状态与结构索引。createBattleState 建立空 Lifetime 图，不扫描预置 Unit；初始对象通过完整 add 入场。Effect.source 仅以 `Ref<Unit> | null` 表达施加者，来源存活与生命周期 Scope 分开，来源离场本身不终结 Effect。
-
-容器不接收战斗状态，也不决定生命周期阶段；完整 replace 由 Core 提交已经配对的值。Effect 容器保存宿主内 ID 进度，Action 的 nextExecutionId 保存于 Capability；Actions 按配置 ID 保存聚合条目，本轮终结只清空 execution。普通内容通过 `effects.setState(battle, ref, nextState)` 提交私有 state，Action 的 setExecutionState 通过本轮 Execution Ref 使用同样形式设置 execution.state，setState／setCooldown 通过持久 Action Ref 分别设置持久 state／Cooldown。Action Ref 由 host 与 Definition 定位，保留私有类型配对；Execution Ref 仍由 host 与本轮 execution.id 定位。两种引用读取同一聚合条目，不增加运行容器或 ID 分配。操作从最新 battle 读取当前实例，只替换指定字段；给定载荷与当前字段引用相同时不生成新 battle。Action 的 execution 为 ENDING 时不允许普通执行写入；持久字段和 Effect 的结束清理仍按各自协议更新。
-
-Projectile 的异构容器归 projectile/projectiles.ts，状态仍由 Battlefield 持有，完整 battle/projectile.ts 操作直接替换容器。Projectile 的 update 接收已经计算好的 `{ position?, state? }`；Core 从当前实例保留未提供字段，只提取允许写入的 position／state，ACTIVE 与 ENDING 均可写。Runtime 在整个 Step 的阶段回调开始前保留 Projectile Query 快照，推进时按需生成 Ref 并逐项读取最新 ACTIVE 实例，本次新建实例不参与正常推进。
-
-私有字段写回只接收结果值：调用方从当前 battle 查询并计算下一值，计算与提交之间不执行其他完整操作，跨领域返回后重读。Skill.setState／setActivationState、Action 的三项字段写回和其他实例生命周期操作维持原契约，完整对象替换归 Core。Restriction、Hook、Contribution 写入使用声明最低宿主能力的 Change 工厂，SP 自然回复贡献也使用同一协议，但仍定义于 sp.ts；这不重新开放 `(current) => next` 通用写回。内部 transform、生命周期回调、Hook 和动态 Contribution Input 各有明确职责。
-
-`NoInfer` 限制新值参与泛型推导；调用者必须保留实例与 Definition 的原始私有类型关联。Ref 可协变查询，但借预先弱化的完整 Ref 写入不兼容数据属于调用契约错误，不增加运行时形状校验。Action 容器的 toJSON 诊断保存聚合条目与私有载荷，执行 ID 进度另由 Capability 保存；Effect 容器诊断同时保存私有载荷和自身 ID 进度。Snapshot 只用于真实诊断投影，不替代完整实体，也不作为 Definition、回调或容器的恢复协议。
-
-self 是输入版本的值。嵌套调用返回后，遵守 [状态接续后的读取与续执行](#状态接续后的读取与续执行)：实时事实从返回 State 重新查询，明确采样与历史载荷保留。不使用动态 getter 偷偷追踪一个可变工作对象，也不以旧整份 Unit 覆盖新版本。
-
-Effect 安装先确定重复施加结果：拒绝或更新保留实例，或进入新建分支。新建先登记 INSTALLING 与 Lifetime，再执行 onInstall 并接续其返回值；重读当前实例后结算到期，零时长新实例执行安装业务后结束，不启用、不执行 onTick 或 onDisable。继续存在的实例再决定是否 ACTIVE。结束请求发布 ENDING，Prepare 撤销已启用的输出、协调 Group 并展开依赖请求；Finalize 等全部真实依赖者完整完成，再调用结束程序与移除。关系权威归 Lifetime 图，包含各领域登记的 owner 与显式 scopes；Effect 独立保存 expiration，不重复保存依赖。合并图保持 DAG，兄弟按边登记顺序请求；source 只表达来源。
-
-Effect 的 expiration 选择 DURATION、DEADLINE、INFINITE 之一；DURATION 保存 duration、remaining、rate。ACTIVE／INACTIVE 均先自动扣时并发布，仅 ACTIVE 调用 onTick，第三参数保存本次推进前的 expiration；回调后重读最新时间状态结算到期。rate 为零允许内容手动推进；DEADLINE 的绝对期限不暂停，INFINITE 不因时间到期。STACK 到期可以减层并重启一轮计时，只有结束实例才进入 Lifetime 析构。详见 [Effect 时间推进](effect.md#6-时间推进)。
-
-已经进入的内容程序按自身控制流继续，明确采样载荷可保留为本次函数局部值。需要槽位释放或最终通知的后继业务使用领域完成时点，不能从嵌套 end 返回推断 Finalize 已完成。Pending 只保存当前同步结算工作，不保存通用最后载荷表、恢复调度或跨 Tick 删除队列。
-
-普通私有 state 转换不自动刷新 Contribution。静态、周期采样、状态响应更新和实时只读求值分别由具体内容与 Capability 表达。Effect 覆写、Contribution 分组、Hook 执行顺序和本次业务条件仍是四件事。
-
-## 7. 同步候选范围
-
-每次派发独立选取候选，不继承祖先派发的候选快照。领域派发遵守：
-
-1. 本次派发开始时，从当前 BattleState 确定候选身份。
-2. 每项执行前从最新返回 State 读取实例和资格。
-3. 新登记身份不自动加入已经确定的候选；候选资格按当前事实判断。
-4. 候选集合由派发领域管理，不作为所有操作的通用参数。
-5. 嵌套 Damage / Healing 是新操作，其每个派发从最新状态取得候选。外层后续独立阶段同样重新取候选；外层当前尚未完成的派发继续使用原候选。
-
-对 Hook 集合，候选身份是登记 ID。每项执行前按 ID 从最新集合读取当前 Hook，再执行其 accepts／invoke；同 ID 替换在本轮使用新版本，移除则跳过，新 ID 不加入已开始的派发。所有登记式 Hook 的 priority 缺省为 0；候选采样时确定降序，同级保持登记顺序，替换不重排；阶段改变后不符合本轮阶段的登记跳过。该身份约定不以 Hook、Unit 或 Effect 对象引用是否变化决定参与。
-
-例如 H1 安装新 Effect 并登记 H2 后发起嵌套伤害，H2 可以参加该新伤害中符合阶段条件的派发；它不补进外层正在执行的派发。候选身份和实际资格分别处理。
-
-候选 ID 序列是本次派发的局部值。每个领域明确自己的集合与参与规则；[原生派发研究](../research/cases/03-dispatch-and-nested-settlement.md)用于对照具体 Buff 行为。
-
-## 8. 完整调用链
-
-以吸收伤害后触发治疗的盾程序为例，派发方传入确定类型的 self 与伤害输入，程序按以下顺序接续：
-
-1. 从当前 battle 按 typed Ref 取得 Effect，使用当前 state 局部计算吸收结果。
-2. 用 `effects.setState(battle, ref, nextState)` 提交本次盾数消耗的结果值；计算与写入之间不推进 battle。
-3. 调用 Healing 的完整操作，并接续返回的 battle。
-4. 用 Effect 身份从新 battle 读取当前实例；若内容条件要求结束，调用 end 并接续其返回值。
-5. 返回最终 battle 与本次吸收结果。
-
-这不规定所有次数盾都在零层时结束，也不宣称所有盾的治疗、结束顺序相同。Effect self 已保存 typed host Ref，定位引用由实例产生，不为示例引入另一种通用 Context。
-
-`effects.setState` 只写私有 state，不自动刷新 Contribution；需要修改已登记贡献的内容显式执行对应刷新。安装／启停／绑定／结束仍由生命周期操作完成，不通过私有数据转换绕过这些规则。
-
-Healing 中若嵌套 Damage，Damage 必须把冷却消耗、HP、致死裁决与已执行的退场请求／Effect Prepare 返回给 Healing，再返回外层盾程序。若当前已有 Lifetime 结算范围，resource.hp.damage.completed 不保证目标的离场 Finalize 已完成；最外层结算器随后完成这些工作。每层报告描述本次操作，不用最终 HP 净变化反推本次伤害／治疗量。
-
-同样的组合可以表达治疗后给其他 Unit 装盾、灼痕死亡爆炸、技能结束补 SP、共享复活额度消耗。普通函数调用、if 和 for 足够，不要求通用指令解释器。
-
-## 9. 正常取消与失败
-
-正常拒绝／取消返回已经完成的状态与 outcome：盾的消耗、开始动作、嵌套回复、正常已消费的 RNG／ID 不因后继拒绝而回滚。取消伤害、停止剩余 Hook、结束 Action 和实际退场分别表达。
-
-未处理异常表示本次模拟失败。step() 尚未到达最终发布位置，已发布版本保持不变，错误直接传播。它不定义可恢复、自动重试或 catch/drop 机制。
-
-伤害领域必须容纳致死裁决和到零后处理。只有实际离场才关闭 Unit 的宿主生命周期并完成其相关清理。死亡爆炸等内容接入明确的击倒／死亡协议，不能把任意 Effect.onEnd 都解释为宿主死亡。
-
-跨 Tick 保存可恢复数据；不保存同步 Hook 栈、Promise、generator 或普通同步调用的临时工作 Context。Route Context 是持久路线状态，不属于这种调用期工作对象。Occupancy 的 Pair 保存已经建立的业务绑定及其不可变采样，也作为 Definition 配对程序的输入，不代表实时 Unit 状态或待重放回调；需要当前事实仍从最新 BattleState 查询。Action、Projectile、Route 和周期 Effect 各自推进，不合并为统一过程框架。
-
-## 10. Meta 接入边界
-
-Meta 选择本次战斗配置，Data 将原始资料与静态配置转换为规范化数据，可以静态建图、组装 Definition 或调用已有工厂绑定参数；具体战斗机制程序由 Content 或所属 Core 领域实现。Core 接收 Definition 与 Initial 创建初始 State，按领域时点执行程序，将本场共享进度、一次性锁、次数、样本和绑定保存在返回的 State 中。Data 不自行实现机制执行程序，Content 不在模块或闭包中保存运行时事实。
-
-盟约的持久层数、装备配置等由 Meta 管理；本场需要变化的内容通过明确输入／输出或规则实例 State 交接。Tactical 不定义商店或盟约管理器，也不直接修改 Meta 对象。联防是否禁止收益、全场额度的玩家作用域、里程碑触发等由传入的内容规则决定。
-
-战斗内形成的规则进度与反馈保存在返回的 BattleState 中，外层据此裁定终局并形成玩法结果。反馈用于后续玩法，不重复重放战斗内已经完成的同一状态变化。需要本场立即影响后继的规则通过本场返回 State 表达，不能只等待战斗结束再执行。
-
-装备、盟约本身不是 Unit。Aura 是普通宿主 Effect；非空间共享额度是独立规则事实。这些接入不要求 Aura Capability、EffectSource 或全域事件总线。
-
-## 11. 内容接入
-
-具体盟约、装备与角色规则由 Content 组合领域操作；Core 维护资源、实例、接收、时间与生命周期契约。Aura 采样、死亡传播等尚未接入的具体程序属于[内容支持边界](tactical-semantics.md)，公共协议不等于对应内容已经完成。
-
-新增内容沿语义闭合的调用链接入，使用普通返回对象和直观线性代码。只有真实接续样板妨碍阅读时，才评估小型状态组合函数；不为代码形状另建通用解释器。
-
-## 12. 从语义推导验收
-
-先按[语义验收](verification.md)确定必须保障的结果，再选择代表场景。现有测试不自动构成保留要求。
-
-本页第 2 节说明公共协议保障什么，不要求为每个消费者另写一套测试。未实现的 Aura、特殊复活等不能靠夹具补一套实现，再以测试结果宣称产品已具备这些机制。
-
-同一状态接续、Hook 派发、依赖析构或批量发布规则集中验证；领域只增加会改变业务结果的差异。取消前缀、真实死亡确认、资源总量与依赖完成等是验收结果，方法调用次数、容器引用共享和没有业务影响的细小帧序不是独立目标。
-
-## 13. 支持边界
-
-特殊生命保护与复活、具体吸血基线、特殊覆写和位移等按[内容缺口](tactical-semantics.md)及对应领域列明，不由通用回调或测试夹具隐式补出实现。已有 Lifetime 请求与依赖完成顺序按 [Lifetime](lifetime.md) 和 [Effect 结束流程](effect.md#结束流程)执行。项目的 DAG 析构政策是工程选择，不能作为原生行为证据。
+通用执行模型不能证明具体机制已完整接入。当前范围与真实缺口见[内容支持](tactical-semantics.md)；原生证据与未决问题见[Research](../research/00-INDEX.md)。

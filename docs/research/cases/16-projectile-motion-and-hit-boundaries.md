@@ -126,7 +126,7 @@ HitBehaviour.OnTriggerEnter2D [86269] 0x180d358a0
 
 `SelectorHitBehaviour._FindTargets_DISPOSE` [86507] `0x180d49d20` 在 `0x180d49de5` 调用 `TargetSelector.FindTargets_DISPOSE`。其他已核实入口分别使用原目标身份、空间重叠或接触对象，并不都调用 TargetSelector。
 
-**架构推导**：Targeting 应由需要筛选接收者的具体命中行为使用；不应成为每个 Projectile 每 Tick 的统一必经步骤。是否通过项目现有 Targeting 组合空间候选，是后续设计选择，不是要求复刻原生 Selector 类。
+**架构推导**：Targeting 应由需要筛选接收者的具体命中行为使用；不应成为每个 Projectile 每 Tick 的统一必经步骤。项目当前接口见 [Projectile](../../architecture/projectile.md)，不要求复刻原生 Selector 类。
 
 ## 5. 目标移动、死亡和离场必须分开
 
@@ -142,16 +142,8 @@ HitBehaviour.OnTriggerEnter2D [86269] 0x180d358a0
 
 停止、消除与超时见 [停止与终结调查](17-projectile-stop-and-termination.md)，来源死亡／撤退及目标暂时消失见 [来源与目标生命周期调查](18-projectile-source-and-target-lifecycles.md)。本篇仅以必要停止分支说明运动与命中边界。
 
-## 6. 当前 Stronghold 的实际差异
+## 6. 边界与后续证据
 
-| 当前实现 | 已证实的语义缺口 |
-| --- | --- |
-| `settlement.ts` 固定按 speedPerTick 直线追踪 | 无法直接表达实际的抛物线、计时、环绕、固定方向等不同推进政策 |
-| 只有到达后才调用 `contact()` | 缺少沿途命中、周期命中和独立计时命中入口 |
-| 所有 contact 候选先做范围接触检查 | 普通锁定命中没有独立身份入口，隐含了并非通用的碰撞前提 |
-| 停止只执行自定义 stop 回调 | stop 可以产生输出，但还没有表达实际样例中可复用的原目标保底与停止命中语义 |
-| 弩手 `acceptsContact` 写死目标当前为 ALLY | 原生普通锁定命中未重新进行这项阵营判断；需要在 Projectile 重构中处理 |
+共享 Projectile 生命周期不意味着共享全部运动或命中资格：到达、命中和停止各有入口，原目标直选、附加候选、沿途碰撞及独立计时不可互相代替。具体 Damage／Healing 仍有自己的接收规则。
 
-本轮不据此增加通用字段或原生 flags。足够确定的边界是：**共享弹道生命周期；运动与命中可分别组织；到达、命中和停止不强绑定；命中资格由具体入口决定；Damage / Healing 仍负责其自身结算。**
-
-详细分项记录：[运动调查](../evidence/projectile-boundaries-20261021/movement/REPORT.md)、[命中调查](../evidence/projectile-boundaries-20261021/hit/REPORT.md)、[实际配置](../evidence/projectile-boundaries-20261021/examples/REPORT.md)。
+详细分项记录：[运动](../evidence/projectile-boundaries-20261021/movement/REPORT.md)、[命中](../evidence/projectile-boundaries-20261021/hit/REPORT.md)、[实际配置](../evidence/projectile-boundaries-20261021/examples/REPORT.md)。项目接口见 [Projectile](../../architecture/projectile.md)。

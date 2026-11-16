@@ -1,599 +1,167 @@
 # Navigation 设计
 
-本页规定 Navigation、Route 与 Locomotion 的类型、API 与行为契约。
-
-Route 与 Locomotion 的公共契约分别从 [route/index.ts](../../src/core/unit/capability/route/index.ts)、[locomotion/index.ts](../../src/core/unit/capability/locomotion/index.ts) 导入；Navigation 按下面的状态与算法文件提供入口。Core 调度直接依赖所需的模型、查询和操作文件。
-
-文件按职责划分：
-
-```text
-navigation/
-├── map.ts       Cell、Map、判等与 Hash
-├── overlay.ts   Overlay 与应用
-├── field.ts     Node、Field、SPFA 构建与原地平滑
-├── raycast.ts   导航射线与沿途格子通行检查
-├── state.ts     权威状态与公开操作
-└── cache.ts     两层身份缓存及派生值读取
-```
-
-Field 选择平滑候选、沿后继链推进并修改 next；Raycast 检查给定两点间的格子和有向出口，不维护后继链。缓存是内部可变派生存储，与不可变的权威 State 分开。
+Navigation 提供确定的导航建议，Route 解释路线，Locomotion 执行自主移动；三者不共享执行状态。公共入口见 [Navigation](../../src/core/battlefield/navigation/state.ts)、[Route](../../src/core/unit/capability/route/index.ts)与 [Locomotion](../../src/core/unit/capability/locomotion/index.ts)。
 
 ## 职责与状态归属
 
-Navigation 是独立子系统，负责基础通行规则、Overlay 操作与导航查询。Battlefield 将战场地块转换为基础 Map，调用 Navigation.create 创建状态并持有该值。有效地图和寻路场是确定性派生结果，可以重新计算。
+Battlefield 将当前地块投影为 WALK／FLY 基础 Map，并持有 Navigation State。State 只保存基础图与 Overlay；有效图和 Field 是可重建派生值。Route Context 保存程序进度，Locomotion 保存历史速度，位置只归 Unit.position。
 
-Route 与 Locomotion 是两个独立 Unit Capability。Route 管理行程并调用 Navigation，把路线目标解析为实际世界坐标中的追踪点；Locomotion 消费追踪点并执行实际运动。
-
-Navigation 查询的公开目标使用精确的 `WorldPosition`；Field 构建接收由 `World.toTile(target)` 派生的 `TilePosition`。精确目标用于末段移动及到达判断，调用方只需提供这一目标坐标。
-
-Navigation.State 聚合基础 Map 与 Overlay 集合这两项权威输入，由 Battlefield.State.navigation 持有。apply 的有效 Map 与 Field 是派生结果，不放进 State。路线进度归 Unit 的 Route：Context 保存 index、current 和 ticking，Route State 保存 Context 集合与 activeId；这些执行事实独立于战场级导航规则。
-
-Navigation 内部维护可变派生缓存，不进入 BattleState，也不需要 Operation 返回缓存的新状态。缓存命中、未命中、淘汰或重建不得改变领域结果。
+Navigation 接收精确世界目标；Field 按目标所在格构建，末段仍使用精确目标。缓存可以内部可变，但不进入 BattleState，也不能改变领域结果。
 
 ### Navigation 的关键语义
 
-- 通行资格、WALK／FLY 代价和有向出口共同决定可达性，不能因额外直线筛选而替换 Field 的导航建议。
-- Overlay 只能增加限制；多来源叠加以及撤销其中一项后，都继续保留其他来源和基础地图的限制。
-- 当前地图或 Overlay 变化后，查询使用该版本的有效规则；旧状态的查询结果不被后来变更污染。
-- 不可达时返回 null；能够追踪目标时保留精确世界坐标，实际移动与到达由消费方判断。
-- 路径计算及缓存保持确定结果。Hash 数值、缓存键、对象共享和命中次数属于内部实现，不形成独立玩法验收目标。
-
-Battlefield 的纯存储、地块写回与完整 Battle 操作边界见 [Battlefield](battlefield.md)。下文的类型与算法说明用于解释这些语义，不要求按每个字段或内部函数分别建立验收场景。Route 与 [Schedule](schedule.md) 共同绑定出生路线和时间基准，Navigation 与 Locomotion 分别负责寻路和实际运动。
+通行、WALK／FLY 代价与有向出口共同决定结果。Overlay 只增加限制；撤销一项仍保留其他限制。查询使用传入版本，不污染旧状态；不可达返回 null，抵达和实际位移由消费方判断。
 
 ## State 与公共操作
 
-navigation/state.ts 定义 Navigation 自身的 State。接口不依赖完整 BattleState、BattlefieldState 或 Battlefield 的具体地图类型。
-
-```typescript
-export type MotionMode = "WALK" | "FLY";
-
-export interface State {
-    readonly baseline: Readonly<Record<MotionMode, Map>>;
-    readonly overlays:
-        Readonly<Record<MotionMode, readonly Overlay[]>>;
-}
-
-export function create(
-    baseline: Readonly<Record<MotionMode, Map>>,
-): State;
-
-export function setOverlay(
-    state: State,
-    mode: MotionMode,
-    overlay: Overlay,
-): State;
-
-export function removeOverlay(
-    state: State,
-    mode: MotionMode,
-    ref: Ref<Overlay>,
-): State;
-
-export function nextPoint(
-    state: State,
-    mode: MotionMode,
-    current: WorldPosition,
-    target: WorldPosition,
-): WorldPosition | null;
-```
+Navigation 不依赖 BattleState 或战场地块类型。具体类型和签名以源码为准，接口只围绕建图、覆盖登记及导航查询。
 
 ### 创建
 
-create 信任来自同一战场地块地图的 WALK／FLY 投影，不重复验证尺寸或 FLY 基础代价。调用方遵守 readonly 输入契约，后续变更通过新 State 表达；Overlay 初始为空。
-
-基础 Map 由 Battlefield 创建和转换后传入，Navigation 不负责解释战场地块。
+创建接收同一战场投影出的 WALK／FLY 图，初始 Overlay 为空；后续改变使用新 State。尺寸、完整数据及基本代价约束在上游构造边界建立。
 
 ### Overlay 登记
 
-操作在指定 mode 的集合中按 ID 定位。每个集合中 ID 唯一，Overlay 本身不保存 mode。
-
-| 操作 | 行为 |
-| --- | --- |
-| setOverlay，ID 不存在 | 新增 Overlay。 |
-| setOverlay，ID 已存在且为同一对象 | 返回原 State。 |
-| setOverlay，ID 已存在且为新对象 | 替换原 Overlay，保留登记位置。 |
-| removeOverlay，ID 存在 | 删除对应 Overlay。 |
-| removeOverlay，ID 不存在 | 返回原 State。 |
-
-操作不修改输入 State，以新集合保存实际变更。同一 Overlay 对象重复登记没有刷新语义，沿用普通登记操作的同引用不变约定。setOverlay 在实际登记入口建立 ID 与代价约束：ID 为非负安全整数，提供 cost 时须为正安全整数；FLY 的 cost 只能省略或为 1。内部 apply 信任已登记的数据，按下面的合并规则计算。
+Overlay 在指定运动方式的集合内按 ID 登记，替换保序，同对象重复登记没有刷新语义。操作入口验证身份与代价；FLY 代价只能省略或为一。Overlay 不保存 mode 或生命周期，业务所有者决定登记与撤销。
 
 ### nextPoint
 
-内部根据 State 与 mode 计算有效 Map，再按 target 所在格获取或构建 Field。调用方只提供当前位置和精确目标，不需要取得 Map、Field 或组合内部构建函数。
+当前位置或目标越界、目标不可通、当前位置不可达时返回 null。若已位于目标格或后继是目标格，返回精确目标；否则返回后继格中心。
 
-| 条件 | 返回值 |
-| --- | --- |
-| current 在地图外 | null。 |
-| target 在地图外或目标格不可通行 | null。 |
-| 当前格对应 Node 为 null | null。 |
-| 当前格是有效目标节点，或 Node.next 指向目标格 | 精确的 target。 |
-| 当前格存在其他 Node.next | next 对应格子的中心坐标。 |
-
-当下一导航格已是目标格时，就追踪精确 target。返回坐标是建议追踪点，实际能移动多远由 Locomotion 决定。
-
-nextPoint 按 Field 的后继节点返回建议坐标，不执行额外 Raycast，也不推进 Route 进度或判断抵达。即使 current 已非常接近 target，也使用相同查询规则；抵达由 Locomotion／Route 根据实际位置判断，null 不兼作到达通知。
-
-nextPoint 不保证返回位置能从当前实际坐标直线到达。Field 平滑基于格子规则，单位偏离格子中心后的实际运动、局部避障与位移修正交给 Locomotion。
-
-nextPoint 不修改 State。同一 State 与相同参数始终产生相同的坐标值或 null，结果对象身份不作承诺。有效 Map、Field 可以内部缓存；命中、未命中、淘汰或重建不改变返回结果。缓存不能保存影响查询结果的隐式执行历史。
-
-导航调用者使用 navigation/state.ts 的 nextPoint 与 distance；Field 及其构建属于内部计算。
+查询直接消费 Field 后继，不附加整段射线筛选，也不把 null 当到达。建议点不保证从偏离格心的实际位置可直线到达，局部避障归 Locomotion。
 
 ### distance
 
-`distance(state, mode, current, target): number | null` 查询同一有效地图上到精确目标的估计路程。它沿导航后继累计几何段长，并将当前位置相对所在格中心的偏移投影到前进方向作修正；同格直接使用目标与当前位置的距离。地图外、目标不可通行或当前格不可达时返回 null。
+估计路程沿导航后继累加几何段长，并将身体相对格心的偏移投影到前进方向修正；同格使用至精确目标的距离。越界或不可达返回 null。
 
-Field.Node.distance 是寻路代价，不是几何路程；该查询不把高代价格权重当作单位实际行走的距离，也不修改导航或路线进度。
+Field 的 distance 是搜索代价，不是实际路程；高代价格权重不能当作行走长度。
 
 ### Route／Locomotion 的交互约束
 
-Navigation 提供导航建议，Route 解释路线，Locomotion 执行运动，三者按以下契约协作：
+Route 解析当前指令目标与偏移，调用 Navigation 获得 nextPoint／goal；Locomotion 消费实际世界坐标和当前运动方式。不可达 MOVE 由 Context 政策决定等待或跳过；地图外恢复由 Route 协调，不扩张 Navigation 的结果协议。
 
-- Route.advance 更新等待、检查路点、执行即时指令；Route.movementTarget 选择活动路线，转换路线偏移并调用 Navigation.nextPoint，返回实际世界坐标中的 nextPoint 与 goal；Locomotion 使用当前 motionMode 执行运动。
-- 地图内的不可达路点通过 nextPoint 的 null 结果反馈给 Route，由当前 Context 的政策决定等待或跳过。
-- 地图外的位置恢复目标由 Route 的追踪点查询协调，Locomotion 负责实际位移及空间约束，不要求 Navigation 为此扩张返回类型。
-- Route 每 Tick 推进一次；各 Context 的相对等待是否计时由 ticking 决定，跨路点推进及位移目标由 activeId 选择。路点可以连续推进，移动只消费一次预算。
-- 创建调用者处理出生偏移的配置与采样，通过 initial.route 传入 Plan 与本次 offset；初始 Unit.position 与路线计算使用同一样本。主路线与临时替代路线的样本各自配对，不将一个样本无条件应用于所有路线。
-- Plan 声明通行方式与路线指令；Route Context 和 Locomotion State 分别保存解释进度与运动状态，导航缓存只保存派生计算结果。
-
-Locomotion 使用 Steering、八邻域地形避障和目的格反射。项目明确选择在每次实际积分时重新计算局部避障力，省略原生每三次调用更新的周期、缓存与计数器；完整 Unity 刚体系统及推拉不属于普通自主移动。
+每 Tick 路线可连续消费即时指令，实际运动只有一份预算。出生调用者为位置和 Route Initial 使用同一偏移样本；主路线和临时路线各自持有对应样本。
 
 ## Route 定义与进度
 
-Route 是路线解释器。Main 与其他 Context 使用相同的 Plan、指令和进入逻辑；控制来源通过公开操作创建、选择或重建 Context。
+Route 是统一的路线解释器。Main 与其他 Context 使用相同 Plan 和指令；控制来源的选择、优先级和有效期归 Content／Effect。
 
 ### 类型与身份
 
-```typescript
-interface Definition {
-    readonly alwaysCheckCurrentPoint: boolean;
-}
+Definition 保存初始执行政策 alwaysCheckCurrentPoint；Plan 保存运动方式、出生起点、可空最终终点、指令序列和 requireAllCheckpoints。Plan 不属于共享 UnitDefinition；创建时必需 Initial 提供本次 Plan 与 offset。
 
-interface Plan {
-    readonly motionMode: MotionMode;
-    readonly startPosition: TilePosition;
-    readonly endPosition: TilePosition | null;
-    readonly checkpoints: readonly Checkpoint[];
-    readonly requireAllCheckpoints: boolean;
-}
+Context 保存 Plan、offset、index、已进入的 current、有效的不可达政策和 ticking。Main 固定 ID 0，其他 Context 使用宿主内递增 ID，移除后不复用；Ref 由宿主和 Context ID 定位，不使用数组位置或不断替换的对象引用作长期身份。
 
-interface Initial {
-    readonly plan: Plan;
-    readonly offset: WorldPosition;
-}
-
-type ContextId = number;
-
-interface Context extends Identified<{
-    readonly host: Ref<Unit & Route>;
-    readonly id: ContextId;
-}> {
-    readonly id: ContextId;
-    readonly plan: Plan;
-    readonly offset: WorldPosition;
-    readonly index: number;
-    readonly current: Checkpoint | null;
-    readonly alwaysCheckCurrentPoint: boolean;
-    readonly ticking: boolean;
-}
-
-interface State {
-    readonly main: Context;
-    readonly others: readonly Context[];
-    readonly activeId: ContextId;
-    readonly nextContextId: ContextId;
-    readonly waveStartTick: number;
-    readonly fragmentReadyTick: number;
-}
-```
-
-Definition 声明能力的初始化政策。Plan 是不可变的路线程序，motionMode 同时供 Navigation 与 Locomotion 使用；startPosition 描述出生路线起点，不代替 Unit.position。endPosition=null 表示没有最终终点。requireAllCheckpoints 决定存在终点时，是否要求先耗尽全部指令才具备 Main 的出口资格。
-
-Initial 是本次 Unit 创建必需的 `{ plan, offset }` 输入；Plan 不放入共享 UnitDefinition。创建者决定 Plan 与偏移样本，Route initializer 用 Definition.alwaysCheckCurrentPoint 初始化 Main，临时 Context 可以使用自己的执行政策。alwaysCheckCurrentPoint 只控制普通 MOVE 不可达时是否仍须实际到达，不决定计时、控制优先级或 Main 出口。
-
-Main 是 Unit 固有的 Context，ID 固定为 0。others 由 Route 分配宿主内递增的 ID，nextContextId 初始为 1，移除后不复用。Ref<Context> 使用宿主 Ref 与 ContextId 定位；Context 只存 id，不为身份再保存宿主。不可变更新、选择与 reassign 保留 Context 身份；数组位置和对象引用不作为长期地址。
-
-index 指向当前执行位置，current 保存已经进入的指令实例。current=null 且 index 有效时，下次解释进入对应指令；current=null 且 index 等于指令数时，指令序列已经耗尽。指令序列耗尽、Context 被移除和 Main 满足出口条件分别判断。
+Route State 组织 Main、其他 Context、activeId 与出生时的 Wave／Fragment 时间快照。index 是执行位置，current 是已经进入的指令实例；current 为空且索引耗尽表示序列完成，不等于 Context 移除或 Main 可以退出。
 
 ### 控制选择与计时
 
-activeId 同时选择跨路点推进和位移目标的 Context。ticking 独立决定每个 Context 当前指令的计时更新：非活动 Context 也可以计时，但不会因此跨越指令；活动 Context 的 ticking=false 时仍可执行不需要计时的到达检查和即时指令。Main 的最终出口检查独立于 activeId。
+activeId 选择跨指令推进与位移目标；ticking 独立决定各 Context 的当前指令是否计时。非活动 Context 可以计时但不消费指令；活动 Context 即使不计时，仍能执行无需计时的到达检查和即时指令。Main 出口检查独立于 activeId。
 
-Fear／Attract／Trace 等控制的来源、目标选择、有效期与优先级属于 Content／Effect。Route 执行它们明确选择的 Context 与 ticking 政策，不保存控制来源的优先级、不建立通用暂停栈。切换运动来源不自动删除 Context，也不自动修改其他 Context 的 ticking。
-
-例如 Trace 接管时可以关闭 Main.ticking，使 Main 的相对 WAIT 保留剩余时长；Fear／Attract 接管位移期间也可以保留基础路线的计时。统一 battle.tick 只提供时间源，不决定每个 Context 是否积累经过时间。禁止自主移动的 Locomotion Restriction 本身不改变 Route 计时。
+切换 Context 不自动改 ticking 或删除其他执行。Fear／Attract／Trace 的控制政策由内容明确提交，Route 不建立优先级系统或通用暂停栈；Locomotion 禁止移动也不自动暂停路线计时。
 
 ### Checkpoint 与进入
 
-Checkpoint 支持 MOVE、WAIT、TRACE、GOTO、DISAPPEAR、APPEAR：
-
-| 指令 | 保存的数据与行为 |
+| 指令 | 行为 |
 | --- | --- |
-| MOVE | position、offset、randomizeOffset；进入时确定本次偏移样本，抵达或按不可达政策跳过后消费。 |
-| WAIT | anchor、tick、timer；ENTER 按剩余 tick 计时，其他 anchor 按各自基准比较。 |
-| TRACE | position、reached；保存最后登记的目标格和本次到达事实，持续执行，不因到达自动消费。 |
-| GOTO | index；同步跳转并按进入语义重新进入目标指令。 |
-| DISAPPEAR | 同步调用 Presence 的完整消失操作。 |
-| APPEAR | position、offset；同步执行固定位置的完整出现操作。 |
+| MOVE | 进入时确定目标偏移，到达或按不可达政策跳过后消费。 |
+| WAIT | 按进入剩余时间或指定绝对基准等待。 |
+| TRACE | 保存最后目标格与 reached，持续执行，到达不自动消费。 |
+| GOTO | 跳转并按进入语义重建目标指令。 |
+| DISAPPEAR／APPEAR | 同步执行消失或固定位置出现。 |
 
-MOVE 的 randomizeOffset=false 使用固定 offset；为 true 时，各轴 offset 表示随机半宽，每次进入独立采样 [-offset, +offset]。current 保存样本并关闭再次采样，Plan 保留重新进入时使用的原始配置。APPEAR 使用固定落点偏移。
-
-Checkpoint 使用同一个联合类型保存配置与进入后的执行实例：
-
-```typescript
-type Checkpoint =
-    | {
-          readonly type: "MOVE";
-          readonly position: TilePosition;
-          readonly offset: WorldPosition;
-          readonly randomizeOffset: boolean;
-      }
-    | {
-          readonly type: "WAIT";
-          readonly anchor: "ENTER" | "BATTLE" | "WAVE" | "FRAGMENT";
-          readonly tick: number;
-          readonly timer: number | null;
-      }
-    | {
-          readonly type: "TRACE";
-          readonly position: TilePosition;
-          readonly reached: boolean;
-      }
-    | { readonly type: "GOTO"; readonly index: number }
-    | { readonly type: "DISAPPEAR" }
-    | {
-          readonly type: "APPEAR";
-          readonly position: TilePosition;
-          readonly offset: WorldPosition;
-      };
-```
-
-Plan 的 WAIT.timer 为 null，TRACE.reached 通常为 false；进入 TRACE 时重置 reached=false。current 是当前指令的执行实例，求值和采样只写入 current，不写回 Plan。GOTO 每次重新进入都会重建等待与随机样本。PATROL_MOVE 在 Data 中编译为 MOVE 与显式 GOTO，回边按完整巡逻段确定，不能把每个巡逻点编译为自循环，也不能用有限复制代替循环。
+Plan 与 current 复用 Checkpoint 联合，求值只改 current：随机 MOVE 每次进入按各轴半宽独立采样，current 保留样本，Plan 保留原配置；固定 MOVE／APPEAR 使用固定偏移。GOTO 重新进入会重建 WAIT 和随机样本。原生巡逻段在 Data 编译为显式 MOVE／GOTO，不复制有限路线或把每点编译成自循环。
 
 #### WAIT
 
-WAIT 使用 ENTER／BATTLE／WAVE／FRAGMENT 四种 anchor。tick 表示配置时长或相对基准的偏移：
+ENTER 进入时建立剩余 timer，仅 ticking 时扣减；重新进入取得完整时长。BATTLE 比较全局 Tick，WAVE 比较出生快照 waveStartTick，FRAGMENT 比较 fragmentReadyTick；三者 timer 为空，按各自基准加配置偏移判断。恢复检查时已经过期便满足，不积累独立计时。
 
-- ENTER：进入时将 timer 初始化为 tick；timer 保存剩余 tick，仅在该 Context.ticking=true 时扣减，降到零即满足。
-- BATTLE：比较 battle.tick 与配置 tick。
-- WAVE：比较 battle.tick 与 state.waveStartTick + tick。
-- FRAGMENT：比较 battle.tick 与 state.fragmentReadyTick + tick。
+非活动 Context 即使等待已满足也保留指令，成为活动执行后才消费。skipWait 仅显式跳过当前 ENTER，不跳过其他基准。
 
-后三种的 timer 保持 null，直接比较 battle.tick 与配置及 Route State 中的基准；绝对战斗时钟持续前进，恢复检查时已经过期的等待立即满足。ENTER 在重新进入时重新取得完整时长。非活动 Context 即使已满足 WAIT 也保留当前指令，直至成为活动 Context 后消费；skipWait 可以显式跳过当前 ENTER 等待，其他 anchor 仍按各自时间基准判断。
-
-waveStartTick 是实际出生时捕获的主 Wave 进入时刻，fragmentReadyTick 是当时最近进入过的主 Fragment 前延迟结束时刻。两者由 Route initializer 从 Schedule 取得，保存在 Route State，主路线与其他 Context 共享；分支出生也采用当时的主线时间上下文，不采用触发它的 Branch Phase 时刻。后续 Schedule 变化不改写快照，见 [Schedule 时间上下文](schedule.md#route-的主流程时间上下文)。
+时间快照由 Route initializer 在实际出生时向 [Schedule](schedule.md#route-的主流程时间上下文) 取得：Wave 进入时刻与最近主 Fragment 前延迟结束时刻。Branch 出生也使用当时主线，不使用 Phase 时刻；后续调度变化不改快照，所有 Context 共享它。
 
 #### TRACE
 
-Route 只接收并在 current.position 保留最后登记的 TilePosition，不持有或选择 UnitRef。Content／Effect 持有目标 UnitRef，按追踪策略更新目标格；目标死亡时清理该 Ref，不自动清除 Route 中的最后目标格，Content 不另存一份 lastTile。
+Content 持有目标 Unit Ref 并更新目标格；Route 只保存最后登记的位置，不索敌、持有目标 Ref 或管理其结束。目标死亡不自动清除最后目标格。
 
-TRACE 抵达时记录 reached=true，继续保留 current 与 index，并停止为这次目标提供位移；到达不触发后继指令、不删除 Context、不切回 Main。目标更新与显式重启分别表达：显式重启即使仍是同一格，也清除 reached，重新执行本次追踪。
-
-TRACE 的目标格不是 Plan 的最终终点。无最终终点的 Plan 可以长期执行 TRACE，也可以在没有位移目标时保留执行上下文；不能用伪造终点或超长 WAIT 代替这种语义。
+到达记录 reached，保留指令与索引并停止为本次目标提供位移；不自动结束 Context、进入后继或恢复 Main。目标更新清除 reached；同格尚未到达可保持原值，同格已到达可显式重启。持续 TRACE 可以使用没有最终终点的 Plan，不伪造终点或超长 WAIT。
 
 ### 推进与同步操作
 
-调度器每 Tick 调用一次 Route.advance。一次推进先按各 Context.ticking 更新当前指令的计时，再连续解释活动 Context，最后独立检查 Main 的出口条件。进入时结算与跨指令推进同步完成，不返回待执行信号队列。
+advance 先更新各 Context 的计时，再连续解释活动 Context，最后检查 Main 出口。MOVE 未到、WAIT 未满足或持续 TRACE 阻塞解释。
 
-固定 Plan 的一次连续解释使用局部 Set<number> 记录已处理的索引。再次遇到同一索引时，在进入前停止本次解释，保留待进入的 index 与 current=null，后续 Tick 再进入。尚未抵达的 MOVE、未满足的 WAIT 和持续 TRACE 也会阻塞解释。visited 不进入 State、不跨 Context 或调用复用；不使用固定转换预算截断长而无环的指令链。
+一次连续解释以局部已访问索引集合保证终止；再遇索引时在进入前让出，保留待进入位置，下一 Tick 再进入。长而无环的序列不受固定次数截断；集合不写 State、不跨调用共享，Plan 改变时重置。
 
-进入 GOTO 时直接改索引并继续；进入 DISAPPEAR／APPEAR 时先发布已越过该指令的进度，再调用对应完整领域操作。副作用返回后，从最新 BattleState 重新读取宿主、Context 与 activeId；宿主仍在场且该 Context 仍取得执行资格时，按最新 Plan、index 与 current 继续解释，不回写旧快照。Context 被修改或 reassign 本身不要求外层停止；宿主已离场、Context 已移除或失去执行资格时停止。visited 只属于本次解释调用，不与嵌套操作共享；Plan 改变时清空本次集合。
-
-查询不隐式进入指令、不重新采样，也不执行 GOTO。每次真实位移只有一份 Locomotion 预算。
+APPEAR／DISAPPEAR 先提交已消费的指令进度，再执行跨领域操作。返回后重读最新宿主、Context 与 activeId；宿主离场、Context 移除或失去资格便停止，重建路线则按最新进度继续，不恢复旧快照。查询不隐式进入、跳转或采样。
 
 ### 公开操作
 
-createContext 与 advance 是完整操作；其余写入通过 Change<Unit & Route> 组合发布，查询只读：
+createContext 建立独立身份并同步进入首条指令，不自动选择控制权。removeContext 不能移除 Main；移除活动 Context 时由调用者明确给出现存后继。selectContext 选择执行，不修改计时政策。
 
-```typescript
-function createContext(
-    battle: BattleState,
-    host: Ref<Unit & Route>,
-    input: {
-        readonly plan: Plan;
-        readonly offset: WorldPosition;
-        readonly alwaysCheckCurrentPoint: boolean;
-        readonly ticking: boolean;
-    },
-): Result<Ref<Context>>;
-
-function removeContext(id: ContextId, nextActiveId: ContextId): Change<Unit & Route>;
-function selectContext(id: ContextId): Change<Unit & Route>;
-function reassign(id: ContextId, plan: Plan, index?: number): Change<Unit & Route>;
-function skipWait(id: ContextId): Change<Unit & Route>;
-function setTicking(id: ContextId, ticking: boolean): Change<Unit & Route>;
-function setTraceTarget(id: ContextId, position: TilePosition): Change<Unit & Route>;
-function advance(battle: BattleState, host: Ref<Unit & Route>): BattleState;
-function getContext(battle: BattleState, ref: Ref<Context>): Context | undefined;
-function movementTarget(battle: BattleState, host: Ref<Unit & Route>): MovementTarget | null;
-function remainingDistance(
-    battle: BattleState,
-    self: Unit & Route,
-    context: Context,
-): number | undefined;
-```
-
-- createContext 分配动态 ID、建立执行状态并同步进入首条指令，向调用者返回 Ref<Context>；不隐式取得运动控制权。
-- removeContext 只移除其他 Context，Main 不可移除；移除活动 Context 时选择调用者明确指定的现存后继，Route 不推断控制优先级。
-- selectContext 选择现存 Context，同时决定跨指令推进与位移目标，不隐式修改 ticking。
-- reassign 为原 Context 绑定新 Plan，并从指定 index（默认 0）重建 current 等执行事实，保留身份、offset 和执行政策；不支持任意编辑 Plan 并保留旧 current 的隐式索引映射。
-- skipWait 只跳过当前 anchor=ENTER 的 WAIT，后续在活动 Context 的解释流程中进入下一指令；BATTLE／WAVE／FRAGMENT 等待仍按时间基准判断，不改变其他指令或 Context。
-- setTraceTarget 登记当前 TRACE 的目标格并清除 reached；同格且尚未到达时保持原值，同格且已到达时也可以显式重启。
-- getContext 按 Typed Ref 从最新 BattleState 查找；宿主或 Context 已不存在时返回空。
+reassign 保留身份、offset 和执行政策，绑定新 Plan 并从指定索引重建当前执行；不提供编辑 Plan 后保留旧 current 的隐式索引映射。skipWait、setTicking 与 setTraceTarget 各修改自己的事实。除创建和推进完整业务外，写入通过 Route Change 组合发布。
 
 ### 运动目标与 Main 出口
 
-movementTarget 读取 activeId 选择的最新 Context。MOVE 使用本次进入已确定的目标样本，TRACE 使用尚未 reached 的 current.position；指令耗尽后，仅在 plan.endPosition 非空时提供最终终点目标。等待、无目标或已经抵达的 TRACE 返回空，不把空目标当作 Main 出口通知。
+movementTarget 使用活动 Context 的当前 MOVE 样本或未 reached 的 TRACE；指令耗尽后可追踪最终终点。等待或无目标返回空，空目标不表示 Main 完成。
 
-查询将 Unit.position 减去 Context.offset，调用 Navigation.nextPoint，再给 nextPoint 和 goal 加回偏移。Locomotion 接收实际世界坐标与该 Plan.motionMode，不解释控制来源或路线偏移。地图内不可达 MOVE 根据 alwaysCheckCurrentPoint 决定跳过或等待；TRACE 的持续控制不由普通 MOVE 的跳过规则终止。
+导航先从身体位置减去 Context.offset，得到建议点后加回偏移。alwaysCheckCurrentPoint 仅决定普通 MOVE 不可达时是否仍要求实际到达，不决定 Main 出口、时间或控制优先级；Layer 独立于运动方式。
 
-remainingDistance 是只读估计，显式接收需要观察的 Context，不把当前取得运动控制权的 Fear／Attract 自动作为普通路线优先级的依据。它使用当前身体位置与已进入指令的真实目标，累计后续 MOVE 和最终终点；WAIT 不增加距离，APPEAR 只改变后续起点而不累计传送跳跃。未来尚未采样的随机 MOVE 按格中心估计，不消费 RNG。
+remainingDistance 显式指定 Context，不把临时控制当作普通路线优先级。它累计当前与后续 MOVE／终点的导航几何路程，WAIT 不加距离，APPEAR 只改变后续起点而不累加传送，未来随机目标按格心估计且不消费 RNG。
 
-当前 TRACE 直接查询其最后登记目标格的距离，reached 不抹掉这个目标。无终点、无法终止的 GOTO 循环或尚未进入的持续 TRACE 没有可确定的有限出口距离，返回 undefined，由调用内容采用自己的排序规则，不伪造零距离或终点。在程序具有可确定有限出口的前提下，当前导航段处于地图外或不可达时，沿用原生估计分支，只返回至当前路点的直线回退，不继续叠加后续路线；不能用这项回退掩盖后续循环或持续 TRACE 的未定义出口。该查询不保存仇恨或距离缓存到 Unit。
+当前 TRACE 查询最后目标格的距离；没有可确定有限出口的无终点路线、循环或未来持续 TRACE 返回 undefined。有限路线的当前段越界或不可达时只给该段直线回退，不继续叠加后续段，也不用回退掩盖无有限出口。
 
-Route 不追加整段射线筛选，也不回退到当前格中心。地图外的位置恢复由 Route 协调，实际位移合法性由 Locomotion 保证。Layer 的空地身份独立于 Plan.motionMode；修改寻路方式不自动改变 Layer。
-
-Route.advance 末尾从最新状态检查 Main：必须存在最终终点、位置满足终点到达条件，并满足 requireAllCheckpoints；为 true 时要求指令序列耗尽，为 false 时允许提早到达终点。满足出口条件时，Route 直接请求 Unit 的完整移除操作；其他 Context 的到达或指令耗尽不触发 Main 出口。
-
-满足 Main 出口条件时，Route 先记录 ROUTE_COMPLETED，再以 SCRIPT 原因请求完整移除，接续 Unit 生命周期、Lifetime、等待关系清理和相应 Hook。Route 不处理统计、蓝门扣血或胜负规则。advance 返回后，运动调度重新读取 Unit，再决定是否继续 Locomotion。
+Main 必须有最终终点、实际到达，且满足 requireAllCheckpoints；要求全部指令时必须耗尽，否则允许提前退出。其他 Context 到达不产生 Main 退出。Route 在 advance 末尾记录 ROUTE_COMPLETED，按 SCRIPT 请求完整 Unit 离场，不负责统计、扣血或胜负；调度随后重读 Unit 决定是否移动。
 
 ### 初始化
 
-创建者选取 Plan、确定本次 offset，并以同一样本构造出生位置和 Initial：
+创建者选择 Plan、采样 offset，以同一样本构造出生位置并提供 Initial。Route 只建立 Main、执行政策和 Schedule 时基，不重新合成 UnitDefinition，也不接受预装执行状态。
 
-```typescript
-const created = unit.initialize(battle, {
-    id,
-    definition,
-    position: Vec2.add(Tile.center(plan.startPosition), offset),
-    initial: { route: { plan, offset } },
-});
-```
-
-Route initializer 通过 [Capability 初始化通道](capability.md#初始化与装配)读取必需 Initial，建立 Main ID 0、activeId=0、nextContextId=1、index=0、current=null、ticking=true，并捕获 Schedule 时间基准。Plan、offset 或时间快照不重新合成 UnitDefinition，也不接收调用者预装的执行状态。
-
-首条指令在完整 Unit 与结构索引发布后，由普通 Unit.enter Hook 同步进入，遵守公共 Hook 的优先级顺序，同级保留登记顺序；unit.add 只登记并执行 enter，不特判 Route。Schedule 在 unit.add 前发布等待关系，使首指令及其同步 Hook 可见完整出生事实。动态 Context 使用同一指令进入逻辑。
-
-已有 Unit 新建 Context 共享其 Route State 的出生时基；新建 Unit 则在实际初始化时从当前 Schedule 取样，不从召唤者继承。技能、Buff 与机制创建者各自组织出生业务，无需强制使用统一的 Schedule Spawn 包装。
+首指令由登记后的普通 Unit.enter 同步进入；Schedule 在 Unit.add 前发布等待关系。动态 Context 复用进入逻辑；已有 Unit 的新 Context 共享原出生时基，新 Unit 从当前 Schedule 独立取样，不从召唤者继承。
 
 ### 回归语义
 
-- 出生首指令同步生效，MOVE 的随机样本只在进入时采样，循环重入取得新样本；长无环指令链与即时循环分别正确完成和让出。
-- Main 相对 WAIT 在 ticking 关闭期间保留剩余时长，绝对等待按快照基准到期；选择另一个 Context 不偷偷改动计时政策。
-- TRACE 到达后保留当前指令，目标死亡保留最后目标格，同格显式重启可以再次移动；控制来源撤销与 Main 出口分别处理。
-- 无最终终点时不因指令耗尽移除 Unit；有终点时 Main 出口独立于活动 Context，并通过完整生命周期清理等待关系。
-- 同步出现／消失 Hook 重建路线或移除宿主后，外层接续最新状态，不覆盖变更或执行旧后继。
+首指令、重新采样、WAIT 基准与 ticking、即时循环、持续 TRACE、Main 独立出口和同步重入由[语义验收](verification.md)集中保障，Route 不重复 Locomotion 或 Hook 的公共矩阵。
 
 ## Locomotion
 
-Locomotion 是独立 Capability。Definition 的 speed 与 minSpeed 使用格/Tick；steeringParameters 已由内容适配为每 Tick 参数：原生 steeringFactor 除以 tickRate，maxSteeringForce 除以 tickRate²。halfBodyWidth 使用世界距离，独立于命中半径。真实移动 Profile 读取 MovementController._halfBodyWidth；Content 工厂显式接收独立半宽，不从 AttackTiming.hitRadius 推导。
+Locomotion 保存历史 velocity、速度贡献与移动限制。目标由本次参数提供，真实位置归 Unit。基础速度与下限使用格／Tick；半身宽独立于 Hitbox。Data 将 steeringFactor 除以 Tick 率、maxSteeringForce 除以 Tick 率平方，内容绑定运动配置。
 
 ### 关键语义
 
-- 当前速度贡献按属性公式求值，先应用 minSpeed，再乘本次运动倍率；Restriction 独立决定是否允许自主移动。暂停或零速度不清除历史速度。
-- Steering 使用历史速度、目标速度误差和局部避障力，合力先限幅，再积分并限速。接近最终 goal 时可直接到达并保留历史速度；中间 nextPoint 只提供方向。
-- WALK 的避障同时考虑硬障碍和高代价格，FLY 只考虑硬障碍；半身宽用于横向几何，避障力去除沿目标方向的分量，并按历史速度比例缩放。当前位置不可通时采用相邻可通格的恢复方向。
-- 普通积分只根据跨格后的目的格决定是否反射位移，反射不改写积分速度；不另加整段扫掠或反射后的二次通行检查。
-- Route 的等待与即时指令、阻挡位置计划和自主移动分别推进。真实位置只保存于 Unit.position，历史 velocity 不代表本 Tick 一定移动。
+有效速度为 `max(minSpeed, 修正后speed) × 本次倍率`；限制与速度独立。暂停、零速或无目标不清历史速度。取得移动资格后，接近最终 goal 且预算足够时直接吸附，保留 velocity；中间建议点不吸附。
 
-这些结果由少量纯算法与真实移动场景分别保障，不按邻格方向、微小阈值、字段或暂停原因展开矩阵。登记、旧版本和缺失 Ref 等公共协议集中验证。场景通过正常构造、advance 和主动空间操作建立位置与历史速度，不注入运行状态。
+普通积分以历史速度、目标速度误差与八邻域局部避障形成合力，先限力再积分限速。WALK 将硬障碍和 cost≥1000 的邻格用于避障，FLY 只看硬障碍；半身宽参与横向几何，局部力去除沿目标方向的分量，并按历史速度比例缩放。当前格不可通时选择相邻可通格恢复方向。
 
-```typescript
-export interface Definition {
-    readonly speed: number;
-    readonly minSpeed: number;
-    readonly steeringParameters: SteeringParameters;
-    readonly halfBodyWidth: number;
-}
+仅在位移跨格且目的格不可通时反射整次位移，不做整段扫掠或反射后二次检查；高代价不等于不可通，反射不改积分所得 velocity。运动结束后可通过 [Facing](capability.md#facing)接续转向。
 
-export type Input = contribution.Input<attribute.Modifier, Unit & Locomotion>;
-
-export interface State {
-    readonly velocity: WorldPosition;
-    readonly speed: readonly Contribution<Input>[];
-    readonly restrictions: readonly Contribution<Restriction>[];
-}
-
-export interface RestrictionContext {
-    readonly self: Unit & Locomotion;
-}
-
-export type Restriction = restriction.Restriction<RestrictionContext>;
-
-export interface Locomotion {
-    readonly definition: { readonly locomotion: Definition };
-    readonly locomotion: State;
-}
-
-export interface MovementTarget {
-    readonly nextPoint: WorldPosition;
-    readonly goal: WorldPosition;
-}
-
-export interface MovementContext {
-    readonly mode: MotionMode;
-    readonly speedMultiplier: number;
-}
-
-export function advance(
-    battle: BattleState,
-    ref: Ref<Unit & Locomotion>,
-    target: MovementTarget,
-    context: MovementContext,
-): BattleState;
-
-export function setRestriction(entry: Contribution<Restriction>): Change<Unit & Locomotion>;
-export function removeRestriction(id: string): Change<Unit & Locomotion>;
-export function setSpeedContribution(
-    entry: Contribution<Input>,
-): Change<Unit & Locomotion>;
-export function removeSpeedContribution(id: string): Change<Unit & Locomotion>;
-```
-
-类型、初始化、守卫及 Restriction／速度贡献 Change 工厂位于 locomotion/capability.ts；工厂不接收 Ref，返回 `Change<Unit & Locomotion>`，由 Unit.update 组合发布，不附带 Blocking 后继。operations.ts 提供完整推进，不转发工厂。初始化验证速度、下限、几何半宽和转向参数非负，不要求基础速度大于 minSpeed。
-
-SteeringParameters 是普通配置值，其数值约束由 Locomotion 初始化入口建立。Data 解析原始 Prefab 并完成 Tick 换算，Ground Enemy 内容工厂显式接收 halfBodyWidth 与 steeringParameters。
-
-推进读取最新 PRESENT 且 Restriction 允许的 Unit；[空间消失](presence.md)由 Presence 登记 Locomotion Restriction 禁止自主移动，不由 Locomotion 读取空间存在字段。Movement 先推进全部 Blockable 位置修正，再推进 Route 并读取当前关系，只限制自主移动；独立位置计划存在或刚完成不自动禁止自主移动。Locomotion 经内部 replace 提交位置与速度，不依赖 Blocking 维护；Blockable 的偏移推进同样只发布位置与计划。依赖当前位置或其他 Battle 事实的阻挡 Restriction 在后续 Blocking 检查点复核；明确要求解除旧关系的空间操作仍自行完成清理。Blocker／Blockable 在 Unit 初始化时至多选择一种，但该约束不决定是否具有 Route、Locomotion 或何种自身 Layer。
-
-Presence Change 纯转换空间事实及所需限制，发布后按稳定能力角色调用 Blockable.release 或 Blocker.releaseAll，读取当前关系并完成清理；详细顺序见[空间存在](presence.md)。Route 在消失期间继续处理等待与出现指令；无 Presence 分支的 APPEAR 先发布位置，再调用相同完整操作。各释放操作自己的首个 RELEASED Hook 已可见新位置、所属计划清理和此次整批双端解除结果。release 不自动维护、搜索或取消目标计划，Blocker 的释放保留其原目标的偏移。阻挡关系由 Movement 在自主移动入口检查，见 [Blocking](blocking.md)。有效速度为 `max(minSpeed, attribute.apply(speed, contributions)) * speedMultiplier`；无目标不调 advance，速度为零或不可移动返回原 battle 并保留 velocity。
-
-如果当前位置到 goal 的距离不超过本 Tick 预算，直接设置位置为 goal，保留 velocity，跳过 Steering、避障及目的格反射。nextPoint 提供 Steering 方向，不因接近中间导航节点而吸附；它也为通过移动资格后的可选改向提供方向采样。位置与速度发布后，再通过 [Facing.turn](capability.md#facing) 接续转向，完整移动返回两者的状态结果。
-
-正常积分先根据实际 Unit.position、halfBodyWidth 和 Navigation 有效 Map 计算八邻域避障。WALK 考虑硬不可通及 cost>=1000 的邻格；FLY 只考虑硬不可通。保留原生几何阈值、最近可通邻格选择、方向投影与速度比例缩放；原生局部力乘 `1/tickRate²` 后进入每 Tick 积分。使用实际身体位置作为几何基准，不引入 Route offset 或原生脚点安装偏移。
-
-Steering 将局部力与目标速度误差产生的力相加后统一限幅，再更新速度并限制在有效移速内。仅当候选位移跨格且目的格不可通时，围绕当前位置指向目的格中心的法向量反射整次位移；不扫描完整线段，不因成本高而反射，也不再次检查反射后的目的格。最终位置可受反射修正，velocity 仍保存积分器得到的新速度。
-
-State 保存 velocity、速度贡献与 Restriction；位置属于 Unit，运动目标由每次 advance 的参数提供。实际位置变化由展示或业务观察者按需要读取，不能从保留的历史速度直接推断本 Tick 是否发生移动。推拉与直接传送使用各自的领域契约。
+项目每次积分重算局部避障，不保留原生每三次调用的缓存周期。Presence 通过限制禁自主移动，Blocking 在 Movement 入口通过当前关系限制它；位置计划、Route 等待与强制空间操作各自独立。推拉和完整刚体系统不属于普通自主移动，当前缺口见 [Tactical 语义](tactical-semantics.md)。
 
 ## Map
 
-`navigation/map.ts`：
-
-```typescript
-export interface Cell {
-    readonly passable: boolean;
-    readonly cost: number;
-    readonly departures: Readonly<Record<Direction, boolean>>;
-}
-
-export class Map {
-    readonly rows: number;
-    readonly columns: number;
-    readonly cells: readonly Cell[];
-
-    constructor(
-        rows: number,
-        columns: number,
-        cells: readonly Cell[],
-    );
-
-    contains(position: TilePosition): boolean;
-    get(position: TilePosition): Cell | undefined;
-    equals(other: Map): boolean;
-}
-
-export type Hash = number;
-
-export function hash(map: Map): Hash;
-```
-
-Map 描述尺寸和每个 Cell 的通行资格、代价及有向出口。移动方式由所属 State 的集合确定。
-
-尺寸、完整 Cell 数据和有效代价由上游构造与地块投影建立。内部 Map 信任这些输入，遵守 readonly 契约，不逐格重复校验。FLY 的基础代价为 1，覆盖代价在 setOverlay 入口保持同一约束。
-
-`equals` 比较尺寸及全部 Cell 内容。相同引用可以直接判等；若借助 Hash，Hash 相同后仍需确认内容。
+Map 保存尺寸、格子通行、正代价和有向出口。FLY 基础代价为一；具体数据由战场投影建立。相等比较检查完整内容，Hash 只能辅助，不能代替判等。
 
 ## Overlay
 
-```typescript
-export type Id = number;
-
-export interface Overlay extends Identified<{ readonly id: Id }> {
-    readonly id: Id;
-    readonly cells: readonly TilePosition[];
-
-    readonly denyPassage: boolean;
-    readonly denyDepartures: readonly Direction[];
-    readonly cost?: number;
-}
-
-```
-
-Overlay 覆盖已经确定的格子，使用公共 `Ref<Overlay>` 表达身份。它不保存移动方式，也不管理自身生命周期。何时登记、更新和撤销由具体业务所有者负责。
-
-Overlay 以 readonly 值表达，数值校验集中在 Navigation.setOverlay 入口。移动方式由 State 中的登记集合及操作参数 mode 决定，与单位的空地身份分别表达。
-
-单个格子的叠加语义为：
-
-```typescript
-cell.passable &&= !overlay.denyPassage;
-cell.departures[d] &&= !overlay.denyDepartures.includes(d);
-cell.cost = Math.max(cell.cost, overlay.cost ?? 1);
-```
-
-Overlay 只能增加这些限制，不能解除基础地图或其他 Overlay 已有的限制。叠加满足交换律和幂等性，顺序不影响最终内容。
+Overlay 保存确定格子与通行／出口禁止及可选代价。叠加为通行取 AND、出口取 AND、代价取 max，只增加限制；合并交换且幂等，不能解除基础图或其他来源的限制。
 
 ## apply
 
-```typescript
-export function apply(
-    base: Map,
-    overlays: readonly Overlay[],
-): Map;
-```
-
-`overlay.ts` 的 `apply` 是局部值转换，不修改任何输入。计算只读取 Overlay 的格子及限制，ID 不参与结果计算。超出 Map 范围的覆盖格子直接忽略。没有实际内容变化时可以复用 base，但对象复用不是领域契约。
-
-不同输入得到相同地图内容时，不要求 `apply` 返回同一个对象；历史内容的对象复用属于缓存优化，不能成为路径有效性的业务前提。
-
-removeOverlay 更新权威 Overlay 集合，后续查询按剩余集合重新计算有效规则，不对旧有效 Map 做逆操作。缓存命中率、对象复用和淘汰策略不进入业务契约。
+apply 由基础图与当前覆盖重算有效图，忽略越界覆盖格；撤销覆盖不对旧有效图做逆操作。对象复用是内部优化，不是路径有效性的前提。
 
 ## hash
 
-`map.ts` 的 hash 是地图内容的辅助值；相等地图得到相同 Hash，Hash 相同仍不能代替内容判等。Hash 的具体数值和计算过程不影响通行语义，不作为玩法验收目标。
+Hash 由地图内容确定，具体数值不属于玩法结果；相同 Hash 仍需内容判等。
 
 ## 内部缓存
 
-有效 Map 与目标导向 Field 可以按对应输入复用。同一目标格内的不同精确目标可以复用 Field，末段仍由 nextPoint 返回各自的精确 WorldPosition。
-
-缓存不拥有执行进度，也不决定结果。缓存键、容器类型和存活策略均属于内部实现；重建或命中必须得到相同的导航建议。
+有效图和目标导向 Field 可复用，同目标格的不同精确目标可共用 Field，末段仍采用各自精确坐标。命中、淘汰与重建不能引入历史相关结果。
 
 ## 内部 Field 类型与构建 API
 
-`field.ts` 保存 Field 类型、构建与平滑过程。Field 是 Navigation 的内部计算结构，不作为调用方导航所需的公共契约：
+Field 是内部目标导向结构：不可达节点为空，目标节点代价零且无后继，其他可达节点具有正搜索代价及平滑后继。越界或不可通目标产生全不可达结果，不抛目标越界异常。
 
-```typescript
-export interface Node {
-    readonly distance: number;
-    readonly next: TilePosition | null;
-}
-
-export interface Field {
-    readonly rows: number;
-    readonly columns: number;
-    readonly target: TilePosition;
-    readonly nodes: readonly (Node | null)[];
-}
-
-export function build(
-    map: Map,
-    target: TilePosition,
-): Field;
-```
-
-Field 是只读的目标导向寻路结果。nodes 对应完整网格，null 表达不可达；内部布局和对象复用不改变下列含义：
-
-- 不可达格：nodes[index] 为 null。
-- 可达目标格：distance 为 0，next 为 null。
-- 其他可达格：distance 为正数，next 为平滑后的后继坐标。
-
-Map 的代价为正，因此只有可达目标节点的 distance 为 0。target 记录请求目标，不保证该格一定可达；目标格越界或不可通时，nodes 全部为 null。上述不变量由 build 保证，不增加显式状态判别字段。
-
-distance 累计原始搜索代价，平滑后不重新计算，不表示实际连续运动距离。按游戏尺度信任已构造的合法代价，不为内部累加增加理论溢出协议。
-
-最终 Node.next 表达平滑后的后继格。原始后继是构建工作值，Field 不保存 Unit 执行进度。
-
-build 是不修改输入 Map 的确定性计算：
-
-```text
-验证目标格
-    ↓
-四方向 SPFA，写入原始 next
-    ↓
-同一内部工作数组按行优先顺序原地平滑 next
-    ↓
-发布只读 Field
-```
-
-目标格越界或不可通时，返回 nodes 全为 null 的 Field，保留请求 target 和地图尺寸，不因目标越界抛出异常。原始搜索采用四方向，随后统一进行允许斜向捷径的平滑；平滑读取已经更新的 next。build、Field 与缓存都使用这一固定算法政策。项目支持范围不包含生息演算。
-
-平滑按实际 from 到 to 的行进方向检查出口；为射线扫描排序端点，不改变有向通行规则。高成本格不参与平滑捷径。Locomotion 的局部避障将 WALK 下 cost>=1000 的可通格视为障碍类；目的格反射只检查 passable，不把高成本直接等同于不可通行。
-
-额外的运动修正与强制访问政策按实际业务需求审查，不由 Field 或缓存接管。
+构建先四方向 SPFA，再按行优先顺序在同一工作数组原地平滑，读取已经更新的后继。搜索代价在平滑后不重算，不等于连续路程；高代价格不参与平滑捷径。有向出口始终按实际行进方向检查，不能因射线端点排序改变方向。
 
 ## Field 与移动消费的研究依据
 
-[客户端原生核对](../research/cases/12-navigation-native-algorithm.md)提供四方向搜索、原地平滑与单一 next 后继的机制依据。[Route 与移动时序核对](../research/cases/13-route-and-movement-timing.md)记录路点、等待与运动消费的原生条件及调用顺序。
-
-Navigation 使用上述搜索与平滑规则。Route 管理指令与导航追踪点，Locomotion 消费实际世界坐标并完成运动，Battle 负责调度和生命周期。导航计算保持独立，不接管这些执行状态。
+[导航算法调查](../research/cases/12-navigation-native-algorithm.md)提供搜索、平滑和后继依据；[路线与移动时序](../research/cases/13-route-and-movement-timing.md)、[路线字段](../research/cases/14-route-definition-fields.md)和[路线修改操作](../research/cases/31-route-operations-and-state.md)提供指令、等待、初始化和状态保留依据。项目不支持生息演算，具体内容缺口不以导航缓存代替。

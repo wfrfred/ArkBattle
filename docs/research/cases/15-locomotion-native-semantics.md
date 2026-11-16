@@ -85,7 +85,7 @@ if (!map.checkGridValid(currentGrid)) {
 
 [BattleOptions 静态构造](../evidence/locomotion-native-20261019/motion/62950-Torappu_Battle_BattleOptions-_cctor.asm) 默认将该开关置 false，但不能据此说实际关卡不用 Prefab 参数：[`BattleOptions.LoadOptions`](../evidence/locomotion-native-20261019/space/62946.asm)（62946，`0x1805da010`）会读取关卡 `steeringEnabled` 并覆盖它，同时加载 `moveMultiplier`。[关卡加载入口](../evidence/locomotion-native-20261019/space/64811.asm)在模式／符文预处理后调用它，字段和常量定位见[空间证据清单](../evidence/locomotion-native-20261019/space/metadata.json)。
 
-当前项目的 `movement-fragment.ts` 与 `movement-scenario.ts` 明确拒绝 `steeringEnabled=false` 的关卡。对于这些已接受输入、且 `F_local=0` 的情况，当前 `steering.ts` 与上述公式同构：项目保存每 Tick 位移量，所以 Prefab 中 `k` 除以 tickRate、`F_max` 除以 tickRate²，不能仅因写法没有显式 dt 就认定转换错误。
+上述是原生时间单位下的积分公式；项目按 Tick 的参数换算与实现见 [Locomotion](../../architecture/navigation.md#locomotion)，不能只由是否显式出现 dt 判断数学是否相同。
 
 ## 4. 吸附、停止与恢复
 
@@ -235,7 +235,7 @@ MoveController.OnTick 不是普通路线速度积分的第二次入口；普通�
 
 0.1 是普通属性范围的下限，不是经过全局倍率后的最低速度，也不是每 Tick 最少位移。覆盖属性范围、canMove、GroundBound 和状态机资格是另外的机制。冻结可同时影响属性与状态，但不应因此把移动禁止等同于把速度减到零。[属性元数据、原始字节与范围计算](../evidence/locomotion-native-20261019/states/metadata.json)。
 
-当前项目 `enemy.ts` 的默认 minimumMoveSpeedPerTick=0.1/tickRate 有普通属性依据；当前 `movement-fragment.ts`／`movement-scenario.ts` 也把关卡 moveMultiplier 传入 Battle，因此这里没有确认全局倍率遗漏。仍需在未来属性模型中决定怎样表达原生已存在的范围 override；本轮不修改接口。
+项目速度与范围契约见 [Locomotion](../../architecture/navigation.md#locomotion)，不能将普通属性下限当成全局倍率后的最低位移。
 
 ### moving 不是唯一事实
 
@@ -247,30 +247,13 @@ MoveController.OnTick 不是普通路线速度积分的第二次入口；普通�
 - `isHanging`：普通 CalculateMoveDelta 根据方向与局部力是否为零等输入建立的控制结果；并非直接比较两个实际位置。
 - Enemy 累计的实际 mapPosition 变化距离。
 
-`Action.IfEnemyIsMoving`（99311）读取刚体速度并检查模长>0.1；`IfEnemyIsMovingBySelf`（99314）读取上述状态查询，说明区分具有实际内容消费者。不能将所有“移动时”效果都默认接到当前项目 `moving = positionChanged` 上。[查询与消费者](../evidence/locomotion-native-20261019/states/metadata.json)。
+`Action.IfEnemyIsMoving`（99311）读取刚体速度并检查模长>0.1；`IfEnemyIsMovingBySelf`（99314）读取上述状态查询，说明区分具有实际内容消费者。不能将所有“移动时”条件统一解释成 positionChanged。[查询与消费者](../evidence/locomotion-native-20261019/states/metadata.json)。
 
-## 9. 与当前实现的对照
+## 9. 证据边界
 
-| 当前位置 | 本轮判断 | 可观测影响 |
-| --- | --- | --- |
-| `locomotion/steering.ts` | 对已支持的 steeringEnabled=true、零局部力场景，数学结构与原生同构；按 Tick 的参数转换有依据 | 不应为了重构而推翻正确的基础积分。 |
-| `locomotion/step.ts` 的 distance<=speed | 原生确有吸附，但对象来自 Cursor.PredictReached，不是每个 nextPoint | 中间转向节点可能被过早吸附，绕过转向。 |
-| 吸附时将 lastVelocity 设为本次 direction | 所查原生吸附分支不更新控制器速度 | 后续转向／恢复运动的历史不同。 |
-| target=null 时清零速度 | 不能对应所有原生暂停／零方向情况 | 停走恢复、等待后的惯性可能不同。 |
-| 当前完整线段与 locator/body 双重检查 | 项目政策；原生普通分支是目的格判断／反射，另有局部避障 | 可能提前停滞，也可能与原生高速轨迹不同。 |
-| `motion.ts` 的反射工具 | 与已核实目的格反射存在相应数学，但尚未成为当前主路径 | 不能仅凭“工具已有”认定功能已接入。 |
-| 未保存避障力与 ticker | 缺少已确认的普通控制器运行事实 | 贴墙、转角、移动方式及动态障碍附近会有轨迹差异。 |
-| Route 的地图外修正目标 | 当前将坐标夹向共同合法范围；原生按越界方向直接步进 | 越界／偏移后的恢复轨迹不同，应单独决定简化政策。 |
-| `minimumMoveSpeedPerTick` | 普通 0.1 属性下限有依据；全局倍率与禁止资格需继续分开 | 不能把“存在下限”解释为禁移仍产生位移。 |
-| `State.moving` | 当前表示实际位移，不能替代所有原生内容查询 | 移动条件、动画展示与物理移动响应可能需要不同事实。 |
+积分与参数开关、预测吸附、速度保留、普通空间修正及移动资格已有直接分支。自主运动方向、运动积分和实际位移约束不能仅凭相同最终坐标互相替代；各类“正在移动”查询也不能统一为 positionChanged。
 
-## 10. 可以据此进入设计，但本轮不定类型
-
-优先级最高的四项已有直接证据：积分与参数开关、预测吸附和速度保留、普通空间修正、移动资格与状态关系。接下来的设计应先明确三种责任：本次自主运动的资格和方向、运动积分与局部力历史、实际位移／外部物理运动的约束。
-
-这些事实不要求照抄 MoveController 或 Unity 类型，也不要求把每个原生字段都做成通用开关。需要保留的只是会改变轨迹、停走恢复和内容条件的差异。具体 State、Definition、Battlefield 依赖及 Hook／Rule 接口，留到下一轮依据这些证据收口；不得把当前 Stronghold 的分层或 segment.ts 当成原生正确性的依据。
-
-未完成的现场范围包括：运行时热更覆盖；全部特殊敌人／内容的碰撞配置；全场物理与单位更新的完整顺序；以及与客户端端到端轨迹的定量对比。本轮静态调查没有解决这些问题，也不据此阻塞普通机制的后续设计。
+未完成的现场范围包括活跃热更、全部特殊敌人／内容的碰撞配置、全场物理与对象更新的完整顺序，以及客户端端到端轨迹的定量对比。项目实现与明确近似见 [Navigation／Locomotion](../../architecture/navigation.md)。
 
 ## 阻挡站位后续核查
 

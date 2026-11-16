@@ -50,7 +50,7 @@ S1／S2 起飞模式 Attack 对象上的 BuffToOwner
 
 `Enemy._CheckMotionModeBlockable` 比较目标的 `changeableMotionMode` 与阻挡者的 `blockMode`，不读目标的 `pathMotionMode`。因此寻路模式、目标空地身份和阻挡策略不能合并为一个值。
 
-半径来自 Character 普通原生路径；`BLOCK_RADIUS_SCALE` 的修正只作用于 FLY 半径。本轮蒂比配置没有证明需要新增一套半径贡献系统，当前项目的 `blocker.radius` 已能保存这两个实际半径。
+半径来自 Character 普通原生路径；`BLOCK_RADIUS_SCALE` 的修正只作用于 FLY 半径。蒂比配置证明半径的普通默认与模式差异，不直接决定项目的修正接口。
 
 地块豁免不是“飞起来就让整格允许阻挡”：地面阻挡者仍按自己的资格处理。射击台的原生 `highland_common[block]` 也按 WALK 阻挡模式施加 BlockFree，不能对所有乘员一律禁挡。相关平台证据已记录在 [Blocking 设计](../../architecture/blocking.md#地块阻挡资格)。
 
@@ -72,23 +72,11 @@ S1／S2 起飞模式 Attack 对象上的 BuffToOwner
 
 关系解除与下一次接敌是不同操作。恢复到地面资格不表示 ResetBlockMode 自己同步取得附近地面目标；后续普通搜索或明确的立即搜索入口决定何时接敌。
 
-当前项目的 Movement 在 Route 推进后检查 `blockable.blocker`：非空则跳过 Locomotion 推进，路线完成离场也受该关系约束。这条判断不依赖 GROUND／AIR。飞行目标取得普通阻挡关系后，已经会停止自主移动；无需新增空中专用关系、禁移动 Rule 或 blocked 状态。被挡住也不意味着要修改目标的 Layer 或寻路模式。
-
-## 5. 项目接入更新（2026-10-30）
-
-原始基线有三项实际限制：canRetain 固定拒绝 AIR 目标、canSearch 无条件要求根格 allowsBlocking、射击台乘员 Rule 恒为 false。新通用接口以 Blocking 自己定义的 Layer = GROUND | AIR 表达能够阻挡的目标层，与宿主自身 Layer 分开，不将原生 BlockMode 命名引入项目。
-
-Blocker Definition 的 layer、rules 必填，radius 可选；State 保存当前 layer 和实际 radius。Core 在未显式覆盖时提供 GROUND 半径 0.7071、AIR 半径 0.8944；显式 Definition.radius 在初始化和切层时都保持覆盖。空地匹配与 AIR 地块豁免由通用 Blocking 解释，阵营和其他特殊资格仍通过双方二元 Rule 判断。射击台 Rule 只禁止当前 GROUND 阻挡，AIR 可通过。
-
-起飞／落地通过 capability/blocking 的 `setLayer(ref, layer): Change` 描述，由 Unit.update 先发布全批纯转换，再按顺序结算。该项 transform 只改 layer／radius；settle 从本项 previous 的 blocked 捕获旧 Ref，由内部 releaseAll 批量解除仍存在的旧身份，再通知并局部维护，不自动搜索。它自己的首个 Released 前本次仍有效的捕获关系已全部解除；混合批次中较早后继可以先按自己的逐项政策处理部分关系，不承诺全批首个通知已有切层清理结果。后继接续最新 BattleState，不回填旧 Unit 或误删重建的新 Ref。普通 update 不推断或通知 Blocking；Content 通过工厂或明确关系操作接入。以上为项目实施契约，不改写前述原生事实；资格政策见 [Blocking](../../architecture/blocking.md#关系资格与-rule)。
-
-蒂比仍应由实际起飞 Buff 的取得／失效调用相应操作，不直接绑定通用 Skill 开始／结束事件。Targetable 对地规避及表现高度继续独立处理；本轮不实现蒂比，也不修改她自身的空地身份。
-
-这次接入不引入新的 Blocking 状态机、layerChanged Hook、Layer Contribution 或任意模式覆盖协议。浮空区块、特殊目标层豁免、BLOCK_RADIUS_SCALE 运行时修正及 Trap／GiantTrap 特殊几何继续作为未接入内容或证据保留，按实际需求推进。
+飞行目标停走依赖已建立的普通阻挡关系，不由目标的寻路模式或视觉高度直接决定。项目切层、关系清理及站位结算见 [Blocking](../../architecture/blocking.md)，自身目标 Layer 与能够阻挡的目标层继续分别表达。
 
 ## 6. 补核：非巡空者实例与半径机制
 
-同日针对 `4b59185` 补核，空中阻挡不是巡空者专属，已有两类明确内容：
+2026-10-29 补核，空中阻挡不是巡空者专属，已有两类明确内容：
 
 - **风絮，医疗·守望者。** 角色表记录 `char_4222_taraxa`、`profession=MEDIC`、`subProfessionId=watchman`，基础阻挡数为 1，特性包含起飞。[PRTS 风絮](https://prts.wiki/w/风絮#特性) 明确其起飞后可以阻挡飞行敌人。这说明能力不能按巡空者职业判断；基础容量与天赋等运行时修正仍须区分。
 - **《未许之地》的可浮空区块。** [UR-4 晴空湍流](https://prts.wiki/w/UR-4_晴空湍流) 的关卡配置说明，放置于该区块的单位在区块浮空时能阻挡空中敌人，不要求单位属于巡空者。保留的客户端表镜像中 `/stages/act47side_04/description` 直接包含这个机制；活动表确认 `act47side` 为《未许之地》。

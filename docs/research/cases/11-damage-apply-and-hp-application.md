@@ -109,7 +109,7 @@ Unit.OnHpZero
 
 Enemy 的 `keepAlive` 路径在进入复活状态时以 force 将 HP 置 1；普通路径不作这次写入。状态退出清理自己添加的属性贡献及所持有的表现产物。`clearEffectsAfterReborn` 指向状态保存的表现 Effect 列表，不是另一项“清除所有战斗 Buff”的政策。
 
-`_PlayAnimation` #77560／#78146 的名称不能作为纯表现的证据：它还建立真正写 HP 的恢复插值。持续时间为 `Clamp01(hpRechargeRatio) × rebornTime`，延迟到本次复活时间的最后这一段开始。非确定性路径使用 DOTween，确定性路径使用 BattleTween；回调 #77562/63、#78148/50 均会把当前 MaxHP 乘插值比例，虚调用 `SetHpInternal(force=true)`。因此原生复活期间可已有渐进 HP 写入，不能只记录结束时的一次恢复。如何在项目中分离动画与实际恢复，是后续设计问题，本批不自行删除该状态语义。
+`_PlayAnimation` #77560／#78146 的名称不能作为纯表现的证据：它还建立真正写 HP 的恢复插值。持续时间为 `Clamp01(hpRechargeRatio) × rebornTime`，延迟到本次复活时间的最后这一段开始。非确定性路径使用 DOTween，确定性路径使用 BattleTween；回调 #77562/63、#78148/50 均会把当前 MaxHP 乘插值比例，虚调用 `SetHpInternal(force=true)`。因此原生复活期间可已有渐进 HP 写入，不能只记录结束时的一次恢复。项目逻辑恢复契约见 [Vitality](../../architecture/vitality.md)，不能将这项资源变化当作纯表现删去。
 
 `Unit.DoReborn` #79011 才派发复活后事件、以本次 `hpRatio × 当前MaxHP` 强制写回 HP、切换本次 mode 并添加指定 Buff。`Character.DoReborn` #77280 随后启动普通状态机；`Enemy.DoReborn` #77799 还重新初始化敌人技能并通知 BattleController。这里的 mode、当前 MaxHP、Buff 与技能初始化有真实顺序，不等同于任意 HP 恢复。
 
@@ -235,33 +235,29 @@ skip 不改变 HP 目标仍进入 `Entity.DoApplyModifier`（67683）的事实�
 
 相邻核对：`OnFinish`（67653）在 `0x18072a16e` 读取 Torappu.Battle.Context，`0x18072a189..19d` 取其栈顶来源，并于 `0x18072a407` 调该来源的 `OnTargetKilled`。这里没有直接读取 Modifier 的 source／originalSource。来源栈写入、恢复与真实内容归属已在[案例39](39-death-attribution-and-attribute-ranges.md)补核；不能进一步将其等同其中某个Modifier字段。
 
-### 6.5 对项目选择的约束范围
+项目 Calculate／Apply、Health 提交与死亡确认契约见 [Resource](../../architecture/resource.md)及[Vitality](../../architecture/vitality.md)；原生事件编号不决定项目 Hook 数量。
 
-上述证据回答原生语义，不另定 ArkBattle API。已确认的项目 Calculate／Apply 划分、普通两侧 Applied 后再按最新 HP 确认死亡，以及同步重入规则保持不变。未来表达生命流失时需要分别保存公式与事件政策；不能以直接 HP 减法代替所有物理／法术流失，也不能机械复刻原生所有事件编号。特殊 HP 改写与提前致命预判的具体内容组合仍按各自证据决定，不以本次研究替换已定普通伤害时序。
-
-## 7. 统一管线的实际内容对照（2026-11-13）
-
-普通损伤与流失都使用现有 Calculate／Apply 和 Hook 集合，请求携带 `DAMAGE / LOSS` 业务性质，各机制通过 Rule／Hook 资格决定响应。本节记录支持该设计的内容对照；2026-11-14 已接入 nature 与独立 hitRecovery 许可，现行接口以 [Vitality 契约](../../architecture/vitality.md#12-请求与计算参数)为准，不按原生事件开关数量设计接口。
+## 7. 不同接收路径的实际内容对照（2026-11-13）
 
 证据与复跑入口集中在 [hp-loss-hook-interactions-20261113](../evidence/hp-loss-hook-interactions-20261113/README.md)。N 表示实际配置绑定与普通原生调用链；W 表示社区资料；组合结果没有冒充本轮游戏内实测。
 
-| 实际内容 | 原生结果与证据 | 对统一模型的判断 |
-| --- | --- | --- |
-| 华法琳 S2 与乌尔比安 | N：S2 实际配置使用 PURE skip 模板；乌尔比安各模式的受伤回血天赋绑定 `ulpia_t_2`，程序只在普通 OnTakeDamage 事件 10 执行。该流失绕过事件 10，因此不会触发回血。 | 将这项回血限定普通伤害即可保留结果，不需要另一套 Receiving。 |
-| 华法琳 S2 与雷蛇 | N：雷蛇天赋的实际脚本为 `TriggerWhenTakenDamageAbility`，订阅 Entity 事件 12，还检查取消及 `ignoreForSp`。LOSS 不进入普通 OnTakeDamage，也不派发该事件。它不是原生 Applied 监听。 | `LOSS` 不触发这项回 SP；具体程序按接收语义接入，不因文案含“受伤后”就机械迁到 Applied。 |
-| “睚”的分身退场与铃兰脆弱 | W：当前敌人正文明确，不消失时承受 35% 最大生命的普通真实伤害，消失时改为 35% 流失。2023-01-25 的 WB-EX-8 实战讨论解释铃兰 40% 脆弱下前者为 49%，后者仍为 35%。 | 真伤类型不够区分；`DAMAGE / LOSS` 加上脆弱的响应资格可表达。35%／49%为当前规则及历史社区反馈，不是本次客户端实测。 |
-| 拟态机械射线与庇护 | N：第 6 节已闭合射线的法术 skip 分支与 RES 公式。W：淬羽赫默能提供庇护；普通庇护不降低流失。这是可共存内容的规则组合推导。 | 保留法抗计算，庇护的普通伤判不响应 LOSS；无需因忽略庇护就跳过整个 Calculate。 |
-| 活性源石与乌尔比安／雷蛇 | N：真实地块绑定 `periodic_damage → NoSourceDamage(PURE, ignoreForSp=true)`，未设置 skip。普通接收只跳过 HIT 回 SP，仍派发事件 10，乌尔比安回血程序没有 `ignoreForSp` 门控；雷蛇自身检查该标记而不回 SP。 | 同属 DAMAGE 也存在不同响应资格。`nature` 不能替代 HIT／受击回复资格；这是与 LOSS 正交的既有需求，不是增加阶段开关的理由。 |
+| 实际内容 | 原生结果与证据 |
+| --- | --- |
+| 华法琳 S2 与乌尔比安 | N：S2 实际配置使用 PURE skip 模板；乌尔比安各模式的受伤回血天赋绑定 `ulpia_t_2`，程序只在普通 OnTakeDamage 事件 10 执行。该流失绕过事件 10，因此不会触发回血。 |
+| 华法琳 S2 与雷蛇 | N：雷蛇天赋的实际脚本为 `TriggerWhenTakenDamageAbility`，订阅 Entity 事件 12，还检查取消及 `ignoreForSp`。LOSS 不进入普通 OnTakeDamage，也不派发该事件。它不是原生 Applied 监听。 |
+| “睚”的分身退场与铃兰脆弱 | W：当前敌人正文明确，不消失时承受 35% 最大生命的普通真实伤害，消失时改为 35% 流失。2023-01-25 的 WB-EX-8 实战讨论解释铃兰 40% 脆弱下前者为 49%，后者仍为 35%。 |
+| 拟态机械射线与庇护 | N：第 6 节已闭合射线的法术 skip 分支与 RES 公式。W：淬羽赫默能提供庇护；普通庇护不降低流失。这是可共存内容的规则组合推导。 |
+| 活性源石与乌尔比安／雷蛇 | N：真实地块绑定 `periodic_damage → NoSourceDamage(PURE, ignoreForSp=true)`，未设置 skip。普通接收只跳过 HIT 回 SP，仍派发事件 10，乌尔比安回血程序没有 `ignoreForSp` 门控；雷蛇自身检查该标记而不回 SP。 |
 
 来源 Formula 另做了定向排查：9054 个模板中定位到 205 项来源计算事件 14 配置，再检查阿、华法琳、史尔特尔、红隼及 Sharp 的相关入口；**未找到能够闭合到实际执行、证明统一 Calculate 必须增加来源／目标派发开关的反例**。阿的倍率配置与周期自损虽均已定位，但倍率的实际存续窗口未闭合，不能声称自损会由 1% 变为 1.5%。排除条件与检索边界见证据中的 `source/README.md`。
 
-这些实例支持统一管线与机制资格的设计方向。当前接口区分普通伤害／流失，并保留独立的普通 HIT 回复许可；“未找到来源计算反例”不是所有内容全局等价的证明。普通死亡顺序继续按既定项目选择，本节不重开其时序。
+这些实例区分了数学类型、普通接收、HIT 回复资格和生命提交；“未找到来源计算反例”不是所有内容全局等价的证明。项目对应契约见 [Resource](../../architecture/resource.md)。
 
 ## 8. force 与最终结束
 
 `SetHpInternal(value, force, noSource, skipReborn)` 的 force 不等于跳过全部免死：普通体仍可构造归零前请求，force 改变入口门控、取消续接与下限处理。noSource、skipReborn 继续传入虚 OnHpZero；同实例复活和最终 FinishMe 不等价。原体见本批 `native.json`，完整实际处决、撤退、来源通知和物理回收见[案例39](39-death-attribution-and-attribute-ranges.md)。
 
-项目采用 Calculate 输出／Apply 接收、Applied 后确认死亡、Outcome.killed；这些已确认选择没有因此被更改。它们也没有自动表达 consumer、不死资格、债务、ES、替身或复活。后续架构必须据上述真实需求一起评估，不能用“已延期”证明普通 HP 提交完整。
+不死、免死、债务、屏障、替身和复活的项目组织见 [Vitality](../../architecture/vitality.md)、[Effect](../../architecture/effect.md)与[Resource](../../architecture/resource.md)。这些契约不是原生 setter 字段的逐项翻译。
 
 ## 9. 限定与实际使用边界
 
@@ -269,4 +265,4 @@ skip 不改变 HP 目标仍进入 `Entity.DoApplyModifier`（67683）的事实�
 - Prefab政策扫描覆盖517包，零解码失败，包含 charpack、enemy 和 token 物理分包。零命中的 `TakeDamageMoveBackEnemy` 只说明该范围未找到实例，不证明废弃。
 - 生息演算专属 HP 改写、保全派驻专属恢复与船运寻路属于既有排除范围；同节点是否在普通玩法使用仍分别检查，不按名字统一排除。
 - 部分工具参数在 native 未被消费、部分只有未绑定候选；详见[覆盖表中的证据边界](37-resource-mechanism-coverage.md#4-没有被当作废弃或批准简化的项目)。未绑定不构成自行不实现的授权。
-- 原生复活动画回调会写实际HP，本文保留了该事实。如何以逻辑时钟表达属于后续项目设计，不能以“不依赖动画”为由悄悄删除这项业务。
+- 原生复活动画回调会写实际HP，本文保留了该事实。项目的逻辑时钟表达见 [Vitality](../../architecture/vitality.md)，不能以不依赖动画为由删除恢复行为。

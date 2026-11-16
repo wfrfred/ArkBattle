@@ -33,7 +33,7 @@
 | 来源存在、当前ATK、缓存输入、无来源输入 | 锡人S1、实际弹道、仇白附加伤害 | [18](18-projectile-source-and-target-lifecycles.md)、[38](38-damage-classification-and-permissions.md)：保留来源不保证派发来源公式事件；缓存ATK不等于全部来源快照 |
 | 共同Modifier与HP／EP专属事件 | 妮芙S1、末药／桑葚普通治疗 | [27](27-attack-additions-and-damage-events.md)、[29](29-hp-and-ep-healing-settlement.md)：多笔输出各自结算，非整次攻击事务 |
 | skip／流失仍算防御并进入HP setter | 实际物理落石、拟态机械射线、无人爆破艇 | [11 §6](11-damage-apply-and-hp-application.md#6-生命流失补核2026-11-13)：公式、普通接收事件和致命保护是不同参与条件 |
-| 普通HIT回复许可 | 雷蛇、活性源石、华法琳S2流失 | [11 §7](11-damage-apply-and-hp-application.md#7-统一管线的实际内容对照2026-11-13)：ignoreForSp不等于跳过一切受伤程序 |
+| 普通HIT回复许可 | 雷蛇、活性源石、华法琳S2流失 | [11 §7](11-damage-apply-and-hp-application.md#7-不同接收路径的实际内容对照2026-11-13)：ignoreForSp不等于跳过一切受伤程序 |
 | 资格前接收与HIT先后 | 浮空信件计数／无敌／改道，纯烬艾雅法拉S2元素屏障 | [38 §11](38-damage-classification-and-permissions.md#11-接收前置普通-hit-与伤判)：资格前确有状态与数值业务；普通HIT先于伤判不等于必须独立公开Key |
 | 无敌／不可伤／睡眠权限 | 瑕光天赋、实际无敌单位及齐尔查克 | [38](38-damage-classification-and-permissions.md)：入口不可伤、取消权限及接收规则分别存在 |
 | 忽略闪避、忽略取消原因 | 远牙天赋、骋风S2、焰尾闪避及成功后继 | [38](38-damage-classification-and-permissions.md)：两权限有实际生产／消费；当前native与Wiki的RNG描述冲突保留，见第4节 |
@@ -79,22 +79,11 @@
 
 上述表覆盖原生资源、输入分类、公式、资格、接收、提交、后继、修改入口及生命周期交接。具体数值、配置Pointer、对象PPtr与分支地址在对应案例／原件，不在概览重复整份反汇编。
 
-## 3. 已确认的项目选择
+## 3. 项目契约入口
 
-以下选择来自既有用户确认，研究不以“更像原生”为由撤销。它们只覆盖所写差异，不能扩大为其他机制的简化授权。
+原生事实不与项目类型逐项对应。四类 Calculate／Apply、Pending、选择性响应、来源／killer 与死亡通知见 [Resource](../../architecture/resource.md)；HP／债务与提交保护见 [Vitality](../../architecture/vitality.md)；标准爆发与恢复见 [Elemental](../../architecture/elemental.md)；屏障、重复施加与竞争见 [Effect](../../architecture/effect.md)。必要测试由 [Verification](../../architecture/verification.md)维护。
 
-| 项目选择 | 与原生的边界 |
-| --- | --- |
-| 四个独立HP／EP Damage／Healing接口，Calculate→Apply | 输出计算完成后才开始接收；不逐事件复刻原生交替顺序，不引入联合Request／Context |
-| 弱点双分支完整Calculate，选一支Apply | 原生有无事件试算；项目不因此让目标响应两次接收 |
-| Calculate最终非负、零计算输出拒绝；零实际变化允许成功 | 原生Modifier负数和最终delta处理时点不同；不把后者重新移入项目Commit |
-| Receiving取消后继续，取消及原因不恢复 | 每项仍判断自身资格，已发生的独立业务不回滚 |
-| 成功闪避的通用后继由目标侧Completed观察CANCELLED／MISS | 原生Evade成功时立即通知；项目在剩余Receiving后、同次Apply返回前同步执行。监听者确认自身为目标，HIT_FAILED不算自身闪避；契约见[Vitality](../../architecture/vitality.md#31-普通伤害流程) |
-| healFree仅影响Targeting | 原生普通OnTakeHeal另检查；项目不自动新增这项治疗接收禁用 |
-| 自然HP／EP按当前速度逐Tick加小数 | 不复刻每+1脉冲、已积累timer或三帧刷新；不派发普通Healing Hook |
-| 目标Applied→来源Applied→最新资格确认死亡→Completed／Outcome.killed | 不把原生Context来源通知机械映射为新Kill Hook；特殊生命归属尚须完整设计 |
-| Burst由Effect承载，恢复时钟rate=0手动推进；onInstall一次性业务 | 是项目组织方式，不意味着恢复控制器和各独立子效果原生共享一个时钟 |
-| UI Event只输出表现所需瞬时事实 | Outcome／Application、当前State、同步Hook各司其职，不为复刻Modifier全部事件增加日志 |
+这些文档记录已确认的项目选择及近似。本页只保存证据覆盖，不能将早期“待设计”当成当前状态，也不能以实现存在或测试通过宣布原生需求完整。
 
 ## 4. 没有被当作废弃或批准简化的项目
 
@@ -108,14 +97,14 @@
 | 弱点候选的atkAddition／固定类型marker | 当前指纹弱点三参构造器仍将附加值置零，与Wiki理论比较不符；实际陈弱点和山概率链已闭合，marker生产者在517资源无命中。分别保留热更冲突与无绑定范围，不宣布废弃 |
 | `INSTANT_KILL_LIKE_DAMAGE` | 有构造入口／过滤消费者；它不是InstantKill操作。UI标记或未闭合候选不单独证明一项通用强制死亡机制 |
 | 标准爆发初始0时长 | 五型正式表均正，所查无0秒正例；给定0时的真实代码行为仍记录，不以非默认无配置判为任意行为 |
-| 动画驱动复活HP插值 | native回调确实写实际HP，不得当纯表现删去。项目坚持逻辑Core不依赖动画，如何保留业务须显式设计，尚未批准瞬间恢复替代 |
+| 动画驱动复活HP插值 | native回调确实写实际HP，不得当纯表现删去。逻辑 Core 的恢复表达见 [Vitality](../../architecture/vitality.md)，不能把实际恢复过程当作纯表现省略 |
 
 这些是可审阅的证据边界，没有被包装成“以后再说，所以本领域完成”。能通过进一步静态输入闭合的继续追；涉及活跃热更新／运行观测的如实保留，不能伪造证据。任何新增不实现或简化须单独提供实际影响并由用户确认。
 
 既有明确排除为生息演算、保全派驻、船运寻路。`HealSplitToUnionFindMembers`和`AverageHealViaHpUseAbilitySelector`的当前命中另保留具体模板及来源，不仅按名字断言全客户端只有这些模式。SP、部署费用、全局生命点及胜负的Modifier标记也列入原生清单，但其资源业务归对应领域，不能强塞进HP／EP接口。
 
-## 5. 对下一次架构审查的约束
+## 5. 使用边界
 
-当前普通四条管线已实现，不代表上述原生需求已全部实现。至少生命资源／干预、分类与权限、同实例复活／模式交接、独立击杀归属、范围覆写、第五类EP及爆发缩时必须一起纳入差距评估，不能再逐个当作孤立Content扩展。
+第 2 节是已取得原生路径与实际绑定的机制入口，第 4 节是具体证据限制，两者均不是当前代码缺口表。负生命、保护成功后继、来源通知及具体假死／替身的项目表达按对应架构维护；具体内容未接入与公共模型无法合理表达分别判断。
 
-先按本页与原件确认需要保留的事实、输入和时点，再组织领域接口；不从22个标志倒推22个API，也不从当前Request缺字段反推需求不成立。既有项目选择继续有效；新增差异必须明确提交用户决定。实现后的测试只验证文档必要语义，测试夹具不能替代原生依据。
+尚未闭合的动态属性范围使用、第五类 EP 及特殊恢复仍须遵循其案例的实际证据和项目支持范围，不能从当前字段或枚举数量推导为已批准不实现。新增简化应说明实际影响；原生 flags 的数量不决定项目 API 数量。

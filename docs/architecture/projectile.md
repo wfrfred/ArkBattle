@@ -1,232 +1,61 @@
 # Projectile 设计
 
-Projectile 是具有空间位置的独立执行实例，存于 Battlefield。框架管理身份与生命周期，Definition 管理行为；运动、命中与终结是实例内部的不同过程，不固定成“飞行 → 命中 → 消失”的流水线。
-
-接口遵守[接口约定](api-conventions.md)：完整操作接收 battle 与 Typed Ref，Definition 回调直接接收 self，当前时间来自 battle.tick。
-
 ## 1. 领域边界
 
-- Projectile 使用独立模型与 Definition，身份、位置、私有 state 和生命周期由自身领域管理。
-- Geometry 与 Battlefield Spatial Query 提供几何和空间候选；需要重新选择接收者的具体行为调用 Targeting。范围原点可以是弹道位置或落点，不等同于属性来源 Unit 的位置。
-- Damage、Healing、Effect 执行各自的完整结算。Projectile 是这些操作的调用方，不因读取来源攻击力而具有 Offense，也不因施加 Effect 而自动成为 Effect 宿主。
-- 来源身份、属性采样和来源存活依赖分别表达。保存 source 不自动建立生命周期父子关系；Action 结束也不自动终结已经创建的 Projectile。
-- 可复用的追踪、运动与命中函数根据具体内容形成，不把原生 Behaviour 逐项映射成框架组件。
+Projectile 是独立运行实例，提供创建、正常推进和完整终结。具体内容决定运动、目标、数值采样、命中及终止业务，不把全部弹道压成一种追踪／碰撞模型。
+
+来源、目标、到达、命中与结束是不同事实；独立弹道不因来源 Unit／Action 结束自动消失。
 
 ## 模块归属
 
-- [projectile/index.ts](../../src/core/projectile/index.ts) 是类型与 ref／all／get 的显式公共入口；完整 Battle 操作直接从 [battle/projectile.ts](../../src/core/battle/projectile.ts) 导入。
-- `projectile/projectile.ts`、`definition.ts` 定义实例与内容程序。
-- `projectile/query.ts` 提供 `all`、`get` 和 `ref`，与 Unit 查询入口一致。all 返回绑定传入 BattleState 版本、按登记顺序惰性遍历的 Query<Projectile>，不自动筛选生命周期或转换 Ref；get/ref 保留 Typed Ref 中的已知对象类型。
-- `projectile/projectiles.ts` 封装异构完整实例的存储与类型恢复，不推进生命周期。
-- `battle/projectile.ts` 提供完整 `create`、`update`、`stop` 和 `advance`，直接替换 Battlefield 中的不可变 Projectiles 容器，负责身份、回调与终结。
-- `battlefield/state.ts` 定义唯一公开 State 与 create；Unit 的纯 `add`、`update`、`remove` 位于 `battlefield/unit.ts`。
-
-Battle 层的 update 只允许内容计算 position 和私有 state，Core 基于当前实例构造新值，保留身份、Definition 和生命周期。Battlefield 持有 Projectiles 状态，Battle 层分配战斗身份并执行内容回调。advance 接收 Runtime 在整个 Tick 开始时捕获的候选 Ref，不在 Projectile 阶段重新枚举集合。
+[projectile](../../src/core/projectile)保存类型、查询与异构容器，Battlefield 持有唯一集合；[battle/projectile.ts](../../src/core/battle/projectile.ts)组织创建、更新、推进与停止。领域 API 与不可变写回遵守[接口约定](api-conventions.md)，终止共用 [Lifetime](lifetime.md)。
 
 ## 2. 实例与 Definition
 
-`projectile/projectile.ts`：
+实例保存身份、Definition、ACTIVE／ENDING、位置与私有 state。Definition 提供可选 onStart／onTick／onEnd，静态共享；私有状态可包含追踪目标、记忆位置、来源、样本、命中记录与业务时钟，不由根类型强制这些字段。
 
-```typescript
-import type { Identified } from "../common/ref.js";
-import type { WorldPosition } from "../geometry/coordinate.js";
-import type { Definition } from "./definition.js";
-
-export type Id = number;
-
-export type Lifecycle = "ACTIVE" | "ENDING";
-
-export interface Projectile<S extends object = object> extends Identified<{ readonly id: Id }> {
-    readonly id: Id;
-    readonly definition: Definition<S>;
-    readonly lifecycle: Lifecycle;
-    readonly position: WorldPosition;
-    readonly state: S;
-}
-
-```
-
-`projectile/definition.ts`：
-
-```typescript
-import type { State as BattleState } from "../battle/state.js";
-import type { Projectile } from "./projectile.js";
-
-export type StopReason =
-    | "ARRIVED"
-    | "EXPIRED"
-    | "EXPLICIT"
-    | "SOURCE_UNAVAILABLE"
-    | "DISPEL";
-
-export interface Definition<S extends object = object> {
-    readonly id: string;
-
-    readonly onStart?: (
-        battle: BattleState,
-        self: Projectile<S>,
-    ) => BattleState;
-
-    readonly onTick?: (
-        battle: BattleState,
-        self: Projectile<S>,
-    ) => BattleState;
-
-    readonly onEnd?: (
-        battle: BattleState,
-        self: Projectile<S>,
-        reason: StopReason,
-    ) => BattleState;
-}
-```
-
-S 是内容私有的运行状态，可以包含运动进度、目标身份、记忆位置、命中历史、来源、数值样本和业务计时，也可以没有其中某些部分。根实例不强制保存来源、追踪目标、攻击力样本、速度、接触范围、停止期限或推进 Tick。
-
-普通查询直接返回完整 Projectile<object>，包含 state 与原 Definition；object 表示尚未证明具体私有形状。精确 Ref／Definition 查询保留具体 S，Core 从同一实例调用其自身 Definition 的程序。追踪弹道的 tracking.project(battle, ref) 在内容层生成实际需要的 Presentation 数值投影，不承担实例恢复。
-
-Definition 直接共享。三个回调都可选，派发方按实例与 Definition 的泛型配对直接传 self。self 表达进入该次回调时的实例值；跨领域操作返回后，需要当前状态或资格时，按 Ref 从最新 battle 重读，遵守[状态接续约定](functional-core.md#状态接续后的读取与续执行)。
-
-StopReason 使用单层联合，DISPEL 是其中一种原因。原因传入终结程序，由内容选择收尾政策；各原因共用同一套请求与 Finalize 流程。
+停止原因包括抵达、到期、显式停止、来源失效与 DISPEL；原因交给内容选择收尾，不拆成不同生命周期机制。具体类型以[源码](../../src/core/projectile/projectile.ts)为准。
 
 ## 3. 异构集合与类型恢复
 
-Battlefield 持有不可变 Projectiles，容器内部以私有 `Store<Id, Projectile<any>>` 保存完整实例。Store 不理解 Ref、Definition、泛型关联或生命周期；关联由 Projectiles 的写入入口建立，擦除与恢复集中在容器内部。
+Projectiles 保存完整异构实例，普通查询不承诺未知私有形状，精确 Ref／Definition 对象身份恢复类型；类型擦除集中在容器边界。字符串相同不代表同一 Definition。
 
-| 容器接口 | 契约 |
-| --- | --- |
-| `Projectiles.empty()` | 空容器。 |
-| `get(id)` | 返回默认 object 的完整 Projectile。 |
-| `get(reference)` | 根据精确 Ref 恢复调用方已知的实例类型。 |
-| `get(id, definition)` | 检查 Definition 对象身份后返回对应 Projectile<S>；字符串 id 相同不等同于同一定义。 |
-| `values()`／`keys()` | 返回绑定当前容器版本、保留登记顺序的 Query。 |
-| `add(self)` | 委托 Store.add 保存完整实例，重复键由 Store 拒绝。 |
-| `replace(reference, next)` | 按 reference.id 委托 Store.replace 写回；缺失键由 Store 拒绝，同一实例对象保留原容器。 |
-| `remove(id)` | 委托 Store.remove 移除身份，缺失键由 Store 拒绝。 |
-
-Projectiles 信任 Core 已构造的完整实例，不在 replace 重复检查 Ref 与实例 id、Definition 或缺失键，也不包装 Store 的异常。完整领域操作在构造更新值时保留 Definition；Typed Ref 与 Definition 的类型恢复仍由容器封装；内部 any 只擦除异构参数，普通 get／values 返回 Projectile<object>，不把 any 作为公共默认值。
-
-身份计数器属于 Battle 执行状态，创建流程直接使用分配器产生的身份与调用方提供的 Definition，不重复校验身份数值、Definition.id 或理论计数溢出。替换不改变登记位置，删除后新增排在末尾。查询惰性、可重复遍历，绑定入口不可变容器就已固定候选来源；推进接收 Iterable<Ref<P>>，在操作处生成 Ref，不要求预先物化数组。
+身份由 Battle 分配，替换保留登记位置，删除后不复用。容器只处理存储，不负责业务资格；Query 绑定不可变输入版本。诊断或表现投影不替代运行实例。
 
 ## 4. 创建、查询与内容更新
 
-```typescript
-export interface CreateInput<S extends object> {
-    readonly position: WorldPosition;
-    readonly state: S;
-}
+创建方确定 Definition、位置和完整私有初态；需要读取属性或消费 RNG 时先明确接续相应状态。身份分配和 ACTIVE 登记先于 onStart，嵌套创建不复用 ID。onStart 可以结束自己，返回 Ref 仍表示已创建事实，不保证实例仍存在。
 
-export function ref<P extends Projectile<any>>(self: P): Ref<P>;
+get 返回指定版本中的完整实例，不隐含 ACTIVE 筛选。update 只设置位置及私有 state，保留身份、Definition 与生命周期；ENDING 也可提交命中／清理进度，不因普通写回恢复实例。
 
-export function get<P extends Projectile<any>>(
-    battle: BattleState,
-    reference: Ref<P>,
-): P | undefined;
-
-export function create<S extends object>(
-    battle: BattleState,
-    definition: Definition<S>,
-    input: CreateInput<NoInfer<S>>,
-): Result<Ref<Projectile<S>>>;
-
-export function update<T extends Projectile<any>>(
-    battle: BattleState,
-    reference: Ref<T>,
-    changes: {
-        readonly position?: WorldPosition;
-        readonly state?: NoInfer<T["state"]>;
-    },
-): BattleState;
-
-export function stop(
-    battle: BattleState,
-    reference: Ref<Projectile<any>>,
-    reason: StopReason = "EXPLICIT",
-): BattleState;
-```
-
-ref 保留已知实例类型；get 只读取传入 battle 的版本，不隐含 ACTIVE 筛选，ENDING 实例在注销前仍可查询。跨 Battle 使用 Ref 属于调用契约错误。
-
-创建方直接提供完整 state 和已确定的 Definition。需要采样属性、消费 RNG 或读取目标时，由内容构造过程明确接续 BattleState，再把确定的初态交给 create。
-
-创建顺序：
-
-```text
-分配身份，更新身份计数器并登记 ACTIVE 实例
-    ↓
-onStart(battle, self)
-    ↓
-返回最新 BattleState 与创建时分配的 Ref
-```
-
-身份计数器与实例登记均在 onStart 前生效；嵌套 create 不复用身份。onStart 可以同步终结自己，因此返回 Ref 不保证返回时实例仍存在；外层不得在回调之后重新写回旧实例。
-
-update 接收已经计算好的 `{ position?, state? }`，从传入 battle 读取最新实例；缺失时抛出 RangeError。调用方先查询当前实例，局部计算位置与私有状态后一次提交；计算与提交之间不执行其他完整操作，跨领域调用后先接续 battle，再重读所需实时状态。
-
-未提供的字段保留当前值，不隐含合并 S 内部字段。两个字段均未变化时返回原 BattleState；ACTIVE 和 ENDING 均允许更新，终结回调仍可能需要提交命中记录或清理进度。Core 只提取 changes 中的 position／state，不直接展开输入对象；id、Definition 与 lifecycle 不进入此接口的写入边界。
-
-`NoInfer` 阻止输入结果值反向放宽由 Definition／精确 Ref 确定的 S。私有更新必须保留实例与 Definition 对应的原始类型关联；Ref 可以弱化用于公共查询，主动弱化后写入不兼容的私有状态属于调用契约错误，不增加运行时数据形状检查。
+跨完整业务后需要当前进度或资格时重新查询，不以旧 self 覆盖新版本；私有类型和写回错误遵守公共契约。
 
 ## 5. 时间推进
 
-Runtime 在整个 Battle Step 开始、任何可能创建或终结弹道的阶段操作之前，捕获本次 Projectile 候选 Ref；到 Projectile 阶段再按登记顺序逐项读取最新实例，只推进 ACTIVE 对象。
+Runtime 在整个 Tick 开始时固定弹道 Ref 候选，到 Projectile 阶段逐项读取最新 ACTIVE 实例。先前回调结束的候选跳过，名单之后新建的实例等后续 Tick；创建和显式停止的程序仍同步执行。
 
-候选固定的是身份，不是实例快照。前一回调可以终结后面的候选，后者到执行时会被跳过。捕获名单之后新创建的弹道不参与本次正常推进；Step 开始前已经登记的实例会进入本次名单，包括初始化已有的弹道。创建回调与显式 stop 仍可在当前同步调用中立即执行。
-
-正常时间推进只有 Runtime 调度的入口，不允许内容推进其他实例。同 Tick 重复调度属于调度器错误，不保存 lastAdvancedTick，也不用创建 Tick 替代候选边界。
-
-onTick 可以移动、报告到达、命中、等待、切换运动方式或发起终结。到达后不再移动的实例仍可以保持 ACTIVE 并执行周期业务。职责分离不要求全场先统一运动、再统一命中、最后统一终结；具体过程可以同步调用并立即接续返回状态。
+正常推进仅由调度器调用一次，不保存实例级重复调度标记。抵达后可保持 ACTIVE、停止移动并继续等待或周期业务；不强制全场先移动、再命中、再结束。
 
 ## 6. 终止请求与 Finalize
 
-停止操作接收 StopReason，委托 Projectile 的静态 lifetime。请求阶段与 Finalize 分开：
+stop 固定首次原因并发布 ENDING，阻止后续正常推进。待依赖完成后，onEnd 读取当前实例执行业务，再从最新集合移除，保留回调中新建或修改的其他弹道。
 
-```text
-从最新 battle 确认 ACTIVE
-    ↓
-登记 Pending，发布 ENDING
-    ↓
-结束请求保留首次 StopReason
-    ↓
-请求依赖者；最外层结算器等待其完整 Finalize
-    ↓
-Finalize 从当前实例调用 onEnd(battle, self, reason)
-    ↓
-从回调返回的最新 battle 注销实例；整个返回后移除 Pending
-```
+无活动结算时 stop 完成整批收尾后返回；嵌套调用的完成边界见 [Lifetime](lifetime.md#finalize-与完成边界)。停止不截断已经进入的普通同步调用栈；后续新输出仍须重新确认资格，不能只在末尾靠停止防重。
 
-重复请求先查 Pending，首次 StopReason 与传播原因不变，不重复收尾回调；缺失时不创建工作。ENDING 阻止后续正常推进，不无差别拒绝终结程序中的命中、位置／私有状态更新和 Effect 清理。
-
-无活动 Lifetime 结算时 stop 在本次调用内完成整批 Finalize；有活动结算时，首次嵌套 stop 只保证 Prepare，不保证实例已从 get／all 消失或 onEnd 已执行，重复 PREPARING 请求也不等待。Pending 在整个 Finalize 返回前保留，即使领域先物理注销、再执行末尾业务，真实依赖关系也仍能约束上游完成。独立 Projectile 不因来源 Unit／Action 结束而自动成为依赖者。
-
-普通停止可以执行该内容的原目标保底、停止爆炸及其他收尾；DISPEL 是否跳过命中、执行什么专属业务由 Definition 确定。两者共用相同的生命周期保护与注销过程，清理可在同一个 onEnd 中完成。
-
-注销使用最新容器，保留回调中新建或修改的其他实例。onEnd 是唯一终结回调，返回后即移除实例。停止原因通过终结程序传递；当前 UI 从 State 获取投射物，不输出停止诊断 Event。
-
-到达与命中由具体内容在实际业务节点执行程序；当前不输出到达或命中诊断 Event。伤害等实际结算按自身 UI 输出契约记录必要事实。
-
-停止不会自动截断已经进入的同步调用栈。内容继续依赖实例活动资格时必须重读；旧 self 可以继续代表本次已发生的事实，不能被当作最新可写实例。延迟业务执行前同样需要确认资格，不能仅依赖最后一次 stop 防重来阻止前面已经发生的输出。
+普通停止可执行原目标保底或落点爆炸，DISPEL 是否跳过这些业务由具体 Definition 决定。两者共用 onEnd 和析构保护，不另建消除回调系统。UI 不输出到达／停止诊断事件，资源输出按 [Event](event.md)处理。
 
 ## 7. 命中与内容状态
 
-命中由内容程序组织。原目标直选、落点范围、沿途接触和周期重新索敌各自取得接收者并检查资格，不统一套用空间重叠或普通伤害 Filter。
+原目标直选、落点范围、沿途接触和周期重选各有资格，不能统一套用空间重叠或普通索敌。命中记录在可重入回调前提交；次数、轮次、原目标保底及终结防重分别保存，不默认整条弹道每目标只命中一次。
 
-命中记录在相应内容回调前提交，避免同步重入重复取得同一次命中。终结防重、原目标保底尝试、历史范围与次数预算分别表达。Reached 与 Stop 的保底可以共享记录，周期业务按实际政策划分轮次；不默认整条弹道生命周期内每个单位只能命中一次。
+tracking 在目标身份仍存在时读取真实位置，暂时消失不回退记忆；身份失效才使用记忆位置。原目标命中要求 PRESENT 且正生命，不重查阵营、Presence 或 Targetable；最终 Damage 是否接收仍独立判断。
 
-命中过程不统一要求 Targetable、Hitbox 或 Vitality；这些要求由取得接收者的入口与最终 Damage／Healing／Effect 操作声明。Hit 入场与实际 HP 变化分别观察。
+已接入的弩箭保存来源、目标、记忆位置、攻击样本和必要记录，到达与普通停止协调同一次原目标命中。来源仍在场时按其当前攻击力，否则沿用发射样本；这是具体弹体政策，不是通用来源快照。
 
-已锁定的 tracking Projectile 只要还能按身份取得目标，就继续使用目标的真实位置；目标暂时[空间消失](presence.md)不改用记忆坐标，身份失效后才回退。tracking.hit 记录一次原目标命中尝试，要求目标仍为 PRESENT 且 HP 大于零，不重新检查阵营、空间存在或 Targetable 限制。原目标命中程序与普通重新索敌分别判断，命中回调被调用不保证最终 Damage 会被接收。
-
-| 内容 | 私有状态与执行方式 | 覆盖范围 |
-| --- | --- | --- |
-| 普通弩箭 | 保存原目标、记忆位置、来源、速度、ATK 样本和必要的命中记录；推进追踪，在到达与普通停止入口协调原目标命中。 | [弩手内容](../../src/content/enemies/crossbowman/action.ts) 已接入。 |
-| 慑砂 S2 | 保存运动进度及到达后的停止期限；等待时保持 ACTIVE，普通停止在实际落点执行爆炸命中。 | 原生机制案例，具体内容未接入。 |
-| 承曦格雷伊 S2 | 保存到达状态、周期触发时间、停止期限及周期命中进度；到达后继续正常推进周期业务。 | 原生机制案例，具体内容未接入。 |
-
-这些案例说明运动、命中与终结的不同业务边界，具体程序通过私有 state 和 Definition 回调组合。追踪内容直接用当前 Tick 加延迟计算停止期限，不为理论上的安全整数溢出增加检查或回退。
+慑砂 S2 的抵达后延时爆炸、承曦格雷伊 S2 的抵达后周期业务说明不同边界，具体内容尚未接入；不能以测试夹具替代内容程序。
 
 ## 8. 语义边界与研究依据
 
-- **消除资格按内容确认。** stop 直接请求终结，尚未提供可拒绝的消除准入；原生中拒绝消除的具体内容仍需接入。
-- **来源死亡后的取值差异独立处理。** 当前真实死亡通过完整 Unit 离场流程注销身份，之后 tracking.attackPower 使用缓存 ATK。与原生来源仍保留期间的取值差异需要按具体内容核对。
+当前 stop 不提供可拒绝的消除准入；沿途碰撞、附着、套索及更复杂周期弹体尚未完整接入。来源退场后的取值差异由具体内容采样政策处理，不由 Projectile 统一保存 Unit 快照。缺口集中见 [Tactical 语义](tactical-semantics.md)。
 
-原生事实与证据分别见[运动与命中](../research/cases/16-projectile-motion-and-hit-boundaries.md)、[停止与终结](../research/cases/17-projectile-stop-and-termination.md)、[来源与目标生命周期](../research/cases/18-projectile-source-and-target-lifecycles.md)。沿途碰撞、附着、套索和到达后的周期业务等内容尚未接入。
+原生依据见[运动与命中](../research/cases/16-projectile-motion-and-hit-boundaries.md)、[停止与终结](../research/cases/17-projectile-stop-and-termination.md)、[来源和目标](../research/cases/18-projectile-source-and-target-lifecycles.md)。当前实现的必要结果按[统一验收](verification.md)验证。

@@ -1,713 +1,104 @@
-# Vitality、Damage 与 Healing
+# Vitality
 
-Vitality 保存普通 HP、负生命债务、MaxHP、DEF、RES、自然回复属性和伤害接收规则，负责 HP 专属接收及伤害提交前后的 damageCommitting／damageCommitted。所有结算 Hook 由对应领域定义 typed Key，存于来源或目标的 Unit.hooks。`battle/resource/` 按 HP／EP，再按 Damage／Healing 提供 Calculate／Apply 操作，复用[公共 Hook 契约](functional-core.md#6-hook-和生命周期的纯契约)。
+Vitality 拥有普通 HP、负生命债务、容量、防御、抗性、自然回复和 HP 接收许可。Damage／Healing 的请求、计算、接收、排除和死亡通知由 [Resource](resource.md) 统一定义；本页只规定 HP 的资源规则与提交扩展点。公开入口为 [vitality/index.ts](../../src/core/unit/capability/vitality/index.ts)。
 
-[resource/index.ts](../../src/core/battle/resource/index.ts) 导出 hp、ep 命名空间，各自导出 damage、healing。HP 业务也可直接从 [hp/damage/index.ts](../../src/core/battle/resource/hp/damage/index.ts) 与 [hp/healing/index.ts](../../src/core/battle/resource/hp/healing/index.ts) 导入公共契约；资源能力由 [vitality/index.ts](../../src/core/unit/capability/vitality/index.ts) 提供。四种业务保留 calculateDamage／applyDamage 或 calculateHealing／applyHealing 两阶段入口；Hook 键和精确公开类型由对应入口导出，共用派发保持内部实现。
+原生资源与保护依据见[案例11](../research/cases/11-damage-apply-and-hp-application.md)，恢复见[案例29](../research/cases/29-hp-and-ep-healing-settlement.md)，属性范围与 MaxHP 变更见[案例39](../research/cases/39-death-attribution-and-attribute-ranges.md)。已提供的资源能力、具体内容尚未接入、尚未闭合的表达需求分别判断，不以一份 Hook 或调查记录代替完整内容支持。
 
-```text
-battle/resource/
-├── receiving.ts
-├── hook.ts
-├── hp/
-│   ├── damage/
-│   └── healing/
-└── ep/
-    ├── damage/
-    └── healing/
-```
-
-HP Damage 覆盖普通伤害与生命流失，两者均使用物理、法术、真实或元素 HP 公式及同一套 Calculate／Apply。特殊生命机制、特殊恢复与其余伤害分类的支持边界见第 3.2、4.2、5 节。
-
-完整原生需求与实际内容依据见[资源机制覆盖表](../research/cases/37-resource-mechanism-coverage.md)，分类／权限见[案例38](../research/cases/38-damage-classification-and-permissions.md)，生命／复活见[案例11](../research/cases/11-damage-apply-and-hp-application.md)，归属／属性范围见[案例39](../research/cases/39-death-attribution-and-attribute-ranges.md)。本页描述当前资源分配与提交协议；具体保护、复活、屏障等内容的支持边界见第 3.2、4.2 节。未接入的真实需求仍是架构差距，原生内部字段不直接决定项目类型。
-
-## 0. Vitality Capability
-
-`vitality/health.ts` 定义 Health 与内部纯分配，`vitality/capability.ts` 提供定义、初始化、容量和属性 Change，`vitality/query.ts` 提供生命状态、生命比例与依赖战场的属性查询；防御与自然 HP 回复属性均属于 Vitality。
+## Vitality Capability
 
 ```typescript
 interface Health {
     readonly hp: number;
     readonly minusHp: number;
 }
-
-interface Definition {
-    readonly maxHp: number;
-    readonly defense: number;
-    readonly resistance: number;
-    readonly recoverySpeed: number;
-    readonly recoveryRatio: number;
-}
-
-interface State {
-    readonly health: Health;
-    readonly maxMinusHpRatio: number;
-    // MaxHP、其他属性贡献与接收限制
-}
-
-initialize<U extends Unit & Pick<Vitality, "definition">>(battle, unit: U): Result<U & Vitality>;
-setMaxHpContribution(entry): Change<Unit & Vitality>;
-removeMaxHpContribution(id): Change<Unit & Vitality>;
-resolveMaxHp(definition, state): number;
-setMaxMinusHpRatio(ratio: number): Change<Unit & Vitality>;
-resolveMaxMinusHp(definition, state): number;
-isAlive(self: Unit & Vitality): boolean;
-hpRatio(self: Unit & Vitality): number;
-setContribution(key: "defense" | "resistance" | "recoverySpeed" | "recoveryRatio", entry): Change<Unit & Vitality>;
-removeContribution(key: "defense" | "resistance" | "recoverySpeed" | "recoveryRatio", id): Change<Unit & Vitality>;
-unit.setHook(key, hook): Change<Unit & Vitality>;
-unit.removeHook(key, id): Change<Unit & Vitality>;
-resolveDefense(battle, self: Unit & Vitality): number;
-resolveResistance(battle, self: Unit & Vitality): number;
-resolveRecoverySpeed(battle, self: Unit & Vitality): number;
-increaseHp(battle, reference: Ref<Unit & Vitality>, amount: number): Result<HealingApplication>;
-advance(battle, reference: Ref<Unit & Vitality>): BattleState;
 ```
 
-基础 MaxHP、DEF、RES、recoverySpeed、recoveryRatio 全部必填，由 initialize 校验为有限非负数，可以是小数。无自然回复时两项回复基础值均为零。初始 Health 为 `{ hp: Math.max(1, definition.maxHp), minusHp: 0 }`，maxMinusHpRatio 初始为 0，有效 MaxHP 的下限为 1。基础 RES 可以超过 100，有效值在属性修正后限制到 0～100；有效 DEF 的下限为 0。普通 HP 使用 0～有效 MaxHP 的范围，不在每次计算后取整。
+State 通过 health 唯一持有生命，不另存顶层 hp；maxMinusHpRatio 是运行时债务容量配置。静态 Definition 提供 maxHp、defense、resistance、recoverySpeed、recoveryRatio，构造入口要求有限非负数，正常资源和变化量均保留小数。
 
-MaxHP 保留静态 Modifier[]，set／remove 分别登记与移除，共用局部比例计算：以 `旧普通HP / 旧MaxHP × 新MaxHP` 作为拟写 HP，再按新容量分配 Health，在同一次纯 Transformation 中发布贡献与生命状态。零 HP 不因属性变化复活，不派发治疗或伤害提交 Hook。若容量变化后的债务已耗尽生命，Settlement 从最新状态确认后以 killer:null 请求正常 DEATH；其余关系由 Unit Lifetime 清理。DEF／RES 与两项回复属性的 Input 为静态修正或 `(battle, self: Unit & Vitality) => readonly Modifier[]`，由普通注册工厂生成 setContribution／removeContribution。专属接收 Hook 通过 unit.setHook／removeHook 登记，Key 保留 Hook 类型与 Vitality 宿主约束。MaxHP 单独保留领域实现，不进入普通字段集合。属性查询接收已取得的当前宿主并返回 number，不重复定位或判空；Damage 在 Formula Hook 后确认当前目标，再按伤害类型求值，不提前缓存或混入穿透。
+| 项目 | 初始值或有效边界 |
+| --- | --- |
+| Health | `{hp:max(1, definition.maxHp), minusHp:0}` |
+| MaxHP | 修正后下限 1 |
+| 债务容量 | `有效 MaxHP × maxMinusHpRatio`；比例初始为 0 |
+| DEF | 修正后下限 0 |
+| RES | 修正后 0～100；基础值可大于 100 |
+| 固定自然回复 | 修正后下限 0，单位 HP／秒 |
+| 比例自然回复 | 修正后 0～1，单位 MaxHP／秒 |
 
-Health、容量配置、Contribution 与 Restriction 共存于 Vitality State，专属接收登记存于 Unit.hooks。DEF／RES 的修改保留其他字段；属性变化不派发普通治疗 Hook。治疗索敌默认 provider 与显式注入 provider 均读取有效 MaxHP，避免把基础值或未计修正的上限用于缺血判定和比例排序。
+isAlive 只判断普通 HP>0，不合并 lifecycle 或 Presence；hpRatio 使用普通 HP／有效 MaxHP，不计屏障和债务。业务在自己需要的时点检查生命周期，治疗需求及比例排序复用有效 MaxHP。
 
-isAlive 与 hpRatio 接收已经取得的 `Unit & Vitality`，不接收 BattleState 或 Ref，不在内部放宽能力要求或重复查找。isAlive 只判断生命状态，不包含 Unit.lifecycle 或 Presence；普通 HP 已归零但仍处于 Applied 的 Unit 返回 false，主动离场中仍持有正 HP 的 Unit 可返回 true。hpRatio 为普通 HP 除以有效 MaxHP，不计屏障或负生命债务。其他领域的存活、缺血与比例排序复用这两个查询，生命周期和空间资格仍由各自业务判断；具体数值计算与提交报告仍可读取 HP。
+MaxHP 贡献只接受静态 Modifier 数组。登记、替换或撤销时，以 `旧普通 HP / 旧 MaxHP × 新 MaxHP` 形成拟写值，再按新容量分配 Health；正向变化也先偿债。贡献与生命在同一 Change 中发布，不派发治疗或伤害提交 Hook，零 HP 不因属性变化复活。容量耗尽时，Settlement 从最新状态确认后以 killer:null 请求 DEATH；结构与析构后继归 Unit。
 
-Damage 接收 Restriction 使用 `allows(battle, ReceivingContext)`；Restrictions 声明 damageRestrictions，State 直接继承 Restrictions、Contributions。登记保存 Contribution<Restriction<ReceivingContext>>；单节点接口为 `setRestriction(entry)`／`removeRestriction(id)`，由普通登记工厂固定 damageRestrictions 字段生成，返回 Change 交给 Unit.update 提交。普通治疗不设 Restriction 数组，治疗干预由专属 Receiving Hook 表达。
+DEF、RES 和自然回复贡献可为静态修正或 `(battle,self)` 查询函数，每次求值先选有效贡献，再求动态输入。它们不额外维护属性缓存或每 Tick 刷新表。接收限制只保存 Damage Restriction；普通 HP Healing 无独立限制数组，治疗干预使用接收 Hook。公共贡献、Restriction 与 Change 契约见 [Capability](capability.md)。
 
-### 0.1 自然 HP 回复
+## 自然 HP 回复
 
-`recoverySpeed` 表示固定 HP／秒，`recoveryRatio` 表示每秒回复的 MaxHP 比例。两者先分别求值并限制到非负数，比例项再限制到 1；`resolveRecoverySpeed` 返回：
+自然回复量为：
 
 ```text
-有效固定回复速度 + 当前有效 MaxHP × 有效比例回复速度
+(有效固定回复速度 + 当前有效 MaxHP × 有效比例回复速度) / TICKS_PER_SECOND
 ```
 
-Runtime 在 Effect 推进后、Elemental 资源推进前调用 Vitality.advance，再进入 Skill／Action。每次从当前 BattleState 读取宿主、有效 MaxHP 与回复贡献，按总速度除以 TICKS_PER_SECOND 分配恢复量，先偿还负生命债务，余额增加普通 HP，保留小数并限制到当前有效 MaxHP。只对生命周期为 PRESENT 且 HP 大于零的 Unit 推进；空间消失和 healFree 不阻止自然回复，零 HP 不被复活。普通 HP 已满且没有待偿债务时不生成新的状态版本；回复速度为零时直接返回，不顺带清算容量变化。
+Runtime 在 Effect 后、Elemental 资源推进前调用 Vitality.advance，之后才进入 Skill／Action。每 Tick 读取当前贡献与上限，先偿债，余额增加普通 HP。仅 PRESENT 且 HP>0 的 Unit 自然回复；Presence 消失和 healFree 不阻止，零 HP 不被自然复活。零速直接返回，不顺带清算容量；满资源且无债务时保留原状态。
 
-increaseHp 是公开的直接生命恢复操作，接收目标 Ref 与有限非负恢复量，从最新 BattleState 取得目标；目标必须仍为 PRESENT，不要求恢复前 HP 大于零，缺失或已开始离场时抛出 RangeError。它先偿还负生命债务，再增加普通 HP 并按当前上限裁切，返回固定的 HealingApplication；不构造 Healing Request，不派发普通治疗或伤害提交 Hook，也不输出 HEAL。具体 Content 可用它表达生命复原和复活中的恢复，调用方自行决定恢复时点与数量，不直接修改 Vitality State。
+逐 Tick 小数回复是明确的项目选择，区别于[原生每次增加 1 HP 的脉冲计时器](../research/cases/29-hp-and-ep-healing-settlement.md#自然-hp-回复的完整普通路径)，不保存脉冲进度，允许启停或变速时的脉冲细节不同。
 
-自然回复与 commitHealing 共用 increaseHp。自然回复保留自身的存活与零速门控，普通治疗保留 Calculate／Apply 的接收资格与 Hook；直接恢复不因此继承这些门控。资源均未变化时保留原 BattleState，不提供额外的 HP 满值通知。
+increaseHp 是公开直接恢复：目标必须仍为 PRESENT，缺失或 LEAVING 抛出 RangeError；恢复前 HP 可为零，恢复量必须有限非负。它从最新 Health 先偿债再增 HP，按当前容量裁切并返回固定恢复报告；不构造 Healing Request、不经过普通治疗或伤害提交 Hook、不输出 HEAL。生命复原、复活恢复及 HP 同步由 Content 选择合适的直接恢复或 Damage，不提供任意 HP 赋值接口。
 
-固定与比例属性、存活门控和不参与普通治疗的依据见[自然回复调查](../research/cases/29-hp-and-ep-healing-settlement.md#自然-hp-回复的完整普通路径)。**逐 Tick 小数回复是项目选择**：不采用原生每次增加 1 HP 的脉冲计时器，不保存脉冲进度；启停或变速时与原生脉冲的时间细节允许不同。
+普通 Healing 的提交与自然回复共用 increaseHp，但前者保留 [Resource](resource.md) 的完整接收与存活门控，后者保留自己的存活与零速门控；直接恢复不自动继承这些前提。
 
-### 0.2 伤害写入前后
+## 伤害写入前后
 
-Vitality.commitDamage 先按当前 Health 分配本笔伤害，再派发 damageCommitting，接续待提交的 Health 与 BattleState。普通伤害与生命流失共用这条路径；治疗、自然回复、初始化和 MaxHP Change 不派发伤害提交 Hook。两个键均定义于 `vitality/hook.ts`，登记于 Unit.hooks：
+所有 HP Nature 共用同一提交。Vitality 先按当前 Health 和 received.amount 分配伤害，damageCommitting 接续待写入的绝对 Health；写入并固定报告后，damageCommitted 接续 void。两者只服务伤害提交，治疗、自然回复、初始化与 MaxHP Change 不派发。
 
-```typescript
-interface DamageCommittingContext extends HpDamage.Context {
-    readonly previous: Health;
-}
-
-type DamageCommittingHook = Hook<DamageCommittingContext, Health>;
-
-interface DamageCommittedContext extends HpDamage.Context {
-    readonly application: DamageApplication;
-}
-
-type DamageCommittedHook = Hook<DamageCommittedContext, void>;
-
-const damageCommitting: Key<DamageCommittingHook, Unit & Vitality>;
-const damageCommitted: Key<DamageCommittedHook, Unit & Vitality>;
-```
-
-DamageCommittingContext.previous 固定进入提交时的完整 Health，request 沿用本笔请求。工作值是本次待写入的绝对 Health，保护程序可以共同调整普通 HP 与债务；它不改变 Receiving Pending、received 或取消原因，FIXED 接收量也正常进入这一生命干预。无负生命时，100 HP 接收 150 伤害的候选仍可包含 hp=-50，不先截零。不死等保护按所需语义返回调整后的两项资源，不能只保留正 HP 却忽略耗尽的债务。
-
-两个 Hook 按 priority 降序执行，同优先级保持登记顺序，候选固定、登记实时读取。它们属于 Vitality 的完整提交，不自动继承 Apply 的 exclude、ignore 或 forbidden。damageCommitting 返回后从最新 BattleState 重新读取宿主、生命状态和有效容量；目标已离场、结束中或生命已归零时返回 null，保留已经完成的回调业务，不派发 damageCommitted。仍可写入时，对接续的 Health 完成范围处理，只更新最新 Unit 的 Health，不重建旧状态，也不把工作值自动改为对回调后生命再加减一次。
-
-Application.before 在实际写入前取得，after 是本笔最终提交的 Health。报告固定后同步派发 damageCommitted，再返回 Battle 执行 UI Event、targetApplied、sourceApplied 和死亡确认。damageCommitted 接续 void，invoke 通过 Result<void> 接续状态；成功包括零实际变化，提交失败不派发。后继更改 MaxHP、恢复生命或结束宿主，都不会改写原报告、把成功改成失败，或被旧候选覆盖。
-
-号角、斯卡蒂模组等保护的本次成功事实由具体 Effect 持有，在 damageCommitted 按内容顺序更替效果、修改 MaxHP 和恢复；Core 不保存成功者 Effect，也不增加统一的保护竞争状态。普通伤后响应仍使用 Applied。独立嵌套提交同一宿主生命时，由内容明确接续候选，公共提交不自动合并变化量。
-
-### 0.3 负生命与资源分配
-
-Vitality State 只通过 health 持有普通 HP 与非负债务，不继承 Health，也不另存顶层 hp。maxMinusHpRatio 是运行时容量配置；resolveMaxMinusHp 返回当前有效 MaxHP 与该比例的乘积。setMaxMinusHpRatio 在构造 Change 时校验有限非负比例，只设置配置，不立即清债、调整生命或发起死亡。容量为零时不参与债务分配，已有债务不因设置操作自动丢失。比例降低后允许暂时保留超过新容量的旧债务，后续资源分配再按有效容量限幅。
-
-负生命分配由 Vitality 的纯函数统一完成，依据见[案例11](../research/cases/11-damage-apply-and-hp-application.md#1-常规-hp额外生命与负生命分别保存)：
-
-- 伤害与 LOSS 先计算原始拟写 HP。启用负生命且拟写值不大于零时，旧普通 HP 大于 1 则债务为本次损失减旧 HP；旧普通 HP 不大于 1 则把本次损失累加到旧债务。不能先将拟写值截到零，也不能统一成每击只累加“超过 HP−1”的部分。
-- 容量未耗尽时保留普通生命，债务耗尽容量时形成 HP 归零；damageCommitting 可共同调整两者。最终死亡仍由完整 Damage 在提交后继和两侧 Applied 之后确认，不建立负生命专用离场流程。
-- Healing 与自然回复先偿还债务，余额增加普通 HP；MaxHP 比例变化产生的正向 HP 变化也参与偿债。MaxHP 的容量变化、局部比例同步与 Settlement 遵守第 0 节的 Change 契约，不伪装成治疗。
-
-容量降低后，恢复分配即使先偿还部分债务，剩余债务仍可能达到新容量并使 HP 归零。治疗与正数自然回复共用的恢复写入处在此时请求正常 DEATH，返回已经固定的资源报告；不把这项资源后继扩展为 Healing 的一般死亡扫描。零速自然回复不进入写入处。这个边界来自当前容量配置与统一分配契约，不作为新增的原生角色使用例。
-
-非致命由 Content 组合 Effect 与 Hook，不新增 Damage Request 字段或枚举。嵯峨按来源或具体 Request 限定保护，重伤在成功应用后另行处理，明确处决是独立业务。具体非致命、不死、免死与形态转换内容尚未接入；资源分配和提交 Hook 的存在不表示它们已完整实现。
-
-提交报告由 Vitality 定义，资源业务的 Application 直接引用：
-
-```typescript
-interface DamageApplication {
-    readonly before: Health;
-    readonly after: Health;
-    readonly hpLoss: number;
-    readonly minusHpGain: number;
-}
-
-interface HealingApplication {
-    readonly before: Health;
-    readonly after: Health;
-    readonly hpGain: number;
-    readonly minusHpLoss: number;
-    readonly overflow: number;
-}
-```
-
-分项变化量分别取非负的普通 HP／债务差值；Healing.overflow 为 `max(0, received.amount - minusHpLoss - hpGain)`。报告在本笔写入时固定，不改变 received，不从后继回调后的生命倒算。DAMAGE／HEAL 的 UI amount 继续只使用 hpLoss／hpGain，不把债务变化合并进现有表现。
-
-Core 不增加 es、maxEsRatio 或 ES 中转流程。屏障等独立吸收额度由 Effect 私有状态和 Hook 表达，过量治疗转屏障的内容可读取 overflow，在 Applied 中处理自身的转换与消费顺序；这些具体内容尚未接入，不因新增报告就宣称已覆盖医生、休谟斯等全部组合。原生资料见[案例29](../research/cases/29-hp-and-ep-healing-settlement.md#7-溢出治疗es与屏障的真实交接)。
-
-Content／Effect 负责启用、配置负生命，以及斩业星熊的“我执”、禁疗、延迟自回和专属后继，不另存一份债务。生命复原、直接 HP 设置和同实例复活仍有各自未接入的业务语义。
-
-## 1. Calculate 与 Apply 的语义边界
-
-HP Damage、EP Damage、HP Healing 与 EP Healing 共同采用两阶段边界：Calculate 表示输出计算，Apply 表示目标接收。两阶段均显式接续 BattleState，允许 Hook 参与；这是 ArkBattle 的明确设计选择，不以复刻原生 Hook 时序为目标。下文具体接口描述普通 HP 伤害与治疗，EP 接口见 [Elemental](elemental.md)。
-
-| 阶段 | 职责 |
-| --- | --- |
-| Calculate：输出计算 | 来源尝试产生一笔伤害或治疗；执行来源与目标的公式修正，读取防御、抗性等属性，计算并修正输出，返回 Calculated 及对应 BattleState。 |
-| Apply：目标接收 | 目标尝试接收选定的输出；执行目标应用前程序、接收资格及有序伤判、资源提交、应用后通知与后继业务。接收阶段仍可修改或取消本笔输出。 |
-
-Calculate 不提交本笔输出的资源变化，也不派发本笔输出的受击或受治疗响应。计算 Hook 可以消费资源、推进 RNG 或发起独立的伤害、治疗、Effect 与生命周期操作；嵌套结算正常执行自己的 Apply，并进入返回状态。目标参与公式修正不等于目标已经受击。
-
-Calculate 成功不意味着目标受击；Apply 被调用也不意味着一定发生资源变化。Apply 从传入的最新 BattleState 读取对象并确认当前资格，不因计算成功跳过接收判断。
-
-四种业务统一区分三种量：Calculate 最终形成的计算输出量、Receiving 后的接收量，以及 Capability 提交后的实际变化量。**零计算输出在 Apply 入口返回 REJECTED，不进入本笔接收或 Applied；Calculate 已完成的状态仍保留。零实际变化允许成功返回 APPLIED。** 例如正数治疗作用于满血目标，仍正常接收并通知，报告中的实际恢复量为零；不能按实际变化量倒推是否发生了接收。接收量归零与明确取消也分别处理，取消仍按取消结果结算。
-
-Formula Hook 从原始 Parameters 开始接续，不预先改写 HP 治疗的 power，也不为 EP 的负数 power 单独抛异常。各领域保留自己的基础公式；全部 Output Hook 执行后，四种 Calculate 均以 `Math.max(0, output)` 形成 Calculated.amount。因此负输出变为零，并由 Apply 拒绝，不会倒转资源增减方向；计算期间已经完成的业务仍保留。原生负数 Modifier 在提交时裁零的处理见[治疗调查](../research/cases/29-hp-and-ep-healing-settlement.md#负数基础求值modifier-数值与提交量)，项目不将这项约束推迟到 Commit。
-
-内容程序按机制语义归属，不按原生事件编号逐项映射：
-
-| 内容程序 | 所属阶段 |
-| --- | --- |
-| 修改公式输入或最终输出 | Calculate |
-| 目标因即将受到伤害或治疗而响应 | Apply |
-| 闪避、护盾、反伤、受击回复 SP | Apply |
-| 成功造成伤害后的附加 EP | Apply 的来源后置 Hook，发起独立 EP 结算 |
-| 资源变化、爆发与死亡 | Apply 中的对应资源提交及后继业务，具体职责由领域契约规定 |
-
-ArkBattle 先完成 Calculate，再开始 Apply；具体机制与原生时序之间的玩法差异由 Content 的采样和流程组合处理。原生目标前置与来源输出的时序依据见[案例 28 第 6 节](../research/cases/28-damage-hooks-and-event-granularity.md#6-目标前置与来源输出能否交换)。
-
-Content 负责具体机制的采样、特殊公式和流程组合；公共 API 提供通用计算与实行。请求是静态数据，不携带延迟计算回调；Hook 通过工作值修改本次计算或接收结果。
-
-每次 Hook 派发仍遵守独立固定候选 ID、逐项读取最新登记与 accepts 的契约。同步回调返回后，需要继续依赖对象当前状态时，从返回的 BattleState 重新查询并确认生命周期；明确采样的数值继续使用。
-
-### 1.1 Calculate
-
-```text
-公式参数 Hook
-    ↓
-读取目标当前防御属性，按当前伤害类型计算基础公式
-    ↓
-输出伤害 Hook
-    ↓
-最终输出截为非负数
-    ↓
-Calculated
-```
-
-公式参数 Hook 依次包含来源和目标的干预。随后读取目标当前 DEF／RES 或元素伤害抗性，按当前类型计算基础公式，再执行来源的输出修正。Calculated 包含整个 Calculate 的结果。
-
-元素 HP 伤害读取 Elemental 的 damageResistance，有效范围为 0–100；目标没有 Elemental 时按 0 计算。基础公式为 `max(power × 0.05, power × (1 - damageResistance / 100))`，其中 power 是截为非负数的攻击基本数值。5% 保底属于公式阶段，后续 Output 与 Receiving 仍可使伤害更低或取消；EP 损伤使用独立抗性和公式，见 [Elemental](elemental.md#3-查询结算与资源提交)。
-
-Calculate 不实行本次伤害的 HP 变化。Formula／Output Hook 可以消费资源、推进 RNG 或发起独立 Operation，其状态逐项接续。闪避、护盾、屏障、接收减伤、同步反伤、受击治疗及死亡由 Apply 处理；反伤可以在外层伤害扣血之前发生。
-
-防御属性在公式节点采样，之后的属性变化不会使 Apply 自动重算。Apply 重新读取生命周期、HP、Effect 和接收规则。
-
-### 1.2 请求与计算参数
-
-Request 携带发起时已经确定、接收方无法自行推导的必要事实，以及初始 Parameters。请求描述本次伤害，不提供配置内部执行步骤的开关。
-
-来源和目标使用 Typed Ref。
-
-```typescript
-interface AttackParameters {
-    readonly power: number;
-    readonly multiplier: number;
-    readonly addition: number;
-}
-
-interface Penetration {
-    readonly fixed: number;
-    readonly proportional: number;
-}
-
-type DamageType = "PHYSICAL" | "ARTS" | "TRUE" | "ELEMENTAL";
-
-type Nature = "DAMAGE" | "ENVIRONMENT" | "LOSS";
-
-type AttackType = "NONE" | "NORMAL" | "SPLASH" | "BUFF" | "ADDITION";
-type ApplyWay = "NONE" | "MELEE" | "RANGED" | "ALL";
-
-type Parameters =
-    | {
-          readonly type: "PHYSICAL" | "ARTS";
-          readonly attack: AttackParameters;
-          readonly penetration: Penetration;
-      }
-    | {
-          readonly type: "TRUE" | "ELEMENTAL";
-          readonly attack: AttackParameters;
-      };
-
-interface Request {
-    readonly attackType: AttackType;
-    readonly applyWay: ApplyWay;
-    readonly nature: Nature;
-    readonly hitRecovery: boolean;
-    readonly source: Ref<Unit> | null;
-    readonly killer: Ref<Unit> | null;
-    readonly target: Ref<Unit & Vitality>;
-    readonly parameters: Parameters;
-}
-
-interface Calculated {
-    readonly type: DamageType;
-    readonly amount: number;
-}
-```
-
-AttackParameters 表示用于本次计算的数值，不要求 power 一定来自来源的 ATK。基本数值为 `power * multiplier + addition`；具体伤害类型再决定防御公式。
-
-HP Damage.Request 的 source 与 killer 分别表示伤害来源和本笔确认死亡时使用的击杀者。killer 必填，由调用者按内容语义显式提供；普通攻击通常两者相同，无伤害来源的输出也可指定已知击杀者，无归属则明确传 null。Core 不从 source、当前仍在场的对象或 Effect／Projectile 来源关系猜测 killer。它不参与公式、接收资格或来源 Hook 选择，也不要求该 Ref 当前仍可解析。显式 killer 是项目选择，原生来源与死亡上下文的区别见[归属调查](../research/cases/39-death-attribution-and-attribute-ranges.md)。EP Damage 与 Healing 不增加该字段。
-
-HP／EP Damage 共用 [resource/damage.ts](../../src/core/battle/resource/damage.ts) 的 AttackType 与 ApplyWay，并从各自 Damage 入口重导出。Request 顶层必填 attackType／applyWay，表示本笔输出的攻击类别与施加途径；它们独立于数学伤害类型、三种 Nature 和 HIT 回复许可，不进入 Parameters 或 Calculated。Content 在构造请求时显式提供；Hook 与 Restriction 通过固定 request 读取，Core 不按这些类别新增阶段、公式或接收分支，也不从来源、距离、当前技能或来源仍在场与否推导分类。
-
-两项均为单值字符串联合，NONE 与 ALL 保留为合法单值，不使用数组或组合 mask。单值是项目选择：现有[伤害分类调查](../research/cases/38-damage-classification-and-permissions.md)未找到要求组合值的实际正例，但原生的 mask 结构与消费者仍存在，不能据此断言原生不支持组合。Hook exclude、Restriction ignore 与取消原因 forbidden 继续分别控制响应、资格与取消尝试，不由 attackType／applyWay 自动生成。Healing 不增加这两个字段。
-
-`nature` 区分 DAMAGE、ENVIRONMENT 和 LOSS，与 parameters.type 的数学类型正交，由调用者按实际机制显式提供；不由自伤、周期、地形来源或 source=null 推断。ENVIRONMENT 标签本身不跳过 Hook、不固定输出量，也不改变伤害公式。
-
-`source` 决定来源身份及其 Hook 查找，`hitRecovery` 单独提供受击类 SP 回复许可，`Options.exclude` 只排除本次明确指定的 Hook，三者不由 ENVIRONMENT 自动产生。HIT 要求 nature!==LOSS 且 hitRecovery=true；LOSS 不论许可均不产生 HIT，例如拟态机械射线同时具有 skip 与未禁用 SP 的原生标记，仍因流失不进入普通受击回复。普通攻击通常提供 true；活性源石为 ENVIRONMENT，敌方深水与标准元素爆发为 DAMAGE，这三类当前 HP 输出均提供 false。来源分类与字段依据见[分类与权限调查](../research/cases/38-damage-classification-and-permissions.md)。
-
-三种 Nature 共用来源 Formula、目标 Formula、公式和 Output，以及 Apply 的 BeforeReceive、Receiving、BeforeCommit 和两侧 Applied。标签不配置阶段派发开关，也不建立额外管线或 Hook 集合；机制通过 Restriction／Hook 资格表达适用范围。普通护盾、闪避、减伤及受伤天赋可按 nature!==LOSS 响应 DAMAGE 与 ENVIRONMENT，例如泥岩的既有受伤程序；具体环境免疫可单独检查 ENVIRONMENT，明确作用于流失的程序可在同一 Hook 响应 LOSS。通用 Applied 仍记录三类成功提交，最后按最新 HP 确认死亡。
-
-无敌和 Presence 的 HP 接收 Restriction 拒绝 DAMAGE 与 ENVIRONMENT，仅允许 LOSS；它们对 EP 的规则保持各自既有语义。基本 Unit 生命周期与 HP 资格仍统一检查，LOSS 不绕过真实离场。未来特殊生命保护仍属于资源提交层，不因流失跳过。实际内容依据及已接受的原生差异见[流失交互研究](../research/cases/11-damage-apply-and-hp-application.md#7-统一管线的实际内容对照2026-11-13)。自然回复不进入 Damage，也不通过构造 LOSS 请求表达。
-
-物理／法术参数只携带当前类型所使用的一套穿透。类型转换必须同时保证新类型参数的业务含义正确；类型系统不负责证明采样来源与时点。跨类型计算需要的历史参数由发起该业务的 Content 保存，例如双分支各自取得完整的物理／法术穿透快照；普通 Request 不因此固定携带两套穿透，也不在来源失效后以实时查询冒充历史采样。
-
-### 1.3 固定 Request 与当前工作值
-
-Calculate 的参数派发使用三个通道：
-
-| 通道 | 本阶段含义 |
-| --- | --- |
-| 固定 Context | `{ request }`，request.parameters 是初始参数。 |
-| 动态 BattleState | 前一个 Hook 返回的最新战斗状态。 |
-| 可接续 current | 前一个 Hook 返回的当前 Parameters。 |
-
-四种结算的 Request 统一通过 parameters 携带初始 Parameters，不必额外复制一份请求。Hook 通过返回新工作值修改参数，不能改写原始请求的历史含义。
-
-例如 Request 初始类型为 PHYSICAL，Hook 将 current 转为 ARTS 后，后续依赖实际类型的筛选与公式读取 current.type；输出阶段使用公式阶段确定的类型，Apply 使用 Calculated.type。不能重新读取 Request 的初始类型来代表后续阶段的实际类型。
-
-### 1.4 跨阶段载荷
-
-Calculated 只保存最终伤害类型与计算后数值；来源、目标和初始事实通过单独传入的 Request 保留。不保存目标当前 HP、DEF／RES 或 Effect State 的快照。已计算的数值保留其采样意义；后续业务需要当前对象状态时，从最新 BattleState 查询。
-
-跨阶段仅传递 Calculate 已确定、Apply 实际需要的事实。具体业务需要跨越 Projectile 或 Calculate／Apply 保存的性质时，必须明确采样时点、作用范围与输入通道；不能以接收时查询来源代替历史采样，也不能仅以“由 Hook 实现”代替数据传递。
-
-### 1.5 操作与结果
-
-```typescript
-calculateDamage(battle, request, options?: hooks.Options): Result<Calculated | undefined>;
-applyDamage(request, calculated: Result<Calculated | undefined>, options?: ApplyOptions): Result<Outcome>;
-
-type Outcome =
-    | { readonly type: "REJECTED" }
-    | { readonly type: "CANCELLED"; readonly received: Pending }
-    | { readonly type: "UNAVAILABLE"; readonly received: Pending }
-    | {
-          readonly type: "APPLIED";
-          readonly received: Pending;
-          readonly application: Application;
-          readonly killed: boolean;
-      };
-```
-
-Apply 接续计算返回的 state；调用间若有其他状态转换，调用者须把最新 state 接回计算 Result。计算失败返回 undefined 时保留已经完成的状态前缀，Apply 形成 REJECTED 并通知仍符合资格的 Completed 观察者。
-
-Parameters Hook 使用固定 Context 中的 Request 和当前 Parameters；HP Damage 的 Output 使用固定 `{ request, type }` 和可修改的 number，HP Healing 的 Output 使用其 Context。type 是公式阶段已确定的类型，输出 Hook 不重新分类或重算防御。
-
-AppliedContext 保留 request、calculated、Receiving 最终 received 和本次 application，不重复携带 Outcome；Outcome 的 APPLIED 分支引用同一个 Application 类型。CompletedContext 保留 request、可能 undefined 的 calculated 和同一份 outcome。application 的 before／after 与资源变化量在实际写入处确定，不受之后治疗、嵌套伤害或离场影响。
-
-HP Damage 的 APPLIED 另携带本笔 killed，表示本笔在两侧 Applied 后确认目标死亡并发起 DEATH。它属于最终 Outcome，不加入资源提交的 Application 或提前执行的 AppliedContext；Completed 观察同一份已确定结果。单笔归属、内容聚合及必要回归见第 3.4 节。
-
-Formula 分来源与目标两个节点，Output 属于来源，BeforeReceive／Receiving 属于目标，BeforeCommit 属于来源。Applied 分别通过 targetApplied 与 sourceApplied 键依次通知目标和来源，同一 Unit 承担两个角色时也分别执行各自登记；Completed 仍按既定终结通知契约，同一宿主不重复通知。每个节点、每个宿主的派发独立固定候选 ID，目标响应中新登记的来源 Hook 可进入随后独立的来源派发。登记、优先级和生命周期见第 1.7 节。
-
-DAMAGE 事件只携带飘字需要的目标、伤害类型、实际 HP 损失和发生 Tick。取消保留零值表现；接收量、取消原因和提交后的 HP 属于 Outcome／Application，不复制到 Event。零数值输入在 Apply 入口 REJECTED，不进入普通受击回复；无敌等入口 Restriction 拒绝也不进入 Receiving。取消不停止后继 Receiving Hook，次数盾自行筛除取消或非正数值；反伤可继续。
-
-### 1.6 结算 Hook 类型
-
-HP Damage、EP Damage、HP Healing 与 EP Healing 各自定义 Request、Context、Parameters、Calculated、Application 与阶段 Hook，不建立四种业务的联合 Request／Context。共用的接收工作值协议位于 [resource/receiving.ts](../../src/core/battle/resource/receiving.ts)，由三个具有专属 Receiving 的业务绑定各自 Reason 和 Context；EP Healing 保留自己的简单 Pending。按 Unit 读取最新登记与资格的实现位于 [resource/hook.ts](../../src/core/battle/resource/hook.ts)，四种业务共用同一派发器；priority 来自公共 Hook，排序统一由公共 dispatch 执行。某内容同时响应多种结算时，分别登记精确 Hook，再调用共享的内容程序。以下使用 HP Damage 子域内的局部类型名。
-
-```typescript
-interface Context {
-    readonly request: Request;
-}
-
-interface OutputContext extends Context {
-    readonly type: DamageType;
-}
-
-interface ReceivingContext extends Context {
-    readonly calculated: Calculated;
-    readonly forbidden: ReadonlySet<Reason>;
-}
-
-interface CommitContext extends ReceivingContext {
-    readonly received: Pending;
-}
-
-type Application = vitality.DamageApplication;
-
-interface AppliedContext extends CommitContext {
-    readonly application: Application;
-}
-
-type SourceFormulaHook = Hook<Context, Parameters>;
-type TargetFormulaHook = Hook<Context, Parameters>;
-type OutputHook = Hook<OutputContext, number>;
-type BeforeCommitHook = Hook<CommitContext, void>;
-type AppliedHook = Hook<AppliedContext, void>;
-
-type TargetKilledContext = Extract<Departure, { readonly reason: "DEATH" }>;
-type TargetKilledHook = Hook<TargetKilledContext, void>;
-const targetKilled: Key<TargetKilledHook, Unit>;
-```
-
-Request 始终表示初始事实；公式参数、输出量和接收工作值只经对应 Hook 的 current 接续。OutputContext.type 是公式确定的类型，不重新读取 Request 的初始类型。BeforeReceive 与 Receiving 使用相同的 ReceivingHook 类型，接续 BattleState 和 Pending；BeforeCommit 与 Applied 只接续 BattleState 业务；Applied 的报告在提交时确定，只对成功提交派发，零实际变化仍可成功。其余业务定义自己的 Application，不重复声明成功 Outcome 的另一份报告。
-
-基础 Context 只保存 request，目标从 request.target 取得；派生 Context 保留各阶段独立的计算、接收和提交事实。各业务 Hook 键由相应子域导出，均登记在 Unit.hooks。beforeReceive 与 receiving 使用不同 Key，前者位于接收准入前，后者位于准入后，各自独立固定候选。HP Damage、HP Healing 与 EP Damage 均提供这两个键，关联 Vitality／Elemental 宿主要求。登记统一使用 unit.setHook／removeHook。
-
-HP Damage 另提供击杀者本地的 targetKilled。Context 直接使用死亡 Departure，包含受害者 unit、reason:"DEATH" 与 killer，不携带本笔 Request、Calculated 或 Application。它表示已确认的死亡事实，仍登记的 LEAVING 击杀者可以响应；无 killer 或击杀者已注销时跳过。每项仍读取最新登记，Effect 自身的生效与参与资格由其 Hook 判断。
-
-EP Healing 只提供 beforeReceive，不增加准入后的专属 receiving 键。其 ReceivingHook 是 Hook<ReceivingContext, Pending>，Pending.cancellation 固定为 null，不导出取消构造器或 CANCELLED 结果。普通 HIT 回复使用 HP Damage.receiving 的高优先级登记，不设额外开始通知。
-
-#### 接收工作值、数值固定与取消
-
-接收协议只在 [resource/receiving.ts](../../src/core/battle/resource/receiving.ts) 实现一次，包含三态 Pending、合法后继 Next、ReceivingHook 和 fix／cancel。各业务保留自己的原因集合和接收 Context，以下以 HP Damage 的绑定为例：
-
-```typescript
-import * as receiving from "../../receiving.js";
-
-type Reason =
-    | "UNSPECIFIED"
-    | "UNHURTABLE"
-    | "MISS"
-    | "BLOCKED"
-    | "HIT_FAILED"
-    | "INTERRUPT";
-
-type Pending<
-    R extends Reason = Reason,
-    T extends receiving.State = receiving.State,
-> = receiving.Pending<R, T>;
-
-type Next<T extends receiving.State, R extends Reason> =
-    receiving.Next<T, R, Reason>;
-
-const fix: receiving.Fix<Reason> = receiving.fix;
-const cancel: receiving.Cancel<Reason> = receiving.cancel;
-
-type ReceivingHook = receiving.ReceivingHook<ReceivingContext, Reason>;
-```
-
-共用 Next 的第三参数是本业务允许的完整原因集合，第二参数 R 是当前已有原因。领域绑定完整集合，允许首次取消选择本域原因，同时保持已有取消的精确原因；不把三个业务的原因合成一个公共枚举。
-
-HP Damage、EP Damage 与 HP Healing 使用 NORMAL／FIXED／CANCELLED 三种 Pending，初始为 NORMAL。NORMAL 和 FIXED 保存 amount；CANCELLED 保存取消时的 amount 与 reason，不再另设可空 cancellation。EP Healing 没有专属 Receiving，沿用自身的 Pending，不机械添加三态。
-
-| 当前状态 | 后继状态 | 数值约定 |
+| 扩展点 | 固定事实 | 工作值与时点 |
 | --- | --- | --- |
-| NORMAL | NORMAL、FIXED、CANCELLED | 可以修改 amount，或将当前值固定、取消。 |
-| FIXED | FIXED、CANCELLED | 保留 amount，不得退回 NORMAL。 |
-| CANCELLED | CANCELLED | 保留取消时的 amount 与原 reason，不得恢复。 |
+| damageCommitting | request、入口 previous:Health | 待写 Health；尚未截到最终资源范围 |
+| damageCommitted | request、固定 application | void；资源已写入，普通 Applied 尚未执行 |
 
-固定与取消都不终止后续 Receiving Hook 派发，Hook 仍可按自身资格执行独立业务。接收量归零不等于取消。Receiving 结束时若为 CANCELLED，返回取消结果，不执行 BeforeCommit、资源提交或 Applied；先前完成的业务仍接续，取消工作值作为快照保留在结果中。
+例如没有债务时，100 HP 接收 150 的候选 hp 为 −50；保护程序可以同时调整普通 HP 与债务。它不改变 received 或取消原因，FIXED 接收量也进入此干预。内部两个键不继承 Apply 的 exclude、ignore 或 forbidden；排序与同步候选遵守 [Hook](hook.md)。
 
-Receiving 的各 Hook 按顺序接续原工作值，不在每项之后截零；全部 Hook 结束后，所属能力的 receive 操作保留 CANCELLED 快照，对仍可提交的工作值以 `Math.max(0, amount)` 形成最终 Pending。BeforeCommit、Commit、Applied 与 Outcome 使用这同一份非负接收量。负工作值不会反转损伤或治疗方向；最终接收量归零仍可正常提交，不等同于零计算输出的入口拒绝。
+damageCommitting 返回后，重新读取当前宿主、生命与容量。目标缺失、LEAVING 或已归零时返回 null，由 Apply 形成 UNAVAILABLE，回调已完成的业务保留，不发本笔成功 Event／Applied。仍可写时只修改最新 Unit 的 Health；候选保持绝对值含义，不自动对回调后的生命再加减一次。
 
-ReceivingHook 的泛型返回类型约束上述单向状态转换及取消原因；amount 始终为 number，不以类型证明数值相等。固定和取消后的数值保留由 Hook 契约保证，内核信任内容实现，不增加比较、纠正或其他运行时防御。特殊 Hook 仍可交给现有派发器。
+Application.before 在实际写点取得，after 为最终提交值。成功包括零实际变化，均同步执行 damageCommitted；失败不执行。后继修改 MaxHP、恢复生命或结束宿主不会重写原报告、将成功改成失败或被旧候选覆盖。独立嵌套修改同一生命时，内容自行接续必要候选，公共提交不合并变化量。
 
-领域绑定共用的纯工作值构造函数 fix 与 cancel。fix 将 NORMAL 固定，其他状态原样保留。cancel 只有 `cancel(current, reason, forbidden)` 一个签名，第三参数必须显式提供本业务原因的 ReadonlySet；Hook 使用 `context.forbidden`。已有取消原样返回；未取消且 reason 被禁止时也返回原 current，保留对象、状态和数值；其余情况产生本次 CANCELLED。
+## 负生命与资源分配
 
-```typescript
-type Cancel<A extends string> = <
-    T extends receiving.State,
-    R extends A,
-    N extends A,
->(
-    current: receiving.Pending<R, T>,
-    reason: N,
-    forbidden: ReadonlySet<A>,
-) => receiving.Pending<R, T> | CancelResult<T, R, N>;
-```
+负生命是非负债务，不是允许普通 hp 持续为负。setMaxMinusHpRatio 只设置有限非负比例，不立即清债、改 HP 或判死；降低比例可暂时留下超过新容量的旧债务，后续资源分配再限幅。容量为零时不参与债务累计或偿还，已有债务不会因关闭配置自动丢失。
 
-cancel 返回原状态或取消结果，不保证取消成功；调用方按 type 收窄。已知 CANCELLED 仍保留原原因，发生新取消时保留 N 的字面量。fix 对已知 NORMAL／FIXED 仅返回 FIXED，对 CANCELLED 保留原原因。ReceivingHook 的 Next 已包含这些合法后继，状态转换断言集中在 resource/receiving.ts；Content 不需要断言或操作 Next。普通改量只在 NORMAL 分支通过 `{ ...current, amount: nextAmount }` 返回。
-
-HP Damage、EP Damage 与 HP Healing 的 ApplyOptions 均可提供 `forbidden?: ReadonlySet<本业务Reason>`。Apply 建立一次 ReceivingContext：`forbidden: options?.forbidden ?? new Set<Reason>()`，本笔各 Hook 共享这份只读事实，CommitContext 与 AppliedContext 沿继承关系保留同一集合。不把它放进 Pending、Request 或 Calculated；Calculate 不接收该选项，嵌套业务独立构造自己的 Context。EP Healing 没有专属 Receiving 或取消原因，不添加 forbidden。
-
-共用 Pending 以完整判别联合与 `{ type: T }` 相交，按 T 收窄整个联合；已知 CANCELLED 时可直接读取精确 reason。fix／cancel 从这层外部状态约束推导 T，并分别保留原原因 R 或本次原因 N。Next 由保留当前值、固定及取消的实际结果组成；ReceivingHook 量化状态 T 和原因 R，不直接量化会使泛型 spread 掩盖字段改写的整对象 P。对应 typed Key 保留完整 ReceivingHook，通过 unit.setHook 登记，不要求 Content 添加类型断言。
-
-Reason 是业务原因的有限集合，不接受内容自造的字符串；机制身份仍由所属 Effect／Hook 保存，不使用干员名作为原因。
-
-| 业务 | 原因集合 |
-| --- | --- |
-| HP Damage | UNSPECIFIED、UNHURTABLE、MISS、BLOCKED、HIT_FAILED、INTERRUPT |
-| EP Damage | UNSPECIFIED、UNHURTABLE、INTERRUPT |
-| HP Healing | UNSPECIFIED |
-
-UNSPECIFIED 表示取消但未指定一种受击结果；它不表示未取消。MISS 是目标成功闪避，HIT_FAILED 是来源本次攻击的未命中事实，不能互换。BLOCKED 表示抵挡，不区分提供者或是否显示数值。INTERRUPT 表示内容显式终止本次应用，不恢复原生特定时点的事件早退顺序；Calculate／Apply 的项目边界、取消后继续派发及已有入口 Restriction 政策保持不变。
-
-这些集合依据[取消原因的实际消费者](../research/cases/38-damage-classification-and-permissions.md#10-取消原因的实际生产与消费)确定。原生两种抵挡的显示差异属于表现输出，不作为两个业务原因；本次未增加该表现输出。MINUS_HEALTH 未定位实际生产路径，不纳入当前集合，也不标记为原生废弃。EP 与治疗不机械复制 HP 原因；原生 HEAL_FREE 的取消仍不覆盖项目仅限制 Targeting 的选择。
-
-上述固定状态只用于接收工作值；Formula 与 Output 的工作值分别为对应业务的 Parameters 和 number。
-
-### 1.7 Hook 登记、顺序与生命周期
-
-使用[类型化键与 Unit 本地 Hooks 集合](hook.md)。HP Damage、EP Damage、HP Healing、EP Healing 分别导出自己的 sourceFormula、targetFormula、output、beforeReceive、beforeCommit、targetApplied、sourceApplied 等实际需要的精确键，HP Damage 另提供 targetKilled，不通过联合 Context 或中央事件目录描述。
-
-固有登记直接写入 Unit Definition.hooks，在任何 enter 程序之前完成装配。运行时统一使用 `unit.setHook(key, hook)`／`unit.removeHook(key, id)`；`Key<H, Owner>` 保留完整 Hook 类型和最低宿主能力，返回 `Change<Unit & Owner>`，经 Unit.update 发布。生命周期键也允许修改，不另设领域转发入口。priority 继承公共 Hook，缺省为 0；计算、应用及专属接收均按 priority 降序，相同时保留登记顺序。候选采样同时固定 priority，同键同 ID 替换保留存储位置、使用最新程序，但不重排本轮。
-
-HP Damage／Healing Receiving、EP Damage Receiving 与 Elemental 的资源／Burst 通知统一存于宿主 Unit.hooks。接收与通知的类型、时点和资格仍归对应业务，EP Healing 不增加专属 Receiving。
-
-普通 HIT 回复由 Skill 登记在 HP Damage.receiving，约定使用 10000 量级的高优先级；普通伤判通常使用缺省 0 或各自明确的优先级，不增加强制优先级分区。该回复只接受未取消且 amount 大于零、nature!==LOSS、hitRecovery=true 的当前工作值，原样返回 Pending。前置取消或归零不授予 HIT；后续闪避、抵挡不回滚已经完成的回复。同轮新增 ID 不进入本轮，需在准入前完成的程序应使用 beforeReceive。
-
-本地登记随承载 Unit 注销而移除，不建立 BattleState 外置表或单独 Hook Lifetime。临时 Effect 在启停时登记、撤销自己的输出；跨 Unit 安装仍由机制拥有者管理撤销。通用集合不承担派发、接收资格或自动回滚。
-
-### 本次接收限制豁免
-
-HP Damage 与 EP Damage 的 ApplyOptions 扩展公共 Hook Options，并提供本业务的 forbidden 及精确接收限制的 ignore。HP Damage 的本地声明为：
-
-```typescript
-interface ApplyOptions extends hooks.Options {
-    readonly forbidden?: ReadonlySet<Reason>;
-    readonly ignore?: (restriction: vitality.Restriction) => boolean;
-}
-```
-
-EP 的 ignore 接收 Elemental.DamageRestriction。定义对象使用精确的 HP ReceivingContext 或 EP DamageContext；Request、Calculated 与 Pending 不保存本次政策。Calculate 只接受 Hook Options，不检查或继承接收豁免。
-
-Apply 在 BeforeReceive 后、Receiving 后及 BeforeCommit 后均使用同一 ignore 查询最新接收资格：每次先解析当前有效 Contribution，再豁免匹配定义，剩余项按 AND 判断。相同定义的多个登记都可豁免，独立无敌等其它定义仍可拒绝；豁免不恢复竞争落败项，也不能绕过 PRESENT、生命值、Burst 等固有前提。嵌套业务独立选择自己的选项。
-
-Hook exclude 决定本次是否执行响应，Restriction ignore 决定本次是否检查某个许可，Pending.reason 只报告取消事实，三者互不替代。HP Healing 的 ApplyOptions 只在 Hook Options 上增加本业务 forbidden，不增加接收限制或 ignore；EP Healing 保留 Hook Options 与既有 healingRestrictions，不新增单次 ignore 或 forbidden。标准机制通过共享定义对象提供身份，一个 Effect 可登记多个不同限制，Effect Definition 本身不是限制身份。
-
-### 1.8 接收与资源提交接口
-
-Battle 编排四种业务各自的 Calculate／Apply、通用 Hook 与 Outcome；Vitality／Elemental 提供资格查询、专属接收和资源提交。Capability 不执行来源 Formula、Output、通用 BeforeReceive／BeforeCommit／Applied，Battle 不直接写入 HP／EP。接口如下。
-
-| 职责 | Vitality | Elemental |
-| --- | --- | --- |
-| 只读接收资格 | canReceiveDamage、canReceiveHealing | canReceiveDamage、canReceiveHealing |
-| 专属接收 | receiveDamage、receiveHealing | receiveDamage；EP Healing 无专属接收接口 |
-| 资源提交 | commitDamage、commitHealing | commitDamage、commitHealing |
-
-canReceive 只查询当前资格与接收 Restriction，不执行 Hook。它接收相应业务判断资格实际需要的事实，不统一要求完整 ReceivingContext：EP 索敌发生在 Calculate 前，不需要也不能伪造 Calculated。HP 接收规则需要计算后的实际伤害类型时，读取该次计算确定的事实，不以 Request 中的初始类型代替。各业务不为形式一致强制同形输入。
-
-receive 接续当前 BattleState 和 Pending，执行该资源的专属接收阶段；目标由 ReceivingContext.request.target 提供：
-
-```typescript
-// Vitality；Elemental 的损伤接收使用 EpDamage 的精确类型。
-receiveDamage(
-    battle: BattleState,
-    context: HpDamage.ReceivingContext,
-    pending: HpDamage.Pending,
-    options?: hooks.Options,
-): Result<HpDamage.Pending>;
-
-receiveHealing(
-    battle: BattleState,
-    context: HpHealing.ReceivingContext,
-    pending: HpHealing.Pending,
-    options?: hooks.Options,
-): Result<HpHealing.Pending>;
-```
-
-HP Damage、HP Healing 与 EP Damage 的 receive 各执行自己的一轮有序 Receiving，接续 BeforeReceive 返回的 Pending。Vitality 的内部派发接口统一从 Context.request.target 取得目标，不另接收一份目标参数。它们都可能发生同步业务，返回值包含接续后的 BattleState 与 Pending。receive 返回前将未取消的最终接收量截为非负数，Commit 信任该边界建立的约束；取消则保留工作值快照，遵守第 1.6 节的 Pending 契约。
-
-commit 接收对应业务的精确 CommitContext，其中 request、calculated 与 received 提供资源写入、Burst 归因和能力通知所需的事实。两种能力分别提供：
-
-```typescript
-// Vitality
-commitDamage(battle: BattleState, context: HpDamage.CommitContext): Result<DamageApplication | null>;
-commitHealing(battle: BattleState, context: HpHealing.CommitContext): Result<HealingApplication>;
-
-// Elemental
-commitDamage(battle: BattleState, context: EpDamage.CommitContext): Result<DamageApplication>;
-commitHealing(battle: BattleState, context: EpHealing.CommitContext): Result<HealingApplication>;
-```
-
-DamageApplication／HealingApplication 由各自资源能力定义，Battle 的 Application 直接引用同一报告。HP 报告保存 before／after 两份 Health，伤害报告 hpLoss／minusHpGain，治疗报告 hpGain／minusHpLoss／overflow；EP 报告保存本次实际变化及对应 Burst 创建事实，治疗逐型报告，不把数额在四型间分摊。报告在资源写入时确定，之后的嵌套业务不重算它。
-
-共享 CommitContext 表达结算事实，业务控制权归对应资源能力。commit 从最新 BattleState 读取资源，保留 Receiving 与 BeforeCommit 已完成的变化；进入前已经确认资格，内部不重复检查同一组 Restriction；HP 伤害提交的 damageCommitting 返回后按第 0.2 节重查当前目标，无法写入时返回 null，Apply 形成 UNAVAILABLE，不输出本笔成功 Event 或 Applied。该数值扩展点不增加独立的免死竞争或写入接管协议。
-
-Apply 的编排为：
+令旧生命为 h、旧债务为 m、原始拟写 HP 为 q。启用负生命且 q≤0 时，按[原生两分支](../research/cases/11-damage-apply-and-hp-application.md#1-常规-hp额外生命与负生命分别保存)累计：
 
 ```text
-非零计算输出与目标基础资格
-→ 以计算量建立初始 Pending
-→ BeforeReceive 接续 Pending
-→ 最新 canReceive
-→ 专属 receive 接续同一 Pending（该业务具有时）
-→ 确认取消与当前资格
-→ 来源 BeforeCommit
-→ 确认当前资格
-→ 对应 Capability.commit（复用 CommitContext）
-→ targetApplied
-→ sourceApplied
-→ HP Damage 按当前 HP 确认死亡
-→ Outcome
+d = h - q
+h > 1：新债务 = d - h
+h ≤ 1：新债务 = m + d
 ```
 
-BeforeReceive 可以改量、固定、取消并执行同步业务；后续准入查询读取最新状态。项目约定：具有取消协议的业务若在前置阶段已经取消，仍将该工作值交给资格允许的 Receiving，后续 Hook 不得恢复；若准入不成立，则跳过 Receiving，已取消的请求仍返回 CANCELLED，其他请求返回 REJECTED。EP Healing 的 BeforeReceive 只接续自己的简单 Pending，准入通过后将最终 amount 截为非负数。
+容量未耗尽时普通 HP 至少为 1；债务达到容量时形成 HP0。不能先截 q，也不能统一为每击只计算超过 HP−1 的部分。例如容量100时，HP100受150→HP1／债50，再受30→债80。damageCommitting 仍可干预两项资源，最后走普通 HP 死亡确认，不新增负生命离场流程。
 
-只在同步业务可能改变续执行条件的边界重查资格，无回调的连续步骤不追加防御。取消不执行 BeforeCommit、commit 或 Applied；正数计算输出在接收后归零、或实际变化为零，仍可成功提交并派发 Applied。
+正向恢复先抵债，余额再增普通 HP，MaxHP 比例变化的正向部分也适用。例如 HP1／债80恢复100→HP21／债0。最终普通 HP 限制在有效上限内，债务保持非负，启用容量时限制到当前容量；未耗尽债务保留普通生命，满债使 HP0。
 
-HP commit 在写入及 damageCommitted 后返回，Battle 在两侧 Applied 后读取当前目标，仍为 PRESENT 且 HP 不大于零时才请求离场。EP commit 同步完成 EP 写入、必要的 Burst 创建及 Lifetime 登记；Burst 的 onInstall 先发布创建事实并通知 burstStarted，再执行仍有效的该次爆发的一次性业务。安装流程完成后派发实际损失的 damaged 通知，再返回提交报告，供 Battle 依次派发 targetApplied、sourceApplied。零恢复预算仍执行安装业务，随后由通用 Effect 安装流程结束，不启用或推进根实例。EP Healing 的 healed 也由资源操作按实际变化派发；CommitContext 保留其所需的原始请求事实。自然恢复不经过普通 Healing 的 Calculate／Apply。
+容量降低后，正恢复即使偿还部分债务，余额仍可能达到新容量并使 HP0。恢复写点此时以 killer:null 请求正常 DEATH，仍返回原恢复报告；完整 Healing 保持 APPLIED，不改成 UNAVAILABLE，不丢成功 UI 或适用的来源后继。Healing 不另作一般死亡扫描，零速自然回复不进入该写点。这是动态容量合同，不冒充原生角色已启用的内容例子。
 
-## 2. 弱点伤害的项目规则
+## 提交报告与特殊恢复
 
-**本项目采用两个独立计算分支：物理、法术分别执行完整 Calculate，各自派发 Hook，选取较高结果后 Apply 一次。** 这有意区别于 [PRTS 的限定公式项、无额外计算事件的理论比较](https://prts.wiki/w/伤害分类)。
+报告在资源写点固定，before／after 均为 Health：
 
-```text
-同一个起始 BattleState
-    ├── calculate(PHYSICAL)，包含其 Hook → 物理结果及对应 BattleState
-    └── calculate(ARTS)，包含其 Hook     → 法术结果及对应 BattleState
-                         ↓
-              选择计算伤害较高的结果
-                         ↓
-              接续该结果的完整 BattleState
-                         ↓
-                    apply 一次
-```
-
-两个候选从同一个输入状态分别执行，不把物理分支返回的状态传给法术分支。选择依据是包含输出修正在内的 Calculate 最终伤害结果，不是仅完成防御公式的数值，也不是护盾、闪避、HP 上限裁切等实行之后的结果。例如物理公式为 100、法术公式为 90，而法术输出修正后为 180，则选择法术的 180 及其对应状态。
-
-选中分支的状态、事件、RNG、ID 分配与 Hook 引发的嵌套业务一并接续；未选分支全部丢弃。不仅选取一个伤害数值，也不在选择之后重新计算一遍。两次 Calculate 都不派发本笔伤害的受击响应；只有选中分支进入 Apply，接收阶段的 Hook 与本次 HP 应用执行一次。
-
-这依赖纯状态契约：Hook 的战斗影响通过返回的 BattleState 表达，不修改输入版本或依赖闭包保存战斗进度。两个计算分支共享不可变输入。
-
-相等结果的选择、固定弱点等内容政策尚待对应内容设计确定。
-
-客户端事实另见[弱点伤害与概率判定](../research/cases/10-weak-damage-and-critical.md)：原生弱点动作读取执行到当时的攻击倍率，两个无事件试算共享该值，不重新派发倍率事件；不能将其理解为排除已发生的暴击。本节分支规则是独立的项目选择。
-
-## 3. Apply 的结算时点
-
-### 3.1 普通伤害流程
-
-| 时点 | 职责 |
+| 报告 | 实际变化量 |
 | --- | --- |
-| 接收开始 | 进入本次接收流程后的起始通知；普通受击回复 SP 等机制在此按自己的资格参与。 |
-| 受击处理（Receiving） | 按顺序处理当前伤害，包括闪避、抵挡、屏障、减伤，以及属于此时点的同步反伤、治疗和计数。 |
-| HP 应用（HP Application） | 从最新 HP 扣除 Receiving 最终数值，最低为零。 |
-| 生命变化已应用 | 本次生命变化已形成事实，响应不能追溯改写这次应用；响应产生的治疗或其他操作正常接续。 |
-| 结算完成 | 通过 Outcome 观察拒绝、取消、失效或已应用的结果。 |
+| DamageApplication | `hpLoss=max(0,before.hp-after.hp)`；`minusHpGain=max(0,after.minusHp-before.minusHp)` |
+| HealingApplication | `hpGain=max(0,after.hp-before.hp)`；`minusHpLoss=max(0,before.minusHp-after.minusHp)`；`overflow=max(0,本次恢复量-minusHpLoss-hpGain)` |
 
-初始零伤害与入口拒绝不进入 Receiving；伤害后来被护盾抵挡与一开始就是零是不同的事实。机制依据见[机制时序对照](../research/cases/11-damage-apply-and-hp-application.md)。
+偿债不属于可转换溢出。UI 的 DAMAGE／HEAL amount 仍只使用 hpLoss／hpGain，债务信息从报告读取。过量转屏障可在 Applied 消费 overflow；屏障额度属于 Effect 私有状态，Core 不增加 ES 或 maxEsRatio 中转。实际 ES 来源和债务交互见[案例29](../research/cases/29-hp-and-ep-healing-settlement.md#7-溢出治疗es与屏障的真实交接)，项目按上述资源报告与 Effect 组合表达。
 
-Receiving 取消当前伤害不自动终止整个 Hook 派发。每项从最新 BattleState 与 current 判断自己的资格：次数盾可以要求伤害仍有效，反伤或计数可以允许已经取消的伤害。盾消耗、节点附带的治疗和嵌套伤害仍在接收中执行，已经完成的业务不因外层取消而回滚。
+## 特殊 HP Application 的支持边界
 
-成功闪避的通用后继通过目标侧 Completed 观察 `outcome.type === "CANCELLED"` 且 `outcome.received.reason === "MISS"`，例如焰尾的下一击标记、阿斯卡纶 S3 的闪避自疗。监听者须确认自身是 request.target，避免把来源观察到的 MISS 当作自身闪避；HIT_FAILED 仍表示来源未命中。取消及原因不可恢复或覆盖，因此最终结果足以辨认成功闪避。这是明确的项目时点选择：原生在 Evade 成功节点立即通知，项目在剩余 Receiving 执行后、同次 Apply 返回前同步执行这些后继，沿用 Completed 的登记、排除与宿主资格。
+非致命、不死、免死、替身、形态切换和复活的具体内容尚未全部接入；已提供的 Health 与 Hook 不能代替各个完整程序的验证，也不预设必须新增 Core 状态机。
 
-Receiving 内不按“先所有闪避、再所有护盾、再所有减伤”建立固定分类顺序。具体节点按业务优先级及稳定的登记先后组织；公共派发器从领域提供的 Hook 候选一次采样 ID 与 priority，固定排序后的候选序列，并在逐项执行时读取最新登记和资格。排序、参与资格、业务成功与整次派发停止分别表达。
+- 非致命由 Effect 在 damageCommitting 按来源／具体请求调整 Health，不增加 Damage 分类；嵯峨本笔保护、应用后重伤与明确处决是不同业务。
+- 普通免死的成功竞争由内容限定，不把不死、替身或形态切换放进一个通用 handled／protected 开关。若叶睦已有不死仍可触发切换，不能因候选已被保护就一律跳过其它程序。
+- 号角、斯卡蒂模组等可由自身 Effect 保存本次成功事实，在 damageCommitted 更替效果、改变 MaxHP 和恢复；Core 不保存成功者 Effect。
+- 当前 Health、拟写候选、是否消费保护和默认变化是否已由内容接管分别处理；后续 Hook 能继续独立业务，不能仅凭回调后 HP>0 认定本笔已完成。
+- 同实例假死／复活不等同于完整离场重建；内容组织其限制、进度、属性和恢复时点。复活恢复可用 increaseHp，完整模式／动作与特殊恢复仍按实际内容验证。
 
-### 3.2 特殊 HP Application 的支持边界
-
-Vitality.damageCommitting 提供伤害写入前的 Health 干预，damageCommitted 提供报告固定后的专属后继。具体非致命、不死、免死、替身及形态转换效果尚未接入；不因有这个扩展点就宣称已实现全部原生生命机制。以下事实是具体机制需要分别表达的业务语义，不要求将它们逐项翻译成 damageCommitting 的字段或独立 Hook：
-
-原生 ES、负生命债务、派生目标的固定扣血、同实例复活和战术点恢复的实际绑定与区别已在[案例11](../research/cases/11-damage-apply-and-hp-application.md)核对。Vitality.health 已统一持有普通 HP 与负生命，提交报告已提供偿债与溢出；独立吸收额度和过量治疗转屏障由 Effect 组合，不新增 Core ES，见第 0.3 节。具体保护、屏障、特殊恢复和复活仍须按各自内容接入，不能从资源结构与报告推定已经覆盖。
-
-| 事实 | 含义与边界 |
-| --- | --- |
-| 本次 HP 变化的默认应用责任 | 本次变化是否仍需由 Vitality 默认路径实行、具体还待应用什么；其他机制接管默认应用不等于停止所有 HP Application Hook。 |
-| 普通免死的成功归属 | 本次普通免死是否已有某个效果成功取得，以及该效果的后续与消耗；不代表所有生命干预都已失去资格。 |
-| 当前 HP 与生命状态 | 从最新 BattleState 查询的当前事实；不以旧 candidateHp、保护是否成功或默认应用是否被接管替代。 |
-
-普通免死的“单次最多成功一个”仅约束属于这项业务契约的效果。不死、替身、形态转换、非致命伤害及特殊生命机制，不因此自动加入同一组竞争。统一 Hook 派发顺序不等于统一的保护竞争关系。
-
-某项保护阻止 HP 归零，不会自动否定其他机制观察致命预判或执行生命干预的资格。若叶睦持有不死时仍能因致命伤切换替身，是必须能表达的案例；具体内容的实际先后另按证据记录，不能由这个结果反推出一条所有机制共用的调用顺序。
-
-某机制接管默认 HP 应用后，后续 Hook 仍可按自身条件观察该决定或执行另一种干预。默认应用责任改变、普通免死成功、伤害取消和停止派发不是同一件事，不以全局 protected 或 handled 布尔值将它们合并。
-
-damageCommitting 的 Context.previous 保留进入提交时的 Health，工作值为待写入的绝对 Health，实际写入接续最新 BattleState。具体机制若需要成功竞争、保留某次变化量或写入后的专属后继，应按实际内容组织这些事实；回调后 HP 大于零本身不证明本次伤害已经完成，Hook 的存在也不自动提供全部保护程序。
-
-### 3.3 生命状态、通知与离场
-
-HP 变化、死亡确定、Unit 仍存在和离场完成分别处理。已确定死亡时，普通治疗不能仅因 Unit 尚在集合中就获得执行资格；普通治疗与明确的免死、复活、形态转换也不共用这一推断。
-
-普通 Damage 提交 Health、执行 damageCommitted 后不维护 Blocking，再按目标、来源顺序完成全部 HP Applied 响应，再读取当前目标：仍为 PRESENT 且 HP 不大于 0 时确认本笔死亡；killer 非 null 则先为目标登记本笔临时高优先级 prepare Hook，随后请求 `Unit.remove(battle, target, { reason: "DEATH", killer: request.killer })`；该 Hook 派发击杀者本地 targetKilled，最后派发 Completed。既有关系的默认保持资格不因临时 HP 为 0 失效，保护响应恢复生命后可以保留原阻挡；新关系取得仍要求双方存活。确实离场时，由 Unit Lifetime 先发布 LEAVING，再派发能力自行登记的 prepare Hook，由 Blocking 清理本 Unit 的关系，而不是由 HP 写入或全场扫描提前推断死亡。已有 Lifetime 结算时，remove 返回只保证请求／Prepare，Completed 不承诺目标全部离场 Finalize 已完成；没有活动结算时，remove 在当前调用内完成 drain。伤害通知保留本次已发生事实，响应按需要读取最新资格。特殊生命干预的支持边界见第 3.2 节。
-
-真实离场沿用 [Lifetime 偏序](lifetime.md)：请求发布 LEAVING，再派发能力自行登记的 prepare Hook 完成 Blocking 清理，通过 Lifetime 已登记的 owner 与 Scope 请求子项；子项整个 Finalize 返回后才注销 Unit，再执行本地 leave 与全局 leave，不在 Finalize 兜底扫描全场关系。Occupancy 清理已通知的旧配对，Deployable 本地 leave 归还实际占用；部署来源预装的死亡程序只响应已确认 DEATH，按 Card 策略处理费用阶段与库存恢复。主动撤退由对应领域操作在请求离场前直接结算退款、Card 费用阶段与库存恢复，不由 Damage 或通用 Unit 推导部署业务。成功保护、替身或复活是否进入真实离场由对应机制决定。资源时点见 [Deployment](deployment.md)。
-
-### 3.4 单笔击杀结果
-
-两侧 Applied 完成后，最新目标仍为 PRESENT 且 HP 不大于 0 时，本笔确认死亡，killer 非 null 时为目标临时登记 priority=10000 的 Unit.prepare Hook，再将 `{ reason: "DEATH", killer: request.killer }` 交给 Unit.remove，APPLIED.killed 为 true；其余情况为 false。Health 写入时归零不提前构成击杀，damageCommitted 或 Applied 中被救回的目标不计入本笔；目标已由嵌套伤害确认死亡、已离场或仍有生命时，外层不重复报告。已有 Lifetime 结算而使 Finalize 延后，不改变已经确认的 killed。
-
-killed 只记录本笔请求是否取得死亡确认，不选取或保存另一份击杀者。死亡归属使用 request.killer，即使 source 为 null、两者不同或击杀者已离场，也不重新裁定。Unit 首次有效结束请求固定包含 killer 的 Departure，prepare 与 leave 使用同一死亡事实；重复请求不覆盖归属，不重复 Prepare。Completed 响应之后发生的新伤害或离场不追溯改写本笔结果。
-
-Unit 先发布 LEAVING，再按公共 priority 执行 prepare。HP Damage 临时 Hook 的 invoke 从最新 State 派发 killer 的本地 targetKilled，闭包接续本笔 Apply 的排除项；普通 prepare 业务约定低于 10000，因此逐击杀后继先于受害者普通 prepare；显式更高 priority 或更早登记的同级 Hook 仍遵守公共排序规则。随后 Lifetime 才自动请求依赖 Effect 等子项结束。受害者的 Effect 仍可在 Prepare 中读取 DEATH 与 killer，完成自己的后继。priority 不跨越这些阶段，也不改变真实依赖的偏序。
-
-临时 Hook 仅由确认死亡且 killer 非 null 的这一笔 Apply 登记，使用本轮固定的死亡 Departure，不在 Unit 或 Vitality 预装击杀业务，不增加全局 Prepare 监听。Lifetime 的首次有效结束与 Prepare 去重保证本笔通知不重复；嵌套伤害已经确认死亡时，外层不再登记。直接 Unit.remove 即使携带 killer，也不自动产生 targetKilled。该接入是项目选择，来源后继先于受害者死亡业务的依据见[原生归属调查](../research/cases/39-death-attribution-and-attribute-ranges.md)；具体重伤奖励等内容尚未接入。
-
-需要在受害者普通 Prepare 前执行的逐击杀业务登记 targetKilled。发起者仍可从 applyDamage 返回的 APPLIED 结果使用 killed，编排范围、多段和附加伤害的累计或整次限额；公共 Damage 不聚合整次攻击。本笔结果与死亡通知各有用途，不声称原生采用相同接口。
-
-必要回归语义：
-
-- KILL-01：两侧 Applied 后目标仍存活时 killed 为 false；本笔真正确认死亡时为 true，Application 继续保留原 HP 提交报告。source 与 killer 独立传递，含无来源和无归属；targetKilled 通过本笔临时 Prepare 先于目标普通 Prepare，后者在依赖 Effect 结束前读取固定 killer，leave 保留同一归属。
-- KILL-02：嵌套结算完成击杀时只有取得死亡确认的内层报告 true；首次有效 End 固定 reason 与 killer，重复结束不覆盖或重复 Prepare。Finalize 延后不丢失已确认结果，Completed 中后发的死亡不回写此前结果。targetKilled 按本笔 Apply.exclude 过滤具体键／ID；排除不阻止临时 Prepare、目标离场或其他后继，也不传播到嵌套操作。仍登记的 LEAVING 击杀者可响应，已注销或 null 则跳过。
-
-## 4. Healing 的两阶段契约
-
-普通治疗沿用 Damage 的状态接续与派发结构，但不引入伤害类型、穿透、防御公式或默认死亡处理。
-
-普通 HP／EP 治疗的原生公式、共享与专属事件、满血回复及具体治疗内容顺序见[治疗结算调查](../research/cases/29-hp-and-ep-healing-settlement.md)。本章定义项目的普通治疗接口与执行语义。
-
-```typescript
-interface HealingParameters {
-    readonly power: number;
-    readonly multiplier: number;
-}
-
-interface Request {
-    readonly source: Ref<Unit> | null;
-    readonly target: Ref<Unit & Vitality>;
-    readonly parameters: HealingParameters;
-}
-
-interface Calculated {
-    readonly amount: number;
-}
-
-calculateHealing(battle, request, options?: hooks.Options): Result<Calculated | undefined>;
-applyHealing(request, calculation, options?: ApplyOptions): Result<Outcome>;
-```
-
-Calculate 依次派发来源 Formula、目标 Formula，将当前 power 与 multiplier 相乘后截零，再派发来源数值 Output。Request 始终表示初始事实，当前 Parameters 与 Output 数值逐项接续；Formula 读取原始参数，全部 Output 之后再按第 1 节形成非负 Calculated，不要求中间工作值非负。输入及 Hook 数值遵守有限数值契约。目标缺失、LEAVING 或 HP 为零时无法计算，已完成的状态前缀仍返回。
-
-Apply 对最终计算量为零的治疗在入口返回 REJECTED，不派发本笔接收与 Applied。正数治疗确认目标当前存在、PRESENT 且 HP 大于零，按第 1 节的接收与提交边界执行，读取最新 Health、MaxHP 先偿债，再按剩余容量增加普通 HP，并固定实际溢出报告；该 HP 发布不附带 Blocking 维护。随后依次派发 targetApplied 与 sourceApplied，即使来源与目标为同一 Unit 也分别执行；Completed 保持同一宿主不重复通知。来源缺失或 LEAVING 时不运行其 Hook，但不因此取消仍可作用于有效目标的已采样治疗。
-
-若恢复写入因缩减后的容量形成满债与零 HP，Vitality 在该写点以 killer:null 请求 DEATH，并返回原 Application；Apply 保留这次成功提交，后继 Hook 按各自宿主资格派发，不将结果改为 UNAVAILABLE。Healing 不另做一般死亡判定，也不产生 killed。
-
-结果与 Damage 使用相同的 REJECTED、CANCELLED、UNAVAILABLE、APPLIED 区分，治疗不携带击杀结果。Pending 使用同样的 NORMAL／FIXED／CANCELLED 三态；取消不停止剩余 Receiving Hook。Application 保存 before、after、hpGain、minusHpLoss 和 overflow，后续嵌套业务不追溯修改这次恢复事实。Received amount 与实际 HP 增加、偿债及溢出分开；完整恢复量不在 Calculate 提前按缺失 HP 截断。
-
-**满血不自动拒绝正数治疗。** 普通索敌是否排除满血对象由选择器决定；已明确目标的正数治疗仍经过正常 Hook，可形成 APPLIED、hpGain 为零。事件 HEAL 只携带目标、实际恢复量和发生 Tick，取消保留零值表现；接收量与取消报告通过 Outcome／Application 返回。普通治疗不能复活 HP 为零的对象。
-
-### 4.1 治疗不可选中是项目选择
-
-**healFree 只限制治疗目标选择，不是 Healing 的接收免疫。** 普通 HP healing 谓词按标准 healFree Definition 的对象身份查询 ACTIVE 实例，独立 EP 回复不检查该标记。该 Effect 不登记 Targetable Restriction；特殊选择自行组合需要的资格。Healing Request 和 HEAL Operation 不携带选择豁免开关，阻挡关系不隐式豁免标准候选限制。
-
-显式 Ref 治疗不重新检查 Targetable、索敌距离、满血筛选或选择排序。泥岩自疗与普通直接治疗使用相同 API，照常参与治疗修正及响应，不需要特设绕过开关。已选中后目标变为不可被治疗选中，不撤销已经明确目标的治疗；具体内容如有中断要求，自行重新验证或取消行动。
-
-官方 HEAL_FREE 同时影响选中和接收；项目中的 healFree 只承担索敌限制。真正需要取消治疗的机制由具体 Effect 的 Receiving Hook 表达。
-
-### 4.2 特殊恢复机制
-
-自然 HP 回复由 Vitality 的属性推进处理，生命复原可由 Content 调用 increaseHp 直接恢复，见第 0.1 节；普通 Healing 已统一处理偿债并报告实际溢出，见第 0.3 节。具体恢复程序决定是否采用普通治疗、阶段排除或直接恢复；持续 HP 同步按实际正负差额组合恢复或 Damage，不提供任意赋值接口。过量治疗转屏障的具体 Effect 尚未接入，不增加 Core ES。原生实际来源、提交及通知见[案例29](../research/cases/29-hp-and-ep-healing-settlement.md)。
-
-## 5. 支持范围
-
-实际内容对扩展时点与事件粒度的要求见[伤害 Hook 需求调查](../research/cases/28-damage-hooks-and-event-granularity.md)。当前公共接口的支持范围如下：
-
-- **死亡清理**：普通伤害与生命流失由完整 HP Damage 在两侧 Applied 后确认死亡、请求离场并形成 killed；显式致死或退场由所属操作请求 Unit 结束。Finalize 遵循 Lifetime 的最外层完成边界。Combat 只推进 Action，不扫描 HP 或代为判定死亡；Applied 中同步调用 Combat 也不提前结束当前伤害的目标。
-- **特殊 HP 修改**：普通伤害与生命流失都通过 HP Damage 结算，自然回复由 Vitality.advance 推进，直接恢复使用 increaseHp，HP 写入由 Vitality 拥有。具体 Content 通过公开操作组合恢复与同步，不直接重建 Vitality State；当前不提供任意 HP 赋值操作。
-- **伤害分类**：HP／EP Damage Request 顶层显式携带单值 attackType／applyWay；HP 另保留 DAMAGE／ENVIRONMENT／LOSS 与 hitRecovery。选择性 Hook 排除与接收限制豁免由本次 Options 表达；非致命由 Content 组合 Effect 与 Hook，不新增专用请求分类，具体内容尚未接入。分担等其余特殊生命业务仍按实际机制设计，不能从目标状态或来源单位类型反推本笔事实。
-- **受伤与 HIT 回复资格**：Request.hitRecovery 与 nature 共同限定受击类 SP 回复；ENVIRONMENT 不自动授予或禁止 HIT；当前活性源石、敌方深水与标准元素爆发均以 hitRecovery=false 保留受伤响应而不提供 HIT 回复，不通过全局阻回伪装单笔资格。具体内容未全部接入不改变这项公共契约。
-- **本次 Hook 排除**：Calculate 与 Apply 分别接收可选 Options.exclude，按键身份与可选登记 ID 排除当前操作的响应；专属接收接续 Apply 选项。不修改登记、不跳过公式或资源提交、不豁免 Restriction，也不将选项保存进 Request／Calculated 或自动传给嵌套业务。契约见 [Hook 排除](hook.md#本次调用的-hook-排除)。
-
-特殊机制的客户端事实、PRTS 说明与项目选择分别记录在[机制研究](../research/cases/11-damage-apply-and-hp-application.md)，不将未经确认的细节视为普通核心契约。
+原生免死、负生命、固定扣血目标、替身与复活依据统一见[案例11](../research/cases/11-damage-apply-and-hp-application.md)。最终死亡归属、targetKilled 与直接致死的调用者组合统一见 [Resource](resource.md#生命状态通知与离场)。

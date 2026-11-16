@@ -170,7 +170,7 @@
 
 `Assign #72163` 只复制 targetType、deltaType、value、source、target、originalSource、ignoreForSp 等指定字段，不复制所有 flag／分类。`Split #72166` 先复制整个值类型 Modifier，再通过 value setter 修改分量；仍受数值写权限影响。构造器、Assign、Split 不能互换而假定传播结果相同。
 
-锡人 S1 的 `NoSourceDamage #99151` 在 `0x181103ff5` 调用无来源公式，再按 `_setOriginalSource=true / BUFF_SOURCE` 在 `0x181104223..22f` 设置 originalSource，最后应用。Modifier.source、originalSource 与 Torappu.Battle.Context当前程序来源是不同事实；本批 death 研究负责击杀来源的实际消费者，不能凭字段名称推定谁获得击杀。
+锡人 S1 的 `NoSourceDamage #99151` 在 `0x181103ff5` 调用无来源公式，再按 `_setOriginalSource=true / BUFF_SOURCE` 在 `0x181104223..22f` 设置 originalSource，最后应用。Modifier.source、originalSource 与 Torappu.Battle.Context当前程序来源是不同事实；[Case 39](39-death-attribution-and-attribute-ranges.md)记录击杀来源的实际消费者，不能凭字段名称推定谁获得击杀。
 
 ### 心烛的实际来源不是 Schedule SPAWN
 
@@ -247,7 +247,7 @@ MINUS_HEALTH(7) 出现在枚举和狼影未排除的剩余空间中，但本次�
 
 - HP Damage：上述具体内容的 MISS、HIT_FAILED、抵挡、无指定原因取消，以及不可伤与中断均有对应证据。
 - EP Damage：`OnTakeEPDamage #67711` 对 EPFreeAll 取消为 NONE、对不可伤取消为 UNHURTABLE；另有上面的事件5中断正例。未定位 EP 专属按具体取消原因分支的实际内容，不把 HP 的 MISS／HIT_FAILED／抵挡直接移入 EP。
-- HP Healing：`OnTakeHeal #67710` 的 HEAL_FREE 路径取消为 NONE。项目已明确 HEAL_FREE 只限制 Targeting，本证据不恢复普通治疗的禁疗接收检查，也不证明 HP Healing 需要全部伤害原因。
+- HP Healing：`OnTakeHeal #67710` 的 HEAL_FREE 路径取消为 NONE。项目接收政策见 [Resource](../../architecture/resource.md)，不由本证据直接生成治疗的全部原因集合。
 
 ## 11. 接收前置、普通 HIT 与伤判
 
@@ -299,6 +299,6 @@ EP恢复资格的组合依据复用[当前控制器原件](../evidence/resource-
 
 部分候选没有被用来证明普通玩法必须支持某种额外分支：`enemy_wdsdw[loss_hp]` 实际绑在 `enemy_1323_wdbshd`，当前只闭合原表／关卡引用，未闭合召唤或直接出场链；`enemy_wlrage_t_check`也未闭合直接出场。`immune_env_damage`绑定巨翼兽，既有sandbox也有玩法归属未核实的act1arkhub记录，不能简单视为普通玩法正例，也不能宣称全为排除模式。完整索引与未闭合项保留于配置记录，不由“未闭合”推导可删除。
 
-### 架构审查约束
+### 项目对应
 
-原生真实内容的接收前处理必须按实际绑定审查，不能因为项目未接入对应角色就删去能力。beforeReceive 需要接续可改量、固定和取消的待接收工作值；只有同名 void 通知不足以覆盖这些前置程序。普通HIT和伤判能否共用一个公开扩展点，与资格前是否存在必要业务，是两个独立问题。
+资格前的可变工作值、普通 HIT 与伤判的组织见 [Resource](../../architecture/resource.md)和[Hook](../../architecture/hook.md)。原生事件5／6／10证明不同的业务条件与机会，不要求项目按函数数目复制公开 Key。

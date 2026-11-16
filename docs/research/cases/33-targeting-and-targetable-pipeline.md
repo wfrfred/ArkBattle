@@ -217,7 +217,7 @@ Mon3tr S1 的实际 RangedHeal 能力 `_ignoreHealFree=true`，其 AdvancedSelec
 2. **SecondaryFilterAdvancedSelector**：基础过滤／排序后执行二次优先处理，再按配置处理嘲讽和最终限额。二次操作具有自己的交换规则，不是天然等价于对所有候选再做一次稳定 sort。
 3. **BlockedOrAdvancedSelector**：先按阻挡列表依次验证并加入输出；未满再调用范围选择补足，排除已加入项。范围内的最终嘲讽排序不能自动覆盖已经单独加入的阻挡前缀。
 
-因此，当前项目 `blockedFirst` 的关系取得顺序可以表达一种阻挡加前政策；它与 `HATRED_DES_BLOCKED_FIRST` 的“先分阻挡组、组内比较仇恨”不是同一算法。也不能仅凭 Wiki 的概括顺序，声称所有 Selector 都在最后用嘲讽重新覆盖阻挡优先。
+按关系取得顺序加前，与 HATRED_DES_BLOCKED_FIRST 的“先分阻挡组、组内比较仇恨”不是同一算法。不能仅凭 Wiki 概括声称所有 Selector 最后都用嘲讽覆盖阻挡优先。
 
 普通 Filter 为候选计算一个或两个权重后进入优先队列，资格失败发生在入队与名额裁剪之前。WeightedTarget 的比较涉及高等／普通权重、相应 FP 比较间距与分桶；比较仍相同时调用 Entity.CompareTo，以实例 UID 决胜。因此它不是所有情况下都保持候选输入顺序的稳定 topK。最后嘲讽路径所用的 StableBubbleSort 则在嘲讽相同的情况下保留此前名单次序。这两种平局政策不能合并描述。
 
@@ -309,31 +309,11 @@ Enemy 无运动 Cursor 时的距离按0处理；不是读取一个不存在的�
 
 远程还有独立的位置输出分支：基类没有处理有效目标且 allowNoTarget 及相应配置成立时，`RangedAttack.DoCastOnTargets` 可用保存输入位置或其所在格中心创建 FixedPosition 并发射。它不重新挑选 Unit；跳过失效的 castTarget 不保证整个能力没有输出。原目标补入、无目标发射、弹道抵达后的原目标保底分别属于不同层，不能合并成一个“始终命中目标”的开关。
 
-## 7. 最终作用与项目对照
+## 7. 最终作用与项目对应
 
-选中、施放、命中、接收和实际资源变化必须分别记录。已有原目标弹道继续命中，不等于无视无敌；睡眠免疫者在名额前被排除，也不等于任何复合 Buff 都应安装失败。
+选中、施放、命中、接收和实际资源变化分别成立。已锁定弹道继续命中不等于无视无敌；睡眠免疫者不占名额也不等于任何复合 Buff 都安装失败。来源、几何中心、排序参考与实际作用目标不保证相同；原生 Purpose、Selector、Validator 和异常字段不是项目类型模板。
 
-| 差异 | 原生事实 | 现有实现 | 已确认的项目选择／本案结论 |
-| --- | --- | --- | --- |
-| 选择入口 | 多种 Selector、Range、Ability 时点与选项组合 | Request 显式 Filter + Selector | 保留显式策略；不复制原生类树或布尔开关集合。 |
-| 用途 | Ability／动作节点生成 purposeMask，所取纯效果光环可为 NONE | Request.purposes 由调用方声明，另有 EFFECT | 不从后续 Operation 自动推导用途；EFFECT 不携带定义 ID，也不自动代表免疫检查。 |
-| 目标侧限制 | Entity／Attributes／Buff／空间事实与具体 validator 共同形成 | Targetable 保存 Restriction Contribution，按 kind 豁免 | 机制身份与一次登记身份分开；不在 Targetable 重复保存异常免疫。 |
-| 普通仇恨 | 嘲讽、实体类、时间／顺序、路线估计距离及具体优先算法 | 普通内容仍用 distance 等显式比较器 | 属于已知缺口，不能把最近目标称为完整普通仇恨。 |
-| 角色出场次序 | Character.UpdateHatred 可重新读取本帧全局部署计数 | 尚未接入对应持久事实与普通排序 | 已选择固定实际入场顺序；不复刻这个全局缓存重读细节。 |
-| 绑定与更新 | source／timing／补入／能力重排共同决定名单 | 普通攻击模板 prepare 选择并保存 bindings | 这是已实现的一种内容政策；其他内容不能自动套用。 |
-| 启动条件与缓存目标 | Trigger 可检查最小数量、保持旧目标，并按搜索 ticker 决定是否重新查找 | hasCandidate 只判断显式 Filter 是否至少存在一个候选；普通模板自行选择 | 现有查询不能冒充全部原生 Trigger 政策；哪些内容需要这些行为，按已核实正例决定。 |
-| 组合资格与组控制 | 内部 Validator 可取反、单独忽略阵营；Group 可按顺序取首个非空组 | 有 and／or／not 和自定义 Selector，尚未接入这些具体内容 | 不能将“接口可以表达”当作已经实现；也不因原生有组件类就新增一套对应框架。 |
-| 来源和参考中心 | 来源运动方式可读取当前对象或回退样本；能力拥有者、选择中心、排序参考源可不同 | 标准 Filter 通常从 Request.source 读当前对象；不存在时按各查询返回拒绝或无比较差异 | 不在调查中把来源快照或替代中心统一塞入 Request；具体所需事实须按机制设计。 |
-| 普通原目标命中 | 保存身份并复核有效／alive，不统一重跑普通选择 | tracking 原目标路径独立于 Targeting Filter | 现有边界有直接依据，不能为统一接口而强制重新索敌。 |
-| HP／EP联合治疗 | 同一选择政策可包含两种需求，实际作用仍有顺序 | 有单项 Filter／HP比例比较，完整行医选择未接入 | 新证据补齐具体机制需求，不在调查中静默新增通用排序政策。 |
-| 随机 | 逐候选抽随机排序权重，RNG 消费与筛选数量相关 | Fisher–Yates 无放回，零数量／空集合不消费 | 保持项目自身确定性；不要求复刻官方 RNG 消费轨迹。 |
-| 近权重与平局 | 普通权重有 FP 比较间距及 UID 后继，晚嘲讽另用稳定排序 | 稳定 topK 保留登记顺序，Comparator 使用 JS 数值 | 本案明确差异，不据当前实现证明二者所有情况下结果相同；是否接入特定近值规则留待设计权衡。 |
-| 数量与中间限额 | Range、Filter、Blackboard、阻挡数分别影响数量，部分路径有128项边界 | Selector 显式声明数量，没有统一的128项边界 | 记录各入口实际差异，不把实现中的每个缓冲上限自动变成项目统一限制。 |
-| 最终结算 | 原生 Modifier／Buff 各有接收与事件分支 | 四条 Calculate→Apply 与 Effect 生命周期 | 保持已经确认的阶段边界，不按原生事件编号改写项目。 |
-
-项目基线 `9a24854` 的核对入口：[Targeting 契约](https://github.com/wfrfred/ArkBattle/blob/9a24854/src/core/battle/targeting/contract.ts)、[Filter](https://github.com/wfrfred/ArkBattle/blob/9a24854/src/core/battle/targeting/filter.ts)、[Comparator](https://github.com/wfrfred/ArkBattle/blob/9a24854/src/core/battle/targeting/compare.ts)、[Selector](https://github.com/wfrfred/ArkBattle/blob/9a24854/src/core/battle/targeting/selector.ts)、[Targetable](https://github.com/wfrfred/ArkBattle/blob/9a24854/src/core/unit/capability/targetable/capability.ts)、[攻击模板](https://github.com/wfrfred/ArkBattle/blob/9a24854/src/content/actions/attack.ts)、[原目标弹道](https://github.com/wfrfred/ArkBattle/blob/9a24854/src/content/projectiles/tracking.ts)。项目政策对应[Targeting 架构](../../architecture/targeting.md)、[普通仇恨事实](../../architecture/tactical-semantics.md#仇恨事实与普通排序)、[Calculate／Apply 边界](../../architecture/vitality.md#1-calculate-与-apply-的语义边界)。这些文档与代码只作为项目对照，不作为原生证据。
-
-本案没有修改 Core、Content 或测试，也没有为调查结果确定新的 API。
+当前候选 Query、目标侧 Restriction、比较与具体 Content 编排见 [Targeting](../../architecture/targeting.md)；最终资源作用见 [Resource](../../architecture/resource.md)，Projectile 再验证见 [Projectile](../../architecture/projectile.md)。
 
 ## 8. 覆盖与具体未决项
 
@@ -344,7 +324,6 @@ Enemy 无运动 Cursor 时的距离按0处理；不是读取一个不存在的�
 1. timing3 已有普通消费分支，但本次选定资源没有实际启用正例；不把方法存在当成新增支持需求。
 2. 号角等真实 hook-key 声明的最终覆盖值来源尚未闭合；不能把普通黑板没有键推导成所有模块／玩法都不赋值。
 3. 本次有限组件调查没有为所有 ignoreMotionMode、ignoreHitRange、异常排除、最终嘲讽、keepTarget、搜索间隔覆盖开关找到非默认实际启用样本。分支语义与启用证据分别记录，不推导这些字段无用；Shared skills 的统计也不冒充全部角色包调查。
-4. 项目无终点 Plan、任意 GOTO 等程序不与原生所有路线字段一一对应；如何向仇恨提供准确事实仍需项目设计，不能补造“原生 null 终点距离”。
 5. 活跃 XLua 与特殊派生 Selector 可替换通用分支，本案未执行实机观测；静态普通链不证明所有动态组合最终结果相同。
 
 这些未决项分别限制具体配置或特殊路径；不重新推翻已经直接核实的普通流程，也不以“未穷尽全游戏”掩盖本案已明确的适用范围。

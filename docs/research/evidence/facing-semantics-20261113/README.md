@@ -32,9 +32,9 @@
 
 PRTS 的火龙断尾／甩尾和眩光手雷分别提供实际玩法需求；本批直接证明的是上述 generic native 消费者。**没有完成 `enemy_1537_mhrors` 的 Prefab → Talent 组件绑定，不将类名中的 `Mh` 当作火龙绑定证据。**
 
-做过的最小资源定位：本地 EnemyDB 镜像已有 `enemy_1537_mhrors` 键；本机资源没有同名 Bundle，manifest 中资源位于聚合包，本批没有重建索引映射或扫描全部敌人包。内容绑定仍按此范围标为未核实。也未执行游戏、验证运行中的 XLua 替换、穷举所有 Animator 或所有攻击政策。
+做过的最小资源定位：本地 EnemyDB 镜像已有 `enemy_1537_mhrors` 键；本机资源没有同名 Bundle，manifest 中资源位于聚合包，本批没有重建索引映射或扫描全部敌人包。本批内容绑定限制仍按上述范围保留；后续 [Case 35](../../cases/35-facing-and-turning-conditions.md)及 [sign 取证](../facing-conditions-20261114/sign/README.md)已补该绑定。也未执行游戏、验证运行中的 XLua 替换、穷举所有 Animator 或所有攻击政策。
 
-对当前项目的判断仅到：**会影响战斗的持久面向事实确实存在，位置、速度和部署四向不能总是还原它。** 单个内容的部位耐久可私有保存；共同面向事实由何领域维护仍待架构选择，不能为了消除缺口就宣称每个内容轮询速度已自然覆盖完整写入时序。
+会影响战斗的持久面向事实确实存在，位置、速度和部署四向不能总是还原它。后续转向条件、火龙实际绑定及原生后端差异见 [Case 35](../../cases/35-facing-and-turning-conditions.md)；项目当前面向契约见 [Facing](../../../architecture/capability.md#facing)。
 
 ## 复查
 

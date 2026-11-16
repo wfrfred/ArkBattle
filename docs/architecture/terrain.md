@@ -1,59 +1,42 @@
 # Terrain 与 Mechanism
 
-Tile 保存地形定义、初始空间属性与当前空间属性。Mechanism 保存接触记录、扫描时间和自身生命周期。持续伤害、属性修正、索敌限制及叠层保存在宿主 Unit 的 Effect 中。
+Tile 拥有地形定义、初始和当前空间属性；Mechanism 保存接触记录、扫描时间与生命周期；持续伤害、修正、限制和叠层归宿主 Unit 上的 Effect。
 
 ## 地块与类型恢复
 
-Core 的 Terrain 只表达 `Definition<P>` 与 `params: P` 的配对，不列举具体游戏地形。Definition 的 `create(params)` 在构造边界校验并打包参数，内部共享 readonly 值。
+Terrain 在构造入口建立 Definition 与逐格 params 配对，不列举全部游戏地形。Tile 保留静态 terrain／initial 和当前 State；稠密不可变 Tiles 查询完整对象，精确 Definition 身份恢复参数类型，普通属性更新不修改定义。
 
-Tile 的结构是 `{ definition: { terrain, initial }, state }`。`definition.terrain` 保存类型化地形与逐格参数，`definition.initial` 是初始 State；当前 State 包含 `elevation`、`placement`、`passability`、`walkCost`、`allowsBlocking` 与 `siteCondition`。tile.create 校验初始 walkCost；初始创建时 state 与 initial 共享引用，后续更新保留 definition。
+当前地图是地块属性唯一权威，不另存 tileStates。完整 Tile 更新校验新步行代价，通行或代价改变时同步重建 Navigation 基础图并保留 Overlay，再维护 Blocking；Content 调用战斗完整入口，不直接改底层图。
 
-Map 的 Tiles 是稠密的不可变序列。`add(tile)` 接受完整泛型 Tile，普通 get(index)／values() 返回完整 Tile<object>，其中 Terrain.params 默认是 object；`get(index, definition)` 通过原 Terrain Definition 对象身份恢复参数类型。`replace(index, state)` 只替换当前 State，保留原 Tile definition，更新通用属性不需要恢复参数类型；它信任上层确认的索引与 State，不重复校验索引存在性或 walkCost。State 引用未变时返回原容器，变更时返回新容器。容器内部以 Tile<any> 保存异构参数，普通公开结果仍使用 object；已知 Definition 的查询保留 P，业务不检查未知参数结构或自选具体 Params。
+高度、可部署类型、通行类型与 allowsBlocking 是不同事实。显式 tile_blockable 优先决定初始阻挡许可，无配置才按原始高地回退；Blocking 消费当前许可，不用当前 elevation 再否决显式允许。相关原生依据见[地形研究](../research/03-space-units-and-mechanisms.md)。
 
-`field.map` 保存当前 Tile，是地块属性的唯一事实来源，不另设 tileStates 或另一份当前 Tiles。Navigation baseline 从当前 `passability` 与 `walkCost` 投影：WALK 使用步行代价，FLY 的代价为 1。Core 不导入 Content 的地穴 Definition。
-
-`battlefield/tile.update(field, position, state)` 是运行态地块变更入口，确认目标地块并校验新 walkCost；这与 tile.create 的初始值校验属于不同入口。通行规则或步行代价改变时同步重建 Navigation baseline，保留已有 overlay。完整战斗入口 `battle/tile.update(battle, position, state)` 接续该结果并维护 Blocking，不重复校验。内容改格使用完整入口。
-
-`siteCondition` 是单个 `symbol | null`，表达该格要求的部署场地条件；Content 在 Card 的部署 Restriction 中判断本次请求是否支持该条件。null 表示没有场地条件要求，Content 的普通场地 `condition.normal`（NORMAL）则是一个实际条件，两者不同。Core 不默认导入普通场地，也不解释官方位掩码。Data 当前把官方位值 1／2／4／8／32 转成 normal／deepsea／tide／night／brokenWalkway；`brokenWalkway` 仅接入场地许可，完整步道切换与坠落机制尚未接入。
-
-`elevation` 表达当前高度类别，`placement` 表达当前部署类别，`passability` 表达导航通行类别；三者不代替 `allowsBlocking`。地图适配以显式 `tile_blockable` 优先、初始高地默认不可阻挡的规则生成 `allowsBlocking` 初值。Blocking 有登记格时只查登记根格的当前许可，无登记格才查身体格；不以当前 elevation 再次硬拒绝。原生 `Tile.isMeleeBlockable`（70673，`0x1808c6070`）同样优先返回黑板覆盖；其默认 `isHighland`（70670，`0x1808c5f10`）读原始 TileData 高度，与可被 Token 改写的当前 Options.heightType 分开。项目已将有效阻挡许可显式保存为字段，调用方直接消费该字段。
+siteCondition 是单个条件身份或 null，null 不等于普通场地条件。Content 部署限制判断是否支持；Data 将原始位值转换为 normal／deepsea／tide／night／brokenWalkway。后者目前仅接场地许可，完整步道切换和坠落尚未接入。
 
 ## Mechanism 操作
 
-Mechanism 使用全场唯一的 Typed Ref，普通查询返回完整 Mechanism<object>；容器内部保持不同 State 与 Definition 的关联，精确 Ref 保留具体状态类型。
+Mechanism 是全场独立身份，具体 Definition 配对初始化和私有 state；setState 只改私有数据。setActive 可逆切换参与资格，remove 不可逆结束。INACTIVE 仍存在且可作依赖，ACTIVE remove 的 Prepare 以 ENDING 调用 onDisable，INACTIVE 不重复停用；Finalize 再 onEnd、注销。
 
-- `create(battle, definition, options)` 初始化并登记实例，返回 Ref。
-- `get(battle, ref)` 查询当前实例。
-- `setState(battle, ref, state)` 接收已经计算好的私有 State，只替换该字段；当前实例的其他事实由 Core 保留，相同 State 引用返回原 BattleState。
-- `setActive(battle, ref, active)` 切换运行资格，停用时同步执行内容清理。
-- `remove(battle, ref)` 委托静态 lifetime，先同步请求并发布 ENDING，最外层结算器在依赖者完整完成后执行 Finalize 与注销。
-- `advance(battle)` 固定本轮候选，逐项读取最新 ACTIVE 实例并执行 `onTick(battle, self)`。
-
-Mechanism 创建时按 Definition.onUnitLeave 自行登记 Battle 全局 leave 观察 Hook，Finalize 移除时注销；派发时从最新状态确认实例仍为 ACTIVE，再调用该程序。`onUnitLeave(battle, self, departure)` 接收 Unit 本地 leave Hook 完成后的历史离场事实，包含注销与已完成的 Card 回收，不表示离开地块；Unit 的 Pending 到该通知整个返回后才解除等待。回调可以重入，后续实时事实从返回的最新 BattleState 读取，不写回旧状态。
-
-Mechanism 的 lifetime 由现有操作模块导出，公共请求／析构协议见 [Lifetime](lifetime.md)。INACTIVE 仍是存在的生命周期，可接受显式 Scope；disable 是可逆参与变化，不等于 remove。ACTIVE remove 的 Prepare 用当前 ENDING self 调用已有 onDisable，INACTIVE remove 不重复 disable；Finalize 调用 onEnd 后注销。嵌套 remove 首次返回只保证 Prepare，不保证 onEnd 或注销；重复 PREPARING 请求不等待原 Prepare，首次原因不覆盖。
+嵌套结束与依赖完成统一见 [Lifetime](lifetime.md)，不在地形再实现一套停止协议。
 
 ## 地形接触与调度
 
-Runtime 依次推进 `Movement → Mechanism → Blocking`。Movement 先推进 Blockable 的阻挡位置，再对 Route 单位推进路线；主路线终点检查成立时立即请求完整 Unit 离场，仍在场、未被阻挡且具备 Locomotion 的单位随后推进自主运动。地形 Mechanism 读取这些操作之后的当前状态，按 Unit 世界坐标计算接触，要求生命周期 PRESENT 且空间存在，不用 Occupancy 代替接触。
+Runtime 顺序为 Movement → Mechanism → Blocking。Movement 先推进阻挡位置计划，再推进路线／自主运动；地形读取这些操作后的身体位置，要求 PRESENT 且空间存在，不用 Occupancy 代替接触。
 
-轮询维护进入、离开和持续接触，各地形分别判断接触资格：活性源石、沼泽、深水和地穴要求地面，烟雾允许地面和空中单位。保持接触时仍重判动态资格，例如飞行单位在地穴上落地。轮询不捕获同 Tick 所有中间位置，也不复刻 Unity 对象顺序。安装与结束请求继续显式接续状态；已有 Lifetime 结算时，嵌套 Effect.end 不保证最终注销已完成。
+轮询维护进入、离开和持续接触，并每次重判动态资格：活性源石、沼泽、深水、地穴要求地面，烟雾允许空中。轮询不捕获同 Tick 所有中间位置，也不复刻 Unity 对象交错。
 
-机制按实际地形配置装配，同一实例可以处理参数不同的多个格子。预置控制器负责其管理的沼泽、深水，静态机制装配排除这些地形，避免重复结算。预置的出现、隐藏与移除使用同一个 Mechanism 生命周期。
+同一控制器可管理参数不同的多格；预置控制器负责其沼泽／深水，静态装配排除重复管理。预置出现、隐藏和移除复用 Mechanism 生命周期。
 
 ## Content 行为
 
-平台等 Content 按 Occupancy 登记格改写当前 Tile，而不是以身体世界位置代替登记。当前预置装置离场时，仅将自己改写的字段恢复为 `definition.initial` 对应值，保留其它当前字段。恢复政策由内容确定，没有通用撤销栈。部署、阻挡与导航统一消费当前 Tile 属性。
+装置按 Occupancy 登记格改写地块，离场仅恢复自己拥有的字段至 initial，保留其他当前字段；没有通用撤销栈。射击台在 Support 配对中登记乘员的 GROUND 禁挡，不改 allowsBlocking，详见 [Occupancy](occupancy.md)。
 
-射击台 Content 通过 Occupancy 的 SUPPORT Definition 程序，在当前乘员的 blocker.restrictions 登记平台实例独占的共享二元 Restriction，只禁止 GROUND 阻挡，AIR 仍由其余 Blocking 规则判断；onOccupantAdded 安装，onOccupantRemoved 只清除该平台规则，不覆写地块 `allowsBlocking`。处理旧配对事实时仍重查当前乘员，详见 [Occupancy 同步通知](occupancy.md#已通知的业务配对)。原生平台向乘员施加 WALK 条件下的 `highland_common[block_core]`／`BLOCK_FREE`，详见 [Blocking 的原生对照](blocking.md#地块阻挡资格)。
+walkCost 是最终有效代价。普通装置阻碍为 1000，真实地穴固定 1,000,000，不用任意 max 叠加或 hole-like 状态替代地穴身份；导航与部署统一消费当前属性。原件和推导见[地形研究](../research/03-space-units-and-mechanisms.md)。
 
-`walkCost` 保存最终有效步行代价，不是可任意累加或取最大值的基础代价。原生普通 `Tile.get_moveCost`（70678，`0x1808adc40`）按 `overrideObstacleLikeMoveCost` 返回 1000 或 1；`HoleTile.get_moveCost`（70580，`0x1808addd0`）直接返回 1,000,000，不受该标记降低。当前装置 Content 的 apply 对普通地形赋 1000，对真实地穴保留定义中的固定代价 1,000,000；不把这些结果泛化成 `max(任意当前代价, 1000)`。完整地穴身份由 Terrain Definition 表达，不能仅凭“hole-like”状态推断固定代价。
+- 活性源石每次入格安装独立 Effect，相邻同参数格也分别登记，离格保留。绝对期限从入格算起，被覆盖仍流逝，停留到期不重装。同组优先级为 `roundToEven(1000 × (attackBonusRatio + attackSpeedBonus))`，高者生效，同级先安装者生效。周期仅 ACTIVE 推进，首次等待一秒，被覆盖时暂停周期，恢复沿用余量且不补发。
+- 烟雾为我方有 Targetable 的单位安装标准隐匿，离开撤销；阻挡不破隐，也没有三秒恢复延迟，空中同样受益。
+- 沼泽与深水分开保存控制器扫描和宿主 Effect 周期，不每轮重装；沼泽一秒叠层与重量门槛是独立参数，重型敌人按内容取得双层。
+- 活性源石 HP 周期伤害为 ENVIRONMENT，敌方深水为 DAMAGE；均禁本笔 HIT 而保留正常接收／Applied，不把地形、无来源或周期一概等同流失，见 [Resource](resource.md)。
+- 必须随控制器结束的接触 Effect 绑定其 Lifetime；onDisable 清 Contact，可逆停用时按业务结束，移除时由依赖图结束产物，不在 onEnd 再重复清理。离格保留的活性源石不自动绑定控制器。
+- 地穴由内容判断坠落资格并完整移除 Unit，空地变化在后续接触轮询重判。
 
-- 活性源石每次进入格子都按该格参数登记独立 Effect，相邻同参数格也分别登记；离格后保留。每个实例的绝对截止时间从该次入格起算，被覆写时仍流逝，停留原格到期不重新附加。同组优先级为 `roundToEven(1000 × (attackBonusRatio + attackSpeedBonus))`，高者生效、同级先登记者生效；使用当前生效实例的伤害和增益参数。每个实例保存剩余触发 Tick，仅在 ACTIVE 时推进，首次伤害等待一秒；被覆写时暂停周期，恢复后沿用剩余预算，不补发等待期间的伤害。依据与优先级公式见[活性源石原生短链](../research/03-space-units-and-mechanisms.md#51-进入周期与资格的原生短链2026-11-10-补核)。必要代表场景串联同参数相邻格、不同参数格的覆盖与候补接替，检查实际伤害、增益与独立到期，不按每种参数组合增加矩阵。
-- 烟雾对具有 Targetable 的我方单位安装通用隐匿 Effect，离开时撤销；阻挡与解除阻挡不改变隐匿，也没有恢复延迟。必要代表场景检查阻挡期间仍不可被普通索敌选中、空中单位同样受益，以及离开后恢复受选；依据见[烟雾原生短链](../research/03-space-units-and-mechanisms.md#51-进入周期与资格的原生短链2026-11-10-补核)。
-- 沼泽、深水分开保存控制器扫描进度与宿主 Effect 的周期进度，不在每次轮询重建 Effect 或重置周期。
-- 活性源石周期 HP 输出显式使用 nature=ENVIRONMENT；敌方深水周期 HP 输出使用 nature=DAMAGE。二者均为 hitRecovery=false，仍走普通 Receiving 与 Applied。分类依据各自实际配置，不把所有地形伤害统一标为环境，也不因无来源或周期输出就当成生命流失；HIT 由单笔许可控制，不安装全局阻回。依据见[分类与权限调查](../research/cases/38-damage-classification-and-permissions.md)。
-- 非 retainOnLeave Effect 显式绑定控制器 Mechanism 的 lifetime，终止时由 DAG 清理并等待；控制器的 Contact 清理直接归 onDisable；Prepare 以 ENDING 调用它时只清 Contact，不手工结束这些 Effect，也不在 onEnd 重复清理。离格、换地形和可逆 Mechanism disable 继续按 Contact 业务请求结束。retainOnLeave 的活性源石等效果不自动建立绑定，避免错误缩短持续期。
-- 地穴由 Content 判断坠落资格，并通过完整 Unit 离场操作完成逻辑结算。
-
-当前沼泽叠层周期为一秒，黑板 value 对应重量门槛；Data 分别写入 stackIntervalTicks 和 massThreshold，周期与重量使用独立参数。
+活性源石与烟雾的调用链见[原生短链](../research/03-space-units-and-mechanisms.md#51-进入周期与资格的原生短链2026-11-10-补核)。当前支持和更多地形缺口见 [Tactical 语义](tactical-semantics.md)，独立结果的集中验收见 [Verification](verification.md)。

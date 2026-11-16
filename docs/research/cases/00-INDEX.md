@@ -1,10 +1,10 @@
-# 第一轮 case study：subsystem 调用协议
+# 原生机制案例索引
 
-研究日期：2026-10-07。沿用 [研究原则](../00-INDEX.md)：项目自身确定性与可观察游戏语义一致，不复刻官方 RNG 消费轨迹或无语义影响的内部实现。
+案例从 2026-10-07 起按主题维护；每案独立标注版本与取证范围。阅读原则见 [研究入口](../00-INDEX.md)。
 
-本轮不增加大领域清单，不修改代码，也不确定最终 API。目标是用具体调用链回答：长期事实归谁；一步返回时完成了什么；后续步骤与嵌套调用可以看见什么。
+研究回答原生资格、读值、调用、修改、结束和实际使用，不在案例索引维护项目类型或接口草案。
 
-案例区分本季实际引用与协议压力样例。当前整理棋子池没有维什戴尔，浊心斯卡蒂默认技能为 S3；维什戴尔和斯卡蒂 S1 分担模板用于验证常规引擎的协议能力，不作为本季新增角色／技能支持承诺。鼓舞的本季引用则沿斯卡蒂 S3 的实际配置核对。
+案例区分本季实际引用与协议压力样例。初始取样的卫戍棋子池没有维什戴尔，浊心斯卡蒂默认技能为 S3；维什戴尔和斯卡蒂 S1 分担模板用于验证常规引擎的协议能力，不作为本季新增角色／技能支持承诺。鼓舞的本季引用则沿斯卡蒂 S3 的实际配置核对。
 
 ## 案例
 
@@ -13,24 +13,24 @@
 | [01 Buff 安装与父作用域](01-buff-installation-and-parent-scope.md) | 维什戴尔残影；鼓舞；覆盖组与 STACK 到期 | 安装／生效／开始动作；父作用域与来源；覆盖键、合并与竞争；到期减层、结束与回收 |
 | [02 Action 与 projectile 阶段](02-action-and-projectile-phases.md) | 维什戴尔普通远程攻击；确有必要的技能模式对照 | 目标与数值读取时点；在途事实；命中、取消与执行后继 |
 | [03 Dispatch 与嵌套结算](03-dispatch-and-nested-settlement.md) | 本季泥岩盾；真实分担模板作对照 | 伤害取消与盾消耗／回复；本次／嵌套／下次派发；嵌套返回与外层继续结算 |
-| [04 协议结论](04-protocol-conclusions.md) | 前三案交叉核对当前实现 | 可落定的调用约束、局部事实与派生关系可见性，以及仍不能统一的部分 |
+| [04 协议结论](04-protocol-conclusions.md) | 前三案交叉核对原生调用 | 可落定的调用约束、局部事实与派生关系可见性，以及仍不能统一的部分 |
 | [05 Skill 开始与结束](05-skill-start-and-finish.md) | 已安装客户端普通 Skill／Ability 原生路径 | 同步结束回调、进入内容的后继与未来 coroutine 的取消边界 |
-| [06 天赋生命周期与建模](06-talent-lifecycle-and-model.md) | 当前客户端 BasicTalent／RebornTalent 与代表性主模式天赋 | 选型、参与、私有状态与多种作用域；独立 Talent Capability 的判断依据 |
+| [06 天赋生命周期与建模](06-talent-lifecycle-and-model.md) | 当前客户端 BasicTalent／RebornTalent 与代表性主模式天赋 | 选型、参与、私有状态与多种作用域；不同天赋状态与附着来源 |
 | [07 攻击周期、动画与执行占用](07-action-timing-and-animation.md) | 玫兰莎、能天使、泥岩、弩手、安洁莉娜与莫斯提马 | Cooldown 与 Casting、缓存等待、逻辑动画事件、起手／续轮与后继释放 |
 | [08 Action 启动资格与中断](08-action-eligibility-and-interruption.md) | 当前客户端 Ability、单位攻击状态与 EnemySkill；霜星、圣堂射手及炎佑实际绑定 | 主动作互斥、启动／中断与结束；EnemySkill 触发计时、Ability 执行、宿主共享 SP 及模式差异 |
 | [09 Skill 机制与需求](09-skill-mechanisms-and-requirements.md) | PRTS 技力／特殊技能／模式策略；客户端 metadata、原生指令与实际资源；10-29 补核修正协议和原生公式，11-10 核对启动结果消费 | SP 与进度、支付与门槛、触发与持续、跨次状态、弹药与二次操作、结束后输出；2.7 闭合原生公式，2.8 收紧贡献范围，3.3 区分实际成败回退与尚无内容依据的启动失败原因分类 |
 | [10 弱点伤害与概率判定](10-weak-damage-and-critical.md) | 当前WeakDamage／AtkScaleUp／AttackInfo、山实际概率能力、赤刃明霄陈完整DB别名 | 同一倍率静默试算、攻击级概率、实际选择链；当前atkAddition置零与Wiki的证据冲突 |
 | [11 HP应用、生命干预与流失](11-damage-apply-and-hp-application.md) | HP／ES／负生命、免死竞争、替身、同实例／主动复活、战术点及实际流失 | 固定扣血、动态不死、consumer后继、复活恢复与模式交接；修正若叶睦模板归属 |
-| [12 SPFA、平滑与移动消费](12-navigation-native-algorithm.md) | 当前 DLL／metadata 原生指令、射线隔离仿真与 Stronghold 对照 | 原地后继更新、Bresenham 边界、运行时移动恢复、地图重规划与最终 Field 是否需要 rawNext |
+| [12 SPFA、平滑与移动消费](12-navigation-native-algorithm.md) | 当前 DLL／metadata 原生指令、射线隔离仿真与当批合成模型对照 | 原地后继更新、Bresenham 边界、运行时移动恢复、地图重规划与最终场实际消费 |
 | [13 Route、等待与实际移动时序](13-route-and-movement-timing.md) | Enemy／Cursor／Checkpoint 原生分支、完整固定关卡目录与实际技能资源 | 两处推进、等待、不可达跳过、目标采样／半径；首路点时序；马特奥运行时随机 MOVE 正例 |
 | [14 RouteDefinition 字段消费](14-route-definition-fields.md) | 出生／Cursor／完成检查原生分支、固定版本关卡 JSON；11-07 补核运行时路线与时间快照 | 字段行为、持续路线偏移、提前终点完成；不同出生入口及实例初始化的事实边界 |
 | [15 Locomotion 运动与空间约束](15-locomotion-native-semantics.md) | 当前 MoveController、Enemy 状态机、地图与物理原生分支，实际控制器 Prefab | 积分、吸附与速度保留、地形避障和反射、移动资格、分离与推拉、移速范围及 moving 观察语义 |
 | [16 Projectile 运动与命中边界](16-projectile-motion-and-hit-boundaries.md) | 当前 Projectile / Movement / HitBehaviour 原生分支，普通弩手、空爆、沿途碰撞和阿米娅实际 Prefab | 共用生命周期、运动组合与计时命中、原目标直选与附加候选资格、Targeting 调用归属 |
 | [17 Projectile 停止与终结](17-projectile-stop-and-termination.md) | StopMe / TryEliminate / 回收原生分支，逻各斯清弹、维什戴尔、慑砂与承曦格雷伊实际配置 | 普通停止与消除、Hit / Stop / Destroy 顺序、同步终结重入和到达后活动等待 |
 | [18 Projectile 来源与目标生命周期](18-projectile-source-and-target-lifecycles.md) | Entity 死亡／撤退／路线消失、ObjectPtr / MountPoint、普通 ApplyDamage、暗索套索及维什戴尔实际配置 | 身份与存活／空间资格、继续追踪与保底命中、来源数值回退与归属、可选生命周期依赖 |
-| [19 Effect 索敌与异常免疫](19-effect-selection-and-immunity.md) | 爱丽丝／卡夫卡睡眠选择、鼓舞光环与标记、Buff 安装及异常 Anti／Immune 原生分支 | 免疫者是否占目标名额、选择与施加／生效的区别、EFFECT Purpose 的必要性及当前项目缺失 |
+| [19 Effect 索敌与异常免疫](19-effect-selection-and-immunity.md) | 爱丽丝／卡夫卡睡眠选择、鼓舞光环与标记、Buff 安装及异常 Anti／Immune 原生分支 | 免疫者是否占目标名额、选择与施加／生效的区别、异常免疫、效果标记与原生 Purpose 的分别消费 |
 | [20 诺伯特平民的阵营与阻挡](20-norport-civilian-allegiance-and-blocking.md) | 本机平民／寻路密探 Prefab、SideTypeIndex 与既有阻挡原生证据；游戏教学和 PRTS 机制说明 | 友好标签与实际阵营的区别、无敌禁选与免伤、鉴定完成后的禁挡，以及定向阻挡资格的边界 |
-| [21 蒂比与空中阻挡](21-tippi-air-blocking.md) | 蒂比实际起飞／落地 Buff 与原生对地规避分支，复用 Blocking 模式调查；补核风絮、可浮空区块及半径默认／倍率／覆盖 | 自身运动身份与阻挡层分离、切换清理、飞行目标停走；2026-10-30 通用 Blocking.layer／setLayer 接入与未实现内容的边界 |
+| [21 蒂比与空中阻挡](21-tippi-air-blocking.md) | 蒂比实际起飞／落地 Buff 与原生对地规避分支，复用 Blocking 模式调查；补核风絮、可浮空区块及半径默认／倍率／覆盖 | 自身运动身份与阻挡层分离、切换清理、飞行目标停走；切层清理、动态半径和实际内容的证据边界 |
 | [22 阻挡站位与中断](22-block-positioning-and-interruption.md) | 当前客户端的 BattleTween、解除／裁撤、离场、传送及失衡入口 | 确定性线性曲线、不同解除入口的取消语义、残留插值与自主移动调度，以及顺序重接敌与同步重入的区别 |
 | [23 Blocker、Blockable 与阵营](23-blocker-and-blockable-roles.md) | 原生角色／敌人资格与本机全部 Enemy bundle 初始掩码 | 区分双重角色执行能力与实际内容，核查 ALLY 限定是否成立 |
 | [24 待部署区、部署费用与卡牌供给](24-deployment-cost-and-supply.md) | 费用 getter／取整／独立截断上限、卡牌 Buff 进入角色与出生时序；cardUid 生成和普通重部署；PRTS 手牌顺序、场下资源、资格、供给及模式对照 | 卡牌与在场采样、共享消耗、当前／下次计时、显示／点选／部署的区别；来源身份跨普通重部署保留，以及原生阶段与多来源交互的证据边界 |
@@ -44,10 +44,10 @@
 | [32 莱塔尼亚召唤物的阻挡与移动](32-leithanien-summons-blocking-and-movement.md) | 规程热更新召唤模板、两个实际 Enemy Prefab、BlockManager 与 Trace／作战状态机 | 区分我方阵营与实现类、仇恨追踪与阻挡交战、相对自身的默认地块；最终属性数值仍待确认 |
 | [33 Targeting／Targetable 通用调用链](33-targeting-and-targetable-pipeline.md) | 真实模式／Trigger／Selector／Validator、候选与优先级、Ability绑定与再验证、弹道及作用入口 | 资格与异常来源、三类排序分流、仇恨距离、HP／EP联合治疗、选中时点与本项目政策的差异 |
 | [34 PRTS 公共机制覆盖审计](34-prts-mechanism-coverage-audit.md) | PRTS 机制目录与代表内容，对照已归档原生证据及当前公共接口 | 区分真实遗漏、既有延期、可组合内容与待核实候选，不以具体内容数量代替公共机制覆盖 |
-| [35 面向与转向条件](35-facing-and-turning-conditions.md) | FaceTo 统一准入、出生／移动／攻击／受力／出现／待机时点、Animator 符号与实际内容绑定 | 区分目标向量、身体四向和有效左右面向；先确认触发、资格及发布条件，再决定 Facing 的项目契约 |
+| [35 面向与转向条件](35-facing-and-turning-conditions.md) | FaceTo 统一准入、出生／移动／攻击／受力／出现／待机时点、Animator 符号与实际内容绑定 | 区分目标向量、身体四向和有效左右面向；触发、资格、发布条件与实际方向消费者 |
 | [36 单位分类与战斗标签](36-unit-classification-and-combat-tags.md) | 实现类／类型掩码、职业、FilterTag／GroupTag、敌人级别与攻击方式；泥岩、守林人、迷迭香及维娜模组绑定 | 分开初始化来源、查询对象与实际内容，核对附加职业及标签预处理，不将展示资料或 Profile 转换当作原生规则 |
 
-| [37 HP／EP资源机制全链覆盖](37-resource-mechanism-coverage.md) | 字段／方法清单、真实Content绑定、全Holder与资源扫描、既有项目选择 | Vitality／Elemental／Damage／Healing统一证据入口；实际需求、实现差距、未绑定候选与冲突分别列明，不默认批准简化 |
+| [37 HP／EP资源机制全链覆盖](37-resource-mechanism-coverage.md) | 字段／方法清单、真实Content绑定、全Holder与资源扫描 | Vitality／Elemental／Damage／Healing统一证据入口；实际使用、未绑定候选与证据冲突分别列明，不默认批准简化 |
 | [38 Damage分类与权限](38-damage-classification-and-permissions.md) | Modifier、22项标志、公式／接收完整体、实际干员与召唤链 | 数学类型、攻击分类、施加途径、数值／取消权限、环境、分担／反伤与传播区别 |
 | [39 最终死亡归属与属性范围](39-death-attribution-and-attribute-ranges.md) | Context栈生产与恢复、FinishMe／OnFinish／两方向通知、实际角色／模组 | 区分伤害与程序来源、noSource原因、最终回收，属性覆写与MaxHP普通setter后继 |
 

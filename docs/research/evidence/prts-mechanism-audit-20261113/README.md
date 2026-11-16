@@ -12,7 +12,7 @@
 
 特别注意：《伤害分类》当前直接打开页面为 2.7.91，搜索引擎摘要仍可能是 2.7.81；《数值范围》页面自身仍声明 2.7.81。不能把缓存摘要、Wiki 声明版本与本地客户端混成同一证据快照。《命中率》有施工警告。未声明统一版本的页面保留 `null`，不从页脚日期补造客户端版本。
 
-此目录保存社区资料与项目实现的覆盖比较。独立 Wave 释放复用 `scheduler-general-20261107`；面向写入与玩法消费已补核于[独立原生批次](../facing-semantics-20261113/README.md)。击杀通知读取 BattleContext 的短链见 [HP 流失批次](../hp-loss-settlement-20261113/README.md)，没有因此确认全部归属生产路径。面向的具体内容绑定、独立击杀来源与共享测距仍分别保留证据限度。
+此目录保存社区资料与项目实现的覆盖比较。独立 Wave 释放复用 `scheduler-general-20261107`；面向写入与玩法消费已补核于[独立原生批次](../facing-semantics-20261113/README.md)。本批初始击杀短链复用 [HP 流失批次](../hp-loss-settlement-20261113/README.md)；后续归属生产与恢复已由 [Case 39](../../cases/39-death-attribution-and-attribute-ranges.md)补核，面向绑定见 [Case 35](../../cases/35-facing-and-turning-conditions.md)。共享测距仍保留本批未闭合范围，历史 coverage.json 不作为当前实现差距表。
 
 复查代码可使用 `coverage.json` 中的路径；固定基线示例：
 

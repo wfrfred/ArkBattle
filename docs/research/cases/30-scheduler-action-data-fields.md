@@ -15,7 +15,7 @@ ArkBattle 是通用明日方舟战斗模拟器。卫戍是当前重点，生息�
 
 配置固定为 `Kengxxiao/ArknightsGameData@bee3f83c5d60590b5e1cd42b8d09d00ce32ab10d`。新批次目的性选取 82 份、3,447 条 Action，并逐文件核验 Git blob SHA：79 份非生息来源有 3,283 条；另取 3 份排除模式配置、164 条作为字段取值对照，分别统计。不是全仓覆盖，也不将所有来源玩法宣布为支持目标。配置见证与 Branch／隐藏组激活链尚未核实的限制分别记录。
 
-本案依次检查五件事：完整消费链；入口间差异；能区分行为的非默认样本；Data／Content／Core／Meta 边界；是否有依据压缩类型。最后一步尚未实施。
+本案依次检查五件事：完整消费链；入口间差异；能区分行为的非默认样本；Data／Content／Core／Meta 边界；是否有依据压缩类型。项目输入见 [Schedule](../../architecture/schedule.md)。
 
 ### 关联容器字段
 
@@ -53,7 +53,7 @@ DataDriven 的 InitValidation 将 actionId 写为 `(subSchedulerI, waveI, fragI,
 
 **N：** 当前 `PhaseData.get_randomActionGroups`（32192）遍历完整 actions，按非空 key 汇入字典，同名项不要求相邻。`FetchActionsWithRandomSpawn(true)`（32193）先按组抽取并收集 Pack Key，再按原数组顺序返回已选及同 Pack 的有效动作。`enemy_2128_dysuib → Talents → SecondRelicTalent` 实际绑定的模板，会在宿主具备 `rogue_5_dyswrd_relic_b` 且 `active_relic_b=1` 时安装调用 `MoveNextLevelBranch(loop=true)` 的程序；所选关卡给 `enemy_2128_dysuib_sp` 提供该开启值并通过 `dycyue_body` 出生。[Prefab、条件与模板](../evidence/unit-audit-20261110/coordinates-numeric/content.json)、[分组及 Execute 原文](../evidence/unit-audit-20261110/coordinates-numeric/native.json)。本批未沿玩法准备层追溯该条件 Buff 的全部安装来源，也未执行客户端。
 
-因此，Data 当前拒绝 Pack、要求 Branch 同组候选连续，是适配器支持子集，不是原生合法性约束；不能从当前 throw 或卫戍样本的默认值推出这些需求不存在。继续拒绝还是扩展转换属于待明确的项目范围选择，本轮不定案。
+同名随机组不要求相邻、Pack 可关联多项；不能以某个适配器的支持子集或卫戍默认值推导原生合法性。项目静态转换边界见 [Data](../../architecture/data.md)和[Schedule](../../architecture/schedule.md)。
 
 ## 3. 逐字段消费矩阵
 
@@ -171,20 +171,9 @@ Enemy.SetExtraMeta 写的是同一 Options.actionExtraMeta，但这是出生后�
 
 79 份非生息样本中，managed=false 有 3 项、blockFragment=true 有 41 项、dontBlockWave=true 有 69 项；隐藏组非空 318 项、group 非空 327 项、Pack 非空 332 项。排除模式的字段对照独立统计，不纳入通用机制支持清单。数字枚举原值也保留，不凭声明顺序转换为名称。
 
-## 8. 独立判断项目职责
+## 8. 项目对应
 
-依据是上文已追踪的行为，不按原生类名、字段名或当前项目目录分配职责：
-
-| 工作 | 所属职责与边界 |
-| --- | --- |
-| 解释敌人键／alias／动作类型、时间与路线引用 | Data 适配原始描述并绑定内容定义；不能将一个 key 统一解释成敌人 ID |
-| 预先确定本轮阵容、读取保存的有效位置和剩余预算、改写模板 | 由对应输入准备／Meta 或玩法适配负责；先理解其最终输出，不能因不是 Core 就不研究 |
-| 战斗中选择 Phase、按条件触发出怪、组织附加效果 | 由实际战斗领域与 Content 程序协作；不能将所有随机选择一律提前到 Meta |
-| 逐 Tick 推进、当前动作完成、波次／最终等待、实例退出账务 | Core 的通用调度与生命周期语义；管理、计数和阻波是不同事实 |
-| 敌人信息载荷中的专属强化或特训程序 | 解释为具体内容事实／初始化或登记程序；不直接让 Core 理解卫戍 EnemyInfo |
-| 原生音画动作 | 表现与控制流程分开审视，保留实际影响调度的完成／阻塞语义；不机械搬进战斗能力模型 |
-
-卫戍本轮阵容随机已明确属于 Meta；这个结论不决定普通关卡、Branch 或战斗中随机出怪的归属。另一方面，原生存在字段也不意味着 Core 必须保留同名字段。应在原生解释与最终调度输入的关系清楚后，再设计最小的通用类型。
+预处理的阵容替换、Phase 内运行时选择、动作执行、实例等待及统计是不同的原生事实。项目计划、运行状态与 Data／Content 边界见 [Schedule](../../architecture/schedule.md)、[Data](../../architecture/data.md)和[Content](../../architecture/content.md)，不在本案另存类型草案。
 
 ## 9. 当前仍未闭合的事项
 

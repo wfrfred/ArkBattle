@@ -164,26 +164,17 @@ return withinDistance(locator, sampledTarget, reachDistance);
 
 DefaultGameMode.DestroyEntity 对 REACH_EXIT 使用 RecycleSelfWithDelay，逻辑结束不等于立即完成资源回收。Finished／Killed 计数与 Scheduler 等待集合分别依既有资格和销毁／回收通知处理，复用[案例 30 的生命周期结论](30-scheduler-action-data-fields.md#5-四个争议字段与退出账务)，本轮不扩展全部通知与回收链。
 
-**项目影响：** requireAllCheckpoints=false 证明完成资格不只取决于指令索引，不单独证明必须锁存 completed。当前项目“保留 Main 完成状态、另行判断离场资格”的政策是独立工程选择；不能用上述原生路径为该锁存或 Blocking 门槛背书。
+requireAllCheckpoints=false 说明终点资格不只取决于指令索引；上述路径不保存独立 completed，不能为项目锁存标记或 Blocking 门槛背书。项目终点操作见 [Navigation／Route](../../architecture/navigation.md#运动目标与-main-出口)。
 
-## 6. 末段跟踪差异与项目选择
-
-最初的 nextPoint 草案只在当前格为目标节点时返回精确 target，其他可达格返回 next 格中心。它不执行额外 Raycast，不负责 Cursor、Visits、到达或实际运动。
+## 6. 末段跟踪的偏移
 
 **N：** 原生 MoveCheckpoint.GetNextDirection（70190）在安全 next 格已经指向路点目标格时，就将本次已采样 offset 加入 next 位置后求方向；不要求当前格先进入目标格。位置计算与分支见 `0x1808a03f3..0x1808a0437`。[末段方向](../evidence/route-movement-20261018/70190.asm)
 
-因此在带非零 reachOffset 的路点上，该草案可能产生不同的局部末段轨迹，但最终目标相同。用户将其判断为小差异，采用不增加 API 的修正：当前格是目标节点，或 next 已指向目标格时，均返回精确 target；其余情况返回 next 格中心。现行契约见 [Navigation 设计](../../architecture/navigation.md)。
+原生末段偏移会在 next 指向目标格时参与，不只在当前格已经是目标格时参与；项目 nextPoint 契约见 [Navigation](../../architecture/navigation.md)。
 
-## 7. 对下一步接口审查的要求
+## 7. 证据边界
 
-- 区分路点时间更新、根据位置／可达性推进、实际运动三件事。
-- Route 提供当前目标及抵达／不可达政策，Locomotion 消费建议并提交实际位置；无需复制客户端类层级。
-- 地图内不可达可直接使用 nextPoint 的 null 结果反馈给 Route，目前不需要独立可达性查询或更复杂的结果类型；地图外恢复由 Locomotion 处理。
-- 同 Tick 连续处理路点不得重复消耗同一份 dt；移动只消费一次预算。项目不强制复制客户端的推进位置。
-- 中心访问记录等政策按实际配置需求继续审查，不预先设计；确需维护的历史归 Unit，不能藏进 Navigation 缓存。
-- 局部避障与位移修正后续按实际业务审查，不因客户端存在相关分支就预设额外 API。
-
-**U：** 未穷尽所有状态机子类、TracePositionCursor 预测前视对特殊短距离布局的影响、运行时热更覆盖和所有状态间切换的帧边界。本轮没有游戏现场验证，也没有以项目现有实现反证客户端。
+路点时间更新、根据位置／可达性推进和实际移动有独立调用点；推进 Checkpoint 不能等同额外消费一次运动预算。尚未穷尽状态机子类、TracePositionCursor 在特殊短距布局中的预测、活跃 XLua 和所有状态切换的帧边界，没有进行游戏现场轨迹验证。
 
 ## 8. ALERT 与巡逻回边（2026-11-06 补核）
 
@@ -278,7 +269,7 @@ BObject.Init 在 `0x1806afb63` 建立位置，早于 Enemy.Init 随后的 Cursor
 
 ### 对后续设计的约束
 
-首路点进入可能包含随机采样、位置写入和同步业务，不能把“构造 Route State”和“进入首路点”混成纯字段初始化，也不能未经判断统一推迟到首个移动 Tick。原生两层登记及类方法顺序不是项目必须照搬的结构；应据实际观察语义决定完整创建／Enter 的边界。当前 Data 接受参数却未传递的现状，不构成字段无用的证据；非默认使用尚未闭合的部分继续保留为调查缺口，不据此提前扩大公开接口。
+首路点进入可能包含随机采样、位置写入和同步业务，不能把“构造 Route State”和“进入首路点”混成纯字段初始化，也不能未经判断统一推迟到首个移动 Tick。原生两层登记及类方法顺序不是项目必须照搬的结构；应据实际观察语义决定完整创建／Enter 的边界。非默认使用尚未闭合的部分继续保留为调查缺口，不据此提前扩大公开接口。
 
 ## 10. 非默认参数的内容正例与搜索范围（2026-11-07 补核）
 

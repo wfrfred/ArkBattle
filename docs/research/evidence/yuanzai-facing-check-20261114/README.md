@@ -1,6 +1,6 @@
 # 圆仔面向的定向核对
 
-日期：2026-11-14。目的：检验独立 Facing、默认移动改向及内容规则能否表达圆仔。未修改 Core 或 Content。
+日期：2026-11-14。范围：圆仔的社区面向说明、可能相关的通用原生节点及其绑定限制。
 
 - `sources.json`：PRTS 级别0的能力说明、来源和限定结论。
 - `node-type.json`：当前客户端通用候选节点 `FaceToDirectionViaMoreTargets` 的字段和方法。

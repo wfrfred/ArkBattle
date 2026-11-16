@@ -133,8 +133,10 @@ GameMode 最后决定销毁／回收方式。Default／AutoChess／GameCity 的 
 
 `Entity.OnAttributeDirty` #67699 对 MaxHP 先计算 `currentHP / oldMaxHP × newMaxHP`，再调用普通 `set_hp`（`0x1807287ee`）。随后以 dt=0接续自然回复timer并重设速率。它不是只写比例后的裸字段。
 
-这会与负生命偿还、HP范围和资源通知交互。比如负生命有效、普通HP为1时，MaxHP翻倍使拟写HP为2，该正向变化可能先偿还1点债务。这是两段原生代码的组合推导，不是本次实机观测；不能继续引用“负生命绝不受MaxHP变更影响”的绝对概括。项目当前MaxHP Change采用纯比例同步，是否扩展须在生命提交整体设计中明确，本文未批准简化。
+这会与负生命偿还、HP范围和资源通知交互。比如负生命有效、普通HP为1时，MaxHP翻倍使拟写HP为2，该正向变化可能先偿还1点债务。这是两段原生代码的组合推导，不是本次实机观测；不能继续引用“负生命绝不受MaxHP变更影响”的绝对概括。项目 MaxHP 与债务分配契约见 [Vitality](../../architecture/vitality.md)，不能继续沿用旧的纯比例字段写入假设。
 
-## 5. 项目边界
+## 5. 项目对应
 
-ArkBattle 已确认 Calculate／Apply 的语义边界、Applied 后确认本笔死亡、完整 Apply Outcome.killed、不新增 Kill Hook。它们是项目协议，不是上面原生事件栈的逐项映射，也没有声称已覆盖负生命、替身或复活归属。新增简化、弃用或模式排除须回到[完整覆盖表](37-resource-mechanism-coverage.md)逐项确认，不能因当前没有字段就当作内容可自行补齐。
+来源与 killer 的独立事实、死亡确认、来源 targetKilled 先于受害者普通 Prepare，以及 InstantKill 调用方的合法生命周期编排见 [Resource](../../architecture/resource.md)与[Lifetime](../../architecture/lifetime.md)。本案不把原生 Context 栈、原因值或对象池变成项目同名协议。
+
+HP／债务、属性范围和生命保护的当前边界见 [Vitality](../../architecture/vitality.md)；完整原生覆盖及具体证据限制见 [Case 37](37-resource-mechanism-coverage.md)。项目选择不能反过来作为原生结论的依据。

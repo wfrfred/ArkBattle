@@ -1,6 +1,6 @@
 # Targeting 与 Targetable
 
-目标选择由普通 Query、集合算法和领域函数组合。Targeting 提供常用候选资格、空间判断与优先级比较；Targetable 保存目标自己的受选限制和嘲讽属性。选择时机、目标绑定与后续复验归调用业务。
+目标选择是普通 Query 与集合算法的组合。Targeting 提供常用资格、几何条件和比较器；Targetable 拥有目标侧受选限制及嘲讽。选择时机、绑定、重选与命中复验归调用业务，不存在另一套通用选择流程对象。
 
 ## 查询组合
 
@@ -9,120 +9,54 @@ const candidates = units.all(battle)
     .filter(hasTargetable)
     .filter(targeting.damage(battle, source))
     .filter(targeting.inRange(origin, range));
-
 const selected = topK(candidates, count, targeting.distance(origin));
-const bindings = selected.map(units.ref);
 ```
 
-source 是调用者选定版本的 Unit。采用标准敌我资格时，来源必须具有 Allegiance，由类型约束表达；调用方从宽泛 Unit 取得来源时，在调用边界收窄。Query 绑定输入 BattleState，谓词读取同一版本；集合终端保留候选完整类型，只有保存身份或调用后续操作时才生成 Ref。候选来源可以是全场、阻挡关系或既有名单，内容可以组合多个查询。
+Query 绑定输入版本，来源 Unit 是调用者选定的事实。候选可来自全场、阻挡或已有名单，内容可多次查询组合策略；终端保留能力类型，只在保存身份或调用后续操作时生成 Ref。
 
-`common.topK` 负责稳定排序与截取，比较相同保留源顺序。`Query.take` 只取当前顺序的前若干项。`rng.sample(candidates, count)` 立即消费候选并无放回抽样；调用者显式接续 RNG 状态，不能在惰性谓词或比较器中消费随机数。
-
-标准谓词直接适配 `Query.filter`，不要求所有查询经过同一选择入口。简单的身份、Layer 或资源条件直接读取已有对象；敌我关系、阻挡关系、生命状态与属性求值复用所属领域查询。
+topK 稳定排序截取，take 只取现有顺序；随机无放回选择立即消费序列，调用者显式接续 RNG，不在惰性谓词或比较器中取随机。
 
 ## 标准资格
 
-四种标准谓词均接收 `(battle, source, ignore?)`，返回保留输入 U 的能力守卫：
+标准谓词要求来源具有 Allegiance，并为异构目标证明所需资源能力与阵营，保留已有其他能力：
 
-```typescript
-function damage(
-    battle: BattleState,
-    source: Unit & Allegiance,
-    ignore?: (restriction: Restriction) => boolean,
-): <U extends Unit & Targetable>(target: U) => target is U & Vitality & Allegiance;
-```
-
-四种标准谓词均要求来源具有 Allegiance。候选来自异构集合，谓词检查候选的能力并保留证明：damage、healing 证明 Vitality 与 Allegiance；elementDamage、elementHealing 证明 Elemental 与 Allegiance。已有 Hitbox、Route 等能力不会在连续筛选中丢失。通用 Targetable 限制查询不因此要求所有来源或目标具有阵营。
-
-| 谓词 | 常用政策 |
+| 谓词 | 政策 |
 | --- | --- |
-| damage | PRESENT、空间存在、有 Vitality 且 HP>0、敌对、目标受选限制允许。 |
-| healing | PRESENT、空间存在、有 Vitality 且 HP>0、同阵营、有效 HP 未满、目标受选限制允许，且没有 ACTIVE 的标准 healFree Effect。 |
-| elementDamage | 空间存在、Elemental 可用、无 Burst、目标非中立、敌对、目标受选限制允许。 |
-| elementHealing | 空间存在、Elemental 可用、无 Burst、同阵营、有 EP 恢复需求、目标受选限制允许。 |
+| damage | PRESENT、空间存在、正生命、敌对，受选限制允许。 |
+| healing | PRESENT、空间存在、正生命、同阵营、有效 HP 未满，限制允许且无 ACTIVE healFree。 |
+| elementDamage | 空间存在、Elemental 可用、无 Burst、非中立敌对目标，限制允许。 |
+| elementHealing | 空间存在、Elemental 可用、无 Burst、同阵营且有恢复需求，限制允许。 |
 
-HP 标准资格复用 Vitality.isAlive，治疗缺血使用 Vitality.hpRatio < 1，不在 Targeting 内直接解释 HP 字段。Elemental 可用要求 PRESENT；具有 Vitality 时还要求 Vitality.isAlive，不要求所有 Elemental Unit 都具有 Vitality。EP 标准资格不构造 Damage／Healing Request，也不执行其完整接收 Restriction。具体作用仍由 Apply 检查；选择成功不保证接收成功。
+生命和比例由 Vitality 解释；Elemental 不要求所有宿主都有 Vitality，具有时仍检查存活。EP 选择不伪造资源 Request 或执行完整接收限制，选中不保证后续作用成功，见 [Resource](resource.md)。
 
-标准谓词明确组合各自政策。普通 HP 治疗选择检查 healFree，独立 EP 回复不检查；特殊选择由内容直接组合目标限制和所属机制查询。
-
-联合治疗的需求是 HP 或有效 EP 可恢复，不能先使用 HP healing 排除满 HP 的患者，再尝试补 EP 条件。Burst 中 EP 不构成恢复需求，但缺 HP 仍可入选。具体内容明确是否采用 healFree 限制，以及比较 HP 比例与绝对 EP 剩余量的主次。
+联合治疗先判断 HP 或有效 EP 有需求，不能先排除满 HP 再补 EP 条件。Burst 不提供 EP 需求，但缺 HP 仍可入选；healFree 是否适用及混合排序由具体内容明确选择。
 
 ## 空间与优先级
 
-`inRange(origin, range)` 检查目标 Hitbox 与显式原点的几何范围相交，无 Hitbox 返回 false。它不隐含生命周期、空间存在或阵营。朝向范围由 `geometry.fromTiles` 生成；来源位置、搜索原点和排序参考可以分别指定。
+inRange 检查目标 Hitbox 与显式原点的 Range 相交，无 Hitbox 为 false，不隐含其他资格。来源位置、搜索原点与排序参考可不同；朝向范围使用当前实例方向和几何转换。
 
-比较器使用普通 `(left, right) => number`：
+普通比较器提供距离平方、有效 HP 比例、有效嘲讽及来源实际阻挡顺序，内容按主次组合。入场先后使用 UID；路线优先使用 Route／Navigation 几何剩余路程，不用直线或搜索代价替代。仇恨是比较公式，不保存入场时间、序号或仇恨缓存，也不按当前阵营猜实体的排序政策。
 
-- `distance(origin)` 比较距离平方。
-- `hpRatio(left, right)` 要求双方具有 Vitality，比较 Vitality.hpRatio 的返回值；普通生命比例由 Vitality 解释。
-- `taunt(battle)` 要求双方具有 Targetable，有效嘲讽越高越优先。
-- `blockedFirst(source)` 按该来源的实际阻挡关系列表顺序排列相关目标；来源要求 Blocker 或 Blockable。
-
-比较规则按内容用 `a(left, right) || b(left, right)` 组合。入场先后采用当前 UID 顺序，后入场优先直接比较 `right.id - left.id`。仇恨是比较公式，不保存在 Unit 或 Targetable State 中，不增加入场时间、序号或仇恨缓存。
-
-路线优先读取 Route／Navigation 提供的估计剩余路程，不以当前位置至最终格的直线距离或导航搜索代价代替。角色按入场顺序、敌人按路线距离等普通规则由内容明确采用，不能从 ALLY／ENEMY 推断实体使用哪项政策。
-
-阻挡前缀补足可以分两次选择：先按关系顺序筛选并占用名额，再从普通范围候选排除已选身份，补足剩余名额。敌人对自身 blocker 的直选按既定内容政策检查 PRESENT、空间存在、存活与敌对，可以绕过普通受选限制；普通范围分支仍使用标准资格。干员阻挡目标没有隐含的限制豁免。
+阻挡前缀可以先选关系目标，再排除已选身份补范围名额。敌人对自身 blocker 的直选可按内容绕过受选限制，但仍判断在场、空间、生命与敌对；干员阻挡目标没有隐含豁免。
 
 ## Targetable
 
-```typescript
-interface Definition {
-    readonly taunt: number;
-    readonly restrictions: readonly Contribution<Restriction>[];
-}
+Definition 明确基础 taunt 与固有限制，State 保存嘲讽贡献及固有／动态的同一限制集合。固有限制重复登记 ID 在构造处拒绝。嘲讽按有效贡献和属性公式取偶舍入，允许负值，不另存派生仇恨。
 
-interface RestrictionContext {
-    readonly source: Unit;
-    readonly target: Unit & Targetable;
-}
+限制使用精确 `{ source, target }` 纯 Context；allowsRestrictions 返回目标谓词，不读取完整查询程序、不解释用途枚举或失效 Ref。普通内容通过标准资格隐藏限制细节，特殊内容才直接组合它。
 
-type Restriction = restriction.Restriction<RestrictionContext>;
+Contribution.id 是登记身份，限制定义对象是机制身份。豁免谓词在有效项竞争后执行；可按定义对象 === 忽略某机制，或以恒真豁免全部受选限制。共用 allows 函数不合并不同定义，忽略胜者不复活被压制项，也不绕过阵营、生命、范围或实际接收规则。公共贡献语义见 [Capability](capability.md#资格限制)。
 
-interface State {
-    readonly taunt: readonly Contribution<Input>[];
-    readonly restrictions: readonly Contribution<Restriction>[];
-}
-```
-
-Targetable 复用公共 Restriction<RestrictionContext>，内部 RestrictionContext 为 { source, target }；外部 allowsRestrictions(battle, source, ignore?) 仍返回目标谓词，不增加查询协议对象。限制只读地判断目标是否允许给定来源选择自己，不接收整次查询程序。来源输入可以由调用者从当前状态取得，也可以由具体延迟输出保留；Targetable 不自行解析失效 Ref 或猜测回退策略。
-
-Definition 的 taunt 和 restrictions 均显式提供。初始化建立空嘲讽贡献，并核对固有限制 ID 唯一性，重复 ID 拒绝构造。固有与动态限制进入同一 State 集合。
-
-`resolveTaunt(battle, self)` 先选有效贡献、动态求值，再按属性公式计算并作半值取偶的整数求值。嘲讽允许负数。`setTauntContribution`／`removeTauntContribution` 沿用普通注册 Change；查询时求值，不维护衍生仇恨状态或附加 Settlement。
-
-`setRestriction`／`removeRestriction` 同样返回 Change。Contribution.id 标识一次独立登记，Restriction 定义对象本身是豁免身份。同一机制的固有和动态来源共享定义对象；不同机制保留不同定义对象，即使复用同一个 allows 函数。
-
-```typescript
-const permitted = targetable.allowsRestrictions(
-    battle,
-    source,
-    (restriction) => restriction === invisibleRestriction,
-);
-```
-
-`allowsRestrictions(battle, source, ignore?)` 返回目标谓词。它先按 Contribution 规则解析有效项，再将定义传给 ignore；返回 true 的定义在本次查询中豁免，剩余项必须全部允许。省略 ignore 表示不豁免，`() => true` 表示豁免全部受选限制。豁免不恢复被竞争压制的项，不改变目标状态，也不豁免生命、阵营、范围或实际作用的接收规则。
-
-普通内容调用标准资格，不需要解释各项限制；特殊内容可以直接使用 Targetable 查询。选择性豁免按定义对象的 `===` 身份比较；上例跳过所有有效的 invisibleRestriction 登记，仍保留迷彩、无敌等其它定义。异常免疫由所属机制维护，Restriction 复用其事实，不在 Targetable 复制免疫状态。
-
-healFree 是独立的标准 Effect，普通 HP healing 按 Definition 对象身份查询其 ACTIVE 实例。它不登记 Restriction，有效性由 Effect 生命周期与竞争决定。复合内容通过安装独立的标准实例取得此语义；明确目标的 Healing 接收不检查该标记。
+healFree 使用标准 Effect 的 Definition 身份和 ACTIVE 状态，不重复登记限制；只影响普通 HP 治疗选择，明确目标的 Healing 与独立 EP 恢复不检查它。
 
 ## 调用业务
 
-攻击模板的每个 TargetGroup 保存 `select(battle, sourceRef): Result<readonly Ref<Unit>[]>`。调用时读取来源、构造并消费 Query，按组顺序接续返回状态后保存 bindings。启动拒绝仍保留此前已经发生的随机消费。
+攻击各 TargetGroup 的内容选择函数按组顺序接续 State 并保存绑定；即使后来启动拒绝，已完成的 RNG 消费仍保留。启动存在性、实际选择和绑定复验可共享内容谓词，但复验不重新竞争名额或取随机，各时点是否同资格仍由内容决定。
 
-需要复用资格的内容共享自己的谓词或候选构造函数：启动条件使用存在性查询，选择使用集合终端，已绑定目标的显式复验只检查当前资格，不重新竞争名额或抽随机数。各时点是否采用相同资格由该内容决定。
-
-已有锁定身份的 Projectile 不自动重新执行普通选择。AOE 等延迟业务自己决定何时保存来源事实、何时搜索当前空间目标，见[原生实例](../research/cases/33-targeting-and-targetable-pipeline.md#46-来源离场后的真实群攻弹道)。Targeting 不管理这些输出的生命周期或快照。
+锁定 Projectile 不自动重新索敌；延迟范围输出自己决定来源采样和搜索时点，Targeting 不管理其生命周期。真实例子见[来源退场后的群攻弹道](../research/cases/33-targeting-and-targetable-pipeline.md#46-来源离场后的真实群攻弹道)。
 
 ## 关键语义与验收
 
-- 普通 HP／EP 选择采用对应标准资格；EP 候选不因完整接收 Restriction 拒绝而提前消失，实际 Apply 仍可拒绝。
-- 来源与搜索原点独立；范围使用当前 Hitbox。空间消失、Layer 和绑定后的命中按各自业务判断。
-- 定义对象豁免覆盖共享定义的全部有效来源，保留其它定义；共用允许函数不合并豁免身份。竞争先于豁免，固有与临时登记互不误删。
-- ACTIVE 的标准 healFree 只影响普通 HP 治疗选择，禁用或结束后不再限制；明确目标的 Healing 和独立 EP 回复分别判断。
-- 联合治疗使用 HP 或有效 EP 的需求。阻挡前缀与普通候选可以采用不同政策，不因迁移改变既定内容结果。
-- 标准资格的来源类型要求阵营；目标资格守卫保留已有能力并证明资源能力与阵营。嘲讽读取有效贡献，允许负值；入场排序直接使用 ID。
-- 攻击按顺序接续各组 RNG，保存绑定；显式复验不重选。随机算法、Query 遍历与稳定 TopK 由公共套件集中验证。
+标准资格／类型保留、有效 HP／EP 需求、独立空间原点、定义豁免、healFree、绑定后复验与多组 RNG 的最小代表见[语义验收](verification.md)。Query、稳定 TopK 和抽样算法集中保障，不逐谓词重复。
 
-验收先按上述独立结果选最小代表场景，不测试已删除接口的缺席或为每个函数复制公共算法矩阵。具体归属见[语义验收](verification.md)。
+原生完整流程见[Targeting 调查](../research/cases/33-targeting-and-targetable-pipeline.md)。其中启动条件、绑定与最终接收属于上下游证据，不能因原生 Selector／Ability 结构复杂而扩张本领域。普通仇恨及特殊内容的接入缺口集中见 [Tactical 语义](tactical-semantics.md)。

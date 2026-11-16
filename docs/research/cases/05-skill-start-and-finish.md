@@ -42,18 +42,6 @@ Ability.StartCastingInternal：先设置 casting
 
 **后续推进也没有按消失统一暂停。** 所查 `Character.OnTick → BasicSkill.Tick` 及开始行为之外的普通 Tick 派发没有消失门禁。Skill 自身仍有存活、沉默、持续期等条件；这不证明所有派生技能或行为在消失期间都执行同样业务。
 
-对应项目当前问题：`activate` 在通知后因 Presence 消失而跳过 `onStart`，却保留 ACTIVE Activation，并不能由上述原生链证明合理。应分别判断这次变化是否真正结束了本轮 Activation，以及仍成立的本轮开始程序应执行什么；不能仅用消失状态代替两项判断。本轮只记录证据与差异，未改动项目的取消策略、开始接口或 Lifetime。
-
 范围限制：没有实际运行或绑定一个 Character 内容来复现“开始通知令自身消失”；结论是普通 native 调用链及条件分析，不是全部内容的运行时保证。
 
-## 项目事件协议
-
-领域事件是结算输出，当前不驱动战斗业务。完整结算登记自身事件，额外报告只保留业务结果；Tick 收尾可投影 Removal Facts。
-
-普通激活：内容成功且本次 activation 仍成立之后登记 SKILL_ACTIVATED；结束：关闭生命周期并完成结束回调之后登记 SKILL_FINISHED。普通零持续期采用“激活内容事件 → ACTIVATED → 清理／结束内容事件 → FINISHED”。
-
-激活内容中已经结束本次 activation 时，继续接续已完成的状态和事件，返回 FINISHED；不在返回时补一个描述当前已不存在激活的 ACTIVATED。内容拒绝保留已完成前缀并返回拒绝原因。这是项目报告约定，不宣称官方具有同名事件流。
-
-## 审查问题的应对
-
-重要业务时序查官方；条件性差异先确认中间业务与影响；约一个 Tick 的小差异采用简单约定；仅报告排序或工程中间过程不阻塞设计。研究业务是否执行与生命周期何时关闭，不为了复制客户端内部结构增加通用调度层。
+项目开始、结束及事件输出契约见 [Skill](../../architecture/skill.md)与[Event](../../architecture/event.md)，不由原生 Ability 的内部回调名称直接决定。

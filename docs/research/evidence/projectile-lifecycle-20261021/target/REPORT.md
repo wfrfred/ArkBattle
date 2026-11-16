@@ -1,6 +1,6 @@
 # Target 生命周期：普通 Projectile 的追踪与原目标保底
 
-研究日期：2026-10-21。范围是本机客户端原生 fallback；没有运行注入、观察实机录屏或核对当前活跃 XLua 替换。版本身份沿用项目 `docs/tactical-research/evidence/projectile-stop-20261021/manifest.json`。仅研究死亡、撤退与对象有效性，暂时消失由 root 的独立分支补齐。没有修改源码。
+研究日期：2026-10-21。范围是本机客户端原生 fallback；没有运行注入、观察实机录屏或核对当前活跃 XLua 替换。版本身份见[同批停止调查清单](../../projectile-stop-20261021/manifest.json)。仅研究死亡、撤退与对象有效性；暂时消失见[独立分支](../presence/REPORT.md)。
 
 ## 1. 结论
 

@@ -1,434 +1,130 @@
 # Blocking 设计
 
-Blocking 负责阻挡关系的建立、解除、站位计算及必要维护；Blockable 保存并推进自身位置修正计划。本文描述两端状态、搜索政策、关系身份、位置推进及同步维护契约，并列明特殊机制的支持边界。
-
-Blocker／Blockable 的数值、能力 Change 工厂与完整操作见 [Capability API](capability.md#blocking)。状态归属与同步返回契约见 [函数式内核](functional-core.md)。
-
-关系查询、acquire／release、maintain／maintainAll 与搜索从 [battle/blocking/index.ts](../../src/core/battle/blocking/index.ts) 导入；Layer、Restriction、容量、volume 的 Change 工厂及两端 acquired／released Hook 键从 [capability/blocking/index.ts](../../src/core/unit/capability/blocking/index.ts) 导入；Hook 使用 unit.setHook／removeHook 登记。Blocking 自己定义 Layer 与容量 Modifier，公共类型也由 Capability 入口导出。工厂不接收 Ref，返回要求相应宿主能力的 Change，由 Unit.update 接收 Ref 后执行；完整关系业务由 battle/blocking/operations.ts 组织，hook.ts 只派发。Blocker 的 releaseAll、Blockable 的 advancePosition／releaseBlockable 完整操作及 stableBlockPosition 查询由 Capability 入口导出。关系解除统一使用接收 Relation 数组的 release，字段发布仍由所属领域负责。
+Blocking 拥有双端关系、取得／解除、资格维护、容量裁撤与取得站位。Blockable 拥有自己的位置修正计划。关系操作见 [battle/blocking](../../src/core/battle/blocking/index.ts)，能力配置、Change 和通知 Key 见 [capability/blocking](../../src/core/unit/capability/blocking/index.ts)。
 
 ## 关键语义
 
-验收围绕以下独立结果选择代表场景；后文的类型、接口和内部步骤是接入说明，不逐项构成测试要求。
-
-1. **关系资格正确。** Blocker 与 Blockable 在构造入口互斥；阵营限制由二元 Restriction 选择，空地、地块、存活及容量条件共同决定能否取得关系。临时 HP 归零后被 HP Applied 响应救活，不提前解除旧关系。
-2. **关系完整且排他。** 一个目标至多属于一个阻挡者；双端关联和取得时的位置计划先一起发布，再通知。旧 Relation 只能结束对应旧关系，不能误解除后来重建的同双方关系。
-3. **容量缩减保留前序目标。** 从已阻挡列表末尾逐项裁撤；每项通知后按最新容量与占用决定是否继续，不提前冻结整组裁撤名单。
-4. **明确解除同步完成。** Layer 与 Blocker.setLayer 的 Settlement 清理当时的当前关系，包括较早 Settlement 已建立的关系。每次批量释放在操作入口固定本次集合，先发布整批双端解除结果再通知；本次通知中新建的关系不追溯清理，不自动搜索替代目标。后继业务遵守[状态接续契约](functional-core.md#状态接续后的读取与续执行)，不恢复旧关联。
-5. **位置计划与关系独立。** 站位计算使用真实几何及前序目标的稳定位置；位置计划推进真实 Unit.position。普通关系解除保留计划，目标主动脱离或明确覆盖位置时取消计划；阻挡不停止路线等待。
-6. **搜索政策有确定的结果。** 普通搜索在 Movement 后执行；一次搜索固定候选，逐项按最新资格和容量尝试。已确认的实时增容政策可以影响后续候选，不添加新候选，也不要求全场反复收敛。
+- 每个目标至多一个阻挡者；双端共享同一 Relation，取得关系与位置计划在通知前一起发布。
+- 旧 Relation 不能解除后来重建的同双方关系。
+- 容量不足从建立顺序末尾逐项裁撤，每项通知后使用最新容量。
+- 批量解除先发布全部双端结果再通知；通知中建立的新关系不追溯清理，不自动补搜索。
+- 关系与偏移计划独立：普通释放保留计划，目标主动脱离或覆盖位置才取消自身计划。
+- 保持关系不因 Applied 前后短暂零 HP 提前解除；新取得仍要求正生命。
 
 ## 职责与调度政策
 
-阻挡资格、容量裁撤和业务副作用依据原生机制确定；搜索候选与容量接续采用项目政策。普通接敌在 Movement 后的固定 Blocking 阶段执行，与原生按 UID 逐对象 OnTick 的交错调度有所区别。
+两端状态是关系的唯一权威，不另建全场关系表。Runtime 在 Movement、Mechanism 后执行 Blocking：固定阶段入口的 Blocker 候选，复核旧关系，再逐个搜索。新建 Blocker 不加入已经固定的普通候选，内容仍可明确调用即时 search／acquire。
 
-1. **Battlefield 负责不可变状态与索引一致性。** 阻挡归属与关联由 Unit 的 Blockable／Blocker State 保存，不维护额外的全局权威关系集合。底层存储转换不派发需要完整 BattleState 的业务 Hook；Runtime 组织调度，Blocking 完整操作负责有时序语义的关系变更。状态存于 Unit 不意味着 Battlefield 存储层负责解释阻挡业务。
-2. **关系业务只由 Blocking 明确操作执行。** acquire／release 构造双端、发布后通知；acquire 最后只复核本次取得的 Relation，release 只处理给定旧关系集合，不自动维护或搜索。Blocker／Blockable 的 Layer、Restriction、容量及 volume 工厂返回 Change，由 Unit.update 一次发布全批字段，再原顺序执行其后继。Restriction 后继复核自身相关关系，容量／volume 后继只结算当前阻挡组的容量。通用发布不推断关系、不派发通知；Hook 登记和私有 state 写回没有 Blocking 后继。嵌套局部后继不接管无关对象的外层待结算事实，同对象交叠则使用共同最新状态。
-3. **每 Tick 在 Movement 后的固定 Blocking Step 先复核旧关系，再搜索。** advance() 先绑定阶段开始时的 Blocker 候选，再以 maintainAll 固定当时的旧关系，逐条读取最新状态复核资格，最后按既定 Unit 顺序调用候选的 search()。阶段内新建的 Blocker 等待下一 Tick 的普通搜索。不保存独立搜索周期或周期计数，也不反复全场复核、搜索到关系稳定。
-4. **按操作范围同步完成清理。** Restriction、容量和 volume Change 的后继在返回前完成各自的关系复核或容量裁撤，不能等待普通阶段。Restriction 可读取任意 Battle 事实；普通间接变化在 Blocking 检查点反映，不保证每次 Battle 写入后全部规则立即重算。需要同步生效的业务明确调用关系操作。release 在返回前完成给定旧集合的批量解除与通知，不额外复核剩余关系或搜索；有空余容量且附近仍有未接敌目标，可以是合法的返回状态。
-5. **阻挡变化同步通知，后继读取最新状态。** 取得关系将双端关联与目标的位置修正计划一起发布，再分别通知双方。Movement 先推进所有已有阻挡偏移，再在 Route 推进后查询当前关系决定是否执行普通自主移动；这一入口检查直接消费关系，不通过 Locomotion Restriction 表达阻挡。阻挡不停止 Route 等待及即时指令，也不禁止强制位移。每次回调返回后接续其 BattleState；后续依赖阻挡者、目标、关系、资格或容量时重新读取，不用旧 Unit、旧关系或旧 remaining 覆盖嵌套修改。Hook 可同步解除关系、改变容量或使单位离场。
-6. **普通搜索与显式取得分开。** 具体内容需要立即搜索时调用 search，需要尝试取得指定双方时调用 acquire；不以每 Tick 去重吞掉合法的额外操作。search() 只固定开始时按距离稳定排序的候选 Ref 数组，同距离保留 Unit 登记顺序，不按起始容量预选接敌名单或冻结容量预算。每次 acquire() 从最新 BattleState 检查双方资格、目标当前阻挡关系及容量。Hook 增容可以使后续候选在本次搜索接敌，减容可以使后续尝试失败；新增单位不加入本次候选。关系变化以最新状态为准，不重复建立已被提前取得的关系，也不重新收集或重排候选。
-7. **存储优化遵守结算契约。** 复制、扫描与通知的实现方式必须保持以上结算结果及可见性。
+search 固定入口按距离稳定排序的目标，同距保留 Unit 登记顺序；每次 acquire 重读资格、归属与容量。Hook 增容可让后续候选在同次搜索取得，减容可使其失败；新增单位不加入候选。普通阶段不循环全场到收敛。
 
-各操作按自己的契约保证存储、索引与双端关联一致；release 只保证给定旧集合已经解除，关系资格由 maintain／maintainAll 复核，容量裁撤由容量／volume Change 的 Settlement 承担，也不要求所有可能的新关系都已经建立。Content 调用这些领域接口，不为其补做内部步骤。同步业务由完整 BattleState 操作承接，不把任意内容程序塞进只接收 BattlefieldState 的存储转换。
+Change 的局部后继在操作返回前完成；读取任意 Battle 事实的 Restriction 不意味着每次写入自动全场维护。间接变化在下一检查点反映，需要同步的业务显式调用完整关系操作。
 
 ## 状态与关系身份
 
-关系存于两端 Capability，字段含义如下：
+构造时 Blocker／Blockable 互斥，也可都没有；能力组成不推导阵营、自身空地身份或 Route／Locomotion。
 
-Unit 初始化时至多声明 Blocker、Blockable 之一，也允许两者皆无。组合约束在创建入口建立，内部操作信任能力身份保持稳定，不在各次查询或维护中重复校验互斥。这是当前项目的支持范围，不据此要求 Blocker 属于 ALLY、Blockable 属于 ENEMY，也不推导宿主的 Layer、Route 或 Locomotion。容量为 0 或暂时被 Restriction 禁止参与不会移除能力。
+Blocker 按建立顺序保存 relations，Blockable 保存唯一 relation。每次取得创建一个不可变 Relation，含两端 Typed Ref，两端及查询／Hook 共享该对象；解除重建产生新对象。旧候选按对象身份确认，不重建端点投影充当关系。
 
-- Blockable 的 relation 字段保存当前 Relation，未被取得时为 null；relation.blocker 定位唯一的阻挡者，该字段是排他归属的权威。
-- Blocker 的 relations 字段按建立顺序保存 Relation，解除保留其余关联的顺序，重新建立追加到末尾。
-- Blockable 的 adjustment 保存本次位置修正的起点、终点和起始 Tick，与当前关系独立；relation=null 但仍有 adjustment 是合法状态。
+Blockable.adjustment 保存起点、终点与开始 Tick；无关系而仍有计划是合法状态。关系和计划只能由所属完整操作修改，普通 Unit 发布不补齐双端或派发通知。
 
-每次取得都读取最新 Blockable 归属，已有归属就不能由另一 Blocker 重复取得。两侧关联与新 adjustment 在首次 ACQUIRED Hook 前一起发布，不暴露仅一侧完成登记的中间状态。
-
-Blocker 的配置与当前状态明确区分：
-
-```typescript
-export type Layer = "GROUND" | "AIR";
-
-export type Modifier =
-    | { readonly type: "ADD"; readonly value: number }
-    | { readonly type: "ZERO" };
-
-interface Definition {
-    readonly capacity: number;
-    readonly layer: Layer;
-    readonly radius?: number;
-    readonly restrictions: readonly Contribution<Restriction>[];
-}
-
-interface BlockableDefinition {
-    readonly volume: number;
-    readonly restrictions: readonly Contribution<Restriction>[];
-}
-```
-
-layer 表示该 Blocker 能阻挡的目标层，与宿主自身的 Unit Layer 分开，类型由 Blocking 自己定义，不依赖 Unit Layer Capability。Blocker 的 Definition.layer 必填；两端 Definition.restrictions 都必填，初始化装配到各自的 restrictions，沿相同二元 Restriction 契约求值。没有额外规则时明确写 restrictions: []。State.layer 与 State.radius 保存当前阻挡层及实际半径，不保存另一份派生层或通过查询临时恢复半径。
-
-Core 提供 GROUND 半径 0.7071、AIR 半径 0.8944。初始化和 setLayer 切换时均选择 definition.radius ?? DEFAULT_RADIUS[layer]；Definition 显式提供的 radius 始终覆盖默认值，切层不改变该覆盖。DEFAULT_RADIUS 是类型为 Readonly<Record<Layer, number>> 的内部共享常量，不经过公共入口导出。普通干员省略 radius；特殊对象按需声明明确半径。
-
-两端关系字段如下；其他容量、占用与 Restriction 字段保持各自职责：
-
-```typescript
-interface PositionAdjustment {
-    readonly from: WorldPosition;
-    readonly to: WorldPosition;
-    readonly startTick: number;
-}
-
-interface BlockableState {
-    readonly relation: Relation | null;
-    readonly adjustment: PositionAdjustment | null;
-}
-
-interface BlockerState {
-    readonly layer: Layer;
-    readonly radius: number;
-    readonly capacity: readonly Contribution<readonly Modifier[]>[];
-    readonly relations: readonly Relation[];
-}
-```
-
-容量贡献使用 Blocking 自己的 Modifier：ADD 追加数值，ZERO 将最终容量置零。setCapacityContribution(entry) 接收 Contribution<readonly Modifier[]>，返回 Change，通过 common/collection/entries.ts 登记或替换来源，在发布后局部完成必要裁撤与通知；移除来源使用同一数组工具。Contribution 模块通过 resolveEntries 保留有效登记，通过 resolve 取得有效 value。Blocking 的 resolveCapacity 先选择生效来源，再展平其 Modifier 数组；出现任一有效 ZERO 时直接返回 0，否则在 Definition.capacity 上累加全部 ADD，再按 ties-to-even 整数化和下限 0 求值。未胜出来源里的 ZERO 不影响结果；撤销有效 ZERO 后按剩余生效贡献重新计算。
-
-ADD／ZERO 是项目的容量修正协议，不代表原生全体阻挡数公式；其他领域按各自的 Attribute 协议求值。Blockable 的 volume 使用整数追加量与下限 1。
-
-两端字段不具有对等写入语义。Blockable 保存唯一归属，Blocker 保存本次取得创建的有序关联；二者都由 Blocking 完整操作明确构造。普通 Content 不直接写归属或列表，不能把提交 Ref 当作接敌请求。acquire 检查双方资格、距离、唯一归属与容量，计算目标站位后准备两个完整对象，将双端关系与新 adjustment 一起发布并自行派发取得通知；release 同样准备两端解除值并自行通知。Core 内部 replace 不承担资格检查或结构修补，Content 不能通过公开 update 提交手写关系字段。
-
-| Blocking 操作形成的归属变化 | 同次操作构造的 Blocker 关联 |
-| --- | --- |
-| null → A | 创建一个新的 Relation，两端共享，并追加到 A 的列表末尾 |
-| A → null | 移除 A 列表中的本次关联条目，其余保序 |
-| A → A | 已有归属时 acquire 不重建关系，保留列表顺序和既有条目对象 |
-| A → B | 不支持普通单次更新，先完整 Release，再执行新的 Acquire |
-
-Blocker 的 relations[] 包含建立顺序这一历史事实，不能每次按 Unit 枚举顺序重新生成。取得追加新条目，解除只移除对应旧条目，其余保序。Blocking 先基于当前对象准备两侧新值，再通过内部 replace 发布，之后执行对应通知；通用发布层不扫描、补齐或重新构造关联。
-
-acquire 为每次新关联创建一个不可变 Relation，blocker／blocked 字段使用普通 Typed Ref 定位端点；Blocker.relations 与 Blockable.relation 保存同一个对象。Relation 对象本身标识这次关系，查询和 Hook 直接返回它，不重建投影。对象存续期间，普通字段更新和不可变状态版本共享原 Relation；相同双方重新取得关系时创建新对象。
-
-固定旧候选时保存原 Relation；解除前在当前 Blocker.relations 中通过 ===／includes 确认它仍存在。若 Hook 已解除旧关系并重建相同双方，外层旧候选跳过它；再次解除同一旧对象不重复通知。内容从关系查询或 Hook 取得原对象，自行构造相同端点的对象不表示已有关系。两端共享 Relation，不另建全局关系集合或关系 ID。
-
-归属由 Blocker 的 Unit ID 定位，本次关系是否仍存在按 Relation 对象比较。不涉及关系业务的普通更新共享既有关系字段，不创建新条目或产生关系通知。
-
-advance(battle) 由 Runtime 每 Tick 调度一次。search(battle, blocker) 指定 Blocker 立即搜索一次，显式调用不受普通阶段限制；Blocking.release 解除关系，不取消目标已有的位置计划，也不隐式重新搜索。Blockable 自身主动解除使用 releaseBlockable，同时取消自己的计划并解除入向关系。
-
-search() 固定候选数组，逐个 acquire()，每项接续最新 BattleState。初始容量仅是开始时的当前事实，不是整次搜索的预算；候选构造不按该容量提前预选或截断。
-
-例如初始剩余容量为 1、E1 和 E2 都在候选中，取得 E1 的 Hook 将容量提高到 2 后，E2 可以在同一次 search() 中接敌。若 Hook 已提前阻挡 E2，外层尝试跳过它；新创建的 E3 不加入本次候选。
+容量贡献使用 ADD／ZERO：先选有效来源，任一有效 ZERO 将容量归零，否则基础容量累加 ADD、取偶舍入并截到非负。未胜出来源的 ZERO 无效。volume 为整数追加、下限一。这是项目的数值协议，不声称覆盖全部原生特殊容量规则。
 
 ## 关系资格与 Restriction
 
-两端使用同一个 [Restriction](../../src/core/unit/capability/blocking/restriction.ts)，从 [Capability 入口](../../src/core/unit/capability/blocking/index.ts) 导入：
+双方限制使用同一二元 Context `{ blocker, blockable }`，分别解析有效贡献后 AND 判断。限制是纯资格查询，登记所有者不改变两端角色。可选 sides 限制检查目标 Allegiance，不要求阻挡者具有 Allegiance；未登记时没有隐含敌对条件。
 
-```typescript
-export interface RestrictionContext {
-    readonly blocker: Unit & Blocker;
-    readonly blockable: Unit & Blockable;
-}
-
-export type Restriction = restriction.Restriction<RestrictionContext>;
-```
-
-Restriction 是针对当前双方的纯查询，可以读取完整 Unit 的其他能力及 BattleState，不执行状态写入。`blocker.restrictions` 与 `blockable.restrictions` 只表示规则的登记所有者；两边都使用同一 `{ blocker, blockable }` Context，不把 Blockable 侧的角色反转，也不另定义各自的 Restriction 类型。双方分别保存 Contribution<Restriction>，按 Contribution 竞争后用同一 Context 执行 AND；多个来源按独立登记 ID 撤销。
-
-Restriction 的读取范围不意味着自动订阅每个 Battle 字段。Restriction Change 的 Settlement 同步复核所属单位的当前关系；时间、第三方单位等间接事实变化由每 Tick 的 Blocking 检查点统一复核。每次全场复核固定入口关系集合并只遍历一遍，Hook 返回后尚未访问的关系读取最新状态；已访问关系在后续 Hook 或搜索中受间接变化影响时，等待下一检查点，除非该业务明确执行即时复核。这是项目的调度契约，不声称原生存在相同全场阶段。
-
-Blocking 结算不要求双方具有 Allegiance，也不内置 `areHostile` 条件。原生的阵营资格是阻挡者允许哪些目标阵营，普通 Character 允许 ENEMY 是标准策略，不是关系本身的公理。Capability 入口提供可选的标准 Restriction：
-
-```typescript
-export function sides(...sides: readonly Side[]): Restriction;
-```
-
-sides 只返回无 id 的限制定义，检查目标当前具有 Allegiance 且其 side 在指定集合内，不要求阻挡者具有 Allegiance。调用方提供登记身份，例如 `setBlockerRestriction({ id: "blocking/sides", value: sides("ALLY", "NEUTRAL") })`；变更发布后仍同步维护自身旧关系。未登记该定义时，没有隐含阵营限制。不同参数产生不同定义，不自动共享豁免身份。
-
-Blocker Definition 的必填 `restrictions` 在初始化时进入当前 State，之后只读取当前 `blocker.restrictions`。普通干员内容显式声明：
-
-```typescript
-blocker: {
-    capacity,
-    layer: "GROUND",
-    restrictions: [{ id: "blocking/sides", value: sides("ENEMY") }],
-}
-```
-
-Content 通过同一二元 Restriction 类型提供其他资格策略；宿主的 Capability 组合与具体策略分别声明。
-
-Blocking 将资格与其他取得条件分开处理：
-
-| 阶段 | 检查内容 |
+| 判断 | 范围 |
 | --- | --- |
-| `canSearch` | 不依赖具体目标的基础资格，包括阻挡者在场、存活；GROUND 另要求当前根格的阻挡许可，AIR 跳过该地块条件；不提前求值二元 Restriction。 |
-| `canRetain` | 双方 PRESENT，阻挡层与目标空地身份匹配，以及两端各自竞争后的有效 Restriction 按同一 `{ blocker, blockable }` Context 执行 AND；GROUND 还要求当前根格允许阻挡，AIR 豁免。临时 HP 为 0 不作为默认保持资格的退出条件。 |
-| 新关系取得 | 在搜索和关系资格之外，双方有 Vitality 时 HP 必须大于 0，确认目标尚无归属、双方在接敌距离内，且当前占用加目标 volume 不超过 capacity。 |
-| 容量裁撤 | 独立比较当前总占用与容量，超出时从既有有序关联末尾逐项解除；每项通知后接续最新状态。 |
+| 搜索入口 | 阻挡者 PRESENT，有 Vitality 时要求存活；GROUND 根格允许阻挡，AIR 豁免地块条件。 |
+| 保持关系 | 双方 PRESENT、阻挡层匹配目标 Layer、双方限制允许；GROUND 根格仍允许阻挡。临时零 HP 不默认打断旧关系。 |
+| 新取得 | 另要求双方有 Vitality 时活着、目标无归属、在接敌距离内且容量足够。 |
+| 容量裁撤 | 比较总占用与容量，从关系末尾逐项解除。 |
 
-距离只约束新取得，普通移动超出起始半径不使旧关系失效。目标是否已有归属在取得入口检查，不属于 `canRetain`；当前容量已满也不使每条既有关系分别变成不合格。取得与保持资格都按当前双方求值，不能压成单个 Unit 的启用标志。
+距离只约束新取得，移动超出接敌半径不解除旧关系。没有 Layer 的 Blockable 不参与普通空地匹配。Presence 通过双方限制及主动释放表达消失，Blocking 不直接读取 Presence。
 
-[空间消失](presence.md)通过两端已有的 Restriction 限制关系资格，由 Presence Change 的 Settlement 按宿主能力角色调用 Blockable.release 或 Blocker.releaseAll，读取并释放当时的当前关系。Blocking 不直接读取 Presence。
-
-正常空地匹配要求目标实际具有 Unit Layer，且 blocker.layer === target.layer.type；没有 Layer 的 Blockable 不参与正常阻挡，不隐式视为 GROUND。生产敌人装配均提供该身份，测试参与关系的对象也应明确配置；Blockable 自身的类型与构造不因此强制依赖 Layer Capability。
-
-普通伤害提交 HP 后先完成 HP Applied 响应；若响应恢复了生命，原有关系继续保留。全部响应后仍然 HP 不大于 0，Damage 才请求 Unit.remove，由离场操作发布 LEAVING 后明确释放该 Unit 的当前关系。Damage／Healing 的 HP 写入不调用 Blocking.maintain，也不让临时 HP 为 0 提前触发解除。这是项目的同步结算契约。
+普通伤害完成 Applied 后才确认真实死亡；资源写入不自动维护关系，见 [Resource](resource.md)。
 
 ## 已确定的操作接口
 
-```typescript
-interface Relation {
-    readonly blocker: Ref<Unit & Blocker>;
-    readonly blocked: Ref<Unit & Blockable>;
-}
+acquire 失败不发布关系；成功先发布双端与新位置计划，再通知双方，最后只维护本次新 Relation。它不顺带复核其他关系或裁撤全组。
 
-export function relations(
-    battle: BattleState,
-    reference?: Ref<Unit>,
-): readonly Relation[];
+release 接受原 Relation 集合，按入口当前有效对象去重并保留输入顺序；先发布整批双端解除，再逐条通知。它不取消目标计划、搜索替代目标或维护无关关系。releaseAll 在操作入口取得当前 Blocker 的全部出向关系后使用同一批量协议。
 
-export function advance(battle: BattleState): BattleState;
+Blockable.release（公共名 releaseBlockable）先取消自身计划，再解除当前入向关系；两者之间无回调，首个 RELEASED 已可见两项结果。
 
-export function acquire(
-    battle: BattleState,
-    blockerRef: Ref<Unit & Blocker>,
-    targetRef: Ref<Unit & Blockable>,
-): BattleState;
-
-export function release(
-    battle: BattleState,
-    captured: readonly Relation[],
-): BattleState;
-
-export function maintain(battle: BattleState, relation: Relation): BattleState;
-
-export function maintainAll(battle: BattleState): BattleState;
-
-export function search(
-    battle: BattleState,
-    blockerRef: Ref<Unit & Blocker>,
-): BattleState;
-```
-
-advance() 在每 Tick 的统一 Blocking 阶段先固定阶段起始的 Blocker 候选，再调用 maintainAll 复核入口已有关系，最后按既定 Unit 顺序逐个生成 Ref 调用 search()。每项调用接续最新 BattleState；本阶段中新建的 Blocker 不加入普通搜索候选，但可以通过明确业务调用 search()。
-
-search() 固定的是开始时按距离稳定排序的候选 Ref 数组，同距离保留 Unit 登记顺序，执行方式如下。canSearch、findCandidates 是内部职责的示意名称，不另建框架；acquire 是同一公开取得操作。
-
-```typescript
-const blocker = units.get(battle, blockerRef);
-
-if (blocker === undefined || !canSearch(battle, blocker)) {
-    return battle;
-}
-
-const candidates = findCandidates(battle, blocker);
-
-for (const ref of candidates) {
-    battle = acquire(battle, blockerRef, ref);
-}
-
-return battle;
-```
-
-每次尝试重新确认双方当前资格、目标是否已被阻挡及当前剩余容量。Hook 增容、减容、提前接敌或解除关系都以返回后的状态为准；候选保持入口时的集合与顺序，容量按每次取得时的状态求值。
-
-acquire 失败时返回原 BattleState，不产生临时关系或通知。成功时在首次 Hook 前发布明确构造的双端状态与新 adjustment，再按 Blocker、Blockable 顺序通知，最后以 maintain 复核本次新 Relation 的当前资格；旧身份已被解除时跳过，不复核其他关系或裁撤整个阻挡组。Hook 中的容量／volume 操作由各自 Settlement 完成裁撤。它不绕过任何普通取得条件。
-
-双端关系解除统一由 `release(battle, captured)` 结算，输入可以跨多个 owner。入口按正向列表中的原 Relation 对象过滤已失效的旧关系，重复的同一旧身份只处理一次，并保留首次出现的输入顺序。它先准备并发布整批双端解除结果，再按该顺序逐条派发双方 RELEASED Hook。首个 Hook 已能读取整批解除结果。
-
-release 只处理传入的旧集合，不自动 maintain、搜索或取消位置计划；Hook 新建立的条目不属于本次解除。过期集合或空集合返回原状态。旧身份在入口确认后，内部纯构造信任该事实；其他领域先完成自己的字段发布，再提交关系集合。调用方可使用 `relations(battle, reference)` 取得当前局部集合，或按具体业务提交已有的旧 Relation。
-
-Blocker Capability 提供完整操作 `releaseAll(battle, reference: Ref<Unit & Blocker>): BattleState`，由 capability/blocking/index.ts 原名导出。入口从当前 BattleState 读取一次宿主，缺失时返回原状态；按取得顺序解除当前全部出向关系，不取消目标的位置计划，也不自动维护或搜索。
-
-两端 Capability 的 Change 工厂由 capability/blocking/index.ts 导出：
-
-| 工厂 | 主要对象与输入 |
-| --- | --- |
-| setLayer | `(Layer): Change<Unit & Blocker>` |
-| setBlockerRestriction／removeBlockerRestriction | `(Contribution<Restriction> / id): Change<Unit & Blocker>` |
-| setCapacityContribution／removeCapacityContribution | `(Contribution<readonly Modifier[]> / id): Change<Unit & Blocker>` |
-| setBlockableRestriction／removeBlockableRestriction | `(Contribution<Restriction> / id): Change<Unit & Blockable>` |
-| setVolumeContribution／removeVolumeContribution | `(Contribution<number> / id): Change<Unit & Blockable>` |
-| unit.setHook／removeHook | 使用两端各自的 acquired／released Key，分别返回 `Change<Unit & Blocker>`／`Change<Unit & Blockable>` |
-
-工厂不接收 Ref 或 battle，也不自行提交。Unit.update 从传入 Ref 确认宿主存在，缺失时抛出 RangeError；存储中的 LEAVING 宿主仍可清理。Restriction、容量和 volume 附带各自的局部后继，Hook Change 只登记集合。相同条目或移除不存在 ID 的本项转换返回原 Unit，由 createChange 不登记 Settlement，不借无变化输入触发裁撤。
-
-工厂实现在 [blocker-operations.ts](../../src/core/unit/capability/blocking/blocker-operations.ts) 和 [blockable-operations.ts](../../src/core/unit/capability/blocking/blockable-operations.ts)。blocker.ts／blockable.ts 保留模型、初始化、守卫和数值查询，Catalog 与只读查询可精确依赖模型。公共入口直接导出工厂，不增加包装。
-
-setLayer 的 transform 只设置 layer 与实际 radius，不修改关系。同层请求由 transform 返回原 Unit，createChange 不登记其 settle。真实切层的 settle 调用 releaseAll(battle, ref(previous))，读取当时当前的全部出向关系并批量解除。自身 Layer.setType 的 Blocker 分支使用相同完整操作。previous 只提供稳定身份，不保存关系范围或整体写回；本批其他字段和嵌套操作的新值因此保留。
-
-setLayer 的 Settlement 解除执行时的全部出向关系，包括在最终层下仍合法的关系及较早 Settlement 的 Hook 已建立的关系。本次 release 通知中新建立的同双方关系使用新的 Relation 对象，不属于本次候选，不被追溯解除。切换仅处理阻挡层与关系清理，不自动 search，也不改变宿主自身的 Unit Layer。内容在需要切换阻挡层的生命周期程序中提交该 Change。
+Blocker.setLayer 的真实变化先发布 layer／radius，Settlement 再释放当时全部出向关系；同层请求无变更。Unit 自身 Layer.setType 采用主动脱离政策，同值调用也清理关系，原生依据见[运动身份调查](../research/cases/15-locomotion-native-semantics.md)。两种层分别表达宿主身份与可阻挡目标，不能混用。
 
 ## 主动解除阻挡的空间操作
 
-[Presence](presence.md) 的 appear／disappear 返回组合 Change：自身叶子只修改空间事实，限制直接复用所属能力的 Restriction Change；自身 Settlement 按 previous 的稳定角色调用 Blockable.release 或 Blocker.releaseAll，由完整操作读取当前关系、取消自身计划并释放。Blocker 不取消目标的独立计划。Route 主动覆盖位置时通过 unit.update 提交 Presence Change；没有该能力时先纯发布位置，再按角色调用相同完整操作。各释放操作在自己的首个 RELEASED Hook 前完成所属计划清理和整批双端解除，不向 Blocking.release 传入额外更新值。
+[Presence](presence.md) 和 Route 主动覆盖位置先发布新空间事实，再按稳定能力角色调用 Blockable.release／Blocker.releaseAll。Blocker 不取消原目标的独立位置计划。
 
-Blocker.layer 的 Change 先在全批发布时设置 layer／radius，等轮到自己的 settle 才通过 releaseAll 读取并批量清理当前集合。release 操作入口固定的全部候选，在它自己的首个 RELEASED Hook 前一并清除。若较早 settle 已解除部分关系，那些较早通知遵守自己的结算语义，不能承诺全批第一个 RELEASED 前切层旧关系已全清空。
-
-例如同批先设置 capacity=1，再 GROUND→AIR，所有 Hook 都看到最终 AIR；容量后继可能先逐项解除 GROUND 旧关系，首个通知时其他旧关系仍存在。反向排列则先由切层后继批量清除。批内 GROUND→AIR→GROUND 最终仍为 GROUND，但旧出向关系应清理，通知不观察中间 AIR。拆成两次 update 则各自完成一轮发布和结算。
-
-释放候选只在对应操作入口固定，携带原 Relation 身份，不保留可重新提交的旧 Unit。本次 Hook 新建的关系不被该次候选覆盖；后续另一项 Settlement 可以再次清理当时的当前关系。每项通知接续最新 BattleState。普通移动仍不因超出初次接敌半径而自动解除关系。
+组合 Change 统一发布最终字段，Settlement 仍按组合顺序执行。每次释放只承诺其操作入口固定集合在自身首个通知前清空，不承诺整个 Change 批次第一个 RELEASED 前全部旧关系已解除；较早容量后继仍可能先逐项裁撤。
 
 ## 显式关系操作与同步维护
 
-公开 Unit.update 的顺序为全部 transform → 一次 Field 发布 → 按 Change 顺序 settle；内部 replace 只发布 Core 已构造好的完整值，两者都不根据字段差异补齐关系或启动维护。Blocking 的 acquire、release 自己明确构造双端，通过 replace 发布后自行派发通知。release 执行明确解除，maintain 复核指定关系资格；容量裁撤属于对应 Contribution Change 的 Settlement。
-
-| 后继来源 | 作用范围 |
+| 来源 | 同步后继 |
 | --- | --- |
-| Blocker／Blockable Restriction Change | settle 固定自身当前关系列表，逐条调用 `maintain(battle, relation)`；不裁容量或扩展到其他关系。 |
-| Blocker 容量 Change | settle 结算本 Blocker 当前容量，从末尾逐条裁撤；不扫描资格失效关系。 |
-| Blockable volume Change | settle 读取执行时当前 owner，结算该阻挡组的当前容量；不在 Hook 后追随新的 owner。 |
-| acquire | 通知完成后只复核本次新 Relation。 |
-| release、setLayer、Presence／Unit.remove | release 仅解除各操作交入的关系集合，不附带维护或搜索。 |
-| Locomotion／Blockable 偏移位置提交 | 只推进位置或计划，不调用 Blocking；依赖位置的 Restriction 在关系检查点求值。Route 主动覆盖位置则明确解除关系。 |
-| maintainAll、完整地块更新 | 固定入口关系列表，按 Unit 顺序及各 Blocker 内的关系顺序各复核一次资格，不裁容量。 |
-| 每 Tick 的 Blocking 阶段 | 先固定 Blocker 候选、执行 maintainAll，再搜索新关系。 |
+| 双方 Restriction Change | 固定自身当前关系，逐条检查保持资格。 |
+| Blocker 容量 Change | 对当前组按尾部裁撤，不替代资格维护。 |
+| Blockable volume Change | 结算执行时当前 owner 的容量，不在通知后追随新 owner。 |
+| acquire | 通知后仅复核本次关系。 |
+| maintainAll／完整地块更新 | 固定入口关系，按既定顺序各检查一次资格，不裁容量。 |
+| 普通位置／偏移提交 | 只改位置和计划；资格在关系检查点读取。 |
 
-`maintain(battle, relation)` 接收已经配对的双方 Typed Ref 及原关系身份。先确认该 Relation 对象仍在当前正向列表中，再从最新 BattleState 读取双方并检查 canRetain；失效时调用 release 解除这一条关系，否则返回当前状态。它不判断输入 Unit 属于哪种角色，不维护 owner 的其他关系，不检查容量。旧关系已被解除或同双方已经重建时，不能将旧 Relation 应用到新条目。
-
-`maintainAll(battle)` 固定调用入口的 relations(battle) 集合，按既定 Unit 顺序及各 Blocker 内的关系建立顺序逐条 maintain。每次接续 Hook 返回的新状态，但不重新收集候选或回头复核已访问项，也不搜索新目标。Hook 新建的关系不属于本次候选；后续间接变化使已访问关系失效时，下一检查点再处理。它与普通搜索共同组成确定的阶段顺序，不承诺返回时对任意 Battle 依赖已经全场收敛。
-
-容量／volume Change 的 Settlement 共享 blocker-operations.ts 内部的 `settleCapacity(battle, Ref<Unit & Blocker>)`，该函数不经过公共 index.ts 导出。它读取当前总占用与容量，超额时 release 当前列表末尾的一条关系，完成同步 Hook 后重新读取，再决定是否继续。容量后继不先挑选资格失效项，资格复核也不接管其他项尚未执行的容量后继。
-
-例如容量从 3 降为 1，先解除并通知 E3；该 Hook 把同一 owner 容量恢复为 2 后，E2 保留。若 Hook 先修改同一 owner 的 Restriction／容量，嵌套后继可以按最新值先解除 E2，恢复容量不撤销既成事实。若修改的是无关 Blocker B，B 的局部后继不会顺便裁撤 A；外层仍在 Hook 返回后按最新 A 决定是否继续。
-
-嵌套 update 只执行自己的局部结算列表，不调度外层剩余项，不保存全局 pending 或更新锁。已经发布的同对象或同关联事实可以交叠，不能把局部队列误称为事务隔离。显式全场地块操作通过 maintainAll 复核已发布的资格事实；需要局部语义的工厂不能以全场复核代替自身后继。
-
-Unit 的真实离场由 Lifetime 先纯发布 LEAVING，再派发统一 prepare Hook。Blocker／Blockable 在自己的 initializer 中将清理 Hook 放在序列前部：Blockable 取消自身 adjustment，再解除当前 relation；Blocker 调用 releaseAll，读取当前关系并批量解除后才通知，不取消其原目标的计划。清理通过 Departure.unit 的身份读取最新宿主，不将离场入口快照中的 relations 当作当前关系。Unit 不导入 Blocking，Finalize 不扫描全场。主动撤退在请求离场前完成返费与 Card 结算，见[主动操作与被动死亡](deployment.md#主动操作与被动死亡)；Blocking 清理不重新决定本次账务。Damage／Healing 写 HP 不启动 Blocking，临时 HP 为 0 不使旧关系失效，普通 Damage 完成 HP Applied 后仍应死亡才请求上述离场清理。普通私有 state 写回和 Hook Change 不启动 Blocking，Restriction 能读取其他能力不代表系统自动订阅任意字段。
+maintain 先确认同一个 Relation 仍存在，再检查当前双方；失效才释放。Hook 登记、私有状态写回和通用 Unit.replace 不自动维护 Blocking。
 
 ## 取得归属与通知时点
 
-取得先计算站位并一次发布双端关系与位置计划，再分别通知：
-
-```text
-从最新 BattleState 检查双方资格、目标归属及容量
-    ↓
-计算 E 的目标站位和新 adjustment
-    ↓
-一次发布 E.blockable.relation、A.blocker.relations 与 E.blockable.adjustment
-    ↓
-A 的 ACQUIRED Hook
-    ↓
-E 的 ACQUIRED Hook
-```
-
-双端关系与目标站位计划必须在首次可重入回调前确定。A 的 Hook 中若 B 尝试取得 E，B 读取最新归属后拒绝；不需要额外的 ACQUIRING 状态、锁或全局登记表。
-
-双端关系与计划的发布先于两侧 Hook，通知顺序不由字段准备顺序推导。任何可能重入的操作之后，后续字段修改都重新读取双方和同一次关系；原关系已终结时，不能回填旧字段或覆盖新关系。
+两端关系和站位计划在首个可重入回调前提交。其他阻挡者在 Hook 中尝试取得同一目标时读取当前归属，不需要锁或 ACQUIRING 阶段。
 
 ## 两侧通知顺序
 
-同一次关系变化先派发 Blocker 侧 Hook，再派发 Blockable 侧 Hook；嵌套关系操作及其 Hook 同步完成后，外层才继续后续通知。
+每条通知先 Blocker、后 Blockable，不跨两方比较 Hook priority。ACQUIRED 每项执行前确认原 Relation 仍有效；Hook 解除旧关系后，外层停止旧取得的后续响应，同双方重建也不能恢复它。
 
-例如 A 的 ACQUIRED Hook 解除原关联条目，嵌套 RELEASED 通知同步完成；外层检查旧关联已失效，停止 A 剩余及 E 的 ACQUIRED 响应。同一双方重新建立的新条目属于另一次关系，不能恢复旧关系的派发。已完成的回调副作用保留；这里只停止已失效关系尚未执行的响应。RELEASED 是解除后的历史通知，不以原关系仍存在作为执行资格。
-
-Contribution 模块提供贡献类型、resolveEntries 与 resolve，不处理自身生命周期，也不感知 Blocking 关系；列表修改由所属领域的 Change 通过 common/collection/entries.ts 完成。贡献何时安装、更新或移除，始终由外部 Effect／Content 或其他业务所有者负责，不向 Contribution 增加 Relation、owner、enabled 或生命周期绑定机制。
-
-Blocking 保证每个 ACQUIRED Hook 开始时原 Relation 对象仍表示当前关系。已经进入的 Hook 如果调用了其他可重入领域操作，后续依赖关系或宿主时仍须重新检查当前事实。贡献的安装与清理由外部所有者执行；清理应定位属于原关系的资源，不能误删后来重建关系的贡献。
+RELEASED 是解除后的历史通知，不要求旧关系仍存在，允许仍登记的 LEAVING 宿主响应。两端的候选及优先级在该条通知开始时一起固定，登记替换、嵌套和优先级遵守[公共 Hook](hook.md)。后续关系轮到时才采样，不提前冻结整批通知。
 
 ## 查询、Hook 与 Runtime 接入
 
-battle/blocking/query.ts 提供 blockerOf(battle, ref)、blocked(battle, ref)、usedCapacity(battle, ref)；输入保留相应 Capability 的 Typed Ref。按 Ref 读取后检查对象是否仍存在，不重复检查 Ref 已证明的稳定能力。`relations(battle, reference?)` 返回只读 Relation 数组：省略 reference 时按 Unit 顺序汇集全场当前 Relation；提供 Unit Ref 时直接读取该 Unit 的角色与关联，不扫描全场。Blocker 按自身 relations 顺序返回原对象，Blockable 直接返回自身保存的 Relation；无能力、无关系或宿主已不存在时返回空数组。hasRelation 按 Relation 对象身份判断旧关联是否仍有效，区分解除后重建的同双方关系。blockerOf 读取 relation.blocker，blocked 从 relations 投影普通目标 Ref，不将端点引用作为关系身份。
+关系查询直接返回两端保存的原对象。局部查询不扫描全场；全场查询按 Unit 和关系建立顺序汇集。端点查询返回 Typed Ref，引用不充当关系轮次身份。
 
-Blocker／Blockable 分别导出 acquired／released typed Key，关联各自最低宿主能力；全部登记存于 Unit.hooks，使用 unit.setHook／removeHook 返回对应 Change。每条关系在其第一个业务回调前同时采样两侧候选 ID 与 priority，分别按公共规则固定顺序，逐项恢复最新同 ID 登记并检查 accepts；新增 ID 不参加该条通知，同 ID 替换使用最新登记。始终先 Blocker，后 Blockable，不跨两方阶段比较 priority；Context 固定原关系事实，BattleState 逐项接续。ACQUIRED 每项前通过原 Relation 身份确认关系仍存在；RELEASED 是历史通知，不要求旧关系仍存在，允许仍登记的 LEAVING 宿主处理。取得和解除直接派发业务 Hook，不输出诊断 Event；release 整批发布后逐条开始通知，各条的双方候选及 priority 在轮到该条时同时固定，不提前冻结后续关系；Blocker 回调改变 Blockable 的 priority 也不重排该条的后半轮。
-
-Runtime 执行 Movement → Mechanism.advance → Blocking.advance。Movement 中 Route.advance 先推进指令并独立检查 Main 终点，满足条件便请求完整离场；其后 Locomotion 只处理仍在场的单位。消费侧通过 relations(battle) 从两端状态取得共享的 Relation 对象，按其中的 Typed Ref 读取端点；不保存额外的全局权威关系。Movement 根据 Blockable 的当前归属决定是否推进自主 Locomotion。
-
-Presence 与 Route 的主动空间变更先纯发布新空间事实，再按角色调用 Blockable.release 或 Blocker.releaseAll。Blockable.release 在关系通知前取消自身计划，两种角色的释放均在首个通知前完成本次集合的双端解除。切层 Change 则先发布全批 layer 字段，自己的 settle 再读取并解除当前关系；普通位置更新仍不按距离解除旧关系。Lifetime 的请求、宿主等待及最终移除遵守[公共析构协议](lifetime.md#请求与-prepare)。Departure 保留离场入口历史；后续需要当前对象的业务重新查询。返费与 Card 资源结算归 Deployment／Deployable，不由 Blocking 通知时点推导。
+Movement 先推进所有已有 Blockable 计划，再推进 Route；根据当前关系决定是否执行自主 Locomotion。阻挡不停止路线等待、即时指令或强制空间操作。真实离场、依赖保护与最终注销统一遵守 [Lifetime](lifetime.md)。
 
 ## 地块阻挡资格
 
-GROUND 搜索只选一个当前根格：具有 Occupancy 时使用 `occupancy.tile` 登记格；没有 Occupancy 时，以 `World.toTile(unit.position)` 使用身体所在格。随后读取该格的 `state.allowsBlocking`。不额外以登记格的 `elevation === "HIGHLAND"` 拒绝，也不把登记格高度与另一身体格的阻挡许可拼成两条条件。显式配置的 `allowsBlocking: true` 在高地上仍然有效。AIR 搜索绕过这项地块资格，不修改 Tile，也不让同格的 GROUND 阻挡者获得豁免。
+GROUND 只使用一个根格：有 Occupancy 时取登记格，否则取身体所在格，再读取当前 allowsBlocking。AIR 豁免该地块条件；显式允许阻挡的高地不能被 elevation 硬判断否决。完整地块更新在发布后同步复核旧关系。
 
-GROUND 的保持资格也要求当前根格允许阻挡，完整地块更新在发布后同步复核并解除失格关系；普通间接变化在 Blocking 检查点反映。AIR 的搜索与保持资格均豁免这项地块条件。搜索和保持资格分别组合这一只读事实，不通过 canRetain 调用 canSearch 共享整套条件。原生调查直接证明的是搜索入口的地块检查；将该条件用于关系保持是项目政策。
+原生搜索使用 Entity.rootTile 与 Tile.isMeleeBlockable；后者先看显式 tile_blockable，无配置才按高度回退。项目以 Occupancy 表达登记角色根格，无登记对象回退身体格，并将地块条件用于关系保持；后两者属于项目政策。原件见[阻挡调查](../research/evidence/blocking-native-20261023/report.txt)。
 
-原生 `Character._SearchBlockee`（76016，`0x180a38200`）进入 `BlockManager.SearchBlockee`（77190，`0x180aa09e0`）；普通地面分支通过 Entity.rootTile 读取 `Tile.isMeleeBlockable`。`Character.get_rootTile`（75833，`0x180a3c1d0`）返回保存的 `m_rootTile`，不是每次由世界位置重新取格。项目以 Occupancy 表达已登记角色的根格；无登记对象的身体格回退是项目的统一查询政策。
-
-`Tile.get_isMeleeBlockable`（70673，`0x1808c6070`）先读黑板 `tile_blockable`，有值直接返回，未配置才取 `!isHighland`。`Tile.get_isHighland`（70670，`0x1808c5f10`）默认读取 TileData 的原始高度；它与读取当前 Options 的 `get_heightType` 不是同一字段语义。因此普通高地的显式阻挡许可不能被当前 elevation 的硬判断覆盖。
-
-射击台另有内容规则。原生 `trap_1106_achplat` 的 `trap_1106_achplat_passive` 在 `ON_OWNER_OVERLAPPED` 向乘员创建 `highland_common[block]`；后者对 WALK 阻挡模式施加带 `BLOCK_FREE` 的派生 Buff，并随阻挡模式变化维护。`Tile.RegisterCharacter`（70726，`0x1808c1eb0`）通知 `BuffContainer.OnOwnerOverlapped`（65410，`0x1806764e0`），`SearchBlockee` 再通过 `Entity.isBlockFree`（66511，`0x180705590`）拒绝接敌。这证明平台禁阻挡来自具体内容，不是所有高地的通用规则。射击台 Content 通过 Occupancy 的 SUPPORT Definition onOccupantAdded 程序在当前乘员的 blocker.restrictions 登记平台自己的 Restriction，只禁止 GROUND 阻挡；该纯规则直接读取当前 blocker.layer，AIR 仍由其余 Blocking 规则判断。onOccupantRemoved 程序同步移除该平台规则，不改变地块 allowsBlocking，也不需要新的层变化通知。
+射击台的禁挡来自具体内容：Support 配对时向乘员登记平台独占限制，仅禁止 GROUND；解除配对只移除自身登记，不改变地块 allowsBlocking。AIR 继续由其他规则判断，见 [Occupancy](occupancy.md)。
 
 ## 阻挡层与其他领域的边界
 
-[原生模式调查](../research/evidence/blocking-native-20261023/modes/report.txt) 已确认阻挡者的 `blockMode` 与目标的 `changeableMotionMode` 需要匹配，`ignoreBlockMode` 可豁免；`pathMotionMode` 只负责寻路，`BlockFree` 是独立的禁挡状态。当前各事实的归属如下：
+目标 Layer 表示当前空地身份，blocker.layer 表示可阻挡目标层；Route Plan.motionMode 表示寻路方式；禁挡由二元限制表达。它们不互相推导，详见[原生模式调查](../research/evidence/blocking-native-20261023/modes/report.txt)。
 
-| 原生事实 | 当前表达能力 |
-| --- | --- |
-| 目标当前运动身份 `changeableMotionMode` | 现有 `Layer.state.type` 的 GROUND／AIR 可表达目标当前空地身份，不需另存一份 Blockable motion。 |
-| 寻路模式 `pathMotionMode` | Route 当前 Context 的 Plan.motionMode 表达路线通行方式；不得用它代替阻挡资格。Locomotion 消费此方式处理运动，不保存第二份身份；修改通过 [Route](navigation.md#route-定义与进度) 的 reassign 重建相应执行。 |
-| 阻挡者 `blockMode` | 项目以 blocker.layer 表示能够阻挡的目标层，并由 blocking.setLayer 执行切换；不从宿主自身 Layer 推导，也不把原生名称引入项目状态。 |
-| `BlockFree` 等禁挡状态 | 现有双端二元 Restriction 可表达，不需要第三个模式或新的 enabled 字段。 |
-
-Movement 在 `blockable.relation !== null` 时跳过该目标的自主 Locomotion 推进。阻挡状态直接由当前关系表达，Route 的计时与即时指令独立推进。
-
-通用 Blocking 支持 GROUND／AIR 目标匹配、Core 默认半径、AIR 地块豁免，以及切层时清除当前全部出向关系。Restriction 处理阵营、禁挡与其他资格；具体干员的起降程序属于 Content。
-
-[蒂比案例调研](../research/cases/21-tippi-air-blocking.md)给出起飞与落地的 Prefab／Buff 依据：本人仍为 WALK，起飞切换阻挡层并独立施加对地规避；默认半径变为 0.8944、获得近战地块条件豁免，切换时清理旧关系。通用接口承接这些 Blocking 行为，蒂比具体内容尚未实现。飞行目标的自主移动同样由 Movement 根据当前关系限制。
-
-[空中阻挡实例与半径机制](../research/cases/21-tippi-air-blocking.md#6-补核非巡空者实例与半径机制)记录守望者风絮和《未许之地》可浮空区块的内容依据，空中阻挡不限定巡空者。原生普通 Character 的 0.8944 是统一空中基准，运行时另有倍率，特殊装置可覆盖；项目支持 Definition.radius 的显式覆盖，运行时半径修正见下述支持边界。
+[蒂比与空中阻挡研究](../research/cases/21-tippi-air-blocking.md)确认自身 WALK、阻挡 AIR、对地规避可以独立存在。普通空中阻挡默认半径 0.8944，可由 Definition 显式覆盖；角色起降及运行时半径倍率仍按实际内容接入。
 
 ## 站位计算与位置推进
 
-`battle/blocking/position.ts` 提供普通阻挡站位计算。acquire 从目标的当前真实位置与 Blocker 位置形成偏移，距离小于 0.5 时沿两者连线推到最小间距；归一化的近零向量不产生新方向。0.5 是站位间距，与接敌半径分开，不从 Hitbox 推导。
+取得站位先以目标与 Blocker 的真实位置计算径向间距：不足 0.5 时推至最小间距，近零向量不制造方向。0.5 是站位间距，不是接敌半径或 Hitbox 尺寸。
 
-计算先以该径向位置检查先前阻挡目标的稳定位置：若有距离平方小于 0.01 的点，再累加分散修正。距离小于 0.1 时采用该先前目标相对 Blocker 的顺时针垂线方向；`0.1 ≤ d < 0.4` 时采用沿分离方向的加权贡献，距离达到 0.4 时不贡献。最后用归一化分散方向的 0.2 修正偏移方向并保留原径向距离。前序坐标按 relations[] 的建立顺序消费，支持惰性 Iterable，不另建位置容器。
+前序目标使用仍有关系时的 `adjustment.to ?? position` 稳定位置。径向位置与已有点距离平方不足 0.01 时做分散：距离不足 0.1 使用相对阻挡者的顺时针垂线，0.1–0.4 使用分离方向加权贡献，达到 0.4 不贡献；最终以归一化分散方向的 0.2 修正方向并保留径向距离。
 
-`stableBlockPosition(unit)` 在当前仍有 blocker 时返回 `adjustment?.to ?? unit.position`，无关系时返回当前真实位置。后续取得因此使用先前目标的预定站位，而不只看它尚未完成的插值位置。稳定位置是查询结果，不在 State 中再保存一份。
+新计划从当前真实位置建立并覆盖旧计划，按 0.2 秒（30 Hz 下六 Tick）线性推进；完成清除计划，不改关系。Unit.position 是唯一真实坐标，不另存 Tween、位置进度或速度。普通释放、容量裁撤和 Blocker 离场保留目标计划；目标自身主动脱离／覆盖位置／离场取消计划。
 
-acquire 从当前 `Unit.position` 建立 `{ from, to, startTick }`，新计划覆盖旧计划。偏移按 0.2 秒推进，项目固定 30 Hz 对应 6 Tick；`advancePosition(battle, ref)` 以 `(tick - startTick) / 6` 计算线性位置，到达终点后清除 adjustment，不改变关系。`Unit.position` 始终是唯一真实坐标，不保存额外 progress／velocity，也不建立独立 Tween 对象或全局任务表。推进只提交位置与计划，依赖位置的关系资格在 Blocking 检查点复核；它不借用自主 Locomotion Restriction，也不额外重置自主速度。
-
-Movement 复用绑定阶段起始 BattleState 的 Unit Query，先过滤 Blockable 并推进全部已有位置修正，再过滤 Route 并执行路线和自主移动。各步在调用时生成 Typed Ref，完整操作从最新 BattleState 读取当前计划、位置和资格。固定枚举来源不要求提前生成 Ref 数组或调用 toArray()。没有 Route 的 Blockable 也能推进偏移；偏移尚未结束或刚结束都不自动跳过自主移动，仍按当前关系、Route 与 Locomotion 资格决定。
-
-两遍推进不构成整批偏移的原子发布，每项接续返回的最新状态。项目的阶段顺序为 `Combat → Projectile → Movement`；位置修正在 Movement 内先于路线与自主移动推进，与原生 Tween 先于全部对象更新的时序有区别。[原生时序与取消依据](../research/cases/22-block-positioning-and-interruption.md)与项目阶段政策分别维护。
-
-| 操作 | 关系 | 自身位置计划 |
-| --- | --- | --- |
-| Blocking.release／关系裁撤 | 解除捕获的关系 | 保留 |
-| Blocker 离场、切层或容量裁撤 | 解除其目标的关系 | 保留目标计划 |
-| Blockable.release（公共别名 releaseBlockable） | 解除自身当前关系 | 取消 |
-| 新 acquire | 建立新关系 | 从当前真实位置创建新计划，覆盖旧计划 |
-| 偏移自然完成 | 不变 | 清除 |
-| 自身主动空间覆盖或 Unit 离场 | 按相应完整操作清理 | 取消自身计划 |
-
-Blockable.release 读取当前宿主，先纯发布自身计划取消，再将其非空 relation 交给 Blocking.release，不扫描全场关系。两步之间没有回调，首次 RELEASED Hook 已可见计划取消和关系解除。只剩孤立计划时仍可单独取消。Blocker 的普通清理不接管其他目标的位置计划。
+Movement 两遍推进各项接续最新状态，不承诺所有偏移一次原子发布。即使没有 Route，Blockable 仍推进计划；计划完成本身不阻止随后按当前关系与移动资格推进。时序及取消依据见[位置修正研究](../research/cases/22-block-positioning-and-interruption.md)。
 
 ## 支持边界
 
-- **特殊资格与几何。** 当前不支持特殊目标层豁免、BLOCK_RADIUS_SCALE 运行时修正及 Trap／GiantTrap 特殊几何；机制证据见相关案例和研究归档。
-- **浮空区块。** 可浮空区块的 Content 机制尚未实现；Tile 不提供阻挡层覆盖，Unit Layer 由所属能力管理。
-- **特殊关系增容。** 大君之触／大君之赐等内容与满阻挡边界仍待实现，见下节。
+特殊层豁免、运行时半径倍率、Trap／GiantTrap 特殊几何与浮空区块内容尚未完整接入。当前接口和已有 Definition 覆盖不表示这些真实机制已完成，统一缺口见 [Tactical 语义](tactical-semantics.md)。
 
 ## 与原生的差异及对照验收
 
-[原生时序调查](../research/evidence/blocking-timing-native-20261023/report.txt)确认：普通接敌与各对象的自主移动交错进行；同一阻挡者的普通入口没有全场多轮收敛，具体内容可以显式立即搜索。[单次操作调查](../research/evidence/blocking-native-20261023/report.txt)记录模式与资格、竞争、容量裁撤、同步通知及位置偏移。
+原生普通搜索按起始容量预选名单，并与对象移动交错；项目采用 Movement 后固定阶段、固定候选和逐次当前容量。增容可能更早接敌，也可能改变归属、攻击机会与漏怪，不预先断言只是微小帧差。该阶段与容量政策是明确项目选择，见[原生时序](../research/evidence/blocking-timing-native-20261023/report.txt)。
 
-项目对固定候选逐次读取当前容量，原生普通搜索则先按起始剩余容量挑选接敌名单。因此 Hook 增容可能使项目中的关系更早建立，并持续改变后续分配；实时容量是项目明确采用的语义。
-
-Movement 后的固定阶段会改变部分接敌归属、目标选择、已执行位移、攻击机会乃至漏怪结果，不能预先归类为只有一帧的小差异。是否需要进一步修正，以对照测试的实际影响决定，不由架构直觉或与 Unity 调用位置不同这一事实单独决定。
-
-下表用于核对项目政策对重要结果的影响，不要求为每个阶段、入口和回调排列组合建立用例。现有验收以[关键语义](#关键语义)为准；原生逐帧对照在具体内容显示接敌、攻击机会或漏怪差异时进行。
-
-| 对照重点 | 需要比较的业务结果 |
-| --- | --- |
-| 目标本 Tick 穿过接敌范围、多个阻挡者竞争目标 | 实际接敌归属、位移、攻击机会与漏怪是否符合支持内容的要求 |
-| 关系与容量变化发生在普通搜索前后 | 已要求的解除及裁撤同步完成；其余接敌按固定检查点和搜索政策产生 |
-| 关系回调改变当前归属、容量或单位存续 | 后继按最新事实执行，不恢复旧关系或丢失已完成的业务结果 |
-| 阻挡位置计划与解除、自主移动交叠 | 真实位置、关系与计划分别保持规定的生命周期，不丢失或额外消费移动预算 |
+验收按[统一清单](verification.md)覆盖双端发布、旧身份、批量释放、容量裁撤、站位与独立计划，不按每个回调排列建立矩阵。
 
 ## 满阻挡筛选与关系引起的容量变化
 
-大君之触／大君之赐的具体增容内容尚未接入，其满阻挡接敌边界需要专项机制证据。当前通用搜索遵守以下容量契约。
+大君之触／大君之赐使阻挡者容量增加，同类最多六层；容量贡献与目标占用是独立事实，不能将 volume 改零代替。项目的实时容量只允许后续既有候选重新尝试，不绕过当前容量前提。
 
-**已确认机制：** [大君之触](https://prts.wiki/w/大君之触) 与 [大君之赐](https://prts.wiki/w/大君之赐) 使阻挡自身的单位阻挡数 +1，同类效果最多叠加 6 次。占用数与对阻挡者的容量贡献是两个可独立观察的事实；后者可能影响后续候选、阻挡目标更换与读取最高阻挡数的其他机制，不能通过把该敌人的 volume 改为 0 代替。
-
-**当前实现边界：** [search 与关系维护](../../src/core/battle/blocking/operations.ts) 使用固定候选、实时容量，关系 Hook 增容允许后续候选在同一次搜索中接敌；不预先冻结预算或在额度首次用尽时结束候选循环。每次实际取得仍要求当前占用加目标 volume 不超过容量，没有额外的满容量特许入口。这些敌人的具体增容效果尚未接入。
-
-**证据限度：** PRTS 的 +1／最多 +6 描述不能单独证明“满阻挡时也能新抓取这类敌人”。[完整普通客户端路径证据](../research/evidence/blocking-native-20261023/competition/report.txt)确认 SearchBlockee 在剩余额度不大于 0 时退出，并先按初始预算选定名单、再逐项建立关系；回调增加容量不会自动回填该次名单。这些敌人的特殊内容、容量增益生效时点及额外调用链尚未完整核对。项目采用实时容量政策：对本次初始候选，增容后允许后续尝试；不因此新增候选，也不增加绕过容量或资格的特殊接敌。特殊敌人的满阻挡行为仍需单独核对。
-
-以下问题用于具体内容接入前的专项调查，不作为现阶段的测试要求：
-
-- 普通敌人已经占满容量后接触该类敌人，是否允许新建关系；先阻挡该类敌人再进入满额状态时是否不同。
-- 第一只该类敌人被阻挡、产生容量贡献后，后续候选何时获得重新判断的机会；对照同轮实时容量行为及原生特殊条件。
-- 普通敌人与该类敌人混合、同类贡献达到 6 层上限时的实际容量、占用与选择顺序。
-- 敌人死亡、解除阻挡、转移阻挡者时撤销正确来源的容量贡献，并重新检查既有关系。
-- 基础 capacity 为 0、被 Restriction 禁止阻挡与仅剩余额度为 0 分别核对，不因引入特殊尝试而绕过明确的资格限制。
-- 若接入同步关系回调，按跨领域状态失效契约重读宿主、目标、关系及当前容量，不继续使用回调前的 remaining。
-
+满容量是否允许新取得这类目标、贡献生效时点及额外调用链尚未完整闭合。普通原生路径在无剩余容量时退出，不能仅凭 +1 描述推出特殊取得权限；实际内容和证据范围见[满阻挡研究](../research/evidence/blocking-native-20261023/competition/report.txt)及 [Tactical 语义](tactical-semantics.md)。

@@ -2,7 +2,7 @@
 
 2026-11-14 补齐五型全局配置、实际来源、EP免疫／屏障、自然回复及恢复修改入口，见[本轮证据](../evidence/resource-mechanisms-20261114/recovery-elemental/README.md)。全领域覆盖见[案例37](37-resource-mechanism-coverage.md)。以下首次推进与零参数的原体继续适用，新增内容集中在第6–9节。
 
-研究日期：2026-11-02；项目基线 `635617b`。2026-11-05 补核零时长参数进入 Buff 的启动、结束与子效果路径，项目基线 `2f8612d`。核对范围为官方 Windows IL2CPP 客户端普通 native 分支，没有运行完整游戏或核实活跃 XLua；不据此决定 Core 的调度或接口设计。
+研究日期：2026-11-02。2026-11-05 补核零时长参数进入 Buff 的启动、结束与子效果路径，项目基线 `2f8612d`。核对范围为官方 Windows IL2CPP 客户端普通 native 分支，没有运行完整游戏或核实活跃 XLua；不据此决定 Core 的调度或接口设计。
 
 ## 1. 问题与结论
 
@@ -164,17 +164,9 @@ LIMITED + duration = 0
 - 当前五型全局配置到根／子模板选择已补齐，见第6节；五型时长均正，仍未找到0秒正式标准配置。旧零参数批次使用单独版本的提取镜像，不能与本轮全局表混成同一发布。
 - 未以固定 30 Hz 数值模拟证明客户端 FP 舍入、持续输出次数与项目逐 Tick 结果完全等价。
 
-## 5. 项目关联
+## 5. 项目对应
 
-项目采用固定步长调度：Elemental 阶段只处理无 Burst 时的自然回复，每次恢复 `当前 recoverySpeed / TICKS_PER_SECOND`。标准 Burst 使用 Effect 的 DURATION Expiration，rate 为 0，由 onTick 按当前 `burstRecoverySpeed` 扣减唯一的 remaining；已推进量由 `duration - remaining` 得到。时间接口见 [Effect 契约](../../architecture/effect.md#6-时间推进)。执行到实例时使用当前状态，阶段之前创建的可以参与本次推进，阶段之后创建的等下一次候选；不设置统一的创建 Tick 跳过规则。
-
-该选择忽略原生逐宿主更新与项目全场阶段之间的帧内微时序差异，不追求每个触发入口的首帧映射。固定步长与首次参与由调度契约决定，Elemental State 不保存上次推进时点。它是项目工程取舍，不将原生的条件性调用顺序改写为全场统一阶段。
-
-标准 Burst Effect 使用同一有效进度确定恢复比例、周期输出和属性恢复，不另保存周期时钟。每次推进结算跨过的周期边界，自然预算耗尽时先完成预算内最后一次输出，再结束实例；取消、提前 finish 和宿主离场不补未来输出。这保留周期输出完整性，不增加原生首帧规则。
-
-恢复期间按原生已确认的恢复比例逐步写回四型真实 EP，在项目的时间表示中为 `当前有效 MaxEP × (duration - remaining) / duration`；结束时写满并清空 Burst 引用。Burst 槽位存在期间仍拒绝新的 EP 损伤与显式回复；不能以准入受限为由把恢复中的真实 EP 一直保留为零。
-
-零预算处理与标准效果的全部持续时间不能直接等同。项目的标准 Burst 在 onInstall 中登记创建事实并执行一次性爆发业务，随后由通用 Effect 安装流程检查时间；零预算不进入根实例的 onEnable 或 onTick，而是请求正常结束。独立眩晕使用自己的期限，永久减防和麻痹保留独立生命周期，需要随根结束的产物通过 Lifetime 绑定。资源 damaged 通知安排在这些同步安装业务之后。这是结合上述证据明确的项目契约，不将一个恢复预算机械套用到全部子效果，也不宣称完整复刻所有原生模板与热更时序。
+EP 存储、标准爆发、子效果生命周期与恢复时钟的当前组织见 [Elemental](../../architecture/elemental.md)；通用计算／接收契约见 [Resource](../../architecture/resource.md)。原生宿主调用位置不决定项目必须复制 coroutine、帧内相位或零时长的清理布局。
 
 ## 6. 五型配置、接收者分流及实际来源
 
@@ -227,4 +219,4 @@ EP不只有ATK附带：固定量、按HP伤害量、AOE及是否经过公式各�
 2. `total=max(0,total−delta)`；elapsed不变。
 3. `_RefreshEpRecoverAfterCooldownReduced`当场重写全部EP比例；新total≤0或elapsed达到新total则当场写满并结束恢复。
 
-说明用例：total10、elapsed4，减2后EP由40%即时变为4/8=50%；不是只改未来速度或只缩倒计时。实际绑定及方法#67759/60见[content.json](../evidence/resource-mechanisms-20261114/recovery-elemental/content.json)、[core-operations.json](../evidence/resource-mechanisms-20261114/recovery-elemental/core-operations.json)。当前项目Effect只推进remaining的接口没有自动表达这项完整操作；本研究没有批准省略即时EP重算或以别的时间公式替代。
+说明用例：total10、elapsed4，减2后EP由40%即时变为4/8=50%；不是只改未来速度或只缩倒计时。实际绑定及方法#67759/60见[content.json](../evidence/resource-mechanisms-20261114/recovery-elemental/content.json)、[core-operations.json](../evidence/resource-mechanisms-20261114/recovery-elemental/core-operations.json)。即时 EP 重算与剩余恢复时长必须分别记录；项目对应操作见 [Elemental](../../architecture/elemental.md)。

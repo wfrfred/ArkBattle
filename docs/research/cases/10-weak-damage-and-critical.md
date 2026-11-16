@@ -45,10 +45,8 @@
 
 [PRTS伤害分类](https://prts.wiki/index.php?title=伤害分类&oldid=450401)（自述2.7.91）将攻击力附加值列入理论比较项。该差异已从旧指纹重新核到当前指纹，仍需有效XLua或客户端运行证据才能判断线上行为；没有用Wiki覆盖原体，也没有把fallback提升为线上实测。ArkBattle已确认的完整双Calculate仍是项目选择，本次不撤销或额外简化。
 
-## 5. 项目选择与证据边界
+## 5. 证据边界与项目契约
 
-ArkBattle已确认两个候选从同一输入分别执行完整Calculate，选择数值及其BattleState，只Apply一次；这与原生静默试算不同，见[弱点伤害契约](../../architecture/vitality.md#2-弱点伤害的项目规则)。本调查不撤销该选择，不在Calculate中触发目标受击。
+本案闭合普通弱点试算、山的概率选择和赤刃明霄陈的实际 DB 绑定；未找到固定弱点标记的启用内容，不能据此宣布该分支废弃。atkAddition 的客户端与社区差异仍按第 4 节记录，不假造热更新解释。
 
-固定弱点marker的当前生产者在517资源精确搜索中无命中，普通弱点本身已有实际干员绑定；不把这一条件分支宣布废弃。atkAddition当前native与Wiki冲突按第4节保留，不能因换成当前指纹就宣称线上热更已证。
-
-历史原件[weak-damage-20261016](../evidence/weak-damage-20261016/README.md)保留原指纹与原记录；机制结论以本页当前核对为准。全领域覆盖见[案例37](37-resource-mechanism-coverage.md)。
+项目的计算／应用、Hook 排除与具体内容编排见 [Resource](../../architecture/resource.md)和[Content](../../architecture/content.md)，不从原生动作数量推出对应的公共类型。

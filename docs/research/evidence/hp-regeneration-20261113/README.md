@@ -33,7 +33,7 @@ EnemyDB 来自 `Kengxxiao/ArknightsGameData` 修订 `63c7cec73c3858d0ae913f85cc8
 
 满血时外层与循环没有停止计时或跳过 setter 的分支；普通 setter 在每次写后比较 `Clamp01(hp/maxHp)` 与 1，不检查是否从非满变满。因此，已满血的正速率脉冲也能进入 HP 满值通知。这里是静态路径推导，未执行实战。
 
-模板全量扫描 9054 项，事件 98 有两项：`titi_s_3[doze_indoze]` 执行 `FinishBuff`，另一个为项目不支持的 `sandbox_v3_service[start]`。前者证明已配置消费者，但本批没有继续追踪缇缇 S3 的实际技能安装绑定，不将模板存在冒充技能现场触发。
+模板全量扫描 9054 项，事件 98 有两项：`titi_s_3[doze_indoze]` 执行 `FinishBuff`，另一个为项目不支持的 `sandbox_v3_service[start]`。前者在本批只证明配置消费者；后续[回复与元素批次](../resource-mechanisms-20261114/recovery-elemental/README.md)已闭合缇缇 S3 的实际安装，结论见 [Case 29](../../cases/29-hp-and-ep-healing-settlement.md)。两批均不冒充技能现场观测。
 
 ## 复跑
 

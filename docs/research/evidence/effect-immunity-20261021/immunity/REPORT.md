@@ -39,7 +39,7 @@ NewBuff顺序：
 
 _CheckThroughBuffAbnormalAnti 遍历输入 data.attributes.abnormalFlags；0x18067eb34读取目标 Attributes.GetAbnormalAnti[64282]。遇到任意一项禁止即返回false（0x18067eb3b..4c），在新实例 Reset/OnStart前拒绝整个Buff。不是按 Buff key 匹配。
 
-_FilterBuffAbnormalAnti遍历已有Buff，0x18067f824调用 Buff.CheckAbnormalFlagAnti[65253]，相交则0x18067f839 MarkFinish[65121](true)。CheckAbnormalFlagAnti在0x180680698..6b8检查本Buff的abnormalFlagMask与antiMask是否有交集，返回的是整个实例是否应结束。没有“从旧Buff剥离一个flag”的处理。
+_FilterBuffAbnormalAnti遍历已有Buff，0x18067f824调用 Buff.CheckAbnormalFlagAnti[65253]，相交则0x18067f839 `MarkFinish[65121](true)`。CheckAbnormalFlagAnti在0x180680698..6b8检查本Buff的abnormalFlagMask与antiMask是否有交集，返回的是整个实例是否应结束。没有“从旧Buff剥离一个flag”的处理。
 
 因此：同一复合Buff里若含X、Y，Anti(X)会拒绝/结束整件；普通Immune(X)本身只影响X的普通有效flag读取。这两个行为不能压成统一布尔安装免疫。
 

@@ -1,6 +1,6 @@
 # Effect 索敌与异常免疫
 
-研究日期：2026-10-21；项目对照 `c40d79b5`。本轮核对“为施加效果而索敌”的实际需求、索敌排除与施加／生效免疫的区别；不设计或实现新的 Effect API。
+研究日期：2026-10-21。本轮核对“为施加效果而索敌”的实际需求、索敌排除与施加／生效免疫的区别；不设计或实现新的 Effect API。
 
 证据来自本机客户端的原生 C# fallback 和实际 Prefab，没有执行实机注入或核实活跃 XLua 替换。二进制身份、精选指令、内容配置及校验值见 [manifest.json](../evidence/effect-immunity-20261021/manifest.json)。
 
@@ -46,8 +46,6 @@ AdvancedSelector.OnPostFilter [74238]
 
 不能把下述光环配置中的 purposeMask=0 泛化为爱丽丝二技能也使用 NONE。其实际组件是 RangedAttack，父类为 AbstractBasicAttack；后者的 `GeneratePurposeMask` [90311] 在 `0x180e9ae11` 调用基础生成逻辑后，于 `0x180e9ae16` 执行 `or eax, 1`，即附加 DAMAGE 位。睡眠免疫仍由 Filter31 独立查询，未变成一个 EFFECT Purpose。这一结论针对原生生成路径，未核实活跃 XLua 替换。
 
-项目随后确定纯属性增益、施加状态等索敌声明普通字符串用途 `EFFECT`，不携带 Effect Definition ID；伤害或治疗光环按本次意图声明相应用途。睡眠免疫仍由睡眠机制维护，是否提前排除免疫者由本次 Filter 决定。这个用途声明是项目接口选择，不是原生事实，也不会自动把 Effect 免疫变成 Targetable 的禁选规则。
-
 实际技能 Prefab 包含：
 
 | 内容 | 验证器／配置 | 已证实的含义 |
@@ -73,18 +71,8 @@ AdvancedSelector.OnPostFilter [74238]
 
 因此，一个复合 Effect 中某项异常不生效，不足以推导该 Effect 的其余状态、回调和生命周期都应该消失。实际模板及上述指令见 [immunity/REPORT.md](../evidence/effect-immunity-20261021/immunity/REPORT.md)。本轮不要求复刻 Anti／Immune 的内部命名或计数存储，只要求后续模型保留已证明的行为区别。
 
-## 4. 当前 Stronghold 的实际差距
+## 4. 结论与项目对应
 
-当前 `unit/effect/operations.ts` 的 install 检查宿主和 Scope 可用性；updateStatus 检查 enabled、状态、宿主、Scope 和互斥组。没有通用施加免疫或异常生效免疫机制。`content/enemies/ground.ts` 遇到 stunImmune 仍直接抛出“不支持”的错误。此前“Effect 已经有免疫”的假设不成立。
+选择名额前排除免疫者、拒绝整个 Buff、移除旧异常 Buff和抑制异常生效是不同原生语义。睡眠 Filter 查询异常资格，鼓舞 Filter 查询当前内容标记，均不能用入站 Effect Definition ID 统一代替。
 
-另一方面，当前 `targeting.Request` 的显式 Filter 已能表达上述内容需要的候选排除，无须增加第二份独立免疫状态。后续建立异常／效果资格查询时，特定 Filter 可以复用该查询；真正的施加或生效路径仍按当时事实维护资格，直接攻击附加控制不能依赖它此前经过过 Targeting。
-
-这不表示所有 Effect.install 都必须新增异常免疫检查：拒绝安装、抑制某项异常与光环不选择某个标记，应分别遵守其业务语义。
-
-## 5. 本轮设计判断
-
-1. “通过 Targeting 选择对象再施加 Effect”有真实需求；“在选择名额前排除某种状态免疫者”同样有真实需求。
-2. 免疫事实不应在 Targetable 与施加侧维护两套；具体 Filter 复用当前资格查询，实际施加／生效继续负责自身契约。
-3. 本轮核实的内容都可以由显式 Filter 表达，不需要给 Purpose 增加 `EFFECT { id }`。这是一项项目判断，不是声称原生不存在任何其他特殊入口。
-4. Effect Definition ID 与异常机制身份不能混用：多个 Effect 可以表达同一种异常，一个复合 Effect 也可以包含多项异常。睡眠 Filter 查询的是 SLEEPING 免疫，鼓舞 Filter 查询的是当前内容标记，均未要求知道传入 Effect Definition ID。
-5. 当前应记录的缺失是异常／效果施加和生效资格，而不是先补一个 Purpose 字段。该机制的 Type／API 仍需单独设计；本轮不修改源码。
+这些结果不决定项目是否采用原生 Purpose、Anti／Immune 枚举或一套通用施加流程。项目选择与 Effect 边界见 [Targeting](../../architecture/targeting.md)和[Effect](../../architecture/effect.md)；具体机制仍须在选择、施加与生效各自适用的时点读取资格。
