@@ -9,7 +9,7 @@
 ## 保留依据
 
 - 保障实际玩法结果、身份与资源不变量，以及会改变结果的发布／结算边界。未接入内容和设计示例不作为已实现行为验收。
-- 每个独立重要结果有代表场景，共享协议只集中保障一次，消费者仅增加自己的业务后果；同一输入、种子与程序得到相同重要结果。
+- 每个独立重要结果有代表场景，共享协议只集中保障一次，消费者仅增加自己的业务后果；同一输入、种子与程序得到相同重要结果。测试目录、主题命名与本文领域一致，每个套件以 Contract 链接对应契约。
 - 身份、资源与生命周期通过公开领域操作建立；纯算法直接使用合法值。夹具准备事实，不伪造完成状态或另写产品算法。
 - 有冲突先依机制证据与已确认选择统一文档，再修实现和测试；具体语义尺度见[架构约定](README.md)。
 
@@ -19,9 +19,9 @@
 
 | 结果 | 集中代表 |
 | --- | --- |
-| 养成、等级覆盖、技能选择、静态覆写、范围与资源关联正确；真实非零自然回复保留单位换算。 | 实际单位／技能资料，不枚举默认零值。 |
-| 地图几何、路线时基与控制流、出兵展开、随机组及等待政策保留。 | Route／Schedule 数据转换；主线预处理与 Branch 运行时抽选、Action／Enemy 的 notCountInTotal 合并到 NONE。 |
-| Effect 重应用、层数／续期和属性修正位置、黑板与来源采样标记完整。 | 实际已启用描述；不以静态读取证明运行算法。 |
+| 养成、等级覆盖、技能选择、静态覆写、范围与资源关联正确；真实非零自然回复保留单位换算。 | [单位配置](../../test/data/unit/)使用实际资料，不枚举默认零值。 |
+| 地图几何、路线时基与控制流、出兵展开、随机组及等待政策保留。 | [Route／Schedule 转换](../../test/data/level/route-schedule.test.js)与[预置配置](../../test/data/level/predefined.test.js)；主线预处理、Branch 运行时抽选及 notCountInTotal 转换。 |
+| Effect 重应用、层数／续期和属性修正位置、黑板与来源采样标记完整。 | [Effect 转换](../../test/data/effect.test.js)使用已启用描述，不以静态读取证明运行算法。 |
 
 Prefab、范围读取和换算由实际业务使用；目录移动、提取工具或未接入原型不产生额外运行验收承诺。
 
@@ -46,13 +46,13 @@ Prefab、范围读取和换算由实际业务使用；目录移动、提取工�
 
 公共容器、Query、RNG、数值取整及几何算法各自集中验证；坐标旋转、范围并集、圆／盒／混合形状的独立相交和扫掠结果不复制到消费者。Targeting 只补一个实际 Hitbox 范围接入，锁定弹道单独验证身份命中。
 
-core-types 集中证明构造与私有状态／回调配对、Typed Ref、具体 Initial 必填与额外已知输入、Query／optional 收窄、Change 能力逆变和 Hook Key 载荷关联。Occupancy 必需 tile、Route 必需 plan／offset、Spawn 所需与禁止能力由构造边界代表覆盖，不按字段、数组长度或每种 Capability 扩矩阵。
+[公共类型契约](../../test/core/types.test.js) 集中证明构造与私有状态／回调配对、Typed Ref、具体 Initial 必填与额外已知输入、Query／optional 收窄、Change 能力逆变和 Hook Key 载荷关联。Occupancy 必需 tile、Route 必需 plan／offset、Spawn 所需与禁止能力由构造边界代表覆盖，不按字段、数组长度或每种 Capability 扩矩阵。
 
 普通注册保序、结构共享、Hook 候选与 Lifetime 析构只在公共代表中保障；MaxHP、冷却、Ammo 和 Blocking 等具有真实后继的 Change 留在所属业务。综合场景仅保障新增跨领域结果，Content 位置或涉及未完整审查领域不是保留重复用例的理由。
 
 ## Effect 分组、重复施加与计时
 
-依据 [Effect](effect.md)，集中在 Effect 主套件保障：
+依据 [Effect](effect.md)，集中在 [Effect 主套件](../../test/core/effect.test.js)保障：
 
 - 来源分组区分共享／空来源独立组、同 Card 多实例、不同 Card、无 Card Unit；来源注销与再部署不改变历史 Card 归属。Deployment 只保障历史在 enter 前登记、拒绝不登记、离场不删除。
 - 重应用正确拒绝、新建或保留身份与私有状态；实际／有效叠层上限、满层续期、END／DECAY 和手动减层产生对应结果。实际变层先发布再通知，即使有效层数未变；满层只续期不通知变层。停用期间仍通知，但不恢复旧输出，重新启用读最新层数。
@@ -62,11 +62,11 @@ core-types 集中证明构造与私有状态／回调配对、Typed Ref、具体
 
 ## Targeting 与 Targetable 的回归语义
 
-依据 [Targeting](targeting.md)：
+依据 [Targeting](targeting.md)，由[标准资格](../../test/core/targeting/eligibility.test.js)、[受选限制](../../test/core/targeting/targetable.test.js)与[实际攻击](../../test/content/actions/attack.test.js)分别保障：
 
 | 关键结果 | 集中代表 |
 | --- | --- |
-| HP／EP 候选与实际接收分开，来源能力和集合目标类型保持。 | 标准选择及 core-types；不复制四个谓词矩阵。 |
+| HP／EP 候选与实际接收分开，来源能力和集合目标类型保持。 | 标准选择及 [公共类型契约](../../test/core/types.test.js)；不复制四个谓词矩阵。 |
 | Restriction 先竞争再按定义身份豁免，独立机制保留，移除不误删其它来源。 | Targetable 一个竞争与共享定义场景。 |
 | 有效 MaxHP、HP／EP 混合需求、ACTIVE healFree 与嘲讽排序正确。 | 混合治疗、贡献与选择场景；公共取整只测一次。 |
 | 选择组接续 RNG，启动拒绝保留消费；保存目标不自动重选，显式复验不重新竞争。 | 实际攻击接入。 |
@@ -75,7 +75,7 @@ core-types 集中证明构造与私有状态／回调配对、Typed Ref、具体
 
 ## Route 与 Schedule 的回归语义
 
-依据 [Route](navigation.md) 和 [Schedule](schedule.md)：
+依据 [Route](navigation.md) 和 [Schedule](schedule.md)，对应[路线](../../test/core/navigation/route.test.js)与[调度](../../test/core/schedule.test.js)套件：
 
 - Route：首指令同步进入、MOVE 进入与重入采样、长无环链完整执行／即时环让出；active 与 ticking 独立，ENTER 可暂停而绝对等待保留出生时基。TRACE 到达后保留指令和最后格，支持同格重启；Main 出口不随临时控制权改变，无终点不离场。空间副作用后使用最新 Context。
 - Schedule：前延迟、出生偏移和位置共用样本、等待先于 enter；Wave 超时只解除 wave 等待，final 保留；活 Unit 的指定等待释放与完整离场各有正确结果。Branch 每次整组重抽，出生前发布索引／RNG／实例，触发 Tick 不重复推进，重入不丢实例。空计划与完成后继续 step 正常。
@@ -84,7 +84,7 @@ core-types 集中证明构造与私有状态／回调配对、Typed Ref、具体
 
 ## Presence 的回归语义
 
-依据 [Presence](presence.md)，主场景保障保留 Unit、位置、占格、部署份额、Effect 与 Lifetime；全部限制先发布，再清理当前 Blocking 和自身计划、取消 Action。appear 只移除自身限制，主动位置覆盖包括同值请求。
+依据 [Presence](presence.md)，[主套件](../../test/core/presence.test.js)保障保留 Unit、位置、占格、部署份额、Effect 与 Lifetime；全部限制先发布，再清理当前 Blocking 和自身计划、取消 Action。appear 只移除自身限制，主动位置覆盖包括同值请求。
 
 跨领域代表只补独立后果：Blocker 不取消原目标的独立偏移；旧 Action 输出停止、已成立 Skill 继续；普通 HP／EP 损伤拒收而 HP LOSS 可结算，明确恢复与自然恢复独立；普通空间／目标／Terrain 排除消失对象，tracking 弹道仍追真实位置。公共 Restriction 与结束协议不重复。
 
@@ -96,7 +96,7 @@ core-types 集中证明构造与私有状态／回调配对、Typed Ref、具体
 | --- | --- |
 | RESTRICTION-01 | 有效贡献、组竞争、定义身份和 AND 判断正确；复用 Targetable，不为 resolve 查询建同构矩阵。 |
 | RESTRICTION-02 | 三次接收复检使用同一 ignore、最新有效项，豁免不恢复败项、不绕过固有前提、不传嵌套；资源代表补同步变化。 |
-| RESTRICTION-03 | 领域操作保留各自资格时点和后继，类型不放宽能力／载荷；core-types、Blocking／Skill／Presence 各承担自身结果。 |
+| RESTRICTION-03 | 领域操作保留各自资格时点和后继，类型不放宽能力／载荷；[公共类型契约](../../test/core/types.test.js)、Blocking／Skill／Presence 各承担自身结果。 |
 | DEPLOY-RESTRICTION-01 | 非法 Quote 在预览与部署一致拒绝；库存、支付、地图、双槽等固定前提不能被规则覆盖，免费与免支付保留不同账务。 |
 | DEPLOY-RESTRICTION-02 | Definition／Card／Request 的覆盖和互斥选择得到稳定拒绝原因；一个分层代表，不枚举所有字段和来源。 |
 
@@ -106,28 +106,28 @@ core-types 集中证明构造与私有状态／回调配对、Typed Ref、具体
 
 | 编号 | 关键结果 | 集中代表 |
 | --- | --- | --- |
-| HOOK-01 | 固定候选及初始 priority、最新登记、同级稳定和独立嵌套；leave 使用注销前程序快照，结束事实不丢仍登记的 LEAVING 宿主。 | 公共 Hook／类型与真实生命周期。 |
-| HOOK-02 | Calculate／Apply 排除独立，键身份和 ID 匹配正确；排除不变成免疫豁免或嵌套政策。 | 一个来源／目标及嵌套结算代表。 |
-| HOOK-03 | Blocking 两方候选和 priority 在任一通知前固定，仍先 Blocker 后 Blockable；关系失效与历史通知按各自契约处理。 | Blocking 关系重入，不复制公共候选矩阵。 |
-| HP-01 | 当前公式类型与防御采样贯穿计算／应用；分类事实保留，不产生计算期受击。 | 实际公式、Formula／Output 干预；数值边界归资源。 |
-| HP-02 | 独立 Calculate 分支只接续选中的完整 State，随后仅 Apply 一次。 | 真实两阶段操作；不自写弱点选择程序证明未接入内容。 |
-| APPLY-01 | BeforeReceive 改变准入并接续工作值，取消保留已完成前缀；HIT 与普通伤判同轮，前置取消不授予 HIT，后续取消不回滚已得 SP。 | 无敌／Skill 接入与同步恢复。 |
-| APPLY-02 | 最终非负边界、零计算拒绝与零接收／零实际变化成功分开；报告在写点固定。 | 接收减量超过输出、满资源治疗和后置嵌套业务。 |
-| APPLY-03 | 固定／取消单向接续，取消权限与成功后继分开；禁止抵挡保留护盾且仍有普通减伤，FIXED 不被普通改量恢复。 | 泥岩真实 Hook 和共用接收类型代表。 |
-| HP-03 | damageCommitted、两侧 Applied 完成后才确认死亡；零 HP 期间保留 Unit 与 Blocking，可救回，不由嵌套 Combat 提前判死。 | 已有致死与恢复场景。 |
-| KILL-01 | 显式 killer 与 source 独立；targetKilled 先于普通目标 Prepare，排除或来源 LEAVING 不改变目标结算。 | Damage 确认与本地通知；null／注销来源附于该场景。 |
-| KILL-02 | 内层取得死亡确认时外层不重复；首次 End 固定归属，重复不 Prepare，Finalize 延后不丢 killed，Completed 后发业务不改旧结果。 | 嵌套伤害与真实 Lifetime。 |
-| KILL-03 | InstantKill 调用者先登记 Prepare，再请求结束；通知看到已发布 LEAVING 与固定 Departure，不要求先写 HP0，直接 remove 不自动生成来源通知。 | Unit 既有直接结束组合，使用公开 Hook／dispatch，不另建 InstantKill 框架。 |
-| HP-04 | MaxHP 变更同步比例与债务分配，容量耗尽由 Settlement 处理；不伪装治疗或复活。 | 现有贡献变化和治疗比例排序。 |
-| HP-05 | 三种 Nature 共用管线；无敌／Presence 不阻止 LOSS，环境标签不自动跳 Hook。 | 已有流失与接收代表。 |
-| HP-06 | HIT 许可与 Nature 独立，非 LOSS 且许可为真才回复；环境和 Effect 输出不靠全局阻回伪装。 | Skill、泥岩与实际活性源石；深水／标准 Burst 分类由内容代表保障。 |
-| HP-07 | 自然回复读取当前属性、逐 Tick 偿债／回 HP，顺序和零速／存活门控正确，不进入普通治疗。 | Effect 后、Action 前的现有恢复场景，含消失与 healFree。 |
-| HP-08 | Health 候选干预后读最新宿主，失效保留前缀而不成功写入；成功含零变化均执行 void 后继，原报告不受其更改／离场影响。 | 提交保护、MaxHP／恢复后继与类型代表。 |
-| HP-09 | 负生命两条累计分支、容量耗尽与配置延后清算正确，设置比例不即时清债或判死。 | 合法受击进入债务后继续损伤，再改变容量。 |
-| HEAL-01 | 恢复先偿债，真正溢出与 HP 增益分开；容量缩减后的 Healing 写入即使引发 DEATH，仍返回 APPLIED 和固定报告。 | 既有债务恢复／溢出场景扩充容量缩减分支，核对离场与报告，不复制自然回复矩阵。 |
-| EP-01 | EP 与 HP 元素抗性独立；最新 MaxEP 的规范化真实写入 State，与报告写点一致。显式恢复逐型全量；healed 只通知正增益，零增益仍可成功 Applied。 | 多型损伤／恢复与上限缩减，读取实际 State 而非只断言报告。 |
-| EP-02 | 耗尽同步创建 Burst，创建通知先于仍有效的一次性输出，随后 damaged／Applied；启动取消不改旧损失报告。 | 标准爆发及创建回调取消。 |
-| EP-03 | 唯一恢复预算、动态上限／速度、暂停、末次周期、零预算输出与产物期限正确；自然 EP 回复不派发 healed 或普通治疗。 | 实际标准 Effect 代表，不重写恢复算法或展开八套参数矩阵。 |
+| HOOK-01 | 固定候选及初始 priority、最新登记、同级稳定和独立嵌套；leave 使用注销前程序快照，结束事实不丢仍登记的 LEAVING 宿主。 | [Hook](../../test/core/hook.test.js)、[类型](../../test/core/types.test.js)与真实生命周期。 |
+| HOOK-02 | Calculate／Apply 排除独立，键身份和 ID 匹配正确；排除不变成免疫豁免或嵌套政策。 | [资源结算](../../test/core/resource/application.test.js)中的来源／目标及嵌套代表。 |
+| HOOK-03 | Blocking 两方候选和 priority 在任一通知前固定，仍先 Blocker 后 Blockable；关系失效与历史通知按各自契约处理。 | [Blocking](../../test/core/blocking.test.js)关系重入，不复制公共候选矩阵。 |
+| HP-01 | 当前公式类型与防御采样贯穿计算／应用；分类事实保留，不产生计算期受击。 | [Calculate](../../test/core/resource/calculation.test.js)实际公式与采样。 |
+| HP-02 | 独立 Calculate 分支只接续选中的完整 State，随后仅 Apply 一次。 | [Calculate](../../test/core/resource/calculation.test.js)的独立计算分支，不自写未接入的弱点内容。 |
+| APPLY-01 | BeforeReceive 改变准入并接续工作值，取消保留已完成前缀；HIT 与普通伤判同轮，前置取消不授予 HIT，后续取消不回滚已得 SP。 | [Apply](../../test/core/resource/application.test.js)的接收与同步后继。 |
+| APPLY-02 | 最终非负边界、零计算拒绝与零接收／零实际变化成功分开；报告在写点固定。 | [Apply](../../test/core/resource/application.test.js)与[Calculate](../../test/core/resource/calculation.test.js)的零值和报告。 |
+| APPLY-03 | 固定／取消单向接续，取消权限与成功后继分开；禁止抵挡保留护盾且仍有普通减伤，FIXED 不被普通改量恢复。 | [泥岩](../../test/content/operators/mudrock.test.js)真实 Hook 与[接收类型](../../test/core/types.test.js)。 |
+| HP-03 | damageCommitted、两侧 Applied 完成后才确认死亡；零 HP 期间保留 Unit 与 Blocking，可救回，不由嵌套 Combat 提前判死。 | [Apply](../../test/core/resource/application.test.js)的致死与恢复。 |
+| KILL-01 | 显式 killer 与 source 独立；targetKilled 先于普通目标 Prepare，排除或来源 LEAVING 不改变目标结算。 | [Apply](../../test/core/resource/application.test.js)确认与[Unit](../../test/core/unit.test.js)本地通知。 |
+| KILL-02 | 内层取得死亡确认时外层不重复；首次 End 固定归属，重复不 Prepare，Finalize 延后不丢 killed，Completed 后发业务不改旧结果。 | [Apply](../../test/core/resource/application.test.js)嵌套死亡与真实 Lifetime。 |
+| KILL-03 | InstantKill 调用者先登记 Prepare，再请求结束；通知看到已发布 LEAVING 与固定 Departure，不要求先写 HP0，直接 remove 不自动生成来源通知。 | [Unit](../../test/core/unit.test.js)的直接结束组合，不另建 InstantKill 框架。 |
+| HP-04 | MaxHP 变更同步比例与债务分配，容量耗尽由 Settlement 处理；不伪装治疗或复活。 | [Vitality](../../test/core/vitality.test.js)贡献变化及[治疗排序](../../test/core/targeting/eligibility.test.js)。 |
+| HP-05 | 三种 Nature 共用管线；无敌／Presence 不阻止 LOSS，环境标签不自动跳 Hook。 | [Apply](../../test/core/resource/application.test.js)流失与接收。 |
+| HP-06 | HIT 许可与 Nature 独立，非 LOSS 且许可为真才回复；环境和 Effect 输出不靠全局阻回伪装。 | [Skill](../../test/core/skill.test.js)、[泥岩](../../test/content/operators/mudrock.test.js)及[实际地形](../../test/content/terrain.test.js)；标准 Burst 由其成品套件保障。 |
+| HP-07 | 自然回复读取当前属性、逐 Tick 偿债／回 HP，顺序和零速／存活门控正确，不进入普通治疗。 | [Vitality](../../test/core/vitality.test.js)的自然回复。 |
+| HP-08 | Health 候选干预后读最新宿主，失效保留前缀而不成功写入；成功含零变化均执行 void 后继，原报告不受其更改／离场影响。 | [Vitality](../../test/core/vitality.test.js)提交干预与[类型](../../test/core/types.test.js)。 |
+| HP-09 | 负生命两条累计分支、容量耗尽与配置延后清算正确，设置比例不即时清债或判死。 | [Vitality](../../test/core/vitality.test.js)的受击、债务与动态容量。 |
+| HEAL-01 | 恢复先偿债，真正溢出与 HP 增益分开；容量缩减后的 Healing 写入即使引发 DEATH，仍返回 APPLIED 和固定报告。 | [Vitality](../../test/core/vitality.test.js)债务恢复与容量缩减，核对离场和固定报告。 |
+| EP-01 | EP 与 HP 元素抗性独立；最新 MaxEP 的规范化真实写入 State，与报告写点一致。显式恢复逐型全量；healed 只通知正增益，零增益仍可成功 Applied。 | [资源公式](../../test/core/resource/calculation.test.js)与[Elemental](../../test/core/elemental.test.js)的实际提交。 |
+| EP-02 | 耗尽同步创建 Burst，创建通知先于仍有效的一次性输出，随后 damaged／Applied；启动取消不改旧损失报告。 | [Elemental](../../test/core/elemental.test.js)的耗尽与启动取消。 |
+| EP-03 | 唯一恢复预算、动态上限／速度、暂停、末次周期、零预算输出与产物期限正确；自然 EP 回复不派发 healed 或普通治疗。 | [Elemental](../../test/core/elemental.test.js)与[标准成品](../../test/core/effects/elemental.test.js)，不重写恢复算法或展开八套参数矩阵。 |
 
 具体过量转屏障、非致命、保护、复活和其它特殊内容接入后，再验证其新增玩法结果；已有资源报告或 Hook 不构成这些内容已实现的证明。狂躁、EP 环境分类和直接缩时的缺口不因文档收敛而排除，见 [Elemental 支持边界](elemental.md#支持边界)。
 

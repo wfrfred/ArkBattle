@@ -1,3 +1,4 @@
+// Contract: [functional-core](../../docs/architecture/functional-core.md#查询与局部计算).
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { createRng } from "../../dist/core/common/rng.js";

@@ -1,3 +1,4 @@
+// Contract: [data](../../docs/architecture/data.md).
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { roundToEven } from "../../dist/core/common/math.js";

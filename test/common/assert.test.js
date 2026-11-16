@@ -1,3 +1,4 @@
+// Contract: [api-conventions](../../docs/architecture/api-conventions.md#5-数值输入查询与字段写回).
 import { test } from "node:test";
 import nodeAssert from "node:assert/strict";
 import {
