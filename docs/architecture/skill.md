@@ -4,8 +4,8 @@ Skill 管理 SP、发动、持续预算、主动操作与完整终止。Action �
 
 ## 关键语义
 
-- 持久 Skill 与本轮 Activation 分开；结束清空本轮，保留持久状态和资源，旧引用不能操作新激活。
-- 发动门槛与实际支付分别求值。先提交支付与激活，再执行启动通知和程序；已结束的本轮不继续启动。
+- Activation 保存 Skill 本轮发动阶段；结束清空本轮，保留持久状态和资源，旧引用不能操作新激活。
+- 发动门槛与支付额由 Activation Definition 显式定义。先提交支付与激活，再执行启动通知和程序；已结束的本轮不继续启动。
 - 回复、支付和直接增减各自遵守资源契约。满槽或阻回期间不积攒补发。
 - 时长和弹药归本轮；延时不改下一轮，消费、耗尽检查、补弹与内容增加弹药分别结算。
 - onEnd 读取本轮数据，activationEnded 通知槽位释放后的历史事实。
@@ -14,7 +14,7 @@ Skill 管理 SP、发动、持续预算、主动操作与完整终止。Action �
 
 `unit/skill/` 拥有聚合、身份、SP／Ammo、持续预算与完整操作；Capability 负责装配、结构守卫、贡献、限制和通知 Key。具体声明以源码为准，登记和写回遵守[接口约定](api-conventions.md)。
 
-SP 可以不存在；hasSp 同时证明配置与状态存在。容量、门槛、默认费用和 TIME 基础时长是静态配置；只有回复速度／倍率及弹药容量具有现有贡献入口，不能以贡献代替配置切换或资源支付。
+SP 可以不存在；hasSp 同时证明配置与状态存在。SP Definition 保存初始值、容量和回复配置；Activation Definition 保存静态发动门槛、支付额和持续预算。只有回复速度／倍率及弹药容量具有贡献入口。
 
 ## 1. 单槽聚合、Definition 与两种身份
 
@@ -32,11 +32,11 @@ SP 可以不存在；hasSp 同时证明配置与状态存在。容量、门槛�
 
 ## 2. SP
 
-容量 capacity、发动门槛 requirement 与默认支付 cost 分开；未配置 cost 时使用 requirement。Activation.cost 可在本次发动版本选择实际费用，运行中的逐次支付仍通过资源操作。
+SP 的容量 capacity 与 Activation Definition 的发动门槛 requirement、支付额 cost 分开；requirement 与 cost 均须显式配置。发动须同时满足门槛与足额支付，特殊付款由具体程序使用资源操作完成。
 
 回复速度与倍率各自按[属性贡献](capability.md#属性与贡献)求值、限制下限为零，再相乘；保留连续值。配置切换、清空余额、支付和持续期改变不是数值贡献的后继。
 
-Recovery 为 TIME、ACTION、HIT 或 NONE；EXTERNAL 是显式操作的来源。recover 检查来源与回复许可并限制到容量；pay 足额支付或失败，不受回复限制；modify 直接增减，普通正增量仍检查 EXTERNAL 许可，负增量不被阻回拦截，forced 只绕过规定的回复限制。三者要求宿主 PRESENT，具有 Vitality 时仍活着；无 Vitality 的 Skill 宿主也可使用资源。
+Recovery 为 TIME、ACTION、HIT 或 NONE；EXTERNAL 是显式操作的来源。recover 检查来源与回复许可并限制到容量；pay 要求显式金额，足额支付或失败，不读取发动政策，也不受回复限制；modify 直接增减，普通正增量仍检查 EXTERNAL 许可，负增量不被阻回拦截，forced 只绕过规定的回复限制。三者要求宿主 PRESENT，具有 Vitality 时仍活着；无 Vitality 的 Skill 宿主也可使用资源。
 
 TIME 自然回复保留周期、余时和上次时刻：
 
@@ -72,7 +72,7 @@ Skill 通知包括 SP 回复／支付／修改、耗弹／普通补弹和激活�
 
 ## 5. 发动与完整结束
 
-发动检查宿主、触发方式、限制、门槛与足额支付，采样本轮状态和持续预算，再一次发布扣费与 Activation，登记其 Unit 所有权。随后记录启动表现、派发 activationStarted 和 spPaid，再重读同一身份、ACTIVE 状态及宿主生命资格，决定是否执行 onStart。
+发动先检查宿主、触发方式、限制、门槛与足额支付；拒绝不构造本轮私有状态、不支付。受理后采样本轮状态和持续预算，一次发布扣费、Activation 与下一轮身份，登记其 Unit 所有权。随后记录启动表现、派发 activationStarted 和 spPaid，再重读同一身份、ACTIVE 状态及宿主生命资格，决定是否执行 onStart。
 
 暂时消失本身不跳过仍成立的 onStart，也不自动结束已有持续技能。启动通知可同步结束本轮；返回的 Ref 仍表示创建事实，支付与已经完成的业务不回滚。依赖本轮身份的业务在登记后执行，不能为前置判断另建本轮状态。
 

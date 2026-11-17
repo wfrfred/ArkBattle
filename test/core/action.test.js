@@ -155,7 +155,7 @@ test("interrupted attack, successful release, and damage output are separate bus
         id: "attack-sp",
         initialize: (state) => ({ state, value: {} }),
         activation: null,
-        sp: { initial: 0, capacity: 5, requirement: 1, recovery: { type: "ACTION", amount: 1 } },
+        sp: { initial: 0, capacity: 5, recovery: { type: "ACTION", amount: 1 } },
     };
     const definition = {
         id: "actor",
@@ -229,7 +229,7 @@ test("Combat advances an instantaneous action once per Tick and skips selection 
         id: "action-sp",
         initialize: (state) => ({ state, value: {} }),
         activation: null,
-        sp: { initial: 0, capacity: 5, requirement: 1, recovery: { type: "ACTION", amount: 1 } },
+        sp: { initial: 0, capacity: 5, recovery: { type: "ACTION", amount: 1 } },
     };
     const definition = {
         id: "actor",

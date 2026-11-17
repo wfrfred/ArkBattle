@@ -426,7 +426,7 @@ vitality.isAlive(bare);
 vitality.hpRatio(bare);
 declare const skillHost: Unit & SkillCapability;
 const controlledActivation: skills.ActivationDefinition<{ completed: number }, { remaining: number }> = {
-    trigger: 'MANUAL', sustain: { type: 'INFINITE' }, initialize: () => ({ remaining: 3 }),
+    trigger: 'MANUAL', requirement: 0, cost: 0, sustain: { type: 'INFINITE' }, initialize: () => ({ remaining: 3 }),
     operations: {
         STOP(state, source, self) {
             const completed: number = self.state.completed;
@@ -437,6 +437,18 @@ const controlledActivation: skills.ActivationDefinition<{ completed: number }, {
         },
     },
 };
+// @ts-expect-error an activation must declare its payment, including zero.
+const missingPayment: skills.ActivationDefinition<object, object> = {
+    trigger: 'MANUAL', requirement: 0, sustain: { type: 'INFINITE' }, initialize: () => ({}),
+};
+const invalidDynamicPayment: skills.ActivationDefinition<{ completed: number }, { remaining: number }> = {
+    ...controlledActivation,
+    // @ts-expect-error activation payment is a static amount.
+    cost: () => 1,
+};
+skills.pay(battle, ref(skillHost), 1);
+// @ts-expect-error resource payment requires an explicit amount.
+skills.pay(battle, ref(skillHost));
 const prioritizedSpRecovery = setUnitHook(spRecovered, {
     id: 'resource-reaction', priority: 10,
     invoke: state => ({ state, value: undefined }),

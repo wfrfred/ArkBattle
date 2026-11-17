@@ -153,7 +153,7 @@ test("HOOK-02: exclusions are local to each operation and match a key or one ID 
 test("APPLY-01: cancellation before immunity preserves its outcome and suppresses HIT until protection ends", () => {
     const resource = {
         id: "hit-recovery", initialize: state => ({ state, value: {} }), activation: null,
-        sp: { initial: 0, capacity: 5, requirement: 1, recovery: { type: "HIT", amount: 1 } },
+        sp: { initial: 0, capacity: 5, recovery: { type: "HIT", amount: 1 } },
     };
     let state = battle([
         { definition: { id: "source", hooks: Hooks.empty() }, position: [0, 0] },
@@ -636,7 +636,7 @@ test("APPLY-02: HP zero output rejects while excess receiving reduction still co
 test("HP-05/06: LOSS completes the shared pipeline against an invincible absent target without HIT recovery", () => {
     const resource = {
         id: "hit-recovery", initialize: state => ({ state, value: {} }), activation: null,
-        sp: { initial: 0, capacity: 5, requirement: 1, recovery: { type: "HIT", amount: 1 } },
+        sp: { initial: 0, capacity: 5, recovery: { type: "HIT", amount: 1 } },
     };
     const calls = [];
     const observe = stage => ({

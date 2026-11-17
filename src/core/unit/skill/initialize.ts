@@ -15,7 +15,13 @@ export function create<S extends object, A extends object>(
         sp.validateDefinition(definition.sp);
     }
 
-    const policy = definition.activation?.sustain;
+    const activation = definition.activation;
+    if (activation !== null) {
+        assertNonnegativeSafeInteger(activation.requirement, "skill SP requirement");
+        assertNonnegativeSafeInteger(activation.cost, "skill SP cost");
+    }
+
+    const policy = activation?.sustain;
     if (policy?.type === "TIME") {
         assertNonnegativeSafeInteger(policy.durationTicks, "skill duration ticks");
     } else if (policy?.type === "AMMO") {

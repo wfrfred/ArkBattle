@@ -21,8 +21,8 @@ test("HOOK-03: Skill and Burst end notifications observe their cleared state whi
     const program = {
         id: "active-until-departure",
         initialize: state => ({ state, value: {} }),
-        sp: { initial: 1, capacity: 1, requirement: 1, cost: 1, recovery: { type: "NONE" } },
-        activation: { trigger: "MANUAL", sustain: { type: "INFINITE" }, initialize: () => ({}) },
+        sp: { initial: 1, capacity: 1, recovery: { type: "NONE" } },
+        activation: { trigger: "MANUAL", requirement: 1, cost: 1, sustain: { type: "INFINITE" }, initialize: () => ({}) },
     };
     const definition = {
         id: "owner",

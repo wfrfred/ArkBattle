@@ -14,6 +14,8 @@ export type End =
 
 export interface Definition<S extends object, A extends object> {
     readonly trigger: Trigger;
+    readonly requirement: number;
+    readonly cost: number;
     readonly sustain: SustainDefinition;
     readonly initialize: (
         battle: BattleState,
@@ -25,11 +27,6 @@ export interface Definition<S extends object, A extends object> {
         source: Ref<Unit & SkillCapability>,
         self: Skill<S, A>,
     ) => boolean;
-    readonly cost?: (
-        battle: BattleState,
-        source: Ref<Unit & SkillCapability>,
-        self: Skill<S, A>,
-    ) => number;
     readonly onStart?: (
         battle: BattleState,
         source: Ref<Unit & SkillCapability>,

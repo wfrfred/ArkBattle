@@ -105,6 +105,7 @@ export function parseArknightsSkillLevel(
     }
 
     const sp = object(selected.spData, "skill SP data");
+    const spCost = number(sp.spCost, "skill SP cost");
     const recovery = spRecovery(sp.spType);
     const increment = number(sp.increment, "skill SP increment");
     const duration = number(selected.duration, "skill duration");
@@ -143,14 +144,13 @@ export function parseArknightsSkillLevel(
             initialize: (battle) => ({ state: battle, value: {} }),
             sp: {
                 initial: number(sp.initSp, "skill initial SP"),
-                capacity:
-                    number(sp.spCost, "skill SP cost") *
-                    number(sp.maxChargeTime, "skill maximum charges"),
-                requirement: number(sp.spCost, "skill SP cost"),
+                capacity: spCost * number(sp.maxChargeTime, "skill maximum charges"),
                 recovery: recoveryDefinition,
             },
             activation: {
                 trigger: activation(selected.skillType),
+                requirement: spCost,
+                cost: spCost,
                 initialize: () => ({}),
                 sustain,
             },

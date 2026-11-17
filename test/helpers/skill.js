@@ -6,11 +6,11 @@ export function definition(input = {}) {
         id: "skill-fixture",
         initialize: battle => ({ state: battle, value: {} }),
         sp: {
-            initial: 2, capacity: 2, requirement: 2, cost: 2,
+            initial: 2, capacity: 2,
             recovery: { type: "TIME", intervalTicks: 30 },
         },
         activation: {
-            trigger: "MANUAL", sustain: { type: "TIME", durationTicks: 30 },
+            trigger: "MANUAL", requirement: 2, cost: 2, sustain: { type: "TIME", durationTicks: 30 },
             initialize: () => ({}),
         },
         ...input,

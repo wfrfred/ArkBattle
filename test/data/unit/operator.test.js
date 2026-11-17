@@ -40,7 +40,7 @@ test("operator profiles use selected phase attributes, explicit table identity a
     assert.equal(prepared.attributes.recoverySpeed, 0);
     assert.deepEqual(prepared.range, [[0, 0], [0, 1]]);
     assert.equal(prepared.skill.definition.id, "skchr_mudrok_2");
-    assert.equal(prepared.skill.definition.sp.requirement, 5);
+    assert.equal(prepared.skill.definition.activation.requirement, 5);
     assert.equal(blackboard(prepared.skill.blackboard).atk_scale, 2.1);
     assert.equal(prepared.skillRange.length, fixture.ranges["x-4"].grids.length);
 });
@@ -82,7 +82,7 @@ test("selected skills enforce unlocks, mastery gates and matching data", () => {
     assert.throws(() => profile(mudrock, { ...base, elite: 0, level: 50, skillLevel: 1 }), /skill is locked/);
     assert.throws(() => profile(mudrock, { ...base, elite: 1, level: 80, skillLevel: 8 }), /higher elite/);
     const mastery = profile(mudrock, { ...base, skillLevel: 10 });
-    assert.equal(mastery.skill.definition.sp.requirement, 4);
+    assert.equal(mastery.skill.definition.activation.requirement, 4);
     assert.equal(blackboard(mastery.skill.blackboard).atk_scale, 2.7);
     assert.throws(() => profile(mudrock, base, { skill: fixture.skills["skcom_atk_up[1]"] }), /does not match/);
 

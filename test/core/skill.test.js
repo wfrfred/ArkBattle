@@ -12,14 +12,21 @@ import * as presence from "../../dist/core/unit/capability/presence/index.js";
 
 test("activation publishes payment before onStart and clears only the completed round before notification", () => {
     const observed = [];
+    const initializedAtSp = [];
+    const payments = [];
     const program = {
         id: "skill",
         initialize: (state) => ({ state, value: { completed: 0 } }),
-        sp: { initial: 30, capacity: 40, requirement: 20, cost: 10, recovery: { type: "NONE" } },
+        sp: { initial: 30, capacity: 40, recovery: { type: "NONE" } },
         activation: {
             trigger: "MANUAL",
+            requirement: 20,
+            cost: 10,
             sustain: { type: "INFINITE" },
-            initialize: () => ({ total: 3 }),
+            initialize: (_state, _source, self) => {
+                initializedAtSp.push(self.sp.value);
+                return { total: 3 };
+            },
             onStart(state, source, self) {
                 observed.push({
                     stage: "start",
@@ -51,6 +58,12 @@ test("activation publishes payment before onStart and clears only the completed 
     state = update(state, source, units.compose(units.setHook(skill.activationStarted, {
             id: "hide-on-start",
             invoke: (state, { host }) => ({ state: update(state, host, presence.disappear()), value: undefined }),
+        }), units.compose(units.setHook(skill.spPaid, {
+            id: "observe-payment",
+            invoke(state, { host, event }) {
+                payments.push([event.amount, event.previous, event.current, get(state, host.id).skill.activation.id]);
+                return { state, value: undefined };
+            },
         }), units.setHook(skill.activationEnded, {
             id: "observe-end",
             invoke(state, { host, event }) {
@@ -61,9 +74,17 @@ test("activation publishes payment before onStart and clears only the completed 
                 });
                 return { state, value: undefined };
             },
-        })));
+        }))));
+    const insufficient = skills.modify(state, source, -15).state;
+    const rejected = skills.activate(insufficient, reference);
+    assert.equal(rejected.value, null);
+    assert.equal(rejected.state, insufficient);
+    assert.deepEqual(initializedAtSp, []);
+    assert.deepEqual(payments, []);
     const first = skills.activate(state, reference);
     state = first.state;
+    assert.deepEqual(initializedAtSp, [30]);
+    assert.deepEqual(payments, [[10, 30, 20, first.value.id]]);
     assert.notEqual(first.value, null);
     assert.deepEqual(observed[0], { stage: "start", sp: 20, current: first.value.id });
     state = skills.finish(state, first.value);
@@ -87,9 +108,11 @@ test("cancellation during payment notification retains payment and suppresses th
     const program = {
         id: "skill",
         initialize: (state) => ({ state, value: { started: false } }),
-        sp: { initial: 10, capacity: 10, requirement: 10, recovery: { type: "NONE" } },
+        sp: { initial: 10, capacity: 10, recovery: { type: "NONE" } },
         activation: {
             trigger: "MANUAL",
+            requirement: 10,
+            cost: 10,
             sustain: { type: "INFINITE" },
             initialize: () => ({}),
             onStart: (state, source) =>
@@ -128,6 +151,8 @@ test("active operations require a declared handler and current permission, while
         initialize: (state) => ({ state, value: {} }),
         activation: {
             trigger: "MANUAL",
+            requirement: 0,
+            cost: 0,
             sustain: { type: "INFINITE" },
             initialize: () => ({ ready: false }),
         },
@@ -195,8 +220,6 @@ test("natural SP recovery pauses without backlog and uses current recovery speed
         sp: {
             initial: 2,
             capacity: 2,
-            requirement: 1,
-            cost: 1,
             recovery: { type: "TIME", intervalTicks: 4 },
         },
     };
@@ -242,6 +265,8 @@ test("TIME extension changes this activation rather than the next activation's b
         initialize: (state) => ({ state, value: {} }),
         activation: {
             trigger: "MANUAL",
+            requirement: 0,
+            cost: 0,
             sustain: { type: "TIME", durationTicks: 5 },
             initialize: () => ({ ticks: 0 }),
             onTick(state, source, self) {
@@ -281,6 +306,8 @@ test("AMMO samples its own capacity formula and distinguishes consumption, refil
         initialize: (state) => ({ state, value: {} }),
         activation: {
             trigger: "MANUAL",
+            requirement: 0,
+            cost: 0,
             sustain: { type: "AMMO", amount: 10 },
             initialize: () => ({}),
         },

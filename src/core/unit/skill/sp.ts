@@ -33,8 +33,6 @@ export type Recovery =
 export interface Definition {
     readonly initial: number;
     readonly capacity: number;
-    readonly requirement: number;
-    readonly cost?: number;
     readonly recovery: Recovery;
 }
 
@@ -128,11 +126,7 @@ export function removeContribution(key: Parameter, id: string): Change<Unit & Sk
 export function validateDefinition(definition: Definition): void {
     assertNonnegativeSafeInteger(definition.initial, "skill initial SP");
     assertNonnegativeSafeInteger(definition.capacity, "skill SP capacity");
-    assertNonnegativeSafeInteger(definition.requirement, "skill SP requirement");
 
-    if (definition.cost !== undefined) {
-        assertNonnegativeSafeInteger(definition.cost, "skill SP cost");
-    }
     if (definition.initial > definition.capacity) {
         throw new RangeError("skill initial SP exceeds capacity");
     }
@@ -231,10 +225,8 @@ export function recover(
     return applied(dispatch(battle, units.ref(self), spRecovered, event), gained);
 }
 
-export function pay(battle: BattleState, ref: Ref<Unit & Skill>, amount?: number): Result<Outcome> {
-    if (amount !== undefined) {
-        assertNonnegativeSafeInteger(amount, "skill SP payment amount");
-    }
+export function pay(battle: BattleState, ref: Ref<Unit & Skill>, amount: number): Result<Outcome> {
+    assertNonnegativeSafeInteger(amount, "skill SP payment amount");
 
     const self = units.get(battle, ref);
     if (self === undefined) {
@@ -250,16 +242,14 @@ export function pay(battle: BattleState, ref: Ref<Unit & Skill>, amount?: number
     }
 
     const state = self.skill.sp;
-    const definition = self.skill.definition.sp;
-    const cost = amount ?? definition.cost ?? definition.requirement;
-    if (state.value < cost) {
+    if (state.value < amount) {
         return rejected(battle, "INSUFFICIENT_SP");
     }
 
     const event: Paid = {
-        amount: cost,
+        amount,
         previous: state.value,
-        current: state.value - cost,
+        current: state.value - amount,
     };
     battle = replaceUnits(battle, [
         {
@@ -268,7 +258,7 @@ export function pay(battle: BattleState, ref: Ref<Unit & Skill>, amount?: number
         },
     ]);
 
-    return applied(dispatch(battle, units.ref(self), spPaid, event), cost);
+    return applied(dispatch(battle, units.ref(self), spPaid, event), amount);
 }
 
 export function modify(

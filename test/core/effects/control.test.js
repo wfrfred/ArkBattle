@@ -23,8 +23,8 @@ function actor(onEnd = state => state) {
     };
     const skill = {
         id: "control-skill", initialize: state => ({ state, value: {} }),
-        sp: { initial: 10, capacity: 10, requirement: 10, cost: 10, recovery: { type: "TIME", intervalTicks: 30 } },
-        activation: { trigger: "MANUAL", sustain: { type: "INFINITE" }, initialize: () => ({}) },
+        sp: { initial: 10, capacity: 10, recovery: { type: "TIME", intervalTicks: 30 } },
+        activation: { trigger: "MANUAL", requirement: 10, cost: 10, sustain: { type: "INFINITE" }, initialize: () => ({}) },
     };
     const definition = {
         id: "controlled", hooks: Hooks.empty(),

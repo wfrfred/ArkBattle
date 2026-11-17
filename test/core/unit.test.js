@@ -98,7 +98,7 @@ test("Unit death preserves its attribution through Effect responses and the orig
     const rewardSkill = {
         id: "reward-skill",
         initialize: state => ({ state, value: {} }),
-        sp: { initial: 0, capacity: 10, requirement: 10, recovery: { type: "NONE" } },
+        sp: { initial: 0, capacity: 10, recovery: { type: "NONE" } },
         activation: null,
     };
     let state = battle([

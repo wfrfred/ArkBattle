@@ -78,7 +78,11 @@ test('elemental execution: erosion defense loss survives recovery and stacks on 
 });
 
 test('elemental execution: character necrosis settles fifteen magical pulses, drains SP and blocks recovery and activation until recovery ends', () => {
-  const skill = createSkillDefinition({ id: 'necrosis-sp', sp: { initial: 20, capacity: 30, requirement: 1, cost: 1, recovery: { type: 'TIME', intervalTicks: 30 } } });
+  const skill = createSkillDefinition({
+    id: 'necrosis-sp',
+    sp: { initial: 20, capacity: 30, recovery: { type: 'TIME', intervalTicks: 30 } },
+    activation: { trigger: 'MANUAL', requirement: 1, cost: 1, sustain: { type: 'TIME', durationTicks: 30 }, initialize: () => ({}) },
+  });
   let work = receiverBattle('CHARACTER', { skill: { initialize: state => createSkill(state, skill) } });
   work = element(work, 'NECROSIS').state;
   assert.equal(getUnit(work, 0).vitality.health.hp, 100000);
@@ -182,8 +186,8 @@ test('mania counts each released action once and each skill activation, caps sel
   });
   const skill = createSkillDefinition({
     id: 'mania-hit',
-    activation: { trigger: 'MANUAL', sustain: { type: 'TIME', durationTicks: 0 }, initialize: () => ({}) },
-    sp: { initial: 0, capacity: 30, requirement: 0, cost: 0, recovery: { type: 'HIT', amount: 1 } },
+    activation: { trigger: 'MANUAL', requirement: 0, cost: 0, sustain: { type: 'TIME', durationTicks: 0 }, initialize: () => ({}) },
+    sp: { initial: 0, capacity: 30, recovery: { type: 'HIT', amount: 1 } },
   });
   let work = createBattle([
     { position: [0, 0], definition: definition('CHARACTER', {
@@ -236,7 +240,7 @@ test('mania counts each released action once and each skill activation, caps sel
 test('mania counts successful skill activations on a host without Action', () => {
   const skill = createSkillDefinition({
     id: 'mania-skill-only', sp: null,
-    activation: { trigger: 'MANUAL', sustain: { type: 'INFINITE' }, initialize: () => ({}) },
+    activation: { trigger: 'MANUAL', requirement: 0, cost: 0, sustain: { type: 'INFINITE' }, initialize: () => ({}) },
   });
   let work = element(receiverBattle('CHARACTER', {
     skill: { initialize: state => createSkill(state, skill) },
@@ -259,7 +263,7 @@ test('enemy mania ramps on its own Tick clock, stops with recovery and includes 
   const attack = action(10000);
   const skill = createSkillDefinition({
     id: 'enemy-mania-hit', activation: null,
-    sp: { initial: 0, capacity: 30, requirement: 1, recovery: { type: 'HIT', amount: 1 } },
+    sp: { initial: 0, capacity: 30, recovery: { type: 'HIT', amount: 1 } },
   });
   const setup = () => receiverBattle('ENEMY', {
     action: actionCapability(attack), skill: { initialize: state => createSkill(state, skill) },

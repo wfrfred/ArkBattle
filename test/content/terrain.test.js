@@ -82,7 +82,7 @@ function until(battle, tick) {
 test("HP-06: infection keeps its entry clocks and ordinary reception while excluding HIT SP recovery", () => {
     const resource = {
         id: "terrain-hit-recovery", initialize: state => ({ state, value: {} }), activation: null,
-        sp: { initial: 0, capacity: 5, requirement: 1, recovery: { type: "HIT", amount: 1 } },
+        sp: { initial: 0, capacity: 5, recovery: { type: "HIT", amount: 1 } },
     };
     const receptions = [];
     const applications = [];

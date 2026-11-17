@@ -1,4 +1,3 @@
-import { assertNonnegativeSafeInteger } from "../../common/assert.js";
 import { lifetime as unitLifetime, replace as replaceUnits, update } from "../../battle/unit.js";
 import type { Identified, Ref } from "../../common/ref.js";
 import { appendEvents, type State as BattleState, type Result } from "../../battle/state.js";
@@ -144,10 +143,8 @@ export function activate<S extends object, A extends object>(
         return { state: battle, value: null };
     }
 
-    const resource = self.definition.sp;
-    const requirement = resource?.requirement ?? 0;
-    const cost = definition.cost?.(battle, source, self) ?? resource?.cost ?? requirement;
-    assertNonnegativeSafeInteger(cost, "skill activation SP cost");
+    const requirement = definition.requirement;
+    const cost = definition.cost;
     const previousSp = self.sp;
     if ((previousSp?.value ?? 0) < requirement || (previousSp?.value ?? 0) < cost) {
         return { state: battle, value: null };
