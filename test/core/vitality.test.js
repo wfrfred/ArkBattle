@@ -2,6 +2,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { battle, get } from "../helpers/battle.js";
+import { attribute as defineAttribute, vitality as defineVitality } from "../helpers/attribute.js";
 import { Hooks } from "../../dist/core/hook.js";
 import * as units from "../../dist/core/unit/index.js";
 import { update, remove } from "../../dist/core/battle/unit.js";
@@ -10,7 +11,7 @@ import { TICKS_PER_SECOND } from "../../dist/core/tick.js";
 import * as hpDamage from "../../dist/core/battle/resource/hp/damage/index.js";
 import * as hpHealing from "../../dist/core/battle/resource/hp/healing/index.js";
 import * as vitality from "../../dist/core/unit/capability/vitality/index.js";
-import * as attribute from "../../dist/core/unit/contribution/attribute.js";
+import * as attribute from "../../dist/core/unit/attribute.js";
 import * as presence from "../../dist/core/unit/capability/presence/index.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import * as actions from "../../dist/core/unit/action/index.js";
@@ -30,7 +31,7 @@ test("HP-07: natural recovery samples current attributes after Effects and befor
     const damageCommits = [];
     const ordinaryHealing = () => assert.fail("natural recovery must not enter ordinary healing");
     const observer = {
-        id: "observe-recovery", intervalTicks: 0, speed: 100,
+        id: "observe-recovery", period: { type: "FIXED", ticks: 0 },
         initialize: state => ({ state, value: {} }),
         prepare: state => ({ state, value: {} }),
         onTick(state) {
@@ -41,7 +42,7 @@ test("HP-07: natural recovery samples current attributes after Effects and befor
     let state = battle([
         { definition: {
             id: "recovering", presence: {},
-            vitality: { maxHp: 100, defense: 0, resistance: 0, recoverySpeed: 3, recoveryRatio: 0.03 },
+            vitality: defineVitality(100, { recoverySpeed: defineAttribute(3), recoveryRatio: defineAttribute(0.03, 0, 1) }),
             hooks: Hooks.empty()
                 .set(hpHealing.targetFormula, { id: "formula", invoke: ordinaryHealing })
                 .set(hpHealing.beforeReceive, { id: "before", invoke: ordinaryHealing })
@@ -56,7 +57,7 @@ test("HP-07: natural recovery samples current attributes after Effects and befor
         }, position: [0, 0] },
         { definition: {
             id: "observer", hooks: Hooks.empty(),
-            action: { initialize: state => actions.createActions(state, actions.create(observer)) },
+            action: { speed: defineAttribute(100, 20), interval: defineAttribute(10), initialize: (state, self) => actions.createActions(state, self, actions.create(observer)) },
         }, position: [1, 0] },
     ]);
     const target = units.ref(get(state, 0));
@@ -135,7 +136,7 @@ test("HP-08: Health protection commits before its consequences and preserves the
         { definition: { id: "source", hooks: Hooks.empty() }, position: [0, 0] },
         { definition: {
             id: "target",
-            vitality: { maxHp: 100, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
+            vitality: defineVitality(100),
             hooks: Hooks.empty()
                 .set(hpDamage.beforeReceive, {
                     id: "fixed-reception",
@@ -241,7 +242,7 @@ test("HP-09: Vitality settles life debt across damage, recovery and MaxHP change
     let capacityReport;
     let state = battle([{ definition: {
         id: "life-debt",
-        vitality: { maxHp: 100, defense: 0, resistance: 0, recoverySpeed: TICKS_PER_SECOND, recoveryRatio: 0 },
+        vitality: defineVitality(100, { recoverySpeed: defineAttribute(TICKS_PER_SECOND) }),
         hooks: Hooks.empty()
             .set(vitality.damageCommitting, {
                 id: "observe-committing",
@@ -350,9 +351,11 @@ test("HP-09: Vitality settles life debt across damage, recovery and MaxHP change
     });
     assert.equal(ended.value.killed, true);
     assert.equal(get(ended.state, 0), undefined);
-    const reducedCapacity = update(second.state, target, vitality.setMaxHpContribution({
-        id: "smaller-pool", value: [attribute.create({ multiplier: -0.5 })],
-    }));
+    const bounded = update(restored.state, target, vitality.setRange("maxHp", { min: null, max: 50 }));
+    assert.deepEqual(get(bounded, 0).vitality.health, { hp: 10.5, minusHp: 0 });
+    const cleared = update(bounded, target, vitality.clearRange("maxHp"));
+    assert.deepEqual(get(cleared, 0).vitality.health, { hp: 21, minusHp: 0 });
+    const reducedCapacity = update(second.state, target, vitality.setRange("maxHp", { min: null, max: 50 }));
     assert.equal(get(reducedCapacity, 0), undefined);
     assert.deepEqual([committing, committed, healing], [3, 3, 2]);
     assert.deepEqual(get(second.state, 0).vitality.health, { hp: 1, minusHp: 80 });

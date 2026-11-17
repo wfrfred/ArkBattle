@@ -145,11 +145,11 @@ function unitDefinition(
     const configuration: Configuration = {
         id: instance.inst.characterKey,
         vitality: {
-            defense: 0,
-            resistance: 0,
-            maxHp: maxHp!,
-            recoverySpeed: recoverySpeed!,
-            recoveryRatio: 0,
+            defense: { default: 0, min: 0, max: null },
+            resistance: { default: 0, min: 0, max: 100 },
+            maxHp: { default: maxHp!, min: 1, max: null },
+            recoverySpeed: { default: recoverySpeed!, min: 0, max: null },
+            recoveryRatio: { default: 0, min: 0, max: 1 },
         },
         deployable: { retreatRestrictions: [] },
         card: {

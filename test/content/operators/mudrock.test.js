@@ -1,3 +1,4 @@
+import { attribute, vitality } from "../../helpers/attribute.js";
 // Contract: [content](../../../docs/architecture/content.md).
 import { Hooks } from "../../../dist/core/hook.js";
 import assert from "node:assert/strict";
@@ -22,7 +23,7 @@ import { advance as advanceLocomotion } from "../../../dist/core/unit/capability
 import { setAttackContribution } from "../../../dist/core/unit/capability/offense/index.js";
 import { setMaxHpContribution } from "../../../dist/core/unit/capability/vitality/index.js";
 import { setType } from "../../../dist/core/unit/capability/layer/index.js";
-import { create as modifier } from "../../../dist/core/unit/contribution/attribute.js";
+import { create as modifier } from "../../../dist/core/unit/attribute.js";
 import { Vec2 } from "../../../dist/core/common/vector.js";
 import { turn } from "../../../dist/core/unit/capability/facing/index.js";
 
@@ -41,11 +42,11 @@ const profile = (fields = {}) => {
         });
 };
 const enemy = (id, position, fields = {}) => initialize({ id, position, definition: {
-    id: "enemy", hooks: Hooks.empty(), targetable: { taunt: 0, restrictions: [] },
-    vitality: { maxHp: 10000, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
+    id: "enemy", hooks: Hooks.empty(), targetable: { taunt: attribute(0, -2, 2), restrictions: [] },
+    vitality: vitality(10000),
     allegiance: { side: "ENEMY" }, layer: { type: "GROUND" },
     hitbox: { shape: { type: "CIRCLE", offset: [0, 0], radius: 0.1 } },
-    locomotion: { halfBodyWidth: 0, minSpeed: 0, speed: 0.1, steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 } },
+    locomotion: { halfBodyWidth: 0, speed: attribute(0.1, 0), steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 } },
     ...fields,
 } });
 function setup(configuration = {}, targets = [], options = {}) {

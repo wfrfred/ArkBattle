@@ -17,6 +17,7 @@ import {
     type Definition as GroundDefinition,
 } from "../ground.js";
 import { createMelee, createRanged, type Projectile, type Timing } from "./action.js";
+import { TICKS_PER_SECOND } from "../../../core/tick.js";
 
 export interface AttackTiming extends Timing {
     readonly hitRadius: number;
@@ -54,7 +55,10 @@ export function create(
         attackTiming: timing,
         attack: ranged,
         action: {
-            initialize: (battle) => createActions(battle, initializeMelee, initializeRanged),
+            speed: { default: profile.attackSpeed, min: 20, max: null },
+            interval: { default: profile.baseAttackTime * TICKS_PER_SECOND, min: 0, max: null },
+            initialize: (battle, self) =>
+                createActions(battle, self, initializeMelee, initializeRanged),
             select: (battle, self) => ({
                 state: battle,
                 value: isCasting(battle, ref(self))

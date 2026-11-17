@@ -1,6 +1,6 @@
 import * as contribution from "../../../unit/contribution/contribution.js";
 import * as entries from "../../../common/collection/entries.js";
-import * as attribute from "../../../unit/contribution/attribute.js";
+import * as attribute from "../../../unit/attribute.js";
 import type { Ref } from "../../../common/ref.js";
 import type { Unit } from "../../../unit/unit.js";
 import type { Deployable } from "../../../unit/capability/deployable/capability.js";

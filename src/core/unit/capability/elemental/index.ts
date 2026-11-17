@@ -6,6 +6,8 @@ export {
     initialize,
     setContribution,
     removeContribution,
+    setRange,
+    clearRange,
     setRestriction,
     removeRestriction,
 } from "./capability.js";

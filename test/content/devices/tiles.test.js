@@ -1,3 +1,4 @@
+import { vitality } from "../../helpers/attribute.js";
 // Contract: [terrain](../../../docs/architecture/terrain.md).
 import { Hooks } from "../../../dist/core/hook.js";
 import { test } from "node:test";
@@ -35,7 +36,7 @@ function battle(firstTerrain = normal, firstCost = 2000) {
 function configuration(id, tileChanges = {}) {
     return { hooks: Hooks.empty(),
         id,
-        vitality: { maxHp: 100, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
+        vitality: vitality(100),
         deployable: { retreatRestrictions: [] },
         card: createCardDefinition({ cost: 0, redeployTicks: 0, slots: 0, placement: "ALL" }),
         tileChanges,

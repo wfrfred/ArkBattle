@@ -2,7 +2,7 @@ import { update } from "../../battle/unit.js";
 import { scope } from "../../lifetime/operations.js";
 import { TICKS_PER_SECOND } from "../../tick.js";
 import { silence, blockSpRecovery } from "../control.js";
-import * as attribute from "../../unit/contribution/attribute.js";
+import * as attribute from "../../unit/attribute.js";
 import * as effects from "../../unit/effect/operations.js";
 import * as units from "../../unit/query.js";
 import { modify } from "../../unit/skill/sp.js";

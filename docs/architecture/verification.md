@@ -53,6 +53,8 @@ Prefab、范围读取和换算由实际业务使用；目录移动、提取工�
 
 ## 普通攻击时序的回归语义
 
+[Attribute](attribute.md)的集中测试保障默认边界规范底值、四项归并后的最终限幅、整区间后写覆盖／完整恢复，以及数值 Contribution 与范围独立。[Action](../../test/core/action.test.js)保障同宿主独立冷却进度、属性贡献及范围变更同步刷新 ATTACK_SPEED、FIXED 不变，周期公式下限10与属性默认下限20分开；领域测试只补 MaxHP、EP、SP 或移动等必要后继。
+
 依据 [Action](action.md#8-普通攻击释放-hook-与移动)，由[普通攻击](../../test/content/actions/attack.test.js)集中保障普通缩放上下限、开始时缓存动作预算、已进入等待不追改和后续段读取新周期。事件等待受缓存预算的取偶量化期限限制；分段等待至少一个 Tick，不另加首次 yield。冷却与执行占用独立，释放后的恢复只消费预算余量。
 
 [玫兰莎](../../test/content/operators/melantha.test.js)保障首次／续轮释放相位及会话中断后重新起手；[弩手](../../test/content/enemies.test.js)保障释放后仍执行后摇时不恢复自主移动；[泥岩](../../test/content/operators/mudrock.test.js)保障 S2在真实普攻前摇中取消旧执行、清空冷却，后续不补发旧输出。各内容读取真实静态时序，不复制公共公式或把零时序夹具当作原生验收。事件在项目 30 Hz 调度中到期消费，不声称验证了官方实机逐帧结果。

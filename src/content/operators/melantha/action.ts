@@ -15,7 +15,6 @@ import { fromTiles } from "../../../core/geometry/range.js";
 import { topK } from "../../../core/common/collection.js";
 
 import type { Profile } from "../../../data/unit/operator.js";
-import { secondsToTicks } from "../../../data/time.js";
 import type { State as BattleState } from "../../../core/battle/state.js";
 
 export interface State {
@@ -59,9 +58,8 @@ export function create(profile: Profile, timing: AttackSpeedTiming): Attack<Stat
             end.type === "CANCELLED"
                 ? setState(battle, actionRef(source, self.definition), { inSession: false })
                 : battle,
-        speed: profile.attributes.attackSpeed,
+        period: { type: "ATTACK_SPEED" },
         triggerBindingId: "primary",
-        intervalTicks: secondsToTicks(profile.attributes.baseAttackTime),
         followUps: [],
         targetGroups: [
             {

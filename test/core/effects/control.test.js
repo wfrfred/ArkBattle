@@ -1,4 +1,5 @@
 // Contract: [effect](../../../docs/architecture/effect.md#10-标准效果库与候选范围).
+import { attribute as defineAttribute } from "../../helpers/attribute.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { battle, get } from "../../helpers/battle.js";
@@ -15,7 +16,7 @@ import { stun, stunRestriction, silence, blockSpRecovery } from "../../../dist/c
 
 function actor(ignoreRestrictions, onEnd = state => state) {
     const action = {
-        id: "held", intervalTicks: 0, speed: 100,
+        id: "held", period: { type: "FIXED", ticks: 0 },
         initialize: state => ({ state, value: {} }),
         prepare: state => ({ state, value: {} }),
         onTick: state => ({ state, value: false }),
@@ -23,16 +24,16 @@ function actor(ignoreRestrictions, onEnd = state => state) {
     };
     const skill = {
         id: "control-skill", initialize: state => ({ state, value: {} }),
-        sp: { initial: 10, capacity: 10, recovery: { type: "TIME", intervalTicks: 30 } },
+        sp: { initial: 10, capacity: 10, recovery: { type: "TIME" }, recoverySpeed: defineAttribute(1), recoveryMultiplier: defineAttribute(1) },
         activation: { trigger: "MANUAL", ignoreRestrictions, requirement: 10, cost: 10, initialize: () => ({ state: {}, duration: { type: "INFINITE" } }) },
     };
     const definition = {
         id: "controlled", hooks: Hooks.empty(),
-        action: { initialize: state => actions.createActions(state, actions.create(action)) },
+        action: { speed: defineAttribute(100, 20), interval: defineAttribute(10), initialize: (state, self) => actions.createActions(state, self, actions.create(action)) },
         skill: { initialize: state => skills.create(state, skill) },
         blocker: { layer: "GROUND", restrictions: [], capacity: 1, radius: 2 },
         facing: { restrictions: [] },
-        locomotion: { halfBodyWidth: 0, minSpeed: 0, speed: 1, steeringParameters: { steeringFactor: 1, maxSteeringForce: 1 } },
+        locomotion: { halfBodyWidth: 0, speed: defineAttribute(1), steeringParameters: { steeringFactor: 1, maxSteeringForce: 1 } },
     };
     return { definition, action, skill };
 }

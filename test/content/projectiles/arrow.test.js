@@ -1,3 +1,4 @@
+import { attribute, vitality } from "../../helpers/attribute.js";
 // Contract: [projectile](../../../docs/architecture/projectile.md).
 import { compose } from "../../../dist/core/unit/index.js";
 import { Hooks } from "../../../dist/core/hook.js";
@@ -14,15 +15,15 @@ import { ref } from '../../../dist/core/unit/query.js';
 import { createArrow } from '../../../dist/content/enemies/crossbowman/action.js';
 import { targetApplied } from '../../../dist/core/battle/resource/hp/damage/index.js';
 import { setAttackContribution } from '../../../dist/core/unit/capability/offense/index.js';
-import { create as modifier } from '../../../dist/core/unit/contribution/attribute.js';
+import { create as modifier } from '../../../dist/core/unit/attribute.js';
 
 function setup(targetHooks = Hooks.empty()) {
   const source = initialize({ id: 0, position: [0, 0], definition: { hooks: Hooks.empty(),
-    id: 'source', offense: { attack: 40 },
+    id: 'source', offense: { attack: attribute(40) },
   } });
   const target = initialize({ id: 1, position: [1, 0], definition: { hooks: targetHooks,
-    id: 'target', vitality: { maxHp: 1000, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
-    presence: {}, targetable: { taunt: 0, restrictions: [{ id: 'hidden', value: {
+    id: 'target', vitality: vitality(1000),
+    presence: {}, targetable: { taunt: attribute(0, -2, 2), restrictions: [{ id: 'hidden', value: {
       allows: () => false,
     } }] },
   } });
@@ -129,7 +130,7 @@ test('a missing locked target does not redirect its arrow to another nearby unit
   const fixture = setup();
   const launched = projectiles.create(fixture.battle, createArrow(), { position: [0, 0], state: fixture.state });
   const other = initialize({ id: 2, position: [1, 0], definition: { hooks: Hooks.empty(),
-    id: 'nearby', vitality: { maxHp: 100, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
+    id: 'nearby', vitality: vitality(100),
   } });
   const withoutTarget = addUnit(removeUnit(launched.state, fixture.state.target, { reason: "SCRIPT" }), other);
   const after = step(withoutTarget, 1);

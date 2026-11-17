@@ -13,11 +13,21 @@ export { beforeRelease, released, dispatchBeforeRelease, dispatchReleased } from
 
 export type { Directive, Context, BeforeReleaseHook, ReleasedHook } from "./release.js";
 
-export { resolveSpeed, resolveBaseInterval, resolvePeriod, period } from "./timing.js";
+export {
+    resolveSpeed,
+    resolveBaseInterval,
+    resolveAttackPeriod,
+    resolvePeriod,
+    period,
+} from "./timing.js";
 
 export {
     setIntervalContribution,
     removeIntervalContribution,
     setSpeedContribution,
     removeSpeedContribution,
+    setIntervalRange,
+    clearIntervalRange,
+    setSpeedRange,
+    clearSpeedRange,
 } from "./operations.js";

@@ -85,9 +85,8 @@ export function skillTargets(battle: BattleState, self: Unit & Allegiance, profi
 function attackDefinition(profile: Profile, skill: boolean, timing: Timing) {
     return {
         id: skill ? "mudrock/s2" : "normal-attack",
-        speed: profile.attributes.attackSpeed,
         triggerBindingId: "primary",
-        intervalTicks: secondsToTicks(profile.attributes.baseAttackTime),
+        period: skill ? { type: "FIXED", ticks: 0 } : { type: "ATTACK_SPEED" },
         timing,
         followUps: [],
         targetGroups: [

@@ -2,6 +2,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { battle, get } from "../helpers/battle.js";
+import { attribute as defineAttribute, vitality as defineVitality } from "../helpers/attribute.js";
 import { Hooks } from "../../dist/core/hook.js";
 import * as units from "../../dist/core/unit/index.js";
 import { update } from "../../dist/core/battle/unit.js";
@@ -16,20 +17,20 @@ import * as presence from "../../dist/core/unit/capability/presence/index.js";
 import { createStun } from "../../dist/core/effects/elemental/neural.js";
 import { createSpDrain } from "../../dist/core/effects/elemental/necrosis.js";
 import { silence, blockSpRecovery } from "../../dist/core/effects/control.js";
-import { create as modifier } from "../../dist/core/unit/contribution/attribute.js";
+import { create as modifier } from "../../dist/core/unit/attribute.js";
 import { elementHealing } from "../../dist/core/battle/targeting/index.js";
 import { hasTargetable } from "../../dist/core/unit/capability/targetable/capability.js";
 import { createArknightsElementalDefinition } from "../../dist/data/effect/elemental.js";
 
 const elementalReceiver = {
     id: "ep-receiver", hooks: Hooks.empty(), presence: {}, allegiance: { side: "ALLY" },
-    vitality: { maxHp: 10000, defense: 0, resistance: 50, recoverySpeed: 0, recoveryRatio: 0 },
+    vitality: defineVitality(10000, { resistance: defineAttribute(50, 0, 100) }),
     elemental: createArknightsElementalDefinition({ receiver: "CHARACTER" }),
 };
 
 const recoveringElementalReceiver = {
     id: "ep-receiver", hooks: Hooks.empty(), presence: {}, allegiance: { side: "ALLY" },
-    targetable: { taunt: 0, restrictions: [] },
+    targetable: { taunt: defineAttribute(0, -2, 2), restrictions: [] },
     elemental: createArknightsElementalDefinition({ receiver: "CHARACTER", recoveryPerSecond: 15 }),
 };
 
@@ -61,9 +62,7 @@ test("EP-03: Burst recovery continues while absent, refills EP with the current 
     }
     state = update(state, target, units.compose(elemental.setContribution("burstRecoverySpeed", {
             id: "clock", value: [modifier({ finalScaler: 2 })],
-        }), elemental.setContribution("maxEp", {
-            id: "capacity", value: [modifier({ addition: 1000 })],
-        })));
+        }), elemental.setRange("maxEp", { min: 2000, max: null })));
     state = effects.advance({ ...state, tick: 5 });
     assert.deepEqual(get(state, 0).elemental.ep, elemental.elementValues(20));
     for (let tick = 6; tick <= 154; tick++) {
@@ -79,6 +78,11 @@ test("EP-03: Burst recovery continues while absent, refills EP with the current 
     state = elemental.cancel(restarted.state, restarted.value.application.burst, "CONTENT");
     assert.deepEqual(get(state, 0).elemental.ep, elemental.elementValues(2000));
     assert.equal(vitality.resolveResistance(state, get(state, 0)), 50);
+    state = update(state, target, elemental.clearRange("maxEp"));
+    assert.equal(elemental.resolveMaxEp(state, get(state, 0)), 1000);
+    assert.deepEqual(get(state, 0).elemental.ep, elemental.elementValues(2000));
+    state = elemental.advance(state, target);
+    assert.deepEqual(get(state, 0).elemental.ep, elemental.elementValues(1000));
 });
 
 test("EP-06: reducing recovery preserves elapsed time, immediately refills from current MaxEP and does not replay periodic output", () => {
@@ -137,7 +141,7 @@ test("EP-06: immediate recovery completion retains independent stun and cannot o
     const definition = {
         ...elementalReceiver, hooks,
         locomotion: {
-            speed: 1, minSpeed: 0, halfBodyWidth: 0,
+            speed: defineAttribute(1), halfBodyWidth: 0,
             steeringParameters: { steeringFactor: 1, maxSteeringForce: 1 },
         },
     };
@@ -177,7 +181,7 @@ test("EP-03: zero recovery budgets keep installation output and independent stun
     const definition = {
         ...elementalReceiver,
         locomotion: {
-            speed: 1, minSpeed: 0, halfBodyWidth: 0,
+            speed: defineAttribute(1), halfBodyWidth: 0,
             steeringParameters: { steeringFactor: 1, maxSteeringForce: 1 },
         },
         elemental: {
@@ -229,7 +233,7 @@ test("EP-02: depletion registers the Burst and completes standard output before 
     let state = battle([
         { definition: {
             ...elementalReceiver, hooks,
-            vitality: { maxHp: 10000, defense: 0, resistance: 50, recoverySpeed: 0, recoveryRatio: 0 },
+            vitality: defineVitality(10000, { resistance: defineAttribute(50, 0, 100) }),
         }, position: [0, 0] },
         { definition: { id: "source", hooks: Hooks.empty() }, position: [1, 0] },
     ]);
@@ -271,7 +275,7 @@ test("EP-02: cancelling a newly registered Burst suppresses standard output with
         });
     let state = battle([{ definition: {
         ...elementalReceiver, hooks,
-        vitality: { maxHp: 10000, defense: 0, resistance: 50, recoverySpeed: 0, recoveryRatio: 0 },
+        vitality: defineVitality(10000, { resistance: defineAttribute(50, 0, 100) }),
     }, position: [0, 0] }]);
     const target = units.ref(get(state, 0));
     state = update(state, target, units.compose(units.compose(units.setHook(elemental.burstStarted, {
@@ -370,9 +374,7 @@ test("EP-01/03: losses stay per element, healing gives every bar the full amount
     assert.deepEqual(get(reduced.state, 0).elemental.ep, current.elemental.ep);
     assert.equal(resourceNotices, 2);
 
-    const smaller = update(full.state, target, elemental.setContribution("maxEp", {
-        id: "smaller-pool", value: [modifier({ multiplier: -0.5 })],
-    }));
+    const smaller = update(full.state, target, elemental.setRange("maxEp", { min: null, max: 500 }));
     const zeroDamage = update(smaller, target, units.setHook(epDamage.receiving, {
         id: "zero-reception",
         invoke: (state, _context, pending) => ({ state, value: { ...pending, amount: 0 } }),

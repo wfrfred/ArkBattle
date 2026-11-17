@@ -1,4 +1,5 @@
 // Contract: [presence](../../docs/architecture/presence.md).
+import { attribute as defineAttribute } from "../helpers/attribute.js";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { Hooks } from "../../dist/core/hook.js";
@@ -21,7 +22,7 @@ test("disappearance preserves deployment and lifetimes, releases blocking before
     const ended = [];
     let entries = 0;
     const program = {
-        id: "attack", intervalTicks: 0, speed: 100,
+        id: "attack", period: { type: "FIXED", ticks: 0 },
         initialize: (state) => ({ state, value: {} }),
         prepare: (state) => ({ state, value: {} }),
         onTick: (state) => ({ state, value: false }),
@@ -41,7 +42,7 @@ test("disappearance preserves deployment and lifetimes, releases blocking before
         occupancy: { slot: "OCCUPANT" },
         deployable: { retreatRestrictions: [] },
         blocker: { capacity: 2, layer: "GROUND", restrictions: [] },
-        action: { initialize: (state) => actions.createActions(state, actions.create(program), actions.create(idle)) },
+        action: { speed: defineAttribute(100, 20), interval: defineAttribute(10), initialize: (state, self) => actions.createActions(state, self, actions.create(program), actions.create(idle)) },
         card: {
             cost: 10, redeployTicks: 10, slots: 1, stock: 1, stockLimit: 1, activeLimit: 1,
             cooldownOnDeploy: false, recoverOnRetreatOrDeath: true, increaseCostOnRetreatOrDeath: true,

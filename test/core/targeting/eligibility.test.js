@@ -1,4 +1,5 @@
 // Contract: [targeting](../../../docs/architecture/targeting.md).
+import { attribute as defineAttribute, vitality as defineVitality } from "../../helpers/attribute.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { Hooks } from "../../../dist/core/hook.js";
@@ -15,14 +16,14 @@ import * as epDamage from "../../../dist/core/battle/resource/ep/damage/index.js
 import * as effects from "../../../dist/core/unit/effect/index.js";
 import { hasLayer, setType } from "../../../dist/core/unit/capability/layer/index.js";
 import { disappear } from "../../../dist/core/unit/capability/presence/index.js";
-import { create as modifier } from "../../../dist/core/unit/contribution/attribute.js";
+import { create as modifier } from "../../../dist/core/unit/attribute.js";
 import { healFree } from "../../../dist/core/effects/protection.js";
 import { createArknightsElementalDefinition } from "../../../dist/data/effect/elemental.js";
 
 const living = {
     id: "target", hooks: Hooks.empty(),
-    targetable: { taunt: 0, restrictions: [] },
-    vitality: { maxHp: 100, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
+    targetable: { taunt: defineAttribute(0, -2, 2), restrictions: [] },
+    vitality: defineVitality(100),
     allegiance: { side: "ENEMY" }, layer: { type: "GROUND" },
 };
 const ids = candidates => Array.from(candidates, target => target.id);
@@ -69,7 +70,7 @@ test("mixed healing keeps HP or EP demand while only an ACTIVE healFree marker r
     };
     let state = battle([
         ...[0, 1, 2, 3].map(x => ({ definition: patient, position: [x, 1] })),
-        { definition: { ...patient, vitality: { ...patient.vitality, maxHp: 10000 } }, position: [4, 1] },
+        { definition: { ...patient, vitality: { ...patient.vitality, maxHp: defineAttribute(10000, 1) } }, position: [4, 1] },
     ]);
     const enlarged = units.ref(get(state, 1));
     state = update(state, enlarged, vitality.setMaxHpContribution({
@@ -108,7 +109,7 @@ test("mixed healing keeps HP or EP demand while only an ACTIVE healFree marker r
 
 test("EP selection checks current resource eligibility without executing reception Restrictions", () => {
     const receiver = {
-        id: "ep-receiver", hooks: Hooks.empty(), targetable: { taunt: 0, restrictions: [] },
+        id: "ep-receiver", hooks: Hooks.empty(), targetable: { taunt: defineAttribute(0, -2, 2), restrictions: [] },
         allegiance: { side: "ALLY" },
         elemental: createArknightsElementalDefinition({ receiver: "ENEMY" }),
     };

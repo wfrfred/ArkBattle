@@ -1,41 +1,31 @@
 import type { Unit } from "../../unit.js";
-import * as contribution from "../../contribution/contribution.js";
-import * as attribute from "../../contribution/attribute.js";
-import type { Action } from "../../action/action.js";
+import * as attribute from "../../attribute.js";
+import type { Definition } from "../../action/definition.js";
 import type { Action as ActionCapability } from "./capability.js";
 
-export function resolveSpeed<P extends object, E extends object>(
-    source: Unit & ActionCapability,
-    self: Action<P, E>,
-): number {
-    return Math.max(
-        20,
-        attribute.apply(self.definition.speed, contribution.resolve(source.action.speed).flat()),
-    );
+export function resolveSpeed(source: Unit & ActionCapability): number {
+    return attribute.resolve(source.definition.action.speed, source.action.speed);
 }
 
-export function resolveBaseInterval<P extends object, E extends object>(
-    source: Unit & ActionCapability,
-    self: Action<P, E>,
-): number {
-    return Math.max(
-        0,
-        attribute.apply(
-            self.definition.intervalTicks,
-            contribution.resolve(source.action.interval).flat(),
-        ),
-    );
+export function resolveBaseInterval(source: Unit & ActionCapability): number {
+    return attribute.resolve(source.definition.action.interval, source.action.interval);
 }
 
-export function resolvePeriod<P extends object, E extends object>(
+export function resolveAttackPeriod(source: Unit & ActionCapability): number {
+    return period(resolveBaseInterval(source), resolveSpeed(source));
+}
+
+export function resolvePeriod(
     source: Unit & ActionCapability,
-    self: Action<P, E>,
+    definition: Pick<Definition, "period">,
 ): number {
-    return period(resolveBaseInterval(source, self), resolveSpeed(source, self));
+    return definition.period.type === "FIXED"
+        ? definition.period.ticks
+        : resolveAttackPeriod(source);
 }
 
 export function period(intervalTicks: number, speed: number): number {
-    const periodTicks = intervalTicks * (100 / Math.min(600, Math.max(20, speed)));
+    const periodTicks = intervalTicks * (100 / Math.min(600, Math.max(10, speed)));
 
     return Math.max(1, periodTicks);
 }

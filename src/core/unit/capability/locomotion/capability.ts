@@ -4,14 +4,14 @@ import type { MotionMode } from "../../../battlefield/navigation/state.js";
 import { type WorldPosition } from "../../../geometry/coordinate.js";
 import type { Unit } from "../../unit.js";
 import type * as contribution from "../../contribution/contribution.js";
-import type * as attribute from "../../contribution/attribute.js";
+import * as attribute from "../../attribute.js";
 import type { SteeringParameters } from "./steering.js";
 import { createRegistrationOperations } from "../../registration.js";
+import { createChange, type Change } from "../../change.js";
 import type { Restriction as BaseRestriction } from "../../../restriction.js";
 
 export interface Definition {
-    readonly speed: number;
-    readonly minSpeed: number;
+    readonly speed: attribute.Definition;
     readonly steeringParameters: SteeringParameters;
     readonly halfBodyWidth: number;
 }
@@ -22,17 +22,14 @@ export interface RestrictionContext {
 
 export type Restriction = BaseRestriction<RestrictionContext>;
 
-export type Input = contribution.Input<attribute.Modifier, Unit & Locomotion>;
-
-interface Contributions {
-    readonly speed: readonly contribution.Contribution<Input>[];
-}
+export type Input = attribute.Input<Unit & Locomotion>;
 
 interface Restrictions {
     readonly restrictions: readonly contribution.Contribution<Restriction>[];
 }
 
-export interface State extends Restrictions, Contributions {
+export interface State extends Restrictions {
+    readonly speed: attribute.State<Input>;
     readonly velocity: WorldPosition;
 }
 
@@ -60,15 +57,20 @@ export function initialize<U extends Unit & Pick<Locomotion, "definition">>(
     unit: U,
 ): Result<U & Locomotion> {
     const definition = unit.definition.locomotion;
-    assertNonnegativeNumber(definition.speed, "speed");
-    assertNonnegativeNumber(definition.minSpeed, "minSpeed");
     assertNonnegativeNumber(definition.halfBodyWidth, "halfBodyWidth");
     assertNonnegativeNumber(definition.steeringParameters.steeringFactor, "steeringFactor");
     assertNonnegativeNumber(definition.steeringParameters.maxSteeringForce, "maxSteeringForce");
 
     return {
         state: battle,
-        value: { ...unit, locomotion: { velocity: [0, 0], speed: [], restrictions: [] } },
+        value: {
+            ...unit,
+            locomotion: {
+                velocity: [0, 0],
+                speed: attribute.initialize<Input>(definition.speed),
+                restrictions: [],
+            },
+        },
     };
 }
 
@@ -78,8 +80,40 @@ export const { set: setRestriction, remove: removeRestriction } = createRegistra
     keyof Restrictions
 >("locomotion", "restrictions");
 
-export const { set: setSpeedContribution, remove: removeSpeedContribution } =
-    createRegistrationOperations<Unit & Locomotion, "locomotion", keyof Contributions>(
-        "locomotion",
-        "speed",
+export function setSpeedContribution(
+    entry: contribution.Contribution<Input>,
+): Change<Unit & Locomotion> {
+    return createChange<Unit & Locomotion>((self) =>
+        updateSpeed(self, attribute.setContribution(self.locomotion.speed, entry)),
     );
+}
+
+export function removeSpeedContribution(id: string): Change<Unit & Locomotion> {
+    return createChange<Unit & Locomotion>((self) =>
+        updateSpeed(self, attribute.removeContribution(self.locomotion.speed, id)),
+    );
+}
+
+export function setSpeedRange(range: attribute.Range): Change<Unit & Locomotion> {
+    return createChange<Unit & Locomotion>((self) =>
+        updateSpeed(
+            self,
+            attribute.setRange(self.definition.locomotion.speed, self.locomotion.speed, range),
+        ),
+    );
+}
+
+export function clearSpeedRange(): Change<Unit & Locomotion> {
+    return createChange<Unit & Locomotion>((self) =>
+        updateSpeed(
+            self,
+            attribute.clearRange(self.definition.locomotion.speed, self.locomotion.speed),
+        ),
+    );
+}
+
+function updateSpeed<U extends Unit & Locomotion>(self: U, speed: attribute.State<Input>): U {
+    return speed === self.locomotion.speed
+        ? self
+        : { ...self, locomotion: { ...self.locomotion, speed } };
+}

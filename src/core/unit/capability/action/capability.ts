@@ -1,14 +1,16 @@
 import type { State as BattleState, Result } from "../../../battle/state.js";
 import type { Unit } from "../../unit.js";
 import type { Id as DefinitionId } from "../../action/definition.js";
-import type { Actions } from "../../action/actions.js";
+import { Actions } from "../../action/actions.js";
 import type * as contribution from "../../contribution/contribution.js";
-import type * as attribute from "../../contribution/attribute.js";
+import * as attribute from "../../attribute.js";
 import { createRegistrationOperations } from "../../registration.js";
 import type { Restriction as BaseRestriction } from "../../../restriction.js";
 
 export interface Definition {
-    readonly initialize: (battle: BattleState) => Result<Actions>;
+    readonly speed: attribute.Definition;
+    readonly interval: attribute.Definition;
+    readonly initialize: (battle: BattleState, self: Unit & Action) => Result<Actions>;
     readonly select?: (battle: BattleState, self: Unit & Action) => Result<readonly DefinitionId[]>;
 }
 
@@ -28,8 +30,8 @@ interface Restrictions {
 export interface State extends Restrictions {
     readonly actions: Actions;
     readonly nextExecutionId: number;
-    readonly interval: readonly contribution.Contribution<Input>[];
-    readonly speed: readonly contribution.Contribution<Input>[];
+    readonly interval: attribute.State;
+    readonly speed: attribute.State;
 }
 
 export interface Action {
@@ -45,18 +47,26 @@ export function initialize<U extends Unit & Pick<Action, "definition">>(
     battle: BattleState,
     unit: U,
 ): Result<U & Action> {
-    const initialized = unit.definition.action.initialize(battle);
+    const definition = unit.definition.action;
+    const self: U & Action = {
+        ...unit,
+        action: {
+            actions: Actions.empty(),
+            nextExecutionId: 0,
+            interval: attribute.initialize(definition.interval),
+            speed: attribute.initialize(definition.speed),
+            restrictions: [],
+        },
+    };
+    const initialized = definition.initialize(battle, self);
 
     return {
         state: initialized.state,
         value: {
-            ...unit,
+            ...self,
             action: {
+                ...self.action,
                 actions: initialized.value,
-                nextExecutionId: 0,
-                interval: [],
-                speed: [],
-                restrictions: [],
             },
         },
     };

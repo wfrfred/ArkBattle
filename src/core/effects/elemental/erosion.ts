@@ -3,7 +3,7 @@ import * as units from "../../unit/query.js";
 import * as effects from "../../unit/effect/operations.js";
 import { ref } from "../../unit/effect/effect.js";
 import type { OrdinaryDefinition as EffectDefinition } from "../../unit/effect/definition.js";
-import * as attribute from "../../unit/contribution/attribute.js";
+import * as attribute from "../../unit/attribute.js";
 import {
     hasVitality,
     setContribution,

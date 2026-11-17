@@ -1,4 +1,5 @@
 // Contract: [lifetime](../../docs/architecture/lifetime.md).
+import { attribute as defineAttribute, vitality as defineVitality } from "../helpers/attribute.js";
 import { Hooks } from "../../dist/core/hook.js";
 import * as unitLifecycle from "../../dist/core/unit/hook.js";
 import assert from "node:assert/strict";
@@ -21,12 +22,12 @@ test("HOOK-03: Skill and Burst end notifications observe their cleared state whi
     const program = {
         id: "active-until-departure",
         initialize: state => ({ state, value: {} }),
-        sp: { initial: 1, capacity: 1, recovery: { type: "NONE" } },
+        sp: { initial: 1, capacity: 1, recovery: { type: "NONE" }, recoverySpeed: defineAttribute(0), recoveryMultiplier: defineAttribute(1) },
         activation: { trigger: "MANUAL", ignoreRestrictions: [], requirement: 1, cost: 1, initialize: () => ({ state: {}, duration: { type: "INFINITE" } }) },
     };
     const definition = {
         id: "owner",
-        vitality: { maxHp: 10000, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
+        vitality: defineVitality(10000),
         elemental: createArknightsElementalDefinition({ receiver: "CHARACTER" }),
         skill: { initialize: state => skills.create(state, program) },
         hooks: Hooks.empty()
@@ -134,8 +135,7 @@ test("an ending ancestor rejects new dependents before its running Action receiv
     let businessCalls = 0;
     const program = {
         id: "channel",
-        intervalTicks: 1,
-        speed: 100,
+        period: { type: "FIXED", ticks: 1 },
         initialize: (state) => ({ state, value: {} }),
         prepare: (state) => ({ state, value: {} }),
         onTick: (state) => ({ state, value: false }),
@@ -152,9 +152,9 @@ test("an ending ancestor rejects new dependents before its running Action receiv
         {
             definition: {
                 id: "source",
-                action: {
-                    initialize: (current) =>
-                        actions.createActions(current, actions.create(program)),
+                action: { speed: defineAttribute(100, 20), interval: defineAttribute(10),
+                    initialize: (current, self) =>
+                        actions.createActions(current, self, actions.create(program)),
                 },
                 hooks: Hooks.empty().set(unitLifecycle.prepare, {
                         id: "bind-during-departure",

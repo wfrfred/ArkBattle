@@ -124,11 +124,11 @@ Main 必须有最终终点、实际到达，且满足 requireAllCheckpoints；�
 
 ## Locomotion
 
-Locomotion 保存历史 velocity、速度贡献与移动限制。目标由本次参数提供，真实位置归 Unit。基础速度与下限使用格／Tick；半身宽独立于 Hitbox。Data 将 steeringFactor 除以 Tick 率、maxSteeringForce 除以 Tick 率平方，内容绑定运动配置。
+Locomotion 保存历史 velocity、speed 的 [Attribute](attribute.md) State 与移动限制。目标由本次参数提供，真实位置归 Unit。速度及范围使用格／Tick，普通内容将0.1格／秒转换为默认下限；半身宽独立于 Hitbox。Data 将 steeringFactor 除以 Tick 率、maxSteeringForce 除以 Tick 率平方，内容绑定运动配置。
 
 ### 关键语义
 
-有效速度为 `max(minSpeed, 修正后speed) × 本次倍率`；限制与速度独立。暂停、零速或无目标不清历史速度。取得移动资格后，接近最终 goal 且预算足够时直接吸附，保留 velocity；中间建议点不吸附。
+本次速度为 `当前有效speed × 本次倍率`；贡献和范围通过 Locomotion 的 Change 修改，限制与速度独立。暂停、零速或无目标不清历史速度。取得移动资格后，接近最终 goal 且预算足够时直接吸附，保留 velocity；中间建议点不吸附。
 
 普通积分以历史速度、目标速度误差与八邻域局部避障形成合力，先限力再积分限速。WALK 将硬障碍和 cost≥1000 的邻格用于避障，FLY 只看硬障碍；半身宽参与横向几何，局部力去除沿目标方向的分量，并按历史速度比例缩放。当前格不可通时选择相邻可通格恢复方向。
 

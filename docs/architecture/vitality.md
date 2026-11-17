@@ -13,23 +13,23 @@ interface Health {
 }
 ```
 
-State 通过 health 唯一持有生命，不另存顶层 hp；maxMinusHpRatio 是运行时债务容量配置。静态 Definition 提供 maxHp、defense、resistance、recoverySpeed、recoveryRatio，构造入口要求有限非负数，正常资源和变化量均保留小数。
+State 通过 health 唯一持有生命，不另存顶层 hp；maxMinusHpRatio 是运行时债务容量配置。maxHp、defense、resistance、recoverySpeed、recoveryRatio 各使用 [Attribute](attribute.md) 的 Definition 与 State，当前边界由 Vitality Change 修改；资源和变化量均保留小数。
 
-| 项目 | 初始值或有效边界 |
+| 项目 | 初始值或默认属性边界 |
 | --- | --- |
-| Health | `{hp:max(1, definition.maxHp), minusHp:0}` |
-| MaxHP | 修正后下限 1 |
+| Health | `{hp:初始有效MaxHP, minusHp:0}` |
+| MaxHP | 下限 1 |
 | 债务容量 | `有效 MaxHP × maxMinusHpRatio`；比例初始为 0 |
-| DEF | 修正后下限 0 |
-| RES | 修正后 0～100；基础值可大于 100 |
-| 固定自然回复 | 修正后下限 0，单位 HP／秒 |
-| 比例自然回复 | 修正后 0～1，单位 MaxHP／秒 |
+| DEF | 下限 0 |
+| RES | 0～100 |
+| 固定自然回复 | 下限 0，单位 HP／秒 |
+| 比例自然回复 | 0～1，单位 MaxHP／秒 |
 
 isAlive 只判断普通 HP>0，不合并 lifecycle 或 Presence；hpRatio 使用普通 HP／有效 MaxHP，不计屏障和债务。业务在自己需要的时点检查生命周期，治疗需求及比例排序复用有效 MaxHP。
 
-MaxHP 贡献只接受静态 Modifier 数组。登记、替换或撤销时，以 `旧普通 HP / 旧 MaxHP × 新 MaxHP` 形成拟写值，再按新容量分配 Health；正向变化也先偿债。贡献与生命在同一 Change 中发布，不派发治疗或伤害提交 Hook，零 HP 不因属性变化复活。容量耗尽时，Settlement 从最新状态确认后以 killer:null 请求 DEATH；结构与析构后继归 Unit。
+MaxHP 贡献只接受静态 Modifier 数组。贡献或范围改变有效上限时，以 `旧普通 HP / 旧 MaxHP × 新 MaxHP` 形成拟写值，再按新容量分配 Health；正向变化也先偿债。属性与生命在同一 Change 中发布，不派发治疗或伤害提交 Hook，零 HP 不因属性变化复活。容量耗尽时，Settlement 从最新状态确认后以 killer:null 请求 DEATH；结构与析构后继归 Unit。
 
-DEF、RES 和自然回复贡献可为静态修正或 `(battle,self)` 查询函数，每次求值先选有效贡献，再求动态输入。它们不额外维护属性缓存或每 Tick 刷新表。接收限制只保存 Damage Restriction；普通 HP Healing 无独立限制数组，治疗干预使用接收 Hook。公共贡献、Restriction 与 Change 契约见 [Capability](capability.md)。
+DEF、RES 和自然回复贡献可为静态修正或 `(battle,self)` 查询函数，按当前 Attribute 求值；查询不额外施加表中默认边界。接收限制只保存 Damage Restriction；普通 HP Healing 无独立限制数组，治疗干预使用接收 Hook。Restriction 与 Change 契约见 [Capability](capability.md)。
 
 ## 自然 HP 回复
 

@@ -2,8 +2,7 @@ import type { Ref } from "../../../common/ref.js";
 import { type State as BattleState } from "../../../battle/state.js";
 import type { Unit } from "../../unit.js";
 import * as units from "../../query.js";
-import * as contribution from "../../contribution/contribution.js";
-import * as attribute from "../../contribution/attribute.js";
+import * as attribute from "../../attribute.js";
 import { hasAllegiance } from "../allegiance/capability.js";
 import { hasVitality } from "../vitality/capability.js";
 import { isAlive } from "../vitality/query.js";
@@ -41,21 +40,12 @@ export function resolveBurstRecoverySpeed(battle: BattleState, self: Unit & Elem
 }
 
 function resolve(battle: BattleState, self: Unit & Elemental, parameter: Parameter): number {
-    const value = attribute.apply(
+    return attribute.resolve(
         self.definition.elemental[parameter],
-        contribution
-            .resolve(self.elemental[parameter])
-            .flatMap((input) => (typeof input === "function" ? input(battle, self) : input)),
+        self.elemental[parameter],
+        battle,
+        self,
     );
-
-    if (parameter === "maxEp") {
-        return Math.max(1, value);
-    }
-    if (parameter === "elementResistance" || parameter === "damageResistance") {
-        return Math.min(100, Math.max(0, value));
-    }
-
-    return Math.max(0, value);
 }
 
 export function available(self: Unit & Elemental): boolean {

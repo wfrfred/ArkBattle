@@ -5,6 +5,8 @@ export {
     removeRestriction,
     setSpeedContribution,
     removeSpeedContribution,
+    setSpeedRange,
+    clearSpeedRange,
 } from "./capability.js";
 
 export type {

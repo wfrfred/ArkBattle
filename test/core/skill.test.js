@@ -6,9 +6,10 @@ import { battle, get } from "../helpers/battle.js";
 import * as units from "../../dist/core/unit/index.js";
 import * as skills from "../../dist/core/unit/skill/index.js";
 import * as skill from "../../dist/core/unit/capability/skill/index.js";
-import { create as modifier } from "../../dist/core/unit/contribution/attribute.js";
+import { create as modifier } from "../../dist/core/unit/attribute.js";
 import { update } from "../../dist/core/battle/unit.js";
 import * as presence from "../../dist/core/unit/capability/presence/index.js";
+import { attribute } from "../helpers/attribute.js";
 
 test("activation publishes payment before onStart and clears only the completed round before notification", () => {
     const observed = [];
@@ -17,7 +18,7 @@ test("activation publishes payment before onStart and clears only the completed 
     const program = {
         id: "skill",
         initialize: (state) => ({ state, value: { completed: 0 } }),
-        sp: { initial: 30, capacity: 40, recovery: { type: "NONE" } },
+        sp: { initial: 30, capacity: 40, recovery: { type: "NONE" }, recoverySpeed: attribute(0), recoveryMultiplier: attribute(1) },
         activation: {
             trigger: "MANUAL", ignoreRestrictions: [],
             requirement: 20,
@@ -107,7 +108,7 @@ test("activation publishes payment before onStart and clears only the completed 
 test("per-call activation parameters preserve ordinary policy and still require sufficient SP", () => {
     const payments = [];
     const program = {
-        id: "special-start", sp: { initial: 3, capacity: 20, recovery: { type: "NONE" } },
+        id: "special-start", sp: { initial: 3, capacity: 20, recovery: { type: "NONE" }, recoverySpeed: attribute(0), recoveryMultiplier: attribute(1) },
         initialize: state => ({ state, value: {} }),
         activation: {
             trigger: "MANUAL", ignoreRestrictions: [], requirement: 10, cost: 7,
@@ -157,7 +158,7 @@ test("cancellation during payment notification retains payment and suppresses th
     const program = {
         id: "skill",
         initialize: (state) => ({ state, value: { started: false } }),
-        sp: { initial: 10, capacity: 10, recovery: { type: "NONE" } },
+        sp: { initial: 10, capacity: 10, recovery: { type: "NONE" }, recoverySpeed: attribute(0), recoveryMultiplier: attribute(1) },
         activation: {
             trigger: "MANUAL", ignoreRestrictions: [],
             requirement: 10,
@@ -267,7 +268,9 @@ test("natural SP recovery pauses without backlog and uses current recovery speed
         sp: {
             initial: 2,
             capacity: 2,
-            recovery: { type: "TIME", intervalTicks: 4 },
+            recovery: { type: "TIME" },
+            recoverySpeed: attribute(7.5),
+            recoveryMultiplier: attribute(1),
         },
     };
     const definition = {
@@ -360,7 +363,7 @@ test("TIME extension stays in its round while persistent state selects a later I
 test("AMMO samples its charged base before payment and applies capacity, consumption, refill and exhaustion policies", () => {
     const program = {
         id: "ammo",
-        sp: { initial: 2, capacity: 2, recovery: { type: "NONE" } },
+        sp: { initial: 2, capacity: 2, recovery: { type: "NONE" }, recoverySpeed: attribute(0), recoveryMultiplier: attribute(1) },
         initialize: (state) => ({ state, value: {} }),
         activation: {
             trigger: "MANUAL", ignoreRestrictions: [],

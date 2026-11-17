@@ -12,7 +12,7 @@ Action 管理行动程序的启动、冷却、执行进度与终止；Content �
 
 ## 1. 状态与领域职责
 
-Unit 的 Action Capability 保存行动容器、宿主内执行身份计数、间隔／速度贡献和启动限制。容器中每项 Action 聚合 Definition、持久 state、Cooldown 与可空 execution。Execution 是按本轮身份读取的同一聚合，execution 确定非空；执行私有数据与持久数据分开。
+Unit 的 Action Capability 保存宿主的攻速／基础攻击间隔 Attribute、行动容器、宿主内执行身份计数和启动限制。容器中每项 Action 聚合 Definition、持久 state、Cooldown 与可空 execution。Execution 是按本轮身份读取的同一聚合，execution 确定非空；执行私有数据与持久数据分开。
 
 Definition 提供基础时序、持久初始化、prepare、onTick 和可选 onEnd。宿主 Ref 由内容回调参数传入，聚合不重复保存 host。Runtime 负责调度；Action 不拥有全场执行集合。
 
@@ -38,9 +38,13 @@ onTick 返回是否完成，本轮进度由执行状态操作发布。需要被�
 
 ## 5. Capability 与冷却
 
-间隔／速度贡献只接受静态修正列表。Change 完成全批发布后，在 Settlement 按最新周期刷新 Cooldown，并保留完成比例；Content 不手工补刷新，Combat 不逐 Tick 轮询刷新。依赖其他运行事实的速率变化由所属机制在适当时点重新提交贡献。
+Action Definition 的 period 明确选择 ATTACK_SPEED 或 FIXED。前者读取 Capability 的有效攻速／基础间隔，后者使用自身 ticks；两份 Action 的周期相同不表示共享冷却状态。周期策略属于持久 Action，不放在单轮 Execution。
 
-普通攻击周期为修正间隔 × 100／限制后的速度：速度属性下限 20，周期计算速度上限 600，有效周期至少一 Tick，依据[攻速公式](https://prts.wiki/w/游戏数据基础#攻速公式)。纯 Cooldown 支持非负连续周期，不替具体攻击决定量化政策。
+间隔／速度 Attribute 的贡献只接受静态修正列表。贡献或范围 Change 完成全批发布后，在 Settlement 按最新周期只刷新 ATTACK_SPEED 的 Cooldown，并保留完成比例；FIXED 不受这些变更影响。Content 不手工补刷新，Combat 不逐 Tick 轮询刷新。依赖其他运行事实的速率变化由所属机制在适当时点重新提交贡献。
+
+普通攻击周期为修正间隔 × 100／限制后的速度：攻速属性默认下限20，可由属性范围覆写；周期公式独立将攻速限制在10–600，有效普通攻击周期至少一 Tick。依据见[属性与周期范围](../research/cases/39-death-attribution-and-attribute-ranges.md#属性范围与消费者限制分开)。纯 Cooldown 与 FIXED 支持非负连续周期，不替具体攻击决定量化政策。
+
+ATTACK_SPEED／FIXED 只决定周期求值。现有 Action 在启动时重置、自身执行期间继续计时；敌人技能独立的首次等待、模式暂停、自身施放暂停和结束重置仍由其内容程序组织，不因配置 FIXED 自动获得。
 
 reset 从当前时刻开始完整周期，clear 立即就绪；保留完成比例与保留绝对已过时间是两种不同的调整。成功启动开始冷却；本轮结束不自动改它。周期变化不缩放已采样的执行等待，普通攻击不足一 Tick 余量的节奏补偿归内容模板。
 
@@ -66,7 +70,7 @@ Combat 固定入口的 Unit 与已有执行候选。对每个宿主先推进原�
 
 时序程序归 Content，只消费静态业务参数，不把 Animator、Spine 或渲染状态引入 Core。FIXED 使用明确的前摇与恢复 Tick；ATTACK_SPEED 使用起手段、主段长度、主段内释放位置与缩放范围，参数由 [Data](data.md)转换。
 
-设当前攻击周期为 T、起手段长为 B、主段长为 L，缩放量为 `a = clamp(T / (B + L), minScale, maxScale)`，无上限时只限制下限。开始时缓存动作预算 `(B + L) × a`；起手段的等待进入后固定，进入后续主段时可以用最新周期重新求释放时间。已经进入的等待与释放截止时间不随后来的改速重新缩放，冷却仍按自身契约更新。
+设宿主有效普通攻击周期为 T、起手段长为 B、主段长为 L，缩放量为 `a = clamp(T / (B + L), minScale, maxScale)`，无上限时只限制下限。T独立读取宿主属性，不以本 Action 的 FIXED 冷却代替。开始时缓存动作预算 `(B + L) × a`；起手段的等待进入后固定，进入后续主段时可以用最新周期重新求释放时间。已经进入的等待与释放截止时间不随后来的改速重新缩放，冷却仍按自身契约更新。
 
 事件等待最晚在 `startedAtTick + max(1, RoundToEven(cachedDuration))` 超时释放，后继主段改速不延后该缓存期限。释放后等待缓存预算扣除已用时间的余量，不再加一个完整恢复段或攻击周期。
 

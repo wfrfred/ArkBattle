@@ -110,13 +110,13 @@ export function createDefinition(
         elemental,
         facing: { restrictions: [] },
         vitality: {
-            maxHp: profile.maxHp,
-            defense: profile.defense,
-            resistance: profile.resistance,
-            recoverySpeed: profile.recoverySpeed,
-            recoveryRatio: 0,
+            maxHp: { default: profile.maxHp, min: 1, max: null },
+            defense: { default: profile.defense, min: 0, max: null },
+            resistance: { default: profile.resistance, min: 0, max: 100 },
+            recoverySpeed: { default: profile.recoverySpeed, min: 0, max: null },
+            recoveryRatio: { default: 0, min: 0, max: 1 },
         },
-        offense: { attack: profile.attack },
+        offense: { attack: { default: profile.attack, min: 0, max: null } },
         allegiance: { side: "ENEMY" },
         layer: { type: "GROUND" },
         hitbox: {
@@ -124,13 +124,19 @@ export function createDefinition(
         },
         blockable: { volume: profile.blockVolume, restrictions: [] },
         locomotion: {
-            speed: perSecondToPerTick(profile.moveSpeedPerSecond),
-            minSpeed: perSecondToPerTick(0.1),
+            speed: {
+                default: perSecondToPerTick(profile.moveSpeedPerSecond),
+                min: perSecondToPerTick(0.1),
+                max: null,
+            },
             steeringParameters: movement.steeringParameters,
             halfBodyWidth: movement.halfBodyWidth,
         },
         route: { alwaysCheckCurrentPoint: true },
         presence: {},
-        targetable: { taunt: profile.taunt, restrictions: [] },
+        targetable: {
+            taunt: { default: profile.taunt, min: -2, max: 2 },
+            restrictions: [],
+        },
     };
 }

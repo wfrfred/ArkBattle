@@ -1,4 +1,5 @@
 // Contract: [effect](../../docs/architecture/effect.md).
+import { attribute as defineAttribute } from "../helpers/attribute.js";
 import { Hooks } from "../../dist/core/hook.js";
 import test from "node:test";
 import assert from "node:assert/strict";
@@ -9,11 +10,11 @@ import * as effects from "../../dist/core/unit/effect/index.js";
 import * as offense from "../../dist/core/unit/capability/offense/index.js";
 import * as deployment from "../../dist/core/battle/deployment/index.js";
 import * as cards from "../../dist/core/battle/deployment/card/index.js";
-import { create as modifier } from "../../dist/core/unit/contribution/attribute.js";
+import { create as modifier } from "../../dist/core/unit/attribute.js";
 import { update, remove, lifetime as unitLifetime } from "../../dist/core/battle/unit.js";
 import { scope } from "../../dist/core/lifetime/index.js";
 
-const operator = { id: "operator", hooks: Hooks.empty(), offense: { attack: 100 } };
+const operator = { id: "operator", hooks: Hooks.empty(), offense: { attack: defineAttribute(100) } };
 
 test("installation, participation, and ending preserve completed business and current private state", () => {
     const observed = [];

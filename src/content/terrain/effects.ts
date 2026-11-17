@@ -24,7 +24,7 @@ import { hasLocomotion } from "../../core/unit/capability/locomotion/index.js";
 
 import { hasVitality } from "../../core/unit/capability/vitality/index.js";
 import { hasAllegiance } from "../../core/unit/capability/allegiance/capability.js";
-import * as attribute from "../../core/unit/contribution/attribute.js";
+import * as attribute from "../../core/unit/attribute.js";
 import { TICKS_PER_SECOND } from "../../core/tick.js";
 import type { DeepseaParams, InfectionParams, MireParams } from "./definition.js";
 

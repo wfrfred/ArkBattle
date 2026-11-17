@@ -5,6 +5,8 @@ export {
     removeRestriction,
     setContribution,
     removeContribution,
+    setRange,
+    clearRange,
     setMaxHpContribution,
     removeMaxHpContribution,
     resolveMaxHp,

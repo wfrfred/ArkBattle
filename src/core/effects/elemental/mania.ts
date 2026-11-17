@@ -10,7 +10,7 @@ import { ref } from "../../unit/effect/effect.js";
 import type { OrdinaryDefinition as EffectDefinition } from "../../unit/effect/definition.js";
 import { setHook, removeHook } from "../../unit/hook.js";
 import { compose, optional } from "../../unit/change.js";
-import * as attribute from "../../unit/contribution/attribute.js";
+import * as attribute from "../../unit/attribute.js";
 import { hasAction } from "../../unit/capability/action/capability.js";
 import {
     setSpeedContribution,

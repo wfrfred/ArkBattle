@@ -1,4 +1,5 @@
 // Contract: [resource](../../../docs/architecture/resource.md).
+import { attribute as defineAttribute, vitality as defineVitality } from "../../helpers/attribute.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { battle, get } from "../../helpers/battle.js";
@@ -11,7 +12,7 @@ import * as hpHealing from "../../../dist/core/battle/resource/hp/healing/index.
 import * as epHealing from "../../../dist/core/battle/resource/ep/healing/index.js";
 import * as vitality from "../../../dist/core/unit/capability/vitality/index.js";
 import * as elemental from "../../../dist/core/unit/capability/elemental/index.js";
-import * as attribute from "../../../dist/core/unit/contribution/attribute.js";
+import * as attribute from "../../../dist/core/unit/attribute.js";
 import { createArknightsElementalDefinition } from "../../../dist/data/effect/elemental.js";
 
 function damageRequest(source, target, power, type = "TRUE", penetration = { fixed: 0, proportional: 0 }) {
@@ -41,7 +42,7 @@ function injuryRequest(target, type, power, source = null) {
 
 const elementalReceiver = {
     id: "ep-receiver", hooks: Hooks.empty(), presence: {}, allegiance: { side: "ALLY" },
-    targetable: { taunt: 0, restrictions: [] },
+    targetable: { taunt: defineAttribute(0, -2, 2), restrictions: [] },
     elemental: createArknightsElementalDefinition({ receiver: "CHARACTER", recoveryPerSecond: 15 }),
 };
 
@@ -50,10 +51,10 @@ test("HP-01: formulas use the calculated type and sampled defenses without begin
         { definition: { id: "source", hooks: Hooks.empty() }, position: [0, 0] },
         { definition: {
             id: "target", hooks: Hooks.empty(),
-            vitality: { maxHp: 1000, defense: 150, resistance: 80, recoverySpeed: 0, recoveryRatio: 0 },
+            vitality: defineVitality(1000, { defense: defineAttribute(150), resistance: defineAttribute(80, 0, 100) }),
             elemental: {
                 ...createArknightsElementalDefinition({ receiver: "CHARACTER" }),
-                elementResistance: 95, damageResistance: 40,
+                elementResistance: defineAttribute(95, 0, 100), damageResistance: defineAttribute(40, 0, 100),
             },
         }, position: [1, 0] },
     ]);
@@ -153,8 +154,8 @@ test("HP-02: independent Calculate results retain their own business state and o
             invoke: (state, { type }, amount) => ({ state, value: type === "ARTS" ? amount * 2 : amount }),
         });
     let state = battle([
-        { definition: { id: "source", hooks: sourceHooks, vitality: { maxHp: 200, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 } }, position: [0, 0] },
-        { definition: { id: "target", hooks: Hooks.empty(), vitality: { maxHp: 500, defense: 0, resistance: 10, recoverySpeed: 0, recoveryRatio: 0 } }, position: [1, 0] },
+        { definition: { id: "source", hooks: sourceHooks, vitality: defineVitality(200) }, position: [0, 0] },
+        { definition: { id: "target", hooks: Hooks.empty(), vitality: defineVitality(500, { resistance: defineAttribute(10, 0, 100) }) }, position: [1, 0] },
     ]);
     const source = units.ref(get(state, 0));
     const target = units.ref(get(state, 1));
@@ -195,8 +196,8 @@ test("EP-01: full resistance preserves formula floors and sampled EP output; HP 
     });
     let state = battle([
         { definition: {
-            ...elementalDefinition({ elementResistance: 100, damageResistance: 100 }),
-            vitality: { maxHp: 1000, defense: 1000, resistance: 99, recoverySpeed: 0, recoveryRatio: 0 },
+            ...elementalDefinition({ elementResistance: defineAttribute(100, 0, 100), damageResistance: defineAttribute(100, 0, 100) }),
+            vitality: defineVitality(1000, { defense: defineAttribute(1000), resistance: defineAttribute(99, 0, 100) }),
         }, position: [0, 0] },
         { definition: { id: "resource-free-source", hooks: sourceHooks }, position: [1, 0] },
     ]);
@@ -264,7 +265,7 @@ test("APPLY-02: Calculate normalizes final HP/EP output before Apply starts rece
             { definition: { id: "source", hooks }, position: [0, 0] },
             { definition: {
                 ...elementalReceiver,
-                vitality: { maxHp: 100, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
+                vitality: defineVitality(100),
                 hooks: Hooks.empty().set(operation.beforeReceive, {
                     id: "receive",
                     invoke: () => assert.fail(`${name}: zero output cannot start receiving`),

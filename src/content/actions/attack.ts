@@ -1,6 +1,6 @@
 import type { Ref } from "../../core/common/ref.js";
 import { Vec2 } from "../../core/common/vector.js";
-import { assertNonnegativeNumber, assertPositiveNumber } from "../../core/common/assert.js";
+import { assertNonnegativeNumber } from "../../core/common/assert.js";
 import {
     appendEvents,
     type State as BattleState,
@@ -15,11 +15,12 @@ import {
     type Action,
     type Execution,
     type Definition as ActionDefinition,
+    type Period,
 } from "../../core/unit/action/index.js";
 import * as actions from "../../core/unit/action/index.js";
 import {
     type Action as ActionCapability,
-    resolvePeriod,
+    resolveAttackPeriod,
     dispatchBeforeRelease,
     dispatchReleased,
 } from "../../core/unit/capability/action/index.js";
@@ -88,8 +89,7 @@ export interface FollowUp {
 
 export interface Configuration<P extends object = object, E extends object = object> {
     readonly id: string;
-    readonly intervalTicks: number;
-    readonly speed?: number;
+    readonly period: Period;
     readonly triggerBindingId: string;
     readonly targetGroups: readonly [TargetGroup, ...TargetGroup[]];
     readonly followUps?: readonly FollowUp[];
@@ -305,8 +305,6 @@ export function create(definition: Definition): Attack {
 export function createWithState<P extends object, E extends object>(
     definition: StatefulDefinition<P, E>,
 ): Attack<P, E> {
-    assertPositiveNumber(definition.intervalTicks, "attack interval");
-
     if (typeof definition.timing !== "function") {
         timing.validate(definition.timing);
     }
@@ -338,17 +336,15 @@ export function createWithState<P extends object, E extends object>(
 
     const configuration: Configuration<P, E> = {
         id: definition.id,
-        intervalTicks: definition.intervalTicks,
+        period: definition.period,
         triggerBindingId: definition.triggerBindingId,
         targetGroups: definition.targetGroups,
         followUps,
-        ...(definition.speed === undefined ? {} : { speed: definition.speed }),
         timing: definition.timing,
     };
     const attack: Attack<P, E> = {
         id: definition.id,
-        intervalTicks: definition.intervalTicks,
-        speed: definition.speed ?? 100,
+        period: definition.period,
         attack: configuration,
         initialize: definition.initialize,
         prepare(battle, source, self) {
@@ -381,11 +377,7 @@ export function createWithState<P extends object, E extends object>(
                 value: {
                     target,
                     bindings,
-                    timing: timing.sample(
-                        input,
-                        resolvePeriod(host, current),
-                        initialized.state.tick,
-                    ),
+                    timing: timing.sample(input, resolveAttackPeriod(host), initialized.state.tick),
                     released: false,
                     previousReadyAtTick: current.cooldown.readyAtTick,
                     cooldownAdjusted: false,
@@ -446,7 +438,7 @@ export function createWithState<P extends object, E extends object>(
 
                 const progressed = timing.advance(
                     self.execution.state.timing,
-                    resolvePeriod(host, actions.getAction(battle, ref(source, self.definition))!),
+                    resolveAttackPeriod(host),
                     self.execution.startedAtTick,
                     battle.tick,
                 );

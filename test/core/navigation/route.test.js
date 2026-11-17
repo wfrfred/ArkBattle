@@ -1,4 +1,5 @@
 // Contract: [navigation](../../../docs/architecture/navigation.md#route-定义与进度).
+import { attribute as defineAttribute } from "../../helpers/attribute.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { battle, get } from "../../helpers/battle.js";
@@ -22,7 +23,7 @@ const plan = (checkpoints = [], extra = {}) => ({
 const wait = (tick, anchor = "ENTER") => ({ type: "WAIT", anchor, tick, timer: null });
 const move = position => ({ type: "MOVE", position, offset: [0, 0], randomizeOffset: false });
 const movement = {
-    speed: 1, minSpeed: 0, halfBodyWidth: 0,
+    speed: defineAttribute(1), halfBodyWidth: 0,
     steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 },
 };
 function creation(program, extra = {}) {

@@ -8,7 +8,7 @@ import {
 import * as units from "../../../core/unit/index.js";
 import type { Timing as AttackTiming } from "../../actions/timing.js";
 import type { Profile } from "../../../data/unit/enemy.js";
-import { perSecondToPerTick, secondsToTicks } from "../../../data/time.js";
+import { perSecondToPerTick } from "../../../data/time.js";
 import { assertNonnegativeSafeInteger, assertPositiveNumber } from "../../../core/common/assert.js";
 import { create as createProjectile } from "../../../core/battle/projectile.js";
 import type { Projectile as ProjectileInstance } from "../../../core/projectile/index.js";
@@ -72,9 +72,8 @@ export function createMelee(profile: Profile, timing: Timing): Attack {
     return createAttack({
         id: "melee",
         onStart: faceTarget,
-        speed: profile.attackSpeed,
         triggerBindingId: "primary",
-        intervalTicks: secondsToTicks(profile.baseAttackTime),
+        period: { type: "ATTACK_SPEED" },
         timing: timing.melee,
         targetGroups: [
             {
@@ -120,9 +119,8 @@ export function createRanged(profile: Profile, timing: Timing, projectile: Proje
     return createAttack({
         id: "ranged",
         onStart: faceTarget,
-        speed: profile.attackSpeed,
         triggerBindingId: "primary",
-        intervalTicks: secondsToTicks(profile.baseAttackTime),
+        period: { type: "ATTACK_SPEED" },
         timing: timing.ranged,
         targetGroups: [
             {

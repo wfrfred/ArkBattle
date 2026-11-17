@@ -1,4 +1,5 @@
 // Contract: [elemental](../../../docs/architecture/elemental.md#2-burst-effect-与标准规则).
+import { attribute as defineAttribute, vitality as defineVitality } from "../../helpers/attribute.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { battle as createBattle, get as getUnit } from "../../helpers/battle.js";
@@ -16,7 +17,7 @@ import { ref as skillRef, definition as createSkillDefinition } from "../../help
 import { create as createSkill, activate as activateSkill, advance as advanceSkill, finish as finishSkill } from "../../../dist/core/unit/skill/index.js";
 import { recover } from "../../../dist/core/unit/skill/sp.js";
 import { resolveAttack } from "../../../dist/core/unit/capability/offense/index.js";
-import { create as modifier } from "../../../dist/core/unit/contribution/attribute.js";
+import { create as modifier } from "../../../dist/core/unit/attribute.js";
 import * as elemental from "../../../dist/core/unit/capability/elemental/index.js";
 import { elementValues, setContribution } from "../../../dist/core/unit/capability/elemental/index.js";
 import { createArknightsElementalDefinition } from "../../../dist/data/effect/elemental.js";
@@ -30,14 +31,14 @@ import { resolveSpeed } from "../../../dist/core/unit/capability/action/timing.j
 const range = [{ type: 'CIRCLE', offset: [0, 0], radius: 20 }];
 const hit = { type: 'CIRCLE', offset: [0, 0], radius: 0.1 };
 function action(interval = 1) {
-  return createAttack({ id: 'normal-attack', triggerBindingId: 'primary', intervalTicks: interval, timing: { type: 'FIXED', windupTicks: 0, recoveryTicks: 0 },
+  return createAttack({ id: 'normal-attack', triggerBindingId: 'primary', period: { type: "FIXED", ticks: interval }, timing: { type: 'FIXED', windupTicks: 0, recoveryTicks: 0 },
     targetGroups: [{ id: 'primary', select: selectDamage({ geometry: range, canTargetAir: true }),
       operations: [{ type: 'DAMAGE', attackType: 'NORMAL', applyWay: 'MELEE', power: 1, damageType: 'TRUE' }] }], followUps: [] });
 }
 function definition(receiver = 'CHARACTER', overrides = {}) {
   return { hooks: Hooks.empty(), id: `element-${receiver}`,
-    vitality: { maxHp: 100000, defense: 500, resistance: 50, recoverySpeed: 0, recoveryRatio: 0 },
-    offense: { attack: 100 },
+    vitality: defineVitality(100000, { defense: defineAttribute(500), resistance: defineAttribute(50, 0, 100) }),
+    offense: { attack: defineAttribute(100) },
     elemental: createArknightsElementalDefinition({ receiver }), ...overrides };
 }
 
@@ -80,7 +81,7 @@ test('elemental execution: erosion defense loss survives recovery and stacks on 
 test('elemental execution: character necrosis settles fifteen magical pulses, drains SP and blocks recovery and activation until recovery ends', () => {
   const skill = createSkillDefinition({
     id: 'necrosis-sp',
-    sp: { initial: 20, capacity: 30, recovery: { type: 'TIME', intervalTicks: 30 } },
+    sp: { initial: 20, capacity: 30, recovery: { type: 'TIME' }, recoverySpeed: defineAttribute(1), recoveryMultiplier: defineAttribute(1) },
     activation: { trigger: 'MANUAL', ignoreRestrictions: [], requirement: 1, cost: 1, initialize: () => ({ state: {}, duration: { type: 'TIME', durationTicks: 30 } }) },
   });
   let work = receiverBattle('CHARACTER', { skill: { initialize: state => createSkill(state, skill) } });
@@ -141,8 +142,8 @@ function battle(receiver, type) {
     ] }],
   });
   const actor = (side, attack) => ({
-    id: side, hooks: Hooks.empty(), vitality: { maxHp: 100000, defense: 500, resistance: 50, recoverySpeed: 0, recoveryRatio: 0 },
-    targetable: { taunt: 0, restrictions: [] }, allegiance: { side },
+    id: side, hooks: Hooks.empty(), vitality: defineVitality(100000, { defense: defineAttribute(500), resistance: defineAttribute(50, 0, 100) }),
+    targetable: { taunt: defineAttribute(0, -2, 2), restrictions: [] }, allegiance: { side },
     hitbox: { shape: hit }, action: actionCapability(attack),
   });
   return createBattle([
@@ -179,7 +180,7 @@ test('elemental runtime: unused neural paralysis survives recovery and the next 
 
 test('mania counts each released action once and each skill activation, caps self-damage and keeps its independent character program after recovery cancellation', () => {
   const attack = createAttack({
-    id: 'mania-attack', triggerBindingId: 'primary', intervalTicks: 30, timing: { type: 'FIXED', windupTicks: 0, recoveryTicks: 0 },
+    id: 'mania-attack', triggerBindingId: 'primary', period: { type: 'ATTACK_SPEED' }, timing: { type: 'FIXED', windupTicks: 0, recoveryTicks: 0 },
     targetGroups: [{ id: 'primary', select: selectDamage({ geometry: range, canTargetAir: true }),
       operations: [{ type: 'DAMAGE', attackType: 'NORMAL', applyWay: 'MELEE', power: 1, damageType: 'TRUE' }] }],
     afterOutput: (work, source, self) => dispatchReleased(work, actions.executionRef(source, self)),
@@ -187,17 +188,17 @@ test('mania counts each released action once and each skill activation, caps sel
   const skill = createSkillDefinition({
     id: 'mania-hit',
     activation: { trigger: 'MANUAL', ignoreRestrictions: [], requirement: 0, cost: 0, initialize: () => ({ state: {}, duration: { type: 'TIME', durationTicks: 0 } }) },
-    sp: { initial: 0, capacity: 30, recovery: { type: 'HIT', amount: 1 } },
+    sp: { initial: 0, capacity: 30, recovery: { type: 'HIT', amount: 1 }, recoverySpeed: defineAttribute(0), recoveryMultiplier: defineAttribute(1) },
   });
   let work = createBattle([
     { position: [0, 0], definition: definition('CHARACTER', {
-      allegiance: { side: 'ALLY' }, action: actionCapability(attack),
+      allegiance: { side: 'ALLY' }, action: { ...actionCapability(attack), interval: defineAttribute(30) },
       skill: { initialize: state => createSkill(state, skill) },
     }) },
     { position: [1, 0], definition: {
       id: 'blocked-output', allegiance: { side: 'ENEMY' },
-      vitality: { maxHp: 100000, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
-      targetable: { taunt: 0, restrictions: [] }, hitbox: { shape: hit },
+      vitality: defineVitality(100000),
+      targetable: { taunt: defineAttribute(0, -2, 2), restrictions: [] }, hitbox: { shape: hit },
       hooks: Hooks.empty().set(hpDamage.receiving, {
         id: 'block-output',
         invoke: (state, context, pending) => ({
@@ -209,7 +210,7 @@ test('mania counts each released action once and each skill activation, caps sel
   const started = element(work, 'MANIA');
   const burst = started.value.application.burst;
   work = started.state;
-  const speed = state => resolveSpeed(getUnit(state, 0), getUnit(state, 0).action.actions.get('mania-attack'));
+  const speed = state => resolveSpeed(getUnit(state, 0));
   assert.equal(speed(work), 150);
   assert.equal(getUnit(work, 0).vitality.health.hp, 100000);
   const pulses = [];
@@ -263,12 +264,12 @@ test('enemy mania ramps on its own Tick clock, stops with recovery and includes 
   const attack = action(10000);
   const skill = createSkillDefinition({
     id: 'enemy-mania-hit', activation: null,
-    sp: { initial: 0, capacity: 30, recovery: { type: 'HIT', amount: 1 } },
+    sp: { initial: 0, capacity: 30, recovery: { type: 'HIT', amount: 1 }, recoverySpeed: defineAttribute(0), recoveryMultiplier: defineAttribute(1) },
   });
   const setup = () => receiverBattle('ENEMY', {
     action: actionCapability(attack), skill: { initialize: state => createSkill(state, skill) },
   });
-  const speed = state => resolveSpeed(getUnit(state, 0), getUnit(state, 0).action.actions.get('normal-attack'));
+  const speed = state => resolveSpeed(getUnit(state, 0));
   const damage = state => state.events.filter(event => event.type === 'DAMAGE');
   const started = element(setup(), 'MANIA');
   let work = started.state;

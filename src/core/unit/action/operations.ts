@@ -241,7 +241,11 @@ export function refreshCooldowns(
 
     for (const id of actions.keys()) {
         const self = actions.get(id)!;
-        const period = resolvePeriod(unit, self);
+        if (self.definition.period.type !== "ATTACK_SPEED") {
+            continue;
+        }
+
+        const period = resolvePeriod(unit, self.definition);
         const next = cooldown.resizeKeepingProgress(self.cooldown, period, battle.tick);
         if (next !== self.cooldown) {
             actions = actions.replace(self.definition, { ...self, cooldown: next });

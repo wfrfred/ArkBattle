@@ -1,3 +1,4 @@
+import { attribute, vitality } from "../../helpers/attribute.js";
 // Contract: [action](../../../docs/architecture/action.md#8-普通攻击释放-hook-与移动).
 import assert from "node:assert/strict";
 import { test } from "node:test";
@@ -17,12 +18,12 @@ import { unit, battle } from "../../helpers/action-fixture.js";
 import * as facing from "../../../dist/core/unit/capability/facing/index.js";
 import { actionCapability } from "../../helpers/actions.js";
 import { setSpeedContribution } from "../../../dist/core/unit/capability/action/index.js";
-import { create as modifier } from "../../../dist/core/unit/contribution/attribute.js";
+import { create as modifier } from "../../../dist/core/unit/attribute.js";
 import { update } from "../../../dist/core/battle/unit.js";
 
 function definition(groups, prepare = state => ({ state, value: {} })) {
     return createWithState({
-        id: "random-attack", intervalTicks: 10, timing: { type: "FIXED", windupTicks: 3, recoveryTicks: 0 },
+        id: "random-attack", period: { type: "FIXED", ticks: 10 }, timing: { type: "FIXED", windupTicks: 3, recoveryTicks: 0 },
         triggerBindingId: "primary", targetGroups: groups,
         initialize: state => ({ state, value: {} }), prepare,
     });
@@ -47,7 +48,7 @@ function group(id, count = 1, accepts = () => true) {
 
 test("an attack turns once at its started program, before output, without turning again on release", () => {
     const program = create({
-        id: "facing-attack", intervalTicks: 10, timing: { type: "FIXED", windupTicks: 2, recoveryTicks: 1 },
+        id: "facing-attack", period: { type: "FIXED", ticks: 10 }, timing: { type: "FIXED", windupTicks: 2, recoveryTicks: 1 },
         triggerBindingId: "primary", onStart: faceTarget,
         targetGroups: [{
             id: "primary", operations: [{ type: "DAMAGE", attackType: "NORMAL", applyWay: "MELEE", power: 7, damageType: "TRUE" }],
@@ -59,7 +60,7 @@ test("an attack turns once at its started program, before output, without turnin
             action: actionCapability(program),
         }, position: [3, 1], initial: { facing: { direction: "RIGHT" } } },
         { definition: { id: "target", hooks: Hooks.empty(),
-            vitality: { maxHp: 100, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
+            vitality: vitality(100),
         }, position: [1, 1] },
     ]);
     const host = units.ref(get(state, 0));
@@ -122,8 +123,8 @@ test("an empty trigger binding rejects the attack without losing later completed
 
 test("bound healing keeps its receivers when a later selection restriction would choose another patient", () => {
     const patient = {
-        id: "patient", hooks: Hooks.empty(), targetable: { taunt: 0, restrictions: [] },
-        vitality: { maxHp: 100, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 }, allegiance: { side: "ALLY" },
+        id: "patient", hooks: Hooks.empty(), targetable: { taunt: attribute(0, -2, 2), restrictions: [] },
+        vitality: vitality(100), allegiance: { side: "ALLY" },
     };
     const recipients = (state, source) => ({
         state,
@@ -133,7 +134,7 @@ test("bound healing keeps its receivers when a later selection restriction would
     });
     let selected;
     const program = createWithState({
-        id: "bound-healing", intervalTicks: 1, timing: { type: "FIXED", windupTicks: 0, recoveryTicks: 0 }, triggerBindingId: "primary",
+        id: "bound-healing", period: { type: "FIXED", ticks: 1 }, timing: { type: "FIXED", windupTicks: 0, recoveryTicks: 0 }, triggerBindingId: "primary",
         initialize: state => ({ state, value: {} }),
         prepare(state) {
             return { state: effects.install(state, selected, healFree).state, value: {} };
@@ -146,7 +147,7 @@ test("bound healing keeps its receivers when a later selection restriction would
     let state = createBattle([
         { definition: {
             ...patient, id: "medic",
-            action: { initialize: state => actions.createActions(state, actions.create(program)) },
+            action: actionCapability(program),
         }, position: [1, 1] },
         { definition: patient, position: [2, 1] },
         { definition: patient, position: [3, 1] },
@@ -169,15 +170,15 @@ test("bound healing keeps its receivers when a later selection restriction would
     assert.equal(get(state, 2).vitality.health.hp, 40);
 });
 
-function timedProgram(timing, intervalTicks = 30, speed = 100) {
+function timedProgram(timing) {
     return create({
-        id: "timed-attack", intervalTicks, speed, timing,
+        id: "timed-attack", period: { type: "ATTACK_SPEED" }, timing,
         triggerBindingId: "primary", targetGroups: [group("primary")],
     });
 }
 
-function begin(program) {
-    const actor = unit(0, { action: program });
+function begin(program, intervalTicks = 30, speed = 100) {
+    const actor = unit(0, { action: { ...actionCapability(program), interval: attribute(intervalTicks), speed: attribute(speed, 20) } });
     const source = units.ref(actor);
     const reference = actions.ref(source, program);
     const started = actions.start(battle(actor, unit(1)), reference);
@@ -201,7 +202,7 @@ test("animation scale bounds separate attack release, execution occupancy and co
         { speed: 20, release: 40, finish: 100, ready: 150 },
         { speed: 600, release: 4, finish: 10, ready: 5 },
     ]) {
-        const started = begin(timedProgram(timing, 30, speed));
+        const started = begin(timedProgram(timing), 30, speed);
         let state = runTo(started.state, started.execution, release - 1);
         assert.equal(get(state, 1).vitality.health.hp, 100);
         assert.equal(actions.getAction(state, started.reference).cooldown.readyAtTick, ready);

@@ -1,3 +1,4 @@
+import { attribute, vitality } from "../helpers/attribute.js";
 // Contract: [content](../../docs/architecture/content.md).
 import { World } from "../../dist/core/geometry/coordinate.js";
 import { Hooks } from "../../dist/core/hook.js";
@@ -72,7 +73,7 @@ function advanceActionUntil(state, reference, untilTick) {
 
 function guard(id, position, blockCapacity = 1, restrictions = []) {
   return initialize({ id, position, definition: { hooks: Hooks.empty(),
-    id: 'test-guard', targetable: { taunt: 0, restrictions }, vitality: { maxHp: 1000, defense: 40, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 }, allegiance: { side: 'ALLY' }, layer: { type: 'GROUND' },
+    id: 'test-guard', targetable: { taunt: attribute(0, -2, 2), restrictions }, vitality: vitality(1000, { defense: attribute(40) }), allegiance: { side: 'ALLY' }, layer: { type: 'GROUND' },
     hitbox: { shape: { type: 'CIRCLE', offset: [0, 0], radius: 0.2 } },
     blocker: { layer: "GROUND", restrictions: [], capacity: blockCapacity },
   } });
@@ -88,7 +89,7 @@ test('hound content binds configured regeneration and rejects unimplemented stun
   } });
   const regenerating = createHound(advanced, timing, houndMovement);
 
-  assert.equal(regenerating.definition.vitality.recoverySpeed, 20);
+  assert.equal(regenerating.definition.vitality.recoverySpeed.default, 20);
   assert.throws(() => createHound({ ...profile('enemy_1000_gopro'), stunImmune: true }, timing, houndMovement), /stun immunity/);
 });
 
@@ -215,7 +216,7 @@ test('crossbow switching between ranged and blocker melee preserves independent 
   const bow = initialize({ id: 1, position: [2, 2.5], definition, initial: routeInitial([2, 2.5]) });
   const initial = addUnit(addUnit(emptyBattle(), guard(0, [2, 2])), bow);
   const cooldown = (battle, action) => getUnit(battle, 1).action.actions.get(action.id).cooldown.readyAtTick;
-  const period = actions.ranged.intervalTicks;
+  const period = definition.action.interval.default;
 
   const ranged = advanceCombatUntil(advanceCombat(initial), 16);
   assert.equal(ranged.battlefield.projectiles.size, 1);

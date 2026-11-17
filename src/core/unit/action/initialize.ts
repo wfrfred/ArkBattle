@@ -1,11 +1,17 @@
 import { assertNonnegativeNumber } from "../../common/assert.js";
 import type { State as BattleState, Result } from "../../battle/state.js";
-import { period } from "../capability/action/timing.js";
+import { resolvePeriod } from "../capability/action/timing.js";
+import type { Unit } from "../unit.js";
+import type { Action as ActionCapability } from "../capability/action/capability.js";
 import { Actions } from "./actions.js";
 import type { Definition } from "./definition.js";
 import * as cooldown from "./cooldown.js";
 
-export type Initializer = (battle: BattleState, actions: Actions) => Result<Actions>;
+export type Initializer = (
+    battle: BattleState,
+    source: Unit & ActionCapability,
+    actions: Actions,
+) => Result<Actions>;
 
 export function create<P extends object, E extends object>(
     definition: Definition<P, E>,
@@ -14,10 +20,11 @@ export function create<P extends object, E extends object>(
         throw new TypeError("action definition identity must be nonempty");
     }
 
-    assertNonnegativeNumber(definition.intervalTicks, "action base interval");
-    assertNonnegativeNumber(definition.speed, "action base speed");
+    if (definition.period.type === "FIXED") {
+        assertNonnegativeNumber(definition.period.ticks, "action period");
+    }
 
-    return (battle, actions) => {
+    return (battle, source, actions) => {
         const initialized = definition.initialize(battle);
 
         return {
@@ -27,7 +34,7 @@ export function create<P extends object, E extends object>(
                 state: initialized.value,
                 execution: null,
                 cooldown: cooldown.initialize(
-                    period(definition.intervalTicks, definition.speed),
+                    resolvePeriod(source, definition),
                     initialized.state.tick,
                 ),
             }),
@@ -37,12 +44,13 @@ export function create<P extends object, E extends object>(
 
 export function createActions(
     battle: BattleState,
+    source: Unit & ActionCapability,
     ...initializers: readonly Initializer[]
 ): Result<Actions> {
     let actions = Actions.empty();
 
     for (const initialize of initializers) {
-        const initialized = initialize(battle, actions);
+        const initialized = initialize(battle, source, actions);
         battle = initialized.state;
         actions = initialized.value;
     }

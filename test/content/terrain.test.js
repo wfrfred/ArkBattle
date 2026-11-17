@@ -1,3 +1,4 @@
+import { attribute, vitality as vitalityDefinition } from "../helpers/attribute.js";
 // Contract: [terrain](../../docs/architecture/terrain.md).
 import assert from "node:assert/strict";
 import { test } from "node:test";
@@ -30,14 +31,14 @@ const mireParams = {
 };
 const deepseaParams = { damage: 40, attackSpeedModifier: -0.6, moveSpeedMultiplier: 0.6 };
 const combat = {
-    vitality: { maxHp: 1000, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
-    offense: { attack: 100 },
-    action: actionCapability({
-        id: "primary", intervalTicks: 30, speed: 100,
+    vitality: vitalityDefinition(1000),
+    offense: { attack: attribute(100) },
+    action: { ...actionCapability({
+        id: "primary", period: { type: "ATTACK_SPEED" },
         initialize: state => ({ state, value: {} }),
         prepare: state => ({ state, value: null }),
         onTick: state => ({ state, value: true }),
-    }),
+    }), interval: attribute(30) },
 };
 const unit = (column, fields = {}) => ({
     definition: { id: "terrain-unit", hooks: Hooks.empty(), presence: {}, ...fields },
@@ -70,7 +71,7 @@ function setup(terrains, placements, definitions) {
 const current = (battle, id = 0) => units.all(battle).find(self => self.id === id);
 const attackSpeed = (battle, id = 0) => {
     const source = current(battle, id);
-    return resolveSpeed(source, source.action.actions.get("primary"));
+    return resolveSpeed(source);
 };
 const move = (battle, id, column) =>
     update(battle, units.ref(current(battle, id)), presence.appear([column, 0]));
@@ -82,7 +83,7 @@ function until(battle, tick) {
 test("HP-06: infection keeps its entry clocks and ordinary reception while excluding HIT SP recovery", () => {
     const resource = {
         id: "terrain-hit-recovery", initialize: state => ({ state, value: {} }), activation: null,
-        sp: { initial: 0, capacity: 5, recovery: { type: "HIT", amount: 1 } },
+        sp: { initial: 0, capacity: 5, recovery: { type: "HIT", amount: 1 }, recoverySpeed: attribute(0), recoveryMultiplier: attribute(1) },
     };
     const receptions = [];
     const applications = [];
@@ -193,11 +194,11 @@ test("deepsea and holes affect ground enemies while leaving allies and airborne 
 
 test("smog keeps allied ground and airborne units invisible through blocking until they leave", () => {
     const configured = setup([terrain.smog.create({}), terrain.normal.create({})], [
-        unit(0, { vitality: combat.vitality, allegiance: { side: "ALLY" }, targetable: { taunt: 0, restrictions: [] },
+        unit(0, { vitality: combat.vitality, allegiance: { side: "ALLY" }, targetable: { taunt: attribute(0, -2, 2), restrictions: [] },
             blocker: { layer: "GROUND", restrictions: [], capacity: 1, radius: 0.7 } }),
         unit(0, { allegiance: { side: "ENEMY" }, layer: { type: "GROUND" }, blockable: { volume: 1, restrictions: [] } }),
         unit(0, { vitality: combat.vitality, allegiance: { side: "ALLY" },
-            layer: { type: "AIR" }, targetable: { taunt: 0, restrictions: [] } }),
+            layer: { type: "AIR" }, targetable: { taunt: attribute(0, -2, 2), restrictions: [] } }),
     ], [terrain.smog]);
     let battle = step(configured.battle, []);
     const visible = (state, id = 0) => damage(state, current(state, 1))(current(state, id));
@@ -218,7 +219,7 @@ test("runtime checks terrain contact after actual route movement", () => {
     const traveller = unit(0, {
         offense: combat.offense,
         route: { alwaysCheckCurrentPoint: true },
-        locomotion: { speed: 1, minSpeed: 0, halfBodyWidth: 0,
+        locomotion: { speed: attribute(1, 0), halfBodyWidth: 0,
             steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 } },
     });
     traveller.initial = { route: {

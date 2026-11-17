@@ -45,7 +45,7 @@ Effect 的重复施加、启用竞争、接收免疫／抵抗和生命周期关�
 
 敌人的模板等级与关卡覆盖先合并。`m_defined`、潜能的零基 rank、原表天赋候选和模组数据槽等原始表示不进入 Core。标签、免疫和关联资源应有明确的转换结果，不要求 Content 从原始 Profile 猜测身份或规则。
 
-单位属性的 hpRecoveryPerSec 转换为固定 HP／秒：干员按已有属性关键帧求值并保留小数，敌人按等级与关卡覆盖合并；Content 将结果绑定到 Vitality.recoverySpeed，不在 Data 推进 HP。
+Unit Profile 保留规范化的静态数值；组装 Core 属性 Definition 时，Content 或已有工厂显式提供 [Attribute](attribute.md) 的 default/min/max。hpRecoveryPerSec 保持 HP／秒，绑定到 Vitality.recoverySpeed.default；自然 SP 速率保持 SP／秒。基础攻击间隔乘 Tick 率后保留连续值，不使用定时事件的向上取整换算。Data 不推进资源或维护运行时范围。
 
 模式配置和继承参数是静态输入；当前模式、当前来源属性和实际继承值由运行状态与内容程序确定。Meta 提供本次选定的阵容和玩法配置，商店、抽取与局外经营不由 Data 执行。未支持的配置在内容入口明确拒绝，不能因当前机制未接入而静默丢弃必要输入。
 

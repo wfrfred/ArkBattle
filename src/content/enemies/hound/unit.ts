@@ -12,6 +12,7 @@ import {
     type Definition as GroundDefinition,
 } from "../ground.js";
 import { create as createAttack } from "./action.js";
+import { TICKS_PER_SECOND } from "../../../core/tick.js";
 
 export interface AttackTiming {
     readonly timing: Timing;
@@ -43,7 +44,11 @@ export function create(
         profile,
         attackTiming: timing,
         attack,
-        action: { initialize: (battle) => createActions(battle, initializeAttack) },
+        action: {
+            speed: { default: profile.attackSpeed, min: 20, max: null },
+            interval: { default: profile.baseAttackTime * TICKS_PER_SECOND, min: 0, max: null },
+            initialize: (battle, self) => createActions(battle, self, initializeAttack),
+        },
     };
 
     return { definition, action: attack };

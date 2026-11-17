@@ -6,15 +6,15 @@ import { battle, get } from "../../helpers/battle.js";
 import { Hooks } from "../../../dist/core/hook.js";
 import { ref } from "../../../dist/core/unit/query.js";
 import { update } from "../../../dist/core/battle/unit.js";
-import { create } from "../../../dist/core/unit/contribution/attribute.js";
-import { advance, setSpeedContribution, removeSpeedContribution, setRestriction, removeRestriction } from "../../../dist/core/unit/capability/locomotion/index.js";
+import { create } from "../../../dist/core/unit/attribute.js";
+import { advance, setSpeedContribution, removeSpeedContribution, setSpeedRange, clearSpeedRange, setRestriction, removeRestriction } from "../../../dist/core/unit/capability/locomotion/index.js";
 
 const close = (actual, expected) => assert.ok(Math.abs(actual - expected) < 1e-12);
 
 test("current movement speed, its minimum and movement permission remain separate", () => {
     let state = battle([{ definition: {
         id: "mover", hooks: Hooks.empty(), presence: {},
-        locomotion: { speed: 0.2, minSpeed: 0.05, halfBodyWidth: 0,
+        locomotion: { speed: { default: 0.2, min: 0.05, max: null }, halfBodyWidth: 0,
             steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 } },
     }, position: [0, 0] }]);
     const host = ref(get(state, 0));
@@ -32,16 +32,20 @@ test("current movement speed, its minimum and movement permission remain separat
     }));
     state = move(state);
     close(get(state, 0).position[0], 0.35);
+    state = update(state, host, setSpeedRange({ min: 0.01, max: null }));
     state = move(state, 0.5);
-    close(get(state, 0).position[0], 0.375);
+    close(get(state, 0).position[0], 0.355);
+    state = update(state, host, clearSpeedRange());
+    state = move(state, 0.5);
+    close(get(state, 0).position[0], 0.38);
     const velocity = get(state, 0).locomotion.velocity;
     state = move(state, 0);
-    close(get(state, 0).position[0], 0.375);
+    close(get(state, 0).position[0], 0.38);
     state = update(state, host, setRestriction({ id: "stop", value: { allows: () => false } }));
     state = move(state);
-    close(get(state, 0).position[0], 0.375);
+    close(get(state, 0).position[0], 0.38);
     assert.deepEqual(get(state, 0).locomotion.velocity, velocity);
     state = update(state, host, compose(removeRestriction("stop"), removeSpeedContribution("slow")));
     state = move(state);
-    close(get(state, 0).position[0], 0.575);
+    close(get(state, 0).position[0], 0.58);
 });

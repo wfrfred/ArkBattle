@@ -1,4 +1,5 @@
 import type { Timing } from "../../actions/timing.js";
+import { TICKS_PER_SECOND } from "../../../core/tick.js";
 import { Hooks } from "../../../core/hook.js";
 import * as unitHooks from "../../../core/unit/hook.js";
 import { normal as normalSite } from "../../terrain/condition.js";
@@ -324,7 +325,10 @@ export function create(
         profile,
         occupancy: { slot: "OCCUPANT" },
         facing: { restrictions: [] },
-        targetable: { taunt: profile.attributes.taunt, restrictions: [] },
+        targetable: {
+            taunt: { default: profile.attributes.taunt, min: -2, max: 2 },
+            restrictions: [],
+        },
         deployable: { retreatRestrictions: [] },
         card: {
             cost: profile.attributes.cost,
@@ -359,13 +363,13 @@ export function create(
             initialize: (battle) => ({ state: battle, value: {} }),
         },
         vitality: {
-            maxHp: profile.attributes.maxHp,
-            defense: profile.attributes.defense,
-            resistance: profile.attributes.resistance,
-            recoverySpeed: profile.attributes.recoverySpeed,
-            recoveryRatio: 0,
+            maxHp: { default: profile.attributes.maxHp, min: 1, max: null },
+            defense: { default: profile.attributes.defense, min: 0, max: null },
+            resistance: { default: profile.attributes.resistance, min: 0, max: 100 },
+            recoverySpeed: { default: profile.attributes.recoverySpeed, min: 0, max: null },
+            recoveryRatio: { default: 0, min: 0, max: 1 },
         },
-        offense: { attack: profile.attributes.attack },
+        offense: { attack: { default: profile.attributes.attack, min: 0, max: null } },
 
         allegiance: { side: "ALLY" },
         layer: { type: "GROUND" },
@@ -376,7 +380,14 @@ export function create(
             restrictions: [{ id: "blocking/sides", value: sides("ENEMY") }],
         },
         action: {
-            initialize: (battle) => createActions(battle, initializeNormalAttack, initializeAction),
+            speed: { default: profile.attributes.attackSpeed, min: 20, max: null },
+            interval: {
+                default: profile.attributes.baseAttackTime * TICKS_PER_SECOND,
+                min: 0,
+                max: null,
+            },
+            initialize: (battle, self) =>
+                createActions(battle, self, initializeNormalAttack, initializeAction),
             select: (battle, self) => ({
                 state: battle,
                 value: [

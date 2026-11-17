@@ -49,6 +49,7 @@ import { hasTargetable } from ${module("unit/capability/targetable/capability")}
 import { topK } from ${module("common/collection")};
 import type { Spawn } from ${module("battle/schedule/index")};
 declare const battle: State;
+const attribute = (value: number, min: number | null = 0, max: number | null = null) => ({ default: value, min, max });
 const outputKey = key<Hook<{ amount: number }, number>>('output');
 const textKey = key<Hook<{ text: string }, number>>('text');
 const registered = Hooks.empty().set(outputKey, {
@@ -181,13 +182,13 @@ Hooks.empty().set(receivingKey, { id: 'restore-then-fix', invoke: (state, _conte
 // @ts-expect-error cancelling again cannot hide replacement of an existing reason.
 Hooks.empty().set(receivingKey, { id: 'rewrite-then-cancel', invoke: (state, context, current) => ({ state, value: current.type === 'CANCELLED' ? hpDamage.cancel({ ...current, reason: 'BLOCKED' as const }, 'MISS', context.forbidden) : current }) });
 const program: actions.Definition<{ uses: number }, { hits: number }> = {
-    id: 'attack', intervalTicks: 10, speed: 100,
+    id: 'attack', period: { type: 'FIXED', ticks: 10 },
     initialize: state => ({ state, value: { uses: 0 } }),
     prepare: state => ({ state, value: { hits: 1 } }),
     onTick: state => ({ state, value: true }),
 };
 const timedAttack = createAttackWithState<{ uses: number }, { hits: number }>({
-    id: 'typed-timing', intervalTicks: 30, triggerBindingId: 'primary',
+    id: 'typed-timing', period: { type: 'ATTACK_SPEED' }, triggerBindingId: 'primary',
     initialize: state => ({ state, value: { uses: 0 } }),
     prepare: state => ({ state, value: { hits: 1 } }),
     timing(_battle, _source, self) {
@@ -204,8 +205,11 @@ const timedAttack = createAttackWithState<{ uses: number }, { hits: number }>({
     targetGroups: [{ id: 'primary', select: state => ({ state, value: [] }), operations: [] }],
 });
 const host = initialize(battle, { id: 0, position: [0, 0], definition: {
-    id: 'armed', hooks: Hooks.empty(), offense: { attack: 100 }, layer: { type: 'GROUND' },
-    action: { initialize: state => actions.createActions(state, actions.create(program)) },
+    id: 'armed', hooks: Hooks.empty(), offense: { attack: attribute(100) }, layer: { type: 'GROUND' },
+    action: {
+        speed: attribute(100, 20), interval: attribute(10),
+        initialize: (state, self) => actions.createActions(state, self, actions.create(program)),
+    },
 } }).value;
 const reference = ref(host);
 removeUnit(battle, reference, { reason: 'SCRIPT' });
@@ -215,7 +219,7 @@ removeUnit(battle, reference, { reason: 'DEATH' });
 // @ts-expect-error other departure reasons do not carry death attribution.
 removeUnit(battle, reference, { reason: 'SCRIPT', killer: null });
 const currentAction = host.action.actions.get(program.id, program)!;
-const currentPeriod: number = actionCapability.resolvePeriod(host, currentAction);
+const currentPeriod: number = actionCapability.resolvePeriod(host, currentAction.definition);
 actionCapability.setSpeedContribution({ id: 'fixed-speed', value: [] });
 const dynamicModifiers = (_state: State, _self: Unit & actionCapability.Action) => [];
 // @ts-expect-error Action time contributions publish fixed values through a Change.
@@ -241,7 +245,7 @@ actions.getExecution(battle, erased)!.execution.state.hits;
 const shield = {
     id: 'shield', initialize: () => ({ charges: 1 }),
     onTick(state, self) {
-        const attack: number = get(state, self.host)!.definition.offense.attack;
+        const attack: number = get(state, self.host)!.definition.offense.attack.default;
         return effects.setState(state, effects.ref(self), { charges: self.state.charges + attack });
     },
 } satisfies effects.OrdinaryDefinition<{ charges: number }, Offense>;
@@ -309,11 +313,11 @@ const receivingChange: Change<Unit & vitality.Vitality> = setUnitHook(hpDamage.r
 update(battle, ref(bare), receivingChange);
 // @ts-expect-error removal carries the same owner requirement as registration.
 update(battle, ref(bare), removeUnitHook(hpDamage.receiving, 'evade'));
-const facingDefinition = { ...bare.definition, facing: { restrictions: [] }, offense: { attack: 10 } };
+const facingDefinition = { ...bare.definition, facing: { restrictions: [] }, offense: { attack: attribute(10) } };
 const facingHost = initialize(battle, {
     id: 4, definition: facingDefinition, position: [0, 0], initial: { facing: { direction: 'LEFT' } },
 }).value;
-const facingAttack: number = facingHost.definition.offense.attack;
+const facingAttack: number = facingHost.definition.offense.attack.default;
 facing.turn(battle, ref(facingHost), 'RIGHT');
 const facingChange: Change<Unit & facing.Facing> = facing.setRestriction({
     id: 'fixed', value: { allows: (_battle, { self, direction }) => self.facing.direction === direction },
@@ -532,7 +536,10 @@ for (const self of selectableActions.filter(targeting.elementHealing(battle, tar
 targeting.damage(battle, host);
 const patient = initialize(battle, { id: 2, position: [0, 0], definition: {
     id: 'patient', hooks: Hooks.empty(),
-    vitality: { maxHp: 100, defense: 10, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
+    vitality: {
+        maxHp: attribute(100, 1), defense: attribute(10), resistance: attribute(0, 0, 100),
+        recoverySpeed: attribute(0), recoveryRatio: attribute(0, 0, 1),
+    },
 } }).value;
 const patientRef = ref(patient);
 const directRecovery: vitality.HealingApplication = vitality.increaseHp(battle, patientRef, 10).value;
@@ -611,7 +618,7 @@ const fixedRestriction = createRegistrationOperations<
 fixedRestriction.set({ id: 'damage-permission', value: elementalRestriction });
 vitality.setContribution('defense', {
     id: 'armor', value: (_state, self) => {
-        const defense: number = self.definition.vitality.defense;
+        const defense: number = self.definition.vitality.defense.default;
         return [];
     },
 });

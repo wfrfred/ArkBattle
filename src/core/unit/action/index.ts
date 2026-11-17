@@ -6,7 +6,7 @@ export { ref as executionRef } from "./execution.js";
 
 export type { Execution } from "./execution.js";
 
-export type { Definition } from "./definition.js";
+export type { Definition, Period } from "./definition.js";
 
 export type { Event } from "./event.js";
 

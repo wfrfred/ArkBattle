@@ -1,3 +1,4 @@
+import { attribute, vitality } from "./attribute.js";
 import { Hooks } from "../../dist/core/hook.js";
 import { tiles as tileEntries } from './tiles.js';
 import { normal } from '../../dist/content/terrain/definition.js';
@@ -27,9 +28,8 @@ export function actionDefinition(power = 7, configuration = {}) {
     return createAttack(
         {
             id: "primary",
-            intervalTicks: 10,
+            period: { type: "FIXED", ticks: 10 },
             timing: { type: "FIXED", windupTicks: 0, recoveryTicks: 0 },
-            speed: 100,
             triggerBindingId: "primary",
             targetGroups: [
                 {
@@ -62,9 +62,9 @@ export function unit(
                 : action;
     const definition = { hooks: Hooks.empty(),
         id: `action-${id}`,
-        vitality: { maxHp: hp, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
-        targetable: { taunt: 0, restrictions: [] }, presence: {},
-        offense: { attack: 10 },
+        vitality: vitality(hp),
+        targetable: { taunt: attribute(0, -2, 2), restrictions: [] }, presence: {},
+        offense: { attack: attribute(10) },
         allegiance: { side },
         layer: { type: "GROUND" },
         hitbox: { shape: hit },

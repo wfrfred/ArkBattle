@@ -14,7 +14,7 @@ Skill 管理 SP、发动、持续预算、主动操作与完整终止。Action �
 
 `unit/skill/` 拥有聚合、身份、SP／Ammo、持续预算与完整操作；Capability 负责装配、结构守卫、贡献、限制和通知 Key。具体声明以源码为准，登记和写回遵守[接口约定](api-conventions.md)。
 
-SP 可以不存在；hasSp 同时证明配置与状态存在。SP Definition 保存初始值、容量和回复配置；Activation Definition 保存静态发动门槛、支付额和本轮初始化程序。只有回复速度／倍率及弹药容量具有贡献入口。
+SP 可以不存在；hasSp 同时证明配置与状态存在。SP Definition 保存初始值、容量、回复来源及回复速度／倍率两项 Attribute；Activation Definition 保存静态发动门槛、支付额和本轮初始化程序。SP 余额和容量不是 Attribute；弹药容量使用自己的贡献模型。
 
 ## 1. 单槽聚合、Definition 与两种身份
 
@@ -36,11 +36,11 @@ SP 的容量 capacity 与 Activation Definition 的发动门槛 requirement、�
 
 `activate(battle, reference, parameters?)` 的 Parameters 包含必填的 requirement 与 cost。未提供时使用 Definition 的整组静态值；提供时只用于本次资格检查和实际支付，不修改 Definition、SP 配置或后续普通启动。Fever 等内容可以显式传入 `{ requirement: 0, cost: 0 }`，其余启动限制和操作前提照常检查。
 
-回复速度与倍率各自按[属性贡献](capability.md#属性与贡献)求值、限制下限为零，再相乘；保留连续值。配置切换、清空余额、支付和持续期改变不是数值贡献的后继。
+recoverySpeed 与 recoveryMultiplier 均须显式提供 [Attribute](attribute.md) Definition，默认下限0。每次查询按当前贡献和范围取得连续值，再相乘得到自然回复速率。贡献或范围 Change 只发布属性；计时器在下一次 SP.advance 读取有效速率，不同步回复或重置余额。
 
 Recovery 为 TIME、ACTION、HIT 或 NONE；EXTERNAL 是显式操作的来源。recover 检查来源与回复许可并限制到容量；pay 要求显式金额，足额支付或失败，不读取发动政策，也不受回复限制；modify 直接增减，普通正增量仍检查 EXTERNAL 许可，负增量不被阻回拦截，forced 只绕过规定的回复限制。三者要求宿主 PRESENT，具有 Vitality 时仍活着；无 Vitality 的 Skill 宿主也可使用资源。
 
-TIME 自然回复保留周期、余时和上次时刻：
+TIME 配置只表示回复来源，周期由 `TICKS_PER_SECOND / 有效回复速率` 得到；速率非正时不计时。自然回复保留周期、余时和上次时刻：
 
 - 满槽、阻回或宿主暂不具备资源资格时暂停，不积攒补算。
 - 速度变化保留绝对已过时间；速度归零使计时无效，恢复后从完整周期开始。

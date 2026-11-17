@@ -1,4 +1,5 @@
 // Contract: [resource](../../../docs/architecture/resource.md).
+import { attribute as defineAttribute, vitality as defineVitality } from "../../helpers/attribute.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { battle, get } from "../../helpers/battle.js";
@@ -12,7 +13,7 @@ import * as hpHealing from "../../../dist/core/battle/resource/hp/healing/index.
 import * as epHealing from "../../../dist/core/battle/resource/ep/healing/index.js";
 import * as vitality from "../../../dist/core/unit/capability/vitality/index.js";
 import * as elemental from "../../../dist/core/unit/capability/elemental/index.js";
-import * as attribute from "../../../dist/core/unit/contribution/attribute.js";
+import * as attribute from "../../../dist/core/unit/attribute.js";
 import * as blocking from "../../../dist/core/battle/blocking/index.js";
 import * as skills from "../../../dist/core/unit/skill/index.js";
 import * as effects from "../../../dist/core/unit/effect/index.js";
@@ -108,7 +109,7 @@ test("HOOK-02: exclusions are local to each operation and match a key or one ID 
         .set(hpDamage.receiving, receiving("outer"))
         .set(hpDamage.completed, completion("target", "shared"))
         .set(hpDamage.completed, completion("target", "kept"));
-    const vitality = { maxHp: 1000, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 };
+    const vitality = defineVitality(1000);
     let state = battle([
         { definition: { id: "source", hooks: sourceHooks }, position: [0, 0] },
         { definition: { id: "target", hooks: targetHooks, vitality }, position: [1, 0] },
@@ -153,12 +154,12 @@ test("HOOK-02: exclusions are local to each operation and match a key or one ID 
 test("APPLY-01: cancellation before immunity preserves its outcome and suppresses HIT until protection ends", () => {
     const resource = {
         id: "hit-recovery", initialize: state => ({ state, value: {} }), activation: null,
-        sp: { initial: 0, capacity: 5, recovery: { type: "HIT", amount: 1 } },
+        sp: { initial: 0, capacity: 5, recovery: { type: "HIT", amount: 1 }, recoverySpeed: defineAttribute(0), recoveryMultiplier: defineAttribute(1) },
     };
     let state = battle([
         { definition: { id: "source", hooks: Hooks.empty() }, position: [0, 0] },
         { definition: {
-            id: "target", hooks: Hooks.empty(), targetable: { taunt: 0, restrictions: [] }, vitality: { maxHp: 100, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
+            id: "target", hooks: Hooks.empty(), targetable: { taunt: defineAttribute(0, -2, 2), restrictions: [] }, vitality: defineVitality(100),
             skill: { initialize: state => skills.create(state, resource) },
         }, position: [1, 0] },
     ]);
@@ -248,8 +249,8 @@ test("RESTRICTION-02: damage exemptions cover one mechanism through reentrant ch
     let state = battle([
         { definition: { id: "source", hooks: Hooks.empty() }, position: [0, 0] },
         { definition: {
-            id: "target", hooks: Hooks.empty(), targetable: { taunt: 0, restrictions: [] },
-            vitality: { maxHp: 100, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
+            id: "target", hooks: Hooks.empty(), targetable: { taunt: defineAttribute(0, -2, 2), restrictions: [] },
+            vitality: defineVitality(100),
         }, position: [1, 0] },
     ]);
     const source = units.ref(get(state, 0));
@@ -296,7 +297,7 @@ test("RESTRICTION-02: damage exemptions cover one mechanism through reentrant ch
 test("APPLY-01: Receiving and BeforeCommit resource changes define the baseline while Applied preserves the report", () => {
     let state = battle([
         { definition: { id: "source", hooks: Hooks.empty() }, position: [0, 0] },
-        { definition: { id: "target", hooks: Hooks.empty(), vitality: { maxHp: 100, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 } }, position: [1, 0] },
+        { definition: { id: "target", hooks: Hooks.empty(), vitality: defineVitality(100) }, position: [1, 0] },
     ]);
     const source = units.ref(get(state, 0));
     const target = units.ref(get(state, 1));
@@ -400,8 +401,8 @@ test("APPLY-01: Receiving and BeforeCommit resource changes define the baseline 
 
 test("APPLY-01: cancellation permissions retain recovery and reflection while only uncancelled work commits", () => {
     let state = battle([
-        { definition: { id: "source", hooks: Hooks.empty(), vitality: { maxHp: 100, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 } }, position: [0, 0] },
-        { definition: { id: "target", hooks: Hooks.empty(), vitality: { maxHp: 100, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 } }, position: [1, 0] },
+        { definition: { id: "source", hooks: Hooks.empty(), vitality: defineVitality(100) }, position: [0, 0] },
+        { definition: { id: "target", hooks: Hooks.empty(), vitality: defineVitality(100) }, position: [1, 0] },
     ]);
     const source = units.ref(get(state, 0));
     const target = units.ref(get(state, 1));
@@ -541,7 +542,7 @@ test("APPLY-02: HP zero output rejects while excess receiving reduction still co
         }) }, position: [0, 0] },
         { definition: {
             id: "target",
-            vitality: { maxHp: 100, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
+            vitality: defineVitality(100),
             hooks: Hooks.empty().set(vitality.damageCommitted, {
                 id: "observe-committed",
                 invoke(current, { application }) {
@@ -636,7 +637,7 @@ test("APPLY-02: HP zero output rejects while excess receiving reduction still co
 test("HP-05/06: LOSS completes the shared pipeline against an invincible absent target without HIT recovery", () => {
     const resource = {
         id: "hit-recovery", initialize: state => ({ state, value: {} }), activation: null,
-        sp: { initial: 0, capacity: 5, recovery: { type: "HIT", amount: 1 } },
+        sp: { initial: 0, capacity: 5, recovery: { type: "HIT", amount: 1 }, recoverySpeed: defineAttribute(0), recoveryMultiplier: defineAttribute(1) },
     };
     const calls = [];
     const observe = stage => ({
@@ -666,8 +667,8 @@ test("HP-05/06: LOSS completes the shared pipeline against an invincible absent 
                 .set(hpDamage.sourceApplied, observe("sourceApplied")),
         }, position: [0, 0] },
         { definition: {
-            id: "target", presence: {}, targetable: { taunt: 0, restrictions: [] },
-            vitality: { maxHp: 35, defense: 20, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
+            id: "target", presence: {}, targetable: { taunt: defineAttribute(0, -2, 2), restrictions: [] },
+            vitality: defineVitality(35, { defense: defineAttribute(20) }),
             skill: { initialize: current => skills.create(current, resource) },
             hooks: Hooks.empty()
                 .set(hpDamage.targetFormula, {
@@ -720,7 +721,7 @@ test("EP-05: environmental EP uses ordinary resistance and reception, with immun
         id: "environmental-ep-target",
         elemental: {
             ...createArknightsElementalDefinition({ receiver: "CHARACTER" }),
-            elementResistance: 50,
+            elementResistance: defineAttribute(50, 0, 100),
         },
         hooks: Hooks.empty().set(epDamage.receiving, {
             id: "observe-reception",
@@ -777,7 +778,7 @@ test("HP-03: lethal HP remains present through nested Combat and both Applied ro
     let state = battle([
         { definition: { id: "source", hooks: Hooks.empty() }, position: [0, 0] },
         { definition: {
-            id: "guard", hooks: Hooks.empty(), vitality: { maxHp: 40, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
+            id: "guard", hooks: Hooks.empty(), vitality: defineVitality(40),
             blocker: { capacity: 1, layer: "GROUND", restrictions: [] },
         }, position: [2, 1] },
         { definition: { id: "enemy", hooks: Hooks.empty(), layer: { type: "GROUND" }, blockable: { volume: 1, restrictions: [] } }, position: [2.2, 1] },
@@ -867,7 +868,7 @@ test("KILL-02: nested damage owns its kill even while Lifetime defers the victim
         { definition: { id: "outer-source", hooks: Hooks.empty().set(hpDamage.completed, observe) }, position: [0, 0] },
         { definition: {
             id: "target", hooks: Hooks.empty(),
-            vitality: { maxHp: 40, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
+            vitality: defineVitality(40),
         }, position: [1, 0] },
         { definition: { id: "inner-source", hooks: Hooks.empty().set(hpDamage.completed, observe) }, position: [2, 0] },
         { definition: { id: "death-attribution", hooks: Hooks.empty() }, position: [3, 0] },
@@ -951,7 +952,7 @@ test("KILL-02: damage started by Completed cannot change the already determined 
         { definition: { id: "source", hooks: Hooks.empty() }, position: [0, 0] },
         { definition: {
             id: "target", hooks: Hooks.empty(),
-            vitality: { maxHp: 40, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
+            vitality: defineVitality(40),
         }, position: [1, 0] },
     ]);
     const source = units.ref(get(state, 0));
@@ -986,7 +987,7 @@ test("HP Healing accepts full resources and absent patients while damage require
                 return { state: current, value: health };
             },
         }),
-        vitality: { maxHp: 100.5, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
+        vitality: defineVitality(100.5),
         elemental: createArknightsElementalDefinition({ receiver: "CHARACTER", recoveryPerSecond: 15 }),
     }, position: [0, 0] }]);
     const target = units.ref(get(state, 0));

@@ -9,7 +9,7 @@ import * as targetable from "../../../dist/core/unit/capability/targetable/capab
 import * as targeting from "../../../dist/core/battle/targeting/index.js";
 import * as effects from "../../../dist/core/unit/effect/index.js";
 import { topK } from "../../../dist/core/common/collection.js";
-import { create as modifier } from "../../../dist/core/unit/contribution/attribute.js";
+import { create as modifier } from "../../../dist/core/unit/attribute.js";
 import {
     invisible, invisibleRestriction, untargetable,
     camouflageRestriction, allyUntargetableRestriction,
@@ -17,7 +17,7 @@ import {
 
 const definition = (side, restrictions = [], taunt = 0) => ({
     id: `targetable-${side}`, hooks: Hooks.empty(), allegiance: { side },
-    targetable: { taunt, restrictions },
+    targetable: { taunt: { default: taunt, min: -2, max: 2 }, restrictions },
 });
 const creation = (side, restrictions, taunt) => ({
     definition: definition(side, restrictions, taunt), position: [0, 0],
@@ -77,7 +77,12 @@ test("ordinary taunt comparison uses signed integer attributes after contributio
 
     assert.equal(preferred(state), 1);
     state = update(state, target, targetable.setTauntContribution({
-        id: "taunt", value: [modifier({ addition: 2 })],
+        id: "taunt", value: [modifier({ addition: 2.5 })],
     }));
     assert.equal(preferred(state), 0);
+    assert.equal(targetable.resolveTaunt(state, get(state, 0)), 2);
+    state = update(state, target, targetable.setTauntRange({ min: null, max: 0.5 }));
+    assert.equal(targetable.resolveTaunt(state, get(state, 0)), 0);
+    state = update(state, target, targetable.clearTauntRange());
+    assert.equal(targetable.resolveTaunt(state, get(state, 0)), 2);
 });

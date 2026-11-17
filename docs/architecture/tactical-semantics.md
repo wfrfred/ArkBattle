@@ -18,7 +18,7 @@ ArkBattle 面向通用明日方舟战斗，卫戍协议是实现重点，不是 
 
 | 范围 | 已接入基础 | 尚未闭合的实际需求 |
 | --- | --- | --- |
-| ATTR-02 属性范围 | 默认属性范围与公式。 | 范围覆写及完整来源同步，见[属性研究](../research/cases/39-death-attribution-and-attribute-ranges.md)。 |
+| ATTR-02 属性范围 | 公共 Attribute、单槽范围覆写／完整恢复、所属资源后继及攻速周期同步。 | 已核实际机制的具体内容接入，见[属性研究](../research/cases/39-death-attribution-and-attribute-ranges.md)；不将原生单槽改成来源恢复栈。 |
 | ATTR-04 数值竞争 | Contribution 与 Effect 各有明确竞争。 | 具体 Buff 如何分组与互斥仍须接入，不从结构能力推定完成。 |
 | DMG-02 分类与阶段 | 四类 Calculate／Apply、HP DAMAGE／ENVIRONMENT／LOSS、EP DAMAGE／ENVIRONMENT、单值攻击类型／途径、死亡归属与 targetKilled。 | 齐尔查克条件免疫、具体环境 EP 来源等 Content 接入，见[分类调查](../research/cases/38-damage-classification-and-permissions.md)。 |
 | DMG-03 生命流失 | LOSS 共用完整管线，普通机制按性质响应，无敌／Presence 允许流失且不授予 HIT。 | 具体流失来源和特殊生命交互仍须验证。 |

@@ -115,12 +115,17 @@ export function createArknightsElementalDefinition(
     options: ArknightsElementalOptions,
 ): ElementalDefinition {
     return {
-        maxEp:
-            options.maxEp ?? (options.receiver === "ENEMY" && options.boss === true ? 2000 : 1000),
-        recoverySpeed: options.recoveryPerSecond ?? 0,
-        elementResistance: options.elementResistance ?? 0,
-        damageResistance: options.damageResistance ?? 0,
-        burstRecoverySpeed: options.burstRecoverySpeed ?? 1,
+        maxEp: {
+            default:
+                options.maxEp ??
+                (options.receiver === "ENEMY" && options.boss === true ? 2000 : 1000),
+            min: 1,
+            max: null,
+        },
+        recoverySpeed: { default: options.recoveryPerSecond ?? 0, min: 0, max: null },
+        elementResistance: { default: options.elementResistance ?? 0, min: 0, max: 100 },
+        damageResistance: { default: options.damageResistance ?? 0, min: 0, max: 100 },
+        burstRecoverySpeed: { default: options.burstRecoverySpeed ?? 1, min: 0, max: null },
         bursts: bursts[options.receiver],
     };
 }

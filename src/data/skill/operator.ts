@@ -5,7 +5,6 @@ import type {
 } from "../../core/unit/skill/index.js";
 import { assertNonnegativeSafeInteger } from "../../core/common/assert.js";
 
-import { TICKS_PER_SECOND } from "../../core/tick.js";
 import { parseBlackboard, type ArknightsBlackboardEntry } from "../blackboard.js";
 import { secondsToTicks } from "../time.js";
 
@@ -124,7 +123,7 @@ export function parseArknightsSkillLevel(
     let recoveryDefinition: Recovery;
 
     if (recovery === "TIME") {
-        recoveryDefinition = { type: "TIME", intervalTicks: TICKS_PER_SECOND / increment };
+        recoveryDefinition = { type: "TIME" };
     } else if (recovery === "NONE") {
         recoveryDefinition = { type: "NONE" };
     } else {
@@ -153,6 +152,12 @@ export function parseArknightsSkillLevel(
                 initial: number(sp.initSp, "skill initial SP"),
                 capacity: spCost * number(sp.maxChargeTime, "skill maximum charges"),
                 recovery: recoveryDefinition,
+                recoverySpeed: {
+                    default: recovery === "TIME" ? increment : 0,
+                    min: 0,
+                    max: null,
+                },
+                recoveryMultiplier: { default: 1, min: 0, max: null },
             },
             activation: {
                 trigger: activation(selected.skillType),

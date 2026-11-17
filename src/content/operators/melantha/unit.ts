@@ -40,11 +40,12 @@ import {
     install,
 } from "../../../core/unit/effect/index.js";
 
-import * as attribute from "../../../core/unit/contribution/attribute.js";
+import * as attribute from "../../../core/unit/attribute.js";
 import { secondsToTicks } from "../../../data/time.js";
 import { create as createAttack, hasTarget } from "./action.js";
 import type { AttackSpeedTiming } from "../../actions/timing.js";
 import { allows } from "../../../core/restriction.js";
+import { TICKS_PER_SECOND } from "../../../core/tick.js";
 
 export interface Definition
     extends
@@ -140,7 +141,10 @@ export function create(profile: Profile, timing: AttackSpeedTiming): Definition 
         profile,
         occupancy: { slot: "OCCUPANT" },
         facing: { restrictions: [] },
-        targetable: { taunt: profile.attributes.taunt, restrictions: [] },
+        targetable: {
+            taunt: { default: profile.attributes.taunt, min: -2, max: 2 },
+            restrictions: [],
+        },
         deployable: { retreatRestrictions: [] },
         card: {
             cost: profile.attributes.cost,
@@ -176,13 +180,13 @@ export function create(profile: Profile, timing: AttackSpeedTiming): Definition 
         },
         elemental: createArknightsElementalDefinition({ receiver: "CHARACTER" }),
         vitality: {
-            maxHp: profile.attributes.maxHp,
-            defense: profile.attributes.defense,
-            resistance: profile.attributes.resistance,
-            recoverySpeed: profile.attributes.recoverySpeed,
-            recoveryRatio: 0,
+            maxHp: { default: profile.attributes.maxHp, min: 1, max: null },
+            defense: { default: profile.attributes.defense, min: 0, max: null },
+            resistance: { default: profile.attributes.resistance, min: 0, max: 100 },
+            recoverySpeed: { default: profile.attributes.recoverySpeed, min: 0, max: null },
+            recoveryRatio: { default: 0, min: 0, max: 1 },
         },
-        offense: { attack: profile.attributes.attack },
+        offense: { attack: { default: profile.attributes.attack, min: 0, max: null } },
 
         allegiance: { side: "ALLY" },
         layer: { type: "GROUND" },
@@ -193,7 +197,13 @@ export function create(profile: Profile, timing: AttackSpeedTiming): Definition 
             restrictions: [{ id: "blocking/sides", value: sides("ENEMY") }],
         },
         action: {
-            initialize: (battle) => createActions(battle, initializeAttack),
+            speed: { default: profile.attributes.attackSpeed, min: 20, max: null },
+            interval: {
+                default: profile.attributes.baseAttackTime * TICKS_PER_SECOND,
+                min: 0,
+                max: null,
+            },
+            initialize: (battle, self) => createActions(battle, self, initializeAttack),
             select(battle, self) {
                 const reference = actionRef(unitRef(self), attack);
                 const current = getAction(battle, reference);

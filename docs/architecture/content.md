@@ -18,7 +18,7 @@ Content 不自行推进模拟，不在共享模块或闭包中保存本场事实
 
 猎狗／弩手等内容自行选择行动；弩手近远程独立冷却与主行动互斥属于其内容政策，不要求所有 Action 都互斥。场景负责选择内容和波次，不建立中央敌人工厂。
 
-普通攻击接收 Data 转换的静态时序；Content 的共享程序处理攻速缩放、开始预算和分段等待。玫兰莎的首次／续轮起手由其持久 Action 状态组织，不由 Core 保存动画状态，详细时序见 [Action](action.md#8-普通攻击释放-hook-与移动)。
+Content 按 [Attribute](attribute.md) 契约绑定所属能力的属性；攻速与连续基础攻击间隔归 Action Capability，每个 Action 显式选择 ATTACK_SPEED 或 FIXED 周期。普通攻击接收 Data 转换的静态时序，共享程序处理缩放、开始预算和分段等待。玫兰莎的首次／续轮起手由其持久 Action 状态组织，不由 Core 保存动画状态，详细时序见 [Action](action.md#8-普通攻击释放-hook-与移动)。
 
 装置也使用普通 Unit。射击台以 SUPPORT 配对向当前乘员登记平台独占限制，只禁止 GROUND 阻挡，解除只撤销自身来源，不改地块允许阻挡字段。改格及离场恢复由具体装置程序执行；结构索引支持交换不意味着游戏允许任意搬格，见 [Occupancy](occupancy.md)与 [Terrain](terrain.md)。
 
@@ -32,7 +32,7 @@ Unit.initialize 根据具体 Definition 装配标准能力，初始化 Hook 在 
 
 ## 语义证据与项目政策
 
-泥岩 S2 满足目标条件时不等待普攻周期；启动先显式取消正在执行的普攻，再清空相关冷却，旧普攻不继续输出，依据见[技能状态切换](../research/cases/08-action-eligibility-and-interruption.md)。普通攻击已接入攻速时序，S2 仍使用专属 FIXED 时序，未完整接入其根／子程序的原生时间链。
+泥岩 S2 满足目标条件时不等待普攻周期，其 Action 周期为 FIXED(0)；启动先显式取消正在执行的普攻，再清空相关冷却，旧普攻不继续输出，依据见[技能状态切换](../research/cases/08-action-eligibility-and-interruption.md)。普通攻击已接入攻速时序，S2 的执行使用专属 FIXED 时序，未完整接入其根／子程序的原生时间链。
 
 护盾耗尽不移除充能机制。先成功以 BLOCKED 取消才扣盾、自疗和获得盾额外 SP，禁止抵挡或已有取消不执行这些后继；普通 HIT 仍独立按本笔资格。NORMAL 的萨卡兹／阻挡减伤与 FIXED 保值分别遵守接收协议，见[抵挡研究](../research/cases/38-damage-classification-and-permissions.md#抵挡及屏障)。
 

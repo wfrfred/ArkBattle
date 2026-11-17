@@ -1,4 +1,5 @@
 // Contract: [capability](../../docs/architecture/capability.md#facing).
+import { attribute as defineAttribute } from "../helpers/attribute.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { Hooks } from "../../dist/core/hook.js";
@@ -37,7 +38,7 @@ test("Facing keeps an instance direction and checks current restrictions unless 
 test("eligible movement faces its navigation direction independently of velocity and turning permission", () => {
     const definition = {
         id: "mover", hooks: Hooks.empty(), facing: { restrictions: [] },
-        locomotion: { speed: 0.1, minSpeed: 0, halfBodyWidth: 0,
+        locomotion: { speed: defineAttribute(0.1), halfBodyWidth: 0,
             steeringParameters: { steeringFactor: 1, maxSteeringForce: 0.01 } },
     };
     let state = battle([{ definition, position: [3, 1],

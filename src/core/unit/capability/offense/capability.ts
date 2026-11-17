@@ -1,21 +1,18 @@
 import type { State as BattleState, Result } from "../../../battle/state.js";
-import { assertNonnegativeNumber } from "../../../common/assert.js";
 import type * as contribution from "../../contribution/contribution.js";
-import type * as attribute from "../../contribution/attribute.js";
+import * as attribute from "../../attribute.js";
 import type { Unit } from "../../unit.js";
-import { createRegistrationOperations } from "../../registration.js";
+import { createChange, type Change } from "../../change.js";
 
 export interface Definition {
-    readonly attack: number;
+    readonly attack: attribute.Definition;
 }
 
-export type Input = contribution.Input<attribute.Modifier, Unit & Offense>;
+export type Input = attribute.Input<Unit & Offense>;
 
-interface Contributions {
-    readonly attack: readonly contribution.Contribution<Input>[];
+export interface State {
+    readonly attack: attribute.State<Input>;
 }
-
-export interface State extends Contributions {}
 
 export interface Offense {
     readonly definition: {
@@ -32,13 +29,49 @@ export function initialize<U extends Unit & Pick<Offense, "definition">>(
     battle: BattleState,
     unit: U,
 ): Result<U & Offense> {
-    assertNonnegativeNumber(unit.definition.offense.attack, "attack");
-
-    return { state: battle, value: { ...unit, offense: { attack: [] } } };
+    return {
+        state: battle,
+        value: {
+            ...unit,
+            offense: { attack: attribute.initialize<Input>(unit.definition.offense.attack) },
+        },
+    };
 }
 
-export const { set: setAttackContribution, remove: removeAttackContribution } =
-    createRegistrationOperations<Unit & Offense, "offense", keyof Contributions>(
-        "offense",
-        "attack",
+export function setAttackContribution(
+    entry: contribution.Contribution<Input>,
+): Change<Unit & Offense> {
+    return createChange<Unit & Offense>((self) =>
+        updateAttack(self, attribute.setContribution(self.offense.attack, entry)),
     );
+}
+
+export function removeAttackContribution(id: string): Change<Unit & Offense> {
+    return createChange<Unit & Offense>((self) =>
+        updateAttack(self, attribute.removeContribution(self.offense.attack, id)),
+    );
+}
+
+export function setAttackRange(range: attribute.Range): Change<Unit & Offense> {
+    return createChange<Unit & Offense>((self) =>
+        updateAttack(
+            self,
+            attribute.setRange(self.definition.offense.attack, self.offense.attack, range),
+        ),
+    );
+}
+
+export function clearAttackRange(): Change<Unit & Offense> {
+    return createChange<Unit & Offense>((self) =>
+        updateAttack(
+            self,
+            attribute.clearRange(self.definition.offense.attack, self.offense.attack),
+        ),
+    );
+}
+
+function updateAttack<U extends Unit & Offense>(self: U, attack: attribute.State<Input>): U {
+    return attack === self.offense.attack
+        ? self
+        : { ...self, offense: { ...self.offense, attack } };
+}

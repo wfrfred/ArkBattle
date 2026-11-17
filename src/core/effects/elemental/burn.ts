@@ -1,6 +1,6 @@
 import { update } from "../../battle/unit.js";
 import { scope } from "../../lifetime/operations.js";
-import * as attribute from "../../unit/contribution/attribute.js";
+import * as attribute from "../../unit/attribute.js";
 import * as effects from "../../unit/effect/operations.js";
 import * as units from "../../unit/query.js";
 import type { OrdinaryDefinition as EffectDefinition } from "../../unit/effect/definition.js";

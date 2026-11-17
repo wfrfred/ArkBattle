@@ -12,7 +12,7 @@ import { advance } from "../../../dist/core/unit/action/index.js";
 
 
 import { setAttackContribution } from "../../../dist/core/unit/capability/offense/capability.js";
-import { create as modifier } from "../../../dist/core/unit/contribution/attribute.js";
+import { create as modifier } from "../../../dist/core/unit/attribute.js";
 
 test("source attack samples current Offense separately for each target after nested reactions", () => {
     const definition = actionDefinition(1, {

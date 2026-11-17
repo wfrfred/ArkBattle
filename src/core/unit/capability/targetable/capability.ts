@@ -1,18 +1,17 @@
-import * as contribution from "../../contribution/contribution.js";
-import * as attribute from "../../contribution/attribute.js";
+import * as attribute from "../../attribute.js";
 import type { Contribution } from "../../contribution/contribution.js";
 import type { Unit } from "../../unit.js";
-import { assertFiniteNumber } from "../../../common/assert.js";
 import { roundToEven } from "../../../common/math.js";
 import type { State as BattleState, Result } from "../../../battle/state.js";
 import { createRegistrationOperations } from "../../registration.js";
+import { createChange, type Change } from "../../change.js";
 import { allows, type Restriction as BaseRestriction } from "../../../restriction.js";
 
 export interface Definition extends Restrictions {
-    readonly taunt: number;
+    readonly taunt: attribute.Definition;
 }
 
-export type Input = contribution.Input<attribute.Modifier, Unit & Targetable>;
+export type Input = attribute.Input<Unit & Targetable>;
 
 export interface RestrictionContext {
     readonly source: Unit;
@@ -21,15 +20,13 @@ export interface RestrictionContext {
 
 export type Restriction = BaseRestriction<RestrictionContext>;
 
-interface Contributions {
-    readonly taunt: readonly Contribution<Input>[];
-}
-
 interface Restrictions {
     readonly restrictions: readonly Contribution<Restriction>[];
 }
 
-export interface State extends Contributions, Restrictions {}
+export interface State extends Restrictions {
+    readonly taunt: attribute.State<Input>;
+}
 
 export interface Targetable {
     readonly definition: { readonly targetable: Definition };
@@ -45,7 +42,6 @@ export function initialize<U extends Unit & Pick<Targetable, "definition">>(
     unit: U,
 ): Result<U & Targetable> {
     const definition = unit.definition.targetable;
-    assertFiniteNumber(definition.taunt, "taunt");
     const ids = new Set<string>();
 
     for (const entry of definition.restrictions) {
@@ -58,7 +54,13 @@ export function initialize<U extends Unit & Pick<Targetable, "definition">>(
 
     return {
         state: battle,
-        value: { ...unit, targetable: { taunt: [], restrictions: [...definition.restrictions] } },
+        value: {
+            ...unit,
+            targetable: {
+                taunt: attribute.initialize<Input>(definition.taunt),
+                restrictions: [...definition.restrictions],
+            },
+        },
     };
 }
 
@@ -68,17 +70,45 @@ export const { set: setRestriction, remove: removeRestriction } = createRegistra
     keyof Restrictions
 >("targetable", "restrictions");
 
-export const { set: setTauntContribution, remove: removeTauntContribution } =
-    createRegistrationOperations<Unit & Targetable, "targetable", "taunt">("targetable", "taunt");
+export function setTauntContribution(entry: Contribution<Input>): Change<Unit & Targetable> {
+    return createChange<Unit & Targetable>((self) =>
+        updateTaunt(self, attribute.setContribution(self.targetable.taunt, entry)),
+    );
+}
+
+export function removeTauntContribution(id: string): Change<Unit & Targetable> {
+    return createChange<Unit & Targetable>((self) =>
+        updateTaunt(self, attribute.removeContribution(self.targetable.taunt, id)),
+    );
+}
+
+export function setTauntRange(range: attribute.Range): Change<Unit & Targetable> {
+    return createChange<Unit & Targetable>((self) =>
+        updateTaunt(
+            self,
+            attribute.setRange(self.definition.targetable.taunt, self.targetable.taunt, range),
+        ),
+    );
+}
+
+export function clearTauntRange(): Change<Unit & Targetable> {
+    return createChange<Unit & Targetable>((self) =>
+        updateTaunt(
+            self,
+            attribute.clearRange(self.definition.targetable.taunt, self.targetable.taunt),
+        ),
+    );
+}
+
+function updateTaunt<U extends Unit & Targetable>(self: U, taunt: attribute.State<Input>): U {
+    return taunt === self.targetable.taunt
+        ? self
+        : { ...self, targetable: { ...self.targetable, taunt } };
+}
 
 export function resolveTaunt(battle: BattleState, self: Unit & Targetable): number {
     return roundToEven(
-        attribute.apply(
-            self.definition.targetable.taunt,
-            contribution
-                .resolve(self.targetable.taunt)
-                .flatMap((input) => (typeof input === "function" ? input(battle, self) : input)),
-        ),
+        attribute.resolve(self.definition.targetable.taunt, self.targetable.taunt, battle, self),
     );
 }
 

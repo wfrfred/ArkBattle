@@ -1,7 +1,7 @@
 import type { Ref } from "../../../common/ref.js";
 import { assertNonnegativeSafeInteger } from "../../../common/assert.js";
 import type { Contribution } from "../../../unit/contribution/contribution.js";
-import type { Modifier } from "../../../unit/contribution/attribute.js";
+import type { Modifier } from "../../../unit/attribute.js";
 import type { State as BattleState } from "../../state.js";
 import { replaceCard } from "../resources.js";
 import type { Card, TimerTarget } from "./card.js";

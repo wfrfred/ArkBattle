@@ -1,4 +1,5 @@
 // Contract: [deployment](../../docs/architecture/deployment.md).
+import { attribute as defineAttribute, vitality as defineVitality } from "../helpers/attribute.js";
 import { Hooks } from "../../dist/core/hook.js";
 import * as unitLifecycle from "../../dist/core/unit/hook.js";
 import test from "node:test";
@@ -8,7 +9,7 @@ import * as deployment from "../../dist/core/battle/deployment/index.js";
 import * as cards from "../../dist/core/battle/deployment/card/index.js";
 import * as units from "../../dist/core/unit/query.js";
 import * as damage from "../../dist/core/battle/resource/hp/damage/index.js";
-import * as attribute from "../../dist/core/unit/contribution/attribute.js";
+import * as attribute from "../../dist/core/unit/attribute.js";
 import * as actions from "../../dist/core/unit/action/index.js";
 
 const operator = {
@@ -16,7 +17,7 @@ const operator = {
     hooks: Hooks.empty(),
     occupancy: { slot: "OCCUPANT" },
     deployable: { retreatRestrictions: [] },
-    vitality: { maxHp: 100, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
+    vitality: defineVitality(100),
     card: {
         cost: 10,
         redeployTicks: 10,
@@ -46,14 +47,14 @@ test("preview, evaluation and deployment use one request; rejection consumes not
     const definition = {
         ...operator,
         facing: { restrictions: [] },
-        action: {
-            initialize(current) {
+        action: { speed: defineAttribute(100, 20), interval: defineAttribute(10),
+            initialize(current, self) {
                 constructions.push({
                     dp: current.deployment.dp,
                     stock: cards.get(current, card).stock,
                     slots: current.deployment.usedSlots,
                 });
-                return actions.createActions(current);
+                return actions.createActions(current, self);
             },
         },
     };

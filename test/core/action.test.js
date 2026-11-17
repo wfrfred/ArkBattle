@@ -7,7 +7,9 @@ import * as units from "../../dist/core/unit/index.js";
 import * as actions from "../../dist/core/unit/action/index.js";
 import * as action from "../../dist/core/unit/capability/action/index.js";
 import * as skills from "../../dist/core/unit/skill/index.js";
-import { create as modifier } from "../../dist/core/unit/contribution/attribute.js";
+import { create as modifier } from "../../dist/core/unit/attribute.js";
+import { attribute, vitality } from "../helpers/attribute.js";
+import { actionCapability } from "../helpers/actions.js";
 import { update } from "../../dist/core/battle/unit.js";
 import { step } from "../../dist/core/battle/runtime.js";
 import { create as attack } from "../../dist/content/actions/attack.js";
@@ -16,8 +18,7 @@ import * as presence from "../../dist/core/unit/capability/presence/index.js";
 test("prepare can reject without allocating a round; ending preserves the latest persistent state", () => {
     const program = {
         id: "two-tick-action",
-        intervalTicks: 0,
-        speed: 100,
+        period: { type: "FIXED", ticks: 0 },
         initialize: (state) => ({ state, value: { attempts: 0, ended: [] } }),
         prepare(state, source, self) {
             const attempts = self.state.attempts + 1;
@@ -44,7 +45,7 @@ test("prepare can reject without allocating a round; ending preserves the latest
     const definition = {
         id: "actor",
         hooks: Hooks.empty(),
-        action: { initialize: (state) => actions.createActions(state, actions.create(program)) },
+        action: actionCapability(program),
     };
     let state = battle([{ definition, position: [1, 1] }]);
     const source = units.ref(get(state, 0));
@@ -77,62 +78,56 @@ test("prepare can reject without allocating a round; ending preserves the latest
     });
 });
 
-test("static speed and interval changes synchronously preserve independent cooldown progress", () => {
-    const fast = {
-        id: "fast",
-        intervalTicks: 10,
-        speed: 100,
-        initialize: (state) => ({ state, value: {} }),
-        prepare: (state) => ({ state, value: {} }),
-        onTick: (state) => ({ state, value: true }),
+test("attribute changes preserve independent attack cooldown progress and leave fixed cooldowns untouched", () => {
+    const first = {
+        id: "first", period: { type: "ATTACK_SPEED" },
+        initialize: state => ({ state, value: {} }),
+        prepare: state => ({ state, value: {} }),
+        onTick: state => ({ state, value: true }),
     };
-    const slow = { ...fast, id: "slow", intervalTicks: 20 };
-    const definition = {
-        id: "actor",
-        hooks: Hooks.empty(),
-        action: {
-            initialize: (state) =>
-                actions.createActions(state, actions.create(fast), actions.create(slow)),
-        },
-    };
-    let state = battle([{ definition, position: [1, 1] }]);
+    const second = { ...first, id: "second" };
+    const fixed = { ...first, id: "fixed", period: { type: "FIXED", ticks: 20 } };
+    let state = battle([{ definition: {
+        id: "actor", hooks: Hooks.empty(), action: actionCapability(first, second, fixed),
+    }, position: [1, 1] }]);
     const source = units.ref(get(state, 0));
-    const fastRef = actions.ref(source, fast);
-    const slowRef = actions.ref(source, slow);
-    const firstStart = actions.start(state, fastRef);
-    state = actions.advance(firstStart.state, firstStart.value);
-    const secondStart = actions.start(state, slowRef);
-    state = actions.cancel(secondStart.state, secondStart.value, "STOPPED");
-    assert.equal(actions.getAction(state, fastRef).cooldown.readyAtTick, 10);
-    assert.equal(actions.getAction(state, slowRef).cooldown.readyAtTick, 20);
+    const references = [first, second, fixed].map(definition => actions.ref(source, definition));
+    const startAt = (index, tick) => {
+        const started = actions.start({ ...state, tick }, references[index]);
+        state = actions.advance(started.state, started.value);
+    };
+    const ready = () => references.map(reference => actions.getAction(state, reference).cooldown.readyAtTick);
+    startAt(0, 0);
+    startAt(1, 2);
+    startAt(2, 2);
+    assert.deepEqual(ready(), [10, 12, 22]);
 
-    state = update({ ...state, tick: 2 }, source, action.setSpeedContribution({
-            id: "speed",
-            value: [modifier({ addition: 100 })],
-        }));
-    assert.equal(actions.getAction(state, fastRef).cooldown.readyAtTick, 6);
-    assert.equal(actions.getAction(state, slowRef).cooldown.readyAtTick, 11);
+    state = update({ ...state, tick: 4 }, source, action.setSpeedContribution({
+        id: "speed", value: [modifier({ addition: 100 })],
+    }));
+    assert.deepEqual(ready(), [7, 8, 22]);
+    state = update({ ...state, tick: 5 }, source, action.removeSpeedContribution("speed"));
+    assert.deepEqual(ready(), [9, 11, 22]);
+    state = update(state, source, units.compose(
+        action.setIntervalContribution({ id: "interval", value: [modifier({ addition: 10 })] }),
+        action.setSpeedContribution({ id: "speed", value: [modifier({ addition: 100 })] }),
+    ));
+    assert.deepEqual(ready(), [9, 11, 22]);
 
-    state = update({ ...state, tick: 3 }, source, action.removeSpeedContribution("speed"));
-    assert.equal(actions.getAction(state, fastRef).cooldown.readyAtTick, 9);
-    assert.equal(actions.getAction(state, slowRef).cooldown.readyAtTick, 19);
-
-    state = update(state, source, units.compose(action.setIntervalContribution({
-            id: "interval",
-            value: [modifier({ addition: 10 })],
-        }), action.setSpeedContribution({
-            id: "speed",
-            value: [modifier({ addition: 100 })],
-        })));
-    assert.equal(actions.getAction(state, fastRef).cooldown.readyAtTick, 9);
-    assert.equal(actions.getAction(state, slowRef).cooldown.readyAtTick, 15);
-
+    state = update(state, source, action.setSpeedRange({ min: 10, max: 10 }));
+    assert.deepEqual(ready(), [85, 125, 22]);
+    state = update(state, source, action.clearSpeedRange());
+    assert.deepEqual(ready(), [9, 11, 22]);
+    state = update(state, source, action.setIntervalRange({ min: 5, max: 5 }));
+    assert.deepEqual(ready(), [6, 6.5, 22]);
+    state = update(state, source, action.clearIntervalRange());
+    assert.deepEqual(ready(), [9, 11, 22]);
 });
 
 test("interrupted attack, successful release, and damage output are separate business stages", () => {
     const program = attack({
         id: "attack",
-        intervalTicks: 10,
+        period: { type: "FIXED", ticks: 10 },
         timing: { type: "FIXED", windupTicks: 0, recoveryTicks: 0 },
         triggerBindingId: "target",
         targetGroups: [
@@ -156,20 +151,20 @@ test("interrupted attack, successful release, and damage output are separate bus
         id: "attack-sp",
         initialize: (state) => ({ state, value: {} }),
         activation: null,
-        sp: { initial: 0, capacity: 5, recovery: { type: "ACTION", amount: 1 } },
+        sp: { initial: 0, capacity: 5, recovery: { type: "ACTION", amount: 1 }, recoverySpeed: attribute(0), recoveryMultiplier: attribute(1) },
     };
     const definition = {
         id: "actor",
         hooks: Hooks.empty(),
         presence: {},
-        action: { initialize: (state) => actions.createActions(state, actions.create(program)) },
+        action: actionCapability(program),
         skill: { initialize: (state) => skills.create(state, resource) },
     };
     const target = {
         id: "target",
         hooks: Hooks.empty(),
-        targetable: { taunt: 0, restrictions: [] },
-        vitality: { maxHp: 100, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
+        targetable: { taunt: attribute(0, -2, 2), restrictions: [] },
+        vitality: vitality(100),
     };
     let state = battle([
         { definition, position: [1, 1] },
@@ -213,8 +208,7 @@ test("Combat advances an instantaneous action once per Tick and skips selection 
     let selections = 0;
     const program = {
         id: "instant",
-        intervalTicks: 0,
-        speed: 100,
+        period: { type: "FIXED", ticks: 0 },
         initialize: (state) => ({ state, value: { completed: 0 } }),
         prepare: (state) => ({ state, value: {} }),
         onTick(state, source, self) {
@@ -230,14 +224,14 @@ test("Combat advances an instantaneous action once per Tick and skips selection 
         id: "action-sp",
         initialize: (state) => ({ state, value: {} }),
         activation: null,
-        sp: { initial: 0, capacity: 5, recovery: { type: "ACTION", amount: 1 } },
+        sp: { initial: 0, capacity: 5, recovery: { type: "ACTION", amount: 1 }, recoverySpeed: attribute(0), recoveryMultiplier: attribute(1) },
     };
     const definition = {
         id: "actor",
         hooks: Hooks.empty(),
         presence: {},
         action: {
-            initialize: (state) => actions.createActions(state, actions.create(program)),
+            ...actionCapability(program),
             select(state) {
                 selections++;
                 return { state, value: [program.id] };

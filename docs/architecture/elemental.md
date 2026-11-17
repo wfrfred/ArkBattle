@@ -13,11 +13,11 @@ Elemental 拥有 EP、接收许可、标准 Burst 的创建与恢复。EP Damage
 
 ## 1. 能力与定义
 
-五型 Type 为 NEURAL、EROSION、BURN、NECROSIS、MANIA 字符串联合；原生 ANGER／数值5转换为 MANIA。Definition 提供共同 maxEp、recoverySpeed、elementResistance、damageResistance、burstRecoverySpeed，以及按 Type 查找的 Burst Definition 表。State 保存五条 EP、唯一当前 Burst Ref、属性贡献和损伤／恢复 Restriction；不按当前阵营推导接收者类型，免疫也不通过删除能力表达。
+五型 Type 为 NEURAL、EROSION、BURN、NECROSIS、MANIA 字符串联合；原生 ANGER／数值5转换为 MANIA。maxEp、recoverySpeed、elementResistance、damageResistance、burstRecoverySpeed 各使用 [Attribute](attribute.md) 的 Definition 与 State；Definition 另按 Type 提供 Burst 表。State 保存五条 EP、唯一当前 Burst Ref 和损伤／恢复 Restriction；不按当前阵营推导接收者类型，免疫也不通过删除能力表达。
 
-构造入口校验基础数值与各型爆发时长，EP 初值为基础上限。五型共用修正后的上限，下限为 1；两项恢复速度下限为 0。recoverySpeed 单位为 EP／秒，burstRecoverySpeed 是每次推进消耗的恢复预算。所有 EP 可保留小数。
+EP 初值为有效 MaxEP，五型共用当前上限。Content 提供的是最终容量，默认下限1、无上限，普通／领袖容量可分别配置1000／2000，不把原生基础 MAX_EP 的1000上限重复施加于最终容量。两项恢复速度默认下限0；recoverySpeed 单位为 EP／秒，burstRecoverySpeed 是每次推进消耗的恢复预算。各型爆发时长在构造时校验，EP 保留小数。
 
-elementResistance 只用于 EP 损伤，damageResistance 只用于 HP 元素伤害；两者修正后均限制在 0～100，5% 基础保底属于 [Resource 公式](resource.md#基础公式与弱点选择)，不改变属性查询结果。五项属性均支持静态或 `(battle,self)` 动态贡献。请求相关减免在 Receiving 表达，不按元素类型复制抗性，也不在 Restriction 内执行副作用。
+elementResistance 只用于 EP 损伤，damageResistance 只用于 HP 元素伤害，默认范围均为0～100；当前范围可由 Change 覆写。5% 基础保底属于 [Resource 公式](resource.md#基础公式与弱点选择)，不改变属性查询结果。五项属性均支持静态或 `(battle,self)` 动态贡献。请求相关减免在 Receiving 表达，不按元素类型复制抗性，也不在 Restriction 内执行副作用。
 
 ## 2. Burst Effect 与标准规则
 
@@ -41,7 +41,7 @@ Burst 是普通 Effect：state 至少保存元素类型，Definition 增加 dura
 
 EP Damage.Request 必填 nature=DAMAGE／ENVIRONMENT，环境身份由输出方显式提供。Restriction、BeforeReceive／Receiving 等直接读取 request.nature，沿现有流程拒绝或取消本笔环境损伤；标签不改变抗性公式、Burst 或 Hook 派发。普通攻击的附加 EP 输出明确使用 DAMAGE。
 
-MaxEP 贡献变更本身不改写 EP。后续提交先按最新上限规范化，再计算本笔实际损失／增益；**规范化结果必须真实发布到 State，不能只在报告中使用截断值**。五型均应一致，即使本笔增益或损失为零也不能留下超上限的实际 EP。自然回复和 Burst 恢复也使用同一有效上限，比例查询不回落到静态基础值。
+MaxEP 的贡献或范围变更本身不改写 EP。后续提交先按最新上限规范化，再计算本笔实际损失／增益；**规范化结果必须真实发布到 State，不能只在报告中使用截断值**。五型均应一致，即使本笔增益或损失为零也不能留下超上限的实际 EP。自然回复和 Burst 恢复也使用同一有效上限，比例查询不回落到静态基础值。
 
 | Application | 资源事实 |
 | --- | --- |

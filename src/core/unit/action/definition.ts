@@ -7,13 +7,15 @@ import type { Execution } from "./execution.js";
 
 export type Id = string;
 
+export type Period =
+    { readonly type: "ATTACK_SPEED" } | { readonly type: "FIXED"; readonly ticks: number };
+
 export type End =
     { readonly type: "FINISHED" } | { readonly type: "CANCELLED"; readonly reason: string };
 
 export interface Definition<P extends object = object, E extends object = object> {
     readonly id: Id;
-    readonly intervalTicks: number;
-    readonly speed: number;
+    readonly period: Period;
     readonly initialize: (battle: BattleState) => Result<P>;
     readonly prepare: (
         battle: BattleState,

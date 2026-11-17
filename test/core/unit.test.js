@@ -1,4 +1,5 @@
 // Contract: [capability](../../docs/architecture/capability.md).
+import { attribute as defineAttribute, vitality as defineVitality } from "../helpers/attribute.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { battle } from "../helpers/battle.js";
@@ -52,7 +53,7 @@ test("Unit death preserves its attribution through Effect responses and the orig
     });
     const definition = {
         id: "dynamic-lifecycle",
-        vitality: { maxHp: 40, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
+        vitality: defineVitality(40),
         hooks: Hooks.empty()
             .set(units.enter, {
                 id: "first",
@@ -98,7 +99,7 @@ test("Unit death preserves its attribution through Effect responses and the orig
     const rewardSkill = {
         id: "reward-skill",
         initialize: state => ({ state, value: {} }),
-        sp: { initial: 0, capacity: 10, recovery: { type: "NONE" } },
+        sp: { initial: 0, capacity: 10, recovery: { type: "NONE" }, recoverySpeed: defineAttribute(0), recoveryMultiplier: defineAttribute(1) },
         activation: null,
     };
     let state = battle([

@@ -46,7 +46,9 @@ Allegiance 的 ALLY／ENEMY／NEUTRAL 表达阵营，不表达干员、敌人或
 
 ## 属性与贡献
 
-Attribute 的四段公式为 `((base + Σaddition) × max(0, 1 + Σmultiplier) + ΣfinalAddition) × ΠfinalScaler`，它不是全部资源的通用公式。各领域决定范围、取整、采样和数值变化后的资源结算。
+[Attribute](attribute.md)统一底值、贡献和最终范围：Definition 保存默认值／边界，State 保存修正来源及当前完整边界。范围单槽后写覆盖，clear 完整恢复默认，不保存来源历史；各领域通过自己的 Change 接入必要后继。
+
+Offense、Vitality、Elemental、Locomotion、Targetable 与 SP 回复属性使用同一 Attribute 模型。它不代替当前 HP／EP／SP 余额、弹药聚合、阻挡容量政策或部署报价。Elemental 的 MaxEP 表示项目最终容量（含敌人级别预算），保留正容量前提，不将它误作原生基础 MAX_EP 字段的1000上限。
 
 Contribution 只管理来源选择：同组最高 priority，平局较小 ID，独立项全部保留；resolveEntries 保留登记元数据，resolve 返回有效值，二者不求值动态载荷。动态 Input 由所属领域按当前 battle／self 只读求值，静态输入由来源在明确时点更新。
 
@@ -60,7 +62,7 @@ Restriction 是精确领域 Context 上的纯允许判断，登记为 Contributi
 
 ### Offense
 
-Offense 保存基础 attack 与静态或动态修正输入，选择有效来源后按 Attribute 求值、截到非负，不取整。查询不附加生命／空间资格，调用者先取得所需能力。
+Offense 保存 attack Attribute，默认下限为0；选择有效来源后按当前范围求值，不取整。查询不附加生命／空间资格，调用者先取得所需能力。
 
 攻击力的采样归输出业务：普通攻击可逐输出读取；弩箭保存发射样本并按来源是否存在选择实时／缓存；泥岩 S2 在自疗和目标循环前采样一次。Offense 不统一这些时点，不在贡献变化后自动维护 Blocking。
 

@@ -1,3 +1,4 @@
+import { vitality } from "./attribute.js";
 import { tiles as tileEntries } from './tiles.js';
 import { normal } from '../../dist/content/terrain/definition.js';
 import { initialize, getUnit } from "./unit.js";
@@ -33,7 +34,7 @@ export function holder(id = 10, { position = [2, 1], capacity = 1, radius = 1, l
             id: `blocking-holder-${id}`,
             hooks: Hooks.empty(),
             ...(side === undefined ? {} : { allegiance: { side } }),
-            presence: {}, vitality: { maxHp: 100, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
+            presence: {}, vitality: vitality(100),
             blocker: { layer, capacity, radius, restrictions: [{ id: "opposing-side", value: blocker.sides("ENEMY") }] },
             ...definition,
         },
@@ -47,7 +48,7 @@ export function target(id = 20, { position = [2.25, 1], volume = 1, layer = "GRO
             id: `blocking-target-${id}`,
             hooks: Hooks.empty(),
             ...(side === undefined ? {} : { allegiance: { side } }),
-            presence: {}, vitality: { maxHp: 100, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
+            presence: {}, vitality: vitality(100),
             layer: { type: layer }, blockable: { volume, restrictions: [] },
             ...definition,
         },

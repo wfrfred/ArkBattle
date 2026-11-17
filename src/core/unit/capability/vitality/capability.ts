@@ -1,8 +1,7 @@
 import type { State as BattleState, Result } from "../../../battle/state.js";
 import { assertNonnegativeNumber } from "../../../common/assert.js";
 import * as contribution from "../../contribution/contribution.js";
-import * as entries from "../../../common/collection/entries.js";
-import * as attribute from "../../contribution/attribute.js";
+import * as attribute from "../../attribute.js";
 import type { Unit } from "../../unit.js";
 import type { Restriction } from "./restriction.js";
 import { createChange, type Change } from "../../change.js";
@@ -12,32 +11,32 @@ import { remove } from "../../../battle/unit.js";
 import { change, normalize, type Health } from "./health.js";
 
 export interface Definition {
-    readonly maxHp: number;
-    readonly defense: number;
-    readonly resistance: number;
-    readonly recoverySpeed: number;
-    readonly recoveryRatio: number;
+    readonly maxHp: attribute.Definition;
+    readonly defense: attribute.Definition;
+    readonly resistance: attribute.Definition;
+    readonly recoverySpeed: attribute.Definition;
+    readonly recoveryRatio: attribute.Definition;
 }
 
-export type Input = contribution.Input<attribute.Modifier, Unit & Vitality>;
+export type Input = attribute.Input<Unit & Vitality>;
 
-interface Contributions {
-    readonly defense: readonly contribution.Contribution<Input>[];
-    readonly resistance: readonly contribution.Contribution<Input>[];
-    readonly recoverySpeed: readonly contribution.Contribution<Input>[];
-    readonly recoveryRatio: readonly contribution.Contribution<Input>[];
+interface Attributes {
+    readonly defense: attribute.State<Input>;
+    readonly resistance: attribute.State<Input>;
+    readonly recoverySpeed: attribute.State<Input>;
+    readonly recoveryRatio: attribute.State<Input>;
 }
 
-export type Parameter = keyof Contributions;
+export type Parameter = keyof Attributes;
 
 interface Restrictions {
     readonly damageRestrictions: readonly contribution.Contribution<Restriction>[];
 }
 
-export interface State extends Restrictions, Contributions {
+export interface State extends Restrictions, Attributes {
     readonly health: Health;
     readonly maxMinusHpRatio: number;
-    readonly maxHp: readonly contribution.Contribution<readonly attribute.Modifier[]>[];
+    readonly maxHp: attribute.State;
 }
 
 export interface Vitality {
@@ -56,24 +55,20 @@ export function initialize<U extends Unit & Pick<Vitality, "definition">>(
     unit: U,
 ): Result<U & Vitality> {
     const definition = unit.definition.vitality;
-    assertNonnegativeNumber(definition.maxHp, "maxHp");
-    assertNonnegativeNumber(definition.defense, "defense");
-    assertNonnegativeNumber(definition.resistance, "resistance");
-    assertNonnegativeNumber(definition.recoverySpeed, "HP recovery per second");
-    assertNonnegativeNumber(definition.recoveryRatio, "HP recovery ratio per second");
+    const maxHp = attribute.initialize(definition.maxHp);
 
     return {
         state: battle,
         value: {
             ...unit,
             vitality: {
-                health: { hp: Math.max(1, definition.maxHp), minusHp: 0 },
+                health: { hp: attribute.resolve(definition.maxHp, maxHp), minusHp: 0 },
                 maxMinusHpRatio: 0,
-                maxHp: [],
-                defense: [],
-                resistance: [],
-                recoverySpeed: [],
-                recoveryRatio: [],
+                maxHp,
+                defense: attribute.initialize<Input>(definition.defense),
+                resistance: attribute.initialize<Input>(definition.resistance),
+                recoverySpeed: attribute.initialize<Input>(definition.recoverySpeed),
+                recoveryRatio: attribute.initialize<Input>(definition.recoveryRatio),
                 damageRestrictions: [],
             },
         },
@@ -121,27 +116,18 @@ function settleHealth(battle: BattleState, previous: Unit & Vitality): BattleSta
 export function setMaxHpContribution(
     entry: contribution.Contribution<readonly attribute.Modifier[]>,
 ): Change<Unit & Vitality> {
-    return createChange<Unit & Vitality>((self) => {
-        const maxHp = entries.set(self.vitality.maxHp, entry);
-        if (maxHp === self.vitality.maxHp) {
-            return self;
-        }
-
-        const vitality = { ...self.vitality, maxHp };
-        const health = preserveHpRatio(
-            self.vitality.health,
-            resolveMaxHp(self.definition.vitality, self.vitality),
-            resolveMaxHp(self.definition.vitality, vitality),
-            vitality.maxMinusHpRatio,
-        );
-
-        return { ...self, vitality: { ...vitality, health } };
-    }, settleHealth);
+    return updateMaxHp((_definition, state) => attribute.setContribution(state, entry));
 }
 
 export function removeMaxHpContribution(id: string): Change<Unit & Vitality> {
+    return updateMaxHp((_definition, state) => attribute.removeContribution(state, id));
+}
+
+function updateMaxHp(
+    update: (definition: attribute.Definition, state: attribute.State) => attribute.State,
+): Change<Unit & Vitality> {
     return createChange<Unit & Vitality>((self) => {
-        const maxHp = entries.remove(self.vitality.maxHp, id);
+        const maxHp = update(self.definition.vitality.maxHp, self.vitality.maxHp);
         if (maxHp === self.vitality.maxHp) {
             return self;
         }
@@ -159,7 +145,7 @@ export function removeMaxHpContribution(id: string): Change<Unit & Vitality> {
 }
 
 export function resolveMaxHp(definition: Definition, state: State): number {
-    return Math.max(1, attribute.apply(definition.maxHp, contribution.resolve(state.maxHp).flat()));
+    return attribute.resolve(definition.maxHp, state.maxHp);
 }
 
 export function resolveMaxMinusHp(definition: Definition, state: State): number {
@@ -176,8 +162,50 @@ export function setMaxMinusHpRatio(ratio: number): Change<Unit & Vitality> {
     );
 }
 
-export const { set: setContribution, remove: removeContribution } = createRegistrationOperations<
-    Unit & Vitality,
-    "vitality",
-    keyof Contributions
->("vitality");
+export function setContribution(
+    parameter: Parameter,
+    entry: contribution.Contribution<Input>,
+): Change<Unit & Vitality> {
+    return updateAttribute(parameter, (_definition, state) =>
+        attribute.setContribution(state, entry),
+    );
+}
+
+export function removeContribution(parameter: Parameter, id: string): Change<Unit & Vitality> {
+    return updateAttribute(parameter, (_definition, state) =>
+        attribute.removeContribution(state, id),
+    );
+}
+
+export function setRange(
+    parameter: Parameter | "maxHp",
+    range: attribute.Range,
+): Change<Unit & Vitality> {
+    return parameter === "maxHp"
+        ? updateMaxHp((definition, state) => attribute.setRange(definition, state, range))
+        : updateAttribute(parameter, (definition, state) =>
+              attribute.setRange(definition, state, range),
+          );
+}
+
+export function clearRange(parameter: Parameter | "maxHp"): Change<Unit & Vitality> {
+    return parameter === "maxHp"
+        ? updateMaxHp(attribute.clearRange)
+        : updateAttribute(parameter, attribute.clearRange);
+}
+
+function updateAttribute(
+    parameter: Parameter,
+    update: (
+        definition: attribute.Definition,
+        state: attribute.State<Input>,
+    ) => attribute.State<Input>,
+): Change<Unit & Vitality> {
+    return createChange<Unit & Vitality>((self) => {
+        const next = update(self.definition.vitality[parameter], self.vitality[parameter]);
+
+        return next === self.vitality[parameter]
+            ? self
+            : { ...self, vitality: { ...self.vitality, [parameter]: next } };
+    });
+}

@@ -1,4 +1,5 @@
 // Contract: [navigation](../../../docs/architecture/navigation.md#locomotion).
+import { attribute as defineAttribute } from "../../helpers/attribute.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { battle, get } from "../../helpers/battle.js";
@@ -15,7 +16,7 @@ const near = (actual, expected) => assert.ok(Math.abs(actual - expected) < 1e-12
 const context = { mode: "WALK", speedMultiplier: 1 };
 const definition = {
     id: "mover", hooks: Hooks.empty(), presence: {},
-    locomotion: { speed: 0.2, minSpeed: 0, halfBodyWidth: 0,
+    locomotion: { speed: defineAttribute(0.2), halfBodyWidth: 0,
         steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 } },
 };
 

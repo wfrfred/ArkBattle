@@ -7,8 +7,7 @@ import { effectiveMap } from "../../../battlefield/navigation/cache.js";
 
 import * as units from "../../query.js";
 import type { Unit } from "../../unit.js";
-import * as contribution from "../../contribution/contribution.js";
-import * as attribute from "../../contribution/attribute.js";
+import * as attribute from "../../attribute.js";
 import type { Locomotion, MovementContext, MovementTarget } from "./capability.js";
 import { calculate as avoidance } from "./avoidance.js";
 import { reflect } from "./motion.js";
@@ -20,15 +19,7 @@ import { allows } from "../../../restriction.js";
 function resolveSpeed(battle: BattleState, self: Unit & Locomotion): number {
     const definition = self.definition.locomotion;
 
-    return Math.max(
-        definition.minSpeed,
-        attribute.apply(
-            definition.speed,
-            contribution
-                .resolve(self.locomotion.speed)
-                .flatMap((input) => (typeof input === "function" ? input(battle, self) : input)),
-        ),
-    );
+    return attribute.resolve(definition.speed, self.locomotion.speed, battle, self);
 }
 
 export function advance(

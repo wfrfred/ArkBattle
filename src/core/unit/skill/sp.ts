@@ -1,16 +1,11 @@
-import {
-    assertNonnegativeSafeInteger,
-    assertPositiveNumber,
-    assertSafeInteger,
-} from "../../common/assert.js";
+import { assertNonnegativeSafeInteger, assertSafeInteger } from "../../common/assert.js";
 import type { Ref } from "../../common/ref.js";
 import type { Result, State as BattleState } from "../../battle/state.js";
 import { TICKS_PER_SECOND } from "../../tick.js";
 import type { Unit } from "../unit.js";
 import * as units from "../query.js";
 import * as contribution from "../contribution/contribution.js";
-import * as entries from "../../common/collection/entries.js";
-import * as attribute from "../contribution/attribute.js";
+import * as attribute from "../attribute.js";
 import { hasVitality } from "../capability/vitality/capability.js";
 import { isAlive } from "../capability/vitality/query.js";
 import type { Skill } from "../capability/skill/capability.js";
@@ -21,12 +16,12 @@ import { createChange, type Change } from "../change.js";
 
 export type Source = "TIME" | "ACTION" | "HIT" | "EXTERNAL";
 
-export type Input = contribution.Input<attribute.Modifier, Unit & Skill>;
+export type Input = attribute.Input<Unit & Skill>;
 
 export type Parameter = "recoverySpeed" | "recoveryMultiplier";
 
 export type Recovery =
-    | { readonly type: "TIME"; readonly intervalTicks: number }
+    | { readonly type: "TIME" }
     | { readonly type: "ACTION" | "HIT"; readonly amount: number }
     | { readonly type: "NONE" };
 
@@ -34,6 +29,8 @@ export interface Definition {
     readonly initial: number;
     readonly capacity: number;
     readonly recovery: Recovery;
+    readonly recoverySpeed: attribute.Definition;
+    readonly recoveryMultiplier: attribute.Definition;
 }
 
 export interface Timer {
@@ -45,8 +42,8 @@ export interface State {
     readonly value: number;
     readonly recovery: Timer | null;
     readonly lastTick: number;
-    readonly recoverySpeed: readonly contribution.Contribution<Input>[];
-    readonly recoveryMultiplier: readonly contribution.Contribution<Input>[];
+    readonly recoverySpeed: attribute.State<Input>;
+    readonly recoveryMultiplier: attribute.State<Input>;
 }
 
 type WithSp = Unit &
@@ -100,7 +97,7 @@ export function setContribution(
             return self;
         }
 
-        const updated = entries.set(sp[key], entry);
+        const updated = attribute.setContribution(sp[key], entry);
 
         return updated === sp[key]
             ? self
@@ -115,7 +112,37 @@ export function removeContribution(key: Parameter, id: string): Change<Unit & Sk
             return self;
         }
 
-        const updated = entries.remove(sp[key], id);
+        const updated = attribute.removeContribution(sp[key], id);
+
+        return updated === sp[key]
+            ? self
+            : { ...self, skill: { ...self.skill, sp: { ...sp, [key]: updated } } };
+    });
+}
+
+export function setRange(key: Parameter, range: attribute.Range): Change<Unit & Skill> {
+    return createChange<Unit & Skill>((self) => {
+        if (!hasSp(self)) {
+            return self;
+        }
+
+        const sp = self.skill.sp;
+        const updated = attribute.setRange(self.skill.definition.sp[key], sp[key], range);
+
+        return updated === sp[key]
+            ? self
+            : { ...self, skill: { ...self.skill, sp: { ...sp, [key]: updated } } };
+    });
+}
+
+export function clearRange(key: Parameter): Change<Unit & Skill> {
+    return createChange<Unit & Skill>((self) => {
+        if (!hasSp(self)) {
+            return self;
+        }
+
+        const sp = self.skill.sp;
+        const updated = attribute.clearRange(self.skill.definition.sp[key], sp[key]);
 
         return updated === sp[key]
             ? self
@@ -132,26 +159,28 @@ export function validateDefinition(definition: Definition): void {
     }
 
     const recovery = definition.recovery;
-    if (recovery.type === "TIME") {
-        assertPositiveNumber(recovery.intervalTicks, "skill SP recovery interval");
-    } else if (recovery.type !== "NONE") {
+    if (recovery.type === "ACTION" || recovery.type === "HIT") {
         assertNonnegativeSafeInteger(recovery.amount, "skill SP recovery amount");
     }
 }
 
 export function initialize(definition: Definition, tick = 0): State {
+    const recoverySpeed = attribute.initialize(definition.recoverySpeed);
+    const recoveryMultiplier = attribute.initialize(definition.recoveryMultiplier);
+    const rate =
+        attribute.resolve(definition.recoverySpeed, recoverySpeed) *
+        attribute.resolve(definition.recoveryMultiplier, recoveryMultiplier);
+    const periodTicks = rate > 0 ? TICKS_PER_SECOND / rate : null;
+
     return {
         value: definition.initial,
         recovery:
-            definition.recovery.type === "TIME"
-                ? {
-                      periodTicks: definition.recovery.intervalTicks,
-                      remainingTicks: definition.recovery.intervalTicks,
-                  }
+            definition.recovery.type === "TIME" && periodTicks !== null
+                ? { periodTicks, remainingTicks: periodTicks }
                 : null,
         lastTick: tick,
-        recoverySpeed: [],
-        recoveryMultiplier: [],
+        recoverySpeed,
+        recoveryMultiplier,
     };
 }
 
@@ -366,26 +395,7 @@ export function advance(battle: BattleState, ref: Ref<Unit & Skill>): BattleStat
 }
 
 function resolve(battle: BattleState, self: WithSp, key: Parameter): number {
-    const definition = self.skill.definition.sp;
-    const state = self.skill.sp;
-
-    let base = 1;
-    if (key === "recoverySpeed") {
-        base =
-            definition.recovery.type === "TIME"
-                ? TICKS_PER_SECOND / definition.recovery.intervalTicks
-                : 0;
-    }
-
-    return Math.max(
-        0,
-        attribute.apply(
-            base,
-            contribution
-                .resolve(state[key])
-                .flatMap((input) => (typeof input === "function" ? input(battle, self) : input)),
-        ),
-    );
+    return attribute.resolve(self.skill.definition.sp[key], self.skill.sp[key], battle, self);
 }
 
 function allowsRecovery(battle: BattleState, self: Unit & Skill, source: Source): boolean {
