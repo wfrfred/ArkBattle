@@ -425,6 +425,18 @@ vitality.isAlive(bare);
 // @ts-expect-error HP proportions require the Vitality capability.
 vitality.hpRatio(bare);
 declare const skillHost: Unit & SkillCapability;
+const controlledActivation: skills.ActivationDefinition<{ completed: number }, { remaining: number }> = {
+    trigger: 'MANUAL', sustain: { type: 'INFINITE' }, initialize: () => ({ remaining: 3 }),
+    operations: {
+        STOP(state, source, self) {
+            const completed: number = self.state.completed;
+            const reference = skills.activationRef(source, self);
+            // @ts-expect-error operation handlers retain the activation's private state type.
+            skills.setActivationState(state, reference, { completed: 1 });
+            return skills.finish(state, reference);
+        },
+    },
+};
 const prioritizedSpRecovery = setUnitHook(spRecovered, {
     id: 'resource-reaction', priority: 10,
     invoke: state => ({ state, value: undefined }),

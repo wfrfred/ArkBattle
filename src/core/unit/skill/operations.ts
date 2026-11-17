@@ -293,19 +293,16 @@ export function operate<X extends Activation<any, any>>(
         return { state: battle, value: false };
     }
 
-    const definition = self.definition.activation!;
-    if (!allows(battle, { self: unit, operation }, unit.skill.operationRestrictions)) {
-        return { state: battle, value: false };
-    }
-    if (definition.onOperation !== undefined) {
-        battle = definition.onOperation(battle, reference.host, self, operation);
-    } else if (operation === "STOP") {
-        battle = finish(battle, reference);
-    } else {
+    const handler = self.definition.activation!.operations?.[operation];
+    if (handler === undefined) {
         return { state: battle, value: false };
     }
 
-    return { state: battle, value: true };
+    if (!allows(battle, { self: unit, operation }, unit.skill.operationRestrictions)) {
+        return { state: battle, value: false };
+    }
+
+    return { state: handler(battle, reference.host, self), value: true };
 }
 
 export function advance(battle: BattleState, host: Ref<Unit & SkillCapability>): BattleState {

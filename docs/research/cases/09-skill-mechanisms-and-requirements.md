@@ -330,7 +330,7 @@ Skill 结束后的输出不自动证明宿主离场后也继续。例如蕾缪�
 
 标准角色凋亡确有 `force=false` 的减 SP 程序，可与玛露西尔的封闭形成实际交互：按已核消费者应拒绝普通减量，而非拒绝她自己的强制扣魔力。这是配置与原体推出的组合，不是本轮实机观测。恢复类型替换则只有通用方法证据，本轮没有闭合非默认实际内容，不单列为必须实现的机制。
 
-另有一项**已有内容的操作资格遗漏**：玫兰莎实际普通 CastSkill 不允许主动丢弃或二次触发；当前 Content 未配置 operationRestrictions／onOperation，而项目 STOP 默认正常结束，命令层直接转发，因此能提前关闭攻击强化。现有操作限制足以表达正确资格，这是接入错误；是否改变公共默认权限须另作架构决定。实际绑定和原生 getter 见[持续补查](../evidence/skill-audit-20261117/sustain/README.md#已有内容的-stop-资格遗漏)。
+玫兰莎实际普通 CastSkill 不允许主动丢弃或二次触发。项目据此明确主动操作支持：Definition 只为支持的操作提供处理器，未提供便拒绝，再由 operationRestrictions 判断当前资格；普通技能无需登记禁止关闭的特例。具体契约见 [Skill](../../architecture/skill.md#4-restriction程序与-hook)，原生绑定与改造前复现保存在[持续补查](../evidence/skill-audit-20261117/sustain/README.md#已有内容的-stop-资格遗漏)。
 
 ### 可由现有领域组合表达的需求
 
@@ -340,7 +340,7 @@ Skill 结束后的输出不自动证明宿主离场后也继续。例如蕾缪�
 | Fever 中已有技能延续 | 实际普通分支给当前周期加 Fever 时长、保留已过时间；退出时区分进入前已开启与在 Fever 内新开的技能。现有 extendTime 和具体管理程序可表达已查固定窗口，不据此重做 Sustain。该时长读取配置周期，不能推广为任意动态剩余时长。 |
 | 玛露西尔跨部署魔力 | 原生有卡牌持有与场下回复链。项目 Card 的持久 state／onTick 与 Unit 生命周期通知可保存和恢复该事实；这部分是内容接入。运行期 SP 配置和增减封闭仍是上表的独立缺口。 |
 | 弹药消费、补弹、自身加弹与加成资格 | consume／check、replenish／grant 已分开。图耶 S2 虽不属于原生普通 AMMO 持续分类，仍是三弹耗尽结束；可以共用项目 AMMO 预算，不能因此获得所有普通弹药类加成。实际资格由具体加成定义判断，不能只读 sustain.type。 |
-| 条件关闭、倾泻、二次操作 | onOperation 与 operationRestrictions 可以表达乌有关闭、号角倾泻及期间禁止再次操作，不要求另建生命周期。 |
+| 条件关闭、倾泻、二次操作 | operations 处理器与 operationRestrictions 可以表达乌有关闭、号角倾泻及期间禁止再次操作，不要求另建生命周期。 |
 | 有限被动、特殊被动与动作结束 | 止颂 S2 有限部署持续可用 PASSIVE + TIME；慕斯 S1 按攻击条件支付、没有普通技能开启／结束通知，可由持久 Skill 编排 Action，不强制创建 Activation。 |
 | 敌人多技能 | Case 08 §8 已确认各自触发计时、模式与宿主共享 SP。持久 Skill 可编排多份 Action 并保存各自计时，不能把每个 EnemySkill 强行当成同槽 Activation。未发现要求多份并行 Activation 的实际消费者。 |
 | 暂时消失与通知 | Presence 改变不自动代表重新创建 Skill；现有项目契约保留已成立的 Activation，具体中断另由内容决定。开始／结束观察者保存自己的历史，已查使用例不要求公开任意私有 state。 |

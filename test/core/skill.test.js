@@ -121,6 +121,72 @@ test("cancellation during payment notification retains payment and suppresses th
     assert.equal(get(state, 0).skill.state.started, false);
 });
 
+test("active operations require a declared handler and current permission, while acceptance and ending are independent", () => {
+    const ordinary = {
+        id: "ordinary",
+        sp: null,
+        initialize: (state) => ({ state, value: {} }),
+        activation: {
+            trigger: "MANUAL",
+            sustain: { type: "INFINITE" },
+            initialize: () => ({ ready: false }),
+        },
+    };
+    const controlled = {
+        ...ordinary,
+        id: "controlled",
+        activation: {
+            ...ordinary.activation,
+            operations: {
+                RETRIGGER(state, source, self) {
+                    return skills.setActivationState(state, skills.activationRef(source, self), {
+                        ready: true,
+                    });
+                },
+                STOP(state, source, self) {
+                    return skills.finish(state, skills.activationRef(source, self));
+                },
+            },
+        },
+    };
+    let state = battle([ordinary, controlled].map((program) => ({
+        definition: {
+            id: program.id,
+            hooks: Hooks.empty(),
+            skill: { initialize: (state) => skills.create(state, program) },
+        },
+        position: [1, 1],
+    })));
+    const source = units.ref(get(state, 0));
+    const first = skills.activate(state, skills.ref(source, ordinary));
+    state = first.state;
+    const unsupported = skills.operate(state, first.value, "STOP");
+    assert.equal(unsupported.value, false);
+    assert.equal(unsupported.state, state);
+    state = skills.finish(state, first.value);
+    assert.equal(get(state, 0).skill.activation, null);
+
+    const controlledSource = units.ref(get(state, 1));
+    const second = skills.activate(state, skills.ref(controlledSource, controlled));
+    state = update(second.state, controlledSource, skill.setRestriction("operationRestrictions", {
+        id: "not-ready",
+        value: {
+            allows: (_state, { self, operation }) =>
+                operation !== "STOP" || self.skill.activation.state.ready,
+        },
+    }));
+    const denied = skills.operate(state, second.value, "STOP");
+    assert.equal(denied.value, false);
+    assert.equal(denied.state, state);
+    const retriggered = skills.operate(state, second.value, "RETRIGGER");
+    state = retriggered.state;
+    assert.equal(retriggered.value, true);
+    assert.equal(skills.getActivation(state, second.value).activation.state.ready, true);
+    const stopped = skills.operate(state, second.value, "STOP");
+    assert.equal(stopped.value, true);
+    assert.equal(get(stopped.state, 1).skill.activation, null);
+});
+
 test("natural SP recovery pauses without backlog and uses current recovery speed", () => {
     const program = {
         id: "sp",

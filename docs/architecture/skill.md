@@ -66,7 +66,7 @@ ammoReplenished 仅通知普通补弹的正实际增量，保存 requested、实
 
 入场 Hook 先登记回复监听，再执行 onEnter，最后重新取得仍为 PRESENT 的宿主尝试 PASSIVE 发动。持久 onTick 按 PRESENT 推进，本轮 onTick 另要求 ACTIVE；它们不机械继承自然 SP 回复的暂停条件。
 
-STOP／RETRIGGER 由内容程序处理；没有自定义 onOperation 时 STOP 默认正常结束。operate 返回是否受理，不承诺激活已经结束。
+Activation Definition 的 operations 按 STOP／RETRIGGER 分别提供处理器，未声明的操作不受理。operate 先检查对应处理器存在，再检查 operationRestrictions，通过后调用该处理器并返回 true；处理器接收 BattleState、宿主 Ref 和完整 Activation，不重复接收操作键。true 表示已受理，不承诺激活已经结束。内部 finish／cancel 不受主动操作支持范围或限制否决。
 
 Skill 通知包括 SP 回复／支付／修改、耗弹／普通补弹和激活创建／结束。全部使用[公共 Hook](hook.md)，结束事实允许仍登记的 LEAVING 宿主响应。激活报告只保留本轮 Ref 与必要结束原因，不复制私有状态；activationEnded 在清空槽位后派发，该旧 Ref 不保证仍可查询。
 
@@ -80,6 +80,6 @@ Skill 通知包括 SP 回复／支付／修改、耗弹／普通补弹和激活�
 
 ## 6. 覆盖边界
 
-当前缺少运行期 SP 配置／发动政策更新、普通 SP 增减封闭及本次发动对特定限制的豁免。现有普通技能 Content 还未限制不支持的主动 STOP。实际使用例与接口判断集中于[Skill 覆盖审查](../research/cases/09-skill-mechanisms-and-requirements.md#9-skill-覆盖审查2026-11-17)，不将未经证实的预算组合列成既定需求。
+当前缺少运行期 SP 配置／发动政策更新、普通 SP 增减封闭及本次发动对特定限制的豁免。实际使用例与接口判断集中于[Skill 覆盖审查](../research/cases/09-skill-mechanisms-and-requirements.md#9-skill-覆盖审查2026-11-17)，不将未经证实的预算组合列成既定需求。
 
 充能、条件耗弹、Fever 的已查期限延后及跨部署魔力的持久保存可以使用现有领域组合；这不代表相应内容已经接入。完整接入范围见[内容缺口](tactical-semantics.md)，同实例复活的技能接续按具体原生程序确定，不统一推断保留或重置。

@@ -40,12 +40,18 @@ export interface Definition<S extends object, A extends object> {
         source: Ref<Unit & SkillCapability>,
         self: Activation<S, A>,
     ) => BattleState;
-    readonly onOperation?: (
-        battle: BattleState,
-        source: Ref<Unit & SkillCapability>,
-        self: Activation<S, A>,
-        operation: Operation,
-    ) => BattleState;
+    readonly operations?: Readonly<
+        Partial<
+            Record<
+                Operation,
+                (
+                    battle: BattleState,
+                    source: Ref<Unit & SkillCapability>,
+                    self: Activation<S, A>,
+                ) => BattleState
+            >
+        >
+    >;
     readonly onEnd?: (
         battle: BattleState,
         source: Ref<Unit & SkillCapability>,
