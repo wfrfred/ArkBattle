@@ -1,4 +1,5 @@
 import { replace as replaceUnits } from "../../../battle/unit.js";
+import { assertNonnegativeSafeInteger } from "../../../common/assert.js";
 import type { Ref } from "../../../common/ref.js";
 import { TICKS_PER_SECOND } from "../../../tick.js";
 import { appendEvents, type State as BattleState, type Result } from "../../../battle/state.js";
@@ -159,6 +160,42 @@ export function commitHealing(
     }
 
     return { state: battle, value: application };
+}
+
+export function reduceDuration(
+    battle: BattleState,
+    reference: Ref<Burst>,
+    ticks: number,
+): BattleState {
+    assertNonnegativeSafeInteger(ticks, "elemental recovery duration reduction");
+
+    if (ticks === 0) {
+        return battle;
+    }
+
+    const host = units.get(battle, reference.host);
+    const self = query.get(battle, reference);
+    if (
+        host === undefined ||
+        !query.available(host) ||
+        self === undefined ||
+        self.lifecycle === "ENDING"
+    ) {
+        return battle;
+    }
+
+    const expiration = self.expiration;
+    const elapsed = expiration.duration - expiration.remaining;
+    const duration = Math.max(0, expiration.duration - ticks);
+    const remaining = Math.max(0, duration - elapsed);
+    battle = effects.setExpiration(battle, reference, { ...expiration, duration, remaining });
+
+    const current = units.get(battle, reference.host)!;
+    const maximum = query.resolveMaxEp(battle, current);
+    const ep = elementValues(remaining === 0 ? maximum : (maximum * elapsed) / duration);
+    battle = replaceUnits(battle, [{ ...current, elemental: { ...current.elemental, ep } }]);
+
+    return remaining === 0 ? finish(battle, reference) : battle;
 }
 
 export function finish(battle: BattleState, reference: Ref<Burst>): BattleState {

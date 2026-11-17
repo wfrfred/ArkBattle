@@ -20,6 +20,7 @@ export {
     receiveDamage,
     commitDamage,
     commitHealing,
+    reduceDuration,
     finish,
     cancel,
     advance,

@@ -15,6 +15,7 @@ import * as locomotion from "../../dist/core/unit/capability/locomotion/index.js
 import * as presence from "../../dist/core/unit/capability/presence/index.js";
 import { createStun } from "../../dist/core/effects/elemental/neural.js";
 import { createSpDrain } from "../../dist/core/effects/elemental/necrosis.js";
+import { silence, blockSpRecovery } from "../../dist/core/effects/control.js";
 import { create as modifier } from "../../dist/core/unit/contribution/attribute.js";
 import { elementHealing } from "../../dist/core/battle/targeting/index.js";
 import { hasTargetable } from "../../dist/core/unit/capability/targetable/capability.js";
@@ -78,6 +79,98 @@ test("EP-03: Burst recovery continues while absent, refills EP with the current 
     state = elemental.cancel(restarted.state, restarted.value.application.burst, "CONTENT");
     assert.deepEqual(get(state, 0).elemental.ep, elemental.elementValues(2000));
     assert.equal(vitality.resolveResistance(state, get(state, 0)), 50);
+});
+
+test("EP-06: reducing recovery preserves elapsed time, immediately refills from current MaxEP and does not replay periodic output", () => {
+    let healed = 0;
+    const hooks = Hooks.empty().set(elemental.healed, {
+        id: "ordinary-healing",
+        invoke(state) { healed++; return { state, value: undefined }; },
+    });
+    let state = battle([{ definition: { ...elementalReceiver, hooks }, position: [0, 0] }]);
+    const target = units.ref(get(state, 0));
+    const incoming = injuryRequest(target, "NECROSIS", 1000);
+    const started = epDamage.applyDamage(incoming, epDamage.calculateDamage(state, incoming));
+    const burst = started.value.application.burst;
+    state = started.state;
+    for (let tick = 1; tick <= 30; tick++) {
+        state = effects.advance({ ...state, tick });
+    }
+    const hp = get(state, 0).vitality.health.hp;
+    const damageEvents = state.events.filter(event => event.type === "DAMAGE");
+    assert.equal(damageEvents.length, 1);
+    assert.equal(get(state, 0).effects.values().some(effect => effect.definition === silence), true);
+    state = update(state, target, elemental.setContribution("maxEp", {
+        id: "capacity", value: [modifier({ addition: 1000 })],
+    }));
+
+    state = elemental.reduceDuration(state, burst, 150);
+    assert.deepEqual(elemental.get(state, burst).expiration, {
+        type: "DURATION", duration: 300, remaining: 270, rate: 0,
+    });
+    assert.deepEqual(get(state, 0).elemental.ep, elemental.elementValues(200));
+
+    state = elemental.reduceDuration(state, burst, 270);
+    assert.equal(get(state, 0).elemental.burst, null);
+    assert.equal(elemental.get(state, burst), undefined);
+    assert.deepEqual(get(state, 0).elemental.ep, elemental.elementValues(2000));
+    assert.equal(get(state, 0).effects.values().some(effect =>
+        effect.definition === silence || effect.definition === blockSpRecovery), false);
+    assert.equal(get(state, 0).vitality.health.hp, hp);
+    assert.deepEqual(state.events.filter(event => event.type === "DAMAGE"), damageEvents);
+    assert.equal(healed, 0);
+});
+
+test("EP-06: immediate recovery completion retains independent stun and cannot overwrite a reentrant Burst", () => {
+    let original;
+    let restarted;
+    const hooks = Hooks.empty().set(elemental.burstEnded, {
+        id: "restart-recovery",
+        invoke(state, { event }) {
+            if (event.burst.id !== original.id) return { state, value: undefined };
+            const incoming = injuryRequest(event.burst.host, "BURN", 1000);
+            const result = epDamage.applyDamage(incoming, epDamage.calculateDamage(state, incoming));
+            restarted = result.value.application.burst;
+            return { state: result.state, value: undefined };
+        },
+    });
+    const definition = {
+        ...elementalReceiver, hooks,
+        locomotion: {
+            speed: 1, minSpeed: 0, halfBodyWidth: 0,
+            steeringParameters: { steeringFactor: 1, maxSteeringForce: 1 },
+        },
+    };
+    let state = battle([{ definition, position: [0, 0] }]);
+    const target = units.ref(get(state, 0));
+    const incoming = injuryRequest(target, "NEURAL", 1000);
+    const started = epDamage.applyDamage(incoming, epDamage.calculateDamage(state, incoming));
+    original = started.value.application.burst;
+    state = started.state;
+    for (let tick = 1; tick <= 30; tick++) {
+        state = effects.advance({ ...state, tick });
+    }
+
+    state = elemental.reduceDuration(state, original, 270);
+    assert.equal(elemental.get(state, original), undefined);
+    assert.notEqual(restarted.id, original.id);
+    assert.deepEqual(get(state, 0).elemental.burst, restarted);
+    assert.deepEqual(get(state, 0).elemental.ep, elemental.elementValues(0));
+    assert.deepEqual(elemental.get(state, restarted).expiration, {
+        type: "DURATION", duration: 300, remaining: 300, rate: 0,
+    });
+    assert.equal(elemental.reduceDuration(state, original, 1), state);
+
+    for (let tick = 31; tick < 300; tick++) {
+        state = effects.advance({ ...state, tick });
+    }
+    const goal = { nextPoint: [0.5, 0], goal: [0.5, 0] };
+    const movement = { mode: "WALK", speedMultiplier: 1 };
+    state = locomotion.advance(state, target, goal, movement);
+    assert.deepEqual(get(state, 0).position, [0, 0]);
+    state = effects.advance({ ...state, tick: 300 });
+    state = locomotion.advance(state, target, goal, movement);
+    assert.deepEqual(get(state, 0).position, goal.goal);
 });
 
 test("EP-03: zero recovery budgets keep installation output and independent stun without later periodic output", () => {

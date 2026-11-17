@@ -82,7 +82,7 @@ End 区分 FINISHED 与携带原因的 CANCELLED；自然到期映射 FINISHED�
 
 ## 6. 时间推进
 
-根 onTick 是唯一恢复推进入口；对正 duration：
+按 Tick 推进恢复由根 onTick 负责；对正 duration：
 
 ```text
 remaining' = max(0, remaining - 当前 burstRecoverySpeed)
@@ -92,6 +92,18 @@ elapsed' = duration - remaining'
 
 先发布 EP 与 remaining，再执行使用该预算的周期业务。恢复速度为零时只暂停恢复预算及其周期，不暂停狂躁独立的 ACTIVE Tick 计数；当前无推进资格时不积攒补算。每次恢复重新求值速度与上限；取消、提前 finish 或离场不补未来输出，onEnd 只收尾。周期与根绑定关系由具体标准程序规定，不据共享的默认时长合并时钟。
 
+`reduceDuration(battle, reference, ticks)` 是本次 Burst 的完整缩时操作，ticks 为非负安全整数，0 保持原状态。操作保留已推进量：
+
+```text
+elapsed = duration - remaining
+duration' = max(0, duration - ticks)
+remaining' = max(0, duration' - elapsed)
+```
+
+发布新预算后，按当前有效 MaxEP 与 `elapsed / duration'` 即时回填五型 EP；已推进量达到新预算时先写满，再请求完整 finish，仍遵守 Lifetime 的结束时序。缩时不执行 onTick／周期业务，也不派发 healed 或普通 Healing。旧 Ref、ENDING 根及失效宿主不改动后来实例。
+
+缩时只改根的 expiration 与 EP，不修改 Definition 或私有周期进度，不传播到独立产物；根绑定产物仍随完整结束清理。凋亡减攻保持原定义的衰减曲线。依据为[珊比缩时与即时回填](../research/cases/25-elemental-burst-recovery-timing.md#9-恢复变速与直接缩时有不同语义)；具体内容自行限定元素类型和触发条件。
+
 无 Burst 时由 Elemental.advance 自然恢复：通过当前生命和 healingRestrictions 后，每 Tick 增加 `recoverySpeed/TICKS_PER_SECOND`，同时按当前上限规范化。速度为零仍需处理上限降低；五型未变则保留原状态。不派发 healed、普通 Healing 或其 UI。阶段调度不增加创建 Tick 跳过／lastAdvancedTick；通用 Effect 的时间规则只在 [Effect](effect.md) 定义。
 
 ## 支持边界
@@ -99,6 +111,6 @@ elapsed' = duration - remaining'
 - 同一宿主当前只允许一个 Burst；特殊内容可组合输出与生命周期，不由标准库提供通用多阶段爆发或启动免疫窗口。
 - 狂躁尚未区分技能成功发动后的空施放资格。原生郁金香 S1 无目标时成功发动并扣除 SP，但空动画分支不增加狂躁；该内容分支尚未接入。原生天赋／通用分类由上述职责划分表达，不另设 Core 枚举。具体依据见[案例25第11节](../research/cases/25-elemental-burst-recovery-timing.md#11-狂躁计数的原生排除范围)。
 - 环境 EP 分类已提供；齐尔查克的条件光环、深水我方损伤等具体 Content 仍需按原生配置接入，不由环境标签代替来源与免疫程序。
-- 珊比直接缩短爆发预算的原生行为保留已推进量、降低总预算并立即重算 EP；当前仅修改 Effect.remaining 不自动完成这项资源操作。根与独立子效果的时间交互仍须闭合。
+- 珊比天赋的实际触发条件尚未接入；恢复变速与独立子效果时钟的剩余差异仍须按具体程序核实，不把缩时操作推广为统一时间传播。
 
 以上真实需求和原生边界见[案例25](../research/cases/25-elemental-burst-recovery-timing.md)、[案例38](../research/cases/38-damage-classification-and-permissions.md)及[覆盖表](../research/cases/37-resource-mechanism-coverage.md)。必要验收结果统一见 [EP 回归语义](verification.md#hook-与伤害治疗的回归语义)。
