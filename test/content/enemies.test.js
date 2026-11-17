@@ -94,6 +94,7 @@ test('hound content binds configured regeneration and rejects unimplemented stun
 
   assert.equal(regenerating.definition.vitality.recoverySpeed.default, 20);
   assert.equal(regenerating.definition.classification.rank, 'BOSS');
+  assert.equal(regenerating.definition.elemental.maxEp.default, 2000);
   assert.throws(() => createHound({ ...profile('enemy_1000_gopro'), stunImmune: true }, timing, houndMovement), /stun immunity/);
 });
 

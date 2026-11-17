@@ -64,7 +64,10 @@ export function createDefinition(
 
     assertPositiveNumber(hitRadius, "enemy hit radius");
 
-    const elemental = createArknightsElementalDefinition({ receiver: "ENEMY" });
+    const elemental = createArknightsElementalDefinition({
+        receiver: "ENEMY",
+        boss: profile.rank === "BOSS",
+    });
 
     return {
         id: profile.id,
