@@ -18,10 +18,13 @@ export interface Initial<A extends object = object> {
     readonly duration: DurationDefinition;
 }
 
-export interface Definition<S extends object, A extends object> {
-    readonly trigger: Trigger;
+export interface Parameters {
     readonly requirement: number;
     readonly cost: number;
+}
+
+export interface Definition<S extends object, A extends object> extends Parameters {
+    readonly trigger: Trigger;
     readonly ignoreRestrictions: readonly ActivationRestriction[];
     readonly initialize: (
         battle: BattleState,

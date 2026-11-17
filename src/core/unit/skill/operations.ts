@@ -17,7 +17,7 @@ import { hasSkill, type Skill as SkillCapability } from "../capability/skill/cap
 import {
     ref as activationRef,
     type Activation,
-    type Trigger,
+    type Parameters as ActivationParameters,
     type End,
     type Operation,
 } from "./activation.js";
@@ -111,8 +111,13 @@ export function setActivationState<X extends Activation<any, any>>(
 export function activate<S extends object, A extends object>(
     battle: BattleState,
     reference: Ref<Skill<S, A>>,
-    trigger: Trigger = "MANUAL",
+    parameters?: ActivationParameters,
 ): Result<Ref<Activation<S, A>> | null> {
+    if (parameters !== undefined) {
+        assertNonnegativeSafeInteger(parameters.requirement, "skill activation SP requirement");
+        assertNonnegativeSafeInteger(parameters.cost, "skill activation SP cost");
+    }
+
     const source = reference.host;
     const unit = units.get(battle, source);
     if (unit?.lifecycle !== "PRESENT" || (hasVitality(unit) && !isAlive(unit))) {
@@ -131,10 +136,7 @@ export function activate<S extends object, A extends object>(
     if (self.activation !== null) {
         return { state: battle, value: null };
     }
-    if (definition.trigger !== trigger) {
-        return { state: battle, value: null };
-    }
-    if (trigger === "PASSIVE" && unit.skill.nextActivationId !== 0) {
+    if (definition.trigger === "PASSIVE" && unit.skill.nextActivationId !== 0) {
         return { state: battle, value: null };
     }
     if (
@@ -146,8 +148,7 @@ export function activate<S extends object, A extends object>(
         return { state: battle, value: null };
     }
 
-    const requirement = definition.requirement;
-    const cost = definition.cost;
+    const { requirement, cost } = parameters ?? definition;
     const previousSp = self.sp;
     if ((previousSp?.value ?? 0) < requirement || (previousSp?.value ?? 0) < cost) {
         return { state: battle, value: null };
@@ -334,7 +335,7 @@ export function advance(battle: BattleState, host: Ref<Unit & SkillCapability>):
         current.skill.activation === null &&
         (trigger === "AUTO" || trigger === "PASSIVE")
     ) {
-        battle = activate(battle, skillRef(host, current.skill.definition), trigger).state;
+        battle = activate(battle, skillRef(host, current.skill.definition)).state;
     }
 
     return battle;
@@ -360,7 +361,7 @@ export const enter: EnterHook = {
             current?.lifecycle === "PRESENT" &&
             current.skill.definition.activation?.trigger === "PASSIVE"
         ) {
-            battle = activate(battle, skillRef(host, current.skill.definition), "PASSIVE").state;
+            battle = activate(battle, skillRef(host, current.skill.definition)).state;
         }
 
         return { state: battle, value: undefined };

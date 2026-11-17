@@ -104,6 +104,55 @@ test("activation publishes payment before onStart and clears only the completed 
     assert.equal(skills.activate(state, reference).value, null);
 });
 
+test("per-call activation parameters preserve ordinary policy and still require sufficient SP", () => {
+    const payments = [];
+    const program = {
+        id: "special-start", sp: { initial: 3, capacity: 20, recovery: { type: "NONE" } },
+        initialize: state => ({ state, value: {} }),
+        activation: {
+            trigger: "MANUAL", ignoreRestrictions: [], requirement: 10, cost: 7,
+            initialize: () => ({ state: {}, duration: { type: "INFINITE" } }),
+        },
+    };
+    const definition = {
+        id: "operator", hooks: Hooks.empty().set(skill.spPaid, {
+            id: "observe-payment",
+            invoke(state, { host, event }) {
+                payments.push([event.amount, event.previous, event.current, get(state, host.id).skill.activation.id]);
+                return { state, value: undefined };
+            },
+        }),
+        skill: { initialize: state => skills.create(state, program) },
+    };
+    let state = battle([{ definition, position: [1, 1] }]);
+    const source = units.ref(get(state, 0));
+    const reference = skills.ref(source, program);
+    assert.equal(skills.activate(state, reference).value, null);
+    const belowRequirement = skills.activate(state, reference, { requirement: 4, cost: 0 });
+    assert.equal(belowRequirement.value, null);
+    assert.equal(belowRequirement.state, state);
+    const belowPayment = skills.activate(state, reference, { requirement: 0, cost: 4 });
+    assert.equal(belowPayment.value, null);
+    assert.equal(belowPayment.state, state);
+    assert.deepEqual(payments, []);
+
+    const free = skills.activate(state, reference, { requirement: 0, cost: 0 });
+    state = free.state;
+    assert.notEqual(free.value, null);
+    assert.equal(get(state, 0).skill.sp.value, 3);
+    assert.deepEqual(payments, [[0, 3, 3, free.value.id]]);
+    assert.equal(skills.getSkill(state, reference).definition, program);
+    assert.equal(program.activation.requirement, 10);
+    assert.equal(program.activation.cost, 7);
+    state = skills.finish(state, free.value);
+    assert.equal(skills.activate(state, reference).value, null);
+    state = skills.modify(state, source, 7).state;
+    const ordinary = skills.activate(state, reference);
+    assert.notEqual(ordinary.value, null);
+    assert.equal(get(ordinary.state, 0).skill.sp.value, 3);
+    assert.deepEqual(payments[1], [7, 10, 3, ordinary.value.id]);
+});
+
 test("cancellation during payment notification retains payment and suppresses the old onStart", () => {
     const program = {
         id: "skill",

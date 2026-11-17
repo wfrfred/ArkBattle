@@ -209,7 +209,7 @@ test("APPLY-03: Mudrock requires a successful block for shield costs and benefit
 test("S2 waits for an eligible target without spending its SP", () => {
     const fixture = setup({}, [enemy(1, [5, 0])]);
     const ready = modify(fixture.battle, ref(fixture.unit), 5).state;
-    const result = activate(ready, skillRef(getUnit(ready, 0)), "AUTO");
+    const result = activate(ready, skillRef(getUnit(ready, 0)));
     assert.equal(result.value, null);
     assert.equal(getUnit(result.state, 0).skill.sp.value, 5);
 });

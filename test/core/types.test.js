@@ -463,6 +463,15 @@ const invalidActivationExemption: skills.ActivationDefinition<{ completed: numbe
     // @ts-expect-error a recovery restriction requires facts not supplied by an activation check.
     ignoreRestrictions: [recoveryOnly],
 };
+const activationParameters: skills.ActivationParameters = { requirement: 0, cost: 0 };
+const skillReference = skills.ref(ref(skillHost), skillHost.skill.definition);
+skills.activate(battle, skillReference, activationParameters);
+// @ts-expect-error a special activation must supply its requirement and payment together.
+skills.activate(battle, skillReference, { requirement: 0 });
+// @ts-expect-error a special activation must supply its requirement and payment together.
+skills.activate(battle, skillReference, { cost: 0 });
+// @ts-expect-error trigger is declared by the skill, not an activation call argument.
+skills.activate(battle, skillReference, 'AUTO');
 skills.pay(battle, ref(skillHost), 1);
 // @ts-expect-error resource payment requires an explicit amount.
 skills.pay(battle, ref(skillHost));

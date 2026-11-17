@@ -11,6 +11,7 @@ export type {
     Trigger,
     End,
     Initial as ActivationInitial,
+    Parameters as ActivationParameters,
     Definition as ActivationDefinition,
     Activation,
 } from "./activation.js";

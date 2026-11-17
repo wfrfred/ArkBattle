@@ -8,6 +8,7 @@ import { step } from "../../dist/core/battle/runtime.js";
 import * as predefined from "../../dist/core/battle/steps/predefined.js";
 import { dp } from "../../dist/core/battle/deployment/index.js";
 import * as cards from "../../dist/core/battle/deployment/card/index.js";
+import * as skills from "../../dist/core/unit/skill/index.js";
 
 const account = {
     initialDp: 20,
@@ -158,4 +159,41 @@ test("Tick phases publish their resource operations and failures preserve the in
     assert.equal(branch.deployment.dp, 20);
     assert.equal(cards.get(branch, card).stock, 1);
     assert.deepEqual([...units.all(branch)], []);
+});
+
+test("manual commands preserve AUTO and PASSIVE scheduling while direct activation can start AUTO", () => {
+    const programs = ["MANUAL", "AUTO", "PASSIVE"].map(trigger => ({
+        id: trigger, sp: null,
+        initialize: state => ({ state, value: { starts: 0 } }),
+        activation: {
+            trigger, ignoreRestrictions: [], requirement: 0, cost: 0,
+            initialize: () => ({ state: {}, duration: { type: "TIME", durationTicks: 0 } }),
+            onStart(state, source, self) {
+                return skills.setState(state, skills.ref(source, self.definition), {
+                    starts: self.state.starts + 1,
+                });
+            },
+        },
+    }));
+    let state = battle(programs.map(program => ({
+        definition: {
+            id: program.id, hooks: Hooks.empty(),
+            skill: { initialize: state => skills.create(state, program) },
+        },
+        position: [1, 1],
+    })));
+    const sources = programs.map((_program, index) => units.ref(get(state, index)));
+    const starts = state => sources.map(source => get(state, source.id).skill.state.starts);
+    assert.deepEqual(starts(state), [0, 0, 1]);
+    state = step(state, sources.map(ref => ({ type: "ACTIVATE_SKILL", ref })));
+    assert.deepEqual(starts(state), [1, 1, 1]);
+    const explicit = skills.activate(state, skills.ref(sources[1], programs[1]));
+    assert.notEqual(explicit.value, null);
+    state = explicit.state;
+    assert.deepEqual(starts(state), [1, 2, 1]);
+    const repeatedPassive = skills.activate(state, skills.ref(sources[2], programs[2]));
+    assert.equal(repeatedPassive.value, null);
+    assert.equal(repeatedPassive.state, state);
+    state = step(state, []);
+    assert.deepEqual(starts(state), [1, 3, 1]);
 });
