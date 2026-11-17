@@ -14,7 +14,7 @@ import { dispatch, ammoConsumed, ammoReplenished } from "../capability/skill/hoo
 import { finish } from "./operations.js";
 import * as query from "./query.js";
 import { replace as replaceUnits } from "../../battle/unit.js";
-import type { Ammo } from "./sustain.js";
+import type { Ammo } from "./duration.js";
 
 export interface Modifier {
     readonly addition: number;
@@ -81,17 +81,17 @@ export function consume<X extends Activation<any, any>>(
     ) {
         return rejected(battle, "UNAVAILABLE");
     }
-    if (active.sustain.type !== "AMMO") {
+    if (active.duration.type !== "AMMO") {
         return rejected(battle, "NO_AMMO");
     }
 
-    const previous = active.sustain;
+    const previous = active.duration;
     const current = { ...previous, remaining: previous.remaining - amount };
 
     battle = replaceUnits(battle, [
         {
             ...self,
-            skill: { ...self.skill, activation: { ...active, sustain: current } },
+            skill: { ...self.skill, activation: { ...active, duration: current } },
         },
     ]);
     battle = dispatch(battle, units.ref(self), ammoConsumed, {
@@ -130,8 +130,8 @@ export function check<X extends Activation<any, any>>(
     const active = query.getActivation(battle, reference)?.activation;
 
     return active?.lifecycle === "ACTIVE" &&
-        active.sustain.type === "AMMO" &&
-        active.sustain.remaining <= 0
+        active.duration.type === "AMMO" &&
+        active.duration.remaining <= 0
         ? finish(battle, reference)
         : battle;
 }
@@ -157,11 +157,11 @@ function add<X extends Activation<any, any>>(
     ) {
         return rejected(battle, "UNAVAILABLE");
     }
-    if (active.sustain.type !== "AMMO") {
+    if (active.duration.type !== "AMMO") {
         return rejected(battle, "NO_AMMO");
     }
 
-    const previous = active.sustain;
+    const previous = active.duration;
     const amount = Math.max(
         0,
         Math.min(
@@ -185,7 +185,7 @@ function add<X extends Activation<any, any>>(
     battle = replaceUnits(battle, [
         {
             ...self,
-            skill: { ...self.skill, activation: { ...active, sustain: current } },
+            skill: { ...self.skill, activation: { ...active, duration: current } },
         },
     ]);
 

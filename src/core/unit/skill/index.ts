@@ -10,6 +10,7 @@ export type {
     Operation,
     Trigger,
     End,
+    Initial as ActivationInitial,
     Definition as ActivationDefinition,
     Activation,
 } from "./activation.js";
@@ -73,4 +74,4 @@ export type {
     Outcome as AmmoOutcome,
 } from "./ammo.js";
 
-export type { Definition as SustainDefinition, Ammo, State as SustainState } from "./sustain.js";
+export type { Definition as DurationDefinition, Ammo, State as DurationState } from "./duration.js";

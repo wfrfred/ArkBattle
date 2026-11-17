@@ -10,8 +10,7 @@ export function definition(input = {}) {
             recovery: { type: "TIME", intervalTicks: 30 },
         },
         activation: {
-            trigger: "MANUAL", requirement: 2, cost: 2, sustain: { type: "TIME", durationTicks: 30 },
-            initialize: () => ({}),
+            trigger: "MANUAL", requirement: 2, cost: 2, initialize: () => ({ state: {}, duration: { type: "TIME", durationTicks: 30 } }),
         },
         ...input,
     });

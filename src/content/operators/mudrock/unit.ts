@@ -265,11 +265,17 @@ export function create(
     const shield = shieldEffect(profile);
     const normalAttack = createNormal(profile, recoveryTicks);
     const action = createSkillAction(profile, recoveryTicks);
+    const activation = profile.skill.definition.activation!;
     const skill: SkillDefinition = {
         ...profile.skill.definition,
         activation: {
-            ...profile.skill.definition.activation!,
-            sustain: { type: "INFINITE" },
+            ...activation,
+            initialize(battle, source, self) {
+                return {
+                    ...activation.initialize(battle, source, self),
+                    duration: { type: "INFINITE" },
+                };
+            },
             accepts(battle, sourceRef) {
                 const source = getCurrentUnit(battle, sourceRef);
 

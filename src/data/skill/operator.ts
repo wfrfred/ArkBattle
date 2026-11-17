@@ -1,4 +1,8 @@
-import type { Definition as SkillDefinition, Recovery } from "../../core/unit/skill/index.js";
+import type {
+    Definition as SkillDefinition,
+    DurationDefinition,
+    Recovery,
+} from "../../core/unit/skill/index.js";
 import { assertNonnegativeSafeInteger } from "../../core/common/assert.js";
 
 import { TICKS_PER_SECOND } from "../../core/tick.js";
@@ -108,12 +112,12 @@ export function parseArknightsSkillLevel(
     const spCost = number(sp.spCost, "skill SP cost");
     const recovery = spRecovery(sp.spType);
     const increment = number(sp.increment, "skill SP increment");
-    const duration = number(selected.duration, "skill duration");
+    const durationSeconds = number(selected.duration, "skill duration");
 
     if (increment < 0 || (recovery === "TIME" && increment === 0)) {
         throw new RangeError("skill SP increment must enable its recovery mode");
     }
-    if (duration < 0 && duration !== -1) {
+    if (durationSeconds < 0 && durationSeconds !== -1) {
         throw new RangeError("skill duration must be nonnegative or unlimited");
     }
 
@@ -127,15 +131,18 @@ export function parseArknightsSkillLevel(
         recoveryDefinition = { type: recovery, amount: increment };
     }
 
-    let sustain: NonNullable<SkillDefinition["activation"]>["sustain"];
+    let duration: DurationDefinition;
 
     if (ammo !== undefined) {
         assertNonnegativeSafeInteger(ammo, "skill ammunition");
-        sustain = { type: "AMMO", amount: ammo };
-    } else if (duration === -1) {
-        sustain = { type: "INFINITE" };
+        duration = { type: "AMMO", amount: ammo };
+    } else if (durationSeconds === -1) {
+        duration = { type: "INFINITE" };
     } else {
-        sustain = { type: "TIME", durationTicks: secondsToTicks(duration, "skill duration") };
+        duration = {
+            type: "TIME",
+            durationTicks: secondsToTicks(durationSeconds, "skill duration"),
+        };
     }
 
     return {
@@ -151,8 +158,7 @@ export function parseArknightsSkillLevel(
                 trigger: activation(selected.skillType),
                 requirement: spCost,
                 cost: spCost,
-                initialize: () => ({}),
-                sustain,
+                initialize: () => ({ state: {}, duration }),
             },
         },
         level,

@@ -68,10 +68,6 @@ export function setAmmoContribution(
     entry: contribution.Contribution<AmmoInput>,
 ): Change<Unit & Skill> {
     return createChange<Unit & Skill>((self) => {
-        if (self.skill.definition.activation?.sustain.type !== "AMMO") {
-            return self;
-        }
-
         const ammo = entries.set(self.skill.ammo, entry);
 
         return ammo === self.skill.ammo ? self : { ...self, skill: { ...self.skill, ammo } };
@@ -80,10 +76,6 @@ export function setAmmoContribution(
 
 export function removeAmmoContribution(id: string): Change<Unit & Skill> {
     return createChange<Unit & Skill>((self) => {
-        if (self.skill.definition.activation?.sustain.type !== "AMMO") {
-            return self;
-        }
-
         const ammo = entries.remove(self.skill.ammo, id);
 
         return ammo === self.skill.ammo ? self : { ...self, skill: { ...self.skill, ammo } };

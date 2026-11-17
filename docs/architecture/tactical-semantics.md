@@ -35,7 +35,7 @@ ArkBattle 面向通用明日方舟战斗，卫戍协议是实现重点，不是 
 | ACTION-02 时间与中断 | 普通攻击释放／输出／恢复及独立取消。 | 完整攻速缩放、特殊取消、连击与锁定政策，见[行动研究](../research/cases/08-action-eligibility-and-interruption.md)。 |
 | SP-01 回复许可 | TIME／ACTION／HIT／EXTERNAL 与独立阻回。 | 特殊资源的隔离政策按实际表示接入；玛露魔力的原生 SP 复用不直接证明需要通用封闭接口，见[Skill 审查](../research/cases/09-skill-mechanisms-and-requirements.md#9-skill-覆盖审查2026-11-17)。 |
 | SP-02 连击 | 成功释放的 ACTION 回复。 | 多次攻击、剑豪例外与每段受击不等于每次攻击的内容。 |
-| SKILL-01 特殊技能 | 持久／本轮状态、门槛／支付、显式主动操作处理器与独立结束；跨部署持久化和已查 Fever 延时可组合。 | 按次数／充能选择初始预算、本次门槛／支付调整及特定控制豁免尚未接入；有限参数与整份定义的需求分开，见[发动变化研究](../research/cases/09-skill-mechanisms-and-requirements.md#10-发动变化的数量与表达范围2026-11-17)。 |
+| SKILL-01 特殊技能 | 持久／本轮状态、静态门槛／支付、本轮 Duration 初始化与弹药贡献、显式主动操作处理器及独立结束；跨部署持久化和已查 Fever 延时可组合。 | 按次数／充能选择预算的具体技能、Fever 本次门槛／支付豁免及止颂 S3定向异常豁免尚未接入，见[发动变化研究](../research/cases/09-skill-mechanisms-and-requirements.md#10-发动变化的数量与表达范围2026-11-17)。 |
 | SKILL-02 耗弹时点 | 消费与耗尽检查分开，旧 Activation 身份受保护。 | 具体弹药技能的耗尽检查时点与内容组合器 afterOutput 的适用范围。 |
 | EFFECT-02 重应用 | 五种政策、来源分组、层数和到期衰减。 | 静态重应用／修正描述到具体 Definition 的接入，不能将通用引擎等同所有 Buff。 |
 | EFFECT-03 Aura | Effect、查询、子 Scope 的组合基础。 | 生产 Aura 的刷新、暂停、样本替换与离开链路。 |

@@ -426,7 +426,16 @@ vitality.isAlive(bare);
 vitality.hpRatio(bare);
 declare const skillHost: Unit & SkillCapability;
 const controlledActivation: skills.ActivationDefinition<{ completed: number }, { remaining: number }> = {
-    trigger: 'MANUAL', requirement: 0, cost: 0, sustain: { type: 'INFINITE' }, initialize: () => ({ remaining: 3 }),
+    trigger: 'MANUAL', requirement: 0, cost: 0,
+    initialize(_battle, _source, self) {
+        const duration: skills.DurationDefinition = self.state.completed === 0
+            ? { type: 'TIME', durationTicks: 30 }
+            : { type: 'INFINITE' };
+        const initial: skills.ActivationInitial<{ remaining: number }> = {
+            state: { remaining: 3 }, duration,
+        };
+        return initial;
+    },
     operations: {
         STOP(state, source, self) {
             const completed: number = self.state.completed;
@@ -439,7 +448,7 @@ const controlledActivation: skills.ActivationDefinition<{ completed: number }, {
 };
 // @ts-expect-error an activation must declare its payment, including zero.
 const missingPayment: skills.ActivationDefinition<object, object> = {
-    trigger: 'MANUAL', requirement: 0, sustain: { type: 'INFINITE' }, initialize: () => ({}),
+    trigger: 'MANUAL', requirement: 0, initialize: () => ({ state: {}, duration: { type: 'INFINITE' } }),
 };
 const invalidDynamicPayment: skills.ActivationDefinition<{ completed: number }, { remaining: number }> = {
     ...controlledActivation,

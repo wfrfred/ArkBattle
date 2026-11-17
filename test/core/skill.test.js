@@ -22,10 +22,9 @@ test("activation publishes payment before onStart and clears only the completed 
             trigger: "MANUAL",
             requirement: 20,
             cost: 10,
-            sustain: { type: "INFINITE" },
             initialize: (_state, _source, self) => {
                 initializedAtSp.push(self.sp.value);
-                return { total: 3 };
+                return { state: { total: 3 }, duration: { type: "INFINITE" } };
             },
             onStart(state, source, self) {
                 observed.push({
@@ -101,6 +100,7 @@ test("activation publishes payment before onStart and clears only the completed 
     assert.equal(skills.getActivation(state, second.value).activation.lifecycle, "ACTIVE");
     state = skills.cancel(state, second.value, "STOPPED");
     assert.equal(skills.getSkill(state, reference).state.completed, 2);
+    assert.deepEqual(initializedAtSp, [30, 20]);
     assert.equal(skills.activate(state, reference).value, null);
 });
 
@@ -113,8 +113,7 @@ test("cancellation during payment notification retains payment and suppresses th
             trigger: "MANUAL",
             requirement: 10,
             cost: 10,
-            sustain: { type: "INFINITE" },
-            initialize: () => ({}),
+            initialize: () => ({ state: {}, duration: { type: "INFINITE" } }),
             onStart: (state, source) =>
                 skills.setState(state, skills.ref(source, program), { started: true }),
         },
@@ -153,8 +152,7 @@ test("active operations require a declared handler and current permission, while
             trigger: "MANUAL",
             requirement: 0,
             cost: 0,
-            sustain: { type: "INFINITE" },
-            initialize: () => ({ ready: false }),
+            initialize: () => ({ state: { ready: false }, duration: { type: "INFINITE" } }),
         },
     };
     const controlled = {
@@ -258,20 +256,29 @@ test("natural SP recovery pauses without backlog and uses current recovery speed
     assert.equal(skills.recover(state, source, "EXTERNAL", 5).value.amount, 1);
 });
 
-test("TIME extension changes this activation rather than the next activation's budget", () => {
+test("TIME extension stays in its round while persistent state selects a later INFINITE duration", () => {
     const program = {
         id: "timed",
         sp: null,
-        initialize: (state) => ({ state, value: {} }),
+        initialize: (state) => ({ state, value: { completed: 0 } }),
         activation: {
             trigger: "MANUAL",
             requirement: 0,
             cost: 0,
-            sustain: { type: "TIME", durationTicks: 5 },
-            initialize: () => ({ ticks: 0 }),
+            initialize: (_state, _source, self) => ({
+                state: { ticks: 0 },
+                duration: self.state.completed === 0
+                    ? { type: "TIME", durationTicks: 5 }
+                    : { type: "INFINITE" },
+            }),
             onTick(state, source, self) {
                 return skills.setActivationState(state, skills.activationRef(source, self), {
                     ticks: self.activation.state.ticks + 1,
+                });
+            },
+            onEnd(state, source, self) {
+                return skills.setState(state, skills.ref(source, program), {
+                    completed: self.state.completed + 1,
                 });
             },
         },
@@ -289,27 +296,31 @@ test("TIME extension changes this activation rather than the next activation's b
     state = skills.extendTime({ ...first.state, tick: 2 }, first.value, 3);
     state = update(state, source, presence.disappear());
     state = skills.advance({ ...state, tick: 5 }, source);
-    assert.equal(skills.getActivation(state, first.value).activation.sustain.endsAtTick, 8);
+    assert.equal(skills.getActivation(state, first.value).activation.duration.endsAtTick, 8);
     assert.equal(skills.getActivation(state, first.value).activation.state.ticks, 1);
     state = skills.advance({ ...state, tick: 8 }, source);
     assert.equal(get(state, 0).skill.activation, null);
     state = update(state, source, presence.appear([1, 1]));
     const second = skills.activate(state, reference);
     state = skills.extendTime(second.state, first.value, 10);
-    assert.equal(skills.getActivation(state, second.value).activation.sustain.endsAtTick, 13);
+    assert.deepEqual(skills.getActivation(state, second.value).activation.duration, { type: "INFINITE" });
+    state = skills.advance({ ...state, tick: 100 }, source);
+    assert.notEqual(skills.getActivation(state, second.value), undefined);
 });
 
-test("AMMO samples its own capacity formula and distinguishes consumption, refill quota, grants, and exhaustion", () => {
+test("AMMO samples its charged base before payment and applies capacity, consumption, refill and exhaustion policies", () => {
     const program = {
         id: "ammo",
-        sp: null,
+        sp: { initial: 2, capacity: 2, recovery: { type: "NONE" } },
         initialize: (state) => ({ state, value: {} }),
         activation: {
             trigger: "MANUAL",
-            requirement: 0,
-            cost: 0,
-            sustain: { type: "AMMO", amount: 10 },
-            initialize: () => ({}),
+            requirement: 1,
+            cost: 1,
+            initialize: (_state, _source, self) => ({
+                state: { charged: self.sp.value === 2 },
+                duration: { type: "AMMO", amount: self.sp.value === 2 ? 20 : 8 },
+            }),
         },
     };
     const definition = {
@@ -326,23 +337,60 @@ test("AMMO samples its own capacity formula and distinguishes consumption, refil
         }));
     const first = skills.activate(state, reference);
     state = update(first.state, source, skill.removeAmmoContribution("magazine"));
-    assert.equal(skills.getActivation(state, first.value).activation.sustain.initial, 17);
+    assert.equal(skills.getActivation(state, first.value).activation.duration.initial, 32);
+    assert.equal(skills.getActivation(state, first.value).activation.state.charged, true);
+    assert.equal(get(state, 0).skill.sp.value, 1);
     assert.equal(skills.resolveAmmoCapacity(5, [{ addition: 0, ratio: 0.5 }]), 7);
-    state = skills.consume(state, first.value, 17).state;
-    assert.equal(skills.getActivation(state, first.value).activation.sustain.remaining, 0);
-    let restored = skills.replenish(state, first.value, 30);
+    state = skills.consume(state, first.value, 32).state;
+    assert.equal(skills.getActivation(state, first.value).activation.duration.remaining, 0);
+    let restored = skills.replenish(state, first.value, 40);
     state = restored.state;
-    assert.equal(restored.value.amount, 17);
-    state = skills.consume(state, first.value, 17).state;
+    assert.equal(restored.value.amount, 32);
+    state = skills.consume(state, first.value, 32).state;
     restored = skills.replenish(state, first.value, 1);
     state = restored.state;
     assert.equal(restored.value.amount, 0);
     state = skills.grant(state, first.value, 1).state;
-    assert.equal(skills.getActivation(state, first.value).activation.sustain.replenished, 17);
+    assert.equal(skills.getActivation(state, first.value).activation.duration.replenished, 32);
     state = skills.consume(state, first.value).state;
     state = skills.check(state, first.value);
     assert.equal(get(state, 0).skill.activation, null);
     const second = skills.activate(state, reference);
     state = skills.consume(second.state, first.value).state;
-    assert.equal(skills.getActivation(state, second.value).activation.sustain.remaining, 10);
+    assert.equal(skills.getActivation(state, second.value).activation.duration.remaining, 8);
+});
+
+test("Ammo contributions registered and withdrawn during TIME affect only later AMMO durations", () => {
+    const program = {
+        id: "changing-duration",
+        sp: null,
+        initialize: state => ({ state, value: { ammo: false } }),
+        activation: {
+            trigger: "MANUAL", requirement: 0, cost: 0,
+            initialize: (_state, _source, self) => ({
+                state: {},
+                duration: self.state.ammo
+                    ? { type: "AMMO", amount: 10 }
+                    : { type: "TIME", durationTicks: 5 },
+            }),
+        },
+    };
+    const definition = {
+        id: "operator", hooks: Hooks.empty(),
+        skill: { initialize: state => skills.create(state, program) },
+    };
+    let state = battle([{ definition, position: [1, 1] }]);
+    const source = units.ref(get(state, 0));
+    const reference = skills.ref(source, program);
+    const timed = skills.activate(state, reference);
+    state = update(timed.state, source, units.compose(
+        skill.setAmmoContribution({ id: "kept", value: [{ addition: 0, ratio: 0.5 }] }),
+        skill.setAmmoContribution({ id: "withdrawn", value: [{ addition: 7, ratio: 0 }] }),
+    ));
+    state = update(state, source, skill.removeAmmoContribution("withdrawn"));
+    assert.deepEqual(skills.getActivation(state, timed.value).activation.duration, { type: "TIME", endsAtTick: 5 });
+    state = skills.finish(state, timed.value);
+    state = skills.setState(state, reference, { ammo: true });
+    const ammo = skills.activate(state, reference);
+    assert.equal(skills.getActivation(ammo.state, ammo.value).activation.duration.initial, 15);
 });

@@ -21,13 +21,6 @@ export function create<S extends object, A extends object>(
         assertNonnegativeSafeInteger(activation.cost, "skill SP cost");
     }
 
-    const policy = activation?.sustain;
-    if (policy?.type === "TIME") {
-        assertNonnegativeSafeInteger(policy.durationTicks, "skill duration ticks");
-    } else if (policy?.type === "AMMO") {
-        assertNonnegativeSafeInteger(policy.amount, "skill ammunition");
-    }
-
     const initialized = definition.initialize(battle);
 
     return {

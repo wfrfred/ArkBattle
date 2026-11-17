@@ -14,11 +14,11 @@ Skill 管理 SP、发动、持续预算、主动操作与完整终止。Action �
 
 `unit/skill/` 拥有聚合、身份、SP／Ammo、持续预算与完整操作；Capability 负责装配、结构守卫、贡献、限制和通知 Key。具体声明以源码为准，登记和写回遵守[接口约定](api-conventions.md)。
 
-SP 可以不存在；hasSp 同时证明配置与状态存在。SP Definition 保存初始值、容量和回复配置；Activation Definition 保存静态发动门槛、支付额和持续预算。只有回复速度／倍率及弹药容量具有贡献入口。
+SP 可以不存在；hasSp 同时证明配置与状态存在。SP Definition 保存初始值、容量和回复配置；Activation Definition 保存静态发动门槛、支付额和本轮初始化程序。只有回复速度／倍率及弹药容量具有贡献入口。
 
 ## 1. 单槽聚合、Definition 与两种身份
 
-每个 Unit 保存一份 Skill 聚合：Definition、持久 state、可空 SP 与可空 activation。Activation 是同一聚合的非空视图，本轮包含身份、开始时刻、生命周期、Sustain 与私有状态。Capability 另保存宿主内激活计数、Ammo 贡献和许可。
+每个 Unit 保存一份 Skill 聚合：Definition、持久 state、可空 SP 与可空 activation。Activation 是同一聚合的非空视图，本轮包含身份、开始时刻、生命周期、Duration 与私有状态。Capability 另保存宿主内激活计数、Ammo 贡献和许可。
 
 持久 state 保存跨激活事实，本轮 state 保存当次进度。可直接由 activation 槽位判断的阶段不再重复保存；SP.value 是余额的唯一事实。聚合不重复保存 host，内容程序显式接收宿主 Ref。
 
@@ -48,11 +48,13 @@ TIME 自然回复保留周期、余时和上次时刻：
 
 ACTION 回复监听成功释放；普通 Action 的启动或结束不自动授予 SP。HIT 回复由 Skill 入场时登记到 HP Damage.receiving，使用 10000 量级优先级：工作值未取消且为正、nature 非 LOSS、hitRecovery 为 true 时尝试回复。前置取消／归零不授予 HIT，后续抵挡／闪避不回滚已完成回复。回复仍受当前 Skill 许可与容量约束，Damage 不依赖 Skill；公共伤害阶段见[Resource](resource.md)。
 
-## 3. Sustain 与弹药
+## 3. Duration 与弹药
+
+Activation.initialize 是纯求值，读取扣费前的完整 Skill，返回 `{ state, duration }`。duration 为 TIME、AMMO 或 INFINITE；可以根据长期状态、充能等本次事实选择预算。本轮预算在提交前校验，创建持久 Skill 时不执行本轮初始化。
 
 TIME 保存本轮截止 Tick，extendTime 明确调整它；INFINITE 由内容结束。AMMO 保存本次初始容量、余量和累计补弹量。
 
-弹药容量在发动、支付 SP 之前采样，后来的贡献只影响后续发动。公式为 `max(1, base + Σaddition + RoundToEven(base × Σratio))`，固定追加不参与比例乘算。当前覆盖初始基础上限与原始上限相同的普通情况，运行中基础上限变化尚未支持。
+Ammo 贡献的登记和撤销不依赖静态或当前 Duration 类型，也不改变已运行预算。只有本轮返回 AMMO 时，才以本轮 amount 为基础，在支付前采样贡献。公式为 `max(1, base + Σaddition + RoundToEven(base × Σratio))`，固定追加不参与比例乘算。当前覆盖初始基础上限与原始上限相同的普通情况，运行中基础上限变化尚未支持。
 
 consume 按完整指定数额消费，允许负余量，不自动结束；check 独立检查同一 Activation 并结束耗尽轮次。replenish 同时受本次容量和累计补弹额度限制；grant 是内容自身增加，不占普通补弹额度，但仍受容量限制。结束丢弃余量不算消费。
 
@@ -72,7 +74,7 @@ Skill 通知包括 SP 回复／支付／修改、耗弹／普通补弹和激活�
 
 ## 5. 发动与完整结束
 
-发动先检查宿主、触发方式、限制、门槛与足额支付；拒绝不构造本轮私有状态、不支付。受理后采样本轮状态和持续预算，一次发布扣费、Activation 与下一轮身份，登记其 Unit 所有权。随后记录启动表现、派发 activationStarted 和 spPaid，再重读同一身份、ACTIVE 状态及宿主生命资格，决定是否执行 onStart。
+发动先检查宿主、触发方式、限制、门槛与足额支付；拒绝不初始化、不支付。通过后调用本轮 initialize 一次，构造 Duration，再一次发布扣费、Activation 与下一轮身份，登记其 Unit 所有权。随后记录启动表现、派发 activationStarted 和 spPaid，再重读同一身份、ACTIVE 状态及宿主生命资格，决定是否执行 onStart。零时长也先执行仍有效的 onStart，再复查到期并结束。
 
 暂时消失本身不跳过仍成立的 onStart，也不自动结束已有持续技能。启动通知可同步结束本轮；返回的 Ref 仍表示创建事实，支付与已经完成的业务不回滚。依赖本轮身份的业务在登记后执行，不能为前置判断另建本轮状态。
 
@@ -80,6 +82,6 @@ Skill 通知包括 SP 回复／支付／修改、耗弹／普通补弹和激活�
 
 ## 6. 覆盖边界
 
-初始 Sustain 尚不能自然按次数／充能状态选择，Fever 的本次门槛与支付豁免、止颂 S3的特定启动限制豁免也未接入。变化范围与实际数量见[发动变化研究](../research/cases/09-skill-mechanisms-and-requirements.md#10-发动变化的数量与表达范围2026-11-17)。这些需求不预定完整定义生成函数；金币／魔力复用原生 SP 也不直接证明项目必须提供通用配置切换或封闭接口。
+本轮初始化可以按次数／充能状态构造 Duration；具体技能仍须接入。Fever 的本次门槛与支付豁免、止颂 S3的特定启动限制豁免尚未接入，变化范围与实际数量见[发动变化研究](../research/cases/09-skill-mechanisms-and-requirements.md#10-发动变化的数量与表达范围2026-11-17)。金币／魔力复用原生 SP，不直接证明项目必须提供普通 SP 运行期配置切换或封闭增减接口。
 
 充能、条件耗弹、Fever 的已查期限延后及跨部署魔力的持久保存可以使用现有领域组合；这不代表相应内容已经接入。完整接入范围见[内容缺口](tactical-semantics.md)，同实例复活的技能接续按具体原生程序确定，不统一推断保留或重置。

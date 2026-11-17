@@ -3,7 +3,7 @@ import type { State as BattleState } from "../../battle/state.js";
 import type { Unit } from "../unit.js";
 import type { Skill as SkillCapability } from "../capability/skill/capability.js";
 import type { Skill } from "./skill.js";
-import type { Definition as SustainDefinition, State as SustainState } from "./sustain.js";
+import type { Definition as DurationDefinition, State as DurationState } from "./duration.js";
 
 export type Operation = "STOP" | "RETRIGGER";
 
@@ -12,16 +12,20 @@ export type Trigger = "MANUAL" | "AUTO" | "PASSIVE";
 export type End =
     { readonly type: "FINISHED" } | { readonly type: "CANCELLED"; readonly reason: string };
 
+export interface Initial<A extends object = object> {
+    readonly state: A;
+    readonly duration: DurationDefinition;
+}
+
 export interface Definition<S extends object, A extends object> {
     readonly trigger: Trigger;
     readonly requirement: number;
     readonly cost: number;
-    readonly sustain: SustainDefinition;
     readonly initialize: (
         battle: BattleState,
         source: Ref<Unit & SkillCapability>,
         self: Skill<S, A>,
-    ) => A;
+    ) => Initial<A>;
     readonly accepts?: (
         battle: BattleState,
         source: Ref<Unit & SkillCapability>,
@@ -61,7 +65,7 @@ export interface State<A extends object = object> {
     readonly id: number;
     readonly startedAtTick: number;
     readonly lifecycle: "ACTIVE" | "ENDING";
-    readonly sustain: SustainState;
+    readonly duration: DurationState;
     readonly state: A;
 }
 

@@ -1,3 +1,4 @@
+import { assertNonnegativeSafeInteger } from "../../common/assert.js";
 import { lifetime as unitLifetime, replace as replaceUnits, update } from "../../battle/unit.js";
 import type { Identified, Ref } from "../../common/ref.js";
 import { appendEvents, type State as BattleState, type Result } from "../../battle/state.js";
@@ -20,7 +21,7 @@ import {
     type End,
     type Operation,
 } from "./activation.js";
-import type { State as SustainState } from "./sustain.js";
+import type { Definition as DurationDefinition, State as DurationState } from "./duration.js";
 import { dispatch, activationStarted, spPaid, activationEnded } from "../capability/skill/hook.js";
 import * as query from "./query.js";
 import { ref as skillRef, type Skill } from "./skill.js";
@@ -150,7 +151,8 @@ export function activate<S extends object, A extends object>(
         return { state: battle, value: null };
     }
 
-    const sustain = initialSustain(battle, unit);
+    const initialized = definition.initialize(battle, source, self);
+    const duration = initialDuration(battle, unit, initialized.duration);
     const active: Activation<S, A> = {
         definition: self.definition,
         state: self.state,
@@ -159,8 +161,8 @@ export function activate<S extends object, A extends object>(
             id: unit.skill.nextActivationId,
             startedAtTick: battle.tick,
             lifecycle: "ACTIVE",
-            sustain,
-            state: definition.initialize(battle, source, self),
+            duration,
+            state: initialized.state,
         },
     };
     const nextActivationId = active.activation.id + 1;
@@ -215,8 +217,8 @@ export function activate<S extends object, A extends object>(
     const after = query.getActivation(battle, activatedRef);
     if (
         after?.activation.lifecycle === "ACTIVE" &&
-        after.activation.sustain.type === "TIME" &&
-        after.activation.sustain.endsAtTick <= battle.tick
+        after.activation.duration.type === "TIME" &&
+        after.activation.duration.endsAtTick <= battle.tick
     ) {
         battle = finish(battle, activatedRef);
     }
@@ -314,8 +316,8 @@ export function advance(battle: BattleState, host: Ref<Unit & SkillCapability>):
     if (unit?.lifecycle === "PRESENT" && unit.skill.activation?.lifecycle === "ACTIVE") {
         const active = unit.skill as Identified<never, typeof unit.skill> as Activation;
         if (
-            active.activation.sustain.type === "TIME" &&
-            active.activation.sustain.endsAtTick <= battle.tick
+            active.activation.duration.type === "TIME" &&
+            active.activation.duration.endsAtTick <= battle.tick
         ) {
             battle = finish(battle, activationRef<Activation>(host, active));
         } else {
@@ -381,32 +383,36 @@ export function extendTime<X extends Activation<any, any>>(
     if (
         active?.id !== reference.id ||
         active.lifecycle !== "ACTIVE" ||
-        active.sustain.type !== "TIME"
+        active.duration.type !== "TIME"
     ) {
         return battle;
     }
 
-    const endsAtTick = Math.max(battle.tick, active.sustain.endsAtTick + ticks);
+    const endsAtTick = Math.max(battle.tick, active.duration.endsAtTick + ticks);
 
     return replaceUnits(battle, [
         {
             ...unit,
             skill: {
                 ...unit.skill,
-                activation: { ...active, sustain: { type: "TIME", endsAtTick } },
+                activation: { ...active, duration: { type: "TIME", endsAtTick } },
             },
         },
     ]);
 }
 
-function initialSustain(battle: BattleState, unit: Unit & SkillCapability): SustainState {
-    const definition = unit.skill.definition.activation!.sustain;
-
+function initialDuration(
+    battle: BattleState,
+    unit: Unit & SkillCapability,
+    definition: DurationDefinition,
+): DurationState {
     if (definition.type === "INFINITE") {
         return { type: "INFINITE" };
     }
 
     if (definition.type === "AMMO") {
+        assertNonnegativeSafeInteger(definition.amount, "skill ammunition");
+
         const budget = resolveAmmoCapacity(
             definition.amount,
             contribution
@@ -416,6 +422,8 @@ function initialSustain(battle: BattleState, unit: Unit & SkillCapability): Sust
 
         return { type: "AMMO", initial: budget, remaining: budget, replenished: 0 };
     }
+
+    assertNonnegativeSafeInteger(definition.durationTicks, "skill duration ticks");
 
     return { type: "TIME", endsAtTick: battle.tick + definition.durationTicks };
 }
