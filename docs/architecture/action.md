@@ -64,6 +64,16 @@ Combat 固定入口的 Unit 与已有执行候选。对每个宿主先推进原�
 
 [普通攻击模板](../../src/content/actions/attack.ts)在 prepare 绑定目标与时序；首次 onTick 先发布开始进度，再调用可选 onStart。实际输出通过[资源操作](resource.md)执行，弹道使用独立 Projectile 生命周期。面向由具体程序调用 [Facing](capability.md#facing)；通用 Action 不推断转向。
 
+时序程序归 Content，只消费静态业务参数，不把 Animator、Spine 或渲染状态引入 Core。FIXED 使用明确的前摇与恢复 Tick；ATTACK_SPEED 使用起手段、主段长度、主段内释放位置与缩放范围，参数由 [Data](data.md)转换。
+
+设当前攻击周期为 T、起手段长为 B、主段长为 L，缩放量为 `a = clamp(T / (B + L), minScale, maxScale)`，无上限时只限制下限。开始时缓存动作预算 `(B + L) × a`；起手段的等待进入后固定，进入后续主段时可以用最新周期重新求释放时间。已经进入的等待与释放截止时间不随后来的改速重新缩放，冷却仍按自身契约更新。
+
+事件等待最晚在 `startedAtTick + max(1, RoundToEven(cachedDuration))` 超时释放，后继主段改速不延后该缓存期限。释放后等待缓存预算扣除已用时间的余量，不再加一个完整恢复段或攻击周期。
+
+分段固定等待和事件等待超时均按取偶舍入、最少一个 Tick，依据原生等待器；初次 yield 已计入等待，不再额外增加一个 Tick。本项目在 30 Hz 推进中，于首个达到标称事件时间或量化期限的整数 Tick 处理，不复刻官方动画事件与协程的帧内调度，也不称为实测官方释放帧，依据见[计时调查](../research/cases/07-action-timing-and-animation.md)。
+
+玫兰莎的起手由具体内容保存攻击会话：首次带 Begin，同会话续轮只用主段，失去目标或中断后重新起手；收尾显示段不额外占用执行。
+
 beforeRelease 返回继续或中断及恢复时长；released 表示已到达成功释放点，先于伤害／治疗输出。派发按当前执行 RUNNING 与宿主 PRESENT 资格续行，首个中断停止；恢复信息交给具体攻击，不增加通用 Unit 恢复字段。
 
 攻击通过拦截后记录 ACTION_RELEASED、派发 released，再读取最新执行的输出载荷。释放通知可以取消执行或结束宿主，此时旧输出停止，已完成的释放事实和回复保留。Skill 在此登记 ACTION 回复，Action 本身不读取 Skill。

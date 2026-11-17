@@ -1,4 +1,5 @@
 import type { Attack } from "../../actions/attack.js";
+import type { Timing } from "../../actions/timing.js";
 import type { Profile } from "../../../data/unit/enemy.js";
 import type { Unit } from "../../../core/unit/index.js";
 import type {
@@ -10,9 +11,10 @@ import {
     createDefinition as createGroundDefinition,
     type Definition as GroundDefinition,
 } from "../ground.js";
-import { create as createAttack, type Timing } from "./action.js";
+import { create as createAttack } from "./action.js";
 
-export interface AttackTiming extends Timing {
+export interface AttackTiming {
+    readonly timing: Timing;
     readonly hitRadius: number;
 }
 
@@ -34,7 +36,7 @@ export function create(
     }
 
     const ground = createGroundDefinition(profile, timing.hitRadius, movement);
-    const attack = createAttack(profile, timing);
+    const attack = createAttack(profile, timing.timing);
     const initializeAttack = createAction(attack);
     const definition: Definition = {
         ...ground,

@@ -6,6 +6,7 @@ import {
 } from "../../../core/battle/resource/hp/damage/index.js";
 
 import * as units from "../../../core/unit/index.js";
+import type { Timing as AttackTiming } from "../../actions/timing.js";
 import type { Profile } from "../../../data/unit/enemy.js";
 import { perSecondToPerTick, secondsToTicks } from "../../../data/time.js";
 import { assertNonnegativeSafeInteger, assertPositiveNumber } from "../../../core/common/assert.js";
@@ -23,8 +24,8 @@ import { hasAllegiance } from "../../../core/unit/capability/allegiance/capabili
 import { topK } from "../../../core/common/collection.js";
 
 export interface Timing {
-    readonly windupTicks: number;
-    readonly recoveryTicks: number;
+    readonly melee: AttackTiming;
+    readonly ranged: AttackTiming;
 }
 
 export interface Projectile {
@@ -74,8 +75,7 @@ export function createMelee(profile: Profile, timing: Timing): Attack {
         speed: profile.attackSpeed,
         triggerBindingId: "primary",
         intervalTicks: secondsToTicks(profile.baseAttackTime),
-        windupTicks: timing.windupTicks,
-        recoveryTicks: timing.recoveryTicks,
+        timing: timing.melee,
         targetGroups: [
             {
                 id: "primary",
@@ -123,8 +123,7 @@ export function createRanged(profile: Profile, timing: Timing, projectile: Proje
         speed: profile.attackSpeed,
         triggerBindingId: "primary",
         intervalTicks: secondsToTicks(profile.baseAttackTime),
-        windupTicks: timing.windupTicks,
-        recoveryTicks: timing.recoveryTicks,
+        timing: timing.ranged,
         targetGroups: [
             {
                 id: "primary",

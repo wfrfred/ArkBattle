@@ -3,6 +3,7 @@ import { Hooks } from "../../../dist/core/hook.js";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
+import { parseAttackTiming } from "../../../dist/data/action/timing.js";
 import { prepare } from "../../../dist/data/unit/operator.js";
 import { create } from "../../../dist/content/operators/melantha/unit.js";
 import { initialize, getUnit } from "../../helpers/unit.js";
@@ -13,11 +14,15 @@ import { ref as skillRef } from "../../helpers/skill.js";
 import { resolveAttack } from "../../../dist/core/unit/capability/offense/index.js";
 import { fixtureBattlefieldState } from "../../helpers/battlefield.js";
 import { ref } from "../../../dist/core/unit/index.js";
-import { start, advance as advanceAction, ref as actionRef } from "../../../dist/core/unit/action/index.js";
+import { start, advance as advanceAction, ref as actionRef, cancel, forUnit } from "../../../dist/core/unit/action/index.js";
 import { advance as advanceBlocking, relations } from "../../../dist/core/battle/blocking/index.js";
-import { invisibleRestriction } from "../../../dist/core/effects/visibility.js";
+import { invisible, invisibleRestriction } from "../../../dist/core/effects/visibility.js";
+
+import { install, end } from "../../../dist/core/unit/effect/index.js";
+import { advance as advanceCombat } from "../../../dist/core/battle/steps/combat.js";
 
 const data = JSON.parse(readFileSync(new URL("../../fixtures/arknights/main-mode-units.json", import.meta.url)));
+const attackTiming = parseAttackTiming(JSON.parse(readFileSync(new URL("../../fixtures/arknights/action_timing.json", import.meta.url), "utf8")).melantha);
 const profile = () => prepare(
     { id: "char_208_melan", record: data.characters.char_208_melan },
     data.skills["skcom_atk_up[1]"],
@@ -33,7 +38,7 @@ const receiver = (restrictions = []) => initialize({
     },
 });
 const source = () => initialize({
-    id: 0, position: [0, 0], definition: create(profile()),
+    id: 0, position: [0, 0], definition: create(profile(), attackTiming),
     initial: { occupancy: { tile: [0, 0], direction: "RIGHT" }, facing: { direction: "RIGHT" } },
 });
 
@@ -47,7 +52,8 @@ test("Melantha's talent and S1 affect real attacks, and the talent remains after
     battle = activate(battle, skillRef(getUnit(battle, 0))).state;
     const attack = actor.action.actions.get("normal-attack").definition;
     const started = start(battle, actionRef(ref(actor), attack));
-    battle = advanceAction(started.state, started.value);
+    battle = started.state;
+    for (let tick = 0; tick <= 29; tick++) battle = advanceAction({ ...battle, tick }, started.value);
     assert.ok(Math.abs(getUnit(battle, 1).vitality.health.hp - (10000 - (738 + 25 + 65) * 1.58)) < 1e-6);
 
     battle = advance({ ...battle, tick: 600 }, ref(actor));
@@ -61,4 +67,41 @@ test("Melantha's ordinary attack still requires a visible target while blocking 
     assert.equal(relations(battle)[0].blocked.id, enemy.id);
     const attack = actor.action.actions.get("normal-attack").definition;
     assert.equal(start(battle, actionRef(ref(actor), attack)).value, null);
+});
+
+test("Melantha pays Begin on first entry, skips it for consecutive attacks, and restores it after a target gap or interruption", () => {
+    const actor = source();
+    let battle = advanceCombat(add(add(createBattleState(fixtureBattlefieldState([])), actor), receiver()));
+    const through = untilTick => {
+        for (let tick = battle.tick + 1; tick <= untilTick; tick++) {
+            battle = advanceCombat({ ...battle, tick });
+        }
+    };
+    const releases = () => battle.events
+        .filter(event => event.type === "DAMAGE" && event.targetUnitId === 1)
+        .map(event => event.tick);
+    through(28);
+    assert.deepEqual(releases(), []);
+    through(29);
+    assert.deepEqual(releases(), [29]);
+    through(65);
+    assert.deepEqual(releases(), [29]);
+    through(66);
+    assert.deepEqual(releases(), [29, 66]);
+
+    const hidden = install(battle, ref(getUnit(battle, 1)), invisible);
+    battle = hidden.state;
+    through(90);
+    assert.deepEqual(battle.events.filter(event => event.type === "ATTACK_STARTED").map(event => event.tick), [0, 45]);
+    battle = end(battle, hidden.value);
+    through(119);
+    assert.deepEqual(releases(), [29, 66]);
+    through(120);
+    assert.deepEqual(releases(), [29, 66, 120]);
+
+    battle = cancel({ ...battle, tick: 121 }, forUnit(battle, ref(actor))[0], "INTERRUPTED");
+    through(164);
+    assert.deepEqual(releases(), [29, 66, 120]);
+    through(165);
+    assert.deepEqual(releases(), [29, 66, 120, 165]);
 });

@@ -4,7 +4,13 @@ import { normal as normalSite } from "../../terrain/condition.js";
 import { update as updateUnit } from "../../../core/battle/unit.js";
 import { scope } from "../../../core/lifetime/index.js";
 import { createArknightsElementalDefinition } from "../../../data/effect/elemental.js";
-import { create as createAction, createActions } from "../../../core/unit/action/index.js";
+import {
+    create as createAction,
+    createActions,
+    getAction,
+    ref as actionRef,
+    setState as setActionState,
+} from "../../../core/unit/action/index.js";
 import {
     get as getCurrentUnit,
     ref as unitRef,
@@ -36,7 +42,9 @@ import {
 
 import * as attribute from "../../../core/unit/contribution/attribute.js";
 import { secondsToTicks } from "../../../data/time.js";
-import { create as createAttack } from "./action.js";
+import { create as createAttack, hasTarget } from "./action.js";
+import type { AttackSpeedTiming } from "../../actions/timing.js";
+import { allows } from "../../../core/restriction.js";
 
 export interface Definition
     extends
@@ -93,7 +101,7 @@ function attackBonus(id: string, amount: number): EffectDefinition<object, Offen
     };
 }
 
-export function create(profile: Profile): Definition {
+export function create(profile: Profile, timing: AttackSpeedTiming): Definition {
     if (profile.id !== "char_208_melan" || profile.skill.definition.id !== "skcom_atk_up[1]") {
         throw new TypeError("Melantha content requires her first skill");
     }
@@ -124,7 +132,7 @@ export function create(profile: Profile): Definition {
         },
     };
 
-    const attack = createAttack(profile);
+    const attack = createAttack(profile, timing);
     const initializeAttack = createAction(attack);
 
     return {
@@ -186,6 +194,22 @@ export function create(profile: Profile): Definition {
         },
         action: {
             initialize: (battle) => createActions(battle, initializeAttack),
+            select(battle, self) {
+                const reference = actionRef(unitRef(self), attack);
+                const current = getAction(battle, reference);
+                if (
+                    !hasTarget(battle, self, profile) ||
+                    !allows(battle, { self, definitionId: attack.id }, self.action.restrictions)
+                ) {
+                    if (current?.execution === null && current.state.inSession) {
+                        battle = setActionState(battle, reference, { inSession: false });
+                    }
+
+                    return { state: battle, value: [] };
+                }
+
+                return { state: battle, value: [attack.id] };
+            },
         },
         skill: { initialize: (battle) => createSkill(battle, skill) },
         hooks: Hooks.empty().set(unitHooks.enter, {

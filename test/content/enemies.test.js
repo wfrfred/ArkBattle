@@ -11,6 +11,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { prepare } from '../../dist/data/unit/enemy.js';
+import { parseAttackTiming } from '../../dist/data/action/timing.js';
 import { parseEnemyMovementPrefab } from '../../dist/data/unit/prefab.js';
 import { create as createHound } from '../../dist/content/enemies/hound/unit.js';
 import { create as createCrossbowman } from '../../dist/content/enemies/crossbowman/unit.js';
@@ -37,6 +38,12 @@ import { advance as advanceSchedule } from '../../dist/core/battle/schedule/inde
 import { battle as createBattle } from '../helpers/battle.js';
 
 const fixture = JSON.parse(readFileSync(new URL('../fixtures/arknights/main-mode-units.json', import.meta.url), 'utf8'));
+const timingData = JSON.parse(readFileSync(new URL('../fixtures/arknights/action_timing.json', import.meta.url), 'utf8'));
+const houndTiming = parseAttackTiming(timingData.hound);
+const crossbowTiming = {
+  melee: parseAttackTiming(timingData.crossbowMelee),
+  ranged: parseAttackTiming(timingData.crossbowRanged),
+};
 const rawEnemy = id => fixture.enemies.find(entry => entry.Key === id);
 const profile = (id, level = 0, overwrittenData) => prepare(rawEnemy(id), { level, overwrittenData });
 const houndMovement = parseEnemyMovementPrefab(JSON.parse(readFileSync(new URL('../fixtures/arknights/prefab_enemy_1000_gopro.json', import.meta.url), 'utf8')));
@@ -53,6 +60,16 @@ function emptyBattle() {
   return createBattleState(createBattlefield(createMap(5, 5, tileEntries(Array.from({ length: 25 }, () => tile)))));
 }
 
+function advanceCombatUntil(state, untilTick) {
+  for (let tick = state.tick + 1; tick <= untilTick; tick++) state = advanceCombat({ ...state, tick });
+  return state;
+}
+
+function advanceActionUntil(state, reference, untilTick) {
+  for (let tick = state.tick; tick <= untilTick; tick++) state = advanceAction({ ...state, tick }, reference);
+  return state;
+}
+
 function guard(id, position, blockCapacity = 1, restrictions = []) {
   return initialize({ id, position, definition: { hooks: Hooks.empty(),
     id: 'test-guard', targetable: { taunt: 0, restrictions }, vitality: { maxHp: 1000, defense: 40, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 }, allegiance: { side: 'ALLY' }, layer: { type: 'GROUND' },
@@ -62,7 +79,7 @@ function guard(id, position, blockCapacity = 1, restrictions = []) {
 }
 
 test('hound content binds configured regeneration and rejects unimplemented stun immunity', () => {
-  const timing = { windupTicks: 0, recoveryTicks: 0, hitRadius: 0.2 };
+  const timing = { timing: houndTiming, hitRadius: 0.2 };
   const advanced = profile('enemy_1000_gopro', 1, { attributes: {
     maxHp: { m_defined: true, m_value: 4000 },
     atk: { m_defined: false, m_value: 9999 },
@@ -84,7 +101,7 @@ function routeInitial(position) {
 
 test('scheduled hound faces its route after the first checkpoint has changed its birth position', () => {
   const { definition } = createHound(profile('enemy_1000_gopro'), {
-    windupTicks: 0, recoveryTicks: 0, hitRadius: 0.2,
+    timing: houndTiming, hitRadius: 0.2,
   }, houndMovement);
   const plan = {
     motionMode: 'WALK', startPosition: [1, 1], endPosition: null,
@@ -114,7 +131,7 @@ test('scheduled hound faces its route after the first checkpoint has changed its
 
 test('a hound attacks its hidden blocker while still respecting invincibility', () => {
   const { definition, action } = createHound(profile('enemy_1000_gopro'), {
-    windupTicks: 0, recoveryTicks: 0, hitRadius: 0.2,
+    timing: houndTiming, hitRadius: 0.2,
   }, houndMovement);
   const blocker = guard(0, [2, 2], 1, [{ id: 'hidden', value: invisibleRestriction }]);
   const hound = initialize({ id: 1, position: [2, 2.5], definition, initial: routeInitial([2, 2.5]) });
@@ -123,20 +140,20 @@ test('a hound attacks its hidden blocker while still respecting invincibility', 
   assert.equal(allowsRestrictions(before, hound)(getUnit(before, 0)), false);
   assert.deepEqual(selectTargets(before, unitRef(hound)).value.map(ref => ref.id), [0]);
   const started = startAction(before, actionRef(unitRef(hound), action));
-  const hit = advanceAction(started.state, started.value);
+  const hit = advanceActionUntil(started.state, started.value, 18);
   assert.equal(getUnit(hit, 0).vitality.health.hp, 850);
 
   const protectedState = install(before, unitRef(blocker), invincible).state;
   const protectedStart = startAction(protectedState, actionRef(unitRef(hound), action));
   assert.notEqual(protectedStart.value, null);
-  assert.equal(getUnit(advanceAction(protectedStart.state, protectedStart.value), 0).vitality.health.hp, 1000);
+  assert.equal(getUnit(advanceActionUntil(protectedStart.state, protectedStart.value, 18), 0).vitality.health.hp, 1000);
 });
 
 test('crossbow selects melee for its actual blocker while ranged targeting keeps ordinary restrictions', () => {
   const narrow = [{ type: 'CIRCLE', offset: [0, 0], radius: 0.01 }];
   const projectile = { definition: createArrow(), speedPerSecond: 6, stopDelayTicks: 0 };
   const { definition, actions } = createCrossbowman({ ...profile('enemy_1003_ncbow'), rangeRadius: 0.01 }, {
-    windupTicks: 1, recoveryTicks: 1, hitRadius: 0.2, projectile,
+    ...crossbowTiming, hitRadius: 0.2, projectile,
   }, crossbowMovement);
   const blocker = guard(0, [2, 2], 1, [{ id: 'innate', value: invisibleRestriction }]);
   const bow = initialize({ id: 1, position: [2, 2.5], definition, initial: routeInitial([2, 2.5]) });
@@ -150,7 +167,7 @@ test('crossbow selects melee for its actual blocker while ranged targeting keeps
   assert.deepEqual(ranged(state, unitRef(bow)).value, []);
   assert.deepEqual(definition.action.select(state, getUnit(state, 1)).value, ['melee']);
   const started = advanceCombat(state);
-  const released = advanceCombat({ ...started, tick: 1 });
+  const released = advanceCombatUntil(started, 15);
   assert.equal(getUnit(released, 0).vitality.health.hp, 800);
   assert.equal(released.battlefield.projectiles.size, 0);
   assert.deepEqual(definition.action.select(released, getUnit(released, 1)).value, []);
@@ -165,11 +182,11 @@ test('crossbow selects melee for its actual blocker while ranged targeting keeps
   assert.deepEqual(definition.action.select(unblocked, getUnit(unblocked, 1)).value, ['ranged']);
 });
 
-test('crossbow uses explicit windup and arrow speed, then settles damage on contact', () => {
+test('crossbow uses its authored release event and arrow speed, then settles damage on contact', () => {
 
   const projectileDefinition = createArrow();
   const { definition, actions: { ranged: attack } } = createCrossbowman(profile('enemy_1003_ncbow'), {
-    windupTicks: 1, recoveryTicks: 1, hitRadius: 0.2,
+    ...crossbowTiming, hitRadius: 0.2,
     projectile: { definition: projectileDefinition, speedPerSecond: 6, stopDelayTicks: 0 },
   }, crossbowMovement);
 
@@ -179,10 +196,12 @@ test('crossbow uses explicit windup and arrow speed, then settles damage on cont
   let state = started.state;
   assert.equal(state.battlefield.projectiles.size, 0);
   assert.equal(getUnit(state, 0).vitality.health.hp, 1000);
-  state = advanceAction({ ...state, tick: 1 }, started.value);
+  state = advanceActionUntil(state, started.value, 15);
+  assert.equal(state.battlefield.projectiles.size, 0);
+  state = advanceAction({ ...state, tick: 16 }, started.value);
   assert.equal(state.battlefield.projectiles.size, 1);
   assert.equal(getUnit(state, 0).vitality.health.hp, 1000);
-  for (let tick = 2; tick <= 10; tick++) {
+  for (let tick = 17; tick <= 26; tick++) {
     state = advanceProjectiles({ ...state, tick }, projectilesQuery.all(state).map(projectilesQuery.ref));
   }
   assert.equal(getUnit(state, 0).vitality.health.hp, 800);
@@ -190,7 +209,7 @@ test('crossbow uses explicit windup and arrow speed, then settles damage on cont
 
 test('crossbow switching between ranged and blocker melee preserves independent cooldowns', () => {
   const { definition, actions } = createCrossbowman(profile('enemy_1003_ncbow'), {
-    windupTicks: 0, recoveryTicks: 0, hitRadius: 0.2,
+    ...crossbowTiming, hitRadius: 0.2,
     projectile: { definition: createArrow(), speedPerSecond: 6, stopDelayTicks: 0 },
   }, crossbowMovement);
   const bow = initialize({ id: 1, position: [2, 2.5], definition, initial: routeInitial([2, 2.5]) });
@@ -198,24 +217,26 @@ test('crossbow switching between ranged and blocker melee preserves independent 
   const cooldown = (battle, action) => getUnit(battle, 1).action.actions.get(action.id).cooldown.readyAtTick;
   const period = actions.ranged.intervalTicks;
 
-  const ranged = advanceCombat(initial);
+  const ranged = advanceCombatUntil(advanceCombat(initial), 16);
   assert.equal(ranged.battlefield.projectiles.size, 1);
   assert.equal(cooldown(ranged, actions.ranged), period);
   assert.equal(cooldown(ranged, actions.melee), 0);
 
-  const blocked = advanceBlocking({ ...ranged, tick: 1 });
+  const recovered = advanceCombatUntil(ranged, 30);
+  const blocked = advanceBlocking({ ...recovered, tick: 31 });
   assert.deepEqual(blockingQueries.relations(blocked).map(({ blocked }) => blocked.id), [1]);
-  const melee = advanceCombat(blocked);
+  const melee = advanceCombatUntil(advanceCombat(blocked), 46);
   assert.equal(getUnit(melee, 0).vitality.health.hp, 800);
   assert.equal(melee.battlefield.projectiles.size, 1);
-  assert.equal(cooldown(melee, actions.melee), period + 1);
+  assert.equal(cooldown(melee, actions.melee), period + 31);
   assert.equal(cooldown(melee, actions.ranged), period);
 
-  const unblocked = releaseBlocking({ ...melee, tick: 2 }, blockingQueries.relations(melee, unitRef(getUnit(melee, 1))));
+  const meleeRecovered = advanceCombatUntil(melee, 61);
+  const unblocked = releaseBlocking({ ...meleeRecovered, tick: 62 }, blockingQueries.relations(meleeRecovered, unitRef(getUnit(meleeRecovered, 1))));
   assert.equal(advanceCombat(unblocked).battlefield.projectiles.size, 1);
-  const rangedAgain = advanceCombat({ ...unblocked, tick: period });
+  const rangedAgain = advanceCombatUntil(advanceCombat({ ...unblocked, tick: period }), period + 16);
   assert.equal(rangedAgain.battlefield.projectiles.size, 2);
   assert.equal(cooldown(rangedAgain, actions.ranged), period * 2);
-  assert.equal(cooldown(rangedAgain, actions.melee), period + 1);
+  assert.equal(cooldown(rangedAgain, actions.melee), period + 31);
 
 });

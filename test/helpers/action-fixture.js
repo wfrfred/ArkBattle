@@ -28,6 +28,7 @@ export function actionDefinition(power = 7, configuration = {}) {
         {
             id: "primary",
             intervalTicks: 10,
+            timing: { type: "FIXED", windupTicks: 0, recoveryTicks: 0 },
             speed: 100,
             triggerBindingId: "primary",
             targetGroups: [

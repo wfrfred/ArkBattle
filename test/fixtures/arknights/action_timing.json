@@ -1,0 +1,55 @@
+{
+    "source": {
+        "case": "docs/research/cases/07-action-timing-and-animation.md",
+        "evidence": [
+            "docs/research/evidence/action-timing-20261014/records.json",
+            "docs/research/evidence/attack-timing-inputs-20261117/"
+        ],
+        "scope": "Authored default-model frame parameters; static inputs, not observed gameplay release ticks."
+    },
+    "melantha": {
+        "framesPerSecond": 30,
+        "beginFrames": 15,
+        "durationFrames": 30,
+        "releaseFrame": 14,
+        "authoredSpeed": 1,
+        "minScale": -1,
+        "maxScale": -1
+    },
+    "mudrockNormal": {
+        "framesPerSecond": 30,
+        "beginFrames": 0,
+        "durationFrames": 48,
+        "releaseFrame": 19,
+        "authoredSpeed": 1,
+        "minScale": 0.1,
+        "maxScale": 1
+    },
+    "crossbowMelee": {
+        "framesPerSecond": 30,
+        "beginFrames": 0,
+        "durationFrames": 30,
+        "releaseFrame": 15,
+        "authoredSpeed": 1,
+        "minScale": 0.1,
+        "maxScale": 1
+    },
+    "crossbowRanged": {
+        "framesPerSecond": 30,
+        "beginFrames": 0,
+        "durationFrames": 30,
+        "releaseFrame": 16,
+        "authoredSpeed": 1,
+        "minScale": 0.1,
+        "maxScale": 1
+    },
+    "hound": {
+        "framesPerSecond": 30,
+        "beginFrames": 0,
+        "durationFrames": 30,
+        "releaseFrame": 18,
+        "authoredSpeed": 1,
+        "minScale": 0.1,
+        "maxScale": 1
+    }
+}

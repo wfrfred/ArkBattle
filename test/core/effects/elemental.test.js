@@ -30,7 +30,7 @@ import { resolveSpeed } from "../../../dist/core/unit/capability/action/timing.j
 const range = [{ type: 'CIRCLE', offset: [0, 0], radius: 20 }];
 const hit = { type: 'CIRCLE', offset: [0, 0], radius: 0.1 };
 function action(interval = 1) {
-  return createAttack({ id: 'normal-attack', triggerBindingId: 'primary', intervalTicks: interval, recoveryTicks: 0,
+  return createAttack({ id: 'normal-attack', triggerBindingId: 'primary', intervalTicks: interval, timing: { type: 'FIXED', windupTicks: 0, recoveryTicks: 0 },
     targetGroups: [{ id: 'primary', select: selectDamage({ geometry: range, canTargetAir: true }),
       operations: [{ type: 'DAMAGE', attackType: 'NORMAL', applyWay: 'MELEE', power: 1, damageType: 'TRUE' }] }], followUps: [] });
 }
@@ -179,7 +179,7 @@ test('elemental runtime: unused neural paralysis survives recovery and the next 
 
 test('mania counts each released action once and each skill activation, caps self-damage and keeps its independent character program after recovery cancellation', () => {
   const attack = createAttack({
-    id: 'mania-attack', triggerBindingId: 'primary', intervalTicks: 30, recoveryTicks: 0,
+    id: 'mania-attack', triggerBindingId: 'primary', intervalTicks: 30, timing: { type: 'FIXED', windupTicks: 0, recoveryTicks: 0 },
     targetGroups: [{ id: 'primary', select: selectDamage({ geometry: range, canTargetAir: true }),
       operations: [{ type: 'DAMAGE', attackType: 'NORMAL', applyWay: 'MELEE', power: 1, damageType: 'TRUE' }] }],
     afterOutput: (work, source, self) => dispatchReleased(work, actions.executionRef(source, self)),

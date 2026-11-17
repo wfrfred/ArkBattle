@@ -1,3 +1,4 @@
+import type { Timing } from "../../actions/timing.js";
 import { Hooks } from "../../../core/hook.js";
 import * as unitHooks from "../../../core/unit/hook.js";
 import { normal as normalSite } from "../../terrain/condition.js";
@@ -9,6 +10,9 @@ import {
     create as createAction,
     createActions,
     clearCooldown,
+    cancel as cancelAction,
+    forUnit,
+    getExecution,
     ref as actionRef,
 } from "../../../core/unit/action/index.js";
 import type { Attack } from "../../actions/attack.js";
@@ -244,6 +248,7 @@ function shieldEffect(profile: Profile): EffectDefinition<ShieldState, Vitality>
 
 export function create(
     profile: Profile,
+    normalTiming: Timing,
     options: { readonly recoveryTicks?: number } = {},
 ): { readonly definition: Definition; readonly action: Attack<object, SkillAttackState> } {
     if (
@@ -263,7 +268,7 @@ export function create(
     const recoveryTicks = options.recoveryTicks ?? 0;
 
     const shield = shieldEffect(profile);
-    const normalAttack = createNormal(profile, recoveryTicks);
+    const normalAttack = createNormal(profile, normalTiming);
     const action = createSkillAction(profile, recoveryTicks);
     const activation = profile.skill.definition.activation!;
     const skill: SkillDefinition = {
@@ -291,8 +296,20 @@ export function create(
                     return state;
                 }
 
-                state = clearCooldown(state, actionRef(unitRef(unit), normalAttack));
-                state = clearCooldown(state, actionRef(unitRef(unit), action));
+                const normal = forUnit(state, unitRef(unit)).find(
+                    (reference) => getExecution(state, reference)?.definition === normalAttack,
+                );
+                if (normal !== undefined) {
+                    state = cancelAction(state, normal, "INTERRUPTED");
+                }
+
+                const current = getCurrentUnit(state, source);
+                if (current?.lifecycle !== "PRESENT" || !hasAction(current)) {
+                    return state;
+                }
+
+                state = clearCooldown(state, actionRef(unitRef(current), normalAttack));
+                state = clearCooldown(state, actionRef(unitRef(current), action));
 
                 return state;
             },

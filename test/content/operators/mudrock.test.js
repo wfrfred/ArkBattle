@@ -3,6 +3,7 @@ import { Hooks } from "../../../dist/core/hook.js";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
+import { parseAttackTiming } from "../../../dist/data/action/timing.js";
 import { prepare } from "../../../dist/data/unit/operator.js";
 import { create, readShield } from "../../../dist/content/operators/mudrock/unit.js";
 import { initialize, getUnit } from "../../helpers/unit.js";
@@ -16,7 +17,7 @@ import { advance as advanceBlocking } from "../../../dist/core/battle/blocking/i
 import { advance as advanceEffects } from "../../../dist/core/unit/effect/index.js";
 import { advance as advanceSkill, activate, modify } from "../../../dist/core/unit/skill/index.js";
 import { ref as skillRef } from "../../helpers/skill.js";
-import { start, advance as advanceAction, ref as actionRef } from "../../../dist/core/unit/action/index.js";
+import { start, advance as advanceAction, ref as actionRef, getExecution } from "../../../dist/core/unit/action/index.js";
 import { advance as advanceLocomotion } from "../../../dist/core/unit/capability/locomotion/index.js";
 import { setAttackContribution } from "../../../dist/core/unit/capability/offense/index.js";
 import { setMaxHpContribution } from "../../../dist/core/unit/capability/vitality/index.js";
@@ -26,6 +27,7 @@ import { Vec2 } from "../../../dist/core/common/vector.js";
 import { turn } from "../../../dist/core/unit/capability/facing/index.js";
 
 const data = JSON.parse(readFileSync(new URL("../../fixtures/arknights/main-mode-units.json", import.meta.url), "utf8"));
+const normalTiming = parseAttackTiming(JSON.parse(readFileSync(new URL("../../fixtures/arknights/action_timing.json", import.meta.url), "utf8")).mudrockNormal);
 const moduleX = "uniequip_002_mudrok";
 const profile = (fields = {}) => {
     const configuration = { elite: 2, level: 90, potential: 1, skillIndex: 1, skillLevel: 7, trust: 100, ...fields };
@@ -48,7 +50,7 @@ const enemy = (id, position, fields = {}) => initialize({ id, position, definiti
 } });
 function setup(configuration = {}, targets = [], options = {}) {
     const prepared = profile(configuration);
-    const content = create(prepared, options);
+    const content = create(prepared, normalTiming, options);
     const unit = initialize({ id: 0, position: [0, 0], definition: content.definition,
         initial: { occupancy: { tile: [0, 0], direction: "RIGHT" }, facing: { direction: "RIGHT" } } });
     let battle = add(createBattleState(fixtureBattlefieldState([])), unit);
@@ -252,6 +254,28 @@ test("S2 replaces normal recovery, heals once and revalidates its bound targets 
     assert.equal(canMove(recovered, getUnit(recovered, 1)), true);
 });
 
+test("S2 interrupts an ordinary attack before its authored release and prevents a late normal hit", () => {
+    const fixture = setup({}, [enemy(1, [1, 0])]);
+    const host = ref(fixture.unit);
+    const normal = fixture.unit.action.actions.get("normal-attack").definition;
+    const pending = start(fixture.battle, actionRef(host, normal));
+    let battle = pending.state;
+    for (let tick = 0; tick <= 5; tick++) battle = advanceAction({ ...battle, tick }, pending.value);
+    assert.equal(getUnit(battle, 1).vitality.health.hp, 10000);
+    battle = modify(battle, host, 5 - getUnit(battle, 0).skill.sp.value).state;
+    const activated = activate(battle, skillRef(getUnit(battle, 0)));
+    assert.notEqual(activated.value, null);
+    battle = activated.state;
+    assert.equal(getExecution(battle, pending.value), undefined);
+    const special = start(battle, actionRef(host, fixture.action));
+    assert.notEqual(special.value, null);
+    battle = advanceAction(special.state, special.value);
+    const afterSkill = 10000 - fixture.prepared.attributes.attack * 2.1;
+    approximate(getUnit(battle, 1).vitality.health.hp, afterSkill);
+    for (let tick = 6; tick <= 48; tick++) battle = advanceAction({ ...battle, tick }, pending.value);
+    approximate(getUnit(battle, 1).vitality.health.hp, afterSkill);
+});
+
 test("Mudrock rejects the unimplemented module Y instead of applying module X behavior", () => {
-    assert.throws(() => create(profile({ module: { id: "uniequip_003_mudrok", level: 3 } })), /only module X/);
+    assert.throws(() => create(profile({ module: { id: "uniequip_003_mudrok", level: 3 } }), normalTiming), /only module X/);
 });

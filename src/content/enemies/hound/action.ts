@@ -1,4 +1,5 @@
 import { create as createAttack, faceTarget, type Attack } from "../../actions/attack.js";
+import type { Timing } from "../../actions/timing.js";
 import type { Profile } from "../../../data/unit/enemy.js";
 import { secondsToTicks } from "../../../data/time.js";
 import * as units from "../../../core/unit/index.js";
@@ -7,11 +8,6 @@ import { hasTargetable } from "../../../core/unit/capability/targetable/capabili
 import { hasAllegiance } from "../../../core/unit/capability/allegiance/capability.js";
 import * as targeting from "../../../core/battle/targeting/index.js";
 
-export interface Timing {
-    readonly windupTicks: number;
-    readonly recoveryTicks: number;
-}
-
 export function create(profile: Profile, timing: Timing): Attack {
     return createAttack({
         id: "normal-attack",
@@ -19,8 +15,7 @@ export function create(profile: Profile, timing: Timing): Attack {
         speed: profile.attackSpeed,
         triggerBindingId: "primary",
         intervalTicks: secondsToTicks(profile.baseAttackTime),
-        windupTicks: timing.windupTicks,
-        recoveryTicks: timing.recoveryTicks,
+        timing,
         targetGroups: [
             {
                 id: "primary",

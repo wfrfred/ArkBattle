@@ -1,10 +1,6 @@
 import type { Ref } from "../../core/common/ref.js";
 import { Vec2 } from "../../core/common/vector.js";
-import {
-    assertNonnegativeNumber,
-    assertNonnegativeSafeInteger,
-    assertPositiveNumber,
-} from "../../core/common/assert.js";
+import { assertNonnegativeNumber, assertPositiveNumber } from "../../core/common/assert.js";
 import {
     appendEvents,
     type State as BattleState,
@@ -23,9 +19,12 @@ import {
 import * as actions from "../../core/unit/action/index.js";
 import {
     type Action as ActionCapability,
+    resolvePeriod,
     dispatchBeforeRelease,
     dispatchReleased,
 } from "../../core/unit/capability/action/index.js";
+import * as timing from "./timing.js";
+import type { Timing, Sample as TimingSample } from "./timing.js";
 
 import { hasOffense, resolveAttack } from "../../core/unit/capability/offense/index.js";
 import { hasFacing, fromVector, turn } from "../../core/unit/capability/facing/index.js";
@@ -87,21 +86,26 @@ export interface FollowUp {
     readonly operation: Operation;
 }
 
-export interface Configuration {
+export interface Configuration<P extends object = object, E extends object = object> {
     readonly id: string;
     readonly intervalTicks: number;
     readonly speed?: number;
     readonly triggerBindingId: string;
     readonly targetGroups: readonly [TargetGroup, ...TargetGroup[]];
     readonly followUps?: readonly FollowUp[];
-    readonly windupTicks?: number;
-    readonly recoveryTicks?: number;
+    readonly timing:
+        | Timing
+        | ((
+              battle: BattleState,
+              source: Ref<Unit & ActionCapability>,
+              self: Action<P, State<E>>,
+          ) => Timing);
 }
 
 export interface Definition<
     P extends object = object,
     E extends object = object,
-> extends Configuration {
+> extends Configuration<P, E> {
     readonly onStart?: (
         battle: BattleState,
         source: Ref<Unit & ActionCapability>,
@@ -132,8 +136,7 @@ export interface StatefulDefinition<P extends object, E extends object> extends 
 export interface State<S extends object = object> {
     readonly target: Ref<Unit>;
     readonly bindings: Readonly<Record<string, readonly Ref<Unit>[]>>;
-    readonly releaseAtTick: number;
-    readonly finishAtTick: number;
+    readonly timing: TimingSample;
     readonly released: boolean;
     readonly previousReadyAtTick: number;
     readonly cooldownAdjusted: boolean;
@@ -144,15 +147,7 @@ export interface Attack<
     P extends object = object,
     E extends object = object,
 > extends ActionDefinition<P, State<E>> {
-    readonly attack: Configuration;
-}
-
-export interface Stored extends Pick<ActionDefinition, "id" | "intervalTicks" | "speed"> {
-    readonly attack: Configuration;
-}
-
-export function isAttack(value: unknown): value is Stored {
-    return typeof value === "object" && value !== null && "attack" in value;
+    readonly attack: Configuration<P, E>;
 }
 
 function sourcePresent(battle: BattleState, source: Ref<Unit>): boolean {
@@ -182,10 +177,10 @@ export function faceTarget<P extends object, E extends object>(
     return direction === null ? battle : turn(battle, units.ref(host), direction);
 }
 
-export function chooseTargets(
+export function chooseTargets<P extends object, E extends object>(
     battle: BattleState,
     source: Ref<Unit & ActionCapability>,
-    definition: Configuration,
+    definition: Configuration<P, E>,
 ): Result<State["bindings"]> {
     const unit = units.get(battle, source);
     if (unit === undefined) {
@@ -311,8 +306,10 @@ export function createWithState<P extends object, E extends object>(
     definition: StatefulDefinition<P, E>,
 ): Attack<P, E> {
     assertPositiveNumber(definition.intervalTicks, "attack interval");
-    assertNonnegativeSafeInteger(definition.windupTicks ?? 0, "attack windup");
-    assertNonnegativeSafeInteger(definition.recoveryTicks ?? 0, "attack recovery");
+
+    if (typeof definition.timing !== "function") {
+        timing.validate(definition.timing);
+    }
 
     for (const group of definition.targetGroups) {
         for (const operation of group.operations) {
@@ -339,17 +336,14 @@ export function createWithState<P extends object, E extends object>(
         assertNonnegativeNumber(followUp.operation.power, "attack operation power");
     }
 
-    const configuration: Configuration = {
+    const configuration: Configuration<P, E> = {
         id: definition.id,
         intervalTicks: definition.intervalTicks,
         triggerBindingId: definition.triggerBindingId,
         targetGroups: definition.targetGroups,
         followUps,
         ...(definition.speed === undefined ? {} : { speed: definition.speed }),
-        ...(definition.windupTicks === undefined ? {} : { windupTicks: definition.windupTicks }),
-        ...(definition.recoveryTicks === undefined
-            ? {}
-            : { recoveryTicks: definition.recoveryTicks }),
+        timing: definition.timing,
     };
     const attack: Attack<P, E> = {
         id: definition.id,
@@ -367,19 +361,33 @@ export function createWithState<P extends object, E extends object>(
                 return { state: battle, value: null };
             }
 
-            const releaseAtTick = battle.tick + (definition.windupTicks ?? 0);
             const initialized = definition.prepare(battle, source, self);
             const current = actions.getAction(initialized.state, ref(source, self.definition));
+            const host = units.get(initialized.state, source);
+            if (current === undefined || host === undefined) {
+                return { state: initialized.state, value: null };
+            }
+
+            const input =
+                typeof definition.timing === "function"
+                    ? definition.timing(initialized.state, source, current)
+                    : definition.timing;
+            if (typeof definition.timing === "function") {
+                timing.validate(input);
+            }
 
             return {
                 state: initialized.state,
                 value: {
                     target,
                     bindings,
-                    releaseAtTick,
-                    finishAtTick: releaseAtTick + (definition.recoveryTicks ?? 0),
+                    timing: timing.sample(
+                        input,
+                        resolvePeriod(host, current),
+                        initialized.state.tick,
+                    ),
                     released: false,
-                    previousReadyAtTick: current?.cooldown.readyAtTick ?? initialized.state.tick,
+                    previousReadyAtTick: current.cooldown.readyAtTick,
                     cooldownAdjusted: false,
                     data: initialized.value,
                 },
@@ -425,13 +433,46 @@ export function createWithState<P extends object, E extends object>(
                 self = current;
             }
 
+            const beginUntilTick = self.execution.state.timing.beginUntilTick;
             if (
                 !self.execution.state.released &&
-                battle.tick >= self.execution.state.releaseAtTick
+                beginUntilTick !== null &&
+                battle.tick >= beginUntilTick
+            ) {
+                const host = units.get(battle, source);
+                if (host === undefined) {
+                    return { state: battle, value: true };
+                }
+
+                const progressed = timing.advance(
+                    self.execution.state.timing,
+                    resolvePeriod(host, actions.getAction(battle, ref(source, self.definition))!),
+                    self.execution.startedAtTick,
+                    battle.tick,
+                );
+                if (progressed !== self.execution.state.timing) {
+                    battle = actions.setExecutionState(battle, identity, {
+                        ...self.execution.state,
+                        timing: progressed,
+                    });
+                    self = actions.getExecution(battle, identity)!;
+                }
+            }
+
+            const releaseAtTick = self.execution.state.timing.releaseAtTick;
+            if (
+                !self.execution.state.released &&
+                releaseAtTick !== null &&
+                battle.tick >= releaseAtTick
             ) {
                 battle = actions.setExecutionState(battle, identity, {
                     ...self.execution.state,
                     released: true,
+                    timing: timing.release(
+                        self.execution.state.timing,
+                        self.execution.startedAtTick,
+                        battle.tick,
+                    ),
                 });
                 const permission = dispatchBeforeRelease(battle, identity);
                 battle = permission.state;
@@ -521,7 +562,10 @@ export function createWithState<P extends object, E extends object>(
 
             return {
                 state: battle,
-                value: current === undefined || battle.tick >= current.execution.state.finishAtTick,
+                value:
+                    current === undefined ||
+                    (current.execution.state.timing.finishAtTick !== null &&
+                        battle.tick >= current.execution.state.timing.finishAtTick),
             };
         },
         ...(definition.onEnd === undefined ? {} : { onEnd: definition.onEnd }),

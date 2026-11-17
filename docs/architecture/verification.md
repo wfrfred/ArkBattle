@@ -20,6 +20,7 @@
 | 结果 | 集中代表 |
 | --- | --- |
 | 养成、等级覆盖、技能选择、静态覆写、范围与资源关联正确；真实非零自然回复保留单位换算。 | [单位配置](../../test/data/unit/)使用实际资料，不枚举默认零值。 |
+| 作者帧参数正确转换起手、主段与释放位置，保留连续 Tick 与无界缩放标记。 | [动作时序](../../test/data/action/timing.test.js)以玫兰莎起手为代表；运行攻速与帧内调度不在 Data 验收。 |
 | 地图几何、路线时基与控制流、出兵展开、随机组及等待政策保留。 | [Route／Schedule 转换](../../test/data/level/route-schedule.test.js)与[预置配置](../../test/data/level/predefined.test.js)；主线预处理、Branch 运行时抽选及 notCountInTotal 转换。 |
 | Effect 重应用、层数／续期和属性修正位置、黑板与来源采样标记完整。 | [Effect 转换](../../test/data/effect.test.js)使用已启用描述，不以静态读取证明运行算法。 |
 
@@ -49,6 +50,12 @@ Prefab、范围读取和换算由实际业务使用；目录移动、提取工�
 [公共类型契约](../../test/core/types.test.js) 集中证明构造与私有状态／回调配对、Typed Ref、具体 Initial 必填与额外已知输入、Query／optional 收窄、Change 能力逆变和 Hook Key 载荷关联。Occupancy 必需 tile、Route 必需 plan／offset、Spawn 所需与禁止能力由构造边界代表覆盖，不按字段、数组长度或每种 Capability 扩矩阵。
 
 普通注册保序、结构共享、Hook 候选与 Lifetime 析构只在公共代表中保障；MaxHP、冷却、Ammo 和 Blocking 等具有真实后继的 Change 留在所属业务。综合场景仅保障新增跨领域结果，Content 位置或涉及未完整审查领域不是保留重复用例的理由。
+
+## 普通攻击时序的回归语义
+
+依据 [Action](action.md#8-普通攻击释放-hook-与移动)，由[普通攻击](../../test/content/actions/attack.test.js)集中保障普通缩放上下限、开始时缓存动作预算、已进入等待不追改和后续段读取新周期。事件等待受缓存预算的取偶量化期限限制；分段等待至少一个 Tick，不另加首次 yield。冷却与执行占用独立，释放后的恢复只消费预算余量。
+
+[玫兰莎](../../test/content/operators/melantha.test.js)保障首次／续轮释放相位及会话中断后重新起手；[弩手](../../test/content/enemies.test.js)保障释放后仍执行后摇时不恢复自主移动；[泥岩](../../test/content/operators/mudrock.test.js)保障 S2在真实普攻前摇中取消旧执行、清空冷却，后续不补发旧输出。各内容读取真实静态时序，不复制公共公式或把零时序夹具当作原生验收。事件在项目 30 Hz 调度中到期消费，不声称验证了官方实机逐帧结果。
 
 ## Effect 分组、重复施加与计时
 

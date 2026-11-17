@@ -133,6 +133,7 @@ test("interrupted attack, successful release, and damage output are separate bus
     const program = attack({
         id: "attack",
         intervalTicks: 10,
+        timing: { type: "FIXED", windupTicks: 0, recoveryTicks: 0 },
         triggerBindingId: "target",
         targetGroups: [
             {

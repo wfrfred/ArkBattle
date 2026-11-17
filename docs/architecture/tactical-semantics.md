@@ -32,7 +32,7 @@ ArkBattle 面向通用明日方舟战斗，卫戍协议是实现重点，不是 
 | TARGET-06 迷彩 | 独立定义对象及精确豁免。 | 光环、中点和格子策略等具体例外。 |
 | TARGET-07 隐匿／反隐 | 隐匿、迷彩及烟雾链。 | 反隐、敌方阻挡破隐和恢复政策；烟雾本身不因阻挡破隐。 |
 | GEO-01 几何 | 连续形状、范围和扫掠。 | 特殊判定方式与动态范围，不能用通用相交代替全部选择政策。 |
-| ACTION-02 时间与中断 | 普通攻击释放／输出／恢复及独立取消。 | 完整攻速缩放、特殊取消、连击与锁定政策，见[行动研究](../research/cases/08-action-eligibility-and-interruption.md)。 |
+| ACTION-02 时间与中断 | 普通攻速缩放、开始预算缓存、分段等待、玫兰莎首次／续轮起手，以及释放／输出／恢复和独立取消。 | 特殊强制前后摇、连击／持续引导、额外取消与锁定政策，见[计时调查](../research/cases/07-action-timing-and-animation.md)和[行动研究](../research/cases/08-action-eligibility-and-interruption.md)。 |
 | SP-01 回复许可 | TIME／ACTION／HIT／EXTERNAL 与独立阻回。 | 特殊资源的隔离政策按实际表示接入；玛露魔力的原生 SP 复用不直接证明需要通用封闭接口，见[Skill 审查](../research/cases/09-skill-mechanisms-and-requirements.md#9-skill-覆盖审查2026-11-17)。 |
 | SP-02 连击 | 成功释放的 ACTION 回复。 | 多次攻击、剑豪例外与每段受击不等于每次攻击的内容。 |
 | SKILL-01 特殊技能 | 持久／本轮状态、静态及本次门槛／支付、本轮 Duration 初始化与弹药贡献、按共享定义豁免启动限制、显式发动与主动操作及独立结束；跨部署持久化和已查 Fever 延时可组合。 | 按次数／充能选择预算、止颂 S3和 Fever 的具体内容尚未接入，见[发动变化研究](../research/cases/09-skill-mechanisms-and-requirements.md#10-发动变化的数量与表达范围2026-11-17)。 |
@@ -61,7 +61,7 @@ ArkBattle 面向通用明日方舟战斗，卫戍协议是实现重点，不是 
 | SCHEDULE-01 调度 | 主 Spawn、Branch 抽选、等待与同步离场反馈。 | 其他关卡 Action 和完整统计，不由普通出生推定。 |
 | RESULT-01 结果 | step 返回完整 Tick，调用者裁决停止。 | 全局统计、蓝门扣血及完整胜负规则未接入，不能用通用超时替代模式结果。 |
 | CONTENT-01 内容 | 玫兰莎、泥岩、猎狗、弩手及代表装置。 | 其他角色、技能、模组、敌人模式和分支模板。 |
-| DATA-01 静态输入 | Unit／Skill／Effect／Level 的已接入转换。 | 敌人招式／SP、完整 Action 时序／选择／弹道和更多 Effect 参数。 |
+| DATA-01 静态输入 | Unit／Skill／Effect／Level 及已提取作者帧时序的转换。 | 敌人招式／SP、更多动作模板／选择／弹道和 Effect 参数；不以时序转换宣称全量 Prefab／Spine 解码。 |
 | MODE-01 模式机制 | 公开领域组合入口。 | 卫戍倒地、自动部署、共享额度与收益等生产调用链。 |
 | MODE-02 Meta | 外层提供本次配置。 | 经营、回合、联防和领袖战的完整结果反馈。 |
 

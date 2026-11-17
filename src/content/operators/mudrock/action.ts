@@ -1,3 +1,4 @@
+import type { Timing } from "../../actions/timing.js";
 import {
     create as createAttack,
     faceTarget,
@@ -81,17 +82,13 @@ export function skillTargets(battle: BattleState, self: Unit & Allegiance, profi
     return allUnits(battle).filter(skillTarget(battle, self, profile));
 }
 
-function attackDefinition(
-    profile: Profile,
-    skill: boolean,
-    recoveryTicks: number,
-): AttackConfiguration {
+function attackDefinition(profile: Profile, skill: boolean, timing: Timing) {
     return {
         id: skill ? "mudrock/s2" : "normal-attack",
         speed: profile.attributes.attackSpeed,
         triggerBindingId: "primary",
         intervalTicks: secondsToTicks(profile.attributes.baseAttackTime),
-        recoveryTicks,
+        timing,
         followUps: [],
         targetGroups: [
             {
@@ -130,12 +127,12 @@ function attackDefinition(
                 ],
             },
         ],
-    };
+    } satisfies AttackConfiguration;
 }
 
-export function createNormal(profile: Profile, recoveryTicks: number): Attack {
+export function createNormal(profile: Profile, timing: Timing): Attack {
     return createAttack({
-        ...attackDefinition(profile, false, recoveryTicks),
+        ...attackDefinition(profile, false, timing),
         onStart: faceTarget,
     });
 }
@@ -144,7 +141,11 @@ export function createSkill(
     profile: Profile,
     recoveryTicks: number,
 ): Attack<object, SkillAttackState> {
-    const activeConfiguration = attackDefinition(profile, true, recoveryTicks);
+    const activeConfiguration = attackDefinition(profile, true, {
+        type: "FIXED",
+        windupTicks: 0,
+        recoveryTicks,
+    });
     const attackScale = value(profile.skill.blackboard, "atk_scale");
     const healRatio = value(profile.skill.blackboard, "hp_ratio");
     const stunChance = value(profile.skill.blackboard, "buff_prob");

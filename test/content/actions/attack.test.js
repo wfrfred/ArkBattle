@@ -16,10 +16,13 @@ import { battle as createBattle, get } from "../../helpers/battle.js";
 import { unit, battle } from "../../helpers/action-fixture.js";
 import * as facing from "../../../dist/core/unit/capability/facing/index.js";
 import { actionCapability } from "../../helpers/actions.js";
+import { setSpeedContribution } from "../../../dist/core/unit/capability/action/index.js";
+import { create as modifier } from "../../../dist/core/unit/contribution/attribute.js";
+import { update } from "../../../dist/core/battle/unit.js";
 
 function definition(groups, prepare = state => ({ state, value: {} })) {
     return createWithState({
-        id: "random-attack", intervalTicks: 10, windupTicks: 3,
+        id: "random-attack", intervalTicks: 10, timing: { type: "FIXED", windupTicks: 3, recoveryTicks: 0 },
         triggerBindingId: "primary", targetGroups: groups,
         initialize: state => ({ state, value: {} }), prepare,
     });
@@ -44,7 +47,7 @@ function group(id, count = 1, accepts = () => true) {
 
 test("an attack turns once at its started program, before output, without turning again on release", () => {
     const program = create({
-        id: "facing-attack", intervalTicks: 10, windupTicks: 2, recoveryTicks: 1,
+        id: "facing-attack", intervalTicks: 10, timing: { type: "FIXED", windupTicks: 2, recoveryTicks: 1 },
         triggerBindingId: "primary", onStart: faceTarget,
         targetGroups: [{
             id: "primary", operations: [{ type: "DAMAGE", attackType: "NORMAL", applyWay: "MELEE", power: 7, damageType: "TRUE" }],
@@ -67,12 +70,18 @@ test("an attack turns once at its started program, before output, without turnin
     assert.equal(get(state, 0).facing.direction, "LEFT");
     assert.equal(get(state, 1).vitality.health.hp, 100);
 
+    state = update({ ...state, tick: 1 }, host, setSpeedContribution({
+        id: "haste", value: [modifier({ addition: 100 })],
+    }));
     state = facing.turn(state, host, "RIGHT");
     state = actions.advance({ ...state, tick: 1 }, started.value);
     assert.equal(get(state, 0).facing.direction, "RIGHT");
     state = actions.advance({ ...state, tick: 2 }, started.value);
     assert.equal(get(state, 0).facing.direction, "RIGHT");
     assert.equal(get(state, 1).vitality.health.hp, 93);
+    assert.notEqual(actions.getExecution(state, started.value), undefined);
+    state = actions.advance({ ...state, tick: 3 }, started.value);
+    assert.equal(actions.getExecution(state, started.value), undefined);
 });
 
 test("attack selection groups and prepare receive the state produced by earlier groups", () => {
@@ -124,7 +133,7 @@ test("bound healing keeps its receivers when a later selection restriction would
     });
     let selected;
     const program = createWithState({
-        id: "bound-healing", intervalTicks: 1, triggerBindingId: "primary",
+        id: "bound-healing", intervalTicks: 1, timing: { type: "FIXED", windupTicks: 0, recoveryTicks: 0 }, triggerBindingId: "primary",
         initialize: state => ({ state, value: {} }),
         prepare(state) {
             return { state: effects.install(state, selected, healFree).state, value: {} };
@@ -158,4 +167,104 @@ test("bound healing keeps its receivers when a later selection restriction would
     state = actions.advance(started.state, started.value);
     assert.equal(get(state, 1).vitality.health.hp, 55);
     assert.equal(get(state, 2).vitality.health.hp, 40);
+});
+
+function timedProgram(timing, intervalTicks = 30, speed = 100) {
+    return create({
+        id: "timed-attack", intervalTicks, speed, timing,
+        triggerBindingId: "primary", targetGroups: [group("primary")],
+    });
+}
+
+function begin(program) {
+    const actor = unit(0, { action: program });
+    const source = units.ref(actor);
+    const reference = actions.ref(source, program);
+    const started = actions.start(battle(actor, unit(1)), reference);
+    assert.notEqual(started.value, null);
+    return { source, reference, execution: started.value, state: actions.advance(started.state, started.value) };
+}
+
+function runTo(state, execution, untilTick) {
+    for (let tick = state.tick + 1; tick <= untilTick; tick++) {
+        state = actions.advance({ ...state, tick }, execution);
+    }
+    return state;
+}
+
+test("animation scale bounds separate attack release, execution occupancy and cooldown", () => {
+    const timing = {
+        type: "ATTACK_SPEED", beginTicks: 0, durationTicks: 100, releaseTicks: 40,
+        minScale: 0.1, maxScale: 1,
+    };
+    for (const { speed, release, finish, ready } of [
+        { speed: 20, release: 40, finish: 100, ready: 150 },
+        { speed: 600, release: 4, finish: 10, ready: 5 },
+    ]) {
+        const started = begin(timedProgram(timing, 30, speed));
+        let state = runTo(started.state, started.execution, release - 1);
+        assert.equal(get(state, 1).vitality.health.hp, 100);
+        assert.equal(actions.getAction(state, started.reference).cooldown.readyAtTick, ready);
+        state = runTo(state, started.execution, release);
+        assert.equal(get(state, 1).vitality.health.hp, 93);
+        state = runTo(state, started.execution, finish - 1);
+        assert.notEqual(actions.getExecution(state, started.execution), undefined);
+        state = runTo(state, started.execution, finish);
+        assert.equal(actions.getExecution(state, started.execution), undefined);
+    }
+});
+
+test("speed changes update cooldown immediately while entered attack waits remain sampled and later rounds resample", () => {
+    const started = begin(timedProgram({
+        type: "ATTACK_SPEED", beginTicks: 0, durationTicks: 30, releaseTicks: 12,
+        minScale: 0, maxScale: null,
+    }));
+    let state = runTo(started.state, started.execution, 5);
+    state = update(state, started.source, setSpeedContribution({
+        id: "haste", value: [modifier({ addition: 100 })],
+    }));
+    assert.equal(actions.getAction(state, started.reference).cooldown.readyAtTick, 17.5);
+    state = runTo(state, started.execution, 11);
+    assert.equal(get(state, 1).vitality.health.hp, 100);
+    state = runTo(state, started.execution, 12);
+    assert.equal(get(state, 1).vitality.health.hp, 93);
+    state = runTo(state, started.execution, 29);
+    assert.notEqual(actions.getExecution(state, started.execution), undefined);
+    state = runTo(state, started.execution, 30);
+    assert.equal(actions.getExecution(state, started.execution), undefined);
+
+    const second = actions.start(state, started.reference);
+    state = actions.advance(second.state, second.value);
+    state = runTo(state, second.value, 35);
+    assert.equal(get(state, 1).vitality.health.hp, 93);
+    state = runTo(state, second.value, 36);
+    assert.equal(get(state, 1).vitality.health.hp, 86);
+    state = runTo(state, second.value, 44);
+    assert.notEqual(actions.getExecution(state, second.value), undefined);
+    state = runTo(state, second.value, 45);
+    assert.equal(actions.getExecution(state, second.value), undefined);
+});
+
+test("Begin retains its entered wait and cached budget while the later main segment samples current speed", () => {
+    for (const { speedChange, release, finish } of [
+        { speedChange: 100, release: 15, finish: 30 },
+        { speedChange: -80, release: 30, finish: 31 },
+    ]) {
+        const started = begin(timedProgram({
+            type: "ATTACK_SPEED", beginTicks: 10, durationTicks: 20, releaseTicks: 10,
+            minScale: 0, maxScale: null,
+        }));
+        let state = runTo(started.state, started.execution, 5);
+        state = update(state, started.source, setSpeedContribution({
+            id: "changed-speed", value: [modifier({ addition: speedChange })],
+        }));
+        state = runTo(state, started.execution, release - 1);
+        assert.equal(get(state, 1).vitality.health.hp, 100);
+        state = runTo(state, started.execution, release);
+        assert.equal(get(state, 1).vitality.health.hp, 93);
+        state = runTo(state, started.execution, finish - 1);
+        assert.notEqual(actions.getExecution(state, started.execution), undefined);
+        state = runTo(state, started.execution, finish);
+        assert.equal(actions.getExecution(state, started.execution), undefined);
+    }
 });

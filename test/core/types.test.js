@@ -19,7 +19,7 @@ import * as actions from ${module("unit/action/index")};
 import * as effects from ${module("unit/effect/index")};
 import * as hpDamage from ${module("battle/resource/hp/damage/index")};
 import * as resource from ${module("battle/resource/index")};
-import type { Operation as AttackOperation } from ${module("../content/actions/attack")};
+import { createWithState as createAttackWithState, type Operation as AttackOperation } from ${module("../content/actions/attack")};
 import * as vitality from ${module("unit/capability/vitality/index")};
 import * as elemental from ${module("unit/capability/elemental/index")};
 import * as facing from ${module("unit/capability/facing/index")};
@@ -186,6 +186,23 @@ const program: actions.Definition<{ uses: number }, { hits: number }> = {
     prepare: state => ({ state, value: { hits: 1 } }),
     onTick: state => ({ state, value: true }),
 };
+const timedAttack = createAttackWithState<{ uses: number }, { hits: number }>({
+    id: 'typed-timing', intervalTicks: 30, triggerBindingId: 'primary',
+    initialize: state => ({ state, value: { uses: 0 } }),
+    prepare: state => ({ state, value: { hits: 1 } }),
+    timing(_battle, _source, self) {
+        const uses: number = self.state.uses;
+        // @ts-expect-error timing evaluation preserves the persistent private state type.
+        self.state.unknown;
+        if (self.execution !== null) {
+            const hits: number = self.execution.state.data.hits;
+            // @ts-expect-error timing evaluation also preserves the execution's private data.
+            self.execution.state.data.unknown;
+        }
+        return { type: 'FIXED', windupTicks: uses, recoveryTicks: 0 };
+    },
+    targetGroups: [{ id: 'primary', select: state => ({ state, value: [] }), operations: [] }],
+});
 const host = initialize(battle, { id: 0, position: [0, 0], definition: {
     id: 'armed', hooks: Hooks.empty(), offense: { attack: 100 }, layer: { type: 'GROUND' },
     action: { initialize: state => actions.createActions(state, actions.create(program)) },
