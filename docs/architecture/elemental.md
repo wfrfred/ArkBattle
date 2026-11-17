@@ -109,8 +109,8 @@ remaining' = max(0, duration' - elapsed)
 ## 支持边界
 
 - 同一宿主当前只允许一个 Burst；特殊内容可组合输出与生命周期，不由标准库提供通用多阶段爆发或启动免疫窗口。
-- 狂躁尚未区分技能成功发动后的空施放资格。原生郁金香 S1 无目标时成功发动并扣除 SP，但空动画分支不增加狂躁；该内容分支尚未接入。原生天赋／通用分类由上述职责划分表达，不另设 Core 枚举。具体依据见[案例25第11节](../research/cases/25-elemental-burst-recovery-timing.md#11-狂躁计数的原生排除范围)。
+- 狂躁的郁金香 S1 空施放例外暂缓接入：无目标时成功发动并扣除 SP，但原生空动画分支不增加狂躁。当前双监听保留，不据此增加通用分类或接口。原生天赋／通用程序由上述职责划分表达。具体依据见[案例25第11节](../research/cases/25-elemental-burst-recovery-timing.md#11-狂躁计数的原生排除范围)。
 - 环境 EP 分类已提供；齐尔查克的条件光环、深水我方损伤等具体 Content 仍需按原生配置接入，不由环境标签代替来源与免疫程序。
-- 珊比天赋的实际触发条件尚未接入；恢复变速与独立子效果时钟的剩余差异仍须按具体程序核实，不把缩时操作推广为统一时间传播。
+- 酒神 S3 的神经恢复变速、珊比天赋的侵蚀缩时等具体触发内容尚未接入。
 
 以上真实需求和原生边界见[案例25](../research/cases/25-elemental-burst-recovery-timing.md)、[案例38](../research/cases/38-damage-classification-and-permissions.md)及[覆盖表](../research/cases/37-resource-mechanism-coverage.md)。必要验收结果统一见 [EP 回归语义](verification.md#hook-与伤害治疗的回归语义)。

@@ -140,4 +140,4 @@ APPLIED.killed 表示本笔取得死亡确认，不加入 Application 或提前�
 
 满 HP 的正数治疗仍可成功、报告零增加和实际溢出；普通选目标时是否排除满血由 [Targeting](targeting.md) 决定。标准 healFree 只限制 HP 治疗选择，不构成接收免疫；独立 EP 回复不检查该标记，明确目标的 Healing 不携带选择豁免开关。这与原生 HEAL_FREE 的接收检查存在明确项目差异。
 
-基础结算和真实内容是否接入分别记录：[Vitality](vitality.md#特殊-hp-application-的支持边界) 说明生命干预与特殊恢复，[Elemental](elemental.md#支持边界) 说明 EP 环境分类及缩时缺口。研究覆盖见[案例37](../research/cases/37-resource-mechanism-coverage.md)，验收结果与集中归属见[语义验收](verification.md#hook-与伤害治疗的回归语义)。
+基础结算和真实内容是否接入分别记录：[Vitality](vitality.md#特殊-hp-application-的支持边界) 说明生命干预与特殊恢复，[Elemental](elemental.md#支持边界) 说明标准爆发及具体内容的支持范围。研究覆盖见[案例37](../research/cases/37-resource-mechanism-coverage.md)，验收结果与集中归属见[语义验收](verification.md#hook-与伤害治疗的回归语义)。

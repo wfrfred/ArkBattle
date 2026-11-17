@@ -132,7 +132,7 @@ Prefab、范围读取和换算由实际业务使用；目录移动、提取工�
 | EP-05 | ENVIRONMENT 仍使用普通 EP 抗性和接收管线；环境免疫 Hook 能取消环境 EP 而不影响普通 EP，单次排除该 Hook 后可正常接收。 | [Apply](../../test/core/resource/application.test.js)的环境免疫场景，不复制公共 Hook 排除矩阵。 |
 | EP-06 | 缩时保留已推进量，按当前 MaxEP 即时回填，不补周期或 healed；耗尽时完整结束并清理根绑定产物，独立眩晕保留原期限，结束回调中的新 Burst 不受旧 Ref 影响。 | [Elemental](../../test/core/elemental.test.js)的即时回填与同步结束两个成品场景。 |
 
-具体过量转屏障、非致命、保护、复活和其它特殊内容接入后，再验证其新增玩法结果；已有资源报告或 Hook 不构成这些内容已实现的证明。EP 变速时钟及具体内容的剩余缺口见 [Elemental 支持边界](elemental.md#支持边界)。
+具体过量转屏障、非致命、保护、复活和其它特殊内容接入后，再验证其新增玩法结果；已有资源报告或 Hook 不构成这些内容已实现的证明。EP 具体内容与暂缓例外见 [Elemental 支持边界](elemental.md#支持边界)。
 
 ## Event 的回归语义
 

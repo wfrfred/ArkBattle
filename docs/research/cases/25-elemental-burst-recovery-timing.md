@@ -213,6 +213,8 @@ EP不只有ATK附带：固定量、按HP伤害量、AOE及是否经过公式各�
 
 酒神S3的Talent2（-263653456522888950）实际安装 `phatm2_t_2[s3]`，黑板增量.5；模板按神经恢复状态增加 `EP_BREAK_RECOVER_SPEED`，条件结束撤销。控制器每次读取当前速度。没有由此证明所有独立子Buff也按同一速度推进。
 
+本批[完整 Holder 属性筛选](../evidence/resource-mechanisms-20261114/recovery-elemental/holder-usage.json)仅得到该模板两项和 `sandbox_v3_epbreak_recover_speedup` 一项；后者属于已排除的生息演算。当前支持范围的实际变速正例限定神经恢复，独立眩晕／麻痹已有相应生命周期依据；不能把未发现的全型变速组合当作已确认的 Core 缺口。这是所列静态输入范围的结论，不宣称全部热更新或未来内容均已穷尽。
+
 珊比天赋2（-3045388504718096767）实际装 `thumpy[t_2]`，物理伤害来源后置event21在目标处于WATER恢复时调用ReduceEpBreakCooldownDuration，潜能配置1.2秒。它的完整操作顺序是：
 
 1. 对仍有效的本次追踪爆发Buff调用SubtractRemainingTime，移除失效引用。
