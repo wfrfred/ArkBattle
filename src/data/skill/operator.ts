@@ -156,6 +156,7 @@ export function parseArknightsSkillLevel(
             },
             activation: {
                 trigger: activation(selected.skillType),
+                ignoreRestrictions: [],
                 requirement: spCost,
                 cost: spCost,
                 initialize: () => ({ state: {}, duration }),

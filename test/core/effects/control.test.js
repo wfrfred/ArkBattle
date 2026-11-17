@@ -11,9 +11,9 @@ import * as sp from "../../../dist/core/unit/skill/sp.js";
 import * as effects from "../../../dist/core/unit/effect/index.js";
 import { advance as advanceLocomotion } from "../../../dist/core/unit/capability/locomotion/index.js";
 import * as facing from "../../../dist/core/unit/capability/facing/index.js";
-import { stun, silence, blockSpRecovery } from "../../../dist/core/effects/control.js";
+import { stun, stunRestriction, silence, blockSpRecovery } from "../../../dist/core/effects/control.js";
 
-function actor(onEnd = state => state) {
+function actor(ignoreRestrictions, onEnd = state => state) {
     const action = {
         id: "held", intervalTicks: 0, speed: 100,
         initialize: state => ({ state, value: {} }),
@@ -24,7 +24,7 @@ function actor(onEnd = state => state) {
     const skill = {
         id: "control-skill", initialize: state => ({ state, value: {} }),
         sp: { initial: 10, capacity: 10, recovery: { type: "TIME", intervalTicks: 30 } },
-        activation: { trigger: "MANUAL", requirement: 10, cost: 10, initialize: () => ({ state: {}, duration: { type: "INFINITE" } }) },
+        activation: { trigger: "MANUAL", ignoreRestrictions, requirement: 10, cost: 10, initialize: () => ({ state: {}, duration: { type: "INFINITE" } }) },
     };
     const definition = {
         id: "controlled", hooks: Hooks.empty(),
@@ -46,7 +46,7 @@ function canMove(state, reference) {
 
 test("stun interrupts the current action, suppresses its affected capabilities, and withdraws only its own restrictions", () => {
     const endings = [];
-    const content = actor((state, _source, _self, end) => { endings.push(end); return state; });
+    const content = actor([], (state, _source, _self, end) => { endings.push(end); return state; });
     let state = battle([
         { definition: content.definition, position: [1, 1], initial: { facing: { direction: "RIGHT" } } },
         { definition: { id: "blockable", hooks: Hooks.empty(), layer: { type: "GROUND" }, blockable: { volume: 1, restrictions: [] } }, position: [1.5, 1] },
@@ -89,7 +89,7 @@ test("stun interrupts the current action, suppresses its affected capabilities, 
 });
 
 test("silence blocks activation while SP prevention independently blocks recovery", () => {
-    const content = actor();
+    const content = actor([]);
     let state = battle([{ definition: content.definition, position: [1, 1], initial: { facing: { direction: "RIGHT" } } }]);
     const source = units.ref(get(state, 0));
     const skill = skills.ref(source, content.skill);
@@ -109,4 +109,39 @@ test("silence blocks activation while SP prevention independently blocks recover
     assert.equal(skills.activate(state, skill).value, null);
     state = effects.end(state, silenced.value);
     assert.notEqual(skills.activate(state, skill).value, null);
+});
+
+test("a skill can ignore every stun source for activation while silence, SP and other stun constraints remain", () => {
+    const content = actor([stunRestriction]);
+    let state = battle([
+        { definition: content.definition, position: [1, 1], initial: { facing: { direction: "RIGHT" } } },
+        { definition: { id: "blockable", hooks: Hooks.empty(), layer: { type: "GROUND" }, blockable: { volume: 1, restrictions: [] } }, position: [1.5, 1] },
+    ]);
+    const source = units.ref(get(state, 0));
+    const target = units.ref(get(state, 1));
+    const reference = skills.ref(source, content.skill);
+    const first = effects.install(state, source, stun);
+    const second = effects.install(first.state, source, stun);
+    const silenced = effects.install(second.state, source, silence);
+    state = silenced.state;
+    const rejected = skills.activate(state, reference);
+    assert.equal(rejected.value, null);
+    assert.equal(rejected.state, state);
+    state = effects.end(state, silenced.value);
+    state = sp.pay(state, source, 5).state;
+    const insufficient = skills.activate(state, reference);
+    assert.equal(insufficient.value, null);
+    assert.equal(insufficient.state, state);
+    state = sp.recover(state, source, "TIME", 5).state;
+    const activated = skills.activate(state, reference);
+    state = activated.state;
+    assert.notEqual(activated.value, null);
+    assert.equal(get(state, 0).skill.sp.value, 0);
+    assert.equal(effects.get(state, first.value).lifecycle, "ACTIVE");
+    assert.equal(effects.get(state, second.value).lifecycle, "ACTIVE");
+    assert.equal(actions.start(state, actions.ref(source, content.action)).value, null);
+    assert.equal(canMove(state, source), false);
+    assert.equal(facing.turn(state, source, "LEFT"), state);
+    state = blocking.search(state, source);
+    assert.equal(blocking.blockerOf(state, target), undefined);
 });

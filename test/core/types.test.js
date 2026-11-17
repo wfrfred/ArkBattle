@@ -24,7 +24,7 @@ import * as vitality from ${module("unit/capability/vitality/index")};
 import * as elemental from ${module("unit/capability/elemental/index")};
 import * as facing from ${module("unit/capability/facing/index")};
 import * as skills from ${module("unit/skill/index")};
-import { hasSkill, spRecovered, type Skill as SkillCapability } from ${module("unit/capability/skill/index")};
+import { hasSkill, spRecovered, type Skill as SkillCapability, type RecoveryRestriction } from ${module("unit/capability/skill/index")};
 import { hasPresence, disappear } from ${module("unit/capability/presence/index")};
 import { dispatch as dispatchElemental } from ${module("unit/capability/elemental/hook")};
 import * as runtime from ${module("battle/runtime")};
@@ -426,7 +426,7 @@ vitality.isAlive(bare);
 vitality.hpRatio(bare);
 declare const skillHost: Unit & SkillCapability;
 const controlledActivation: skills.ActivationDefinition<{ completed: number }, { remaining: number }> = {
-    trigger: 'MANUAL', requirement: 0, cost: 0,
+    trigger: 'MANUAL', ignoreRestrictions: [], requirement: 0, cost: 0,
     initialize(_battle, _source, self) {
         const duration: skills.DurationDefinition = self.state.completed === 0
             ? { type: 'TIME', durationTicks: 30 }
@@ -448,12 +448,20 @@ const controlledActivation: skills.ActivationDefinition<{ completed: number }, {
 };
 // @ts-expect-error an activation must declare its payment, including zero.
 const missingPayment: skills.ActivationDefinition<object, object> = {
-    trigger: 'MANUAL', requirement: 0, initialize: () => ({ state: {}, duration: { type: 'INFINITE' } }),
+    trigger: 'MANUAL', ignoreRestrictions: [], requirement: 0, initialize: () => ({ state: {}, duration: { type: 'INFINITE' } }),
 };
 const invalidDynamicPayment: skills.ActivationDefinition<{ completed: number }, { remaining: number }> = {
     ...controlledActivation,
     // @ts-expect-error activation payment is a static amount.
     cost: () => 1,
+};
+const recoveryOnly: RecoveryRestriction = {
+    allows: (_battle, context) => context.source === 'TIME',
+};
+const invalidActivationExemption: skills.ActivationDefinition<{ completed: number }, { remaining: number }> = {
+    ...controlledActivation,
+    // @ts-expect-error a recovery restriction requires facts not supplied by an activation check.
+    ignoreRestrictions: [recoveryOnly],
 };
 skills.pay(battle, ref(skillHost), 1);
 // @ts-expect-error resource payment requires an explicit amount.

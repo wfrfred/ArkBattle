@@ -19,7 +19,7 @@ test("activation publishes payment before onStart and clears only the completed 
         initialize: (state) => ({ state, value: { completed: 0 } }),
         sp: { initial: 30, capacity: 40, recovery: { type: "NONE" } },
         activation: {
-            trigger: "MANUAL",
+            trigger: "MANUAL", ignoreRestrictions: [],
             requirement: 20,
             cost: 10,
             initialize: (_state, _source, self) => {
@@ -110,7 +110,7 @@ test("cancellation during payment notification retains payment and suppresses th
         initialize: (state) => ({ state, value: { started: false } }),
         sp: { initial: 10, capacity: 10, recovery: { type: "NONE" } },
         activation: {
-            trigger: "MANUAL",
+            trigger: "MANUAL", ignoreRestrictions: [],
             requirement: 10,
             cost: 10,
             initialize: () => ({ state: {}, duration: { type: "INFINITE" } }),
@@ -149,7 +149,7 @@ test("active operations require a declared handler and current permission, while
         sp: null,
         initialize: (state) => ({ state, value: {} }),
         activation: {
-            trigger: "MANUAL",
+            trigger: "MANUAL", ignoreRestrictions: [],
             requirement: 0,
             cost: 0,
             initialize: () => ({ state: { ready: false }, duration: { type: "INFINITE" } }),
@@ -262,7 +262,7 @@ test("TIME extension stays in its round while persistent state selects a later I
         sp: null,
         initialize: (state) => ({ state, value: { completed: 0 } }),
         activation: {
-            trigger: "MANUAL",
+            trigger: "MANUAL", ignoreRestrictions: [],
             requirement: 0,
             cost: 0,
             initialize: (_state, _source, self) => ({
@@ -314,7 +314,7 @@ test("AMMO samples its charged base before payment and applies capacity, consump
         sp: { initial: 2, capacity: 2, recovery: { type: "NONE" } },
         initialize: (state) => ({ state, value: {} }),
         activation: {
-            trigger: "MANUAL",
+            trigger: "MANUAL", ignoreRestrictions: [],
             requirement: 1,
             cost: 1,
             initialize: (_state, _source, self) => ({
@@ -366,7 +366,7 @@ test("Ammo contributions registered and withdrawn during TIME affect only later 
         sp: null,
         initialize: state => ({ state, value: { ammo: false } }),
         activation: {
-            trigger: "MANUAL", requirement: 0, cost: 0,
+            trigger: "MANUAL", ignoreRestrictions: [], requirement: 0, cost: 0,
             initialize: (_state, _source, self) => ({
                 state: {},
                 duration: self.state.ammo

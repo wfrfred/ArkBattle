@@ -2,6 +2,7 @@ import type { Identified, Ref } from "../../common/ref.js";
 import type { State as BattleState } from "../../battle/state.js";
 import type { Unit } from "../unit.js";
 import type { Skill as SkillCapability } from "../capability/skill/capability.js";
+import type { ActivationRestriction } from "../capability/skill/restriction.js";
 import type { Skill } from "./skill.js";
 import type { Definition as DurationDefinition, State as DurationState } from "./duration.js";
 
@@ -21,6 +22,7 @@ export interface Definition<S extends object, A extends object> {
     readonly trigger: Trigger;
     readonly requirement: number;
     readonly cost: number;
+    readonly ignoreRestrictions: readonly ActivationRestriction[];
     readonly initialize: (
         battle: BattleState,
         source: Ref<Unit & SkillCapability>,

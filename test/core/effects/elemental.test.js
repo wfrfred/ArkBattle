@@ -81,7 +81,7 @@ test('elemental execution: character necrosis settles fifteen magical pulses, dr
   const skill = createSkillDefinition({
     id: 'necrosis-sp',
     sp: { initial: 20, capacity: 30, recovery: { type: 'TIME', intervalTicks: 30 } },
-    activation: { trigger: 'MANUAL', requirement: 1, cost: 1, initialize: () => ({ state: {}, duration: { type: 'TIME', durationTicks: 30 } }) },
+    activation: { trigger: 'MANUAL', ignoreRestrictions: [], requirement: 1, cost: 1, initialize: () => ({ state: {}, duration: { type: 'TIME', durationTicks: 30 } }) },
   });
   let work = receiverBattle('CHARACTER', { skill: { initialize: state => createSkill(state, skill) } });
   work = element(work, 'NECROSIS').state;
@@ -186,7 +186,7 @@ test('mania counts each released action once and each skill activation, caps sel
   });
   const skill = createSkillDefinition({
     id: 'mania-hit',
-    activation: { trigger: 'MANUAL', requirement: 0, cost: 0, initialize: () => ({ state: {}, duration: { type: 'TIME', durationTicks: 0 } }) },
+    activation: { trigger: 'MANUAL', ignoreRestrictions: [], requirement: 0, cost: 0, initialize: () => ({ state: {}, duration: { type: 'TIME', durationTicks: 0 } }) },
     sp: { initial: 0, capacity: 30, recovery: { type: 'HIT', amount: 1 } },
   });
   let work = createBattle([
@@ -240,7 +240,7 @@ test('mania counts each released action once and each skill activation, caps sel
 test('mania counts successful skill activations on a host without Action', () => {
   const skill = createSkillDefinition({
     id: 'mania-skill-only', sp: null,
-    activation: { trigger: 'MANUAL', requirement: 0, cost: 0, initialize: () => ({ state: {}, duration: { type: 'INFINITE' } }) },
+    activation: { trigger: 'MANUAL', ignoreRestrictions: [], requirement: 0, cost: 0, initialize: () => ({ state: {}, duration: { type: 'INFINITE' } }) },
   });
   let work = element(receiverBattle('CHARACTER', {
     skill: { initialize: state => createSkill(state, skill) },

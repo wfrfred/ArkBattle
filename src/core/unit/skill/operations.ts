@@ -138,7 +138,9 @@ export function activate<S extends object, A extends object>(
         return { state: battle, value: null };
     }
     if (
-        !allows(battle, { self: unit }, unit.skill.activationRestrictions) ||
+        !allows(battle, { self: unit }, unit.skill.activationRestrictions, (restriction) =>
+            definition.ignoreRestrictions.includes(restriction),
+        ) ||
         !(definition.accepts?.(battle, source, self) ?? true)
     ) {
         return { state: battle, value: null };

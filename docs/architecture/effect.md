@@ -166,4 +166,6 @@ Elemental 拥有 EP 与当前 Burst 引用；标准元素 Effect 实现伤害、
 
 stun 向已有 Action、Locomotion、Skill、Blocking 与 Facing 登记各自限制并取消当前 Action；停用只撤销自身登记。Facing 强制转向只绕过转向限制，不恢复其他能力。
 
+control 公开共享的 stunRestriction、silenceRestriction 与 spRecoveryRestriction 定义；不同 Effect 来源以独立登记 ID 引用相应定义。Skill 可按定义身份豁免自身的启动限制，但不会解除异常、撤销登记或改变其他领域的限制，见 [Skill](skill.md#4-restriction程序与-hook)。
+
 healFree 按标准 Definition 身份及 ACTIVE 状态限制普通 HP 治疗选择，不登记通用受选贡献，也不禁止明确目标的 HP／EP 治疗接收。资源阶段、伤判和死亡通知统一见 [Resource](resource.md)。具体尚未闭合的机制集中列于 [Tactical 语义](tactical-semantics.md)。

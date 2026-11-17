@@ -66,6 +66,8 @@ ammoReplenished 仅通知普通补弹的正实际增量，保存 requested、实
 
 启动、主动操作和回复分别持有精确限制。启动要求 PRESENT、正生命及 activationRestrictions；[Presence](presence.md)通过限制禁止消失期间的新激活。operate 检查 PRESENT、当前轮 ACTIVE 和 operationRestrictions，不额外要求空间存在或 HP；内部到期、完成及宿主离场不受主动操作限制否决。
 
+Activation Definition 必须显式提供 `ignoreRestrictions: readonly ActivationRestriction[]`：普通技能为 `[]`，允许眩晕中发动的技能可填写共享的 `control.stunRestriction`。先解析有效贡献，再按定义对象身份豁免；同一定义的多个来源一起忽略，不按登记 ID 判断，也不恢复被竞争压制的项。该豁免只作用于本次 Skill 启动，不删除登记、解除 Effect 或恢复其他领域的能力；只忽略 stun 仍受 silence、Presence 等其余限制。宿主生命周期、已有 Activation、触发方式及 SP 前提仍须满足。
+
 入场 Hook 先登记回复监听，再执行 onEnter，最后重新取得仍为 PRESENT 的宿主尝试 PASSIVE 发动。持久 onTick 按 PRESENT 推进，本轮 onTick 另要求 ACTIVE；它们不机械继承自然 SP 回复的暂停条件。
 
 Activation Definition 的 operations 按 STOP／RETRIGGER 分别提供处理器，未声明的操作不受理。operate 先检查对应处理器存在，再检查 operationRestrictions，通过后调用该处理器并返回 true；处理器接收 BattleState、宿主 Ref 和完整 Activation，不重复接收操作键。true 表示已受理，不承诺激活已经结束。内部 finish／cancel 不受主动操作支持范围或限制否决。
@@ -82,6 +84,6 @@ Skill 通知包括 SP 回复／支付／修改、耗弹／普通补弹和激活�
 
 ## 6. 覆盖边界
 
-本轮初始化可以按次数／充能状态构造 Duration；具体技能仍须接入。Fever 的本次门槛与支付豁免、止颂 S3的特定启动限制豁免尚未接入，变化范围与实际数量见[发动变化研究](../research/cases/09-skill-mechanisms-and-requirements.md#10-发动变化的数量与表达范围2026-11-17)。金币／魔力复用原生 SP，不直接证明项目必须提供普通 SP 运行期配置切换或封闭增减接口。
+本轮初始化可以按次数／充能状态构造 Duration，启动豁免可以表达止颂 S3的定向异常许可；具体技能仍须接入。Fever 的本次 SP 门槛与支付豁免尚未接入，变化范围与实际数量见[发动变化研究](../research/cases/09-skill-mechanisms-and-requirements.md#10-发动变化的数量与表达范围2026-11-17)。金币／魔力复用原生 SP，不直接证明项目必须提供普通 SP 运行期配置切换或封闭增减接口。
 
 充能、条件耗弹、Fever 的已查期限延后及跨部署魔力的持久保存可以使用现有领域组合；这不代表相应内容已经接入。完整接入范围见[内容缺口](tactical-semantics.md)，同实例复活的技能接续按具体原生程序确定，不统一推断保留或重置。
