@@ -1,0 +1,16 @@
+{
+  "checkedOn": "2026-11-17",
+  "source": "https://prts.wiki/index.php?title=%E6%95%B0%E5%80%BC%E8%8C%83%E5%9B%B4&oldid=444062",
+  "sourceType": "Community secondary source, not official client documentation",
+  "pageReportedClientVersion": "2.7.81",
+  "crossChecks": [
+    "The page lists 38 Attribute IDs with four reserved entries and 34 numeric properties; the local metadata inventory independently confirms this structure.",
+    "The page distinguishes the attack-speed attribute minimum20 from the attack-period consumer clamp10..600; both are independently checked in the local declarations and native bodies.",
+    "The page describes numeric range override as an entity-local change to attribute bounds; local native methods and content bindings provide the primary evidence."
+  ],
+  "limits": [
+    "The page is not assumed to match the installed client version merely because a current URL was read.",
+    "No unverified default value or consumer rule is filled from this page; the full table is derived from the local metadata and constructors.",
+    "This record stores the source and comparison scope, not a copy of the webpage."
+  ]
+}

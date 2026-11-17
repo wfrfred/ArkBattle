@@ -127,6 +127,8 @@ Attributes.AddModifier / RemoveModifier
 
 项目的周期刷新契约见 [Action](../../architecture/action.md)，不在本案重复描述登记与写回接口。
 
+攻速属性的默认下限20与周期公式的独立限制 `[10,600]` 分属两层；动态属性范围低于20时才会显出差异。当前常量、范围覆写及同步通知的连接见[完整属性补核](39-death-attribution-and-attribute-ranges.md#4-属性求值与范围)。
+
 ## 4. 普通动画缩放：周期长短和占用长短可以分离
 
 `AbstractAnimatedAbility.UpdatePlaybackSpeed`（91798，`0x180f00820`）的普通、无 SlowDown 分支，结合真实 animator 映射，计算：

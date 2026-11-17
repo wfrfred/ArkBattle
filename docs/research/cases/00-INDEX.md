@@ -49,7 +49,7 @@
 
 | [37 HP／EP资源机制全链覆盖](37-resource-mechanism-coverage.md) | 字段／方法清单、真实Content绑定、全Holder与资源扫描 | Vitality／Elemental／Damage／Healing统一证据入口；实际使用、未绑定候选与证据冲突分别列明，不默认批准简化 |
 | [38 Damage分类与权限](38-damage-classification-and-permissions.md) | Modifier、22项标志、公式／接收完整体、实际干员与召唤链 | 数学类型、攻击分类、施加途径、数值／取消权限、环境、分担／反伤与传播区别 |
-| [39 最终死亡归属与属性范围](39-death-attribution-and-attribute-ranges.md) | Context栈生产与恢复、FinishMe／OnFinish／两方向通知、实际角色／模组 | 区分伤害与程序来源、noSource原因、最终回收，属性覆写与MaxHP普通setter后继 |
+| [39 最终死亡归属与属性范围](39-death-attribution-and-attribute-ranges.md) | Context栈、最终通知；34项属性默认范围、求值／覆写及实际使用 | 伤害与程序来源、最终回收；属性范围与公式限制、同步后继及支持玩法中的覆写 |
 
 证据文件及复现范围见[批次索引](../evidence/README.md)。案例负责维护问题、结论及适用条件、直接证据／调用链推断、未决项和项目关联；批次 README 负责版本、指纹、文件用途和实际复现入口。
 

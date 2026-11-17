@@ -1,0 +1,1903 @@
+{
+  "provenance": {
+    "checkedOn": "2026-11-17",
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/attribute-ranges-20261117/extract_usage.py",
+      "bytes": 16565,
+      "sha256": "0051224a8913e2c81094a217fa77f4b69a0df8c895dd8e65e3c51e9ad2cdf717"
+    },
+    "helper": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/attack-addon-order-20261102/content/decode_content.py",
+      "bytes": 8161,
+      "sha256": "d17abeee072576a29ca060884dcc0dd770fe0f8194ca7eed7b5c13b99b41e14e"
+    },
+    "source": {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+      "bytes": 2151020,
+      "sha256": "8edcb8017c977cdf52c2593b58e21db96949f3ad1e6f904180ac1241f145ca79"
+    },
+    "scope": "All installed holder template event programs scanned by decoded node type; references are literal template-key edges, not runtime reachability."
+  },
+  "result": [
+    {
+      "bundle": "config/buff_template_holder.ab",
+      "file": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+      "pathId": "6070581171229484677",
+      "objectSha256": "c03149251d47fa31e6f6cb5b696f9e93925f51a97bf9ee335593c888bdcb6fec",
+      "scannedTemplates": 9054,
+      "templates": [
+        {
+          "templateKey": "enemy_etouch_move_speed[lock]",
+          "effectKey": "",
+          "onEventPriority": 0,
+          "eventToActions": {
+            "_items": {
+              "Array": [
+                {
+                  "key": 0,
+                  "value": {
+                    "SerializedState": "[{\"_blackBoardKey\":\"minValue\",\"_targetType\":\"BUFF_OWNER\",\"_attributeType\":\"MOVE_SPEED\",\"$type\":\"Torappu.Battle.Action.Nodes+AssignAttributeRawDataIntoBlackboard\"},{\"_targetType\":\"BUFF_OWNER\",\"_attributeType\":\"MOVE_SPEED\",\"_doClear\":false,\"_minValueKey\":\"minValue\",\"_maxValueKey\":null,\"_refresh\":true,\"$type\":\"Torappu.Battle.Action.Nodes+ModifyAttributeDataRangeOverride\"}]",
+                    "SerializedObjectReferences": {
+                      "Array": []
+                    }
+                  }
+                },
+                {
+                  "key": 1,
+                  "value": {
+                    "SerializedState": "[{\"_targetType\":\"BUFF_OWNER\",\"_attributeType\":\"MOVE_SPEED\",\"_doClear\":true,\"_minValueKey\":\"minValue\",\"_maxValueKey\":null,\"_refresh\":true,\"$type\":\"Torappu.Battle.Action.Nodes+ModifyAttributeDataRangeOverride\"}]",
+                    "SerializedObjectReferences": {
+                      "Array": []
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "templateIndex": 1236,
+          "events": [
+            {
+              "event": 0,
+              "actions": [
+                {
+                  "_blackBoardKey": "minValue",
+                  "_targetType": "BUFF_OWNER",
+                  "_attributeType": "MOVE_SPEED",
+                  "$type": "Torappu.Battle.Action.Nodes+AssignAttributeRawDataIntoBlackboard"
+                },
+                {
+                  "_targetType": "BUFF_OWNER",
+                  "_attributeType": "MOVE_SPEED",
+                  "_doClear": false,
+                  "_minValueKey": "minValue",
+                  "_maxValueKey": null,
+                  "_refresh": true,
+                  "$type": "Torappu.Battle.Action.Nodes+ModifyAttributeDataRangeOverride"
+                }
+              ]
+            },
+            {
+              "event": 1,
+              "actions": [
+                {
+                  "_targetType": "BUFF_OWNER",
+                  "_attributeType": "MOVE_SPEED",
+                  "_doClear": true,
+                  "_minValueKey": "minValue",
+                  "_maxValueKey": null,
+                  "_refresh": true,
+                  "$type": "Torappu.Battle.Action.Nodes+ModifyAttributeDataRangeOverride"
+                }
+              ]
+            }
+          ],
+          "matches": [
+            {
+              "path": "/0/actions/1",
+              "value": {
+                "_targetType": "BUFF_OWNER",
+                "_attributeType": "MOVE_SPEED",
+                "_doClear": false,
+                "_minValueKey": "minValue",
+                "_maxValueKey": null,
+                "_refresh": true,
+                "$type": "Torappu.Battle.Action.Nodes+ModifyAttributeDataRangeOverride"
+              }
+            },
+            {
+              "path": "/1/actions/0",
+              "value": {
+                "_targetType": "BUFF_OWNER",
+                "_attributeType": "MOVE_SPEED",
+                "_doClear": true,
+                "_minValueKey": "minValue",
+                "_maxValueKey": null,
+                "_refresh": true,
+                "$type": "Torappu.Battle.Action.Nodes+ModifyAttributeDataRangeOverride"
+              }
+            }
+          ]
+        },
+        {
+          "templateKey": "move_speed_range_override",
+          "effectKey": "",
+          "onEventPriority": 0,
+          "eventToActions": {
+            "_items": {
+              "Array": [
+                {
+                  "key": 0,
+                  "value": {
+                    "SerializedState": "[{\"_conditionNode\":{\"_targetType\":\"BUFF_OWNER\",\"_motionMask\":\"NONE\",\"_checkTargetAlive\":false,\"_checkApplyWay\":false,\"_checkTargetUnitType\":true,\"_unitType\":\"ENEMY\",\"_applyWay\":\"NONE\",\"_checkTargetFree\":false,\"_checkMotionTargetFree\":false,\"$type\":\"Torappu.Battle.Action.Nodes+IfTarget\"},\"_succeedNodes\":[{\"_targetType\":\"BUFF_OWNER\",\"_blackboardKey\":\"curRespawnCnt\",\"$type\":\"Torappu.Battle.Action.Nodes+AssignRespawnCntToBlackboard\"},{\"_conditionNode\":{\"_targetType\":\"BUFF_OWNER\",\"_anotherBuff\":false,\"_buffKey\":null,\"_blackboardKey\":\"curRespawnCnt\",\"_blackboardKeyFromBb\":null,\"_valueToCompare\":0,\"_anotherKeyToCompare\":\"\",\"_condType\":\"EQUALS\",\"$type\":\"Torappu.Battle.Action.Nodes+FilterByBlackboardValue\"},\"_succeedNodes\":[{\"_conditionNode\":{\"_targetType\":\"BUFF_OWNER\",\"_anotherBuff\":false,\"_buffKey\":null,\"_blackboardKey\":\"custom_override_move_speed\",\"_blackboardKeyFromBb\":null,\"_valueToCompare\":1,\"_anotherKeyToCompare\":null,\"_condType\":\"EQUALS\",\"$type\":\"Torappu.Battle.Action.Nodes+FilterByBlackboardValue\"},\"_succeedNodes\":[{\"_targetType\":\"BUFF_OWNER\",\"_attributeType\":\"MOVE_SPEED\",\"_doClear\":false,\"_minValueKey\":\"minValue_move_speed\",\"_maxValueKey\":null,\"_refresh\":true,\"$type\":\"Torappu.Battle.Action.Nodes+ModifyAttributeDataRangeOverride\"}],\"_failNodes\":[{\"_blackBoardKey\":\"minValue\",\"_targetType\":\"BUFF_OWNER\",\"_attributeType\":\"MOVE_SPEED\",\"$type\":\"Torappu.Battle.Action.Nodes+AssignAttributeRawDataIntoBlackboard\"},{\"_targetType\":\"BUFF_OWNER\",\"_attributeType\":\"MOVE_SPEED\",\"_doClear\":false,\"_minValueKey\":\"minValue\",\"_maxValueKey\":null,\"_refresh\":true,\"$type\":\"Torappu.Battle.Action.Nodes+ModifyAttributeDataRangeOverride\"}],\"$type\":\"Torappu.Battle.Action.Nodes+IfElse\"}],\"_failNodes\":[{\"_decCntIfStack\":false,\"_updateOverrideMap\":true,\"$type\":\"Torappu.Battle.Action.Nodes+FinishBuff\"}],\"$type\":\"Torappu.Battle.Action.Nodes+IfElse\"}],\"_failNodes\":[{\"_decCntIfStack\":false,\"_updateOverrideMap\":true,\"$type\":\"Torappu.Battle.Action.Nodes+FinishBuff\"}],\"$type\":\"Torappu.Battle.Action.Nodes+IfElse\"}]",
+                    "SerializedObjectReferences": {
+                      "Array": []
+                    }
+                  }
+                },
+                {
+                  "key": 1,
+                  "value": {
+                    "SerializedState": "[{\"_targetType\":\"BUFF_OWNER\",\"_attributeType\":\"MOVE_SPEED\",\"_doClear\":true,\"_minValueKey\":\"minValue\",\"_maxValueKey\":null,\"_refresh\":true,\"$type\":\"Torappu.Battle.Action.Nodes+ModifyAttributeDataRangeOverride\"}]",
+                    "SerializedObjectReferences": {
+                      "Array": []
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "templateIndex": 3200,
+          "events": [
+            {
+              "event": 0,
+              "actions": [
+                {
+                  "_conditionNode": {
+                    "_targetType": "BUFF_OWNER",
+                    "_motionMask": "NONE",
+                    "_checkTargetAlive": false,
+                    "_checkApplyWay": false,
+                    "_checkTargetUnitType": true,
+                    "_unitType": "ENEMY",
+                    "_applyWay": "NONE",
+                    "_checkTargetFree": false,
+                    "_checkMotionTargetFree": false,
+                    "$type": "Torappu.Battle.Action.Nodes+IfTarget"
+                  },
+                  "_succeedNodes": [
+                    {
+                      "_targetType": "BUFF_OWNER",
+                      "_blackboardKey": "curRespawnCnt",
+                      "$type": "Torappu.Battle.Action.Nodes+AssignRespawnCntToBlackboard"
+                    },
+                    {
+                      "_conditionNode": {
+                        "_targetType": "BUFF_OWNER",
+                        "_anotherBuff": false,
+                        "_buffKey": null,
+                        "_blackboardKey": "curRespawnCnt",
+                        "_blackboardKeyFromBb": null,
+                        "_valueToCompare": 0,
+                        "_anotherKeyToCompare": "",
+                        "_condType": "EQUALS",
+                        "$type": "Torappu.Battle.Action.Nodes+FilterByBlackboardValue"
+                      },
+                      "_succeedNodes": [
+                        {
+                          "_conditionNode": {
+                            "_targetType": "BUFF_OWNER",
+                            "_anotherBuff": false,
+                            "_buffKey": null,
+                            "_blackboardKey": "custom_override_move_speed",
+                            "_blackboardKeyFromBb": null,
+                            "_valueToCompare": 1,
+                            "_anotherKeyToCompare": null,
+                            "_condType": "EQUALS",
+                            "$type": "Torappu.Battle.Action.Nodes+FilterByBlackboardValue"
+                          },
+                          "_succeedNodes": [
+                            {
+                              "_targetType": "BUFF_OWNER",
+                              "_attributeType": "MOVE_SPEED",
+                              "_doClear": false,
+                              "_minValueKey": "minValue_move_speed",
+                              "_maxValueKey": null,
+                              "_refresh": true,
+                              "$type": "Torappu.Battle.Action.Nodes+ModifyAttributeDataRangeOverride"
+                            }
+                          ],
+                          "_failNodes": [
+                            {
+                              "_blackBoardKey": "minValue",
+                              "_targetType": "BUFF_OWNER",
+                              "_attributeType": "MOVE_SPEED",
+                              "$type": "Torappu.Battle.Action.Nodes+AssignAttributeRawDataIntoBlackboard"
+                            },
+                            {
+                              "_targetType": "BUFF_OWNER",
+                              "_attributeType": "MOVE_SPEED",
+                              "_doClear": false,
+                              "_minValueKey": "minValue",
+                              "_maxValueKey": null,
+                              "_refresh": true,
+                              "$type": "Torappu.Battle.Action.Nodes+ModifyAttributeDataRangeOverride"
+                            }
+                          ],
+                          "$type": "Torappu.Battle.Action.Nodes+IfElse"
+                        }
+                      ],
+                      "_failNodes": [
+                        {
+                          "_decCntIfStack": false,
+                          "_updateOverrideMap": true,
+                          "$type": "Torappu.Battle.Action.Nodes+FinishBuff"
+                        }
+                      ],
+                      "$type": "Torappu.Battle.Action.Nodes+IfElse"
+                    }
+                  ],
+                  "_failNodes": [
+                    {
+                      "_decCntIfStack": false,
+                      "_updateOverrideMap": true,
+                      "$type": "Torappu.Battle.Action.Nodes+FinishBuff"
+                    }
+                  ],
+                  "$type": "Torappu.Battle.Action.Nodes+IfElse"
+                }
+              ]
+            },
+            {
+              "event": 1,
+              "actions": [
+                {
+                  "_targetType": "BUFF_OWNER",
+                  "_attributeType": "MOVE_SPEED",
+                  "_doClear": true,
+                  "_minValueKey": "minValue",
+                  "_maxValueKey": null,
+                  "_refresh": true,
+                  "$type": "Torappu.Battle.Action.Nodes+ModifyAttributeDataRangeOverride"
+                }
+              ]
+            }
+          ],
+          "matches": [
+            {
+              "path": "/0/actions/0/_succeedNodes/1/_succeedNodes/0/_succeedNodes/0",
+              "value": {
+                "_targetType": "BUFF_OWNER",
+                "_attributeType": "MOVE_SPEED",
+                "_doClear": false,
+                "_minValueKey": "minValue_move_speed",
+                "_maxValueKey": null,
+                "_refresh": true,
+                "$type": "Torappu.Battle.Action.Nodes+ModifyAttributeDataRangeOverride"
+              }
+            },
+            {
+              "path": "/0/actions/0/_succeedNodes/1/_succeedNodes/0/_failNodes/1",
+              "value": {
+                "_targetType": "BUFF_OWNER",
+                "_attributeType": "MOVE_SPEED",
+                "_doClear": false,
+                "_minValueKey": "minValue",
+                "_maxValueKey": null,
+                "_refresh": true,
+                "$type": "Torappu.Battle.Action.Nodes+ModifyAttributeDataRangeOverride"
+              }
+            },
+            {
+              "path": "/1/actions/0",
+              "value": {
+                "_targetType": "BUFF_OWNER",
+                "_attributeType": "MOVE_SPEED",
+                "_doClear": true,
+                "_minValueKey": "minValue",
+                "_maxValueKey": null,
+                "_refresh": true,
+                "$type": "Torappu.Battle.Action.Nodes+ModifyAttributeDataRangeOverride"
+              }
+            }
+          ]
+        },
+        {
+          "templateKey": "trap_pirene_init",
+          "effectKey": "",
+          "onEventPriority": 0,
+          "eventToActions": {
+            "_items": {
+              "Array": [
+                {
+                  "key": 0,
+                  "value": {
+                    "SerializedState": "[{\"_conditionNode\":{\"_targetType\":\"BUFF_OWNER\",\"_condType\":\"GE\",\"_value\":1.0,\"_useSourceHpRatio\":false,\"_sourceType\":\"SOURCE\",\"_blackboardPrefix\":null,\"$type\":\"Torappu.Battle.Action.Nodes+FilterByTargetHpRatio\"},\"_succeedNodes\":[{\"_blackboardKey\":\"full\",\"_blackboardSource\":\"CURRENT\",\"_keySource\":\"CONSTANT\",\"_keyTargetType\":\"TARGET\",\"_value\":1.0,\"_copyFromKey\":null,\"_assignString\":false,\"$type\":\"Torappu.Battle.Action.Nodes+AssignValueToBB\"},{\"_envKey\":\"env_040_act48side\",\"_target\":\"BUFF_OWNER\",\"_triggerWithEvent\":true,\"_eventName\":\"trap_full\",\"_triggerWithBlackboard\":false,\"_readResultFromBlackboard\":false,\"_tryRuntimeLoad\":false,\"$type\":\"Torappu.Battle.Action.Nodes+TriggerEnvSystem\"},{\"_buff\":{\"attributes\":{\"abnormalFlags\":[],\"abnormalImmunes\":[],\"abnormalAntis\":[],\"abnormalCombos\":[],\"abnormalComboImmunes\":[],\"attributeModifiers\":[]},\"buffKey\":\"trap_pirene_trigger_delay\",\"loadFromDB\":false,\"isDurableBuff\":false,\"isDamageMissable\":false,\"isSilenceable\":false,\"isStunnable\":false,\"isFreezable\":false,\"isLevitatable\":false,\"isGroundBoundable\":false,\"statusResistable\":\"AUTOMATIC\",\"templateKey\":\"empty\",\"disableOverride\":false,\"overrideKey\":null,\"overrideType\":\"DEFAULT\",\"maxStackCnt\":1,\"refreshRemainingTimeWhenStackMax\":false,\"clearAllStackCntWhenTimeUp\":false,\"maxValidStackCnt\":-1,\"independentCharacterSource\":false,\"overrideEffectKey\":null,\"overrideOnEventPriority\":false,\"onEventPriority\":\"DEFAULT\",\"audioSignal\":null,\"lifeTimeType\":\"INFINITY\",\"takeSnapshotWhenExtend\":false,\"durationKey\":\"delay_time\",\"remainingTimeKey\":null,\"lifeTime\":2.0,\"triggerLifeType\":\"IMMEDIATELY\",\"triggerCnt\":1,\"triggerInterval\":2.0,\"waitFirstTriggerInterval\":true,\"firstTriggerInterval\":-1.0,\"priority\":-1,\"priorityBBKeys\":[],\"stripBlackboardParamsWithBuffKey\":false,\"blackboard\":[],\"enableInitDirectionFromSource\":false},\"_buffOwner\":\"BUFF_OWNER\",\"_useSpecialBuffSource\":false,\"_specialBuffSource\":\"BUFF_SOURCE\",\"_isDerivedBuff\":true,\"_finishDerivedBuffIfParentFinish\":true,\"_inherateSourceProjectileFromParentBuff\":false,\"_hookEffectKeyFromSourceProjectile\":false,\"$type\":\"Torappu.Battle.Action.Nodes+CreateBuff\"}],\"_failNodes\":[{\"_blackboardKey\":\"full\",\"_blackboardSource\":\"CURRENT\",\"_keySource\":\"CONSTANT\",\"_keyTargetType\":\"TARGET\",\"_value\":0.0,\"_copyFromKey\":null,\"_assignString\":false,\"$type\":\"Torappu.Battle.Action.Nodes+AssignValueToBB\"},{\"_buff\":{\"attributes\":{\"abnormalFlags\":[],\"abnormalImmunes\":[],\"abnormalAntis\":[],\"abnormalCombos\":[],\"abnormalComboImmunes\":[],\"attributeModifiers\":[]},\"buffKey\":\"trap_pirene_trigger_delay[off]\",\"loadFromDB\":false,\"isDurableBuff\":false,\"isDamageMissable\":false,\"isSilenceable\":false,\"isStunnable\":false,\"isFreezable\":false,\"isLevitatable\":false,\"isGroundBoundable\":false,\"statusResistable\":\"AUTOMATIC\",\"templateKey\":\"empty\",\"disableOverride\":false,\"overrideKey\":null,\"overrideType\":\"DEFAULT\",\"maxStackCnt\":1,\"refreshRemainingTimeWhenStackMax\":false,\"clearAllStackCntWhenTimeUp\":false,\"maxValidStackCnt\":-1,\"independentCharacterSource\":false,\"overrideEffectKey\":null,\"overrideOnEventPriority\":false,\"onEventPriority\":\"DEFAULT\",\"audioSignal\":null,\"lifeTimeType\":\"INFINITY\",\"takeSnapshotWhenExtend\":false,\"durationKey\":\"delay_time\",\"remainingTimeKey\":null,\"lifeTime\":2.0,\"triggerLifeType\":\"IMMEDIATELY\",\"triggerCnt\":1,\"triggerInterval\":2.0,\"waitFirstTriggerInterval\":true,\"firstTriggerInterval\":-1.0,\"priority\":-1,\"priorityBBKeys\":[],\"stripBlackboardParamsWithBuffKey\":false,\"blackboard\":[],\"enableInitDirectionFromSource\":false},\"_buffOwner\":\"BUFF_OWNER\",\"_useSpecialBuffSource\":false,\"_specialBuffSource\":\"BUFF_SOURCE\",\"_isDerivedBuff\":true,\"_finishDerivedBuffIfParentFinish\":true,\"_inherateSourceProjectileFromParentBuff\":false,\"_hookEffectKeyFromSourceProjectile\":false,\"$type\":\"Torappu.Battle.Action.Nodes+CreateBuff\"}],\"$type\":\"Torappu.Battle.Action.Nodes+IfElse\"},{\"$type\":\"Torappu.Battle.Action.Nodes+AlwaysNext\"},{\"_targetType\":\"BUFF_OWNER\",\"_attributeType\":\"MAX_HP\",\"_scaleVar\":\"scale\",\"_blackboardKey\":\"hp_origin\",\"$type\":\"Torappu.Battle.Action.Nodes+AssignAttributeToBB\"},{\"_targetType\":\"BUFF_OWNER\",\"_attributeType\":\"MAX_HP\",\"_doClear\":false,\"_minValueKey\":\"hp_origin\",\"_maxValueKey\":\"hp_origin\",\"_refresh\":true,\"$type\":\"Torappu.Battle.Action.Nodes+ModifyAttributeDataRangeOverride\"}]",
+                    "SerializedObjectReferences": {
+                      "Array": []
+                    }
+                  }
+                },
+                {
+                  "key": 2,
+                  "value": {
+                    "SerializedState": "[{\"_conditionNode\":{\"_targetType\":\"BUFF_OWNER\",\"_condType\":\"GE\",\"_value\":1.0,\"_useSourceHpRatio\":false,\"_sourceType\":\"SOURCE\",\"_blackboardPrefix\":null,\"$type\":\"Torappu.Battle.Action.Nodes+FilterByTargetHpRatio\"},\"_succeedNodes\":[{\"_buffKey\":\"trap_pirene_trigger_delay[off]\",\"_loadFromBlackboard\":false,\"_decCntIfStack\":false,\"_updateOverrideMap\":true,\"_targetType\":\"BUFF_OWNER\",\"_checkBuffSource\":false,\"_sourceType\":\"BUFF_SOURCE\",\"_alsoClearNullSource\":false,\"_finishHostBuff\":false,\"_excludeThisBuff\":false,\"_decCntKey\":null,\"_decCnt\":1,\"$type\":\"Torappu.Battle.Action.Nodes+FinishBuffsById\"},{\"_targetType\":\"BUFF_OWNER\",\"_anotherBuff\":false,\"_buffKey\":null,\"_blackboardKey\":\"full\",\"_blackboardKeyFromBb\":null,\"_valueToCompare\":1,\"_anotherKeyToCompare\":null,\"_condType\":\"LT\",\"$type\":\"Torappu.Battle.Action.Nodes+FilterByBlackboardValue\"},{\"_targetType\":\"BUFF_OWNER\",\"_buffKeys\":[\"trap_pirene_trigger_delay\"],\"isAND\":true,\"_loadFromBlackboard\":false,\"_checkBuffSource\":false,\"_buffSourceType\":\"BUFF_SOURCE\",\"_checkSourceHost\":false,\"$type\":\"Torappu.Battle.Action.Nodes+CheckContainsBuff\"},{\"$type\":\"Torappu.Battle.Action.Nodes+IfNot\"},{\"_updateOverrideMap\":true,\"$type\":\"Torappu.Battle.Action.Nodes+FinishDerivedBuff\"},{\"_buff\":{\"attributes\":{\"abnormalFlags\":[],\"abnormalImmunes\":[],\"abnormalAntis\":[],\"abnormalCombos\":[],\"abnormalComboImmunes\":[],\"attributeModifiers\":[]},\"buffKey\":\"trap_pirene_trigger_delay\",\"loadFromDB\":false,\"isDurableBuff\":false,\"isDamageMissable\":false,\"isSilenceable\":false,\"isStunnable\":false,\"isFreezable\":false,\"isLevitatable\":false,\"isGroundBoundable\":false,\"statusResistable\":\"AUTOMATIC\",\"templateKey\":\"trap_pirene_trigger_delay\",\"disableOverride\":false,\"overrideKey\":null,\"overrideType\":\"DEFAULT\",\"maxStackCnt\":1,\"refreshRemainingTimeWhenStackMax\":false,\"clearAllStackCntWhenTimeUp\":false,\"maxValidStackCnt\":-1,\"independentCharacterSource\":false,\"overrideEffectKey\":null,\"overrideOnEventPriority\":false,\"onEventPriority\":\"DEFAULT\",\"audioSignal\":null,\"lifeTimeType\":\"INFINITY\",\"takeSnapshotWhenExtend\":false,\"durationKey\":\"delay_time\",\"remainingTimeKey\":null,\"lifeTime\":2.0,\"triggerLifeType\":\"LIMITED\",\"triggerCnt\":1,\"triggerInterval\":2.0,\"waitFirstTriggerInterval\":true,\"firstTriggerInterval\":-1.0,\"priority\":-1,\"priorityBBKeys\":[],\"stripBlackboardParamsWithBuffKey\":true,\"blackboard\":[],\"enableInitDirectionFromSource\":false},\"_buffOwner\":\"BUFF_OWNER\",\"_useSpecialBuffSource\":false,\"_specialBuffSource\":\"BUFF_SOURCE\",\"_isDerivedBuff\":true,\"_finishDerivedBuffIfParentFinish\":true,\"_inherateSourceProjectileFromParentBuff\":false,\"_hookEffectKeyFromSourceProjectile\":false,\"$type\":\"Torappu.Battle.Action.Nodes+CreateBuff\"}],\"_failNodes\":[{\"_buffKey\":\"trap_pirene_trigger_delay\",\"_loadFromBlackboard\":false,\"_decCntIfStack\":false,\"_updateOverrideMap\":true,\"_targetType\":\"BUFF_OWNER\",\"_checkBuffSource\":false,\"_sourceType\":\"BUFF_SOURCE\",\"_alsoClearNullSource\":false,\"_finishHostBuff\":false,\"_excludeThisBuff\":false,\"_decCntKey\":null,\"_decCnt\":1,\"$type\":\"Torappu.Battle.Action.Nodes+FinishBuffsById\"},{\"_targetType\":\"BUFF_OWNER\",\"_anotherBuff\":false,\"_buffKey\":null,\"_blackboardKey\":\"full\",\"_blackboardKeyFromBb\":null,\"_valueToCompare\":1,\"_anotherKeyToCompare\":null,\"_condType\":\"GE\",\"$type\":\"Torappu.Battle.Action.Nodes+FilterByBlackboardValue\"},{\"_targetType\":\"BUFF_OWNER\",\"_buffKeys\":[\"trap_pirene_trigger_delay[off]\"],\"isAND\":true,\"_loadFromBlackboard\":false,\"_checkBuffSource\":false,\"_buffSourceType\":\"BUFF_SOURCE\",\"_checkSourceHost\":false,\"$type\":\"Torappu.Battle.Action.Nodes+CheckContainsBuff\"},{\"$type\":\"Torappu.Battle.Action.Nodes+IfNot\"},{\"_updateOverrideMap\":true,\"$type\":\"Torappu.Battle.Action.Nodes+FinishDerivedBuff\"},{\"_buff\":{\"attributes\":{\"abnormalFlags\":[],\"abnormalImmunes\":[],\"abnormalAntis\":[],\"abnormalCombos\":[],\"abnormalComboImmunes\":[],\"attributeModifiers\":[]},\"buffKey\":\"trap_pirene_trigger_delay[off]\",\"loadFromDB\":false,\"isDurableBuff\":false,\"isDamageMissable\":false,\"isSilenceable\":false,\"isStunnable\":false,\"isFreezable\":false,\"isLevitatable\":false,\"isGroundBoundable\":false,\"statusResistable\":\"AUTOMATIC\",\"templateKey\":\"trap_pirene_trigger_delay[off]\",\"disableOverride\":false,\"overrideKey\":null,\"overrideType\":\"DEFAULT\",\"maxStackCnt\":1,\"refreshRemainingTimeWhenStackMax\":false,\"clearAllStackCntWhenTimeUp\":false,\"maxValidStackCnt\":-1,\"independentCharacterSource\":false,\"overrideEffectKey\":null,\"overrideOnEventPriority\":false,\"onEventPriority\":\"DEFAULT\",\"audioSignal\":null,\"lifeTimeType\":\"INFINITY\",\"takeSnapshotWhenExtend\":false,\"durationKey\":\"delay_time\",\"remainingTimeKey\":null,\"lifeTime\":2.0,\"triggerLifeType\":\"LIMITED\",\"triggerCnt\":1,\"triggerInterval\":2.0,\"waitFirstTriggerInterval\":true,\"firstTriggerInterval\":-1.0,\"priority\":-1,\"priorityBBKeys\":[],\"stripBlackboardParamsWithBuffKey\":true,\"blackboard\":[],\"enableInitDirectionFromSource\":false},\"_buffOwner\":\"BUFF_OWNER\",\"_useSpecialBuffSource\":false,\"_specialBuffSource\":\"BUFF_SOURCE\",\"_isDerivedBuff\":true,\"_finishDerivedBuffIfParentFinish\":true,\"_inherateSourceProjectileFromParentBuff\":false,\"_hookEffectKeyFromSourceProjectile\":false,\"$type\":\"Torappu.Battle.Action.Nodes+CreateBuff\"}],\"$type\":\"Torappu.Battle.Action.Nodes+IfElse\"}]",
+                    "SerializedObjectReferences": {
+                      "Array": []
+                    }
+                  }
+                },
+                {
+                  "key": 7,
+                  "value": {
+                    "SerializedState": "[{\"_conditionNode\":{\"$type\":\"Torappu.Battle.Action.Nodes+IsHeal\"},\"_succeedNodes\":[{\"_targetType\":\"BUFF_OWNER\",\"_condType\":\"GE\",\"_value\":1.0,\"_useSourceHpRatio\":false,\"_sourceType\":\"SOURCE\",\"_blackboardPrefix\":null,\"$type\":\"Torappu.Battle.Action.Nodes+FilterByTargetHpRatio\"},{\"_modifierTargetType\":\"HP\",\"_blackboardKey\":\"value_after\",\"$type\":\"Torappu.Battle.Action.Nodes+AssignModifierRealDeltaToBB\"},{\"_blackboardKey\":\"value_before\",\"_filterModifierCancelled\":true,\"$type\":\"Torappu.Battle.Action.Nodes+AssignModifierValueIntoBlackboard\"},{\"_inputKey\":\"value_before\",\"_outputKey\":\"value_store\",\"_multiplyParamKey\":null,\"_dividedParamKey\":null,\"_useRemainder\":false,\"_addParamKey\":null,\"_minusParamKey\":\"value_after\",\"_minValueKey\":null,\"_maxValueKey\":\"value_store_max\",\"_finalAbs\":false,\"_finalCeil\":false,\"_finalFloor\":false,\"_finalRound\":false,\"_useAbilityBlackboard\":false,\"_abilityName\":\"\",\"$type\":\"Torappu.Battle.Action.Nodes+CalculateBlackboardValueViaParams\"}],\"_failNodes\":[{\"_targetType\":\"BUFF_OWNER\",\"_condType\":\"LT\",\"_value\":1.0,\"_useSourceHpRatio\":false,\"_sourceType\":\"SOURCE\",\"_blackboardPrefix\":null,\"$type\":\"Torappu.Battle.Action.Nodes+FilterByTargetHpRatio\"},{\"_blackboardKey\":\"value_store\",\"_blackboardSource\":\"CURRENT\",\"_keySource\":\"CONSTANT\",\"_keyTargetType\":\"TARGET\",\"_value\":0.0,\"_copyFromKey\":null,\"_assignString\":false,\"$type\":\"Torappu.Battle.Action.Nodes+AssignValueToBB\"}],\"$type\":\"Torappu.Battle.Action.Nodes+IfElse\"}]",
+                    "SerializedObjectReferences": {
+                      "Array": []
+                    }
+                  }
+                },
+                {
+                  "key": 51,
+                  "value": {
+                    "SerializedState": "[{\"_targetType\":\"BUFF_OWNER\",\"_condType\":\"GE\",\"_value\":1.0,\"_useSourceHpRatio\":false,\"_sourceType\":\"SOURCE\",\"_blackboardPrefix\":null,\"$type\":\"Torappu.Battle.Action.Nodes+FilterByTargetHpRatio\"},{\"_logType\":\"SIMPLE\",\"_key\":\"pirene_hp_full\",\"_loadKeyFromBlackBoard\":false,\"_countInHostIfToken\":false,\"_additionValue\":1,\"_additionValueKey\":\"\",\"_attributeType\":\"NONE\",\"_target\":\"BUFF_OWNER\",\"$type\":\"Torappu.Battle.Action.Nodes+LogExtraBattleInfo\"}]",
+                    "SerializedObjectReferences": {
+                      "Array": []
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "templateIndex": 4439,
+          "events": [
+            {
+              "event": 0,
+              "actions": [
+                {
+                  "_conditionNode": {
+                    "_targetType": "BUFF_OWNER",
+                    "_condType": "GE",
+                    "_value": 1.0,
+                    "_useSourceHpRatio": false,
+                    "_sourceType": "SOURCE",
+                    "_blackboardPrefix": null,
+                    "$type": "Torappu.Battle.Action.Nodes+FilterByTargetHpRatio"
+                  },
+                  "_succeedNodes": [
+                    {
+                      "_blackboardKey": "full",
+                      "_blackboardSource": "CURRENT",
+                      "_keySource": "CONSTANT",
+                      "_keyTargetType": "TARGET",
+                      "_value": 1.0,
+                      "_copyFromKey": null,
+                      "_assignString": false,
+                      "$type": "Torappu.Battle.Action.Nodes+AssignValueToBB"
+                    },
+                    {
+                      "_envKey": "env_040_act48side",
+                      "_target": "BUFF_OWNER",
+                      "_triggerWithEvent": true,
+                      "_eventName": "trap_full",
+                      "_triggerWithBlackboard": false,
+                      "_readResultFromBlackboard": false,
+                      "_tryRuntimeLoad": false,
+                      "$type": "Torappu.Battle.Action.Nodes+TriggerEnvSystem"
+                    },
+                    {
+                      "_buff": {
+                        "attributes": {
+                          "abnormalFlags": [],
+                          "abnormalImmunes": [],
+                          "abnormalAntis": [],
+                          "abnormalCombos": [],
+                          "abnormalComboImmunes": [],
+                          "attributeModifiers": []
+                        },
+                        "buffKey": "trap_pirene_trigger_delay",
+                        "loadFromDB": false,
+                        "isDurableBuff": false,
+                        "isDamageMissable": false,
+                        "isSilenceable": false,
+                        "isStunnable": false,
+                        "isFreezable": false,
+                        "isLevitatable": false,
+                        "isGroundBoundable": false,
+                        "statusResistable": "AUTOMATIC",
+                        "templateKey": "empty",
+                        "disableOverride": false,
+                        "overrideKey": null,
+                        "overrideType": "DEFAULT",
+                        "maxStackCnt": 1,
+                        "refreshRemainingTimeWhenStackMax": false,
+                        "clearAllStackCntWhenTimeUp": false,
+                        "maxValidStackCnt": -1,
+                        "independentCharacterSource": false,
+                        "overrideEffectKey": null,
+                        "overrideOnEventPriority": false,
+                        "onEventPriority": "DEFAULT",
+                        "audioSignal": null,
+                        "lifeTimeType": "INFINITY",
+                        "takeSnapshotWhenExtend": false,
+                        "durationKey": "delay_time",
+                        "remainingTimeKey": null,
+                        "lifeTime": 2.0,
+                        "triggerLifeType": "IMMEDIATELY",
+                        "triggerCnt": 1,
+                        "triggerInterval": 2.0,
+                        "waitFirstTriggerInterval": true,
+                        "firstTriggerInterval": -1.0,
+                        "priority": -1,
+                        "priorityBBKeys": [],
+                        "stripBlackboardParamsWithBuffKey": false,
+                        "blackboard": [],
+                        "enableInitDirectionFromSource": false
+                      },
+                      "_buffOwner": "BUFF_OWNER",
+                      "_useSpecialBuffSource": false,
+                      "_specialBuffSource": "BUFF_SOURCE",
+                      "_isDerivedBuff": true,
+                      "_finishDerivedBuffIfParentFinish": true,
+                      "_inherateSourceProjectileFromParentBuff": false,
+                      "_hookEffectKeyFromSourceProjectile": false,
+                      "$type": "Torappu.Battle.Action.Nodes+CreateBuff"
+                    }
+                  ],
+                  "_failNodes": [
+                    {
+                      "_blackboardKey": "full",
+                      "_blackboardSource": "CURRENT",
+                      "_keySource": "CONSTANT",
+                      "_keyTargetType": "TARGET",
+                      "_value": 0.0,
+                      "_copyFromKey": null,
+                      "_assignString": false,
+                      "$type": "Torappu.Battle.Action.Nodes+AssignValueToBB"
+                    },
+                    {
+                      "_buff": {
+                        "attributes": {
+                          "abnormalFlags": [],
+                          "abnormalImmunes": [],
+                          "abnormalAntis": [],
+                          "abnormalCombos": [],
+                          "abnormalComboImmunes": [],
+                          "attributeModifiers": []
+                        },
+                        "buffKey": "trap_pirene_trigger_delay[off]",
+                        "loadFromDB": false,
+                        "isDurableBuff": false,
+                        "isDamageMissable": false,
+                        "isSilenceable": false,
+                        "isStunnable": false,
+                        "isFreezable": false,
+                        "isLevitatable": false,
+                        "isGroundBoundable": false,
+                        "statusResistable": "AUTOMATIC",
+                        "templateKey": "empty",
+                        "disableOverride": false,
+                        "overrideKey": null,
+                        "overrideType": "DEFAULT",
+                        "maxStackCnt": 1,
+                        "refreshRemainingTimeWhenStackMax": false,
+                        "clearAllStackCntWhenTimeUp": false,
+                        "maxValidStackCnt": -1,
+                        "independentCharacterSource": false,
+                        "overrideEffectKey": null,
+                        "overrideOnEventPriority": false,
+                        "onEventPriority": "DEFAULT",
+                        "audioSignal": null,
+                        "lifeTimeType": "INFINITY",
+                        "takeSnapshotWhenExtend": false,
+                        "durationKey": "delay_time",
+                        "remainingTimeKey": null,
+                        "lifeTime": 2.0,
+                        "triggerLifeType": "IMMEDIATELY",
+                        "triggerCnt": 1,
+                        "triggerInterval": 2.0,
+                        "waitFirstTriggerInterval": true,
+                        "firstTriggerInterval": -1.0,
+                        "priority": -1,
+                        "priorityBBKeys": [],
+                        "stripBlackboardParamsWithBuffKey": false,
+                        "blackboard": [],
+                        "enableInitDirectionFromSource": false
+                      },
+                      "_buffOwner": "BUFF_OWNER",
+                      "_useSpecialBuffSource": false,
+                      "_specialBuffSource": "BUFF_SOURCE",
+                      "_isDerivedBuff": true,
+                      "_finishDerivedBuffIfParentFinish": true,
+                      "_inherateSourceProjectileFromParentBuff": false,
+                      "_hookEffectKeyFromSourceProjectile": false,
+                      "$type": "Torappu.Battle.Action.Nodes+CreateBuff"
+                    }
+                  ],
+                  "$type": "Torappu.Battle.Action.Nodes+IfElse"
+                },
+                {
+                  "$type": "Torappu.Battle.Action.Nodes+AlwaysNext"
+                },
+                {
+                  "_targetType": "BUFF_OWNER",
+                  "_attributeType": "MAX_HP",
+                  "_scaleVar": "scale",
+                  "_blackboardKey": "hp_origin",
+                  "$type": "Torappu.Battle.Action.Nodes+AssignAttributeToBB"
+                },
+                {
+                  "_targetType": "BUFF_OWNER",
+                  "_attributeType": "MAX_HP",
+                  "_doClear": false,
+                  "_minValueKey": "hp_origin",
+                  "_maxValueKey": "hp_origin",
+                  "_refresh": true,
+                  "$type": "Torappu.Battle.Action.Nodes+ModifyAttributeDataRangeOverride"
+                }
+              ]
+            },
+            {
+              "event": 2,
+              "actions": [
+                {
+                  "_conditionNode": {
+                    "_targetType": "BUFF_OWNER",
+                    "_condType": "GE",
+                    "_value": 1.0,
+                    "_useSourceHpRatio": false,
+                    "_sourceType": "SOURCE",
+                    "_blackboardPrefix": null,
+                    "$type": "Torappu.Battle.Action.Nodes+FilterByTargetHpRatio"
+                  },
+                  "_succeedNodes": [
+                    {
+                      "_buffKey": "trap_pirene_trigger_delay[off]",
+                      "_loadFromBlackboard": false,
+                      "_decCntIfStack": false,
+                      "_updateOverrideMap": true,
+                      "_targetType": "BUFF_OWNER",
+                      "_checkBuffSource": false,
+                      "_sourceType": "BUFF_SOURCE",
+                      "_alsoClearNullSource": false,
+                      "_finishHostBuff": false,
+                      "_excludeThisBuff": false,
+                      "_decCntKey": null,
+                      "_decCnt": 1,
+                      "$type": "Torappu.Battle.Action.Nodes+FinishBuffsById"
+                    },
+                    {
+                      "_targetType": "BUFF_OWNER",
+                      "_anotherBuff": false,
+                      "_buffKey": null,
+                      "_blackboardKey": "full",
+                      "_blackboardKeyFromBb": null,
+                      "_valueToCompare": 1,
+                      "_anotherKeyToCompare": null,
+                      "_condType": "LT",
+                      "$type": "Torappu.Battle.Action.Nodes+FilterByBlackboardValue"
+                    },
+                    {
+                      "_targetType": "BUFF_OWNER",
+                      "_buffKeys": [
+                        "trap_pirene_trigger_delay"
+                      ],
+                      "isAND": true,
+                      "_loadFromBlackboard": false,
+                      "_checkBuffSource": false,
+                      "_buffSourceType": "BUFF_SOURCE",
+                      "_checkSourceHost": false,
+                      "$type": "Torappu.Battle.Action.Nodes+CheckContainsBuff"
+                    },
+                    {
+                      "$type": "Torappu.Battle.Action.Nodes+IfNot"
+                    },
+                    {
+                      "_updateOverrideMap": true,
+                      "$type": "Torappu.Battle.Action.Nodes+FinishDerivedBuff"
+                    },
+                    {
+                      "_buff": {
+                        "attributes": {
+                          "abnormalFlags": [],
+                          "abnormalImmunes": [],
+                          "abnormalAntis": [],
+                          "abnormalCombos": [],
+                          "abnormalComboImmunes": [],
+                          "attributeModifiers": []
+                        },
+                        "buffKey": "trap_pirene_trigger_delay",
+                        "loadFromDB": false,
+                        "isDurableBuff": false,
+                        "isDamageMissable": false,
+                        "isSilenceable": false,
+                        "isStunnable": false,
+                        "isFreezable": false,
+                        "isLevitatable": false,
+                        "isGroundBoundable": false,
+                        "statusResistable": "AUTOMATIC",
+                        "templateKey": "trap_pirene_trigger_delay",
+                        "disableOverride": false,
+                        "overrideKey": null,
+                        "overrideType": "DEFAULT",
+                        "maxStackCnt": 1,
+                        "refreshRemainingTimeWhenStackMax": false,
+                        "clearAllStackCntWhenTimeUp": false,
+                        "maxValidStackCnt": -1,
+                        "independentCharacterSource": false,
+                        "overrideEffectKey": null,
+                        "overrideOnEventPriority": false,
+                        "onEventPriority": "DEFAULT",
+                        "audioSignal": null,
+                        "lifeTimeType": "INFINITY",
+                        "takeSnapshotWhenExtend": false,
+                        "durationKey": "delay_time",
+                        "remainingTimeKey": null,
+                        "lifeTime": 2.0,
+                        "triggerLifeType": "LIMITED",
+                        "triggerCnt": 1,
+                        "triggerInterval": 2.0,
+                        "waitFirstTriggerInterval": true,
+                        "firstTriggerInterval": -1.0,
+                        "priority": -1,
+                        "priorityBBKeys": [],
+                        "stripBlackboardParamsWithBuffKey": true,
+                        "blackboard": [],
+                        "enableInitDirectionFromSource": false
+                      },
+                      "_buffOwner": "BUFF_OWNER",
+                      "_useSpecialBuffSource": false,
+                      "_specialBuffSource": "BUFF_SOURCE",
+                      "_isDerivedBuff": true,
+                      "_finishDerivedBuffIfParentFinish": true,
+                      "_inherateSourceProjectileFromParentBuff": false,
+                      "_hookEffectKeyFromSourceProjectile": false,
+                      "$type": "Torappu.Battle.Action.Nodes+CreateBuff"
+                    }
+                  ],
+                  "_failNodes": [
+                    {
+                      "_buffKey": "trap_pirene_trigger_delay",
+                      "_loadFromBlackboard": false,
+                      "_decCntIfStack": false,
+                      "_updateOverrideMap": true,
+                      "_targetType": "BUFF_OWNER",
+                      "_checkBuffSource": false,
+                      "_sourceType": "BUFF_SOURCE",
+                      "_alsoClearNullSource": false,
+                      "_finishHostBuff": false,
+                      "_excludeThisBuff": false,
+                      "_decCntKey": null,
+                      "_decCnt": 1,
+                      "$type": "Torappu.Battle.Action.Nodes+FinishBuffsById"
+                    },
+                    {
+                      "_targetType": "BUFF_OWNER",
+                      "_anotherBuff": false,
+                      "_buffKey": null,
+                      "_blackboardKey": "full",
+                      "_blackboardKeyFromBb": null,
+                      "_valueToCompare": 1,
+                      "_anotherKeyToCompare": null,
+                      "_condType": "GE",
+                      "$type": "Torappu.Battle.Action.Nodes+FilterByBlackboardValue"
+                    },
+                    {
+                      "_targetType": "BUFF_OWNER",
+                      "_buffKeys": [
+                        "trap_pirene_trigger_delay[off]"
+                      ],
+                      "isAND": true,
+                      "_loadFromBlackboard": false,
+                      "_checkBuffSource": false,
+                      "_buffSourceType": "BUFF_SOURCE",
+                      "_checkSourceHost": false,
+                      "$type": "Torappu.Battle.Action.Nodes+CheckContainsBuff"
+                    },
+                    {
+                      "$type": "Torappu.Battle.Action.Nodes+IfNot"
+                    },
+                    {
+                      "_updateOverrideMap": true,
+                      "$type": "Torappu.Battle.Action.Nodes+FinishDerivedBuff"
+                    },
+                    {
+                      "_buff": {
+                        "attributes": {
+                          "abnormalFlags": [],
+                          "abnormalImmunes": [],
+                          "abnormalAntis": [],
+                          "abnormalCombos": [],
+                          "abnormalComboImmunes": [],
+                          "attributeModifiers": []
+                        },
+                        "buffKey": "trap_pirene_trigger_delay[off]",
+                        "loadFromDB": false,
+                        "isDurableBuff": false,
+                        "isDamageMissable": false,
+                        "isSilenceable": false,
+                        "isStunnable": false,
+                        "isFreezable": false,
+                        "isLevitatable": false,
+                        "isGroundBoundable": false,
+                        "statusResistable": "AUTOMATIC",
+                        "templateKey": "trap_pirene_trigger_delay[off]",
+                        "disableOverride": false,
+                        "overrideKey": null,
+                        "overrideType": "DEFAULT",
+                        "maxStackCnt": 1,
+                        "refreshRemainingTimeWhenStackMax": false,
+                        "clearAllStackCntWhenTimeUp": false,
+                        "maxValidStackCnt": -1,
+                        "independentCharacterSource": false,
+                        "overrideEffectKey": null,
+                        "overrideOnEventPriority": false,
+                        "onEventPriority": "DEFAULT",
+                        "audioSignal": null,
+                        "lifeTimeType": "INFINITY",
+                        "takeSnapshotWhenExtend": false,
+                        "durationKey": "delay_time",
+                        "remainingTimeKey": null,
+                        "lifeTime": 2.0,
+                        "triggerLifeType": "LIMITED",
+                        "triggerCnt": 1,
+                        "triggerInterval": 2.0,
+                        "waitFirstTriggerInterval": true,
+                        "firstTriggerInterval": -1.0,
+                        "priority": -1,
+                        "priorityBBKeys": [],
+                        "stripBlackboardParamsWithBuffKey": true,
+                        "blackboard": [],
+                        "enableInitDirectionFromSource": false
+                      },
+                      "_buffOwner": "BUFF_OWNER",
+                      "_useSpecialBuffSource": false,
+                      "_specialBuffSource": "BUFF_SOURCE",
+                      "_isDerivedBuff": true,
+                      "_finishDerivedBuffIfParentFinish": true,
+                      "_inherateSourceProjectileFromParentBuff": false,
+                      "_hookEffectKeyFromSourceProjectile": false,
+                      "$type": "Torappu.Battle.Action.Nodes+CreateBuff"
+                    }
+                  ],
+                  "$type": "Torappu.Battle.Action.Nodes+IfElse"
+                }
+              ]
+            },
+            {
+              "event": 7,
+              "actions": [
+                {
+                  "_conditionNode": {
+                    "$type": "Torappu.Battle.Action.Nodes+IsHeal"
+                  },
+                  "_succeedNodes": [
+                    {
+                      "_targetType": "BUFF_OWNER",
+                      "_condType": "GE",
+                      "_value": 1.0,
+                      "_useSourceHpRatio": false,
+                      "_sourceType": "SOURCE",
+                      "_blackboardPrefix": null,
+                      "$type": "Torappu.Battle.Action.Nodes+FilterByTargetHpRatio"
+                    },
+                    {
+                      "_modifierTargetType": "HP",
+                      "_blackboardKey": "value_after",
+                      "$type": "Torappu.Battle.Action.Nodes+AssignModifierRealDeltaToBB"
+                    },
+                    {
+                      "_blackboardKey": "value_before",
+                      "_filterModifierCancelled": true,
+                      "$type": "Torappu.Battle.Action.Nodes+AssignModifierValueIntoBlackboard"
+                    },
+                    {
+                      "_inputKey": "value_before",
+                      "_outputKey": "value_store",
+                      "_multiplyParamKey": null,
+                      "_dividedParamKey": null,
+                      "_useRemainder": false,
+                      "_addParamKey": null,
+                      "_minusParamKey": "value_after",
+                      "_minValueKey": null,
+                      "_maxValueKey": "value_store_max",
+                      "_finalAbs": false,
+                      "_finalCeil": false,
+                      "_finalFloor": false,
+                      "_finalRound": false,
+                      "_useAbilityBlackboard": false,
+                      "_abilityName": "",
+                      "$type": "Torappu.Battle.Action.Nodes+CalculateBlackboardValueViaParams"
+                    }
+                  ],
+                  "_failNodes": [
+                    {
+                      "_targetType": "BUFF_OWNER",
+                      "_condType": "LT",
+                      "_value": 1.0,
+                      "_useSourceHpRatio": false,
+                      "_sourceType": "SOURCE",
+                      "_blackboardPrefix": null,
+                      "$type": "Torappu.Battle.Action.Nodes+FilterByTargetHpRatio"
+                    },
+                    {
+                      "_blackboardKey": "value_store",
+                      "_blackboardSource": "CURRENT",
+                      "_keySource": "CONSTANT",
+                      "_keyTargetType": "TARGET",
+                      "_value": 0.0,
+                      "_copyFromKey": null,
+                      "_assignString": false,
+                      "$type": "Torappu.Battle.Action.Nodes+AssignValueToBB"
+                    }
+                  ],
+                  "$type": "Torappu.Battle.Action.Nodes+IfElse"
+                }
+              ]
+            },
+            {
+              "event": 51,
+              "actions": [
+                {
+                  "_targetType": "BUFF_OWNER",
+                  "_condType": "GE",
+                  "_value": 1.0,
+                  "_useSourceHpRatio": false,
+                  "_sourceType": "SOURCE",
+                  "_blackboardPrefix": null,
+                  "$type": "Torappu.Battle.Action.Nodes+FilterByTargetHpRatio"
+                },
+                {
+                  "_logType": "SIMPLE",
+                  "_key": "pirene_hp_full",
+                  "_loadKeyFromBlackBoard": false,
+                  "_countInHostIfToken": false,
+                  "_additionValue": 1,
+                  "_additionValueKey": "",
+                  "_attributeType": "NONE",
+                  "_target": "BUFF_OWNER",
+                  "$type": "Torappu.Battle.Action.Nodes+LogExtraBattleInfo"
+                }
+              ]
+            }
+          ],
+          "matches": [
+            {
+              "path": "/0/actions/3",
+              "value": {
+                "_targetType": "BUFF_OWNER",
+                "_attributeType": "MAX_HP",
+                "_doClear": false,
+                "_minValueKey": "hp_origin",
+                "_maxValueKey": "hp_origin",
+                "_refresh": true,
+                "$type": "Torappu.Battle.Action.Nodes+ModifyAttributeDataRangeOverride"
+              }
+            }
+          ]
+        },
+        {
+          "templateKey": "nasti_nstchr[blood_one]",
+          "effectKey": "",
+          "onEventPriority": 0,
+          "eventToActions": {
+            "_items": {
+              "Array": [
+                {
+                  "key": 0,
+                  "value": {
+                    "SerializedState": "[{\"_targetType\":\"BUFF_OWNER\",\"_attributeType\":\"MAX_HP\",\"_doClear\":false,\"_minValueKey\":\"init_max_hp\",\"_maxValueKey\":\"init_max_hp\",\"_refresh\":true,\"$type\":\"Torappu.Battle.Action.Nodes+ModifyAttributeDataRangeOverride\"},{\"_inputKey\":\"init_max_hp\",\"_outputKey\":\"delta_hp\",\"_multiplyParamKey\":null,\"_dividedParamKey\":null,\"_useRemainder\":false,\"_addParamKey\":null,\"_minusParamKey\":\"init_hp\",\"_minValueKey\":null,\"_maxValueKey\":null,\"_finalAbs\":true,\"_finalCeil\":false,\"_finalFloor\":false,\"_finalRound\":false,\"_useAbilityBlackboard\":false,\"_abilityName\":\"\",\"$type\":\"Torappu.Battle.Action.Nodes+CalculateBlackboardValueViaParams\"},{\"_damageType\":\"PURE\",\"_damageKey\":\"delta_hp\",\"_atkScaleKey\":\"atk_scale\",\"_ignoreForSp\":false,\"_attackType\":\"NORMAL\",\"_skipModifierEvent\":true,\"_considerUnhurtable\":false,\"_noSourceDamage\":false,\"_targetType\":\"TARGET\",\"_assignRealDamageToBB\":false,\"_assignFinalDamageToBB\":false,\"_multiplierByKey\":false,\"_multiplierKey\":\"cnt\",\"_damageSourceType\":\"SOURCE\",\"_damageTargetType\":\"TARGET\",\"_triggerOnCalculateDamage\":false,\"_isEnvDamage\":false,\"_ignoreCancelReasonMask\":\"NONE\",\"_forceDisplayDamageNum\":false,\"_undeadable\":false,\"_modifierKey\":\"\",\"_devideDamageFromAbilityCnt\":false,\"$type\":\"Torappu.Battle.Action.Nodes+FixedValueDamage\"}]",
+                    "SerializedObjectReferences": {
+                      "Array": []
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "templateIndex": 5945,
+          "events": [
+            {
+              "event": 0,
+              "actions": [
+                {
+                  "_targetType": "BUFF_OWNER",
+                  "_attributeType": "MAX_HP",
+                  "_doClear": false,
+                  "_minValueKey": "init_max_hp",
+                  "_maxValueKey": "init_max_hp",
+                  "_refresh": true,
+                  "$type": "Torappu.Battle.Action.Nodes+ModifyAttributeDataRangeOverride"
+                },
+                {
+                  "_inputKey": "init_max_hp",
+                  "_outputKey": "delta_hp",
+                  "_multiplyParamKey": null,
+                  "_dividedParamKey": null,
+                  "_useRemainder": false,
+                  "_addParamKey": null,
+                  "_minusParamKey": "init_hp",
+                  "_minValueKey": null,
+                  "_maxValueKey": null,
+                  "_finalAbs": true,
+                  "_finalCeil": false,
+                  "_finalFloor": false,
+                  "_finalRound": false,
+                  "_useAbilityBlackboard": false,
+                  "_abilityName": "",
+                  "$type": "Torappu.Battle.Action.Nodes+CalculateBlackboardValueViaParams"
+                },
+                {
+                  "_damageType": "PURE",
+                  "_damageKey": "delta_hp",
+                  "_atkScaleKey": "atk_scale",
+                  "_ignoreForSp": false,
+                  "_attackType": "NORMAL",
+                  "_skipModifierEvent": true,
+                  "_considerUnhurtable": false,
+                  "_noSourceDamage": false,
+                  "_targetType": "TARGET",
+                  "_assignRealDamageToBB": false,
+                  "_assignFinalDamageToBB": false,
+                  "_multiplierByKey": false,
+                  "_multiplierKey": "cnt",
+                  "_damageSourceType": "SOURCE",
+                  "_damageTargetType": "TARGET",
+                  "_triggerOnCalculateDamage": false,
+                  "_isEnvDamage": false,
+                  "_ignoreCancelReasonMask": "NONE",
+                  "_forceDisplayDamageNum": false,
+                  "_undeadable": false,
+                  "_modifierKey": "",
+                  "_devideDamageFromAbilityCnt": false,
+                  "$type": "Torappu.Battle.Action.Nodes+FixedValueDamage"
+                }
+              ]
+            }
+          ],
+          "matches": [
+            {
+              "path": "/0/actions/0",
+              "value": {
+                "_targetType": "BUFF_OWNER",
+                "_attributeType": "MAX_HP",
+                "_doClear": false,
+                "_minValueKey": "init_max_hp",
+                "_maxValueKey": "init_max_hp",
+                "_refresh": true,
+                "$type": "Torappu.Battle.Action.Nodes+ModifyAttributeDataRangeOverride"
+              }
+            }
+          ]
+        },
+        {
+          "templateKey": "rmixer_e_002_t1",
+          "effectKey": "",
+          "onEventPriority": 0,
+          "eventToActions": {
+            "_items": {
+              "Array": [
+                {
+                  "key": 0,
+                  "value": {
+                    "SerializedState": "[{\"_blackBoardKey\":\"minValue\",\"_targetType\":\"BUFF_OWNER\",\"_attributeType\":\"ATTACK_SPEED\",\"$type\":\"Torappu.Battle.Action.Nodes+AssignAttributeRawDataIntoBlackboard\"},{\"_targetType\":\"BUFF_OWNER\",\"_attributeType\":\"ATTACK_SPEED\",\"_doClear\":false,\"_minValueKey\":\"minValue\",\"_maxValueKey\":null,\"_refresh\":true,\"$type\":\"Torappu.Battle.Action.Nodes+ModifyAttributeDataRangeOverride\"}]",
+                    "SerializedObjectReferences": {
+                      "Array": []
+                    }
+                  }
+                },
+                {
+                  "key": 1,
+                  "value": {
+                    "SerializedState": "[{\"_targetType\":\"BUFF_OWNER\",\"_attributeType\":\"ATTACK_SPEED\",\"_doClear\":true,\"_minValueKey\":\"minValue\",\"_maxValueKey\":null,\"_refresh\":true,\"$type\":\"Torappu.Battle.Action.Nodes+ModifyAttributeDataRangeOverride\"}]",
+                    "SerializedObjectReferences": {
+                      "Array": []
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "templateIndex": 6932,
+          "events": [
+            {
+              "event": 0,
+              "actions": [
+                {
+                  "_blackBoardKey": "minValue",
+                  "_targetType": "BUFF_OWNER",
+                  "_attributeType": "ATTACK_SPEED",
+                  "$type": "Torappu.Battle.Action.Nodes+AssignAttributeRawDataIntoBlackboard"
+                },
+                {
+                  "_targetType": "BUFF_OWNER",
+                  "_attributeType": "ATTACK_SPEED",
+                  "_doClear": false,
+                  "_minValueKey": "minValue",
+                  "_maxValueKey": null,
+                  "_refresh": true,
+                  "$type": "Torappu.Battle.Action.Nodes+ModifyAttributeDataRangeOverride"
+                }
+              ]
+            },
+            {
+              "event": 1,
+              "actions": [
+                {
+                  "_targetType": "BUFF_OWNER",
+                  "_attributeType": "ATTACK_SPEED",
+                  "_doClear": true,
+                  "_minValueKey": "minValue",
+                  "_maxValueKey": null,
+                  "_refresh": true,
+                  "$type": "Torappu.Battle.Action.Nodes+ModifyAttributeDataRangeOverride"
+                }
+              ]
+            }
+          ],
+          "matches": [
+            {
+              "path": "/0/actions/1",
+              "value": {
+                "_targetType": "BUFF_OWNER",
+                "_attributeType": "ATTACK_SPEED",
+                "_doClear": false,
+                "_minValueKey": "minValue",
+                "_maxValueKey": null,
+                "_refresh": true,
+                "$type": "Torappu.Battle.Action.Nodes+ModifyAttributeDataRangeOverride"
+              }
+            },
+            {
+              "path": "/1/actions/0",
+              "value": {
+                "_targetType": "BUFF_OWNER",
+                "_attributeType": "ATTACK_SPEED",
+                "_doClear": true,
+                "_minValueKey": "minValue",
+                "_maxValueKey": null,
+                "_refresh": true,
+                "$type": "Torappu.Battle.Action.Nodes+ModifyAttributeDataRangeOverride"
+              }
+            }
+          ]
+        },
+        {
+          "templateKey": "enemy_shsggd_passive",
+          "effectKey": "",
+          "onEventPriority": 0,
+          "eventToActions": {
+            "_items": {
+              "Array": [
+                {
+                  "key": 10,
+                  "value": {
+                    "SerializedState": "[{\"_reason\":\"UNHURTABLE\",\"$type\":\"Torappu.Battle.Action.Nodes+CancelModifier\"}]",
+                    "SerializedObjectReferences": {
+                      "Array": []
+                    }
+                  }
+                },
+                {
+                  "key": 0,
+                  "value": {
+                    "SerializedState": "[{\"_blackboardKey\":\"atk_speed\",\"_blackboardSource\":\"CURRENT\",\"_keySource\":\"CONSTANT\",\"_keyTargetType\":\"TARGET\",\"_value\":100.0,\"_copyFromKey\":null,\"_assignString\":false,\"$type\":\"Torappu.Battle.Action.Nodes+AssignValueToBB\"},{\"_blackboardKey\":\"atk_time\",\"_blackboardSource\":\"CURRENT\",\"_keySource\":\"CONSTANT\",\"_keyTargetType\":\"TARGET\",\"_value\":0.1,\"_copyFromKey\":null,\"_assignString\":false,\"$type\":\"Torappu.Battle.Action.Nodes+AssignValueToBB\"},{\"_targetType\":\"BUFF_OWNER\",\"_attributeType\":\"ATTACK_SPEED\",\"_doClear\":false,\"_minValueKey\":\"atk_speed\",\"_maxValueKey\":\"atk_speed\",\"_refresh\":true,\"$type\":\"Torappu.Battle.Action.Nodes+ModifyAttributeDataRangeOverride\"},{\"_targetType\":\"BUFF_OWNER\",\"_attributeType\":\"BASE_ATTACK_TIME\",\"_doClear\":false,\"_minValueKey\":\"atk_time\",\"_maxValueKey\":\"atk_time\",\"_refresh\":true,\"$type\":\"Torappu.Battle.Action.Nodes+ModifyAttributeDataRangeOverride\"}]",
+                    "SerializedObjectReferences": {
+                      "Array": []
+                    }
+                  }
+                },
+                {
+                  "key": 34,
+                  "value": {
+                    "SerializedState": "[{\"_logType\":\"SIMPLE\",\"_key\":\"enemy_shsggd_exit\",\"_loadKeyFromBlackBoard\":false,\"_countInHostIfToken\":false,\"_additionValue\":1,\"_additionValueKey\":\"\",\"_attributeType\":\"NONE\",\"_target\":\"BUFF_OWNER\",\"$type\":\"Torappu.Battle.Action.Nodes+LogExtraBattleInfo\"},{\"_source\":\"BUFF_OWNER\",\"_useTargetOptions\":false,\"_targetOptions\":{\"targetSide\":\"NONE\",\"targetMotion\":\"NONE\",\"targetCategory\":\"NONE\",\"enableAdvancedOptions\":false,\"ignoreTargetFree\":false,\"ignoreAllyTargetFree\":false,\"ignoreHealFree\":false,\"ignoreMotionMode\":false,\"ignoreTargetSide\":false,\"excludeSomeAbnormalFlags\":false,\"containSomeAbnormalFlags\":false,\"excludeAbnormalFlag\":\"STUNNED\",\"containAbnormalFlag\":\"STUNNED\",\"purposeMask\":\"NONE\",\"professionMask\":\"NONE\",\"checkUnitType\":false,\"unitTypeMask\":\"NONE\",\"onlyIgnoreSomeOfTargetFreeCase\":false,\"abnormalFlag\":\"STUNNED\",\"abnormalCombo\":\"SLEEPING\"},\"_unitId\":\"enemy_2140_shsgzd\",\"_buff\":{\"attributes\":{\"abnormalFlags\":[],\"abnormalImmunes\":[],\"abnormalAntis\":[],\"abnormalCombos\":[],\"abnormalComboImmunes\":[],\"attributeModifiers\":[]},\"buffKey\":\"enemy_shsggd_exit\",\"loadFromDB\":false,\"isDurableBuff\":false,\"isDamageMissable\":false,\"isSilenceable\":false,\"isStunnable\":false,\"isFreezable\":false,\"isLevitatable\":false,\"isGroundBoundable\":false,\"statusResistable\":\"AUTOMATIC\",\"templateKey\":\"enemy_shsggd_exit\",\"disableOverride\":false,\"overrideKey\":null,\"overrideType\":\"DEFAULT\",\"maxStackCnt\":1,\"refreshRemainingTimeWhenStackMax\":false,\"clearAllStackCntWhenTimeUp\":false,\"maxValidStackCnt\":-1,\"independentCharacterSource\":false,\"overrideEffectKey\":null,\"overrideOnEventPriority\":false,\"onEventPriority\":\"DEFAULT\",\"audioSignal\":null,\"lifeTimeType\":\"IMMEDIATELY\",\"takeSnapshotWhenExtend\":false,\"durationKey\":null,\"remainingTimeKey\":null,\"lifeTime\":0.0,\"triggerLifeType\":\"IMMEDIATELY\",\"triggerCnt\":0,\"triggerInterval\":-1.0,\"waitFirstTriggerInterval\":true,\"firstTriggerInterval\":-1.0,\"priority\":-1,\"priorityBBKeys\":[],\"stripBlackboardParamsWithBuffKey\":false,\"blackboard\":[],\"enableInitDirectionFromSource\":false},\"_recordCountKey\":null,\"$type\":\"Torappu.Battle.Action.Nodes+CreateBuffToUnitId\"},{\"_source\":\"BUFF_OWNER\",\"_useTargetOptions\":false,\"_targetOptions\":{\"targetSide\":\"NONE\",\"targetMotion\":\"NONE\",\"targetCategory\":\"NONE\",\"enableAdvancedOptions\":false,\"ignoreTargetFree\":false,\"ignoreAllyTargetFree\":false,\"ignoreHealFree\":false,\"ignoreMotionMode\":false,\"ignoreTargetSide\":false,\"excludeSomeAbnormalFlags\":false,\"containSomeAbnormalFlags\":false,\"excludeAbnormalFlag\":\"STUNNED\",\"containAbnormalFlag\":\"STUNNED\",\"purposeMask\":\"NONE\",\"professionMask\":\"NONE\",\"checkUnitType\":false,\"unitTypeMask\":\"NONE\",\"onlyIgnoreSomeOfTargetFreeCase\":false,\"abnormalFlag\":\"STUNNED\",\"abnormalCombo\":\"SLEEPING\"},\"_unitId\":\"enemy_2141_shsgz2\",\"_buff\":{\"attributes\":{\"abnormalFlags\":null,\"abnormalImmunes\":null,\"abnormalAntis\":null,\"abnormalCombos\":null,\"abnormalComboImmunes\":null,\"attributeModifiers\":null},\"buffKey\":\"enemy_shsggd_exit\",\"loadFromDB\":false,\"isDurableBuff\":false,\"isDamageMissable\":false,\"isSilenceable\":false,\"isStunnable\":false,\"isFreezable\":false,\"isLevitatable\":false,\"isGroundBoundable\":false,\"statusResistable\":\"AUTOMATIC\",\"templateKey\":\"enemy_shsggd_exit\",\"disableOverride\":false,\"overrideKey\":null,\"overrideType\":\"DEFAULT\",\"maxStackCnt\":1,\"refreshRemainingTimeWhenStackMax\":false,\"clearAllStackCntWhenTimeUp\":false,\"maxValidStackCnt\":-1,\"independentCharacterSource\":false,\"overrideEffectKey\":null,\"overrideOnEventPriority\":false,\"onEventPriority\":\"DEFAULT\",\"audioSignal\":null,\"lifeTimeType\":\"IMMEDIATELY\",\"takeSnapshotWhenExtend\":false,\"durationKey\":null,\"remainingTimeKey\":null,\"lifeTime\":0.0,\"triggerLifeType\":\"IMMEDIATELY\",\"triggerCnt\":0,\"triggerInterval\":-1.0,\"waitFirstTriggerInterval\":true,\"firstTriggerInterval\":-1.0,\"priority\":-1,\"priorityBBKeys\":[],\"stripBlackboardParamsWithBuffKey\":false,\"blackboard\":[],\"enableInitDirectionFromSource\":false},\"_recordCountKey\":null,\"$type\":\"Torappu.Battle.Action.Nodes+CreateBuffToUnitId\"}]",
+                    "SerializedObjectReferences": {
+                      "Array": []
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "templateIndex": 8432,
+          "events": [
+            {
+              "event": 10,
+              "actions": [
+                {
+                  "_reason": "UNHURTABLE",
+                  "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+                }
+              ]
+            },
+            {
+              "event": 0,
+              "actions": [
+                {
+                  "_blackboardKey": "atk_speed",
+                  "_blackboardSource": "CURRENT",
+                  "_keySource": "CONSTANT",
+                  "_keyTargetType": "TARGET",
+                  "_value": 100.0,
+                  "_copyFromKey": null,
+                  "_assignString": false,
+                  "$type": "Torappu.Battle.Action.Nodes+AssignValueToBB"
+                },
+                {
+                  "_blackboardKey": "atk_time",
+                  "_blackboardSource": "CURRENT",
+                  "_keySource": "CONSTANT",
+                  "_keyTargetType": "TARGET",
+                  "_value": 0.1,
+                  "_copyFromKey": null,
+                  "_assignString": false,
+                  "$type": "Torappu.Battle.Action.Nodes+AssignValueToBB"
+                },
+                {
+                  "_targetType": "BUFF_OWNER",
+                  "_attributeType": "ATTACK_SPEED",
+                  "_doClear": false,
+                  "_minValueKey": "atk_speed",
+                  "_maxValueKey": "atk_speed",
+                  "_refresh": true,
+                  "$type": "Torappu.Battle.Action.Nodes+ModifyAttributeDataRangeOverride"
+                },
+                {
+                  "_targetType": "BUFF_OWNER",
+                  "_attributeType": "BASE_ATTACK_TIME",
+                  "_doClear": false,
+                  "_minValueKey": "atk_time",
+                  "_maxValueKey": "atk_time",
+                  "_refresh": true,
+                  "$type": "Torappu.Battle.Action.Nodes+ModifyAttributeDataRangeOverride"
+                }
+              ]
+            },
+            {
+              "event": 34,
+              "actions": [
+                {
+                  "_logType": "SIMPLE",
+                  "_key": "enemy_shsggd_exit",
+                  "_loadKeyFromBlackBoard": false,
+                  "_countInHostIfToken": false,
+                  "_additionValue": 1,
+                  "_additionValueKey": "",
+                  "_attributeType": "NONE",
+                  "_target": "BUFF_OWNER",
+                  "$type": "Torappu.Battle.Action.Nodes+LogExtraBattleInfo"
+                },
+                {
+                  "_source": "BUFF_OWNER",
+                  "_useTargetOptions": false,
+                  "_targetOptions": {
+                    "targetSide": "NONE",
+                    "targetMotion": "NONE",
+                    "targetCategory": "NONE",
+                    "enableAdvancedOptions": false,
+                    "ignoreTargetFree": false,
+                    "ignoreAllyTargetFree": false,
+                    "ignoreHealFree": false,
+                    "ignoreMotionMode": false,
+                    "ignoreTargetSide": false,
+                    "excludeSomeAbnormalFlags": false,
+                    "containSomeAbnormalFlags": false,
+                    "excludeAbnormalFlag": "STUNNED",
+                    "containAbnormalFlag": "STUNNED",
+                    "purposeMask": "NONE",
+                    "professionMask": "NONE",
+                    "checkUnitType": false,
+                    "unitTypeMask": "NONE",
+                    "onlyIgnoreSomeOfTargetFreeCase": false,
+                    "abnormalFlag": "STUNNED",
+                    "abnormalCombo": "SLEEPING"
+                  },
+                  "_unitId": "enemy_2140_shsgzd",
+                  "_buff": {
+                    "attributes": {
+                      "abnormalFlags": [],
+                      "abnormalImmunes": [],
+                      "abnormalAntis": [],
+                      "abnormalCombos": [],
+                      "abnormalComboImmunes": [],
+                      "attributeModifiers": []
+                    },
+                    "buffKey": "enemy_shsggd_exit",
+                    "loadFromDB": false,
+                    "isDurableBuff": false,
+                    "isDamageMissable": false,
+                    "isSilenceable": false,
+                    "isStunnable": false,
+                    "isFreezable": false,
+                    "isLevitatable": false,
+                    "isGroundBoundable": false,
+                    "statusResistable": "AUTOMATIC",
+                    "templateKey": "enemy_shsggd_exit",
+                    "disableOverride": false,
+                    "overrideKey": null,
+                    "overrideType": "DEFAULT",
+                    "maxStackCnt": 1,
+                    "refreshRemainingTimeWhenStackMax": false,
+                    "clearAllStackCntWhenTimeUp": false,
+                    "maxValidStackCnt": -1,
+                    "independentCharacterSource": false,
+                    "overrideEffectKey": null,
+                    "overrideOnEventPriority": false,
+                    "onEventPriority": "DEFAULT",
+                    "audioSignal": null,
+                    "lifeTimeType": "IMMEDIATELY",
+                    "takeSnapshotWhenExtend": false,
+                    "durationKey": null,
+                    "remainingTimeKey": null,
+                    "lifeTime": 0.0,
+                    "triggerLifeType": "IMMEDIATELY",
+                    "triggerCnt": 0,
+                    "triggerInterval": -1.0,
+                    "waitFirstTriggerInterval": true,
+                    "firstTriggerInterval": -1.0,
+                    "priority": -1,
+                    "priorityBBKeys": [],
+                    "stripBlackboardParamsWithBuffKey": false,
+                    "blackboard": [],
+                    "enableInitDirectionFromSource": false
+                  },
+                  "_recordCountKey": null,
+                  "$type": "Torappu.Battle.Action.Nodes+CreateBuffToUnitId"
+                },
+                {
+                  "_source": "BUFF_OWNER",
+                  "_useTargetOptions": false,
+                  "_targetOptions": {
+                    "targetSide": "NONE",
+                    "targetMotion": "NONE",
+                    "targetCategory": "NONE",
+                    "enableAdvancedOptions": false,
+                    "ignoreTargetFree": false,
+                    "ignoreAllyTargetFree": false,
+                    "ignoreHealFree": false,
+                    "ignoreMotionMode": false,
+                    "ignoreTargetSide": false,
+                    "excludeSomeAbnormalFlags": false,
+                    "containSomeAbnormalFlags": false,
+                    "excludeAbnormalFlag": "STUNNED",
+                    "containAbnormalFlag": "STUNNED",
+                    "purposeMask": "NONE",
+                    "professionMask": "NONE",
+                    "checkUnitType": false,
+                    "unitTypeMask": "NONE",
+                    "onlyIgnoreSomeOfTargetFreeCase": false,
+                    "abnormalFlag": "STUNNED",
+                    "abnormalCombo": "SLEEPING"
+                  },
+                  "_unitId": "enemy_2141_shsgz2",
+                  "_buff": {
+                    "attributes": {
+                      "abnormalFlags": null,
+                      "abnormalImmunes": null,
+                      "abnormalAntis": null,
+                      "abnormalCombos": null,
+                      "abnormalComboImmunes": null,
+                      "attributeModifiers": null
+                    },
+                    "buffKey": "enemy_shsggd_exit",
+                    "loadFromDB": false,
+                    "isDurableBuff": false,
+                    "isDamageMissable": false,
+                    "isSilenceable": false,
+                    "isStunnable": false,
+                    "isFreezable": false,
+                    "isLevitatable": false,
+                    "isGroundBoundable": false,
+                    "statusResistable": "AUTOMATIC",
+                    "templateKey": "enemy_shsggd_exit",
+                    "disableOverride": false,
+                    "overrideKey": null,
+                    "overrideType": "DEFAULT",
+                    "maxStackCnt": 1,
+                    "refreshRemainingTimeWhenStackMax": false,
+                    "clearAllStackCntWhenTimeUp": false,
+                    "maxValidStackCnt": -1,
+                    "independentCharacterSource": false,
+                    "overrideEffectKey": null,
+                    "overrideOnEventPriority": false,
+                    "onEventPriority": "DEFAULT",
+                    "audioSignal": null,
+                    "lifeTimeType": "IMMEDIATELY",
+                    "takeSnapshotWhenExtend": false,
+                    "durationKey": null,
+                    "remainingTimeKey": null,
+                    "lifeTime": 0.0,
+                    "triggerLifeType": "IMMEDIATELY",
+                    "triggerCnt": 0,
+                    "triggerInterval": -1.0,
+                    "waitFirstTriggerInterval": true,
+                    "firstTriggerInterval": -1.0,
+                    "priority": -1,
+                    "priorityBBKeys": [],
+                    "stripBlackboardParamsWithBuffKey": false,
+                    "blackboard": [],
+                    "enableInitDirectionFromSource": false
+                  },
+                  "_recordCountKey": null,
+                  "$type": "Torappu.Battle.Action.Nodes+CreateBuffToUnitId"
+                }
+              ]
+            }
+          ],
+          "matches": [
+            {
+              "path": "/1/actions/2",
+              "value": {
+                "_targetType": "BUFF_OWNER",
+                "_attributeType": "ATTACK_SPEED",
+                "_doClear": false,
+                "_minValueKey": "atk_speed",
+                "_maxValueKey": "atk_speed",
+                "_refresh": true,
+                "$type": "Torappu.Battle.Action.Nodes+ModifyAttributeDataRangeOverride"
+              }
+            },
+            {
+              "path": "/1/actions/3",
+              "value": {
+                "_targetType": "BUFF_OWNER",
+                "_attributeType": "BASE_ATTACK_TIME",
+                "_doClear": false,
+                "_minValueKey": "atk_time",
+                "_maxValueKey": "atk_time",
+                "_refresh": true,
+                "$type": "Torappu.Battle.Action.Nodes+ModifyAttributeDataRangeOverride"
+              }
+            }
+          ]
+        },
+        {
+          "templateKey": "trap_shmbmb[init]",
+          "effectKey": "",
+          "onEventPriority": 0,
+          "eventToActions": {
+            "_items": {
+              "Array": [
+                {
+                  "key": 0,
+                  "value": {
+                    "SerializedState": "[{\"_blackboardKey\":\"uid_trap_cnt\",\"_bbKeyFormBb\":null,\"_channel\":\"ROGUELIKE\",\"_value\":1.0,\"_valueBlackboardKey\":\"\",\"_addString\":false,\"_valueStr\":null,\"_overwrite\":false,\"$type\":\"Torappu.Battle.Action.Nodes+AddGlobalBlackboard\"},{\"_globalblackboardKey\":\"uid_trap_boss\",\"_globalBbKeyFormBb\":null,\"_blackboardKey\":\"uid_trap_boss\",\"_channel\":\"ROGUELIKE\",\"_assignString\":true,\"$type\":\"Torappu.Battle.Action.Nodes+AssignGlobalBlackboardToBlackboard\"},{\"_blackboardKey\":\"times_cur\",\"_blackboardSource\":\"CURRENT\",\"_keySource\":\"CONSTANT\",\"_keyTargetType\":\"TARGET\",\"_value\":0.0,\"_copyFromKey\":null,\"_assignString\":false,\"$type\":\"Torappu.Battle.Action.Nodes+AssignValueToBB\"},{\"_targetType\":\"BUFF_OWNER\",\"_attributeType\":\"MAX_HP\",\"_scaleVar\":\"scale\",\"$type\":\"Torappu.Battle.Action.Nodes+AssignAttributeAsDynamicVarToBB\"},{\"_targetType\":\"BUFF_OWNER\",\"_attributeType\":\"MAX_HP\",\"_doClear\":false,\"_minValueKey\":\"dynamic\",\"_maxValueKey\":\"dynamic\",\"_refresh\":true,\"$type\":\"Torappu.Battle.Action.Nodes+ModifyAttributeDataRangeOverride\"}]",
+                    "SerializedObjectReferences": {
+                      "Array": []
+                    }
+                  }
+                },
+                {
+                  "key": 2,
+                  "value": {
+                    "SerializedState": "[{\"_targetType\":\"BUFF_OWNER\",\"_getMaxHpFromTarget\":false,\"_damageType\":\"PURE\",\"_applyWay\":\"NONE\",\"_ignoreForSp\":true,\"_isUndeadable\":false,\"_attackType\":\"NORMAL\",\"_skipModifierEvent\":false,\"_multiplyByKey\":false,\"_multiplierKey\":\"cnt\",\"_noSourceDamage\":true,\"$type\":\"Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio\"},{\"_conditionNode\":{\"_targetType\":\"BUFF_OWNER\",\"_anotherBuff\":false,\"_buffKey\":null,\"_blackboardKey\":\"times_cur\",\"_blackboardKeyFromBb\":null,\"_valueToCompare\":0,\"_anotherKeyToCompare\":\"times\",\"_condType\":\"GE\",\"$type\":\"Torappu.Battle.Action.Nodes+FilterByBlackboardValue\"},\"_succeedNodes\":null,\"_failNodes\":[{\"_blackboardKey\":\"hp_ratio\",\"_blackboardKeyFromBb\":null,\"_addition\":0,\"_additionKey\":\"hp_ratio_per_sec\",\"_isFloat\":true,\"_outputKey\":null,\"_maxKey\":null,\"$type\":\"Torappu.Battle.Action.Nodes+BlackboardAdd\"},{\"_blackboardKey\":\"times_cur\",\"_blackboardKeyFromBb\":null,\"_addition\":1,\"_additionKey\":null,\"_isFloat\":false,\"_outputKey\":null,\"_maxKey\":null,\"$type\":\"Torappu.Battle.Action.Nodes+BlackboardAdd\"}],\"$type\":\"Torappu.Battle.Action.Nodes+IfElse\"}]",
+                    "SerializedObjectReferences": {
+                      "Array": []
+                    }
+                  }
+                },
+                {
+                  "key": 5,
+                  "value": {
+                    "SerializedState": "[{\"_modifierTargetType\":\"SP\",\"$type\":\"Torappu.Battle.Action.Nodes+FilterModifierTargetType\"},{\"_sideMask\":\"ALLY\",\"_targetType\":\"MODIFIER_SOURCE\",\"$type\":\"Torappu.Battle.Action.Nodes+IfTargetSide\"},{\"_reason\":\"UNHURTABLE\",\"$type\":\"Torappu.Battle.Action.Nodes+CancelModifier\"}]",
+                    "SerializedObjectReferences": {
+                      "Array": []
+                    }
+                  }
+                },
+                {
+                  "key": 4,
+                  "value": {
+                    "SerializedState": "[{\"_blackboardKey\":\"uid_trap_cnt\",\"_bbKeyFormBb\":null,\"_channel\":\"ROGUELIKE\",\"_value\":-1.0,\"_valueBlackboardKey\":\"\",\"_addString\":false,\"_valueStr\":null,\"_overwrite\":false,\"$type\":\"Torappu.Battle.Action.Nodes+AddGlobalBlackboard\"}]",
+                    "SerializedObjectReferences": {
+                      "Array": []
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "templateIndex": 8450,
+          "events": [
+            {
+              "event": 0,
+              "actions": [
+                {
+                  "_blackboardKey": "uid_trap_cnt",
+                  "_bbKeyFormBb": null,
+                  "_channel": "ROGUELIKE",
+                  "_value": 1.0,
+                  "_valueBlackboardKey": "",
+                  "_addString": false,
+                  "_valueStr": null,
+                  "_overwrite": false,
+                  "$type": "Torappu.Battle.Action.Nodes+AddGlobalBlackboard"
+                },
+                {
+                  "_globalblackboardKey": "uid_trap_boss",
+                  "_globalBbKeyFormBb": null,
+                  "_blackboardKey": "uid_trap_boss",
+                  "_channel": "ROGUELIKE",
+                  "_assignString": true,
+                  "$type": "Torappu.Battle.Action.Nodes+AssignGlobalBlackboardToBlackboard"
+                },
+                {
+                  "_blackboardKey": "times_cur",
+                  "_blackboardSource": "CURRENT",
+                  "_keySource": "CONSTANT",
+                  "_keyTargetType": "TARGET",
+                  "_value": 0.0,
+                  "_copyFromKey": null,
+                  "_assignString": false,
+                  "$type": "Torappu.Battle.Action.Nodes+AssignValueToBB"
+                },
+                {
+                  "_targetType": "BUFF_OWNER",
+                  "_attributeType": "MAX_HP",
+                  "_scaleVar": "scale",
+                  "$type": "Torappu.Battle.Action.Nodes+AssignAttributeAsDynamicVarToBB"
+                },
+                {
+                  "_targetType": "BUFF_OWNER",
+                  "_attributeType": "MAX_HP",
+                  "_doClear": false,
+                  "_minValueKey": "dynamic",
+                  "_maxValueKey": "dynamic",
+                  "_refresh": true,
+                  "$type": "Torappu.Battle.Action.Nodes+ModifyAttributeDataRangeOverride"
+                }
+              ]
+            },
+            {
+              "event": 2,
+              "actions": [
+                {
+                  "_targetType": "BUFF_OWNER",
+                  "_getMaxHpFromTarget": false,
+                  "_damageType": "PURE",
+                  "_applyWay": "NONE",
+                  "_ignoreForSp": true,
+                  "_isUndeadable": false,
+                  "_attackType": "NORMAL",
+                  "_skipModifierEvent": false,
+                  "_multiplyByKey": false,
+                  "_multiplierKey": "cnt",
+                  "_noSourceDamage": true,
+                  "$type": "Torappu.Battle.Action.Nodes+DamageViaMaxHpRatio"
+                },
+                {
+                  "_conditionNode": {
+                    "_targetType": "BUFF_OWNER",
+                    "_anotherBuff": false,
+                    "_buffKey": null,
+                    "_blackboardKey": "times_cur",
+                    "_blackboardKeyFromBb": null,
+                    "_valueToCompare": 0,
+                    "_anotherKeyToCompare": "times",
+                    "_condType": "GE",
+                    "$type": "Torappu.Battle.Action.Nodes+FilterByBlackboardValue"
+                  },
+                  "_succeedNodes": null,
+                  "_failNodes": [
+                    {
+                      "_blackboardKey": "hp_ratio",
+                      "_blackboardKeyFromBb": null,
+                      "_addition": 0,
+                      "_additionKey": "hp_ratio_per_sec",
+                      "_isFloat": true,
+                      "_outputKey": null,
+                      "_maxKey": null,
+                      "$type": "Torappu.Battle.Action.Nodes+BlackboardAdd"
+                    },
+                    {
+                      "_blackboardKey": "times_cur",
+                      "_blackboardKeyFromBb": null,
+                      "_addition": 1,
+                      "_additionKey": null,
+                      "_isFloat": false,
+                      "_outputKey": null,
+                      "_maxKey": null,
+                      "$type": "Torappu.Battle.Action.Nodes+BlackboardAdd"
+                    }
+                  ],
+                  "$type": "Torappu.Battle.Action.Nodes+IfElse"
+                }
+              ]
+            },
+            {
+              "event": 5,
+              "actions": [
+                {
+                  "_modifierTargetType": "SP",
+                  "$type": "Torappu.Battle.Action.Nodes+FilterModifierTargetType"
+                },
+                {
+                  "_sideMask": "ALLY",
+                  "_targetType": "MODIFIER_SOURCE",
+                  "$type": "Torappu.Battle.Action.Nodes+IfTargetSide"
+                },
+                {
+                  "_reason": "UNHURTABLE",
+                  "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+                }
+              ]
+            },
+            {
+              "event": 4,
+              "actions": [
+                {
+                  "_blackboardKey": "uid_trap_cnt",
+                  "_bbKeyFormBb": null,
+                  "_channel": "ROGUELIKE",
+                  "_value": -1.0,
+                  "_valueBlackboardKey": "",
+                  "_addString": false,
+                  "_valueStr": null,
+                  "_overwrite": false,
+                  "$type": "Torappu.Battle.Action.Nodes+AddGlobalBlackboard"
+                }
+              ]
+            }
+          ],
+          "matches": [
+            {
+              "path": "/0/actions/4",
+              "value": {
+                "_targetType": "BUFF_OWNER",
+                "_attributeType": "MAX_HP",
+                "_doClear": false,
+                "_minValueKey": "dynamic",
+                "_maxValueKey": "dynamic",
+                "_refresh": true,
+                "$type": "Torappu.Battle.Action.Nodes+ModifyAttributeDataRangeOverride"
+              }
+            }
+          ]
+        },
+        {
+          "templateKey": "trap_shadvt_passive_log_kill",
+          "effectKey": "",
+          "onEventPriority": 0,
+          "eventToActions": {
+            "_items": {
+              "Array": [
+                {
+                  "key": 4,
+                  "value": {
+                    "SerializedState": "[{\"_logType\":\"SIMPLE\",\"_key\":\"killed\",\"_loadKeyFromBlackBoard\":false,\"_countInHostIfToken\":false,\"_additionValue\":1,\"_additionValueKey\":\"\",\"_attributeType\":\"NONE\",\"_target\":\"BUFF_OWNER\",\"$type\":\"Torappu.Battle.Action.Nodes+LogExtraBattleInfo\"}]",
+                    "SerializedObjectReferences": {
+                      "Array": []
+                    }
+                  }
+                },
+                {
+                  "key": 51,
+                  "value": {
+                    "SerializedState": "[{\"_ownerType\":\"BUFF_OWNER\",\"$type\":\"Torappu.Battle.Action.Nodes+CheckUnitAlive\"},{\"_logType\":\"SIMPLE\",\"_key\":\"exit\",\"_loadKeyFromBlackBoard\":false,\"_countInHostIfToken\":false,\"_additionValue\":1,\"_additionValueKey\":\"\",\"_attributeType\":\"NONE\",\"_target\":\"BUFF_OWNER\",\"$type\":\"Torappu.Battle.Action.Nodes+LogExtraBattleInfo\"}]",
+                    "SerializedObjectReferences": {
+                      "Array": []
+                    }
+                  }
+                },
+                {
+                  "key": 0,
+                  "value": {
+                    "SerializedState": "[{\"_blackboardKey\":\"default_value\",\"_blackboardSource\":\"CURRENT\",\"_keySource\":\"CONSTANT\",\"_keyTargetType\":\"TARGET\",\"_value\":1.0,\"_copyFromKey\":null,\"_assignString\":false,\"$type\":\"Torappu.Battle.Action.Nodes+AssignValueToBB\"},{\"_targetType\":\"BUFF_OWNER\",\"_attributeType\":\"SP_RECOVERY_PER_SEC\",\"_doClear\":false,\"_minValueKey\":\"default_value\",\"_maxValueKey\":\"default_value\",\"_refresh\":true,\"$type\":\"Torappu.Battle.Action.Nodes+ModifyAttributeDataRangeOverride\"},{\"_targetType\":\"BUFF_OWNER\",\"_attributeType\":\"SP_RECOVER_RATIO\",\"_doClear\":false,\"_minValueKey\":\"default_value\",\"_maxValueKey\":\"default_value\",\"_refresh\":true,\"$type\":\"Torappu.Battle.Action.Nodes+ModifyAttributeDataRangeOverride\"}]",
+                    "SerializedObjectReferences": {
+                      "Array": []
+                    }
+                  }
+                },
+                {
+                  "key": 6,
+                  "value": {
+                    "SerializedState": "[{\"_deltaType\":\"ADD\",\"_filterTargetType\":true,\"_modifierTargetType\":\"SP\",\"$type\":\"Torappu.Battle.Action.Nodes+FilterByModifierDeltaType\"},{\"_reason\":\"UNHURTABLE\",\"$type\":\"Torappu.Battle.Action.Nodes+CancelModifier\"}]",
+                    "SerializedObjectReferences": {
+                      "Array": []
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "templateIndex": 8458,
+          "events": [
+            {
+              "event": 4,
+              "actions": [
+                {
+                  "_logType": "SIMPLE",
+                  "_key": "killed",
+                  "_loadKeyFromBlackBoard": false,
+                  "_countInHostIfToken": false,
+                  "_additionValue": 1,
+                  "_additionValueKey": "",
+                  "_attributeType": "NONE",
+                  "_target": "BUFF_OWNER",
+                  "$type": "Torappu.Battle.Action.Nodes+LogExtraBattleInfo"
+                }
+              ]
+            },
+            {
+              "event": 51,
+              "actions": [
+                {
+                  "_ownerType": "BUFF_OWNER",
+                  "$type": "Torappu.Battle.Action.Nodes+CheckUnitAlive"
+                },
+                {
+                  "_logType": "SIMPLE",
+                  "_key": "exit",
+                  "_loadKeyFromBlackBoard": false,
+                  "_countInHostIfToken": false,
+                  "_additionValue": 1,
+                  "_additionValueKey": "",
+                  "_attributeType": "NONE",
+                  "_target": "BUFF_OWNER",
+                  "$type": "Torappu.Battle.Action.Nodes+LogExtraBattleInfo"
+                }
+              ]
+            },
+            {
+              "event": 0,
+              "actions": [
+                {
+                  "_blackboardKey": "default_value",
+                  "_blackboardSource": "CURRENT",
+                  "_keySource": "CONSTANT",
+                  "_keyTargetType": "TARGET",
+                  "_value": 1.0,
+                  "_copyFromKey": null,
+                  "_assignString": false,
+                  "$type": "Torappu.Battle.Action.Nodes+AssignValueToBB"
+                },
+                {
+                  "_targetType": "BUFF_OWNER",
+                  "_attributeType": "SP_RECOVERY_PER_SEC",
+                  "_doClear": false,
+                  "_minValueKey": "default_value",
+                  "_maxValueKey": "default_value",
+                  "_refresh": true,
+                  "$type": "Torappu.Battle.Action.Nodes+ModifyAttributeDataRangeOverride"
+                },
+                {
+                  "_targetType": "BUFF_OWNER",
+                  "_attributeType": "SP_RECOVER_RATIO",
+                  "_doClear": false,
+                  "_minValueKey": "default_value",
+                  "_maxValueKey": "default_value",
+                  "_refresh": true,
+                  "$type": "Torappu.Battle.Action.Nodes+ModifyAttributeDataRangeOverride"
+                }
+              ]
+            },
+            {
+              "event": 6,
+              "actions": [
+                {
+                  "_deltaType": "ADD",
+                  "_filterTargetType": true,
+                  "_modifierTargetType": "SP",
+                  "$type": "Torappu.Battle.Action.Nodes+FilterByModifierDeltaType"
+                },
+                {
+                  "_reason": "UNHURTABLE",
+                  "$type": "Torappu.Battle.Action.Nodes+CancelModifier"
+                }
+              ]
+            }
+          ],
+          "matches": [
+            {
+              "path": "/2/actions/1",
+              "value": {
+                "_targetType": "BUFF_OWNER",
+                "_attributeType": "SP_RECOVERY_PER_SEC",
+                "_doClear": false,
+                "_minValueKey": "default_value",
+                "_maxValueKey": "default_value",
+                "_refresh": true,
+                "$type": "Torappu.Battle.Action.Nodes+ModifyAttributeDataRangeOverride"
+              }
+            },
+            {
+              "path": "/2/actions/2",
+              "value": {
+                "_targetType": "BUFF_OWNER",
+                "_attributeType": "SP_RECOVER_RATIO",
+                "_doClear": false,
+                "_minValueKey": "default_value",
+                "_maxValueKey": "default_value",
+                "_refresh": true,
+                "$type": "Torappu.Battle.Action.Nodes+ModifyAttributeDataRangeOverride"
+              }
+            }
+          ]
+        },
+        {
+          "templateKey": "sandbox_v3_lock_maxhp",
+          "effectKey": "",
+          "onEventPriority": 0,
+          "eventToActions": {
+            "_items": {
+              "Array": [
+                {
+                  "key": 24,
+                  "value": {
+                    "SerializedState": "[{\"_targetType\":\"BUFF_OWNER\",\"_attributeType\":\"MAX_HP\",\"_scaleVar\":\"\",\"_blackboardKey\":\"max_hp\",\"$type\":\"Torappu.Battle.Action.Nodes+AssignAttributeToBB\"},{\"_targetType\":\"BUFF_OWNER\",\"_attributeType\":\"MAX_HP\",\"_doClear\":false,\"_minValueKey\":null,\"_maxValueKey\":\"max_hp\",\"_refresh\":true,\"$type\":\"Torappu.Battle.Action.Nodes+ModifyAttributeDataRangeOverride\"}]",
+                    "SerializedObjectReferences": {
+                      "Array": []
+                    }
+                  }
+                },
+                {
+                  "key": 25,
+                  "value": {
+                    "SerializedState": "[{\"_targetType\":\"BUFF_OWNER\",\"_attributeType\":\"MAX_HP\",\"_doClear\":true,\"_minValueKey\":null,\"_maxValueKey\":\"\",\"_refresh\":true,\"$type\":\"Torappu.Battle.Action.Nodes+ModifyAttributeDataRangeOverride\"}]",
+                    "SerializedObjectReferences": {
+                      "Array": []
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "templateIndex": 8845,
+          "events": [
+            {
+              "event": 24,
+              "actions": [
+                {
+                  "_targetType": "BUFF_OWNER",
+                  "_attributeType": "MAX_HP",
+                  "_scaleVar": "",
+                  "_blackboardKey": "max_hp",
+                  "$type": "Torappu.Battle.Action.Nodes+AssignAttributeToBB"
+                },
+                {
+                  "_targetType": "BUFF_OWNER",
+                  "_attributeType": "MAX_HP",
+                  "_doClear": false,
+                  "_minValueKey": null,
+                  "_maxValueKey": "max_hp",
+                  "_refresh": true,
+                  "$type": "Torappu.Battle.Action.Nodes+ModifyAttributeDataRangeOverride"
+                }
+              ]
+            },
+            {
+              "event": 25,
+              "actions": [
+                {
+                  "_targetType": "BUFF_OWNER",
+                  "_attributeType": "MAX_HP",
+                  "_doClear": true,
+                  "_minValueKey": null,
+                  "_maxValueKey": "",
+                  "_refresh": true,
+                  "$type": "Torappu.Battle.Action.Nodes+ModifyAttributeDataRangeOverride"
+                }
+              ]
+            }
+          ],
+          "matches": [
+            {
+              "path": "/0/actions/1",
+              "value": {
+                "_targetType": "BUFF_OWNER",
+                "_attributeType": "MAX_HP",
+                "_doClear": false,
+                "_minValueKey": null,
+                "_maxValueKey": "max_hp",
+                "_refresh": true,
+                "$type": "Torappu.Battle.Action.Nodes+ModifyAttributeDataRangeOverride"
+              }
+            },
+            {
+              "path": "/1/actions/0",
+              "value": {
+                "_targetType": "BUFF_OWNER",
+                "_attributeType": "MAX_HP",
+                "_doClear": true,
+                "_minValueKey": null,
+                "_maxValueKey": "",
+                "_refresh": true,
+                "$type": "Torappu.Battle.Action.Nodes+ModifyAttributeDataRangeOverride"
+              }
+            }
+          ]
+        }
+      ],
+      "directTemplateReferences": [
+        {
+          "templateIndex": 4441,
+          "templateKey": "trap_pirene_trigger_delay",
+          "matches": [
+            {
+              "path": "/0/actions/0/_buffKey",
+              "templateKey": "trap_pirene_init"
+            }
+          ],
+          "events": [
+            {
+              "event": 2,
+              "actions": [
+                {
+                  "_targetType": "BUFF_OWNER",
+                  "_blackboardKey": "full",
+                  "_valueKey": null,
+                  "_buffKey": "trap_pirene_init",
+                  "_useBlackboardBuffKey": false,
+                  "_buffKeyAssignFrom": null,
+                  "_useCurBuffBB": false,
+                  "_assignString": false,
+                  "_defaultValue": 1.0,
+                  "_assignFirstBuff": true,
+                  "_checkAssignToBuffSource": false,
+                  "_assignToBuffSourceType": "TARGET",
+                  "_assignMode": "OVERRIDE",
+                  "_assignToMainBuff": false,
+                  "_includeDisableBuffs": false,
+                  "$type": "Torappu.Battle.Action.Nodes+AssignBuffBlackboard"
+                },
+                {
+                  "_envKey": "env_040_act48side",
+                  "_target": "BUFF_OWNER",
+                  "_triggerWithEvent": true,
+                  "_eventName": "trap_full",
+                  "_triggerWithBlackboard": false,
+                  "_readResultFromBlackboard": false,
+                  "_tryRuntimeLoad": false,
+                  "$type": "Torappu.Battle.Action.Nodes+TriggerEnvSystem"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "templateIndex": 4442,
+          "templateKey": "trap_pirene_trigger_delay[off]",
+          "matches": [
+            {
+              "path": "/0/actions/0/_buffKey",
+              "templateKey": "trap_pirene_init"
+            }
+          ],
+          "events": [
+            {
+              "event": 2,
+              "actions": [
+                {
+                  "_targetType": "BUFF_OWNER",
+                  "_blackboardKey": "full",
+                  "_valueKey": null,
+                  "_buffKey": "trap_pirene_init",
+                  "_useBlackboardBuffKey": false,
+                  "_buffKeyAssignFrom": null,
+                  "_useCurBuffBB": false,
+                  "_assignString": false,
+                  "_defaultValue": 0.0,
+                  "_assignFirstBuff": true,
+                  "_checkAssignToBuffSource": false,
+                  "_assignToBuffSourceType": "TARGET",
+                  "_assignMode": "OVERRIDE",
+                  "_assignToMainBuff": false,
+                  "_includeDisableBuffs": false,
+                  "$type": "Torappu.Battle.Action.Nodes+AssignBuffBlackboard"
+                },
+                {
+                  "_envKey": "env_040_act48side",
+                  "_target": "BUFF_OWNER",
+                  "_triggerWithEvent": true,
+                  "_eventName": "trap_not_full",
+                  "_triggerWithBlackboard": false,
+                  "_readResultFromBlackboard": false,
+                  "_tryRuntimeLoad": false,
+                  "$type": "Torappu.Battle.Action.Nodes+TriggerEnvSystem"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

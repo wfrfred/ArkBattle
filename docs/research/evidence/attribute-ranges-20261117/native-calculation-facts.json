@@ -1,0 +1,68 @@
+{
+  "checkedOn": "2026-11-17",
+  "scope": "Static ordinary native branches; no client execution or active XLua verification.",
+  "record": "native-calculation.json",
+  "claims": [
+    {
+      "claim": "The numeric evaluator sums addition, multiplier and finalAddition separately, multiplies finalScaler, then computes ((raw + addition) * max(0, 1 + multiplier) + finalAddition) * finalScaler. It clamps once against the selected attribute range and writes the cached value; there is no generic integer rounding in this evaluator.",
+      "methods": [65262],
+      "anchors": ["0x180679c38", "0x180679c50", "0x180679c68", "0x180679c80", "0x180679d86", "0x180679db8", "0x180679dc6", "0x180679dd4", "0x180679de2", "0x180679f62", "0x180679f99"]
+    },
+    {
+      "claim": "GetValue returns m_cachedData when the attribute is clean, or calls the evaluator when dirty. The evaluator clears that dirty bit and writes its clamped result. GetValueRoundToInt explicitly calls GetValue and only then MathUtil.RoundToInt.",
+      "methods": [65243, 65245, 65262],
+      "anchors": ["0x1806785e0", "0x18067862e", "0x18067865a", "0x180679d34", "0x180678553", "0x18067857f"],
+      "roundingEvidence": "../attack-timing-inputs-20261117/wait-timeout.json: MathUtil.RoundToInt #226062 delegates to FP.Round #226189, including ties-to-even."
+    },
+    {
+      "claim": "get_rawData exposes the current m_rawData array. GetRawValue reads and decrypts that attribute's current m_rawData entry, without invoking modifiers, range selection, clamp or rounding. It does not reload the original data-table value.",
+      "methods": [65232, 65244],
+      "anchors": ["0x18067a580", "0x1806784c4", "0x180678504"]
+    },
+    {
+      "claim": "Raw writes have different entry contracts. Reset and OverwriteAllAttributesRawData obtain AttributeMeta ranges and clamp their input before storing it. OverwriteRawData directly stores the supplied single FP, marks the attribute dirty, and optionally demands its effective value. Therefore an unclamped raw getter does not imply initialization skips clamping, and initialization clamping does not imply every later raw write is clamped.",
+      "methods": [65235, 65236, 65239],
+      "anchors": ["0x180679205", "0x1806792cb", "0x180679422", "0x180678b86", "0x180678c18", "0x180678c89", "0x180678d5c", "0x180678d78", "0x180678d8a"]
+    },
+    {
+      "claim": "OverrideDataRange uses the provided non-null side, but a null side falls back to m_dataRange, not the previously overridden range. If both arguments are null, it returns without modifying the current override or marking dirty. An actual override writes one complete nullable range for this attribute; it is not a multi-source contribution collection.",
+      "methods": [65237, 65263, 65264],
+      "anchors": ["0x1806788a8", "0x1806788ad", "0x1806788b1", "0x1806788d6", "0x180678904", "0x180678920", "0x18067894b", "0x1806789cf", "0x1806789e7"],
+      "example": "With default [20, MAX], after override [50, 80], override(null, 90) produces [20, 90]. override(null, null) then leaves [20, 90] in place; it does not clear."
+    },
+    {
+      "claim": "ClearDataRangeOverride empties that attribute's whole nullable range, then calls MarkAttributeDirty. GetMinValue/GetMaxValue fall back to the default m_dataRange once empty. refresh=true additionally calls GetValue; it does not enable or disable dirty notifications.",
+      "methods": [65238, 65257, 65263, 65264],
+      "anchors": ["0x18067758f", "0x18067759a", "0x1806775a2", "0x1806775b4", "0x1806786d1", "0x180678742"]
+    },
+    {
+      "claim": "Range changes connect to the existing synchronous Entity attack-time notification. MarkAttributeDirty writes the dirty bit then immediately calls onAttributeMarkedDirty with the old cached value. The initialized Entity handler reads current speed/base interval, calls CalculateAttackInterval, then invokes Ability.OnAttackTimeChanged; ordinary animated abilities preserve timer progress. This connection also applies to ClearDataRangeOverride, including when refresh=false but the subscribed callback demands the new value.",
+      "methods": [65237, 65238, 65257, 67624, 67699, 93883],
+      "anchors": ["0x1806789e7", "0x1806775a2", "0x180678742", "0x18072898c", "0x180728a0d", "0x180728a40", "0x180f90e2b"],
+      "reusedEvidence": ["../attack-speed-timing-20261105/dirty/native.json", "../attack-speed-timing-20261105/dirty/findings.json"]
+    },
+    {
+      "claim": "The attack interval formula has its own clamp distinct from AttributeMeta: MIN_ATTACK_SPEED=10, MAX_ATTACK_SPEED=600, divider=100. CalculateAttackInterval returns baseInterval/(clamp(speed,10,600)/100). The ordinary attribute minimum is separately 20; overriding it below 20 makes the distinction observable.",
+      "methods": [65907, 65915],
+      "anchors": ["0x1806874ae", "0x1806874d0", "0x1806874cb", "0x1806874f1", "0x18068750a", "0x18068570f", "0x180685747", "0x180685769"],
+      "defaultRangeEvidence": "../resource-mechanisms-20261114/death-attributes/metadata.json: AttributesData.attackSpeed AttributeMeta minimum=20."
+    },
+    {
+      "claim": "A DeckBuff that becomes an ordinary field Buff remains a modifier rather than automatically becoming raw, even when installed during initialization before initial HP sampling. This is distinct from a creator modifying the supplied attribute data before Attributes.Reset.",
+      "reusedEvidence": ["../../cases/24-deployment-cost-and-supply.md#十卡牌附加与部署时序", "../deployment-entry-20261101/README.md"],
+      "contentExample": "Makiri S2 MAX_HP/MULTIPLIER DeckBuff becomes an AddBuff registration during Character.OnInit.",
+      "limit": "No claim that all CardBuff or mode preprocessing uses the same path; those creators must be followed separately."
+    }
+  ],
+  "readOnlyProjectDifference": {
+    "path": "src/core/unit/capability/action/timing.ts",
+    "finding": "period() currently clamps speed to [20,600]; native CalculateAttackInterval clamps [10,600]. They agree under default speed minimum20 but differ if dynamic attribute range admits a lower speed.",
+    "otherBoundary": "Current common attribute.apply computes the same four-stage arithmetic in JavaScript numbers. Per-domain clamping exists outside it; dynamic native range override storage has not been implemented.",
+    "notDecidedHere": "No API, Contribution policy, cache implementation, or Core refactor is prescribed by this evidence."
+  },
+  "limits": [
+    "Static original methods, not an official per-frame experiment or active hotfix capture.",
+    "Numeric properties and their consumers may explicitly round or add formula-specific floors; this evaluator does not establish every downstream consumer's policy.",
+    "Default field range declarations and unsupported/special-mode attributes are catalogued separately by the parent investigation."
+  ]
+}

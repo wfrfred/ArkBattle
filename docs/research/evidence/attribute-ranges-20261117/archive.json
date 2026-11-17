@@ -1,0 +1,1125 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-11-17"
+    ],
+    "collectionDateSource": "record fields",
+    "organizedOn": "2026-11-17",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+        "records": [
+          "inventory-native.json#/provenance/client/dll",
+          "inventory.json#/provenance/client/dll",
+          "native-calculation.json#/provenance/client/dll",
+          "usage-native.json#/provenance/client/dll"
+        ],
+        "bytes": 223112680
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        "records": [
+          "inventory-native.json#/provenance/client/metadata",
+          "inventory.json#/provenance/client/metadata",
+          "native-calculation.json#/provenance/client/metadata",
+          "usage-native.json#/provenance/client/metadata"
+        ],
+        "bytes": 46669332
+      }
+    },
+    "sourceRecords": [
+      "inventory-native.json",
+      "inventory.json",
+      "native-calculation-facts.json",
+      "native-calculation.json",
+      "prts.json",
+      "usage-native.json",
+      "usage-prefabs.json",
+      "usage-static.json",
+      "usage-templates.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12895,
+        "sha256": "9c5b246859318caaec4aab5275ef0d2d49fce5d612c6b4e569973a9941ba621a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "README-inventory.md",
+        "kind": "historical-report",
+        "bytes": 6094,
+        "sha256": "bd3ca9042f642789d891b300858937e1d409cfedc7af30a189ca97b4aa740c94"
+      },
+      {
+        "path": "README-native.md",
+        "kind": "historical-report",
+        "bytes": 3117,
+        "sha256": "cd85634f95d143963655f2cf8766f685395a7f647c56e1c48b9806667054781d"
+      },
+      {
+        "path": "README-usage.md",
+        "kind": "historical-report",
+        "bytes": 8070,
+        "sha256": "ac764be60199b796c1e5bf2b413e7baa06dedb15abbc1a009bb917199f3dafeb"
+      },
+      {
+        "path": "extract_inventory.py",
+        "kind": "historical-script",
+        "bytes": 14640,
+        "sha256": "0fd365470faafa6acf5f2bf957ab448ee080ef09b6252401dc0a69e0eaed6596"
+      },
+      {
+        "path": "extract_native.py",
+        "kind": "historical-script",
+        "bytes": 4929,
+        "sha256": "7db0b676ece6e15264324e70a4528ff0b13031ad4f6f0616b7104012b90c8bcc"
+      },
+      {
+        "path": "extract_usage.py",
+        "kind": "historical-script",
+        "bytes": 16565,
+        "sha256": "0051224a8913e2c81094a217fa77f4b69a0df8c895dd8e65e3c51e9ad2cdf717"
+      },
+      {
+        "path": "inventory-native.json",
+        "kind": "record",
+        "bytes": 431458,
+        "sha256": "50f0a4c71160319f79b43f624dd13af1e74ea80bb16750cff722539c01f6aff9"
+      },
+      {
+        "path": "inventory.json",
+        "kind": "record",
+        "bytes": 41684,
+        "sha256": "84c5f2c54ffb51c0b57f83643cc929946f148c6ff4c8b8fa8fdca07c67d6bfe5"
+      },
+      {
+        "path": "native-calculation-facts.json",
+        "kind": "record",
+        "bytes": 6870,
+        "sha256": "e7df9837cee8811219896dac61ee72a479f7814b02c01cdbaa5ee8138e069394"
+      },
+      {
+        "path": "native-calculation.json",
+        "kind": "record",
+        "bytes": 586804,
+        "sha256": "20968be9cde8bbcfb4cc823a63d4da1634a65e3c2ead6bbf12e9f9348a04697d"
+      },
+      {
+        "path": "prts.json",
+        "kind": "record",
+        "bytes": 1152,
+        "sha256": "d0ae14bf65547ef5ab61b66eaf694b5cc5eb97bb866fc541d7979bbb430bcbea"
+      },
+      {
+        "path": "usage-native.json",
+        "kind": "record",
+        "bytes": 103725,
+        "sha256": "b4fdb523bc5ca2cb0c378770034fac505385ae82b9403b6b5d113a224bdaaf13"
+      },
+      {
+        "path": "usage-prefabs.json",
+        "kind": "record",
+        "bytes": 773031,
+        "sha256": "b262e340583ddb6bb249c162d07e9853fc1c24651f72317543f22a1f52ca71a4"
+      },
+      {
+        "path": "usage-static.json",
+        "kind": "record",
+        "bytes": 274221,
+        "sha256": "f298f3809777cc9010e2edde565f4e4f6e6e2961471cd9a3ab8db3853e834af2"
+      },
+      {
+        "path": "usage-templates.json",
+        "kind": "record",
+        "bytes": 101915,
+        "sha256": "667dc5e86a653c3ff7c1c820a4906cf0fd98465c2c13ee8f003a625dc96b2f42"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 31426,
+          "mode": "disasm",
+          "records": [
+            "inventory-native.json#/result/owners/0/methods/0",
+            "inventory-native.json#/result/bodies/0/method",
+            "inventory-native.json#/result/bodies/0/fragments/0",
+            "inventory-native.json#/result/bodies/0/fragments/0/method"
+          ],
+          "fullname": "Torappu.AttributeMetaAttribute..ctor",
+          "address": "0x182372db0"
+        },
+        {
+          "index": 31427,
+          "mode": "disasm",
+          "records": [
+            "inventory-native.json#/result/owners/0/methods/1",
+            "inventory-native.json#/result/attributes/15/decoded/constructor",
+            "inventory-native.json#/result/attributes/16/decoded/constructor",
+            "inventory-native.json#/result/attributes/21/decoded/constructor",
+            "inventory-native.json#/result/bodies/1/method",
+            "inventory-native.json#/result/bodies/1/fragments/0",
+            "inventory-native.json#/result/bodies/1/fragments/0/method"
+          ],
+          "fullname": "Torappu.AttributeMetaAttribute..ctor",
+          "address": "0x182372d20"
+        },
+        {
+          "index": 31428,
+          "mode": "disasm",
+          "records": [
+            "inventory-native.json#/result/owners/0/methods/2",
+            "inventory-native.json#/result/attributes/0/decoded/constructor",
+            "inventory-native.json#/result/attributes/1/decoded/constructor",
+            "inventory-native.json#/result/attributes/2/decoded/constructor",
+            "inventory-native.json#/result/attributes/4/decoded/constructor",
+            "inventory-native.json#/result/attributes/5/decoded/constructor",
+            "inventory-native.json#/result/attributes/6/decoded/constructor",
+            "inventory-native.json#/result/attributes/7/decoded/constructor",
+            "inventory-native.json#/result/attributes/8/decoded/constructor",
+            "inventory-native.json#/result/attributes/9/decoded/constructor",
+            "inventory-native.json#/result/attributes/10/decoded/constructor",
+            "inventory-native.json#/result/attributes/11/decoded/constructor",
+            "inventory-native.json#/result/attributes/12/decoded/constructor",
+            "inventory-native.json#/result/attributes/13/decoded/constructor",
+            "inventory-native.json#/result/attributes/25/decoded/constructor",
+            "inventory-native.json#/result/attributes/27/decoded/constructor",
+            "inventory-native.json#/result/attributes/29/decoded/constructor",
+            "inventory-native.json#/result/attributes/30/decoded/constructor",
+            "inventory-native.json#/result/attributes/31/decoded/constructor",
+            "inventory-native.json#/result/attributes/33/decoded/constructor",
+            "inventory-native.json#/result/bodies/2/method",
+            "inventory-native.json#/result/bodies/2/fragments/0",
+            "inventory-native.json#/result/bodies/2/fragments/0/method"
+          ],
+          "fullname": "Torappu.AttributeMetaAttribute..ctor",
+          "address": "0x182372d60"
+        },
+        {
+          "index": 31429,
+          "mode": "disasm",
+          "records": [
+            "inventory-native.json#/result/owners/0/methods/3",
+            "inventory-native.json#/result/attributes/3/decoded/constructor",
+            "inventory-native.json#/result/attributes/14/decoded/constructor",
+            "inventory-native.json#/result/attributes/17/decoded/constructor",
+            "inventory-native.json#/result/attributes/18/decoded/constructor",
+            "inventory-native.json#/result/attributes/19/decoded/constructor",
+            "inventory-native.json#/result/attributes/20/decoded/constructor",
+            "inventory-native.json#/result/attributes/22/decoded/constructor",
+            "inventory-native.json#/result/attributes/23/decoded/constructor",
+            "inventory-native.json#/result/attributes/24/decoded/constructor",
+            "inventory-native.json#/result/attributes/26/decoded/constructor",
+            "inventory-native.json#/result/attributes/28/decoded/constructor",
+            "inventory-native.json#/result/attributes/32/decoded/constructor",
+            "inventory-native.json#/result/bodies/3/method",
+            "inventory-native.json#/result/bodies/3/fragments/0",
+            "inventory-native.json#/result/bodies/3/fragments/0/method"
+          ],
+          "fullname": "Torappu.AttributeMetaAttribute..ctor",
+          "address": "0x182372cc0"
+        },
+        {
+          "index": 31430,
+          "mode": "metadata",
+          "records": [
+            "inventory-native.json#/result/owners/0/methods/4"
+          ],
+          "fullname": "Torappu.AttributeMetaAttribute.GetMinAsFloat",
+          "address": "0x180758720"
+        },
+        {
+          "index": 31431,
+          "mode": "metadata",
+          "records": [
+            "inventory-native.json#/result/owners/0/methods/5"
+          ],
+          "fullname": "Torappu.AttributeMetaAttribute.GetMaxAsFloat",
+          "address": "0x180758730"
+        },
+        {
+          "index": 31432,
+          "mode": "disasm",
+          "records": [
+            "inventory-native.json#/result/owners/0/methods/6",
+            "inventory-native.json#/result/bodies/4/method",
+            "inventory-native.json#/result/bodies/4/fragments/0",
+            "inventory-native.json#/result/bodies/4/fragments/0/method"
+          ],
+          "fullname": "Torappu.AttributeMetaAttribute.GetRangeAsTVector2",
+          "address": "0x182372bb0"
+        },
+        {
+          "index": 31437,
+          "mode": "metadata",
+          "records": [
+            "inventory-native.json#/result/owners/1/methods/0"
+          ],
+          "fullname": "Torappu.AttributesData.get_fieldMetas",
+          "address": "0x182374ef0"
+        },
+        {
+          "index": 31438,
+          "mode": "metadata",
+          "records": [
+            "inventory-native.json#/result/owners/1/methods/1"
+          ],
+          "fullname": "Torappu.AttributesData.Assign",
+          "address": "0x182373700"
+        },
+        {
+          "index": 31439,
+          "mode": "metadata",
+          "records": [
+            "inventory-native.json#/result/owners/1/methods/2"
+          ],
+          "fullname": "Torappu.AttributesData.ApplyDelta",
+          "address": "0x182373510"
+        },
+        {
+          "index": 31440,
+          "mode": "metadata",
+          "records": [
+            "inventory-native.json#/result/owners/1/methods/3"
+          ],
+          "fullname": "Torappu.AttributesData.Lerp",
+          "address": "0x182373ae0"
+        },
+        {
+          "index": 31441,
+          "mode": "disasm",
+          "records": [
+            "inventory-native.json#/result/owners/1/methods/4",
+            "inventory-native.json#/result/bodies/5/method",
+            "inventory-native.json#/result/bodies/5/fragments/0",
+            "inventory-native.json#/result/bodies/5/fragments/0/method"
+          ],
+          "fullname": "Torappu.AttributesData.ReadAttributesField",
+          "address": "0x182373e20"
+        },
+        {
+          "index": 31442,
+          "mode": "disasm",
+          "records": [
+            "inventory-native.json#/result/owners/1/methods/5",
+            "inventory-native.json#/result/bodies/6/method",
+            "inventory-native.json#/result/bodies/6/fragments/0",
+            "inventory-native.json#/result/bodies/6/fragments/0/method"
+          ],
+          "fullname": "Torappu.AttributesData.WriteAttributesField",
+          "address": "0x182374080"
+        },
+        {
+          "index": 31443,
+          "mode": "disasm",
+          "records": [
+            "inventory-native.json#/result/owners/1/methods/6",
+            "inventory-native.json#/result/bodies/7/method",
+            "inventory-native.json#/result/bodies/7/fragments/0",
+            "inventory-native.json#/result/bodies/7/fragments/0/method"
+          ],
+          "fullname": "Torappu.AttributesData.WriteAttributesField",
+          "address": "0x1823743b0"
+        },
+        {
+          "index": 31444,
+          "mode": "disasm",
+          "records": [
+            "inventory-native.json#/result/owners/1/methods/7",
+            "inventory-native.json#/result/bodies/8/method",
+            "inventory-native.json#/result/bodies/8/fragments/0",
+            "inventory-native.json#/result/bodies/8/fragments/0/method"
+          ],
+          "fullname": "Torappu.AttributesData..ctor",
+          "address": "0x1823749b0"
+        },
+        {
+          "index": 31445,
+          "mode": "metadata",
+          "records": [
+            "inventory-native.json#/result/owners/1/methods/8"
+          ],
+          "fullname": "Torappu.AttributesData..cctor",
+          "address": "0x182374450"
+        },
+        {
+          "index": 65232,
+          "mode": "disasm",
+          "records": [
+            "native-calculation.json#/result/methods/0",
+            "native-calculation.json#/result/bodies/0",
+            "native-calculation.json#/result/bodies/0/fragments/0",
+            "native-calculation.json#/result/bodies/0/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Attributes.get_rawData",
+          "address": "0x18067a580"
+        },
+        {
+          "index": 65233,
+          "mode": "disasm",
+          "records": [
+            "native-calculation.json#/result/methods/1",
+            "native-calculation.json#/result/bodies/1",
+            "native-calculation.json#/result/bodies/1/fragments/0",
+            "native-calculation.json#/result/bodies/1/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Attributes..ctor",
+          "address": "0x18067a040"
+        },
+        {
+          "index": 65234,
+          "mode": "disasm",
+          "records": [
+            "native-calculation.json#/result/methods/2",
+            "native-calculation.json#/result/bodies/2",
+            "native-calculation.json#/result/bodies/2/fragments/0",
+            "native-calculation.json#/result/bodies/2/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Attributes..ctor",
+          "address": "0x18067a2d0"
+        },
+        {
+          "index": 65235,
+          "mode": "disasm",
+          "records": [
+            "native-calculation.json#/result/methods/3",
+            "native-calculation.json#/result/bodies/3",
+            "native-calculation.json#/result/bodies/3/fragments/0",
+            "native-calculation.json#/result/bodies/3/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Attributes.Reset",
+          "address": "0x180679070"
+        },
+        {
+          "index": 65236,
+          "mode": "disasm",
+          "records": [
+            "native-calculation.json#/result/methods/4",
+            "native-calculation.json#/result/bodies/4",
+            "native-calculation.json#/result/bodies/4/fragments/0",
+            "native-calculation.json#/result/bodies/4/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Attributes.OverwriteRawData",
+          "address": "0x180678ce0"
+        },
+        {
+          "index": 65237,
+          "mode": "disasm",
+          "records": [
+            "native-calculation.json#/result/methods/5",
+            "native-calculation.json#/result/bodies/5",
+            "native-calculation.json#/result/bodies/5/fragments/0",
+            "native-calculation.json#/result/bodies/5/fragments/0/method",
+            "usage-native.json#/result/methods/0",
+            "usage-native.json#/result/xrefs/0/targetMethods/0",
+            "usage-native.json#/result/bodies/1",
+            "usage-native.json#/result/bodies/1/method"
+          ],
+          "fullname": "Torappu.Battle.Attributes.OverrideDataRange",
+          "address": "0x180678850"
+        },
+        {
+          "index": 65238,
+          "mode": "disasm",
+          "records": [
+            "native-calculation.json#/result/methods/6",
+            "native-calculation.json#/result/bodies/6",
+            "native-calculation.json#/result/bodies/6/fragments/0",
+            "native-calculation.json#/result/bodies/6/fragments/0/method",
+            "usage-native.json#/result/methods/1",
+            "usage-native.json#/result/xrefs/1/targetMethods/0",
+            "usage-native.json#/result/bodies/2",
+            "usage-native.json#/result/bodies/2/method"
+          ],
+          "fullname": "Torappu.Battle.Attributes.ClearDataRangeOverride",
+          "address": "0x180677530"
+        },
+        {
+          "index": 65239,
+          "mode": "disasm",
+          "records": [
+            "native-calculation.json#/result/methods/7",
+            "native-calculation.json#/result/bodies/7",
+            "native-calculation.json#/result/bodies/7/fragments/0",
+            "native-calculation.json#/result/bodies/7/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Attributes.OverwriteAllAttributesRawData",
+          "address": "0x180678a40"
+        },
+        {
+          "index": 65243,
+          "mode": "disasm",
+          "records": [
+            "native-calculation.json#/result/methods/8",
+            "native-calculation.json#/result/bodies/8",
+            "native-calculation.json#/result/bodies/8/fragments/0",
+            "native-calculation.json#/result/bodies/8/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Attributes.GetValue",
+          "address": "0x180678590"
+        },
+        {
+          "index": 65244,
+          "mode": "disasm",
+          "records": [
+            "native-calculation.json#/result/methods/9",
+            "native-calculation.json#/result/bodies/9",
+            "native-calculation.json#/result/bodies/9/fragments/0",
+            "native-calculation.json#/result/bodies/9/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Attributes.GetRawValue",
+          "address": "0x180678490"
+        },
+        {
+          "index": 65245,
+          "mode": "disasm",
+          "records": [
+            "native-calculation.json#/result/methods/10",
+            "native-calculation.json#/result/bodies/10",
+            "native-calculation.json#/result/bodies/10/fragments/0",
+            "native-calculation.json#/result/bodies/10/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Attributes.GetValueRoundToInt",
+          "address": "0x180678520"
+        },
+        {
+          "index": 65257,
+          "mode": "disasm",
+          "records": [
+            "native-calculation.json#/result/methods/11",
+            "native-calculation.json#/result/bodies/11",
+            "native-calculation.json#/result/bodies/11/fragments/0",
+            "native-calculation.json#/result/bodies/11/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Attributes.MarkAttributeDirty",
+          "address": "0x180678680"
+        },
+        {
+          "index": 65258,
+          "mode": "disasm",
+          "records": [
+            "native-calculation.json#/result/methods/12",
+            "native-calculation.json#/result/bodies/12",
+            "native-calculation.json#/result/bodies/12/fragments/0",
+            "native-calculation.json#/result/bodies/12/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Attributes.MarkAttributesDirty",
+          "address": "0x180678770"
+        },
+        {
+          "index": 65262,
+          "mode": "disasm",
+          "records": [
+            "native-calculation.json#/result/methods/13",
+            "native-calculation.json#/result/bodies/13",
+            "native-calculation.json#/result/bodies/13/fragments/0",
+            "native-calculation.json#/result/bodies/13/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Attributes._CalculateAttributeValue",
+          "address": "0x180679970"
+        },
+        {
+          "index": 65263,
+          "mode": "disasm",
+          "records": [
+            "native-calculation.json#/result/methods/14",
+            "native-calculation.json#/result/bodies/14",
+            "native-calculation.json#/result/bodies/14/fragments/0",
+            "native-calculation.json#/result/bodies/14/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Attributes.GetMinValue",
+          "address": "0x1806783a0"
+        },
+        {
+          "index": 65264,
+          "mode": "disasm",
+          "records": [
+            "native-calculation.json#/result/methods/15",
+            "native-calculation.json#/result/bodies/15",
+            "native-calculation.json#/result/bodies/15/fragments/0",
+            "native-calculation.json#/result/bodies/15/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Attributes.GetMaxValue",
+          "address": "0x1806782c0"
+        },
+        {
+          "index": 65907,
+          "mode": "disasm",
+          "records": [
+            "native-calculation.json#/result/methods/16",
+            "native-calculation.json#/result/bodies/16",
+            "native-calculation.json#/result/bodies/16/fragments/0",
+            "native-calculation.json#/result/bodies/16/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.BattleFormula.CalculateAttackInterval",
+          "address": "0x180685640"
+        },
+        {
+          "index": 65915,
+          "mode": "disasm",
+          "records": [
+            "native-calculation.json#/result/methods/17",
+            "native-calculation.json#/result/bodies/17",
+            "native-calculation.json#/result/bodies/17/fragments/0",
+            "native-calculation.json#/result/bodies/17/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.BattleFormula..cctor",
+          "address": "0x180687450"
+        },
+        {
+          "index": 67452,
+          "mode": "disasm",
+          "records": [
+            "native-calculation.json#/result/methods/18",
+            "native-calculation.json#/result/bodies/18",
+            "native-calculation.json#/result/bodies/18/fragments/0",
+            "native-calculation.json#/result/bodies/18/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_attackTime",
+          "address": "0x180733410"
+        },
+        {
+          "index": 99020,
+          "mode": "disasm",
+          "records": [
+            "usage-native.json#/result/methods/2",
+            "usage-native.json#/result/xrefs/2/targetMethods/0",
+            "usage-native.json#/result/bodies/3",
+            "usage-native.json#/result/bodies/3/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ModifyAttributeDataRangeOverride.get_allowedSource",
+          "address": "0x1810eae70"
+        },
+        {
+          "index": 99021,
+          "mode": "disasm",
+          "records": [
+            "usage-native.json#/result/methods/3",
+            "usage-native.json#/result/xrefs/0/candidates/0/confirmedInstructions/0/method",
+            "usage-native.json#/result/xrefs/1/candidates/0/confirmedInstructions/0/method",
+            "usage-native.json#/result/xrefs/3/targetMethods/0",
+            "usage-native.json#/result/bodies/0",
+            "usage-native.json#/result/bodies/0/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ModifyAttributeDataRangeOverride.Execute",
+          "address": "0x1810eabd0"
+        },
+        {
+          "index": 99022,
+          "mode": "disasm",
+          "records": [
+            "usage-native.json#/result/methods/4",
+            "usage-native.json#/result/xrefs/4/targetMethods/0",
+            "usage-native.json#/result/bodies/4",
+            "usage-native.json#/result/bodies/4/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ModifyAttributeDataRangeOverride..ctor",
+          "address": "0x1810eae00"
+        },
+        {
+          "index": 243356,
+          "mode": "metadata",
+          "records": [
+            "inventory-native.json#/result/owners/3/methods/0"
+          ],
+          "fullname": "CodeStage.AntiCheat.ObscuredTypes.ObscuredInt..ctor",
+          "address": "0x18686bb00"
+        },
+        {
+          "index": 243357,
+          "mode": "metadata",
+          "records": [
+            "inventory-native.json#/result/owners/3/methods/1"
+          ],
+          "fullname": "CodeStage.AntiCheat.ObscuredTypes.ObscuredInt.SetNewCryptoKey",
+          "address": "0x18686b8a0"
+        },
+        {
+          "index": 243358,
+          "mode": "metadata",
+          "records": [
+            "inventory-native.json#/result/owners/3/methods/2"
+          ],
+          "fullname": "CodeStage.AntiCheat.ObscuredTypes.ObscuredInt.Encrypt",
+          "address": "0x18686b200"
+        },
+        {
+          "index": 243359,
+          "mode": "metadata",
+          "records": [
+            "inventory-native.json#/result/owners/3/methods/3"
+          ],
+          "fullname": "CodeStage.AntiCheat.ObscuredTypes.ObscuredInt.Encrypt",
+          "address": "0x18686b180"
+        },
+        {
+          "index": 243360,
+          "mode": "metadata",
+          "records": [
+            "inventory-native.json#/result/owners/3/methods/4"
+          ],
+          "fullname": "CodeStage.AntiCheat.ObscuredTypes.ObscuredInt.Decrypt",
+          "address": "0x18686b0f0"
+        },
+        {
+          "index": 243361,
+          "mode": "metadata",
+          "records": [
+            "inventory-native.json#/result/owners/3/methods/5"
+          ],
+          "fullname": "CodeStage.AntiCheat.ObscuredTypes.ObscuredInt.Decrypt",
+          "address": "0x18686b070"
+        },
+        {
+          "index": 243362,
+          "mode": "metadata",
+          "records": [
+            "inventory-native.json#/result/owners/3/methods/6"
+          ],
+          "fullname": "CodeStage.AntiCheat.ObscuredTypes.ObscuredInt.ApplyNewCryptoKey",
+          "address": "0x18686ae10"
+        },
+        {
+          "index": 243363,
+          "mode": "metadata",
+          "records": [
+            "inventory-native.json#/result/owners/3/methods/7"
+          ],
+          "fullname": "CodeStage.AntiCheat.ObscuredTypes.ObscuredInt.RandomizeCryptoKey",
+          "address": "0x18686b670"
+        },
+        {
+          "index": 243364,
+          "mode": "metadata",
+          "records": [
+            "inventory-native.json#/result/owners/3/methods/8"
+          ],
+          "fullname": "CodeStage.AntiCheat.ObscuredTypes.ObscuredInt.GetEncrypted",
+          "address": "0x18686b4d0"
+        },
+        {
+          "index": 243365,
+          "mode": "metadata",
+          "records": [
+            "inventory-native.json#/result/owners/3/methods/9"
+          ],
+          "fullname": "CodeStage.AntiCheat.ObscuredTypes.ObscuredInt.SetEncrypted",
+          "address": "0x18686b720"
+        },
+        {
+          "index": 243366,
+          "mode": "metadata",
+          "records": [
+            "inventory-native.json#/result/owners/3/methods/10"
+          ],
+          "fullname": "CodeStage.AntiCheat.ObscuredTypes.ObscuredInt.GetDecrypted",
+          "address": "0x18686b480"
+        },
+        {
+          "index": 243367,
+          "mode": "disasm",
+          "records": [
+            "inventory-native.json#/result/owners/3/methods/11",
+            "inventory-native.json#/result/bodies/9/method",
+            "inventory-native.json#/result/bodies/9/fragments/0",
+            "inventory-native.json#/result/bodies/9/fragments/0/method"
+          ],
+          "fullname": "CodeStage.AntiCheat.ObscuredTypes.ObscuredInt.InternalDecrypt",
+          "address": "0x18686b580"
+        },
+        {
+          "index": 243368,
+          "mode": "metadata",
+          "records": [
+            "inventory-native.json#/result/owners/3/methods/12"
+          ],
+          "fullname": "CodeStage.AntiCheat.ObscuredTypes.ObscuredInt.op_Implicit",
+          "address": "0x18686be00"
+        },
+        {
+          "index": 243369,
+          "mode": "metadata",
+          "records": [
+            "inventory-native.json#/result/owners/3/methods/13"
+          ],
+          "fullname": "CodeStage.AntiCheat.ObscuredTypes.ObscuredInt.op_Implicit",
+          "address": "0x18686bef0"
+        },
+        {
+          "index": 243370,
+          "mode": "metadata",
+          "records": [
+            "inventory-native.json#/result/owners/3/methods/14"
+          ],
+          "fullname": "CodeStage.AntiCheat.ObscuredTypes.ObscuredInt.op_Implicit",
+          "address": "0x18686be30"
+        },
+        {
+          "index": 243371,
+          "mode": "metadata",
+          "records": [
+            "inventory-native.json#/result/owners/3/methods/15"
+          ],
+          "fullname": "CodeStage.AntiCheat.ObscuredTypes.ObscuredInt.op_Implicit",
+          "address": "0x18686bd40"
+        },
+        {
+          "index": 243372,
+          "mode": "metadata",
+          "records": [
+            "inventory-native.json#/result/owners/3/methods/16"
+          ],
+          "fullname": "CodeStage.AntiCheat.ObscuredTypes.ObscuredInt.op_Explicit",
+          "address": "0x18686bc30"
+        },
+        {
+          "index": 243373,
+          "mode": "metadata",
+          "records": [
+            "inventory-native.json#/result/owners/3/methods/17"
+          ],
+          "fullname": "CodeStage.AntiCheat.ObscuredTypes.ObscuredInt.op_Increment",
+          "address": "0x18686bf40"
+        },
+        {
+          "index": 243374,
+          "mode": "metadata",
+          "records": [
+            "inventory-native.json#/result/owners/3/methods/18"
+          ],
+          "fullname": "CodeStage.AntiCheat.ObscuredTypes.ObscuredInt.op_Decrement",
+          "address": "0x18686bb90"
+        },
+        {
+          "index": 243375,
+          "mode": "metadata",
+          "records": [
+            "inventory-native.json#/result/owners/3/methods/19"
+          ],
+          "fullname": "CodeStage.AntiCheat.ObscuredTypes.ObscuredInt.GetHashCode",
+          "address": "0x18686b520"
+        },
+        {
+          "index": 243376,
+          "mode": "metadata",
+          "records": [
+            "inventory-native.json#/result/owners/3/methods/20"
+          ],
+          "fullname": "CodeStage.AntiCheat.ObscuredTypes.ObscuredInt.ToString",
+          "address": "0x18686b900"
+        },
+        {
+          "index": 243377,
+          "mode": "metadata",
+          "records": [
+            "inventory-native.json#/result/owners/3/methods/21"
+          ],
+          "fullname": "CodeStage.AntiCheat.ObscuredTypes.ObscuredInt.ToString",
+          "address": "0x18686ba50"
+        },
+        {
+          "index": 243378,
+          "mode": "metadata",
+          "records": [
+            "inventory-native.json#/result/owners/3/methods/22"
+          ],
+          "fullname": "CodeStage.AntiCheat.ObscuredTypes.ObscuredInt.ToString",
+          "address": "0x18686b9e0"
+        },
+        {
+          "index": 243379,
+          "mode": "metadata",
+          "records": [
+            "inventory-native.json#/result/owners/3/methods/23"
+          ],
+          "fullname": "CodeStage.AntiCheat.ObscuredTypes.ObscuredInt.ToString",
+          "address": "0x18686b960"
+        },
+        {
+          "index": 243380,
+          "mode": "metadata",
+          "records": [
+            "inventory-native.json#/result/owners/3/methods/24"
+          ],
+          "fullname": "CodeStage.AntiCheat.ObscuredTypes.ObscuredInt.Equals",
+          "address": "0x18686b290"
+        },
+        {
+          "index": 243381,
+          "mode": "metadata",
+          "records": [
+            "inventory-native.json#/result/owners/3/methods/25"
+          ],
+          "fullname": "CodeStage.AntiCheat.ObscuredTypes.ObscuredInt.Equals",
+          "address": "0x18686b3d0"
+        },
+        {
+          "index": 243382,
+          "mode": "metadata",
+          "records": [
+            "inventory-native.json#/result/owners/3/methods/26"
+          ],
+          "fullname": "CodeStage.AntiCheat.ObscuredTypes.ObscuredInt.CompareTo",
+          "address": "0x18686af80"
+        },
+        {
+          "index": 243383,
+          "mode": "metadata",
+          "records": [
+            "inventory-native.json#/result/owners/3/methods/27"
+          ],
+          "fullname": "CodeStage.AntiCheat.ObscuredTypes.ObscuredInt.CompareTo",
+          "address": "0x18686af10"
+        },
+        {
+          "index": 243384,
+          "mode": "metadata",
+          "records": [
+            "inventory-native.json#/result/owners/3/methods/28"
+          ],
+          "fullname": "CodeStage.AntiCheat.ObscuredTypes.ObscuredInt.CompareTo",
+          "address": "0x18686b000"
+        },
+        {
+          "index": 243385,
+          "mode": "metadata",
+          "records": [
+            "inventory-native.json#/result/owners/3/methods/29"
+          ],
+          "fullname": "CodeStage.AntiCheat.ObscuredTypes.ObscuredInt..cctor",
+          "address": "0x18686bac0"
+        }
+      ],
+      "blocks": [],
+      "types": [
+        {
+          "name": "Torappu.AttributeMetaAttribute",
+          "records": [
+            "inventory-native.json#/result/owners/0"
+          ]
+        },
+        {
+          "name": "Torappu.AttributeType",
+          "records": [
+            "inventory-native.json#/result/owners/2"
+          ]
+        },
+        {
+          "name": "Torappu.AttributesData",
+          "records": [
+            "inventory-native.json#/result/owners/1"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Action.Nodes/ModifyAttributeDataRangeOverride",
+          "records": [
+            "usage-native.json#/result/owners/1"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Attributes",
+          "records": [
+            "native-calculation.json#/result/fieldOwners/0",
+            "usage-native.json#/result/owners/0"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.BattleFormula",
+          "records": [
+            "native-calculation.json#/result/fieldOwners/1"
+          ]
+        }
+      ],
+      "constants": [],
+      "bundles": [
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99",
+          "records": [
+            "usage-prefabs.json#/provenance/sources/0"
+          ],
+          "bytes": 477255
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_4212_nasti.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_4212_nasti.ab",
+          "sha256": "543bcc5318b0cf2ccd0be05eedf98ec3759435d81f7572b6a8f9f962425c90f7",
+          "records": [
+            "usage-prefabs.json#/provenance/sources/1"
+          ],
+          "bytes": 26644
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_35.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_35.ab",
+          "sha256": "144a51c4419a8d0bef7cb61b0a0452a5775051aedbd8fac5a89b3c5db5e84592",
+          "records": [
+            "usage-prefabs.json#/provenance/sources/2"
+          ],
+          "bytes": 382837
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_33.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_33.ab",
+          "sha256": "64df05bb2d0a083aedbe724d23c1ede43a86ee1b8387f244965b056497000739",
+          "records": [
+            "usage-prefabs.json#/provenance/sources/3"
+          ],
+          "bytes": 449718
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/[pack]common.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/[pack]common.ab",
+          "sha256": "0c272d977e59085e83b9fbedc12733202f39daed3e52d388613ae337609610c7",
+          "records": [
+            "usage-prefabs.json#/provenance/sources/4"
+          ],
+          "bytes": 721996
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "sha256": "0d0b4c0f9252c14a69a20d4bea09527403dd3eddfc2f7bcd757c3c30cf37ffc3",
+          "records": [
+            "usage-prefabs.json#/provenance/sources/5"
+          ],
+          "bytes": 1367500
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]equips.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]equips.ab",
+          "sha256": "1698bc4166582fc953e54367e31cf46de2585fa94bdbeda8ab93256eb6cf5b4b",
+          "records": [
+            "usage-prefabs.json#/provenance/sources/6"
+          ],
+          "bytes": 749424
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]globalbuffs.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]globalbuffs.ab",
+          "sha256": "fdd08aa6cb289a9376a41ce2c4801608a438c7b8a9957896631c2d1ab1a5bc76",
+          "records": [
+            "usage-prefabs.json#/provenance/sources/7"
+          ],
+          "bytes": 243617
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]envsystems.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]envsystems.ab",
+          "sha256": "ad66947bec144849ca3f22237c28cea1639d9e5c746beae6f478831ebd93afcc",
+          "records": [
+            "usage-prefabs.json#/provenance/sources/8"
+          ],
+          "bytes": 182398
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_0.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_0.ab",
+          "sha256": "adcf77f260748418d57e08d2539993232de53053bf4a5ec2292ff9a4c7865f1d",
+          "records": [
+            "usage-prefabs.json#/provenance/sources/9"
+          ],
+          "bytes": 5089969
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_1.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_1.ab",
+          "sha256": "e399b7335ba58134d81d6a7b42079a0284d447f39da9fdcc08ef3909e3b89604",
+          "records": [
+            "usage-prefabs.json#/provenance/sources/10"
+          ],
+          "bytes": 1955267
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_2.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_2.ab",
+          "sha256": "9781d097ccdddb0835cee6a2dd988a0963c63a4e7cd6e2ed9a4d25d77418b726",
+          "records": [
+            "usage-prefabs.json#/provenance/sources/11"
+          ],
+          "bytes": 4890432
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_3.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_3.ab",
+          "sha256": "b4489956c3b5be0c53bc6fc0dcdf31ecbe0babb6e8099da1ecafca084f99e64c",
+          "records": [
+            "usage-prefabs.json#/provenance/sources/12"
+          ],
+          "bytes": 2040978
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_4.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_4.ab",
+          "sha256": "09ef43e4a181cda91c01c5dc9658451fac30de1e87b462e5b60f71ae546ed618",
+          "records": [
+            "usage-prefabs.json#/provenance/sources/13"
+          ],
+          "bytes": 3211755
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_5.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_5.ab",
+          "sha256": "4a49fe9d4535474d896e64331657773790c891f14dd99616b6774dfe5a1d7a96",
+          "records": [
+            "usage-prefabs.json#/provenance/sources/14"
+          ],
+          "bytes": 2812726
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_6.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_6.ab",
+          "sha256": "f632f2d5722e63965a3e3c30445a677275c58bdf9d6d7f8a2e7aee01ce118177",
+          "records": [
+            "usage-prefabs.json#/provenance/sources/15"
+          ],
+          "bytes": 994726
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "sha256": "8edcb8017c977cdf52c2593b58e21db96949f3ad1e6f904180ac1241f145ca79",
+          "records": [
+            "usage-templates.json#/provenance/source"
+          ],
+          "bytes": 2151020
+        }
+      ]
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}
