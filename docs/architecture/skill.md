@@ -78,8 +78,8 @@ Skill 通知包括 SP 回复／支付／修改、耗弹／普通补弹和激活�
 
 结束按[Lifetime](lifetime.md)等待依赖清理，调用本轮 onEnd，随后只清空同一 activation、保留最新持久状态和 SP，再通知 activationEnded。ENDING 持续占位；在已有结算中，嵌套 finish／cancel 返回不保证槽位已释放，需要下一轮的业务在结束通知中继续。
 
-## 6. 待完成的机制覆盖
+## 6. 覆盖边界
 
-完整范围见[内容缺口](tactical-semantics.md)与[技能覆盖研究](../research/cases/09-skill-mechanisms-and-requirements.md#3-触发持续与输出)。运行时 SP 配置切换、跨部署魔力、Fever 暂停／恢复、独立弹药与 TIME／INFINITE 并存、特殊发动资格及弹药类加成身份尚未完整接入，不能由现有字段或贡献推定已覆盖。
+当前缺少运行期 SP 配置／发动政策更新、普通 SP 增减封闭及本次发动对特定限制的豁免。现有普通技能 Content 还未限制不支持的主动 STOP。实际使用例与接口判断集中于[Skill 覆盖审查](../research/cases/09-skill-mechanisms-and-requirements.md#9-skill-覆盖审查2026-11-17)，不将未经证实的预算组合列成既定需求。
 
-长期保留零 HP、同身份复活后的技能接续仍依赖特殊生命领域决策。运行期容量／最低门槛／逐次支付与持续时间的原生差异见[公式及时间操作调查](../research/cases/09-skill-mechanisms-and-requirements.md#27-原生公式复核ammosp-与具体持续时间操作)。
+充能、条件耗弹、Fever 的已查期限延后及跨部署魔力的持久保存可以使用现有领域组合；这不代表相应内容已经接入。完整接入范围见[内容缺口](tactical-semantics.md)，同实例复活的技能接续按具体原生程序确定，不统一推断保留或重置。

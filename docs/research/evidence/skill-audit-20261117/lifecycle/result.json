@@ -1,0 +1,3153 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-17",
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/skill-audit-20261117/lifecycle/extract.py",
+      "bytes": 6508,
+      "sha256": "de49e70575348af3b25d2171e0de10d0478197572a9c6d81de8d63bf7d4a3135"
+    },
+    "decoder": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/targeting-pipeline-20261109/content/extract_content.py",
+      "bytes": 12906,
+      "sha256": "37504c156e11e55c9c06174980fb1617281690ab3b01db9caa9dfd28937f5faa"
+    },
+    "treeReader": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/nymph-action-settlement-20261103/projectile/decode_projectile.py",
+      "bytes": 6749,
+      "sha256": "dab13196fb726d06bd9094c29f09a12dc3677b2c129359a1f7c305e13a8157fb"
+    },
+    "installedSources": [
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+        "bytes": 477255,
+        "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+        "bytes": 1367500,
+        "sha256": "0d0b4c0f9252c14a69a20d4bea09527403dd3eddfc2f7bcd757c3c30cf37ffc3"
+      }
+    ],
+    "mirror": {
+      "repository": "Kengxxiao/ArknightsGameData",
+      "revision": "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+      "inputs": [
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/route-operations-20261107/data/character_table.json",
+          "bytes": 15468242,
+          "sha256": "6a61f54802ee194dbb21968976eb99e2a4050e38928bd24bd2b770479076cea1"
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/route-operations-20261107/data/skill_table.json",
+          "bytes": 11766431,
+          "sha256": "492900f6b957233296c9736c86bb4e5f3ab4b4d7f5055a0f973c5acec3d174b1"
+        }
+      ]
+    },
+    "reusedNative": {
+      "input": {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/unit-audit-20261110/control-terrain/native.json",
+        "bytes": 1662255,
+        "sha256": "994972b332540bfe176fc2648294e9b2d89ec631afdb23728115b175a55ade2c"
+      },
+      "provenance": {
+        "scope": "Static native branches; no game execution or runtime XLua verification.",
+        "client": {
+          "dll": {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+            "bytes": 223112680,
+            "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff"
+          },
+          "metadata": {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+            "bytes": 46669332,
+            "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5"
+          },
+          "metadataVersion": 29,
+          "imageBase": "0x180000000"
+        },
+        "tool": {
+          "script": {
+            "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/native.py",
+            "bytes": 18723,
+            "sha256": "1c6c16dc97e0dd9af0af4033c81a7534384dd65ebb1e604df3f4a3289df158e6"
+          },
+          "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]"
+        },
+        "location": {
+          "metadataRegistration": "0x187ee0630",
+          "modules": {
+            "Assembly-CSharp.dll": {
+              "address": 6564854272,
+              "methodPointers": 6585881040,
+              "count": 225427,
+              "fileBacked": true
+            },
+            "Torappu.Common.dll": {
+              "address": 6577712928,
+              "methodPointers": 6592562080,
+              "count": 6004,
+              "fileBacked": true
+            },
+            "ThirdPartyAssembly.dll": {
+              "address": 6577712272,
+              "methodPointers": 6592454304,
+              "count": 12660,
+              "fileBacked": true
+            },
+            "mscorlib.dll": {
+              "address": 6577364064,
+              "methodPointers": 6592131600,
+              "count": 13987,
+              "fileBacked": true
+            },
+            "UnityEngine.UIElementsModule.dll": {
+              "address": 6577900992,
+              "methodPointers": 6592933968,
+              "count": 6132,
+              "fileBacked": true
+            },
+            "System.dll": {
+              "address": 6577628368,
+              "methodPointers": 6592396096,
+              "count": 7003,
+              "fileBacked": true
+            },
+            "Unity.InputSystem.dll": {
+              "address": 6577776016,
+              "methodPointers": 6592616544,
+              "count": 5703,
+              "fileBacked": true
+            },
+            "Unity.Mathematics.dll": {
+              "address": 6577838608,
+              "methodPointers": 6592682032,
+              "count": 9336,
+              "fileBacked": true
+            },
+            "UnityEngine.CoreModule.dll": {
+              "address": 6577886944,
+              "methodPointers": 6592866352,
+              "count": 4154,
+              "fileBacked": true
+            },
+            "System.Xml.dll": {
+              "address": 6577618416,
+              "methodPointers": 6592367840,
+              "count": 3283,
+              "fileBacked": true
+            },
+            "Newtonsoft.Json.dll": {
+              "address": 6577473344,
+              "methodPointers": 6592259616,
+              "count": 2998,
+              "fileBacked": true
+            },
+            "Unity.TextMeshPro.dll": {
+              "address": 6577852240,
+              "methodPointers": 6592835600,
+              "count": 1618,
+              "fileBacked": true
+            },
+            "Sirenix.Serialization.dll": {
+              "address": 6577530576,
+              "methodPointers": 6592309936,
+              "count": 1885,
+              "fileBacked": true
+            },
+            "spine-unity.dll": {
+              "address": 6577560208,
+              "methodPointers": 6592332928,
+              "count": 1982,
+              "fileBacked": true
+            },
+            "protobuf-net.Core.dll": {
+              "address": 6577475616,
+              "methodPointers": 6592285904,
+              "count": 1952,
+              "fileBacked": true
+            },
+            "CriMw.CriWare.Runtime.dll": {
+              "address": 6565019472,
+              "methodPointers": 6587703856,
+              "count": 2565,
+              "fileBacked": true
+            },
+            "UnityEngine.UI.dll": {
+              "address": 6577955760,
+              "methodPointers": 6592996064,
+              "count": 2041,
+              "fileBacked": true
+            },
+            "Cinemachine.dll": {
+              "address": 6564996672,
+              "methodPointers": 6587684464,
+              "count": 1160,
+              "fileBacked": true
+            },
+            "ICSharpCode.SharpZipLib.dll": {
+              "address": 6565040576,
+              "methodPointers": 6587747952,
+              "count": 1256,
+              "fileBacked": true
+            },
+            "DOTween.dll": {
+              "address": 6565028192,
+              "methodPointers": 6587727808,
+              "count": 1188,
+              "fileBacked": true
+            },
+            "System.Core.dll": {
+              "address": 6577602800,
+              "methodPointers": 6592356000,
+              "count": 1117,
+              "fileBacked": true
+            },
+            "UnityEngine.TextCoreTextEngineModule.dll": {
+              "address": 6577900064,
+              "methodPointers": 6592929888,
+              "count": 370,
+              "fileBacked": true
+            },
+            "Unity.Postprocessing.Runtime.dll": {
+              "address": 6577843136,
+              "methodPointers": 6592828752,
+              "count": 810,
+              "fileBacked": true
+            },
+            "Sirenix.Utilities.dll": {
+              "address": 6577549328,
+              "methodPointers": 6592325136,
+              "count": 968,
+              "fileBacked": true
+            },
+            "Mono.Security.dll": {
+              "address": 6577363904,
+              "methodPointers": 6592127104,
+              "count": 562,
+              "fileBacked": true
+            },
+            "UnityEngine.IMGUIModule.dll": {
+              "address": 6577890704,
+              "methodPointers": 6592908944,
+              "count": 724,
+              "fileBacked": true
+            },
+            "Unity.Timeline.dll": {
+              "address": 6577856512,
+              "methodPointers": 6592850304,
+              "count": 876,
+              "fileBacked": true
+            },
+            "Sirenix.OdinInspector.Attributes.dll": {
+              "address": 6577507296,
+              "methodPointers": 6592305952,
+              "count": 462,
+              "fileBacked": true
+            },
+            "System.Collections.Immutable.dll": {
+              "address": 6577584240,
+              "methodPointers": 6592349104,
+              "count": 825,
+              "fileBacked": true
+            },
+            "Hypergryph.OneChannel.dll": {
+              "address": 6565035376,
+              "methodPointers": 6587741424,
+              "count": 755,
+              "fileBacked": true
+            },
+            "ConsolePro.dll": {
+              "address": 6565008736,
+              "methodPointers": 6587697344,
+              "count": 793,
+              "fileBacked": true
+            },
+            "Assembly-CSharp-firstpass.dll": {
+              "address": 6563861904,
+              "methodPointers": 6585841648,
+              "count": 747,
+              "fileBacked": true
+            },
+            "P31RestKit.dll": {
+              "address": 6577475456,
+              "methodPointers": 6592283600,
+              "count": 287,
+              "fileBacked": true
+            },
+            "UnityEngine.ParticleSystemModule.dll": {
+              "address": 6577893824,
+              "methodPointers": 6592916384,
+              "count": 491,
+              "fileBacked": true
+            },
+            "clipper_library.dll": {
+              "address": 6564997696,
+              "methodPointers": 6587695360,
+              "count": 216,
+              "fileBacked": true
+            },
+            "torappu.CrashSight.Standalone.dll": {
+              "address": 6577764784,
+              "methodPointers": 6592613760,
+              "count": 280,
+              "fileBacked": true
+            },
+            "UnityEngine.AnimationModule.dll": {
+              "address": 6577860928,
+              "methodPointers": 6592861456,
+              "count": 366,
+              "fileBacked": true
+            },
+            "UnityEngine.AndroidJNIModule.dll": {
+              "address": 6577859152,
+              "methodPointers": 6592859440,
+              "count": 252,
+              "fileBacked": true
+            },
+            "UnityEngine.UIElementsNativeModule.dll": {
+              "address": 6577945600,
+              "methodPointers": 6592993088,
+              "count": 245,
+              "fileBacked": true
+            },
+            "UnityEngine.UnityWebRequestModule.dll": {
+              "address": 6577956752,
+              "methodPointers": 6593013680,
+              "count": 143,
+              "fileBacked": true
+            },
+            "DOTween.Modules.dll": {
+              "address": 6565020800,
+              "methodPointers": 6587725728,
+              "count": 235,
+              "fileBacked": true
+            },
+            "System.Xml.Linq.dll": {
+              "address": 6577604992,
+              "methodPointers": 6592365952,
+              "count": 210,
+              "fileBacked": true
+            },
+            "XNode.dll": {
+              "address": 6577960256,
+              "methodPointers": 6593016992,
+              "count": 199,
+              "fileBacked": true
+            },
+            "UnityEngine.PhysicsModule.dll": {
+              "address": 6577895584,
+              "methodPointers": 6592924848,
+              "count": 182,
+              "fileBacked": true
+            },
+            "UnityEngine.Physics2DModule.dll": {
+              "address": 6577894672,
+              "methodPointers": 6592923088,
+              "count": 168,
+              "fileBacked": true
+            },
+            "UnityEngine.TextCoreFontEngineModule.dll": {
+              "address": 6577898160,
+              "methodPointers": 6592927760,
+              "count": 121,
+              "fileBacked": true
+            },
+            "System.Numerics.dll": {
+              "address": 6577603280,
+              "methodPointers": 6592364992,
+              "count": 77,
+              "fileBacked": true
+            },
+            "UnityEngine.AIModule.dll": {
+              "address": 6577857296,
+              "methodPointers": 6592857856,
+              "count": 153,
+              "fileBacked": true
+            },
+            "UnityEngine.AudioModule.dll": {
+              "address": 6577861936,
+              "methodPointers": 6592865360,
+              "count": 96,
+              "fileBacked": true
+            },
+            "UnityEngine.UIModule.dll": {
+              "address": 6577946240,
+              "methodPointers": 6592995136,
+              "count": 116,
+              "fileBacked": true
+            },
+            "Hypergryph.Browser.dll": {
+              "address": 6565029568,
+              "methodPointers": 6587737712,
+              "count": 196,
+              "fileBacked": true
+            },
+            "UnityEngine.XRModule.dll": {
+              "address": 6577958704,
+              "methodPointers": 6593015712,
+              "count": 67,
+              "fileBacked": true
+            },
+            "Torappu.CETest.dll": {
+              "address": 6577712768,
+              "methodPointers": 6592561408,
+              "count": 84,
+              "fileBacked": true
+            },
+            "UnityEngine.TextRenderingModule.dll": {
+              "address": 6577900464,
+              "methodPointers": 6592933088,
+              "count": 50,
+              "fileBacked": true
+            },
+            "UnityEngine.InputLegacyModule.dll": {
+              "address": 6577891168,
+              "methodPointers": 6592915328,
+              "count": 71,
+              "fileBacked": true
+            },
+            "UnityEngine.TerrainModule.dll": {
+              "address": 6577897184,
+              "methodPointers": 6592927408,
+              "count": 41,
+              "fileBacked": true
+            },
+            "UnityEngine.SharedInternalsModule.dll": {
+              "address": 6577896208,
+              "methodPointers": 6592926640,
+              "count": 68,
+              "fileBacked": true
+            },
+            "UnityEngine.TilemapModule.dll": {
+              "address": 6577900816,
+              "methodPointers": 6592933536,
+              "count": 42,
+              "fileBacked": true
+            },
+            "UnityEngine.VFXModule.dll": {
+              "address": 6577957568,
+              "methodPointers": 6593015056,
+              "count": 33,
+              "fileBacked": true
+            },
+            "Sirenix.Serialization.Config.dll": {
+              "address": 6577507568,
+              "methodPointers": 6592309760,
+              "count": 22,
+              "fileBacked": true
+            },
+            "UnityEngine.AssetBundleModule.dll": {
+              "address": 6577861376,
+              "methodPointers": 6592865136,
+              "count": 28,
+              "fileBacked": true
+            },
+            "UnityEngine.SubsystemsModule.dll": {
+              "address": 6577896832,
+              "methodPointers": 6592927184,
+              "count": 28,
+              "fileBacked": true
+            },
+            "UnityEngine.UnityWebRequestWWWModule.dll": {
+              "address": 6577957232,
+              "methodPointers": 6593014928,
+              "count": 15,
+              "fileBacked": true
+            },
+            "UnityEngine.VideoModule.dll": {
+              "address": 6577957824,
+              "methodPointers": 6593015344,
+              "count": 18,
+              "fileBacked": true
+            },
+            "UnityEngine.DirectorModule.dll": {
+              "address": 6577887264,
+              "methodPointers": 6592908624,
+              "count": 34,
+              "fileBacked": true
+            },
+            "UnityEngine.InputModule.dll": {
+              "address": 6577891424,
+              "methodPointers": 6592916192,
+              "count": 17,
+              "fileBacked": true
+            },
+            "UnityEngine.UnityAnalyticsModule.dll": {
+              "address": 6577955968,
+              "methodPointers": 6593013584,
+              "count": 12,
+              "fileBacked": true
+            },
+            "Hypergryph.EventLogSDK.dll": {
+              "address": 6565030464,
+              "methodPointers": 6587739280,
+              "count": 181,
+              "fileBacked": true
+            },
+            "UnityEngine.JSONSerializeModule.dll": {
+              "address": 6577891680,
+              "methodPointers": 6592916328,
+              "count": 7,
+              "fileBacked": true
+            },
+            "UnityEngine.UnityWebRequestTextureModule.dll": {
+              "address": 6577956976,
+              "methodPointers": 6593014832,
+              "count": 12,
+              "fileBacked": true
+            },
+            "UnityEngine.VRModule.dll": {
+              "address": 6577958032,
+              "methodPointers": 6593015520,
+              "count": 10,
+              "fileBacked": true
+            },
+            "Torappu.Sofdec.dll": {
+              "address": 6577765232,
+              "methodPointers": 6592616000,
+              "count": 66,
+              "fileBacked": true
+            },
+            "UnityEngine.ImageConversionModule.dll": {
+              "address": 6577887632,
+              "methodPointers": 6592908904,
+              "count": 4,
+              "fileBacked": true
+            },
+            "UnityEngine.WindModule.dll": {
+              "address": 6577958256,
+              "methodPointers": 6593015600,
+              "count": 13,
+              "fileBacked": true
+            },
+            "UnityEngine.GridModule.dll": {
+              "address": 6577887440,
+              "methodPointers": 6592908896,
+              "count": 1,
+              "fileBacked": true
+            },
+            "UnityEngine.ScreenCaptureModule.dll": {
+              "address": 6577895760,
+              "methodPointers": 6592926624,
+              "count": 1,
+              "fileBacked": true
+            },
+            "Hypergryph.GameUpdate.dll": {
+              "address": 6565030928,
+              "methodPointers": 6587740736,
+              "count": 71,
+              "fileBacked": true
+            },
+            "Unity.Profiling.Core.dll": {
+              "address": 6577843520,
+              "methodPointers": 6592835264,
+              "count": 41,
+              "fileBacked": true
+            },
+            "System.Configuration.dll": {
+              "address": 6577584560,
+              "methodPointers": 6592355712,
+              "count": 35,
+              "fileBacked": true
+            },
+            "System.Runtime.Serialization.dll": {
+              "address": 6577603664,
+              "methodPointers": 6592365904,
+              "count": 6,
+              "fileBacked": true
+            },
+            "System.Runtime.CompilerServices.Unsafe.dll": {
+              "address": 6577603456,
+              "methodPointers": 6592365888,
+              "count": 2,
+              "fileBacked": true
+            },
+            "Unity.MemoryProfiler.dll": {
+              "address": 6577838800,
+              "methodPointers": 6592828688,
+              "count": 8,
+              "fileBacked": true
+            },
+            "CriMw.CriWare.Vp9.Runtime.dll": {
+              "address": 6565019680,
+              "methodPointers": 6587725648,
+              "count": 10,
+              "fileBacked": true
+            },
+            "Hypergryph.Log.dll": {
+              "address": 6565031152,
+              "methodPointers": 6587741312,
+              "count": 14,
+              "fileBacked": true
+            },
+            "XNode.Groups.dll": {
+              "address": 6577959056,
+              "methodPointers": 6593016960,
+              "count": 3,
+              "fileBacked": true
+            },
+            "AntiSDK.dll": {
+              "address": 6563858064,
+              "methodPointers": 6585841616,
+              "count": 3,
+              "fileBacked": true
+            },
+            "Torappu.UICommonEditor.dll": {
+              "address": 6577765408,
+              "methodPointers": 6592616528,
+              "count": 2,
+              "fileBacked": true
+            },
+            "enum2int.dll": {
+              "address": 6565028352,
+              "methodPointers": 6593280072,
+              "count": 2,
+              "fileBacked": false
+            },
+            "__Generated": {
+              "address": 6577960432,
+              "methodPointers": 6593018584,
+              "count": 3,
+              "fileBacked": true
+            }
+          }
+        }
+      },
+      "pointer": "/result/methods:fullname=Torappu.Battle.BasicSkill.get_ownerCanUseInAbnormalState"
+    },
+    "scope": "Exactly four skill roots, same-GameObject Skill/Ability pairs and fixed mirror bindings. Current installed configuration and independently versioned mirror. Reused native getter, no live execution or XLua observation."
+  },
+  "result": {
+    "characterBindings": {
+      "char_4011_lessng": {
+        "name": "止颂",
+        "skills": [
+          {
+            "skillId": "skchr_lessng_1",
+            "overridePrefabKey": null,
+            "overrideTokenKey": null,
+            "levelUpCostCond": [
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 28800,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 8,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31084",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30023",
+                    "count": 7,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 57600,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 12,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30054",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31014",
+                    "count": 9,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 86400,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 15,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30135",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30084",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  }
+                ]
+              }
+            ],
+            "unlockCond": {
+              "phase": "PHASE_0",
+              "level": 1
+            }
+          },
+          {
+            "skillId": "skchr_lessng_2",
+            "overridePrefabKey": null,
+            "overrideTokenKey": null,
+            "levelUpCostCond": [
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 28800,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 8,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31054",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30083",
+                    "count": 7,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 57600,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 12,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30084",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31044",
+                    "count": 8,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 86400,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 15,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30145",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31014",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  }
+                ]
+              }
+            ],
+            "unlockCond": {
+              "phase": "PHASE_1",
+              "level": 1
+            }
+          },
+          {
+            "skillId": "skchr_lessng_3",
+            "overridePrefabKey": null,
+            "overrideTokenKey": null,
+            "levelUpCostCond": [
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 28800,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 8,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30054",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31063",
+                    "count": 5,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 57600,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 12,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31074",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31084",
+                    "count": 8,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 86400,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 15,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30155",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30054",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  }
+                ]
+              }
+            ],
+            "unlockCond": {
+              "phase": "PHASE_2",
+              "level": 1
+            }
+          }
+        ]
+      },
+      "char_185_frncat": {
+        "name": "慕斯",
+        "skills": [
+          {
+            "skillId": "skchr_frncat_1",
+            "overridePrefabKey": null,
+            "overrideTokenKey": null,
+            "levelUpCostCond": [
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 28800,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 2,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30064",
+                    "count": 1,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30043",
+                    "count": 2,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 57600,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30084",
+                    "count": 2,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30064",
+                    "count": 2,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 86400,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30125",
+                    "count": 2,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30024",
+                    "count": 2,
+                    "type": "MATERIAL"
+                  }
+                ]
+              }
+            ],
+            "unlockCond": {
+              "phase": "PHASE_0",
+              "level": 1
+            }
+          },
+          {
+            "skillId": "skchr_frncat_2",
+            "overridePrefabKey": null,
+            "overrideTokenKey": null,
+            "levelUpCostCond": [
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 28800,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 2,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30074",
+                    "count": 1,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30053",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 57600,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30094",
+                    "count": 2,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30074",
+                    "count": 3,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 86400,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30135",
+                    "count": 2,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30014",
+                    "count": 2,
+                    "type": "MATERIAL"
+                  }
+                ]
+              }
+            ],
+            "unlockCond": {
+              "phase": "PHASE_1",
+              "level": 1
+            }
+          }
+        ]
+      },
+      "char_311_mudrok": {
+        "name": "泥岩",
+        "skills": [
+          {
+            "skillId": "skcom_def_up[3]",
+            "overridePrefabKey": "skchr_mudrok_1",
+            "overrideTokenKey": null,
+            "levelUpCostCond": [
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 28800,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 8,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30084",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30063",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 57600,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 12,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30014",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30094",
+                    "count": 9,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 86400,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 15,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30125",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31034",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  }
+                ]
+              }
+            ],
+            "unlockCond": {
+              "phase": "PHASE_0",
+              "level": 1
+            }
+          },
+          {
+            "skillId": "skchr_mudrok_2",
+            "overridePrefabKey": null,
+            "overrideTokenKey": null,
+            "levelUpCostCond": [
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 28800,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 8,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31034",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31013",
+                    "count": 3,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 57600,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 12,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31014",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30014",
+                    "count": 10,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 86400,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 15,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30115",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31024",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  }
+                ]
+              }
+            ],
+            "unlockCond": {
+              "phase": "PHASE_1",
+              "level": 1
+            }
+          },
+          {
+            "skillId": "skchr_mudrok_3",
+            "overridePrefabKey": null,
+            "overrideTokenKey": null,
+            "levelUpCostCond": [
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 28800,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 8,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30104",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30083",
+                    "count": 5,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 57600,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 12,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30044",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31024",
+                    "count": 7,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 86400,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 15,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30135",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31014",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  }
+                ]
+              }
+            ],
+            "unlockCond": {
+              "phase": "PHASE_2",
+              "level": 1
+            }
+          }
+        ]
+      }
+    },
+    "skillData": {
+      "skchr_lessng_2": {
+        "skillId": "skchr_lessng_2",
+        "levels": [
+          {
+            "level": 1,
+            "name": "虔修对决",
+            "skillType": "PASSIVE",
+            "durationType": "NONE",
+            "duration": 15.0,
+            "spData": {
+              "spType": 8,
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 0,
+              "initSp": 0,
+              "increment": 0.0
+            },
+            "blackboard": [
+              {
+                "key": "atk",
+                "value": 0.2,
+                "valueStr": null
+              },
+              {
+                "key": "talent_scale",
+                "value": 2.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "level": 10,
+            "name": "虔修对决",
+            "skillType": "PASSIVE",
+            "durationType": "NONE",
+            "duration": 24.0,
+            "spData": {
+              "spType": 8,
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 0,
+              "initSp": 0,
+              "increment": 0.0
+            },
+            "blackboard": [
+              {
+                "key": "atk",
+                "value": 0.6,
+                "valueStr": null
+              },
+              {
+                "key": "talent_scale",
+                "value": 2.2,
+                "valueStr": null
+              }
+            ]
+          }
+        ]
+      },
+      "skchr_lessng_3": {
+        "skillId": "skchr_lessng_3",
+        "levels": [
+          {
+            "level": 1,
+            "name": "苦修破誓",
+            "skillType": "MANUAL",
+            "durationType": "NONE",
+            "duration": 20.0,
+            "spData": {
+              "spType": "INCREASE_WITH_TIME",
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 55,
+              "initSp": 15,
+              "increment": 1.0
+            },
+            "blackboard": [
+              {
+                "key": "max_hp",
+                "value": 0.5,
+                "valueStr": null
+              },
+              {
+                "key": "lessng_s3[atk_scale].atk_scale",
+                "value": 1.4,
+                "valueStr": null
+              },
+              {
+                "key": "magical_value",
+                "value": 600.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "level": 10,
+            "name": "苦修破誓",
+            "skillType": "MANUAL",
+            "durationType": "NONE",
+            "duration": 20.0,
+            "spData": {
+              "spType": "INCREASE_WITH_TIME",
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 40,
+              "initSp": 30,
+              "increment": 1.0
+            },
+            "blackboard": [
+              {
+                "key": "max_hp",
+                "value": 1.1,
+                "valueStr": null
+              },
+              {
+                "key": "lessng_s3[atk_scale].atk_scale",
+                "value": 2.2,
+                "valueStr": null
+              },
+              {
+                "key": "magical_value",
+                "value": 600.0,
+                "valueStr": null
+              }
+            ]
+          }
+        ]
+      },
+      "skchr_frncat_1": {
+        "skillId": "skchr_frncat_1",
+        "levels": [
+          {
+            "level": 1,
+            "name": "挠伤",
+            "skillType": "AUTO",
+            "durationType": "NONE",
+            "duration": 0.0,
+            "spData": {
+              "spType": "INCREASE_WHEN_ATTACK",
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 6,
+              "initSp": 0,
+              "increment": 1.0
+            },
+            "blackboard": [
+              {
+                "key": "atk",
+                "value": 0.3,
+                "valueStr": null
+              },
+              {
+                "key": "frncat_s_1[debuff].atk",
+                "value": -0.15,
+                "valueStr": null
+              },
+              {
+                "key": "frncat_s_1[debuff].duration",
+                "value": 5.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "level": 10,
+            "name": "挠伤",
+            "skillType": "AUTO",
+            "durationType": "NONE",
+            "duration": 0.0,
+            "spData": {
+              "spType": "INCREASE_WHEN_ATTACK",
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 4,
+              "initSp": 0,
+              "increment": 1.0
+            },
+            "blackboard": [
+              {
+                "key": "atk",
+                "value": 0.75,
+                "valueStr": null
+              },
+              {
+                "key": "frncat_s_1[debuff].atk",
+                "value": -0.4,
+                "valueStr": null
+              },
+              {
+                "key": "frncat_s_1[debuff].duration",
+                "value": 5.0,
+                "valueStr": null
+              }
+            ]
+          }
+        ]
+      },
+      "skchr_mudrok_2": {
+        "skillId": "skchr_mudrok_2",
+        "levels": [
+          {
+            "level": 1,
+            "name": "岩崩锤",
+            "skillType": "AUTO",
+            "durationType": "NONE",
+            "duration": 0.0,
+            "spData": {
+              "spType": "INCREASE_WHEN_TAKEN_DAMAGE",
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 6,
+              "initSp": 0,
+              "increment": 1.0
+            },
+            "blackboard": [
+              {
+                "key": "atk_scale",
+                "value": 1.7,
+                "valueStr": null
+              },
+              {
+                "key": "buff_prob",
+                "value": 0.3,
+                "valueStr": null
+              },
+              {
+                "key": "stun",
+                "value": 0.4,
+                "valueStr": null
+              },
+              {
+                "key": "hp_ratio",
+                "value": 0.04,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "level": 10,
+            "name": "岩崩锤",
+            "skillType": "AUTO",
+            "durationType": "NONE",
+            "duration": 0.0,
+            "spData": {
+              "spType": "INCREASE_WHEN_TAKEN_DAMAGE",
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 4,
+              "initSp": 0,
+              "increment": 1.0
+            },
+            "blackboard": [
+              {
+                "key": "atk_scale",
+                "value": 2.7,
+                "valueStr": null
+              },
+              {
+                "key": "buff_prob",
+                "value": 0.3,
+                "valueStr": null
+              },
+              {
+                "key": "stun",
+                "value": 1.2,
+                "valueStr": null
+              },
+              {
+                "key": "hp_ratio",
+                "value": 0.06,
+                "valueStr": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "components": [
+      {
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "pathId": "-8621369842960336780",
+        "ownerPPtr": {
+          "m_FileID": 0,
+          "m_PathID": -8153520895796086668
+        },
+        "ancestry": [
+          {
+            "gameObjectPathId": "-8153520895796086668",
+            "name": "skchr_mudrok_2",
+            "components": [
+              {
+                "m_FileID": 0,
+                "m_PathID": 4987506465601910900
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": -8621369842960336780
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": 3130726341302253684
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": 3578344524386498676
+              }
+            ]
+          }
+        ],
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": 6851783972288338031
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "6851783972288338031",
+          "name": "CastSkill",
+          "cl": "CastSkill",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "objectSha256": "24a4751635cb9487de582cac19c0ea1332e7763f7328b33320287d2ed59dbaed",
+        "enabled": 1,
+        "value": {
+          "_maxTriggerTime": -1,
+          "_allowSpRecoveryWhenAffecting": 0,
+          "_limitGlobalTriggerTime": 0,
+          "_hidden": 0,
+          "_showSpBarEvenHidden": 0,
+          "_showSpAsBulletMode": 0,
+          "_showSpRatioAsProgress": 0,
+          "_playCharWordVoice": 1,
+          "_playCharWordWithPassiveType": 0,
+          "_earlyVoice": 0,
+          "_canCastWithNoSp": 0,
+          "_canSilenced": 0,
+          "_canUseInAbnormalState": 0,
+          "_defaultModeIndex": -1,
+          "_attackBlackboardModeIndex": -1,
+          "_extraAttackBlackboardModeIndices": {
+            "Array": []
+          },
+          "_rangeIdModeIndex": -1,
+          "_extraRangeIdModeIndices": {
+            "Array": []
+          },
+          "_rangeIdUsageType": 7,
+          "_writeDurationToAttackBlackboard": 0,
+          "_attachSignalIds": 0,
+          "_extraAbilities": {
+            "Array": [
+              {
+                "m_FileID": 0,
+                "m_PathID": 8290759946353997940
+              }
+            ]
+          },
+          "_useEscapeTime": 0,
+          "_earlySkillFinishAtAttackFinished": 0,
+          "_stopAffectOnInterrupt": 0,
+          "_showProgressToNext": 0,
+          "_hideSkillStackCount": 0,
+          "_hideHudSkillStackCount": 0,
+          "_playSkillBeginAnim": 0,
+          "_forceAnimFaceToDefault": 0,
+          "_beginAnim": "",
+          "_beginAnimDown": "",
+          "_beginEffect": {
+            "Array": []
+          },
+          "_useFaceVector": 0,
+          "_beginAnimValidator": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_availableValidator": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_trigger": {
+            "m_FileID": 0,
+            "m_PathID": 854831876055136372
+          },
+          "_switchToState": 1,
+          "_uninterruptibleOnAbilityPredelay": 0,
+          "_canSwitchDuringBorn": 1,
+          "_canCastDuringBorn": 1,
+          "_checkHasTargetBeforeDoCast": 0,
+          "_useTriggerInManualMode": 0,
+          "_allowNoTarget": 1,
+          "_shouldCastLikeAttack": 0,
+          "_isRemoteControlled": 0,
+          "_hideRangeToShow": 0,
+          "_forceToShowRange": 0,
+          "_forceUseBaseShowRange": 0,
+          "_rangeToShow": {
+            "m_FileID": 0,
+            "m_PathID": -3867783893802977164
+          },
+          "_recoverSpIfNoTarget": 0,
+          "_resetAbilityCooldownWhenCastEnd": 0,
+          "_onlyAvailableWhenTokenValid": 0,
+          "_hasUniStackColor": 0,
+          "_skipSpCheckInSkillState": 0
+        }
+      },
+      {
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "pathId": "-5787243488378523559",
+        "ownerPPtr": {
+          "m_FileID": 0,
+          "m_PathID": 5606539752341598297
+        },
+        "ancestry": [
+          {
+            "gameObjectPathId": "5606539752341598297",
+            "name": "skchr_lessng_3",
+            "components": [
+              {
+                "m_FileID": 0,
+                "m_PathID": 3355480526259908697
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": -5787243488378523559
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": 8172940558262366297
+              }
+            ]
+          }
+        ],
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": 6851783972288338031
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "6851783972288338031",
+          "name": "CastSkill",
+          "cl": "CastSkill",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "objectSha256": "2064273281808bb72d4a909e9ab3d8eb5eed5c75d7c54da3fb6c8030112f6a8a",
+        "enabled": 1,
+        "value": {
+          "_maxTriggerTime": -1,
+          "_allowSpRecoveryWhenAffecting": 0,
+          "_limitGlobalTriggerTime": 0,
+          "_hidden": 0,
+          "_showSpBarEvenHidden": 0,
+          "_showSpAsBulletMode": 0,
+          "_showSpRatioAsProgress": 0,
+          "_playCharWordVoice": 1,
+          "_playCharWordWithPassiveType": 0,
+          "_earlyVoice": 0,
+          "_canCastWithNoSp": 0,
+          "_canSilenced": 0,
+          "_canUseInAbnormalState": 1,
+          "_defaultModeIndex": -1,
+          "_attackBlackboardModeIndex": 2,
+          "_extraAttackBlackboardModeIndices": {
+            "Array": []
+          },
+          "_rangeIdModeIndex": -1,
+          "_extraRangeIdModeIndices": {
+            "Array": []
+          },
+          "_rangeIdUsageType": 7,
+          "_writeDurationToAttackBlackboard": 0,
+          "_attachSignalIds": 0,
+          "_extraAbilities": {
+            "Array": []
+          },
+          "_useEscapeTime": 0,
+          "_earlySkillFinishAtAttackFinished": 0,
+          "_stopAffectOnInterrupt": 0,
+          "_showProgressToNext": 0,
+          "_hideSkillStackCount": 0,
+          "_hideHudSkillStackCount": 0,
+          "_playSkillBeginAnim": 0,
+          "_forceAnimFaceToDefault": 0,
+          "_beginAnim": "",
+          "_beginAnimDown": "",
+          "_beginEffect": {
+            "Array": []
+          },
+          "_useFaceVector": 0,
+          "_beginAnimValidator": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_availableValidator": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_trigger": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_switchToState": 0,
+          "_uninterruptibleOnAbilityPredelay": 0,
+          "_canSwitchDuringBorn": 1,
+          "_canCastDuringBorn": 1,
+          "_checkHasTargetBeforeDoCast": 0,
+          "_useTriggerInManualMode": 0,
+          "_allowNoTarget": 1,
+          "_shouldCastLikeAttack": 0,
+          "_isRemoteControlled": 0,
+          "_hideRangeToShow": 0,
+          "_forceToShowRange": 0,
+          "_forceUseBaseShowRange": 0,
+          "_rangeToShow": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_recoverSpIfNoTarget": 0,
+          "_resetAbilityCooldownWhenCastEnd": 0,
+          "_onlyAvailableWhenTokenValid": 0,
+          "_hasUniStackColor": 0,
+          "_skipSpCheckInSkillState": 0
+        }
+      },
+      {
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "pathId": "424415836659428721",
+        "ownerPPtr": {
+          "m_FileID": 0,
+          "m_PathID": -2491638706555867791
+        },
+        "ancestry": [
+          {
+            "gameObjectPathId": "-2491638706555867791",
+            "name": "skchr_lessng_2",
+            "components": [
+              {
+                "m_FileID": 0,
+                "m_PathID": -3704561795005960847
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": 424415836659428721
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": 3851692001934290289
+              }
+            ]
+          }
+        ],
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": 2822254928132392630
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "2822254928132392630",
+          "name": "AppearSkill",
+          "cl": "AppearSkill",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "objectSha256": "a48d0789057eb5584b30da859eb500277bceebb01048e0f1f43af682d4170a2a",
+        "enabled": 1,
+        "value": {
+          "_maxTriggerTime": -1,
+          "_allowSpRecoveryWhenAffecting": 0,
+          "_limitGlobalTriggerTime": 0,
+          "_hidden": 0,
+          "_showSpBarEvenHidden": 0,
+          "_showSpAsBulletMode": 0,
+          "_showSpRatioAsProgress": 0,
+          "_playCharWordVoice": 1,
+          "_playCharWordWithPassiveType": 0,
+          "_earlyVoice": 0,
+          "_canCastWithNoSp": 0,
+          "_canSilenced": 0,
+          "_canUseInAbnormalState": 0,
+          "_defaultModeIndex": 1,
+          "_attackBlackboardModeIndex": 1,
+          "_extraAttackBlackboardModeIndices": {
+            "Array": []
+          },
+          "_rangeIdModeIndex": -1,
+          "_extraRangeIdModeIndices": {
+            "Array": []
+          },
+          "_rangeIdUsageType": 7,
+          "_writeDurationToAttackBlackboard": 0,
+          "_attachSignalIds": 0,
+          "_extraAbilities": {
+            "Array": []
+          },
+          "_useEscapeTime": 0,
+          "_earlySkillFinishAtAttackFinished": 0,
+          "_stopAffectOnInterrupt": 0,
+          "_showProgressToNext": 0,
+          "_hideSkillStackCount": 0,
+          "_hideHudSkillStackCount": 0,
+          "_playSkillBeginAnim": 0,
+          "_forceAnimFaceToDefault": 0,
+          "_beginAnim": "",
+          "_beginAnimDown": "",
+          "_beginEffect": {
+            "Array": []
+          },
+          "_useFaceVector": 0,
+          "_beginAnimValidator": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_availableValidator": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_overrideStartEffect": "",
+          "_switchToState": 0,
+          "_castOnLocate": 1,
+          "_overrideAudioSignalId": 0
+        }
+      },
+      {
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "pathId": "3130726341302253684",
+        "ownerPPtr": {
+          "m_FileID": 0,
+          "m_PathID": -8153520895796086668
+        },
+        "ancestry": [
+          {
+            "gameObjectPathId": "-8153520895796086668",
+            "name": "skchr_mudrok_2",
+            "components": [
+              {
+                "m_FileID": 0,
+                "m_PathID": 4987506465601910900
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": -8621369842960336780
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": 3130726341302253684
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": 3578344524386498676
+              }
+            ]
+          }
+        ],
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": 2702927552840241462
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "2702927552840241462",
+          "name": "AnimatedActionToOwnerAbility",
+          "cl": "AnimatedActionToOwnerAbility",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "objectSha256": "260b6627fb67a48c1f7234592a67ba4fc62c3f68b6a7afa5a888fe77aafb5d18",
+        "enabled": 1,
+        "value": {
+          "_selector": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_metadata": {
+            "namedAsAlias": "",
+            "blackboardPrefix": ""
+          },
+          "_overrideSignalId": "",
+          "_interruptAbilityOnDetach": 0,
+          "_attachPassiveBuffsOnDummy": 1,
+          "_ignoreIfOwnerDead": 0,
+          "_forceAsDmgOrHealAbility": 0,
+          "_waitForAttackEvent": 1,
+          "_interuptIfTargetDead": 0,
+          "_resetCdStrategy": 1,
+          "_selectTargetSource": 1,
+          "_selectTargetTiming": 1,
+          "_timeMode": 0,
+          "_alwaysIncludeTarget": 1,
+          "_allowNoTarget": 1,
+          "_animKey": "Skill_1",
+          "_endAnimKey": "",
+          "_downAnimKey": "",
+          "_downEndAnimKey": "",
+          "_upAnimKey": "",
+          "_upEndAnimKey": "",
+          "_cooldown": 0.0,
+          "_cooldownKey": "duration",
+          "_preDelay": 0.0,
+          "_escapeTime": 0.0,
+          "_faceToTarget": 0,
+          "_faceToDefault": 0,
+          "_faceToFront": 0,
+          "_faceToFirstCastTarget": 0,
+          "_checkFaceToFirstCastTargetDownAttack": 0,
+          "_forceFaceToDirection": 0,
+          "_activeBuffs": {
+            "Array": []
+          },
+          "_maxAnimScale": -1.0,
+          "_onlyPlayEndAnimWhenIsLastAbility": 0,
+          "_ignorePalsyInterrupt": 0,
+          "_affectedBySlowDown": 0,
+          "_actions": {
+            "SerializedState": "[{\"_ownerType\":\"SOURCE\",\"_targetType\":\"SOURCE\",\"_abilityName\":\"RollAttack\",\"_checkCanUseAblityFlag\":false,\"_castDirectly\":false,\"_useFirstActiveAbility\":false,\"_useCastResult\":false,\"_triggerHostAbility\":false,\"_notInterruptAbilityIfCasting\":false,\"$type\":\"Torappu.Battle.Action.Nodes+TriggerAbility\"},{\"_healTarget\":\"SOURCE\",\"_getMaxHpFromTarget\":false,\"_ignoreHealFree\":true,\"_skipModifierEvent\":false,\"$type\":\"Torappu.Battle.Action.Nodes+HealViaMaxHpRatio\"},{\"_targetType\":\"SOURCE\",\"_sourceType\":\"SOURCE\",\"_effectKey\":\"common_heal_hit_01\",\"_useSourceFaceVactor\":false,\"_useSourceToTargetDirection\":false,\"_useConstDirection\":false,\"_constDirection\":\"UP\",\"_createEffectHoldBySource\":false,\"_createEffectConstDirectionHoldBySource\":false,\"_useAttackPlaybackSpeed\":false,\"_manualSetPlaybackSpeed\":false,\"_blackboardKey\":\"\",\"_playbackSpeed\":1.0,\"$type\":\"Torappu.Battle.Action.Nodes+CreateEffect\"}]",
+            "SerializedObjectReferences": {
+              "Array": []
+            }
+          }
+        }
+      },
+      {
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "pathId": "3851692001934290289",
+        "ownerPPtr": {
+          "m_FileID": 0,
+          "m_PathID": -2491638706555867791
+        },
+        "ancestry": [
+          {
+            "gameObjectPathId": "-2491638706555867791",
+            "name": "skchr_lessng_2",
+            "components": [
+              {
+                "m_FileID": 0,
+                "m_PathID": -3704561795005960847
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": 424415836659428721
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": 3851692001934290289
+              }
+            ]
+          }
+        ],
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": -4234909118878081699
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "-4234909118878081699",
+          "name": "ActiveBuffAbility",
+          "cl": "ActiveBuffAbility",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "objectSha256": "7dd76bf94300b05659cb386cbbf728299d34255deae8a5519c173a0c8dc3e690",
+        "enabled": 1,
+        "value": {
+          "_selector": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_metadata": {
+            "namedAsAlias": "",
+            "blackboardPrefix": ""
+          },
+          "_overrideSignalId": "",
+          "_interruptAbilityOnDetach": 1,
+          "_attachPassiveBuffsOnDummy": 1,
+          "_ignoreIfOwnerDead": 0,
+          "_forceAsDmgOrHealAbility": 0,
+          "_waitForAttackEvent": 1,
+          "_interuptIfTargetDead": 0,
+          "_resetCdStrategy": 1,
+          "_buffs": {
+            "Array": [
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": [
+                      {
+                        "attributeType": 1,
+                        "formulaItem": 1,
+                        "value": 0.0,
+                        "loadFromBlackboard": 1,
+                        "fetchBaseValueFromSourceEntity": 0
+                      }
+                    ]
+                  }
+                },
+                "buffKey": "lessng_s2",
+                "loadFromDB": 0,
+                "isDurableBuff": 0,
+                "isDamageMissable": 0,
+                "isSilenceable": 0,
+                "isStunnable": 0,
+                "isFreezable": 0,
+                "isLevitatable": 0,
+                "isGroundBoundable": 0,
+                "statusResistable": 2,
+                "templateKey": "lessng_s2[switch_mode]",
+                "disableOverride": 0,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": 0,
+                "clearAllStackCntWhenTimeUp": 0,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": 0,
+                "overrideEffectKey": "lessng_skill_02_buff",
+                "overrideOnEventPriority": 0,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": 1,
+                "takeSnapshotWhenExtend": 0,
+                "durationKey": "duration",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": 0,
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": 1,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": 0,
+                "blackboard": {
+                  "Array": [
+                    {
+                      "key": "mode",
+                      "value": 0.0,
+                      "valueStr": ""
+                    }
+                  ]
+                },
+                "enableInitDirectionFromSource": 0
+              },
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "lessng_s2[eff_manager]",
+                "loadFromDB": 0,
+                "isDurableBuff": 0,
+                "isDamageMissable": 0,
+                "isSilenceable": 0,
+                "isStunnable": 0,
+                "isFreezable": 0,
+                "isLevitatable": 0,
+                "isGroundBoundable": 0,
+                "statusResistable": 2,
+                "templateKey": "lessng_s2[eff_manager]",
+                "disableOverride": 0,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": 0,
+                "clearAllStackCntWhenTimeUp": 0,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": 0,
+                "overrideEffectKey": "",
+                "overrideOnEventPriority": 0,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": 1,
+                "takeSnapshotWhenExtend": 0,
+                "durationKey": "duration",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": 2,
+                "triggerCnt": 0,
+                "triggerInterval": 0.10000000149011612,
+                "waitFirstTriggerInterval": 1,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": 0,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": 0
+              }
+            ]
+          },
+          "_waitForCasting": 0,
+          "_updateLifetimeWhenSpellStart": 0,
+          "_preDelay": 0.0,
+          "_escapeTime": 0.0,
+          "_checkBuffEarlyFinish": 0,
+          "_passiveBuffs": {
+            "Array": []
+          },
+          "_ignoreInfiniteBuffCooldown": 0,
+          "_enableUpdateCooldown": 0
+        }
+      },
+      {
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "pathId": "5747343086491030346",
+        "ownerPPtr": {
+          "m_FileID": 0,
+          "m_PathID": -8306348309105847478
+        },
+        "ancestry": [
+          {
+            "gameObjectPathId": "-8306348309105847478",
+            "name": "skchr_frncat_1",
+            "components": [
+              {
+                "m_FileID": 0,
+                "m_PathID": 2190114082351502154
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": 75376970400420682
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": 5747343086491030346
+              }
+            ]
+          }
+        ],
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": -9197020083192676093
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "-9197020083192676093",
+          "name": "NextAtkAdditionSkill",
+          "cl": "NextAtkAdditionSkill",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "objectSha256": "721e3629b1aa1e2f6a30dab7d905979336cff91833a265526910b73a5c59bf4c",
+        "enabled": 1,
+        "value": {
+          "_maxTriggerTime": -1,
+          "_allowSpRecoveryWhenAffecting": 0,
+          "_limitGlobalTriggerTime": 0,
+          "_hidden": 0,
+          "_showSpBarEvenHidden": 0,
+          "_showSpAsBulletMode": 0,
+          "_showSpRatioAsProgress": 0,
+          "_playCharWordVoice": 1,
+          "_playCharWordWithPassiveType": 0,
+          "_earlyVoice": 0,
+          "_canCastWithNoSp": 0,
+          "_canSilenced": 0,
+          "_canUseInAbnormalState": 0,
+          "_defaultModeIndex": -1,
+          "_attackBlackboardModeIndex": -1,
+          "_extraAttackBlackboardModeIndices": {
+            "Array": []
+          },
+          "_rangeIdModeIndex": -1,
+          "_extraRangeIdModeIndices": {
+            "Array": []
+          },
+          "_rangeIdUsageType": 7,
+          "_writeDurationToAttackBlackboard": 0,
+          "_attachSignalIds": 0,
+          "_extraAbilities": {
+            "Array": []
+          },
+          "_useEscapeTime": 0,
+          "_earlySkillFinishAtAttackFinished": 0,
+          "_stopAffectOnInterrupt": 0,
+          "_showProgressToNext": 0,
+          "_hideSkillStackCount": 0,
+          "_hideHudSkillStackCount": 0,
+          "_playSkillBeginAnim": 0,
+          "_forceAnimFaceToDefault": 0,
+          "_beginAnim": "",
+          "_beginAnimDown": "",
+          "_beginEffect": {
+            "Array": []
+          },
+          "_useFaceVector": 0,
+          "_beginAnimValidator": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_availableValidator": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_trigger": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          }
+        }
+      },
+      {
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "pathId": "8172940558262366297",
+        "ownerPPtr": {
+          "m_FileID": 0,
+          "m_PathID": 5606539752341598297
+        },
+        "ancestry": [
+          {
+            "gameObjectPathId": "5606539752341598297",
+            "name": "skchr_lessng_3",
+            "components": [
+              {
+                "m_FileID": 0,
+                "m_PathID": 3355480526259908697
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": -5787243488378523559
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": 8172940558262366297
+              }
+            ]
+          }
+        ],
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": -4234909118878081699
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "-4234909118878081699",
+          "name": "ActiveBuffAbility",
+          "cl": "ActiveBuffAbility",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "objectSha256": "188b0e25a9de915cd95da9bb816fcf077bfa50fe5516e35a86901d38786c44d4",
+        "enabled": 1,
+        "value": {
+          "_selector": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_metadata": {
+            "namedAsAlias": "",
+            "blackboardPrefix": ""
+          },
+          "_overrideSignalId": "",
+          "_interruptAbilityOnDetach": 1,
+          "_attachPassiveBuffsOnDummy": 1,
+          "_ignoreIfOwnerDead": 0,
+          "_forceAsDmgOrHealAbility": 0,
+          "_waitForAttackEvent": 1,
+          "_interuptIfTargetDead": 0,
+          "_resetCdStrategy": 1,
+          "_buffs": {
+            "Array": [
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "lessng_s3",
+                "loadFromDB": 0,
+                "isDurableBuff": 0,
+                "isDamageMissable": 0,
+                "isSilenceable": 0,
+                "isStunnable": 0,
+                "isFreezable": 0,
+                "isLevitatable": 0,
+                "isGroundBoundable": 0,
+                "statusResistable": 2,
+                "templateKey": "switch_mode_restart_fsm",
+                "disableOverride": 0,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": 0,
+                "clearAllStackCntWhenTimeUp": 0,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": 0,
+                "overrideEffectKey": "",
+                "overrideOnEventPriority": 0,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": 1,
+                "takeSnapshotWhenExtend": 0,
+                "durationKey": "duration",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": 0,
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": 1,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": 0,
+                "blackboard": {
+                  "Array": [
+                    {
+                      "key": "mode",
+                      "value": 2.0,
+                      "valueStr": ""
+                    }
+                  ]
+                },
+                "enableInitDirectionFromSource": 0
+              },
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "lessng_s3[atk_scale]",
+                "loadFromDB": 0,
+                "isDurableBuff": 0,
+                "isDamageMissable": 0,
+                "isSilenceable": 0,
+                "isStunnable": 0,
+                "isFreezable": 0,
+                "isLevitatable": 0,
+                "isGroundBoundable": 0,
+                "statusResistable": 2,
+                "templateKey": "lessng_s3[atk_scale]",
+                "disableOverride": 0,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": 0,
+                "clearAllStackCntWhenTimeUp": 0,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": 0,
+                "overrideEffectKey": "",
+                "overrideOnEventPriority": 0,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": 1,
+                "takeSnapshotWhenExtend": 0,
+                "durationKey": "duration",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": 0,
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": 1,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": 1,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": 0
+              },
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "lessng_s3[anti]",
+                "loadFromDB": 0,
+                "isDurableBuff": 0,
+                "isDamageMissable": 0,
+                "isSilenceable": 0,
+                "isStunnable": 0,
+                "isFreezable": 0,
+                "isLevitatable": 0,
+                "isGroundBoundable": 0,
+                "statusResistable": 2,
+                "templateKey": "lessng_s3[anti]",
+                "disableOverride": 0,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": 0,
+                "clearAllStackCntWhenTimeUp": 0,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": 0,
+                "overrideEffectKey": "",
+                "overrideOnEventPriority": 0,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": 1,
+                "takeSnapshotWhenExtend": 0,
+                "durationKey": "duration",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": 0,
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": 1,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": 0,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": 0
+              }
+            ]
+          },
+          "_waitForCasting": 0,
+          "_updateLifetimeWhenSpellStart": 0,
+          "_preDelay": 0.0,
+          "_escapeTime": 0.0,
+          "_checkBuffEarlyFinish": 0,
+          "_passiveBuffs": {
+            "Array": []
+          },
+          "_ignoreInfiniteBuffCooldown": 0,
+          "_enableUpdateCooldown": 0
+        }
+      }
+    ],
+    "reusedOwnerQualification": {
+      "method": {
+        "nameIndex": 2789443,
+        "declaringType": 11055,
+        "returnType": 46024,
+        "parameterStart": -1,
+        "genericContainerIndex": -1,
+        "token": 100737088,
+        "flags": 2180,
+        "iflags": 0,
+        "slot": 65535,
+        "parameterCount": 0,
+        "index": 73791,
+        "image": "Assembly-CSharp.dll",
+        "address": 6452520672,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.Battle.BasicSkill.get_ownerCanUseInAbnormalState",
+        "returnTypeName": "bool",
+        "parameters": []
+      },
+      "nextRegisteredEntry": "0x18099a7d0",
+      "parts": [
+        {
+          "address": "0x18099a6e0",
+          "boundary": "PE .pdata range containing entry; separate funclets/tail targets require expansion; explicit byte limit",
+          "end": "0x18099a7c6",
+          "decodedEnd": "0x18099a7c6",
+          "decodedBytes": 230,
+          "fullyDecoded": true,
+          "bytesSha256": "2e94576bcfb01e746e87f2485e9870f38bb5010d54037d9c455a39756dc29462",
+          "capstoneVersion": "5.0.7",
+          "instructions": [
+            {
+              "address": "0x18099a6e0",
+              "bytes": "4053",
+              "mnemonic": "push",
+              "operands": "rbx"
+            },
+            {
+              "address": "0x18099a6e2",
+              "bytes": "4883ec20",
+              "mnemonic": "sub",
+              "operands": "rsp, 0x20"
+            },
+            {
+              "address": "0x18099a6e6",
+              "bytes": "803dfb24600800",
+              "mnemonic": "cmp",
+              "operands": "byte ptr [rip + 0x86024fb], 0",
+              "ripReferences": [
+                "0x188f9cbe8"
+              ]
+            },
+            {
+              "address": "0x18099a6ed",
+              "bytes": "488bd9",
+              "mnemonic": "mov",
+              "operands": "rbx, rcx"
+            },
+            {
+              "address": "0x18099a6f0",
+              "bytes": "7513",
+              "mnemonic": "jne",
+              "operands": "0x18099a705",
+              "target": "0x18099a705",
+              "targetOutsideRange": false,
+              "methods": []
+            },
+            {
+              "address": "0x18099a6f2",
+              "bytes": "488d0d0f331708",
+              "mnemonic": "lea",
+              "operands": "rcx, [rip + 0x817330f]",
+              "ripReferences": [
+                "0x188b0da08"
+              ]
+            },
+            {
+              "address": "0x18099a6f9",
+              "bytes": "e8121bb0ff",
+              "mnemonic": "call",
+              "operands": "0x18049c210",
+              "target": "0x18049c210",
+              "methods": []
+            },
+            {
+              "address": "0x18099a6fe",
+              "bytes": "c605e324600801",
+              "mnemonic": "mov",
+              "operands": "byte ptr [rip + 0x86024e3], 1",
+              "ripReferences": [
+                "0x188f9cbe8"
+              ]
+            },
+            {
+              "address": "0x18099a705",
+              "bytes": "488b05fc321708",
+              "mnemonic": "mov",
+              "operands": "rax, qword ptr [rip + 0x81732fc]",
+              "ripReferences": [
+                "0x188b0da08"
+              ]
+            },
+            {
+              "address": "0x18099a70c",
+              "bytes": "488b90b8000000",
+              "mnemonic": "mov",
+              "operands": "rdx, qword ptr [rax + 0xb8]"
+            },
+            {
+              "address": "0x18099a713",
+              "bytes": "488b8a90000000",
+              "mnemonic": "mov",
+              "operands": "rcx, qword ptr [rdx + 0x90]"
+            },
+            {
+              "address": "0x18099a71a",
+              "bytes": "4885c9",
+              "mnemonic": "test",
+              "operands": "rcx, rcx"
+            },
+            {
+              "address": "0x18099a71d",
+              "bytes": "0f858d000000",
+              "mnemonic": "jne",
+              "operands": "0x18099a7b0",
+              "target": "0x18099a7b0",
+              "targetOutsideRange": false,
+              "methods": []
+            },
+            {
+              "address": "0x18099a723",
+              "bytes": "384b27",
+              "mnemonic": "cmp",
+              "operands": "byte ptr [rbx + 0x27], cl"
+            },
+            {
+              "address": "0x18099a726",
+              "bytes": "7527",
+              "mnemonic": "jne",
+              "operands": "0x18099a74f",
+              "target": "0x18099a74f",
+              "targetOutsideRange": false,
+              "methods": []
+            },
+            {
+              "address": "0x18099a728",
+              "bytes": "33d2",
+              "mnemonic": "xor",
+              "operands": "edx, edx"
+            },
+            {
+              "address": "0x18099a72a",
+              "bytes": "488bcb",
+              "mnemonic": "mov",
+              "operands": "rcx, rbx"
+            },
+            {
+              "address": "0x18099a72d",
+              "bytes": "e86e040000",
+              "mnemonic": "call",
+              "operands": "0x18099aba0",
+              "target": "0x18099aba0",
+              "methods": [
+                "Torappu.Battle.BasicSkill.get_owner"
+              ]
+            },
+            {
+              "address": "0x18099a732",
+              "bytes": "4885c0",
+              "mnemonic": "test",
+              "operands": "rax, rax"
+            },
+            {
+              "address": "0x18099a735",
+              "bytes": "0f8485000000",
+              "mnemonic": "je",
+              "operands": "0x18099a7c0",
+              "target": "0x18099a7c0",
+              "targetOutsideRange": false,
+              "methods": []
+            },
+            {
+              "address": "0x18099a73b",
+              "bytes": "33d2",
+              "mnemonic": "xor",
+              "operands": "edx, edx"
+            },
+            {
+              "address": "0x18099a73d",
+              "bytes": "488bc8",
+              "mnemonic": "mov",
+              "operands": "rcx, rax"
+            },
+            {
+              "address": "0x18099a740",
+              "bytes": "e80bd8d9ff",
+              "mnemonic": "call",
+              "operands": "0x180737f50",
+              "target": "0x180737f50",
+              "methods": [
+                "Torappu.Battle.Entity.get_isSkillActivatableInAbnormal"
+              ]
+            },
+            {
+              "address": "0x18099a745",
+              "bytes": "84c0",
+              "mnemonic": "test",
+              "operands": "al, al"
+            },
+            {
+              "address": "0x18099a747",
+              "bytes": "7506",
+              "mnemonic": "jne",
+              "operands": "0x18099a74f",
+              "target": "0x18099a74f",
+              "targetOutsideRange": false,
+              "methods": []
+            },
+            {
+              "address": "0x18099a749",
+              "bytes": "4883c420",
+              "mnemonic": "add",
+              "operands": "rsp, 0x20"
+            },
+            {
+              "address": "0x18099a74d",
+              "bytes": "5b",
+              "mnemonic": "pop",
+              "operands": "rbx"
+            },
+            {
+              "address": "0x18099a74e",
+              "bytes": "c3",
+              "mnemonic": "ret",
+              "operands": ""
+            },
+            {
+              "address": "0x18099a74f",
+              "bytes": "803dc924600800",
+              "mnemonic": "cmp",
+              "operands": "byte ptr [rip + 0x86024c9], 0",
+              "ripReferences": [
+                "0x188f9cc1f"
+              ]
+            },
+            {
+              "address": "0x18099a756",
+              "bytes": "7513",
+              "mnemonic": "jne",
+              "operands": "0x18099a76b",
+              "target": "0x18099a76b",
+              "targetOutsideRange": false,
+              "methods": []
+            },
+            {
+              "address": "0x18099a758",
+              "bytes": "488d0da9321708",
+              "mnemonic": "lea",
+              "operands": "rcx, [rip + 0x81732a9]",
+              "ripReferences": [
+                "0x188b0da08"
+              ]
+            },
+            {
+              "address": "0x18099a75f",
+              "bytes": "e8ac1ab0ff",
+              "mnemonic": "call",
+              "operands": "0x18049c210",
+              "target": "0x18049c210",
+              "methods": []
+            },
+            {
+              "address": "0x18099a764",
+              "bytes": "c605b424600801",
+              "mnemonic": "mov",
+              "operands": "byte ptr [rip + 0x86024b4], 1",
+              "ripReferences": [
+                "0x188f9cc1f"
+              ]
+            },
+            {
+              "address": "0x18099a76b",
+              "bytes": "488b0596321708",
+              "mnemonic": "mov",
+              "operands": "rax, qword ptr [rip + 0x8173296]",
+              "ripReferences": [
+                "0x188b0da08"
+              ]
+            },
+            {
+              "address": "0x18099a772",
+              "bytes": "488b88b8000000",
+              "mnemonic": "mov",
+              "operands": "rcx, qword ptr [rax + 0xb8]"
+            },
+            {
+              "address": "0x18099a779",
+              "bytes": "488b8948020000",
+              "mnemonic": "mov",
+              "operands": "rcx, qword ptr [rcx + 0x248]"
+            },
+            {
+              "address": "0x18099a780",
+              "bytes": "4885c9",
+              "mnemonic": "test",
+              "operands": "rcx, rcx"
+            },
+            {
+              "address": "0x18099a783",
+              "bytes": "7509",
+              "mnemonic": "jne",
+              "operands": "0x18099a78e",
+              "target": "0x18099a78e",
+              "targetOutsideRange": false,
+              "methods": []
+            },
+            {
+              "address": "0x18099a785",
+              "bytes": "488b83a8000000",
+              "mnemonic": "mov",
+              "operands": "rax, qword ptr [rbx + 0xa8]"
+            },
+            {
+              "address": "0x18099a78c",
+              "bytes": "eb0b",
+              "mnemonic": "jmp",
+              "operands": "0x18099a799",
+              "target": "0x18099a799",
+              "targetOutsideRange": false,
+              "methods": []
+            },
+            {
+              "address": "0x18099a78e",
+              "bytes": "4533c0",
+              "mnemonic": "xor",
+              "operands": "r8d, r8d"
+            },
+            {
+              "address": "0x18099a791",
+              "bytes": "488bd3",
+              "mnemonic": "mov",
+              "operands": "rdx, rbx"
+            },
+            {
+              "address": "0x18099a794",
+              "bytes": "e83734a902",
+              "mnemonic": "call",
+              "operands": "0x18342dbd0",
+              "target": "0x18342dbd0",
+              "methods": [
+                "XLua.DelegateBridge.__Gen_Delegate_Imp3440"
+              ]
+            },
+            {
+              "address": "0x18099a799",
+              "bytes": "4885c0",
+              "mnemonic": "test",
+              "operands": "rax, rax"
+            },
+            {
+              "address": "0x18099a79c",
+              "bytes": "7422",
+              "mnemonic": "je",
+              "operands": "0x18099a7c0",
+              "target": "0x18099a7c0",
+              "targetOutsideRange": false,
+              "methods": []
+            },
+            {
+              "address": "0x18099a79e",
+              "bytes": "33d2",
+              "mnemonic": "xor",
+              "operands": "edx, edx"
+            },
+            {
+              "address": "0x18099a7a0",
+              "bytes": "488bc8",
+              "mnemonic": "mov",
+              "operands": "rcx, rax"
+            },
+            {
+              "address": "0x18099a7a3",
+              "bytes": "e808d7d9ff",
+              "mnemonic": "call",
+              "operands": "0x180737eb0",
+              "target": "0x180737eb0",
+              "methods": [
+                "Torappu.Battle.Entity.get_isSilenced"
+              ]
+            },
+            {
+              "address": "0x18099a7a8",
+              "bytes": "3401",
+              "mnemonic": "xor",
+              "operands": "al, 1"
+            },
+            {
+              "address": "0x18099a7aa",
+              "bytes": "4883c420",
+              "mnemonic": "add",
+              "operands": "rsp, 0x20"
+            },
+            {
+              "address": "0x18099a7ae",
+              "bytes": "5b",
+              "mnemonic": "pop",
+              "operands": "rbx"
+            },
+            {
+              "address": "0x18099a7af",
+              "bytes": "c3",
+              "mnemonic": "ret",
+              "operands": ""
+            },
+            {
+              "address": "0x18099a7b0",
+              "bytes": "4533c0",
+              "mnemonic": "xor",
+              "operands": "r8d, r8d"
+            },
+            {
+              "address": "0x18099a7b3",
+              "bytes": "488bd3",
+              "mnemonic": "mov",
+              "operands": "rdx, rbx"
+            },
+            {
+              "address": "0x18099a7b6",
+              "bytes": "4883c420",
+              "mnemonic": "add",
+              "operands": "rsp, 0x20"
+            },
+            {
+              "address": "0x18099a7ba",
+              "bytes": "5b",
+              "mnemonic": "pop",
+              "operands": "rbx"
+            },
+            {
+              "address": "0x18099a7bb",
+              "bytes": "e9302e9d02",
+              "mnemonic": "jmp",
+              "operands": "0x18336d5f0",
+              "target": "0x18336d5f0",
+              "targetOutsideRange": true,
+              "methods": [
+                "XLua.DelegateBridge.__Gen_Delegate_Imp21"
+              ]
+            },
+            {
+              "address": "0x18099a7c0",
+              "bytes": "e8fb1bb0ff",
+              "mnemonic": "call",
+              "operands": "0x18049c3c0",
+              "target": "0x18049c3c0",
+              "methods": []
+            },
+            {
+              "address": "0x18099a7c5",
+              "bytes": "cc",
+              "mnemonic": "int3",
+              "operands": ""
+            }
+          ]
+        },
+        {
+          "address": "0x18099a7c6",
+          "boundary": "next known method/section boundary; completeness unproven; explicit byte limit",
+          "end": "0x18099a7d0",
+          "decodedEnd": "0x18099a7d0",
+          "decodedBytes": 10,
+          "fullyDecoded": true,
+          "bytesSha256": "22e52bba61da8ad6732be550205a10b89a1bb3b0ea491be07de9294f0eb6f045",
+          "capstoneVersion": "5.0.7",
+          "instructions": [
+            {
+              "address": "0x18099a7c6",
+              "bytes": "cc",
+              "mnemonic": "int3",
+              "operands": ""
+            },
+            {
+              "address": "0x18099a7c7",
+              "bytes": "cc",
+              "mnemonic": "int3",
+              "operands": ""
+            },
+            {
+              "address": "0x18099a7c8",
+              "bytes": "cc",
+              "mnemonic": "int3",
+              "operands": ""
+            },
+            {
+              "address": "0x18099a7c9",
+              "bytes": "cc",
+              "mnemonic": "int3",
+              "operands": ""
+            },
+            {
+              "address": "0x18099a7ca",
+              "bytes": "cc",
+              "mnemonic": "int3",
+              "operands": ""
+            },
+            {
+              "address": "0x18099a7cb",
+              "bytes": "cc",
+              "mnemonic": "int3",
+              "operands": ""
+            },
+            {
+              "address": "0x18099a7cc",
+              "bytes": "cc",
+              "mnemonic": "int3",
+              "operands": ""
+            },
+            {
+              "address": "0x18099a7cd",
+              "bytes": "cc",
+              "mnemonic": "int3",
+              "operands": ""
+            },
+            {
+              "address": "0x18099a7ce",
+              "bytes": "cc",
+              "mnemonic": "int3",
+              "operands": ""
+            },
+            {
+              "address": "0x18099a7cf",
+              "bytes": "cc",
+              "mnemonic": "int3",
+              "operands": ""
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

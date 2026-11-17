@@ -1,0 +1,26 @@
+{
+  "provenance": {
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/skill-audit-20261117/sp/verify.py",
+      "bytes": 3701,
+      "sha256": "59ed17296eca16a8517cf6e76db3bdb9e237b5c3e0a19aba530df4d8c013f6af"
+    },
+    "scope": "Fresh identity/byte/layout checks and independent config re-extraction; no client execution/XLua verification."
+  },
+  "result": {
+    "complete": true,
+    "checks": {
+      "clientFingerprint": true,
+      "methodIdentity": true,
+      "instructionBytes": true,
+      "fieldLayouts": true,
+      "enumBytes": true,
+      "freshConfiguration": true
+    },
+    "methods": 648,
+    "instructions": 2551,
+    "fieldOwners": 28,
+    "enumConstants": 210,
+    "configurationSelectors": 2
+  }
+}

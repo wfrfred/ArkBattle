@@ -33,9 +33,9 @@ ArkBattle 面向通用明日方舟战斗，卫戍协议是实现重点，不是 
 | TARGET-07 隐匿／反隐 | 隐匿、迷彩及烟雾链。 | 反隐、敌方阻挡破隐和恢复政策；烟雾本身不因阻挡破隐。 |
 | GEO-01 几何 | 连续形状、范围和扫掠。 | 特殊判定方式与动态范围，不能用通用相交代替全部选择政策。 |
 | ACTION-02 时间与中断 | 普通攻击释放／输出／恢复及独立取消。 | 完整攻速缩放、特殊取消、连击与锁定政策，见[行动研究](../research/cases/08-action-eligibility-and-interruption.md)。 |
-| SP-01 回复许可 | TIME／ACTION／HIT／EXTERNAL 与独立阻回。 | 特殊阻回类别与具体触发者。 |
+| SP-01 回复许可 | TIME／ACTION／HIT／EXTERNAL 与独立阻回。 | 玛露西尔的普通正／负 SP 增减封闭尚无接口，不能用阻回代替；见[Skill 审查](../research/cases/09-skill-mechanisms-and-requirements.md#9-skill-覆盖审查2026-11-17)。 |
 | SP-02 连击 | 成功释放的 ACTION 回复。 | 多次攻击、剑豪例外与每段受击不等于每次攻击的内容。 |
-| SKILL-01 特殊技能 | 持久／本轮状态、门槛／支付、主动操作与结束。 | SP 配置切换、跨部署魔力、Fever、独立弹药等，见[技能覆盖](../research/cases/09-skill-mechanisms-and-requirements.md)。 |
+| SKILL-01 特殊技能 | 持久／本轮状态、门槛／支付、主动操作与结束；跨部署持久化和已查 Fever 延时可组合。 | 运行期 SP 配置／发动政策、止颂 S3 的特定控制豁免缺少接口；现有普通技能未限制主动 STOP。具体内容与证据边界见[技能审查](../research/cases/09-skill-mechanisms-and-requirements.md#9-skill-覆盖审查2026-11-17)。 |
 | SKILL-02 耗弹时点 | 消费与耗尽检查分开，旧 Activation 身份受保护。 | 具体弹药技能的耗尽检查时点与内容组合器 afterOutput 的适用范围。 |
 | EFFECT-02 重应用 | 五种政策、来源分组、层数和到期衰减。 | 静态重应用／修正描述到具体 Definition 的接入，不能将通用引擎等同所有 Buff。 |
 | EFFECT-03 Aura | Effect、查询、子 Scope 的组合基础。 | 生产 Aura 的刷新、暂停、样本替换与离开链路。 |

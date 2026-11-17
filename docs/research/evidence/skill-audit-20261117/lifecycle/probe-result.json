@@ -1,0 +1,41 @@
+{
+  "provenance": {
+    "checkedOn": "2026-11-17",
+    "scope": "Project public API expression; not implemented Lessing gameplay or native execution",
+    "inputs": [
+      {
+        "path": "src/core/unit/skill/operations.ts",
+        "bytes": 15386,
+        "sha256": "a3494f35fb93358564ca3d4ef8b72c3a9e69f9d23b1d2516fd16f742f27b8ba5"
+      },
+      {
+        "path": "src/core/effects/control.ts",
+        "bytes": 4253,
+        "sha256": "92223324db98bf55016544b8e0493665567a0e7a9a9153da45f4b89fe2838620"
+      },
+      {
+        "path": "dist/core/unit/skill/operations.js",
+        "bytes": 13635,
+        "sha256": "6471d35424925868b349f08b2c8fc4ab4ccfb76a6d3a59299d27a80f31470896"
+      },
+      {
+        "path": "dist/core/effects/control.js",
+        "bytes": 3300,
+        "sha256": "0adb0380a28b836a75765cc7fdada899db55e3950c3439fe1f6997b78c213d19"
+      }
+    ]
+  },
+  "result": {
+    "skillId": "skchr_lessng_3",
+    "whileStunned": {
+      "activated": false,
+      "sp": 40,
+      "acceptsCalled": false,
+      "stunRetained": true
+    },
+    "afterEndingStun": {
+      "activated": true,
+      "sp": 0
+    }
+  }
+}

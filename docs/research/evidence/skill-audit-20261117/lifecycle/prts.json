@@ -1,0 +1,19 @@
+{
+  "provenance": {
+    "checkedOn": "2026-11-17",
+    "source": "PRTS community pages; current online text, no fixed revision or raw-page hash",
+    "nativeProof": false
+  },
+  "result": [
+    {
+      "url": "https://prts.wiki/w/止颂",
+      "section": "技能2、技能3及备注",
+      "facts": [
+        "S2是部署触发、有限持续的被动技能，专精3持续24秒。",
+        "S3允许处于可抵抗状态时开启，开启先净化相关状态再取得技能效果。",
+        "S3持续期另提供强制状态抵抗及晕眩、寒冷、冻结反制。不能由此推导无视全部资格或清除全部Buff。",
+        "自伤资格在净化前采样，涉及可抵抗状态及若干指定异常；本轮不把此自伤检测集合等同技能发动许可集合。"
+      ]
+    }
+  ]
+}

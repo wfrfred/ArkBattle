@@ -1,0 +1,89 @@
+{
+  "checkedOn": "2026-11-17",
+  "scope": "Targeted sustain/ammunition/Fever audit of current public Skill API; 24 complete native method bodies and 25 installed component projections. No runtime/XLua observation or production changes.",
+  "native": {
+    "feverExistingActivation": "FeverBehaviour._JoinFeverDuringSkill writes m_isJoinDuringSkill=true. _LeaveFever forwards the saved bool to OnBeforeLeaveFever; true skips the branch that interrupts the Skill.",
+    "feverDuration": "FeverCommonBehaviour.OnAfterJoinFever calls Ability.get_cooldown, adds get_feverTime, and calls virtual UpdateCooldown(period, waitFirst=false, keepPassedTime=true) when _updateAbilityCooldown is set. The actual Mortis S1/S2 behaviours enable it.",
+    "feverTimeSource": "get_feverTime reads FeverSystemManager.data +0x18. This is the configured Fever period, not proven to be an arbitrary per-instance remaining duration.",
+    "feverNewActivation": "OnBeforeLeaveFever for a non-preexisting activation interrupts/switches out, and configured _updateCoolDownIfInterrupt restores the original SkillData.duration after interruption.",
+    "feverSp": "OnBeforeJoinFever samples SP; _RecoverSpCost/_RevertRecoverSpCost provide temporary SP bookkeeping. These are native implementation details, not a requirement to emulate artificial SP grants in Content.",
+    "tuye": "The installed skchr_tuye_2 root is CastSkillWithLimitTimes with _canDiscardRemainingCount=false. Its Ability hierarchy includes an independent event counter. Existing Case09 and PRTS establish 3-ammo exhaustion and a different native duration classification from ordinary AMMO.",
+    "manualClose": "Melantha uses skill skcom_atk_up[1], whose separately-versioned table selects installed prefab skcom_atk_up. Its root is ordinary CastSkill, which has no IsDiscardable or isRetriggerable override. Ordinary native BasicSkill.IsDiscardable #73803 and isRetriggerable #73801 return false. Tuye CastSkillWithLimitTimes.IsDiscardable additionally requires its configured _canDiscardRemainingCount, which is false in Tuye S2."
+  },
+  "coreAssessment": [
+    {
+      "topic": "Fever duration suspension",
+      "status": "existing-api-natural",
+      "mapping": "Existing extendTime can preserve the remaining ordinary Skill interval across the known fixed Fever window. Entry/exit bookkeeping belongs to the concrete Fever manager. No evidence here requires replacing TIME.endsAtTick or adding a universal pause state."
+    },
+    {
+      "topic": "Fever starts while under ordinary SP threshold",
+      "status": "same-runtime-sp-policy-gap",
+      "mapping": "activation.cost can make payment zero but activate still checks Definition.sp.requirement; existing API cannot naturally vary the launch requirement for Fever. Group under runtime SP configuration/activation policy rather than a new Fever subsystem."
+    },
+    {
+      "topic": "TIME plus independent ammunition",
+      "status": "no-actual-concurrent-time-budget-example-found",
+      "mapping": "Tuye proves resource identity differs from native duration identity, but still finishes only on ammunition exhaustion. Existing AMMO budget can represent this. This audit does not establish a finite TIME plus AMMO dual-exit Core requirement."
+    },
+    {
+      "topic": "Ammunition category versus resource",
+      "status": "content-qualification-required",
+      "mapping": "Ammo possession, consume/replenish/grant notifications, and ordinary-AMMO bonus eligibility are separate. Tuye can use AMMO budget but must be excluded from bonuses requiring native AMMO duration. Contribution Input can filter by shared static Definition identity/qualification; do not infer every bonus solely from sustain.type."
+    },
+    {
+      "topic": "Capacity and replenishment",
+      "status": "existing-api-natural-for-confirmed-inputs",
+      "mapping": "Capacity is sampled at launch; ordinary replenish has a per-activation cumulative ceiling; grant excludes its own additions from this ceiling and still respects capacity. Confirmed Inside/Lemuen changes affect later launch samples. No actual mid-activation base-counter replacement example found."
+    },
+    {
+      "topic": "Manual close/retrigger",
+      "status": "existing-program-and-restriction-model",
+      "mapping": "Existing onOperation plus operationRestrictions can express Uyou close, Horn conditional dump and retrigger denial without a new lifecycle protocol. Generic STOP defaults to finish, so Content must explicitly deny unsupported player operations; this default is a project policy to audit, not evidence every native Skill is closable."
+    },
+    {
+      "topic": "Negative TIME adjustment completion",
+      "status": "no-actual-counterexample-found",
+      "mapping": "extendTime permits negative adjustment and normal deadline checks settle later; the selected Fever original-budget reset follows interruption. No confirmed actual caller here requires a new immediate-duration-shortening Core operation."
+    },
+    {
+      "topic": "Existing unsupported STOP operation is accepted",
+      "status": "current-content-integration-defect",
+      "mapping": "Melantha Content provides neither onOperation nor operationRestrictions. Public Skill.operate defaults STOP to finish and the command layer forwards STOP, so a normal timed attack-up can be actively ended. Existing onOperation/restriction APIs can express correct qualification; choice of default or Content registration remains an architecture decision, not a new lifecycle requirement."
+    }
+  ],
+  "limitations": [
+    "No blanket statement that every native sustain mechanism is covered.",
+    "No finite TIME plus ammo positive configuration was established; absence in this targeted audit does not prove global absence.",
+    "No active XLua or runtime experiment.",
+    "Skill start/exit animation policy and special action cancellation remain outside this bounded audit."
+  ],
+  "reusedEvidence": [
+    "../../../cases/09-skill-mechanisms-and-requirements.md#27-原生公式复核ammosp-与具体持续时间操作",
+    "../../skill-parameter-formulas-20261029/ammo-native.json",
+    "../../skill-parameter-formulas-20261029/ammo-content.json",
+    "../../ammo-cancellation-20261105/README.md"
+  ],
+  "communitySources": [
+    {
+      "url": "https://prts.wiki/w/术语释义#Fever",
+      "consulted": "2026-11-17",
+      "paraphrase": "Fever can trigger member Skills without the normal SP threshold/payment, preserves an already-active timed Skill across the Fever window, and ends Skills newly started through Fever when Fever ends."
+    },
+    {
+      "url": "https://prts.wiki/w/图耶#技能",
+      "consulted": "2026-11-17",
+      "paraphrase": "S2 has three rounds, ends on ammo exhaustion, can interact with ammo consumption and replenishment, but is excluded from most bonuses that specifically require the native AMMO duration category."
+    },
+    {
+      "url": "https://prts.wiki/w/烛煌#技能",
+      "consulted": "2026-11-17",
+      "paraphrase": "S3 gains extra ammo independently of the ordinary replenishment quota; the current ammo amount still cannot exceed capacity."
+    },
+    {
+      "url": "https://prts.wiki/w/圣约送葬人#技能",
+      "consulted": "2026-11-17",
+      "paraphrase": "S2 self-granted ammo is independent of the ordinary replenishment quota; capacity bonus is sampled when the Skill begins."
+    }
+  ]
+}

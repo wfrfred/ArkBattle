@@ -1,0 +1,28 @@
+{
+  "provenance": {
+    "checkedOn": "2026-11-17",
+    "classification": "Community descriptions; supplementary to installed configuration and native evidence, not execution traces."
+  },
+  "result": {
+    "sources": [
+      {
+        "title": "玛露西尔",
+        "url": "https://prts.wiki/w/玛露西尔",
+        "observations": [
+          "Describes mana as a resource transferred to skill SP on entry and retained outside deployment, with recovery while off field.",
+          "States that skills have minimum SP requirements despite not requiring full SP; their natural SP recovery is zero."
+        ],
+        "boundary": "The native modifier and Card-state gates are independently checked; page text does not determine callback order or initial blackboard merging."
+      },
+      {
+        "title": "琳琅诗怀雅",
+        "url": "https://prts.wiki/w/琳琅诗怀雅",
+        "observations": [
+          "Describes the skill's transition into coins with a changed storage maximum and separate skill-dependent spending.",
+          "Special eligibility for outside SP changes is content-specific; this audit does not equate every use of the word forced with an unconditional global permission."
+        ],
+        "boundary": "The report uses installed ModifySpDataAfterSkillCast and template programs for the actual configuration changes; it does not claim all external coin immunity paths were newly closed."
+      }
+    ]
+  }
+}

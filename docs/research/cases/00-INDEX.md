@@ -18,7 +18,7 @@
 | [06 天赋生命周期与建模](06-talent-lifecycle-and-model.md) | 当前客户端 BasicTalent／RebornTalent 与代表性主模式天赋 | 选型、参与、私有状态与多种作用域；不同天赋状态与附着来源 |
 | [07 攻击周期、动画与执行占用](07-action-timing-and-animation.md) | 玫兰莎、能天使、泥岩、弩手、安洁莉娜与莫斯提马 | Cooldown 与 Casting、缓存等待、逻辑动画事件、起手／续轮与后继释放 |
 | [08 Action 启动资格与中断](08-action-eligibility-and-interruption.md) | 当前客户端 Ability、单位攻击状态与 EnemySkill；霜星、圣堂射手及炎佑实际绑定 | 主动作互斥、启动／中断与结束；EnemySkill 触发计时、Ability 执行、宿主共享 SP 及模式差异 |
-| [09 Skill 机制与需求](09-skill-mechanisms-and-requirements.md) | PRTS 技力／特殊技能／模式策略；客户端 metadata、原生指令与实际资源；10-29 补核修正协议和原生公式，11-10 核对启动结果消费 | SP 与进度、支付与门槛、触发与持续、跨次状态、弹药与二次操作、结束后输出；2.7 闭合原生公式，2.8 收紧贡献范围，3.3 区分实际成败回退与尚无内容依据的启动失败原因分类 |
+| [09 Skill 机制与需求](09-skill-mechanisms-and-requirements.md) | PRTS、客户端方法与实际 Skill／天赋绑定；11-17 补查玛露西尔、止颂、Fever、图耶和普通技能关闭资格 | SP 配置／余额与许可、发动资格、持续与弹药、跨次状态和通知；§9 区分三个接口缺口、已有 STOP 接入错误及可用现有组合表达的需求 |
 | [10 弱点伤害与概率判定](10-weak-damage-and-critical.md) | 当前WeakDamage／AtkScaleUp／AttackInfo、山实际概率能力、赤刃明霄陈完整DB别名 | 同一倍率静默试算、攻击级概率、实际选择链；当前atkAddition置零与Wiki的证据冲突 |
 | [11 HP应用、生命干预与流失](11-damage-apply-and-hp-application.md) | HP／ES／负生命、免死竞争、替身、同实例／主动复活、战术点及实际流失 | 固定扣血、动态不死、consumer后继、复活恢复与模式交接；修正若叶睦模板归属 |
 | [12 SPFA、平滑与移动消费](12-navigation-native-algorithm.md) | 当前 DLL／metadata 原生指令、射线隔离仿真与当批合成模型对照 | 原地后继更新、Bresenham 边界、运行时移动恢复、地图重规划与最终场实际消费 |

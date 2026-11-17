@@ -1,0 +1,34 @@
+{
+  "provenance": {
+    "checkedOn": "2026-11-17",
+    "scope": "Project public API and production Content; not native execution",
+    "inputs": [
+      {
+        "path": "test/fixtures/arknights/main-mode-units.json",
+        "bytes": 120815,
+        "sha256": "4596f7b0a39ce1f39eaba90ac20803eb2919c362970e5ce9d995cabb58b6b7db"
+      },
+      {
+        "path": "src/content/operators/melantha/unit.ts",
+        "bytes": 7498,
+        "sha256": "989f738f66c0f08fdb232f79aae3a78612f3152702357f43eade85eef5c323e5"
+      },
+      {
+        "path": "src/core/unit/skill/operations.ts",
+        "bytes": 15386,
+        "sha256": "a3494f35fb93358564ca3d4ef8b72c3a9e69f9d23b1d2516fd16f742f27b8ba5"
+      }
+    ]
+  },
+  "result": {
+    "skillId": "skcom_atk_up[1]",
+    "tick": 0,
+    "stopAccepted": true,
+    "activationRemoved": true,
+    "attack": {
+      "before": 894.24,
+      "active": 1308.24,
+      "afterStop": 894.24
+    }
+  }
+}

@@ -1,0 +1,5134 @@
+{
+  "provenance": {
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/skill-audit-20261117/sp/extract_static.py",
+      "bytes": 2297,
+      "sha256": "43f9e779a2bf9b8bcffe7b28823e39b80deba7d92abbecac3f4d74d350f8a7e3"
+    },
+    "sources": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/route-operations-20261107/data/character_table.json",
+        "bytes": 15468242,
+        "sha256": "6a61f54802ee194dbb21968976eb99e2a4050e38928bd24bd2b770479076cea1",
+        "gitBlobSha1": "5cfce5bc20be49bfcefc754cbc7efa09aa69483c",
+        "sourcePath": "zh_CN/gamedata/excel/character_table.json"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/route-operations-20261107/data/skill_table.json",
+        "bytes": 11766431,
+        "sha256": "492900f6b957233296c9736c86bb4e5f3ab4b4d7f5055a0f973c5acec3d174b1",
+        "gitBlobSha1": "913886644cefcef46866e033656a47ac4269e9af",
+        "sourcePath": "zh_CN/gamedata/excel/skill_table.json"
+      }
+    ],
+    "verificationRecord": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/route-operations-20261107/data-source-verification.json",
+      "bytes": 1413,
+      "sha256": "4fcd255faa2fb1d1aa996243fb608b0bb75f6bf855c8daff6bdbc5a3380396bb"
+    },
+    "source": {
+      "date": "2026-11-07",
+      "source": "https://github.com/Kengxxiao/ArknightsGameData",
+      "revision": "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+      "method": "git rev-parse <revision>:<path>; SHA1 of blob <byteLength>\\0 followed by raw file bytes; SHA256 of raw bytes",
+      "scope": "Complete table bytes, not normalized connector JSON. Tables are cached locally; selected entries archived by config.py."
+    },
+    "scope": "Pinned raw third-party mirror records, independently versioned from installed Prefabs."
+  },
+  "result": {
+    "characterData": {
+      "char_4141_marcil": {
+        "name": "玛露西尔",
+        "description": "攻击造成<@ba.kw>群体法术伤害</>",
+        "sortIndex": 683,
+        "spTargetType": "NONE",
+        "spTargetId": null,
+        "canUseGeneralPotentialItem": true,
+        "canUseActivityPotentialItem": false,
+        "potentialItemId": "p_char_4141_marcil",
+        "activityPotentialItemId": null,
+        "classicPotentialItemId": null,
+        "nationId": null,
+        "groupId": null,
+        "teamId": "laios",
+        "mainPower": {
+          "nationId": null,
+          "groupId": null,
+          "teamId": "laios"
+        },
+        "subPower": null,
+        "displayNumber": "DD02",
+        "appellation": "Marcille",
+        "position": "RANGED",
+        "tagList": [
+          "群攻",
+          "治疗",
+          "控场"
+        ],
+        "itemUsage": "魔法师玛露西尔，魔法学校自创始以来的才女。",
+        "itemDesc": "“绝对不吃魔物，绝对不吃！！”",
+        "itemObtainApproach": "招募寻访",
+        "isNotObtainable": false,
+        "isSpChar": false,
+        "maxPotentialLevel": 5,
+        "rarity": "TIER_6",
+        "profession": "CASTER",
+        "subProfessionId": "splashcaster",
+        "trait": null,
+        "phases": [
+          {
+            "characterPrefabKey": "char_4141_marcil",
+            "rangeId": "2-3",
+            "maxLevel": 50,
+            "attributesKeyFrames": [
+              {
+                "level": 1,
+                "data": {
+                  "maxHp": 810,
+                  "atk": 424,
+                  "def": 52,
+                  "magicResistance": 10.0,
+                  "cost": 31,
+                  "blockCnt": 1,
+                  "moveSpeed": 1.0,
+                  "attackSpeed": 100.0,
+                  "baseAttackTime": 2.9,
+                  "respawnTime": 70,
+                  "hpRecoveryPerSec": 0.0,
+                  "spRecoveryPerSec": 1.0,
+                  "maxDeployCount": 1,
+                  "maxDeckStackCnt": 0,
+                  "tauntLevel": 0,
+                  "massLevel": 0,
+                  "baseForceLevel": 0,
+                  "blockVolume": -1,
+                  "stunImmune": false,
+                  "silenceImmune": false,
+                  "sleepImmune": false,
+                  "frozenImmune": false,
+                  "levitateImmune": false,
+                  "disarmedCombatImmune": false,
+                  "fearedImmune": false,
+                  "palsyImmune": false,
+                  "attractImmune": false,
+                  "teleportImmune": false,
+                  "groundBoundImmune": false
+                }
+              },
+              {
+                "level": 50,
+                "data": {
+                  "maxHp": 1125,
+                  "atk": 598,
+                  "def": 79,
+                  "magicResistance": 10.0,
+                  "cost": 31,
+                  "blockCnt": 1,
+                  "moveSpeed": 1.0,
+                  "attackSpeed": 100.0,
+                  "baseAttackTime": 2.9,
+                  "respawnTime": 70,
+                  "hpRecoveryPerSec": 0.0,
+                  "spRecoveryPerSec": 1.0,
+                  "maxDeployCount": 1,
+                  "maxDeckStackCnt": 0,
+                  "tauntLevel": 0,
+                  "massLevel": 0,
+                  "baseForceLevel": 0,
+                  "blockVolume": -1,
+                  "stunImmune": false,
+                  "silenceImmune": false,
+                  "sleepImmune": false,
+                  "frozenImmune": false,
+                  "levitateImmune": false,
+                  "disarmedCombatImmune": false,
+                  "fearedImmune": false,
+                  "palsyImmune": false,
+                  "attractImmune": false,
+                  "teleportImmune": false,
+                  "groundBoundImmune": false
+                }
+              }
+            ],
+            "evolveCost": null
+          },
+          {
+            "characterPrefabKey": "char_4141_marcil",
+            "rangeId": "3-6",
+            "maxLevel": 80,
+            "attributesKeyFrames": [
+              {
+                "level": 1,
+                "data": {
+                  "maxHp": 1125,
+                  "atk": 598,
+                  "def": 79,
+                  "magicResistance": 15.0,
+                  "cost": 34,
+                  "blockCnt": 1,
+                  "moveSpeed": 1.0,
+                  "attackSpeed": 100.0,
+                  "baseAttackTime": 2.9,
+                  "respawnTime": 70,
+                  "hpRecoveryPerSec": 0.0,
+                  "spRecoveryPerSec": 1.0,
+                  "maxDeployCount": 1,
+                  "maxDeckStackCnt": 0,
+                  "tauntLevel": 0,
+                  "massLevel": 0,
+                  "baseForceLevel": 0,
+                  "blockVolume": -1,
+                  "stunImmune": false,
+                  "silenceImmune": false,
+                  "sleepImmune": false,
+                  "frozenImmune": false,
+                  "levitateImmune": false,
+                  "disarmedCombatImmune": false,
+                  "fearedImmune": false,
+                  "palsyImmune": false,
+                  "attractImmune": false,
+                  "teleportImmune": false,
+                  "groundBoundImmune": false
+                }
+              },
+              {
+                "level": 80,
+                "data": {
+                  "maxHp": 1407,
+                  "atk": 767,
+                  "def": 109,
+                  "magicResistance": 15.0,
+                  "cost": 34,
+                  "blockCnt": 1,
+                  "moveSpeed": 1.0,
+                  "attackSpeed": 100.0,
+                  "baseAttackTime": 2.9,
+                  "respawnTime": 70,
+                  "hpRecoveryPerSec": 0.0,
+                  "spRecoveryPerSec": 1.0,
+                  "maxDeployCount": 1,
+                  "maxDeckStackCnt": 0,
+                  "tauntLevel": 0,
+                  "massLevel": 0,
+                  "baseForceLevel": 0,
+                  "blockVolume": -1,
+                  "stunImmune": false,
+                  "silenceImmune": false,
+                  "sleepImmune": false,
+                  "frozenImmune": false,
+                  "levitateImmune": false,
+                  "disarmedCombatImmune": false,
+                  "fearedImmune": false,
+                  "palsyImmune": false,
+                  "attractImmune": false,
+                  "teleportImmune": false,
+                  "groundBoundImmune": false
+                }
+              }
+            ],
+            "evolveCost": [
+              {
+                "id": "3251",
+                "count": 5,
+                "type": "MATERIAL"
+              },
+              {
+                "id": "30062",
+                "count": 5,
+                "type": "MATERIAL"
+              },
+              {
+                "id": "30052",
+                "count": 4,
+                "type": "MATERIAL"
+              }
+            ]
+          },
+          {
+            "characterPrefabKey": "char_4141_marcil",
+            "rangeId": "3-6",
+            "maxLevel": 90,
+            "attributesKeyFrames": [
+              {
+                "level": 1,
+                "data": {
+                  "maxHp": 1407,
+                  "atk": 767,
+                  "def": 109,
+                  "magicResistance": 20.0,
+                  "cost": 34,
+                  "blockCnt": 1,
+                  "moveSpeed": 1.0,
+                  "attackSpeed": 100.0,
+                  "baseAttackTime": 2.9,
+                  "respawnTime": 70,
+                  "hpRecoveryPerSec": 0.0,
+                  "spRecoveryPerSec": 1.0,
+                  "maxDeployCount": 1,
+                  "maxDeckStackCnt": 0,
+                  "tauntLevel": 0,
+                  "massLevel": 0,
+                  "baseForceLevel": 0,
+                  "blockVolume": -1,
+                  "stunImmune": false,
+                  "silenceImmune": false,
+                  "sleepImmune": false,
+                  "frozenImmune": false,
+                  "levitateImmune": false,
+                  "disarmedCombatImmune": false,
+                  "fearedImmune": false,
+                  "palsyImmune": false,
+                  "attractImmune": false,
+                  "teleportImmune": false,
+                  "groundBoundImmune": false
+                }
+              },
+              {
+                "level": 90,
+                "data": {
+                  "maxHp": 1805,
+                  "atk": 914,
+                  "def": 130,
+                  "magicResistance": 20.0,
+                  "cost": 34,
+                  "blockCnt": 1,
+                  "moveSpeed": 1.0,
+                  "attackSpeed": 100.0,
+                  "baseAttackTime": 2.9,
+                  "respawnTime": 70,
+                  "hpRecoveryPerSec": 0.0,
+                  "spRecoveryPerSec": 1.0,
+                  "maxDeployCount": 1,
+                  "maxDeckStackCnt": 0,
+                  "tauntLevel": 0,
+                  "massLevel": 0,
+                  "baseForceLevel": 0,
+                  "blockVolume": -1,
+                  "stunImmune": false,
+                  "silenceImmune": false,
+                  "sleepImmune": false,
+                  "frozenImmune": false,
+                  "levitateImmune": false,
+                  "disarmedCombatImmune": false,
+                  "fearedImmune": false,
+                  "palsyImmune": false,
+                  "attractImmune": false,
+                  "teleportImmune": false,
+                  "groundBoundImmune": false
+                }
+              }
+            ],
+            "evolveCost": [
+              {
+                "id": "3253",
+                "count": 4,
+                "type": "MATERIAL"
+              },
+              {
+                "id": "30155",
+                "count": 4,
+                "type": "MATERIAL"
+              },
+              {
+                "id": "30094",
+                "count": 2,
+                "type": "MATERIAL"
+              }
+            ]
+          }
+        ],
+        "skills": [
+          {
+            "skillId": "skchr_marcil_1",
+            "overridePrefabKey": null,
+            "overrideTokenKey": null,
+            "levelUpCostCond": [
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 28800,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 8,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31044",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30103",
+                    "count": 5,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 57600,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 12,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31054",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30104",
+                    "count": 8,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 86400,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 15,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30135",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31024",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  }
+                ]
+              }
+            ],
+            "unlockCond": {
+              "phase": "PHASE_0",
+              "level": 1
+            }
+          },
+          {
+            "skillId": "skchr_marcil_2",
+            "overridePrefabKey": null,
+            "overrideTokenKey": null,
+            "levelUpCostCond": [
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 28800,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 8,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30064",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31043",
+                    "count": 1,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 57600,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 12,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31074",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31034",
+                    "count": 7,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 86400,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 15,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30125",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30054",
+                    "count": 5,
+                    "type": "MATERIAL"
+                  }
+                ]
+              }
+            ],
+            "unlockCond": {
+              "phase": "PHASE_1",
+              "level": 1
+            }
+          },
+          {
+            "skillId": "skchr_marcil_3",
+            "overridePrefabKey": null,
+            "overrideTokenKey": null,
+            "levelUpCostCond": [
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 28800,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 8,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31014",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30023",
+                    "count": 10,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 57600,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 12,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30094",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30084",
+                    "count": 8,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 86400,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 15,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30155",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31064",
+                    "count": 2,
+                    "type": "MATERIAL"
+                  }
+                ]
+              }
+            ],
+            "unlockCond": {
+              "phase": "PHASE_2",
+              "level": 1
+            }
+          }
+        ],
+        "displayTokenDict": null,
+        "talents": [
+          {
+            "candidates": [
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_0",
+                  "level": 1
+                },
+                "requiredPotentialRank": 0,
+                "prefabKey": "1",
+                "name": "建校以来第一才女",
+                "description": "技能消耗<$ba.magicpoint>魔力</>且可随时开启，<$ba.magicpoint>魔力</>不自然回复，不在场时每秒回复1点；有<$ba.magicpoint>魔力</>时，攻击力+10%，攻击溅射范围扩大",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "interval",
+                    "value": 1.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "mana_add",
+                    "value": 1.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "mana_max",
+                    "value": 100.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "mana_init",
+                    "value": 0.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "sp",
+                    "value": 1.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "atk",
+                    "value": 0.1,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_0",
+                  "level": 1
+                },
+                "requiredPotentialRank": 2,
+                "prefabKey": "1",
+                "name": "建校以来第一才女",
+                "description": "技能消耗<$ba.magicpoint>魔力</>且可随时开启，<$ba.magicpoint>魔力</>不自然回复，不在场时每秒回复1点；有<$ba.magicpoint>魔力</>时，攻击力+15%<@ba.talpu>（+5%）</>，攻击溅射范围扩大",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "interval",
+                    "value": 1.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "mana_add",
+                    "value": 1.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "mana_max",
+                    "value": 100.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "mana_init",
+                    "value": 0.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "sp",
+                    "value": 1.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "atk",
+                    "value": 0.15,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_1",
+                  "level": 1
+                },
+                "requiredPotentialRank": 0,
+                "prefabKey": "1",
+                "name": "建校以来第一才女",
+                "description": "技能消耗<$ba.magicpoint>魔力</>且可随时开启，<$ba.magicpoint>魔力</>不自然回复，不在场时每秒回复1点；有<$ba.magicpoint>魔力</>时，攻击力+20%，攻击溅射范围扩大",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "interval",
+                    "value": 1.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "mana_add",
+                    "value": 1.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "mana_max",
+                    "value": 100.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "mana_init",
+                    "value": 0.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "sp",
+                    "value": 1.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "atk",
+                    "value": 0.2,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_1",
+                  "level": 1
+                },
+                "requiredPotentialRank": 2,
+                "prefabKey": "1",
+                "name": "建校以来第一才女",
+                "description": "技能消耗<$ba.magicpoint>魔力</>且可随时开启，<$ba.magicpoint>魔力</>不自然回复，不在场时每秒回复1点；有<$ba.magicpoint>魔力</>时，攻击力+25%<@ba.talpu>（+5%）</>，攻击溅射范围扩大",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "interval",
+                    "value": 1.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "mana_add",
+                    "value": 1.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "mana_max",
+                    "value": 100.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "mana_init",
+                    "value": 0.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "sp",
+                    "value": 1.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "atk",
+                    "value": 0.25,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              }
+            ]
+          },
+          {
+            "candidates": [
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "requiredPotentialRank": 0,
+                "prefabKey": "2",
+                "name": "可靠的同伴",
+                "description": "初始<$ba.magicpoint>魔力</>+25，编队中有4名<$ba.laiosteam>【莱欧斯小队】</>干员时，所有<$ba.laiosteam>【莱欧斯小队】</>干员攻击速度+25，防御力+35%",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "mana_init",
+                    "value": 25.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "attack_speed",
+                    "value": 25.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "def",
+                    "value": 0.35,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              }
+            ]
+          }
+        ],
+        "potentialRanks": [
+          {
+            "type": "BUFF",
+            "description": "部署费用-1",
+            "buff": {
+              "attributes": {
+                "abnormalFlags": null,
+                "abnormalImmunes": null,
+                "abnormalAntis": null,
+                "abnormalCombos": null,
+                "abnormalComboImmunes": null,
+                "attributeModifiers": [
+                  {
+                    "attributeType": "COST",
+                    "formulaItem": "ADDITION",
+                    "value": -1.0,
+                    "loadFromBlackboard": false,
+                    "fetchBaseValueFromSourceEntity": false
+                  }
+                ]
+              }
+            },
+            "equivalentCost": null
+          },
+          {
+            "type": "CUSTOM",
+            "description": "第一天赋效果增强",
+            "buff": null,
+            "equivalentCost": null
+          },
+          {
+            "type": "BUFF",
+            "description": "攻击力+34",
+            "buff": {
+              "attributes": {
+                "abnormalFlags": null,
+                "abnormalImmunes": null,
+                "abnormalAntis": null,
+                "abnormalCombos": null,
+                "abnormalComboImmunes": null,
+                "attributeModifiers": [
+                  {
+                    "attributeType": "ATK",
+                    "formulaItem": "ADDITION",
+                    "value": 34.0,
+                    "loadFromBlackboard": false,
+                    "fetchBaseValueFromSourceEntity": false
+                  }
+                ]
+              }
+            },
+            "equivalentCost": null
+          },
+          {
+            "type": "BUFF",
+            "description": "再部署时间-6秒",
+            "buff": {
+              "attributes": {
+                "abnormalFlags": null,
+                "abnormalImmunes": null,
+                "abnormalAntis": null,
+                "abnormalCombos": null,
+                "abnormalComboImmunes": null,
+                "attributeModifiers": [
+                  {
+                    "attributeType": "RESPAWN_TIME",
+                    "formulaItem": "ADDITION",
+                    "value": -6.0,
+                    "loadFromBlackboard": false,
+                    "fetchBaseValueFromSourceEntity": false
+                  }
+                ]
+              }
+            },
+            "equivalentCost": null
+          },
+          {
+            "type": "BUFF",
+            "description": "部署费用-1",
+            "buff": {
+              "attributes": {
+                "abnormalFlags": null,
+                "abnormalImmunes": null,
+                "abnormalAntis": null,
+                "abnormalCombos": null,
+                "abnormalComboImmunes": null,
+                "attributeModifiers": [
+                  {
+                    "attributeType": "COST",
+                    "formulaItem": "ADDITION",
+                    "value": -1.0,
+                    "loadFromBlackboard": false,
+                    "fetchBaseValueFromSourceEntity": false
+                  }
+                ]
+              }
+            },
+            "equivalentCost": null
+          }
+        ],
+        "favorKeyFrames": [
+          {
+            "level": 0,
+            "data": {
+              "maxHp": 0,
+              "atk": 0,
+              "def": 0,
+              "magicResistance": 0.0,
+              "cost": 0,
+              "blockCnt": 0,
+              "moveSpeed": 0.0,
+              "attackSpeed": 0.0,
+              "baseAttackTime": 0.0,
+              "respawnTime": 0,
+              "hpRecoveryPerSec": 0.0,
+              "spRecoveryPerSec": 0.0,
+              "maxDeployCount": 0,
+              "maxDeckStackCnt": 0,
+              "tauntLevel": 0,
+              "massLevel": 0,
+              "baseForceLevel": 0,
+              "blockVolume": -1,
+              "stunImmune": false,
+              "silenceImmune": false,
+              "sleepImmune": false,
+              "frozenImmune": false,
+              "levitateImmune": false,
+              "disarmedCombatImmune": false,
+              "fearedImmune": false,
+              "palsyImmune": false,
+              "attractImmune": false,
+              "teleportImmune": false,
+              "groundBoundImmune": false
+            }
+          },
+          {
+            "level": 50,
+            "data": {
+              "maxHp": 0,
+              "atk": 110,
+              "def": 0,
+              "magicResistance": 0.0,
+              "cost": 0,
+              "blockCnt": 0,
+              "moveSpeed": 0.0,
+              "attackSpeed": 0.0,
+              "baseAttackTime": 0.0,
+              "respawnTime": 0,
+              "hpRecoveryPerSec": 0.0,
+              "spRecoveryPerSec": 0.0,
+              "maxDeployCount": 0,
+              "maxDeckStackCnt": 0,
+              "tauntLevel": 0,
+              "massLevel": 0,
+              "baseForceLevel": 0,
+              "blockVolume": -1,
+              "stunImmune": false,
+              "silenceImmune": false,
+              "sleepImmune": false,
+              "frozenImmune": false,
+              "levitateImmune": false,
+              "disarmedCombatImmune": false,
+              "fearedImmune": false,
+              "palsyImmune": false,
+              "attractImmune": false,
+              "teleportImmune": false,
+              "groundBoundImmune": false
+            }
+          }
+        ],
+        "allSkillLvlup": [
+          {
+            "unlockCond": {
+              "phase": "PHASE_0",
+              "level": 1
+            },
+            "lvlUpCost": [
+              {
+                "id": "3301",
+                "count": 5,
+                "type": "MATERIAL"
+              }
+            ]
+          },
+          {
+            "unlockCond": {
+              "phase": "PHASE_0",
+              "level": 1
+            },
+            "lvlUpCost": [
+              {
+                "id": "3301",
+                "count": 5,
+                "type": "MATERIAL"
+              },
+              {
+                "id": "30021",
+                "count": 5,
+                "type": "MATERIAL"
+              },
+              {
+                "id": "30051",
+                "count": 4,
+                "type": "MATERIAL"
+              }
+            ]
+          },
+          {
+            "unlockCond": {
+              "phase": "PHASE_0",
+              "level": 1
+            },
+            "lvlUpCost": [
+              {
+                "id": "3302",
+                "count": 8,
+                "type": "MATERIAL"
+              },
+              {
+                "id": "30032",
+                "count": 5,
+                "type": "MATERIAL"
+              }
+            ]
+          },
+          {
+            "unlockCond": {
+              "phase": "PHASE_1",
+              "level": 1
+            },
+            "lvlUpCost": [
+              {
+                "id": "3302",
+                "count": 8,
+                "type": "MATERIAL"
+              },
+              {
+                "id": "30042",
+                "count": 4,
+                "type": "MATERIAL"
+              },
+              {
+                "id": "30022",
+                "count": 3,
+                "type": "MATERIAL"
+              }
+            ]
+          },
+          {
+            "unlockCond": {
+              "phase": "PHASE_1",
+              "level": 1
+            },
+            "lvlUpCost": [
+              {
+                "id": "3302",
+                "count": 8,
+                "type": "MATERIAL"
+              },
+              {
+                "id": "30103",
+                "count": 4,
+                "type": "MATERIAL"
+              }
+            ]
+          },
+          {
+            "unlockCond": {
+              "phase": "PHASE_1",
+              "level": 1
+            },
+            "lvlUpCost": [
+              {
+                "id": "3303",
+                "count": 8,
+                "type": "MATERIAL"
+              },
+              {
+                "id": "31043",
+                "count": 5,
+                "type": "MATERIAL"
+              },
+              {
+                "id": "30083",
+                "count": 3,
+                "type": "MATERIAL"
+              }
+            ]
+          }
+        ]
+      },
+      "char_1033_swire2": {
+        "name": "琳琅诗怀雅",
+        "description": "再部署时间<@ba.kw>减少</>，撤退时不返还<@ba.kw>部署费用</>，在场时每3秒<@ba.kw>消耗</>3点部署费用（不足时自动撤退）",
+        "sortIndex": 639,
+        "spTargetType": "NONE",
+        "spTargetId": null,
+        "canUseGeneralPotentialItem": true,
+        "canUseActivityPotentialItem": false,
+        "potentialItemId": "p_char_1033_swire2",
+        "activityPotentialItemId": null,
+        "classicPotentialItemId": null,
+        "nationId": "lungmen",
+        "groupId": null,
+        "teamId": null,
+        "mainPower": {
+          "nationId": "lungmen",
+          "groupId": null,
+          "teamId": null
+        },
+        "subPower": null,
+        "displayNumber": "LM22",
+        "appellation": "Swire the Elegant Wit",
+        "position": "MELEE",
+        "tagList": [
+          "快速复活",
+          "爆发"
+        ],
+        "itemUsage": "龙门近卫局局长诗怀雅，刚刚结束在汐斯塔的度假。",
+        "itemDesc": "她带回来的不止因心动购入的商品，还有能够撬动市场的商机。",
+        "itemObtainApproach": "招募寻访",
+        "isNotObtainable": false,
+        "isSpChar": true,
+        "maxPotentialLevel": 5,
+        "rarity": "TIER_6",
+        "profession": "SPECIAL",
+        "subProfessionId": "merchant",
+        "trait": {
+          "candidates": [
+            {
+              "unlockCondition": {
+                "phase": "PHASE_0",
+                "level": 1
+              },
+              "requiredPotentialRank": 0,
+              "blackboard": [
+                {
+                  "key": "interval",
+                  "value": 3.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "cost",
+                  "value": -3.0,
+                  "valueStr": null
+                }
+              ],
+              "overrideDescripton": null,
+              "prefabKey": null,
+              "rangeId": null
+            }
+          ]
+        },
+        "phases": [
+          {
+            "characterPrefabKey": "char_1033_swire2",
+            "rangeId": "1-1",
+            "maxLevel": 50,
+            "attributesKeyFrames": [
+              {
+                "level": 1,
+                "data": {
+                  "maxHp": 1146,
+                  "atk": 386,
+                  "def": 235,
+                  "magicResistance": 0.0,
+                  "cost": 7,
+                  "blockCnt": 1,
+                  "moveSpeed": 1.0,
+                  "attackSpeed": 100.0,
+                  "baseAttackTime": 1.0,
+                  "respawnTime": 25,
+                  "hpRecoveryPerSec": 0.0,
+                  "spRecoveryPerSec": 1.0,
+                  "maxDeployCount": 1,
+                  "maxDeckStackCnt": 0,
+                  "tauntLevel": 0,
+                  "massLevel": 0,
+                  "baseForceLevel": 0,
+                  "blockVolume": -1,
+                  "stunImmune": false,
+                  "silenceImmune": false,
+                  "sleepImmune": false,
+                  "frozenImmune": false,
+                  "levitateImmune": false,
+                  "disarmedCombatImmune": false,
+                  "fearedImmune": false,
+                  "palsyImmune": false,
+                  "attractImmune": false,
+                  "teleportImmune": false,
+                  "groundBoundImmune": false
+                }
+              },
+              {
+                "level": 50,
+                "data": {
+                  "maxHp": 1509,
+                  "atk": 530,
+                  "def": 302,
+                  "magicResistance": 0.0,
+                  "cost": 7,
+                  "blockCnt": 1,
+                  "moveSpeed": 1.0,
+                  "attackSpeed": 100.0,
+                  "baseAttackTime": 1.0,
+                  "respawnTime": 25,
+                  "hpRecoveryPerSec": 0.0,
+                  "spRecoveryPerSec": 1.0,
+                  "maxDeployCount": 1,
+                  "maxDeckStackCnt": 0,
+                  "tauntLevel": 0,
+                  "massLevel": 0,
+                  "baseForceLevel": 0,
+                  "blockVolume": -1,
+                  "stunImmune": false,
+                  "silenceImmune": false,
+                  "sleepImmune": false,
+                  "frozenImmune": false,
+                  "levitateImmune": false,
+                  "disarmedCombatImmune": false,
+                  "fearedImmune": false,
+                  "palsyImmune": false,
+                  "attractImmune": false,
+                  "teleportImmune": false,
+                  "groundBoundImmune": false
+                }
+              }
+            ],
+            "evolveCost": null
+          },
+          {
+            "characterPrefabKey": "char_1033_swire2",
+            "rangeId": "1-1",
+            "maxLevel": 80,
+            "attributesKeyFrames": [
+              {
+                "level": 1,
+                "data": {
+                  "maxHp": 1509,
+                  "atk": 530,
+                  "def": 302,
+                  "magicResistance": 0.0,
+                  "cost": 9,
+                  "blockCnt": 1,
+                  "moveSpeed": 1.0,
+                  "attackSpeed": 100.0,
+                  "baseAttackTime": 1.0,
+                  "respawnTime": 25,
+                  "hpRecoveryPerSec": 0.0,
+                  "spRecoveryPerSec": 1.0,
+                  "maxDeployCount": 1,
+                  "maxDeckStackCnt": 0,
+                  "tauntLevel": 0,
+                  "massLevel": 0,
+                  "baseForceLevel": 0,
+                  "blockVolume": -1,
+                  "stunImmune": false,
+                  "silenceImmune": false,
+                  "sleepImmune": false,
+                  "frozenImmune": false,
+                  "levitateImmune": false,
+                  "disarmedCombatImmune": false,
+                  "fearedImmune": false,
+                  "palsyImmune": false,
+                  "attractImmune": false,
+                  "teleportImmune": false,
+                  "groundBoundImmune": false
+                }
+              },
+              {
+                "level": 80,
+                "data": {
+                  "maxHp": 1864,
+                  "atk": 672,
+                  "def": 388,
+                  "magicResistance": 0.0,
+                  "cost": 9,
+                  "blockCnt": 1,
+                  "moveSpeed": 1.0,
+                  "attackSpeed": 100.0,
+                  "baseAttackTime": 1.0,
+                  "respawnTime": 25,
+                  "hpRecoveryPerSec": 0.0,
+                  "spRecoveryPerSec": 1.0,
+                  "maxDeployCount": 1,
+                  "maxDeckStackCnt": 0,
+                  "tauntLevel": 0,
+                  "massLevel": 0,
+                  "baseForceLevel": 0,
+                  "blockVolume": -1,
+                  "stunImmune": false,
+                  "silenceImmune": false,
+                  "sleepImmune": false,
+                  "frozenImmune": false,
+                  "levitateImmune": false,
+                  "disarmedCombatImmune": false,
+                  "fearedImmune": false,
+                  "palsyImmune": false,
+                  "attractImmune": false,
+                  "teleportImmune": false,
+                  "groundBoundImmune": false
+                }
+              }
+            ],
+            "evolveCost": [
+              {
+                "id": "3281",
+                "count": 5,
+                "type": "MATERIAL"
+              },
+              {
+                "id": "30022",
+                "count": 8,
+                "type": "MATERIAL"
+              },
+              {
+                "id": "30042",
+                "count": 5,
+                "type": "MATERIAL"
+              }
+            ]
+          },
+          {
+            "characterPrefabKey": "char_1033_swire2",
+            "rangeId": "1-1",
+            "maxLevel": 90,
+            "attributesKeyFrames": [
+              {
+                "level": 1,
+                "data": {
+                  "maxHp": 1864,
+                  "atk": 672,
+                  "def": 388,
+                  "magicResistance": 0.0,
+                  "cost": 9,
+                  "blockCnt": 1,
+                  "moveSpeed": 1.0,
+                  "attackSpeed": 100.0,
+                  "baseAttackTime": 1.0,
+                  "respawnTime": 25,
+                  "hpRecoveryPerSec": 0.0,
+                  "spRecoveryPerSec": 1.0,
+                  "maxDeployCount": 1,
+                  "maxDeckStackCnt": 0,
+                  "tauntLevel": 0,
+                  "massLevel": 0,
+                  "baseForceLevel": 0,
+                  "blockVolume": -1,
+                  "stunImmune": false,
+                  "silenceImmune": false,
+                  "sleepImmune": false,
+                  "frozenImmune": false,
+                  "levitateImmune": false,
+                  "disarmedCombatImmune": false,
+                  "fearedImmune": false,
+                  "palsyImmune": false,
+                  "attractImmune": false,
+                  "teleportImmune": false,
+                  "groundBoundImmune": false
+                }
+              },
+              {
+                "level": 90,
+                "data": {
+                  "maxHp": 2360,
+                  "atk": 810,
+                  "def": 457,
+                  "magicResistance": 0.0,
+                  "cost": 9,
+                  "blockCnt": 1,
+                  "moveSpeed": 1.0,
+                  "attackSpeed": 100.0,
+                  "baseAttackTime": 1.0,
+                  "respawnTime": 25,
+                  "hpRecoveryPerSec": 0.0,
+                  "spRecoveryPerSec": 1.0,
+                  "maxDeployCount": 1,
+                  "maxDeckStackCnt": 0,
+                  "tauntLevel": 0,
+                  "massLevel": 0,
+                  "baseForceLevel": 0,
+                  "blockVolume": -1,
+                  "stunImmune": false,
+                  "silenceImmune": false,
+                  "sleepImmune": false,
+                  "frozenImmune": false,
+                  "levitateImmune": false,
+                  "disarmedCombatImmune": false,
+                  "fearedImmune": false,
+                  "palsyImmune": false,
+                  "attractImmune": false,
+                  "teleportImmune": false,
+                  "groundBoundImmune": false
+                }
+              }
+            ],
+            "evolveCost": [
+              {
+                "id": "3283",
+                "count": 4,
+                "type": "MATERIAL"
+              },
+              {
+                "id": "30135",
+                "count": 4,
+                "type": "MATERIAL"
+              },
+              {
+                "id": "30074",
+                "count": 6,
+                "type": "MATERIAL"
+              }
+            ]
+          }
+        ],
+        "skills": [
+          {
+            "skillId": "skchr_swire2_1",
+            "overridePrefabKey": null,
+            "overrideTokenKey": null,
+            "levelUpCostCond": [
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 28800,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 8,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30084",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31013",
+                    "count": 5,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 57600,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 12,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31064",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31044",
+                    "count": 8,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 86400,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 15,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30135",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30064",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  }
+                ]
+              }
+            ],
+            "unlockCond": {
+              "phase": "PHASE_0",
+              "level": 1
+            }
+          },
+          {
+            "skillId": "skchr_swire2_2",
+            "overridePrefabKey": null,
+            "overrideTokenKey": "token_10031_swire2_gdtrap",
+            "levelUpCostCond": [
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 28800,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 8,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31054",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30093",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 57600,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 12,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30084",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30104",
+                    "count": 7,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 86400,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 15,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30145",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31064",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  }
+                ]
+              }
+            ],
+            "unlockCond": {
+              "phase": "PHASE_1",
+              "level": 1
+            }
+          },
+          {
+            "skillId": "skchr_swire2_3",
+            "overridePrefabKey": null,
+            "overrideTokenKey": null,
+            "levelUpCostCond": [
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 28800,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 8,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31034",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30023",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 57600,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 12,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30054",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30084",
+                    "count": 7,
+                    "type": "MATERIAL"
+                  }
+                ]
+              },
+              {
+                "unlockCond": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "lvlUpTime": 86400,
+                "levelUpCost": [
+                  {
+                    "id": "3303",
+                    "count": 15,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "30155",
+                    "count": 6,
+                    "type": "MATERIAL"
+                  },
+                  {
+                    "id": "31014",
+                    "count": 4,
+                    "type": "MATERIAL"
+                  }
+                ]
+              }
+            ],
+            "unlockCond": {
+              "phase": "PHASE_2",
+              "level": 1
+            }
+          }
+        ],
+        "displayTokenDict": null,
+        "talents": [
+          {
+            "candidates": [
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_0",
+                  "level": 1
+                },
+                "requiredPotentialRank": 0,
+                "prefabKey": "1",
+                "name": "大买家",
+                "description": "技能期间每次特性消耗费用时获得1枚金币（可用于技能消耗）",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "sp",
+                    "value": 0.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "trait_sp",
+                    "value": 1.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "atk",
+                    "value": 0.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "max_stack_cnt",
+                    "value": 0.0,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_1",
+                  "level": 1
+                },
+                "requiredPotentialRank": 0,
+                "prefabKey": "1",
+                "name": "大买家",
+                "description": "技能期间每次特性消耗费用时获得1枚金币（可用于技能消耗），并提升自身3%的攻击力（最多叠加5次）",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "sp",
+                    "value": 0.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "trait_sp",
+                    "value": 1.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "atk",
+                    "value": 0.03,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "max_stack_cnt",
+                    "value": 5.0,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_1",
+                  "level": 1
+                },
+                "requiredPotentialRank": 4,
+                "prefabKey": "1",
+                "name": "大买家",
+                "description": "技能期间每次特性消耗费用时获得1枚金币（可用于技能消耗），并提升自身3%的攻击力（最多叠加6<@ba.talpu>（+1）</>次）",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "sp",
+                    "value": 0.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "trait_sp",
+                    "value": 1.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "atk",
+                    "value": 0.03,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "max_stack_cnt",
+                    "value": 6.0,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "requiredPotentialRank": 0,
+                "prefabKey": "1",
+                "name": "大买家",
+                "description": "开启技能时获得1枚金币（可用于技能消耗），技能期间每次特性消耗费用时获得1枚金币，并提升自身4%的攻击力（最多叠加8次）",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "sp",
+                    "value": 1.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "trait_sp",
+                    "value": 1.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "atk",
+                    "value": 0.04,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "max_stack_cnt",
+                    "value": 8.0,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "requiredPotentialRank": 4,
+                "prefabKey": "1",
+                "name": "大买家",
+                "description": "开启技能时获得1枚金币（可用于技能消耗），技能期间每次特性消耗费用时获得1枚金币，并提升自身4%的攻击力（最多叠加9<@ba.talpu>（+1）</>次）",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "sp",
+                    "value": 1.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "trait_sp",
+                    "value": 1.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "atk",
+                    "value": 0.04,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "max_stack_cnt",
+                    "value": 9.0,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              }
+            ]
+          },
+          {
+            "candidates": [
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "requiredPotentialRank": 0,
+                "prefabKey": "2",
+                "name": "破财消灾",
+                "description": "受到致命伤害时，若费用足够则消耗5点部署费用使生命恢复到70%，每次触发该天赋时消耗的费用翻倍",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "cost",
+                    "value": -5.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "hp_ratio",
+                    "value": 0.7,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "cost_multi",
+                    "value": 2.0,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "unlockCondition": {
+                  "phase": "PHASE_2",
+                  "level": 1
+                },
+                "requiredPotentialRank": 2,
+                "prefabKey": "2",
+                "name": "破财消灾",
+                "description": "受到致命伤害时，若费用足够则消耗5点部署费用使生命恢复到80%<@ba.talpu>（+10%）</>，每次触发该天赋时消耗的费用翻倍",
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "cost",
+                    "value": -5.0,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "hp_ratio",
+                    "value": 0.8,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "cost_multi",
+                    "value": 2.0,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              }
+            ]
+          }
+        ],
+        "potentialRanks": [
+          {
+            "type": "BUFF",
+            "description": "部署费用-1",
+            "buff": {
+              "attributes": {
+                "abnormalFlags": null,
+                "abnormalImmunes": null,
+                "abnormalAntis": null,
+                "abnormalCombos": null,
+                "abnormalComboImmunes": null,
+                "attributeModifiers": [
+                  {
+                    "attributeType": "COST",
+                    "formulaItem": "ADDITION",
+                    "value": -1.0,
+                    "loadFromBlackboard": false,
+                    "fetchBaseValueFromSourceEntity": false
+                  }
+                ]
+              }
+            },
+            "equivalentCost": null
+          },
+          {
+            "type": "CUSTOM",
+            "description": "第二天赋效果增强",
+            "buff": null,
+            "equivalentCost": null
+          },
+          {
+            "type": "BUFF",
+            "description": "攻击力+30",
+            "buff": {
+              "attributes": {
+                "abnormalFlags": null,
+                "abnormalImmunes": null,
+                "abnormalAntis": null,
+                "abnormalCombos": null,
+                "abnormalComboImmunes": null,
+                "attributeModifiers": [
+                  {
+                    "attributeType": "ATK",
+                    "formulaItem": "ADDITION",
+                    "value": 30.0,
+                    "loadFromBlackboard": false,
+                    "fetchBaseValueFromSourceEntity": false
+                  }
+                ]
+              }
+            },
+            "equivalentCost": null
+          },
+          {
+            "type": "CUSTOM",
+            "description": "第一天赋效果增强",
+            "buff": null,
+            "equivalentCost": null
+          },
+          {
+            "type": "BUFF",
+            "description": "部署费用-1",
+            "buff": {
+              "attributes": {
+                "abnormalFlags": null,
+                "abnormalImmunes": null,
+                "abnormalAntis": null,
+                "abnormalCombos": null,
+                "abnormalComboImmunes": null,
+                "attributeModifiers": [
+                  {
+                    "attributeType": "COST",
+                    "formulaItem": "ADDITION",
+                    "value": -1.0,
+                    "loadFromBlackboard": false,
+                    "fetchBaseValueFromSourceEntity": false
+                  }
+                ]
+              }
+            },
+            "equivalentCost": null
+          }
+        ],
+        "favorKeyFrames": [
+          {
+            "level": 0,
+            "data": {
+              "maxHp": 0,
+              "atk": 0,
+              "def": 0,
+              "magicResistance": 0.0,
+              "cost": 0,
+              "blockCnt": 0,
+              "moveSpeed": 0.0,
+              "attackSpeed": 0.0,
+              "baseAttackTime": 0.0,
+              "respawnTime": 0,
+              "hpRecoveryPerSec": 0.0,
+              "spRecoveryPerSec": 0.0,
+              "maxDeployCount": 0,
+              "maxDeckStackCnt": 0,
+              "tauntLevel": 0,
+              "massLevel": 0,
+              "baseForceLevel": 0,
+              "blockVolume": -1,
+              "stunImmune": false,
+              "silenceImmune": false,
+              "sleepImmune": false,
+              "frozenImmune": false,
+              "levitateImmune": false,
+              "disarmedCombatImmune": false,
+              "fearedImmune": false,
+              "palsyImmune": false,
+              "attractImmune": false,
+              "teleportImmune": false,
+              "groundBoundImmune": false
+            }
+          },
+          {
+            "level": 50,
+            "data": {
+              "maxHp": 300,
+              "atk": 55,
+              "def": 0,
+              "magicResistance": 0.0,
+              "cost": 0,
+              "blockCnt": 0,
+              "moveSpeed": 0.0,
+              "attackSpeed": 0.0,
+              "baseAttackTime": 0.0,
+              "respawnTime": 0,
+              "hpRecoveryPerSec": 0.0,
+              "spRecoveryPerSec": 0.0,
+              "maxDeployCount": 0,
+              "maxDeckStackCnt": 0,
+              "tauntLevel": 0,
+              "massLevel": 0,
+              "baseForceLevel": 0,
+              "blockVolume": -1,
+              "stunImmune": false,
+              "silenceImmune": false,
+              "sleepImmune": false,
+              "frozenImmune": false,
+              "levitateImmune": false,
+              "disarmedCombatImmune": false,
+              "fearedImmune": false,
+              "palsyImmune": false,
+              "attractImmune": false,
+              "teleportImmune": false,
+              "groundBoundImmune": false
+            }
+          }
+        ],
+        "allSkillLvlup": [
+          {
+            "unlockCond": {
+              "phase": "PHASE_0",
+              "level": 1
+            },
+            "lvlUpCost": [
+              {
+                "id": "3301",
+                "count": 5,
+                "type": "MATERIAL"
+              }
+            ]
+          },
+          {
+            "unlockCond": {
+              "phase": "PHASE_0",
+              "level": 1
+            },
+            "lvlUpCost": [
+              {
+                "id": "3301",
+                "count": 5,
+                "type": "MATERIAL"
+              },
+              {
+                "id": "30031",
+                "count": 6,
+                "type": "MATERIAL"
+              },
+              {
+                "id": "30041",
+                "count": 4,
+                "type": "MATERIAL"
+              }
+            ]
+          },
+          {
+            "unlockCond": {
+              "phase": "PHASE_0",
+              "level": 1
+            },
+            "lvlUpCost": [
+              {
+                "id": "3302",
+                "count": 8,
+                "type": "MATERIAL"
+              },
+              {
+                "id": "30042",
+                "count": 4,
+                "type": "MATERIAL"
+              }
+            ]
+          },
+          {
+            "unlockCond": {
+              "phase": "PHASE_1",
+              "level": 1
+            },
+            "lvlUpCost": [
+              {
+                "id": "3302",
+                "count": 8,
+                "type": "MATERIAL"
+              },
+              {
+                "id": "30052",
+                "count": 4,
+                "type": "MATERIAL"
+              },
+              {
+                "id": "30012",
+                "count": 5,
+                "type": "MATERIAL"
+              }
+            ]
+          },
+          {
+            "unlockCond": {
+              "phase": "PHASE_1",
+              "level": 1
+            },
+            "lvlUpCost": [
+              {
+                "id": "3302",
+                "count": 8,
+                "type": "MATERIAL"
+              },
+              {
+                "id": "31043",
+                "count": 5,
+                "type": "MATERIAL"
+              }
+            ]
+          },
+          {
+            "unlockCond": {
+              "phase": "PHASE_1",
+              "level": 1
+            },
+            "lvlUpCost": [
+              {
+                "id": "3303",
+                "count": 8,
+                "type": "MATERIAL"
+              },
+              {
+                "id": "31033",
+                "count": 6,
+                "type": "MATERIAL"
+              },
+              {
+                "id": "30023",
+                "count": 4,
+                "type": "MATERIAL"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "skillData": {
+      "skchr_marcil_1": {
+        "skillId": "skchr_marcil_1",
+        "iconId": null,
+        "hidden": false,
+        "levels": [
+          {
+            "name": "才女的实力",
+            "rangeId": null,
+            "description": "短暂<$ba.chant>吟唱</>后开启技能，每次攻击消耗<@ba.vdown>{sp_cost}</>点<$ba.magicpoint>魔力</>，攻击力<@ba.vup>+{atk:0%}</>，在找不到攻击目标时改为治疗友方干员\\n<@ba.rem>技能可随时主动关闭</>",
+            "skillType": "MANUAL",
+            "durationType": "NONE",
+            "spData": {
+              "spType": "INCREASE_WITH_TIME",
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 80,
+              "initSp": 25,
+              "increment": 0.0
+            },
+            "prefabId": "skchr_marcil_1",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "chant_duration",
+                "value": 1.5,
+                "valueStr": null
+              },
+              {
+                "key": "skill_cost_min_sp",
+                "value": 2.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_init",
+                "value": 25.0,
+                "valueStr": null
+              },
+              {
+                "key": "atk",
+                "value": 0.4,
+                "valueStr": null
+              },
+              {
+                "key": "sp_cost",
+                "value": 2.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_max",
+                "value": 80.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "name": "才女的实力",
+            "rangeId": null,
+            "description": "短暂<$ba.chant>吟唱</>后开启技能，每次攻击消耗<@ba.vdown>{sp_cost}</>点<$ba.magicpoint>魔力</>，攻击力<@ba.vup>+{atk:0%}</>，在找不到攻击目标时改为治疗友方干员\\n<@ba.rem>技能可随时主动关闭</>",
+            "skillType": "MANUAL",
+            "durationType": "NONE",
+            "spData": {
+              "spType": "INCREASE_WITH_TIME",
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 80,
+              "initSp": 25,
+              "increment": 0.0
+            },
+            "prefabId": "skchr_marcil_1",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "chant_duration",
+                "value": 1.5,
+                "valueStr": null
+              },
+              {
+                "key": "skill_cost_min_sp",
+                "value": 2.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_init",
+                "value": 25.0,
+                "valueStr": null
+              },
+              {
+                "key": "atk",
+                "value": 0.45,
+                "valueStr": null
+              },
+              {
+                "key": "sp_cost",
+                "value": 2.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_max",
+                "value": 80.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "name": "才女的实力",
+            "rangeId": null,
+            "description": "短暂<$ba.chant>吟唱</>后开启技能，每次攻击消耗<@ba.vdown>{sp_cost}</>点<$ba.magicpoint>魔力</>，攻击力<@ba.vup>+{atk:0%}</>，在找不到攻击目标时改为治疗友方干员\\n<@ba.rem>技能可随时主动关闭</>",
+            "skillType": "MANUAL",
+            "durationType": "NONE",
+            "spData": {
+              "spType": "INCREASE_WITH_TIME",
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 80,
+              "initSp": 25,
+              "increment": 0.0
+            },
+            "prefabId": "skchr_marcil_1",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "chant_duration",
+                "value": 1.5,
+                "valueStr": null
+              },
+              {
+                "key": "skill_cost_min_sp",
+                "value": 2.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_init",
+                "value": 25.0,
+                "valueStr": null
+              },
+              {
+                "key": "atk",
+                "value": 0.5,
+                "valueStr": null
+              },
+              {
+                "key": "sp_cost",
+                "value": 2.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_max",
+                "value": 80.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "name": "才女的实力",
+            "rangeId": null,
+            "description": "短暂<$ba.chant>吟唱</>后开启技能，每次攻击消耗<@ba.vdown>{sp_cost}</>点<$ba.magicpoint>魔力</>，攻击力<@ba.vup>+{atk:0%}</>，在找不到攻击目标时改为治疗友方干员\\n<@ba.rem>技能可随时主动关闭</>",
+            "skillType": "MANUAL",
+            "durationType": "NONE",
+            "spData": {
+              "spType": "INCREASE_WITH_TIME",
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 80,
+              "initSp": 25,
+              "increment": 0.0
+            },
+            "prefabId": "skchr_marcil_1",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "chant_duration",
+                "value": 1.5,
+                "valueStr": null
+              },
+              {
+                "key": "skill_cost_min_sp",
+                "value": 2.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_init",
+                "value": 25.0,
+                "valueStr": null
+              },
+              {
+                "key": "atk",
+                "value": 0.55,
+                "valueStr": null
+              },
+              {
+                "key": "sp_cost",
+                "value": 2.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_max",
+                "value": 80.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "name": "才女的实力",
+            "rangeId": null,
+            "description": "短暂<$ba.chant>吟唱</>后开启技能，每次攻击消耗<@ba.vdown>{sp_cost}</>点<$ba.magicpoint>魔力</>，攻击力<@ba.vup>+{atk:0%}</>，在找不到攻击目标时改为治疗友方干员\\n<@ba.rem>技能可随时主动关闭</>",
+            "skillType": "MANUAL",
+            "durationType": "NONE",
+            "spData": {
+              "spType": "INCREASE_WITH_TIME",
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 80,
+              "initSp": 25,
+              "increment": 0.0
+            },
+            "prefabId": "skchr_marcil_1",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "chant_duration",
+                "value": 1.5,
+                "valueStr": null
+              },
+              {
+                "key": "skill_cost_min_sp",
+                "value": 2.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_init",
+                "value": 25.0,
+                "valueStr": null
+              },
+              {
+                "key": "atk",
+                "value": 0.6,
+                "valueStr": null
+              },
+              {
+                "key": "sp_cost",
+                "value": 2.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_max",
+                "value": 80.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "name": "才女的实力",
+            "rangeId": null,
+            "description": "短暂<$ba.chant>吟唱</>后开启技能，每次攻击消耗<@ba.vdown>{sp_cost}</>点<$ba.magicpoint>魔力</>，攻击力<@ba.vup>+{atk:0%}</>，在找不到攻击目标时改为治疗友方干员\\n<@ba.rem>技能可随时主动关闭</>",
+            "skillType": "MANUAL",
+            "durationType": "NONE",
+            "spData": {
+              "spType": "INCREASE_WITH_TIME",
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 80,
+              "initSp": 25,
+              "increment": 0.0
+            },
+            "prefabId": "skchr_marcil_1",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "chant_duration",
+                "value": 1.5,
+                "valueStr": null
+              },
+              {
+                "key": "skill_cost_min_sp",
+                "value": 2.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_init",
+                "value": 25.0,
+                "valueStr": null
+              },
+              {
+                "key": "atk",
+                "value": 0.7,
+                "valueStr": null
+              },
+              {
+                "key": "sp_cost",
+                "value": 2.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_max",
+                "value": 80.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "name": "才女的实力",
+            "rangeId": null,
+            "description": "短暂<$ba.chant>吟唱</>后开启技能，每次攻击消耗<@ba.vdown>{sp_cost}</>点<$ba.magicpoint>魔力</>，攻击力<@ba.vup>+{atk:0%}</>，在找不到攻击目标时改为治疗友方干员\\n<@ba.rem>技能可随时主动关闭</>",
+            "skillType": "MANUAL",
+            "durationType": "NONE",
+            "spData": {
+              "spType": "INCREASE_WITH_TIME",
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 80,
+              "initSp": 25,
+              "increment": 0.0
+            },
+            "prefabId": "skchr_marcil_1",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "chant_duration",
+                "value": 1.5,
+                "valueStr": null
+              },
+              {
+                "key": "skill_cost_min_sp",
+                "value": 2.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_init",
+                "value": 25.0,
+                "valueStr": null
+              },
+              {
+                "key": "atk",
+                "value": 0.85,
+                "valueStr": null
+              },
+              {
+                "key": "sp_cost",
+                "value": 2.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_max",
+                "value": 80.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "name": "才女的实力",
+            "rangeId": null,
+            "description": "短暂<$ba.chant>吟唱</>后开启技能，每次攻击消耗<@ba.vdown>{sp_cost}</>点<$ba.magicpoint>魔力</>，攻击力<@ba.vup>+{atk:0%}</>，在找不到攻击目标时改为治疗友方干员\\n<@ba.rem>技能可随时主动关闭</>",
+            "skillType": "MANUAL",
+            "durationType": "NONE",
+            "spData": {
+              "spType": "INCREASE_WITH_TIME",
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 80,
+              "initSp": 25,
+              "increment": 0.0
+            },
+            "prefabId": "skchr_marcil_1",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "chant_duration",
+                "value": 1.5,
+                "valueStr": null
+              },
+              {
+                "key": "skill_cost_min_sp",
+                "value": 2.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_init",
+                "value": 25.0,
+                "valueStr": null
+              },
+              {
+                "key": "atk",
+                "value": 1.0,
+                "valueStr": null
+              },
+              {
+                "key": "sp_cost",
+                "value": 2.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_max",
+                "value": 80.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "name": "才女的实力",
+            "rangeId": null,
+            "description": "短暂<$ba.chant>吟唱</>后开启技能，每次攻击消耗<@ba.vdown>{sp_cost}</>点<$ba.magicpoint>魔力</>，攻击力<@ba.vup>+{atk:0%}</>，在找不到攻击目标时改为治疗友方干员\\n<@ba.rem>技能可随时主动关闭</>",
+            "skillType": "MANUAL",
+            "durationType": "NONE",
+            "spData": {
+              "spType": "INCREASE_WITH_TIME",
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 80,
+              "initSp": 25,
+              "increment": 0.0
+            },
+            "prefabId": "skchr_marcil_1",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "chant_duration",
+                "value": 1.5,
+                "valueStr": null
+              },
+              {
+                "key": "skill_cost_min_sp",
+                "value": 2.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_init",
+                "value": 25.0,
+                "valueStr": null
+              },
+              {
+                "key": "atk",
+                "value": 1.2,
+                "valueStr": null
+              },
+              {
+                "key": "sp_cost",
+                "value": 2.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_max",
+                "value": 80.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "name": "才女的实力",
+            "rangeId": null,
+            "description": "短暂<$ba.chant>吟唱</>后开启技能，每次攻击消耗<@ba.vdown>{sp_cost}</>点<$ba.magicpoint>魔力</>，攻击力<@ba.vup>+{atk:0%}</>，在找不到攻击目标时改为治疗友方干员\\n<@ba.rem>技能可随时主动关闭</>",
+            "skillType": "MANUAL",
+            "durationType": "NONE",
+            "spData": {
+              "spType": "INCREASE_WITH_TIME",
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 80,
+              "initSp": 25,
+              "increment": 0.0
+            },
+            "prefabId": "skchr_marcil_1",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "chant_duration",
+                "value": 1.5,
+                "valueStr": null
+              },
+              {
+                "key": "skill_cost_min_sp",
+                "value": 2.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_init",
+                "value": 25.0,
+                "valueStr": null
+              },
+              {
+                "key": "atk",
+                "value": 1.4,
+                "valueStr": null
+              },
+              {
+                "key": "sp_cost",
+                "value": 2.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_max",
+                "value": 80.0,
+                "valueStr": null
+              }
+            ]
+          }
+        ]
+      },
+      "skchr_marcil_2": {
+        "skillId": "skchr_marcil_2",
+        "iconId": null,
+        "hidden": false,
+        "levels": [
+          {
+            "name": "召唤使魔",
+            "rangeId": null,
+            "description": "<$ba.chant>吟唱</><@ba.vdown>{chant_duration}</>秒后，消耗<@ba.vdown>{sp_cost}</>点<$ba.magicpoint>魔力</>制作并使用使魔攻击，攻击力<@ba.vup>+{atk:0%}</>，攻击使所有命中目标<$ba.sluggish>停顿</><@ba.vup>{attack@sluggish}</>秒\\n第二次使用时使魔升级，攻击距离<@ba.vup>+1</>，攻击速度<@ba.vup>+{attack_speed}</>，攻击<$ba.stun>晕眩</>主目标<@ba.vup>{attack@stun}</>秒\\n<@ba.rem>技能持续时间无限，第一次使用可随时停止</>",
+            "skillType": "AUTO",
+            "durationType": "NONE",
+            "spData": {
+              "spType": "INCREASE_WITH_TIME",
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 80,
+              "initSp": 10,
+              "increment": 0.0
+            },
+            "prefabId": "skchr_marcil_2",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "chant_duration",
+                "value": 11.0,
+                "valueStr": null
+              },
+              {
+                "key": "skill_cost_min_sp",
+                "value": 35.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_init",
+                "value": 10.0,
+                "valueStr": null
+              },
+              {
+                "key": "atk",
+                "value": 0.4,
+                "valueStr": null
+              },
+              {
+                "key": "attack@sluggish",
+                "value": 0.5,
+                "valueStr": null
+              },
+              {
+                "key": "attack_speed",
+                "value": 30.0,
+                "valueStr": null
+              },
+              {
+                "key": "attack@stun",
+                "value": 0.5,
+                "valueStr": null
+              },
+              {
+                "key": "sp_cost",
+                "value": 35.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_max",
+                "value": 80.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "name": "召唤使魔",
+            "rangeId": null,
+            "description": "<$ba.chant>吟唱</><@ba.vdown>{chant_duration}</>秒后，消耗<@ba.vdown>{sp_cost}</>点<$ba.magicpoint>魔力</>制作并使用使魔攻击，攻击力<@ba.vup>+{atk:0%}</>，攻击使所有命中目标<$ba.sluggish>停顿</><@ba.vup>{attack@sluggish}</>秒\\n第二次使用时使魔升级，攻击距离<@ba.vup>+1</>，攻击速度<@ba.vup>+{attack_speed}</>，攻击<$ba.stun>晕眩</>主目标<@ba.vup>{attack@stun}</>秒\\n<@ba.rem>技能持续时间无限，第一次使用可随时停止</>",
+            "skillType": "AUTO",
+            "durationType": "NONE",
+            "spData": {
+              "spType": "INCREASE_WITH_TIME",
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 80,
+              "initSp": 10,
+              "increment": 0.0
+            },
+            "prefabId": "skchr_marcil_2",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "chant_duration",
+                "value": 11.0,
+                "valueStr": null
+              },
+              {
+                "key": "skill_cost_min_sp",
+                "value": 35.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_init",
+                "value": 10.0,
+                "valueStr": null
+              },
+              {
+                "key": "atk",
+                "value": 0.45,
+                "valueStr": null
+              },
+              {
+                "key": "attack@sluggish",
+                "value": 0.5,
+                "valueStr": null
+              },
+              {
+                "key": "attack_speed",
+                "value": 30.0,
+                "valueStr": null
+              },
+              {
+                "key": "attack@stun",
+                "value": 0.5,
+                "valueStr": null
+              },
+              {
+                "key": "sp_cost",
+                "value": 35.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_max",
+                "value": 80.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "name": "召唤使魔",
+            "rangeId": null,
+            "description": "<$ba.chant>吟唱</><@ba.vdown>{chant_duration}</>秒后，消耗<@ba.vdown>{sp_cost}</>点<$ba.magicpoint>魔力</>制作并使用使魔攻击，攻击力<@ba.vup>+{atk:0%}</>，攻击使所有命中目标<$ba.sluggish>停顿</><@ba.vup>{attack@sluggish}</>秒\\n第二次使用时使魔升级，攻击距离<@ba.vup>+1</>，攻击速度<@ba.vup>+{attack_speed}</>，攻击<$ba.stun>晕眩</>主目标<@ba.vup>{attack@stun}</>秒\\n<@ba.rem>技能持续时间无限，第一次使用可随时停止</>",
+            "skillType": "AUTO",
+            "durationType": "NONE",
+            "spData": {
+              "spType": "INCREASE_WITH_TIME",
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 80,
+              "initSp": 10,
+              "increment": 0.0
+            },
+            "prefabId": "skchr_marcil_2",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "chant_duration",
+                "value": 11.0,
+                "valueStr": null
+              },
+              {
+                "key": "skill_cost_min_sp",
+                "value": 35.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_init",
+                "value": 10.0,
+                "valueStr": null
+              },
+              {
+                "key": "atk",
+                "value": 0.5,
+                "valueStr": null
+              },
+              {
+                "key": "attack@sluggish",
+                "value": 0.5,
+                "valueStr": null
+              },
+              {
+                "key": "attack_speed",
+                "value": 30.0,
+                "valueStr": null
+              },
+              {
+                "key": "attack@stun",
+                "value": 0.5,
+                "valueStr": null
+              },
+              {
+                "key": "sp_cost",
+                "value": 35.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_max",
+                "value": 80.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "name": "召唤使魔",
+            "rangeId": null,
+            "description": "<$ba.chant>吟唱</><@ba.vdown>{chant_duration}</>秒后，消耗<@ba.vdown>{sp_cost}</>点<$ba.magicpoint>魔力</>制作并使用使魔攻击，攻击力<@ba.vup>+{atk:0%}</>，攻击使所有命中目标<$ba.sluggish>停顿</><@ba.vup>{attack@sluggish}</>秒\\n第二次使用时使魔升级，攻击距离<@ba.vup>+1</>，攻击速度<@ba.vup>+{attack_speed}</>，攻击<$ba.stun>晕眩</>主目标<@ba.vup>{attack@stun}</>秒\\n<@ba.rem>技能持续时间无限，第一次使用可随时停止</>",
+            "skillType": "AUTO",
+            "durationType": "NONE",
+            "spData": {
+              "spType": "INCREASE_WITH_TIME",
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 80,
+              "initSp": 10,
+              "increment": 0.0
+            },
+            "prefabId": "skchr_marcil_2",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "chant_duration",
+                "value": 11.0,
+                "valueStr": null
+              },
+              {
+                "key": "skill_cost_min_sp",
+                "value": 35.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_init",
+                "value": 10.0,
+                "valueStr": null
+              },
+              {
+                "key": "atk",
+                "value": 0.55,
+                "valueStr": null
+              },
+              {
+                "key": "attack@sluggish",
+                "value": 0.5,
+                "valueStr": null
+              },
+              {
+                "key": "attack_speed",
+                "value": 35.0,
+                "valueStr": null
+              },
+              {
+                "key": "attack@stun",
+                "value": 0.5,
+                "valueStr": null
+              },
+              {
+                "key": "sp_cost",
+                "value": 35.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_max",
+                "value": 80.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "name": "召唤使魔",
+            "rangeId": null,
+            "description": "<$ba.chant>吟唱</><@ba.vdown>{chant_duration}</>秒后，消耗<@ba.vdown>{sp_cost}</>点<$ba.magicpoint>魔力</>制作并使用使魔攻击，攻击力<@ba.vup>+{atk:0%}</>，攻击使所有命中目标<$ba.sluggish>停顿</><@ba.vup>{attack@sluggish}</>秒\\n第二次使用时使魔升级，攻击距离<@ba.vup>+1</>，攻击速度<@ba.vup>+{attack_speed}</>，攻击<$ba.stun>晕眩</>主目标<@ba.vup>{attack@stun}</>秒\\n<@ba.rem>技能持续时间无限，第一次使用可随时停止</>",
+            "skillType": "AUTO",
+            "durationType": "NONE",
+            "spData": {
+              "spType": "INCREASE_WITH_TIME",
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 80,
+              "initSp": 10,
+              "increment": 0.0
+            },
+            "prefabId": "skchr_marcil_2",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "chant_duration",
+                "value": 11.0,
+                "valueStr": null
+              },
+              {
+                "key": "skill_cost_min_sp",
+                "value": 35.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_init",
+                "value": 10.0,
+                "valueStr": null
+              },
+              {
+                "key": "atk",
+                "value": 0.6,
+                "valueStr": null
+              },
+              {
+                "key": "attack@sluggish",
+                "value": 0.5,
+                "valueStr": null
+              },
+              {
+                "key": "attack_speed",
+                "value": 35.0,
+                "valueStr": null
+              },
+              {
+                "key": "attack@stun",
+                "value": 0.5,
+                "valueStr": null
+              },
+              {
+                "key": "sp_cost",
+                "value": 35.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_max",
+                "value": 80.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "name": "召唤使魔",
+            "rangeId": null,
+            "description": "<$ba.chant>吟唱</><@ba.vdown>{chant_duration}</>秒后，消耗<@ba.vdown>{sp_cost}</>点<$ba.magicpoint>魔力</>制作并使用使魔攻击，攻击力<@ba.vup>+{atk:0%}</>，攻击使所有命中目标<$ba.sluggish>停顿</><@ba.vup>{attack@sluggish}</>秒\\n第二次使用时使魔升级，攻击距离<@ba.vup>+1</>，攻击速度<@ba.vup>+{attack_speed}</>，攻击<$ba.stun>晕眩</>主目标<@ba.vup>{attack@stun}</>秒\\n<@ba.rem>技能持续时间无限，第一次使用可随时停止</>",
+            "skillType": "AUTO",
+            "durationType": "NONE",
+            "spData": {
+              "spType": "INCREASE_WITH_TIME",
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 80,
+              "initSp": 10,
+              "increment": 0.0
+            },
+            "prefabId": "skchr_marcil_2",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "chant_duration",
+                "value": 11.0,
+                "valueStr": null
+              },
+              {
+                "key": "skill_cost_min_sp",
+                "value": 35.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_init",
+                "value": 10.0,
+                "valueStr": null
+              },
+              {
+                "key": "atk",
+                "value": 0.65,
+                "valueStr": null
+              },
+              {
+                "key": "attack@sluggish",
+                "value": 0.5,
+                "valueStr": null
+              },
+              {
+                "key": "attack_speed",
+                "value": 35.0,
+                "valueStr": null
+              },
+              {
+                "key": "attack@stun",
+                "value": 0.5,
+                "valueStr": null
+              },
+              {
+                "key": "sp_cost",
+                "value": 35.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_max",
+                "value": 80.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "name": "召唤使魔",
+            "rangeId": null,
+            "description": "<$ba.chant>吟唱</><@ba.vdown>{chant_duration}</>秒后，消耗<@ba.vdown>{sp_cost}</>点<$ba.magicpoint>魔力</>制作并使用使魔攻击，攻击力<@ba.vup>+{atk:0%}</>，攻击使所有命中目标<$ba.sluggish>停顿</><@ba.vup>{attack@sluggish}</>秒\\n第二次使用时使魔升级，攻击距离<@ba.vup>+1</>，攻击速度<@ba.vup>+{attack_speed}</>，攻击<$ba.stun>晕眩</>主目标<@ba.vup>{attack@stun}</>秒\\n<@ba.rem>技能持续时间无限，第一次使用可随时停止</>",
+            "skillType": "AUTO",
+            "durationType": "NONE",
+            "spData": {
+              "spType": "INCREASE_WITH_TIME",
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 80,
+              "initSp": 10,
+              "increment": 0.0
+            },
+            "prefabId": "skchr_marcil_2",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "chant_duration",
+                "value": 11.0,
+                "valueStr": null
+              },
+              {
+                "key": "skill_cost_min_sp",
+                "value": 35.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_init",
+                "value": 10.0,
+                "valueStr": null
+              },
+              {
+                "key": "atk",
+                "value": 0.7,
+                "valueStr": null
+              },
+              {
+                "key": "attack@sluggish",
+                "value": 0.5,
+                "valueStr": null
+              },
+              {
+                "key": "attack_speed",
+                "value": 45.0,
+                "valueStr": null
+              },
+              {
+                "key": "attack@stun",
+                "value": 0.5,
+                "valueStr": null
+              },
+              {
+                "key": "sp_cost",
+                "value": 35.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_max",
+                "value": 80.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "name": "召唤使魔",
+            "rangeId": null,
+            "description": "<$ba.chant>吟唱</><@ba.vdown>{chant_duration}</>秒后，消耗<@ba.vdown>{sp_cost}</>点<$ba.magicpoint>魔力</>制作并使用使魔攻击，攻击力<@ba.vup>+{atk:0%}</>，攻击使所有命中目标<$ba.sluggish>停顿</><@ba.vup>{attack@sluggish}</>秒\\n第二次使用时使魔升级，攻击距离<@ba.vup>+1</>，攻击速度<@ba.vup>+{attack_speed}</>，攻击<$ba.stun>晕眩</>主目标<@ba.vup>{attack@stun}</>秒\\n<@ba.rem>技能持续时间无限，第一次使用可随时停止</>",
+            "skillType": "AUTO",
+            "durationType": "NONE",
+            "spData": {
+              "spType": "INCREASE_WITH_TIME",
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 80,
+              "initSp": 10,
+              "increment": 0.0
+            },
+            "prefabId": "skchr_marcil_2",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "chant_duration",
+                "value": 11.0,
+                "valueStr": null
+              },
+              {
+                "key": "skill_cost_min_sp",
+                "value": 35.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_init",
+                "value": 10.0,
+                "valueStr": null
+              },
+              {
+                "key": "atk",
+                "value": 0.8,
+                "valueStr": null
+              },
+              {
+                "key": "attack@sluggish",
+                "value": 0.5,
+                "valueStr": null
+              },
+              {
+                "key": "attack_speed",
+                "value": 50.0,
+                "valueStr": null
+              },
+              {
+                "key": "attack@stun",
+                "value": 0.5,
+                "valueStr": null
+              },
+              {
+                "key": "sp_cost",
+                "value": 35.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_max",
+                "value": 80.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "name": "召唤使魔",
+            "rangeId": null,
+            "description": "<$ba.chant>吟唱</><@ba.vdown>{chant_duration}</>秒后，消耗<@ba.vdown>{sp_cost}</>点<$ba.magicpoint>魔力</>制作并使用使魔攻击，攻击力<@ba.vup>+{atk:0%}</>，攻击使所有命中目标<$ba.sluggish>停顿</><@ba.vup>{attack@sluggish}</>秒\\n第二次使用时使魔升级，攻击距离<@ba.vup>+1</>，攻击速度<@ba.vup>+{attack_speed}</>，攻击<$ba.stun>晕眩</>主目标<@ba.vup>{attack@stun}</>秒\\n<@ba.rem>技能持续时间无限，第一次使用可随时停止</>",
+            "skillType": "AUTO",
+            "durationType": "NONE",
+            "spData": {
+              "spType": "INCREASE_WITH_TIME",
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 80,
+              "initSp": 10,
+              "increment": 0.0
+            },
+            "prefabId": "skchr_marcil_2",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "chant_duration",
+                "value": 11.0,
+                "valueStr": null
+              },
+              {
+                "key": "skill_cost_min_sp",
+                "value": 35.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_init",
+                "value": 10.0,
+                "valueStr": null
+              },
+              {
+                "key": "atk",
+                "value": 0.9,
+                "valueStr": null
+              },
+              {
+                "key": "attack@sluggish",
+                "value": 0.5,
+                "valueStr": null
+              },
+              {
+                "key": "attack_speed",
+                "value": 55.0,
+                "valueStr": null
+              },
+              {
+                "key": "attack@stun",
+                "value": 0.5,
+                "valueStr": null
+              },
+              {
+                "key": "sp_cost",
+                "value": 35.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_max",
+                "value": 80.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "name": "召唤使魔",
+            "rangeId": null,
+            "description": "<$ba.chant>吟唱</><@ba.vdown>{chant_duration}</>秒后，消耗<@ba.vdown>{sp_cost}</>点<$ba.magicpoint>魔力</>制作并使用使魔攻击，攻击力<@ba.vup>+{atk:0%}</>，攻击使所有命中目标<$ba.sluggish>停顿</><@ba.vup>{attack@sluggish}</>秒\\n第二次使用时使魔升级，攻击距离<@ba.vup>+1</>，攻击速度<@ba.vup>+{attack_speed}</>，攻击<$ba.stun>晕眩</>主目标<@ba.vup>{attack@stun}</>秒\\n<@ba.rem>技能持续时间无限，第一次使用可随时停止</>",
+            "skillType": "AUTO",
+            "durationType": "NONE",
+            "spData": {
+              "spType": "INCREASE_WITH_TIME",
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 80,
+              "initSp": 10,
+              "increment": 0.0
+            },
+            "prefabId": "skchr_marcil_2",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "chant_duration",
+                "value": 11.0,
+                "valueStr": null
+              },
+              {
+                "key": "skill_cost_min_sp",
+                "value": 35.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_init",
+                "value": 10.0,
+                "valueStr": null
+              },
+              {
+                "key": "atk",
+                "value": 1.0,
+                "valueStr": null
+              },
+              {
+                "key": "attack@sluggish",
+                "value": 0.5,
+                "valueStr": null
+              },
+              {
+                "key": "attack_speed",
+                "value": 60.0,
+                "valueStr": null
+              },
+              {
+                "key": "attack@stun",
+                "value": 0.5,
+                "valueStr": null
+              },
+              {
+                "key": "sp_cost",
+                "value": 35.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_max",
+                "value": 80.0,
+                "valueStr": null
+              }
+            ]
+          }
+        ]
+      },
+      "skchr_marcil_3": {
+        "skillId": "skchr_marcil_3",
+        "iconId": null,
+        "hidden": false,
+        "levels": [
+          {
+            "name": "爆破魔法",
+            "rangeId": null,
+            "description": "<$ba.chant>吟唱</><@ba.vdown>{chant_duration}</>秒后，消耗<@ba.vdown>{skill_cost_min_sp}</>点<$ba.magicpoint>魔力</>，在正前方位置造成爆炸，对周围敌人造成<@ba.vup>{atk_scale:0%}</>攻击力的法术伤害，炸到的高台会崩开碎片<$ba.stun>晕眩</>其周围敌人<@ba.vup>{stun}</>秒\\n可追加<$ba.chant>吟唱</><@ba.vdown>{extra_chant_duration}</>秒，完成后消耗剩余<@ba.vdown>所有</><$ba.magicpoint>魔力</>，每额外消耗<@ba.vdown>{sp_cost_extra}</>点<$ba.magicpoint>魔力</>，追加1次爆炸\\n<@ba.rem>追加吟唱可随时停止</>",
+            "skillType": "MANUAL",
+            "durationType": "NONE",
+            "spData": {
+              "spType": "INCREASE_WITH_TIME",
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 80,
+              "initSp": 40,
+              "increment": 0.0
+            },
+            "prefabId": "skchr_marcil_3",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "chant_duration",
+                "value": 5.0,
+                "valueStr": null
+              },
+              {
+                "key": "extra_chant_duration",
+                "value": 10.0,
+                "valueStr": null
+              },
+              {
+                "key": "skill_cost_min_sp",
+                "value": 8.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_max",
+                "value": 80.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_init",
+                "value": 40.0,
+                "valueStr": null
+              },
+              {
+                "key": "sp_cost_extra",
+                "value": 8.0,
+                "valueStr": null
+              },
+              {
+                "key": "atk_scale",
+                "value": 2.8,
+                "valueStr": null
+              },
+              {
+                "key": "interval",
+                "value": 0.45,
+                "valueStr": null
+              },
+              {
+                "key": "stun",
+                "value": 2.0,
+                "valueStr": null
+              },
+              {
+                "key": "trig_cnt",
+                "value": 49.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "name": "爆破魔法",
+            "rangeId": null,
+            "description": "<$ba.chant>吟唱</><@ba.vdown>{chant_duration}</>秒后，消耗<@ba.vdown>{skill_cost_min_sp}</>点<$ba.magicpoint>魔力</>，在正前方位置造成爆炸，对周围敌人造成<@ba.vup>{atk_scale:0%}</>攻击力的法术伤害，炸到的高台会崩开碎片<$ba.stun>晕眩</>其周围敌人<@ba.vup>{stun}</>秒\\n可追加<$ba.chant>吟唱</><@ba.vdown>{extra_chant_duration}</>秒，完成后消耗剩余<@ba.vdown>所有</><$ba.magicpoint>魔力</>，每额外消耗<@ba.vdown>{sp_cost_extra}</>点<$ba.magicpoint>魔力</>，追加1次爆炸\\n<@ba.rem>追加吟唱可随时停止</>",
+            "skillType": "MANUAL",
+            "durationType": "NONE",
+            "spData": {
+              "spType": "INCREASE_WITH_TIME",
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 80,
+              "initSp": 40,
+              "increment": 0.0
+            },
+            "prefabId": "skchr_marcil_3",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "chant_duration",
+                "value": 5.0,
+                "valueStr": null
+              },
+              {
+                "key": "extra_chant_duration",
+                "value": 10.0,
+                "valueStr": null
+              },
+              {
+                "key": "skill_cost_min_sp",
+                "value": 8.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_max",
+                "value": 80.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_init",
+                "value": 40.0,
+                "valueStr": null
+              },
+              {
+                "key": "sp_cost_extra",
+                "value": 8.0,
+                "valueStr": null
+              },
+              {
+                "key": "atk_scale",
+                "value": 2.9,
+                "valueStr": null
+              },
+              {
+                "key": "interval",
+                "value": 0.45,
+                "valueStr": null
+              },
+              {
+                "key": "stun",
+                "value": 2.0,
+                "valueStr": null
+              },
+              {
+                "key": "trig_cnt",
+                "value": 49.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "name": "爆破魔法",
+            "rangeId": null,
+            "description": "<$ba.chant>吟唱</><@ba.vdown>{chant_duration}</>秒后，消耗<@ba.vdown>{skill_cost_min_sp}</>点<$ba.magicpoint>魔力</>，在正前方位置造成爆炸，对周围敌人造成<@ba.vup>{atk_scale:0%}</>攻击力的法术伤害，炸到的高台会崩开碎片<$ba.stun>晕眩</>其周围敌人<@ba.vup>{stun}</>秒\\n可追加<$ba.chant>吟唱</><@ba.vdown>{extra_chant_duration}</>秒，完成后消耗剩余<@ba.vdown>所有</><$ba.magicpoint>魔力</>，每额外消耗<@ba.vdown>{sp_cost_extra}</>点<$ba.magicpoint>魔力</>，追加1次爆炸\\n<@ba.rem>追加吟唱可随时停止</>",
+            "skillType": "MANUAL",
+            "durationType": "NONE",
+            "spData": {
+              "spType": "INCREASE_WITH_TIME",
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 80,
+              "initSp": 40,
+              "increment": 0.0
+            },
+            "prefabId": "skchr_marcil_3",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "chant_duration",
+                "value": 5.0,
+                "valueStr": null
+              },
+              {
+                "key": "extra_chant_duration",
+                "value": 10.0,
+                "valueStr": null
+              },
+              {
+                "key": "skill_cost_min_sp",
+                "value": 8.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_max",
+                "value": 80.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_init",
+                "value": 40.0,
+                "valueStr": null
+              },
+              {
+                "key": "sp_cost_extra",
+                "value": 8.0,
+                "valueStr": null
+              },
+              {
+                "key": "atk_scale",
+                "value": 3.0,
+                "valueStr": null
+              },
+              {
+                "key": "interval",
+                "value": 0.45,
+                "valueStr": null
+              },
+              {
+                "key": "stun",
+                "value": 2.0,
+                "valueStr": null
+              },
+              {
+                "key": "trig_cnt",
+                "value": 49.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "name": "爆破魔法",
+            "rangeId": null,
+            "description": "<$ba.chant>吟唱</><@ba.vdown>{chant_duration}</>秒后，消耗<@ba.vdown>{skill_cost_min_sp}</>点<$ba.magicpoint>魔力</>，在正前方位置造成爆炸，对周围敌人造成<@ba.vup>{atk_scale:0%}</>攻击力的法术伤害，炸到的高台会崩开碎片<$ba.stun>晕眩</>其周围敌人<@ba.vup>{stun}</>秒\\n可追加<$ba.chant>吟唱</><@ba.vdown>{extra_chant_duration}</>秒，完成后消耗剩余<@ba.vdown>所有</><$ba.magicpoint>魔力</>，每额外消耗<@ba.vdown>{sp_cost_extra}</>点<$ba.magicpoint>魔力</>，追加1次爆炸\\n<@ba.rem>追加吟唱可随时停止</>",
+            "skillType": "MANUAL",
+            "durationType": "NONE",
+            "spData": {
+              "spType": "INCREASE_WITH_TIME",
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 80,
+              "initSp": 40,
+              "increment": 0.0
+            },
+            "prefabId": "skchr_marcil_3",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "chant_duration",
+                "value": 5.0,
+                "valueStr": null
+              },
+              {
+                "key": "extra_chant_duration",
+                "value": 10.0,
+                "valueStr": null
+              },
+              {
+                "key": "skill_cost_min_sp",
+                "value": 8.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_max",
+                "value": 80.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_init",
+                "value": 40.0,
+                "valueStr": null
+              },
+              {
+                "key": "sp_cost_extra",
+                "value": 8.0,
+                "valueStr": null
+              },
+              {
+                "key": "atk_scale",
+                "value": 3.1,
+                "valueStr": null
+              },
+              {
+                "key": "interval",
+                "value": 0.45,
+                "valueStr": null
+              },
+              {
+                "key": "stun",
+                "value": 3.0,
+                "valueStr": null
+              },
+              {
+                "key": "trig_cnt",
+                "value": 49.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "name": "爆破魔法",
+            "rangeId": null,
+            "description": "<$ba.chant>吟唱</><@ba.vdown>{chant_duration}</>秒后，消耗<@ba.vdown>{skill_cost_min_sp}</>点<$ba.magicpoint>魔力</>，在正前方位置造成爆炸，对周围敌人造成<@ba.vup>{atk_scale:0%}</>攻击力的法术伤害，炸到的高台会崩开碎片<$ba.stun>晕眩</>其周围敌人<@ba.vup>{stun}</>秒\\n可追加<$ba.chant>吟唱</><@ba.vdown>{extra_chant_duration}</>秒，完成后消耗剩余<@ba.vdown>所有</><$ba.magicpoint>魔力</>，每额外消耗<@ba.vdown>{sp_cost_extra}</>点<$ba.magicpoint>魔力</>，追加1次爆炸\\n<@ba.rem>追加吟唱可随时停止</>",
+            "skillType": "MANUAL",
+            "durationType": "NONE",
+            "spData": {
+              "spType": "INCREASE_WITH_TIME",
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 80,
+              "initSp": 40,
+              "increment": 0.0
+            },
+            "prefabId": "skchr_marcil_3",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "chant_duration",
+                "value": 5.0,
+                "valueStr": null
+              },
+              {
+                "key": "extra_chant_duration",
+                "value": 10.0,
+                "valueStr": null
+              },
+              {
+                "key": "skill_cost_min_sp",
+                "value": 8.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_max",
+                "value": 80.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_init",
+                "value": 40.0,
+                "valueStr": null
+              },
+              {
+                "key": "sp_cost_extra",
+                "value": 8.0,
+                "valueStr": null
+              },
+              {
+                "key": "atk_scale",
+                "value": 3.2,
+                "valueStr": null
+              },
+              {
+                "key": "interval",
+                "value": 0.45,
+                "valueStr": null
+              },
+              {
+                "key": "stun",
+                "value": 3.0,
+                "valueStr": null
+              },
+              {
+                "key": "trig_cnt",
+                "value": 49.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "name": "爆破魔法",
+            "rangeId": null,
+            "description": "<$ba.chant>吟唱</><@ba.vdown>{chant_duration}</>秒后，消耗<@ba.vdown>{skill_cost_min_sp}</>点<$ba.magicpoint>魔力</>，在正前方位置造成爆炸，对周围敌人造成<@ba.vup>{atk_scale:0%}</>攻击力的法术伤害，炸到的高台会崩开碎片<$ba.stun>晕眩</>其周围敌人<@ba.vup>{stun}</>秒\\n可追加<$ba.chant>吟唱</><@ba.vdown>{extra_chant_duration}</>秒，完成后消耗剩余<@ba.vdown>所有</><$ba.magicpoint>魔力</>，每额外消耗<@ba.vdown>{sp_cost_extra}</>点<$ba.magicpoint>魔力</>，追加1次爆炸\\n<@ba.rem>追加吟唱可随时停止</>",
+            "skillType": "MANUAL",
+            "durationType": "NONE",
+            "spData": {
+              "spType": "INCREASE_WITH_TIME",
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 80,
+              "initSp": 40,
+              "increment": 0.0
+            },
+            "prefabId": "skchr_marcil_3",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "chant_duration",
+                "value": 5.0,
+                "valueStr": null
+              },
+              {
+                "key": "extra_chant_duration",
+                "value": 10.0,
+                "valueStr": null
+              },
+              {
+                "key": "skill_cost_min_sp",
+                "value": 8.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_max",
+                "value": 80.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_init",
+                "value": 40.0,
+                "valueStr": null
+              },
+              {
+                "key": "sp_cost_extra",
+                "value": 8.0,
+                "valueStr": null
+              },
+              {
+                "key": "atk_scale",
+                "value": 3.3,
+                "valueStr": null
+              },
+              {
+                "key": "interval",
+                "value": 0.45,
+                "valueStr": null
+              },
+              {
+                "key": "stun",
+                "value": 3.0,
+                "valueStr": null
+              },
+              {
+                "key": "trig_cnt",
+                "value": 49.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "name": "爆破魔法",
+            "rangeId": null,
+            "description": "<$ba.chant>吟唱</><@ba.vdown>{chant_duration}</>秒后，消耗<@ba.vdown>{skill_cost_min_sp}</>点<$ba.magicpoint>魔力</>，在正前方位置造成爆炸，对周围敌人造成<@ba.vup>{atk_scale:0%}</>攻击力的法术伤害，炸到的高台会崩开碎片<$ba.stun>晕眩</>其周围敌人<@ba.vup>{stun}</>秒\\n可追加<$ba.chant>吟唱</><@ba.vdown>{extra_chant_duration}</>秒，完成后消耗剩余<@ba.vdown>所有</><$ba.magicpoint>魔力</>，每额外消耗<@ba.vdown>{sp_cost_extra}</>点<$ba.magicpoint>魔力</>，追加1次爆炸\\n<@ba.rem>追加吟唱可随时停止</>",
+            "skillType": "MANUAL",
+            "durationType": "NONE",
+            "spData": {
+              "spType": "INCREASE_WITH_TIME",
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 80,
+              "initSp": 40,
+              "increment": 0.0
+            },
+            "prefabId": "skchr_marcil_3",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "chant_duration",
+                "value": 5.0,
+                "valueStr": null
+              },
+              {
+                "key": "extra_chant_duration",
+                "value": 10.0,
+                "valueStr": null
+              },
+              {
+                "key": "skill_cost_min_sp",
+                "value": 8.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_max",
+                "value": 80.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_init",
+                "value": 40.0,
+                "valueStr": null
+              },
+              {
+                "key": "sp_cost_extra",
+                "value": 8.0,
+                "valueStr": null
+              },
+              {
+                "key": "atk_scale",
+                "value": 3.4,
+                "valueStr": null
+              },
+              {
+                "key": "interval",
+                "value": 0.45,
+                "valueStr": null
+              },
+              {
+                "key": "stun",
+                "value": 3.0,
+                "valueStr": null
+              },
+              {
+                "key": "trig_cnt",
+                "value": 49.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "name": "爆破魔法",
+            "rangeId": null,
+            "description": "<$ba.chant>吟唱</><@ba.vdown>{chant_duration}</>秒后，消耗<@ba.vdown>{skill_cost_min_sp}</>点<$ba.magicpoint>魔力</>，在正前方位置造成爆炸，对周围敌人造成<@ba.vup>{atk_scale:0%}</>攻击力的法术伤害，炸到的高台会崩开碎片<$ba.stun>晕眩</>其周围敌人<@ba.vup>{stun}</>秒\\n可追加<$ba.chant>吟唱</><@ba.vdown>{extra_chant_duration}</>秒，完成后消耗剩余<@ba.vdown>所有</><$ba.magicpoint>魔力</>，每额外消耗<@ba.vdown>{sp_cost_extra}</>点<$ba.magicpoint>魔力</>，追加1次爆炸\\n<@ba.rem>追加吟唱可随时停止</>",
+            "skillType": "MANUAL",
+            "durationType": "NONE",
+            "spData": {
+              "spType": "INCREASE_WITH_TIME",
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 80,
+              "initSp": 40,
+              "increment": 0.0
+            },
+            "prefabId": "skchr_marcil_3",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "chant_duration",
+                "value": 5.0,
+                "valueStr": null
+              },
+              {
+                "key": "extra_chant_duration",
+                "value": 10.0,
+                "valueStr": null
+              },
+              {
+                "key": "skill_cost_min_sp",
+                "value": 8.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_max",
+                "value": 80.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_init",
+                "value": 40.0,
+                "valueStr": null
+              },
+              {
+                "key": "sp_cost_extra",
+                "value": 8.0,
+                "valueStr": null
+              },
+              {
+                "key": "atk_scale",
+                "value": 3.5,
+                "valueStr": null
+              },
+              {
+                "key": "interval",
+                "value": 0.45,
+                "valueStr": null
+              },
+              {
+                "key": "stun",
+                "value": 3.5,
+                "valueStr": null
+              },
+              {
+                "key": "trig_cnt",
+                "value": 49.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "name": "爆破魔法",
+            "rangeId": null,
+            "description": "<$ba.chant>吟唱</><@ba.vdown>{chant_duration}</>秒后，消耗<@ba.vdown>{skill_cost_min_sp}</>点<$ba.magicpoint>魔力</>，在正前方位置造成爆炸，对周围敌人造成<@ba.vup>{atk_scale:0%}</>攻击力的法术伤害，炸到的高台会崩开碎片<$ba.stun>晕眩</>其周围敌人<@ba.vup>{stun}</>秒\\n可追加<$ba.chant>吟唱</><@ba.vdown>{extra_chant_duration}</>秒，完成后消耗剩余<@ba.vdown>所有</><$ba.magicpoint>魔力</>，每额外消耗<@ba.vdown>{sp_cost_extra}</>点<$ba.magicpoint>魔力</>，追加1次爆炸\\n<@ba.rem>追加吟唱可随时停止</>",
+            "skillType": "MANUAL",
+            "durationType": "NONE",
+            "spData": {
+              "spType": "INCREASE_WITH_TIME",
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 80,
+              "initSp": 40,
+              "increment": 0.0
+            },
+            "prefabId": "skchr_marcil_3",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "chant_duration",
+                "value": 5.0,
+                "valueStr": null
+              },
+              {
+                "key": "extra_chant_duration",
+                "value": 10.0,
+                "valueStr": null
+              },
+              {
+                "key": "skill_cost_min_sp",
+                "value": 8.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_max",
+                "value": 80.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_init",
+                "value": 40.0,
+                "valueStr": null
+              },
+              {
+                "key": "sp_cost_extra",
+                "value": 8.0,
+                "valueStr": null
+              },
+              {
+                "key": "atk_scale",
+                "value": 3.7,
+                "valueStr": null
+              },
+              {
+                "key": "interval",
+                "value": 0.45,
+                "valueStr": null
+              },
+              {
+                "key": "stun",
+                "value": 3.5,
+                "valueStr": null
+              },
+              {
+                "key": "trig_cnt",
+                "value": 49.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "name": "爆破魔法",
+            "rangeId": null,
+            "description": "<$ba.chant>吟唱</><@ba.vdown>{chant_duration}</>秒后，消耗<@ba.vdown>{skill_cost_min_sp}</>点<$ba.magicpoint>魔力</>，在正前方位置造成爆炸，对周围敌人造成<@ba.vup>{atk_scale:0%}</>攻击力的法术伤害，炸到的高台会崩开碎片<$ba.stun>晕眩</>其周围敌人<@ba.vup>{stun}</>秒\\n可追加<$ba.chant>吟唱</><@ba.vdown>{extra_chant_duration}</>秒，完成后消耗剩余<@ba.vdown>所有</><$ba.magicpoint>魔力</>，每额外消耗<@ba.vdown>{sp_cost_extra}</>点<$ba.magicpoint>魔力</>，追加1次爆炸\\n<@ba.rem>追加吟唱可随时停止</>",
+            "skillType": "MANUAL",
+            "durationType": "NONE",
+            "spData": {
+              "spType": "INCREASE_WITH_TIME",
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 80,
+              "initSp": 40,
+              "increment": 0.0
+            },
+            "prefabId": "skchr_marcil_3",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "chant_duration",
+                "value": 5.0,
+                "valueStr": null
+              },
+              {
+                "key": "extra_chant_duration",
+                "value": 10.0,
+                "valueStr": null
+              },
+              {
+                "key": "skill_cost_min_sp",
+                "value": 8.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_max",
+                "value": 80.0,
+                "valueStr": null
+              },
+              {
+                "key": "mana_init",
+                "value": 40.0,
+                "valueStr": null
+              },
+              {
+                "key": "sp_cost_extra",
+                "value": 8.0,
+                "valueStr": null
+              },
+              {
+                "key": "atk_scale",
+                "value": 3.9,
+                "valueStr": null
+              },
+              {
+                "key": "interval",
+                "value": 0.45,
+                "valueStr": null
+              },
+              {
+                "key": "stun",
+                "value": 4.0,
+                "valueStr": null
+              },
+              {
+                "key": "trig_cnt",
+                "value": 49.0,
+                "valueStr": null
+              }
+            ]
+          }
+        ]
+      },
+      "skchr_swire2_1": {
+        "skillId": "skchr_swire2_1",
+        "iconId": null,
+        "hidden": false,
+        "levels": [
+          {
+            "name": "仗义疏财",
+            "rangeId": "1-1",
+            "description": "消耗<@ba.vup>一枚</>金币，下一次攻击会为周围八格内血量不足70%的一名友方单位恢复相当于攻击力<@ba.vup>{attack@heal_scale:0%}</>的生命\\n<@ba.rem>携带此技能时金币上限为1</>",
+            "skillType": "PASSIVE",
+            "durationType": "NONE",
+            "spData": {
+              "spType": 8,
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 0,
+              "initSp": 0,
+              "increment": 0.0
+            },
+            "prefabId": "skchr_swire2_1",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "attack@heal_scale",
+                "value": 0.25,
+                "valueStr": null
+              },
+              {
+                "key": "sp",
+                "value": 1.0,
+                "valueStr": null
+              },
+              {
+                "key": "attack@sp",
+                "value": -1.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "name": "仗义疏财",
+            "rangeId": "1-1",
+            "description": "消耗<@ba.vup>一枚</>金币，下一次攻击会为周围八格内血量不足70%的一名友方单位恢复相当于攻击力<@ba.vup>{attack@heal_scale:0%}</>的生命\\n<@ba.rem>携带此技能时金币上限为1</>",
+            "skillType": "PASSIVE",
+            "durationType": "NONE",
+            "spData": {
+              "spType": 8,
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 0,
+              "initSp": 0,
+              "increment": 0.0
+            },
+            "prefabId": "skchr_swire2_1",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "attack@heal_scale",
+                "value": 0.3,
+                "valueStr": null
+              },
+              {
+                "key": "sp",
+                "value": 1.0,
+                "valueStr": null
+              },
+              {
+                "key": "attack@sp",
+                "value": -1.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "name": "仗义疏财",
+            "rangeId": "1-1",
+            "description": "消耗<@ba.vup>一枚</>金币，下一次攻击会为周围八格内血量不足70%的一名友方单位恢复相当于攻击力<@ba.vup>{attack@heal_scale:0%}</>的生命\\n<@ba.rem>携带此技能时金币上限为1</>",
+            "skillType": "PASSIVE",
+            "durationType": "NONE",
+            "spData": {
+              "spType": 8,
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 0,
+              "initSp": 0,
+              "increment": 0.0
+            },
+            "prefabId": "skchr_swire2_1",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "attack@heal_scale",
+                "value": 0.35,
+                "valueStr": null
+              },
+              {
+                "key": "sp",
+                "value": 1.0,
+                "valueStr": null
+              },
+              {
+                "key": "attack@sp",
+                "value": -1.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "name": "仗义疏财",
+            "rangeId": "1-1",
+            "description": "消耗<@ba.vup>一枚</>金币，下一次攻击会为周围八格内血量不足70%的一名友方单位恢复相当于攻击力<@ba.vup>{attack@heal_scale:0%}</>的生命\\n<@ba.rem>携带此技能时金币上限为2</>",
+            "skillType": "PASSIVE",
+            "durationType": "NONE",
+            "spData": {
+              "spType": 8,
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 0,
+              "initSp": 0,
+              "increment": 0.0
+            },
+            "prefabId": "skchr_swire2_1",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "attack@heal_scale",
+                "value": 0.4,
+                "valueStr": null
+              },
+              {
+                "key": "sp",
+                "value": 2.0,
+                "valueStr": null
+              },
+              {
+                "key": "attack@sp",
+                "value": -1.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "name": "仗义疏财",
+            "rangeId": "1-1",
+            "description": "消耗<@ba.vup>一枚</>金币，下一次攻击会为周围八格内血量不足70%的一名友方单位恢复相当于攻击力<@ba.vup>{attack@heal_scale:0%}</>的生命\\n<@ba.rem>携带此技能时金币上限为2</>",
+            "skillType": "PASSIVE",
+            "durationType": "NONE",
+            "spData": {
+              "spType": 8,
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 0,
+              "initSp": 0,
+              "increment": 0.0
+            },
+            "prefabId": "skchr_swire2_1",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "attack@heal_scale",
+                "value": 0.45,
+                "valueStr": null
+              },
+              {
+                "key": "sp",
+                "value": 2.0,
+                "valueStr": null
+              },
+              {
+                "key": "attack@sp",
+                "value": -1.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "name": "仗义疏财",
+            "rangeId": "1-1",
+            "description": "消耗<@ba.vup>一枚</>金币，下一次攻击会为周围八格内血量不足70%的一名友方单位恢复相当于攻击力<@ba.vup>{attack@heal_scale:0%}</>的生命\\n<@ba.rem>携带此技能时金币上限为2</>",
+            "skillType": "PASSIVE",
+            "durationType": "NONE",
+            "spData": {
+              "spType": 8,
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 0,
+              "initSp": 0,
+              "increment": 0.0
+            },
+            "prefabId": "skchr_swire2_1",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "attack@heal_scale",
+                "value": 0.5,
+                "valueStr": null
+              },
+              {
+                "key": "sp",
+                "value": 2.0,
+                "valueStr": null
+              },
+              {
+                "key": "attack@sp",
+                "value": -1.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "name": "仗义疏财",
+            "rangeId": "1-1",
+            "description": "消耗<@ba.vup>一枚</>金币，下一次攻击会为周围八格内血量不足70%的一名友方单位恢复相当于攻击力<@ba.vup>{attack@heal_scale:0%}</>的生命\\n<@ba.rem>携带此技能时金币上限为2</>",
+            "skillType": "PASSIVE",
+            "durationType": "NONE",
+            "spData": {
+              "spType": 8,
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 0,
+              "initSp": 0,
+              "increment": 0.0
+            },
+            "prefabId": "skchr_swire2_1",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "attack@heal_scale",
+                "value": 0.55,
+                "valueStr": null
+              },
+              {
+                "key": "sp",
+                "value": 2.0,
+                "valueStr": null
+              },
+              {
+                "key": "attack@sp",
+                "value": -1.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "name": "仗义疏财",
+            "rangeId": "1-1",
+            "description": "消耗<@ba.vup>一枚</>金币，下一次攻击会为周围八格内血量不足70%的一名友方单位恢复相当于攻击力<@ba.vup>{attack@heal_scale:0%}</>的生命\\n<@ba.rem>携带此技能时金币上限为3</>",
+            "skillType": "PASSIVE",
+            "durationType": "NONE",
+            "spData": {
+              "spType": 8,
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 0,
+              "initSp": 0,
+              "increment": 0.0
+            },
+            "prefabId": "skchr_swire2_1",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "attack@heal_scale",
+                "value": 0.6,
+                "valueStr": null
+              },
+              {
+                "key": "sp",
+                "value": 3.0,
+                "valueStr": null
+              },
+              {
+                "key": "attack@sp",
+                "value": -1.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "name": "仗义疏财",
+            "rangeId": "1-1",
+            "description": "消耗<@ba.vup>一枚</>金币，下一次攻击会为周围八格内血量不足70%的一名友方单位恢复相当于攻击力<@ba.vup>{attack@heal_scale:0%}</>的生命\\n<@ba.rem>携带此技能时金币上限为3</>",
+            "skillType": "PASSIVE",
+            "durationType": "NONE",
+            "spData": {
+              "spType": 8,
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 0,
+              "initSp": 0,
+              "increment": 0.0
+            },
+            "prefabId": "skchr_swire2_1",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "attack@heal_scale",
+                "value": 0.7,
+                "valueStr": null
+              },
+              {
+                "key": "sp",
+                "value": 3.0,
+                "valueStr": null
+              },
+              {
+                "key": "attack@sp",
+                "value": -1.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "name": "仗义疏财",
+            "rangeId": "1-1",
+            "description": "消耗<@ba.vup>一枚</>金币，下一次攻击会为周围八格内血量不足70%的一名友方单位恢复相当于攻击力<@ba.vup>{attack@heal_scale:0%}</>的生命\\n<@ba.rem>携带此技能时金币上限为3</>",
+            "skillType": "PASSIVE",
+            "durationType": "NONE",
+            "spData": {
+              "spType": 8,
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 0,
+              "initSp": 0,
+              "increment": 0.0
+            },
+            "prefabId": "skchr_swire2_1",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "attack@heal_scale",
+                "value": 0.8,
+                "valueStr": null
+              },
+              {
+                "key": "sp",
+                "value": 3.0,
+                "valueStr": null
+              },
+              {
+                "key": "attack@sp",
+                "value": -1.0,
+                "valueStr": null
+              }
+            ]
+          }
+        ]
+      },
+      "skchr_swire2_2": {
+        "skillId": "skchr_swire2_2",
+        "iconId": null,
+        "hidden": false,
+        "levels": [
+          {
+            "name": "“见面礼”",
+            "rangeId": "1-1",
+            "description": "消耗<@ba.vup>一枚</>金币在范围内一个可放置且可通行的地面放置香槟炸弹，香槟炸弹会对触碰到的首个敌人造成相当于攻击力<@ba.vup>{atk_scale:0%}</>的物理伤害，并使目标<$ba.sluggish>停顿</><@ba.vup>{sluggish}</>秒\\n<@ba.rem>香槟炸弹在场3秒后可额外造成一次伤害；携带此技能时金币上限为3</>",
+            "skillType": "PASSIVE",
+            "durationType": "NONE",
+            "spData": {
+              "spType": 8,
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 0,
+              "initSp": 0,
+              "increment": 0.0
+            },
+            "prefabId": "skchr_swire2_2",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "sp",
+                "value": 3.0,
+                "valueStr": null
+              },
+              {
+                "key": "atk_scale",
+                "value": 1.4,
+                "valueStr": null
+              },
+              {
+                "key": "sluggish",
+                "value": 2.0,
+                "valueStr": null
+              },
+              {
+                "key": "attack@sp",
+                "value": -1.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "name": "“见面礼”",
+            "rangeId": "1-1",
+            "description": "消耗<@ba.vup>一枚</>金币在范围内一个可放置且可通行的地面放置香槟炸弹，香槟炸弹会对触碰到的首个敌人造成相当于攻击力<@ba.vup>{atk_scale:0%}</>的物理伤害，并使目标<$ba.sluggish>停顿</><@ba.vup>{sluggish}</>秒\\n<@ba.rem>香槟炸弹在场3秒后可额外造成一次伤害；携带此技能时金币上限为3</>",
+            "skillType": "PASSIVE",
+            "durationType": "NONE",
+            "spData": {
+              "spType": 8,
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 0,
+              "initSp": 0,
+              "increment": 0.0
+            },
+            "prefabId": "skchr_swire2_2",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "sp",
+                "value": 3.0,
+                "valueStr": null
+              },
+              {
+                "key": "atk_scale",
+                "value": 1.45,
+                "valueStr": null
+              },
+              {
+                "key": "sluggish",
+                "value": 2.0,
+                "valueStr": null
+              },
+              {
+                "key": "attack@sp",
+                "value": -1.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "name": "“见面礼”",
+            "rangeId": "1-1",
+            "description": "消耗<@ba.vup>一枚</>金币在范围内一个可放置且可通行的地面放置香槟炸弹，香槟炸弹会对触碰到的首个敌人造成相当于攻击力<@ba.vup>{atk_scale:0%}</>的物理伤害，并使目标<$ba.sluggish>停顿</><@ba.vup>{sluggish}</>秒\\n<@ba.rem>香槟炸弹在场3秒后可额外造成一次伤害；携带此技能时金币上限为3</>",
+            "skillType": "PASSIVE",
+            "durationType": "NONE",
+            "spData": {
+              "spType": 8,
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 0,
+              "initSp": 0,
+              "increment": 0.0
+            },
+            "prefabId": "skchr_swire2_2",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "sp",
+                "value": 3.0,
+                "valueStr": null
+              },
+              {
+                "key": "atk_scale",
+                "value": 1.5,
+                "valueStr": null
+              },
+              {
+                "key": "sluggish",
+                "value": 2.0,
+                "valueStr": null
+              },
+              {
+                "key": "attack@sp",
+                "value": -1.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "name": "“见面礼”",
+            "rangeId": "1-1",
+            "description": "消耗<@ba.vup>一枚</>金币在范围内一个可放置且可通行的地面放置香槟炸弹，香槟炸弹会对触碰到的首个敌人造成相当于攻击力<@ba.vup>{atk_scale:0%}</>的物理伤害，并使目标<$ba.sluggish>停顿</><@ba.vup>{sluggish}</>秒\\n<@ba.rem>香槟炸弹在场3秒后可额外造成一次伤害；携带此技能时金币上限为3</>",
+            "skillType": "PASSIVE",
+            "durationType": "NONE",
+            "spData": {
+              "spType": 8,
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 0,
+              "initSp": 0,
+              "increment": 0.0
+            },
+            "prefabId": "skchr_swire2_2",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "sp",
+                "value": 3.0,
+                "valueStr": null
+              },
+              {
+                "key": "atk_scale",
+                "value": 1.55,
+                "valueStr": null
+              },
+              {
+                "key": "sluggish",
+                "value": 2.0,
+                "valueStr": null
+              },
+              {
+                "key": "attack@sp",
+                "value": -1.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "name": "“见面礼”",
+            "rangeId": "1-1",
+            "description": "消耗<@ba.vup>一枚</>金币在范围内一个可放置且可通行的地面放置香槟炸弹，香槟炸弹会对触碰到的首个敌人造成相当于攻击力<@ba.vup>{atk_scale:0%}</>的物理伤害，并使目标<$ba.sluggish>停顿</><@ba.vup>{sluggish}</>秒\\n<@ba.rem>香槟炸弹在场3秒后可额外造成一次伤害；携带此技能时金币上限为3</>",
+            "skillType": "PASSIVE",
+            "durationType": "NONE",
+            "spData": {
+              "spType": 8,
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 0,
+              "initSp": 0,
+              "increment": 0.0
+            },
+            "prefabId": "skchr_swire2_2",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "sp",
+                "value": 3.0,
+                "valueStr": null
+              },
+              {
+                "key": "atk_scale",
+                "value": 1.6,
+                "valueStr": null
+              },
+              {
+                "key": "sluggish",
+                "value": 2.0,
+                "valueStr": null
+              },
+              {
+                "key": "attack@sp",
+                "value": -1.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "name": "“见面礼”",
+            "rangeId": "1-1",
+            "description": "消耗<@ba.vup>一枚</>金币在范围内一个可放置且可通行的地面放置香槟炸弹，香槟炸弹会对触碰到的首个敌人造成相当于攻击力<@ba.vup>{atk_scale:0%}</>的物理伤害，并使目标<$ba.sluggish>停顿</><@ba.vup>{sluggish}</>秒\\n<@ba.rem>香槟炸弹在场3秒后可额外造成一次伤害；携带此技能时金币上限为3</>",
+            "skillType": "PASSIVE",
+            "durationType": "NONE",
+            "spData": {
+              "spType": 8,
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 0,
+              "initSp": 0,
+              "increment": 0.0
+            },
+            "prefabId": "skchr_swire2_2",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "sp",
+                "value": 3.0,
+                "valueStr": null
+              },
+              {
+                "key": "atk_scale",
+                "value": 1.65,
+                "valueStr": null
+              },
+              {
+                "key": "sluggish",
+                "value": 2.0,
+                "valueStr": null
+              },
+              {
+                "key": "attack@sp",
+                "value": -1.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "name": "“见面礼”",
+            "rangeId": "1-1",
+            "description": "消耗<@ba.vup>一枚</>金币在范围内一个可放置且可通行的地面放置香槟炸弹，香槟炸弹会对触碰到的首个敌人造成相当于攻击力<@ba.vup>{atk_scale:0%}</>的物理伤害，并使目标<$ba.sluggish>停顿</><@ba.vup>{sluggish}</>秒\\n<@ba.rem>香槟炸弹在场3秒后可额外造成一次伤害；携带此技能时金币上限为4</>",
+            "skillType": "PASSIVE",
+            "durationType": "NONE",
+            "spData": {
+              "spType": 8,
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 0,
+              "initSp": 0,
+              "increment": 0.0
+            },
+            "prefabId": "skchr_swire2_2",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "sp",
+                "value": 4.0,
+                "valueStr": null
+              },
+              {
+                "key": "atk_scale",
+                "value": 1.7,
+                "valueStr": null
+              },
+              {
+                "key": "sluggish",
+                "value": 2.0,
+                "valueStr": null
+              },
+              {
+                "key": "attack@sp",
+                "value": -1.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "name": "“见面礼”",
+            "rangeId": "1-1",
+            "description": "消耗<@ba.vup>一枚</>金币在范围内一个可放置且可通行的地面放置香槟炸弹，香槟炸弹会对触碰到的首个敌人造成相当于攻击力<@ba.vup>{atk_scale:0%}</>的物理伤害，并使目标<$ba.sluggish>停顿</><@ba.vup>{sluggish}</>秒\\n<@ba.rem>香槟炸弹在场3秒后可额外造成一次伤害；携带此技能时金币上限为4</>",
+            "skillType": "PASSIVE",
+            "durationType": "NONE",
+            "spData": {
+              "spType": 8,
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 0,
+              "initSp": 0,
+              "increment": 0.0
+            },
+            "prefabId": "skchr_swire2_2",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "sp",
+                "value": 4.0,
+                "valueStr": null
+              },
+              {
+                "key": "atk_scale",
+                "value": 1.8,
+                "valueStr": null
+              },
+              {
+                "key": "sluggish",
+                "value": 2.0,
+                "valueStr": null
+              },
+              {
+                "key": "attack@sp",
+                "value": -1.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "name": "“见面礼”",
+            "rangeId": "1-1",
+            "description": "消耗<@ba.vup>一枚</>金币在范围内一个可放置且可通行的地面放置香槟炸弹，香槟炸弹会对触碰到的首个敌人造成相当于攻击力<@ba.vup>{atk_scale:0%}</>的物理伤害，并使目标<$ba.sluggish>停顿</><@ba.vup>{sluggish}</>秒\\n<@ba.rem>香槟炸弹在场3秒后可额外造成一次伤害；携带此技能时金币上限为5</>",
+            "skillType": "PASSIVE",
+            "durationType": "NONE",
+            "spData": {
+              "spType": 8,
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 0,
+              "initSp": 0,
+              "increment": 0.0
+            },
+            "prefabId": "skchr_swire2_2",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "sp",
+                "value": 5.0,
+                "valueStr": null
+              },
+              {
+                "key": "atk_scale",
+                "value": 1.9,
+                "valueStr": null
+              },
+              {
+                "key": "sluggish",
+                "value": 2.0,
+                "valueStr": null
+              },
+              {
+                "key": "attack@sp",
+                "value": -1.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "name": "“见面礼”",
+            "rangeId": "1-1",
+            "description": "消耗<@ba.vup>一枚</>金币在范围内一个可放置且可通行的地面放置香槟炸弹，香槟炸弹会对触碰到的首个敌人造成相当于攻击力<@ba.vup>{atk_scale:0%}</>的物理伤害，并使目标<$ba.sluggish>停顿</><@ba.vup>{sluggish}</>秒\\n<@ba.rem>香槟炸弹在场3秒后可额外造成一次伤害；携带此技能时金币上限为5</>",
+            "skillType": "PASSIVE",
+            "durationType": "NONE",
+            "spData": {
+              "spType": 8,
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 0,
+              "initSp": 0,
+              "increment": 0.0
+            },
+            "prefabId": "skchr_swire2_2",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "sp",
+                "value": 5.0,
+                "valueStr": null
+              },
+              {
+                "key": "atk_scale",
+                "value": 2.0,
+                "valueStr": null
+              },
+              {
+                "key": "sluggish",
+                "value": 2.0,
+                "valueStr": null
+              },
+              {
+                "key": "attack@sp",
+                "value": -1.0,
+                "valueStr": null
+              }
+            ]
+          }
+        ]
+      },
+      "skchr_swire2_3": {
+        "skillId": "skchr_swire2_3",
+        "iconId": null,
+        "hidden": false,
+        "levels": [
+          {
+            "name": "千金一掷",
+            "rangeId": "1-1",
+            "description": "攻击变为二连击，击倒敌人时获得一枚金币；主动关闭技能时消耗<@ba.vup>所有</>金币对前方范围内敌人随机攻击，每消耗一枚金币造成一次相当于攻击力<@ba.vup>{atk_scale:0%}</>的物理伤害，并将目标<@ba.vup>小力地</>向前推开\\n<@ba.rem>持续时间无限，可随时主动关闭技能；携带此技能时金币上限为10</>",
+            "skillType": "AUTO",
+            "durationType": "NONE",
+            "spData": {
+              "spType": "INCREASE_WITH_TIME",
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 5,
+              "initSp": 0,
+              "increment": 1.0
+            },
+            "prefabId": "skchr_swire2_3",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "atk_scale",
+                "value": 0.8,
+                "valueStr": null
+              },
+              {
+                "key": "force",
+                "value": 0.0,
+                "valueStr": null
+              },
+              {
+                "key": "sp",
+                "value": 10.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "name": "千金一掷",
+            "rangeId": "1-1",
+            "description": "攻击变为二连击，击倒敌人时获得一枚金币；主动关闭技能时消耗<@ba.vup>所有</>金币对前方范围内敌人随机攻击，每消耗一枚金币造成一次相当于攻击力<@ba.vup>{atk_scale:0%}</>的物理伤害，并将目标<@ba.vup>小力地</>向前推开\\n<@ba.rem>持续时间无限，可随时主动关闭技能；携带此技能时金币上限为10</>",
+            "skillType": "AUTO",
+            "durationType": "NONE",
+            "spData": {
+              "spType": "INCREASE_WITH_TIME",
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 5,
+              "initSp": 0,
+              "increment": 1.0
+            },
+            "prefabId": "skchr_swire2_3",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "atk_scale",
+                "value": 0.85,
+                "valueStr": null
+              },
+              {
+                "key": "force",
+                "value": 0.0,
+                "valueStr": null
+              },
+              {
+                "key": "sp",
+                "value": 10.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "name": "千金一掷",
+            "rangeId": "1-1",
+            "description": "攻击变为二连击，击倒敌人时获得一枚金币；主动关闭技能时消耗<@ba.vup>所有</>金币对前方范围内敌人随机攻击，每消耗一枚金币造成一次相当于攻击力<@ba.vup>{atk_scale:0%}</>的物理伤害，并将目标<@ba.vup>小力地</>向前推开\\n<@ba.rem>持续时间无限，可随时主动关闭技能；携带此技能时金币上限为10</>",
+            "skillType": "AUTO",
+            "durationType": "NONE",
+            "spData": {
+              "spType": "INCREASE_WITH_TIME",
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 5,
+              "initSp": 0,
+              "increment": 1.0
+            },
+            "prefabId": "skchr_swire2_3",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "atk_scale",
+                "value": 0.9,
+                "valueStr": null
+              },
+              {
+                "key": "force",
+                "value": 0.0,
+                "valueStr": null
+              },
+              {
+                "key": "sp",
+                "value": 10.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "name": "千金一掷",
+            "rangeId": "1-1",
+            "description": "攻击变为二连击，击倒敌人时获得一枚金币；主动关闭技能时消耗<@ba.vup>所有</>金币对前方范围内敌人随机攻击，每消耗一枚金币造成一次相当于攻击力<@ba.vup>{atk_scale:0%}</>的物理伤害，并将目标<@ba.vup>小力地</>向前推开\\n<@ba.rem>持续时间无限，可随时主动关闭技能；携带此技能时金币上限为10</>",
+            "skillType": "AUTO",
+            "durationType": "NONE",
+            "spData": {
+              "spType": "INCREASE_WITH_TIME",
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 5,
+              "initSp": 0,
+              "increment": 1.0
+            },
+            "prefabId": "skchr_swire2_3",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "atk_scale",
+                "value": 1.0,
+                "valueStr": null
+              },
+              {
+                "key": "force",
+                "value": 0.0,
+                "valueStr": null
+              },
+              {
+                "key": "sp",
+                "value": 10.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "name": "千金一掷",
+            "rangeId": "1-1",
+            "description": "攻击变为二连击，击倒敌人时获得一枚金币；主动关闭技能时消耗<@ba.vup>所有</>金币对前方范围内敌人随机攻击，每消耗一枚金币造成一次相当于攻击力<@ba.vup>{atk_scale:0%}</>的物理伤害，并将目标<@ba.vup>小力地</>向前推开\\n<@ba.rem>持续时间无限，可随时主动关闭技能；携带此技能时金币上限为10</>",
+            "skillType": "AUTO",
+            "durationType": "NONE",
+            "spData": {
+              "spType": "INCREASE_WITH_TIME",
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 5,
+              "initSp": 0,
+              "increment": 1.0
+            },
+            "prefabId": "skchr_swire2_3",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "atk_scale",
+                "value": 1.05,
+                "valueStr": null
+              },
+              {
+                "key": "force",
+                "value": 0.0,
+                "valueStr": null
+              },
+              {
+                "key": "sp",
+                "value": 10.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "name": "千金一掷",
+            "rangeId": "1-1",
+            "description": "攻击变为二连击，击倒敌人时获得一枚金币；主动关闭技能时消耗<@ba.vup>所有</>金币对前方范围内敌人随机攻击，每消耗一枚金币造成一次相当于攻击力<@ba.vup>{atk_scale:0%}</>的物理伤害，并将目标<@ba.vup>小力地</>向前推开\\n<@ba.rem>持续时间无限，可随时主动关闭技能；携带此技能时金币上限为10</>",
+            "skillType": "AUTO",
+            "durationType": "NONE",
+            "spData": {
+              "spType": "INCREASE_WITH_TIME",
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 5,
+              "initSp": 0,
+              "increment": 1.0
+            },
+            "prefabId": "skchr_swire2_3",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "atk_scale",
+                "value": 1.1,
+                "valueStr": null
+              },
+              {
+                "key": "force",
+                "value": 0.0,
+                "valueStr": null
+              },
+              {
+                "key": "sp",
+                "value": 10.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "name": "千金一掷",
+            "rangeId": "1-1",
+            "description": "攻击变为二连击，击倒敌人时获得一枚金币；主动关闭技能时消耗<@ba.vup>所有</>金币对前方范围内敌人随机攻击，每消耗一枚金币造成一次相当于攻击力<@ba.vup>{atk_scale:0%}</>的物理伤害，并将目标<@ba.vup>小力地</>向前推开\\n<@ba.rem>持续时间无限，可随时主动关闭技能；携带此技能时金币上限为10</>",
+            "skillType": "AUTO",
+            "durationType": "NONE",
+            "spData": {
+              "spType": "INCREASE_WITH_TIME",
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 5,
+              "initSp": 0,
+              "increment": 1.0
+            },
+            "prefabId": "skchr_swire2_3",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "atk_scale",
+                "value": 1.2,
+                "valueStr": null
+              },
+              {
+                "key": "force",
+                "value": 0.0,
+                "valueStr": null
+              },
+              {
+                "key": "sp",
+                "value": 10.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "name": "千金一掷",
+            "rangeId": "1-1",
+            "description": "攻击变为二连击，击倒敌人时获得一枚金币；主动关闭技能时消耗<@ba.vup>所有</>金币对前方范围内敌人随机攻击，每消耗一枚金币造成一次相当于攻击力<@ba.vup>{atk_scale:0%}</>的物理伤害，并将目标<@ba.vup>小力地</>向前推开\\n<@ba.rem>持续时间无限，可随时主动关闭技能；携带此技能时金币上限为10</>",
+            "skillType": "AUTO",
+            "durationType": "NONE",
+            "spData": {
+              "spType": "INCREASE_WITH_TIME",
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 5,
+              "initSp": 0,
+              "increment": 1.0
+            },
+            "prefabId": "skchr_swire2_3",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "atk_scale",
+                "value": 1.3,
+                "valueStr": null
+              },
+              {
+                "key": "force",
+                "value": 0.0,
+                "valueStr": null
+              },
+              {
+                "key": "sp",
+                "value": 10.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "name": "千金一掷",
+            "rangeId": "1-1",
+            "description": "攻击变为二连击，击倒敌人时获得一枚金币；主动关闭技能时消耗<@ba.vup>所有</>金币对前方范围内敌人随机攻击，每消耗一枚金币造成一次相当于攻击力<@ba.vup>{atk_scale:0%}</>的物理伤害，并将目标<@ba.vup>小力地</>向前推开\\n<@ba.rem>持续时间无限，可随时主动关闭技能；携带此技能时金币上限为10</>",
+            "skillType": "AUTO",
+            "durationType": "NONE",
+            "spData": {
+              "spType": "INCREASE_WITH_TIME",
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 5,
+              "initSp": 0,
+              "increment": 1.0
+            },
+            "prefabId": "skchr_swire2_3",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "atk_scale",
+                "value": 1.4,
+                "valueStr": null
+              },
+              {
+                "key": "force",
+                "value": 0.0,
+                "valueStr": null
+              },
+              {
+                "key": "sp",
+                "value": 10.0,
+                "valueStr": null
+              }
+            ]
+          },
+          {
+            "name": "千金一掷",
+            "rangeId": "1-1",
+            "description": "攻击变为二连击，击倒敌人时获得一枚金币；主动关闭技能时消耗<@ba.vup>所有</>金币对前方范围内敌人随机攻击，每消耗一枚金币造成一次相当于攻击力<@ba.vup>{atk_scale:0%}</>的物理伤害，并将目标<@ba.vup>中等力度地</>向前推开\\n<@ba.rem>持续时间无限，可随时主动关闭技能；携带此技能时金币上限为10</>",
+            "skillType": "AUTO",
+            "durationType": "NONE",
+            "spData": {
+              "spType": "INCREASE_WITH_TIME",
+              "levelUpCost": null,
+              "maxChargeTime": 1,
+              "spCost": 5,
+              "initSp": 0,
+              "increment": 1.0
+            },
+            "prefabId": "skchr_swire2_3",
+            "duration": -1.0,
+            "blackboard": [
+              {
+                "key": "atk_scale",
+                "value": 1.5,
+                "valueStr": null
+              },
+              {
+                "key": "force",
+                "value": 1.0,
+                "valueStr": null
+              },
+              {
+                "key": "sp",
+                "value": 10.0,
+                "valueStr": null
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
