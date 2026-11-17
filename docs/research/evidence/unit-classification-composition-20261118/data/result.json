@@ -1,0 +1,5124 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-18",
+    "sources": [
+      {
+        "file": ".cache/native-research/unit-audit-20261110/operator-config/character_table.json",
+        "revision": "17759cc8cdf37388414145d16262a3a06f3ab25e",
+        "path": "zh_CN/gamedata/excel/character_table.json",
+        "sha256": "e523c7c83c36e2d76697121079e17d0282da1a94d59a55e1cc55616edf0b41c4",
+        "gitBlobSha1": "f7284f66cfd87273a6805142b389aa314320968f",
+        "bytes": 15069101,
+        "url": "https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/17759cc8cdf37388414145d16262a3a06f3ab25e/zh_CN/gamedata/excel/character_table.json"
+      },
+      {
+        "file": ".cache/native-research/leithanien-enemydata-20261109/enemy_database.json",
+        "revision": "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+        "path": "zh_CN/gamedata/levels/enemydata/enemy_database.json",
+        "sha256": "eb8559db76aecd92c37b3ac038de0e9aeb8b6d6c107adfaeadfe0fbc098e067b",
+        "gitBlobSha1": "62ab806926b9c8ca5c80524730caf0066f6c2c2f",
+        "bytes": 15721552,
+        "url": "https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/63c7cec73c3858d0ae913f85cc89af3cef4d744f/zh_CN/gamedata/levels/enemydata/enemy_database.json"
+      }
+    ],
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/unit-classification-composition-20261118/data/extract.py",
+      "sha256": "90f6091d26610984728bba4158dd98fbf2fbe3b48e57c16520568aa8f161dea0"
+    },
+    "scope": "Complete fixed Character/Enemy tables; explicit profession cohorts and selected original fields/references."
+  },
+  "result": {
+    "characterCount": 1382,
+    "characterTopLevelFieldCounts": {
+      "activityPotentialItemId": 1382,
+      "allSkillLvlup": 1382,
+      "appellation": 1382,
+      "canUseActivityPotentialItem": 1382,
+      "canUseGeneralPotentialItem": 1382,
+      "classicPotentialItemId": 1382,
+      "description": 1382,
+      "displayNumber": 1382,
+      "displayTokenDict": 1382,
+      "favorKeyFrames": 1382,
+      "groupId": 1382,
+      "isNotObtainable": 1382,
+      "isSpChar": 1382,
+      "itemDesc": 1382,
+      "itemObtainApproach": 1382,
+      "itemUsage": 1382,
+      "mainPower": 1382,
+      "maxPotentialLevel": 1382,
+      "name": 1382,
+      "nationId": 1382,
+      "phases": 1382,
+      "position": 1382,
+      "potentialItemId": 1382,
+      "potentialRanks": 1382,
+      "profession": 1382,
+      "rarity": 1382,
+      "skills": 1382,
+      "sortIndex": 1382,
+      "spTargetId": 1382,
+      "spTargetType": 1382,
+      "subPower": 1382,
+      "subProfessionId": 1382,
+      "tagList": 1382,
+      "talents": 1382,
+      "teamId": 1382,
+      "trait": 1382
+    },
+    "characterByProfession": {
+      "CASTER": {
+        "count": 64,
+        "distributions": {
+          "mainPower": [
+            {
+              "value": {
+                "groupId": "elite",
+                "nationId": "rhodes",
+                "teamId": null
+              },
+              "count": 3
+            },
+            {
+              "value": {
+                "groupId": "rhine",
+                "nationId": "columbia",
+                "teamId": null
+              },
+              "count": 2
+            },
+            {
+              "value": {
+                "groupId": "sui",
+                "nationId": "yan",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": "tara",
+                "nationId": "victoria",
+                "teamId": null
+              },
+              "count": 2
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "bolivar",
+                "teamId": null
+              },
+              "count": 2
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "columbia",
+                "teamId": null
+              },
+              "count": 4
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "iberia",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "kjerag",
+                "teamId": null
+              },
+              "count": 2
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "laterano",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "leithanien",
+                "teamId": null
+              },
+              "count": 5
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "lungmen",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "rhodes",
+                "teamId": "action4"
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "rhodes",
+                "teamId": "reserve1"
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "rhodes",
+                "teamId": "reserve4"
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "rhodes",
+                "teamId": null
+              },
+              "count": 7
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "rim",
+                "teamId": null
+              },
+              "count": 3
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "sami",
+                "teamId": null
+              },
+              "count": 3
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "sargon",
+                "teamId": null
+              },
+              "count": 4
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "siracusa",
+                "teamId": null
+              },
+              "count": 3
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "ursus",
+                "teamId": "student"
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "ursus",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "victoria",
+                "teamId": null
+              },
+              "count": 9
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "yan",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": null,
+                "teamId": "laios"
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": null,
+                "teamId": null
+              },
+              "count": 4
+            }
+          ],
+          "subPower": [
+            {
+              "value": [
+                {
+                  "groupId": "babel",
+                  "nationId": null,
+                  "teamId": null
+                },
+                {
+                  "groupId": null,
+                  "nationId": "sargon",
+                  "teamId": null
+                }
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                {
+                  "groupId": "babel",
+                  "nationId": null,
+                  "teamId": null
+                }
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                {
+                  "groupId": "karlan",
+                  "nationId": "kjerag",
+                  "teamId": null
+                }
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                {
+                  "groupId": "penguin",
+                  "nationId": "lungmen",
+                  "teamId": null
+                }
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "bolivar",
+                  "teamId": null
+                }
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "columbia",
+                  "teamId": null
+                }
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "kjerag",
+                  "teamId": null
+                }
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "leithanien",
+                  "teamId": null
+                }
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "rim",
+                  "teamId": null
+                },
+                {
+                  "groupId": "babel",
+                  "nationId": null,
+                  "teamId": null
+                }
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "sargon",
+                  "teamId": null
+                }
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "victoria",
+                  "teamId": null
+                }
+              ],
+              "count": 2
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "yan",
+                  "teamId": null
+                },
+                {
+                  "groupId": null,
+                  "nationId": "victoria",
+                  "teamId": null
+                }
+              ],
+              "count": 1
+            },
+            {
+              "value": null,
+              "count": 51
+            }
+          ],
+          "position": [
+            {
+              "value": "RANGED",
+              "count": 64
+            }
+          ],
+          "subProfessionId": [
+            {
+              "value": "blastcaster",
+              "count": 5
+            },
+            {
+              "value": "chain",
+              "count": 4
+            },
+            {
+              "value": "corecaster",
+              "count": 15
+            },
+            {
+              "value": "funnel",
+              "count": 7
+            },
+            {
+              "value": "mystic",
+              "count": 6
+            },
+            {
+              "value": "phalanx",
+              "count": 5
+            },
+            {
+              "value": "primcaster",
+              "count": 6
+            },
+            {
+              "value": "soulcaster",
+              "count": 2
+            },
+            {
+              "value": "splashcaster",
+              "count": 14
+            }
+          ],
+          "tagList": [
+            {
+              "value": [
+                "元素",
+                "爆发"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "元素",
+                "输出",
+                "控场"
+              ],
+              "count": 2
+            },
+            {
+              "value": [
+                "元素",
+                "输出",
+                "群攻"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "元素",
+                "输出"
+              ],
+              "count": 2
+            },
+            {
+              "value": [
+                "召唤",
+                "输出"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "召唤"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "支援机械",
+                "削弱"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "新手"
+              ],
+              "count": 2
+            },
+            {
+              "value": [
+                "群攻",
+                "减速"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "群攻",
+                "削弱"
+              ],
+              "count": 2
+            },
+            {
+              "value": [
+                "群攻",
+                "控场"
+              ],
+              "count": 5
+            },
+            {
+              "value": [
+                "群攻",
+                "支援",
+                "控场"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "群攻",
+                "治疗",
+                "控场"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "群攻",
+                "爆发"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "群攻",
+                "输出",
+                "控场"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "群攻",
+                "输出"
+              ],
+              "count": 4
+            },
+            {
+              "value": [
+                "群攻",
+                "防护"
+              ],
+              "count": 3
+            },
+            {
+              "value": [
+                "群攻"
+              ],
+              "count": 3
+            },
+            {
+              "value": [
+                "输出",
+                "削弱"
+              ],
+              "count": 3
+            },
+            {
+              "value": [
+                "输出",
+                "控场"
+              ],
+              "count": 6
+            },
+            {
+              "value": [
+                "输出",
+                "治疗",
+                "减速"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "输出",
+                "生存"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "输出"
+              ],
+              "count": 20
+            }
+          ]
+        },
+        "withNonemptyPowerCount": 60,
+        "nonemptyPowerRows": []
+      },
+      "MEDIC": {
+        "count": 42,
+        "distributions": {
+          "mainPower": [
+            {
+              "value": {
+                "groupId": "rhine",
+                "nationId": "columbia",
+                "teamId": null
+              },
+              "count": 2
+            },
+            {
+              "value": {
+                "groupId": "siesta",
+                "nationId": "columbia",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": "tara",
+                "nationId": "victoria",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "iberia",
+                "teamId": null
+              },
+              "count": 3
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "leithanien",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "rhodes",
+                "teamId": "reserve1"
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "rhodes",
+                "teamId": "reserve4"
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "rhodes",
+                "teamId": null
+              },
+              "count": 13
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "rim",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "sargon",
+                "teamId": null
+              },
+              "count": 3
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "ursus",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "victoria",
+                "teamId": null
+              },
+              "count": 4
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "yan",
+                "teamId": null
+              },
+              "count": 4
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": null,
+                "teamId": "followers"
+              },
+              "count": 2
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": null,
+                "teamId": null
+              },
+              "count": 4
+            }
+          ],
+          "subPower": [
+            {
+              "value": [
+                {
+                  "groupId": "babel",
+                  "nationId": null,
+                  "teamId": null
+                }
+              ],
+              "count": 2
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "kjerag",
+                  "teamId": null
+                }
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "minos",
+                  "teamId": null
+                }
+              ],
+              "count": 2
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "rhodes",
+                  "teamId": null
+                }
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "rim",
+                  "teamId": null
+                }
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "sargon",
+                  "teamId": null
+                }
+              ],
+              "count": 2
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "siracusa",
+                  "teamId": null
+                }
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "victoria",
+                  "teamId": null
+                }
+              ],
+              "count": 2
+            },
+            {
+              "value": null,
+              "count": 30
+            }
+          ],
+          "position": [
+            {
+              "value": "RANGED",
+              "count": 42
+            }
+          ],
+          "subProfessionId": [
+            {
+              "value": "chainhealer",
+              "count": 4
+            },
+            {
+              "value": "healer",
+              "count": 5
+            },
+            {
+              "value": "incantationmedic",
+              "count": 4
+            },
+            {
+              "value": "physician",
+              "count": 17
+            },
+            {
+              "value": "ringhealer",
+              "count": 5
+            },
+            {
+              "value": "wandermedic",
+              "count": 5
+            },
+            {
+              "value": "watchman",
+              "count": 2
+            }
+          ],
+          "tagList": [
+            {
+              "value": [
+                "召唤",
+                "治疗"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "支援机械",
+                "治疗"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "治疗",
+                "支援"
+              ],
+              "count": 8
+            },
+            {
+              "value": [
+                "治疗",
+                "输出",
+                "削弱"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "治疗",
+                "输出",
+                "支援"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "治疗",
+                "输出"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "治疗",
+                "防护",
+                "控场"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "治疗"
+              ],
+              "count": 27
+            },
+            {
+              "value": [
+                "高空",
+                "治疗",
+                "支援"
+              ],
+              "count": 1
+            }
+          ]
+        },
+        "withNonemptyPowerCount": 38,
+        "nonemptyPowerRows": []
+      },
+      "PIONEER": {
+        "count": 46,
+        "distributions": {
+          "mainPower": [
+            {
+              "value": {
+                "groupId": "babel",
+                "nationId": null,
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": "blacksteel",
+                "nationId": "columbia",
+                "teamId": null
+              },
+              "count": 2
+            },
+            {
+              "value": {
+                "groupId": "glasgow",
+                "nationId": "victoria",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": "karlan",
+                "nationId": "kjerag",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": "penguin",
+                "nationId": "lungmen",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": "pinus",
+                "nationId": "kazimierz",
+                "teamId": null
+              },
+              "count": 2
+            },
+            {
+              "value": {
+                "groupId": "rhine",
+                "nationId": "columbia",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": "siesta",
+                "nationId": "columbia",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": "sweep",
+                "nationId": "rhodes",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "columbia",
+                "teamId": null
+              },
+              "count": 2
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "higashi",
+                "teamId": null
+              },
+              "count": 2
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "kjerag",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "laterano",
+                "teamId": null
+              },
+              "count": 2
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "rhodes",
+                "teamId": "action4"
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "rhodes",
+                "teamId": "reserve1"
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "rhodes",
+                "teamId": null
+              },
+              "count": 7
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "rim",
+                "teamId": null
+              },
+              "count": 2
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "sargon",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "siracusa",
+                "teamId": "chiave"
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "siracusa",
+                "teamId": null
+              },
+              "count": 2
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "ursus",
+                "teamId": "student"
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "ursus",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "victoria",
+                "teamId": null
+              },
+              "count": 5
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "yan",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": null,
+                "teamId": "laios"
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": null,
+                "teamId": null
+              },
+              "count": 4
+            }
+          ],
+          "subPower": [
+            {
+              "value": [
+                {
+                  "groupId": "tara",
+                  "nationId": "victoria",
+                  "teamId": null
+                }
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "bolivar",
+                  "teamId": null
+                }
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "higashi",
+                  "teamId": null
+                }
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "iberia",
+                  "teamId": null
+                }
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "kazimierz",
+                  "teamId": null
+                }
+              ],
+              "count": 2
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "siracusa",
+                  "teamId": null
+                }
+              ],
+              "count": 1
+            },
+            {
+              "value": null,
+              "count": 39
+            }
+          ],
+          "position": [
+            {
+              "value": "MELEE",
+              "count": 39
+            },
+            {
+              "value": "RANGED",
+              "count": 7
+            }
+          ],
+          "subProfessionId": [
+            {
+              "value": "agent",
+              "count": 6
+            },
+            {
+              "value": "bearer",
+              "count": 5
+            },
+            {
+              "value": "charger",
+              "count": 7
+            },
+            {
+              "value": "counsellor",
+              "count": 2
+            },
+            {
+              "value": "pioneer",
+              "count": 19
+            },
+            {
+              "value": "tactician",
+              "count": 7
+            }
+          ],
+          "tagList": [
+            {
+              "value": [
+                "支援机械",
+                "控场"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "新手"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "费用回复",
+                "召唤"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "费用回复",
+                "快速复活"
+              ],
+              "count": 6
+            },
+            {
+              "value": [
+                "费用回复",
+                "控场"
+              ],
+              "count": 6
+            },
+            {
+              "value": [
+                "费用回复",
+                "支援"
+              ],
+              "count": 6
+            },
+            {
+              "value": [
+                "费用回复",
+                "治疗"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "费用回复",
+                "爆发"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "费用回复",
+                "生存"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "费用回复",
+                "输出"
+              ],
+              "count": 13
+            },
+            {
+              "value": [
+                "费用回复",
+                "防护"
+              ],
+              "count": 4
+            },
+            {
+              "value": [
+                "费用回复"
+              ],
+              "count": 2
+            },
+            {
+              "value": [
+                "输出",
+                "费用回复"
+              ],
+              "count": 2
+            },
+            {
+              "value": [
+                "防护"
+              ],
+              "count": 1
+            }
+          ]
+        },
+        "withNonemptyPowerCount": 42,
+        "nonemptyPowerRows": []
+      },
+      "SNIPER": {
+        "count": 63,
+        "distributions": {
+          "mainPower": [
+            {
+              "value": {
+                "groupId": "abyssal",
+                "nationId": "egir",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": "babel",
+                "nationId": null,
+                "teamId": null
+              },
+              "count": 2
+            },
+            {
+              "value": {
+                "groupId": "blacksteel",
+                "nationId": "columbia",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": "elite",
+                "nationId": "rhodes",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": "penguin",
+                "nationId": "lungmen",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": "pinus",
+                "nationId": "kazimierz",
+                "teamId": null
+              },
+              "count": 2
+            },
+            {
+              "value": {
+                "groupId": "siesta",
+                "nationId": "columbia",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": "tara",
+                "nationId": "victoria",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "bolivar",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "columbia",
+                "teamId": null
+              },
+              "count": 5
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "higashi",
+                "teamId": null
+              },
+              "count": 2
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "iberia",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "kazimierz",
+                "teamId": null
+              },
+              "count": 2
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "kjerag",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "laterano",
+                "teamId": null
+              },
+              "count": 6
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "minos",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "rhodes",
+                "teamId": "action4"
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "rhodes",
+                "teamId": "reserve1"
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "rhodes",
+                "teamId": "reserve4"
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "rhodes",
+                "teamId": "reserve6"
+              },
+              "count": 2
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "rhodes",
+                "teamId": null
+              },
+              "count": 8
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "rim",
+                "teamId": null
+              },
+              "count": 2
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "sami",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "sargon",
+                "teamId": null
+              },
+              "count": 3
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "siracusa",
+                "teamId": "chiave"
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "siracusa",
+                "teamId": null
+              },
+              "count": 3
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "ursus",
+                "teamId": "student"
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "victoria",
+                "teamId": null
+              },
+              "count": 2
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "yan",
+                "teamId": null
+              },
+              "count": 2
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": null,
+                "teamId": "rainbow"
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": null,
+                "teamId": "sees"
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": null,
+                "teamId": null
+              },
+              "count": 4
+            }
+          ],
+          "subPower": [
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "bolivar",
+                  "teamId": null
+                }
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "columbia",
+                  "teamId": null
+                }
+              ],
+              "count": 2
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "kazimierz",
+                  "teamId": null
+                }
+              ],
+              "count": 2
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "laterano",
+                  "teamId": null
+                }
+              ],
+              "count": 3
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "rhodes",
+                  "teamId": null
+                }
+              ],
+              "count": 2
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "rim",
+                  "teamId": null
+                }
+              ],
+              "count": 2
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "sargon",
+                  "teamId": null
+                }
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "victoria",
+                  "teamId": null
+                }
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "yan",
+                  "teamId": null
+                }
+              ],
+              "count": 1
+            },
+            {
+              "value": null,
+              "count": 48
+            }
+          ],
+          "position": [
+            {
+              "value": "RANGED",
+              "count": 63
+            }
+          ],
+          "subProfessionId": [
+            {
+              "value": "aoesniper",
+              "count": 7
+            },
+            {
+              "value": "bombarder",
+              "count": 4
+            },
+            {
+              "value": "closerange",
+              "count": 6
+            },
+            {
+              "value": "fastshot",
+              "count": 21
+            },
+            {
+              "value": "hunter",
+              "count": 3
+            },
+            {
+              "value": "longrange",
+              "count": 6
+            },
+            {
+              "value": "loopshooter",
+              "count": 3
+            },
+            {
+              "value": "reaperrange",
+              "count": 5
+            },
+            {
+              "value": "siegesniper",
+              "count": 6
+            },
+            {
+              "value": "skybreaker",
+              "count": 2
+            }
+          ],
+          "tagList": [
+            {
+              "value": [
+                "控场"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "支援机械",
+                "支援"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "新手"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "爆发",
+                "控场"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "群攻",
+                "减速"
+              ],
+              "count": 2
+            },
+            {
+              "value": [
+                "群攻",
+                "削弱"
+              ],
+              "count": 2
+            },
+            {
+              "value": [
+                "群攻",
+                "输出"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "群攻"
+              ],
+              "count": 6
+            },
+            {
+              "value": [
+                "输出",
+                "减速"
+              ],
+              "count": 4
+            },
+            {
+              "value": [
+                "输出",
+                "削弱"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "输出",
+                "快速复活"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "输出",
+                "控场"
+              ],
+              "count": 3
+            },
+            {
+              "value": [
+                "输出",
+                "爆发"
+              ],
+              "count": 3
+            },
+            {
+              "value": [
+                "输出",
+                "生存"
+              ],
+              "count": 2
+            },
+            {
+              "value": [
+                "输出",
+                "群攻"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "输出"
+              ],
+              "count": 33
+            }
+          ]
+        },
+        "withNonemptyPowerCount": 59,
+        "nonemptyPowerRows": []
+      },
+      "SPECIAL": {
+        "count": 53,
+        "distributions": {
+          "mainPower": [
+            {
+              "value": {
+                "groupId": "abyssal",
+                "nationId": "egir",
+                "teamId": null
+              },
+              "count": 2
+            },
+            {
+              "value": {
+                "groupId": "blacksteel",
+                "nationId": "columbia",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": "penguin",
+                "nationId": "lungmen",
+                "teamId": null
+              },
+              "count": 2
+            },
+            {
+              "value": {
+                "groupId": "rhine",
+                "nationId": "columbia",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": "sui",
+                "nationId": "yan",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": "sweep",
+                "nationId": "rhodes",
+                "teamId": null
+              },
+              "count": 2
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "columbia",
+                "teamId": null
+              },
+              "count": 5
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "higashi",
+                "teamId": null
+              },
+              "count": 3
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "iberia",
+                "teamId": null
+              },
+              "count": 2
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "kazimierz",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "kjerag",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "laterano",
+                "teamId": null
+              },
+              "count": 2
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "lungmen",
+                "teamId": "lee"
+              },
+              "count": 3
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "lungmen",
+                "teamId": null
+              },
+              "count": 6
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "rhodes",
+                "teamId": "action4"
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "rhodes",
+                "teamId": null
+              },
+              "count": 5
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "sargon",
+                "teamId": null
+              },
+              "count": 2
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "siracusa",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "victoria",
+                "teamId": null
+              },
+              "count": 3
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "yan",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": null,
+                "teamId": "mujica"
+              },
+              "count": 2
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": null,
+                "teamId": "rainbow"
+              },
+              "count": 3
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": null,
+                "teamId": "sees"
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": null,
+                "teamId": null
+              },
+              "count": 2
+            }
+          ],
+          "subPower": [
+            {
+              "value": [
+                {
+                  "groupId": "babel",
+                  "nationId": null,
+                  "teamId": null
+                }
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                {
+                  "groupId": "karlan",
+                  "nationId": "kjerag",
+                  "teamId": null
+                }
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "columbia",
+                  "teamId": null
+                }
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "egir",
+                  "teamId": null
+                }
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "higashi",
+                  "teamId": null
+                }
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "iberia",
+                  "teamId": null
+                }
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "laterano",
+                  "teamId": null
+                }
+              ],
+              "count": 2
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "rhodes",
+                  "teamId": null
+                }
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "rim",
+                  "teamId": null
+                }
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "siracusa",
+                  "teamId": null
+                },
+                {
+                  "groupId": null,
+                  "nationId": "ursus",
+                  "teamId": null
+                }
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "siracusa",
+                  "teamId": null
+                }
+              ],
+              "count": 3
+            },
+            {
+              "value": null,
+              "count": 39
+            }
+          ],
+          "position": [
+            {
+              "value": "MELEE",
+              "count": 41
+            },
+            {
+              "value": "RANGED",
+              "count": 12
+            }
+          ],
+          "subProfessionId": [
+            {
+              "value": "alchemist",
+              "count": 3
+            },
+            {
+              "value": "dollkeeper",
+              "count": 7
+            },
+            {
+              "value": "executor",
+              "count": 11
+            },
+            {
+              "value": "geek",
+              "count": 3
+            },
+            {
+              "value": "hookmaster",
+              "count": 5
+            },
+            {
+              "value": "merchant",
+              "count": 5
+            },
+            {
+              "value": "pusher",
+              "count": 4
+            },
+            {
+              "value": "skywalker",
+              "count": 3
+            },
+            {
+              "value": "stalker",
+              "count": 6
+            },
+            {
+              "value": "traper",
+              "count": 6
+            }
+          ],
+          "tagList": [
+            {
+              "value": [
+                "位移",
+                "减速"
+              ],
+              "count": 2
+            },
+            {
+              "value": [
+                "位移",
+                "控场"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "位移",
+                "输出",
+                "控场"
+              ],
+              "count": 2
+            },
+            {
+              "value": [
+                "位移",
+                "输出"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "位移"
+              ],
+              "count": 3
+            },
+            {
+              "value": [
+                "减速",
+                "输出"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "削弱",
+                "减速"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "削弱",
+                "快速复活"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "削弱",
+                "支援"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "召唤",
+                "位移"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "召唤",
+                "削弱"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "召唤",
+                "控场",
+                "输出"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "召唤",
+                "控场"
+              ],
+              "count": 2
+            },
+            {
+              "value": [
+                "召唤",
+                "输出"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "快速复活",
+                ""
+              ],
+              "count": 2
+            },
+            {
+              "value": [
+                "快速复活",
+                "削弱"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "快速复活",
+                "控场",
+                "输出"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "快速复活",
+                "控场"
+              ],
+              "count": 3
+            },
+            {
+              "value": [
+                "快速复活",
+                "爆发"
+              ],
+              "count": 2
+            },
+            {
+              "value": [
+                "快速复活",
+                "生存",
+                "输出"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "快速复活",
+                "输出"
+              ],
+              "count": 3
+            },
+            {
+              "value": [
+                "快速复活",
+                "防护"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "快速复活"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "支援",
+                "输出"
+              ],
+              "count": 2
+            },
+            {
+              "value": [
+                "支援机械",
+                "爆发"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "生存",
+                "快速复活"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "输出",
+                "快速复活",
+                "治疗"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "输出",
+                "快速复活"
+              ],
+              "count": 3
+            },
+            {
+              "value": [
+                "输出",
+                "控场"
+              ],
+              "count": 3
+            },
+            {
+              "value": [
+                "输出",
+                "支援",
+                "削弱"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "输出",
+                "支援"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "输出",
+                "生存"
+              ],
+              "count": 2
+            },
+            {
+              "value": [
+                "防护",
+                "快速复活"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "高空",
+                "控场"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "高空",
+                "生存"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "高空",
+                "输出",
+                "控场"
+              ],
+              "count": 1
+            }
+          ]
+        },
+        "withNonemptyPowerCount": 51,
+        "nonemptyPowerRows": []
+      },
+      "SUPPORT": {
+        "count": 52,
+        "distributions": {
+          "mainPower": [
+            {
+              "value": {
+                "groupId": "elite",
+                "nationId": "rhodes",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": "karlan",
+                "nationId": "kjerag",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": "penguin",
+                "nationId": "lungmen",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": "rhine",
+                "nationId": "columbia",
+                "teamId": null
+              },
+              "count": 5
+            },
+            {
+              "value": {
+                "groupId": "sui",
+                "nationId": "yan",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "bolivar",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "columbia",
+                "teamId": null
+              },
+              "count": 3
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "egir",
+                "teamId": null
+              },
+              "count": 3
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "higashi",
+                "teamId": null
+              },
+              "count": 2
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "iberia",
+                "teamId": null
+              },
+              "count": 2
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "kazimierz",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "kjerag",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "laterano",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "leithanien",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "rhodes",
+                "teamId": "reserve6"
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "rhodes",
+                "teamId": null
+              },
+              "count": 6
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "rim",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "sami",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "sargon",
+                "teamId": null
+              },
+              "count": 2
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "siracusa",
+                "teamId": null
+              },
+              "count": 3
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "ursus",
+                "teamId": "student"
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "ursus",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "victoria",
+                "teamId": null
+              },
+              "count": 4
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "yan",
+                "teamId": null
+              },
+              "count": 3
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": null,
+                "teamId": "mujica"
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": null,
+                "teamId": "sees"
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": null,
+                "teamId": null
+              },
+              "count": 3
+            }
+          ],
+          "subPower": [
+            {
+              "value": [
+                {
+                  "groupId": "babel",
+                  "nationId": null,
+                  "teamId": null
+                }
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                {
+                  "groupId": "karlan",
+                  "nationId": "kjerag",
+                  "teamId": null
+                }
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "bolivar",
+                  "teamId": null
+                }
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "columbia",
+                  "teamId": null
+                }
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "higashi",
+                  "teamId": null
+                }
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "laterano",
+                  "teamId": null
+                }
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "minos",
+                  "teamId": null
+                }
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "ursus",
+                  "teamId": null
+                }
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "victoria",
+                  "teamId": null
+                }
+              ],
+              "count": 1
+            },
+            {
+              "value": null,
+              "count": 43
+            }
+          ],
+          "position": [
+            {
+              "value": "MELEE",
+              "count": 6
+            },
+            {
+              "value": "RANGED",
+              "count": 46
+            }
+          ],
+          "subProfessionId": [
+            {
+              "value": "bard",
+              "count": 6
+            },
+            {
+              "value": "blessing",
+              "count": 7
+            },
+            {
+              "value": "craftsman",
+              "count": 6
+            },
+            {
+              "value": "ritualist",
+              "count": 7
+            },
+            {
+              "value": "slower",
+              "count": 12
+            },
+            {
+              "value": "summoner",
+              "count": 7
+            },
+            {
+              "value": "supportiveranger",
+              "count": 2
+            },
+            {
+              "value": "underminer",
+              "count": 5
+            }
+          ],
+          "tagList": [
+            {
+              "value": [
+                "元素",
+                "控场"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "元素",
+                "支援"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "元素"
+              ],
+              "count": 4
+            },
+            {
+              "value": [
+                "减速",
+                "控场"
+              ],
+              "count": 2
+            },
+            {
+              "value": [
+                "减速",
+                "支援",
+                "输出"
+              ],
+              "count": 2
+            },
+            {
+              "value": [
+                "减速",
+                "支援"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "减速",
+                "治疗"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "减速",
+                "输出",
+                "支援"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "减速",
+                "输出"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "减速"
+              ],
+              "count": 3
+            },
+            {
+              "value": [
+                "削弱",
+                "减速"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "削弱"
+              ],
+              "count": 5
+            },
+            {
+              "value": [
+                "召唤",
+                "减速"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "召唤",
+                "控场"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "召唤",
+                "支援",
+                "控场"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "召唤",
+                "支援"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "召唤",
+                "输出",
+                "支援"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "召唤"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "控场"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "支援",
+                "减速",
+                "输出"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "支援",
+                "治疗"
+              ],
+              "count": 3
+            },
+            {
+              "value": [
+                "支援",
+                "生存",
+                "治疗"
+              ],
+              "count": 2
+            },
+            {
+              "value": [
+                "支援",
+                "生存",
+                "输出"
+              ],
+              "count": 2
+            },
+            {
+              "value": [
+                "支援",
+                "生存"
+              ],
+              "count": 5
+            },
+            {
+              "value": [
+                "支援",
+                "输出"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "支援",
+                "防护"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "支援机械",
+                "元素"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "输出",
+                "支援"
+              ],
+              "count": 4
+            },
+            {
+              "value": [
+                "防护",
+                "支援"
+              ],
+              "count": 2
+            }
+          ]
+        },
+        "withNonemptyPowerCount": 49,
+        "nonemptyPowerRows": []
+      },
+      "TANK": {
+        "count": 52,
+        "distributions": {
+          "mainPower": [
+            {
+              "value": {
+                "groupId": "blacksteel",
+                "nationId": "columbia",
+                "teamId": null
+              },
+              "count": 2
+            },
+            {
+              "value": {
+                "groupId": "elite",
+                "nationId": "rhodes",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": "karlan",
+                "nationId": "kjerag",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": "lgd",
+                "nationId": "lungmen",
+                "teamId": null
+              },
+              "count": 2
+            },
+            {
+              "value": {
+                "groupId": "penguin",
+                "nationId": "lungmen",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": "pinus",
+                "nationId": "kazimierz",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": "rhine",
+                "nationId": "columbia",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": "sui",
+                "nationId": "yan",
+                "teamId": null
+              },
+              "count": 3
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "bolivar",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "columbia",
+                "teamId": null
+              },
+              "count": 2
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "egir",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "kazimierz",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "kjerag",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "laterano",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "leithanien",
+                "teamId": null
+              },
+              "count": 2
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "lungmen",
+                "teamId": "lee"
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "lungmen",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "minos",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "rhodes",
+                "teamId": "action4"
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "rhodes",
+                "teamId": "reserve1"
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "rhodes",
+                "teamId": "reserve4"
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "rhodes",
+                "teamId": "reserve6"
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "rhodes",
+                "teamId": null
+              },
+              "count": 4
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "rim",
+                "teamId": null
+              },
+              "count": 4
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "sargon",
+                "teamId": null
+              },
+              "count": 3
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "siracusa",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "ursus",
+                "teamId": "student"
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "ursus",
+                "teamId": null
+              },
+              "count": 2
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "victoria",
+                "teamId": null
+              },
+              "count": 2
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": null,
+                "teamId": "followers"
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": null,
+                "teamId": "laios"
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": null,
+                "teamId": "rainbow"
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": null,
+                "teamId": null
+              },
+              "count": 4
+            }
+          ],
+          "subPower": [
+            {
+              "value": [
+                {
+                  "groupId": "karlan",
+                  "nationId": "kjerag",
+                  "teamId": null
+                }
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "bolivar",
+                  "teamId": null
+                }
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "columbia",
+                  "teamId": null
+                }
+              ],
+              "count": 2
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "higashi",
+                  "teamId": null
+                }
+              ],
+              "count": 3
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "kazimierz",
+                  "teamId": null
+                },
+                {
+                  "groupId": null,
+                  "nationId": "rhodes",
+                  "teamId": null
+                }
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "leithanien",
+                  "teamId": null
+                }
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "sargon",
+                  "teamId": null
+                }
+              ],
+              "count": 2
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "victoria",
+                  "teamId": null
+                }
+              ],
+              "count": 1
+            },
+            {
+              "value": null,
+              "count": 40
+            }
+          ],
+          "position": [
+            {
+              "value": "MELEE",
+              "count": 52
+            }
+          ],
+          "subProfessionId": [
+            {
+              "value": "artsprotector",
+              "count": 6
+            },
+            {
+              "value": "duelist",
+              "count": 3
+            },
+            {
+              "value": "fortress",
+              "count": 3
+            },
+            {
+              "value": "guardian",
+              "count": 9
+            },
+            {
+              "value": "primprotector",
+              "count": 5
+            },
+            {
+              "value": "protector",
+              "count": 15
+            },
+            {
+              "value": "shotprotector",
+              "count": 6
+            },
+            {
+              "value": "unyield",
+              "count": 5
+            }
+          ],
+          "tagList": [
+            {
+              "value": [
+                "元素",
+                "生存"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "元素",
+                "防护"
+              ],
+              "count": 4
+            },
+            {
+              "value": [
+                "支援机械",
+                "防护"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "新手"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "生存",
+                "召唤",
+                "输出"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "生存",
+                "输出"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "生存",
+                "防护",
+                "输出"
+              ],
+              "count": 2
+            },
+            {
+              "value": [
+                "生存",
+                "防护"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "输出",
+                "生存",
+                "防护"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "输出",
+                "生存"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "输出",
+                "防护"
+              ],
+              "count": 6
+            },
+            {
+              "value": [
+                "防护",
+                "位移"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "防护",
+                "支援"
+              ],
+              "count": 2
+            },
+            {
+              "value": [
+                "防护",
+                "治疗",
+                "支援"
+              ],
+              "count": 2
+            },
+            {
+              "value": [
+                "防护",
+                "治疗",
+                "输出"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "防护",
+                "治疗"
+              ],
+              "count": 6
+            },
+            {
+              "value": [
+                "防护",
+                "生存",
+                "输出"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "防护",
+                "生存"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "防护",
+                "输出",
+                "减速"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "防护",
+                "输出",
+                "支援"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "防护",
+                "输出"
+              ],
+              "count": 6
+            },
+            {
+              "value": [
+                "防护"
+              ],
+              "count": 10
+            }
+          ]
+        },
+        "withNonemptyPowerCount": 48,
+        "nonemptyPowerRows": []
+      },
+      "TOKEN": {
+        "count": 75,
+        "distributions": {
+          "mainPower": [
+            {
+              "value": {
+                "groupId": null,
+                "nationId": null,
+                "teamId": null
+              },
+              "count": 75
+            }
+          ],
+          "subPower": [
+            {
+              "value": null,
+              "count": 75
+            }
+          ],
+          "position": [
+            {
+              "value": "ALL",
+              "count": 22
+            },
+            {
+              "value": "MELEE",
+              "count": 47
+            },
+            {
+              "value": "RANGED",
+              "count": 6
+            }
+          ],
+          "subProfessionId": [
+            {
+              "value": "executor",
+              "count": 1
+            },
+            {
+              "value": "notchar1",
+              "count": 73
+            },
+            {
+              "value": "pioneer",
+              "count": 1
+            }
+          ],
+          "tagList": [
+            {
+              "value": null,
+              "count": 75
+            }
+          ]
+        },
+        "withNonemptyPowerCount": 0,
+        "nonemptyPowerRows": []
+      },
+      "TRAP": {
+        "count": 846,
+        "distributions": {
+          "mainPower": [
+            {
+              "value": {
+                "groupId": null,
+                "nationId": null,
+                "teamId": null
+              },
+              "count": 846
+            }
+          ],
+          "subPower": [
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "laterano",
+                  "teamId": null
+                }
+              ],
+              "count": 3
+            },
+            {
+              "value": null,
+              "count": 843
+            }
+          ],
+          "position": [
+            {
+              "value": "MELEE",
+              "count": 1
+            },
+            {
+              "value": "NONE",
+              "count": 844
+            },
+            {
+              "value": "RANGED",
+              "count": 1
+            }
+          ],
+          "subProfessionId": [
+            {
+              "value": "notchar2",
+              "count": 846
+            }
+          ],
+          "tagList": [
+            {
+              "value": null,
+              "count": 846
+            }
+          ]
+        },
+        "withNonemptyPowerCount": 3,
+        "nonemptyPowerRows": [
+          {
+            "pointer": "/trap_235_hlnpcm",
+            "id": "trap_235_hlnpcm",
+            "name": "圣徒像扮演者",
+            "profession": "TRAP",
+            "subProfessionId": "notchar2",
+            "position": "NONE",
+            "mainPower": {
+              "nationId": null,
+              "groupId": null,
+              "teamId": null
+            },
+            "subPower": [
+              {
+                "nationId": "laterano",
+                "groupId": null,
+                "teamId": null
+              }
+            ],
+            "tagList": null,
+            "isNotObtainable": false
+          },
+          {
+            "pointer": "/trap_236_hlnpcs",
+            "id": "trap_236_hlnpcs",
+            "name": "圣堂射手扮演者",
+            "profession": "TRAP",
+            "subProfessionId": "notchar2",
+            "position": "NONE",
+            "mainPower": {
+              "nationId": null,
+              "groupId": null,
+              "teamId": null
+            },
+            "subPower": [
+              {
+                "nationId": "laterano",
+                "groupId": null,
+                "teamId": null
+              }
+            ],
+            "tagList": null,
+            "isNotObtainable": false
+          },
+          {
+            "pointer": "/trap_237_hlnpcb",
+            "id": "trap_237_hlnpcb",
+            "name": "圣堂保育员扮演者",
+            "profession": "TRAP",
+            "subProfessionId": "notchar2",
+            "position": "NONE",
+            "mainPower": {
+              "nationId": null,
+              "groupId": null,
+              "teamId": null
+            },
+            "subPower": [
+              {
+                "nationId": "laterano",
+                "groupId": null,
+                "teamId": null
+              }
+            ],
+            "tagList": null,
+            "isNotObtainable": false
+          }
+        ]
+      },
+      "WARRIOR": {
+        "count": 89,
+        "distributions": {
+          "mainPower": [
+            {
+              "value": {
+                "groupId": "abyssal",
+                "nationId": "egir",
+                "teamId": null
+              },
+              "count": 3
+            },
+            {
+              "value": {
+                "groupId": "babel",
+                "nationId": null,
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": "blacksteel",
+                "nationId": "columbia",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": "elite",
+                "nationId": "rhodes",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": "glasgow",
+                "nationId": "victoria",
+                "teamId": null
+              },
+              "count": 3
+            },
+            {
+              "value": {
+                "groupId": "karlan",
+                "nationId": "kjerag",
+                "teamId": null
+              },
+              "count": 2
+            },
+            {
+              "value": {
+                "groupId": "lgd",
+                "nationId": "lungmen",
+                "teamId": null
+              },
+              "count": 2
+            },
+            {
+              "value": {
+                "groupId": "siesta",
+                "nationId": "columbia",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": "sui",
+                "nationId": "yan",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "bolivar",
+                "teamId": null
+              },
+              "count": 3
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "columbia",
+                "teamId": null
+              },
+              "count": 5
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "egir",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "higashi",
+                "teamId": null
+              },
+              "count": 3
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "iberia",
+                "teamId": null
+              },
+              "count": 3
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "kazimierz",
+                "teamId": null
+              },
+              "count": 3
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "laterano",
+                "teamId": null
+              },
+              "count": 2
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "leithanien",
+                "teamId": null
+              },
+              "count": 2
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "minos",
+                "teamId": null
+              },
+              "count": 4
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "rhodes",
+                "teamId": "action4"
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "rhodes",
+                "teamId": "reserve4"
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "rhodes",
+                "teamId": "reserve6"
+              },
+              "count": 3
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "rhodes",
+                "teamId": null
+              },
+              "count": 9
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "rim",
+                "teamId": null
+              },
+              "count": 2
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "sami",
+                "teamId": null
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "sargon",
+                "teamId": null
+              },
+              "count": 4
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "siracusa",
+                "teamId": "chiave"
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "siracusa",
+                "teamId": null
+              },
+              "count": 2
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "ursus",
+                "teamId": "student"
+              },
+              "count": 2
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "ursus",
+                "teamId": null
+              },
+              "count": 2
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "victoria",
+                "teamId": null
+              },
+              "count": 2
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": "yan",
+                "teamId": null
+              },
+              "count": 7
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": null,
+                "teamId": "laios"
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": null,
+                "teamId": "mujica"
+              },
+              "count": 2
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": null,
+                "teamId": "rainbow"
+              },
+              "count": 3
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": null,
+                "teamId": "sees"
+              },
+              "count": 1
+            },
+            {
+              "value": {
+                "groupId": null,
+                "nationId": null,
+                "teamId": null
+              },
+              "count": 4
+            }
+          ],
+          "subPower": [
+            {
+              "value": [
+                {
+                  "groupId": "babel",
+                  "nationId": null,
+                  "teamId": null
+                }
+              ],
+              "count": 2
+            },
+            {
+              "value": [
+                {
+                  "groupId": "glasgow",
+                  "nationId": "victoria",
+                  "teamId": null
+                }
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "bolivar",
+                  "teamId": null
+                }
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "columbia",
+                  "teamId": null
+                }
+              ],
+              "count": 3
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "higashi",
+                  "teamId": null
+                }
+              ],
+              "count": 2
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "iberia",
+                  "teamId": null
+                }
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "kazimierz",
+                  "teamId": null
+                },
+                {
+                  "groupId": null,
+                  "nationId": "leithanien",
+                  "teamId": null
+                }
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "kazimierz",
+                  "teamId": null
+                }
+              ],
+              "count": 2
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "laterano",
+                  "teamId": null
+                }
+              ],
+              "count": 2
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "rhodes",
+                  "teamId": null
+                }
+              ],
+              "count": 2
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "rim",
+                  "teamId": null
+                }
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "sargon",
+                  "teamId": null
+                }
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "victoria",
+                  "teamId": null
+                }
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": "yan",
+                  "teamId": null
+                },
+                {
+                  "groupId": null,
+                  "nationId": "victoria",
+                  "teamId": null
+                }
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                {
+                  "groupId": null,
+                  "nationId": null,
+                  "teamId": "followers"
+                },
+                {
+                  "groupId": null,
+                  "nationId": "rhodes",
+                  "teamId": null
+                }
+              ],
+              "count": 1
+            },
+            {
+              "value": null,
+              "count": 67
+            }
+          ],
+          "position": [
+            {
+              "value": "MELEE",
+              "count": 89
+            }
+          ],
+          "subProfessionId": [
+            {
+              "value": "artsfghter",
+              "count": 7
+            },
+            {
+              "value": "centurion",
+              "count": 9
+            },
+            {
+              "value": "crusher",
+              "count": 4
+            },
+            {
+              "value": "fearless",
+              "count": 14
+            },
+            {
+              "value": "fighter",
+              "count": 8
+            },
+            {
+              "value": "hammer",
+              "count": 4
+            },
+            {
+              "value": "instructor",
+              "count": 6
+            },
+            {
+              "value": "librator",
+              "count": 4
+            },
+            {
+              "value": "lord",
+              "count": 12
+            },
+            {
+              "value": "mercenary",
+              "count": 2
+            },
+            {
+              "value": "musha",
+              "count": 5
+            },
+            {
+              "value": "primguard",
+              "count": 2
+            },
+            {
+              "value": "reaper",
+              "count": 5
+            },
+            {
+              "value": "sword",
+              "count": 7
+            }
+          ],
+          "tagList": [
+            {
+              "value": [
+                "减速",
+                "输出"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "支援机械",
+                "支援"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "治疗",
+                "支援"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "爆发",
+                "控场"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "爆发",
+                "输出",
+                "削弱"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "爆发",
+                "输出",
+                "控场"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "爆发",
+                "输出",
+                "生存"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "爆发",
+                "输出"
+              ],
+              "count": 6
+            },
+            {
+              "value": [
+                "爆发"
+              ],
+              "count": 3
+            },
+            {
+              "value": [
+                "生存",
+                "输出"
+              ],
+              "count": 4
+            },
+            {
+              "value": [
+                "群攻",
+                "控场"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "群攻",
+                "爆发"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "群攻",
+                "生存"
+              ],
+              "count": 6
+            },
+            {
+              "value": [
+                "群攻",
+                "输出",
+                "削弱"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "群攻",
+                "输出",
+                "爆发"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "输出",
+                "削弱"
+              ],
+              "count": 2
+            },
+            {
+              "value": [
+                "输出",
+                "控场",
+                ""
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "输出",
+                "控场"
+              ],
+              "count": 4
+            },
+            {
+              "value": [
+                "输出",
+                "支援"
+              ],
+              "count": 7
+            },
+            {
+              "value": [
+                "输出",
+                "爆发"
+              ],
+              "count": 3
+            },
+            {
+              "value": [
+                "输出",
+                "生存",
+                "控场",
+                "爆发"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "输出",
+                "生存"
+              ],
+              "count": 17
+            },
+            {
+              "value": [
+                "输出",
+                "群攻"
+              ],
+              "count": 1
+            },
+            {
+              "value": [
+                "输出",
+                "防护"
+              ],
+              "count": 2
+            },
+            {
+              "value": [
+                "输出"
+              ],
+              "count": 21
+            }
+          ]
+        },
+        "withNonemptyPowerCount": 85,
+        "nonemptyPowerRows": []
+      }
+    },
+    "selectedCharacterRows": [
+      {
+        "pointer": "/char_504_rguard",
+        "id": "char_504_rguard",
+        "name": "预备干员-近战",
+        "profession": "PIONEER",
+        "subProfessionId": "pioneer",
+        "position": "MELEE",
+        "mainPower": {
+          "nationId": null,
+          "groupId": null,
+          "teamId": null
+        },
+        "subPower": null,
+        "tagList": [
+          "防护"
+        ],
+        "isNotObtainable": true
+      },
+      {
+        "pointer": "/char_510_amedic",
+        "id": "char_510_amedic",
+        "name": "Touch",
+        "profession": "MEDIC",
+        "subProfessionId": "physician",
+        "position": "RANGED",
+        "mainPower": {
+          "nationId": null,
+          "groupId": null,
+          "teamId": null
+        },
+        "subPower": null,
+        "tagList": [
+          "治疗"
+        ],
+        "isNotObtainable": true
+      },
+      {
+        "pointer": "/char_616_pithst",
+        "id": "char_616_pithst",
+        "name": "盟约·辅助干员",
+        "profession": "SUPPORT",
+        "subProfessionId": "ritualist",
+        "position": "RANGED",
+        "mainPower": {
+          "nationId": null,
+          "groupId": null,
+          "teamId": null
+        },
+        "subPower": null,
+        "tagList": [
+          "元素"
+        ],
+        "isNotObtainable": true
+      },
+      {
+        "pointer": "/char_110_deepcl",
+        "id": "char_110_deepcl",
+        "name": "深海色",
+        "profession": "SUPPORT",
+        "subProfessionId": "summoner",
+        "position": "RANGED",
+        "mainPower": {
+          "nationId": "egir",
+          "groupId": null,
+          "teamId": null
+        },
+        "subPower": null,
+        "tagList": [
+          "召唤"
+        ],
+        "isNotObtainable": false
+      },
+      {
+        "pointer": "/token_10001_deepcl_tentac",
+        "id": "token_10001_deepcl_tentac",
+        "name": "触手",
+        "profession": "TOKEN",
+        "subProfessionId": "notchar1",
+        "position": "MELEE",
+        "mainPower": {
+          "nationId": null,
+          "groupId": null,
+          "teamId": null
+        },
+        "subPower": null,
+        "tagList": null,
+        "isNotObtainable": false
+      },
+      {
+        "pointer": "/char_250_phatom",
+        "id": "char_250_phatom",
+        "name": "傀影",
+        "profession": "SPECIAL",
+        "subProfessionId": "executor",
+        "position": "MELEE",
+        "mainPower": {
+          "nationId": "victoria",
+          "groupId": null,
+          "teamId": null
+        },
+        "subPower": null,
+        "tagList": [
+          "快速复活",
+          "控场",
+          "输出"
+        ],
+        "isNotObtainable": false
+      },
+      {
+        "pointer": "/token_10007_phatom_twin",
+        "id": "token_10007_phatom_twin",
+        "name": "镜中虚影",
+        "profession": "TOKEN",
+        "subProfessionId": "executor",
+        "position": "MELEE",
+        "mainPower": {
+          "nationId": null,
+          "groupId": null,
+          "teamId": null
+        },
+        "subPower": null,
+        "tagList": null,
+        "isNotObtainable": false
+      },
+      {
+        "pointer": "/char_248_mgllan",
+        "id": "char_248_mgllan",
+        "name": "麦哲伦",
+        "profession": "SUPPORT",
+        "subProfessionId": "summoner",
+        "position": "RANGED",
+        "mainPower": {
+          "nationId": "columbia",
+          "groupId": "rhine",
+          "teamId": null
+        },
+        "subPower": null,
+        "tagList": [
+          "支援",
+          "减速",
+          "输出"
+        ],
+        "isNotObtainable": false
+      },
+      {
+        "pointer": "/token_10005_mgllan_drone1",
+        "id": "token_10005_mgllan_drone1",
+        "name": "龙腾.F",
+        "profession": "TOKEN",
+        "subProfessionId": "notchar1",
+        "position": "ALL",
+        "mainPower": {
+          "nationId": null,
+          "groupId": null,
+          "teamId": null
+        },
+        "subPower": null,
+        "tagList": null,
+        "isNotObtainable": false
+      },
+      {
+        "pointer": "/token_10005_mgllan_drone2",
+        "id": "token_10005_mgllan_drone2",
+        "name": "龙腾.L",
+        "profession": "TOKEN",
+        "subProfessionId": "notchar1",
+        "position": "MELEE",
+        "mainPower": {
+          "nationId": null,
+          "groupId": null,
+          "teamId": null
+        },
+        "subPower": null,
+        "tagList": null,
+        "isNotObtainable": false
+      },
+      {
+        "pointer": "/token_10005_mgllan_drone3",
+        "id": "token_10005_mgllan_drone3",
+        "name": "龙腾.A",
+        "profession": "TOKEN",
+        "subProfessionId": "notchar1",
+        "position": "RANGED",
+        "mainPower": {
+          "nationId": null,
+          "groupId": null,
+          "teamId": null
+        },
+        "subPower": null,
+        "tagList": null,
+        "isNotObtainable": false
+      },
+      {
+        "pointer": "/char_1033_swire2",
+        "id": "char_1033_swire2",
+        "name": "琳琅诗怀雅",
+        "profession": "SPECIAL",
+        "subProfessionId": "merchant",
+        "position": "MELEE",
+        "mainPower": {
+          "nationId": "lungmen",
+          "groupId": null,
+          "teamId": null
+        },
+        "subPower": null,
+        "tagList": [
+          "快速复活",
+          "爆发"
+        ],
+        "isNotObtainable": false
+      },
+      {
+        "pointer": "/token_10031_swire2_gdtrap",
+        "id": "token_10031_swire2_gdtrap",
+        "name": "香槟炸弹",
+        "profession": "TOKEN",
+        "subProfessionId": "notchar1",
+        "position": "MELEE",
+        "mainPower": {
+          "nationId": null,
+          "groupId": null,
+          "teamId": null
+        },
+        "subPower": null,
+        "tagList": null,
+        "isNotObtainable": false
+      },
+      {
+        "pointer": "/trap_001_crate",
+        "id": "trap_001_crate",
+        "name": "障碍物",
+        "profession": "TRAP",
+        "subProfessionId": "notchar2",
+        "position": "NONE",
+        "mainPower": {
+          "nationId": null,
+          "groupId": null,
+          "teamId": null
+        },
+        "subPower": null,
+        "tagList": null,
+        "isNotObtainable": false
+      },
+      {
+        "pointer": "/trap_007_ballis",
+        "id": "trap_007_ballis",
+        "name": "弩炮",
+        "profession": "TRAP",
+        "subProfessionId": "notchar2",
+        "position": "NONE",
+        "mainPower": {
+          "nationId": null,
+          "groupId": null,
+          "teamId": null
+        },
+        "subPower": null,
+        "tagList": null,
+        "isNotObtainable": false
+      },
+      {
+        "pointer": "/trap_079_allydonq",
+        "id": "trap_079_allydonq",
+        "name": "猎潮的骑士",
+        "profession": "TOKEN",
+        "subProfessionId": "pioneer",
+        "position": "MELEE",
+        "mainPower": {
+          "nationId": null,
+          "groupId": null,
+          "teamId": null
+        },
+        "subPower": null,
+        "tagList": null,
+        "isNotObtainable": false
+      },
+      {
+        "pointer": "/trap_235_hlnpcm",
+        "id": "trap_235_hlnpcm",
+        "name": "圣徒像扮演者",
+        "profession": "TRAP",
+        "subProfessionId": "notchar2",
+        "position": "NONE",
+        "mainPower": {
+          "nationId": null,
+          "groupId": null,
+          "teamId": null
+        },
+        "subPower": [
+          {
+            "nationId": "laterano",
+            "groupId": null,
+            "teamId": null
+          }
+        ],
+        "tagList": null,
+        "isNotObtainable": false
+      },
+      {
+        "pointer": "/trap_236_hlnpcs",
+        "id": "trap_236_hlnpcs",
+        "name": "圣堂射手扮演者",
+        "profession": "TRAP",
+        "subProfessionId": "notchar2",
+        "position": "NONE",
+        "mainPower": {
+          "nationId": null,
+          "groupId": null,
+          "teamId": null
+        },
+        "subPower": [
+          {
+            "nationId": "laterano",
+            "groupId": null,
+            "teamId": null
+          }
+        ],
+        "tagList": null,
+        "isNotObtainable": false
+      },
+      {
+        "pointer": "/trap_237_hlnpcb",
+        "id": "trap_237_hlnpcb",
+        "name": "圣堂保育员扮演者",
+        "profession": "TRAP",
+        "subProfessionId": "notchar2",
+        "position": "NONE",
+        "mainPower": {
+          "nationId": null,
+          "groupId": null,
+          "teamId": null
+        },
+        "subPower": [
+          {
+            "nationId": "laterano",
+            "groupId": null,
+            "teamId": null
+          }
+        ],
+        "tagList": null,
+        "isNotObtainable": false
+      },
+      {
+        "pointer": "/trap_042_tidectrl",
+        "id": "trap_042_tidectrl",
+        "name": "涨潮控制",
+        "profession": "TRAP",
+        "subProfessionId": "notchar2",
+        "position": "NONE",
+        "mainPower": {
+          "nationId": null,
+          "groupId": null,
+          "teamId": null
+        },
+        "subPower": null,
+        "tagList": null,
+        "isNotObtainable": false
+      },
+      {
+        "pointer": "/trap_317_ubprison",
+        "id": "trap_317_ubprison",
+        "name": "禁闭所",
+        "profession": "TRAP",
+        "subProfessionId": "notchar2",
+        "position": "NONE",
+        "mainPower": {
+          "nationId": null,
+          "groupId": null,
+          "teamId": null
+        },
+        "subPower": null,
+        "tagList": null,
+        "isNotObtainable": false
+      },
+      {
+        "pointer": "/trap_014_tower",
+        "id": "trap_014_tower",
+        "name": "L-44\"留声机\"",
+        "profession": "TRAP",
+        "subProfessionId": "notchar2",
+        "position": "NONE",
+        "mainPower": {
+          "nationId": null,
+          "groupId": null,
+          "teamId": null
+        },
+        "subPower": null,
+        "tagList": null,
+        "isNotObtainable": false
+      }
+    ],
+    "tokenReferenceCount": 191,
+    "tokenReferenceFieldCounts": {
+      "tokenKey": 147,
+      "overrideTokenKey": 44
+    },
+    "tokenReferenceTargetProfessions": [
+      {
+        "value": "TOKEN",
+        "count": 188
+      },
+      {
+        "value": null,
+        "count": 3
+      }
+    ],
+    "unresolvedTokenReferences": [
+      {
+        "pointer": "/char_1045_svash2/talents/0/candidates/0/tokenKey",
+        "field": "tokenKey",
+        "owner": "char_1045_svash2",
+        "ownerName": "凛御银灰",
+        "target": "token_10057_svash2_eagle",
+        "targetPointer": null,
+        "targetName": null,
+        "targetProfession": null
+      },
+      {
+        "pointer": "/char_1045_svash2/talents/0/candidates/1/tokenKey",
+        "field": "tokenKey",
+        "owner": "char_1045_svash2",
+        "ownerName": "凛御银灰",
+        "target": "token_10057_svash2_eagle",
+        "targetPointer": null,
+        "targetName": null,
+        "targetProfession": null
+      },
+      {
+        "pointer": "/char_1045_svash2/talents/0/candidates/2/tokenKey",
+        "field": "tokenKey",
+        "owner": "char_1045_svash2",
+        "ownerName": "凛御银灰",
+        "target": "token_10057_svash2_eagle",
+        "targetPointer": null,
+        "targetName": null,
+        "targetProfession": null
+      }
+    ],
+    "selectedTokenReferences": [
+      {
+        "pointer": "/char_110_deepcl/talents/0/candidates/0/tokenKey",
+        "field": "tokenKey",
+        "owner": "char_110_deepcl",
+        "ownerName": "深海色",
+        "target": "token_10001_deepcl_tentac",
+        "targetPointer": "/token_10001_deepcl_tentac",
+        "targetName": "触手",
+        "targetProfession": "TOKEN"
+      },
+      {
+        "pointer": "/char_110_deepcl/talents/0/candidates/1/tokenKey",
+        "field": "tokenKey",
+        "owner": "char_110_deepcl",
+        "ownerName": "深海色",
+        "target": "token_10001_deepcl_tentac",
+        "targetPointer": "/token_10001_deepcl_tentac",
+        "targetName": "触手",
+        "targetProfession": "TOKEN"
+      },
+      {
+        "pointer": "/char_110_deepcl/talents/0/candidates/2/tokenKey",
+        "field": "tokenKey",
+        "owner": "char_110_deepcl",
+        "ownerName": "深海色",
+        "target": "token_10001_deepcl_tentac",
+        "targetPointer": "/token_10001_deepcl_tentac",
+        "targetName": "触手",
+        "targetProfession": "TOKEN"
+      },
+      {
+        "pointer": "/char_248_mgllan/skills/0/overrideTokenKey",
+        "field": "overrideTokenKey",
+        "owner": "char_248_mgllan",
+        "ownerName": "麦哲伦",
+        "target": "token_10005_mgllan_drone1",
+        "targetPointer": "/token_10005_mgllan_drone1",
+        "targetName": "龙腾.F",
+        "targetProfession": "TOKEN"
+      },
+      {
+        "pointer": "/char_248_mgllan/skills/1/overrideTokenKey",
+        "field": "overrideTokenKey",
+        "owner": "char_248_mgllan",
+        "ownerName": "麦哲伦",
+        "target": "token_10005_mgllan_drone2",
+        "targetPointer": "/token_10005_mgllan_drone2",
+        "targetName": "龙腾.L",
+        "targetProfession": "TOKEN"
+      },
+      {
+        "pointer": "/char_248_mgllan/skills/2/overrideTokenKey",
+        "field": "overrideTokenKey",
+        "owner": "char_248_mgllan",
+        "ownerName": "麦哲伦",
+        "target": "token_10005_mgllan_drone3",
+        "targetPointer": "/token_10005_mgllan_drone3",
+        "targetName": "龙腾.A",
+        "targetProfession": "TOKEN"
+      },
+      {
+        "pointer": "/char_250_phatom/talents/0/candidates/0/tokenKey",
+        "field": "tokenKey",
+        "owner": "char_250_phatom",
+        "ownerName": "傀影",
+        "target": "token_10007_phatom_twin",
+        "targetPointer": "/token_10007_phatom_twin",
+        "targetName": "镜中虚影",
+        "targetProfession": "TOKEN"
+      },
+      {
+        "pointer": "/char_250_phatom/talents/0/candidates/1/tokenKey",
+        "field": "tokenKey",
+        "owner": "char_250_phatom",
+        "ownerName": "傀影",
+        "target": "token_10007_phatom_twin",
+        "targetPointer": "/token_10007_phatom_twin",
+        "targetName": "镜中虚影",
+        "targetProfession": "TOKEN"
+      },
+      {
+        "pointer": "/char_1033_swire2/skills/1/overrideTokenKey",
+        "field": "overrideTokenKey",
+        "owner": "char_1033_swire2",
+        "ownerName": "琳琅诗怀雅",
+        "target": "token_10031_swire2_gdtrap",
+        "targetPointer": "/token_10031_swire2_gdtrap",
+        "targetName": "香槟炸弹",
+        "targetProfession": "TOKEN"
+      }
+    ],
+    "sideKeyScan": {
+      "exactKeys": [
+        "_sideTypeIndex",
+        "playerSide",
+        "side",
+        "sideType",
+        "sideTypeIndex"
+      ],
+      "characterMatches": [],
+      "enemyMatches": []
+    },
+    "enemyCount": 2216,
+    "enemyDataFieldCounts": {
+      "applyWay": 2483,
+      "attributes": 2483,
+      "description": 2483,
+      "enemyTags": 2483,
+      "levelType": 2483,
+      "lifePointReduce": 2483,
+      "motion": 2483,
+      "name": 2483,
+      "notCountInTotal": 2483,
+      "numOfExtraDrops": 2483,
+      "prefabKey": 2483,
+      "rangeRadius": 2483,
+      "skills": 2483,
+      "spData": 2483,
+      "talentBlackboard": 2483,
+      "viewRadius": 2483
+    },
+    "requestedLeithanienEnemyRowsPresent": [],
+    "limits": [
+      "The whole-table counts include excluded modes; selected records are not all mode-activation proofs.",
+      "profession is an explicit source field; no controller class or side is inferred from key prefixes.",
+      "A tokenKey/overrideTokenKey reference proves a static binding, not that it is enabled in a particular battle.",
+      "DisplayTokenDict is display data and is not treated as a runtime creation instruction.",
+      "No matching side key in these tables does not prove side cannot be configured in Prefabs or changed by code.",
+      "No claim that empty powers of the selected TOKEN rows can never be supplemented by preprocessing."
+    ]
+  }
+}

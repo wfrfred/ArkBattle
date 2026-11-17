@@ -1,0 +1,494 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-18",
+    "script": {
+      "path": "docs/research/evidence/unit-classification-composition-20261118/native/select_evidence.py",
+      "bytes": 5383,
+      "sha256": "1bfd886eb681625dc803ef972fa0c28da06e7b1c5a5b3794b8b72e52ee7a3f76"
+    },
+    "sources": [
+      {
+        "path": "docs/research/evidence/unit-classification-20261114/identity/native.json",
+        "bytes": 2867129,
+        "sha256": "da23eb6886880eacc426ca5804d4304e95bb5c41f212071c0883441643407fdc"
+      },
+      {
+        "path": "docs/research/evidence/unit-audit-20261110/control-terrain/components.json",
+        "bytes": 204659,
+        "sha256": "0b782780489072e3eb541ac5423e81d15667477540d5d9f71c2bc0544ffb8ab9"
+      },
+      {
+        "path": "docs/research/evidence/damage-output-order-20261103/prison/decoded-content.json",
+        "bytes": 16913,
+        "sha256": "00122c58a13d10b8953655a21bb18d5a50d4e602e2c2bcf8433cb35f38131610"
+      },
+      {
+        "path": "docs/research/evidence/leithanien-summons-20261109/content/prefabs.json",
+        "bytes": 199032,
+        "sha256": "9099176f0448c1e4629218ce37649fc826389f05ea6a3e33fdaed5daf5f3c484"
+      },
+      {
+        "path": "docs/research/evidence/unit-audit-20261110/control-terrain/configuration.json",
+        "bytes": 72465,
+        "sha256": "ff27661c83593f925504a41cd4cc86f99a9f4776d48fc20ef24c47ca0b66e4a5"
+      },
+      {
+        "path": ".cache/native-research/unit-audit-20261110/operator-config/character_table.json",
+        "bytes": 15069101,
+        "sha256": "e523c7c83c36e2d76697121079e17d0282da1a94d59a55e1cc55616edf0b41c4",
+        "revision": "17759cc8cdf37388414145d16262a3a06f3ab25e",
+        "url": "https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/17759cc8cdf37388414145d16262a3a06f3ab25e/zh_CN/gamedata/excel/character_table.json"
+      },
+      {
+        "path": "docs/research/evidence/card-source-identity-20261111/deployment/native/BuildAt-77239.asm",
+        "bytes": 5515,
+        "sha256": "8c06c5ad51548d978c0062218f09a1eb832a008339c8af23ca2659d145993774"
+      },
+      {
+        "path": "docs/research/evidence/card-source-identity-20261111/deployment/native/_BuildAtInternal-77293.asm",
+        "bytes": 13074,
+        "sha256": "57e2fa9c1534203328465bf5fbd4fdcb154864e8974c55dc3e77c46e28219f67"
+      }
+    ],
+    "scope": "Targeted reuse of existing exact component and native evidence; no client execution or exhaustive prefab scan."
+  },
+  "result": {
+    "sideEnums": [
+      {
+        "fullname": "Torappu.Battle.SideTypeIndex",
+        "index": 9965,
+        "values": [
+          {
+            "name": "ALLY",
+            "value": 0,
+            "fieldIndex": 69178,
+            "default": {
+              "fieldIndex": 69178,
+              "typeIndex": 60309,
+              "dataIndex": 172881,
+              "index": 11109
+            },
+            "encodedBytes": "00"
+          },
+          {
+            "name": "ENEMY",
+            "value": 1,
+            "fieldIndex": 69179,
+            "default": {
+              "fieldIndex": 69179,
+              "typeIndex": 60309,
+              "dataIndex": 172882,
+              "index": 11110
+            },
+            "encodedBytes": "02"
+          },
+          {
+            "name": "NEUTRAL",
+            "value": 2,
+            "fieldIndex": 69180,
+            "default": {
+              "fieldIndex": 69180,
+              "typeIndex": 60309,
+              "dataIndex": 172883,
+              "index": 11111
+            },
+            "encodedBytes": "04"
+          },
+          {
+            "name": "ENUM",
+            "value": 3,
+            "fieldIndex": 69181,
+            "default": {
+              "fieldIndex": 69181,
+              "typeIndex": 60309,
+              "dataIndex": 172884,
+              "index": 11112
+            },
+            "encodedBytes": "06"
+          }
+        ]
+      },
+      {
+        "fullname": "Torappu.Battle.SideType",
+        "index": 9966,
+        "values": [
+          {
+            "name": "NONE",
+            "value": 0,
+            "fieldIndex": 69183,
+            "default": {
+              "fieldIndex": 69183,
+              "typeIndex": 60309,
+              "dataIndex": 172885,
+              "index": 11113
+            },
+            "encodedBytes": "00"
+          },
+          {
+            "name": "ALLY",
+            "value": 1,
+            "fieldIndex": 69184,
+            "default": {
+              "fieldIndex": 69184,
+              "typeIndex": 60309,
+              "dataIndex": 172886,
+              "index": 11114
+            },
+            "encodedBytes": "02"
+          },
+          {
+            "name": "ENEMY",
+            "value": 2,
+            "fieldIndex": 69185,
+            "default": {
+              "fieldIndex": 69185,
+              "typeIndex": 60309,
+              "dataIndex": 172887,
+              "index": 11115
+            },
+            "encodedBytes": "04"
+          },
+          {
+            "name": "BOTH_ALLY_AND_ENEMY",
+            "value": 3,
+            "fieldIndex": 69186,
+            "default": {
+              "fieldIndex": 69186,
+              "typeIndex": 60309,
+              "dataIndex": 172888,
+              "index": 11116
+            },
+            "encodedBytes": "06"
+          },
+          {
+            "name": "NEUTRAL",
+            "value": 4,
+            "fieldIndex": 69187,
+            "default": {
+              "fieldIndex": 69187,
+              "typeIndex": 60309,
+              "dataIndex": 172889,
+              "index": 11117
+            },
+            "encodedBytes": "08"
+          },
+          {
+            "name": "ALL",
+            "value": 7,
+            "fieldIndex": 69188,
+            "default": {
+              "fieldIndex": 69188,
+              "typeIndex": 60309,
+              "dataIndex": 172890,
+              "index": 11118
+            },
+            "encodedBytes": "0e"
+          }
+        ]
+      }
+    ],
+    "components": [
+      {
+        "source": "unit-audit-20261110/control-terrain/components.json",
+        "pointer": "/result/42",
+        "identity": {
+          "bundle": "pkgrps/btl_pfb_tokens_1.ab",
+          "file": "CAB-95fe4aaa36317a6e48d46c094fe4a8a1",
+          "pathId": "-5406581960972654285",
+          "hierarchy": [
+            "trap_098_mire"
+          ],
+          "objectSha256": "384b9868a6c223f185343a6bd53919de309971b14ef905d1b9e755d14e2a202a",
+          "scriptPPtr": {
+            "m_FileID": 1,
+            "m_PathID": 7298368132990067154
+          },
+          "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+          "script": {
+            "bundle": "anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+            "value": {
+              "id": "7298368132990067154",
+              "name": "Trap",
+              "cl": "Trap",
+              "ns": "Torappu.Battle",
+              "asm": "Assembly-CSharp.dll"
+            }
+          }
+        },
+        "values": {
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": 7298368132990067154
+          },
+          "_sideType": 1,
+          "_category": 2,
+          "_filterTag": {
+            "Array": []
+          }
+        }
+      },
+      {
+        "source": "unit-audit-20261110/control-terrain/components.json",
+        "pointer": "/result/72",
+        "identity": {
+          "bundle": "pkgrps/btl_pfb_tokens_0.ab",
+          "file": "CAB-f68700761ef4b9b267b0af89309727d6",
+          "pathId": "6760998331680630361",
+          "hierarchy": [
+            "trap_042_tidectrl"
+          ],
+          "objectSha256": "e6a8942b3e96bf732543bf4dd87668b7f06897e25fdcc7ad25da78ca41bc5f33",
+          "scriptPPtr": {
+            "m_FileID": 1,
+            "m_PathID": 7298368132990067154
+          },
+          "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+          "script": {
+            "bundle": "anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+            "value": {
+              "id": "7298368132990067154",
+              "name": "Trap",
+              "cl": "Trap",
+              "ns": "Torappu.Battle",
+              "asm": "Assembly-CSharp.dll"
+            }
+          }
+        },
+        "values": {
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": 7298368132990067154
+          },
+          "_sideType": 1,
+          "_category": 2,
+          "_filterTag": {
+            "Array": [
+              "redman_exclude",
+              "storm"
+            ]
+          }
+        }
+      },
+      {
+        "source": "damage-output-order-20261103/prison/decoded-content.json",
+        "pointer": "/result/0",
+        "identity": {
+          "bundle": "pkgrps/btl_pfb_tokens_4.ab",
+          "file": "CAB-425a845ff37dbe17e203e6b341c4f664",
+          "pathId": "-8720332516268970448",
+          "name": "trap_317_ubprison",
+          "hierarchy": [
+            {
+              "name": "trap_317_ubprison",
+              "gameObjectPathId": "-3290655887584399824",
+              "transformPathId": "1951681471924137520"
+            }
+          ],
+          "sha256": "b5e2107989069dca323cc4b4beaf03556b5cc8b408441bb68176aba3046bf1ee",
+          "rawFile": "btl_pfb_tokens_4--8720332516268970448.bin"
+        },
+        "values": {
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": 7298368132990067154
+          },
+          "_sideType": 2,
+          "_category": 1,
+          "_filterTag": {
+            "Array": []
+          }
+        }
+      },
+      {
+        "source": "leithanien-summons-20261109/content/prefabs.json",
+        "pointer": "/result/components/23",
+        "identity": {
+          "key": "enemy_9026_acltm",
+          "file": "CAB-83405aaa933fd36a5751fc087ae0984f",
+          "pathId": "-881802608265815001",
+          "hierarchy": [
+            {
+              "name": "enemy_9026_acltm",
+              "gameObjectPathId": "9111696189198539815",
+              "transformPathId": "-8272771654351545305"
+            }
+          ],
+          "objectSha256": "670f269a97b23d6732203dd5a047639bbb66833cf65b178a80658d26c5476841",
+          "scriptBinding": {
+            "file": "CAB-658d74aab777086fc32b93f385be999a",
+            "pathId": "-6629209555389654693",
+            "externalReference": {
+              "fileId": 1,
+              "guid": "00000000000000000000000000000000",
+              "type": 0,
+              "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+            },
+            "source": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+            "value": {
+              "id": "-6629209555389654693",
+              "name": "Enemy",
+              "cl": "Enemy",
+              "ns": "Torappu.Battle",
+              "asm": "Assembly-CSharp.dll"
+            }
+          }
+        },
+        "values": {
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": -6629209555389654693
+          },
+          "_sideTypeIndex": 0
+        }
+      },
+      {
+        "source": "leithanien-summons-20261109/content/prefabs.json",
+        "pointer": "/result/components/30",
+        "identity": {
+          "key": "enemy_9025_aclts",
+          "file": "CAB-83405aaa933fd36a5751fc087ae0984f",
+          "pathId": "1348064420560207857",
+          "hierarchy": [
+            {
+              "name": "enemy_9025_aclts",
+              "gameObjectPathId": "-3232031457722925071",
+              "transformPathId": "2990578528502382577"
+            }
+          ],
+          "objectSha256": "7eacf9d2556f0cab22f5f87129581440fa71acd1fed174727c01c5105a6dab3b",
+          "scriptBinding": {
+            "file": "CAB-658d74aab777086fc32b93f385be999a",
+            "pathId": "-6629209555389654693",
+            "externalReference": {
+              "fileId": 1,
+              "guid": "00000000000000000000000000000000",
+              "type": 0,
+              "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+            },
+            "source": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+            "value": {
+              "id": "-6629209555389654693",
+              "name": "Enemy",
+              "cl": "Enemy",
+              "ns": "Torappu.Battle",
+              "asm": "Assembly-CSharp.dll"
+            }
+          }
+        },
+        "values": {
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": -6629209555389654693
+          },
+          "_sideTypeIndex": 0
+        }
+      }
+    ],
+    "levelBindings": [
+      {
+        "source": "unit-audit-20261110/control-terrain/configuration.json",
+        "pointer": "/result/levelSelections/57",
+        "selection": {
+          "sourcePath": "zh_CN/gamedata/levels/activities/act2autochess/level_act2autochess_m04.json",
+          "pointer": "/predefines/tokenInsts/4",
+          "value": {
+            "position": {
+              "row": 18,
+              "col": 1
+            },
+            "direction": "UP",
+            "hidden": false,
+            "alias": "trap_042_tidectrl#1",
+            "uniEquipIds": null,
+            "showSpIllust": false,
+            "masterInfos": null,
+            "inst": {
+              "characterKey": "trap_042_tidectrl",
+              "level": 1,
+              "phase": "PHASE_0",
+              "favorPoint": 0,
+              "potentialRank": 0
+            },
+            "skillIndex": 2,
+            "mainSkillLvl": 1,
+            "skinId": "",
+            "tmplId": null,
+            "overrideSkillBlackboard": null,
+            "overrideTalents": null
+          }
+        }
+      }
+    ],
+    "characterNames": [
+      {
+        "pointer": "/trap_042_tidectrl",
+        "values": {
+          "name": "涨潮控制",
+          "profession": "TRAP",
+          "subProfessionId": "notchar2"
+        }
+      },
+      {
+        "pointer": "/trap_098_mire",
+        "values": {
+          "name": "沼泽控制",
+          "profession": "TRAP",
+          "subProfessionId": "notchar2"
+        }
+      },
+      {
+        "pointer": "/trap_317_ubprison",
+        "values": {
+          "name": "禁闭所",
+          "profession": "TRAP",
+          "subProfessionId": "notchar2"
+        }
+      }
+    ],
+    "buildSideSnippets": [
+      {
+        "source": "card-source-identity-20261111/deployment/native/BuildAt-77239.asm",
+        "range": [
+          "0x180a9d537",
+          "0x180a9d553"
+        ],
+        "lines": [
+          "0x180a9d537: mov rdx, qword ptr [rdi]",
+          "0x180a9d53a: mov rcx, rdi",
+          "0x180a9d53d: mov rax, qword ptr [rdx + 0xe80]",
+          "0x180a9d544: mov rdx, qword ptr [rdx + 0xe88]",
+          "0x180a9d54b: call rax",
+          "0x180a9d54d: xor edx, edx",
+          "0x180a9d54f: mov dword ptr [rsp + 0x48], eax"
+        ]
+      },
+      {
+        "source": "card-source-identity-20261111/deployment/native/_BuildAtInternal-77293.asm",
+        "range": [
+          "0x180aaafa2",
+          "0x180aaafdd"
+        ],
+        "lines": [
+          "0x180aaafa2: mov qword ptr [rsp + 0x40], 0",
+          "0x180aaafab: mov rax, qword ptr [rax + 0x48]",
+          "0x180aaafaf: mov qword ptr [rsp + 0x38], rax",
+          "0x180aaafb4: movss dword ptr [rsp + 0x30], xmm0",
+          "0x180aaafba: movsd qword ptr [rsp + 0x28], xmm7",
+          "0x180aaafc0: mov dword ptr [rsp + 0x20], r14d",
+          "0x180aaafc5: mov r9d, r15d",
+          "0x180aaafc8: psrldq xmm6, 8",
+          "0x180aaafcd: movd r8d, xmm6",
+          "0x180aaafd2: mov rdx, rsi",
+          "0x180aaafd5: mov rcx, rdi",
+          "0x180aaafd8: call 0x1807264b0 ; Torappu.Battle.Entity.Init"
+        ]
+      }
+    ],
+    "limits": [
+      "The excluded sandbox factory is not used as a supported-content example.",
+      "The prison MonoScript PPtr matches the resolved Trap binding in the same installed bundle; raw object and sources remain in the original evidence.",
+      "Prefab side is an initialization policy, not a guarantee that later content cannot change current side.",
+      "A nonempty Trap FilterTag exists in an actual visible supported level controller; this does not enumerate all tag consumers."
+    ]
+  }
+}

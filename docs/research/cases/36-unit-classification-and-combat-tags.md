@@ -1,6 +1,6 @@
 # 单位分类与战斗标签
 
-研究日期：2026-11-14。问题是原生单位有哪些可被战斗程序查询的分类事实、它们从哪里建立、哪些会变化，以及实际内容读取哪一项。调查涵盖通用战斗、干员／敌人／召唤物／装置和代表内容；不涉及生息演算、保全派驻、船运寻路。原件、输入指纹和复跑入口见[证据批次](../evidence/unit-classification-20261114/README.md)。
+研究日期：2026-11-14，2026-11-18 补核召唤物、装置与资料组合。问题是原生单位有哪些可被战斗程序查询的分类事实、它们从哪里建立、哪些会变化，以及实际内容读取哪一项。调查涵盖通用战斗、干员／敌人／召唤物／装置和代表内容；不涉及生息演算、保全派驻、船运寻路。原件、输入指纹和复跑入口见[分类批次](../evidence/unit-classification-20261114/README.md)与[组合批次](../evidence/unit-classification-composition-20261118/README.md)。
 
 本案整理原生需求，不确定 ArkBattle 的新字段、Capability 或标签 API。静态客户端正文、资源绑定、社区说明分别记录；没有执行实机，也没有取得活跃 XLua 的运行结果。
 
@@ -30,7 +30,9 @@
 
 [Case 32](32-leithanien-summons-blocking-and-movement.md)已将莱塔尼亚盟约的两个召唤物绑定到 `enemy_9025_aclts`／`enemy_9026_acltm`。它们使用 Enemy 实现，Prefab 配置为 ALLY 阵营。因此用 ALLY 判断“Character 类单位”，或者用 Enemy 实现判断敌对，都会改变这类内容的筛选结果。
 
-`CheckEntityUnitType` 的三个掩码位分别执行 Character／Enemy／Token 类测试。由于继承关系，Token 及 Trap 可同时满足 CHARACTER 位和 TOKEN 位。实际 `skchr_tocka_3` 配置同时要求 CHARACTER 类型掩码与 `professionMask=639`；两项并非重复。`UnitType` 的 TOKEN 枚举值为 3，`UnitTypeMask.TOKEN` 为 4，也不能直接相互强转。
+`CheckEntityUnitType` 的三个掩码位分别执行 Character／Enemy／Token 类测试。由于继承关系，Token 及 Trap 可同时满足 CHARACTER 位和 TOKEN 位。`UnitType` 的 TOKEN 枚举值为 3，`UnitTypeMask.TOKEN` 为 4，也不能直接相互强转。
+
+实际 `skchr_tocka_3` 的三个 Selector 同时要求 ALLY、CHARACTER 类型掩码和 `professionMask=639`（八职业）。原生职业检查对 ALLY 非 Character 在非零职业掩码下已拒绝，TOKEN／TRAP 职业又不在639内。因此，在这个具体组合中 Character 检查不能证明项目需要额外保存一份 Character 身份。两个原生谓词并不普遍等价，但配置同时出现不等于架构必须保存两套独立事实。精确配置和分支见[身份调查](../evidence/unit-classification-20261114/identity/README.md)。
 
 固定资料中的镜中虚影是 TOKEN 职业、executor 分支；妖怪同时是 `drone` 标签、FLY 运动方式、NONE 攻击方式。它们分别提供了职业／分支、标签／移动／攻击方式不能互相推导的静态正例。
 
@@ -70,6 +72,26 @@ Selector 的 `checkExtraProfession` 决定该次职业检查是否接受附加�
 
 原生 `CheckEnemyLevelType` 和 `CheckEnemyLevelMask` 都读当前 `Enemy.data.levelType`；`EnemyData.isBoss` 是 `levelType == BOSS`，不是另一套独立 Boss 事实。这项分类确有战斗消费者，不能只保留在敌人手册展示中。
 
+### 2.6 组织筛选也有实际模组绑定
+
+信仰搅拌机 X3 的 `rmixer_equip_1_3_p2` 关联 GlobalAuraAbility，validator 为 `FilterGroupTagTargetValidator`，标签是 `laterano`，实际安装 `rmixer_e_002_t1`。完整绑定已在[属性范围调查](39-death-attribution-and-attribute-ranges.md#实际范围覆写)闭合。它证明普通组织归属有实际战斗消费者，与下述额外 GroupTag Rune 的启用缺口不同。
+
+### 2.7 召唤途径、阵营与分类资料的组合
+
+2026-11-18 全表与选定原生路径补核见[组合批次](../evidence/unit-classification-composition-20261118/README.md)。
+
+固定 `character_table` 的1382项具有相同的36个顶层字段；按显式 profession 分为八职业461项、TOKEN75项、TRAP846项。八职业有29项没有组织归属，TOKEN本快照均没有；TRAP则有三项通过 `subPower` 附加 `laterano`：圣徒像扮演者、圣堂射手扮演者、圣堂保育员扮演者。故组织归属既不保证八职业单位非空，也不限定为八职业专有。空组织集合是实际资料，不必等同于缺失字段。
+
+TOKEN资料也不只有统一的分支：镜中虚影是 TOKEN／executor；`trap_079_allydonq` 猎潮的骑士是 TOKEN／pioneer。后者虽使用 trap key，职业仍是TOKEN。精确原文和深海色、傀影、麦哲伦、琳琅诗怀雅的 `tokenKey/overrideTokenKey` 引用保存在[JSON核对](../evidence/unit-classification-composition-20261118/data/README.md)；这些引用证明静态绑定，不单独证明实际启用或阵营。
+
+两份完整 Character／Enemy JSON 对精确字段名 `side`、`sideType`、`sideTypeIndex`、`_sideTypeIndex`、`playerSide` 的递归查询均无命中。阵营须按 Prefab 与创建链读取，不能由表名、职业或召唤动作反推。莱塔尼亚“一个小节／一个乐部”是已有实际正例：SummonEnemyWithRuntimeRoute 创建 Enemy 控制器，Prefab明确为ALLY；召唤不是与Enemy资料互斥的第三种资料。
+
+普通 Character 的初始化阵营 getter 返回 `SideType.ALLY=1`；Token 覆盖该 getter，直接读取 Prefab `_sideType`。已核部署链通过 `BuildParam.sideType → Entity.Init → BObject.Init` 写入当前 side，playerSide另存；Enemy则先将 Prefab的SideTypeIndex转换成SideType。这些路径没有根据职业或“被召唤”自动决定阵营，也不能推出全部特殊创建入口都沿用默认值。完整字段与调用片段见[原生补核](../evidence/unit-classification-composition-20261118/native/README.md)。
+
+筛选标签也不由Enemy独占。`trap_042_tidectrl` 涨潮控制的实际 Trap Prefab 含 `_filterTag=['redman_exclude','storm']`，卫戍 act2autochess m04 有可见预置和技能选择；Trap的查询读取这一数组，同时其职业／组织查询仍走角色资料路径。其 `_sideType=1` 是ALLY；另一实际Trap资源 `trap_317_ubprison` 禁闭所的 `_sideType=2` 则是ENEMY。因此不能以“角色只有组织标签、敌人只有战斗标签”，或以敌我阵营为联合分支前提。该例不声称两条标签的全部实际消费者均已展开。
+
+以上事实约束项目抽象：创建途径、敌我阵营和分类资料必须分别解释；原生继承不自动成为项目类型层次。职业资料与Enemy级别资料在已核路径中分属不同数据来源，可以据此评估资料联合，但本批不将有限样本提升为禁止组合的全局规则，也不确定 Capability 数量、分支名或字段归属。
+
 ## 3. 初始化与变化范围
 
 Enemy 的战斗分类来自转换后的 EnemyData，再由 Enemy 初始化保存数据引用；基础记录、等级覆盖和关卡引用覆写必须按各自路径检查，不能默认查手册或固定 level 0 就等价。Character 的基础职业、附加职业及组标签则来自 Character 数据构造与相应预处理。具体赋值、合并及保留证据见[标签调查](../evidence/unit-classification-20261114/tags/README.md)和[身份调查](../evidence/unit-classification-20261114/identity/README.md)。
@@ -78,7 +100,7 @@ Enemy 的战斗分类来自转换后的 EnemyData，再由 Enemy 初始化保存
 
 额外 GroupTag 的已核写入发生在 Rune 的 Character 预处理。调用者包括预置 Character／Token 的临时 Dummy 创建—预处理—回收，以及卡牌属性资料处理；它们不是已在场 Character 动态增删标签的正例。本批未找到该 Rune 的实际非默认启用配置，保留这一具体缺口。
 
-实体类别另有真正的修改入口：`Token.SwitchCategory` 写入覆盖值，`get_category` 在覆盖值非零时读它，否则使用 Prefab `_category`。本批保留完整方法与相关调用节点，尚未逐个闭合实际内容绑定；不能因为部分标签只找到构造路径，就把全部分类轴宣布为不可变。
+实体类别另有真正的修改入口：`Token.SwitchCategory` 写入覆盖值，`get_category` 在覆盖值非零时读它，否则使用 Prefab `_category`。补核的涨潮控制已有非默认 `_category=2` 的实际配置，不能再把非默认值整体当成只有枚举声明；运行时切换的各内容绑定仍未闭合，不能因此将全部分类轴宣布为不可变。
 
 静态镜像中有敌人分类的逐级显式字段，但“某级重新声明”不等于“分类实际改变”。例如 `enemy_1570_ymgscm` 的 level 0／1 都是空 enemyTags；不能将 level 1 的显式空数组单独当成清除非空标签的玩法正例。静态统计、版本和查询保存在[配置证据](../evidence/unit-classification-20261114/config/README.md)。
 

@@ -45,7 +45,7 @@
 | [33 Targeting／Targetable 通用调用链](33-targeting-and-targetable-pipeline.md) | 真实模式／Trigger／Selector／Validator、候选与优先级、Ability绑定与再验证、弹道及作用入口 | 资格与异常来源、三类排序分流、仇恨距离、HP／EP联合治疗、选中时点与本项目政策的差异 |
 | [34 PRTS 公共机制覆盖审计](34-prts-mechanism-coverage-audit.md) | PRTS 机制目录与代表内容，对照已归档原生证据及当前公共接口 | 区分真实遗漏、既有延期、可组合内容与待核实候选，不以具体内容数量代替公共机制覆盖 |
 | [35 面向与转向条件](35-facing-and-turning-conditions.md) | FaceTo 统一准入、出生／移动／攻击／受力／出现／待机时点、Animator 符号与实际内容绑定 | 区分目标向量、身体四向和有效左右面向；触发、资格、发布条件与实际方向消费者 |
-| [36 单位分类与战斗标签](36-unit-classification-and-combat-tags.md) | 实现类／类型掩码、职业、FilterTag／GroupTag、敌人级别与攻击方式；泥岩、守林人、迷迭香及维娜模组绑定 | 分开初始化来源、查询对象与实际内容，核对附加职业及标签预处理，不将展示资料或 Profile 转换当作原生规则 |
+| [36 单位分类与战斗标签](36-unit-classification-and-combat-tags.md) | 实现类／类型掩码、职业、FilterTag／GroupTag、级别与攻击方式；召唤物／装置的组织、筛选标签和阵营组合 | 分开创建途径、资料族与敌我；核对真实查询集合，不以原生继承或字段并存推导项目类型 |
 
 | [37 HP／EP资源机制全链覆盖](37-resource-mechanism-coverage.md) | 字段／方法清单、真实Content绑定、全Holder与资源扫描 | Vitality／Elemental／Damage／Healing统一证据入口；实际使用、未绑定候选与证据冲突分别列明，不默认批准简化 |
 | [38 Damage分类与权限](38-damage-classification-and-permissions.md) | Modifier、22项标志、公式／接收完整体、实际干员与召唤链 | 数学类型、攻击分类、施加途径、数值／取消权限、环境、分担／反伤与传播区别 |

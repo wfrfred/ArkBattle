@@ -1,0 +1,221 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-11-18"
+    ],
+    "collectionDateSource": "batch directory",
+    "organizedOn": "2026-11-18",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+        "records": [
+          "native/bobject-init.json#/provenance/client/dll",
+          "native/side-getters.json#/provenance/client/dll"
+        ],
+        "bytes": 223112680
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        "records": [
+          "native/bobject-init.json#/provenance/client/metadata",
+          "native/side-getters.json#/provenance/client/metadata"
+        ],
+        "bytes": 46669332
+      }
+    },
+    "sourceRecords": [
+      "community.json",
+      "data/result.json",
+      "native/bobject-init.json",
+      "native/selected-evidence.json",
+      "native/side-getters.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12895,
+        "sha256": "9c5b246859318caaec4aab5275ef0d2d49fce5d612c6b4e569973a9941ba621a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "community.json",
+        "kind": "record",
+        "bytes": 1787,
+        "sha256": "b6a8a5f77c6a8f2866ab2babbeeb4706dc00553514a88b8f428725be67fa9bc0"
+      },
+      {
+        "path": "data/extract.py",
+        "kind": "historical-script",
+        "bytes": 8774,
+        "sha256": "90f6091d26610984728bba4158dd98fbf2fbe3b48e57c16520568aa8f161dea0"
+      },
+      {
+        "path": "data/result.json",
+        "kind": "record",
+        "bytes": 123822,
+        "sha256": "8cf8faa5ca79792c5a840f0c0f393fca2eebad2580bc2ee63ae45e4597f874e7"
+      },
+      {
+        "path": "native/bobject-init.json",
+        "kind": "record",
+        "bytes": 18492,
+        "sha256": "b65cf10de9762dfdf0aa3155c25ece2d9d44189f9240920b2d554cc3062de00b"
+      },
+      {
+        "path": "native/select_evidence.py",
+        "kind": "historical-script",
+        "bytes": 5383,
+        "sha256": "1bfd886eb681625dc803ef972fa0c28da06e7b1c5a5b3794b8b72e52ee7a3f76"
+      },
+      {
+        "path": "native/selected-evidence.json",
+        "kind": "record",
+        "bytes": 16271,
+        "sha256": "5d60ad5a2d3474135b1bc1e2297dd7f3f6c60fea19ddf7237f3db0d60dea6f44"
+      },
+      {
+        "path": "native/side-getters.json",
+        "kind": "record",
+        "bytes": 263123,
+        "sha256": "62ab394edd4d7a6c7dcf6c78f0896d516bdafee70867be3c25d09c8fd687ef67"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 66009,
+          "mode": "disasm",
+          "records": [
+            "native/bobject-init.json#/result/methods/0",
+            "native/bobject-init.json#/result/bodies/0",
+            "native/bobject-init.json#/result/bodies/0/fragments/0",
+            "native/bobject-init.json#/result/bodies/0/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.BObject.Init",
+          "address": "0x1806afb40"
+        },
+        {
+          "index": 67623,
+          "mode": "disasm",
+          "records": [
+            "native/side-getters.json#/result/methods/0",
+            "native/side-getters.json#/result/bodies/0",
+            "native/side-getters.json#/result/bodies/0/fragments/0",
+            "native/side-getters.json#/result/bodies/0/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.Init",
+          "address": "0x180726370"
+        },
+        {
+          "index": 67624,
+          "mode": "disasm",
+          "records": [
+            "native/side-getters.json#/result/methods/1",
+            "native/side-getters.json#/result/bodies/1",
+            "native/side-getters.json#/result/bodies/1/fragments/0",
+            "native/side-getters.json#/result/bodies/1/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.Init",
+          "address": "0x1807264b0"
+        },
+        {
+          "index": 77126,
+          "mode": "disasm",
+          "records": [
+            "native/side-getters.json#/result/methods/2",
+            "native/side-getters.json#/result/bodies/2",
+            "native/side-getters.json#/result/bodies/2/fragments/0",
+            "native/side-getters.json#/result/bodies/2/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Character.get_initSideType",
+          "address": "0x180ab07f0"
+        },
+        {
+          "index": 78754,
+          "mode": "disasm",
+          "records": [
+            "native/side-getters.json#/result/methods/3",
+            "native/side-getters.json#/result/bodies/3",
+            "native/side-getters.json#/result/bodies/3/fragments/0",
+            "native/side-getters.json#/result/bodies/3/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Token.get_isEnemySideToken",
+          "address": "0x180b04f10"
+        },
+        {
+          "index": 78756,
+          "mode": "disasm",
+          "records": [
+            "native/side-getters.json#/result/methods/4",
+            "native/side-getters.json#/result/bodies/4",
+            "native/side-getters.json#/result/bodies/4/fragments/0",
+            "native/side-getters.json#/result/bodies/4/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Token.get_initSideType",
+          "address": "0x180b04eb0"
+        }
+      ],
+      "blocks": [],
+      "types": [
+        {
+          "name": "Torappu.Battle.BObject",
+          "records": [
+            "native/bobject-init.json#/result/fieldOwners/0"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Character/BuildParam",
+          "records": [
+            "native/side-getters.json#/result/fieldOwners/2"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.SideType",
+          "records": [
+            "native/side-getters.json#/result/fieldOwners/1"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.SideTypeIndex",
+          "records": [
+            "native/side-getters.json#/result/fieldOwners/0"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Token",
+          "records": [
+            "native/side-getters.json#/result/fieldOwners/3"
+          ]
+        }
+      ],
+      "constants": [],
+      "bundles": [
+        {
+          "kind": "bundle",
+          "path": "pkgrps/btl_pfb_tokens_4.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_4.ab",
+          "sha256": "b5e2107989069dca323cc4b4beaf03556b5cc8b408441bb68176aba3046bf1ee",
+          "records": [
+            "native/selected-evidence.json#/result/components/2/identity"
+          ]
+        }
+      ]
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

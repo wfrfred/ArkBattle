@@ -1,0 +1,27 @@
+{
+  "provenance": {
+    "checkedOn": "2026-11-18",
+    "method": "PRTS search and page read; bounded excerpts and paraphrases",
+    "limits": "Community documentation supplements the byte-verified JSON and native evidence. No MediaWiki revision pinned and no live battle observation."
+  },
+  "result": [
+    {
+      "url": "https://prts.wiki/w/圣堂射手扮演者",
+      "quotedExcerpt": "该装置具有隐藏势力：拉特兰。",
+      "paraphrase": "The device page describes an ALLY object with Laterano affiliation and lists ordinary event/annihilation appearances. This agrees with the fixed character_table TRAP record whose subPower contains laterano.",
+      "scope": "Supports the selected ordinary device example; does not prove that every affiliation-sensitive effect includes it."
+    },
+    {
+      "url": "https://prts.wiki/w/猎潮的骑士",
+      "quotedExcerpt": "职业为召唤物而非装置，职业分支为尖兵",
+      "paraphrase": "The page describes an ALLY object in the integrated-strategy mode, with summon profession and pioneer subprofession. The fixed JSON record trap_079_allydonq explicitly has TOKEN/pioneer. The page also distinguishes the enemy boss incarnation.",
+      "scope": "Key prefix, profession, subprofession and player-facing device name are not interchangeable classifications."
+    },
+    {
+      "url": "https://prts.wiki/w/L-44\"留声机\"",
+      "quotedExcerpt": "该装置不会因为占领状态改变而改变阵营",
+      "paraphrase": "The page lists ENEMY allegiance while its modes can attack/heal different sides. Player/enemy occupation mode is not evidence that the object's allegiance changes.",
+      "scope": "Do not use takeover as a side-mutation example without tracing the actual side write."
+    }
+  ]
+}
