@@ -272,6 +272,7 @@ function apply(
             const request: epDamage.Request = {
                 attackType: operation.attackType,
                 applyWay: operation.applyWay,
+                nature: "DAMAGE",
                 source,
                 target: units.ref(receiver),
                 parameters: { type: operation.elementType, power: operation.power },

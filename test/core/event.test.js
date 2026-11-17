@@ -33,7 +33,7 @@ test("EVENT-01: real HP and EP operations emit display facts including zero chan
     state = epHealing.applyHealing(
         elementalRecovery, epHealing.calculateHealing(state, elementalRecovery),
     ).state;
-    const injury = { source: null, target, attackType: "NORMAL", applyWay: "NONE", parameters: { type: "NEURAL", power: 100 } };
+    const injury = { source: null, target, attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE", parameters: { type: "NEURAL", power: 100 } };
     state = epDamage.applyDamage(injury, epDamage.calculateDamage(state, injury)).state;
     state = epHealing.applyHealing(elementalRecovery, epHealing.calculateHealing(state, elementalRecovery)).state;
     const recovery = { source: null, target, parameters: { power: 30, multiplier: 1 } };
@@ -63,7 +63,7 @@ test("EVENT-02: a Burst keeps its original position through movement and death i
         vitality: { maxHp: 2000, defense: 0, resistance: 0, recoverySpeed: 0, recoveryRatio: 0 },
     }, position: [1, 1] }]);
     const target = units.ref(get(state, 0));
-    const injury = { source: null, target, attackType: "NORMAL", applyWay: "NONE", parameters: { type: "BURN", power: 1000 } };
+    const injury = { source: null, target, attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE", parameters: { type: "BURN", power: 1000 } };
     state = epDamage.applyDamage(injury, epDamage.calculateDamage(state, injury)).state;
     state = update(state, target, presence.appear([4, 1]));
     const lethal = {

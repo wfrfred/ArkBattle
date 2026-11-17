@@ -12,6 +12,7 @@ export { fix, cancel } from "./contract.js";
 
 export type {
     Event,
+    Nature,
     Request,
     Parameters,
     Calculated,

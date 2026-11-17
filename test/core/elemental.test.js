@@ -33,13 +33,13 @@ const recoveringElementalReceiver = {
 };
 
 function injuryRequest(target, type, power, source = null) {
-    return { target, source, attackType: "NORMAL", applyWay: "NONE", parameters: { type, power } };
+    return { target, source, attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE", parameters: { type, power } };
 }
 
 test("EP-03: Burst recovery continues while absent, refills EP with the current budget and releases its output", () => {
     let state = battle([{ definition: elementalReceiver, position: [0, 0] }]);
     const target = units.ref(get(state, 0));
-    const incoming = { target, source: null, attackType: "NORMAL", applyWay: "NONE", parameters: { type: "BURN", power: 1000 } };
+    const incoming = { target, source: null, attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE", parameters: { type: "BURN", power: 1000 } };
     const started = epDamage.applyDamage(incoming, epDamage.calculateDamage(state, incoming));
     const burst = started.value.application.burst;
     state = started.state;
@@ -98,7 +98,7 @@ test("EP-03: zero recovery budgets keep installation output and independent stun
     };
     let state = battle([{ definition, position: [0, 0] }]);
     const target = units.ref(get(state, 0));
-    const neural = { target, source: null, attackType: "NORMAL", applyWay: "NONE", parameters: { type: "NEURAL", power: 1000 } };
+    const neural = { target, source: null, attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE", parameters: { type: "NEURAL", power: 1000 } };
     const result = epDamage.applyDamage(neural, epDamage.calculateDamage(state, neural));
     state = result.state;
     assert.equal(get(state, 0).vitality.health.hp, 9000);
@@ -113,7 +113,7 @@ test("EP-03: zero recovery budgets keep installation output and independent stun
     state = locomotion.advance(state, target, goal, movement);
     assert.deepEqual(get(state, 0).position, goal.goal);
 
-    const necrosis = { target, source: null, attackType: "NORMAL", applyWay: "NONE", parameters: { type: "NECROSIS", power: 1000 } };
+    const necrosis = { target, source: null, attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE", parameters: { type: "NECROSIS", power: 1000 } };
     state = epDamage.applyDamage(necrosis, epDamage.calculateDamage(state, necrosis)).state;
     state = effects.advance({ ...state, tick: 750 });
     assert.equal(get(state, 0).vitality.health.hp, 9000);
@@ -229,7 +229,7 @@ test("EP-01/03: losses stay per element, healing gives every bar the full amount
     let state = battle([{ definition: { ...recoveringElementalReceiver, hooks }, position: [0, 0] }]);
     const target = units.ref(get(state, 0));
     for (const [type, power] of [["NEURAL", 200], ["EROSION", 80], ["BURN", 40]]) {
-        const incoming = { target, source: null, attackType: "NORMAL", applyWay: "NONE", parameters: { type, power } };
+        const incoming = { target, source: null, attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE", parameters: { type, power } };
         state = epDamage.applyDamage(incoming, epDamage.calculateDamage(state, incoming)).state;
     }
     assert.deepEqual(get(state, 0).elemental.ep, {
@@ -284,7 +284,7 @@ test("EP-01/03: losses stay per element, healing gives every bar the full amount
         id: "zero-reception",
         invoke: (state, _context, pending) => ({ state, value: { ...pending, amount: 0 } }),
     }));
-    const injury = { target, source: null, attackType: "BUFF", applyWay: "NONE", parameters: { type: "NEURAL", power: 1 } };
+    const injury = { target, source: null, attackType: "BUFF", applyWay: "NONE", nature: "DAMAGE", parameters: { type: "NEURAL", power: 1 } };
     const damaged = epDamage.applyDamage(injury, epDamage.calculateDamage(zeroDamage, injury));
     const healed = epHealing.applyHealing(incoming, epHealing.calculateHealing(smaller, incoming));
     assert.equal(damaged.value.type, "APPLIED");

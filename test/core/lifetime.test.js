@@ -55,7 +55,7 @@ test("HOOK-03: Skill and Burst end notifications observe their cleared state whi
     const owner = units.ref(units.all(state).find(() => true));
     const activated = skills.activate(state, skills.ref(owner, program));
     assert.notEqual(activated.value, null);
-    const request = { source: null, target: owner, attackType: "NORMAL", applyWay: "NONE", parameters: { type: "NEURAL", power: 1000 } };
+    const request = { source: null, target: owner, attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE", parameters: { type: "NEURAL", power: 1000 } };
     const burst = epDamage.applyDamage(request, epDamage.calculateDamage(activated.state, request));
     assert.notEqual(burst.value.application.burst, null);
     state = remove(burst.state, owner, { reason: "SCRIPT" });

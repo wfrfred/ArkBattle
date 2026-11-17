@@ -20,7 +20,7 @@ ArkBattle 面向通用明日方舟战斗，卫戍协议是实现重点，不是 
 | --- | --- | --- |
 | ATTR-02 属性范围 | 默认属性范围与公式。 | 范围覆写及完整来源同步，见[属性研究](../research/cases/39-death-attribution-and-attribute-ranges.md)。 |
 | ATTR-04 数值竞争 | Contribution 与 Effect 各有明确竞争。 | 具体 Buff 如何分组与互斥仍须接入，不从结构能力推定完成。 |
-| DMG-02 分类与阶段 | 四类 Calculate／Apply、HP DAMAGE／ENVIRONMENT／LOSS、单值攻击类型／途径、死亡归属与 targetKilled。 | EP 环境身份尚未表达；齐尔查克有真实独立消费者，见[分类调查](../research/cases/38-damage-classification-and-permissions.md)。 |
+| DMG-02 分类与阶段 | 四类 Calculate／Apply、HP DAMAGE／ENVIRONMENT／LOSS、EP DAMAGE／ENVIRONMENT、单值攻击类型／途径、死亡归属与 targetKilled。 | 齐尔查克条件免疫、具体环境 EP 来源等 Content 接入，见[分类调查](../research/cases/38-damage-classification-and-permissions.md)。 |
 | DMG-03 生命流失 | LOSS 共用完整管线，普通机制按性质响应，无敌／Presence 允许流失且不授予 HIT。 | 具体流失来源和特殊生命交互仍须验证。 |
 | DMG-04 特殊生命 | Health／债务、联合提交干预与固定报告后的后继。 | 具体不死／免死、复活／替身／锁血、成功消耗和特殊死亡链未完整接入；Core 不新增 ES。 |
 | DMG-05 弱点 | 双候选完整计算、选择完整结果再 Apply 一次的项目规则。 | 代表弱点 Content 尚未接入。 |

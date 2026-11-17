@@ -45,7 +45,7 @@ function receiverBattle(receiver = 'CHARACTER', overrides = {}) {
   return createBattle([{ position: [1, 0], definition: definition(receiver, overrides) }]);
 }
 function element(work, type, tick = work.tick, power = 1000) {
-  const request = { target: unitRef(getUnit(work, 0)), source: null, attackType: "NORMAL", applyWay: "NONE", parameters: { type, power } };
+  const request = { target: unitRef(getUnit(work, 0)), source: null, attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE", parameters: { type, power } };
   return epDamage.applyDamage(request, epDamage.calculateDamage({ ...work, tick }, request));
 }
 function advance(work, tick) {
@@ -163,7 +163,7 @@ test('elemental runtime: unused neural paralysis survives recovery and the next 
   events.push(...(runtime = stepBattle(runtime, [])).events);
   assert.equal(events.filter(event => event.type === 'ACTION_CANCELLED' && event.sourceUnitId === 1).length, 1);
 
-  const request = { target: unitRef(victim(runtime)), source: null, attackType: "NORMAL", applyWay: "NONE", parameters: { type: 'NEURAL', power: 1000 } };
+  const request = { target: unitRef(victim(runtime)), source: null, attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE", parameters: { type: 'NEURAL', power: 1000 } };
   runtime = epDamage.applyDamage(request, epDamage.calculateDamage(runtime, request)).state;
   while (runtime.tick <= 365) events.push(...(runtime = stepBattle(runtime, [])).events);
   const cancelled = events.filter(event => event.type === 'ACTION_CANCELLED' && event.sourceUnitId === 1);

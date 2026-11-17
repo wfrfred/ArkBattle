@@ -36,7 +36,7 @@ function elementalDefinition(config = {}, hooks = Hooks.empty()) {
 }
 
 function injuryRequest(target, type, power, source = null) {
-    return { target, source, attackType: "NORMAL", applyWay: "NONE", parameters: { type, power } };
+    return { target, source, attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE", parameters: { type, power } };
 }
 
 const elementalReceiver = {
@@ -275,8 +275,8 @@ test("APPLY-02: Calculate normalizes final HP/EP output before Apply starts rece
             source: units.ref(get(state, 0)),
             target: units.ref(get(state, 1)),
             parameters,
-            ...(operation === hpDamage || operation === epDamage ? { attackType: "NORMAL", applyWay: "NONE" } : {}),
-            ...(operation === hpDamage ? { nature: "DAMAGE", hitRecovery: true, killer: units.ref(get(state, 0)) } : {}),
+            ...(operation === hpDamage || operation === epDamage ? { attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE" } : {}),
+            ...(operation === hpDamage ? { hitRecovery: true, killer: units.ref(get(state, 0)) } : {}),
         };
         const calculate = operation.calculateDamage ?? operation.calculateHealing;
         const apply = operation.applyDamage ?? operation.applyHealing;

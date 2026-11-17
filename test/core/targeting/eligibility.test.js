@@ -35,7 +35,7 @@ function wound(state, target, power) {
     return hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request)).state;
 }
 function injure(state, target, power) {
-    const request = { source: null, target, attackType: "NORMAL", applyWay: "NONE", parameters: { type: "NEURAL", power } };
+    const request = { source: null, target, attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE", parameters: { type: "NEURAL", power } };
     return epDamage.applyDamage(request, epDamage.calculateDamage(state, request));
 }
 

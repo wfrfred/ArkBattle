@@ -713,6 +713,65 @@ test("HP-05/06: LOSS completes the shared pipeline against an invincible absent 
     assert.equal(get(applied.state, target.id), undefined);
 });
 
+test("EP-05: environmental EP uses ordinary resistance and reception, with immunity controlled by the existing hook", () => {
+    const received = [];
+    const applied = [];
+    let state = battle([{ definition: {
+        id: "environmental-ep-target",
+        elemental: {
+            ...createArknightsElementalDefinition({ receiver: "CHARACTER" }),
+            elementResistance: 50,
+        },
+        hooks: Hooks.empty().set(epDamage.receiving, {
+            id: "observe-reception",
+            invoke(current, { request }, pending) {
+                received.push(request.nature);
+                return { state: current, value: pending };
+            },
+        }).set(epDamage.targetApplied, {
+            id: "observe-application",
+            invoke(current, { request }) {
+                applied.push(request.nature);
+                return { state: current, value: undefined };
+            },
+        }),
+    }, position: [0, 0] }]);
+    const target = units.ref(get(state, 0));
+    const environment = {
+        source: null, target, attackType: "NONE", applyWay: "NONE", nature: "ENVIRONMENT",
+        parameters: { type: "EROSION", power: 100 },
+    };
+    const first = epDamage.calculateDamage(state, environment);
+    assert.equal(first.value.amount, 50);
+    const unprotected = epDamage.applyDamage(environment, first);
+    assert.equal(unprotected.value.type, "APPLIED");
+    assert.equal(unprotected.value.application.epLoss, 50);
+    state = update(unprotected.state, target, units.setHook(epDamage.beforeReceive, {
+        id: "environment-immunity",
+        accepts: (_current, { request }) => request.nature === "ENVIRONMENT",
+        invoke: (current, context, pending) => ({
+            state: current,
+            value: epDamage.cancel(pending, "UNHURTABLE", context.forbidden),
+        }),
+    }));
+    const ordinary = { ...environment, nature: "DAMAGE" };
+    const accepted = epDamage.applyDamage(ordinary, epDamage.calculateDamage(state, ordinary));
+    assert.equal(accepted.value.type, "APPLIED");
+    assert.equal(accepted.value.application.epLoss, 50);
+    const immune = epDamage.applyDamage(environment, epDamage.calculateDamage(accepted.state, environment));
+    assert.equal(immune.value.type, "CANCELLED");
+    assert.equal(immune.value.received.reason, "UNHURTABLE");
+    assert.equal(get(immune.state, 0).elemental.ep.EROSION, 900);
+    const bypassed = epDamage.applyDamage(environment, epDamage.calculateDamage(immune.state, environment), {
+        exclude: [[epDamage.beforeReceive, "environment-immunity"]],
+    });
+    assert.equal(bypassed.value.type, "APPLIED");
+    assert.equal(bypassed.value.application.epLoss, 50);
+    assert.equal(get(bypassed.state, 0).elemental.ep.EROSION, 850);
+    assert.deepEqual(received, ["ENVIRONMENT", "DAMAGE", "ENVIRONMENT", "ENVIRONMENT"]);
+    assert.deepEqual(applied, ["ENVIRONMENT", "DAMAGE", "ENVIRONMENT"]);
+});
+
 test("HP-03: lethal HP remains present through nested Combat and both Applied roles before death releases blocking", () => {
     let prepared = false;
     let state = battle([
@@ -957,7 +1016,7 @@ test("HP Healing accepts full resources and absent patients while damage require
     const hpLoss = { source: null, target, attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE", hitRecovery: true, killer: null, parameters: {
         type: "TRUE", attack: { power: 30, multiplier: 1, addition: 0 },
     } };
-    const epLoss = { target, source: null, attackType: "NORMAL", applyWay: "NONE", parameters: { type: "NEURAL", power: 200 } };
+    const epLoss = { target, source: null, attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE", parameters: { type: "NEURAL", power: 200 } };
     state = hpDamage.applyDamage(hpLoss, hpDamage.calculateDamage(full.state, hpLoss)).state;
     state = epDamage.applyDamage(epLoss, epDamage.calculateDamage(state, epLoss)).state;
     assert.equal(get(state, 0).vitality.health.hp, 70.5);

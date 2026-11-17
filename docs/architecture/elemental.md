@@ -39,6 +39,8 @@ Burst 是普通 Effect：state 至少保存元素类型，Definition 增加 dura
 
 损伤规则读取 `{self,request,type}`，type 来自本次 Calculated；恢复规则读取 `{self,request}`。两者分别登记，不借用 HP 接收规则。无敌和 Presence 通过 EP 损伤限制表达；Presence 不直接限制明确恢复、自然回复或已有 Burst。Targeting 的 EP 谓词另检查目标侧限制、阵营与需要恢复的资源，不为候选查询伪造完整计算结果；HP 行动附加 EP 输出也不自动套用 EP 索敌条件。
 
+EP Damage.Request 必填 nature=DAMAGE／ENVIRONMENT，环境身份由输出方显式提供。Restriction、BeforeReceive／Receiving 等直接读取 request.nature，沿现有流程拒绝或取消本笔环境损伤；标签不改变抗性公式、Burst 或 Hook 派发。普通攻击的附加 EP 输出明确使用 DAMAGE。
+
 MaxEP 贡献变更本身不改写 EP。后续提交先按最新上限规范化，再计算本笔实际损失／增益；**规范化结果必须真实发布到 State，不能只在报告中使用截断值**。五型均应一致，即使本笔增益或损失为零也不能留下超上限的实际 EP。自然回复和 Burst 恢复也使用同一有效上限，比例查询不回落到静态基础值。
 
 | Application | 资源事实 |
@@ -96,7 +98,7 @@ elapsed' = duration - remaining'
 
 - 同一宿主当前只允许一个 Burst；特殊内容可组合输出与生命周期，不由标准库提供通用多阶段爆发或启动免疫窗口。
 - 狂躁尚未区分技能成功发动后的空施放资格。原生郁金香 S1 无目标时成功发动并扣除 SP，但空动画分支不增加狂躁；该内容分支尚未接入。原生天赋／通用分类由上述职责划分表达，不另设 Core 枚举。具体依据见[案例25第11节](../research/cases/25-elemental-burst-recovery-timing.md#11-狂躁计数的原生排除范围)。
-- EP 环境损伤分类及相应实际免疫交互尚未接入，不能因 HP 已有 ENVIRONMENT 就宣称 EP 已覆盖，也不能从地形来源猜测。
+- 环境 EP 分类已提供；齐尔查克的条件光环、深水我方损伤等具体 Content 仍需按原生配置接入，不由环境标签代替来源与免疫程序。
 - 珊比直接缩短爆发预算的原生行为保留已推进量、降低总预算并立即重算 EP；当前仅修改 Effect.remaining 不自动完成这项资源操作。根与独立子效果的时间交互仍须闭合。
 
 以上真实需求和原生边界见[案例25](../research/cases/25-elemental-burst-recovery-timing.md)、[案例38](../research/cases/38-damage-classification-and-permissions.md)及[覆盖表](../research/cases/37-resource-mechanism-coverage.md)。必要验收结果统一见 [EP 回归语义](verification.md#hook-与伤害治疗的回归语义)。

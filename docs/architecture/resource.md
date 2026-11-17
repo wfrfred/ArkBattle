@@ -39,19 +39,22 @@ Context 只保留本阶段所需的固定事实：基础为 request，接收增�
 
 ### 请求分类
 
-HP／EP Damage 顶层必填单值 `attackType` 与 `applyWay`：
+HP／EP Damage 顶层必填单值 `attackType`、`applyWay` 与 `nature`：
 
 | 字段 | 合法值与职责 |
 | --- | --- |
 | attackType | NONE、NORMAL、SPLASH、BUFF、ADDITION；本笔攻击类别 |
 | applyWay | NONE、MELEE、RANGED、ALL；本笔施加途径 |
 | HP nature | DAMAGE、ENVIRONMENT、LOSS；HP 业务性质 |
+| EP nature | DAMAGE、ENVIRONMENT；EP 损伤性质 |
 | HP hitRecovery | 独立的受击类 SP 回复许可 |
 | HP killer | 显式击杀者 Ref 或 null，与 source 独立 |
 
 这些事实由调用者提供，不从阵营、距离、周期、Effect、地形或空来源推导，不改变数学伤害类型。分类采用字符串联合而非组合 mask 是项目选择；不据此断言原生禁止组合。Healing 不携带这些 Damage 分类。
 
-三种 Nature 使用同一管线。ENVIRONMENT 标签本身不跳过 Hook、固定数值或改变公式；source、hitRecovery 与本次 exclude 分别控制来源、HIT 许可与响应排除。普通无敌和 Presence 的 HP 接收规则只允许 LOSS；流失仍计算防御并进入提交和死亡后继。具体护盾、闪避、减伤或受伤机制按自身资格处理，泥岩接受 nature!==LOSS。活性源石为 ENVIRONMENT，敌方深水与标准爆发 HP 输出为 DAMAGE。角色狂躁周期明确允许 HIT；其它标准爆发、活性源石与敌方深水不允许，见 [Elemental](elemental.md#狂躁的行动与时间累加)。
+HP 的三种 Nature、EP 的两种 Nature 分别使用各自同一管线。ENVIRONMENT 标签本身不跳过 Hook、固定数值或改变公式；source、HP hitRecovery 与本次 exclude 分别控制来源、HIT 许可与响应排除。EP 的限制与接收 Hook 通过 request.nature 实现环境免疫，取消权限仍遵守 Receiving 契约，排除 Hook 不删除登记。原生深水损伤来源与齐尔查克条件光环依据见[案例38](../research/cases/38-damage-classification-and-permissions.md#3-shared-flags-完整清单)。
+
+普通无敌和 Presence 的 HP 接收规则只允许 LOSS；流失仍计算防御并进入提交和死亡后继。具体护盾、闪避、减伤或受伤机制按自身资格处理，泥岩接受 nature!==LOSS。活性源石为 ENVIRONMENT，敌方深水与标准爆发 HP 输出为 DAMAGE。角色狂躁周期明确允许 HIT；其它标准爆发、活性源石与敌方深水不允许，见 [Elemental](elemental.md#狂躁的行动与时间累加)。
 
 普通 HIT 回复与伤判共用 HP Damage.receiving，Skill 的监听约定 priority=10000，普通伤判通常为 0。它仅接受未取消、amount>0、nature!==LOSS 且 hitRecovery=true 的工作值，回复后原样返回；前置取消或归零不授予 HIT，后续抵挡或闪避不回滚已完成回复。实际回复仍受 SP 自身资格与容量限制，详见 [Skill](skill.md)。
 

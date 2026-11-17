@@ -5,6 +5,8 @@ import type { Unit, Id } from "../../../../unit/unit.js";
 import type { Elemental, Type } from "../../../../unit/capability/elemental/capability.js";
 import type { DamageApplication } from "../../../../unit/capability/elemental/operations.js";
 
+export type Nature = "DAMAGE" | "ENVIRONMENT";
+
 export interface Event {
     readonly type: "ELEMENTAL_INJURY";
     readonly targetUnitId: Id;
@@ -21,6 +23,7 @@ export interface Parameters {
 export interface Request {
     readonly attackType: AttackType;
     readonly applyWay: ApplyWay;
+    readonly nature: Nature;
     readonly source: Ref<Unit> | null;
     readonly target: Ref<Unit & Elemental>;
     readonly parameters: Parameters;
