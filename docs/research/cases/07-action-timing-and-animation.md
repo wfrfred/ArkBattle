@@ -143,6 +143,8 @@ D = a * L
 
 对开始后参数不变、事件未被其他因素打断的行动，动画原始事件时间 `e` 的标称释放时刻为 `e * a / authoredSpeed`。本轮表格中的 authoredSpeed 均为 1，因而可简写为 `e * a`。这只是连续时间推算；每帧事件派发和协程恢复仍有量化。
 
+事件等待还受缓存动作预算限制。[固定超时补核](../evidence/attack-timing-inputs-20261117/README.md#事件等待超时)确认 `WaitWhileForFixedSeconds` 将预算换成 `max(RoundToInt(timeout / deltaPlayTime), 1)` 个等待 Tick，半整数取偶；先 yield，再在恢复时检查谓词和计数。这证明等待器的内部量化，不证明官方当帧协程恢复次数。
+
 由此可以确认两种有实际玩法影响的边界：
 
 - 低攻速达到动画拉伸上限时，`D < T`：动画 / 执行可以先结束，周期尚未就绪。
@@ -159,10 +161,13 @@ D = a * L
 | 能天使 Default `_attack` → MeleeAttack | `1 / 0.3` | 2 | `min(max(T, 0.1), 2)` |
 | 能天使 S1 → MultiRangedAttack | `1 / 0.3` | 1 | `min(max(T, 0.1), 1)` |
 | 能天使 S3 切换到 mode 1 的 MultiRangedAttack | `1 / 0.3` | 2 | `min(max(T, 0.1), 2)` |
+| 猎狗 Default `_combat` → MeleeAttack（2026-11-17 补核） | `1 / 18⁄30` | 1 | `min(max(T, 0.1), 1)` |
 | 弩手 Default `_attack` → RangedAttack | `1 / 16⁄30` | 1 | `min(max(T, 0.1), 1)` |
 | 同一弩手 `_combat` → 另一个 MeleeAttack | `1 / 1⁄2` | 1 | `min(max(T, 0.1), 1)` |
 | 泥岩 Default `_attack` → MeleeAttack | `1.6 / 19⁄30` | 1 | `min(max(T, 0.16), 1.6)` |
 | 泥岩 S2 根 AnimatedActionToOwnerAbility | `1.6 / 20⁄30` | 不设上限 | `max(T, 0.16)` |
+
+猎狗补核保存于[当前静态资源批次](../evidence/attack-timing-inputs-20261117/README.md)：Default._attack 为空，实际近战由 `_combat` 引用；Mapper 的 authoredSpeed=1，Spine Attack 原长1秒、OnAttack 原始 float32 为0.6000000238418579秒。帧数是资源时间的表达，不冒充实际释放逻辑帧。
 
 泥岩是 `char_311_mudrok`；`char_416_zumama` 是森蚺，二者不能混用。泥岩 S2 根程序按序 TriggerAbility(`RollAttack`) → HealViaMaxHpRatio → CreateEffect；RollAttack 子节点是指定时间、无动画事件等待的另一 Ability，不能把根动画预算再套一次作为其伤害前摇。
 

@@ -1,0 +1,705 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-17",
+    "scope": "One selected Hound default Combat ability and its static animation input; no client execution, XLua or exact gameplay-frame observation.",
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/attack-timing-inputs-20261117/extract.py",
+      "bytes": 5497,
+      "sha256": "3683c9635976b0965f54069c4c48c612de270df3a491a8411d1b371234ba0e69"
+    },
+    "decoder": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/attack-timing-inputs-20261117/read-spine.cjs",
+      "bytes": 1509,
+      "sha256": "99e596f1c839c06d48c9f183b5fafce1389e566fbb03c22fe4bf9d1f75425196"
+    },
+    "helpers": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/targeting-pipeline-20261109/content/extract_content.py",
+        "bytes": 12906,
+        "sha256": "37504c156e11e55c9c06174980fb1617281690ab3b01db9caa9dfd28937f5faa"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/nymph-action-settlement-20261103/projectile/decode_projectile.py",
+        "bytes": 6749,
+        "sha256": "dab13196fb726d06bd9094c29f09a12dc3677b2c129359a1f7c305e13a8157fb"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/unity_assets.py",
+        "bytes": 3542,
+        "sha256": "cece612435569ab6162594a9b42cbdbdab420579719f099a3b705ab4adaf7e25"
+      }
+    ],
+    "sources": [
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_base_0.ab",
+        "bytes": 147859,
+        "sha256": "8ad3f66ba83f9bd1b5b256009ff262eead54ac4d07bc921d1f5b7337226cf7df"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/refs/arts/enm_art_base_0.ab",
+        "bytes": 1931734,
+        "sha256": "9a35462e6ddf9fb5840710efc4b90ab440a4091ae38213345373bfa55a497a4e"
+      }
+    ],
+    "runtime": {
+      "url": "https://raw.githubusercontent.com/EsotericSoftware/spine-runtimes/8b4844bd4b193ba9e54487ed397a777993cbad56/spine-ts/build/spine-core.js",
+      "sha256": "f1e0a31b9906e4d4daf2733857d21381ddbbe75adec7f4d83e1cc9b2b070dfc1",
+      "commit": "8b4844bd4b193ba9e54487ed397a777993cbad56"
+    }
+  },
+  "result": {
+    "components": [
+      {
+        "bundle": "battle/enm_pfb_base_0.ab",
+        "file": "CAB-b2b15d37e92fccb550555511a61b9297",
+        "pathId": "-2249318070340056801",
+        "classId": 114,
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": 3271251570051877151
+          },
+          "common:349": 1,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": -6629209555389654693
+          },
+          "common:427": "",
+          "_animator": {
+            "m_FileID": 0,
+            "m_PathID": -8054023714078422753
+          },
+          "_modes": {
+            "Array": [
+              {
+                "m_FileID": 0,
+                "m_PathID": 762063988910950687
+              }
+            ]
+          },
+          "_commonAbilities": {
+            "Array": []
+          },
+          "_uiMountPoint": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_effectTransform": {
+            "m_FileID": 0,
+            "m_PathID": 7908510145689258271
+          },
+          "_shadow": {
+            "m_FileID": 0,
+            "m_PathID": -7591770728159606497
+          },
+          "_defaultBodyColor": {
+            "r": 1.0,
+            "g": 1.0,
+            "b": 1.0,
+            "a": 1.0
+          },
+          "_hideShadowOnRecycle": 0,
+          "_overrideGraphicBound": -1.0,
+          "_hudPluginReplacePairs": {
+            "Array": []
+          },
+          "_showDebugName": 0,
+          "_sideTypeIndex": 1,
+          "_locateRange": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_disableRenderLocateRange": 0,
+          "_isFixedRotation": 0,
+          "_bodyDirectionPolicy": 0,
+          "_useMoveDirAsFaceDir": 0,
+          "_scaleMoveBySpeed": 0,
+          "_scaleMoveAnimationRange": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "_showSpAsBulletMode": 0,
+          "_hideBulletSpModes": {
+            "Array": []
+          },
+          "_alwaysShowHp": 0,
+          "_alwaysHideHp": 0,
+          "_keepMoveAnimScale": 0,
+          "_useSpecificDeadAnim": 0,
+          "_useSpecificReachExitAnim": 0,
+          "_disableBornTweenColor": 0,
+          "_height": 0.0,
+          "_groundBoundHeightZOffset": 0.10000000149011612,
+          "_useSpineLikeHeightUpdate": 0,
+          "_spineLikeHeightUpdateRatio": 0.25,
+          "_delayToBorn": 0.0,
+          "_onlyDelayToBornOnTileStart": 0,
+          "_audioSignalUseId": 0,
+          "_startEffect": "",
+          "_deadEffect": "",
+          "_blockVolume": 1,
+          "_specialBlockCondition": {
+            "_type": 0,
+            "_buffKeyPairs": {
+              "Array": []
+            },
+            "_filterTags": {
+              "Array": []
+            }
+          },
+          "_dontSetEnemyFaceByCursorWhenBorn": 0,
+          "_idleWhenBorn": 0,
+          "_canNotExit": 0,
+          "_hideShadowOnReset": 0,
+          "_allowFalldownWhenReborn": 0,
+          "_alwaysCheckCurrentPoint": 0,
+          "_ignoreBlockMode": 0,
+          "_specificBlockMask": 0
+        },
+        "rawFile": "enm_pfb_base_0--2249318070340056801.bin",
+        "sha256": "66f82378454f25845c2a1d1291aa820299e70dd6cff21e609660ca8c5deabc02"
+      },
+      {
+        "bundle": "battle/enm_pfb_base_0.ab",
+        "file": "CAB-b2b15d37e92fccb550555511a61b9297",
+        "pathId": "762063988910950687",
+        "classId": 114,
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": -1233325122447439585
+          },
+          "common:349": 1,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": 5390319429299248724
+          },
+          "common:427": "",
+          "_bodyTransform": {
+            "m_FileID": 0,
+            "m_PathID": 7415359281826597151
+          },
+          "_animatorHooker": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_overrideStartEffect": "",
+          "_overrideDeadEffect": "",
+          "_combat": {
+            "m_FileID": 0,
+            "m_PathID": 8708220394381609247
+          },
+          "_attack": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_attackTrigger": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_hideUIAttackRange": 0,
+          "_updateAttackRangeExtendByAttributeDirty": 0,
+          "_rangeToShow": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_extraRangesToShow": {
+            "Array": []
+          },
+          "_generalAbilities": {
+            "Array": []
+          },
+          "_addIndexToSignalId": 0,
+          "_includeIndexZero": 0,
+          "_alwaysHideHp": {
+            "isDefined": 0,
+            "value": 0
+          },
+          "_alwaysHideSp": {
+            "isDefined": 0,
+            "value": 0
+          }
+        },
+        "rawFile": "enm_pfb_base_0-762063988910950687.bin",
+        "sha256": "8393fe952fa8328920893c94f571282d774d0783f4b40b0f7907c3f58c97a25f"
+      },
+      {
+        "bundle": "battle/enm_pfb_base_0.ab",
+        "file": "CAB-b2b15d37e92fccb550555511a61b9297",
+        "pathId": "8708220394381609247",
+        "classId": 114,
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": 4082901377198819615
+          },
+          "common:349": 1,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": 4381884627089348317
+          },
+          "common:427": "",
+          "_selector": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_metadata": {
+            "namedAsAlias": "",
+            "blackboardPrefix": ""
+          },
+          "_overrideSignalId": "",
+          "_interruptAbilityOnDetach": 0,
+          "_attachPassiveBuffsOnDummy": 1,
+          "_ignoreIfOwnerDead": 0,
+          "_forceAsDmgOrHealAbility": 0,
+          "_waitForAttackEvent": 1,
+          "_interuptIfTargetDead": 0,
+          "_resetCdStrategy": 1,
+          "_selectTargetSource": 2,
+          "_selectTargetTiming": 0,
+          "_timeMode": 0,
+          "_alwaysIncludeTarget": 1,
+          "_allowNoTarget": 0,
+          "_animKey": "Attack",
+          "_endAnimKey": "Idle",
+          "_downAnimKey": "",
+          "_downEndAnimKey": "",
+          "_upAnimKey": "",
+          "_upEndAnimKey": "",
+          "_cooldown": 0.0,
+          "_cooldownKey": "duration",
+          "_preDelay": 0.0,
+          "_escapeTime": 0.0,
+          "_faceToTarget": 1,
+          "_faceToDefault": 0,
+          "_faceToFront": 0,
+          "_faceToFirstCastTarget": 0,
+          "_checkFaceToFirstCastTargetDownAttack": 0,
+          "_forceFaceToDirection": 0,
+          "_activeBuffs": {
+            "Array": []
+          },
+          "_maxAnimScale": 1.0,
+          "_onlyPlayEndAnimWhenIsLastAbility": 0,
+          "_ignorePalsyInterrupt": 0,
+          "_affectedBySlowDown": 1,
+          "_atkScale": 1.0,
+          "_atkScaleKey": "atk_scale",
+          "_attackType": 1,
+          "_elementDamageType": 0,
+          "_epDamageRatio": 0.0,
+          "_useDynamicAttackType": 0,
+          "_deliveryParaWhenReplaceActionNode": 0,
+          "_damageType": 1,
+          "_extraDamageType": 0,
+          "_alwaysPutIncludeTargetFirst": 0
+        },
+        "rawFile": "enm_pfb_base_0-8708220394381609247.bin",
+        "sha256": "128c3dce26df829878fccb88889c6fea4b71ecbef720f3006981d7fbc5eb4c4e"
+      },
+      {
+        "bundle": "battle/enm_pfb_base_0.ab",
+        "file": "CAB-b2b15d37e92fccb550555511a61b9297",
+        "pathId": "-8054023714078422753",
+        "classId": 114,
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": -4568500726804674273
+          },
+          "common:349": 1,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": 6360585277869116281
+          },
+          "common:427": "",
+          "_animations": {
+            "Array": [
+              {
+                "animKey": "Move",
+                "animName": "Run_Loop",
+                "loop": 1,
+                "speed": 1.2000000476837158,
+                "ignoreMissing": 0
+              },
+              {
+                "animKey": "Idle",
+                "animName": "Idle",
+                "loop": 1,
+                "speed": 1.0,
+                "ignoreMissing": 0
+              },
+              {
+                "animKey": "Attack",
+                "animName": "Attack",
+                "loop": 0,
+                "speed": 1.0,
+                "ignoreMissing": 0
+              },
+              {
+                "animKey": "Die",
+                "animName": "Die",
+                "loop": 0,
+                "speed": 1.0,
+                "ignoreMissing": 0
+              },
+              {
+                "animKey": "Default",
+                "animName": "Default",
+                "loop": 0,
+                "speed": 1.0,
+                "ignoreMissing": 0
+              }
+            ]
+          },
+          "_spineSkins": {
+            "Array": []
+          },
+          "_mixSettings": {
+            "Array": []
+          },
+          "_spineScale": 1.0,
+          "_enableShowDamageFlash": 1,
+          "_cacheBoundsCenter": 1,
+          "_resetSkinToInitial": 0,
+          "_skeleton": {
+            "m_FileID": 0,
+            "m_PathID": -8192295190255204065
+          },
+          "_faceSwitcher": {
+            "m_FileID": 0,
+            "m_PathID": -4568403274050533089
+          },
+          "_neverImmediatelyFaceSwitcher": 0,
+          "_muzzleTransform": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_hitTransform": {
+            "m_FileID": 0,
+            "m_PathID": -3038640145849087713
+          },
+          "_headTransform": {
+            "m_FileID": 0,
+            "m_PathID": 3329736156524022047
+          },
+          "_shadowTransform": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_specialPoint0": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_specialPoint1": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_specialPoint2": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_specialPoint3": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_specialPoint4": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_specialPoint5": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_specialPoint6": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_specialPoint7": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_specialPoint8": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_specialPoint9": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_specialPoint10": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_specialPoint11": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_specialPoint12": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_specialPoint13": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_specialPoint14": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_specialPoint15": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          }
+        },
+        "rawFile": "enm_pfb_base_0--8054023714078422753.bin",
+        "sha256": "836d870256f5830307e72d8af1ca49888f179ce187286b01ecea1a58eba3eb7d"
+      },
+      {
+        "bundle": "battle/enm_pfb_base_0.ab",
+        "file": "CAB-b2b15d37e92fccb550555511a61b9297",
+        "pathId": "-8192295190255204065",
+        "classId": 114,
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": 6430189522945607967
+          },
+          "common:349": 1,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": 175525945580115722
+          },
+          "common:427": "",
+          "skeletonDataAsset": {
+            "m_FileID": 4,
+            "m_PathID": 5535087554908002653
+          },
+          "initialSkinName": "default",
+          "initialFlipX": 0,
+          "initialFlipY": 0,
+          "updateWhenInvisible": 3,
+          "separatorSlotNames": {
+            "Array": []
+          },
+          "zSpacing": 0.0,
+          "useClipping": 1,
+          "immutableTriangles": 0,
+          "pmaVertexColors": 1,
+          "clearStateOnDisable": 0,
+          "tintBlack": 0,
+          "singleSubmesh": 0,
+          "fixDrawOrder": 0,
+          "addNormals": 0,
+          "calculateTangents": 0,
+          "maskInteraction": 0,
+          "maskMaterials": {
+            "materialsMaskDisabled": {
+              "Array": []
+            },
+            "materialsInsideMask": {
+              "Array": []
+            },
+            "materialsOutsideMask": {
+              "Array": []
+            }
+          },
+          "disableRenderingOnOverride": 1,
+          "_animationName": "Default",
+          "loop": 0,
+          "timeScale": 1.0
+        },
+        "rawFile": "enm_pfb_base_0--8192295190255204065.bin",
+        "sha256": "d4f05334a8d926b4036ef83ee62514ca634cc91082544cba87008d5367185a4d"
+      },
+      {
+        "bundle": "refs/arts/enm_art_base_0.ab",
+        "file": "CAB-4cdaf31e669f8d5caa552cc11103c0ac",
+        "pathId": "5535087554908002653",
+        "classId": 114,
+        "value": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "common:349": 1,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": -6887505452609033796
+          },
+          "common:427": "enemy_1000_gopro_SkeletonData",
+          "atlasAssets": {
+            "Array": [
+              {
+                "m_FileID": 0,
+                "m_PathID": 2494527047748459936
+              }
+            ]
+          },
+          "scale": 0.009999999776482582,
+          "skeletonJSON": {
+            "m_FileID": 0,
+            "m_PathID": 1447465155671978999
+          },
+          "isUpgradingBlendModeMaterials": 0,
+          "blendModeMaterials": {
+            "requiresBlendModeMaterials": 0,
+            "applyAdditiveMaterial": 0,
+            "additiveMaterials": {
+              "Array": []
+            },
+            "multiplyMaterials": {
+              "Array": []
+            },
+            "screenMaterials": {
+              "Array": []
+            }
+          },
+          "skeletonDataModifiers": {
+            "Array": []
+          },
+          "fromAnimation": {
+            "Array": []
+          },
+          "toAnimation": {
+            "Array": []
+          },
+          "duration": {
+            "Array": []
+          },
+          "defaultMix": 0.0,
+          "controller": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          }
+        },
+        "rawFile": "enm_art_base_0-5535087554908002653.bin",
+        "sha256": "92fac76ebb938a7013805e4be9984db17ad49fa50033ac6b2b5e1bd0f2d5949e"
+      }
+    ],
+    "externals": [
+      {
+        "fileId": 1,
+        "guid": "00000000000000000000000000000000",
+        "type": 0,
+        "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+      },
+      {
+        "fileId": 2,
+        "guid": "00000000000000000000000000000000",
+        "type": 0,
+        "path": "archive:/CAB-91cea44584a6ec97d898d56400e40207/CAB-91cea44584a6ec97d898d56400e40207"
+      },
+      {
+        "fileId": 3,
+        "guid": "00000000000000000000000000000000",
+        "type": 0,
+        "path": "archive:/CAB-bb3091942f0741c935b32a0901cd5792/CAB-bb3091942f0741c935b32a0901cd5792"
+      },
+      {
+        "fileId": 4,
+        "guid": "00000000000000000000000000000000",
+        "type": 0,
+        "path": "archive:/CAB-4cdaf31e669f8d5caa552cc11103c0ac/CAB-4cdaf31e669f8d5caa552cc11103c0ac"
+      }
+    ],
+    "textAsset": {
+      "file": "CAB-4cdaf31e669f8d5caa552cc11103c0ac",
+      "pathId": "1447465155671978999",
+      "name": "enemy_1000_gopro.skel",
+      "rawFile": "hound.skel",
+      "bytes": 101737,
+      "sha256": "6255bff9f5fe9cd893a7d700c8580cb30ffaf52b378ef9b8d22977188ef8eca5"
+    },
+    "spine": {
+      "version": "3.8.99",
+      "fps": 30,
+      "animations": [
+        {
+          "name": "Attack",
+          "duration": 1,
+          "events": [
+            {
+              "name": "OnAttack",
+              "time": 0.6000000238418579,
+              "intValue": 0,
+              "floatValue": 0,
+              "stringValue": ""
+            }
+          ]
+        },
+        {
+          "name": "Default",
+          "duration": 0,
+          "events": []
+        },
+        {
+          "name": "Die",
+          "duration": 0.6666666865348816,
+          "events": []
+        },
+        {
+          "name": "Idle",
+          "duration": 1,
+          "events": []
+        },
+        {
+          "name": "Move_Begin",
+          "duration": 0.1666666716337204,
+          "events": []
+        },
+        {
+          "name": "Move_End",
+          "duration": 0.1666666716337204,
+          "events": []
+        },
+        {
+          "name": "Move_Loop",
+          "duration": 0.800000011920929,
+          "events": []
+        },
+        {
+          "name": "Run_Begin",
+          "duration": 0.1666666716337204,
+          "events": []
+        },
+        {
+          "name": "Run_End",
+          "duration": 0.1666666716337204,
+          "events": []
+        },
+        {
+          "name": "Run_Loop",
+          "duration": 0.5333333611488342,
+          "events": []
+        }
+      ]
+    },
+    "selected": {
+      "prefabFile": "CAB-b2b15d37e92fccb550555511a61b9297",
+      "abilityPathId": "8708220394381609247",
+      "abilityRole": "Default._combat",
+      "animationKey": "Attack",
+      "mapper": {
+        "animKey": "Attack",
+        "animName": "Attack",
+        "loop": 0,
+        "speed": 1.0,
+        "ignoreMissing": 0
+      },
+      "animation": {
+        "name": "Attack",
+        "duration": 1,
+        "events": [
+          {
+            "name": "OnAttack",
+            "time": 0.6000000238418579,
+            "intValue": 0,
+            "floatValue": 0,
+            "stringValue": ""
+          }
+        ]
+      }
+    }
+  }
+}

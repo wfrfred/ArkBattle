@@ -1,0 +1,266 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-11-17"
+    ],
+    "collectionDateSource": "batch directory",
+    "organizedOn": "2026-11-17",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+        "records": [
+          "wait-timeout.json#/provenance/client/dll"
+        ],
+        "bytes": 223112680
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        "records": [
+          "wait-timeout.json#/provenance/client/metadata"
+        ],
+        "bytes": 46669332
+      }
+    },
+    "sourceRecords": [
+      "result.json",
+      "wait-timeout.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12895,
+        "sha256": "9c5b246859318caaec4aab5275ef0d2d49fce5d612c6b4e569973a9941ba621a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "enm_art_base_0-5535087554908002653.bin",
+        "kind": "artifact",
+        "bytes": 152,
+        "sha256": "92fac76ebb938a7013805e4be9984db17ad49fa50033ac6b2b5e1bd0f2d5949e"
+      },
+      {
+        "path": "enm_pfb_base_0--2249318070340056801.bin",
+        "kind": "artifact",
+        "bytes": 292,
+        "sha256": "66f82378454f25845c2a1d1291aa820299e70dd6cff21e609660ca8c5deabc02"
+      },
+      {
+        "path": "enm_pfb_base_0--8054023714078422753.bin",
+        "kind": "artifact",
+        "bytes": 488,
+        "sha256": "836d870256f5830307e72d8af1ca49888f179ce187286b01ecea1a58eba3eb7d"
+      },
+      {
+        "path": "enm_pfb_base_0--8192295190255204065.bin",
+        "kind": "artifact",
+        "bytes": 152,
+        "sha256": "d4f05334a8d926b4036ef83ee62514ca634cc91082544cba87008d5367185a4d"
+      },
+      {
+        "path": "enm_pfb_base_0-762063988910950687.bin",
+        "kind": "artifact",
+        "bytes": 152,
+        "sha256": "8393fe952fa8328920893c94f571282d774d0783f4b40b0f7907c3f58c97a25f"
+      },
+      {
+        "path": "enm_pfb_base_0-8708220394381609247.bin",
+        "kind": "artifact",
+        "bytes": 260,
+        "sha256": "128c3dce26df829878fccb88889c6fea4b71ecbef720f3006981d7fbc5eb4c4e"
+      },
+      {
+        "path": "extract-wait.py",
+        "kind": "historical-script",
+        "bytes": 3144,
+        "sha256": "7709d646842a7ccad9e6d978cc6b61b8f7c3f1c5afc422db4dc6b8107e8bae08"
+      },
+      {
+        "path": "extract.py",
+        "kind": "historical-script",
+        "bytes": 5497,
+        "sha256": "3683c9635976b0965f54069c4c48c612de270df3a491a8411d1b371234ba0e69"
+      },
+      {
+        "path": "hound.skel",
+        "kind": "artifact",
+        "bytes": 101737,
+        "sha256": "6255bff9f5fe9cd893a7d700c8580cb30ffaf52b378ef9b8d22977188ef8eca5"
+      },
+      {
+        "path": "read-spine.cjs",
+        "kind": "artifact",
+        "bytes": 1509,
+        "sha256": "99e596f1c839c06d48c9f183b5fafce1389e566fbb03c22fe4bf9d1f75425196"
+      },
+      {
+        "path": "result.json",
+        "kind": "record",
+        "bytes": 20786,
+        "sha256": "96682fd3b1344287692082004b24e396cb4ecd146ab7e6e7332495db07f35801"
+      },
+      {
+        "path": "wait-timeout.json",
+        "kind": "record",
+        "bytes": 67672,
+        "sha256": "6d25fe7f4895811ca5fa5df4734160e30e109d94ce749b35333e56252368c732"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 65122,
+          "mode": "disasm",
+          "records": [
+            "wait-timeout.json#/result/methods/0",
+            "wait-timeout.json#/result/methods/0/method"
+          ],
+          "fullname": "Torappu.Battle.AsyncUtil/<WaitWhileForFixedSeconds>d__1.MoveNext",
+          "address": "0x1806906a0"
+        },
+        {
+          "index": 65124,
+          "mode": "metadata",
+          "records": [
+            "wait-timeout.json#/result/methods/0/followingMethod"
+          ],
+          "fullname": "Torappu.Battle.AsyncUtil/<WaitWhileForFixedSeconds>d__1.System.Collections.IEnumerator.Reset",
+          "address": "0x1806907c0"
+        },
+        {
+          "index": 65152,
+          "mode": "disasm",
+          "records": [
+            "wait-timeout.json#/result/methods/1",
+            "wait-timeout.json#/result/methods/1/method"
+          ],
+          "fullname": "Torappu.Battle.AsyncUtil/<WaitWhileForFixedSeconds>d__6.MoveNext",
+          "address": "0x180690810"
+        },
+        {
+          "index": 65154,
+          "mode": "metadata",
+          "records": [
+            "wait-timeout.json#/result/methods/1/followingMethod"
+          ],
+          "fullname": "Torappu.Battle.AsyncUtil/<WaitWhileForFixedSeconds>d__6.System.Collections.IEnumerator.Reset",
+          "address": "0x1806909a0"
+        },
+        {
+          "index": 226062,
+          "mode": "disasm",
+          "records": [
+            "wait-timeout.json#/result/helpers/0",
+            "wait-timeout.json#/result/helpers/0/method"
+          ],
+          "fullname": "Torappu.MathUtil.RoundToInt",
+          "address": "0x186946c30"
+        },
+        {
+          "index": 226189,
+          "mode": "disasm",
+          "records": [
+            "wait-timeout.json#/result/helpers/1",
+            "wait-timeout.json#/result/helpers/1/method"
+          ],
+          "fullname": "Torappu.FP.Round",
+          "address": "0x18695cf80"
+        }
+      ],
+      "blocks": [],
+      "types": [],
+      "constants": [],
+      "bundles": [
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_base_0.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_base_0.ab",
+          "sha256": "8ad3f66ba83f9bd1b5b256009ff262eead54ac4d07bc921d1f5b7337226cf7df",
+          "records": [
+            "result.json#/provenance/sources/0"
+          ],
+          "bytes": 147859
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/refs/arts/enm_art_base_0.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/refs/arts/enm_art_base_0.ab",
+          "sha256": "9a35462e6ddf9fb5840710efc4b90ab440a4091ae38213345373bfa55a497a4e",
+          "records": [
+            "result.json#/provenance/sources/1"
+          ],
+          "bytes": 1931734
+        },
+        {
+          "kind": "bundle",
+          "path": "battle/enm_pfb_base_0.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_base_0.ab",
+          "sha256": "66f82378454f25845c2a1d1291aa820299e70dd6cff21e609660ca8c5deabc02",
+          "records": [
+            "result.json#/result/components/0"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "battle/enm_pfb_base_0.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_base_0.ab",
+          "sha256": "8393fe952fa8328920893c94f571282d774d0783f4b40b0f7907c3f58c97a25f",
+          "records": [
+            "result.json#/result/components/1"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "battle/enm_pfb_base_0.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_base_0.ab",
+          "sha256": "128c3dce26df829878fccb88889c6fea4b71ecbef720f3006981d7fbc5eb4c4e",
+          "records": [
+            "result.json#/result/components/2"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "battle/enm_pfb_base_0.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_base_0.ab",
+          "sha256": "836d870256f5830307e72d8af1ca49888f179ce187286b01ecea1a58eba3eb7d",
+          "records": [
+            "result.json#/result/components/3"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "battle/enm_pfb_base_0.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_base_0.ab",
+          "sha256": "d4f05334a8d926b4036ef83ee62514ca634cc91082544cba87008d5367185a4d",
+          "records": [
+            "result.json#/result/components/4"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "refs/arts/enm_art_base_0.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/refs/arts/enm_art_base_0.ab",
+          "sha256": "92fac76ebb938a7013805e4be9984db17ad49fa50033ac6b2b5e1bd0f2d5949e",
+          "records": [
+            "result.json#/result/components/5"
+          ]
+        }
+      ]
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}
