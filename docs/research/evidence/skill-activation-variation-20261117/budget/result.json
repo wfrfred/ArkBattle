@@ -1,0 +1,82 @@
+{
+  "checkedOn": "2026-11-17",
+  "scope": "Five actually bound Skill programs and Ch’en alter mode/counter configuration; ordinary native/static inputs, no runtime or active XLua observation.",
+  "facts": [
+    {
+      "skill": "skchr_typhon_2",
+      "budget": "First TIME20 seconds, later INFINITE",
+      "trigger": "MANUAL throughout selected table",
+      "privateHistory": "Per-deployment spell count selects one of two Buff lists",
+      "coreMinimum": "Initial Sustain may select TIME or INFINITE; same Content program can select mode/effect."
+    },
+    {
+      "skill": "skchr_thorns_3",
+      "budget": "First TIME30 seconds, later INFINITE",
+      "trigger": "MANUAL throughout selected table",
+      "privateHistory": "Per-deployment spell count selects finite/indefinite list and stronger effect operands",
+      "coreMinimum": "Initial Sustain selection plus explicit Content effect parameters; no separate callback identity requirement."
+    },
+    {
+      "skill": "skchr_vvana_3",
+      "budget": "First TIME15 seconds, second and later TIME25 seconds",
+      "trigger": "MANUAL throughout selected table",
+      "privateHistory": "Trigger-count predicate writes duration_plus from duration/enhance_duration and marks enhanced mode",
+      "coreMinimum": "Evaluated initial duration; same program handles mode/range/attack-pattern variation."
+    },
+    {
+      "skill": "skchr_chyue_3",
+      "budget": "Instant/action-coupled Skill in selected table; duration0",
+      "trigger": "MANUAL is retained. After the fifth activation, Content creates a .03-second periodic TriggerSkill program.",
+      "privateHistory": "Cast-count/charge markers control attack selection and permanent enhanced state",
+      "coreMinimum": "Persistent Content automatic-attempt policy using existing manual activation; not proof of trigger enum mutation."
+    },
+    {
+      "skill": "skchr_chen2_2",
+      "budget": "AMMO original base B is8 ordinarily or20 when fully charged, before independent max-count additions",
+      "trigger": "MANUAL in both cases",
+      "selection": "Actual BuffDuringSkill installs the >=2-charge judge, then the effect selects Mode2/S2 or Mode3/S2+. Two AbilityEventCounters have useAnotherBBKey false/true and triggerTimeCount8/20.",
+      "nativeConsumer": "AbilityEventCounter.SetData#96414 writes chosen count to m_maxCount then copies it to m_originalMaxCount; independent contribution occupies m_maxAdditionCount.",
+      "coreMinimum": "Evaluate the base Sustain.AMMO amount for this activation before resolveCapacity. Do not replace a base20 selection with fixed addition12 while retaining base8."
+    }
+  ],
+  "requiredShapesInThisSample": {
+    "initialTimeValueVariation": true,
+    "timeToInfiniteSelection": true,
+    "newAmmoFormula": false,
+    "triggerIdentityMutation": false,
+    "automaticAttemptPolicyVariation": true,
+    "wholeActivationProgramReplacementProved": false,
+    "multipleCompetingInitialBudgetProvidersProved": false,
+    "initialAmmoBaseVariation": true
+  },
+  "assessment": "The selected actual variations are initial sustain (TIME value, TIME/INFINITE, AMMO base value), effect/action stage operands, and an automatic-attempt policy. None supplies a group of changed initialization/progress/end/operation programs that would make complete Activation Definition replacement materially more natural than narrow evaluation; this is a bounded engineering assessment, not a Turing-completeness argument against separate definitions.",
+  "reusedAmmoEvidence": "docs/research/evidence/skill-parameter-formulas-20261029/ammo-content.json and ammo-native.json: actual Inside/Lemuen fixed capacity additions and native aggregation; separate from these four initial-duration variations.",
+  "limits": [
+    "Targeted representative cases are not exhaustive proof of absence.",
+    "Native object/class layout is not an architecture requirement.",
+    "Current installed Prefab and fixed mirror tables are separately versioned.",
+    "No production code or shared case changed."
+  ],
+  "communitySources": [
+    {
+      "url": "https://prts.wiki/w/提丰#技能",
+      "consulted": "2026-11-17",
+      "paraphrase": "S2 has a finite first use and indefinite later uses, reset for each deployment."
+    },
+    {
+      "url": "https://prts.wiki/w/棘刺#技能",
+      "consulted": "2026-11-17",
+      "paraphrase": "S3 becomes stronger and indefinite from the second use, reset for each deployment."
+    },
+    {
+      "url": "https://prts.wiki/w/薇薇安娜#技能",
+      "consulted": "2026-11-17",
+      "paraphrase": "S3 gains expanded range/three hits and a longer 25-second duration from its second use."
+    },
+    {
+      "url": "https://prts.wiki/w/重岳#技能",
+      "consulted": "2026-11-17",
+      "paraphrase": "After the fifth use S3 is automatically attempted, while its underlying manual-trigger nature remains."
+    }
+  ]
+}

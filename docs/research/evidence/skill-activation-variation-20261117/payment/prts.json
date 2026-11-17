@@ -1,0 +1,28 @@
+{
+  "provenance": {
+    "checkedOn": "2026-11-17",
+    "classification": "Community cross-check, separate from installed components and native bodies. Paraphrases, not page snapshots."
+  },
+  "result": {
+    "sources": [
+      {
+        "title": "薇薇安娜",
+        "url": "https://prts.wiki/w/Vvan",
+        "paraphrase": "The ordinary not-yet-charged cast spends the minimum amount. Once charged mode has been acquired, it persists until the next Skill end even if current SP later decreases; current SP alone cannot reconstruct that history.",
+        "nativeBoundary": "Fresh components and the mode template independently show a threshold checker, unmanaged mode Buff, skill-start SP clear and skill-end mode removal. This batch does not replay the whole cast."
+      },
+      {
+        "title": "流明",
+        "url": "https://prts.wiki/w/Lumen",
+        "paraphrase": "Lumen S2 has a charged enhancement and consumes the current stored SP. The fresh bound judge template samples enhancement eligibility and explicitly clears SP.",
+        "nativeBoundary": "The exact call ordering for every Skill Behaviour and generic base-cost payment is not newly expanded here."
+      },
+      {
+        "title": "卫戍协议：盟约 下半/PRTS盟约记录",
+        "url": "https://prts.wiki/w/卫戍协议：盟约_下半/PRTS盟约记录",
+        "paraphrase": "The note places the 70% SP-requirement adjustment at battle start, floors the result and allows zero.",
+        "nativeBoundary": "The archived activity-table reference is real but its runtime native consumer was not closed. Do not infer continuously varying in-battle cost, capacity or recovery mode from the presence-count headline."
+      }
+    ]
+  }
+}

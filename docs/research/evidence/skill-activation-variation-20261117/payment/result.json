@@ -1,0 +1,664 @@
+{
+  "provenance": {
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/skill-activation-variation-20261117/payment/summarize.py",
+      "bytes": 5122,
+      "sha256": "bf609257c09356c318933f97244119c1958e8f6571796c2ad1d19297c5ed719f"
+    },
+    "content": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/skill-activation-variation-20261117/payment/content.json",
+      "bytes": 322302,
+      "sha256": "6dce9286183428aaeb786e190e73b1eb50b207e85376fdeaf274f29c73b25bc5"
+    },
+    "reused": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/skill-audit-20261117/sustain/native.json",
+        "bytes": 1201636,
+        "sha256": "21a520f1055a3cef183b9ea19a74355dabc6c2fd7ab74b5a02b2da61c346dcef"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/skill-parameter-formulas-20261029/duration-native.json",
+        "bytes": 326033,
+        "sha256": "6c03a9cb40b1e1687855f0d00352500b89f12065e78ed09adcc95bfad10128ea"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/skill-parameter-formulas-20261029/sp-native.json",
+        "bytes": 123855,
+        "sha256": "2cda848b64c4b47c21bb95f07fab66d7041ff59c139dc2f023ee10edd1dd94ba"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/skill-modifier-20261029/content.json",
+        "bytes": 53022,
+        "sha256": "b3e97c3984fe59887f56f5b5d280f65aacf0024933bd1ad1aab056b8e969c4b5"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/skill-audit-20261117/sp/content.json",
+        "bytes": 748210,
+        "sha256": "cee686cb91ab2fe55b00a166295be93873f8d8df7e812527ccfad8f789ba4e37"
+      }
+    ]
+  },
+  "result": {
+    "scope": "Fresh Fever count is complete only for installed [uc]skills.ab. Payment examples are targeted; these counts are not a census of all game Skills.",
+    "counts": {
+      "feverComponents": 11,
+      "feverPrefabRoots": 11,
+      "feverSkillIds": 11,
+      "feverCharacters": 5
+    },
+    "feverParticipants": [
+      {
+        "characterId": "char_4185_amoris",
+        "name": "祐天寺若麦",
+        "skillIndex": 1,
+        "skillId": "skchr_amoris_1",
+        "prefabIds": [
+          "skchr_amoris_1"
+        ],
+        "behaviourPathIds": [
+          "17566326337756952"
+        ],
+        "normalMaxLevel": {
+          "name": "如焰般热烈",
+          "rangeId": null,
+          "description": "攻击变为特殊的三连击，其中第一次攻击的攻击力变为<@ba.vup>{attack@atk_scale_heavy:0%}</>且溅射范围<@ba.vup>扩大</>；后两次攻击的攻击力变为<@ba.vup>{attack@atk_scale_light:0%}</>",
+          "skillType": "MANUAL",
+          "durationType": "NONE",
+          "spData": {
+            "spType": "INCREASE_WHEN_ATTACK",
+            "levelUpCost": null,
+            "maxChargeTime": 1,
+            "spCost": 20,
+            "initSp": 8,
+            "increment": 1.0
+          },
+          "prefabId": "skchr_amoris_1",
+          "duration": 15.0,
+          "blackboard": [
+            {
+              "key": "attack@atk_scale_heavy",
+              "value": 1.6,
+              "valueStr": null
+            },
+            {
+              "key": "attack@atk_scale_light",
+              "value": 0.2,
+              "valueStr": null
+            }
+          ]
+        }
+      },
+      {
+        "characterId": "char_4185_amoris",
+        "name": "祐天寺若麦",
+        "skillIndex": 2,
+        "skillId": "skchr_amoris_2",
+        "prefabIds": [
+          "skchr_amoris_2"
+        ],
+        "behaviourPathIds": [
+          "-3322865626845168419"
+        ],
+        "normalMaxLevel": {
+          "name": "如麦般生长",
+          "rangeId": "x-4",
+          "description": "攻击范围<@ba.vup>扩大</>，攻击变为特殊的八连击，其中第一、五次攻击的攻击力变为<@ba.vup>{attack@atk_scale_heavy:0%}</>；其余攻击的攻击力变为<@ba.vup>{attack@atk_scale_light:0%}</>。随机攻击范围内的目标",
+          "skillType": "MANUAL",
+          "durationType": "NONE",
+          "spData": {
+            "spType": "INCREASE_WHEN_ATTACK",
+            "levelUpCost": null,
+            "maxChargeTime": 1,
+            "spCost": 32,
+            "initSp": 24,
+            "increment": 1.0
+          },
+          "prefabId": "skchr_amoris_2",
+          "duration": 24.0,
+          "blackboard": [
+            {
+              "key": "attack@atk_scale_heavy",
+              "value": 1.25,
+              "valueStr": null
+            },
+            {
+              "key": "attack@atk_scale_light",
+              "value": 0.1,
+              "valueStr": null
+            }
+          ]
+        }
+      },
+      {
+        "characterId": "char_4184_dolris",
+        "name": "三角初华",
+        "skillIndex": 1,
+        "skillId": "skchr_dolris_1",
+        "prefabIds": [
+          "skchr_dolris_1"
+        ],
+        "behaviourPathIds": [
+          "-1860968596648359169"
+        ],
+        "normalMaxLevel": {
+          "name": "我思念的",
+          "rangeId": "x-2",
+          "description": "攻击范围扩大，攻击范围内所有友方单位获得相当于三角初华<@ba.vup>{attack@atk:0%}</>攻击力与防御力的<$ba.inspire>鼓舞</>效果，目标受到伤害时三角初华会为其治疗<@ba.vup>{attack@heal_value_s1}</>点生命",
+          "skillType": "MANUAL",
+          "durationType": "NONE",
+          "spData": {
+            "spType": "INCREASE_WITH_TIME",
+            "levelUpCost": null,
+            "maxChargeTime": 1,
+            "spCost": 35,
+            "initSp": 25,
+            "increment": 1.0
+          },
+          "prefabId": "skchr_dolris_1",
+          "duration": 30.0,
+          "blackboard": [
+            {
+              "key": "attack@atk",
+              "value": 0.55,
+              "valueStr": null
+            },
+            {
+              "key": "attack@def",
+              "value": 0.55,
+              "valueStr": null
+            },
+            {
+              "key": "attack@heal_value_s1",
+              "value": 100.0,
+              "valueStr": null
+            }
+          ]
+        }
+      },
+      {
+        "characterId": "char_4184_dolris",
+        "name": "三角初华",
+        "skillIndex": 2,
+        "skillId": "skchr_dolris_2",
+        "prefabIds": [
+          "skchr_dolris_2"
+        ],
+        "behaviourPathIds": [
+          "2592022969644245976"
+        ],
+        "normalMaxLevel": {
+          "name": "我悲悯的",
+          "rangeId": null,
+          "description": "技能期间特性不再恢复生命，每{interval}秒对攻击范围内随机一名敌人造成相当于攻击力<@ba.vup>{attack@atk_scale:0%}</>的法术伤害并为一名友方治疗相当于攻击力<@ba.vup>{attack@heal_scale:0%}</>的生命；攻击范围内所有其他友方单位获得相当于三角初华<@ba.vup>{attack@atk:0%}</>攻击力的鼓舞效果",
+          "skillType": "MANUAL",
+          "durationType": "NONE",
+          "spData": {
+            "spType": "INCREASE_WITH_TIME",
+            "levelUpCost": null,
+            "maxChargeTime": 1,
+            "spCost": 30,
+            "initSp": 20,
+            "increment": 1.0
+          },
+          "prefabId": "skchr_dolris_2",
+          "duration": 12.0,
+          "blackboard": [
+            {
+              "key": "attack@atk",
+              "value": 1.0,
+              "valueStr": null
+            },
+            {
+              "key": "interval",
+              "value": 0.3,
+              "valueStr": null
+            },
+            {
+              "key": "attack@atk_scale",
+              "value": 1.0,
+              "valueStr": null
+            },
+            {
+              "key": "attack@heal_scale",
+              "value": 0.25,
+              "valueStr": null
+            }
+          ]
+        }
+      },
+      {
+        "characterId": "char_4183_mortis",
+        "name": "若叶睦",
+        "skillIndex": 1,
+        "skillId": "skchr_mortis_1",
+        "prefabIds": [
+          "skchr_mortis_1"
+        ],
+        "behaviourPathIds": [
+          "6052952230982506290"
+        ],
+        "normalMaxLevel": {
+          "name": "多首野兽",
+          "rangeId": null,
+          "description": "防御力<@ba.vup>+{def:0%}</>，阻挡数<@ba.vup>+{block_cnt}</>，更容易成为敌人的攻击目标；技能期间被击倒后，<替身>也能阻挡敌人且享受技能效果，直到<替身>退场",
+          "skillType": "MANUAL",
+          "durationType": "NONE",
+          "spData": {
+            "spType": "INCREASE_WITH_TIME",
+            "levelUpCost": null,
+            "maxChargeTime": 1,
+            "spCost": 20,
+            "initSp": 15,
+            "increment": 1.0
+          },
+          "prefabId": "skchr_mortis_1",
+          "duration": 15.0,
+          "blackboard": [
+            {
+              "key": "def",
+              "value": 1.2,
+              "valueStr": null
+            },
+            {
+              "key": "block_cnt",
+              "value": 2.0,
+              "valueStr": null
+            },
+            {
+              "key": "taunt_level",
+              "value": 1.0,
+              "valueStr": null
+            }
+          ]
+        }
+      },
+      {
+        "characterId": "char_4183_mortis",
+        "name": "若叶睦",
+        "skillIndex": 2,
+        "skillId": "skchr_mortis_2",
+        "prefabIds": [
+          "skchr_mortis_2"
+        ],
+        "behaviourPathIds": [
+          "-7788941006478189186"
+        ],
+        "normalMaxLevel": {
+          "name": "破坏与滋养",
+          "rangeId": "2-1",
+          "description": "攻击范围扩大，攻击间隔略微缩短，每次攻击变为攻击力<@ba.vup>{attack@atk_scale:0%}</>法术伤害的三连发，随机攻击范围内的目标，每次攻击到敌人时自身受到<@ba.vdown>{value}</>点法术伤害",
+          "skillType": "MANUAL",
+          "durationType": "NONE",
+          "spData": {
+            "spType": "INCREASE_WITH_TIME",
+            "levelUpCost": null,
+            "maxChargeTime": 1,
+            "spCost": 25,
+            "initSp": 11,
+            "increment": 1.0
+          },
+          "prefabId": "skchr_mortis_2",
+          "duration": 15.0,
+          "blackboard": [
+            {
+              "key": "base_attack_time",
+              "value": -0.3,
+              "valueStr": null
+            },
+            {
+              "key": "attack@atk_scale",
+              "value": 1.2,
+              "valueStr": null
+            },
+            {
+              "key": "value",
+              "value": 20.0,
+              "valueStr": null
+            }
+          ]
+        }
+      },
+      {
+        "characterId": "char_4182_oblvns",
+        "name": "丰川祥子",
+        "skillIndex": 1,
+        "skillId": "skchr_oblvns_1",
+        "prefabIds": [
+          "skchr_oblvns_1"
+        ],
+        "behaviourPathIds": [
+          "-3349291737652062889"
+        ],
+        "normalMaxLevel": {
+          "name": "新月的苏醒",
+          "rangeId": null,
+          "description": "演奏出<@ba.vup>8</>个音符。每个音符造成的法术伤害依次从攻击力的<@ba.vup>{atk_scale:0%}</>逐渐降低至<@ba.vup>{atk_scale_8:0%}</>。\\n<@ba.rem>可充能2次，充能至最大层数时自动释放一次</>",
+          "skillType": "MANUAL",
+          "durationType": "NONE",
+          "spData": {
+            "spType": "INCREASE_WHEN_ATTACK",
+            "levelUpCost": null,
+            "maxChargeTime": 2,
+            "spCost": 3,
+            "initSp": 0,
+            "increment": 1.0
+          },
+          "prefabId": "skchr_oblvns_1",
+          "duration": -1.0,
+          "blackboard": [
+            {
+              "key": "atk_scale",
+              "value": 1.0,
+              "valueStr": null
+            },
+            {
+              "key": "atk_scale_2",
+              "value": 0.92,
+              "valueStr": null
+            },
+            {
+              "key": "atk_scale_3",
+              "value": 0.75,
+              "valueStr": null
+            },
+            {
+              "key": "atk_scale_4",
+              "value": 0.58,
+              "valueStr": null
+            },
+            {
+              "key": "atk_scale_5",
+              "value": 0.42,
+              "valueStr": null
+            },
+            {
+              "key": "atk_scale_6",
+              "value": 0.33,
+              "valueStr": null
+            },
+            {
+              "key": "atk_scale_7",
+              "value": 0.17,
+              "valueStr": null
+            },
+            {
+              "key": "atk_scale_8",
+              "value": 0.05,
+              "valueStr": null
+            },
+            {
+              "key": "angle",
+              "value": 15.0,
+              "valueStr": null
+            }
+          ]
+        }
+      },
+      {
+        "characterId": "char_4182_oblvns",
+        "name": "丰川祥子",
+        "skillIndex": 2,
+        "skillId": "skchr_oblvns_2",
+        "prefabIds": [
+          "skchr_oblvns_2"
+        ],
+        "behaviourPathIds": [
+          "-4311067092811501357"
+        ],
+        "normalMaxLevel": {
+          "name": "满月的舞会",
+          "rangeId": null,
+          "description": "<@ba.rem>可以切换<@ba.vup>钢琴（初始）</>或<@ba.vup>风琴</>音色演奏：</>\\n<@ba.vup>钢琴</>：攻击力<@ba.vup>+{attack@atk:0%}</>，音符飞行速度加快，命中目标后穿过敌人造成<@ba.vup>物理伤害</>\\n<@ba.vup>风琴</>：攻击速度<@ba.vup>+{attack@attack_speed}</>，音符造成<@ba.vup>法术伤害</>且飞行速度减缓 \\n<@ba.rem><$ba.fever>Fever</>期间变为当前音色的二连击</>",
+          "skillType": "MANUAL",
+          "durationType": "NONE",
+          "spData": {
+            "spType": "INCREASE_WHEN_ATTACK",
+            "levelUpCost": null,
+            "maxChargeTime": 1,
+            "spCost": 5,
+            "initSp": 0,
+            "increment": 1.0
+          },
+          "prefabId": "skchr_oblvns_2",
+          "duration": -1.0,
+          "blackboard": [
+            {
+              "key": "attack@attack_speed",
+              "value": 140.0,
+              "valueStr": null
+            },
+            {
+              "key": "attack@atk",
+              "value": 1.1,
+              "valueStr": null
+            },
+            {
+              "key": "attack@passby_delay",
+              "value": 0.5,
+              "valueStr": null
+            }
+          ]
+        }
+      },
+      {
+        "characterId": "char_4182_oblvns",
+        "name": "丰川祥子",
+        "skillIndex": 3,
+        "skillId": "skchr_oblvns_3",
+        "prefabIds": [
+          "skchr_oblvns_3"
+        ],
+        "behaviourPathIds": [
+          "-5377320831656744270"
+        ],
+        "normalMaxLevel": {
+          "name": "残月的余响",
+          "rangeId": "3-21",
+          "description": "攻击范围扩大，攻击同时使用<@ba.vup>钢琴</>和<@ba.vup>风琴</>音色演奏，各自演奏<@ba.vup>2</>个造成相当于攻击力<@ba.vup>{attack@atk_scale:0%}</>物理和法术伤害的音符，且分别追踪法术抗性和防御力最高的敌人。\\n<@ba.rem><$ba.fever>Fever</>期间<$ba.mujica>Ave Mujica</>成员受到致命伤害时不撤退，<$ba.fever>Fever</>结束后退场</>",
+          "skillType": "MANUAL",
+          "durationType": "NONE",
+          "spData": {
+            "spType": "INCREASE_WHEN_ATTACK",
+            "levelUpCost": null,
+            "maxChargeTime": 1,
+            "spCost": 42,
+            "initSp": 34,
+            "increment": 1.0
+          },
+          "prefabId": "skchr_oblvns_3",
+          "duration": 25.0,
+          "blackboard": [
+            {
+              "key": "attack@attack_speed",
+              "value": 0.0,
+              "valueStr": null
+            },
+            {
+              "key": "attack@atk_scale",
+              "value": 2.2,
+              "valueStr": null
+            }
+          ]
+        }
+      },
+      {
+        "characterId": "char_4186_tmoris",
+        "name": "八幡海铃",
+        "skillIndex": 1,
+        "skillId": "skchr_tmoris_1",
+        "prefabIds": [
+          "skchr_tmoris_1"
+        ],
+        "behaviourPathIds": [
+          "-8053196661172006868"
+        ],
+        "normalMaxLevel": {
+          "name": "颤栗之弦",
+          "rangeId": null,
+          "description": "发动一次<@ba.vup>{times}连击</>，对攻击范围内的地面敌人每次造成相当于<@ba.vup>{atk_scale:0%}</>攻击力的法术伤害。\\n<@ba.rem>其他<$ba.mujica>Ave Mujica</>成员开启技能时，额外释放一次</>\\n<@ba.rem>可充能2次</>",
+          "skillType": "MANUAL",
+          "durationType": "NONE",
+          "spData": {
+            "spType": "INCREASE_WHEN_ATTACK",
+            "levelUpCost": null,
+            "maxChargeTime": 2,
+            "spCost": 4,
+            "initSp": 0,
+            "increment": 1.0
+          },
+          "prefabId": "skchr_tmoris_1",
+          "duration": 2.1,
+          "blackboard": [
+            {
+              "key": "atk_scale",
+              "value": 0.7,
+              "valueStr": null
+            },
+            {
+              "key": "times",
+              "value": 5.0,
+              "valueStr": null
+            }
+          ]
+        }
+      },
+      {
+        "characterId": "char_4186_tmoris",
+        "name": "八幡海铃",
+        "skillIndex": 2,
+        "skillId": "skchr_tmoris_2",
+        "prefabIds": [
+          "skchr_tmoris_2"
+        ],
+        "behaviourPathIds": [
+          "-8144144414337868350"
+        ],
+        "normalMaxLevel": {
+          "name": "无存之所",
+          "rangeId": null,
+          "description": "立即使攻击范围内的敌人<$ba.fear>恐惧</>1.5秒，每秒对攻击范围内的敌人造成攻击力<@ba.vup>{attack@atk_scale:0%}</>的法术伤害，第一天赋造成<$ba.sluggish>停顿</>的概率提升至<@ba.vup>{talent_scale}</>倍",
+          "skillType": "MANUAL",
+          "durationType": "NONE",
+          "spData": {
+            "spType": "INCREASE_WITH_TIME",
+            "levelUpCost": null,
+            "maxChargeTime": 1,
+            "spCost": 40,
+            "initSp": 25,
+            "increment": 1.0
+          },
+          "prefabId": "skchr_tmoris_2",
+          "duration": 15.0,
+          "blackboard": [
+            {
+              "key": "attack@atk_scale",
+              "value": 1.0,
+              "valueStr": null
+            },
+            {
+              "key": "attack@interval",
+              "value": 1.0,
+              "valueStr": null
+            },
+            {
+              "key": "fear",
+              "value": 1.5,
+              "valueStr": null
+            },
+            {
+              "key": "talent_scale",
+              "value": 2.2,
+              "valueStr": null
+            }
+          ]
+        }
+      }
+    ],
+    "classifications": [
+      {
+        "mechanism": "Fever SP exemption",
+        "skillIds": [
+          "skchr_amoris_1",
+          "skchr_amoris_2",
+          "skchr_dolris_1",
+          "skchr_dolris_2",
+          "skchr_mortis_1",
+          "skchr_mortis_2",
+          "skchr_oblvns_1",
+          "skchr_oblvns_2",
+          "skchr_oblvns_3",
+          "skchr_tmoris_1",
+          "skchr_tmoris_2"
+        ],
+        "count": 11,
+        "changes": [
+          "effective numeric launch threshold",
+          "effective numeric payment"
+        ],
+        "budgetTypeChangeProven": false,
+        "wholeActivationProgramReplacementProven": false,
+        "boundary": "Other Fever lifetime/control behaviour is not reduced to payment and is covered by the sustain branch."
+      },
+      {
+        "mechanism": "Lumen S2",
+        "skillIds": [
+          "skchr_lumen_2"
+        ],
+        "count": 1,
+        "changes": [
+          "charged-result sample",
+          "explicit current-SP clear"
+        ],
+        "budgetTypeChangeProven": false,
+        "wholeActivationProgramReplacementProven": false,
+        "evidence": "Bound BuffDuringSkill installs lumen_s_2_enhance_judge: event0 checks available count>=2 before ClearCharacterSp."
+      },
+      {
+        "mechanism": "Viviana S1",
+        "skillIds": [
+          "skchr_vvana_1"
+        ],
+        "count": 1,
+        "changes": [
+          "latched charged mode",
+          "normal base payment or mode-owned SP clear"
+        ],
+        "budgetTypeChangeProven": false,
+        "wholeActivationProgramReplacementProven": false,
+        "evidence": "Bound SpRatioToggleChecker and unmanaged vvana_s_1[mode]; event33 clears SP and event20 ends that mode.",
+        "boundary": "A current balance alone does not reconstruct an already-latched mode; downstream alternative attack programs are content, not proof the Activation callback contract must change."
+      },
+      {
+        "mechanism": "Catap2 S1/S2 charge conversion",
+        "skillIds": [
+          "skchr_catap2_1",
+          "skchr_catap2_2"
+        ],
+        "count": 2,
+        "changes": [
+          "first-charge payment",
+          "remaining-SP sample/clear",
+          "numeric extension of current duration"
+        ],
+        "budgetTypeChangeProven": false,
+        "wholeActivationProgramReplacementProven": false,
+        "evidence": "Prior complete Case09§2.7 native and binding: first charge is paid before the trigger reads remaining SP, clears it and extends current Ability duration."
+      }
+    ],
+    "unresolved": [
+      {
+        "mechanism": "SpScaleAfterSkillCast",
+        "level": "native method/fields, no actual supported-content binding closed in the cited records",
+        "count": null,
+        "boundary": "The existing [uc]skills field scan only found three Swire ModifySpDataAfterSkillCast components; no claim of all-client absence."
+      },
+      {
+        "mechanism": "act2autochess_bond_eff_sunt",
+        "level": "fixed activity-table selection and community battle-start note; native runtime binding unclosed",
+        "count": null,
+        "boundary": "Not counted as a live configuration-switch example. PRTS says battle-start SP requirement reduction to 70%, floored, possibly zero."
+      }
+    ],
+    "inference": "This branch proves numeric sampling and explicit resource/time operations, not a need for arbitrary complete Definition replacement. It also does not prove intrinsic payment rules obey the Attribute modifier algebra."
+  }
+}

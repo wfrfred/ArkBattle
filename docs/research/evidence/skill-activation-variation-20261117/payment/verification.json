@@ -1,0 +1,27 @@
+{
+  "provenance": {
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/skill-activation-variation-20261117/payment/verify.py",
+      "bytes": 2426,
+      "sha256": "0f4060b03d59ad00bb96e4b1b1b85a47097c724a59cfcf0f4e54ba214d5d91b8"
+    },
+    "scope": "Fresh config re-extraction and count/result comparison; not native or runtime execution."
+  },
+  "result": {
+    "complete": true,
+    "checks": {
+      "freshConfiguration": true,
+      "sourceFingerprints": true,
+      "derivedResult": true,
+      "feverDeduplicated": true
+    },
+    "counts": {
+      "feverComponents": 11,
+      "feverPrefabRoots": 11,
+      "feverSkillIds": 11,
+      "feverCharacters": 5
+    },
+    "componentCount": 36,
+    "templateCount": 4
+  }
+}

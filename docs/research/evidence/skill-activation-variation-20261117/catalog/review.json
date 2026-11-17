@@ -1,0 +1,124 @@
+{
+  "reviewedOn": "2026-11-17",
+  "basis": "Manual review of the 232 SkillID keyword candidates and 53 character/trait/talent candidate records in result.json. All data levels were searched; classification uses the relevant original description, binding and blackboard, not the keyword label. Static description/configuration evidence, not native execution.",
+  "counts": {
+    "useCountTimeToInfiniteSkillIds": 6,
+    "useCountFiniteTimeValueSkillIds": 1,
+    "chargedFiniteTimeValueSkillIds": 2,
+    "chargedInitialAmmoValueSkillIds": 1,
+    "theseCreationBudgetFieldVariationsUniqueSkillIds": 10,
+    "existingActiveTimeAdjustmentSkillIds": 3,
+    "conditionalAutomaticUseSkillIds": 3,
+    "externalAutomaticUseProviderSkills": 1,
+    "externalAutomaticUseProviderCharacterRecords": 2,
+    "confirmedRuntimeReplacementOfNativeSkillTypeEnum": 0,
+    "confirmedNecessityToReplaceCompleteActivationDefinition": 0
+  },
+  "confirmedFieldChanges": [
+    {
+      "category": "use-count TIME to INFINITE",
+      "skillIds": ["skchr_buildr_2", "skchr_dminon_2", "skchr_haruka_2", "skchr_headb2_2", "skchr_thorns_3", "skchr_typhon_2"],
+      "fields": ["sustain kind"],
+      "fact": "All six descriptions explicitly make the second and later uses infinite. Highest data-level first durations respectively 15, 20, 26, 16, 30 and 20 seconds; headb2 is already AUTO at the first use.",
+      "boundary": "The use counter/phase can choose this finite input. A different sustain kind does not itself require changing callbacks, private-state layout or operations. No multi-provider competition follows from a unit's own use count."
+    },
+    {
+      "category": "use-count finite time value",
+      "skillIds": ["skchr_vvana_3"],
+      "fields": ["TIME duration"],
+      "fact": "Second and later uses last 25 seconds; the highest-level ordinary duration is 15 seconds, and enhance_duration is 25.",
+      "boundary": "Other described changes are range and attack-hit effects. This is not evidence that the generic Activation program must be replaced."
+    },
+    {
+      "category": "charged finite time value",
+      "skillIds": ["skchr_takila_2", "skchr_warmy_2"],
+      "fields": ["TIME duration"],
+      "fact": "Charged use extends duration from 15 to 30 seconds at the highest data level; the actual enhance_duration/enhanced_duration keys are retained.",
+      "boundary": "The charged condition and bonus effects are separate from computing this budget input. The input is not necessarily a four-stage attribute formula."
+    },
+    {
+      "category": "charged initial ammo value",
+      "skillIds": ["skchr_chen2_2"],
+      "fields": ["initial AMMO budget"],
+      "fact": "Highest-level ordinary ammo is 8; charged use supplies 20 via attack@another_trigger_time.",
+      "boundary": "A budget amount changes; the input does not prove an alternative lifecycle or private-state type. Existing ammo capacity inputs already have an activation-time sampling policy."
+    }
+  ],
+  "explicitTimeOperations": [
+    {
+      "skillIds": ["skchr_hadiya_2"],
+      "fact": "Equipment adaptation during the active skill pays 15 DP and extends the current skill by 15 seconds.",
+      "existingEvidence": "../../../cases/09-skill-mechanisms-and-requirements.md#25-数值修正协议补核动态输入不等于有序变换",
+      "classification": "Update an existing execution; not selection of the next complete Definition."
+    },
+    {
+      "skillIds": ["skchr_catap2_1", "skchr_catap2_2"],
+      "characterId": "char_1049_catap2",
+      "fact": "The actual talent says to consume all charges when opening a skill and increase duration per charge. Static skill duration is 4 seconds at the highest level, maxChargeTime=5 and spCost=2.",
+      "existingEvidence": "../../../cases/09-skill-mechanisms-and-requirements.md#27-原生公式复核ammosp-与具体持续时间操作",
+      "classification": "Existing Case09 native/content evidence fixes payment of the first layer, then reading/clearing remaining SP and extending time. The description alone must not be rewritten into one sampled all-SP activation cost or a different complete Definition."
+    }
+  ],
+  "automaticUsePolicies": [
+    {
+      "skillIds": ["skchr_chyue_3"],
+      "fact": "After five uses the description says automatic release; the raw skillType remains MANUAL.",
+      "classification": "Additional conditional automatic attempt. Static text does not prove replacement of the native trigger enum or loss of manual use; the existing PRTS/native investigation determines those details."
+    },
+    {
+      "skillIds": ["skchr_oblvns_1", "skchr_orchd2_1"],
+      "fact": "Both say to release once automatically on reaching maximum charge; raw skillType remains MANUAL.",
+      "classification": "Conditional auto-attempt alongside manual triggering, not a mutually exclusive permanent AUTO definition."
+    },
+    {
+      "skillIds": ["skchr_tocka_2"],
+      "fact": "Applies a triggered effect to other operators; when their skill can open, an attack-speed window makes their skill automatic. Tocka S2 itself is already AUTO in the table.",
+      "classification": "External policy affecting another unit's attempt. It is not Tocka's own per-round trigger selection; full native timing is outside this static scan."
+    },
+    {
+      "characterIds": ["trap_1516_lhnat", "trap_174_smfrut"],
+      "fact": "The linked traits respectively say that friendly operators automatically open skills, and that eating/starting the meal grants automatic skill use. The exact character/trait records are retained in result.json.",
+      "classification": "External automatic-use providers. Their current supported-mode applicability and native timing are not inferred from the resource prefix or name. They remain raw content candidates rather than proof of a new trigger enum."
+    }
+  ],
+  "resourcesAndPayment": {
+    "chargedBonusSkillIds": ["skchr_billro_1", "skchr_billro_2", "skchr_billro_3", "skchr_chen2_2", "skchr_gnosis_2", "skchr_judge_1", "skchr_lumen_2", "skchr_takila_2", "skchr_vvana_1", "skchr_warmy_2", "sktok_smpow"],
+    "chargedBonusBoundary": "Eleven table-bound skill IDs explicitly have charged bonuses; the presence of maxChargeTime=2 and the text does not on its own establish the exact payment node or turn every charged bonus into Definition replacement. skchr_orchd2_3 is excluded: its three-second wind-up is a different meaning of 蓄力.",
+    "conditionalPaymentExamples": [
+      {"skillId": "skchr_chyue_1", "fact": "At maximum charge consumes all charge layers; below maximum this is not described as consuming all. A finite payment policy, not evidence of a new callback group."},
+      {"skillId": "skchr_orchd2_1", "fact": "If charge remains after the opening shot, consumes one additional layer for a follow-up shot. Timing is explicit in the content text; do not silently collapse it into the initial cost."},
+      {"skillId": "skchr_marcil_3", "fact": "Optional additional chanting then consumes all remaining magic for extra explosions. The payment occurs during the program, not necessarily at Activation creation."}
+    ],
+    "magicSkillIds": ["skchr_marcil_1", "skchr_marcil_2", "skchr_marcil_3"],
+    "magicBoundary": "Explicit skill_cost_min_sp/sp_cost blackboard values and talent text show magic activation/payment policy; actual permissive startup, delayed/forced payment and capacity configuration use existing Case09 native evidence. Static text alone does not reconstruct that pipeline.",
+    "negativeFinding": "No newly found table description explicitly changes the same skill's initial SP requirement or base SP cost by use count. This does not exclude native Behaviour, external Effect, Fever, relic, module or level-driven changes absent from these two tables. DP and Swire's coin text are not counted as SP configuration changes."
+  },
+  "contentBranchesNotWholeDefinitionEvidence": [
+    {"skillIds": ["skchr_amgoat_1", "skchr_pinecn_2", "skchr_pepe_2", "skchr_closur_1"], "fact": "Repeated use changes attack/effect strength or generated DP; preserve the use counter/content program, not an inferred Activation callback swap."},
+    {"skillIds": ["skchr_nothin_2"], "fact": "Random effect selection while the same infinite skill is running. Random outputs are not a new Activation Definition requirement."},
+    {"skillIds": ["skchr_horn_2", "skchr_horn_3", "skchr_rockr_2", "skchr_wisdel_2", "skchr_oxi_3"], "fact": "Overload is an active-round content phase, with effects and stop behavior depending on that phase. Existing operations plus current permission can express conditional stop/toss behavior; the text does not require replacing the operations table."},
+    {"skillIds": ["skchr_marcil_2"], "fact": "Only the first use can be stopped. This requires current STOP qualification, already separate from operation support; it does not require changing the callback table."},
+    {"skillIds": ["skchr_f12yin_2", "skchr_hodrer_2", "skchr_lin_1", "skchr_svrash_2", "skchr_narant_1", "skchr_oblvns_2"], "fact": "Mode/effect toggles do not by themselves imply replacing the generic activation program; the active behavior can belong to persistent Skill state and concrete Action/Effect composition."}
+  ],
+  "naturalProgramGroupingCandidates": [
+    {
+      "skillIds": ["skchr_marcil_2"],
+      "fact": "First use creates the familiar and allows STOP; second use upgrades it and no longer allows STOP. This is the closest retained candidate for grouping distinct per-stage content entry programs.",
+      "boundary": "The source proves creation/upgrade and different current STOP permission, but does not require different private-state layout or a new core operation-support table. Separate content definitions may be clearer than one large callback; that is a design comparison, not a mechanism fact established by this static scan."
+    },
+    {
+      "skillIds": ["skchr_makoto_3", "skchr_oblvns_2"],
+      "fact": "The source describes distinct forms/instruments with different attack and effect programs.",
+      "boundary": "These are genuine content program groups, not merely a numerical addition. The changed program is the unit's persistent Action/Effect/mode behavior; the table does not establish replacement of the next Activation's lifecycle callbacks or state type."
+    }
+  ],
+  "scopeLimits": [
+    "Counts are deduplicated SkillIDs, not data levels or matches. Classification groups overlap; do not add their counts as one global total.",
+    "A confirmed change to TIME/INFINITE, time amount, ammo amount or eligibility is not evidence that an entire Definition, callback group, private state layout or operations table must change.",
+    "Zero confirmed whole-Definition replacement requirements means this scan provides no such evidence; it is not a proof that no runtime content can need one.",
+    "All TOKEN/TRAP and non-obtainable table references were retained, even for modes the project does not support. Their presence does not expand the project scope.",
+    "The four unreferenced skill_table records are Amiya's alternate-form skills, not automatically unused data. Character patches and module/level/enemy tables were not inputs to this scan.",
+    "Two SkillIDs have trigger enums varying between static levels; that is not evidence of a runtime trigger mutation.",
+    "This scan does not determine whether finite input selection should use Contribution, a plain callback, explicit current policy or another API. Multi-provider aggregation and a unit's own use-count branch are separate requirements."
+  ]
+}
