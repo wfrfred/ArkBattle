@@ -26,23 +26,27 @@ Unit.initialize 按 Catalog 顺序接续各 initializer，最后合并 Definitio
 
 Unit enter／tick 要求宿主仍 PRESENT；prepare 使用固定 Departure 并先于自动请求依赖者。leave 在注销前捕获最新登记对象与优先级，注销后派发，历史载荷不变。完整机制见 [Lifetime](lifetime.md)，死亡归属与来源响应见 [Resource](resource.md)。
 
-## 单位标签与 Profile 边界
-
-当前泥岩的萨卡兹减伤仍从攻击者 definition.profile.tags 读取。需要的是明确战斗身份，不是把完整 Profile 作为跨内容协议。实现类、阵营、职业、FilterTag／GroupTag、敌人级别与攻击方式分别有消费者，不能压成同一种标签。
-
-[单位分类调查](../research/cases/36-unit-classification-and-combat-tags.md)已提供原生依据，但尚未形成完整公共接口，属于未闭合架构范围，见 [Tactical 语义](tactical-semantics.md)。
-
 ## 构造、校验与命名
 
 真实输入和合法构造入口建立数值、身份、能力依赖与配置配对。内部信任 Typed Ref 和已有不变量，不重复解析私有数据，也不以强转或任意状态覆盖补出缺失能力。
 
 Definition 可由 Content 组装，也可由 Data 调用已有工厂静态绑定；运行程序由所属 Core 领域或 Content 实现。初始化不等于 validate，查询不推进业务。命名、公开入口与字段级写回遵守[接口约定](api-conventions.md)，不增加空转发层、深拷贝或冻结协议。
 
-## Allegiance
+## Classification
 
-Allegiance 的 ALLY／ENEMY／NEUTRAL 表达阵营，不表达干员、敌人或装置类别。普通敌对判定为一方 ENEMY、另一方非 ENEMY；ALLY 与 NEUTRAL 不因此敌对。
+Classification 按需装配，Definition 保存静态分类资料，配对的 State 为空。Content 明确单位类别：OPERATOR、SUMMON、DEVICE 或 ENEMY；它们不建立 Unit 的行为继承，也不自动赋予 Capability。公共字段只有 side，其他事实按类别限定，所有静态数组显式提供。
 
-阵营只作为具体业务输入，不自动决定索敌、受伤或阻挡资格。Blocking 的目标阵营由显式二元限制表达。
+OPERATOR 保存 groupTags、八职业之一、对应 subProfession 及 extraProfessions；合法职业与子职业配对由 professions 表确定，子职业使用闭合的大写标识。SUMMON 保存 groupTags，没有八职业，可复用子职业或明确为 null；DEVICE 保存 groupTags 与 filterTags，没有职业及子职业；ENEMY 保存 filterTags 与 NORMAL／ELITE／BOSS 级别。召唤物复用 EXECUTOR 不使其成为 SPECIAL 干员，额外职业也不改写基础职业与子职业。
+
+类别、阵营与创建方式分别独立：ALLY／ENEMY／NEUTRAL 不决定单位类别，部署、调度或召唤操作也不自动改分类。原生依据见[单位分类调查](../research/cases/36-unit-classification-and-combat-tags.md)及[我方 Enemy 召唤物](../research/cases/32-leithanien-summons-blocking-and-movement.md)；明确游戏类别、单一 Capability 与空 State 是项目组织选择，不复刻原生 Character／Token／Trap 类链。
+
+filterTags 是战斗筛选标签，groupTags 是组织归属，两者分别查询，类别没有对应字段时返回 false。干员档案种族不自动成为 filterTags。职业匹配由调用者明确是否包含额外职业；子职业可匹配 OPERATOR 与 SUMMON，级别只匹配 ENEMY，类别不符则返回 false。
+
+hasClassification 与指定明确类别的 isType 提供结构／类别守卫，保留已有能力；isType 接收动态类别时只返回布尔值。matchesProfession／matchesSubProfession／matchesRank 也只返回布尔资格，不从匹配失败推断其他类别。需要类别字段时，先用 isType 收窄，再组合匹配条件。查询不检查存活、空间存在或受选资格，也不推进状态。泥岩等内容通过公共标签查询，不读取其他内容的完整 Profile。
+
+普通敌对判定为一方 ENEMY、另一方非 ENEMY；ALLY 与 NEUTRAL 不因此敌对。阵营只作为具体业务输入，不自动决定索敌、受伤或阻挡资格。Blocking 的目标阵营由显式二元限制表达。空地身份、运动方式和本笔攻击途径继续由各自领域提供，不由分类或标签推导。
+
+原生 EntityCategory、类筛选与单位当前攻击方式的剩余需求见 [Tactical 语义](tactical-semantics.md)，不把已有静态分类接口当作这些内容已闭合的依据。
 
 ## 属性与贡献
 

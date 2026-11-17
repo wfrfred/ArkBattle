@@ -23,13 +23,13 @@ import { hasTargetable } from "../../dist/core/unit/capability/targetable/capabi
 import { createArknightsElementalDefinition } from "../../dist/data/effect/elemental.js";
 
 const elementalReceiver = {
-    id: "ep-receiver", hooks: Hooks.empty(), presence: {}, allegiance: { side: "ALLY" },
+    id: "ep-receiver", hooks: Hooks.empty(), presence: {}, classification: { type: "DEVICE", side: "ALLY", filterTags: [], groupTags: [] },
     vitality: defineVitality(10000, { resistance: defineAttribute(50, 0, 100) }),
     elemental: createArknightsElementalDefinition({ receiver: "CHARACTER" }),
 };
 
 const recoveringElementalReceiver = {
-    id: "ep-receiver", hooks: Hooks.empty(), presence: {}, allegiance: { side: "ALLY" },
+    id: "ep-receiver", hooks: Hooks.empty(), presence: {}, classification: { type: "DEVICE", side: "ALLY", filterTags: [], groupTags: [] },
     targetable: { taunt: defineAttribute(0, -2, 2), restrictions: [] },
     elemental: createArknightsElementalDefinition({ receiver: "CHARACTER", recoveryPerSecond: 15 }),
 };

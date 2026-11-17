@@ -2,7 +2,7 @@ import type { Restriction as BaseRestriction } from "../../../restriction.js";
 import type { Unit } from "../../unit.js";
 import type { Blocker } from "./blocker.js";
 import type { Blockable } from "./blockable.js";
-import { hasAllegiance, type Side } from "../allegiance/capability.js";
+import { hasClassification, type Side } from "../classification/index.js";
 
 export interface RestrictionContext {
     readonly blocker: Unit & Blocker;
@@ -14,6 +14,7 @@ export type Restriction = BaseRestriction<RestrictionContext>;
 export function sides(...sides: readonly Side[]): Restriction {
     return {
         allows: (_battle, { blockable }) =>
-            hasAllegiance(blockable) && sides.includes(blockable.allegiance.side),
+            hasClassification(blockable) &&
+            sides.includes(blockable.definition.classification.side),
     };
 }

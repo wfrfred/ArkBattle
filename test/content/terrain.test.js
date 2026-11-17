@@ -150,8 +150,8 @@ test("HP-06: infection keeps its entry clocks and ordinary reception while exclu
 test("mire preserves its stacking clock across adjacent tiles and gives heavy enemies double stacks", () => {
     const patch = terrain.mire.create(mireParams);
     const configured = setup([patch, patch, terrain.normal.create({})], [
-        unit(0, { ...combat, allegiance: { side: "ENEMY" }, massLevel: 3 }),
-        unit(0, { ...combat, allegiance: { side: "ENEMY" }, massLevel: 2 }),
+        unit(0, { ...combat, classification: { type: "ENEMY", side: "ENEMY", filterTags: [], rank: "NORMAL" }, massLevel: 3 }),
+        unit(0, { ...combat, classification: { type: "ENEMY", side: "ENEMY", filterTags: [], rank: "NORMAL" }, massLevel: 2 }),
     ], [terrain.mire]);
     let battle = until(configured.battle, 2);
     assert.deepEqual([0, 1].map(id => attackSpeed(battle, id)), [90, 95]);
@@ -166,7 +166,7 @@ test("mire preserves its stacking clock across adjacent tiles and gives heavy en
 test("deepsea and holes affect ground enemies while leaving allies and airborne enemies untouched", () => {
     const natures = [];
     const configured = setup([terrain.deepsea.create(deepseaParams), terrain.hole.create({})], [
-        unit(0, { ...combat, allegiance: { side: "ENEMY" }, layer: { type: "GROUND" },
+        unit(0, { ...combat, classification: { type: "ENEMY", side: "ENEMY", filterTags: [], rank: "NORMAL" }, layer: { type: "GROUND" },
             hooks: Hooks.empty().set(hpDamage.receiving, {
                 id: "observe-deepsea-nature",
                 invoke(state, { request }, pending) {
@@ -175,8 +175,8 @@ test("deepsea and holes affect ground enemies while leaving allies and airborne 
                 },
             }),
         }),
-        unit(0, { ...combat, allegiance: { side: "ALLY" }, layer: { type: "GROUND" } }),
-        unit(0, { ...combat, allegiance: { side: "ENEMY" }, layer: { type: "AIR" } }),
+        unit(0, { ...combat, classification: { type: "OPERATOR", side: "ALLY", profession: "WARRIOR", subProfession: "FEARLESS", extraProfessions: [], groupTags: [] }, layer: { type: "GROUND" } }),
+        unit(0, { ...combat, classification: { type: "ENEMY", side: "ENEMY", filterTags: [], rank: "NORMAL" }, layer: { type: "AIR" } }),
     ], [terrain.deepsea, terrain.hole]);
     let battle = until(configured.battle, 2);
     assert.deepEqual(natures, ["DAMAGE"]);
@@ -194,10 +194,10 @@ test("deepsea and holes affect ground enemies while leaving allies and airborne 
 
 test("smog keeps allied ground and airborne units invisible through blocking until they leave", () => {
     const configured = setup([terrain.smog.create({}), terrain.normal.create({})], [
-        unit(0, { vitality: combat.vitality, allegiance: { side: "ALLY" }, targetable: { taunt: attribute(0, -2, 2), restrictions: [] },
+        unit(0, { vitality: combat.vitality, classification: { type: "OPERATOR", side: "ALLY", profession: "WARRIOR", subProfession: "FEARLESS", extraProfessions: [], groupTags: [] }, targetable: { taunt: attribute(0, -2, 2), restrictions: [] },
             blocker: { layer: "GROUND", restrictions: [], capacity: 1, radius: 0.7 } }),
-        unit(0, { allegiance: { side: "ENEMY" }, layer: { type: "GROUND" }, blockable: { volume: 1, restrictions: [] } }),
-        unit(0, { vitality: combat.vitality, allegiance: { side: "ALLY" },
+        unit(0, { classification: { type: "ENEMY", side: "ENEMY", filterTags: [], rank: "NORMAL" }, layer: { type: "GROUND" }, blockable: { volume: 1, restrictions: [] } }),
+        unit(0, { vitality: combat.vitality, classification: { type: "OPERATOR", side: "ALLY", profession: "WARRIOR", subProfession: "FEARLESS", extraProfessions: [], groupTags: [] },
             layer: { type: "AIR" }, targetable: { taunt: attribute(0, -2, 2), restrictions: [] } }),
     ], [terrain.smog]);
     let battle = step(configured.battle, []);

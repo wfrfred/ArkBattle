@@ -5,9 +5,9 @@ import * as targeting from "../../../core/battle/targeting/index.js";
 import * as units from "../../../core/unit/index.js";
 import { hasTargetable } from "../../../core/unit/capability/targetable/capability.js";
 import {
-    hasAllegiance,
-    type Allegiance,
-} from "../../../core/unit/capability/allegiance/capability.js";
+    hasClassification,
+    type Classification,
+} from "../../../core/unit/capability/classification/index.js";
 import { hasBlockable, hasBlocker } from "../../../core/unit/capability/blocking/index.js";
 import { hasDirection } from "../../../core/unit/capability/occupancy/index.js";
 import { hasLayer } from "../../../core/unit/capability/layer/index.js";
@@ -21,7 +21,7 @@ export interface State {
     readonly inSession: boolean;
 }
 
-function candidates(battle: BattleState, self: units.Unit & Allegiance, profile: Profile) {
+function candidates(battle: BattleState, self: units.Unit & Classification, profile: Profile) {
     const withinRange = hasDirection(self)
         ? targeting.inRange(self.position, fromTiles(profile.range, self.occupancy.direction))
         : () => false;
@@ -39,7 +39,7 @@ function candidates(battle: BattleState, self: units.Unit & Allegiance, profile:
 }
 
 export function hasTarget(battle: BattleState, self: units.Unit, profile: Profile): boolean {
-    return hasAllegiance(self) && candidates(battle, self, profile).some(() => true);
+    return hasClassification(self) && candidates(battle, self, profile).some(() => true);
 }
 
 export function create(profile: Profile, timing: AttackSpeedTiming): Attack<State> {
@@ -66,7 +66,7 @@ export function create(profile: Profile, timing: AttackSpeedTiming): Attack<Stat
                 id: "primary",
                 select(battle, source) {
                     const self = units.get(battle, source);
-                    if (self === undefined || !hasAllegiance(self)) {
+                    if (self === undefined || !hasClassification(self)) {
                         return { state: battle, value: [] };
                     }
 

@@ -4,7 +4,7 @@ import type { Profile } from "../../../data/unit/enemy.js";
 import * as units from "../../../core/unit/index.js";
 import { hasBlockable } from "../../../core/unit/capability/blocking/index.js";
 import { hasTargetable } from "../../../core/unit/capability/targetable/capability.js";
-import { hasAllegiance } from "../../../core/unit/capability/allegiance/capability.js";
+import { hasClassification } from "../../../core/unit/capability/classification/index.js";
 import * as targeting from "../../../core/battle/targeting/index.js";
 
 export function create(profile: Profile, timing: Timing): Attack {
@@ -19,7 +19,7 @@ export function create(profile: Profile, timing: Timing): Attack {
                 id: "primary",
                 select(battle, source) {
                     const self = units.get(battle, source);
-                    if (self === undefined || !hasAllegiance(self)) {
+                    if (self === undefined || !hasClassification(self)) {
                         return { state: battle, value: [] };
                     }
 

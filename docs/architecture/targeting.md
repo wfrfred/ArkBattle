@@ -18,7 +18,7 @@ topK 稳定排序截取，take 只取现有顺序；随机无放回选择立即�
 
 ## 标准资格
 
-标准谓词要求来源具有 Allegiance，并为异构目标证明所需资源能力与阵营，保留已有其他能力：
+标准谓词要求来源具有 Classification，并为异构目标证明所需资源能力与分类，保留已有其他能力。这里只消费 side，不按单位类别猜阵营：
 
 | 谓词 | 政策 |
 | --- | --- |
@@ -28,6 +28,8 @@ topK 稳定排序截取，take 只取现有顺序；随机无放回选择立即�
 | elementHealing | 空间存在、Elemental 可用、无 Burst、同阵营且有恢复需求，限制允许。 |
 
 生命和比例由 Vitality 解释；Elemental 不要求所有宿主都有 Vitality，具有时仍检查存活。EP 选择不伪造资源 Request 或执行完整接收限制，选中不保证后续作用成功，见 [Resource](resource.md)。
+
+职业、子职业、组织、战斗标签和敌人级别使用 [Classification](capability.md#classification) 的纯查询组合进 Query；阵营、出生方式和 Capability 组成不能替代这些事实。分类查询不承担选择资格，标准资格也不隐含职业或标签限制。
 
 联合治疗先判断 HP 或有效 EP 有需求，不能先排除满 HP 再补 EP 条件。Burst 不提供 EP 需求，但缺 HP 仍可入选；healFree 是否适用及混合排序由具体内容明确选择。
 

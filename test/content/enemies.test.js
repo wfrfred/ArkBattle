@@ -73,7 +73,7 @@ function advanceActionUntil(state, reference, untilTick) {
 
 function guard(id, position, blockCapacity = 1, restrictions = []) {
   return initialize({ id, position, definition: { hooks: Hooks.empty(),
-    id: 'test-guard', targetable: { taunt: attribute(0, -2, 2), restrictions }, vitality: vitality(1000, { defense: attribute(40) }), allegiance: { side: 'ALLY' }, layer: { type: 'GROUND' },
+    id: 'test-guard', targetable: { taunt: attribute(0, -2, 2), restrictions }, vitality: vitality(1000, { defense: attribute(40) }), classification: { type: "OPERATOR", side: 'ALLY', profession: "WARRIOR", subProfession: "FEARLESS", extraProfessions: [], groupTags: [] }, layer: { type: 'GROUND' },
     hitbox: { shape: { type: 'CIRCLE', offset: [0, 0], radius: 0.2 } },
     blocker: { layer: "GROUND", restrictions: [], capacity: blockCapacity },
   } });
@@ -81,15 +81,19 @@ function guard(id, position, blockCapacity = 1, restrictions = []) {
 
 test('hound content binds configured regeneration and rejects unimplemented stun immunity', () => {
   const timing = { timing: houndTiming, hitRadius: 0.2 };
-  const advanced = profile('enemy_1000_gopro', 1, { attributes: {
-    maxHp: { m_defined: true, m_value: 4000 },
-    atk: { m_defined: false, m_value: 9999 },
-    moveSpeed: { m_defined: true, m_value: 1.1 },
-    hpRecoveryPerSec: { m_defined: true, m_value: 20 },
-  } });
+  const advanced = profile('enemy_1000_gopro', 1, {
+    levelType: { m_defined: true, m_value: 'BOSS' },
+    attributes: {
+      maxHp: { m_defined: true, m_value: 4000 },
+      atk: { m_defined: false, m_value: 9999 },
+      moveSpeed: { m_defined: true, m_value: 1.1 },
+      hpRecoveryPerSec: { m_defined: true, m_value: 20 },
+    },
+  });
   const regenerating = createHound(advanced, timing, houndMovement);
 
   assert.equal(regenerating.definition.vitality.recoverySpeed.default, 20);
+  assert.equal(regenerating.definition.classification.rank, 'BOSS');
   assert.throws(() => createHound({ ...profile('enemy_1000_gopro'), stunImmune: true }, timing, houndMovement), /stun immunity/);
 });
 

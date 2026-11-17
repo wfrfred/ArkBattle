@@ -22,9 +22,9 @@ import {
 } from "../../../core/unit/capability/targetable/capability.js";
 import { hasOffense, resolveAttack } from "../../../core/unit/capability/offense/index.js";
 import {
-    hasAllegiance,
-    type Allegiance,
-} from "../../../core/unit/capability/allegiance/capability.js";
+    hasClassification,
+    type Classification,
+} from "../../../core/unit/capability/classification/index.js";
 
 import { finish } from "../../../core/unit/skill/index.js";
 import { hasSkill } from "../../../core/unit/capability/skill/index.js";
@@ -53,7 +53,7 @@ import { value, healSelf } from "./common.js";
 
 function attackTarget(
     battle: BattleState,
-    self: Unit & Allegiance,
+    self: Unit & Classification,
     profile: Profile,
     skill: boolean,
 ) {
@@ -65,7 +65,9 @@ function attackTarget(
           )
         : () => false;
 
-    return <U extends Unit>(target: U): target is U & Targetable & Vitality & Allegiance & Layer =>
+    return <U extends Unit>(
+        target: U,
+    ): target is U & Targetable & Vitality & Classification & Layer =>
         hasTargetable(target) &&
         eligible(target) &&
         hasLayer(target) &&
@@ -74,11 +76,11 @@ function attackTarget(
             (!skill && hasBlockable(target) && target.blockable.relation?.blocker.id === self.id));
 }
 
-export function skillTarget(battle: BattleState, self: Unit & Allegiance, profile: Profile) {
+export function skillTarget(battle: BattleState, self: Unit & Classification, profile: Profile) {
     return attackTarget(battle, self, profile, true);
 }
 
-export function skillTargets(battle: BattleState, self: Unit & Allegiance, profile: Profile) {
+export function skillTargets(battle: BattleState, self: Unit & Classification, profile: Profile) {
     return allUnits(battle).filter(skillTarget(battle, self, profile));
 }
 
@@ -94,7 +96,7 @@ function attackDefinition(profile: Profile, skill: boolean, timing: Timing) {
                 id: "primary",
                 select(battle, source) {
                     const self = getCurrentUnit(battle, source);
-                    if (self === undefined || !hasAllegiance(self)) {
+                    if (self === undefined || !hasClassification(self)) {
                         return { state: battle, value: [] };
                     }
 
@@ -171,7 +173,7 @@ export function createSkill(
                 const currentSource = getCurrentUnit(state, host);
                 const target = getCurrentUnit(state, targetRef);
 
-                if (currentSource?.lifecycle !== "PRESENT" || !hasAllegiance(currentSource)) {
+                if (currentSource?.lifecycle !== "PRESENT" || !hasClassification(currentSource)) {
                     return state;
                 }
 

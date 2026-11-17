@@ -26,7 +26,7 @@ const enemy = {
     hooks: Hooks.empty(),
     blockable: { volume: 1, restrictions: [] },
     layer: { type: "GROUND" },
-    allegiance: { side: "ENEMY" },
+    classification: { type: "DEVICE", side: "ENEMY", filterTags: [], groupTags: [] },
 };
 
 test("HOOK-03: a relation fixes both sides' priority order before notifying either side and reads replacements live", () => {
@@ -87,7 +87,7 @@ test("search and maintenance use effective pair restrictions, volume, layers and
             },
             position: [2, 1],
         },
-        { definition: { ...enemy, allegiance: { side: "ALLY" } }, position: [2.1, 1] },
+        { definition: { ...enemy, classification: { type: "DEVICE", side: "ALLY", filterTags: [], groupTags: [] } }, position: [2.1, 1] },
         { definition: { ...enemy, layer: { type: "AIR" } }, position: [2.15, 1] },
         { definition: { ...enemy, blockable: { volume: 2, restrictions: [] } }, position: [2.2, 1] },
         {
@@ -211,7 +211,7 @@ test("layer settlements release current relations acquired by earlier settlement
                 blocker: { ...blocker.blocker, radius: 1 },
                 layer: { type: "GROUND" },
             }, position: [2, 1] },
-            { definition: { ...enemy, allegiance: { side: "NEUTRAL" } }, position: [2.1, 1] },
+            { definition: { ...enemy, classification: { type: "DEVICE", side: "NEUTRAL", filterTags: [], groupTags: [] } }, position: [2.1, 1] },
             { definition: { ...enemy, layer: { type: targetLayer } }, position: [2.2, 1] },
         ]);
         const owner = units.ref(get(state, 0));

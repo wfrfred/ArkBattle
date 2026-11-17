@@ -3,7 +3,7 @@ import { type State as BattleState } from "../../../battle/state.js";
 import type { Unit } from "../../unit.js";
 import * as units from "../../query.js";
 import * as attribute from "../../attribute.js";
-import { hasAllegiance } from "../allegiance/capability.js";
+import { hasClassification } from "../classification/index.js";
 import { hasVitality } from "../vitality/capability.js";
 import { isAlive } from "../vitality/query.js";
 import { ELEMENT_TYPES, type Elemental, type Parameter, type Type } from "./capability.js";
@@ -64,7 +64,7 @@ export function canReceiveDamage(
         self !== undefined &&
         available(self) &&
         self.elemental.burst === null &&
-        (!hasAllegiance(self) || self.allegiance.side !== "NEUTRAL") &&
+        (!hasClassification(self) || self.definition.classification.side !== "NEUTRAL") &&
         allows(battle, { self, request, type }, self.elemental.damageRestrictions, ignore)
     );
 }

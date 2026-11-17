@@ -44,7 +44,7 @@ import { setAttackContribution, resolveAttack } from ${module("unit/capability/o
 import type { Blocker, Blockable, Relation, Hook as BlockingHook } from ${module("unit/capability/blocking/index")};
 import * as blocking from ${module("battle/blocking/index")};
 import * as targeting from ${module("battle/targeting/index")};
-import type { Allegiance } from ${module("unit/capability/allegiance/capability")};
+import * as classification from ${module("unit/capability/classification/index")};
 import { hasTargetable } from ${module("unit/capability/targetable/capability")};
 import { topK } from ${module("common/collection")};
 import type { Spawn } from ${module("battle/schedule/index")};
@@ -308,6 +308,48 @@ effects.setExpiration(battle, burstRef, { ...burst.expiration, remaining: burst.
 effects.setExpiration(battle, burstRef, { type: 'DEADLINE', tick: 10 });
 const bare = initialize(battle, { id: 1, position: [0, 0], definition: { id: 'bare', hooks: Hooks.empty() } }).value;
 update(battle, ref(bare), killedChange);
+const classifiedDefinition = {
+    id: 'classified', hooks: Hooks.empty(),
+    classification: { type: 'DEVICE' as const, side: 'ALLY' as const, filterTags: [], groupTags: [] },
+};
+const classified = initialize(battle, { id: 6, position: [0, 0], definition: classifiedDefinition }).value;
+const classifiedCapability: classification.Classification<'DEVICE'> = classified;
+const initializedClassification: classification.State = classified.classification;
+const staticClassification: classification.Definition = classified.definition.classification;
+// @ts-expect-error an unselected Classification does not appear in the Catalog product.
+bare.classification;
+// @ts-expect-error classification queries require a Classification-capable Unit.
+classification.hasFilterTag(bare, 'sarkaz');
+for (const side of ['ALLY', 'ENEMY', 'NEUTRAL'] as const) {
+    const common = { side };
+    const categoryDefinitions: readonly classification.Definition[] = [
+        { ...common, type: 'DEVICE', filterTags: [], groupTags: ['rhodes'] },
+        { ...common, type: 'OPERATOR', groupTags: ['rhodes'], profession: 'SPECIAL', subProfession: 'EXECUTOR', extraProfessions: [] },
+        { ...common, type: 'SUMMON', groupTags: ['rhodes'], subProfession: 'EXECUTOR' },
+        { ...common, type: 'SUMMON', groupTags: ['rhodes'], subProfession: null },
+        { ...common, type: 'ENEMY', filterTags: ['sarkaz'], rank: 'ELITE' },
+    ];
+}
+const commonClassification = { side: 'ALLY' as const };
+// @ts-expect-error an operator requires its associated profession facts together.
+const missingProfessionFacts: classification.Definition = { ...commonClassification, type: 'OPERATOR', groupTags: [] };
+// @ts-expect-error an enemy requires its associated rank.
+const missingRank: classification.Definition = { ...commonClassification, type: 'ENEMY', filterTags: [] };
+// @ts-expect-error a profession only accepts its own sub-professions.
+const wrongProfessionPair: classification.Definition = { ...commonClassification, type: 'OPERATOR', groupTags: [], profession: 'CASTER', subProfession: 'EXECUTOR', extraProfessions: [] };
+// @ts-expect-error summon classification does not carry an operator profession.
+const wrongSummonFields: classification.Definition = { ...commonClassification, type: 'SUMMON', groupTags: [], subProfession: 'EXECUTOR', profession: 'SPECIAL' };
+// @ts-expect-error operators carry group tags rather than enemy filter tags.
+const wrongOperatorTags: classification.Definition = { ...commonClassification, type: 'OPERATOR', groupTags: [], profession: 'SPECIAL', subProfession: 'EXECUTOR', extraProfessions: [], filterTags: [] };
+// @ts-expect-error enemy classification does not carry group tags.
+const wrongEnemyTags: classification.Definition = { ...commonClassification, type: 'ENEMY', rank: 'ELITE', filterTags: [], groupTags: [] };
+// @ts-expect-error summons are a category rather than one of the eight professions.
+const summonProfession: classification.Profession = 'TOKEN';
+// @ts-expect-error original lowercase data identifiers are converted before Core construction.
+const rawSubProfession: classification.SubProfession = 'executor';
+// @ts-expect-error narrowing to one category rejects a different category's definition.
+const mismatchedClassification: classification.Classification<'ENEMY'> = classified;
+
 const receivingChange: Change<Unit & vitality.Vitality> = setUnitHook(hpDamage.receiving, receivingHooks.get(receivingKey)[0]!);
 // @ts-expect-error receiving keys retain their Vitality owner requirement through Change.
 update(battle, ref(bare), receivingChange);
@@ -519,20 +561,71 @@ for (const self of allUnits(battle).filter(actionCapability.hasAction).filter(ha
     const speed: number = skills.resolveRecoverySpeed(battle, self);
 }
 const selectableActions = allUnits(battle).filter(actionCapability.hasAction).filter(hasTargetable);
-declare const targetingSource: Unit & Allegiance;
+for (const self of allUnits(battle).filter(actionCapability.hasAction).filter(classification.hasClassification)) {
+    const preservedClassifiedAction: actionCapability.Action = self;
+    const establishedClassification: classification.Classification = self;
+    if (classification.isType(self, 'OPERATOR')) {
+        const preservedOperatorAction: actionCapability.Action = self;
+        const establishedOperator: classification.Classification<'OPERATOR'> = self;
+        const profession: classification.Profession = self.definition.classification.profession;
+        const groupTags: readonly string[] = self.definition.classification.groupTags;
+    }
+    if (classification.isType(self, 'OPERATOR') && classification.matchesProfession(self, ['CASTER'], true)) {
+        const preservedProfessionAction: actionCapability.Action = self;
+        const establishedOperator: classification.Classification<'OPERATOR'> = self;
+        const profession: classification.Profession = self.definition.classification.profession;
+        // @ts-expect-error operator classification does not establish an enemy rank.
+        self.definition.classification.rank;
+    }
+    if (classification.isType(self, 'SUMMON') && classification.matchesSubProfession(self, ['EXECUTOR'])) {
+        const preservedSubProfessionAction: actionCapability.Action = self;
+        const establishedSummon: classification.Classification<'SUMMON'> = self;
+        const subProfession: classification.SubProfession | null = self.definition.classification.subProfession;
+        // @ts-expect-error a summon does not carry an operator profession.
+        self.definition.classification.profession;
+    }
+    if (classification.isType(self, 'DEVICE') && classification.hasGroupTag(self, 'rhodes')) {
+        const preservedGroupAction: actionCapability.Action = self;
+        const groupTags: readonly string[] = self.definition.classification.groupTags;
+        const filterTags: readonly string[] = self.definition.classification.filterTags;
+    }
+    if (classification.isType(self, 'ENEMY') && classification.matchesRank(self, ['ELITE'])) {
+        const preservedRankAction: actionCapability.Action = self;
+        const establishedEnemy: classification.Classification<'ENEMY'> = self;
+        const rank: classification.Rank = self.definition.classification.rank;
+        const filterTags: readonly string[] = self.definition.classification.filterTags;
+        // @ts-expect-error rank matching does not establish operator profession facts.
+        self.definition.classification.profession;
+    }
+}
+
+declare const professionCandidate: (Unit & classification.Classification<'OPERATOR'>) | (Unit & classification.Classification<'SUMMON'>);
+if (classification.matchesProfession(professionCandidate, ['CASTER'], true)) {
+} else {
+    // @ts-expect-error a failed profession match can still be a non-Caster operator.
+    const incorrectlyExcludedOperator: Unit & classification.Classification<'SUMMON'> = professionCandidate;
+}
+declare const requestedCategory: classification.Type;
+if (classification.isType(professionCandidate, requestedCategory)) {
+} else {
+    // @ts-expect-error comparing a dynamic category does not make the mismatch unreachable.
+    const incorrectlyExcludedCandidate: never = professionCandidate;
+}
+
+declare const targetingSource: Unit & classification.Classification;
 const damagedCandidates = selectableActions.filter(targeting.damage(battle, targetingSource));
 const nearestPatient = topK(damagedCandidates, 1, targeting.hpRatio)[0]!;
 const patientAlive: boolean = vitality.isAlive(nearestPatient);
 const patientHpRatio: number = vitality.hpRatio(nearestPatient);
 const preservedAction: actionCapability.Action = nearestPatient;
 const establishedVitality: vitality.Vitality = nearestPatient;
-const establishedAllegiance: Allegiance = nearestPatient;
+const establishedClassification: classification.Classification = nearestPatient;
 for (const self of selectableActions.filter(targeting.elementHealing(battle, targetingSource))) {
     const preservedAction: actionCapability.Action = self;
     const establishedElemental: elemental.Elemental = self;
-    const establishedAllegiance: Allegiance = self;
+    const establishedClassification: classification.Classification = self;
 }
-// @ts-expect-error standard target eligibility requires the source's Allegiance capability.
+// @ts-expect-error standard target eligibility requires the source's Classification capability.
 targeting.damage(battle, host);
 const patient = initialize(battle, { id: 2, position: [0, 0], definition: {
     id: 'patient', hooks: Hooks.empty(),

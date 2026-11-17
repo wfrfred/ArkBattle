@@ -4,6 +4,7 @@ import {
     assertNonnegativeSafeInteger,
     assertPositiveNumber,
 } from "../../core/common/assert.js";
+import { RANKS, type Rank } from "../../core/unit/capability/classification/index.js";
 
 interface EnemyMovementValues {
     readonly maxHp: number | undefined;
@@ -220,7 +221,8 @@ export interface Profile {
     readonly mass: number;
     readonly blockVolume: number;
     readonly stunImmune: boolean;
-    readonly tags: readonly string[];
+    readonly filterTags: readonly string[];
+    readonly rank: Rank;
     readonly applyWay: "MELEE" | "RANGED";
     readonly lifePointReduce: number;
     readonly notCountInTotal: boolean;
@@ -282,6 +284,16 @@ function textValue(source: Record<string, unknown>, key: string): string {
     }
 
     return value;
+}
+
+function rank(value: unknown): Rank {
+    for (const rank of RANKS) {
+        if (value === rank) {
+            return rank;
+        }
+    }
+
+    throw new TypeError(`unknown enemy rank ${String(value)}`);
 }
 
 export function prepare(value: unknown, configuration: Configuration): Profile {
@@ -369,8 +381,11 @@ export function prepare(value: unknown, configuration: Configuration): Profile {
         throw new TypeError(`unsupported enemy applyWay ${String(fields.applyWay)}`);
     }
 
-    const tags = fields.enemyTags ?? [];
-    if (!Array.isArray(tags) || !tags.every((tag: unknown) => typeof tag === "string")) {
+    const filterTags = fields.enemyTags ?? [];
+    if (
+        !Array.isArray(filterTags) ||
+        !filterTags.every((tag: unknown) => typeof tag === "string")
+    ) {
         throw new TypeError("enemy tags must be a string array");
     }
 
@@ -405,7 +420,8 @@ export function prepare(value: unknown, configuration: Configuration): Profile {
         mass,
         blockVolume,
         stunImmune: flag(attributes, "stunImmune"),
-        tags,
+        filterTags,
+        rank: rank(fields.levelType === undefined ? "NORMAL" : fields.levelType),
         applyWay: fields.applyWay,
         lifePointReduce,
         notCountInTotal: flag(fields, "notCountInTotal"),

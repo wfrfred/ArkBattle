@@ -2,7 +2,7 @@ import { update as updateUnit } from "../battle/unit.js";
 
 import type { OrdinaryDefinition as Definition } from "../unit/effect/index.js";
 import * as units from "../unit/index.js";
-import { areHostile, hasAllegiance } from "../unit/capability/allegiance/capability.js";
+import { areHostile, hasClassification } from "../unit/capability/classification/index.js";
 import * as targetable from "../unit/capability/targetable/capability.js";
 
 function restriction(
@@ -43,9 +43,9 @@ function restriction(
 }
 
 const allowsSameSide: targetable.Restriction["allows"] = (_battle, { source, target: owner }) =>
-    !hasAllegiance(source) ||
-    !hasAllegiance(owner) ||
-    source.allegiance.side === owner.allegiance.side;
+    !hasClassification(source) ||
+    !hasClassification(owner) ||
+    source.definition.classification.side === owner.definition.classification.side;
 
 export const invisibleRestriction: targetable.Restriction = {
     allows: allowsSameSide,
@@ -53,7 +53,9 @@ export const invisibleRestriction: targetable.Restriction = {
 
 export const camouflageRestriction: targetable.Restriction = {
     allows(_battle, { source, target: owner }) {
-        return !hasAllegiance(source) || !hasAllegiance(owner) || !areHostile(source, owner);
+        return (
+            !hasClassification(source) || !hasClassification(owner) || !areHostile(source, owner)
+        );
     },
 };
 
@@ -64,9 +66,9 @@ export const untargetableRestriction: targetable.Restriction = {
 export const allyUntargetableRestriction: targetable.Restriction = {
     allows(_battle, { source, target: owner }) {
         return (
-            !hasAllegiance(source) ||
-            !hasAllegiance(owner) ||
-            source.allegiance.side !== owner.allegiance.side
+            !hasClassification(source) ||
+            !hasClassification(owner) ||
+            source.definition.classification.side !== owner.definition.classification.side
         );
     },
 };

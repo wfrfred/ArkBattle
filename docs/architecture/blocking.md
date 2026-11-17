@@ -31,7 +31,7 @@ Blockable.adjustment 保存起点、终点与开始 Tick；无关系而仍有计
 
 ## 关系资格与 Restriction
 
-双方限制使用同一二元 Context `{ blocker, blockable }`，分别解析有效贡献后 AND 判断。限制是纯资格查询，登记所有者不改变两端角色。可选 sides 限制检查目标 Allegiance，不要求阻挡者具有 Allegiance；未登记时没有隐含敌对条件。
+双方限制使用同一二元 Context `{ blocker, blockable }`，分别解析有效贡献后 AND 判断。限制是纯资格查询，登记所有者不改变两端角色。可选 sides 限制检查目标 Classification 的 side，不要求阻挡者具有 Classification；未登记时没有隐含敌对条件。
 
 | 判断 | 范围 |
 | --- | --- |

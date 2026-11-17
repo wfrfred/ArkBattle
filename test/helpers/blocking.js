@@ -33,7 +33,7 @@ export function holder(id = 10, { position = [2, 1], capacity = 1, radius = 1, l
         definition: {
             id: `blocking-holder-${id}`,
             hooks: Hooks.empty(),
-            ...(side === undefined ? {} : { allegiance: { side } }),
+            ...(side === undefined ? {} : { classification: { type: "DEVICE", side, filterTags: [], groupTags: [] } }),
             presence: {}, vitality: vitality(100),
             blocker: { layer, capacity, radius, restrictions: [{ id: "opposing-side", value: blocker.sides("ENEMY") }] },
             ...definition,
@@ -47,7 +47,7 @@ export function target(id = 20, { position = [2.25, 1], volume = 1, layer = "GRO
         definition: {
             id: `blocking-target-${id}`,
             hooks: Hooks.empty(),
-            ...(side === undefined ? {} : { allegiance: { side } }),
+            ...(side === undefined ? {} : { classification: { type: "DEVICE", side, filterTags: [], groupTags: [] } }),
             presence: {}, vitality: vitality(100),
             layer: { type: layer }, blockable: { volume, restrictions: [] },
             ...definition,

@@ -16,7 +16,7 @@ test("Unit construction rejects conflicting roles and installs entry effects on 
     const entryEffect = { id: "entry-effect", initialize: () => ({ charges: 2 }) };
     const definition = {
         id: "allied-unit",
-        allegiance: { side: "ALLY" },
+        classification: { type: "DEVICE", side: "ALLY", filterTags: [], groupTags: [] },
         hooks: Hooks.empty().set(units.enter, {
             id: "install-entry-effect",
             invoke(state, self) {
@@ -37,7 +37,7 @@ test("Unit construction rejects conflicting roles and installs entry effects on 
         definition, position: [0, 0], initial: { occupancy: { tile: [0, 0] } },
     }]);
     const current = units.all(state).find((unit) => unit.definition === definition);
-    assert.equal(current.allegiance.side, "ALLY");
+    assert.equal(current.definition.classification.side, "ALLY");
     assert.equal(hasOccupancy(current), false);
     assert.equal(current.effects.values().find((effect) => effect.definition === entryEffect).state.charges, 2);
 });

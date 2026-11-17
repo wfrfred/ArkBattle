@@ -1,5 +1,5 @@
 import * as action from "./action/capability.js";
-import * as allegiance from "./allegiance/capability.js";
+import * as classification from "./classification/index.js";
 import * as blockable from "./blocking/blockable.js";
 import * as blocker from "./blocking/blocker.js";
 import * as deployable from "./deployable/capability.js";
@@ -25,7 +25,7 @@ export const initializers = {
     action: action.initialize,
     skill: skill.initialize,
     elemental: elemental.initialize,
-    allegiance: allegiance.initialize,
+    classification: classification.initialize,
     layer: layer.initialize,
     hitbox: hitbox.initialize,
     blocker: blocker.initialize,

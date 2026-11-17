@@ -32,6 +32,7 @@ Prefab、范围读取和换算由实际业务使用；目录移动、提取工�
 | --- | --- |
 | [Battlefield](battlefield.md)、[Spatial](spatial.md) | 不可变发布、全批最终占格、Tile／Overlay 导航与空间资格；结构写入不执行业务。位置、Presence、占格和 Hitbox 分开；接触不等于命中。 |
 | [Unit 构造](capability.md#初始化与装配) | 具体 Definition 与所选 State／Initial 配对，拒绝阻挡双角色，登记后能力组成稳定；额外已知 Initial 可忽略。初始 Effect 经登记后的正常 install。 |
+| [Classification](capability.md#classification) | 单位类别与 side 独立，保持三阵营敌对关系；筛选／组织标签按类别限定且不混用，缺少对应字段的查询返回 false；基础／额外职业按本次政策匹配，召唤物复用子职业不获得八职业，错误类别不匹配。[集中代表](../../test/core/classification.test.js)保障查询结果；公共类型契约保障普通干员职业／子职业配对及守卫保留输入。 |
 | [Change](api-conventions.md#51-unit-完整操作与批量变更) | 同目标 compose 结合而不交换，各项 previous、no-op 和有序 Settlement；纯变换一次发布后结算，真实后继不因最终恢复入口引用丢失。optional 读取前序输入；嵌套 update 接续最新状态。 |
 | [Hook](hook.md)、[Lifetime](lifetime.md) | 候选固定、最新登记、独立嵌套、priority 同级稳定；首次有效结束固定载荷，依赖完整结束后宿主才注销。旧执行 Ref 不操作后来实例。 |
 | [Action](action.md)、[Skill](skill.md) | 启动受理与已发生前缀、静态时序修正的同步冷却结算、释放／中断／输出、持久与单轮身份；发动门槛与支付额独立且显式声明，本次完整参数不改配置或后续普通启动，命令与自动调度各守入口条件；拒绝不初始化或支付，支付通知看到已发布的本轮；Duration 按长期状态与扣费前余额构造，弹药本轮基础值先确定再修正，贡献变更只影响后续轮次；显式 SP 支付与回复许可；主动操作须有处理器并通过限制，受理不等于结束，内部结束独立；跨回调不重复消费或恢复旧执行。 |

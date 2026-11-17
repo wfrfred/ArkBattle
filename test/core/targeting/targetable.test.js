@@ -16,7 +16,7 @@ import {
 } from "../../../dist/core/effects/visibility.js";
 
 const definition = (side, restrictions = [], taunt = 0) => ({
-    id: `targetable-${side}`, hooks: Hooks.empty(), allegiance: { side },
+    id: `targetable-${side}`, hooks: Hooks.empty(), classification: { type: "DEVICE", side, filterTags: [], groupTags: [] },
     targetable: { taunt: { default: taunt, min: -2, max: 2 }, restrictions },
 });
 const creation = (side, restrictions, taunt) => ({

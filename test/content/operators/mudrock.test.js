@@ -44,7 +44,7 @@ const profile = (fields = {}) => {
 const enemy = (id, position, fields = {}) => initialize({ id, position, definition: {
     id: "enemy", hooks: Hooks.empty(), targetable: { taunt: attribute(0, -2, 2), restrictions: [] },
     vitality: vitality(10000),
-    allegiance: { side: "ENEMY" }, layer: { type: "GROUND" },
+    classification: { type: "ENEMY", side: "ENEMY", filterTags: [], rank: "NORMAL" }, layer: { type: "GROUND" },
     hitbox: { shape: { type: "CIRCLE", offset: [0, 0], radius: 0.1 } },
     locomotion: { halfBodyWidth: 0, speed: attribute(0.1, 0), steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 } },
     ...fields,
@@ -109,8 +109,8 @@ test("Mudrock's shield keeps recharging while capped", () => {
 
 test("module X uses current max HP for shield healing and distinguishes blocked Sarkaz sources", () => {
     const fixture = setup({ module: { id: moduleX, level: 3 } }, [
-        enemy(1, [0.6, 0], { blockable: { volume: 1, restrictions: [] }, profile: { tags: ["sarkaz"] } }),
-        enemy(2, [5, 0], { profile: { tags: ["sarkaz"] } }),
+        enemy(1, [0.6, 0], { blockable: { volume: 1, restrictions: [] }, classification: { type: "ENEMY", side: "ENEMY", filterTags: ["sarkaz"], rank: "NORMAL" } }),
+        enemy(2, [5, 0], { classification: { type: "ENEMY", side: "ENEMY", filterTags: ["sarkaz"], rank: "NORMAL" } }),
         enemy(3, [6, 0]),
     ]);
     let battle = update(fixture.battle, ref(fixture.unit), setMaxHpContribution({
@@ -127,7 +127,7 @@ test("module X uses current max HP for shield healing and distinguishes blocked 
 
 test("APPLY-03: Mudrock requires a successful block for shield costs and benefits", () => {
     const fixture = setup({ module: { id: moduleX, level: 3 } }, [
-        enemy(1, [0.6, 0], { blockable: { volume: 1, restrictions: [] }, profile: { tags: ["sarkaz"] } }),
+        enemy(1, [0.6, 0], { blockable: { volume: 1, restrictions: [] }, classification: { type: "ENEMY", side: "ENEMY", filterTags: ["sarkaz"], rank: "NORMAL" } }),
     ]);
     const ready = advanceEffectsUntil(wound(fixture.battle), 270);
     const observed = [];

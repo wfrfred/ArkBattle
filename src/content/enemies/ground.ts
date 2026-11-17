@@ -34,7 +34,7 @@ export interface Definition
         UnitDefinition,
         Pick<
             CapabilityDefinitions,
-            | "allegiance"
+            | "classification"
             | "blockable"
             | "elemental"
             | "facing"
@@ -117,7 +117,12 @@ export function createDefinition(
             recoveryRatio: { default: 0, min: 0, max: 1 },
         },
         offense: { attack: { default: profile.attack, min: 0, max: null } },
-        allegiance: { side: "ENEMY" },
+        classification: {
+            type: "ENEMY",
+            side: "ENEMY",
+            filterTags: profile.filterTags,
+            rank: profile.rank,
+        },
         layer: { type: "GROUND" },
         hitbox: {
             shape: { type: "CIRCLE", offset: [0, 0], radius: hitRadius },

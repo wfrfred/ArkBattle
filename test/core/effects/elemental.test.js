@@ -143,7 +143,7 @@ function battle(receiver, type) {
   });
   const actor = (side, attack) => ({
     id: side, hooks: Hooks.empty(), vitality: defineVitality(100000, { defense: defineAttribute(500), resistance: defineAttribute(50, 0, 100) }),
-    targetable: { taunt: defineAttribute(0, -2, 2), restrictions: [] }, allegiance: { side },
+    targetable: { taunt: defineAttribute(0, -2, 2), restrictions: [] }, classification: { type: "DEVICE", side, filterTags: [], groupTags: [] },
     hitbox: { shape: hit }, action: actionCapability(attack),
   });
   return createBattle([
@@ -192,11 +192,11 @@ test('mania counts each released action once and each skill activation, caps sel
   });
   let work = createBattle([
     { position: [0, 0], definition: definition('CHARACTER', {
-      allegiance: { side: 'ALLY' }, action: { ...actionCapability(attack), interval: defineAttribute(30) },
+      classification: { type: "DEVICE", side: 'ALLY', filterTags: [], groupTags: [] }, action: { ...actionCapability(attack), interval: defineAttribute(30) },
       skill: { initialize: state => createSkill(state, skill) },
     }) },
     { position: [1, 0], definition: {
-      id: 'blocked-output', allegiance: { side: 'ENEMY' },
+      id: 'blocked-output', classification: { type: "DEVICE", side: 'ENEMY', filterTags: [], groupTags: [] },
       vitality: defineVitality(100000),
       targetable: { taunt: defineAttribute(0, -2, 2), restrictions: [] }, hitbox: { shape: hit },
       hooks: Hooks.empty().set(hpDamage.receiving, {

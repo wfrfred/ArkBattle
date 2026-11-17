@@ -15,7 +15,7 @@ import type { Effect } from "../../core/unit/effect/index.js";
 
 import { hasLayer } from "../../core/unit/capability/layer/capability.js";
 import * as presence from "../../core/unit/capability/presence/index.js";
-import { hasAllegiance } from "../../core/unit/capability/allegiance/capability.js";
+import { hasClassification } from "../../core/unit/capability/classification/index.js";
 import { hasTargetable } from "../../core/unit/capability/targetable/capability.js";
 import { invisible } from "../../core/effects/visibility.js";
 import * as terrain from "./definition.js";
@@ -264,7 +264,9 @@ export function createTerrainMechanism(
             id: "terrain/deepsea",
             intervalTicks: 6,
             accepts: (unit) =>
-                onGround(unit) && hasAllegiance(unit) && unit.allegiance.side === "ENEMY",
+                onGround(unit) &&
+                hasClassification(unit) &&
+                unit.definition.classification.side === "ENEMY",
             enter: (battle, unit, params, scopes) =>
                 effects.install(battle, units.ref(unit), createDeepseaEffect(params), {
                     scopes,
@@ -277,7 +279,9 @@ export function createTerrainMechanism(
             id: "terrain/smog",
             intervalTicks: 1,
             accepts: (unit) =>
-                hasAllegiance(unit) && unit.allegiance.side === "ALLY" && hasTargetable(unit),
+                hasClassification(unit) &&
+                unit.definition.classification.side === "ALLY" &&
+                hasTargetable(unit),
             enter: (battle, unit, _params, scopes) =>
                 hasTargetable(unit)
                     ? effects.install(battle, units.ref(unit), invisible, { scopes })
@@ -289,7 +293,9 @@ export function createTerrainMechanism(
             id: "terrain/hole",
             intervalTicks: 1,
             accepts: (unit) =>
-                onGround(unit) && hasAllegiance(unit) && unit.allegiance.side === "ENEMY",
+                onGround(unit) &&
+                hasClassification(unit) &&
+                unit.definition.classification.side === "ENEMY",
             enter: (battle, unit) => ({
                 state: removeUnit(battle, units.ref(unit), { reason: "DEATH", killer: null }),
                 value: null,

@@ -21,7 +21,7 @@ function passenger(id = 10, tile = first, layer = "GROUND") {
     return initialize({
         id, position: Tile.center(tile), initial: { occupancy: { tile } }, definition: {
             id: "passenger", hooks: Hooks.empty(), occupancy: { slot: "OCCUPANT" }, presence: {},
-            allegiance: { side: "ALLY" }, vitality: vitality(100),
+            classification: { type: "OPERATOR", side: "ALLY", profession: "WARRIOR", subProfession: "FEARLESS", extraProfessions: [], groupTags: [] }, vitality: vitality(100),
             blocker: { layer, capacity: 1, restrictions: [{ id: "opposing-side", value: sides("ENEMY") }] },
         },
     });

@@ -24,7 +24,7 @@ const living = {
     id: "target", hooks: Hooks.empty(),
     targetable: { taunt: defineAttribute(0, -2, 2), restrictions: [] },
     vitality: defineVitality(100),
-    allegiance: { side: "ENEMY" }, layer: { type: "GROUND" },
+    classification: { type: "DEVICE", side: "ENEMY", filterTags: [], groupTags: [] }, layer: { type: "GROUND" },
 };
 const ids = candidates => Array.from(candidates, target => target.id);
 const candidates = state => units.all(state).filter(targetable.hasTargetable);
@@ -43,11 +43,11 @@ function injure(state, target, power) {
 test("standard HP eligibility is independent of the chosen range origin and uses current spatial facts", () => {
     const hitbox = { shape: { type: "CIRCLE", offset: [0, 0], radius: 0.7 } };
     let state = battle([
-        { definition: { id: "source", hooks: Hooks.empty(), allegiance: { side: "ALLY" } }, position: [0, 0] },
+        { definition: { id: "source", hooks: Hooks.empty(), classification: { type: "DEVICE", side: "ALLY", filterTags: [], groupTags: [] } }, position: [0, 0] },
         { definition: { ...living, hitbox }, position: [2.6, 1] },
         { definition: { ...living, hitbox }, position: [2.6, 1] },
         { definition: { ...living, presence: {} }, position: [2.6, 1] },
-        { definition: { ...living, allegiance: { side: "ALLY" }, hitbox }, position: [1, 1] },
+        { definition: { ...living, classification: { type: "DEVICE", side: "ALLY", filterTags: [], groupTags: [] }, hitbox }, position: [1, 1] },
     ]);
     state = update(state, units.ref(get(state, 2)), setType("AIR"));
     const source = get(state, 0);
@@ -65,7 +65,7 @@ test("standard HP eligibility is independent of the chosen range origin and uses
 
 test("mixed healing keeps HP or EP demand while only an ACTIVE healFree marker restricts HP selection", () => {
     const patient = {
-        ...living, allegiance: { side: "ALLY" },
+        ...living, classification: { type: "DEVICE", side: "ALLY", filterTags: [], groupTags: [] },
         elemental: createArknightsElementalDefinition({ receiver: "ENEMY" }),
     };
     let state = battle([
@@ -110,13 +110,13 @@ test("mixed healing keeps HP or EP demand while only an ACTIVE healFree marker r
 test("EP selection checks current resource eligibility without executing reception Restrictions", () => {
     const receiver = {
         id: "ep-receiver", hooks: Hooks.empty(), targetable: { taunt: defineAttribute(0, -2, 2), restrictions: [] },
-        allegiance: { side: "ALLY" },
+        classification: { type: "DEVICE", side: "ALLY", filterTags: [], groupTags: [] },
         elemental: createArknightsElementalDefinition({ receiver: "ENEMY" }),
     };
     let state = battle([
-        { definition: { id: "source", hooks: Hooks.empty(), allegiance: { side: "ENEMY" } }, position: [0, 0] },
+        { definition: { id: "source", hooks: Hooks.empty(), classification: { type: "DEVICE", side: "ENEMY", filterTags: [], groupTags: [] } }, position: [0, 0] },
         { definition: receiver, position: [1, 0] },
-        { definition: { ...receiver, allegiance: { side: "NEUTRAL" } }, position: [2, 0] },
+        { definition: { ...receiver, classification: { type: "DEVICE", side: "NEUTRAL", filterTags: [], groupTags: [] } }, position: [2, 0] },
     ]);
     const target = units.ref(get(state, 1));
     let damageChecks = 0;

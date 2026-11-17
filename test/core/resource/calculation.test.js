@@ -31,7 +31,7 @@ const healingRequest = (source, target, power) => ({
 
 function elementalDefinition(config = {}, hooks = Hooks.empty()) {
     return {
-        id: "ep-receiver", hooks, presence: {}, allegiance: { side: "ALLY" },
+        id: "ep-receiver", hooks, presence: {}, classification: { type: "DEVICE", side: "ALLY", filterTags: [], groupTags: [] },
         elemental: { ...createArknightsElementalDefinition({ receiver: "CHARACTER" }), ...config },
     };
 }
@@ -41,7 +41,7 @@ function injuryRequest(target, type, power, source = null) {
 }
 
 const elementalReceiver = {
-    id: "ep-receiver", hooks: Hooks.empty(), presence: {}, allegiance: { side: "ALLY" },
+    id: "ep-receiver", hooks: Hooks.empty(), presence: {}, classification: { type: "DEVICE", side: "ALLY", filterTags: [], groupTags: [] },
     targetable: { taunt: defineAttribute(0, -2, 2), restrictions: [] },
     elemental: createArknightsElementalDefinition({ receiver: "CHARACTER", recoveryPerSecond: 15 }),
 };

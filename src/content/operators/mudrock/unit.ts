@@ -5,7 +5,10 @@ import * as unitHooks from "../../../core/unit/hook.js";
 import { normal as normalSite } from "../../terrain/condition.js";
 import { update as updateUnit } from "../../../core/battle/unit.js";
 import { hasTargetable } from "../../../core/unit/capability/targetable/capability.js";
-import { hasAllegiance } from "../../../core/unit/capability/allegiance/capability.js";
+import {
+    hasClassification,
+    hasFilterTag,
+} from "../../../core/unit/capability/classification/index.js";
 import { createArknightsElementalDefinition } from "../../../data/effect/elemental.js";
 import {
     create as createAction,
@@ -61,7 +64,7 @@ export interface Definition
         Pick<
             CapabilityDefinitions,
             | "action"
-            | "allegiance"
+            | "classification"
             | "blocker"
             | "deployable"
             | "elemental"
@@ -100,20 +103,7 @@ export function readShield(
 }
 
 function hasSarkazTag(unit: Unit | undefined): boolean {
-    const definition = unit?.definition;
-    if (definition === undefined || !("profile" in definition)) {
-        return false;
-    }
-
-    const profile = definition.profile;
-
-    return (
-        typeof profile === "object" &&
-        profile !== null &&
-        "tags" in profile &&
-        Array.isArray(profile.tags) &&
-        profile.tags.includes("sarkaz")
-    );
+    return unit !== undefined && hasClassification(unit) && hasFilterTag(unit, "sarkaz");
 }
 
 function shieldEffect(profile: Profile): EffectDefinition<ShieldState, Vitality> {
@@ -287,7 +277,7 @@ export function create(
 
                 return (
                     source !== undefined &&
-                    hasAllegiance(source) &&
+                    hasClassification(source) &&
                     skillTargets(battle, source, profile).some(() => true)
                 );
             },
@@ -371,7 +361,14 @@ export function create(
         },
         offense: { attack: { default: profile.attributes.attack, min: 0, max: null } },
 
-        allegiance: { side: "ALLY" },
+        classification: {
+            type: "OPERATOR",
+            side: "ALLY",
+            profession: "TANK",
+            subProfession: "UNYIELD",
+            extraProfessions: [],
+            groupTags: ["rhodes"],
+        },
         layer: { type: "GROUND" },
         hitbox: { shape: { type: "CIRCLE", offset: [0, 0], radius: 0.25 } },
         blocker: {

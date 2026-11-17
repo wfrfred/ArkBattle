@@ -23,7 +23,7 @@ import * as locomotion from "../../core/unit/capability/locomotion/index.js";
 import { hasLocomotion } from "../../core/unit/capability/locomotion/index.js";
 
 import { hasVitality } from "../../core/unit/capability/vitality/index.js";
-import { hasAllegiance } from "../../core/unit/capability/allegiance/capability.js";
+import { hasClassification } from "../../core/unit/capability/classification/index.js";
 import * as attribute from "../../core/unit/attribute.js";
 import { TICKS_PER_SECOND } from "../../core/tick.js";
 import type { DeepseaParams, InfectionParams, MireParams } from "./definition.js";
@@ -190,7 +190,8 @@ export function createMireEffect(params: MireParams): Definition<MireState> {
                 return battle;
             }
 
-            const enemy = hasAllegiance(unit) && unit.allegiance.side === "ENEMY";
+            const enemy =
+                hasClassification(unit) && unit.definition.classification.side === "ENEMY";
             const gain =
                 enemy && hasMass(unit) && unit.definition.massLevel >= params.massThreshold ? 2 : 1;
             const stacks = Math.min(params.maxStacks, self.state.stacks + gain);

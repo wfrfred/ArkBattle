@@ -53,7 +53,7 @@ export interface Definition
         Pick<
             CapabilityDefinitions,
             | "action"
-            | "allegiance"
+            | "classification"
             | "blocker"
             | "deployable"
             | "elemental"
@@ -188,7 +188,14 @@ export function create(profile: Profile, timing: AttackSpeedTiming): Definition 
         },
         offense: { attack: { default: profile.attributes.attack, min: 0, max: null } },
 
-        allegiance: { side: "ALLY" },
+        classification: {
+            type: "OPERATOR",
+            side: "ALLY",
+            profession: "WARRIOR",
+            subProfession: "FEARLESS",
+            extraProfessions: [],
+            groupTags: ["rhodes", "reserve4", "victoria"],
+        },
         layer: { type: "GROUND" },
         hitbox: { shape: { type: "CIRCLE", offset: [0, 0], radius: 0.25 } },
         blocker: {

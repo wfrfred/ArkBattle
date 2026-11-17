@@ -1,9 +1,9 @@
 import type { Unit } from "../../unit/unit.js";
 import {
     areHostile,
-    hasAllegiance,
-    type Allegiance,
-} from "../../unit/capability/allegiance/capability.js";
+    hasClassification,
+    type Classification,
+} from "../../unit/capability/classification/index.js";
 import { hasHitbox } from "../../unit/capability/hitbox/capability.js";
 import * as presence from "../../unit/capability/presence/capability.js";
 import {
@@ -23,35 +23,35 @@ import type { State as BattleState } from "../state.js";
 
 export function damage(
     battle: BattleState,
-    source: Unit & Allegiance,
+    source: Unit & Classification,
     ignore?: (restriction: Restriction) => boolean,
-): <U extends Unit & Targetable>(target: U) => target is U & Vitality & Allegiance {
+): <U extends Unit & Targetable>(target: U) => target is U & Vitality & Classification {
     const allows = allowsRestrictions(battle, source, ignore);
 
-    return <U extends Unit & Targetable>(target: U): target is U & Vitality & Allegiance =>
+    return <U extends Unit & Targetable>(target: U): target is U & Vitality & Classification =>
         target.lifecycle === "PRESENT" &&
         presence.isPresent(target) &&
         hasVitality(target) &&
         isAlive(target) &&
-        hasAllegiance(target) &&
+        hasClassification(target) &&
         areHostile(source, target) &&
         allows(target);
 }
 
 export function healing(
     battle: BattleState,
-    source: Unit & Allegiance,
+    source: Unit & Classification,
     ignore?: (restriction: Restriction) => boolean,
-): <U extends Unit & Targetable>(target: U) => target is U & Vitality & Allegiance {
+): <U extends Unit & Targetable>(target: U) => target is U & Vitality & Classification {
     const allows = allowsRestrictions(battle, source, ignore);
 
-    return <U extends Unit & Targetable>(target: U): target is U & Vitality & Allegiance =>
+    return <U extends Unit & Targetable>(target: U): target is U & Vitality & Classification =>
         target.lifecycle === "PRESENT" &&
         presence.isPresent(target) &&
         hasVitality(target) &&
         isAlive(target) &&
-        hasAllegiance(target) &&
-        source.allegiance.side === target.allegiance.side &&
+        hasClassification(target) &&
+        source.definition.classification.side === target.definition.classification.side &&
         hpRatio(target) < 1 &&
         !target.effects
             .values()
@@ -61,36 +61,36 @@ export function healing(
 
 export function elementDamage(
     battle: BattleState,
-    source: Unit & Allegiance,
+    source: Unit & Classification,
     ignore?: (restriction: Restriction) => boolean,
-): <U extends Unit & Targetable>(target: U) => target is U & Elemental & Allegiance {
+): <U extends Unit & Targetable>(target: U) => target is U & Elemental & Classification {
     const allows = allowsRestrictions(battle, source, ignore);
 
-    return <U extends Unit & Targetable>(target: U): target is U & Elemental & Allegiance =>
+    return <U extends Unit & Targetable>(target: U): target is U & Elemental & Classification =>
         presence.isPresent(target) &&
         hasElemental(target) &&
         available(target) &&
         target.elemental.burst === null &&
-        hasAllegiance(target) &&
-        target.allegiance.side !== "NEUTRAL" &&
+        hasClassification(target) &&
+        target.definition.classification.side !== "NEUTRAL" &&
         areHostile(source, target) &&
         allows(target);
 }
 
 export function elementHealing(
     battle: BattleState,
-    source: Unit & Allegiance,
+    source: Unit & Classification,
     ignore?: (restriction: Restriction) => boolean,
-): <U extends Unit & Targetable>(target: U) => target is U & Elemental & Allegiance {
+): <U extends Unit & Targetable>(target: U) => target is U & Elemental & Classification {
     const allows = allowsRestrictions(battle, source, ignore);
 
-    return <U extends Unit & Targetable>(target: U): target is U & Elemental & Allegiance =>
+    return <U extends Unit & Targetable>(target: U): target is U & Elemental & Classification =>
         presence.isPresent(target) &&
         hasElemental(target) &&
         available(target) &&
         target.elemental.burst === null &&
-        hasAllegiance(target) &&
-        source.allegiance.side === target.allegiance.side &&
+        hasClassification(target) &&
+        source.definition.classification.side === target.definition.classification.side &&
         resolveDamageRatio(battle, target) > 0 &&
         allows(target);
 }

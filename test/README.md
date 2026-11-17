@@ -41,7 +41,7 @@ test/
 | [Vitality](../docs/architecture/vitality.md)、[Elemental](../docs/architecture/elemental.md) | [vitality](core/vitality.test.js)、[elemental](core/elemental.test.js) |
 | [Action](../docs/architecture/action.md)、[Skill](../docs/architecture/skill.md) | [action](core/action.test.js)、[skill](core/skill.test.js) |
 | [Effect 与标准效果](../docs/architecture/effect.md) | [引擎](core/effect.test.js)、[控制](core/effects/control.test.js)、[元素爆发](core/effects/elemental.test.js) |
-| [Capability](../docs/architecture/capability.md) | [contribution](core/contribution.test.js)、[allegiance](core/allegiance.test.js)、[facing](core/facing.test.js) |
+| [Capability](../docs/architecture/capability.md) | [contribution](core/contribution.test.js)、[classification](core/classification.test.js)、[facing](core/facing.test.js) |
 | [Battlefield](../docs/architecture/battlefield.md) | [battlefield](core/battlefield.test.js) |
 | [Geometry](../docs/architecture/geometry.md) | [vector](common/vector.test.js)、[coordinate](core/geometry/coordinate.test.js)、[range](core/geometry/range.test.js)、[sweep](core/geometry/sweep.test.js) |
 | [Navigation／Route／Locomotion](../docs/architecture/navigation.md) | [route](core/navigation/route.test.js)、[locomotion](core/navigation/locomotion.test.js)、[avoidance](core/navigation/avoidance.test.js)、[speed](core/navigation/speed.test.js) |
