@@ -10,7 +10,7 @@ import { resolveDeploymentCommands } from "./deployment/operations.js";
 import { advanceMovement } from "./steps/movement.js";
 import { advance as advanceBlocking } from "./blocking/operations.js";
 import { advanceProjectiles } from "./steps/projectiles.js";
-import { advance as advanceMechanisms } from "./mechanism.js";
+import { advance as advanceMechanisms } from "../mechanism/mechanism.js";
 import * as projectiles from "../projectile/query.js";
 import { advanceElements } from "./steps/elemental.js";
 import { advanceVitality } from "./steps/vitality.js";

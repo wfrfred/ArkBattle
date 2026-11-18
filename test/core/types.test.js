@@ -35,7 +35,7 @@ import * as projectiles from ${module("projectile/query")};
 import * as projectileOperations from ${module("battle/projectile")};
 import type { Definition as ProjectileDefinition } from ${module("projectile/definition")};
 import { reassign, selectContext, setTicking, type Plan, type Route } from ${module("unit/capability/route/index")};
-import * as mechanisms from ${module("battle/mechanism")};
+import * as mechanisms from ${module("mechanism/index")};
 import { createPredefinedDefinition } from ${module("battle/steps/predefined")};
 import * as actionCapability from ${module("unit/capability/action/index")};
 import { createRegistrationOperations } from ${module("unit/registration")};

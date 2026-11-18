@@ -2,7 +2,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { Hooks } from "../../dist/core/hook.js";
-import * as mechanisms from "../../dist/core/battle/mechanism.js";
+import * as mechanisms from "../../dist/core/mechanism/index.js";
 import { remove as removeUnit } from "../../dist/core/battle/unit.js";
 import { battle as runtimeBattle, get } from "../helpers/battle.js";
 import { ref } from "../../dist/core/unit/query.js";

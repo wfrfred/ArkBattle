@@ -1,10 +1,10 @@
+import { assertNonnegativeSafeInteger } from "../common/assert.js";
 import type { Identified, Ref } from "../common/ref.js";
 import { create as createLifetime } from "../lifetime/operations.js";
 import type { Query } from "../common/query.js";
 import type { Departure } from "../unit/unit.js";
-import { instantiateMechanismPlacement } from "./creation/mechanism.js";
-import type { Result, State as BattleState } from "./state.js";
-import { removeHook, leave } from "./unit-hook.js";
+import type { Result, State as BattleState } from "../battle/state.js";
+import { setHook, removeHook, leave } from "../battle/unit-hook.js";
 
 export type MechanismId = number;
 
@@ -21,6 +21,11 @@ export interface MechanismDefinition<S extends object = object> {
     ) => BattleState;
     readonly onDisable?: (battle: BattleState, self: Mechanism<S>) => BattleState;
     readonly onEnd?: (battle: BattleState, self: Mechanism<S>) => BattleState;
+}
+
+export interface MechanismPlacementDefinition<S extends object = object> {
+    readonly definition: MechanismDefinition<S>;
+    readonly active?: boolean;
 }
 
 export interface Mechanism<S extends object = object> extends Identified<{
@@ -51,7 +56,42 @@ export function create<S extends object>(
     definition: MechanismDefinition<S>,
     options: { readonly active?: boolean } = {},
 ): Result<Ref<Mechanism<S>>> {
-    return instantiateMechanismPlacement(battle, { definition, ...options });
+    const id = battle.execution.nextMechanismId;
+    assertNonnegativeSafeInteger(id, "mechanism id");
+    const nextMechanismId = id + 1;
+    if (!Number.isSafeInteger(nextMechanismId)) {
+        throw new RangeError("mechanism identity overflow");
+    }
+
+    const created = battle.mechanisms.create(id, definition, options.active ?? true);
+    battle = {
+        ...battle,
+        mechanisms: created.mechanisms,
+        execution: { ...battle.execution, nextMechanismId },
+    };
+    const self = created.mechanisms.get(created.reference)!;
+    if (self.definition.onUnitLeave !== undefined) {
+        const reference = created.reference;
+        battle = setHook(battle, leave, {
+            id: `@mechanism/${id}/unit-leave`,
+            invoke: (current, departure) => {
+                const mechanism = current.mechanisms.get(reference);
+
+                return {
+                    state:
+                        mechanism?.lifecycle === "ACTIVE"
+                            ? mechanism.definition.onUnitLeave!(current, mechanism, departure)
+                            : current,
+                    value: undefined,
+                };
+            },
+        });
+    }
+
+    return {
+        state: battle,
+        value: created.reference,
+    };
 }
 
 export function get<M extends Mechanism<any>>(

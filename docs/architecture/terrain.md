@@ -14,7 +14,7 @@ siteCondition 是单个条件身份或 null，null 不等于普通场地条件�
 
 ## Mechanism 操作
 
-Mechanism 是全场独立身份，具体 Definition 配对初始化和私有 state；setState 只改私有数据。setActive 可逆切换参与资格，remove 不可逆结束。INACTIVE 仍存在且可作依赖，ACTIVE remove 的 Prepare 以 ENDING 调用 onDisable，INACTIVE 不重复停用；Finalize 再 onEnd、注销。
+Mechanism 是全场独立身份，其[领域模块](../../src/core/mechanism/index.ts)拥有模型、容器、创建与生命周期；Battle 保存容器并安排推进。具体 Definition 配对初始化和私有 state；setState 只改私有数据。setActive 可逆切换参与资格，remove 不可逆结束。INACTIVE 仍存在且可作依赖，ACTIVE remove 的 Prepare 以 ENDING 调用 onDisable，INACTIVE 不重复停用；Finalize 再 onEnd、注销。
 
 嵌套结束与依赖完成统一见 [Lifetime](lifetime.md)，不在地形再实现一套停止协议。
 

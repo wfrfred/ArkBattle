@@ -3,13 +3,13 @@ import type { Definition as UnitDefinition, End, Unit } from "../../unit/unit.js
 import { initialize as initializeUnit, type Input as UnitInput } from "../../unit/initialize.js";
 import { get as getUnit, ref as unitRef } from "../../unit/query.js";
 import {
+    create as createMechanism,
     get as getMechanism,
     remove as removeMechanism,
     type MechanismDefinition,
     type Mechanism,
-} from "../mechanism.js";
+} from "../../mechanism/mechanism.js";
 import type { Ref } from "../../common/ref.js";
-import { instantiateMechanismPlacement } from "../creation/mechanism.js";
 import { add, remove as removeUnit } from "../unit.js";
 import type { State as BattleState } from "../state.js";
 import type { Definitions } from "../../unit/capability/catalog.js";
@@ -107,7 +107,7 @@ export function appear(battle: BattleState, id: PredefinedDefinition["id"]): Bat
         };
         battle = add(battle, unit);
     } else {
-        const initialized = instantiateMechanismPlacement(battle, creation);
+        const initialized = createMechanism(battle, creation.definition);
         battle = {
             ...initialized.state,
             predefinedPresence: [

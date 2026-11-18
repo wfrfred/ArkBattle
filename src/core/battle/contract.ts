@@ -1,6 +1,6 @@
 import type { Seed } from "../common/rng.js";
 import type { Map } from "../battlefield/map/map.js";
-import type { MechanismPlacementDefinition } from "./creation/mechanism.js";
+import type { MechanismPlacementDefinition } from "../mechanism/mechanism.js";
 import type { Definition as ScheduleDefinition } from "./schedule/definition.js";
 import type { Unit } from "../unit/unit.js";
 import type { Input as DeploymentInput } from "./deployment/deployment.js";

@@ -8,7 +8,7 @@ import {
     createPredefinedDefinition,
     type StoredPredefinedDefinition,
 } from "../../core/battle/steps/predefined.js";
-import { createMechanismDefinition } from "../../core/battle/mechanism.js";
+import { createMechanismDefinition } from "../../core/mechanism/index.js";
 import { createTerrainMechanism } from "../../content/terrain/mechanism.js";
 import { mire, deepsea } from "../../content/terrain/definition.js";
 import { create as createCrate } from "../../content/devices/crate.js";

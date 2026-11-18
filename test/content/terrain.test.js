@@ -5,7 +5,7 @@ import { test } from "node:test";
 import { Hooks } from "../../dist/core/hook.js";
 import * as terrain from "../../dist/content/terrain/definition.js";
 import { createTerrainMechanism } from "../../dist/content/terrain/mechanism.js";
-import * as mechanisms from "../../dist/core/battle/mechanism.js";
+import * as mechanisms from "../../dist/core/mechanism/index.js";
 import * as units from "../../dist/core/unit/index.js";
 import * as skills from "../../dist/core/unit/skill/index.js";
 import * as vitality from "../../dist/core/unit/capability/vitality/index.js";

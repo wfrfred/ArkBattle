@@ -1,5 +1,5 @@
 import type { State as BattlefieldState } from "../battlefield/state.js";
-import { Mechanisms } from "./mechanisms.js";
+import { Mechanisms } from "../mechanism/mechanisms.js";
 import * as dependency from "../lifetime/dependency.js";
 import type { State as LifetimeState } from "../lifetime/lifetime.js";
 import { Hooks } from "../hook.js";
