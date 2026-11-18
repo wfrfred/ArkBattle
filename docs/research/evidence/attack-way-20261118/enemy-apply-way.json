@@ -1,0 +1,35 @@
+{
+  "provenance": {
+    "source": {
+      "file": ".cache/native-research/leithanien-enemydata-20261109/enemy_database.json",
+      "revision": "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+      "path": "zh_CN/gamedata/levels/enemydata/enemy_database.json",
+      "sha256": "eb8559db76aecd92c37b3ac038de0e9aeb8b6d6c107adfaeadfe0fbc098e067b",
+      "gitBlobSha1": "62ab806926b9c8ca5c80524730caf0066f6c2c2f",
+      "bytes": 15721552,
+      "url": "https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/63c7cec73c3858d0ae913f85cc89af3cef4d744f/zh_CN/gamedata/levels/enemydata/enemy_database.json"
+    },
+    "scope": "Fixed-revision EnemyDB projection. Original level rows and definition flags."
+  },
+  "result": {
+    "enemyKey": "enemy_1562_cjtaot",
+    "levels": [
+      {
+        "pointer": "/enemies/1465/Value/0/enemyData/applyWay",
+        "level": 0,
+        "applyWay": {
+          "m_defined": true,
+          "m_value": "ALL"
+        }
+      },
+      {
+        "pointer": "/enemies/1465/Value/1/enemyData/applyWay",
+        "level": 1,
+        "applyWay": {
+          "m_defined": false,
+          "m_value": "NONE"
+        }
+      }
+    ]
+  }
+}

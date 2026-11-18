@@ -31,6 +31,7 @@
       }
     },
     "sourceRecords": [
+      "enemy-apply-way.json",
       "equip-parts.json",
       "mode-init.json",
       "prefabs.json",
@@ -49,6 +50,12 @@
   },
   "result": {
     "artifacts": [
+      {
+        "path": "enemy-apply-way.json",
+        "kind": "record",
+        "bytes": 1161,
+        "sha256": "c4eda62009b755200c757980ab65017f9d79c60ff0e3626d1d51a8d76c0f670b"
+      },
       {
         "path": "equip-parts.json",
         "kind": "record",
