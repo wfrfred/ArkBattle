@@ -5,7 +5,7 @@ import { silence, blockSpRecovery } from "../control.js";
 import * as modifier from "../../common/modifier.js";
 import * as effects from "../../unit/effect/operations.js";
 import * as units from "../../unit/query.js";
-import { modify } from "../../unit/skill/sp.js";
+import { modify } from "../../unit/capability/skill/sp.js";
 import {
     hasOffense,
     setAttackContribution,

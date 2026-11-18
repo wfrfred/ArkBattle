@@ -2,7 +2,7 @@ import type {
     Definition as SkillDefinition,
     DurationDefinition,
     Recovery,
-} from "../../core/unit/skill/index.js";
+} from "../../core/unit/capability/skill/index.js";
 import { assertNonnegativeSafeInteger } from "../../core/common/assert.js";
 
 import { parseBlackboard, type ArknightsBlackboardEntry } from "../blackboard.js";

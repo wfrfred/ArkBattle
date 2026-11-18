@@ -1,6 +1,6 @@
 # Blocking 设计
 
-Blocking 拥有双端关系、取得／解除、资格维护、容量裁撤与取得站位。Blockable 拥有自己的位置修正计划。关系操作见 [battle/blocking](../../src/core/blocking/index.ts)，能力配置、Change 和通知 Key 见 [capability/blocking](../../src/core/unit/capability/blocking/index.ts)。
+Blocking 拥有双端关系、取得／解除、资格维护、容量裁撤与取得站位。Blockable 拥有自己的位置修正计划。关系操作见 [battle/blocking](../../src/core/battle/blocking/index.ts)，能力配置、Change 和通知 Key 见 [capability/blocking](../../src/core/unit/capability/blocking/index.ts)。
 
 ## 关键语义
 

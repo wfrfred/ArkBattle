@@ -1,4 +1,4 @@
-import { calculateDamage, applyDamage } from "../../dist/core/resource/hp/damage/index.js";
+import { calculateDamage, applyDamage } from "../../dist/core/battle/resource/hp/damage/index.js";
 
 export function parameters(power, type = "PHYSICAL", penetration = { fixed: 0, proportional: 0 }) {
     const attack = { power, multiplier: 1, addition: 0 };

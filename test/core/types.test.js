@@ -15,21 +15,21 @@ import { Hooks, key, type Hook } from ${module("hook")};
 import { initialize, ref, get, all as allUnits, compose, optional, setHook as setUnitHook, removeHook as removeUnitHook, type Unit, type Input as UnitInput, type Change } from ${module("unit/index")};
 import { prepare as unitPrepare } from ${module("unit/hook")};
 import { update, remove as removeUnit } from ${module("unit/operations")};
-import * as actions from ${module("unit/action/index")};
+import * as actions from ${module("unit/capability/action/index")};
 import * as effects from ${module("unit/effect/index")};
-import * as hpDamage from ${module("resource/hp/damage/index")};
-import * as resource from ${module("resource/index")};
+import * as hpDamage from ${module("battle/resource/hp/damage/index")};
+import * as resource from ${module("battle/resource/index")};
 import { createWithState as createAttackWithState, type Operation as AttackOperation } from ${module("../content/actions/attack")};
 import * as vitality from ${module("unit/capability/vitality/index")};
 import * as elemental from ${module("unit/capability/elemental/index")};
 import * as facing from ${module("unit/capability/facing/index")};
-import * as skills from ${module("unit/skill/index")};
-import { hasSkill, spRecovered, type Skill as SkillCapability, type RecoveryRestriction } from ${module("unit/capability/skill/index")};
+import * as skills from ${module("unit/capability/skill/index")};
+import { hasSkill, spRecovered, type SkillCapability, type RecoveryRestriction } from ${module("unit/capability/skill/index")};
 import { hasPresence, disappear } from ${module("unit/capability/presence/index")};
 import { dispatch as dispatchElemental } from ${module("unit/capability/elemental/hook")};
 import * as runtime from ${module("battle/runtime")};
 import type { Input as BattleInput, Command } from ${module("battle/contract")};
-import type { Card, UnitDefinition as CardDefinition } from ${module("deployment/card/card")};
+import type { Card, UnitDefinition as CardDefinition } from ${module("battle/deployment/card/card")};
 import type { Projectile } from ${module("projectile/projectile")};
 import * as projectiles from ${module("projectile/query")};
 import * as projectileOperations from ${module("projectile/operations")};
@@ -37,17 +37,16 @@ import type { Definition as ProjectileDefinition } from ${module("projectile/def
 import { reassign, selectContext, setTicking, type Plan, type Route } from ${module("unit/capability/route/index")};
 import * as mechanisms from ${module("mechanism/index")};
 import { createPredefinedDefinition } from ${module("battle/predefined")};
-import * as actionCapability from ${module("unit/capability/action/index")};
 import { createRegistrationOperations } from ${module("unit/registration")};
 import type { Offense } from ${module("unit/capability/offense/index")};
 import { setAttackContribution, resolveAttack } from ${module("unit/capability/offense/index")};
 import type { Blocker, Blockable, Relation, Hook as BlockingHook } from ${module("unit/capability/blocking/index")};
-import * as blocking from ${module("blocking/index")};
-import * as targeting from ${module("targeting/index")};
+import * as blocking from ${module("battle/blocking/index")};
+import * as targeting from ${module("battle/targeting/index")};
 import * as classification from ${module("unit/capability/classification/index")};
 import { hasTargetable } from ${module("unit/capability/targetable/capability")};
 import { topK } from ${module("common/collection/order")};
-import type { Spawn } from ${module("schedule/index")};
+import type { Spawn } from ${module("battle/schedule/index")};
 declare const battle: State;
 const attribute = (value: number, min: number | null = 0, max: number | null = null) => ({ default: value, min, max });
 const outputKey = key<Hook<{ amount: number }, number>>('output');
@@ -219,11 +218,11 @@ removeUnit(battle, reference, { reason: 'DEATH' });
 // @ts-expect-error other departure reasons do not carry death attribution.
 removeUnit(battle, reference, { reason: 'SCRIPT', killer: null });
 const currentAction = host.action.actions.get(program.id, program)!;
-const currentPeriod: number = actionCapability.resolvePeriod(host, currentAction.definition);
-actionCapability.setSpeedContribution({ id: 'fixed-speed', value: [] });
-const dynamicModifiers = (_state: State, _self: Unit & actionCapability.Action) => [];
+const currentPeriod: number = actions.resolvePeriod(host, currentAction.definition);
+actions.setSpeedContribution({ id: 'fixed-speed', value: [] });
+const dynamicModifiers = (_state: State, _self: Unit & actions.ActionCapability) => [];
 // @ts-expect-error Action time contributions publish fixed values through a Change.
-actionCapability.setSpeedContribution({ id: 'dynamic-speed', value: dynamicModifiers });
+actions.setSpeedContribution({ id: 'dynamic-speed', value: dynamicModifiers });
 const persistent = actions.ref(reference, program);
 const uses: number = actions.getAction(battle, persistent)!.state.uses;
 actions.setState(battle, persistent, { uses: uses + 1 });
@@ -454,32 +453,32 @@ actions.cancelForUnit(battle, ref(bare), 'SOURCE_ABSENT');
 // @ts-expect-error the host has not established the required capability.
 effects.install(battle, ref(bare), shield);
 const change: Change<Unit & Offense> = setAttackContribution({ id: 'bonus', value: [] });
-const actionChange = actionCapability.setRestriction({ id: 'ready', value: { allows: () => true } });
-const optionalAction: Change<Unit> = optional(actionCapability.hasAction, actionChange);
+const actionChange = actions.setRestriction({ id: 'ready', value: { allows: () => true } });
+const optionalAction: Change<Unit> = optional(actions.hasAction, actionChange);
 const optionalPresence: Change<Unit> = optional(hasPresence, disappear());
 update(battle, ref(bare), optionalAction);
 const optionalResult = optionalAction(host);
 const optionalHost: typeof host = optionalResult.next;
 const optionalLayer: 'GROUND' | 'AIR' = optionalResult.next.layer.type;
 const combined = compose(change, actionChange);
-const intersection: Change<Unit & Offense & actionCapability.Action> = combined;
+const intersection: Change<Unit & Offense & actions.ActionCapability> = combined;
 const applied = combined(host);
 const completeHost: typeof host = applied.next;
 const extraLayer: 'GROUND' | 'AIR' = applied.next.layer.type;
 update(battle, reference, combined);
 declare const offenseOnly: Ref<Unit & Offense>;
-declare const actionOnly: Ref<Unit & actionCapability.Action>;
+declare const actionOnly: Ref<Unit & actions.ActionCapability>;
 // @ts-expect-error the composed Action requirement cannot be supplied by an Offense-only Ref.
 update(battle, offenseOnly, combined);
 // @ts-expect-error the composed Offense requirement cannot be supplied by an Action-only Ref.
 update(battle, actionOnly, combined);
 declare const skillChange: Change<Unit & SkillCapability>;
 // @ts-expect-error an Action guard does not establish Skill.
-optional(actionCapability.hasAction, skillChange);
+optional(actions.hasAction, skillChange);
 // @ts-expect-error requiring Skill cannot be weakened into requiring only Action.
-const wrongRequirement: Change<Unit & actionCapability.Action> = skillChange;
+const wrongRequirement: Change<Unit & actions.ActionCapability> = skillChange;
 const general: Change<Unit> = self => ({ next: self, settlements: [] });
-const usableWithAction: Change<Unit & actionCapability.Action> = general;
+const usableWithAction: Change<Unit & actions.ActionCapability> = general;
 const attack: number = resolveAttack(battle, host);
 // @ts-expect-error value computation requires the relevant capability.
 resolveAttack(battle, bare);
@@ -551,46 +550,46 @@ if (skills.hasSp(skillHost)) {
     const speed: number = skills.resolveRecoverySpeed(battle, skillHost);
     const multiplier: number = skills.resolveRecoveryMultiplier(battle, skillHost);
 }
-const actionHost = allUnits(battle).find(actionCapability.hasAction)!;
-const foundAction: actionCapability.Action = actionHost;
+const actionHost = allUnits(battle).find(actions.hasAction)!;
+const foundAction: actions.ActionCapability = actionHost;
 const ordinaryPredicate: (self: Unit) => boolean = self => self.id > 0;
 // @ts-expect-error an ordinary predicate does not establish a capability proof.
 allUnits(battle).filter(ordinaryPredicate).find(() => true)!.action;
-for (const self of allUnits(battle).filter(actionCapability.hasAction).filter(hasSkill).filter(skills.hasSp)) {
-    const action: actionCapability.Action = self;
+for (const self of allUnits(battle).filter(actions.hasAction).filter(hasSkill).filter(skills.hasSp)) {
+    const action: actions.ActionCapability = self;
     const speed: number = skills.resolveRecoverySpeed(battle, self);
 }
-const selectableActions = allUnits(battle).filter(actionCapability.hasAction).filter(hasTargetable);
-for (const self of allUnits(battle).filter(actionCapability.hasAction).filter(classification.hasClassification)) {
-    const preservedClassifiedAction: actionCapability.Action = self;
+const selectableActions = allUnits(battle).filter(actions.hasAction).filter(hasTargetable);
+for (const self of allUnits(battle).filter(actions.hasAction).filter(classification.hasClassification)) {
+    const preservedClassifiedAction: actions.ActionCapability = self;
     const establishedClassification: classification.Classification = self;
     if (classification.isType(self, 'OPERATOR')) {
-        const preservedOperatorAction: actionCapability.Action = self;
+        const preservedOperatorAction: actions.ActionCapability = self;
         const establishedOperator: classification.Classification<'OPERATOR'> = self;
         const profession: classification.Profession = self.definition.classification.profession;
         const groupTags: readonly string[] = self.definition.classification.groupTags;
     }
     if (classification.isType(self, 'OPERATOR') && classification.matchesProfession(self, ['CASTER'], true)) {
-        const preservedProfessionAction: actionCapability.Action = self;
+        const preservedProfessionAction: actions.ActionCapability = self;
         const establishedOperator: classification.Classification<'OPERATOR'> = self;
         const profession: classification.Profession = self.definition.classification.profession;
         // @ts-expect-error operator classification does not establish an enemy rank.
         self.definition.classification.rank;
     }
     if (classification.isType(self, 'SUMMON') && classification.matchesSubProfession(self, ['EXECUTOR'])) {
-        const preservedSubProfessionAction: actionCapability.Action = self;
+        const preservedSubProfessionAction: actions.ActionCapability = self;
         const establishedSummon: classification.Classification<'SUMMON'> = self;
         const subProfession: classification.SubProfession | null = self.definition.classification.subProfession;
         // @ts-expect-error a summon does not carry an operator profession.
         self.definition.classification.profession;
     }
     if (classification.isType(self, 'DEVICE') && classification.hasGroupTag(self, 'rhodes')) {
-        const preservedGroupAction: actionCapability.Action = self;
+        const preservedGroupAction: actions.ActionCapability = self;
         const groupTags: readonly string[] = self.definition.classification.groupTags;
         const filterTags: readonly string[] = self.definition.classification.filterTags;
     }
     if (classification.isType(self, 'ENEMY') && classification.matchesRank(self, ['ELITE'])) {
-        const preservedRankAction: actionCapability.Action = self;
+        const preservedRankAction: actions.ActionCapability = self;
         const establishedEnemy: classification.Classification<'ENEMY'> = self;
         const rank: classification.Rank = self.definition.classification.rank;
         const filterTags: readonly string[] = self.definition.classification.filterTags;
@@ -617,11 +616,11 @@ const damagedCandidates = selectableActions.filter(targeting.damage(battle, targ
 const nearestPatient = topK(damagedCandidates, 1, targeting.hpRatio)[0]!;
 const patientAlive: boolean = vitality.isAlive(nearestPatient);
 const patientHpRatio: number = vitality.hpRatio(nearestPatient);
-const preservedAction: actionCapability.Action = nearestPatient;
+const preservedAction: actions.ActionCapability = nearestPatient;
 const establishedVitality: vitality.Vitality = nearestPatient;
 const establishedClassification: classification.Classification = nearestPatient;
 for (const self of selectableActions.filter(targeting.elementHealing(battle, targetingSource))) {
-    const preservedAction: actionCapability.Action = self;
+    const preservedAction: actions.ActionCapability = self;
     const establishedElemental: elemental.Elemental = self;
     const establishedClassification: classification.Classification = self;
 }
@@ -724,7 +723,7 @@ setUnitHook(hpDamage.receiving, {
         return { state, value: hpDamage.cancel(pending, 'MISS', context.forbidden) };
     },
 });
-setUnitHook(actionCapability.beforeRelease, {
+setUnitHook(actions.beforeRelease, {
     id: 'interrupt',
     invoke: (state, context) => {
         const source: Ref<Unit> = context.source;

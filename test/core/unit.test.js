@@ -6,10 +6,10 @@ import { battle } from "../helpers/battle.js";
 import { Hooks, dispatch } from "../../dist/core/hook.js";
 import * as units from "../../dist/core/unit/index.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
-import * as skills from "../../dist/core/unit/skill/index.js";
-import * as hpDamage from "../../dist/core/resource/hp/damage/index.js";
+import * as skills from "../../dist/core/unit/capability/skill/index.js";
+import * as hpDamage from "../../dist/core/battle/resource/hp/damage/index.js";
 import { add, update, remove } from "../../dist/core/unit/operations.js";
-import { output as damageOutput } from "../../dist/core/resource/hp/damage/index.js";
+import { output as damageOutput } from "../../dist/core/battle/resource/hp/damage/index.js";
 import { hasOccupancy } from "../../dist/core/unit/capability/occupancy/index.js";
 
 test("Unit construction rejects conflicting roles and installs entry effects on the registered host", () => {

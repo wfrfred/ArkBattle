@@ -20,7 +20,7 @@ export type { Health } from "./health.js";
 
 export type { Restriction } from "./restriction.js";
 
-export type { ReceivingContext as RestrictionContext } from "../../../resource/hp/damage/hook.js";
+export type { ReceivingContext as RestrictionContext } from "../../../battle/resource/hp/damage/hook.js";
 
 export { damageCommitting, damageCommitted } from "./hook.js";
 

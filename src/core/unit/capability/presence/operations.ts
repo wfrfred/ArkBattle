@@ -2,7 +2,7 @@ import type { WorldPosition } from "../../../geometry/coordinate.js";
 import type { Unit } from "../../unit.js";
 import * as units from "../../query.js";
 import { compose, createChange, optional, type Change } from "../../change.js";
-import { cancelForUnit } from "../../action/operations.js";
+import { cancelForUnit } from "../action/operations.js";
 import * as action from "../action/capability.js";
 import * as skill from "../skill/capability.js";
 import * as locomotion from "../locomotion/capability.js";

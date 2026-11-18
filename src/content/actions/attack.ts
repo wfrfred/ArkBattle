@@ -12,18 +12,16 @@ import type { Unit } from "../../core/unit/index.js";
 import {
     ref,
     executionRef,
-    type Action,
-    type Execution,
-    type Definition as ActionDefinition,
-    type Period,
-} from "../../core/unit/action/index.js";
-import * as actions from "../../core/unit/action/index.js";
-import {
-    type Action as ActionCapability,
     resolveAttackPeriod,
     dispatchBeforeRelease,
     dispatchReleased,
+    type Action,
+    type ActionCapability,
+    type Execution,
+    type Definition as ActionDefinition,
+    type Period,
 } from "../../core/unit/capability/action/index.js";
+import * as actions from "../../core/unit/capability/action/index.js";
 import * as timing from "./timing.js";
 import type { Timing, Sample as TimingSample } from "./timing.js";
 
@@ -37,21 +35,21 @@ import {
     type DamageType,
     type AttackType,
     type ApplyWay,
-} from "../../core/resource/hp/damage/index.js";
+} from "../../core/battle/resource/hp/damage/index.js";
 
 import { hasVitality } from "../../core/unit/capability/vitality/index.js";
 import {
     calculateHealing,
     applyHealing,
     type Request as HealingRequest,
-} from "../../core/resource/hp/healing/index.js";
+} from "../../core/battle/resource/hp/healing/index.js";
 
 import {
     hasElemental,
     type Type as ElementType,
 } from "../../core/unit/capability/elemental/index.js";
-import * as epDamage from "../../core/resource/ep/damage/index.js";
-import * as epHealing from "../../core/resource/ep/healing/index.js";
+import * as epDamage from "../../core/battle/resource/ep/damage/index.js";
+import * as epHealing from "../../core/battle/resource/ep/healing/index.js";
 
 export type Operation =
     | {

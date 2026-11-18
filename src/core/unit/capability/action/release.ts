@@ -1,6 +1,6 @@
 import type { Ref } from "../../../common/ref.js";
 import type { State as BattleState, Result } from "../../../battle/state.js";
-import type { Execution } from "../../action/execution.js";
+import type { Execution } from "./execution.js";
 import type { Unit } from "../../unit.js";
 import * as units from "../../query.js";
 import * as hook from "../../../hook.js";

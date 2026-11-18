@@ -1,6 +1,6 @@
-import { activate, advance, operate } from "../../unit/skill/operations.js";
-import { ref as activationRef, type Activation } from "../../unit/skill/activation.js";
-import { ref as skillRef } from "../../unit/skill/skill.js";
+import { activate, advance, operate } from "../../unit/capability/skill/operations.js";
+import { ref as activationRef, type Activation } from "../../unit/capability/skill/activation.js";
+import { ref as skillRef } from "../../unit/capability/skill/skill.js";
 import type { Identified } from "../../common/ref.js";
 import { hasSkill } from "../../unit/capability/skill/capability.js";
 import * as units from "../../unit/query.js";

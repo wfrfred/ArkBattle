@@ -1,6 +1,6 @@
 # Skill 设计
 
-Skill 管理 SP、发动、持续预算、主动操作与完整终止。Action 管理行动程序，Effect 管理附着影响；具体内容组合它们，不由 Skill 推断攻击内容。领域入口为 [unit/skill](../../src/core/unit/skill/index.ts)，能力装配与限制入口为 [capability/skill](../../src/core/unit/capability/skill/index.ts)。
+Skill 管理 SP、发动、持续预算、主动操作与完整终止。Action 管理行动程序，Effect 管理附着影响；具体内容组合它们，不由 Skill 推断攻击内容。领域入口见 [unit/capability/skill](../../src/core/unit/capability/skill/index.ts)。
 
 ## 关键语义
 
@@ -12,7 +12,7 @@ Skill 管理 SP、发动、持续预算、主动操作与完整终止。Action �
 
 ## 模块与入口
 
-`unit/skill/` 拥有聚合、身份、SP／Ammo、持续预算与完整操作；Capability 负责装配、结构守卫、贡献、限制和通知 Key。具体声明以源码为准，登记和写回遵守[接口约定](api-conventions.md)。
+`unit/capability/skill/` 集中装配、贡献、限制和通知，以及技能聚合、SP、弹药和 Activation 的完整操作。公共入口用 `SkillCapability` 表示宿主能力，用 `Skill` 表示技能聚合。登记和写回遵守[接口约定](api-conventions.md)。
 
 SP 可以不存在；hasSp 同时证明配置与状态存在。SP Definition 保存初始值、容量、回复来源及回复速度／倍率两项 Attribute；Activation Definition 保存静态发动门槛、支付额和本轮初始化程序。SP 余额和容量不是 Attribute；弹药容量使用自己的贡献模型。
 

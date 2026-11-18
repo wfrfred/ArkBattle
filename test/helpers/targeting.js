@@ -1,4 +1,4 @@
-import * as targeting from "../../dist/core/targeting/index.js";
+import * as targeting from "../../dist/core/battle/targeting/index.js";
 import * as units from "../../dist/core/unit/query.js";
 import { hasTargetable } from "../../dist/core/unit/capability/targetable/capability.js";
 import { hasLayer } from "../../dist/core/unit/capability/layer/index.js";

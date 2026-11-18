@@ -8,13 +8,13 @@ import * as units from "../../dist/core/unit/index.js";
 import { update, remove } from "../../dist/core/unit/operations.js";
 import { step } from "../../dist/core/battle/runtime.js";
 import { TICKS_PER_SECOND } from "../../dist/core/tick.js";
-import * as hpDamage from "../../dist/core/resource/hp/damage/index.js";
-import * as hpHealing from "../../dist/core/resource/hp/healing/index.js";
+import * as hpDamage from "../../dist/core/battle/resource/hp/damage/index.js";
+import * as hpHealing from "../../dist/core/battle/resource/hp/healing/index.js";
 import * as vitality from "../../dist/core/unit/capability/vitality/index.js";
 import * as modifier from "../../dist/core/common/modifier.js";
 import * as presence from "../../dist/core/unit/capability/presence/index.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
-import * as actions from "../../dist/core/unit/action/index.js";
+import * as actions from "../../dist/core/unit/capability/action/index.js";
 import { healFree } from "../../dist/core/effects/protection.js";
 
 const damageRequest = (source, target, power) => ({

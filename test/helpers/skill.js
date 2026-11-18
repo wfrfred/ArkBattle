@@ -1,4 +1,4 @@
-import { ref as skillRef } from "../../dist/core/unit/skill/index.js";
+import { ref as skillRef } from "../../dist/core/unit/capability/skill/index.js";
 import { ref as unitRef } from "../../dist/core/unit/index.js";
 import { attribute } from "./attribute.js";
 

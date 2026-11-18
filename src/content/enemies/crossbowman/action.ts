@@ -3,7 +3,7 @@ import {
     calculateDamage,
     applyDamage,
     type Request as DamageRequest,
-} from "../../../core/resource/hp/damage/index.js";
+} from "../../../core/battle/resource/hp/damage/index.js";
 
 import * as units from "../../../core/unit/index.js";
 import type { Timing as AttackTiming } from "../../actions/timing.js";
@@ -19,7 +19,7 @@ import * as tracking from "../../projectiles/tracking.js";
 import { hasOffense, resolveAttack } from "../../../core/unit/capability/offense/index.js";
 
 import { hasVitality } from "../../../core/unit/capability/vitality/index.js";
-import * as targeting from "../../../core/targeting/index.js";
+import * as targeting from "../../../core/battle/targeting/index.js";
 import { hasBlockable } from "../../../core/unit/capability/blocking/index.js";
 import { hasTargetable } from "../../../core/unit/capability/targetable/capability.js";
 import { hasClassification } from "../../../core/unit/capability/classification/index.js";

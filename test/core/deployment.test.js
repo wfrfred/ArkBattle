@@ -5,12 +5,12 @@ import * as unitLifecycle from "../../dist/core/unit/hook.js";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { battle, get } from "../helpers/battle.js";
-import * as deployment from "../../dist/core/deployment/index.js";
-import * as cards from "../../dist/core/deployment/card/index.js";
+import * as deployment from "../../dist/core/battle/deployment/index.js";
+import * as cards from "../../dist/core/battle/deployment/card/index.js";
 import * as units from "../../dist/core/unit/query.js";
-import * as damage from "../../dist/core/resource/hp/damage/index.js";
+import * as damage from "../../dist/core/battle/resource/hp/damage/index.js";
 import * as modifier from "../../dist/core/common/modifier.js";
-import * as actions from "../../dist/core/unit/action/index.js";
+import * as actions from "../../dist/core/unit/capability/action/index.js";
 
 const operator = {
     id: "operator",

@@ -1,5 +1,5 @@
-import * as blocking from "../../../blocking/operations.js";
-import { relations } from "../../../blocking/query.js";
+import * as blocking from "../../../battle/blocking/operations.js";
+import { relations } from "../../../battle/blocking/query.js";
 import * as entries from "../../../common/collection/entries.js";
 import type * as contribution from "../../../common/contribution.js";
 import { createChange, type Change } from "../../change.js";

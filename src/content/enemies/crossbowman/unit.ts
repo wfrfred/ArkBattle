@@ -9,7 +9,7 @@ import {
     create as createAction,
     createActions,
     isCasting,
-} from "../../../core/unit/action/index.js";
+} from "../../../core/unit/capability/action/index.js";
 
 import { hasBlockable } from "../../../core/unit/capability/blocking/index.js";
 import {

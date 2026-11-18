@@ -20,7 +20,7 @@ Deployment 完成部署资格、消费、实例创建与通知；Card 保存跨�
 | 库存、费用阶段、时钟、私有 state 和部署历史 | Card |
 | 本次 Card／COST／额度／退款与撤退限制 | Deployable |
 
-各领域通过自身操作维护状态，不借通用 Unit 更新推断账务。具体声明见 [deployment/index.ts](../../src/core/deployment/index.ts)。
+各领域通过自身操作维护状态，不借通用 Unit 更新推断账务。具体声明见 [deployment/index.ts](../../src/core/battle/deployment/index.ts)。
 
 ## 静态内容与 Card
 

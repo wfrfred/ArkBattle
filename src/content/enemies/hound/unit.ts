@@ -6,7 +6,10 @@ import type {
     Definitions as CapabilityDefinitions,
     Product,
 } from "../../../core/unit/capability/catalog.js";
-import { create as createAction, createActions } from "../../../core/unit/action/index.js";
+import {
+    create as createAction,
+    createActions,
+} from "../../../core/unit/capability/action/index.js";
 import {
     createDefinition as createGroundDefinition,
     type Definition as GroundDefinition,

@@ -1,0 +1,36 @@
+import type { Ref } from "../../../common/ref.js";
+import type { State as BattleState, Result } from "../../../battle/state.js";
+import type { Unit } from "../../unit.js";
+import type { Action as ActionCapability } from "./capability.js";
+import type { Action } from "./action.js";
+import type { Execution } from "./execution.js";
+
+export type Id = string;
+
+export type Period =
+    { readonly type: "ATTACK_SPEED" } | { readonly type: "FIXED"; readonly ticks: number };
+
+export type End =
+    { readonly type: "FINISHED" } | { readonly type: "CANCELLED"; readonly reason: string };
+
+export interface Definition<P extends object = object, E extends object = object> {
+    readonly id: Id;
+    readonly period: Period;
+    readonly initialize: (battle: BattleState) => Result<P>;
+    readonly prepare: (
+        battle: BattleState,
+        source: Ref<Unit & ActionCapability>,
+        self: Action<P, E>,
+    ) => Result<E | null>;
+    readonly onTick: (
+        battle: BattleState,
+        source: Ref<Unit & ActionCapability>,
+        self: Execution<P, E>,
+    ) => Result<boolean>;
+    readonly onEnd?: (
+        battle: BattleState,
+        source: Ref<Unit & ActionCapability>,
+        self: Execution<P, E>,
+        end: End,
+    ) => BattleState;
+}

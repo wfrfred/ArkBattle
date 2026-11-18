@@ -16,7 +16,7 @@ import type {
     ActivationRestriction,
     RecoveryRestriction,
 } from "../unit/capability/skill/restriction.js";
-import { cancelForUnit } from "../unit/action/operations.js";
+import { cancelForUnit } from "../unit/capability/action/operations.js";
 import { compose, optional, type Change } from "../unit/change.js";
 import type { Unit } from "../unit/unit.js";
 import * as units from "../unit/query.js";

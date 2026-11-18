@@ -14,17 +14,17 @@ import { create as createAttack } from "../../../dist/content/actions/attack.js"
 import { actionCapability } from "../../helpers/actions.js";
 import { ref as unitRef } from "../../../dist/core/unit/index.js";
 import { ref as skillRef, definition as createSkillDefinition } from "../../helpers/skill.js";
-import { create as createSkill, activate as activateSkill, advance as advanceSkill, finish as finishSkill } from "../../../dist/core/unit/skill/index.js";
-import { recover } from "../../../dist/core/unit/skill/sp.js";
+import { create as createSkill, activate as activateSkill, advance as advanceSkill, finish as finishSkill } from "../../../dist/core/unit/capability/skill/index.js";
+import { recover } from "../../../dist/core/unit/capability/skill/sp.js";
 import { resolveAttack } from "../../../dist/core/unit/capability/offense/index.js";
 import { create as modifier } from "../../../dist/core/common/modifier.js";
 import * as elemental from "../../../dist/core/unit/capability/elemental/index.js";
 import { elementValues, setContribution } from "../../../dist/core/unit/capability/elemental/index.js";
 import { createArknightsElementalDefinition } from "../../../dist/data/effect/elemental.js";
 import { stun } from "../../../dist/core/effects/control.js";
-import * as epDamage from "../../../dist/core/resource/ep/damage/index.js";
-import * as hpDamage from "../../../dist/core/resource/hp/damage/index.js";
-import * as actions from "../../../dist/core/unit/action/index.js";
+import * as epDamage from "../../../dist/core/battle/resource/ep/damage/index.js";
+import * as hpDamage from "../../../dist/core/battle/resource/hp/damage/index.js";
+import * as actions from "../../../dist/core/unit/capability/action/index.js";
 import { dispatchReleased } from "../../../dist/core/unit/capability/action/release.js";
 import { resolveSpeed } from "../../../dist/core/unit/capability/action/timing.js";
 

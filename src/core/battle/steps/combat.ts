@@ -1,6 +1,6 @@
-import * as actions from "../../unit/action/operations.js";
-import { forUnit } from "../../unit/action/query.js";
-import { ref as actionRef } from "../../unit/action/action.js";
+import * as actions from "../../unit/capability/action/operations.js";
+import { forUnit } from "../../unit/capability/action/query.js";
+import { ref as actionRef } from "../../unit/capability/action/action.js";
 import * as units from "../../unit/query.js";
 import { hasAction } from "../../unit/capability/action/capability.js";
 import * as presence from "../../unit/capability/presence/capability.js";

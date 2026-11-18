@@ -7,7 +7,7 @@ import { all, get, ref } from "../../dist/core/unit/query.js";
 import { remove } from "../../dist/core/unit/operations.js";
 import * as predefined from "../../dist/core/battle/predefined.js";
 import { step } from "../../dist/core/battle/runtime.js";
-import { isCompleted, timing, triggerBranch, releaseFromWave } from "../../dist/core/schedule/index.js";
+import { isCompleted, timing, triggerBranch, releaseFromWave } from "../../dist/core/battle/schedule/index.js";
 import { battle, get as getUnit } from "../helpers/battle.js";
 
 const plan = {

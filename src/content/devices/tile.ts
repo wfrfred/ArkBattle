@@ -12,8 +12,8 @@ import type { Definition as OccupancyDefinition } from "../../core/unit/capabili
 import type { Definition as VitalityDefinition } from "../../core/unit/capability/vitality/index.js";
 import type { Definition as UnitDefinition } from "../../core/unit/index.js";
 import type { Definition as ClassificationDefinition } from "../../core/unit/capability/classification/index.js";
-import type { Definition as CardDefinition } from "../../core/deployment/card/index.js";
-import type { Restriction as DeploymentRestriction } from "../../core/deployment/index.js";
+import type { Definition as CardDefinition } from "../../core/battle/deployment/card/index.js";
+import type { Restriction as DeploymentRestriction } from "../../core/battle/deployment/index.js";
 import { hole } from "../terrain/definition.js";
 
 export interface Definition extends UnitDefinition {

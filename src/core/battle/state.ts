@@ -12,15 +12,12 @@ import type { Id as UnitId } from "../unit/unit.js";
 import type { MechanismId } from "../mechanism/index.js";
 import type { Id as OverlayId } from "../battlefield/navigation/overlay.js";
 import type { PredefinedPresence } from "./predefined.js";
-import {
-    initialize as initializeSchedule,
-    type State as ScheduleState,
-} from "../schedule/state.js";
-import { leaveHook as scheduleLeaveHook } from "../schedule/runtime.js";
+import { initialize as initializeSchedule, type State as ScheduleState } from "./schedule/state.js";
+import { leaveHook as scheduleLeaveHook } from "./schedule/runtime.js";
 import {
     initialize as initializeDeployment,
     type State as DeploymentState,
-} from "../deployment/deployment.js";
+} from "./deployment/deployment.js";
 
 export interface BattleExecutionState {
     readonly rngState: Seed;

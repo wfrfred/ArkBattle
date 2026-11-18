@@ -1,4 +1,4 @@
-import type { Context as DamageContext } from "../../../resource/hp/damage/hook.js";
+import type { Context as DamageContext } from "../../../battle/resource/hp/damage/hook.js";
 import { key, type Hook } from "../../../hook.js";
 import type { Unit } from "../../unit.js";
 import type { Vitality } from "./capability.js";

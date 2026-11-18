@@ -6,9 +6,9 @@ import { Hooks } from "../../dist/core/hook.js";
 import * as units from "../../dist/core/unit/index.js";
 import { step } from "../../dist/core/battle/runtime.js";
 import * as predefined from "../../dist/core/battle/predefined.js";
-import { dp } from "../../dist/core/deployment/index.js";
-import * as cards from "../../dist/core/deployment/card/index.js";
-import * as skills from "../../dist/core/unit/skill/index.js";
+import { dp } from "../../dist/core/battle/deployment/index.js";
+import * as cards from "../../dist/core/battle/deployment/card/index.js";
+import * as skills from "../../dist/core/unit/capability/skill/index.js";
 
 const account = {
     initialDp: 20,

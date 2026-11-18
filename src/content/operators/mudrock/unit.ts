@@ -16,8 +16,9 @@ import {
     cancel as cancelAction,
     forUnit,
     getExecution,
+    hasAction,
     ref as actionRef,
-} from "../../../core/unit/action/index.js";
+} from "../../../core/unit/capability/action/index.js";
 import type { Attack } from "../../actions/attack.js";
 import type { State as SkillAttackState } from "../../actions/skill.js";
 import {
@@ -27,25 +28,24 @@ import {
     type Unit,
     type Definition as UnitDefinition,
 } from "../../../core/unit/index.js";
-import { blocked } from "../../../core/blocking/index.js";
+import { blocked } from "../../../core/battle/blocking/index.js";
 import { hasBlocker, sides } from "../../../core/unit/capability/blocking/index.js";
 import type { Profile } from "../../../data/unit/operator.js";
 import { secondsToTicks } from "../../../data/time.js";
 import {
     create as createSkill,
+    hasSkill,
     modify,
     type Definition as SkillDefinition,
-} from "../../../core/unit/skill/index.js";
-import { hasSkill } from "../../../core/unit/capability/skill/index.js";
+} from "../../../core/unit/capability/skill/index.js";
 
 import type { Definitions as CapabilityDefinitions } from "../../../core/unit/capability/catalog.js";
-import { hasAction } from "../../../core/unit/capability/action/index.js";
-import type { Definition as CardDefinition } from "../../../core/deployment/card/index.js";
+import type { Definition as CardDefinition } from "../../../core/battle/deployment/card/index.js";
 import { get as getTile } from "../../../core/battlefield/map/map.js";
 
 import { healFree } from "../../../core/effects/protection.js";
 import { hasVitality, type Vitality } from "../../../core/unit/capability/vitality/index.js";
-import { cancel, receiving } from "../../../core/resource/hp/damage/index.js";
+import { cancel, receiving } from "../../../core/battle/resource/hp/damage/index.js";
 import {
     type OrdinaryDefinition as EffectDefinition,
     type OrdinaryEffect as Effect,

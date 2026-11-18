@@ -2,9 +2,9 @@ import type * as contribution from "../../../common/contribution.js";
 import type { Restriction as BaseRestriction } from "../../../restriction.js";
 import type { Unit } from "../../unit.js";
 import type { Skill } from "./capability.js";
-import type { Source } from "../../skill/sp.js";
+import type { Source } from "./sp.js";
 
-import type { Operation } from "../../skill/activation.js";
+import type { Operation } from "./activation.js";
 
 export interface ActivationContext {
     readonly self: Unit & Skill;

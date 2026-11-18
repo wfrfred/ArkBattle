@@ -39,7 +39,7 @@ Content／Data 默认从领域入口消费；Core 内部按实际依赖精确导
 
 ### Core 领域入口与职责边界
 
-Unit／Projectile 的模型、查询与完整登记、更新、结束归自身领域；Occupancy 自行维护业务配对，Field 只维护存储与索引。Battle 负责跨领域协调与 Tick 调度，不因操作接收 BattleState 就收纳其实现。其余领域的公开能力与使用边界由各专题说明，无需在本文复制导出清单。
+Unit／Projectile 的模型、查询与完整登记、更新、结束归自身领域。Occupancy 自行维护业务配对，Field 维护存储与索引。Battle 的业务子目录各自定义完整结算，Runtime 安排 Tick 顺序，Battle 的协调入口通过所属领域的操作接续状态。其余领域的公开能力与使用边界由各专题说明。
 
 ## 2. 参数与职责
 

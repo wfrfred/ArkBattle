@@ -8,13 +8,12 @@ import * as units from "../../dist/core/unit/index.js";
 import * as lifecycle from "../../dist/core/unit/hook.js";
 import { update } from "../../dist/core/unit/operations.js";
 import * as presence from "../../dist/core/unit/capability/presence/index.js";
-import * as blocking from "../../dist/core/blocking/index.js";
+import * as blocking from "../../dist/core/battle/blocking/index.js";
 import * as block from "../../dist/core/unit/capability/blocking/index.js";
-import * as actions from "../../dist/core/unit/action/index.js";
-import * as action from "../../dist/core/unit/capability/action/index.js";
+import * as actions from "../../dist/core/unit/capability/action/index.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
-import * as deployment from "../../dist/core/deployment/index.js";
-import * as cards from "../../dist/core/deployment/card/index.js";
+import * as deployment from "../../dist/core/battle/deployment/index.js";
+import * as cards from "../../dist/core/battle/deployment/card/index.js";
 import { step } from "../../dist/core/battle/runtime.js";
 
 test("disappearance preserves deployment and lifetimes, releases blocking before cancelling actions, and removes only its restrictions", () => {
@@ -107,10 +106,10 @@ test("disappearance preserves deployment and lifetimes, releases blocking before
     assert.ok(effects.get(state, installed.value));
 
     state = step(state, []);
-    state = update(state, owner, action.setRestriction({ id: "other-source", value: { allows: () => false } }));
+    state = update(state, owner, actions.setRestriction({ id: "other-source", value: { allows: () => false } }));
     state = update(state, owner, presence.appear([2, 1]));
     assert.equal(actions.start(state, actionRef).value, null);
-    state = update(state, owner, action.removeRestriction("other-source"));
+    state = update(state, owner, actions.removeRestriction("other-source"));
     const restarted = actions.start(state, actionRef);
     assert.notEqual(restarted.value, null);
     assert.equal(actions.getExecution(restarted.state, restarted.value).execution.lifecycle, "RUNNING");

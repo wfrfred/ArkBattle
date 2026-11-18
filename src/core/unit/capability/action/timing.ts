@@ -1,6 +1,6 @@
 import type { Unit } from "../../unit.js";
 import * as attribute from "../../attribute.js";
-import type { Definition } from "../../action/definition.js";
+import type { Definition } from "./definition.js";
 import type { Action as ActionCapability } from "./capability.js";
 
 export function resolveSpeed(source: Unit & ActionCapability): number {

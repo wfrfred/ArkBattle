@@ -9,12 +9,11 @@ import * as units from "../../dist/core/unit/index.js";
 import { remove } from "../../dist/core/unit/operations.js";
 import * as lifetimes from "../../dist/core/lifetime/index.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
-import * as actions from "../../dist/core/unit/action/index.js";
-import * as skills from "../../dist/core/unit/skill/index.js";
-import * as skill from "../../dist/core/unit/capability/skill/index.js";
+import * as actions from "../../dist/core/unit/capability/action/index.js";
+import * as skills from "../../dist/core/unit/capability/skill/index.js";
 import * as elemental from "../../dist/core/unit/capability/elemental/index.js";
 import * as vitality from "../../dist/core/unit/capability/vitality/index.js";
-import * as epDamage from "../../dist/core/resource/ep/damage/index.js";
+import * as epDamage from "../../dist/core/battle/resource/ep/damage/index.js";
 import { createArknightsElementalDefinition } from "../../dist/data/effect/elemental.js";
 
 test("HOOK-03: Skill and Burst end notifications observe their cleared state while the owner is LEAVING", () => {
@@ -31,7 +30,7 @@ test("HOOK-03: Skill and Burst end notifications observe their cleared state whi
         elemental: createArknightsElementalDefinition({ receiver: "CHARACTER" }),
         skill: { initialize: state => skills.create(state, program) },
         hooks: Hooks.empty()
-            .set(skill.activationEnded, {
+            .set(skills.activationEnded, {
                 id: "activation-ended",
                 invoke(state, { host }) {
                     const current = units.get(state, host);

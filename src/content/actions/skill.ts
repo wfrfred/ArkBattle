@@ -1,9 +1,14 @@
 import { assertPositiveSafeInteger } from "../../core/common/assert.js";
 import type { Identified, Ref } from "../../core/common/ref.js";
 
-import { executionRef, getExecution } from "../../core/unit/action/index.js";
-import { activationRef, type Activation, consume, check } from "../../core/unit/skill/index.js";
-import { hasSkill } from "../../core/unit/capability/skill/index.js";
+import { executionRef, getExecution } from "../../core/unit/capability/action/index.js";
+import {
+    activationRef,
+    type Activation,
+    consume,
+    check,
+    hasSkill,
+} from "../../core/unit/capability/skill/index.js";
 
 import * as units from "../../core/unit/index.js";
 import { createWithState, type Attack, type Definition as AttackDefinition } from "./attack.js";

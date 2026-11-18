@@ -4,9 +4,8 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { battle, get } from "../helpers/battle.js";
 import * as units from "../../dist/core/unit/index.js";
-import * as actions from "../../dist/core/unit/action/index.js";
-import * as action from "../../dist/core/unit/capability/action/index.js";
-import * as skills from "../../dist/core/unit/skill/index.js";
+import * as actions from "../../dist/core/unit/capability/action/index.js";
+import * as skills from "../../dist/core/unit/capability/skill/index.js";
 import { create as modifier } from "../../dist/core/common/modifier.js";
 import { attribute, vitality } from "../helpers/attribute.js";
 import { actionCapability } from "../helpers/actions.js";
@@ -102,25 +101,25 @@ test("attribute changes preserve independent attack cooldown progress and leave 
     startAt(2, 2);
     assert.deepEqual(ready(), [10, 12, 22]);
 
-    state = update({ ...state, tick: 4 }, source, action.setSpeedContribution({
+    state = update({ ...state, tick: 4 }, source, actions.setSpeedContribution({
         id: "speed", value: [modifier({ addition: 100 })],
     }));
     assert.deepEqual(ready(), [7, 8, 22]);
-    state = update({ ...state, tick: 5 }, source, action.removeSpeedContribution("speed"));
+    state = update({ ...state, tick: 5 }, source, actions.removeSpeedContribution("speed"));
     assert.deepEqual(ready(), [9, 11, 22]);
     state = update(state, source, units.compose(
-        action.setIntervalContribution({ id: "interval", value: [modifier({ addition: 10 })] }),
-        action.setSpeedContribution({ id: "speed", value: [modifier({ addition: 100 })] }),
+        actions.setIntervalContribution({ id: "interval", value: [modifier({ addition: 10 })] }),
+        actions.setSpeedContribution({ id: "speed", value: [modifier({ addition: 100 })] }),
     ));
     assert.deepEqual(ready(), [9, 11, 22]);
 
-    state = update(state, source, action.setSpeedRange({ min: 10, max: 10 }));
+    state = update(state, source, actions.setSpeedRange({ min: 10, max: 10 }));
     assert.deepEqual(ready(), [85, 125, 22]);
-    state = update(state, source, action.clearSpeedRange());
+    state = update(state, source, actions.clearSpeedRange());
     assert.deepEqual(ready(), [9, 11, 22]);
-    state = update(state, source, action.setIntervalRange({ min: 5, max: 5 }));
+    state = update(state, source, actions.setIntervalRange({ min: 5, max: 5 }));
     assert.deepEqual(ready(), [6, 6.5, 22]);
-    state = update(state, source, action.clearIntervalRange());
+    state = update(state, source, actions.clearIntervalRange());
     assert.deepEqual(ready(), [9, 11, 22]);
 });
 
@@ -172,7 +171,7 @@ test("interrupted attack, successful release, and damage output are separate bus
     ]);
     const source = units.ref(get(state, 0));
     const reference = actions.ref(source, program);
-    state = update(state, source, units.setHook(action.beforeRelease, {
+    state = update(state, source, units.setHook(actions.beforeRelease, {
             id: "interrupt",
             invoke: (state) => ({ state, value: { type: "INTERRUPT", recoveryTicks: 2 } }),
         }));
@@ -182,7 +181,7 @@ test("interrupted attack, successful release, and damage output are separate bus
     assert.equal(get(state, 1).vitality.health.hp, 100);
 
 
-    state = update({ ...state, tick: 10 }, source, units.compose(units.removeHook(action.beforeRelease, "interrupt"), units.setHook(action.released, {
+    state = update({ ...state, tick: 10 }, source, units.compose(units.removeHook(actions.beforeRelease, "interrupt"), units.setHook(actions.released, {
             id: "hide-after-release",
             invoke: (state, { execution }) => ({
                 state: update(state, execution.host, presence.disappear()),
@@ -197,7 +196,7 @@ test("interrupted attack, successful release, and damage output are separate bus
 
     state = { ...state, tick: 20 };
     state = update(state, source, presence.appear([1, 1]));
-    state = update(state, source, units.removeHook(action.released, "hide-after-release"));
+    state = update(state, source, units.removeHook(actions.released, "hide-after-release"));
     started = actions.start(state, reference);
     state = actions.advance(started.state, started.value);
     assert.equal(get(state, 0).skill.sp.value, 2);

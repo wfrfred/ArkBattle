@@ -1,6 +1,6 @@
 # Damage 与 Healing 结算
 
-本页是 HP／EP 四类资源业务的公共契约。HP 状态、债务和提交干预见 [Vitality](vitality.md)，EP 状态与爆发见 [Elemental](elemental.md)；登记、优先级与同步候选见 [Hook](hook.md)，结束偏序见 [Lifetime](lifetime.md)。具体公开类型由 [resource/index.ts](../../src/core/resource/index.ts) 下的四个业务入口提供，保留各自 Request、Context、Reason 和报告，不建立联合请求或中央事件目录。
+本页是 HP／EP 四类资源业务的公共契约。HP 状态、债务和提交干预见 [Vitality](vitality.md)，EP 状态与爆发见 [Elemental](elemental.md)；登记、优先级与同步候选见 [Hook](hook.md)，结束偏序见 [Lifetime](lifetime.md)。具体公开类型由 [resource/index.ts](../../src/core/battle/resource/index.ts) 下的四个业务入口提供，保留各自 Request、Context、Reason 和报告，不建立联合请求或中央事件目录。
 
 原生依据集中在[公式与概率](../research/cases/10-weak-damage-and-critical.md)、[生命应用](../research/cases/11-damage-apply-and-hp-application.md)、[接收阶段](../research/cases/28-damage-hooks-and-event-granularity.md)、[治疗](../research/cases/29-hp-and-ep-healing-settlement.md)、[分类与权限](../research/cases/38-damage-classification-and-permissions.md)及[死亡归属](../research/cases/39-death-attribution-and-attribute-ranges.md)。Calculate／Apply 的划分及下述明确标出的规则是项目选择，不要求逐步复刻原生 Modifier。
 

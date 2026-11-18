@@ -1,6 +1,6 @@
 # Action 设计
 
-Action 管理行动程序的启动、冷却、执行进度与终止；Content 决定目标、输出和与 Skill／Effect 的组合。[公共入口](../../src/core/unit/action/index.ts)提供具体类型与操作。通用变更、状态接续、Hook 和析构分别遵守[接口约定](api-conventions.md)、[Functional Core](functional-core.md)、[Hook](hook.md)和[Lifetime](lifetime.md)。
+Action 管理行动程序的启动、冷却、执行进度与终止；Content 决定目标、输出和与 Skill／Effect 的组合。[公共入口](../../src/core/unit/capability/action/index.ts)提供具体类型与操作。通用变更、状态接续、Hook 和析构分别遵守[接口约定](api-conventions.md)、[Functional Core](functional-core.md)、[Hook](hook.md)和[Lifetime](lifetime.md)。
 
 ## 关键语义
 
@@ -18,7 +18,7 @@ Definition 提供基础时序、持久初始化、prepare、onTick 和可选 onE
 
 ## 2. 模块与导入
 
-`unit/action/` 拥有聚合、身份、容器、冷却和完整操作；`unit/capability/action/` 拥有能力装配、贡献、启动限制和释放 Hook。公共 API 见各自 index，不在架构文档复制导出清单。
+`unit/capability/action/` 集中装配、宿主属性、释放 Hook，以及行动聚合、冷却与执行操作。公共入口用 `ActionCapability` 表示宿主能力，用 `Action` 表示单项行动。
 
 ## 3. Definition、Action 与 Execution
 

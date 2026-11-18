@@ -15,7 +15,7 @@ import { hasAction } from "../../unit/capability/action/capability.js";
 import {
     setSpeedContribution,
     removeSpeedContribution,
-} from "../../unit/capability/action/operations.js";
+} from "../../unit/capability/action/attributes.js";
 import { released } from "../../unit/capability/action/release.js";
 import { hasSkill } from "../../unit/capability/skill/capability.js";
 import { activationStarted } from "../../unit/capability/skill/hook.js";

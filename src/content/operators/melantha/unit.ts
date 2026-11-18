@@ -9,7 +9,7 @@ import {
     getAction,
     ref as actionRef,
     setState as setActionState,
-} from "../../../core/unit/action/index.js";
+} from "../../../core/unit/capability/action/index.js";
 import {
     update as updateUnit,
     get as getCurrentUnit,
@@ -24,9 +24,9 @@ import {
     create as createSkill,
     activationRef,
     lifetime as skillLifetime,
-} from "../../../core/unit/skill/index.js";
+} from "../../../core/unit/capability/skill/index.js";
 
-import type { Definition as CardDefinition } from "../../../core/deployment/card/index.js";
+import type { Definition as CardDefinition } from "../../../core/battle/deployment/card/index.js";
 import { get as getTile } from "../../../core/battlefield/map/map.js";
 import { sides } from "../../../core/unit/capability/blocking/index.js";
 import {

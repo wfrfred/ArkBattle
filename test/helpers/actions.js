@@ -1,4 +1,4 @@
-import { create, createActions } from "../../dist/core/unit/action/index.js";
+import { create, createActions } from "../../dist/core/unit/capability/action/index.js";
 import { attribute } from "./attribute.js";
 
 export function actionCapability(...definitions) {

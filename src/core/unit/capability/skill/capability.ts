@@ -2,12 +2,12 @@ import type { Unit } from "../../unit.js";
 import type * as contribution from "../../../common/contribution.js";
 import * as entries from "../../../common/collection/entries.js";
 import type { State as BattleState, Result } from "../../../battle/state.js";
-import type { Skill as SkillState } from "../../skill/skill.js";
-import type { Input as AmmoInput } from "../../skill/ammo.js";
+import type { Skill as SkillState } from "./skill.js";
+import type { Input as AmmoInput } from "./ammo.js";
 import type { RecoveryRestriction, Restrictions } from "./restriction.js";
 import { createChange, type Change } from "../../change.js";
 import { createRegistrationOperations } from "../../registration.js";
-import { enter } from "../../skill/operations.js";
+import { enter } from "./operations.js";
 import { enter as enterKey } from "../../hook.js";
 
 const activeRecoveryRestriction: RecoveryRestriction = {

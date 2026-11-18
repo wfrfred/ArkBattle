@@ -8,7 +8,7 @@ Definition 包含主 Waves 与按名称查找的 Branches。Wave 提供前延迟
 
 每项 Spawn 只描述一次出生：完整 UnitDefinition、本次 Route Plan、固定 offset、随机半宽 randomRange、前延迟后的 atTick 和 Wait。主线 count／interval 与随机组在 Data 预处理为确定序列；Branch 随执行抽选。
 
-普通 Spawn 的定义必须有 Route，可选择 Facing 等其他能力；不支持 Occupancy／Deployable，因为出生不提供登记地块。创建同时提供 Route 的 Plan／offset 和 Facing 的 RIGHT 初值；未声明 Facing 时按通用规则忽略额外已知输入。Plan 与实例偏移独立于共享 UnitDefinition，具体类型见 [schedule/index.ts](../../src/core/schedule/index.ts)。
+普通 Spawn 的定义必须有 Route，可选择 Facing 等其他能力；不支持 Occupancy／Deployable，因为出生不提供登记地块。创建同时提供 Route 的 Plan／offset 和 Facing 的 RIGHT 初值；未声明 Facing 时按通用规则忽略额外已知输入。Plan 与实例偏移独立于共享 UnitDefinition，具体类型见 [schedule/index.ts](../../src/core/battle/schedule/index.ts)。
 
 出生 offset 为固定量加各轴范围内随机扰动，同一次样本用于出生位置和 Route.Initial.offset。MOVE 的进入随机偏移是另一项语义，见 [Route](navigation.md#checkpoint-与进入)。
 

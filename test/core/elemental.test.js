@@ -6,9 +6,9 @@ import { attribute as defineAttribute, vitality as defineVitality } from "../hel
 import { Hooks } from "../../dist/core/hook.js";
 import * as units from "../../dist/core/unit/index.js";
 import { update } from "../../dist/core/unit/operations.js";
-import * as hpDamage from "../../dist/core/resource/hp/damage/index.js";
-import * as epDamage from "../../dist/core/resource/ep/damage/index.js";
-import * as epHealing from "../../dist/core/resource/ep/healing/index.js";
+import * as hpDamage from "../../dist/core/battle/resource/hp/damage/index.js";
+import * as epDamage from "../../dist/core/battle/resource/ep/damage/index.js";
+import * as epHealing from "../../dist/core/battle/resource/ep/healing/index.js";
 import * as elemental from "../../dist/core/unit/capability/elemental/index.js";
 import * as vitality from "../../dist/core/unit/capability/vitality/index.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
@@ -18,7 +18,7 @@ import { createStun } from "../../dist/core/effects/elemental/neural.js";
 import { createSpDrain } from "../../dist/core/effects/elemental/necrosis.js";
 import { silence, blockSpRecovery } from "../../dist/core/effects/control.js";
 import { create as modifier } from "../../dist/core/common/modifier.js";
-import { elementHealing } from "../../dist/core/targeting/index.js";
+import { elementHealing } from "../../dist/core/battle/targeting/index.js";
 import { hasTargetable } from "../../dist/core/unit/capability/targetable/capability.js";
 import { createArknightsElementalDefinition } from "../../dist/data/effect/elemental.js";
 

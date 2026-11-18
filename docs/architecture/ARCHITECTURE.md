@@ -64,7 +64,9 @@ Route 的本次 Plan／offset、Occupancy 的本次 tile 等实例事实经 Init
 
 ## Subsystem 的责任与调用
 
-独立领域在 Core 下各自组织模型与完整操作。`battle/` 保存全局状态、外部命令、初始化、Tick 调度及地块／预置等跨领域协调；`unit/` 保存 Unit、能力和宿主内实例；`common/` 保存不依赖战斗实体的基础机制。操作接收 BattleState 不改变其业务归属。
+`battle/` 保存全局状态、外部命令、初始化和 Tick 调度。Blocking、Deployment、Resource、Schedule 和 Targeting 各有自己的子目录，定义在战斗上下文中生效的规则。`battlefield/` 提供地图、登记、空间索引与导航。Battlefield 的操作以战场状态为输入，Battle 负责协调这些空间事实与战斗业务。
+
+`unit/` 保存 Unit、能力和宿主内实例。Action 与 Skill 各自在 Capability 目录中组织装配和运行模型。`projectile/` 与 `mechanism/` 各自负责独立实例的身份与生命周期。`lifetime/`、`geometry/` 与 `common/` 提供共享机制，`effects/` 提供标准效果。
 
 | 领域 | 负责的事实与操作 |
 | --- | --- |

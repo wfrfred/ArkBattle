@@ -1,5 +1,5 @@
 import { replace as replaceUnits, lifetime as unitLifetime } from "../operations.js";
-import { cardForUnit } from "../../deployment/query.js";
+import { cardForUnit } from "../../battle/deployment/query.js";
 import { type State as BattleState, type Result } from "../../battle/state.js";
 import type { Unit } from "../unit.js";
 import type { Ref } from "../../common/ref.js";

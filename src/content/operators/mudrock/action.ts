@@ -9,7 +9,7 @@ import {
     create as createSkillAttack,
     type State as SkillAttackState,
 } from "../../actions/skill.js";
-import { getExecution, executionRef } from "../../../core/unit/action/index.js";
+import { getExecution, executionRef } from "../../../core/unit/capability/action/index.js";
 import {
     get as getCurrentUnit,
     ref as unitRef,
@@ -26,17 +26,16 @@ import {
     type Classification,
 } from "../../../core/unit/capability/classification/index.js";
 
-import { finish } from "../../../core/unit/skill/index.js";
-import { hasSkill } from "../../../core/unit/capability/skill/index.js";
+import { finish, hasSkill } from "../../../core/unit/capability/skill/index.js";
 
 import type { Vitality } from "../../../core/unit/capability/vitality/index.js";
 import {
     calculateDamage,
     applyDamage,
     type Request as DamageRequest,
-} from "../../../core/resource/hp/damage/index.js";
+} from "../../../core/battle/resource/hp/damage/index.js";
 
-import * as targeting from "../../../core/targeting/index.js";
+import * as targeting from "../../../core/battle/targeting/index.js";
 import { hasBlockable, hasBlocker } from "../../../core/unit/capability/blocking/index.js";
 import { hasDirection } from "../../../core/unit/capability/occupancy/index.js";
 import { hasLayer, type Layer } from "../../../core/unit/capability/layer/index.js";

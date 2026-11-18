@@ -9,8 +9,7 @@ import {
     type Definition as UnitDefinition,
 } from "../../core/unit/index.js";
 import { Vec2 } from "../../core/common/vector.js";
-import { isCasting } from "../../core/unit/action/index.js";
-import { hasAction } from "../../core/unit/capability/action/index.js";
+import { hasAction, isCasting } from "../../core/unit/capability/action/index.js";
 import {
     hasLocomotion,
     setRestriction,
