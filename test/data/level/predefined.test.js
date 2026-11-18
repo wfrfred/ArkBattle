@@ -87,9 +87,7 @@ test("real hidden devices preserve placement, static classification and target c
     assert.deepEqual(modifiedDefinition.creation.definition.classification, {
         type: "DEVICE", side: "ENEMY", filterTags: ["changed-filter"], groupTags: ["laterano", "kazimierz"],
     });
-    assert.equal(modifiedDefinition.creation.definition.targetable.category, "DEFAULT");
-    token._category = 3;
-    assert.throws(() => parsePredefinedPrefab(modifiedPrefab), /unsupported token _category/);
+    assert.equal(modifiedDefinition.creation.definition.targetable.category, "DEVICE");
 });
 
 test("real controller and skill data supply shared terrain parameters", () => {

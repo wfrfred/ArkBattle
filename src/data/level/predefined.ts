@@ -158,11 +158,7 @@ function unitDefinition(
             filterTags: profile.filterTags,
             groupTags,
         },
-        targetable: {
-            category: profile.category,
-            taunt: { default: taunt!, min: -2, max: 2 },
-            restrictions: [],
-        },
+        taunt: taunt!,
         vitality: {
             defense: { default: 0, min: 0, max: null },
             resistance: { default: 0, min: 0, max: 100 },

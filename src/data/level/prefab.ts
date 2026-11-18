@@ -5,7 +5,6 @@ import type {
 } from "../../core/battlefield/map/tile.js";
 import { parsePrefabExtraction, getPrefabComponent, type PrefabExtraction } from "../prefab.js";
 import type { Side } from "../../core/unit/capability/classification/index.js";
-import type { Category } from "../../core/unit/capability/targetable/capability.js";
 import { parseTags } from "../unit/tags.js";
 import { parseSiteCondition, parseAllowedSiteConditions } from "./site-condition.js";
 
@@ -19,7 +18,6 @@ export type PredefinedPrefab =
           readonly type: "UNIT";
           readonly prefabKey: string;
           readonly side: Side;
-          readonly category: Category;
           readonly filterTags: readonly string[];
           readonly tileChanges: Partial<TileState>;
           readonly deployable: {
@@ -63,22 +61,6 @@ function side(value: unknown): Side {
 
         default:
             throw new TypeError("unsupported token _sideType");
-    }
-}
-
-function category(value: unknown): Category {
-    switch (value) {
-        case 1:
-            return "DEFAULT";
-
-        case 2:
-            return "DEVICE";
-
-        case 4:
-            return "OBSTACLE";
-
-        default:
-            throw new TypeError("unsupported token _category");
     }
 }
 
@@ -258,7 +240,6 @@ export function parsePredefinedPrefab(value: unknown, skillValue?: unknown): Pre
             type: "UNIT",
             prefabKey: source.prefabKey,
             side: side(token._sideType),
-            category: category(token._category),
             filterTags: parseTags(token._filterTag),
             tileChanges: tileChanges(mode, options),
             deployable: deployable(token),

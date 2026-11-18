@@ -28,8 +28,9 @@ export interface Definition extends UnitDefinition {
 
 export interface Configuration extends Pick<
     Definition,
-    "id" | "classification" | "targetable" | "vitality" | "deployable" | "card"
+    "id" | "classification" | "vitality" | "deployable" | "card"
 > {
+    readonly taunt: number;
     readonly tileChanges: Partial<TileState>;
 }
 

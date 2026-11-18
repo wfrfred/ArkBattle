@@ -26,7 +26,7 @@ function clearOccupant(battle: BattleState, position: TilePosition): BattleState
 }
 
 export function create(configuration: Configuration): Definition {
-    const { id, classification, targetable, vitality, deployable, card } = configuration;
+    const { id, classification, taunt, vitality, deployable, card } = configuration;
     const tileChanges = {
         ...configuration.tileChanges,
         walkCost: 1000,
@@ -35,7 +35,11 @@ export function create(configuration: Configuration): Definition {
     return {
         id,
         classification,
-        targetable,
+        targetable: {
+            category: "DEVICE",
+            taunt: { default: taunt, min: -2, max: 2 },
+            restrictions: [],
+        },
         vitality,
         deployable,
         card,
