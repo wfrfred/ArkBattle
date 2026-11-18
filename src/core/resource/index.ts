@@ -1,4 +1,4 @@
-export type { Options, Exclusion } from "../../hook.js";
+export type { Options, Exclusion } from "../hook.js";
 
 export type { AttackType, ApplyWay } from "./damage.js";
 

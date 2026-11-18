@@ -1,5 +1,5 @@
-import type { Result, State as BattleState } from "../state.js";
-import type { Hook } from "../../hook.js";
+import type { Result, State as BattleState } from "../battle/state.js";
+import type { Hook } from "../hook.js";
 
 export type State = "NORMAL" | "FIXED" | "CANCELLED";
 

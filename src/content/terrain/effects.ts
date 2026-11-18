@@ -5,7 +5,7 @@ import {
     applyDamage,
     calculateDamage,
     type Request as DamageRequest,
-} from "../../core/battle/resource/hp/damage/index.js";
+} from "../../core/resource/hp/damage/index.js";
 
 import * as effects from "../../core/unit/effect/index.js";
 import {

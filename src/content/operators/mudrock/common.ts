@@ -6,7 +6,7 @@ import {
     calculateHealing,
     applyHealing,
     type Request as HealingRequest,
-} from "../../../core/battle/resource/hp/healing/index.js";
+} from "../../../core/resource/hp/healing/index.js";
 
 import type { Profile } from "../../../data/unit/operator.js";
 

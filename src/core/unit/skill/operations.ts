@@ -12,7 +12,7 @@ import { hasVitality } from "../capability/vitality/capability.js";
 import { isAlive } from "../capability/vitality/query.js";
 import { hasAction } from "../capability/action/capability.js";
 import { released, type ReleasedHook } from "../capability/action/release.js";
-import { receiving, type ReceivingHook } from "../../battle/resource/hp/damage/hook.js";
+import { receiving, type ReceivingHook } from "../../resource/hp/damage/hook.js";
 import { hasSkill, type Skill as SkillCapability } from "../capability/skill/capability.js";
 import {
     ref as activationRef,

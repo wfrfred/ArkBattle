@@ -6,9 +6,9 @@ import type { Unit } from "../../unit.js";
 import type { Elemental } from "./capability.js";
 import type { Burst, End } from "./burst.js";
 import type { DamageApplication, HealingApplication } from "./operations.js";
-import type { Request as DamageRequest } from "../../../battle/resource/ep/damage/contract.js";
-import type { Request as HealingRequest } from "../../../battle/resource/ep/healing/contract.js";
-import type { ReceivingHook } from "../../../battle/resource/ep/damage/hook.js";
+import type { Request as DamageRequest } from "../../../resource/ep/damage/contract.js";
+import type { Request as HealingRequest } from "../../../resource/ep/healing/contract.js";
+import type { ReceivingHook } from "../../../resource/ep/damage/hook.js";
 
 export type DamageReceivingHook = ReceivingHook;
 

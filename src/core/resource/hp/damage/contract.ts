@@ -1,9 +1,9 @@
 import * as receiving from "../../receiving.js";
 import type { AttackType, ApplyWay } from "../../damage.js";
-import type { DamageApplication } from "../../../../unit/capability/vitality/operations.js";
-import type { Ref } from "../../../../common/ref.js";
-import type { Unit, Id } from "../../../../unit/unit.js";
-import type { Vitality } from "../../../../unit/capability/vitality/capability.js";
+import type { DamageApplication } from "../../../unit/capability/vitality/operations.js";
+import type { Ref } from "../../../common/ref.js";
+import type { Unit, Id } from "../../../unit/unit.js";
+import type { Vitality } from "../../../unit/capability/vitality/capability.js";
 
 export type DamageType = "PHYSICAL" | "ARTS" | "TRUE" | "ELEMENTAL";
 

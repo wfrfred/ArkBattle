@@ -1,15 +1,15 @@
-import type { Options } from "../../../../hook.js";
-import type { Result, State as BattleState } from "../../../state.js";
-import * as units from "../../../../unit/query.js";
-import type { Unit } from "../../../../unit/unit.js";
-import type { Vitality } from "../../../../unit/capability/vitality/capability.js";
+import type { Options } from "../../../hook.js";
+import type { Result, State as BattleState } from "../../../battle/state.js";
+import * as units from "../../../unit/query.js";
+import type { Unit } from "../../../unit/unit.js";
+import type { Vitality } from "../../../unit/capability/vitality/capability.js";
 import {
     isAlive,
     resolveDefense,
     resolveResistance,
-} from "../../../../unit/capability/vitality/query.js";
-import { hasElemental } from "../../../../unit/capability/elemental/capability.js";
-import { resolveDamageResistance } from "../../../../unit/capability/elemental/query.js";
+} from "../../../unit/capability/vitality/query.js";
+import { hasElemental } from "../../../unit/capability/elemental/capability.js";
+import { resolveDamageResistance } from "../../../unit/capability/elemental/query.js";
 import type { Calculated, Parameters, Request } from "./contract.js";
 import { dispatch, sourceFormula, targetFormula, output as outputKey } from "./hook.js";
 

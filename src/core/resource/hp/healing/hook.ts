@@ -1,7 +1,7 @@
 import type * as receivingProtocol from "../../receiving.js";
-import type { Unit } from "../../../../unit/unit.js";
-import type { Vitality } from "../../../../unit/capability/vitality/capability.js";
-import * as hooks from "../../../../hook.js";
+import type { Unit } from "../../../unit/unit.js";
+import type { Vitality } from "../../../unit/capability/vitality/capability.js";
+import * as hooks from "../../../hook.js";
 import type {
     Application,
     Calculated,

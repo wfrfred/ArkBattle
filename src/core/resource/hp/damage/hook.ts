@@ -1,9 +1,9 @@
 import type * as receivingProtocol from "../../receiving.js";
-import type { Departure, Unit } from "../../../../unit/unit.js";
-import type { Vitality } from "../../../../unit/capability/vitality/capability.js";
-import * as hooks from "../../../../hook.js";
-import * as units from "../../../../unit/query.js";
-import type { Result, State as BattleState } from "../../../state.js";
+import type { Departure, Unit } from "../../../unit/unit.js";
+import type { Vitality } from "../../../unit/capability/vitality/capability.js";
+import * as hooks from "../../../hook.js";
+import * as units from "../../../unit/query.js";
+import type { Result, State as BattleState } from "../../../battle/state.js";
 import type {
     Application,
     Calculated,

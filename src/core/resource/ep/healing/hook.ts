@@ -1,6 +1,6 @@
-import type { Unit } from "../../../../unit/unit.js";
-import type { Elemental } from "../../../../unit/capability/elemental/capability.js";
-import * as hooks from "../../../../hook.js";
+import type { Unit } from "../../../unit/unit.js";
+import type { Elemental } from "../../../unit/capability/elemental/capability.js";
+import * as hooks from "../../../hook.js";
 import type { Application, Calculated, Parameters, Pending, Request } from "./contract.js";
 
 export interface Context {

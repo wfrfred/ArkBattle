@@ -1,13 +1,8 @@
-import type { Options } from "../../../../hook.js";
-import type { Restriction } from "../../../../unit/capability/vitality/restriction.js";
-import type { Ref } from "../../../../common/ref.js";
-import type { Unit } from "../../../../unit/unit.js";
-import * as units from "../../../../unit/query.js";
-import { prepare, setHook } from "../../../../unit/hook.js";
-import * as vitality from "../../../../unit/capability/vitality/operations.js";
-import { isAlive } from "../../../../unit/capability/vitality/query.js";
-import { appendEvents, type Result, type State as BattleState } from "../../../state.js";
-import { remove, update } from "../../../../unit/operations.js";
+import type { Options } from "../../../hook.js";
+import type { Ref } from "../../../common/ref.js";
+import type { Unit } from "../../../unit/unit.js";
+import * as vitality from "../../../unit/capability/vitality/operations.js";
+import { appendEvents, type Result, type State as BattleState } from "../../../battle/state.js";
 import type { Calculated, Outcome, Pending, Reason, Request } from "./contract.js";
 import {
     type CommitContext,
@@ -19,27 +14,23 @@ import {
     targetApplied,
     sourceApplied,
     completed,
-    dispatchTargetKilled,
 } from "./hook.js";
 
 export interface ApplyOptions extends Options {
-    readonly ignore?: (restriction: Restriction) => boolean;
     readonly forbidden?: ReadonlySet<Reason>;
 }
 
-export function applyDamage(
+export function applyHealing(
     request: Request,
     calculated: Result<Calculated | undefined>,
     options?: ApplyOptions,
 ): Result<Outcome> {
     let battle = calculated.state;
     const calculation = calculated.value;
-    const target = units.get(battle, request.target);
     if (
         calculation === undefined ||
         calculation.amount === 0 ||
-        target?.lifecycle !== "PRESENT" ||
-        !isAlive(target)
+        !vitality.canReceiveHealing(battle, request.target)
     ) {
         return complete(battle, request, calculation, { type: "REJECTED" }, options);
     }
@@ -59,7 +50,7 @@ export function applyDamage(
     );
     battle = before.state;
 
-    if (!vitality.canReceiveDamage(battle, context, options?.ignore)) {
+    if (!vitality.canReceiveHealing(battle, request.target)) {
         return complete(
             battle,
             request,
@@ -71,13 +62,13 @@ export function applyDamage(
         );
     }
 
-    const receiving = vitality.receiveDamage(battle, context, before.value, options);
+    const receiving = vitality.receiveHealing(battle, context, before.value, options);
     battle = receiving.state;
     const received = receiving.value;
     if (received.type === "CANCELLED") {
         return complete(battle, request, calculation, { type: "CANCELLED", received }, options);
     }
-    if (!vitality.canReceiveDamage(battle, context, options?.ignore)) {
+    if (!vitality.canReceiveHealing(battle, request.target)) {
         return complete(battle, request, calculation, { type: "UNAVAILABLE", received }, options);
     }
 
@@ -91,23 +82,18 @@ export function applyDamage(
         options,
     ).state;
 
-    if (!vitality.canReceiveDamage(battle, context, options?.ignore)) {
+    if (!vitality.canReceiveHealing(battle, request.target)) {
         return complete(battle, request, calculation, { type: "UNAVAILABLE", received }, options);
     }
 
-    const committed = vitality.commitDamage(battle, commitContext);
+    const committed = vitality.commitHealing(battle, commitContext);
     battle = committed.state;
     const application = committed.value;
-    if (application === null) {
-        return complete(battle, request, calculation, { type: "UNAVAILABLE", received }, options);
-    }
-
     battle = appendEvents(battle, [
         {
-            type: "DAMAGE",
+            type: "HEAL",
             targetUnitId: request.target.id,
-            damageType: calculation.type,
-            amount: application.hpLoss,
+            amount: application.hpGain,
             tick: battle.tick,
         },
     ]);
@@ -130,37 +116,11 @@ export function applyDamage(
         options,
     ).state;
 
-    const current = units.get(battle, request.target);
-    const killed = current?.lifecycle === "PRESENT" && !isAlive(current);
-    if (killed) {
-        if (request.killer !== null) {
-            battle = update(
-                battle,
-                request.target,
-                setHook(prepare, {
-                    id: "@damage/targetKilled",
-                    priority: 10000,
-                    invoke: (state, departure) =>
-                        departure.reason === "DEATH"
-                            ? dispatchTargetKilled(state, departure, options)
-                            : { state, value: undefined },
-                }),
-            );
-        }
-
-        battle = remove(battle, request.target, { reason: "DEATH", killer: request.killer });
-    }
-
     return complete(
         battle,
         request,
         calculation,
-        {
-            type: "APPLIED",
-            received,
-            application,
-            killed,
-        },
+        { type: "APPLIED", received, application },
         options,
     );
 }
@@ -175,9 +135,8 @@ function complete(
     if (outcome.type === "CANCELLED" && calculated !== undefined) {
         battle = appendEvents(battle, [
             {
-                type: "DAMAGE",
+                type: "HEAL",
                 targetUnitId: request.target.id,
-                damageType: calculated.type,
                 amount: 0,
                 tick: battle.tick,
             },

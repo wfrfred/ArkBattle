@@ -1,8 +1,8 @@
-import type { Ref } from "../../common/ref.js";
-import * as hooks from "../../hook.js";
-import type { Unit } from "../../unit/unit.js";
-import * as units from "../../unit/query.js";
-import type { Result, State as BattleState } from "../state.js";
+import type { Ref } from "../common/ref.js";
+import * as hooks from "../hook.js";
+import type { Unit } from "../unit/unit.js";
+import * as units from "../unit/query.js";
+import type { Result, State as BattleState } from "../battle/state.js";
 
 export function dispatch<C, T>(
     battle: BattleState,

@@ -8,8 +8,8 @@ import { hasVitality } from "../vitality/capability.js";
 import { isAlive } from "../vitality/query.js";
 import { ELEMENT_TYPES, type Elemental, type Parameter, type Type } from "./capability.js";
 import type { Burst } from "./burst.js";
-import type { Request as DamageRequest } from "../../../battle/resource/ep/damage/contract.js";
-import type { Request as HealingRequest } from "../../../battle/resource/ep/healing/contract.js";
+import type { Request as DamageRequest } from "../../../resource/ep/damage/contract.js";
+import type { Request as HealingRequest } from "../../../resource/ep/healing/contract.js";
 import { allows } from "../../../restriction.js";
 import type { DamageRestriction } from "./restriction.js";
 

@@ -2,8 +2,8 @@ import type * as contribution from "../../../common/contribution.js";
 import type { Restriction as BaseRestriction } from "../../../restriction.js";
 import type { Unit } from "../../unit.js";
 import type { Elemental, Type } from "./capability.js";
-import type { Request as DamageRequest } from "../../../battle/resource/ep/damage/contract.js";
-import type { Request as HealingRequest } from "../../../battle/resource/ep/healing/contract.js";
+import type { Request as DamageRequest } from "../../../resource/ep/damage/contract.js";
+import type { Request as HealingRequest } from "../../../resource/ep/healing/contract.js";
 
 export interface DamageContext {
     readonly self: Unit & Elemental;

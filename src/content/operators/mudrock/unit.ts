@@ -45,7 +45,7 @@ import { get as getTile } from "../../../core/battlefield/map/map.js";
 
 import { healFree } from "../../../core/effects/protection.js";
 import { hasVitality, type Vitality } from "../../../core/unit/capability/vitality/index.js";
-import { cancel, receiving } from "../../../core/battle/resource/hp/damage/index.js";
+import { cancel, receiving } from "../../../core/resource/hp/damage/index.js";
 import {
     type OrdinaryDefinition as EffectDefinition,
     type OrdinaryEffect as Effect,

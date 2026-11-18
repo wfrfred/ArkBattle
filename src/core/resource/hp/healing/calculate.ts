@@ -1,7 +1,7 @@
-import type { Options } from "../../../../hook.js";
-import type { Result, State as BattleState } from "../../../state.js";
-import * as units from "../../../../unit/query.js";
-import { isAlive } from "../../../../unit/capability/vitality/query.js";
+import type { Options } from "../../../hook.js";
+import type { Result, State as BattleState } from "../../../battle/state.js";
+import * as units from "../../../unit/query.js";
+import { isAlive } from "../../../unit/capability/vitality/query.js";
 import type { Calculated, Request } from "./contract.js";
 import { dispatch, sourceFormula, targetFormula, output as outputKey } from "./hook.js";
 

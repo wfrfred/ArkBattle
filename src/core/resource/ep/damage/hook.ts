@@ -1,7 +1,7 @@
-import type { Unit } from "../../../../unit/unit.js";
-import type { Elemental, Type } from "../../../../unit/capability/elemental/capability.js";
+import type { Unit } from "../../../unit/unit.js";
+import type { Elemental, Type } from "../../../unit/capability/elemental/capability.js";
 import type * as receivingProtocol from "../../receiving.js";
-import * as hooks from "../../../../hook.js";
+import * as hooks from "../../../hook.js";
 import type { Application, Calculated, Parameters, Pending, Reason, Request } from "./contract.js";
 
 export interface Context {

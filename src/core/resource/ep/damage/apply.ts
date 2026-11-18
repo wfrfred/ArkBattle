@@ -1,9 +1,9 @@
-import type { Options } from "../../../../hook.js";
-import type { DamageRestriction } from "../../../../unit/capability/elemental/restriction.js";
-import type { Result } from "../../../state.js";
-import * as units from "../../../../unit/query.js";
-import { available, canReceiveDamage } from "../../../../unit/capability/elemental/query.js";
-import { receiveDamage, commitDamage } from "../../../../unit/capability/elemental/operations.js";
+import type { Options } from "../../../hook.js";
+import type { DamageRestriction } from "../../../unit/capability/elemental/restriction.js";
+import type { Result } from "../../../battle/state.js";
+import * as units from "../../../unit/query.js";
+import { available, canReceiveDamage } from "../../../unit/capability/elemental/query.js";
+import { receiveDamage, commitDamage } from "../../../unit/capability/elemental/operations.js";
 import type { Calculated, Outcome, Pending, Reason, Request } from "./contract.js";
 import {
     type CommitContext,

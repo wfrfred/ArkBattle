@@ -13,7 +13,7 @@ import * as projectilesQuery from '../../../dist/core/projectile/query.js';
 import { advance } from '../../../dist/core/projectile/operations.js';
 import { ref } from '../../../dist/core/unit/query.js';
 import { createArrow } from '../../../dist/content/enemies/crossbowman/action.js';
-import { targetApplied } from '../../../dist/core/battle/resource/hp/damage/index.js';
+import { targetApplied } from '../../../dist/core/resource/hp/damage/index.js';
 import { setAttackContribution } from '../../../dist/core/unit/capability/offense/index.js';
 import { create as modifier } from '../../../dist/core/common/modifier.js';
 

@@ -3,7 +3,7 @@ import {
     calculateDamage,
     applyDamage,
     type Request as DamageRequest,
-} from "../../../core/battle/resource/hp/damage/index.js";
+} from "../../../core/resource/hp/damage/index.js";
 
 import * as units from "../../../core/unit/index.js";
 import type { Timing as AttackTiming } from "../../actions/timing.js";
