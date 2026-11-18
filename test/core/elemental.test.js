@@ -17,7 +17,7 @@ import * as presence from "../../dist/core/unit/capability/presence/index.js";
 import { createStun } from "../../dist/core/effects/elemental/neural.js";
 import { createSpDrain } from "../../dist/core/effects/elemental/necrosis.js";
 import { silence, blockSpRecovery } from "../../dist/core/effects/control.js";
-import { create as modifier } from "../../dist/core/unit/attribute.js";
+import { create as modifier } from "../../dist/core/common/modifier.js";
 import { elementHealing } from "../../dist/core/battle/targeting/index.js";
 import { hasTargetable } from "../../dist/core/unit/capability/targetable/capability.js";
 import { createArknightsElementalDefinition } from "../../dist/data/effect/elemental.js";

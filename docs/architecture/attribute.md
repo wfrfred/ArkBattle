@@ -1,6 +1,6 @@
 # Attribute
 
-Attribute 表达数值底值、修正来源与有效范围。Definition 保存 `default/min/max`；State 保存 `contributions/min/max`，后两项是当前完整边界。空边界表示没有额外数值限制，余额、弹药、计数与报价不因此成为 Attribute。
+Attribute 表达数值底值、修正来源与有效范围。Definition 保存 `default/min/max`；State 保存 `contributions/min/max`，后两项是当前完整边界。空边界表示没有额外数值限制，余额、弹药、计数与报价不因此成为 Attribute。四项 Modifier 与计算函数属于 common，可由 Card 等领域独立使用；Attribute 在 Unit 中组织范围和动态求值。
 
 Definition.default 是配置输入，先按 Definition 的默认边界规范化为底值；当前范围变更不改写这个底值。有效贡献先按 [Contribution](capability.md#属性与贡献) 选择，再求静态或动态输入，按四项公式计算并限幅：
 
@@ -18,4 +18,4 @@ Definition.default 是配置输入，先按 Definition 的默认边界规范化�
 
 原生枚举、公式、范围入口与实际内容依据见 [Case39](../research/cases/39-death-attribution-and-attribute-ranges.md#4-属性求值与范围)。单槽恢复属于保留原生语义；Definition／State 的纯值组织与无查询缓存属于项目组织方式。
 
-[集中测试](../../test/core/attribute.test.js)保障四项归并后的最终范围、整区间覆写／恢复、Contribution 与范围独立，以及只求值竞争后的有效输入。各领域只补自己的资源或计时后继。
+[数值修正测试](../../test/common/modifier.test.js)保障四项公式与连续值；[属性测试](../../test/core/attribute.test.js)保障底值与最终范围、整区间覆写／恢复、Contribution 与范围独立，以及只求值竞争后的有效输入。各领域只补自己的资源或计时后继。

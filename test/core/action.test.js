@@ -7,7 +7,7 @@ import * as units from "../../dist/core/unit/index.js";
 import * as actions from "../../dist/core/unit/action/index.js";
 import * as action from "../../dist/core/unit/capability/action/index.js";
 import * as skills from "../../dist/core/unit/skill/index.js";
-import { create as modifier } from "../../dist/core/unit/attribute.js";
+import { create as modifier } from "../../dist/core/common/modifier.js";
 import { attribute, vitality } from "../helpers/attribute.js";
 import { actionCapability } from "../helpers/actions.js";
 import { update } from "../../dist/core/battle/unit.js";

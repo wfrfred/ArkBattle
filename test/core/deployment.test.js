@@ -9,7 +9,7 @@ import * as deployment from "../../dist/core/battle/deployment/index.js";
 import * as cards from "../../dist/core/battle/deployment/card/index.js";
 import * as units from "../../dist/core/unit/query.js";
 import * as damage from "../../dist/core/battle/resource/hp/damage/index.js";
-import * as attribute from "../../dist/core/unit/attribute.js";
+import * as modifier from "../../dist/core/common/modifier.js";
 import * as actions from "../../dist/core/unit/action/index.js";
 
 const operator = {
@@ -287,7 +287,7 @@ test("stock recovers serially with sampled budgets; pause and reduction affect o
     state = cards.startCooldown(state, card, 200);
     state = cards.setRedeployTimeContribution({ ...state, tick: 5 }, card, {
         id: "longer-recovery",
-        value: [attribute.create({ addition: 10 })],
+        value: [modifier.create({ addition: 10 })],
     });
     state = deployment.advance({ ...state, tick: 10 });
     assert.equal(cards.get(state, card).stock, 1);

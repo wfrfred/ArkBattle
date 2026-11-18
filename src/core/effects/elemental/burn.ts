@@ -1,6 +1,6 @@
 import { update } from "../../battle/unit.js";
 import { scope } from "../../lifetime/operations.js";
-import * as attribute from "../../unit/attribute.js";
+import * as modifier from "../../common/modifier.js";
 import * as effects from "../../unit/effect/operations.js";
 import * as units from "../../unit/query.js";
 import type { OrdinaryDefinition as EffectDefinition } from "../../unit/effect/definition.js";
@@ -37,7 +37,7 @@ function resistanceReduction(amount: number): EffectDefinition<object, Vitality>
                 self.host,
                 setContribution("resistance", {
                     id: `@effect/${self.id}/resistance`,
-                    value: [attribute.create({ addition: -amount })],
+                    value: [modifier.create({ addition: -amount })],
                 }),
             ),
         onDisable: (battle, self) =>

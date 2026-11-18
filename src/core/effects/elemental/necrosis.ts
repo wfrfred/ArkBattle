@@ -2,7 +2,7 @@ import { update } from "../../battle/unit.js";
 import { scope } from "../../lifetime/operations.js";
 import { TICKS_PER_SECOND } from "../../tick.js";
 import { silence, blockSpRecovery } from "../control.js";
-import * as attribute from "../../unit/attribute.js";
+import * as modifier from "../../common/modifier.js";
 import * as effects from "../../unit/effect/operations.js";
 import * as units from "../../unit/query.js";
 import { modify } from "../../unit/skill/sp.js";
@@ -89,7 +89,7 @@ export function createAttackReduction(parameters: AttackReductionParameters): De
                       setAttackContribution({
                           id: `@effect/${self.id}/attack`,
                           value: [
-                              attribute.create({
+                              modifier.create({
                                   finalScaler: 1 - parameters.attackReductionRatio,
                               }),
                           ],
@@ -133,7 +133,7 @@ export function createAttackReduction(parameters: AttackReductionParameters): De
                         units.ref(unit),
                         setAttackContribution({
                             id: `@effect/${self.id}/attack`,
-                            value: [attribute.create({ finalScaler: scaler })],
+                            value: [modifier.create({ finalScaler: scaler })],
                         }),
                     );
                 }

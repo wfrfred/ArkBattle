@@ -4,6 +4,7 @@ import type { Id as DefinitionId } from "../../action/definition.js";
 import { Actions } from "../../action/actions.js";
 import type * as contribution from "../../../common/contribution.js";
 import * as attribute from "../../attribute.js";
+import type * as modifier from "../../../common/modifier.js";
 import { createRegistrationOperations } from "../../registration.js";
 import type { Restriction as BaseRestriction } from "../../../restriction.js";
 
@@ -21,7 +22,7 @@ export interface RestrictionContext {
 
 export type Restriction = BaseRestriction<RestrictionContext>;
 
-export type Input = readonly attribute.Modifier[];
+export type Input = readonly modifier.Modifier[];
 
 interface Restrictions {
     readonly restrictions: readonly contribution.Contribution<Restriction>[];

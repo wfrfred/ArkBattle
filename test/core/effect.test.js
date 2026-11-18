@@ -10,7 +10,7 @@ import * as effects from "../../dist/core/unit/effect/index.js";
 import * as offense from "../../dist/core/unit/capability/offense/index.js";
 import * as deployment from "../../dist/core/battle/deployment/index.js";
 import * as cards from "../../dist/core/battle/deployment/card/index.js";
-import { create as modifier } from "../../dist/core/unit/attribute.js";
+import { create as modifier } from "../../dist/core/common/modifier.js";
 import { update, remove, lifetime as unitLifetime } from "../../dist/core/battle/unit.js";
 import { scope } from "../../dist/core/lifetime/index.js";
 

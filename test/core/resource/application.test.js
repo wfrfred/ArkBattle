@@ -13,7 +13,7 @@ import * as hpHealing from "../../../dist/core/battle/resource/hp/healing/index.
 import * as epHealing from "../../../dist/core/battle/resource/ep/healing/index.js";
 import * as vitality from "../../../dist/core/unit/capability/vitality/index.js";
 import * as elemental from "../../../dist/core/unit/capability/elemental/index.js";
-import * as attribute from "../../../dist/core/unit/attribute.js";
+import * as modifier from "../../../dist/core/common/modifier.js";
 import * as blocking from "../../../dist/core/battle/blocking/index.js";
 import * as skills from "../../../dist/core/unit/skill/index.js";
 import * as effects from "../../../dist/core/unit/effect/index.js";
@@ -328,7 +328,7 @@ test("APPLY-01: Receiving and BeforeCommit resource changes define the baseline 
                                 target,
                                 vitality.setMaxHpContribution({
                                     id: "larger-hp",
-                                    value: [attribute.create({ multiplier: 1 })],
+                                    value: [modifier.create({ multiplier: 1 })],
                                 }),
                             ),
                             value: pending,
@@ -389,7 +389,7 @@ test("APPLY-01: Receiving and BeforeCommit resource changes define the baseline 
     assert.equal(healingNotifications, 2);
 
     state = update(result.state, target, vitality.setMaxHpContribution({
-        id: "larger-hp", value: [attribute.create({ multiplier: 2 })],
+        id: "larger-hp", value: [modifier.create({ multiplier: 2 })],
     }));
     assert.equal(get(state, 1).vitality.health.hp, 187.5);
     assert.equal(vitality.resolveMaxHp(get(state, 1).definition.vitality, get(state, 1).vitality), 300);

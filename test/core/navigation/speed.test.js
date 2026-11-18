@@ -6,7 +6,7 @@ import { battle, get } from "../../helpers/battle.js";
 import { Hooks } from "../../../dist/core/hook.js";
 import { ref } from "../../../dist/core/unit/query.js";
 import { update } from "../../../dist/core/battle/unit.js";
-import { create } from "../../../dist/core/unit/attribute.js";
+import { create } from "../../../dist/core/common/modifier.js";
 import { advance, setSpeedContribution, removeSpeedContribution, setSpeedRange, clearSpeedRange, setRestriction, removeRestriction } from "../../../dist/core/unit/capability/locomotion/index.js";
 
 const close = (actual, expected) => assert.ok(Math.abs(actual - expected) < 1e-12);

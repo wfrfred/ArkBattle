@@ -12,7 +12,7 @@ import * as hpHealing from "../../../dist/core/battle/resource/hp/healing/index.
 import * as epHealing from "../../../dist/core/battle/resource/ep/healing/index.js";
 import * as vitality from "../../../dist/core/unit/capability/vitality/index.js";
 import * as elemental from "../../../dist/core/unit/capability/elemental/index.js";
-import * as attribute from "../../../dist/core/unit/attribute.js";
+import * as modifier from "../../../dist/core/common/modifier.js";
 import { createArknightsElementalDefinition } from "../../../dist/data/effect/elemental.js";
 
 function damageRequest(source, target, power, type = "TRUE", penetration = { fixed: 0, proportional: 0 }) {
@@ -131,7 +131,7 @@ test("HP-01: formulas use the calculated type and sampled defenses without begin
     assert.equal(get(calculated.state, 1).vitality.health.hp, 1000);
     assert.equal(receptions, 0);
     state = update(calculated.state, target, vitality.setContribution("resistance", {
-        id: "later-resistance", value: [attribute.create({ finalAddition: 20 })],
+        id: "later-resistance", value: [modifier.create({ finalAddition: 20 })],
     }));
     const applied = hpDamage.applyDamage(request, { ...calculated, state });
     assert.equal(applied.value.application.hpLoss, 200);
@@ -213,7 +213,7 @@ test("EP-01: full resistance preserves formula floors and sampled EP output; HP 
     assert.equal(incoming.parameters.type, "BURN");
     assert.deepEqual(get(calculated.state, 0).elemental.ep, elemental.elementValues(1000));
     state = update(calculated.state, target, units.compose(elemental.setContribution("elementResistance", {
-            id: "changed-after-calculation", value: [attribute.create({ finalAddition: -50 })],
+            id: "changed-after-calculation", value: [modifier.create({ finalAddition: -50 })],
         }), elemental.setRestriction("damageRestrictions", {
             id: "only-neural", value: { allows: (_current, { type }) => type === "NEURAL" },
         })));

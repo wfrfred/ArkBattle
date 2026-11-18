@@ -6,7 +6,7 @@ import type {
 } from "../../../unit/capability/deployable/capability.js";
 import type { Definition as OccupancyDefinition } from "../../../unit/capability/occupancy/capability.js";
 import type { Contribution } from "../../../common/contribution.js";
-import type { Modifier } from "../../../unit/attribute.js";
+import type { Modifier } from "../../../common/modifier.js";
 import type { Hooks } from "../../../hook.js";
 import type { Definition } from "./definition.js";
 import type { Restriction } from "./restriction.js";

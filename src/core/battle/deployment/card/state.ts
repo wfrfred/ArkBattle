@@ -1,6 +1,6 @@
 import * as contribution from "../../../common/contribution.js";
 import * as entries from "../../../common/collection/entries.js";
-import * as attribute from "../../../unit/attribute.js";
+import * as modifier from "../../../common/modifier.js";
 import type { Ref } from "../../../common/ref.js";
 import type { Unit } from "../../../unit/unit.js";
 import type { Deployable } from "../../../unit/capability/deployable/capability.js";
@@ -36,7 +36,7 @@ export function resolveRedeployTicks(card: Card<any>): number {
     return Math.max(
         0,
         Math.ceil(
-            attribute.apply(
+            modifier.apply(
                 card.definition.card.redeployTicks,
                 contribution.resolve(card.redeployTimeContributions).flat(),
             ),
@@ -189,7 +189,7 @@ function replaceClock<T extends Card<any>>(card: T, target: TimerTarget, clock: 
 
 export function setCostContribution<T extends Card<any>>(
     card: T,
-    entry: contribution.Contribution<readonly attribute.Modifier[]>,
+    entry: contribution.Contribution<readonly modifier.Modifier[]>,
 ): T {
     const costContributions = entries.set(card.costContributions, entry);
 
@@ -204,7 +204,7 @@ export function removeCostContribution<T extends Card<any>>(card: T, id: string)
 
 export function setRedeployTimeContribution<T extends Card<any>>(
     card: T,
-    entry: contribution.Contribution<readonly attribute.Modifier[]>,
+    entry: contribution.Contribution<readonly modifier.Modifier[]>,
 ): T {
     const redeployTimeContributions = entries.set(card.redeployTimeContributions, entry);
 

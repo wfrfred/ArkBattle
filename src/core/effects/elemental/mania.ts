@@ -10,7 +10,7 @@ import { ref } from "../../unit/effect/effect.js";
 import type { OrdinaryDefinition as EffectDefinition } from "../../unit/effect/definition.js";
 import { setHook, removeHook } from "../../unit/hook.js";
 import { compose, optional } from "../../unit/change.js";
-import * as attribute from "../../unit/attribute.js";
+import * as modifier from "../../common/modifier.js";
 import { hasAction } from "../../unit/capability/action/capability.js";
 import {
     setSpeedContribution,
@@ -75,7 +75,7 @@ function setSpeed(
         units.ref(host),
         amount === null
             ? removeSpeedContribution(key)
-            : setSpeedContribution({ id: key, value: [attribute.create({ addition: amount })] }),
+            : setSpeedContribution({ id: key, value: [modifier.create({ addition: amount })] }),
     );
 }
 

@@ -24,14 +24,14 @@ import { hasLocomotion } from "../../core/unit/capability/locomotion/index.js";
 
 import { hasVitality } from "../../core/unit/capability/vitality/index.js";
 import { hasClassification } from "../../core/unit/capability/classification/index.js";
-import * as attribute from "../../core/unit/attribute.js";
+import * as modifier from "../../core/common/modifier.js";
 import { TICKS_PER_SECOND } from "../../core/tick.js";
 import type { DeepseaParams, InfectionParams, MireParams } from "./definition.js";
 
 interface Modifiers {
-    readonly attack?: attribute.Modifier;
-    readonly attackSpeed?: attribute.Modifier;
-    readonly movementSpeed?: attribute.Modifier;
+    readonly attack?: modifier.Modifier;
+    readonly attackSpeed?: modifier.Modifier;
+    readonly movementSpeed?: modifier.Modifier;
 }
 
 interface PeriodicState {
@@ -123,8 +123,8 @@ export function createInfectionEffect(params: InfectionParams): Definition<Infec
         initialize: () => ({ remainingTicks: TICKS_PER_SECOND }),
         onEnable(battle, self) {
             return changeModifiers(battle, self.host, `terrain/${self.id}`, {
-                attack: attribute.create({ multiplier: params.attackBonusRatio }),
-                attackSpeed: attribute.create({ addition: params.attackSpeedBonus }),
+                attack: modifier.create({ multiplier: params.attackBonusRatio }),
+                attackSpeed: modifier.create({ addition: params.attackSpeedBonus }),
             });
         },
         onDisable: (battle, self) => changeModifiers(battle, self.host, `terrain/${self.id}`),
@@ -148,8 +148,8 @@ export function createDeepseaEffect(params: DeepseaParams): Definition<PeriodicS
         initialize: () => ({ nextTick: 0 }),
         onEnable(battle, self) {
             return changeModifiers(battle, self.host, `terrain/${self.id}`, {
-                attackSpeed: attribute.create({ multiplier: params.attackSpeedModifier }),
-                movementSpeed: attribute.create({ finalScaler: params.moveSpeedMultiplier }),
+                attackSpeed: modifier.create({ multiplier: params.attackSpeedModifier }),
+                movementSpeed: modifier.create({ finalScaler: params.moveSpeedMultiplier }),
             });
         },
         onDisable: (battle, self) => changeModifiers(battle, self.host, `terrain/${self.id}`),
@@ -201,10 +201,10 @@ export function createMireEffect(params: MireParams): Definition<MireState> {
             });
 
             return changeModifiers(battle, self.host, `terrain/${self.id}`, {
-                attackSpeed: attribute.create({ multiplier: stacks * params.attackSpeedPerStack }),
+                attackSpeed: modifier.create({ multiplier: stacks * params.attackSpeedPerStack }),
                 ...(enemy
                     ? {
-                          movementSpeed: attribute.create({
+                          movementSpeed: modifier.create({
                               multiplier: stacks * params.moveSpeedRatioPerStack,
                           }),
                       }

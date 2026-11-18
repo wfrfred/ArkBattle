@@ -15,7 +15,7 @@ import { ref } from '../../../dist/core/unit/query.js';
 import { createArrow } from '../../../dist/content/enemies/crossbowman/action.js';
 import { targetApplied } from '../../../dist/core/battle/resource/hp/damage/index.js';
 import { setAttackContribution } from '../../../dist/core/unit/capability/offense/index.js';
-import { create as modifier } from '../../../dist/core/unit/attribute.js';
+import { create as modifier } from '../../../dist/core/common/modifier.js';
 
 function setup(targetHooks = Hooks.empty()) {
   const source = initialize({ id: 0, position: [0, 0], definition: { hooks: Hooks.empty(),

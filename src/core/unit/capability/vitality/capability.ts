@@ -2,6 +2,7 @@ import type { State as BattleState, Result } from "../../../battle/state.js";
 import { assertNonnegativeNumber } from "../../../common/assert.js";
 import * as contribution from "../../../common/contribution.js";
 import * as attribute from "../../attribute.js";
+import type * as modifier from "../../../common/modifier.js";
 import type { Unit } from "../../unit.js";
 import type { Restriction } from "./restriction.js";
 import { createChange, type Change } from "../../change.js";
@@ -114,7 +115,7 @@ function settleHealth(battle: BattleState, previous: Unit & Vitality): BattleSta
 }
 
 export function setMaxHpContribution(
-    entry: contribution.Contribution<readonly attribute.Modifier[]>,
+    entry: contribution.Contribution<readonly modifier.Modifier[]>,
 ): Change<Unit & Vitality> {
     return updateMaxHp((_definition, state) => attribute.setContribution(state, entry));
 }

@@ -3,7 +3,7 @@ import * as units from "../../unit/query.js";
 import * as effects from "../../unit/effect/operations.js";
 import { ref } from "../../unit/effect/effect.js";
 import type { OrdinaryDefinition as EffectDefinition } from "../../unit/effect/definition.js";
-import * as attribute from "../../unit/attribute.js";
+import * as modifier from "../../common/modifier.js";
 import {
     hasVitality,
     setContribution,
@@ -36,7 +36,7 @@ function reduction(amount: number): EffectDefinition<object, Vitality> {
                 self.host,
                 setContribution("defense", {
                     id: `@effect/${self.id}/defense`,
-                    value: [attribute.create({ addition: -amount })],
+                    value: [modifier.create({ addition: -amount })],
                 }),
             ),
         onDisable: (battle, self) =>

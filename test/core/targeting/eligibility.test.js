@@ -16,7 +16,7 @@ import * as epDamage from "../../../dist/core/battle/resource/ep/damage/index.js
 import * as effects from "../../../dist/core/unit/effect/index.js";
 import { hasLayer, setType } from "../../../dist/core/unit/capability/layer/index.js";
 import { disappear } from "../../../dist/core/unit/capability/presence/index.js";
-import { create as modifier } from "../../../dist/core/unit/attribute.js";
+import { create as modifier } from "../../../dist/core/common/modifier.js";
 import { healFree } from "../../../dist/core/effects/protection.js";
 import { createArknightsElementalDefinition } from "../../../dist/data/effect/elemental.js";
 

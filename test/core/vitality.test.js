@@ -11,7 +11,7 @@ import { TICKS_PER_SECOND } from "../../dist/core/tick.js";
 import * as hpDamage from "../../dist/core/battle/resource/hp/damage/index.js";
 import * as hpHealing from "../../dist/core/battle/resource/hp/healing/index.js";
 import * as vitality from "../../dist/core/unit/capability/vitality/index.js";
-import * as attribute from "../../dist/core/unit/attribute.js";
+import * as modifier from "../../dist/core/common/modifier.js";
 import * as presence from "../../dist/core/unit/capability/presence/index.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import * as actions from "../../dist/core/unit/action/index.js";
@@ -74,10 +74,10 @@ test("HP-07: natural recovery samples current attributes after Effects and befor
         onTick(current, self) {
             return update(current, self.host, units.compose(
                 vitality.setContribution("recoverySpeed", {
-                    id: "fixed", value: current => [attribute.create({ addition: current.tick * 3 })],
+                    id: "fixed", value: current => [modifier.create({ addition: current.tick * 3 })],
                 }),
                 vitality.setContribution("recoveryRatio", {
-                    id: "ratio", value: [attribute.create({ addition: 0.03 })],
+                    id: "ratio", value: [modifier.create({ addition: 0.03 })],
                 }),
             ));
         },
@@ -92,7 +92,7 @@ test("HP-07: natural recovery samples current attributes after Effects and befor
     assert.equal(state.events.some(event => event.type === "HEAL"), false);
 
     state = update(state, target, vitality.setMaxHpContribution({
-        id: "larger-pool", value: [attribute.create({ multiplier: 1 })],
+        id: "larger-pool", value: [modifier.create({ multiplier: 1 })],
     }));
     state = step(state, []);
     assert.equal(vitality.resolveRecoverySpeed(state, get(state, 0)), 21);
@@ -101,11 +101,11 @@ test("HP-07: natural recovery samples current attributes after Effects and befor
     assert.equal(state.events.some(event => event.type === "HEAL"), false);
 
     state = update(state, target, vitality.setContribution("recoveryRatio", {
-        id: "ratio", value: [attribute.create({ addition: 2 })],
+        id: "ratio", value: [modifier.create({ addition: 2 })],
     }));
     assert.equal(vitality.resolveRecoverySpeed(state, get(state, 0)), 209);
     state = update(state, target, vitality.setContribution("recoverySpeed", {
-        id: "fixed", value: [attribute.create({ addition: 10000 })],
+        id: "fixed", value: [modifier.create({ addition: 10000 })],
     }));
     state = vitality.advance(state, target);
     assert.equal(get(state, 0).vitality.health.hp, 200);
@@ -159,7 +159,7 @@ test("HP-08: Health protection commits before its consequences and preserves the
                         assert.deepEqual(health, { hp: 1, minusHp: 50 });
                         return {
                             state: update(current, context.request.target, vitality.setContribution("defense", {
-                                id: "armor", value: [attribute.create({ addition: 20 })],
+                                id: "armor", value: [modifier.create({ addition: 20 })],
                             })),
                             value: { ...health, minusHp: 10 },
                         };
@@ -173,7 +173,7 @@ test("HP-08: Health protection commits before its consequences and preserves the
                         observed = application;
                         assert.deepEqual(get(current, request.target.id).vitality.health, application.after);
                         current = update(current, request.target, vitality.setMaxHpContribution({
-                            id: "larger-pool", value: [attribute.create({ multiplier: 1 })],
+                            id: "larger-pool", value: [modifier.create({ multiplier: 1 })],
                         }));
                         const recovery = healingRequest(null, request.target, 10);
                         return {
@@ -309,7 +309,7 @@ test("HP-09: Vitality settles life debt across damage, recovery and MaxHP change
     assert.deepEqual(get(naturallyRecovered, 0).vitality.health, { hp: 1, minusHp: 79 });
     assert.equal(naturallyRecovered.events.some(event => event.type === "HEAL"), false);
     const enlarged = update(second.state, target, vitality.setMaxHpContribution({
-        id: "larger-pool", value: [attribute.create({ multiplier: 1 })],
+        id: "larger-pool", value: [modifier.create({ multiplier: 1 })],
     }));
     assert.deepEqual(get(enlarged, 0).vitality.health, { hp: 1, minusHp: 79 });
     assert.equal(vitality.resolveMaxMinusHp(get(enlarged, 0).definition.vitality, get(enlarged, 0).vitality), 200);
@@ -317,7 +317,7 @@ test("HP-09: Vitality settles life debt across damage, recovery and MaxHP change
     assert.deepEqual(get(lowerCapacity, 0).vitality.health, { hp: 1, minusHp: 80 });
     assert.equal(vitality.resolveMaxMinusHp(get(lowerCapacity, 0).definition.vitality, get(lowerCapacity, 0).vitality), 50);
     const pausedRecovery = update(lowerCapacity, target, vitality.setContribution("recoverySpeed", {
-        id: "pause-recovery", value: [attribute.create({ addition: -TICKS_PER_SECOND })],
+        id: "pause-recovery", value: [modifier.create({ addition: -TICKS_PER_SECOND })],
     }));
     assert.equal(vitality.advance(pausedRecovery, target), pausedRecovery);
     assert.equal(get(vitality.advance(lowerCapacity, target), 0), undefined);

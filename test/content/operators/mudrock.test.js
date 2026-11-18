@@ -23,7 +23,7 @@ import { advance as advanceLocomotion } from "../../../dist/core/unit/capability
 import { setAttackContribution } from "../../../dist/core/unit/capability/offense/index.js";
 import { setMaxHpContribution } from "../../../dist/core/unit/capability/vitality/index.js";
 import { setType } from "../../../dist/core/unit/capability/layer/index.js";
-import { create as modifier } from "../../../dist/core/unit/attribute.js";
+import { create as modifier } from "../../../dist/core/common/modifier.js";
 import { Vec2 } from "../../../dist/core/common/vector.js";
 import { turn } from "../../../dist/core/unit/capability/facing/index.js";
 

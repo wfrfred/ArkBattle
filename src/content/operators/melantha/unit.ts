@@ -40,7 +40,7 @@ import {
     install,
 } from "../../../core/unit/effect/index.js";
 
-import * as attribute from "../../../core/unit/attribute.js";
+import * as modifier from "../../../core/common/modifier.js";
 import { secondsToTicks } from "../../../data/time.js";
 import { create as createAttack, hasTarget } from "./action.js";
 import type { AttackSpeedTiming } from "../../actions/timing.js";
@@ -84,7 +84,7 @@ function attackBonus(id: string, amount: number): EffectDefinition<object, Offen
                       unitRef(unit),
                       setAttackContribution({
                           id: `effect/${self.id}/attack`,
-                          value: [attribute.create({ multiplier: amount })],
+                          value: [modifier.create({ multiplier: amount })],
                       }),
                   );
         },

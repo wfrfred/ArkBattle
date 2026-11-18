@@ -18,7 +18,7 @@ import { unit, battle } from "../../helpers/action-fixture.js";
 import * as facing from "../../../dist/core/unit/capability/facing/index.js";
 import { actionCapability } from "../../helpers/actions.js";
 import { setSpeedContribution } from "../../../dist/core/unit/capability/action/index.js";
-import { create as modifier } from "../../../dist/core/unit/attribute.js";
+import { create as modifier } from "../../../dist/core/common/modifier.js";
 import { update } from "../../../dist/core/battle/unit.js";
 
 function definition(groups, prepare = state => ({ state, value: {} })) {

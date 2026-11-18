@@ -17,7 +17,7 @@ import { ref as skillRef, definition as createSkillDefinition } from "../../help
 import { create as createSkill, activate as activateSkill, advance as advanceSkill, finish as finishSkill } from "../../../dist/core/unit/skill/index.js";
 import { recover } from "../../../dist/core/unit/skill/sp.js";
 import { resolveAttack } from "../../../dist/core/unit/capability/offense/index.js";
-import { create as modifier } from "../../../dist/core/unit/attribute.js";
+import { create as modifier } from "../../../dist/core/common/modifier.js";
 import * as elemental from "../../../dist/core/unit/capability/elemental/index.js";
 import { elementValues, setContribution } from "../../../dist/core/unit/capability/elemental/index.js";
 import { createArknightsElementalDefinition } from "../../../dist/data/effect/elemental.js";

@@ -9,7 +9,7 @@ import * as targetable from "../../../dist/core/unit/capability/targetable/capab
 import * as targeting from "../../../dist/core/battle/targeting/index.js";
 import * as effects from "../../../dist/core/unit/effect/index.js";
 import { topK } from "../../../dist/core/common/collection/order.js";
-import { create as modifier } from "../../../dist/core/unit/attribute.js";
+import { create as modifier } from "../../../dist/core/common/modifier.js";
 import {
     invisible, invisibleRestriction, untargetable,
     camouflageRestriction, allyUntargetableRestriction,

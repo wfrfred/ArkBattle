@@ -6,7 +6,7 @@ import { battle, get } from "../helpers/battle.js";
 import * as units from "../../dist/core/unit/index.js";
 import * as skills from "../../dist/core/unit/skill/index.js";
 import * as skill from "../../dist/core/unit/capability/skill/index.js";
-import { create as modifier } from "../../dist/core/unit/attribute.js";
+import { create as modifier } from "../../dist/core/common/modifier.js";
 import { update } from "../../dist/core/battle/unit.js";
 import * as presence from "../../dist/core/unit/capability/presence/index.js";
 import { attribute } from "../helpers/attribute.js";
