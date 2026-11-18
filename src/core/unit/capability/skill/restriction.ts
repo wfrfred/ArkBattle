@@ -1,4 +1,4 @@
-import type * as contribution from "../../contribution/contribution.js";
+import type * as contribution from "../../../common/contribution.js";
 import type { Restriction as BaseRestriction } from "../../../restriction.js";
 import type { Unit } from "../../unit.js";
 import type { Skill } from "./capability.js";

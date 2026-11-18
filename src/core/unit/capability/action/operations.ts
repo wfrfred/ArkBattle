@@ -1,7 +1,7 @@
 import type { Unit } from "../../unit.js";
 import * as units from "../../query.js";
 import { createChange, type Change } from "../../change.js";
-import type * as contribution from "../../contribution/contribution.js";
+import type * as contribution from "../../../common/contribution.js";
 import * as attribute from "../../attribute.js";
 import { refreshCooldowns } from "../../action/operations.js";
 import type { Action, Input, State } from "./capability.js";

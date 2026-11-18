@@ -7,7 +7,7 @@ import { register, unregister } from "../../lifetime/operations.js";
 import * as units from "../query.js";
 import type { Unit } from "../unit.js";
 import { setHook, type EnterHook } from "../hook.js";
-import * as contribution from "../contribution/contribution.js";
+import * as contribution from "../../common/contribution.js";
 import { hasVitality } from "../capability/vitality/capability.js";
 import { isAlive } from "../capability/vitality/query.js";
 import { hasAction } from "../capability/action/capability.js";

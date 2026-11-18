@@ -1,5 +1,5 @@
 import type { Unit } from "../../unit.js";
-import type * as contribution from "../../contribution/contribution.js";
+import type * as contribution from "../../../common/contribution.js";
 import * as entries from "../../../common/collection/entries.js";
 import type { State as BattleState, Result } from "../../../battle/state.js";
 import type { Skill as SkillState } from "../../skill/skill.js";

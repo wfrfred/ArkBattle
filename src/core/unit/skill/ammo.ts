@@ -7,7 +7,6 @@ import type { Ref } from "../../common/ref.js";
 import type { State as BattleState, Result } from "../../battle/state.js";
 import type { Unit } from "../unit.js";
 import * as units from "../query.js";
-import type * as contribution from "../contribution/contribution.js";
 import type { Activation } from "./activation.js";
 import type { Skill } from "../capability/skill/capability.js";
 import { dispatch, ammoConsumed, ammoReplenished } from "../capability/skill/hook.js";
@@ -21,7 +20,8 @@ export interface Modifier {
     readonly ratio: number;
 }
 
-export type Input = contribution.Input<Modifier, Unit & Skill>;
+export type Input =
+    readonly Modifier[] | ((battle: BattleState, self: Unit & Skill) => readonly Modifier[]);
 
 export function resolveCapacity(base: number, modifiers: Iterable<Modifier>): number {
     let addition = 0;

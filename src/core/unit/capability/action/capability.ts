@@ -2,7 +2,7 @@ import type { State as BattleState, Result } from "../../../battle/state.js";
 import type { Unit } from "../../unit.js";
 import type { Id as DefinitionId } from "../../action/definition.js";
 import { Actions } from "../../action/actions.js";
-import type * as contribution from "../../contribution/contribution.js";
+import type * as contribution from "../../../common/contribution.js";
 import * as attribute from "../../attribute.js";
 import { createRegistrationOperations } from "../../registration.js";
 import type { Restriction as BaseRestriction } from "../../../restriction.js";

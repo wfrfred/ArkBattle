@@ -1,7 +1,7 @@
 import type { State as BattleState } from "../battle/state.js";
 import { assertFiniteNumber } from "../common/assert.js";
 import * as entries from "../common/collection/entries.js";
-import * as contribution from "./contribution/contribution.js";
+import * as contribution from "../common/contribution.js";
 
 export interface Modifier {
     readonly addition: number;
@@ -19,7 +19,8 @@ export interface Definition extends Range {
     readonly default: number;
 }
 
-export type Input<H> = contribution.Input<Modifier, H>;
+export type Input<H> =
+    readonly Modifier[] | ((battle: BattleState, self: H) => readonly Modifier[]);
 
 export interface State<I = readonly Modifier[]> extends Range {
     readonly contributions: readonly contribution.Contribution<I>[];

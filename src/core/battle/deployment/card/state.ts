@@ -1,4 +1,4 @@
-import * as contribution from "../../../unit/contribution/contribution.js";
+import * as contribution from "../../../common/contribution.js";
 import * as entries from "../../../common/collection/entries.js";
 import * as attribute from "../../../unit/attribute.js";
 import type { Ref } from "../../../common/ref.js";

@@ -1,7 +1,7 @@
 // Contract: [capability](../../docs/architecture/capability.md#属性与贡献).
 import assert from "node:assert/strict";
 import test from "node:test";
-import { resolve, resolveEntries } from "../../dist/core/unit/contribution/contribution.js";
+import { resolve, resolveEntries } from "../../dist/core/common/contribution.js";
 
 test("contributions keep independent sources and select a group's highest priority with a stable tie", () => {
     const independent = { id: "base", value: "independent" };

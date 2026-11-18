@@ -1,4 +1,4 @@
-import type { Contribution } from "../../unit/contribution/contribution.js";
+import type { Contribution } from "../../common/contribution.js";
 import type { Ref } from "../../common/ref.js";
 import { assertNonnegativeNumber, assertNonnegativeSafeInteger } from "../../common/assert.js";
 import type { Direction } from "../../geometry/direction.js";

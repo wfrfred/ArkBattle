@@ -4,7 +4,7 @@ import type { Result, State as BattleState } from "../../battle/state.js";
 import { TICKS_PER_SECOND } from "../../tick.js";
 import type { Unit } from "../unit.js";
 import * as units from "../query.js";
-import * as contribution from "../contribution/contribution.js";
+import * as contribution from "../../common/contribution.js";
 import * as attribute from "../attribute.js";
 import { hasVitality } from "../capability/vitality/capability.js";
 import { isAlive } from "../capability/vitality/query.js";

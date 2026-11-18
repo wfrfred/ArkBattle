@@ -2,7 +2,7 @@ import * as blocking from "../../../battle/blocking/operations.js";
 import { relations, usedCapacity } from "../../../battle/blocking/query.js";
 import type { State as BattleState } from "../../../battle/state.js";
 import * as entries from "../../../common/collection/entries.js";
-import type * as contribution from "../../contribution/contribution.js";
+import type * as contribution from "../../../common/contribution.js";
 import { createChange, type Change } from "../../change.js";
 import type { Ref } from "../../../common/ref.js";
 import type { Unit } from "../../unit.js";

@@ -1,4 +1,4 @@
-import type { Contribution } from "../../../unit/contribution/contribution.js";
+import type { Contribution } from "../../../common/contribution.js";
 import type { Result, State as BattleState } from "../../state.js";
 import type { Card } from "./card.js";
 import type { Restriction } from "../restriction.js";

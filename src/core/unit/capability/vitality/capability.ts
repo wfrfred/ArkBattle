@@ -1,6 +1,6 @@
 import type { State as BattleState, Result } from "../../../battle/state.js";
 import { assertNonnegativeNumber } from "../../../common/assert.js";
-import * as contribution from "../../contribution/contribution.js";
+import * as contribution from "../../../common/contribution.js";
 import * as attribute from "../../attribute.js";
 import type { Unit } from "../../unit.js";
 import type { Restriction } from "./restriction.js";

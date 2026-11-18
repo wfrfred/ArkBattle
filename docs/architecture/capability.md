@@ -54,7 +54,7 @@ hasClassification 与指定明确类别的 isType 提供结构／类别守卫，
 
 Offense、Vitality、Elemental、Locomotion、Targetable 与 SP 回复属性使用同一 Attribute 模型。它不代替当前 HP／EP／SP 余额、弹药聚合、阻挡容量政策或部署报价。Elemental 的 MaxEP 表示项目最终容量（含敌人级别预算），保留正容量前提，不将它误作原生基础 MAX_EP 字段的1000上限。
 
-Contribution 只管理来源选择：同组最高 priority，平局较小 ID，独立项全部保留；resolveEntries 保留登记元数据，resolve 返回有效值，二者不求值动态载荷。动态 Input 由所属领域按当前 battle／self 只读求值，静态输入由来源在明确时点更新。
+Contribution 是 common 中的来源登记与选择机制：同组最高 priority，平局较小 ID，独立项全部保留；resolveEntries 保留登记元数据，resolve 返回有效值，二者不求值动态载荷。动态 Input 由所属领域定义，并按当前 battle／self 只读求值，静态输入由来源在明确时点更新。
 
 MaxHP、Action 时序与 Blocking 等具有各自的变化后继，见对应领域；不把属性查询变成完整业务或统一同步所有领域。
 

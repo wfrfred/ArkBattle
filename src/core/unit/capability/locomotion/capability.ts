@@ -3,7 +3,7 @@ import type { State as BattleState, Result } from "../../../battle/state.js";
 import type { MotionMode } from "../../../battlefield/navigation/state.js";
 import { type WorldPosition } from "../../../geometry/coordinate.js";
 import type { Unit } from "../../unit.js";
-import type * as contribution from "../../contribution/contribution.js";
+import type * as contribution from "../../../common/contribution.js";
 import * as attribute from "../../attribute.js";
 import type { SteeringParameters } from "./steering.js";
 import { createRegistrationOperations } from "../../registration.js";

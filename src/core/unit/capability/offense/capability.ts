@@ -1,5 +1,5 @@
 import type { State as BattleState, Result } from "../../../battle/state.js";
-import type * as contribution from "../../contribution/contribution.js";
+import type * as contribution from "../../../common/contribution.js";
 import * as attribute from "../../attribute.js";
 import type { Unit } from "../../unit.js";
 import { createChange, type Change } from "../../change.js";

@@ -1,7 +1,7 @@
 import type { State as BattleState, Result } from "../../../battle/state.js";
 import { assertNonnegativeNumber, assertNonnegativeSafeInteger } from "../../../common/assert.js";
 import { roundToEven } from "../../../common/math.js";
-import * as contribution from "../../contribution/contribution.js";
+import * as contribution from "../../../common/contribution.js";
 import type { Unit } from "../../unit.js";
 import type { Relation, Hook } from "./contract.js";
 import type { Restriction } from "./restriction.js";

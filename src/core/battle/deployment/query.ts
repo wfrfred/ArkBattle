@@ -1,4 +1,4 @@
-import { resolveEntries, type Contribution } from "../../unit/contribution/contribution.js";
+import { resolveEntries, type Contribution } from "../../common/contribution.js";
 import type { Ref } from "../../common/ref.js";
 import type { Direction } from "../../geometry/direction.js";
 import type { TilePosition } from "../../geometry/coordinate.js";

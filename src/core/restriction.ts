@@ -1,5 +1,5 @@
 import type { State as BattleState } from "./battle/state.js";
-import { resolve, type Contribution } from "./unit/contribution/contribution.js";
+import { resolve, type Contribution } from "./common/contribution.js";
 
 export interface Restriction<C> {
     readonly allows: (battle: BattleState, context: C) => boolean;

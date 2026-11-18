@@ -1,5 +1,5 @@
 import * as attribute from "../../attribute.js";
-import type { Contribution } from "../../contribution/contribution.js";
+import type { Contribution } from "../../../common/contribution.js";
 import type { Unit } from "../../unit.js";
 import { roundToEven } from "../../../common/math.js";
 import type { State as BattleState, Result } from "../../../battle/state.js";
