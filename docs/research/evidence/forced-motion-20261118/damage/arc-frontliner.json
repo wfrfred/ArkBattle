@@ -1,0 +1,457 @@
+{
+  "checkedOn": "2026-11-19",
+  "provenance": {
+    "prefabs": {
+      "collectedOn": "2026-11-19",
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/attack-way-20261118/extract_aak_fuze_prefabs.py",
+        "bytes": 4757,
+        "sha256": "7daff49c07f3bd7045a38f611c343f909caef453830774e70203de3e3f308f0b"
+      },
+      "helper": {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/targeting-pipeline-20261109/content/extract_content.py",
+        "bytes": 12906,
+        "sha256": "37504c156e11e55c9c06174980fb1617281690ab3b01db9caa9dfd28937f5faa"
+      },
+      "sources": [
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "bytes": 477255,
+          "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_13.ab",
+          "bytes": 342400,
+          "sha256": "0b3c936babb315fa9771a7e78e4cd2b1dfdee9ce80e043fdac65122d8b424a59"
+        }
+      ],
+      "selection": {
+        "battle/enm_pfb_13.ab": [
+          "enemy_1328_cbjedi"
+        ]
+      },
+      "scope": "All MonoBehaviour components under selected character/module hierarchy roots; no live execution observation."
+    },
+    "templates": {
+      "collectedOn": "2026-11-19",
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/attack-way-20261118/extract_templates.py",
+        "bytes": 2922,
+        "sha256": "06f04626dd11953a074e24f847fd21798c43c824c187f89913c55412ba997031"
+      },
+      "helper": {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/attack-addon-order-20261102/content/decode_content.py",
+        "bytes": 8161,
+        "sha256": "d17abeee072576a29ca060884dcc0dd770fe0f8194ca7eed7b5c13b99b41e14e"
+      },
+      "source": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+        "bytes": 2151020,
+        "sha256": "8edcb8017c977cdf52c2593b58e21db96949f3ad1e6f904180ac1241f145ca79"
+      },
+      "scope": "Selected installed Buff template programs; concrete character/talent/module binding recorded separately. "
+    }
+  },
+  "result": {
+    "passives": [
+      {
+        "bundle": "battle/enm_pfb_13.ab",
+        "file": "CAB-d5a5ebb06b9b5c15f66b6f736b421497",
+        "pathId": "2466358622795164611",
+        "hierarchy": [
+          "enemy_1328_cbjedi_2",
+          "Talents",
+          "unbalanced_bleed"
+        ],
+        "objectSha256": "cb298c0cdccc7c3fb5568c9af2c3c2b71847203be0ea246e4c405987ed170143",
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": 3800760148018415462
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "3800760148018415462",
+          "name": "PassiveBuffAbility",
+          "cl": "PassiveBuffAbility",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "value": {
+          "_selector": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_metadata": {
+            "namedAsAlias": "",
+            "blackboardPrefix": ""
+          },
+          "_overrideSignalId": "",
+          "_interruptAbilityOnDetach": 0,
+          "_attachPassiveBuffsOnDummy": 1,
+          "_ignoreIfOwnerDead": 0,
+          "_forceAsDmgOrHealAbility": 0,
+          "_buffs": {
+            "Array": [
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "enemy_cbjedi_bleed",
+                "loadFromDB": 0,
+                "isDurableBuff": 0,
+                "isDamageMissable": 0,
+                "isSilenceable": 0,
+                "isStunnable": 0,
+                "isFreezable": 0,
+                "isLevitatable": 0,
+                "isGroundBoundable": 0,
+                "statusResistable": 2,
+                "templateKey": "enemy_cbjedi_bleed",
+                "disableOverride": 0,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": 0,
+                "clearAllStackCntWhenTimeUp": 0,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": 0,
+                "overrideEffectKey": "",
+                "overrideOnEventPriority": 0,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": 2,
+                "takeSnapshotWhenExtend": 0,
+                "durationKey": "duration",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": 2,
+                "triggerCnt": 0,
+                "triggerInterval": 1.0,
+                "waitFirstTriggerInterval": 1,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": 0,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": 0
+              }
+            ]
+          }
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_13.ab",
+        "file": "CAB-d5a5ebb06b9b5c15f66b6f736b421497",
+        "pathId": "4009788810133065458",
+        "hierarchy": [
+          "enemy_1328_cbjedi",
+          "Talents",
+          "unbalanced_bleed"
+        ],
+        "objectSha256": "680df392031ed2cad4e9caa96a2292137ea498f88d129560d46e6c1a377e46d6",
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": 3800760148018415462
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "3800760148018415462",
+          "name": "PassiveBuffAbility",
+          "cl": "PassiveBuffAbility",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "value": {
+          "_selector": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_metadata": {
+            "namedAsAlias": "",
+            "blackboardPrefix": ""
+          },
+          "_overrideSignalId": "",
+          "_interruptAbilityOnDetach": 0,
+          "_attachPassiveBuffsOnDummy": 1,
+          "_ignoreIfOwnerDead": 0,
+          "_forceAsDmgOrHealAbility": 0,
+          "_buffs": {
+            "Array": [
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "enemy_cbjedi_bleed",
+                "loadFromDB": 0,
+                "isDurableBuff": 0,
+                "isDamageMissable": 0,
+                "isSilenceable": 0,
+                "isStunnable": 0,
+                "isFreezable": 0,
+                "isLevitatable": 0,
+                "isGroundBoundable": 0,
+                "statusResistable": 2,
+                "templateKey": "enemy_cbjedi_bleed",
+                "disableOverride": 0,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": 0,
+                "clearAllStackCntWhenTimeUp": 0,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": 0,
+                "overrideEffectKey": "",
+                "overrideOnEventPriority": 0,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": 2,
+                "takeSnapshotWhenExtend": 0,
+                "durationKey": "duration",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": 2,
+                "triggerCnt": 0,
+                "triggerInterval": 1.0,
+                "waitFirstTriggerInterval": 1,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": 0,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": 0
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "templates": [
+      {
+        "bundle": "config/buff_template_holder.ab",
+        "file": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+        "pathId": "6070581171229484677",
+        "objectSha256": "c03149251d47fa31e6f6cb5b696f9e93925f51a97bf9ee335593c888bdcb6fec",
+        "templates": [
+          {
+            "templateKey": "periodic_damage_without_modify",
+            "effectKey": "buff_violent",
+            "onEventPriority": 0,
+            "eventToActions": {
+              "_items": {
+                "Array": [
+                  {
+                    "key": 2,
+                    "value": {
+                      "SerializedState": "[{\"_damageType\":\"PURE\",\"_damageKey\":\"damage\",\"_ignoreForSp\":true,\"_damageWithoutModify\":true,\"_attackType\":\"BUFF\",\"_isEnvDamage\":false,\"_isUndeadable\":false,\"_ignoreCancelReasonMask\":\"NONE\",\"_instantKillLikeDamage\":false,\"_isNotChangeableValue\":false,\"_multiplierByKey\":false,\"_multiplierKey\":\"cnt\",\"_modifierKey\":\"\",\"_setOriginalSource\":false,\"_originalSourceType\":\"SOURCE\",\"$type\":\"Torappu.Battle.Action.Nodes+NoSourceDamage\"}]",
+                      "SerializedObjectReferences": {
+                        "Array": []
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            "templateIndex": 282,
+            "events": [
+              {
+                "event": 2,
+                "actions": [
+                  {
+                    "_damageType": "PURE",
+                    "_damageKey": "damage",
+                    "_ignoreForSp": true,
+                    "_damageWithoutModify": true,
+                    "_attackType": "BUFF",
+                    "_isEnvDamage": false,
+                    "_isUndeadable": false,
+                    "_ignoreCancelReasonMask": "NONE",
+                    "_instantKillLikeDamage": false,
+                    "_isNotChangeableValue": false,
+                    "_multiplierByKey": false,
+                    "_multiplierKey": "cnt",
+                    "_modifierKey": "",
+                    "_setOriginalSource": false,
+                    "_originalSourceType": "SOURCE",
+                    "$type": "Torappu.Battle.Action.Nodes+NoSourceDamage"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "templateKey": "enemy_cbjedi_bleed",
+            "effectKey": "",
+            "onEventPriority": 0,
+            "eventToActions": {
+              "_items": {
+                "Array": [
+                  {
+                    "key": 2,
+                    "value": {
+                      "SerializedState": "[{\"_conditionNode\":{\"_targetType\":\"BUFF_OWNER\",\"$type\":\"Torappu.Battle.Action.Nodes+CheckEnemyUnbalanced\"},\"_succeedNodes\":[{\"_conditionNode\":{\"_targetType\":\"BUFF_OWNER\",\"_buffKeys\":[\"cbjedi_blood\"],\"isAND\":true,\"_loadFromBlackboard\":false,\"_checkBuffSource\":false,\"_buffSourceType\":\"BUFF_SOURCE\",\"_checkSourceHost\":false,\"$type\":\"Torappu.Battle.Action.Nodes+CheckContainsBuff\"},\"_succeedNodes\":null,\"_failNodes\":[{\"_buff\":{\"attributes\":{\"abnormalFlags\":[],\"abnormalImmunes\":[],\"abnormalAntis\":[],\"abnormalCombos\":[],\"abnormalComboImmunes\":[],\"attributeModifiers\":[]},\"buffKey\":\"cbjedi_blood\",\"loadFromDB\":false,\"isDurableBuff\":false,\"isDamageMissable\":false,\"isSilenceable\":false,\"isStunnable\":false,\"isFreezable\":false,\"isLevitatable\":false,\"isGroundBoundable\":false,\"statusResistable\":\"AUTOMATIC\",\"templateKey\":\"periodic_damage_without_modify\",\"disableOverride\":false,\"overrideKey\":null,\"overrideType\":\"DEFAULT\",\"maxStackCnt\":1,\"refreshRemainingTimeWhenStackMax\":false,\"clearAllStackCntWhenTimeUp\":false,\"maxValidStackCnt\":-1,\"independentCharacterSource\":false,\"overrideEffectKey\":\"weedy_skill_03_buff\",\"overrideOnEventPriority\":false,\"onEventPriority\":\"DEFAULT\",\"audioSignal\":null,\"lifeTimeType\":\"INFINITY\",\"takeSnapshotWhenExtend\":false,\"durationKey\":null,\"remainingTimeKey\":null,\"lifeTime\":0.0,\"triggerLifeType\":\"INFINITY\",\"triggerCnt\":0,\"triggerInterval\":-1.0,\"waitFirstTriggerInterval\":true,\"firstTriggerInterval\":-1.0,\"priority\":-1,\"priorityBBKeys\":[],\"stripBlackboardParamsWithBuffKey\":false,\"blackboard\":[],\"enableInitDirectionFromSource\":false},\"_buffOwner\":\"BUFF_OWNER\",\"_useSpecialBuffSource\":false,\"_specialBuffSource\":\"BUFF_SOURCE\",\"_isDerivedBuff\":false,\"_finishDerivedBuffIfParentFinish\":false,\"_inherateSourceProjectileFromParentBuff\":false,\"_hookEffectKeyFromSourceProjectile\":false,\"$type\":\"Torappu.Battle.Action.Nodes+CreateBuff\"}],\"$type\":\"Torappu.Battle.Action.Nodes+IfElse\"}],\"_failNodes\":[{\"_buffKey\":\"cbjedi_blood\",\"_loadFromBlackboard\":false,\"_decCntIfStack\":false,\"_updateOverrideMap\":true,\"_targetType\":\"BUFF_OWNER\",\"_checkBuffSource\":false,\"_sourceType\":\"BUFF_SOURCE\",\"_alsoClearNullSource\":false,\"_finishHostBuff\":false,\"_excludeThisBuff\":false,\"_decCntKey\":null,\"_decCnt\":1,\"$type\":\"Torappu.Battle.Action.Nodes+FinishBuffsById\"}],\"$type\":\"Torappu.Battle.Action.Nodes+IfElse\"}]",
+                      "SerializedObjectReferences": {
+                        "Array": []
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            "templateIndex": 1372,
+            "events": [
+              {
+                "event": 2,
+                "actions": [
+                  {
+                    "_conditionNode": {
+                      "_targetType": "BUFF_OWNER",
+                      "$type": "Torappu.Battle.Action.Nodes+CheckEnemyUnbalanced"
+                    },
+                    "_succeedNodes": [
+                      {
+                        "_conditionNode": {
+                          "_targetType": "BUFF_OWNER",
+                          "_buffKeys": [
+                            "cbjedi_blood"
+                          ],
+                          "isAND": true,
+                          "_loadFromBlackboard": false,
+                          "_checkBuffSource": false,
+                          "_buffSourceType": "BUFF_SOURCE",
+                          "_checkSourceHost": false,
+                          "$type": "Torappu.Battle.Action.Nodes+CheckContainsBuff"
+                        },
+                        "_succeedNodes": null,
+                        "_failNodes": [
+                          {
+                            "_buff": {
+                              "attributes": {
+                                "abnormalFlags": [],
+                                "abnormalImmunes": [],
+                                "abnormalAntis": [],
+                                "abnormalCombos": [],
+                                "abnormalComboImmunes": [],
+                                "attributeModifiers": []
+                              },
+                              "buffKey": "cbjedi_blood",
+                              "loadFromDB": false,
+                              "isDurableBuff": false,
+                              "isDamageMissable": false,
+                              "isSilenceable": false,
+                              "isStunnable": false,
+                              "isFreezable": false,
+                              "isLevitatable": false,
+                              "isGroundBoundable": false,
+                              "statusResistable": "AUTOMATIC",
+                              "templateKey": "periodic_damage_without_modify",
+                              "disableOverride": false,
+                              "overrideKey": null,
+                              "overrideType": "DEFAULT",
+                              "maxStackCnt": 1,
+                              "refreshRemainingTimeWhenStackMax": false,
+                              "clearAllStackCntWhenTimeUp": false,
+                              "maxValidStackCnt": -1,
+                              "independentCharacterSource": false,
+                              "overrideEffectKey": "weedy_skill_03_buff",
+                              "overrideOnEventPriority": false,
+                              "onEventPriority": "DEFAULT",
+                              "audioSignal": null,
+                              "lifeTimeType": "INFINITY",
+                              "takeSnapshotWhenExtend": false,
+                              "durationKey": null,
+                              "remainingTimeKey": null,
+                              "lifeTime": 0.0,
+                              "triggerLifeType": "INFINITY",
+                              "triggerCnt": 0,
+                              "triggerInterval": -1.0,
+                              "waitFirstTriggerInterval": true,
+                              "firstTriggerInterval": -1.0,
+                              "priority": -1,
+                              "priorityBBKeys": [],
+                              "stripBlackboardParamsWithBuffKey": false,
+                              "blackboard": [],
+                              "enableInitDirectionFromSource": false
+                            },
+                            "_buffOwner": "BUFF_OWNER",
+                            "_useSpecialBuffSource": false,
+                            "_specialBuffSource": "BUFF_SOURCE",
+                            "_isDerivedBuff": false,
+                            "_finishDerivedBuffIfParentFinish": false,
+                            "_inherateSourceProjectileFromParentBuff": false,
+                            "_hookEffectKeyFromSourceProjectile": false,
+                            "$type": "Torappu.Battle.Action.Nodes+CreateBuff"
+                          }
+                        ],
+                        "$type": "Torappu.Battle.Action.Nodes+IfElse"
+                      }
+                    ],
+                    "_failNodes": [
+                      {
+                        "_buffKey": "cbjedi_blood",
+                        "_loadFromBlackboard": false,
+                        "_decCntIfStack": false,
+                        "_updateOverrideMap": true,
+                        "_targetType": "BUFF_OWNER",
+                        "_checkBuffSource": false,
+                        "_sourceType": "BUFF_SOURCE",
+                        "_alsoClearNullSource": false,
+                        "_finishHostBuff": false,
+                        "_excludeThisBuff": false,
+                        "_decCntKey": null,
+                        "_decCnt": 1,
+                        "$type": "Torappu.Battle.Action.Nodes+FinishBuffsById"
+                      }
+                    ],
+                    "$type": "Torappu.Battle.Action.Nodes+IfElse"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -227,7 +227,9 @@ GROUND_BOUND 与 UNMOVABLE 是不同标志；isActuallyGroundBound 还会结合 
 
 **N：** `Enemy.OnTick` 每 5 个逻辑 Tick 取当前实际坐标，把它到上次采样点的距离加到累计值。该分支位于普通单位更新中，适用于自主运动和强制位移。`DamageByDistance` 读取同一累计值，用本次与 Buff 保存基线的差结算，并更新基线。
 
-温蒂 S3 命中附加独立的 `rupture`，安装时保存基线，周期与结束时消费差值，伤害为真实伤害。歌蕾蒂娅与暗索的 X 模组也使用 `DamageByDistance`，伤害为法术，由来源的使敌人失衡和结束牵引事件分别附加及移除 Buff。它们用 `CheckEnemyUnbalanced` 限定采样和结算，周期失效时结束 Buff。两种效果各自拥有伤害基线，同一敌人的移动累计值可供它们共同读取。[模板、配置和原生读写](../evidence/forced-motion-20261118/README.md#移动距离伤害)。
+温蒂 S3 命中附加独立的 `rupture`，安装时保存基线，周期与结束时消费差值，伤害为真实伤害。歌蕾蒂娅与暗索的 X 模组也使用 `DamageByDistance`，伤害为法术，由来源的使敌人失衡和结束牵引事件分别附加及按键移除对应 Buff。结束事件关闭来源匹配。它们用 `CheckEnemyUnbalanced` 限定采样和结算，周期失效时结束 Buff。两种效果各自拥有伤害基线，同一敌人的移动累计值可供它们共同读取。[模板、配置和原生读写](../evidence/forced-motion-20261118/README.md#移动距离伤害)。
+
+2026-11-19 补核弧光锋卫及锋卫长。常驻 `enemy_cbjedi_bleed` 周期检查当前失衡。检查通过且缺少 `cbjedi_blood` 时装上固定值真实伤害 Buff，检查失败时撤掉它。伤害模板直接使用 `NoSourceDamage`。在两个检查点之间退出并重新进入失衡时，下一次检查仍可保留已有伤害 Buff。这是模板的采样语义，实际同 Tick 轨迹尚未做实机观测。[弧光锋卫与伤害模板](../evidence/forced-motion-20261118/damage/arc-frontliner.json)。
 
 ## 8. Tick 顺序、移速与 moving
 

@@ -2,10 +2,11 @@
   "provenance": {
     "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
     "collectedOn": [
-      "2026-11-18"
+      "2026-11-18",
+      "2026-11-19"
     ],
     "collectionDateSource": "record fields",
-    "organizedOn": "2026-11-18",
+    "organizedOn": "2026-11-19",
     "client": {
       "dll": {
         "kind": "dll",
@@ -52,6 +53,7 @@
       "collision/ice-corner-velocity.json",
       "collision/stage-witness.json",
       "collision/tile-assets.json",
+      "damage/arc-frontliner.json",
       "damage/config.json",
       "damage/native.json",
       "formulas/force-native-selected.json",
@@ -161,10 +163,22 @@
         "sha256": "c73cd2fba6c387b9057357553cd6e3a09860c3cae1c0e484ab18a36e54bfdb02"
       },
       {
+        "path": "damage/arc-frontliner.json",
+        "kind": "record",
+        "bytes": 20413,
+        "sha256": "e00eccfcc8d2b3ed41f05cafaa1f80349244acea05d6ab5799c3aaaa5ee5067b"
+      },
+      {
         "path": "damage/config.json",
         "kind": "record",
         "bytes": 44773,
         "sha256": "9f236a77ec83576c830b55850aef0b638af9eea0b9834459a59af5008aa911b0"
+      },
+      {
+        "path": "damage/extract_arc_frontliner.py",
+        "kind": "historical-script",
+        "bytes": 1832,
+        "sha256": "51d146aeda976686ee404378cf346b68fd4111c09c9378e01af246f438b47474"
       },
       {
         "path": "damage/extract_config.py",
@@ -1761,6 +1775,7 @@
           "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99",
           "records": [
             "collision/ice-corner-prefab.json#/provenance/sources/1",
+            "damage/arc-frontliner.json#/provenance/prefabs/sources/0",
             "damage/config.json#/provenance/prefabs/sources/0",
             "formulas/mint-config.json#/provenance/prefabDecoder/sources/0",
             "push/prefabs.json#/provenance/sources/0",
@@ -1803,6 +1818,28 @@
         },
         {
           "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_13.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_13.ab",
+          "sha256": "0b3c936babb315fa9771a7e78e4cd2b1dfdee9ce80e043fdac65122d8b424a59",
+          "records": [
+            "damage/arc-frontliner.json#/provenance/prefabs/sources/1"
+          ],
+          "bytes": 342400
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "sha256": "8edcb8017c977cdf52c2593b58e21db96949f3ad1e6f904180ac1241f145ca79",
+          "records": [
+            "damage/arc-frontliner.json#/provenance/templates/source",
+            "damage/config.json#/provenance/templates/source",
+            "push/templates.json#/provenance/source"
+          ],
+          "bytes": 2151020
+        },
+        {
+          "kind": "bundle",
           "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
           "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
           "sha256": "0d0b4c0f9252c14a69a20d4bea09527403dd3eddfc2f7bcd757c3c30cf37ffc3",
@@ -1822,17 +1859,6 @@
             "damage/config.json#/provenance/prefabs/sources/2"
           ],
           "bytes": 749424
-        },
-        {
-          "kind": "bundle",
-          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
-          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
-          "sha256": "8edcb8017c977cdf52c2593b58e21db96949f3ad1e6f904180ac1241f145ca79",
-          "records": [
-            "damage/config.json#/provenance/templates/source",
-            "push/templates.json#/provenance/source"
-          ],
-          "bytes": 2151020
         },
         {
           "kind": "bundle",

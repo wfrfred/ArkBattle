@@ -50,7 +50,8 @@
 
 - 当前 `Enemy..ctor`（77876）在 `0x180ac9a6e–82` 用周期 5 初始化 `m_updatePosTicker`。`Enemy.OnTick`（77845）在 `0x180ac106d–1125` 取当前位置和旧采样点的距离，加到 `m_totalMoveDist`。`DamageByDistance.Execute`（99181）在 `0x1810fbf0c` 读取它，`0x1810fbf75–8c` 计算与保存值的差，随后更新基线并执行预结算伤害分支。`CheckEnemyUnbalanced.Execute`（101818）在 `0x1811e2592` 读取当前失衡状态。[伤害与周期初始化](damage/native.json)、[累计值的更新](collision/contact-ranges.json)。
 - 温蒂 `skchr_weedy_3` 的 RangedAttack 选择 `projectile_weedy_s3`，同时通过命中 Buff 分别绑定 `knockback[dir]` 和 `rupture`。后者的事件 0 初始化距离基线，事件 2 与 1 分别处理周期与结束。该模板的伤害类型为 `PURE`，专三配置的伤害系数为 1200，持续时间 8 秒，更新间隔黑板值 0.066 秒。[技能和 Buff 配置](damage/config.json)、[温蒂技能说明](https://m.prts.wiki/w/温蒂)。
-- 歌蕾蒂娅和暗索的 X 模组特性组件 `glady_equip_1_1_p1` 和 `rope_equip_1_1_p1` 分别绑定 `glady_e_trait` 和 `rope_e_trait`。在事件 52 附加对应位移法伤 Buff，事件 53 移除。当前方法 `Buff.OnMakeEnemyUnbalanced`（66194）、`Buff.OnEndPulling`（66203）分别派发 52、53。位移法伤模板通过 `CheckEnemyUnbalanced` 检查目标，周期分支检查失败时结束 Buff。[模组与模板配置](damage/config.json)、[事件派发和失衡检查](damage/native.json)、[歌蕾蒂娅](https://prts.wiki/w/歌蕾蒂娅)、[暗索](https://prts.wiki/w/暗索)。
+- 歌蕾蒂娅和暗索的 X 模组特性组件 `glady_equip_1_1_p1` 和 `rope_equip_1_1_p1` 分别绑定 `glady_e_trait` 和 `rope_e_trait`。在事件 52 附加对应位移法伤 Buff，事件 53 对事件目标按对应 Buff key 移除，`_checkBuffSource=false`。当前方法 `Buff.OnMakeEnemyUnbalanced`（66194）、`Buff.OnEndPulling`（66203）分别派发 52、53。位移法伤模板通过 `CheckEnemyUnbalanced` 检查目标，周期分支检查失败时结束 Buff。[模组与模板配置](damage/config.json)、[事件派发和失衡检查](damage/native.json)、[歌蕾蒂娅](https://prts.wiki/w/歌蕾蒂娅)、[暗索](https://prts.wiki/w/暗索)。
+- 2026-11-19 从 `battle/enm_pfb_13.ab` 复提两种弧光锋卫。两者的 `Talents/unbalanced_bleed` 都挂 `enemy_cbjedi_bleed`。模板索引 1372 仅配置周期事件 2，消费当前失衡和自身是否已有 `cbjedi_blood`，按检查结果创建或结束该 Buff。伤害模板索引 282 周期执行 `NoSourceDamage`，伤害类型为 `PURE`。[Prefab 与模板](damage/arc-frontliner.json)、[弧光锋卫](https://prts.wiki/w/弧光锋卫)。
 
 ## 复查
 
@@ -67,6 +68,7 @@ uv run --offline "$batch/state/extract_state.py" --out "$work/state/native-state
 python "$batch/formulas/extract_mint_config.py" --out "$work/formulas/mint-config.json"
 python "$batch/formulas/decode_game_consts.py" --out "$work/formulas/force-tables.json"
 python "$batch/damage/extract_config.py" --out "$work/damage/config.json"
+python "$batch/damage/extract_arc_frontliner.py" --out "$work/damage/arc-frontliner.json"
 uv run --offline --with 'capstone==5.0.7' python "$batch/collision/extract_ranges.py" \
   --out "$work/damage/native.json" --index 99181 101818 77876 66194 66203
 uv run --locked "$skill/scripts/replay.py" "$batch" --out "$work/native" \
