@@ -10,8 +10,10 @@ import type { Timing as AttackTiming } from "../../actions/timing.js";
 import type { Profile } from "../../../data/unit/enemy.js";
 import { perSecondToPerTick } from "../../../data/time.js";
 import { assertNonnegativeSafeInteger, assertPositiveNumber } from "../../../core/common/assert.js";
-import { create as createProjectile } from "../../../core/battle/projectile.js";
-import type { Projectile as ProjectileInstance } from "../../../core/projectile/index.js";
+import {
+    create as createProjectile,
+    type Projectile as ProjectileInstance,
+} from "../../../core/projectile/index.js";
 import type { State as BattleState } from "../../../core/battle/index.js";
 import * as tracking from "../../projectiles/tracking.js";
 import { hasOffense, resolveAttack } from "../../../core/unit/capability/offense/index.js";

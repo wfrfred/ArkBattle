@@ -1,4 +1,4 @@
-import { update } from "../../battle/unit.js";
+import { update } from "../../unit/operations.js";
 import { TICKS_PER_SECOND } from "../../tick.js";
 import * as units from "../../unit/query.js";
 import * as effects from "../../unit/effect/operations.js";

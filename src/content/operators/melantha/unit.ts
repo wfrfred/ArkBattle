@@ -1,7 +1,6 @@
 import { Hooks } from "../../../core/hook.js";
 import * as unitHooks from "../../../core/unit/hook.js";
 import { normal as normalSite } from "../../terrain/condition.js";
-import { update as updateUnit } from "../../../core/battle/unit.js";
 import { scope } from "../../../core/lifetime/index.js";
 import { createArknightsElementalDefinition } from "../../../data/effect/elemental.js";
 import {
@@ -12,6 +11,7 @@ import {
     setState as setActionState,
 } from "../../../core/unit/action/index.js";
 import {
+    update as updateUnit,
     get as getCurrentUnit,
     ref as unitRef,
     type Definition as UnitDefinition,

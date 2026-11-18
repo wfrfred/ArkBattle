@@ -3,7 +3,7 @@ import { attribute as defineAttribute } from "../helpers/attribute.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { Hooks } from "../../dist/core/hook.js";
-import { update } from "../../dist/core/battle/unit.js";
+import { update } from "../../dist/core/unit/operations.js";
 import * as units from "../../dist/core/unit/index.js";
 import * as facing from "../../dist/core/unit/capability/facing/index.js";
 import * as locomotion from "../../dist/core/unit/capability/locomotion/index.js";

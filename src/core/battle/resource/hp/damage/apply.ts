@@ -7,7 +7,7 @@ import { prepare, setHook } from "../../../../unit/hook.js";
 import * as vitality from "../../../../unit/capability/vitality/operations.js";
 import { isAlive } from "../../../../unit/capability/vitality/query.js";
 import { appendEvents, type Result, type State as BattleState } from "../../../state.js";
-import { remove, update } from "../../../unit.js";
+import { remove, update } from "../../../../unit/operations.js";
 import type { Calculated, Outcome, Pending, Reason, Request } from "./contract.js";
 import {
     type CommitContext,

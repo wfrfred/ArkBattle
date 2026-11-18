@@ -6,7 +6,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { battle } from "../helpers/battle.js";
 import * as units from "../../dist/core/unit/index.js";
-import { remove } from "../../dist/core/battle/unit.js";
+import { remove } from "../../dist/core/unit/operations.js";
 import * as lifetimes from "../../dist/core/lifetime/index.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import * as actions from "../../dist/core/unit/action/index.js";

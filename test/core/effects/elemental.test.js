@@ -4,7 +4,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { battle as createBattle, get as getUnit } from "../../helpers/battle.js";
 import { Hooks } from "../../../dist/core/hook.js";
-import { update as applyUnitChanges } from "../../../dist/core/battle/unit.js";
+import { update as applyUnitChanges } from "../../../dist/core/unit/operations.js";
 import * as unitQueries from "../../../dist/core/unit/index.js";
 import { resolveDefense } from "../../../dist/core/unit/capability/vitality/index.js";
 import { selectDamage } from "../../helpers/targeting.js";

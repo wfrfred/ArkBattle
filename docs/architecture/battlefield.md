@@ -1,6 +1,6 @@
 # Battlefield
 
-Battlefield 保存战场的空间事实，提供纯状态写回和只读查询。Unit 的完整登场、离场、Hook、Lifetime、部署账务和阻挡关系结算由对应的 Battle／Unit 领域负责。
+Battlefield 保存战场的空间事实，提供纯状态写回和只读查询。Unit 的完整登场、离场、Hook 与 Lifetime 由 Unit 领域负责；部署账务和阻挡关系由相应领域结算。
 
 ## 状态归属
 
@@ -40,7 +40,7 @@ Map 保存矩形地块布局、标记和阻隔边。Tile 引用静态 Definition
 
 批量写回先撤销受影响对象的旧占格，再登记最终布局。地图内登记、同槽唯一性由结构写入口维护，两个不同槽可以共存。索引只表达当前结构，不代表 Support 已经通知过的业务配对，详见 [Occupancy](occupancy.md)。
 
-Content 提交 Capability Change 或调用完整领域操作。`battle/unit.update` 组织全批转换、一次发布与后续 Settlement；`battle/unit.add`／`remove` 组织生命周期。纯 Field 写回不是这些操作的替代入口，完整协议见 [Unit 批量变更](api-conventions.md#51-unit-完整操作与批量变更)。
+Content 提交 Capability Change 或调用完整领域操作。`unit.update` 组织全批转换、一次发布与后续 Settlement；`unit.add`／`remove` 组织生命周期。纯 Field 写回不是这些操作的替代入口，完整协议见 [Unit 批量变更](api-conventions.md#51-unit-完整操作与批量变更)。
 
 ## Navigation 与 Spatial
 

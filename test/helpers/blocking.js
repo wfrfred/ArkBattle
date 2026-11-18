@@ -4,7 +4,7 @@ import { normal } from '../../dist/content/terrain/definition.js';
 import { initialize, getUnit } from "./unit.js";
 import { ref } from "../../dist/core/unit/query.js";
 import { createBattleState } from "../../dist/core/battle/state.js";
-import { add as addUnit } from "../../dist/core/battle/unit.js";
+import { add as addUnit } from "../../dist/core/unit/operations.js";
 import { create } from "../../dist/core/battlefield/state.js";
 import { create as createMap } from "../../dist/core/battlefield/map/map.js";
 import { create as createTile } from "../../dist/core/battlefield/map/tile.js";

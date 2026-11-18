@@ -10,7 +10,7 @@ import {
     type Mechanism,
 } from "../mechanism/mechanism.js";
 import type { Ref } from "../common/ref.js";
-import { add, remove as removeUnit } from "./unit.js";
+import { add, remove as removeUnit } from "../unit/operations.js";
 import type { State as BattleState } from "./state.js";
 import type { Definitions } from "../unit/capability/catalog.js";
 

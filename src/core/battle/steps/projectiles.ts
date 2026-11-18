@@ -1,5 +1,5 @@
 import type { Ref } from "../../common/ref.js";
-import { advance, stop } from "../projectile.js";
+import { advance, stop } from "../../projectile/operations.js";
 import type { Projectile } from "../../projectile/projectile.js";
 import type { State as BattleState } from "../state.js";
 import type { Command } from "../contract.js";

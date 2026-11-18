@@ -4,7 +4,7 @@ import * as unitLifecycle from "../../dist/core/unit/hook.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { battle, unit, actionDefinition } from "../helpers/action-fixture.js";
-import * as projectiles from "../../dist/core/battle/projectile.js";
+import * as projectiles from "../../dist/core/projectile/operations.js";
 import * as projectilesQuery from "../../dist/core/projectile/query.js";
 import { advanceProjectiles } from "../../dist/core/battle/steps/projectiles.js";
 

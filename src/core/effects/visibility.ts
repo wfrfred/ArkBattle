@@ -1,4 +1,4 @@
-import { update as updateUnit } from "../battle/unit.js";
+import { update as updateUnit } from "../unit/operations.js";
 
 import type { OrdinaryDefinition as Definition } from "../unit/effect/index.js";
 import * as units from "../unit/index.js";

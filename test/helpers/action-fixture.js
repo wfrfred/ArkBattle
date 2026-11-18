@@ -4,7 +4,7 @@ import { tiles as tileEntries } from './tiles.js';
 import { normal } from '../../dist/content/terrain/definition.js';
 import { selectDamage } from "./targeting.js";
 import { create as createBattlefield } from "../../dist/core/battlefield/state.js";
-import { add as addUnit } from "../../dist/core/battle/unit.js";
+import { add as addUnit } from "../../dist/core/unit/operations.js";
 import { createBattleState } from "../../dist/core/battle/state.js";
 import { create as createMap } from "../../dist/core/battlefield/map/map.js";
 import { create as createTile } from "../../dist/core/battlefield/map/tile.js";

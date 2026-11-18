@@ -1,7 +1,7 @@
 import { Hooks } from "../../core/hook.js";
 import * as unitHooks from "../../core/unit/hook.js";
 import type { State as BattleState } from "../../core/battle/index.js";
-import { remove as removeUnit, update } from "../../core/battle/unit.js";
+import { remove as removeUnit, update, ref as unitRef } from "../../core/unit/index.js";
 import { at as occupancyAt } from "../../core/battlefield/occupancy.js";
 import type { TilePosition } from "../../core/geometry/coordinate.js";
 import { hasOccupancy } from "../../core/unit/capability/occupancy/index.js";
@@ -11,7 +11,6 @@ import {
     setBlockerRestriction as setRestriction,
     type Restriction,
 } from "../../core/unit/capability/blocking/index.js";
-import { ref as unitRef } from "../../core/unit/index.js";
 import { apply, restore, type Configuration, type Definition } from "./tile.js";
 
 const groundBlockingRestriction: Restriction = {

@@ -15,7 +15,7 @@ import { appendEvents } from "../../dist/core/battle/state.js";
 import { step } from "../../dist/core/battle/index.js";
 
 import { createArknightsElementalDefinition } from "../../dist/data/effect/elemental.js";
-import { update } from "../../dist/core/battle/unit.js";
+import { update } from "../../dist/core/unit/operations.js";
 
 const elemental = createArknightsElementalDefinition({ receiver: "CHARACTER" });
 

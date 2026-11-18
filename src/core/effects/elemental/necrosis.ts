@@ -1,4 +1,4 @@
-import { update } from "../../battle/unit.js";
+import { update } from "../../unit/operations.js";
 import { scope } from "../../lifetime/operations.js";
 import { TICKS_PER_SECOND } from "../../tick.js";
 import { silence, blockSpRecovery } from "../control.js";

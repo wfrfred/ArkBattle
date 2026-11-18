@@ -7,7 +7,7 @@ import { Hooks } from "../../../dist/core/hook.js";
 import * as lifecycle from "../../../dist/core/unit/hook.js";
 import * as route from "../../../dist/core/unit/capability/route/index.js";
 import * as units from "../../../dist/core/unit/index.js";
-import { update } from "../../../dist/core/battle/unit.js";
+import { update } from "../../../dist/core/unit/operations.js";
 import { step } from "../../../dist/core/battle/runtime.js";
 import { appear } from "../../../dist/core/unit/capability/presence/index.js";
 import { search } from "../../../dist/core/battle/blocking/index.js";

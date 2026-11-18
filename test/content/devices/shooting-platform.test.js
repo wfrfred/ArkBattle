@@ -5,7 +5,7 @@ import { ref } from "../../../dist/core/unit/query.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { create as createPlatform } from "../../../dist/content/devices/shooting-platform.js";
-import { add, remove, update } from "../../../dist/core/battle/unit.js";
+import { add, remove, update } from "../../../dist/core/unit/operations.js";
 import { get as getTile } from "../../../dist/core/battlefield/map/map.js";
 import { Tile } from "../../../dist/core/geometry/coordinate.js";
 import { createDefinition as createDeployable, createCardDefinition } from "../../helpers/deployable.js";

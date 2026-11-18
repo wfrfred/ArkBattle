@@ -1,6 +1,6 @@
 import type { Ref } from "../../../common/ref.js";
 import type { State as BattleState } from "../../../battle/state.js";
-import { remove } from "../../../battle/unit.js";
+import { remove } from "../../operations.js";
 import { recover } from "../../../battle/deployment/dp.js";
 import * as cards from "../../../battle/deployment/card/operations.js";
 import { get as getCard } from "../../../battle/deployment/card/query.js";

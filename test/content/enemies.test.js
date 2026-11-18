@@ -20,7 +20,7 @@ import { createArrow } from '../../dist/content/enemies/crossbowman/action.js';
 import { initialize } from "../helpers/unit.js";
 
 import { createBattleState } from '../../dist/core/battle/state.js';
-import { add as addUnit } from '../../dist/core/battle/unit.js';
+import { add as addUnit } from '../../dist/core/unit/operations.js';
 import { getUnit } from '../helpers/unit.js';
 import { create as createBattlefield } from '../../dist/core/battlefield/state.js';
 import { create as createMap } from '../../dist/core/battlefield/map/map.js';
@@ -33,7 +33,7 @@ import { install } from '../../dist/core/unit/effect/index.js';
 import { inRange } from '../../dist/core/battle/targeting/index.js';
 import { advance as advanceAction } from '../../dist/core/unit/action/index.js';
 import { advance as advanceCombat } from '../../dist/core/battle/steps/combat.js';
-import { advance as advanceProjectiles } from '../../dist/core/battle/projectile.js';
+import { advance as advanceProjectiles } from '../../dist/core/projectile/operations.js';
 import * as projectilesQuery from '../../dist/core/projectile/index.js';
 import { advance as advanceSchedule } from '../../dist/core/battle/schedule/index.js';
 import { battle as createBattle } from '../helpers/battle.js';

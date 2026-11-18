@@ -7,7 +7,7 @@ import { create as createCrate } from "../../../dist/content/devices/crate.js";
 import { hole, normal } from "../../../dist/content/terrain/definition.js";
 import * as conditions from "../../../dist/content/terrain/condition.js";
 import { createBattleState } from "../../../dist/core/battle/state.js";
-import { add, remove } from "../../../dist/core/battle/unit.js";
+import { add, remove } from "../../../dist/core/unit/operations.js";
 import { create as createField } from "../../../dist/core/battlefield/state.js";
 import { create as createMap, get as getTile } from "../../../dist/core/battlefield/map/map.js";
 import { create as createTile } from "../../../dist/core/battlefield/map/tile.js";

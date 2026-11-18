@@ -26,3 +26,5 @@ export { compose, optional } from "./change.js";
 export { initialize } from "./initialize.js";
 
 export { ref, all, get } from "./query.js";
+
+export { add, update, remove } from "./operations.js";

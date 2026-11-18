@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { Hooks } from "../../../dist/core/hook.js";
 import { battle, get } from "../../helpers/battle.js";
-import { update } from "../../../dist/core/battle/unit.js";
+import { update } from "../../../dist/core/unit/operations.js";
 import * as units from "../../../dist/core/unit/query.js";
 import * as targetable from "../../../dist/core/unit/capability/targetable/capability.js";
 import * as targeting from "../../../dist/core/battle/targeting/index.js";

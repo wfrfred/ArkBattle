@@ -1,7 +1,7 @@
 import { Vec2 } from "../../../common/vector.js";
 import { assert, assertNonnegativeSafeInteger } from "../../../common/assert.js";
 import { createRng } from "../../../common/rng.js";
-import { remove as removeUnit, replace as replaceUnit, update } from "../../../battle/unit.js";
+import { remove as removeUnit, replace as replaceUnit, update } from "../../operations.js";
 import type { Ref } from "../../../common/ref.js";
 import { appendEvents, type State as BattleState, type Result } from "../../../battle/state.js";
 import * as navigation from "../../../battlefield/navigation/state.js";

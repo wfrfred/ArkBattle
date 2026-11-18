@@ -1,4 +1,4 @@
-import { replace as replaceUnits, lifetime as unitLifetime } from "../../battle/unit.js";
+import { replace as replaceUnits, lifetime as unitLifetime } from "../operations.js";
 import { cardForUnit } from "../../battle/deployment/query.js";
 import { type State as BattleState, type Result } from "../../battle/state.js";
 import type { Unit } from "../unit.js";

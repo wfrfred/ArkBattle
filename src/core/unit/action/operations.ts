@@ -1,4 +1,4 @@
-import { lifetime as unitLifetime, replace as replaceUnits } from "../../battle/unit.js";
+import { lifetime as unitLifetime, replace as replaceUnits } from "../operations.js";
 import type { Ref } from "../../common/ref.js";
 import { appendEvents, type State as BattleState, type Result } from "../../battle/state.js";
 import * as lifetimes from "../../lifetime/index.js";

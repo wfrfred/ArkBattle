@@ -1,4 +1,4 @@
-import { replace as replaceUnits } from "../../../battle/unit.js";
+import { replace as replaceUnits } from "../../operations.js";
 import { assertNonnegativeSafeInteger } from "../../../common/assert.js";
 import type { Ref } from "../../../common/ref.js";
 import { TICKS_PER_SECOND } from "../../../tick.js";

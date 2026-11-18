@@ -1,4 +1,4 @@
-import { update } from "../../battle/unit.js";
+import { update } from "../../unit/operations.js";
 import type { State as BattleState } from "../../battle/state.js";
 import type { Ref } from "../../common/ref.js";
 import { TICKS_PER_SECOND } from "../../tick.js";

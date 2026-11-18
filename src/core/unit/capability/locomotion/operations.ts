@@ -1,5 +1,5 @@
 import { Vec2 } from "../../../common/vector.js";
-import { replace } from "../../../battle/unit.js";
+import { replace } from "../../operations.js";
 import { assertNonnegativeNumber } from "../../../common/assert.js";
 import type { Ref } from "../../../common/ref.js";
 import { type State as BattleState } from "../../../battle/state.js";

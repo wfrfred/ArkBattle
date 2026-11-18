@@ -10,7 +10,7 @@ import type { Restriction } from "./restriction.js";
 import { assertSafeInteger } from "../../../common/assert.js";
 import type { Blockable } from "./blockable.js";
 import type { State as BattleState } from "../../../battle/state.js";
-import { replace } from "../../../battle/unit.js";
+import { replace } from "../../operations.js";
 import { TICKS_PER_SECOND } from "../../../tick.js";
 import * as units from "../../query.js";
 import type { WorldPosition } from "../../../geometry/coordinate.js";

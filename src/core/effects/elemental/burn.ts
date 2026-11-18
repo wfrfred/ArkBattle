@@ -1,4 +1,4 @@
-import { update } from "../../battle/unit.js";
+import { update } from "../../unit/operations.js";
 import { scope } from "../../lifetime/operations.js";
 import * as modifier from "../../common/modifier.js";
 import * as effects from "../../unit/effect/operations.js";

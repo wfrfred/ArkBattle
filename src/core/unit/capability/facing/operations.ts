@@ -1,4 +1,4 @@
-import { replace } from "../../../battle/unit.js";
+import { replace } from "../../operations.js";
 import type { State as BattleState } from "../../../battle/state.js";
 import type { Ref } from "../../../common/ref.js";
 import type { Unit } from "../../unit.js";

@@ -4,7 +4,7 @@ import { ref as unitRef } from "../../unit/query.js";
 import type { Deployable } from "../../unit/capability/deployable/capability.js";
 import { setDeployment, canRetreat, retreat } from "../../unit/capability/deployable/operations.js";
 import type { Command } from "../contract.js";
-import { add } from "../unit.js";
+import { add } from "../../unit/operations.js";
 import type { State as BattleState, Result } from "../state.js";
 import { initialize as initializeUnit } from "../../unit/initialize.js";
 import { Tile, type TilePosition } from "../../geometry/coordinate.js";

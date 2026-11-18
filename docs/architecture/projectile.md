@@ -8,7 +8,7 @@ Projectile 是独立运行实例，提供创建、正常推进和完整终结。
 
 ## 模块归属
 
-[projectile](../../src/core/projectile)保存类型、查询与异构容器，Battlefield 持有唯一集合；[battle/projectile.ts](../../src/core/battle/projectile.ts)组织创建、更新、推进与停止。领域 API 与不可变写回遵守[接口约定](api-conventions.md)，终止共用 [Lifetime](lifetime.md)。
+[projectile](../../src/core/projectile)集中模型、查询、异构容器与[完整操作](../../src/core/projectile/operations.ts)，Battlefield 持有唯一集合；Battle 调度当前 Tick 的候选与命令。领域 API 与不可变写回遵守[接口约定](api-conventions.md)，终止共用 [Lifetime](lifetime.md)。
 
 ## 2. 实例与 Definition
 

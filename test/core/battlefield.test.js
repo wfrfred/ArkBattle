@@ -17,7 +17,7 @@ import {
 import { effectiveMap, field } from "../../dist/core/battlefield/navigation/cache.js";
 import { within, overlap, sweep } from "../../dist/core/battlefield/spatial/query.js";
 import { disappear } from "../../dist/core/unit/capability/presence/operations.js";
-import { remove, update } from "../../dist/core/battle/unit.js";
+import { remove, update } from "../../dist/core/unit/operations.js";
 
 test("a field batch publishes final occupancy without moving bodies or executing lifecycle programs", () => {
     const notices = [];

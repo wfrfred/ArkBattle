@@ -5,7 +5,7 @@ import { test } from "node:test";
 import { battle, get } from "../../helpers/battle.js";
 import { Hooks } from "../../../dist/core/hook.js";
 import { ref } from "../../../dist/core/unit/query.js";
-import { update } from "../../../dist/core/battle/unit.js";
+import { update } from "../../../dist/core/unit/operations.js";
 import { create } from "../../../dist/core/common/modifier.js";
 import { advance, setSpeedContribution, removeSpeedContribution, setSpeedRange, clearSpeedRange, setRestriction, removeRestriction } from "../../../dist/core/unit/capability/locomotion/index.js";
 

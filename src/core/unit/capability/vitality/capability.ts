@@ -8,7 +8,7 @@ import type { Restriction } from "./restriction.js";
 import { createChange, type Change } from "../../change.js";
 import { createRegistrationOperations } from "../../registration.js";
 import * as units from "../../query.js";
-import { remove } from "../../../battle/unit.js";
+import { remove } from "../../operations.js";
 import { change, normalize, type Health } from "./health.js";
 
 export interface Definition {

@@ -3,7 +3,6 @@ import { scope, type Scope as LifetimeScope } from "../../core/lifetime/index.js
 import type { State as BattleState, OperationResult as Result } from "../../core/battle/index.js";
 import * as mechanisms from "../../core/mechanism/index.js";
 import type { MechanismDefinition } from "../../core/mechanism/index.js";
-import { remove as removeUnit } from "../../core/battle/unit.js";
 import type { Definition as TerrainDefinition } from "../../core/battlefield/map/terrain.js";
 import { contains } from "../../core/battlefield/map/map.js";
 import { World } from "../../core/geometry/coordinate.js";
@@ -297,7 +296,7 @@ export function createTerrainMechanism(
                 hasClassification(unit) &&
                 unit.definition.classification.side === "ENEMY",
             enter: (battle, unit) => ({
-                state: removeUnit(battle, units.ref(unit), { reason: "DEATH", killer: null }),
+                state: units.remove(battle, units.ref(unit), { reason: "DEATH", killer: null }),
                 value: null,
             }),
         });

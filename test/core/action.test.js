@@ -10,7 +10,7 @@ import * as skills from "../../dist/core/unit/skill/index.js";
 import { create as modifier } from "../../dist/core/common/modifier.js";
 import { attribute, vitality } from "../helpers/attribute.js";
 import { actionCapability } from "../helpers/actions.js";
-import { update } from "../../dist/core/battle/unit.js";
+import { update } from "../../dist/core/unit/operations.js";
 import { step } from "../../dist/core/battle/runtime.js";
 import { create as attack } from "../../dist/content/actions/attack.js";
 import * as presence from "../../dist/core/unit/capability/presence/index.js";

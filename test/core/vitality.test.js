@@ -5,7 +5,7 @@ import { battle, get } from "../helpers/battle.js";
 import { attribute as defineAttribute, vitality as defineVitality } from "../helpers/attribute.js";
 import { Hooks } from "../../dist/core/hook.js";
 import * as units from "../../dist/core/unit/index.js";
-import { update, remove } from "../../dist/core/battle/unit.js";
+import { update, remove } from "../../dist/core/unit/operations.js";
 import { step } from "../../dist/core/battle/runtime.js";
 import { TICKS_PER_SECOND } from "../../dist/core/tick.js";
 import * as hpDamage from "../../dist/core/battle/resource/hp/damage/index.js";

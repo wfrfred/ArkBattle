@@ -2,7 +2,7 @@ import type { TilePosition } from "../../../geometry/coordinate.js";
 import type { Direction } from "../../../geometry/direction.js";
 import type { Unit } from "../../unit.js";
 import type { State as BattleState, Result } from "../../../battle/state.js";
-import { enter, leave } from "../../../battle/occupancy.js";
+import { enter, leave } from "./operations.js";
 import { ref } from "../../query.js";
 import * as lifecycle from "../../hook.js";
 

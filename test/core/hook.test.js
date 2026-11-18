@@ -4,7 +4,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { battle } from "../helpers/battle.js";
 import * as units from "../../dist/core/unit/index.js";
-import { remove, update } from "../../dist/core/battle/unit.js";
+import { remove, update } from "../../dist/core/unit/operations.js";
 import * as hooks from "../../dist/core/hook.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import { leave, setHook, removeHook } from "../../dist/core/battle/unit-hook.js";

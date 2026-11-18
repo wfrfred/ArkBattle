@@ -1,6 +1,6 @@
 import { allows } from "../../restriction.js";
 import { Vec2 } from "../../common/vector.js";
-import { replace } from "../unit.js";
+import { replace } from "../../unit/operations.js";
 import type { Ref } from "../../common/ref.js";
 import { World } from "../../geometry/coordinate.js";
 import { get as getTile } from "../../battlefield/map/map.js";

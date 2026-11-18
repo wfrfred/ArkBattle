@@ -5,7 +5,7 @@ import { Tile, type WorldPosition } from "../../geometry/coordinate.js";
 import { initialize as initializeUnit } from "../../unit/initialize.js";
 import type { Id as UnitId, Unit } from "../../unit/unit.js";
 import type { State as BattleState } from "../state.js";
-import { add } from "../unit.js";
+import { add } from "../../unit/operations.js";
 import type { Hook } from "../unit-hook.js";
 import type { Spawn } from "./definition.js";
 import type { ActivePhase } from "./state.js";

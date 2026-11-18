@@ -1,6 +1,6 @@
 import type { Ref } from "../../../common/ref.js";
 import { appendEvents, type State as BattleState } from "../../../battle/state.js";
-import { replace } from "../../../battle/unit.js";
+import { replace } from "../../operations.js";
 import { TICKS_PER_SECOND } from "../../../tick.js";
 import * as units from "../../query.js";
 import type { Unit } from "../../unit.js";

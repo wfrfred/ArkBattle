@@ -1,7 +1,6 @@
 import type { Ref } from "../../core/common/ref.js";
 import type { State as BattleState } from "../../core/battle/index.js";
 import { roundToEven } from "../../core/common/math.js";
-import { update as updateUnit } from "../../core/battle/unit.js";
 import {
     applyDamage,
     calculateDamage,
@@ -57,7 +56,7 @@ function changeModifiers(
         return battle;
     }
 
-    return updateUnit(
+    return units.update(
         battle,
         units.ref(unit),
         [

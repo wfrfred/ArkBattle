@@ -17,7 +17,7 @@ import { advanceVitality } from "./steps/vitality.js";
 import { advanceSkills } from "./steps/skills.js";
 import { initialize as initializeSchedule } from "./schedule/state.js";
 import { initializeBattlefield } from "./initialization.js";
-import * as unit from "./unit.js";
+import * as unit from "../unit/operations.js";
 import { addCard, advance as advanceDeployment } from "./deployment/resources.js";
 import type { Card } from "./deployment/card/card.js";
 import { initialize as initializeDeployment } from "./deployment/deployment.js";

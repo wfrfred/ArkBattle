@@ -1,4 +1,4 @@
-import { update } from "../../battle/unit.js";
+import { update } from "../../unit/operations.js";
 import * as units from "../../unit/query.js";
 import * as effects from "../../unit/effect/operations.js";
 import { ref } from "../../unit/effect/effect.js";

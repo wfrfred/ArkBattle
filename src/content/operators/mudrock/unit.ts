@@ -3,7 +3,6 @@ import { TICKS_PER_SECOND } from "../../../core/tick.js";
 import { Hooks } from "../../../core/hook.js";
 import * as unitHooks from "../../../core/unit/hook.js";
 import { normal as normalSite } from "../../terrain/condition.js";
-import { update as updateUnit } from "../../../core/battle/unit.js";
 import { hasTargetable } from "../../../core/unit/capability/targetable/capability.js";
 import {
     hasClassification,
@@ -22,6 +21,7 @@ import {
 import type { Attack } from "../../actions/attack.js";
 import type { State as SkillAttackState } from "../../actions/skill.js";
 import {
+    update as updateUnit,
     get as getCurrentUnit,
     ref as unitRef,
     type Unit,

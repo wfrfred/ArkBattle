@@ -1,7 +1,7 @@
 // Contract: [action](../../../docs/architecture/action.md#8-普通攻击释放-hook-与移动).
 import * as hpDamage from "../../../dist/core/battle/resource/hp/damage/index.js";
 import { targetApplied } from "../../../dist/core/battle/resource/hp/damage/index.js";
-import { update as applyUnitChanges } from "../../../dist/core/battle/unit.js";
+import { update as applyUnitChanges } from "../../../dist/core/unit/operations.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { battle, unit, actionDefinition, geometry } from "../../helpers/action-fixture.js";

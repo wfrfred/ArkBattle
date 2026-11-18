@@ -2,7 +2,7 @@ import type { Ref } from "../../../common/ref.js";
 import { assert, assertNonnegativeNumber } from "../../../common/assert.js";
 import { TICKS_PER_SECOND } from "../../../tick.js";
 import type { State as BattleState, Result } from "../../../battle/state.js";
-import { remove, replace } from "../../../battle/unit.js";
+import { remove, replace } from "../../operations.js";
 import type { Unit } from "../../unit.js";
 import * as units from "../../query.js";
 import * as hooks from "../../../hook.js";

@@ -11,7 +11,7 @@ import { initialize, getUnit } from "../../helpers/unit.js";
 import { fixtureBattlefieldState } from "../../helpers/battlefield.js";
 import { damage, parameters } from "../../helpers/vitality.js";
 import { createBattleState } from "../../../dist/core/battle/state.js";
-import { add, update } from "../../../dist/core/battle/unit.js";
+import { add, update } from "../../../dist/core/unit/operations.js";
 import { ref, compose, setHook, removeHook } from "../../../dist/core/unit/index.js";
 import * as hpDamage from "../../../dist/core/battle/resource/hp/damage/index.js";
 import { advance as advanceBlocking } from "../../../dist/core/battle/blocking/index.js";

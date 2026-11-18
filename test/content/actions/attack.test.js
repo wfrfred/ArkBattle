@@ -19,7 +19,7 @@ import * as facing from "../../../dist/core/unit/capability/facing/index.js";
 import { actionCapability } from "../../helpers/actions.js";
 import { setSpeedContribution } from "../../../dist/core/unit/capability/action/index.js";
 import { create as modifier } from "../../../dist/core/common/modifier.js";
-import { update } from "../../../dist/core/battle/unit.js";
+import { update } from "../../../dist/core/unit/operations.js";
 
 function definition(groups, prepare = state => ({ state, value: {} })) {
     return createWithState({

@@ -1,5 +1,5 @@
 import { assertNonnegativeSafeInteger } from "../../common/assert.js";
-import { lifetime as unitLifetime, replace as replaceUnits, update } from "../../battle/unit.js";
+import { lifetime as unitLifetime, replace as replaceUnits, update } from "../operations.js";
 import type { Identified, Ref } from "../../common/ref.js";
 import { appendEvents, type State as BattleState, type Result } from "../../battle/state.js";
 import * as lifetimes from "../../lifetime/index.js";

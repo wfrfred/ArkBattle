@@ -12,7 +12,7 @@ import type { Skill } from "../capability/skill/capability.js";
 import { dispatch, ammoConsumed, ammoReplenished } from "../capability/skill/hook.js";
 import { finish } from "./operations.js";
 import * as query from "./query.js";
-import { replace as replaceUnits } from "../../battle/unit.js";
+import { replace as replaceUnits } from "../operations.js";
 import type { Ammo } from "./duration.js";
 
 export interface Modifier {

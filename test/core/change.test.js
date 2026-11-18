@@ -5,7 +5,7 @@ import { test } from "node:test";
 import { battle } from "../helpers/battle.js";
 import * as units from "../../dist/core/unit/index.js";
 import { createChange } from "../../dist/core/unit/change.js";
-import { update } from "../../dist/core/battle/unit.js";
+import { update } from "../../dist/core/unit/operations.js";
 
 test("composition associates without commuting, publishes the final Unit and preserves nested settlements", () => {
     const before = battle([

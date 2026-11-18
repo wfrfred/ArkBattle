@@ -1,13 +1,13 @@
 import * as battlefield from "../battlefield/unit.js";
 import type { State as BattlefieldState } from "../battlefield/state.js";
-import type { End, Unit, Departure } from "../unit/unit.js";
-import * as units from "../unit/query.js";
-import { appendEvents, type State as BattleState } from "./state.js";
+import type { End, Unit, Departure } from "./unit.js";
+import * as units from "./query.js";
+import { appendEvents, type State as BattleState } from "../battle/state.js";
 import { create as createLifetime } from "../lifetime/operations.js";
 import type { Ref } from "../common/ref.js";
-import { dispatch as dispatchObservers, leave as unitLeave } from "./unit-hook.js";
-import type { Change } from "../unit/change.js";
-import * as lifecycle from "../unit/hook.js";
+import { dispatch as dispatchObservers, leave as unitLeave } from "../battle/unit-hook.js";
+import type { Change } from "./change.js";
+import * as lifecycle from "./hook.js";
 import { dispatch } from "../hook.js";
 
 /* eslint-disable @typescript-eslint/no-unnecessary-type-parameters -- Accept capability-bearing object literals while returning only BattleState. */

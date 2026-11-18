@@ -9,7 +9,7 @@ import { prepare } from "../../../dist/data/unit/operator.js";
 import { create } from "../../../dist/content/operators/melantha/unit.js";
 import { initialize, getUnit } from "../../helpers/unit.js";
 import { createBattleState } from "../../../dist/core/battle/state.js";
-import { add } from "../../../dist/core/battle/unit.js";
+import { add } from "../../../dist/core/unit/operations.js";
 import { activate, advance, modify } from "../../../dist/core/unit/skill/index.js";
 import { ref as skillRef } from "../../helpers/skill.js";
 import { resolveAttack } from "../../../dist/core/unit/capability/offense/index.js";

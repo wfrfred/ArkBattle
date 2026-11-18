@@ -7,7 +7,6 @@ import type {
     Projectile,
 } from "../../core/projectile/index.js";
 
-import { stop, update } from "../../core/battle/projectile.js";
 import { type WorldPosition } from "../../core/geometry/coordinate.js";
 import { hasOffense, resolveAttack } from "../../core/unit/capability/offense/index.js";
 
@@ -84,7 +83,7 @@ export function hit<S extends State>(
         return battle;
     }
 
-    battle = update(battle, reference, {
+    battle = projectiles.update(battle, reference, {
         state: { ...current.state, hitAttempted: true },
     });
     const marked = projectiles.get(battle, reference)!;
@@ -104,7 +103,9 @@ export function advance<S extends State>(
     const reference = projectiles.ref(self);
 
     if (self.state.stopAtTick !== null) {
-        return battle.tick >= self.state.stopAtTick ? stop(battle, reference, "ARRIVED") : battle;
+        return battle.tick >= self.state.stopAtTick
+            ? projectiles.stop(battle, reference, "ARRIVED")
+            : battle;
     }
 
     const target = units.get(battle, self.state.target);
@@ -120,7 +121,7 @@ export function advance<S extends State>(
           );
     const stopAtTick = reached ? battle.tick + self.state.stopDelayTicks : null;
 
-    battle = update(battle, reference, {
+    battle = projectiles.update(battle, reference, {
         position,
         state: { ...self.state, destination, stopAtTick },
     });
@@ -136,6 +137,6 @@ export function advance<S extends State>(
     return latest?.lifecycle === "ACTIVE" &&
         latest.state.stopAtTick !== null &&
         battle.tick >= latest.state.stopAtTick
-        ? stop(battle, reference, "ARRIVED")
+        ? projectiles.stop(battle, reference, "ARRIVED")
         : battle;
 }

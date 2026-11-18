@@ -5,7 +5,7 @@ import { test } from "node:test";
 import { battle, get } from "../../helpers/battle.js";
 import { Hooks, key } from "../../../dist/core/hook.js";
 import * as units from "../../../dist/core/unit/index.js";
-import { update, remove } from "../../../dist/core/battle/unit.js";
+import { update, remove } from "../../../dist/core/unit/operations.js";
 import { advance as advanceCombat } from "../../../dist/core/battle/steps/combat.js";
 import * as hpDamage from "../../../dist/core/battle/resource/hp/damage/index.js";
 import * as epDamage from "../../../dist/core/battle/resource/ep/damage/index.js";

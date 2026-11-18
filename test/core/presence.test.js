@@ -6,7 +6,7 @@ import { Hooks } from "../../dist/core/hook.js";
 import { battle, get } from "../helpers/battle.js";
 import * as units from "../../dist/core/unit/index.js";
 import * as lifecycle from "../../dist/core/unit/hook.js";
-import { update } from "../../dist/core/battle/unit.js";
+import { update } from "../../dist/core/unit/operations.js";
 import * as presence from "../../dist/core/unit/capability/presence/index.js";
 import * as blocking from "../../dist/core/battle/blocking/index.js";
 import * as block from "../../dist/core/unit/capability/blocking/index.js";

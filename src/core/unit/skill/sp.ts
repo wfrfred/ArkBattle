@@ -9,7 +9,7 @@ import * as attribute from "../attribute.js";
 import { hasVitality } from "../capability/vitality/capability.js";
 import { isAlive } from "../capability/vitality/query.js";
 import type { Skill } from "../capability/skill/capability.js";
-import { replace as replaceUnits } from "../../battle/unit.js";
+import { replace as replaceUnits } from "../operations.js";
 import { dispatch, spRecovered, spPaid, spModified } from "../capability/skill/hook.js";
 import { allows } from "../../restriction.js";
 import { createChange, type Change } from "../change.js";

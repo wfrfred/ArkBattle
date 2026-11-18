@@ -9,7 +9,7 @@ import { compileSpawnSchedule } from "../../../dist/data/level/schedule.js";
 import { resolveEnemyMovementValues } from "../../../dist/data/unit/enemy.js";
 import { initialize, step } from "../../../dist/core/battle/runtime.js";
 import { isCompleted, triggerBranch } from "../../../dist/core/battle/schedule/index.js";
-import { remove } from "../../../dist/core/battle/unit.js";
+import { remove } from "../../../dist/core/unit/operations.js";
 import { all, ref } from "../../../dist/core/unit/query.js";
 import { get } from "../../helpers/battle.js";
 

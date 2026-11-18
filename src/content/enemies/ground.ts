@@ -1,9 +1,9 @@
 import { Hooks } from "../../core/hook.js";
 import * as unitHooks from "../../core/unit/hook.js";
-import { update as updateUnit } from "../../core/battle/unit.js";
 import { createArknightsElementalDefinition } from "../../data/effect/elemental.js";
 
 import {
+    update as updateUnit,
     get as getUnit,
     ref as unitRef,
     type Definition as UnitDefinition,

@@ -1,10 +1,10 @@
 import type { Ref } from "../common/ref.js";
 import type { WorldPosition } from "../geometry/coordinate.js";
-import type { Definition, StopReason } from "../projectile/definition.js";
-import type { Projectile } from "../projectile/projectile.js";
-import { get, ref } from "../projectile/query.js";
+import type { Definition, StopReason } from "./definition.js";
+import type { Projectile } from "./projectile.js";
+import { get, ref } from "./query.js";
 import { create as createLifetime } from "../lifetime/operations.js";
-import type { State as BattleState, Result } from "./state.js";
+import type { State as BattleState, Result } from "../battle/state.js";
 
 export interface CreateInput<S extends object> {
     readonly position: WorldPosition;

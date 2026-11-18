@@ -13,7 +13,7 @@ import * as hpDamage from "../../dist/core/battle/resource/hp/damage/index.js";
 import { create as createTile } from "../../dist/core/battlefield/map/tile.js";
 import { Tiles } from "../../dist/core/battlefield/map/tiles.js";
 import { create as createMap } from "../../dist/core/battlefield/map/map.js";
-import { update } from "../../dist/core/battle/unit.js";
+import { update } from "../../dist/core/unit/operations.js";
 import { initialize, step } from "../../dist/core/battle/index.js";
 import { actionCapability } from "../helpers/actions.js";
 import { resolveAttack } from "../../dist/core/unit/capability/offense/index.js";
