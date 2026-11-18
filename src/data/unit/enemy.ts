@@ -219,7 +219,7 @@ export interface Profile {
     readonly baseAttackTime: number;
     readonly moveSpeedPerSecond: number;
     readonly rangeRadius: number;
-    readonly mass: number;
+    readonly massLevel: number;
     readonly blockVolume: number;
     readonly stunImmune: boolean;
     readonly filterTags: readonly string[];
@@ -384,12 +384,12 @@ export function prepare(value: unknown, configuration: Configuration): Profile {
     const baseAttackTime = numeric(attributes, "baseAttackTime");
     assertPositiveNumber(maxHp, "enemy maxHp");
     assertPositiveNumber(baseAttackTime, "enemy baseAttackTime");
-    const mass = numeric(attributes, "massLevel", 0);
+    const massLevel = numeric(attributes, "massLevel", 0);
     const blockVolume = numeric(attributes, "blockCnt", 1);
     const lifePointReduce = numeric(fields, "lifePointReduce", 1);
     const taunt = attributes.tauntLevel ?? 0;
     assertFiniteNumber(taunt, "enemy taunt level");
-    assertNonnegativeSafeInteger(mass, "enemy mass");
+    assertNonnegativeSafeInteger(massLevel, "enemy mass level");
     assertNonnegativeSafeInteger(blockVolume, "enemy block volume");
     assertNonnegativeSafeInteger(lifePointReduce, "enemy life point reduction");
 
@@ -408,7 +408,7 @@ export function prepare(value: unknown, configuration: Configuration): Profile {
         baseAttackTime,
         moveSpeedPerSecond: numeric(attributes, "moveSpeed"),
         rangeRadius: numeric(fields, "rangeRadius", 0),
-        mass,
+        massLevel,
         blockVolume,
         stunImmune: flag(attributes, "stunImmune"),
         filterTags,

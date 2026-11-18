@@ -10,6 +10,7 @@ import * as units from "../../../dist/core/unit/index.js";
 import { update } from "../../../dist/core/unit/operations.js";
 import { step } from "../../../dist/core/battle/runtime.js";
 import { appear } from "../../../dist/core/unit/capability/presence/index.js";
+import { applyImpulse, isUnbalanced, setForceRestriction } from "../../../dist/core/unit/capability/locomotion/index.js";
 import { search } from "../../../dist/core/battle/blocking/index.js";
 import { blockableReleased } from "../../../dist/core/unit/capability/blocking/index.js";
 import * as navigation from "../../../dist/core/battlefield/navigation/state.js";
@@ -114,6 +115,29 @@ test("Context selection and ticking separately control relative and absolute wai
     absolute = update(absolute, absoluteHost, route.selectContext(0));
     absolute = step(absolute, []);
     assert.equal(current(absolute).current.type, "MOVE");
+});
+
+test("route waits continue through forced movement and steering resumes after the forced step", () => {
+    let state = battle([creation(plan([wait(1), move([2, 0])]), {
+        layer: { type: "GROUND" },
+        locomotion: {
+            ...movement,
+            body: { shape: { type: "CIRCLE", offset: [0, 0], radius: 0.1 }, mass: 1, frictionFactor: 0 },
+        },
+    })]);
+    const host = units.ref(get(state, 0));
+    state = step(applyImpulse(state, host, [0.5, 0]).state, []);
+    const forcedPosition = get(state, 0).position;
+    assert.equal(current(state).current.type, "MOVE");
+    assert.ok(forcedPosition[0] > 0);
+    assert.equal(forcedPosition[1], 0);
+
+    state = update(state, host, setForceRestriction({ id: "immune", value: { allows: () => false } }));
+    state = step(state, []);
+    assert.equal(isUnbalanced(get(state, 0)), false);
+    assert.deepEqual(get(state, 0).position, forcedPosition);
+    state = step(state, []);
+    assert.ok(get(state, 0).position[1] > 0);
 });
 
 test("reassign rebuilds the entered instruction and skipWait only skips a relative wait", () => {

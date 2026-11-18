@@ -6,4 +6,4 @@ export { ref, all, get } from "./query.js";
 
 export type { CreateInput } from "./operations.js";
 
-export { create, update, stop } from "./operations.js";
+export { create, update, stop, lifetime } from "./operations.js";

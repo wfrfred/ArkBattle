@@ -1,4 +1,5 @@
-import { assertPositiveSafeInteger } from "../../common/assert.js";
+import { assert, assertPositiveSafeInteger } from "../../common/assert.js";
+import { validateShape, type Shape } from "../../geometry/shape.js";
 import type { Terrain } from "./terrain.js";
 
 export type Elevation = "LOWLAND" | "HIGHLAND";
@@ -9,6 +10,8 @@ export type Passability = "NONE" | "WALK_ONLY" | "ALL" | "FLY_ONLY";
 
 export type SiteCondition = symbol;
 
+export type Collision = Extract<Shape, { readonly type: "BOX" }>;
+
 export interface State {
     readonly elevation: Elevation;
     readonly placement: Placement;
@@ -16,6 +19,7 @@ export interface State {
     readonly walkCost: number;
     readonly allowsBlocking: boolean;
     readonly siteCondition: SiteCondition | null;
+    readonly collision?: Collision | null;
 }
 
 export interface Definition<P extends object = object> {
@@ -28,8 +32,17 @@ export interface Tile<P extends object = object> {
     readonly state: State;
 }
 
+export function validateState(state: State): void {
+    assertPositiveSafeInteger(state.walkCost, "tile walk cost");
+
+    if (state.collision != null) {
+        assert(["BOX"].includes(state.collision.type), "invalid tile collision box", TypeError);
+        validateShape(state.collision);
+    }
+}
+
 export function create<P extends object>(definition: Definition<P>): Tile<P> {
-    assertPositiveSafeInteger(definition.initial.walkCost, "tile walk cost");
+    validateState(definition.initial);
 
     return { definition, state: definition.initial };
 }

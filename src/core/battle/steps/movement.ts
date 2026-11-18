@@ -1,10 +1,17 @@
 import { hasRoute } from "../../unit/capability/route/capability.js";
 import * as route from "../../unit/capability/route/operations.js";
 import { activeContext, movementTarget } from "../../unit/capability/route/query.js";
-import { hasLocomotion } from "../../unit/capability/locomotion/capability.js";
+import { Vec2 } from "../../common/vector.js";
+import {
+    hasLocomotion,
+    isUnbalanced,
+    MOVE_SAMPLE_INTERVAL,
+} from "../../unit/capability/locomotion/capability.js";
 import { hasBlockable } from "../../unit/capability/blocking/blockable.js";
 import * as blockable from "../../unit/capability/blocking/blockable-operations.js";
 import * as locomotion from "../../unit/capability/locomotion/operations.js";
+import { advanceUnbalance } from "../../unit/capability/locomotion/unbalance.js";
+import { replace } from "../../unit/operations.js";
 import * as units from "../../unit/query.js";
 import type { State as BattleState } from "../state.js";
 
@@ -18,19 +25,27 @@ export function advanceMovement(
         battle = blockable.advancePosition(battle, units.ref(unit));
     }
 
-    for (const initial of candidates.filter(hasRoute)) {
+    for (const initial of candidates) {
         const ref = units.ref(initial);
-        battle = route.advance(battle, ref);
+        if (hasRoute(initial)) {
+            battle = route.advance(battle, units.ref(initial));
+        }
+
         const unit = units.get(battle, ref);
-        if (
-            unit?.lifecycle !== "PRESENT" ||
-            (hasBlockable(unit) && unit.blockable.relation !== null) ||
-            !hasLocomotion(unit)
-        ) {
+        if (unit?.lifecycle !== "PRESENT" || !hasLocomotion(unit)) {
             continue;
         }
 
-        const target = movementTarget(battle, ref);
+        if (isUnbalanced(unit)) {
+            battle = advanceUnbalance(battle, units.ref(unit));
+            continue;
+        }
+
+        if (!hasRoute(unit) || (hasBlockable(unit) && unit.blockable.relation !== null)) {
+            continue;
+        }
+
+        const target = movementTarget(battle, units.ref(unit));
         if (target !== null) {
             battle = locomotion.advance(battle, units.ref(unit), target, {
                 mode: activeContext(unit).plan.motionMode,
@@ -39,5 +54,30 @@ export function advanceMovement(
         }
     }
 
-    return battle;
+    const samples = units
+        .all(battle)
+        .filter(hasLocomotion)
+        .filter(
+            (unit) =>
+                unit.lifecycle === "PRESENT" && battle.tick >= unit.locomotion.nextMoveSampleTick,
+        )
+        .map((unit) => {
+            const state = unit.locomotion;
+
+            return {
+                ...unit,
+                locomotion: {
+                    ...state,
+                    totalMoveDistance:
+                        state.totalMoveDistance +
+                        Math.sqrt(
+                            Vec2.distanceSquared(unit.position, state.lastMoveSamplePosition),
+                        ),
+                    lastMoveSamplePosition: unit.position,
+                    nextMoveSampleTick: battle.tick + MOVE_SAMPLE_INTERVAL,
+                },
+            };
+        });
+
+    return replace(battle, samples.toArray());
 }

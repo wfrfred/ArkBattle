@@ -167,14 +167,6 @@ export function createDeepseaEffect(params: DeepseaParams): Definition<PeriodicS
     };
 }
 
-interface Mass {
-    readonly definition: { readonly massLevel: number };
-}
-
-function hasMass(unit: Unit): unit is Unit & Mass {
-    return "massLevel" in unit.definition;
-}
-
 export function createMireEffect(params: MireParams): Definition<MireState> {
     return {
         id: "terrain/mire",
@@ -192,7 +184,11 @@ export function createMireEffect(params: MireParams): Definition<MireState> {
             const enemy =
                 hasClassification(unit) && unit.definition.classification.side === "ENEMY";
             const gain =
-                enemy && hasMass(unit) && unit.definition.massLevel >= params.massThreshold ? 2 : 1;
+                enemy &&
+                hasLocomotion(unit) &&
+                locomotion.resolveMassLevel(battle, unit) >= params.massThreshold
+                    ? 2
+                    : 1;
             const stacks = Math.min(params.maxStacks, self.state.stacks + gain);
             battle = effects.setState(battle, effectRef(self), {
                 stacks,

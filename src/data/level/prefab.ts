@@ -11,6 +11,7 @@ import { parseSiteCondition, parseAllowedSiteConditions } from "./site-condition
 export interface TileDeploymentPrefab {
     readonly prefabKey: string;
     readonly siteCondition: SiteCondition | null;
+    readonly forceBoxCollider?: boolean;
 }
 
 export type PredefinedPrefab =
@@ -76,7 +77,18 @@ export function parseTileDeploymentPrefab(value: unknown): TileDeploymentPrefab 
         throw new TypeError(`unsupported tile deployment profile ${source.prefabKey}`);
     }
 
-    return { prefabKey: source.prefabKey, siteCondition };
+    const forceBoxCollider =
+        tile._forceBoxCollider === 0 || tile._forceBoxCollider === 1
+            ? tile._forceBoxCollider === 1
+            : tile._forceBoxCollider;
+
+    return {
+        prefabKey: source.prefabKey,
+        siteCondition,
+        ...(forceBoxCollider === undefined
+            ? {}
+            : { forceBoxCollider: boolean(forceBoxCollider, "tile _forceBoxCollider") }),
+    };
 }
 
 function buffKeys(source: PrefabExtraction): ReadonlySet<string> {

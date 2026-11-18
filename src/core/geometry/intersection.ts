@@ -1,7 +1,7 @@
 import { Vec2 } from "../common/vector.js";
 import type { WorldPosition } from "./coordinate.js";
 import type { Range } from "./range.js";
-import type { Shape } from "./shape.js";
+import type { BodyShape, Shape } from "./shape.js";
 
 function containsShape(shape: Shape, origin: WorldPosition, position: WorldPosition): boolean {
     const dx = Math.abs(position[0] - origin[0] - shape.offset[0]);
@@ -187,4 +187,68 @@ export function sweep(
     }
 
     return first;
+}
+
+interface SweepContact {
+    readonly time: number;
+    readonly normal: Vec2;
+}
+
+export function sweepBodyAgainstBox(
+    body: BodyShape,
+    from: WorldPosition,
+    to: WorldPosition,
+    target: Extract<Shape, { readonly type: "BOX" }>,
+    targetOrigin: WorldPosition,
+): SweepContact | null {
+    // Expanding the box by the capsule's straight segment leaves a circle sweep.
+    const halfExtents: Vec2 = [
+        target.halfExtents[0] +
+            (body.type === "CAPSULE" && body.axis === "X" ? body.halfLength : 0),
+        target.halfExtents[1] +
+            (body.type === "CAPSULE" && body.axis === "Y" ? body.halfLength : 0),
+    ];
+    const origin = Vec2.add(targetOrigin, target.offset);
+    const center = Vec2.add(from, body.offset);
+    const start = Vec2.sub(center, origin);
+    const motion = Vec2.sub(to, from);
+    if (motion[0] === 0 || motion[1] === 0) {
+        const axis = motion[0] === 0 ? 0 : 1;
+        const side = halfExtents[axis] + body.radius;
+        const tolerance =
+            8 * Number.EPSILON * Math.max(1, Math.abs(center[axis]), Math.abs(origin[axis]), side);
+        if (Math.abs(Math.abs(start[axis]) - side) <= tolerance) {
+            // A tangent path reaches the flat side at the first corner. Evaluate
+            // that boundary directly to avoid a false inward normal at tile seams.
+            const track: Vec2 = axis === 0 ? [0, start[1]] : [start[0], 0];
+            const time = sweepBox(track, Vec2.add(track, motion), halfExtents);
+            const sign = start[axis] < 0 ? -1 : 1;
+
+            return time === null ? null : { time, normal: axis === 0 ? [sign, 0] : [0, sign] };
+        }
+    }
+
+    const circle = { type: "CIRCLE", offset: body.offset, radius: body.radius } as const;
+    const time = sweep(circle, from, to, { ...target, halfExtents }, targetOrigin);
+    if (time === null) {
+        return null;
+    }
+
+    const relative = Vec2.add(start, Vec2.scale(motion, time));
+    const nearest: Vec2 = [
+        Math.max(-halfExtents[0], Math.min(halfExtents[0], relative[0])),
+        Math.max(-halfExtents[1], Math.min(halfExtents[1], relative[1])),
+    ];
+    const outward = Vec2.sub(relative, nearest);
+    const length = Vec2.length(outward);
+    if (length > 0) {
+        return { time, normal: Vec2.scale(outward, 1 / length) };
+    }
+
+    // For an embedded start, the nearest face supplies the escape direction.
+    const face =
+        halfExtents[0] - Math.abs(relative[0]) <= halfExtents[1] - Math.abs(relative[1]) ? 0 : 1;
+    const sign = relative[face] < 0 ? -1 : 1;
+
+    return { time, normal: face === 0 ? [sign, 0] : [0, sign] };
 }

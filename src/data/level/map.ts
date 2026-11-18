@@ -188,6 +188,10 @@ function parseTile(
                     blockable === undefined ? heightType === "LOWLAND" : blockable.value !== 0,
                 placement: string(source.buildableType, "tile buildable type") as Placement,
                 passability: string(source.passableMask, "tile passable mask") as Passability,
+                collision:
+                    heightType === "HIGHLAND" || prefab?.forceBoxCollider === true
+                        ? { type: "BOX", offset: [0, 0], halfExtents: [0.5, 0.5] }
+                        : null,
                 siteCondition:
                     prefab === undefined
                         ? parseSiteCondition(

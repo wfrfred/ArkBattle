@@ -40,7 +40,7 @@ Prefab、范围读取和换算由实际业务使用；目录移动、提取工�
 | [Effect](effect.md)、[Contribution](capability.md#属性与贡献) | 安装与启停、竞争、重应用、到期和最后业务正确；先选有效贡献再求动态输入，所属公式保留小数与数值范围。 |
 | [Occupancy](occupancy.md)、[Deployment](deployment.md) | 双槽排他、Pair 先发布再通知，旧配对不影响替代实例；Quote 预览与执行一致，资源先消费再入场，主动／被动离场分别结账，库存／DP 预算及 Card 延续正确。 |
 | [Blocking](blocking.md)、[Layer](capability.md#layer-与-hitbox) | 资格、容量尾裁、批量双端发布与旧 Relation；主动空间覆盖取消自身计划、解除当前关系。Layer 同值请求仍清理，Settlement 使用当时当前关系，通知中新建关系不追删。 |
-| [Locomotion](navigation.md) | 历史速度、限力／限速、转向、最终目标吸附、地形避障与反射；自主移动和阻挡偏移独立，Route 不重复运动公式。 |
+| [Locomotion](navigation.md) | 历史速度、限力／限速、转向、最终目标吸附、地形避障与反射。推拉共用外力速度，按照来源管理牵引，免疫先于位移结算。旧失衡段的结束和依赖清理不影响新段。推进包含无 Route 的单位并采样实际位移。由[失衡](../../test/core/navigation/unbalance.test.js)、[运动](../../test/core/navigation/locomotion.test.js)和[路线](../../test/core/navigation/route.test.js)集中验证。 |
 | [Targeting](targeting.md)、[Presence](presence.md) | 选择、空间存在、锁定命中与实际接收独立；具体重要协作见下节。 |
 | [Resource](resource.md)、[Vitality](vitality.md)、[Elemental](elemental.md) | 输出／接收／实际变化分离，HP／债务与 EP 准确提交，后继报告固定，死亡与 Burst 顺序正确；集中结果见资源清单。 |
 | [Runtime](functional-core.md) | 出生等待先于 enter，逐对象接续最新状态，预置重入保留新绑定，Tick 阶段确定、失败不发布；调度完成后 step 仍可推进。 |

@@ -8,7 +8,12 @@ import { effectiveMap } from "../../../battlefield/navigation/cache.js";
 import * as units from "../../query.js";
 import type { Unit } from "../../unit.js";
 import * as attribute from "../../attribute.js";
-import type { Locomotion, MovementContext, MovementTarget } from "./capability.js";
+import {
+    isUnbalanced,
+    type Locomotion,
+    type MovementContext,
+    type MovementTarget,
+} from "./capability.js";
 import { calculate as avoidance } from "./avoidance.js";
 import { reflect } from "./motion.js";
 import { integrate } from "./steering.js";
@@ -29,7 +34,11 @@ export function advance(
     context: MovementContext,
 ): BattleState {
     const self = units.get(battle, ref);
-    if (self?.lifecycle !== "PRESENT" || !allows(battle, { self }, self.locomotion.restrictions)) {
+    if (
+        self?.lifecycle !== "PRESENT" ||
+        isUnbalanced(self) ||
+        !allows(battle, { self }, self.locomotion.restrictions)
+    ) {
         return battle;
     }
 

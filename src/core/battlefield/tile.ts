@@ -1,7 +1,6 @@
-import { assertPositiveSafeInteger } from "../common/assert.js";
 import type { TilePosition } from "../geometry/coordinate.js";
 import type { State } from "./state.js";
-import type { State as TileState } from "./map/tile.js";
+import { validateState, type State as TileState } from "./map/tile.js";
 import * as maps from "./map/map.js";
 import * as navigation from "./map/navigation.js";
 
@@ -14,7 +13,7 @@ export function update(field: State, position: TilePosition, state: TileState): 
         return field;
     }
 
-    assertPositiveSafeInteger(state.walkCost, "tile walk cost");
+    validateState(state);
     const index = position[0] * field.map.columns + position[1];
     const map = { ...field.map, tiles: field.map.tiles.replace(index, state) };
     const navigationChanged =

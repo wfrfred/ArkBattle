@@ -28,26 +28,22 @@ const castingRestriction: Restriction = {
     allows: (battle, { self }) => !hasAction(self) || !isCasting(battle, unitRef(self)),
 };
 
-export interface Definition
-    extends
-        UnitDefinition,
-        Pick<
-            CapabilityDefinitions,
-            | "classification"
-            | "blockable"
-            | "elemental"
-            | "facing"
-            | "hitbox"
-            | "layer"
-            | "locomotion"
-            | "offense"
-            | "route"
-            | "presence"
-            | "targetable"
-            | "vitality"
-        > {
-    readonly massLevel: number;
-}
+export type Definition = UnitDefinition &
+    Pick<
+        CapabilityDefinitions,
+        | "classification"
+        | "blockable"
+        | "elemental"
+        | "facing"
+        | "hitbox"
+        | "layer"
+        | "locomotion"
+        | "offense"
+        | "route"
+        | "presence"
+        | "targetable"
+        | "vitality"
+    >;
 
 export function createDefinition(
     profile: Profile,
@@ -70,7 +66,6 @@ export function createDefinition(
 
     return {
         id: profile.id,
-        massLevel: profile.mass,
         hooks: Hooks.empty()
             .set(unitHooks.enter, {
                 id: "ground-enemy/movement-casting-rule",
@@ -138,6 +133,18 @@ export function createDefinition(
             },
             steeringParameters: movement.steeringParameters,
             halfBodyWidth: movement.halfBodyWidth,
+            massLevel: { default: profile.massLevel, min: 0, max: null },
+            body: {
+                shape: {
+                    type: "CAPSULE",
+                    offset: [0, -0.1],
+                    radius: 0.1,
+                    halfLength: 0.1,
+                    axis: "Y",
+                },
+                mass: 1,
+                frictionFactor: 1,
+            },
         },
         route: { alwaysCheckCurrentPoint: true },
         presence: {},

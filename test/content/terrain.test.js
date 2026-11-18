@@ -11,16 +11,20 @@ import * as skills from "../../dist/core/unit/capability/skill/index.js";
 import * as vitality from "../../dist/core/unit/capability/vitality/index.js";
 import * as hpDamage from "../../dist/core/battle/resource/hp/damage/index.js";
 import { create as createTile } from "../../dist/core/battlefield/map/tile.js";
+import { get as getTile } from "../../dist/core/battlefield/map/map.js";
 import { Tiles } from "../../dist/core/battlefield/map/tiles.js";
 import { create as createMap } from "../../dist/core/battlefield/map/map.js";
 import { update } from "../../dist/core/unit/operations.js";
 import { initialize, step } from "../../dist/core/battle/index.js";
+import { update as updateTile } from "../../dist/core/battle/tile.js";
 import { actionCapability } from "../helpers/actions.js";
 import { resolveAttack } from "../../dist/core/unit/capability/offense/index.js";
 import { resolveSpeed } from "../../dist/core/unit/capability/action/timing.js";
 import { damage } from "../../dist/core/battle/targeting/index.js";
 import * as presence from "../../dist/core/unit/capability/presence/index.js";
 import { setType } from "../../dist/core/unit/capability/layer/index.js";
+import { applyImpulse, setMassLevelContribution } from "../../dist/core/unit/capability/locomotion/index.js";
+import { create as createModifier } from "../../dist/core/common/modifier.js";
 
 const infectionParams = (damage = 80) => ({
     damage, attackBonusRatio: 0.2, attackSpeedBonus: 20, durationTicks: 65,
@@ -147,13 +151,25 @@ test("HP-06: infection keeps its entry clocks and ordinary reception while exclu
     assert.equal(current(battle).skill.sp.value, 0);
 });
 
-test("mire preserves its stacking clock across adjacent tiles and gives heavy enemies double stacks", () => {
+test("mire preserves its stacking clock across adjacent tiles and uses effective mass for double stacks", () => {
     const patch = terrain.mire.create(mireParams);
+    const enemy = {
+        ...combat,
+        classification: { type: "ENEMY", side: "ENEMY", filterTags: [], rank: "NORMAL" },
+        locomotion: {
+            speed: attribute(1), halfBodyWidth: 0,
+            steeringParameters: { steeringFactor: 1, maxSteeringForce: 1 },
+            massLevel: attribute(2),
+        },
+    };
     const configured = setup([patch, patch, terrain.normal.create({})], [
-        unit(0, { ...combat, classification: { type: "ENEMY", side: "ENEMY", filterTags: [], rank: "NORMAL" }, massLevel: 3 }),
-        unit(0, { ...combat, classification: { type: "ENEMY", side: "ENEMY", filterTags: [], rank: "NORMAL" }, massLevel: 2 }),
+        unit(0, enemy),
+        unit(0, enemy),
     ], [terrain.mire]);
-    let battle = until(configured.battle, 2);
+    let battle = update(configured.battle, units.ref(current(configured.battle)), setMassLevelContribution({
+        id: "extra-weight", value: [createModifier({ addition: 1 })],
+    }));
+    battle = until(battle, 2);
     assert.deepEqual([0, 1].map(id => attackSpeed(battle, id)), [90, 95]);
     battle = until(move(battle, 0, 1), 31);
     assert.equal(attackSpeed(battle), 90);
@@ -163,10 +179,12 @@ test("mire preserves its stacking clock across adjacent tiles and gives heavy en
     assert.equal(attackSpeed(battle), 100);
 });
 
-test("deepsea and holes affect ground enemies while leaving allies and airborne enemies untouched", () => {
+test("deepsea and holes affect ground enemies, including a unit pushed into a hole", () => {
     const natures = [];
     const configured = setup([terrain.deepsea.create(deepseaParams), terrain.hole.create({})], [
         unit(0, { ...combat, classification: { type: "ENEMY", side: "ENEMY", filterTags: [], rank: "NORMAL" }, layer: { type: "GROUND" },
+            locomotion: { speed: attribute(1), halfBodyWidth: 0.1,
+                steeringParameters: { steeringFactor: 1, maxSteeringForce: 1 } },
             hooks: Hooks.empty().set(hpDamage.receiving, {
                 id: "observe-deepsea-nature",
                 invoke(state, { request }, pending) {
@@ -182,7 +200,10 @@ test("deepsea and holes affect ground enemies while leaving allies and airborne 
     assert.deepEqual(natures, ["DAMAGE"]);
     assert.deepEqual([0, 1, 2].map(id => current(battle, id).vitality.health.hp), [960, 1000, 1000]);
     assert.deepEqual([0, 1, 2].map(id => attackSpeed(battle, id)), [40, 100, 100]);
-    for (const id of [0, 1, 2]) battle = move(battle, id, 1);
+    const hole = getTile(battle.battlefield.map, [0, 1]);
+    battle = updateTile(battle, [0, 1], { ...hole.state, passability: "FLY_ONLY" });
+    battle = applyImpulse(battle, units.ref(current(battle, 0)), [30, 0]).state;
+    for (const id of [1, 2]) battle = move(battle, id, 1);
     battle = step(battle, []);
     assert.equal(current(battle, 0), undefined);
     assert.ok(current(battle, 1));
