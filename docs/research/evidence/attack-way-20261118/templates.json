@@ -1,0 +1,123 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-18",
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/attack-way-20261118/milu/extract_templates.py",
+      "bytes": 2922,
+      "sha256": "06f04626dd11953a074e24f847fd21798c43c824c187f89913c55412ba997031"
+    },
+    "helper": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/attack-addon-order-20261102/content/decode_content.py",
+      "bytes": 8161,
+      "sha256": "d17abeee072576a29ca060884dcc0dd770fe0f8194ca7eed7b5c13b99b41e14e"
+    },
+    "source": {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+      "bytes": 2151020,
+      "sha256": "8edcb8017c977cdf52c2593b58e21db96949f3ad1e6f904180ac1241f145ca79"
+    },
+    "scope": "Selected installed Buff template programs; concrete character/talent/module binding recorded separately. "
+  },
+  "result": [
+    {
+      "bundle": "config/buff_template_holder.ab",
+      "file": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+      "pathId": "6070581171229484677",
+      "objectSha256": "c03149251d47fa31e6f6cb5b696f9e93925f51a97bf9ee335593c888bdcb6fec",
+      "templates": [
+        {
+          "templateKey": "milu_t_1",
+          "effectKey": "",
+          "onEventPriority": 0,
+          "eventToActions": {
+            "_items": {
+              "Array": [
+                {
+                  "key": 14,
+                  "value": {
+                    "SerializedState": "[{\"_filterApplyWay\":true,\"_filterProjectileKey\":\"\",\"_applyWay\":\"RANGED\",\"_defaultValue\":1.0,\"_filterNoneApplyWay\":false,\"_cancelIfAtkScaleZero\":false,\"_atkScaleKey\":\"atk_scale\",\"_overwriteAtkScale\":false,\"$type\":\"Torappu.Battle.Action.Nodes+AtkScaleUp\"}]",
+                    "SerializedObjectReferences": {
+                      "Array": []
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "templateIndex": 257,
+          "events": [
+            {
+              "event": 14,
+              "actions": [
+                {
+                  "_filterApplyWay": true,
+                  "_filterProjectileKey": "",
+                  "_applyWay": "RANGED",
+                  "_defaultValue": 1.0,
+                  "_filterNoneApplyWay": false,
+                  "_cancelIfAtkScaleZero": false,
+                  "_atkScaleKey": "atk_scale",
+                  "_overwriteAtkScale": false,
+                  "$type": "Torappu.Battle.Action.Nodes+AtkScaleUp"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "templateKey": "milu_e_t_1",
+          "effectKey": "",
+          "onEventPriority": 0,
+          "eventToActions": {
+            "_items": {
+              "Array": [
+                {
+                  "key": 14,
+                  "value": {
+                    "SerializedState": "[{\"_filterApplyWay\":true,\"_filterProjectileKey\":\"\",\"_applyWay\":\"NONE\",\"_defaultValue\":1.0,\"_filterNoneApplyWay\":true,\"_cancelIfAtkScaleZero\":false,\"_atkScaleKey\":\"atk_scale\",\"_overwriteAtkScale\":false,\"$type\":\"Torappu.Battle.Action.Nodes+AtkScaleUp\"},{\"$type\":\"Torappu.Battle.Action.Nodes+IfNot\"},{\"_filterApplyWay\":true,\"_filterProjectileKey\":\"\",\"_applyWay\":\"RANGED\",\"_defaultValue\":1.0,\"_filterNoneApplyWay\":false,\"_cancelIfAtkScaleZero\":false,\"_atkScaleKey\":\"atk_scale\",\"_overwriteAtkScale\":false,\"$type\":\"Torappu.Battle.Action.Nodes+AtkScaleUp\"}]",
+                    "SerializedObjectReferences": {
+                      "Array": []
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "templateIndex": 1134,
+          "events": [
+            {
+              "event": 14,
+              "actions": [
+                {
+                  "_filterApplyWay": true,
+                  "_filterProjectileKey": "",
+                  "_applyWay": "NONE",
+                  "_defaultValue": 1.0,
+                  "_filterNoneApplyWay": true,
+                  "_cancelIfAtkScaleZero": false,
+                  "_atkScaleKey": "atk_scale",
+                  "_overwriteAtkScale": false,
+                  "$type": "Torappu.Battle.Action.Nodes+AtkScaleUp"
+                },
+                {
+                  "$type": "Torappu.Battle.Action.Nodes+IfNot"
+                },
+                {
+                  "_filterApplyWay": true,
+                  "_filterProjectileKey": "",
+                  "_applyWay": "RANGED",
+                  "_defaultValue": 1.0,
+                  "_filterNoneApplyWay": false,
+                  "_cancelIfAtkScaleZero": false,
+                  "_atkScaleKey": "atk_scale",
+                  "_overwriteAtkScale": false,
+                  "$type": "Torappu.Battle.Action.Nodes+AtkScaleUp"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

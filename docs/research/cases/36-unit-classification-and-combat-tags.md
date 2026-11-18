@@ -1,6 +1,6 @@
 # 单位分类与战斗标签
 
-研究日期：2026-11-14，2026-11-18 补核召唤物、装置与资料组合，以及豆苗磐蟹的实体类别切换。问题是原生单位有哪些可被战斗程序查询的分类事实、它们从哪里建立、哪些会变化，以及实际内容读取哪一项。调查涵盖通用战斗、干员／敌人／召唤物／装置和代表内容；不涉及生息演算、保全派驻、船运寻路。原件、输入指纹和复跑入口见[分类批次](../evidence/unit-classification-20261114/README.md)、[组合批次](../evidence/unit-classification-composition-20261118/README.md)与[类别切换批次](../evidence/entity-category-20261118/README.md)。
+研究日期：2026-11-14，2026-11-18 补核召唤物、装置与资料组合、豆苗磐蟹的实体类别切换，以及攻击方式的形态汇总和实际模组绑定。问题是原生单位有哪些可被战斗程序查询的分类事实、它们从哪里建立、哪些会变化，以及实际内容读取哪一项。调查涵盖通用战斗、干员／敌人／召唤物／装置和代表内容；不涉及生息演算、保全派驻、船运寻路。原件、输入指纹和复跑入口见[分类批次](../evidence/unit-classification-20261114/README.md)、[组合批次](../evidence/unit-classification-composition-20261118/README.md)、[类别切换批次](../evidence/entity-category-20261118/README.md)与[攻击方式补证](../evidence/attack-way-20261118/README.md)。
 
 本案整理原生需求，不确定 ArkBattle 的新字段、Capability 或标签 API。静态客户端正文、资源绑定、社区说明分别记录；没有执行实机，也没有取得活跃 XLua 的运行结果。
 
@@ -55,6 +55,10 @@
 | `FilterAbilityApplyWay` 节点 | 当前 Ability 的 applyWay |
 
 普通 Unit 的 `allApplyWay` 读取 `m_currentMode.allApplyWay`；该字段位于 Unit `+0x200`，Mode 的汇总值位于 `+0xc0`。它仍不等于某一笔 Modifier 的分类。普通原生 MeleeAttack／RangedAttack 分别返回 MELEE／RANGED，Heal 返回 NONE；治疗不会因有弹道而自动成为此处的 RANGED。
+
+2026-11-18 补核：`UnitMode.OnInit` 将汇总值清零，依次将 `_combat` 与 `_attack` 的 `Ability.applyWay` 按位并入，受各自组件分支控制。贝娜的本体与替身各自绑定 MeleeAttack 和 RangedAttack，实际切换流程保持同一 Unit，读值随形态从 MELEE 变为 RANGED，回到本体恢复 MELEE。磐蟹的作战和战术点形态都绑定 MeleeAttack，战术点用 NeverTrigger 禁止普通攻击，仍汇总为 MELEE。能否发动与该值分别判断。Enemy 的 getter 独立读取 EnemyData，即使弩手当前执行阻挡近战，读取的仍是资料中的 RANGED。
+
+守林人 Y 模组二、三级实际绑定 `milu_e_t_1`，在同一公式事件先判断目标值是否为 NONE，失败后再判断是否包含 RANGED。普通天赋仅匹配 RANGED，ALL 同时包含 MELEE 与 RANGED。所取敌人资料在显式等级记录中实际包含这四种值。模组判断使用目标实体的同一虚槽，适用于进入该公式的非 Enemy 目标；没有用真实关卡实机复核该分支。[攻击方式补证](../evidence/attack-way-20261118/README.md)
 
 这已证明同名“攻击方式”查询具有不同采样对象。尚未找到同一实际敌人在上述两个 Enemy 数据查询间产生不同结果的可执行正例，不将代码差别冒充已观测的玩法差别。
 

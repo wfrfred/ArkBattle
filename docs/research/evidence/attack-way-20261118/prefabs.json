@@ -1,0 +1,686 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-18",
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/attack-way-20261118/milu/extract_prefabs.py",
+      "bytes": 4657,
+      "sha256": "d6cab91818e9966fd0f1b3ca3f97cdc0ddc512dcad95b592f16710ab5cbe9462"
+    },
+    "helper": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/targeting-pipeline-20261109/content/extract_content.py",
+      "bytes": 12906,
+      "sha256": "37504c156e11e55c9c06174980fb1617281690ab3b01db9caa9dfd28937f5faa"
+    },
+    "sources": [
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+        "bytes": 477255,
+        "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]equips.ab",
+        "bytes": 749424,
+        "sha256": "1698bc4166582fc953e54367e31cf46de2585fa94bdbeda8ab93256eb6cf5b4b"
+      }
+    ],
+    "selection": {
+      "battle/prefabs/[uc]equips.ab": [
+        "uniequip_002_milu",
+        "milu_equip_1_"
+      ]
+    },
+    "scope": "All MonoBehaviour components under selected character/module hierarchy roots; no live execution observation."
+  },
+  "result": [
+    {
+      "bundle": "battle/prefabs/[uc]equips.ab",
+      "file": "CAB-7e3af38637f0d056d61e3e709179a7d1",
+      "pathId": "-2685151398839105992",
+      "hierarchy": [
+        "milu_equip_1_3_p1"
+      ],
+      "objectSha256": "cbbd48e5dcdb69807edd6c6804f15ef8a8015fa599eeae50d0e18a7a7758e493",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 3800760148018415462
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "3800760148018415462",
+        "name": "PassiveBuffAbility",
+        "cl": "PassiveBuffAbility",
+        "ns": "Torappu.Battle.Abilities",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_selector": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_metadata": {
+          "namedAsAlias": "",
+          "blackboardPrefix": ""
+        },
+        "_overrideSignalId": "",
+        "_interruptAbilityOnDetach": 0,
+        "_attachPassiveBuffsOnDummy": 1,
+        "_ignoreIfOwnerDead": 0,
+        "_forceAsDmgOrHealAbility": 0,
+        "_buffs": {
+          "Array": [
+            {
+              "attributes": {
+                "abnormalFlags": {
+                  "Array": []
+                },
+                "abnormalImmunes": {
+                  "Array": []
+                },
+                "abnormalAntis": {
+                  "Array": []
+                },
+                "abnormalCombos": {
+                  "Array": []
+                },
+                "abnormalComboImmunes": {
+                  "Array": []
+                },
+                "attributeModifiers": {
+                  "Array": []
+                }
+              },
+              "buffKey": "milu_e_trait",
+              "loadFromDB": 0,
+              "isDurableBuff": 0,
+              "isDamageMissable": 0,
+              "isSilenceable": 0,
+              "isStunnable": 0,
+              "isFreezable": 0,
+              "isLevitatable": 0,
+              "isGroundBoundable": 0,
+              "statusResistable": 2,
+              "templateKey": "milu_e_trait",
+              "disableOverride": 1,
+              "overrideKey": "",
+              "overrideType": 0,
+              "maxStackCnt": 1,
+              "refreshRemainingTimeWhenStackMax": 0,
+              "clearAllStackCntWhenTimeUp": 0,
+              "maxValidStackCnt": -1,
+              "independentCharacterSource": 0,
+              "overrideEffectKey": "",
+              "overrideOnEventPriority": 0,
+              "onEventPriority": 0,
+              "audioSignal": "",
+              "lifeTimeType": 2,
+              "takeSnapshotWhenExtend": 0,
+              "durationKey": "",
+              "remainingTimeKey": "",
+              "lifeTime": 0.0,
+              "triggerLifeType": 0,
+              "triggerCnt": 0,
+              "triggerInterval": -1.0,
+              "waitFirstTriggerInterval": 1,
+              "firstTriggerInterval": -1.0,
+              "priority": -1,
+              "priorityBBKeys": {
+                "Array": []
+              },
+              "stripBlackboardParamsWithBuffKey": 0,
+              "blackboard": {
+                "Array": []
+              },
+              "enableInitDirectionFromSource": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]equips.ab",
+      "file": "CAB-7e3af38637f0d056d61e3e709179a7d1",
+      "pathId": "-328725806280888447",
+      "hierarchy": [
+        "milu_equip_1_1_p1"
+      ],
+      "objectSha256": "2ac5ae36aadc69ea5e4bf22805e285bd685aa8f35267951f40441c13e6020336",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 3800760148018415462
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "3800760148018415462",
+        "name": "PassiveBuffAbility",
+        "cl": "PassiveBuffAbility",
+        "ns": "Torappu.Battle.Abilities",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_selector": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_metadata": {
+          "namedAsAlias": "",
+          "blackboardPrefix": ""
+        },
+        "_overrideSignalId": "",
+        "_interruptAbilityOnDetach": 0,
+        "_attachPassiveBuffsOnDummy": 1,
+        "_ignoreIfOwnerDead": 0,
+        "_forceAsDmgOrHealAbility": 0,
+        "_buffs": {
+          "Array": [
+            {
+              "attributes": {
+                "abnormalFlags": {
+                  "Array": []
+                },
+                "abnormalImmunes": {
+                  "Array": []
+                },
+                "abnormalAntis": {
+                  "Array": []
+                },
+                "abnormalCombos": {
+                  "Array": []
+                },
+                "abnormalComboImmunes": {
+                  "Array": []
+                },
+                "attributeModifiers": {
+                  "Array": []
+                }
+              },
+              "buffKey": "milu_e_trait",
+              "loadFromDB": 0,
+              "isDurableBuff": 0,
+              "isDamageMissable": 0,
+              "isSilenceable": 0,
+              "isStunnable": 0,
+              "isFreezable": 0,
+              "isLevitatable": 0,
+              "isGroundBoundable": 0,
+              "statusResistable": 2,
+              "templateKey": "milu_e_trait",
+              "disableOverride": 1,
+              "overrideKey": "",
+              "overrideType": 0,
+              "maxStackCnt": 1,
+              "refreshRemainingTimeWhenStackMax": 0,
+              "clearAllStackCntWhenTimeUp": 0,
+              "maxValidStackCnt": -1,
+              "independentCharacterSource": 0,
+              "overrideEffectKey": "",
+              "overrideOnEventPriority": 0,
+              "onEventPriority": 0,
+              "audioSignal": "",
+              "lifeTimeType": 2,
+              "takeSnapshotWhenExtend": 0,
+              "durationKey": "",
+              "remainingTimeKey": "",
+              "lifeTime": 0.0,
+              "triggerLifeType": 0,
+              "triggerCnt": 0,
+              "triggerInterval": -1.0,
+              "waitFirstTriggerInterval": 1,
+              "firstTriggerInterval": -1.0,
+              "priority": -1,
+              "priorityBBKeys": {
+                "Array": []
+              },
+              "stripBlackboardParamsWithBuffKey": 0,
+              "blackboard": {
+                "Array": []
+              },
+              "enableInitDirectionFromSource": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]equips.ab",
+      "file": "CAB-7e3af38637f0d056d61e3e709179a7d1",
+      "pathId": "2802390295139215981",
+      "hierarchy": [
+        "milu_equip_1_2_p1"
+      ],
+      "objectSha256": "9daf2643f91085b25823f5e44c606ba4d4822b4f543f0391e49b3272a52006e7",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 3800760148018415462
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "3800760148018415462",
+        "name": "PassiveBuffAbility",
+        "cl": "PassiveBuffAbility",
+        "ns": "Torappu.Battle.Abilities",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_selector": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_metadata": {
+          "namedAsAlias": "",
+          "blackboardPrefix": ""
+        },
+        "_overrideSignalId": "",
+        "_interruptAbilityOnDetach": 0,
+        "_attachPassiveBuffsOnDummy": 1,
+        "_ignoreIfOwnerDead": 0,
+        "_forceAsDmgOrHealAbility": 0,
+        "_buffs": {
+          "Array": [
+            {
+              "attributes": {
+                "abnormalFlags": {
+                  "Array": []
+                },
+                "abnormalImmunes": {
+                  "Array": []
+                },
+                "abnormalAntis": {
+                  "Array": []
+                },
+                "abnormalCombos": {
+                  "Array": []
+                },
+                "abnormalComboImmunes": {
+                  "Array": []
+                },
+                "attributeModifiers": {
+                  "Array": []
+                }
+              },
+              "buffKey": "milu_e_trait",
+              "loadFromDB": 0,
+              "isDurableBuff": 0,
+              "isDamageMissable": 0,
+              "isSilenceable": 0,
+              "isStunnable": 0,
+              "isFreezable": 0,
+              "isLevitatable": 0,
+              "isGroundBoundable": 0,
+              "statusResistable": 2,
+              "templateKey": "milu_e_trait",
+              "disableOverride": 1,
+              "overrideKey": "",
+              "overrideType": 0,
+              "maxStackCnt": 1,
+              "refreshRemainingTimeWhenStackMax": 0,
+              "clearAllStackCntWhenTimeUp": 0,
+              "maxValidStackCnt": -1,
+              "independentCharacterSource": 0,
+              "overrideEffectKey": "",
+              "overrideOnEventPriority": 0,
+              "onEventPriority": 0,
+              "audioSignal": "",
+              "lifeTimeType": 2,
+              "takeSnapshotWhenExtend": 0,
+              "durationKey": "",
+              "remainingTimeKey": "",
+              "lifeTime": 0.0,
+              "triggerLifeType": 0,
+              "triggerCnt": 0,
+              "triggerInterval": -1.0,
+              "waitFirstTriggerInterval": 1,
+              "firstTriggerInterval": -1.0,
+              "priority": -1,
+              "priorityBBKeys": {
+                "Array": []
+              },
+              "stripBlackboardParamsWithBuffKey": 0,
+              "blackboard": {
+                "Array": []
+              },
+              "enableInitDirectionFromSource": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]equips.ab",
+      "file": "CAB-7e3af38637f0d056d61e3e709179a7d1",
+      "pathId": "3087446653603222523",
+      "hierarchy": [
+        "milu_equip_1_3_p2"
+      ],
+      "objectSha256": "af27eb276b469aa0c71f0b29df6f22618cc762ff0695850aa02214eb01a9f6e2",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -2726233351382997147
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-2726233351382997147",
+        "name": "Talent",
+        "cl": "Talent",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_overwriteTalentKey": "1_override",
+        "_overwriteParentRangeId": 0,
+        "_checkValidBySkillIndex": {
+          "Array": []
+        },
+        "_attachInDummy": 0,
+        "_defaultModeIndex": -1,
+        "_attackBlackboardModeIndex": -1,
+        "_extraAttackBlackboardModeIndices": {
+          "Array": []
+        },
+        "_overrideDefaultRangeId": 0,
+        "_applyTalentScale": 0,
+        "_influenceSkillBlackboard": 0,
+        "_fromRawDataToSkill": 0,
+        "_applyTalentRange": 0,
+        "_applyBlackboardBySkill": 0,
+        "_applyStrBlackboardBySkill": 0,
+        "_writeRangeIdToProjectileBlackboard": 0,
+        "_affectWhenNotRootTalent": 0,
+        "_scaleCertainKeyFlag": 0,
+        "_scaleCertainKeyList": {
+          "Array": []
+        },
+        "_scaleCertainMode": 0,
+        "_scaleModeIndices": {
+          "Array": []
+        }
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]equips.ab",
+      "file": "CAB-7e3af38637f0d056d61e3e709179a7d1",
+      "pathId": "4978816348887437012",
+      "hierarchy": [
+        "uniequip_002_milu"
+      ],
+      "objectSha256": "c230d3b963f39067a704ca9423fc97eb9fb4de28a620d8ab54adce0bc12b16cb",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -1805110554459698129
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-1805110554459698129",
+        "name": "BattleUniEquipSetting",
+        "cl": "BattleUniEquipSetting",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_effects": {
+          "Array": [
+            "uniequip_002_milu_01"
+          ]
+        }
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]equips.ab",
+      "file": "CAB-7e3af38637f0d056d61e3e709179a7d1",
+      "pathId": "5766588038050812923",
+      "hierarchy": [
+        "milu_equip_1_3_p2"
+      ],
+      "objectSha256": "7a4965d82c804c300694de67ee6769c2cf37261241735cb1b16639ecc3ea1881",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 3800760148018415462
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "3800760148018415462",
+        "name": "PassiveBuffAbility",
+        "cl": "PassiveBuffAbility",
+        "ns": "Torappu.Battle.Abilities",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_selector": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_metadata": {
+          "namedAsAlias": "",
+          "blackboardPrefix": ""
+        },
+        "_overrideSignalId": "",
+        "_interruptAbilityOnDetach": 0,
+        "_attachPassiveBuffsOnDummy": 1,
+        "_ignoreIfOwnerDead": 0,
+        "_forceAsDmgOrHealAbility": 0,
+        "_buffs": {
+          "Array": [
+            {
+              "attributes": {
+                "abnormalFlags": {
+                  "Array": []
+                },
+                "abnormalImmunes": {
+                  "Array": []
+                },
+                "abnormalAntis": {
+                  "Array": []
+                },
+                "abnormalCombos": {
+                  "Array": []
+                },
+                "abnormalComboImmunes": {
+                  "Array": []
+                },
+                "attributeModifiers": {
+                  "Array": []
+                }
+              },
+              "buffKey": "milu_e_t_1",
+              "loadFromDB": 0,
+              "isDurableBuff": 0,
+              "isDamageMissable": 0,
+              "isSilenceable": 0,
+              "isStunnable": 0,
+              "isFreezable": 0,
+              "isLevitatable": 0,
+              "isGroundBoundable": 0,
+              "statusResistable": 2,
+              "templateKey": "milu_e_t_1",
+              "disableOverride": 1,
+              "overrideKey": "",
+              "overrideType": 0,
+              "maxStackCnt": 1,
+              "refreshRemainingTimeWhenStackMax": 0,
+              "clearAllStackCntWhenTimeUp": 0,
+              "maxValidStackCnt": -1,
+              "independentCharacterSource": 0,
+              "overrideEffectKey": "",
+              "overrideOnEventPriority": 0,
+              "onEventPriority": 0,
+              "audioSignal": "",
+              "lifeTimeType": 2,
+              "takeSnapshotWhenExtend": 0,
+              "durationKey": "",
+              "remainingTimeKey": "",
+              "lifeTime": 0.0,
+              "triggerLifeType": 0,
+              "triggerCnt": 0,
+              "triggerInterval": -1.0,
+              "waitFirstTriggerInterval": 1,
+              "firstTriggerInterval": -1.0,
+              "priority": -1,
+              "priorityBBKeys": {
+                "Array": []
+              },
+              "stripBlackboardParamsWithBuffKey": 0,
+              "blackboard": {
+                "Array": []
+              },
+              "enableInitDirectionFromSource": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]equips.ab",
+      "file": "CAB-7e3af38637f0d056d61e3e709179a7d1",
+      "pathId": "6372690736878919377",
+      "hierarchy": [
+        "milu_equip_1_2_p2"
+      ],
+      "objectSha256": "d09c1ea042d86bd9c3be436a3bc372a45ae7ddc458e14c5dfe73ada116befbba",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 3800760148018415462
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "3800760148018415462",
+        "name": "PassiveBuffAbility",
+        "cl": "PassiveBuffAbility",
+        "ns": "Torappu.Battle.Abilities",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_selector": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_metadata": {
+          "namedAsAlias": "",
+          "blackboardPrefix": ""
+        },
+        "_overrideSignalId": "",
+        "_interruptAbilityOnDetach": 0,
+        "_attachPassiveBuffsOnDummy": 1,
+        "_ignoreIfOwnerDead": 0,
+        "_forceAsDmgOrHealAbility": 0,
+        "_buffs": {
+          "Array": [
+            {
+              "attributes": {
+                "abnormalFlags": {
+                  "Array": []
+                },
+                "abnormalImmunes": {
+                  "Array": []
+                },
+                "abnormalAntis": {
+                  "Array": []
+                },
+                "abnormalCombos": {
+                  "Array": []
+                },
+                "abnormalComboImmunes": {
+                  "Array": []
+                },
+                "attributeModifiers": {
+                  "Array": []
+                }
+              },
+              "buffKey": "milu_e_t_1",
+              "loadFromDB": 0,
+              "isDurableBuff": 0,
+              "isDamageMissable": 0,
+              "isSilenceable": 0,
+              "isStunnable": 0,
+              "isFreezable": 0,
+              "isLevitatable": 0,
+              "isGroundBoundable": 0,
+              "statusResistable": 2,
+              "templateKey": "milu_e_t_1",
+              "disableOverride": 1,
+              "overrideKey": "",
+              "overrideType": 0,
+              "maxStackCnt": 1,
+              "refreshRemainingTimeWhenStackMax": 0,
+              "clearAllStackCntWhenTimeUp": 0,
+              "maxValidStackCnt": -1,
+              "independentCharacterSource": 0,
+              "overrideEffectKey": "",
+              "overrideOnEventPriority": 0,
+              "onEventPriority": 0,
+              "audioSignal": "",
+              "lifeTimeType": 2,
+              "takeSnapshotWhenExtend": 0,
+              "durationKey": "",
+              "remainingTimeKey": "",
+              "lifeTime": 0.0,
+              "triggerLifeType": 0,
+              "triggerCnt": 0,
+              "triggerInterval": -1.0,
+              "waitFirstTriggerInterval": 1,
+              "firstTriggerInterval": -1.0,
+              "priority": -1,
+              "priorityBBKeys": {
+                "Array": []
+              },
+              "stripBlackboardParamsWithBuffKey": 0,
+              "blackboard": {
+                "Array": []
+              },
+              "enableInitDirectionFromSource": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]equips.ab",
+      "file": "CAB-7e3af38637f0d056d61e3e709179a7d1",
+      "pathId": "7158514906786242257",
+      "hierarchy": [
+        "milu_equip_1_2_p2"
+      ],
+      "objectSha256": "2e89332444c4c0f145ae99580d14d3bba49606648d966b05ea0eaaec3ff50f2e",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -2726233351382997147
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-2726233351382997147",
+        "name": "Talent",
+        "cl": "Talent",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_overwriteTalentKey": "1_override",
+        "_overwriteParentRangeId": 0,
+        "_checkValidBySkillIndex": {
+          "Array": []
+        },
+        "_attachInDummy": 0,
+        "_defaultModeIndex": -1,
+        "_attackBlackboardModeIndex": -1,
+        "_extraAttackBlackboardModeIndices": {
+          "Array": []
+        },
+        "_overrideDefaultRangeId": 0,
+        "_applyTalentScale": 0,
+        "_influenceSkillBlackboard": 0,
+        "_fromRawDataToSkill": 0,
+        "_applyTalentRange": 0,
+        "_applyBlackboardBySkill": 0,
+        "_applyStrBlackboardBySkill": 0,
+        "_writeRangeIdToProjectileBlackboard": 0,
+        "_affectWhenNotRootTalent": 0,
+        "_scaleCertainKeyFlag": 0,
+        "_scaleCertainKeyList": {
+          "Array": []
+        },
+        "_scaleCertainMode": 0,
+        "_scaleModeIndices": {
+          "Array": []
+        }
+      }
+    }
+  ]
+}

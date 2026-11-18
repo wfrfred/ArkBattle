@@ -1,0 +1,148 @@
+{
+  "provenance": {
+    "source": {
+      "file": ".cache/native-research/unit-audit-20261110/operator-config/battle_equip_table.json",
+      "revision": "17759cc8cdf37388414145d16262a3a06f3ab25e",
+      "path": "zh_CN/gamedata/excel/battle_equip_table.json",
+      "sha256": "991ce1a8cd76682704b7e95fb71de8c726fd9ff62038a2da31b8a3870dc48055",
+      "gitBlobSha1": "7039d6565ad74eb77128d2ea137837ef62800ffe",
+      "bytes": 5763741,
+      "url": "https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/17759cc8cdf37388414145d16262a3a06f3ab25e/zh_CN/gamedata/excel/battle_equip_table.json"
+    },
+    "scope": "Original level 2 and 3 TALENT parts of uniequip_002_milu; verifies resource identity, not live activation."
+  },
+  "result": [
+    {
+      "pointer": "/uniequip_002_milu/phases/1/parts/1",
+      "equipLevel": 2,
+      "part": {
+        "resKey": "milu_equip_1_2_p2",
+        "target": "TALENT",
+        "isToken": false,
+        "validInGameTag": null,
+        "validInMapTag": null,
+        "addOrOverrideTalentDataBundle": {
+          "candidates": [
+            {
+              "displayRangeId": false,
+              "upgradeDescription": "攻击使用远程武器或不攻击的敌人时，攻击力提升至145%",
+              "talentIndex": 0,
+              "validModeIndices": null,
+              "unlockCondition": {
+                "phase": "PHASE_2",
+                "level": 50
+              },
+              "requiredPotentialRank": 0,
+              "prefabKey": "1",
+              "name": "暗杀者",
+              "description": null,
+              "rangeId": null,
+              "blackboard": [
+                {
+                  "key": "atk_scale",
+                  "value": 1.45,
+                  "valueStr": null
+                }
+              ],
+              "tokenKey": null,
+              "isHideTalent": false
+            },
+            {
+              "displayRangeId": false,
+              "upgradeDescription": "攻击使用远程武器或不攻击的敌人时，攻击力提升至150%<@ba.talpu>（+5%）</>",
+              "talentIndex": 0,
+              "validModeIndices": null,
+              "unlockCondition": {
+                "phase": "PHASE_2",
+                "level": 50
+              },
+              "requiredPotentialRank": 4,
+              "prefabKey": "1",
+              "name": "暗杀者",
+              "description": null,
+              "rangeId": null,
+              "blackboard": [
+                {
+                  "key": "atk_scale",
+                  "value": 1.5,
+                  "valueStr": null
+                }
+              ],
+              "tokenKey": null,
+              "isHideTalent": false
+            }
+          ]
+        },
+        "overrideTraitDataBundle": {
+          "candidates": null
+        }
+      }
+    },
+    {
+      "pointer": "/uniequip_002_milu/phases/2/parts/1",
+      "equipLevel": 3,
+      "part": {
+        "resKey": "milu_equip_1_3_p2",
+        "target": "TALENT",
+        "isToken": false,
+        "validInGameTag": null,
+        "validInMapTag": null,
+        "addOrOverrideTalentDataBundle": {
+          "candidates": [
+            {
+              "displayRangeId": false,
+              "upgradeDescription": "攻击使用远程武器或不攻击的敌人时，攻击力提升至150%",
+              "talentIndex": 0,
+              "validModeIndices": null,
+              "unlockCondition": {
+                "phase": "PHASE_2",
+                "level": 50
+              },
+              "requiredPotentialRank": 0,
+              "prefabKey": "1",
+              "name": "暗杀者",
+              "description": null,
+              "rangeId": null,
+              "blackboard": [
+                {
+                  "key": "atk_scale",
+                  "value": 1.5,
+                  "valueStr": null
+                }
+              ],
+              "tokenKey": null,
+              "isHideTalent": false
+            },
+            {
+              "displayRangeId": false,
+              "upgradeDescription": "攻击使用远程武器或不攻击的敌人时，攻击力提升至155%<@ba.talpu>（+5%）</>",
+              "talentIndex": 0,
+              "validModeIndices": null,
+              "unlockCondition": {
+                "phase": "PHASE_2",
+                "level": 50
+              },
+              "requiredPotentialRank": 4,
+              "prefabKey": "1",
+              "name": "暗杀者",
+              "description": null,
+              "rangeId": null,
+              "blackboard": [
+                {
+                  "key": "atk_scale",
+                  "value": 1.55,
+                  "valueStr": null
+                }
+              ],
+              "tokenKey": null,
+              "isHideTalent": false
+            }
+          ]
+        },
+        "overrideTraitDataBundle": {
+          "candidates": null
+        }
+      }
+    }
+  ]
+}
