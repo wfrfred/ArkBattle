@@ -106,6 +106,12 @@ Enemy 的战斗分类来自转换后的 EnemyData，再由 Enemy 初始化保存
 
 `TargetOptions.VerifyTarget` 将本次类别掩码传给 `BattleUtil.VerifyTarget`，后者虚调用目标的当前类别 getter，再判断掩码交集。只允许 `DEFAULT` 的查询因此在磐蟹形态通过类别这一关，在战术点形态被这一关排除。阵营、存活和其他受选条件另由相应检查决定。配置、黑板键与原生指令定位见[类别切换批次](../evidence/entity-category-20261118/README.md)。
 
+### 实体类别的实际查询方
+
+普通弩手的远程攻击 Selector 使用 `DEFAULT=1`。齐尔查克的环境免伤光环则将 `DEFAULT | TRAP_OR_ITEM=3` 交给自己的 validator，让范围内合格的友方装置也可获得光环。无餍的 `KillCjbtow` 用 `TRAP_OR_ITEM=2` 查询装置，再筛选 `trap_cjbtow[mark]`，选中一个废弃火灶时执行强制击杀。三条实际配置的定位见[查询方原件索引](../evidence/entity-category-20261118/README.md#实际查询方)。
+
+这三个用法说明类别掩码让每次查询选择所处理的对象集合。齐尔查克允许装置通过类别筛选，无餍还要求特定标记。豆苗战术点在类别这一关符合允许装置的查询，最终是否入选取决于相应查询的其他条件。
+
 静态镜像中有敌人分类的逐级显式字段，但“某级重新声明”不等于“分类实际改变”。例如 `enemy_1570_ymgscm` 的 level 0／1 都是空 enemyTags；不能将 level 1 的显式空数组单独当成清除非空标签的玩法正例。静态统计、版本和查询保存在[配置证据](../evidence/unit-classification-20261114/config/README.md)。
 
 已核对的 Enemy 模式切换／重生路径不替换该数据引用；这只能说明这些具体操作保留相应分类。本轮没有证明任意热更新或内容程序都不能改变标签，也没有为每条分类轴找到战中修改正例。是否需要动态修改公共状态，应依据实际修改链决定，不能从字段是数组、名称含 RuntimeData，或已有 Contribution 框架反推。
