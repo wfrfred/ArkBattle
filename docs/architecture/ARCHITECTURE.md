@@ -64,6 +64,8 @@ Route 的本次 Plan／offset、Occupancy 的本次 tile 等实例事实经 Init
 
 ## Subsystem 的责任与调用
 
+独立领域在 Core 下各自组织模型与完整操作。`battle/` 保存全局状态、外部命令、初始化、Tick 调度及地块／预置等跨领域协调；`unit/` 保存 Unit、能力和宿主内实例；`common/` 保存不依赖战斗实体的基础机制。操作接收 BattleState 不改变其业务归属。
+
 | 领域 | 负责的事实与操作 |
 | --- | --- |
 | [Resource](resource.md) | HP／EP Damage、Healing 的 Calculate／Apply 与本次结算结果 |
