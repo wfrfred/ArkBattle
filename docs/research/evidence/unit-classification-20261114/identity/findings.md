@@ -61,7 +61,7 @@ professionMask = 639  // 八职业，排除 TOKEN 与 TRAP
 
 ## 尚未闭合的边界
 
-- 没有穷举所有修改 category 的实际 Prefab 绑定；已核实接口和完整 fallback，不能由方法存在推出每个装置都会执行它。
+- 没有穷举所有修改 category 的实际 Prefab 绑定。后续已核实[豆苗磐蟹的战中切换与类别筛选](../../../cases/36-unit-classification-and-combat-tags.md#3-初始化与变化范围)。
 - 没有证明基础职业或附加职业在任意 XLua／外部脚本下不可修改；当前正例确认的是预处理写入与选择时读取。
 - 没有把 UnitType 普通枚举的所有消费者穷举为实体权威分类。已确认的索敌掩码消费者直接检查类。
 - 以上不能推导 Character 等价于可部署、具有 Card、属于我方或八职业干员；也不能由玩家称谓“装置”推导实际类一定为 Trap。

@@ -1,6 +1,6 @@
 # 单位分类与战斗标签
 
-研究日期：2026-11-14，2026-11-18 补核召唤物、装置与资料组合。问题是原生单位有哪些可被战斗程序查询的分类事实、它们从哪里建立、哪些会变化，以及实际内容读取哪一项。调查涵盖通用战斗、干员／敌人／召唤物／装置和代表内容；不涉及生息演算、保全派驻、船运寻路。原件、输入指纹和复跑入口见[分类批次](../evidence/unit-classification-20261114/README.md)与[组合批次](../evidence/unit-classification-composition-20261118/README.md)。
+研究日期：2026-11-14，2026-11-18 补核召唤物、装置与资料组合，以及豆苗磐蟹的实体类别切换。问题是原生单位有哪些可被战斗程序查询的分类事实、它们从哪里建立、哪些会变化，以及实际内容读取哪一项。调查涵盖通用战斗、干员／敌人／召唤物／装置和代表内容；不涉及生息演算、保全派驻、船运寻路。原件、输入指纹和复跑入口见[分类批次](../evidence/unit-classification-20261114/README.md)、[组合批次](../evidence/unit-classification-composition-20261118/README.md)与[类别切换批次](../evidence/entity-category-20261118/README.md)。
 
 本案整理原生需求，不确定 ArkBattle 的新字段、Capability 或标签 API。静态客户端正文、资源绑定、社区说明分别记录；没有执行实机，也没有取得活跃 XLua 的运行结果。
 
@@ -100,7 +100,11 @@ Enemy 的战斗分类来自转换后的 EnemyData，再由 Enemy 初始化保存
 
 额外 GroupTag 的已核写入发生在 Rune 的 Character 预处理。调用者包括预置 Character／Token 的临时 Dummy 创建—预处理—回收，以及卡牌属性资料处理；它们不是已在场 Character 动态增删标签的正例。本批未找到该 Rune 的实际非默认启用配置，保留这一具体缺口。
 
-实体类别另有真正的修改入口：`Token.SwitchCategory` 写入覆盖值，`get_category` 在覆盖值非零时读它，否则使用 Prefab `_category`。补核的涨潮控制已有非默认 `_category=2` 的实际配置，不能再把非默认值整体当成只有枚举声明；运行时切换的各内容绑定仍未闭合，不能因此将全部分类轴宣布为不可变。
+实体类别可以战中切换。普通 `Token.SwitchCategory` 写入 `m_category`，普通 `Token.get_category` 在覆盖值非零时读它，否则使用 Prefab `_category`。`RallyPoint.get_category` 直接读取 `m_category`。涨潮控制的 Prefab 有非默认 `_category=2`，豆苗磐蟹则提供同一在场实例来回切换的正例。
+
+豆苗磐蟹 `token_10014_bstalk_crab` 在 Crab 模式的监听器 `crab_s_1[listener]` 处理击倒，先执行 `SwitchRallyPointCategory` 写入 `TRAP_OR_ITEM=2`，随后切到 Flower。恢复时 `crab_switch` 安装 `crab_t_1[category_default]`，通过黑板 `category=1` 使同一节点写入 `DEFAULT=1`，然后恢复 HP 并切回 Crab。这两个程序作用于同一个 RallyPoint，恢复链见[磐蟹生命机制](11-damage-apply-and-hp-application.md#rallypoint-不是-unit-完整死亡)。
+
+`TargetOptions.VerifyTarget` 将本次类别掩码传给 `BattleUtil.VerifyTarget`，后者虚调用目标的当前类别 getter，再判断掩码交集。只允许 `DEFAULT` 的查询因此在磐蟹形态通过类别这一关，在战术点形态被这一关排除。阵营、存活和其他受选条件另由相应检查决定。配置、黑板键与原生指令定位见[类别切换批次](../evidence/entity-category-20261118/README.md)。
 
 静态镜像中有敌人分类的逐级显式字段，但“某级重新声明”不等于“分类实际改变”。例如 `enemy_1570_ymgscm` 的 level 0／1 都是空 enemyTags；不能将 level 1 的显式空数组单独当成清除非空标签的玩法正例。静态统计、版本和查询保存在[配置证据](../evidence/unit-classification-20261114/config/README.md)。
 
@@ -108,7 +112,7 @@ Enemy 的战斗分类来自转换后的 EnemyData，再由 Enemy 初始化保存
 
 ## 4. 已闭合与剩余证据缺口
 
-已闭合：分类轴之间的区别、主要数据来源及读取位置；单位类型掩码的类测试与重叠；FilterTag／GroupTag 区别；泥岩、守林人、附加职业模组和敌人级别模组的配置／消费者链。旧的 Profile.tags 转换不能作为这些原生语义的依据。
+已闭合：分类轴之间的区别、主要数据来源及读取位置；单位类型掩码的类测试与重叠；FilterTag／GroupTag 区别；豆苗磐蟹的战中实体类别切换及类别筛选；泥岩、守林人、附加职业模组和敌人级别模组的配置／消费者链。旧的 Profile.tags 转换不能作为这些原生语义的依据。
 
 仍未闭合的具体问题：
 
