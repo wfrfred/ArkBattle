@@ -2,7 +2,7 @@ import * as targeting from "../../dist/core/battle/targeting/index.js";
 import * as units from "../../dist/core/unit/query.js";
 import { hasTargetable } from "../../dist/core/unit/capability/targetable/capability.js";
 import { hasLayer } from "../../dist/core/unit/capability/layer/index.js";
-import { topK } from "../../dist/core/common/collection.js";
+import { topK } from "../../dist/core/common/collection/order.js";
 
 export function selectDamage({ geometry, canTargetAir = false, maxTargets = 1 }) {
     return (battle, source) => {

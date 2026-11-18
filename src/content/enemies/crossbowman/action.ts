@@ -21,7 +21,7 @@ import * as targeting from "../../../core/battle/targeting/index.js";
 import { hasBlockable } from "../../../core/unit/capability/blocking/index.js";
 import { hasTargetable } from "../../../core/unit/capability/targetable/capability.js";
 import { hasClassification } from "../../../core/unit/capability/classification/index.js";
-import { topK } from "../../../core/common/collection.js";
+import { topK } from "../../../core/common/collection/order.js";
 
 export interface Timing {
     readonly melee: AttackTiming;

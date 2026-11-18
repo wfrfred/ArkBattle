@@ -1,4 +1,4 @@
-import { assertNonnegativeSafeInteger } from "./assert.js";
+import { assertNonnegativeSafeInteger } from "../assert.js";
 
 export function sort<T>(
     candidates: Iterable<T>,

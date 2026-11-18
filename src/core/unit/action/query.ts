@@ -1,5 +1,5 @@
 import type { State as BattleState } from "../../battle/state.js";
-import { sort } from "../../common/collection.js";
+import { sort } from "../../common/collection/order.js";
 import type { Identified, Ref } from "../../common/ref.js";
 import * as units from "../query.js";
 import type { Unit } from "../unit.js";

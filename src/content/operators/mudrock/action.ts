@@ -41,7 +41,7 @@ import { hasBlockable, hasBlocker } from "../../../core/unit/capability/blocking
 import { hasDirection } from "../../../core/unit/capability/occupancy/index.js";
 import { hasLayer, type Layer } from "../../../core/unit/capability/layer/index.js";
 import { fromTiles } from "../../../core/geometry/range.js";
-import { topK } from "../../../core/common/collection.js";
+import { topK } from "../../../core/common/collection/order.js";
 import type { State as BattleState } from "../../../core/battle/index.js";
 
 import { createRng } from "../../../core/common/rng.js";

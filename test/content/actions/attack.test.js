@@ -4,7 +4,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { Hooks } from "../../../dist/core/hook.js";
 import { createRng } from "../../../dist/core/common/rng.js";
-import { topK } from "../../../dist/core/common/collection.js";
+import { topK } from "../../../dist/core/common/collection/order.js";
 import { create, createWithState, faceTarget } from "../../../dist/content/actions/attack.js";
 import * as targeting from "../../../dist/core/battle/targeting/index.js";
 import { hasTargetable } from "../../../dist/core/unit/capability/targetable/capability.js";

@@ -32,7 +32,7 @@ test/
 
 | 文档主题 | 套件 |
 | --- | --- |
-| [接口、查询与通用输入](../docs/architecture/api-conventions.md) | [assert](common/assert.test.js)、[collection](common/collection.test.js)、[query](common/query.test.js)、[store](common/store.test.js) |
+| [接口、查询与通用输入](../docs/architecture/api-conventions.md) | [assert](common/assert.test.js)、[order](common/order.test.js)、[query](common/query.test.js)、[store](common/store.test.js) |
 | [数值与静态换算](../docs/architecture/data.md)、[确定性](../docs/architecture/functional-core.md) | [math](common/math.test.js)、[RNG](common/rng.test.js) |
 | [类型约束](../docs/architecture/api-conventions.md#统一-typed-ref-与类型恢复) | [types](core/types.test.js) |
 | [Unit 构造](../docs/architecture/capability.md)、[状态接续](../docs/architecture/functional-core.md)、[Change](../docs/architecture/api-conventions.md#51-unit-完整操作与批量变更) | [unit](core/unit.test.js)、[runtime](core/runtime.test.js)、[change](core/change.test.js) |

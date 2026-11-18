@@ -46,7 +46,7 @@ import * as blocking from ${module("battle/blocking/index")};
 import * as targeting from ${module("battle/targeting/index")};
 import * as classification from ${module("unit/capability/classification/index")};
 import { hasTargetable } from ${module("unit/capability/targetable/capability")};
-import { topK } from ${module("common/collection")};
+import { topK } from ${module("common/collection/order")};
 import type { Spawn } from ${module("battle/schedule/index")};
 declare const battle: State;
 const attribute = (value: number, min: number | null = 0, max: number | null = null) => ({ default: value, min, max });

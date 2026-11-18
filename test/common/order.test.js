@@ -1,7 +1,7 @@
 // Contract: [api-conventions](../../docs/architecture/api-conventions.md#查询与候选).
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { sort, topK } from "../../dist/core/common/collection.js";
+import { sort, topK } from "../../dist/core/common/collection/order.js";
 
 test("sorting and TopK preserve earlier candidates when priorities are equal", () => {
     const candidates = [

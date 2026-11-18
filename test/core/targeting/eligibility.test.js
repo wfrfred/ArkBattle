@@ -3,7 +3,7 @@ import { attribute as defineAttribute, vitality as defineVitality } from "../../
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { Hooks } from "../../../dist/core/hook.js";
-import { topK } from "../../../dist/core/common/collection.js";
+import { topK } from "../../../dist/core/common/collection/order.js";
 import { battle, get } from "../../helpers/battle.js";
 import { update } from "../../../dist/core/battle/unit.js";
 import * as units from "../../../dist/core/unit/query.js";

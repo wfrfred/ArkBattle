@@ -1,5 +1,5 @@
 import type { Ref } from "../../common/ref.js";
-import { sort } from "../../common/collection.js";
+import { sort } from "../../common/collection/order.js";
 import { create } from "../../common/query.js";
 import type { State as BattlefieldState } from "../state.js";
 import type { WorldPosition } from "../../geometry/coordinate.js";
