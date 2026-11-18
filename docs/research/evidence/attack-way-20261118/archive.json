@@ -13,6 +13,8 @@
         "gameRelativePath": "GameAssembly.dll",
         "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
         "records": [
+          "if-target-type.json#/provenance/client/dll",
+          "if-target.json#/provenance/client/dll",
           "mode-init.json#/provenance/client/dll",
           "unit-mode.json#/provenance/client/dll"
         ],
@@ -24,6 +26,8 @@
         "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
         "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
         "records": [
+          "if-target-type.json#/provenance/client/metadata",
+          "if-target.json#/provenance/client/metadata",
           "mode-init.json#/provenance/client/metadata",
           "unit-mode.json#/provenance/client/metadata"
         ],
@@ -31,8 +35,12 @@
       }
     },
     "sourceRecords": [
+      "aak-damage-template.json",
+      "aak-fuze-prefabs.json",
       "enemy-apply-way.json",
       "equip-parts.json",
+      "if-target-type.json",
+      "if-target.json",
       "mode-init.json",
       "prefabs.json",
       "templates.json",
@@ -51,6 +59,18 @@
   "result": {
     "artifacts": [
       {
+        "path": "aak-damage-template.json",
+        "kind": "record",
+        "bytes": 3776,
+        "sha256": "2cbcc32572c576c82a05d171ffd175a456d16061b24e2d59b5a9ffd90dd92b61"
+      },
+      {
+        "path": "aak-fuze-prefabs.json",
+        "kind": "record",
+        "bytes": 129762,
+        "sha256": "59c4bf38e0d0acc8b6892279f05bb40c2156aed79189b863fd6bbd1f1949d4af"
+      },
+      {
         "path": "enemy-apply-way.json",
         "kind": "record",
         "bytes": 1161,
@@ -63,6 +83,12 @@
         "sha256": "0b44abdf90954d622fa9261e0cb0c1daac166f2c27972f715e66538a41c4074a"
       },
       {
+        "path": "extract_aak_fuze_prefabs.py",
+        "kind": "historical-script",
+        "bytes": 4757,
+        "sha256": "7daff49c07f3bd7045a38f611c343f909caef453830774e70203de3e3f308f0b"
+      },
+      {
         "path": "extract_prefabs.py",
         "kind": "historical-script",
         "bytes": 4657,
@@ -73,6 +99,18 @@
         "kind": "historical-script",
         "bytes": 2922,
         "sha256": "06f04626dd11953a074e24f847fd21798c43c824c187f89913c55412ba997031"
+      },
+      {
+        "path": "if-target-type.json",
+        "kind": "record",
+        "bytes": 24060,
+        "sha256": "6a4b5b3ecc84f8fa47d4b6059f714a9aae20425918985815d1b238c674fe0664"
+      },
+      {
+        "path": "if-target.json",
+        "kind": "record",
+        "bytes": 40523,
+        "sha256": "b702ee2b6b57d03812079ef704af1adab05cc25e1e2efc00aa291a3448fe71c6"
       },
       {
         "path": "mode-init.json",
@@ -471,10 +509,45 @@
           ],
           "fullname": "Torappu.Battle.UnitMode..ctor",
           "address": "0x180b13950"
+        },
+        {
+          "index": 101656,
+          "mode": "metadata",
+          "records": [
+            "if-target-type.json#/result/0/methods/0"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/IfTarget.get_allowedSource",
+          "address": "0x1811d9aa0"
+        },
+        {
+          "index": 101657,
+          "mode": "disasm",
+          "records": [
+            "if-target-type.json#/result/0/methods/1",
+            "if-target.json#/result",
+            "if-target.json#/result/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/IfTarget.Execute",
+          "address": "0x1811d9840"
+        },
+        {
+          "index": 101658,
+          "mode": "metadata",
+          "records": [
+            "if-target-type.json#/result/0/methods/2"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/IfTarget..ctor",
+          "address": "0x1811d9a30"
         }
       ],
       "blocks": [],
       "types": [
+        {
+          "name": "Torappu.Battle.Action.Nodes/IfTarget",
+          "records": [
+            "if-target-type.json#/result/0"
+          ]
+        },
         {
           "name": "Torappu.Battle.UnitMode",
           "records": [
@@ -486,13 +559,55 @@
       "bundles": [
         {
           "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "sha256": "8edcb8017c977cdf52c2593b58e21db96949f3ad1e6f904180ac1241f145ca79",
+          "records": [
+            "aak-damage-template.json#/provenance/source",
+            "templates.json#/provenance/source"
+          ],
+          "bytes": 2151020
+        },
+        {
+          "kind": "bundle",
           "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
           "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
           "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99",
           "records": [
+            "aak-fuze-prefabs.json#/provenance/sources/0",
             "prefabs.json#/provenance/sources/0"
           ],
           "bytes": 477255
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "sha256": "0d0b4c0f9252c14a69a20d4bea09527403dd3eddfc2f7bcd757c3c30cf37ffc3",
+          "records": [
+            "aak-fuze-prefabs.json#/provenance/sources/1"
+          ],
+          "bytes": 1367500
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_225_haak.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_225_haak.ab",
+          "sha256": "95f081a133221722e6aed0070bd84db5ad6cbc6ee95d0710b337a59310294ea9",
+          "records": [
+            "aak-fuze-prefabs.json#/provenance/sources/2"
+          ],
+          "bytes": 22986
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_4126_fuze.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_4126_fuze.ab",
+          "sha256": "96ca9270512a981ee33139936a0cd6a129697069637dd44382448e2cfcf3d83f",
+          "records": [
+            "aak-fuze-prefabs.json#/provenance/sources/3"
+          ],
+          "bytes": 21821
         },
         {
           "kind": "bundle",
@@ -503,16 +618,6 @@
             "prefabs.json#/provenance/sources/1"
           ],
           "bytes": 749424
-        },
-        {
-          "kind": "bundle",
-          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
-          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
-          "sha256": "8edcb8017c977cdf52c2593b58e21db96949f3ad1e6f904180ac1241f145ca79",
-          "records": [
-            "templates.json#/provenance/source"
-          ],
-          "bytes": 2151020
         }
       ]
     },

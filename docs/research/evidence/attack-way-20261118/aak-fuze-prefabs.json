@@ -1,0 +1,4310 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-18",
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/attack-way-20261118/amoris/fuze/extract_prefabs.py",
+      "bytes": 4757,
+      "sha256": "7daff49c07f3bd7045a38f611c343f909caef453830774e70203de3e3f308f0b"
+    },
+    "helper": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/targeting-pipeline-20261109/content/extract_content.py",
+      "bytes": 12906,
+      "sha256": "37504c156e11e55c9c06174980fb1617281690ab3b01db9caa9dfd28937f5faa"
+    },
+    "sources": [
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+        "bytes": 477255,
+        "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+        "bytes": 1367500,
+        "sha256": "0d0b4c0f9252c14a69a20d4bea09527403dd3eddfc2f7bcd757c3c30cf37ffc3"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_225_haak.ab",
+        "bytes": 22986,
+        "sha256": "95f081a133221722e6aed0070bd84db5ad6cbc6ee95d0710b337a59310294ea9"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_4126_fuze.ab",
+        "bytes": 21821,
+        "sha256": "96ca9270512a981ee33139936a0cd6a129697069637dd44382448e2cfcf3d83f"
+      }
+    ],
+    "selection": {
+      "battle/prefabs/[uc]skills.ab": [
+        "skchr_haak_2",
+        "skchr_haak_3"
+      ],
+      "charpack/char_225_haak.ab": [
+        "char_225_haak"
+      ],
+      "charpack/char_4126_fuze.ab": [
+        "char_4126_fuze"
+      ]
+    },
+    "scope": "All MonoBehaviour components under selected character/module hierarchy roots; no live execution observation."
+  },
+  "result": [
+    {
+      "bundle": "battle/prefabs/[uc]skills.ab",
+      "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+      "pathId": "-8602285875540598589",
+      "hierarchy": [
+        "skchr_haak_3",
+        "AttackWrapper",
+        "Fake_Attack",
+        "Selector"
+      ],
+      "objectSha256": "38544ac3335fcc4cd2e1a04c1085e12300e72da9f8504cb31627429c692eb775",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 7080728813803358465
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "7080728813803358465",
+        "name": "AdvancedSelector",
+        "cl": "AdvancedSelector",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_targetSide": 1,
+        "_targetMotion": 3,
+        "_targetCategory": 1,
+        "_postFilter": 21,
+        "_ignoreTargetFree": 0,
+        "_onlyIgnoreSomeOfTargetFreeCase": 0,
+        "_abnormalFlag": 46,
+        "_abnormalCombo": 3,
+        "_ignoreAllyTargetFree": 0,
+        "_ignoreHealFree": 0,
+        "_ignoreMotionMode": 0,
+        "_forceIgnoreCamouflage": 0,
+        "_needProfessionMask": 0,
+        "_professionMask": 0,
+        "_excludeSomeAbnormalFlags": 0,
+        "_excludeAbnormalFlag": 46,
+        "_limitTargetNum": 1,
+        "_maxTargetKey": "max_target",
+        "_maxTargetExtraKey": "",
+        "_maxNum": 1,
+        "_excludeOwner": 1,
+        "_sortByTauntAtLast": 0,
+        "_ignoreHitRange": 0,
+        "_checkUnitType": 0,
+        "_unitTypeMask": 0,
+        "_abilityInputTargetAsSortSource": 0,
+        "_targetOptionHookedKeys": {
+          "Array": []
+        }
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]skills.ab",
+      "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+      "pathId": "-6726821149893599037",
+      "hierarchy": [
+        "skchr_haak_3",
+        "AttackWrapper",
+        "Fake_Attack"
+      ],
+      "objectSha256": "259f23e2419f98039ab97f57c4fd9ed0ba164be89846bf4d1dee7beba1612dd4",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -3698736381282439861
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-3698736381282439861",
+        "name": "MultiRangedAttack",
+        "cl": "MultiRangedAttack",
+        "ns": "Torappu.Battle.Abilities",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_selector": {
+          "m_FileID": 0,
+          "m_PathID": -8602285875540598589
+        },
+        "_metadata": {
+          "namedAsAlias": "",
+          "blackboardPrefix": ""
+        },
+        "_overrideSignalId": "",
+        "_interruptAbilityOnDetach": 0,
+        "_attachPassiveBuffsOnDummy": 1,
+        "_ignoreIfOwnerDead": 0,
+        "_forceAsDmgOrHealAbility": 0,
+        "_waitForAttackEvent": 1,
+        "_interuptIfTargetDead": 0,
+        "_resetCdStrategy": 1,
+        "_selectTargetSource": 1,
+        "_selectTargetTiming": 0,
+        "_timeMode": 0,
+        "_alwaysIncludeTarget": 1,
+        "_allowNoTarget": 0,
+        "_animKey": "Skill",
+        "_endAnimKey": "Skill_Down",
+        "_downAnimKey": "",
+        "_downEndAnimKey": "",
+        "_upAnimKey": "",
+        "_upEndAnimKey": "",
+        "_cooldown": 0.0,
+        "_cooldownKey": "duration",
+        "_preDelay": 0.0,
+        "_escapeTime": 0.0,
+        "_faceToTarget": 1,
+        "_faceToDefault": 0,
+        "_faceToFront": 0,
+        "_faceToFirstCastTarget": 0,
+        "_checkFaceToFirstCastTargetDownAttack": 0,
+        "_forceFaceToDirection": 0,
+        "_activeBuffs": {
+          "Array": [
+            {
+              "attributes": {
+                "abnormalFlags": {
+                  "Array": []
+                },
+                "abnormalImmunes": {
+                  "Array": []
+                },
+                "abnormalAntis": {
+                  "Array": []
+                },
+                "abnormalCombos": {
+                  "Array": []
+                },
+                "abnormalComboImmunes": {
+                  "Array": []
+                },
+                "attributeModifiers": {
+                  "Array": [
+                    {
+                      "attributeType": 7,
+                      "formulaItem": 0,
+                      "value": 0.0,
+                      "loadFromBlackboard": 1,
+                      "fetchBaseValueFromSourceEntity": 0
+                    },
+                    {
+                      "attributeType": 1,
+                      "formulaItem": 1,
+                      "value": 0.0,
+                      "loadFromBlackboard": 1,
+                      "fetchBaseValueFromSourceEntity": 0
+                    }
+                  ]
+                }
+              },
+              "buffKey": "haak_s_3[target]",
+              "loadFromDB": 0,
+              "isDurableBuff": 0,
+              "isDamageMissable": 0,
+              "isSilenceable": 0,
+              "isStunnable": 0,
+              "isFreezable": 0,
+              "isLevitatable": 0,
+              "isGroundBoundable": 0,
+              "statusResistable": 2,
+              "templateKey": "empty",
+              "disableOverride": 0,
+              "overrideKey": "",
+              "overrideType": 0,
+              "maxStackCnt": 1,
+              "refreshRemainingTimeWhenStackMax": 0,
+              "clearAllStackCntWhenTimeUp": 0,
+              "maxValidStackCnt": -1,
+              "independentCharacterSource": 1,
+              "overrideEffectKey": "haak_skill_03_buff",
+              "overrideOnEventPriority": 0,
+              "onEventPriority": 0,
+              "audioSignal": "",
+              "lifeTimeType": 1,
+              "takeSnapshotWhenExtend": 0,
+              "durationKey": "",
+              "remainingTimeKey": "",
+              "lifeTime": 0.0,
+              "triggerLifeType": 0,
+              "triggerCnt": 0,
+              "triggerInterval": -1.0,
+              "waitFirstTriggerInterval": 1,
+              "firstTriggerInterval": -1.0,
+              "priority": -1,
+              "priorityBBKeys": {
+                "Array": []
+              },
+              "stripBlackboardParamsWithBuffKey": 0,
+              "blackboard": {
+                "Array": []
+              },
+              "enableInitDirectionFromSource": 0
+            }
+          ]
+        },
+        "_maxAnimScale": -1.0,
+        "_onlyPlayEndAnimWhenIsLastAbility": 0,
+        "_ignorePalsyInterrupt": 0,
+        "_affectedBySlowDown": 0,
+        "_atkScale": 0.0,
+        "_atkScaleKey": "atk_scale",
+        "_attackType": 1,
+        "_elementDamageType": 0,
+        "_epDamageRatio": 0.0,
+        "_useDynamicAttackType": 0,
+        "_deliveryParaWhenReplaceActionNode": 0,
+        "_projectileKey": "projectile_haak_s_fake",
+        "_mountPointType": 2,
+        "_useMountGroup": 0,
+        "_mountGroup": {
+          "loopType": 0,
+          "mountPoints": {
+            "Array": []
+          }
+        },
+        "_damageType": 1,
+        "_waitForProjectileInvalid": 0,
+        "_notClearProjectileWhenCastEnd": 0,
+        "_fireAttackFinishWhenProjectileInvalid": 0,
+        "_minPostDelayWhenProjectileInvalid": 0.0,
+        "_waitForAnimEndWhenProjectileInvalid": 0,
+        "_projectileDestination": 0,
+        "_extraDamageType": 0,
+        "_emitToInputPosWhenTargetIsInvalid": 0,
+        "_emitToInputRootTileWhenTargetIsInvalid": 0,
+        "_useCachedAtkOnly": 0,
+        "_transferSource": 0,
+        "_extraProjectileKeys": {
+          "Array": []
+        },
+        "_fireCreateProjectileEvent": 0,
+        "_additionalTimes": 14,
+        "_triggerDelta": 0.029999999329447746,
+        "_waitAttackEventForAllAttacks": 0,
+        "_additionalProjectile": "projectile_haak_s_fake",
+        "_useMultiAdditionalProjectiles": 0,
+        "_additionalProjectiles": {
+          "Array": []
+        },
+        "_enableMountPointGroup": 0,
+        "_mountPointGroup": {
+          "Array": []
+        },
+        "_onlyFeedActionsToFirstOne": 0,
+        "_onlyTrigAudioSignalForFirstOne": 1,
+        "_limitToOneTargetAfterFirstRound": 0,
+        "_splitDamage": 0,
+        "_addSpellCntToSignalId": 0,
+        "_addSpellCntToLastSignalId": 0,
+        "_onlyFeedActiveBuffToLastOne": 1,
+        "_onlyFeedActiveBuffToFirstOne": 0,
+        "_refreshTimesOnCastStart": 0,
+        "_castToFirstRoundTargetLocationsAtProjectileBirth": 0,
+        "_hookTheLastProjectile": ""
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]skills.ab",
+      "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+      "pathId": "-5442699003515715689",
+      "hierarchy": [
+        "skchr_haak_2",
+        "AttackWrapper",
+        "Attack",
+        "Selector"
+      ],
+      "objectSha256": "9fb1b9065f30a24ab4733b44f553dc02bd746565740a6d79bf36473eed495ce9",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 8607874384982393801
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "8607874384982393801",
+        "name": "SelectorTrigger",
+        "cl": "SelectorTrigger",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_keepTarget": 0,
+        "_minTargetNum": 0,
+        "_overrideSearchTargetTick": -1
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]skills.ab",
+      "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+      "pathId": "-4550506103587618921",
+      "hierarchy": [
+        "skchr_haak_2",
+        "AttackWrapper",
+        "Attack"
+      ],
+      "objectSha256": "7962d8c2012b861a30306b8404d18989a54f7aeb55851772b60bec8bf6103fb4",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -3698736381282439861
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-3698736381282439861",
+        "name": "MultiRangedAttack",
+        "cl": "MultiRangedAttack",
+        "ns": "Torappu.Battle.Abilities",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_selector": {
+          "m_FileID": 0,
+          "m_PathID": 34878567882145687
+        },
+        "_metadata": {
+          "namedAsAlias": "",
+          "blackboardPrefix": ""
+        },
+        "_overrideSignalId": "",
+        "_interruptAbilityOnDetach": 0,
+        "_attachPassiveBuffsOnDummy": 1,
+        "_ignoreIfOwnerDead": 0,
+        "_forceAsDmgOrHealAbility": 0,
+        "_waitForAttackEvent": 1,
+        "_interuptIfTargetDead": 0,
+        "_resetCdStrategy": 1,
+        "_selectTargetSource": 1,
+        "_selectTargetTiming": 0,
+        "_timeMode": 0,
+        "_alwaysIncludeTarget": 1,
+        "_allowNoTarget": 0,
+        "_animKey": "Skill",
+        "_endAnimKey": "Skill_Down",
+        "_downAnimKey": "",
+        "_downEndAnimKey": "",
+        "_upAnimKey": "",
+        "_upEndAnimKey": "",
+        "_cooldown": 0.0,
+        "_cooldownKey": "duration",
+        "_preDelay": 0.0,
+        "_escapeTime": 0.0,
+        "_faceToTarget": 1,
+        "_faceToDefault": 0,
+        "_faceToFront": 0,
+        "_faceToFirstCastTarget": 0,
+        "_checkFaceToFirstCastTargetDownAttack": 0,
+        "_forceFaceToDirection": 0,
+        "_activeBuffs": {
+          "Array": [
+            {
+              "attributes": {
+                "abnormalFlags": {
+                  "Array": []
+                },
+                "abnormalImmunes": {
+                  "Array": []
+                },
+                "abnormalAntis": {
+                  "Array": []
+                },
+                "abnormalCombos": {
+                  "Array": []
+                },
+                "abnormalComboImmunes": {
+                  "Array": []
+                },
+                "attributeModifiers": {
+                  "Array": []
+                }
+              },
+              "buffKey": "haak_s_2",
+              "loadFromDB": 0,
+              "isDurableBuff": 0,
+              "isDamageMissable": 0,
+              "isSilenceable": 0,
+              "isStunnable": 0,
+              "isFreezable": 0,
+              "isLevitatable": 0,
+              "isGroundBoundable": 0,
+              "statusResistable": 2,
+              "templateKey": "instant_damage_physical[add_sp]",
+              "disableOverride": 0,
+              "overrideKey": "",
+              "overrideType": 0,
+              "maxStackCnt": 1,
+              "refreshRemainingTimeWhenStackMax": 0,
+              "clearAllStackCntWhenTimeUp": 0,
+              "maxValidStackCnt": -1,
+              "independentCharacterSource": 0,
+              "overrideEffectKey": "",
+              "overrideOnEventPriority": 0,
+              "onEventPriority": 0,
+              "audioSignal": "",
+              "lifeTimeType": 0,
+              "takeSnapshotWhenExtend": 0,
+              "durationKey": "",
+              "remainingTimeKey": "",
+              "lifeTime": 0.0,
+              "triggerLifeType": 0,
+              "triggerCnt": 0,
+              "triggerInterval": -1.0,
+              "waitFirstTriggerInterval": 1,
+              "firstTriggerInterval": -1.0,
+              "priority": -1,
+              "priorityBBKeys": {
+                "Array": []
+              },
+              "stripBlackboardParamsWithBuffKey": 0,
+              "blackboard": {
+                "Array": []
+              },
+              "enableInitDirectionFromSource": 0
+            }
+          ]
+        },
+        "_maxAnimScale": -1.0,
+        "_onlyPlayEndAnimWhenIsLastAbility": 0,
+        "_ignorePalsyInterrupt": 0,
+        "_affectedBySlowDown": 0,
+        "_atkScale": 0.0,
+        "_atkScaleKey": "atk_scale",
+        "_attackType": 1,
+        "_elementDamageType": 0,
+        "_epDamageRatio": 0.0,
+        "_useDynamicAttackType": 0,
+        "_deliveryParaWhenReplaceActionNode": 0,
+        "_projectileKey": "projectile_haak_s2",
+        "_mountPointType": 2,
+        "_useMountGroup": 0,
+        "_mountGroup": {
+          "loopType": 0,
+          "mountPoints": {
+            "Array": []
+          }
+        },
+        "_damageType": 1,
+        "_waitForProjectileInvalid": 0,
+        "_notClearProjectileWhenCastEnd": 0,
+        "_fireAttackFinishWhenProjectileInvalid": 0,
+        "_minPostDelayWhenProjectileInvalid": 0.0,
+        "_waitForAnimEndWhenProjectileInvalid": 0,
+        "_projectileDestination": 0,
+        "_extraDamageType": 0,
+        "_emitToInputPosWhenTargetIsInvalid": 0,
+        "_emitToInputRootTileWhenTargetIsInvalid": 0,
+        "_useCachedAtkOnly": 0,
+        "_transferSource": 0,
+        "_extraProjectileKeys": {
+          "Array": []
+        },
+        "_fireCreateProjectileEvent": 0,
+        "_additionalTimes": 14,
+        "_triggerDelta": 0.029999999329447746,
+        "_waitAttackEventForAllAttacks": 0,
+        "_additionalProjectile": "projectile_haak_s2_multi",
+        "_useMultiAdditionalProjectiles": 0,
+        "_additionalProjectiles": {
+          "Array": []
+        },
+        "_enableMountPointGroup": 0,
+        "_mountPointGroup": {
+          "Array": []
+        },
+        "_onlyFeedActionsToFirstOne": 0,
+        "_onlyTrigAudioSignalForFirstOne": 1,
+        "_limitToOneTargetAfterFirstRound": 0,
+        "_splitDamage": 0,
+        "_addSpellCntToSignalId": 0,
+        "_addSpellCntToLastSignalId": 0,
+        "_onlyFeedActiveBuffToLastOne": 0,
+        "_onlyFeedActiveBuffToFirstOne": 0,
+        "_refreshTimesOnCastStart": 0,
+        "_castToFirstRoundTargetLocationsAtProjectileBirth": 0,
+        "_hookTheLastProjectile": ""
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]skills.ab",
+      "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+      "pathId": "-4424655512026554173",
+      "hierarchy": [
+        "skchr_haak_3"
+      ],
+      "objectSha256": "deb1edb4d17b2f91ad48adabbdfc6ae0e16be9a3177917d5ad1275e417abef33",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -3703208971068511792
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-3703208971068511792",
+        "name": "AbilitySequenceGroup",
+        "cl": "AbilitySequenceGroup",
+        "ns": "Torappu.Battle.Abilities",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_selector": {
+          "m_FileID": 0,
+          "m_PathID": -1090656356389232445
+        },
+        "_metadata": {
+          "namedAsAlias": "",
+          "blackboardPrefix": ""
+        },
+        "_overrideSignalId": "",
+        "_interruptAbilityOnDetach": 0,
+        "_attachPassiveBuffsOnDummy": 1,
+        "_ignoreIfOwnerDead": 0,
+        "_forceAsDmgOrHealAbility": 0,
+        "_abilities": {
+          "Array": [
+            {
+              "m_FileID": 0,
+              "m_PathID": 8355487405946560707
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": -1020782965540527933
+            }
+          ]
+        },
+        "_alwaysNext": 1,
+        "_forceNextIfCastFail": 0,
+        "_checkCanUseSubAbility": 0,
+        "_useLongestAbilityCooldown": 0,
+        "_fireCastStartEventWhenCast": 0,
+        "_stopMoveNextWhenNotCasting": 0,
+        "_alsoInterruptCurrentSubAbility": 0,
+        "_interruptableSubAbilityIndice": {
+          "Array": []
+        },
+        "_alsoStopSubAbilityAffect": 0,
+        "_alsoResetSubAbilityCooldown": 0,
+        "_setDataExceptRedundance": 0,
+        "_interruptIfTargetDead": 0,
+        "_castToInputPosIfTargetInvalid": 0,
+        "_timeMode": 1,
+        "_updateCooldownAfterSubAbilitiesAttached": 0,
+        "_enableLoop": 0,
+        "_abilityLoopSettings": {
+          "Array": []
+        }
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]skills.ab",
+      "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+      "pathId": "-4328837157586804541",
+      "hierarchy": [
+        "skchr_haak_3"
+      ],
+      "objectSha256": "019fc036266f365e09b95f9ca6db9a6142694e2b34043c7386cf99353346a71f",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 6851783972288338031
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "6851783972288338031",
+        "name": "CastSkill",
+        "cl": "CastSkill",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_maxTriggerTime": -1,
+        "_allowSpRecoveryWhenAffecting": 0,
+        "_limitGlobalTriggerTime": 0,
+        "_hidden": 0,
+        "_showSpBarEvenHidden": 0,
+        "_showSpAsBulletMode": 0,
+        "_showSpRatioAsProgress": 0,
+        "_playCharWordVoice": 1,
+        "_playCharWordWithPassiveType": 0,
+        "_earlyVoice": 0,
+        "_canCastWithNoSp": 0,
+        "_canSilenced": 0,
+        "_canUseInAbnormalState": 0,
+        "_defaultModeIndex": -1,
+        "_attackBlackboardModeIndex": -1,
+        "_extraAttackBlackboardModeIndices": {
+          "Array": []
+        },
+        "_rangeIdModeIndex": -1,
+        "_extraRangeIdModeIndices": {
+          "Array": []
+        },
+        "_rangeIdUsageType": 7,
+        "_writeDurationToAttackBlackboard": 0,
+        "_attachSignalIds": 0,
+        "_extraAbilities": {
+          "Array": []
+        },
+        "_useEscapeTime": 0,
+        "_earlySkillFinishAtAttackFinished": 0,
+        "_stopAffectOnInterrupt": 0,
+        "_showProgressToNext": 0,
+        "_hideSkillStackCount": 0,
+        "_hideHudSkillStackCount": 0,
+        "_playSkillBeginAnim": 0,
+        "_forceAnimFaceToDefault": 0,
+        "_beginAnim": "",
+        "_beginAnimDown": "",
+        "_beginEffect": {
+          "Array": []
+        },
+        "_useFaceVector": 0,
+        "_beginAnimValidator": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_availableValidator": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_trigger": {
+          "m_FileID": 0,
+          "m_PathID": -3528873145755770685
+        },
+        "_switchToState": 1,
+        "_uninterruptibleOnAbilityPredelay": 0,
+        "_canSwitchDuringBorn": 1,
+        "_canCastDuringBorn": 1,
+        "_checkHasTargetBeforeDoCast": 0,
+        "_useTriggerInManualMode": 0,
+        "_allowNoTarget": 1,
+        "_shouldCastLikeAttack": 0,
+        "_isRemoteControlled": 0,
+        "_hideRangeToShow": 0,
+        "_forceToShowRange": 0,
+        "_forceUseBaseShowRange": 0,
+        "_rangeToShow": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_recoverSpIfNoTarget": 0,
+        "_resetAbilityCooldownWhenCastEnd": 0,
+        "_onlyAvailableWhenTokenValid": 0,
+        "_hasUniStackColor": 0,
+        "_skipSpCheckInSkillState": 0
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]skills.ab",
+      "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+      "pathId": "-3679496056933138537",
+      "hierarchy": [
+        "skchr_haak_2",
+        "AttackWrapper",
+        "Fake_Attack",
+        "Selector"
+      ],
+      "objectSha256": "395b2022f75c1f16eba7ae7d37f334482a84d72defd48bd9a87942657806742d",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 8607874384982393801
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "8607874384982393801",
+        "name": "SelectorTrigger",
+        "cl": "SelectorTrigger",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_keepTarget": 0,
+        "_minTargetNum": 0,
+        "_overrideSearchTargetTick": -1
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]skills.ab",
+      "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+      "pathId": "-3528873145755770685",
+      "hierarchy": [
+        "skchr_haak_3",
+        "AttackWrapper",
+        "Attack",
+        "Selector"
+      ],
+      "objectSha256": "7cf0c89f9bce3127d1af25b9ed5427d776d74d1bb7e7394fdb931e1056bb406b",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 8607874384982393801
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "8607874384982393801",
+        "name": "SelectorTrigger",
+        "cl": "SelectorTrigger",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_keepTarget": 0,
+        "_minTargetNum": 0,
+        "_overrideSearchTargetTick": -1
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]skills.ab",
+      "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+      "pathId": "-3474007383476027497",
+      "hierarchy": [
+        "skchr_haak_2",
+        "AttackWrapper",
+        "Fake_Attack"
+      ],
+      "objectSha256": "ed730b893d0df91a20f3030998c5e49f5ed90b453330545b2103ce89d1f23706",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -3698736381282439861
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-3698736381282439861",
+        "name": "MultiRangedAttack",
+        "cl": "MultiRangedAttack",
+        "ns": "Torappu.Battle.Abilities",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_selector": {
+          "m_FileID": 0,
+          "m_PathID": 6647551655368114071
+        },
+        "_metadata": {
+          "namedAsAlias": "",
+          "blackboardPrefix": ""
+        },
+        "_overrideSignalId": "",
+        "_interruptAbilityOnDetach": 0,
+        "_attachPassiveBuffsOnDummy": 1,
+        "_ignoreIfOwnerDead": 0,
+        "_forceAsDmgOrHealAbility": 0,
+        "_waitForAttackEvent": 1,
+        "_interuptIfTargetDead": 0,
+        "_resetCdStrategy": 1,
+        "_selectTargetSource": 1,
+        "_selectTargetTiming": 0,
+        "_timeMode": 0,
+        "_alwaysIncludeTarget": 1,
+        "_allowNoTarget": 0,
+        "_animKey": "Skill",
+        "_endAnimKey": "Skill_Down",
+        "_downAnimKey": "",
+        "_downEndAnimKey": "",
+        "_upAnimKey": "",
+        "_upEndAnimKey": "",
+        "_cooldown": 0.0,
+        "_cooldownKey": "duration",
+        "_preDelay": 0.0,
+        "_escapeTime": 0.0,
+        "_faceToTarget": 1,
+        "_faceToDefault": 0,
+        "_faceToFront": 0,
+        "_faceToFirstCastTarget": 0,
+        "_checkFaceToFirstCastTargetDownAttack": 0,
+        "_forceFaceToDirection": 0,
+        "_activeBuffs": {
+          "Array": [
+            {
+              "attributes": {
+                "abnormalFlags": {
+                  "Array": []
+                },
+                "abnormalImmunes": {
+                  "Array": []
+                },
+                "abnormalAntis": {
+                  "Array": []
+                },
+                "abnormalCombos": {
+                  "Array": []
+                },
+                "abnormalComboImmunes": {
+                  "Array": []
+                },
+                "attributeModifiers": {
+                  "Array": [
+                    {
+                      "attributeType": 0,
+                      "formulaItem": 1,
+                      "value": 0.0,
+                      "loadFromBlackboard": 1,
+                      "fetchBaseValueFromSourceEntity": 0
+                    },
+                    {
+                      "attributeType": 2,
+                      "formulaItem": 1,
+                      "value": 0.0,
+                      "loadFromBlackboard": 1,
+                      "fetchBaseValueFromSourceEntity": 0
+                    }
+                  ]
+                }
+              },
+              "buffKey": "haak_s_2[target]",
+              "loadFromDB": 0,
+              "isDurableBuff": 0,
+              "isDamageMissable": 0,
+              "isSilenceable": 0,
+              "isStunnable": 0,
+              "isFreezable": 0,
+              "isLevitatable": 0,
+              "isGroundBoundable": 0,
+              "statusResistable": 2,
+              "templateKey": "empty",
+              "disableOverride": 0,
+              "overrideKey": "",
+              "overrideType": 0,
+              "maxStackCnt": 1,
+              "refreshRemainingTimeWhenStackMax": 0,
+              "clearAllStackCntWhenTimeUp": 0,
+              "maxValidStackCnt": -1,
+              "independentCharacterSource": 1,
+              "overrideEffectKey": "haak_skill_02_buff",
+              "overrideOnEventPriority": 0,
+              "onEventPriority": 0,
+              "audioSignal": "",
+              "lifeTimeType": 1,
+              "takeSnapshotWhenExtend": 0,
+              "durationKey": "",
+              "remainingTimeKey": "",
+              "lifeTime": 0.0,
+              "triggerLifeType": 0,
+              "triggerCnt": 0,
+              "triggerInterval": -1.0,
+              "waitFirstTriggerInterval": 1,
+              "firstTriggerInterval": -1.0,
+              "priority": -1,
+              "priorityBBKeys": {
+                "Array": []
+              },
+              "stripBlackboardParamsWithBuffKey": 0,
+              "blackboard": {
+                "Array": []
+              },
+              "enableInitDirectionFromSource": 0
+            }
+          ]
+        },
+        "_maxAnimScale": -1.0,
+        "_onlyPlayEndAnimWhenIsLastAbility": 0,
+        "_ignorePalsyInterrupt": 0,
+        "_affectedBySlowDown": 0,
+        "_atkScale": 0.0,
+        "_atkScaleKey": "atk_scale",
+        "_attackType": 1,
+        "_elementDamageType": 0,
+        "_epDamageRatio": 0.0,
+        "_useDynamicAttackType": 0,
+        "_deliveryParaWhenReplaceActionNode": 0,
+        "_projectileKey": "projectile_haak_s_fake",
+        "_mountPointType": 2,
+        "_useMountGroup": 0,
+        "_mountGroup": {
+          "loopType": 0,
+          "mountPoints": {
+            "Array": []
+          }
+        },
+        "_damageType": 1,
+        "_waitForProjectileInvalid": 0,
+        "_notClearProjectileWhenCastEnd": 0,
+        "_fireAttackFinishWhenProjectileInvalid": 0,
+        "_minPostDelayWhenProjectileInvalid": 0.0,
+        "_waitForAnimEndWhenProjectileInvalid": 0,
+        "_projectileDestination": 0,
+        "_extraDamageType": 0,
+        "_emitToInputPosWhenTargetIsInvalid": 0,
+        "_emitToInputRootTileWhenTargetIsInvalid": 0,
+        "_useCachedAtkOnly": 0,
+        "_transferSource": 0,
+        "_extraProjectileKeys": {
+          "Array": []
+        },
+        "_fireCreateProjectileEvent": 0,
+        "_additionalTimes": 14,
+        "_triggerDelta": 0.029999999329447746,
+        "_waitAttackEventForAllAttacks": 0,
+        "_additionalProjectile": "projectile_haak_s_fake",
+        "_useMultiAdditionalProjectiles": 0,
+        "_additionalProjectiles": {
+          "Array": []
+        },
+        "_enableMountPointGroup": 0,
+        "_mountPointGroup": {
+          "Array": []
+        },
+        "_onlyFeedActionsToFirstOne": 0,
+        "_onlyTrigAudioSignalForFirstOne": 1,
+        "_limitToOneTargetAfterFirstRound": 0,
+        "_splitDamage": 0,
+        "_addSpellCntToSignalId": 0,
+        "_addSpellCntToLastSignalId": 0,
+        "_onlyFeedActiveBuffToLastOne": 1,
+        "_onlyFeedActiveBuffToFirstOne": 0,
+        "_refreshTimesOnCastStart": 0,
+        "_castToFirstRoundTargetLocationsAtProjectileBirth": 0,
+        "_hookTheLastProjectile": ""
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]skills.ab",
+      "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+      "pathId": "-2793773295245279337",
+      "hierarchy": [
+        "skchr_haak_2",
+        "AttackWrapper",
+        "Attack"
+      ],
+      "objectSha256": "229d029bdf1f7a6258993c0fcf44c41c10f429f705593fcecd05a2adebabdc68",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -550693537895634864
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-550693537895634864",
+        "name": "UberEffectEmitter",
+        "cl": "UberEffectEmitter",
+        "ns": "Torappu.Battle.Abilities",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_hitEffects": {
+          "Array": []
+        },
+        "_castEffects": {
+          "Array": [
+            {
+              "_directionType": 0,
+              "_effects": {
+                "Array": [
+                  "haak_skill_02_start",
+                  "",
+                  "",
+                  ""
+                ]
+              },
+              "_oneshot": 1,
+              "_startEvent": 2,
+              "_endEvent": 3,
+              "_onlyOnce": 0,
+              "_useFourDirectionalFace": 0,
+              "_delayIfFirstAttack": 0.0,
+              "_hookEffectAfterFirstAttack": ""
+            },
+            {
+              "_directionType": 0,
+              "_effects": {
+                "Array": [
+                  "haak_skill_02_start_02",
+                  "",
+                  "",
+                  ""
+                ]
+              },
+              "_oneshot": 1,
+              "_startEvent": 2,
+              "_endEvent": 3,
+              "_onlyOnce": 0,
+              "_useFourDirectionalFace": 0,
+              "_delayIfFirstAttack": 0.0,
+              "_hookEffectAfterFirstAttack": ""
+            }
+          ]
+        },
+        "_attachEffects": {
+          "Array": []
+        },
+        "_inputTargetEffects": {
+          "Array": []
+        },
+        "_castTargetEffects": {
+          "Array": []
+        },
+        "_convertCastEndToAttachFinish": 0,
+        "_recalculatePlaybackSpeed": 0,
+        "_preDelayFactor": 0.0
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]skills.ab",
+      "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+      "pathId": "-1090656356389232445",
+      "hierarchy": [
+        "skchr_haak_3",
+        "AttackWrapper",
+        "Attack",
+        "Selector"
+      ],
+      "objectSha256": "da0366e30d80726c25072a884c56d8301eab0dff6b07bcffc45019100ff68ab2",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 7080728813803358465
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "7080728813803358465",
+        "name": "AdvancedSelector",
+        "cl": "AdvancedSelector",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_targetSide": 1,
+        "_targetMotion": 3,
+        "_targetCategory": 1,
+        "_postFilter": 21,
+        "_ignoreTargetFree": 0,
+        "_onlyIgnoreSomeOfTargetFreeCase": 0,
+        "_abnormalFlag": 46,
+        "_abnormalCombo": 3,
+        "_ignoreAllyTargetFree": 0,
+        "_ignoreHealFree": 0,
+        "_ignoreMotionMode": 0,
+        "_forceIgnoreCamouflage": 0,
+        "_needProfessionMask": 0,
+        "_professionMask": 0,
+        "_excludeSomeAbnormalFlags": 0,
+        "_excludeAbnormalFlag": 46,
+        "_limitTargetNum": 1,
+        "_maxTargetKey": "max_target",
+        "_maxTargetExtraKey": "",
+        "_maxNum": 1,
+        "_excludeOwner": 1,
+        "_sortByTauntAtLast": 0,
+        "_ignoreHitRange": 0,
+        "_checkUnitType": 0,
+        "_unitTypeMask": 0,
+        "_abilityInputTargetAsSortSource": 0,
+        "_targetOptionHookedKeys": {
+          "Array": []
+        }
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]skills.ab",
+      "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+      "pathId": "-1020782965540527933",
+      "hierarchy": [
+        "skchr_haak_3",
+        "Buff"
+      ],
+      "objectSha256": "310ebacb006f86235444d280a79b99a393a3516c53b9e9ef64d9d699b45c4f7c",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -4234909118878081699
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-4234909118878081699",
+        "name": "ActiveBuffAbility",
+        "cl": "ActiveBuffAbility",
+        "ns": "Torappu.Battle.Abilities",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_selector": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_metadata": {
+          "namedAsAlias": "",
+          "blackboardPrefix": ""
+        },
+        "_overrideSignalId": "",
+        "_interruptAbilityOnDetach": 0,
+        "_attachPassiveBuffsOnDummy": 1,
+        "_ignoreIfOwnerDead": 0,
+        "_forceAsDmgOrHealAbility": 0,
+        "_waitForAttackEvent": 0,
+        "_interuptIfTargetDead": 0,
+        "_resetCdStrategy": 1,
+        "_buffs": {
+          "Array": [
+            {
+              "attributes": {
+                "abnormalFlags": {
+                  "Array": []
+                },
+                "abnormalImmunes": {
+                  "Array": []
+                },
+                "abnormalAntis": {
+                  "Array": []
+                },
+                "abnormalCombos": {
+                  "Array": []
+                },
+                "abnormalComboImmunes": {
+                  "Array": []
+                },
+                "attributeModifiers": {
+                  "Array": [
+                    {
+                      "attributeType": 7,
+                      "formulaItem": 0,
+                      "value": 0.0,
+                      "loadFromBlackboard": 1,
+                      "fetchBaseValueFromSourceEntity": 0
+                    },
+                    {
+                      "attributeType": 1,
+                      "formulaItem": 1,
+                      "value": 0.0,
+                      "loadFromBlackboard": 1,
+                      "fetchBaseValueFromSourceEntity": 0
+                    }
+                  ]
+                }
+              },
+              "buffKey": "haak_s_3[self]",
+              "loadFromDB": 0,
+              "isDurableBuff": 0,
+              "isDamageMissable": 0,
+              "isSilenceable": 0,
+              "isStunnable": 0,
+              "isFreezable": 0,
+              "isLevitatable": 0,
+              "isGroundBoundable": 0,
+              "statusResistable": 2,
+              "templateKey": "empty",
+              "disableOverride": 0,
+              "overrideKey": "",
+              "overrideType": 0,
+              "maxStackCnt": 1,
+              "refreshRemainingTimeWhenStackMax": 0,
+              "clearAllStackCntWhenTimeUp": 0,
+              "maxValidStackCnt": -1,
+              "independentCharacterSource": 1,
+              "overrideEffectKey": "haak_skill_03_buff",
+              "overrideOnEventPriority": 0,
+              "onEventPriority": 0,
+              "audioSignal": "",
+              "lifeTimeType": 1,
+              "takeSnapshotWhenExtend": 0,
+              "durationKey": "",
+              "remainingTimeKey": "",
+              "lifeTime": 0.0,
+              "triggerLifeType": 0,
+              "triggerCnt": 0,
+              "triggerInterval": -1.0,
+              "waitFirstTriggerInterval": 1,
+              "firstTriggerInterval": -1.0,
+              "priority": -1,
+              "priorityBBKeys": {
+                "Array": []
+              },
+              "stripBlackboardParamsWithBuffKey": 0,
+              "blackboard": {
+                "Array": []
+              },
+              "enableInitDirectionFromSource": 0
+            }
+          ]
+        },
+        "_waitForCasting": 0,
+        "_updateLifetimeWhenSpellStart": 0,
+        "_preDelay": 0.0,
+        "_escapeTime": 0.0,
+        "_checkBuffEarlyFinish": 0,
+        "_passiveBuffs": {
+          "Array": []
+        },
+        "_ignoreInfiniteBuffCooldown": 0,
+        "_enableUpdateCooldown": 0
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]skills.ab",
+      "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+      "pathId": "-76905219358727997",
+      "hierarchy": [
+        "skchr_haak_3",
+        "AttackWrapper",
+        "Fake_Attack",
+        "Selector"
+      ],
+      "objectSha256": "2329dd847fc7a086f74448908343e89ae5c2b48112fbe0647304b638df977249",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 8607874384982393801
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "8607874384982393801",
+        "name": "SelectorTrigger",
+        "cl": "SelectorTrigger",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_keepTarget": 0,
+        "_minTargetNum": 0,
+        "_overrideSearchTargetTick": -1
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]skills.ab",
+      "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+      "pathId": "34878567882145687",
+      "hierarchy": [
+        "skchr_haak_2",
+        "AttackWrapper",
+        "Attack",
+        "Selector"
+      ],
+      "objectSha256": "83c9a27101cc19aa788266e51a8f1b8b1615ded67bedf4bf6c34458d04e2bff2",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 7080728813803358465
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "7080728813803358465",
+        "name": "AdvancedSelector",
+        "cl": "AdvancedSelector",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_targetSide": 1,
+        "_targetMotion": 3,
+        "_targetCategory": 1,
+        "_postFilter": 21,
+        "_ignoreTargetFree": 0,
+        "_onlyIgnoreSomeOfTargetFreeCase": 0,
+        "_abnormalFlag": 46,
+        "_abnormalCombo": 3,
+        "_ignoreAllyTargetFree": 0,
+        "_ignoreHealFree": 0,
+        "_ignoreMotionMode": 0,
+        "_forceIgnoreCamouflage": 0,
+        "_needProfessionMask": 0,
+        "_professionMask": 0,
+        "_excludeSomeAbnormalFlags": 0,
+        "_excludeAbnormalFlag": 46,
+        "_limitTargetNum": 1,
+        "_maxTargetKey": "max_target",
+        "_maxTargetExtraKey": "",
+        "_maxNum": 1,
+        "_excludeOwner": 1,
+        "_sortByTauntAtLast": 0,
+        "_ignoreHitRange": 0,
+        "_checkUnitType": 0,
+        "_unitTypeMask": 0,
+        "_abilityInputTargetAsSortSource": 0,
+        "_targetOptionHookedKeys": {
+          "Array": []
+        }
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]skills.ab",
+      "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+      "pathId": "611961958113984407",
+      "hierarchy": [
+        "skchr_haak_2"
+      ],
+      "objectSha256": "e8deca06531111c36def43beb28fd29238f1d512da568be7ace2a99328d53a34",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 6851783972288338031
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "6851783972288338031",
+        "name": "CastSkill",
+        "cl": "CastSkill",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_maxTriggerTime": -1,
+        "_allowSpRecoveryWhenAffecting": 0,
+        "_limitGlobalTriggerTime": 0,
+        "_hidden": 0,
+        "_showSpBarEvenHidden": 0,
+        "_showSpAsBulletMode": 0,
+        "_showSpRatioAsProgress": 0,
+        "_playCharWordVoice": 1,
+        "_playCharWordWithPassiveType": 0,
+        "_earlyVoice": 0,
+        "_canCastWithNoSp": 0,
+        "_canSilenced": 0,
+        "_canUseInAbnormalState": 0,
+        "_defaultModeIndex": -1,
+        "_attackBlackboardModeIndex": -1,
+        "_extraAttackBlackboardModeIndices": {
+          "Array": []
+        },
+        "_rangeIdModeIndex": -1,
+        "_extraRangeIdModeIndices": {
+          "Array": []
+        },
+        "_rangeIdUsageType": 7,
+        "_writeDurationToAttackBlackboard": 0,
+        "_attachSignalIds": 0,
+        "_extraAbilities": {
+          "Array": []
+        },
+        "_useEscapeTime": 0,
+        "_earlySkillFinishAtAttackFinished": 0,
+        "_stopAffectOnInterrupt": 0,
+        "_showProgressToNext": 0,
+        "_hideSkillStackCount": 0,
+        "_hideHudSkillStackCount": 0,
+        "_playSkillBeginAnim": 0,
+        "_forceAnimFaceToDefault": 0,
+        "_beginAnim": "",
+        "_beginAnimDown": "",
+        "_beginEffect": {
+          "Array": []
+        },
+        "_useFaceVector": 0,
+        "_beginAnimValidator": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_availableValidator": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_trigger": {
+          "m_FileID": 0,
+          "m_PathID": -5442699003515715689
+        },
+        "_switchToState": 1,
+        "_uninterruptibleOnAbilityPredelay": 0,
+        "_canSwitchDuringBorn": 1,
+        "_canCastDuringBorn": 1,
+        "_checkHasTargetBeforeDoCast": 0,
+        "_useTriggerInManualMode": 0,
+        "_allowNoTarget": 1,
+        "_shouldCastLikeAttack": 0,
+        "_isRemoteControlled": 0,
+        "_hideRangeToShow": 0,
+        "_forceToShowRange": 0,
+        "_forceUseBaseShowRange": 0,
+        "_rangeToShow": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_recoverSpIfNoTarget": 0,
+        "_resetAbilityCooldownWhenCastEnd": 0,
+        "_onlyAvailableWhenTokenValid": 0,
+        "_hasUniStackColor": 0,
+        "_skipSpCheckInSkillState": 0
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]skills.ab",
+      "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+      "pathId": "3390491399249837975",
+      "hierarchy": [
+        "skchr_haak_2",
+        "Buff"
+      ],
+      "objectSha256": "6af1c046c5dfcaa275f37964b53d8fa297e84fb6238e7b13e220b96e44236b3e",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -4234909118878081699
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-4234909118878081699",
+        "name": "ActiveBuffAbility",
+        "cl": "ActiveBuffAbility",
+        "ns": "Torappu.Battle.Abilities",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_selector": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_metadata": {
+          "namedAsAlias": "",
+          "blackboardPrefix": ""
+        },
+        "_overrideSignalId": "",
+        "_interruptAbilityOnDetach": 0,
+        "_attachPassiveBuffsOnDummy": 1,
+        "_ignoreIfOwnerDead": 0,
+        "_forceAsDmgOrHealAbility": 0,
+        "_waitForAttackEvent": 0,
+        "_interuptIfTargetDead": 0,
+        "_resetCdStrategy": 1,
+        "_buffs": {
+          "Array": [
+            {
+              "attributes": {
+                "abnormalFlags": {
+                  "Array": []
+                },
+                "abnormalImmunes": {
+                  "Array": []
+                },
+                "abnormalAntis": {
+                  "Array": []
+                },
+                "abnormalCombos": {
+                  "Array": []
+                },
+                "abnormalComboImmunes": {
+                  "Array": []
+                },
+                "attributeModifiers": {
+                  "Array": [
+                    {
+                      "attributeType": 0,
+                      "formulaItem": 1,
+                      "value": 0.0,
+                      "loadFromBlackboard": 1,
+                      "fetchBaseValueFromSourceEntity": 0
+                    },
+                    {
+                      "attributeType": 2,
+                      "formulaItem": 1,
+                      "value": 0.0,
+                      "loadFromBlackboard": 1,
+                      "fetchBaseValueFromSourceEntity": 0
+                    }
+                  ]
+                }
+              },
+              "buffKey": "haak_s_2[self]",
+              "loadFromDB": 0,
+              "isDurableBuff": 0,
+              "isDamageMissable": 0,
+              "isSilenceable": 0,
+              "isStunnable": 0,
+              "isFreezable": 0,
+              "isLevitatable": 0,
+              "isGroundBoundable": 0,
+              "statusResistable": 2,
+              "templateKey": "empty",
+              "disableOverride": 0,
+              "overrideKey": "",
+              "overrideType": 0,
+              "maxStackCnt": 1,
+              "refreshRemainingTimeWhenStackMax": 0,
+              "clearAllStackCntWhenTimeUp": 0,
+              "maxValidStackCnt": -1,
+              "independentCharacterSource": 1,
+              "overrideEffectKey": "haak_skill_02_buff",
+              "overrideOnEventPriority": 0,
+              "onEventPriority": 0,
+              "audioSignal": "",
+              "lifeTimeType": 1,
+              "takeSnapshotWhenExtend": 0,
+              "durationKey": "",
+              "remainingTimeKey": "",
+              "lifeTime": 0.0,
+              "triggerLifeType": 0,
+              "triggerCnt": 0,
+              "triggerInterval": -1.0,
+              "waitFirstTriggerInterval": 1,
+              "firstTriggerInterval": -1.0,
+              "priority": -1,
+              "priorityBBKeys": {
+                "Array": []
+              },
+              "stripBlackboardParamsWithBuffKey": 0,
+              "blackboard": {
+                "Array": []
+              },
+              "enableInitDirectionFromSource": 0
+            }
+          ]
+        },
+        "_waitForCasting": 0,
+        "_updateLifetimeWhenSpellStart": 0,
+        "_preDelay": 0.0,
+        "_escapeTime": 0.0,
+        "_checkBuffEarlyFinish": 0,
+        "_passiveBuffs": {
+          "Array": []
+        },
+        "_ignoreInfiniteBuffCooldown": 0,
+        "_enableUpdateCooldown": 0
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]skills.ab",
+      "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+      "pathId": "3812797745079247043",
+      "hierarchy": [
+        "skchr_haak_3",
+        "AttackWrapper",
+        "Attack",
+        "Selector"
+      ],
+      "objectSha256": "44910576779280ca73579c1be9051286656879b3b9bbc420119e123e6210397c",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -2891200616113119906
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-2891200616113119906",
+        "name": "AutoLoadBoxRange",
+        "cl": "AutoLoadBoxRange",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_useBlackboardRangeId": 0,
+        "_extendable": 0
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]skills.ab",
+      "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+      "pathId": "3996399639376814275",
+      "hierarchy": [
+        "skchr_haak_3",
+        "AttackWrapper",
+        "Attack"
+      ],
+      "objectSha256": "be5b962dccdac02aa0eb639ce6d346ed58ac095532b21b5637f39a37b9a9c6d4",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -3698736381282439861
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-3698736381282439861",
+        "name": "MultiRangedAttack",
+        "cl": "MultiRangedAttack",
+        "ns": "Torappu.Battle.Abilities",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_selector": {
+          "m_FileID": 0,
+          "m_PathID": -1090656356389232445
+        },
+        "_metadata": {
+          "namedAsAlias": "",
+          "blackboardPrefix": ""
+        },
+        "_overrideSignalId": "",
+        "_interruptAbilityOnDetach": 0,
+        "_attachPassiveBuffsOnDummy": 1,
+        "_ignoreIfOwnerDead": 0,
+        "_forceAsDmgOrHealAbility": 0,
+        "_waitForAttackEvent": 1,
+        "_interuptIfTargetDead": 0,
+        "_resetCdStrategy": 1,
+        "_selectTargetSource": 1,
+        "_selectTargetTiming": 0,
+        "_timeMode": 0,
+        "_alwaysIncludeTarget": 1,
+        "_allowNoTarget": 0,
+        "_animKey": "Skill",
+        "_endAnimKey": "Skill_Down",
+        "_downAnimKey": "",
+        "_downEndAnimKey": "",
+        "_upAnimKey": "",
+        "_upEndAnimKey": "",
+        "_cooldown": 0.0,
+        "_cooldownKey": "duration",
+        "_preDelay": 0.0,
+        "_escapeTime": 0.0,
+        "_faceToTarget": 1,
+        "_faceToDefault": 0,
+        "_faceToFront": 0,
+        "_faceToFirstCastTarget": 0,
+        "_checkFaceToFirstCastTargetDownAttack": 0,
+        "_forceFaceToDirection": 0,
+        "_activeBuffs": {
+          "Array": [
+            {
+              "attributes": {
+                "abnormalFlags": {
+                  "Array": []
+                },
+                "abnormalImmunes": {
+                  "Array": []
+                },
+                "abnormalAntis": {
+                  "Array": []
+                },
+                "abnormalCombos": {
+                  "Array": []
+                },
+                "abnormalComboImmunes": {
+                  "Array": []
+                },
+                "attributeModifiers": {
+                  "Array": []
+                }
+              },
+              "buffKey": "haak_s_2",
+              "loadFromDB": 0,
+              "isDurableBuff": 0,
+              "isDamageMissable": 0,
+              "isSilenceable": 0,
+              "isStunnable": 0,
+              "isFreezable": 0,
+              "isLevitatable": 0,
+              "isGroundBoundable": 0,
+              "statusResistable": 2,
+              "templateKey": "instant_damage_physical[add_sp]",
+              "disableOverride": 0,
+              "overrideKey": "",
+              "overrideType": 0,
+              "maxStackCnt": 1,
+              "refreshRemainingTimeWhenStackMax": 0,
+              "clearAllStackCntWhenTimeUp": 0,
+              "maxValidStackCnt": -1,
+              "independentCharacterSource": 0,
+              "overrideEffectKey": "",
+              "overrideOnEventPriority": 0,
+              "onEventPriority": 0,
+              "audioSignal": "",
+              "lifeTimeType": 0,
+              "takeSnapshotWhenExtend": 0,
+              "durationKey": "",
+              "remainingTimeKey": "",
+              "lifeTime": 0.0,
+              "triggerLifeType": 0,
+              "triggerCnt": 0,
+              "triggerInterval": -1.0,
+              "waitFirstTriggerInterval": 1,
+              "firstTriggerInterval": -1.0,
+              "priority": -1,
+              "priorityBBKeys": {
+                "Array": []
+              },
+              "stripBlackboardParamsWithBuffKey": 0,
+              "blackboard": {
+                "Array": []
+              },
+              "enableInitDirectionFromSource": 0
+            }
+          ]
+        },
+        "_maxAnimScale": -1.0,
+        "_onlyPlayEndAnimWhenIsLastAbility": 0,
+        "_ignorePalsyInterrupt": 0,
+        "_affectedBySlowDown": 0,
+        "_atkScale": 0.0,
+        "_atkScaleKey": "atk_scale",
+        "_attackType": 1,
+        "_elementDamageType": 0,
+        "_epDamageRatio": 0.0,
+        "_useDynamicAttackType": 0,
+        "_deliveryParaWhenReplaceActionNode": 0,
+        "_projectileKey": "projectile_haak_s3",
+        "_mountPointType": 2,
+        "_useMountGroup": 0,
+        "_mountGroup": {
+          "loopType": 0,
+          "mountPoints": {
+            "Array": []
+          }
+        },
+        "_damageType": 1,
+        "_waitForProjectileInvalid": 0,
+        "_notClearProjectileWhenCastEnd": 0,
+        "_fireAttackFinishWhenProjectileInvalid": 0,
+        "_minPostDelayWhenProjectileInvalid": 0.0,
+        "_waitForAnimEndWhenProjectileInvalid": 0,
+        "_projectileDestination": 0,
+        "_extraDamageType": 0,
+        "_emitToInputPosWhenTargetIsInvalid": 0,
+        "_emitToInputRootTileWhenTargetIsInvalid": 0,
+        "_useCachedAtkOnly": 0,
+        "_transferSource": 0,
+        "_extraProjectileKeys": {
+          "Array": []
+        },
+        "_fireCreateProjectileEvent": 0,
+        "_additionalTimes": 14,
+        "_triggerDelta": 0.029999999329447746,
+        "_waitAttackEventForAllAttacks": 0,
+        "_additionalProjectile": "projectile_haak_s3_multi",
+        "_useMultiAdditionalProjectiles": 0,
+        "_additionalProjectiles": {
+          "Array": []
+        },
+        "_enableMountPointGroup": 0,
+        "_mountPointGroup": {
+          "Array": []
+        },
+        "_onlyFeedActionsToFirstOne": 0,
+        "_onlyTrigAudioSignalForFirstOne": 1,
+        "_limitToOneTargetAfterFirstRound": 0,
+        "_splitDamage": 0,
+        "_addSpellCntToSignalId": 0,
+        "_addSpellCntToLastSignalId": 0,
+        "_onlyFeedActiveBuffToLastOne": 0,
+        "_onlyFeedActiveBuffToFirstOne": 0,
+        "_refreshTimesOnCastStart": 0,
+        "_castToFirstRoundTargetLocationsAtProjectileBirth": 0,
+        "_hookTheLastProjectile": ""
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]skills.ab",
+      "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+      "pathId": "4010864734710194371",
+      "hierarchy": [
+        "skchr_haak_3",
+        "AttackWrapper",
+        "Fake_Attack",
+        "Selector"
+      ],
+      "objectSha256": "aaa1f8044b30016451af35b5cd0aca67b3024335cb4085b8790a20880308a007",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -2891200616113119906
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-2891200616113119906",
+        "name": "AutoLoadBoxRange",
+        "cl": "AutoLoadBoxRange",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_useBlackboardRangeId": 0,
+        "_extendable": 0
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]skills.ab",
+      "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+      "pathId": "4821441643628248983",
+      "hierarchy": [
+        "skchr_haak_2",
+        "AttackWrapper"
+      ],
+      "objectSha256": "530676ed1e0b3294b0f0ba9b0a7f28a5051a229f3145e6f5239c41249ef820c3",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 8671737732485835867
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "8671737732485835867",
+        "name": "AbilityParallelGroup",
+        "cl": "AbilityParallelGroup",
+        "ns": "Torappu.Battle.Abilities",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_selector": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_metadata": {
+          "namedAsAlias": "",
+          "blackboardPrefix": ""
+        },
+        "_overrideSignalId": "",
+        "_interruptAbilityOnDetach": 0,
+        "_attachPassiveBuffsOnDummy": 1,
+        "_ignoreIfOwnerDead": 0,
+        "_forceAsDmgOrHealAbility": 0,
+        "_abilities": {
+          "Array": [
+            {
+              "m_FileID": 0,
+              "m_PathID": -4550506103587618921
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": -3474007383476027497
+            }
+          ]
+        },
+        "_alsoInterruptSubAbilities": 0,
+        "_useEscaptime": 0,
+        "_alsoCheckChildrenAffecting": 0,
+        "_finishAllAbilitiesIfOneFinish": 0,
+        "_mainAbility": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_timeMode": 1,
+        "_updateCooldownAfterSubAbilitiesAttached": 0
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]skills.ab",
+      "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+      "pathId": "5242865389670940567",
+      "hierarchy": [
+        "skchr_haak_2",
+        "AttackWrapper",
+        "Fake_Attack",
+        "Selector"
+      ],
+      "objectSha256": "9109114421aad2254ef4612b99e756fddff772964bcf37043cf0ec64c990f8d5",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -2891200616113119906
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-2891200616113119906",
+        "name": "AutoLoadBoxRange",
+        "cl": "AutoLoadBoxRange",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_useBlackboardRangeId": 0,
+        "_extendable": 0
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]skills.ab",
+      "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+      "pathId": "6061201332742119619",
+      "hierarchy": [
+        "skchr_haak_3",
+        "AttackWrapper",
+        "Attack"
+      ],
+      "objectSha256": "8a30a0b11fe9159c9963c4fd3a6b28c3b6f658960074d46c170bee458c9d31b1",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -550693537895634864
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-550693537895634864",
+        "name": "UberEffectEmitter",
+        "cl": "UberEffectEmitter",
+        "ns": "Torappu.Battle.Abilities",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_hitEffects": {
+          "Array": []
+        },
+        "_castEffects": {
+          "Array": [
+            {
+              "_directionType": 0,
+              "_effects": {
+                "Array": [
+                  "haak_skill_03_start",
+                  "",
+                  "",
+                  ""
+                ]
+              },
+              "_oneshot": 1,
+              "_startEvent": 2,
+              "_endEvent": 3,
+              "_onlyOnce": 0,
+              "_useFourDirectionalFace": 0,
+              "_delayIfFirstAttack": 0.0,
+              "_hookEffectAfterFirstAttack": ""
+            },
+            {
+              "_directionType": 0,
+              "_effects": {
+                "Array": [
+                  "haak_skill_03_start_02",
+                  "",
+                  "",
+                  ""
+                ]
+              },
+              "_oneshot": 1,
+              "_startEvent": 2,
+              "_endEvent": 3,
+              "_onlyOnce": 0,
+              "_useFourDirectionalFace": 0,
+              "_delayIfFirstAttack": 0.0,
+              "_hookEffectAfterFirstAttack": ""
+            }
+          ]
+        },
+        "_attachEffects": {
+          "Array": []
+        },
+        "_inputTargetEffects": {
+          "Array": []
+        },
+        "_castTargetEffects": {
+          "Array": []
+        },
+        "_convertCastEndToAttachFinish": 0,
+        "_recalculatePlaybackSpeed": 0,
+        "_preDelayFactor": 0.0
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]skills.ab",
+      "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+      "pathId": "6595669145255264151",
+      "hierarchy": [
+        "skchr_haak_2"
+      ],
+      "objectSha256": "6884ffd87114867b94eb4d6d65a2724de1d7ecc18f72416614c34ddde7507656",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -3703208971068511792
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-3703208971068511792",
+        "name": "AbilitySequenceGroup",
+        "cl": "AbilitySequenceGroup",
+        "ns": "Torappu.Battle.Abilities",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_selector": {
+          "m_FileID": 0,
+          "m_PathID": 34878567882145687
+        },
+        "_metadata": {
+          "namedAsAlias": "",
+          "blackboardPrefix": ""
+        },
+        "_overrideSignalId": "",
+        "_interruptAbilityOnDetach": 0,
+        "_attachPassiveBuffsOnDummy": 1,
+        "_ignoreIfOwnerDead": 0,
+        "_forceAsDmgOrHealAbility": 0,
+        "_abilities": {
+          "Array": [
+            {
+              "m_FileID": 0,
+              "m_PathID": 4821441643628248983
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 3390491399249837975
+            }
+          ]
+        },
+        "_alwaysNext": 1,
+        "_forceNextIfCastFail": 0,
+        "_checkCanUseSubAbility": 0,
+        "_useLongestAbilityCooldown": 0,
+        "_fireCastStartEventWhenCast": 0,
+        "_stopMoveNextWhenNotCasting": 0,
+        "_alsoInterruptCurrentSubAbility": 0,
+        "_interruptableSubAbilityIndice": {
+          "Array": []
+        },
+        "_alsoStopSubAbilityAffect": 0,
+        "_alsoResetSubAbilityCooldown": 0,
+        "_setDataExceptRedundance": 0,
+        "_interruptIfTargetDead": 0,
+        "_castToInputPosIfTargetInvalid": 0,
+        "_timeMode": 1,
+        "_updateCooldownAfterSubAbilitiesAttached": 0,
+        "_enableLoop": 0,
+        "_abilityLoopSettings": {
+          "Array": []
+        }
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]skills.ab",
+      "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+      "pathId": "6647551655368114071",
+      "hierarchy": [
+        "skchr_haak_2",
+        "AttackWrapper",
+        "Fake_Attack",
+        "Selector"
+      ],
+      "objectSha256": "daa4f2e353a91eb4690a6b981b93646dd815757958d639ac442fa7be0642f764",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 7080728813803358465
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "7080728813803358465",
+        "name": "AdvancedSelector",
+        "cl": "AdvancedSelector",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_targetSide": 1,
+        "_targetMotion": 3,
+        "_targetCategory": 1,
+        "_postFilter": 21,
+        "_ignoreTargetFree": 0,
+        "_onlyIgnoreSomeOfTargetFreeCase": 0,
+        "_abnormalFlag": 46,
+        "_abnormalCombo": 3,
+        "_ignoreAllyTargetFree": 0,
+        "_ignoreHealFree": 0,
+        "_ignoreMotionMode": 0,
+        "_forceIgnoreCamouflage": 0,
+        "_needProfessionMask": 0,
+        "_professionMask": 0,
+        "_excludeSomeAbnormalFlags": 0,
+        "_excludeAbnormalFlag": 46,
+        "_limitTargetNum": 1,
+        "_maxTargetKey": "max_target",
+        "_maxTargetExtraKey": "",
+        "_maxNum": 1,
+        "_excludeOwner": 1,
+        "_sortByTauntAtLast": 0,
+        "_ignoreHitRange": 0,
+        "_checkUnitType": 0,
+        "_unitTypeMask": 0,
+        "_abilityInputTargetAsSortSource": 0,
+        "_targetOptionHookedKeys": {
+          "Array": []
+        }
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]skills.ab",
+      "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+      "pathId": "8355487405946560707",
+      "hierarchy": [
+        "skchr_haak_3",
+        "AttackWrapper"
+      ],
+      "objectSha256": "0fbc5f7a251de4ef724429f6895442c8222317b9f9a5b7bca29abf734921d5ec",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 8671737732485835867
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "8671737732485835867",
+        "name": "AbilityParallelGroup",
+        "cl": "AbilityParallelGroup",
+        "ns": "Torappu.Battle.Abilities",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_selector": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_metadata": {
+          "namedAsAlias": "",
+          "blackboardPrefix": ""
+        },
+        "_overrideSignalId": "",
+        "_interruptAbilityOnDetach": 0,
+        "_attachPassiveBuffsOnDummy": 1,
+        "_ignoreIfOwnerDead": 0,
+        "_forceAsDmgOrHealAbility": 0,
+        "_abilities": {
+          "Array": [
+            {
+              "m_FileID": 0,
+              "m_PathID": 3996399639376814275
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": -6726821149893599037
+            }
+          ]
+        },
+        "_alsoInterruptSubAbilities": 0,
+        "_useEscaptime": 0,
+        "_alsoCheckChildrenAffecting": 0,
+        "_finishAllAbilitiesIfOneFinish": 0,
+        "_mainAbility": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_timeMode": 1,
+        "_updateCooldownAfterSubAbilitiesAttached": 0
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]skills.ab",
+      "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+      "pathId": "8582352314100793239",
+      "hierarchy": [
+        "skchr_haak_2",
+        "AttackWrapper",
+        "Attack",
+        "Selector"
+      ],
+      "objectSha256": "b274607acf551b080dc4746df18c16ce1f542cee8ab5d3b05c4e41c43c0a1e32",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -2891200616113119906
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-2891200616113119906",
+        "name": "AutoLoadBoxRange",
+        "cl": "AutoLoadBoxRange",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_useBlackboardRangeId": 0,
+        "_extendable": 0
+      }
+    },
+    {
+      "bundle": "charpack/char_225_haak.ab",
+      "file": "CAB-730af13ca16887ba52d183ec92e16cae",
+      "pathId": "-6777423320114243347",
+      "hierarchy": [
+        "char_225_haak",
+        "Talents",
+        "2"
+      ],
+      "objectSha256": "ca18f04a49890d36f726bd2ec61402416900133f361bf759b336b3393f17fd4f",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 3800760148018415462
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "3800760148018415462",
+        "name": "PassiveBuffAbility",
+        "cl": "PassiveBuffAbility",
+        "ns": "Torappu.Battle.Abilities",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_selector": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_metadata": {
+          "namedAsAlias": "",
+          "blackboardPrefix": ""
+        },
+        "_overrideSignalId": "",
+        "_interruptAbilityOnDetach": 0,
+        "_attachPassiveBuffsOnDummy": 1,
+        "_ignoreIfOwnerDead": 0,
+        "_forceAsDmgOrHealAbility": 0,
+        "_buffs": {
+          "Array": [
+            {
+              "attributes": {
+                "abnormalFlags": {
+                  "Array": []
+                },
+                "abnormalImmunes": {
+                  "Array": []
+                },
+                "abnormalAntis": {
+                  "Array": []
+                },
+                "abnormalCombos": {
+                  "Array": []
+                },
+                "abnormalComboImmunes": {
+                  "Array": []
+                },
+                "attributeModifiers": {
+                  "Array": []
+                }
+              },
+              "buffKey": "haak_t_2",
+              "loadFromDB": 0,
+              "isDurableBuff": 0,
+              "isDamageMissable": 0,
+              "isSilenceable": 0,
+              "isStunnable": 0,
+              "isFreezable": 0,
+              "isLevitatable": 0,
+              "isGroundBoundable": 0,
+              "statusResistable": 2,
+              "templateKey": "heal_scale",
+              "disableOverride": 0,
+              "overrideKey": "",
+              "overrideType": 0,
+              "maxStackCnt": 1,
+              "refreshRemainingTimeWhenStackMax": 0,
+              "clearAllStackCntWhenTimeUp": 0,
+              "maxValidStackCnt": -1,
+              "independentCharacterSource": 0,
+              "overrideEffectKey": "",
+              "overrideOnEventPriority": 0,
+              "onEventPriority": 0,
+              "audioSignal": "",
+              "lifeTimeType": 2,
+              "takeSnapshotWhenExtend": 0,
+              "durationKey": "",
+              "remainingTimeKey": "",
+              "lifeTime": 0.0,
+              "triggerLifeType": 0,
+              "triggerCnt": 0,
+              "triggerInterval": -1.0,
+              "waitFirstTriggerInterval": 1,
+              "firstTriggerInterval": -1.0,
+              "priority": -1,
+              "priorityBBKeys": {
+                "Array": []
+              },
+              "stripBlackboardParamsWithBuffKey": 0,
+              "blackboard": {
+                "Array": []
+              },
+              "enableInitDirectionFromSource": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "bundle": "charpack/char_225_haak.ab",
+      "file": "CAB-730af13ca16887ba52d183ec92e16cae",
+      "pathId": "-4482640474503227155",
+      "hierarchy": [
+        "char_225_haak",
+        "Modes",
+        "Default",
+        "Body",
+        "Attack",
+        "Trigger"
+      ],
+      "objectSha256": "38771322712da507205bcc856435d543a03a0fa39f20768b5aeb965070736f53",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -2891200616113119906
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-2891200616113119906",
+        "name": "AutoLoadBoxRange",
+        "cl": "AutoLoadBoxRange",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_useBlackboardRangeId": 0,
+        "_extendable": 0
+      }
+    },
+    {
+      "bundle": "charpack/char_225_haak.ab",
+      "file": "CAB-730af13ca16887ba52d183ec92e16cae",
+      "pathId": "-4244777586993047315",
+      "hierarchy": [
+        "char_225_haak",
+        "Others",
+        "Shadow"
+      ],
+      "objectSha256": "3f7b8c7015945b2331aea5dd47b99507c2188a671d5048a53aa3da3b562b1f0e",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -2368896203154538901
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-2368896203154538901",
+        "name": "ShadowController",
+        "cl": "ShadowController",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_autoAttachToGround": 0,
+        "_attachOffset": 0.10000000149011612,
+        "_simplyUseTileHeight": 0,
+        "_enableAdvanced": 0,
+        "_alwaysUseSpineOffset": 0,
+        "_sprite": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_graphic": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_faceSwitcher": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_boneToFollow": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_specialInit": 0,
+        "_simpleFollow": 0,
+        "_easeType": 1
+      }
+    },
+    {
+      "bundle": "charpack/char_225_haak.ab",
+      "file": "CAB-730af13ca16887ba52d183ec92e16cae",
+      "pathId": "-925635168815326995",
+      "hierarchy": [
+        "char_225_haak",
+        "Modes",
+        "Default",
+        "Body",
+        "Attack",
+        "Trigger"
+      ],
+      "objectSha256": "1389403bd99077b83c12d3d1015a2591876a23f14914a49bc3c8da1f137df366",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 7080728813803358465
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "7080728813803358465",
+        "name": "AdvancedSelector",
+        "cl": "AdvancedSelector",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_targetSide": 2,
+        "_targetMotion": 3,
+        "_targetCategory": 1,
+        "_postFilter": 4,
+        "_ignoreTargetFree": 0,
+        "_onlyIgnoreSomeOfTargetFreeCase": 0,
+        "_abnormalFlag": 29,
+        "_abnormalCombo": 2,
+        "_ignoreAllyTargetFree": 0,
+        "_ignoreHealFree": 0,
+        "_ignoreMotionMode": 0,
+        "_forceIgnoreCamouflage": 0,
+        "_needProfessionMask": 0,
+        "_professionMask": 0,
+        "_excludeSomeAbnormalFlags": 0,
+        "_excludeAbnormalFlag": 46,
+        "_limitTargetNum": 1,
+        "_maxTargetKey": "max_target",
+        "_maxTargetExtraKey": "",
+        "_maxNum": 1,
+        "_excludeOwner": 0,
+        "_sortByTauntAtLast": 0,
+        "_ignoreHitRange": 0,
+        "_checkUnitType": 0,
+        "_unitTypeMask": 0,
+        "_abilityInputTargetAsSortSource": 0,
+        "_targetOptionHookedKeys": {
+          "Array": []
+        }
+      }
+    },
+    {
+      "bundle": "charpack/char_225_haak.ab",
+      "file": "CAB-730af13ca16887ba52d183ec92e16cae",
+      "pathId": "-669200192594290451",
+      "hierarchy": [
+        "char_225_haak"
+      ],
+      "objectSha256": "c50a724bc6b92b60222e62a23edc922e733d047dd5a9206fc1add26ddde7fb2f",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -1297314214590689040
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-1297314214590689040",
+        "name": "Character",
+        "cl": "Character",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_animator": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_modes": {
+          "Array": [
+            {
+              "m_FileID": 0,
+              "m_PathID": 7173840852862785773
+            }
+          ]
+        },
+        "_commonAbilities": {
+          "Array": []
+        },
+        "_uiMountPoint": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_effectTransform": {
+          "m_FileID": 0,
+          "m_PathID": -6037227755795949331
+        },
+        "_shadow": {
+          "m_FileID": 0,
+          "m_PathID": -4244777586993047315
+        },
+        "_defaultBodyColor": {
+          "r": 1.0,
+          "g": 1.0,
+          "b": 1.0,
+          "a": 1.0
+        },
+        "_hideShadowOnRecycle": 0,
+        "_overrideGraphicBound": -1.0,
+        "_hudPluginReplacePairs": {
+          "Array": []
+        },
+        "_showDebugName": 0,
+        "_skinHolder": {
+          "m_FileID": 0,
+          "m_PathID": -1574346601790875411
+        },
+        "_motionMode": 0,
+        "_blockMode": 0,
+        "_ignoreBlockMode": 0,
+        "_isFixedRotation": 0,
+        "_occupiedRemainingCharacterCnt": 1,
+        "_useRealBornTimeFromAnim": 0,
+        "_buildCondition": {
+          "buildableType": 2,
+          "isTryingOverlapCharacater": 0,
+          "needSpecifyDirection": 1,
+          "limitByHostAttackRange": 0,
+          "limitByHostAbilityRange": 0,
+          "canNotBuildInHostAttackRange": 0,
+          "abilityName": "",
+          "tileKey": "",
+          "ignoreBuildableTypeTileTypes": 0,
+          "extraBuildConditionArray": {
+            "SerializedState": "null",
+            "SerializedObjectReferences": {
+              "Array": []
+            }
+          },
+          "advancedBuildableMask": 1,
+          "overlapOptions": {
+            "_verifySourceId": 0,
+            "_verifySourceIds": {
+              "Array": []
+            },
+            "_verifySourceProfession": 0,
+            "_verifySourceProfessions": 0,
+            "_isAllConditionOR": 1,
+            "_overlapPriority": 0,
+            "_changeTargetGraphicColor": 0,
+            "_excludeSourceId": 0,
+            "_excludeSourceIds": {
+              "Array": []
+            },
+            "_verifySourceTargetTokenRelationship": 0
+          },
+          "excludeNoTargetTile": 0,
+          "extraLocateRange": "",
+          "checkManuallyBuildableType": 0,
+          "manuallyBuildableType": 0,
+          "_excludeOccupiedByWalkEnemy": 0,
+          "allowWalkEnemyInHostRange": 0,
+          "_checkUpdateBuildable": 0
+        },
+        "_traitAbility": {
+          "m_FileID": 0,
+          "m_PathID": 3868378729437944045
+        },
+        "_withdrawCostRecoverRatio": 0.5,
+        "_maxWithdrawCostRatioOfRawCost": 1.0,
+        "_directionTransform": {
+          "m_FileID": 0,
+          "m_PathID": 961671177419970797
+        },
+        "_directionIndicator": {
+          "m_FileID": 0,
+          "m_PathID": -3358657637014611731
+        },
+        "_startEffect": "",
+        "_deadEffect": "",
+        "_playStartVocal": 1,
+        "_showDeadTweenColor": 1,
+        "_useSpecificDeadAnim": 0,
+        "_onlyPlayStartEffectOnce": 0,
+        "_dontMoveCameraWhenFocus": 0,
+        "_disableCharInfoPanel": 0,
+        "_disableRotateWhenDead": 0,
+        "_disableSetDirectionWhenDummy": 0,
+        "_clearProjectileWhenDead": 0,
+        "_useIdForAudioSignalMask": 0,
+        "_skipBornAudioOnMoveLikeRespawnSelf": 0,
+        "_preprocessData": 0,
+        "_disableClickCharacterInfo": 0,
+        "_skillUiFollowHeadPint": 0,
+        "m_overrideBornTime": -1.0
+      }
+    },
+    {
+      "bundle": "charpack/char_225_haak.ab",
+      "file": "CAB-730af13ca16887ba52d183ec92e16cae",
+      "pathId": "732583261043120365",
+      "hierarchy": [
+        "char_225_haak",
+        "Talents",
+        "1"
+      ],
+      "objectSha256": "0a97598614f60baba6935640f9cf2cc7ab66b9cc023f7c153945f7251942372c",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -2726233351382997147
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-2726233351382997147",
+        "name": "Talent",
+        "cl": "Talent",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_overwriteTalentKey": "",
+        "_overwriteParentRangeId": 0,
+        "_checkValidBySkillIndex": {
+          "Array": []
+        },
+        "_attachInDummy": 1,
+        "_defaultModeIndex": -1,
+        "_attackBlackboardModeIndex": -1,
+        "_extraAttackBlackboardModeIndices": {
+          "Array": []
+        },
+        "_overrideDefaultRangeId": 0,
+        "_applyTalentScale": 0,
+        "_influenceSkillBlackboard": 0,
+        "_fromRawDataToSkill": 0,
+        "_applyTalentRange": 0,
+        "_applyBlackboardBySkill": 0,
+        "_applyStrBlackboardBySkill": 0,
+        "_writeRangeIdToProjectileBlackboard": 0,
+        "_affectWhenNotRootTalent": 0,
+        "_scaleCertainKeyFlag": 0,
+        "_scaleCertainKeyList": {
+          "Array": []
+        },
+        "_scaleCertainMode": 0,
+        "_scaleModeIndices": {
+          "Array": []
+        }
+      }
+    },
+    {
+      "bundle": "charpack/char_225_haak.ab",
+      "file": "CAB-730af13ca16887ba52d183ec92e16cae",
+      "pathId": "1160723051024898285",
+      "hierarchy": [
+        "char_225_haak",
+        "Modes",
+        "Default",
+        "Body",
+        "Attack",
+        "Trigger"
+      ],
+      "objectSha256": "cd14dc861695709c23bd8e626ec791d25b8a3b9c9a61c27e4f6f11c51aeb783d",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 8607874384982393801
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "8607874384982393801",
+        "name": "SelectorTrigger",
+        "cl": "SelectorTrigger",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_keepTarget": 0,
+        "_minTargetNum": 1,
+        "_overrideSearchTargetTick": -1
+      }
+    },
+    {
+      "bundle": "charpack/char_225_haak.ab",
+      "file": "CAB-730af13ca16887ba52d183ec92e16cae",
+      "pathId": "2964862230449641709",
+      "hierarchy": [
+        "char_225_haak",
+        "Modes",
+        "Default",
+        "Body",
+        "Attack"
+      ],
+      "objectSha256": "98851c9f4e28033531dea6e0f29e2ba3cd701e91396cb2a77e99922d70bb5ed3",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 4156651312234227407
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "4156651312234227407",
+        "name": "RangedAttack",
+        "cl": "RangedAttack",
+        "ns": "Torappu.Battle.Abilities",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_selector": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_metadata": {
+          "namedAsAlias": "",
+          "blackboardPrefix": ""
+        },
+        "_overrideSignalId": "",
+        "_interruptAbilityOnDetach": 0,
+        "_attachPassiveBuffsOnDummy": 1,
+        "_ignoreIfOwnerDead": 0,
+        "_forceAsDmgOrHealAbility": 0,
+        "_waitForAttackEvent": 1,
+        "_interuptIfTargetDead": 0,
+        "_resetCdStrategy": 1,
+        "_selectTargetSource": 1,
+        "_selectTargetTiming": 0,
+        "_timeMode": 0,
+        "_alwaysIncludeTarget": 1,
+        "_allowNoTarget": 0,
+        "_animKey": "Attack_Loop",
+        "_endAnimKey": "",
+        "_downAnimKey": "Attack_Down_Loop",
+        "_downEndAnimKey": "",
+        "_upAnimKey": "",
+        "_upEndAnimKey": "",
+        "_cooldown": 0.0,
+        "_cooldownKey": "duration",
+        "_preDelay": 0.0,
+        "_escapeTime": 0.0,
+        "_faceToTarget": 1,
+        "_faceToDefault": 0,
+        "_faceToFront": 0,
+        "_faceToFirstCastTarget": 0,
+        "_checkFaceToFirstCastTargetDownAttack": 0,
+        "_forceFaceToDirection": 0,
+        "_activeBuffs": {
+          "Array": []
+        },
+        "_maxAnimScale": 1.0,
+        "_onlyPlayEndAnimWhenIsLastAbility": 0,
+        "_ignorePalsyInterrupt": 0,
+        "_affectedBySlowDown": 0,
+        "_atkScale": 1.0,
+        "_atkScaleKey": "atk_scale",
+        "_attackType": 1,
+        "_elementDamageType": 0,
+        "_epDamageRatio": 0.0,
+        "_useDynamicAttackType": 0,
+        "_deliveryParaWhenReplaceActionNode": 0,
+        "_projectileKey": "projectile_haak",
+        "_mountPointType": 2,
+        "_useMountGroup": 0,
+        "_mountGroup": {
+          "loopType": 0,
+          "mountPoints": {
+            "Array": []
+          }
+        },
+        "_damageType": 1,
+        "_waitForProjectileInvalid": 0,
+        "_notClearProjectileWhenCastEnd": 0,
+        "_fireAttackFinishWhenProjectileInvalid": 0,
+        "_minPostDelayWhenProjectileInvalid": 0.0,
+        "_waitForAnimEndWhenProjectileInvalid": 0,
+        "_projectileDestination": 0,
+        "_extraDamageType": 0,
+        "_emitToInputPosWhenTargetIsInvalid": 0,
+        "_emitToInputRootTileWhenTargetIsInvalid": 0,
+        "_useCachedAtkOnly": 0,
+        "_transferSource": 0,
+        "_extraProjectileKeys": {
+          "Array": []
+        },
+        "_fireCreateProjectileEvent": 0
+      }
+    },
+    {
+      "bundle": "charpack/char_225_haak.ab",
+      "file": "CAB-730af13ca16887ba52d183ec92e16cae",
+      "pathId": "3868378729437944045",
+      "hierarchy": [
+        "char_225_haak",
+        "Trait"
+      ],
+      "objectSha256": "8817e8deec0e7c4ca024e942d2f39bb9a1031f918c8a78a922b7243582d4efb9",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 3800760148018415462
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "3800760148018415462",
+        "name": "PassiveBuffAbility",
+        "cl": "PassiveBuffAbility",
+        "ns": "Torappu.Battle.Abilities",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_selector": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_metadata": {
+          "namedAsAlias": "",
+          "blackboardPrefix": ""
+        },
+        "_overrideSignalId": "",
+        "_interruptAbilityOnDetach": 0,
+        "_attachPassiveBuffsOnDummy": 1,
+        "_ignoreIfOwnerDead": 0,
+        "_forceAsDmgOrHealAbility": 0,
+        "_buffs": {
+          "Array": [
+            {
+              "attributes": {
+                "abnormalFlags": {
+                  "Array": []
+                },
+                "abnormalImmunes": {
+                  "Array": []
+                },
+                "abnormalAntis": {
+                  "Array": []
+                },
+                "abnormalCombos": {
+                  "Array": []
+                },
+                "abnormalComboImmunes": {
+                  "Array": []
+                },
+                "attributeModifiers": {
+                  "Array": []
+                }
+              },
+              "buffKey": "haak_tr",
+              "loadFromDB": 0,
+              "isDurableBuff": 0,
+              "isDamageMissable": 0,
+              "isSilenceable": 0,
+              "isStunnable": 0,
+              "isFreezable": 0,
+              "isLevitatable": 0,
+              "isGroundBoundable": 0,
+              "statusResistable": 2,
+              "templateKey": "periodic_damage_by_hp_ratio[skip_modifier_fix][undeadable]",
+              "disableOverride": 0,
+              "overrideKey": "",
+              "overrideType": 0,
+              "maxStackCnt": 1,
+              "refreshRemainingTimeWhenStackMax": 0,
+              "clearAllStackCntWhenTimeUp": 0,
+              "maxValidStackCnt": -1,
+              "independentCharacterSource": 0,
+              "overrideEffectKey": "",
+              "overrideOnEventPriority": 0,
+              "onEventPriority": 0,
+              "audioSignal": "",
+              "lifeTimeType": 2,
+              "takeSnapshotWhenExtend": 0,
+              "durationKey": "",
+              "remainingTimeKey": "",
+              "lifeTime": 0.0,
+              "triggerLifeType": 2,
+              "triggerCnt": 0,
+              "triggerInterval": 1.0,
+              "waitFirstTriggerInterval": 1,
+              "firstTriggerInterval": -1.0,
+              "priority": -1,
+              "priorityBBKeys": {
+                "Array": []
+              },
+              "stripBlackboardParamsWithBuffKey": 0,
+              "blackboard": {
+                "Array": []
+              },
+              "enableInitDirectionFromSource": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "bundle": "charpack/char_225_haak.ab",
+      "file": "CAB-730af13ca16887ba52d183ec92e16cae",
+      "pathId": "3956923551127066861",
+      "hierarchy": [
+        "char_225_haak",
+        "Talents",
+        "1"
+      ],
+      "objectSha256": "d0f81e37bf0af3923afe23e48eb73d9bb6ce262baa69d146a6a2ec73398db8bf",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -8004000125733044417
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-8004000125733044417",
+        "name": "PassiveAttachmentAbility",
+        "cl": "PassiveAttachmentAbility",
+        "ns": "Torappu.Battle.Abilities",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_selector": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_metadata": {
+          "namedAsAlias": "",
+          "blackboardPrefix": ""
+        },
+        "_overrideSignalId": "",
+        "_interruptAbilityOnDetach": 0,
+        "_attachPassiveBuffsOnDummy": 1,
+        "_ignoreIfOwnerDead": 0,
+        "_forceAsDmgOrHealAbility": 0,
+        "_buffs": {
+          "Array": []
+        },
+        "_additiveActiveBuffs": {
+          "Array": [
+            {
+              "attributes": {
+                "abnormalFlags": {
+                  "Array": []
+                },
+                "abnormalImmunes": {
+                  "Array": []
+                },
+                "abnormalAntis": {
+                  "Array": []
+                },
+                "abnormalCombos": {
+                  "Array": []
+                },
+                "abnormalComboImmunes": {
+                  "Array": []
+                },
+                "attributeModifiers": {
+                  "Array": []
+                }
+              },
+              "buffKey": "haak_t_1",
+              "loadFromDB": 0,
+              "isDurableBuff": 0,
+              "isDamageMissable": 0,
+              "isSilenceable": 0,
+              "isStunnable": 0,
+              "isFreezable": 0,
+              "isLevitatable": 0,
+              "isGroundBoundable": 0,
+              "statusResistable": 2,
+              "templateKey": "haak_t_1",
+              "disableOverride": 0,
+              "overrideKey": "",
+              "overrideType": 0,
+              "maxStackCnt": 1,
+              "refreshRemainingTimeWhenStackMax": 0,
+              "clearAllStackCntWhenTimeUp": 0,
+              "maxValidStackCnt": -1,
+              "independentCharacterSource": 0,
+              "overrideEffectKey": "",
+              "overrideOnEventPriority": 0,
+              "onEventPriority": 0,
+              "audioSignal": "",
+              "lifeTimeType": 2,
+              "takeSnapshotWhenExtend": 0,
+              "durationKey": "",
+              "remainingTimeKey": "",
+              "lifeTime": 0.0,
+              "triggerLifeType": 0,
+              "triggerCnt": 0,
+              "triggerInterval": -1.0,
+              "waitFirstTriggerInterval": 1,
+              "firstTriggerInterval": -1.0,
+              "priority": -1,
+              "priorityBBKeys": {
+                "Array": []
+              },
+              "stripBlackboardParamsWithBuffKey": 0,
+              "blackboard": {
+                "Array": []
+              },
+              "enableInitDirectionFromSource": 0
+            }
+          ]
+        },
+        "_targetFamilyMask": 3,
+        "_targetValidator": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_probKey": ""
+      }
+    },
+    {
+      "bundle": "charpack/char_225_haak.ab",
+      "file": "CAB-730af13ca16887ba52d183ec92e16cae",
+      "pathId": "5987948077626513645",
+      "hierarchy": [
+        "char_225_haak",
+        "Modes",
+        "Default",
+        "Body",
+        "Attack"
+      ],
+      "objectSha256": "7ccd36046d8ec27d54cd5f24800a6ce4574f3b77cbf663dbb147e7dd7ac35c59",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -550693537895634864
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-550693537895634864",
+        "name": "UberEffectEmitter",
+        "cl": "UberEffectEmitter",
+        "ns": "Torappu.Battle.Abilities",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_hitEffects": {
+          "Array": []
+        },
+        "_castEffects": {
+          "Array": [
+            {
+              "_directionType": 0,
+              "_effects": {
+                "Array": [
+                  "haak_attack_01_start",
+                  "",
+                  "",
+                  ""
+                ]
+              },
+              "_oneshot": 1,
+              "_startEvent": 2,
+              "_endEvent": 3,
+              "_onlyOnce": 0,
+              "_useFourDirectionalFace": 0,
+              "_delayIfFirstAttack": 0.3330000042915344,
+              "_hookEffectAfterFirstAttack": ""
+            }
+          ]
+        },
+        "_attachEffects": {
+          "Array": []
+        },
+        "_inputTargetEffects": {
+          "Array": []
+        },
+        "_castTargetEffects": {
+          "Array": []
+        },
+        "_convertCastEndToAttachFinish": 0,
+        "_recalculatePlaybackSpeed": 0,
+        "_preDelayFactor": 0.0
+      }
+    },
+    {
+      "bundle": "charpack/char_225_haak.ab",
+      "file": "CAB-730af13ca16887ba52d183ec92e16cae",
+      "pathId": "7173840852862785773",
+      "hierarchy": [
+        "char_225_haak",
+        "Modes",
+        "Default"
+      ],
+      "objectSha256": "b023824bccc6586e6df72984e74484e9ed1f835382319cb606e76bbc9641c7d2",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 5390319429299248724
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "5390319429299248724",
+        "name": "UnitMode",
+        "cl": "UnitMode",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_bodyTransform": {
+          "m_FileID": 0,
+          "m_PathID": 8445958555360975085
+        },
+        "_animatorHooker": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_overrideStartEffect": "",
+        "_overrideDeadEffect": "",
+        "_combat": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_attack": {
+          "m_FileID": 0,
+          "m_PathID": 2964862230449641709
+        },
+        "_attackTrigger": {
+          "m_FileID": 0,
+          "m_PathID": 1160723051024898285
+        },
+        "_hideUIAttackRange": 0,
+        "_updateAttackRangeExtendByAttributeDirty": 0,
+        "_rangeToShow": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_extraRangesToShow": {
+          "Array": []
+        },
+        "_generalAbilities": {
+          "Array": []
+        },
+        "_addIndexToSignalId": 0,
+        "_includeIndexZero": 0,
+        "_alwaysHideHp": {
+          "isDefined": 0,
+          "value": 0
+        },
+        "_alwaysHideSp": {
+          "isDefined": 0,
+          "value": 0
+        }
+      }
+    },
+    {
+      "bundle": "charpack/char_225_haak.ab",
+      "file": "CAB-730af13ca16887ba52d183ec92e16cae",
+      "pathId": "8320551384278587629",
+      "hierarchy": [
+        "char_225_haak",
+        "Talents",
+        "2"
+      ],
+      "objectSha256": "5b770b651f9e7a6ebce9143bd3f2bdb42a78c21d7a7cb1cd90e8c04f1c08c3b1",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -2726233351382997147
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-2726233351382997147",
+        "name": "Talent",
+        "cl": "Talent",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_overwriteTalentKey": "",
+        "_overwriteParentRangeId": 0,
+        "_checkValidBySkillIndex": {
+          "Array": []
+        },
+        "_attachInDummy": 1,
+        "_defaultModeIndex": -1,
+        "_attackBlackboardModeIndex": -1,
+        "_extraAttackBlackboardModeIndices": {
+          "Array": []
+        },
+        "_overrideDefaultRangeId": 0,
+        "_applyTalentScale": 0,
+        "_influenceSkillBlackboard": 0,
+        "_fromRawDataToSkill": 0,
+        "_applyTalentRange": 0,
+        "_applyBlackboardBySkill": 0,
+        "_applyStrBlackboardBySkill": 0,
+        "_writeRangeIdToProjectileBlackboard": 0,
+        "_affectWhenNotRootTalent": 0,
+        "_scaleCertainKeyFlag": 0,
+        "_scaleCertainKeyList": {
+          "Array": []
+        },
+        "_scaleCertainMode": 0,
+        "_scaleModeIndices": {
+          "Array": []
+        }
+      }
+    },
+    {
+      "bundle": "charpack/char_4126_fuze.ab",
+      "file": "CAB-36affbec4241b422935f7b8dc63d53bd",
+      "pathId": "-7938603592871619761",
+      "hierarchy": [
+        "char_4126_fuze",
+        "Modes",
+        "S1",
+        "Body",
+        "Attack",
+        "Selector"
+      ],
+      "objectSha256": "8209571fe66ea1b9a3ca38546ee5fff60e5da603851dd42126fd225bb0a81d3e",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 8607874384982393801
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "8607874384982393801",
+        "name": "SelectorTrigger",
+        "cl": "SelectorTrigger",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_keepTarget": 0,
+        "_minTargetNum": 1,
+        "_overrideSearchTargetTick": -1
+      }
+    },
+    {
+      "bundle": "charpack/char_4126_fuze.ab",
+      "file": "CAB-36affbec4241b422935f7b8dc63d53bd",
+      "pathId": "-7492693438330940593",
+      "hierarchy": [
+        "char_4126_fuze",
+        "Modes",
+        "Default",
+        "Body",
+        "Attack",
+        "Selector"
+      ],
+      "objectSha256": "6a2c5ad052a54a267cfb0d16e9d1943b385fa962b8839d42c1d47f01a1948f63",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 840206743537877183
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "840206743537877183",
+        "name": "BlockedOrAdvancedSelector",
+        "cl": "BlockedOrAdvancedSelector",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_targetSide": 2,
+        "_targetMotion": 3,
+        "_targetCategory": 1,
+        "_postFilter": 4,
+        "_ignoreTargetFree": 0,
+        "_onlyIgnoreSomeOfTargetFreeCase": 0,
+        "_abnormalFlag": 32,
+        "_abnormalCombo": 2,
+        "_ignoreAllyTargetFree": 0,
+        "_ignoreHealFree": 0,
+        "_ignoreMotionMode": 0,
+        "_forceIgnoreCamouflage": 0,
+        "_needProfessionMask": 0,
+        "_professionMask": 0,
+        "_excludeSomeAbnormalFlags": 0,
+        "_excludeAbnormalFlag": 46,
+        "_limitTargetNum": 0,
+        "_maxTargetKey": "max_target",
+        "_maxTargetExtraKey": "",
+        "_maxNum": 1,
+        "_excludeOwner": 0,
+        "_sortByTauntAtLast": 0,
+        "_ignoreHitRange": 0,
+        "_checkUnitType": 0,
+        "_unitTypeMask": 0,
+        "_abilityInputTargetAsSortSource": 0,
+        "_targetOptionHookedKeys": {
+          "Array": []
+        },
+        "_limitedMaxTargetNumToBlockedCnt": 1,
+        "_allowZeroBlockCntLimit": 0
+      }
+    },
+    {
+      "bundle": "charpack/char_4126_fuze.ab",
+      "file": "CAB-36affbec4241b422935f7b8dc63d53bd",
+      "pathId": "-6612831574709218481",
+      "hierarchy": [
+        "char_4126_fuze"
+      ],
+      "objectSha256": "b12a18b3da8291c17482253fce4d621e7f3927a4f23a4893a43013de4651de58",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -1297314214590689040
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-1297314214590689040",
+        "name": "Character",
+        "cl": "Character",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_animator": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_modes": {
+          "Array": [
+            {
+              "m_FileID": 0,
+              "m_PathID": 8032398434223543119
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 7840926449258419023
+            }
+          ]
+        },
+        "_commonAbilities": {
+          "Array": []
+        },
+        "_uiMountPoint": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_effectTransform": {
+          "m_FileID": 0,
+          "m_PathID": -4373030145346546865
+        },
+        "_shadow": {
+          "m_FileID": 0,
+          "m_PathID": -5983131864248528049
+        },
+        "_defaultBodyColor": {
+          "r": 1.0,
+          "g": 1.0,
+          "b": 1.0,
+          "a": 1.0
+        },
+        "_hideShadowOnRecycle": 0,
+        "_overrideGraphicBound": -1.0,
+        "_hudPluginReplacePairs": {
+          "Array": []
+        },
+        "_showDebugName": 0,
+        "_skinHolder": {
+          "m_FileID": 0,
+          "m_PathID": -8611359662075587761
+        },
+        "_motionMode": 0,
+        "_blockMode": 0,
+        "_ignoreBlockMode": 0,
+        "_isFixedRotation": 0,
+        "_occupiedRemainingCharacterCnt": 1,
+        "_useRealBornTimeFromAnim": 0,
+        "_buildCondition": {
+          "buildableType": 1,
+          "isTryingOverlapCharacater": 0,
+          "needSpecifyDirection": 1,
+          "limitByHostAttackRange": 0,
+          "limitByHostAbilityRange": 0,
+          "canNotBuildInHostAttackRange": 0,
+          "abilityName": "",
+          "tileKey": "",
+          "ignoreBuildableTypeTileTypes": 0,
+          "extraBuildConditionArray": {
+            "SerializedState": "null",
+            "SerializedObjectReferences": {
+              "Array": []
+            }
+          },
+          "advancedBuildableMask": 1,
+          "overlapOptions": {
+            "_verifySourceId": 0,
+            "_verifySourceIds": {
+              "Array": []
+            },
+            "_verifySourceProfession": 0,
+            "_verifySourceProfessions": 0,
+            "_isAllConditionOR": 1,
+            "_overlapPriority": 0,
+            "_changeTargetGraphicColor": 0,
+            "_excludeSourceId": 0,
+            "_excludeSourceIds": {
+              "Array": []
+            },
+            "_verifySourceTargetTokenRelationship": 0
+          },
+          "excludeNoTargetTile": 0,
+          "extraLocateRange": "",
+          "checkManuallyBuildableType": 0,
+          "manuallyBuildableType": 0,
+          "_excludeOccupiedByWalkEnemy": 0,
+          "allowWalkEnemyInHostRange": 0,
+          "_checkUpdateBuildable": 0
+        },
+        "_traitAbility": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_withdrawCostRecoverRatio": 0.5,
+        "_maxWithdrawCostRatioOfRawCost": 1.0,
+        "_directionTransform": {
+          "m_FileID": 0,
+          "m_PathID": 1884137113543332687
+        },
+        "_directionIndicator": {
+          "m_FileID": 0,
+          "m_PathID": -7952667074038377649
+        },
+        "_startEffect": "",
+        "_deadEffect": "",
+        "_playStartVocal": 1,
+        "_showDeadTweenColor": 1,
+        "_useSpecificDeadAnim": 0,
+        "_onlyPlayStartEffectOnce": 0,
+        "_dontMoveCameraWhenFocus": 0,
+        "_disableCharInfoPanel": 0,
+        "_disableRotateWhenDead": 0,
+        "_disableSetDirectionWhenDummy": 0,
+        "_clearProjectileWhenDead": 0,
+        "_useIdForAudioSignalMask": 0,
+        "_skipBornAudioOnMoveLikeRespawnSelf": 0,
+        "_preprocessData": 0,
+        "_disableClickCharacterInfo": 0,
+        "_skillUiFollowHeadPint": 0,
+        "m_overrideBornTime": -1.0
+      }
+    },
+    {
+      "bundle": "charpack/char_4126_fuze.ab",
+      "file": "CAB-36affbec4241b422935f7b8dc63d53bd",
+      "pathId": "-6611869315128994993",
+      "hierarchy": [
+        "char_4126_fuze",
+        "Modes",
+        "S1",
+        "Body",
+        "Attack",
+        "Selector"
+      ],
+      "objectSha256": "84d4eb26e56710d844ef1902da5dcb4f87ff3d5b2f84a849301f49a69618ae2b",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -2891200616113119906
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-2891200616113119906",
+        "name": "AutoLoadBoxRange",
+        "cl": "AutoLoadBoxRange",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_useBlackboardRangeId": 0,
+        "_extendable": 1
+      }
+    },
+    {
+      "bundle": "charpack/char_4126_fuze.ab",
+      "file": "CAB-36affbec4241b422935f7b8dc63d53bd",
+      "pathId": "-5983131864248528049",
+      "hierarchy": [
+        "char_4126_fuze",
+        "Others",
+        "Shadow"
+      ],
+      "objectSha256": "54731c729745099ca544bfc49851b1e32fc30c6673026dba310561e48ad43728",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -2368896203154538901
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-2368896203154538901",
+        "name": "ShadowController",
+        "cl": "ShadowController",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_autoAttachToGround": 0,
+        "_attachOffset": 0.10000000149011612,
+        "_simplyUseTileHeight": 0,
+        "_enableAdvanced": 0,
+        "_alwaysUseSpineOffset": 0,
+        "_sprite": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_graphic": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_faceSwitcher": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_boneToFollow": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_specialInit": 0,
+        "_simpleFollow": 0,
+        "_easeType": 1
+      }
+    },
+    {
+      "bundle": "charpack/char_4126_fuze.ab",
+      "file": "CAB-36affbec4241b422935f7b8dc63d53bd",
+      "pathId": "-3996746674723204273",
+      "hierarchy": [
+        "char_4126_fuze",
+        "Modes",
+        "Default",
+        "Body",
+        "Attack",
+        "Selector"
+      ],
+      "objectSha256": "b4f18f9e849e2fa82faace5ec78253ae32f8fe5889441db16b2d4b03b0a0e887",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -2891200616113119906
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-2891200616113119906",
+        "name": "AutoLoadBoxRange",
+        "cl": "AutoLoadBoxRange",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_useBlackboardRangeId": 0,
+        "_extendable": 0
+      }
+    },
+    {
+      "bundle": "charpack/char_4126_fuze.ab",
+      "file": "CAB-36affbec4241b422935f7b8dc63d53bd",
+      "pathId": "-3219276853088726193",
+      "hierarchy": [
+        "char_4126_fuze",
+        "Modes",
+        "Default",
+        "Body",
+        "Attack",
+        "Selector"
+      ],
+      "objectSha256": "2bced76a781122411dd5850e3319a1b2a423c0df6ade4eec83eb2fdac039bcac",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 8607874384982393801
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "8607874384982393801",
+        "name": "SelectorTrigger",
+        "cl": "SelectorTrigger",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_keepTarget": 0,
+        "_minTargetNum": 1,
+        "_overrideSearchTargetTick": -1
+      }
+    },
+    {
+      "bundle": "charpack/char_4126_fuze.ab",
+      "file": "CAB-36affbec4241b422935f7b8dc63d53bd",
+      "pathId": "-824783117765553329",
+      "hierarchy": [
+        "char_4126_fuze",
+        "Modes",
+        "Default",
+        "Body",
+        "Attack"
+      ],
+      "objectSha256": "3f19d15d049e293ae34ba1e4ac40944fc17c225f78a24e542cccda9d75574981",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 4381884627089348317
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "4381884627089348317",
+        "name": "MeleeAttack",
+        "cl": "MeleeAttack",
+        "ns": "Torappu.Battle.Abilities",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_selector": {
+          "m_FileID": 0,
+          "m_PathID": -7492693438330940593
+        },
+        "_metadata": {
+          "namedAsAlias": "",
+          "blackboardPrefix": ""
+        },
+        "_overrideSignalId": "",
+        "_interruptAbilityOnDetach": 1,
+        "_attachPassiveBuffsOnDummy": 1,
+        "_ignoreIfOwnerDead": 0,
+        "_forceAsDmgOrHealAbility": 0,
+        "_waitForAttackEvent": 1,
+        "_interuptIfTargetDead": 0,
+        "_resetCdStrategy": 1,
+        "_selectTargetSource": 1,
+        "_selectTargetTiming": 0,
+        "_timeMode": 0,
+        "_alwaysIncludeTarget": 1,
+        "_allowNoTarget": 0,
+        "_animKey": "Attack",
+        "_endAnimKey": "Idle",
+        "_downAnimKey": "",
+        "_downEndAnimKey": "",
+        "_upAnimKey": "",
+        "_upEndAnimKey": "",
+        "_cooldown": 0.0,
+        "_cooldownKey": "duration",
+        "_preDelay": 0.0,
+        "_escapeTime": 0.0,
+        "_faceToTarget": 1,
+        "_faceToDefault": 0,
+        "_faceToFront": 0,
+        "_faceToFirstCastTarget": 0,
+        "_checkFaceToFirstCastTargetDownAttack": 0,
+        "_forceFaceToDirection": 0,
+        "_activeBuffs": {
+          "Array": []
+        },
+        "_maxAnimScale": 1.0,
+        "_onlyPlayEndAnimWhenIsLastAbility": 0,
+        "_ignorePalsyInterrupt": 0,
+        "_affectedBySlowDown": 0,
+        "_atkScale": 1.0,
+        "_atkScaleKey": "atk_scale",
+        "_attackType": 1,
+        "_elementDamageType": 0,
+        "_epDamageRatio": 0.0,
+        "_useDynamicAttackType": 0,
+        "_deliveryParaWhenReplaceActionNode": 0,
+        "_damageType": 1,
+        "_extraDamageType": 0,
+        "_alwaysPutIncludeTargetFirst": 0
+      }
+    },
+    {
+      "bundle": "charpack/char_4126_fuze.ab",
+      "file": "CAB-36affbec4241b422935f7b8dc63d53bd",
+      "pathId": "-466354574652779697",
+      "hierarchy": [
+        "char_4126_fuze",
+        "Modes",
+        "S1",
+        "Body",
+        "Attack",
+        "Selector"
+      ],
+      "objectSha256": "8f75fc41fe6b1ebc7833ee077791a4bbe26d160014633ab32c480b1f129f98c4",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 840206743537877183
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "840206743537877183",
+        "name": "BlockedOrAdvancedSelector",
+        "cl": "BlockedOrAdvancedSelector",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_targetSide": 2,
+        "_targetMotion": 3,
+        "_targetCategory": 1,
+        "_postFilter": 4,
+        "_ignoreTargetFree": 0,
+        "_onlyIgnoreSomeOfTargetFreeCase": 0,
+        "_abnormalFlag": 32,
+        "_abnormalCombo": 2,
+        "_ignoreAllyTargetFree": 0,
+        "_ignoreHealFree": 0,
+        "_ignoreMotionMode": 0,
+        "_forceIgnoreCamouflage": 0,
+        "_needProfessionMask": 0,
+        "_professionMask": 0,
+        "_excludeSomeAbnormalFlags": 0,
+        "_excludeAbnormalFlag": 46,
+        "_limitTargetNum": 0,
+        "_maxTargetKey": "max_target",
+        "_maxTargetExtraKey": "",
+        "_maxNum": 1,
+        "_excludeOwner": 0,
+        "_sortByTauntAtLast": 0,
+        "_ignoreHitRange": 0,
+        "_checkUnitType": 0,
+        "_unitTypeMask": 0,
+        "_abilityInputTargetAsSortSource": 0,
+        "_targetOptionHookedKeys": {
+          "Array": []
+        },
+        "_limitedMaxTargetNumToBlockedCnt": 1,
+        "_allowZeroBlockCntLimit": 0
+      }
+    },
+    {
+      "bundle": "charpack/char_4126_fuze.ab",
+      "file": "CAB-36affbec4241b422935f7b8dc63d53bd",
+      "pathId": "-298649812123823281",
+      "hierarchy": [
+        "char_4126_fuze",
+        "Modes",
+        "S1",
+        "Body",
+        "Attack"
+      ],
+      "objectSha256": "6619ce274ef5e0d05186bcdbdf2f1f6195e680b15d534ad1a89060007aa6535b",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 4381884627089348317
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "4381884627089348317",
+        "name": "MeleeAttack",
+        "cl": "MeleeAttack",
+        "ns": "Torappu.Battle.Abilities",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_selector": {
+          "m_FileID": 0,
+          "m_PathID": -466354574652779697
+        },
+        "_metadata": {
+          "namedAsAlias": "",
+          "blackboardPrefix": ""
+        },
+        "_overrideSignalId": "",
+        "_interruptAbilityOnDetach": 1,
+        "_attachPassiveBuffsOnDummy": 1,
+        "_ignoreIfOwnerDead": 0,
+        "_forceAsDmgOrHealAbility": 0,
+        "_waitForAttackEvent": 1,
+        "_interuptIfTargetDead": 0,
+        "_resetCdStrategy": 1,
+        "_selectTargetSource": 1,
+        "_selectTargetTiming": 0,
+        "_timeMode": 0,
+        "_alwaysIncludeTarget": 1,
+        "_allowNoTarget": 0,
+        "_animKey": "Attack",
+        "_endAnimKey": "Idle",
+        "_downAnimKey": "",
+        "_downEndAnimKey": "",
+        "_upAnimKey": "",
+        "_upEndAnimKey": "",
+        "_cooldown": 0.0,
+        "_cooldownKey": "duration",
+        "_preDelay": 0.0,
+        "_escapeTime": 0.0,
+        "_faceToTarget": 0,
+        "_faceToDefault": 1,
+        "_faceToFront": 0,
+        "_faceToFirstCastTarget": 0,
+        "_checkFaceToFirstCastTargetDownAttack": 0,
+        "_forceFaceToDirection": 0,
+        "_activeBuffs": {
+          "Array": []
+        },
+        "_maxAnimScale": 1.0,
+        "_onlyPlayEndAnimWhenIsLastAbility": 0,
+        "_ignorePalsyInterrupt": 0,
+        "_affectedBySlowDown": 0,
+        "_atkScale": 1.0,
+        "_atkScaleKey": "atk_scale",
+        "_attackType": 1,
+        "_elementDamageType": 0,
+        "_epDamageRatio": 0.0,
+        "_useDynamicAttackType": 0,
+        "_deliveryParaWhenReplaceActionNode": 0,
+        "_damageType": 1,
+        "_extraDamageType": 0,
+        "_alwaysPutIncludeTargetFirst": 0
+      }
+    },
+    {
+      "bundle": "charpack/char_4126_fuze.ab",
+      "file": "CAB-36affbec4241b422935f7b8dc63d53bd",
+      "pathId": "526258351017251663",
+      "hierarchy": [
+        "char_4126_fuze",
+        "Modes",
+        "Default",
+        "Body",
+        "Attack"
+      ],
+      "objectSha256": "1284e0b89e7bc867c67c86b67e9eb22f7f0c4983c8d2ee45a7fa5de53705113e",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -550693537895634864
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-550693537895634864",
+        "name": "UberEffectEmitter",
+        "cl": "UberEffectEmitter",
+        "ns": "Torappu.Battle.Abilities",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_hitEffects": {
+          "Array": [
+            {
+              "_directionType": 0,
+              "_effects": {
+                "Array": [
+                  "fuze_attack_hit_01"
+                ]
+              },
+              "_oneshot": 1,
+              "_endEvent": 3,
+              "_onlyOnce": 0,
+              "_useFourDirectionalFace": 0,
+              "_useOwnerToTargetDirection": 0,
+              "_playIfNotInputTarget": 0,
+              "_playOnlyIfInputTarget": 0
+            }
+          ]
+        },
+        "_castEffects": {
+          "Array": [
+            {
+              "_directionType": 0,
+              "_effects": {
+                "Array": [
+                  "fuze_attack_start_01"
+                ]
+              },
+              "_oneshot": 0,
+              "_startEvent": 2,
+              "_endEvent": 3,
+              "_onlyOnce": 0,
+              "_useFourDirectionalFace": 0,
+              "_delayIfFirstAttack": 0.0,
+              "_hookEffectAfterFirstAttack": ""
+            },
+            {
+              "_directionType": 0,
+              "_effects": {
+                "Array": [
+                  "fuze_attack_start_02"
+                ]
+              },
+              "_oneshot": 0,
+              "_startEvent": 2,
+              "_endEvent": 3,
+              "_onlyOnce": 0,
+              "_useFourDirectionalFace": 0,
+              "_delayIfFirstAttack": 0.0,
+              "_hookEffectAfterFirstAttack": ""
+            }
+          ]
+        },
+        "_attachEffects": {
+          "Array": []
+        },
+        "_inputTargetEffects": {
+          "Array": []
+        },
+        "_castTargetEffects": {
+          "Array": []
+        },
+        "_convertCastEndToAttachFinish": 0,
+        "_recalculatePlaybackSpeed": 0,
+        "_preDelayFactor": 0.0
+      }
+    },
+    {
+      "bundle": "charpack/char_4126_fuze.ab",
+      "file": "CAB-36affbec4241b422935f7b8dc63d53bd",
+      "pathId": "1148625650450518863",
+      "hierarchy": [
+        "char_4126_fuze",
+        "Modes",
+        "S1",
+        "Body",
+        "Attack"
+      ],
+      "objectSha256": "2141f5e04d8067551a3937a34e52276156a4b18692b6e1099412066895278748",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -550693537895634864
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-550693537895634864",
+        "name": "UberEffectEmitter",
+        "cl": "UberEffectEmitter",
+        "ns": "Torappu.Battle.Abilities",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_hitEffects": {
+          "Array": [
+            {
+              "_directionType": 0,
+              "_effects": {
+                "Array": [
+                  "fuze_skill_01_hit_01"
+                ]
+              },
+              "_oneshot": 1,
+              "_endEvent": 3,
+              "_onlyOnce": 0,
+              "_useFourDirectionalFace": 0,
+              "_useOwnerToTargetDirection": 0,
+              "_playIfNotInputTarget": 0,
+              "_playOnlyIfInputTarget": 0
+            }
+          ]
+        },
+        "_castEffects": {
+          "Array": [
+            {
+              "_directionType": 0,
+              "_effects": {
+                "Array": [
+                  "fuze_attack_start_01"
+                ]
+              },
+              "_oneshot": 0,
+              "_startEvent": 2,
+              "_endEvent": 3,
+              "_onlyOnce": 0,
+              "_useFourDirectionalFace": 0,
+              "_delayIfFirstAttack": 0.0,
+              "_hookEffectAfterFirstAttack": ""
+            },
+            {
+              "_directionType": 0,
+              "_effects": {
+                "Array": [
+                  "fuze_attack_start_02"
+                ]
+              },
+              "_oneshot": 0,
+              "_startEvent": 2,
+              "_endEvent": 3,
+              "_onlyOnce": 0,
+              "_useFourDirectionalFace": 0,
+              "_delayIfFirstAttack": 0.0,
+              "_hookEffectAfterFirstAttack": ""
+            }
+          ]
+        },
+        "_attachEffects": {
+          "Array": []
+        },
+        "_inputTargetEffects": {
+          "Array": []
+        },
+        "_castTargetEffects": {
+          "Array": []
+        },
+        "_convertCastEndToAttachFinish": 0,
+        "_recalculatePlaybackSpeed": 0,
+        "_preDelayFactor": 0.0
+      }
+    },
+    {
+      "bundle": "charpack/char_4126_fuze.ab",
+      "file": "CAB-36affbec4241b422935f7b8dc63d53bd",
+      "pathId": "2599332655848117071",
+      "hierarchy": [
+        "char_4126_fuze",
+        "Others",
+        "Direction",
+        "Talents",
+        "1"
+      ],
+      "objectSha256": "206cb96e253f36b08d35df9559dd5a5dde8d23aee31a3040cea8dc46483223af",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -2726233351382997147
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-2726233351382997147",
+        "name": "Talent",
+        "cl": "Talent",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_overwriteTalentKey": "",
+        "_overwriteParentRangeId": 0,
+        "_checkValidBySkillIndex": {
+          "Array": []
+        },
+        "_attachInDummy": 0,
+        "_defaultModeIndex": -1,
+        "_attackBlackboardModeIndex": -1,
+        "_extraAttackBlackboardModeIndices": {
+          "Array": []
+        },
+        "_overrideDefaultRangeId": 0,
+        "_applyTalentScale": 0,
+        "_influenceSkillBlackboard": 0,
+        "_fromRawDataToSkill": 0,
+        "_applyTalentRange": 0,
+        "_applyBlackboardBySkill": 0,
+        "_applyStrBlackboardBySkill": 0,
+        "_writeRangeIdToProjectileBlackboard": 0,
+        "_affectWhenNotRootTalent": 0,
+        "_scaleCertainKeyFlag": 0,
+        "_scaleCertainKeyList": {
+          "Array": []
+        },
+        "_scaleCertainMode": 0,
+        "_scaleModeIndices": {
+          "Array": []
+        }
+      }
+    },
+    {
+      "bundle": "charpack/char_4126_fuze.ab",
+      "file": "CAB-36affbec4241b422935f7b8dc63d53bd",
+      "pathId": "3538446864662614863",
+      "hierarchy": [
+        "char_4126_fuze",
+        "Modes",
+        "S1",
+        "Body",
+        "Attack"
+      ],
+      "objectSha256": "29979fa8cd86b5392b95715dd50cd317416f2689c481bb81bb37e2841f2ab1d6",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -994835214138492539
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-994835214138492539",
+        "name": "AbilityEventCounter",
+        "cl": "AbilityEventCounter",
+        "ns": "Torappu.Battle.Abilities",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_countEvent": 4,
+        "_useAnotherBBKey": 0,
+        "_triggerTimeCount": 0,
+        "_expendPerTrigger": 1,
+        "_resetAfterEnd": 1,
+        "_resetImmediatelyWhenProgressEnd": 0,
+        "_resetWhenAttackFinished": 0,
+        "_ignoreTriggerOnce": 0,
+        "_overrideRecoverCountLimit": 0,
+        "_recoverCountLimit": 0,
+        "_forceAbilityWaitForPeriodWhenFinalCastEnd": 0,
+        "_persistRemainingCountToSharedBlackboard": 0,
+        "_remainingCountSharedBBKey": ""
+      }
+    },
+    {
+      "bundle": "charpack/char_4126_fuze.ab",
+      "file": "CAB-36affbec4241b422935f7b8dc63d53bd",
+      "pathId": "5986297597097694031",
+      "hierarchy": [
+        "char_4126_fuze",
+        "Others",
+        "Direction",
+        "Talents",
+        "1"
+      ],
+      "objectSha256": "503961df76697306893f76c4c69273fd62de50488df4e5a9e79dc67e2a8317ab",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 3800760148018415462
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "3800760148018415462",
+        "name": "PassiveBuffAbility",
+        "cl": "PassiveBuffAbility",
+        "ns": "Torappu.Battle.Abilities",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_selector": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_metadata": {
+          "namedAsAlias": "",
+          "blackboardPrefix": ""
+        },
+        "_overrideSignalId": "",
+        "_interruptAbilityOnDetach": 1,
+        "_attachPassiveBuffsOnDummy": 1,
+        "_ignoreIfOwnerDead": 0,
+        "_forceAsDmgOrHealAbility": 0,
+        "_buffs": {
+          "Array": [
+            {
+              "attributes": {
+                "abnormalFlags": {
+                  "Array": []
+                },
+                "abnormalImmunes": {
+                  "Array": []
+                },
+                "abnormalAntis": {
+                  "Array": []
+                },
+                "abnormalCombos": {
+                  "Array": []
+                },
+                "abnormalComboImmunes": {
+                  "Array": []
+                },
+                "attributeModifiers": {
+                  "Array": []
+                }
+              },
+              "buffKey": "fuze_t_1",
+              "loadFromDB": 0,
+              "isDurableBuff": 0,
+              "isDamageMissable": 0,
+              "isSilenceable": 0,
+              "isStunnable": 0,
+              "isFreezable": 0,
+              "isLevitatable": 0,
+              "isGroundBoundable": 0,
+              "statusResistable": 2,
+              "templateKey": "fuze_t_1",
+              "disableOverride": 0,
+              "overrideKey": "",
+              "overrideType": 0,
+              "maxStackCnt": 1,
+              "refreshRemainingTimeWhenStackMax": 0,
+              "clearAllStackCntWhenTimeUp": 0,
+              "maxValidStackCnt": -1,
+              "independentCharacterSource": 0,
+              "overrideEffectKey": "",
+              "overrideOnEventPriority": 0,
+              "onEventPriority": 0,
+              "audioSignal": "",
+              "lifeTimeType": 2,
+              "takeSnapshotWhenExtend": 0,
+              "durationKey": "duration",
+              "remainingTimeKey": "",
+              "lifeTime": 0.0,
+              "triggerLifeType": 0,
+              "triggerCnt": 0,
+              "triggerInterval": -1.0,
+              "waitFirstTriggerInterval": 1,
+              "firstTriggerInterval": -1.0,
+              "priority": -1,
+              "priorityBBKeys": {
+                "Array": []
+              },
+              "stripBlackboardParamsWithBuffKey": 0,
+              "blackboard": {
+                "Array": []
+              },
+              "enableInitDirectionFromSource": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "bundle": "charpack/char_4126_fuze.ab",
+      "file": "CAB-36affbec4241b422935f7b8dc63d53bd",
+      "pathId": "7829940668469826383",
+      "hierarchy": [
+        "char_4126_fuze",
+        "Modes",
+        "S1"
+      ],
+      "objectSha256": "66e670b96a06c70ed5995cddd6be9975a24e7cc9c0ff5eb10566245116557c64",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -2632969505105631840
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-2632969505105631840",
+        "name": "SimpleUnitAnimatorHooker",
+        "cl": "SimpleUnitAnimatorHooker",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_excludeAnimKeys": {
+          "Array": []
+        },
+        "_replaceAnimPairs": {
+          "Array": [
+            {
+              "fromAnimKey": "Attack",
+              "toAnimKey": "Skill_1_Loop"
+            },
+            {
+              "fromAnimKey": "Idle",
+              "toAnimKey": "Skill_1_Idle"
+            }
+          ]
+        },
+        "_disableSwitchSettings": {
+          "Array": []
+        }
+      }
+    },
+    {
+      "bundle": "charpack/char_4126_fuze.ab",
+      "file": "CAB-36affbec4241b422935f7b8dc63d53bd",
+      "pathId": "7840926449258419023",
+      "hierarchy": [
+        "char_4126_fuze",
+        "Modes",
+        "S1"
+      ],
+      "objectSha256": "6e84dcddbd79e215d36f1dbd00ca5e85b7c93a4032694a28fee261c64baf0935",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 5390319429299248724
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "5390319429299248724",
+        "name": "UnitMode",
+        "cl": "UnitMode",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_bodyTransform": {
+          "m_FileID": 0,
+          "m_PathID": -7395510927029480625
+        },
+        "_animatorHooker": {
+          "m_FileID": 0,
+          "m_PathID": 7829940668469826383
+        },
+        "_overrideStartEffect": "",
+        "_overrideDeadEffect": "",
+        "_combat": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_attack": {
+          "m_FileID": 0,
+          "m_PathID": -298649812123823281
+        },
+        "_attackTrigger": {
+          "m_FileID": 0,
+          "m_PathID": -7938603592871619761
+        },
+        "_hideUIAttackRange": 0,
+        "_updateAttackRangeExtendByAttributeDirty": 0,
+        "_rangeToShow": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_extraRangesToShow": {
+          "Array": []
+        },
+        "_generalAbilities": {
+          "Array": []
+        },
+        "_addIndexToSignalId": 1,
+        "_includeIndexZero": 1,
+        "_alwaysHideHp": {
+          "isDefined": 0,
+          "value": 0
+        },
+        "_alwaysHideSp": {
+          "isDefined": 0,
+          "value": 0
+        }
+      }
+    },
+    {
+      "bundle": "charpack/char_4126_fuze.ab",
+      "file": "CAB-36affbec4241b422935f7b8dc63d53bd",
+      "pathId": "8032398434223543119",
+      "hierarchy": [
+        "char_4126_fuze",
+        "Modes",
+        "Default"
+      ],
+      "objectSha256": "15c2ba97b50beaecf25e4cd68990caf86da8072bdd68b5a8202b93b657bb6718",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 5390319429299248724
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "5390319429299248724",
+        "name": "UnitMode",
+        "cl": "UnitMode",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_bodyTransform": {
+          "m_FileID": 0,
+          "m_PathID": 1017262710239220559
+        },
+        "_animatorHooker": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_overrideStartEffect": "",
+        "_overrideDeadEffect": "",
+        "_combat": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_attack": {
+          "m_FileID": 0,
+          "m_PathID": -824783117765553329
+        },
+        "_attackTrigger": {
+          "m_FileID": 0,
+          "m_PathID": -3219276853088726193
+        },
+        "_hideUIAttackRange": 0,
+        "_updateAttackRangeExtendByAttributeDirty": 0,
+        "_rangeToShow": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_extraRangesToShow": {
+          "Array": []
+        },
+        "_generalAbilities": {
+          "Array": []
+        },
+        "_addIndexToSignalId": 1,
+        "_includeIndexZero": 1,
+        "_alwaysHideHp": {
+          "isDefined": 0,
+          "value": 0
+        },
+        "_alwaysHideSp": {
+          "isDefined": 0,
+          "value": 0
+        }
+      }
+    }
+  ]
+}
