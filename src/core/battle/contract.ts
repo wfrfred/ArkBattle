@@ -5,7 +5,7 @@ import type { Definition as ScheduleDefinition } from "./schedule/definition.js"
 import type { Unit } from "../unit/unit.js";
 import type { Input as DeploymentInput } from "./deployment/deployment.js";
 import type { Card } from "./deployment/card/card.js";
-import type { StoredPredefinedDefinition } from "./steps/predefined.js";
+import type { StoredPredefinedDefinition } from "./predefined.js";
 import type { DeploymentCommand } from "./deployment/operations.js";
 import type { Ref } from "../common/ref.js";
 import type { Execution } from "../unit/action/execution.js";

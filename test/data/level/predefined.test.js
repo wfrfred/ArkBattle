@@ -7,7 +7,7 @@ import { parsePredefinedDefinition, resolvePredefinedPrefabKey } from "../../../
 import { parsePredefinedPrefab } from "../../../dist/data/level/prefab.js";
 import { resolvePredefinedSkillId, resolvePredefinedSkillBlackboard } from "../../../dist/data/skill/predefined.js";
 import { resolveTerrainControllers } from "../../../dist/data/level/terrain.js";
-import { predefinedIdsForAlias, appear } from "../../../dist/core/battle/steps/predefined.js";
+import { predefinedIdsForAlias, appear } from "../../../dist/core/battle/predefined.js";
 import { initialize } from "../../../dist/core/battle/index.js";
 import { at as occupancyAt } from "../../../dist/core/battlefield/occupancy.js";
 

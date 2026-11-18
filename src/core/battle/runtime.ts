@@ -2,7 +2,7 @@ import { createBattleState, type State } from "./state.js";
 import { advance as advanceEffects } from "../unit/effect/operations.js";
 import { assert, assertNonnegativeNumber } from "../common/assert.js";
 import { create as createBattlefield } from "../battlefield/state.js";
-import { reconcilePredefinedPresence } from "./steps/predefined.js";
+import { reconcilePredefinedPresence } from "./predefined.js";
 import type { Input, Command } from "./contract.js";
 import { prepare as prepareCombat, advance as advanceCombat } from "./steps/combat.js";
 import { advance as advanceSchedule } from "./schedule/runtime.js";

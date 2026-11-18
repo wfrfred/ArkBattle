@@ -1,5 +1,5 @@
 import { create as createMechanism } from "../mechanism/mechanism.js";
-import { appear } from "./steps/predefined.js";
+import { appear } from "./predefined.js";
 import type { Input } from "./contract.js";
 import type { State as BattleState } from "./state.js";
 

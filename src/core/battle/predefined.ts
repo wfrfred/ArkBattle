@@ -1,18 +1,18 @@
-import { assertNonnegativeSafeInteger } from "../../common/assert.js";
-import type { Definition as UnitDefinition, End, Unit } from "../../unit/unit.js";
-import { initialize as initializeUnit, type Input as UnitInput } from "../../unit/initialize.js";
-import { get as getUnit, ref as unitRef } from "../../unit/query.js";
+import { assertNonnegativeSafeInteger } from "../common/assert.js";
+import type { Definition as UnitDefinition, End, Unit } from "../unit/unit.js";
+import { initialize as initializeUnit, type Input as UnitInput } from "../unit/initialize.js";
+import { get as getUnit, ref as unitRef } from "../unit/query.js";
 import {
     create as createMechanism,
     get as getMechanism,
     remove as removeMechanism,
     type MechanismDefinition,
     type Mechanism,
-} from "../../mechanism/mechanism.js";
-import type { Ref } from "../../common/ref.js";
-import { add, remove as removeUnit } from "../unit.js";
-import type { State as BattleState } from "../state.js";
-import type { Definitions } from "../../unit/capability/catalog.js";
+} from "../mechanism/mechanism.js";
+import type { Ref } from "../common/ref.js";
+import { add, remove as removeUnit } from "./unit.js";
+import type { State as BattleState } from "./state.js";
+import type { Definitions } from "../unit/capability/catalog.js";
 
 export type PredefinedUnitCreation<
     D extends UnitDefinition & Partial<Definitions> = UnitDefinition & Partial<Definitions>,
