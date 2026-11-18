@@ -48,6 +48,12 @@ ATTACK_SPEED／FIXED 只决定周期求值。现有 Action 在启动时重置、
 
 reset 从当前时刻开始完整周期，clear 立即就绪；保留完成比例与保留绝对已过时间是两种不同的调整。成功启动开始冷却；本轮结束不自动改它。周期变化不缩放已采样的执行等待，普通攻击不足一 Tick 余量的节奏补偿归内容模板。
 
+### 攻击方式
+
+Action Definition 显式提供 `applyWay`。攻击工厂从伤害与元素损伤操作合并方式，纯治疗生成 `NONE`。自定义输出显式提供自身方式，并供实际输出复用。伤害请求的 `applyWay` 表达该笔输出。
+
+`getApplyWay(unit)` 合并单位所有已注册 Action 的 Definition，同一方式重复计入仍保持该值，近战和远程合并为 `ALL`，空集合为 `NONE`。普通单位和 Enemy 都按这一规则，空闲、冷却和当前 Execution 不影响结果。弩手注册近战与远程，因而得到 `ALL`。这是项目选择，原生模式汇总与敌人资料查询见[攻击方式调查](../research/cases/36-unit-classification-and-combat-tags.md#23-守林人目标的攻击方式)。
+
 ## 6. 完整启动、写回与终止
 
 start 先检查配置身份、宿主资格、执行占位、限制与冷却，再运行 prepare；返回后按最新宿主、聚合和周期复查。仍可启动时才一次发布 Execution、Cooldown 与身份计数，并登记 Execution→Unit 所有权。普通拒绝不分配身份或开始周期，Result 保留准备程序已经提交的业务。start 只登记，首次执行由调度器调用 advance。

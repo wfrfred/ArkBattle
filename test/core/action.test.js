@@ -17,6 +17,7 @@ import * as presence from "../../dist/core/unit/capability/presence/index.js";
 test("prepare can reject without allocating a round; ending preserves the latest persistent state", () => {
     const program = {
         id: "two-tick-action",
+        applyWay: "NONE",
         period: { type: "FIXED", ticks: 0 },
         initialize: (state) => ({ state, value: { attempts: 0, ended: [] } }),
         prepare(state, source, self) {
@@ -79,7 +80,7 @@ test("prepare can reject without allocating a round; ending preserves the latest
 
 test("attribute changes preserve independent attack cooldown progress and leave fixed cooldowns untouched", () => {
     const first = {
-        id: "first", period: { type: "ATTACK_SPEED" },
+        id: "first", applyWay: "NONE", period: { type: "ATTACK_SPEED" },
         initialize: state => ({ state, value: {} }),
         prepare: state => ({ state, value: {} }),
         onTick: state => ({ state, value: true }),
@@ -207,6 +208,7 @@ test("Combat advances an instantaneous action once per Tick and skips selection 
     let selections = 0;
     const program = {
         id: "instant",
+        applyWay: "NONE",
         period: { type: "FIXED", ticks: 0 },
         initialize: (state) => ({ state, value: { completed: 0 } }),
         prepare: (state) => ({ state, value: {} }),

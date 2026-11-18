@@ -117,16 +117,18 @@ function attackDefinition(profile: Profile, skill: boolean, timing: Timing) {
                         ).map(unitRef),
                     };
                 },
-                operations: [
-                    {
-                        type: "DAMAGE",
-                        attackType: "NORMAL",
-                        applyWay: "MELEE",
-                        power: 0,
-                        powerSource: "SOURCE_ATTACK",
-                        damageType: "PHYSICAL",
-                    },
-                ],
+                operations: skill
+                    ? []
+                    : [
+                          {
+                              type: "DAMAGE",
+                              attackType: "NORMAL",
+                              applyWay: "MELEE",
+                              power: 0,
+                              powerSource: "SOURCE_ATTACK",
+                              damageType: "PHYSICAL",
+                          },
+                      ],
             },
         ],
     } satisfies AttackConfiguration;
@@ -155,6 +157,7 @@ export function createSkill(
 
     return createSkillAttack({
         ...activeConfiguration,
+        applyWay: "MELEE",
         output(state, host, self) {
             const source = getCurrentUnit(state, host);
             if (source === undefined || !hasSkill(source) || source.skill.activation === null) {
@@ -184,7 +187,7 @@ export function createSkill(
 
                 const request: DamageRequest = {
                     attackType: "NORMAL",
-                    applyWay: "MELEE",
+                    applyWay: self.definition.applyWay,
                     source: unitRef(source),
                     killer: unitRef(source),
                     target: unitRef(target),

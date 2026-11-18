@@ -16,7 +16,7 @@ export interface Action<P extends object = object, E extends object = object> ex
 }
 
 export interface Snapshot {
-    readonly definition: Pick<Definition, "id" | "period">;
+    readonly definition: Pick<Definition, "id" | "applyWay" | "period">;
     readonly cooldown: cooldown.State;
     readonly state: unknown;
     readonly execution: ExecutionSnapshot | null;

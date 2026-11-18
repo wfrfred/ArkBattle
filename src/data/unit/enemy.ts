@@ -224,7 +224,6 @@ export interface Profile {
     readonly stunImmune: boolean;
     readonly filterTags: readonly string[];
     readonly rank: Rank;
-    readonly applyWay: "MELEE" | "RANGED";
     readonly lifePointReduce: number;
     readonly notCountInTotal: boolean;
 }
@@ -378,9 +377,6 @@ export function prepare(value: unknown, configuration: Configuration): Profile {
     if (fields.motion !== "WALK") {
         throw new TypeError(`unsupported enemy motion ${String(fields.motion)}`);
     }
-    if (fields.applyWay !== "MELEE" && fields.applyWay !== "RANGED") {
-        throw new TypeError(`unsupported enemy applyWay ${String(fields.applyWay)}`);
-    }
 
     const filterTags = parseTags(fields.enemyTags ?? []);
 
@@ -417,7 +413,6 @@ export function prepare(value: unknown, configuration: Configuration): Profile {
         stunImmune: flag(attributes, "stunImmune"),
         filterTags,
         rank: rank(fields.levelType === undefined ? "NORMAL" : fields.levelType),
-        applyWay: fields.applyWay,
         lifePointReduce,
         notCountInTotal: flag(fields, "notCountInTotal"),
     };

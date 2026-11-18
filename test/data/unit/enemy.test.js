@@ -32,7 +32,9 @@ test("main-mode enemy levels inherit individual defined fields and apply stage o
     assert.equal(advanced.recoverySpeed, 20);
     assert.deepEqual(advanced.filterTags, ["sarkaz"]);
     assert.equal(advanced.rank, "BOSS");
-    const bow = profile("enemy_1003_ncbow", 1);
+    const bow = profile("enemy_1003_ncbow", 1, {
+        applyWay: { m_defined: true, m_value: "ALL" },
+    });
     assert.equal(bow.attackSpeed, 0);
     assert.throws(() => profile("enemy_1000_gopro", 2));
 });

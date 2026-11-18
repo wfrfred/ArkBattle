@@ -134,6 +134,7 @@ test("an ending ancestor rejects new dependents before its running Action receiv
     let businessCalls = 0;
     const program = {
         id: "channel",
+        applyWay: "NONE",
         period: { type: "FIXED", ticks: 1 },
         initialize: (state) => ({ state, value: {} }),
         prepare: (state) => ({ state, value: {} }),

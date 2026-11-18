@@ -24,6 +24,7 @@ import {
 import * as actions from "../../core/unit/capability/action/index.js";
 import * as timing from "./timing.js";
 import type { Timing, Sample as TimingSample } from "./timing.js";
+import { mergeApplyWays } from "../../core/battle/resource/damage.js";
 
 import { hasOffense, resolveAttack } from "../../core/unit/capability/offense/index.js";
 import { hasFacing, fromVector, turn } from "../../core/unit/capability/facing/index.js";
@@ -100,16 +101,11 @@ export interface Configuration<P extends object = object, E extends object = obj
           ) => Timing);
 }
 
-export interface Definition<
-    P extends object = object,
-    E extends object = object,
-> extends Configuration<P, E> {
+export type Definition<P extends object = object, E extends object = object> = Configuration<
+    P,
+    E
+> & {
     readonly onStart?: (
-        battle: BattleState,
-        source: Ref<Unit & ActionCapability>,
-        self: Execution<P, State<E>>,
-    ) => BattleState;
-    readonly output?: (
         battle: BattleState,
         source: Ref<Unit & ActionCapability>,
         self: Execution<P, State<E>>,
@@ -120,16 +116,26 @@ export interface Definition<
         self: Execution<P, State<E>>,
     ) => BattleState;
     readonly onEnd?: ActionDefinition<P, State<E>>["onEnd"];
-}
+} & (
+        | { readonly output?: undefined; readonly applyWay?: never }
+        | {
+              readonly applyWay: ApplyWay;
+              readonly output: (
+                  battle: BattleState,
+                  source: Ref<Unit & ActionCapability>,
+                  self: Execution<P, State<E>>,
+              ) => BattleState;
+          }
+    );
 
-export interface StatefulDefinition<P extends object, E extends object> extends Definition<P, E> {
+export type StatefulDefinition<P extends object, E extends object> = Definition<P, E> & {
     readonly initialize: (battle: BattleState) => Result<P>;
     readonly prepare: (
         battle: BattleState,
         source: Ref<Unit & ActionCapability>,
         self: Action<P, State<E>>,
     ) => Result<E>;
-}
+};
 
 export interface State<S extends object = object> {
     readonly target: Ref<Unit>;
@@ -332,6 +338,10 @@ export function createWithState<P extends object, E extends object>(
         assertNonnegativeNumber(followUp.operation.power, "attack operation power");
     }
 
+    const operations = [
+        ...definition.targetGroups.flatMap((group) => group.operations),
+        ...followUps.map(({ operation }) => operation),
+    ];
     const configuration: Configuration<P, E> = {
         id: definition.id,
         period: definition.period,
@@ -342,6 +352,14 @@ export function createWithState<P extends object, E extends object>(
     };
     const attack: Attack<P, E> = {
         id: definition.id,
+        applyWay:
+            definition.output === undefined
+                ? mergeApplyWays(
+                      operations.map((operation) =>
+                          "applyWay" in operation ? operation.applyWay : "NONE",
+                      ),
+                  )
+                : definition.applyWay,
         period: definition.period,
         attack: configuration,
         initialize: definition.initialize,

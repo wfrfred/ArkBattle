@@ -17,9 +17,9 @@ export interface State {
     readonly activation: Ref<Activation> | null;
 }
 
-export interface Definition extends AttackDefinition<object, State> {
+export type Definition = AttackDefinition<object, State> & {
     readonly ammoPerAction?: number;
-}
+};
 
 export function create(definition: Definition): Attack<object, State> {
     const amount = definition.ammoPerAction ?? 1;

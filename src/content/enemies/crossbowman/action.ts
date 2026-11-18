@@ -36,13 +36,15 @@ export interface Projectile {
     readonly stopDelayTicks: number;
 }
 
+const arrowApplyWay = "RANGED";
+
 export function createArrow(): tracking.Definition {
     const hit = (battle: BattleState, self: ProjectileInstance<tracking.State>): BattleState =>
         tracking.hit(battle, self, (state, current, target) => {
             const source = current.state.source;
             const request: DamageRequest = {
                 attackType: "NORMAL",
-                applyWay: "RANGED",
+                applyWay: arrowApplyWay,
                 source: source !== null && units.get(state, source) !== undefined ? source : null,
                 killer: source,
                 target: units.ref(target),
@@ -120,6 +122,7 @@ export function createRanged(profile: Profile, timing: Timing, projectile: Proje
 
     return createAttack({
         id: "ranged",
+        applyWay: arrowApplyWay,
         onStart: faceTarget,
         triggerBindingId: "primary",
         period: { type: "ATTACK_SPEED" },
@@ -155,16 +158,7 @@ export function createRanged(profile: Profile, timing: Timing, projectile: Proje
                         ),
                     };
                 },
-                operations: [
-                    {
-                        type: "DAMAGE",
-                        attackType: "NORMAL",
-                        applyWay: "RANGED",
-                        power: profile.attack,
-                        powerSource: "SOURCE_ATTACK",
-                        damageType: "PHYSICAL",
-                    },
-                ],
+                operations: [],
             },
         ],
         output: (state, host, self) => {

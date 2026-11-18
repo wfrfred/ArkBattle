@@ -16,7 +16,7 @@ import { stun, stunRestriction, silence, blockSpRecovery } from "../../../dist/c
 
 function actor(ignoreRestrictions, onEnd = state => state) {
     const action = {
-        id: "held", period: { type: "FIXED", ticks: 0 },
+        id: "held", applyWay: "NONE", period: { type: "FIXED", ticks: 0 },
         initialize: state => ({ state, value: {} }),
         prepare: state => ({ state, value: {} }),
         onTick: state => ({ state, value: false }),

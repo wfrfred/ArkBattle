@@ -46,7 +46,7 @@ hasClassification 与指定明确类别的 isType 提供结构／类别守卫，
 
 普通敌对判定为一方 ENEMY、另一方非 ENEMY；ALLY 与 NEUTRAL 不因此敌对。阵营只作为具体业务输入，不自动决定索敌、受伤或阻挡资格。Blocking 的目标阵营由显式二元限制表达。空地身份、运动方式和本笔攻击途径继续由各自领域提供，不由分类或标签推导。
 
-原生 EntityCategory、类筛选与单位当前攻击方式的剩余需求见 [Tactical 语义](tactical-semantics.md)，不把已有静态分类接口当作这些内容已闭合的依据。
+单位攻击方式由 [Action](action.md#攻击方式) 汇总。受选类别和类筛选的剩余需求见 [Tactical 语义](tactical-semantics.md)。
 
 ## 属性与贡献
 

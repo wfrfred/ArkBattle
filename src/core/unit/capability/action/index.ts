@@ -12,7 +12,7 @@ export type { Event } from "./event.js";
 
 export { create, createActions } from "./initialize.js";
 
-export { forUnit, getAction, getExecution, isCasting } from "./query.js";
+export { forUnit, getAction, getExecution, getApplyWay, isCasting } from "./query.js";
 
 export {
     lifetime,

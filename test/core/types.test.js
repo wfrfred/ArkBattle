@@ -181,7 +181,7 @@ Hooks.empty().set(receivingKey, { id: 'restore-then-fix', invoke: (state, _conte
 // @ts-expect-error cancelling again cannot hide replacement of an existing reason.
 Hooks.empty().set(receivingKey, { id: 'rewrite-then-cancel', invoke: (state, context, current) => ({ state, value: current.type === 'CANCELLED' ? hpDamage.cancel({ ...current, reason: 'BLOCKED' as const }, 'MISS', context.forbidden) : current }) });
 const program: actions.Definition<{ uses: number }, { hits: number }> = {
-    id: 'attack', period: { type: 'FIXED', ticks: 10 },
+    id: 'attack', applyWay: 'NONE', period: { type: 'FIXED', ticks: 10 },
     initialize: state => ({ state, value: { uses: 0 } }),
     prepare: state => ({ state, value: { hits: 1 } }),
     onTick: state => ({ state, value: true }),
@@ -203,6 +203,15 @@ const timedAttack = createAttackWithState<{ uses: number }, { hits: number }>({
     },
     targetGroups: [{ id: 'primary', select: state => ({ state, value: [] }), operations: [] }],
 });
+const timedAttackInput = {
+    ...timedAttack.attack,
+    initialize: (state: typeof battle) => ({ state, value: { uses: 0 } }),
+    prepare: (state: typeof battle) => ({ state, value: { hits: 1 } }),
+};
+// @ts-expect-error declarative attacks derive their apply way from operations.
+createAttackWithState({ ...timedAttackInput, applyWay: 'RANGED' });
+// @ts-expect-error custom output declares its apply way explicitly.
+createAttackWithState({ ...timedAttackInput, output: state => state });
 const host = initialize(battle, { id: 0, position: [0, 0], definition: {
     id: 'armed', hooks: Hooks.empty(), offense: { attack: attribute(100) }, layer: { type: 'GROUND' },
     action: {

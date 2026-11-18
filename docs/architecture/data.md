@@ -43,7 +43,7 @@ Effect 的重复施加、启用竞争、接收免疫／抵抗和生命周期关�
 
 干员的精英阶段、等级、潜能、信赖、技能等级／专精及模组选择在 Data 完成。等级属性和信赖增量分别按各自关键帧插值：MaxHP、ATK、DEF、嘲讽、阻挡数、费用和再部署时间取偶舍入，法抗、攻速与基础攻击间隔保留小数。先分别写回等级属性和信赖增量，再相加。依据见[干员配置数据补核](../research/cases/06-talent-lifecycle-and-model.md#干员配置数据补核2026-11-10)。
 
-敌人的模板等级与关卡覆盖先合并。`m_defined`、潜能的零基 rank、原表天赋候选和模组数据槽等原始表示不进入 Core。标签、免疫和关联资源应有明确的转换结果，不要求 Content 从原始 Profile 猜测身份或规则。
+敌人的模板等级与关卡覆盖先合并。`m_defined`、潜能的零基 rank、原表天赋候选和模组数据槽等原始表示不进入 Core。标签、免疫和关联资源应有明确的转换结果，不要求 Content 从原始 Profile 猜测身份或规则。原始敌人资料的 `applyWay` 保留输入兼容，查询以实际登记的 [Action](action.md#攻击方式) 为准。
 
 Content 明确 [Classification](capability.md#classification) 的单位类别、职业／子职业，Data 提供组织与战斗筛选标签。角色的 mainPower／subPower 合并为 Profile.groupTags，不重复读取旧组织字段，也不混入档案种族；敌人的 enemyTags／levelType 规范为 filterTags／rank。标签必须是非空字符串，转换保留大小写和首次出现顺序并去重，不按名称猜测语义或丢弃。
 

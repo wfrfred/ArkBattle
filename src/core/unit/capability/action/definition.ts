@@ -1,5 +1,6 @@
 import type { Ref } from "../../../common/ref.js";
 import type { State as BattleState, Result } from "../../../battle/state.js";
+import type { ApplyWay } from "../../../battle/resource/damage.js";
 import type { Unit } from "../../unit.js";
 import type { Action as ActionCapability } from "./capability.js";
 import type { Action } from "./action.js";
@@ -15,6 +16,7 @@ export type End =
 
 export interface Definition<P extends object = object, E extends object = object> {
     readonly id: Id;
+    readonly applyWay: ApplyWay;
     readonly period: Period;
     readonly initialize: (battle: BattleState) => Result<P>;
     readonly prepare: (

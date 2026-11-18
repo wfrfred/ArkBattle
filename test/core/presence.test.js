@@ -21,7 +21,7 @@ test("disappearance preserves deployment and lifetimes, releases blocking before
     const ended = [];
     let entries = 0;
     const program = {
-        id: "attack", period: { type: "FIXED", ticks: 0 },
+        id: "attack", applyWay: "NONE", period: { type: "FIXED", ticks: 0 },
         initialize: (state) => ({ state, value: {} }),
         prepare: (state) => ({ state, value: {} }),
         onTick: (state) => ({ state, value: false }),

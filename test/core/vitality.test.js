@@ -31,7 +31,7 @@ test("HP-07: natural recovery samples current attributes after Effects and befor
     const damageCommits = [];
     const ordinaryHealing = () => assert.fail("natural recovery must not enter ordinary healing");
     const observer = {
-        id: "observe-recovery", period: { type: "FIXED", ticks: 0 },
+        id: "observe-recovery", applyWay: "NONE", period: { type: "FIXED", ticks: 0 },
         initialize: state => ({ state, value: {} }),
         prepare: state => ({ state, value: {} }),
         onTick(state) {

@@ -34,7 +34,7 @@ const combat = {
     vitality: vitalityDefinition(1000),
     offense: { attack: attribute(100) },
     action: { ...actionCapability({
-        id: "primary", period: { type: "ATTACK_SPEED" },
+        id: "primary", applyWay: "NONE", period: { type: "ATTACK_SPEED" },
         initialize: state => ({ state, value: {} }),
         prepare: state => ({ state, value: null }),
         onTick: state => ({ state, value: true }),

@@ -40,8 +40,8 @@ export function create(
     readonly definition: Definition;
     readonly actions: { readonly melee: Attack; readonly ranged: Attack };
 } {
-    if (profile.id !== "enemy_1003_ncbow" || profile.applyWay !== "RANGED") {
-        throw new TypeError("Crossbowman content requires its ranged profile");
+    if (profile.id !== "enemy_1003_ncbow") {
+        throw new TypeError("Crossbowman content requires its own profile");
     }
 
     const ground = createGroundDefinition(profile, timing.hitRadius, movement);
