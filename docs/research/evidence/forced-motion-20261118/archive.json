@@ -1,0 +1,1809 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-11-18"
+    ],
+    "collectionDateSource": "record fields",
+    "organizedOn": "2026-11-18",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+        "records": [
+          "collision/collider-build-ranges.json#/provenance/client/dll",
+          "collision/contact-ranges.json#/provenance/client/dll",
+          "collision/ice-corner-native.json#/provenance/client/dll",
+          "collision/ice-corner-velocity.json#/provenance/client/dll",
+          "formulas/force-native-selected.json#/provenance/client/dll",
+          "push/native-push.json#/provenance/client/dll",
+          "state/native-state.json#/provenance/client/dll"
+        ],
+        "bytes": 223112680
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        "records": [
+          "collision/collider-build-ranges.json#/provenance/client/metadata",
+          "collision/contact-ranges.json#/provenance/client/metadata",
+          "collision/ice-corner-native.json#/provenance/client/metadata",
+          "collision/ice-corner-velocity.json#/provenance/client/metadata",
+          "formulas/force-native-selected.json#/provenance/client/metadata",
+          "push/native-push.json#/provenance/client/metadata",
+          "state/native-state.json#/provenance/client/metadata"
+        ],
+        "bytes": 46669332
+      }
+    },
+    "sourceRecords": [
+      "collision/collider-build-ranges.json",
+      "collision/contact-ranges.json",
+      "collision/enemy-physics.json",
+      "collision/ice-corner-level.json",
+      "collision/ice-corner-native.json",
+      "collision/ice-corner-prefab.json",
+      "collision/ice-corner-velocity.json",
+      "collision/stage-witness.json",
+      "collision/tile-assets.json",
+      "formulas/force-native-selected.json",
+      "formulas/force-tables.json",
+      "formulas/mint-config.json",
+      "push/native-push.json",
+      "push/prefabs.json",
+      "push/projectiles.json",
+      "push/skill-inputs.json",
+      "push/templates.json",
+      "state/native-state.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12895,
+        "sha256": "9c5b246859318caaec4aab5275ef0d2d49fce5d612c6b4e569973a9941ba621a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "collision/collider-build-ranges.json",
+        "kind": "record",
+        "bytes": 270392,
+        "sha256": "ad80985f22a5bcba31605a8fb097032bab21f9de85b5fc23424c800316d5d529"
+      },
+      {
+        "path": "collision/contact-ranges.json",
+        "kind": "record",
+        "bytes": 1236523,
+        "sha256": "65c677caa78a2ceb2b826f0b65d06f79c9666c1415686e62eb492eac3dd15947"
+      },
+      {
+        "path": "collision/enemy-physics.json",
+        "kind": "record",
+        "bytes": 32561,
+        "sha256": "01bdc1b307981a9a5325815f54ec03ba4556e99a3a807d42b1d2c3aaa9deffbb"
+      },
+      {
+        "path": "collision/extract_enemy_physics.py",
+        "kind": "historical-script",
+        "bytes": 6116,
+        "sha256": "34533931ac3a9830d2cf82f61afaba6f942c915c0abddae724682667644d6934"
+      },
+      {
+        "path": "collision/extract_ice_prefab.py",
+        "kind": "historical-script",
+        "bytes": 3182,
+        "sha256": "1cc0854edb94771674c6f8bbf4e1f9078d4b6bb40b8a7d263ad511df9e2e539e"
+      },
+      {
+        "path": "collision/extract_ranges.py",
+        "kind": "historical-script",
+        "bytes": 3258,
+        "sha256": "887112956714f3274126df8b2f088ad0af8ceabd0e2262b94c664ee3223566a5"
+      },
+      {
+        "path": "collision/extract_tile_assets.py",
+        "kind": "historical-script",
+        "bytes": 4600,
+        "sha256": "f6720924dc5bce782f0d4fe030bf5d8ea2718d365f543c43581729ca21c69f82"
+      },
+      {
+        "path": "collision/ice-corner-level.json",
+        "kind": "record",
+        "bytes": 1100,
+        "sha256": "cee48399ab7615434b8bebf5f192691531de7355bdd9dc64b2c2d6c6b395b394"
+      },
+      {
+        "path": "collision/ice-corner-native.json",
+        "kind": "record",
+        "bytes": 248469,
+        "sha256": "f1354c6ca0cbd9b2bde5b4156291433fc8e74370653f068640c73e80a1c2e0fc"
+      },
+      {
+        "path": "collision/ice-corner-prefab.json",
+        "kind": "record",
+        "bytes": 9484,
+        "sha256": "ccc866f3244a67ec41754536b0960f63b6445b45d90f0853c8c98eb3be562273"
+      },
+      {
+        "path": "collision/ice-corner-velocity.json",
+        "kind": "record",
+        "bytes": 64943,
+        "sha256": "2d3fe819db570e7fca725b0ca0c533080e6031c0bae5f48d703a03eb521d453a"
+      },
+      {
+        "path": "collision/stage-witness.json",
+        "kind": "record",
+        "bytes": 106813,
+        "sha256": "1b25e1416deedde4619e230cc06aebb7f2df330624c3bb00c0ae56033c622fd6"
+      },
+      {
+        "path": "collision/tile-assets.json",
+        "kind": "record",
+        "bytes": 208965,
+        "sha256": "a02ef91b9a31fc6adc8dacc03acc4fa3244a0784c271afab313cb9f7747bfc57"
+      },
+      {
+        "path": "collision/verify_stage_data.py",
+        "kind": "historical-script",
+        "bytes": 5033,
+        "sha256": "c73cd2fba6c387b9057357553cd6e3a09860c3cae1c0e484ab18a36e54bfdb02"
+      },
+      {
+        "path": "formulas/decode_game_consts.py",
+        "kind": "historical-script",
+        "bytes": 2973,
+        "sha256": "fdcced4a11c178a76901c1a962c90c2c6f1a9a08d9ccd2e62e81c83fa0e9e96e"
+      },
+      {
+        "path": "formulas/extract_mint_config.py",
+        "kind": "historical-script",
+        "bytes": 5721,
+        "sha256": "045fd0c92b6ac566f8d068578ffb1bfa59969f284c35dfcb4f0776200434e550"
+      },
+      {
+        "path": "formulas/force-native-selected.json",
+        "kind": "record",
+        "bytes": 233658,
+        "sha256": "87edb5f048e8b5d2b9691cf643ba37f4a0385d35461c310289cf1ae6b0ed65ac"
+      },
+      {
+        "path": "formulas/force-tables.json",
+        "kind": "record",
+        "bytes": 1962,
+        "sha256": "a37a2ac7213df1cd1285225332dda20793d4726485f4f7244b37fc84a9038522"
+      },
+      {
+        "path": "formulas/mint-config.json",
+        "kind": "record",
+        "bytes": 16779,
+        "sha256": "ee99e3acf1430d816f8e07947b4d843095aba915f791763344533608c24d161e"
+      },
+      {
+        "path": "push/extract_push_config.py",
+        "kind": "historical-script",
+        "bytes": 3209,
+        "sha256": "fe8b407bab45584384bfec3d99e4ea896e33b97b84d7a4422ff53655bff3e0c0"
+      },
+      {
+        "path": "push/extract_push_native.py",
+        "kind": "historical-script",
+        "bytes": 6762,
+        "sha256": "958be131e52281569b2c5f0d4c1e0d4525269eecf97f6296d91c502afef57f92"
+      },
+      {
+        "path": "push/native-push.json",
+        "kind": "record",
+        "bytes": 1805972,
+        "sha256": "be6f6a801bcfaed2e54945e8d8ab50e0e2d44666ebc9eb224d1bc8bac3df6807"
+      },
+      {
+        "path": "push/prefabs.json",
+        "kind": "record",
+        "bytes": 47646,
+        "sha256": "8c63499a90c9ceff6d742124297d47b71427e8bf1d9be062f005c7d8778c1f5c"
+      },
+      {
+        "path": "push/projectiles.json",
+        "kind": "record",
+        "bytes": 53236,
+        "sha256": "3fe2a6504320e9e57c0a302690e19b4d3de6aba76abebac583ea2dc55950f366"
+      },
+      {
+        "path": "push/skill-inputs.json",
+        "kind": "record",
+        "bytes": 17393,
+        "sha256": "24e48060cade9aa29235d3fed3981285578164919d989eeaff19817bc5923e2c"
+      },
+      {
+        "path": "push/templates.json",
+        "kind": "record",
+        "bytes": 2387,
+        "sha256": "7257271ba2a9524433c654bce5107d99cd0ab20005fe40e750825987837ed4f8"
+      },
+      {
+        "path": "state/extract_state.py",
+        "kind": "historical-script",
+        "bytes": 2238,
+        "sha256": "022cda83fa3a4f01f571072996cdd4a6a72dcfd25fc3b9722b6be6ee14daa108"
+      },
+      {
+        "path": "state/native-state.json",
+        "kind": "record",
+        "bytes": 667369,
+        "sha256": "65ccfdc1c1a29c5ba0e3bd605c90a9222f2e3a49e02d424e02593ef9400d7aa5"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 67,
+          "mode": "metadata",
+          "records": [
+            "collision/collider-build-ranges.json#/result/search/0"
+          ],
+          "fullname": "ReedTile.Init",
+          "address": "0x180541460"
+        },
+        {
+          "index": 28641,
+          "mode": "disasm",
+          "records": [
+            "collision/contact-ranges.json#/result/ranges/28641",
+            "collision/contact-ranges.json#/result/ranges/28641/method"
+          ],
+          "fullname": "Torappu.GridPosition.FromVectorPosition",
+          "address": "0x18214cb40"
+        },
+        {
+          "index": 32166,
+          "mode": "disasm",
+          "records": [
+            "state/native-state.json#/result/bodies/0/method",
+            "state/native-state.json#/result/bodies/0/fragments/0",
+            "state/native-state.json#/result/bodies/0/fragments/0/method"
+          ],
+          "fullname": "Torappu.LevelData/Options..ctor",
+          "address": "0x18246fb80"
+        },
+        {
+          "index": 45644,
+          "mode": "metadata",
+          "records": [
+            "push/native-push.json#/result/typeSlots/Motion multiplier declaring type"
+          ],
+          "fullname": "Torappu.Battle.BattleOptions"
+        },
+        {
+          "index": 53407,
+          "mode": "metadata",
+          "records": [
+            "push/native-push.json#/result/typeSlots/Knockback target cast"
+          ],
+          "fullname": "Torappu.Battle.Enemy"
+        },
+        {
+          "index": 63902,
+          "mode": "disasm",
+          "records": [
+            "state/native-state.json#/result/bodies/1/method",
+            "state/native-state.json#/result/bodies/1/fragments/0",
+            "state/native-state.json#/result/bodies/1/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.BattleOptions.LoadOptions",
+          "address": "0x180607560"
+        },
+        {
+          "index": 63906,
+          "mode": "disasm",
+          "records": [
+            "state/native-state.json#/result/bodies/2/method",
+            "state/native-state.json#/result/bodies/2/fragments/0",
+            "state/native-state.json#/result/bodies/2/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.BattleOptions..cctor",
+          "address": "0x180607f20"
+        },
+        {
+          "index": 63907,
+          "mode": "disasm",
+          "records": [
+            "state/native-state.json#/result/bodies/3/method",
+            "state/native-state.json#/result/bodies/3/fragments/0",
+            "state/native-state.json#/result/bodies/3/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Consts..cctor",
+          "address": "0x1806097c0"
+        },
+        {
+          "index": 64038,
+          "mode": "metadata",
+          "records": [
+            "push/native-push.json#/result/methodsWithoutBody/0"
+          ],
+          "fullname": "Torappu.Battle.Ability.GetActiveBuffs"
+        },
+        {
+          "index": 65683,
+          "mode": "metadata",
+          "records": [
+            "push/native-push.json#/result/bodies/0/method"
+          ],
+          "fullname": "Torappu.Battle.BattleController.CreateProjectile",
+          "address": "0x180650390"
+        },
+        {
+          "index": 65684,
+          "mode": "metadata",
+          "records": [
+            "push/native-push.json#/result/bodies/1/method"
+          ],
+          "fullname": "Torappu.Battle.BattleController.CreateProjectile",
+          "address": "0x180650480"
+        },
+        {
+          "index": 65736,
+          "mode": "disasm",
+          "records": [
+            "collision/contact-ranges.json#/result/ranges/65736",
+            "collision/contact-ranges.json#/result/ranges/65736/method"
+          ],
+          "fullname": "Torappu.Battle.BattleController.OnPhysicObjectInit",
+          "address": "0x18065a520"
+        },
+        {
+          "index": 65737,
+          "mode": "disasm",
+          "records": [
+            "collision/contact-ranges.json#/result/ranges/65737",
+            "collision/contact-ranges.json#/result/ranges/65737/method"
+          ],
+          "fullname": "Torappu.Battle.BattleController.OnPhysicObjectRecycle",
+          "address": "0x18065a5d0"
+        },
+        {
+          "index": 65802,
+          "mode": "disasm",
+          "records": [
+            "collision/contact-ranges.json#/result/ranges/65802",
+            "collision/contact-ranges.json#/result/ranges/65802/method"
+          ],
+          "fullname": "Torappu.Battle.BattleController.OnTick",
+          "address": "0x18065aaa0"
+        },
+        {
+          "index": 65910,
+          "mode": "disasm",
+          "records": [
+            "formulas/force-native-selected.json#/result/formulas/0",
+            "formulas/force-native-selected.json#/result/formulas/0/method"
+          ],
+          "fullname": "Torappu.Battle.BattleFormula.CalculatePushForce",
+          "address": "0x1806871c0"
+        },
+        {
+          "index": 65911,
+          "mode": "disasm",
+          "records": [
+            "formulas/force-native-selected.json#/result/formulas/1",
+            "formulas/force-native-selected.json#/result/formulas/1/method"
+          ],
+          "fullname": "Torappu.Battle.BattleFormula.CalculatePushForce",
+          "address": "0x1806870b0"
+        },
+        {
+          "index": 65912,
+          "mode": "disasm",
+          "records": [
+            "formulas/force-native-selected.json#/result/formulas/2",
+            "formulas/force-native-selected.json#/result/formulas/2/method"
+          ],
+          "fullname": "Torappu.Battle.BattleFormula.CalculatePushForce",
+          "address": "0x180686f80"
+        },
+        {
+          "index": 65913,
+          "mode": "disasm",
+          "records": [
+            "formulas/force-native-selected.json#/result/formulas/3",
+            "formulas/force-native-selected.json#/result/formulas/3/method"
+          ],
+          "fullname": "Torappu.Battle.BattleFormula.CalculatePullForce",
+          "address": "0x180686e90"
+        },
+        {
+          "index": 66024,
+          "mode": "disasm",
+          "records": [
+            "collision/contact-ranges.json#/result/ranges/66024",
+            "collision/contact-ranges.json#/result/ranges/66024/method"
+          ],
+          "fullname": "Torappu.Battle.BObject._AssignLocalPosInternal",
+          "address": "0x1806b0070"
+        },
+        {
+          "index": 66092,
+          "mode": "metadata",
+          "records": [
+            "push/native-push.json#/result/bodies/2/method"
+          ],
+          "fullname": "Torappu.Battle.Buff.Reset",
+          "address": "0x1806d5b20"
+        },
+        {
+          "index": 66123,
+          "mode": "metadata",
+          "records": [
+            "push/native-push.json#/result/bodies/3/method"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnStart",
+          "address": "0x1806d4fc0"
+        },
+        {
+          "index": 66182,
+          "mode": "disasm",
+          "records": [
+            "collision/collider-build-ranges.json#/result/search/1",
+            "collision/collider-build-ranges.json#/result/ranges/66182",
+            "collision/collider-build-ranges.json#/result/ranges/66182/method",
+            "collision/contact-ranges.json#/result/ranges/66182",
+            "collision/contact-ranges.json#/result/ranges/66182/method"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnCollideWithHighLand",
+          "address": "0x1806d1e80"
+        },
+        {
+          "index": 66232,
+          "mode": "metadata",
+          "records": [
+            "push/native-push.json#/result/bodies/4/method"
+          ],
+          "fullname": "Torappu.Battle.Buff._RunActions",
+          "address": "0x1806dc050"
+        },
+        {
+          "index": 66233,
+          "mode": "metadata",
+          "records": [
+            "push/native-push.json#/result/bodies/5/method"
+          ],
+          "fullname": "Torappu.Battle.Buff._RunActionsCore",
+          "address": "0x1806dbbd0"
+        },
+        {
+          "index": 66301,
+          "mode": "metadata",
+          "records": [
+            "push/native-push.json#/result/bodies/6/method"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.NewBuff",
+          "address": "0x1806b6940"
+        },
+        {
+          "index": 66431,
+          "mode": "disasm",
+          "records": [
+            "collision/collider-build-ranges.json#/result/search/2",
+            "collision/contact-ranges.json#/result/ranges/66431",
+            "collision/contact-ranges.json#/result/ranges/66431/method"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnCollideWithHighLand",
+          "address": "0x1806bdc20"
+        },
+        {
+          "index": 67480,
+          "mode": "metadata",
+          "records": [
+            "push/native-push.json#/result/bodies/7/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_baseForceLevel",
+          "address": "0x1807336e0"
+        },
+        {
+          "index": 67510,
+          "mode": "disasm",
+          "records": [
+            "state/native-state.json#/result/bodies/4/method",
+            "state/native-state.json#/result/bodies/4/fragments/0",
+            "state/native-state.json#/result/bodies/4/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.get_isBlockFree",
+          "address": "0x180736d30"
+        },
+        {
+          "index": 67543,
+          "mode": "metadata",
+          "records": [
+            "push/native-push.json#/result/bodies/8/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.AddBuff",
+          "address": "0x180720760"
+        },
+        {
+          "index": 67544,
+          "mode": "metadata",
+          "records": [
+            "push/native-push.json#/result/bodies/9/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.AddBuff",
+          "address": "0x1807208c0"
+        },
+        {
+          "index": 68509,
+          "mode": "metadata",
+          "records": [
+            "collision/collider-build-ranges.json#/result/search/3"
+          ],
+          "fullname": "Torappu.Battle.EnvActionToUnitOnTile.Init",
+          "address": "0x180772310"
+        },
+        {
+          "index": 68541,
+          "mode": "metadata",
+          "records": [
+            "collision/collider-build-ranges.json#/result/search/4"
+          ],
+          "fullname": "Torappu.Battle.EnvEnableBuffToTargetsOnTile.Init",
+          "address": "0x180774fe0"
+        },
+        {
+          "index": 69253,
+          "mode": "metadata",
+          "records": [
+            "collision/collider-build-ranges.json#/result/search/5"
+          ],
+          "fullname": "Torappu.Battle.Act42SideBattleManager/HiddenAreaManager._InitColliderHolder",
+          "address": "0x1807be530"
+        },
+        {
+          "index": 71588,
+          "mode": "metadata",
+          "records": [
+            "collision/collider-build-ranges.json#/result/search/6"
+          ],
+          "fullname": "Torappu.Battle.BlockedEdge._InitCollider",
+          "address": "0x1808ce9e0"
+        },
+        {
+          "index": 71593,
+          "mode": "metadata",
+          "records": [
+            "collision/collider-build-ranges.json#/result/search/7"
+          ],
+          "fullname": "Torappu.Battle.BuffTile.Init",
+          "address": "0x1808cf2d0"
+        },
+        {
+          "index": 71599,
+          "mode": "metadata",
+          "records": [
+            "collision/contact-ranges.json#/result/search/0"
+          ],
+          "fullname": "Torappu.Battle.BuffTile.OnEnemyEnter",
+          "address": "0x1808cf5f0"
+        },
+        {
+          "index": 71619,
+          "mode": "metadata",
+          "records": [
+            "collision/collider-build-ranges.json#/result/search/8"
+          ],
+          "fullname": "Torappu.Battle.CastTile.Init",
+          "address": "0x1808d0000"
+        },
+        {
+          "index": 71633,
+          "mode": "metadata",
+          "records": [
+            "collision/collider-build-ranges.json#/result/search/9"
+          ],
+          "fullname": "Torappu.Battle.CooperateEndTile.Init",
+          "address": "0x1808e5d80"
+        },
+        {
+          "index": 71641,
+          "mode": "metadata",
+          "records": [
+            "collision/collider-build-ranges.json#/result/search/10"
+          ],
+          "fullname": "Torappu.Battle.CooperateStartTile.Init",
+          "address": "0x1808e6a50"
+        },
+        {
+          "index": 71652,
+          "mode": "metadata",
+          "records": [
+            "collision/collider-build-ranges.json#/result/search/11"
+          ],
+          "fullname": "Torappu.Battle.DirectionTile.Init",
+          "address": "0x1808e7ce0"
+        },
+        {
+          "index": 71655,
+          "mode": "metadata",
+          "records": [
+            "collision/collider-build-ranges.json#/result/search/12"
+          ],
+          "fullname": "Torappu.Battle.DynamicBuffQuickSandTile.Init",
+          "address": "0x1808e7eb0"
+        },
+        {
+          "index": 71664,
+          "mode": "metadata",
+          "records": [
+            "collision/collider-build-ranges.json#/result/search/13"
+          ],
+          "fullname": "Torappu.Battle.DynamicBuffTile.Init",
+          "address": "0x1808e8660"
+        },
+        {
+          "index": 71676,
+          "mode": "metadata",
+          "records": [
+            "collision/contact-ranges.json#/result/search/1"
+          ],
+          "fullname": "Torappu.Battle.DynamicBuffTile.OnEnemyEnter",
+          "address": "0x1808e88b0"
+        },
+        {
+          "index": 71691,
+          "mode": "metadata",
+          "records": [
+            "collision/collider-build-ranges.json#/result/search/14"
+          ],
+          "fullname": "Torappu.Battle.DynamicBuffWoodrdTile.Init",
+          "address": "0x1808e99b0"
+        },
+        {
+          "index": 71698,
+          "mode": "metadata",
+          "records": [
+            "collision/contact-ranges.json#/result/search/2"
+          ],
+          "fullname": "Torappu.Battle.DynamicBuffWoodrdTile.OnEnemyEnter",
+          "address": "0x1808e9bf0"
+        },
+        {
+          "index": 71709,
+          "mode": "metadata",
+          "records": [
+            "collision/collider-build-ranges.json#/result/search/15"
+          ],
+          "fullname": "Torappu.Battle.GravityButtonTile.Init",
+          "address": "0x1808ea3d0"
+        },
+        {
+          "index": 71729,
+          "mode": "disasm",
+          "records": [
+            "collision/contact-ranges.json#/result/ranges/71729",
+            "collision/contact-ranges.json#/result/ranges/71729/method"
+          ],
+          "fullname": "Torappu.Battle.HoleTile.get_moveCost",
+          "address": "0x1808ec3d0"
+        },
+        {
+          "index": 71732,
+          "mode": "disasm",
+          "records": [
+            "collision/contact-ranges.json#/result/search/3",
+            "collision/contact-ranges.json#/result/ranges/71732",
+            "collision/contact-ranges.json#/result/ranges/71732/method"
+          ],
+          "fullname": "Torappu.Battle.HoleTile.OnEnemyEnter",
+          "address": "0x1808ebf70"
+        },
+        {
+          "index": 71733,
+          "mode": "disasm",
+          "records": [
+            "collision/contact-ranges.json#/result/ranges/71733",
+            "collision/contact-ranges.json#/result/ranges/71733/method"
+          ],
+          "fullname": "Torappu.Battle.HoleTile.OnEnemyMotionModeChanged",
+          "address": "0x1808ec050"
+        },
+        {
+          "index": 71744,
+          "mode": "disasm",
+          "records": [
+            "collision/ice-corner-native.json#/result/ranges/71744",
+            "collision/ice-corner-native.json#/result/ranges/71744/method"
+          ],
+          "fullname": "Torappu.Battle.IceCornerTile._NormalDirectionDamping",
+          "address": "0x1808ed010"
+        },
+        {
+          "index": 71745,
+          "mode": "disasm",
+          "records": [
+            "collision/ice-corner-native.json#/result/ranges/71745",
+            "collision/ice-corner-native.json#/result/ranges/71745/method"
+          ],
+          "fullname": "Torappu.Battle.IceCornerTile._AddCentripetalForce",
+          "address": "0x1808ec8c0"
+        },
+        {
+          "index": 71746,
+          "mode": "disasm",
+          "records": [
+            "collision/ice-corner-native.json#/result/ranges/71746",
+            "collision/ice-corner-native.json#/result/ranges/71746/method"
+          ],
+          "fullname": "Torappu.Battle.IceCornerTile._DoOrbitInternal",
+          "address": "0x1808ecc80"
+        },
+        {
+          "index": 71747,
+          "mode": "disasm",
+          "records": [
+            "collision/ice-corner-native.json#/result/ranges/71747",
+            "collision/ice-corner-native.json#/result/ranges/71747/method"
+          ],
+          "fullname": "Torappu.Battle.IceCornerTile._CheckWithinRange",
+          "address": "0x1808ecb50"
+        },
+        {
+          "index": 71748,
+          "mode": "disasm",
+          "records": [
+            "collision/ice-corner-native.json#/result/ranges/71748",
+            "collision/ice-corner-native.json#/result/ranges/71748/method"
+          ],
+          "fullname": "Torappu.Battle.IceCornerTile._DoOrbit",
+          "address": "0x1808ecea0"
+        },
+        {
+          "index": 71749,
+          "mode": "disasm",
+          "records": [
+            "collision/ice-corner-native.json#/result/ranges/71749",
+            "collision/ice-corner-native.json#/result/ranges/71749/method"
+          ],
+          "fullname": "Torappu.Battle.IceCornerTile._StopOrbit",
+          "address": "0x1808ed560"
+        },
+        {
+          "index": 71750,
+          "mode": "disasm",
+          "records": [
+            "collision/contact-ranges.json#/result/search/4",
+            "collision/ice-corner-native.json#/result/ranges/71750",
+            "collision/ice-corner-native.json#/result/ranges/71750/method"
+          ],
+          "fullname": "Torappu.Battle.IceCornerTile.OnEnemyEnter",
+          "address": "0x1808ec580"
+        },
+        {
+          "index": 71751,
+          "mode": "disasm",
+          "records": [
+            "collision/ice-corner-native.json#/result/ranges/71751",
+            "collision/ice-corner-native.json#/result/ranges/71751/method"
+          ],
+          "fullname": "Torappu.Battle.IceCornerTile.OnEnemyLeave",
+          "address": "0x1808ec810"
+        },
+        {
+          "index": 71757,
+          "mode": "metadata",
+          "records": [
+            "collision/contact-ranges.json#/result/search/5"
+          ],
+          "fullname": "Torappu.Battle.IceTile.OnEnemyEnter",
+          "address": "0x1808ed940"
+        },
+        {
+          "index": 71763,
+          "mode": "metadata",
+          "records": [
+            "collision/collider-build-ranges.json#/result/search/16"
+          ],
+          "fullname": "Torappu.Battle.InteractableTile.Init",
+          "address": "0x1808edfa0"
+        },
+        {
+          "index": 71819,
+          "mode": "disasm",
+          "records": [
+            "collision/collider-build-ranges.json#/result/ranges/71819",
+            "collision/collider-build-ranges.json#/result/ranges/71819/method"
+          ],
+          "fullname": "Torappu.Battle.Tile.get_isHighland",
+          "address": "0x1808fc780"
+        },
+        {
+          "index": 71840,
+          "mode": "disasm",
+          "records": [
+            "collision/collider-build-ranges.json#/result/search/17",
+            "collision/collider-build-ranges.json#/result/ranges/71840",
+            "collision/collider-build-ranges.json#/result/ranges/71840/method"
+          ],
+          "fullname": "Torappu.Battle.Tile.Init",
+          "address": "0x1808f4330"
+        },
+        {
+          "index": 71879,
+          "mode": "disasm",
+          "records": [
+            "collision/collider-build-ranges.json#/result/search/18",
+            "collision/collider-build-ranges.json#/result/ranges/71879",
+            "collision/collider-build-ranges.json#/result/ranges/71879/method"
+          ],
+          "fullname": "Torappu.Battle.Tile.AddEnemy",
+          "address": "0x1808f1210"
+        },
+        {
+          "index": 71888,
+          "mode": "disasm",
+          "records": [
+            "collision/collider-build-ranges.json#/result/ranges/71888",
+            "collision/collider-build-ranges.json#/result/ranges/71888/method"
+          ],
+          "fullname": "Torappu.Battle.Tile.TryUpdateTileInfo",
+          "address": "0x1808f9290"
+        },
+        {
+          "index": 71895,
+          "mode": "disasm",
+          "records": [
+            "collision/collider-build-ranges.json#/result/search/19",
+            "collision/collider-build-ranges.json#/result/ranges/71895",
+            "collision/collider-build-ranges.json#/result/ranges/71895/method"
+          ],
+          "fullname": "Torappu.Battle.Tile._InitCollider",
+          "address": "0x1808f9d20"
+        },
+        {
+          "index": 71903,
+          "mode": "disasm",
+          "records": [
+            "collision/contact-ranges.json#/result/search/6",
+            "collision/contact-ranges.json#/result/ranges/71903",
+            "collision/contact-ranges.json#/result/ranges/71903/method"
+          ],
+          "fullname": "Torappu.Battle.Tile.OnEnemyEnter",
+          "address": "0x1808f58e0"
+        },
+        {
+          "index": 71905,
+          "mode": "disasm",
+          "records": [
+            "collision/collider-build-ranges.json#/result/ranges/71905",
+            "collision/collider-build-ranges.json#/result/ranges/71905/method"
+          ],
+          "fullname": "Torappu.Battle.Tile.OnEnemyMotionModeChanged",
+          "address": "0x1808f59e0"
+        },
+        {
+          "index": 72012,
+          "mode": "metadata",
+          "records": [
+            "collision/collider-build-ranges.json#/result/search/20"
+          ],
+          "fullname": "Torappu.Battle.UpdateableBuffTile.Init",
+          "address": "0x1808fdcf0"
+        },
+        {
+          "index": 72291,
+          "mode": "disasm",
+          "records": [
+            "collision/collider-build-ranges.json#/result/ranges/72291",
+            "collision/collider-build-ranges.json#/result/ranges/72291/method"
+          ],
+          "fullname": "Torappu.Battle.HarpoonProjectile._StopCollideHighLand",
+          "address": "0x180906890"
+        },
+        {
+          "index": 72302,
+          "mode": "disasm",
+          "records": [
+            "formulas/force-native-selected.json#/result/callers/3/method",
+            "formulas/force-native-selected.json#/result/callers/3/pieces/0",
+            "formulas/force-native-selected.json#/result/callers/3/pieces/0/method"
+          ],
+          "fullname": "Torappu.Battle.HarpoonProjectile/<DoLink>d__19.MoveNext",
+          "address": "0x18091e2f0"
+        },
+        {
+          "index": 72512,
+          "mode": "metadata",
+          "records": [
+            "push/native-push.json#/result/bodies/10/method"
+          ],
+          "fullname": "Torappu.Battle.Projectile.Init",
+          "address": "0x180916cb0"
+        },
+        {
+          "index": 72513,
+          "mode": "metadata",
+          "records": [
+            "push/native-push.json#/result/bodies/11/method"
+          ],
+          "fullname": "Torappu.Battle.Projectile.Init",
+          "address": "0x180915f60"
+        },
+        {
+          "index": 72514,
+          "mode": "metadata",
+          "records": [
+            "push/native-push.json#/result/bodies/12/method"
+          ],
+          "fullname": "Torappu.Battle.Projectile.Init",
+          "address": "0x180916540"
+        },
+        {
+          "index": 72524,
+          "mode": "metadata",
+          "records": [
+            "push/native-push.json#/result/bodies/13/method"
+          ],
+          "fullname": "Torappu.Battle.Projectile.RegisterBuffs",
+          "address": "0x180918d20"
+        },
+        {
+          "index": 72620,
+          "mode": "metadata",
+          "records": [
+            "push/native-push.json#/result/bodies/14/method"
+          ],
+          "fullname": "Torappu.Battle.Projectile/ActionController.Init",
+          "address": "0x180920430"
+        },
+        {
+          "index": 72621,
+          "mode": "metadata",
+          "records": [
+            "push/native-push.json#/result/bodies/15/method"
+          ],
+          "fullname": "Torappu.Battle.Projectile/ActionController.InitFromProjectile",
+          "address": "0x180920280"
+        },
+        {
+          "index": 72623,
+          "mode": "metadata",
+          "records": [
+            "push/native-push.json#/result/bodies/16/method"
+          ],
+          "fullname": "Torappu.Battle.Projectile/ActionController.RegisterBuffs",
+          "address": "0x180921190"
+        },
+        {
+          "index": 72625,
+          "mode": "metadata",
+          "records": [
+            "push/native-push.json#/result/bodies/17/method"
+          ],
+          "fullname": "Torappu.Battle.Projectile/ActionController.OnHitTarget",
+          "address": "0x1809207b0"
+        },
+        {
+          "index": 72635,
+          "mode": "metadata",
+          "records": [
+            "push/native-push.json#/result/bodies/18/method"
+          ],
+          "fullname": "Torappu.Battle.Projectile/ActionController._AttachBuffs",
+          "address": "0x1809215c0"
+        },
+        {
+          "index": 72811,
+          "mode": "disasm",
+          "records": [
+            "collision/collider-build-ranges.json#/result/ranges/72811",
+            "collision/collider-build-ranges.json#/result/ranges/72811/method"
+          ],
+          "fullname": "Torappu.Battle.BattleFactory.CreateTile",
+          "address": "0x1809269e0"
+        },
+        {
+          "index": 77602,
+          "mode": "disasm",
+          "records": [
+            "collision/contact-ranges.json#/result/ranges/77602",
+            "collision/contact-ranges.json#/result/ranges/77602/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.get_onlyCollideWhenUnbalance",
+          "address": "0x180ace100"
+        },
+        {
+          "index": 77643,
+          "mode": "metadata",
+          "records": [
+            "push/native-push.json#/result/bodies/19/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.get_massLevel",
+          "address": "0x180acd6a0"
+        },
+        {
+          "index": 77695,
+          "mode": "disasm",
+          "records": [
+            "collision/ice-corner-velocity.json#/result/ranges/77695",
+            "collision/ice-corner-velocity.json#/result/ranges/77695/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.get_velocity",
+          "address": "0x180acf620"
+        },
+        {
+          "index": 77696,
+          "mode": "disasm",
+          "records": [
+            "collision/ice-corner-velocity.json#/result/ranges/77696",
+            "collision/ice-corner-velocity.json#/result/ranges/77696/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.set_velocity",
+          "address": "0x180ad02e0"
+        },
+        {
+          "index": 77697,
+          "mode": "disasm",
+          "records": [
+            "collision/collider-build-ranges.json#/result/search/21",
+            "collision/collider-build-ranges.json#/result/ranges/77697",
+            "collision/collider-build-ranges.json#/result/ranges/77697/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.get_rigidbody2D",
+          "address": "0x180ace670"
+        },
+        {
+          "index": 77742,
+          "mode": "disasm",
+          "records": [
+            "state/native-state.json#/result/bodies/5/method",
+            "state/native-state.json#/result/bodies/5/fragments/0",
+            "state/native-state.json#/result/bodies/5/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.CheckBlockableWithoutCheckRange",
+          "address": "0x180ab9f30"
+        },
+        {
+          "index": 77748,
+          "mode": "metadata",
+          "records": [
+            "push/native-push.json#/result/bodies/20/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.KnockBack",
+          "address": "0x180abd6f0"
+        },
+        {
+          "index": 77750,
+          "mode": "disasm",
+          "records": [
+            "state/native-state.json#/result/bodies/6/method",
+            "state/native-state.json#/result/bodies/6/fragments/0",
+            "state/native-state.json#/result/bodies/6/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.BeginPull",
+          "address": "0x180ab8590"
+        },
+        {
+          "index": 77751,
+          "mode": "disasm",
+          "records": [
+            "collision/ice-corner-velocity.json#/result/ranges/77751",
+            "collision/ice-corner-velocity.json#/result/ranges/77751/method",
+            "state/native-state.json#/result/bodies/7/method",
+            "state/native-state.json#/result/bodies/7/fragments/0",
+            "state/native-state.json#/result/bodies/7/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.StillPull",
+          "address": "0x180ac3b10"
+        },
+        {
+          "index": 77752,
+          "mode": "disasm",
+          "records": [
+            "state/native-state.json#/result/bodies/8/method",
+            "state/native-state.json#/result/bodies/8/fragments/0",
+            "state/native-state.json#/result/bodies/8/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.TryEarlyStopPull",
+          "address": "0x180ac42c0"
+        },
+        {
+          "index": 77753,
+          "mode": "disasm",
+          "records": [
+            "state/native-state.json#/result/bodies/9/method",
+            "state/native-state.json#/result/bodies/9/fragments/0",
+            "state/native-state.json#/result/bodies/9/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.EndPull",
+          "address": "0x180abaf40"
+        },
+        {
+          "index": 77754,
+          "mode": "disasm",
+          "records": [
+            "collision/contact-ranges.json#/result/ranges/77754",
+            "collision/contact-ranges.json#/result/ranges/77754/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.FallDown",
+          "address": "0x180abb2e0"
+        },
+        {
+          "index": 77758,
+          "mode": "disasm",
+          "records": [
+            "state/native-state.json#/result/bodies/10/method",
+            "state/native-state.json#/result/bodies/10/fragments/0",
+            "state/native-state.json#/result/bodies/10/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy._RemoveInvalidPullSources",
+          "address": "0x180ac89a0"
+        },
+        {
+          "index": 77814,
+          "mode": "disasm",
+          "records": [
+            "collision/contact-ranges.json#/result/search/7",
+            "collision/contact-ranges.json#/result/ranges/77814",
+            "collision/contact-ranges.json#/result/ranges/77814/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy._UpdateCurrentTile",
+          "address": "0x180ac8ee0"
+        },
+        {
+          "index": 77845,
+          "mode": "disasm",
+          "records": [
+            "collision/contact-ranges.json#/result/ranges/77845",
+            "collision/contact-ranges.json#/result/ranges/77845/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.OnTick",
+          "address": "0x180ac09a0"
+        },
+        {
+          "index": 77853,
+          "mode": "disasm",
+          "records": [
+            "collision/contact-ranges.json#/result/ranges/77853",
+            "collision/contact-ranges.json#/result/ranges/77853/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy._InitPhysics",
+          "address": "0x180ac75c0"
+        },
+        {
+          "index": 77951,
+          "mode": "metadata",
+          "records": [
+            "push/native-push.json#/result/bodies/21/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy/States/Blackboard.UpdateUnbalanceProtectTime",
+          "address": "0x180ad5620"
+        },
+        {
+          "index": 78054,
+          "mode": "disasm",
+          "records": [
+            "state/native-state.json#/result/bodies/11/method",
+            "state/native-state.json#/result/bodies/11/fragments/0",
+            "state/native-state.json#/result/bodies/11/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy/States/UnbalanceState.get_abnormalFlagMask",
+          "address": "0x180aed950"
+        },
+        {
+          "index": 78060,
+          "mode": "disasm",
+          "records": [
+            "collision/contact-ranges.json#/result/ranges/78060",
+            "collision/contact-ranges.json#/result/ranges/78060/method",
+            "state/native-state.json#/result/bodies/12/method",
+            "state/native-state.json#/result/bodies/12/fragments/0",
+            "state/native-state.json#/result/bodies/12/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy/States/UnbalanceState.OnEnter",
+          "address": "0x180aec340"
+        },
+        {
+          "index": 78061,
+          "mode": "disasm",
+          "records": [
+            "collision/contact-ranges.json#/result/ranges/78061",
+            "collision/contact-ranges.json#/result/ranges/78061/method",
+            "state/native-state.json#/result/bodies/13/method",
+            "state/native-state.json#/result/bodies/13/fragments/0",
+            "state/native-state.json#/result/bodies/13/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy/States/UnbalanceState.OnExit",
+          "address": "0x180aec7d0"
+        },
+        {
+          "index": 78062,
+          "mode": "disasm",
+          "records": [
+            "collision/contact-ranges.json#/result/ranges/78062",
+            "collision/contact-ranges.json#/result/ranges/78062/method",
+            "state/native-state.json#/result/bodies/14/method",
+            "state/native-state.json#/result/bodies/14/fragments/0",
+            "state/native-state.json#/result/bodies/14/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy/States/UnbalanceState.OnTick",
+          "address": "0x180aecad0"
+        },
+        {
+          "index": 78063,
+          "mode": "disasm",
+          "records": [
+            "collision/contact-ranges.json#/result/ranges/78063",
+            "collision/contact-ranges.json#/result/ranges/78063/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy/States/UnbalanceState._CheckCollideWithHighLand",
+          "address": "0x180aecf10"
+        },
+        {
+          "index": 78064,
+          "mode": "disasm",
+          "records": [
+            "state/native-state.json#/result/bodies/15/method",
+            "state/native-state.json#/result/bodies/15/fragments/0",
+            "state/native-state.json#/result/bodies/15/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy/States/UnbalanceState._UpdateFriction",
+          "address": "0x180aed3d0"
+        },
+        {
+          "index": 78067,
+          "mode": "disasm",
+          "records": [
+            "collision/contact-ranges.json#/result/ranges/78067",
+            "collision/contact-ranges.json#/result/ranges/78067/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy/States/UnbalanceState.OnAfterPhysicSimulate",
+          "address": "0x180aec270"
+        },
+        {
+          "index": 79195,
+          "mode": "disasm",
+          "records": [
+            "collision/contact-ranges.json#/result/ranges/79195",
+            "collision/contact-ranges.json#/result/ranges/79195/method"
+          ],
+          "fullname": "Torappu.Battle.VisualObject.get_mapPosition",
+          "address": "0x180b23080"
+        },
+        {
+          "index": 79200,
+          "mode": "disasm",
+          "records": [
+            "collision/contact-ranges.json#/result/ranges/79200",
+            "collision/contact-ranges.json#/result/ranges/79200/method"
+          ],
+          "fullname": "Torappu.Battle.VisualObject.get_gridPosition",
+          "address": "0x180b22ec0"
+        },
+        {
+          "index": 79209,
+          "mode": "disasm",
+          "records": [
+            "collision/contact-ranges.json#/result/ranges/79209",
+            "collision/contact-ranges.json#/result/ranges/79209/method"
+          ],
+          "fullname": "Torappu.Battle.VisualObject.SetPosition",
+          "address": "0x180b22bf0"
+        },
+        {
+          "index": 79214,
+          "mode": "disasm",
+          "records": [
+            "collision/contact-ranges.json#/result/ranges/79214",
+            "collision/contact-ranges.json#/result/ranges/79214/method"
+          ],
+          "fullname": "Torappu.Battle.VisualObject._AssignLocalPosInternal",
+          "address": "0x180b22e00"
+        },
+        {
+          "index": 79680,
+          "mode": "metadata",
+          "records": [
+            "push/native-push.json#/result/bodies/22/method"
+          ],
+          "fullname": "Torappu.Battle.MapUtil.ParseDirection",
+          "address": "0x180b4d8f0"
+        },
+        {
+          "index": 84138,
+          "mode": "metadata",
+          "records": [
+            "push/native-push.json#/result/typeSlots/Normalized zero vector declaring type"
+          ],
+          "fullname": "UnityEngine.Vector2"
+        },
+        {
+          "index": 87961,
+          "mode": "disasm",
+          "records": [
+            "formulas/force-native-selected.json#/result/callers/2/method",
+            "formulas/force-native-selected.json#/result/callers/2/pieces/0",
+            "formulas/force-native-selected.json#/result/callers/2/pieces/0/method"
+          ],
+          "fullname": "Torappu.Battle.Racing.RacingBattleUtil._CalculateCollisionResult",
+          "address": "0x180db5fa0"
+        },
+        {
+          "index": 88008,
+          "mode": "metadata",
+          "records": [
+            "collision/contact-ranges.json#/result/search/8"
+          ],
+          "fullname": "Torappu.Battle.Projectiles.AuraHitBehaviour.OnTriggerEnter2D",
+          "address": "0x180da1240"
+        },
+        {
+          "index": 88119,
+          "mode": "metadata",
+          "records": [
+            "collision/contact-ranges.json#/result/search/9"
+          ],
+          "fullname": "Torappu.Battle.Projectiles.CoolDownAfterHitBehaviour.OnTriggerEnter2D",
+          "address": "0x180db8530"
+        },
+        {
+          "index": 88214,
+          "mode": "metadata",
+          "records": [
+            "collision/contact-ranges.json#/result/search/10"
+          ],
+          "fullname": "Torappu.Battle.Projectiles.HitBehaviour.OnTriggerEnter2D",
+          "address": "0x180dc0870"
+        },
+        {
+          "index": 88236,
+          "mode": "metadata",
+          "records": [
+            "collision/contact-ranges.json#/result/search/11"
+          ],
+          "fullname": "Torappu.Battle.Projectiles.LaserHitBehaviour.OnTriggerEnter2D",
+          "address": "0x180dc1da0"
+        },
+        {
+          "index": 89226,
+          "mode": "metadata",
+          "records": [
+            "collision/collider-build-ranges.json#/result/search/22"
+          ],
+          "fullname": "Torappu.Battle.Tiles.CreepTile.Init",
+          "address": "0x180e18f70"
+        },
+        {
+          "index": 92830,
+          "mode": "metadata",
+          "records": [
+            "push/native-push.json#/result/bodies/23/method"
+          ],
+          "fullname": "Torappu.Battle.Abilities.RangedAttack.OnCastOnTarget",
+          "address": "0x180f6a9b0"
+        },
+        {
+          "index": 92841,
+          "mode": "metadata",
+          "records": [
+            "push/native-push.json#/result/bodies/24/method"
+          ],
+          "fullname": "Torappu.Battle.Abilities.RangedAttack.CreateProjectile",
+          "address": "0x180f699c0"
+        },
+        {
+          "index": 93886,
+          "mode": "metadata",
+          "records": [
+            "push/native-push.json#/result/bodies/25/method"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbstractAnimatedAbility.GetActiveBuffs",
+          "address": "0x180f90790"
+        },
+        {
+          "index": 94021,
+          "mode": "metadata",
+          "records": [
+            "collision/contact-ranges.json#/result/search/12"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AuraAbility.OnTriggerEnter2D",
+          "address": "0x180f95af0"
+        },
+        {
+          "index": 94449,
+          "mode": "metadata",
+          "records": [
+            "collision/contact-ranges.json#/result/search/13"
+          ],
+          "fullname": "Torappu.Battle.Abilities.RacingColliderAbility.OnTriggerEnter2D",
+          "address": "0x180fb4910"
+        },
+        {
+          "index": 94466,
+          "mode": "metadata",
+          "records": [
+            "collision/contact-ranges.json#/result/search/14"
+          ],
+          "fullname": "Torappu.Battle.Abilities.RO4DLC2BounceAbility.OnTriggerEnter2D",
+          "address": "0x180fb3110"
+        },
+        {
+          "index": 95786,
+          "mode": "metadata",
+          "records": [
+            "collision/contact-ranges.json#/result/search/15"
+          ],
+          "fullname": "Torappu.Battle.Abilities.PycjmpJumpAbility.OnTriggerEnter2D",
+          "address": "0x180ff2a60"
+        },
+        {
+          "index": 97346,
+          "mode": "metadata",
+          "records": [
+            "push/native-push.json#/result/bodies/26/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes.GetActionTarget",
+          "address": "0x18107acb0"
+        },
+        {
+          "index": 100306,
+          "mode": "metadata",
+          "records": [
+            "formulas/force-native-selected.json#/result/callers/1/method",
+            "push/native-push.json#/result/bodies/27/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/Knockback.Execute",
+          "address": "0x1811791b0"
+        },
+        {
+          "index": 100319,
+          "mode": "disasm",
+          "records": [
+            "formulas/force-native-selected.json#/result/callers/0/method",
+            "formulas/force-native-selected.json#/result/callers/0/pieces/0",
+            "formulas/force-native-selected.json#/result/callers/0/pieces/0/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/DragTowardSource.Execute",
+          "address": "0x18116ffd0"
+        },
+        {
+          "index": 226057,
+          "mode": "metadata",
+          "records": [
+            "push/native-push.json#/result/bodies/28/method"
+          ],
+          "fullname": "Torappu.MathUtil.LE",
+          "address": "0x186945ca0"
+        },
+        {
+          "index": 226068,
+          "mode": "metadata",
+          "records": [
+            "push/native-push.json#/result/bodies/29/method"
+          ],
+          "fullname": "Torappu.MathUtil.IsZero",
+          "address": "0x1869459c0"
+        },
+        {
+          "index": 226069,
+          "mode": "metadata",
+          "records": [
+            "push/native-push.json#/result/bodies/30/method"
+          ],
+          "fullname": "Torappu.MathUtil.IsZero",
+          "address": "0x186945940"
+        },
+        {
+          "index": 226088,
+          "mode": "metadata",
+          "records": [
+            "push/native-push.json#/result/bodies/31/method"
+          ],
+          "fullname": "Torappu.MathUtil.LE",
+          "address": "0x186945c90"
+        },
+        {
+          "index": 226089,
+          "mode": "metadata",
+          "records": [
+            "push/native-push.json#/result/bodies/32/method"
+          ],
+          "fullname": "Torappu.MathUtil.LE",
+          "address": "0x186945c80"
+        },
+        {
+          "index": 226102,
+          "mode": "metadata",
+          "records": [
+            "push/native-push.json#/result/bodies/33/method"
+          ],
+          "fullname": "Torappu.MathUtil.IsZero",
+          "address": "0x186945a80"
+        },
+        {
+          "index": 226103,
+          "mode": "metadata",
+          "records": [
+            "push/native-push.json#/result/bodies/34/method"
+          ],
+          "fullname": "Torappu.MathUtil.IsZero",
+          "address": "0x186945ba0"
+        },
+        {
+          "index": 226137,
+          "mode": "metadata",
+          "records": [
+            "push/native-push.json#/result/bodies/35/method"
+          ],
+          "fullname": "Torappu.MathUtil.IsZero",
+          "address": "0x186945bc0"
+        },
+        {
+          "index": 226138,
+          "mode": "metadata",
+          "records": [
+            "push/native-push.json#/result/bodies/36/method"
+          ],
+          "fullname": "Torappu.MathUtil.IsZero",
+          "address": "0x186945aa0"
+        },
+        {
+          "index": 226149,
+          "mode": "metadata",
+          "records": [
+            "push/native-push.json#/result/bodies/37/method"
+          ],
+          "fullname": "Torappu.MathUtil.NormalizeDirectionSafely",
+          "address": "0x186946430"
+        },
+        {
+          "index": 226150,
+          "mode": "metadata",
+          "records": [
+            "push/native-push.json#/result/bodies/38/method"
+          ],
+          "fullname": "Torappu.MathUtil.NormalizeDirectionSafely",
+          "address": "0x1869464d0"
+        },
+        {
+          "index": 309732,
+          "mode": "metadata",
+          "records": [
+            "collision/contact-ranges.json#/result/search/16"
+          ],
+          "fullname": "Cinemachine.CinemachineTriggerAction.OnTriggerEnter2D",
+          "address": "0x1843754d0"
+        },
+        {
+          "index": 309753,
+          "mode": "metadata",
+          "records": [
+            "collision/contact-ranges.json#/result/search/17"
+          ],
+          "fullname": "Cinemachine.CinemachineCollisionImpulseSource.OnTriggerEnter2D",
+          "address": "0x18436d280"
+        },
+        {
+          "index": 324482,
+          "mode": "disasm",
+          "records": [
+            "collision/contact-ranges.json#/result/ranges/324482",
+            "collision/contact-ranges.json#/result/ranges/324482/method"
+          ],
+          "fullname": "UnityEngine.Physics2D.Simulate",
+          "address": "0x186e30c10"
+        },
+        {
+          "index": 324596,
+          "mode": "metadata",
+          "records": [
+            "collision/collider-build-ranges.json#/result/search/23"
+          ],
+          "fullname": "UnityEngine.BoxCollider2D.get_size",
+          "address": "0x186e2e060"
+        },
+        {
+          "index": 324597,
+          "mode": "metadata",
+          "records": [
+            "collision/collider-build-ranges.json#/result/search/24"
+          ],
+          "fullname": "UnityEngine.BoxCollider2D.set_size",
+          "address": "0x186e2e100"
+        },
+        {
+          "index": 324598,
+          "mode": "metadata",
+          "records": [
+            "collision/collider-build-ranges.json#/result/search/25"
+          ],
+          "fullname": "UnityEngine.BoxCollider2D.get_size_Injected",
+          "address": "0x186e2e010"
+        },
+        {
+          "index": 324599,
+          "mode": "metadata",
+          "records": [
+            "collision/collider-build-ranges.json#/result/search/26"
+          ],
+          "fullname": "UnityEngine.BoxCollider2D.set_size_Injected",
+          "address": "0x186e2e0b0"
+        }
+      ],
+      "blocks": [],
+      "types": [
+        {
+          "name": "Torappu.Battle.HarpoonProjectile",
+          "records": [
+            "formulas/force-native-selected.json#/result/types/1"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.HarpoonProjectile/<DoLink>d__19",
+          "records": [
+            "formulas/force-native-selected.json#/result/types/0"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.LinkProjectile",
+          "records": [
+            "formulas/force-native-selected.json#/result/types/2"
+          ]
+        },
+        {
+          "name": "Torappu.GameDataConsts",
+          "records": [
+            "formulas/force-native-selected.json#/result/types/3"
+          ]
+        }
+      ],
+      "constants": [],
+      "bundles": [
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_base_0.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_base_0.ab",
+          "sha256": "8ad3f66ba83f9bd1b5b256009ff262eead54ac4d07bc921d1f5b7337226cf7df",
+          "records": [
+            "collision/enemy-physics.json#/provenance/sources/enemyBundle"
+          ],
+          "bytes": 147859
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]tiles.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]tiles.ab",
+          "sha256": "35dc9bf5673f176433a7f6e965b930c767c6c297925aa3315559bb11e730e4db",
+          "records": [
+            "collision/ice-corner-prefab.json#/provenance/sources/0",
+            "collision/tile-assets.json#/result/bundles/0/source"
+          ],
+          "bytes": 55553
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99",
+          "records": [
+            "collision/ice-corner-prefab.json#/provenance/sources/1",
+            "formulas/mint-config.json#/provenance/prefabDecoder/sources/0",
+            "push/prefabs.json#/provenance/sources/0",
+            "push/projectiles.json#/provenance/sources/0"
+          ],
+          "bytes": 477255
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/scenes/obt/main/level_main_02-08/level_main_02-08.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/scenes/obt/main/level_main_02-08/level_main_02-08.ab",
+          "sha256": "fd6815e11fa4b7c3a1e097aa2d510360bd383ec63e42160d975e7b7a49193991",
+          "records": [
+            "collision/stage-witness.json#/result/stages/0/scene",
+            "collision/tile-assets.json#/result/bundles/1/source"
+          ],
+          "bytes": 401727
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/scenes/obt/training/level_training_14/level_training_14.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/scenes/obt/training/level_training_14/level_training_14.ab",
+          "sha256": "a1f85414c34d707a2a7efa24f3096916eb1e60c921cb4b76a85f366451032afb",
+          "records": [
+            "collision/stage-witness.json#/result/stages/1/scene",
+            "collision/tile-assets.json#/result/bundles/2/source"
+          ],
+          "bytes": 945598
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/scenes/obt/training/level_mechanism_5/level_mechanism_5.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/scenes/obt/training/level_mechanism_5/level_mechanism_5.ab",
+          "sha256": "ccd14091edc5a70f4c45781f5dc130c558c80f97057ac07bf50968291cecce32",
+          "records": [
+            "collision/stage-witness.json#/result/stages/2/scene",
+            "collision/tile-assets.json#/result/bundles/3/source"
+          ],
+          "bytes": 167516
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/anon/a2adf558e4aef8b8e3d9dafb2c9a941c.bin",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/anon/a2adf558e4aef8b8e3d9dafb2c9a941c.bin",
+          "sha256": "5c9a3f3589e64c6a0f65ae07ca511796c48d97f973375eab3c6e0d78bb610b8a",
+          "records": [
+            "formulas/force-tables.json#/provenance/source"
+          ],
+          "bytes": 26895
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/config/buff_template_holder.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/config/buff_template_holder.ab",
+          "sha256": "f486df86406db62b2773039b87d05a405fb95a31ddc82568c6a6efef14e47f01",
+          "records": [
+            "formulas/mint-config.json#/provenance/templates"
+          ],
+          "bytes": 2197532
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_388_mint.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_388_mint.ab",
+          "sha256": "0b5b45619a87b3c21ca4113e61acf4e6db175b5e9db8d14f0564e87e33125ae3",
+          "records": [
+            "formulas/mint-config.json#/provenance/prefabDecoder/sources/1"
+          ],
+          "bytes": 22662
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "sha256": "0d0b4c0f9252c14a69a20d4bea09527403dd3eddfc2f7bcd757c3c30cf37ffc3",
+          "records": [
+            "formulas/mint-config.json#/provenance/prefabDecoder/sources/2",
+            "push/prefabs.json#/provenance/sources/1"
+          ],
+          "bytes": 1367500
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_277_sqrrel.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_277_sqrrel.ab",
+          "sha256": "0ea640bba0f483bddf7a66e24b4bafbfe80741f9a936c8b3df5fb80a545aed6a",
+          "records": [
+            "push/prefabs.json#/provenance/sources/2"
+          ],
+          "bytes": 20810
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]projectiles.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]projectiles.ab",
+          "sha256": "cc3f21b73b10fbc619a1ff8b099f31e678c883ddacb7bb6775fea960ffecb0e1",
+          "records": [
+            "push/projectiles.json#/provenance/sources/1"
+          ],
+          "bytes": 1905483
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "sha256": "8edcb8017c977cdf52c2593b58e21db96949f3ad1e6f904180ac1241f145ca79",
+          "records": [
+            "push/templates.json#/provenance/source"
+          ],
+          "bytes": 2151020
+        }
+      ]
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

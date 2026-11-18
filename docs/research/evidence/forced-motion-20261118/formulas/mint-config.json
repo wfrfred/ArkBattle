@@ -1,0 +1,514 @@
+{
+  "provenance": {
+    "caseScript": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/forced-motion-20261118/formulas/extract_mint_config.py",
+      "bytes": 5721,
+      "sha256": "045fd0c92b6ac566f8d068578ffb1bfa59969f284c35dfcb4f0776200434e550"
+    },
+    "prefabDecoder": {
+      "collectedOn": "2026-11-18",
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/attack-way-20261118/extract_prefabs.py",
+        "bytes": 4657,
+        "sha256": "d6cab91818e9966fd0f1b3ca3f97cdc0ddc512dcad95b592f16710ab5cbe9462"
+      },
+      "helper": {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/targeting-pipeline-20261109/content/extract_content.py",
+        "bytes": 12906,
+        "sha256": "37504c156e11e55c9c06174980fb1617281690ab3b01db9caa9dfd28937f5faa"
+      },
+      "sources": [
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "bytes": 477255,
+          "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_388_mint.ab",
+          "bytes": 22662,
+          "sha256": "0b5b45619a87b3c21ca4113e61acf4e6db175b5e9db8d14f0564e87e33125ae3"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "bytes": 1367500,
+          "sha256": "0d0b4c0f9252c14a69a20d4bea09527403dd3eddfc2f7bcd757c3c30cf37ffc3"
+        }
+      ],
+      "selection": {
+        "charpack/char_388_mint.ab": [
+          "char_388_mint"
+        ],
+        "battle/prefabs/[uc]skills.ab": [
+          "skchr_mint_2"
+        ]
+      },
+      "scope": "All MonoBehaviour components under selected character/module hierarchy roots; no live execution observation."
+    },
+    "templates": {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/config/buff_template_holder.ab",
+      "bytes": 2197532,
+      "sha256": "f486df86406db62b2773039b87d05a405fb95a31ddc82568c6a6efef14e47f01"
+    },
+    "mirrorTables": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/route-operations-20261107/data/character_table.json",
+        "bytes": 15468242,
+        "sha256": "6a61f54802ee194dbb21968976eb99e2a4050e38928bd24bd2b770479076cea1"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/route-operations-20261107/data/skill_table.json",
+        "bytes": 11766431,
+        "sha256": "492900f6b957233296c9736c86bb4e5f3ab4b4d7f5055a0f973c5acec3d174b1"
+      }
+    ],
+    "mirrorRevision": "63c7cec73c3858d0ae913f85cc89af3cef4d744f"
+  },
+  "result": {
+    "characterSkill": {
+      "skillId": "skchr_mint_2",
+      "overridePrefabKey": null
+    },
+    "skill": [
+      {
+        "prefabId": "skchr_mint_2",
+        "attackForce": 0.0
+      },
+      {
+        "prefabId": "skchr_mint_2",
+        "attackForce": 0.0
+      },
+      {
+        "prefabId": "skchr_mint_2",
+        "attackForce": 0.0
+      },
+      {
+        "prefabId": "skchr_mint_2",
+        "attackForce": 0.0
+      },
+      {
+        "prefabId": "skchr_mint_2",
+        "attackForce": 0.0
+      },
+      {
+        "prefabId": "skchr_mint_2",
+        "attackForce": 0.0
+      },
+      {
+        "prefabId": "skchr_mint_2",
+        "attackForce": 0.0
+      },
+      {
+        "prefabId": "skchr_mint_2",
+        "attackForce": 0.0
+      },
+      {
+        "prefabId": "skchr_mint_2",
+        "attackForce": 0.0
+      },
+      {
+        "prefabId": "skchr_mint_2",
+        "attackForce": 1.0
+      }
+    ],
+    "components": [
+      {
+        "bundle": "charpack/char_388_mint.ab",
+        "file": "CAB-2f178a04f48994efd959fa0bdac5390d",
+        "pathId": "485246306630486299",
+        "hierarchy": [
+          "char_388_mint"
+        ],
+        "objectSha256": "5b7cbcc00e36f4edf96ebeed3f985e1b24c9a362a100cb3008b98788c831e3f0",
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": -1297314214590689040
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "-1297314214590689040",
+          "name": "Character",
+          "cl": "Character",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "value": {
+          "_modes": {
+            "Array": [
+              {
+                "m_FileID": 0,
+                "m_PathID": -4787485657355663077
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": 8278193991228115227
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": 7052670541923469595
+              }
+            ]
+          }
+        }
+      },
+      {
+        "bundle": "battle/prefabs/[uc]skills.ab",
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "pathId": "5049859550413674908",
+        "hierarchy": [
+          "skchr_mint_2"
+        ],
+        "objectSha256": "fc2c4e366def8d6719bab70c6eaf9782322587b26b6c38e5842735803fe2d549",
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": 6851783972288338031
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "6851783972288338031",
+          "name": "CastSkill",
+          "cl": "CastSkill",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "value": {
+          "_attackBlackboardModeIndex": 2
+        }
+      },
+      {
+        "bundle": "battle/prefabs/[uc]skills.ab",
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "pathId": "6042205285299607964",
+        "hierarchy": [
+          "skchr_mint_2"
+        ],
+        "objectSha256": "a871885c66aab809b73968b5d817aaa8231e5fa710d0f3b2c77fc3054e3101ec",
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": -4234909118878081699
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "-4234909118878081699",
+          "name": "ActiveBuffAbility",
+          "cl": "ActiveBuffAbility",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "value": {
+          "_buffs": {
+            "Array": [
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "mint_s_2",
+                "loadFromDB": 0,
+                "isDurableBuff": 0,
+                "isDamageMissable": 0,
+                "isSilenceable": 0,
+                "isStunnable": 0,
+                "isFreezable": 0,
+                "isLevitatable": 0,
+                "isGroundBoundable": 0,
+                "statusResistable": 2,
+                "templateKey": "mint_s_2",
+                "disableOverride": 1,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": 0,
+                "clearAllStackCntWhenTimeUp": 0,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": 0,
+                "overrideEffectKey": "mint_skill_02_buff",
+                "overrideOnEventPriority": 0,
+                "onEventPriority": 0,
+                "audioSignal": "skchr_mint_2",
+                "lifeTimeType": 1,
+                "takeSnapshotWhenExtend": 0,
+                "durationKey": "",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": 0,
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": 1,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": 0,
+                "blackboard": {
+                  "Array": [
+                    {
+                      "key": "mode",
+                      "value": 2.0,
+                      "valueStr": ""
+                    }
+                  ]
+                },
+                "enableInitDirectionFromSource": 0
+              },
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "mint_s_s[effect]",
+                "loadFromDB": 0,
+                "isDurableBuff": 0,
+                "isDamageMissable": 0,
+                "isSilenceable": 0,
+                "isStunnable": 0,
+                "isFreezable": 0,
+                "isLevitatable": 0,
+                "isGroundBoundable": 0,
+                "statusResistable": 2,
+                "templateKey": "empty",
+                "disableOverride": 0,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": 0,
+                "clearAllStackCntWhenTimeUp": 0,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": 0,
+                "overrideEffectKey": "mint_skill_02_range",
+                "overrideOnEventPriority": 0,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": 1,
+                "takeSnapshotWhenExtend": 0,
+                "durationKey": "",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": 0,
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": 1,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": 0,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": 0
+              }
+            ]
+          }
+        }
+      },
+      {
+        "bundle": "charpack/char_388_mint.ab",
+        "file": "CAB-2f178a04f48994efd959fa0bdac5390d",
+        "pathId": "7052670541923469595",
+        "hierarchy": [
+          "char_388_mint",
+          "Modes",
+          "S2"
+        ],
+        "objectSha256": "63d448a7c57ab20f34a780a01307c4c1645e776e12a5c7bf6f8eface056e6391",
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": 5390319429299248724
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "5390319429299248724",
+          "name": "UnitMode",
+          "cl": "UnitMode",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "value": {
+          "_attack": {
+            "m_FileID": 0,
+            "m_PathID": -3993532002032039653
+          }
+        }
+      },
+      {
+        "bundle": "charpack/char_388_mint.ab",
+        "file": "CAB-2f178a04f48994efd959fa0bdac5390d",
+        "pathId": "-3993532002032039653",
+        "hierarchy": [
+          "char_388_mint",
+          "Modes",
+          "S2",
+          "Attack"
+        ],
+        "objectSha256": "71cb429e5093be6702cca3b406dfd4ca38a41056883df51cdb0d38695a6f3d94",
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": 4381884627089348317
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "4381884627089348317",
+          "name": "MeleeAttack",
+          "cl": "MeleeAttack",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "value": {
+          "_activeBuffs": {
+            "Array": [
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "mint_s_2[pull]",
+                "loadFromDB": 0,
+                "isDurableBuff": 0,
+                "isDamageMissable": 0,
+                "isSilenceable": 0,
+                "isStunnable": 0,
+                "isFreezable": 0,
+                "isLevitatable": 0,
+                "isGroundBoundable": 0,
+                "statusResistable": 2,
+                "templateKey": "mint_s_2[pull]",
+                "disableOverride": 0,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": 0,
+                "clearAllStackCntWhenTimeUp": 0,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": 0,
+                "overrideEffectKey": "",
+                "overrideOnEventPriority": 0,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": 0,
+                "takeSnapshotWhenExtend": 0,
+                "durationKey": "",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": 0,
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": 1,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": 0,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": 0
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "templates": {
+      "mint_s_2": {
+        "holder": "buff_template_holder",
+        "file": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+        "pathId": "6070581171229484677",
+        "offset": 286540,
+        "size": 2116,
+        "recordSha256": "b3d20dda2734431fd9bfd67e24e6232ddd2b64f5add219d09458c2c4a5cae7bc",
+        "effect": "",
+        "priority": 0,
+        "events": [
+          {
+            "event": 0,
+            "actions": [
+              {
+                "_modeIndex": 0,
+                "_loadModeFromBlackboard": true,
+                "_restoreDefault": false,
+                "_restartFSM": true,
+                "_targetType": "TARGET",
+                "$type": "Torappu.Battle.Action.Nodes+SwitchMode"
+              }
+            ],
+            "referenceCount": 0
+          }
+        ]
+      },
+      "mint_s_2[pull]": {
+        "holder": "buff_template_holder",
+        "file": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+        "pathId": "6070581171229484677",
+        "offset": 288656,
+        "size": 140,
+        "recordSha256": "13e8166e2b8bb9aa10434703d78a6329a7dbc91e42ae24a610541fe5b8ae86e1",
+        "effect": "",
+        "priority": 0,
+        "events": [
+          {
+            "event": 0,
+            "actions": [
+              {
+                "_source": "SOURCE",
+                "_target": "TARGET",
+                "$type": "Torappu.Battle.Action.Nodes+DragTowardSource"
+              }
+            ],
+            "referenceCount": 0
+          }
+        ]
+      }
+    }
+  }
+}

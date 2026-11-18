@@ -1,0 +1,76 @@
+{
+  "provenance": {
+    "source": {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/anon/a2adf558e4aef8b8e3d9dafb2c9a941c.bin",
+      "bytes": 26895,
+      "sha256": "5c9a3f3589e64c6a0f65ae07ca511796c48d97f973375eab3c6e0d78bb610b8a"
+    },
+    "tool": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/forced-motion-20261118/formulas/decode_game_consts.py",
+      "bytes": 2973,
+      "sha256": "fdcced4a11c178a76901c1a962c90c2c6f1a9a08d9ccd2e62e81c83fa0e9e96e"
+    },
+    "unityVersion": "5.x.x"
+  },
+  "result": {
+    "file": "CAB-c72300404a9eb1f1f4a60cef09d18fe1",
+    "pathId": "-6968129341170069194",
+    "sha256": "9f9f6d36416b7a6f93b2d154a71a43aa662beda59436982dd7d00b7c2122e8e0",
+    "flatbuffer": 156,
+    "root": 424,
+    "vtable": 166,
+    "fields": {
+      "pushForces": {
+        "slot": 72,
+        "offset": 42228,
+        "bytes": "07000000000000000000c842000048430000c8430000e1430080044400001144",
+        "value": [
+          0.0,
+          100.0,
+          200.0,
+          400.0,
+          450.0,
+          530.0,
+          580.0
+        ]
+      },
+      "pushForceZeroIndex": {
+        "slot": 73,
+        "offset": 512,
+        "bytes": "03000000",
+        "value": 3
+      },
+      "normalGachaUnlockPrice": {
+        "slot": 74,
+        "offset": 43400,
+        "bytes": "04000000ffffffffffffffff0800000012000000",
+        "value": [
+          -1,
+          -1,
+          8,
+          18
+        ]
+      },
+      "pullForces": {
+        "slot": 75,
+        "offset": 42260,
+        "bytes": "0700000000000000000000400000204100002042000028420000304200003842",
+        "value": [
+          0.0,
+          2.0,
+          10.0,
+          40.0,
+          42.0,
+          44.0,
+          46.0
+        ]
+      },
+      "pullForceZeroIndex": {
+        "slot": 76,
+        "offset": 516,
+        "bytes": "03000000",
+        "value": 3
+      }
+    }
+  }
+}

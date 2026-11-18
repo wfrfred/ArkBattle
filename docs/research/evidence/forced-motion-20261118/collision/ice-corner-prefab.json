@@ -1,0 +1,249 @@
+{
+  "provenance": {
+    "scope": "Installed prefab and externally resolved MonoScript.",
+    "sources": [
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]tiles.ab",
+        "bytes": 55553,
+        "sha256": "35dc9bf5673f176433a7f6e965b930c767c6c297925aa3315559bb11e730e4db"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+        "bytes": 477255,
+        "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99"
+      }
+    ],
+    "tools": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/forced-motion-20261118/collision/extract_ice_prefab.py",
+        "bytes": 3182,
+        "sha256": "1cc0854edb94771674c6f8bbf4e1f9078d4b6bb40b8a7d263ad511df9e2e539e"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/attack-addon-order-20261102/content/decode_content.py",
+        "bytes": 8161,
+        "sha256": "d17abeee072576a29ca060884dcc0dd770fe0f8194ca7eed7b5c13b99b41e14e"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/nymph-action-settlement-20261103/projectile/decode_projectile.py",
+        "bytes": 6749,
+        "sha256": "dab13196fb726d06bd9094c29f09a12dc3677b2c129359a1f7c305e13a8157fb"
+      }
+    ]
+  },
+  "result": {
+    "prefab": {
+      "file": "CAB-a3035ec54e4c62f1271965a646b6fe4e",
+      "gameObject": {
+        "pathId": "-5167338031130463484",
+        "type": 1,
+        "classId": 1,
+        "rawHex": "02000000000000000433bbbfb507ffaa00000000043326db83674165080000000e00000074696c655f6963657475725f6c740000000001",
+        "sha256": "8ffa52653b18e38cd6dfed90fee73b0ed46d95a8cd8fec714c173fdb2e42a155",
+        "values": {
+          "m_Component": {
+            "Array": [
+              {
+                "component": {
+                  "m_FileID": 0,
+                  "m_PathID": -6125168491013393660
+                }
+              },
+              {
+                "component": {
+                  "m_FileID": 0,
+                  "m_PathID": 7296226687332004612
+                }
+              }
+            ]
+          },
+          "m_Layer": {
+            "type": "common:934",
+            "hex": "08000000"
+          },
+          "common:427": "tile_icetur_lt",
+          "m_Tag": {
+            "type": "common:907",
+            "hex": "0000"
+          },
+          "m_IsActive": {
+            "type": "common:76",
+            "hex": "01"
+          }
+        }
+      },
+      "component": {
+        "pathId": "7296226687332004612",
+        "type": 23,
+        "classId": 114,
+        "rawHex": "0000000004331a3c70ed49b801000000010000008a1db5ee999be9d2000000000e00000074696c655f6963657475725f6c740000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003000000030000000000000000000000000000000000000001000000030000000100000001000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001000000010000000000000000000000000000000000000000000000000000001100000074696c655f6963657475725b636f6c645d0000000000000000000000000000000000000000000000000000000000000000000000020000001100000074696c655f6963657374725b636f6c645d000000000000000000000000000000010000000000000000000000ffffffff000000000000000000000000000000000000000002000000000000000000000000000000000000000200000000000000713da24000000000000080bfffffffff00000000000000000200000006000000667265657a6500000000a0400000000004000000636f6c640000a040000000000000000001000000000000000433fa1c2775ed6f",
+        "sha256": "41a6d192490fce7c4cc5d53a38f4b59b9b5c28fb001b6c5dfab79dad7039ca0e",
+        "values": {
+          "common:374": {
+            "m_FileID": 0,
+            "m_PathID": -5167338031130463484
+          },
+          "common:349": true,
+          "common:490": {
+            "m_FileID": 1,
+            "m_PathID": -3248894570733953654
+          },
+          "common:427": "",
+          "_tileKey": "tile_icetur_lt",
+          "_height": 0.0,
+          "_locateHeightOffset": 0.0,
+          "_forceBoxCollider": false,
+          "_graphic": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_allGraphicList": {
+            "Array": []
+          },
+          "_effect": "",
+          "_setHoldEffectToEffectHolder": false,
+          "_data": {
+            "tileKey": "",
+            "heightType": 0,
+            "buildableType": 3,
+            "passableMask": 3,
+            "playerSideMask": false,
+            "blackboard": {
+              "Array": []
+            },
+            "effects": {
+              "Array": []
+            }
+          },
+          "_mapLayer": 0,
+          "_injectEnvDmgFlagToBlackboard": true,
+          "_targetOptions": {
+            "targetSide": 3,
+            "targetMotion": 1,
+            "targetCategory": 1,
+            "enableAdvancedOptions": true,
+            "ignoreTargetFree": false,
+            "ignoreAllyTargetFree": false,
+            "ignoreHealFree": false,
+            "ignoreMotionMode": false,
+            "ignoreTargetSide": false,
+            "excludeSomeAbnormalFlags": false,
+            "containSomeAbnormalFlags": false,
+            "excludeAbnormalFlag": 0,
+            "containAbnormalFlag": 0,
+            "purposeMask": 0,
+            "professionMask": 0,
+            "checkUnitType": false,
+            "unitTypeMask": 0,
+            "onlyIgnoreSomeOfTargetFreeCase": false,
+            "abnormalFlag": 0,
+            "abnormalCombo": 0
+          },
+          "_sourceSide": 1,
+          "_buffs": {
+            "Array": [
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "tile_icetur[cold]",
+                "loadFromDB": false,
+                "isDurableBuff": false,
+                "isDamageMissable": false,
+                "isSilenceable": false,
+                "isStunnable": false,
+                "isFreezable": false,
+                "isLevitatable": false,
+                "isGroundBoundable": false,
+                "statusResistable": true,
+                "templateKey": "tile_icestr[cold]",
+                "disableOverride": false,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": false,
+                "clearAllStackCntWhenTimeUp": false,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": false,
+                "overrideEffectKey": "",
+                "overrideOnEventPriority": false,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": true,
+                "takeSnapshotWhenExtend": false,
+                "durationKey": "",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": true,
+                "triggerCnt": 0,
+                "triggerInterval": 5.070000171661377,
+                "waitFirstTriggerInterval": false,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": false,
+                "blackboard": {
+                  "Array": [
+                    {
+                      "key": "freeze",
+                      "value": 5.0,
+                      "valueStr": ""
+                    },
+                    {
+                      "key": "cold",
+                      "value": 5.0,
+                      "valueStr": ""
+                    }
+                  ]
+                },
+                "enableInitDirectionFromSource": false
+              }
+            ]
+          },
+          "_clearBuffsWhenLeft": true,
+          "_orbitCenter": {
+            "m_FileID": 0,
+            "m_PathID": 8065231318540759812
+          }
+        }
+      }
+    },
+    "scriptBinding": {
+      "externalReference": {
+        "fileId": 1,
+        "guid": "00000000000000000000000000000000",
+        "type": 0,
+        "path": "archive:/CAB-658d74aab777086fc32b93f385be999a/CAB-658d74aab777086fc32b93f385be999a"
+      },
+      "file": "CAB-658d74aab777086fc32b93f385be999a",
+      "value": {
+        "id": "-3248894570733953654",
+        "name": "IceCornerTile",
+        "cl": "IceCornerTile",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "rawHex": "0d000000496365436f726e657254696c6500000000000000c2534e5dc172bcb4db6708fee716938d0d000000496365436f726e657254696c650000000e000000546f72617070752e426174746c65000013000000417373656d626c792d4353686172702e646c6c00",
+      "sha256": "b13a96d06f463f27dbf74f5301063f24e8eba9aafdc2c07c76842ec1dd7da40d"
+    }
+  }
+}

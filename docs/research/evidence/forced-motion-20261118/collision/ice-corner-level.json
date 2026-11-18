@@ -1,0 +1,34 @@
+{
+  "provenance": {
+    "scope": "Fixed mirror projection of real BI-TR-2 tile placement. Not an observed combat or proof of actual runtime updates.",
+    "source": {
+      "url": "https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/63c7cec73c3858d0ae913f85cc89af3cef4d744f/zh_CN/gamedata/levels/activities/act14side/level_act14side_tr02.json",
+      "revision": "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+      "sha256": "1a49d1c55312c14345707aef457fd4372a9e8ea704d5f787a2600def29c73014",
+      "gitBlobSha1": "f9cf39c9e442700495071c48f317e7faeee3b8e3",
+      "bytes": 60703
+    },
+    "communityReference": "https://prts.wiki/w/BI-TR-2"
+  },
+  "result": [
+    {
+      "pointer": "/mapData/tiles/35",
+      "tile": {
+        "tileKey": "tile_icetur_lt",
+        "heightType": "LOWLAND",
+        "buildableType": "NONE",
+        "passableMask": "ALL",
+        "playerSideMask": "ALL",
+        "blackboard": null,
+        "effects": null
+      },
+      "coordinates": [
+        {
+          "row": 3,
+          "col": 5,
+          "pointer": "/mapData/map/4/5"
+        }
+      ]
+    }
+  ]
+}

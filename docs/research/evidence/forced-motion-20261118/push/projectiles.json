@@ -1,0 +1,1646 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-18",
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/attack-way-20261118/extract_aak_fuze_prefabs.py",
+      "bytes": 4757,
+      "sha256": "7daff49c07f3bd7045a38f611c343f909caef453830774e70203de3e3f308f0b"
+    },
+    "helper": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/targeting-pipeline-20261109/content/extract_content.py",
+      "bytes": 12906,
+      "sha256": "37504c156e11e55c9c06174980fb1617281690ab3b01db9caa9dfd28937f5faa"
+    },
+    "sources": [
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+        "bytes": 477255,
+        "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]projectiles.ab",
+        "bytes": 1905483,
+        "sha256": "cc3f21b73b10fbc619a1ff8b099f31e678c883ddacb7bb6775fea960ffecb0e1"
+      }
+    ],
+    "selection": {
+      "battle/prefabs/[uc]projectiles.ab": [
+        "projectile_sqrrel_s1",
+        "projectile_sqrrel_s2"
+      ]
+    },
+    "scope": "All MonoBehaviour components under selected character/module hierarchy roots; no live execution observation."
+  },
+  "result": [
+    {
+      "bundle": "battle/prefabs/[uc]projectiles.ab",
+      "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+      "pathId": "-9090231817309548036",
+      "hierarchy": [
+        "projectile_sqrrel_s1"
+      ],
+      "objectSha256": "2cfa82ac1872b7308fcd260d394b131503efe4df4393059062cfad1ea3c8cc7c",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 6834194400804168919
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "6834194400804168919",
+        "name": "EffectBehaviour",
+        "cl": "EffectBehaviour",
+        "ns": "Torappu.Battle.Projectiles",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_effectsWhenStart": {
+          "Array": []
+        },
+        "_effectsWhenReached": {
+          "Array": []
+        },
+        "_effectsWhenHit": {
+          "Array": [
+            "sqrrel_skill_01_hit"
+          ]
+        },
+        "_effectsToTargetWhenStart": {
+          "Array": []
+        },
+        "_effectsToTileWhenStart": {
+          "Array": []
+        },
+        "_effectsWhenStop": {
+          "Array": []
+        },
+        "_effectOnTrigger": {
+          "Array": []
+        },
+        "_replaceHitEffectAfterFirstHit": 0,
+        "_repalceEffectsWhenHit": {
+          "Array": []
+        },
+        "_onlyPlayHitEffectOnTraceTarget": 0,
+        "_onlyPlayHitEffectOnNotTraceTarget": 0,
+        "_onlyPlayHitEffectOnce": 0,
+        "_clearHitEffectOnStop": 0,
+        "_clearPlayEffectOnStop": 0,
+        "_clearEffectsOnTileOnStop": 0,
+        "_clearReachedEffectWhenStop": 0,
+        "_alwaysPlayStartEffects": 0,
+        "_playStartEffectOnlyOnProjectile": 0,
+        "_useSourceFaceVector": 0,
+        "_useSourceFaceVectorOnHit": 0,
+        "_useSourceFaceVectorOnStart": 0,
+        "_forceReachTargetGround": 0,
+        "_followTargetGround": 0,
+        "_replaceMainEffectWhenReach": 0,
+        "_mainEffectToReplace": "",
+        "_useTraceTargetWhenReach": 0,
+        "_setReachEffectOnProjectile": 0,
+        "_syncEffectScaleViaProjectile": 0
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]projectiles.ab",
+      "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+      "pathId": "-8368983074934225929",
+      "hierarchy": [
+        "projectile_sqrrel_s1_logic"
+      ],
+      "objectSha256": "3a9a72e1a17d2a6a1072eeca6b84576e55587a3eebe74dc512e02ff10d89e5ad",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -3494225671239136090
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-3494225671239136090",
+        "name": "HitBehaviour",
+        "cl": "HitBehaviour",
+        "ns": "Torappu.Battle.Projectiles",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_targetOptions": {
+          "targetSide": 2,
+          "targetMotion": 3,
+          "targetCategory": 1,
+          "enableAdvancedOptions": 1,
+          "ignoreTargetFree": 0,
+          "ignoreAllyTargetFree": 0,
+          "ignoreHealFree": 0,
+          "ignoreMotionMode": 0,
+          "ignoreTargetSide": 0,
+          "excludeSomeAbnormalFlags": 0,
+          "containSomeAbnormalFlags": 0,
+          "excludeAbnormalFlag": 0,
+          "containAbnormalFlag": 0,
+          "purposeMask": 0,
+          "professionMask": 0,
+          "checkUnitType": 0,
+          "unitTypeMask": 0,
+          "onlyIgnoreSomeOfTargetFreeCase": 0,
+          "abnormalFlag": 0,
+          "abnormalCombo": 0
+        },
+        "_goThroughWall": 1,
+        "_onlyCheckHitWhenReachTarget": 1,
+        "_onlyCheckHitWhenStop": 0,
+        "_canFlyThroughTheDeathArea": 0,
+        "_exceptTraceTarget": 1,
+        "_overridePurposeMaskWithTargetOptions": 0,
+        "_rangeToLoad": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_onlyTraceTarget": 0,
+        "_ignoreCamouflage": 1,
+        "_ignoreRangeScale": 0,
+        "_exceptSource": 0,
+        "_mergeTraceTargetMotion": 0,
+        "_markReachedOnlyWhenTargetEnter": 0,
+        "_exceptFlyCharacter": 0,
+        "_dontCheckTargetLeft": 0,
+        "_checkHitRange": 0,
+        "_hitRangePurposeMask": 0
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]projectiles.ab",
+      "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+      "pathId": "-7949946972863762203",
+      "hierarchy": [
+        "projectile_sqrrel_s2_logic"
+      ],
+      "objectSha256": "4f681bf48556e90787c457a0df3cda2d48aee1b03550909e9ae2c53a2829d9f1",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -8797129986015012478
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-8797129986015012478",
+        "name": "SimpleProjectile",
+        "cl": "SimpleProjectile",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_randomDelayToBorn": 0.0,
+        "_randomDelayToBornKey": "",
+        "_bodyTransform": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_keepAlreadyHitTime": -1.0,
+        "_mainEffect": "",
+        "_clearMainEffectWhenReached": 0,
+        "_actionController": {
+          "_detachBuffsWhenTargetLeave": 0,
+          "_detachAllBuffsWhenStopped": 0,
+          "_onlyAddBuffsToTraceTarget": 0,
+          "_onlyAddBuffsToTargetOnce": 0,
+          "_dontAddBuffs": 0,
+          "_excludeAttachments": 0,
+          "_useSelfBlackboard": 0,
+          "_extraBuffsInTheEnd": {
+            "Array": []
+          },
+          "_useExtraBuffsWhenStopHit": 0,
+          "_addExtraBuffsWhenReached": 0,
+          "_detachAllExtraBuffsWhenStopped": 0
+        },
+        "_fixDealHitTargetLeft": 0,
+        "_stopGraphicProjectileWhenClearMainEffect": 0,
+        "_overrideAudioSignal": "",
+        "_fireProjectileReachedEvent": 0,
+        "_eliminatableStatus": 0,
+        "_movementAdjustableStatus": 0,
+        "_managedBySource": 0,
+        "_projectileType": 0,
+        "_containsChildrenBehaviours": 0,
+        "_canHitSameTargetMultipleTimes": 0,
+        "_lifeTimeType": 1,
+        "_lifeTime": 10.0,
+        "_getLifeTimeFromBB": 0,
+        "_hitNumType": 2,
+        "_maxHitNum": 1,
+        "_getMaxHitNumFromBB": 0,
+        "_maxHitNumBBKey": "",
+        "_stopAfterMaxHit": 1,
+        "_stopAfterFirstHit": 0,
+        "_stopWhenSourceInvalid": 0,
+        "_alwaysHitTraceTargetInTheEnd": 1,
+        "_alwaysHitTraceTargetWhenReached": 0,
+        "_alwaysReachInTheEnd": 0,
+        "_limitedMaxHitNumToSourceBlockedCnt": 0,
+        "_allowZeroBlockCntLimit": 0
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]projectiles.ab",
+      "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+      "pathId": "-7596352531519322311",
+      "hierarchy": [
+        "projectile_sqrrel_s2"
+      ],
+      "objectSha256": "9cc7473837a4ef302e82589f20b2d6303a8048d6e601fe6ba8fd004876c1c870",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 6834194400804168919
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "6834194400804168919",
+        "name": "EffectBehaviour",
+        "cl": "EffectBehaviour",
+        "ns": "Torappu.Battle.Projectiles",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_effectsWhenStart": {
+          "Array": []
+        },
+        "_effectsWhenReached": {
+          "Array": []
+        },
+        "_effectsWhenHit": {
+          "Array": [
+            "sqrrel_skill_01_hit"
+          ]
+        },
+        "_effectsToTargetWhenStart": {
+          "Array": []
+        },
+        "_effectsToTileWhenStart": {
+          "Array": []
+        },
+        "_effectsWhenStop": {
+          "Array": []
+        },
+        "_effectOnTrigger": {
+          "Array": []
+        },
+        "_replaceHitEffectAfterFirstHit": 0,
+        "_repalceEffectsWhenHit": {
+          "Array": []
+        },
+        "_onlyPlayHitEffectOnTraceTarget": 0,
+        "_onlyPlayHitEffectOnNotTraceTarget": 0,
+        "_onlyPlayHitEffectOnce": 0,
+        "_clearHitEffectOnStop": 0,
+        "_clearPlayEffectOnStop": 0,
+        "_clearEffectsOnTileOnStop": 0,
+        "_clearReachedEffectWhenStop": 0,
+        "_alwaysPlayStartEffects": 0,
+        "_playStartEffectOnlyOnProjectile": 0,
+        "_useSourceFaceVector": 0,
+        "_useSourceFaceVectorOnHit": 0,
+        "_useSourceFaceVectorOnStart": 0,
+        "_forceReachTargetGround": 0,
+        "_followTargetGround": 0,
+        "_replaceMainEffectWhenReach": 0,
+        "_mainEffectToReplace": "",
+        "_useTraceTargetWhenReach": 0,
+        "_setReachEffectOnProjectile": 0,
+        "_syncEffectScaleViaProjectile": 0
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]projectiles.ab",
+      "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+      "pathId": "-7205195863681494532",
+      "hierarchy": [
+        "projectile_sqrrel_s1"
+      ],
+      "objectSha256": "bb4f5c2ca6700c5155e022b687ec6e92f16cfc450303ac246b5589c587f09d7c",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -8797129986015012478
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-8797129986015012478",
+        "name": "SimpleProjectile",
+        "cl": "SimpleProjectile",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_randomDelayToBorn": 0.0,
+        "_randomDelayToBornKey": "",
+        "_bodyTransform": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_keepAlreadyHitTime": -1.0,
+        "_mainEffect": "sqrrel_skill_01_trail",
+        "_clearMainEffectWhenReached": 0,
+        "_actionController": {
+          "_detachBuffsWhenTargetLeave": 0,
+          "_detachAllBuffsWhenStopped": 0,
+          "_onlyAddBuffsToTraceTarget": 0,
+          "_onlyAddBuffsToTargetOnce": 0,
+          "_dontAddBuffs": 0,
+          "_excludeAttachments": 0,
+          "_useSelfBlackboard": 0,
+          "_extraBuffsInTheEnd": {
+            "Array": []
+          },
+          "_useExtraBuffsWhenStopHit": 0,
+          "_addExtraBuffsWhenReached": 0,
+          "_detachAllExtraBuffsWhenStopped": 0
+        },
+        "_fixDealHitTargetLeft": 0,
+        "_stopGraphicProjectileWhenClearMainEffect": 0,
+        "_overrideAudioSignal": "",
+        "_fireProjectileReachedEvent": 0,
+        "_eliminatableStatus": 0,
+        "_movementAdjustableStatus": 0,
+        "_managedBySource": 0,
+        "_projectileType": 0,
+        "_containsChildrenBehaviours": 0,
+        "_canHitSameTargetMultipleTimes": 0,
+        "_lifeTimeType": 1,
+        "_lifeTime": 10.0,
+        "_getLifeTimeFromBB": 0,
+        "_hitNumType": 1,
+        "_maxHitNum": 1,
+        "_getMaxHitNumFromBB": 0,
+        "_maxHitNumBBKey": "",
+        "_stopAfterMaxHit": 0,
+        "_stopAfterFirstHit": 0,
+        "_stopWhenSourceInvalid": 0,
+        "_alwaysHitTraceTargetInTheEnd": 1,
+        "_alwaysHitTraceTargetWhenReached": 0,
+        "_alwaysReachInTheEnd": 0,
+        "_limitedMaxHitNumToSourceBlockedCnt": 0,
+        "_allowZeroBlockCntLimit": 0
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]projectiles.ab",
+      "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+      "pathId": "-6586049919282723015",
+      "hierarchy": [
+        "projectile_sqrrel_s2"
+      ],
+      "objectSha256": "ab35f02f13ef76dd2f6a3d409677570eb8873c8bfa747db420fecbad836c8e87",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -8797129986015012478
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-8797129986015012478",
+        "name": "SimpleProjectile",
+        "cl": "SimpleProjectile",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_randomDelayToBorn": 0.0,
+        "_randomDelayToBornKey": "",
+        "_bodyTransform": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_keepAlreadyHitTime": -1.0,
+        "_mainEffect": "sqrrel_skill_02_trail",
+        "_clearMainEffectWhenReached": 0,
+        "_actionController": {
+          "_detachBuffsWhenTargetLeave": 0,
+          "_detachAllBuffsWhenStopped": 0,
+          "_onlyAddBuffsToTraceTarget": 0,
+          "_onlyAddBuffsToTargetOnce": 0,
+          "_dontAddBuffs": 0,
+          "_excludeAttachments": 0,
+          "_useSelfBlackboard": 0,
+          "_extraBuffsInTheEnd": {
+            "Array": []
+          },
+          "_useExtraBuffsWhenStopHit": 0,
+          "_addExtraBuffsWhenReached": 0,
+          "_detachAllExtraBuffsWhenStopped": 0
+        },
+        "_fixDealHitTargetLeft": 0,
+        "_stopGraphicProjectileWhenClearMainEffect": 0,
+        "_overrideAudioSignal": "",
+        "_fireProjectileReachedEvent": 0,
+        "_eliminatableStatus": 0,
+        "_movementAdjustableStatus": 0,
+        "_managedBySource": 0,
+        "_projectileType": 0,
+        "_containsChildrenBehaviours": 0,
+        "_canHitSameTargetMultipleTimes": 0,
+        "_lifeTimeType": 1,
+        "_lifeTime": 10.0,
+        "_getLifeTimeFromBB": 0,
+        "_hitNumType": 2,
+        "_maxHitNum": 1,
+        "_getMaxHitNumFromBB": 0,
+        "_maxHitNumBBKey": "",
+        "_stopAfterMaxHit": 1,
+        "_stopAfterFirstHit": 0,
+        "_stopWhenSourceInvalid": 0,
+        "_alwaysHitTraceTargetInTheEnd": 1,
+        "_alwaysHitTraceTargetWhenReached": 0,
+        "_alwaysReachInTheEnd": 0,
+        "_limitedMaxHitNumToSourceBlockedCnt": 0,
+        "_allowZeroBlockCntLimit": 0
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]projectiles.ab",
+      "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+      "pathId": "-5035320930250944004",
+      "hierarchy": [
+        "projectile_sqrrel_s1"
+      ],
+      "objectSha256": "bf2dd30b7eaa100c213ba563fd01d2cfd8ec35fda836e2eaa26c1520ca1928c8",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -3494225671239136090
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-3494225671239136090",
+        "name": "HitBehaviour",
+        "cl": "HitBehaviour",
+        "ns": "Torappu.Battle.Projectiles",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_targetOptions": {
+          "targetSide": 2,
+          "targetMotion": 3,
+          "targetCategory": 1,
+          "enableAdvancedOptions": 1,
+          "ignoreTargetFree": 0,
+          "ignoreAllyTargetFree": 0,
+          "ignoreHealFree": 0,
+          "ignoreMotionMode": 0,
+          "ignoreTargetSide": 0,
+          "excludeSomeAbnormalFlags": 0,
+          "containSomeAbnormalFlags": 0,
+          "excludeAbnormalFlag": 0,
+          "containAbnormalFlag": 0,
+          "purposeMask": 0,
+          "professionMask": 0,
+          "checkUnitType": 0,
+          "unitTypeMask": 0,
+          "onlyIgnoreSomeOfTargetFreeCase": 0,
+          "abnormalFlag": 0,
+          "abnormalCombo": 0
+        },
+        "_goThroughWall": 1,
+        "_onlyCheckHitWhenReachTarget": 1,
+        "_onlyCheckHitWhenStop": 0,
+        "_canFlyThroughTheDeathArea": 0,
+        "_exceptTraceTarget": 1,
+        "_overridePurposeMaskWithTargetOptions": 0,
+        "_rangeToLoad": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_onlyTraceTarget": 0,
+        "_ignoreCamouflage": 1,
+        "_ignoreRangeScale": 0,
+        "_exceptSource": 0,
+        "_mergeTraceTargetMotion": 0,
+        "_markReachedOnlyWhenTargetEnter": 0,
+        "_exceptFlyCharacter": 0,
+        "_dontCheckTargetLeft": 0,
+        "_checkHitRange": 0,
+        "_hitRangePurposeMask": 0
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]projectiles.ab",
+      "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+      "pathId": "-5016507515358149641",
+      "hierarchy": [
+        "projectile_sqrrel_s1_logic"
+      ],
+      "objectSha256": "28b817a03738746d93d61619679ee189ae6e1c13ec3dfebfa625f408a3c3bd02",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 6834194400804168919
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "6834194400804168919",
+        "name": "EffectBehaviour",
+        "cl": "EffectBehaviour",
+        "ns": "Torappu.Battle.Projectiles",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_effectsWhenStart": {
+          "Array": []
+        },
+        "_effectsWhenReached": {
+          "Array": []
+        },
+        "_effectsWhenHit": {
+          "Array": [
+            "sqrrel_skill_01_hit"
+          ]
+        },
+        "_effectsToTargetWhenStart": {
+          "Array": []
+        },
+        "_effectsToTileWhenStart": {
+          "Array": []
+        },
+        "_effectsWhenStop": {
+          "Array": []
+        },
+        "_effectOnTrigger": {
+          "Array": []
+        },
+        "_replaceHitEffectAfterFirstHit": 0,
+        "_repalceEffectsWhenHit": {
+          "Array": []
+        },
+        "_onlyPlayHitEffectOnTraceTarget": 0,
+        "_onlyPlayHitEffectOnNotTraceTarget": 0,
+        "_onlyPlayHitEffectOnce": 0,
+        "_clearHitEffectOnStop": 0,
+        "_clearPlayEffectOnStop": 0,
+        "_clearEffectsOnTileOnStop": 0,
+        "_clearReachedEffectWhenStop": 0,
+        "_alwaysPlayStartEffects": 0,
+        "_playStartEffectOnlyOnProjectile": 0,
+        "_useSourceFaceVector": 0,
+        "_useSourceFaceVectorOnHit": 0,
+        "_useSourceFaceVectorOnStart": 0,
+        "_forceReachTargetGround": 0,
+        "_followTargetGround": 0,
+        "_replaceMainEffectWhenReach": 0,
+        "_mainEffectToReplace": "",
+        "_useTraceTargetWhenReach": 0,
+        "_setReachEffectOnProjectile": 0,
+        "_syncEffectScaleViaProjectile": 0
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]projectiles.ab",
+      "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+      "pathId": "-3951618106000879117",
+      "hierarchy": [
+        "projectile_sqrrel_s1_graphic"
+      ],
+      "objectSha256": "0e64ddb0eed51495d6b5d5651c5658933bc92a261346f88533d619d46d4391d6",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -1429203677512073985
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-1429203677512073985",
+        "name": "AdvancedMovement",
+        "cl": "AdvancedMovement",
+        "ns": "Torappu.Battle.Projectiles",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_rotateToTarget": 0,
+        "_forceReachedWhenTimeup": 1,
+        "_useSourceDirection": 0,
+        "_useTargetDirection": 0,
+        "_useStartToTarget": 0,
+        "_awayFromSourceAsDirection": 0,
+        "_flyToTargetLocationOnly": 0,
+        "_useSourceDirectionRandomArcAngleStart": 0,
+        "_useSourceToTargetRandomArcAngleStart": 0,
+        "_useSourceDirectionArcAngleWithRatio": 0,
+        "_useSourceToTargetArcAngleWithRatio": 0,
+        "_sourceDirectionArcAngleRatio": 0.0,
+        "_sourceToTargetArcAngle": 0.0,
+        "_adjustSourceToTargetArcAngleBySourceFace": 0,
+        "_flyToPredefinedLocation": 0,
+        "_predefinedLocation": 0,
+        "_freezeRotationZ": 0,
+        "_freezeRotationXY": 0,
+        "_exactMatchCameraForward": 0,
+        "_resetToTargetPosWhenReached": 0,
+        "_resetToTracetargetMapPosV3": 0,
+        "_handleWithIBuildableTarget": 0,
+        "_forceResetToTargetPosWhenReached": 0,
+        "_fixProjectileZWhenReached": 0,
+        "_fixOnProjectileReached": 0,
+        "_onlyReachedInTime": 0.0,
+        "_moveType": 1,
+        "_moveTypeData": {
+          "common:106": {
+            "Array": []
+          }
+        },
+        "_speed": 10.0,
+        "_speedKey": "",
+        "_distance": 0.0,
+        "_comeBack": 0,
+        "_comeBackSpeedScale": 0.25,
+        "_delayToStart": 0.0,
+        "_delayAfterReached": 0.0,
+        "_delayToReachAfterHit": 0.0,
+        "_clearTraceTargetWhenReached": 1,
+        "_updateDelayTimeOnlyOnce": 0,
+        "_skipSmoothLerpDirection": 0,
+        "_addInertia": 0,
+        "_turnSpeed": 0.0,
+        "_useDynamicSpeed": 0,
+        "_deltaSpeedPerSec": 0.0,
+        "_finalSpeed": 0.0,
+        "_randomOffset": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "_forceUseTargetMountPoint": 0,
+        "_rotateToTargetOnDelayToStart": 0,
+        "_drawFuncTurnAndWaveDebugLine": 0,
+        "_fixProjectileHasReached": 0
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]projectiles.ab",
+      "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+      "pathId": "-3015834025154313225",
+      "hierarchy": [
+        "projectile_sqrrel_s1_logic"
+      ],
+      "objectSha256": "e9cdf3f7110b8f18a153a78f4ad5b0a28cbb3a612ff76e83a9b366e1ab899281",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -8797129986015012478
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-8797129986015012478",
+        "name": "SimpleProjectile",
+        "cl": "SimpleProjectile",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_randomDelayToBorn": 0.0,
+        "_randomDelayToBornKey": "",
+        "_bodyTransform": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_keepAlreadyHitTime": -1.0,
+        "_mainEffect": "",
+        "_clearMainEffectWhenReached": 0,
+        "_actionController": {
+          "_detachBuffsWhenTargetLeave": 0,
+          "_detachAllBuffsWhenStopped": 0,
+          "_onlyAddBuffsToTraceTarget": 0,
+          "_onlyAddBuffsToTargetOnce": 0,
+          "_dontAddBuffs": 0,
+          "_excludeAttachments": 0,
+          "_useSelfBlackboard": 0,
+          "_extraBuffsInTheEnd": {
+            "Array": []
+          },
+          "_useExtraBuffsWhenStopHit": 0,
+          "_addExtraBuffsWhenReached": 0,
+          "_detachAllExtraBuffsWhenStopped": 0
+        },
+        "_fixDealHitTargetLeft": 0,
+        "_stopGraphicProjectileWhenClearMainEffect": 0,
+        "_overrideAudioSignal": "",
+        "_fireProjectileReachedEvent": 0,
+        "_eliminatableStatus": 0,
+        "_movementAdjustableStatus": 0,
+        "_managedBySource": 0,
+        "_projectileType": 0,
+        "_containsChildrenBehaviours": 0,
+        "_canHitSameTargetMultipleTimes": 0,
+        "_lifeTimeType": 1,
+        "_lifeTime": 10.0,
+        "_getLifeTimeFromBB": 0,
+        "_hitNumType": 1,
+        "_maxHitNum": 1,
+        "_getMaxHitNumFromBB": 0,
+        "_maxHitNumBBKey": "",
+        "_stopAfterMaxHit": 0,
+        "_stopAfterFirstHit": 0,
+        "_stopWhenSourceInvalid": 0,
+        "_alwaysHitTraceTargetInTheEnd": 1,
+        "_alwaysHitTraceTargetWhenReached": 0,
+        "_alwaysReachInTheEnd": 0,
+        "_limitedMaxHitNumToSourceBlockedCnt": 0,
+        "_allowZeroBlockCntLimit": 0
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]projectiles.ab",
+      "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+      "pathId": "-2389114277116372956",
+      "hierarchy": [
+        "projectile_sqrrel_s2_graphic"
+      ],
+      "objectSha256": "2d05da60c8b9e74197ce81015e7cddf697147338e19c66d15cf92de5c77f55a8",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -1429203677512073985
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-1429203677512073985",
+        "name": "AdvancedMovement",
+        "cl": "AdvancedMovement",
+        "ns": "Torappu.Battle.Projectiles",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_rotateToTarget": 0,
+        "_forceReachedWhenTimeup": 1,
+        "_useSourceDirection": 0,
+        "_useTargetDirection": 0,
+        "_useStartToTarget": 0,
+        "_awayFromSourceAsDirection": 0,
+        "_flyToTargetLocationOnly": 0,
+        "_useSourceDirectionRandomArcAngleStart": 0,
+        "_useSourceToTargetRandomArcAngleStart": 0,
+        "_useSourceDirectionArcAngleWithRatio": 0,
+        "_useSourceToTargetArcAngleWithRatio": 0,
+        "_sourceDirectionArcAngleRatio": 0.0,
+        "_sourceToTargetArcAngle": 0.0,
+        "_adjustSourceToTargetArcAngleBySourceFace": 0,
+        "_flyToPredefinedLocation": 0,
+        "_predefinedLocation": 0,
+        "_freezeRotationZ": 0,
+        "_freezeRotationXY": 0,
+        "_exactMatchCameraForward": 0,
+        "_resetToTargetPosWhenReached": 0,
+        "_resetToTracetargetMapPosV3": 0,
+        "_handleWithIBuildableTarget": 0,
+        "_forceResetToTargetPosWhenReached": 0,
+        "_fixProjectileZWhenReached": 0,
+        "_fixOnProjectileReached": 0,
+        "_onlyReachedInTime": 0.0,
+        "_moveType": 1,
+        "_moveTypeData": {
+          "common:106": {
+            "Array": []
+          }
+        },
+        "_speed": 10.0,
+        "_speedKey": "",
+        "_distance": 0.0,
+        "_comeBack": 0,
+        "_comeBackSpeedScale": 0.25,
+        "_delayToStart": 0.0,
+        "_delayAfterReached": 0.0,
+        "_delayToReachAfterHit": 0.0,
+        "_clearTraceTargetWhenReached": 1,
+        "_updateDelayTimeOnlyOnce": 0,
+        "_skipSmoothLerpDirection": 0,
+        "_addInertia": 0,
+        "_turnSpeed": 0.0,
+        "_useDynamicSpeed": 0,
+        "_deltaSpeedPerSec": 0.0,
+        "_finalSpeed": 0.0,
+        "_randomOffset": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "_forceUseTargetMountPoint": 0,
+        "_rotateToTargetOnDelayToStart": 0,
+        "_drawFuncTurnAndWaveDebugLine": 0,
+        "_fixProjectileHasReached": 0
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]projectiles.ab",
+      "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+      "pathId": "-2363545481162340551",
+      "hierarchy": [
+        "projectile_sqrrel_s2"
+      ],
+      "objectSha256": "751d3d26de4d73f3b6023838e26bf5210bcee3c028ad81116293640159f0e859",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -3494225671239136090
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-3494225671239136090",
+        "name": "HitBehaviour",
+        "cl": "HitBehaviour",
+        "ns": "Torappu.Battle.Projectiles",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_targetOptions": {
+          "targetSide": 2,
+          "targetMotion": 3,
+          "targetCategory": 1,
+          "enableAdvancedOptions": 1,
+          "ignoreTargetFree": 0,
+          "ignoreAllyTargetFree": 0,
+          "ignoreHealFree": 0,
+          "ignoreMotionMode": 0,
+          "ignoreTargetSide": 0,
+          "excludeSomeAbnormalFlags": 0,
+          "containSomeAbnormalFlags": 0,
+          "excludeAbnormalFlag": 0,
+          "containAbnormalFlag": 0,
+          "purposeMask": 0,
+          "professionMask": 0,
+          "checkUnitType": 0,
+          "unitTypeMask": 0,
+          "onlyIgnoreSomeOfTargetFreeCase": 0,
+          "abnormalFlag": 0,
+          "abnormalCombo": 0
+        },
+        "_goThroughWall": 1,
+        "_onlyCheckHitWhenReachTarget": 1,
+        "_onlyCheckHitWhenStop": 0,
+        "_canFlyThroughTheDeathArea": 0,
+        "_exceptTraceTarget": 0,
+        "_overridePurposeMaskWithTargetOptions": 0,
+        "_rangeToLoad": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_onlyTraceTarget": 0,
+        "_ignoreCamouflage": 1,
+        "_ignoreRangeScale": 0,
+        "_exceptSource": 0,
+        "_mergeTraceTargetMotion": 0,
+        "_markReachedOnlyWhenTargetEnter": 0,
+        "_exceptFlyCharacter": 0,
+        "_dontCheckTargetLeft": 0,
+        "_checkHitRange": 0,
+        "_hitRangePurposeMask": 0
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]projectiles.ab",
+      "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+      "pathId": "-1170294437257056027",
+      "hierarchy": [
+        "projectile_sqrrel_s2_logic",
+        "Range"
+      ],
+      "objectSha256": "5437bc5646f3601c1b07b682438861a197ee085aac2634e427412613ebbbb052",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 6185056810787956083
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "6185056810787956083",
+        "name": "CircleRange",
+        "cl": "CircleRange",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_useBlackboardRangeId": 0,
+        "_extendable": 0,
+        "_scaleble": 0
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]projectiles.ab",
+      "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+      "pathId": "-308096611071027164",
+      "hierarchy": [
+        "projectile_sqrrel_s2_graphic"
+      ],
+      "objectSha256": "a805e36c44b5e259a58c4e1d12a1f96ca23692ba3eb482dcf12e497ec1268141",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -8797129986015012478
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-8797129986015012478",
+        "name": "SimpleProjectile",
+        "cl": "SimpleProjectile",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_randomDelayToBorn": 0.0,
+        "_randomDelayToBornKey": "",
+        "_bodyTransform": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_keepAlreadyHitTime": -1.0,
+        "_mainEffect": "sqrrel_skill_02_trail",
+        "_clearMainEffectWhenReached": 0,
+        "_actionController": {
+          "_detachBuffsWhenTargetLeave": 0,
+          "_detachAllBuffsWhenStopped": 0,
+          "_onlyAddBuffsToTraceTarget": 0,
+          "_onlyAddBuffsToTargetOnce": 0,
+          "_dontAddBuffs": 0,
+          "_excludeAttachments": 0,
+          "_useSelfBlackboard": 0,
+          "_extraBuffsInTheEnd": {
+            "Array": []
+          },
+          "_useExtraBuffsWhenStopHit": 0,
+          "_addExtraBuffsWhenReached": 0,
+          "_detachAllExtraBuffsWhenStopped": 0
+        },
+        "_fixDealHitTargetLeft": 0,
+        "_stopGraphicProjectileWhenClearMainEffect": 0,
+        "_overrideAudioSignal": "",
+        "_fireProjectileReachedEvent": 0,
+        "_eliminatableStatus": 0,
+        "_movementAdjustableStatus": 0,
+        "_managedBySource": 0,
+        "_projectileType": 0,
+        "_containsChildrenBehaviours": 0,
+        "_canHitSameTargetMultipleTimes": 0,
+        "_lifeTimeType": 1,
+        "_lifeTime": 10.0,
+        "_getLifeTimeFromBB": 0,
+        "_hitNumType": 2,
+        "_maxHitNum": 1,
+        "_getMaxHitNumFromBB": 0,
+        "_maxHitNumBBKey": "",
+        "_stopAfterMaxHit": 1,
+        "_stopAfterFirstHit": 0,
+        "_stopWhenSourceInvalid": 0,
+        "_alwaysHitTraceTargetInTheEnd": 1,
+        "_alwaysHitTraceTargetWhenReached": 0,
+        "_alwaysReachInTheEnd": 0,
+        "_limitedMaxHitNumToSourceBlockedCnt": 0,
+        "_allowZeroBlockCntLimit": 0
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]projectiles.ab",
+      "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+      "pathId": "1991665122598650871",
+      "hierarchy": [
+        "projectile_sqrrel_s1_logic",
+        "Range"
+      ],
+      "objectSha256": "9276317e2ee271456ba59ebe2ba07e5bbc2243d1e9ab519c1677dba1850d1629",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 6185056810787956083
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "6185056810787956083",
+        "name": "CircleRange",
+        "cl": "CircleRange",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_useBlackboardRangeId": 0,
+        "_extendable": 0,
+        "_scaleble": 0
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]projectiles.ab",
+      "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+      "pathId": "3434461094005150204",
+      "hierarchy": [
+        "projectile_sqrrel_s1"
+      ],
+      "objectSha256": "6cd24ad2266cd7f64e42ebd124ab397ecf86a7ca14be2b38df6fe6b651a24fdd",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -1429203677512073985
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-1429203677512073985",
+        "name": "AdvancedMovement",
+        "cl": "AdvancedMovement",
+        "ns": "Torappu.Battle.Projectiles",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_rotateToTarget": 0,
+        "_forceReachedWhenTimeup": 1,
+        "_useSourceDirection": 0,
+        "_useTargetDirection": 0,
+        "_useStartToTarget": 0,
+        "_awayFromSourceAsDirection": 0,
+        "_flyToTargetLocationOnly": 0,
+        "_useSourceDirectionRandomArcAngleStart": 0,
+        "_useSourceToTargetRandomArcAngleStart": 0,
+        "_useSourceDirectionArcAngleWithRatio": 0,
+        "_useSourceToTargetArcAngleWithRatio": 0,
+        "_sourceDirectionArcAngleRatio": 0.0,
+        "_sourceToTargetArcAngle": 0.0,
+        "_adjustSourceToTargetArcAngleBySourceFace": 0,
+        "_flyToPredefinedLocation": 0,
+        "_predefinedLocation": 0,
+        "_freezeRotationZ": 0,
+        "_freezeRotationXY": 0,
+        "_exactMatchCameraForward": 0,
+        "_resetToTargetPosWhenReached": 0,
+        "_resetToTracetargetMapPosV3": 0,
+        "_handleWithIBuildableTarget": 0,
+        "_forceResetToTargetPosWhenReached": 0,
+        "_fixProjectileZWhenReached": 0,
+        "_fixOnProjectileReached": 0,
+        "_onlyReachedInTime": 0.0,
+        "_moveType": 1,
+        "_moveTypeData": {
+          "common:106": {
+            "Array": []
+          }
+        },
+        "_speed": 10.0,
+        "_speedKey": "",
+        "_distance": 0.0,
+        "_comeBack": 0,
+        "_comeBackSpeedScale": 0.25,
+        "_delayToStart": 0.0,
+        "_delayAfterReached": 0.0,
+        "_delayToReachAfterHit": 0.0,
+        "_clearTraceTargetWhenReached": 1,
+        "_updateDelayTimeOnlyOnce": 0,
+        "_skipSmoothLerpDirection": 0,
+        "_addInertia": 0,
+        "_turnSpeed": 0.0,
+        "_useDynamicSpeed": 0,
+        "_deltaSpeedPerSec": 0.0,
+        "_finalSpeed": 0.0,
+        "_randomOffset": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "_forceUseTargetMountPoint": 0,
+        "_rotateToTargetOnDelayToStart": 0,
+        "_drawFuncTurnAndWaveDebugLine": 0,
+        "_fixProjectileHasReached": 0
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]projectiles.ab",
+      "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+      "pathId": "3655912519459391289",
+      "hierarchy": [
+        "projectile_sqrrel_s2",
+        "Range"
+      ],
+      "objectSha256": "ee5fbafcd145eb9eff3b8f85e63f5b5cf3062e060b0cfd05c25889e02386086f",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 6185056810787956083
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "6185056810787956083",
+        "name": "CircleRange",
+        "cl": "CircleRange",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_useBlackboardRangeId": 0,
+        "_extendable": 0,
+        "_scaleble": 0
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]projectiles.ab",
+      "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+      "pathId": "3848124305000629239",
+      "hierarchy": [
+        "projectile_sqrrel_s1_logic"
+      ],
+      "objectSha256": "51a8ac67c225e4cd9fa3b126406ed82a3391c6fba08bb0b16dc3afe3d0d61b69",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -1429203677512073985
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-1429203677512073985",
+        "name": "AdvancedMovement",
+        "cl": "AdvancedMovement",
+        "ns": "Torappu.Battle.Projectiles",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_rotateToTarget": 0,
+        "_forceReachedWhenTimeup": 1,
+        "_useSourceDirection": 0,
+        "_useTargetDirection": 0,
+        "_useStartToTarget": 0,
+        "_awayFromSourceAsDirection": 0,
+        "_flyToTargetLocationOnly": 0,
+        "_useSourceDirectionRandomArcAngleStart": 0,
+        "_useSourceToTargetRandomArcAngleStart": 0,
+        "_useSourceDirectionArcAngleWithRatio": 0,
+        "_useSourceToTargetArcAngleWithRatio": 0,
+        "_sourceDirectionArcAngleRatio": 0.0,
+        "_sourceToTargetArcAngle": 0.0,
+        "_adjustSourceToTargetArcAngleBySourceFace": 0,
+        "_flyToPredefinedLocation": 0,
+        "_predefinedLocation": 0,
+        "_freezeRotationZ": 0,
+        "_freezeRotationXY": 0,
+        "_exactMatchCameraForward": 0,
+        "_resetToTargetPosWhenReached": 0,
+        "_resetToTracetargetMapPosV3": 0,
+        "_handleWithIBuildableTarget": 0,
+        "_forceResetToTargetPosWhenReached": 0,
+        "_fixProjectileZWhenReached": 0,
+        "_fixOnProjectileReached": 0,
+        "_onlyReachedInTime": 0.0,
+        "_moveType": 1,
+        "_moveTypeData": {
+          "common:106": {
+            "Array": []
+          }
+        },
+        "_speed": 10.0,
+        "_speedKey": "",
+        "_distance": 0.0,
+        "_comeBack": 0,
+        "_comeBackSpeedScale": 0.25,
+        "_delayToStart": 0.0,
+        "_delayAfterReached": 0.0,
+        "_delayToReachAfterHit": 0.0,
+        "_clearTraceTargetWhenReached": 1,
+        "_updateDelayTimeOnlyOnce": 0,
+        "_skipSmoothLerpDirection": 0,
+        "_addInertia": 0,
+        "_turnSpeed": 0.0,
+        "_useDynamicSpeed": 0,
+        "_deltaSpeedPerSec": 0.0,
+        "_finalSpeed": 0.0,
+        "_randomOffset": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "_forceUseTargetMountPoint": 0,
+        "_rotateToTargetOnDelayToStart": 0,
+        "_drawFuncTurnAndWaveDebugLine": 0,
+        "_fixProjectileHasReached": 0
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]projectiles.ab",
+      "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+      "pathId": "4144454723516942137",
+      "hierarchy": [
+        "projectile_sqrrel_s2"
+      ],
+      "objectSha256": "35e456e26ecce8126bc98f0ad15da9509412a08e8be5e4c825f31e0e4d994c7d",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -1429203677512073985
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-1429203677512073985",
+        "name": "AdvancedMovement",
+        "cl": "AdvancedMovement",
+        "ns": "Torappu.Battle.Projectiles",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_rotateToTarget": 0,
+        "_forceReachedWhenTimeup": 1,
+        "_useSourceDirection": 0,
+        "_useTargetDirection": 0,
+        "_useStartToTarget": 0,
+        "_awayFromSourceAsDirection": 0,
+        "_flyToTargetLocationOnly": 0,
+        "_useSourceDirectionRandomArcAngleStart": 0,
+        "_useSourceToTargetRandomArcAngleStart": 0,
+        "_useSourceDirectionArcAngleWithRatio": 0,
+        "_useSourceToTargetArcAngleWithRatio": 0,
+        "_sourceDirectionArcAngleRatio": 0.0,
+        "_sourceToTargetArcAngle": 0.0,
+        "_adjustSourceToTargetArcAngleBySourceFace": 0,
+        "_flyToPredefinedLocation": 0,
+        "_predefinedLocation": 0,
+        "_freezeRotationZ": 0,
+        "_freezeRotationXY": 0,
+        "_exactMatchCameraForward": 0,
+        "_resetToTargetPosWhenReached": 0,
+        "_resetToTracetargetMapPosV3": 0,
+        "_handleWithIBuildableTarget": 0,
+        "_forceResetToTargetPosWhenReached": 0,
+        "_fixProjectileZWhenReached": 0,
+        "_fixOnProjectileReached": 0,
+        "_onlyReachedInTime": 0.0,
+        "_moveType": 1,
+        "_moveTypeData": {
+          "common:106": {
+            "Array": []
+          }
+        },
+        "_speed": 10.0,
+        "_speedKey": "",
+        "_distance": 0.0,
+        "_comeBack": 0,
+        "_comeBackSpeedScale": 0.25,
+        "_delayToStart": 0.0,
+        "_delayAfterReached": 0.0,
+        "_delayToReachAfterHit": 0.0,
+        "_clearTraceTargetWhenReached": 1,
+        "_updateDelayTimeOnlyOnce": 0,
+        "_skipSmoothLerpDirection": 0,
+        "_addInertia": 0,
+        "_turnSpeed": 0.0,
+        "_useDynamicSpeed": 0,
+        "_deltaSpeedPerSec": 0.0,
+        "_finalSpeed": 0.0,
+        "_randomOffset": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "_forceUseTargetMountPoint": 0,
+        "_rotateToTargetOnDelayToStart": 0,
+        "_drawFuncTurnAndWaveDebugLine": 0,
+        "_fixProjectileHasReached": 0
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]projectiles.ab",
+      "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+      "pathId": "4755334797063123173",
+      "hierarchy": [
+        "projectile_sqrrel_s2_logic"
+      ],
+      "objectSha256": "02a772fec2dbe748a408f8ece00971211ba8e72007620b29b0c61c7c34666904",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 6834194400804168919
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "6834194400804168919",
+        "name": "EffectBehaviour",
+        "cl": "EffectBehaviour",
+        "ns": "Torappu.Battle.Projectiles",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_effectsWhenStart": {
+          "Array": []
+        },
+        "_effectsWhenReached": {
+          "Array": []
+        },
+        "_effectsWhenHit": {
+          "Array": [
+            "sqrrel_skill_01_hit"
+          ]
+        },
+        "_effectsToTargetWhenStart": {
+          "Array": []
+        },
+        "_effectsToTileWhenStart": {
+          "Array": []
+        },
+        "_effectsWhenStop": {
+          "Array": []
+        },
+        "_effectOnTrigger": {
+          "Array": []
+        },
+        "_replaceHitEffectAfterFirstHit": 0,
+        "_repalceEffectsWhenHit": {
+          "Array": []
+        },
+        "_onlyPlayHitEffectOnTraceTarget": 0,
+        "_onlyPlayHitEffectOnNotTraceTarget": 0,
+        "_onlyPlayHitEffectOnce": 0,
+        "_clearHitEffectOnStop": 0,
+        "_clearPlayEffectOnStop": 0,
+        "_clearEffectsOnTileOnStop": 0,
+        "_clearReachedEffectWhenStop": 0,
+        "_alwaysPlayStartEffects": 0,
+        "_playStartEffectOnlyOnProjectile": 0,
+        "_useSourceFaceVector": 0,
+        "_useSourceFaceVectorOnHit": 0,
+        "_useSourceFaceVectorOnStart": 0,
+        "_forceReachTargetGround": 0,
+        "_followTargetGround": 0,
+        "_replaceMainEffectWhenReach": 0,
+        "_mainEffectToReplace": "",
+        "_useTraceTargetWhenReach": 0,
+        "_setReachEffectOnProjectile": 0,
+        "_syncEffectScaleViaProjectile": 0
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]projectiles.ab",
+      "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+      "pathId": "5346089814529249788",
+      "hierarchy": [
+        "projectile_sqrrel_s1",
+        "Range"
+      ],
+      "objectSha256": "8141aeac4985c30a2530a41d0668c9b2ce6ebd2d123abbdda4b741af996e8f53",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 6185056810787956083
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "6185056810787956083",
+        "name": "CircleRange",
+        "cl": "CircleRange",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_useBlackboardRangeId": 0,
+        "_extendable": 0,
+        "_scaleble": 0
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]projectiles.ab",
+      "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+      "pathId": "5949297207923298803",
+      "hierarchy": [
+        "projectile_sqrrel_s1_graphic",
+        "Range"
+      ],
+      "objectSha256": "28f47811cb457f88148857019eddbd7304924c6abbb7b1445b0cd2bb16046e74",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 6185056810787956083
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "6185056810787956083",
+        "name": "CircleRange",
+        "cl": "CircleRange",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_useBlackboardRangeId": 0,
+        "_extendable": 0,
+        "_scaleble": 0
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]projectiles.ab",
+      "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+      "pathId": "6449385481764018212",
+      "hierarchy": [
+        "projectile_sqrrel_s2_graphic",
+        "Range"
+      ],
+      "objectSha256": "19fe743f2c373d271d503609290c16e1c6e740028a57a5e7594d2f58c51a2e69",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 6185056810787956083
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "6185056810787956083",
+        "name": "CircleRange",
+        "cl": "CircleRange",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_useBlackboardRangeId": 0,
+        "_extendable": 0,
+        "_scaleble": 0
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]projectiles.ab",
+      "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+      "pathId": "7234577891430093299",
+      "hierarchy": [
+        "projectile_sqrrel_s1_graphic"
+      ],
+      "objectSha256": "8c857fe4c1d3ad08d794b2e3bf5409b9912f9c09d8370a628f9b24953e825031",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -8797129986015012478
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-8797129986015012478",
+        "name": "SimpleProjectile",
+        "cl": "SimpleProjectile",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_randomDelayToBorn": 0.0,
+        "_randomDelayToBornKey": "",
+        "_bodyTransform": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_keepAlreadyHitTime": -1.0,
+        "_mainEffect": "sqrrel_skill_01_trail",
+        "_clearMainEffectWhenReached": 0,
+        "_actionController": {
+          "_detachBuffsWhenTargetLeave": 0,
+          "_detachAllBuffsWhenStopped": 0,
+          "_onlyAddBuffsToTraceTarget": 0,
+          "_onlyAddBuffsToTargetOnce": 0,
+          "_dontAddBuffs": 0,
+          "_excludeAttachments": 0,
+          "_useSelfBlackboard": 0,
+          "_extraBuffsInTheEnd": {
+            "Array": []
+          },
+          "_useExtraBuffsWhenStopHit": 0,
+          "_addExtraBuffsWhenReached": 0,
+          "_detachAllExtraBuffsWhenStopped": 0
+        },
+        "_fixDealHitTargetLeft": 0,
+        "_stopGraphicProjectileWhenClearMainEffect": 0,
+        "_overrideAudioSignal": "",
+        "_fireProjectileReachedEvent": 0,
+        "_eliminatableStatus": 0,
+        "_movementAdjustableStatus": 0,
+        "_managedBySource": 0,
+        "_projectileType": 0,
+        "_containsChildrenBehaviours": 0,
+        "_canHitSameTargetMultipleTimes": 0,
+        "_lifeTimeType": 1,
+        "_lifeTime": 10.0,
+        "_getLifeTimeFromBB": 0,
+        "_hitNumType": 1,
+        "_maxHitNum": 1,
+        "_getMaxHitNumFromBB": 0,
+        "_maxHitNumBBKey": "",
+        "_stopAfterMaxHit": 0,
+        "_stopAfterFirstHit": 0,
+        "_stopWhenSourceInvalid": 0,
+        "_alwaysHitTraceTargetInTheEnd": 1,
+        "_alwaysHitTraceTargetWhenReached": 0,
+        "_alwaysReachInTheEnd": 0,
+        "_limitedMaxHitNumToSourceBlockedCnt": 0,
+        "_allowZeroBlockCntLimit": 0
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]projectiles.ab",
+      "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+      "pathId": "7680040128112193765",
+      "hierarchy": [
+        "projectile_sqrrel_s2_logic"
+      ],
+      "objectSha256": "f7672d96fac53a7ca6e410c01881ea63d212fbbe15db6b72896b89abfe97162c",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -3494225671239136090
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-3494225671239136090",
+        "name": "HitBehaviour",
+        "cl": "HitBehaviour",
+        "ns": "Torappu.Battle.Projectiles",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_targetOptions": {
+          "targetSide": 2,
+          "targetMotion": 3,
+          "targetCategory": 1,
+          "enableAdvancedOptions": 1,
+          "ignoreTargetFree": 0,
+          "ignoreAllyTargetFree": 0,
+          "ignoreHealFree": 0,
+          "ignoreMotionMode": 0,
+          "ignoreTargetSide": 0,
+          "excludeSomeAbnormalFlags": 0,
+          "containSomeAbnormalFlags": 0,
+          "excludeAbnormalFlag": 0,
+          "containAbnormalFlag": 0,
+          "purposeMask": 0,
+          "professionMask": 0,
+          "checkUnitType": 0,
+          "unitTypeMask": 0,
+          "onlyIgnoreSomeOfTargetFreeCase": 0,
+          "abnormalFlag": 0,
+          "abnormalCombo": 0
+        },
+        "_goThroughWall": 1,
+        "_onlyCheckHitWhenReachTarget": 1,
+        "_onlyCheckHitWhenStop": 0,
+        "_canFlyThroughTheDeathArea": 0,
+        "_exceptTraceTarget": 0,
+        "_overridePurposeMaskWithTargetOptions": 0,
+        "_rangeToLoad": {
+          "m_FileID": 0,
+          "m_PathID": 0
+        },
+        "_onlyTraceTarget": 0,
+        "_ignoreCamouflage": 1,
+        "_ignoreRangeScale": 0,
+        "_exceptSource": 0,
+        "_mergeTraceTargetMotion": 0,
+        "_markReachedOnlyWhenTargetEnter": 0,
+        "_exceptFlyCharacter": 0,
+        "_dontCheckTargetLeft": 0,
+        "_checkHitRange": 0,
+        "_hitRangePurposeMask": 0
+      }
+    },
+    {
+      "bundle": "battle/prefabs/[uc]projectiles.ab",
+      "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+      "pathId": "7849323512475971813",
+      "hierarchy": [
+        "projectile_sqrrel_s2_logic"
+      ],
+      "objectSha256": "b8faa44c10c7df8347e4c2e608555651a18cebfe4c5367709a34f45d44240cf3",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -1429203677512073985
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-1429203677512073985",
+        "name": "AdvancedMovement",
+        "cl": "AdvancedMovement",
+        "ns": "Torappu.Battle.Projectiles",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_rotateToTarget": 0,
+        "_forceReachedWhenTimeup": 1,
+        "_useSourceDirection": 0,
+        "_useTargetDirection": 0,
+        "_useStartToTarget": 0,
+        "_awayFromSourceAsDirection": 0,
+        "_flyToTargetLocationOnly": 0,
+        "_useSourceDirectionRandomArcAngleStart": 0,
+        "_useSourceToTargetRandomArcAngleStart": 0,
+        "_useSourceDirectionArcAngleWithRatio": 0,
+        "_useSourceToTargetArcAngleWithRatio": 0,
+        "_sourceDirectionArcAngleRatio": 0.0,
+        "_sourceToTargetArcAngle": 0.0,
+        "_adjustSourceToTargetArcAngleBySourceFace": 0,
+        "_flyToPredefinedLocation": 0,
+        "_predefinedLocation": 0,
+        "_freezeRotationZ": 0,
+        "_freezeRotationXY": 0,
+        "_exactMatchCameraForward": 0,
+        "_resetToTargetPosWhenReached": 0,
+        "_resetToTracetargetMapPosV3": 0,
+        "_handleWithIBuildableTarget": 0,
+        "_forceResetToTargetPosWhenReached": 0,
+        "_fixProjectileZWhenReached": 0,
+        "_fixOnProjectileReached": 0,
+        "_onlyReachedInTime": 0.0,
+        "_moveType": 1,
+        "_moveTypeData": {
+          "common:106": {
+            "Array": []
+          }
+        },
+        "_speed": 10.0,
+        "_speedKey": "",
+        "_distance": 0.0,
+        "_comeBack": 0,
+        "_comeBackSpeedScale": 0.25,
+        "_delayToStart": 0.0,
+        "_delayAfterReached": 0.0,
+        "_delayToReachAfterHit": 0.0,
+        "_clearTraceTargetWhenReached": 1,
+        "_updateDelayTimeOnlyOnce": 0,
+        "_skipSmoothLerpDirection": 0,
+        "_addInertia": 0,
+        "_turnSpeed": 0.0,
+        "_useDynamicSpeed": 0,
+        "_deltaSpeedPerSec": 0.0,
+        "_finalSpeed": 0.0,
+        "_randomOffset": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "_forceUseTargetMountPoint": 0,
+        "_rotateToTargetOnDelayToStart": 0,
+        "_drawFuncTurnAndWaveDebugLine": 0,
+        "_fixProjectileHasReached": 0
+      }
+    }
+  ]
+}

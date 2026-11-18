@@ -1,0 +1,1324 @@
+{
+  "provenance": {
+    "scope": "Static serialized settings and component bytes for selected prefab roots.",
+    "caseScript": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/forced-motion-20261118/collision/extract_enemy_physics.py",
+      "bytes": 6116,
+      "sha256": "34533931ac3a9830d2cf82f61afaba6f942c915c0abddae724682667644d6934"
+    },
+    "sources": {
+      "manager": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/globalgamemanagers",
+        "bytes": 810348,
+        "sha256": "3bc10458e0a6cd4a777b17df0194eaf22cb40a8684dcae21f55b8a221c959055"
+      },
+      "enemyBundle": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_base_0.ab",
+        "bytes": 147859,
+        "sha256": "8ad3f66ba83f9bd1b5b256009ff262eead54ac4d07bc921d1f5b7337226cf7df"
+      }
+    }
+  },
+  "result": {
+    "unityBuild": "2021.3.39f1",
+    "playerSettings": {
+      "78": {
+        "id": 3,
+        "rawHex": "0900000007000000736f6c6469657200080000007475746f7269616c1300000055495472616e736974696f6e416374696f6e7300120000004275696c64696e67526f6f6d4f626a65637400001400000053746174696342617463684578636c75736976650c000000426174746c65554943617264060000004469746865720000070000004e61764d657368000c0000005374617475734f626a656374200000000700000044656661756c74000d0000005472616e73706172656e7446580000000e00000049676e6f72652052617963617374000000000000050000005761746572000000020000005549000000000000000000000400000054494c4505000000454e454d5900000004000000414c4c59030000004d4150000500000052414e47450000000a00000044454154485f4152454100000a00000050524f4a454354494c4500000600000045464645435400000600000055495f41564700000800000055495f47414348410c00000055495f43554c4c5f4d41534b0e000000454e454d595f434f4c4c4944455200000f0000004255494c445f424c55455052494e54000b0000004255494c445f5641554c540003000000444959000d0000004449595f494e44494341544f52000000080000004449595f4d41524b0b00000047414348415f414e494d45000300000053444b000800000055495f52545f5053070000004e45555452414c000b000000504f535450524f434553530008000000434f4c4c49444552000000000c0000000a0000004261636b67726f756e64000087d17eec080000004d61705f54696c654fcbcf880a0000004d61705f5769646765740000b358c23b0700000044656661756c7400000000000e0000004d61705f466f726567726f756e64000039aec9410a00000050726f6a656374696c65000091e948200600000045666665637400002352ca3407000000546f706d6f7374000db70bcc0700000055494c6f77657200bb7f5f8f02000000554900001bc580c20700000055495570706572006554f7510600000053637265656e00005d4d36ad"
+      },
+      "19": {
+        "id": 15,
+        "rawHex": "00000000c3f51cc100000000000000000000000008000000030000000000803fcdcc4c3e000000410000c8420000b443cdcc4c3e0000403f0000003f0ad7233c000000400ad7233c00000000640000001e00000064000000c8000000c80000003200000032000000640000006400000064000000010000000a0000000a000000320000003200000000000000010101000100000020000000ff00f7abff00f7abff00f7abffffffffff00f7abff00f7abffffffffffffffffc800ffebc850f0abc850f7abc800f7abc806f7bbc840ffebc826f7bbc800f7abfffdf7abfffdf7abfffdf7abc821f0abffffffbbffffffbbffffffbbffffffbbffffffbbffffffbbc80000a8ffffffbfc850f0abffffffbfc82100c0ffffffff"
+      }
+    },
+    "layerNames": [
+      "Default",
+      "TransparentFX",
+      "Ignore Raycast",
+      "",
+      "Water",
+      "UI",
+      "",
+      "",
+      "TILE",
+      "ENEMY",
+      "ALLY",
+      "MAP",
+      "RANGE",
+      "DEATH_AREA",
+      "PROJECTILE",
+      "EFFECT",
+      "UI_AVG",
+      "UI_GACHA",
+      "UI_CULL_MASK",
+      "ENEMY_COLLIDER",
+      "BUILD_BLUEPRINT",
+      "BUILD_VAULT",
+      "DIY",
+      "DIY_INDICATOR",
+      "DIY_MARK",
+      "GACHA_ANIME",
+      "SDK",
+      "UI_RT_PS",
+      "NEUTRAL",
+      "POSTPROCESS",
+      "COLLIDER",
+      ""
+    ],
+    "matrix": {
+      "Default": {
+        "layer": 0,
+        "collidesWith": [
+          "Default",
+          "TransparentFX",
+          "Ignore Raycast",
+          "3",
+          "Water",
+          "UI",
+          "6",
+          "7",
+          "UI_AVG",
+          "UI_GACHA",
+          "UI_CULL_MASK",
+          "BUILD_BLUEPRINT",
+          "BUILD_VAULT",
+          "DIY",
+          "DIY_INDICATOR",
+          "DIY_MARK",
+          "GACHA_ANIME",
+          "UI_RT_PS",
+          "POSTPROCESS",
+          "31"
+        ]
+      },
+      "TransparentFX": {
+        "layer": 1,
+        "collidesWith": [
+          "Default",
+          "TransparentFX",
+          "Ignore Raycast",
+          "3",
+          "Water",
+          "UI",
+          "6",
+          "7",
+          "UI_AVG",
+          "UI_GACHA",
+          "UI_CULL_MASK",
+          "BUILD_BLUEPRINT",
+          "BUILD_VAULT",
+          "DIY",
+          "DIY_INDICATOR",
+          "DIY_MARK",
+          "GACHA_ANIME",
+          "UI_RT_PS",
+          "POSTPROCESS",
+          "31"
+        ]
+      },
+      "Ignore Raycast": {
+        "layer": 2,
+        "collidesWith": [
+          "Default",
+          "TransparentFX",
+          "Ignore Raycast",
+          "3",
+          "Water",
+          "UI",
+          "6",
+          "7",
+          "UI_AVG",
+          "UI_GACHA",
+          "UI_CULL_MASK",
+          "BUILD_BLUEPRINT",
+          "BUILD_VAULT",
+          "DIY",
+          "DIY_INDICATOR",
+          "DIY_MARK",
+          "GACHA_ANIME",
+          "UI_RT_PS",
+          "POSTPROCESS",
+          "31"
+        ]
+      },
+      "Water": {
+        "layer": 4,
+        "collidesWith": [
+          "Default",
+          "TransparentFX",
+          "Ignore Raycast",
+          "3",
+          "Water",
+          "UI",
+          "6",
+          "7",
+          "UI_AVG",
+          "UI_GACHA",
+          "UI_CULL_MASK",
+          "BUILD_BLUEPRINT",
+          "BUILD_VAULT",
+          "DIY",
+          "DIY_INDICATOR",
+          "DIY_MARK",
+          "GACHA_ANIME",
+          "UI_RT_PS",
+          "POSTPROCESS",
+          "31"
+        ]
+      },
+      "UI": {
+        "layer": 5,
+        "collidesWith": [
+          "Default",
+          "TransparentFX",
+          "Ignore Raycast",
+          "3",
+          "Water",
+          "UI",
+          "6",
+          "7",
+          "UI_AVG",
+          "UI_GACHA",
+          "UI_CULL_MASK",
+          "BUILD_BLUEPRINT",
+          "BUILD_VAULT",
+          "DIY",
+          "DIY_INDICATOR",
+          "DIY_MARK",
+          "GACHA_ANIME",
+          "UI_RT_PS",
+          "POSTPROCESS",
+          "31"
+        ]
+      },
+      "TILE": {
+        "layer": 8,
+        "collidesWith": [
+          "3",
+          "6",
+          "7",
+          "UI_AVG",
+          "UI_GACHA",
+          "UI_CULL_MASK",
+          "ENEMY_COLLIDER",
+          "BUILD_BLUEPRINT",
+          "BUILD_VAULT",
+          "DIY",
+          "DIY_INDICATOR",
+          "DIY_MARK",
+          "GACHA_ANIME",
+          "UI_RT_PS",
+          "POSTPROCESS",
+          "COLLIDER",
+          "31"
+        ]
+      },
+      "ENEMY": {
+        "layer": 9,
+        "collidesWith": [
+          "3",
+          "6",
+          "7",
+          "RANGE",
+          "PROJECTILE",
+          "BUILD_BLUEPRINT",
+          "BUILD_VAULT",
+          "DIY",
+          "DIY_INDICATOR",
+          "DIY_MARK",
+          "GACHA_ANIME",
+          "UI_RT_PS",
+          "POSTPROCESS",
+          "31"
+        ]
+      },
+      "ALLY": {
+        "layer": 10,
+        "collidesWith": [
+          "3",
+          "6",
+          "7",
+          "RANGE",
+          "PROJECTILE",
+          "UI_AVG",
+          "UI_GACHA",
+          "UI_CULL_MASK",
+          "BUILD_BLUEPRINT",
+          "BUILD_VAULT",
+          "DIY",
+          "DIY_INDICATOR",
+          "DIY_MARK",
+          "GACHA_ANIME",
+          "UI_RT_PS",
+          "POSTPROCESS",
+          "31"
+        ]
+      },
+      "MAP": {
+        "layer": 11,
+        "collidesWith": [
+          "3",
+          "6",
+          "7",
+          "UI_AVG",
+          "UI_GACHA",
+          "UI_CULL_MASK",
+          "BUILD_BLUEPRINT",
+          "BUILD_VAULT",
+          "DIY",
+          "DIY_INDICATOR",
+          "DIY_MARK",
+          "GACHA_ANIME",
+          "UI_RT_PS",
+          "POSTPROCESS",
+          "31"
+        ]
+      },
+      "RANGE": {
+        "layer": 12,
+        "collidesWith": [
+          "3",
+          "6",
+          "7",
+          "ENEMY",
+          "ALLY",
+          "UI_AVG",
+          "UI_GACHA",
+          "UI_CULL_MASK",
+          "BUILD_BLUEPRINT",
+          "BUILD_VAULT",
+          "DIY",
+          "DIY_INDICATOR",
+          "DIY_MARK",
+          "GACHA_ANIME",
+          "UI_RT_PS",
+          "NEUTRAL",
+          "POSTPROCESS",
+          "31"
+        ]
+      },
+      "DEATH_AREA": {
+        "layer": 13,
+        "collidesWith": [
+          "3",
+          "6",
+          "7",
+          "PROJECTILE",
+          "UI_AVG",
+          "UI_GACHA",
+          "UI_CULL_MASK",
+          "ENEMY_COLLIDER",
+          "BUILD_BLUEPRINT",
+          "BUILD_VAULT",
+          "DIY",
+          "DIY_INDICATOR",
+          "DIY_MARK",
+          "GACHA_ANIME",
+          "UI_RT_PS",
+          "POSTPROCESS",
+          "COLLIDER",
+          "31"
+        ]
+      },
+      "PROJECTILE": {
+        "layer": 14,
+        "collidesWith": [
+          "3",
+          "6",
+          "7",
+          "ENEMY",
+          "ALLY",
+          "DEATH_AREA",
+          "UI_AVG",
+          "UI_GACHA",
+          "UI_CULL_MASK",
+          "BUILD_BLUEPRINT",
+          "BUILD_VAULT",
+          "DIY",
+          "DIY_INDICATOR",
+          "DIY_MARK",
+          "GACHA_ANIME",
+          "UI_RT_PS",
+          "NEUTRAL",
+          "POSTPROCESS",
+          "31"
+        ]
+      },
+      "EFFECT": {
+        "layer": 15,
+        "collidesWith": [
+          "3",
+          "6",
+          "7",
+          "UI_AVG",
+          "UI_GACHA",
+          "UI_CULL_MASK",
+          "BUILD_BLUEPRINT",
+          "BUILD_VAULT",
+          "DIY",
+          "DIY_INDICATOR",
+          "DIY_MARK",
+          "GACHA_ANIME",
+          "UI_RT_PS",
+          "POSTPROCESS",
+          "31"
+        ]
+      },
+      "UI_AVG": {
+        "layer": 16,
+        "collidesWith": [
+          "Default",
+          "TransparentFX",
+          "Ignore Raycast",
+          "3",
+          "Water",
+          "UI",
+          "6",
+          "7",
+          "TILE",
+          "ALLY",
+          "MAP",
+          "RANGE",
+          "DEATH_AREA",
+          "PROJECTILE",
+          "EFFECT",
+          "UI_AVG",
+          "UI_GACHA",
+          "UI_CULL_MASK",
+          "BUILD_BLUEPRINT",
+          "BUILD_VAULT",
+          "DIY",
+          "DIY_INDICATOR",
+          "DIY_MARK",
+          "GACHA_ANIME",
+          "UI_RT_PS",
+          "POSTPROCESS",
+          "31"
+        ]
+      },
+      "UI_GACHA": {
+        "layer": 17,
+        "collidesWith": [
+          "Default",
+          "TransparentFX",
+          "Ignore Raycast",
+          "3",
+          "Water",
+          "UI",
+          "6",
+          "7",
+          "TILE",
+          "ALLY",
+          "MAP",
+          "RANGE",
+          "DEATH_AREA",
+          "PROJECTILE",
+          "EFFECT",
+          "UI_AVG",
+          "UI_GACHA",
+          "UI_CULL_MASK",
+          "BUILD_BLUEPRINT",
+          "BUILD_VAULT",
+          "DIY",
+          "DIY_INDICATOR",
+          "DIY_MARK",
+          "GACHA_ANIME",
+          "UI_RT_PS",
+          "POSTPROCESS",
+          "31"
+        ]
+      },
+      "UI_CULL_MASK": {
+        "layer": 18,
+        "collidesWith": [
+          "Default",
+          "TransparentFX",
+          "Ignore Raycast",
+          "3",
+          "Water",
+          "UI",
+          "6",
+          "7",
+          "TILE",
+          "ALLY",
+          "MAP",
+          "RANGE",
+          "DEATH_AREA",
+          "PROJECTILE",
+          "EFFECT",
+          "UI_AVG",
+          "UI_GACHA",
+          "UI_CULL_MASK",
+          "BUILD_BLUEPRINT",
+          "BUILD_VAULT",
+          "DIY",
+          "DIY_INDICATOR",
+          "DIY_MARK",
+          "GACHA_ANIME",
+          "UI_RT_PS",
+          "POSTPROCESS",
+          "31"
+        ]
+      },
+      "ENEMY_COLLIDER": {
+        "layer": 19,
+        "collidesWith": [
+          "3",
+          "6",
+          "7",
+          "TILE",
+          "DEATH_AREA",
+          "BUILD_BLUEPRINT",
+          "BUILD_VAULT",
+          "DIY",
+          "DIY_INDICATOR",
+          "DIY_MARK",
+          "GACHA_ANIME",
+          "UI_RT_PS",
+          "POSTPROCESS",
+          "31"
+        ]
+      },
+      "BUILD_BLUEPRINT": {
+        "layer": 20,
+        "collidesWith": [
+          "Default",
+          "TransparentFX",
+          "Ignore Raycast",
+          "3",
+          "Water",
+          "UI",
+          "6",
+          "7",
+          "TILE",
+          "ENEMY",
+          "ALLY",
+          "MAP",
+          "RANGE",
+          "DEATH_AREA",
+          "PROJECTILE",
+          "EFFECT",
+          "UI_AVG",
+          "UI_GACHA",
+          "UI_CULL_MASK",
+          "ENEMY_COLLIDER",
+          "BUILD_BLUEPRINT",
+          "BUILD_VAULT",
+          "DIY",
+          "DIY_INDICATOR",
+          "DIY_MARK",
+          "GACHA_ANIME",
+          "UI_RT_PS",
+          "NEUTRAL",
+          "POSTPROCESS",
+          "31"
+        ]
+      },
+      "BUILD_VAULT": {
+        "layer": 21,
+        "collidesWith": [
+          "Default",
+          "TransparentFX",
+          "Ignore Raycast",
+          "3",
+          "Water",
+          "UI",
+          "6",
+          "7",
+          "TILE",
+          "ENEMY",
+          "ALLY",
+          "MAP",
+          "RANGE",
+          "DEATH_AREA",
+          "PROJECTILE",
+          "EFFECT",
+          "UI_AVG",
+          "UI_GACHA",
+          "UI_CULL_MASK",
+          "ENEMY_COLLIDER",
+          "BUILD_BLUEPRINT",
+          "BUILD_VAULT",
+          "DIY",
+          "DIY_INDICATOR",
+          "DIY_MARK",
+          "GACHA_ANIME",
+          "UI_RT_PS",
+          "NEUTRAL",
+          "POSTPROCESS",
+          "31"
+        ]
+      },
+      "DIY": {
+        "layer": 22,
+        "collidesWith": [
+          "Default",
+          "TransparentFX",
+          "Ignore Raycast",
+          "3",
+          "Water",
+          "UI",
+          "6",
+          "7",
+          "TILE",
+          "ENEMY",
+          "ALLY",
+          "MAP",
+          "RANGE",
+          "DEATH_AREA",
+          "PROJECTILE",
+          "EFFECT",
+          "UI_AVG",
+          "UI_GACHA",
+          "UI_CULL_MASK",
+          "ENEMY_COLLIDER",
+          "BUILD_BLUEPRINT",
+          "BUILD_VAULT",
+          "DIY",
+          "DIY_INDICATOR",
+          "DIY_MARK",
+          "GACHA_ANIME",
+          "UI_RT_PS",
+          "NEUTRAL",
+          "POSTPROCESS",
+          "31"
+        ]
+      },
+      "DIY_INDICATOR": {
+        "layer": 23,
+        "collidesWith": [
+          "Default",
+          "TransparentFX",
+          "Ignore Raycast",
+          "3",
+          "Water",
+          "UI",
+          "6",
+          "7",
+          "TILE",
+          "ENEMY",
+          "ALLY",
+          "MAP",
+          "RANGE",
+          "DEATH_AREA",
+          "PROJECTILE",
+          "EFFECT",
+          "UI_AVG",
+          "UI_GACHA",
+          "UI_CULL_MASK",
+          "ENEMY_COLLIDER",
+          "BUILD_BLUEPRINT",
+          "BUILD_VAULT",
+          "DIY",
+          "DIY_INDICATOR",
+          "DIY_MARK",
+          "GACHA_ANIME",
+          "UI_RT_PS",
+          "NEUTRAL",
+          "POSTPROCESS",
+          "31"
+        ]
+      },
+      "DIY_MARK": {
+        "layer": 24,
+        "collidesWith": [
+          "Default",
+          "TransparentFX",
+          "Ignore Raycast",
+          "3",
+          "Water",
+          "UI",
+          "6",
+          "7",
+          "TILE",
+          "ENEMY",
+          "ALLY",
+          "MAP",
+          "RANGE",
+          "DEATH_AREA",
+          "PROJECTILE",
+          "EFFECT",
+          "UI_AVG",
+          "UI_GACHA",
+          "UI_CULL_MASK",
+          "ENEMY_COLLIDER",
+          "BUILD_BLUEPRINT",
+          "BUILD_VAULT",
+          "DIY",
+          "DIY_INDICATOR",
+          "DIY_MARK",
+          "GACHA_ANIME",
+          "UI_RT_PS",
+          "NEUTRAL",
+          "POSTPROCESS",
+          "31"
+        ]
+      },
+      "GACHA_ANIME": {
+        "layer": 25,
+        "collidesWith": [
+          "Default",
+          "TransparentFX",
+          "Ignore Raycast",
+          "3",
+          "Water",
+          "UI",
+          "6",
+          "7",
+          "TILE",
+          "ENEMY",
+          "ALLY",
+          "MAP",
+          "RANGE",
+          "DEATH_AREA",
+          "PROJECTILE",
+          "EFFECT",
+          "UI_AVG",
+          "UI_GACHA",
+          "UI_CULL_MASK",
+          "ENEMY_COLLIDER",
+          "BUILD_BLUEPRINT",
+          "BUILD_VAULT",
+          "DIY",
+          "DIY_INDICATOR",
+          "DIY_MARK",
+          "GACHA_ANIME",
+          "UI_RT_PS",
+          "NEUTRAL",
+          "POSTPROCESS",
+          "31"
+        ]
+      },
+      "SDK": {
+        "layer": 26,
+        "collidesWith": [
+          "3",
+          "6",
+          "7",
+          "UI_RT_PS",
+          "POSTPROCESS",
+          "31"
+        ]
+      },
+      "UI_RT_PS": {
+        "layer": 27,
+        "collidesWith": [
+          "Default",
+          "TransparentFX",
+          "Ignore Raycast",
+          "3",
+          "Water",
+          "UI",
+          "6",
+          "7",
+          "TILE",
+          "ENEMY",
+          "ALLY",
+          "MAP",
+          "RANGE",
+          "DEATH_AREA",
+          "PROJECTILE",
+          "EFFECT",
+          "UI_AVG",
+          "UI_GACHA",
+          "UI_CULL_MASK",
+          "ENEMY_COLLIDER",
+          "BUILD_BLUEPRINT",
+          "BUILD_VAULT",
+          "DIY",
+          "DIY_INDICATOR",
+          "DIY_MARK",
+          "GACHA_ANIME",
+          "SDK",
+          "UI_RT_PS",
+          "NEUTRAL",
+          "POSTPROCESS",
+          "31"
+        ]
+      },
+      "NEUTRAL": {
+        "layer": 28,
+        "collidesWith": [
+          "3",
+          "6",
+          "7",
+          "RANGE",
+          "PROJECTILE",
+          "BUILD_BLUEPRINT",
+          "BUILD_VAULT",
+          "DIY",
+          "DIY_INDICATOR",
+          "DIY_MARK",
+          "GACHA_ANIME",
+          "UI_RT_PS",
+          "POSTPROCESS",
+          "31"
+        ]
+      },
+      "POSTPROCESS": {
+        "layer": 29,
+        "collidesWith": [
+          "Default",
+          "TransparentFX",
+          "Ignore Raycast",
+          "3",
+          "Water",
+          "UI",
+          "6",
+          "7",
+          "TILE",
+          "ENEMY",
+          "ALLY",
+          "MAP",
+          "RANGE",
+          "DEATH_AREA",
+          "PROJECTILE",
+          "EFFECT",
+          "UI_AVG",
+          "UI_GACHA",
+          "UI_CULL_MASK",
+          "ENEMY_COLLIDER",
+          "BUILD_BLUEPRINT",
+          "BUILD_VAULT",
+          "DIY",
+          "DIY_INDICATOR",
+          "DIY_MARK",
+          "GACHA_ANIME",
+          "SDK",
+          "UI_RT_PS",
+          "NEUTRAL",
+          "POSTPROCESS",
+          "31"
+        ]
+      },
+      "COLLIDER": {
+        "layer": 30,
+        "collidesWith": [
+          "3",
+          "6",
+          "7",
+          "TILE",
+          "DEATH_AREA",
+          "COLLIDER",
+          "31"
+        ]
+      }
+    },
+    "enemies": [
+      {
+        "prefab": "enemy_1003_ncbow",
+        "rootId": -1771144562787886515,
+        "cab": "CAB-b2b15d37e92fccb550555511a61b9297",
+        "physics": [
+          {
+            "classId": 50,
+            "componentId": 6480242499756415565,
+            "gameObjectId": -1771144562787886515,
+            "gameObject": {
+              "name": "enemy_1003_ncbow",
+              "active": true,
+              "layer": 9,
+              "layerName": "ENEMY",
+              "components": [
+                [
+                  0,
+                  -6118801444287489459
+                ],
+                [
+                  0,
+                  -5684249958478128563
+                ],
+                [
+                  0,
+                  2072793587615324749
+                ],
+                [
+                  0,
+                  6480242499756415565
+                ],
+                [
+                  0,
+                  6029440098294349
+                ]
+              ]
+            },
+            "transform": {
+              "gameObject": [
+                0,
+                -1771144562787886515
+              ],
+              "children": [
+                [
+                  0,
+                  -1177098568696079795
+                ],
+                [
+                  0,
+                  7856937711973620301
+                ],
+                [
+                  0,
+                  4251462082039175757
+                ],
+                [
+                  0,
+                  1304102643779820109
+                ],
+                [
+                  0,
+                  -6075039067631920563
+                ]
+              ],
+              "parent": [
+                0,
+                0
+              ],
+              "localPosition": [
+                4.0,
+                3.0,
+                0.0
+              ],
+              "localScale": [
+                1.0,
+                1.0,
+                1.0
+              ]
+            },
+            "rawHex": "000000004dda297167a16be700000000010000000000803f00000000cdcc4c3d0000000000000000000000000000000000000000000000000100000004000000",
+            "properties": {
+              "bodyType": 0,
+              "simulated": true,
+              "mass": 1.0,
+              "gravityScale": 0.0,
+              "collisionDetection": 1,
+              "linearDrag": 0.0,
+              "constraints": 4
+            }
+          },
+          {
+            "classId": 58,
+            "componentId": 6029440098294349,
+            "gameObjectId": -1771144562787886515,
+            "gameObject": {
+              "name": "enemy_1003_ncbow",
+              "active": true,
+              "layer": 9,
+              "layerName": "ENEMY",
+              "components": [
+                [
+                  0,
+                  -6118801444287489459
+                ],
+                [
+                  0,
+                  -5684249958478128563
+                ],
+                [
+                  0,
+                  2072793587615324749
+                ],
+                [
+                  0,
+                  6480242499756415565
+                ],
+                [
+                  0,
+                  6029440098294349
+                ]
+              ]
+            },
+            "transform": {
+              "gameObject": [
+                0,
+                -1771144562787886515
+              ],
+              "children": [
+                [
+                  0,
+                  -1177098568696079795
+                ],
+                [
+                  0,
+                  7856937711973620301
+                ],
+                [
+                  0,
+                  4251462082039175757
+                ],
+                [
+                  0,
+                  1304102643779820109
+                ],
+                [
+                  0,
+                  -6075039067631920563
+                ]
+              ],
+              "parent": [
+                0,
+                0
+              ],
+              "localPosition": [
+                4.0,
+                3.0,
+                0.0
+              ],
+              "localScale": [
+                1.0,
+                1.0,
+                1.0
+              ]
+            },
+            "rawHex": "000000004dda297167a16be7010000000000803f000000000000000000000000010000000000000000000000cdcccc3d",
+            "properties": {
+              "enabled": true,
+              "isTrigger": true,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "radius": 0.10000000149011612
+            }
+          },
+          {
+            "classId": 70,
+            "componentId": -8651893637189805491,
+            "gameObjectId": 733143380121016909,
+            "gameObject": {
+              "name": "ColliderHolder",
+              "active": true,
+              "layer": 19,
+              "layerName": "ENEMY_COLLIDER",
+              "components": [
+                [
+                  0,
+                  -6075039067631920563
+                ],
+                [
+                  0,
+                  -8651893637189805491
+                ]
+              ]
+            },
+            "transform": {
+              "gameObject": [
+                0,
+                733143380121016909
+              ],
+              "children": [],
+              "parent": [
+                0,
+                -6118801444287489459
+              ],
+              "localPosition": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "localScale": [
+                1.0,
+                1.0,
+                1.0
+              ]
+            },
+            "rawHex": "000000004dda8a1505a62c0a010000000000803f0000000000000000000000000000000000000000d0ccccbdcdcc4c3ececccc3e00000000",
+            "properties": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                -0.10000002384185791
+              ],
+              "size": [
+                0.20000000298023224,
+                0.40000003576278687
+              ],
+              "direction": 0
+            }
+          },
+          {
+            "classId": 58,
+            "componentId": -1496708880177767859,
+            "gameObjectId": 286909581330405965,
+            "gameObject": {
+              "name": "Trigger",
+              "active": true,
+              "layer": 12,
+              "layerName": "RANGE",
+              "components": [
+                [
+                  0,
+                  9092332378577820237
+                ],
+                [
+                  0,
+                  -113612809910035891
+                ],
+                [
+                  0,
+                  8818523658956757581
+                ],
+                [
+                  0,
+                  7504190791054907981
+                ],
+                [
+                  0,
+                  -1496708880177767859
+                ]
+              ]
+            },
+            "transform": {
+              "gameObject": [
+                0,
+                286909581330405965
+              ],
+              "children": [],
+              "parent": [
+                0,
+                -5227838643497543091
+              ],
+              "localPosition": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "localScale": [
+                1.0,
+                1.0,
+                1.0
+              ]
+            },
+            "rawHex": "000000004ddada7dbe4efb03010000000000803f00000000000000000000000001000000000000000000000000000040",
+            "properties": {
+              "enabled": true,
+              "isTrigger": true,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "radius": 2.0
+            }
+          }
+        ]
+      },
+      {
+        "prefab": "enemy_1016_diaman",
+        "rootId": 1066426442440496041,
+        "cab": "CAB-b2b15d37e92fccb550555511a61b9297",
+        "physics": [
+          {
+            "classId": 50,
+            "componentId": 3182561830801167273,
+            "gameObjectId": 1066426442440496041,
+            "gameObject": {
+              "name": "enemy_1016_diaman",
+              "active": true,
+              "layer": 9,
+              "layerName": "ENEMY",
+              "components": [
+                [
+                  0,
+                  917292352513233833
+                ],
+                [
+                  0,
+                  7180524077437146025
+                ],
+                [
+                  0,
+                  -1806580759486737495
+                ],
+                [
+                  0,
+                  3182561830801167273
+                ],
+                [
+                  0,
+                  -1064454893267725399
+                ]
+              ]
+            },
+            "transform": {
+              "gameObject": [
+                0,
+                1066426442440496041
+              ],
+              "children": [
+                [
+                  0,
+                  1499824971221423017
+                ],
+                [
+                  0,
+                  -298957447955164247
+                ],
+                [
+                  0,
+                  1928194596238316457
+                ]
+              ],
+              "parent": [
+                0,
+                0
+              ],
+              "localPosition": [
+                0.5009999871253967,
+                3.0,
+                0.0
+              ],
+              "localScale": [
+                1.0,
+                1.0,
+                1.0
+              ]
+            },
+            "rawHex": "00000000a9d3bf0033b5cc0e00000000010000000000803f00000000cdcc4c3d0000000000000000000000000000000000000000000000000100000004000000",
+            "properties": {
+              "bodyType": 0,
+              "simulated": true,
+              "mass": 1.0,
+              "gravityScale": 0.0,
+              "collisionDetection": 1,
+              "linearDrag": 0.0,
+              "constraints": 4
+            }
+          },
+          {
+            "classId": 58,
+            "componentId": -1064454893267725399,
+            "gameObjectId": 1066426442440496041,
+            "gameObject": {
+              "name": "enemy_1016_diaman",
+              "active": true,
+              "layer": 9,
+              "layerName": "ENEMY",
+              "components": [
+                [
+                  0,
+                  917292352513233833
+                ],
+                [
+                  0,
+                  7180524077437146025
+                ],
+                [
+                  0,
+                  -1806580759486737495
+                ],
+                [
+                  0,
+                  3182561830801167273
+                ],
+                [
+                  0,
+                  -1064454893267725399
+                ]
+              ]
+            },
+            "transform": {
+              "gameObject": [
+                0,
+                1066426442440496041
+              ],
+              "children": [
+                [
+                  0,
+                  1499824971221423017
+                ],
+                [
+                  0,
+                  -298957447955164247
+                ],
+                [
+                  0,
+                  1928194596238316457
+                ]
+              ],
+              "parent": [
+                0,
+                0
+              ],
+              "localPosition": [
+                0.5009999871253967,
+                3.0,
+                0.0
+              ],
+              "localScale": [
+                1.0,
+                1.0,
+                1.0
+              ]
+            },
+            "rawHex": "00000000a9d3bf0033b5cc0e010000000000803f000000000000000000000000010000000000000000000000cdcccc3d",
+            "properties": {
+              "enabled": true,
+              "isTrigger": true,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "radius": 0.10000000149011612
+            }
+          },
+          {
+            "classId": 70,
+            "componentId": 4390032327295751081,
+            "gameObjectId": 4801367624275055529,
+            "gameObject": {
+              "name": "ColliderHolder",
+              "active": true,
+              "layer": 19,
+              "layerName": "ENEMY_COLLIDER",
+              "components": [
+                [
+                  0,
+                  -2694579219950218327
+                ],
+                [
+                  0,
+                  4390032327295751081
+                ]
+              ]
+            },
+            "transform": {
+              "gameObject": [
+                0,
+                4801367624275055529
+              ],
+              "children": [],
+              "parent": [
+                0,
+                1928194596238316457
+              ],
+              "localPosition": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "localScale": [
+                1.0,
+                1.0,
+                1.0
+              ]
+            },
+            "rawHex": "00000000a9d3f9606ae2a142010000000000803f00000000000000000000000000000000000000005064cebdcdcc4c3e8e98cd3e00000000",
+            "properties": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                -0.100777268409729
+              ],
+              "size": [
+                0.20000000298023224,
+                0.40155452489852905
+              ],
+              "direction": 0
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

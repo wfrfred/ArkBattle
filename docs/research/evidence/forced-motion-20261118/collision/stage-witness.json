@@ -1,0 +1,3671 @@
+{
+  "provenance": {
+    "scope": "Cross-version static coordinate and geometry check.",
+    "caseScriptSha256": "c73cd2fba6c387b9057357553cd6e3a09860c3cae1c0e484ab18a36e54bfdb02"
+  },
+  "result": {
+    "stages": [
+      {
+        "label": "2-8",
+        "prts": "https://prts.wiki/w/2-8",
+        "source": {
+          "url": "https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/63c7cec73c3858d0ae913f85cc89af3cef4d744f/zh_CN/gamedata/levels/obt/main/level_main_02-08.json",
+          "revision": "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+          "bytes": 89976,
+          "sha256": "cb472b3d26d8dcb5722898ea993a300855b35d2586ff028bf6c9e521cc9a0c3b",
+          "gitBlobSha1": "b734334604498974f25093629bc89ceb4f1aedf8"
+        },
+        "scene": {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/scenes/obt/main/level_main_02-08/level_main_02-08.ab",
+          "bytes": 401727,
+          "sha256": "fd6815e11fa4b7c3a1e097aa2d510360bd383ec63e42160d975e7b7a49193991"
+        },
+        "cells": [
+          {
+            "row": 6,
+            "col": 0,
+            "tileIndexPointer": "/mapData/map/0/0",
+            "tilePointer": "/mapData/tiles/66",
+            "tileKey": "tile_hole",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": null
+          },
+          {
+            "row": 6,
+            "col": 1,
+            "tileIndexPointer": "/mapData/map/0/1",
+            "tilePointer": "/mapData/tiles/67",
+            "tileKey": "tile_start",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 6,
+            "col": 2,
+            "tileIndexPointer": "/mapData/map/0/2",
+            "tilePointer": "/mapData/tiles/68",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 6,
+            "col": 3,
+            "tileIndexPointer": "/mapData/map/0/3",
+            "tilePointer": "/mapData/tiles/69",
+            "tileKey": "tile_start",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 6,
+            "col": 4,
+            "tileIndexPointer": "/mapData/map/0/4",
+            "tilePointer": "/mapData/tiles/70",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 6,
+            "col": 5,
+            "tileIndexPointer": "/mapData/map/0/5",
+            "tilePointer": "/mapData/tiles/71",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 6,
+            "col": 6,
+            "tileIndexPointer": "/mapData/map/0/6",
+            "tilePointer": "/mapData/tiles/72",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 6,
+            "col": 7,
+            "tileIndexPointer": "/mapData/map/0/7",
+            "tilePointer": "/mapData/tiles/73",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 6,
+            "col": 8,
+            "tileIndexPointer": "/mapData/map/0/8",
+            "tilePointer": "/mapData/tiles/74",
+            "tileKey": "tile_end",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 6,
+            "col": 9,
+            "tileIndexPointer": "/mapData/map/0/9",
+            "tilePointer": "/mapData/tiles/75",
+            "tileKey": "tile_end",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 6,
+            "col": 10,
+            "tileIndexPointer": "/mapData/map/0/10",
+            "tilePointer": "/mapData/tiles/76",
+            "tileKey": "tile_hole",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": null
+          },
+          {
+            "row": 5,
+            "col": 0,
+            "tileIndexPointer": "/mapData/map/1/0",
+            "tilePointer": "/mapData/tiles/55",
+            "tileKey": "tile_hole",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": null
+          },
+          {
+            "row": 5,
+            "col": 1,
+            "tileIndexPointer": "/mapData/map/1/1",
+            "tilePointer": "/mapData/tiles/56",
+            "tileKey": "tile_floor",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 5,
+            "col": 2,
+            "tileIndexPointer": "/mapData/map/1/2",
+            "tilePointer": "/mapData/tiles/57",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 5,
+            "col": 3,
+            "tileIndexPointer": "/mapData/map/1/3",
+            "tilePointer": "/mapData/tiles/58",
+            "tileKey": "tile_road",
+            "heightType": "LOWLAND",
+            "buildableType": "MELEE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 5,
+            "col": 4,
+            "tileIndexPointer": "/mapData/map/1/4",
+            "tilePointer": "/mapData/tiles/59",
+            "tileKey": "tile_gazebo",
+            "heightType": "HIGHLAND",
+            "buildableType": "RANGED",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 5,
+            "col": 5,
+            "tileIndexPointer": "/mapData/map/1/5",
+            "tilePointer": "/mapData/tiles/60",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 5,
+            "col": 6,
+            "tileIndexPointer": "/mapData/map/1/6",
+            "tilePointer": "/mapData/tiles/61",
+            "tileKey": "tile_wall",
+            "heightType": "HIGHLAND",
+            "buildableType": "RANGED",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 5,
+            "col": 7,
+            "tileIndexPointer": "/mapData/map/1/7",
+            "tilePointer": "/mapData/tiles/62",
+            "tileKey": "tile_wall",
+            "heightType": "HIGHLAND",
+            "buildableType": "RANGED",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 5,
+            "col": 8,
+            "tileIndexPointer": "/mapData/map/1/8",
+            "tilePointer": "/mapData/tiles/63",
+            "tileKey": "tile_road",
+            "heightType": "LOWLAND",
+            "buildableType": "MELEE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 5,
+            "col": 9,
+            "tileIndexPointer": "/mapData/map/1/9",
+            "tilePointer": "/mapData/tiles/64",
+            "tileKey": "tile_road",
+            "heightType": "LOWLAND",
+            "buildableType": "MELEE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 5,
+            "col": 10,
+            "tileIndexPointer": "/mapData/map/1/10",
+            "tilePointer": "/mapData/tiles/65",
+            "tileKey": "tile_hole",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": null
+          },
+          {
+            "row": 4,
+            "col": 0,
+            "tileIndexPointer": "/mapData/map/2/0",
+            "tilePointer": "/mapData/tiles/44",
+            "tileKey": "tile_hole",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": null
+          },
+          {
+            "row": 4,
+            "col": 1,
+            "tileIndexPointer": "/mapData/map/2/1",
+            "tilePointer": "/mapData/tiles/45",
+            "tileKey": "tile_floor",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 4,
+            "col": 2,
+            "tileIndexPointer": "/mapData/map/2/2",
+            "tilePointer": "/mapData/tiles/46",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 4,
+            "col": 3,
+            "tileIndexPointer": "/mapData/map/2/3",
+            "tilePointer": "/mapData/tiles/47",
+            "tileKey": "tile_road",
+            "heightType": "LOWLAND",
+            "buildableType": "MELEE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 4,
+            "col": 4,
+            "tileIndexPointer": "/mapData/map/2/4",
+            "tilePointer": "/mapData/tiles/48",
+            "tileKey": "tile_gazebo",
+            "heightType": "HIGHLAND",
+            "buildableType": "RANGED",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 4,
+            "col": 5,
+            "tileIndexPointer": "/mapData/map/2/5",
+            "tilePointer": "/mapData/tiles/49",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 4,
+            "col": 6,
+            "tileIndexPointer": "/mapData/map/2/6",
+            "tilePointer": "/mapData/tiles/50",
+            "tileKey": "tile_wall",
+            "heightType": "HIGHLAND",
+            "buildableType": "RANGED",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 4,
+            "col": 7,
+            "tileIndexPointer": "/mapData/map/2/7",
+            "tilePointer": "/mapData/tiles/51",
+            "tileKey": "tile_wall",
+            "heightType": "HIGHLAND",
+            "buildableType": "RANGED",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 4,
+            "col": 8,
+            "tileIndexPointer": "/mapData/map/2/8",
+            "tilePointer": "/mapData/tiles/52",
+            "tileKey": "tile_road",
+            "heightType": "LOWLAND",
+            "buildableType": "MELEE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 4,
+            "col": 9,
+            "tileIndexPointer": "/mapData/map/2/9",
+            "tilePointer": "/mapData/tiles/53",
+            "tileKey": "tile_road",
+            "heightType": "LOWLAND",
+            "buildableType": "MELEE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 4,
+            "col": 10,
+            "tileIndexPointer": "/mapData/map/2/10",
+            "tilePointer": "/mapData/tiles/54",
+            "tileKey": "tile_hole",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": null
+          },
+          {
+            "row": 3,
+            "col": 0,
+            "tileIndexPointer": "/mapData/map/3/0",
+            "tilePointer": "/mapData/tiles/33",
+            "tileKey": "tile_hole",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": null
+          },
+          {
+            "row": 3,
+            "col": 1,
+            "tileIndexPointer": "/mapData/map/3/1",
+            "tilePointer": "/mapData/tiles/34",
+            "tileKey": "tile_floor",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 3,
+            "col": 2,
+            "tileIndexPointer": "/mapData/map/3/2",
+            "tilePointer": "/mapData/tiles/35",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 3,
+            "col": 3,
+            "tileIndexPointer": "/mapData/map/3/3",
+            "tilePointer": "/mapData/tiles/36",
+            "tileKey": "tile_road",
+            "heightType": "LOWLAND",
+            "buildableType": "MELEE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 3,
+            "col": 4,
+            "tileIndexPointer": "/mapData/map/3/4",
+            "tilePointer": "/mapData/tiles/37",
+            "tileKey": "tile_road",
+            "heightType": "LOWLAND",
+            "buildableType": "MELEE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 3,
+            "col": 5,
+            "tileIndexPointer": "/mapData/map/3/5",
+            "tilePointer": "/mapData/tiles/38",
+            "tileKey": "tile_road",
+            "heightType": "LOWLAND",
+            "buildableType": "MELEE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 3,
+            "col": 6,
+            "tileIndexPointer": "/mapData/map/3/6",
+            "tilePointer": "/mapData/tiles/39",
+            "tileKey": "tile_road",
+            "heightType": "LOWLAND",
+            "buildableType": "MELEE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 3,
+            "col": 7,
+            "tileIndexPointer": "/mapData/map/3/7",
+            "tilePointer": "/mapData/tiles/40",
+            "tileKey": "tile_road",
+            "heightType": "LOWLAND",
+            "buildableType": "MELEE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 3,
+            "col": 8,
+            "tileIndexPointer": "/mapData/map/3/8",
+            "tilePointer": "/mapData/tiles/41",
+            "tileKey": "tile_road",
+            "heightType": "LOWLAND",
+            "buildableType": "MELEE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 3,
+            "col": 9,
+            "tileIndexPointer": "/mapData/map/3/9",
+            "tilePointer": "/mapData/tiles/42",
+            "tileKey": "tile_road",
+            "heightType": "LOWLAND",
+            "buildableType": "MELEE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 3,
+            "col": 10,
+            "tileIndexPointer": "/mapData/map/3/10",
+            "tilePointer": "/mapData/tiles/43",
+            "tileKey": "tile_hole",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": null
+          },
+          {
+            "row": 2,
+            "col": 0,
+            "tileIndexPointer": "/mapData/map/4/0",
+            "tilePointer": "/mapData/tiles/22",
+            "tileKey": "tile_hole",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": null
+          },
+          {
+            "row": 2,
+            "col": 1,
+            "tileIndexPointer": "/mapData/map/4/1",
+            "tilePointer": "/mapData/tiles/23",
+            "tileKey": "tile_floor",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 2,
+            "col": 2,
+            "tileIndexPointer": "/mapData/map/4/2",
+            "tilePointer": "/mapData/tiles/24",
+            "tileKey": "tile_gazebo",
+            "heightType": "HIGHLAND",
+            "buildableType": "RANGED",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 2,
+            "col": 3,
+            "tileIndexPointer": "/mapData/map/4/3",
+            "tilePointer": "/mapData/tiles/25",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 2,
+            "col": 4,
+            "tileIndexPointer": "/mapData/map/4/4",
+            "tilePointer": "/mapData/tiles/26",
+            "tileKey": "tile_wall",
+            "heightType": "HIGHLAND",
+            "buildableType": "RANGED",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 2,
+            "col": 5,
+            "tileIndexPointer": "/mapData/map/4/5",
+            "tilePointer": "/mapData/tiles/27",
+            "tileKey": "tile_wall",
+            "heightType": "HIGHLAND",
+            "buildableType": "RANGED",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 2,
+            "col": 6,
+            "tileIndexPointer": "/mapData/map/4/6",
+            "tilePointer": "/mapData/tiles/28",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 2,
+            "col": 7,
+            "tileIndexPointer": "/mapData/map/4/7",
+            "tilePointer": "/mapData/tiles/29",
+            "tileKey": "tile_bigforce",
+            "heightType": "HIGHLAND",
+            "buildableType": "RANGED",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 2,
+            "col": 8,
+            "tileIndexPointer": "/mapData/map/4/8",
+            "tilePointer": "/mapData/tiles/30",
+            "tileKey": "tile_fence",
+            "heightType": "LOWLAND",
+            "buildableType": "MELEE",
+            "passableMask": "FLY_ONLY",
+            "collider": null
+          },
+          {
+            "row": 2,
+            "col": 9,
+            "tileIndexPointer": "/mapData/map/4/9",
+            "tilePointer": "/mapData/tiles/31",
+            "tileKey": "tile_bigforce",
+            "heightType": "LOWLAND",
+            "buildableType": "MELEE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 2,
+            "col": 10,
+            "tileIndexPointer": "/mapData/map/4/10",
+            "tilePointer": "/mapData/tiles/32",
+            "tileKey": "tile_hole",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": null
+          },
+          {
+            "row": 1,
+            "col": 0,
+            "tileIndexPointer": "/mapData/map/5/0",
+            "tilePointer": "/mapData/tiles/11",
+            "tileKey": "tile_hole",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": null
+          },
+          {
+            "row": 1,
+            "col": 1,
+            "tileIndexPointer": "/mapData/map/5/1",
+            "tilePointer": "/mapData/tiles/12",
+            "tileKey": "tile_floor",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 1,
+            "col": 2,
+            "tileIndexPointer": "/mapData/map/5/2",
+            "tilePointer": "/mapData/tiles/13",
+            "tileKey": "tile_floor",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 1,
+            "col": 3,
+            "tileIndexPointer": "/mapData/map/5/3",
+            "tilePointer": "/mapData/tiles/14",
+            "tileKey": "tile_floor",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 1,
+            "col": 4,
+            "tileIndexPointer": "/mapData/map/5/4",
+            "tilePointer": "/mapData/tiles/15",
+            "tileKey": "tile_floor",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 1,
+            "col": 5,
+            "tileIndexPointer": "/mapData/map/5/5",
+            "tilePointer": "/mapData/tiles/16",
+            "tileKey": "tile_floor",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 1,
+            "col": 6,
+            "tileIndexPointer": "/mapData/map/5/6",
+            "tilePointer": "/mapData/tiles/17",
+            "tileKey": "tile_floor",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 1,
+            "col": 7,
+            "tileIndexPointer": "/mapData/map/5/7",
+            "tilePointer": "/mapData/tiles/18",
+            "tileKey": "tile_floor",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 1,
+            "col": 8,
+            "tileIndexPointer": "/mapData/map/5/8",
+            "tilePointer": "/mapData/tiles/19",
+            "tileKey": "tile_road",
+            "heightType": "LOWLAND",
+            "buildableType": "MELEE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 1,
+            "col": 9,
+            "tileIndexPointer": "/mapData/map/5/9",
+            "tilePointer": "/mapData/tiles/20",
+            "tileKey": "tile_road",
+            "heightType": "LOWLAND",
+            "buildableType": "MELEE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 1,
+            "col": 10,
+            "tileIndexPointer": "/mapData/map/5/10",
+            "tilePointer": "/mapData/tiles/21",
+            "tileKey": "tile_hole",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": null
+          },
+          {
+            "row": 0,
+            "col": 0,
+            "tileIndexPointer": "/mapData/map/6/0",
+            "tilePointer": "/mapData/tiles/0",
+            "tileKey": "tile_hole",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": null
+          },
+          {
+            "row": 0,
+            "col": 1,
+            "tileIndexPointer": "/mapData/map/6/1",
+            "tilePointer": "/mapData/tiles/1",
+            "tileKey": "tile_hole",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": null
+          },
+          {
+            "row": 0,
+            "col": 2,
+            "tileIndexPointer": "/mapData/map/6/2",
+            "tilePointer": "/mapData/tiles/2",
+            "tileKey": "tile_hole",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": null
+          },
+          {
+            "row": 0,
+            "col": 3,
+            "tileIndexPointer": "/mapData/map/6/3",
+            "tilePointer": "/mapData/tiles/3",
+            "tileKey": "tile_hole",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": null
+          },
+          {
+            "row": 0,
+            "col": 4,
+            "tileIndexPointer": "/mapData/map/6/4",
+            "tilePointer": "/mapData/tiles/4",
+            "tileKey": "tile_hole",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": null
+          },
+          {
+            "row": 0,
+            "col": 5,
+            "tileIndexPointer": "/mapData/map/6/5",
+            "tilePointer": "/mapData/tiles/5",
+            "tileKey": "tile_hole",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": null
+          },
+          {
+            "row": 0,
+            "col": 6,
+            "tileIndexPointer": "/mapData/map/6/6",
+            "tilePointer": "/mapData/tiles/6",
+            "tileKey": "tile_hole",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": null
+          },
+          {
+            "row": 0,
+            "col": 7,
+            "tileIndexPointer": "/mapData/map/6/7",
+            "tilePointer": "/mapData/tiles/7",
+            "tileKey": "tile_hole",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": null
+          },
+          {
+            "row": 0,
+            "col": 8,
+            "tileIndexPointer": "/mapData/map/6/8",
+            "tilePointer": "/mapData/tiles/8",
+            "tileKey": "tile_hole",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": null
+          },
+          {
+            "row": 0,
+            "col": 9,
+            "tileIndexPointer": "/mapData/map/6/9",
+            "tilePointer": "/mapData/tiles/9",
+            "tileKey": "tile_hole",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": null
+          },
+          {
+            "row": 0,
+            "col": 10,
+            "tileIndexPointer": "/mapData/map/6/10",
+            "tilePointer": "/mapData/tiles/10",
+            "tileKey": "tile_hole",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": null
+          }
+        ],
+        "counts": [
+          {
+            "tileKey": "tile_bigforce",
+            "height": "HIGHLAND",
+            "passableMask": "FLY_ONLY",
+            "isPhysical": true,
+            "count": 1
+          },
+          {
+            "tileKey": "tile_bigforce",
+            "height": "LOWLAND",
+            "passableMask": "ALL",
+            "isPhysical": false,
+            "count": 1
+          },
+          {
+            "tileKey": "tile_end",
+            "height": "LOWLAND",
+            "passableMask": "ALL",
+            "isPhysical": false,
+            "count": 2
+          },
+          {
+            "tileKey": "tile_fence",
+            "height": "LOWLAND",
+            "passableMask": "FLY_ONLY",
+            "isPhysical": false,
+            "count": 1
+          },
+          {
+            "tileKey": "tile_floor",
+            "height": "LOWLAND",
+            "passableMask": "ALL",
+            "isPhysical": false,
+            "count": 11
+          },
+          {
+            "tileKey": "tile_forbidden",
+            "height": "HIGHLAND",
+            "passableMask": "FLY_ONLY",
+            "isPhysical": true,
+            "count": 12
+          },
+          {
+            "tileKey": "tile_gazebo",
+            "height": "HIGHLAND",
+            "passableMask": "FLY_ONLY",
+            "isPhysical": true,
+            "count": 3
+          },
+          {
+            "tileKey": "tile_hole",
+            "height": "LOWLAND",
+            "passableMask": "FLY_ONLY",
+            "isPhysical": false,
+            "count": 23
+          },
+          {
+            "tileKey": "tile_road",
+            "height": "LOWLAND",
+            "passableMask": "ALL",
+            "isPhysical": false,
+            "count": 15
+          },
+          {
+            "tileKey": "tile_start",
+            "height": "LOWLAND",
+            "passableMask": "ALL",
+            "isPhysical": false,
+            "count": 2
+          },
+          {
+            "tileKey": "tile_wall",
+            "height": "HIGHLAND",
+            "passableMask": "FLY_ONLY",
+            "isPhysical": true,
+            "count": 6
+          }
+        ]
+      },
+      {
+        "label": "TR-14",
+        "prts": "https://prts.wiki/w/TR-14",
+        "source": {
+          "url": "https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/63c7cec73c3858d0ae913f85cc89af3cef4d744f/zh_CN/gamedata/levels/obt/training/level_training_14.json",
+          "revision": "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+          "bytes": 29100,
+          "sha256": "96b86e3c190213139edb33ff20a4ecad629d2ba02d165e2856d49196a17df49a",
+          "gitBlobSha1": "b07ad60f78f695ece908c375e96708ccdf759305"
+        },
+        "scene": {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/scenes/obt/training/level_training_14/level_training_14.ab",
+          "bytes": 945598,
+          "sha256": "a1f85414c34d707a2a7efa24f3096916eb1e60c921cb4b76a85f366451032afb"
+        },
+        "cells": [
+          {
+            "row": 6,
+            "col": 0,
+            "tileIndexPointer": "/mapData/map/0/0",
+            "tilePointer": "/mapData/tiles/54",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 6,
+            "col": 1,
+            "tileIndexPointer": "/mapData/map/0/1",
+            "tilePointer": "/mapData/tiles/55",
+            "tileKey": "tile_start",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 6,
+            "col": 2,
+            "tileIndexPointer": "/mapData/map/0/2",
+            "tilePointer": "/mapData/tiles/56",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 6,
+            "col": 3,
+            "tileIndexPointer": "/mapData/map/0/3",
+            "tilePointer": "/mapData/tiles/57",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 6,
+            "col": 4,
+            "tileIndexPointer": "/mapData/map/0/4",
+            "tilePointer": "/mapData/tiles/58",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 6,
+            "col": 5,
+            "tileIndexPointer": "/mapData/map/0/5",
+            "tilePointer": "/mapData/tiles/59",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 6,
+            "col": 6,
+            "tileIndexPointer": "/mapData/map/0/6",
+            "tilePointer": "/mapData/tiles/60",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 6,
+            "col": 7,
+            "tileIndexPointer": "/mapData/map/0/7",
+            "tilePointer": "/mapData/tiles/61",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 6,
+            "col": 8,
+            "tileIndexPointer": "/mapData/map/0/8",
+            "tilePointer": "/mapData/tiles/62",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 5,
+            "col": 0,
+            "tileIndexPointer": "/mapData/map/1/0",
+            "tilePointer": "/mapData/tiles/45",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 5,
+            "col": 1,
+            "tileIndexPointer": "/mapData/map/1/1",
+            "tilePointer": "/mapData/tiles/46",
+            "tileKey": "tile_road",
+            "heightType": "LOWLAND",
+            "buildableType": "MELEE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 5,
+            "col": 2,
+            "tileIndexPointer": "/mapData/map/1/2",
+            "tilePointer": "/mapData/tiles/47",
+            "tileKey": "tile_road",
+            "heightType": "LOWLAND",
+            "buildableType": "MELEE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 5,
+            "col": 3,
+            "tileIndexPointer": "/mapData/map/1/3",
+            "tilePointer": "/mapData/tiles/48",
+            "tileKey": "tile_road",
+            "heightType": "LOWLAND",
+            "buildableType": "MELEE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 5,
+            "col": 4,
+            "tileIndexPointer": "/mapData/map/1/4",
+            "tilePointer": "/mapData/tiles/49",
+            "tileKey": "tile_road",
+            "heightType": "LOWLAND",
+            "buildableType": "MELEE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 5,
+            "col": 5,
+            "tileIndexPointer": "/mapData/map/1/5",
+            "tilePointer": "/mapData/tiles/50",
+            "tileKey": "tile_road",
+            "heightType": "LOWLAND",
+            "buildableType": "MELEE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 5,
+            "col": 6,
+            "tileIndexPointer": "/mapData/map/1/6",
+            "tilePointer": "/mapData/tiles/51",
+            "tileKey": "tile_road",
+            "heightType": "LOWLAND",
+            "buildableType": "MELEE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 5,
+            "col": 7,
+            "tileIndexPointer": "/mapData/map/1/7",
+            "tilePointer": "/mapData/tiles/52",
+            "tileKey": "tile_road",
+            "heightType": "LOWLAND",
+            "buildableType": "MELEE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 5,
+            "col": 8,
+            "tileIndexPointer": "/mapData/map/1/8",
+            "tilePointer": "/mapData/tiles/53",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 4,
+            "col": 0,
+            "tileIndexPointer": "/mapData/map/2/0",
+            "tilePointer": "/mapData/tiles/36",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 4,
+            "col": 1,
+            "tileIndexPointer": "/mapData/map/2/1",
+            "tilePointer": "/mapData/tiles/37",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 4,
+            "col": 2,
+            "tileIndexPointer": "/mapData/map/2/2",
+            "tilePointer": "/mapData/tiles/38",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 4,
+            "col": 3,
+            "tileIndexPointer": "/mapData/map/2/3",
+            "tilePointer": "/mapData/tiles/39",
+            "tileKey": "tile_wall",
+            "heightType": "HIGHLAND",
+            "buildableType": "RANGED",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 4,
+            "col": 4,
+            "tileIndexPointer": "/mapData/map/2/4",
+            "tilePointer": "/mapData/tiles/40",
+            "tileKey": "tile_wall",
+            "heightType": "HIGHLAND",
+            "buildableType": "RANGED",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 4,
+            "col": 5,
+            "tileIndexPointer": "/mapData/map/2/5",
+            "tilePointer": "/mapData/tiles/41",
+            "tileKey": "tile_wall",
+            "heightType": "HIGHLAND",
+            "buildableType": "RANGED",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 4,
+            "col": 6,
+            "tileIndexPointer": "/mapData/map/2/6",
+            "tilePointer": "/mapData/tiles/42",
+            "tileKey": "tile_road",
+            "heightType": "LOWLAND",
+            "buildableType": "MELEE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 4,
+            "col": 7,
+            "tileIndexPointer": "/mapData/map/2/7",
+            "tilePointer": "/mapData/tiles/43",
+            "tileKey": "tile_road",
+            "heightType": "LOWLAND",
+            "buildableType": "MELEE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 4,
+            "col": 8,
+            "tileIndexPointer": "/mapData/map/2/8",
+            "tilePointer": "/mapData/tiles/44",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 3,
+            "col": 0,
+            "tileIndexPointer": "/mapData/map/3/0",
+            "tilePointer": "/mapData/tiles/27",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 3,
+            "col": 1,
+            "tileIndexPointer": "/mapData/map/3/1",
+            "tilePointer": "/mapData/tiles/28",
+            "tileKey": "tile_road",
+            "heightType": "LOWLAND",
+            "buildableType": "MELEE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 3,
+            "col": 2,
+            "tileIndexPointer": "/mapData/map/3/2",
+            "tilePointer": "/mapData/tiles/29",
+            "tileKey": "tile_road",
+            "heightType": "LOWLAND",
+            "buildableType": "MELEE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 3,
+            "col": 3,
+            "tileIndexPointer": "/mapData/map/3/3",
+            "tilePointer": "/mapData/tiles/30",
+            "tileKey": "tile_road",
+            "heightType": "LOWLAND",
+            "buildableType": "MELEE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 3,
+            "col": 4,
+            "tileIndexPointer": "/mapData/map/3/4",
+            "tilePointer": "/mapData/tiles/31",
+            "tileKey": "tile_road",
+            "heightType": "LOWLAND",
+            "buildableType": "MELEE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 3,
+            "col": 5,
+            "tileIndexPointer": "/mapData/map/3/5",
+            "tilePointer": "/mapData/tiles/32",
+            "tileKey": "tile_road",
+            "heightType": "LOWLAND",
+            "buildableType": "MELEE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 3,
+            "col": 6,
+            "tileIndexPointer": "/mapData/map/3/6",
+            "tilePointer": "/mapData/tiles/33",
+            "tileKey": "tile_road",
+            "heightType": "LOWLAND",
+            "buildableType": "MELEE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 3,
+            "col": 7,
+            "tileIndexPointer": "/mapData/map/3/7",
+            "tilePointer": "/mapData/tiles/34",
+            "tileKey": "tile_road",
+            "heightType": "LOWLAND",
+            "buildableType": "MELEE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 3,
+            "col": 8,
+            "tileIndexPointer": "/mapData/map/3/8",
+            "tilePointer": "/mapData/tiles/35",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 2,
+            "col": 0,
+            "tileIndexPointer": "/mapData/map/4/0",
+            "tilePointer": "/mapData/tiles/18",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 2,
+            "col": 1,
+            "tileIndexPointer": "/mapData/map/4/1",
+            "tilePointer": "/mapData/tiles/19",
+            "tileKey": "tile_road",
+            "heightType": "LOWLAND",
+            "buildableType": "MELEE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 2,
+            "col": 2,
+            "tileIndexPointer": "/mapData/map/4/2",
+            "tilePointer": "/mapData/tiles/20",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 2,
+            "col": 3,
+            "tileIndexPointer": "/mapData/map/4/3",
+            "tilePointer": "/mapData/tiles/21",
+            "tileKey": "tile_hole",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 2,
+            "col": 4,
+            "tileIndexPointer": "/mapData/map/4/4",
+            "tilePointer": "/mapData/tiles/22",
+            "tileKey": "tile_hole",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 2,
+            "col": 5,
+            "tileIndexPointer": "/mapData/map/4/5",
+            "tilePointer": "/mapData/tiles/23",
+            "tileKey": "tile_hole",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 2,
+            "col": 6,
+            "tileIndexPointer": "/mapData/map/4/6",
+            "tilePointer": "/mapData/tiles/24",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 2,
+            "col": 7,
+            "tileIndexPointer": "/mapData/map/4/7",
+            "tilePointer": "/mapData/tiles/25",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 2,
+            "col": 8,
+            "tileIndexPointer": "/mapData/map/4/8",
+            "tilePointer": "/mapData/tiles/26",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 1,
+            "col": 0,
+            "tileIndexPointer": "/mapData/map/5/0",
+            "tilePointer": "/mapData/tiles/9",
+            "tileKey": "tile_start",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 1,
+            "col": 1,
+            "tileIndexPointer": "/mapData/map/5/1",
+            "tilePointer": "/mapData/tiles/10",
+            "tileKey": "tile_road",
+            "heightType": "LOWLAND",
+            "buildableType": "MELEE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 1,
+            "col": 2,
+            "tileIndexPointer": "/mapData/map/5/2",
+            "tilePointer": "/mapData/tiles/11",
+            "tileKey": "tile_road",
+            "heightType": "LOWLAND",
+            "buildableType": "MELEE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 1,
+            "col": 3,
+            "tileIndexPointer": "/mapData/map/5/3",
+            "tilePointer": "/mapData/tiles/12",
+            "tileKey": "tile_road",
+            "heightType": "LOWLAND",
+            "buildableType": "MELEE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 1,
+            "col": 4,
+            "tileIndexPointer": "/mapData/map/5/4",
+            "tilePointer": "/mapData/tiles/13",
+            "tileKey": "tile_road",
+            "heightType": "LOWLAND",
+            "buildableType": "MELEE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 1,
+            "col": 5,
+            "tileIndexPointer": "/mapData/map/5/5",
+            "tilePointer": "/mapData/tiles/14",
+            "tileKey": "tile_road",
+            "heightType": "LOWLAND",
+            "buildableType": "MELEE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 1,
+            "col": 6,
+            "tileIndexPointer": "/mapData/map/5/6",
+            "tilePointer": "/mapData/tiles/15",
+            "tileKey": "tile_road",
+            "heightType": "LOWLAND",
+            "buildableType": "MELEE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 1,
+            "col": 7,
+            "tileIndexPointer": "/mapData/map/5/7",
+            "tilePointer": "/mapData/tiles/16",
+            "tileKey": "tile_road",
+            "heightType": "LOWLAND",
+            "buildableType": "MELEE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 1,
+            "col": 8,
+            "tileIndexPointer": "/mapData/map/5/8",
+            "tilePointer": "/mapData/tiles/17",
+            "tileKey": "tile_end",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 0,
+            "col": 0,
+            "tileIndexPointer": "/mapData/map/6/0",
+            "tilePointer": "/mapData/tiles/0",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 0,
+            "col": 1,
+            "tileIndexPointer": "/mapData/map/6/1",
+            "tilePointer": "/mapData/tiles/1",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 0,
+            "col": 2,
+            "tileIndexPointer": "/mapData/map/6/2",
+            "tilePointer": "/mapData/tiles/2",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 0,
+            "col": 3,
+            "tileIndexPointer": "/mapData/map/6/3",
+            "tilePointer": "/mapData/tiles/3",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 0,
+            "col": 4,
+            "tileIndexPointer": "/mapData/map/6/4",
+            "tilePointer": "/mapData/tiles/4",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 0,
+            "col": 5,
+            "tileIndexPointer": "/mapData/map/6/5",
+            "tilePointer": "/mapData/tiles/5",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 0,
+            "col": 6,
+            "tileIndexPointer": "/mapData/map/6/6",
+            "tilePointer": "/mapData/tiles/6",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 0,
+            "col": 7,
+            "tileIndexPointer": "/mapData/map/6/7",
+            "tilePointer": "/mapData/tiles/7",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 0,
+            "col": 8,
+            "tileIndexPointer": "/mapData/map/6/8",
+            "tilePointer": "/mapData/tiles/8",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          }
+        ],
+        "counts": [
+          {
+            "tileKey": "tile_end",
+            "height": "LOWLAND",
+            "passableMask": "ALL",
+            "isPhysical": false,
+            "count": 1
+          },
+          {
+            "tileKey": "tile_forbidden",
+            "height": "HIGHLAND",
+            "passableMask": "FLY_ONLY",
+            "isPhysical": true,
+            "count": 30
+          },
+          {
+            "tileKey": "tile_hole",
+            "height": "LOWLAND",
+            "passableMask": "ALL",
+            "isPhysical": false,
+            "count": 3
+          },
+          {
+            "tileKey": "tile_road",
+            "height": "LOWLAND",
+            "passableMask": "ALL",
+            "isPhysical": false,
+            "count": 24
+          },
+          {
+            "tileKey": "tile_start",
+            "height": "LOWLAND",
+            "passableMask": "ALL",
+            "isPhysical": false,
+            "count": 2
+          },
+          {
+            "tileKey": "tile_wall",
+            "height": "HIGHLAND",
+            "passableMask": "FLY_ONLY",
+            "isPhysical": true,
+            "count": 3
+          }
+        ]
+      },
+      {
+        "label": "CH-5",
+        "prts": "https://prts.wiki/w/CH-5",
+        "source": {
+          "url": "https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/63c7cec73c3858d0ae913f85cc89af3cef4d744f/zh_CN/gamedata/levels/obt/training/level_mechanism_5.json",
+          "revision": "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+          "bytes": 51273,
+          "sha256": "cae454262e08675e8c6fde9193cd8d34fafe18f86714048875282d3ad38139e9",
+          "gitBlobSha1": "6d0676a369b8a5d7b859616ef95089bb183053e2"
+        },
+        "scene": {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/scenes/obt/training/level_mechanism_5/level_mechanism_5.ab",
+          "bytes": 167516,
+          "sha256": "ccd14091edc5a70f4c45781f5dc130c558c80f97057ac07bf50968291cecce32"
+        },
+        "cells": [
+          {
+            "row": 6,
+            "col": 0,
+            "tileIndexPointer": "/mapData/map/0/0",
+            "tilePointer": "/mapData/tiles/60",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 6,
+            "col": 1,
+            "tileIndexPointer": "/mapData/map/0/1",
+            "tilePointer": "/mapData/tiles/61",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 6,
+            "col": 2,
+            "tileIndexPointer": "/mapData/map/0/2",
+            "tilePointer": "/mapData/tiles/62",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 6,
+            "col": 3,
+            "tileIndexPointer": "/mapData/map/0/3",
+            "tilePointer": "/mapData/tiles/63",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 6,
+            "col": 4,
+            "tileIndexPointer": "/mapData/map/0/4",
+            "tilePointer": "/mapData/tiles/64",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 6,
+            "col": 5,
+            "tileIndexPointer": "/mapData/map/0/5",
+            "tilePointer": "/mapData/tiles/65",
+            "tileKey": "tile_end",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 6,
+            "col": 6,
+            "tileIndexPointer": "/mapData/map/0/6",
+            "tilePointer": "/mapData/tiles/66",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 6,
+            "col": 7,
+            "tileIndexPointer": "/mapData/map/0/7",
+            "tilePointer": "/mapData/tiles/67",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 6,
+            "col": 8,
+            "tileIndexPointer": "/mapData/map/0/8",
+            "tilePointer": "/mapData/tiles/68",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 6,
+            "col": 9,
+            "tileIndexPointer": "/mapData/map/0/9",
+            "tilePointer": "/mapData/tiles/69",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 5,
+            "col": 0,
+            "tileIndexPointer": "/mapData/map/1/0",
+            "tilePointer": "/mapData/tiles/50",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 5,
+            "col": 1,
+            "tileIndexPointer": "/mapData/map/1/1",
+            "tilePointer": "/mapData/tiles/51",
+            "tileKey": "tile_floor",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 5,
+            "col": 2,
+            "tileIndexPointer": "/mapData/map/1/2",
+            "tilePointer": "/mapData/tiles/52",
+            "tileKey": "tile_floor",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 5,
+            "col": 3,
+            "tileIndexPointer": "/mapData/map/1/3",
+            "tilePointer": "/mapData/tiles/53",
+            "tileKey": "tile_floor",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 5,
+            "col": 4,
+            "tileIndexPointer": "/mapData/map/1/4",
+            "tilePointer": "/mapData/tiles/54",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 5,
+            "col": 5,
+            "tileIndexPointer": "/mapData/map/1/5",
+            "tilePointer": "/mapData/tiles/55",
+            "tileKey": "tile_floor",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 5,
+            "col": 6,
+            "tileIndexPointer": "/mapData/map/1/6",
+            "tilePointer": "/mapData/tiles/56",
+            "tileKey": "tile_hole",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 5,
+            "col": 7,
+            "tileIndexPointer": "/mapData/map/1/7",
+            "tilePointer": "/mapData/tiles/57",
+            "tileKey": "tile_hole",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 5,
+            "col": 8,
+            "tileIndexPointer": "/mapData/map/1/8",
+            "tilePointer": "/mapData/tiles/58",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 5,
+            "col": 9,
+            "tileIndexPointer": "/mapData/map/1/9",
+            "tilePointer": "/mapData/tiles/59",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 4,
+            "col": 0,
+            "tileIndexPointer": "/mapData/map/2/0",
+            "tilePointer": "/mapData/tiles/40",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 4,
+            "col": 1,
+            "tileIndexPointer": "/mapData/map/2/1",
+            "tilePointer": "/mapData/tiles/41",
+            "tileKey": "tile_floor",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 4,
+            "col": 2,
+            "tileIndexPointer": "/mapData/map/2/2",
+            "tilePointer": "/mapData/tiles/42",
+            "tileKey": "tile_hole",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 4,
+            "col": 3,
+            "tileIndexPointer": "/mapData/map/2/3",
+            "tilePointer": "/mapData/tiles/43",
+            "tileKey": "tile_floor",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 4,
+            "col": 4,
+            "tileIndexPointer": "/mapData/map/2/4",
+            "tilePointer": "/mapData/tiles/44",
+            "tileKey": "tile_wall",
+            "heightType": "HIGHLAND",
+            "buildableType": "RANGED",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 4,
+            "col": 5,
+            "tileIndexPointer": "/mapData/map/2/5",
+            "tilePointer": "/mapData/tiles/45",
+            "tileKey": "tile_floor",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 4,
+            "col": 6,
+            "tileIndexPointer": "/mapData/map/2/6",
+            "tilePointer": "/mapData/tiles/46",
+            "tileKey": "tile_hole",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 4,
+            "col": 7,
+            "tileIndexPointer": "/mapData/map/2/7",
+            "tilePointer": "/mapData/tiles/47",
+            "tileKey": "tile_hole",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 4,
+            "col": 8,
+            "tileIndexPointer": "/mapData/map/2/8",
+            "tilePointer": "/mapData/tiles/48",
+            "tileKey": "tile_wall",
+            "heightType": "HIGHLAND",
+            "buildableType": "RANGED",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 4,
+            "col": 9,
+            "tileIndexPointer": "/mapData/map/2/9",
+            "tilePointer": "/mapData/tiles/49",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 3,
+            "col": 0,
+            "tileIndexPointer": "/mapData/map/3/0",
+            "tilePointer": "/mapData/tiles/30",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 3,
+            "col": 1,
+            "tileIndexPointer": "/mapData/map/3/1",
+            "tilePointer": "/mapData/tiles/31",
+            "tileKey": "tile_floor",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 3,
+            "col": 2,
+            "tileIndexPointer": "/mapData/map/3/2",
+            "tilePointer": "/mapData/tiles/32",
+            "tileKey": "tile_hole",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 3,
+            "col": 3,
+            "tileIndexPointer": "/mapData/map/3/3",
+            "tilePointer": "/mapData/tiles/33",
+            "tileKey": "tile_floor",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 3,
+            "col": 4,
+            "tileIndexPointer": "/mapData/map/3/4",
+            "tilePointer": "/mapData/tiles/34",
+            "tileKey": "tile_wall",
+            "heightType": "HIGHLAND",
+            "buildableType": "RANGED",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 3,
+            "col": 5,
+            "tileIndexPointer": "/mapData/map/3/5",
+            "tilePointer": "/mapData/tiles/35",
+            "tileKey": "tile_floor",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 3,
+            "col": 6,
+            "tileIndexPointer": "/mapData/map/3/6",
+            "tilePointer": "/mapData/tiles/36",
+            "tileKey": "tile_hole",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 3,
+            "col": 7,
+            "tileIndexPointer": "/mapData/map/3/7",
+            "tilePointer": "/mapData/tiles/37",
+            "tileKey": "tile_hole",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 3,
+            "col": 8,
+            "tileIndexPointer": "/mapData/map/3/8",
+            "tilePointer": "/mapData/tiles/38",
+            "tileKey": "tile_wall",
+            "heightType": "HIGHLAND",
+            "buildableType": "RANGED",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 3,
+            "col": 9,
+            "tileIndexPointer": "/mapData/map/3/9",
+            "tilePointer": "/mapData/tiles/39",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 2,
+            "col": 0,
+            "tileIndexPointer": "/mapData/map/4/0",
+            "tilePointer": "/mapData/tiles/20",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 2,
+            "col": 1,
+            "tileIndexPointer": "/mapData/map/4/1",
+            "tilePointer": "/mapData/tiles/21",
+            "tileKey": "tile_floor",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 2,
+            "col": 2,
+            "tileIndexPointer": "/mapData/map/4/2",
+            "tilePointer": "/mapData/tiles/22",
+            "tileKey": "tile_hole",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 2,
+            "col": 3,
+            "tileIndexPointer": "/mapData/map/4/3",
+            "tilePointer": "/mapData/tiles/23",
+            "tileKey": "tile_floor",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 2,
+            "col": 4,
+            "tileIndexPointer": "/mapData/map/4/4",
+            "tilePointer": "/mapData/tiles/24",
+            "tileKey": "tile_wall",
+            "heightType": "HIGHLAND",
+            "buildableType": "RANGED",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 2,
+            "col": 5,
+            "tileIndexPointer": "/mapData/map/4/5",
+            "tilePointer": "/mapData/tiles/25",
+            "tileKey": "tile_floor",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 2,
+            "col": 6,
+            "tileIndexPointer": "/mapData/map/4/6",
+            "tilePointer": "/mapData/tiles/26",
+            "tileKey": "tile_floor",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 2,
+            "col": 7,
+            "tileIndexPointer": "/mapData/map/4/7",
+            "tilePointer": "/mapData/tiles/27",
+            "tileKey": "tile_hole",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 2,
+            "col": 8,
+            "tileIndexPointer": "/mapData/map/4/8",
+            "tilePointer": "/mapData/tiles/28",
+            "tileKey": "tile_wall",
+            "heightType": "HIGHLAND",
+            "buildableType": "RANGED",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 2,
+            "col": 9,
+            "tileIndexPointer": "/mapData/map/4/9",
+            "tilePointer": "/mapData/tiles/29",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 1,
+            "col": 0,
+            "tileIndexPointer": "/mapData/map/5/0",
+            "tilePointer": "/mapData/tiles/10",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 1,
+            "col": 1,
+            "tileIndexPointer": "/mapData/map/5/1",
+            "tilePointer": "/mapData/tiles/11",
+            "tileKey": "tile_floor",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 1,
+            "col": 2,
+            "tileIndexPointer": "/mapData/map/5/2",
+            "tilePointer": "/mapData/tiles/12",
+            "tileKey": "tile_hole",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 1,
+            "col": 3,
+            "tileIndexPointer": "/mapData/map/5/3",
+            "tilePointer": "/mapData/tiles/13",
+            "tileKey": "tile_floor",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 1,
+            "col": 4,
+            "tileIndexPointer": "/mapData/map/5/4",
+            "tilePointer": "/mapData/tiles/14",
+            "tileKey": "tile_floor",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 1,
+            "col": 5,
+            "tileIndexPointer": "/mapData/map/5/5",
+            "tilePointer": "/mapData/tiles/15",
+            "tileKey": "tile_floor",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 1,
+            "col": 6,
+            "tileIndexPointer": "/mapData/map/5/6",
+            "tilePointer": "/mapData/tiles/16",
+            "tileKey": "tile_floor",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 1,
+            "col": 7,
+            "tileIndexPointer": "/mapData/map/5/7",
+            "tilePointer": "/mapData/tiles/17",
+            "tileKey": "tile_hole",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 1,
+            "col": 8,
+            "tileIndexPointer": "/mapData/map/5/8",
+            "tilePointer": "/mapData/tiles/18",
+            "tileKey": "tile_wall",
+            "heightType": "HIGHLAND",
+            "buildableType": "RANGED",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 1,
+            "col": 9,
+            "tileIndexPointer": "/mapData/map/5/9",
+            "tilePointer": "/mapData/tiles/19",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 0,
+            "col": 0,
+            "tileIndexPointer": "/mapData/map/6/0",
+            "tilePointer": "/mapData/tiles/0",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 0,
+            "col": 1,
+            "tileIndexPointer": "/mapData/map/6/1",
+            "tilePointer": "/mapData/tiles/1",
+            "tileKey": "tile_start",
+            "heightType": "LOWLAND",
+            "buildableType": "NONE",
+            "passableMask": "ALL",
+            "collider": null
+          },
+          {
+            "row": 0,
+            "col": 2,
+            "tileIndexPointer": "/mapData/map/6/2",
+            "tilePointer": "/mapData/tiles/2",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 0,
+            "col": 3,
+            "tileIndexPointer": "/mapData/map/6/3",
+            "tilePointer": "/mapData/tiles/3",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 0,
+            "col": 4,
+            "tileIndexPointer": "/mapData/map/6/4",
+            "tilePointer": "/mapData/tiles/4",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 0,
+            "col": 5,
+            "tileIndexPointer": "/mapData/map/6/5",
+            "tilePointer": "/mapData/tiles/5",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 0,
+            "col": 6,
+            "tileIndexPointer": "/mapData/map/6/6",
+            "tilePointer": "/mapData/tiles/6",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 0,
+            "col": 7,
+            "tileIndexPointer": "/mapData/map/6/7",
+            "tilePointer": "/mapData/tiles/7",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 0,
+            "col": 8,
+            "tileIndexPointer": "/mapData/map/6/8",
+            "tilePointer": "/mapData/tiles/8",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          },
+          {
+            "row": 0,
+            "col": 9,
+            "tileIndexPointer": "/mapData/map/6/9",
+            "tilePointer": "/mapData/tiles/9",
+            "tileKey": "tile_forbidden",
+            "heightType": "HIGHLAND",
+            "buildableType": "NONE",
+            "passableMask": "FLY_ONLY",
+            "collider": {
+              "enabled": true,
+              "isTrigger": false,
+              "offset": [
+                0.0,
+                0.0
+              ],
+              "size": [
+                1.0,
+                1.0
+              ],
+              "edgeRadius": 0.0
+            }
+          }
+        ],
+        "counts": [
+          {
+            "tileKey": "tile_end",
+            "height": "LOWLAND",
+            "passableMask": "ALL",
+            "isPhysical": false,
+            "count": 1
+          },
+          {
+            "tileKey": "tile_floor",
+            "height": "LOWLAND",
+            "passableMask": "ALL",
+            "isPhysical": false,
+            "count": 19
+          },
+          {
+            "tileKey": "tile_forbidden",
+            "height": "HIGHLAND",
+            "passableMask": "FLY_ONLY",
+            "isPhysical": true,
+            "count": 30
+          },
+          {
+            "tileKey": "tile_hole",
+            "height": "LOWLAND",
+            "passableMask": "ALL",
+            "isPhysical": false,
+            "count": 12
+          },
+          {
+            "tileKey": "tile_start",
+            "height": "LOWLAND",
+            "passableMask": "ALL",
+            "isPhysical": false,
+            "count": 1
+          },
+          {
+            "tileKey": "tile_wall",
+            "height": "HIGHLAND",
+            "passableMask": "FLY_ONLY",
+            "isPhysical": true,
+            "count": 7
+          }
+        ]
+      }
+    ],
+    "mission": {
+      "source": {
+        "url": "https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/17759cc8cdf37388414145d16262a3a06f3ab25e/zh_CN/gamedata/excel/uniequip_table.json",
+        "revision": "17759cc8cdf37388414145d16262a3a06f3ab25e",
+        "bytes": 3392727,
+        "sha256": "c436d9ca672c8e8c3926d0ccbd496f7591004baf944f8cb47458572f4eaa8590",
+        "gitBlobSha1": "337a11c671c583a626f4ab14e0f92d8bcb49b8ab"
+      },
+      "pointer": "/missionList/uniequip_002_sqrrel_2",
+      "prts": "https://prts.wiki/w/阿消",
+      "value": {
+        "template": "EquipmentEventStageMore",
+        "desc": "3星通关主题曲2-8；必须编入非助战阿消，且本场战斗至少使2个磐蟹坠落地穴",
+        "paramList": [
+          "3",
+          "main_02-08",
+          "char_277_sqrrel",
+          "SIMPLE,enemy_1016_diaman,fall_down",
+          "2"
+        ],
+        "uniEquipMissionId": "uniequip_002_sqrrel_2",
+        "uniEquipMissionSort": 2,
+        "uniEquipId": "uniequip_002_sqrrel",
+        "jumpStageId": "main_02-08"
+      }
+    }
+  }
+}
