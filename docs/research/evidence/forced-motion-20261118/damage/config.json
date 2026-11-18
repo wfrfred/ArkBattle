@@ -1,0 +1,1087 @@
+{
+  "provenance": {
+    "prefabs": {
+      "collectedOn": "2026-11-18",
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/attack-way-20261118/extract_aak_fuze_prefabs.py",
+        "bytes": 4757,
+        "sha256": "7daff49c07f3bd7045a38f611c343f909caef453830774e70203de3e3f308f0b"
+      },
+      "helper": {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/targeting-pipeline-20261109/content/extract_content.py",
+        "bytes": 12906,
+        "sha256": "37504c156e11e55c9c06174980fb1617281690ab3b01db9caa9dfd28937f5faa"
+      },
+      "sources": [
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "bytes": 477255,
+          "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "bytes": 1367500,
+          "sha256": "0d0b4c0f9252c14a69a20d4bea09527403dd3eddfc2f7bcd757c3c30cf37ffc3"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]equips.ab",
+          "bytes": 749424,
+          "sha256": "1698bc4166582fc953e54367e31cf46de2585fa94bdbeda8ab93256eb6cf5b4b"
+        }
+      ],
+      "selection": {
+        "battle/prefabs/[uc]skills.ab": [
+          "skchr_weedy_3"
+        ],
+        "battle/prefabs/[uc]equips.ab": [
+          "glady_equip_1_1_p1",
+          "rope_equip_1_1_p1"
+        ]
+      },
+      "scope": "All MonoBehaviour components under selected character/module hierarchy roots; no live execution observation."
+    },
+    "templates": {
+      "collectedOn": "2026-11-18",
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/attack-way-20261118/extract_templates.py",
+        "bytes": 2922,
+        "sha256": "06f04626dd11953a074e24f847fd21798c43c824c187f89913c55412ba997031"
+      },
+      "helper": {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/attack-addon-order-20261102/content/decode_content.py",
+        "bytes": 8161,
+        "sha256": "d17abeee072576a29ca060884dcc0dd770fe0f8194ca7eed7b5c13b99b41e14e"
+      },
+      "source": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+        "bytes": 2151020,
+        "sha256": "8edcb8017c977cdf52c2593b58e21db96949f3ad1e6f904180ac1241f145ca79"
+      },
+      "scope": "Selected installed Buff template programs; concrete character/talent/module binding recorded separately. "
+    },
+    "skillSourceRevision": "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+    "tableSources": [
+      {
+        "sourcePath": "zh_CN/gamedata/excel/character_table.json",
+        "localPath": ".cache/native-research/route-operations-20261107/data/character_table.json",
+        "sha256": "6a61f54802ee194dbb21968976eb99e2a4050e38928bd24bd2b770479076cea1",
+        "bytes": 15468242
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/excel/skill_table.json",
+        "localPath": ".cache/native-research/route-operations-20261107/data/skill_table.json",
+        "sha256": "492900f6b957233296c9736c86bb4e5f3ab4b4d7f5055a0f973c5acec3d174b1",
+        "bytes": 11766431
+      }
+    ]
+  },
+  "result": {
+    "weedySkill": {
+      "skillId": "skchr_weedy_3",
+      "overridePrefabKey": null
+    },
+    "weedyMastery3": [
+      {
+        "key": "force",
+        "value": 3.0,
+        "valueStr": null
+      },
+      {
+        "key": "stun",
+        "value": 0.0,
+        "valueStr": null
+      },
+      {
+        "key": "atk_scale",
+        "value": 3.5,
+        "valueStr": null
+      },
+      {
+        "key": "duration",
+        "value": 8.0,
+        "valueStr": null
+      },
+      {
+        "key": "dist",
+        "value": 1.0,
+        "valueStr": null
+      },
+      {
+        "key": "value",
+        "value": 1200.0,
+        "valueStr": null
+      },
+      {
+        "key": "interval",
+        "value": 0.066,
+        "valueStr": null
+      }
+    ],
+    "components": [
+      {
+        "bundle": "battle/prefabs/[uc]skills.ab",
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "pathId": "-5293117915051110373",
+        "hierarchy": [
+          "skchr_weedy_3"
+        ],
+        "objectSha256": "cdb2aedcd0e812d04ae42cde6541fe12c40e3d73277e12b298e11325bf82ca81",
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": 4156651312234227407
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "4156651312234227407",
+          "name": "RangedAttack",
+          "cl": "RangedAttack",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "value": {
+          "_selector": {
+            "m_FileID": 0,
+            "m_PathID": 3071064650171830299
+          },
+          "_metadata": {
+            "namedAsAlias": "",
+            "blackboardPrefix": ""
+          },
+          "_overrideSignalId": "",
+          "_interruptAbilityOnDetach": 0,
+          "_attachPassiveBuffsOnDummy": 1,
+          "_ignoreIfOwnerDead": 0,
+          "_forceAsDmgOrHealAbility": 0,
+          "_waitForAttackEvent": 1,
+          "_interuptIfTargetDead": 0,
+          "_resetCdStrategy": 1,
+          "_selectTargetSource": 1,
+          "_selectTargetTiming": 0,
+          "_timeMode": 1,
+          "_alwaysIncludeTarget": 0,
+          "_allowNoTarget": 1,
+          "_animKey": "Skill_3",
+          "_endAnimKey": "Idle",
+          "_downAnimKey": "Skill_3_Down",
+          "_downEndAnimKey": "",
+          "_upAnimKey": "",
+          "_upEndAnimKey": "",
+          "_cooldown": 0.0,
+          "_cooldownKey": "duration",
+          "_preDelay": 0.0,
+          "_escapeTime": 0.0,
+          "_faceToTarget": 1,
+          "_faceToDefault": 0,
+          "_faceToFront": 0,
+          "_faceToFirstCastTarget": 0,
+          "_checkFaceToFirstCastTargetDownAttack": 0,
+          "_forceFaceToDirection": 0,
+          "_activeBuffs": {
+            "Array": [
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "weedy_s_3_knockback",
+                "loadFromDB": 0,
+                "isDurableBuff": 0,
+                "isDamageMissable": 0,
+                "isSilenceable": 0,
+                "isStunnable": 0,
+                "isFreezable": 0,
+                "isLevitatable": 0,
+                "isGroundBoundable": 0,
+                "statusResistable": 2,
+                "templateKey": "knockback[dir]",
+                "disableOverride": 0,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": 0,
+                "clearAllStackCntWhenTimeUp": 0,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": 0,
+                "overrideEffectKey": "",
+                "overrideOnEventPriority": 0,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": 0,
+                "takeSnapshotWhenExtend": 0,
+                "durationKey": "",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": 0,
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": 1,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": 0,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": 0
+              },
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "weedy_s_3[rupture]",
+                "loadFromDB": 0,
+                "isDurableBuff": 0,
+                "isDamageMissable": 0,
+                "isSilenceable": 0,
+                "isStunnable": 0,
+                "isFreezable": 0,
+                "isLevitatable": 0,
+                "isGroundBoundable": 0,
+                "statusResistable": 2,
+                "templateKey": "rupture",
+                "disableOverride": 0,
+                "overrideKey": "rupture",
+                "overrideType": 3,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": 0,
+                "clearAllStackCntWhenTimeUp": 0,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": 0,
+                "overrideEffectKey": "weedy_skill_03_buff",
+                "overrideOnEventPriority": 0,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": 1,
+                "takeSnapshotWhenExtend": 0,
+                "durationKey": "",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": 2,
+                "triggerCnt": 0,
+                "triggerInterval": 1.0,
+                "waitFirstTriggerInterval": 1,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": 0,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": 0
+              }
+            ]
+          },
+          "_maxAnimScale": 1.0,
+          "_onlyPlayEndAnimWhenIsLastAbility": 0,
+          "_ignorePalsyInterrupt": 0,
+          "_affectedBySlowDown": 0,
+          "_atkScale": 1.0,
+          "_atkScaleKey": "atk_scale",
+          "_attackType": 1,
+          "_elementDamageType": 0,
+          "_epDamageRatio": 0.0,
+          "_useDynamicAttackType": 0,
+          "_deliveryParaWhenReplaceActionNode": 0,
+          "_projectileKey": "projectile_weedy_s3",
+          "_mountPointType": 2,
+          "_useMountGroup": 0,
+          "_mountGroup": {
+            "loopType": 0,
+            "mountPoints": {
+              "Array": []
+            }
+          },
+          "_damageType": 2,
+          "_waitForProjectileInvalid": 1,
+          "_notClearProjectileWhenCastEnd": 0,
+          "_fireAttackFinishWhenProjectileInvalid": 0,
+          "_minPostDelayWhenProjectileInvalid": 0.0,
+          "_waitForAnimEndWhenProjectileInvalid": 0,
+          "_projectileDestination": 0,
+          "_extraDamageType": 0,
+          "_emitToInputPosWhenTargetIsInvalid": 0,
+          "_emitToInputRootTileWhenTargetIsInvalid": 0,
+          "_useCachedAtkOnly": 0,
+          "_transferSource": 0,
+          "_extraProjectileKeys": {
+            "Array": []
+          },
+          "_fireCreateProjectileEvent": 0
+        }
+      },
+      {
+        "bundle": "battle/prefabs/[uc]equips.ab",
+        "file": "CAB-7e3af38637f0d056d61e3e709179a7d1",
+        "pathId": "-9136525477607034301",
+        "hierarchy": [
+          "rope_equip_1_1_p1"
+        ],
+        "objectSha256": "50945afd8ede3842918bb338e9c1c3b4b4f915f2ce4861ec393627fcb66b5696",
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": 3800760148018415462
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "3800760148018415462",
+          "name": "PassiveBuffAbility",
+          "cl": "PassiveBuffAbility",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "value": {
+          "_selector": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_metadata": {
+            "namedAsAlias": "",
+            "blackboardPrefix": ""
+          },
+          "_overrideSignalId": "",
+          "_interruptAbilityOnDetach": 0,
+          "_attachPassiveBuffsOnDummy": 1,
+          "_ignoreIfOwnerDead": 0,
+          "_forceAsDmgOrHealAbility": 0,
+          "_buffs": {
+            "Array": [
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "rope_e_trait",
+                "loadFromDB": 0,
+                "isDurableBuff": 0,
+                "isDamageMissable": 0,
+                "isSilenceable": 0,
+                "isStunnable": 0,
+                "isFreezable": 0,
+                "isLevitatable": 0,
+                "isGroundBoundable": 0,
+                "statusResistable": 2,
+                "templateKey": "rope_e_trait",
+                "disableOverride": 0,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": 0,
+                "clearAllStackCntWhenTimeUp": 0,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": 0,
+                "overrideEffectKey": "",
+                "overrideOnEventPriority": 0,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": 2,
+                "takeSnapshotWhenExtend": 0,
+                "durationKey": "",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": 0,
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": 1,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": 0,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": 0
+              }
+            ]
+          }
+        }
+      },
+      {
+        "bundle": "battle/prefabs/[uc]equips.ab",
+        "file": "CAB-7e3af38637f0d056d61e3e709179a7d1",
+        "pathId": "-176721508698283018",
+        "hierarchy": [
+          "glady_equip_1_1_p1"
+        ],
+        "objectSha256": "dbaa3a386a3cbd1bcff3f76aeb3c9240e0c26f2f2732c05b1d9cab6916f67402",
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": 3800760148018415462
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "3800760148018415462",
+          "name": "PassiveBuffAbility",
+          "cl": "PassiveBuffAbility",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "value": {
+          "_selector": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          },
+          "_metadata": {
+            "namedAsAlias": "",
+            "blackboardPrefix": ""
+          },
+          "_overrideSignalId": "",
+          "_interruptAbilityOnDetach": 0,
+          "_attachPassiveBuffsOnDummy": 1,
+          "_ignoreIfOwnerDead": 0,
+          "_forceAsDmgOrHealAbility": 0,
+          "_buffs": {
+            "Array": [
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "glady_e_trait",
+                "loadFromDB": 0,
+                "isDurableBuff": 0,
+                "isDamageMissable": 0,
+                "isSilenceable": 0,
+                "isStunnable": 0,
+                "isFreezable": 0,
+                "isLevitatable": 0,
+                "isGroundBoundable": 0,
+                "statusResistable": 2,
+                "templateKey": "glady_e_trait",
+                "disableOverride": 0,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": 0,
+                "clearAllStackCntWhenTimeUp": 0,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": 0,
+                "overrideEffectKey": "",
+                "overrideOnEventPriority": 0,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": 2,
+                "takeSnapshotWhenExtend": 0,
+                "durationKey": "",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": 0,
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": 1,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": 0,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": 0
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "templates": [
+      {
+        "bundle": "config/buff_template_holder.ab",
+        "file": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+        "pathId": "6070581171229484677",
+        "objectSha256": "c03149251d47fa31e6f6cb5b696f9e93925f51a97bf9ee335593c888bdcb6fec",
+        "templates": [
+          {
+            "templateKey": "rupture",
+            "effectKey": "",
+            "onEventPriority": 0,
+            "eventToActions": {
+              "_items": {
+                "Array": [
+                  {
+                    "key": 0,
+                    "value": {
+                      "SerializedState": "[{\"_isInit\":true,\"_targetType\":\"BUFF_OWNER\",\"_sourceType\":\"BUFF_SOURCE\",\"_attackType\":\"BUFF\",\"_damageType\":\"PURE\",\"$type\":\"Torappu.Battle.Action.Nodes+DamageByDistance\"}]",
+                      "SerializedObjectReferences": {
+                        "Array": []
+                      }
+                    }
+                  },
+                  {
+                    "key": 2,
+                    "value": {
+                      "SerializedState": "[{\"_isInit\":false,\"_targetType\":\"BUFF_OWNER\",\"_sourceType\":\"BUFF_SOURCE\",\"_attackType\":\"BUFF\",\"_damageType\":\"PURE\",\"$type\":\"Torappu.Battle.Action.Nodes+DamageByDistance\"}]",
+                      "SerializedObjectReferences": {
+                        "Array": []
+                      }
+                    }
+                  },
+                  {
+                    "key": 1,
+                    "value": {
+                      "SerializedState": "[{\"_isInit\":false,\"_targetType\":\"BUFF_OWNER\",\"_sourceType\":\"BUFF_SOURCE\",\"_attackType\":\"BUFF\",\"_damageType\":\"PURE\",\"$type\":\"Torappu.Battle.Action.Nodes+DamageByDistance\"}]",
+                      "SerializedObjectReferences": {
+                        "Array": []
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            "templateIndex": 294,
+            "events": [
+              {
+                "event": 0,
+                "actions": [
+                  {
+                    "_isInit": true,
+                    "_targetType": "BUFF_OWNER",
+                    "_sourceType": "BUFF_SOURCE",
+                    "_attackType": "BUFF",
+                    "_damageType": "PURE",
+                    "$type": "Torappu.Battle.Action.Nodes+DamageByDistance"
+                  }
+                ]
+              },
+              {
+                "event": 2,
+                "actions": [
+                  {
+                    "_isInit": false,
+                    "_targetType": "BUFF_OWNER",
+                    "_sourceType": "BUFF_SOURCE",
+                    "_attackType": "BUFF",
+                    "_damageType": "PURE",
+                    "$type": "Torappu.Battle.Action.Nodes+DamageByDistance"
+                  }
+                ]
+              },
+              {
+                "event": 1,
+                "actions": [
+                  {
+                    "_isInit": false,
+                    "_targetType": "BUFF_OWNER",
+                    "_sourceType": "BUFF_SOURCE",
+                    "_attackType": "BUFF",
+                    "_damageType": "PURE",
+                    "$type": "Torappu.Battle.Action.Nodes+DamageByDistance"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "templateKey": "glady_e_rupture",
+            "effectKey": "",
+            "onEventPriority": 0,
+            "eventToActions": {
+              "_items": {
+                "Array": [
+                  {
+                    "key": 2,
+                    "value": {
+                      "SerializedState": "[{\"_conditionNode\":{\"_targetType\":\"BUFF_OWNER\",\"$type\":\"Torappu.Battle.Action.Nodes+CheckEnemyUnbalanced\"},\"_succeedNodes\":[{\"_isInit\":false,\"_targetType\":\"BUFF_OWNER\",\"_sourceType\":\"BUFF_SOURCE\",\"_attackType\":\"BUFF\",\"_damageType\":\"MAGICAL\",\"$type\":\"Torappu.Battle.Action.Nodes+DamageByDistance\"}],\"_failNodes\":[{\"_decCntIfStack\":false,\"_updateOverrideMap\":true,\"$type\":\"Torappu.Battle.Action.Nodes+FinishBuff\"}],\"$type\":\"Torappu.Battle.Action.Nodes+IfElse\"}]",
+                      "SerializedObjectReferences": {
+                        "Array": []
+                      }
+                    }
+                  },
+                  {
+                    "key": 0,
+                    "value": {
+                      "SerializedState": "[{\"_targetType\":\"BUFF_OWNER\",\"$type\":\"Torappu.Battle.Action.Nodes+CheckEnemyUnbalanced\"},{\"_isInit\":false,\"_targetType\":\"BUFF_OWNER\",\"_sourceType\":\"BUFF_SOURCE\",\"_attackType\":\"BUFF\",\"_damageType\":\"MAGICAL\",\"$type\":\"Torappu.Battle.Action.Nodes+DamageByDistance\"}]",
+                      "SerializedObjectReferences": {
+                        "Array": []
+                      }
+                    }
+                  },
+                  {
+                    "key": 1,
+                    "value": {
+                      "SerializedState": "[{\"_targetType\":\"BUFF_OWNER\",\"$type\":\"Torappu.Battle.Action.Nodes+CheckEnemyUnbalanced\"},{\"_isInit\":false,\"_targetType\":\"BUFF_OWNER\",\"_sourceType\":\"BUFF_SOURCE\",\"_attackType\":\"BUFF\",\"_damageType\":\"MAGICAL\",\"$type\":\"Torappu.Battle.Action.Nodes+DamageByDistance\"}]",
+                      "SerializedObjectReferences": {
+                        "Array": []
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            "templateIndex": 6647,
+            "events": [
+              {
+                "event": 2,
+                "actions": [
+                  {
+                    "_conditionNode": {
+                      "_targetType": "BUFF_OWNER",
+                      "$type": "Torappu.Battle.Action.Nodes+CheckEnemyUnbalanced"
+                    },
+                    "_succeedNodes": [
+                      {
+                        "_isInit": false,
+                        "_targetType": "BUFF_OWNER",
+                        "_sourceType": "BUFF_SOURCE",
+                        "_attackType": "BUFF",
+                        "_damageType": "MAGICAL",
+                        "$type": "Torappu.Battle.Action.Nodes+DamageByDistance"
+                      }
+                    ],
+                    "_failNodes": [
+                      {
+                        "_decCntIfStack": false,
+                        "_updateOverrideMap": true,
+                        "$type": "Torappu.Battle.Action.Nodes+FinishBuff"
+                      }
+                    ],
+                    "$type": "Torappu.Battle.Action.Nodes+IfElse"
+                  }
+                ]
+              },
+              {
+                "event": 0,
+                "actions": [
+                  {
+                    "_targetType": "BUFF_OWNER",
+                    "$type": "Torappu.Battle.Action.Nodes+CheckEnemyUnbalanced"
+                  },
+                  {
+                    "_isInit": false,
+                    "_targetType": "BUFF_OWNER",
+                    "_sourceType": "BUFF_SOURCE",
+                    "_attackType": "BUFF",
+                    "_damageType": "MAGICAL",
+                    "$type": "Torappu.Battle.Action.Nodes+DamageByDistance"
+                  }
+                ]
+              },
+              {
+                "event": 1,
+                "actions": [
+                  {
+                    "_targetType": "BUFF_OWNER",
+                    "$type": "Torappu.Battle.Action.Nodes+CheckEnemyUnbalanced"
+                  },
+                  {
+                    "_isInit": false,
+                    "_targetType": "BUFF_OWNER",
+                    "_sourceType": "BUFF_SOURCE",
+                    "_attackType": "BUFF",
+                    "_damageType": "MAGICAL",
+                    "$type": "Torappu.Battle.Action.Nodes+DamageByDistance"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "templateKey": "glady_e_trait",
+            "effectKey": "",
+            "onEventPriority": 0,
+            "eventToActions": {
+              "_items": {
+                "Array": [
+                  {
+                    "key": 52,
+                    "value": {
+                      "SerializedState": "[{\"_buff\":{\"attributes\":{\"abnormalFlags\":[],\"abnormalImmunes\":[],\"abnormalAntis\":[],\"abnormalCombos\":[],\"abnormalComboImmunes\":[],\"attributeModifiers\":[]},\"buffKey\":\"glady_e_rupture\",\"loadFromDB\":false,\"isDurableBuff\":false,\"isDamageMissable\":false,\"isSilenceable\":false,\"isStunnable\":false,\"isFreezable\":false,\"isLevitatable\":false,\"isGroundBoundable\":false,\"statusResistable\":\"AUTOMATIC\",\"templateKey\":\"glady_e_rupture\",\"disableOverride\":false,\"overrideKey\":null,\"overrideType\":\"UNIQUE\",\"maxStackCnt\":1,\"refreshRemainingTimeWhenStackMax\":false,\"clearAllStackCntWhenTimeUp\":false,\"maxValidStackCnt\":-1,\"independentCharacterSource\":false,\"overrideEffectKey\":null,\"overrideOnEventPriority\":false,\"onEventPriority\":\"DEFAULT\",\"audioSignal\":null,\"lifeTimeType\":\"INFINITY\",\"takeSnapshotWhenExtend\":false,\"durationKey\":null,\"remainingTimeKey\":null,\"lifeTime\":0.0,\"triggerLifeType\":\"INFINITY\",\"triggerCnt\":0,\"triggerInterval\":0.066,\"waitFirstTriggerInterval\":true,\"firstTriggerInterval\":-1.0,\"priority\":-1,\"priorityBBKeys\":[],\"stripBlackboardParamsWithBuffKey\":false,\"blackboard\":[],\"enableInitDirectionFromSource\":false},\"_buffOwner\":\"TARGET\",\"_useSpecialBuffSource\":false,\"_specialBuffSource\":\"BUFF_SOURCE\",\"_isDerivedBuff\":false,\"_finishDerivedBuffIfParentFinish\":false,\"_inherateSourceProjectileFromParentBuff\":false,\"_hookEffectKeyFromSourceProjectile\":false,\"$type\":\"Torappu.Battle.Action.Nodes+CreateBuff\"}]",
+                      "SerializedObjectReferences": {
+                        "Array": []
+                      }
+                    }
+                  },
+                  {
+                    "key": 53,
+                    "value": {
+                      "SerializedState": "[{\"_buffKey\":\"glady_e_rupture\",\"_loadFromBlackboard\":false,\"_decCntIfStack\":false,\"_updateOverrideMap\":true,\"_targetType\":\"TARGET\",\"_checkBuffSource\":false,\"_sourceType\":\"BUFF_SOURCE\",\"_alsoClearNullSource\":false,\"_finishHostBuff\":false,\"_excludeThisBuff\":false,\"_decCntKey\":null,\"_decCnt\":1,\"$type\":\"Torappu.Battle.Action.Nodes+FinishBuffsById\"}]",
+                      "SerializedObjectReferences": {
+                        "Array": []
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            "templateIndex": 6648,
+            "events": [
+              {
+                "event": 52,
+                "actions": [
+                  {
+                    "_buff": {
+                      "attributes": {
+                        "abnormalFlags": [],
+                        "abnormalImmunes": [],
+                        "abnormalAntis": [],
+                        "abnormalCombos": [],
+                        "abnormalComboImmunes": [],
+                        "attributeModifiers": []
+                      },
+                      "buffKey": "glady_e_rupture",
+                      "loadFromDB": false,
+                      "isDurableBuff": false,
+                      "isDamageMissable": false,
+                      "isSilenceable": false,
+                      "isStunnable": false,
+                      "isFreezable": false,
+                      "isLevitatable": false,
+                      "isGroundBoundable": false,
+                      "statusResistable": "AUTOMATIC",
+                      "templateKey": "glady_e_rupture",
+                      "disableOverride": false,
+                      "overrideKey": null,
+                      "overrideType": "UNIQUE",
+                      "maxStackCnt": 1,
+                      "refreshRemainingTimeWhenStackMax": false,
+                      "clearAllStackCntWhenTimeUp": false,
+                      "maxValidStackCnt": -1,
+                      "independentCharacterSource": false,
+                      "overrideEffectKey": null,
+                      "overrideOnEventPriority": false,
+                      "onEventPriority": "DEFAULT",
+                      "audioSignal": null,
+                      "lifeTimeType": "INFINITY",
+                      "takeSnapshotWhenExtend": false,
+                      "durationKey": null,
+                      "remainingTimeKey": null,
+                      "lifeTime": 0.0,
+                      "triggerLifeType": "INFINITY",
+                      "triggerCnt": 0,
+                      "triggerInterval": 0.066,
+                      "waitFirstTriggerInterval": true,
+                      "firstTriggerInterval": -1.0,
+                      "priority": -1,
+                      "priorityBBKeys": [],
+                      "stripBlackboardParamsWithBuffKey": false,
+                      "blackboard": [],
+                      "enableInitDirectionFromSource": false
+                    },
+                    "_buffOwner": "TARGET",
+                    "_useSpecialBuffSource": false,
+                    "_specialBuffSource": "BUFF_SOURCE",
+                    "_isDerivedBuff": false,
+                    "_finishDerivedBuffIfParentFinish": false,
+                    "_inherateSourceProjectileFromParentBuff": false,
+                    "_hookEffectKeyFromSourceProjectile": false,
+                    "$type": "Torappu.Battle.Action.Nodes+CreateBuff"
+                  }
+                ]
+              },
+              {
+                "event": 53,
+                "actions": [
+                  {
+                    "_buffKey": "glady_e_rupture",
+                    "_loadFromBlackboard": false,
+                    "_decCntIfStack": false,
+                    "_updateOverrideMap": true,
+                    "_targetType": "TARGET",
+                    "_checkBuffSource": false,
+                    "_sourceType": "BUFF_SOURCE",
+                    "_alsoClearNullSource": false,
+                    "_finishHostBuff": false,
+                    "_excludeThisBuff": false,
+                    "_decCntKey": null,
+                    "_decCnt": 1,
+                    "$type": "Torappu.Battle.Action.Nodes+FinishBuffsById"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "templateKey": "rope_e_trait",
+            "effectKey": "",
+            "onEventPriority": 0,
+            "eventToActions": {
+              "_items": {
+                "Array": [
+                  {
+                    "key": 52,
+                    "value": {
+                      "SerializedState": "[{\"_buff\":{\"attributes\":{\"abnormalFlags\":[],\"abnormalImmunes\":[],\"abnormalAntis\":[],\"abnormalCombos\":[],\"abnormalComboImmunes\":[],\"attributeModifiers\":[]},\"buffKey\":\"rope_e_rupture\",\"loadFromDB\":false,\"isDurableBuff\":false,\"isDamageMissable\":false,\"isSilenceable\":false,\"isStunnable\":false,\"isFreezable\":false,\"isLevitatable\":false,\"isGroundBoundable\":false,\"statusResistable\":\"AUTOMATIC\",\"templateKey\":\"rope_e_rupture\",\"disableOverride\":false,\"overrideKey\":null,\"overrideType\":\"UNIQUE\",\"maxStackCnt\":1,\"refreshRemainingTimeWhenStackMax\":false,\"clearAllStackCntWhenTimeUp\":false,\"maxValidStackCnt\":-1,\"independentCharacterSource\":false,\"overrideEffectKey\":null,\"overrideOnEventPriority\":false,\"onEventPriority\":\"DEFAULT\",\"audioSignal\":null,\"lifeTimeType\":\"INFINITY\",\"takeSnapshotWhenExtend\":false,\"durationKey\":null,\"remainingTimeKey\":null,\"lifeTime\":0.0,\"triggerLifeType\":\"INFINITY\",\"triggerCnt\":0,\"triggerInterval\":0.066,\"waitFirstTriggerInterval\":true,\"firstTriggerInterval\":-1.0,\"priority\":-1,\"priorityBBKeys\":[],\"stripBlackboardParamsWithBuffKey\":false,\"blackboard\":[],\"enableInitDirectionFromSource\":false},\"_buffOwner\":\"TARGET\",\"_useSpecialBuffSource\":false,\"_specialBuffSource\":\"BUFF_SOURCE\",\"_isDerivedBuff\":false,\"_finishDerivedBuffIfParentFinish\":false,\"_inherateSourceProjectileFromParentBuff\":false,\"_hookEffectKeyFromSourceProjectile\":false,\"$type\":\"Torappu.Battle.Action.Nodes+CreateBuff\"}]",
+                      "SerializedObjectReferences": {
+                        "Array": []
+                      }
+                    }
+                  },
+                  {
+                    "key": 53,
+                    "value": {
+                      "SerializedState": "[{\"_buffKey\":\"rope_e_rupture\",\"_loadFromBlackboard\":false,\"_decCntIfStack\":false,\"_updateOverrideMap\":true,\"_targetType\":\"TARGET\",\"_checkBuffSource\":false,\"_sourceType\":\"BUFF_SOURCE\",\"_alsoClearNullSource\":false,\"_finishHostBuff\":false,\"_excludeThisBuff\":false,\"_decCntKey\":null,\"_decCnt\":1,\"$type\":\"Torappu.Battle.Action.Nodes+FinishBuffsById\"}]",
+                      "SerializedObjectReferences": {
+                        "Array": []
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            "templateIndex": 6652,
+            "events": [
+              {
+                "event": 52,
+                "actions": [
+                  {
+                    "_buff": {
+                      "attributes": {
+                        "abnormalFlags": [],
+                        "abnormalImmunes": [],
+                        "abnormalAntis": [],
+                        "abnormalCombos": [],
+                        "abnormalComboImmunes": [],
+                        "attributeModifiers": []
+                      },
+                      "buffKey": "rope_e_rupture",
+                      "loadFromDB": false,
+                      "isDurableBuff": false,
+                      "isDamageMissable": false,
+                      "isSilenceable": false,
+                      "isStunnable": false,
+                      "isFreezable": false,
+                      "isLevitatable": false,
+                      "isGroundBoundable": false,
+                      "statusResistable": "AUTOMATIC",
+                      "templateKey": "rope_e_rupture",
+                      "disableOverride": false,
+                      "overrideKey": null,
+                      "overrideType": "UNIQUE",
+                      "maxStackCnt": 1,
+                      "refreshRemainingTimeWhenStackMax": false,
+                      "clearAllStackCntWhenTimeUp": false,
+                      "maxValidStackCnt": -1,
+                      "independentCharacterSource": false,
+                      "overrideEffectKey": null,
+                      "overrideOnEventPriority": false,
+                      "onEventPriority": "DEFAULT",
+                      "audioSignal": null,
+                      "lifeTimeType": "INFINITY",
+                      "takeSnapshotWhenExtend": false,
+                      "durationKey": null,
+                      "remainingTimeKey": null,
+                      "lifeTime": 0.0,
+                      "triggerLifeType": "INFINITY",
+                      "triggerCnt": 0,
+                      "triggerInterval": 0.066,
+                      "waitFirstTriggerInterval": true,
+                      "firstTriggerInterval": -1.0,
+                      "priority": -1,
+                      "priorityBBKeys": [],
+                      "stripBlackboardParamsWithBuffKey": false,
+                      "blackboard": [],
+                      "enableInitDirectionFromSource": false
+                    },
+                    "_buffOwner": "TARGET",
+                    "_useSpecialBuffSource": false,
+                    "_specialBuffSource": "BUFF_SOURCE",
+                    "_isDerivedBuff": false,
+                    "_finishDerivedBuffIfParentFinish": false,
+                    "_inherateSourceProjectileFromParentBuff": false,
+                    "_hookEffectKeyFromSourceProjectile": false,
+                    "$type": "Torappu.Battle.Action.Nodes+CreateBuff"
+                  }
+                ]
+              },
+              {
+                "event": 53,
+                "actions": [
+                  {
+                    "_buffKey": "rope_e_rupture",
+                    "_loadFromBlackboard": false,
+                    "_decCntIfStack": false,
+                    "_updateOverrideMap": true,
+                    "_targetType": "TARGET",
+                    "_checkBuffSource": false,
+                    "_sourceType": "BUFF_SOURCE",
+                    "_alsoClearNullSource": false,
+                    "_finishHostBuff": false,
+                    "_excludeThisBuff": false,
+                    "_decCntKey": null,
+                    "_decCnt": 1,
+                    "$type": "Torappu.Battle.Action.Nodes+FinishBuffsById"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "templateKey": "rope_e_rupture",
+            "effectKey": "",
+            "onEventPriority": 0,
+            "eventToActions": {
+              "_items": {
+                "Array": [
+                  {
+                    "key": 2,
+                    "value": {
+                      "SerializedState": "[{\"_conditionNode\":{\"_targetType\":\"BUFF_OWNER\",\"$type\":\"Torappu.Battle.Action.Nodes+CheckEnemyUnbalanced\"},\"_succeedNodes\":[{\"_isInit\":false,\"_targetType\":\"BUFF_OWNER\",\"_sourceType\":\"BUFF_SOURCE\",\"_attackType\":\"BUFF\",\"_damageType\":\"MAGICAL\",\"$type\":\"Torappu.Battle.Action.Nodes+DamageByDistance\"}],\"_failNodes\":[{\"_decCntIfStack\":false,\"_updateOverrideMap\":true,\"$type\":\"Torappu.Battle.Action.Nodes+FinishBuff\"}],\"$type\":\"Torappu.Battle.Action.Nodes+IfElse\"}]",
+                      "SerializedObjectReferences": {
+                        "Array": []
+                      }
+                    }
+                  },
+                  {
+                    "key": 0,
+                    "value": {
+                      "SerializedState": "[{\"_targetType\":\"BUFF_OWNER\",\"$type\":\"Torappu.Battle.Action.Nodes+CheckEnemyUnbalanced\"},{\"_isInit\":false,\"_targetType\":\"BUFF_OWNER\",\"_sourceType\":\"BUFF_SOURCE\",\"_attackType\":\"BUFF\",\"_damageType\":\"MAGICAL\",\"$type\":\"Torappu.Battle.Action.Nodes+DamageByDistance\"}]",
+                      "SerializedObjectReferences": {
+                        "Array": []
+                      }
+                    }
+                  },
+                  {
+                    "key": 1,
+                    "value": {
+                      "SerializedState": "[{\"_targetType\":\"BUFF_OWNER\",\"$type\":\"Torappu.Battle.Action.Nodes+CheckEnemyUnbalanced\"},{\"_isInit\":false,\"_targetType\":\"BUFF_OWNER\",\"_sourceType\":\"BUFF_SOURCE\",\"_attackType\":\"BUFF\",\"_damageType\":\"MAGICAL\",\"$type\":\"Torappu.Battle.Action.Nodes+DamageByDistance\"}]",
+                      "SerializedObjectReferences": {
+                        "Array": []
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            "templateIndex": 6653,
+            "events": [
+              {
+                "event": 2,
+                "actions": [
+                  {
+                    "_conditionNode": {
+                      "_targetType": "BUFF_OWNER",
+                      "$type": "Torappu.Battle.Action.Nodes+CheckEnemyUnbalanced"
+                    },
+                    "_succeedNodes": [
+                      {
+                        "_isInit": false,
+                        "_targetType": "BUFF_OWNER",
+                        "_sourceType": "BUFF_SOURCE",
+                        "_attackType": "BUFF",
+                        "_damageType": "MAGICAL",
+                        "$type": "Torappu.Battle.Action.Nodes+DamageByDistance"
+                      }
+                    ],
+                    "_failNodes": [
+                      {
+                        "_decCntIfStack": false,
+                        "_updateOverrideMap": true,
+                        "$type": "Torappu.Battle.Action.Nodes+FinishBuff"
+                      }
+                    ],
+                    "$type": "Torappu.Battle.Action.Nodes+IfElse"
+                  }
+                ]
+              },
+              {
+                "event": 0,
+                "actions": [
+                  {
+                    "_targetType": "BUFF_OWNER",
+                    "$type": "Torappu.Battle.Action.Nodes+CheckEnemyUnbalanced"
+                  },
+                  {
+                    "_isInit": false,
+                    "_targetType": "BUFF_OWNER",
+                    "_sourceType": "BUFF_SOURCE",
+                    "_attackType": "BUFF",
+                    "_damageType": "MAGICAL",
+                    "$type": "Torappu.Battle.Action.Nodes+DamageByDistance"
+                  }
+                ]
+              },
+              {
+                "event": 1,
+                "actions": [
+                  {
+                    "_targetType": "BUFF_OWNER",
+                    "$type": "Torappu.Battle.Action.Nodes+CheckEnemyUnbalanced"
+                  },
+                  {
+                    "_isInit": false,
+                    "_targetType": "BUFF_OWNER",
+                    "_sourceType": "BUFF_SOURCE",
+                    "_attackType": "BUFF",
+                    "_damageType": "MAGICAL",
+                    "$type": "Torappu.Battle.Action.Nodes+DamageByDistance"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

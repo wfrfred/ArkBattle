@@ -17,6 +17,7 @@
           "collision/contact-ranges.json#/provenance/client/dll",
           "collision/ice-corner-native.json#/provenance/client/dll",
           "collision/ice-corner-velocity.json#/provenance/client/dll",
+          "damage/native.json#/provenance/client/dll",
           "formulas/force-native-selected.json#/provenance/client/dll",
           "push/native-push.json#/provenance/client/dll",
           "state/native-state.json#/provenance/client/dll"
@@ -33,6 +34,7 @@
           "collision/contact-ranges.json#/provenance/client/metadata",
           "collision/ice-corner-native.json#/provenance/client/metadata",
           "collision/ice-corner-velocity.json#/provenance/client/metadata",
+          "damage/native.json#/provenance/client/metadata",
           "formulas/force-native-selected.json#/provenance/client/metadata",
           "push/native-push.json#/provenance/client/metadata",
           "state/native-state.json#/provenance/client/metadata"
@@ -50,6 +52,8 @@
       "collision/ice-corner-velocity.json",
       "collision/stage-witness.json",
       "collision/tile-assets.json",
+      "damage/config.json",
+      "damage/native.json",
       "formulas/force-native-selected.json",
       "formulas/force-tables.json",
       "formulas/mint-config.json",
@@ -155,6 +159,24 @@
         "kind": "historical-script",
         "bytes": 5033,
         "sha256": "c73cd2fba6c387b9057357553cd6e3a09860c3cae1c0e484ab18a36e54bfdb02"
+      },
+      {
+        "path": "damage/config.json",
+        "kind": "record",
+        "bytes": 44773,
+        "sha256": "9f236a77ec83576c830b55850aef0b638af9eea0b9834459a59af5008aa911b0"
+      },
+      {
+        "path": "damage/extract_config.py",
+        "kind": "historical-script",
+        "bytes": 2543,
+        "sha256": "3e89014bbf9dc1e484ff7b434f8d9d48c74d9a8c694834d92b2982812a7e7dbb"
+      },
+      {
+        "path": "damage/native.json",
+        "kind": "record",
+        "bytes": 195927,
+        "sha256": "01c7fc16483fe5eb5fda7139c832de7a3aff82fd573c0a90960ccdf9fdd891cc"
       },
       {
         "path": "formulas/decode_game_consts.py",
@@ -458,6 +480,26 @@
           ],
           "fullname": "Torappu.Battle.Buff.OnCollideWithHighLand",
           "address": "0x1806d1e80"
+        },
+        {
+          "index": 66194,
+          "mode": "disasm",
+          "records": [
+            "damage/native.json#/result/ranges/66194",
+            "damage/native.json#/result/ranges/66194/method"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnMakeEnemyUnbalanced",
+          "address": "0x1806d31d0"
+        },
+        {
+          "index": 66203,
+          "mode": "disasm",
+          "records": [
+            "damage/native.json#/result/ranges/66203",
+            "damage/native.json#/result/ranges/66203/method"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnEndPulling",
+          "address": "0x1806d2360"
         },
         {
           "index": 66232,
@@ -1173,6 +1215,16 @@
           "address": "0x180ac75c0"
         },
         {
+          "index": 77876,
+          "mode": "disasm",
+          "records": [
+            "damage/native.json#/result/ranges/77876",
+            "damage/native.json#/result/ranges/77876/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy..ctor",
+          "address": "0x180ac9870"
+        },
+        {
           "index": 77951,
           "mode": "metadata",
           "records": [
@@ -1448,6 +1500,16 @@
           "address": "0x18107acb0"
         },
         {
+          "index": 99181,
+          "mode": "disasm",
+          "records": [
+            "damage/native.json#/result/ranges/99181",
+            "damage/native.json#/result/ranges/99181/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/DamageByDistance.Execute",
+          "address": "0x1810fbd40"
+        },
+        {
           "index": 100306,
           "mode": "metadata",
           "records": [
@@ -1467,6 +1529,16 @@
           ],
           "fullname": "Torappu.Battle.Action.Nodes/DragTowardSource.Execute",
           "address": "0x18116ffd0"
+        },
+        {
+          "index": 101818,
+          "mode": "disasm",
+          "records": [
+            "damage/native.json#/result/ranges/101818",
+            "damage/native.json#/result/ranges/101818/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/CheckEnemyUnbalanced.Execute",
+          "address": "0x1811e2480"
         },
         {
           "index": 226057,
@@ -1689,6 +1761,7 @@
           "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99",
           "records": [
             "collision/ice-corner-prefab.json#/provenance/sources/1",
+            "damage/config.json#/provenance/prefabs/sources/0",
             "formulas/mint-config.json#/provenance/prefabDecoder/sources/0",
             "push/prefabs.json#/provenance/sources/0",
             "push/projectiles.json#/provenance/sources/0"
@@ -1730,6 +1803,39 @@
         },
         {
           "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "sha256": "0d0b4c0f9252c14a69a20d4bea09527403dd3eddfc2f7bcd757c3c30cf37ffc3",
+          "records": [
+            "damage/config.json#/provenance/prefabs/sources/1",
+            "formulas/mint-config.json#/provenance/prefabDecoder/sources/2",
+            "push/prefabs.json#/provenance/sources/1"
+          ],
+          "bytes": 1367500
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]equips.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]equips.ab",
+          "sha256": "1698bc4166582fc953e54367e31cf46de2585fa94bdbeda8ab93256eb6cf5b4b",
+          "records": [
+            "damage/config.json#/provenance/prefabs/sources/2"
+          ],
+          "bytes": 749424
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "sha256": "8edcb8017c977cdf52c2593b58e21db96949f3ad1e6f904180ac1241f145ca79",
+          "records": [
+            "damage/config.json#/provenance/templates/source",
+            "push/templates.json#/provenance/source"
+          ],
+          "bytes": 2151020
+        },
+        {
+          "kind": "bundle",
           "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/anon/a2adf558e4aef8b8e3d9dafb2c9a941c.bin",
           "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/anon/a2adf558e4aef8b8e3d9dafb2c9a941c.bin",
           "sha256": "5c9a3f3589e64c6a0f65ae07ca511796c48d97f973375eab3c6e0d78bb610b8a",
@@ -1760,17 +1866,6 @@
         },
         {
           "kind": "bundle",
-          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
-          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
-          "sha256": "0d0b4c0f9252c14a69a20d4bea09527403dd3eddfc2f7bcd757c3c30cf37ffc3",
-          "records": [
-            "formulas/mint-config.json#/provenance/prefabDecoder/sources/2",
-            "push/prefabs.json#/provenance/sources/1"
-          ],
-          "bytes": 1367500
-        },
-        {
-          "kind": "bundle",
           "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_277_sqrrel.ab",
           "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_277_sqrrel.ab",
           "sha256": "0ea640bba0f483bddf7a66e24b4bafbfe80741f9a936c8b3df5fb80a545aed6a",
@@ -1788,16 +1883,6 @@
             "push/projectiles.json#/provenance/sources/1"
           ],
           "bytes": 1905483
-        },
-        {
-          "kind": "bundle",
-          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
-          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
-          "sha256": "8edcb8017c977cdf52c2593b58e21db96949f3ad1e6f904180ac1241f145ca79",
-          "records": [
-            "push/templates.json#/provenance/source"
-          ],
-          "bytes": 2151020
         }
       ]
     },
