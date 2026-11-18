@@ -1,4 +1,4 @@
-import type { Id as UnitId } from "../../unit/unit.js";
+import type { Id as UnitId } from "../unit/unit.js";
 import type { BranchPhase, Definition, Spawn } from "./definition.js";
 
 export interface State {

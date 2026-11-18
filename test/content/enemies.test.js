@@ -35,7 +35,7 @@ import { advance as advanceAction } from '../../dist/core/unit/action/index.js';
 import { advance as advanceCombat } from '../../dist/core/battle/steps/combat.js';
 import { advance as advanceProjectiles } from '../../dist/core/projectile/operations.js';
 import * as projectilesQuery from '../../dist/core/projectile/index.js';
-import { advance as advanceSchedule } from '../../dist/core/battle/schedule/index.js';
+import { advance as advanceSchedule } from '../../dist/core/schedule/index.js';
 import { battle as createBattle } from '../helpers/battle.js';
 
 const fixture = JSON.parse(readFileSync(new URL('../fixtures/arknights/main-mode-units.json', import.meta.url), 'utf8'));

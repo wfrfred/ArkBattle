@@ -1,7 +1,7 @@
-import type { WorldPosition } from "../../geometry/coordinate.js";
-import type { Definitions } from "../../unit/capability/catalog.js";
-import type { Plan, Route } from "../../unit/capability/route/capability.js";
-import type { Definition as BaseDefinition } from "../../unit/unit.js";
+import type { WorldPosition } from "../geometry/coordinate.js";
+import type { Definitions } from "../unit/capability/catalog.js";
+import type { Plan, Route } from "../unit/capability/route/capability.js";
+import type { Definition as BaseDefinition } from "../unit/unit.js";
 
 export type UnitDefinition = BaseDefinition &
     Route["definition"] &

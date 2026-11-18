@@ -1,7 +1,7 @@
 import { Vec2 } from "../../../common/vector.js";
 import { assert, assertNonnegativeSafeInteger } from "../../../common/assert.js";
 import type { State as BattleState, Result } from "../../../battle/state.js";
-import { timing } from "../../../battle/schedule/query.js";
+import { timing } from "../../../schedule/query.js";
 import type { MotionMode } from "../../../battlefield/navigation/state.js";
 import type { Identified, Ref } from "../../../common/ref.js";
 import type { TilePosition, WorldPosition } from "../../../geometry/coordinate.js";

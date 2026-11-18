@@ -47,7 +47,7 @@ import * as targeting from ${module("targeting/index")};
 import * as classification from ${module("unit/capability/classification/index")};
 import { hasTargetable } from ${module("unit/capability/targetable/capability")};
 import { topK } from ${module("common/collection/order")};
-import type { Spawn } from ${module("battle/schedule/index")};
+import type { Spawn } from ${module("schedule/index")};
 declare const battle: State;
 const attribute = (value: number, min: number | null = 0, max: number | null = null) => ({ default: value, min, max });
 const outputKey = key<Hook<{ amount: number }, number>>('output');

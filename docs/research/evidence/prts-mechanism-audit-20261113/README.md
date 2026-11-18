@@ -17,7 +17,7 @@
 复查代码可使用 `coverage.json` 中的路径；固定基线示例：
 
 ```sh
-git show 408ab7cf7e4fb9aa0332312bf11621e0368c7912:src/core/battle/schedule/runtime.ts
+git show 408ab7cf7e4fb9aa0332312bf11621e0368c7912:src/core/schedule/runtime.ts
 git show 408ab7cf7e4fb9aa0332312bf11621e0368c7912:src/core/battle/damage/hp/contract.ts
 ```
 
