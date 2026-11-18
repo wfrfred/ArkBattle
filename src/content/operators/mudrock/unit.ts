@@ -367,7 +367,7 @@ export function create(
             profession: "TANK",
             subProfession: "UNYIELD",
             extraProfessions: [],
-            groupTags: ["rhodes"],
+            groupTags: profile.groupTags,
         },
         layer: { type: "GROUND" },
         hitbox: { shape: { type: "CIRCLE", offset: [0, 0], radius: 0.25 } },

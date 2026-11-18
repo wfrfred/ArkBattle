@@ -31,6 +31,7 @@ function platform() {
         id: 30, position: Tile.center(first), initial: { occupancy: { tile: first } },
         definition: createPlatform({
             id: "platform", vitality: vitality(100),
+            classification: { type: "DEVICE", side: "ALLY", filterTags: [], groupTags: [] },
             deployable, card, tileChanges: { elevation: "HIGHLAND" },
         }),
     });

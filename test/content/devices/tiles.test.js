@@ -36,6 +36,7 @@ function battle(firstTerrain = normal, firstCost = 2000) {
 function configuration(id, tileChanges = {}) {
     return { hooks: Hooks.empty(),
         id,
+        classification: { type: "DEVICE", side: "ALLY", filterTags: [], groupTags: [] },
         vitality: vitality(100),
         deployable: { retreatRestrictions: [] },
         card: createCardDefinition({ cost: 0, redeployTicks: 0, slots: 0, placement: "ALL" }),

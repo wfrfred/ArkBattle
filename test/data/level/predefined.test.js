@@ -29,15 +29,19 @@ function predefined(raw, key) {
     return { instance, character, skill, profile };
 }
 
-test("a real hidden predefine converts its alias, world position and occupancy tile", () => {
+test("real hidden devices preserve placement and static classification", () => {
     const raw = fixture("level_act1autochess_m02");
     const { instance, character, profile } = predefined(raw, "trap_1105_accrate");
     const definition = parsePredefinedDefinition(0, instance, profile, character);
+    const platformData = predefined(raw, "trap_1106_achplat");
+    const platformDefinition = parsePredefinedDefinition(
+        1, platformData.instance, platformData.profile, platformData.character,
+    );
     const level = parseLevelDefinition(raw, {
         consumeTileBlackboard: (_context, entry) => ["isValidHand", "previewNotAlloed"].includes(entry.key),
     });
     let battle = initialize({
-        map: level.map, predefines: [definition], initialMechanisms: [],
+        map: level.map, predefines: [definition, platformDefinition], initialMechanisms: [],
         schedule: { waves: [], branches: {} }, routeMoveMultiplier: 1, rngState: 123,
     });
     assert.equal(battle.battlefield.units.size, 0);
@@ -48,6 +52,32 @@ test("a real hidden predefine converts its alias, world position and occupancy t
     assert.deepEqual(crate.occupancy.tile, [12, 4]);
     assert.equal(crate.definition.vitality.recoverySpeed.default, 0);
     assert.equal(occupancyAt(battle.battlefield, [12, 4]).occupant.id, crate.id);
+    assert.deepEqual(crate.definition.classification, {
+        type: "DEVICE", side: "ALLY", filterTags: [], groupTags: [],
+    });
+    const [platformId] = predefinedIdsForAlias(battle.definition.predefines, "trap_1106_achplat#001");
+    battle = appear(battle, platformId);
+    const platform = [...battle.battlefield.units.values()]
+        .find(unit => unit.definition.id === "trap_1106_achplat");
+    assert.deepEqual(platform.definition.classification, {
+        type: "DEVICE", side: "ALLY", filterTags: ["SANDBOX_FACTORY"], groupTags: [],
+    });
+
+    const modifiedPrefab = fixture("prefab_trap_1106_achplat");
+    const token = modifiedPrefab.components.find(component => "_rewriteTileOptions" in component.fields).fields;
+    token._sideType = 2;
+    token._filterTag = ["changed-filter"];
+    const modifiedCharacter = {
+        ...platformData.character,
+        mainPower: { nationId: "laterano", groupId: null, teamId: null },
+        subPower: [{ nationId: "kazimierz", groupId: null, teamId: null }],
+    };
+    const modifiedDefinition = parsePredefinedDefinition(
+        2, platformData.instance, parsePredefinedPrefab(modifiedPrefab), modifiedCharacter,
+    );
+    assert.deepEqual(modifiedDefinition.creation.definition.classification, {
+        type: "DEVICE", side: "ENEMY", filterTags: ["changed-filter"], groupTags: ["laterano", "kazimierz"],
+    });
 });
 
 test("real controller and skill data supply shared terrain parameters", () => {

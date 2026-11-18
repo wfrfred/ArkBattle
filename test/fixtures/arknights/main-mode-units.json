@@ -805,7 +805,13 @@
             "level": 1
           }
         }
-      ]
+      ],
+      "mainPower": {
+        "nationId": "rhodes",
+        "groupId": null,
+        "teamId": null
+      },
+      "subPower": null
     },
     "char_208_melan": {
       "name": "玫兰莎",
@@ -1233,6 +1239,18 @@
             "phase": "PHASE_1",
             "level": 1
           }
+        }
+      ],
+      "mainPower": {
+        "nationId": "rhodes",
+        "groupId": null,
+        "teamId": "reserve4"
+      },
+      "subPower": [
+        {
+          "nationId": "victoria",
+          "groupId": null,
+          "teamId": null
         }
       ]
     }

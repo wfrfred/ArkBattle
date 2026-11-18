@@ -5,6 +5,7 @@ import {
     assertPositiveNumber,
 } from "../../core/common/assert.js";
 import { RANKS, type Rank } from "../../core/unit/capability/classification/index.js";
+import { parseTags } from "./tags.js";
 
 interface EnemyMovementValues {
     readonly maxHp: number | undefined;
@@ -381,13 +382,7 @@ export function prepare(value: unknown, configuration: Configuration): Profile {
         throw new TypeError(`unsupported enemy applyWay ${String(fields.applyWay)}`);
     }
 
-    const filterTags = fields.enemyTags ?? [];
-    if (
-        !Array.isArray(filterTags) ||
-        !filterTags.every((tag: unknown) => typeof tag === "string")
-    ) {
-        throw new TypeError("enemy tags must be a string array");
-    }
+    const filterTags = parseTags(fields.enemyTags ?? []);
 
     const maxHp = numeric(attributes, "maxHp");
     const baseAttackTime = numeric(attributes, "baseAttackTime");

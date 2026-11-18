@@ -45,7 +45,9 @@ Effect 的重复施加、启用竞争、接收免疫／抵抗和生命周期关�
 
 敌人的模板等级与关卡覆盖先合并。`m_defined`、潜能的零基 rank、原表天赋候选和模组数据槽等原始表示不进入 Core。标签、免疫和关联资源应有明确的转换结果，不要求 Content 从原始 Profile 猜测身份或规则。
 
-Content 明确 [Classification](capability.md#classification) 的单位类别、职业／子职业及固定组织；当前角色转换不解析这些身份。敌人转换将 enemyTags／levelType 规范为 filterTags／rank；资料中的 TOKEN／TRAP 不进入八职业，subProfession 不按原始字符串直接透传。Rune／模组额外职业及通用 Trap Prefab 筛选标签解析尚未接入；阵营由实际创建配置提供，不由资料来源或召唤入口推断。
+Content 明确 [Classification](capability.md#classification) 的单位类别、职业／子职业，Data 提供组织与战斗筛选标签。角色的 mainPower／subPower 合并为 Profile.groupTags，不重复读取旧组织字段，也不混入档案种族；敌人的 enemyTags／levelType 规范为 filterTags／rank。标签必须是非空字符串，转换保留大小写和首次出现顺序并去重，不按名称猜测语义或丢弃。
+
+预置 Unit 装置从实际 Prefab 读取阵营与筛选标签，从角色资料读取组织标签，经 Content 绑定 DEVICE 分类。地形控制器仍按 Mechanism 转换，TileDeployment 只描述地图地块的部署条件。资料中的 TOKEN／TRAP 不进入八职业，subProfession 不按原始字符串直接透传；Rune／模组提供的额外职业与组织标签预处理尚未接入。
 
 Unit Profile 保留规范化的静态数值；组装 Core 属性 Definition 时，Content 或已有工厂显式提供 [Attribute](attribute.md) 的 default/min/max。hpRecoveryPerSec 保持 HP／秒，绑定到 Vitality.recoverySpeed.default；自然 SP 速率保持 SP／秒。基础攻击间隔乘 Tick 率后保留连续值，不使用定时事件的向上取整换算。Data 不推进资源或维护运行时范围。
 

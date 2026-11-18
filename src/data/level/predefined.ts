@@ -22,6 +22,7 @@ import { Tile } from "../../core/geometry/coordinate.js";
 import type { ArknightsPredefinedInstance } from "./definition.js";
 import type { PredefinedPrefab } from "./prefab.js";
 import { secondsToTicks } from "../time.js";
+import { parseGroupTags } from "../unit/tags.js";
 
 function object(value: unknown, name: string): Record<string, unknown> {
     if (value === null || typeof value !== "object" || Array.isArray(value)) {
@@ -90,6 +91,7 @@ function unitDefinition(
     instance: ArknightsPredefinedInstance,
     phase: Record<string, unknown>,
     profile: Extract<PredefinedPrefab, { readonly type: "UNIT" }>,
+    groupTags: readonly string[],
 ): DeviceDefinition {
     if (instance.inst.potentialRank !== 0 || instance.inst.favorPoint !== 0) {
         throw new TypeError("predefined unit potential and favor modifiers are not supported");
@@ -144,6 +146,12 @@ function unitDefinition(
 
     const configuration: Configuration = {
         id: instance.inst.characterKey,
+        classification: {
+            type: "DEVICE",
+            side: profile.side,
+            filterTags: profile.filterTags,
+            groupTags,
+        },
         vitality: {
             defense: { default: 0, min: 0, max: null },
             resistance: { default: 0, min: 0, max: 100 },
@@ -213,7 +221,7 @@ export function parsePredefinedDefinition(
         });
     }
 
-    const definition = unitDefinition(instance, phase, profile);
+    const definition = unitDefinition(instance, phase, profile, parseGroupTags(characterValue));
     const position = Tile.center(instance.position);
 
     return createPredefinedDefinition({

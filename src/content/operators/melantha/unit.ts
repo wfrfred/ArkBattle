@@ -194,7 +194,7 @@ export function create(profile: Profile, timing: AttackSpeedTiming): Definition 
             profession: "WARRIOR",
             subProfession: "FEARLESS",
             extraProfessions: [],
-            groupTags: ["rhodes", "reserve4", "victoria"],
+            groupTags: profile.groupTags,
         },
         layer: { type: "GROUND" },
         hitbox: { shape: { type: "CIRCLE", offset: [0, 0], radius: 0.25 } },

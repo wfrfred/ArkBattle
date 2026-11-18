@@ -8,6 +8,7 @@ import type { TilePosition } from "../../core/geometry/coordinate.js";
 import { parseBlackboard, type ArknightsBlackboardEntry } from "../blackboard.js";
 import { parseRange } from "../range.js";
 import { parseArknightsSkillLevel, type ArknightsSkillLevel } from "../skill/operator.js";
+import { parseGroupTags } from "./tags.js";
 
 export interface Configuration {
     readonly elite: 0 | 1 | 2;
@@ -40,6 +41,7 @@ interface Talent {
 
 export interface Profile {
     readonly id: string;
+    readonly groupTags: readonly string[];
     readonly configuration: Configuration;
     readonly attributes: Readonly<Attributes>;
     readonly range: readonly TilePosition[];
@@ -565,6 +567,7 @@ export function prepare(
 
     return {
         id,
+        groupTags: parseGroupTags(character),
         configuration,
         attributes,
         range: parseRange(tables.ranges, phase.rangeId),

@@ -5,7 +5,7 @@
     "cab": "CAB-425a845ff37dbe17e203e6b341c4f664",
     "unityVersion": "2021.3.39f1",
     "filtered": true,
-    "selection": "root token deployment fields and its referenced initial tile mode"
+    "selection": "root token deployment fields and its referenced initial tile mode; token side and filter tags retained for unit classification"
   },
   "components": [
     {
@@ -58,7 +58,11 @@
         "_category": 2,
         "_rewriteTileOptions": true,
         "_ignoreBlockAnyRoutes": true,
-        "_withdrawable": false
+        "_withdrawable": false,
+        "_sideType": 1,
+        "_filterTag": [
+          "SANDBOX_FACTORY"
+        ]
       }
     },
     {

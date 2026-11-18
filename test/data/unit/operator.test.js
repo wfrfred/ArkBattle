@@ -38,11 +38,24 @@ test("operator profiles use selected phase attributes, explicit table identity a
     assert.equal(prepared.attributes.maxHp, 3928);
     assert.equal(prepared.attributes.attack, 882);
     assert.equal(prepared.attributes.recoverySpeed, 0);
+    assert.deepEqual(prepared.groupTags, ["rhodes"]);
     assert.deepEqual(prepared.range, [[0, 0], [0, 1]]);
     assert.equal(prepared.skill.definition.id, "skchr_mudrok_2");
     assert.equal(prepared.skill.definition.activation.requirement, 5);
     assert.equal(blackboard(prepared.skill.blackboard).atk_scale, 2.1);
     assert.equal(prepared.skillRange.length, fixture.ranges["x-4"].grids.length);
+    const character = {
+        ...fixture.characters[melantha],
+        nationId: "laterano", groupId: "abyssal", teamId: "followers",
+        subPower: [
+            ...fixture.characters[melantha].subPower,
+            fixture.characters[melantha].mainPower,
+        ],
+    };
+    const other = profile(melantha, {
+        elite: 1, level: 55, potential: 1, skillIndex: 0, skillLevel: 7, trust: 0,
+    }, { character });
+    assert.deepEqual(other.groupTags, ["rhodes", "reserve4", "victoria"]);
 });
 
 test("phase interpolation rounds integer fields and preserves floating attributes", () => {

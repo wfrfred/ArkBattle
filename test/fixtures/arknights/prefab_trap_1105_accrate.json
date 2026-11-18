@@ -5,7 +5,7 @@
     "cab": "CAB-425a845ff37dbe17e203e6b341c4f664",
     "unityVersion": "2021.3.39f1",
     "filtered": true,
-    "selection": "movement fields and predefined controller/mode/buff bindings; rendering and unrelated enemy abilities omitted"
+    "selection": "movement fields and predefined controller/mode/buff bindings; rendering and unrelated enemy abilities omitted; token side and filter tags retained for unit classification"
   },
   "gameObject": {
     "m_Component": [
@@ -121,7 +121,8 @@
         "_hideTileOptions": false,
         "_isInfinity": false,
         "_withdrawable": true,
-        "_disableUIHub": false
+        "_disableUIHub": false,
+        "_filterTag": []
       },
       "unityClassId": 114,
       "serializedType": "builtin:263"
