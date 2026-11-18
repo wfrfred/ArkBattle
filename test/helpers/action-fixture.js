@@ -63,7 +63,7 @@ export function unit(
     const definition = { hooks: Hooks.empty(),
         id: `action-${id}`,
         vitality: vitality(hp),
-        targetable: { taunt: attribute(0, -2, 2), restrictions: [] }, presence: {},
+        targetable: { category: "DEFAULT", taunt: attribute(0, -2, 2), restrictions: [] }, presence: {},
         offense: { attack: attribute(10) },
         classification: { type: "DEVICE", side, filterTags: [], groupTags: [] },
         layer: { type: "GROUND" },

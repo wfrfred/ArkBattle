@@ -194,17 +194,20 @@ test("deepsea and holes affect ground enemies while leaving allies and airborne 
 
 test("smog keeps allied ground and airborne units invisible through blocking until they leave", () => {
     const configured = setup([terrain.smog.create({}), terrain.normal.create({})], [
-        unit(0, { vitality: combat.vitality, classification: { type: "OPERATOR", side: "ALLY", profession: "WARRIOR", subProfession: "FEARLESS", extraProfessions: [], groupTags: [] }, targetable: { taunt: attribute(0, -2, 2), restrictions: [] },
+        unit(0, { vitality: combat.vitality, classification: { type: "OPERATOR", side: "ALLY", profession: "WARRIOR", subProfession: "FEARLESS", extraProfessions: [], groupTags: [] }, targetable: { category: "DEFAULT", taunt: attribute(0, -2, 2), restrictions: [] },
             blocker: { layer: "GROUND", restrictions: [], capacity: 1, radius: 0.7 } }),
         unit(0, { classification: { type: "ENEMY", side: "ENEMY", filterTags: [], rank: "NORMAL" }, layer: { type: "GROUND" }, blockable: { volume: 1, restrictions: [] } }),
         unit(0, { vitality: combat.vitality, classification: { type: "OPERATOR", side: "ALLY", profession: "WARRIOR", subProfession: "FEARLESS", extraProfessions: [], groupTags: [] },
-            layer: { type: "AIR" }, targetable: { taunt: attribute(0, -2, 2), restrictions: [] } }),
+            layer: { type: "AIR" }, targetable: { category: "DEFAULT", taunt: attribute(0, -2, 2), restrictions: [] } }),
+        unit(0, { vitality: combat.vitality, classification: { type: "DEVICE", side: "ALLY", filterTags: [], groupTags: [] },
+            targetable: { category: "DEVICE", taunt: attribute(0, -2, 2), restrictions: [] } }),
     ], [terrain.smog]);
     let battle = step(configured.battle, []);
     const visible = (state, id = 0) => damage(state, current(state, 1))(current(state, id));
     assert.equal(current(battle, 1).blockable.relation.blocker.id, 0);
     assert.equal(visible(battle), false);
     assert.equal(visible(battle, 2), false);
+    assert.equal(visible(battle, 3), true);
     battle = step(battle, []);
     assert.equal(visible(battle), false);
     battle = step(move(battle, 1, 1), []);

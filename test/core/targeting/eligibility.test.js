@@ -22,7 +22,7 @@ import { createArknightsElementalDefinition } from "../../../dist/data/effect/el
 
 const living = {
     id: "target", hooks: Hooks.empty(),
-    targetable: { taunt: defineAttribute(0, -2, 2), restrictions: [] },
+    targetable: { category: "DEFAULT", taunt: defineAttribute(0, -2, 2), restrictions: [] },
     vitality: defineVitality(100),
     classification: { type: "DEVICE", side: "ENEMY", filterTags: [], groupTags: [] }, layer: { type: "GROUND" },
 };
@@ -109,7 +109,7 @@ test("mixed healing keeps HP or EP demand while only an ACTIVE healFree marker r
 
 test("EP selection checks current resource eligibility without executing reception Restrictions", () => {
     const receiver = {
-        id: "ep-receiver", hooks: Hooks.empty(), targetable: { taunt: defineAttribute(0, -2, 2), restrictions: [] },
+        id: "ep-receiver", hooks: Hooks.empty(), targetable: { category: "DEFAULT", taunt: defineAttribute(0, -2, 2), restrictions: [] },
         classification: { type: "DEVICE", side: "ALLY", filterTags: [], groupTags: [] },
         elemental: createArknightsElementalDefinition({ receiver: "ENEMY" }),
     };

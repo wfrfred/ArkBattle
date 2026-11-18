@@ -8,6 +8,7 @@ import { hasHitbox } from "../../unit/capability/hitbox/capability.js";
 import * as presence from "../../unit/capability/presence/capability.js";
 import {
     allowsRestrictions,
+    type Category,
     type Restriction,
     type Targetable,
 } from "../../unit/capability/targetable/capability.js";
@@ -20,6 +21,12 @@ import { overlaps } from "../../geometry/intersection.js";
 import type { WorldPosition } from "../../geometry/coordinate.js";
 import type { Range } from "../../geometry/range.js";
 import type { State as BattleState } from "../state.js";
+
+export function inCategories(
+    categories: readonly Category[],
+): (target: Unit & Targetable) => boolean {
+    return (target) => categories.includes(target.targetable.category);
+}
 
 export function damage(
     battle: BattleState,

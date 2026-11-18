@@ -21,6 +21,8 @@ export interface State {
     readonly inSession: boolean;
 }
 
+const inDefaultCategory = targeting.inCategories(["DEFAULT"]);
+
 function candidates(battle: BattleState, self: units.Unit & Classification, profile: Profile) {
     const withinRange = hasDirection(self)
         ? targeting.inRange(self.position, fromTiles(profile.range, self.occupancy.direction))
@@ -33,7 +35,7 @@ function candidates(battle: BattleState, self: units.Unit & Classification, prof
         .filter((target) => hasLayer(target) && target.layer.type === "GROUND")
         .filter(
             (target) =>
-                withinRange(target) ||
+                (inDefaultCategory(target) && withinRange(target)) ||
                 (hasBlockable(target) && target.blockable.relation?.blocker.id === self.id),
         );
 }

@@ -17,7 +17,7 @@ import {
 
 const definition = (side, restrictions = [], taunt = 0) => ({
     id: `targetable-${side}`, hooks: Hooks.empty(), classification: { type: "DEVICE", side, filterTags: [], groupTags: [] },
-    targetable: { taunt: { default: taunt, min: -2, max: 2 }, restrictions },
+    targetable: { category: "DEFAULT", taunt: { default: taunt, min: -2, max: 2 }, restrictions },
 });
 const creation = (side, restrictions, taunt) => ({
     definition: definition(side, restrictions, taunt), position: [0, 0],

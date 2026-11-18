@@ -159,7 +159,7 @@ test("APPLY-01: cancellation before immunity preserves its outcome and suppresse
     let state = battle([
         { definition: { id: "source", hooks: Hooks.empty() }, position: [0, 0] },
         { definition: {
-            id: "target", hooks: Hooks.empty(), targetable: { taunt: defineAttribute(0, -2, 2), restrictions: [] }, vitality: defineVitality(100),
+            id: "target", hooks: Hooks.empty(), targetable: { category: "DEFAULT", taunt: defineAttribute(0, -2, 2), restrictions: [] }, vitality: defineVitality(100),
             skill: { initialize: state => skills.create(state, resource) },
         }, position: [1, 0] },
     ]);
@@ -249,7 +249,7 @@ test("RESTRICTION-02: damage exemptions cover one mechanism through reentrant ch
     let state = battle([
         { definition: { id: "source", hooks: Hooks.empty() }, position: [0, 0] },
         { definition: {
-            id: "target", hooks: Hooks.empty(), targetable: { taunt: defineAttribute(0, -2, 2), restrictions: [] },
+            id: "target", hooks: Hooks.empty(), targetable: { category: "DEFAULT", taunt: defineAttribute(0, -2, 2), restrictions: [] },
             vitality: defineVitality(100),
         }, position: [1, 0] },
     ]);
@@ -667,7 +667,7 @@ test("HP-05/06: LOSS completes the shared pipeline against an invincible absent 
                 .set(hpDamage.sourceApplied, observe("sourceApplied")),
         }, position: [0, 0] },
         { definition: {
-            id: "target", presence: {}, targetable: { taunt: defineAttribute(0, -2, 2), restrictions: [] },
+            id: "target", presence: {}, targetable: { category: "DEFAULT", taunt: defineAttribute(0, -2, 2), restrictions: [] },
             vitality: defineVitality(35, { defense: defineAttribute(20) }),
             skill: { initialize: current => skills.create(current, resource) },
             hooks: Hooks.empty()

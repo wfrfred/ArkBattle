@@ -42,7 +42,7 @@ const profile = (fields = {}) => {
         });
 };
 const enemy = (id, position, fields = {}) => initialize({ id, position, definition: {
-    id: "enemy", hooks: Hooks.empty(), targetable: { taunt: attribute(0, -2, 2), restrictions: [] },
+    id: "enemy", hooks: Hooks.empty(), targetable: { category: "DEFAULT", taunt: attribute(0, -2, 2), restrictions: [] },
     vitality: vitality(10000),
     classification: { type: "ENEMY", side: "ENEMY", filterTags: [], rank: "NORMAL" }, layer: { type: "GROUND" },
     hitbox: { shape: { type: "CIRCLE", offset: [0, 0], radius: 0.1 } },

@@ -3,6 +3,7 @@ import {
     assertNonnegativeNumber,
     assertPositiveNumber,
     assertPositiveSafeInteger,
+    assertSafeInteger,
 } from "../../core/common/assert.js";
 import {
     createPredefinedDefinition,
@@ -104,6 +105,7 @@ function unitDefinition(
     let recoverySpeed: number | undefined;
     let cost: number | undefined;
     let respawnTime: number | undefined;
+    let taunt: number | undefined;
     let minimumLevel = Infinity;
     let maximumLevel = -Infinity;
 
@@ -117,17 +119,20 @@ function unitDefinition(
         const frameRecoverySpeed = attributes.hpRecoveryPerSec;
         const frameCost = attributes.cost;
         const frameRespawnTime = attributes.respawnTime;
+        const frameTaunt = attributes.tauntLevel;
 
         assertPositiveNumber(hp, "predefined maxHp");
         assertNonnegativeNumber(frameRecoverySpeed, "predefined HP recovery speed");
         assertNonnegativeNumber(frameCost, "predefined deployment cost");
         assertNonnegativeNumber(frameRespawnTime, "predefined respawn time");
+        assertSafeInteger(frameTaunt, "predefined taunt level");
 
         if (
             (maxHp !== undefined && maxHp !== hp) ||
             (recoverySpeed !== undefined && recoverySpeed !== frameRecoverySpeed) ||
             (cost !== undefined && cost !== frameCost) ||
-            (respawnTime !== undefined && respawnTime !== frameRespawnTime)
+            (respawnTime !== undefined && respawnTime !== frameRespawnTime) ||
+            (taunt !== undefined && taunt !== frameTaunt)
         ) {
             throw new TypeError("varying predefined unit attributes are not supported");
         }
@@ -136,6 +141,7 @@ function unitDefinition(
         recoverySpeed = frameRecoverySpeed;
         cost = frameCost;
         respawnTime = frameRespawnTime;
+        taunt = frameTaunt;
         minimumLevel = Math.min(minimumLevel, frame.level);
         maximumLevel = Math.max(maximumLevel, frame.level);
     }
@@ -151,6 +157,11 @@ function unitDefinition(
             side: profile.side,
             filterTags: profile.filterTags,
             groupTags,
+        },
+        targetable: {
+            category: profile.category,
+            taunt: { default: taunt!, min: -2, max: 2 },
+            restrictions: [],
         },
         vitality: {
             defense: { default: 0, min: 0, max: null },

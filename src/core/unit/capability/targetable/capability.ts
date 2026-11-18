@@ -7,7 +7,10 @@ import { createRegistrationOperations } from "../../registration.js";
 import { createChange, type Change } from "../../change.js";
 import { allows, type Restriction as BaseRestriction } from "../../../restriction.js";
 
+export type Category = "DEFAULT" | "DEVICE" | "OBSTACLE";
+
 export interface Definition extends Restrictions {
+    readonly category: Category;
     readonly taunt: attribute.Definition;
 }
 
@@ -25,6 +28,7 @@ interface Restrictions {
 }
 
 export interface State extends Restrictions {
+    readonly category: Category;
     readonly taunt: attribute.State<Input>;
 }
 
@@ -57,6 +61,7 @@ export function initialize<U extends Unit & Pick<Targetable, "definition">>(
         value: {
             ...unit,
             targetable: {
+                category: definition.category,
                 taunt: attribute.initialize<Input>(definition.taunt),
                 restrictions: [...definition.restrictions],
             },
@@ -69,6 +74,14 @@ export const { set: setRestriction, remove: removeRestriction } = createRegistra
     "targetable",
     keyof Restrictions
 >("targetable", "restrictions");
+
+export function setCategory(category: Category): Change<Unit & Targetable> {
+    return createChange<Unit & Targetable>((self) =>
+        category === self.targetable.category
+            ? self
+            : { ...self, targetable: { ...self.targetable, category } },
+    );
+}
 
 export function setTauntContribution(entry: Contribution<Input>): Change<Unit & Targetable> {
     return createChange<Unit & Targetable>((self) =>

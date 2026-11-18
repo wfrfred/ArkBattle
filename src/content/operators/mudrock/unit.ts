@@ -316,6 +316,7 @@ export function create(
         occupancy: { slot: "OCCUPANT" },
         facing: { restrictions: [] },
         targetable: {
+            category: "DEFAULT",
             taunt: { default: profile.attributes.taunt, min: -2, max: 2 },
             restrictions: [],
         },

@@ -4,12 +4,13 @@ import { hasOccupancy } from "../../core/unit/capability/occupancy/index.js";
 import { apply, restore, type Configuration, type Definition } from "./tile.js";
 
 export function create(configuration: Configuration): Definition {
-    const { id, classification, vitality, deployable, card } = configuration;
+    const { id, classification, targetable, vitality, deployable, card } = configuration;
     const tileChanges = { ...configuration.tileChanges, walkCost: 1000 };
 
     return {
         id,
         classification,
+        targetable,
         vitality,
         deployable,
         card,

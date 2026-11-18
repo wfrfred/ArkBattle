@@ -32,6 +32,7 @@ function platform() {
         definition: createPlatform({
             id: "platform", vitality: vitality(100),
             classification: { type: "DEVICE", side: "ALLY", filterTags: [], groupTags: [] },
+            targetable: { category: "DEVICE", taunt: { default: -1, min: -2, max: 2 }, restrictions: [] },
             deployable, card, tileChanges: { elevation: "HIGHLAND" },
         }),
     });

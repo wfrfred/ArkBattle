@@ -10,6 +10,9 @@ import { resolveTerrainControllers } from "../../../dist/data/level/terrain.js";
 import { predefinedIdsForAlias, appear } from "../../../dist/core/battle/predefined.js";
 import { initialize } from "../../../dist/core/battle/index.js";
 import { at as occupancyAt } from "../../../dist/core/battlefield/occupancy.js";
+import { all } from "../../../dist/core/unit/index.js";
+import { hasTargetable } from "../../../dist/core/unit/capability/targetable/capability.js";
+import { inCategories } from "../../../dist/core/battle/targeting/index.js";
 
 const fixture = (name) => JSON.parse(readFileSync(
     new URL(`../../fixtures/arknights/${name}.json`, import.meta.url), "utf8",
@@ -29,7 +32,7 @@ function predefined(raw, key) {
     return { instance, character, skill, profile };
 }
 
-test("real hidden devices preserve placement and static classification", () => {
+test("real hidden devices preserve placement, static classification and target category", () => {
     const raw = fixture("level_act1autochess_m02");
     const { instance, character, profile } = predefined(raw, "trap_1105_accrate");
     const definition = parsePredefinedDefinition(0, instance, profile, character);
@@ -55,6 +58,7 @@ test("real hidden devices preserve placement and static classification", () => {
     assert.deepEqual(crate.definition.classification, {
         type: "DEVICE", side: "ALLY", filterTags: [], groupTags: [],
     });
+    assert.equal(crate.targetable.category, "OBSTACLE");
     const [platformId] = predefinedIdsForAlias(battle.definition.predefines, "trap_1106_achplat#001");
     battle = appear(battle, platformId);
     const platform = [...battle.battlefield.units.values()]
@@ -62,11 +66,16 @@ test("real hidden devices preserve placement and static classification", () => {
     assert.deepEqual(platform.definition.classification, {
         type: "DEVICE", side: "ALLY", filterTags: ["SANDBOX_FACTORY"], groupTags: [],
     });
+    assert.equal(platform.targetable.category, "DEVICE");
+    const candidates = all(battle).filter(hasTargetable);
+    assert.deepEqual(Array.from(candidates.filter(inCategories(["DEFAULT"]))), []);
+    assert.deepEqual(Array.from(candidates.filter(inCategories(["DEFAULT", "DEVICE"])), unit => unit.id), [platform.id]);
 
     const modifiedPrefab = fixture("prefab_trap_1106_achplat");
     const token = modifiedPrefab.components.find(component => "_rewriteTileOptions" in component.fields).fields;
     token._sideType = 2;
     token._filterTag = ["changed-filter"];
+    token._category = 1;
     const modifiedCharacter = {
         ...platformData.character,
         mainPower: { nationId: "laterano", groupId: null, teamId: null },
@@ -78,6 +87,9 @@ test("real hidden devices preserve placement and static classification", () => {
     assert.deepEqual(modifiedDefinition.creation.definition.classification, {
         type: "DEVICE", side: "ENEMY", filterTags: ["changed-filter"], groupTags: ["laterano", "kazimierz"],
     });
+    assert.equal(modifiedDefinition.creation.definition.targetable.category, "DEFAULT");
+    token._category = 3;
+    assert.throws(() => parsePredefinedPrefab(modifiedPrefab), /unsupported token _category/);
 });
 
 test("real controller and skill data supply shared terrain parameters", () => {

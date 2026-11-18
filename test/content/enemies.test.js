@@ -20,13 +20,13 @@ import { createArrow } from '../../dist/content/enemies/crossbowman/action.js';
 import { initialize } from "../helpers/unit.js";
 
 import { createBattleState } from '../../dist/core/battle/state.js';
-import { add as addUnit } from '../../dist/core/unit/operations.js';
+import { add as addUnit, update } from '../../dist/core/unit/operations.js';
 import { getUnit } from '../helpers/unit.js';
 import { create as createBattlefield } from '../../dist/core/battlefield/state.js';
 import { create as createMap } from '../../dist/core/battlefield/map/map.js';
 import { start as startAction, ref as actionRef } from '../../dist/core/unit/capability/action/index.js';
 import { ref as unitRef } from '../../dist/core/unit/index.js';
-import { allowsRestrictions } from '../../dist/core/unit/capability/targetable/capability.js';
+import { allowsRestrictions, setCategory } from '../../dist/core/unit/capability/targetable/capability.js';
 import { invisibleRestriction } from '../../dist/core/effects/visibility.js';
 import { invincible } from '../../dist/core/effects/protection.js';
 import { install } from '../../dist/core/unit/effect/index.js';
@@ -73,7 +73,7 @@ function advanceActionUntil(state, reference, untilTick) {
 
 function guard(id, position, blockCapacity = 1, restrictions = []) {
   return initialize({ id, position, definition: { hooks: Hooks.empty(),
-    id: 'test-guard', targetable: { taunt: attribute(0, -2, 2), restrictions }, vitality: vitality(1000, { defense: attribute(40) }), classification: { type: "OPERATOR", side: 'ALLY', profession: "WARRIOR", subProfession: "FEARLESS", extraProfessions: [], groupTags: [] }, layer: { type: 'GROUND' },
+    id: 'test-guard', targetable: { category: "DEFAULT", taunt: attribute(0, -2, 2), restrictions }, vitality: vitality(1000, { defense: attribute(40) }), classification: { type: "OPERATOR", side: 'ALLY', profession: "WARRIOR", subProfession: "FEARLESS", extraProfessions: [], groupTags: [] }, layer: { type: 'GROUND' },
     hitbox: { shape: { type: 'CIRCLE', offset: [0, 0], radius: 0.2 } },
     blocker: { layer: "GROUND", restrictions: [], capacity: blockCapacity },
   } });
@@ -163,7 +163,8 @@ test('crossbow selects melee for its actual blocker while ranged targeting keeps
   }, crossbowMovement);
   const blocker = guard(0, [2, 2], 1, [{ id: 'innate', value: invisibleRestriction }]);
   const bow = initialize({ id: 1, position: [2, 2.5], definition, initial: routeInitial([2, 2.5]) });
-  const state = advanceBlocking(addUnit(addUnit(emptyBattle(), blocker), bow));
+  const initial = addUnit(addUnit(emptyBattle(), blocker), bow);
+  const state = advanceBlocking(update(initial, unitRef(blocker), setCategory("DEVICE")));
   const melee = actions.melee.attack.targetGroups[0].select;
   const ranged = actions.ranged.attack.targetGroups[0].select;
 
@@ -197,7 +198,15 @@ test('crossbow uses its authored release event and arrow speed, then settles dam
   }, crossbowMovement);
 
   const bow = initialize({ id: 1, position: [2, 3.5], definition, initial: routeInitial([2, 3.5]) });
-  const before = addUnit(addUnit(emptyBattle(), guard(0, [2, 2], 0)), bow);
+  const guardUnit = guard(0, [2, 2], 0);
+  const target = unitRef(guardUnit);
+  const select = attack.attack.targetGroups[0].select;
+  const initial = addUnit(addUnit(emptyBattle(), guardUnit), bow);
+  assert.deepEqual(select(initial, unitRef(bow)).value, [target]);
+  const device = update(initial, target, setCategory("DEVICE"));
+  assert.deepEqual(select(device, unitRef(bow)).value, []);
+  const before = update(device, target, setCategory("DEFAULT"));
+  assert.deepEqual(select(before, unitRef(bow)).value, [target]);
   const started = startAction(before, actionRef(unitRef(bow), attack));
   let state = started.state;
   assert.equal(state.battlefield.projectiles.size, 0);

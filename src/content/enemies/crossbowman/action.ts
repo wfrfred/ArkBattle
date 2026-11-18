@@ -139,6 +139,7 @@ export function createRanged(profile: Profile, timing: Timing, projectile: Proje
                     const candidates = units
                         .all(battle)
                         .filter(hasTargetable)
+                        .filter(targeting.inCategories(["DEFAULT"]))
                         .filter(targeting.damage(battle, self))
                         .filter((target) => target.id !== blocker?.id)
                         .filter(

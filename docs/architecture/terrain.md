@@ -33,7 +33,7 @@ Runtime 顺序为 Movement → Mechanism → Blocking。Movement 先推进阻挡
 walkCost 是最终有效代价。普通装置阻碍为 1000，真实地穴固定 1,000,000，不用任意 max 叠加或 hole-like 状态替代地穴身份；导航与部署统一消费当前属性。原件和推导见[地形研究](../research/03-space-units-and-mechanisms.md)。
 
 - 活性源石每次入格安装独立 Effect，相邻同参数格也分别登记，离格保留。绝对期限从入格算起，被覆盖仍流逝，停留到期不重装。同组优先级为 `roundToEven(1000 × (attackBonusRatio + attackSpeedBonus))`，高者生效，同级先安装者生效。周期仅 ACTIVE 推进，首次等待一秒，被覆盖时暂停周期，恢复沿用余量且不补发。
-- 烟雾为我方有 Targetable 的单位安装标准隐匿，离开撤销；阻挡不破隐，也没有三秒恢复延迟，空中同样受益。
+- 烟雾为受选类别为 DEFAULT 的我方单位安装标准隐匿，离开撤销；阻挡不破隐，也没有三秒恢复延迟，空中同样受益。
 - 沼泽与深水分开保存控制器扫描和宿主 Effect 周期，不每轮重装；沼泽一秒叠层与重量门槛是独立参数，重型敌人按内容取得双层。
 - 活性源石 HP 周期伤害为 ENVIRONMENT，敌方深水为 DAMAGE；均禁本笔 HIT 而保留正常接收／Applied，不把地形、无来源或周期一概等同流失，见 [Resource](resource.md)。
 - 必须随控制器结束的接触 Effect 绑定其 Lifetime；onDisable 清 Contact，可逆停用时按业务结束，移除时由依赖图结束产物，不在 onEnd 再重复清理。离格保留的活性源石不自动绑定控制器。

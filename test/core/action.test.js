@@ -162,7 +162,7 @@ test("interrupted attack, successful release, and damage output are separate bus
     const target = {
         id: "target",
         hooks: Hooks.empty(),
-        targetable: { taunt: attribute(0, -2, 2), restrictions: [] },
+        targetable: { category: "DEFAULT", taunt: attribute(0, -2, 2), restrictions: [] },
         vitality: vitality(100),
     };
     let state = battle([

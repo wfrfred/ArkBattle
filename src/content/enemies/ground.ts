@@ -142,6 +142,7 @@ export function createDefinition(
         route: { alwaysCheckCurrentPoint: true },
         presence: {},
         targetable: {
+            category: "DEFAULT",
             taunt: { default: profile.taunt, min: -2, max: 2 },
             restrictions: [],
         },

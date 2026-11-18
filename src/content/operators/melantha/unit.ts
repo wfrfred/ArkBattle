@@ -142,6 +142,7 @@ export function create(profile: Profile, timing: AttackSpeedTiming): Definition 
         occupancy: { slot: "OCCUPANT" },
         facing: { restrictions: [] },
         targetable: {
+            category: "DEFAULT",
             taunt: { default: profile.attributes.taunt, min: -2, max: 2 },
             restrictions: [],
         },

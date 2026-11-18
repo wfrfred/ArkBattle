@@ -50,6 +50,8 @@ import { stun } from "../../../core/effects/control.js";
 import { install } from "../../../core/unit/effect/index.js";
 import { value, healSelf } from "./common.js";
 
+const inDefaultCategory = targeting.inCategories(["DEFAULT"]);
+
 function attackTarget(
     battle: BattleState,
     self: Unit & Classification,
@@ -71,7 +73,7 @@ function attackTarget(
         eligible(target) &&
         hasLayer(target) &&
         target.layer.type === "GROUND" &&
-        (withinRange(target) ||
+        ((inDefaultCategory(target) && withinRange(target)) ||
             (!skill && hasBlockable(target) && target.blockable.relation?.blocker.id === self.id));
 }
 

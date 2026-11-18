@@ -23,7 +23,7 @@ function setup(targetHooks = Hooks.empty()) {
   } });
   const target = initialize({ id: 1, position: [1, 0], definition: { hooks: targetHooks,
     id: 'target', vitality: vitality(1000),
-    presence: {}, targetable: { taunt: attribute(0, -2, 2), restrictions: [{ id: 'hidden', value: {
+    presence: {}, targetable: { category: "DEFAULT", taunt: attribute(0, -2, 2), restrictions: [{ id: 'hidden', value: {
       allows: () => false,
     } }] },
   } });

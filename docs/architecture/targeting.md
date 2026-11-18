@@ -1,12 +1,13 @@
 # Targeting 与 Targetable
 
-目标选择是普通 Query 与集合算法的组合。Targeting 提供常用资格、几何条件和比较器；Targetable 拥有目标侧受选限制及嘲讽。选择时机、绑定、重选与命中复验归调用业务，不存在另一套通用选择流程对象。
+目标选择是普通 Query 与集合算法的组合。Targeting 提供常用资格、类别筛选、几何条件和比较器；Targetable 拥有目标侧受选类别、受选限制及嘲讽。选择时机、绑定、重选与命中复验归调用业务，不存在另一套通用选择流程对象。
 
 ## 查询组合
 
 ```typescript
 const candidates = units.all(battle)
     .filter(hasTargetable)
+    .filter(targeting.inCategories(["DEFAULT"]))
     .filter(targeting.damage(battle, source))
     .filter(targeting.inRange(origin, range));
 const selected = topK(candidates, count, targeting.distance(origin));
@@ -42,6 +43,8 @@ inRange 检查目标 Hitbox 与显式原点的 Range 相交，无 Hitbox 为 fal
 阻挡前缀可以先选关系目标，再排除已选身份补范围名额。敌人对自身 blocker 的直选可按内容绕过受选限制，但仍判断在场、空间、生命与敌对；干员阻挡目标没有隐含豁免。
 
 ## Targetable
+
+Definition 提供初始受选类别，State 保存当前类别，内容通过 setCategory 切换。inCategories 读取当前值，普通范围查询纳入 DEFAULT，特殊选择可显式纳入 DEVICE 或 OBSTACLE。类别筛选和受选限制分别判断，阻挡直选按内容决定是否筛选类别。单位身份由 Classification 表达。
 
 Definition 明确基础 taunt 与固有限制，State 保存嘲讽贡献及固有／动态的同一限制集合。固有限制重复登记 ID 在构造处拒绝。嘲讽按有效贡献和属性公式取偶舍入，允许负值，不另存派生仇恨。
 

@@ -8,6 +8,7 @@ import { contains } from "../../core/battlefield/map/map.js";
 import { World } from "../../core/geometry/coordinate.js";
 import * as units from "../../core/unit/index.js";
 import type { Id, Unit } from "../../core/unit/index.js";
+import { inCategories } from "../../core/battle/targeting/index.js";
 
 import * as effects from "../../core/unit/effect/index.js";
 import type { Effect } from "../../core/unit/effect/index.js";
@@ -274,13 +275,16 @@ export function createTerrainMechanism(
         });
     }
     if (definition === terrain.smog) {
+        const inDefaultCategory = inCategories(["DEFAULT"]);
+
         return create(terrain.smog, indices, {
             id: "terrain/smog",
             intervalTicks: 1,
             accepts: (unit) =>
                 hasClassification(unit) &&
                 unit.definition.classification.side === "ALLY" &&
-                hasTargetable(unit),
+                hasTargetable(unit) &&
+                inDefaultCategory(unit),
             enter: (battle, unit, _params, scopes) =>
                 hasTargetable(unit)
                     ? effects.install(battle, units.ref(unit), invisible, { scopes })
