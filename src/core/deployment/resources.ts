@@ -1,6 +1,6 @@
-import { assertNonnegativeNumber, assertNonnegativeSafeInteger } from "../../common/assert.js";
-import type { Ref } from "../../common/ref.js";
-import type { State as BattleState, Result } from "../state.js";
+import { assertNonnegativeNumber, assertNonnegativeSafeInteger } from "../common/assert.js";
+import type { Ref } from "../common/ref.js";
+import type { State as BattleState, Result } from "../battle/state.js";
 import { ref, type Card, type UnitDefinition } from "./card/card.js";
 import { get, all } from "./card/query.js";
 import * as card from "./card/state.js";

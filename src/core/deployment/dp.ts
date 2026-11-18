@@ -1,5 +1,5 @@
-import { assertFiniteNumber, assertNonnegativeNumber } from "../../common/assert.js";
-import type { Result, State as BattleState } from "../state.js";
+import { assertFiniteNumber, assertNonnegativeNumber } from "../common/assert.js";
+import type { Result, State as BattleState } from "../battle/state.js";
 import type { State } from "./deployment.js";
 
 export function advance(state: State, tick: number): State {

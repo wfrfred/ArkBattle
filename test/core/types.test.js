@@ -29,7 +29,7 @@ import { hasPresence, disappear } from ${module("unit/capability/presence/index"
 import { dispatch as dispatchElemental } from ${module("unit/capability/elemental/hook")};
 import * as runtime from ${module("battle/runtime")};
 import type { Input as BattleInput, Command } from ${module("battle/contract")};
-import type { Card, UnitDefinition as CardDefinition } from ${module("battle/deployment/card/card")};
+import type { Card, UnitDefinition as CardDefinition } from ${module("deployment/card/card")};
 import type { Projectile } from ${module("projectile/projectile")};
 import * as projectiles from ${module("projectile/query")};
 import * as projectileOperations from ${module("projectile/operations")};

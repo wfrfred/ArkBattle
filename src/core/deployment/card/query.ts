@@ -1,7 +1,7 @@
-import * as restriction from "../../../restriction.js";
-import type { Ref } from "../../../common/ref.js";
-import { create, type Query } from "../../../common/query.js";
-import type { State as BattleState } from "../../state.js";
+import * as restriction from "../../restriction.js";
+import type { Ref } from "../../common/ref.js";
+import { create, type Query } from "../../common/query.js";
+import type { State as BattleState } from "../../battle/state.js";
 import type { Card, UnitDefinition } from "./card.js";
 import type { RestrictionContext } from "./restriction.js";
 

@@ -40,7 +40,7 @@ import { hasSkill } from "../../../core/unit/capability/skill/index.js";
 
 import type { Definitions as CapabilityDefinitions } from "../../../core/unit/capability/catalog.js";
 import { hasAction } from "../../../core/unit/capability/action/index.js";
-import type { Definition as CardDefinition } from "../../../core/battle/deployment/card/index.js";
+import type { Definition as CardDefinition } from "../../../core/deployment/card/index.js";
 import { get as getTile } from "../../../core/battlefield/map/map.js";
 
 import { healFree } from "../../../core/effects/protection.js";

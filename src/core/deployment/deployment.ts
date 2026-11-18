@@ -3,11 +3,11 @@ import {
     assertNonnegativeNumber,
     assertNonnegativeSafeInteger,
     assertPositiveSafeInteger,
-} from "../../common/assert.js";
+} from "../common/assert.js";
 import type * as card from "./card/card.js";
-import type { Ref } from "../../common/ref.js";
+import type { Ref } from "../common/ref.js";
 import type { Ordering } from "./order.js";
-import { Hooks } from "../../hook.js";
+import { Hooks } from "../hook.js";
 
 export interface Definition {
     readonly initialDp: number;

@@ -20,7 +20,7 @@ import { leaveHook as scheduleLeaveHook } from "../schedule/runtime.js";
 import {
     initialize as initializeDeployment,
     type State as DeploymentState,
-} from "./deployment/deployment.js";
+} from "../deployment/deployment.js";
 
 export interface BattleExecutionState {
     readonly rngState: Seed;

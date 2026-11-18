@@ -1,8 +1,8 @@
-import * as hooks from "../../hook.js";
-import type { Entry } from "../../common/collection/entries.js";
-import type { Unit } from "../../unit/unit.js";
-import type { Deployable } from "../../unit/capability/deployable/capability.js";
-import type { State as BattleState } from "../state.js";
+import * as hooks from "../hook.js";
+import type { Entry } from "../common/collection/entries.js";
+import type { Unit } from "../unit/unit.js";
+import type { Deployable } from "../unit/capability/deployable/capability.js";
+import type { State as BattleState } from "../battle/state.js";
 import type { DeployRequest } from "./request.js";
 
 export interface Deployed {

@@ -1,9 +1,9 @@
-import type { Contribution } from "../../common/contribution.js";
-import type { Ref } from "../../common/ref.js";
-import { assertNonnegativeNumber, assertNonnegativeSafeInteger } from "../../common/assert.js";
-import type { Direction } from "../../geometry/direction.js";
-import type { TilePosition } from "../../geometry/coordinate.js";
-import type { Hooks } from "../../hook.js";
+import type { Contribution } from "../common/contribution.js";
+import type { Ref } from "../common/ref.js";
+import { assertNonnegativeNumber, assertNonnegativeSafeInteger } from "../common/assert.js";
+import type { Direction } from "../geometry/direction.js";
+import type { TilePosition } from "../geometry/coordinate.js";
+import type { Hooks } from "../hook.js";
 import type { Card } from "./card/card.js";
 import type { Restriction } from "./restriction.js";
 

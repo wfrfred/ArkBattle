@@ -1,14 +1,14 @@
-import type { Ref } from "../../common/ref.js";
-import type { Unit } from "../../unit/unit.js";
-import { ref as unitRef } from "../../unit/query.js";
-import type { Deployable } from "../../unit/capability/deployable/capability.js";
-import { setDeployment, canRetreat, retreat } from "../../unit/capability/deployable/operations.js";
-import type { Command } from "../contract.js";
-import { add } from "../../unit/operations.js";
-import type { State as BattleState, Result } from "../state.js";
-import { initialize as initializeUnit } from "../../unit/initialize.js";
-import { Tile, type TilePosition } from "../../geometry/coordinate.js";
-import type { Direction } from "../../geometry/direction.js";
+import type { Ref } from "../common/ref.js";
+import type { Unit } from "../unit/unit.js";
+import { ref as unitRef } from "../unit/query.js";
+import type { Deployable } from "../unit/capability/deployable/capability.js";
+import { setDeployment, canRetreat, retreat } from "../unit/capability/deployable/operations.js";
+import type { Command } from "../battle/contract.js";
+import { add } from "../unit/operations.js";
+import type { State as BattleState, Result } from "../battle/state.js";
+import { initialize as initializeUnit } from "../unit/initialize.js";
+import { Tile, type TilePosition } from "../geometry/coordinate.js";
+import type { Direction } from "../geometry/direction.js";
 import { dispatch as notifyDeployed } from "./hook.js";
 import { get } from "./card/query.js";
 import type { Card } from "./card/card.js";
@@ -17,8 +17,8 @@ import * as cards from "./card/operations.js";
 import { advanceResources, replaceCard } from "./resources.js";
 import { evaluateCurrent, resolveRestrictions, createRequest } from "./query.js";
 import { validateQuote, type DeployRequest, type DeployOutcome } from "./request.js";
-import { Hooks } from "../../hook.js";
-import * as lifecycle from "../../unit/hook.js";
+import { Hooks } from "../hook.js";
+import * as lifecycle from "../unit/hook.js";
 
 export { canRetreat, retreat };
 

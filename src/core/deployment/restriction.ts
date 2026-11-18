@@ -1,4 +1,4 @@
-import type { Restriction as BaseRestriction } from "../../restriction.js";
+import type { Restriction as BaseRestriction } from "../restriction.js";
 import type { DeployRequest } from "./request.js";
 
 export interface RestrictionContext {

@@ -26,7 +26,7 @@ import {
     lifetime as skillLifetime,
 } from "../../../core/unit/skill/index.js";
 
-import type { Definition as CardDefinition } from "../../../core/battle/deployment/card/index.js";
+import type { Definition as CardDefinition } from "../../../core/deployment/card/index.js";
 import { get as getTile } from "../../../core/battlefield/map/map.js";
 import { sides } from "../../../core/unit/capability/blocking/index.js";
 import {
