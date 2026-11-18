@@ -1,28 +1,24 @@
-import { allows } from "../../restriction.js";
-import { Vec2 } from "../../common/vector.js";
-import { replace } from "../../unit/operations.js";
-import type { Ref } from "../../common/ref.js";
-import { World } from "../../geometry/coordinate.js";
-import { get as getTile } from "../../battlefield/map/map.js";
-import {
-    hasBlocker,
-    resolveCapacity,
-    type Blocker,
-} from "../../unit/capability/blocking/blocker.js";
+import { allows } from "../restriction.js";
+import { Vec2 } from "../common/vector.js";
+import { replace } from "../unit/operations.js";
+import type { Ref } from "../common/ref.js";
+import { World } from "../geometry/coordinate.js";
+import { get as getTile } from "../battlefield/map/map.js";
+import { hasBlocker, resolveCapacity, type Blocker } from "../unit/capability/blocking/blocker.js";
 import {
     hasBlockable,
     resolveVolume,
     stableBlockPosition,
     type Blockable,
-} from "../../unit/capability/blocking/blockable.js";
-import { hasLayer } from "../../unit/capability/layer/capability.js";
-import { hasOccupancy } from "../../unit/capability/occupancy/capability.js";
-import { hasVitality } from "../../unit/capability/vitality/capability.js";
-import { isAlive } from "../../unit/capability/vitality/query.js";
-import * as units from "../../unit/query.js";
-import type { Id, Unit } from "../../unit/unit.js";
-import type { State as BattleState } from "../state.js";
-import type { Relation } from "../../unit/capability/blocking/contract.js";
+} from "../unit/capability/blocking/blockable.js";
+import { hasLayer } from "../unit/capability/layer/capability.js";
+import { hasOccupancy } from "../unit/capability/occupancy/capability.js";
+import { hasVitality } from "../unit/capability/vitality/capability.js";
+import { isAlive } from "../unit/capability/vitality/query.js";
+import * as units from "../unit/query.js";
+import type { Id, Unit } from "../unit/unit.js";
+import type { State as BattleState } from "../battle/state.js";
+import type { Relation } from "../unit/capability/blocking/contract.js";
 import * as hooks from "./hook.js";
 import { relations, usedCapacity } from "./query.js";
 import { calculate as calculatePosition } from "./position.js";

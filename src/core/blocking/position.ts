@@ -1,5 +1,5 @@
-import { Vec2 } from "../../common/vector.js";
-import type { WorldPosition } from "../../geometry/coordinate.js";
+import { Vec2 } from "../common/vector.js";
+import type { WorldPosition } from "../geometry/coordinate.js";
 
 function normalize(vector: Vec2): Vec2 {
     const length = Vec2.length(vector);

@@ -14,7 +14,7 @@ import { createBattleState } from "../../../dist/core/battle/state.js";
 import { add, update } from "../../../dist/core/unit/operations.js";
 import { ref, compose, setHook, removeHook } from "../../../dist/core/unit/index.js";
 import * as hpDamage from "../../../dist/core/resource/hp/damage/index.js";
-import { advance as advanceBlocking } from "../../../dist/core/battle/blocking/index.js";
+import { advance as advanceBlocking } from "../../../dist/core/blocking/index.js";
 import { advance as advanceEffects } from "../../../dist/core/unit/effect/index.js";
 import { advance as advanceSkill, activate, modify } from "../../../dist/core/unit/skill/index.js";
 import { ref as skillRef } from "../../helpers/skill.js";

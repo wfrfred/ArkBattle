@@ -8,7 +8,7 @@ import { prepare as prepareCombat, advance as advanceCombat } from "./steps/comb
 import { advance as advanceSchedule } from "../schedule/runtime.js";
 import { resolveDeploymentCommands } from "../deployment/operations.js";
 import { advanceMovement } from "./steps/movement.js";
-import { advance as advanceBlocking } from "./blocking/operations.js";
+import { advance as advanceBlocking } from "../blocking/operations.js";
 import { advanceProjectiles } from "./steps/projectiles.js";
 import { advance as advanceMechanisms } from "../mechanism/mechanism.js";
 import * as projectiles from "../projectile/query.js";

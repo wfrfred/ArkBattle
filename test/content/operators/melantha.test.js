@@ -16,7 +16,7 @@ import { resolveAttack } from "../../../dist/core/unit/capability/offense/index.
 import { fixtureBattlefieldState } from "../../helpers/battlefield.js";
 import { ref } from "../../../dist/core/unit/index.js";
 import { start, advance as advanceAction, ref as actionRef, cancel, forUnit } from "../../../dist/core/unit/action/index.js";
-import { advance as advanceBlocking, relations } from "../../../dist/core/battle/blocking/index.js";
+import { advance as advanceBlocking, relations } from "../../../dist/core/blocking/index.js";
 import { invisible, invisibleRestriction } from "../../../dist/core/effects/visibility.js";
 
 import { install, end } from "../../../dist/core/unit/effect/index.js";

@@ -27,7 +27,7 @@ import {
     type Unit,
     type Definition as UnitDefinition,
 } from "../../../core/unit/index.js";
-import { blocked } from "../../../core/battle/blocking/index.js";
+import { blocked } from "../../../core/blocking/index.js";
 import { hasBlocker, sides } from "../../../core/unit/capability/blocking/index.js";
 import type { Profile } from "../../../data/unit/operator.js";
 import { secondsToTicks } from "../../../data/time.js";

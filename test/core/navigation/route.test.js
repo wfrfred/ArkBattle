@@ -10,7 +10,7 @@ import * as units from "../../../dist/core/unit/index.js";
 import { update } from "../../../dist/core/unit/operations.js";
 import { step } from "../../../dist/core/battle/runtime.js";
 import { appear } from "../../../dist/core/unit/capability/presence/index.js";
-import { search } from "../../../dist/core/battle/blocking/index.js";
+import { search } from "../../../dist/core/blocking/index.js";
 import { blockableReleased } from "../../../dist/core/unit/capability/blocking/index.js";
 import * as navigation from "../../../dist/core/battlefield/navigation/state.js";
 import { get as getTile } from "../../../dist/core/battlefield/map/map.js";

@@ -9,7 +9,7 @@ import { create } from "../../dist/core/battlefield/state.js";
 import { create as createMap } from "../../dist/core/battlefield/map/map.js";
 import { create as createTile } from "../../dist/core/battlefield/map/tile.js";
 import { normal as normalSite } from "../../dist/content/terrain/condition.js";
-import * as blocking from "../../dist/core/battle/blocking/index.js";
+import * as blocking from "../../dist/core/blocking/index.js";
 import * as blocker from "../../dist/core/unit/capability/blocking/index.js";
 import { Hooks } from "../../dist/core/hook.js";
 

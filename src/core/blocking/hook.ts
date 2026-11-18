@@ -1,10 +1,10 @@
-import type { State as BattleState } from "../state.js";
-import * as units from "../../unit/query.js";
-import * as hooks from "../../hook.js";
-import type { Relation } from "../../unit/capability/blocking/contract.js";
+import type { State as BattleState } from "../battle/state.js";
+import * as units from "../unit/query.js";
+import * as hooks from "../hook.js";
+import type { Relation } from "../unit/capability/blocking/contract.js";
 import { hasRelation } from "./query.js";
-import * as blockerHooks from "../../unit/capability/blocking/blocker.js";
-import * as blockableHooks from "../../unit/capability/blocking/blockable.js";
+import * as blockerHooks from "../unit/capability/blocking/blocker.js";
+import * as blockableHooks from "../unit/capability/blocking/blockable.js";
 
 type Notification = "acquired" | "released";
 

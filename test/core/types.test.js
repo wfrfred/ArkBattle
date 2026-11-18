@@ -42,7 +42,7 @@ import { createRegistrationOperations } from ${module("unit/registration")};
 import type { Offense } from ${module("unit/capability/offense/index")};
 import { setAttackContribution, resolveAttack } from ${module("unit/capability/offense/index")};
 import type { Blocker, Blockable, Relation, Hook as BlockingHook } from ${module("unit/capability/blocking/index")};
-import * as blocking from ${module("battle/blocking/index")};
+import * as blocking from ${module("blocking/index")};
 import * as targeting from ${module("targeting/index")};
 import * as classification from ${module("unit/capability/classification/index")};
 import { hasTargetable } from ${module("unit/capability/targetable/capability")};

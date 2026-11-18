@@ -5,7 +5,7 @@ import { test } from "node:test";
 import { battle, get } from "../../helpers/battle.js";
 import { Hooks } from "../../../dist/core/hook.js";
 import * as units from "../../../dist/core/unit/index.js";
-import * as blocking from "../../../dist/core/battle/blocking/index.js";
+import * as blocking from "../../../dist/core/blocking/index.js";
 import * as actions from "../../../dist/core/unit/action/index.js";
 import * as skills from "../../../dist/core/unit/skill/index.js";
 import * as sp from "../../../dist/core/unit/skill/sp.js";

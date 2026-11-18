@@ -6,7 +6,7 @@ import assert from "node:assert/strict";
 import { battle, get } from "../helpers/battle.js";
 import * as units from "../../dist/core/unit/index.js";
 import * as unit from "../../dist/core/unit/operations.js";
-import * as blocking from "../../dist/core/battle/blocking/index.js";
+import * as blocking from "../../dist/core/blocking/index.js";
 import * as capability from "../../dist/core/unit/capability/blocking/index.js";
 import * as layer from "../../dist/core/unit/capability/layer/index.js";
 import * as tiles from "../../dist/core/battle/tile.js";
