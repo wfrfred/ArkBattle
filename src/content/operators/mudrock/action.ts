@@ -36,7 +36,7 @@ import {
     type Request as DamageRequest,
 } from "../../../core/resource/hp/damage/index.js";
 
-import * as targeting from "../../../core/battle/targeting/index.js";
+import * as targeting from "../../../core/targeting/index.js";
 import { hasBlockable, hasBlocker } from "../../../core/unit/capability/blocking/index.js";
 import { hasDirection } from "../../../core/unit/capability/occupancy/index.js";
 import { hasLayer, type Layer } from "../../../core/unit/capability/layer/index.js";

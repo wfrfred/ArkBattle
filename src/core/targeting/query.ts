@@ -1,25 +1,25 @@
-import type { Unit } from "../../unit/unit.js";
+import type { Unit } from "../unit/unit.js";
 import {
     areHostile,
     hasClassification,
     type Classification,
-} from "../../unit/capability/classification/index.js";
-import { hasHitbox } from "../../unit/capability/hitbox/capability.js";
-import * as presence from "../../unit/capability/presence/capability.js";
+} from "../unit/capability/classification/index.js";
+import { hasHitbox } from "../unit/capability/hitbox/capability.js";
+import * as presence from "../unit/capability/presence/capability.js";
 import {
     allowsRestrictions,
     type Restriction,
     type Targetable,
-} from "../../unit/capability/targetable/capability.js";
-import { hasVitality, type Vitality } from "../../unit/capability/vitality/capability.js";
-import { isAlive, hpRatio } from "../../unit/capability/vitality/query.js";
-import { hasElemental, type Elemental } from "../../unit/capability/elemental/capability.js";
-import { available, resolveDamageRatio } from "../../unit/capability/elemental/query.js";
-import { healFree } from "../../effects/protection.js";
-import { overlaps } from "../../geometry/intersection.js";
-import type { WorldPosition } from "../../geometry/coordinate.js";
-import type { Range } from "../../geometry/range.js";
-import type { State as BattleState } from "../state.js";
+} from "../unit/capability/targetable/capability.js";
+import { hasVitality, type Vitality } from "../unit/capability/vitality/capability.js";
+import { isAlive, hpRatio } from "../unit/capability/vitality/query.js";
+import { hasElemental, type Elemental } from "../unit/capability/elemental/capability.js";
+import { available, resolveDamageRatio } from "../unit/capability/elemental/query.js";
+import { healFree } from "../effects/protection.js";
+import { overlaps } from "../geometry/intersection.js";
+import type { WorldPosition } from "../geometry/coordinate.js";
+import type { Range } from "../geometry/range.js";
+import type { State as BattleState } from "../battle/state.js";
 
 export function damage(
     battle: BattleState,

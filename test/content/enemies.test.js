@@ -30,7 +30,7 @@ import { allowsRestrictions } from '../../dist/core/unit/capability/targetable/c
 import { invisibleRestriction } from '../../dist/core/effects/visibility.js';
 import { invincible } from '../../dist/core/effects/protection.js';
 import { install } from '../../dist/core/unit/effect/index.js';
-import { inRange } from '../../dist/core/battle/targeting/index.js';
+import { inRange } from '../../dist/core/targeting/index.js';
 import { advance as advanceAction } from '../../dist/core/unit/action/index.js';
 import { advance as advanceCombat } from '../../dist/core/battle/steps/combat.js';
 import { advance as advanceProjectiles } from '../../dist/core/projectile/operations.js';

@@ -6,7 +6,7 @@ import { Hooks } from "../../../dist/core/hook.js";
 import { createRng } from "../../../dist/core/common/rng.js";
 import { topK } from "../../../dist/core/common/collection/order.js";
 import { create, createWithState, faceTarget } from "../../../dist/content/actions/attack.js";
-import * as targeting from "../../../dist/core/battle/targeting/index.js";
+import * as targeting from "../../../dist/core/targeting/index.js";
 import { hasTargetable } from "../../../dist/core/unit/capability/targetable/capability.js";
 import * as units from "../../../dist/core/unit/query.js";
 import * as actions from "../../../dist/core/unit/action/index.js";

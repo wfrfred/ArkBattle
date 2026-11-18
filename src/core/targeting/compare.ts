@@ -1,13 +1,13 @@
-import { Vec2 } from "../../common/vector.js";
+import { Vec2 } from "../common/vector.js";
 
-import type { WorldPosition } from "../../geometry/coordinate.js";
-import type { Unit } from "../../unit/unit.js";
-import type { Vitality } from "../../unit/capability/vitality/capability.js";
-import * as vitality from "../../unit/capability/vitality/query.js";
-import { hasBlocker, type Blocker } from "../../unit/capability/blocking/blocker.js";
-import { hasBlockable, type Blockable } from "../../unit/capability/blocking/blockable.js";
-import { resolveTaunt, type Targetable } from "../../unit/capability/targetable/capability.js";
-import type { State as BattleState } from "../state.js";
+import type { WorldPosition } from "../geometry/coordinate.js";
+import type { Unit } from "../unit/unit.js";
+import type { Vitality } from "../unit/capability/vitality/capability.js";
+import * as vitality from "../unit/capability/vitality/query.js";
+import { hasBlocker, type Blocker } from "../unit/capability/blocking/blocker.js";
+import { hasBlockable, type Blockable } from "../unit/capability/blocking/blockable.js";
+import { resolveTaunt, type Targetable } from "../unit/capability/targetable/capability.js";
+import type { State as BattleState } from "../battle/state.js";
 
 export function distance(origin: WorldPosition): (left: Unit, right: Unit) => number {
     return (left, right) =>

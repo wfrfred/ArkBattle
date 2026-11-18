@@ -1,7 +1,7 @@
 import { createWithState, faceTarget, type Attack } from "../../actions/attack.js";
 import type { AttackSpeedTiming } from "../../actions/timing.js";
 import { ref as actionRef, setState } from "../../../core/unit/action/index.js";
-import * as targeting from "../../../core/battle/targeting/index.js";
+import * as targeting from "../../../core/targeting/index.js";
 import * as units from "../../../core/unit/index.js";
 import { hasTargetable } from "../../../core/unit/capability/targetable/capability.js";
 import {

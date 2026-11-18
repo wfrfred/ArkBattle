@@ -18,7 +18,7 @@ import { initialize, step } from "../../dist/core/battle/index.js";
 import { actionCapability } from "../helpers/actions.js";
 import { resolveAttack } from "../../dist/core/unit/capability/offense/index.js";
 import { resolveSpeed } from "../../dist/core/unit/capability/action/timing.js";
-import { damage } from "../../dist/core/battle/targeting/index.js";
+import { damage } from "../../dist/core/targeting/index.js";
 import * as presence from "../../dist/core/unit/capability/presence/index.js";
 import { setType } from "../../dist/core/unit/capability/layer/index.js";
 
