@@ -1,0 +1,65 @@
+{
+  "provenance": {
+    "collectedAt": "2026-11-18T11:48:27.071082+00:00",
+    "scope": "Selected local JSON documents only. Value matches locate potential references; they do not resolve or validate bindings.",
+    "tool": {
+      "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/config.py",
+      "sha256": "67c2a913386059a57f9316f25e532c9dd20cdc4adb91d820065d09fd9dec76e4"
+    },
+    "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+    "argv": [
+      ".cache/native-research/route-operations-20261107/data/character_table.json",
+      "--source-url",
+      "https://github.com/Kengxxiao/ArknightsGameData",
+      "--revision",
+      "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+      "--out",
+      "docs/research/evidence/entity-category-20261118/bean-character.json",
+      "select",
+      "/token_10014_bstalk_crab",
+      "--field",
+      "/profession",
+      "--field",
+      "/subProfessionId",
+      "--field",
+      "/mainPower",
+      "--field",
+      "/subPower"
+    ],
+    "sourceUrl": "https://github.com/Kengxxiao/ArknightsGameData",
+    "revision": "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+    "inputs": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/route-operations-20261107/data/character_table.json",
+        "bytes": 15468242,
+        "sha256": "6a61f54802ee194dbb21968976eb99e2a4050e38928bd24bd2b770479076cea1",
+        "status": "ok",
+        "matched": 1
+      }
+    ]
+  },
+  "result": {
+    "matched": 1,
+    "matches": [
+      {
+        "source": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/route-operations-20261107/data/character_table.json",
+        "pointer": "/token_10014_bstalk_crab",
+        "fields": {
+          "/profession": "TOKEN",
+          "/subProfessionId": "notchar1",
+          "/mainPower": {
+            "nationId": null,
+            "groupId": null,
+            "teamId": null
+          },
+          "/subPower": null
+        },
+        "missingFields": []
+      }
+    ],
+    "complete": true,
+    "scanned": 1,
+    "succeeded": 1,
+    "errors": []
+  }
+}

@@ -22,6 +22,16 @@
 
 普通 Selector 的类别从 `RangeSelector.Reset`（76187）建立的选项进入范围资格检查。齐尔查克的 validator 路径和 Selector 的配置转换正文均已保留在[索敌资格原件](../targeting-pipeline-20261109/qualification.json)。这些绑定确认了普通攻击、扩大到装置的光环及专查装置的能力。它们没有覆盖任意查询对豆苗战术点的其他资格条件。
 
+## 两种形态的分类查询
+
+| 查询 | 原件与定位 |
+| --- | --- |
+| 类、职业与筛选标签 | [磐蟹角色资料](bean-character.json) 是固定镜像中的 `TOKEN` 记录，主要及附加组织归属为空。[生命机制内容](../resource-mechanisms-20261114/life/content.json) 的根组件 `/result/components/1812` 保存两个模式 PPtr 和 `_filterTag.Array=[]`。[类型和槽位](bean-type-evidence.json) 说明 `RallyPoint` 继承 `Trap`，而 `Trap` 继承 `Token`。虚槽 101 由 `Trap.CheckHasFilterTag`（78846）实现，见[标签正文](../unit-classification-20261114/tags/tag-bodies.json)。`BattleUtil.CheckEntityUnitType`（79594）类检查见[分类原件](../unit-classification-20261114/identity/native.json)。 |
+| 豆苗 S1 | [角色绑定](../resource-mechanisms-20261114/life/static-bindings.json) 的 `/result/characters/10` 绑定 `skchr_bstalk_1`。其 [Prefab 原件](bean-s1-prefab.json) 的 CastSkill 和挂载 `bstalk_s_1` 的 AnimatedActionToOwnerAbility 分别为 `532514189762625254` 和 `1624118544394157798`，同属一个 GameObject。`CheckFirstRallyPointMode.Execute`（101218）在 `0x1811b6011` 调 `Character.FetchTokenOrHost`，找到首个 RallyPoint 后于 `0x1811b60e2` 查 `get_inRallyPointMode`。后者在[生命机制正文](../resource-mechanisms-20261114/life/native.json)（78625）的 `0x180affd2b` 读 `m_category`，比较 `TRAP_OR_ITEM=2`。[S1 模板](bean-s1-template.json) 成功分支向所属 Token 创建触发 `crab_switch` 的 Buff，失败分支为 `HealToken`。玩法描述见[豆苗 S1](https://prts.wiki/w/豆苗#技能)。 |
+| 装置类别对照 | [禁闭所摘录](../unit-classification-composition-20261118/native/selected-evidence.json) 保存 `trap_317_ubprison` 的 Trap 组件，类别值为 `1`。[战术射击平台](../../../../test/fixtures/arknights/prefab_trap_1106_achplat.json) 与[战术装备整理箱](../../../../test/fixtures/arknights/prefab_trap_1105_accrate.json) 的 `/components/0/fields/_category` 分别为 `2` 和 `4`。 |
+
+两种形态的类筛选和标签查询由同一个根对象处理。这里已核的是普通客户端分支与该实例的配置，未运行双方形态下所有外部职业、标签及索敌消费者。
+
 ## 复跑
 
 从仓库根目录读取相同指纹的本机客户端。第一条命令重提节点正文，第二条命令用既有字符串定位逻辑复核 `0x1810f006b` 的 metadata 字面量。
@@ -31,4 +41,10 @@ work=.cache/native-research/entity-category-20261118/replay
 UV_CACHE_DIR="$PWD/.cache/uv" uv run --locked --offline .agents/skills/arkbattle-native-research/scripts/native.py --out "$work/body.json" disasm 98855
 UV_CACHE_DIR="$PWD/.cache/uv" uv run --locked --offline docs/research/evidence/unit-classification-20261114/identity/extract.py --out "$work/literals.json" --body 98855
 python docs/research/evidence/entity-category-20261118/extract_consumer_templates.py --out "$work/consumer-templates.json"
+UV_CACHE_DIR="$PWD/.cache/uv" uv run --locked --offline docs/research/evidence/facing-semantics-20261113/extract.py --out "$work/bean-native.json" --body Torappu.Battle.Action.Nodes/CheckFirstRallyPointMode.Execute
+decoder=docs/research/evidence/healing-settlement-20261103/content/extract_content.py
+UV_CACHE_DIR="$PWD/.cache/uv" uv run --offline "$decoder" --game '/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game' --out "$work/bean-prefab" --bundle 'battle/prefabs/[uc]skills.ab' --object 532514189762625254 --object 1624118544394157798
+UV_CACHE_DIR="$PWD/.cache/uv" uv run --offline "$decoder" --game '/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game' --out "$work/bean-template" --bundle config/buff_template_holder.ab --template bstalk_s_1
 ```
+
+继承关系及声明槽位可用 `native.py type` 分别查询 `Torappu.Battle.RallyPoint`、`Trap`、`Token` 和 `Character`，再匹配各条 `parentIndex` 与对应类型的 `index`。磐蟹角色表的投影与输入指纹见 [bean-character.json](bean-character.json)。

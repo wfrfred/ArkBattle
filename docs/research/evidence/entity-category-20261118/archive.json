@@ -13,6 +13,7 @@
         "gameRelativePath": "GameAssembly.dll",
         "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
         "records": [
+          "bean-type-evidence.json#/provenance/client/dll",
           "node.json#/provenance/client/dll"
         ],
         "bytes": 223112680
@@ -23,12 +24,17 @@
         "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
         "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
         "records": [
+          "bean-type-evidence.json#/provenance/client/metadata",
           "node.json#/provenance/client/metadata"
         ],
         "bytes": 46669332
       }
     },
     "sourceRecords": [
+      "bean-character.json",
+      "bean-s1-prefab.json",
+      "bean-s1-template.json",
+      "bean-type-evidence.json",
       "consumer-templates.json",
       "node.json"
     ],
@@ -44,6 +50,30 @@
   },
   "result": {
     "artifacts": [
+      {
+        "path": "bean-character.json",
+        "kind": "record",
+        "bytes": 2145,
+        "sha256": "d05ff3dedc1210a8f1eb81c635d7d9cf5b0bc8fb8c57a295ccb211190627fb78"
+      },
+      {
+        "path": "bean-s1-prefab.json",
+        "kind": "record",
+        "bytes": 9181,
+        "sha256": "b808f3f06467779c9fc8eb0fa77529f8e50fea999062cfde7b587d85dbd26bdd"
+      },
+      {
+        "path": "bean-s1-template.json",
+        "kind": "record",
+        "bytes": 6252,
+        "sha256": "b444ab8d6fc4e643f2074b1ec2f2128ce919544d63780872d7f57c5565fb373e"
+      },
+      {
+        "path": "bean-type-evidence.json",
+        "kind": "record",
+        "bytes": 54678,
+        "sha256": "177dc9fbc536f038ff288d81086a6e4228783bd0b33c1aaf94bb591eb7624614"
+      },
       {
         "path": "consumer-templates.json",
         "kind": "record",
@@ -66,6 +96,38 @@
     "replay": {
       "methods": [
         {
+          "index": 77296,
+          "mode": "metadata",
+          "records": [
+            "bean-type-evidence.json#/result/classHierarchy/Character/declaredSlots/0"
+          ],
+          "fullname": "Torappu.Battle.Character.CheckHasFilterTag"
+        },
+        {
+          "index": 78627,
+          "mode": "metadata",
+          "records": [
+            "bean-type-evidence.json#/result/classHierarchy/RallyPoint/declaredSlots/0"
+          ],
+          "fullname": "Torappu.Battle.RallyPoint.get_category"
+        },
+        {
+          "index": 78757,
+          "mode": "metadata",
+          "records": [
+            "bean-type-evidence.json#/result/classHierarchy/Token/declaredSlots/0"
+          ],
+          "fullname": "Torappu.Battle.Token.get_category"
+        },
+        {
+          "index": 78846,
+          "mode": "metadata",
+          "records": [
+            "bean-type-evidence.json#/result/classHierarchy/Trap/declaredSlots/0"
+          ],
+          "fullname": "Torappu.Battle.Trap.CheckHasFilterTag"
+        },
+        {
           "index": 98855,
           "mode": "disasm",
           "records": [
@@ -74,6 +136,18 @@
           ],
           "fullname": "Torappu.Battle.Action.Nodes/SwitchRallyPointCategory.Execute",
           "address": "0x1810eff60"
+        },
+        {
+          "index": 101218,
+          "mode": "disasm",
+          "records": [
+            "bean-type-evidence.json#/result/methods/0",
+            "bean-type-evidence.json#/result/bodies/0",
+            "bean-type-evidence.json#/result/bodies/0/fragments/0",
+            "bean-type-evidence.json#/result/bodies/0/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/CheckFirstRallyPointMode.Execute",
+          "address": "0x1811b5e80"
         }
       ],
       "blocks": [],
@@ -82,13 +156,51 @@
       "bundles": [
         {
           "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "sha256": "0d0b4c0f9252c14a69a20d4bea09527403dd3eddfc2f7bcd757c3c30cf37ffc3",
+          "records": [
+            "bean-s1-prefab.json#/provenance/sources/0"
+          ],
+          "bytes": 1367500
+        },
+        {
+          "kind": "bundle",
+          "path": "battle/prefabs/[uc]skills.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "sha256": "8214f2a5a426d8d17b3f324a063e4cf6b13731839ec2e58c8a9550450107f52f",
+          "records": [
+            "bean-s1-prefab.json#/result/0"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "battle/prefabs/[uc]skills.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "sha256": "2c289b9d5b0946f802c924adeee73bb8673cba1a176abb219878ae16cb47d744",
+          "records": [
+            "bean-s1-prefab.json#/result/1"
+          ]
+        },
+        {
+          "kind": "bundle",
           "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
           "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
           "sha256": "8edcb8017c977cdf52c2593b58e21db96949f3ad1e6f904180ac1241f145ca79",
           "records": [
+            "bean-s1-template.json#/provenance/sources/0",
             "consumer-templates.json#/provenance/source"
           ],
           "bytes": 2151020
+        },
+        {
+          "kind": "bundle",
+          "path": "config/buff_template_holder.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "sha256": "c03149251d47fa31e6f6cb5b696f9e93925f51a97bf9ee335593c888bdcb6fec",
+          "records": [
+            "bean-s1-template.json#/result/0"
+          ]
         }
       ]
     },

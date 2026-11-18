@@ -112,6 +112,14 @@ Enemy 的战斗分类来自转换后的 EnemyData，再由 Enemy 初始化保存
 
 这三个用法说明类别掩码让每次查询选择所处理的对象集合。齐尔查克允许装置通过类别筛选，无餍还要求特定标记。豆苗战术点在类别这一关符合允许装置的查询，最终是否入选取决于相应查询的其他条件。
 
+### 豆苗两种形态的分类资料与实际消费者
+
+磐蟹的角色表职业为 `TOKEN`，组织字段均空。Crab／Flower 两种模式共用一个 `RallyPoint` 根组件。其继承链为 `RallyPoint → Trap → Token → Character`，所以两种形态的 `CHARACTER` 和 `TOKEN` 类检查均成立。筛选标签的虚槽沿继承调用 `Trap.CheckHasFilterTag`，查询同一个 Prefab 的 `_filterTag`，本例为空。这条查询没有按当前 `EntityCategory` 切换到另一份标签资料。组织标签查询也从 Character 的资料读取。 [分类资料原件](../evidence/entity-category-20261118/README.md#两种形态的分类查询)
+
+豆苗 S1「定点指令」是实际消费者。它通过施术者的召唤归属找到首个 RallyPoint，读取战术点状态，等待形态触发 `crab_switch` 提前恢复，参战形态走回满生命的分支。原生的该状态查询读取当前类别值。两种形态都参与这条归属查询，其结果与普通 `DEFAULT` 索敌分开。 [S1 的配置与客户端正文](../evidence/entity-category-20261118/README.md#两种形态的分类查询)
+
+装置资料本身也横跨三种实际类别。禁闭所为 `DEFAULT=1`，战术射击平台为 `TRAP_OR_ITEM=2`，战术装备整理箱为 `OBSTACLE=4`。羽毛笔 S2 对禁闭所的命中范围筛选见 [Case 28](28-damage-hooks-and-event-granularity.md#6-目标前置与来源输出能否交换)。因此，处于哪一类候选集合需要由实际受选规则判定。 [装置配置对照](../evidence/entity-category-20261118/README.md#两种形态的分类查询)
+
 静态镜像中有敌人分类的逐级显式字段，但“某级重新声明”不等于“分类实际改变”。例如 `enemy_1570_ymgscm` 的 level 0／1 都是空 enemyTags；不能将 level 1 的显式空数组单独当成清除非空标签的玩法正例。静态统计、版本和查询保存在[配置证据](../evidence/unit-classification-20261114/config/README.md)。
 
 已核对的 Enemy 模式切换／重生路径不替换该数据引用；这只能说明这些具体操作保留相应分类。本轮没有证明任意热更新或内容程序都不能改变标签，也没有为每条分类轴找到战中修改正例。是否需要动态修改公共状态，应依据实际修改链决定，不能从字段是数组、名称含 RuntimeData，或已有 Contribution 框架反推。
