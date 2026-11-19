@@ -45,8 +45,8 @@ function configuration(id, tileChanges = {}) {
     };
 }
 
-function place(battle, id, definition, tile, position = Tile.center(tile)) {
-    const initialized = initialize(battle, { id, definition, position, initial: {
+function place(battle, definition, tile, position = Tile.center(tile)) {
+    const initialized = initialize(battle, { definition, position, initial: {
         occupancy: { tile },
     } });
 
@@ -58,7 +58,7 @@ for (const [terrain, initialCost] of [[normal, 2000], [hole, 1000000]]) {
         const definition = createCrate(configuration("crate"));
         let state = battle(terrain, initialCost);
         const original = getTile(state.battlefield.map, [0, 0]);
-        state = place(state, 0, definition, [0, 0], Tile.center([0, 2]));
+        state = place(state, definition, [0, 0], Tile.center([0, 2]));
 
         const tile = getTile(state.battlefield.map, [0, 0]);
         const expectedCost = terrain === hole ? initialCost : 1000;

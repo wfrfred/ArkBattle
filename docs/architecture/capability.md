@@ -20,7 +20,7 @@ Catalog 从 initializer 字典的函数签名派生配置、标准状态和 Init
 
 具体 Definition 决定装配哪些能力；对应 initializer 的第三参数必填时，initial 对应键及顶层 initial 都必填。允许额外的已知 Initial，它们在未选能力时忽略，未知键和错误值仍被类型拒绝。Occupancy 必需 tile，Route 必需 Plan／offset，Facing 必需方向；调用者不能预装运行进度或 Effects 容器。
 
-Unit.initialize 按 Catalog 顺序接续各 initializer，最后合并 Definition.hooks；同键同 ID 后者覆盖、位置保留。Occupancy 先于依赖它的 Deployable。初始化可读取当前战场或消费 RNG，但半成品尚未登记，不能从战场查询自己；需要已有能力时直接读取输入 Unit。
+`Unit.initialize` 从当前 BattleState 分配实例 ID，推进分配进度，然后按 Catalog 顺序接续各 initializer。最后合并 Definition.hooks，同键同 ID 后者覆盖并保留位置。Occupancy 先于依赖它的 Deployable。初始化期间可以读取当前战场或消费 RNG，需要本次已装配的能力时直接读取输入 Unit。调用方接续返回的 State，可先登记本业务的事实，再用 `Unit.add` 发布实例并触发 enter。
 
 能力可在装配时登记 enter／prepare／leave 等 Hook。固有登记在完整 add 和任何 enter 前就绪；同级保留默认装配顺序，实际执行按[公共 Hook 优先级](hook.md)。通用装配和 Unit 生命周期不按具体能力建立额外阶段。初始 Effect 在登记后的 enter 正常安装。
 

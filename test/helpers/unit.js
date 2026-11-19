@@ -20,8 +20,11 @@ export function fixtureBattle(tick = 0) {
     return { ...createBattleState(create(map)), tick };
 }
 
-export function initialize({ tick = 0, ...input }) {
-    return initializeUnit(fixtureBattle(tick), input).value;
+export function initialize({ id = 0, tick = 0, ...input }) {
+    const battle = fixtureBattle(tick);
+    const fixture = { ...battle, execution: { ...battle.execution, nextUnitId: id } };
+
+    return initializeUnit(fixture, input).value;
 }
 
 export function getUnit(battle, id) {

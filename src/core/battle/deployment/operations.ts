@@ -84,10 +84,7 @@ export function deploy<T extends Card<any>>(
     }
 
     battle = replaceCard(battle, consumed);
-    const id = battle.execution.nextUnitId;
-    battle = { ...battle, execution: { ...battle.execution, nextUnitId: id + 1 } };
     const initialized = initializeUnit(battle, {
-        id,
         definition: self.definition,
         position: Tile.center(request.tilePosition),
         initial: {

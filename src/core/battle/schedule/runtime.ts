@@ -11,7 +11,6 @@ import type { Spawn } from "./definition.js";
 import type { ActivePhase } from "./state.js";
 
 function spawn(battle: BattleState, entry: Spawn): BattleState {
-    const id = battle.execution.nextUnitId;
     const rng = createRng(battle.execution.rngState);
     const offset: WorldPosition = [
         entry.offset[0] + (rng.next() * 2 - 1) * entry.randomRange[0],
@@ -20,10 +19,9 @@ function spawn(battle: BattleState, entry: Spawn): BattleState {
 
     battle = {
         ...battle,
-        execution: { ...battle.execution, nextUnitId: id + 1, rngState: rng.state() },
+        execution: { ...battle.execution, rngState: rng.state() },
     };
     const created = initializeUnit(battle, {
-        id,
         definition: entry.definition,
         position: Vec2.add(Tile.center(entry.plan.startPosition), offset),
         initial: {
@@ -34,6 +32,7 @@ function spawn(battle: BattleState, entry: Spawn): BattleState {
     battle = created.state;
 
     if (entry.wait !== "NONE") {
+        const { id } = created.value;
         const { waiting } = battle.schedule;
         battle = {
             ...battle,

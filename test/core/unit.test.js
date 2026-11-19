@@ -4,6 +4,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { battle } from "../helpers/battle.js";
 import { Hooks, dispatch } from "../../dist/core/hook.js";
+import { appear } from "../../dist/core/battle/predefined.js";
 import * as units from "../../dist/core/unit/index.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import * as skills from "../../dist/core/unit/capability/skill/index.js";
@@ -26,7 +27,7 @@ test("Unit construction rejects conflicting roles and installs entry effects on 
         }),
     };
     assert.throws(() => units.initialize(battle(), {
-        id: 0, position: [0, 0], definition: {
+        position: [0, 0], definition: {
             id: "conflicting-roles", hooks: Hooks.empty(),
             blocker: { capacity: 1, layer: "GROUND", restrictions: [] },
             blockable: { volume: 1, restrictions: [] },
@@ -40,6 +41,28 @@ test("Unit construction rejects conflicting roles and installs entry effects on 
     assert.equal(current.definition.classification.side, "ALLY");
     assert.equal(hasOccupancy(current), false);
     assert.equal(current.effects.values().find((effect) => effect.definition === entryEffect).state.charges, 2);
+});
+
+test("direct Unit initialization shares instance identity allocation with predefines", () => {
+    const predefined = { id: "predefined", hooks: Hooks.empty() };
+    const summoned = { id: "summoned", hooks: Hooks.empty() };
+    const initial = battle([], {
+        predefines: [{
+            id: 0, alias: null, initiallyPresent: false,
+            creation: { type: "UNIT", definition: predefined, position: [1, 0] },
+        }],
+    });
+
+    const created = units.initialize(initial, { definition: summoned, position: [0, 0] });
+    const reference = units.ref(created.value);
+    assert.equal(units.get(created.state, reference), undefined);
+    const registered = add(created.state, created.value);
+    const appeared = appear(registered, 0);
+    const placed = units.all(appeared).find((unit) => unit.definition === predefined);
+
+    assert.ok(placed);
+    assert.notDeepEqual(units.ref(placed), reference);
+    assert.equal(units.get(appeared, reference)?.definition, summoned);
 });
 
 test("Unit death preserves its attribution through Effect responses and the original departure", () => {
@@ -161,7 +184,7 @@ test("Unit death preserves its attribution through Effect responses and the orig
     assert.deepEqual(observed, ["first", "replacement", "death-response", "victim-prepare", "effect-disabled", "effect-ended", "late-leave"]);
 
     const created = units.initialize(ended.state, {
-        id: 2, position: [0, 0],
+        position: [0, 0],
         definition: {
             ...definition, id: "instant-target",
             hooks: Hooks.empty().set(units.prepare, {

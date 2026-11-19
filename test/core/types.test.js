@@ -212,7 +212,7 @@ const timedAttackInput = {
 createAttackWithState({ ...timedAttackInput, applyWay: 'RANGED' });
 // @ts-expect-error custom output declares its apply way explicitly.
 createAttackWithState({ ...timedAttackInput, output: state => state });
-const host = initialize(battle, { id: 0, position: [0, 0], definition: {
+const host = initialize(battle, { position: [0, 0], definition: {
     id: 'armed', hooks: Hooks.empty(), offense: { attack: attribute(100) }, layer: { type: 'GROUND' },
     action: {
         speed: attribute(100, 20), interval: attribute(10),
@@ -314,13 +314,15 @@ const burst = elemental.get(battle, burstRef)!;
 effects.setExpiration(battle, burstRef, { ...burst.expiration, remaining: burst.expiration.remaining - 1 });
 // @ts-expect-error writes retain the Burst identity's duration contract.
 effects.setExpiration(battle, burstRef, { type: 'DEADLINE', tick: 10 });
-const bare = initialize(battle, { id: 1, position: [0, 0], definition: { id: 'bare', hooks: Hooks.empty() } }).value;
+const bare = initialize(battle, { position: [0, 0], definition: { id: 'bare', hooks: Hooks.empty() } }).value;
+// @ts-expect-error Unit instance identity is assigned by the initializer.
+initialize(battle, { id: 1, position: [0, 0], definition: bare.definition });
 update(battle, ref(bare), killedChange);
 const classifiedDefinition = {
     id: 'classified', hooks: Hooks.empty(),
     classification: { type: 'DEVICE' as const, side: 'ALLY' as const, filterTags: [], groupTags: [] },
 };
-const classified = initialize(battle, { id: 6, position: [0, 0], definition: classifiedDefinition }).value;
+const classified = initialize(battle, { position: [0, 0], definition: classifiedDefinition }).value;
 const classifiedCapability: classification.Classification<'DEVICE'> = classified;
 const initializedClassification: classification.State = classified.classification;
 const staticClassification: classification.Definition = classified.definition.classification;
@@ -365,7 +367,7 @@ update(battle, ref(bare), receivingChange);
 update(battle, ref(bare), removeUnitHook(hpDamage.receiving, 'evade'));
 const facingDefinition = { ...bare.definition, facing: { restrictions: [] }, offense: { attack: attribute(10) } };
 const facingHost = initialize(battle, {
-    id: 4, definition: facingDefinition, position: [0, 0], initial: { facing: { direction: 'LEFT' } },
+    definition: facingDefinition, position: [0, 0], initial: { facing: { direction: 'LEFT' } },
 }).value;
 const facingAttack: number = facingHost.definition.offense.attack.default;
 facing.turn(battle, ref(facingHost), 'RIGHT');
@@ -374,12 +376,12 @@ const facingChange: Change<Unit & facing.Facing> = facing.setRestriction({
 });
 const facingProduct: typeof facingHost = facingChange(facingHost).next;
 // @ts-expect-error Facing construction requires the instance direction.
-initialize(battle, { id: 4, definition: facingDefinition, position: [0, 0] });
+initialize(battle, { definition: facingDefinition, position: [0, 0] });
 // @ts-expect-error facing operations require a Facing-capable Unit.
 facing.turn(battle, ref(bare), 'LEFT');
 const occupiedDefinition = { ...bare.definition, occupancy: { slot: 'OCCUPANT' as const } };
 const occupiedInput: UnitInput<typeof occupiedDefinition> = {
-    id: 3, definition: occupiedDefinition, position: [0, 0],
+    definition: occupiedDefinition, position: [0, 0],
     initial: { occupancy: { tile: [0, 0] } },
 };
 const occupied = initialize(battle, occupiedInput).value;
@@ -392,7 +394,7 @@ initialize(battle, { ...occupiedInput, initial: { occupancy: { direction: 'RIGHT
 declare const plan: Plan;
 const routedDefinition = { id: 'routed', hooks: Hooks.empty(), route: { alwaysCheckCurrentPoint: true } };
 const routedInput: UnitInput<typeof routedDefinition> = {
-    id: 5, definition: routedDefinition, position: [0, 0],
+    definition: routedDefinition, position: [0, 0],
     initial: { route: { plan, offset: [0, 0] } },
 };
 initialize(battle, routedInput);
@@ -404,7 +406,7 @@ initialize(battle, { ...routedInput, definition: bare.definition, initial: { rou
 // @ts-expect-error an unknown initialization key is rejected alongside a valid one.
 initialize(battle, { ...routedInput, initial: { ...routedInput.initial, rouet: routedInput.initial.route } });
 // @ts-expect-error Route construction requires the instance Plan and offset.
-initialize(battle, { id: 5, definition: routedDefinition, position: [0, 0] });
+initialize(battle, { definition: routedDefinition, position: [0, 0] });
 declare const scheduleSpawn: Spawn;
 const routedSpawn: Spawn = { ...scheduleSpawn, definition: routedDefinition };
 // @ts-expect-error scheduled construction requires the Route capability.
@@ -635,7 +637,7 @@ for (const self of selectableActions.filter(targeting.elementHealing(battle, tar
 }
 // @ts-expect-error standard target eligibility requires the source's Classification capability.
 targeting.damage(battle, host);
-const patient = initialize(battle, { id: 2, position: [0, 0], definition: {
+const patient = initialize(battle, { position: [0, 0], definition: {
     id: 'patient', hooks: Hooks.empty(),
     vitality: {
         maxHp: attribute(100, 1), defense: attribute(10), resistance: attribute(0, 0, 100),

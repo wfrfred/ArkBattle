@@ -18,7 +18,7 @@ export type PredefinedUnitCreation<
     D extends UnitDefinition & Partial<Definitions> = UnitDefinition & Partial<Definitions>,
 > = {
     readonly type: "UNIT";
-} & Omit<UnitInput<D>, "id">;
+} & UnitInput<D>;
 
 export interface PredefinedMechanismCreation<S extends object = object> {
     readonly type: "MECHANISM";
@@ -93,9 +93,7 @@ export function appear(battle: BattleState, id: PredefinedDefinition["id"]): Bat
 
     const creation = definition.creation;
     if (creation.type === "UNIT") {
-        const unitId = battle.execution.nextUnitId;
-        battle = { ...battle, execution: { ...battle.execution, nextUnitId: unitId + 1 } };
-        const initialized = initializeUnit(battle, { ...creation, id: unitId });
+        const initialized = initializeUnit(battle, creation);
         battle = initialized.state;
         const unit = initialized.value;
         battle = {

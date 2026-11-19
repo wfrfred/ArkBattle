@@ -46,7 +46,7 @@ Quote 承诺 DP、库存和额度消费：dp 为 null 表示不支付，零表�
 
 ## 普通部署流程
 
-合并并判定资格 → 采样 COST／退款依据 → 提交 DP、库存、usedSlots 及部署间隔 → 分配身份并初始化 Unit → Deployable.setDeployment 写入本次事实 → 登记 Unit／占格 → 普通 enter。
+合并并判定资格 → 采样 COST／退款依据 → 提交 DP、库存、usedSlots 及部署间隔 → `Unit.initialize` 分配身份并装配 → Deployable.setDeployment 写入本次事实 → 登记 Unit／占格 → 普通 enter。
 
 付款先处理 DP 时基，不能在消费后补发满额期间回复。落点与方向通过 Occupancy Initial 提供；Deployment 不直接重建 Deployable State。
 
@@ -54,7 +54,7 @@ Quote 承诺 DP、库存和额度消费：dp 为 null 表示不支付，零表�
 
 ## 关卡预置与开场 Unit
 
-Predefined 持有完整 Unit 或 Mechanism 创建项；Unit 直接复用其具体 Definition 所需的初始化输入。initiallyPresent 声明开场出现，appear 分配实例身份、登记预置绑定后再 add／enter。
+Predefined 持有完整 Unit 或 Mechanism 创建项。Unit 复用其具体 Definition 所需的初始化输入。initiallyPresent 声明开场出现。Unit 分支由 `Unit.initialize` 分配实例身份，appear 登记预置绑定后再 add／enter。
 
 appear／remove 是按 PredefinedDefinition.id 的领域操作，不通过 Command。remove 先撤销旧绑定再完整结束实例；Unit 分支接收 Unit.End。离场回调重新出现同一预置项时，外层保留新绑定。预置不执行玩家部署的支付与部署通知。
 

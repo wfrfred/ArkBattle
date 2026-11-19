@@ -42,7 +42,7 @@ Battle 初始化登记全局 leave 反馈，任意完整 Unit 离场同步释放
 
 ## 从 Spawn 到 Unit
 
-出生先分配身份、采样偏移并发布 RNG，再用原 Definition、本次 Route Plan／offset 与 Facing 初值初始化 Unit。接续初始化状态后先登记等待，再 Unit.add 登记完整对象并执行 enter。
+出生先采样偏移并发布 RNG，再由 `Unit.initialize` 分配身份，用原 Definition、本次 Route Plan／offset 与 Facing 初值完成装配。接续初始化状态后先登记等待，再用 `Unit.add` 登记完整对象并执行 enter。
 
 Route 在实际初始化时取得主线时间快照，登记后的 enter 同步进入首指令；这些回调已经能看到完整出生和等待事实。unit.add 不解释路线。返回后始终接续最新 State，不覆盖嵌套操作的 Schedule／RNG／Unit 修改。
 

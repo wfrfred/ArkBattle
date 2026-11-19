@@ -7,11 +7,10 @@ import {
     type Product,
 } from "./capability/catalog.js";
 import { Effects } from "./effect/effects.js";
-import type { Unit, Definition, Id } from "./unit.js";
+import type { Unit, Definition } from "./unit.js";
 import { Hooks } from "../hook.js";
 
 export type Input<D extends Definition & Partial<Definitions> = Definition> = {
-    readonly id: Id;
     readonly definition: D;
     readonly position: WorldPosition;
     readonly hooks?: Hooks;
@@ -24,8 +23,11 @@ export function initialize<D extends Definition & Partial<Definitions>>(
     input: Input<D>,
 ): Result<Unit & Product<D>>;
 export function initialize(battle: BattleState, input: Input): Result<Unit> {
+    const id = battle.execution.nextUnitId;
+    battle = { ...battle, execution: { ...battle.execution, nextUnitId: id + 1 } };
+
     let unit: Unit = {
-        id: input.id,
+        id,
         lifecycle: "PRESENT",
         definition: input.definition,
         hooks: input.hooks ?? Hooks.empty(),
