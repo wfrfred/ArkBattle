@@ -3,6 +3,7 @@ import {
     assertPositiveSafeInteger,
     assertSafeInteger,
 } from "../../../common/assert.js";
+import { roundToEven } from "../../../common/math.js";
 import type { Ref } from "../../../common/ref.js";
 import type { State as BattleState, Result } from "../../../battle/state.js";
 import type { Unit } from "../../unit.js";
@@ -34,9 +35,7 @@ export function resolveCapacity(base: number, modifiers: Iterable<Modifier>): nu
         ratio += modifier.ratio;
     }
 
-    const scaled = base * ratio;
-    const lower = Math.floor(scaled);
-    const rounded = scaled - lower === 0.5 ? lower + Math.abs(lower % 2) : Math.round(scaled);
+    const rounded = roundToEven(base * ratio);
     const capacity = Math.max(1, base + addition + rounded);
 
     return capacity;

@@ -1,3 +1,4 @@
+import { roundToEven } from "../common/math.js";
 import type { Vec2 } from "../common/vector.js";
 import { Direction } from "./direction.js";
 
@@ -5,17 +6,9 @@ export type TilePosition = Vec2;
 
 export type WorldPosition = Vec2;
 
-function roundTiesToEven(value: number): number {
-    const lower = Math.floor(value);
-    const fraction = value - lower;
-    if (fraction < 0.5) {
-        return lower;
-    }
-    if (fraction > 0.5) {
-        return lower + 1;
-    }
-
-    return lower % 2 === 0 ? lower : lower + 1;
+function toTileComponent(value: number): number {
+    // Preserve an input zero and normalize zero produced by rounding.
+    return value === 0 ? value : roundToEven(value) + 0;
 }
 
 export const Tile = {
@@ -45,6 +38,6 @@ export const Tile = {
 
 export const World = {
     toTile(position: WorldPosition): TilePosition {
-        return [roundTiesToEven(position[1]), roundTiesToEven(position[0])];
+        return [toTileComponent(position[1]), toTileComponent(position[0])];
     },
 };
