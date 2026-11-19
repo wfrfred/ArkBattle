@@ -14,6 +14,7 @@ import { get } from "./card/query.js";
 import type { Card } from "./card/card.js";
 import * as card from "./card/state.js";
 import * as cards from "./card/operations.js";
+import * as dp from "./dp.js";
 import { advanceResources, replaceCard } from "./resources.js";
 import { evaluateCurrent, resolveRestrictions, createRequest } from "./query.js";
 import { validateQuote, type DeployRequest, type DeployOutcome } from "./request.js";
@@ -65,17 +66,21 @@ export function deploy<T extends Card<any>>(
                           ? cost
                           : card.resolveBaseCost(self),
               };
-    const current = battle.deployment;
+    const amount = request.quote.dp;
+    if (amount !== null) {
+        const payment = dp.pay(battle, amount);
+        if (!payment.value) {
+            return { state: previous, value: { type: "REJECTED", reason: "INSUFFICIENT_DP" } };
+        }
+
+        battle = payment.state;
+    }
+
     battle = {
         ...battle,
         deployment: {
-            ...current,
-            dp: request.quote.dp === null ? current.dp : current.dp - request.quote.dp,
-            lastDpRecoveryTick:
-                request.quote.dp !== null && request.quote.dp !== 0
-                    ? battle.tick
-                    : current.lastDpRecoveryTick,
-            usedSlots: current.usedSlots + request.quote.slots,
+            ...battle.deployment,
+            usedSlots: battle.deployment.usedSlots + request.quote.slots,
         },
     };
     let consumed = card.consume(self, request.quote.stock);
