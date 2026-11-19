@@ -153,12 +153,7 @@ export function evaluateCurrent(
         return { type: "REJECTED", reason: "INSUFFICIENT_DP" };
     }
 
-    const [row, column] = request.tilePosition;
-    if (
-        !Number.isInteger(row) ||
-        !Number.isInteger(column) ||
-        getTile(battle.battlefield.map, request.tilePosition) === undefined
-    ) {
+    if (getTile(battle.battlefield.map, request.tilePosition) === undefined) {
         return { type: "REJECTED", reason: "OUTSIDE_MAP" };
     }
 

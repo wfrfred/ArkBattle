@@ -30,7 +30,7 @@ Battlefield 保存战场的空间事实，提供纯状态写回和只读查询�
 
 Map 保存矩形地块布局、标记和阻隔边。Tile 引用静态 Definition，并保存当前 State；Definition.initial 是初始地块事实，当前状态可以由地块操作替换。Terrain 的类型和参数随 Definition 提供，具体地形行为由 Content 的 Mechanism／Effect 表达。
 
-数据解析与地图、地块构造入口建立尺寸、地块数量、坐标和通行代价等约束。内部投影与计算信任这些已构造的数据，不逐次重验地图、复制 Definition 或验证内容私有数据。
+数据解析与地图、地块构造入口建立尺寸、地块数量、坐标和通行代价等约束。地图和导航接受行、列均为安全整数且落在地图范围内的格子地址。内部投影与计算信任已构造的数据，不逐次重验地图、复制 Definition 或验证内容私有数据。
 
 `battlefield/tile.update` 纯地发布 Tile 状态；passability 或 walkCost 改变时，同时更新基础导航投影并保留 Overlay。该入口不执行地形内容或阻挡维护。需要同步完整地块结算的调用方使用 `battle/tile.update`，它在发布后调用 Blocking 的关系维护。
 

@@ -2,7 +2,7 @@ import type { Passability, Tile } from "./tile.js";
 import type { Definition as TerrainDefinition } from "./terrain.js";
 import type { Tiles } from "./tiles.js";
 import { assertPositiveSafeInteger } from "../../common/assert.js";
-import { type TilePosition } from "../../geometry/coordinate.js";
+import { Tile as TileCoordinates, type TilePosition } from "../../geometry/coordinate.js";
 import { Direction } from "../../geometry/direction.js";
 
 export interface Marker {
@@ -25,6 +25,10 @@ export interface Map {
 }
 
 export function contains(map: Map, position: TilePosition): boolean {
+    if (!TileCoordinates.is(position)) {
+        return false;
+    }
+
     const [row, col] = position;
 
     return row >= 0 && row < map.rows && col >= 0 && col < map.columns;
@@ -84,6 +88,10 @@ export function create(
 
     for (const [index, edge] of blockEdges.entries()) {
         const position = edge.position;
+        if (!TileCoordinates.is(position)) {
+            throw new RangeError(`block edge at index ${index} has an invalid tile position`);
+        }
+
         const [dRow, dCol] = Direction.vector(edge.direction);
         const neighbor: TilePosition = [position[0] + dRow, position[1] + dCol];
         if (!contains(map, position) && !contains(map, neighbor)) {

@@ -60,6 +60,27 @@ test("a field batch publishes final occupancy without moving bodies or executing
     assert.deepEqual(notices, ["first", "second"]);
 });
 
+test("fractional tile addresses cannot alias an integer tile", () => {
+    const dimensions = { rows: 2, columns: 2 };
+    const tile = [0.5, 0];
+    const { map, navigation } = battle([], dimensions).battlefield;
+    assert.equal(getTile(map, tile), undefined);
+
+    assert.throws(() => battle([{
+        definition: { id: "occupant", hooks: Hooks.empty(), occupancy: { slot: "OCCUPANT" } },
+        position: [0, 0],
+        initial: { occupancy: { tile } },
+    }], dimensions), RangeError);
+
+    const covered = setOverlay(navigation, "WALK", {
+        id: 0,
+        cells: [tile],
+        denyPassage: true,
+        denyDepartures: [],
+    });
+    assert.deepEqual(nextPoint(covered, "WALK", [0, 0], [1, 0]), [1, 0]);
+});
+
 test("navigation follows current tile costs, directional restrictions and independent overlays", () => {
     const original = battle([], { rows: 1, columns: 3 }).battlefield;
     const cost = (navigation) => field(effectiveMap(navigation, "WALK"), [0, 2]).nodes[0].distance;

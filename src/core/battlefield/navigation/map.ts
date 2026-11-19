@@ -1,4 +1,4 @@
-import type { TilePosition } from "../../geometry/coordinate.js";
+import { Tile, type TilePosition } from "../../geometry/coordinate.js";
 import { DIRECTIONS, type Direction } from "../../geometry/direction.js";
 
 export interface Cell {
@@ -21,6 +21,10 @@ export class Map {
     }
 
     contains(position: TilePosition): boolean {
+        if (!Tile.is(position)) {
+            return false;
+        }
+
         const [row, col] = position;
 
         return row >= 0 && row < this.rows && col >= 0 && col < this.columns;
