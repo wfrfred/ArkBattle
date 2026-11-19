@@ -31,7 +31,6 @@ export interface Input {
     readonly forceLevel: number;
     readonly nearStop: readonly NearStop[];
     readonly brake?: Brake;
-    readonly endOnReach?: boolean;
 }
 
 export interface Pull extends Identified<{
@@ -48,7 +47,6 @@ export interface Pull extends Identified<{
     readonly nearStop: readonly NearStop[];
     readonly brake: Brake;
     readonly braked: boolean;
-    readonly endOnReach: boolean;
 }
 
 export function ref(self: Pull): Ref<Pull> {
@@ -160,11 +158,7 @@ export function create(
         nearStop: input.nearStop,
         brake: input.brake ?? "ONCE",
         braked: false,
-        endOnReach: input.endOnReach ?? false,
     };
-    if (item.endOnReach && isNear(battle, item)) {
-        return { state: battle, value: null };
-    }
 
     const reference = ref(item);
     const pulls = new Map(next.pulls).set(item.id, item);

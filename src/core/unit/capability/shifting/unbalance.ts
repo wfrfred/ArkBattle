@@ -248,32 +248,18 @@ function settlePulls(
     const effective = [...current.self.pulls.values()].filter((item) =>
         pull.available(battle, item),
     );
-    const arrived: pull.Pull[] = [];
-    const lost: pull.Pull[] = [];
-
-    for (const item of effective) {
-        if (!advanced.has(item.id)) {
-            continue;
-        }
-
-        if (pull.position(battle, item.point) === undefined) {
-            lost.push(item);
-        } else if (pull.isNear(battle, item)) {
-            arrived.push(item);
-        }
-    }
-
-    if (effective.length === 1 && arrived[0] !== undefined) {
-        const item = arrived[0];
-        if (!item.braked || item.brake === "WHILE_NEAR") {
-            battle = pull.brake(battle, pull.ref(item));
-        }
-    }
-
-    for (const item of arrived) {
-        if (item.endOnReach) {
-            battle = pull.end(battle, pull.ref(item), "ARRIVED");
-        }
+    const lost = effective.filter(
+        (item) => advanced.has(item.id) && pull.position(battle, item.point) === undefined,
+    );
+    const sole = effective.length === 1 ? effective[0] : undefined;
+    if (
+        sole !== undefined &&
+        advanced.has(sole.id) &&
+        lost.length === 0 &&
+        (!sole.braked || sole.brake === "WHILE_NEAR") &&
+        pull.isNear(battle, sole)
+    ) {
+        battle = pull.brake(battle, pull.ref(sole));
     }
 
     for (const item of lost) {

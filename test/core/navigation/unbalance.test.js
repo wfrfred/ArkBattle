@@ -70,17 +70,10 @@ test("push uses the current source and target grades and the battle push multipl
     assertPosition(step(shifted.state, []), [1 + 530 * 0.25 * 0.02 / 30, 1]);
 });
 
-test("pull creation refuses a zero table result, an ended source, and an already reached pull", () => {
+test("pull creation refuses a zero table result and an ended source", () => {
     const { state, host, source } = setup();
     const tooLight = pull.create(state, source, host, fixedPull(source, [5, 1], { forceLevel: -4 }));
     assert.deepEqual(tooLight, { state, value: null });
-
-    const reached = pull.create(state, source, host, fixedPull(source, [1.01, 1], {
-        nearStop: [pull.withinRadius(0.05)],
-        endOnReach: true,
-    }));
-    assert.deepEqual(reached, { state, value: null });
-    assert.equal(shiftable.isUnbalanced(get(reached.state, 0)), false);
 
     const departed = units.remove(state, source, { reason: "SCRIPT" });
     const withoutSource = pull.create(departed, source, host, fixedPull(source, [5, 1]));
@@ -185,19 +178,19 @@ test("near braking uses ONCE or WHILE_NEAR with the same retained pull", () => {
     }
 });
 
-test("arrival publishes displacement before braking and ending the pull", () => {
-    const observations = [];
+test("near braking follows displacement and leaves the pull active until explicitly ended", () => {
+    let moved = false;
     let pullRef;
     const { state, host, source } = setup({
         ...targetDefinition,
         hooks: Hooks.empty().set(unbalance.forcedMoved, {
-            id: "observe-arrival",
+            id: "observe-near-stop",
             invoke(current) {
                 const position = get(current, 0).position;
                 assert.ok(position[0] >= 1.8 && position[0] <= 2.2);
                 assert.ok(unbalance.get(current, pullRef.unbalance).velocity[0] > 0);
                 assert.equal(lifetime.available(current, lifetime.scope(pull.lifetime, pullRef)), true);
-                observations.push("MOVED");
+                moved = true;
                 return { state: current, value: undefined };
             },
         }),
@@ -205,25 +198,21 @@ test("arrival publishes displacement before braking and ending the pull", () => 
     const linked = pull.create(state, source, host, fixedPull(source, [2, 1], {
         nearStop: [pull.withinRadius(0.2)],
         brake: "ONCE",
-        endOnReach: true,
     }));
     pullRef = linked.value;
     assert.ok(pullRef);
     const scope = lifetime.scope(pull.lifetime, pullRef);
-    const watched = effects.install(linked.state, host, {
-        id: "observe-pull-end",
-        initialize: () => ({}),
-        onEnd(current, _effect, reason) {
-            assert.deepEqual(unbalance.get(current, pullRef.unbalance).velocity, [0, 0]);
-            assert.equal(lifetime.available(current, scope), false);
-            observations.push(reason);
-            return current;
-        },
-    }, { scopes: [scope] });
-    let current = step(unbalance.applyImpulse(watched.state, host, [24, 0]).state, []);
-    assert.deepEqual(observations, ["MOVED", "ARRIVED"]);
-    assert.equal(shiftable.isUnbalanced(get(current, 0)), true);
+    let current = step(unbalance.applyImpulse(linked.state, host, [24, 0]).state, []);
+    assert.equal(moved, true);
+    assert.deepEqual(unbalance.get(current, pullRef.unbalance).velocity, [0, 0]);
     for (let i = 0; i < 3; i++) current = step(current, []);
+    assert.equal(lifetime.available(current, scope), true);
+    assert.equal(shiftable.isUnbalanced(get(current, 0)), true);
+
+    current = pull.end(current, pullRef);
+    assert.equal(lifetime.available(current, scope), false);
+    assert.equal(shiftable.isUnbalanced(get(current, 0)), true);
+    current = step(current, []);
     assert.equal(shiftable.isUnbalanced(get(current, 0)), false);
 });
 
