@@ -128,7 +128,7 @@ Prefab、范围读取和换算由实际业务使用；目录移动、提取工�
 | APPLY-01 | BeforeReceive 改变准入并接续工作值，取消保留已完成前缀；HIT 与普通伤判同轮，前置取消不授予 HIT，后续取消不回滚已得 SP。 | [Apply](../../test/core/resource/application.test.js)的接收与同步后继。 |
 | APPLY-02 | 最终非负边界、零计算拒绝与零接收／零实际变化成功分开；报告在写点固定。 | [Apply](../../test/core/resource/application.test.js)与[Calculate](../../test/core/resource/calculation.test.js)的零值和报告。 |
 | APPLY-03 | 固定／取消单向接续，取消权限与成功后继分开；禁止抵挡保留护盾且仍有普通减伤，FIXED 不被普通改量恢复。 | [泥岩](../../test/content/operators/mudrock.test.js)真实 Hook 与[接收类型](../../test/core/types.test.js)。 |
-| HP-03 | damageCommitted、两侧 Applied 完成后才确认死亡；零 HP 期间保留 Unit 与 Blocking，可救回，不由嵌套 Combat 提前判死。 | [Apply](../../test/core/resource/application.test.js)的致死与恢复。 |
+| HP-03 | damageCommitted、两侧 Applied 完成后才确认死亡。零 HP 期间保留 Unit 与 Blocking，可救回，嵌套 Combat 和零量直接恢复均保留原结算的死亡归属。 | [Apply](../../test/core/resource/application.test.js)的致死与恢复。 |
 | KILL-01 | 显式 killer 与 source 独立；targetKilled 先于普通目标 Prepare，排除或来源 LEAVING 不改变目标结算。 | [Apply](../../test/core/resource/application.test.js)确认与[Unit](../../test/core/unit.test.js)本地通知。 |
 | KILL-02 | 内层取得死亡确认时外层不重复；首次 End 固定归属，重复不 Prepare，Finalize 延后不丢 killed，Completed 后发业务不改旧结果。 | [Apply](../../test/core/resource/application.test.js)嵌套死亡与真实 Lifetime。 |
 | KILL-03 | InstantKill 调用者先登记 Prepare，再请求结束；通知看到已发布 LEAVING 与固定 Departure，不要求先写 HP0，直接 remove 不自动生成来源通知。 | [Unit](../../test/core/unit.test.js)的直接结束组合，不另建 InstantKill 框架。 |
@@ -151,6 +151,8 @@ Prefab、范围读取和换算由实际业务使用；目录移动、提取工�
 ## Event 的回归语义
 
 依据 [Event](event.md)：成功的 HP／EP 结算输出实际变化，包含零实际变化；拒绝不产生成功 Event。元素 HP 伤害与 EP 损伤分开；爆发位置与注销历史不会因随后移动／删除丢失；顺序按发生时点，Tick 清空旧输出但旧版本可读，表现不反向改变领域状态。
+
+HP 伤害先于 damageCommitted 中的嵌套治疗输出，触发离场的普通治疗先输出 HEAL，见 [Vitality](../../test/core/vitality.test.js)。
 
 这些结果集中在 UI 适配与实际结算组合，领域业务通过 State、Outcome／Application 或 Hook 验证，不为 Blocking、Projectile 等复制诊断输出矩阵。
 

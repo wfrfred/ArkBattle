@@ -102,16 +102,6 @@ export function applyDamage(
         return complete(battle, request, calculation, { type: "UNAVAILABLE", received }, options);
     }
 
-    battle = appendEvents(battle, [
-        {
-            type: "DAMAGE",
-            targetUnitId: request.target.id,
-            damageType: calculation.type,
-            amount: application.hpLoss,
-            tick: battle.tick,
-        },
-    ]);
-
     const appliedContext = { ...commitContext, application };
     battle = dispatch(
         battle,

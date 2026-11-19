@@ -801,10 +801,16 @@ test("HP-03: lethal HP remains present through nested Combat and both Applied ro
                     blocking.blockerOf(current, enemy).id,
                 ]);
                 assert.equal(vitality.isAlive(get(current, 1)), false);
+                const zeroRecovery = vitality.increaseHp(current, target, 0);
+                assert.equal(zeroRecovery.state, current);
+                assert.deepEqual(zeroRecovery.value, {
+                    before: { hp: 0, minusHp: 0 }, after: { hp: 0, minusHp: 0 },
+                    hpGain: 0, minusHpLoss: 0, overflow: 0,
+                });
                 const recovery = healingRequest(null, target, 20);
                 const attempted = hpHealing.applyHealing(
                     recovery,
-                    hpHealing.calculateHealing(current, recovery),
+                    hpHealing.calculateHealing(zeroRecovery.state, recovery),
                 );
                 assert.equal(attempted.value.type, "REJECTED");
                 const resumed = advanceCombat(attempted.state);
@@ -836,7 +842,9 @@ test("HP-03: lethal HP remains present through nested Combat and both Applied ro
     }));
     state = update(state, target, units.setHook(units.prepare, {
         id: "kill-reward",
-        invoke(current) {
+        invoke(current, departure) {
+            assert.equal(departure.reason, "DEATH");
+            assert.deepEqual(departure.killer, source);
             prepared = true;
             return { state: current, value: undefined };
         },

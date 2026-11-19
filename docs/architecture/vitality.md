@@ -45,7 +45,7 @@ Runtime 在 Effect 后、Elemental 资源推进前调用 Vitality.advance，之�
 
 increaseHp 是公开直接恢复：目标必须仍为 PRESENT，缺失或 LEAVING 抛出 RangeError；恢复前 HP 可为零，恢复量必须有限非负。它从最新 Health 先偿债再增 HP，按当前容量裁切并返回固定恢复报告；不构造 Healing Request、不经过普通治疗或伤害提交 Hook、不输出 HEAL。生命复原、复活恢复及 HP 同步由 Content 选择合适的直接恢复或 Damage，不提供任意 HP 赋值接口。
 
-普通 Healing 的提交与自然回复共用 increaseHp，但前者保留 [Resource](resource.md) 的完整接收与存活门控，后者保留自己的存活与零速门控；直接恢复不自动继承这些前提。
+普通 Healing、自然回复和直接恢复共享同一资源分配规则。普通治疗遵循 [Resource](resource.md) 的接收与存活门控。自然回复检查存活与零速，直接恢复允许对仍处于 PRESENT 的零 HP 单位执行。
 
 ## 伤害写入前后
 
@@ -54,7 +54,7 @@ increaseHp 是公开直接恢复：目标必须仍为 PRESENT，缺失或 LEAVIN
 | 扩展点 | 固定事实 | 工作值与时点 |
 | --- | --- | --- |
 | damageCommitting | request、入口 previous:Health | 待写 Health；尚未截到最终资源范围 |
-| damageCommitted | request、固定 application | void；资源已写入，普通 Applied 尚未执行 |
+| damageCommitted | request、固定 application | void。资源与 DAMAGE Event 已发布，随后才执行普通 Applied。 |
 
 例如没有债务时，100 HP 接收 150 的候选 hp 为 −50；保护程序可以同时调整普通 HP 与债务。它不改变 received 或取消原因，FIXED 接收量也进入此干预。内部两个键不继承 Apply 的 exclude、ignore 或 forbidden；排序与同步候选遵守 [Hook](hook.md)。
 
@@ -78,7 +78,7 @@ h ≤ 1：新债务 = m + d
 
 正向恢复先抵债，余额再增普通 HP，MaxHP 比例变化的正向部分也适用。例如 HP1／债80恢复100→HP21／债0。最终普通 HP 限制在有效上限内，债务保持非负，启用容量时限制到当前容量；未耗尽债务保留普通生命，满债使 HP0。
 
-容量降低后，正恢复即使偿还部分债务，余额仍可能达到新容量并使 HP0。恢复写点此时以 killer:null 请求正常 DEATH，仍返回原恢复报告；完整 Healing 保持 APPLIED，不改成 UNAVAILABLE，不丢成功 UI 或适用的来源后继。Healing 不另作一般死亡扫描，零速自然回复不进入该写点。这是动态容量合同，不冒充原生角色已启用的内容例子。
+容量降低后，恢复结算的债务余额仍可能达到新容量。恢复前 HP 大于零且本次写入将 HP 降至零时，恢复以 killer:null 请求正常 DEATH。普通 Healing 先发布 HEAL，再请求离场，并保留 APPLIED 和适用的来源后继。恢复前已为零时，可以通过直接恢复救回单位。仍为零时由原业务确认死亡。零速自然回复跳过资源结算。以上规定动态容量的 Core 行为，具体角色接入按对应内容验证。
 
 ## 提交报告与特殊恢复
 

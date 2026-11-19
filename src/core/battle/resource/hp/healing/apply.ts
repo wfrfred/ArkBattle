@@ -89,14 +89,6 @@ export function applyHealing(
     const committed = vitality.commitHealing(battle, commitContext);
     battle = committed.state;
     const application = committed.value;
-    battle = appendEvents(battle, [
-        {
-            type: "HEAL",
-            targetUnitId: request.target.id,
-            amount: application.hpGain,
-            tick: battle.tick,
-        },
-    ]);
 
     const appliedContext = { ...commitContext, application };
     battle = dispatch(

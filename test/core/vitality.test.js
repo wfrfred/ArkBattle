@@ -215,6 +215,10 @@ test("HP-08: Health protection commits before its consequences and preserves the
     assert.deepEqual(protectedHit.value.application, {
         before: { hp: 100, minusHp: 0 }, after: { hp: 10, minusHp: 0 }, hpLoss: 90, minusHpGain: 0,
     });
+    assert.deepEqual(protectedHit.state.events.map(({ type, amount }) => [type, amount]), [
+        ["DAMAGE", 90],
+        ["HEAL", 10],
+    ]);
     assert.equal(protectedHit.value.killed, false);
     assert.equal(vitality.resolveDefense(protectedHit.state, get(protectedHit.state, target.id)), 20);
     assert.equal(committed, 1);
@@ -331,7 +335,9 @@ test("HP-09: Vitality settles life debt across damage, recovery and MaxHP change
     assert.deepEqual(capacityReport.before, { hp: 1, minusHp: 80 });
     assert.deepEqual(capacityReport.after, { hp: 0, minusHp: 50 });
     assert.equal(get(departedRecovery.state, 0), undefined);
-    assert.equal(departedRecovery.state.events.find(event => event.type === "HEAL").amount, 0);
+    const recoveryEvents = departedRecovery.state.events.slice(lowerCapacity.events.length);
+    assert.deepEqual(recoveryEvents.map(event => event.type), ["HEAL", "UNIT_REMOVED"]);
+    assert.equal(recoveryEvents[0].amount, 0);
 
     const recovery = healingRequest(null, target, 100);
     const restored = hpHealing.applyHealing(recovery, hpHealing.calculateHealing(second.state, recovery));

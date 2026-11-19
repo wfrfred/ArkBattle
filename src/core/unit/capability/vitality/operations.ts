@@ -1,7 +1,7 @@
 import type { Ref } from "../../../common/ref.js";
 import { assert, assertNonnegativeNumber } from "../../../common/assert.js";
 import { TICKS_PER_SECOND } from "../../../tick.js";
-import type { State as BattleState, Result } from "../../../battle/state.js";
+import { appendEvents, type State as BattleState, type Result } from "../../../battle/state.js";
 import { remove, replace } from "../../operations.js";
 import type { Unit } from "../../unit.js";
 import * as units from "../../query.js";
@@ -134,6 +134,16 @@ export function commitDamage(
         ]);
     }
 
+    battle = appendEvents(battle, [
+        {
+            type: "DAMAGE",
+            targetUnitId: target.id,
+            damageType: context.calculated.type,
+            amount: application.hpLoss,
+            tick: battle.tick,
+        },
+    ]);
+
     // eslint-disable-next-line @typescript-eslint/no-invalid-void-type -- The hook's work type is void.
     const notified = dispatchHook<DamageCommittedContext, void, DamageCommittedHook>(
         battle,
@@ -152,7 +162,7 @@ export function commitHealing(
     battle: BattleState,
     context: healing.CommitContext,
 ): Result<HealingApplication> {
-    return increaseHp(battle, context.request.target, context.received.amount);
+    return recoverHp(battle, context.request.target, context.received.amount, "HEAL");
 }
 
 export function advance(battle: BattleState, reference: Ref<Unit & Vitality>): BattleState {
@@ -170,6 +180,15 @@ export function increaseHp(
     battle: BattleState,
     reference: Ref<Unit & Vitality>,
     amount: number,
+): Result<HealingApplication> {
+    return recoverHp(battle, reference, amount, null);
+}
+
+function recoverHp(
+    battle: BattleState,
+    reference: Ref<Unit & Vitality>,
+    amount: number,
+    event: "HEAL" | null,
 ): Result<HealingApplication> {
     assertNonnegativeNumber(amount, "HP recovery amount");
     const unit = units.get(battle, reference);
@@ -189,18 +208,26 @@ export function increaseHp(
         overflow: Math.max(0, amount - minusHpLoss - hpGain),
     };
 
-    const state =
-        after.hp === before.hp && after.minusHp === before.minusHp
-            ? battle
-            : replace(battle, [{ ...unit, vitality: { ...unit.vitality, health: after } }]);
+    if (after.hp !== before.hp || after.minusHp !== before.minusHp) {
+        battle = replace(battle, [{ ...unit, vitality: { ...unit.vitality, health: after } }]);
+    }
 
-    return {
-        state:
-            after.hp <= 0
-                ? remove(state, units.ref(unit), { reason: "DEATH", killer: null })
-                : state,
-        value: application,
-    };
+    if (event !== null) {
+        battle = appendEvents(battle, [
+            {
+                type: event,
+                targetUnitId: reference.id,
+                amount: application.hpGain,
+                tick: battle.tick,
+            },
+        ]);
+    }
+
+    if (before.hp > 0 && after.hp <= 0) {
+        battle = remove(battle, reference, { reason: "DEATH", killer: null });
+    }
+
+    return { state: battle, value: application };
 }
 
 function dispatchHook<C extends damage.Context | healing.Context, T, H extends hooks.Hook<C, T>>(
