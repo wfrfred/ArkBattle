@@ -68,12 +68,7 @@ export function deploy<T extends Card<any>>(
               };
     const amount = request.quote.dp;
     if (amount !== null) {
-        const payment = dp.pay(battle, amount);
-        if (!payment.value) {
-            return { state: previous, value: { type: "REJECTED", reason: "INSUFFICIENT_DP" } };
-        }
-
-        battle = payment.state;
+        battle = dp.pay(battle, amount).state;
     }
 
     battle = {
