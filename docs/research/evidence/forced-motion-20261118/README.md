@@ -30,6 +30,13 @@
 
 薄绿的 `skchr_mint_2` 切到模式 2，该模式的 `MeleeAttack` 会附加 `mint_s_2[pull]`。模板事件 0 调用 `DragTowardSource`（100319），在 `0x18117016c–243` 取目标指向来源的向量、查推力表，再调用 slot 233 的 `Enemy.KnockBack`。[薄绿的技能、模式与模板](formulas/mint-config.json)、[共用推力表的指令](formulas/force-native-selected.json)。
 
+## 牵引公式与近停补核
+
+2026-11-19 沿用上表客户端指纹，核对五个牵引调用点的查表、衰减、距离判定、清速与当前来源的停止分支，并补查崖心、雪雉和歌蕾蒂娅的技能和弹道资源。可读结论集中在 [Case 15 的牵引补核](../../cases/15-locomotion-native-semantics.md#2026-11-19-补核牵引公式与近停)。
+
+- 原生取证保存五个牵引入口的调用和关键指令，以及 `CheckInBlockRange`、`TryEarlyStopPull` 和半径常量。静态直接调用扫描覆盖当前二进制中的 E8／E9 候选。[原生分支](pull/native-branches.json)。
+- 配置取证保存角色技能槽、技能节点、弹道 ID、组件类型、参数与输入指纹。歌蕾蒂娅 S2 同时保存技能 Buff、模式切换模板与角色模式的引用链。[技能与弹道配置](pull/prefab-mappings.json)。
+
 ## 失衡状态
 
 - `UnbalanceState.OnEnter`（78060）释放阻挡，登记物理对象，启用非 Trigger Collider，登记状态属性修正。该状态的 `abnormalFlagMask`（78054）为 `1 << 3`，`Entity.get_isBlockFree`（67510）消费标志 3，`Enemy.CheckBlockableWithoutCheckRange`（77742）以其为拒绝条件。这给出了当前阻挡释放和持续拒绝两处独立行为。[状态和阻挡](state/native-state.json)。
@@ -71,7 +78,32 @@ python "$batch/damage/extract_config.py" --out "$work/damage/config.json"
 python "$batch/damage/extract_arc_frontliner.py" --out "$work/damage/arc-frontliner.json"
 uv run --offline --with 'capstone==5.0.7' python "$batch/collision/extract_ranges.py" \
   --out "$work/damage/native.json" --index 99181 101818 77876 66194 66203
+uv run --offline --with 'capstone==5.0.7' python "$batch/collision/extract_ranges.py" \
+  --out "$work/pull/native-full.json" \
+  --index 72289 72302 72458 88379 88651 97040 77752 77322 79636 79637 \
+  --xref 65913 79637 77751 --select Torappu.MathUtil.CheckDistance
+uv run --offline --locked "$skill/scripts/native.py" --out "$work/pull/radius.json" \
+  read 0x1870aed7c --format '<f'
 uv run --locked "$skill/scripts/replay.py" "$batch" --out "$work/native" \
   --method 78062 --method 77742 --method 72302 --method 65910 --method 65913
 python "$skill/scripts/archive.py" --batch "$batch"
+```
+
+已核对技能与弹道的完整组件可复提到独立目录。根据 Bundle 指纹确认版本。[配置证据](pull/prefab-mappings.json)。
+
+```sh
+python - "$batch" "$work/pull" <<'PY'
+import json
+import runpy
+import sys
+from pathlib import Path
+
+batch, output = map(Path, sys.argv[1:])
+record = json.loads((batch / "pull/prefab-mappings.json").read_text())
+extract = runpy.run_path(str(batch / "push/extract_push_config.py"))["extract_with"]
+extract("extract_prefabs.py", output / "prefabs-full.json",
+        SELECTION=record["provenance"]["prefabs"]["selection"])
+extract("extract_templates.py", output / "templates.json",
+        KEYS={"switch_mode_restart_fsm"})
+PY
 ```

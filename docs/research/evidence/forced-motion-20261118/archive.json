@@ -20,6 +20,8 @@
           "collision/ice-corner-velocity.json#/provenance/client/dll",
           "damage/native.json#/provenance/client/dll",
           "formulas/force-native-selected.json#/provenance/client/dll",
+          "pull/native-branches.json#/provenance/client/dll",
+          "pull/prefab-mappings.json#/provenance/clientBuild/GameAssembly.dll",
           "push/native-push.json#/provenance/client/dll",
           "state/native-state.json#/provenance/client/dll"
         ],
@@ -37,6 +39,8 @@
           "collision/ice-corner-velocity.json#/provenance/client/metadata",
           "damage/native.json#/provenance/client/metadata",
           "formulas/force-native-selected.json#/provenance/client/metadata",
+          "pull/native-branches.json#/provenance/client/metadata",
+          "pull/prefab-mappings.json#/provenance/clientBuild/Arknights_Data~1il2cpp_data~1Metadata~1global-metadata.dat",
           "push/native-push.json#/provenance/client/metadata",
           "state/native-state.json#/provenance/client/metadata"
         ],
@@ -59,6 +63,8 @@
       "formulas/force-native-selected.json",
       "formulas/force-tables.json",
       "formulas/mint-config.json",
+      "pull/native-branches.json",
+      "pull/prefab-mappings.json",
       "push/native-push.json",
       "push/prefabs.json",
       "push/projectiles.json",
@@ -221,6 +227,18 @@
         "kind": "record",
         "bytes": 16779,
         "sha256": "ee99e3acf1430d816f8e07947b4d843095aba915f791763344533608c24d161e"
+      },
+      {
+        "path": "pull/native-branches.json",
+        "kind": "record",
+        "bytes": 50885,
+        "sha256": "cf3f73869a95db5c35f8851d7607a38b467bb47033dabee5bbec15b530211a8d"
+      },
+      {
+        "path": "pull/prefab-mappings.json",
+        "kind": "record",
+        "bytes": 48393,
+        "sha256": "2be27975da00d3eecefe4cba12481c67509df8e295670d5b9d2c5f767eca5a7f"
       },
       {
         "path": "push/extract_push_config.py",
@@ -449,7 +467,8 @@
           "mode": "disasm",
           "records": [
             "formulas/force-native-selected.json#/result/formulas/3",
-            "formulas/force-native-selected.json#/result/formulas/3/method"
+            "formulas/force-native-selected.json#/result/formulas/3/method",
+            "pull/native-branches.json#/result/directCallCoverage/CalculatePullForce"
           ],
           "fullname": "Torappu.Battle.BattleFormula.CalculatePullForce",
           "address": "0x180686e90"
@@ -949,6 +968,15 @@
           "address": "0x1808fdcf0"
         },
         {
+          "index": 72289,
+          "mode": "disasm",
+          "records": [
+            "pull/native-branches.json#/result/methods/1"
+          ],
+          "fullname": "Torappu.Battle.HarpoonProjectile.OnInit",
+          "address": "0x1809061b0"
+        },
+        {
           "index": 72291,
           "mode": "disasm",
           "records": [
@@ -964,10 +992,20 @@
           "records": [
             "formulas/force-native-selected.json#/result/callers/3/method",
             "formulas/force-native-selected.json#/result/callers/3/pieces/0",
-            "formulas/force-native-selected.json#/result/callers/3/pieces/0/method"
+            "formulas/force-native-selected.json#/result/callers/3/pieces/0/method",
+            "pull/native-branches.json#/result/directCallCoverage/confirmedCallers/0"
           ],
           "fullname": "Torappu.Battle.HarpoonProjectile/<DoLink>d__19.MoveNext",
           "address": "0x18091e2f0"
+        },
+        {
+          "index": 72458,
+          "mode": "disasm",
+          "records": [
+            "pull/native-branches.json#/result/directCallCoverage/confirmedCallers/1"
+          ],
+          "fullname": "Torappu.Battle.NetCatcherProjectile/<_DoPull>d__33.MoveNext",
+          "address": "0x18091f730"
         },
         {
           "index": 72512,
@@ -1061,6 +1099,15 @@
           "address": "0x1809269e0"
         },
         {
+          "index": 77322,
+          "mode": "disasm",
+          "records": [
+            "pull/native-branches.json#/result/methods/4"
+          ],
+          "fullname": "Torappu.Battle.Character.CheckInBlockRange",
+          "address": "0x180a9db10"
+        },
+        {
           "index": 77602,
           "mode": "disasm",
           "records": [
@@ -1147,6 +1194,7 @@
           "records": [
             "collision/ice-corner-velocity.json#/result/ranges/77751",
             "collision/ice-corner-velocity.json#/result/ranges/77751/method",
+            "pull/native-branches.json#/result/methods/6",
             "state/native-state.json#/result/bodies/7/method",
             "state/native-state.json#/result/bodies/7/fragments/0",
             "state/native-state.json#/result/bodies/7/fragments/0/method"
@@ -1158,6 +1206,7 @@
           "index": 77752,
           "mode": "disasm",
           "records": [
+            "pull/native-branches.json#/result/methods/5",
             "state/native-state.json#/result/bodies/8/method",
             "state/native-state.json#/result/bodies/8/fragments/0",
             "state/native-state.json#/result/bodies/8/fragments/0/method"
@@ -1369,6 +1418,25 @@
           "address": "0x180b22e00"
         },
         {
+          "index": 79636,
+          "mode": "disasm",
+          "records": [
+            "pull/native-branches.json#/result/methods/3"
+          ],
+          "fullname": "Torappu.Battle.BattleUtil.CheckTargetWithinBlockRange",
+          "address": "0x180b40720"
+        },
+        {
+          "index": 79637,
+          "mode": "disasm",
+          "records": [
+            "pull/native-branches.json#/result/directCallCoverage/CalculatePullAttenuationFactor",
+            "pull/native-branches.json#/result/methods/0"
+          ],
+          "fullname": "Torappu.Battle.BattleUtil.CalculatePullAttenuationFactor",
+          "address": "0x180b402d0"
+        },
+        {
           "index": 79680,
           "mode": "metadata",
           "records": [
@@ -1431,6 +1499,24 @@
           ],
           "fullname": "Torappu.Battle.Projectiles.LaserHitBehaviour.OnTriggerEnter2D",
           "address": "0x180dc1da0"
+        },
+        {
+          "index": 88379,
+          "mode": "disasm",
+          "records": [
+            "pull/native-branches.json#/result/directCallCoverage/confirmedCallers/2"
+          ],
+          "fullname": "Torappu.Battle.Projectiles.PullHitTargetBehaviour/<_DoLink>d__8.MoveNext",
+          "address": "0x180dcd4a0"
+        },
+        {
+          "index": 88651,
+          "mode": "disasm",
+          "records": [
+            "pull/native-branches.json#/result/directCallCoverage/confirmedCallers/3"
+          ],
+          "fullname": "Torappu.Battle.Projectiles.VortexMultiHitBehaviour/<_DoPull>d__5.MoveNext",
+          "address": "0x180dfd260"
         },
         {
           "index": 89226,
@@ -1503,6 +1589,15 @@
           ],
           "fullname": "Torappu.Battle.Abilities.PycjmpJumpAbility.OnTriggerEnter2D",
           "address": "0x180ff2a60"
+        },
+        {
+          "index": 97040,
+          "mode": "disasm",
+          "records": [
+            "pull/native-branches.json#/result/directCallCoverage/confirmedCallers/4"
+          ],
+          "fullname": "Torappu.Battle.Abilities.PullCastTargets/<_DoLink>d__10.MoveNext",
+          "address": "0x181063030"
         },
         {
           "index": 97346,
@@ -1636,6 +1731,15 @@
           "address": "0x186945aa0"
         },
         {
+          "index": 226146,
+          "mode": "disasm",
+          "records": [
+            "pull/native-branches.json#/result/methods/2"
+          ],
+          "fullname": "Torappu.MathUtil.CheckDistance",
+          "address": "0x186944270"
+        },
+        {
           "index": 226149,
           "mode": "metadata",
           "records": [
@@ -1721,9 +1825,77 @@
       "blocks": [],
       "types": [
         {
+          "name": "Torappu.Battle.Abilities.AbilitySequenceGroup",
+          "records": [
+            "pull/prefab-mappings.json#/result/skillMappings/8/sequence"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Abilities.ActiveBuffAbility",
+          "records": [
+            "pull/prefab-mappings.json#/result/skillMappings/7/activeBuff"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Abilities.AnimatedActionToOwnerAbility",
+          "records": [
+            "pull/prefab-mappings.json#/result/skillMappings/8/chant"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Abilities.RangedAttack",
+          "records": [
+            "pull/prefab-mappings.json#/result/skillMappings/0/projectileRoutes/0/attack",
+            "pull/prefab-mappings.json#/result/skillMappings/1/projectileRoutes/0/attack",
+            "pull/prefab-mappings.json#/result/skillMappings/2/projectileRoutes/0/attack",
+            "pull/prefab-mappings.json#/result/skillMappings/3/projectileRoutes/0/attack",
+            "pull/prefab-mappings.json#/result/skillMappings/4/projectileRoutes/0/attack",
+            "pull/prefab-mappings.json#/result/skillMappings/5/projectileRoutes/0/attack",
+            "pull/prefab-mappings.json#/result/skillMappings/6/projectileRoutes/0/attack",
+            "pull/prefab-mappings.json#/result/skillMappings/7/projectileRoutes/0/attack",
+            "pull/prefab-mappings.json#/result/skillMappings/8/projectileRoutes/0/attack",
+            "pull/prefab-mappings.json#/result/skillMappings/8/projectileRoutes/1/attack"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Abilities.RangedAttackWithDoubleConfirm",
+          "records": [
+            "pull/prefab-mappings.json#/result/skillMappings/8/projectileRoutes/2/attack"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.CastSkill",
+          "records": [
+            "pull/prefab-mappings.json#/result/skillMappings/1/skill",
+            "pull/prefab-mappings.json#/result/skillMappings/3/skill",
+            "pull/prefab-mappings.json#/result/skillMappings/5/skill",
+            "pull/prefab-mappings.json#/result/skillMappings/7/skill",
+            "pull/prefab-mappings.json#/result/skillMappings/8/skill"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Character",
+          "records": [
+            "pull/prefab-mappings.json#/result/skillMappings/7/character"
+          ]
+        },
+        {
           "name": "Torappu.Battle.HarpoonProjectile",
           "records": [
-            "formulas/force-native-selected.json#/result/types/1"
+            "formulas/force-native-selected.json#/result/types/1",
+            "pull/prefab-mappings.json#/result/skillMappings/0/projectileRoutes/0/projectileComponents/0",
+            "pull/prefab-mappings.json#/result/skillMappings/1/projectileRoutes/0/projectileComponents/0",
+            "pull/prefab-mappings.json#/result/skillMappings/2/projectileRoutes/0/projectileComponents/0",
+            "pull/prefab-mappings.json#/result/skillMappings/3/projectileRoutes/0/projectileComponents/0",
+            "pull/prefab-mappings.json#/result/skillMappings/4/projectileRoutes/0/projectileComponents/0",
+            "pull/prefab-mappings.json#/result/skillMappings/6/projectileRoutes/0/projectileComponents/0",
+            "pull/prefab-mappings.json#/result/skillMappings/7/projectileRoutes/0/projectileComponents/0"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.HarpoonProjectile.OnInit",
+          "records": [
+            "pull/native-branches.json#/result/methods/1"
           ]
         },
         {
@@ -1733,9 +1905,49 @@
           ]
         },
         {
+          "name": "Torappu.Battle.LaserProjectile",
+          "records": [
+            "pull/prefab-mappings.json#/result/skillMappings/8/projectileRoutes/1/projectileComponents/0"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.LassoProjectile",
+          "records": [
+            "pull/prefab-mappings.json#/result/skillMappings/8/projectileRoutes/0/projectileComponents/0"
+          ]
+        },
+        {
           "name": "Torappu.Battle.LinkProjectile",
           "records": [
             "formulas/force-native-selected.json#/result/types/2"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.NetCatcherProjectile",
+          "records": [
+            "pull/prefab-mappings.json#/result/skillMappings/5/projectileRoutes/0/projectileComponents/0",
+            "pull/prefab-mappings.json#/result/skillMappings/8/projectileRoutes/2/projectileComponents/0"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Projectiles.VortexMultiHitBehaviour",
+          "records": [
+            "pull/prefab-mappings.json#/result/skillMappings/8/projectileRoutes/1/projectileComponents/1"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.ReplacementSkill",
+          "records": [
+            "pull/prefab-mappings.json#/result/skillMappings/0/skill",
+            "pull/prefab-mappings.json#/result/skillMappings/2/skill",
+            "pull/prefab-mappings.json#/result/skillMappings/4/skill",
+            "pull/prefab-mappings.json#/result/skillMappings/6/skill"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.UnitMode",
+          "records": [
+            "pull/prefab-mappings.json#/result/skillMappings/7/mode"
           ]
         },
         {
@@ -1745,7 +1957,15 @@
           ]
         }
       ],
-      "constants": [],
+      "constants": [
+        {
+          "address": "0x1870aed7c",
+          "format": "<f",
+          "records": [
+            "pull/native-branches.json#/result/nearRadiusAndBlockShrink"
+          ]
+        }
+      ],
       "bundles": [
         {
           "kind": "bundle",
@@ -1778,6 +1998,7 @@
             "damage/arc-frontliner.json#/provenance/prefabs/sources/0",
             "damage/config.json#/provenance/prefabs/sources/0",
             "formulas/mint-config.json#/provenance/prefabDecoder/sources/0",
+            "pull/prefab-mappings.json#/provenance/prefabs/sources/0",
             "push/prefabs.json#/provenance/sources/0",
             "push/projectiles.json#/provenance/sources/0"
           ],
@@ -1834,6 +2055,7 @@
           "records": [
             "damage/arc-frontliner.json#/provenance/templates/source",
             "damage/config.json#/provenance/templates/source",
+            "pull/prefab-mappings.json#/provenance/templates/source",
             "push/templates.json#/provenance/source"
           ],
           "bytes": 2151020
@@ -1846,6 +2068,7 @@
           "records": [
             "damage/config.json#/provenance/prefabs/sources/1",
             "formulas/mint-config.json#/provenance/prefabDecoder/sources/2",
+            "pull/prefab-mappings.json#/provenance/prefabs/sources/1",
             "push/prefabs.json#/provenance/sources/1"
           ],
           "bytes": 1367500
@@ -1876,7 +2099,8 @@
           "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/config/buff_template_holder.ab",
           "sha256": "f486df86406db62b2773039b87d05a405fb95a31ddc82568c6a6efef14e47f01",
           "records": [
-            "formulas/mint-config.json#/provenance/templates"
+            "formulas/mint-config.json#/provenance/templates",
+            "pull/prefab-mappings.json#/provenance/persistentTemplateSource"
           ],
           "bytes": 2197532
         },
@@ -1892,6 +2116,27 @@
         },
         {
           "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]projectiles.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]projectiles.ab",
+          "sha256": "cc3f21b73b10fbc619a1ff8b099f31e678c883ddacb7bb6775fea960ffecb0e1",
+          "records": [
+            "pull/prefab-mappings.json#/provenance/prefabs/sources/2",
+            "push/projectiles.json#/provenance/sources/1"
+          ],
+          "bytes": 1905483
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_474_glady.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_474_glady.ab",
+          "sha256": "09bf3d049d194032ab998c2b7634dab44a3d917e4bbce7b979c566c29a9b7b55",
+          "records": [
+            "pull/prefab-mappings.json#/provenance/prefabs/sources/3"
+          ],
+          "bytes": 24776
+        },
+        {
+          "kind": "bundle",
           "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_277_sqrrel.ab",
           "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_277_sqrrel.ab",
           "sha256": "0ea640bba0f483bddf7a66e24b4bafbfe80741f9a936c8b3df5fb80a545aed6a",
@@ -1899,16 +2144,6 @@
             "push/prefabs.json#/provenance/sources/2"
           ],
           "bytes": 20810
-        },
-        {
-          "kind": "bundle",
-          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]projectiles.ab",
-          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]projectiles.ab",
-          "sha256": "cc3f21b73b10fbc619a1ff8b099f31e678c883ddacb7bb6775fea960ffecb0e1",
-          "records": [
-            "push/projectiles.json#/provenance/sources/1"
-          ],
-          "bytes": 1905483
         }
       ]
     },

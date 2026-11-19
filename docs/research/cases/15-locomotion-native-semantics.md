@@ -207,7 +207,7 @@ GROUND_BOUND 与 UNMOVABLE 是不同标志；isActuallyGroundBound 还会结合 
 
 **N｜推击。** 阿消两技能各自发射对应弹道，弹道命中安装 Buff，Buff 事件执行 `Knockback`。节点当场读取施力者的基础力度、当前朝向、双方位置和目标的有效重量等级。阿消配置下，目标位于施力者朝向的扇区内且距离大于 0.25 格时沿该朝向推；其他情况扣两档，按双方当前位置的连线向外推。查表值通过近零门槛后，在物理体上施加一次冲量，大小是 `表值 × MOVE_MULTIPLIER × 0.02`。普通默认倍率 0.5，关卡可提供自己的移动倍率。近零的方向向量会被安全归一化成零，目标仍可能进入失衡。[阿消配置与命中链](../evidence/forced-motion-20261118/README.md#推击)。
 
-**N｜牵引。** 暗索的 Harpoon 用弹道力度和来源基础力度之和减去目标有效重量，查得本次最大拉力；后续施力按当前拉点和位置重算方向，普通衰减为 `min(1, 当前距离 / 初始距离)^4`。持续时间用弹道力度单独减目标重量，差值不大于 −2 时取 0.5 秒，否则用弹道配置时长，暗索样例为 1 秒。连续施力有独立的来源和停止条件。源或目标失效、达到配置的近停条件等可以结束拉拽。本地停止链先通知目标 `EndPull`，再允许施力者立即搜索阻挡目标。特定近停路径在只剩当前拉力来源时清零物理速度；一般终止仍由失衡逻辑处理已有速度。[牵引公式和当前方法](../evidence/forced-motion-20261118/README.md#牵引与力值)、[暗索弹道的来源资格](18-projectile-source-and-target-lifecycles.md#5-实际存在可选的来源生命周期依赖)、[阻挡时序](../evidence/blocking-timing-native-20261023/immediate/report.txt)。
+**N｜牵引。** 暗索的 Harpoon 用弹道力度和来源基础力度之和减去目标有效重量，查得本次最大拉力；后续读取目标当前位置，朝拉点施加衰减后的力。持续时间用弹道力度单独减目标重量，差值不大于 −2 时取 0.5 秒，否则用弹道配置时长，暗索样例为 1 秒。源或目标失效、达到配置的近停条件等可以结束拉拽。本地停止链先通知目标 `EndPull`，再允许施力者立即搜索阻挡目标。共享衰减公式和近停分支见下方补核。[牵引公式和当前方法](../evidence/forced-motion-20261118/README.md#牵引与力值)、[暗索弹道的来源资格](18-projectile-source-and-target-lifecycles.md#5-实际存在可选的来源生命周期依赖)、[阻挡时序](../evidence/blocking-timing-native-20261023/immediate/report.txt)。
 
 **N｜朝来源的冲量。** 薄绿二技能的攻击安装 `mint_s_2[pull]`。其 `DragTowardSource` 将方向指向来源，查推表并通过同一个 `Enemy.KnockBack` 入口一次施加冲量。受力方向和一次／连续施力是独立选择。[薄绿配置与原生入口](../evidence/forced-motion-20261118/README.md#牵引与力值)。
 
@@ -230,6 +230,25 @@ GROUND_BOUND 与 UNMOVABLE 是不同标志；isActuallyGroundBound 还会结合 
 温蒂 S3 命中附加独立的 `rupture`，安装时保存基线，周期与结束时消费差值，伤害为真实伤害。歌蕾蒂娅与暗索的 X 模组也使用 `DamageByDistance`，伤害为法术，由来源的使敌人失衡和结束牵引事件分别附加及按键移除对应 Buff。结束事件关闭来源匹配。它们用 `CheckEnemyUnbalanced` 限定采样和结算，周期失效时结束 Buff。两种效果各自拥有伤害基线，同一敌人的移动累计值可供它们共同读取。[模板、配置和原生读写](../evidence/forced-motion-20261118/README.md#移动距离伤害)。
 
 2026-11-19 补核弧光锋卫及锋卫长。常驻 `enemy_cbjedi_bleed` 周期检查当前失衡。检查通过且缺少 `cbjedi_blood` 时装上固定值真实伤害 Buff，检查失败时撤掉它。伤害模板直接使用 `NoSourceDamage`。在两个检查点之间退出并重新进入失衡时，下一次检查仍可保留已有伤害 Buff。这是模板的采样语义，实际同 Tick 轨迹尚未做实机观测。[弧光锋卫与伤害模板](../evidence/forced-motion-20261118/damage/arc-frontliner.json)。
+
+### 2026-11-19 补核牵引公式与近停
+
+**N｜共用公式。** 普通钩索 `HarpoonProjectile`、捕网 `NetCatcherProjectile`、`PullHitTargetBehaviour`、`VortexMultiHitBehaviour` 和 `PullCastTargets` 是当前客户端中直接调用牵引衰减函数的五条执行路径。逐条核对指令，五者都用同一张拉力表取初始力度，将其乘以衰减因子后向目标提交持续力。初始距离大于零时，衰减因子为 `min(1, 当前距离 / 初始距离)^4`。原生直接调用扫描只覆盖 E8／E9 调用与跳转。拐角冰面另以空来源提交向心力，薄绿 S2 向来源施加一次冲量，两条路径各自结算。[牵引调用点与分支](../evidence/forced-motion-20261118/pull/native-branches.json)、[冰面力入口](../evidence/forced-motion-20261118/collision/ice-corner-velocity.json)。
+
+**N｜技能样例。** 暗索 S1／S2、崖心 S1／S2、雪雉 S1、歌蕾蒂娅 S1／S2 都绑定 `HarpoonProjectile`。歌蕾蒂娅 S2 通过 Buff 切换到角色模式 1，该模式的普攻发射钩索。七个钩索样例均启用阻挡范围判定，且近停时保留牵引。雪雉 S2 使用捕网。歌蕾蒂娅 S3 的三个攻击节点分别引用套索、带漩涡行为的弹道与收尾捕网。这两个捕网样例都在第一阶段近停时保留牵引，在第二阶段近停时结束该段。从 Prefab 读取的是序列化配置，单次运行仍可受技能黑板控制。[技能与弹道绑定](../evidence/forced-motion-20261118/pull/prefab-mappings.json)、[暗索配置](../evidence/projectile-lifecycle-20261021/source-binding/witness-projectile-configs.json)。
+
+**N｜普通钩索的距离判定。** 每 Tick 评估两条路径，命中任一条就进入近停分支。[Harpoon 距离分支及阻挡范围实现](../evidence/forced-motion-20261118/pull/native-branches.json)。
+
+- 目标距钩索保存的拉点不超过 0.05 格。`_pullToPosInBB` 启用时，该阈值为 `_pullSourceOffset + 0.05`。
+- `_notInfluencedByBlock` 关闭，且施力者的收缩阻挡范围包含目标。普通 `Character.CheckInBlockRange` 比较双方平面距离的平方与阻挡范围平方阈值减去 0.05，边界取等号。平方阈值为 0.5 时，相当于约 0.6708 格。[PRTS 距离对照](https://prts.wiki/w/作战机制#拉力：拖拽)。
+
+**N｜近停的三个结果。** 已进入近停分支时，`TryEarlyStopPull` 先清理无效来源，当前请求来源恰好是唯一有效来源时才把目标的共享外力速度写零。普通钩索记住清速成功，之后不再重复清速。接着 `_stopAfterPulledBack` 决定结束钩索，或保留钩索并提交零力。这一选择独立于清速是否成功。钩索保留时，每 Tick 仍重算距离，目标离开近停范围可恢复普通衰减力。若钩索先在范围外结束，停止提交自身的力，剩余速度继续由失衡结算。[钩索与清速指令](../evidence/forced-motion-20261118/pull/native-branches.json)、[失衡物理](../evidence/forced-motion-20261118/README.md#失衡状态)。
+
+**N｜变体。** 漩涡以弹道当前位置为中心，阈值为 0.05 格，命中该判定时尝试清速并提交零力。捕网检查保存的拉点半径 0.05 格，也可通过施力者的收缩阻挡范围触发。捕网按当前阶段的停止标志选择结束本段牵引或提交零力，结束本段后弹道可接续其他阶段。命中牵引和 Ability 牵引也使用两条距离判定，并在续帧入口单独检查剩余时间是否已到期。[五条入口的近停分支](../evidence/forced-motion-20261118/pull/native-branches.json)。
+
+**I｜对 Core 的约束。** 已核实的持续牵引共用力值衰减。拉点、阻挡范围判定、零力、唯一来源清速和结束牵引各有独立条件。保留牵引而暂时输出零力，以及另一条牵引继续施力，都应能表达。
+
+**U｜调查范围。** 本节使用同版 Windows x64 客户端的静态原生指令与所列技能 Prefab。尚未核实运行时热更、锏 S3 等其他特殊技能的资产绑定及近停后重新施力的实战逐帧轨迹。[输入版本与复查入口](../evidence/forced-motion-20261118/README.md#牵引公式与近停补核)。
 
 ## 8. Tick 顺序、移速与 moving
 

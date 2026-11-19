@@ -1,0 +1,1241 @@
+{
+  "collectedOn": "2026-11-19",
+  "provenance": {
+    "scope": "Selected Win64 native instructions. Direct E8/E9 scan and statically decoded branches taken when XLua overrides are absent. No runtime test, indirect-call enumeration, or assignment of the five classes to specific skills.",
+    "client": {
+      "dll": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "bytes": 223112680,
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff"
+      },
+      "metadata": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "bytes": 46669332,
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5"
+      },
+      "metadataVersion": 29,
+      "imageBase": "0x180000000"
+    },
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/native.py",
+        "bytes": 18723,
+        "sha256": "1c6c16dc97e0dd9af0af4033c81a7534384dd65ebb1e604df3f4a3289df158e6"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "capstoneVersion": "5.0.7"
+    }
+  },
+  "result": {
+    "replay": {
+      "commands": [
+        "native.py xrefs 0x180b402d0",
+        "native.py xrefs 0x180686e90",
+        "native.py disasm 72289 72302 72458 77322 77751 77752 79636 79637 88379 88651 97040 65913 226146",
+        "native.py read 0x1870aed7c --size 4 --format '<f'"
+      ],
+      "additionalBlocks": [
+        {
+          "address": "0x18090625e",
+          "end": "0x180906477",
+          "bytesSha256": "8e12f541cfc730b6325639d8bd666821755d2242c53f27c90c3f068de77b656e"
+        },
+        {
+          "address": "0x180a9db85",
+          "end": "0x180a9dc10",
+          "bytesSha256": "0a89acfc3b4efc35b39c3eb99919505095e858eeab78d65508a0c7730e744f4a"
+        },
+        {
+          "address": "0x180b407b5",
+          "end": "0x180b40813",
+          "bytesSha256": "ac584ef05dc36f6c594ac4b2c39c4a445a0b98fdcef2d68fba97806041869d81"
+        },
+        {
+          "address": "0x18091e469",
+          "end": "0x18091e500",
+          "bytesSha256": "3656dd8f0b5b44fe8a96a00198fcad62e7636702612ca6da9526da56d0ba4d19"
+        },
+        {
+          "address": "0x18091e500",
+          "end": "0x18091eae4",
+          "bytesSha256": "777bb46123de00f5f5e7ad1394c5568d1395f19c7fb165f23645f7279e989123"
+        },
+        {
+          "address": "0x18091f889",
+          "end": "0x18091f8f0",
+          "bytesSha256": "3cdbb7851b424bd004eb286888baa77ba5e10c8383df47e5de56e7fd34fc57c8"
+        },
+        {
+          "address": "0x18091f8f0",
+          "end": "0x18091fe08",
+          "bytesSha256": "2c478b3a70ec62fd07089e7126b5976e14d1e75ab7a338a3c8afc924b669fd2b"
+        },
+        {
+          "address": "0x180dcd664",
+          "end": "0x180dcd6cb",
+          "bytesSha256": "e06d4b52d24083eb6d380adb4578008dc475d0099cdd98e2f574071330ded3c0"
+        },
+        {
+          "address": "0x180dcd6cb",
+          "end": "0x180dcd900",
+          "bytesSha256": "63bd1d6c20686c3b06f44367630f1597029357ec78570690f8e7aebe6c50c13f"
+        },
+        {
+          "address": "0x180dcd900",
+          "end": "0x180dcd953",
+          "bytesSha256": "c7f883efaacf9184c45bfd67f16474c55a0a140f12ac54d78c0af545dbff153d"
+        },
+        {
+          "address": "0x181063234",
+          "end": "0x18106329f",
+          "bytesSha256": "3052187fa7e39df2b7be2f93b366465bb0f2b42fb96b142ea2f88c0a4f752b83"
+        },
+        {
+          "address": "0x18106329f",
+          "end": "0x181063a6a",
+          "bytesSha256": "104432b1b6613daf60e7622124704f56ac68cab774753ca5f841649e8e28433c"
+        }
+      ],
+      "notes": "Run with the recorded file fingerprints. Use native.py disasm-at <address> for the additional blocks and for each caller slice beyond the initial unwind entry."
+    },
+    "directCallCoverage": {
+      "scope": "Direct E8/E9 candidates only; excludes indirect/virtual calls; instruction boundaries require confirmation.",
+      "CalculatePullAttenuationFactor": {
+        "methodIndex": 79637,
+        "fullname": "Torappu.Battle.BattleUtil.CalculatePullAttenuationFactor",
+        "token": "0x6013716",
+        "address": "0x180b402d0"
+      },
+      "CalculatePullForce": {
+        "methodIndex": 65913,
+        "fullname": "Torappu.Battle.BattleFormula.CalculatePullForce",
+        "token": "0x601017a",
+        "address": "0x180686e90"
+      },
+      "confirmedCallers": [
+        {
+          "methodIndex": 72302,
+          "fullname": "Torappu.Battle.HarpoonProjectile/<DoLink>d__19.MoveNext",
+          "token": "0x6011a6f",
+          "address": "0x18091e2f0",
+          "callSites": {
+            "CalculatePullAttenuationFactor": "0x18091e450",
+            "CalculatePullForce": "0x18091e7e8"
+          },
+          "nearPredicate": "Distance to m_pullBackDestination <= radius. If that test fails and _notInfluencedByBlock is false, use the source Character blocker range with shrink enabled.",
+          "nearRadius": "0.05, or _pullSourceOffset + 0.05 when _pullToPosInBB is enabled.",
+          "nearOutcome": "TryEarlyStopPull with the projectile as source until the first success. With _stopAfterPulledBack set, StopMe bypasses StillPull. Otherwise send zero force to StillPull. Each resumed loop checks the position and near predicate again.",
+          "selectedInstructions": [
+            {
+              "from": "0x18091e450",
+              "through": "0x18091e45c",
+              "instructions": [
+                "0x18091e450  call 0x180b402d0",
+                "0x18091e455  mov rcx, qword ptr [rdi + 0x30]",
+                "0x18091e459  movaps xmm7, xmm0",
+                "0x18091e45c  mulss xmm7, xmm6"
+              ]
+            },
+            {
+              "from": "0x18091e47d",
+              "through": "0x18091e4b4",
+              "instructions": [
+                "0x18091e47d  call 0x180b23080",
+                "0x18091e482  cmp byte ptr [rsi + 0x1f8], 0",
+                "0x18091e489  movss xmm9, dword ptr [rsi + 0x200]",
+                "0x18091e492  movss xmm10, dword ptr [rsi + 0x204]",
+                "0x18091e49b  movq xmm8, rax",
+                "0x18091e4a0  je 0x18091e4b4",
+                "0x18091e4a2  movss xmm6, dword ptr [rsi + 0x1f0]",
+                "0x18091e4aa  addss xmm6, dword ptr [rip + 0x67908ca]",
+                "0x18091e4b2  jmp 0x18091e4bc",
+                "0x18091e4b4  movss xmm6, dword ptr [rip + 0x67908c0]"
+              ]
+            },
+            {
+              "from": "0x18091e4dd",
+              "through": "0x18091e4e5",
+              "instructions": [
+                "0x18091e4dd  movaps xmm2, xmm6",
+                "0x18091e4e0  movq rcx, xmm8",
+                "0x18091e4e5  call 0x186944270"
+              ]
+            },
+            {
+              "from": "0x18091e4fc",
+              "through": "0x18091e511",
+              "instructions": [
+                "0x18091e4fc  test al, al",
+                "0x18091e4fe  jne 0x18091e53a",
+                "0x18091e500  cmp byte ptr [rsi + 0x1f7], al",
+                "0x18091e506  jne 0x18091e572",
+                "0x18091e508  mov rbx, qword ptr [rdi + 0x30]",
+                "0x18091e50c  xor edx, edx",
+                "0x18091e50e  mov rcx, rsi",
+                "0x18091e511  call 0x18091c350"
+              ]
+            },
+            {
+              "from": "0x18091e525",
+              "through": "0x18091e541",
+              "instructions": [
+                "0x18091e525  mov rdx, rax",
+                "0x18091e528  xor r9d, r9d",
+                "0x18091e52b  mov r8b, 1",
+                "0x18091e52e  mov rcx, rbx",
+                "0x18091e531  call 0x180b40720",
+                "0x18091e536  test al, al",
+                "0x18091e538  je 0x18091e572",
+                "0x18091e53a  cmp byte ptr [rsi + 0x208], 0",
+                "0x18091e541  jne 0x18091e566"
+              ]
+            },
+            {
+              "from": "0x18091e550",
+              "through": "0x18091e56f",
+              "instructions": [
+                "0x18091e550  xor r8d, r8d",
+                "0x18091e553  mov rdx, rsi",
+                "0x18091e556  call 0x180ac42c0",
+                "0x18091e55b  test al, al",
+                "0x18091e55d  je 0x18091e566",
+                "0x18091e55f  mov byte ptr [rsi + 0x208], 1",
+                "0x18091e566  cmp byte ptr [rsi + 0x1f4], 0",
+                "0x18091e56d  jne 0x18091e5b7",
+                "0x18091e56f  xorps xmm7, xmm7"
+              ]
+            },
+            {
+              "from": "0x18091e599",
+              "through": "0x18091e5bc",
+              "instructions": [
+                "0x18091e599  xor ebp, ebp",
+                "0x18091e59b  movaps xmm3, xmm7",
+                "0x18091e59e  movq r8, xmm0",
+                "0x18091e5a3  mov qword ptr [rsp + 0x20], rbp",
+                "0x18091e5a8  mov rdx, rsi",
+                "0x18091e5ab  mov rcx, rax",
+                "0x18091e5ae  call 0x180ac3b10",
+                "0x18091e5b3  test al, al",
+                "0x18091e5b5  jne 0x18091e5eb",
+                "0x18091e5b7  xor edx, edx",
+                "0x18091e5b9  mov rcx, rsi",
+                "0x18091e5bc  call 0x1809198f0"
+              ]
+            },
+            {
+              "from": "0x18091e7df",
+              "through": "0x18091e7f0",
+              "instructions": [
+                "0x18091e7df  lea ecx, [rbx + rbp]",
+                "0x18091e7e2  xor r8d, r8d",
+                "0x18091e7e5  mov edx, r14d",
+                "0x18091e7e8  call 0x180686e90",
+                "0x18091e7ed  movaps xmm6, xmm0",
+                "0x18091e7f0  movss dword ptr [rdi + 0x38], xmm6"
+              ]
+            },
+            {
+              "from": "0x18091e90b",
+              "through": "0x18091e91b",
+              "instructions": [
+                "0x18091e90b  mov qword ptr [rdi + 0x18], rdx",
+                "0x18091e90f  call 0x18049bcf0",
+                "0x18091e914  mov dword ptr [rdi + 0x10], 3",
+                "0x18091e91b  jmp 0x18091eaad"
+              ]
+            }
+          ]
+        },
+        {
+          "methodIndex": 72458,
+          "fullname": "Torappu.Battle.NetCatcherProjectile/<_DoPull>d__33.MoveNext",
+          "token": "0x6011b0b",
+          "address": "0x18091f730",
+          "callSites": {
+            "CalculatePullAttenuationFactor": "0x18091f870",
+            "CalculatePullForce": "0x18091fc16"
+          },
+          "nearPredicate": "Distance to the stored pull point <= 0.05 or source Character blocker range with shrink enabled.",
+          "nearOutcome": "TryEarlyStopPull with the projectile as source until the first success. When the coroutine flag at +0x48 is set, take coroutine cleanup without StillPull. The cleanup either stops the projectile or adjusts its remaining lifetime based on its follow target. With the flag clear send zero force to StillPull.",
+          "selectedInstructions": [
+            {
+              "from": "0x18091f870",
+              "through": "0x18091f87c",
+              "instructions": [
+                "0x18091f870  call 0x180b402d0",
+                "0x18091f875  mov rcx, qword ptr [rbx + 0x28]",
+                "0x18091f879  movaps xmm7, xmm0",
+                "0x18091f87c  mulss xmm7, xmm6"
+              ]
+            },
+            {
+              "from": "0x18091f8c2",
+              "through": "0x18091f8db",
+              "instructions": [
+                "0x18091f8c2  movss xmm2, dword ptr [rip + 0x678f4b2]",
+                "0x18091f8ca  xor r9d, r9d",
+                "0x18091f8cd  unpcklps xmm8, xmm9",
+                "0x18091f8d1  movq rcx, xmm6",
+                "0x18091f8d6  movq rdx, xmm8",
+                "0x18091f8db  call 0x186944270"
+              ]
+            },
+            {
+              "from": "0x18091f8ec",
+              "through": "0x18091f8ee",
+              "instructions": [
+                "0x18091f8ec  test al, al",
+                "0x18091f8ee  jne 0x18091f92b"
+              ]
+            },
+            {
+              "from": "0x18091f916",
+              "through": "0x18091f93b",
+              "instructions": [
+                "0x18091f916  mov rdx, rax",
+                "0x18091f919  xor r9d, r9d",
+                "0x18091f91c  mov r8b, 1",
+                "0x18091f91f  mov rcx, rsi",
+                "0x18091f922  call 0x180b40720",
+                "0x18091f927  test al, al",
+                "0x18091f929  je 0x18091f969",
+                "0x18091f92b  test rdi, rdi",
+                "0x18091f92e  je 0x18091fe02",
+                "0x18091f934  cmp byte ptr [rdi + 0x229], 0",
+                "0x18091f93b  jne 0x18091f960"
+              ]
+            },
+            {
+              "from": "0x18091f94a",
+              "through": "0x18091f966",
+              "instructions": [
+                "0x18091f94a  xor r8d, r8d",
+                "0x18091f94d  mov rdx, rdi",
+                "0x18091f950  call 0x180ac42c0",
+                "0x18091f955  test al, al",
+                "0x18091f957  je 0x18091f960",
+                "0x18091f959  mov byte ptr [rdi + 0x229], 1",
+                "0x18091f960  cmp byte ptr [rbx + 0x48], 0",
+                "0x18091f964  jne 0x18091f9b6",
+                "0x18091f966  xorps xmm7, xmm7"
+              ]
+            },
+            {
+              "from": "0x18091f994",
+              "through": "0x18091f9bb",
+              "instructions": [
+                "0x18091f994  xor esi, esi",
+                "0x18091f996  movaps xmm3, xmm7",
+                "0x18091f999  movq r8, xmm0",
+                "0x18091f99e  mov qword ptr [rsp + 0x20], rsi",
+                "0x18091f9a3  mov rdx, rdi",
+                "0x18091f9a6  mov rcx, rax",
+                "0x18091f9a9  call 0x180ac3b10",
+                "0x18091f9ae  test al, al",
+                "0x18091f9b0  jne 0x18091fa8a",
+                "0x18091f9b6  xor edx, edx",
+                "0x18091f9b8  mov rcx, rdi",
+                "0x18091f9bb  call 0x180911ff0"
+              ]
+            },
+            {
+              "from": "0x18091f9e0",
+              "through": "0x18091f9e7",
+              "instructions": [
+                "0x18091f9e0  call 0x186dcf430",
+                "0x18091f9e5  test al, al",
+                "0x18091f9e7  je 0x18091fda8"
+              ]
+            },
+            {
+              "from": "0x18091fa16",
+              "through": "0x18091fa26",
+              "instructions": [
+                "0x18091fa16  test al, al",
+                "0x18091fa18  jne 0x18091fda8",
+                "0x18091fa1e  movss xmm6, dword ptr [rdi + 0x200]",
+                "0x18091fa26  mov byte ptr [rdi + 0x228], al"
+              ]
+            },
+            {
+              "from": "0x18091fa46",
+              "through": "0x18091fa5e",
+              "instructions": [
+                "0x18091fa46  call 0x18695e180",
+                "0x18091fa4b  xor r9d, r9d",
+                "0x18091fa4e  xor r8d, r8d",
+                "0x18091fa51  mov rdx, rax",
+                "0x18091fa54  mov rcx, rdi",
+                "0x18091fa57  call 0x180915a70",
+                "0x18091fa5c  xor al, al",
+                "0x18091fa5e  jmp 0x18091fd7c"
+              ]
+            },
+            {
+              "from": "0x18091fc0d",
+              "through": "0x18091fc1e",
+              "instructions": [
+                "0x18091fc0d  lea ecx, [r14 + rsi]",
+                "0x18091fc11  xor r8d, r8d",
+                "0x18091fc14  mov edx, ebp",
+                "0x18091fc16  call 0x180686e90",
+                "0x18091fc1b  movaps xmm6, xmm0",
+                "0x18091fc1e  movss dword ptr [rbx + 0x4c], xmm6"
+              ]
+            },
+            {
+              "from": "0x18091fda8",
+              "through": "0x18091fdb4",
+              "instructions": [
+                "0x18091fda8  xor edx, edx",
+                "0x18091fdaa  mov rcx, rdi",
+                "0x18091fdad  call 0x1809198f0",
+                "0x18091fdb2  xor al, al",
+                "0x18091fdb4  jmp 0x18091fd7c"
+              ]
+            }
+          ]
+        },
+        {
+          "methodIndex": 88379,
+          "fullname": "Torappu.Battle.Projectiles.PullHitTargetBehaviour/<_DoLink>d__8.MoveNext",
+          "token": "0x601593c",
+          "address": "0x180dcd4a0",
+          "callSites": {
+            "CalculatePullAttenuationFactor": "0x180dcd64b",
+            "CalculatePullForce": "0x180dcd92e"
+          },
+          "nearPredicate": "Distance to the stored pull point <= 0.05, source Character blocker range with shrink enabled, or the behaviour FP timer at +0x38 <= 0.",
+          "nearOutcome": "TryEarlyStopPull with the projectile as source and send zero force to StillPull. The same timer also has an earlier coroutine exit check.",
+          "selectedInstructions": [
+            {
+              "from": "0x180dcd5a9",
+              "through": "0x180dcd5f0",
+              "instructions": [
+                "0x180dcd5a9  mov rbx, qword ptr [rbp + 0x38]",
+                "0x180dcd5ad  cmp dword ptr [rcx + 0xe0], 0",
+                "0x180dcd5b4  jne 0x180dcd5bb",
+                "0x180dcd5b6  call 0x18049c450",
+                "0x180dcd5bb  xor edx, edx",
+                "0x180dcd5bd  xor ecx, ecx",
+                "0x180dcd5bf  call 0x18695e170",
+                "0x180dcd5c4  mov rcx, qword ptr [rip + 0x7e68cdd]",
+                "0x180dcd5cb  mov rdi, rax",
+                "0x180dcd5ce  cmp dword ptr [rcx + 0xe0], 0",
+                "0x180dcd5d5  jne 0x180dcd5dc",
+                "0x180dcd5d7  call 0x18049c450",
+                "0x180dcd5dc  xor r8d, r8d",
+                "0x180dcd5df  mov rdx, rdi",
+                "0x180dcd5e2  mov rcx, rbx",
+                "0x180dcd5e5  call 0x186945ca0",
+                "0x180dcd5ea  mov rbx, qword ptr [rsi + 0x28]",
+                "0x180dcd5ee  test al, al",
+                "0x180dcd5f0  jne 0x180dcd874"
+              ]
+            },
+            {
+              "from": "0x180dcd64b",
+              "through": "0x180dcd657",
+              "instructions": [
+                "0x180dcd64b  call 0x180b402d0",
+                "0x180dcd650  mov rcx, qword ptr [rsi + 0x28]",
+                "0x180dcd654  movaps xmm7, xmm0",
+                "0x180dcd657  mulss xmm7, xmm6"
+              ]
+            },
+            {
+              "from": "0x180dcd69d",
+              "through": "0x180dcd6b6",
+              "instructions": [
+                "0x180dcd69d  movss xmm2, dword ptr [rip + 0x62e16d7]",
+                "0x180dcd6a5  xor r9d, r9d",
+                "0x180dcd6a8  unpcklps xmm8, xmm9",
+                "0x180dcd6ac  movq rcx, xmm6",
+                "0x180dcd6b1  movq rdx, xmm8",
+                "0x180dcd6b6  call 0x186944270"
+              ]
+            },
+            {
+              "from": "0x180dcd6c7",
+              "through": "0x180dcd6c9",
+              "instructions": [
+                "0x180dcd6c7  test al, al",
+                "0x180dcd6c9  jne 0x180dcd740"
+              ]
+            },
+            {
+              "from": "0x180dcd6e2",
+              "through": "0x180dcd6f2",
+              "instructions": [
+                "0x180dcd6e2  xor r9d, r9d",
+                "0x180dcd6e5  mov r8b, 1",
+                "0x180dcd6e8  mov rcx, rbx",
+                "0x180dcd6eb  call 0x180b40720",
+                "0x180dcd6f0  test al, al",
+                "0x180dcd6f2  jne 0x180dcd740"
+              ]
+            },
+            {
+              "from": "0x180dcd6fb",
+              "through": "0x180dcd6fb",
+              "instructions": [
+                "0x180dcd6fb  mov rbx, qword ptr [rbp + 0x38]"
+              ]
+            },
+            {
+              "from": "0x180dcd70f",
+              "through": "0x180dcd711",
+              "instructions": [
+                "0x180dcd70f  xor ecx, ecx",
+                "0x180dcd711  call 0x18695e170"
+              ]
+            },
+            {
+              "from": "0x180dcd72e",
+              "through": "0x180dcd749",
+              "instructions": [
+                "0x180dcd72e  xor r8d, r8d",
+                "0x180dcd731  mov rdx, rdi",
+                "0x180dcd734  mov rcx, rbx",
+                "0x180dcd737  call 0x186945ca0",
+                "0x180dcd73c  test al, al",
+                "0x180dcd73e  je 0x180dcd768",
+                "0x180dcd740  mov rbx, qword ptr [rsi + 0x28]",
+                "0x180dcd744  xor edx, edx",
+                "0x180dcd746  mov rcx, rbp",
+                "0x180dcd749  call 0x180928480"
+              ]
+            },
+            {
+              "from": "0x180dcd757",
+              "through": "0x180dcd765",
+              "instructions": [
+                "0x180dcd757  xor r8d, r8d",
+                "0x180dcd75a  mov rdx, rax",
+                "0x180dcd75d  mov rcx, rbx",
+                "0x180dcd760  call 0x180ac42c0",
+                "0x180dcd765  xorps xmm7, xmm7"
+              ]
+            },
+            {
+              "from": "0x180dcd785",
+              "through": "0x180dcd7b8",
+              "instructions": [
+                "0x180dcd785  cmp byte ptr [rsi + 0x48], dl",
+                "0x180dcd788  jne 0x180dcd81a",
+                "0x180dcd78e  call 0x180928480",
+                "0x180dcd793  test rbx, rbx",
+                "0x180dcd796  je 0x180dcdc6b",
+                "0x180dcd79c  xor edi, edi",
+                "0x180dcd79e  movaps xmm3, xmm7",
+                "0x180dcd7a1  movq r8, xmm6",
+                "0x180dcd7a6  mov qword ptr [rsp + 0x20], rdi",
+                "0x180dcd7ab  mov rdx, rax",
+                "0x180dcd7ae  mov rcx, rbx",
+                "0x180dcd7b1  call 0x180ac3b10",
+                "0x180dcd7b6  test al, al",
+                "0x180dcd7b8  jne 0x180dcd9ca"
+              ]
+            },
+            {
+              "from": "0x180dcd925",
+              "through": "0x180dcd93e",
+              "instructions": [
+                "0x180dcd925  lea ecx, [rbx + rdi]",
+                "0x180dcd928  xor r8d, r8d",
+                "0x180dcd92b  mov edx, r14d",
+                "0x180dcd92e  call 0x180686e90",
+                "0x180dcd933  mov r14, qword ptr [rsp + 0x80]",
+                "0x180dcd93b  movaps xmm6, xmm0",
+                "0x180dcd93e  movss dword ptr [rsi + 0x40], xmm6"
+              ]
+            }
+          ]
+        },
+        {
+          "methodIndex": 88651,
+          "fullname": "Torappu.Battle.Projectiles.VortexMultiHitBehaviour/<_DoPull>d__5.MoveNext",
+          "token": "0x6015a4c",
+          "address": "0x180dfd260",
+          "callSites": {
+            "CalculatePullAttenuationFactor": "0x180dfd424",
+            "CalculatePullForce": "0x180dfd693"
+          },
+          "nearPredicate": "Distance to the current projectile map position <= 0.05. This near branch goes straight from the distance test to the helper and has no blocker-range fallback or second timer test. An earlier per-target FP timer test can exit the continuation.",
+          "nearOutcome": "TryEarlyStopPull with the projectile as source and send zero force to StillPull.",
+          "selectedInstructions": [
+            {
+              "from": "0x180dfd347",
+              "through": "0x180dfd39c",
+              "instructions": [
+                "0x180dfd347  mov edx, dword ptr [rsi + 0x50]",
+                "0x180dfd34a  call 0x184d27b00",
+                "0x180dfd34f  mov rcx, qword ptr [rip + 0x7dc995a]",
+                "0x180dfd356  mov rdi, rax",
+                "0x180dfd359  cmp dword ptr [rcx + 0xe0], 0",
+                "0x180dfd360  jne 0x180dfd367",
+                "0x180dfd362  call 0x18049c450",
+                "0x180dfd367  xor edx, edx",
+                "0x180dfd369  xor ecx, ecx",
+                "0x180dfd36b  call 0x18695e170",
+                "0x180dfd370  mov rcx, qword ptr [rip + 0x7e38f31]",
+                "0x180dfd377  mov rbx, rax",
+                "0x180dfd37a  cmp dword ptr [rcx + 0xe0], 0",
+                "0x180dfd381  jne 0x180dfd388",
+                "0x180dfd383  call 0x18049c450",
+                "0x180dfd388  xor r8d, r8d",
+                "0x180dfd38b  mov rdx, rbx",
+                "0x180dfd38e  mov rcx, rdi",
+                "0x180dfd391  call 0x186945ca0",
+                "0x180dfd396  mov rbx, qword ptr [rsi + 0x28]",
+                "0x180dfd39a  test al, al",
+                "0x180dfd39c  jne 0x180dfd5be"
+              ]
+            },
+            {
+              "from": "0x180dfd424",
+              "through": "0x180dfd430",
+              "instructions": [
+                "0x180dfd424  call 0x180b402d0",
+                "0x180dfd429  mov rcx, qword ptr [rsi + 0x28]",
+                "0x180dfd42d  movaps xmm7, xmm0",
+                "0x180dfd430  mulss xmm7, xmm6"
+              ]
+            },
+            {
+              "from": "0x180dfd43f",
+              "through": "0x180dfd461",
+              "instructions": [
+                "0x180dfd43f  call 0x180b23080",
+                "0x180dfd444  xor edx, edx",
+                "0x180dfd446  mov rcx, rbp",
+                "0x180dfd449  movq xmm8, rax",
+                "0x180dfd44e  call 0x180928480",
+                "0x180dfd453  test rax, rax",
+                "0x180dfd456  je 0x180dfd99e",
+                "0x180dfd45c  xor edx, edx",
+                "0x180dfd45e  mov rcx, rax",
+                "0x180dfd461  call 0x180b23080"
+              ]
+            },
+            {
+              "from": "0x180dfd480",
+              "through": "0x180dfd4c3",
+              "instructions": [
+                "0x180dfd480  movss xmm2, dword ptr [rip + 0x62b18f4]",
+                "0x180dfd488  xor r9d, r9d",
+                "0x180dfd48b  movq rdx, xmm6",
+                "0x180dfd490  movq rcx, xmm8",
+                "0x180dfd495  call 0x186944270",
+                "0x180dfd49a  test al, al",
+                "0x180dfd49c  je 0x180dfd4c6",
+                "0x180dfd49e  mov rbx, qword ptr [rsi + 0x28]",
+                "0x180dfd4a2  xor edx, edx",
+                "0x180dfd4a4  mov rcx, rbp",
+                "0x180dfd4a7  call 0x180928480",
+                "0x180dfd4ac  test rbx, rbx",
+                "0x180dfd4af  je 0x180dfd99e",
+                "0x180dfd4b5  xor r8d, r8d",
+                "0x180dfd4b8  mov rdx, rax",
+                "0x180dfd4bb  mov rcx, rbx",
+                "0x180dfd4be  call 0x180ac42c0",
+                "0x180dfd4c3  xorps xmm7, xmm7"
+              ]
+            },
+            {
+              "from": "0x180dfd4e3",
+              "through": "0x180dfd512",
+              "instructions": [
+                "0x180dfd4e3  cmp byte ptr [rsi + 0x38], dl",
+                "0x180dfd4e6  jne 0x180dfd564",
+                "0x180dfd4e8  call 0x180928480",
+                "0x180dfd4ed  test rbx, rbx",
+                "0x180dfd4f0  je 0x180dfd99e",
+                "0x180dfd4f6  xor edi, edi",
+                "0x180dfd4f8  movaps xmm3, xmm7",
+                "0x180dfd4fb  movq r8, xmm6",
+                "0x180dfd500  mov qword ptr [rsp + 0x20], rdi",
+                "0x180dfd505  mov rdx, rax",
+                "0x180dfd508  mov rcx, rbx",
+                "0x180dfd50b  call 0x180ac3b10",
+                "0x180dfd510  test al, al",
+                "0x180dfd512  jne 0x180dfd8ad"
+              ]
+            },
+            {
+              "from": "0x180dfd68a",
+              "through": "0x180dfd69b",
+              "instructions": [
+                "0x180dfd68a  lea ecx, [rbx + rdi]",
+                "0x180dfd68d  xor r8d, r8d",
+                "0x180dfd690  mov edx, r14d",
+                "0x180dfd693  call 0x180686e90",
+                "0x180dfd698  movaps xmm6, xmm0",
+                "0x180dfd69b  movss dword ptr [rsi + 0x30], xmm6"
+              ]
+            }
+          ]
+        },
+        {
+          "methodIndex": 97040,
+          "fullname": "Torappu.Battle.Abilities.PullCastTargets/<_DoLink>d__10.MoveNext",
+          "token": "0x6017b11",
+          "address": "0x181063030",
+          "callSites": {
+            "CalculatePullAttenuationFactor": "0x181063219",
+            "CalculatePullForce": "0x1810635f6"
+          },
+          "nearPredicate": "Distance to the stored pull point <= 0.05, owner Character blocker range with shrink enabled, or the per-target FP timer <= 0.",
+          "nearOutcome": "TryEarlyStopPull with the owner as source and send zero force to StillPull. The same timer also has an earlier coroutine exit check.",
+          "selectedInstructions": [
+            {
+              "from": "0x181063165",
+              "through": "0x18106317b",
+              "instructions": [
+                "0x181063165  mov r8, qword ptr [rip + 0x7ba20b4]",
+                "0x18106316c  mov edx, dword ptr [rsi + 0x44]",
+                "0x18106316f  call 0x184d27b00",
+                "0x181063174  mov rcx, qword ptr [rip + 0x7b63b35]",
+                "0x18106317b  mov rdi, rax"
+              ]
+            },
+            {
+              "from": "0x18106318c",
+              "through": "0x181063190",
+              "instructions": [
+                "0x18106318c  xor edx, edx",
+                "0x18106318e  xor ecx, ecx",
+                "0x181063190  call 0x18695e170"
+              ]
+            },
+            {
+              "from": "0x1810631ad",
+              "through": "0x1810631c1",
+              "instructions": [
+                "0x1810631ad  xor r8d, r8d",
+                "0x1810631b0  mov rdx, rbx",
+                "0x1810631b3  mov rcx, rdi",
+                "0x1810631b6  call 0x186945ca0",
+                "0x1810631bb  mov rbx, qword ptr [rsi + 0x28]",
+                "0x1810631bf  test al, al",
+                "0x1810631c1  jne 0x181063532"
+              ]
+            },
+            {
+              "from": "0x181063219",
+              "through": "0x181063226",
+              "instructions": [
+                "0x181063219  call 0x180b402d0",
+                "0x18106321e  mov rcx, qword ptr [rsi + 0x28]",
+                "0x181063222  movaps xmm11, xmm0",
+                "0x181063226  mulss xmm11, xmm6"
+              ]
+            },
+            {
+              "from": "0x18106326d",
+              "through": "0x181063286",
+              "instructions": [
+                "0x18106326d  movss xmm2, dword ptr [rip + 0x604bb07]",
+                "0x181063275  xor r9d, r9d",
+                "0x181063278  unpcklps xmm9, xmm10",
+                "0x18106327c  movq rcx, xmm6",
+                "0x181063281  movq rdx, xmm9",
+                "0x181063286  call 0x186944270"
+              ]
+            },
+            {
+              "from": "0x181063297",
+              "through": "0x1810632a8",
+              "instructions": [
+                "0x181063297  test al, al",
+                "0x181063299  jne 0x181063338",
+                "0x18106329f  mov rbx, qword ptr [rsi + 0x28]",
+                "0x1810632a3  xor edx, edx",
+                "0x1810632a5  mov rcx, rbp",
+                "0x1810632a8  call 0x1806093e0"
+              ]
+            },
+            {
+              "from": "0x1810632bf",
+              "through": "0x1810632cf",
+              "instructions": [
+                "0x1810632bf  xor r9d, r9d",
+                "0x1810632c2  mov r8b, 1",
+                "0x1810632c5  mov rcx, rbx",
+                "0x1810632c8  call 0x180b40720",
+                "0x1810632cd  test al, al",
+                "0x1810632cf  jne 0x181063338"
+              ]
+            },
+            {
+              "from": "0x1810632d1",
+              "through": "0x1810632f4",
+              "instructions": [
+                "0x1810632d1  mov rcx, qword ptr [rbp + 0x30]",
+                "0x1810632d5  test rcx, rcx",
+                "0x1810632d8  je 0x181063a5e",
+                "0x1810632de  mov r8, qword ptr [rip + 0x7ba1f3b]",
+                "0x1810632e5  mov edx, dword ptr [rsi + 0x44]",
+                "0x1810632e8  call 0x184d27b00",
+                "0x1810632ed  mov rcx, qword ptr [rip + 0x7b639bc]",
+                "0x1810632f4  mov rdi, rax"
+              ]
+            },
+            {
+              "from": "0x181063305",
+              "through": "0x181063309",
+              "instructions": [
+                "0x181063305  xor edx, edx",
+                "0x181063307  xor ecx, ecx",
+                "0x181063309  call 0x18695e170"
+              ]
+            },
+            {
+              "from": "0x181063326",
+              "through": "0x18106335d",
+              "instructions": [
+                "0x181063326  xor r8d, r8d",
+                "0x181063329  mov rdx, rbx",
+                "0x18106332c  mov rcx, rdi",
+                "0x18106332f  call 0x186945ca0",
+                "0x181063334  test al, al",
+                "0x181063336  je 0x181063361",
+                "0x181063338  mov rbx, qword ptr [rsi + 0x28]",
+                "0x18106333c  xor edx, edx",
+                "0x18106333e  mov rcx, rbp",
+                "0x181063341  call 0x1806093e0",
+                "0x181063346  test rbx, rbx",
+                "0x181063349  je 0x181063a5e",
+                "0x18106334f  xor r8d, r8d",
+                "0x181063352  mov rdx, rax",
+                "0x181063355  mov rcx, rbx",
+                "0x181063358  call 0x180ac42c0",
+                "0x18106335d  xorps xmm11, xmm11"
+              ]
+            },
+            {
+              "from": "0x181063415",
+              "through": "0x181063450",
+              "instructions": [
+                "0x181063415  cmp byte ptr [rsi + 0x40], dl",
+                "0x181063418  jne 0x1810634d0",
+                "0x18106341e  call 0x1806093e0",
+                "0x181063423  test rbx, rbx",
+                "0x181063426  je 0x181063a5e",
+                "0x18106342c  movaps xmm0, xmm7",
+                "0x18106342f  xor edi, edi",
+                "0x181063431  unpcklps xmm0, xmm8",
+                "0x181063435  movaps xmm3, xmm11",
+                "0x181063439  movq r8, xmm0",
+                "0x18106343e  mov qword ptr [rsp + 0x20], rdi",
+                "0x181063443  mov rdx, rax",
+                "0x181063446  mov rcx, rbx",
+                "0x181063449  call 0x180ac3b10",
+                "0x18106344e  test al, al",
+                "0x181063450  jne 0x1810637b2"
+              ]
+            },
+            {
+              "from": "0x1810635ed",
+              "through": "0x1810635fe",
+              "instructions": [
+                "0x1810635ed  lea ecx, [rbx + rdi]",
+                "0x1810635f0  xor r8d, r8d",
+                "0x1810635f3  mov edx, r14d",
+                "0x1810635f6  call 0x180686e90",
+                "0x1810635fb  movaps xmm6, xmm0",
+                "0x1810635fe  movss dword ptr [rsi + 0x38], xmm6"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "nearRadiusAndBlockShrink": {
+      "address": "0x1870aed7c",
+      "bytes": "cdcc4c3d",
+      "float32": 0.05000000074505806,
+      "uses": "Base radius in all five callers and squared-distance subtraction in the blocker predicate when shrink is enabled."
+    },
+    "methods": [
+      {
+        "methodIndex": 79637,
+        "fullname": "Torappu.Battle.BattleUtil.CalculatePullAttenuationFactor",
+        "token": "0x6013716",
+        "address": "0x180b402d0",
+        "observation": "When initial distance is positive, use min(1, current distance / initial distance)^4.",
+        "selectedInstructions": [
+          {
+            "from": "0x180b40329",
+            "through": "0x180b40336",
+            "instructions": [
+              "0x180b40329  call 0x180549fe0",
+              "0x180b4032e  movaps xmm1, xmm0",
+              "0x180b40331  comiss xmm6, xmm1",
+              "0x180b40334  jae 0x180b4034d",
+              "0x180b40336  movss xmm0, dword ptr [rip + 0x656d8a2]"
+            ]
+          },
+          {
+            "from": "0x180b4034d",
+            "through": "0x180b4035c",
+            "instructions": [
+              "0x180b4034d  divss xmm1, xmm6",
+              "0x180b40351  movaps xmm0, xmm1",
+              "0x180b40354  mulss xmm0, xmm1",
+              "0x180b40358  mulss xmm0, xmm1",
+              "0x180b4035c  mulss xmm0, xmm1"
+            ]
+          }
+        ]
+      },
+      {
+        "methodIndex": 72289,
+        "fullname": "Torappu.Battle.HarpoonProjectile.OnInit",
+        "token": "0x6011a62",
+        "address": "0x1809061b0",
+        "fields": {
+          "_pullSourceOffset": "0x1f0",
+          "_stopAfterPulledBack": "0x1f4",
+          "_notInfluencedByBlock": "0x1f7",
+          "_pullToPosInBB": "0x1f8",
+          "m_pullBackDestination": "0x200",
+          "m_isPullStopped": "0x208"
+        },
+        "observation": "With _pullToPosInBB set, two successful FP blackboard reads supply the stored pull point. The normal source branch uses source map position plus direction vector times _pullSourceOffset. Without the source object the fallback uses the projectile map position. The near radius uses the flag itself, regardless of which initialization branch supplied the point.",
+        "selectedInstructions": [
+          {
+            "from": "0x180906289",
+            "through": "0x1809062f3",
+            "instructions": [
+              "0x180906289  cmp byte ptr [rbx + 0x1f8], 0",
+              "0x180906290  mov rdi, rax",
+              "0x180906293  je 0x180906332",
+              "0x180906299  xor edx, edx",
+              "0x18090629b  mov rcx, rbx",
+              "0x18090629e  call 0x18091b8a0",
+              "0x1809062a3  test rax, rax",
+              "0x1809062a6  je 0x1809064a1",
+              "0x1809062ac  mov rdx, qword ptr [rip + 0x83679fd]",
+              "0x1809062b3  lea r8, [rsp + 0x78]",
+              "0x1809062b8  xor r9d, r9d",
+              "0x1809062bb  mov rcx, rax",
+              "0x1809062be  call 0x1823795f0",
+              "0x1809062c3  test al, al",
+              "0x1809062c5  je 0x180906332",
+              "0x1809062c7  xor edx, edx",
+              "0x1809062c9  mov rcx, rbx",
+              "0x1809062cc  call 0x18091b8a0",
+              "0x1809062d1  test rax, rax",
+              "0x1809062d4  je 0x1809064a1",
+              "0x1809062da  mov rdx, qword ptr [rip + 0x829d1b7]",
+              "0x1809062e1  lea r8, [rsp + 0x30]",
+              "0x1809062e6  xor r9d, r9d",
+              "0x1809062e9  mov rcx, rax",
+              "0x1809062ec  call 0x1823795f0",
+              "0x1809062f1  test al, al",
+              "0x1809062f3  je 0x180906332"
+            ]
+          },
+          {
+            "from": "0x18090630a",
+            "through": "0x18090632d",
+            "instructions": [
+              "0x18090630a  xor edx, edx",
+              "0x18090630c  lea rcx, [rsp + 0x78]",
+              "0x180906311  call 0x18695b4d0",
+              "0x180906316  xor edx, edx",
+              "0x180906318  lea rcx, [rsp + 0x30]",
+              "0x18090631d  movaps xmm6, xmm0",
+              "0x180906320  call 0x18695b4d0",
+              "0x180906325  movss dword ptr [rbx + 0x200], xmm6",
+              "0x18090632d  jmp 0x180906413"
+            ]
+          },
+          {
+            "from": "0x180906358",
+            "through": "0x180906383",
+            "instructions": [
+              "0x180906358  xor edx, edx",
+              "0x18090635a  mov rcx, rbx",
+              "0x18090635d  call 0x180b23080",
+              "0x180906362  mov qword ptr [rsp + 0x38], rax",
+              "0x180906367  movss xmm0, dword ptr [rsp + 0x38]",
+              "0x18090636d  movss xmm1, dword ptr [rsp + 0x3c]",
+              "0x180906373  movss dword ptr [rbx + 0x200], xmm0",
+              "0x18090637b  movss dword ptr [rbx + 0x204], xmm1",
+              "0x180906383  jmp 0x18090641b"
+            ]
+          },
+          {
+            "from": "0x180906388",
+            "through": "0x180906396",
+            "instructions": [
+              "0x180906388  test rdi, rdi",
+              "0x18090638b  je 0x1809064a1",
+              "0x180906391  xor edx, edx",
+              "0x180906393  mov rcx, rdi",
+              "0x180906396  call 0x180b23080"
+            ]
+          },
+          {
+            "from": "0x1809063cb",
+            "through": "0x180906413",
+            "instructions": [
+              "0x1809063cb  mov rsi, qword ptr [rax + 0x58]",
+              "0x1809063cf  call 0x180734910",
+              "0x1809063d4  test rsi, rsi",
+              "0x1809063d7  je 0x1809064a1",
+              "0x1809063dd  cmp eax, dword ptr [rsi + 0x18]",
+              "0x1809063e0  jae 0x18090649b",
+              "0x1809063e6  movss xmm1, dword ptr [rbx + 0x1f0]",
+              "0x1809063ee  cdqe",
+              "0x1809063f0  movaps xmm0, xmm1",
+              "0x1809063f3  mulss xmm0, dword ptr [rsi + rax*8 + 0x24]",
+              "0x1809063f9  addss xmm0, dword ptr [rsp + 0x3c]",
+              "0x1809063ff  mulss xmm1, dword ptr [rsi + rax*8 + 0x20]",
+              "0x180906405  addss xmm1, dword ptr [rsp + 0x38]",
+              "0x18090640b  movss dword ptr [rbx + 0x200], xmm1",
+              "0x180906413  movss dword ptr [rbx + 0x204], xmm0"
+            ]
+          }
+        ]
+      },
+      {
+        "methodIndex": 226146,
+        "fullname": "Torappu.MathUtil.CheckDistance",
+        "token": "0x60002d0",
+        "address": "0x186944270",
+        "observation": "Compare squared map distance against radius squared, inclusive.",
+        "selectedInstructions": [
+          {
+            "from": "0x186944288",
+            "through": "0x1869442a7",
+            "instructions": [
+              "0x186944288  subss xmm0, dword ptr [rsp + 8]",
+              "0x18694428e  subss xmm1, dword ptr [rsp + 0xc]",
+              "0x186944294  mulss xmm1, xmm1",
+              "0x186944298  mulss xmm0, xmm0",
+              "0x18694429c  mulss xmm2, xmm2",
+              "0x1869442a0  addss xmm1, xmm0",
+              "0x1869442a4  comiss xmm2, xmm1",
+              "0x1869442a7  setae al"
+            ]
+          }
+        ]
+      },
+      {
+        "methodIndex": 79636,
+        "fullname": "Torappu.Battle.BattleUtil.CheckTargetWithinBlockRange",
+        "token": "0x6013715",
+        "address": "0x180b40720",
+        "observation": "When the source Character passes the Unity object test, select 0.05 or zero by the shrink argument and dispatch the blocker range predicate. The four referencing callers pass shrink=true.",
+        "selectedInstructions": [
+          {
+            "from": "0x180b40799",
+            "through": "0x180b407a3",
+            "instructions": [
+              "0x180b40799  mov rcx, rbx",
+              "0x180b4079c  call 0x186dcf430",
+              "0x180b407a1  test al, al",
+              "0x180b407a3  jne 0x180b407b5"
+            ]
+          },
+          {
+            "from": "0x180b407ba",
+            "through": "0x180b407cc",
+            "instructions": [
+              "0x180b407ba  test dil, dil",
+              "0x180b407bd  je 0x180b407c9",
+              "0x180b407bf  movss xmm6, dword ptr [rip + 0x656e5b5]",
+              "0x180b407c7  jmp 0x180b407cc",
+              "0x180b407c9  xorps xmm6, xmm6",
+              "0x180b407cc  test rbx, rbx"
+            ]
+          },
+          {
+            "from": "0x180b407e2",
+            "through": "0x180b40810",
+            "instructions": [
+              "0x180b407e2  mov r9, qword ptr [rbx]",
+              "0x180b407e5  movaps xmm2, xmm6",
+              "0x180b407e8  mov rdx, rsi",
+              "0x180b407eb  mov rcx, rbx",
+              "0x180b407ee  mov rax, qword ptr [r9 + 0xff0]",
+              "0x180b407f5  mov r9, qword ptr [r9 + 0xff8]",
+              "0x180b407fc  movaps xmm6, xmmword ptr [rsp + 0x30]",
+              "0x180b40801  mov rbx, qword ptr [rsp + 0x50]",
+              "0x180b40806  mov rsi, qword ptr [rsp + 0x58]",
+              "0x180b4080b  add rsp, 0x40",
+              "0x180b4080f  pop rdi",
+              "0x180b40810  jmp rax"
+            ]
+          }
+        ]
+      },
+      {
+        "methodIndex": 77322,
+        "fullname": "Torappu.Battle.Character.CheckInBlockRange",
+        "token": "0x6012e0b",
+        "address": "0x180a9db10",
+        "observation": "Calculate the squared distance between blocker and target map positions. Return d² <= sqrBlockRange() - shrink. The shrink is subtracted from the squared range.",
+        "selectedInstructions": [
+          {
+            "from": "0x180a9db8a",
+            "through": "0x180a9dbcd",
+            "instructions": [
+              "0x180a9db8a  mov rcx, rdi",
+              "0x180a9db8d  call 0x180b23080",
+              "0x180a9db92  xor edx, edx",
+              "0x180a9db94  mov qword ptr [rsp + 0x30], rax",
+              "0x180a9db99  mov rcx, rbx",
+              "0x180a9db9c  call 0x180b23080",
+              "0x180a9dba1  movss xmm0, dword ptr [rsp + 0x30]",
+              "0x180a9dba7  movss xmm6, dword ptr [rsp + 0x34]",
+              "0x180a9dbad  mov qword ptr [rsp + 0x38], rax",
+              "0x180a9dbb2  subss xmm0, dword ptr [rsp + 0x38]",
+              "0x180a9dbb8  subss xmm6, dword ptr [rsp + 0x3c]",
+              "0x180a9dbbe  cmp byte ptr [rip + 0x853aeab], 0",
+              "0x180a9dbc5  mulss xmm6, xmm6",
+              "0x180a9dbc9  mulss xmm0, xmm0",
+              "0x180a9dbcd  addss xmm6, xmm0"
+            ]
+          },
+          {
+            "from": "0x180a9dbdb",
+            "through": "0x180a9dc0f",
+            "instructions": [
+              "0x180a9dbdb  mov rdx, qword ptr [rbx]",
+              "0x180a9dbde  mov rcx, rbx",
+              "0x180a9dbe1  mov rax, qword ptr [rdx + 0xf30]",
+              "0x180a9dbe8  mov rdx, qword ptr [rdx + 0xf38]",
+              "0x180a9dbef  call rax",
+              "0x180a9dbf1  subss xmm0, xmm7",
+              "0x180a9dbf5  comiss xmm0, xmm6",
+              "0x180a9dbf8  movaps xmm6, xmmword ptr [rsp + 0x50]",
+              "0x180a9dbfd  setae al",
+              "0x180a9dc00  mov rbx, qword ptr [rsp + 0x70]",
+              "0x180a9dc05  movaps xmm7, xmmword ptr [rsp + 0x40]",
+              "0x180a9dc0a  add rsp, 0x60",
+              "0x180a9dc0e  pop rdi",
+              "0x180a9dc0f  ret"
+            ]
+          }
+        ]
+      },
+      {
+        "methodIndex": 77752,
+        "fullname": "Torappu.Battle.Enemy.TryEarlyStopPull",
+        "token": "0x6012fb9",
+        "address": "0x180ac42c0",
+        "observation": "Prune invalid pull sources, require exactly one registered source and a match to the given source, then set rigid-body velocity to zero and return true. Its success tail leaves the matched source registered.",
+        "selectedInstructions": [
+          {
+            "from": "0x180ac4342",
+            "through": "0x180ac4381",
+            "instructions": [
+              "0x180ac4342  mov rcx, qword ptr [rax + 0x560]",
+              "0x180ac4349  test rcx, rcx",
+              "0x180ac434c  jne 0x180ac442a",
+              "0x180ac4352  xor edx, edx",
+              "0x180ac4354  mov rcx, rbx",
+              "0x180ac4357  call 0x180ac89a0",
+              "0x180ac435c  mov rcx, qword ptr [rbx + 0x440]",
+              "0x180ac4363  test rcx, rcx",
+              "0x180ac4366  je 0x180ac4442",
+              "0x180ac436c  mov rdx, qword ptr [rip + 0x816e4e5]",
+              "0x180ac4373  call 0x184af5400",
+              "0x180ac4378  cmp eax, 1",
+              "0x180ac437b  jne 0x180ac441d",
+              "0x180ac4381  mov rdx, qword ptr [rbx + 0x440]"
+            ]
+          },
+          {
+            "from": "0x180ac4391",
+            "through": "0x180ac43e7",
+            "instructions": [
+              "0x180ac4391  mov r9, qword ptr [rip + 0x816e278]",
+              "0x180ac4398  lea rcx, [rsp + 0x30]",
+              "0x180ac439d  xor r8d, r8d",
+              "0x180ac43a0  call 0x184cde8c0",
+              "0x180ac43a5  mov r8, qword ptr [rip + 0x81476a4]",
+              "0x180ac43ac  lea rcx, [rsp + 0x20]",
+              "0x180ac43b1  mov rdx, rdi",
+              "0x180ac43b4  call 0x1853ae8f0",
+              "0x180ac43b9  movaps xmm0, xmmword ptr [rsp + 0x20]",
+              "0x180ac43be  lea rdx, [rsp + 0x20]",
+              "0x180ac43c3  movaps xmm1, xmmword ptr [rsp + 0x30]",
+              "0x180ac43c8  lea rcx, [rsp + 0x30]",
+              "0x180ac43cd  mov r8, qword ptr [rip + 0x814742c]",
+              "0x180ac43d4  movdqa xmmword ptr [rsp + 0x20], xmm0",
+              "0x180ac43da  movdqa xmmword ptr [rsp + 0x30], xmm1",
+              "0x180ac43e0  call 0x1853ae810",
+              "0x180ac43e5  test al, al",
+              "0x180ac43e7  je 0x180ac441d"
+            ]
+          },
+          {
+            "from": "0x180ac43e9",
+            "through": "0x180ac4429",
+            "instructions": [
+              "0x180ac43e9  xor edx, edx",
+              "0x180ac43eb  mov rcx, rbx",
+              "0x180ac43ee  call 0x180ace670",
+              "0x180ac43f3  xor ecx, ecx",
+              "0x180ac43f5  mov rbx, rax",
+              "0x180ac43f8  call 0x1805183b0",
+              "0x180ac43fd  test rbx, rbx",
+              "0x180ac4400  je 0x180ac4442",
+              "0x180ac4402  xor r8d, r8d",
+              "0x180ac4405  mov rdx, rax",
+              "0x180ac4408  mov rcx, rbx",
+              "0x180ac440b  call 0x186e32c90",
+              "0x180ac4410  mov al, 1",
+              "0x180ac4412  mov rbx, qword ptr [rsp + 0x50]",
+              "0x180ac4417  add rsp, 0x40",
+              "0x180ac441b  pop rdi",
+              "0x180ac441c  ret",
+              "0x180ac441d  xor al, al",
+              "0x180ac441f  mov rbx, qword ptr [rsp + 0x50]",
+              "0x180ac4424  add rsp, 0x40",
+              "0x180ac4428  pop rdi",
+              "0x180ac4429  ret"
+            ]
+          }
+        ]
+      },
+      {
+        "methodIndex": 77751,
+        "fullname": "Torappu.Battle.Enemy.StillPull",
+        "token": "0x6012fb8",
+        "address": "0x180ac3b10",
+        "observation": "On the accepted path multiply the direction by the submitted force, call AddForce, and return true. Zero submitted force can succeed.",
+        "selectedInstructions": [
+          {
+            "from": "0x180ac3c99",
+            "through": "0x180ac3cbc",
+            "instructions": [
+              "0x180ac3c99  mulss xmm1, xmm7",
+              "0x180ac3c9d  mulss xmm2, xmm7",
+              "0x180ac3ca1  test rax, rax",
+              "0x180ac3ca4  je 0x180ac3d03",
+              "0x180ac3ca6  unpcklps xmm1, xmm2",
+              "0x180ac3ca9  xor r9d, r9d",
+              "0x180ac3cac  movq rdx, xmm1",
+              "0x180ac3cb1  xor r8d, r8d",
+              "0x180ac3cb4  mov rcx, rax",
+              "0x180ac3cb7  call 0x186e326f0",
+              "0x180ac3cbc  mov al, 1"
+            ]
+          }
+        ]
+      }
+    ],
+    "relatedEvidence": [
+      "../formulas/force-native-selected.json",
+      "../state/native-state.json",
+      "../../projectile-lifecycle-20261021/source-binding/witness-projectile-configs.json"
+    ]
+  }
+}

@@ -1,0 +1,1231 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-19",
+    "scope": "Static skill bindings and serialized MonoBehaviour fields for four named operators. The client fingerprints identify the installed build. The pinned table mirror supplies operator slots and skill prefab keys from a separate source. A binding records a resolved configuration, not a live execution observation. Projectile component fields are recorded as serialized, before skill-level blackboard or runtime writes.",
+    "clientBuild": {
+      "GameAssembly.dll": {
+        "bytes": 223112680,
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff"
+      },
+      "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat": {
+        "bytes": 46669332,
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5"
+      }
+    },
+    "prefabs": {
+      "collectedOn": "2026-11-19",
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/attack-way-20261118/extract_prefabs.py",
+        "bytes": 4657,
+        "sha256": "d6cab91818e9966fd0f1b3ca3f97cdc0ddc512dcad95b592f16710ab5cbe9462"
+      },
+      "helper": {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/targeting-pipeline-20261109/content/extract_content.py",
+        "bytes": 12906,
+        "sha256": "37504c156e11e55c9c06174980fb1617281690ab3b01db9caa9dfd28937f5faa"
+      },
+      "sources": [
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "bytes": 477255,
+          "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "bytes": 1367500,
+          "sha256": "0d0b4c0f9252c14a69a20d4bea09527403dd3eddfc2f7bcd757c3c30cf37ffc3"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]projectiles.ab",
+          "bytes": 1905483,
+          "sha256": "cc3f21b73b10fbc619a1ff8b099f31e678c883ddacb7bb6775fea960ffecb0e1"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_474_glady.ab",
+          "bytes": 24776,
+          "sha256": "09bf3d049d194032ab998c2b7634dab44a3d917e4bbce7b979c566c29a9b7b55"
+        }
+      ],
+      "selection": {
+        "battle/prefabs/[uc]skills.ab": [
+          "skchr_rope",
+          "skchr_slchan",
+          "skchr_snsant",
+          "skchr_glady"
+        ],
+        "battle/prefabs/[uc]projectiles.ab": [
+          "projectile_rope",
+          "projectile_slchan",
+          "projectile_snsant",
+          "projectile_chr_glady"
+        ],
+        "charpack/char_474_glady.ab": [
+          "char_474_glady"
+        ]
+      },
+      "scope": "All MonoBehaviour components under selected character/module hierarchy roots; no live execution observation."
+    },
+    "templates": {
+      "collectedOn": "2026-11-19",
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/attack-way-20261118/extract_templates.py",
+        "bytes": 2922,
+        "sha256": "06f04626dd11953a074e24f847fd21798c43c824c187f89913c55412ba997031"
+      },
+      "helper": {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/attack-addon-order-20261102/content/decode_content.py",
+        "bytes": 8161,
+        "sha256": "d17abeee072576a29ca060884dcc0dd770fe0f8194ca7eed7b5c13b99b41e14e"
+      },
+      "source": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+        "bytes": 2151020,
+        "sha256": "8edcb8017c977cdf52c2593b58e21db96949f3ad1e6f904180ac1241f145ca79"
+      },
+      "scope": "Selected installed Buff template programs; concrete character/talent/module binding recorded separately. "
+    },
+    "persistentTemplateSource": {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/config/buff_template_holder.ab",
+      "bytes": 2197532,
+      "sha256": "f486df86406db62b2773039b87d05a405fb95a31ddc82568c6a6efef14e47f01"
+    },
+    "tables": {
+      "sourceUrl": "https://github.com/Kengxxiao/ArknightsGameData",
+      "revision": "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+      "sources": [
+        {
+          "sourcePath": "zh_CN/gamedata/excel/character_table.json",
+          "localPath": ".cache/native-research/route-operations-20261107/data/character_table.json",
+          "sha256": "6a61f54802ee194dbb21968976eb99e2a4050e38928bd24bd2b770479076cea1",
+          "bytes": 15468242
+        },
+        {
+          "sourcePath": "zh_CN/gamedata/excel/skill_table.json",
+          "localPath": ".cache/native-research/route-operations-20261107/data/skill_table.json",
+          "sha256": "492900f6b957233296c9736c86bb4e5f3ab4b4d7f5055a0f973c5acec3d174b1",
+          "bytes": 11766431
+        }
+      ]
+    },
+    "replay": {
+      "prefabs": "From the repository root, load docs/research/evidence/forced-motion-20261118/push/extract_push_config.py using runpy.run_path and call extract_with('extract_prefabs.py', output_path, SELECTION=provenance.prefabs.selection). Match selected result rows by bundle, file and pathId, then project the recorded fields. Parse the serialized Chant action array as JSON.",
+      "template": "Use the same extract_with helper with ('extract_templates.py', output_path, KEYS={'switch_mode_restart_fsm'}). For PersistentData, read the identified holder object with native-research unity_assets Reader starting at byte 28. Read a holder name and record count, then each record's three fields (key, effect, priority), and each event's three fields (event, program JSON, object reference count followed by 12 bytes per reference). Match the recorded key, relative offset and record hash.",
+      "tables": "Use read_table from the same helper to check the pinned hashes and select character.skills[characterSkillSlot] and the distinct skill.levels[*].prefabId values."
+    },
+    "previousRopeWitness": "../../projectile-lifecycle-20261021/source-binding/witness-projectile-configs.json"
+  },
+  "result": {
+    "skillMappings": [
+      {
+        "characterId": "char_236_rope",
+        "characterName": "暗索",
+        "characterSkillSlot": 0,
+        "skillId": "skchr_rope_1",
+        "skillName": "勾爪发射",
+        "overridePrefabKey": null,
+        "skillPrefabKey": "skchr_rope_1",
+        "binding": "skill prefab attack",
+        "skill": {
+          "bundle": "battle/prefabs/[uc]skills.ab",
+          "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+          "pathId": "2822519598499772808",
+          "hierarchy": [
+            "skchr_rope_1"
+          ],
+          "type": "Torappu.Battle.ReplacementSkill",
+          "objectSha256": "0fd345ef22ef0d27c808f507b8b9f62d244ca07c713cd757056e1fe013f83693",
+          "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+          "scriptPPtr": {
+            "m_FileID": 1,
+            "m_PathID": "5227880615222932794"
+          },
+          "fields": {}
+        },
+        "projectileRoutes": [
+          {
+            "attack": {
+              "bundle": "battle/prefabs/[uc]skills.ab",
+              "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+              "pathId": "-1130966464347162232",
+              "hierarchy": [
+                "skchr_rope_1"
+              ],
+              "type": "Torappu.Battle.Abilities.RangedAttack",
+              "objectSha256": "22684f1e99dfcf4d705b488269633a825872f2915fc5e4460c335a3b4439c210",
+              "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+              "scriptPPtr": {
+                "m_FileID": 1,
+                "m_PathID": "4156651312234227407"
+              },
+              "fields": {
+                "_projectileKey": "projectile_rope_s1",
+                "_waitForProjectileInvalid": 1,
+                "_notClearProjectileWhenCastEnd": 0,
+                "_fireAttackFinishWhenProjectileInvalid": 1
+              }
+            },
+            "projectileKey": "projectile_rope_s1",
+            "projectileComponents": [
+              {
+                "bundle": "battle/prefabs/[uc]projectiles.ab",
+                "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+                "pathId": "-6398049183091636726",
+                "hierarchy": [
+                  "projectile_rope_s1_logic"
+                ],
+                "type": "Torappu.Battle.HarpoonProjectile",
+                "objectSha256": "fe6c4e798233df30de070525d27273e2a864a82a1b16cb6e5247eccb64356338",
+                "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+                "scriptPPtr": {
+                  "m_FileID": 1,
+                  "m_PathID": "-258532801309066565"
+                },
+                "fields": {
+                  "_managedBySource": 0,
+                  "_linkDuration": 1.0,
+                  "_getLifeTimeFromBB": 0,
+                  "_pullForceLevel": 0,
+                  "_pullSourceOffset": 0.5,
+                  "_stopAfterPulledBack": 0,
+                  "_ignoreTargetMess": 0,
+                  "_stopWhenCollideWithHighLand": 0,
+                  "_notInfluencedByBlock": 0,
+                  "_pullToPosInBB": 0
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "characterId": "char_236_rope",
+        "characterName": "暗索",
+        "characterSkillSlot": 1,
+        "skillId": "skchr_rope_2",
+        "skillName": "复式勾爪",
+        "overridePrefabKey": null,
+        "skillPrefabKey": "skchr_rope_2",
+        "binding": "skill prefab attack",
+        "skill": {
+          "bundle": "battle/prefabs/[uc]skills.ab",
+          "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+          "pathId": "-1370793769566608384",
+          "hierarchy": [
+            "skchr_rope_2"
+          ],
+          "type": "Torappu.Battle.CastSkill",
+          "objectSha256": "7df06d920678825c675f8b4fb491c906835840aadba313260327f32c7df97ddd",
+          "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+          "scriptPPtr": {
+            "m_FileID": 1,
+            "m_PathID": "6851783972288338031"
+          },
+          "fields": {}
+        },
+        "projectileRoutes": [
+          {
+            "attack": {
+              "bundle": "battle/prefabs/[uc]skills.ab",
+              "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+              "pathId": "-6690356152633072640",
+              "hierarchy": [
+                "skchr_rope_2"
+              ],
+              "type": "Torappu.Battle.Abilities.RangedAttack",
+              "objectSha256": "ae7a6a948507863b52b7ced2163322274ac041669cd8aa3536199fe1eaec0953",
+              "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+              "scriptPPtr": {
+                "m_FileID": 1,
+                "m_PathID": "4156651312234227407"
+              },
+              "fields": {
+                "_projectileKey": "projectile_rope_s2",
+                "_waitForProjectileInvalid": 1,
+                "_notClearProjectileWhenCastEnd": 0,
+                "_fireAttackFinishWhenProjectileInvalid": 1
+              }
+            },
+            "projectileKey": "projectile_rope_s2",
+            "projectileComponents": [
+              {
+                "bundle": "battle/prefabs/[uc]projectiles.ab",
+                "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+                "pathId": "-8262687393199105708",
+                "hierarchy": [
+                  "projectile_rope_s2_logic"
+                ],
+                "type": "Torappu.Battle.HarpoonProjectile",
+                "objectSha256": "c24baf81e05e1199ed56e7f560e1753c62a3d78faa361017c6d43854ab4fe285",
+                "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+                "scriptPPtr": {
+                  "m_FileID": 1,
+                  "m_PathID": "-258532801309066565"
+                },
+                "fields": {
+                  "_managedBySource": 0,
+                  "_linkDuration": 1.0,
+                  "_getLifeTimeFromBB": 0,
+                  "_pullForceLevel": 0,
+                  "_pullSourceOffset": 0.5,
+                  "_stopAfterPulledBack": 0,
+                  "_ignoreTargetMess": 0,
+                  "_stopWhenCollideWithHighLand": 0,
+                  "_notInfluencedByBlock": 0,
+                  "_pullToPosInBB": 0
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "characterId": "char_173_slchan",
+        "characterName": "崖心",
+        "characterSkillSlot": 0,
+        "skillId": "skchr_slchan_1",
+        "skillName": "锁链勾爪",
+        "overridePrefabKey": null,
+        "skillPrefabKey": "skchr_slchan_1",
+        "binding": "skill prefab attack",
+        "skill": {
+          "bundle": "battle/prefabs/[uc]skills.ab",
+          "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+          "pathId": "388341258213961966",
+          "hierarchy": [
+            "skchr_slchan_1"
+          ],
+          "type": "Torappu.Battle.ReplacementSkill",
+          "objectSha256": "b4473ba331b77227c486f1ef9974c470ff6aa36d25dd1815a8969ef93a310282",
+          "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+          "scriptPPtr": {
+            "m_FileID": 1,
+            "m_PathID": "5227880615222932794"
+          },
+          "fields": {}
+        },
+        "projectileRoutes": [
+          {
+            "attack": {
+              "bundle": "battle/prefabs/[uc]skills.ab",
+              "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+              "pathId": "936773192025944302",
+              "hierarchy": [
+                "skchr_slchan_1"
+              ],
+              "type": "Torappu.Battle.Abilities.RangedAttack",
+              "objectSha256": "e7e23088aa9b3fb0a906b0926c9a37f9748ff3df51a393c0290d738ed07d735c",
+              "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+              "scriptPPtr": {
+                "m_FileID": 1,
+                "m_PathID": "4156651312234227407"
+              },
+              "fields": {
+                "_projectileKey": "projectile_slchan_s1",
+                "_waitForProjectileInvalid": 1,
+                "_notClearProjectileWhenCastEnd": 0,
+                "_fireAttackFinishWhenProjectileInvalid": 1
+              }
+            },
+            "projectileKey": "projectile_slchan_s1",
+            "projectileComponents": [
+              {
+                "bundle": "battle/prefabs/[uc]projectiles.ab",
+                "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+                "pathId": "2652387874217511195",
+                "hierarchy": [
+                  "projectile_slchan_s1_logic"
+                ],
+                "type": "Torappu.Battle.HarpoonProjectile",
+                "objectSha256": "9122bb14e5ad694fc8fbe3d12124fe6594fa89b45fea0ca70b65c25909546cfc",
+                "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+                "scriptPPtr": {
+                  "m_FileID": 1,
+                  "m_PathID": "-258532801309066565"
+                },
+                "fields": {
+                  "_managedBySource": 0,
+                  "_linkDuration": 1.0,
+                  "_getLifeTimeFromBB": 0,
+                  "_pullForceLevel": 0,
+                  "_pullSourceOffset": 0.5,
+                  "_stopAfterPulledBack": 0,
+                  "_ignoreTargetMess": 0,
+                  "_stopWhenCollideWithHighLand": 0,
+                  "_notInfluencedByBlock": 0,
+                  "_pullToPosInBB": 0
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "characterId": "char_173_slchan",
+        "characterName": "崖心",
+        "characterSkillSlot": 1,
+        "skillId": "skchr_slchan_2",
+        "skillName": "束缚链",
+        "overridePrefabKey": null,
+        "skillPrefabKey": "skchr_slchan_2",
+        "binding": "skill prefab attack",
+        "skill": {
+          "bundle": "battle/prefabs/[uc]skills.ab",
+          "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+          "pathId": "-2016059290897248084",
+          "hierarchy": [
+            "skchr_slchan_2"
+          ],
+          "type": "Torappu.Battle.CastSkill",
+          "objectSha256": "44f0e2400a806eec08c3530f86b166391dd99d9b260d22ba22ceddad178703ef",
+          "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+          "scriptPPtr": {
+            "m_FileID": 1,
+            "m_PathID": "6851783972288338031"
+          },
+          "fields": {}
+        },
+        "projectileRoutes": [
+          {
+            "attack": {
+              "bundle": "battle/prefabs/[uc]skills.ab",
+              "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+              "pathId": "-4489886006820826964",
+              "hierarchy": [
+                "skchr_slchan_2"
+              ],
+              "type": "Torappu.Battle.Abilities.RangedAttack",
+              "objectSha256": "36e2f1754d493e40ebc3554fcc7552ff36f1128ee2619838a920d7bd44df2ad9",
+              "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+              "scriptPPtr": {
+                "m_FileID": 1,
+                "m_PathID": "4156651312234227407"
+              },
+              "fields": {
+                "_projectileKey": "projectile_slchan_s2",
+                "_waitForProjectileInvalid": 1,
+                "_notClearProjectileWhenCastEnd": 0,
+                "_fireAttackFinishWhenProjectileInvalid": 1
+              }
+            },
+            "projectileKey": "projectile_slchan_s2",
+            "projectileComponents": [
+              {
+                "bundle": "battle/prefabs/[uc]projectiles.ab",
+                "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+                "pathId": "7734266770330268472",
+                "hierarchy": [
+                  "projectile_slchan_s2_logic"
+                ],
+                "type": "Torappu.Battle.HarpoonProjectile",
+                "objectSha256": "209421646bbb16d7349d3c4e10faa6bead66533387738f998b9b58b1400743c4",
+                "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+                "scriptPPtr": {
+                  "m_FileID": 1,
+                  "m_PathID": "-258532801309066565"
+                },
+                "fields": {
+                  "_managedBySource": 0,
+                  "_linkDuration": 1.0,
+                  "_getLifeTimeFromBB": 0,
+                  "_pullForceLevel": 0,
+                  "_pullSourceOffset": 0.5,
+                  "_stopAfterPulledBack": 0,
+                  "_ignoreTargetMess": 0,
+                  "_stopWhenCollideWithHighLand": 0,
+                  "_notInfluencedByBlock": 0,
+                  "_pullToPosInBB": 0
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "characterId": "char_383_snsant",
+        "characterName": "雪雉",
+        "characterSkillSlot": 0,
+        "skillId": "skchr_snsant_1",
+        "skillName": "倒刺钩爪",
+        "overridePrefabKey": null,
+        "skillPrefabKey": "skchr_snsant_1",
+        "binding": "skill prefab attack",
+        "skill": {
+          "bundle": "battle/prefabs/[uc]skills.ab",
+          "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+          "pathId": "2239104759253130253",
+          "hierarchy": [
+            "skchr_snsant_1"
+          ],
+          "type": "Torappu.Battle.ReplacementSkill",
+          "objectSha256": "ac603836e4be3a355efdbc5541c92ffb535c7bd7d0508b8580fb5aef21ddef2f",
+          "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+          "scriptPPtr": {
+            "m_FileID": 1,
+            "m_PathID": "5227880615222932794"
+          },
+          "fields": {}
+        },
+        "projectileRoutes": [
+          {
+            "attack": {
+              "bundle": "battle/prefabs/[uc]skills.ab",
+              "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+              "pathId": "-4567432265077466099",
+              "hierarchy": [
+                "skchr_snsant_1"
+              ],
+              "type": "Torappu.Battle.Abilities.RangedAttack",
+              "objectSha256": "ec1d9fed8fb534e51f2f2704ae281970fe73614a90e3b71f2ec835fa1f7068c7",
+              "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+              "scriptPPtr": {
+                "m_FileID": 1,
+                "m_PathID": "4156651312234227407"
+              },
+              "fields": {
+                "_projectileKey": "projectile_snsant_s1",
+                "_waitForProjectileInvalid": 1,
+                "_notClearProjectileWhenCastEnd": 0,
+                "_fireAttackFinishWhenProjectileInvalid": 1
+              }
+            },
+            "projectileKey": "projectile_snsant_s1",
+            "projectileComponents": [
+              {
+                "bundle": "battle/prefabs/[uc]projectiles.ab",
+                "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+                "pathId": "8361573461179259879",
+                "hierarchy": [
+                  "projectile_snsant_s1_logic"
+                ],
+                "type": "Torappu.Battle.HarpoonProjectile",
+                "objectSha256": "4b2b8d9bb17cda9cd4cc1a0e132f5f091f5e5885ed4193d79dd00115155f408b",
+                "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+                "scriptPPtr": {
+                  "m_FileID": 1,
+                  "m_PathID": "-258532801309066565"
+                },
+                "fields": {
+                  "_managedBySource": 0,
+                  "_linkDuration": 1.0,
+                  "_getLifeTimeFromBB": 0,
+                  "_pullForceLevel": 0,
+                  "_pullSourceOffset": 0.5,
+                  "_stopAfterPulledBack": 0,
+                  "_ignoreTargetMess": 0,
+                  "_stopWhenCollideWithHighLand": 0,
+                  "_notInfluencedByBlock": 0,
+                  "_pullToPosInBB": 0
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "characterId": "char_383_snsant",
+        "characterName": "雪雉",
+        "characterSkillSlot": 1,
+        "skillId": "skchr_snsant_2",
+        "skillName": "伸缩式电捕网",
+        "overridePrefabKey": null,
+        "skillPrefabKey": "skchr_snsant_2",
+        "binding": "skill prefab attack",
+        "skill": {
+          "bundle": "battle/prefabs/[uc]skills.ab",
+          "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+          "pathId": "-3759850362981263078",
+          "hierarchy": [
+            "skchr_snsant_2"
+          ],
+          "type": "Torappu.Battle.CastSkill",
+          "objectSha256": "a0251089ab03c0b8a15b94ce379731472f043001f551086467c3f3715a606236",
+          "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+          "scriptPPtr": {
+            "m_FileID": 1,
+            "m_PathID": "6851783972288338031"
+          },
+          "fields": {}
+        },
+        "projectileRoutes": [
+          {
+            "attack": {
+              "bundle": "battle/prefabs/[uc]skills.ab",
+              "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+              "pathId": "4305797227423389978",
+              "hierarchy": [
+                "skchr_snsant_2"
+              ],
+              "type": "Torappu.Battle.Abilities.RangedAttack",
+              "objectSha256": "5a8366e4229a5f56093bf8657b89b7de3009bffafb0faf35e175ca677b77c627",
+              "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+              "scriptPPtr": {
+                "m_FileID": 1,
+                "m_PathID": "4156651312234227407"
+              },
+              "fields": {
+                "_projectileKey": "projectile_snsant_s2",
+                "_waitForProjectileInvalid": 1,
+                "_notClearProjectileWhenCastEnd": 0,
+                "_fireAttackFinishWhenProjectileInvalid": 1
+              }
+            },
+            "projectileKey": "projectile_snsant_s2",
+            "projectileComponents": [
+              {
+                "bundle": "battle/prefabs/[uc]projectiles.ab",
+                "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+                "pathId": "3471435982621705304",
+                "hierarchy": [
+                  "projectile_snsant_s2_logic"
+                ],
+                "type": "Torappu.Battle.NetCatcherProjectile",
+                "objectSha256": "3fb9834ff005742f0a711625c4f508b1429b0e6bb6f42963b6e1e8836a5eeef2",
+                "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+                "scriptPPtr": {
+                  "m_FileID": 1,
+                  "m_PathID": "-8289086878072459360"
+                },
+                "fields": {
+                  "_managedBySource": 0,
+                  "_linkDuration": 1.0,
+                  "_getLifeTimeFromBB": 0,
+                  "_pullForceLevel": 0,
+                  "_firstPartTime": 0.30000001192092896,
+                  "_stopAfterFirstPulledBack": 0,
+                  "_allowInputTargetDead": 0,
+                  "_secondPullSourceOffset": 0.5,
+                  "_secondPartTime": 1.0,
+                  "_stopAfterSecondPulledBack": 1,
+                  "_maxRandomOffset": 0.30000001192092896
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "characterId": "char_474_glady",
+        "characterName": "歌蕾蒂娅",
+        "characterSkillSlot": 0,
+        "skillId": "skchr_glady_1",
+        "skillName": "缺水的大洋裂断",
+        "overridePrefabKey": null,
+        "skillPrefabKey": "skchr_glady_1",
+        "binding": "skill prefab attack",
+        "skill": {
+          "bundle": "battle/prefabs/[uc]skills.ab",
+          "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+          "pathId": "-3974638149328523120",
+          "hierarchy": [
+            "skchr_glady_1"
+          ],
+          "type": "Torappu.Battle.ReplacementSkill",
+          "objectSha256": "980f992b9f8c0a1148fbe14cb72529f14cff271589ce6faa86e125c5f01a78c7",
+          "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+          "scriptPPtr": {
+            "m_FileID": 1,
+            "m_PathID": "5227880615222932794"
+          },
+          "fields": {}
+        },
+        "projectileRoutes": [
+          {
+            "attack": {
+              "bundle": "battle/prefabs/[uc]skills.ab",
+              "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+              "pathId": "-1223003346309107568",
+              "hierarchy": [
+                "skchr_glady_1"
+              ],
+              "type": "Torappu.Battle.Abilities.RangedAttack",
+              "objectSha256": "a39e5208924cd74d49b91c0229cc08af209c89c34905d9b23605c60148c8040e",
+              "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+              "scriptPPtr": {
+                "m_FileID": 1,
+                "m_PathID": "4156651312234227407"
+              },
+              "fields": {
+                "_projectileKey": "projectile_chr_glady_s1",
+                "_waitForProjectileInvalid": 1,
+                "_notClearProjectileWhenCastEnd": 0,
+                "_fireAttackFinishWhenProjectileInvalid": 1
+              }
+            },
+            "projectileKey": "projectile_chr_glady_s1",
+            "projectileComponents": [
+              {
+                "bundle": "battle/prefabs/[uc]projectiles.ab",
+                "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+                "pathId": "-3271843153208851246",
+                "hierarchy": [
+                  "projectile_chr_glady_s1_logic"
+                ],
+                "type": "Torappu.Battle.HarpoonProjectile",
+                "objectSha256": "7c99d15ec52d88e1fd7a71b2f02bd70ee776b8995468f13fa65fb517f4617b72",
+                "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+                "scriptPPtr": {
+                  "m_FileID": 1,
+                  "m_PathID": "-258532801309066565"
+                },
+                "fields": {
+                  "_managedBySource": 0,
+                  "_linkDuration": 1.0,
+                  "_getLifeTimeFromBB": 0,
+                  "_pullForceLevel": 0,
+                  "_pullSourceOffset": 0.5,
+                  "_stopAfterPulledBack": 0,
+                  "_ignoreTargetMess": 0,
+                  "_stopWhenCollideWithHighLand": 0,
+                  "_notInfluencedByBlock": 0,
+                  "_pullToPosInBB": 0
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "characterId": "char_474_glady",
+        "characterName": "歌蕾蒂娅",
+        "characterSkillSlot": 1,
+        "skillId": "skchr_glady_2",
+        "skillName": "缺水的掌握怒海",
+        "overridePrefabKey": null,
+        "skillPrefabKey": "skchr_glady_2",
+        "binding": "skill buff selects character attack mode",
+        "skill": {
+          "bundle": "battle/prefabs/[uc]skills.ab",
+          "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+          "pathId": "8880729578903844651",
+          "hierarchy": [
+            "skchr_glady_2"
+          ],
+          "type": "Torappu.Battle.CastSkill",
+          "objectSha256": "c51c6f6f0926ca773d546e22e6a3a2fa0ede92445e3c61dea1e70effc5480112",
+          "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+          "scriptPPtr": {
+            "m_FileID": 1,
+            "m_PathID": "6851783972288338031"
+          },
+          "fields": {
+            "_attackBlackboardModeIndex": 1,
+            "_rangeIdModeIndex": 1
+          }
+        },
+        "activeBuff": {
+          "bundle": "battle/prefabs/[uc]skills.ab",
+          "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+          "pathId": "9167121004578092843",
+          "hierarchy": [
+            "skchr_glady_2"
+          ],
+          "type": "Torappu.Battle.Abilities.ActiveBuffAbility",
+          "objectSha256": "eade2ead511c36fa2f618e22517e49049f525374eab8c67d83107fc2f8010039",
+          "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+          "scriptPPtr": {
+            "m_FileID": 1,
+            "m_PathID": "-4234909118878081699"
+          },
+          "fields": {
+            "_buffs.Array[0]": {
+              "buffKey": "glady_s_2",
+              "templateKey": "switch_mode_restart_fsm",
+              "blackboard": {
+                "Array": [
+                  {
+                    "key": "mode",
+                    "value": 1.0,
+                    "valueStr": ""
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "buffTemplateKey": "switch_mode_restart_fsm",
+        "character": {
+          "bundle": "charpack/char_474_glady.ab",
+          "file": "CAB-ebf4ba7decf1c9b0b4fc4ee6923afac4",
+          "pathId": "-7160035173357079821",
+          "hierarchy": [
+            "char_474_glady"
+          ],
+          "type": "Torappu.Battle.Character",
+          "objectSha256": "df52833da0d97280b8ee12a4e74fa52a33b225e98076e3ac8f9d21f6eebfd9e6",
+          "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+          "scriptPPtr": {
+            "m_FileID": 1,
+            "m_PathID": "-1297314214590689040"
+          },
+          "fields": {
+            "_modes": {
+              "Array": [
+                {
+                  "m_FileID": 0,
+                  "m_PathID": "-538733813559479565"
+                },
+                {
+                  "m_FileID": 0,
+                  "m_PathID": "-2514497422553992461"
+                },
+                {
+                  "m_FileID": 0,
+                  "m_PathID": "-1963049381183180045"
+                }
+              ]
+            }
+          }
+        },
+        "modeIndex": 1,
+        "mode": {
+          "bundle": "charpack/char_474_glady.ab",
+          "file": "CAB-ebf4ba7decf1c9b0b4fc4ee6923afac4",
+          "pathId": "-2514497422553992461",
+          "hierarchy": [
+            "char_474_glady",
+            "Modes",
+            "S2"
+          ],
+          "type": "Torappu.Battle.UnitMode",
+          "objectSha256": "34ab0f0751a83074d8d8d19390f55be28dbc2bcd741a08014e0098df521057dc",
+          "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+          "scriptPPtr": {
+            "m_FileID": 1,
+            "m_PathID": "5390319429299248724"
+          },
+          "fields": {
+            "_attack": {
+              "m_FileID": 0,
+              "m_PathID": "8080582619786359539"
+            }
+          }
+        },
+        "projectileRoutes": [
+          {
+            "attack": {
+              "bundle": "charpack/char_474_glady.ab",
+              "file": "CAB-ebf4ba7decf1c9b0b4fc4ee6923afac4",
+              "pathId": "8080582619786359539",
+              "hierarchy": [
+                "char_474_glady",
+                "Modes",
+                "S2",
+                "Body",
+                "Attack"
+              ],
+              "type": "Torappu.Battle.Abilities.RangedAttack",
+              "objectSha256": "588c8c1a70dd3f48df5c320c5080ea45999a5289364b0a70656778e8042fe03b",
+              "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+              "scriptPPtr": {
+                "m_FileID": 1,
+                "m_PathID": "4156651312234227407"
+              },
+              "fields": {
+                "_projectileKey": "projectile_chr_glady_s2",
+                "_waitForProjectileInvalid": 1,
+                "_notClearProjectileWhenCastEnd": 0,
+                "_fireAttackFinishWhenProjectileInvalid": 1
+              }
+            },
+            "projectileKey": "projectile_chr_glady_s2",
+            "projectileComponents": [
+              {
+                "bundle": "battle/prefabs/[uc]projectiles.ab",
+                "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+                "pathId": "1527433336465046396",
+                "hierarchy": [
+                  "projectile_chr_glady_s2_logic"
+                ],
+                "type": "Torappu.Battle.HarpoonProjectile",
+                "objectSha256": "f63c583c2d29e88f3051dd20ff333a20c850904e3ea0a8e2b57b1a5bcfffd115",
+                "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+                "scriptPPtr": {
+                  "m_FileID": 1,
+                  "m_PathID": "-258532801309066565"
+                },
+                "fields": {
+                  "_managedBySource": 0,
+                  "_linkDuration": 1.0,
+                  "_getLifeTimeFromBB": 0,
+                  "_pullForceLevel": 0,
+                  "_pullSourceOffset": 0.5,
+                  "_stopAfterPulledBack": 0,
+                  "_ignoreTargetMess": 0,
+                  "_stopWhenCollideWithHighLand": 0,
+                  "_notInfluencedByBlock": 0,
+                  "_pullToPosInBB": 0
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "characterId": "char_474_glady",
+        "characterName": "歌蕾蒂娅",
+        "characterSkillSlot": 2,
+        "skillId": "skchr_glady_3",
+        "skillName": "缺水的碎漩狂舞",
+        "overridePrefabKey": null,
+        "skillPrefabKey": "skchr_glady_3",
+        "binding": "skill sequence and triggered abilities",
+        "skill": {
+          "bundle": "battle/prefabs/[uc]skills.ab",
+          "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+          "pathId": "4081377557238432381",
+          "hierarchy": [
+            "skchr_glady_3"
+          ],
+          "type": "Torappu.Battle.CastSkill",
+          "objectSha256": "53cde0360420de4fa934c4aa5a69ae855cd9daae2f3ed5bed2fa10c569c7c654",
+          "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+          "scriptPPtr": {
+            "m_FileID": 1,
+            "m_PathID": "6851783972288338031"
+          },
+          "fields": {
+            "_extraAbilities": {
+              "Array": [
+                {
+                  "m_FileID": 0,
+                  "m_PathID": "3262757703934788221"
+                },
+                {
+                  "m_FileID": 0,
+                  "m_PathID": "-4480028741103205763"
+                }
+              ]
+            }
+          }
+        },
+        "sequence": {
+          "bundle": "battle/prefabs/[uc]skills.ab",
+          "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+          "pathId": "4575495158283420285",
+          "hierarchy": [
+            "skchr_glady_3"
+          ],
+          "type": "Torappu.Battle.Abilities.AbilitySequenceGroup",
+          "objectSha256": "f44da8845fcc9c9996e61b1b21c7b2d319936fb2aa0ef8b0253b5f4374258761",
+          "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+          "scriptPPtr": {
+            "m_FileID": 1,
+            "m_PathID": "-3703208971068511792"
+          },
+          "fields": {
+            "_abilities": {
+              "Array": [
+                {
+                  "m_FileID": 0,
+                  "m_PathID": "-5091373855863291267"
+                },
+                {
+                  "m_FileID": 0,
+                  "m_PathID": "-4484485962964876675"
+                },
+                {
+                  "m_FileID": 0,
+                  "m_PathID": "-3633245999185018243"
+                },
+                {
+                  "m_FileID": 0,
+                  "m_PathID": "-5091373855863291267"
+                }
+              ]
+            }
+          }
+        },
+        "chant": {
+          "bundle": "battle/prefabs/[uc]skills.ab",
+          "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+          "pathId": "-4484485962964876675",
+          "hierarchy": [
+            "skchr_glady_3",
+            "Chant"
+          ],
+          "type": "Torappu.Battle.Abilities.AnimatedActionToOwnerAbility",
+          "objectSha256": "1c9737eb4a3a3f48f62433a615996e0e574caf07d1ef5cc89c8e254f02a9be7e",
+          "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+          "scriptPPtr": {
+            "m_FileID": 1,
+            "m_PathID": "2702927552840241462"
+          },
+          "fields": {
+            "_actions.SerializedState": [
+              {
+                "_ownerType": "SOURCE",
+                "_targetType": "SOURCE",
+                "_abilityName": "ChantAttack1",
+                "_checkCanUseAblityFlag": false,
+                "_castDirectly": true,
+                "_useFirstActiveAbility": false,
+                "_useCastResult": false,
+                "_triggerHostAbility": false,
+                "_notInterruptAbilityIfCasting": false,
+                "$type": "Torappu.Battle.Action.Nodes+TriggerAbility"
+              },
+              {
+                "_ownerType": "SOURCE",
+                "_targetType": "SOURCE",
+                "_abilityName": "ChantAttack2",
+                "_checkCanUseAblityFlag": false,
+                "_castDirectly": true,
+                "_useFirstActiveAbility": false,
+                "_useCastResult": false,
+                "_triggerHostAbility": false,
+                "_notInterruptAbilityIfCasting": false,
+                "$type": "Torappu.Battle.Action.Nodes+TriggerAbility"
+              }
+            ]
+          }
+        },
+        "projectileRoutes": [
+          {
+            "attack": {
+              "bundle": "battle/prefabs/[uc]skills.ab",
+              "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+              "pathId": "3262757703934788221",
+              "hierarchy": [
+                "skchr_glady_3",
+                "ChantAttack1"
+              ],
+              "type": "Torappu.Battle.Abilities.RangedAttack",
+              "objectSha256": "e42e871648fc41d8bec787bd5d589aa67463b2ec85eebb178da32bacc7aef9f6",
+              "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+              "scriptPPtr": {
+                "m_FileID": 1,
+                "m_PathID": "4156651312234227407"
+              },
+              "fields": {
+                "_projectileKey": "projectile_chr_glady_s3_1",
+                "_waitForProjectileInvalid": 0,
+                "_notClearProjectileWhenCastEnd": 0,
+                "_fireAttackFinishWhenProjectileInvalid": 0
+              }
+            },
+            "projectileKey": "projectile_chr_glady_s3_1",
+            "projectileComponents": [
+              {
+                "bundle": "battle/prefabs/[uc]projectiles.ab",
+                "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+                "pathId": "-8696895155564868822",
+                "hierarchy": [
+                  "projectile_chr_glady_s3_1"
+                ],
+                "type": "Torappu.Battle.LassoProjectile",
+                "objectSha256": "ad4de44bad98eb9bf86a1b15dfb540981246f0131b076681f90b8e0c6c2b51b8",
+                "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+                "scriptPPtr": {
+                  "m_FileID": 1,
+                  "m_PathID": "-1571035685851700140"
+                },
+                "fields": {
+                  "_managedBySource": 0,
+                  "_linkDuration": 10.0,
+                  "_getLifeTimeFromBB": 0
+                }
+              }
+            ]
+          },
+          {
+            "attack": {
+              "bundle": "battle/prefabs/[uc]skills.ab",
+              "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+              "pathId": "-4480028741103205763",
+              "hierarchy": [
+                "skchr_glady_3",
+                "ChantAttack2"
+              ],
+              "type": "Torappu.Battle.Abilities.RangedAttack",
+              "objectSha256": "8c0fdd29239f554b667c30181bed3fd3cc13022e112394d90b365836cd5381ad",
+              "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+              "scriptPPtr": {
+                "m_FileID": 1,
+                "m_PathID": "4156651312234227407"
+              },
+              "fields": {
+                "_projectileKey": "projectile_chr_glady_s3_2",
+                "_waitForProjectileInvalid": 1,
+                "_notClearProjectileWhenCastEnd": 0,
+                "_fireAttackFinishWhenProjectileInvalid": 0
+              }
+            },
+            "projectileKey": "projectile_chr_glady_s3_2",
+            "projectileComponents": [
+              {
+                "bundle": "battle/prefabs/[uc]projectiles.ab",
+                "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+                "pathId": "-4916759588908343044",
+                "hierarchy": [
+                  "projectile_chr_glady_s3_2"
+                ],
+                "type": "Torappu.Battle.LaserProjectile",
+                "objectSha256": "dbac6d8ec2fe029c8fa83065be9aab00a9e0e1920197155dd67833c7bd76d951",
+                "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+                "scriptPPtr": {
+                  "m_FileID": 1,
+                  "m_PathID": "-6387705589145155397"
+                },
+                "fields": {
+                  "_managedBySource": 0,
+                  "_linkDuration": 10.0,
+                  "_getLifeTimeFromBB": 0
+                }
+              },
+              {
+                "bundle": "battle/prefabs/[uc]projectiles.ab",
+                "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+                "pathId": "3384370484435050748",
+                "hierarchy": [
+                  "projectile_chr_glady_s3_2"
+                ],
+                "type": "Torappu.Battle.Projectiles.VortexMultiHitBehaviour",
+                "objectSha256": "30de80129f2d3b17db3ddde13c5073e2a91b2eedbc9cfa30f3422621b0d8b6e2",
+                "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+                "scriptPPtr": {
+                  "m_FileID": 1,
+                  "m_PathID": "-2025156788615700222"
+                },
+                "fields": {
+                  "_pullDuration": 0.5
+                }
+              }
+            ]
+          },
+          {
+            "attack": {
+              "bundle": "battle/prefabs/[uc]skills.ab",
+              "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+              "pathId": "-5091373855863291267",
+              "hierarchy": [
+                "skchr_glady_3",
+                "FinalAttack"
+              ],
+              "type": "Torappu.Battle.Abilities.RangedAttackWithDoubleConfirm",
+              "objectSha256": "598e7567559d6d4534ad4d935f8a6a44eb13b75317af119159c761f32d66ab80",
+              "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+              "scriptPPtr": {
+                "m_FileID": 1,
+                "m_PathID": "-550487323491409174"
+              },
+              "fields": {
+                "_projectileKey": "projectile_chr_glady_s3_3",
+                "_waitForProjectileInvalid": 1,
+                "_notClearProjectileWhenCastEnd": 0,
+                "_fireAttackFinishWhenProjectileInvalid": 1
+              }
+            },
+            "projectileKey": "projectile_chr_glady_s3_3",
+            "projectileComponents": [
+              {
+                "bundle": "battle/prefabs/[uc]projectiles.ab",
+                "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+                "pathId": "-4964235436794669870",
+                "hierarchy": [
+                  "projectile_chr_glady_s3_3_logic"
+                ],
+                "type": "Torappu.Battle.NetCatcherProjectile",
+                "objectSha256": "549bd83a1b72ff3823d3315a02e3304b33828c3902e29ede6803f5408ed33901",
+                "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+                "scriptPPtr": {
+                  "m_FileID": 1,
+                  "m_PathID": "-8289086878072459360"
+                },
+                "fields": {
+                  "_managedBySource": 0,
+                  "_linkDuration": 1.0,
+                  "_getLifeTimeFromBB": 0,
+                  "_pullForceLevel": 0,
+                  "_firstPartTime": 0.30000001192092896,
+                  "_stopAfterFirstPulledBack": 0,
+                  "_allowInputTargetDead": 1,
+                  "_secondPullSourceOffset": 0.5,
+                  "_secondPartTime": 1.0,
+                  "_stopAfterSecondPulledBack": 1,
+                  "_maxRandomOffset": 0.30000001192092896
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "buffTemplates": {
+      "streamingAssets": {
+        "bundle": "config/buff_template_holder.ab",
+        "file": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+        "pathId": "6070581171229484677",
+        "objectSha256": "c03149251d47fa31e6f6cb5b696f9e93925f51a97bf9ee335593c888bdcb6fec",
+        "templateKey": "switch_mode_restart_fsm",
+        "templateIndex": 335,
+        "events": [
+          {
+            "event": 0,
+            "actions": [
+              {
+                "_modeIndex": 1,
+                "_loadModeFromBlackboard": true,
+                "_restoreDefault": false,
+                "_restartFSM": true,
+                "_targetType": "TARGET",
+                "$type": "Torappu.Battle.Action.Nodes+SwitchMode"
+              }
+            ]
+          },
+          {
+            "event": 1,
+            "actions": [
+              {
+                "_modeIndex": 0,
+                "_loadModeFromBlackboard": false,
+                "_restoreDefault": true,
+                "_restartFSM": true,
+                "_targetType": "TARGET",
+                "$type": "Torappu.Battle.Action.Nodes+SwitchMode"
+              }
+            ]
+          }
+        ]
+      },
+      "persistentData": {
+        "holder": "buff_template_holder",
+        "file": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+        "pathId": "6070581171229484677",
+        "offset": 344096,
+        "size": 392,
+        "recordSha256": "4f327c8e90eb5e521c1edd6bcf25a517648af318784db0f4f691e29f5e4d3cb6",
+        "key": "switch_mode_restart_fsm",
+        "events": [
+          {
+            "event": 0,
+            "actions": [
+              {
+                "_modeIndex": 1,
+                "_loadModeFromBlackboard": true,
+                "_restoreDefault": false,
+                "_restartFSM": true,
+                "_targetType": "TARGET",
+                "$type": "Torappu.Battle.Action.Nodes+SwitchMode"
+              }
+            ],
+            "referenceCount": 0
+          },
+          {
+            "event": 1,
+            "actions": [
+              {
+                "_modeIndex": 0,
+                "_loadModeFromBlackboard": false,
+                "_restoreDefault": true,
+                "_restartFSM": true,
+                "_targetType": "TARGET",
+                "$type": "Torappu.Battle.Action.Nodes+SwitchMode"
+              }
+            ],
+            "referenceCount": 0
+          }
+        ]
+      }
+    }
+  }
+}
