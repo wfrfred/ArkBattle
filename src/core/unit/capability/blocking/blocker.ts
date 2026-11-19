@@ -2,6 +2,7 @@ import type { State as BattleState, Result } from "../../../battle/state.js";
 import { assertNonnegativeNumber, assertNonnegativeSafeInteger } from "../../../common/assert.js";
 import { roundToEven } from "../../../common/math.js";
 import * as contribution from "../../../common/contribution.js";
+import { validateRestrictions } from "../../../restriction.js";
 import type { Unit } from "../../unit.js";
 import type { Relation, Hook } from "./contract.js";
 import type { Restriction } from "./restriction.js";
@@ -62,6 +63,7 @@ export function initialize<U extends Unit & Pick<Blocker, "definition">>(
     const radius = definition.radius ?? DEFAULT_RADIUS[definition.layer];
     assertNonnegativeSafeInteger(definition.capacity, "blocking capacity");
     assertNonnegativeNumber(radius, "block radius");
+    validateRestrictions(definition.restrictions);
 
     return {
         state: battle,

@@ -3,7 +3,7 @@ import { assertNonnegativeNumber, assertPositiveNumber } from "../../../common/a
 import type * as contribution from "../../../common/contribution.js";
 import { roundToEven } from "../../../common/math.js";
 import { validateShape, type Shape } from "../../../geometry/shape.js";
-import type { Restriction as BaseRestriction } from "../../../restriction.js";
+import { validateRestrictions, type Restriction as BaseRestriction } from "../../../restriction.js";
 import * as attribute from "../../attribute.js";
 import { createChange, type Change } from "../../change.js";
 import { createRegistrationOperations } from "../../registration.js";
@@ -63,6 +63,7 @@ export function initialize<
     validateShape(body.shape);
     assertPositiveNumber(body.mass, "shiftable body mass");
     assertNonnegativeNumber(body.frictionFactor, "shiftable body friction factor");
+    validateRestrictions(definition.restrictions);
 
     return {
         state: battle,

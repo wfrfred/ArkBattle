@@ -5,6 +5,18 @@ export interface Restriction<C> {
     readonly allows: (battle: BattleState, context: C) => boolean;
 }
 
+export function validateRestrictions<C>(entries: readonly Contribution<Restriction<C>>[]): void {
+    const ids = new Set<string>();
+
+    for (const { id } of entries) {
+        if (ids.has(id)) {
+            throw new TypeError(`duplicate restriction identity: ${id}`);
+        }
+
+        ids.add(id);
+    }
+}
+
 export function allows<C>(
     battle: BattleState,
     context: C,

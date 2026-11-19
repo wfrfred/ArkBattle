@@ -1,7 +1,7 @@
 import type * as contribution from "../../../common/contribution.js";
 import type { State as BattleState, Result } from "../../../battle/state.js";
 import type { WorldPosition } from "../../../geometry/coordinate.js";
-import type { Restriction as BaseRestriction } from "../../../restriction.js";
+import { validateRestrictions, type Restriction as BaseRestriction } from "../../../restriction.js";
 import type { Unit } from "../../unit.js";
 import { createRegistrationOperations } from "../../registration.js";
 
@@ -42,13 +42,16 @@ export function initialize<U extends Unit & Pick<Facing, "definition">>(
     unit: U,
     initial: Initial,
 ): Result<U & Facing> {
+    const { restrictions } = unit.definition.facing;
+    validateRestrictions(restrictions);
+
     return {
         state: battle,
         value: {
             ...unit,
             facing: {
                 direction: initial.direction,
-                restrictions: unit.definition.facing.restrictions,
+                restrictions,
             },
         },
     };

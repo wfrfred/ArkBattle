@@ -62,6 +62,8 @@ MaxHP、Action 时序与 Blocking 等具有各自的变化后继，见对应领�
 
 Restriction 是精确领域 Context 上的纯允许判断，登记为 Contribution<Restriction>。登记 ID 管理来源，定义对象可标识机制；共享定义的多来源独立撤销，参数不同不自动共享身份。
 
+Unit Capability 装配时要求每份初始 Restriction 列表的登记 ID 唯一，重复 ID 会拒绝构造。不同列表各自管理 ID。运行时 `setRestriction` 按 ID 替换所在列表中的已有登记。
+
 有效贡献先竞争，再按 AND 判断未豁免的限制，空集合允许；豁免不恢复被压制项，也不修改登记。基础身份、生命周期、资源与结构前提不属于可豁免限制。业务检查点及必要后继由各领域决定，Hook 的响应与重入不是限制求值。单次资源豁免见 [Resource](resource.md)。
 
 ### Offense

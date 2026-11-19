@@ -3,7 +3,7 @@ import type { State as BattleState, Result } from "../../../battle/state.js";
 import type { Unit } from "../../unit.js";
 import type { Ref } from "../../../common/ref.js";
 import type { Card } from "../../../battle/deployment/card/card.js";
-import type { Restriction as BaseRestriction } from "../../../restriction.js";
+import { validateRestrictions, type Restriction as BaseRestriction } from "../../../restriction.js";
 import { hasOccupancy, type Occupancy } from "../occupancy/capability.js";
 import { Hooks } from "../../../hook.js";
 import { leave } from "../../hook.js";
@@ -46,6 +46,9 @@ export function initialize<
         throw new TypeError("deployable requires occupancy");
     }
 
+    const { retreatRestrictions } = unit.definition.deployable;
+    validateRestrictions(retreatRestrictions);
+
     return {
         state: battle,
         value: {
@@ -65,7 +68,7 @@ export function initialize<
                 cost: 0,
                 slots: 0,
                 refund: null,
-                retreatRestrictions: unit.definition.deployable.retreatRestrictions,
+                retreatRestrictions,
             },
         },
     };

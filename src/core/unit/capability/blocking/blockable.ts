@@ -1,6 +1,7 @@
 import type { State as BattleState, Result } from "../../../battle/state.js";
 import { assertPositiveSafeInteger } from "../../../common/assert.js";
 import * as contribution from "../../../common/contribution.js";
+import { validateRestrictions } from "../../../restriction.js";
 import type { Unit } from "../../unit.js";
 import type { Relation, Hook } from "./contract.js";
 import type { Restriction } from "./restriction.js";
@@ -48,7 +49,9 @@ export function initialize<U extends Unit & Pick<Blockable, "definition">>(
     battle: BattleState,
     unit: U,
 ): Result<U & Blockable> {
-    assertPositiveSafeInteger(unit.definition.blockable.volume, "blocking volume");
+    const { volume, restrictions } = unit.definition.blockable;
+    assertPositiveSafeInteger(volume, "blocking volume");
+    validateRestrictions(restrictions);
 
     return {
         state: battle,
@@ -59,7 +62,7 @@ export function initialize<U extends Unit & Pick<Blockable, "definition">>(
                 relation: null,
                 adjustment: null,
                 volume: [],
-                restrictions: unit.definition.blockable.restrictions,
+                restrictions,
             },
         },
     };

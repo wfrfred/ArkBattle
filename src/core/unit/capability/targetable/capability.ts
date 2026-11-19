@@ -5,7 +5,11 @@ import { roundToEven } from "../../../common/math.js";
 import type { State as BattleState, Result } from "../../../battle/state.js";
 import { createRegistrationOperations } from "../../registration.js";
 import { createChange, type Change } from "../../change.js";
-import { allows, type Restriction as BaseRestriction } from "../../../restriction.js";
+import {
+    allows,
+    validateRestrictions,
+    type Restriction as BaseRestriction,
+} from "../../../restriction.js";
 
 export type Category = "DEFAULT" | "DEVICE" | "OBSTACLE";
 
@@ -46,15 +50,7 @@ export function initialize<U extends Unit & Pick<Targetable, "definition">>(
     unit: U,
 ): Result<U & Targetable> {
     const definition = unit.definition.targetable;
-    const ids = new Set<string>();
-
-    for (const entry of definition.restrictions) {
-        if (ids.has(entry.id)) {
-            throw new TypeError(`duplicate targetable restriction identity: ${entry.id}`);
-        }
-
-        ids.add(entry.id);
-    }
+    validateRestrictions(definition.restrictions);
 
     return {
         state: battle,

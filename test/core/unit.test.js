@@ -8,6 +8,8 @@ import { appear } from "../../dist/core/battle/predefined.js";
 import * as units from "../../dist/core/unit/index.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import * as skills from "../../dist/core/unit/capability/skill/index.js";
+import * as facing from "../../dist/core/unit/capability/facing/index.js";
+import * as targetable from "../../dist/core/unit/capability/targetable/capability.js";
 import * as hpDamage from "../../dist/core/battle/resource/hp/damage/index.js";
 import { add, update, remove } from "../../dist/core/unit/operations.js";
 import { output as damageOutput } from "../../dist/core/battle/resource/hp/damage/index.js";
@@ -41,6 +43,34 @@ test("Unit construction rejects conflicting roles and installs entry effects on 
     assert.equal(current.definition.classification.side, "ALLY");
     assert.equal(hasOccupancy(current), false);
     assert.equal(current.effects.values().find((effect) => effect.definition === entryEffect).state.charges, 2);
+});
+
+test("Unit construction requires unique restriction IDs within each capability list", () => {
+    const blocked = { id: "locked", value: { allows: () => false } };
+    const allowed = { id: "locked", value: { allows: () => true } };
+    const definition = {
+        id: "restricted", hooks: Hooks.empty(),
+        facing: { restrictions: [blocked] },
+        targetable: { category: "DEFAULT", taunt: defineAttribute(0, -2, 2), restrictions: [blocked] },
+    };
+    const input = { definition, position: [0, 0], initial: { facing: { direction: "RIGHT" } } };
+    const initial = battle();
+    for (const key of ["facing", "targetable"]) {
+        const duplicate = {
+            ...definition, [key]: { ...definition[key], restrictions: [blocked, allowed] },
+        };
+        assert.throws(() => units.initialize(initial, { ...input, definition: duplicate }), TypeError);
+    }
+
+    const created = units.initialize(initial, input);
+    const host = units.ref(created.value);
+    const registered = add(created.state, created.value);
+    assert.equal(facing.turn(registered, host, "LEFT"), registered);
+    const updated = update(registered, host, facing.setRestriction(allowed));
+    const turned = facing.turn(updated, host, "LEFT");
+    const current = units.get(turned, host);
+    assert.equal(current.facing.direction, "LEFT");
+    assert.equal(targetable.allowsRestrictions(turned, current)(current), false);
 });
 
 test("direct Unit initialization shares instance identity allocation with predefines", () => {
