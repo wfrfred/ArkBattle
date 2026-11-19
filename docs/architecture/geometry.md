@@ -16,16 +16,16 @@ Tile.center 将 `[row, col]` 转为 `[col, row]`；World.toTile 使用 ties-to-e
 
 ## Shape 与 Range
 
-Shape 为圆或轴对齐矩形，offset 相对调用方传入的世界原点。圆半径、矩形半宽高非负且有限，不支持旋转或递归 Union。
+Shape 支持圆、轴对齐矩形和轴对齐胶囊，offset 相对调用方传入的世界原点。半径、矩形半宽高和胶囊半长均为有限非负数。胶囊的 axis 选择 X 或 Y，halfLength 是中间直线段的半长，轴向总半长为 halfLength 加半径。halfLength 为零时等同圆，半径为零时保留直线段，两者都为零时等同点。形状保持轴对齐。
 
 Range 是 Shape 并集，空列表为空范围。fromTiles 先按指定朝向旋转相对格子，再将其转换为半宽高 0.5 的矩形；查询时另传实际世界原点。单个 Hitbox 保存一个 Shape，身体所属格查询不替代连续几何判定。
 
 ## 几何计算
 
-contains 检查点，overlaps 检查形状；任意成员命中即满足 Range，相切视为相交。
+contains 检查点，overlaps 检查形状。任意成员命中即满足 Range，边界上的点和形状间相切均成立。三种 Shape 可以任意组合进行相交和扫掠计算。
 
 sweep 返回形状沿直线平移的首次接触比例，范围为 0–1；初始重叠或相切为 0，无接触为 null。起终点相同退化为静态相交。计算期间双方尺寸、偏移和目标位置不变，不计算旋转或目标轨迹。
 
-强制移动的 BodyShape 支持圆与轴对齐胶囊。胶囊的 halfLength 是直线段半长，轴向总半长还需加上半径。扫掠胶囊与矩形时，先按胶囊直线段扩张矩形，再扫掠圆。接触结果包含首次接触比例和向外法线，供运动裁剪法向速度。战场使用地块显式配置的碰撞盒，贴着碰撞盒平行移动时保持切向。
+强制移动复用 Shape，使用 `sweepAgainstBox` 查询与地块碰撞盒的首次接触比例和向外法线。运动据此裁剪法向速度，贴着碰撞盒平行移动时保持切向。
 
 几何公式及边界由[几何与空间验收](verification.md)集中保障；战场筛选与命中业务另见[Spatial](spatial.md)和[Projectile](projectile.md)。

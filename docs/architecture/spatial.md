@@ -4,16 +4,15 @@ Spatial 提供 Unit 位置与 Hitbox 的空间查询。查询来源是坐标和�
 
 ## 数据归属与查询入口
 
-Unit.position 保存实际世界位置，Hitbox Definition 的 shape 保存单个静态 Shape。[Presence](presence.md) 表达身体是否参与普通空间交互，没有该 Capability 的 Unit 默认具有空间存在性。暂时消失保留真实坐标和身份，不等于移除位置字段；Layer 的空地身份独立于这些几何事实。
+Unit.position 保存实际世界位置，Hitbox Definition 的 shape 保存单个静态 [Shape](geometry.md#shape-与-range)，可以是圆、轴对齐矩形或轴对齐胶囊。[Presence](presence.md) 表达身体是否参与普通空间交互，没有该 Capability 的 Unit 默认具有空间存在性。暂时消失保留真实坐标和身份，不等于移除位置字段；Layer 的空地身份独立于这些几何事实。
 
 Spatial 在传入的 BattlefieldState 上枚举 Unit，用类型守卫保留 Capability 信息，在公开结果边界形成 Ref 和数组。它不要求完整 BattleState，不维护另一份空间索引；结果始终属于本次查询的输入版本。
 
 单位身体所属格通过 World.toTile 的 ties-to-even 规则计算；它与连续 Shape 的包含判定有不同的边界语义。Spatial 提供位置包含、Hitbox 相交和扫掠接触三种查询，具体签名见[公共入口](../../src/core/battlefield/spatial/query.ts)。
 
-
 within 检查 Unit.position 是否在 Range 内，不要求 Hitbox，也不使用 Hitbox 的 offset 替代单位位置。overlap 检查 Range 与目标 Hitbox 的相交，使用 Unit.position 作为目标 Shape 的原点。Range 是 Shape 数组表示的并集；空 Range 不匹配任何对象。
 
-sweep 检查单个 Shape 沿 from 到 to 线性平移时，与各目标静态 Hitbox 的首次接触。fraction 在 [0, 1] 内，初始重叠或相切为 0；坐标分量相等时退化为静态相交。结果按 fraction 稳定升序排列，相等时保留 Unit 登记顺序。它不计算目标在 Tick 内的运动轨迹。
+sweep 检查单个 Shape 沿 from 到 to 线性平移时，与各目标静态 Hitbox 的首次接触。双方各自使用 Shape 的 offset。fraction 在 [0, 1] 内，初始重叠或相切为 0，起点与终点相同时退化为静态相交。结果按 fraction 稳定升序排列，相等时保留 Unit 登记顺序。它不计算目标在 Tick 内的运动轨迹。
 
 三种查询只纳入 `unit.lifecycle === "PRESENT" && presence.isPresent(unit)` 的 Unit，不检查 HP、阵营、Targetable 或 Effect 免疫。overlap 和 sweep 要求 Hitbox，within 不要求。LEAVING 宿主在清理回调期间仍能通过 units.get 读取，但不再参与新的空间集合查询。
 
@@ -21,7 +20,7 @@ sweep 检查单个 Shape 沿 from 到 to 线性平移时，与各目标静态 Hi
 
 ## 几何与业务执行边界
 
-geometry/intersection.ts 只提供 contains、overlaps、sweep 的几何计算，不认识 Unit 或生命周期。已持有 Unit 的调用方直接调用它，由自身业务契约决定资格。
+`geometry/intersection.ts` 提供 contains、overlaps、sweep 的纯几何计算。已持有 Unit 的调用方可直接传入形状与坐标，由自身业务契约决定资格。
 
 空间查询仅接收 BattlefieldState，直接通过通用 Query 遍历该版本的 field.units。查询不修改状态、不执行 Hook、不消费 RNG。结果是传入状态版本上的已完成查询；Ref 只保留身份，Contact.fraction 是当时的几何事实。后续同步业务改变状态后，需要当前资格或几何时，从最新 BattleState 重新读取和判定。消费方从接触顺序中选择符合业务资格的对象，不能把第一个几何接触默认当成实际命中。
 

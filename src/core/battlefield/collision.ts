@@ -1,7 +1,7 @@
 import { Vec2 } from "../common/vector.js";
 import { Tile, type TilePosition, type WorldPosition } from "../geometry/coordinate.js";
-import { sweepBodyAgainstBox } from "../geometry/intersection.js";
-import type { BodyShape } from "../geometry/shape.js";
+import { sweepAgainstBox } from "../geometry/intersection.js";
+import type { Shape } from "../geometry/shape.js";
 import type { Map } from "./map/map.js";
 import type { Collision } from "./map/tile.js";
 
@@ -75,7 +75,7 @@ export function advanceForcedMotion(
     map: Map,
     position: WorldPosition,
     velocity: Vec2,
-    shape: BodyShape,
+    shape: Shape,
 ): ForcedMotion {
     const contacts: Contact[] = [];
     if (Vec2.length(velocity) === 0) {
@@ -97,7 +97,7 @@ export function advanceForcedMotion(
                 continue;
             }
 
-            const hit = sweepBodyAgainstBox(shape, position, destination, box, origin);
+            const hit = sweepAgainstBox(shape, position, destination, box, origin);
             if (hit === null || dot(velocity, hit.normal) >= -tolerance) {
                 continue;
             }

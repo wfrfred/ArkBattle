@@ -2,7 +2,7 @@ import type { State as BattleState, Result } from "../../../battle/state.js";
 import { assertNonnegativeNumber, assertPositiveNumber } from "../../../common/assert.js";
 import type * as contribution from "../../../common/contribution.js";
 import { roundToEven } from "../../../common/math.js";
-import { validateBodyShape, type BodyShape } from "../../../geometry/shape.js";
+import { validateShape, type Shape } from "../../../geometry/shape.js";
 import type { Restriction as BaseRestriction } from "../../../restriction.js";
 import * as attribute from "../../attribute.js";
 import { createChange, type Change } from "../../change.js";
@@ -14,7 +14,7 @@ import type { Unbalance } from "./unbalance.js";
 const defaultMassLevel: attribute.Definition = { default: 0, min: 0, max: null };
 
 export interface BodyDefinition {
-    readonly shape: BodyShape;
+    readonly shape: Shape;
     readonly mass: number;
     readonly frictionFactor: number;
 }
@@ -61,7 +61,7 @@ export function initialize<
 
     const definition = unit.definition.shiftable;
     if (definition.body !== undefined) {
-        validateBodyShape(definition.body.shape);
+        validateShape(definition.body.shape);
         assertPositiveNumber(definition.body.mass, "shiftable body mass");
         assertNonnegativeNumber(definition.body.frictionFactor, "shiftable body friction factor");
     }

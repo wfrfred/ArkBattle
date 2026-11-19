@@ -11,10 +11,7 @@ export type Shape =
           readonly type: "BOX";
           readonly offset: WorldPosition;
           readonly halfExtents: WorldPosition;
-      };
-
-export type BodyShape =
-    | Extract<Shape, { readonly type: "CIRCLE" }>
+      }
     | {
           readonly type: "CAPSULE";
           readonly offset: WorldPosition;
@@ -36,25 +33,14 @@ export function validateShape(shape: Shape): void {
             assertNonnegativeNumber(shape.halfExtents[0], "box half width");
             assertNonnegativeNumber(shape.halfExtents[1], "box half height");
             break;
-    }
-}
-
-export function validateBodyShape(shape: BodyShape): void {
-    switch (shape.type) {
-        case "CIRCLE":
-            validateShape(shape);
-
-            return;
 
         case "CAPSULE":
             assert(["X", "Y"].includes(shape.axis), "invalid capsule axis", TypeError);
-            assertFiniteNumber(shape.offset[0], "capsule offset x");
-            assertFiniteNumber(shape.offset[1], "capsule offset y");
             assertNonnegativeNumber(shape.radius, "capsule radius");
             assertNonnegativeNumber(shape.halfLength, "capsule half segment length");
+            break;
 
-            return;
+        default:
+            throw new TypeError("invalid shape");
     }
-
-    throw new TypeError("invalid body shape");
 }

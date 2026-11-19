@@ -1,65 +1,44 @@
 import { Vec2 } from "../common/vector.js";
 import type { WorldPosition } from "./coordinate.js";
 import type { Range } from "./range.js";
-import type { BodyShape, Shape } from "./shape.js";
+import type { Shape } from "./shape.js";
 
-function containsShape(shape: Shape, origin: WorldPosition, position: WorldPosition): boolean {
-    const dx = Math.abs(position[0] - origin[0] - shape.offset[0]);
-    const dy = Math.abs(position[1] - origin[1] - shape.offset[1]);
+interface RoundedBox {
+    readonly halfExtents: Vec2;
+    readonly radius: number;
+}
 
+function roundedBox(shape: Shape): RoundedBox {
     switch (shape.type) {
         case "CIRCLE":
-            return dx * dx + dy * dy <= shape.radius * shape.radius;
+            return { halfExtents: [0, 0], radius: shape.radius };
 
         case "BOX":
-            return dx <= shape.halfExtents[0] && dy <= shape.halfExtents[1];
+            return { halfExtents: shape.halfExtents, radius: 0 };
+
+        case "CAPSULE":
+            return {
+                halfExtents: shape.axis === "X" ? [shape.halfLength, 0] : [0, shape.halfLength],
+                radius: shape.radius,
+            };
     }
 }
 
-function circleOverlapsShape(
-    circle: Extract<Shape, { readonly type: "CIRCLE" }>,
-    circleOrigin: WorldPosition,
-    shape: Shape,
-    shapeOrigin: WorldPosition,
-): boolean {
-    let dx = Math.abs(circleOrigin[0] + circle.offset[0] - shapeOrigin[0] - shape.offset[0]);
-    let dy = Math.abs(circleOrigin[1] + circle.offset[1] - shapeOrigin[1] - shape.offset[1]);
-    let radius = circle.radius;
-
-    switch (shape.type) {
-        case "CIRCLE":
-            radius += shape.radius;
-            break;
-
-        case "BOX":
-            dx = Math.max(0, dx - shape.halfExtents[0]);
-            dy = Math.max(0, dy - shape.halfExtents[1]);
-            break;
-    }
-
-    return dx * dx + dy * dy <= radius * radius;
+function minkowskiSum(left: RoundedBox, right: RoundedBox): RoundedBox {
+    return {
+        halfExtents: Vec2.add(left.halfExtents, right.halfExtents),
+        radius: left.radius + right.radius,
+    };
 }
 
-function overlapsShapes(
-    left: Shape,
-    leftOrigin: WorldPosition,
-    right: Shape,
-    rightOrigin: WorldPosition,
-): boolean {
-    if (left.type === "CIRCLE") {
-        return circleOverlapsShape(left, leftOrigin, right, rightOrigin);
-    }
-    if (right.type === "CIRCLE") {
-        return circleOverlapsShape(right, rightOrigin, left, leftOrigin);
+function containsRoundedBox(box: RoundedBox, point: Vec2): boolean {
+    const dx = Math.abs(point[0]) - box.halfExtents[0];
+    const dy = Math.abs(point[1]) - box.halfExtents[1];
+    if (box.radius === 0) {
+        return dx <= 0 && dy <= 0;
     }
 
-    const dx = Math.abs(leftOrigin[0] + left.offset[0] - rightOrigin[0] - right.offset[0]);
-    const dy = Math.abs(leftOrigin[1] + left.offset[1] - rightOrigin[1] - right.offset[1]);
-
-    return (
-        dx <= left.halfExtents[0] + right.halfExtents[0] &&
-        dy <= left.halfExtents[1] + right.halfExtents[1]
-    );
+    return Math.max(0, dx) ** 2 + Math.max(0, dy) ** 2 <= box.radius * box.radius;
 }
 
 function sweepBox(
@@ -121,49 +100,19 @@ function sweepCircle(
     return first >= 0 && first <= 1 ? first : null;
 }
 
-export function contains(range: Range, origin: WorldPosition, point: WorldPosition): boolean {
-    return range.some((shape) => containsShape(shape, origin, point));
-}
-
-export function overlaps(
-    range: Range,
-    origin: WorldPosition,
-    shape: Shape,
-    shapeOrigin: WorldPosition,
-): boolean {
-    return range.some((entry) => overlapsShapes(entry, origin, shape, shapeOrigin));
-}
-
-export function sweep(
-    moving: Shape,
-    from: WorldPosition,
-    to: WorldPosition,
-    target: Shape,
-    targetOrigin: WorldPosition,
-): number | null {
-    if (overlapsShapes(moving, from, target, targetOrigin)) {
+function sweepRoundedBox(start: Vec2, end: Vec2, box: RoundedBox): number | null {
+    if (containsRoundedBox(box, start)) {
         return 0;
     }
 
-    if (Vec2.equal(from, to)) {
+    if (Vec2.equal(start, end)) {
         return null;
     }
 
-    const x = targetOrigin[0] + target.offset[0];
-    const y = targetOrigin[1] + target.offset[1];
-    const start: WorldPosition = [from[0] + moving.offset[0] - x, from[1] + moving.offset[1] - y];
-    const end: WorldPosition = [to[0] + moving.offset[0] - x, to[1] + moving.offset[1] - y];
-    const width =
-        (moving.type === "BOX" ? moving.halfExtents[0] : 0) +
-        (target.type === "BOX" ? target.halfExtents[0] : 0);
-    const height =
-        (moving.type === "BOX" ? moving.halfExtents[1] : 0) +
-        (target.type === "BOX" ? target.halfExtents[1] : 0);
-    const radius =
-        (moving.type === "CIRCLE" ? moving.radius : 0) +
-        (target.type === "CIRCLE" ? target.radius : 0);
+    const { halfExtents, radius } = box;
+    const [width, height] = halfExtents;
     if (radius === 0) {
-        return sweepBox(start, end, [width, height]);
+        return sweepBox(start, end, halfExtents);
     }
 
     if (width === 0 && height === 0) {
@@ -189,32 +138,64 @@ export function sweep(
     return first;
 }
 
+export function contains(range: Range, origin: WorldPosition, point: WorldPosition): boolean {
+    return range.some((shape) =>
+        containsRoundedBox(roundedBox(shape), Vec2.sub(point, Vec2.add(origin, shape.offset))),
+    );
+}
+
+export function overlaps(
+    range: Range,
+    origin: WorldPosition,
+    shape: Shape,
+    shapeOrigin: WorldPosition,
+): boolean {
+    const target = roundedBox(shape);
+    const center = Vec2.add(shapeOrigin, shape.offset);
+
+    return range.some((entry) =>
+        containsRoundedBox(
+            minkowskiSum(roundedBox(entry), target),
+            Vec2.sub(Vec2.add(origin, entry.offset), center),
+        ),
+    );
+}
+
+export function sweep(
+    moving: Shape,
+    from: WorldPosition,
+    to: WorldPosition,
+    target: Shape,
+    targetOrigin: WorldPosition,
+): number | null {
+    const center = Vec2.add(targetOrigin, target.offset);
+    const start = Vec2.sub(Vec2.add(from, moving.offset), center);
+    const end = Vec2.sub(Vec2.add(to, moving.offset), center);
+
+    return sweepRoundedBox(start, end, minkowskiSum(roundedBox(moving), roundedBox(target)));
+}
+
 interface SweepContact {
     readonly time: number;
     readonly normal: Vec2;
 }
 
-export function sweepBodyAgainstBox(
-    body: BodyShape,
+export function sweepAgainstBox(
+    moving: Shape,
     from: WorldPosition,
     to: WorldPosition,
     target: Extract<Shape, { readonly type: "BOX" }>,
     targetOrigin: WorldPosition,
 ): SweepContact | null {
-    // Expanding the box by the capsule's straight segment leaves a circle sweep.
-    const halfExtents: Vec2 = [
-        target.halfExtents[0] +
-            (body.type === "CAPSULE" && body.axis === "X" ? body.halfLength : 0),
-        target.halfExtents[1] +
-            (body.type === "CAPSULE" && body.axis === "Y" ? body.halfLength : 0),
-    ];
+    const box = minkowskiSum(roundedBox(moving), roundedBox(target));
+    const { halfExtents, radius } = box;
     const origin = Vec2.add(targetOrigin, target.offset);
-    const center = Vec2.add(from, body.offset);
+    const center = Vec2.add(from, moving.offset);
     const start = Vec2.sub(center, origin);
     const motion = Vec2.sub(to, from);
     if (motion[0] === 0 || motion[1] === 0) {
         const axis = motion[0] === 0 ? 0 : 1;
-        const side = halfExtents[axis] + body.radius;
+        const side = halfExtents[axis] + radius;
         const tolerance =
             8 * Number.EPSILON * Math.max(1, Math.abs(center[axis]), Math.abs(origin[axis]), side);
         if (Math.abs(Math.abs(start[axis]) - side) <= tolerance) {
@@ -228,13 +209,17 @@ export function sweepBodyAgainstBox(
         }
     }
 
-    const circle = { type: "CIRCLE", offset: body.offset, radius: body.radius } as const;
-    const time = sweep(circle, from, to, { ...target, halfExtents }, targetOrigin);
+    const end = Vec2.sub(Vec2.add(to, moving.offset), origin);
+    const time = sweepRoundedBox(start, end, box);
     if (time === null) {
         return null;
     }
 
     const relative = Vec2.add(start, Vec2.scale(motion, time));
+    if (radius === 0) {
+        return { time, normal: faceNormal(relative, halfExtents, motion) };
+    }
+
     const nearest: Vec2 = [
         Math.max(-halfExtents[0], Math.min(halfExtents[0], relative[0])),
         Math.max(-halfExtents[1], Math.min(halfExtents[1], relative[1])),
@@ -245,10 +230,25 @@ export function sweepBodyAgainstBox(
         return { time, normal: Vec2.scale(outward, 1 / length) };
     }
 
-    // For an embedded start, the nearest face supplies the escape direction.
-    const face =
-        halfExtents[0] - Math.abs(relative[0]) <= halfExtents[1] - Math.abs(relative[1]) ? 0 : 1;
-    const sign = relative[face] < 0 ? -1 : 1;
+    return { time, normal: faceNormal(relative, halfExtents) };
+}
 
-    return { time, normal: face === 0 ? [sign, 0] : [0, sign] };
+function faceNormal(position: Vec2, halfExtents: Vec2, motion?: Vec2): Vec2 {
+    const dx = halfExtents[0] - Math.abs(position[0]);
+    const dy = halfExtents[1] - Math.abs(position[1]);
+    const sx = position[0] < 0 || (halfExtents[0] === 0 && (motion?.[0] ?? 0) > 0) ? -1 : 1;
+    const sy = position[1] < 0 || (halfExtents[1] === 0 && (motion?.[1] ?? 0) > 0) ? -1 : 1;
+
+    // At a sharp corner a path that separates from either face stays outside.
+    if (motion !== undefined && dx === 0 && dy === 0) {
+        if (motion[0] * sx >= 0) {
+            return [sx, 0];
+        }
+        if (motion[1] * sy >= 0) {
+            return [0, sy];
+        }
+    }
+
+    // For an embedded start, the nearest face supplies the escape direction.
+    return dx <= dy ? [sx, 0] : [0, sy];
 }
