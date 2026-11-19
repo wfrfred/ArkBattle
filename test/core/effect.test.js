@@ -270,6 +270,15 @@ test("EXTEND and EXTEND_TIME renew the retained instance without creating incomi
     assert.equal(retained.source, source);
     assert.deepEqual(retained.expiration, { type: "DURATION", duration: 3, remaining: 7, rate: 1 });
     assert.equal(installations, 1);
+    assert.throws(
+        () => effects.install(state, owner, {
+            ...extend,
+            id: "incompatible-default",
+            group: { ...extend.group, type: "DEFAULT" },
+            initialize: () => assert.fail("incompatible group must be detected before installation"),
+        }),
+        { name: "TypeError", message: /renewal/ },
+    );
 
     const cumulative = {
         id: "cumulative",
@@ -348,14 +357,19 @@ test("STACK separates effective output, manual consumption, and natural decay wh
         expiration: { type: "DURATION", duration: 2, remaining: 2, rate: 1 },
     });
     state = effects.advance({ ...first.state, tick: 1 });
-    const second = effects.install(state, owner, stacked, {
+    const incoming = {
+        ...stacked,
+        id: "incoming-stack",
+        group: { ...stacked.group, priority: 10, maxCount: 1, maxEffectiveCount: 1, refreshAtMax: false },
+    };
+    const second = effects.install(state, owner, incoming, {
         expiration: { type: "DURATION", duration: 5, remaining: 5, rate: 1 },
     });
     const third = effects.install(second.state, owner, stacked, {
         expiration: { type: "DURATION", duration: 2, remaining: 2, rate: 1 },
     });
     state = effects.advance({ ...third.state, tick: 2 });
-    const full = effects.install(state, owner, stacked, {
+    const full = effects.install(state, owner, incoming, {
         expiration: { type: "DURATION", duration: 6, remaining: 6, rate: 1 },
     });
     state = full.state;
@@ -402,8 +416,16 @@ test("STACK separates effective output, manual consumption, and natural decay wh
         },
     };
     const endFirst = effects.install(state, owner, endTogether, {
-        expiration: { type: "DURATION", duration: 1, remaining: 1, rate: 1 },
+        expiration: { type: "DEADLINE", tick: 11 },
     });
+    assert.throws(
+        () => effects.install(endFirst.state, owner, {
+            ...endTogether,
+            id: "incompatible-decay",
+            group: { ...endTogether.group, expirationPolicy: "DECAY" },
+        }),
+        { name: "TypeError", message: /end-together/ },
+    );
     const endSecond = effects.install(endFirst.state, owner, endTogether, {
         expiration: { type: "DURATION", duration: 1, remaining: 1, rate: 1 },
     });

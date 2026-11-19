@@ -96,15 +96,27 @@ export function install<S extends object, H extends object>(
                           self.lifecycle !== "ENDING" && matchesGroup(self, group, groupSource),
                   );
 
-    if (retained !== undefined && group !== undefined && group.type !== "DEFAULT") {
+    if (retained !== undefined && group !== undefined) {
+        const existing = retained.definition.group!;
+        if (
+            existing.type !== group.type ||
+            (existing.type === "STACK" &&
+                group.type === "STACK" &&
+                existing.expirationPolicy !== group.expirationPolicy)
+        ) {
+            throw new TypeError(`incompatible policies for effect group ${group.id}`);
+        }
+
         if (group.type === "UNIQUE") {
             return { state: battle, value: null };
         }
 
-        return {
-            state: merge(battle, unit, retained, expiration),
-            value: effectRef(retained),
-        };
+        if (group.type !== "DEFAULT") {
+            return {
+                state: merge(battle, unit, retained, expiration),
+                value: effectRef(retained),
+            };
+        }
     }
 
     const instance = {
