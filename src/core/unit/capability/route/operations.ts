@@ -4,6 +4,7 @@ import { createRng } from "../../../common/rng.js";
 import { remove as removeUnit, replace as replaceUnit, update } from "../../operations.js";
 import type { Ref } from "../../../common/ref.js";
 import { appendEvents, type State as BattleState, type Result } from "../../../battle/state.js";
+import { effectiveMap } from "../../../battlefield/navigation/cache.js";
 import * as navigation from "../../../battlefield/navigation/state.js";
 import {
     Tile,
@@ -291,21 +292,18 @@ function interpret(battle: BattleState, reference: Ref<Context>, enterFirst = fa
             }
         } else if (current.type === "MOVE") {
             const goal = target(context)!;
-            const locator = Vec2.sub(self.position, context.offset);
-            const map = battle.battlefield.navigation.baseline[plan.motionMode];
-            const inside =
-                map.contains(World.toTile(self.position)) && map.contains(World.toTile(locator));
-            const skipped =
-                !context.alwaysCheckCurrentPoint &&
-                inside &&
-                navigation.nextPoint(
-                    battle.battlefield.navigation,
-                    plan.motionMode,
-                    locator,
-                    goal,
-                ) === null;
-            if (!atTarget(self, context, goal) && !skipped) {
-                return battle;
+            if (!atTarget(self, context, goal)) {
+                const locator = Vec2.sub(self.position, context.offset);
+                const state = battle.battlefield.navigation;
+                const map = effectiveMap(state, plan.motionMode);
+                if (
+                    context.alwaysCheckCurrentPoint ||
+                    map.get(World.toTile(self.position))?.passable !== true ||
+                    !map.contains(World.toTile(locator)) ||
+                    navigation.nextPoint(state, plan.motionMode, locator, goal) !== null
+                ) {
+                    return battle;
+                }
             }
         } else {
             return battle;

@@ -20,6 +20,31 @@ const NEIGHBORS: readonly TilePosition[] = [
     [1, -1],
 ];
 
+export function nearestPassableNeighbor(
+    map: Map,
+    tile: TilePosition,
+    position: WorldPosition,
+): WorldPosition | null {
+    let nearest: WorldPosition | null = null;
+    let nearestDistance = Number.POSITIVE_INFINITY;
+
+    for (const offset of NEIGHBORS) {
+        const neighbor = Vec2.add(tile, offset);
+        if (map.get(neighbor)?.passable !== true) {
+            continue;
+        }
+
+        const center = Tile.center(neighbor);
+        const distance = Vec2.distanceSquared(position, center);
+        if (distance < nearestDistance) {
+            nearest = center;
+            nearestDistance = distance;
+        }
+    }
+
+    return nearest;
+}
+
 function terrainForce(
     map: Map,
     mode: MotionMode,
@@ -32,23 +57,9 @@ function terrainForce(
         return [0, 0];
     }
     if (!current.passable) {
-        let nearest = Number.POSITIVE_INFINITY;
-        let force: WorldPosition = [0, 0];
+        const neighbor = nearestPassableNeighbor(map, tile, position);
 
-        for (const offset of NEIGHBORS) {
-            const neighbor = Vec2.add(tile, offset);
-            if (map.get(neighbor)?.passable !== true) {
-                continue;
-            }
-
-            const distance = Vec2.distanceSquared(position, Tile.center(neighbor));
-            if (distance < nearest) {
-                nearest = distance;
-                force = [offset[1], offset[0]];
-            }
-        }
-
-        return force;
+        return neighbor === null ? [0, 0] : Vec2.sub(neighbor, Tile.center(tile));
     }
 
     const center = Tile.center(tile);

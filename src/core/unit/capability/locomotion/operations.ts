@@ -4,13 +4,14 @@ import { assertNonnegativeNumber } from "../../../common/assert.js";
 import type { Ref } from "../../../common/ref.js";
 import { type State as BattleState } from "../../../battle/state.js";
 import { effectiveMap } from "../../../battlefield/navigation/cache.js";
+import { World } from "../../../geometry/coordinate.js";
 
 import * as units from "../../query.js";
 import type { Unit } from "../../unit.js";
 import * as attribute from "../../attribute.js";
 import type { Locomotion, MovementContext, MovementTarget } from "./capability.js";
 import { isUnbalanced } from "../shifting/shiftable.js";
-import { calculate as avoidance } from "./avoidance.js";
+import { calculate as avoidance, nearestPassableNeighbor } from "./avoidance.js";
 import { reflect } from "./motion.js";
 import { integrate } from "./steering.js";
 import { hasFacing, fromVector } from "../facing/capability.js";
@@ -26,7 +27,7 @@ function resolveSpeed(battle: BattleState, self: Unit & Locomotion): number {
 export function advance(
     battle: BattleState,
     ref: Ref<Unit & Locomotion>,
-    target: MovementTarget,
+    target: MovementTarget | null,
     context: MovementContext,
 ): BattleState {
     const self = units.get(battle, ref);
@@ -36,6 +37,21 @@ export function advance(
         !allows(battle, { self }, self.locomotion.restrictions)
     ) {
         return battle;
+    }
+
+    const map = effectiveMap(battle.battlefield.navigation, context.mode);
+    if (target === null) {
+        const tile = World.toTile(self.position);
+        if (map.get(tile)?.passable !== false) {
+            return battle;
+        }
+
+        const goal = nearestPassableNeighbor(map, tile, self.position);
+        if (goal === null) {
+            return battle;
+        }
+
+        target = { nextPoint: goal, goal };
     }
 
     assertNonnegativeNumber(context.speedMultiplier, "speedMultiplier");
@@ -51,7 +67,6 @@ export function advance(
     if (Vec2.distanceSquared(position, target.goal) <= speed * speed) {
         position = target.goal;
     } else {
-        const map = effectiveMap(battle.battlefield.navigation, context.mode);
         const direction = Vec2.sub(target.nextPoint, position);
         const force = avoidance(
             map,

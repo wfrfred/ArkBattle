@@ -47,12 +47,10 @@ export function advanceMovement(
         }
 
         const target = movementTarget(battle, units.ref(unit));
-        if (target !== null) {
-            battle = locomotion.advance(battle, units.ref(unit), target, {
-                mode: activeContext(unit).plan.motionMode,
-                speedMultiplier: routeMoveMultiplier,
-            });
-        }
+        battle = locomotion.advance(battle, units.ref(unit), target, {
+            mode: activeContext(unit).plan.motionMode,
+            speedMultiplier: routeMoveMultiplier,
+        });
     }
 
     const samples = units

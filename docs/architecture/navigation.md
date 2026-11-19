@@ -104,7 +104,7 @@ reassign 保留身份、offset 和执行政策，绑定新 Plan 并从指定索�
 
 movementTarget 使用活动 Context 的当前 MOVE 样本或未 reached 的 TRACE；指令耗尽后可追踪最终终点。等待或无目标返回空，空目标不表示 Main 完成。
 
-导航先从身体位置减去 Context.offset，得到建议点后加回偏移。alwaysCheckCurrentPoint 仅决定普通 MOVE 不可达时是否仍要求实际到达，不决定 Main 出口、时间或控制优先级；Layer 独立于运动方式。
+导航先从身体位置减去 Context.offset，得到建议点后加回偏移。当前 MOVE 未到达且身体所在格在地图内但不可通时，保留该 MOVE，供 Locomotion 先脱困。身体进入可通格后，按 alwaysCheckCurrentPoint 决定是否跳过不可达的 MOVE。Main 出口、时间和控制优先级各有独立政策，Layer 独立于运动方式。
 
 remainingDistance 显式指定 Context，不把临时控制当作普通路线优先级。它累计当前与后续 MOVE／终点的导航几何路程，WAIT 不加距离，APPEAR 只改变后续起点而不累加传送，未来随机目标按格心估计且不消费 RNG。
 
@@ -128,9 +128,11 @@ Locomotion 保存历史 velocity、speed 的 [Attribute](attribute.md) State 与
 
 ### 关键语义
 
-本次速度为 `当前有效speed × 本次倍率`；贡献和范围通过 Locomotion 的 Change 修改，限制与速度独立。暂停、零速或无目标不清历史速度。取得移动资格后，接近最终 goal 且预算足够时直接吸附，保留 velocity；中间建议点不吸附。
+本次速度为 `当前有效speed × 本次倍率`；贡献和范围通过 Locomotion 的 Change 修改，限制与速度独立。暂停或零速保留历史速度。取得移动资格后，接近最终 goal 且预算足够时直接吸附，保留 velocity；中间建议点不吸附。
 
-普通积分以历史速度、目标速度误差与八邻域局部避障形成合力，先限力再积分限速。WALK 将硬障碍和 cost≥1000 的邻格用于避障，FLY 只看硬障碍；半身宽参与横向几何，局部力去除沿目标方向的分量，并按历史速度比例缩放。当前格不可通时选择相邻可通格恢复方向。
+Movement 将本步的路线目标或空值传给 Locomotion。没有目标时，身体所在格在地图内且不可通，就朝最近的可通邻格脱困。没有这样的邻格或身体所在格可通时，保持位置与历史速度。
+
+普通积分以历史速度、目标速度误差与八邻域局部避障形成合力，先限力再积分限速。WALK 将硬障碍和 cost≥1000 的邻格用于避障，FLY 只看硬障碍。半身宽参与横向几何，局部力去除沿目标方向的分量，并按历史速度比例缩放。身体所在格不可通时，局部力取最近可通邻格的方向。
 
 仅在位移跨格且目的格不可通时反射整次位移，不做整段扫掠或反射后二次检查；高代价不等于不可通，反射不改积分所得 velocity。运动结束后可通过 [Facing](capability.md#facing)接续转向。
 

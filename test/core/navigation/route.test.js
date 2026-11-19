@@ -142,6 +142,26 @@ test("route waits continue through forced movement and steering resumes after th
     assert.ok(get(state, 0).position[1] > 0);
 });
 
+test("an impassable starting tile keeps the current MOVE while the unit recovers", () => {
+    let state = battle([creation(plan([move([0, 5])]), {
+        route: { alwaysCheckCurrentPoint: false },
+        locomotion: { ...movement, speed: defineAttribute(0.25) },
+    })]);
+    const instruction = current(state).current;
+    state = updateTile(state, [0, 0], {
+        ...getTile(state.battlefield.map, [0, 0]).state,
+        passability: "NONE",
+    });
+
+    state = step(state, []);
+    assert.deepEqual(current(state).current, instruction);
+    assert.notDeepEqual(get(state, 0).position, [0, 0]);
+
+    state = ticks(state, 40);
+    assert.deepEqual(get(state, 0).position, [5, 0]);
+    assert.equal(current(state).index, 1);
+});
+
 test("reassign rebuilds the entered instruction and skipWait only skips a relative wait", () => {
     const program = plan([wait(5), move([0, 3])]);
     let state = battle([creation(program)]);
