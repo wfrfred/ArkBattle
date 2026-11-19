@@ -25,7 +25,7 @@ const targetDefinition = {
         halfBodyWidth: 0.1,
         steeringParameters: { steeringFactor: 1, maxSteeringForce: 1 },
     },
-    shiftable: { restrictions: [], body },
+    shiftable: { massLevel: attribute(0), restrictions: [], body },
 };
 const sourceDefinition = {
     id: "forced-movement-source",
@@ -232,6 +232,38 @@ test("immunity rejects reception and ends an existing segment before displacemen
     const knocked = unbalance.applyImpulse(released, host, [30, 0]);
     assert.ok(knocked.value);
     assertPosition(step(knocked.state, []), [2, 1]);
+});
+
+test("runtime friction applies during a segment and the next segment until restored", () => {
+    const { state, host } = setup({
+        ...targetDefinition,
+        shiftable: { ...targetDefinition.shiftable, body: { ...body, frictionFactor: 2 } },
+    });
+    const impulse = [3, 0];
+    const speed = 0.1;
+    const defaultSpeedAfterFriction = speed - 0.0109;
+    const first = unbalance.applyImpulse(state, host, impulse);
+    assert.ok(first.value);
+    let current = step(first.state, []);
+    assertPosition(current, [1 + defaultSpeedAfterFriction, 1]);
+
+    current = units.update(current, host, shiftable.setFrictionFactor(0));
+    current = step(current, []);
+    const restingX = 1 + 2 * defaultSpeedAfterFriction;
+    assertPosition(current, [restingX, 1]);
+
+    current = unbalance.setVelocity(current, first.value, [0, 0]);
+    for (let i = 0; i < 3; i++) current = step(current, []);
+    assert.equal(shiftable.isUnbalanced(get(current, 0)), false);
+
+    const second = unbalance.applyImpulse(current, host, impulse);
+    assert.ok(second.value);
+    assert.notDeepEqual(second.value, first.value);
+    current = step(second.state, []);
+    assertPosition(current, [restingX + speed, 1]);
+
+    current = units.update(current, host, shiftable.restoreFrictionFactor());
+    assertPosition(step(current, []), [restingX + speed + defaultSpeedAfterFriction, 1]);
 });
 
 test("forced movement slides along a physical wall and publishes its committed contact", () => {

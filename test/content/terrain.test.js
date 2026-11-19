@@ -160,7 +160,11 @@ test("mire preserves its stacking clock across adjacent tiles and uses effective
             speed: attribute(1), halfBodyWidth: 0,
             steeringParameters: { steeringFactor: 1, maxSteeringForce: 1 },
         },
-        shiftable: { massLevel: attribute(2), restrictions: [] },
+        shiftable: {
+            massLevel: attribute(2),
+            restrictions: [],
+            body: { shape: { type: "CIRCLE", offset: [0, 0], radius: 0 }, mass: 1, frictionFactor: 1 },
+        },
     };
     const configured = setup([patch, patch, terrain.normal.create({})], [
         unit(0, enemy),
@@ -185,7 +189,11 @@ test("deepsea and holes affect ground enemies, including a unit pushed into a ho
         unit(0, { ...combat, classification: { type: "ENEMY", side: "ENEMY", filterTags: [], rank: "NORMAL" }, layer: { type: "GROUND" },
             locomotion: { speed: attribute(1), halfBodyWidth: 0.1,
                 steeringParameters: { steeringFactor: 1, maxSteeringForce: 1 } },
-            shiftable: { restrictions: [] },
+            shiftable: {
+                massLevel: attribute(0),
+                restrictions: [],
+                body: { shape: { type: "CIRCLE", offset: [0, 0], radius: 0.1 }, mass: 1, frictionFactor: 1 },
+            },
             hooks: Hooks.empty().set(hpDamage.receiving, {
                 id: "observe-deepsea-nature",
                 invoke(state, { request }, pending) {

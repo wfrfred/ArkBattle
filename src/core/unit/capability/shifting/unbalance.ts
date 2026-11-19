@@ -175,7 +175,7 @@ export function applyImpulse(
         return { state: battle, value: null };
     }
 
-    const mass = unit.definition.shiftable.body?.mass ?? 1;
+    const { mass } = unit.definition.shiftable.body;
     const velocity = Vec2.add(next.velocity, Vec2.scale(impulse, 1 / (mass * TICKS_PER_SECOND)));
 
     return { state: receive(battle, unit, { ...next, velocity }), value: ref(next) };
@@ -289,23 +289,13 @@ export function advance(battle: BattleState, reference: Ref<Unbalance>): BattleS
         force = Vec2.add(force, pull.force(battle, item, unit.position));
     }
 
-    const body = unit.definition.shiftable.body;
-    const mass = body?.mass ?? 1;
-    const friction = (FRICTION * mass * (body?.frictionFactor ?? 1)) / TICKS_PER_SECOND ** 2;
+    const { mass, shape } = unit.definition.shiftable.body;
+    const friction = (FRICTION * mass * unit.shiftable.frictionFactor) / TICKS_PER_SECOND ** 2;
     const velocity = Vec2.add(
         Vec2.clampLength(self.velocity, Math.max(0, Vec2.length(self.velocity) - friction)),
         Vec2.scale(force, 1 / (mass * TICKS_PER_SECOND ** 2)),
     );
-    const motion = advanceForcedMotion(
-        battle.battlefield.map,
-        unit.position,
-        velocity,
-        body?.shape ?? {
-            type: "CIRCLE",
-            offset: ZERO,
-            radius: unit.definition.locomotion.halfBodyWidth,
-        },
-    );
+    const motion = advanceForcedMotion(battle.battlefield.map, unit.position, velocity, shape);
     battle = replaceUnits(battle, [
         {
             ...unit,

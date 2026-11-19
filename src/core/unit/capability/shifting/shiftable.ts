@@ -11,8 +11,6 @@ import type { Unit } from "../../unit.js";
 import { hasLocomotion, type Locomotion } from "../locomotion/capability.js";
 import type { Unbalance } from "./unbalance.js";
 
-const defaultMassLevel: attribute.Definition = { default: 0, min: 0, max: null };
-
 export interface BodyDefinition {
     readonly shape: Shape;
     readonly mass: number;
@@ -26,14 +24,15 @@ interface Restrictions {
 }
 
 export interface Definition extends Restrictions {
-    readonly massLevel?: attribute.Definition;
-    readonly body?: BodyDefinition;
+    readonly massLevel: attribute.Definition;
+    readonly body: BodyDefinition;
 }
 
 export type Input = attribute.Input<Unit & Shiftable>;
 
 export interface State extends Restrictions {
     readonly massLevel: attribute.State<Input>;
+    readonly frictionFactor: number;
     readonly unbalance: Unbalance | null;
     readonly endingUnbalances: ReadonlyMap<number, Unbalance>;
     readonly nextUnbalanceId: number;
@@ -60,18 +59,18 @@ export function initialize<
     }
 
     const definition = unit.definition.shiftable;
-    if (definition.body !== undefined) {
-        validateShape(definition.body.shape);
-        assertPositiveNumber(definition.body.mass, "shiftable body mass");
-        assertNonnegativeNumber(definition.body.frictionFactor, "shiftable body friction factor");
-    }
+    const { body } = definition;
+    validateShape(body.shape);
+    assertPositiveNumber(body.mass, "shiftable body mass");
+    assertNonnegativeNumber(body.frictionFactor, "shiftable body friction factor");
 
     return {
         state: battle,
         value: {
             ...unit,
             shiftable: {
-                massLevel: attribute.initialize<Input>(definition.massLevel ?? defaultMassLevel),
+                massLevel: attribute.initialize<Input>(definition.massLevel),
+                frictionFactor: body.frictionFactor,
                 restrictions: definition.restrictions,
                 unbalance: null,
                 endingUnbalances: new Map(),
@@ -90,7 +89,7 @@ export const { set: setRestriction, remove: removeRestriction } = createRegistra
 export function resolveMassLevel(battle: BattleState, self: Unit & Shiftable): number {
     return roundToEven(
         attribute.resolve(
-            self.definition.shiftable.massLevel ?? defaultMassLevel,
+            self.definition.shiftable.massLevel,
             self.shiftable.massLevel,
             battle,
             self,
@@ -117,7 +116,7 @@ export function setMassLevelRange(range: attribute.Range): Change<Unit & Shiftab
         updateMassLevel(
             self,
             attribute.setRange(
-                self.definition.shiftable.massLevel ?? defaultMassLevel,
+                self.definition.shiftable.massLevel,
                 self.shiftable.massLevel,
                 range,
             ),
@@ -129,10 +128,7 @@ export function clearMassLevelRange(): Change<Unit & Shiftable> {
     return createChange<Unit & Shiftable>((self) =>
         updateMassLevel(
             self,
-            attribute.clearRange(
-                self.definition.shiftable.massLevel ?? defaultMassLevel,
-                self.shiftable.massLevel,
-            ),
+            attribute.clearRange(self.definition.shiftable.massLevel, self.shiftable.massLevel),
         ),
     );
 }
@@ -144,4 +140,22 @@ function updateMassLevel<U extends Unit & Shiftable>(
     return massLevel === self.shiftable.massLevel
         ? self
         : { ...self, shiftable: { ...self.shiftable, massLevel } };
+}
+
+export function setFrictionFactor(frictionFactor: number): Change<Unit & Shiftable> {
+    assertNonnegativeNumber(frictionFactor, "shiftable friction factor");
+
+    return createChange<Unit & Shiftable>((self) => updateFrictionFactor(self, frictionFactor));
+}
+
+export function restoreFrictionFactor(): Change<Unit & Shiftable> {
+    return createChange<Unit & Shiftable>((self) =>
+        updateFrictionFactor(self, self.definition.shiftable.body.frictionFactor),
+    );
+}
+
+function updateFrictionFactor<U extends Unit & Shiftable>(self: U, frictionFactor: number): U {
+    return frictionFactor === self.shiftable.frictionFactor
+        ? self
+        : { ...self, shiftable: { ...self.shiftable, frictionFactor } };
 }

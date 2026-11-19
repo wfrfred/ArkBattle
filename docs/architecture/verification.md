@@ -42,14 +42,14 @@ Prefab、范围读取和换算由实际业务使用；目录移动、提取工�
 | [Occupancy](occupancy.md)、[Deployment](deployment.md) | 双槽排他、Pair 先发布再通知，旧配对不影响替代实例；Quote 预览与执行一致，资源先消费再入场，主动／被动离场分别结账，库存／DP 预算及 Card 延续正确。 |
 | [Blocking](blocking.md)、[Layer](capability.md#layer-与-hitbox) | 资格、容量尾裁、批量双端发布与旧 Relation；主动空间覆盖取消自身计划、解除当前关系。Layer 同值请求仍清理，Settlement 使用当时当前关系，通知中新建关系不追删。 |
 | [Locomotion](navigation.md#locomotion) | 历史速度、限力／限速、转向、最终目标吸附、地形避障与反射。推进包含无 Route 的受力单位并采样实际位移。由[运动](../../test/core/navigation/locomotion.test.js)和[路线](../../test/core/navigation/route.test.js)集中验证。 |
-| [Shifting](navigation.md#强制位移) | 推击取当前有效力度和重量，牵引创建时采样力值，同一来源的多个实例独立。近停保持零力牵引，位置发布与位移通知先于自动清速。唯一有效牵引才可清速，依赖结束保留剩余速度。手动结束牵引后，失衡由后续推进结算。免疫先于位移，旧段依赖清理不影响新段。由[失衡](../../test/core/navigation/unbalance.test.js)集中验证。 |
+| [Shifting](navigation.md#强制位移) | 推击取当前有效力度和重量，牵引创建时采样力值，同一来源的多个实例独立。近停保持零力牵引，位置发布与位移通知先于自动清速。唯一有效牵引才可清速，依赖结束保留剩余速度。手动结束牵引后，失衡由后续推进结算。免疫先于位移，旧段依赖清理不影响新段。积分读取当前摩擦倍率，倍率跨失衡段保留，恢复后使用配置底值。由[失衡](../../test/core/navigation/unbalance.test.js)集中验证。 |
 | [Targeting](targeting.md)、[Presence](presence.md) | 选择、空间存在、锁定命中与实际接收独立；具体重要协作见下节。 |
 | [Resource](resource.md)、[Vitality](vitality.md)、[Elemental](elemental.md) | 输出／接收／实际变化分离，HP／债务与 EP 准确提交，后继报告固定，死亡与 Burst 顺序正确；集中结果见资源清单。 |
 | [Runtime](functional-core.md) | 出生等待先于 enter，逐对象接续最新状态，预置重入保留新绑定，Tick 阶段确定、失败不发布；调度完成后 step 仍可推进。 |
 
 ## 集中归属与收敛完成条件
 
-公共容器、Query、RNG、数值取整及几何算法各自集中验证；坐标旋转、范围并集、圆／盒／混合形状的独立相交和扫掠结果不复制到消费者。Targeting 只补一个实际 Hitbox 范围接入，锁定弹道单独验证身份命中。
+公共容器、Query、RNG、数值取整及几何算法各自集中验证；坐标旋转、范围并集、圆、方盒和轴对齐胶囊的独立相交和扫掠结果不复制到消费者。Targeting 只补一个实际 Hitbox 范围接入，锁定弹道单独验证身份命中。
 
 [公共类型契约](../../test/core/types.test.js) 集中证明构造与私有状态／回调配对、Typed Ref、具体 Initial 必填与额外已知输入、Query／optional 收窄、Change 能力逆变和 Hook Key 载荷关联。Occupancy 必需 tile、Route 必需 plan／offset、Spawn 所需与禁止能力由构造边界代表覆盖，不按字段、数组长度或每种 Capability 扩矩阵。
 

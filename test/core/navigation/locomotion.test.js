@@ -70,6 +70,7 @@ test("runtime advances a routeless unit under force and samples its committed po
             ...definition,
             layer: { type: "GROUND" },
             shiftable: {
+                massLevel: defineAttribute(0),
                 restrictions: [],
                 body: { shape: { type: "CIRCLE", offset: [0, 0], radius: 0.1 }, mass: 1, frictionFactor: 0 },
             },

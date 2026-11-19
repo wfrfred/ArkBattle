@@ -138,7 +138,7 @@ Locomotion 保存历史 velocity、speed 的 [Attribute](attribute.md) State 与
 
 ## 强制位移
 
-[Shifting](../../src/core/unit/capability/shifting/index.ts) 提供推击、牵引和失衡。`Shifter` 持有施力方 `baseForceLevel`，`Shiftable` 依赖 `Locomotion`，持有受力限制、物理体、`massLevel` 和失衡段。力度与重量各为可贡献、可覆写范围的 [Attribute](attribute.md)，读取有效等级时舍入到最近整数，恰在中点时取偶数。省略重量或物理体时，使用重量等级 0、以自主移动半身宽为半径的圆、质量和摩擦倍率 1。
+[Shifting](../../src/core/unit/capability/shifting/index.ts) 提供推击、牵引和失衡。`Shifter` 持有施力方 `baseForceLevel`，`Shiftable` 依赖 `Locomotion`，持有受力限制、物理体、`massLevel` 和失衡段。力度与重量各为可贡献、可覆写范围的 [Attribute](attribute.md)，读取有效等级时舍入到最近整数，恰在中点时取偶数。装配 `Shiftable` 时须声明 `massLevel` 和 `body`，物理体配置给出形状、质量和摩擦倍率底值。
 
 ### 施力入口
 
@@ -156,13 +156,15 @@ Locomotion 保存历史 velocity、speed 的 [Attribute](attribute.md) State 与
 
 ### 单步结算
 
+有效 `frictionFactor` 保存在 `Shiftable.State`，单位装配时取物理体配置的底值。`shiftable.setFrictionFactor` 覆盖当前值，输入为有限非负数，设为 0 时摩擦减速量为 0。`shiftable.restoreFrictionFactor` 恢复配置底值。每次积分读取当时的倍率，进入或结束失衡段都保留该值。拐角冰面的地形程序可以在入格时设置倍率并在离格时恢复。 [拐角冰面取证](../research/evidence/forced-motion-20261118/README.md#地形和物理更新)
+
 失衡推进检查受力资格，应用摩擦、牵引和单步力，再积分一次。物理体扫掠地块碰撞盒，截去朝障碍的速度分量并保留可行的切向分量。先发布实际位置，再派发 `unbalance.forcedMoved`，载荷包括原段 Ref、实际起止位置及接触格和法线。回调可按原段引用调整速度或追加下一步的力。自动清速在回调之后读取最新已提交的位置。
 
 失衡只在推进阶段检查自然结束。速度不高于停止阈值、保护到期、已无有效牵引和待施单步力时结束。段的 Lifetime 先发布 `ENDING`、使本段 Scope 失效，再结束依赖。清理回调内可开始新段，仍按旧引用完成清理。来源或拉点结束会撤掉牵引，剩余外力速度留给下一次失衡推进。
 
 Movement 推进失衡单位，包括无 Route 的单位。每五个 Tick 以两次实际位置的距离更新 `totalMoveDistance`。随后由 Mechanism 观察落点，由 Blocking 结算阻挡。位置相关 Effect 可读取累计距离，持有相应牵引或失衡段的 Scope，并结算自身伤害。
 
-扫掠使用项目的确定性胶囊／圆体与静态地块碰撞盒模型。原生接触轨迹的实测和具体内容的接入范围见 [Tactical 语义](tactical-semantics.md)。
+扫掠将受力单位的共享 `Shape` 与静态地块的显式碰撞盒作确定性碰撞计算。原生接触轨迹的实测和具体内容的接入范围见 [Tactical 语义](tactical-semantics.md)。
 
 ## Map
 

@@ -122,6 +122,7 @@ test("route waits continue through forced movement and steering resumes after th
         layer: { type: "GROUND" },
         locomotion: movement,
         shiftable: {
+            massLevel: defineAttribute(0),
             restrictions: [],
             body: { shape: { type: "CIRCLE", offset: [0, 0], radius: 0.1 }, mass: 1, frictionFactor: 0 },
         },
