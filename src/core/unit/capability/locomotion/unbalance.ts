@@ -30,7 +30,7 @@ type Host = Unit & Locomotion;
 
 interface Traction {
     readonly source: lifetimes.Scope;
-    readonly force: Vec2;
+    readonly pendingForce: Vec2;
 }
 
 export interface Unbalance extends Identified<{ readonly host: Ref<Host>; readonly id: number }> {
@@ -188,7 +188,7 @@ export function beginPull(
     assert(Vec2.is(force), "pull force must be a finite vector", TypeError);
 
     return lifetimes.available(battle, source)
-        ? receive(battle, host, { source, force })
+        ? receive(battle, host, { source, pendingForce: force })
         : { state: battle, value: null };
 }
 
@@ -223,12 +223,12 @@ export function continuePull(
     }
 
     const { unit, self } = active;
-    if (Vec2.equal(force, pull.force)) {
+    if (Vec2.equal(force, pull.pendingForce)) {
         return { state: battle, value: true };
     }
 
     const pulls = new Map(self.pulls);
-    pulls.set(identity, { ...pull, force });
+    pulls.set(identity, { ...pull, pendingForce: force });
 
     return { state: replaceUnbalance(battle, unit, { ...self, pulls }), value: true };
 }
@@ -323,8 +323,8 @@ export function advanceUnbalance(battle: BattleState, host: Ref<Host>): BattleSt
 
     for (const [identity, pull] of self.pulls) {
         if (lifetimes.available(battle, pull.source)) {
-            pulls.set(identity, pull);
-            force = Vec2.add(force, pull.force);
+            pulls.set(identity, { ...pull, pendingForce: ZERO });
+            force = Vec2.add(force, pull.pendingForce);
         }
     }
 

@@ -33,7 +33,7 @@ function assertPosition(state, expected) {
     assert.ok(Math.abs(y - expected[1]) < 1e-12, `${y} ≈ ${expected[1]}`);
 }
 
-test("impulses and independent projectile pulls share velocity, and ending one preserves the other", () => {
+test("pull sources share velocity with impulses and contribute only submitted forces", () => {
     let state = target();
     const host = units.ref(get(state, 0));
     const projectile = { id: "pull-source" };
@@ -54,10 +54,17 @@ test("impulses and independent projectile pulls share velocity, and ending one p
     state = step(state, []);
     assertPosition(state, [1.10, 1.04]);
 
-    // A source that leaves without a pull callback also stops contributing.
-    state = projectiles.stop(state, second.value);
     state = step(state, []);
     assertPosition(state, [1.15, 1.07]);
+    state = locomotion.continuePull(state, initial.value, right, [0, 18]).state;
+    state = step(state, []);
+    assertPosition(state, [1.20, 1.12]);
+
+    // A source that leaves without a pull callback also stops contributing.
+    state = locomotion.continuePull(state, initial.value, right, [0, 18]).state;
+    state = projectiles.stop(state, second.value);
+    state = step(state, []);
+    assertPosition(state, [1.25, 1.17]);
 });
 
 test("immunity rejects reception and ends an existing segment before displacement", () => {
