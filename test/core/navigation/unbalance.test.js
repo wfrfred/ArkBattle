@@ -33,7 +33,7 @@ function assertPosition(state, expected) {
     assert.ok(Math.abs(y - expected[1]) < 1e-12, `${y} ≈ ${expected[1]}`);
 }
 
-test("impulses and independent projectile pulls share velocity, and ending one preserves the other", () => {
+test("independent pulls apply their current force until they or their source end", () => {
     let state = target();
     const host = units.ref(get(state, 0));
     const projectile = { id: "pull-source" };
@@ -44,20 +44,44 @@ test("impulses and independent projectile pulls share velocity, and ending one p
     const initial = locomotion.applyImpulse(second.state, host, [0.6, 0]);
     const repeat = locomotion.applyImpulse(initial.state, host, [0.6, 0]);
     const pullA = locomotion.beginPull(repeat.state, host, left, [9, 0]);
-    const pullB = locomotion.beginPull(pullA.state, host, right, [0, 9]);
-    assert.deepEqual([repeat.value, pullA.value, pullB.value], Array(3).fill(initial.value));
-    state = step(pullB.state, []);
+    const repeatPull = locomotion.beginPull(pullA.state, host, left, [9, 0]);
+    const pullB = locomotion.beginPull(repeatPull.state, host, right, [0, 9]);
+    assert.deepEqual(repeat.value, initial.value);
+    assert.deepEqual(repeatPull.value, pullA.value);
+    assert.notDeepEqual(pullB.value, pullA.value);
+
+    let endReason;
+    const attached = effects.install(pullB.state, host, {
+        id: "pull-dependent",
+        initialize: () => ({}),
+        onEnd(current, _effect, reason) {
+            endReason = reason;
+            return current;
+        },
+    }, { scopes: [lifetime.scope(locomotion.pullLifetime, pullB.value)] });
+    state = step(attached.state, []);
     assertPosition(state, [1.05, 1.01]);
 
-    state = locomotion.endPull(state, initial.value, left, { stopIfLast: true });
-    state = locomotion.continuePull(state, initial.value, right, [0, 18]).state;
+    state = locomotion.endPull(state, pullA.value, { stopIfLast: true });
+    const restarted = locomotion.beginPull(state, host, left, [0, 0]);
+    assert.notDeepEqual(restarted.value, pullA.value);
+    state = locomotion.endPull(restarted.state, pullA.value);
+    assert.equal(lifetime.available(state, lifetime.scope(locomotion.pullLifetime, restarted.value)), true);
+    state = locomotion.endPull(state, restarted.value);
+    state = locomotion.continuePull(state, pullB.value, [0, 18]).state;
     state = step(state, []);
     assertPosition(state, [1.10, 1.04]);
-
-    // A source that leaves without a pull callback also stops contributing.
-    state = projectiles.stop(state, second.value);
     state = step(state, []);
-    assertPosition(state, [1.15, 1.07]);
+    assertPosition(state, [1.15, 1.09]);
+
+    state = projectiles.stop(state, second.value, "DISPEL");
+    assert.equal(endReason, "DISPEL");
+    state = step(state, []);
+    assertPosition(state, [1.20, 1.14]);
+
+    const last = locomotion.beginPull(state, host, left, [0, 0]);
+    state = locomotion.endPull(last.state, last.value, { stopIfLast: true });
+    assertPosition(step(state, []), [1.20, 1.14]);
 });
 
 test("immunity rejects reception and ends an existing segment before displacement", () => {
@@ -106,11 +130,14 @@ test("forced movement slides along a physical wall and publishes its committed c
     assert.deepEqual(contact, [{ tile: [1, 2], normal: [-1, 0] }]);
 });
 
-test("an ending segment invalidates its scope before a dependent starts the next segment", () => {
+test("ending a segment settles its pulls even when a pull dependent starts the next segment", () => {
     const state = target();
     const host = units.ref(get(state, 0));
-    const first = locomotion.applyImpulse(state, host, [30, 0]);
-    const oldScope = lifetime.scope(locomotion.unbalanceLifetime, first.value);
+    const source = projectiles.create(state, { id: "rebound-source" }, { position: [0, 0], state: {} });
+    const sourceScope = lifetime.scope(projectiles.lifetime, source.value);
+    const first = locomotion.beginPull(source.state, host, sourceScope, [9, 0]);
+    const oldScope = lifetime.scope(locomotion.unbalanceLifetime, first.value.unbalance);
+    const oldPullScope = lifetime.scope(locomotion.pullLifetime, first.value);
     let next;
     const installed = effects.install(first.state, host, {
         id: "rebound",
@@ -118,14 +145,16 @@ test("an ending segment invalidates its scope before a dependent starts the next
         onEnd(current) {
             assert.equal(locomotion.isUnbalanced(get(current, 0)), false);
             assert.equal(lifetime.available(current, oldScope), false);
-            const applied = locomotion.applyImpulse(current, host, [0, 30]);
-            next = applied.value;
-            return applied.state;
+            assert.equal(lifetime.available(current, oldPullScope), false);
+            const started = locomotion.beginPull(current, host, sourceScope, [0, 900]);
+            next = started.value;
+            return started.state;
         },
-    }, { scopes: [oldScope] });
-    const ended = locomotion.unbalanceLifetime.end(installed.state, first.value, "SETTLED");
+    }, { scopes: [oldPullScope] });
+    const ended = locomotion.unbalanceLifetime.end(installed.state, first.value.unbalance, "SETTLED");
     assert.ok(next);
-    assert.notDeepEqual(next, first.value);
-    assert.equal(lifetime.available(ended, lifetime.scope(locomotion.unbalanceLifetime, next)), true);
+    assert.notDeepEqual(next.unbalance, first.value.unbalance);
+    assert.deepEqual(lifetime.dependencies(ended, oldPullScope), []);
+    assert.equal(lifetime.available(ended, lifetime.scope(locomotion.pullLifetime, next)), true);
     assertPosition(step(ended, []), [1, 2]);
 });

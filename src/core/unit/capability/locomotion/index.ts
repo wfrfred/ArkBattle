@@ -38,10 +38,11 @@ export {
     endPull,
     addForce,
     setUnbalanceVelocity,
+    pullLifetime,
     unbalanceLifetime,
 } from "./unbalance.js";
 
-export type { Unbalance } from "./unbalance.js";
+export type { Pull, Unbalance } from "./unbalance.js";
 
 export { forcedMoved } from "./hook.js";
 

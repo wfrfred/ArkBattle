@@ -49,6 +49,7 @@ export interface State extends Restrictions {
     readonly velocity: WorldPosition;
     readonly massLevel: attribute.State<Input>;
     readonly unbalance: Unbalance | null;
+    readonly endingUnbalances: ReadonlyMap<number, Unbalance>;
     readonly nextUnbalanceId: number;
     readonly totalMoveDistance: number;
     readonly lastMoveSamplePosition: WorldPosition;
@@ -104,6 +105,7 @@ export function initialize<U extends Unit & Pick<Locomotion, "definition">>(
                 forceRestrictions: [],
                 massLevel: attribute.initialize<Input>(definition.massLevel ?? defaultMassLevel),
                 unbalance: null,
+                endingUnbalances: new Map(),
                 nextUnbalanceId: 0,
                 totalMoveDistance: 0,
                 lastMoveSamplePosition: unit.position,
