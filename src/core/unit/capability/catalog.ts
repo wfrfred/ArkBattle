@@ -12,6 +12,8 @@ import * as occupancy from "./occupancy/capability.js";
 import * as offense from "./offense/capability.js";
 import * as presence from "./presence/capability.js";
 import * as route from "./route/capability.js";
+import * as shiftable from "./shifting/shiftable.js";
+import * as shifter from "./shifting/shifter.js";
 import * as skill from "./skill/capability.js";
 import * as targetable from "./targetable/capability.js";
 import * as vitality from "./vitality/capability.js";
@@ -31,6 +33,8 @@ export const initializers = {
     blocker: blocker.initialize,
     blockable: blockable.initialize,
     locomotion: locomotion.initialize,
+    shifter: shifter.initialize,
+    shiftable: shiftable.initialize,
     route: route.initialize,
     presence: presence.initialize,
     targetable: targetable.initialize,

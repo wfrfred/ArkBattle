@@ -19,7 +19,7 @@ import type { Unit } from "../../core/unit/index.js";
 import * as offense from "../../core/unit/capability/offense/index.js";
 import * as action from "../../core/unit/capability/action/index.js";
 import * as locomotion from "../../core/unit/capability/locomotion/index.js";
-import { hasLocomotion } from "../../core/unit/capability/locomotion/index.js";
+import { shiftable } from "../../core/unit/capability/shifting/index.js";
 
 import { hasVitality } from "../../core/unit/capability/vitality/index.js";
 import { hasClassification } from "../../core/unit/capability/classification/index.js";
@@ -73,7 +73,7 @@ function changeModifiers(
                     : action.setSpeedContribution({ id, value: [modifiers.attackSpeed] }),
             ),
             units.optional(
-                hasLocomotion,
+                locomotion.hasLocomotion,
                 modifiers?.movementSpeed === undefined
                     ? locomotion.removeSpeedContribution(id)
                     : locomotion.setSpeedContribution({ id, value: [modifiers.movementSpeed] }),
@@ -185,8 +185,8 @@ export function createMireEffect(params: MireParams): Definition<MireState> {
                 hasClassification(unit) && unit.definition.classification.side === "ENEMY";
             const gain =
                 enemy &&
-                hasLocomotion(unit) &&
-                locomotion.resolveMassLevel(battle, unit) >= params.massThreshold
+                shiftable.hasShiftable(unit) &&
+                shiftable.resolveMassLevel(battle, unit) >= params.massThreshold
                     ? 2
                     : 1;
             const stacks = Math.min(params.maxStacks, self.state.stacks + gain);

@@ -38,6 +38,7 @@ export type Definition = UnitDefinition &
         | "hitbox"
         | "layer"
         | "locomotion"
+        | "shiftable"
         | "offense"
         | "route"
         | "presence"
@@ -133,7 +134,10 @@ export function createDefinition(
             },
             steeringParameters: movement.steeringParameters,
             halfBodyWidth: movement.halfBodyWidth,
+        },
+        shiftable: {
             massLevel: { default: profile.massLevel, min: 0, max: null },
+            restrictions: [],
             body: {
                 shape: {
                     type: "CAPSULE",

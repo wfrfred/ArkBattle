@@ -147,6 +147,7 @@ export interface ArknightsLevelContent {
 
 export interface ArknightsLevelDefinition extends Omit<ArknightsLevelContent, "mapData"> {
     readonly map: Map;
+    readonly pushMultiplier: number;
 }
 
 function object(value: unknown, name: string, fields?: readonly string[]): Record<string, unknown> {
@@ -723,7 +724,11 @@ export function createLevelDefinition(
 ): ArknightsLevelDefinition {
     const { mapData, ...level } = content;
 
-    return { ...level, map: parseBattlefieldMap(mapData, mapOptions) };
+    return {
+        ...level,
+        map: parseBattlefieldMap(mapData, mapOptions),
+        pushMultiplier: level.options.moveMultiplier,
+    };
 }
 
 export function parseLevelDefinition(

@@ -23,7 +23,7 @@ import { resolveSpeed } from "../../dist/core/unit/capability/action/timing.js";
 import { damage } from "../../dist/core/battle/targeting/index.js";
 import * as presence from "../../dist/core/unit/capability/presence/index.js";
 import { setType } from "../../dist/core/unit/capability/layer/index.js";
-import { applyImpulse, setMassLevelContribution } from "../../dist/core/unit/capability/locomotion/index.js";
+import { shiftable, unbalance } from "../../dist/core/unit/capability/shifting/index.js";
 import { create as createModifier } from "../../dist/core/common/modifier.js";
 
 const infectionParams = (damage = 80) => ({
@@ -159,14 +159,14 @@ test("mire preserves its stacking clock across adjacent tiles and uses effective
         locomotion: {
             speed: attribute(1), halfBodyWidth: 0,
             steeringParameters: { steeringFactor: 1, maxSteeringForce: 1 },
-            massLevel: attribute(2),
         },
+        shiftable: { massLevel: attribute(2), restrictions: [] },
     };
     const configured = setup([patch, patch, terrain.normal.create({})], [
         unit(0, enemy),
         unit(0, enemy),
     ], [terrain.mire]);
-    let battle = update(configured.battle, units.ref(current(configured.battle)), setMassLevelContribution({
+    let battle = update(configured.battle, units.ref(current(configured.battle)), shiftable.setMassLevelContribution({
         id: "extra-weight", value: [createModifier({ addition: 1 })],
     }));
     battle = until(battle, 2);
@@ -185,6 +185,7 @@ test("deepsea and holes affect ground enemies, including a unit pushed into a ho
         unit(0, { ...combat, classification: { type: "ENEMY", side: "ENEMY", filterTags: [], rank: "NORMAL" }, layer: { type: "GROUND" },
             locomotion: { speed: attribute(1), halfBodyWidth: 0.1,
                 steeringParameters: { steeringFactor: 1, maxSteeringForce: 1 } },
+            shiftable: { restrictions: [] },
             hooks: Hooks.empty().set(hpDamage.receiving, {
                 id: "observe-deepsea-nature",
                 invoke(state, { request }, pending) {
@@ -202,7 +203,7 @@ test("deepsea and holes affect ground enemies, including a unit pushed into a ho
     assert.deepEqual([0, 1, 2].map(id => attackSpeed(battle, id)), [40, 100, 100]);
     const hole = getTile(battle.battlefield.map, [0, 1]);
     battle = updateTile(battle, [0, 1], { ...hole.state, passability: "FLY_ONLY" });
-    battle = applyImpulse(battle, units.ref(current(battle, 0)), [30, 0]).state;
+    battle = unbalance.applyImpulse(battle, units.ref(current(battle, 0)), [30, 0]).state;
     for (const id of [1, 2]) battle = move(battle, id, 1);
     battle = step(battle, []);
     assert.equal(current(battle, 0), undefined);

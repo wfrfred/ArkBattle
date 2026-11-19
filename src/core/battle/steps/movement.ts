@@ -4,13 +4,13 @@ import { activeContext, movementTarget } from "../../unit/capability/route/query
 import { Vec2 } from "../../common/vector.js";
 import {
     hasLocomotion,
-    isUnbalanced,
     MOVE_SAMPLE_INTERVAL,
 } from "../../unit/capability/locomotion/capability.js";
 import { hasBlockable } from "../../unit/capability/blocking/blockable.js";
 import * as blockable from "../../unit/capability/blocking/blockable-operations.js";
 import * as locomotion from "../../unit/capability/locomotion/operations.js";
-import { advanceUnbalance } from "../../unit/capability/locomotion/unbalance.js";
+import { hasShiftable } from "../../unit/capability/shifting/shiftable.js";
+import * as unbalance from "../../unit/capability/shifting/unbalance.js";
 import { replace } from "../../unit/operations.js";
 import * as units from "../../unit/query.js";
 import type { State as BattleState } from "../state.js";
@@ -36,8 +36,9 @@ export function advanceMovement(
             continue;
         }
 
-        if (isUnbalanced(unit)) {
-            battle = advanceUnbalance(battle, units.ref(unit));
+        const current = hasShiftable(unit) ? unit.shiftable.unbalance : null;
+        if (current?.lifecycle === "ACTIVE") {
+            battle = unbalance.advance(battle, unbalance.ref(current));
             continue;
         }
 

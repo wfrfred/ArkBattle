@@ -17,12 +17,14 @@ export type { Event } from "./event.js";
 export interface Definition {
     readonly predefines: readonly StoredPredefinedDefinition[];
     readonly routeMoveMultiplier: number;
+    readonly pushMultiplier: number;
 }
 
 export interface Input<
     CardStates extends readonly object[] = readonly object[],
     MechanismStates extends readonly object[] = readonly object[],
-> extends Definition {
+> extends Omit<Definition, "pushMultiplier"> {
+    readonly pushMultiplier?: number;
     readonly deployment?: DeploymentInput<CardStates>;
     readonly map: Map;
     readonly schedule: ScheduleDefinition;

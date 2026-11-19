@@ -37,9 +37,12 @@ const defaultExecution: BattleExecutionState = {
     nextProjectileId: 0,
 };
 
+export const DEFAULT_PUSH_MULTIPLIER = 0.5;
+
 const defaultDefinition: Definition = {
     predefines: [],
     routeMoveMultiplier: 1,
+    pushMultiplier: DEFAULT_PUSH_MULTIPLIER,
 };
 
 export interface State {

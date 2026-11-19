@@ -6,155 +6,291 @@ import { attribute } from "../../helpers/attribute.js";
 import { step } from "../../../dist/core/battle/runtime.js";
 import { update as updateTile } from "../../../dist/core/battle/tile.js";
 import { get as getTile } from "../../../dist/core/battlefield/map/map.js";
+import { create as modifier } from "../../../dist/core/common/modifier.js";
 import { Hooks } from "../../../dist/core/hook.js";
 import * as lifetime from "../../../dist/core/lifetime/index.js";
 import * as projectiles from "../../../dist/core/projectile/index.js";
 import * as units from "../../../dist/core/unit/index.js";
+import { lifetime as unitLifetime } from "../../../dist/core/unit/operations.js";
 import * as effects from "../../../dist/core/unit/effect/index.js";
-import * as locomotion from "../../../dist/core/unit/capability/locomotion/index.js";
+import { pull, push, shifter, shiftable, unbalance } from "../../../dist/core/unit/capability/shifting/index.js";
 import { unbalanceImmunity } from "../../../dist/core/effects/protection.js";
 
 const body = { shape: { type: "CIRCLE", offset: [0, 0], radius: 0.1 }, mass: 1, frictionFactor: 0 };
-const definition = {
+const targetDefinition = {
     id: "forced-movement-target",
     hooks: Hooks.empty(),
     locomotion: {
-        body,
         speed: attribute(1),
         halfBodyWidth: 0.1,
         steeringParameters: { steeringFactor: 1, maxSteeringForce: 1 },
     },
+    shiftable: { restrictions: [], body },
 };
-const target = () => battle([{ definition, position: [1, 1] }]);
+const sourceDefinition = {
+    id: "forced-movement-source",
+    hooks: Hooks.empty(),
+    shifter: { baseForceLevel: attribute(0) },
+};
 
-function assertPosition(state, expected) {
-    const [x, y] = get(state, 0).position;
-    assert.ok(Math.abs(x - expected[0]) < 1e-12, `${x} ≈ ${expected[0]}`);
-    assert.ok(Math.abs(y - expected[1]) < 1e-12, `${y} ≈ ${expected[1]}`);
+function setup(definition = targetDefinition, options) {
+    const state = battle([
+        { definition, position: [1, 1] },
+        { definition: sourceDefinition, position: [0, 0] },
+    ], options);
+    return { state, host: units.ref(get(state, 0)), source: units.ref(get(state, 1)) };
 }
 
-test("independent pulls apply their current force until they or their source end", () => {
-    let state = target();
-    const host = units.ref(get(state, 0));
-    const projectile = { id: "pull-source" };
-    const first = projectiles.create(state, projectile, { position: [0, 0], state: {} });
-    const second = projectiles.create(first.state, projectile, { position: [0, 0], state: {} });
-    const left = lifetime.scope(projectiles.lifetime, first.value);
-    const right = lifetime.scope(projectiles.lifetime, second.value);
-    const initial = locomotion.applyImpulse(second.state, host, [0.6, 0]);
-    const repeat = locomotion.applyImpulse(initial.state, host, [0.6, 0]);
-    const pullA = locomotion.beginPull(repeat.state, host, left, [9, 0]);
-    const repeatPull = locomotion.beginPull(pullA.state, host, left, [9, 0]);
-    const pullB = locomotion.beginPull(repeatPull.state, host, right, [0, 9]);
-    assert.deepEqual(repeat.value, initial.value);
-    assert.deepEqual(repeatPull.value, pullA.value);
-    assert.notDeepEqual(pullB.value, pullA.value);
+function fixedPull(source, position, options = {}) {
+    return {
+        scope: lifetime.scope(unitLifetime, source),
+        point: { type: "FIXED", position },
+        forceLevel: 0,
+        nearStop: [],
+        ...options,
+    };
+}
 
+function assertPosition(state, [expectedX, expectedY]) {
+    const [x, y] = get(state, 0).position;
+    assert.ok(Math.abs(x - expectedX) < 1e-12, `${x} ≈ ${expectedX}`);
+    assert.ok(Math.abs(y - expectedY) < 1e-12, `${y} ≈ ${expectedY}`);
+}
+
+test("push uses the current source and target grades and the battle push multiplier", () => {
+    const { state, host, source } = setup({
+        ...targetDefinition,
+        shiftable: { ...targetDefinition.shiftable, massLevel: attribute(2.5) },
+    }, { pushMultiplier: 0.25 });
+    const strengthened = units.update(state, source, shifter.setBaseForceLevelContribution({
+        id: "extra-force", value: [modifier({ addition: 3.5 })],
+    }));
+    const shifted = push(strengthened, source, host, { forceLevel: 0, direction: [1, 0] });
+    assert.ok(shifted.value);
+    assertPosition(step(shifted.state, []), [1 + 530 * 0.25 * 0.02 / 30, 1]);
+});
+
+test("pull creation refuses a zero table result, an ended source, and an already reached pull", () => {
+    const { state, host, source } = setup();
+    const tooLight = pull.create(state, source, host, fixedPull(source, [5, 1], { forceLevel: -4 }));
+    assert.deepEqual(tooLight, { state, value: null });
+
+    const reached = pull.create(state, source, host, fixedPull(source, [1.01, 1], {
+        nearStop: [pull.withinRadius(0.05)],
+        endOnReach: true,
+    }));
+    assert.deepEqual(reached, { state, value: null });
+    assert.equal(shiftable.isUnbalanced(get(reached.state, 0)), false);
+
+    const departed = units.remove(state, source, { reason: "SCRIPT" });
+    const withoutSource = pull.create(departed, source, host, fixedPull(source, [5, 1]));
+    assert.deepEqual(withoutSource, { state: departed, value: null });
+});
+
+test("a pull samples its force once and later pulls use the updated grades", () => {
+    const { state, host, source } = setup();
+    const options = fixedPull(source, [5, 1]);
+    const original = pull.create(state, source, host, options);
+    assert.ok(original.value);
+    const stronger = units.update(original.state, source, shifter.setBaseForceLevelContribution({
+        id: "extra-force", value: [modifier({ addition: 2 })],
+    }));
+    const changed = units.update(stronger, host, shiftable.setMassLevelContribution({
+        id: "extra-weight", value: [modifier({ addition: 4 })],
+    }));
+    assertPosition(step(changed, []), [1 + 40 / 900, 1]);
+
+    const fresh = pull.create(pull.end(changed, original.value), source, host, options);
+    assert.ok(fresh.value);
+    assertPosition(step(fresh.state, []), [1 + 2 / 900, 1]);
+});
+
+test("pulls with a shared source scope stack and only the sole pull can brake", () => {
+    const { state, host, source } = setup();
+    const initial = unbalance.applyImpulse(state, host, [0.6, 0]);
+    const repeat = unbalance.applyImpulse(initial.state, host, [0.6, 0]);
+    const options = fixedPull(source, [5, 1]);
+    const first = pull.create(repeat.state, source, host, options);
+    const second = pull.create(first.state, source, host, options);
+    assert.ok(first.value && second.value);
+    assert.deepEqual(repeat.value, initial.value);
+    assert.deepEqual(first.value.unbalance, second.value.unbalance);
+    assert.notDeepEqual(first.value, second.value);
+
+    const multiple = pull.brake(second.state, first.value);
+    assertPosition(step(multiple, []), [1 + 1.2 / 30 + 80 / 900, 1]);
+
+    const firstScope = lifetime.scope(pull.lifetime, first.value);
+    const secondScope = lifetime.scope(pull.lifetime, second.value);
+    const remaining = pull.end(multiple, first.value);
+    assert.equal(lifetime.available(remaining, firstScope), false);
+    assert.equal(lifetime.available(remaining, secondScope), true);
+    assert.deepEqual(unbalance.get(remaining, repeat.value).velocity, [1.2 / 30, 0]);
+    const braked = pull.brake(remaining, second.value);
+    assert.deepEqual(unbalance.get(braked, repeat.value).velocity, [0, 0]);
+    assert.equal(lifetime.available(braked, secondScope), true);
+});
+
+test("a moving pull point can hold a pull at zero, resume it, and end it without clearing momentum", () => {
+    const { state, host, source } = setup();
+    const anchor = projectiles.create(state, { id: "pull-anchor" }, { position: [2, 1], state: {} });
+    const linked = pull.create(anchor.state, source, host, fixedPull(source, [2, 1], {
+        point: { type: "PROJECTILE", projectile: anchor.value },
+        nearStop: [pull.withinRadius(0.05)],
+    }));
+    assert.ok(linked.value);
+    const scope = lifetime.scope(pull.lifetime, linked.value);
     let endReason;
-    const attached = effects.install(pullB.state, host, {
+    const watched = effects.install(linked.state, host, {
         id: "pull-dependent",
         initialize: () => ({}),
         onEnd(current, _effect, reason) {
             endReason = reason;
             return current;
         },
-    }, { scopes: [lifetime.scope(locomotion.pullLifetime, pullB.value)] });
-    state = step(attached.state, []);
-    assertPosition(state, [1.05, 1.01]);
+    }, { scopes: [scope] });
 
-    state = locomotion.endPull(state, pullA.value, { stopIfLast: true });
-    const restarted = locomotion.beginPull(state, host, left, [0, 0]);
-    assert.notDeepEqual(restarted.value, pullA.value);
-    state = locomotion.endPull(restarted.state, pullA.value);
-    assert.equal(lifetime.available(state, lifetime.scope(locomotion.pullLifetime, restarted.value)), true);
-    state = locomotion.endPull(state, restarted.value);
-    state = locomotion.continuePull(state, pullB.value, [0, 18]).state;
-    state = step(state, []);
-    assertPosition(state, [1.10, 1.04]);
-    state = step(state, []);
-    assertPosition(state, [1.15, 1.09]);
+    let current = projectiles.update(watched.state, anchor.value, { position: [1.01, 1] });
+    for (let i = 0; i < 4; i++) current = step(current, []);
+    assertPosition(current, [1, 1]);
+    assert.equal(lifetime.available(current, scope), true);
 
-    state = projectiles.stop(state, second.value, "DISPEL");
+    current = step(projectiles.update(current, anchor.value, { position: [1.5, 1] }), []);
+    assertPosition(current, [1 + 2.5 / 900, 1]);
+    current = projectiles.stop(current, anchor.value, "DISPEL");
     assert.equal(endReason, "DISPEL");
-    state = step(state, []);
-    assertPosition(state, [1.20, 1.14]);
+    assert.equal(lifetime.available(current, scope), false);
+    assert.equal(shiftable.isUnbalanced(get(current, 0)), true);
+    current = step(current, []);
+    assertPosition(current, [1 + 5 / 900, 1]);
+    assert.equal(shiftable.isUnbalanced(get(current, 0)), false);
+});
 
-    const last = locomotion.beginPull(state, host, left, [0, 0]);
-    state = locomotion.endPull(last.state, last.value, { stopIfLast: true });
-    assertPosition(step(state, []), [1.20, 1.14]);
+test("near braking uses ONCE or WHILE_NEAR with the same retained pull", () => {
+    const { state, host, source } = setup();
+    for (const brake of ["ONCE", "WHILE_NEAR"]) {
+        const linked = pull.create(state, source, host, fixedPull(source, [1.01, 1], {
+            nearStop: [pull.withinRadius(0.2)],
+            brake,
+        }));
+        assert.ok(linked.value);
+        const segment = linked.value.unbalance;
+        const first = step(unbalance.applyImpulse(linked.state, host, [1.5, 0]).state, []);
+        assertPosition(first, [1.05, 1]);
+        assert.deepEqual(unbalance.get(first, segment).velocity, [0, 0]);
+        const second = step(unbalance.applyImpulse(first, host, [1.5, 0]).state, []);
+        assertPosition(second, [1.10, 1]);
+        assert.deepEqual(unbalance.get(second, segment).velocity, brake === "ONCE" ? [0.05, 0] : [0, 0]);
+        assert.equal(lifetime.available(second, lifetime.scope(pull.lifetime, linked.value)), true);
+    }
+});
+
+test("arrival publishes displacement before braking and ending the pull", () => {
+    const observations = [];
+    let pullRef;
+    const { state, host, source } = setup({
+        ...targetDefinition,
+        hooks: Hooks.empty().set(unbalance.forcedMoved, {
+            id: "observe-arrival",
+            invoke(current) {
+                const position = get(current, 0).position;
+                assert.ok(position[0] >= 1.8 && position[0] <= 2.2);
+                assert.ok(unbalance.get(current, pullRef.unbalance).velocity[0] > 0);
+                assert.equal(lifetime.available(current, lifetime.scope(pull.lifetime, pullRef)), true);
+                observations.push("MOVED");
+                return { state: current, value: undefined };
+            },
+        }),
+    });
+    const linked = pull.create(state, source, host, fixedPull(source, [2, 1], {
+        nearStop: [pull.withinRadius(0.2)],
+        brake: "ONCE",
+        endOnReach: true,
+    }));
+    pullRef = linked.value;
+    assert.ok(pullRef);
+    const scope = lifetime.scope(pull.lifetime, pullRef);
+    const watched = effects.install(linked.state, host, {
+        id: "observe-pull-end",
+        initialize: () => ({}),
+        onEnd(current, _effect, reason) {
+            assert.deepEqual(unbalance.get(current, pullRef.unbalance).velocity, [0, 0]);
+            assert.equal(lifetime.available(current, scope), false);
+            observations.push(reason);
+            return current;
+        },
+    }, { scopes: [scope] });
+    let current = step(unbalance.applyImpulse(watched.state, host, [24, 0]).state, []);
+    assert.deepEqual(observations, ["MOVED", "ARRIVED"]);
+    assert.equal(shiftable.isUnbalanced(get(current, 0)), true);
+    for (let i = 0; i < 3; i++) current = step(current, []);
+    assert.equal(shiftable.isUnbalanced(get(current, 0)), false);
 });
 
 test("immunity rejects reception and ends an existing segment before displacement", () => {
-    const state = target();
-    const host = units.ref(get(state, 0));
-    const pushed = locomotion.applyImpulse(state, host, [30, 0]);
+    const { state, host } = setup();
+    const pushed = unbalance.applyImpulse(state, host, [30, 0]);
     const immunity = effects.install(pushed.state, host, unbalanceImmunity);
-    assert.equal(locomotion.applyImpulse(immunity.state, host, [30, 0]).value, null);
-    assert.equal(locomotion.isUnbalanced(get(immunity.state, 0)), true);
+    assert.equal(unbalance.applyImpulse(immunity.state, host, [30, 0]).value, null);
+    assert.equal(shiftable.isUnbalanced(get(immunity.state, 0)), true);
 
     const advanced = step(immunity.state, []);
     assertPosition(advanced, [1, 1]);
-    assert.equal(locomotion.isUnbalanced(get(advanced, 0)), false);
-    assert.equal(lifetime.available(advanced, lifetime.scope(locomotion.unbalanceLifetime, pushed.value)), false);
+    assert.equal(shiftable.isUnbalanced(get(advanced, 0)), false);
+    assert.equal(lifetime.available(advanced, lifetime.scope(unbalance.lifetime, pushed.value)), false);
 
     const released = effects.end(advanced, immunity.value, "SCRIPT");
-    const knocked = locomotion.applyImpulse(released, host, [30, 0]);
+    const knocked = unbalance.applyImpulse(released, host, [30, 0]);
     assert.ok(knocked.value);
     assertPosition(step(knocked.state, []), [2, 1]);
 });
 
 test("forced movement slides along a physical wall and publishes its committed contact", () => {
     let contact;
-    let state = battle([{
-        position: [1, 1],
-        definition: {
-            ...definition,
-            hooks: Hooks.empty().set(locomotion.forcedMoved, {
-                id: "record-contact",
-                invoke(current, movement) {
-                    assertPosition(current, [1.4, 1.5]);
-                    contact = movement.contacts;
-                    return { state: current, value: undefined };
-                },
-            }),
-        },
-    }]);
+    const { state, host } = setup({
+        ...targetDefinition,
+        hooks: Hooks.empty().set(unbalance.forcedMoved, {
+            id: "record-contact",
+            invoke(current, movement) {
+                assertPosition(current, [1.4, 1.5]);
+                contact = movement.contacts;
+                return { state: current, value: undefined };
+            },
+        }),
+    });
     const tile = getTile(state.battlefield.map, [1, 2]);
-    state = updateTile(state, [1, 2], {
+    const wall = updateTile(state, [1, 2], {
         ...tile.state,
         collision: { type: "BOX", offset: [0, 0], halfExtents: [0.5, 0.5] },
     });
-    state = locomotion.applyImpulse(state, units.ref(get(state, 0)), [45, 15]).state;
-    state = step(state, []);
-    assertPosition(state, [1.4, 1.5]);
+    const moved = step(unbalance.applyImpulse(wall, host, [45, 15]).state, []);
+    assertPosition(moved, [1.4, 1.5]);
     assert.deepEqual(contact, [{ tile: [1, 2], normal: [-1, 0] }]);
 });
 
 test("ending a segment settles its pulls even when a pull dependent starts the next segment", () => {
-    const state = target();
-    const host = units.ref(get(state, 0));
-    const source = projectiles.create(state, { id: "rebound-source" }, { position: [0, 0], state: {} });
-    const sourceScope = lifetime.scope(projectiles.lifetime, source.value);
-    const first = locomotion.beginPull(source.state, host, sourceScope, [9, 0]);
-    const oldScope = lifetime.scope(locomotion.unbalanceLifetime, first.value.unbalance);
-    const oldPullScope = lifetime.scope(locomotion.pullLifetime, first.value);
+    const { state, host, source } = setup();
+    const first = pull.create(state, source, host, fixedPull(source, [5, 1]));
+    assert.ok(first.value);
+    const oldScope = lifetime.scope(unbalance.lifetime, first.value.unbalance);
+    const oldPullScope = lifetime.scope(pull.lifetime, first.value);
     let next;
     const installed = effects.install(first.state, host, {
         id: "rebound",
         initialize: () => ({}),
         onEnd(current) {
-            assert.equal(locomotion.isUnbalanced(get(current, 0)), false);
+            assert.equal(shiftable.isUnbalanced(get(current, 0)), false);
             assert.equal(lifetime.available(current, oldScope), false);
             assert.equal(lifetime.available(current, oldPullScope), false);
-            const started = locomotion.beginPull(current, host, sourceScope, [0, 900]);
+            const started = pull.create(current, source, host, fixedPull(source, [1, 2]));
             next = started.value;
             return started.state;
         },
     }, { scopes: [oldPullScope] });
-    const ended = locomotion.unbalanceLifetime.end(installed.state, first.value.unbalance, "SETTLED");
+    const ended = unbalance.lifetime.end(installed.state, first.value.unbalance, "SETTLED");
     assert.ok(next);
     assert.notDeepEqual(next.unbalance, first.value.unbalance);
     assert.deepEqual(lifetime.dependencies(ended, oldPullScope), []);
-    assert.equal(lifetime.available(ended, lifetime.scope(locomotion.pullLifetime, next)), true);
-    assertPosition(step(ended, []), [1, 2]);
+    assert.equal(lifetime.available(ended, lifetime.scope(pull.lifetime, next)), true);
+    assertPosition(step(pull.end(ended, first.value), []), [1, 1 + 40 / 900]);
 });

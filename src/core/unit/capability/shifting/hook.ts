@@ -5,7 +5,7 @@ import type { WorldPosition } from "../../../geometry/coordinate.js";
 import * as hooks from "../../../hook.js";
 import * as units from "../../query.js";
 import type { Unit } from "../../unit.js";
-import type { Locomotion } from "./capability.js";
+import type { Shiftable } from "./shiftable.js";
 import type { Unbalance } from "./unbalance.js";
 
 export interface ForcedMovement {
@@ -15,8 +15,8 @@ export interface ForcedMovement {
     readonly contacts: readonly Contact[];
 }
 
-export const forcedMoved = hooks.key<hooks.Hook<ForcedMovement, void>, Unit & Locomotion>(
-    "locomotion.forcedMoved",
+export const forcedMoved = hooks.key<hooks.Hook<ForcedMovement, void>, Unit & Shiftable>(
+    "shifting.forcedMoved",
 );
 
 export function dispatchMoved(battle: BattleState, event: ForcedMovement): BattleState {

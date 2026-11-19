@@ -1,4 +1,4 @@
-import { createBattleState, type State } from "./state.js";
+import { createBattleState, DEFAULT_PUSH_MULTIPLIER, type State } from "./state.js";
 import { advance as advanceEffects } from "../unit/effect/operations.js";
 import { assert, assertNonnegativeNumber } from "../common/assert.js";
 import { create as createBattlefield } from "../battlefield/state.js";
@@ -30,7 +30,9 @@ export function initialize<
     MechanismStates extends readonly object[],
 >(input: Input<CardStates, MechanismStates>): State;
 export function initialize(input: Input<readonly any[], readonly any[]>): State {
+    const { pushMultiplier = DEFAULT_PUSH_MULTIPLIER } = input;
     assertNonnegativeNumber(input.routeMoveMultiplier, "routeMoveMultiplier");
+    assertNonnegativeNumber(pushMultiplier, "pushMultiplier");
     assert(
         Number.isInteger(input.rngState) && input.rngState >= 0 && input.rngState < 2 ** 32,
         "battle RNG state must be an unsigned 32-bit integer",
@@ -64,6 +66,7 @@ export function initialize(input: Input<readonly any[], readonly any[]>): State 
         {
             predefines: input.predefines,
             routeMoveMultiplier: input.routeMoveMultiplier,
+            pushMultiplier,
         },
     );
 

@@ -60,6 +60,13 @@ test("native routes compile patrol loops and retain wait anchors before birth", 
     ]);
 });
 
+test("level push multiplier retains the configured value, including zero", () => {
+    const raw = fixture("level_act1autochess_h07_02");
+    assert.equal(parseLevelDefinition(raw).pushMultiplier, 0.5);
+    const level = parseLevelDefinition({ ...raw, options: { ...raw.options, moveMultiplier: 0 } });
+    assert.equal(level.pushMultiplier, 0);
+});
+
 test("main random groups preserve source order and expand the selected count once", () => {
     const { level, resolve, definitions } = source();
     const seed = 123;
@@ -135,7 +142,7 @@ test("Action and Enemy notCountInTotal release scheduling from still-present uni
     assert.deepEqual(compiled.schedule.waves[0].fragments[0].spawns.map(({ wait }) => wait), ["NONE", "WAVE"]);
     let state = step(initialize({
         map: level.map, schedule: compiled.schedule, predefines: [], initialMechanisms: [],
-        routeMoveMultiplier: 1, rngState: compiled.rngState,
+        routeMoveMultiplier: 1, pushMultiplier: level.pushMultiplier, rngState: compiled.rngState,
     }), []);
     assert.deepEqual(state.schedule.waiting, { wave: [1], final: [1] });
     state = triggerBranch(state, "uncounted", false);

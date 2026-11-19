@@ -23,6 +23,7 @@
 | 组织标签合并、去重且不双计旧字段，标签保留大小写与顺序；装置的实际阵营及筛选标签进入 DEVICE Definition。 | [标签转换](../../test/data/unit/tags.test.js)、[角色配置](../../test/data/unit/operator.test.js)与[预置装置](../../test/data/level/predefined.test.js)保障规范化和内容绑定，不重复 Core 标签查询。 |
 | 作者帧参数正确转换起手、主段与释放位置，保留连续 Tick 与无界缩放标记。 | [动作时序](../../test/data/action/timing.test.js)以玫兰莎起手为代表；运行攻速与帧内调度不在 Data 验收。 |
 | 地图几何、路线时基与控制流、出兵展开、随机组及等待政策保留。 | [Route／Schedule 转换](../../test/data/level/route-schedule.test.js)与[预置配置](../../test/data/level/predefined.test.js)；主线预处理、Branch 运行时抽选及 notCountInTotal 转换。 |
+| 关卡推击倍率保留，包括配置为零的倍率。 | [关卡转换](../../test/data/level/route-schedule.test.js)。 |
 | Effect 重应用、层数／续期和属性修正位置、黑板与来源采样标记完整。 | [Effect 转换](../../test/data/effect.test.js)使用已启用描述，不以静态读取证明运行算法。 |
 
 Prefab、范围读取和换算由实际业务使用；目录移动、提取工具或未接入原型不产生额外运行验收承诺。
@@ -40,7 +41,8 @@ Prefab、范围读取和换算由实际业务使用；目录移动、提取工�
 | [Effect](effect.md)、[Contribution](capability.md#属性与贡献) | 安装与启停、竞争、重应用、到期和最后业务正确；先选有效贡献再求动态输入，所属公式保留小数与数值范围。 |
 | [Occupancy](occupancy.md)、[Deployment](deployment.md) | 双槽排他、Pair 先发布再通知，旧配对不影响替代实例；Quote 预览与执行一致，资源先消费再入场，主动／被动离场分别结账，库存／DP 预算及 Card 延续正确。 |
 | [Blocking](blocking.md)、[Layer](capability.md#layer-与-hitbox) | 资格、容量尾裁、批量双端发布与旧 Relation；主动空间覆盖取消自身计划、解除当前关系。Layer 同值请求仍清理，Settlement 使用当时当前关系，通知中新建关系不追删。 |
-| [Locomotion](navigation.md) | 历史速度、限力／限速、转向、最终目标吸附、地形避障与反射。推拉共用外力速度，按照来源管理牵引，免疫先于位移结算。旧失衡段的结束和依赖清理不影响新段。推进包含无 Route 的单位并采样实际位移。由[失衡](../../test/core/navigation/unbalance.test.js)、[运动](../../test/core/navigation/locomotion.test.js)和[路线](../../test/core/navigation/route.test.js)集中验证。 |
+| [Locomotion](navigation.md#locomotion) | 历史速度、限力／限速、转向、最终目标吸附、地形避障与反射。推进包含无 Route 的受力单位并采样实际位移。由[运动](../../test/core/navigation/locomotion.test.js)和[路线](../../test/core/navigation/route.test.js)集中验证。 |
+| [Shifting](navigation.md#强制位移) | 推击取当前有效力度和重量，牵引创建时采样力值，同一来源的多个实例独立。近停可保持零力牵引，位置发布与位移通知先于清速和到达结束。唯一有效牵引才可清速，依赖结束保留剩余速度。免疫先于位移，旧段依赖清理不影响新段。由[失衡](../../test/core/navigation/unbalance.test.js)集中验证。 |
 | [Targeting](targeting.md)、[Presence](presence.md) | 选择、空间存在、锁定命中与实际接收独立；具体重要协作见下节。 |
 | [Resource](resource.md)、[Vitality](vitality.md)、[Elemental](elemental.md) | 输出／接收／实际变化分离，HP／债务与 EP 准确提交，后继报告固定，死亡与 Burst 顺序正确；集中结果见资源清单。 |
 | [Runtime](functional-core.md) | 出生等待先于 enter，逐对象接续最新状态，预置重入保留新绑定，Tick 阶段确定、失败不发布；调度完成后 step 仍可推进。 |

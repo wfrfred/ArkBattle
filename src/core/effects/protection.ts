@@ -4,7 +4,7 @@ import { update as updateUnit } from "../unit/operations.js";
 import type { OrdinaryDefinition as Definition } from "../unit/effect/index.js";
 import * as vitality from "../unit/capability/vitality/index.js";
 import * as elemental from "../unit/capability/elemental/index.js";
-import * as locomotion from "../unit/capability/locomotion/capability.js";
+import * as shiftable from "../unit/capability/shifting/shiftable.js";
 import * as targetable from "../unit/capability/targetable/capability.js";
 import * as units from "../unit/index.js";
 import { untargetableRestriction } from "./visibility.js";
@@ -21,16 +21,16 @@ export const invincibleEpDamageRestriction: elemental.DamageRestriction = {
     allows: () => false,
 };
 
-const forceImmunity: locomotion.Restriction = { allows: () => false };
+const forceImmunity: shiftable.Restriction = { allows: () => false };
 
-export const unbalanceImmunity: Definition<object, locomotion.Locomotion> = {
+export const unbalanceImmunity: Definition<object, shiftable.Shiftable> = {
     id: "protection/unbalance-immunity",
     initialize: () => ({}),
     onEnable(state, self) {
         return updateUnit(
             state,
             self.host,
-            locomotion.setForceRestriction({
+            shiftable.setRestriction({
                 id: `@effect/${self.id}/unbalance-immunity`,
                 value: forceImmunity,
             }),
@@ -40,7 +40,7 @@ export const unbalanceImmunity: Definition<object, locomotion.Locomotion> = {
         return updateUnit(
             state,
             self.host,
-            locomotion.removeForceRestriction(`@effect/${self.id}/unbalance-immunity`),
+            shiftable.removeRestriction(`@effect/${self.id}/unbalance-immunity`),
         );
     },
 };

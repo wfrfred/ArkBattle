@@ -16,7 +16,7 @@ import {
     type Blockable,
 } from "../../unit/capability/blocking/blockable.js";
 import { hasLayer } from "../../unit/capability/layer/capability.js";
-import { isUnbalanced } from "../../unit/capability/locomotion/capability.js";
+import { isUnbalanced } from "../../unit/capability/shifting/shiftable.js";
 import { hasOccupancy } from "../../unit/capability/occupancy/capability.js";
 import { hasVitality } from "../../unit/capability/vitality/capability.js";
 import { isAlive } from "../../unit/capability/vitality/query.js";

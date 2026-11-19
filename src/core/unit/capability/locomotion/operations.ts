@@ -8,12 +8,8 @@ import { effectiveMap } from "../../../battlefield/navigation/cache.js";
 import * as units from "../../query.js";
 import type { Unit } from "../../unit.js";
 import * as attribute from "../../attribute.js";
-import {
-    isUnbalanced,
-    type Locomotion,
-    type MovementContext,
-    type MovementTarget,
-} from "./capability.js";
+import type { Locomotion, MovementContext, MovementTarget } from "./capability.js";
+import { isUnbalanced } from "../shifting/shiftable.js";
 import { calculate as avoidance } from "./avoidance.js";
 import { reflect } from "./motion.js";
 import { integrate } from "./steering.js";
