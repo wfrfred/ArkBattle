@@ -248,6 +248,12 @@ GROUND_BOUND 与 UNMOVABLE 是不同标志；isActuallyGroundBound 还会结合 
 
 **N｜漩涡的单次牵引。** 对一个目标的同一次 `_DoPull` 中，漩涡首次登记成功后清除首帧标记。后续每次推进重新判定距离，近停时尝试清速，再对同一个弹道来源调用 `StillPull(0)`。续拉成功后挂起，下一次推进仍继续这一条牵引。到期时另走收尾路径，先尝试清速，再调用 `EndPull`。这条证据覆盖一次 `_DoPull` 内的多次清速，技能下一次命中另行判定。[开始、续帧和结束指令](../evidence/forced-motion-20261118/pull/native-branches.json)。
 
+**N｜力度来源与推进资格。** 钩索、捕网、漩涡、命中牵引和 Ability 牵引都有取不到施力者时按基础力度 0 查表的分支。原生另检查弹道能否继续。Harpoon、Laser 与 Lasso 都继承 LinkProjectile 的来源失效停止策略，`Projectile.OnTick` 会检查来源 `ValidAndAlive`，普通钩索协程也独立检查。暗索钩索与歌蕾蒂娅 S3 漩涡属于这组来源绑定的样例。现有样例尚未证明施力者失效后仍能创建普通持续牵引。[来源的取值和校验](../evidence/forced-motion-20261118/pull/entry-and-end.json)、[技能和弹道](../evidence/forced-motion-20261118/pull/prefab-mappings.json)、[基础力度调用点](../evidence/forced-motion-20261118/base-force/consumers.json)。
+
+**N｜首轮登记。** Harpoon 与 NetCatcher 算出的初始拉力为零时，在调用 `BeginPull` 前走停止。初始拉力大于零时，首轮也先评估近停，再决定是否登记。配置为到位结束时直接走钩索停止或捕网本段清理，跳过本次 `BeginPull`，因而本次牵引未新建失衡。配置为到位后保留时可以登记零力牵引。登记前的清速仍要求当前来源已是目标唯一有效牵引，因此一个此前没有登记的新来源不能先清掉目标的旧速度。[首轮停止、登记与清速指令](../evidence/forced-motion-20261118/pull/entry-and-end.json)。
+
+**N｜续帧收尾。** 在已核实的手动物理和协程推进分支中，战斗先模拟并发布物理位置，续帧牵引用该位置重新判断到位。已挂接的钩索和捕网走弹道停止分支时，在相应资格满足的路径上先调用目标的 `EndPull`。目标移除来源后，符合条件时同步推进一次失衡状态检查，再通知 `OnEndPulling`。弹道收尾随后能让施力者即时搜索阻挡目标，仍受阻挡资格限制。弹道因其他原因在普通对象更新中停止，也能走自己的停止链。位移伤害另使用定期采样的累计距离，见本节上方。[物理提交与停止调用顺序](../evidence/forced-motion-20261118/pull/entry-and-end.json)、[阻挡搜索历史取证](../evidence/blocking-timing-native-20261023/immediate/report.txt)。
+
 **I｜对 Core 的约束。** 已核实的持续牵引共用力值衰减。拉点、阻挡范围判定、零力、唯一来源清速和结束牵引各有独立条件。保留牵引而暂时输出零力，以及另一条牵引继续施力，都应能表达。
 
 **U｜调查范围。** 本节使用同版 Windows x64 客户端的静态原生指令与所列技能 Prefab。尚未核实运行时热更、锏 S3 等其他特殊技能的资产绑定及近停后重新施力的实战逐帧轨迹。[输入版本与复查入口](../evidence/forced-motion-20261118/README.md#牵引公式与近停补核)。

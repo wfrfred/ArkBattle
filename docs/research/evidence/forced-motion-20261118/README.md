@@ -36,6 +36,7 @@
 
 - 原生取证保存五个牵引入口的调用和关键指令，以及 `CheckInBlockRange`、`TryEarlyStopPull` 和半径常量。静态直接调用扫描覆盖当前二进制中的 E8／E9 候选。[原生分支](pull/native-branches.json)。
 - 配置取证保存角色技能槽、技能节点、弹道 ID、组件类型、参数与输入指纹。歌蕾蒂娅 S2 同时保存技能 Buff、模式切换模板与角色模式的引用链。[技能与弹道配置](pull/prefab-mappings.json)。
+- 牵引开始与收尾记录保存来源有效性校验、首轮近停先于登记、物理位置提交以及收尾通知的关键分支。[来源、登记与收尾](pull/entry-and-end.json)。
 
 ## 基础力度等级补核
 
@@ -91,6 +92,9 @@ uv run --offline --with 'capstone==5.0.7' python "$batch/collision/extract_range
   --out "$work/pull/native-full.json" \
   --index 72289 72302 72458 88379 88651 97040 77752 77322 79636 79637 \
   --xref 65913 79637 77751 --select Torappu.MathUtil.CheckDistance
+uv run --offline --with 'capstone==5.0.7' python "$batch/collision/extract_ranges.py" \
+  --out "$work/pull/entry-and-end-full.json" \
+  --index 65802 72290 72302 72346 72423 72458 72526 77262 77750 77753 78067
 uv run --offline --locked "$skill/scripts/native.py" --out "$work/pull/radius.json" \
   read 0x1870aed7c --format '<f'
 uv run --offline --with 'capstone==5.0.7' python "$batch/collision/extract_ranges.py" \
@@ -103,7 +107,7 @@ uv run --locked "$skill/scripts/replay.py" "$batch" --out "$work/native" \
 python "$skill/scripts/archive.py" --batch "$batch"
 ```
 
-已核对技能与弹道的完整组件可复提到独立目录。根据 Bundle 指纹确认版本。[配置证据](pull/prefab-mappings.json)。
+已核对技能与弹道的完整组件可复提到独立目录。根据 Bundle 指纹确认版本。弹道继承关系可用 `native.py type` 核对开始与收尾记录中的 `replay.typeNames`。[配置证据](pull/prefab-mappings.json)、[开始与收尾取证](pull/entry-and-end.json)。
 
 ```sh
 python - "$batch" "$work/pull" <<'PY'
@@ -119,5 +123,8 @@ extract("extract_prefabs.py", output / "prefabs-full.json",
         SELECTION=record["provenance"]["prefabs"]["selection"])
 extract("extract_templates.py", output / "templates.json",
         KEYS={"switch_mode_restart_fsm"})
+entry = json.loads((batch / "pull/entry-and-end.json").read_text())
+extract("extract_prefabs.py", output / "entry-prefabs.json",
+        SELECTION=entry["result"]["replay"]["prefabSelection"])
 PY
 ```

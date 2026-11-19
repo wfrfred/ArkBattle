@@ -23,6 +23,7 @@
           "collision/ice-corner-velocity.json#/provenance/client/dll",
           "damage/native.json#/provenance/client/dll",
           "formulas/force-native-selected.json#/provenance/client/dll",
+          "pull/entry-and-end.json#/provenance/client/dll",
           "pull/native-branches.json#/provenance/client/dll",
           "pull/prefab-mappings.json#/provenance/clientBuild/GameAssembly.dll",
           "push/native-push.json#/provenance/client/dll",
@@ -45,6 +46,7 @@
           "collision/ice-corner-velocity.json#/provenance/client/metadata",
           "damage/native.json#/provenance/client/metadata",
           "formulas/force-native-selected.json#/provenance/client/metadata",
+          "pull/entry-and-end.json#/provenance/client/metadata",
           "pull/native-branches.json#/provenance/client/metadata",
           "pull/prefab-mappings.json#/provenance/clientBuild/Arknights_Data~1il2cpp_data~1Metadata~1global-metadata.dat",
           "push/native-push.json#/provenance/client/metadata",
@@ -73,6 +75,7 @@
       "formulas/force-native-selected.json",
       "formulas/force-tables.json",
       "formulas/mint-config.json",
+      "pull/entry-and-end.json",
       "pull/native-branches.json",
       "pull/prefab-mappings.json",
       "push/native-push.json",
@@ -261,6 +264,12 @@
         "kind": "record",
         "bytes": 16779,
         "sha256": "ee99e3acf1430d816f8e07947b4d843095aba915f791763344533608c24d161e"
+      },
+      {
+        "path": "pull/entry-and-end.json",
+        "kind": "record",
+        "bytes": 46578,
+        "sha256": "2399b36c402fab17b9cbcc9e235d8b501a1852c77350411a699b4e80ac76c76f"
       },
       {
         "path": "pull/native-branches.json",
@@ -587,7 +596,8 @@
           "mode": "disasm",
           "records": [
             "collision/contact-ranges.json#/result/ranges/65802",
-            "collision/contact-ranges.json#/result/ranges/65802/method"
+            "collision/contact-ranges.json#/result/ranges/65802/method",
+            "pull/entry-and-end.json#/result/methods/0"
           ],
           "fullname": "Torappu.Battle.BattleController.OnTick",
           "address": "0x18065aaa0"
@@ -1175,6 +1185,15 @@
           "address": "0x1809061b0"
         },
         {
+          "index": 72290,
+          "mode": "disasm",
+          "records": [
+            "pull/entry-and-end.json#/result/methods/2"
+          ],
+          "fullname": "Torappu.Battle.HarpoonProjectile.OnProjectileStop",
+          "address": "0x1809064b0"
+        },
+        {
           "index": 72291,
           "mode": "disasm",
           "records": [
@@ -1191,15 +1210,35 @@
             "formulas/force-native-selected.json#/result/callers/3/method",
             "formulas/force-native-selected.json#/result/callers/3/pieces/0",
             "formulas/force-native-selected.json#/result/callers/3/pieces/0/method",
+            "pull/entry-and-end.json#/result/methods/6",
             "pull/native-branches.json#/result/directCallCoverage/confirmedCallers/0"
           ],
           "fullname": "Torappu.Battle.HarpoonProjectile/<DoLink>d__19.MoveNext",
           "address": "0x18091e2f0"
         },
         {
+          "index": 72346,
+          "mode": "disasm",
+          "records": [
+            "pull/entry-and-end.json#/result/methods/8"
+          ],
+          "fullname": "Torappu.Battle.LinkProjectile.get_stopWhenSourceInvalid",
+          "address": "0x1809089a0"
+        },
+        {
+          "index": 72423,
+          "mode": "disasm",
+          "records": [
+            "pull/entry-and-end.json#/result/methods/3"
+          ],
+          "fullname": "Torappu.Battle.NetCatcherProjectile.OnProjectileStop",
+          "address": "0x1809129b0"
+        },
+        {
           "index": 72458,
           "mode": "disasm",
           "records": [
+            "pull/entry-and-end.json#/result/methods/7",
             "pull/native-branches.json#/result/directCallCoverage/confirmedCallers/1"
           ],
           "fullname": "Torappu.Battle.NetCatcherProjectile/<_DoPull>d__33.MoveNext",
@@ -1240,6 +1279,15 @@
           ],
           "fullname": "Torappu.Battle.Projectile.RegisterBuffs",
           "address": "0x180918d20"
+        },
+        {
+          "index": 72526,
+          "mode": "disasm",
+          "records": [
+            "pull/entry-and-end.json#/result/methods/9"
+          ],
+          "fullname": "Torappu.Battle.Projectile.OnTick",
+          "address": "0x180918540"
         },
         {
           "index": 72620,
@@ -1380,6 +1428,7 @@
           "index": 77750,
           "mode": "disasm",
           "records": [
+            "pull/entry-and-end.json#/result/methods/5",
             "state/native-state.json#/result/bodies/6/method",
             "state/native-state.json#/result/bodies/6/fragments/0",
             "state/native-state.json#/result/bodies/6/fragments/0/method"
@@ -1417,6 +1466,7 @@
           "index": 77753,
           "mode": "disasm",
           "records": [
+            "pull/entry-and-end.json#/result/methods/4",
             "state/native-state.json#/result/bodies/9/method",
             "state/native-state.json#/result/bodies/9/fragments/0",
             "state/native-state.json#/result/bodies/9/fragments/0/method"
@@ -1571,7 +1621,8 @@
           "mode": "disasm",
           "records": [
             "collision/contact-ranges.json#/result/ranges/78067",
-            "collision/contact-ranges.json#/result/ranges/78067/method"
+            "collision/contact-ranges.json#/result/ranges/78067/method",
+            "pull/entry-and-end.json#/result/methods/1"
           ],
           "fullname": "Torappu.Battle.Enemy/States/UnbalanceState.OnAfterPhysicSimulate",
           "address": "0x180aec270"
@@ -2285,6 +2336,7 @@
             "damage/arc-frontliner.json#/provenance/prefabs/sources/0",
             "damage/config.json#/provenance/prefabs/sources/0",
             "formulas/mint-config.json#/provenance/prefabDecoder/sources/0",
+            "pull/entry-and-end.json#/provenance/prefabs/sources/0",
             "pull/prefab-mappings.json#/provenance/prefabs/sources/0",
             "push/prefabs.json#/provenance/sources/0",
             "push/projectiles.json#/provenance/sources/0"
@@ -2312,6 +2364,7 @@
             "base-force/content.json#/provenance/installedGameAssets/2",
             "damage/config.json#/provenance/prefabs/sources/1",
             "formulas/mint-config.json#/provenance/prefabDecoder/sources/2",
+            "pull/entry-and-end.json#/provenance/prefabs/sources/2",
             "pull/prefab-mappings.json#/provenance/prefabs/sources/1",
             "push/prefabs.json#/provenance/sources/1"
           ],
@@ -2461,6 +2514,7 @@
           "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]projectiles.ab",
           "sha256": "cc3f21b73b10fbc619a1ff8b099f31e678c883ddacb7bb6775fea960ffecb0e1",
           "records": [
+            "pull/entry-and-end.json#/provenance/prefabs/sources/1",
             "pull/prefab-mappings.json#/provenance/prefabs/sources/2",
             "push/projectiles.json#/provenance/sources/1"
           ],

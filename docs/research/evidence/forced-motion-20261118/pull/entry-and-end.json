@@ -1,0 +1,1052 @@
+{
+  "collectedOn": "2026-11-19",
+  "provenance": {
+    "client": {
+      "dll": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "bytes": 223112680,
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff"
+      },
+      "metadata": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "bytes": 46669332,
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5"
+      },
+      "metadataVersion": 29,
+      "imageBase": "0x180000000"
+    },
+    "nativeDecoder": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/native.py",
+        "bytes": 18723,
+        "sha256": "1c6c16dc97e0dd9af0af4033c81a7534384dd65ebb1e604df3f4a3289df158e6"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]"
+    },
+    "rangeExtractor": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/forced-motion-20261118/collision/extract_ranges.py",
+      "bytes": 3258,
+      "sha256": "887112956714f3274126df8b2f088ad0af8ceabd0e2262b94c664ee3223566a5"
+    },
+    "prefabs": {
+      "collectedOn": "2026-11-18",
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/attack-way-20261118/extract_prefabs.py",
+        "bytes": 4657,
+        "sha256": "d6cab91818e9966fd0f1b3ca3f97cdc0ddc512dcad95b592f16710ab5cbe9462"
+      },
+      "helper": {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/targeting-pipeline-20261109/content/extract_content.py",
+        "bytes": 12906,
+        "sha256": "37504c156e11e55c9c06174980fb1617281690ab3b01db9caa9dfd28937f5faa"
+      },
+      "sources": [
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "bytes": 477255,
+          "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]projectiles.ab",
+          "bytes": 1905483,
+          "sha256": "cc3f21b73b10fbc619a1ff8b099f31e678c883ddacb7bb6775fea960ffecb0e1"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "bytes": 1367500,
+          "sha256": "0d0b4c0f9252c14a69a20d4bea09527403dd3eddfc2f7bcd757c3c30cf37ffc3"
+        }
+      ],
+      "selection": {
+        "battle/prefabs/[uc]projectiles.ab": [
+          "projectile_chr_almond_s2",
+          "projectile_mizuki_uniequip_004"
+        ],
+        "battle/prefabs/[uc]skills.ab": [
+          "skchr_almond_2",
+          "sktok_mlyss_wtrman_3",
+          "skchr_acspec_3"
+        ]
+      },
+      "scope": "All MonoBehaviour components under selected character/module hierarchy roots; no live execution observation."
+    },
+    "scope": "Ordinary installed native paths and selected serialized configurations. E8 calls and virtual slot arguments are read at instruction boundaries. Runtime hotfixes, all content reachability and play-frame trajectories were not verified."
+  },
+  "result": {
+    "projectileTypes": [
+      {
+        "name": "Torappu.Battle.HarpoonProjectile",
+        "typeDefinitionIndex": 10883,
+        "parentTypeIndex": 61532,
+        "parent": "Torappu.Battle.LinkProjectile",
+        "stopWhenSourceInvalidMethods": []
+      },
+      {
+        "name": "Torappu.Battle.LaserProjectile",
+        "typeDefinitionIndex": 10885,
+        "parentTypeIndex": 61532,
+        "parent": "Torappu.Battle.LinkProjectile",
+        "stopWhenSourceInvalidMethods": []
+      },
+      {
+        "name": "Torappu.Battle.LassoProjectile",
+        "typeDefinitionIndex": 10887,
+        "parentTypeIndex": 61532,
+        "parent": "Torappu.Battle.LinkProjectile",
+        "stopWhenSourceInvalidMethods": []
+      },
+      {
+        "name": "Torappu.Battle.LinkProjectile",
+        "typeDefinitionIndex": 10889,
+        "parentTypeIndex": 66507,
+        "parent": "Torappu.Battle.Projectile",
+        "stopWhenSourceInvalidMethods": [
+          {
+            "index": 72346,
+            "fullName": "Torappu.Battle.LinkProjectile.get_stopWhenSourceInvalid",
+            "address": "0x1809089a0"
+          }
+        ]
+      }
+    ],
+    "additionalPrefabWitnesses": [
+      {
+        "bundle": "battle/prefabs/[uc]projectiles.ab",
+        "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+        "pathId": "-7620140768024633078",
+        "hierarchy": [
+          "projectile_chr_almond_s2_logic"
+        ],
+        "type": "Torappu.Battle.Projectiles.PullHitTargetBehaviour",
+        "objectSha256": "4474ad2e890df86dbed608644a400bc73eaade17335069cb8c29b05dd35c04b7",
+        "projectileKey": null
+      },
+      {
+        "bundle": "battle/prefabs/[uc]projectiles.ab",
+        "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+        "pathId": "-7268449085302337361",
+        "hierarchy": [
+          "projectile_mizuki_uniequip_004"
+        ],
+        "type": "Torappu.Battle.LassoProjectile",
+        "objectSha256": "f4fc8816298385a534da1857499710f4ace2f029b1c2255405fbfa23e943f98b",
+        "projectileKey": null
+      },
+      {
+        "bundle": "battle/prefabs/[uc]projectiles.ab",
+        "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+        "pathId": "-5236322706541941612",
+        "hierarchy": [
+          "projectile_mizuki_uniequip_004_logic"
+        ],
+        "type": "Torappu.Battle.LassoProjectile",
+        "objectSha256": "6efe0e47a96d620e8c82a4973e16e993710ba53fa2e22bab1123eab665b7000a",
+        "projectileKey": null
+      },
+      {
+        "bundle": "battle/prefabs/[uc]projectiles.ab",
+        "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+        "pathId": "-4708408755663342272",
+        "hierarchy": [
+          "projectile_chr_almond_s2"
+        ],
+        "type": "Torappu.Battle.Projectiles.PullHitTargetBehaviour",
+        "objectSha256": "edf9ef7d1d0c159f1c44c5ae2091c924c0d57cff3192f61aa4e15cf95e663767",
+        "projectileKey": null
+      },
+      {
+        "bundle": "battle/prefabs/[uc]projectiles.ab",
+        "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+        "pathId": "-1978412409238691574",
+        "hierarchy": [
+          "projectile_chr_almond_s2_logic"
+        ],
+        "type": "Torappu.Battle.LassoProjectile",
+        "objectSha256": "c5eeb138853f35616bea7ddc7bb5299a66f562e1bca40634747039ceda4d891d",
+        "projectileKey": null
+      },
+      {
+        "bundle": "battle/prefabs/[uc]projectiles.ab",
+        "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+        "pathId": "2441599521524741440",
+        "hierarchy": [
+          "projectile_chr_almond_s2"
+        ],
+        "type": "Torappu.Battle.LassoProjectile",
+        "objectSha256": "76880f78dd63a974a4bf80ff511712b8709f1a9e6fe13eaabef33db093fe0b8c",
+        "projectileKey": null
+      },
+      {
+        "bundle": "battle/prefabs/[uc]projectiles.ab",
+        "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+        "pathId": "2687220466526425263",
+        "hierarchy": [
+          "projectile_mizuki_uniequip_004"
+        ],
+        "type": "Torappu.Battle.Projectiles.PullHitTargetBehaviour",
+        "objectSha256": "9641b0dda42442d3bb24702e544eae688e221c9c6c88553a916282183228c2b7",
+        "projectileKey": null
+      },
+      {
+        "bundle": "battle/prefabs/[uc]projectiles.ab",
+        "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+        "pathId": "6247467172234030228",
+        "hierarchy": [
+          "projectile_mizuki_uniequip_004_logic"
+        ],
+        "type": "Torappu.Battle.Projectiles.PullHitTargetBehaviour",
+        "objectSha256": "87c4a7e635b321d7482d63ae8aed2ffe6796fef563e126da529543cd8a8c4b6c",
+        "projectileKey": null
+      },
+      {
+        "bundle": "battle/prefabs/[uc]skills.ab",
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "pathId": "-7927345257167594536",
+        "hierarchy": [
+          "sktok_mlyss_wtrman_3",
+          "PullS3"
+        ],
+        "type": "Torappu.Battle.Abilities.PullCastTargets",
+        "objectSha256": "7b997b3bce1c15d62df8ac8022cbfa23dcde5271e6be70fb610fea2a223d3485",
+        "projectileKey": null
+      },
+      {
+        "bundle": "battle/prefabs/[uc]skills.ab",
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "pathId": "-5777245891685369995",
+        "hierarchy": [
+          "skchr_almond_2"
+        ],
+        "type": "Torappu.Battle.Abilities.RangedAttack",
+        "objectSha256": "7028348e310bf5ecba0b750a2c9724e150a79eae9feb5b70a873326f60426318",
+        "projectileKey": "projectile_chr_almond_s2"
+      },
+      {
+        "bundle": "battle/prefabs/[uc]skills.ab",
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "pathId": "-3639162395655999683",
+        "hierarchy": [
+          "skchr_acspec_3",
+          "Pull"
+        ],
+        "type": "Torappu.Battle.Abilities.PullCastTargets",
+        "objectSha256": "6810dc38d5bc0c774915b5646dbffac5942484aed2629d011aedf2ca19f01b14",
+        "projectileKey": null
+      }
+    ],
+    "sourceValidation": {
+      "sourceLifeCall": "Projectile.OnTick @0x18091882d; MethodSpec 291686 through usage slot 0x188aef0b0 is BattleUtil.ValidAndAlive for the saved source ObjectPtr.",
+      "observations": [
+        "LinkProjectile returns true from get_stopWhenSourceInvalid on the stock branch. Harpoon, Laser and Lasso inherit it.",
+        "Harpoon samples absent source as base force zero in this arithmetic branch, then independently checks validity of the saved target and source before the first BeginPull.",
+        "NetCatcher initializes source force bonus to zero at 0x18091fb04 and skips the getter when the source Unity object is absent.",
+        "A zero fallback in the force calculation does not establish an actual attack that continues after source loss."
+      ]
+    },
+    "firstTouch": {
+      "zeroBaseForce": "Harpoon @0x18091e81a and NetCatcher @0x18091fc48 can exit before BeginPull.",
+      "arrivalStop": "Harpoon @0x18091e56d and NetCatcher @0x18091f964 branch to stop/cleanup before virtual BeginPull on first touch if configured to end on reach.",
+      "arrivalHold": "The alternative zeroes the force argument and may register via BeginPull. The preceding TryEarlyStopPull only zeroes velocity when this same source is already the sole effective source.",
+      "beginSlot": 234,
+      "endSlot": 235
+    },
+    "positionAndEnd": [
+      "The selected manual physics path simulates at 0x18065b2a2, commits Unbalance position at 0x18065b3ab, and runs CoroutineSimulator at 0x18065b48c.",
+      "The continuation reads committed positions. A stop can also originate in the earlier ordinary projectile update.",
+      "Where attachment/target/type guards permit, Harpoon and NetCatcher stop invoke the target EndPull slot before SearchBlockeeImmediate on a valid Character source.",
+      "EndPull can synchronously tick the unbalance state after source removal; its OnEndPulling callback is later in the method and requires the relevant projectile source. Re-search is conditional and can reject a still-unbalanced target."
+    ],
+    "methods": [
+      {
+        "methodIndex": 65802,
+        "fullname": "Torappu.Battle.BattleController.OnTick",
+        "token": "0x601010b",
+        "address": "0x18065aaa0",
+        "selectedInstructions": [
+          {
+            "from": "0x18065b0b1",
+            "through": "0x18065b0b9",
+            "instructions": [
+              "0x18065b0b1  488bd3  mov rdx, rbx",
+              "0x18065b0b4  e877872b00  call 0x180913830",
+              "0x18065b0b9  488b0d98f55608  mov rcx, qword ptr [rip + 0x856f598]"
+            ]
+          },
+          {
+            "from": "0x18065b27b",
+            "through": "0x18065b2a7",
+            "instructions": [
+              "0x18065b27b  e8d0b33406  call 0x1869a6650",
+              "0x18065b280  84c0  test al, al",
+              "0x18065b282  0f8543010000  jne 0x18065b3cb",
+              "0x18065b288  488b0de1524f08  mov rcx, qword ptr [rip + 0x84f52e1]",
+              "0x18065b28f  83b9e000000000  cmp dword ptr [rcx + 0xe0], 0",
+              "0x18065b296  7505  jne 0x18065b29d",
+              "0x18065b298  e8b311e4ff  call 0x18049c450",
+              "0x18065b29d  33d2  xor edx, edx",
+              "0x18065b29f  0f28c6  movaps xmm0, xmm6",
+              "0x18065b2a2  e869597d06  call 0x186e30c10",
+              "0x18065b2a7  458be7  mov r12d, r15d"
+            ]
+          },
+          {
+            "from": "0x18065b39b",
+            "through": "0x18065b3b6",
+            "instructions": [
+              "0x18065b39b  488bcf  mov rcx, rdi",
+              "0x18065b39e  ffd2  call rdx",
+              "0x18065b3a0  eb0e  jmp 0x18065b3b0",
+              "0x18065b3a2  4533c0  xor r8d, r8d",
+              "0x18065b3a5  0f28ce  movaps xmm1, xmm6",
+              "0x18065b3a8  488bcf  mov rcx, rdi",
+              "0x18065b3ab  e8c00e4900  call 0x180aec270",
+              "0x18065b3b0  41ffc4  inc r12d",
+              "0x18065b3b3  418bcc  mov ecx, r12d",
+              "0x18065b3b6  488b86d0000000  mov rax, qword ptr [rsi + 0xd0]"
+            ]
+          },
+          {
+            "from": "0x18065b471",
+            "through": "0x18065b48c",
+            "instructions": [
+              "0x18065b471  e8aa70ff02  call 0x183652520",
+              "0x18065b476  84c0  test al, al",
+              "0x18065b478  7417  je 0x18065b491",
+              "0x18065b47a  488b8e38010000  mov rcx, qword ptr [rsi + 0x138]",
+              "0x18065b481  4885c9  test rcx, rcx",
+              "0x18065b484  0f84ee000000  je 0x18065b578",
+              "0x18065b48a  33d2  xor edx, edx",
+              "0x18065b48c  e81f080300  call 0x18068bcb0"
+            ]
+          }
+        ]
+      },
+      {
+        "methodIndex": 78067,
+        "fullname": "Torappu.Battle.Enemy/States/UnbalanceState.OnAfterPhysicSimulate",
+        "token": "0x60130f4",
+        "address": "0x180aec270",
+        "selectedInstructions": [
+          {
+            "from": "0x180aec2e1",
+            "through": "0x180aec32f",
+            "instructions": [
+              "0x180aec2e1  e8ea90ad04  call 0x1855c53d0",
+              "0x180aec2e6  4885c0  test rax, rax",
+              "0x180aec2e9  7444  je 0x180aec32f",
+              "0x180aec2eb  33d2  xor edx, edx",
+              "0x180aec2ed  488bc8  mov rcx, rax",
+              "0x180aec2f0  e88b6d0300  call 0x180b23080",
+              "0x180aec2f5  4885ff  test rdi, rdi",
+              "0x180aec2f8  7435  je 0x180aec32f",
+              "0x180aec2fa  4533c0  xor r8d, r8d",
+              "0x180aec2fd  488bd0  mov rdx, rax",
+              "0x180aec300  488bcf  mov rcx, rdi",
+              "0x180aec303  488b7c2440  mov rdi, qword ptr [rsp + 0x40]",
+              "0x180aec308  0f28742420  movaps xmm6, xmmword ptr [rsp + 0x20]",
+              "0x180aec30d  4883c430  add rsp, 0x30",
+              "0x180aec311  5b  pop rbx",
+              "0x180aec312  e9d9680300  jmp 0x180b22bf0",
+              "0x180aec317  4533c9  xor r9d, r9d",
+              "0x180aec31a  0f28d6  movaps xmm2, xmm6",
+              "0x180aec31d  488bd3  mov rdx, rbx",
+              "0x180aec320  0f28742420  movaps xmm6, xmmword ptr [rsp + 0x20]",
+              "0x180aec325  4883c430  add rsp, 0x30",
+              "0x180aec329  5b  pop rbx",
+              "0x180aec32a  e921dfc102  jmp 0x18370a250",
+              "0x180aec32f  e88c009bff  call 0x18049c3c0"
+            ]
+          }
+        ]
+      },
+      {
+        "methodIndex": 72290,
+        "fullname": "Torappu.Battle.HarpoonProjectile.OnProjectileStop",
+        "token": "0x6011a63",
+        "address": "0x1809064b0",
+        "selectedInstructions": [
+          {
+            "from": "0x180906570",
+            "through": "0x1809065a7",
+            "instructions": [
+              "0x180906570  e86b1b0100  call 0x1809180e0",
+              "0x180906575  80bbd801000000  cmp byte ptr [rbx + 0x1d8], 0",
+              "0x18090657c  0f8467010000  je 0x1809066e9",
+              "0x180906582  0f1083c8010000  movups xmm0, xmmword ptr [rbx + 0x1c8]",
+              "0x180906589  488b15208b1e08  mov rdx, qword ptr [rip + 0x81e8b20]",
+              "0x180906590  488d4c2420  lea rcx, [rsp + 0x20]",
+              "0x180906595  0f29442420  movaps xmmword ptr [rsp + 0x20], xmm0",
+              "0x18090659a  e891d8d703  call 0x184683e30",
+              "0x18090659f  84c0  test al, al",
+              "0x1809065a1  0f8442010000  je 0x1809066e9",
+              "0x1809065a7  c683d801000000  mov byte ptr [rbx + 0x1d8], 0"
+            ]
+          },
+          {
+            "from": "0x1809065e8",
+            "through": "0x1809065fd",
+            "instructions": [
+              "0x1809065e8  4533c0  xor r8d, r8d",
+              "0x1809065eb  33d2  xor edx, edx",
+              "0x1809065ed  488bcf  mov rcx, rdi",
+              "0x1809065f0  e83b8e4c06  call 0x186dcf430",
+              "0x1809065f5  84c0  test al, al",
+              "0x1809065f7  0f84ec000000  je 0x1809066e9",
+              "0x1809065fd  80bbf601000000  cmp byte ptr [rbx + 0x1f6], 0"
+            ]
+          },
+          {
+            "from": "0x180906669",
+            "through": "0x1809066a2",
+            "instructions": [
+              "0x180906669  33d2  xor edx, edx",
+              "0x18090666b  488bcb  mov rcx, rbx",
+              "0x18090666e  e87d600100  call 0x18091c6f0",
+              "0x180906673  83f802  cmp eax, 2",
+              "0x180906676  7419  je 0x180906691",
+              "0x180906678  4885ff  test rdi, rdi",
+              "0x18090667b  0f84ae000000  je 0x18090672f",
+              "0x180906681  b9eb000000  mov ecx, 0xeb",
+              "0x180906686  4c8bc3  mov r8, rbx",
+              "0x180906689  488bd7  mov rdx, rdi",
+              "0x18090668c  e8efed6fff  call 0x180005480",
+              "0x180906691  33d2  xor edx, edx",
+              "0x180906693  c6830802000001  mov byte ptr [rbx + 0x208], 1",
+              "0x18090669a  488bcb  mov rcx, rbx",
+              "0x18090669d  e8ae5c0100  call 0x18091c350",
+              "0x1809066a2  488b15770f2d08  mov rdx, qword ptr [rip + 0x82d0f77]"
+            ]
+          },
+          {
+            "from": "0x1809066c9",
+            "through": "0x1809066e4",
+            "instructions": [
+              "0x1809066c9  4533c0  xor r8d, r8d",
+              "0x1809066cc  33d2  xor edx, edx",
+              "0x1809066ce  488bcf  mov rcx, rdi",
+              "0x1809066d1  e85a8d4c06  call 0x186dcf430",
+              "0x1809066d6  84c0  test al, al",
+              "0x1809066d8  740f  je 0x1809066e9",
+              "0x1809066da  4885ff  test rdi, rdi",
+              "0x1809066dd  7450  je 0x18090672f",
+              "0x1809066df  33d2  xor edx, edx",
+              "0x1809066e1  488bcf  mov rcx, rdi",
+              "0x1809066e4  e837061a00  call 0x180aa6d20"
+            ]
+          }
+        ]
+      },
+      {
+        "methodIndex": 72423,
+        "fullname": "Torappu.Battle.NetCatcherProjectile.OnProjectileStop",
+        "token": "0x6011ae8",
+        "address": "0x1809129b0",
+        "selectedInstructions": [
+          {
+            "from": "0x180912a42",
+            "through": "0x180912a79",
+            "instructions": [
+              "0x180912a42  e899560000  call 0x1809180e0",
+              "0x180912a47  80bbd801000000  cmp byte ptr [rbx + 0x1d8], 0",
+              "0x180912a4e  0f84e8000000  je 0x180912b3c",
+              "0x180912a54  0f1083c8010000  movups xmm0, xmmword ptr [rbx + 0x1c8]",
+              "0x180912a5b  488b154ec61d08  mov rdx, qword ptr [rip + 0x81dc64e]",
+              "0x180912a62  488d4c2420  lea rcx, [rsp + 0x20]",
+              "0x180912a67  0f29442420  movaps xmmword ptr [rsp + 0x20], xmm0",
+              "0x180912a6c  e8bf13d703  call 0x184683e30",
+              "0x180912a71  84c0  test al, al",
+              "0x180912a73  0f84c3000000  je 0x180912b3c",
+              "0x180912a79  c683d801000000  mov byte ptr [rbx + 0x1d8], 0"
+            ]
+          },
+          {
+            "from": "0x180912aba",
+            "through": "0x180912af0",
+            "instructions": [
+              "0x180912aba  4533c0  xor r8d, r8d",
+              "0x180912abd  33d2  xor edx, edx",
+              "0x180912abf  488bcf  mov rcx, rdi",
+              "0x180912ac2  e869c94b06  call 0x186dcf430",
+              "0x180912ac7  84c0  test al, al",
+              "0x180912ac9  7471  je 0x180912b3c",
+              "0x180912acb  4885ff  test rdi, rdi",
+              "0x180912ace  0f84a4000000  je 0x180912b78",
+              "0x180912ad4  b9eb000000  mov ecx, 0xeb",
+              "0x180912ad9  4c8bc3  mov r8, rbx",
+              "0x180912adc  488bd7  mov rdx, rdi",
+              "0x180912adf  e89c296fff  call 0x180005480",
+              "0x180912ae4  33d2  xor edx, edx",
+              "0x180912ae6  c6832902000001  mov byte ptr [rbx + 0x229], 1",
+              "0x180912aed  488bcb  mov rcx, rbx",
+              "0x180912af0  e85b980000  call 0x18091c350"
+            ]
+          },
+          {
+            "from": "0x180912b1c",
+            "through": "0x180912b37",
+            "instructions": [
+              "0x180912b1c  4533c0  xor r8d, r8d",
+              "0x180912b1f  33d2  xor edx, edx",
+              "0x180912b21  488bcf  mov rcx, rdi",
+              "0x180912b24  e807c94b06  call 0x186dcf430",
+              "0x180912b29  84c0  test al, al",
+              "0x180912b2b  740f  je 0x180912b3c",
+              "0x180912b2d  4885ff  test rdi, rdi",
+              "0x180912b30  7446  je 0x180912b78",
+              "0x180912b32  33d2  xor edx, edx",
+              "0x180912b34  488bcf  mov rcx, rdi",
+              "0x180912b37  e8e4411900  call 0x180aa6d20"
+            ]
+          }
+        ]
+      },
+      {
+        "methodIndex": 77753,
+        "fullname": "Torappu.Battle.Enemy.EndPull",
+        "token": "0x6012fba",
+        "address": "0x180abaf40",
+        "selectedInstructions": [
+          {
+            "from": "0x180abb075",
+            "through": "0x180abb0e5",
+            "instructions": [
+              "0x180abb075  488b8e40040000  mov rcx, qword ptr [rsi + 0x440]",
+              "0x180abb07c  4885c9  test rcx, rcx",
+              "0x180abb07f  0f8470010000  je 0x180abb1f5",
+              "0x180abb085  488b150c7a1708  mov rdx, qword ptr [rip + 0x8177a0c]",
+              "0x180abb08c  e84f392204  call 0x184cde9e0",
+              "0x180abb091  84c0  test al, al",
+              "0x180abb093  7450  je 0x180abb0e5",
+              "0x180abb095  33d2  xor edx, edx",
+              "0x180abb097  488bce  mov rcx, rsi",
+              "0x180abb09a  e861200100  call 0x180acd100",
+              "0x180abb09f  84c0  test al, al",
+              "0x180abb0a1  7442  je 0x180abb0e5",
+              "0x180abb0a3  33d2  xor edx, edx",
+              "0x180abb0a5  488bce  mov rcx, rsi",
+              "0x180abb0a8  e8b33c0100  call 0x180aced60",
+              "0x180abb0ad  488b0dfcbb1008  mov rcx, qword ptr [rip + 0x810bbfc]",
+              "0x180abb0b4  488bd8  mov rbx, rax",
+              "0x180abb0b7  83b9e000000000  cmp dword ptr [rcx + 0xe0], 0",
+              "0x180abb0be  7505  jne 0x180abb0c5",
+              "0x180abb0c0  e88b139eff  call 0x18049c450",
+              "0x180abb0c5  33d2  xor edx, edx",
+              "0x180abb0c7  33c9  xor ecx, ecx",
+              "0x180abb0c9  e8a230ea05  call 0x18695e170",
+              "0x180abb0ce  4885db  test rbx, rbx",
+              "0x180abb0d1  0f841e010000  je 0x180abb1f5",
+              "0x180abb0d7  4533c0  xor r8d, r8d",
+              "0x180abb0da  488bd0  mov rdx, rax",
+              "0x180abb0dd  488bcb  mov rcx, rbx",
+              "0x180abb0e0  e8fbaebe01  call 0x1826a5fe0",
+              "0x180abb0e5  488b15b45d0d08  mov rdx, qword ptr [rip + 0x80d5db4]"
+            ]
+          },
+          {
+            "from": "0x180abb154",
+            "through": "0x180abb1c8",
+            "instructions": [
+              "0x180abb154  4533c0  xor r8d, r8d",
+              "0x180abb157  33d2  xor edx, edx",
+              "0x180abb159  488bcb  mov rcx, rbx",
+              "0x180abb15c  e8cf423106  call 0x186dcf430",
+              "0x180abb161  84c0  test al, al",
+              "0x180abb163  7468  je 0x180abb1cd",
+              "0x180abb165  4885db  test rbx, rbx",
+              "0x180abb168  0f8487000000  je 0x180abb1f5",
+              "0x180abb16e  33d2  xor edx, edx",
+              "0x180abb170  488bcb  mov rcx, rbx",
+              "0x180abb173  e8d811e6ff  call 0x18091c350",
+              "0x180abb178  488b0dd14e0608  mov rcx, qword ptr [rip + 0x8064ed1]",
+              "0x180abb17f  488bf8  mov rdi, rax",
+              "0x180abb182  83b9e000000000  cmp dword ptr [rcx + 0xe0], 0",
+              "0x180abb189  7505  jne 0x180abb190",
+              "0x180abb18b  e8c0129eff  call 0x18049c450",
+              "0x180abb190  4533c0  xor r8d, r8d",
+              "0x180abb193  33d2  xor edx, edx",
+              "0x180abb195  488bcf  mov rcx, rdi",
+              "0x180abb198  e893423106  call 0x186dcf430",
+              "0x180abb19d  84c0  test al, al",
+              "0x180abb19f  742c  je 0x180abb1cd",
+              "0x180abb1a1  33d2  xor edx, edx",
+              "0x180abb1a3  488bcb  mov rcx, rbx",
+              "0x180abb1a6  e8a511e6ff  call 0x18091c350",
+              "0x180abb1ab  4885c0  test rax, rax",
+              "0x180abb1ae  7445  je 0x180abb1f5",
+              "0x180abb1b0  33d2  xor edx, edx",
+              "0x180abb1b2  488bc8  mov rcx, rax",
+              "0x180abb1b5  e8e686c7ff  call 0x1807338a0",
+              "0x180abb1ba  4885c0  test rax, rax",
+              "0x180abb1bd  7436  je 0x180abb1f5",
+              "0x180abb1bf  4533c0  xor r8d, r8d",
+              "0x180abb1c2  488bd6  mov rdx, rsi",
+              "0x180abb1c5  488bc8  mov rcx, rax",
+              "0x180abb1c8  e80334c0ff  call 0x1806be5d0"
+            ]
+          }
+        ]
+      },
+      {
+        "methodIndex": 77750,
+        "fullname": "Torappu.Battle.Enemy.BeginPull",
+        "token": "0x6012fb7",
+        "address": "0x180ab8590",
+        "selectedInstructions": [
+          {
+            "from": "0x180ab86de",
+            "through": "0x180ab86eb",
+            "instructions": [
+              "0x180ab86de  660f7f442440  movdqa xmmword ptr [rsp + 0x40], xmm0",
+              "0x180ab86e4  e8874b2204  call 0x184cdd270",
+              "0x180ab86e9  33d2  xor edx, edx",
+              "0x180ab86eb  488bcb  mov rcx, rbx"
+            ]
+          },
+          {
+            "from": "0x180ab8721",
+            "through": "0x180ab8734",
+            "instructions": [
+              "0x180ab8721  4533c9  xor r9d, r9d",
+              "0x180ab8724  66480f7eca  movq rdx, xmm1",
+              "0x180ab8729  4533c0  xor r8d, r8d",
+              "0x180ab872c  488bc8  mov rcx, rax",
+              "0x180ab872f  e8bc9f3706  call 0x186e326f0",
+              "0x180ab8734  33d2  xor edx, edx"
+            ]
+          },
+          {
+            "from": "0x180ab8756",
+            "through": "0x180ab878b",
+            "instructions": [
+              "0x180ab8756  4885c0  test rax, rax",
+              "0x180ab8759  0f846e010000  je 0x180ab88cd",
+              "0x180ab875f  33d2  xor edx, edx",
+              "0x180ab8761  488bc8  mov rcx, rax",
+              "0x180ab8764  e8b7ce0100  call 0x180ad5620",
+              "0x180ab8769  33d2  xor edx, edx",
+              "0x180ab876b  488bcb  mov rcx, rbx",
+              "0x180ab876e  e8ed650100  call 0x180aced60",
+              "0x180ab8773  4885c0  test rax, rax",
+              "0x180ab8776  0f8451010000  je 0x180ab88cd",
+              "0x180ab877c  4c8b057d1d0508  mov r8, qword ptr [rip + 0x8051d7d]",
+              "0x180ab8783  ba09000000  mov edx, 9",
+              "0x180ab8788  488bc8  mov rcx, rax",
+              "0x180ab878b  e8d0301004  call 0x184bbb860"
+            ]
+          }
+        ]
+      },
+      {
+        "methodIndex": 72302,
+        "fullname": "Torappu.Battle.HarpoonProjectile/<DoLink>d__19.MoveNext",
+        "token": "0x6011a6f",
+        "address": "0x18091e2f0",
+        "selectedInstructions": [
+          {
+            "from": "0x18091e550",
+            "through": "0x18091e572",
+            "instructions": [
+              "0x18091e550  4533c0  xor r8d, r8d",
+              "0x18091e553  488bd6  mov rdx, rsi",
+              "0x18091e556  e8655d1a00  call 0x180ac42c0",
+              "0x18091e55b  84c0  test al, al",
+              "0x18091e55d  7407  je 0x18091e566",
+              "0x18091e55f  c6860802000001  mov byte ptr [rsi + 0x208], 1",
+              "0x18091e566  80bef401000000  cmp byte ptr [rsi + 0x1f4], 0",
+              "0x18091e56d  7548  jne 0x18091e5b7",
+              "0x18091e56f  0f57ff  xorps xmm7, xmm7",
+              "0x18091e572  33d2  xor edx, edx"
+            ]
+          },
+          {
+            "from": "0x18091e593",
+            "through": "0x18091e5eb",
+            "instructions": [
+              "0x18091e593  807f4000  cmp byte ptr [rdi + 0x40], 0",
+              "0x18091e597  752f  jne 0x18091e5c8",
+              "0x18091e599  33ed  xor ebp, ebp",
+              "0x18091e59b  0f28df  movaps xmm3, xmm7",
+              "0x18091e59e  66490f7ec0  movq r8, xmm0",
+              "0x18091e5a3  48896c2420  mov qword ptr [rsp + 0x20], rbp",
+              "0x18091e5a8  488bd6  mov rdx, rsi",
+              "0x18091e5ab  488bc8  mov rcx, rax",
+              "0x18091e5ae  e85d551a00  call 0x180ac3b10",
+              "0x18091e5b3  84c0  test al, al",
+              "0x18091e5b5  7534  jne 0x18091e5eb",
+              "0x18091e5b7  33d2  xor edx, edx",
+              "0x18091e5b9  488bce  mov rcx, rsi",
+              "0x18091e5bc  e82fb3ffff  call 0x1809198f0",
+              "0x18091e5c1  32c0  xor al, al",
+              "0x18091e5c3  e9e7040000  jmp 0x18091eaaf",
+              "0x18091e5c8  b9ea000000  mov ecx, 0xea",
+              "0x18091e5cd  f30f117c2420  movss dword ptr [rsp + 0x20], xmm7",
+              "0x18091e5d3  66490f7ec1  movq r9, xmm0",
+              "0x18091e5d8  4c8bc6  mov r8, rsi",
+              "0x18091e5db  488bd0  mov rdx, rax",
+              "0x18091e5de  e87d0670ff  call 0x18001ec60",
+              "0x18091e5e3  84c0  test al, al",
+              "0x18091e5e5  74d0  je 0x18091e5b7",
+              "0x18091e5e7  c6474000  mov byte ptr [rdi + 0x40], 0",
+              "0x18091e5eb  80beb101000000  cmp byte ptr [rsi + 0x1b1], 0"
+            ]
+          },
+          {
+            "from": "0x18091e625",
+            "through": "0x18091e627",
+            "instructions": [
+              "0x18091e625  33ed  xor ebp, ebp",
+              "0x18091e627  4038aef5010000  cmp byte ptr [rsi + 0x1f5], bpl"
+            ]
+          },
+          {
+            "from": "0x18091e777",
+            "through": "0x18091e7f0",
+            "instructions": [
+              "0x18091e777  488bd8  mov rbx, rax",
+              "0x18091e77a  39a9e0000000  cmp dword ptr [rcx + 0xe0], ebp",
+              "0x18091e780  7505  jne 0x18091e787",
+              "0x18091e782  e8c9dcb7ff  call 0x18049c450",
+              "0x18091e787  4533c0  xor r8d, r8d",
+              "0x18091e78a  33d2  xor edx, edx",
+              "0x18091e78c  488bcb  mov rcx, rbx",
+              "0x18091e78f  e89c0c4b06  call 0x186dcf430",
+              "0x18091e794  84c0  test al, al",
+              "0x18091e796  7415  je 0x18091e7ad",
+              "0x18091e798  4885db  test rbx, rbx",
+              "0x18091e79b  0f843d030000  je 0x18091eade",
+              "0x18091e7a1  33d2  xor edx, edx",
+              "0x18091e7a3  488bcb  mov rcx, rbx",
+              "0x18091e7a6  e8354fe1ff  call 0x1807336e0",
+              "0x18091e7ab  8be8  mov ebp, eax",
+              "0x18091e7ad  488b4f30  mov rcx, qword ptr [rdi + 0x30]",
+              "0x18091e7b1  8b9efc010000  mov ebx, dword ptr [rsi + 0x1fc]",
+              "0x18091e7b7  4885c9  test rcx, rcx",
+              "0x18091e7ba  0f841e030000  je 0x18091eade",
+              "0x18091e7c0  33d2  xor edx, edx",
+              "0x18091e7c2  e8d9ee1a00  call 0x180acd6a0",
+              "0x18091e7c7  488b0de2911f08  mov rcx, qword ptr [rip + 0x81f91e2]",
+              "0x18091e7ce  448bf0  mov r14d, eax",
+              "0x18091e7d1  83b9e000000000  cmp dword ptr [rcx + 0xe0], 0",
+              "0x18091e7d8  7505  jne 0x18091e7df",
+              "0x18091e7da  e871dcb7ff  call 0x18049c450",
+              "0x18091e7df  8d0c2b  lea ecx, [rbx + rbp]",
+              "0x18091e7e2  4533c0  xor r8d, r8d",
+              "0x18091e7e5  418bd6  mov edx, r14d",
+              "0x18091e7e8  e8a386d6ff  call 0x180686e90",
+              "0x18091e7ed  0f28f0  movaps xmm6, xmm0",
+              "0x18091e7f0  f30f117738  movss dword ptr [rdi + 0x38], xmm6"
+            ]
+          },
+          {
+            "from": "0x18091e80a",
+            "through": "0x18091e820",
+            "instructions": [
+              "0x18091e80a  4533c0  xor r8d, r8d",
+              "0x18091e80d  0f57c9  xorps xmm1, xmm1",
+              "0x18091e810  0f28c6  movaps xmm0, xmm6",
+              "0x18091e813  e878740206  call 0x186945c90",
+              "0x18091e818  84c0  test al, al",
+              "0x18091e81a  0f8500010000  jne 0x18091e920",
+              "0x18091e820  488b4f30  mov rcx, qword ptr [rdi + 0x30]"
+            ]
+          },
+          {
+            "from": "0x18091e87e",
+            "through": "0x18091e8d8",
+            "instructions": [
+              "0x18091e87e  c6474001  mov byte ptr [rdi + 0x40], 1",
+              "0x18091e882  33d2  xor edx, edx",
+              "0x18091e884  488bce  mov rcx, rsi",
+              "0x18091e887  e8b41ad9ff  call 0x1806b0340",
+              "0x18091e88c  84c0  test al, al",
+              "0x18091e88e  0f8423fdffff  je 0x18091e5b7",
+              "0x18091e894  0f1086c8010000  movups xmm0, xmmword ptr [rsi + 0x1c8]",
+              "0x18091e89b  488b150e081d08  mov rdx, qword ptr [rip + 0x81d080e]",
+              "0x18091e8a2  488d4c2430  lea rcx, [rsp + 0x30]",
+              "0x18091e8a7  0f29442430  movaps xmmword ptr [rsp + 0x30], xmm0",
+              "0x18091e8ac  e87f55d603  call 0x184683e30",
+              "0x18091e8b1  84c0  test al, al",
+              "0x18091e8b3  0f84fefcffff  je 0x18091e5b7",
+              "0x18091e8b9  0f108600010000  movups xmm0, xmmword ptr [rsi + 0x100]",
+              "0x18091e8c0  488b15e9071d08  mov rdx, qword ptr [rip + 0x81d07e9]",
+              "0x18091e8c7  488d4c2430  lea rcx, [rsp + 0x30]",
+              "0x18091e8cc  0f29442430  movaps xmmword ptr [rsp + 0x30], xmm0",
+              "0x18091e8d1  e85a55d603  call 0x184683e30",
+              "0x18091e8d6  84c0  test al, al",
+              "0x18091e8d8  0f84d9fcffff  je 0x18091e5b7"
+            ]
+          },
+          {
+            "from": "0x18091e920",
+            "through": "0x18091e925",
+            "instructions": [
+              "0x18091e920  33d2  xor edx, edx",
+              "0x18091e922  488bce  mov rcx, rsi",
+              "0x18091e925  e8c6afffff  call 0x1809198f0"
+            ]
+          }
+        ]
+      },
+      {
+        "methodIndex": 72458,
+        "fullname": "Torappu.Battle.NetCatcherProjectile/<_DoPull>d__33.MoveNext",
+        "token": "0x6011b0b",
+        "address": "0x18091f730",
+        "selectedInstructions": [
+          {
+            "from": "0x18091f944",
+            "through": "0x18091f9a9",
+            "instructions": [
+              "0x18091f944  0f84b8040000  je 0x18091fe02",
+              "0x18091f94a  4533c0  xor r8d, r8d",
+              "0x18091f94d  488bd7  mov rdx, rdi",
+              "0x18091f950  e86b491a00  call 0x180ac42c0",
+              "0x18091f955  84c0  test al, al",
+              "0x18091f957  7407  je 0x18091f960",
+              "0x18091f959  c6872902000001  mov byte ptr [rdi + 0x229], 1",
+              "0x18091f960  807b4800  cmp byte ptr [rbx + 0x48], 0",
+              "0x18091f964  7550  jne 0x18091f9b6",
+              "0x18091f966  0f57ff  xorps xmm7, xmm7",
+              "0x18091f969  33d2  xor edx, edx",
+              "0x18091f96b  488d8c24a0000000  lea rcx, [rsp + 0xa0]",
+              "0x18091f973  e818a7c2ff  call 0x18054a090",
+              "0x18091f978  66480f6ec0  movq xmm0, rax",
+              "0x18091f97d  488b4328  mov rax, qword ptr [rbx + 0x28]",
+              "0x18091f981  4885c0  test rax, rax",
+              "0x18091f984  0f8478040000  je 0x18091fe02",
+              "0x18091f98a  807b5400  cmp byte ptr [rbx + 0x54], 0",
+              "0x18091f98e  0f85cf000000  jne 0x18091fa63",
+              "0x18091f994  33f6  xor esi, esi",
+              "0x18091f996  0f28df  movaps xmm3, xmm7",
+              "0x18091f999  66490f7ec0  movq r8, xmm0",
+              "0x18091f99e  4889742420  mov qword ptr [rsp + 0x20], rsi",
+              "0x18091f9a3  488bd7  mov rdx, rdi",
+              "0x18091f9a6  488bc8  mov rcx, rax",
+              "0x18091f9a9  e862411a00  call 0x180ac3b10"
+            ]
+          },
+          {
+            "from": "0x18091f9b6",
+            "through": "0x18091f9ca",
+            "instructions": [
+              "0x18091f9b6  33d2  xor edx, edx",
+              "0x18091f9b8  488bcf  mov rcx, rdi",
+              "0x18091f9bb  e83026ffff  call 0x180911ff0",
+              "0x18091f9c0  488b0d89062008  mov rcx, qword ptr [rip + 0x8200689]",
+              "0x18091f9c7  488bd8  mov rbx, rax",
+              "0x18091f9ca  83b9e000000000  cmp dword ptr [rcx + 0xe0], 0"
+            ]
+          },
+          {
+            "from": "0x18091fa63",
+            "through": "0x18091fa8a",
+            "instructions": [
+              "0x18091fa63  b9ea000000  mov ecx, 0xea",
+              "0x18091fa68  f30f117c2420  movss dword ptr [rsp + 0x20], xmm7",
+              "0x18091fa6e  66490f7ec1  movq r9, xmm0",
+              "0x18091fa73  4c8bc7  mov r8, rdi",
+              "0x18091fa76  488bd0  mov rdx, rax",
+              "0x18091fa79  e8e2f16fff  call 0x18001ec60",
+              "0x18091fa7e  84c0  test al, al",
+              "0x18091fa80  0f8430ffffff  je 0x18091f9b6",
+              "0x18091fa86  c6435400  mov byte ptr [rbx + 0x54], 0",
+              "0x18091fa8a  80bfb101000000  cmp byte ptr [rdi + 0x1b1], 0"
+            ]
+          },
+          {
+            "from": "0x18091fafd",
+            "through": "0x18091fb06",
+            "instructions": [
+              "0x18091fafd  488b05dcf51e08  mov rax, qword ptr [rip + 0x81ef5dc]",
+              "0x18091fb04  33f6  xor esi, esi",
+              "0x18091fb06  488b90b8000000  mov rdx, qword ptr [rax + 0xb8]"
+            ]
+          },
+          {
+            "from": "0x18091fb94",
+            "through": "0x18091fc16",
+            "instructions": [
+              "0x18091fb94  33d2  xor edx, edx",
+              "0x18091fb96  488bcf  mov rcx, rdi",
+              "0x18091fb99  e8b2c7ffff  call 0x18091c350",
+              "0x18091fb9e  488b0dab042008  mov rcx, qword ptr [rip + 0x82004ab]",
+              "0x18091fba5  488be8  mov rbp, rax",
+              "0x18091fba8  39b1e0000000  cmp dword ptr [rcx + 0xe0], esi",
+              "0x18091fbae  7505  jne 0x18091fbb5",
+              "0x18091fbb0  e89bc8b7ff  call 0x18049c450",
+              "0x18091fbb5  4533c0  xor r8d, r8d",
+              "0x18091fbb8  33d2  xor edx, edx",
+              "0x18091fbba  488bcd  mov rcx, rbp",
+              "0x18091fbbd  e86ef84a06  call 0x186dcf430",
+              "0x18091fbc2  84c0  test al, al",
+              "0x18091fbc4  7415  je 0x18091fbdb",
+              "0x18091fbc6  4885ed  test rbp, rbp",
+              "0x18091fbc9  0f8433020000  je 0x18091fe02",
+              "0x18091fbcf  33d2  xor edx, edx",
+              "0x18091fbd1  488bcd  mov rcx, rbp",
+              "0x18091fbd4  e8073be1ff  call 0x1807336e0",
+              "0x18091fbd9  8bf0  mov esi, eax",
+              "0x18091fbdb  488b4b28  mov rcx, qword ptr [rbx + 0x28]",
+              "0x18091fbdf  448bb70c020000  mov r14d, dword ptr [rdi + 0x20c]",
+              "0x18091fbe6  4885c9  test rcx, rcx",
+              "0x18091fbe9  0f8413020000  je 0x18091fe02",
+              "0x18091fbef  33d2  xor edx, edx",
+              "0x18091fbf1  e8aada1a00  call 0x180acd6a0",
+              "0x18091fbf6  488b0db37d1f08  mov rcx, qword ptr [rip + 0x81f7db3]",
+              "0x18091fbfd  8be8  mov ebp, eax",
+              "0x18091fbff  83b9e000000000  cmp dword ptr [rcx + 0xe0], 0",
+              "0x18091fc06  7505  jne 0x18091fc0d",
+              "0x18091fc08  e843c8b7ff  call 0x18049c450",
+              "0x18091fc0d  418d0c36  lea ecx, [r14 + rsi]",
+              "0x18091fc11  4533c0  xor r8d, r8d",
+              "0x18091fc14  8bd5  mov edx, ebp",
+              "0x18091fc16  e87572d6ff  call 0x180686e90"
+            ]
+          },
+          {
+            "from": "0x18091fc41",
+            "through": "0x18091fc48",
+            "instructions": [
+              "0x18091fc41  e84a600206  call 0x186945c90",
+              "0x18091fc46  84c0  test al, al",
+              "0x18091fc48  0f8568010000  jne 0x18091fdb6"
+            ]
+          },
+          {
+            "from": "0x18091fcdd",
+            "through": "0x18091fce1",
+            "instructions": [
+              "0x18091fcdd  c6435401  mov byte ptr [rbx + 0x54], 1",
+              "0x18091fce1  33d2  xor edx, edx"
+            ]
+          },
+          {
+            "from": "0x18091fdb6",
+            "through": "0x18091fdc0",
+            "instructions": [
+              "0x18091fdb6  33d2  xor edx, edx",
+              "0x18091fdb8  488bcf  mov rcx, rdi",
+              "0x18091fdbb  e8309bffff  call 0x1809198f0",
+              "0x18091fdc0  488b05a1342c08  mov rax, qword ptr [rip + 0x82c34a1]"
+            ]
+          }
+        ]
+      },
+      {
+        "methodIndex": 72346,
+        "fullname": "Torappu.Battle.LinkProjectile.get_stopWhenSourceInvalid",
+        "token": "0x6011a9b",
+        "address": "0x1809089a0",
+        "selectedInstructions": [
+          {
+            "from": "0x1809089a0",
+            "through": "0x1809089e3",
+            "instructions": [
+              "0x1809089a0  4053  push rbx",
+              "0x1809089a2  4883ec20  sub rsp, 0x20",
+              "0x1809089a6  803db03d690800  cmp byte ptr [rip + 0x8693db0], 0",
+              "0x1809089ad  488bd9  mov rbx, rcx",
+              "0x1809089b0  7513  jne 0x1809089c5",
+              "0x1809089b2  488d0dff802f08  lea rcx, [rip + 0x82f80ff]",
+              "0x1809089b9  e85238b9ff  call 0x18049c210",
+              "0x1809089be  c605983d690801  mov byte ptr [rip + 0x8693d98], 1",
+              "0x1809089c5  488b05ec802f08  mov rax, qword ptr [rip + 0x82f80ec]",
+              "0x1809089cc  488b90b8000000  mov rdx, qword ptr [rax + 0xb8]",
+              "0x1809089d3  488b4a40  mov rcx, qword ptr [rdx + 0x40]",
+              "0x1809089d7  4885c9  test rcx, rcx",
+              "0x1809089da  7508  jne 0x1809089e4",
+              "0x1809089dc  b001  mov al, 1",
+              "0x1809089de  4883c420  add rsp, 0x20",
+              "0x1809089e2  5b  pop rbx",
+              "0x1809089e3  c3  ret"
+            ]
+          }
+        ]
+      },
+      {
+        "methodIndex": 72526,
+        "fullname": "Torappu.Battle.Projectile.OnTick",
+        "token": "0x6011b4f",
+        "address": "0x180918540",
+        "selectedInstructions": [
+          {
+            "from": "0x1809187f1",
+            "through": "0x18091886b",
+            "instructions": [
+              "0x1809187f1  7608  jbe 0x1809187fb",
+              "0x1809187f3  488b0e  mov rcx, qword ptr [rsi]",
+              "0x1809187f6  e815e8b3ff  call 0x180457010",
+              "0x1809187fb  488b16  mov rdx, qword ptr [rsi]",
+              "0x1809187fe  488bce  mov rcx, rsi",
+              "0x180918801  488b82e0030000  mov rax, qword ptr [rdx + 0x3e0]",
+              "0x180918808  488b92e8030000  mov rdx, qword ptr [rdx + 0x3e8]",
+              "0x18091880f  ffd0  call rax",
+              "0x180918811  84c0  test al, al",
+              "0x180918813  7471  je 0x180918886",
+              "0x180918815  0f108600010000  movups xmm0, xmmword ptr [rsi + 0x100]",
+              "0x18091881c  488b158d681d08  mov rdx, qword ptr [rip + 0x81d688d]",
+              "0x180918823  488d4c2420  lea rcx, [rsp + 0x20]",
+              "0x180918828  0f29442420  movaps xmmword ptr [rsp + 0x20], xmm0",
+              "0x18091882d  e8feb5d603  call 0x184683e30",
+              "0x180918832  84c0  test al, al",
+              "0x180918834  7550  jne 0x180918886",
+              "0x180918836  803d33026c0800  cmp byte ptr [rip + 0x86c0233], 0",
+              "0x18091883d  7608  jbe 0x180918847",
+              "0x18091883f  488b0e  mov rcx, qword ptr [rsi]",
+              "0x180918842  e8c9e7b3ff  call 0x180457010",
+              "0x180918847  488b16  mov rdx, qword ptr [rsi]",
+              "0x18091884a  488bce  mov rcx, rsi",
+              "0x18091884d  488b8220040000  mov rax, qword ptr [rdx + 0x420]",
+              "0x180918854  488b9228040000  mov rdx, qword ptr [rdx + 0x428]",
+              "0x18091885b  ffd0  call rax",
+              "0x18091885d  84c0  test al, al",
+              "0x18091885f  7425  je 0x180918886",
+              "0x180918861  33d2  xor edx, edx",
+              "0x180918863  488bce  mov rcx, rsi",
+              "0x180918866  e885100000  call 0x1809198f0",
+              "0x18091886b  4c8b742460  mov r14, qword ptr [rsp + 0x60]"
+            ]
+          }
+        ]
+      }
+    ],
+    "replay": {
+      "nativeIndices": [
+        65802,
+        72290,
+        72302,
+        72346,
+        72423,
+        72458,
+        72526,
+        77750,
+        77753,
+        78067
+      ],
+      "typeNames": [
+        "Torappu.Battle.HarpoonProjectile",
+        "Torappu.Battle.LaserProjectile",
+        "Torappu.Battle.LassoProjectile",
+        "Torappu.Battle.LinkProjectile"
+      ],
+      "prefabSelection": {
+        "battle/prefabs/[uc]projectiles.ab": [
+          "projectile_chr_almond_s2",
+          "projectile_mizuki_uniequip_004"
+        ],
+        "battle/prefabs/[uc]skills.ab": [
+          "skchr_almond_2",
+          "sktok_mlyss_wtrman_3",
+          "skchr_acspec_3"
+        ]
+      }
+    },
+    "relatedEvidence": [
+      "native-branches.json",
+      "prefab-mappings.json",
+      "../base-force/consumers.json",
+      "../state/native-state.json",
+      "../damage/native.json"
+    ]
+  }
+}
