@@ -3,6 +3,7 @@ import { Hooks } from "../../dist/core/hook.js";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { battle, get } from "../helpers/battle.js";
+import { step } from "../../dist/core/battle/index.js";
 import * as units from "../../dist/core/unit/index.js";
 import * as skills from "../../dist/core/unit/capability/skill/index.js";
 import { create as modifier } from "../../dist/core/common/modifier.js";
@@ -257,6 +258,12 @@ test("active operations require a declared handler and current permission, while
     const stopped = skills.operate(state, second.value, "STOP");
     assert.equal(stopped.value, true);
     assert.equal(get(stopped.state, 1).skill.activation, null);
+
+    const command = operation => ({ type: "SKILL", ref: controlledSource, operation });
+    const commandStarted = step(stopped.state, [command("STOP"), command("ACTIVATE"), command("RETRIGGER")]);
+    assert.equal(get(commandStarted, 1).skill.activation.state.ready, true);
+    const commandStopped = step(commandStarted, [command("STOP"), command("RETRIGGER")]);
+    assert.equal(get(commandStopped, 1).skill.activation, null);
 });
 
 test("natural SP recovery pauses without backlog and uses current recovery speed", () => {

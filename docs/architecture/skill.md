@@ -78,7 +78,9 @@ Skill 通知包括 SP 回复／支付／修改、耗弹／普通补弹和激活�
 
 ## 5. 发动与完整结束
 
-trigger 描述常规调度：ACTIVATE_SKILL 命令仅受理 MANUAL，advance 调度 AUTO 与尚未成功发动的 PASSIVE，enter 尝试 PASSIVE。领域操作 activate 不接收 trigger 参数，也不要求与常规触发方式匹配；Content 可以显式发起启动。PASSIVE 始终只允许成功发动一次。
+`Battle.step` 通过 `SKILL` 命令接收 Skill 宿主的 Unit Ref 和操作。`ACTIVATE` 仅受理 MANUAL 技能。`STOP` 与 `RETRIGGER` 在命令执行时取得当前激活并交给 `operate`，没有当前激活时跳过命令。
+
+常规调度由 trigger 决定。advance 调度 AUTO 与尚未成功发动的 PASSIVE，enter 尝试 PASSIVE。Content 可以直接调用 `activate` 显式发动任意触发类型的技能。PASSIVE 始终只允许成功发动一次。
 
 发动先检查宿主、占槽、限制、accepts、本次门槛与足额支付；拒绝不初始化、不支付。通过后调用本轮 initialize 一次，构造 Duration，再一次发布扣费、Activation 与下一轮身份，登记其 Unit 所有权。随后记录启动表现、派发 activationStarted 和 spPaid，再重读同一身份、ACTIVE 状态及宿主生命资格，决定是否执行 onStart。零时长也先执行仍有效的 onStart，再复查到期并结束。
 

@@ -185,7 +185,7 @@ test("manual commands preserve AUTO and PASSIVE scheduling while direct activati
     const sources = programs.map((_program, index) => units.ref(get(state, index)));
     const starts = state => sources.map(source => get(state, source.id).skill.state.starts);
     assert.deepEqual(starts(state), [0, 0, 1]);
-    state = step(state, sources.map(ref => ({ type: "ACTIVATE_SKILL", ref })));
+    state = step(state, sources.map(ref => ({ type: "SKILL", ref, operation: "ACTIVATE" })));
     assert.deepEqual(starts(state), [1, 1, 1]);
     const explicit = skills.activate(state, skills.ref(sources[1], programs[1]));
     assert.notEqual(explicit.value, null);

@@ -29,6 +29,7 @@ import { hasPresence, disappear } from ${module("unit/capability/presence/index"
 import { dispatch as dispatchElemental } from ${module("unit/capability/elemental/hook")};
 import * as runtime from ${module("battle/runtime")};
 import type { Input as BattleInput, Command } from ${module("battle/contract")};
+import type { SkillCommand } from ${module("battle/index")};
 import type { Card, UnitDefinition as CardDefinition } from ${module("battle/deployment/card/card")};
 import type { Projectile } from ${module("projectile/projectile")};
 import * as projectiles from ${module("projectile/query")};
@@ -420,11 +421,11 @@ declare const routeDefinition: Plan;
 const routeChange = compose(reassign(0, routeDefinition), compose(selectContext(0), setTicking(0, false)));
 update(battle, routeCommandRef, routeChange);
 declare const projectileCommandRef: Ref<Projectile<{ hits: number }>>;
-const skillCommand: Command = { type: 'ACTIVATE_SKILL', ref: skillCommandRef };
+const skillCommand: SkillCommand = { type: 'SKILL', ref: skillCommandRef, operation: 'ACTIVATE' };
 const projectileCommand: Command<Card, Projectile<{ hits: number }>> = { type: 'STOP_PROJECTILE', ref: projectileCommandRef };
 runtime.step(battle, [skillCommand, projectileCommand]);
 // @ts-expect-error skill commands require a Skill-capable Unit.
-const missingSkillCommand: Command = { type: 'STOP_SKILL', ref: ref(bare) };
+const missingSkillCommand: Command = { type: 'SKILL', ref: ref(bare), operation: 'STOP' };
 // @ts-expect-error a Unit reference is not a Projectile reference.
 const wrongProjectileCommand: Command = { type: 'STOP_PROJECTILE', ref: ref(bare) };
 const projectileDefinition: ProjectileDefinition<{ hits: number }> = {

@@ -10,6 +10,7 @@ import type { DeploymentCommand } from "./deployment/operations.js";
 import type { Ref } from "../common/ref.js";
 import type { Execution } from "../unit/capability/action/execution.js";
 import type { Projectile } from "../projectile/projectile.js";
+import type { Operation } from "../unit/capability/skill/activation.js";
 import type { Skill } from "../unit/capability/skill/capability.js";
 
 export type { Event } from "./event.js";
@@ -34,10 +35,15 @@ export interface Input<
     readonly rngState: Seed;
 }
 
+export interface SkillCommand {
+    readonly type: "SKILL";
+    readonly ref: Ref<Unit & Skill>;
+    readonly operation: "ACTIVATE" | Operation;
+}
+
 export type Command<T extends Card<any> = Card, P extends Projectile<any> = Projectile> =
     | DeploymentCommand<T>
-    | { readonly type: "ACTIVATE_SKILL"; readonly ref: Ref<Unit & Skill> }
-    | { readonly type: "STOP_SKILL"; readonly ref: Ref<Unit & Skill> }
+    | SkillCommand
     | {
           readonly type: "CANCEL_ACTION_EXECUTION";
           readonly ref: Ref<Execution>;

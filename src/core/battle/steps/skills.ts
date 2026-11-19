@@ -15,7 +15,7 @@ export function advanceSkills(state: BattleState, commands: readonly Command[]):
     }
 
     for (const command of commands) {
-        if (command.type !== "ACTIVATE_SKILL" && command.type !== "STOP_SKILL") {
+        if (command.type !== "SKILL") {
             continue;
         }
 
@@ -24,7 +24,7 @@ export function advanceSkills(state: BattleState, commands: readonly Command[]):
             continue;
         }
 
-        if (command.type === "ACTIVATE_SKILL") {
+        if (command.operation === "ACTIVATE") {
             if (unit.skill.definition.activation?.trigger === "MANUAL") {
                 state = activate(state, skillRef(command.ref, unit.skill.definition)).state;
             }
@@ -35,7 +35,7 @@ export function advanceSkills(state: BattleState, commands: readonly Command[]):
                     command.ref,
                     unit.skill as Identified<never, typeof unit.skill> as Activation,
                 ),
-                "STOP",
+                command.operation,
             ).state;
         }
     }
