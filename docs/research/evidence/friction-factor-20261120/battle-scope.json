@@ -1,0 +1,82 @@
+{
+  "date": "2026-11-20",
+  "provenance": {
+    "revision": "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+    "levelSamples": [
+      {
+        "url": "https://github.com/Kengxxiao/ArknightsGameData/blob/63c7cec73c3858d0ae913f85cc89af3cef4d744f/zh_CN/gamedata/levels/activities/act17side/level_act17side_05.json",
+        "bytes": 84230,
+        "sha256": "42c552eef89c30bf81c0796ad025ef9142515fe2b769cb407bae54bc5c89d9a8"
+      },
+      {
+        "url": "https://github.com/Kengxxiao/ArknightsGameData/blob/63c7cec73c3858d0ae913f85cc89af3cef4d744f/zh_CN/gamedata/levels/activities/act14side/level_act14side_tr02.json",
+        "bytes": 60703,
+        "sha256": "1a49d1c55312c14345707aef457fd4372a9e8ea704d5f787a2600def29c73014"
+      }
+    ]
+  },
+  "result": {
+    "bouncyStage": {
+      "enemyReferences": [
+        {
+          "pointer": "/enemyDbRefs/4",
+          "entry": {
+            "useDb": true,
+            "id": "enemy_1236_bouncy",
+            "level": 0,
+            "overwrittenData": null
+          }
+        },
+        {
+          "pointer": "/enemyDbRefs/5",
+          "entry": {
+            "useDb": true,
+            "id": "enemy_1236_bouncy_2",
+            "level": 0,
+            "overwrittenData": null
+          }
+        },
+        {
+          "pointer": "/enemyDbRefs/6",
+          "entry": {
+            "useDb": true,
+            "id": "enemy_1236_bouncy_3",
+            "level": 0,
+            "overwrittenData": null
+          }
+        }
+      ],
+      "predefinedTokenCards": [
+        {
+          "pointer": "/predefines/tokenCards/0/inst/characterKey",
+          "characterKey": "trap_060_bouncy"
+        }
+      ]
+    },
+    "iceTrainingStage": [
+      {
+        "pointer": "/mapData/tiles/35",
+        "tile": {
+          "tileKey": "tile_icetur_lt",
+          "heightType": "LOWLAND",
+          "buildableType": "NONE",
+          "passableMask": "ALL",
+          "playerSideMask": "ALL",
+          "blackboard": null,
+          "effects": null
+        },
+        "cellPointers": [
+          "/mapData/map/4/5"
+        ]
+      }
+    ],
+    "exactKeyScan": {
+      "scope": "Decoded level files in the pinned mirror. Includes all paths in this mirror matching the file pattern.",
+      "filePattern": "zh_CN/gamedata/levels/**/level_*.json",
+      "regex": "\"key\"\\s*:\\s*\"friction_factor\"",
+      "fileCount": 4025,
+      "matches": [],
+      "limits": "Searches a literal blackboard key in level JSON. Does not scan scripts or Prefab data, or establish absence outside this revision."
+    }
+  }
+}

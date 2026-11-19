@@ -1,0 +1,163 @@
+{
+  "provenance": {
+    "checkedOn": "2026-11-20",
+    "scope": "Installed Windows client, serialized football tile prefab and pinned CN level map. Static configuration and native branch evidence.",
+    "nativeClient": {
+      "dll": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "bytes": 223112680,
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff"
+      },
+      "metadata": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "bytes": 46669332,
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5"
+      },
+      "metadataVersion": 29,
+      "imageBase": "0x180000000"
+    },
+    "prefabBundle": {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]tiles.ab",
+      "bytes": 55553,
+      "sha256": "35dc9bf5673f176433a7f6e965b930c767c6c297925aa3315559bb11e730e4db"
+    },
+    "scriptBundle": {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+      "bytes": 477255,
+      "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99"
+    },
+    "decodedCnLevel": {
+      "url": "https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/63c7cec73c3858d0ae913f85cc89af3cef4d744f/zh_CN/gamedata/levels/activities/act1football/level_act1football_01.json",
+      "revision": "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+      "gitBlobSha1": "03e9e9ee75c610b7007f8b8a000b9861a695295d",
+      "bytes": 1923032,
+      "sha256": "0637356a80c2ebbc15ff31d185a9ca85ee745cd3e6cf925679c964bf0848926d"
+    },
+    "communityReferences": [
+      "https://prts.wiki/w/北境意志球",
+      "https://prts.wiki/w/底海滑动球"
+    ],
+    "replay": {
+      "prefab": [
+        "from pathlib import Path; import runpy; extract = runpy.run_path('docs/research/evidence/forced-motion-20261118/push/extract_push_config.py')['extract_with']",
+        "extract('extract_aak_fuze_prefabs.py', Path('/tmp/friction-football-prefab.json'), SELECTION={'battle/prefabs/[uc]tiles.ab': ['tile_football']})",
+        "Select the component by CAB and PathID. Compare _grasslandDatas.Array and the MonoScript PPtr."
+      ],
+      "stage": "Fetch the exact decodedCnLevel URL, check its hashes, and resolve /mapData/map/7/1 to /mapData/tiles/14. Count rows whose tileKey is tile_football.",
+      "native": "Use .agents/skills/arkbattle-native-research/scripts/native.py disasm 71648 71840 71796 77814 77725 with the fingerprints above. Use disasm-at for a method fragment if its ordinary range stops before the specified address."
+    }
+  },
+  "result": {
+    "prefab": {
+      "file": "CAB-a3035ec54e4c62f1271965a646b6fe4e",
+      "pathId": "-862666787130299604",
+      "object": {
+        "bytes": 372,
+        "sha256": "65a348cf569540762d4d0e9f71b0986c8fbe419e19f0b22ff4cdfa7a8675ed26"
+      },
+      "tileKey": "tile_football",
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": "-7581450486819592328"
+      },
+      "script": {
+        "id": "-7581450486819592328",
+        "name": "CoopFootballTile",
+        "cl": "CoopFootballTile",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "modeArrayPointer": "/_grasslandDatas/Array",
+      "modes": [
+        {
+          "modeIdx": 0,
+          "grasslandType": 0,
+          "additionalFriction": 0.0
+        },
+        {
+          "modeIdx": 1,
+          "grasslandType": 1,
+          "additionalFriction": -0.15000000596046448
+        },
+        {
+          "modeIdx": 2,
+          "grasslandType": 2,
+          "additionalFriction": 0.11999999731779099
+        }
+      ]
+    },
+    "level": {
+      "levelId": null,
+      "tileEntryCount": 77,
+      "exampleCellPointer": "/mapData/map/7/1",
+      "exampleTileIndex": 14,
+      "exampleTilePointer": "/mapData/tiles/14",
+      "exampleTile": {
+        "tileKey": "tile_football",
+        "heightType": "LOWLAND",
+        "buildableType": "ALL",
+        "passableMask": "ALL",
+        "playerSideMask": "ALL",
+        "blackboard": [
+          {
+            "key": "tile",
+            "value": 0.0,
+            "valueStr": "landball"
+          }
+        ],
+        "effects": null
+      }
+    },
+    "tileWriters": {
+      "target": "Torappu.Battle.Tile.m_additionalFriction",
+      "targetOffset": "0xe4",
+      "onInit": {
+        "method": "Torappu.Battle.Tile.Init",
+        "methodIndex": 71840,
+        "blackboardKey": {
+          "value": "friction_factor",
+          "metadataLiteralIndex": 29585,
+          "usageAddress": "0x188bf3680",
+          "encodedUsage": "0xa000e723"
+        },
+        "behavior": "Reads the current tile blackboard float with fallback zero, then writes the tile field.",
+        "anchors": [
+          "0x1808f4a0a 488b156fec2f08 mov rdx, qword ptr [rip + 0x82fec6f]",
+          "0x1808f4a14 0f57d2 xorps xmm2, xmm2",
+          "0x1808f4a1c e81f3fa801 call Torappu.Blackboard.GetFloatOrDefault",
+          "0x1808f4a21 f30f1187e4000000 movss dword ptr [rdi + 0xe4], xmm0"
+        ],
+        "methodAddress": "0x1808f4330"
+      },
+      "onSwitchMode": {
+        "method": "Torappu.Battle.CoopFootballTile.OnSwitchMode",
+        "methodIndex": 71648,
+        "behavior": "Writes a new additional-friction value to the tile field when a matching grassland mode is selected.",
+        "anchors": [
+          "0x1808e5b9a 488b9608020000 mov rdx, qword ptr [rsi + 0x208]",
+          "0x1808e5bf7 397c2458 cmp dword ptr [rsp + 0x58], edi",
+          "0x1808e5bfb 75e5 jne 0x1808e5be2",
+          "0x1808e5bfd f30f10442460 movss xmm0, dword ptr [rsp + 0x60]",
+          "0x1808e5c03 f30f1186e4000000 movss dword ptr [rsi + 0xe4], xmm0"
+        ],
+        "methodAddress": "0x1808e5b20",
+        "fields": {
+          "_grasslandDatas": {
+            "offset": "0x208"
+          }
+        }
+      },
+      "enemyRead": {
+        "method": "Torappu.Battle.Enemy._UpdateCurrentTile",
+        "methodIndex": 77814,
+        "anchor": "0x180ac91d0 call Torappu.Battle.Tile.get_additionalFriction",
+        "existingEvidence": "docs/research/evidence/forced-motion-20261118/collision/contact-ranges.json"
+      }
+    },
+    "limits": [
+      "The selected level entry does not contain a friction_factor blackboard key. The mode-specific prefab assignments and the generic initialization key are separately observed.",
+      "This record does not establish a live runtime switch trajectory or the sign/magnitude of values configured for every other stage."
+    ]
+  }
+}

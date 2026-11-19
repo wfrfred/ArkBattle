@@ -1,0 +1,260 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-11-20"
+    ],
+    "collectionDateSource": "record fields",
+    "organizedOn": "2026-11-20",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+        "records": [
+          "native.json#/provenance/client/dll",
+          "terrain.json#/provenance/nativeClient/dll"
+        ],
+        "bytes": 223112680
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        "records": [
+          "native.json#/provenance/client/metadata",
+          "terrain.json#/provenance/nativeClient/metadata"
+        ],
+        "bytes": 46669332
+      }
+    },
+    "sourceRecords": [
+      "battle-scope.json",
+      "enemy-content.json",
+      "native.json",
+      "terrain.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12895,
+        "sha256": "9c5b246859318caaec4aab5275ef0d2d49fce5d612c6b4e569973a9941ba621a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "battle-scope.json",
+        "kind": "record",
+        "bytes": 2537,
+        "sha256": "bc4d9a509f231a4157acca88c4607d7f02110c9386b7e1d0b1ad4b0e78e25da7"
+      },
+      {
+        "path": "enemy-content.json",
+        "kind": "record",
+        "bytes": 11360,
+        "sha256": "0f1eabac8052f0435ae80c87329fd6718a6166c6537dbbc922fed329c94d40f5"
+      },
+      {
+        "path": "extract.py",
+        "kind": "historical-script",
+        "bytes": 2863,
+        "sha256": "f759992c0d27282037a93c16fbbdad2cc66df9070e817e8f22bdd0036e653d8c"
+      },
+      {
+        "path": "native.json",
+        "kind": "record",
+        "bytes": 106244,
+        "sha256": "ed471d0eda77a3852b70a295acab02af2deec53ec2774bb29b48d15ffe126eba"
+      },
+      {
+        "path": "terrain.json",
+        "kind": "record",
+        "bytes": 6822,
+        "sha256": "7ef7e7c455170d38fedfa8ab5b39ed2dd7a6a5f0b39601985ee6dbe1897f553f"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 71648,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/bodies/0",
+            "native.json#/result/bodies/0/method",
+            "terrain.json#/result/tileWriters/onSwitchMode"
+          ],
+          "fullname": "Torappu.Battle.CoopFootballTile.OnSwitchMode",
+          "address": "0x1808e5b20"
+        },
+        {
+          "index": 71746,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/bodies/1",
+            "native.json#/result/bodies/1/method"
+          ],
+          "fullname": "Torappu.Battle.IceCornerTile._DoOrbitInternal",
+          "address": "0x1808ecc80"
+        },
+        {
+          "index": 71749,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/bodies/2",
+            "native.json#/result/bodies/2/method"
+          ],
+          "fullname": "Torappu.Battle.IceCornerTile._StopOrbit",
+          "address": "0x1808ed560"
+        },
+        {
+          "index": 71796,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/bodies/3",
+            "native.json#/result/bodies/3/method"
+          ],
+          "fullname": "Torappu.Battle.Tile.get_additionalFriction",
+          "address": "0x1808fb4e0"
+        },
+        {
+          "index": 71840,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/bodies/4",
+            "native.json#/result/bodies/4/method",
+            "terrain.json#/result/tileWriters/onInit"
+          ],
+          "fullname": "Torappu.Battle.Tile.Init",
+          "address": "0x1808f4330"
+        },
+        {
+          "index": 77716,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/bodies/5",
+            "native.json#/result/bodies/5/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.get_frictionFactor",
+          "address": "0x180acbc70"
+        },
+        {
+          "index": 77723,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/bodies/6",
+            "native.json#/result/bodies/6/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.UpdateFrictionFactor",
+          "address": "0x180ac5580"
+        },
+        {
+          "index": 77724,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/bodies/7",
+            "native.json#/result/bodies/7/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.RestoreFrictionFactor",
+          "address": "0x180ac2c30"
+        },
+        {
+          "index": 77814,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/bodies/8",
+            "native.json#/result/bodies/8/method",
+            "terrain.json#/result/tileWriters/enemyRead"
+          ],
+          "fullname": "Torappu.Battle.Enemy._UpdateCurrentTile",
+          "address": "0x180ac8ee0"
+        },
+        {
+          "index": 77876,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/bodies/9",
+            "native.json#/result/bodies/9/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy..ctor",
+          "address": "0x180ac9870"
+        },
+        {
+          "index": 100322,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/bodies/10",
+            "native.json#/result/bodies/10/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/UpdateFrictionFactor.Execute",
+          "address": "0x181182b50"
+        }
+      ],
+      "blocks": [],
+      "types": [],
+      "constants": [],
+      "bundles": [
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/config/buff_template_holder.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/config/buff_template_holder.ab",
+          "sha256": "f486df86406db62b2773039b87d05a405fb95a31ddc82568c6a6efef14e47f01",
+          "records": [
+            "enemy-content.json#/provenance/templateSource"
+          ],
+          "bytes": 2197532
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99",
+          "records": [
+            "enemy-content.json#/provenance/prefabSources/0",
+            "terrain.json#/provenance/scriptBundle"
+          ],
+          "bytes": 477255
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_10.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_10.ab",
+          "sha256": "7d88a8815d0947b2836c8770c0ff3c2b92645696ec5e2c9d715d6d0b18148fbb",
+          "records": [
+            "enemy-content.json#/provenance/prefabSources/1"
+          ],
+          "bytes": 270254
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_17.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_17.ab",
+          "sha256": "5cab229230f1ad686df4048a44c7d0bfb719b0993ba38e25e66bce15c1e22e7a",
+          "records": [
+            "enemy-content.json#/provenance/prefabSources/2"
+          ],
+          "bytes": 370630
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]tiles.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]tiles.ab",
+          "sha256": "35dc9bf5673f176433a7f6e965b930c767c6c297925aa3315559bb11e730e4db",
+          "records": [
+            "terrain.json#/provenance/prefabBundle"
+          ],
+          "bytes": 55553
+        }
+      ]
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

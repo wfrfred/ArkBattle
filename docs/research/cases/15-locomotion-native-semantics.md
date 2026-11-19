@@ -276,6 +276,16 @@ GROUND_BOUND 与 UNMOVABLE 是不同标志；isActuallyGroundBound 还会结合 
 
 **U｜覆盖边界。** 上述调用点是安装版的静态直接调用。脚本热更、间接调用和其他配置修正来源仍需按具体内容复查。固定角色表另有四个 `base_force_level` 天赋黑板条目，已记录原值和指针，实际绑定尚待核实。[天赋黑板查询](../evidence/forced-motion-20261118/base-force/data-tables.json)、[取证版本和复查入口](../evidence/forced-motion-20261118/README.md#基础力度等级补核)。
 
+### 2026-11-20 补核失衡摩擦的来源
+
+**N｜有效倍率。** `Enemy.get_frictionFactor`（77716）读取当前单位倍率和地块附加量，返回 `max(0, 单位当前倍率 + 地块附加量)`。`UpdateFrictionFactor`（77723）覆盖单位侧当前倍率。`RestoreFrictionFactor`（77724）把同一字段写回 `1`，保留地块附加量。失衡积分另乘质量、重力、普通摩擦系数 `0.5` 和时间步。[字段读取与覆写](../evidence/friction-factor-20261120/native.json)、[失衡积分](../evidence/forced-motion-20261118/README.md#失衡状态)。
+
+**N｜地块附加量。** `Tile.Init`（71840）从地块黑板读取 `friction_factor`，缺省为 `0`。`Enemy._UpdateCurrentTile`（77814）经 `Tile.get_additionalFriction`（71796）把当前地块的值写入敌人保存的地块附加量。足球地块通过切换模式写入这个值，该模式排除在项目支持范围之外。普通活动关 BI-TR-2 的 `IceCornerTile` 直接修改冻结单位的当前倍率，出格时恢复。[地块写入的排除样本](../evidence/friction-factor-20261120/terrain.json)、[原生读写](../evidence/friction-factor-20261120/native.json)、[BI-TR-2 关卡配置](../evidence/friction-factor-20261120/battle-scope.json)。
+
+**N｜单位内容。** 《愚人号》普通关 SN-5 注册圣徒之手 `trap_060_bouncy` 和三种弹力球敌人模板。弹力球（`enemy_1236_bouncy`）的敌人黑板配置 `friction.friction_factor = 0.6`。Prefab 的摩擦天赋安装 `enemy_bouncy_friction`，模板通过 `UpdateFrictionFactor` 节点读取黑板 `friction_factor` 或恢复倍率。这个值由具体天赋配置。运行时黑板前缀的推导路径未单独解码。[SN-5 关卡配置](../evidence/friction-factor-20261120/battle-scope.json)、[敌人黑板、Prefab 和 Buff 模板](../evidence/friction-factor-20261120/enemy-content.json)、[节点读取和分派](../evidence/friction-factor-20261120/native.json)。
+
+**U｜调查范围。** 固定镜像的 4,025 份 `level_*.json` 中没有字面黑板键 `friction_factor`。这次扫描只覆盖关卡 JSON，地块 Prefab、脚本和热更仍按实际内容核实。E8／E9 扫描只记录直接调用候选。[取样记录](../evidence/friction-factor-20261120/battle-scope.json)、[输入与复查入口](../evidence/friction-factor-20261120/README.md)。
+
 ## 8. Tick 顺序、移速与 moving
 
 ### 单敌人内部顺序

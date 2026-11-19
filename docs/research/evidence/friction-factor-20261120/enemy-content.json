@@ -1,0 +1,324 @@
+{
+  "collectedOn": "2026-11-20",
+  "provenance": {
+    "scope": "Four named EnemyData level-0 samples, their installed streaming Prefabs, and the named template in the installed persistent holder. Static source and binding excerpts. No client playthrough, active XLua check, all-unit configuration scan or claim that the mirror revision identifies the local client files.",
+    "prefabSources": [
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+        "bytes": 477255,
+        "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_10.ab",
+        "bytes": 270254,
+        "sha256": "7d88a8815d0947b2836c8770c0ff3c2b92645696ec5e2c9d715d6d0b18148fbb"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_17.ab",
+        "bytes": 370630,
+        "sha256": "5cab229230f1ad686df4048a44c7d0bfb719b0993ba38e25e66bce15c1e22e7a"
+      }
+    ],
+    "prefabExtractor": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/attack-way-20261118/extract_aak_fuze_prefabs.py",
+      "bytes": 4757,
+      "sha256": "7daff49c07f3bd7045a38f611c343f909caef453830774e70203de3e3f308f0b"
+    },
+    "templateSource": {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/config/buff_template_holder.ab",
+      "bytes": 2197532,
+      "sha256": "f486df86406db62b2773039b87d05a405fb95a31ddc82568c6a6efef14e47f01"
+    },
+    "templateDecoder": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/attack-addon-order-20261102/content/decode_content.py",
+      "bytes": 8161,
+      "sha256": "d17abeee072576a29ca060884dcc0dd770fe0f8194ca7eed7b5c13b99b41e14e"
+    },
+    "tableSource": {
+      "sourceUrl": "https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/63c7cec73c3858d0ae913f85cc89af3cef4d744f/zh_CN/gamedata/levels/enemydata/enemy_database.json",
+      "revision": "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+      "path": "zh_CN/gamedata/levels/enemydata/enemy_database.json",
+      "bytes": 15721552,
+      "sha256": "eb8559db76aecd92c37b3ac038de0e9aeb8b6d6c107adfaeadfe0fbc098e067b"
+    }
+  },
+  "result": {
+    "enemyDatabase": [
+      {
+        "enemyId": "enemy_1236_bouncy",
+        "level": 0,
+        "name": "弹力球",
+        "prefabKey": "enemy_1236_bouncy",
+        "sourcePointer": "/enemies/915/Value/0/enemyData/talentBlackboard/1",
+        "entry": {
+          "key": "friction.friction_factor",
+          "value": 0.6,
+          "valueStr": null
+        }
+      },
+      {
+        "enemyId": "enemy_1236_bouncy_2",
+        "level": 0,
+        "name": "清洗弹力球",
+        "prefabKey": "enemy_1236_bouncy_2",
+        "sourcePointer": "/enemies/916/Value/0/enemyData/talentBlackboard/1",
+        "entry": {
+          "key": "friction.friction_factor",
+          "value": 0.6,
+          "valueStr": null
+        }
+      },
+      {
+        "enemyId": "enemy_1236_bouncy_3",
+        "level": 0,
+        "name": "反弹弹力球",
+        "prefabKey": "enemy_1236_bouncy_3",
+        "sourcePointer": "/enemies/917/Value/0/enemyData/talentBlackboard/1",
+        "entry": {
+          "key": "friction.friction_factor",
+          "value": 0.6,
+          "valueStr": null
+        }
+      },
+      {
+        "enemyId": "enemy_1441_bounc2",
+        "level": 0,
+        "name": "新小帮手",
+        "prefabKey": "enemy_1441_bounc2",
+        "sourcePointer": "/enemies/1303/Value/0/enemyData/talentBlackboard/1",
+        "entry": {
+          "key": "friction.friction_factor",
+          "value": 0.6,
+          "valueStr": null
+        }
+      }
+    ],
+    "frictionComponents": [
+      {
+        "bundle": "battle/enm_pfb_10.ab",
+        "file": "CAB-6e182f87ba5d9c6cdcc10600b3a77870",
+        "pathId": "3674054860630388476",
+        "hierarchy": [
+          "enemy_1236_bouncy",
+          "Talents",
+          "Friction"
+        ],
+        "objectSha256": "73b82ee0b705a405973deab57709f6a580e8ef33a3d090d5bd0ab6d60deea6c9",
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": 3800760148018415462
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "3800760148018415462",
+          "name": "PassiveBuffAbility",
+          "cl": "PassiveBuffAbility",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "componentFields": {
+          "_metadata": {
+            "namedAsAlias": "",
+            "blackboardPrefix": ""
+          },
+          "_buffs": {
+            "Array": [
+              {
+                "buffKey": "bouncy_friction",
+                "templateKey": "enemy_bouncy_friction",
+                "loadFromDB": 0,
+                "lifeTimeType": 2,
+                "stripBlackboardParamsWithBuffKey": 0,
+                "blackboard": {
+                  "Array": []
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_10.ab",
+        "file": "CAB-6e182f87ba5d9c6cdcc10600b3a77870",
+        "pathId": "-5839449371817945500",
+        "hierarchy": [
+          "enemy_1236_bouncy_2",
+          "Talents",
+          "Friction"
+        ],
+        "objectSha256": "53ed8979a7ea054fde346e9f06a8ba4fd413a70fb3026ceaaa05486c92fe5c6f",
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": 3800760148018415462
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "3800760148018415462",
+          "name": "PassiveBuffAbility",
+          "cl": "PassiveBuffAbility",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "componentFields": {
+          "_metadata": {
+            "namedAsAlias": "",
+            "blackboardPrefix": ""
+          },
+          "_buffs": {
+            "Array": [
+              {
+                "buffKey": "bouncy_friction",
+                "templateKey": "enemy_bouncy_friction",
+                "loadFromDB": 0,
+                "lifeTimeType": 2,
+                "stripBlackboardParamsWithBuffKey": 0,
+                "blackboard": {
+                  "Array": []
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_10.ab",
+        "file": "CAB-6e182f87ba5d9c6cdcc10600b3a77870",
+        "pathId": "6256767968218923924",
+        "hierarchy": [
+          "enemy_1236_bouncy_3",
+          "Talents",
+          "Friction"
+        ],
+        "objectSha256": "e8eed5077dac201aff6efb5cc1584a7349e57ec6edc5bb7dd247feed1f5cf232",
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": 3800760148018415462
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "3800760148018415462",
+          "name": "PassiveBuffAbility",
+          "cl": "PassiveBuffAbility",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "componentFields": {
+          "_metadata": {
+            "namedAsAlias": "",
+            "blackboardPrefix": ""
+          },
+          "_buffs": {
+            "Array": [
+              {
+                "buffKey": "bouncy_friction",
+                "templateKey": "enemy_bouncy_friction",
+                "loadFromDB": 0,
+                "lifeTimeType": 2,
+                "stripBlackboardParamsWithBuffKey": 0,
+                "blackboard": {
+                  "Array": []
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_17.ab",
+        "file": "CAB-a4a7bee43932d4710a58df03a50dfa6f",
+        "pathId": "-1548398180075574298",
+        "hierarchy": [
+          "enemy_1441_bounc2",
+          "Talents",
+          "Friction"
+        ],
+        "objectSha256": "6598d90ff57aafee0ef67b7a6c93fe99510be5d64b5d4d956f744ee1001f46ef",
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": 3800760148018415462
+        },
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "3800760148018415462",
+          "name": "PassiveBuffAbility",
+          "cl": "PassiveBuffAbility",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "componentFields": {
+          "_metadata": {
+            "namedAsAlias": "",
+            "blackboardPrefix": ""
+          },
+          "_buffs": {
+            "Array": [
+              {
+                "buffKey": "bouncy_friction",
+                "templateKey": "enemy_bouncy_friction",
+                "loadFromDB": 0,
+                "lifeTimeType": 2,
+                "stripBlackboardParamsWithBuffKey": 0,
+                "blackboard": {
+                  "Array": []
+                }
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "buffTemplate": {
+      "bundle": "config/buff_template_holder.ab",
+      "file": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+      "pathId": "6070581171229484677",
+      "objectSha256": "5a92aafc1bde0f63366d2682477d92260f85263c6e65770ae12007110ad85cd0",
+      "templateIndex": 1113,
+      "templateKey": "enemy_bouncy_friction",
+      "events": [
+        {
+          "event": 0,
+          "actions": [
+            {
+              "_target": "BUFF_OWNER",
+              "_frictionFactor": 0.0,
+              "_restoreFrictionFactor": false,
+              "$type": "Torappu.Battle.Action.Nodes+UpdateFrictionFactor"
+            }
+          ]
+        },
+        {
+          "event": 1,
+          "actions": [
+            {
+              "_target": "BUFF_OWNER",
+              "_frictionFactor": 0.0,
+              "_restoreFrictionFactor": true,
+              "$type": "Torappu.Battle.Action.Nodes+UpdateFrictionFactor"
+            }
+          ]
+        }
+      ]
+    },
+    "replay": {
+      "prefabs": {
+        "script": "docs/research/evidence/attack-way-20261118/extract_aak_fuze_prefabs.py",
+        "globalSelection": {
+          "battle/enm_pfb_10.ab": [
+            "enemy_1236_bouncy"
+          ],
+          "battle/enm_pfb_17.ab": [
+            "enemy_1441_bounc2"
+          ]
+        },
+        "selector": "Run main with SELECTION replaced by globalSelection and an output outside the archive. Keep exact named roots and the Talents/Friction MonoBehaviour resolved to PassiveBuffAbility."
+      },
+      "template": {
+        "script": "docs/research/evidence/attack-addon-order-20261102/content/decode_content.py",
+        "selector": "Read templateSource via bundle / serialized. Within the recorded PathID, use the Unity type tree to decode the object, select _templates.Array by templateKey, and parse each matching event value.SerializedState as JSON."
+      },
+      "table": {
+        "selector": "Read the raw pinned table revision, select enemies by the four listed IDs, then select level 0 and talentBlackboard entries matching friction.friction_factor. The recorded JSON pointers locate the exact values."
+      }
+    }
+  }
+}
