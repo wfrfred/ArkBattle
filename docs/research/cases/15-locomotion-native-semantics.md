@@ -252,6 +252,24 @@ GROUND_BOUND 与 UNMOVABLE 是不同标志；isActuallyGroundBound 还会结合 
 
 **U｜调查范围。** 本节使用同版 Windows x64 客户端的静态原生指令与所列技能 Prefab。尚未核实运行时热更、锏 S3 等其他特殊技能的资产绑定及近停后重新施力的实战逐帧轨迹。[输入版本与复查入口](../evidence/forced-motion-20261118/README.md#牵引公式与近停补核)。
 
+### 2026-11-19 补核基础力度等级
+
+**N｜属性归属。** `BASE_FORCE_LEVEL` 是 `Entity` 的通用 Attribute，编号为 24。`AttributesData.baseForceLevel` 是整数配置字段，默认 0。属性元数据的上下限沿用 FP 的可表示范围。Entity 初始化把属性配置交给 `Attributes.Reset`，底值、修正项和有效值缓存与其他 Attribute 一起保存。通用 Modifier 的添加和移除覆盖属性 24。业务 getter `Entity.get_baseForceLevel` 读取修正和限幅后的有效值，并取最近偶数整数。[属性定义、存储和求值指令](../evidence/forced-motion-20261118/base-force/attribute.json)、[通用属性求值](39-death-attribution-and-attribute-ranges.md#底值修正与有效值)。
+
+**N｜初始配置。** 固定修订的角色表有 4,916 条阶段属性关键帧和 1,013 条信赖属性关键帧，两组 `baseForceLevel` 全为 0。该修订的敌人数据库有 2,483 条等级数据写有此字段，均为未定义且原字段值为 0。此统计覆盖这两张表的指定字段，关卡覆写与战中修正另行考察。[固定表版本、查询和计数](../evidence/forced-motion-20261118/base-force/data-tables.json)。
+
+**N｜战中修正。** 温蒂 S2 的 `ActiveBuffAbility` 安装 `weedy_s_2`，该 Buff 切换水炮模式，并用技能黑板的 `base_force_level` 加算属性 24。技能 1–3 级为 −1，4 级至专精二为 0，专精三为 +1。2-8 的两个 `tile_bigforce` 分别位于高台和地面，关卡黑板都配置 +1。地块的 `BuffTile` 对同一属性提供加算，配置为离格清除。阿消两技能的 `force` 则由对应施力动作读取，作为该次执行的力度档位。[技能、关卡和 Modifier 引用](../evidence/forced-motion-20261118/base-force/content.json)。
+
+**N｜玩法配置。** 安装包中「锈刃-神力」的两个收藏品条目 `rogue_2_relic_fight_80` 与 `rogue_1_relic_p40` 都绑定 `char_attribute_add` Rune，黑板 `base_force_level` 为 +2，职业筛选为特种。活动「推斥管控」的三档配置使用同一个 Rune 键，黑板值分别为 +1、+1、+2。[安装包数据和字段指针](../evidence/forced-motion-20261118/base-force/content.json)、[PRTS 收藏品对照](https://prts.wiki/w/锈刃-神力)。
+
+**N｜候选 Rune 处理链。** `CAttributesAdd.DoPreprocessChar` 在角色预处理阶段把 `AttributesData` 传给 `Rune.ApplyChangesToAttributesAdd`。通用函数按属性读取黑板增量和旧字段值，应用加法及属性范围，再写回 `AttributesData`。目前确认了这条数据写入链，`char_attribute_add` 的注册映射仍待追溯。[处理链的调用及写入指令](../evidence/forced-motion-20261118/base-force/content.json)。
+
+**N｜施力时的取值。** 当前二进制对 `Entity.get_baseForceLevel` 的直接调用扫描得到 11 处，经指令边界核对后，分为六个使用推力表的 Action Node 和五条持续牵引入口。常规推击在效果执行时读取来源的基础力度和目标的重量，合并技能力度及该技能的方向修正，再查推表。持续牵引入口开始时采样来源基础力度和目标重量，查拉力表并保存力值，后续以该值乘距离衰减。拉力表的这些调用发生在各施力入口，目标侧的 `BeginPull` 接收已算好的方向与力。[11 处读取、入参和调用指令](../evidence/forced-motion-20261118/base-force/consumers.json)。
+
+**N｜牵引时长。** 普通钩索以弹道自身的力度等级减目标重量来选 0.5 秒或配置时长。捕网以对应等级差决定是否将当前阶段的时长减半，然后另行合并来源基础力度来算力。基础力度改变的是初始实际拉力，已核对的这两条时长分支各自读取弹道档位和重量。[时长和查表分支](../evidence/forced-motion-20261118/base-force/consumers.json)。
+
+**U｜覆盖边界。** 上述调用点是安装版的静态直接调用。脚本热更、间接调用和其他配置修正来源仍需按具体内容复查。固定角色表另有四个 `base_force_level` 天赋黑板条目，已记录原值和指针，实际绑定尚待核实。[天赋黑板查询](../evidence/forced-motion-20261118/base-force/data-tables.json)、[取证版本和复查入口](../evidence/forced-motion-20261118/README.md#基础力度等级补核)。
+
 ## 8. Tick 顺序、移速与 moving
 
 ### 单敌人内部顺序

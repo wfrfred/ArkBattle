@@ -1,0 +1,761 @@
+{
+  "provenance": {
+    "checkedOn": "2026-11-19",
+    "scope": "Installed Windows asset and pinned CN game data comparison, with previously archived native consumer and attribute metadata. No live runtime or active XLua check.",
+    "communityReferences": {
+      "terrain": "https://prts.wiki/w/特种战术点",
+      "stage": "https://prts.wiki/w/2-8",
+      "operator": "https://prts.wiki/w/温蒂",
+      "pull": "https://prts.wiki/w/推与拉",
+      "rogueRelic": "https://prts.wiki/w/锈刃-神力"
+    },
+    "decodedCnGameData": {
+      "revision": "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+      "skillTable": {
+        "url": "https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/63c7cec73c3858d0ae913f85cc89af3cef4d744f/zh_CN/gamedata/excel/skill_table.json",
+        "gitBlobSha1": "913886644cefcef46866e033656a47ac4269e9af",
+        "sha256": "492900f6b957233296c9736c86bb4e5f3ab4b4d7f5055a0f973c5acec3d174b1",
+        "bytes": 11766431
+      },
+      "activityTable": {
+        "url": "https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/63c7cec73c3858d0ae913f85cc89af3cef4d744f/zh_CN/gamedata/excel/activity_table.json",
+        "gitBlobSha1": "bbb635afbefca4a7c821fc7f56586ee714696404",
+        "sha256": "beae99622fa74cebac7ab99380479a8a0ced2b2e38cdc974d879ba6a66523dda",
+        "bytes": 11705621
+      },
+      "stage": {
+        "url": "https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/63c7cec73c3858d0ae913f85cc89af3cef4d744f/zh_CN/gamedata/levels/obt/main/level_main_02-08.json",
+        "gitBlobSha1": "b734334604498974f25093629bc89ceb4f1aedf8",
+        "sha256": "cb472b3d26d8dcb5722898ea993a300855b35d2586ff028bf6c9e521cc9a0c3b",
+        "bytes": 89976
+      }
+    },
+    "installedGameAssets": [
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+        "bytes": 477255,
+        "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]tiles.ab",
+        "bytes": 55553,
+        "sha256": "35dc9bf5673f176433a7f6e965b930c767c6c297925aa3315559bb11e730e4db"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+        "bytes": 1367500,
+        "sha256": "0d0b4c0f9252c14a69a20d4bea09527403dd3eddfc2f7bcd757c3c30cf37ffc3"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+        "bytes": 2151020,
+        "sha256": "8edcb8017c977cdf52c2593b58e21db96949f3ad1e6f904180ac1241f145ca79"
+      }
+    ],
+    "decoders": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/attack-way-20261118/extract_aak_fuze_prefabs.py",
+        "bytes": 4757,
+        "sha256": "7daff49c07f3bd7045a38f611c343f909caef453830774e70203de3e3f308f0b"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/targeting-pipeline-20261109/content/extract_content.py",
+        "bytes": 12906,
+        "sha256": "37504c156e11e55c9c06174980fb1617281690ab3b01db9caa9dfd28937f5faa"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/attack-way-20261118/extract_templates.py",
+        "bytes": 2922,
+        "sha256": "06f04626dd11953a074e24f847fd21798c43c824c187f89913c55412ba997031"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/attack-addon-order-20261102/content/decode_content.py",
+        "bytes": 8161,
+        "sha256": "d17abeee072576a29ca060884dcc0dd770fe0f8194ca7eed7b5c13b99b41e14e"
+      }
+    ],
+    "replay": {
+      "pinnedTables": "Fetch the three exact decoded CN game-data URLs and verify the fingerprints. Apply the JSON Pointers to verify the projection.",
+      "assetSetup": "from pathlib import Path; import runpy; out = Path('/tmp/ark-base-force'); out.mkdir(exist_ok=True); extract = runpy.run_path('docs/research/evidence/forced-motion-20261118/push/extract_push_config.py')['extract_with']",
+      "prefabs": "extract('extract_aak_fuze_prefabs.py', out/'witnesses.json', SELECTION={'battle/prefabs/[uc]tiles.ab': ['tile_bigforce'], 'battle/prefabs/[uc]skills.ab': ['skchr_weedy_2']})",
+      "templates": "extract('extract_templates.py', out/'templates.json', KEYS={'empty', 'switch_mode_restart_fsm'})",
+      "installedTextAssets": [
+        "Use unity_assets.bundle(path)[0] to find the matching CAB and unity_assets.serialized(cabBytes)[\"objects\"] to select the PathId with classid=49.",
+        "Slice cabBytes[start:start+size] and check both hashes. Offsets are relative to the complete Unity TextAsset object.",
+        "For a recorded table T and slot S, read V=T−i32(T) and F=T+u16(V+4+2*S), with a zero/absent vtable entry indicating the default value. Follow offsets with P+u32(P); a vector at its resulting location starts with its u32 count and then uoffsets. A string starts with a u32 byte count and uses UTF-8.",
+        "Rogue display table slots 0/1 identify id/name. Rune-data slots 0/1 identify id and rune vector, rune slots 0/1 identify key and blackboard vector, blackboard slots 0/1/2 identify key/float value/string value.",
+        "Boss Rush rune-data slots 0/4 identify id and rune vector; rune slots 0/1/2 identify key, selector table and blackboard vector; selector slot 0 is the profession mask.",
+        "Weedy skill table slots 0/3 identify id and skill-level vector, level slots 6/8 identify id and blackboard vector."
+      ],
+      "nativeRuneHandler": [
+        "PYTHONPATH=.cache/native-research/python python .agents/skills/arkbattle-native-research/scripts/native.py disasm --max-bytes 896 87237 86994 86992 87010",
+        "PYTHONPATH=.cache/native-research/python python .agents/skills/arkbattle-native-research/scripts/native.py disasm-at --max-bytes 350 0x180d81fde",
+        "PYTHONPATH=.cache/native-research/python python .agents/skills/arkbattle-native-research/scripts/native.py disasm-at --max-bytes 650 0x180d8231e"
+      ]
+    },
+    "installedTextAssets": {
+      "rogue": {
+        "path": "Arknights_Data/PersistentData/Bundles/anon/e617f968e368c6508fca76699ac009e1.bin",
+        "sha256": "d1900d338f15ff403f6ab174a1f0607bbe8f8d244279166eeb644733af5c097f",
+        "bytes": 2324731,
+        "file": "CAB-f880d13c8c4055d13f271311f786e882",
+        "pathId": "-502434719954726974",
+        "object": {
+          "sha256": "3531d48c5ac076d83e2e292560558078a5c2965444e44ab84073b487ca15b3a6",
+          "bytes": 8606148
+        },
+        "name": "roguelike_topic_tablebd71d3"
+      },
+      "activity": {
+        "path": "Arknights_Data/PersistentData/Bundles/anon/a0030fbe9e5958420310f5ecd71d66ef.bin",
+        "sha256": "2f1b25eb13c54a367688d3b4483dbf06a04b8f80e76a8efe32f9eac01098138f",
+        "bytes": 1899867,
+        "file": "CAB-6fd954e1d015117302cf1b2ec77ce586",
+        "pathId": "3507569230508595151",
+        "object": {
+          "sha256": "c4e1bc3f77ac6dcdb5aba47d4c1c96f2ff918e16deecad8d7f4bda5139f4eb70",
+          "bytes": 6080932
+        },
+        "name": "activity_table071163"
+      },
+      "skill": {
+        "path": "Arknights_Data/PersistentData/Bundles/anon/d504286a36d2f6a5b976990be477dafe.bin",
+        "sha256": "81800c4fe046c791337632003cb8e32552204076a5923fa4d30e15628192461a",
+        "bytes": 831959,
+        "file": "CAB-8ed19057637e419bd4d17c7e954788f1",
+        "pathId": "-7928915771743903330",
+        "object": {
+          "sha256": "82a01b7cae8c7b4b3a9db725c622d2ad6bd377c84d31418c31c0bf53aa8b6b5e",
+          "bytes": 4877692
+        },
+        "name": "skill_tableafb859"
+      }
+    },
+    "nativeClient": {
+      "dll": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "bytes": 223112680,
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff"
+      },
+      "metadata": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "bytes": 46669332,
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5"
+      },
+      "metadataVersion": 29,
+      "imageBase": "0x180000000"
+    }
+  },
+  "result": {
+    "nativeAttribute": {
+      "dataField": "AttributesData.baseForceLevel",
+      "attributeType": 24,
+      "constructorDefault": 0,
+      "blackboardKey": "base_force_level",
+      "inventoryEvidence": "docs/research/evidence/attribute-ranges-20261117/inventory-native.json",
+      "consumerEvidence": "docs/research/evidence/forced-motion-20261118/formulas/force-native-selected.json",
+      "rangeEvidence": "docs/research/evidence/attribute-ranges-20261117/README-inventory.md",
+      "consumer": "The source entity effective attribute is combined with attack or projectile force for displacement strength. Harpoon duration compares the projectile force with target weight separately."
+    },
+    "tileModifier": {
+      "cells": [
+        {
+          "pointer": "/mapData/tiles/29",
+          "mapIndexPointers": [
+            "/mapData/map/4/7"
+          ],
+          "tileKey": "tile_bigforce",
+          "heightType": "HIGHLAND",
+          "blackboard": [
+            {
+              "key": "base_force_level",
+              "value": 1.0,
+              "valueStr": null
+            }
+          ]
+        },
+        {
+          "pointer": "/mapData/tiles/31",
+          "mapIndexPointers": [
+            "/mapData/map/4/9"
+          ],
+          "tileKey": "tile_bigforce",
+          "heightType": "LOWLAND",
+          "blackboard": [
+            {
+              "key": "base_force_level",
+              "value": 1.0,
+              "valueStr": null
+            }
+          ]
+        }
+      ],
+      "component": {
+        "bundle": "battle/prefabs/[uc]tiles.ab",
+        "file": "CAB-a3035ec54e4c62f1271965a646b6fe4e",
+        "pathId": "1365633191505899559",
+        "hierarchy": [
+          "tile_bigforce"
+        ],
+        "objectSha256": "fd284f5a0395feebe194a02dbd9d804feb794162452aeb203f264ac700dec0b8",
+        "script": {
+          "id": "8764313853837755128",
+          "name": "BuffTile",
+          "cl": "BuffTile",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        }
+      },
+      "clearBuffsWhenLeft": 1,
+      "buffPointer": "/value/_buffs/Array/0",
+      "modifierPointer": "/value/_buffs/Array/0/attributes/attributeModifiers/Array/0",
+      "buffKey": "tile_bigforce",
+      "templateKey": "empty",
+      "lifeTimeType": 2,
+      "modifier": {
+        "attributeType": 24,
+        "formulaItem": 0,
+        "value": 0.0,
+        "loadFromBlackboard": 1,
+        "fetchBaseValueFromSourceEntity": 0
+      }
+    },
+    "operatorSelfModifier": {
+      "skillId": "skchr_weedy_2",
+      "skillName": "水炮模式",
+      "blackboardPointerPattern": "/skchr_weedy_2/levels/{0..9}/blackboard",
+      "rankOrder": "1–7, mastery I–III",
+      "blackboards": [
+        {
+          "base_force_level": -1.0
+        },
+        {
+          "base_force_level": -1.0
+        },
+        {
+          "base_force_level": -1.0
+        },
+        {
+          "base_force_level": 0.0
+        },
+        {
+          "base_force_level": 0.0
+        },
+        {
+          "base_force_level": 0.0
+        },
+        {
+          "base_force_level": 0.0
+        },
+        {
+          "base_force_level": 0.0
+        },
+        {
+          "base_force_level": 0.0
+        },
+        {
+          "base_force_level": 1.0
+        }
+      ],
+      "component": {
+        "bundle": "battle/prefabs/[uc]skills.ab",
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "pathId": "2502984912304438531",
+        "hierarchy": [
+          "skchr_weedy_2"
+        ],
+        "objectSha256": "15f21f5469de3444260121025793e4e3dcc057f7eb74451e00940127f3c87be6",
+        "script": {
+          "id": "-4234909118878081699",
+          "name": "ActiveBuffAbility",
+          "cl": "ActiveBuffAbility",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        }
+      },
+      "castComponent": {
+        "bundle": "battle/prefabs/[uc]skills.ab",
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "pathId": "8595435156089109763",
+        "hierarchy": [
+          "skchr_weedy_2"
+        ],
+        "objectSha256": "ce47133453405f9dd1db596e4d28f944d517fec493e604cbc051f2aaab3af720",
+        "script": {
+          "id": "6851783972288338031",
+          "name": "CastSkill",
+          "cl": "CastSkill",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        }
+      },
+      "buffPointer": "/value/_buffs/Array/0",
+      "modifierPointer": "/value/_buffs/Array/0/attributes/attributeModifiers/Array/3",
+      "buffKey": "weedy_s_2",
+      "templateKey": "switch_mode_restart_fsm",
+      "lifeTimeType": 2,
+      "modifier": {
+        "attributeType": 24,
+        "formulaItem": 0,
+        "value": 0.0,
+        "loadFromBlackboard": 1,
+        "fetchBaseValueFromSourceEntity": 0
+      },
+      "buffBlackboard": [
+        {
+          "key": "mode",
+          "value": 1.0,
+          "valueStr": ""
+        }
+      ],
+      "installedBlackboard": {
+        "skillTableOffset": 1584060,
+        "levels": [
+          {
+            "levelTableOffset": 1588548,
+            "offset": 1588900,
+            "key": "base_force_level",
+            "floatValue": -1.0,
+            "floatByteOffset": 1588904,
+            "floatBytes": "000080bf"
+          },
+          {
+            "levelTableOffset": 1588056,
+            "offset": 1588408,
+            "key": "base_force_level",
+            "floatValue": -1.0,
+            "floatByteOffset": 1588412,
+            "floatBytes": "000080bf"
+          },
+          {
+            "levelTableOffset": 1587564,
+            "offset": 1587916,
+            "key": "base_force_level",
+            "floatValue": -1.0,
+            "floatByteOffset": 1587920,
+            "floatBytes": "000080bf"
+          },
+          {
+            "levelTableOffset": 1587076,
+            "offset": 1587428,
+            "key": "base_force_level",
+            "floatValue": 0.0,
+            "floatByteOffset": null,
+            "floatBytes": null
+          },
+          {
+            "levelTableOffset": 1586588,
+            "offset": 1586940,
+            "key": "base_force_level",
+            "floatValue": 0.0,
+            "floatByteOffset": null,
+            "floatBytes": null
+          },
+          {
+            "levelTableOffset": 1586100,
+            "offset": 1586452,
+            "key": "base_force_level",
+            "floatValue": 0.0,
+            "floatByteOffset": null,
+            "floatBytes": null
+          },
+          {
+            "levelTableOffset": 1585612,
+            "offset": 1585964,
+            "key": "base_force_level",
+            "floatValue": 0.0,
+            "floatByteOffset": null,
+            "floatBytes": null
+          },
+          {
+            "levelTableOffset": 1585124,
+            "offset": 1585476,
+            "key": "base_force_level",
+            "floatValue": 0.0,
+            "floatByteOffset": null,
+            "floatBytes": null
+          },
+          {
+            "levelTableOffset": 1584636,
+            "offset": 1584988,
+            "key": "base_force_level",
+            "floatValue": 0.0,
+            "floatByteOffset": null,
+            "floatBytes": null
+          },
+          {
+            "levelTableOffset": 1584136,
+            "offset": 1584496,
+            "key": "base_force_level",
+            "floatValue": 1.0,
+            "floatByteOffset": 1584500,
+            "floatBytes": "0000803f"
+          }
+        ]
+      }
+    },
+    "buffTemplates": {
+      "bundle": "config/buff_template_holder.ab",
+      "file": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+      "pathId": "6070581171229484677",
+      "objectSha256": "c03149251d47fa31e6f6cb5b696f9e93925f51a97bf9ee335593c888bdcb6fec",
+      "templates": [
+        {
+          "templateKey": "empty",
+          "templateIndex": 147,
+          "events": []
+        },
+        {
+          "templateKey": "switch_mode_restart_fsm",
+          "templateIndex": 335,
+          "events": [
+            {
+              "event": 0,
+              "actions": [
+                {
+                  "_modeIndex": 1,
+                  "_loadModeFromBlackboard": true,
+                  "_restoreDefault": false,
+                  "_restartFSM": true,
+                  "_targetType": "TARGET",
+                  "$type": "Torappu.Battle.Action.Nodes+SwitchMode"
+                }
+              ]
+            },
+            {
+              "event": 1,
+              "actions": [
+                {
+                  "_modeIndex": 0,
+                  "_loadModeFromBlackboard": false,
+                  "_restoreDefault": true,
+                  "_restartFSM": true,
+                  "_targetType": "TARGET",
+                  "$type": "Torappu.Battle.Action.Nodes+SwitchMode"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "globalRuneModifier": {
+      "activityId": "act1bossrush",
+      "relicId": "act1bossrush_relic_04",
+      "name": "推斥管控",
+      "runes": [
+        {
+          "level": 1,
+          "pointer": "/activity/BOSS_RUSH/act1bossrush/relicLevelInfoDataMap/act1bossrush_relic_04/levelInfos/1/runeData/runes/0",
+          "key": "char_attribute_add",
+          "blackboard": [
+            {
+              "key": "base_force_level",
+              "value": 1.0,
+              "valueStr": null
+            }
+          ],
+          "installed": {
+            "runeDataOffset": 4517020,
+            "runeOffset": 4517168,
+            "selectorOffset": 4517184,
+            "professionMask": 639,
+            "modifierBlackboard": {
+              "offset": 4517236,
+              "key": "base_force_level",
+              "floatValue": 1.0,
+              "floatByteOffset": 4517240,
+              "floatBytes": "0000803f"
+            }
+          }
+        },
+        {
+          "level": 2,
+          "pointer": "/activity/BOSS_RUSH/act1bossrush/relicLevelInfoDataMap/act1bossrush_relic_04/levelInfos/2/runeData/runes/0",
+          "key": "char_attribute_add",
+          "blackboard": [
+            {
+              "key": "base_force_level",
+              "value": 1.0,
+              "valueStr": null
+            }
+          ],
+          "installed": {
+            "runeDataOffset": 4516404,
+            "runeOffset": 4516660,
+            "selectorOffset": 4516676,
+            "professionMask": 639,
+            "modifierBlackboard": {
+              "offset": 4516728,
+              "key": "base_force_level",
+              "floatValue": 1.0,
+              "floatByteOffset": 4516732,
+              "floatBytes": "0000803f"
+            }
+          }
+        },
+        {
+          "level": 3,
+          "pointer": "/activity/BOSS_RUSH/act1bossrush/relicLevelInfoDataMap/act1bossrush_relic_04/levelInfos/3/runeData/runes/0",
+          "key": "char_attribute_add",
+          "blackboard": [
+            {
+              "key": "base_force_level",
+              "value": 2.0,
+              "valueStr": null
+            }
+          ],
+          "installed": {
+            "runeDataOffset": 4515516,
+            "runeOffset": 4515944,
+            "selectorOffset": 4515960,
+            "professionMask": 639,
+            "modifierBlackboard": {
+              "offset": 4516012,
+              "key": "base_force_level",
+              "floatValue": 2.0,
+              "floatByteOffset": 4516016,
+              "floatBytes": "00000040"
+            }
+          }
+        }
+      ],
+      "limit": "Installed and pinned data agree on the configured mode-wide attribute addition. The rune handler is investigated separately from the source data.",
+      "commonSelector": {
+        "professionMask": 639,
+        "buildableMask": "ALL",
+        "playerSideMask": "ALL",
+        "mapLayerMask": "ALL",
+        "sideType": "ALL",
+        "charIdFilter": null,
+        "charIdExcludeFilter": null,
+        "enemyIdFilter": null,
+        "enemyIdExcludeFilter": null,
+        "enemyLevelTypeFilter": null,
+        "enemyActionHiddenGroupFilter": null,
+        "skillIdFilter": null,
+        "tileKeyFilter": null,
+        "groupTagFilter": null,
+        "filterTagFilter": null,
+        "filterTagExcludeFilter": null,
+        "subProfessionExcludeFilter": null,
+        "mapTagFilter": null,
+        "heightTypeMask": "ALL"
+      }
+    },
+    "individualExecutionForce": {
+      "skillId": "skchr_sqrrel_1",
+      "skillName": "水蒸气泵",
+      "blackboardKey": "force",
+      "blackboardPointerPattern": "/skchr_sqrrel_1/levels/{0..9}/blackboard",
+      "values": [
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        2.0
+      ],
+      "bindingEvidence": "docs/research/evidence/forced-motion-20261118/push/native-push.json",
+      "assetEvidence": "docs/research/evidence/forced-motion-20261118/push/projectiles.json"
+    },
+    "limits": [
+      "No character or enemy with a permanent nonzero intrinsic raw base was verified. The zero default is confirmed. The tile and skill witnesses modify the effective value, the generic character additive rune handler writes AttributesData in preprocessing, and the execution example supplies a separate payload value."
+    ],
+    "roguelikeGlobalRune": {
+      "name": "锈刃-神力",
+      "runeKey": "char_attribute_add",
+      "entries": [
+        {
+          "relicId": "rogue_2_relic_fight_80",
+          "displayTableOffset": 7511544,
+          "runesTableOffset": 7356876,
+          "runeOffset": 7356924,
+          "selectorBlackboardOffset": 7357008,
+          "selector": {
+            "key": "selector.profession",
+            "valueStr": "special"
+          },
+          "modifierBlackboard": {
+            "offset": 7356972,
+            "key": "base_force_level",
+            "floatValue": 2.0,
+            "floatByteOffset": 7356976,
+            "floatBytes": "00000040"
+          }
+        },
+        {
+          "relicId": "rogue_1_relic_p40",
+          "displayTableOffset": 8118820,
+          "runesTableOffset": 7965456,
+          "runeOffset": 7965500,
+          "selectorBlackboardOffset": 7965584,
+          "selector": {
+            "key": "selector.profession",
+            "valueStr": "special"
+          },
+          "modifierBlackboard": {
+            "offset": 7965548,
+            "key": "base_force_level",
+            "floatValue": 2.0,
+            "floatByteOffset": 7965552,
+            "floatBytes": "00000040"
+          }
+        }
+      ]
+    },
+    "nativeCharacterAdditiveRuneHandler": {
+      "writePath": "CAttributesAdd.DoPreprocessChar forwards an AttributesData object to ApplyChangesToAttributesAdd. The generic routine reads attribute field metadata, looks up the matching rune blackboard float, reads the old AttributesData field, applies the addition callback, clamps to its declared range, and calls AttributesData.WriteAttributesField. This is a preprocess data write, distinct from attaching a live field Buff.",
+      "limit": "The name-to-handler registration for the configured char_attribute_add string was not independently traced. These are ordinary native method bodies, with no live runtime verification.",
+      "nativeSlices": [
+        {
+          "method": "Torappu.Battle.Runes.Internal.CAttributesAdd.DoPreprocessChar",
+          "methodIndex": 87237,
+          "address": "0x180d71530",
+          "decodedEnd": "0x180d715be",
+          "bytesSha256": "5b8d63e6998f6ef8723c4a79c2178b3dbcde0d287cebf5f843f3011fda167a56",
+          "instructions": [
+            {
+              "address": "0x180d7157a",
+              "bytes": "488b13",
+              "mnemonic": "mov",
+              "operands": "rdx, qword ptr [rbx]"
+            },
+            {
+              "address": "0x180d71592",
+              "bytes": "e9d9090100",
+              "mnemonic": "jmp",
+              "operands": "0x180d81f70",
+              "methods": [
+                "Torappu.Battle.Runes.Rune.ApplyChangesToAttributesAdd"
+              ]
+            }
+          ]
+        },
+        {
+          "method": "Torappu.Battle.Runes.Rune.ApplyChangesToAttributesAdd",
+          "methodIndex": 86994,
+          "address": "0x180d81fde",
+          "decodedEnd": "0x180d820b5",
+          "bytesSha256": "b98740a492b78a237902986b7e7fb4f866d1a2b10a74b641d09e0ce7546afcdc",
+          "instructions": [
+            {
+              "address": "0x180d8205a",
+              "bytes": "e85176da03",
+              "mnemonic": "call",
+              "operands": "0x184b296b0",
+              "methods": [
+                "XLua.__XLua_Gen_Delegate129..ctor"
+              ]
+            },
+            {
+              "address": "0x180d820b0",
+              "bytes": "e99b010000",
+              "mnemonic": "jmp",
+              "operands": "0x180d82250",
+              "methods": [
+                "Torappu.Battle.Runes.Rune.ApplyChangesToAttributes"
+              ]
+            }
+          ]
+        },
+        {
+          "method": "Torappu.Battle.Runes.Rune.ApplyChangesToAttributes",
+          "methodIndex": 86992,
+          "address": "0x180d8231e",
+          "decodedEnd": "0x180d82544",
+          "bytesSha256": "20d16503aacde50ec14521498322571985ca0abfc45ca056ccc02dd73cc32314",
+          "instructions": [
+            {
+              "address": "0x180d8233f",
+              "bytes": "e8ac2b5f01",
+              "mnemonic": "call",
+              "operands": "0x182374ef0",
+              "methods": [
+                "Torappu.AttributesData.get_fieldMetas"
+              ]
+            },
+            {
+              "address": "0x180d823df",
+              "bytes": "e81c340000",
+              "mnemonic": "call",
+              "operands": "0x180d85800",
+              "methods": [
+                "Torappu.Battle.Runes.Rune.get_blackboard"
+              ]
+            },
+            {
+              "address": "0x180d82424",
+              "bytes": "e8b7725f01",
+              "mnemonic": "call",
+              "operands": "0x1823796e0",
+              "methods": [
+                "Torappu.Blackboard.TryGetFloat"
+              ]
+            },
+            {
+              "address": "0x180d8243c",
+              "bytes": "e86f075f01",
+              "mnemonic": "call",
+              "operands": "0x182372bb0",
+              "methods": [
+                "Torappu.AttributeMetaAttribute.GetRangeAsTVector2"
+              ]
+            },
+            {
+              "address": "0x180d8247f",
+              "bytes": "e89c195f01",
+              "mnemonic": "call",
+              "operands": "0x182373e20",
+              "methods": [
+                "Torappu.AttributesData.ReadAttributesField"
+              ]
+            },
+            {
+              "address": "0x180d824fc",
+              "bytes": "e88fd4bd05",
+              "mnemonic": "call",
+              "operands": "0x18695f990",
+              "methods": [
+                "Torappu.TSMath.Clamp"
+              ]
+            },
+            {
+              "address": "0x180d8250d",
+              "bytes": "e89e1e5f01",
+              "mnemonic": "call",
+              "operands": "0x1823743b0",
+              "methods": [
+                "Torappu.AttributesData.WriteAttributesField"
+              ]
+            }
+          ]
+        },
+        {
+          "method": "Torappu.Battle.Runes.Rune/<>c.<ApplyChangesToAttributesAdd>b__55_0",
+          "methodIndex": 87010,
+          "address": "0x180d86fe0",
+          "decodedEnd": "0x180d87039",
+          "bytesSha256": "690946f782d37f35e609d9ebc55074c9cdf73141a7da9bbaed03d84e27ba70ec",
+          "instructions": [
+            {
+              "address": "0x180d87034",
+              "bytes": "e9874fa803",
+              "mnemonic": "jmp",
+              "operands": "0x18480bfc0",
+              "methods": [
+                "Torappu.FP.op_Addition",
+                "Torappu.FP.FastAdd",
+                "UnityEngine.Timeline.DiscreteTime.op_Addition"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

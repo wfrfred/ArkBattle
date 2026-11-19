@@ -1,0 +1,241 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-19",
+    "repository": "https://github.com/Kengxxiao/ArknightsGameData",
+    "revision": "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+    "tool": {
+      "path": ".agents/skills/arkbattle-native-research/scripts/config.py",
+      "sha256": "67c2a913386059a57f9316f25e532c9dd20cdc4adb91d820065d09fd9dec76e4"
+    },
+    "inputs": [
+      {
+        "sourcePath": "zh_CN/gamedata/excel/character_table.json",
+        "url": "https://github.com/Kengxxiao/ArknightsGameData/blob/63c7cec73c3858d0ae913f85cc89af3cef4d744f/zh_CN/gamedata/excel/character_table.json",
+        "bytes": 15468242,
+        "sha256": "6a61f54802ee194dbb21968976eb99e2a4050e38928bd24bd2b770479076cea1"
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/levels/enemydata/enemy_database.json",
+        "url": "https://github.com/Kengxxiao/ArknightsGameData/blob/63c7cec73c3858d0ae913f85cc89af3cef4d744f/zh_CN/gamedata/levels/enemydata/enemy_database.json",
+        "bytes": 15721552,
+        "sha256": "eb8559db76aecd92c37b3ac038de0e9aeb8b6d6c107adfaeadfe0fbc098e067b"
+      },
+      {
+        "sourcePath": "zh_CN/gamedata/excel/skill_table.json",
+        "url": "https://github.com/Kengxxiao/ArknightsGameData/blob/63c7cec73c3858d0ae913f85cc89af3cef4d744f/zh_CN/gamedata/excel/skill_table.json",
+        "bytes": 11766431,
+        "sha256": "492900f6b957233296c9736c86bb4e5f3ab4b4d7f5055a0f973c5acec3d174b1"
+      }
+    ],
+    "scope": "Three complete pinned JSON inputs, independently versioned from the installed client. Keyframe and database counts do not include equipment, level overrides, templates, or mode-specific runtime modifiers. The blackboard queries match the exact key only. An entry establishes a configured value; template and component bindings determine what it affects.",
+    "replay": "Run config.py on the input with the recorded SHA-256 and append each configArguments sequence. Use the sourcePath and pinned revision to recover the original bytes."
+  },
+  "result": {
+    "characterPhaseKeyframes": {
+      "input": "zh_CN/gamedata/excel/character_table.json",
+      "configArguments": [
+        "stats",
+        "/*/phases/*/attributesKeyFrames/*/data",
+        "--by",
+        "/baseForceLevel"
+      ],
+      "matched": 4916,
+      "groups": [
+        {
+          "value": 0,
+          "count": 4916
+        }
+      ],
+      "missingGroupValues": {}
+    },
+    "characterFavorKeyframes": {
+      "input": "zh_CN/gamedata/excel/character_table.json",
+      "configArguments": [
+        "stats",
+        "/*/favorKeyFrames/*/data",
+        "--by",
+        "/baseForceLevel"
+      ],
+      "matched": 1013,
+      "groups": [
+        {
+          "value": 0,
+          "count": 1013
+        }
+      ],
+      "missingGroupValues": {}
+    },
+    "enemyDefinedFlag": {
+      "input": "zh_CN/gamedata/levels/enemydata/enemy_database.json",
+      "configArguments": [
+        "stats",
+        "/enemies/*/Value/*/enemyData/attributes/baseForceLevel",
+        "--by",
+        "/m_defined"
+      ],
+      "matched": 2483,
+      "groups": [
+        {
+          "value": false,
+          "count": 2483
+        }
+      ],
+      "missingGroupValues": {}
+    },
+    "enemyValue": {
+      "input": "zh_CN/gamedata/levels/enemydata/enemy_database.json",
+      "configArguments": [
+        "stats",
+        "/enemies/*/Value/*/enemyData/attributes/baseForceLevel",
+        "--by",
+        "/m_value"
+      ],
+      "matched": 2483,
+      "groups": [
+        {
+          "value": 0,
+          "count": 2483
+        }
+      ],
+      "missingGroupValues": {}
+    },
+    "skillBlackboardMatches": {
+      "input": "zh_CN/gamedata/excel/skill_table.json",
+      "configArguments": [
+        "select",
+        "/*/levels/*/blackboard/*",
+        "--where",
+        "/key",
+        "\"base_force_level\""
+      ],
+      "matched": 10,
+      "matches": [
+        {
+          "pointer": "/skchr_weedy_2/levels/0/blackboard/3",
+          "value": {
+            "key": "base_force_level",
+            "value": -1.0,
+            "valueStr": null
+          }
+        },
+        {
+          "pointer": "/skchr_weedy_2/levels/1/blackboard/3",
+          "value": {
+            "key": "base_force_level",
+            "value": -1.0,
+            "valueStr": null
+          }
+        },
+        {
+          "pointer": "/skchr_weedy_2/levels/2/blackboard/3",
+          "value": {
+            "key": "base_force_level",
+            "value": -1.0,
+            "valueStr": null
+          }
+        },
+        {
+          "pointer": "/skchr_weedy_2/levels/3/blackboard/3",
+          "value": {
+            "key": "base_force_level",
+            "value": 0.0,
+            "valueStr": null
+          }
+        },
+        {
+          "pointer": "/skchr_weedy_2/levels/4/blackboard/3",
+          "value": {
+            "key": "base_force_level",
+            "value": 0.0,
+            "valueStr": null
+          }
+        },
+        {
+          "pointer": "/skchr_weedy_2/levels/5/blackboard/3",
+          "value": {
+            "key": "base_force_level",
+            "value": 0.0,
+            "valueStr": null
+          }
+        },
+        {
+          "pointer": "/skchr_weedy_2/levels/6/blackboard/3",
+          "value": {
+            "key": "base_force_level",
+            "value": 0.0,
+            "valueStr": null
+          }
+        },
+        {
+          "pointer": "/skchr_weedy_2/levels/7/blackboard/3",
+          "value": {
+            "key": "base_force_level",
+            "value": 0.0,
+            "valueStr": null
+          }
+        },
+        {
+          "pointer": "/skchr_weedy_2/levels/8/blackboard/3",
+          "value": {
+            "key": "base_force_level",
+            "value": 0.0,
+            "valueStr": null
+          }
+        },
+        {
+          "pointer": "/skchr_weedy_2/levels/9/blackboard/3",
+          "value": {
+            "key": "base_force_level",
+            "value": 1.0,
+            "valueStr": null
+          }
+        }
+      ]
+    },
+    "talentBlackboardMatches": {
+      "input": "zh_CN/gamedata/excel/character_table.json",
+      "configArguments": [
+        "select",
+        "/*/talents/*/candidates/*/blackboard/*",
+        "--where",
+        "/key",
+        "\"base_force_level\""
+      ],
+      "matched": 4,
+      "matches": [
+        {
+          "pointer": "/token_10009_weedy_cannon/talents/1/candidates/0/blackboard/0",
+          "value": {
+            "key": "base_force_level",
+            "value": 1.0,
+            "valueStr": null
+          }
+        },
+        {
+          "pointer": "/trap_060_bouncy/talents/0/candidates/0/blackboard/0",
+          "value": {
+            "key": "base_force_level",
+            "value": 2.0,
+            "valueStr": null
+          }
+        },
+        {
+          "pointer": "/trap_157_bounc2/talents/0/candidates/0/blackboard/0",
+          "value": {
+            "key": "base_force_level",
+            "value": 0.0,
+            "valueStr": null
+          }
+        },
+        {
+          "pointer": "/trap_195_arcpw/talents/0/candidates/0/blackboard/0",
+          "value": {
+            "key": "base_force_level",
+            "value": 1.0,
+            "valueStr": null
+          }
+        }
+      ]
+    }
+  }
+}

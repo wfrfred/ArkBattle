@@ -1,0 +1,669 @@
+{
+  "collectedOn": "2026-11-19",
+  "provenance": {
+    "scope": "Same-build Win64 metadata and stock IL2CPP paths when XLua overrides are absent. No runtime observations.",
+    "client": {
+      "dll": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "bytes": 223112680,
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff"
+      },
+      "metadata": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "bytes": 46669332,
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5"
+      },
+      "metadataVersion": 29,
+      "imageBase": "0x180000000"
+    },
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/native.py",
+        "bytes": 18723,
+        "sha256": "1c6c16dc97e0dd9af0af4033c81a7534384dd65ebb1e604df3f4a3289df158e6"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "capstoneVersion": "5.0.7"
+    },
+    "priorArtifacts": [
+      {
+        "path": "../../attribute-ranges-20261117/inventory-native.json",
+        "purpose": "decoded AttributeType and AttributeMeta, data constructor and reflection"
+      },
+      {
+        "path": "../../attribute-ranges-20261117/native-calculation.json",
+        "purpose": "the runtime attribute range, formula, storage, and dirty cache"
+      },
+      {
+        "path": "../../attack-speed-timing-20261105/dirty/native.json",
+        "purpose": "generic modifier adds and removes, Entity init and reset"
+      },
+      {
+        "path": "../../attack-timing-inputs-20261117/wait-timeout.json",
+        "purpose": "fixed-point ties-to-even"
+      },
+      {
+        "path": "../../forced-motion-20261118/push/native-push.json",
+        "purpose": "base-force getter and push consumers"
+      },
+      {
+        "path": "../../unit-audit-20261110/coordinates-numeric/native.json",
+        "purpose": "separate rounding helper for data-field integer writes"
+      }
+    ]
+  },
+  "result": {
+    "attribute": {
+      "ordinal": 24,
+      "enumMetadata": {
+        "name": "BASE_FORCE_LEVEL",
+        "value": 24,
+        "defaultRecord": {
+          "fieldIndex": 325272,
+          "typeIndex": 60309,
+          "dataIndex": 279542,
+          "index": 25773
+        },
+        "encodedHex": "30"
+      },
+      "dataField": {
+        "nameIndex": 1187680,
+        "typeIndex": 64442,
+        "token": 67132841,
+        "index": 23976,
+        "name": "baseForceLevel",
+        "typeName": "CodeStage.AntiCheat.ObscuredTypes.ObscuredInt",
+        "static": false,
+        "offset": 360,
+        "unboxedOffset": null,
+        "attributeMetaBlob": {
+          "dataStart": 43581940,
+          "range": {
+            "token": 67132841,
+            "startOffset": 151239,
+            "index": 8939
+          },
+          "nextRange": {
+            "token": 67132842,
+            "startOffset": 151253,
+            "index": 8940
+          },
+          "bytes": "01c37a000001000055c001547430",
+          "constructorIndex": 31427,
+          "attributeTypeOrdinal": 24,
+          "minimumDeclared": false,
+          "maximumDeclared": false
+        },
+        "unconfiguredConstructorDefault": {
+          "value": 0,
+          "conversion": "CodeStage.AntiCheat.ObscuredTypes.ObscuredInt.op_Implicit",
+          "callAddress": "0x182374c13",
+          "storeAddress": "0x182374c24",
+          "fieldOffset": 360
+        }
+      },
+      "defaultEffectiveRange": {
+        "minimum": "FP.MinValue",
+        "minimumRawQ32_32": "0x8000000000000002",
+        "maximum": "FP.MaxValue",
+        "maximumRawQ32_32": "0x7ffffffffffffffe",
+        "oneRawQ32_32": "0x0000000100000000",
+        "notes": "These are signed fixed-point representational bounds. The downstream push/pull tables have their own index clamp."
+      },
+      "genericModifierMaskBit": "0x0000000001000000",
+      "consumerRounding": "Resolve the effective FP in the current range, then round to nearest with ties to even."
+    },
+    "fieldOwners": [
+      {
+        "fullname": "Torappu.AttributeType",
+        "fields": [
+          {
+            "name": "BASE_FORCE_LEVEL",
+            "index": 325272,
+            "token": 67109286,
+            "typeName": "Torappu.AttributeType",
+            "offset": 0,
+            "static": true
+          }
+        ]
+      },
+      {
+        "fullname": "Torappu.AttributeMetaAttribute",
+        "fields": [
+          {
+            "name": "m_hasMin",
+            "index": 23954,
+            "token": 67132819,
+            "typeName": "bool",
+            "offset": 32,
+            "static": false
+          },
+          {
+            "name": "m_hasMax",
+            "index": 23955,
+            "token": 67132820,
+            "typeName": "bool",
+            "offset": 33,
+            "static": false
+          }
+        ]
+      },
+      {
+        "fullname": "Torappu.Battle.Entity",
+        "fields": [
+          {
+            "name": "m_attributes",
+            "index": 73938,
+            "token": 67182803,
+            "typeName": "Torappu.Battle.Attributes",
+            "offset": 176,
+            "static": false
+          },
+          {
+            "name": "__Hotfix0_get_baseForceLevel",
+            "index": 74095,
+            "token": 67182960,
+            "typeName": "XLua.DelegateBridge",
+            "offset": 992,
+            "static": true
+          }
+        ]
+      },
+      {
+        "fullname": "Torappu.Battle.Attributes",
+        "fields": [
+          {
+            "name": "m_attributeModifiers",
+            "index": 70997,
+            "token": 67179862,
+            "typeName": "type(kind=0x15, data=0x188d3ddc8)[]",
+            "offset": 24,
+            "static": false
+          },
+          {
+            "name": "m_rawData",
+            "index": 71005,
+            "token": 67179870,
+            "typeName": "Torappu.ObscuredFP[]",
+            "offset": 88,
+            "static": false
+          },
+          {
+            "name": "m_dataRange",
+            "index": 71006,
+            "token": 67179871,
+            "typeName": "Torappu.TSVector2[]",
+            "offset": 96,
+            "static": false
+          },
+          {
+            "name": "m_cachedData",
+            "index": 71007,
+            "token": 67179872,
+            "typeName": "Torappu.ObscuredFP[]",
+            "offset": 104,
+            "static": false
+          },
+          {
+            "name": "m_overrideDataRange",
+            "index": 71008,
+            "token": 67179873,
+            "typeName": "type(kind=0x15, data=0x188e1c448)[]",
+            "offset": 112,
+            "static": false
+          },
+          {
+            "name": "m_dirtyMask",
+            "index": 71009,
+            "token": 67179874,
+            "typeName": "long",
+            "offset": 120,
+            "static": false
+          },
+          {
+            "name": "onAttributeMarkedDirty",
+            "index": 71010,
+            "token": 67179875,
+            "typeName": "type(kind=0x15, data=0x188d5e2c8)",
+            "offset": 128,
+            "static": false
+          }
+        ]
+      },
+      {
+        "fullname": "Torappu.FP",
+        "fields": [
+          {
+            "name": "MaxValue",
+            "index": 325972,
+            "token": 67109986,
+            "typeName": "Torappu.FP",
+            "offset": 16,
+            "static": true
+          },
+          {
+            "name": "MinValue",
+            "index": 325973,
+            "token": 67109987,
+            "typeName": "Torappu.FP",
+            "offset": 24,
+            "static": true
+          },
+          {
+            "name": "One",
+            "index": 325974,
+            "token": 67109988,
+            "typeName": "Torappu.FP",
+            "offset": 32,
+            "static": true
+          }
+        ]
+      }
+    ],
+    "genericEvaluation": "Clamp(((raw + sum(addition)) * max(0, 1 + sum(multiplier)) + sum(finalAddition)) * product(finalScaler), currentMin, currentMax)",
+    "methods": [
+      {
+        "methodIndex": 31444,
+        "fullname": "Torappu.AttributesData..ctor",
+        "token": "0x06007ad5",
+        "address": "0x1823749b0",
+        "selectedInstructions": [
+          "0x182374bf7  4533c0  xor r8d, r8d",
+          "0x182374bfa  33d2  xor edx, edx",
+          "0x182374c0f  488d4dd0  lea rcx, [rbp - 0x30]",
+          "0x182374c13  e8e8714f04  call 0x18686be00",
+          "0x182374c24  0f118368010000  movups xmmword ptr [rbx + 0x168], xmm0",
+          "0x182374c2b  898b78010000  mov dword ptr [rbx + 0x178], ecx"
+        ],
+        "observation": "The unconfigured data object constructs and stores ObscuredInt(0) in the field at 0x168."
+      },
+      {
+        "methodIndex": 31427,
+        "fullname": "Torappu.AttributeMetaAttribute..ctor",
+        "token": "0x06007ac4",
+        "address": "0x182372d20",
+        "selectedInstructions": [
+          "0x182372d2c  c74118ffff7fff  mov dword ptr [rcx + 0x18], 0xff7fffff",
+          "0x182372d35  c7411cffff7f7f  mov dword ptr [rcx + 0x1c], 0x7f7fffff",
+          "0x182372d44  897b10  mov dword ptr [rbx + 0x10], edi"
+        ],
+        "observation": "The one-argument AttributeMeta constructor saves the enum and supplies float sentinel fields. The declaration omits both explicit bounds."
+      },
+      {
+        "methodIndex": 31432,
+        "fullname": "Torappu.AttributeMetaAttribute.GetRangeAsTVector2",
+        "token": "0x06007ac9",
+        "address": "0x182372bb0",
+        "selectedInstructions": [
+          "0x182372be1  807f2000  cmp byte ptr [rdi + 0x20], 0",
+          "0x182372bea  7430  je 0x182372c1c",
+          "0x182372c42  488b5b18  mov rbx, qword ptr [rbx + 0x18]",
+          "0x182372c46  807f2100  cmp byte ptr [rdi + 0x21], 0",
+          "0x182372c4a  7422  je 0x182372c6e",
+          "0x182372c8d  488b4010  mov rax, qword ptr [rax + 0x10]"
+        ],
+        "observation": "GetRangeAsTVector2 checks m_hasMin/m_hasMax. When absent, use FP static slots +0x18 MinValue and +0x10 MaxValue."
+      },
+      {
+        "methodIndex": 226253,
+        "fullname": "Torappu.FP..cctor",
+        "token": "0x0600033b",
+        "address": "0x18695d6c0",
+        "selectedInstructions": [
+          "0x18695d766  48b8feffffffffffff7f  movabs rax, 0x7ffffffffffffffe",
+          "0x18695d770  48894110  mov qword ptr [rcx + 0x10], rax",
+          "0x18695d782  48b80200000000000080  movabs rax, 0x8000000000000002",
+          "0x18695d78c  48894118  mov qword ptr [rcx + 0x18], rax",
+          "0x18695d79e  48b80000000001000000  movabs rax, 0x100000000",
+          "0x18695d7a8  48894120  mov qword ptr [rcx + 0x20], rax"
+        ],
+        "observation": "The FP class constructor initializes MaxValue, MinValue, and One to the recorded raw values."
+      },
+      {
+        "methodIndex": 31441,
+        "fullname": "Torappu.AttributesData.ReadAttributesField",
+        "token": "0x06007ad2",
+        "address": "0x182373e20",
+        "selectedInstructions": [
+          "0x182374046  e8a57e4f04  call 0x18686bef0"
+        ],
+        "observation": "Generic read of an integer data field converts its ObscuredInt to an ordinary integer before returning a float."
+      },
+      {
+        "methodIndex": 31442,
+        "fullname": "Torappu.AttributesData.WriteAttributesField",
+        "token": "0x06007ad3",
+        "address": "0x182374080",
+        "selectedInstructions": [
+          "0x182374316  e8f52fc9fd  call 0x180007310",
+          "0x18237433f  e8bc7a4f04  call 0x18686be00"
+        ],
+        "observation": "The generic integer data write rounds before constructing ObscuredInt. This is a separate conversion from the effective-value getter. The round helper is archived with the coordinate numeric evidence."
+      },
+      {
+        "methodIndex": 67622,
+        "fullname": "Torappu.Battle.Entity..ctor",
+        "token": "0x06010827",
+        "address": "0x1807327e0",
+        "selectedInstructions": [
+          "0x18073296f  e8cc76f4ff  call 0x18067a040",
+          "0x180732974  488d8bb0000000  lea rcx, [rbx + 0xb0]",
+          "0x18073297b  4889bbb0000000  mov qword ptr [rbx + 0xb0], rdi"
+        ],
+        "observation": "The Entity constructor creates its runtime Attributes instance and stores it in m_attributes."
+      },
+      {
+        "methodIndex": 67357,
+        "fullname": "Torappu.Battle.Entity.get_attributes",
+        "token": "0x0601071e",
+        "address": "0x1807335c0",
+        "selectedInstructions": [
+          "0x180733617  488b83b0000000  mov rax, qword ptr [rbx + 0xb0]"
+        ],
+        "observation": "The ordinary getter returns the per-Entity Attributes instance from offset 0xb0."
+      },
+      {
+        "methodIndex": 67624,
+        "fullname": "Torappu.Battle.Entity.Init",
+        "token": "0x06010829",
+        "address": "0x1807264b0",
+        "selectedInstructions": [
+          "0x18072670d  e8aece0000  call 0x1807335c0",
+          "0x18072671e  488bd5  mov rdx, rbp",
+          "0x180726724  e84729f5ff  call 0x180679070",
+          "0x1807267d9  4c8bb880000000  mov r15, qword ptr [rax + 0x80]",
+          "0x18072680e  4d8b8028090000  mov r8, qword ptr [r8 + 0x928]",
+          "0x180726823  e878fda405  call 0x1861765a0",
+          "0x18072685a  48898580000000  mov qword ptr [rbp + 0x80], rax"
+        ],
+        "observation": "Init passes the supplied AttributesData to Attributes.Reset, then installs the Entity dirty callback."
+      },
+      {
+        "methodIndex": 65235,
+        "fullname": "Torappu.Battle.Attributes.Reset",
+        "token": "0x0600fed4",
+        "address": "0x180679070",
+        "selectedInstructions": [
+          "0x180679205  e8a699cf01  call 0x182372bb0",
+          "0x18067920a  4d8b4760  mov r8, qword ptr [r15 + 0x60]",
+          "0x180679239  498b6f58  mov rbp, qword ptr [r15 + 0x58]",
+          "0x18067927c  e89fabcf01  call 0x182373e20",
+          "0x18067929e  e8dd4e2e06  call 0x18695e180",
+          "0x1806792cb  e8c0662e06  call 0x18695f990",
+          "0x1806792db  e8b05a2e06  call 0x18695ed90",
+          "0x180679313  498b5770  mov rdx, qword ptr [r15 + 0x70]",
+          "0x180679360  498b4718  mov rax, qword ptr [r15 + 0x18]",
+          "0x1806793fd  e84ee64c04  call 0x184b47a50",
+          "0x180679408  83fb26  cmp ebx, 0x26",
+          "0x180679411  498b5768  mov rdx, qword ptr [r15 + 0x68]",
+          "0x180679418  498b4f58  mov rcx, qword ptr [r15 + 0x58]",
+          "0x180679422  e8d90fad05  call 0x18614a400",
+          "0x180679427  4d897778  mov qword ptr [r15 + 0x78], r14"
+        ],
+        "observation": "Load reflected default ranges and data fields, convert and clamp raw slots, reset temporary per-attribute state, and initialize the cache and dirty state."
+      },
+      {
+        "methodIndex": 65237,
+        "fullname": "Torappu.Battle.Attributes.OverrideDataRange",
+        "token": "0x0600fed6",
+        "address": "0x180678850",
+        "selectedInstructions": [
+          "0x1806788ad  41803e00  cmp byte ptr [r14], 0",
+          "0x1806788b1  0f845c010000  je 0x180678a13",
+          "0x180678904  488b3cfb  mov rdi, qword ptr [rbx + rdi*8]",
+          "0x18067894b  498b5cde28  mov rbx, qword ptr [r14 + rbx*8 + 0x28]",
+          "0x1806789cf  8bd6  mov edx, esi",
+          "0x1806789e7  e894fcffff  call 0x180678680"
+        ],
+        "observation": "The general range override selects the ordinal passed by the caller and marks it dirty. Optional sides fall back to the default range."
+      },
+      {
+        "methodIndex": 67646,
+        "fullname": "Torappu.Battle.Entity.OnReset",
+        "token": "0x0601083f",
+        "address": "0x18072b310",
+        "selectedInstructions": [
+          "0x18072b49a  e801840000  call 0x1807338a0",
+          "0x18072b4b0  e8fb69f8ff  call 0x1806b1eb0",
+          "0x18072b55e  e82dd4a405  call 0x186178990",
+          "0x18072b572  4c89bf80000000  mov qword ptr [rdi + 0x80], r15"
+        ],
+        "observation": "The ordinary Entity reset clears its Buff container and removes the dirty callback."
+      },
+      {
+        "methodIndex": 67480,
+        "fullname": "Torappu.Battle.Entity.get_baseForceLevel",
+        "token": "0x06010799",
+        "address": "0x1807336e0",
+        "selectedInstructions": [
+          "0x18073372b  488b88e0030000  mov rcx, qword ptr [rax + 0x3e0]",
+          "0x180733735  7524  jne 0x18073375b",
+          "0x18073373c  e87ffeffff  call 0x1807335c0",
+          "0x180733749  ba18000000  mov edx, 0x18",
+          "0x180733756  e9c54df4ff  jmp 0x180678520"
+        ],
+        "observation": "The stock getter selects AttributeType 24 and returns Attributes.GetValueRoundToInt."
+      },
+      {
+        "methodIndex": 65243,
+        "fullname": "Torappu.Battle.Attributes.GetValue",
+        "token": "0x0600fedc",
+        "address": "0x180678590",
+        "selectedInstructions": [
+          "0x1806785e0  4885d3  test rbx, rdx",
+          "0x18067862e  e88d672e06  call 0x18695edc0",
+          "0x18067865a  e911130000  jmp 0x180679970"
+        ],
+        "observation": "GetValue serves the effective-value cache when clean and dispatches the generic evaluator when dirty."
+      },
+      {
+        "methodIndex": 65262,
+        "fullname": "Torappu.Battle.Attributes._CalculateAttributeValue",
+        "token": "0x0600feef",
+        "address": "0x180679970",
+        "selectedInstructions": [
+          "0x180679c0a  41ffd2  call r10",
+          "0x180679c38  e883231904  call 0x18480bfc0",
+          "0x180679c50  e86b231904  call 0x18480bfc0",
+          "0x180679c68  e853231904  call 0x18480bfc0",
+          "0x180679c80  e89b222e06  call 0x18695bf20",
+          "0x180679d34  49295578  sub qword ptr [r13 + 0x78], rdx",
+          "0x180679d38  498b5558  mov rdx, qword ptr [r13 + 0x58]",
+          "0x180679d86  e835221904  call 0x18480bfc0",
+          "0x180679db8  e843602e06  call 0x18695fe00",
+          "0x180679dc6  e855212e06  call 0x18695bf20",
+          "0x180679dd4  e8e7211904  call 0x18480bfc0",
+          "0x180679de2  e839212e06  call 0x18695bf20",
+          "0x180679e53  498b4d60  mov rcx, qword ptr [r13 + 0x60]",
+          "0x180679ee6  4d8b4570  mov r8, qword ptr [r13 + 0x70]",
+          "0x180679f0c  498b4d60  mov rcx, qword ptr [r13 + 0x60]",
+          "0x180679f62  e8295a2e06  call 0x18695f990",
+          "0x180679f6a  498b7d68  mov rdi, qword ptr [r13 + 0x68]",
+          "0x180679f99  0f1144d720  movups xmmword ptr [rdi + rdx*8 + 0x20], xmm0"
+        ],
+        "observation": "The common evaluator combines the raw value and four buckets, clamps to the current range, and caches the effective FP without rounding."
+      },
+      {
+        "methodIndex": 65245,
+        "fullname": "Torappu.Battle.Attributes.GetValueRoundToInt",
+        "token": "0x0600fede",
+        "address": "0x180678520",
+        "selectedInstructions": [
+          "0x180678553  e838000000  call 0x180678590",
+          "0x18067857f  e9ace62c06  jmp 0x186946c30"
+        ],
+        "observation": "GetValueRoundToInt rounds after GetValue has calculated or supplied the effective FP."
+      },
+      {
+        "methodIndex": 226062,
+        "fullname": "Torappu.MathUtil.RoundToInt",
+        "token": "0x0600027c",
+        "address": "0x186946c30",
+        "selectedInstructions": [
+          "0x186946c6f  e80c630100  call 0x18695cf80",
+          "0x186946c80  e8ab480100  call 0x18695b530"
+        ],
+        "observation": "MathUtil.RoundToInt calls FP.Round and then FP.AsInt."
+      },
+      {
+        "methodIndex": 226189,
+        "fullname": "Torappu.FP.Round",
+        "token": "0x060002fb",
+        "address": "0x18695cf80",
+        "selectedInstructions": [
+          "0x18695cfca  48b900000000ffffffff  movabs rcx, 0xffffffff00000000",
+          "0x18695cfd4  4823d9  and rbx, rcx",
+          "0x18695cfd7  b900000080  mov ecx, 0x80000000",
+          "0x18695cfdc  483bf9  cmp rdi, rcx",
+          "0x18695cfdf  723a  jb 0x18695d01b",
+          "0x18695cfe1  7707  ja 0x18695cfea",
+          "0x18695cfe3  480fbae320  bt rbx, 0x20",
+          "0x18695cfe8  7331  jae 0x18695d01b",
+          "0x18695d009  488b4020  mov rax, qword ptr [rax + 0x20]",
+          "0x18695d00d  4803c3  add rax, rbx",
+          "0x18695d01b  488bc3  mov rax, rbx"
+        ],
+        "observation": "FP.Round compares the fraction with 0.5 and uses the retained integer parity for an exact tie."
+      },
+      {
+        "methodIndex": 65240,
+        "fullname": "Torappu.Battle.Attributes.AddModifier",
+        "token": "0x0600fed9",
+        "address": "0x180677240",
+        "selectedInstructions": [
+          "0x1806773a0  e8cbdfffff  call 0x180675370",
+          "0x1806773b5  48d3e2  shl rdx, cl",
+          "0x1806773b8  4985d6  test r14, rdx",
+          "0x1806773bd  488b4618  mov rax, qword ptr [rsi + 0x18]",
+          "0x1806773de  e87d4b4f04  call 0x184b6bf60",
+          "0x1806773e9  83fb26  cmp ebx, 0x26",
+          "0x1806773fd  e87e120000  call 0x180678680",
+          "0x180677407  83fd26  cmp ebp, 0x26"
+        ],
+        "observation": "AddModifier walks the modifier mask over the 38 attribute slots, adds it to matching collections, and marks matched slots dirty."
+      },
+      {
+        "methodIndex": 65241,
+        "fullname": "Torappu.Battle.Attributes.RemoveModifier",
+        "token": "0x0600feda",
+        "address": "0x180678e60",
+        "selectedInstructions": [
+          "0x180678fc0  e8abc3ffff  call 0x180675370",
+          "0x180678fd5  48d3e2  shl rdx, cl",
+          "0x180678fd8  4985d6  test r14, rdx",
+          "0x180678fdd  488b4618  mov rax, qword ptr [rsi + 0x18]",
+          "0x180678ffe  e82d305004  call 0x184b7c030",
+          "0x180679009  83fb26  cmp ebx, 0x26",
+          "0x18067901d  e85ef6ffff  call 0x180678680",
+          "0x180679027  83fd26  cmp ebp, 0x26"
+        ],
+        "observation": "RemoveModifier walks the matching slots symmetrically and marks them dirty."
+      },
+      {
+        "methodIndex": 65242,
+        "fullname": "Torappu.Battle.Attributes.AddModifierToSingleAttribute",
+        "token": "0x0600fedb",
+        "address": "0x180677160",
+        "selectedInstructions": [
+          "0x1806771ae  488b5d18  mov rbx, qword ptr [rbp + 0x18]",
+          "0x1806771c3  488b4cc320  mov rcx, qword ptr [rbx + rax*8 + 0x20]",
+          "0x1806771d7  e8844d4f04  call 0x184b6bf60",
+          "0x180677207  48d3e2  shl rdx, cl",
+          "0x18067720a  4885d3  test rbx, rdx",
+          "0x180677217  e864140000  call 0x180678680"
+        ],
+        "observation": "The single-attribute add path indexes the supplied enum directly and marks its slot dirty when the modifier mask matches."
+      },
+      {
+        "methodIndex": 65257,
+        "fullname": "Torappu.Battle.Attributes.MarkAttributeDirty",
+        "token": "0x0600feea",
+        "address": "0x180678680",
+        "selectedInstructions": [
+          "0x1806786d1  48895f78  mov qword ptr [rdi + 0x78], rbx",
+          "0x180678742  41ffd2  call r10"
+        ],
+        "observation": "MarkAttributeDirty writes the dirty mask and synchronously invokes the registered notification callback."
+      }
+    ],
+    "replay": {
+      "methodIndices": [
+        31444,
+        31427,
+        31432,
+        226253,
+        31441,
+        31442,
+        67622,
+        67357,
+        67624,
+        65235,
+        65237,
+        67646,
+        67480,
+        65243,
+        65262,
+        65245,
+        226062,
+        226189,
+        65240,
+        65241,
+        65242,
+        65257
+      ],
+      "continuationBlocks": [
+        {
+          "address": "0x1806786e4",
+          "end": "0x18067874a",
+          "bytesSha256": "1f7a0dde82cdee2939174beaa59ed475328567abf5c3be16244faa14705d3018"
+        },
+        {
+          "address": "0x1806788ba",
+          "end": "0x180678a13",
+          "bytesSha256": "0e53f8a9b326ac4cdbf1614370204d184cf50c8159fe7aa60a58509623ce447c"
+        },
+        {
+          "address": "0x180726617",
+          "end": "0x180727026",
+          "bytesSha256": "333b75a9a0227dc307eb8bd05af85425f154dc5405bab614a6fea7ac0290beea"
+        },
+        {
+          "address": "0x18072b3f3",
+          "end": "0x18072b8ac",
+          "bytesSha256": "43727aeeea800612a2dda19f52c3d62785aaa5b9c34ade9afe5675f567bd2df1"
+        },
+        {
+          "address": "0x18073292d",
+          "end": "0x180732f03",
+          "bytesSha256": "0ecf34feef97d26b6b605a777f2605eb6ced4c116d287d42653ad5a8d1ea8b69"
+        },
+        {
+          "address": "0x182373ffc",
+          "end": "0x182374062",
+          "bytesSha256": "0e0cb378bc38eb13c57f0448cb1468731aa2f11374231f4b645c4f19654b46c1"
+        },
+        {
+          "address": "0x18237412e",
+          "end": "0x18237439b",
+          "bytesSha256": "2e35a3b4cae1d2cd12dadcd45ec257b1f78bea4c0fda27b68593b174167bf827"
+        }
+      ],
+      "commands": [
+        "native.py type Torappu.AttributeType",
+        "native.py type Torappu.AttributesData",
+        "native.py type Torappu.AttributeMetaAttribute",
+        "native.py type Torappu.Battle.Entity",
+        "native.py type Torappu.Battle.Attributes",
+        "native.py type Torappu.FP",
+        "native.py disasm <methodIndices>",
+        "native.py disasm-at <continuationBlocks.address>",
+        "docs/research/evidence/attribute-ranges-20261117/extract_inventory.py --out /tmp/attribute-inventory-native.json"
+      ]
+    },
+    "limits": [
+      "The checked data constructor default is 0. Content may provide another base value.",
+      "The generic modifier and range paths can affect ordinal 24. They do not identify which skill, item, mode, or other content supplies a modifier to that ordinal.",
+      "The method extracts show the stock branch and do not determine active XLua or enumerate indirect writers."
+    ]
+  }
+}

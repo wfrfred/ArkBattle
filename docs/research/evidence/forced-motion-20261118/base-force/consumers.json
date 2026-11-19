@@ -1,0 +1,801 @@
+{
+  "collectedOn": "2026-11-19",
+  "provenance": {
+    "client": {
+      "dll": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "bytes": 223112680,
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff"
+      },
+      "metadata": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "bytes": 46669332,
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5"
+      },
+      "metadataVersion": 29,
+      "imageBase": "0x180000000"
+    },
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/native.py",
+        "bytes": 18723,
+        "sha256": "1c6c16dc97e0dd9af0af4033c81a7534384dd65ebb1e604df3f4a3289df158e6"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "capstoneVersion": "5.0.7"
+    },
+    "scope": "Current installed Windows x64 client. The raw E8/E9 scan over executable sections is checked against decoded instruction boundaries. Inlined reads, indirect calls and XLua behavior are outside that scan. No runtime observations are asserted."
+  },
+  "result": {
+    "replay": {
+      "commands": [
+        "native.py search 'Torappu.Battle.Entity.get_baseForceLevel'",
+        "native.py xrefs 0x1807336e0",
+        "native.py type Torappu.Battle.Projectiles.PullHitTargetBehaviour",
+        "native.py type Torappu.Battle.Projectiles.VortexMultiHitBehaviour",
+        "native.py type Torappu.Battle.Abilities.PullCastTargets",
+        "native.py read 0x1870ade08 --size 4 --format '<f'",
+        "native.py read 0x1870adda8 --size 4 --format '<f'"
+      ],
+      "bodySelection": "Decode the stated start-inclusive, end-exclusive binary range for each selector. Contiguous ranges are bounded by the next distinct known method start and can include alignment bytes or multiple PE unwind blocks. native.py disasm/disasm-at can be repeated across those blocks.",
+      "bodies": [
+        {
+          "index": 65910,
+          "name": "Torappu.Battle.BattleFormula.CalculatePushForce",
+          "address": "0x1806871c0",
+          "end": "0x1806872b0",
+          "bytesSha256": "96f4afb342982fa4f6c7d0abdcf2d578cfb58bbaa07c45d1543a84d08e62f759"
+        },
+        {
+          "index": 65913,
+          "name": "Torappu.Battle.BattleFormula.CalculatePullForce",
+          "address": "0x180686e90",
+          "end": "0x180686f80",
+          "bytesSha256": "6f42bc70f6851a9bcd31d2d75424ad8dcff66ca25a8d7c06204c6ae7177e93eb"
+        },
+        {
+          "index": 67480,
+          "name": "Torappu.Battle.Entity.get_baseForceLevel",
+          "address": "0x1807336e0",
+          "end": "0x180733780",
+          "bytesSha256": "37d6428551f279382673a60d385b19f6d25cd0b2b21a8c8be664c5a93e6b844f"
+        },
+        {
+          "index": 72302,
+          "name": "Torappu.Battle.HarpoonProjectile/<DoLink>d__19.MoveNext",
+          "address": "0x18091e2f0",
+          "end": "0x18091eaf0",
+          "bytesSha256": "0f9428eaceb52283eacb8eec9bbf0033fe0db39b5143275f1491d3f1f04ab94b"
+        },
+        {
+          "index": 72458,
+          "name": "Torappu.Battle.NetCatcherProjectile/<_DoPull>d__33.MoveNext",
+          "address": "0x18091f730",
+          "end": "0x18091fe10",
+          "bytesSha256": "d698afcef2ffbd317d8a6e0d19688ad604193d15d893e1590a4e3e57b9bc40f9"
+        },
+        {
+          "index": 77748,
+          "name": "Torappu.Battle.Enemy.KnockBack",
+          "address": "0x180abd6f0",
+          "end": "0x180abd9c0",
+          "bytesSha256": "648a7e13da02c2b53ba5b2fae49b0cd94cc6c5a6f136e203305ca9659c24671a"
+        },
+        {
+          "index": 77751,
+          "name": "Torappu.Battle.Enemy.StillPull",
+          "address": "0x180ac3b10",
+          "end": "0x180ac3d10",
+          "bytesSha256": "b19628f2bfb94df8fc59955a3e1a9a6626c544794322c0b359ca77ed2bbfbeac"
+        },
+        {
+          "index": 88368,
+          "name": "Torappu.Battle.Projectiles.PullHitTargetBehaviour.OnTick",
+          "address": "0x180dca590",
+          "end": "0x180dca690",
+          "bytesSha256": "b135791d94c2c2e6a3680bb087950d920d2f5188da5624f15832bdb2db4994fe"
+        },
+        {
+          "index": 88369,
+          "name": "Torappu.Battle.Projectiles.PullHitTargetBehaviour.OnHitTarget",
+          "address": "0x180dca0a0",
+          "end": "0x180dca2e0",
+          "bytesSha256": "4b9c14a01916874d225013171f79161d865a727a4dcf1d458940cbbeb649c961"
+        },
+        {
+          "index": 88379,
+          "name": "Torappu.Battle.Projectiles.PullHitTargetBehaviour/<_DoLink>d__8.MoveNext",
+          "address": "0x180dcd4a0",
+          "end": "0x180dcdc80",
+          "bytesSha256": "77260bdb9c449caeac5ef4d94a35160b36bd292e38ae6ca01d15a6e8cbaf2f63"
+        },
+        {
+          "index": 88639,
+          "name": "Torappu.Battle.Projectiles.VortexMultiHitBehaviour.OnTick",
+          "address": "0x180dfdf60",
+          "end": "0x180dfe140",
+          "bytesSha256": "2b3e35df10acb4234add790b43470286711dd5b95f6698f4a53038c12579b9a5"
+        },
+        {
+          "index": 88651,
+          "name": "Torappu.Battle.Projectiles.VortexMultiHitBehaviour/<_DoPull>d__5.MoveNext",
+          "address": "0x180dfd260",
+          "end": "0x180dfd9b0",
+          "bytesSha256": "ee7e07ce7a3fd8f8f95ab63a2b3bff735412f84a701d8d980ad4259e8c338db5"
+        },
+        {
+          "index": 97031,
+          "name": "Torappu.Battle.Abilities.PullCastTargets._RegisterPullRemainingTime",
+          "address": "0x18105d420",
+          "end": "0x18105d590",
+          "bytesSha256": "0970289c9d68acce53a6284c020954f1fa63a0e850f56a24d2d80aa38658392e"
+        },
+        {
+          "index": 97040,
+          "name": "Torappu.Battle.Abilities.PullCastTargets/<_DoLink>d__10.MoveNext",
+          "address": "0x181063030",
+          "end": "0x181063a70",
+          "bytesSha256": "c4e7a0a1490495a2006f256e9e350cc369fd43e012405049b0bc2412585c332a"
+        },
+        {
+          "index": 97511,
+          "name": "Torappu.Battle.Action.Nodes/YmgpckKnockBackWithDirection.Execute",
+          "address": "0x18107e900",
+          "end": "0x18107ecb0",
+          "bytesSha256": "f1fe9d7e6d9a8dc22ae0f577d0762650f7a94c8a767f4edf782b8ac4c676f412"
+        },
+        {
+          "index": 100306,
+          "name": "Torappu.Battle.Action.Nodes/Knockback.Execute",
+          "address": "0x1811791b0",
+          "end": "0x181179580",
+          "bytesSha256": "ba90024ad718a5cd24da7e023c4a8e87ace9a40940f37d7784017ec081807798"
+        },
+        {
+          "index": 100309,
+          "name": "Torappu.Battle.Action.Nodes/KnockBackWithDirection.Execute",
+          "address": "0x181178cf0",
+          "end": "0x1811790c0",
+          "bytesSha256": "8c73416ce63eb91ff0b3a563427bcb5ff255c69fac33518f140b6e24ce4a3841"
+        },
+        {
+          "index": 100312,
+          "name": "Torappu.Battle.Action.Nodes/KnockBackTargetsByRootTile.Execute",
+          "address": "0x1811781e0",
+          "end": "0x181178670",
+          "bytesSha256": "c45f8c6d37686abf57d6a9bdbb39703a5dd105c03420f400bf19e72e66fc5c57"
+        },
+        {
+          "index": 100316,
+          "name": "Torappu.Battle.Action.Nodes/KnockBackWithCharacterDirection.Execute",
+          "address": "0x1811788c0",
+          "end": "0x181178c20",
+          "bytesSha256": "0d871a30233f9c07833f91921ba30c90ac7d08ab9f498d07eb563394947da451"
+        },
+        {
+          "index": 100319,
+          "name": "Torappu.Battle.Action.Nodes/DragTowardSource.Execute",
+          "address": "0x18116ffd0",
+          "end": "0x1811702a0",
+          "bytesSha256": "f6d197a4788de19fce4fd1769548d4cbc4732a1433ddbb2c54f8e915e45fbadd"
+        }
+      ],
+      "durationConstants": [
+        {
+          "address": "0x1870ade08",
+          "bytes": "000000c0",
+          "f32": -2.0
+        },
+        {
+          "address": "0x1870adda8",
+          "bytes": "0000003f",
+          "f32": 0.5
+        }
+      ]
+    },
+    "getter": {
+      "index": 67480,
+      "name": "Torappu.Battle.Entity.get_baseForceLevel",
+      "address": "0x1807336e0",
+      "virtualSlot": 65535,
+      "interpretation": "The ordinary getter reads current Attribute 24 with integer rounding. Its XLua hook can override that path. Metadata slot 65535 denotes a nonvirtual getter.",
+      "instructions": [
+        "0x18073372b 488b88e0030000 mov rcx, qword ptr [rax + 0x3e0]",
+        "0x180733735 7524 jne 0x18073375b",
+        "0x18073373c e87ffeffff call 0x1807335c0  Torappu.Battle.Entity.get_attributes",
+        "0x180733749 ba18000000 mov edx, 0x18",
+        "0x180733756 e9c54df4ff jmp 0x180678520  Torappu.Battle.Attributes.GetValueRoundToInt",
+        "0x180733766 e995aee302 jmp 0x18356e600  XLua.DelegateBridge.__Gen_Delegate_Imp54"
+      ]
+    },
+    "directScan": {
+      "target": "0x1807336e0",
+      "candidateCount": 11,
+      "verifiedCallCount": 11,
+      "verifiedTailJumpCount": 0,
+      "scope": "Direct E8/E9 candidates only; excludes indirect/virtual calls; instruction boundaries require confirmation."
+    },
+    "consumers": [
+      {
+        "callSite": {
+          "address": "0x18091e7a6",
+          "bytes": "e8354fe1ff",
+          "section": "il2cpp"
+        },
+        "method": {
+          "index": 72302,
+          "name": "Torappu.Battle.HarpoonProjectile/<DoLink>d__19.MoveNext",
+          "address": "0x18091e2f0"
+        },
+        "family": "continuous pull",
+        "sampling": "coroutine initialization",
+        "configurationLayout": {
+          "type": "Torappu.Battle.HarpoonProjectile",
+          "fields": {
+            "_stopAfterPulledBack": {
+              "offset": "0x1f4",
+              "type": "bool"
+            },
+            "_ignoreTargetMess": {
+              "offset": "0x1f5",
+              "type": "bool"
+            },
+            "m_pullForceLevel": {
+              "offset": "0x1fc",
+              "type": "int"
+            }
+          }
+        },
+        "composition": [
+          "0x18091e7a6 e8354fe1ff call 0x1807336e0  Torappu.Battle.Entity.get_baseForceLevel",
+          "0x18091e7ab 8be8 mov ebp, eax",
+          "0x18091e7b1 8b9efc010000 mov ebx, dword ptr [rsi + 0x1fc]",
+          "0x18091e7c2 e8d9ee1a00 call 0x180acd6a0  Torappu.Battle.Enemy.get_massLevel",
+          "0x18091e7df 8d0c2b lea ecx, [rbx + rbp]",
+          "0x18091e7e8 e8a386d6ff call 0x180686e90  Torappu.Battle.BattleFormula.CalculatePullForce",
+          "0x18091e7f0 f30f117738 movss dword ptr [rdi + 0x38], xmm6"
+        ],
+        "continuation": [
+          "0x18091e432 f30f107738 movss xmm6, dword ptr [rdi + 0x38]",
+          "0x18091e450 e87b1e2200 call 0x180b402d0  Torappu.Battle.BattleUtil.CalculatePullAttenuationFactor",
+          "0x18091e45c f30f59fe mulss xmm7, xmm6",
+          "0x18091e59b 0f28df movaps xmm3, xmm7",
+          "0x18091e5ae e85d551a00 call 0x180ac3b10  Torappu.Battle.Enemy.StillPull"
+        ],
+        "duration": {
+          "summary": "The separate duration branch subtracts target mass level from the projectile-level field m_pullForceLevel. _ignoreTargetMess substitutes mass level zero for this comparison only. A difference of at most -2 selects the fixed 0.5 second value; otherwise the link duration is read. Source base force is not included in this branch.",
+          "evidence": [
+            {
+              "index": 72302,
+              "name": "Torappu.Battle.HarpoonProjectile/<DoLink>d__19.MoveNext",
+              "address": "0x18091e2f0",
+              "instructions": [
+                "0x18091e61f 8b9efc010000 mov ebx, dword ptr [rsi + 0x1fc]",
+                "0x18091e627 4038aef5010000 cmp byte ptr [rsi + 0x1f5], bpl",
+                "0x18091e630 8bc5 mov eax, ebp",
+                "0x18091e643 e858f01a00 call 0x180acd6a0  Torappu.Battle.Enemy.get_massLevel",
+                "0x18091e648 f30f1005b8f77806 movss xmm0, dword ptr [rip + 0x678f7b8]",
+                "0x18091e650 2bd8 sub ebx, eax",
+                "0x18091e659 0f2fc1 comiss xmm0, xmm1",
+                "0x18091e65c 7225 jb 0x18091e683",
+                "0x18091e672 f30f10052ef77806 movss xmm0, dword ptr [rip + 0x678f72e]",
+                "0x18091e688 e873a1feff call 0x180908800  Torappu.Battle.LinkProjectile.get_linkDuration",
+                "0x18091e699 e8d273ffff call 0x180915a70  Torappu.Battle.Projectile.EnsureLifeTime"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "callSite": {
+          "address": "0x18091fbd4",
+          "bytes": "e8073be1ff",
+          "section": "il2cpp"
+        },
+        "method": {
+          "index": 72458,
+          "name": "Torappu.Battle.NetCatcherProjectile/<_DoPull>d__33.MoveNext",
+          "address": "0x18091f730"
+        },
+        "family": "continuous pull",
+        "sampling": "coroutine initialization",
+        "configurationLayout": {
+          "type": "Torappu.Battle.NetCatcherProjectile",
+          "fields": {
+            "_firstPartTime": {
+              "offset": "0x1f4",
+              "type": "float"
+            },
+            "_secondPartTime": {
+              "offset": "0x200",
+              "type": "float"
+            },
+            "m_pullForceLevel": {
+              "offset": "0x20c",
+              "type": "int"
+            }
+          }
+        },
+        "composition": [
+          "0x18091fbd4 e8073be1ff call 0x1807336e0  Torappu.Battle.Entity.get_baseForceLevel",
+          "0x18091fbd9 8bf0 mov esi, eax",
+          "0x18091fbdf 448bb70c020000 mov r14d, dword ptr [rdi + 0x20c]",
+          "0x18091fbf1 e8aada1a00 call 0x180acd6a0  Torappu.Battle.Enemy.get_massLevel",
+          "0x18091fc0d 418d0c36 lea ecx, [r14 + rsi]",
+          "0x18091fc16 e87572d6ff call 0x180686e90  Torappu.Battle.BattleFormula.CalculatePullForce",
+          "0x18091fc1e f30f11734c movss dword ptr [rbx + 0x4c], xmm6"
+        ],
+        "continuation": [
+          "0x18091f870 e85b0a2200 call 0x180b402d0  Torappu.Battle.BattleUtil.CalculatePullAttenuationFactor",
+          "0x18091f87c f30f59fe mulss xmm7, xmm6",
+          "0x18091f9a9 e862411a00 call 0x180ac3b10  Torappu.Battle.Enemy.StillPull"
+        ],
+        "duration": {
+          "summary": "The coroutine reads its phase duration argument. Its duration branch compares the projectile-level field m_pullForceLevel minus target mass level with -2. A difference of at most -2 multiplies the duration by 0.5 before passing it to EnsureLifeTime. Only the separate force sample adds the source base force.",
+          "evidence": [
+            {
+              "index": 72458,
+              "name": "Torappu.Battle.NetCatcherProjectile/<_DoPull>d__33.MoveNext",
+              "address": "0x18091f730",
+              "instructions": [
+                "0x18091fac0 f30f107330 movss xmm6, dword ptr [rbx + 0x30]",
+                "0x18091fb16 448bb70c020000 mov r14d, dword ptr [rdi + 0x20c]",
+                "0x18091fb2b e870db1a00 call 0x180acd6a0  Torappu.Battle.Enemy.get_massLevel",
+                "0x18091fb30 f30f1005d0e27806 movss xmm0, dword ptr [rip + 0x678e2d0]",
+                "0x18091fb38 442bf0 sub r14d, eax",
+                "0x18091fb43 0f2fc1 comiss xmm0, xmm1",
+                "0x18091fb46 7208 jb 0x18091fb50",
+                "0x18091fb48 f30f593558e27806 mulss xmm6, dword ptr [rip + 0x678e258]",
+                "0x18091fb69 e812e60306 call 0x18695e180  Torappu.FP.op_Implicit",
+                "0x18091fb7a e8f15effff call 0x180915a70  Torappu.Battle.Projectile.EnsureLifeTime",
+                "0x18091fb99 e8b2c7ffff call 0x18091c350  Torappu.Battle.Projectile.get_source",
+                "0x18091fbd4 e8073be1ff call 0x1807336e0  Torappu.Battle.Entity.get_baseForceLevel"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "callSite": {
+          "address": "0x180dcd8da",
+          "bytes": "e8015e96ff",
+          "section": "il2cpp"
+        },
+        "method": {
+          "index": 88379,
+          "name": "Torappu.Battle.Projectiles.PullHitTargetBehaviour/<_DoLink>d__8.MoveNext",
+          "address": "0x180dcd4a0"
+        },
+        "family": "continuous pull",
+        "sampling": "coroutine initialization",
+        "configurationLayout": {
+          "type": "Torappu.Battle.Projectiles.PullHitTargetBehaviour",
+          "fields": {
+            "_pullDuration": {
+              "offset": "0x2c",
+              "type": "float"
+            },
+            "m_pullForceLevel": {
+              "offset": "0x30",
+              "type": "int"
+            },
+            "m_pullRemainingTime": {
+              "offset": "0x38",
+              "type": "Torappu.FP"
+            }
+          }
+        },
+        "composition": [
+          "0x180dcd8da e8015e96ff call 0x1807336e0  Torappu.Battle.Entity.get_baseForceLevel",
+          "0x180dcd8df 8bf8 mov edi, eax",
+          "0x180dcd8e3 33ff xor edi, edi",
+          "0x180dcd8f2 8b5d30 mov ebx, dword ptr [rbp + 0x30]",
+          "0x180dcd908 e893fdcfff call 0x180acd6a0  Torappu.Battle.Enemy.get_massLevel",
+          "0x180dcd925 8d0c3b lea ecx, [rbx + rdi]",
+          "0x180dcd92e e85d958bff call 0x180686e90  Torappu.Battle.BattleFormula.CalculatePullForce",
+          "0x180dcd93e f30f117640 movss dword ptr [rsi + 0x40], xmm6"
+        ],
+        "continuation": [
+          "0x180dcd64b e8802cd7ff call 0x180b402d0  Torappu.Battle.BattleUtil.CalculatePullAttenuationFactor",
+          "0x180dcd657 f30f59fe mulss xmm7, xmm6",
+          "0x180dcd7b1 e85a63cfff call 0x180ac3b10  Torappu.Battle.Enemy.StillPull"
+        ],
+        "duration": {
+          "summary": "OnHitTarget initializes m_pullRemainingTime from its configured _pullDuration before scheduling the coroutine. OnTick subtracts elapsed time from that same timer. The source base force is sampled separately in the force coroutine.",
+          "evidence": [
+            {
+              "index": 88369,
+              "name": "Torappu.Battle.Projectiles.PullHitTargetBehaviour.OnHitTarget",
+              "address": "0x180dca0a0",
+              "instructions": [
+                "0x180dca131 f30f10762c movss xmm6, dword ptr [rsi + 0x2c]",
+                "0x180dca14e e82d40b905 call 0x18695e180  Torappu.FP.op_Implicit",
+                "0x180dca158 48894638 mov qword ptr [rsi + 0x38], rax",
+                "0x180dca2a0 e89b7689ff call 0x180661940  Torappu.Battle.BattleController.StartBattleCoroutine"
+              ]
+            },
+            {
+              "index": 88368,
+              "name": "Torappu.Battle.Projectiles.PullHitTargetBehaviour.OnTick",
+              "address": "0x180dca590",
+              "instructions": [
+                "0x180dca618 e8a31ab905 call 0x18695c0c0",
+                "0x180dca65d e80e3bb905 call 0x18695e170  Torappu.FP.op_Implicit",
+                "0x180dca662 48894638 mov qword ptr [rsi + 0x38], rax"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "callSite": {
+          "address": "0x180dfd64d",
+          "bytes": "e88e6093ff",
+          "section": "il2cpp"
+        },
+        "method": {
+          "index": 88651,
+          "name": "Torappu.Battle.Projectiles.VortexMultiHitBehaviour/<_DoPull>d__5.MoveNext",
+          "address": "0x180dfd260"
+        },
+        "family": "continuous pull",
+        "sampling": "coroutine initialization",
+        "configurationLayout": {
+          "type": "Torappu.Battle.Projectiles.VortexMultiHitBehaviour",
+          "fields": {
+            "_pullDuration": {
+              "offset": "0xa8",
+              "type": "float"
+            },
+            "m_pullForceLevel": {
+              "offset": "0xb8",
+              "type": "int"
+            },
+            "m_pullRemainingTimeList": {
+              "offset": "0xc0",
+              "type": "type(kind=0x15, data=0x188e5a8e8)"
+            }
+          }
+        },
+        "composition": [
+          "0x180dfd64d e88e6093ff call 0x1807336e0  Torappu.Battle.Entity.get_baseForceLevel",
+          "0x180dfd652 8bf8 mov edi, eax",
+          "0x180dfd656 33ff xor edi, edi",
+          "0x180dfd65c 8b9db8000000 mov ebx, dword ptr [rbp + 0xb8]",
+          "0x180dfd66d e82e00cdff call 0x180acd6a0  Torappu.Battle.Enemy.get_massLevel",
+          "0x180dfd68a 8d0c3b lea ecx, [rbx + rdi]",
+          "0x180dfd693 e8f89788ff call 0x180686e90  Torappu.Battle.BattleFormula.CalculatePullForce",
+          "0x180dfd69b f30f117630 movss dword ptr [rsi + 0x30], xmm6"
+        ],
+        "continuation": [
+          "0x180dfd424 e8a72ed4ff call 0x180b402d0  Torappu.Battle.BattleUtil.CalculatePullAttenuationFactor",
+          "0x180dfd430 f30f59fe mulss xmm7, xmm6",
+          "0x180dfd50b e80066ccff call 0x180ac3b10  Torappu.Battle.Enemy.StillPull"
+        ],
+        "duration": {
+          "summary": "After a positive force sample the coroutine registers its own remaining-time index using the configured _pullDuration. Later resumes compare the indexed timer. The source base force contributes to the initial magnitude and is not an input to the timer.",
+          "evidence": [
+            {
+              "index": 88651,
+              "name": "Torappu.Battle.Projectiles.VortexMultiHitBehaviour/<_DoPull>d__5.MoveNext",
+              "address": "0x180dfd260",
+              "instructions": [
+                "0x180dfd7de 488bbdc0000000 mov rdi, qword ptr [rbp + 0xc0]",
+                "0x180dfd7e5 f30f10b5a8000000 movss xmm6, dword ptr [rbp + 0xa8]",
+                "0x180dfd800 e87b09b605 call 0x18695e180  Torappu.FP.op_Implicit",
+                "0x180dfd883 48895cca20 mov qword ptr [rdx + rcx*8 + 0x20], rbx",
+                "0x180dfd8aa 894650 mov dword ptr [rsi + 0x50], eax",
+                "0x180dfd347 8b5650 mov edx, dword ptr [rsi + 0x50]",
+                "0x180dfd391 e80a89b405 call 0x186945ca0  Torappu.MathUtil.LE"
+              ]
+            },
+            {
+              "index": 88639,
+              "name": "Torappu.Battle.Projectiles.VortexMultiHitBehaviour.OnTick",
+              "address": "0x180dfdf60",
+              "instructions": [
+                "0x180dfdfef e8ac39ffff call 0x180df19a0  Torappu.Battle.Projectiles.SelectorHitBehaviour.OnTick",
+                "0x180dfe05b e860e0b505 call 0x18695c0c0",
+                "0x180dfe06f e8fc9bf203 call 0x184d27c70"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "callSite": {
+          "address": "0x1810635b3",
+          "bytes": "e828016dff",
+          "section": "il2cpp"
+        },
+        "method": {
+          "index": 97040,
+          "name": "Torappu.Battle.Abilities.PullCastTargets/<_DoLink>d__10.MoveNext",
+          "address": "0x181063030"
+        },
+        "family": "continuous pull",
+        "sampling": "coroutine initialization",
+        "configurationLayout": {
+          "type": "Torappu.Battle.Abilities.PullCastTargets",
+          "fields": {
+            "_pullDuration": {
+              "offset": "0x24",
+              "type": "float"
+            },
+            "m_pullRemainingTimeList": {
+              "offset": "0x30",
+              "type": "type(kind=0x15, data=0x188e5a8e8)"
+            },
+            "m_pullForceLevel": {
+              "offset": "0x38",
+              "type": "int"
+            }
+          }
+        },
+        "composition": [
+          "0x1810635b3 e828016dff call 0x1807336e0  Torappu.Battle.Entity.get_baseForceLevel",
+          "0x1810635b8 8bf8 mov edi, eax",
+          "0x1810635bc 33ff xor edi, edi",
+          "0x1810635c2 8b5d38 mov ebx, dword ptr [rbp + 0x38]",
+          "0x1810635d0 e8cba0a6ff call 0x180acd6a0  Torappu.Battle.Enemy.get_massLevel",
+          "0x1810635ed 8d0c3b lea ecx, [rbx + rdi]",
+          "0x1810635f6 e8953862ff call 0x180686e90  Torappu.Battle.BattleFormula.CalculatePullForce",
+          "0x1810635fe f30f117638 movss dword ptr [rsi + 0x38], xmm6"
+        ],
+        "continuation": [
+          "0x181063219 e8b2d0adff call 0x180b402d0  Torappu.Battle.BattleUtil.CalculatePullAttenuationFactor",
+          "0x181063226 f3440f59de mulss xmm11, xmm6",
+          "0x181063449 e8c206a6ff call 0x180ac3b10  Torappu.Battle.Enemy.StillPull"
+        ],
+        "duration": {
+          "summary": "The coroutine initializes the indexed timer from the ability configuration _pullDuration. Its resumption reads the indexed remaining time separately from the initial magnitude.",
+          "evidence": [
+            {
+              "index": 97040,
+              "name": "Torappu.Battle.Abilities.PullCastTargets/<_DoLink>d__10.MoveNext",
+              "address": "0x181063030",
+              "instructions": [
+                "0x1810636f0 f30f107524 movss xmm6, dword ptr [rbp + 0x24]",
+                "0x181063708 e873aa8f05 call 0x18695e180  Torappu.FP.op_Implicit",
+                "0x181063790 488b4530 mov rax, qword ptr [rbp + 0x30]",
+                "0x1810637af 894644 mov dword ptr [rsi + 0x44], eax",
+                "0x181063190 e8dbaf8f05 call 0x18695e170  Torappu.FP.op_Implicit",
+                "0x18106332f e86c298e05 call 0x186945ca0  Torappu.MathUtil.LE"
+              ]
+            },
+            {
+              "index": 97031,
+              "name": "Torappu.Battle.Abilities.PullCastTargets._RegisterPullRemainingTime",
+              "address": "0x18105d420",
+              "instructions": [
+                "0x18105d4bb e8c00c9005 call 0x18695e180  Torappu.FP.op_Implicit"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "callSite": {
+          "address": "0x18107eab4",
+          "bytes": "e8274c6bff",
+          "section": "il2cpp"
+        },
+        "method": {
+          "index": 97511,
+          "name": "Torappu.Battle.Action.Nodes/YmgpckKnockBackWithDirection.Execute",
+          "address": "0x18107e900"
+        },
+        "family": "push impulse",
+        "sampling": "action execution",
+        "composition": [
+          "0x18107ea9f e8eca12f01 call 0x182378c90  Torappu.Blackboard.GetIntOrDefault",
+          "0x18107eab4 e8274c6bff call 0x1807336e0  Torappu.Battle.Entity.get_baseForceLevel",
+          "0x18107eab9 8d3c28 lea edi, [rax + rbp]",
+          "0x18107eaca e8d1eba4ff call 0x180acd6a0  Torappu.Battle.Enemy.get_massLevel",
+          "0x18107eaeb 8bcf mov ecx, edi",
+          "0x18107eaed e8ce8660ff call 0x1806871c0  Torappu.Battle.BattleFormula.CalculatePushForce",
+          "0x18107ebda b9e9000000 mov ecx, 0xe9",
+          "0x18107ebff e85c7ff9fe call 0x180016b60"
+        ],
+        "note": "Reads the current source attribute and the configured blackboard level on Execute, then looks up push force with the target weight."
+      },
+      {
+        "callSite": {
+          "address": "0x18117016c",
+          "bytes": "e86f355cff",
+          "section": "il2cpp"
+        },
+        "method": {
+          "index": 100319,
+          "name": "Torappu.Battle.Action.Nodes/DragTowardSource.Execute",
+          "address": "0x18116ffd0"
+        },
+        "family": "push impulse",
+        "sampling": "action execution",
+        "composition": [
+          "0x181170157 e8348b2001 call 0x182378c90  Torappu.Blackboard.GetIntOrDefault",
+          "0x18117016c e86f355cff call 0x1807336e0  Torappu.Battle.Entity.get_baseForceLevel",
+          "0x181170178 e8032f9bff call 0x180b23080  Torappu.Battle.VisualObject.get_mapPosition",
+          "0x18117019a e8e12e9bff call 0x180b23080  Torappu.Battle.VisualObject.get_mapPosition",
+          "0x1811701b0 f30f5c742438 subss xmm6, dword ptr [rsp + 0x38]",
+          "0x1811701b6 f30f5c7c243c subss xmm7, dword ptr [rsp + 0x3c]",
+          "0x1811701e4 e847627d05 call 0x186946430  Torappu.MathUtil.NormalizeDirectionSafely",
+          "0x1811701f3 e8a8d495ff call 0x180acd6a0  Torappu.Battle.Enemy.get_massLevel",
+          "0x18117020f 8d0c2f lea ecx, [rdi + rbp]",
+          "0x181170217 e8a46f51ff call 0x1806871c0  Torappu.Battle.BattleFormula.CalculatePushForce",
+          "0x18117022e b9e9000000 mov ecx, 0xe9",
+          "0x181170243 e81869eafe call 0x180016b60"
+        ],
+        "note": "Reads the current source attribute and the configured blackboard level on Execute. The vector points from target toward source. The result uses the Push table and virtual KnockBack slot 233."
+      },
+      {
+        "callSite": {
+          "address": "0x181178402",
+          "bytes": "e8d9b25bff",
+          "section": "il2cpp"
+        },
+        "method": {
+          "index": 100312,
+          "name": "Torappu.Battle.Action.Nodes/KnockBackTargetsByRootTile.Execute",
+          "address": "0x1811781e0"
+        },
+        "family": "push impulse",
+        "sampling": "action execution",
+        "composition": [
+          "0x1811783ed e89e082001 call 0x182378c90  Torappu.Blackboard.GetIntOrDefault",
+          "0x181178402 e8d9b25bff call 0x1807336e0  Torappu.Battle.Entity.get_baseForceLevel",
+          "0x18117840c 8bf8 mov edi, eax",
+          "0x18117840e e88d5295ff call 0x180acd6a0  Torappu.Battle.Enemy.get_massLevel",
+          "0x18117842b 8d0c37 lea ecx, [rdi + rsi]",
+          "0x181178434 e887ed50ff call 0x1806871c0  Torappu.Battle.BattleFormula.CalculatePushForce",
+          "0x1811785db b9e9000000 mov ecx, 0xe9",
+          "0x181178600 e85be5e9fe call 0x180016b60"
+        ],
+        "note": "Reads the source base force and target weight on Execute in the selected target path. It treats the displacement as a push impulse."
+      },
+      {
+        "callSite": {
+          "address": "0x181178ad7",
+          "bytes": "e804ac5bff",
+          "section": "il2cpp"
+        },
+        "method": {
+          "index": 100316,
+          "name": "Torappu.Battle.Action.Nodes/KnockBackWithCharacterDirection.Execute",
+          "address": "0x1811788c0"
+        },
+        "family": "push impulse",
+        "sampling": "action execution",
+        "composition": [
+          "0x181178ac1 e8ca012001 call 0x182378c90  Torappu.Blackboard.GetIntOrDefault",
+          "0x181178ad7 e804ac5bff call 0x1807336e0  Torappu.Battle.Entity.get_baseForceLevel",
+          "0x181178adc 8bf0 mov esi, eax",
+          "0x181178aec e8af4b95ff call 0x180acd6a0  Torappu.Battle.Enemy.get_massLevel",
+          "0x181178b08 428d0c36 lea ecx, [rsi + r14]",
+          "0x181178b11 e8aae650ff call 0x1806871c0  Torappu.Battle.BattleFormula.CalculatePushForce",
+          "0x181178b8f b9e9000000 mov ecx, 0xe9",
+          "0x181178bba e8a1dfe9fe call 0x180016b60"
+        ],
+        "note": "Reads the current source attribute and target weight on Execute, then looks up a push impulse for the selected direction."
+      },
+      {
+        "callSite": {
+          "address": "0x181178e99",
+          "bytes": "e842a85bff",
+          "section": "il2cpp"
+        },
+        "method": {
+          "index": 100309,
+          "name": "Torappu.Battle.Action.Nodes/KnockBackWithDirection.Execute",
+          "address": "0x181178cf0"
+        },
+        "family": "push impulse",
+        "sampling": "action execution",
+        "composition": [
+          "0x181178e83 e808fe1f01 call 0x182378c90  Torappu.Blackboard.GetIntOrDefault",
+          "0x181178e99 e842a85bff call 0x1807336e0  Torappu.Battle.Entity.get_baseForceLevel",
+          "0x181178e9e 8bd8 mov ebx, eax",
+          "0x181178eb6 e8e54795ff call 0x180acd6a0  Torappu.Battle.Enemy.get_massLevel",
+          "0x181178ed3 428d0c23 lea ecx, [rbx + r12]",
+          "0x181178edd e8dee250ff call 0x1806871c0  Torappu.Battle.BattleFormula.CalculatePushForce",
+          "0x181179032 b9e9000000 mov ecx, 0xe9",
+          "0x181179057 e804dbe9fe call 0x180016b60"
+        ],
+        "note": "Adds the current source base level to the configured level at this Push-table branch. The direction node has additional late branching; this evidence concerns this direct getter consumer."
+      },
+      {
+        "callSite": {
+          "address": "0x181179376",
+          "bytes": "e865a35bff",
+          "section": "il2cpp"
+        },
+        "method": {
+          "index": 100306,
+          "name": "Torappu.Battle.Action.Nodes/Knockback.Execute",
+          "address": "0x1811791b0"
+        },
+        "family": "push impulse",
+        "sampling": "action execution",
+        "composition": [
+          "0x181179361 e82af91f01 call 0x182378c90  Torappu.Blackboard.GetIntOrDefault",
+          "0x181179376 e865a35bff call 0x1807336e0  Torappu.Battle.Entity.get_baseForceLevel",
+          "0x18117937b 8d3407 lea esi, [rdi + rax]",
+          "0x18117947b 412b761c sub esi, dword ptr [r14 + 0x1c]",
+          "0x1811794b9 e8e24195ff call 0x180acd6a0  Torappu.Battle.Enemy.get_massLevel",
+          "0x1811794da 8bce mov ecx, esi",
+          "0x1811794dc e8dfdc50ff call 0x1806871c0  Torappu.Battle.BattleFormula.CalculatePushForce",
+          "0x18117950b b9e9000000 mov ecx, 0xe9",
+          "0x181179520 e83bd6e9fe call 0x180016b60"
+        ],
+        "note": "Reads the current source base level on Execute, composes with the blackboard level, and may subtract a direction penalty at 0x18117947b before the Push-table lookup."
+      }
+    ],
+    "tablesAndApplication": {
+      "pushTable": {
+        "index": 65910,
+        "name": "Torappu.Battle.BattleFormula.CalculatePushForce",
+        "address": "0x1806871c0",
+        "interpretation": "Uses the Push-specific table and its neutral index, then clamps neutral index plus the combined source level minus target mass level.",
+        "instructions": [
+          "0x18068723c 488b80d0010000 mov rax, qword ptr [rax + 0x1d0]",
+          "0x180687248 448b82d8010000 mov r8d, dword ptr [rdx + 0x1d8]",
+          "0x18068724f 442bc3 sub r8d, ebx",
+          "0x180687252 4403c7 add r8d, edi",
+          "0x18068725c 780f js 0x18068726d",
+          "0x180687263 443bc0 cmp r8d, eax",
+          "0x180687276 f30f10448120 movss xmm0, dword ptr [rcx + rax*4 + 0x20]"
+        ]
+      },
+      "pullTable": {
+        "index": 65913,
+        "name": "Torappu.Battle.BattleFormula.CalculatePullForce",
+        "address": "0x180686e90",
+        "interpretation": "Uses the Pull-specific table and its neutral index, then clamps neutral index plus the combined source level minus target mass level.",
+        "instructions": [
+          "0x180686f0c 488b80e8010000 mov rax, qword ptr [rax + 0x1e8]",
+          "0x180686f18 448b82f0010000 mov r8d, dword ptr [rdx + 0x1f0]",
+          "0x180686f1f 442bc3 sub r8d, ebx",
+          "0x180686f22 4403c7 add r8d, edi",
+          "0x180686f2c 780f js 0x180686f3d",
+          "0x180686f33 443bc0 cmp r8d, eax",
+          "0x180686f46 f30f10448120 movss xmm0, dword ptr [rcx + rax*4 + 0x20]"
+        ]
+      },
+      "pushApplication": {
+        "index": 77748,
+        "name": "Torappu.Battle.Enemy.KnockBack",
+        "address": "0x180abd6f0",
+        "slot": 233,
+        "interpretation": "Enemy.KnockBack supplies the vector to Rigidbody2D.AddForce in Impulse mode (1). This path applies the move multiplier and a fixed 0.02 factor.",
+        "instructions": [
+          "0x180abd871 f3410f59f0 mulss xmm6, xmm8",
+          "0x180abd8d4 e837d4da05 call 0x18686ad10  CodeStage.AntiCheat.ObscuredTypes.ObscuredFloat.op_Implicit",
+          "0x180abd8df f30f59f0 mulss xmm6, xmm0",
+          "0x180abd8e7 f30f593565255f06 mulss xmm6, dword ptr [rip + 0x65f2565]",
+          "0x180abd90b 41b801000000 mov r8d, 1",
+          "0x180abd914 e8d74d3706 call 0x186e326f0  UnityEngine.Rigidbody2D.AddForce"
+        ]
+      },
+      "pullContinuation": {
+        "index": 77751,
+        "name": "Torappu.Battle.Enemy.StillPull",
+        "address": "0x180ac3b10",
+        "interpretation": "Enemy.StillPull uses the passed scalar magnitude and direction in Rigidbody2D.AddForce Force mode (0). The shown continuation does not apply the KnockBack map multiplier.",
+        "instructions": [
+          "0x180ac3b3c 0f28fb movaps xmm7, xmm3",
+          "0x180ac3c99 f30f59cf mulss xmm1, xmm7",
+          "0x180ac3c9d f30f59d7 mulss xmm2, xmm7",
+          "0x180ac3cb1 4533c0 xor r8d, r8d",
+          "0x180ac3cb7 e834ea3606 call 0x186e326f0  UnityEngine.Rigidbody2D.AddForce"
+        ]
+      }
+    },
+    "relatedEvidence": [
+      "../push/native-push.json",
+      "../formulas/force-native-selected.json",
+      "../formulas/force-tables.json",
+      "../pull/native-branches.json",
+      "../pull/prefab-mappings.json"
+    ]
+  }
+}

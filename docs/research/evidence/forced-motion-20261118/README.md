@@ -37,6 +37,15 @@
 - 原生取证保存五个牵引入口的调用和关键指令，以及 `CheckInBlockRange`、`TryEarlyStopPull` 和半径常量。静态直接调用扫描覆盖当前二进制中的 E8／E9 候选。[原生分支](pull/native-branches.json)。
 - 配置取证保存角色技能槽、技能节点、弹道 ID、组件类型、参数与输入指纹。歌蕾蒂娅 S2 同时保存技能 Buff、模式切换模板与角色模式的引用链。[技能与弹道配置](pull/prefab-mappings.json)。
 
+## 基础力度等级补核
+
+2026-11-19 复核了 `BASE_FORCE_LEVEL` 的声明、初始化、修正和读取点。安装包取证使用上表的客户端指纹，固定镜像表格的修订单独记录。结论位于 Case 15。[基础力度等级案例](../../cases/15-locomotion-native-semantics.md#2026-11-19-补核基础力度等级)。
+
+- 属性记录保存 Entity 和 Attributes 的字段、默认值、范围、修正和有效值取整证据。[属性与存储](base-force/attribute.json)。
+- 消费者记录保存 11 个直接调用点、施力参数和持续牵引的采样与时长分支。[原生调用](base-force/consumers.json)。
+- 表格记录保存角色与敌人底值的完整字段统计，并摘录温蒂 S2 的技能黑板。原始 JSON 可按记录的镜像修订、源路径和 SHA-256 复查。[固定数据表](base-force/data-tables.json)。
+- 内容记录保存技能、地块及玩法配置样例的实际资源引用和解码选择器。[配置与修正来源](base-force/content.json)。
+
 ## 失衡状态
 
 - `UnbalanceState.OnEnter`（78060）释放阻挡，登记物理对象，启用非 Trigger Collider，登记状态属性修正。该状态的 `abnormalFlagMask`（78054）为 `1 << 3`，`Entity.get_isBlockFree`（67510）消费标志 3，`Enemy.CheckBlockableWithoutCheckRange`（77742）以其为拒绝条件。这给出了当前阻挡释放和持续拒绝两处独立行为。[状态和阻挡](state/native-state.json)。
@@ -84,6 +93,11 @@ uv run --offline --with 'capstone==5.0.7' python "$batch/collision/extract_range
   --xref 65913 79637 77751 --select Torappu.MathUtil.CheckDistance
 uv run --offline --locked "$skill/scripts/native.py" --out "$work/pull/radius.json" \
   read 0x1870aed7c --format '<f'
+uv run --offline --with 'capstone==5.0.7' python "$batch/collision/extract_ranges.py" \
+  --out "$work/base-force/native-full.json" \
+  --index 67480 67624 65240 65241 65242 --xref 67480 \
+  --select Torappu.Battle.Attributes.Reset Torappu.Battle.Attributes.GetValueRoundToInt \
+  --fields Torappu.Battle.Entity Torappu.Battle.Attributes Torappu.Battle.AttributesData
 uv run --locked "$skill/scripts/replay.py" "$batch" --out "$work/native" \
   --method 78062 --method 77742 --method 72302 --method 65910 --method 65913
 python "$skill/scripts/archive.py" --batch "$batch"
