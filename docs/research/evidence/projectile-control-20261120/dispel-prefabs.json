@@ -1,0 +1,298 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-20",
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/attack-way-20261118/extract_prefabs.py",
+      "bytes": 4657,
+      "sha256": "d6cab91818e9966fd0f1b3ca3f97cdc0ddc512dcad95b592f16710ab5cbe9462"
+    },
+    "helper": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/targeting-pipeline-20261109/content/extract_content.py",
+      "bytes": 12906,
+      "sha256": "37504c156e11e55c9c06174980fb1617281690ab3b01db9caa9dfd28937f5faa"
+    },
+    "sources": [
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+        "bytes": 477255,
+        "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/prefabs/[uc]projectiles.ab",
+        "bytes": 1916729,
+        "sha256": "4fe6672c65b56cf6f593c9daadda11e61956c89ecd7fd0e91bf95996a65d1dc4"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_13.ab",
+        "bytes": 342400,
+        "sha256": "0b3c936babb315fa9771a7e78e4cd2b1dfdee9ce80e043fdac65122d8b424a59"
+      }
+    ],
+    "selection": {
+      "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/prefabs/[uc]projectiles.ab": [
+        "projectile_enemy_cbsisy",
+        "projectile_crossbow"
+      ],
+      "battle/enm_pfb_13.ab": [
+        "enemy_1331_cbsisy"
+      ]
+    },
+    "scope": "Selected serialized prefab fields with resolved MonoScript and ability PPtr. No live activation or hit observation.",
+    "projection": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/projectile-control-20261120/extract_dispel_prefabs.py",
+        "bytes": 2777,
+        "sha256": "d8e3bb17ebc7c0b4cd63b58944a8df73048e1726cfa4b4529713377bdeb4835f"
+      },
+      "wrapper": {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/forced-motion-20261118/push/extract_push_config.py",
+        "bytes": 3209,
+        "sha256": "fe8b407bab45584384bfec3d99e4ea896e33b97b84d7a4422ff53655bff3e0c0"
+      },
+      "fieldsByPathId": {
+        "-8223809503309271891": [
+          "_commonAbilities"
+        ],
+        "-8915949423972979539": [
+          "_projectileKey"
+        ],
+        "-7436304583270929235": [
+          "_projectileKey"
+        ],
+        "2585524171859296351": [
+          "_eliminatableStatus",
+          "_movementAdjustableStatus",
+          "_mainEffect",
+          "_lifeTime"
+        ],
+        "5238304719443313584": [
+          "_eliminatableStatus",
+          "_movementAdjustableStatus",
+          "_mainEffect",
+          "_lifeTime"
+        ],
+        "5817916136774037088": [
+          "_eliminatableStatus",
+          "_movementAdjustableStatus",
+          "_mainEffect",
+          "_lifeTime"
+        ],
+        "-6540156056414461813": [
+          "_eliminatableStatus",
+          "_movementAdjustableStatus",
+          "_mainEffect",
+          "_lifeTime"
+        ]
+      }
+    }
+  },
+  "result": [
+    {
+      "bundle": "battle/enm_pfb_13.ab",
+      "file": "CAB-d5a5ebb06b9b5c15f66b6f736b421497",
+      "pathId": "-8223809503309271891",
+      "hierarchy": [
+        "enemy_1331_cbsisy"
+      ],
+      "objectSha256": "9f3a80b056974a9fdff9b49910797551e396793dc55adcda342789271ed8aaf9",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -6629209555389654693
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-6629209555389654693",
+        "name": "Enemy",
+        "cl": "Enemy",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_commonAbilities": {
+          "Array": [
+            {
+              "m_FileID": 0,
+              "m_PathID": -8915949423972979539
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": -7436304583270929235
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 5449010322126466221
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": -8566877630957753171
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 1761137557717380269
+            }
+          ]
+        }
+      }
+    },
+    {
+      "bundle": "battle/enm_pfb_13.ab",
+      "file": "CAB-d5a5ebb06b9b5c15f66b6f736b421497",
+      "pathId": "-8915949423972979539",
+      "hierarchy": [
+        "enemy_1331_cbsisy",
+        "CommonAbility",
+        "FourDirAttackIdle"
+      ],
+      "objectSha256": "90ff5408ba68055a347284c78af580889b03930c739379a434855b858354d18a",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 8776168996799013473
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "8776168996799013473",
+        "name": "CrossRangedAttack",
+        "cl": "CrossRangedAttack",
+        "ns": "Torappu.Battle.Abilities",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_projectileKey": "projectile_enemy_cbsisy"
+      }
+    },
+    {
+      "bundle": "battle/enm_pfb_13.ab",
+      "file": "CAB-d5a5ebb06b9b5c15f66b6f736b421497",
+      "pathId": "-7436304583270929235",
+      "hierarchy": [
+        "enemy_1331_cbsisy",
+        "CommonAbility",
+        "FourDirAttackMove"
+      ],
+      "objectSha256": "5b0291d68bfe8931949a37eb8d822735521ce862e7de9664bf23a6fba463d065",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": 8776168996799013473
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "8776168996799013473",
+        "name": "CrossRangedAttack",
+        "cl": "CrossRangedAttack",
+        "ns": "Torappu.Battle.Abilities",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_projectileKey": "projectile_enemy_cbsisy"
+      }
+    },
+    {
+      "bundle": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/prefabs/[uc]projectiles.ab",
+      "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+      "pathId": "2585524171859296351",
+      "hierarchy": [
+        "projectile_enemy_cbsisy"
+      ],
+      "objectSha256": "10b82da739bc720d945a96f56c909125f5d4f98c9669d9ef57c96f517bd001b9",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -8797129986015012478
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-8797129986015012478",
+        "name": "SimpleProjectile",
+        "cl": "SimpleProjectile",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_eliminatableStatus": 2,
+        "_movementAdjustableStatus": 2,
+        "_mainEffect": "enemy_cbsisy_attack_trail",
+        "_lifeTime": 0.20000000298023224
+      }
+    },
+    {
+      "bundle": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/prefabs/[uc]projectiles.ab",
+      "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+      "pathId": "5238304719443313584",
+      "hierarchy": [
+        "projectile_crossbow"
+      ],
+      "objectSha256": "572bc3c636219f533800286b0e997305b8c9efdbd5717eba7a98cfb2fc894167",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -8797129986015012478
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-8797129986015012478",
+        "name": "SimpleProjectile",
+        "cl": "SimpleProjectile",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_eliminatableStatus": 0,
+        "_movementAdjustableStatus": 0,
+        "_mainEffect": "common_gongjian_trail_01",
+        "_lifeTime": 5.0
+      }
+    },
+    {
+      "bundle": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/prefabs/[uc]projectiles.ab",
+      "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+      "pathId": "5817916136774037088",
+      "hierarchy": [
+        "projectile_crossbow_logic"
+      ],
+      "objectSha256": "32a685cb3d35f60bcf123fc2d77c1fe01d1cede8f99d092b9029a9d66e197127",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -8797129986015012478
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-8797129986015012478",
+        "name": "SimpleProjectile",
+        "cl": "SimpleProjectile",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_eliminatableStatus": 0,
+        "_movementAdjustableStatus": 0,
+        "_mainEffect": "",
+        "_lifeTime": 5.0
+      }
+    },
+    {
+      "bundle": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/prefabs/[uc]projectiles.ab",
+      "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+      "pathId": "-6540156056414461813",
+      "hierarchy": [
+        "projectile_crossbow_graphic"
+      ],
+      "objectSha256": "b5f383f8194d53feee0e2f8b3c4ff4f6a02c5726b842307cdba59d80d5b17118",
+      "scriptPPtr": {
+        "m_FileID": 1,
+        "m_PathID": -8797129986015012478
+      },
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "-8797129986015012478",
+        "name": "SimpleProjectile",
+        "cl": "SimpleProjectile",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "value": {
+        "_eliminatableStatus": 0,
+        "_movementAdjustableStatus": 0,
+        "_mainEffect": "common_gongjian_trail_01",
+        "_lifeTime": 5.0
+      }
+    }
+  ]
+}

@@ -1,0 +1,394 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-20",
+    "scope": "Selected static prefab references and a versioned skill-table extract.",
+    "script": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/projectile-control-20261120/extract_logos.py",
+      "bytes": 6335,
+      "sha256": "ff49930936fb405a9eacdaf95552f044b96682c559b87196396d291200e95acd"
+    },
+    "helpers": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/targeting-pipeline-20261109/content/extract_content.py",
+        "bytes": 12906,
+        "sha256": "37504c156e11e55c9c06174980fb1617281690ab3b01db9caa9dfd28937f5faa"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/nymph-action-settlement-20261103/projectile/decode_projectile.py",
+        "bytes": 6749,
+        "sha256": "dab13196fb726d06bd9094c29f09a12dc3677b2c129359a1f7c305e13a8157fb"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/unity_assets.py",
+        "bytes": 3542,
+        "sha256": "cece612435569ab6162594a9b42cbdbdab420579719f099a3b705ab4adaf7e25"
+      }
+    ],
+    "sources": [
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+        "bytes": 477255,
+        "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+        "bytes": 1367500,
+        "sha256": "0d0b4c0f9252c14a69a20d4bea09527403dd3eddfc2f7bcd757c3c30cf37ffc3"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_4133_logos.ab",
+        "bytes": 31734,
+        "sha256": "86c5b1ea6e59b2230ba1157e6acc0de8365edb9ce2f94a7e928cc73a69d9e3c5"
+      }
+    ],
+    "skillTable": {
+      "url": "https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/63c7cec73c3858d0ae913f85cc89af3cef4d744f/zh_CN/gamedata/excel/skill_table.json",
+      "revision": "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+      "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/route-operations-20261107/data/skill_table.json",
+      "bytes": 11766431,
+      "sha256": "492900f6b957233296c9736c86bb4e5f3ab4b4d7f5055a0f973c5acec3d174b1"
+    }
+  },
+  "result": {
+    "components": [
+      {
+        "bundle": "battle/prefabs/[uc]skills.ab",
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "pathId": "-6646596549590448322",
+        "objectSha256": "9b2b805c690b89c962b1bde49b4b45a2ccfb08876779f199c5e615a23d4bf807",
+        "gameObjectPathId": "2348985937860953918",
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": 5588963537932396408
+        },
+        "script": {
+          "id": "5588963537932396408",
+          "name": "ActiveAbilityWrapper",
+          "cl": "ActiveAbilityWrapper",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "value": {
+          "_metadata": {
+            "namedAsAlias": "ProjectileAura",
+            "blackboardPrefix": ""
+          },
+          "_wrappedAbilities": {
+            "Array": [
+              {
+                "m_FileID": 0,
+                "m_PathID": 4938691717097981758
+              }
+            ]
+          }
+        }
+      },
+      {
+        "bundle": "battle/prefabs/[uc]skills.ab",
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "pathId": "-5586643412165654722",
+        "objectSha256": "fe8bce718b74848f62db85af8474fe7c96ea92b416518037ec140fa3ec34ccb4",
+        "gameObjectPathId": "2289735480463984446",
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": -2277369998322713569
+        },
+        "script": {
+          "id": "-2277369998322713569",
+          "name": "ProjectileMoveScaleBehaviour",
+          "cl": "ProjectileMoveScaleBehaviour",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "value": {
+          "_moveScale": 1.0
+        }
+      },
+      {
+        "bundle": "battle/prefabs/[uc]skills.ab",
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "pathId": "-3086533397681928386",
+        "objectSha256": "74aa3786b6c70e38d603e3891d069b5546604fac8cb7b7e1ce53629a2dac6601",
+        "gameObjectPathId": "-3893906502223198402",
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": 6851783972288338031
+        },
+        "script": {
+          "id": "6851783972288338031",
+          "name": "CastSkill",
+          "cl": "CastSkill",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "value": {
+          "_extraAbilities": {
+            "Array": [
+              {
+                "m_FileID": 0,
+                "m_PathID": -6646596549590448322
+              }
+            ]
+          },
+          "_attackBlackboardModeIndex": 3,
+          "_extraAttackBlackboardModeIndices": {
+            "Array": [
+              4
+            ]
+          }
+        }
+      },
+      {
+        "bundle": "battle/prefabs/[uc]skills.ab",
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "pathId": "-2382881213094754498",
+        "objectSha256": "f8136ec79b4f4fe0f3332e38b3c659ae9c72212fe33591babcb9a86252e11572",
+        "gameObjectPathId": "2289735480463984446",
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": -2891200616113119906
+        },
+        "script": {
+          "id": "-2891200616113119906",
+          "name": "AutoLoadBoxRange",
+          "cl": "AutoLoadBoxRange",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "value": {
+          "_useBlackboardRangeId": 0
+        }
+      },
+      {
+        "bundle": "battle/prefabs/[uc]skills.ab",
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "pathId": "4938691717097981758",
+        "objectSha256": "7b3e6ba644356660967fd51fe5b863d61a70388064c26bbbd209384b9c7f61c1",
+        "gameObjectPathId": "2289735480463984446",
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": -7898126078783828281
+        },
+        "script": {
+          "id": "-7898126078783828281",
+          "name": "ProjectileAuraAbility",
+          "cl": "ProjectileAuraAbility",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "value": {
+          "_projectileValidator": {
+            "m_FileID": 0,
+            "m_PathID": 7167625259498604350
+          }
+        }
+      },
+      {
+        "bundle": "battle/prefabs/[uc]skills.ab",
+        "file": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+        "pathId": "7167625259498604350",
+        "objectSha256": "182f0e5ffb6afd1a53012786c1e4e9a3d22dc406c89b16dd532df45e2344b7a5",
+        "gameObjectPathId": "2289735480463984446",
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": -1274229115713164980
+        },
+        "script": {
+          "id": "-1274229115713164980",
+          "name": "ProjectileValidator",
+          "cl": "ProjectileValidator",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "value": {
+          "_targetSide": 2,
+          "_verifyProjectileType": 0,
+          "_onlySourceIsMe": 0
+        }
+      },
+      {
+        "bundle": "charpack/char_4133_logos.ab",
+        "file": "CAB-69c117175007e4cbd7ca17048930ab1a",
+        "pathId": "-8180575500434369077",
+        "objectSha256": "ddb0f95ad7f8577a3bdb5cfc15e875978744b814248ab4f06b3454ad7a60d800",
+        "gameObjectPathId": "-2548681857132554805",
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": 5390319429299248724
+        },
+        "script": {
+          "id": "5390319429299248724",
+          "name": "UnitMode",
+          "cl": "UnitMode",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "value": {
+          "_attack": {
+            "m_FileID": 0,
+            "m_PathID": 8587170977828672971
+          }
+        }
+      },
+      {
+        "bundle": "charpack/char_4133_logos.ab",
+        "file": "CAB-69c117175007e4cbd7ca17048930ab1a",
+        "pathId": "-7800239368906435125",
+        "objectSha256": "ac181e404f43166bb5b2259907567c54aa38d32502ae557d549ef88ddffe26a6",
+        "gameObjectPathId": "8084434814728639947",
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": 1966733865724876027
+        },
+        "script": {
+          "id": "1966733865724876027",
+          "name": "AdvancedProjectileSelector",
+          "cl": "AdvancedProjectileSelector",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "value": {
+          "_targetSide": 2
+        }
+      },
+      {
+        "bundle": "charpack/char_4133_logos.ab",
+        "file": "CAB-69c117175007e4cbd7ca17048930ab1a",
+        "pathId": "-2395166296745536053",
+        "objectSha256": "932d43c6a13b66bf5de87fde4016b93b08f97a2f8c13e500be665bc3d83ec711",
+        "gameObjectPathId": "8084434814728639947",
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": -2891200616113119906
+        },
+        "script": {
+          "id": "-2891200616113119906",
+          "name": "AutoLoadBoxRange",
+          "cl": "AutoLoadBoxRange",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "value": {
+          "_useBlackboardRangeId": 0
+        }
+      },
+      {
+        "bundle": "charpack/char_4133_logos.ab",
+        "file": "CAB-69c117175007e4cbd7ca17048930ab1a",
+        "pathId": "8587170977828672971",
+        "objectSha256": "cfebaeb989e0bf67e96ad76048453964ebe8f52e34b011cd3a576b55b1bd1fa3",
+        "gameObjectPathId": "-5615559086309141045",
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "scriptPPtr": {
+          "m_FileID": 1,
+          "m_PathID": -8472532906046541671
+        },
+        "script": {
+          "id": "-8472532906046541671",
+          "name": "EliminateProjectileAbility",
+          "cl": "EliminateProjectileAbility",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "value": {
+          "_selector": {
+            "m_FileID": 0,
+            "m_PathID": -7800239368906435125
+          },
+          "_animKey": "Skill_3_End"
+        }
+      }
+    ],
+    "blackboards": [
+      {
+        "pointer": "/skchr_logos_3/levels/0/blackboard/2",
+        "value": {
+          "key": "projectile_move_scale",
+          "value": 0.05,
+          "valueStr": null
+        }
+      },
+      {
+        "pointer": "/skchr_logos_3/levels/1/blackboard/2",
+        "value": {
+          "key": "projectile_move_scale",
+          "value": 0.05,
+          "valueStr": null
+        }
+      },
+      {
+        "pointer": "/skchr_logos_3/levels/2/blackboard/2",
+        "value": {
+          "key": "projectile_move_scale",
+          "value": 0.05,
+          "valueStr": null
+        }
+      },
+      {
+        "pointer": "/skchr_logos_3/levels/3/blackboard/2",
+        "value": {
+          "key": "projectile_move_scale",
+          "value": 0.05,
+          "valueStr": null
+        }
+      },
+      {
+        "pointer": "/skchr_logos_3/levels/4/blackboard/2",
+        "value": {
+          "key": "projectile_move_scale",
+          "value": 0.05,
+          "valueStr": null
+        }
+      },
+      {
+        "pointer": "/skchr_logos_3/levels/5/blackboard/2",
+        "value": {
+          "key": "projectile_move_scale",
+          "value": 0.05,
+          "valueStr": null
+        }
+      },
+      {
+        "pointer": "/skchr_logos_3/levels/6/blackboard/2",
+        "value": {
+          "key": "projectile_move_scale",
+          "value": 0.05,
+          "valueStr": null
+        }
+      },
+      {
+        "pointer": "/skchr_logos_3/levels/7/blackboard/2",
+        "value": {
+          "key": "projectile_move_scale",
+          "value": 0.05,
+          "valueStr": null
+        }
+      },
+      {
+        "pointer": "/skchr_logos_3/levels/8/blackboard/2",
+        "value": {
+          "key": "projectile_move_scale",
+          "value": 0.05,
+          "valueStr": null
+        }
+      },
+      {
+        "pointer": "/skchr_logos_3/levels/9/blackboard/2",
+        "value": {
+          "key": "projectile_move_scale",
+          "value": 0.05,
+          "valueStr": null
+        }
+      }
+    ]
+  }
+}

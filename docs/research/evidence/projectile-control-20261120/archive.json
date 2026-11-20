@@ -1,0 +1,316 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-11-20"
+    ],
+    "collectionDateSource": "record fields",
+    "organizedOn": "2026-11-20",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+        "records": [
+          "native.json#/provenance/client/dll"
+        ],
+        "bytes": 223112680
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        "records": [
+          "native.json#/provenance/client/metadata"
+        ],
+        "bytes": 46669332
+      }
+    },
+    "sourceRecords": [
+      "dispel-prefabs.json",
+      "logos.json",
+      "native.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12895,
+        "sha256": "9c5b246859318caaec4aab5275ef0d2d49fce5d612c6b4e569973a9941ba621a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "dispel-prefabs.json",
+        "kind": "record",
+        "bytes": 9970,
+        "sha256": "300d8687d5d8eeefecd8daf8b5942a838bb7645a930c0509e9ca29ec88b75727"
+      },
+      {
+        "path": "extract_dispel_prefabs.py",
+        "kind": "historical-script",
+        "bytes": 2777,
+        "sha256": "d8e3bb17ebc7c0b4cd63b58944a8df73048e1726cfa4b4529713377bdeb4835f"
+      },
+      {
+        "path": "extract_logos.py",
+        "kind": "historical-script",
+        "bytes": 6335,
+        "sha256": "ff49930936fb405a9eacdaf95552f044b96682c559b87196396d291200e95acd"
+      },
+      {
+        "path": "logos.json",
+        "kind": "record",
+        "bytes": 13134,
+        "sha256": "0708f20bc9360798902416d6bf05da83ea03297400c33131296c8f4eefd9f9c1"
+      },
+      {
+        "path": "native.json",
+        "kind": "record",
+        "bytes": 304427,
+        "sha256": "498111de4a7bff9a9b88f2407e1b531d174e25875a4754abf513e1c8977d1e88"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 66009,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/2/method"
+          ],
+          "fullname": "Torappu.Battle.BObject.Init",
+          "address": "0x1806afb40"
+        },
+        {
+          "index": 72391,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/16/method"
+          ],
+          "fullname": "Torappu.Battle.BasicMovement.GetTimeScale",
+          "address": "0x1808ff360"
+        },
+        {
+          "index": 72408,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/8/method"
+          ],
+          "fullname": "Torappu.Battle.BasicMovement.RegisterMoveScale",
+          "address": "0x1809001a0"
+        },
+        {
+          "index": 72409,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/9/method"
+          ],
+          "fullname": "Torappu.Battle.BasicMovement.UnregisterMoveScale",
+          "address": "0x180900de0"
+        },
+        {
+          "index": 72410,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/10/method"
+          ],
+          "fullname": "Torappu.Battle.BasicMovement._CalculateFinalMoveScale",
+          "address": "0x180900ec0"
+        },
+        {
+          "index": 72522,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/14/method"
+          ],
+          "fullname": "Torappu.Battle.Projectile.TryEliminate",
+          "address": "0x180919aa0"
+        },
+        {
+          "index": 72526,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/3/method"
+          ],
+          "fullname": "Torappu.Battle.Projectile.OnTick",
+          "address": "0x180918540"
+        },
+        {
+          "index": 72572,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/4/method"
+          ],
+          "fullname": "Torappu.Battle.Projectile.RegisterMoveScale",
+          "address": "0x180918fd0"
+        },
+        {
+          "index": 72573,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/5/method"
+          ],
+          "fullname": "Torappu.Battle.Projectile.UnregisterMoveScale",
+          "address": "0x180919b70"
+        },
+        {
+          "index": 72575,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/6/method"
+          ],
+          "fullname": "Torappu.Battle.Projectile._InitOuterAdjustableSettings",
+          "address": "0x18091ae50"
+        },
+        {
+          "index": 72576,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/7/method"
+          ],
+          "fullname": "Torappu.Battle.Projectile._CalculateEliminatable",
+          "address": "0x18091a0d0"
+        },
+        {
+          "index": 72605,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/15/method"
+          ],
+          "fullname": "Torappu.Battle.Projectile/Behaviour.GetTimeScale",
+          "address": "0x180927710"
+        },
+        {
+          "index": 76146,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/0/method"
+          ],
+          "fullname": "Torappu.Battle.AdvancedProjectileSelector.FindProjectiles_CLEAR",
+          "address": "0x180a2b7b0"
+        },
+        {
+          "index": 76147,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/1/method"
+          ],
+          "fullname": "Torappu.Battle.AdvancedProjectileSelector._ValidateProjectile",
+          "address": "0x180a2bd00"
+        },
+        {
+          "index": 97010,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/11/method"
+          ],
+          "fullname": "Torappu.Battle.Abilities.ProjectileMoveScaleBehaviour.SetData",
+          "address": "0x18105c710"
+        },
+        {
+          "index": 97011,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/12/method"
+          ],
+          "fullname": "Torappu.Battle.Abilities.ProjectileMoveScaleBehaviour.OnProjectileEnter",
+          "address": "0x18105c4f0"
+        },
+        {
+          "index": 97012,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/methods/13/method"
+          ],
+          "fullname": "Torappu.Battle.Abilities.ProjectileMoveScaleBehaviour.OnProjectileExit",
+          "address": "0x18105c600"
+        }
+      ],
+      "blocks": [],
+      "types": [
+        {
+          "name": "Torappu.Battle.BObject",
+          "records": [
+            "native.json#/result/types/0"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Projectile",
+          "records": [
+            "native.json#/result/types/1"
+          ]
+        },
+        {
+          "name": "Torappu.FP",
+          "records": [
+            "native.json#/result/types/2"
+          ]
+        }
+      ],
+      "constants": [],
+      "bundles": [
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99",
+          "records": [
+            "dispel-prefabs.json#/provenance/sources/0",
+            "logos.json#/provenance/sources/0"
+          ],
+          "bytes": 477255
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/prefabs/[uc]projectiles.ab",
+          "gameRelativePath": "Arknights_Data/PersistentData/Bundles/battle/prefabs/[uc]projectiles.ab",
+          "sha256": "4fe6672c65b56cf6f593c9daadda11e61956c89ecd7fd0e91bf95996a65d1dc4",
+          "records": [
+            "dispel-prefabs.json#/provenance/sources/1"
+          ],
+          "bytes": 1916729
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_13.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_13.ab",
+          "sha256": "0b3c936babb315fa9771a7e78e4cd2b1dfdee9ce80e043fdac65122d8b424a59",
+          "records": [
+            "dispel-prefabs.json#/provenance/sources/2"
+          ],
+          "bytes": 342400
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "sha256": "0d0b4c0f9252c14a69a20d4bea09527403dd3eddfc2f7bcd757c3c30cf37ffc3",
+          "records": [
+            "logos.json#/provenance/sources/1"
+          ],
+          "bytes": 1367500
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_4133_logos.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_4133_logos.ab",
+          "sha256": "86c5b1ea6e59b2230ba1157e6acc0de8365edb9ce2f94a7e928cc73a69d9e3c5",
+          "records": [
+            "logos.json#/provenance/sources/2"
+          ],
+          "bytes": 31734
+        }
+      ]
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

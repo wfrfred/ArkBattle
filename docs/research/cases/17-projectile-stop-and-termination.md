@@ -42,6 +42,16 @@ DestroyMe()
 
 超时也有资格条件：当前时间达到寿命，且 Movement 不属于跟随逻辑弹道的特殊模式，再通过 ExtraCheckToFinish 才 Stop。普通 AdvancedMovement 沿用 `followsLogicProjectile=false`，基础 ExtraCheckToFinish=true；不能将此概括成所有图形追随组件无条件超时。
 
+### 2.2 逻各斯的敌方弹道选择、减速与消除
+
+2026-11-20 补查逻各斯 S3。当前资源的 `skchr_logos_3` 经 `_extraAbilities` 绑定 `ProjectileAuraAbility`，同一对象上的 `ProjectileMoveScaleBehaviour` 对范围内敌方弹道登记减速，离开时移除。技能结束的 `EliminateProjectileAbility` 另选范围内敌方弹道再尝试消除。技能表各等级的 `projectile_move_scale` 都是 `0.05`。 [技能资源、黑板与指令](../evidence/projectile-control-20261120/README.md) · [PRTS 技能说明](https://prts.wiki/w/%E9%80%BB%E5%90%84%E6%96%AF#技能)
+
+`AdvancedProjectileSelector._ValidateProjectile` #76147 在 `0x180a2bd7a–0x180a2bd86` 比较选择器阵营和 `BObject.side`。`Projectile.Init` 的普通发射分支把来源的阵营传给 `BObject.Init` 写入弹道。派生弹道的已核实分支从原弹道读取阵营。这些选择读取弹道自己的阵营，发射者后来失效也不会使该字段失效。 [客户端摘录](../evidence/projectile-control-20261120/native.json)
+
+`_InitOuterAdjustableSettings` #72575 初始化两个布尔事实。可变速取决于 Movement 支持及弹道配置。可消除的 `AUTOMATIC` 分支复用初始化出的可变速结果，显式 `YES`／`NO` 可独立决定。`TryEliminate` #72522 检查已经解析的可消除值再请求 Stop。「十字路口」量产型的两个远程攻击都发射明确禁止变速与消除的 `projectile_enemy_cbsisy`。 [客户端摘录](../evidence/projectile-control-20261120/native.json) · [敌方弹道样例](../evidence/projectile-control-20261120/dispel-prefabs.json)
+
+弹道进入／离开光环时，`ProjectileMoveScaleBehaviour` 分别登记／移除一个系数。`BasicMovement._CalculateFinalMoveScale` #72410 将现有系数相乘。根 `Projectile.OnTick` 用缩放后的时间增量累计 `currentTime`，寿命检查消费该累计值。各 Behaviour 的推进另用自己的 `timeScale` 乘本次原始时间增量。到达后等待及周期触发需核对各自的计时入口。 [客户端摘录](../evidence/projectile-control-20261120/native.json)
+
 ## 3. Stop 内部的准确顺序
 
 `Projectile.OnProjectileStop` [71361] `0x1808d97d0`：
