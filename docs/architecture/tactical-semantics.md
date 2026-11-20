@@ -51,7 +51,7 @@ ArkBattle 面向通用明日方舟战斗，卫戍协议是实现重点，不是 
 | MOVE-01 路线 | Plan／Context、显式指令、计时／控制分开与 Main 出口。 | Fear／Attract／Trace 的实际控制来源、缓存恢复和特殊操作内容。 |
 | MOVE-02 强制移动 | Route 固定位置出现。[Shifting](navigation.md#强制位移) 推击、牵引、近停与失衡生命周期，受力免疫与地图实体碰撞。Locomotion 累计实际位移。 | 具体推拉技能和地形绑定、浮空及特殊撤退再部署。 |
 | MOVE-03 面向 | LEFT／RIGHT、普通／强制转向与既有移动／攻击接入。 | 受力、待机及特殊转向，见[面向调查](../research/cases/35-facing-and-turning-conditions.md)。 |
-| PROJECTILE-01 弹道 | 独立泛型实例、Lifetime 与弩箭追踪。 | 沿途碰撞、附着、套索、延时爆炸／周期内容和可拒绝消除资格。 |
+| PROJECTILE-01 弹道 | 独立泛型实例、Lifetime 与弩箭追踪。 | 外部变速已有[设计](projectile.md#外部变速与运动)，待实现。阵营、消除及来源离场后的范围索敌见[待决接口](projectile.md#8-待决接口与研究依据)。沿途碰撞、附着、套索与延时／周期模板随内容接入。 |
 | DEPLOY-02 费用 | 独立费用上限与阶段计算。 | 多来源原生公式、完整来源写入和动态同步。 |
 | DEPLOY-03 方向 | 本次 Occupancy 方向与范围。 | 更多方向相关内容，不强制所有对象有方向。 |
 | DEPLOY-04 撤退 | 主动资格、请求前账务、被动死亡。 | 具体限制与特殊强退，控制者授权归外层。 |

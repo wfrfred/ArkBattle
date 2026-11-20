@@ -36,6 +36,14 @@ Runtime 在整个 Tick 开始时固定弹道 Ref 候选，到 Projectile 阶段�
 
 正常推进仅由调度器调用一次，不保存实例级重复调度标记。抵达后可保持 ACTIVE、停止移动并继续等待或周期业务；不强制全场先移动、再命中、再结束。
 
+### 外部变速与运动
+
+已确定以下设计，待实现。`move` 是 Projectile 实例与私有 `state` 并列的可选字段。创建时决定是否装配，字段存在即表示接受外部移动倍率。`move` 保存倍率贡献，专用操作按来源 ID 登记、替换和撤销。有效倍率相乘，空集合的倍率为 `1`。不可变速的弹道也可以在 `onTick` 从私有状态推进轨迹。「十字路口」量产型的远程弹道是实际样例。 [敌方弹道取证](../research/evidence/projectile-control-20261120/dispel-prefabs.json)
+
+`onTick` 决定本步如何运动。正常一个 Tick 的时间增量为 `1`，接入 `move` 后按有效倍率缩放。飞行和随飞行缩放的寿命消耗使用同一份 `deltaTicks`，累积时保留小数。抵达后的等待和周期业务按各自的计时规则推进。 [计时入口](../research/cases/17-projectile-stop-and-termination.md#22-逻各斯的敌方弹道选择减速与消除)
+
+Content 以纯函数计算运动结果，由 `onTick` 读取目标位置、提交状态、处理碰撞与业务后继。`towards` 接收位置、目标、速度和 `deltaTicks`，返回下一位置及本步是否几何抵达。线性步进可直接组合 `Vec2.add` 和 `Vec2.scale`。抛物线和绕行函数的签名随实际轨迹确定。 [运动案例](../research/cases/16-projectile-motion-and-hit-boundaries.md) · [当前追踪](../../src/content/projectiles/tracking.ts)
+
 ## 6. 终止请求与 Finalize
 
 stop 固定首次原因并发布 ENDING，阻止后续正常推进。待依赖完成后，onEnd 读取当前实例执行业务，再从最新集合移除，保留回调中新建或修改的其他弹道。
@@ -54,8 +62,15 @@ tracking 在目标身份仍存在时读取真实位置，暂时消失不回退�
 
 慑砂 S2 的抵达后延时爆炸、承曦格雷伊 S2 的抵达后周期业务说明不同边界，具体内容尚未接入；不能以测试夹具替代内容程序。
 
-## 8. 语义边界与研究依据
+## 8. 待决接口与研究依据
 
-当前 stop 不提供可拒绝的消除准入；沿途碰撞、附着、套索及更复杂周期弹体尚未完整接入。来源退场后的取值差异由具体内容采样政策处理，不由 Projectile 统一保存 Unit 快照。缺口集中见 [Tactical 语义](tactical-semantics.md)。
+| 待决项 | 已知约束 |
+| --- | --- |
+| 弹道阵营的创建输入 | 消除和变速需要按弹道自身阵营选择。来源离场后阵营仍可读取，派生弹道也要能继承该事实。 |
+| 消除资格与操作 | 资格独立于 `move`。需确定资格的字段与消除入口签名。受拒时保持实例，成功后沿用现有终止流程。当前 `stop` 接受 `DISPEL` 原因，尚无消除准入。 |
+| 来源离场后的范围索敌 | Targeting 目前要求实时来源 Unit。需确定发射时保存的最小选敌信息，以及 Targetable 限制如何获得这些信息和可用的实时来源。 [空爆案例](../research/cases/33-targeting-and-targetable-pipeline.md#46-来源离场后的真实群攻弹道) |
+| Battle 的 `STOP_PROJECTILE` | 已核实的战斗内清弹可调用领域操作。是否保留对外命令取决于宿主是否需要直接停止弹道。 [Battle Command](../../src/core/battle/contract.ts) |
+
+沿途碰撞、附着、套索、延时爆炸与周期弹体按实际内容接入。来源退场后的伤害数值由各模板的采样政策决定。覆盖进度见 [Tactical 语义](tactical-semantics.md)。
 
 原生依据见[运动与命中](../research/cases/16-projectile-motion-and-hit-boundaries.md)、[停止与终结](../research/cases/17-projectile-stop-and-termination.md)、[来源和目标](../research/cases/18-projectile-source-and-target-lifecycles.md)。当前实现的必要结果按[统一验收](verification.md)验证。
