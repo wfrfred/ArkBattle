@@ -14,7 +14,7 @@ Projectile 是独立运行实例，提供创建、正常推进和完整终结。
 
 实例保存身份、Definition、ACTIVE／ENDING、位置与私有 state。Definition 提供可选 onStart／onTick／onEnd，静态共享；私有状态可包含追踪目标、记忆位置、来源、样本、命中记录与业务时钟，不由根类型强制这些字段。
 
-停止原因包括抵达、到期、显式停止、来源失效与 DISPEL；原因交给内容选择收尾，不拆成不同生命周期机制。具体类型以[源码](../../src/core/projectile/projectile.ts)为准。
+结束原因交给 `onEnd` 决定收尾。当前原因类型见 [Definition](../../src/core/projectile/definition.ts)，已确定的移除接口见[移除与消除](#移除与消除)。
 
 ## 3. 异构集合与类型恢复
 
@@ -46,11 +46,33 @@ Content 以纯函数计算运动结果，由 `onTick` 读取目标位置、提�
 
 ## 6. 终止请求与 Finalize
 
-stop 固定首次原因并发布 ENDING，阻止后续正常推进。待依赖完成后，onEnd 读取当前实例执行业务，再从最新集合移除，保留回调中新建或修改的其他弹道。
+结束请求固定首次原因并发布 ENDING，阻止后续正常推进。待依赖完成后，onEnd 读取当前实例执行业务，再从最新集合移除，保留回调中新建或修改的其他弹道。
 
-无活动结算时 stop 完成整批收尾后返回；嵌套调用的完成边界见 [Lifetime](lifetime.md#finalize-与完成边界)。停止不截断已经进入的普通同步调用栈；后续新输出仍须重新确认资格，不能只在末尾靠停止防重。
+无活动结算时，结束请求完成整批收尾后返回；嵌套调用的完成边界见 [Lifetime](lifetime.md#finalize-与完成边界)。结束请求发出后，已经进入的普通同步调用栈继续执行。后续新输出须重新确认资格。
 
-普通停止可执行原目标保底或落点爆炸，DISPEL 是否跳过这些业务由具体 Definition 决定。两者共用 onEnd 和析构保护，不另建消除回调系统。UI 不输出到达／停止诊断事件，资源输出按 [Event](event.md)处理。
+### 移除与消除
+
+以下接口已确定，待实现。领域操作由当前的 `stop` 改为 `remove`，消除原因由 `DISPEL` 改为 `ELIMINATED`。消除资格由具体 Definition 组合 `Eliminatable` 表达，与 `move` 独立。
+
+```typescript
+export interface Eliminatable {
+    readonly definition: { readonly eliminatable: true };
+}
+
+export function remove<P extends Projectile<any>>(
+    battle: BattleState,
+    reference: Ref<P>,
+    reason?: Exclude<EndReason, "ELIMINATED">,
+): BattleState;
+
+export function remove<P extends Projectile<any> & Eliminatable>(
+    battle: BattleState,
+    reference: Ref<P>,
+    reason: "ELIMINATED",
+): BattleState;
+```
+
+逻各斯等内容从弹道集合按阵营、范围与 `hasEliminatable` 筛选。守卫收窄后的实例可生成满足消除重载的 Ref。两种重载进入同一个 Lifetime，`onEnd(battle, self, reason)` 按原因处理各自的收尾，例如普通弩箭在消除时跳过原目标保底命中。资源输出按 [Event](event.md)处理。 [原生停止与消除](../research/cases/17-projectile-stop-and-termination.md#21-不同入口是否采用相同命中政策)
 
 ## 7. 命中与内容状态
 
@@ -67,7 +89,6 @@ tracking 在目标身份仍存在时读取真实位置，暂时消失不回退�
 | 待决项 | 已知约束 |
 | --- | --- |
 | 弹道阵营的创建输入 | 消除和变速需要按弹道自身阵营选择。来源离场后阵营仍可读取，派生弹道也要能继承该事实。 |
-| 消除资格与操作 | 资格独立于 `move`。需确定资格的字段与消除入口签名。受拒时保持实例，成功后沿用现有终止流程。当前 `stop` 接受 `DISPEL` 原因，尚无消除准入。 |
 | 来源离场后的范围索敌 | Targeting 目前要求实时来源 Unit。需确定发射时保存的最小选敌信息，以及 Targetable 限制如何获得这些信息和可用的实时来源。 [空爆案例](../research/cases/33-targeting-and-targetable-pipeline.md#46-来源离场后的真实群攻弹道) |
 | Battle 的 `STOP_PROJECTILE` | 已核实的战斗内清弹可调用领域操作。是否保留对外命令取决于宿主是否需要直接停止弹道。 [Battle Command](../../src/core/battle/contract.ts) |
 
