@@ -1,15 +1,15 @@
 import type { Entry } from "../common/collection/entries.js";
-import { key, type Key, type Hook as TacticalHook } from "../hook.js";
+import { key, type Hook, type Key } from "../hook.js";
 import { createChange, type Change } from "./change.js";
 import type { Departure, Unit } from "./unit.js";
 
-export type EnterHook = TacticalHook<Unit, void>;
+export type EnterHook = Hook<Unit, void>;
 
-export type TickHook = TacticalHook<Unit, void>;
+export type TickHook = Hook<Unit, void>;
 
-export type LeaveHook = TacticalHook<Departure, void>;
+export type LeaveHook = Hook<Departure, void>;
 
-export type PrepareHook = TacticalHook<Departure, void>;
+export type PrepareHook = Hook<Departure, void>;
 
 export const enter = key<EnterHook, Unit>("unit.enter");
 

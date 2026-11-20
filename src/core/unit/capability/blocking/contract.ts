@@ -1,5 +1,5 @@
 import type { Ref } from "../../../common/ref.js";
-import type { Hook as TacticalHook } from "../../../hook.js";
+import type * as hooks from "../../../hook.js";
 import type { Unit } from "../../unit.js";
 import type { Blocker } from "./blocker.js";
 import type { Blockable } from "./blockable.js";
@@ -14,4 +14,4 @@ export interface Context<U extends Unit> {
     readonly relation: Relation;
 }
 
-export type Hook<U extends Unit> = TacticalHook<Context<U>, void>;
+export type Hook<U extends Unit> = hooks.Hook<Context<U>, void>;
