@@ -38,7 +38,7 @@ export function applyDamage(
     if (
         calculation === undefined ||
         calculation.amount === 0 ||
-        target?.lifecycle !== "PRESENT" ||
+        target?.lifecycle !== "ACTIVE" ||
         !isAlive(target)
     ) {
         return complete(battle, request, calculation, { type: "REJECTED" }, options);
@@ -121,7 +121,7 @@ export function applyDamage(
     ).state;
 
     const current = units.get(battle, request.target);
-    const killed = current?.lifecycle === "PRESENT" && !isAlive(current);
+    const killed = current?.lifecycle === "ACTIVE" && !isAlive(current);
     if (killed) {
         if (request.killer !== null) {
             battle = update(

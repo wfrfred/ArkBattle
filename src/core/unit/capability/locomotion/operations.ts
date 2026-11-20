@@ -32,7 +32,7 @@ export function advance(
 ): BattleState {
     const self = units.get(battle, ref);
     if (
-        self?.lifecycle !== "PRESENT" ||
+        self?.lifecycle !== "ACTIVE" ||
         isUnbalanced(self) ||
         !allows(battle, { self }, self.locomotion.restrictions)
     ) {

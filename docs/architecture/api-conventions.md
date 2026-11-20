@@ -17,7 +17,7 @@
 
 无单个主要对象的批量操作可以省略 Ref。函数所在目录、名字及是否返回 State，不决定它属于哪类。私有 setter 接收计算完成的结果值；只写状态的操作直接返回 State，有调用者实际消费的结果时才使用 Result 或 Outcome。
 
-实例生命周期阶段统一叫 `lifecycle`，私有业务数据叫 `state`。Effect.enabled 是启用意图，Lifetime Pending.phase 是结算进度，保留不同名称。Definition 描述配置和程序，Initial 提供本次构造事实；不为普通定义另造 Runtime、Compiled、Program 等别名。
+实例生命周期阶段统一叫 `lifecycle`，两态生命周期使用 `ACTIVE`／`ENDING`。私有业务数据叫 `state`。Effect.enabled 是启用意图，Lifetime Pending.phase 是结算进度，保留不同名称。Definition 描述配置和程序，Initial 提供本次构造事实；不为普通定义另造 Runtime、Compiled、Program 等别名。
 
 实例程序用 onStart／onTick／onEnd 等场景动词；事实通知用 started／ended／paid 等已发生名称，前置干预用 beforeXxx。主动操作用 start／advance／cancel／stop 等实际业务动词，不能用 finish 命名一个未必结束的请求。同一语义复用已有动词，不以转发包装统一表面签名。
 
@@ -61,7 +61,7 @@ Unit Initial 由 Catalog 推导：所选能力要求的输入必填，额外的�
 
 ### 查询与候选
 
-Query 是绑定输入版本的可重复惰性遍历，每次迭代有独立游标。all 返回完整实体，按登记顺序，不隐式筛选能力、生命、Presence 或阵营；get 读取指定版本，LEAVING 在物理移除前仍可读。
+Query 是绑定输入版本的可重复惰性遍历，每次迭代有独立游标。all 返回完整实体，按登记顺序，不隐式筛选能力、生命、Presence 或阵营；get 读取指定版本，ENDING 在物理移除前仍可读。
 
 filter 保留类型收窄，map／flatMap／take 组合候选；some／find／reduce／toArray 消费序列。take(0) 不访问源，提前退出或异常时关闭迭代器，flatMap 同时关闭当前内层。只有确实需要数组、索引或序列化时才物化。
 

@@ -20,7 +20,7 @@ Mechanism 是全场独立身份，其[领域模块](../../src/core/mechanism/ind
 
 ## 地形接触与调度
 
-Runtime 顺序为 Movement → Mechanism → Blocking。Movement 先推进阻挡位置计划，再推进路线／自主运动；地形读取这些操作后的身体位置，要求 PRESENT 且空间存在，不用 Occupancy 代替接触。
+Runtime 顺序为 Movement → Mechanism → Blocking。Movement 先推进阻挡位置计划，再推进路线／自主运动；地形读取这些操作后的身体位置，要求 ACTIVE 且空间存在，不用 Occupancy 代替接触。
 
 轮询维护进入、离开和持续接触，并每次重判动态资格：活性源石、沼泽、深水、地穴要求地面，烟雾允许空中。轮询不捕获同 Tick 所有中间位置，也不复刻 Unity 对象交错。
 

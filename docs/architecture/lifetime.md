@@ -12,7 +12,7 @@ Lifetime 统一结束请求、依赖传播与最终析构。领域拥有实例�
 
 Scope 保留描述符与 Ref 的领域配对。getRef 仅在描述符匹配时恢复公开实体类型，不凭 Scope 恢复未知私有参数；Burst 使用 Effect 的描述符，不另建类型。dependencies 只查询显式 Scope，不包含 owner；解绑不能解除 owner。
 
-available 沿实际 owner 与显式 Scope 父边检查本节点及全部上游：缺失、Pending 或结束中均拒绝新依赖。Unit 要求 PRESENT，Execution 要求 RUNNING，Activation 要求 ACTIVE；INSTALLING／INACTIVE Effect 与 INACTIVE Mechanism 仍可绑定。HP、空间存在、普通 source 与时间都不属于这项资格。
+available 沿实际 owner 与显式 Scope 父边检查本节点及全部上游：缺失、Pending 或结束中均拒绝新依赖。Unit、Execution 与 Activation 要求 ACTIVE；INSTALLING／INACTIVE Effect 与 INACTIVE Mechanism 仍可绑定。HP、空间存在、普通 source 与时间都不属于这项资格。
 
 绑定入口拒绝不可用端点，合并图闭环抛错；内部传播信任已建立的 DAG。公共描述符不授予 Content 绕过领域推进或私有写回协议的权限。
 
@@ -20,7 +20,7 @@ available 沿实际 owner 与显式 Scope 父边检查本节点及全部上游�
 
 描述符提供稳定身份、查询、结束态判断、纯 begin、发布、Prepare、Finalize 与原因转换。公开实体类型、内部异构上界和结束载荷在这个受信边界配对，具体声明以源码为准。
 
-begin 只形成 ENDING／LEAVING；发布后再 Prepare。Prepare 可以读取标记前 initial 以决定撤销哪些输出，需要实时事实时另查最新状态。Finalize 只按 Ref 和固定结束载荷从当前存储取得实例，不回填入口快照。
+begin 只形成 ENDING；发布后再 Prepare。Prepare 可以读取标记前 initial 以决定撤销哪些输出，需要实时事实时另查最新状态。Finalize 只按 Ref 和固定结束载荷从当前存储取得实例，不回填入口快照。
 
 Unit Departure 在 remove 入口固定：历史 unit 与 End；DEATH 明确带 killer，其他原因不带。后续 Finalize 不重推原因或归属。业务结束载荷与向依赖者传播的原因是两条通道：例如 Unit 死亡对 Action 表达 SOURCE_ABSENT 取消，对其依赖者仍传播 DEATH。首次请求同时固定两者，重复请求不覆盖。
 
@@ -50,7 +50,7 @@ Prepare 早于自动请求依赖者；它可先主动结束子项，从而确定
 
 首次嵌套请求返回保证自身 Prepare 完成，不保证 Finalize；重复 PREPARING 请求也不等待原 Prepare。Prepare 是多个完整业务的序列，不是任意回调原子事务，需要随标记失效的事实应在对应发布中建立。
 
-结束态立即阻止正常推进与新依赖。Unit.prepare 使用[公共 Hook](hook.md)顺序；Effect 在 Prepare 撤销输出、协调候补，但 LEAVING 宿主不能重新启用弱者。主动撤退的退款等前置业务归 Deployment，不由通用 Prepare 推导。
+结束态立即阻止正常推进与新依赖。Unit.prepare 使用[公共 Hook](hook.md)顺序；Effect 在 Prepare 撤销输出、协调候补，但 ENDING 宿主不能重新启用弱者。主动撤退的退款等前置业务归 Deployment，不由通用 Prepare 推导。
 
 ## Finalize 与完成边界
 

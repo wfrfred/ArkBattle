@@ -38,7 +38,7 @@ export function damage(
         const allows = allowsRestrictions(battle, source, ignore);
 
         return <U extends Unit & Targetable>(target: U): target is U & Vitality & Classification =>
-            target.lifecycle === "PRESENT" &&
+            target.lifecycle === "ACTIVE" &&
             presence.isPresent(target) &&
             hasVitality(target) &&
             isAlive(target) &&
@@ -56,7 +56,7 @@ export function healing(
     const allows = allowsRestrictions(battle, source, ignore);
 
     return <U extends Unit & Targetable>(target: U): target is U & Vitality & Classification =>
-        target.lifecycle === "PRESENT" &&
+        target.lifecycle === "ACTIVE" &&
         presence.isPresent(target) &&
         hasVitality(target) &&
         isAlive(target) &&

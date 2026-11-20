@@ -25,8 +25,8 @@ topK 稳定排序截取，take 只取现有顺序；随机无放回选择立即�
 
 | 谓词 | 政策 |
 | --- | --- |
-| damage | PRESENT、空间存在、正生命、敌对，受选限制允许。 |
-| healing | PRESENT、空间存在、正生命、同阵营、有效 HP 未满，限制允许且无 ACTIVE healFree。 |
+| damage | ACTIVE、空间存在、正生命、敌对，受选限制允许。 |
+| healing | ACTIVE、空间存在、正生命、同阵营、有效 HP 未满，限制允许且无 ACTIVE healFree。 |
 | elementDamage | 空间存在、Elemental 可用、无 Burst、非中立敌对目标，限制允许。 |
 | elementHealing | 空间存在、Elemental 可用、无 Burst、同阵营且有恢复需求，限制允许。 |
 

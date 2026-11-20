@@ -814,7 +814,7 @@ test("HP-03: lethal HP remains present through nested Combat and both Applied ro
                 );
                 assert.equal(attempted.value.type, "REJECTED");
                 const resumed = advanceCombat(attempted.state);
-                assert.equal(get(resumed, 1)?.lifecycle, "PRESENT");
+                assert.equal(get(resumed, 1)?.lifecycle, "ACTIVE");
                 return { state: resumed, value: undefined };
             },
         }),
@@ -853,7 +853,7 @@ test("HP-03: lethal HP remains present through nested Combat and both Applied ro
     const result = hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request), {
         exclude: [[hpDamage.targetKilled, "kill-reward"]],
     });
-    assert.deepEqual(calls, [["target", 0, "PRESENT", 1], ["source", 0, "PRESENT", 1]]);
+    assert.deepEqual(calls, [["target", 0, "ACTIVE", 1], ["source", 0, "ACTIVE", 1]]);
     assert.deepEqual(result.value.application, { before: { hp: 40, minusHp: 0 }, after: { hp: 0, minusHp: 0 }, hpLoss: 40, minusHpGain: 0 });
     assert.equal(result.value.killed, true);
     assert.equal(prepared, true);
@@ -896,7 +896,7 @@ test("KILL-02: nested damage owns its kill even while Lifetime defers the victim
         units.setHook(hpDamage.targetKilled, {
             id: "fact-after-leaving",
             invoke(current) {
-                assert.equal(get(current, killer.id).lifecycle, "LEAVING");
+                assert.equal(get(current, killer.id).lifecycle, "ENDING");
                 leavingNotified = true;
                 return { state: current, value: undefined };
             },
@@ -929,7 +929,7 @@ test("KILL-02: nested damage owns its kill even while Lifetime defers the victim
         invoke(current) {
             const request = { ...damageRequest(otherSource, target, 40), killer };
             nested = hpDamage.applyDamage(request, hpDamage.calculateDamage(current, request));
-            assert.equal(get(nested.state, target.id).lifecycle, "LEAVING");
+            assert.equal(get(nested.state, target.id).lifecycle, "ENDING");
             return { state: nested.state, value: undefined };
         },
     }));
@@ -938,7 +938,7 @@ test("KILL-02: nested damage owns its kill even while Lifetime defers the victim
         onEnd(current) {
             const request = damageRequest(source, target, 10);
             outer = hpDamage.applyDamage(request, hpDamage.calculateDamage(current, request));
-            assert.equal(get(outer.state, target.id).lifecycle, "LEAVING");
+            assert.equal(get(outer.state, target.id).lifecycle, "ENDING");
             return outer.state;
         },
     });

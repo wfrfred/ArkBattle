@@ -21,7 +21,7 @@ export function calculateDamage(
     const unavailable = (current: BattleState) => {
         const target = units.get(current, request.target);
 
-        return target?.lifecycle !== "PRESENT" || !isAlive(target);
+        return target?.lifecycle !== "ACTIVE" || !isAlive(target);
     };
     if (unavailable(battle)) {
         return { state: battle, value: undefined };
@@ -41,7 +41,7 @@ export function calculateDamage(
     }
 
     const target = units.get(battle, request.target);
-    if (target?.lifecycle !== "PRESENT" || !isAlive(target)) {
+    if (target?.lifecycle !== "ACTIVE" || !isAlive(target)) {
         return { state: battle, value: undefined };
     }
 

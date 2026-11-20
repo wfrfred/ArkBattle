@@ -45,7 +45,7 @@ export function canReceiveDamage(
     const target = units.get(battle, context.request.target);
 
     return (
-        target?.lifecycle === "PRESENT" &&
+        target?.lifecycle === "ACTIVE" &&
         isAlive(target) &&
         allows(battle, context, target.vitality.damageRestrictions, ignore)
     );
@@ -54,7 +54,7 @@ export function canReceiveDamage(
 export function canReceiveHealing(battle: BattleState, target: Ref<Unit & Vitality>): boolean {
     const unit = units.get(battle, target);
 
-    return unit?.lifecycle === "PRESENT" && isAlive(unit);
+    return unit?.lifecycle === "ACTIVE" && isAlive(unit);
 }
 
 export function receiveDamage(
@@ -110,7 +110,7 @@ export function commitDamage(
     );
     battle = committed.state;
     const current = units.get(battle, target);
-    if (current?.lifecycle !== "PRESENT" || !isAlive(current)) {
+    if (current?.lifecycle !== "ACTIVE" || !isAlive(current)) {
         return { state: battle, value: null };
     }
 
@@ -167,7 +167,7 @@ export function commitHealing(
 
 export function advance(battle: BattleState, reference: Ref<Unit & Vitality>): BattleState {
     const unit = units.get(battle, reference);
-    if (unit?.lifecycle !== "PRESENT" || !isAlive(unit)) {
+    if (unit?.lifecycle !== "ACTIVE" || !isAlive(unit)) {
         return battle;
     }
 
@@ -192,7 +192,7 @@ function recoverHp(
 ): Result<HealingApplication> {
     assertNonnegativeNumber(amount, "HP recovery amount");
     const unit = units.get(battle, reference);
-    assert(unit?.lifecycle === "PRESENT", "HP recovery target is not present", RangeError);
+    assert(unit?.lifecycle === "ACTIVE", "HP recovery target is not active", RangeError);
 
     const before = unit.vitality.health;
     const maxHp = resolveMaxHp(unit.definition.vitality, unit.vitality);
@@ -243,14 +243,14 @@ function dispatchHook<C extends damage.Context | healing.Context, T, H extends h
         candidates(current) {
             const unit = units.get(current, target);
 
-            return unit?.lifecycle === "PRESENT"
+            return unit?.lifecycle === "ACTIVE"
                 ? unit.hooks.get(key).filter(({ id }) => !hooks.excluded(options, key, id))
                 : [];
         },
         find(current, id) {
             const unit = units.get(current, target);
 
-            return unit?.lifecycle === "PRESENT" ? unit.hooks.find(key, id) : undefined;
+            return unit?.lifecycle === "ACTIVE" ? unit.hooks.find(key, id) : undefined;
         },
     });
 }

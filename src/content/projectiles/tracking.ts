@@ -95,7 +95,7 @@ export function hit<S extends State, T extends object>(
     });
     const marked = projectiles.get(battle, reference)!;
     const target = units.get(battle, marked.state.target);
-    if (target?.lifecycle !== "PRESENT" || !isAlive(target)) {
+    if (target?.lifecycle !== "ACTIVE" || !isAlive(target)) {
         return battle;
     }
 

@@ -21,7 +21,7 @@ export function add<U extends Unit>(battle: BattleState, unit: U): BattleState {
         find: (current, id) => {
             const self = units.get(current, reference);
 
-            return self?.lifecycle === "PRESENT" ? self.hooks.find(lifecycle.enter, id) : undefined;
+            return self?.lifecycle === "ACTIVE" ? self.hooks.find(lifecycle.enter, id) : undefined;
         },
     }).state;
 }
@@ -55,8 +55,8 @@ export const lifetime = createLifetime<Unit, Unit, Departure>({
     kind: "UNIT",
     address: (ref) => [ref.id],
     get: units.get,
-    isEnding: (self) => self.lifecycle === "LEAVING",
-    begin: (self) => ({ ...self, lifecycle: "LEAVING" }),
+    isEnding: (self) => self.lifecycle === "ENDING",
+    begin: (self) => ({ ...self, lifecycle: "ENDING" }),
     replace: (battle, _reference, next) => replace(battle, [next]),
     prepare: (battle, reference, _initial, departure) =>
         dispatch(battle, departure, undefined, {
@@ -104,7 +104,7 @@ export function advance(battle: BattleState): BattleState {
     for (const candidate of candidates) {
         const reference = units.ref(candidate);
         const self = units.get(battle, reference);
-        if (self?.lifecycle !== "PRESENT") {
+        if (self?.lifecycle !== "ACTIVE") {
             continue;
         }
 
@@ -113,7 +113,7 @@ export function advance(battle: BattleState): BattleState {
             find: (current, id) => {
                 const unit = units.get(current, reference);
 
-                return unit?.lifecycle === "PRESENT"
+                return unit?.lifecycle === "ACTIVE"
                     ? unit.hooks.find(lifecycle.tick, id)
                     : undefined;
             },

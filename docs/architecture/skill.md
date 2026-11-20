@@ -38,7 +38,7 @@ SP 的容量 capacity 与 Activation Definition 的发动门槛 requirement、�
 
 recoverySpeed 与 recoveryMultiplier 均须显式提供 [Attribute](attribute.md) Definition，默认下限0。每次查询按当前贡献和范围取得连续值，再相乘得到自然回复速率。贡献或范围 Change 只发布属性；计时器在下一次 SP.advance 读取有效速率，不同步回复或重置余额。
 
-Recovery 为 TIME、ACTION、HIT 或 NONE；EXTERNAL 是显式操作的来源。recover 检查来源与回复许可并限制到容量；pay 要求显式金额，足额支付或失败，不读取发动政策，也不受回复限制；modify 直接增减，普通正增量仍检查 EXTERNAL 许可，负增量不被阻回拦截，forced 只绕过规定的回复限制。三者要求宿主 PRESENT，具有 Vitality 时仍活着；无 Vitality 的 Skill 宿主也可使用资源。
+Recovery 为 TIME、ACTION、HIT 或 NONE；EXTERNAL 是显式操作的来源。recover 检查来源与回复许可并限制到容量；pay 要求显式金额，足额支付或失败，不读取发动政策，也不受回复限制；modify 直接增减，普通正增量仍检查 EXTERNAL 许可，负增量不被阻回拦截，forced 只绕过规定的回复限制。三者要求宿主 ACTIVE，具有 Vitality 时仍活着；无 Vitality 的 Skill 宿主也可使用资源。
 
 TIME 配置只表示回复来源，周期由 `TICKS_PER_SECOND / 有效回复速率` 得到；速率非正时不计时。自然回复保留周期、余时和上次时刻：
 
@@ -66,15 +66,15 @@ ammoReplenished 仅通知普通补弹的正实际增量，保存 requested、实
 
 ## 4. Restriction、程序与 Hook
 
-启动、主动操作和回复分别持有精确限制。启动要求 PRESENT、正生命及 activationRestrictions；[Presence](presence.md)通过限制禁止消失期间的新激活。operate 检查 PRESENT、当前轮 ACTIVE 和 operationRestrictions，不额外要求空间存在或 HP；内部到期、完成及宿主离场不受主动操作限制否决。
+启动、主动操作和回复分别持有精确限制。启动要求宿主 ACTIVE、正生命及 activationRestrictions；[Presence](presence.md)通过限制禁止消失期间的新激活。operate 检查宿主和当前 Activation 均为 ACTIVE，再检查 operationRestrictions，不额外要求空间存在或 HP；内部到期、完成及宿主离场不受主动操作限制否决。
 
 Activation Definition 必须显式提供 `ignoreRestrictions: readonly ActivationRestriction[]`：普通技能为 `[]`，允许眩晕中发动的技能可填写共享的 `control.stunRestriction`。先解析有效贡献，再按定义对象身份豁免；同一定义的多个来源一起忽略，不按登记 ID 判断，也不恢复被竞争压制的项。该豁免只作用于本次 Skill 启动，不删除登记、解除 Effect 或恢复其他领域的能力；只忽略 stun 仍受 silence、Presence 等其余限制。宿主生命周期、已有 Activation、accepts 及本次 SP 前提仍须满足。
 
-入场 Hook 先登记回复监听，再执行 onEnter，最后重新取得仍为 PRESENT 的宿主尝试 PASSIVE 发动。持久 onTick 按 PRESENT 推进，本轮 onTick 另要求 ACTIVE；它们不机械继承自然 SP 回复的暂停条件。
+入场 Hook 先登记回复监听，再执行 onEnter，最后重新取得仍为 ACTIVE 的宿主尝试 PASSIVE 发动。持久 onTick 要求宿主 ACTIVE，本轮 onTick 还要求当前 Activation 为 ACTIVE；它们不机械继承自然 SP 回复的暂停条件。
 
 Activation Definition 的 operations 按 STOP／RETRIGGER 分别提供处理器，未声明的操作不受理。operate 先检查对应处理器存在，再检查 operationRestrictions，通过后调用该处理器并返回 true；处理器接收 BattleState、宿主 Ref 和完整 Activation，不重复接收操作键。true 表示已受理，不承诺激活已经结束。内部 finish／cancel 不受主动操作支持范围或限制否决。
 
-Skill 通知包括 SP 回复／支付／修改、耗弹／普通补弹和激活创建／结束。全部使用[公共 Hook](hook.md)，结束事实允许仍登记的 LEAVING 宿主响应。激活报告只保留本轮 Ref 与必要结束原因，不复制私有状态；activationEnded 在清空槽位后派发，该旧 Ref 不保证仍可查询。
+Skill 通知包括 SP 回复／支付／修改、耗弹／普通补弹和激活创建／结束。全部使用[公共 Hook](hook.md)，结束事实允许仍登记的 ENDING 宿主响应。激活报告只保留本轮 Ref 与必要结束原因，不复制私有状态；activationEnded 在清空槽位后派发，该旧 Ref 不保证仍可查询。
 
 ## 5. 发动与完整结束
 

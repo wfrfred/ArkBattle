@@ -6,7 +6,7 @@
 
 所有登记使用类型化 Key。Unit 的生命周期、资源、Action、Skill、Blocking、Elemental 等本地登记统一存于 `Unit.hooks`；全局 Unit 观察和 Deployment 观察存于各自 Battle 领域的 Hooks 集合。存储一致不合并业务阶段或宿主所有权。
 
-各领域自行派发，不建立万能业务广播器。公共集合负责存取，公共 dispatch 负责共同调用协议；它们不判断 PRESENT、资源资格或业务是否应继续。
+各领域自行派发，不建立万能业务广播器。公共集合负责存取，公共 dispatch 负责共同调用协议；它们不判断 ACTIVE、资源资格或业务是否应继续。
 
 ## 类型化键与集合
 
@@ -44,13 +44,13 @@ accepts 只读。通知使用 void；取消、固定数值等工作值转换由�
 
 | 场景 | 必要语义 |
 | --- | --- |
-| Unit enter／tick | 固定候选，每项前要求当前宿主 PRESENT |
-| Unit prepare | 先发布 LEAVING 并固定 Departure，再执行；自动请求依赖者结束在其后 |
+| Unit enter／tick | 固定候选，每项前要求当前宿主 ACTIVE |
+| Unit prepare | 先发布 ENDING 并固定 Departure，再执行；自动请求依赖者结束在其后 |
 | Unit leave | 注销前捕获最新 Hook 对象及 priority 快照，注销后执行；不再查已删除宿主 |
 | Blocking 一条关系 | 首个回调前同时采样双方候选，各自排序，先 Blocker 后 Blockable；不跨角色按 priority 混排 |
 | Blocking ACQUIRED／RELEASED | 前者随原 Relation 失效停止；后者通知已发生的解除，不追删回调中新建的关系 |
-| 资源常规阶段 | 要求当前宿主 PRESENT，具体阶段保留自己的停止条件 |
-| Skill／Elemental 结束事实、HP targetKilled | 仍登记的 LEAVING 宿主可以参与，不套用来源输出资格 |
+| 资源常规阶段 | 要求当前宿主 ACTIVE，具体阶段保留自己的停止条件 |
+| Skill／Elemental 结束事实、HP targetKilled | 仍登记的 ENDING 宿主可以参与，不套用来源输出资格 |
 
 一批关系逐条开始时取各自候选，不提前冻结整批登记。同一 Unit 承担来源和目标等不同角色时，仍按不同 Key 分别通知。历史载荷不随实时查询改变，见[状态接续](functional-core.md#状态接续后的读取与续执行)。
 

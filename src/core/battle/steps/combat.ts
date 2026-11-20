@@ -29,7 +29,7 @@ export function advance(battle: BattleState): BattleState {
         }
 
         const unit = units.get(battle, source);
-        if (unit?.lifecycle !== "PRESENT" || !presence.isPresent(unit)) {
+        if (unit?.lifecycle !== "ACTIVE" || !presence.isPresent(unit)) {
             continue;
         }
 
@@ -42,7 +42,7 @@ export function advance(battle: BattleState): BattleState {
 
         for (const id of new Set(selected.value)) {
             const latest = units.get(battle, reference);
-            if (latest?.lifecycle !== "PRESENT") {
+            if (latest?.lifecycle !== "ACTIVE") {
                 break;
             }
 

@@ -95,7 +95,7 @@ export function createParalysis(parameters: ParalysisParameters): Definition {
 
                         const recoveryTicks = TICKS_PER_SECOND / 2;
                         const host = units.get(current, self.host);
-                        if (host?.lifecycle === "PRESENT") {
+                        if (host?.lifecycle === "ACTIVE") {
                             current = effects.install(current, self.host, stun, {
                                 expiration: {
                                     type: "DEADLINE",

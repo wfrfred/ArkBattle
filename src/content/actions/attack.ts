@@ -154,10 +154,10 @@ export interface Attack<
     readonly attack: Configuration<P, E>;
 }
 
-function sourcePresent(battle: BattleState, source: Ref<Unit>): boolean {
+function isSourceActive(battle: BattleState, source: Ref<Unit>): boolean {
     const current = units.get(battle, source);
 
-    return current?.lifecycle === "PRESENT";
+    return current?.lifecycle === "ACTIVE";
 }
 
 export function faceTarget<P extends object, E extends object>(
@@ -431,7 +431,7 @@ export function createWithState<P extends object, E extends object>(
                 battle = definition.onStart?.(battle, source, self) ?? battle;
 
                 const current = actions.getExecution(battle, identity);
-                if (current?.execution.lifecycle !== "RUNNING" || !sourcePresent(battle, source)) {
+                if (current?.execution.lifecycle !== "ACTIVE" || !isSourceActive(battle, source)) {
                     return {
                         state: actions.cancel(battle, identity, "SOURCE_ABSENT"),
                         value: true,
@@ -485,7 +485,7 @@ export function createWithState<P extends object, E extends object>(
                 const permission = dispatchBeforeRelease(battle, identity);
                 battle = permission.state;
                 const current = actions.getExecution(battle, identity);
-                if (current?.execution.lifecycle !== "RUNNING" || !sourcePresent(battle, source)) {
+                if (current?.execution.lifecycle !== "ACTIVE" || !isSourceActive(battle, source)) {
                     return {
                         state: actions.cancel(battle, identity, "SOURCE_ABSENT"),
                         value: true,
@@ -515,7 +515,7 @@ export function createWithState<P extends object, E extends object>(
                 battle = dispatchReleased(battle, identity);
 
                 const output = actions.getExecution(battle, identity);
-                if (output?.execution.lifecycle !== "RUNNING" || !sourcePresent(battle, source)) {
+                if (output?.execution.lifecycle !== "ACTIVE" || !isSourceActive(battle, source)) {
                     return {
                         state: actions.cancel(battle, identity, "SOURCE_ABSENT"),
                         value: true,
@@ -530,7 +530,7 @@ export function createWithState<P extends object, E extends object>(
                             for (const target of output.execution.state.bindings[group.id] ?? []) {
                                 if (
                                     actions.getExecution(battle, identity)?.execution.lifecycle !==
-                                    "RUNNING"
+                                    "ACTIVE"
                                 ) {
                                     return { state: battle, value: true };
                                 }
@@ -546,7 +546,7 @@ export function createWithState<P extends object, E extends object>(
                               [])) {
                             if (
                                 actions.getExecution(battle, identity)?.execution.lifecycle !==
-                                "RUNNING"
+                                "ACTIVE"
                             ) {
                                 return { state: battle, value: true };
                             }
@@ -557,7 +557,7 @@ export function createWithState<P extends object, E extends object>(
                 }
 
                 const completed = actions.getExecution(battle, identity);
-                if (completed?.execution.lifecycle !== "RUNNING") {
+                if (completed?.execution.lifecycle !== "ACTIVE") {
                     return { state: battle, value: true };
                 }
 

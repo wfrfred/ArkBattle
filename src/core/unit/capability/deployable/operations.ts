@@ -20,7 +20,7 @@ export function canRetreat(battle: BattleState, reference: Ref<Unit & Deployable
     const self = units.get(battle, reference);
 
     return (
-        self?.lifecycle === "PRESENT" &&
+        self?.lifecycle === "ACTIVE" &&
         allows(battle, { self }, self.deployable.retreatRestrictions)
     );
 }

@@ -77,7 +77,7 @@ export function install<S extends object, H extends object>(
     validate(expiration);
 
     if (
-        unit?.lifecycle !== "PRESENT" ||
+        unit?.lifecycle !== "ACTIVE" ||
         scopes.some((dependency) => !available(battle, dependency))
     ) {
         return { state: battle, value: null };

@@ -28,7 +28,7 @@ export function initialize(battle: BattleState, input: Input): Result<Unit> {
 
     let unit: Unit = {
         id,
-        lifecycle: "PRESENT",
+        lifecycle: "ACTIVE",
         definition: input.definition,
         hooks: input.hooks ?? Hooks.empty(),
         position: input.position,

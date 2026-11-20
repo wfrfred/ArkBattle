@@ -128,7 +128,7 @@ Prefab、范围读取和换算由实际业务使用；目录移动、提取工�
 
 | 编号 | 关键结果 | 集中代表 |
 | --- | --- | --- |
-| HOOK-01 | 固定候选及初始 priority、最新登记、同级稳定和独立嵌套；leave 使用注销前程序快照，结束事实不丢仍登记的 LEAVING 宿主。 | [Hook](../../test/core/hook.test.js)、[类型](../../test/core/types.test.js)与真实生命周期。 |
+| HOOK-01 | 固定候选及初始 priority、最新登记、同级稳定和独立嵌套；leave 使用注销前程序快照，结束事实不丢仍登记的 ENDING 宿主。 | [Hook](../../test/core/hook.test.js)、[类型](../../test/core/types.test.js)与真实生命周期。 |
 | HOOK-02 | Calculate／Apply 排除独立，键身份和 ID 匹配正确；排除不变成免疫豁免或嵌套政策。 | [资源结算](../../test/core/resource/application.test.js)中的来源／目标及嵌套代表。 |
 | HOOK-03 | Blocking 两方候选和 priority 在任一通知前固定，仍先 Blocker 后 Blockable；关系失效与历史通知按各自契约处理。 | [Blocking](../../test/core/blocking.test.js)关系重入，不复制公共候选矩阵。 |
 | HP-01 | 当前公式类型与防御采样贯穿计算／应用；分类事实保留，不产生计算期受击。 | [Calculate](../../test/core/resource/calculation.test.js)实际公式与采样。 |
@@ -137,9 +137,9 @@ Prefab、范围读取和换算由实际业务使用；目录移动、提取工�
 | APPLY-02 | 最终非负边界、零计算拒绝与零接收／零实际变化成功分开；报告在写点固定。 | [Apply](../../test/core/resource/application.test.js)与[Calculate](../../test/core/resource/calculation.test.js)的零值和报告。 |
 | APPLY-03 | 固定／取消单向接续，取消权限与成功后继分开；禁止抵挡保留护盾且仍有普通减伤，FIXED 不被普通改量恢复。 | [泥岩](../../test/content/operators/mudrock.test.js)真实 Hook 与[接收类型](../../test/core/types.test.js)。 |
 | HP-03 | damageCommitted、两侧 Applied 完成后才确认死亡。零 HP 期间保留 Unit 与 Blocking，可救回，嵌套 Combat 和零量直接恢复均保留原结算的死亡归属。 | [Apply](../../test/core/resource/application.test.js)的致死与恢复。 |
-| KILL-01 | 显式 killer 与 source 独立；targetKilled 先于普通目标 Prepare，排除或来源 LEAVING 不改变目标结算。 | [Apply](../../test/core/resource/application.test.js)确认与[Unit](../../test/core/unit.test.js)本地通知。 |
+| KILL-01 | 显式 killer 与 source 独立；targetKilled 先于普通目标 Prepare，排除或来源 ENDING 不改变目标结算。 | [Apply](../../test/core/resource/application.test.js)确认与[Unit](../../test/core/unit.test.js)本地通知。 |
 | KILL-02 | 内层取得死亡确认时外层不重复；首次 End 固定归属，重复不 Prepare，Finalize 延后不丢 killed，Completed 后发业务不改旧结果。 | [Apply](../../test/core/resource/application.test.js)嵌套死亡与真实 Lifetime。 |
-| KILL-03 | InstantKill 调用者先登记 Prepare，再请求结束；通知看到已发布 LEAVING 与固定 Departure，不要求先写 HP0，直接 remove 不自动生成来源通知。 | [Unit](../../test/core/unit.test.js)的直接结束组合，不另建 InstantKill 框架。 |
+| KILL-03 | InstantKill 调用者先登记 Prepare，再请求结束；通知看到已发布 ENDING 与固定 Departure，不要求先写 HP0，直接 remove 不自动生成来源通知。 | [Unit](../../test/core/unit.test.js)的直接结束组合，不另建 InstantKill 框架。 |
 | HP-04 | MaxHP 变更同步比例与债务分配，容量耗尽由 Settlement 处理；不伪装治疗或复活。 | [Vitality](../../test/core/vitality.test.js)贡献变化及[治疗排序](../../test/core/targeting/eligibility.test.js)。 |
 | HP-05 | 三种 Nature 共用管线；无敌／Presence 不阻止 LOSS，环境标签不自动跳 Hook。 | [Apply](../../test/core/resource/application.test.js)流失与接收。 |
 | HP-06 | HIT 许可与 Nature 独立，非 LOSS 且许可为真才回复；环境和 Effect 输出不靠全局阻回伪装。 | [Skill](../../test/core/skill.test.js)、[泥岩](../../test/content/operators/mudrock.test.js)及[实际地形](../../test/content/terrain.test.js)；标准 Burst 由其成品套件保障。 |

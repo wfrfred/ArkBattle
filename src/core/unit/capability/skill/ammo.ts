@@ -74,7 +74,7 @@ export function consume<X extends Activation<any, any>>(
 
     const active = self.skill.activation;
     if (
-        self.lifecycle !== "PRESENT" ||
+        self.lifecycle !== "ACTIVE" ||
         active?.id !== reference.id ||
         active.lifecycle !== "ACTIVE"
     ) {
@@ -150,7 +150,7 @@ function add<X extends Activation<any, any>>(
 
     const active = self.skill.activation;
     if (
-        self.lifecycle !== "PRESENT" ||
+        self.lifecycle !== "ACTIVE" ||
         active?.id !== reference.id ||
         active.lifecycle !== "ACTIVE"
     ) {

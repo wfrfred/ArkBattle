@@ -295,7 +295,7 @@ export function create(
                 }
 
                 const current = getCurrentUnit(state, source);
-                if (current?.lifecycle !== "PRESENT" || !hasAction(current)) {
+                if (current?.lifecycle !== "ACTIVE" || !hasAction(current)) {
                     return state;
                 }
 

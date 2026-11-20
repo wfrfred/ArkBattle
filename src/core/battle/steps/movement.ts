@@ -32,7 +32,7 @@ export function advanceMovement(
         }
 
         const unit = units.get(battle, ref);
-        if (unit?.lifecycle !== "PRESENT" || !hasLocomotion(unit)) {
+        if (unit?.lifecycle !== "ACTIVE" || !hasLocomotion(unit)) {
             continue;
         }
 
@@ -58,7 +58,7 @@ export function advanceMovement(
         .filter(hasLocomotion)
         .filter(
             (unit) =>
-                unit.lifecycle === "PRESENT" && battle.tick >= unit.locomotion.nextMoveSampleTick,
+                unit.lifecycle === "ACTIVE" && battle.tick >= unit.locomotion.nextMoveSampleTick,
         )
         .map((unit) => {
             const state = unit.locomotion;

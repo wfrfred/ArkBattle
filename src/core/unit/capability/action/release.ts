@@ -60,7 +60,7 @@ function running(battle: BattleState, context: Context): boolean {
     const source = units.get(battle, context.source);
 
     return (
-        source?.lifecycle === "PRESENT" &&
-        source.action.actions.getExecution(context.execution.id)?.execution.lifecycle === "RUNNING"
+        source?.lifecycle === "ACTIVE" &&
+        source.action.actions.getExecution(context.execution.id)?.execution.lifecycle === "ACTIVE"
     );
 }

@@ -70,7 +70,7 @@ test("prepare can reject without allocating a round; ending preserves the latest
 
     const next = actions.start(state, reference);
     state = actions.cancel(next.state, started.value, "OLD_ROUND");
-    assert.equal(actions.getExecution(state, next.value).execution.lifecycle, "RUNNING");
+    assert.equal(actions.getExecution(state, next.value).execution.lifecycle, "ACTIVE");
     state = actions.cancel(state, next.value, "STOPPED");
     assert.deepEqual(actions.getAction(state, reference).state.ended[1], {
         end: { type: "CANCELLED", reason: "STOPPED" },

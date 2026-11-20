@@ -5,7 +5,7 @@ import type { Action } from "./action.js";
 
 export type Id = number;
 
-export type Lifecycle = "RUNNING" | "ENDING";
+export type Lifecycle = "ACTIVE" | "ENDING";
 
 export interface State<E extends object = object> {
     readonly id: Id;

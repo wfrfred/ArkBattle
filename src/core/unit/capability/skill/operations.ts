@@ -120,7 +120,7 @@ export function activate<S extends object, A extends object>(
 
     const source = reference.host;
     const unit = units.get(battle, source);
-    if (unit?.lifecycle !== "PRESENT" || (hasVitality(unit) && !isAlive(unit))) {
+    if (unit?.lifecycle !== "ACTIVE" || (hasVitality(unit) && !isAlive(unit))) {
         return { state: battle, value: null };
     }
 
@@ -209,7 +209,7 @@ export function activate<S extends object, A extends object>(
     const current = query.getActivation(battle, activatedRef);
     const currentUnit = units.get(battle, source);
     if (
-        currentUnit?.lifecycle === "PRESENT" &&
+        currentUnit?.lifecycle === "ACTIVE" &&
         (!hasVitality(currentUnit) || isAlive(currentUnit)) &&
         current?.activation.lifecycle === "ACTIVE" &&
         definition.onStart !== undefined
@@ -286,7 +286,7 @@ export function operate<X extends Activation<any, any>>(
     operation: Operation,
 ): Result<boolean> {
     const unit = units.get(battle, reference.host);
-    if (unit?.lifecycle !== "PRESENT") {
+    if (unit?.lifecycle !== "ACTIVE") {
         return { state: battle, value: false };
     }
 
@@ -310,13 +310,13 @@ export function operate<X extends Activation<any, any>>(
 export function advance(battle: BattleState, host: Ref<Unit & SkillCapability>): BattleState {
     battle = sp.advance(battle, host);
     let unit = units.get(battle, host);
-    if (unit?.lifecycle === "PRESENT" && unit.skill.definition.onTick !== undefined) {
+    if (unit?.lifecycle === "ACTIVE" && unit.skill.definition.onTick !== undefined) {
         battle = unit.skill.definition.onTick(battle, host, unit.skill);
     }
 
     unit = units.get(battle, host);
 
-    if (unit?.lifecycle === "PRESENT" && unit.skill.activation?.lifecycle === "ACTIVE") {
+    if (unit?.lifecycle === "ACTIVE" && unit.skill.activation?.lifecycle === "ACTIVE") {
         const active = unit.skill as Identified<never, typeof unit.skill> as Activation;
         if (
             active.activation.duration.type === "TIME" &&
@@ -331,7 +331,7 @@ export function advance(battle: BattleState, host: Ref<Unit & SkillCapability>):
     const current = units.get(battle, host);
     const trigger = current?.skill.definition.activation?.trigger;
     if (
-        current?.lifecycle === "PRESENT" &&
+        current?.lifecycle === "ACTIVE" &&
         current.skill.activation === null &&
         (trigger === "AUTO" || trigger === "PASSIVE")
     ) {
@@ -358,7 +358,7 @@ export const enter: EnterHook = {
 
         const current = units.get(battle, host);
         if (
-            current?.lifecycle === "PRESENT" &&
+            current?.lifecycle === "ACTIVE" &&
             current.skill.definition.activation?.trigger === "PASSIVE"
         ) {
             battle = activate(battle, skillRef(host, current.skill.definition)).state;
@@ -378,7 +378,7 @@ export function extendTime<X extends Activation<any, any>>(
     }
 
     const unit = units.get(battle, reference.host);
-    if (unit?.lifecycle !== "PRESENT" || (hasVitality(unit) && !isAlive(unit))) {
+    if (unit?.lifecycle !== "ACTIVE" || (hasVitality(unit) && !isAlive(unit))) {
         return battle;
     }
 

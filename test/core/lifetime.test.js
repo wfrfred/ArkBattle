@@ -16,7 +16,7 @@ import * as vitality from "../../dist/core/unit/capability/vitality/index.js";
 import * as epDamage from "../../dist/core/battle/resource/ep/damage/index.js";
 import { createArknightsElementalDefinition } from "../../dist/data/effect/elemental.js";
 
-test("HOOK-03: Skill and Burst end notifications observe their cleared state while the owner is LEAVING", () => {
+test("HOOK-03: Skill and Burst end notifications observe their cleared state while the owner is ENDING", () => {
     const observed = [];
     const program = {
         id: "active-until-departure",
@@ -60,7 +60,7 @@ test("HOOK-03: Skill and Burst end notifications observe their cleared state whi
     assert.notEqual(burst.value.application.burst, null);
     state = remove(burst.state, owner, { reason: "SCRIPT" });
     assert.equal(units.get(state, owner), undefined);
-    assert.deepEqual(observed.sort(), [["activation", "LEAVING"], ["burst", "LEAVING"]]);
+    assert.deepEqual(observed.sort(), [["activation", "ENDING"], ["burst", "ENDING"]]);
 });
 
 test("an owner waits for dependent finalizers and repeated requests preserve the first reason", () => {
@@ -94,7 +94,7 @@ test("an owner waits for dependent finalizers and repeated requests preserve the
         onEnd(current, self, reason) {
             assert.equal(reason, "FIRST");
             assert.equal(self.state.total, 3);
-            assert.equal(units.get(current, owner).lifecycle, "LEAVING");
+            assert.equal(units.get(current, owner).lifecycle, "ENDING");
             calls.push("parent-ended");
             return remove(current, owner, { reason: "SCRIPT" });
         },
@@ -111,7 +111,7 @@ test("an owner waits for dependent finalizers and repeated requests preserve the
                 assert.equal(reason, "FIRST");
                 current = effects.end(current, parent, "SECOND");
                 current = remove(current, owner, { reason: "DEATH", killer: null });
-                assert.equal(units.get(current, owner).lifecycle, "LEAVING");
+                assert.equal(units.get(current, owner).lifecycle, "ENDING");
                 assert.equal(effects.get(current, parent).lifecycle, "ENDING");
                 const previous = effects.get(current, parent);
                 current = effects.setState(current, parent, { total: previous.state.total + 2 });
@@ -128,7 +128,7 @@ test("an owner waits for dependent finalizers and repeated requests preserve the
     assert.equal(units.get(after, owner), undefined);
 });
 
-test("an ending ancestor rejects new dependents before its running Action receives the end request", () => {
+test("an ending ancestor rejects new dependents before its active Action execution receives the end request", () => {
     let execution;
     let attempted = "not attempted";
     let businessCalls = 0;
@@ -162,7 +162,7 @@ test("an ending ancestor rejects new dependents before its running Action receiv
                         invoke(current) {
                             assert.equal(
                                 actions.getExecution(current, execution).execution.lifecycle,
-                                "RUNNING",
+                                "ACTIVE",
                             );
                             const recipient = units
                                 .all(current)

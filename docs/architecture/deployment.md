@@ -28,7 +28,7 @@ Deployment 完成部署资格、消费、实例创建与通知；Card 保存跨�
 
 Card 配置明确费用、部署间隔、库存／在场上限、额度、退款和供给政策。当前 cooldownOnDeploy 控制部署时启动间隔，recoverOnRetreatOrDeath 与 increaseCostOnRetreatOrDeath 分别控制普通撤退／死亡恢复及费用阶段；这些字段的组织仍待重审，不能把现有布尔组合视为已完成领域收口。
 
-deployedUnits 保存本场成功部署的 Unit Ref 历史，在初始化后、任何 enter 前登记；离场不删除。cardForUnit 因而在来源注销后仍可查 Card，支持 [Effect 来源分组](effect.md#来源分组)。历史不等于在场数，activeCount 查询当前仍登记的实例，包含 LEAVING。
+deployedUnits 保存本场成功部署的 Unit Ref 历史，在初始化后、任何 enter 前登记；离场不删除。cardForUnit 因而在来源注销后仍可查 Card，支持 [Effect 来源分组](effect.md#来源分组)。历史不等于在场数，activeCount 查询当前仍登记的实例，包含 ENDING。
 
 Card 的 unitHooks 注入未来实例，不追改已经创建的 Unit。私有状态的构造、类型配对与写回遵守公共约定，不在此复制异构容器接口。
 
@@ -66,13 +66,13 @@ Deployable 单向依赖 Occupancy。初始来源为空、COST／额度为零、�
 
 ## 主动操作与被动死亡
 
-retreat 要求当前 PRESENT 且撤退限制允许，先按本次依据退款，再按 Card 政策推进费用阶段／库存恢复，最后请求 Unit 以 RETREAT 结束。已有恢复队列保留当前段，新段启动时才采样时长。嵌套结束只完成 Prepare 时，这些前置账务也已完成。
+retreat 要求当前 ACTIVE 且撤退限制允许，先按本次依据退款，再按 Card 政策推进费用阶段／库存恢复，最后请求 Unit 以 RETREAT 结束。已有恢复队列保留当前段，新段启动时才采样时长。嵌套结束只完成 Prepare 时，这些前置账务也已完成。
 
 被动死亡程序只在 DEATH leave 结算 Card；零 HP 的暂态不是死亡确认。其他真实离场仍清理 Occupancy 配对和本次额度。HP 死亡确认与归属通知见 [Resource](resource.md)。
 
 ## 离场清理的偏序
 
-公共阶段为：发布 LEAVING／prepare → 真实依赖完整结束 → 捕获当前 leave 登记快照 → 注销 Unit 与结构占格、记录移除 → 本地 leave → 全局 leave。
+公共阶段为：发布 ENDING／prepare → 真实依赖完整结束 → 捕获当前 leave 登记快照 → 注销 Unit 与结构占格、记录移除 → 本地 leave → 全局 leave。
 
 本地默认同级装配顺序是：归还本次 slots、适用的死亡 Card 结账、Card Hook、Request Hook、Occupancy 配对清理、Definition Hook。显式 priority 可改变本地顺序，不能跨公共阶段。高优先级内容不能假设尚未执行的账务已经完成。
 

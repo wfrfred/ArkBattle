@@ -41,8 +41,7 @@ export function disappear(): Change<Unit & Presence> {
 
     const change = compose(presence, restrictions(false));
 
-    return (self) =>
-        self.lifecycle === "PRESENT" ? change(self) : { next: self, settlements: [] };
+    return (self) => (self.lifecycle === "ACTIVE" ? change(self) : { next: self, settlements: [] });
 }
 
 export function appear(position: WorldPosition): Change<Unit & Presence> {
@@ -62,8 +61,7 @@ export function appear(position: WorldPosition): Change<Unit & Presence> {
 
     const change = compose(presence, restrictions(true));
 
-    return (self) =>
-        self.lifecycle === "PRESENT" ? change(self) : { next: self, settlements: [] };
+    return (self) => (self.lifecycle === "ACTIVE" ? change(self) : { next: self, settlements: [] });
 }
 
 function restrictions(present: boolean): Change<Unit> {

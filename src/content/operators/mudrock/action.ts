@@ -169,7 +169,7 @@ export function createSkill(
 
             for (const targetRef of self.execution.state.bindings.primary ?? []) {
                 if (
-                    getExecution(state, executionRef(host, self))?.execution.lifecycle !== "RUNNING"
+                    getExecution(state, executionRef(host, self))?.execution.lifecycle !== "ACTIVE"
                 ) {
                     return state;
                 }
@@ -177,7 +177,7 @@ export function createSkill(
                 const currentSource = getCurrentUnit(state, host);
                 const target = getCurrentUnit(state, targetRef);
 
-                if (currentSource?.lifecycle !== "PRESENT" || !hasClassification(currentSource)) {
+                if (currentSource?.lifecycle !== "ACTIVE" || !hasClassification(currentSource)) {
                     return state;
                 }
 

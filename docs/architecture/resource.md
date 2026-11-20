@@ -19,7 +19,7 @@ Calculate 计算一笔输出；Apply 让目标接收该输出并完成资源与�
 → HP Damage 确认死亡 → Completed → Outcome
 ```
 
-基础目标必须仍登记且 PRESENT，HP 业务还要求 HP>0；EP 的 Burst 等固有前提由 Elemental 定义。BeforeReceive 位于接收 Restriction 前，能改变数值与准入状态；它不绕过基础前提。三次接收复检分别位于 BeforeReceive、Receiving、BeforeCommit 之后，读取最新有效规则。没有同步业务的连续步骤不重复校验。
+基础目标必须仍登记且 ACTIVE，HP 业务还要求 HP>0；EP 的 Burst 等固有前提由 Elemental 定义。BeforeReceive 位于接收 Restriction 前，能改变数值与准入状态；它不绕过基础前提。三次接收复检分别位于 BeforeReceive、Receiving、BeforeCommit 之后，读取最新有效规则。没有同步业务的连续步骤不重复校验。
 
 各业务区分计算输出、接收量和实际变化：
 
@@ -31,7 +31,7 @@ Outcome 使用 type 判别：REJECTED 表示未获受理，CANCELLED 保留取�
 
 ## 固定 Request 与当前工作值
 
-Request 保存来源、目标、初始 parameters 及发起时确定的事实。来源与目标使用 Typed Ref；source 可为 null，来源已注销或 LEAVING 时不派发其普通输出 Hook，但不否定目标仍可接收已采样输出。
+Request 保存来源、目标、初始 parameters 及发起时确定的事实。来源与目标使用 Typed Ref；source 可为 null，来源已注销或 ENDING 时不派发其普通输出 Hook，但不否定目标仍可接收已采样输出。
 
 Formula 以原始 Parameters 为初值逐项接续。当前参数可改变伤害类型；基础公式、OutputContext.type 与 Calculated.type 使用改变后的实际类型，不重新读取 Request.parameters.type。防御与抗性在 Formula 后采样，Apply 不因之后属性变化自动重算。
 
@@ -112,27 +112,27 @@ MISS 是目标成功闪避，HIT_FAILED 是来源未命中，BLOCKED 是抵挡�
 
 Calculate 与 Apply 分别接受 exclude；同键在本次多个宿主上使用时一致匹配。专属 Receiving 接续 Apply 的选项。Vitality 内部 damageCommitting／damageCommitted、EP 资源／Burst 通知与其它生命周期不自动继承它；HP targetKilled 是下节规定的显式转发。
 
-ignore 不绕过 PRESENT、存活、Burst 或中立默认前提。HP Restriction 接收实际 ReceivingContext，EP 接收 `{self, request, type}`，实际 type 来自 Calculated；不为索敌伪造计算结果。HP Healing 没有接收限制数组，EP Healing 保留自己的 healingRestrictions，均不增加本次 ignore；EP Healing 也没有 forbidden。
+ignore 不绕过 ACTIVE、存活、Burst 或中立默认前提。HP Restriction 接收实际 ReceivingContext，EP 接收 `{self, request, type}`，实际 type 来自 Calculated；不为索敌伪造计算结果。HP Healing 没有接收限制数组，EP Healing 保留自己的 healingRestrictions，均不增加本次 ignore；EP Healing 也没有 forbidden。
 
 Hook 的固定 Context、priority、候选快照与重入资格只在 [Hook](hook.md) 定义。sourceFormula／targetFormula、targetApplied／sourceApplied 是不同角色；同一 Unit 承担两个角色仍分别 Applied，Completed 对同一宿主只通知一次。
 
 ## 生命状态、通知与离场
 
-HP 资源提交及 damageCommitted 完成后，依次执行目标与来源 Applied，再读取目标：仍为 PRESENT 且 HP≤0 才确认本笔死亡。此前零 HP 不等于已离场，不提前清掉 Blocking；恢复后可保留旧关系。普通 Healing 不恢复零 HP，明确的保护或复活恢复使用 [Vitality](vitality.md#自然-hp-回复) 的直接操作。Combat 不扫描 HP 或代为判死。
+HP 资源提交及 damageCommitted 完成后，依次执行目标与来源 Applied，再读取目标：仍为 ACTIVE 且 HP≤0 才确认本笔死亡。此前零 HP 不等于已离场，不提前清掉 Blocking；恢复后可保留旧关系。普通 Healing 不恢复零 HP，明确的保护或复活恢复使用 [Vitality](vitality.md#自然-hp-回复) 的直接操作。Combat 不扫描 HP 或代为判死。
 
 HP Damage.Request.killer 必填，由调用者给定；无伤害 source 也可有 killer，无归属则为 null。Core 不从当前世界猜测，也不因来源注销而重判。Unit.End 的 DEATH 分支必须携带 killer；首次有效结束固定 Departure，重复请求不覆盖原因、归属或重复 Prepare。
 
 ### 单笔击杀结果与 targetKilled
 
-仅在本笔确认死亡且 killer 非 null 时，HP Apply 给目标临时登记 priority=10000 的 Unit.prepare Hook，然后调用 Unit.remove(DEATH,killer)。Unit 先固定 Departure、发布 LEAVING，临时 Hook 再以当前 State、传入的死亡 Departure 派发击杀者本地 targetKilled；普通目标 prepare 业务约定低于 10000。更高优先级或同级先登记项仍服从公共排序，没有强制分区。
+仅在本笔确认死亡且 killer 非 null 时，HP Apply 给目标临时登记 priority=10000 的 Unit.prepare Hook，然后调用 Unit.remove(DEATH,killer)。Unit 先固定 Departure、发布 ENDING，临时 Hook 再以当前 State、传入的死亡 Departure 派发击杀者本地 targetKilled；普通目标 prepare 业务约定低于 10000。更高优先级或同级先登记项仍服从公共排序，没有强制分区。
 
-`TargetKilledContext = Extract<Departure, {reason:"DEATH"}>`，工作值为 void，typed Key 要求 Unit。它只携带受害者 unit、reason 和 killer，不复制 Request 或资源报告。仍登记的 LEAVING 击杀者可响应，已注销或 null 时跳过；每项 Effect 的实际资格仍由自身 Hook 判断。Apply.exclude 显式用于该键／ID，排除不影响临时 Prepare 本身、目标死亡或其它生命周期，也不传播到嵌套伤害。
+`TargetKilledContext = Extract<Departure, {reason:"DEATH"}>`，工作值为 void，typed Key 要求 Unit。它只携带受害者 unit、reason 和 killer，不复制 Request 或资源报告。仍登记的 ENDING 击杀者可响应，已注销或 null 时跳过；每项 Effect 的实际资格仍由自身 Hook 判断。Apply.exclude 显式用于该键／ID，排除不影响临时 Prepare 本身、目标死亡或其它生命周期，也不传播到嵌套伤害。
 
 APPLIED.killed 表示本笔取得死亡确认，不加入 Application 或提前发生的 AppliedContext。目标已由内层确认死亡、已离场、或已被救回时，外层不再确认；Finalize 延后不丢结果，Completed 后发业务不回写旧结果。逐击杀即时后继使用 targetKilled，范围／多段累计或整次限额仍可由 Content 使用 killed 编排。
 
 ### 直接致死的调用者组合
 
-直接 Unit.remove(DEATH,killer) 提供死亡事实，不自动生成 targetKilled，也不要求先写 HP0。InstantKill 内容若需要来源后继，调用者先登记自己的本地 Prepare 闭包，再请求移除；Unit 发布 LEAVING／固定 Departure 后才在 Prepare 中通知击杀者：当前 State 已是 LEAVING，Departure 仍保留离场入口历史；随后执行普通目标准备和依赖清理。它复用 typed Key、公共 dispatch 与 Unit 结束，不增加 InstantKill API、全局 Prepare 或 Unit／Vitality 的预装击杀逻辑。
+直接 Unit.remove(DEATH,killer) 提供死亡事实，不自动生成 targetKilled，也不要求先写 HP0。InstantKill 内容若需要来源后继，调用者先登记自己的本地 Prepare 闭包，再请求移除；Unit 发布 ENDING／固定 Departure 后才在 Prepare 中通知击杀者：当前 State 已是 ENDING，Departure 仍保留离场入口历史；随后执行普通目标准备和依赖清理。它复用 typed Key、公共 dispatch 与 Unit 结束，不增加 InstantKill API、全局 Prepare 或 Unit／Vitality 的预装击杀逻辑。
 
 完整结束偏序与嵌套完成边界归 [Lifetime](lifetime.md)：Prepare 先于自动请求依赖者，真实依赖者完整结束后宿主才注销。Apply 返回及 Completed 不保证处于已有结算范围中的 Finalize 已完成。归属依据见[案例39](../research/cases/39-death-attribution-and-attribute-ranges.md)，临时 Hook 组织方式是项目选择。
 

@@ -96,7 +96,7 @@ function create<P extends object>(
 
             function indexOf(unit: Unit): number | undefined {
                 if (
-                    unit.lifecycle !== "PRESENT" ||
+                    unit.lifecycle !== "ACTIVE" ||
                     !presence.isPresent(unit) ||
                     !behaviour.accepts(unit)
                 ) {

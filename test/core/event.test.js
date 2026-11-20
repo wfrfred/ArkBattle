@@ -91,9 +91,9 @@ test("EVENT-03: route output is independent of simulation facts and clears next 
     }, position: [1, 1] }]);
     const output = appendEvents(initial, [{ type: "ROUTE_COMPLETED", unitId: 0, tick: 0 }]);
 
-    assert.equal(get(output, 0).lifecycle, "PRESENT");
+    assert.equal(get(output, 0).lifecycle, "ACTIVE");
     const next = step(output, []);
     assert.deepEqual(next.events, []);
-    assert.equal(get(next, 0).lifecycle, "PRESENT");
+    assert.equal(get(next, 0).lifecycle, "ACTIVE");
     assert.deepEqual(output.events, [{ type: "ROUTE_COMPLETED", unitId: 0, tick: 0 }]);
 });

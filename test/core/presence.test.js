@@ -86,7 +86,7 @@ test("disappearance preserves deployment and lifetimes, releases blocking before
             assert.equal(get(current, owner.id).presence.present, false);
             assert.deepEqual(blocking.blocked(current, owner), []);
             assert.ok(targets.every((target) => blocking.blockerOf(current, target) === undefined));
-            assert.equal(actions.getExecution(current, started.value).execution.lifecycle, "RUNNING");
+            assert.equal(actions.getExecution(current, started.value).execution.lifecycle, "ACTIVE");
             assert.equal(actions.start(current, idleAction).value, null);
             current = blocking.acquire(current, owner, targets[0]);
             assert.deepEqual(blocking.blocked(current, owner), []);
@@ -94,7 +94,7 @@ test("disappearance preserves deployment and lifetimes, releases blocking before
         },
     }), presence.disappear()));
     assert.equal(notifications, 2);
-    assert.equal(get(state, owner.id).lifecycle, "PRESENT");
+    assert.equal(get(state, owner.id).lifecycle, "ACTIVE");
     assert.deepEqual(get(state, owner.id).position, [2, 1]);
     assert.equal(get(state, owner.id).occupancy.pair, pair);
     assert.equal(get(state, 0).occupancy.pair, pair);
@@ -112,5 +112,5 @@ test("disappearance preserves deployment and lifetimes, releases blocking before
     state = update(state, owner, actions.removeRestriction("other-source"));
     const restarted = actions.start(state, actionRef);
     assert.notEqual(restarted.value, null);
-    assert.equal(actions.getExecution(restarted.state, restarted.value).execution.lifecycle, "RUNNING");
+    assert.equal(actions.getExecution(restarted.state, restarted.value).execution.lifecycle, "ACTIVE");
 });

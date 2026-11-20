@@ -92,7 +92,7 @@ export const lifetime = lifetimes.create<Unbalance, Unbalance, End>({
 });
 
 function present(unit: Host): boolean {
-    return unit.lifecycle === "PRESENT" && isPresent(unit) && (!hasVitality(unit) || isAlive(unit));
+    return unit.lifecycle === "ACTIVE" && isPresent(unit) && (!hasVitality(unit) || isAlive(unit));
 }
 
 function permitsForce(battle: BattleState, unit: Host): boolean {

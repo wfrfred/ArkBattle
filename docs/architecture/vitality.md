@@ -39,13 +39,13 @@ DEF、RES 和自然回复贡献可为静态修正或 `(battle,self)` 查询函�
 (有效固定回复速度 + 当前有效 MaxHP × 有效比例回复速度) / TICKS_PER_SECOND
 ```
 
-Runtime 在 Effect 后、Elemental 资源推进前调用 Vitality.advance，之后才进入 Skill／Action。每 Tick 读取当前贡献与上限，先偿债，余额增加普通 HP。仅 PRESENT 且 HP>0 的 Unit 自然回复；Presence 消失和 healFree 不阻止，零 HP 不被自然复活。零速直接返回，不顺带清算容量；满资源且无债务时保留原状态。
+Runtime 在 Effect 后、Elemental 资源推进前调用 Vitality.advance，之后才进入 Skill／Action。每 Tick 读取当前贡献与上限，先偿债，余额增加普通 HP。仅 ACTIVE 且 HP>0 的 Unit 自然回复；Presence 消失和 healFree 不阻止，零 HP 不被自然复活。零速直接返回，不顺带清算容量；满资源且无债务时保留原状态。
 
 逐 Tick 小数回复是明确的项目选择，区别于[原生每次增加 1 HP 的脉冲计时器](../research/cases/29-hp-and-ep-healing-settlement.md#自然-hp-回复的完整普通路径)，不保存脉冲进度，允许启停或变速时的脉冲细节不同。
 
-increaseHp 是公开直接恢复：目标必须仍为 PRESENT，缺失或 LEAVING 抛出 RangeError；恢复前 HP 可为零，恢复量必须有限非负。它从最新 Health 先偿债再增 HP，按当前容量裁切并返回固定恢复报告；不构造 Healing Request、不经过普通治疗或伤害提交 Hook、不输出 HEAL。生命复原、复活恢复及 HP 同步由 Content 选择合适的直接恢复或 Damage，不提供任意 HP 赋值接口。
+increaseHp 是公开直接恢复：目标必须仍为 ACTIVE，缺失或 ENDING 抛出 RangeError；恢复前 HP 可为零，恢复量必须有限非负。它从最新 Health 先偿债再增 HP，按当前容量裁切并返回固定恢复报告；不构造 Healing Request、不经过普通治疗或伤害提交 Hook、不输出 HEAL。生命复原、复活恢复及 HP 同步由 Content 选择合适的直接恢复或 Damage，不提供任意 HP 赋值接口。
 
-普通 Healing、自然回复和直接恢复共享同一资源分配规则。普通治疗遵循 [Resource](resource.md) 的接收与存活门控。自然回复检查存活与零速，直接恢复允许对仍处于 PRESENT 的零 HP 单位执行。
+普通 Healing、自然回复和直接恢复共享同一资源分配规则。普通治疗遵循 [Resource](resource.md) 的接收与存活门控。自然回复检查存活与零速，直接恢复允许对仍处于 ACTIVE 的零 HP 单位执行。
 
 ## 伤害写入前后
 
@@ -58,7 +58,7 @@ increaseHp 是公开直接恢复：目标必须仍为 PRESENT，缺失或 LEAVIN
 
 例如没有债务时，100 HP 接收 150 的候选 hp 为 −50；保护程序可以同时调整普通 HP 与债务。它不改变 received 或取消原因，FIXED 接收量也进入此干预。内部两个键不继承 Apply 的 exclude、ignore 或 forbidden；排序与同步候选遵守 [Hook](hook.md)。
 
-damageCommitting 返回后，重新读取当前宿主、生命与容量。目标缺失、LEAVING 或已归零时返回 null，由 Apply 形成 UNAVAILABLE，回调已完成的业务保留，不发本笔成功 Event／Applied。仍可写时只修改最新 Unit 的 Health；候选保持绝对值含义，不自动对回调后的生命再加减一次。
+damageCommitting 返回后，重新读取当前宿主、生命与容量。目标缺失、ENDING 或已归零时返回 null，由 Apply 形成 UNAVAILABLE，回调已完成的业务保留，不发本笔成功 Event／Applied。仍可写时只修改最新 Unit 的 Health；候选保持绝对值含义，不自动对回调后的生命再加减一次。
 
 Application.before 在实际写点取得，after 为最终提交值。成功包括零实际变化，均同步执行 damageCommitted；失败不执行。后继修改 MaxHP、恢复生命或结束宿主不会重写原报告、将成功改成失败或被旧候选覆盖。独立嵌套修改同一生命时，内容自行接续必要候选，公共提交不合并变化量。
 

@@ -24,7 +24,7 @@ Pair 保存 tile 及建立时的双方快照，两端引用同一对象。建立
 
 任一端后入场都查询当前同格并建立配对，相同 Pair 不重复通知；对端旧绑定先完整解除，再以最新状态建立。先一次发布双方 Pair，再调用 SUPPORT.onOccupantAdded。
 
-离场使用固定 Departure.unit 的旧 Pair，仅清当前仍持有该 Pair 的端点，先发布再 onOccupantRemoved。若旧组合已被解除，不重复通知，也不影响同格新对象。入场通知开始时双方 PRESENT 且已配对；移除通知处理原历史组合。
+离场使用固定 Departure.unit 的旧 Pair，仅清当前仍持有该 Pair 的端点，先发布再 onOccupantRemoved。若旧组合已被解除，不重复通知，也不影响同格新对象。入场通知开始时双方 ACTIVE 且已配对；移除通知处理原历史组合。
 
 普通 Unit.update／replace 不调用配对程序。配对回调可执行同步业务，外层接续最新 BattleState，通用规则见 [Functional Core](functional-core.md)。
 

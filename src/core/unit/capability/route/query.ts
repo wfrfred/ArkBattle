@@ -155,7 +155,7 @@ export function movementTarget(
     reference: Ref<Unit & Route>,
 ): MovementTarget | null {
     const self = units.get(battle, reference);
-    if (self?.lifecycle !== "PRESENT") {
+    if (self?.lifecycle !== "ACTIVE") {
         return null;
     }
 

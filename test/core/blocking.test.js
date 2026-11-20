@@ -303,7 +303,7 @@ test("own layer requests release current relations before hooks, including same-
             id: "reacquire",
             invoke: (current) => {
                 removedNotifications++;
-                assert.equal(get(current, owner.id).lifecycle, "LEAVING");
+                assert.equal(get(current, owner.id).lifecycle, "ENDING");
                 assert.deepEqual(blocking.blocked(current, owner), []);
                 assert.ok(
                     targets.every((target) => blocking.blockerOf(current, target) === undefined),

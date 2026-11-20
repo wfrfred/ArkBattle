@@ -339,7 +339,7 @@ export function advance(battle: BattleState, ref: Ref<Unit & Skill>): BattleStat
     if (self === undefined) {
         return battle;
     }
-    if (self.lifecycle !== "PRESENT" || !hasSp(self)) {
+    if (self.lifecycle !== "ACTIVE" || !hasSp(self)) {
         return battle;
     }
 
@@ -403,7 +403,7 @@ function allowsRecovery(battle: BattleState, self: Unit & Skill, source: Source)
 }
 
 function available(self: Unit): boolean {
-    return self.lifecycle === "PRESENT" && (!hasVitality(self) || isAlive(self));
+    return self.lifecycle === "ACTIVE" && (!hasVitality(self) || isAlive(self));
 }
 function applied(state: BattleState, amount: number): Result<Outcome> {
     return { state, value: { type: "APPLIED", amount } };

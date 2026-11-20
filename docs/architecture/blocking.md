@@ -35,8 +35,8 @@ Blockable.adjustment 保存起点、终点与开始 Tick；无关系而仍有计
 
 | 判断 | 范围 |
 | --- | --- |
-| 搜索入口 | 阻挡者 PRESENT，有 Vitality 时要求存活；GROUND 根格允许阻挡，AIR 豁免地块条件。 |
-| 保持关系 | 双方 PRESENT、阻挡层匹配目标 Layer、双方限制允许；GROUND 根格仍允许阻挡。临时零 HP 不默认打断旧关系。 |
+| 搜索入口 | 阻挡者 ACTIVE，有 Vitality 时要求存活；GROUND 根格允许阻挡，AIR 豁免地块条件。 |
+| 保持关系 | 双方 ACTIVE、阻挡层匹配目标 Layer、双方限制允许；GROUND 根格仍允许阻挡。临时零 HP 不默认打断旧关系。 |
 | 新取得 | 另要求双方有 Vitality 时活着、目标无归属、在接敌距离内且容量足够。 |
 | 容量裁撤 | 比较总占用与容量，从关系末尾逐项解除。 |
 
@@ -81,7 +81,7 @@ maintain 先确认同一个 Relation 仍存在，再检查当前双方；失效�
 
 每条通知先 Blocker、后 Blockable，不跨两方比较 Hook priority。ACQUIRED 每项执行前确认原 Relation 仍有效；Hook 解除旧关系后，外层停止旧取得的后续响应，同双方重建也不能恢复它。
 
-RELEASED 是解除后的历史通知，不要求旧关系仍存在，允许仍登记的 LEAVING 宿主响应。两端的候选及优先级在该条通知开始时一起固定，登记替换、嵌套和优先级遵守[公共 Hook](hook.md)。后续关系轮到时才采样，不提前冻结整批通知。
+RELEASED 是解除后的历史通知，不要求旧关系仍存在，允许仍登记的 ENDING 宿主响应。两端的候选及优先级在该条通知开始时一起固定，登记替换、嵌套和优先级遵守[公共 Hook](hook.md)。后续关系轮到时才采样，不提前冻结整批通知。
 
 ## 查询、Hook 与 Runtime 接入
 

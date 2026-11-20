@@ -13,7 +13,7 @@ export function turn(
     mode: "NORMAL" | "FORCED" = "NORMAL",
 ): BattleState {
     const self = units.get(battle, reference);
-    if (self?.lifecycle !== "PRESENT" || self.facing.direction === direction) {
+    if (self?.lifecycle !== "ACTIVE" || self.facing.direction === direction) {
         return battle;
     }
     if (mode === "NORMAL" && !allows(battle, { self, direction }, self.facing.restrictions)) {

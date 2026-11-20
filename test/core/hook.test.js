@@ -90,7 +90,7 @@ test("Unit prepare prioritizes responses while leave orders the latest captured 
             return update(current, self.host, units.setHook(units.prepare, {
                 id: "death-output",
                 invoke(next) {
-                    assert.equal(units.get(next, subject).lifecycle, "LEAVING");
+                    assert.equal(units.get(next, subject).lifecycle, "ENDING");
                     assert.equal(effects.get(next, effects.ref(self)).lifecycle, "ACTIVE");
                     calls.push("death-output");
                     return { state: next, value: undefined };
@@ -98,7 +98,7 @@ test("Unit prepare prioritizes responses while leave orders the latest captured 
             }));
         },
         onEnd(current, self) {
-            assert.equal(units.get(current, subject).lifecycle, "LEAVING");
+            assert.equal(units.get(current, subject).lifecycle, "ENDING");
             calls.push("effect-end");
             return update(current, self.host, units.setHook(units.leave, {
                 id: "latest-leave", priority: 200,
@@ -115,7 +115,7 @@ test("Unit prepare prioritizes responses while leave orders the latest captured 
         units.setHook(units.prepare, {
             id: "earlier-response", priority: 100,
             invoke(current) {
-                assert.equal(units.get(current, subject).lifecycle, "LEAVING");
+                assert.equal(units.get(current, subject).lifecycle, "ENDING");
                 calls.push("earlier-response");
                 return { state: current, value: undefined };
             },

@@ -46,7 +46,7 @@ export function start<P extends object, E extends object>(
 
     function check(battle: BattleState) {
         const unit = units.get(battle, source);
-        if (unit?.lifecycle !== "PRESENT" || (hasVitality(unit) && !isAlive(unit))) {
+        if (unit?.lifecycle !== "ACTIVE" || (hasVitality(unit) && !isAlive(unit))) {
             return null;
         }
 
@@ -95,7 +95,7 @@ export function start<P extends object, E extends object>(
         execution: {
             id: unit.action.nextExecutionId,
             startedAtTick: battle.tick,
-            lifecycle: "RUNNING",
+            lifecycle: "ACTIVE",
             state: initialized.value,
         },
     };
@@ -214,10 +214,10 @@ export function advance<X extends Execution<any, any>>(
     }
 
     const self = source.action.actions.getExecution(reference.id);
-    if (self?.execution.lifecycle !== "RUNNING") {
+    if (self?.execution.lifecycle !== "ACTIVE") {
         return battle;
     }
-    if (source.lifecycle !== "PRESENT") {
+    if (source.lifecycle !== "ACTIVE") {
         return lifetime.end(battle, reference, { type: "CANCELLED", reason: "SOURCE_ABSENT" });
     }
 

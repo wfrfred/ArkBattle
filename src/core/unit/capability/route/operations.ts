@@ -40,7 +40,7 @@ function changeContext<U extends Unit & Route>(
     transform: (context: Context) => Context,
 ): U {
     const context = contextFor(self, id);
-    if (self.lifecycle !== "PRESENT" || context === undefined) {
+    if (self.lifecycle !== "ACTIVE" || context === undefined) {
         return self;
     }
 
@@ -74,7 +74,7 @@ export function createContext(
     validatePlan(input.plan);
     assert(Vec2.is(input.offset), "invalid route offset", TypeError);
     const self = units.get(battle, host);
-    assert(self?.lifecycle === "PRESENT", "route host is not present", RangeError);
+    assert(self?.lifecycle === "ACTIVE", "route host is not active", RangeError);
 
     const context: Context = {
         id: self.route.nextContextId,
@@ -104,7 +104,7 @@ export function removeContext(id: ContextId, nextActiveId: ContextId): Change<Un
     assert(id !== 0, "main route context cannot be removed", RangeError);
 
     return createChange<Unit & Route>((self) => {
-        if (self.lifecycle !== "PRESENT" || contextFor(self, id) === undefined) {
+        if (self.lifecycle !== "ACTIVE" || contextFor(self, id) === undefined) {
             return self;
         }
 
@@ -130,7 +130,7 @@ export function removeContext(id: ContextId, nextActiveId: ContextId): Change<Un
 
 export function selectContext(id: ContextId): Change<Unit & Route> {
     return createChange<Unit & Route>((self) =>
-        self.lifecycle !== "PRESENT" ||
+        self.lifecycle !== "ACTIVE" ||
         self.route.activeId === id ||
         contextFor(self, id) === undefined
             ? self
@@ -222,7 +222,7 @@ function interpret(battle: BattleState, reference: Ref<Context>, enterFirst = fa
     for (;;) {
         const self = units.get(battle, reference.host);
         const context = self === undefined ? undefined : contextFor(self, reference.id);
-        if (self?.lifecycle !== "PRESENT" || context === undefined) {
+        if (self?.lifecycle !== "ACTIVE" || context === undefined) {
             return battle;
         }
         if (!enterFirst && self.route.activeId !== context.id) {
@@ -345,7 +345,7 @@ function executeSpatial(
 
 export function advance(battle: BattleState, reference: Ref<Unit & Route>): BattleState {
     const self = units.get(battle, reference);
-    if (self?.lifecycle !== "PRESENT") {
+    if (self?.lifecycle !== "ACTIVE") {
         return battle;
     }
 
@@ -371,7 +371,7 @@ export function advance(battle: BattleState, reference: Ref<Unit & Route>): Batt
 
     battle = interpret(battle, ref(reference, activeContext(self)));
     const latest = units.get(battle, reference);
-    if (latest?.lifecycle !== "PRESENT") {
+    if (latest?.lifecycle !== "ACTIVE") {
         return battle;
     }
 

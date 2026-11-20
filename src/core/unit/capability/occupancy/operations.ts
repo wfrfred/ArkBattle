@@ -18,7 +18,7 @@ export function setDirection(direction: Direction): Change<Unit & Occupancy> {
 
 export function enter(battle: State, reference: Ref<Unit & Occupancy>): State {
     const self = units.get(battle, reference);
-    if (self?.lifecycle !== "PRESENT") {
+    if (self?.lifecycle !== "ACTIVE") {
         return battle;
     }
 
@@ -30,7 +30,7 @@ export function enter(battle: State, reference: Ref<Unit & Occupancy>): State {
 
     const support = units.get(battle, current.support)! as Pair["support"];
     const occupant = units.get(battle, current.occupant)!;
-    if (support.lifecycle !== "PRESENT" || occupant.lifecycle !== "PRESENT") {
+    if (support.lifecycle !== "ACTIVE" || occupant.lifecycle !== "ACTIVE") {
         return battle;
     }
 

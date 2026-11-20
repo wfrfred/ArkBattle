@@ -39,14 +39,14 @@ export function dispatch<C, T, H extends hooks.Hook<C, T>>(
         candidates(current) {
             const unit = units.get(current, owner);
 
-            return unit?.lifecycle === "PRESENT"
+            return unit?.lifecycle === "ACTIVE"
                 ? unit.hooks.get(key).filter(({ id }) => !hooks.excluded(options, key, id))
                 : [];
         },
         find(current, id) {
             const unit = units.get(current, owner);
 
-            return unit?.lifecycle === "PRESENT" ? unit.hooks.find(key, id) : undefined;
+            return unit?.lifecycle === "ACTIVE" ? unit.hooks.find(key, id) : undefined;
         },
         ...(stop === undefined ? {} : { stop: (current: BattleState) => stop(current) }),
     });

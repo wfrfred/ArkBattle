@@ -49,7 +49,7 @@ function resolve(battle: BattleState, self: Unit & Elemental, parameter: Paramet
 }
 
 export function available(self: Unit & Elemental): boolean {
-    return self.lifecycle === "PRESENT" && (!hasVitality(self) || isAlive(self));
+    return self.lifecycle === "ACTIVE" && (!hasVitality(self) || isAlive(self));
 }
 
 export function canReceiveDamage(

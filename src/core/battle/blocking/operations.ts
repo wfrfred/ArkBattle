@@ -41,7 +41,7 @@ function allowsTile(battle: BattleState, unit: Unit & Blocker): boolean {
 
 function canSearch(battle: BattleState, unit: Unit & Blocker): boolean {
     return (
-        unit.lifecycle === "PRESENT" &&
+        unit.lifecycle === "ACTIVE" &&
         !isUnbalanced(unit) &&
         (!hasVitality(unit) || isAlive(unit)) &&
         allowsTile(battle, unit)
@@ -54,8 +54,8 @@ function canRetain(
     target: Unit & Blockable,
 ): boolean {
     return (
-        blocker.lifecycle === "PRESENT" &&
-        target.lifecycle === "PRESENT" &&
+        blocker.lifecycle === "ACTIVE" &&
+        target.lifecycle === "ACTIVE" &&
         !isUnbalanced(blocker) &&
         !isUnbalanced(target) &&
         allowsTile(battle, blocker) &&

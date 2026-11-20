@@ -24,7 +24,7 @@ Catalog 从 initializer 字典的函数签名派生配置、标准状态和 Init
 
 能力可在装配时登记 enter／prepare／leave 等 Hook。固有登记在完整 add 和任何 enter 前就绪；同级保留默认装配顺序，实际执行按[公共 Hook 优先级](hook.md)。通用装配和 Unit 生命周期不按具体能力建立额外阶段。初始 Effect 在登记后的 enter 正常安装。
 
-Unit enter／tick 要求宿主仍 PRESENT；prepare 使用固定 Departure 并先于自动请求依赖者。leave 在注销前捕获最新登记对象与优先级，注销后派发，历史载荷不变。完整机制见 [Lifetime](lifetime.md)，死亡归属与来源响应见 [Resource](resource.md)。
+Unit enter／tick 要求宿主仍 ACTIVE；prepare 使用固定 Departure 并先于自动请求依赖者。leave 在注销前捕获最新登记对象与优先级，注销后派发，历史载荷不变。完整机制见 [Lifetime](lifetime.md)，死亡归属与来源响应见 [Resource](resource.md)。
 
 ## 构造、校验与命名
 
@@ -84,7 +84,7 @@ Hitbox Definition 保存单个静态 Shape，State 为空，不复制几何或�
 
 Facing 保存 LEFT／RIGHT 有效面向，与摆放朝向、自主移动独立；既可静止转向，也可移动不转向。声明时必须提供 initial.facing。符号由方向派生，不另存；向量 X 为正／负映射右／左，X 为零保留原值，不由动画或摄像机决定。
 
-turn 是完整操作，要求当前 PRESENT；NORMAL 检查本次方向限制，FORCED 仅绕过这些限制。方向相同、拒绝或宿主缺失不变，成功仅改自身面向。限制登记复用普通 Change。
+turn 是完整操作，要求当前 ACTIVE；NORMAL 检查本次方向限制，FORCED 仅绕过这些限制。方向相同、拒绝或宿主缺失不变，成功仅改自身面向。限制登记复用普通 Change。
 
 ### 触发与跨领域交互
 

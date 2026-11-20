@@ -35,7 +35,7 @@ Burst 是普通 Effect：state 至少保存元素类型，Definition 增加 dura
 
 ## 3. 查询、结算与资源提交
 
-公开入口为 [elemental/index.ts](../../src/core/unit/capability/elemental/index.ts)。available 只判断已知 Elemental 宿主的 PRESENT 与生命资格，不含空间存在。实际接收还检查 Burst 槽位及相应 Restriction；当前中立阵营默认拒绝损伤。Burst 存在时包括 ENDING 均拒收 EP 损伤与显式恢复。
+公开入口为 [elemental/index.ts](../../src/core/unit/capability/elemental/index.ts)。available 只判断已知 Elemental 宿主的 ACTIVE 与生命资格，不含空间存在。实际接收还检查 Burst 槽位及相应 Restriction；当前中立阵营默认拒绝损伤。Burst 存在时包括 ENDING 均拒收 EP 损伤与显式恢复。
 
 损伤规则读取 `{self,request,type}`，type 来自本次 Calculated；恢复规则读取 `{self,request}`。两者分别登记，不借用 HP 接收规则。无敌和 Presence 通过 EP 损伤限制表达；Presence 不直接限制明确恢复、自然回复或已有 Burst。Targeting 的 EP 谓词另检查目标侧限制、阵营与需要恢复的资源，不为候选查询伪造完整计算结果；HP 行动附加 EP 输出也不自动套用 EP 索敌条件。
 

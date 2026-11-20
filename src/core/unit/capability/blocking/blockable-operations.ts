@@ -55,7 +55,7 @@ export function advancePosition(
     reference: Ref<Unit & Blockable>,
 ): BattleState {
     const self = units.get(battle, reference);
-    if (self?.lifecycle !== "PRESENT") {
+    if (self?.lifecycle !== "ACTIVE") {
         return battle;
     }
 

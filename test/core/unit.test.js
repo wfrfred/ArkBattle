@@ -175,7 +175,7 @@ test("Unit death preserves its attribution through Effect responses and the orig
                 invoke(state, departure) {
                     assert.equal(departure.reason, "DEATH");
                     assert.deepEqual(departure.killer, killer);
-                    assert.equal(units.get(state, units.ref(departure.unit)).lifecycle, "LEAVING");
+                    assert.equal(units.get(state, units.ref(departure.unit)).lifecycle, "ENDING");
                     assert.equal(effects.get(state, effects.ref(self)).lifecycle, "ACTIVE");
                     killedDeparture = departure;
                     observed.push("death-response");
@@ -232,7 +232,7 @@ test("Unit death preserves its attribution through Effect responses and the orig
     state = update(add(created.state, created.value), directTarget, units.setHook(units.prepare, {
         id: "direct-death-notification", priority: 10000,
         invoke(current, departure) {
-            assert.equal(units.get(current, directTarget).lifecycle, "LEAVING");
+            assert.equal(units.get(current, directTarget).lifecycle, "ENDING");
             return dispatch(current, departure, undefined, {
                 candidates: next => units.get(next, killer).hooks.get(hpDamage.targetKilled),
                 find: (next, id) => units.get(next, killer)?.hooks.find(hpDamage.targetKilled, id),

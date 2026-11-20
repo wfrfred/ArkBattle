@@ -14,7 +14,7 @@ within 检查 Unit.position 是否在 Range 内，不要求 Hitbox，也不使�
 
 sweep 检查单个 Shape 沿 from 到 to 线性平移时，与各目标静态 Hitbox 的首次接触。双方各自使用 Shape 的 offset。fraction 在 [0, 1] 内，初始重叠或相切为 0，起点与终点相同时退化为静态相交。结果按 fraction 稳定升序排列，相等时保留 Unit 登记顺序。它不计算目标在 Tick 内的运动轨迹。
 
-三种查询只纳入 `unit.lifecycle === "PRESENT" && presence.isPresent(unit)` 的 Unit，不检查 HP、阵营、Targetable 或 Effect 免疫。overlap 和 sweep 要求 Hitbox，within 不要求。LEAVING 宿主在清理回调期间仍能通过 units.get 读取，但不再参与新的空间集合查询。
+三种查询只纳入 `unit.lifecycle === "ACTIVE" && presence.isPresent(unit)` 的 Unit，不检查 HP、阵营、Targetable 或 Effect 免疫。overlap 和 sweep 要求 Hitbox，within 不要求。ENDING 宿主在清理回调期间仍能通过 units.get 读取，但不再参与新的空间集合查询。
 
 每个 Unit 最多返回一次。within 和 overlap 保留 Unit Query 的逻辑登记顺序，不追加优先级。查询不按地图边界裁剪，来源不要求对应实际 Unit。
 

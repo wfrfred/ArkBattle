@@ -187,7 +187,7 @@ test("a living Unit can release only its Wave wait without advancing the main pr
     assert.equal(state.schedule.main.type, "COMPLETED");
     assert.equal(isCompleted(state.schedule), false);
     assert.deepEqual(state.schedule.waiting.final, [0, 1]);
-    assert.equal(getUnit(state, 0).lifecycle, "PRESENT");
+    assert.equal(getUnit(state, 0).lifecycle, "ACTIVE");
 });
 
 test("an enemy removed in enter releases its wait before the next wave starts", () => {

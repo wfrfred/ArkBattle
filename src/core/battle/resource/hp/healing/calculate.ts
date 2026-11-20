@@ -13,7 +13,7 @@ export function calculateHealing(
     const unavailable = (current: BattleState) => {
         const target = units.get(current, request.target);
 
-        return target?.lifecycle !== "PRESENT" || !isAlive(target);
+        return target?.lifecycle !== "ACTIVE" || !isAlive(target);
     };
     if (unavailable(battle)) {
         return { state: battle, value: undefined };

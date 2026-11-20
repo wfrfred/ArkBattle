@@ -7,7 +7,7 @@ export type Id = number;
 
 export type DefinitionId = string;
 
-export type Lifecycle = "PRESENT" | "LEAVING";
+export type Lifecycle = "ACTIVE" | "ENDING";
 
 export type LeaveReason = "DEATH" | "RETREAT" | "EXPIRED" | "SCRIPT";
 
