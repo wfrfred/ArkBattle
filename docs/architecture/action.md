@@ -48,6 +48,8 @@ ATTACK_SPEED／FIXED 只决定周期求值。现有 Action 在启动时重置、
 
 reset 从当前时刻开始完整周期，clear 立即就绪。成功启动开始冷却，本轮结束保留当前冷却。周期变化不缩放已采样的执行等待，普通攻击不足一 Tick 余量的节奏补偿归内容模板。
 
+哈蒂娅 S2、雷狼龙 S 空爆等通过保留已过时间调整本轮技能持续预算。项目由 Skill 的 `extendTime()` 修改该轮截止 Tick。 [计时调查](../research/cases/07-action-timing-and-animation.md#2026-11-20-补核保留已过时间的实际用途)
+
 ### 攻击方式
 
 Action Definition 显式提供 `applyWay`。攻击工厂从伤害与元素损伤操作合并方式，纯治疗生成 `NONE`。自定义输出显式提供自身方式，并供实际输出复用。伤害请求的 `applyWay` 表达该笔输出。

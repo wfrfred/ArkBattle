@@ -129,6 +129,14 @@ Attributes.AddModifier / RemoveModifier
 
 攻速属性的默认下限20与周期公式的独立限制 `[10,600]` 分属两层；动态属性范围低于20时才会显出差异。当前常量、范围覆写及同步通知的连接见[完整属性补核](39-death-attribution-and-attribute-ranges.md#4-属性求值与范围)。
 
+### 2026-11-20 补核：保留已过时间的实际用途
+
+哈蒂娅 S2 与雷狼龙 S 空爆 S1／S2 的延时模板对当前技能 Ability 使用 `keepPassedTime=true`。已核实的 Fever 分支也给正在运行的技能增加时长。周期增加 Δ 时，本轮余时增加 Δ。项目用 Skill 的 `extendTime()` 表达这类持续时间变化。 [技能期内延时](09-skill-mechanisms-and-requirements.md#time先写清本次具体运算及其发生时点) · [实际配置与指令](../evidence/skill-parameter-formulas-20261029/duration-native.json) · [Fever 证据](../evidence/skill-audit-20261117/sustain/README.md#fever-不单独证明需要改造-time)
+
+自然 SP 和 HP 回复各有按此规则重算周期的路径。敌方技能的已查样例有独立的触发冷却，施放期间暂停，结束时重置。 [SP 计时](09-skill-mechanisms-and-requirements.md#21-sp-公式与计时器新的客户端原生核对) · [HP 计时](29-hp-and-ep-healing-settlement.md) · [敌方技能计时](08-action-eligibility-and-interruption.md#8-enemyskill-的触发动作与共享-sp2026-11-10)
+
+客户端还在 `AbstractAnimatedAbility.DoAttach` 和部分组合 Ability 的 `DoAttach` 中重算周期，并保留计时器已过时间。`UnitMode` 可卸下并重新挂载同一个 Ability，因而这条路径也可能作用于已有计时器。尚未定位到重挂时改变周期、因此改变下一次 Action 启动时点的具体配置。 [当前客户端装配与计时证据](../evidence/action-elapsed-time-20261120/README.md)
+
 ## 4. 普通动画缩放：周期长短和占用长短可以分离
 
 `AbstractAnimatedAbility.UpdatePlaybackSpeed`（91798，`0x180f00820`）的普通、无 SlowDown 分支，结合真实 animator 映射，计算：
