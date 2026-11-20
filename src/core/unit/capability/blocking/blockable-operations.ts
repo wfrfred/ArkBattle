@@ -5,7 +5,7 @@ import type * as contribution from "../../../common/contribution.js";
 import { createChange, type Change } from "../../change.js";
 import type { Ref } from "../../../common/ref.js";
 import type { Unit } from "../../unit.js";
-import type { PrepareHook } from "../../hook.js";
+import type { RemovingHook } from "../../hook.js";
 import type { Restriction } from "./restriction.js";
 import { assertSafeInteger } from "../../../common/assert.js";
 import type { Blockable } from "./blockable.js";
@@ -19,7 +19,7 @@ import { settleCapacity } from "./blocker-operations.js";
 
 const POSITION_ADJUSTMENT_TICKS = 0.2 * TICKS_PER_SECOND;
 
-export const prepare: PrepareHook = {
+export const removing: RemovingHook = {
     id: "@blockable/prepare",
     invoke: (battle, { unit }) => ({
         state: release(battle, units.ref(unit as Unit & Blockable)),

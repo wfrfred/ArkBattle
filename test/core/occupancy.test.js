@@ -76,7 +76,7 @@ test("occupancy pairs notify once and an old departure cannot clear the replacem
     const request = deployment.createRequest(state, unitCard, [1, 2]);
     const placedUnit = deployment.deploy(state, {
         ...request,
-        hooks: Hooks.empty().set(unitLifecycle.leave, {
+        hooks: Hooks.empty().set(unitLifecycle.removed, {
                 id: "replace-on-leave",
 
                 invoke: (current) => {

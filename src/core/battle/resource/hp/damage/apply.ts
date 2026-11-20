@@ -3,7 +3,7 @@ import type { Restriction } from "../../../../unit/capability/vitality/restricti
 import type { Ref } from "../../../../common/ref.js";
 import type { Unit } from "../../../../unit/unit.js";
 import * as units from "../../../../unit/query.js";
-import { prepare, setHook } from "../../../../unit/hook.js";
+import { removing, setHook } from "../../../../unit/hook.js";
 import * as vitality from "../../../../unit/capability/vitality/operations.js";
 import { isAlive } from "../../../../unit/capability/vitality/query.js";
 import { appendEvents, type Result, type State as BattleState } from "../../../state.js";
@@ -127,7 +127,7 @@ export function applyDamage(
             battle = update(
                 battle,
                 request.target,
-                setHook(prepare, {
+                setHook(removing, {
                     id: "@damage/targetKilled",
                     priority: 10000,
                     invoke: (state, departure) =>

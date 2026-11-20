@@ -45,7 +45,7 @@ Prefab、范围读取和换算由实际业务使用；目录移动、提取工�
 | [Shifting](navigation.md#强制位移) | 推击取当前有效力度和重量，牵引创建时采样力值，同一来源的多个实例独立。近停保持零力牵引，位置发布与位移通知先于自动清速。唯一有效牵引才可清速，依赖结束保留剩余速度。手动结束牵引后，失衡由后续推进结算。免疫先于位移，旧段依赖清理不影响新段。积分读取当前摩擦倍率，倍率跨失衡段保留，恢复后使用配置底值。由[失衡](../../test/core/navigation/unbalance.test.js)集中验证。 |
 | [Targeting](targeting.md)、[Presence](presence.md) | 选择、空间存在、锁定命中与实际接收独立；具体重要协作见下节。 |
 | [Resource](resource.md)、[Vitality](vitality.md)、[Elemental](elemental.md) | 输出／接收／实际变化分离，HP／债务与 EP 准确提交，后继报告固定，死亡与 Burst 顺序正确；集中结果见资源清单。 |
-| [Runtime](functional-core.md) | 出生等待先于 enter，逐对象接续最新状态，预置重入保留新绑定，Tick 阶段确定、失败不发布；调度完成后 step 仍可推进。 |
+| [Runtime](functional-core.md) | 出生等待先于 entered，逐对象接续最新状态，预置重入保留新绑定，Tick 阶段确定、失败不发布；调度完成后 step 仍可推进。 |
 
 ## 集中归属与收敛完成条件
 
@@ -67,7 +67,7 @@ Prefab、范围读取和换算由实际业务使用；目录移动、提取工�
 
 依据 [Effect](effect.md)，集中在 [Effect 主套件](../../test/core/effect.test.js)保障：
 
-- 来源分组区分共享／空来源独立组、同 Card 多实例、不同 Card、无 Card Unit；来源注销与再部署不改变历史 Card 归属。Deployment 只保障历史在 enter 前登记、拒绝不登记、离场不删除。
+- 来源分组区分共享／空来源独立组、同 Card 多实例、不同 Card、无 Card Unit；来源注销与再部署不改变历史 Card 归属。Deployment 只保障历史在 entered 前登记、拒绝不登记、离场不删除。
 - 同组重复政策或 STACK 到期政策冲突时报告配置错误。兼容的重应用按政策拒绝、新建或保留身份与私有状态；实际／有效叠层上限、满层续期、END／DECAY 和手动减层产生对应结果。实际变层先发布再通知，即使有效层数未变；满层只续期不通知变层。停用期间仍通知，但不恢复旧输出，重新启用读最新层数。
 - 零时长仍安装后结束；INACTIVE 自动扣时、ACTIVE 才执行 onTick，手动推进、绝对期限和最新时间续期保留最后业务。通用计时不复制到每种 Burst。
 
@@ -99,7 +99,7 @@ Prefab、范围读取和换算由实际业务使用；目录移动、提取工�
 依据 [Route](navigation.md) 和 [Schedule](schedule.md)，对应[路线](../../test/core/navigation/route.test.js)与[调度](../../test/core/schedule.test.js)套件：
 
 - Route：首指令同步进入、MOVE 进入与重入采样、长无环链完整执行／即时环让出；active 与 ticking 独立，ENTER 可暂停而绝对等待保留出生时基。TRACE 到达后保留指令和最后格，支持同格重启；Main 出口不随临时控制权改变，无终点不离场。空间副作用后使用最新 Context。
-- Schedule：前延迟、出生偏移和位置共用样本、等待先于 enter；Wave 超时只解除 wave 等待，final 保留；活 Unit 的指定等待释放与完整离场各有正确结果。Branch 每次整组重抽，出生前发布索引／RNG／实例，触发 Tick 不重复推进，重入不丢实例。空计划与完成后继续 step 正常。
+- Schedule：前延迟、出生偏移和位置共用样本、等待先于 entered；Wave 超时只解除 wave 等待，final 保留；活 Unit 的指定等待释放与完整离场各有正确结果。Branch 每次整组重抽，出生前发布索引／RNG／实例，触发 Tick 不重复推进，重入不丢实例。空计划与完成后继续 step 正常。
 
 路线距离只累计导航运动，不计 APPEAR 跳跃；Data 转换与 Core 运行分别集中保障，Hook／RNG 不重复验证。
 
@@ -128,7 +128,7 @@ Prefab、范围读取和换算由实际业务使用；目录移动、提取工�
 
 | 编号 | 关键结果 | 集中代表 |
 | --- | --- | --- |
-| HOOK-01 | 固定候选及初始 priority、最新登记、同级稳定和独立嵌套；leave 使用注销前程序快照，结束事实不丢仍登记的 ENDING 宿主。 | [Hook](../../test/core/hook.test.js)、[类型](../../test/core/types.test.js)与真实生命周期。 |
+| HOOK-01 | 固定候选及初始 priority、最新登记、同级稳定和独立嵌套；removed 使用注销前程序快照，结束事实不丢仍登记的 ENDING 宿主。 | [Hook](../../test/core/hook.test.js)、[类型](../../test/core/types.test.js)与真实生命周期。 |
 | HOOK-02 | Calculate／Apply 排除独立，键身份和 ID 匹配正确；排除不变成免疫豁免或嵌套政策。 | [资源结算](../../test/core/resource/application.test.js)中的来源／目标及嵌套代表。 |
 | HOOK-03 | Blocking 两方候选和 priority 在任一通知前固定，仍先 Blocker 后 Blockable；关系失效与历史通知按各自契约处理。 | [Blocking](../../test/core/blocking.test.js)关系重入，不复制公共候选矩阵。 |
 | HP-01 | 当前公式类型与防御采样贯穿计算／应用；分类事实保留，不产生计算期受击。 | [Calculate](../../test/core/resource/calculation.test.js)实际公式与采样。 |
@@ -137,9 +137,9 @@ Prefab、范围读取和换算由实际业务使用；目录移动、提取工�
 | APPLY-02 | 最终非负边界、零计算拒绝与零接收／零实际变化成功分开；报告在写点固定。 | [Apply](../../test/core/resource/application.test.js)与[Calculate](../../test/core/resource/calculation.test.js)的零值和报告。 |
 | APPLY-03 | 固定／取消单向接续，取消权限与成功后继分开；禁止抵挡保留护盾且仍有普通减伤，FIXED 不被普通改量恢复。 | [泥岩](../../test/content/operators/mudrock.test.js)真实 Hook 与[接收类型](../../test/core/types.test.js)。 |
 | HP-03 | damageCommitted、两侧 Applied 完成后才确认死亡。零 HP 期间保留 Unit 与 Blocking，可救回，嵌套 Combat 和零量直接恢复均保留原结算的死亡归属。 | [Apply](../../test/core/resource/application.test.js)的致死与恢复。 |
-| KILL-01 | 显式 killer 与 source 独立；targetKilled 先于普通目标 Prepare，排除或来源 ENDING 不改变目标结算。 | [Apply](../../test/core/resource/application.test.js)确认与[Unit](../../test/core/unit.test.js)本地通知。 |
-| KILL-02 | 内层取得死亡确认时外层不重复；首次 End 固定归属，重复不 Prepare，Finalize 延后不丢 killed，Completed 后发业务不改旧结果。 | [Apply](../../test/core/resource/application.test.js)嵌套死亡与真实 Lifetime。 |
-| KILL-03 | InstantKill 调用者先登记 Prepare，再请求结束；通知看到已发布 ENDING 与固定 Departure，不要求先写 HP0，直接 remove 不自动生成来源通知。 | [Unit](../../test/core/unit.test.js)的直接结束组合，不另建 InstantKill 框架。 |
+| KILL-01 | 显式 killer 与 source 独立；targetKilled 先于目标的普通 removing Hook，排除或来源 ENDING 不改变目标结算。 | [Apply](../../test/core/resource/application.test.js)确认与[Unit](../../test/core/unit.test.js)本地通知。 |
+| KILL-02 | 内层取得死亡确认时外层不重复；首次 End 固定归属，重复请求不再次派发 removing，Finalize 延后不丢 killed，Completed 后发业务不改旧结果。 | [Apply](../../test/core/resource/application.test.js)嵌套死亡与真实 Lifetime。 |
+| KILL-03 | InstantKill 调用者先登记 removing Hook，再请求结束；通知看到已发布 ENDING 与固定 Departure，不要求先写 HP0，直接 remove 不自动生成来源通知。 | [Unit](../../test/core/unit.test.js)的直接结束组合，不另建 InstantKill 框架。 |
 | HP-04 | MaxHP 变更同步比例与债务分配，容量耗尽由 Settlement 处理；不伪装治疗或复活。 | [Vitality](../../test/core/vitality.test.js)贡献变化及[治疗排序](../../test/core/targeting/eligibility.test.js)。 |
 | HP-05 | 三种 Nature 共用管线；无敌／Presence 不阻止 LOSS，环境标签不自动跳 Hook。 | [Apply](../../test/core/resource/application.test.js)流失与接收。 |
 | HP-06 | HIT 许可与 Nature 独立，非 LOSS 且许可为真才回复；环境和 Effect 输出不靠全局阻回伪装。 | [Skill](../../test/core/skill.test.js)、[泥岩](../../test/content/operators/mudrock.test.js)及[实际地形](../../test/content/terrain.test.js)；标准 Burst 由其成品套件保障。 |

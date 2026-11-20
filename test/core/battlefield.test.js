@@ -22,7 +22,7 @@ test("a field batch publishes final occupancy without moving bodies or executing
     const definition = (id) => ({
         id,
         occupancy: { slot: "OCCUPANT" },
-        hooks: Hooks.empty().set(unitLifecycle.enter, {
+        hooks: Hooks.empty().set(unitLifecycle.entered, {
                 id: "entry",
 
                 invoke: (state) => {

@@ -48,9 +48,9 @@ test("restriction exemptions use effective definition identity without reviving 
     state = independent.state;
     assert.equal(visibleToDetector(state), false);
     assert.equal(targetable.allowsRestrictions(state, source, () => true)(units.get(state, target)), true);
-    state = effects.end(state, independent.value);
+    state = effects.remove(state, independent.value);
     assert.equal(visibleToDetector(state), true);
-    state = effects.end(state, installed.value);
+    state = effects.remove(state, installed.value);
     assert.equal(targetable.allowsRestrictions(state, source)(units.get(state, target)), false);
     assert.equal(visibleToDetector(state), true);
 });

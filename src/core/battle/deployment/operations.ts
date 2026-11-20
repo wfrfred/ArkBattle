@@ -95,7 +95,7 @@ export function deploy<T extends Card<any>>(
             },
         },
         hooks: Hooks.empty()
-            .set(lifecycle.enter, {
+            .set(lifecycle.entered, {
                 id: "@deployment/enter",
                 invoke: (state, unit) => ({
                     state: notifyDeployed(state, {
@@ -105,7 +105,7 @@ export function deploy<T extends Card<any>>(
                     value: undefined,
                 }),
             })
-            .set(lifecycle.leave, {
+            .set(lifecycle.removed, {
                 id: "@deployment/death",
                 accepts: (_state, departure) => departure.reason === "DEATH",
                 invoke: (state) => {

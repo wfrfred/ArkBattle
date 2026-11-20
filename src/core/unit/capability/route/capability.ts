@@ -99,7 +99,7 @@ export function initialize<U extends Unit & Pick<Route, "definition">>(
         state: battle,
         value: {
             ...unit,
-            hooks: unit.hooks.set(lifecycle.enter, {
+            hooks: unit.hooks.set(lifecycle.entered, {
                 id: "@route/enter",
                 invoke: (current, self) => ({
                     state: enter(current, {

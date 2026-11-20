@@ -3,7 +3,7 @@ import { Mechanisms } from "../mechanism/mechanisms.js";
 import * as dependency from "../lifetime/dependency.js";
 import type { State as LifetimeState } from "../lifetime/lifetime.js";
 import { Hooks } from "../hook.js";
-import { leave as unitLeave } from "./unit-hook.js";
+import { removed as unitRemoved } from "./unit-hook.js";
 import type { Definition } from "./contract.js";
 import type { Event } from "./event.js";
 import type { Id as ProjectileId } from "../projectile/projectile.js";
@@ -13,7 +13,7 @@ import type { MechanismId } from "../mechanism/index.js";
 import type { Id as OverlayId } from "../battlefield/navigation/overlay.js";
 import type { PredefinedPresence } from "./predefined.js";
 import { initialize as initializeSchedule, type State as ScheduleState } from "./schedule/state.js";
-import { leaveHook as scheduleLeaveHook } from "./schedule/runtime.js";
+import { removedHook as scheduleRemovedHook } from "./schedule/runtime.js";
 import {
     initialize as initializeDeployment,
     type State as DeploymentState,
@@ -84,7 +84,7 @@ export function createBattleState(
             endings: new Map(),
             settling: false,
         },
-        unitHooks: Hooks.empty().set(unitLeave, scheduleLeaveHook),
+        unitHooks: Hooks.empty().set(unitRemoved, scheduleRemovedHook),
         schedule,
         predefinedPresence: [],
         events: [],

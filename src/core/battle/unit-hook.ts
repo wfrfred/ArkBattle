@@ -5,7 +5,7 @@ import type { State as BattleState } from "./state.js";
 
 export type Hook = hooks.Hook<Departure, void>;
 
-export const leave = hooks.key<Hook, BattleState>("battle.unit.leave");
+export const removed = hooks.key<Hook, BattleState>("battle.unit.removed");
 
 export function setHook<H extends Entry>(
     battle: BattleState,

@@ -29,7 +29,7 @@ test("initial and scheduled entry see registered battle facts and preserve their
     const scheduled = {
         id: "scheduled",
         route: { alwaysCheckCurrentPoint: true },
-        hooks: Hooks.empty().set(units.enter, {
+        hooks: Hooks.empty().set(units.entered, {
             id: "observe-birth",
             invoke(current, self) {
                 assert.equal(get(current, self.id).definition.id, "scheduled");
@@ -41,7 +41,7 @@ test("initial and scheduled entry see registered battle facts and preserve their
     };
     const initial = {
         id: "initial",
-        hooks: Hooks.empty().set(units.enter, {
+        hooks: Hooks.empty().set(units.entered, {
             id: "observe-initialization",
             invoke(current, self) {
                 assert.equal(current.schedule.definition.waves.length, 1);
@@ -74,7 +74,7 @@ test("initial and scheduled entry see registered battle facts and preserve their
 test("a predefined departure can create its successor without losing that binding or the next operation", () => {
     const reappearing = {
         id: "reappearing",
-        hooks: Hooks.empty().set(units.leave, {
+        hooks: Hooks.empty().set(units.removed, {
             id: "return-after-departure",
             invoke(current, { unit }) {
                 assert.equal(get(current, unit.id), undefined);

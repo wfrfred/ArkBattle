@@ -230,7 +230,7 @@ export function create(profile: Profile, timing: AttackSpeedTiming): Definition 
             },
         },
         skill: { initialize: (battle) => createSkill(battle, skill) },
-        hooks: Hooks.empty().set(unitHooks.enter, {
+        hooks: Hooks.empty().set(unitHooks.entered, {
             id: "melantha/install-talent",
             invoke(state, self) {
                 return {

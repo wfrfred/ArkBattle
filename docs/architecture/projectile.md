@@ -43,7 +43,7 @@ export interface Definition<S extends object = object, T extends object = object
 
 创建分为 `initialize` 和 `add`，与 Unit 的流程一致。调用方传入 Definition、阵营、位置、私有状态及 Definition 要求的额外字段。`initialize(battle, input)` 分配 ID，将实例设为 ACTIVE，并返回 `Result<Projectile<S, T> & T & { readonly definition: D }>`。`D` 保留传入 Definition 的具体类型。调用方接续返回的战斗状态，并可从该实例取得保留具体类型的 Ref。
 
-`add(battle, self)` 要求实例具备 Definition 声明的额外字段。它登记 ACTIVE 实例，随后执行 `onEnter` 并返回 `BattleState`。`onEnter` 与 Unit 的 `enter` 都发生在登记后。Projectile 直接调用 Definition 回调，Unit 则通过 `enter` 键派发已登记的 Hook。`onEnter` 可以立即结束弹道，调用方取得的 Ref 仍表示这次分配的身份。 [Unit 登记](../../src/core/unit/operations.ts)
+`add(battle, self)` 要求实例具备 Definition 声明的额外字段。它登记 ACTIVE 实例，随后执行 `onEnter` 并返回 `BattleState`。`onEnter` 与 Unit 的 `entered` 都发生在登记后。Projectile 直接调用 Definition 回调，Unit 则通过 `entered` 键派发已登记的 Hook。`onEnter` 可以立即结束弹道，调用方取得的 Ref 仍表示这次分配的身份。 [Unit 登记](../../src/core/unit/operations.ts)
 
 get 返回指定版本中的完整实例，不隐含 ACTIVE 筛选。update 只设置位置及私有 state，保留身份、Definition 与生命周期；ENDING 也可提交命中／清理进度，不因普通写回恢复实例。
 
@@ -69,7 +69,7 @@ Content 以纯函数计算运动结果，由 `onTick` 读取目标位置、提�
 
 ## 6. 终止请求与 Finalize
 
-结束请求固定首次原因并发布 ENDING，阻止后续正常推进。待依赖完成后，`onEnd` 读取当前实例执行收尾，再从最新集合移除，保留回调中新建或修改的其他弹道。Unit 的 `leave` 在注销后派发，描述已经发生的离场。 [Unit 离场](../../src/core/unit/operations.ts)
+结束请求固定首次原因并发布 ENDING，阻止后续正常推进。待依赖完成后，`onEnd` 读取当前实例执行收尾，再从最新集合移除，保留回调中新建或修改的其他弹道。Unit 的 `removed` 在注销后派发，描述已经发生的离场。 [Unit 离场](../../src/core/unit/operations.ts)
 
 无活动结算时，结束请求完成整批收尾后返回；嵌套调用的完成边界见 [Lifetime](lifetime.md#finalize-与完成边界)。结束请求发出后，已经进入的普通同步调用栈继续执行。后续新输出须重新确认资格。
 

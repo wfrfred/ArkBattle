@@ -221,7 +221,7 @@ test("APPLY-01: cancellation before immunity preserves its outcome and suppresse
     assert.equal(commits, 0);
 
     state = update(rejected.state, target, units.removeHook(hpDamage.beforeReceive, "enable-immunity"));
-    state = effects.end(state, protection);
+    state = effects.remove(state, protection);
     const accepted = hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request));
     assert.equal(accepted.value.application.hpLoss, 30);
     assert.equal(get(accepted.state, 1).skill.sp.value, 1);
@@ -840,7 +840,7 @@ test("HP-03: lethal HP remains present through nested Combat and both Applied ro
         id: "kill-reward",
         invoke() { assert.fail("the excluded death response must not run"); },
     }));
-    state = update(state, target, units.setHook(units.prepare, {
+    state = update(state, target, units.setHook(units.removing, {
         id: "kill-reward",
         invoke(current, departure) {
             assert.equal(departure.reason, "DEATH");
@@ -903,7 +903,7 @@ test("KILL-02: nested damage owns its kill even while Lifetime defers the victim
         }),
     ));
     state = update(state, target, units.compose(
-        units.setHook(units.prepare, {
+        units.setHook(units.removing, {
             id: "preserve-first-death",
             invoke(current, departure) {
                 assert.deepEqual(departure.killer, killer);
@@ -914,7 +914,7 @@ test("KILL-02: nested damage owns its kill even while Lifetime defers the victim
                 };
             },
         }),
-        units.setHook(units.leave, {
+        units.setHook(units.removed, {
             id: "preserve-first-death",
             invoke(current, departure) {
                 departures.push(["leave", departure.killer.id]);
@@ -942,7 +942,7 @@ test("KILL-02: nested damage owns its kill even while Lifetime defers the victim
             return outer.state;
         },
     });
-    state = effects.end(installed.state, installed.value);
+    state = effects.remove(installed.state, installed.value);
 
     assert.equal(nested.value.killed, true);
     assert.equal(outer.value.killed, false);

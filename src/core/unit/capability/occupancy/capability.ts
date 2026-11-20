@@ -65,14 +65,14 @@ export function initialize<U extends Unit & Pick<Occupancy, "definition">>(
         value: {
             ...unit,
             hooks: unit.hooks
-                .set(lifecycle.enter, {
+                .set(lifecycle.entered, {
                     id: "@occupancy/enter",
                     invoke: (current, self) => ({
                         state: enter(current, ref(self as Unit & Occupancy)),
                         value: undefined,
                     }),
                 })
-                .set(lifecycle.leave, {
+                .set(lifecycle.removed, {
                     id: "@occupancy/leave",
                     invoke: (current, departure) => ({
                         state: leave(current, departure.unit as Unit & Occupancy),

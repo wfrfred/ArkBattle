@@ -93,7 +93,7 @@ test("a pull samples its force once and later pulls use the updated grades", () 
     }));
     assertPosition(step(changed, []), [1 + 40 / 900, 1]);
 
-    const fresh = pull.create(pull.end(changed, original.value), source, host, options);
+    const fresh = pull.create(pull.remove(changed, original.value), source, host, options);
     assert.ok(fresh.value);
     assertPosition(step(fresh.state, []), [1 + 2 / 900, 1]);
 });
@@ -115,7 +115,7 @@ test("pulls with a shared source scope stack and only the sole pull can brake", 
 
     const firstScope = lifetime.scope(pull.lifetime, first.value);
     const secondScope = lifetime.scope(pull.lifetime, second.value);
-    const remaining = pull.end(multiple, first.value);
+    const remaining = pull.remove(multiple, first.value);
     assert.equal(lifetime.available(remaining, firstScope), false);
     assert.equal(lifetime.available(remaining, secondScope), true);
     assert.deepEqual(unbalance.get(remaining, repeat.value).velocity, [1.2 / 30, 0]);
@@ -213,7 +213,7 @@ test("near braking follows displacement and leaves the pull active until explici
     assert.equal(lifetime.available(current, scope), true);
     assert.equal(shiftable.isUnbalanced(get(current, 0)), true);
 
-    current = pull.end(current, pullRef);
+    current = pull.remove(current, pullRef);
     assert.equal(lifetime.available(current, scope), false);
     assert.equal(shiftable.isUnbalanced(get(current, 0)), true);
     current = step(current, []);
@@ -232,7 +232,7 @@ test("immunity rejects reception and ends an existing segment before displacemen
     assert.equal(shiftable.isUnbalanced(get(advanced, 0)), false);
     assert.equal(lifetime.available(advanced, lifetime.scope(unbalance.lifetime, pushed.value)), false);
 
-    const released = effects.end(advanced, immunity.value, "SCRIPT");
+    const released = effects.remove(advanced, immunity.value, "SCRIPT");
     const knocked = unbalance.applyImpulse(released, host, [30, 0]);
     assert.ok(knocked.value);
     assertPosition(step(knocked.state, []), [2, 1]);
@@ -317,5 +317,5 @@ test("ending a segment settles its pulls even when a pull dependent starts the n
     assert.notDeepEqual(next.unbalance, first.value.unbalance);
     assert.deepEqual(lifetime.dependencies(ended, oldPullScope), []);
     assert.equal(lifetime.available(ended, lifetime.scope(pull.lifetime, next)), true);
-    assertPosition(step(pull.end(ended, first.value), []), [1, 1 + 40 / 900]);
+    assertPosition(step(pull.remove(ended, first.value), []), [1, 1 + 40 / 900]);
 });

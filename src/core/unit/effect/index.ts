@@ -29,6 +29,6 @@ export {
     decreaseStack,
     setEnabled,
     lifetime,
-    end,
+    remove,
     advance,
 } from "./operations.js";

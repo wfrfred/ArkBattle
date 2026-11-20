@@ -6,9 +6,9 @@ import type { Unit } from "../../unit.js";
 import type { Relation, Hook } from "./contract.js";
 import type { Restriction } from "./restriction.js";
 import type { WorldPosition } from "../../../geometry/coordinate.js";
-import { prepare } from "./blockable-operations.js";
+import { removing } from "./blockable-operations.js";
 import { Hooks as UnitHooks, key } from "../../../hook.js";
-import { prepare as prepareKey } from "../../hook.js";
+import { removing as removingKey } from "../../hook.js";
 
 interface Restrictions {
     readonly restrictions: readonly contribution.Contribution<Restriction>[];
@@ -57,7 +57,7 @@ export function initialize<U extends Unit & Pick<Blockable, "definition">>(
         state: battle,
         value: {
             ...unit,
-            hooks: UnitHooks.empty().set(prepareKey, prepare).merge(unit.hooks),
+            hooks: UnitHooks.empty().set(removingKey, removing).merge(unit.hooks),
             blockable: {
                 relation: null,
                 adjustment: null,

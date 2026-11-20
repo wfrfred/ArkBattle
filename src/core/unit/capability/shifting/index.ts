@@ -25,7 +25,7 @@ export const pull = {
     lifetime: pulls.lifetime,
     withinRadius: pulls.withinRadius,
     brake: pulls.brake,
-    end: pulls.end,
+    remove: pulls.remove,
 } as const;
 
 export const unbalance = {

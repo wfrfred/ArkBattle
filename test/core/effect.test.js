@@ -62,7 +62,7 @@ test("installation, participation, and ending preserve completed business and cu
     state = effects.setEnabled(state, installed.value, false);
     assert.equal(offense.resolveAttack(state, units.get(state, owner)), 100);
     state = effects.setEnabled(state, installed.value, true);
-    state = effects.end(state, installed.value);
+    state = effects.remove(state, installed.value);
     assert.equal(effects.get(state, installed.value), undefined);
     assert.deepEqual(observed.at(-1), ["end", "ENDING", 3, 100]);
 
@@ -91,7 +91,7 @@ test("installation, participation, and ending preserve completed business and cu
     const ended = effects.install(state, owner, {
         ...instant,
         id: "self-ending",
-        onInstall: (current, self) => effects.end(current, effects.ref(self)),
+        onInstall: (current, self) => effects.remove(current, effects.ref(self)),
     });
     assert.equal(effects.get(ended.state, ended.value), undefined);
 });
@@ -137,9 +137,9 @@ test("DEFAULT retains candidates and installs them before priority and enabled d
     assert.equal(effects.get(state, low.value).lifecycle, "INACTIVE");
     assert.equal(effects.get(state, equal.value).lifecycle, "INACTIVE");
     assert.equal(offense.resolveAttack(state, units.get(state, owner)), 100);
-    state = effects.end(state, high.value);
+    state = effects.remove(state, high.value);
     assert.equal(offense.resolveAttack(state, units.get(state, owner)), 130);
-    state = effects.end(state, equal.value);
+    state = effects.remove(state, equal.value);
     assert.equal(offense.resolveAttack(state, units.get(state, owner)), 110);
 });
 
@@ -522,7 +522,7 @@ test("source grouping follows persistent Cards across redeployment and keeps Car
     state = deployment.retreat(installed.state, firstSource);
     assert.equal(units.get(state, firstSource), undefined);
     assert.equal(effects.install(state, owner, definition, { source: firstSource }).value, null);
-    state = effects.end(state, installed.value);
+    state = effects.remove(state, installed.value);
     const delayed = {
         ...definition,
         id: "delayed-card-source",

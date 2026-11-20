@@ -73,7 +73,7 @@ export function create(configuration: Configuration): Definition {
             },
         },
         hooks: Hooks.empty()
-            .set(unitHooks.enter, {
+            .set(unitHooks.entered, {
                 id: "shooting-platform/apply-tile",
                 invoke(battle, self) {
                     return {
@@ -84,7 +84,7 @@ export function create(configuration: Configuration): Definition {
                     };
                 },
             })
-            .set(unitHooks.leave, {
+            .set(unitHooks.removed, {
                 id: "shooting-platform/restore-tile",
                 invoke(battle, { unit }) {
                     if (!hasOccupancy(unit)) {

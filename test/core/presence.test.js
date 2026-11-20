@@ -33,9 +33,9 @@ test("disappearance preserves deployment and lifetimes, releases blocking before
     const idle = { ...program, id: "idle" };
     const operator = {
         id: "operator", presence: {},
-        hooks: Hooks.empty().set(lifecycle.enter, {
+        hooks: Hooks.empty().set(lifecycle.entered, {
             id: "enter", invoke(state) { entries++; return { state, value: undefined }; },
-        }).set(lifecycle.leave, {
+        }).set(lifecycle.removed, {
             id: "leave", invoke(state, departure) { departures.push(departure); return { state, value: undefined }; },
         }),
         occupancy: { slot: "OCCUPANT" },

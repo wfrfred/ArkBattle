@@ -19,7 +19,20 @@
 
 实例生命周期阶段统一叫 `lifecycle`，两态生命周期使用 `ACTIVE`／`ENDING`。私有业务数据叫 `state`。Effect.enabled 是启用意图，Lifetime Pending.phase 是结算进度，保留不同名称。Definition 描述配置和程序，Initial 提供本次构造事实；不为普通定义另造 Runtime、Compiled、Program 等别名。
 
-实例程序用 onStart／onTick／onEnd 等场景动词；事实通知用 started／ended／paid 等已发生名称，前置干预用 beforeXxx。主动操作用 start／advance／cancel／stop 等实际业务动词，不能用 finish 命名一个未必结束的请求。同一语义复用已有动词，不以转发包装统一表面签名。
+实例程序用 `onStart`、`onTick`、`onEnd` 等场景动词。事实通知用 `started`、`ended`、`paid` 等已发生名称，前置干预用 `beforeXxx`。主动操作按业务命名，同一语义复用已有动词，不以转发包装统一表面签名。
+
+### 生命周期命名
+
+领域若公开按 Ref 请求终结实例的通用入口，命名为 `remove`。结束原因和载荷由所属领域定义。`finish` 和 `cancel` 表达执行的具体结束结果，分别提交 `FINISHED` 和 `CANCELLED`。这些操作委托 `Lifetime.end`，完成边界遵守 [Lifetime](lifetime.md#finalize-与完成边界)。
+
+| 执行时点 | 名称 |
+| --- | --- |
+| 登记实例之后 | Definition 程序 `onEnter` 或 Unit 通知 `entered` |
+| 已发布 `ENDING`，自动请求依赖者结束之前 | Unit Hook `removing` |
+| 依赖者完成收尾之后，实例注销之前 | Definition 程序 `onEnd` |
+| 实例注销之后 | Unit 通知 `removed`，Battle 级键名为 `battle.unit.removed` |
+
+`onDisable` 撤销生效中的输出。可逆停用和移除 `ACTIVE` 的 Effect 或 Mechanism 都可触发它。
 
 ### Restriction 接口约定
 
@@ -79,7 +92,7 @@ Hook 固定 Context，逐项接续 BattleState 和工作值；通知使用 void�
 
 完整操作自行检查所属领域的身份、生命周期与资源前提。允许普通 Unit 并报告缺少能力的接口使用 Ref<Unit>；本来就要求能力的入口使用相应交叉类型。正常业务拒绝不是异常，缺失身份或非法输入按所属操作契约处理。
 
-end／cancel／stop／remove 委托 Lifetime；嵌套返回的保证以请求／Prepare 为界，不把“完整操作”误解为任意对象都已经 Finalize。需要当前资格的新业务必须重新查询，已经发生的责任则按具体语义完成。
+首次有效的嵌套结束请求在自身 Prepare 完成后返回，Finalize 仍可待结算。需要当前资格的新业务必须重新查询，已经发生的责任按具体语义完成。 [Lifetime](lifetime.md#finalize-与完成边界)
 
 ## 5. 数值输入、查询与字段写回
 

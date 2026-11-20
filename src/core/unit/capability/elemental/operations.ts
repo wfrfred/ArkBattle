@@ -199,7 +199,7 @@ export function reduceDuration(
 }
 
 export function finish(battle: BattleState, reference: Ref<Burst>): BattleState {
-    return effects.end(battle, reference, "ELEMENTAL_BURST_FINISHED");
+    return effects.remove(battle, reference, "ELEMENTAL_BURST_FINISHED");
 }
 
 export function cancel(
@@ -207,7 +207,7 @@ export function cancel(
     reference: Ref<Burst>,
     reason = "CANCELLED",
 ): BattleState {
-    return effects.end(battle, reference, reason);
+    return effects.remove(battle, reference, reason);
 }
 
 export function advance(battle: BattleState, host: Ref<Unit & Elemental>): BattleState {

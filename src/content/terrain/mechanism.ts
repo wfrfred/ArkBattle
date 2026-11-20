@@ -123,7 +123,7 @@ function create<P extends object>(
                     battle = setContact(battle, unitId);
 
                     if (!behaviour.retainOnLeave && contact.effect !== null) {
-                        battle = effects.end(battle, contact.effect, "LEFT_TERRAIN");
+                        battle = effects.remove(battle, contact.effect, "LEFT_TERRAIN");
                     }
                 }
             }
@@ -164,7 +164,7 @@ function create<P extends object>(
                     battle = setContact(battle, unit.id);
 
                     if (!behaviour.retainOnLeave && previous.effect !== null) {
-                        battle = effects.end(battle, previous.effect, "TERRAIN_CHANGED");
+                        battle = effects.remove(battle, previous.effect, "TERRAIN_CHANGED");
                     }
                 }
 
@@ -187,7 +187,7 @@ function create<P extends object>(
 
                 if (mechanisms.get(battle, reference)?.lifecycle !== "ACTIVE") {
                     return !behaviour.retainOnLeave && installed.value !== null
-                        ? effects.end(battle, installed.value, "TERRAIN_UNAVAILABLE")
+                        ? effects.remove(battle, installed.value, "TERRAIN_UNAVAILABLE")
                         : battle;
                 }
 
@@ -195,13 +195,13 @@ function create<P extends object>(
                 if (current !== undefined && indexOf(current) === index) {
                     battle = setContact(battle, unit.id, { index, effect: installed.value });
                 } else if (!behaviour.retainOnLeave && installed.value !== null) {
-                    battle = effects.end(battle, installed.value, "LEFT_TERRAIN");
+                    battle = effects.remove(battle, installed.value, "LEFT_TERRAIN");
                 }
             }
 
             return battle;
         },
-        onUnitLeave(battle, self, departure) {
+        onUnitRemoved(battle, self, departure) {
             if (!self.state.contacts.has(departure.unit.id)) {
                 return battle;
             }
@@ -221,7 +221,7 @@ function create<P extends object>(
             if (!behaviour.retainOnLeave && self.lifecycle !== "ENDING") {
                 for (const contact of owned) {
                     if (contact.effect !== null) {
-                        battle = effects.end(battle, contact.effect, "TERRAIN_UNAVAILABLE");
+                        battle = effects.remove(battle, contact.effect, "TERRAIN_UNAVAILABLE");
                     }
                 }
             }

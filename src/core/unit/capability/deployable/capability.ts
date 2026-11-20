@@ -6,7 +6,7 @@ import type { Card } from "../../../battle/deployment/card/card.js";
 import { validateRestrictions, type Restriction as BaseRestriction } from "../../../restriction.js";
 import { hasOccupancy, type Occupancy } from "../occupancy/capability.js";
 import { Hooks } from "../../../hook.js";
-import { leave } from "../../hook.js";
+import { removed } from "../../hook.js";
 import { releaseSlots } from "../../../battle/deployment/resources.js";
 import { createRegistrationOperations } from "../../registration.js";
 
@@ -54,7 +54,7 @@ export function initialize<
         value: {
             ...unit,
             hooks: Hooks.empty()
-                .set(leave, {
+                .set(removed, {
                     id: "@deployable/release-slots",
                     invoke: (current, departure) => {
                         const { slots } = (departure.unit as Unit & Deployable).deployable;

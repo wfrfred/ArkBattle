@@ -21,7 +21,7 @@ Unit.effects 保存实例，Unit.hooks 保存登记；属性与限制贡献归�
 
 ## 2. Definition、实例与泛型
 
-Definition 是共享行为；实例保存稳定身份、宿主、实际来源、私有 state、expiration、enabled 与 lifecycle。初始 state、来源、Scope、时间与启用许可属于本次安装输入，不覆写 Definition 的规则。Unit 初始化为空 Effects，初始效果在宿主登记后的 enter 程序中正常安装。
+Definition 是共享行为；实例保存稳定身份、宿主、实际来源、私有 state、expiration、enabled 与 lifecycle。初始 state、来源、Scope、时间与启用许可属于本次安装输入，不覆写 Definition 的规则。Unit 初始化为空 Effects，初始效果在宿主登记后的 `entered` Hook 中正常安装。
 
 私有状态类型与宿主能力要求由具体 Definition 配对，精确 Ref 保持它们。普通查询返回完整实体但不承诺未知私有形状；异构存储及调用自身 Definition 的边界集中擦除类型，内容不逐个断言私有 state。
 
@@ -100,7 +100,7 @@ setState 仅改私有数据，各 lifecycle 均可写入，不恢复实例或刷
 
 ### 结束流程
 
-Effect 的 Prepare 发布 ENDING，并对原 ACTIVE 实例调用 onDisable 撤销输出、协调组候补。随后等待依赖者完整 Finalize，调用当前实例的 onEnd，再移除并注销关系。候补在 Prepare 阶段协调，早于原实例 onEnd；宿主 ENDING 时不启用候补。
+`remove` 按 Ref 请求终结 Effect，默认原因为 `EXPLICIT`。Lifetime 发布 `ENDING` 后，在 Prepare 阶段对原 `ACTIVE` 实例调用 `onDisable` 撤销输出，并协调组候补。依赖者完整 Finalize 后，调用当前实例的 `onEnd`，再移除实例并注销关系。宿主 `ENDING` 时不启用候补。
 
 请求与完成、首次原因及嵌套结束的边界见 [Lifetime](lifetime.md#请求与-prepare)。onEnd 请求 Unit 离场会先标记 ENDING，但所有权保护宿主直到整个 Effect Finalize 返回。普通 onTick 没有相同的调用栈保护；后继按业务资格接续最新状态。
 

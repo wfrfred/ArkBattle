@@ -1,6 +1,6 @@
 # Lifetime 与依赖析构
 
-Lifetime 统一结束请求、依赖传播与最终析构。领域拥有实例、创建、私有状态和存储，以 end／cancel／stop／remove 等完整业务入口适配公共协议，不统一启动或解释内容数据。
+Lifetime 统一结束请求、依赖传播与最终析构。领域负责实例的创建、私有状态和存储。`remove` 请求终结实例，`finish` 和 `cancel` 表达执行结果，领域入口委托 `Lifetime.end`。 [生命周期命名](api-conventions.md#生命周期命名)
 
 请求同步执行 Prepare；单个最外层结算器按依赖完成顺序 Finalize。所有真实依赖者的整个 Finalize 返回后，owner 才可完成。
 
@@ -24,7 +24,7 @@ begin 只形成 ENDING；发布后再 Prepare。Prepare 可以读取标记前 in
 
 Unit Departure 在 remove 入口固定：历史 unit 与 End；DEATH 明确带 killer，其他原因不带。后续 Finalize 不重推原因或归属。业务结束载荷与向依赖者传播的原因是两条通道：例如 Unit 死亡对 Action 表达 SOURCE_ABSENT 取消，对其依赖者仍传播 DEATH。首次请求同时固定两者，重复请求不覆盖。
 
-Unit 不是可依赖结束的子节点，不提供 fromDependency；各能力自行登记 Unit.prepare 清理程序。来源击杀响应的编排归 [Resource](resource.md)，不是通用 Lifetime 的常设业务。
+Unit 不是可依赖结束的子节点，不提供 `fromDependency`。各能力自行登记 `Unit.removing` 清理程序，来源击杀响应的编排归 [Resource](resource.md)。
 
 ## 状态归属与关系权威
 
@@ -50,7 +50,7 @@ Prepare 早于自动请求依赖者；它可先主动结束子项，从而确定
 
 首次嵌套请求返回保证自身 Prepare 完成，不保证 Finalize；重复 PREPARING 请求也不等待原 Prepare。Prepare 是多个完整业务的序列，不是任意回调原子事务，需要随标记失效的事实应在对应发布中建立。
 
-结束态立即阻止正常推进与新依赖。Unit.prepare 使用[公共 Hook](hook.md)顺序；Effect 在 Prepare 撤销输出、协调候补，但 ENDING 宿主不能重新启用弱者。主动撤退的退款等前置业务归 Deployment，不由通用 Prepare 推导。
+结束态立即阻止正常推进与新依赖。Unit 在 Prepare 阶段按[公共 Hook](hook.md)顺序派发 `removing`。Effect 在 Prepare 撤销输出、协调候补，但 ENDING 宿主不能重新启用弱者。主动撤退的退款等前置业务归 Deployment。
 
 ## Finalize 与完成边界
 
@@ -68,4 +68,4 @@ Prepare 早于自动请求依赖者；它可先主动结束子项，从而确定
 
 等待只来自真实关系，普通函数调用不生成反向等待。例如 Effect.onEnd 请求 Unit.remove 时 Unit 等已有子 Effect 完成，Effect 不因为调用 remove 又等待 Unit。独立 Projectile 不随来源／Action 自动结束；Blocking、Occupancy 与 Card 冷却也不自动成为生命周期依赖。
 
-清理期间允许哪些字段写回由领域决定。Mechanism.disable 可逆，remove 不可逆；ACTIVE remove 的 Prepare 以 ENDING 调用 onDisable，INACTIVE remove 不重复停用，Finalize 再 onEnd。领域只能使用自身合法操作修改状态。
+清理期间允许哪些字段写回由领域决定。Mechanism 的 `setActive` 可逆，`remove` 请求终结。Prepare 只对原 `ACTIVE` 的实例调用 `onDisable`，此时实例已是 `ENDING`。Finalize 执行 `onEnd` 后注销实例。领域只能使用自身合法操作修改状态。

@@ -217,6 +217,10 @@ export function brake(battle: BattleState, reference: Ref<Pull>): BattleState {
     return unbalance.replace(battle, unit, { ...self, velocity: ZERO, pulls });
 }
 
-export function end(battle: BattleState, reference: Ref<Pull>, reason = "EXPLICIT"): BattleState {
+export function remove(
+    battle: BattleState,
+    reference: Ref<Pull>,
+    reason = "EXPLICIT",
+): BattleState {
     return lifetime.end(battle, reference, reason);
 }

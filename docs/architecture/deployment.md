@@ -6,8 +6,8 @@ Deployment 完成部署资格、消费、实例创建与通知；Card 保存跨�
 
 - 预览与执行使用同一请求、报价契约和资格流程；拒绝不消费，成功先支付再构造与入场。
 - 本次来源 Card、COST、退款依据与额度在登记前由 Deployable 构造，账户仍归 Deployment。
-- 主动撤退在请求离场前结账，被动死亡由真实死亡 leave 结账；SCRIPT／EXPIRED 不冒充死亡。
-- Unit 注销及结构占格释放先于本地 leave，再全局 leave；各集合内部遵守公共 priority。
+- 主动撤退在请求离场前结账，被动死亡由真实死亡的 removed 结账；SCRIPT／EXPIRED 不冒充死亡。
+- Unit 注销及结构占格释放先于本地 removed，再全局 removed；各集合内部遵守公共 priority。
 - 部署间隔与逐份恢复独立，暂停保留余时，不把满额等待补发为资源。
 
 ## 状态归属
@@ -28,7 +28,7 @@ Deployment 完成部署资格、消费、实例创建与通知；Card 保存跨�
 
 Card 配置明确费用、部署间隔、库存／在场上限、额度、退款和供给政策。当前 cooldownOnDeploy 控制部署时启动间隔，recoverOnRetreatOrDeath 与 increaseCostOnRetreatOrDeath 分别控制普通撤退／死亡恢复及费用阶段；这些字段的组织仍待重审，不能把现有布尔组合视为已完成领域收口。
 
-deployedUnits 保存本场成功部署的 Unit Ref 历史，在初始化后、任何 enter 前登记；离场不删除。cardForUnit 因而在来源注销后仍可查 Card，支持 [Effect 来源分组](effect.md#来源分组)。历史不等于在场数，activeCount 查询当前仍登记的实例，包含 ENDING。
+deployedUnits 保存本场成功部署的 Unit Ref 历史，在初始化后、任何 entered 前登记；离场不删除。cardForUnit 因而在来源注销后仍可查 Card，支持 [Effect 来源分组](effect.md#来源分组)。历史不等于在场数，activeCount 查询当前仍登记的实例，包含 ENDING。
 
 Card 的 unitHooks 注入未来实例，不追改已经创建的 Unit。私有状态的构造、类型配对与写回遵守公共约定，不在此复制异构容器接口。
 
@@ -46,15 +46,15 @@ Quote 承诺 DP、库存和额度消费：dp 为 null 表示不支付，零表�
 
 ## 普通部署流程
 
-合并并判定资格 → 采样 COST／退款依据 → 提交 DP、库存、usedSlots 及部署间隔 → `Unit.initialize` 分配身份并装配 → Deployable.setDeployment 写入本次事实 → 登记 Unit／占格 → 普通 enter。
+合并并判定资格 → 采样 COST／退款依据 → 提交 DP、库存、usedSlots 及部署间隔 → `Unit.initialize` 分配身份并装配 → Deployable.setDeployment 写入本次事实 → 登记 Unit／占格 → 普通 entered。
 
 付款先处理 DP 时基，不能在消费后补发满额期间回复。落点与方向通过 Occupancy Initial 提供；Deployment 不直接重建 Deployable State。
 
-部署 enter 程序先装配，然后 Card／Request Hook，再 Capability 和内容程序；公共 priority 可调整同一集合，默认同级保持装配顺序。Deployment 部署通知和 Occupancy 配对各自通过已登记程序完成，Unit.add 不特判这些领域。
+部署 entered 程序先装配，然后 Card／Request Hook，再 Capability 和内容程序；公共 priority 可调整同一集合，默认同级保持装配顺序。Deployment 部署通知和 Occupancy 配对各自通过已登记程序完成，Unit.add 不特判这些领域。
 
 ## 关卡预置与开场 Unit
 
-Predefined 持有完整 Unit 或 Mechanism 创建项。Unit 复用其具体 Definition 所需的初始化输入。initiallyPresent 声明开场出现。Unit 分支由 `Unit.initialize` 分配实例身份，appear 登记预置绑定后再 add／enter。
+Predefined 持有完整 Unit 或 Mechanism 创建项。Unit 复用其具体 Definition 所需的初始化输入。initiallyPresent 声明开场出现。Unit 分支由 `Unit.initialize` 分配实例身份，appear 登记预置绑定后再 add 并派发 entered。
 
 appear／remove 是按 PredefinedDefinition.id 的领域操作，不通过 Command。remove 先撤销旧绑定再完整结束实例；Unit 分支接收 Unit.End。离场回调重新出现同一预置项时，外层保留新绑定。预置不执行玩家部署的支付与部署通知。
 
@@ -68,21 +68,21 @@ Deployable 单向依赖 Occupancy。初始来源为空、COST／额度为零、�
 
 retreat 要求当前 ACTIVE 且撤退限制允许，先按本次依据退款，再按 Card 政策推进费用阶段／库存恢复，最后请求 Unit 以 RETREAT 结束。已有恢复队列保留当前段，新段启动时才采样时长。嵌套结束只完成 Prepare 时，这些前置账务也已完成。
 
-被动死亡程序只在 DEATH leave 结算 Card；零 HP 的暂态不是死亡确认。其他真实离场仍清理 Occupancy 配对和本次额度。HP 死亡确认与归属通知见 [Resource](resource.md)。
+被动死亡程序只在 DEATH 的 removed 结算 Card；零 HP 的暂态不是死亡确认。其他真实离场仍清理 Occupancy 配对和本次额度。HP 死亡确认与归属通知见 [Resource](resource.md)。
 
 ## 离场清理的偏序
 
-公共阶段为：发布 ENDING／prepare → 真实依赖完整结束 → 捕获当前 leave 登记快照 → 注销 Unit 与结构占格、记录移除 → 本地 leave → 全局 leave。
+公共阶段为：发布 ENDING／派发 removing → 真实依赖完整结束 → 捕获当前 removed 登记快照 → 注销 Unit 与结构占格、记录移除 → 本地 removed → 全局 removed。
 
 本地默认同级装配顺序是：归还本次 slots、适用的死亡 Card 结账、Card Hook、Request Hook、Occupancy 配对清理、Definition Hook。显式 priority 可改变本地顺序，不能跨公共阶段。高优先级内容不能假设尚未执行的账务已经完成。
 
-prepare／依赖收尾期间的 leave 登记变化进入注销前快照；固定 Departure 仍代表离场开始时的历史。所有本地 leave 都看到 Unit 与结构已注销，旧配对不清掉同格替代实例的新绑定。
+removing 和依赖收尾期间的 removed 登记变化进入注销前快照；固定 Departure 仍代表离场开始时的历史。所有本地 removed 都看到 Unit 与结构已注销，旧配对不清掉同格替代实例的新绑定。
 
-usedSlots 在 prepare 和依赖结束期间仍计入本次份额，物理注销后的 Deployable Hook 调用 Deployment 归还；预置份额为零。账户不由能力直接写入，Card 历史和当前 activeCount 也不代替它。
+usedSlots 在 removing 和依赖结束期间仍计入本次份额，物理注销后的 Deployable Hook 调用 Deployment 归还；预置份额为零。账户不由能力直接写入，Card 历史和当前 activeCount 也不代替它。
 
 ## 部署观察
 
-Deployment 的 deployed 与全局 Unit leave 分别存于所属 Battle Hooks 集合，不塞进某个 Unit。Deployed 固定 `{ unit, request }` 创建事实，支付读取 request.quote；后续 enter 仍可能改变或移除实例，需要实时状态时重新查询。
+Deployment 的 deployed 与全局 Unit removed 分别存于所属 Battle Hooks 集合，不塞进某个 Unit。Deployed 固定 `{ unit, request }` 创建事实，支付读取 request.quote；后续 entered 仍可能改变或移除实例，需要实时状态时重新查询。
 
 公共候选、priority、替换和嵌套派发见 [Hook](hook.md)。一次性来源在同步触发新部署前先消费自己的机会，不用 Event 执行业务。
 

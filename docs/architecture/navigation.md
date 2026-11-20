@@ -118,7 +118,7 @@ Main 必须有最终终点、实际到达，且满足 requireAllCheckpoints；�
 
 创建者选择 Plan、采样 offset，以同一样本构造出生位置并提供 Initial。Route 只建立 Main、执行政策和 Schedule 时基，不重新合成 UnitDefinition，也不接受预装执行状态。
 
-首指令由登记后的普通 Unit.enter 同步进入；Schedule 在 Unit.add 前发布等待关系。动态 Context 复用进入逻辑；已有 Unit 的新 Context 共享原出生时基，新 Unit 从当前 Schedule 独立取样，不从召唤者继承。
+首指令由登记后的普通 Unit.entered 同步进入；Schedule 在 Unit.add 前发布等待关系。动态 Context 复用进入逻辑；已有 Unit 的新 Context 共享原出生时基，新 Unit 从当前 Schedule 独立取样，不从召唤者继承。
 
 ### 回归语义
 
@@ -154,7 +154,7 @@ Movement 将本步的路线目标或空值传给 Locomotion。没有目标时，
 
 `pull.create` 接收施力方、受力方、来源 Scope、本次力度和拉点。拉点可为固定坐标或实时读取位置的弹道。创建时采样有效力度、重量、拉表值与初始距离。每步按目标和当前拉点计算方向，初始距离大于零时以 `min(1, 当前距离 / 初始距离)^4` 衰减。施力方不存在、来源 Scope 或弹道拉点失效、受力资格拒绝或拉表值为零时返回 `null`。
 
-每次创建分配独立 `Ref<Pull>`。同一来源 Scope 可同时拥有多条牵引，各自可结束。`pull.lifetime` 以牵引引用提供依赖 Scope，来源 Scope、所属失衡段和弹道拉点结束时均清理对应实例。`pull.end` 结束一条牵引并保留已有速度，其他牵引继续推进。旧引用只定位原实例。
+每次创建分配独立 `Ref<Pull>`。同一来源 Scope 可同时拥有多条牵引，各自可结束。`pull.lifetime` 以牵引引用提供依赖 Scope，来源 Scope、所属失衡段和弹道拉点结束时均清理对应实例。`pull.remove` 请求结束一条牵引并保留已有速度，默认原因为 `EXPLICIT`，其他牵引继续推进。旧引用只定位原实例。
 
 满足调用方提供的任一近停谓词即进入近停，可用 `pull.withinRadius` 表达距离判定。创建时已在近停范围内也可建立牵引。近停期间牵引保持有效，每步施力为零，离开范围后恢复施力。默认自动清速策略 `ONCE` 在首次成功清速后记住结果，`WHILE_NEAR` 可在以后满足近停条件时再次清速。显式 `pull.brake` 可在近停范围外调用。两种入口均要求请求对应本段唯一有效牵引。同一 Scope 的两个实例也各计一条。到位后由 Content 决定是否结束牵引、停止弹道或切换阶段。
 

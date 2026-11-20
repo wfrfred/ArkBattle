@@ -7,8 +7,8 @@ import type { Input as AmmoInput } from "./ammo.js";
 import type { RecoveryRestriction, Restrictions } from "./restriction.js";
 import { createChange, type Change } from "../../change.js";
 import { createRegistrationOperations } from "../../registration.js";
-import { enter } from "./operations.js";
-import { enter as enterKey } from "../../hook.js";
+import { entered } from "./operations.js";
+import { entered as enteredKey } from "../../hook.js";
 
 const activeRecoveryRestriction: RecoveryRestriction = {
     allows: (_battle, { self }) => self.skill.activation === null,
@@ -54,7 +54,7 @@ export function initialize<U extends Unit & Pick<Skill, "definition">>(
 
     return {
         state: initialized.state,
-        value: { ...unit, skill: value, hooks: unit.hooks.set(enterKey, enter) },
+        value: { ...unit, skill: value, hooks: unit.hooks.set(enteredKey, entered) },
     };
 }
 

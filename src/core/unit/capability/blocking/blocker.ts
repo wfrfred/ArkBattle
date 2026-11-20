@@ -6,9 +6,9 @@ import { validateRestrictions } from "../../../restriction.js";
 import type { Unit } from "../../unit.js";
 import type { Relation, Hook } from "./contract.js";
 import type { Restriction } from "./restriction.js";
-import { prepare } from "./blocker-operations.js";
+import { removing } from "./blocker-operations.js";
 import { Hooks as UnitHooks, key } from "../../../hook.js";
-import { prepare as prepareKey } from "../../hook.js";
+import { removing as removingKey } from "../../hook.js";
 
 export type Layer = "GROUND" | "AIR";
 
@@ -69,7 +69,7 @@ export function initialize<U extends Unit & Pick<Blocker, "definition">>(
         state: battle,
         value: {
             ...unit,
-            hooks: UnitHooks.empty().set(prepareKey, prepare).merge(unit.hooks),
+            hooks: UnitHooks.empty().set(removingKey, removing).merge(unit.hooks),
             blocker: {
                 relations: [],
                 capacity: [],

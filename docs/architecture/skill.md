@@ -70,7 +70,7 @@ ammoReplenished 仅通知普通补弹的正实际增量，保存 requested、实
 
 Activation Definition 必须显式提供 `ignoreRestrictions: readonly ActivationRestriction[]`：普通技能为 `[]`，允许眩晕中发动的技能可填写共享的 `control.stunRestriction`。先解析有效贡献，再按定义对象身份豁免；同一定义的多个来源一起忽略，不按登记 ID 判断，也不恢复被竞争压制的项。该豁免只作用于本次 Skill 启动，不删除登记、解除 Effect 或恢复其他领域的能力；只忽略 stun 仍受 silence、Presence 等其余限制。宿主生命周期、已有 Activation、accepts 及本次 SP 前提仍须满足。
 
-入场 Hook 先登记回复监听，再执行 onEnter，最后重新取得仍为 ACTIVE 的宿主尝试 PASSIVE 发动。持久 onTick 要求宿主 ACTIVE，本轮 onTick 还要求当前 Activation 为 ACTIVE；它们不机械继承自然 SP 回复的暂停条件。
+entered Hook 先登记回复监听，再执行 onEnter，最后重新取得仍为 ACTIVE 的宿主尝试 PASSIVE 发动。持久 onTick 要求宿主 ACTIVE，本轮 onTick 还要求当前 Activation 为 ACTIVE；它们不机械继承自然 SP 回复的暂停条件。
 
 Activation Definition 的 operations 按 STOP／RETRIGGER 分别提供处理器，未声明的操作不受理。operate 先检查对应处理器存在，再检查 operationRestrictions，通过后调用该处理器并返回 true；处理器接收 BattleState、宿主 Ref 和完整 Activation，不重复接收操作键。true 表示已受理，不承诺激活已经结束。内部 finish／cancel 不受主动操作支持范围或限制否决。
 
@@ -80,7 +80,7 @@ Skill 通知包括 SP 回复／支付／修改、耗弹／普通补弹和激活�
 
 `Battle.step` 通过 `SKILL` 命令接收 Skill 宿主的 Unit Ref 和操作。`ACTIVATE` 仅受理 MANUAL 技能。`STOP` 与 `RETRIGGER` 在命令执行时取得当前激活并交给 `operate`，没有当前激活时跳过命令。
 
-常规调度由 trigger 决定。advance 调度 AUTO 与尚未成功发动的 PASSIVE，enter 尝试 PASSIVE。Content 可以直接调用 `activate` 显式发动任意触发类型的技能。PASSIVE 始终只允许成功发动一次。
+常规调度由 trigger 决定。advance 调度 AUTO 与尚未成功发动的 PASSIVE，entered 尝试 PASSIVE。Content 可以直接调用 `activate` 显式发动任意触发类型的技能。PASSIVE 始终只允许成功发动一次。
 
 发动先检查宿主、占槽、限制、accepts、本次门槛与足额支付；拒绝不初始化、不支付。通过后调用本轮 initialize 一次，构造 Duration，再一次发布扣费、Activation 与下一轮身份，登记其 Unit 所有权。随后记录启动表现、派发 activationStarted 和 spPaid，再重读同一身份、ACTIVE 状态及宿主生命资格，决定是否执行 onStart。零时长也先执行仍有效的 onStart，再复查到期并结束。
 

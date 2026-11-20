@@ -90,7 +90,7 @@ export function createParalysis(parameters: ParalysisParameters): Definition {
                         current = effects.setState(current, reference, { used });
 
                         if (used === parameters.paralysisStacks) {
-                            current = effects.end(current, reference);
+                            current = effects.remove(current, reference);
                         }
 
                         const recoveryTicks = TICKS_PER_SECOND / 2;

@@ -26,7 +26,7 @@ initialize 建立初始主线、Branch 索引和空等待；无 Wave 时主线�
 
 advance 推进主线与已有活动 Phase；triggerBranch 触发一个 Phase，loop 仅决定末尾选择是否回首；resolveUnits 释放已离场 Unit 的两个集合关系；releaseFromWave 只解除指定活 Unit 的 wave 等待。后两者不隐式 advance，不移除 Unit 或改变计数。
 
-Battle 初始化登记全局 leave 反馈，任意完整 Unit 离场同步释放等待；通用 Unit 生命周期不依赖 Schedule。
+Battle 初始化登记全局 `battle.unit.removed` 反馈，任意完整 Unit 离场同步释放等待；通用 Unit 生命周期不依赖 Schedule。
 
 ## 出生时间
 
@@ -42,9 +42,9 @@ Battle 初始化登记全局 leave 反馈，任意完整 Unit 离场同步释放
 
 ## 从 Spawn 到 Unit
 
-出生先采样偏移并发布 RNG，再由 `Unit.initialize` 分配身份，用原 Definition、本次 Route Plan／offset 与 Facing 初值完成装配。接续初始化状态后先登记等待，再用 `Unit.add` 登记完整对象并执行 enter。
+出生先采样偏移并发布 RNG，再由 `Unit.initialize` 分配身份，用原 Definition、本次 Route Plan／offset 与 Facing 初值完成装配。接续初始化状态后先登记等待，再用 `Unit.add` 登记完整对象并派发 entered。
 
-Route 在实际初始化时取得主线时间快照，登记后的 enter 同步进入首指令；这些回调已经能看到完整出生和等待事实。unit.add 不解释路线。返回后始终接续最新 State，不覆盖嵌套操作的 Schedule／RNG／Unit 修改。
+Route 在实际初始化时取得主线时间快照，登记后的 entered 同步进入首指令；这些回调已经能看到完整出生和等待事实。unit.add 不解释路线。返回后始终接续最新 State，不覆盖嵌套操作的 Schedule／RNG／Unit 修改。
 
 其他技能、Effect 与机制创建者复用 Unit 初始化通道，自行选择路线来源和出生业务，不强制使用 Schedule Spawn。
 
@@ -60,7 +60,7 @@ PRE_DELAY → 各 FRAGMENT → WAITING → POST_DELAY → 下一 Wave／COMPLETE
 
 每次触发按当前下一索引选择一个 Phase，使用当前 RNG 对 WeightedSpawns 选一个完整组，再先发布下一索引、RNG 与新 ActivePhase，最后同步执行当前到期的出生。循环重入同一 Phase 重新抽选，执行期间不重抽或修改静态 Definition。
 
-enter 重入同一 Branch 时已看见下一索引和新 RNG，会建立独立实例；外层接续最新状态继续自身剩余项目。完成时按本次实例对象身份从最新集合移除，不按相同定义或触发 Tick 批量删除。
+entered 重入同一 Branch 时已看见下一索引和新 RNG，会建立独立实例；外层接续最新状态继续自身剩余项目。完成时按本次实例对象身份从最新集合移除，不按相同定义或触发 Tick 批量删除。
 
 triggerBranch 处理新实例触发 Tick 的到期项；常规 advance 仅推进 startTick 早于本 Tick 的已有实例，各一次。因此触发在普通推进之前、期间或之后，都不重复出生。
 
@@ -86,11 +86,11 @@ Data 合并 Action／Enemy 的 notCountInTotal 后，按以下优先级转换：
 
 ## 领域边界
 
-Schedule 只维护调度与等待；Route 决定路线出口并请求完整离场，已登记 leave 反馈等待释放。统计、关卡生命、得分和终局由对应规则／调用者处理，不保存 Battle.result 或 Total／Finished／Killed。
+Schedule 只维护调度与等待；Route 决定路线出口并请求完整离场，已登记的 removed 反馈等待释放。统计、关卡生命、得分和终局由对应规则／调用者处理，不保存 Battle.result 或 Total／Finished／Killed。
 
 ## 回归语义
 
-[统一验收](verification.md)覆盖时间轴、同样本出生与路线、等待早于 enter、超时／活 Unit 解除／离场、Branch 整组重抽与同步重入，以及空计划和真实出生时基。公共 Hook、RNG、Unit 析构不逐入口重复。
+[统一验收](verification.md)覆盖时间轴、同样本出生与路线、等待早于 entered、超时／活 Unit 解除／离场、Branch 整组重抽与同步重入，以及空计划和真实出生时基。公共 Hook、RNG、Unit 析构不逐入口重复。
 
 ## 机制依据
 

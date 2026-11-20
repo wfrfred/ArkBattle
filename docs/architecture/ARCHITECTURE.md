@@ -60,7 +60,7 @@ Core 不裁定胜负，也不因 Schedule 完成而冻结。调用者读取调�
 
 Unit 提供身份、共享 Definition、连续位置、生命周期与本地 Hook 集合。Capability 为其增加成对的 Definition 和 State；登记后能力组成保持稳定。Catalog 从 initializer 签名推导装配与必需 Initial，创建者先确定具体 Definition，再初始化并登记 Unit。
 
-Route 的本次 Plan／offset、Occupancy 的本次 tile 等实例事实经 Initial 提供。初始 Effect 在 Unit 登记后的 enter 程序中安装，不接受预装运行实例。构造与类型约束见 [Capability](capability.md)及[接口约定](api-conventions.md)。
+Route 的本次 Plan／offset、Occupancy 的本次 tile 等实例事实经 Initial 提供。初始 Effect 在 Unit 登记后的 `entered` Hook 中安装，不接受预装运行实例。构造与类型约束见 [Capability](capability.md)及[接口约定](api-conventions.md)。
 
 ## Subsystem 的责任与调用
 

@@ -274,7 +274,7 @@ export function resolveUnits(battle: BattleState, removedUnitIds: readonly UnitI
           };
 }
 
-export const leaveHook: Hook = {
+export const removedHook: Hook = {
     id: "@schedule/resolve-unit",
     invoke: (battle, { unit }) => ({ state: resolveUnits(battle, [unit.id]), value: undefined }),
 };

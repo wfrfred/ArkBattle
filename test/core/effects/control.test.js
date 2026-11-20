@@ -77,7 +77,7 @@ test("stun interrupts the current action, suppresses its affected capabilities, 
     state = effects.setEnabled(state, first.value, false);
     assert.equal(actions.start(state, action).value, null);
     assert.equal(facing.turn(state, source, "LEFT"), state);
-    state = effects.end(state, second.value);
+    state = effects.remove(state, second.value);
     state = { ...state, tick: 1 };
     assert.notEqual(actions.start(state, action).value, null);
     assert.equal(canMove(state, source), true);
@@ -104,11 +104,11 @@ test("silence blocks activation while SP prevention independently blocks recover
     const blocked = effects.install(state, source, blockSpRecovery);
     state = blocked.state;
     assert.equal(sp.recover(state, source, "EXTERNAL", 1).value.type, "REJECTED");
-    state = effects.end(state, blocked.value);
+    state = effects.remove(state, blocked.value);
     state = sp.recover(state, source, "EXTERNAL", 1).state;
     assert.equal(get(state, 0).skill.sp.value, 10);
     assert.equal(skills.activate(state, skill).value, null);
-    state = effects.end(state, silenced.value);
+    state = effects.remove(state, silenced.value);
     assert.notEqual(skills.activate(state, skill).value, null);
 });
 
@@ -128,7 +128,7 @@ test("a skill can ignore every stun source for activation while silence, SP and 
     const rejected = skills.activate(state, reference);
     assert.equal(rejected.value, null);
     assert.equal(rejected.state, state);
-    state = effects.end(state, silenced.value);
+    state = effects.remove(state, silenced.value);
     state = sp.pay(state, source, 5).state;
     const insufficient = skills.activate(state, reference);
     assert.equal(insufficient.value, null);

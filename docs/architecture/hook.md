@@ -20,7 +20,7 @@ ID 的范围是集合 × Key × ID。无登记返回空集合；同键同 ID 的
 
 ## 固有声明与初始化
 
-Definition、创建输入与 Unit 使用同一种 Hooks 集合，无登记使用 Hooks.empty()。初始化从输入集合开始，按 Capability initializer 顺序装配，最后合并 Definition.hooks；全部固有登记在 add 与 enter 之前就绪。
+Definition、创建输入与 Unit 使用同一种 Hooks 集合，无登记使用 Hooks.empty()。初始化从输入集合开始，按 Capability initializer 顺序装配，最后合并 Definition.hooks；全部固有登记在 add 与 entered 之前就绪。
 
 固有 Hook 可以直接声明，不必包装 Effect。Card 的 Unit Hook 或预置输入也使用同一集合；修改 Card 只影响以后创建的 Unit，不追溯已有实例。
 
@@ -44,9 +44,10 @@ accepts 只读。通知使用 void；取消、固定数值等工作值转换由�
 
 | 场景 | 必要语义 |
 | --- | --- |
-| Unit enter／tick | 固定候选，每项前要求当前宿主 ACTIVE |
-| Unit prepare | 先发布 ENDING 并固定 Departure，再执行；自动请求依赖者结束在其后 |
-| Unit leave | 注销前捕获最新 Hook 对象及 priority 快照，注销后执行；不再查已删除宿主 |
+| Unit entered／tick | 固定候选，每项前要求当前宿主 ACTIVE |
+| Unit removing | 固定 Departure 并发布 ENDING 后执行，早于 Lifetime 自动请求依赖者结束 |
+| Unit removed | 注销前捕获最新 Hook 对象及 priority 快照，注销后执行；不再查已删除宿主 |
+| Battle unit removed | `battle.unit.removed` 在 Unit 本地 `removed` 后派发 |
 | Blocking 一条关系 | 首个回调前同时采样双方候选，各自排序，先 Blocker 后 Blockable；不跨角色按 priority 混排 |
 | Blocking ACQUIRED／RELEASED | 前者随原 Relation 失效停止；后者通知已发生的解除，不追删回调中新建的关系 |
 | 资源常规阶段 | 要求当前宿主 ACTIVE，具体阶段保留自己的停止条件 |
@@ -56,7 +57,7 @@ accepts 只读。通知使用 void；取消、固定数值等工作值转换由�
 
 普通 HIT 回复与伤判共用 HP Damage.receiving；HIT 约定采用 10000 量级高优先级并原样返回工作值，普通伤判通常为 0。数值是内容顺序约定，不建立强制分区或额外派发轮次。beforeReceive 与 receiving 使用同一业务 Hook 类型、不同 Key，保留各自时点。
 
-HP Damage 的临时 Prepare 与 targetKilled 顺序由 [Resource](resource.md)规定；公共 Hook 不自动添加击杀程序。
+HP Damage 的临时 removing Hook 与 targetKilled 顺序由 [Resource](resource.md)规定；公共 Hook 不自动添加击杀程序。
 
 ## 本次调用的 Hook 排除
 

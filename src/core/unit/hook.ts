@@ -3,21 +3,21 @@ import { key, type Hook, type Key } from "../hook.js";
 import { createChange, type Change } from "./change.js";
 import type { Departure, Unit } from "./unit.js";
 
-export type EnterHook = Hook<Unit, void>;
+export type EnteredHook = Hook<Unit, void>;
 
 export type TickHook = Hook<Unit, void>;
 
-export type LeaveHook = Hook<Departure, void>;
+export type RemovedHook = Hook<Departure, void>;
 
-export type PrepareHook = Hook<Departure, void>;
+export type RemovingHook = Hook<Departure, void>;
 
-export const enter = key<EnterHook, Unit>("unit.enter");
+export const entered = key<EnteredHook, Unit>("unit.entered");
 
 export const tick = key<TickHook, Unit>("unit.tick");
 
-export const prepare = key<PrepareHook, Unit>("unit.prepare");
+export const removing = key<RemovingHook, Unit>("unit.removing");
 
-export const leave = key<LeaveHook, Unit>("unit.leave");
+export const removed = key<RemovedHook, Unit>("unit.removed");
 
 export function setHook<H extends Entry, Owner extends object>(
     reference: Key<H, Owner>,

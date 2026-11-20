@@ -68,7 +68,7 @@ export function createDefinition(
     return {
         id: profile.id,
         hooks: Hooks.empty()
-            .set(unitHooks.enter, {
+            .set(unitHooks.entered, {
                 id: "ground-enemy/movement-casting-rule",
                 invoke(battle, self) {
                     return {
@@ -86,7 +86,7 @@ export function createDefinition(
                     };
                 },
             })
-            .set(unitHooks.enter, {
+            .set(unitHooks.entered, {
                 id: "ground-enemy/facing",
                 invoke(battle, self) {
                     const current = getUnit(battle, unitRef(self));

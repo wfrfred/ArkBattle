@@ -20,7 +20,7 @@ export function create(configuration: Configuration): Definition {
         card,
         occupancy: { slot: "OCCUPANT" },
         hooks: Hooks.empty()
-            .set(unitHooks.enter, {
+            .set(unitHooks.entered, {
                 id: "crate/apply-tile",
                 invoke(battle, self) {
                     return {
@@ -31,7 +31,7 @@ export function create(configuration: Configuration): Definition {
                     };
                 },
             })
-            .set(unitHooks.leave, {
+            .set(unitHooks.removed, {
                 id: "crate/restore-tile",
                 invoke(battle, { unit }) {
                     return {

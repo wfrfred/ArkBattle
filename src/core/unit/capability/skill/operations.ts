@@ -6,7 +6,7 @@ import * as lifetimes from "../../../lifetime/index.js";
 import { register, unregister } from "../../../lifetime/operations.js";
 import * as units from "../../query.js";
 import type { Unit } from "../../unit.js";
-import { setHook, type EnterHook } from "../../hook.js";
+import { setHook, type EnteredHook } from "../../hook.js";
 import * as contribution from "../../../common/contribution.js";
 import { hasVitality } from "../vitality/capability.js";
 import { isAlive } from "../vitality/query.js";
@@ -341,7 +341,7 @@ export function advance(battle: BattleState, host: Ref<Unit & SkillCapability>):
     return battle;
 }
 
-export const enter: EnterHook = {
+export const entered: EnteredHook = {
     id: "@skill/enter",
     invoke: (battle, self) => {
         const host = units.ref(self as Unit & SkillCapability);

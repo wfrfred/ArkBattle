@@ -11,9 +11,9 @@ export type {
 
 export type { Event } from "./event.js";
 
-export type { EnterHook, TickHook, PrepareHook, LeaveHook } from "./hook.js";
+export type { EnteredHook, TickHook, RemovingHook, RemovedHook } from "./hook.js";
 
-export { enter, tick, prepare, leave, setHook, removeHook } from "./hook.js";
+export { entered, tick, removing, removed, setHook, removeHook } from "./hook.js";
 
 export type { Input } from "./initialize.js";
 

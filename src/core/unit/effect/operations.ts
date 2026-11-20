@@ -215,7 +215,7 @@ export function decreaseStack<T extends StackEffect<any, any>>(
     const stack = self as StackEffect;
 
     return amount >= stack.stackCount
-        ? end(battle, reference)
+        ? remove(battle, reference)
         : updateStack(battle, unit!, stack, stack.stackCount - amount, stack.expiration);
 }
 
@@ -265,7 +265,7 @@ export const lifetime: Lifetime<Effect, Effect<any, any>, string> = create({
     fromDependency: (reason) => reason,
 });
 
-export function end<T extends Effect<any, any>>(
+export function remove<T extends Effect<any, any>>(
     battle: BattleState,
     reference: Ref<T>,
     reason = "EXPLICIT",
@@ -413,7 +413,7 @@ function settleExpiration(battle: BattleState, reference: Ref<Effect>): BattleSt
         });
     }
 
-    return end(battle, reference, "EXPIRED");
+    return remove(battle, reference, "EXPIRED");
 }
 
 function remainingTime(expiration: Expiration, tick: number): number {

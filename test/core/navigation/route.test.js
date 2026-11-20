@@ -231,7 +231,7 @@ test("Main exit is independent of the selected Context and completes Unit lifeti
     let leaves = 0;
     let state = battle([creation(plan([{ type: "APPEAR", position: [0, 3], offset: [0, 0] }], {
         endPosition: [0, 3],
-    }), { hooks: Hooks.empty().set(lifecycle.leave, {
+    }), { hooks: Hooks.empty().set(lifecycle.removed, {
         id: "leave", invoke: state => { leaves++; return { state, value: undefined }; },
     }) })]);
     const host = units.ref(get(state, 0));

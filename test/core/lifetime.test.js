@@ -69,7 +69,7 @@ test("an owner waits for dependent finalizers and repeated requests preserve the
         {
             definition: {
                 id: "owner",
-                hooks: Hooks.empty().set(unitLifecycle.leave, {
+                hooks: Hooks.empty().set(unitLifecycle.removed, {
                         id: "observe-removal",
 
                         invoke(current, departure) {
@@ -109,7 +109,7 @@ test("an owner waits for dependent finalizers and repeated requests preserve the
             initialize: () => ({}),
             onEnd(current, _self, reason) {
                 assert.equal(reason, "FIRST");
-                current = effects.end(current, parent, "SECOND");
+                current = effects.remove(current, parent, "SECOND");
                 current = remove(current, owner, { reason: "DEATH", killer: null });
                 assert.equal(units.get(current, owner).lifecycle, "ENDING");
                 assert.equal(effects.get(current, parent).lifecycle, "ENDING");
@@ -122,7 +122,7 @@ test("an owner waits for dependent finalizers and repeated requests preserve the
         { scopes: [lifetimes.scope(effects.lifetime, parent)] },
     ).state;
 
-    const after = effects.end(state, parent, "FIRST");
+    const after = effects.remove(state, parent, "FIRST");
 
     assert.deepEqual(calls, ["parent-disabled", "child-ended", "parent-ended", "owner-left"]);
     assert.equal(units.get(after, owner), undefined);
@@ -156,7 +156,7 @@ test("an ending ancestor rejects new dependents before its active Action executi
                     initialize: (current, self) =>
                         actions.createActions(current, self, actions.create(program)),
                 },
-                hooks: Hooks.empty().set(unitLifecycle.prepare, {
+                hooks: Hooks.empty().set(unitLifecycle.removing, {
                         id: "bind-during-departure",
 
                         invoke(current) {

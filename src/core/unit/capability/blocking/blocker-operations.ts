@@ -6,7 +6,7 @@ import type * as contribution from "../../../common/contribution.js";
 import { createChange, type Change } from "../../change.js";
 import type { Ref } from "../../../common/ref.js";
 import type { Unit } from "../../unit.js";
-import type { PrepareHook } from "../../hook.js";
+import type { RemovingHook } from "../../hook.js";
 import * as units from "../../query.js";
 import type { Restriction } from "./restriction.js";
 import {
@@ -17,7 +17,7 @@ import {
     type Modifier,
 } from "./blocker.js";
 
-export const prepare: PrepareHook = {
+export const removing: RemovingHook = {
     id: "@blocker/prepare",
     invoke: (battle, { unit }) => ({
         state: releaseAll(battle, units.ref(unit as Unit & Blocker)),

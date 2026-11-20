@@ -1,6 +1,6 @@
 # 空间存在
 
-Presence 保存身体是否参与普通空间交互，初始 present 为 true；无该能力默认空间存在。暂时消失保留 Unit 身份、真实位置、Lifetime、部署和 Occupancy，不等于离场，不派发 enter／leave，也不统一结束 Skill、Effect、Burst 或独立弹道。
+Presence 保存身体是否参与普通空间交互，初始 present 为 true；无该能力默认空间存在。暂时消失保留 Unit 身份、真实位置、Lifetime、部署和 Occupancy，不等于离场，不派发 entered／removed，也不统一结束 Skill、Effect、Burst 或独立弹道。
 
 原生依据见[来源和目标生命周期](../research/cases/18-projectile-source-and-target-lifecycles.md)与[技能开始通知](../research/cases/05-skill-start-and-finish.md#2026-11-06复核开始通知中的宿主消失)。
 

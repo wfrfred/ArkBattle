@@ -24,9 +24,9 @@ Content 按 [Attribute](attribute.md) 契约绑定所属能力的属性；攻速
 
 ## 状态与登场
 
-`Unit.initialize` 分配单位身份并根据具体 Definition 装配标准能力。初始化 Hook 在 add／enter 前就绪，初始 Effect 在宿主登记后的 enter 正常安装。装配顺序与执行优先级分开，详见 [Capability](capability.md#初始化与装配)。
+`Unit.initialize` 分配单位身份并根据具体 Definition 装配标准能力。初始化 Hook 在 add 和 entered 前就绪，初始 Effect 在宿主登记后的 entered 正常安装。装配顺序与执行优先级分开，详见 [Capability](capability.md#初始化与装配)。
 
-出生和部署逐对象接续：一个对象的创建、登记及 enter 完成后，下一项使用最新 BattleState。普通 Unit.tick 位于出生之后、Effect／Skill／Action 之前；需要即时响应伤害或行动结果的变化使用所属业务 Hook，不等待下一 Tick。
+出生和部署逐对象接续：一个对象的创建、登记及 entered 完成后，下一项使用最新 BattleState。普通 Unit.tick 位于出生之后、Effect／Skill／Action 之前；需要即时响应伤害或行动结果的变化使用所属业务 Hook，不等待下一 Tick。
 
 内容可扩展 Unit 的私有阶段事实，但不预装标准能力 State、不直接改其他领域状态。占格 Pair、部署账务、来源历史和生命周期由其所属领域维护；历史载荷需要实时字段时重新查询。完整状态接续见 [Functional Core](functional-core.md)。
 

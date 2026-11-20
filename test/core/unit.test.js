@@ -20,7 +20,7 @@ test("Unit construction rejects conflicting roles and installs entry effects on 
     const definition = {
         id: "allied-unit",
         classification: { type: "DEVICE", side: "ALLY", filterTags: [], groupTags: [] },
-        hooks: Hooks.empty().set(units.enter, {
+        hooks: Hooks.empty().set(units.entered, {
             id: "install-entry-effect",
             invoke(state, self) {
                 assert.ok(units.get(state, units.ref(self)));
@@ -108,21 +108,21 @@ test("Unit death preserves its attribution through Effect responses and the orig
         id: "dynamic-lifecycle",
         vitality: defineVitality(40),
         hooks: Hooks.empty()
-            .set(units.enter, {
+            .set(units.entered, {
                 id: "first",
                 invoke(state, self) {
                     assert.ok(units.get(state, units.ref(self)).hooks.find(damageOutput, "intrinsic-output"));
                     observed.push("first");
                     return {
-                        state: update(state, units.ref(self), units.setHook(units.enter, {
+                        state: update(state, units.ref(self), units.setHook(units.entered, {
                             ...record("replacement"), id: "existing",
                         })),
                         value: undefined,
                     };
                 },
             })
-            .set(units.enter, record("existing"))
-            .set(units.prepare, {
+            .set(units.entered, record("existing"))
+            .set(units.removing, {
                 id: "prepare",
                 invoke(state, departure) {
                     assert.equal(skills.getSkill(state, skills.ref(killer, rewardSkill)).sp.value, 1);
@@ -130,11 +130,11 @@ test("Unit death preserves its attribution through Effect responses and the orig
                     assert.equal(departure, killedDeparture);
                     observed.push("victim-prepare");
                     return {
-                        state: update(state, units.ref(departure.unit), units.setHook(units.leave, {
+                        state: update(state, units.ref(departure.unit), units.setHook(units.removed, {
                             id: "late-leave",
                             invoke(current, original) {
                                 assert.equal(units.get(current, units.ref(original.unit)), undefined);
-                                assert.equal(original.unit.hooks.find(units.leave, "late-leave"), undefined);
+                                assert.equal(original.unit.hooks.find(units.removed, "late-leave"), undefined);
                                 assert.deepEqual(original.killer, killer);
                                 observed.push("late-leave");
                                 return { state: current, value: undefined };
@@ -217,7 +217,7 @@ test("Unit death preserves its attribution through Effect responses and the orig
         position: [0, 0],
         definition: {
             ...definition, id: "instant-target",
-            hooks: Hooks.empty().set(units.prepare, {
+            hooks: Hooks.empty().set(units.removing, {
                 id: "observe-direct-death",
                 invoke(current, departure) {
                     assert.equal(departure, killedDeparture);
@@ -229,7 +229,7 @@ test("Unit death preserves its attribution through Effect responses and the orig
         },
     });
     const directTarget = units.ref(created.value);
-    state = update(add(created.state, created.value), directTarget, units.setHook(units.prepare, {
+    state = update(add(created.state, created.value), directTarget, units.setHook(units.removing, {
         id: "direct-death-notification", priority: 10000,
         invoke(current, departure) {
             assert.equal(units.get(current, directTarget).lifecycle, "ENDING");

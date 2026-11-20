@@ -18,15 +18,15 @@ const plan = {
     requireAllCheckpoints: true,
 };
 
-function definition(id, enter) {
+function definition(id, onEntered) {
     return {
         id,
         hooks:
-            enter === undefined
+            onEntered === undefined
                 ? Hooks.empty()
-                : Hooks.empty().set(lifecycle.enter, {
+                : Hooks.empty().set(lifecycle.entered, {
                       id: `content/${id}`,
-                      invoke: (state, self) => ({ state: enter(state, self), value: undefined }),
+                      invoke: (state, self) => ({ state: onEntered(state, self), value: undefined }),
                   }),
         route: { alwaysCheckCurrentPoint: true },
     };
@@ -88,7 +88,7 @@ test("wave and fragment clocks execute preprocessed births and share the sampled
     assert.ok(self.route.main.offset[1] >= -0.2 && self.route.main.offset[1] <= 0.6);
 });
 
-test("wait policies publish before enter; timeout leaves final waits until complete removal", () => {
+test("wait policies publish before the entered hook and timeout leaves final waits until complete removal", () => {
     const entries = [];
     const observe = (state, self) => {
         entries.push({
@@ -190,7 +190,7 @@ test("a living Unit can release only its Wave wait without advancing the main pr
     assert.equal(getUnit(state, 0).lifecycle, "ACTIVE");
 });
 
-test("an enemy removed in enter releases its wait before the next wave starts", () => {
+test("an enemy removed in its entered hook releases its wait before the next wave starts", () => {
     const births = [];
     const departing = definition("departing", (state, self) => {
         births.push([self.definition.id, state.tick]);
@@ -223,7 +223,7 @@ test("an enemy removed in enter releases its wait before the next wave starts", 
     assert.equal(isCompleted(state.schedule), true);
 });
 
-test("enter can trigger the next branch phase without losing its later births", () => {
+test("the entered hook can trigger the next branch phase without losing its later births", () => {
     const births = [];
     const record = (state, self) => {
         births.push(self.definition.id);
@@ -264,7 +264,7 @@ test("enter can trigger the next branch phase without losing its later births", 
     assert.equal(isCompleted(state.schedule), true);
 });
 
-test("looping weighted phases publish RNG before enter and retain each selected execution", () => {
+test("looping weighted phases publish RNG before the entered hook and retain each selected execution", () => {
     const births = [];
     const record = (state, self) => {
         births.push([self.definition.id, state.tick]);

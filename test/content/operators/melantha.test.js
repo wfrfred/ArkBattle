@@ -19,7 +19,7 @@ import { start, advance as advanceAction, ref as actionRef, cancel, forUnit } fr
 import { advance as advanceBlocking, relations } from "../../../dist/core/battle/blocking/index.js";
 import { invisible, invisibleRestriction } from "../../../dist/core/effects/visibility.js";
 
-import { install, end } from "../../../dist/core/unit/effect/index.js";
+import { install, remove as removeEffect } from "../../../dist/core/unit/effect/index.js";
 import { advance as advanceCombat } from "../../../dist/core/battle/steps/combat.js";
 
 const data = JSON.parse(readFileSync(new URL("../../fixtures/arknights/main-mode-units.json", import.meta.url)));
@@ -94,7 +94,7 @@ test("Melantha pays Begin on first entry, skips it for consecutive attacks, and 
     battle = hidden.state;
     through(90);
     assert.deepEqual(battle.events.filter(event => event.type === "ATTACK_STARTED").map(event => event.tick), [0, 45]);
-    battle = end(battle, hidden.value);
+    battle = removeEffect(battle, hidden.value);
     through(119);
     assert.deepEqual(releases(), [29, 66]);
     through(120);

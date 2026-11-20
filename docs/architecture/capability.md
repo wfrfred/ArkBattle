@@ -20,11 +20,11 @@ Catalog 从 initializer 字典的函数签名派生配置、标准状态和 Init
 
 具体 Definition 决定装配哪些能力；对应 initializer 的第三参数必填时，initial 对应键及顶层 initial 都必填。允许额外的已知 Initial，它们在未选能力时忽略，未知键和错误值仍被类型拒绝。Occupancy 必需 tile，Route 必需 Plan／offset，Facing 必需方向；调用者不能预装运行进度或 Effects 容器。
 
-`Unit.initialize` 从当前 BattleState 分配实例 ID，推进分配进度，然后按 Catalog 顺序接续各 initializer。最后合并 Definition.hooks，同键同 ID 后者覆盖并保留位置。Occupancy 先于依赖它的 Deployable。初始化期间可以读取当前战场或消费 RNG，需要本次已装配的能力时直接读取输入 Unit。调用方接续返回的 State，可先登记本业务的事实，再用 `Unit.add` 发布实例并触发 enter。
+`Unit.initialize` 从当前 BattleState 分配实例 ID，推进分配进度，然后按 Catalog 顺序接续各 initializer。最后合并 Definition.hooks，同键同 ID 后者覆盖并保留位置。Occupancy 先于依赖它的 Deployable。初始化期间可以读取当前战场或消费 RNG，需要本次已装配的能力时直接读取输入 Unit。调用方接续返回的 State，可先登记本业务的事实，再用 `Unit.add` 发布实例并触发 entered。
 
-能力可在装配时登记 enter／prepare／leave 等 Hook。固有登记在完整 add 和任何 enter 前就绪；同级保留默认装配顺序，实际执行按[公共 Hook 优先级](hook.md)。通用装配和 Unit 生命周期不按具体能力建立额外阶段。初始 Effect 在登记后的 enter 正常安装。
+能力可在装配时登记 entered／removing／removed 等 Hook。固有登记在完整 add 和任何 entered 前就绪；同级保留默认装配顺序，实际执行按[公共 Hook 优先级](hook.md)。通用装配和 Unit 生命周期不按具体能力建立额外阶段。初始 Effect 在登记后的 entered 正常安装。
 
-Unit enter／tick 要求宿主仍 ACTIVE；prepare 使用固定 Departure 并先于自动请求依赖者。leave 在注销前捕获最新登记对象与优先级，注销后派发，历史载荷不变。完整机制见 [Lifetime](lifetime.md)，死亡归属与来源响应见 [Resource](resource.md)。
+Unit 的 entered 和 tick 要求宿主仍为 ACTIVE。removing 使用固定 Departure，在 Lifetime 自动请求依赖者结束之前派发。removed 在注销前捕获最新登记对象与优先级，在注销后派发，历史载荷不变。完整机制见 [Lifetime](lifetime.md)，死亡归属与来源响应见 [Resource](resource.md)。
 
 ## 构造、校验与命名
 
@@ -95,7 +95,7 @@ turn 是完整操作，要求当前 ACTIVE；NORMAL 检查本次方向限制，F
 
 ### 初始化
 
-Schedule 提供 RIGHT 初值，地面敌人 enter 在 Route 首指令后按当前导航尝试强制转向。Deployment 的 LEFT 摆放选左，其他或未指定选右；直接创建／预置明确提供初值。上述默认与同步政策属于项目选择，依据见[面向调查](../research/cases/35-facing-and-turning-conditions.md)。
+Schedule 提供 RIGHT 初值，地面敌人的 entered 在 Route 首指令后按当前导航尝试强制转向。Deployment 的 LEFT 摆放选左，其他或未指定选右；直接创建／预置明确提供初值。上述默认与同步政策属于项目选择，依据见[面向调查](../research/cases/35-facing-and-turning-conditions.md)。
 
 ### 必要回归语义
 

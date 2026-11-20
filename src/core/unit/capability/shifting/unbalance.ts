@@ -263,7 +263,7 @@ function settlePulls(
     }
 
     for (const item of lost) {
-        battle = pull.end(battle, pull.ref(item), "SOURCE_UNAVAILABLE");
+        battle = pull.remove(battle, pull.ref(item), "SOURCE_UNAVAILABLE");
     }
 
     return battle;

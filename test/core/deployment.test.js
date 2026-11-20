@@ -41,7 +41,7 @@ const account = {
     slotLimit: 3,
 };
 
-test("preview, evaluation and deployment use one request; rejection consumes nothing and enter sees consumption", () => {
+test("preview, evaluation and deployment share a request, rejection spends nothing, and the entered hook sees consumption", () => {
     const constructions = [];
     const deployments = [];
     const definition = {
@@ -100,7 +100,7 @@ test("preview, evaluation and deployment use one request; rejection consumes not
     const allowed = {
         ...rejected,
         tilePosition: [0, 2],
-        hooks: Hooks.empty().set(unitLifecycle.enter, {
+        hooks: Hooks.empty().set(unitLifecycle.entered, {
                 id: "observe-consumption",
 
                 invoke: (current, self) => {
@@ -222,7 +222,7 @@ test("retreat settles refund and the persistent Card before departure; confirmed
                     ...operator,
                     card: {
                         ...operator.card,
-                        unitHooks: Hooks.empty().set(unitLifecycle.leave, {
+                        unitHooks: Hooks.empty().set(unitLifecycle.removed, {
                                 id: "observe-departure",
 
                                 invoke: (current, { unit, reason }) => {

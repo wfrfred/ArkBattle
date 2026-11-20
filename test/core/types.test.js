@@ -13,7 +13,7 @@ import type { Ref } from ${module("common/ref")};
 import type { State } from ${module("battle/state")};
 import { Hooks, key, type Hook } from ${module("hook")};
 import { initialize, ref, get, all as allUnits, compose, optional, setHook as setUnitHook, removeHook as removeUnitHook, type Unit, type Input as UnitInput, type Change } from ${module("unit/index")};
-import { prepare as unitPrepare } from ${module("unit/hook")};
+import { removing as unitRemoving } from ${module("unit/hook")};
 import { update, remove as removeUnit } from ${module("unit/operations")};
 import * as actions from ${module("unit/capability/action/index")};
 import * as effects from ${module("unit/effect/index")};
@@ -56,7 +56,7 @@ const registered = Hooks.empty().set(outputKey, {
     id: 'output', priority: 5, invoke: (state, context, current) => ({ state, value: current + context.amount }),
 });
 registered.get(outputKey)[0]!.invoke(battle, { amount: 1 }, 0);
-const prioritizedLifecycle: Change<Unit> = setUnitHook(unitPrepare, {
+const prioritizedLifecycle: Change<Unit> = setUnitHook(unitRemoving, {
     id: 'before-cleanup', priority: 100,
     invoke: state => ({ state, value: undefined }),
 });
