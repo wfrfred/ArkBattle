@@ -22,7 +22,6 @@ export {
     setCooldown,
     cancel,
     cancelForUnit,
-    refreshCooldowns,
     resetCooldown,
     clearCooldown,
     advance,
