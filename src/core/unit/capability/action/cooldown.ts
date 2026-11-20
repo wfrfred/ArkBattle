@@ -31,14 +31,3 @@ export function resizeKeepingProgress(state: State, periodTicks: number, tick: n
 
     return { periodTicks, readyAtTick };
 }
-
-export function resizeKeepingElapsed(state: State, periodTicks: number, tick: number): State {
-    if (periodTicks === state.periodTicks) {
-        return state;
-    }
-
-    const elapsed = Math.max(0, tick - (state.readyAtTick - state.periodTicks));
-    const readyAtTick = tick + Math.max(0, periodTicks - elapsed);
-
-    return { periodTicks, readyAtTick };
-}
