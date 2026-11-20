@@ -5,12 +5,15 @@ import { Map } from "./map.js";
 
 export type Id = number;
 
-export interface Overlay extends Identified<{ readonly id: Id }> {
-    readonly id: Id;
+export interface Input {
     readonly cells: readonly TilePosition[];
     readonly denyPassage: boolean;
     readonly denyDepartures: readonly Direction[];
     readonly cost?: number;
+}
+
+export interface Overlay extends Identified<{ readonly id: Id }>, Input {
+    readonly id: Id;
 }
 
 export function apply(base: Map, overlays: readonly Overlay[]): Map {

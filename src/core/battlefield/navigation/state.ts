@@ -1,5 +1,5 @@
 import type { Ref } from "../../common/ref.js";
-import { assertNonnegativeSafeInteger, assertPositiveSafeInteger } from "../../common/assert.js";
+import { assertPositiveSafeInteger } from "../../common/assert.js";
 import { Vec2 } from "../../common/vector.js";
 import { Tile, World, type WorldPosition } from "../../geometry/coordinate.js";
 import { effectiveMap, field } from "./cache.js";
@@ -18,8 +18,6 @@ export function create(baseline: Readonly<Record<MotionMode, Map>>): State {
 }
 
 export function setOverlay(state: State, mode: MotionMode, overlay: Overlay): State {
-    assertNonnegativeSafeInteger(overlay.id, "navigation overlay id");
-
     if (overlay.cost !== undefined) {
         assertPositiveSafeInteger(overlay.cost, "navigation overlay cost");
     }
@@ -29,10 +27,6 @@ export function setOverlay(state: State, mode: MotionMode, overlay: Overlay): St
 
     const current = state.overlays[mode];
     const index = current.findIndex((entry) => entry.id === overlay.id);
-    if (current[index] === overlay) {
-        return state;
-    }
-
     const entries = [...current];
     if (index === -1) {
         entries.push(overlay);
@@ -48,16 +42,12 @@ export function setOverlay(state: State, mode: MotionMode, overlay: Overlay): St
 
 export function removeOverlay(state: State, mode: MotionMode, ref: Ref<Overlay>): State {
     const entries = state.overlays[mode];
-    const index = entries.findIndex((entry) => entry.id === ref.id);
-    if (index === -1) {
-        return state;
-    }
 
     return {
         baseline: state.baseline,
         overlays: {
             ...state.overlays,
-            [mode]: entries.filter((_, entryIndex) => entryIndex !== index),
+            [mode]: entries.filter((entry) => entry.id !== ref.id),
         },
     };
 }
