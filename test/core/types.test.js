@@ -443,6 +443,9 @@ projectiles.initialize(battle, { definition: projectileDefinition, side: 'ALLY',
 const projectileBattle = projectiles.add(createdProjectile.state, createdProjectile.value);
 const projectileRef = projectiles.ref(createdProjectile.value);
 const projectileHits: number = projectiles.get(projectileBattle, projectileRef)!.state.hits;
+const restoredOrdinaryProjectile = projectileBattle.battlefield.projectiles.get(projectileRef.id, projectileDefinition)!;
+// @ts-expect-error Definition recovery cannot grant elimination to an ordinary Projectile.
+projectiles.remove(projectileBattle, projectiles.ref(restoredOrdinaryProjectile), 'ELIMINATED');
 // @ts-expect-error a Projectile Ref fixes the private state accepted by writes.
 projectiles.update(projectileBattle, projectileRef, { state: { hits: 'wrong' } });
 // @ts-expect-error a Projectile Ref without eligibility cannot request elimination.
@@ -474,6 +477,7 @@ projectiles.setMoveContribution(slowableBattle, slowableProjectileRef, { id: 'sl
 projectiles.remove(slowableBattle, slowableProjectileRef, 'ELIMINATED');
 const restoredProjectile = slowableBattle.battlefield.projectiles.get(slowableProjectileRef.id, createdSlowable.value.definition)!;
 projectiles.resolveMoveScale(restoredProjectile);
+projectiles.remove(slowableBattle, projectiles.ref(restoredProjectile), 'ELIMINATED');
 projectiles.update(slowableBattle, projectiles.ref(restoredProjectile), { state: { hits: restoredProjectile.state.hits + 1 } });
 // @ts-expect-error Definition recovery retains the paired private state type.
 projectiles.update(slowableBattle, projectiles.ref(restoredProjectile), { state: { hits: 'wrong' } });

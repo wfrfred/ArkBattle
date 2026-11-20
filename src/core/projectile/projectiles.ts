@@ -23,10 +23,10 @@ export class Projectiles {
 
     get<P extends Projectile<object, any>>(reference: Ref<P>): P | undefined;
     get(id: Id): Projectile | undefined;
-    get<S extends object, T extends object>(
+    get<S extends object, T extends object, const D extends Definition<S, T>>(
         id: Id,
-        definition: Definition<S, T>,
-    ): (Projectile<S, T> & T) | undefined;
+        definition: Definition<S, T> & D,
+    ): (Projectile<S, T> & T & { readonly definition: D }) | undefined;
     get<P extends Projectile<object, any>>(
         identity: Id | Ref<P>,
         definition?: Definition<any, any>,
