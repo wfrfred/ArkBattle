@@ -9,7 +9,7 @@ import { advance as advanceSchedule } from "./schedule/runtime.js";
 import { resolveDeploymentCommands } from "./deployment/operations.js";
 import { advanceMovement } from "./steps/movement.js";
 import { advance as advanceBlocking } from "./blocking/operations.js";
-import { advanceProjectiles } from "./steps/projectiles.js";
+import { advance as advanceProjectiles } from "../projectile/operations.js";
 import { advance as advanceMechanisms } from "../mechanism/mechanism.js";
 import * as projectiles from "../projectile/query.js";
 import { advanceElements } from "./steps/elemental.js";
@@ -21,7 +21,6 @@ import * as unit from "../unit/operations.js";
 import { addCard, advance as advanceDeployment } from "./deployment/resources.js";
 import type { Card } from "./deployment/card/card.js";
 import { initialize as initializeDeployment } from "./deployment/deployment.js";
-import type { Projectile } from "../projectile/projectile.js";
 
 export type { Input, Command, Event } from "./contract.js";
 
@@ -77,11 +76,8 @@ export function initialize(input: Input<readonly any[], readonly any[]>): State 
     return initializeBattlefield(initial, input);
 }
 
-export function step(
-    battle: State,
-    commands: readonly Command<Card<any>, Projectile<any>>[],
-): State {
-    const projectileCandidates = projectiles.all(battle);
+export function step(battle: State, commands: readonly Command<Card<any>>[]): State {
+    const projectileCandidates = projectiles.all(battle).map(projectiles.ref);
     let state: State = { ...battle, events: [] };
 
     state = advanceDeployment(state);
@@ -104,7 +100,7 @@ export function step(
 
     state = advanceCombat(state);
 
-    state = advanceProjectiles(state, projectileCandidates.map(projectiles.ref), commands);
+    state = advanceProjectiles(state, projectileCandidates);
 
     state = advanceMovement(state, {
         routeMoveMultiplier: battle.definition.routeMoveMultiplier,

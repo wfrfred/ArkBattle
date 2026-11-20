@@ -1,4 +1,3 @@
-import { Vec2 } from "../../core/common/vector.js";
 import type { Ref } from "../../core/common/ref.js";
 import type { State as BattleState } from "../../core/battle/index.js";
 import * as projectiles from "../../core/projectile/index.js";
@@ -13,6 +12,7 @@ import { hasOffense, resolveAttack } from "../../core/unit/capability/offense/in
 import { isAlive, type Vitality } from "../../core/unit/capability/vitality/index.js";
 import * as units from "../../core/unit/index.js";
 import type { Unit } from "../../core/unit/index.js";
+import { towards } from "./motion.js";
 
 export interface State {
     readonly source: Ref<Unit> | null;
@@ -26,7 +26,7 @@ export interface State {
     readonly launchedAtTick: number;
 }
 
-export interface Definition extends ProjectileDefinition<State> {
+export interface Definition<T extends object = object> extends ProjectileDefinition<State, T> {
     readonly tracking: true;
 }
 
@@ -39,9 +39,9 @@ export interface Presentation {
     readonly launchedAtTick: number;
 }
 
-export function project<S extends object>(
+export function project<S extends object, T extends object>(
     battle: BattleState,
-    reference: Ref<Projectile<S>>,
+    reference: Ref<Projectile<S, T>>,
 ): Presentation | undefined {
     const self = projectiles.get(battle, reference);
     if (
@@ -63,7 +63,10 @@ export function project<S extends object>(
     };
 }
 
-export function attackPower<S extends State>(battle: BattleState, self: Projectile<S>): number {
+export function attackPower<S extends State, T extends object>(
+    battle: BattleState,
+    self: Projectile<S, T>,
+): number {
     const source = self.state.source === null ? undefined : units.get(battle, self.state.source);
     if (source === undefined) {
         return self.state.cachedAtk;
@@ -72,10 +75,10 @@ export function attackPower<S extends State>(battle: BattleState, self: Projecti
     return hasOffense(source) ? resolveAttack(battle, source) : 0;
 }
 
-export function hit<S extends State>(
+export function hit<S extends State, T extends object>(
     battle: BattleState,
-    self: Projectile<S>,
-    invoke: (battle: BattleState, self: Projectile<S>, target: Unit & Vitality) => BattleState,
+    self: Projectile<S, T>,
+    invoke: (battle: BattleState, self: Projectile<S, T>, target: Unit & Vitality) => BattleState,
 ): BattleState {
     const reference = projectiles.ref(self);
     const current = projectiles.get(battle, reference);
@@ -95,30 +98,28 @@ export function hit<S extends State>(
     return invoke(battle, marked, target);
 }
 
-export function advance<S extends State>(
+export function advance<S extends State, T extends object>(
     battle: BattleState,
-    self: Projectile<S>,
-    onReached: (battle: BattleState, self: Projectile<S>) => BattleState,
+    self: Projectile<S, T>,
+    deltaTicks: number,
+    onReached: (battle: BattleState, self: Projectile<S, T>) => BattleState,
 ): BattleState {
     const reference = projectiles.ref(self);
 
     if (self.state.stopAtTick !== null) {
         return battle.tick >= self.state.stopAtTick
-            ? projectiles.stop(battle, reference, "ARRIVED")
+            ? projectiles.remove(battle, reference, "ARRIVED")
             : battle;
     }
 
     const target = units.get(battle, self.state.target);
     const destination = target?.position ?? self.state.destination;
-    const reached =
-        Vec2.distanceSquared(self.position, destination) <=
-        self.state.speedPerTick * self.state.speedPerTick;
-    const position = reached
-        ? destination
-        : Vec2.add(
-              self.position,
-              Vec2.clampLength(Vec2.sub(destination, self.position), self.state.speedPerTick),
-          );
+    const { position, reached } = towards(
+        self.position,
+        destination,
+        self.state.speedPerTick,
+        deltaTicks,
+    );
     const stopAtTick = reached ? battle.tick + self.state.stopDelayTicks : null;
 
     battle = projectiles.update(battle, reference, {
@@ -137,6 +138,6 @@ export function advance<S extends State>(
     return latest?.lifecycle === "ACTIVE" &&
         latest.state.stopAtTick !== null &&
         battle.tick >= latest.state.stopAtTick
-        ? projectiles.stop(battle, reference, "ARRIVED")
+        ? projectiles.remove(battle, reference, "ARRIVED")
         : battle;
 }

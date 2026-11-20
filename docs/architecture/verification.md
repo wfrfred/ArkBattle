@@ -4,7 +4,7 @@
 
 ## 范围
 
-覆盖 Battlefield、Unit 构造／Change／查询、各 Capability，以及 Action、Skill、Effect、Contribution、Deployment、Blocking、Occupancy、Route／Schedule 和 Runtime 协作；包括公共 Hook／Ref／Lifetime 与 HP／EP 四类结算。完整 Projectile、Mechanism 的独立业务仍按其领域审查，参与已审查协作时不豁免公共契约。
+覆盖 Battlefield、Unit 构造／Change／查询、各 Capability，以及 Action、Skill、Effect、Projectile、Contribution、Deployment、Blocking、Occupancy、Route／Schedule 和 Runtime 协作。公共 Hook／Ref／Lifetime 与 HP／EP 四类结算同样纳入覆盖。完整 Mechanism 的独立业务仍按其领域审查。
 
 ## 保留依据
 
@@ -85,6 +85,13 @@ Prefab、范围读取和换算由实际业务使用；目录移动、提取工�
 | 选择组接续 RNG，启动拒绝保留消费；保存目标不自动重选，显式复验不重新竞争。 | 实际攻击接入。 |
 
 来源退场后的样本归 Projectile／Content；复杂选择由 Query 组合，不另建测试专用 Selector 程序。
+
+## Projectile 的回归语义
+
+- `initialize` 分配身份，`add` 登记后调用 `onEnter`。回调可以嵌套创建或移除已登记实例。
+- Runtime 只推进 Tick 入口已有的候选。已结束的候选跳过。
+- 外部变速按来源 ID 替换和撤销，有效倍率相乘。不可变速弹道排除在登记候选外。
+- 消除通过资格筛选和 Ref 类型约束进入 Lifetime，`onEnd` 收到 `ELIMINATED`。代表用例覆盖原目标保底跳过和弹道 Scope 下的 Pull 清理。
 
 ## Route 与 Schedule 的回归语义
 

@@ -1,8 +1,9 @@
 import type { Restriction as BaseRestriction } from "../../../restriction.js";
+import type { Side } from "../../../side.js";
 import type { Unit } from "../../unit.js";
 import type { Blocker } from "./blocker.js";
 import type { Blockable } from "./blockable.js";
-import { hasClassification, type Side } from "../classification/index.js";
+import { hasClassification } from "../classification/index.js";
 
 export interface RestrictionContext {
     readonly blocker: Unit & Blocker;

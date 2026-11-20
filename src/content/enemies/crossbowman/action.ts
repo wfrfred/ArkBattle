@@ -10,10 +10,8 @@ import type { Timing as AttackTiming } from "../../actions/timing.js";
 import type { Profile } from "../../../data/unit/enemy.js";
 import { perSecondToPerTick } from "../../../data/time.js";
 import { assertNonnegativeSafeInteger, assertPositiveNumber } from "../../../core/common/assert.js";
-import {
-    create as createProjectile,
-    type Projectile as ProjectileInstance,
-} from "../../../core/projectile/index.js";
+import * as projectiles from "../../../core/projectile/index.js";
+import type { Projectile as ProjectileInstance } from "../../../core/projectile/index.js";
 import type { State as BattleState } from "../../../core/battle/index.js";
 import * as tracking from "../../projectiles/tracking.js";
 import { hasOffense, resolveAttack } from "../../../core/unit/capability/offense/index.js";
@@ -67,8 +65,8 @@ export function createArrow(): tracking.Definition {
     return {
         id: "main-mode-crossbow-arrow",
         tracking: true,
-        onTick: (battle, self) => tracking.advance(battle, self, hit),
-        onEnd: (battle, self, reason) => (reason === "DISPEL" ? battle : hit(battle, self)),
+        onTick: (battle, self) => tracking.advance(battle, self, 1, hit),
+        onEnd: (battle, self, reason) => (reason === "ELIMINATED" ? battle : hit(battle, self)),
     };
 }
 
@@ -164,13 +162,20 @@ export function createRanged(profile: Profile, timing: Timing, projectile: Proje
         output: (state, host, self) => {
             const source = units.get(state, host);
             const target = units.get(state, self.execution.state.target);
-            if (source === undefined || target === undefined || !hasVitality(target)) {
+            if (
+                source === undefined ||
+                !hasClassification(source) ||
+                target === undefined ||
+                !hasVitality(target)
+            ) {
                 return state;
             }
 
             const cachedAtk = hasOffense(source) ? resolveAttack(state, source) : 0;
 
-            return createProjectile(state, projectile.definition, {
+            const initialized = projectiles.initialize(state, {
+                definition: projectile.definition,
+                side: source.definition.classification.side,
                 position: source.position,
                 state: {
                     source: units.ref(source),
@@ -183,7 +188,9 @@ export function createRanged(profile: Profile, timing: Timing, projectile: Proje
                     hitAttempted: false,
                     launchedAtTick: state.tick,
                 },
-            }).state;
+            });
+
+            return projectiles.add(initialized.state, initialized.value);
         },
     });
 }

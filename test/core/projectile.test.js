@@ -4,18 +4,19 @@ import * as unitLifecycle from "../../dist/core/unit/hook.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { battle, unit, actionDefinition } from "../helpers/action-fixture.js";
-import * as projectiles from "../../dist/core/projectile/operations.js";
-import * as projectilesQuery from "../../dist/core/projectile/query.js";
-import { advanceProjectiles } from "../../dist/core/battle/steps/projectiles.js";
+import * as projectiles from "../../dist/core/projectile/index.js";
+import { advance } from "../../dist/core/projectile/operations.js";
 
 import { step as stepBattle } from "../../dist/core/battle/runtime.js";
 import { battle as createBattle } from "../helpers/battle.js";
 
 
-const candidates = battle => projectilesQuery.all(battle).map(projectilesQuery.ref);
-const instances = battle => projectilesQuery.all(battle).toArray();
-const create = (battle, definition, state = {}, position = [0, 0]) =>
-    projectiles.create(battle, definition, { position, state });
+const candidates = battle => projectiles.all(battle).map(projectiles.ref);
+const instances = battle => projectiles.all(battle).toArray();
+function create(battle, definition, state = {}) {
+    const initialized = projectiles.initialize(battle, { definition, side: "NEUTRAL", position: [0, 0], state });
+    return { state: projectiles.add(initialized.state, initialized.value), value: projectiles.ref(initialized.value) };
+}
 
 function runtime(initialUnits) {
     return createBattle(initialUnits.map(self => ({
@@ -24,31 +25,38 @@ function runtime(initialUnits) {
 }
 
 
-test("Projectile creation registers before onStart and nested creation allocates independent identities", () => {
+test("Projectile initialization reserves its identity before add publishes it and calls onEnter", () => {
     const observed = [];
-    const child = { id: "child", onStart(battle, self) {
+    const child = { id: "child", onEnter(battle, self) {
         observed.push("child");
-        assert.strictEqual(projectilesQuery.get(battle, projectilesQuery.ref(self)), self);
+        assert.strictEqual(projectiles.get(battle, projectiles.ref(self)), self);
         return battle;
     } };
-    const parent = { id: "parent", onStart(battle, self) {
+    const parent = { id: "parent", onEnter(battle, self) {
         observed.push("parent");
-        assert.strictEqual(projectilesQuery.get(battle, projectilesQuery.ref(self)), self);
+        assert.strictEqual(projectiles.get(battle, projectiles.ref(self)), self);
         return create(battle, child, { child: true }).state;
     } };
     const initial = battle();
-    const created = create(initial, parent, { parent: true });
+    const initialized = projectiles.initialize(initial, {
+        definition: parent, side: "ALLY", position: [0, 0], state: { parent: true },
+    });
+    const reference = projectiles.ref(initialized.value);
+    assert.equal(projectiles.get(initialized.state, reference), undefined);
+    assert.deepEqual(observed, []);
+    const added = projectiles.add(initialized.state, initialized.value);
 
     assert.deepEqual(observed, ["parent", "child"]);
-    assert.deepEqual(projectilesQuery.get(created.state, created.value).state, { parent: true });
-    assert.deepEqual(instances(created.state).map(self => self.state), [{ parent: true }, { child: true }]);
+    assert.deepEqual(projectiles.get(added, reference).state, { parent: true });
+    assert.equal(projectiles.get(added, reference).side, "ALLY");
+    assert.deepEqual(instances(added).map(self => self.state), [{ parent: true }, { child: true }]);
 });
 
-test("onStart may synchronously stop its own instance while create still returns the allocated Ref", () => {
+test("onEnter may synchronously remove its own registered instance", () => {
     const observed = [];
     const definition = {
         id: "instant",
-        onStart: (battle, self) => projectiles.stop(battle, projectilesQuery.ref(self)),
+        onEnter: (battle, self) => projectiles.remove(battle, projectiles.ref(self)),
         onEnd(battle, self, reason) {
             observed.push([self.lifecycle, reason]);
             return battle;
@@ -56,33 +64,61 @@ test("onStart may synchronously stop its own instance while create still returns
     };
     const created = create(battle(), definition);
 
-    assert.equal(projectilesQuery.get(created.state, created.value), undefined);
+    assert.equal(projectiles.get(created.state, created.value), undefined);
     assert.deepEqual(observed, [["ENDING", "EXPLICIT"]]);
 });
 
 
-test("Battle commands stop in order before survivors advance", () => {
+test("the Projectile step skips a candidate removed earlier in the same step", () => {
     const observed = [];
-    const definition = { id: "command", onTick(battle, self) {
+    const target = create(battle(), { id: "target", onTick(battle) {
+        observed.push("target");
+        return battle;
+    } });
+    const source = create(target.state, { id: "source", onTick(battle, self) {
         observed.push(["advance", self.id]);
-        return projectiles.update(battle, projectilesQuery.ref(self), { position: [1, 0] });
-    }, onEnd(battle, self) { observed.push(["stop", self.id]); return battle; } };
-    let initial = battle();
-    for (let index = 0; index < 3; index++) initial = create(initial, definition).state;
-    const references = instances(initial).map(projectilesQuery.ref);
-    const progressed = advanceProjectiles(initial, candidates(initial), [references[2], references[0]].map(ref => ({ type: "STOP_PROJECTILE", ref })));
+        return projectiles.remove(battle, target.value);
+    } });
+    const progressed = advance(source.state, [source.value, target.value]);
 
-    assert.deepEqual(observed, [["stop", 2], ["stop", 0], ["advance", 1]]);
-    assert.deepEqual(instances(progressed).map(self => [self.id, self.position]), [[1, [1, 0]]]);
+    assert.deepEqual(observed, [["advance", source.value.id]]);
+    assert.equal(projectiles.get(progressed, target.value), undefined);
+});
+
+test("Slowable projectiles compose the contributions of each source and remove them independently", () => {
+    const initialized = projectiles.initialize(battle(), {
+        definition: { id: "slowable", onTick(battle, self) {
+            return projectiles.update(battle, projectiles.ref(self), {
+                position: [self.position[0] + projectiles.resolveMoveScale(self), 0],
+            });
+        } },
+        side: "ENEMY", position: [0, 0], state: {}, move: { contributions: [] },
+    });
+    const added = projectiles.add(initialized.state, initialized.value);
+    const ordinary = create(added, { id: "ordinary" });
+    const [reference] = projectiles.all(ordinary.state).filter(projectiles.hasSlowable).map(projectiles.ref).toArray();
+    assert.equal(reference.id, initialized.value.id);
+    assert.equal(projectiles.all(ordinary.state).filter(projectiles.hasSlowable).toArray().length, 1);
+
+    let state = projectiles.setMoveContribution(ordinary.state, reference, { id: "a", value: 0.5 });
+    state = projectiles.setMoveContribution(state, reference, { id: "b", value: 0.25 });
+    state = projectiles.setMoveContribution(state, reference, { id: "b", value: 0.5 });
+    state = advance(state, candidates(state));
+    assert.deepEqual(projectiles.get(state, reference).position, [0.25, 0]);
+
+    state = advance(projectiles.removeMoveContribution(state, reference, "a"), [reference]);
+    assert.deepEqual(projectiles.get(state, reference).position, [0.75, 0]);
+    state = advance(projectiles.removeMoveContribution(state, reference, "b"), [reference]);
+    assert.deepEqual(projectiles.get(state, reference).position, [1.75, 0]);
 });
 
 test("Runtime freezes Projectile candidates before Unit callbacks and Action output", () => {
     const observed = [];
-    const fromUnit = { id: "unit-child", onStart(battle) { observed.push(["unit-create", battle.tick]); return battle; }, onTick(battle, self) {
+    const fromUnit = { id: "unit-child", onEnter(battle) { observed.push(["unit-create", battle.tick]); return battle; }, onTick(battle, self) {
         observed.push([self.definition.id, battle.tick]);
         return battle;
     } };
-    const fromAction = { id: "action-child", onStart(battle) { observed.push(["action-create", battle.tick]); return battle; }, onTick(battle, self) { observed.push([self.definition.id, battle.tick]); return battle; } };
+    const fromAction = { id: "action-child", onEnter(battle) { observed.push(["action-create", battle.tick]); return battle; }, onTick(battle, self) { observed.push([self.definition.id, battle.tick]); return battle; } };
     const source = unit(0, { hooks: Hooks.empty().set(unitLifecycle.tick, { id: "test/tick",  invoke(battle) {
         return { state: battle.tick === 0 ? create(battle, fromUnit).state : battle, value: undefined };
     } }), action: actionDefinition(0, { output: battle => create(battle, fromAction).state }) });

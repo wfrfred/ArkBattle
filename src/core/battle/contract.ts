@@ -9,7 +9,6 @@ import type { StoredPredefinedDefinition } from "./predefined.js";
 import type { DeploymentCommand } from "./deployment/operations.js";
 import type { Ref } from "../common/ref.js";
 import type { Execution } from "../unit/capability/action/execution.js";
-import type { Projectile } from "../projectile/projectile.js";
 import type { Operation } from "../unit/capability/skill/activation.js";
 import type { Skill } from "../unit/capability/skill/capability.js";
 
@@ -41,11 +40,10 @@ export interface SkillCommand {
     readonly operation: "ACTIVATE" | Operation;
 }
 
-export type Command<T extends Card<any> = Card, P extends Projectile<any> = Projectile> =
+export type Command<T extends Card<any> = Card> =
     | DeploymentCommand<T>
     | SkillCommand
     | {
           readonly type: "CANCEL_ACTION_EXECUTION";
           readonly ref: Ref<Execution>;
-      }
-    | { readonly type: "STOP_PROJECTILE"; readonly ref: Ref<P> };
+      };

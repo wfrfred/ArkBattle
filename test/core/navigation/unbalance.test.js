@@ -126,9 +126,13 @@ test("pulls with a shared source scope stack and only the sole pull can brake", 
 
 test("a moving pull point can hold a pull at zero, resume it, and end it without clearing momentum", () => {
     const { state, host, source } = setup();
-    const anchor = projectiles.create(state, { id: "pull-anchor" }, { position: [2, 1], state: {} });
-    const linked = pull.create(anchor.state, source, host, fixedPull(source, [2, 1], {
-        point: { type: "PROJECTILE", projectile: anchor.value },
+    const anchor = projectiles.initialize(state, {
+        definition: { id: "pull-anchor", eliminatable: true }, side: "ALLY", position: [2, 1], state: {},
+    });
+    const anchorRef = projectiles.ref(anchor.value);
+    const added = projectiles.add(anchor.state, anchor.value);
+    const linked = pull.create(added, source, host, fixedPull(source, [2, 1], {
+        point: { type: "PROJECTILE", projectile: anchorRef },
         nearStop: [pull.withinRadius(0.05)],
     }));
     assert.ok(linked.value);
@@ -143,15 +147,15 @@ test("a moving pull point can hold a pull at zero, resume it, and end it without
         },
     }, { scopes: [scope] });
 
-    let current = projectiles.update(watched.state, anchor.value, { position: [1.01, 1] });
+    let current = projectiles.update(watched.state, anchorRef, { position: [1.01, 1] });
     for (let i = 0; i < 4; i++) current = step(current, []);
     assertPosition(current, [1, 1]);
     assert.equal(lifetime.available(current, scope), true);
 
-    current = step(projectiles.update(current, anchor.value, { position: [1.5, 1] }), []);
+    current = step(projectiles.update(current, anchorRef, { position: [1.5, 1] }), []);
     assertPosition(current, [1 + 2.5 / 900, 1]);
-    current = projectiles.stop(current, anchor.value, "DISPEL");
-    assert.equal(endReason, "DISPEL");
+    current = projectiles.remove(current, anchorRef, "ELIMINATED");
+    assert.equal(endReason, "ELIMINATED");
     assert.equal(lifetime.available(current, scope), false);
     assert.equal(shiftable.isUnbalanced(get(current, 0)), true);
     current = step(current, []);

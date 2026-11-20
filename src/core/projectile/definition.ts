@@ -1,11 +1,15 @@
 import type { State as BattleState } from "../battle/state.js";
 import type { Projectile } from "./projectile.js";
 
-export type StopReason = "ARRIVED" | "EXPIRED" | "EXPLICIT" | "SOURCE_UNAVAILABLE" | "DISPEL";
+export type EndReason = "ARRIVED" | "EXPIRED" | "EXPLICIT" | "SOURCE_UNAVAILABLE" | "ELIMINATED";
 
-export interface Definition<S extends object> {
+export interface Definition<S extends object = object, T extends object = object> {
     readonly id: string;
-    readonly onStart?: (battle: BattleState, self: Projectile<S>) => BattleState;
-    readonly onTick?: (battle: BattleState, self: Projectile<S>) => BattleState;
-    readonly onEnd?: (battle: BattleState, self: Projectile<S>, reason: StopReason) => BattleState;
+    readonly onEnter?: (battle: BattleState, self: Projectile<S, T>) => BattleState;
+    readonly onTick?: (battle: BattleState, self: Projectile<S, T>) => BattleState;
+    readonly onEnd?: (
+        battle: BattleState,
+        self: Projectile<S, T>,
+        reason: EndReason,
+    ) => BattleState;
 }

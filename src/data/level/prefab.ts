@@ -3,8 +3,8 @@ import type {
     SiteCondition,
     State as TileState,
 } from "../../core/battlefield/map/tile.js";
+import type { Side } from "../../core/side.js";
 import { parsePrefabExtraction, getPrefabComponent, type PrefabExtraction } from "../prefab.js";
-import type { Side } from "../../core/unit/capability/classification/index.js";
 import { parseTags } from "../unit/tags.js";
 import { parseSiteCondition, parseAllowedSiteConditions } from "./site-condition.js";
 

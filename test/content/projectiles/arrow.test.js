@@ -8,8 +8,7 @@ import { fixtureBattle, initialize } from '../../helpers/unit.js';
 import { add as addUnit, remove as removeUnit, update as updateUnits } from '../../../dist/core/unit/operations.js';
 import { appear, disappear } from '../../../dist/core/unit/capability/presence/index.js';
 import { getUnit } from '../../helpers/unit.js';
-import * as projectiles from '../../../dist/core/projectile/operations.js';
-import * as projectilesQuery from '../../../dist/core/projectile/query.js';
+import * as projectiles from '../../../dist/core/projectile/index.js';
 import { advance } from '../../../dist/core/projectile/operations.js';
 import { ref } from '../../../dist/core/unit/query.js';
 import { createArrow } from '../../../dist/content/enemies/crossbowman/action.js';
@@ -36,50 +35,57 @@ function setup(targetHooks = Hooks.empty()) {
   return { battle, source, target, state };
 }
 
+function launch(battle, state, position = [0, 0], definition = createArrow()) {
+  const initialized = projectiles.initialize(battle, { definition, position, side: 'ENEMY', state });
+  return {
+    state: projectiles.add(initialized.state, initialized.value),
+    value: projectiles.ref(initialized.value),
+  };
+}
+
 function step(battle, tick) {
-  return advance({ ...battle, tick }, projectilesQuery.all(battle).map(projectilesQuery.ref));
+  return advance({ ...battle, tick }, projectiles.all(battle).map(projectiles.ref));
 }
 
 test('locked arrows follow a disappeared target position and separate identity hits from damage reception', () => {
   const fixture = setup();
-  const launched = projectiles.create(fixture.battle, createArrow(), {
-    position: [0, 0], state: { ...fixture.state, stopDelayTicks: 1 },
-  });
+  const launched = launch(fixture.battle, { ...fixture.state, stopDelayTicks: 1 });
   let state = updateUnits(launched.state, ref(fixture.target), compose(appear([3, 0]), disappear()));
   state = step(state, 1);
-  assert.deepEqual(projectilesQuery.get(state, launched.value).position, [1, 0]);
-  assert.deepEqual(projectilesQuery.get(state, launched.value).state.destination, [3, 0]);
+  assert.deepEqual(projectiles.get(state, launched.value).position, [1, 0]);
+  assert.deepEqual(projectiles.get(state, launched.value).state.destination, [3, 0]);
   state = step(state, 2);
   state = step(state, 3);
-  assert.equal(projectilesQuery.get(state, launched.value).state.hitAttempted, true);
+  assert.equal(projectiles.get(state, launched.value).state.hitAttempted, true);
   assert.equal(getUnit(state, 1).vitality.health.hp, 1000);
   state = step(state, 4);
-  assert.equal(projectilesQuery.get(state, launched.value), undefined);
+  assert.equal(projectiles.get(state, launched.value), undefined);
 
   state = updateUnits(state, ref(fixture.target), appear([3, 0]));
-  const visible = projectiles.create(state, createArrow(), {
-    position: [3, 0], state: { ...fixture.state, stopDelayTicks: 2 },
-  });
+  const visible = launch(state, { ...fixture.state, stopDelayTicks: 2 }, [3, 0]);
   state = step(visible.state, 5);
   assert.equal(getUnit(state, 1).vitality.health.hp, 960);
   state = step(state, 6);
-  assert.equal(projectilesQuery.get(state, visible.value).lifecycle, 'ACTIVE');
+  assert.equal(projectiles.get(state, visible.value).lifecycle, 'ACTIVE');
   assert.equal(getUnit(state, 1).vitality.health.hp, 960);
   state = step(state, 7);
-  assert.equal(projectilesQuery.get(state, visible.value), undefined);
+  assert.equal(projectiles.get(state, visible.value), undefined);
   assert.equal(getUnit(state, 1).vitality.health.hp, 960);
 });
 
-test('dispel skips the ordinary arrow fallback hit while explicit stop performs it once', () => {
+test('elimination skips the arrow fallback hit while explicit removal performs it once', () => {
   const fixture = setup();
-  const launched = projectiles.create(fixture.battle, createArrow(), { position: [0, 0], state: fixture.state });
-  const dispelled = projectiles.stop(launched.state, launched.value, 'DISPEL');
-  const stopped = projectiles.stop(launched.state, launched.value);
+  const definition = { ...createArrow(), eliminatable: true };
+  const launched = launch(fixture.battle, fixture.state, [0, 0], definition);
+  const arrow = projectiles.get(launched.state, launched.value);
+  assert.ok(arrow && projectiles.hasEliminatable(arrow));
+  const eliminated = projectiles.remove(launched.state, projectiles.ref(arrow), 'ELIMINATED');
+  const removed = projectiles.remove(launched.state, launched.value);
 
-  assert.equal(getUnit(dispelled, 1).vitality.health.hp, 1000);
-  assert.equal(getUnit(stopped, 1).vitality.health.hp, 960);
-  assert.equal(dispelled.battlefield.projectiles.size, 0);
-  assert.equal(stopped.battlefield.projectiles.size, 0);
+  assert.equal(getUnit(eliminated, 1).vitality.health.hp, 1000);
+  assert.equal(getUnit(removed, 1).vitality.health.hp, 960);
+  assert.equal(eliminated.battlefield.projectiles.size, 0);
+  assert.equal(removed.battlefield.projectiles.size, 0);
 });
 
 test('an arrow cannot hit twice when its damage response stops the projectile', () => {
@@ -89,18 +95,16 @@ test('an arrow cannot hit twice when its damage response stops the projectile', 
     id: 'stop-on-hit',
     invoke(state) {
       hits++;
-      return { state: projectiles.stop(state, arrow), value: undefined };
+      return { state: projectiles.remove(state, arrow), value: undefined };
     },
   }));
-  const launched = projectiles.create(fixture.battle, createArrow(), {
-    position: [0, 0], state: fixture.state,
-  });
+  const launched = launch(fixture.battle, fixture.state);
   arrow = launched.value;
   const after = step(launched.state, 1);
 
   assert.equal(hits, 1);
   assert.equal(getUnit(after, 1).vitality.health.hp, 960);
-  assert.equal(projectilesQuery.get(after, arrow), undefined);
+  assert.equal(projectiles.get(after, arrow), undefined);
 });
 
 test('tracking reads current source attack and falls back to its launch sample after removal', () => {
@@ -112,9 +116,7 @@ test('tracking reads current source attack and falls back to its launch sample a
       return { state: battle, value: undefined };
     },
   }));
-  const launched = projectiles.create(fixture.battle, createArrow(), {
-    position: [0, 0], state: { ...fixture.state, cachedAtk: 40 },
-  });
+  const launched = launch(fixture.battle, { ...fixture.state, cachedAtk: 40 });
   const boosted = updateUnits(launched.state, ref(fixture.source), setAttackContribution({
     id: 'after-launch', value: [modifier({ addition: 20 })],
   }));
@@ -128,7 +130,7 @@ test('tracking reads current source attack and falls back to its launch sample a
 
 test('a missing locked target does not redirect its arrow to another nearby unit', () => {
   const fixture = setup();
-  const launched = projectiles.create(fixture.battle, createArrow(), { position: [0, 0], state: fixture.state });
+  const launched = launch(fixture.battle, fixture.state);
   const other = initialize({ id: 2, position: [1, 0], definition: { hooks: Hooks.empty(),
     id: 'nearby', vitality: vitality(100),
   } });

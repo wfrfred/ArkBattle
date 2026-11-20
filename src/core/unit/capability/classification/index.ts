@@ -2,7 +2,6 @@ export {
     RANKS,
     hasClassification,
     initialize,
-    type Side,
     type Rank,
     type Type,
     type Definition,

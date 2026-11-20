@@ -1,9 +1,20 @@
-export type { Definition, StopReason } from "./definition.js";
+export type { Definition, EndReason } from "./definition.js";
 
-export type { Projectile, Id, Lifecycle } from "./projectile.js";
+export type { Projectile, Id, Lifecycle, Eliminatable } from "./projectile.js";
 
-export { ref, all, get } from "./query.js";
+export { ref, all, get, hasEliminatable } from "./query.js";
 
-export type { CreateInput } from "./operations.js";
+export type { Input } from "./initialize.js";
 
-export { create, update, stop, lifetime } from "./operations.js";
+export { initialize } from "./initialize.js";
+
+export { add, update, remove, lifetime } from "./operations.js";
+
+export {
+    hasSlowable,
+    setContribution as setMoveContribution,
+    removeContribution as removeMoveContribution,
+    resolve as resolveMoveScale,
+} from "./slowable.js";
+
+export type { Slowable } from "./slowable.js";

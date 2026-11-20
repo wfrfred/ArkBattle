@@ -1,90 +1,67 @@
 import type { Ref } from "../common/ref.js";
 import type { WorldPosition } from "../geometry/coordinate.js";
-import type { Definition, StopReason } from "./definition.js";
-import type { Projectile } from "./projectile.js";
+import type { EndReason } from "./definition.js";
+import type { Eliminatable, Projectile, ProjectileFields } from "./projectile.js";
 import { get, ref } from "./query.js";
 import { create as createLifetime } from "../lifetime/operations.js";
-import type { State as BattleState, Result } from "../battle/state.js";
+import type { State as BattleState } from "../battle/state.js";
 
-export interface CreateInput<S extends object> {
-    readonly position: WorldPosition;
-    readonly state: S;
-}
-
-export function create<S extends object>(
-    battle: BattleState,
-    definition: Definition<S>,
-    input: CreateInput<NoInfer<S>>,
-): Result<Ref<Projectile<S>>> {
-    const id = battle.execution.nextProjectileId;
-    const self: Projectile<S> = {
-        id,
-        definition,
-        lifecycle: "ACTIVE",
-        position: input.position,
-        state: input.state,
-    };
-    const reference = ref(self);
+export function add(battle: BattleState, self: ProjectileFields<any, any>): BattleState {
     battle = {
         ...battle,
-        execution: { ...battle.execution, nextProjectileId: id + 1 },
         battlefield: {
             ...battle.battlefield,
             projectiles: battle.battlefield.projectiles.add(self),
         },
     };
 
-    return {
-        state: definition.onStart?.(battle, self) ?? battle,
-        value: reference,
-    };
+    return self.definition.onEnter?.(battle, self) ?? battle;
 }
 
-export function update<T extends Projectile<any>>(
+export function update<S extends object, T extends object>(
     battle: BattleState,
-    reference: Ref<T>,
+    reference: Ref<Projectile<S, T>>,
     changes: {
         readonly position?: WorldPosition;
-        readonly state?: NoInfer<T["state"]>;
+        readonly state?: NoInfer<S>;
     },
 ): BattleState {
     const current = get(battle, reference);
     if (current === undefined) {
-        throw new RangeError(`unknown projectile: ${reference.id}`);
+        throw new RangeError("unknown projectile");
     }
 
     const position = changes.position ?? current.position;
-    const state = (changes.state ?? current.state) as T["state"];
+    const state = changes.state ?? current.state;
     if (position === current.position && state === current.state) {
         return battle;
     }
 
-    return {
-        ...battle,
-        battlefield: {
-            ...battle.battlefield,
-            projectiles: battle.battlefield.projectiles.replace(reference, {
-                ...current,
-                position,
-                state,
-            }),
-        },
-    };
+    return replace(battle, reference, { ...current, position, state });
 }
 
-export const lifetime = createLifetime<Projectile, Projectile<any>, StopReason>({
+export function replace<P extends ProjectileFields<any, any>>(
+    battle: BattleState,
+    reference: Ref<P>,
+    self: NoInfer<P>,
+): BattleState {
+    const projectiles = battle.battlefield.projectiles.replace(reference, self);
+
+    return projectiles === battle.battlefield.projectiles
+        ? battle
+        : {
+              ...battle,
+              battlefield: { ...battle.battlefield, projectiles },
+          };
+}
+
+export const lifetime = createLifetime<Projectile, ProjectileFields<any, any>, EndReason>({
     kind: "PROJECTILE",
     address: (ref) => [ref.id],
     get,
     isEnding: (self) => self.lifecycle === "ENDING",
     begin: (self) => ({ ...self, lifecycle: "ENDING" }),
-    replace: (battle, _ref, next) => ({
-        ...battle,
-        battlefield: {
-            ...battle.battlefield,
-            projectiles: battle.battlefield.projectiles.replace(ref(next), next),
-        },
-    }),
+    replace: (battle, _reference, next) => replace(battle, ref(next), next),
     finalize: (battle, reference, reason) => {
         const self = get(battle, reference)!;
         battle = self.definition.onEnd?.(battle, self, reason) ?? battle;
@@ -100,15 +77,25 @@ export const lifetime = createLifetime<Projectile, Projectile<any>, StopReason>(
     reason: (reason) => reason,
 });
 
-export function stop<P extends Projectile<any>>(
+export function remove<P extends ProjectileFields<any, any>>(
     battle: BattleState,
     reference: Ref<P>,
-    reason: StopReason = "EXPLICIT",
+    reason?: Exclude<EndReason, "ELIMINATED">,
+): BattleState;
+export function remove<P extends ProjectileFields<any, any> & Eliminatable>(
+    battle: BattleState,
+    reference: Ref<P>,
+    reason: "ELIMINATED",
+): BattleState;
+export function remove<P extends ProjectileFields<any, any>>(
+    battle: BattleState,
+    reference: Ref<P>,
+    reason: EndReason = "EXPLICIT",
 ): BattleState {
     return lifetime.end(battle, reference, reason);
 }
 
-export function advance<P extends Projectile<any>>(
+export function advance<P extends ProjectileFields<any, any>>(
     battle: BattleState,
     candidates: Iterable<Ref<P>>,
 ): BattleState {

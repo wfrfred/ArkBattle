@@ -1,8 +1,7 @@
 import type { State as BattleState, Result } from "../../../battle/state.js";
+import type { Side } from "../../../side.js";
 import type { Unit } from "../../unit.js";
 import type { Profession, ProfessionDefinition, SubProfession } from "./professions.js";
-
-export type Side = "ALLY" | "ENEMY" | "NEUTRAL";
 
 export const RANKS = ["NORMAL", "ELITE", "BOSS"] as const;
 

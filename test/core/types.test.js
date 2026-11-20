@@ -30,11 +30,10 @@ import { dispatch as dispatchElemental } from ${module("unit/capability/elementa
 import * as runtime from ${module("battle/runtime")};
 import type { Input as BattleInput, Command } from ${module("battle/contract")};
 import type { SkillCommand } from ${module("battle/index")};
-import type { Card, UnitDefinition as CardDefinition } from ${module("battle/deployment/card/card")};
-import type { Projectile } from ${module("projectile/projectile")};
-import * as projectiles from ${module("projectile/query")};
-import * as projectileOperations from ${module("projectile/operations")};
-import type { Definition as ProjectileDefinition } from ${module("projectile/definition")};
+import type { UnitDefinition as CardDefinition } from ${module("battle/deployment/card/card")};
+import * as projectiles from ${module("projectile/index")};
+import type { Definition as ProjectileDefinition, Slowable } from ${module("projectile/index")};
+import type { Point as PullPoint } from ${module("unit/capability/shifting/pull")};
 import { reassign, selectContext, setTicking, type Plan, type Route } from ${module("unit/capability/route/index")};
 import * as mechanisms from ${module("mechanism/index")};
 import { createPredefinedDefinition } from ${module("battle/predefined")};
@@ -420,27 +419,48 @@ declare const routeCommandRef: Ref<Unit & Route>;
 declare const routeDefinition: Plan;
 const routeChange = compose(reassign(0, routeDefinition), compose(selectContext(0), setTicking(0, false)));
 update(battle, routeCommandRef, routeChange);
-declare const projectileCommandRef: Ref<Projectile<{ hits: number }>>;
 const skillCommand: SkillCommand = { type: 'SKILL', ref: skillCommandRef, operation: 'ACTIVATE' };
-const projectileCommand: Command<Card, Projectile<{ hits: number }>> = { type: 'STOP_PROJECTILE', ref: projectileCommandRef };
-runtime.step(battle, [skillCommand, projectileCommand]);
+runtime.step(battle, [skillCommand]);
 // @ts-expect-error skill commands require a Skill-capable Unit.
 const missingSkillCommand: Command = { type: 'SKILL', ref: ref(bare), operation: 'STOP' };
 // @ts-expect-error a Unit reference is not a Projectile reference.
-const wrongProjectileCommand: Command = { type: 'STOP_PROJECTILE', ref: ref(bare) };
+projectiles.remove(battle, ref(bare));
 const projectileDefinition: ProjectileDefinition<{ hits: number }> = {
     id: 'projectile',
     onTick(state, self) {
         const hits: number = self.state.hits;
-        return projectileOperations.update(state, projectiles.ref(self), { state: { hits: hits + 1 } });
+        return projectiles.update(state, projectiles.ref(self), { state: { hits: hits + 1 } });
     },
 };
-const createdProjectile = projectileOperations.create(battle, projectileDefinition, {
-    position: [0, 0], state: { hits: 0 },
+const createdProjectile = projectiles.initialize(battle, {
+    definition: projectileDefinition, side: 'ALLY', position: [0, 0], state: { hits: 0 },
 });
-const projectileHits: number = projectiles.get(createdProjectile.state, createdProjectile.value)!.state.hits;
+const projectileBattle = projectiles.add(createdProjectile.state, createdProjectile.value);
+const projectileRef = projectiles.ref(createdProjectile.value);
+const projectileHits: number = projectiles.get(projectileBattle, projectileRef)!.state.hits;
 // @ts-expect-error a Projectile Ref fixes the private state accepted by writes.
-projectileOperations.update(battle, createdProjectile.value, { state: { hits: 'wrong' } });
+projectiles.update(projectileBattle, projectileRef, { state: { hits: 'wrong' } });
+// @ts-expect-error a Projectile Ref without eligibility cannot request elimination.
+projectiles.remove(projectileBattle, projectileRef, 'ELIMINATED');
+// @ts-expect-error an ordinary Projectile Ref cannot receive speed contributions.
+projectiles.setMoveContribution(projectileBattle, projectileRef, { id: 'slow', value: 0.05 });
+for (const target of projectiles.all(projectileBattle).filter(projectiles.hasEliminatable)) {
+    projectiles.remove(projectileBattle, projectiles.ref(target), 'ELIMINATED');
+}
+const slowableDefinition: ProjectileDefinition<{ hits: number }, Slowable> = {
+    id: 'slowable-projectile',
+    onTick(state, self) {
+        const scale: number = projectiles.resolveMoveScale(self);
+        return projectiles.update(state, projectiles.ref(self), { position: [scale, 0], state: { hits: self.state.hits + 1 } });
+    },
+};
+const slowableInput = { definition: slowableDefinition, side: 'ENEMY', position: [0, 0], state: { hits: 0 } } as const;
+// @ts-expect-error creation supplies the instance fields used by the paired Definition.
+projectiles.initialize(battle, slowableInput);
+const slowableProjectile = projectiles.initialize(battle, { ...slowableInput, move: { contributions: [] } }).value;
+const slowableProjectileRef = projectiles.ref(slowableProjectile);
+projectiles.setMoveContribution(battle, slowableProjectileRef, { id: 'slow', value: 0.05 });
+const pullPoint: PullPoint = { type: 'PROJECTILE', projectile: slowableProjectileRef };
 declare const elementalUnit: Unit & elemental.Elemental;
 elemental.available(elementalUnit);
 // @ts-expect-error Elemental eligibility requires its resource capability.
