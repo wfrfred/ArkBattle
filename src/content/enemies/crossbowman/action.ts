@@ -92,7 +92,7 @@ export function createMelee(profile: Profile, timing: Timing): Attack {
                         return { state: battle, value: [] };
                     }
 
-                    const eligible = targeting.damage(battle, self, () => true);
+                    const eligible = targeting.damage(self, () => true)(battle);
 
                     return {
                         state: battle,
@@ -141,7 +141,7 @@ export function createRanged(profile: Profile, timing: Timing, projectile: Proje
                         .all(battle)
                         .filter(hasTargetable)
                         .filter(targeting.inCategories(["DEFAULT"]))
-                        .filter(targeting.damage(battle, self))
+                        .filter(targeting.damage(self)(battle))
                         .filter((target) => target.id !== blocker?.id)
                         .filter(
                             targeting.inRange(self.position, [

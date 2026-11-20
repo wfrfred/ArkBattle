@@ -9,7 +9,7 @@ export function selectDamage({ geometry, canTargetAir = false, maxTargets = 1 })
         const self = units.get(battle, source);
         const candidates = units.all(battle)
             .filter(hasTargetable)
-            .filter(targeting.damage(battle, self))
+            .filter(targeting.damage(self)(battle))
             .filter(target => canTargetAir || (hasLayer(target) && target.layer.type === "GROUND"))
             .filter(targeting.inRange(self.position, geometry));
 

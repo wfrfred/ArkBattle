@@ -644,7 +644,7 @@ if (classification.isType(professionCandidate, requestedCategory)) {
 }
 
 declare const targetingSource: Unit & classification.Classification;
-const damagedCandidates = selectableActions.filter(targeting.damage(battle, targetingSource));
+const damagedCandidates = selectableActions.filter(targeting.damage(targetingSource)(battle));
 const nearestPatient = topK(damagedCandidates, 1, targeting.hpRatio)[0]!;
 const patientAlive: boolean = vitality.isAlive(nearestPatient);
 const patientHpRatio: number = vitality.hpRatio(nearestPatient);
@@ -657,7 +657,7 @@ for (const self of selectableActions.filter(targeting.elementHealing(battle, tar
     const establishedClassification: classification.Classification = self;
 }
 // @ts-expect-error standard target eligibility requires the source's Classification capability.
-targeting.damage(battle, host);
+targeting.damage(host)(battle);
 const patient = initialize(battle, { position: [0, 0], definition: {
     id: 'patient', hooks: Hooks.empty(),
     vitality: {

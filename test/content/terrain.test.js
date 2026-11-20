@@ -233,7 +233,7 @@ test("smog keeps allied ground and airborne units invisible through blocking unt
             targetable: { category: "DEVICE", taunt: attribute(0, -2, 2), restrictions: [] } }),
     ], [terrain.smog]);
     let battle = step(configured.battle, []);
-    const visible = (state, id = 0) => damage(state, current(state, 1))(current(state, id));
+    const visible = (state, id = 0) => damage(current(state, 1))(state)(current(state, id));
     assert.equal(current(battle, 1).blockable.relation.blocker.id, 0);
     assert.equal(visible(battle), false);
     assert.equal(visible(battle, 2), false);

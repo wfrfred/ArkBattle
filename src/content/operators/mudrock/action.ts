@@ -58,7 +58,7 @@ function attackTarget(
     profile: Profile,
     skill: boolean,
 ) {
-    const eligible = targeting.damage(battle, self);
+    const eligible = targeting.damage(self)(battle);
     const withinRange = hasDirection(self)
         ? targeting.inRange(
               self.position,

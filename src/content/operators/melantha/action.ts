@@ -31,7 +31,7 @@ function candidates(battle: BattleState, self: units.Unit & Classification, prof
     return units
         .all(battle)
         .filter(hasTargetable)
-        .filter(targeting.damage(battle, self))
+        .filter(targeting.damage(self)(battle))
         .filter((target) => hasLayer(target) && target.layer.type === "GROUND")
         .filter(
             (target) =>

@@ -52,7 +52,8 @@ test("standard HP eligibility is independent of the chosen range origin and uses
     state = update(state, units.ref(get(state, 2)), setType("AIR"));
     const source = get(state, 0);
     const within = targeting.inRange([1, 1], [{ type: "CIRCLE", offset: [0, 0], radius: 1 }]);
-    const eligible = state => candidates(state).filter(targeting.damage(state, source));
+    const damageFilter = targeting.damage(source);
+    const eligible = state => candidates(state).filter(damageFilter(state));
 
     assert.deepEqual(ids(eligible(state)), [1, 2, 3]);
     assert.deepEqual(ids(eligible(state).filter(within)), [1, 2]);
@@ -61,6 +62,22 @@ test("standard HP eligibility is independent of the chosen range origin and uses
     state = update(state, units.ref(get(state, 3)), disappear());
     assert.deepEqual(ids(eligible(state)), [1, 2]);
     assert.equal(targetable.allowsRestrictions(state, source)(get(state, 3)), true);
+});
+
+test("a stored damage filter evaluates restrictions with the supplied battle state", () => {
+    const initial = battle([
+        { definition: { id: "source", hooks: Hooks.empty(), classification: { type: "DEVICE", side: "ALLY", filterTags: [], groupTags: [] } }, position: [0, 0] },
+        { definition: living, position: [1, 0] },
+    ]);
+    const enabledAt = initial.tick + 1;
+    const launched = update(initial, units.ref(get(initial, 1)), targetable.setRestriction({
+        id: "delayed-selection", value: { allows: state => state.tick >= enabledAt },
+    }));
+    const eligible = targeting.damage(get(launched, 0));
+    const impact = { ...launched, tick: enabledAt };
+
+    assert.deepEqual(ids(candidates(launched).filter(eligible(launched))), []);
+    assert.deepEqual(ids(candidates(impact).filter(eligible(impact))), [1]);
 });
 
 test("mixed healing keeps HP or EP demand while only an ACTIVE healFree marker restricts HP selection", () => {

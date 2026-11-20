@@ -29,7 +29,7 @@ export function create(profile: Profile, timing: Timing): Attack {
                         return { state: battle, value: [] };
                     }
 
-                    const eligible = targeting.damage(battle, self, () => true);
+                    const eligible = targeting.damage(self, () => true)(battle);
 
                     return {
                         state: battle,
