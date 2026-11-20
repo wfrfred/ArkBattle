@@ -14,7 +14,7 @@ export function add<S extends object, T extends object>(
         ...battle,
         battlefield: {
             ...battle.battlefield,
-            projectiles: battle.battlefield.projectiles.add(self),
+            projectiles: battle.battlefield.projectiles.add(self.id, self),
         },
     };
 
@@ -48,7 +48,7 @@ export function replace<P extends Projectile<object, any>>(
     reference: Ref<P>,
     self: NoInfer<P>,
 ): BattleState {
-    const projectiles = battle.battlefield.projectiles.replace(reference, self);
+    const projectiles = battle.battlefield.projectiles.replace(reference.id, self);
 
     return projectiles === battle.battlefield.projectiles
         ? battle
@@ -83,7 +83,7 @@ export const lifetime = createLifetime<Projectile, Projectile<object, any>, EndR
 export function remove<P extends Projectile<object, any>>(
     battle: BattleState,
     reference: Ref<P>,
-    reason?: Exclude<EndReason, "ELIMINATED">,
+    reason: Exclude<EndReason, "ELIMINATED">,
 ): BattleState;
 export function remove<P extends Projectile<object, any> & Eliminatable>(
     battle: BattleState,
@@ -93,7 +93,7 @@ export function remove<P extends Projectile<object, any> & Eliminatable>(
 export function remove<P extends Projectile<object, any>>(
     battle: BattleState,
     reference: Ref<P>,
-    reason: EndReason = "EXPLICIT",
+    reason: EndReason,
 ): BattleState {
     return lifetime.end(battle, reference, reason);
 }

@@ -80,7 +80,7 @@ test('elimination skips the arrow fallback hit while explicit removal performs i
   const arrow = projectiles.get(launched.state, launched.value);
   assert.ok(arrow && projectiles.hasEliminatable(arrow));
   const eliminated = projectiles.remove(launched.state, projectiles.ref(arrow), 'ELIMINATED');
-  const removed = projectiles.remove(launched.state, launched.value);
+  const removed = projectiles.remove(launched.state, launched.value, 'EXPLICIT');
 
   assert.equal(getUnit(eliminated, 1).vitality.health.hp, 1000);
   assert.equal(getUnit(removed, 1).vitality.health.hp, 960);
@@ -95,7 +95,7 @@ test('an arrow cannot hit twice when its damage response stops the projectile', 
     id: 'stop-on-hit',
     invoke(state) {
       hits++;
-      return { state: projectiles.remove(state, arrow), value: undefined };
+      return { state: projectiles.remove(state, arrow, 'EXPLICIT'), value: undefined };
     },
   }));
   const launched = launch(fixture.battle, fixture.state);

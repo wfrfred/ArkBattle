@@ -8,7 +8,7 @@ Projectile 是独立运行实例，提供创建、正常推进和完整终结。
 
 ## 模块归属
 
-[projectile](../../src/core/projectile)集中模型、查询、异构容器与完整操作。Battlefield 持有唯一集合，Battle 调度当前 Tick 的候选。构造、登记、更新及类型恢复遵守[接口约定](api-conventions.md)，终止共用 [Lifetime](lifetime.md)。
+[projectile](../../src/core/projectile)集中模型、查询与完整操作。Battlefield 直接持有存放弹道的通用 `Store`，Battle 调度当前 Tick 的候选。构造、登记、更新及类型恢复遵守[接口约定](api-conventions.md)，终止共用 [Lifetime](lifetime.md)。
 
 ## 2. 实例与 Definition
 
@@ -35,13 +35,13 @@ export interface Definition<S extends object = object, T extends object = object
 
 ## 3. 异构集合与类型恢复
 
-Projectiles 保存完整异构实例。普通查询提供 `Projectile` 的公共字段，精确 Ref 恢复实例类型，按 Definition 对象身份查询恢复 `Projectile<S, T> & T`。类型擦除集中在容器边界。字符串相同不代表同一 Definition。
+`Store` 保存完整异构实例。`all` 按登记顺序提供具有 `Projectile` 公共字段的实例，`ref` 保留传入实例的具体类型，`get` 按 Ref 恢复该类型。
 
 创建操作使用 BattleState 中的身份分配进度，替换保留登记位置，删除后不复用。容器只处理存储，不负责业务资格；Query 绑定不可变输入版本。诊断或表现投影不替代运行实例。
 
 ## 4. 创建、查询与内容更新
 
-创建分为 `initialize` 和 `add`，与 Unit 的流程一致。`initialize(battle, input)` 分配 ID，并装配调用方按 Definition 提供的 `S` 和 `T`。返回类型为 `Result<Projectile<S, T> & T & { readonly definition: D }>`，其中 `D` 保留传入 Definition 的具体类型。调用方接续返回的战斗状态，并可从该实例取得保留具体类型的 Ref。
+创建分为 `initialize` 和 `add`，与 Unit 的流程一致。调用方传入 Definition、阵营、位置、私有状态及 Definition 要求的额外字段。`initialize(battle, input)` 分配 ID，将实例设为 ACTIVE，并返回 `Result<Projectile<S, T> & T & { readonly definition: D }>`。`D` 保留传入 Definition 的具体类型。调用方接续返回的战斗状态，并可从该实例取得保留具体类型的 Ref。
 
 `add(battle, self)` 要求实例具备 Definition 声明的额外字段。它登记 ACTIVE 实例，随后执行 `onEnter` 并返回 `BattleState`。`onEnter` 与 Unit 的 `enter` 都发生在登记后。Projectile 直接调用 Definition 回调，Unit 则通过 `enter` 键派发已登记的 Hook。`onEnter` 可以立即结束弹道，调用方取得的 Ref 仍表示这次分配的身份。 [Unit 登记](../../src/core/unit/operations.ts)
 
@@ -75,7 +75,7 @@ Content 以纯函数计算运动结果，由 `onTick` 读取目标位置、提�
 
 ### 移除与消除
 
-`remove` 的 `ELIMINATED` 重载要求具有消除资格。资格由具体 Definition 的 `eliminatable: true` 表达，与 `move` 独立。
+`remove` 要求调用方显式传入结束原因。`ELIMINATED` 重载要求具有消除资格。资格由具体 Definition 的 `eliminatable: true` 表达，与 `move` 独立。
 
 ```typescript
 export interface Eliminatable {
@@ -85,7 +85,7 @@ export interface Eliminatable {
 export function remove<P extends Projectile<object, any>>(
     battle: BattleState,
     reference: Ref<P>,
-    reason?: Exclude<EndReason, "ELIMINATED">,
+    reason: Exclude<EndReason, "ELIMINATED">,
 ): BattleState;
 
 export function remove<P extends Projectile<object, any> & Eliminatable>(

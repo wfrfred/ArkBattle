@@ -8,14 +8,14 @@ export function ref<P extends Projectile<object, any>>(self: P): Ref<P> {
 }
 
 export function all(battle: BattleState): Query<Projectile> {
-    return battle.battlefield.projectiles.values();
+    return battle.battlefield.projectiles.values() as Query<Projectile>;
 }
 
 export function get<P extends Projectile<object, any>>(
     battle: BattleState,
     reference: Ref<P>,
 ): P | undefined {
-    return battle.battlefield.projectiles.get(reference);
+    return battle.battlefield.projectiles.get(reference.id) as P | undefined;
 }
 
 export function hasEliminatable<P extends Projectile<object, any>>(

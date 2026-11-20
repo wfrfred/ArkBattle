@@ -56,7 +56,7 @@ test("onEnter may synchronously remove its own registered instance", () => {
     const observed = [];
     const definition = {
         id: "instant",
-        onEnter: (battle, self) => projectiles.remove(battle, projectiles.ref(self)),
+        onEnter: (battle, self) => projectiles.remove(battle, projectiles.ref(self), "EXPLICIT"),
         onEnd(battle, self, reason) {
             observed.push([self.lifecycle, reason]);
             return battle;
@@ -77,7 +77,7 @@ test("the Projectile step skips a candidate removed earlier in the same step", (
     } });
     const source = create(target.state, { id: "source", onTick(battle, self) {
         observed.push(["advance", self.id]);
-        return projectiles.remove(battle, target.value);
+        return projectiles.remove(battle, target.value, "EXPLICIT");
     } });
     const progressed = advance(source.state, [source.value, target.value]);
 

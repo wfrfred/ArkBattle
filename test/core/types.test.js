@@ -425,7 +425,7 @@ runtime.step(battle, [skillCommand]);
 // @ts-expect-error skill commands require a Skill-capable Unit.
 const missingSkillCommand: Command = { type: 'SKILL', ref: ref(bare), operation: 'STOP' };
 // @ts-expect-error a Unit reference is not a Projectile reference.
-projectiles.remove(battle, ref(bare));
+projectiles.remove(battle, ref(bare), 'EXPLICIT');
 const projectileDefinition: ProjectileDefinition<{ hits: number }> = {
     id: 'projectile',
     onTick(state, self) {
@@ -443,6 +443,8 @@ projectiles.initialize(battle, { definition: projectileDefinition, side: 'ALLY',
 const projectileBattle = projectiles.add(createdProjectile.state, createdProjectile.value);
 const projectileRef = projectiles.ref(createdProjectile.value);
 const projectileHits: number = projectiles.get(projectileBattle, projectileRef)!.state.hits;
+// @ts-expect-error removing a Projectile requires an explicit reason.
+projectiles.remove(projectileBattle, projectileRef);
 // @ts-expect-error a Projectile Ref fixes the private state accepted by writes.
 projectiles.update(projectileBattle, projectileRef, { state: { hits: 'wrong' } });
 // @ts-expect-error a Projectile Ref without eligibility cannot request elimination.
@@ -470,13 +472,9 @@ const createdSlowable = projectiles.initialize(battle, {
 });
 const slowableBattle = projectiles.add(createdSlowable.state, createdSlowable.value);
 const slowableProjectileRef = projectiles.ref(createdSlowable.value);
-projectiles.setMoveContribution(slowableBattle, slowableProjectileRef, { id: 'slow', value: 0.05 });
-projectiles.remove(slowableBattle, slowableProjectileRef, 'ELIMINATED');
-const restoredProjectile = slowableBattle.battlefield.projectiles.get(slowableProjectileRef.id, createdSlowable.value.definition)!;
-projectiles.resolveMoveScale(restoredProjectile);
-projectiles.update(slowableBattle, projectiles.ref(restoredProjectile), { state: { hits: restoredProjectile.state.hits + 1 } });
-// @ts-expect-error Definition recovery retains the paired private state type.
-projectiles.update(slowableBattle, projectiles.ref(restoredProjectile), { state: { hits: 'wrong' } });
+const restoredRef = projectiles.ref(projectiles.get(slowableBattle, slowableProjectileRef)!);
+projectiles.setMoveContribution(slowableBattle, restoredRef, { id: 'slow', value: 0.05 });
+projectiles.remove(slowableBattle, restoredRef, 'ELIMINATED');
 declare const trackedProjectile: Projectile<tracking.State, Slowable> & Slowable;
 tracking.hit(battle, trackedProjectile, (next, self) => {
     projectiles.resolveMoveScale(self);

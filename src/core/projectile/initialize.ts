@@ -9,8 +9,6 @@ export type Input<S extends object, T extends object = object> = {
     readonly position: WorldPosition;
     readonly side: Side;
     readonly state: NoInfer<S>;
-    readonly id?: never;
-    readonly lifecycle?: never;
 } & NoInfer<T>;
 
 export function initialize<S extends object, T extends object, const D extends Definition<S, T>>(
