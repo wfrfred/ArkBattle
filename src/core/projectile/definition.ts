@@ -5,11 +5,11 @@ export type EndReason = "ARRIVED" | "EXPIRED" | "EXPLICIT" | "SOURCE_UNAVAILABLE
 
 export interface Definition<S extends object = object, T extends object = object> {
     readonly id: string;
-    readonly onEnter?: (battle: BattleState, self: Projectile<S, T>) => BattleState;
-    readonly onTick?: (battle: BattleState, self: Projectile<S, T>) => BattleState;
+    readonly onEnter?: (battle: BattleState, self: Projectile<S, T> & T) => BattleState;
+    readonly onTick?: (battle: BattleState, self: Projectile<S, T> & T) => BattleState;
     readonly onEnd?: (
         battle: BattleState,
-        self: Projectile<S, T>,
+        self: Projectile<S, T> & T,
         reason: EndReason,
     ) => BattleState;
 }

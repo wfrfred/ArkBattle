@@ -4,7 +4,7 @@ import * as entries from "../common/collection/entries.js";
 import * as contribution from "../common/contribution.js";
 import type { Ref } from "../common/ref.js";
 import { replace } from "./operations.js";
-import type { ProjectileFields } from "./projectile.js";
+import type { Projectile } from "./projectile.js";
 import { get } from "./query.js";
 
 export interface Slowable {
@@ -13,15 +13,15 @@ export interface Slowable {
     };
 }
 
-export function hasSlowable<P extends ProjectileFields<any, any>>(self: P): self is P & Slowable {
-    return self.move !== undefined;
+export function hasSlowable<P extends Projectile<object, any>>(self: P): self is P & Slowable {
+    return "move" in self;
 }
 
 export function resolve(self: Slowable): number {
     return contribution.resolve(self.move.contributions).reduce((scale, value) => scale * value, 1);
 }
 
-export function setContribution<P extends ProjectileFields<any, any> & Slowable>(
+export function setContribution<P extends Projectile<object, any> & Slowable>(
     battle: BattleState,
     reference: Ref<P>,
     entry: contribution.Contribution<number>,
@@ -31,7 +31,7 @@ export function setContribution<P extends ProjectileFields<any, any> & Slowable>
     return updateContributions(battle, reference, (current) => entries.set(current, entry));
 }
 
-export function removeContribution<P extends ProjectileFields<any, any> & Slowable>(
+export function removeContribution<P extends Projectile<object, any> & Slowable>(
     battle: BattleState,
     reference: Ref<P>,
     id: string,
@@ -39,7 +39,7 @@ export function removeContribution<P extends ProjectileFields<any, any> & Slowab
     return updateContributions(battle, reference, (current) => entries.remove(current, id));
 }
 
-function updateContributions<P extends ProjectileFields<any, any> & Slowable>(
+function updateContributions<P extends Projectile<object, any> & Slowable>(
     battle: BattleState,
     reference: Ref<P>,
     update: (current: Slowable["move"]["contributions"]) => Slowable["move"]["contributions"],

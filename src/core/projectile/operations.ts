@@ -1,12 +1,15 @@
 import type { Ref } from "../common/ref.js";
 import type { WorldPosition } from "../geometry/coordinate.js";
 import type { EndReason } from "./definition.js";
-import type { Eliminatable, Projectile, ProjectileFields } from "./projectile.js";
+import type { Eliminatable, Projectile } from "./projectile.js";
 import { get, ref } from "./query.js";
 import { create as createLifetime } from "../lifetime/operations.js";
 import type { State as BattleState } from "../battle/state.js";
 
-export function add(battle: BattleState, self: ProjectileFields<any, any>): BattleState {
+export function add<S extends object, T extends object>(
+    battle: BattleState,
+    self: Projectile<S, T> & NoInfer<T>,
+): BattleState {
     battle = {
         ...battle,
         battlefield: {
@@ -40,7 +43,7 @@ export function update<S extends object, T extends object>(
     return replace(battle, reference, { ...current, position, state });
 }
 
-export function replace<P extends ProjectileFields<any, any>>(
+export function replace<P extends Projectile<object, any>>(
     battle: BattleState,
     reference: Ref<P>,
     self: NoInfer<P>,
@@ -55,7 +58,7 @@ export function replace<P extends ProjectileFields<any, any>>(
           };
 }
 
-export const lifetime = createLifetime<Projectile, ProjectileFields<any, any>, EndReason>({
+export const lifetime = createLifetime<Projectile, Projectile<object, any>, EndReason>({
     kind: "PROJECTILE",
     address: (ref) => [ref.id],
     get,
@@ -77,17 +80,17 @@ export const lifetime = createLifetime<Projectile, ProjectileFields<any, any>, E
     reason: (reason) => reason,
 });
 
-export function remove<P extends ProjectileFields<any, any>>(
+export function remove<P extends Projectile<object, any>>(
     battle: BattleState,
     reference: Ref<P>,
     reason?: Exclude<EndReason, "ELIMINATED">,
 ): BattleState;
-export function remove<P extends ProjectileFields<any, any> & Eliminatable>(
+export function remove<P extends Projectile<object, any> & Eliminatable>(
     battle: BattleState,
     reference: Ref<P>,
     reason: "ELIMINATED",
 ): BattleState;
-export function remove<P extends ProjectileFields<any, any>>(
+export function remove<P extends Projectile<object, any>>(
     battle: BattleState,
     reference: Ref<P>,
     reason: EndReason = "EXPLICIT",
@@ -95,7 +98,7 @@ export function remove<P extends ProjectileFields<any, any>>(
     return lifetime.end(battle, reference, reason);
 }
 
-export function advance<P extends ProjectileFields<any, any>>(
+export function advance<P extends Projectile<object, any>>(
     battle: BattleState,
     candidates: Iterable<Ref<P>>,
 ): BattleState {

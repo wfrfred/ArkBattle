@@ -14,16 +14,16 @@ Projectile 是独立运行实例，提供创建、正常推进和完整终结。
 
 实例保存身份、Definition、ACTIVE／ENDING、位置与私有 state。Definition 静态共享；私有状态可包含追踪目标、记忆位置、来源、样本、命中记录与业务时钟。
 
-生命周期程序沿用 Action 和 Effect 的配对方式。`S` 表示私有状态，`T` 表示已装配到实例上的额外字段。`Projectile<S, T>` 组合基础字段与 `T`，保存 `state: S` 和 `definition: Definition<S, T>`。调度读取实例后直接调用该实例的 Definition 回调。
+生命周期程序沿用 Action 和 Effect 的配对方式。`Projectile<S, T>` 定义公共字段，保存 `state: S` 和 `definition: Definition<S, T>`。`T` 描述额外装配的字段，回调接收完整实例 `Projectile<S, T> & T`。调度读取实例后直接调用该实例的 Definition 回调。
 
 ```typescript
 export interface Definition<S extends object = object, T extends object = object> {
     readonly id: string;
-    readonly onEnter?: (battle: BattleState, self: Projectile<S, T>) => BattleState;
-    readonly onTick?: (battle: BattleState, self: Projectile<S, T>) => BattleState;
+    readonly onEnter?: (battle: BattleState, self: Projectile<S, T> & T) => BattleState;
+    readonly onTick?: (battle: BattleState, self: Projectile<S, T> & T) => BattleState;
     readonly onEnd?: (
         battle: BattleState,
-        self: Projectile<S, T>,
+        self: Projectile<S, T> & T,
         reason: EndReason,
     ) => BattleState;
 }
@@ -35,15 +35,15 @@ export interface Definition<S extends object = object, T extends object = object
 
 ## 3. 异构集合与类型恢复
 
-Projectiles 保存完整异构实例，普通查询不承诺未知私有形状，精确 Ref／Definition 对象身份恢复类型；类型擦除集中在容器边界。字符串相同不代表同一 Definition。
+Projectiles 保存完整异构实例。普通查询提供 `Projectile` 的公共字段，精确 Ref 恢复实例类型，按 Definition 对象身份查询恢复 `Projectile<S, T> & T`。类型擦除集中在容器边界。字符串相同不代表同一 Definition。
 
 创建操作使用 BattleState 中的身份分配进度，替换保留登记位置，删除后不复用。容器只处理存储，不负责业务资格；Query 绑定不可变输入版本。诊断或表现投影不替代运行实例。
 
 ## 4. 创建、查询与内容更新
 
-创建分为 `initialize` 和 `add`，与 Unit 的流程一致。`initialize(battle, input)` 分配 ID、装配 `S` 和 `T`，返回 `Result<Projectile<S, T>>`。调用方接续返回的战斗状态，并可从该实例取得保留具体类型的 Ref。
+创建分为 `initialize` 和 `add`，与 Unit 的流程一致。`initialize(battle, input)` 分配 ID，并装配调用方按 Definition 提供的 `S` 和 `T`。返回类型为 `Result<Projectile<S, T> & T & { readonly definition: D }>`，其中 `D` 保留传入 Definition 的具体类型。调用方接续返回的战斗状态，并可从该实例取得保留具体类型的 Ref。
 
-`add(battle, self)` 登记 ACTIVE 实例，随后执行 `onEnter` 并返回 `BattleState`。`onEnter` 与 Unit 的 `enter` 都发生在登记后。Projectile 直接调用 Definition 回调，Unit 则通过 `enter` 键派发已登记的 Hook。`onEnter` 可以立即结束弹道，调用方取得的 Ref 仍表示这次分配的身份。 [Unit 登记](../../src/core/unit/operations.ts)
+`add(battle, self)` 要求实例具备 Definition 声明的额外字段。它登记 ACTIVE 实例，随后执行 `onEnter` 并返回 `BattleState`。`onEnter` 与 Unit 的 `enter` 都发生在登记后。Projectile 直接调用 Definition 回调，Unit 则通过 `enter` 键派发已登记的 Hook。`onEnter` 可以立即结束弹道，调用方取得的 Ref 仍表示这次分配的身份。 [Unit 登记](../../src/core/unit/operations.ts)
 
 get 返回指定版本中的完整实例，不隐含 ACTIVE 筛选。update 只设置位置及私有 state，保留身份、Definition 与生命周期；ENDING 也可提交命中／清理进度，不因普通写回恢复实例。
 
@@ -61,7 +61,7 @@ Runtime 在整个 Tick 开始时固定弹道 Ref 候选，到 Projectile 阶段�
 
 ### 外部变速与运动
 
-`Slowable` 由实例上的 `move` 字段表达。支持变速的模板在初始化时装配该字段，内容用 `hasSlowable` 筛选，再调用 `setMoveContribution` 和 `removeMoveContribution` 按来源 ID 维护倍率。`resolveMoveScale` 将有效倍率相乘，空集合的倍率为 `1`。不可变速的弹道也可以在 `onTick` 从私有状态推进轨迹。「十字路口」量产型的远程弹道是实际样例。 [变速操作](../../src/core/projectile/slowable.ts) · [敌方弹道取证](../research/evidence/projectile-control-20261120/dispel-prefabs.json)
+`Slowable` 定义实例上的 `move` 字段。支持变速的模板在创建时装配 `move: { contributions: [] }`。内容用 `hasSlowable` 筛选，再调用 `setMoveContribution` 和 `removeMoveContribution` 按来源 ID 维护倍率。`setMoveContribution` 校验写入的倍率。`resolveMoveScale` 将有效倍率相乘，空集合的倍率为 `1`。不可变速的弹道也可以在 `onTick` 从私有状态推进轨迹。「十字路口」量产型的远程弹道是实际样例。 [变速操作](../../src/core/projectile/slowable.ts) · [敌方弹道取证](../research/evidence/projectile-control-20261120/dispel-prefabs.json)
 
 `onTick` 决定本步如何运动。正常一个 Tick 的时间增量为 `1`，接入 `move` 后按有效倍率缩放。飞行和随飞行缩放的寿命消耗使用同一份 `deltaTicks`，累积时保留小数。抵达后的等待和周期业务按各自的计时规则推进。 [计时入口](../research/cases/17-projectile-stop-and-termination.md#22-逻各斯的敌方弹道选择减速与消除)
 
@@ -82,13 +82,13 @@ export interface Eliminatable {
     readonly definition: { readonly eliminatable: true };
 }
 
-export function remove<P extends ProjectileFields<any, any>>(
+export function remove<P extends Projectile<object, any>>(
     battle: BattleState,
     reference: Ref<P>,
     reason?: Exclude<EndReason, "ELIMINATED">,
 ): BattleState;
 
-export function remove<P extends ProjectileFields<any, any> & Eliminatable>(
+export function remove<P extends Projectile<object, any> & Eliminatable>(
     battle: BattleState,
     reference: Ref<P>,
     reason: "ELIMINATED",

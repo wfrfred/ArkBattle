@@ -32,7 +32,8 @@ import type { Input as BattleInput, Command } from ${module("battle/contract")};
 import type { SkillCommand } from ${module("battle/index")};
 import type { UnitDefinition as CardDefinition } from ${module("battle/deployment/card/card")};
 import * as projectiles from ${module("projectile/index")};
-import type { Definition as ProjectileDefinition, Slowable } from ${module("projectile/index")};
+import type { Definition as ProjectileDefinition, Projectile, Slowable } from ${module("projectile/index")};
+import * as tracking from ${module("../content/projectiles/tracking")};
 import type { Point as PullPoint } from ${module("unit/capability/shifting/pull")};
 import { reassign, selectContext, setTicking, type Plan, type Route } from ${module("unit/capability/route/index")};
 import * as mechanisms from ${module("mechanism/index")};
@@ -435,6 +436,10 @@ const projectileDefinition: ProjectileDefinition<{ hits: number }> = {
 const createdProjectile = projectiles.initialize(battle, {
     definition: projectileDefinition, side: 'ALLY', position: [0, 0], state: { hits: 0 },
 });
+// @ts-expect-error an ordinary Definition does not select movement contributions.
+projectiles.initialize(battle, { definition: projectileDefinition, side: 'ALLY', position: [0, 0], state: { hits: 0 }, move: { contributions: [] } });
+// @ts-expect-error construction uses the private state type declared by the Definition.
+projectiles.initialize(battle, { definition: projectileDefinition, side: 'ALLY', position: [0, 0], state: { hits: 'wrong' } });
 const projectileBattle = projectiles.add(createdProjectile.state, createdProjectile.value);
 const projectileRef = projectiles.ref(createdProjectile.value);
 const projectileHits: number = projectiles.get(projectileBattle, projectileRef)!.state.hits;
@@ -457,9 +462,30 @@ const slowableDefinition: ProjectileDefinition<{ hits: number }, Slowable> = {
 const slowableInput = { definition: slowableDefinition, side: 'ENEMY', position: [0, 0], state: { hits: 0 } } as const;
 // @ts-expect-error creation supplies the instance fields used by the paired Definition.
 projectiles.initialize(battle, slowableInput);
-const slowableProjectile = projectiles.initialize(battle, { ...slowableInput, move: { contributions: [] } }).value;
-const slowableProjectileRef = projectiles.ref(slowableProjectile);
-projectiles.setMoveContribution(battle, slowableProjectileRef, { id: 'slow', value: 0.05 });
+declare const incompleteProjectile: Projectile<{ hits: number }, Slowable>;
+// @ts-expect-error registration requires the assembled instance that onEnter receives.
+projectiles.add(battle, incompleteProjectile);
+const createdSlowable = projectiles.initialize(battle, {
+    ...slowableInput, definition: { ...slowableDefinition, eliminatable: true }, move: { contributions: [] },
+});
+const slowableBattle = projectiles.add(createdSlowable.state, createdSlowable.value);
+const slowableProjectileRef = projectiles.ref(createdSlowable.value);
+projectiles.setMoveContribution(slowableBattle, slowableProjectileRef, { id: 'slow', value: 0.05 });
+projectiles.remove(slowableBattle, slowableProjectileRef, 'ELIMINATED');
+const restoredProjectile = slowableBattle.battlefield.projectiles.get(slowableProjectileRef.id, createdSlowable.value.definition)!;
+projectiles.resolveMoveScale(restoredProjectile);
+projectiles.update(slowableBattle, projectiles.ref(restoredProjectile), { state: { hits: restoredProjectile.state.hits + 1 } });
+// @ts-expect-error Definition recovery retains the paired private state type.
+projectiles.update(slowableBattle, projectiles.ref(restoredProjectile), { state: { hits: 'wrong' } });
+declare const trackedProjectile: Projectile<tracking.State, Slowable> & Slowable;
+tracking.hit(battle, trackedProjectile, (next, self) => {
+    projectiles.resolveMoveScale(self);
+    return next;
+});
+tracking.advance(battle, trackedProjectile, 1, (next, self) => {
+    projectiles.resolveMoveScale(self);
+    return next;
+});
 const pullPoint: PullPoint = { type: 'PROJECTILE', projectile: slowableProjectileRef };
 declare const elementalUnit: Unit & elemental.Elemental;
 elemental.available(elementalUnit);

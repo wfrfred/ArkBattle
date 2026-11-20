@@ -6,7 +6,6 @@ import type { WorldPosition } from "../../../geometry/coordinate.js";
 import * as lifetimes from "../../../lifetime/index.js";
 import { unregister } from "../../../lifetime/operations.js";
 import * as projectiles from "../../../projectile/index.js";
-import type { ProjectileFields } from "../../../projectile/projectile.js";
 import * as units from "../../query.js";
 import type { Unit } from "../../unit.js";
 import { resolvePullForce } from "./force.js";
@@ -19,7 +18,10 @@ const ZERO: Vec2 = [0, 0];
 
 export type Point =
     | { readonly type: "FIXED"; readonly position: WorldPosition }
-    | { readonly type: "PROJECTILE"; readonly projectile: Ref<ProjectileFields<any, any>> };
+    | {
+          readonly type: "PROJECTILE";
+          readonly projectile: Ref<projectiles.Projectile<object, any>>;
+      };
 
 export type NearStop = (battle: BattleState, self: Pull) => boolean;
 
