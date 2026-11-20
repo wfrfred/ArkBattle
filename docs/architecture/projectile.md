@@ -30,6 +30,10 @@ get 返回指定版本中的完整实例，不隐含 ACTIVE 筛选。update 只�
 
 跨完整业务后需要当前进度或资格时重新查询，不以旧 self 覆盖新版本；私有类型和写回错误遵守公共契约。
 
+### 弹道阵营
+
+以下接口已确定，待实现。`Side` 定义在 `core/side.ts`，由 Projectile 和单位 Classification 共用。`create()` 的 `CreateInput` 要求创建方传入 `side: Side`，弹道在实例上保存该值。继承原弹道归属时，创建方直接传入原弹道的 `side`。来源离场后，选择器仍读取弹道自身阵营。 [阵营取证](../research/cases/17-projectile-stop-and-termination.md#22-逻各斯的敌方弹道选择减速与消除)
+
 ## 5. 时间推进
 
 Runtime 在整个 Tick 开始时固定弹道 Ref 候选，到 Projectile 阶段逐项读取最新 ACTIVE 实例。先前回调结束的候选跳过，名单之后新建的实例等后续 Tick；创建和显式停止的程序仍同步执行。
@@ -74,6 +78,8 @@ export function remove<P extends Projectile<any> & Eliminatable>(
 
 逻各斯等内容从弹道集合按阵营、范围与 `hasEliminatable` 筛选。守卫收窄后的实例可生成满足消除重载的 Ref。两种重载进入同一个 Lifetime，`onEnd(battle, self, reason)` 按原因处理各自的收尾，例如普通弩箭在消除时跳过原目标保底命中。资源输出按 [Event](event.md)处理。 [原生停止与消除](../research/cases/17-projectile-stop-and-termination.md#21-不同入口是否采用相同命中政策)
 
+战斗内清弹直接调用领域 `remove`。实现移除接口时一并删除 Battle 的 `STOP_PROJECTILE` 命令。 [当前 Battle Command](../../src/core/battle/contract.ts)
+
 ## 7. 命中与内容状态
 
 原目标直选、落点范围、沿途接触和周期重选各有资格，不能统一套用空间重叠或普通索敌。命中记录在可重入回调前提交；次数、轮次、原目标保底及终结防重分别保存，不默认整条弹道每目标只命中一次。
@@ -86,11 +92,7 @@ tracking 在目标身份仍存在时读取真实位置，暂时消失不回退�
 
 ## 8. 待决接口与研究依据
 
-| 待决项 | 已知约束 |
-| --- | --- |
-| 弹道阵营的创建输入 | 消除和变速需要按弹道自身阵营选择。来源离场后阵营仍可读取，派生弹道也要能继承该事实。 |
-| 来源离场后的范围索敌 | Targeting 目前要求实时来源 Unit。需确定发射时保存的最小选敌信息，以及 Targetable 限制如何获得这些信息和可用的实时来源。 [空爆案例](../research/cases/33-targeting-and-targetable-pipeline.md#46-来源离场后的真实群攻弹道) |
-| Battle 的 `STOP_PROJECTILE` | 已核实的战斗内清弹可调用领域操作。是否保留对外命令取决于宿主是否需要直接停止弹道。 [Battle Command](../../src/core/battle/contract.ts) |
+来源离场后的范围索敌待定。Targeting 目前要求实时来源 Unit。需确定发射时保存的最小选敌信息，以及 Targetable 限制如何获得这些信息和可用的实时来源。 [空爆案例](../research/cases/33-targeting-and-targetable-pipeline.md#46-来源离场后的真实群攻弹道)
 
 沿途碰撞、附着、套索、延时爆炸与周期弹体按实际内容接入。来源退场后的伤害数值由各模板的采样政策决定。覆盖进度见 [Tactical 语义](tactical-semantics.md)。
 
