@@ -14,7 +14,7 @@ import { create as createAttack } from "../../../dist/content/actions/attack.js"
 import { actionCapability } from "../../helpers/actions.js";
 import { ref as unitRef } from "../../../dist/core/unit/index.js";
 import { ref as skillRef, definition as createSkillDefinition } from "../../helpers/skill.js";
-import { create as createSkill, activate as activateSkill, advance as advanceSkill, finish as finishSkill } from "../../../dist/core/unit/capability/skill/index.js";
+import { activate as activateSkill, advance as advanceSkill, finish as finishSkill } from "../../../dist/core/unit/capability/skill/index.js";
 import { recover } from "../../../dist/core/unit/capability/skill/sp.js";
 import { resolveAttack } from "../../../dist/core/unit/capability/offense/index.js";
 import { create as modifier } from "../../../dist/core/common/modifier.js";
@@ -84,7 +84,7 @@ test('elemental execution: character necrosis settles fifteen magical pulses, dr
     sp: { initial: 20, capacity: 30, recovery: { type: 'TIME' }, recoverySpeed: defineAttribute(1), recoveryMultiplier: defineAttribute(1) },
     activation: { trigger: 'MANUAL', ignoreRestrictions: [], requirement: 1, cost: 1, initialize: () => ({ state: {}, duration: { type: 'TIME', durationTicks: 30 } }) },
   });
-  let work = receiverBattle('CHARACTER', { skill: { initialize: state => createSkill(state, skill) } });
+  let work = receiverBattle('CHARACTER', { skill: { definition: skill } });
   work = element(work, 'NECROSIS').state;
   assert.equal(getUnit(work, 0).vitality.health.hp, 100000);
   assert.equal(activateSkill(work, skillRef(getUnit(work, 0))).value, null);
@@ -193,7 +193,7 @@ test('mania counts each released action once and each skill activation, caps sel
   let work = createBattle([
     { position: [0, 0], definition: definition('CHARACTER', {
       classification: { type: "DEVICE", side: 'ALLY', filterTags: [], groupTags: [] }, action: { ...actionCapability(attack), interval: defineAttribute(30) },
-      skill: { initialize: state => createSkill(state, skill) },
+      skill: { definition: skill },
     }) },
     { position: [1, 0], definition: {
       id: 'blocked-output', classification: { type: "DEVICE", side: 'ENEMY', filterTags: [], groupTags: [] },
@@ -244,7 +244,7 @@ test('mania counts successful skill activations on a host without Action', () =>
     activation: { trigger: 'MANUAL', ignoreRestrictions: [], requirement: 0, cost: 0, initialize: () => ({ state: {}, duration: { type: 'INFINITE' } }) },
   });
   let work = element(receiverBattle('CHARACTER', {
-    skill: { initialize: state => createSkill(state, skill) },
+    skill: { definition: skill },
   }), 'MANIA').state;
   const first = activateSkill(work, skillRef(getUnit(work, 0)));
   assert.notEqual(first.value, null);
@@ -267,7 +267,7 @@ test('enemy mania ramps on its own Tick clock, stops with recovery and includes 
     sp: { initial: 0, capacity: 30, recovery: { type: 'HIT', amount: 1 }, recoverySpeed: defineAttribute(0), recoveryMultiplier: defineAttribute(1) },
   });
   const setup = () => receiverBattle('ENEMY', {
-    action: actionCapability(attack), skill: { initialize: state => createSkill(state, skill) },
+    action: actionCapability(attack), skill: { definition: skill },
   });
   const speed = state => resolveSpeed(getUnit(state, 0));
   const damage = state => state.events.filter(event => event.type === 'DAMAGE');

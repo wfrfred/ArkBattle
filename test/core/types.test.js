@@ -218,7 +218,7 @@ const host = initialize(battle, { position: [0, 0], definition: {
     id: 'armed', hooks: Hooks.empty(), offense: { attack: attribute(100) }, layer: { type: 'GROUND' },
     action: {
         speed: attribute(100, 20), interval: attribute(10),
-        initialize: (state, self) => actions.createActions(state, self, actions.create(program)),
+        definitions: [program],
     },
 } }).value;
 const reference = ref(host);

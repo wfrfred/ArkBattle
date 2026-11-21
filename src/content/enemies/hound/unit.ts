@@ -7,10 +7,6 @@ import type {
     Product,
 } from "../../../core/unit/capability/catalog.js";
 import {
-    create as createAction,
-    createActions,
-} from "../../../core/unit/capability/action/index.js";
-import {
     createDefinition as createGroundDefinition,
     type Definition as GroundDefinition,
 } from "../ground.js";
@@ -41,7 +37,6 @@ export function create(
 
     const ground = createGroundDefinition(profile, timing.hitRadius, movement);
     const attack = createAttack(profile, timing.timing);
-    const initializeAttack = createAction(attack);
     const definition: Definition = {
         ...ground,
         profile,
@@ -50,7 +45,7 @@ export function create(
         action: {
             speed: { default: profile.attackSpeed, min: 20, max: null },
             interval: { default: profile.baseAttackTime * TICKS_PER_SECOND, min: 0, max: null },
-            initialize: (battle, self) => createActions(battle, self, initializeAttack),
+            definitions: [attack],
         },
     };
 

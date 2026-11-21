@@ -57,7 +57,7 @@ test("HP-07: natural recovery samples current attributes after Effects and befor
         }, position: [0, 0] },
         { definition: {
             id: "observer", hooks: Hooks.empty(),
-            action: { speed: defineAttribute(100, 20), interval: defineAttribute(10), initialize: (state, self) => actions.createActions(state, self, actions.create(observer)) },
+            action: { speed: defineAttribute(100, 20), interval: defineAttribute(10), definitions: [observer] },
         }, position: [1, 0] },
     ]);
     const target = units.ref(get(state, 0));

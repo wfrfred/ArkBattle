@@ -159,7 +159,7 @@ test("Unit death preserves its attribution through Effect responses and the orig
         { definition, position: [0, 0] },
         { definition: {
             id: "killer", hooks: Hooks.empty(),
-            skill: { initialize: current => skills.create(current, rewardSkill) },
+            skill: { definition: rewardSkill },
         }, position: [1, 0] },
     ]);
     assert.deepEqual(observed, ["first", "replacement"]);

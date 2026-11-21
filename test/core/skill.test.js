@@ -50,7 +50,7 @@ test("activation publishes payment before onStart and clears only the completed 
         id: "operator",
         hooks: Hooks.empty(),
         presence: {},
-        skill: { initialize: (state) => skills.create(state, program) },
+        skill: { definition: program },
     };
     let state = battle([{ definition, position: [1, 1] }]);
     const source = units.ref(get(state, 0));
@@ -123,7 +123,7 @@ test("per-call activation parameters preserve ordinary policy and still require 
                 return { state, value: undefined };
             },
         }),
-        skill: { initialize: state => skills.create(state, program) },
+        skill: { definition: program },
     };
     let state = battle([{ definition, position: [1, 1] }]);
     const source = units.ref(get(state, 0));
@@ -171,7 +171,7 @@ test("cancellation during payment notification retains payment and suppresses th
     const definition = {
         id: "operator",
         hooks: Hooks.empty(),
-        skill: { initialize: (state) => skills.create(state, program) },
+        skill: { definition: program },
     };
     let state = battle([{ definition, position: [1, 1] }]);
     const source = units.ref(get(state, 0));
@@ -226,7 +226,7 @@ test("active operations require a declared handler and current permission, while
         definition: {
             id: program.id,
             hooks: Hooks.empty(),
-            skill: { initialize: (state) => skills.create(state, program) },
+            skill: { definition: program },
         },
         position: [1, 1],
     })));
@@ -282,7 +282,7 @@ test("natural SP recovery pauses without backlog and uses current recovery speed
     const definition = {
         id: "operator",
         hooks: Hooks.empty(),
-        skill: { initialize: (state) => skills.create(state, program) },
+        skill: { definition: program },
     };
     let state = battle([{ definition, position: [1, 1] }]);
     const source = units.ref(get(state, 0));
@@ -345,7 +345,7 @@ test("TIME extension stays in its round while persistent state selects a later I
         id: "operator",
         hooks: Hooks.empty(),
         presence: {},
-        skill: { initialize: (state) => skills.create(state, program) },
+        skill: { definition: program },
     };
     let state = battle([{ definition, position: [1, 1] }]);
     const source = units.ref(get(state, 0));
@@ -384,7 +384,7 @@ test("AMMO samples its charged base before payment and applies capacity, consump
     const definition = {
         id: "operator",
         hooks: Hooks.empty(),
-        skill: { initialize: (state) => skills.create(state, program) },
+        skill: { definition: program },
     };
     let state = battle([{ definition, position: [1, 1] }]);
     const source = units.ref(get(state, 0));
@@ -435,7 +435,7 @@ test("Ammo contributions registered and withdrawn during TIME affect only later 
     };
     const definition = {
         id: "operator", hooks: Hooks.empty(),
-        skill: { initialize: state => skills.create(state, program) },
+        skill: { definition: program },
     };
     let state = battle([{ definition, position: [1, 1] }]);
     const source = units.ref(get(state, 0));

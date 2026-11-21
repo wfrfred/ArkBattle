@@ -28,7 +28,7 @@ test("HOOK-03: Skill and Burst end notifications observe their cleared state whi
         id: "owner",
         vitality: defineVitality(10000),
         elemental: createArknightsElementalDefinition({ receiver: "CHARACTER" }),
-        skill: { initialize: state => skills.create(state, program) },
+        skill: { definition: program },
         hooks: Hooks.empty()
             .set(skills.activationEnded, {
                 id: "activation-ended",
@@ -153,8 +153,7 @@ test("an ending ancestor rejects new dependents before its active Action executi
             definition: {
                 id: "source",
                 action: { speed: defineAttribute(100, 20), interval: defineAttribute(10),
-                    initialize: (current, self) =>
-                        actions.createActions(current, self, actions.create(program)),
+                    definitions: [program],
                 },
                 hooks: Hooks.empty().set(unitLifecycle.removing, {
                         id: "bind-during-departure",

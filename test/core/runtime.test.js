@@ -178,7 +178,7 @@ test("manual commands preserve AUTO and PASSIVE scheduling while direct activati
     let state = battle(programs.map(program => ({
         definition: {
             id: program.id, hooks: Hooks.empty(),
-            skill: { initialize: state => skills.create(state, program) },
+            skill: { definition: program },
         },
         position: [1, 1],
     })));

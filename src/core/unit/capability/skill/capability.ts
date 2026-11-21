@@ -3,6 +3,8 @@ import type * as contribution from "../../../common/contribution.js";
 import * as entries from "../../../common/collection/entries.js";
 import type { State as BattleState, Result } from "../../../battle/state.js";
 import type { Skill as SkillState } from "./skill.js";
+import type { Definition as SkillDefinition } from "./definition.js";
+import { initialize as initializeSkill } from "./initialize.js";
 import type { Input as AmmoInput } from "./ammo.js";
 import type { RecoveryRestriction, Restrictions } from "./restriction.js";
 import { createChange, type Change } from "../../change.js";
@@ -15,7 +17,7 @@ const activeRecoveryRestriction: RecoveryRestriction = {
 };
 
 export interface Definition {
-    readonly initialize: (battle: BattleState) => Result<SkillState<any, any>>;
+    readonly definition: SkillDefinition<any, any>;
 }
 
 export interface State extends SkillState, Restrictions {
@@ -36,7 +38,7 @@ export function initialize<U extends Unit & Pick<Skill, "definition">>(
     battle: BattleState,
     unit: U,
 ): Result<U & Skill> {
-    const initialized = unit.definition.skill.initialize(battle);
+    const initialized = initializeSkill(battle, unit.definition.skill.definition);
     const skill = initialized.value;
     const value: State = {
         ...skill,

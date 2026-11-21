@@ -10,8 +10,6 @@ export type { Definition, Period } from "./definition.js";
 
 export type { Event } from "./event.js";
 
-export { create, createActions } from "./initialize.js";
-
 export { forUnit, getAction, getExecution, getApplyWay, isCasting } from "./query.js";
 
 export {

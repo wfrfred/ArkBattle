@@ -4,7 +4,7 @@ import type { Definition } from "./definition.js";
 import type { Skill } from "./skill.js";
 import * as sp from "./sp.js";
 
-export function create<S extends object, A extends object>(
+export function initialize<S extends object, A extends object>(
     battle: BattleState,
     definition: Definition<S, A>,
 ): Result<Skill<S, A>> {

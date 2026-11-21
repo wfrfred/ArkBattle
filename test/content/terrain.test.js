@@ -100,7 +100,7 @@ test("HP-06: infection keeps its entry clocks and ordinary reception while exclu
         terrain.normal.create({}),
     ], [unit(0, {
         ...combat,
-        skill: { initialize: state => skills.create(state, resource) },
+        skill: { definition: resource },
         hooks: Hooks.empty().set(hpDamage.targetApplied, {
             id: "observe-environment-application",
             invoke(state, { request, application }) {

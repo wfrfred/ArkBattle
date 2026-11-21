@@ -10,8 +10,6 @@ import {
 } from "../../../core/unit/capability/classification/index.js";
 import { createArknightsElementalDefinition } from "../../../data/effect/elemental.js";
 import {
-    create as createAction,
-    createActions,
     clearCooldown,
     cancel as cancelAction,
     forUnit,
@@ -33,7 +31,6 @@ import { hasBlocker, sides } from "../../../core/unit/capability/blocking/index.
 import type { Profile } from "../../../data/unit/operator.js";
 import { secondsToTicks } from "../../../data/time.js";
 import {
-    create as createSkill,
     hasSkill,
     modify,
     type Definition as SkillDefinition,
@@ -306,8 +303,6 @@ export function create(
             },
         },
     };
-    const initializeNormalAttack = createAction(normalAttack);
-    const initializeAction = createAction(action);
 
     const definition: Definition = {
         elemental: createArknightsElementalDefinition({ receiver: "CHARACTER" }),
@@ -384,8 +379,7 @@ export function create(
                 min: 0,
                 max: null,
             },
-            initialize: (battle, self) =>
-                createActions(battle, self, initializeNormalAttack, initializeAction),
+            definitions: [normalAttack, action],
             select: (battle, self) => ({
                 state: battle,
                 value: [
@@ -393,7 +387,7 @@ export function create(
                 ],
             }),
         },
-        skill: { initialize: (battle) => createSkill(battle, skill) },
+        skill: { definition: skill },
         hooks: Hooks.empty().set(unitHooks.entered, {
             id: "mudrock/install-initial-effects",
             invoke(state, self) {

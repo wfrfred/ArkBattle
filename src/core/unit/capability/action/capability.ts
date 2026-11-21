@@ -1,7 +1,8 @@
 import type { State as BattleState, Result } from "../../../battle/state.js";
 import type { Unit } from "../../unit.js";
-import type { Id as DefinitionId } from "./definition.js";
+import type { Definition as ActionDefinition, Id as DefinitionId } from "./definition.js";
 import { Actions } from "./actions.js";
+import { initialize as initializeAction } from "./initialize.js";
 import type * as contribution from "../../../common/contribution.js";
 import * as attribute from "../../attribute.js";
 import type * as modifier from "../../../common/modifier.js";
@@ -11,7 +12,7 @@ import type { Restriction as BaseRestriction } from "../../../restriction.js";
 export interface Definition {
     readonly speed: attribute.Definition;
     readonly interval: attribute.Definition;
-    readonly initialize: (battle: BattleState, self: Unit & Action) => Result<Actions>;
+    readonly definitions: readonly ActionDefinition<any, any>[];
     readonly select?: (battle: BattleState, self: Unit & Action) => Result<readonly DefinitionId[]>;
 }
 
@@ -59,15 +60,21 @@ export function initialize<U extends Unit & Pick<Action, "definition">>(
             restrictions: [],
         },
     };
-    const initialized = definition.initialize(battle, self);
+    let actions = self.action.actions;
+
+    for (const program of definition.definitions) {
+        const initialized = initializeAction(battle, self, program);
+        battle = initialized.state;
+        actions = actions.add(initialized.value);
+    }
 
     return {
-        state: initialized.state,
+        state: battle,
         value: {
             ...self,
             action: {
                 ...self.action,
-                actions: initialized.value,
+                actions,
             },
         },
     };

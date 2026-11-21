@@ -4,8 +4,6 @@ import { normal as normalSite } from "../../terrain/condition.js";
 import { scope } from "../../../core/lifetime/index.js";
 import { createArknightsElementalDefinition } from "../../../data/effect/elemental.js";
 import {
-    create as createAction,
-    createActions,
     getAction,
     ref as actionRef,
     setState as setActionState,
@@ -21,7 +19,6 @@ import type { Profile } from "../../../data/unit/operator.js";
 import type { Definitions as CapabilityDefinitions } from "../../../core/unit/capability/catalog.js";
 import {
     type Definition as SkillDefinition,
-    create as createSkill,
     activationRef,
     lifetime as skillLifetime,
 } from "../../../core/unit/capability/skill/index.js";
@@ -134,7 +131,6 @@ export function create(profile: Profile, timing: AttackSpeedTiming): Definition 
     };
 
     const attack = createAttack(profile, timing);
-    const initializeAttack = createAction(attack);
 
     return {
         id: profile.id,
@@ -211,7 +207,7 @@ export function create(profile: Profile, timing: AttackSpeedTiming): Definition 
                 min: 0,
                 max: null,
             },
-            initialize: (battle, self) => createActions(battle, self, initializeAttack),
+            definitions: [attack],
             select(battle, self) {
                 const reference = actionRef(unitRef(self), attack);
                 const current = getAction(battle, reference);
@@ -229,7 +225,7 @@ export function create(profile: Profile, timing: AttackSpeedTiming): Definition 
                 return { state: battle, value: [attack.id] };
             },
         },
-        skill: { initialize: (battle) => createSkill(battle, skill) },
+        skill: { definition: skill },
         hooks: Hooks.empty().set(unitHooks.entered, {
             id: "melantha/install-talent",
             invoke(state, self) {

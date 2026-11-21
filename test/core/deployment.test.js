@@ -10,7 +10,6 @@ import * as cards from "../../dist/core/battle/deployment/card/index.js";
 import * as units from "../../dist/core/unit/query.js";
 import * as damage from "../../dist/core/battle/resource/hp/damage/index.js";
 import * as modifier from "../../dist/core/common/modifier.js";
-import * as actions from "../../dist/core/unit/capability/action/index.js";
 
 const operator = {
     id: "operator",
@@ -77,15 +76,24 @@ test("preview, evaluation and deployment share a request, rejection spends nothi
     const definition = {
         ...operator,
         facing: { restrictions: [] },
-        action: { speed: defineAttribute(100, 20), interval: defineAttribute(10),
-            initialize(current, self) {
-                constructions.push({
-                    dp: current.deployment.dp,
-                    stock: cards.get(current, card).stock,
-                    slots: current.deployment.usedSlots,
-                });
-                return actions.createActions(current, self);
-            },
+        action: {
+            speed: defineAttribute(100, 20),
+            interval: defineAttribute(10),
+            definitions: [{
+                id: "observe-construction",
+                applyWay: "NONE",
+                period: { type: "FIXED", ticks: 1 },
+                initialize(current) {
+                    constructions.push({
+                        dp: current.deployment.dp,
+                        stock: cards.get(current, card).stock,
+                        slots: current.deployment.usedSlots,
+                    });
+                    return { state: current, value: {} };
+                },
+                prepare: state => ({ state, value: null }),
+                onTick: state => ({ state, value: false }),
+            }],
         },
     };
     let state = battle([], { deployment: { definition: account, cards: [definition] } });

@@ -22,7 +22,7 @@ SP 可以不存在；hasSp 同时证明配置与状态存在。SP Definition 保
 
 持久 state 保存跨激活事实，本轮 state 保存当次进度。可直接由 activation 槽位判断的阶段不再重复保存；SP.value 是余额的唯一事实。聚合不重复保存 host，内容程序显式接收宿主 Ref。
 
-创建入口接续持久初始化和 SP 初态，建立私有状态与回调的配对。Unit 尚未登记时不能查询自己或假定兄弟能力已装配。具体 Definition 由内容工厂确定，不以联合 Definition 构造一套运行时能力分派。
+Content 在 Skill Capability 的 `definition` 中声明选定技能。Capability 装配时执行该 Definition 的持久初始化，建立私有状态、SP 初态和空激活槽位，并接续返回的 BattleState。Unit 尚未登记时不能查询自己或假定兄弟能力已装配。
 
 ### 引用、查询与写回
 

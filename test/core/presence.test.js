@@ -41,7 +41,7 @@ test("disappearance preserves deployment and lifetimes, releases blocking before
         occupancy: { slot: "OCCUPANT" },
         deployable: { retreatRestrictions: [] },
         blocker: { capacity: 2, layer: "GROUND", restrictions: [] },
-        action: { speed: defineAttribute(100, 20), interval: defineAttribute(10), initialize: (state, self) => actions.createActions(state, self, actions.create(program), actions.create(idle)) },
+        action: { speed: defineAttribute(100, 20), interval: defineAttribute(10), definitions: [program, idle] },
         card: {
             cost: 10, redeployTicks: 10, slots: 1, stock: 1, stockLimit: 1, activeLimit: 1,
             cooldownOnDeploy: false, recoverOnRetreatOrDeath: true, increaseCostOnRetreatOrDeath: true,

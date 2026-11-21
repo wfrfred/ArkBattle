@@ -29,8 +29,8 @@ function actor(ignoreRestrictions, onEnd = state => state) {
     };
     const definition = {
         id: "controlled", hooks: Hooks.empty(),
-        action: { speed: defineAttribute(100, 20), interval: defineAttribute(10), initialize: (state, self) => actions.createActions(state, self, actions.create(action)) },
-        skill: { initialize: state => skills.create(state, skill) },
+        action: { speed: defineAttribute(100, 20), interval: defineAttribute(10), definitions: [action] },
+        skill: { definition: skill },
         blocker: { layer: "GROUND", restrictions: [], capacity: 1, radius: 2 },
         facing: { restrictions: [] },
         locomotion: { halfBodyWidth: 0, speed: defineAttribute(1), steeringParameters: { steeringFactor: 1, maxSteeringForce: 1 } },

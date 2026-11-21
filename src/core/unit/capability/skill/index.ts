@@ -18,8 +18,6 @@ export type {
 
 export { getSkill, getActivation } from "./query.js";
 
-export { create } from "./initialize.js";
-
 export {
     lifetime,
     setState,

@@ -7,12 +7,49 @@ import * as units from "../../dist/core/unit/index.js";
 import * as actions from "../../dist/core/unit/capability/action/index.js";
 import * as skills from "../../dist/core/unit/capability/skill/index.js";
 import { create as modifier } from "../../dist/core/common/modifier.js";
+import { createRng } from "../../dist/core/common/rng.js";
 import { attribute, vitality } from "../helpers/attribute.js";
 import { actionCapability } from "../helpers/actions.js";
 import { update } from "../../dist/core/unit/operations.js";
 import { step } from "../../dist/core/battle/runtime.js";
 import { create as attack } from "../../dist/content/actions/attack.js";
 import * as presence from "../../dist/core/unit/capability/presence/index.js";
+
+test("capabilities initialize declared programs in order and carry their battle state forward", () => {
+    const seed = 7;
+    const initialize = (state) => {
+        const rng = createRng(state.execution.rngState);
+        const sample = rng.next();
+        return {
+            state: { ...state, execution: { ...state.execution, rngState: rng.state() } },
+            value: { sample },
+        };
+    };
+    const first = {
+        id: "first",
+        applyWay: "NONE",
+        period: { type: "FIXED", ticks: 1 },
+        initialize,
+        prepare: (state) => ({ state, value: null }),
+        onTick: (state) => ({ state, value: false }),
+    };
+    const second = { ...first, id: "second" };
+    const skill = { id: "skill", initialize, sp: null, activation: null };
+    const definition = {
+        id: "actor",
+        hooks: Hooks.empty(),
+        action: actionCapability(first, second),
+        skill: { definition: skill },
+    };
+    const state = battle([{ definition, position: [1, 1] }], { rngState: seed });
+    const host = units.ref(get(state, 0));
+    const rng = createRng(seed);
+
+    assert.equal(actions.getAction(state, actions.ref(host, first)).state.sample, rng.next());
+    assert.equal(actions.getAction(state, actions.ref(host, second)).state.sample, rng.next());
+    assert.equal(skills.getSkill(state, skills.ref(host, skill)).state.sample, rng.next());
+    assert.equal(state.execution.rngState, rng.state());
+});
 
 test("prepare can reject without allocating a round; ending preserves the latest persistent state", () => {
     const program = {
@@ -158,7 +195,7 @@ test("interrupted attack, successful release, and damage output are separate bus
         hooks: Hooks.empty(),
         presence: {},
         action: actionCapability(program),
-        skill: { initialize: (state) => skills.create(state, resource) },
+        skill: { definition: resource },
     };
     const target = {
         id: "target",
@@ -238,7 +275,7 @@ test("Combat advances an instantaneous action once per Tick and skips selection 
                 return { state, value: [program.id] };
             },
         },
-        skill: { initialize: (state) => skills.create(state, resource) },
+        skill: { definition: resource },
     };
     const firstRun = step(battle([{ definition, position: [1, 1] }], { rngState: 42 }), []);
     const reference = actions.ref(units.ref(get(firstRun, 0)), program);

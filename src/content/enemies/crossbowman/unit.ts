@@ -5,11 +5,7 @@ import type {
     Definitions as CapabilityDefinitions,
     Product,
 } from "../../../core/unit/capability/catalog.js";
-import {
-    create as createAction,
-    createActions,
-    isCasting,
-} from "../../../core/unit/capability/action/index.js";
+import { isCasting } from "../../../core/unit/capability/action/index.js";
 
 import { hasBlockable } from "../../../core/unit/capability/blocking/index.js";
 import {
@@ -47,8 +43,6 @@ export function create(
     const ground = createGroundDefinition(profile, timing.hitRadius, movement);
     const melee = createMelee(profile, timing);
     const ranged = createRanged(profile, timing, timing.projectile);
-    const initializeMelee = createAction(melee);
-    const initializeRanged = createAction(ranged);
     const definition: Definition = {
         ...ground,
         profile,
@@ -57,8 +51,7 @@ export function create(
         action: {
             speed: { default: profile.attackSpeed, min: 20, max: null },
             interval: { default: profile.baseAttackTime * TICKS_PER_SECOND, min: 0, max: null },
-            initialize: (battle, self) =>
-                createActions(battle, self, initializeMelee, initializeRanged),
+            definitions: [melee, ranged],
             select: (battle, self) => ({
                 state: battle,
                 value: isCasting(battle, ref(self))

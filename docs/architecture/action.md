@@ -22,7 +22,7 @@ Definition 提供基础时序、持久初始化、prepare、onTick 和可选 onE
 
 ## 3. Definition、Action 与 Execution
 
-创建时执行持久初始化，建立就绪冷却与空执行。共享 Definition 的不同宿主分别产生私有状态；初始化期间宿主尚未登记，不能查询自己或假定兄弟能力已完成装配。
+Content 在 Action Capability 的 `definitions` 中按顺序声明行动。Capability 装配时逐项接续 BattleState，执行 Definition 的持久初始化，并保存带就绪冷却和空执行槽位的 Action。`select` 仍由 Content 决定运行时选招。共享 Definition 的不同宿主分别产生私有状态。初始化期间宿主尚未登记，也不能假定兄弟能力已完成装配。
 
 prepare 检查本次内容条件、初始化执行数据并采样；返回 null 表示未启动，已经完成的状态变化仍接续。需要执行身份的伤害、召唤、绑定 Effect 等业务放在登记后的 onTick；prepare 不递归启动自己或改变来源配置。
 

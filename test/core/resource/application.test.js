@@ -160,7 +160,7 @@ test("APPLY-01: cancellation before immunity preserves its outcome and suppresse
         { definition: { id: "source", hooks: Hooks.empty() }, position: [0, 0] },
         { definition: {
             id: "target", hooks: Hooks.empty(), targetable: { category: "DEFAULT", taunt: defineAttribute(0, -2, 2), restrictions: [] }, vitality: defineVitality(100),
-            skill: { initialize: state => skills.create(state, resource) },
+            skill: { definition: resource },
         }, position: [1, 0] },
     ]);
     const source = units.ref(get(state, 0));
@@ -669,7 +669,7 @@ test("HP-05/06: LOSS completes the shared pipeline against an invincible absent 
         { definition: {
             id: "target", presence: {}, targetable: { category: "DEFAULT", taunt: defineAttribute(0, -2, 2), restrictions: [] },
             vitality: defineVitality(35, { defense: defineAttribute(20) }),
-            skill: { initialize: current => skills.create(current, resource) },
+            skill: { definition: resource },
             hooks: Hooks.empty()
                 .set(hpDamage.targetFormula, {
                     id: "target-formula",

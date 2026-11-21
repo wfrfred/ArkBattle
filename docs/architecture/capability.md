@@ -22,6 +22,8 @@ Catalog 从 initializer 字典的函数签名派生配置、标准状态和 Init
 
 `Unit.initialize` 从当前 BattleState 分配实例 ID，推进分配进度，然后按 Catalog 顺序接续各 initializer。最后合并 Definition.hooks，同键同 ID 后者覆盖并保留位置。Occupancy 先于依赖它的 Deployable。初始化期间可以读取当前战场或消费 RNG，需要本次已装配的能力时直接读取输入 Unit。调用方接续返回的 State，可先登记本业务的事实，再用 `Unit.add` 发布实例并触发 entered。
 
+Action 的 `definitions` 声明所选行动，Skill 的 `definition` 声明所选技能。各 Capability initializer 负责组装实例，逐次接续具体 Definition 的私有状态初始化结果。
+
 能力可在装配时登记 entered／removing／removed 等 Hook。固有登记在完整 add 和任何 entered 前就绪；同级保留默认装配顺序，实际执行按[公共 Hook 优先级](hook.md)。通用装配和 Unit 生命周期不按具体能力建立额外阶段。初始 Effect 在登记后的 entered 正常安装。
 
 Unit 的 entered 和 tick 要求宿主仍为 ACTIVE。removing 使用固定 Departure，在 Lifetime 自动请求依赖者结束之前派发。removed 在注销前捕获最新登记对象与优先级，在注销后派发，历史载荷不变。完整机制见 [Lifetime](lifetime.md)，死亡归属与来源响应见 [Resource](resource.md)。
