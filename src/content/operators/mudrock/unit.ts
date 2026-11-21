@@ -35,8 +35,6 @@ import {
 } from "../../../core/unit/capability/skill/index.js";
 
 import type { Definition as CardDefinition } from "../../../core/battle/deployment/card/index.js";
-import type { Elemental } from "../../../core/unit/capability/elemental/index.js";
-import type { Hitbox } from "../../../core/unit/capability/hitbox/capability.js";
 import { get as getTile } from "../../../core/battlefield/map/map.js";
 
 import { healFree } from "../../../core/effects/protection.js";
@@ -61,8 +59,6 @@ import {
 import { value, healSelf } from "./common.js";
 
 export type Mudrock = Operator &
-    Elemental &
-    Hitbox &
     ActionCapability<Mudrock> &
     SkillCapability<Mudrock> & {
         readonly definition: {

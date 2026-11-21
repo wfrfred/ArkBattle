@@ -24,8 +24,6 @@ import {
 } from "../../../core/unit/capability/skill/index.js";
 
 import type { Definition as CardDefinition } from "../../../core/battle/deployment/card/index.js";
-import type { Elemental } from "../../../core/unit/capability/elemental/index.js";
-import type { Hitbox } from "../../../core/unit/capability/hitbox/capability.js";
 import { get as getTile } from "../../../core/battlefield/map/map.js";
 import { sides } from "../../../core/unit/capability/blocking/index.js";
 import {
@@ -48,8 +46,6 @@ import { allows } from "../../../core/restriction.js";
 import { TICKS_PER_SECOND } from "../../../core/tick.js";
 
 export type Melantha = Operator &
-    Elemental &
-    Hitbox &
     ActionCapability<Melantha> &
     SkillCapability<Melantha> & {
         readonly definition: {

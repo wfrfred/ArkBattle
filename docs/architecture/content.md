@@ -65,10 +65,12 @@ Content 按 [Attribute](attribute.md) 契约绑定所属能力的属性；攻速
 type Operator = Unit &
     Classification<"OPERATOR"> &
     Vitality &
+    Elemental &
     Offense &
     Blocker &
     Targetable &
     Layer &
+    Hitbox &
     Facing &
     Occupancy &
     Deployable;
@@ -78,6 +80,8 @@ type Device = Unit & Classification<"DEVICE">;
 ```
 
 普通原生角色默认具备阻挡能力，因此 `Blocker` 属于 `Operator` 的基础组合。零阻挡以容量 `0` 表达，高台等情况依照地块和阻挡层资格结算。[原生阻挡证据](../research/cases/23-blocker-and-blockable-roles.md) · [阻挡资格](blocking.md#关系资格与-restriction)
+
+普通干员具备 `Elemental` 的角色元素接收规则和用于空间命中的 `Hitbox`。元素免疫由接收限制表达，命中体的形状由具体单位配置。[元素接收](elemental.md#1-能力与定义) · [空间查询](spatial.md)
 
 ### 具体单位的写法
 
