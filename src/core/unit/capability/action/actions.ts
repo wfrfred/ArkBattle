@@ -65,8 +65,4 @@ export class Actions {
 
         return store === this.#store ? this : new Actions(store);
     }
-
-    toJSON(): readonly Action[] {
-        return this.values().toArray();
-    }
 }

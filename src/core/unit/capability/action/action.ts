@@ -18,9 +18,9 @@ export interface Action<
     readonly execution: ExecutionState<E> | null;
 }
 
-export function ref<P extends object, E extends object, H extends object>(
-    host: Ref<Unit & ActionCapability & NoInfer<H>>,
-    definition: Definition<P, E, H>,
+export function ref<P extends object, E extends object>(
+    host: Ref<Unit & ActionCapability>,
+    definition: Definition<P, E, never>,
 ): Ref<Action<P, E>> {
     const identity: Identity<Action<P, E>> = { host, definition };
 

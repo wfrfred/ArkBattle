@@ -133,7 +133,7 @@ export function startConfigured(
         throw new RangeError(`unknown selected action definition ${id}`);
     }
 
-    return start(battle, actionRef(units.ref(unit), action.definition as Definition));
+    return start(battle, actionRef(units.ref(unit), action.definition));
 }
 
 export function setExecutionState<P extends object, E extends object>(

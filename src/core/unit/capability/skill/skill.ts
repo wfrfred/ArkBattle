@@ -15,9 +15,9 @@ export interface Skill<S extends object = object, A extends object = object> ext
     readonly activation: State<A> | null;
 }
 
-export function ref<S extends object, A extends object, H extends object>(
-    host: Ref<Unit & SkillCapability & NoInfer<H>>,
-    definition: Definition<S, A, H>,
+export function ref<S extends object, A extends object>(
+    host: Ref<Unit & SkillCapability>,
+    definition: Definition<S, A, never>,
 ): Ref<Skill<S, A>> {
     const identity: Identity<Skill<S, A>> = { host, definition };
 

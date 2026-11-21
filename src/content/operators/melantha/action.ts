@@ -55,20 +55,20 @@ export function hasTarget(
 }
 
 export function create(profile: Profile, timing: AttackSpeedTiming): Attack<State, object, Host> {
-    const attack: Attack<State, object, Host> = createWithState<State, object, Host>({
+    return createWithState<State, object, Host>({
         id: "normal-attack",
         initialize: (battle) => ({ state: battle, value: { inSession: false } }),
         prepare: (battle) => ({ state: battle, value: {} }),
         timing: (_battle, _source, self) =>
             self.state.inSession ? { ...timing, beginTicks: 0 } : timing,
         onStart(battle, source, self) {
-            battle = setState(battle, actionRef(source, attack), { inSession: true });
+            battle = setState(battle, actionRef(source, self.definition), { inSession: true });
 
             return faceTarget(battle, source, self);
         },
-        onEnd: (battle, source, _self, end) =>
+        onEnd: (battle, source, self, end) =>
             end.type === "CANCELLED"
-                ? setState(battle, actionRef(source, attack), { inSession: false })
+                ? setState(battle, actionRef(source, self.definition), { inSession: false })
                 : battle,
         period: { type: "ATTACK_SPEED" },
         triggerBindingId: "primary",
@@ -106,6 +106,4 @@ export function create(profile: Profile, timing: AttackSpeedTiming): Attack<Stat
             },
         ],
     });
-
-    return attack;
 }

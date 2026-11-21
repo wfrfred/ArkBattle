@@ -202,6 +202,10 @@ const program: actions.Definition<{ uses: number }, { hits: number }, ArmedHost>
         }
         const host: Ref<Unit & actions.ActionCapability> = source;
         const execution: actions.Execution<{ uses: number }, { hits: number }> = self;
+        const action = actions.ref(source, self.definition);
+        state = actions.setState(state, action, { uses: self.state.uses + 1 });
+        // @ts-expect-error the callback's action identity retains its private state type.
+        actions.setState(state, action, { hits: 0 });
         return actions.finish(state, actions.executionRef(host, execution));
     },
 };
@@ -245,6 +249,12 @@ const controlledActivation: skills.ActivationDefinition<ControlledSkillState, Co
             state: { remaining: 3 }, duration,
         };
         return initial;
+    },
+    onStart(state, source, self) {
+        const skill = skills.ref(source, self.definition);
+        // @ts-expect-error the callback's skill identity retains its private state type.
+        skills.setState(state, skill, { remaining: 0 });
+        return skills.setState(state, skill, { completed: self.state.completed + 1 });
     },
     operations: {
         STOP(state, source, self) {
@@ -313,8 +323,9 @@ const dynamicModifiers = (_state: State, _self: Unit & actions.ActionCapability)
 // @ts-expect-error Action time contributions publish fixed values through a Change.
 actions.setSpeedContribution({ id: 'dynamic-speed', value: dynamicModifiers });
 const persistent: Ref<actions.Action<{ uses: number }, { hits: number }>> = actions.ref(reference, program);
-// @ts-expect-error a precise action identity requires its declared host capabilities.
-actions.ref(plainActionHost, program);
+const actionOnGenericHost: typeof persistent = actions.ref(plainActionHost, program);
+// @ts-expect-error an Action identity still requires an Action host.
+actions.ref(ref(bare), program);
 const uses: number = actions.getAction(battle, persistent)!.state.uses;
 actions.setState(battle, persistent, { uses: uses + 1 });
 // @ts-expect-error the persistent identity retains its own private state type.
@@ -661,19 +672,23 @@ const invalidActivationExemption: typeof controlledActivation = {
 };
 const activationParameters: skills.ActivationParameters = { requirement: 0, cost: 0 };
 const skillReference = skills.ref(reference, skillProgram);
-// @ts-expect-error a precise skill identity requires its declared host capabilities.
-skills.ref(ref(skillHost), skillProgram);
+const skillOnGenericHost: typeof skillReference = skills.ref(ref(skillHost), skillProgram);
+// @ts-expect-error a Skill identity still requires a Skill host.
+skills.ref(ref(bare), skillProgram);
 const typedActivation = skills.activate(battle, skillReference, activationParameters);
 if (typedActivation.value !== null) {
     const self = skills.getActivation(typedActivation.state, typedActivation.value)!;
     const remaining: number = self.activation.state.remaining;
     const completed: number = self.state.completed;
 }
-const configuredActivation = skills.activate(battle, ref(skillHost), activationParameters);
+// @ts-expect-error activation requires a Skill Ref.
+skills.activate(battle, ref(skillHost), activationParameters);
+const configuredSkill = skills.ref(ref(skillHost), skillHost.skill.definition);
+const configuredActivation = skills.activate(battle, configuredSkill, activationParameters);
 if (configuredActivation.value !== null) {
     const self = skills.getActivation(configuredActivation.state, configuredActivation.value)!;
     const ordinaryActivationState: object = self.activation.state;
-    // @ts-expect-error activating the configured skill by host does not recover its private state.
+    // @ts-expect-error an ordinary Skill Ref does not recover private state fields.
     self.activation.state.remaining;
 }
 // @ts-expect-error a special activation must supply its requirement and payment together.
