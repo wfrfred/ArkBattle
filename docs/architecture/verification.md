@@ -51,7 +51,7 @@ Prefab、范围读取和换算由实际业务使用；目录移动、提取工�
 
 公共容器、Query、RNG、数值取整及几何算法各自集中验证；坐标旋转、范围并集、圆、方盒和轴对齐胶囊的独立相交和扫掠结果不复制到消费者。Targeting 只补一个实际 Hitbox 范围接入，锁定弹道单独验证身份命中。
 
-[公共类型契约](../../test/core/types.test.js) 集中证明构造与私有状态／回调配对、Typed Ref、具体 Initial 必填与额外已知输入、Query／optional 收窄、Change 能力逆变和 Hook Key 载荷关联。Occupancy 必需 tile、Route 必需 plan／offset、Spawn 所需与禁止能力由构造边界代表覆盖，不按字段、数组长度或每种 Capability 扩矩阵。
+[公共类型契约](../../test/core/types.test.js) 集中证明构造与私有状态／回调配对、Typed Ref、具体 Initial 必填与额外已知输入、Query／optional 收窄、Change 能力逆变和 Hook Key 载荷关联。Occupancy 必需 tile、Route 必需 plan／offset、Spawn 所需与禁止能力由构造边界代表覆盖。Card 构造以带 Route 的蓝图为代表，验证部署入口无法提供该能力必需的初值时，蓝图在绑定阶段被拒绝。不按字段、数组长度或每种 Capability 扩矩阵。
 
 普通注册保序、结构共享、Hook 候选与 Lifetime 析构只在公共代表中保障；MaxHP、冷却、Ammo 和 Blocking 等具有真实后继的 Change 留在所属业务。综合场景仅保障新增跨领域结果，Content 位置或涉及未完整审查领域不是保留重复用例的理由。
 

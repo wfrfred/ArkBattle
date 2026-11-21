@@ -16,6 +16,7 @@ export type Id = number;
 export type UnitDefinition = BaseDefinition & {
     readonly deployable: DeployableDefinition;
     readonly occupancy: OccupancyDefinition;
+    readonly route?: never;
 };
 
 export type Clock = {

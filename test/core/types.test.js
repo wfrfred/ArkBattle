@@ -1,5 +1,6 @@
 // Contract: [api-conventions](../../docs/architecture/api-conventions.md#统一-typed-ref-与类型恢复).
 // Contract: [action](../../docs/architecture/action.md#3-definitionaction-与-execution).
+// Contract: [deployment](../../docs/architecture/deployment.md#静态内容与-card).
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { fileURLToPath } from "node:url";
@@ -927,6 +928,9 @@ const cardInput = {
 const initializedCard = cards.initialize(battle, cardInput);
 // @ts-expect-error deployment requires a Unit Definition with Occupancy and Deployable.
 cards.initialize(battle, { definition: counterCard, unitDefinition: bare.definition });
+const routedCardUnit = { ...cardUnitBase, route: routedDefinition.route };
+// @ts-expect-error ordinary Card deployment cannot supply Route's Plan and offset.
+cards.initialize(battle, { definition: counterCard, unitDefinition: routedCardUnit });
 const cardRef = cards.ref(initializedCard.value);
 const cardBattle = cards.add(initializedCard.state, initializedCard.value);
 // @ts-expect-error registration requires the state type declared by the Card Definition.

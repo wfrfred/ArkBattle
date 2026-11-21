@@ -26,6 +26,8 @@ Deployment 完成部署资格、消费、实例创建与通知；Card 保存跨�
 
 开场手牌的每一项绑定一份 `definition` 和一份 `unitDefinition`。Card Definition 描述卡牌政策和程序。Unit Definition 描述场上单位，并提供卡牌部署所需的 `occupancy` 和 `deployable`。部署时直接复用该 Unit Definition。多张 Card 可以共用一份 Unit Definition，各有独立身份和资源。
 
+Card 绑定的蓝图所需 `Initial` 必须由部署入口提供。普通按格部署提供 Occupancy 和 Facing 初值。Route 需要本次路线的 Plan 和 offset，因此带 Route 的蓝图在 Card 构造时由类型检查拒绝。
+
 `card.initialize(battle, { definition, unitDefinition })` 分配 ID、运行 Card Definition 的初始化并返回完整实例。`card.add(battle, self)` 接收私有状态与 Definition 配对的 `Card<S>`，按 ID 登记进通用 `Store`。`card.get(battle, ref)` 依据 typed Ref 恢复实例类型。展示顺序独立保存，Card 登记或写回变更后接续 Deployment 的排序策略。
 
 Card 配置明确费用、部署间隔、库存／在场上限、额度、退款和供给政策。当前 cooldownOnDeploy 控制部署时启动间隔，recoverOnRetreatOrDeath 与 increaseCostOnRetreatOrDeath 分别控制普通撤退／死亡恢复及费用阶段；这些字段的组织仍待重审，不能把现有布尔组合视为已完成领域收口。
