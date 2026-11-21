@@ -3,7 +3,6 @@ export type {
     Spawn,
     Wait,
     Operation,
-    ScheduledOperation,
     Definition,
     Wave,
     Fragment,

@@ -23,14 +23,11 @@ export interface Spawn {
 export type Wait = "NONE" | "FINAL" | "WAVE";
 
 export interface Operation {
+    readonly atTick: number;
     readonly execute: (battle: BattleState) => Result<boolean>;
 }
 
-export interface ScheduledOperation extends Operation {
-    readonly atTick: number;
-}
-
-export type Entry = Spawn | ScheduledOperation;
+export type Entry = Spawn | Operation;
 
 export interface Definition {
     readonly waves: readonly Wave[];

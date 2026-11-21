@@ -6,9 +6,9 @@ Schedule 推进主 Wave 和 Branch 的战斗操作，管理出生 Unit 的波次
 
 Definition 包含主 Waves 与按名称查找的 Branches。Wave 提供前延迟、后延迟、可空最大等待和 Fragment 序列。Fragment 提供前延迟与 Entry 序列。Branch 的每个 Phase 提供前延迟，允许混排确定 Entry 与按权重抽选的整组 Entry。
 
-Entry 可以是 Spawn 或 ScheduledOperation。Spawn 描述一次出生，包含完整 UnitDefinition、本次 Route Plan、固定 offset、随机半宽 randomRange、前延迟后的 atTick 和 Wait。主线 count／interval 与随机组在 Data 预处理为确定序列，Branch 随执行抽选。
+Entry 可以是 Spawn 或 Operation。Spawn 描述一次出生，包含完整 UnitDefinition、本次 Route Plan、固定 offset、随机半宽 randomRange、前延迟后的 atTick 和 Wait。主线 count／interval 与随机组在 Data 预处理为确定序列，Branch 随执行抽选。
 
-Operation 通过 `execute(battle): Result<boolean>` 尝试同步执行一次战斗操作。ScheduledOperation 加上相对时刻 `atTick`。关卡在 execute 中读取实时 BattleState，按业务规则调用各领域的正常入口。Data 的 `compileSpawnSchedule` 负责出怪转换，其他操作由关卡组装。
+Operation 包含相对时刻 `atTick` 和 `execute(battle): Result<boolean>`。条目到期时，关卡通过 execute 读取实时 BattleState，按业务规则同步调用各领域的正常入口。Data 的 `compileSpawnSchedule` 负责出怪转换，其他操作由关卡组装。
 
 普通 Spawn 的定义必须有 Route，可选择 Facing 等其他能力；不支持 Occupancy／Deployable，因为出生不提供登记地块。创建同时提供 Route 的 Plan／offset 和 Facing 的 RIGHT 初值；未声明 Facing 时按通用规则忽略额外已知输入。Plan 与实例偏移独立于共享 UnitDefinition，具体类型见 [schedule/index.ts](../../src/core/battle/schedule/index.ts)。
 
