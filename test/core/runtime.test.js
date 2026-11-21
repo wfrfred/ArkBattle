@@ -75,7 +75,7 @@ test("initial and scheduled entry see registered battle facts and preserve their
         initialMechanisms: [{ definition: controller }],
         schedule: { waves: [{
             preDelayTicks: 0, postDelayTicks: 0, maxWaitingTicks: null,
-            fragments: [{ preDelayTicks: 0, spawns: [{
+            fragments: [{ preDelayTicks: 0, entries: [{
                 atTick: 0, definition: scheduled, plan, offset: [0, 0],
                 randomRange: [0, 0], wait: "WAVE",
             }] }],

@@ -75,7 +75,7 @@ test("main random groups preserve source order and expand the selected count onc
         actions: [0, 1, 2].map((actionIndex) => ({ waveIndex: 0, fragmentIndex: 0, actionIndex })),
         branches: [],
     }, resolve, seed);
-    const spawns = compiled.schedule.waves[0].fragments[0].spawns;
+    const spawns = compiled.schedule.waves[0].fragments[0].entries;
 
     assert.deepEqual(spawns.map(({ definition }) => definition.id), ["N", "B", "B"]);
     assert.deepEqual(spawns.map(({ atTick }) => atTick), [0, 0, 3]);
@@ -100,8 +100,8 @@ test("branch groups retain whole candidates for runtime choice and preserve entr
     }, resolve, 123);
     const entries = compiled.schedule.branches.sample.phases[0].entries;
 
-    assert.deepEqual(entries[0].options.map(({ weight, spawns }) => [weight, spawns.length]), [[0, 1], [1, 2]]);
-    assert.equal(entries[1][0].definition.id, "N");
+    assert.deepEqual(entries[0].options.map(({ weight, entries }) => [weight, entries.length]), [[0, 1], [1, 2]]);
+    assert.equal(entries[1].definition.id, "N");
     assert.equal(compiled.rngState, 123);
 });
 
@@ -153,7 +153,7 @@ test("Action and Enemy notCountInTotal release scheduling from still-present uni
         const { delayToBornTicks } = readEnemyMovementPrefab(resolved, prefabs);
         return { definition, notCountInTotal: resolved.notCountInTotal, delayToBornTicks };
     }, 7);
-    assert.deepEqual(compiled.schedule.waves[0].fragments[0].spawns.map(({ wait }) => wait), ["NONE", "WAVE"]);
+    assert.deepEqual(compiled.schedule.waves[0].fragments[0].entries.map(({ wait }) => wait), ["NONE", "WAVE"]);
     let state = step(initialize({
         map: level.map, schedule: compiled.schedule, initialUnits: [], initialMechanisms: [],
         routeMoveMultiplier: 1, pushMultiplier: level.pushMultiplier, rngState: compiled.rngState,

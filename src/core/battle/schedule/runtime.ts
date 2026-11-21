@@ -4,10 +4,10 @@ import type { Ref } from "../../common/ref.js";
 import { Tile, type WorldPosition } from "../../geometry/coordinate.js";
 import { initialize as initializeUnit } from "../../unit/initialize.js";
 import type { Id as UnitId, Unit } from "../../unit/unit.js";
-import type { State as BattleState } from "../state.js";
+import type { Result, State as BattleState } from "../state.js";
 import { add } from "../../unit/operations.js";
 import type { Hook } from "../unit-hook.js";
-import type { Spawn } from "./definition.js";
+import type { Entry, Spawn, Wave } from "./definition.js";
 import type { ActivePhase } from "./state.js";
 
 function spawn(battle: BattleState, entry: Spawn): BattleState {
@@ -49,6 +49,56 @@ function spawn(battle: BattleState, entry: Spawn): BattleState {
     return add(battle, created.value);
 }
 
+function advanceEntries(
+    battle: BattleState,
+    entries: readonly Entry[],
+    nextEntry: number,
+    origin: number,
+): Result<number> {
+    for (; nextEntry < entries.length; nextEntry++) {
+        const entry = entries[nextEntry]!;
+        if (origin + entry.atTick > battle.tick) {
+            break;
+        }
+
+        if ("execute" in entry) {
+            if (entry.ready !== undefined && !entry.ready(battle)) {
+                break;
+            }
+
+            battle = entry.execute(battle);
+        } else {
+            battle = spawn(battle, entry);
+        }
+    }
+
+    return { state: battle, value: nextEntry };
+}
+
+function enterFragment(battle: BattleState, wave: Wave, fragmentIndex: number): BattleState {
+    const { schedule, tick } = battle;
+    const fragment = wave.fragments[fragmentIndex];
+    if (fragment === undefined) {
+        return { ...battle, schedule: { ...schedule, main: { type: "WAITING", startTick: tick } } };
+    }
+
+    return {
+        ...battle,
+        schedule: {
+            ...schedule,
+            fragmentStartTick: tick,
+            main: {
+                type: "FRAGMENT",
+                fragmentIndex,
+                entries: [...fragment.entries].sort(
+                    (first, second) => first.atTick - second.atTick,
+                ),
+                nextEntry: 0,
+            },
+        },
+    };
+}
+
 function advanceMain(battle: BattleState): BattleState {
     while (true) {
         const { schedule, tick } = battle;
@@ -66,49 +116,29 @@ function advanceMain(battle: BattleState): BattleState {
                     return battle;
                 }
 
-                battle = {
-                    ...battle,
-                    schedule: {
-                        ...schedule,
-                        fragmentStartTick:
-                            wave.fragments.length === 0 ? schedule.fragmentStartTick : tick,
-                        main:
-                            wave.fragments.length === 0
-                                ? { type: "WAITING", startTick: tick }
-                                : { type: "FRAGMENT", fragmentIndex: 0 },
-                    },
-                };
+                battle = enterFragment(battle, wave, 0);
                 break;
 
             case "FRAGMENT": {
                 const fragment = wave.fragments[main.fragmentIndex]!;
                 const origin = schedule.fragmentStartTick + fragment.preDelayTicks;
 
-                for (const entry of fragment.spawns) {
-                    if (origin + entry.atTick === tick) {
-                        battle = spawn(battle, entry);
-                    }
+                const { state, value } = advanceEntries(
+                    battle,
+                    main.entries,
+                    main.nextEntry,
+                    origin,
+                );
+                if (value < main.entries.length) {
+                    return value === main.nextEntry
+                        ? state
+                        : {
+                              ...state,
+                              schedule: { ...state.schedule, main: { ...main, nextEntry: value } },
+                          };
                 }
 
-                if (fragment.spawns.some((entry) => origin + entry.atTick > tick)) {
-                    return battle;
-                }
-
-                const nextIndex = main.fragmentIndex + 1;
-                battle = {
-                    ...battle,
-                    schedule: {
-                        ...battle.schedule,
-                        fragmentStartTick:
-                            nextIndex === wave.fragments.length
-                                ? battle.schedule.fragmentStartTick
-                                : tick,
-                        main:
-                            nextIndex === wave.fragments.length
-                                ? { type: "WAITING", startTick: tick }
-                                : { type: "FRAGMENT", fragmentIndex: nextIndex },
-                    },
-                };
+                battle = enterFragment(state, wave, main.fragmentIndex + 1);
                 break;
             }
 
@@ -159,22 +189,24 @@ function advanceMain(battle: BattleState): BattleState {
 
 function advancePhase(battle: BattleState, phase: ActivePhase): BattleState {
     const origin = phase.startTick + phase.phase.preDelayTicks;
+    const { state, value } = advanceEntries(battle, phase.entries, phase.nextEntry, origin);
 
-    for (const entry of phase.spawns) {
-        if (origin + entry.atTick === battle.tick) {
-            battle = spawn(battle, entry);
-        }
+    if (value === phase.nextEntry && value < phase.entries.length) {
+        return state;
     }
 
-    if (phase.spawns.some((entry) => origin + entry.atTick > battle.tick)) {
-        return battle;
-    }
+    const { activePhases } = state.schedule;
 
     return {
-        ...battle,
+        ...state,
         schedule: {
-            ...battle.schedule,
-            activePhases: battle.schedule.activePhases.filter((current) => current !== phase),
+            ...state.schedule,
+            activePhases:
+                value === phase.entries.length
+                    ? activePhases.filter((current) => current !== phase)
+                    : activePhases.map((current) =>
+                          current === phase ? { ...phase, nextEntry: value } : current,
+                      ),
         },
     };
 }
@@ -209,23 +241,24 @@ export function triggerBranch(battle: BattleState, id: string, loop: boolean): B
     }
 
     const rng = createRng(battle.execution.rngState);
-    const spawns: Spawn[] = [];
+    const entries: Entry[] = [];
 
     for (const entry of definition.entries) {
         if ("options" in entry) {
             const [first, ...rest] = entry.options;
             const selected = rng.weighted([
-                [first!.spawns, first!.weight],
-                ...rest.map(({ spawns, weight }) => [spawns, weight] as const),
+                [first!.entries, first!.weight],
+                ...rest.map(({ entries, weight }) => [entries, weight] as const),
             ]);
 
-            spawns.push(...selected);
+            entries.push(...selected);
         } else {
-            spawns.push(...entry);
+            entries.push(entry);
         }
     }
 
-    const phase: ActivePhase = { phase: definition, startTick: battle.tick, spawns };
+    entries.sort((first, second) => first.atTick - second.atTick);
+    const phase: ActivePhase = { phase: definition, startTick: battle.tick, entries, nextEntry: 0 };
     battle = {
         ...battle,
         execution: { ...battle.execution, rngState: rng.state() },

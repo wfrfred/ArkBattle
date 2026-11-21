@@ -2,13 +2,15 @@ export type {
     UnitDefinition,
     Spawn,
     Wait,
+    Operation,
+    ScheduledOperation,
     Definition,
     Wave,
     Fragment,
     Branch,
     BranchPhase,
     Entry,
-    WeightedSpawns,
+    WeightedEntries,
 } from "./definition.js";
 
 export type { State, MainProgress, ActivePhase } from "./state.js";

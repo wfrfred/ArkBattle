@@ -2,6 +2,7 @@ import type { WorldPosition } from "../../geometry/coordinate.js";
 import type { Definitions } from "../../unit/capability/catalog.js";
 import type { Plan, Route } from "../../unit/capability/route/capability.js";
 import type { Definition as BaseDefinition } from "../../unit/unit.js";
+import type { State as BattleState } from "../state.js";
 
 export type UnitDefinition = BaseDefinition &
     Route["definition"] &
@@ -21,6 +22,17 @@ export interface Spawn {
 
 export type Wait = "NONE" | "FINAL" | "WAVE";
 
+export interface Operation {
+    readonly execute: (battle: BattleState) => BattleState;
+}
+
+export interface ScheduledOperation extends Operation {
+    readonly atTick: number;
+    readonly ready?: (battle: BattleState) => boolean;
+}
+
+export type Entry = Spawn | ScheduledOperation;
+
 export interface Definition {
     readonly waves: readonly Wave[];
     readonly branches: Readonly<Record<string, Branch>>;
@@ -35,7 +47,7 @@ export interface Wave {
 
 export interface Fragment {
     readonly preDelayTicks: number;
-    readonly spawns: readonly Spawn[];
+    readonly entries: readonly Entry[];
 }
 
 export interface Branch {
@@ -44,14 +56,12 @@ export interface Branch {
 
 export interface BranchPhase {
     readonly preDelayTicks: number;
-    readonly entries: readonly Entry[];
+    readonly entries: readonly (Entry | WeightedEntries)[];
 }
 
-export type Entry = readonly Spawn[] | WeightedSpawns;
-
-export interface WeightedSpawns {
+export interface WeightedEntries {
     readonly options: readonly {
         readonly weight: number;
-        readonly spawns: readonly Spawn[];
+        readonly entries: readonly Entry[];
     }[];
 }

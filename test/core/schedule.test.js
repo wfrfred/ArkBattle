@@ -36,8 +36,8 @@ function spawn(definition, atTick = 0, wait = "NONE") {
     return { definition, plan, offset: [0, 0], randomRange: [0, 0], atTick, wait };
 }
 
-function fragment(spawns, preDelayTicks = 0) {
-    return { spawns, preDelayTicks };
+function fragment(entries, preDelayTicks = 0) {
+    return { entries, preDelayTicks };
 }
 
 function wave(fragments, options = {}) {
@@ -88,6 +88,98 @@ test("wave and fragment clocks execute preprocessed births and share the sampled
     assert.ok(self.route.main.offset[1] >= -0.2 && self.route.main.offset[1] <= 0.6);
 });
 
+test("a scheduled operation waits for its target while another queue advances", () => {
+    const log = [];
+    const record = (state, self) => {
+        log.push([self.definition.id, state.tick]);
+        return state;
+    };
+    const target = definition("target", record);
+    const findTarget = (state) => all(state).find((unit) => unit.definition === target);
+    const withdraw = {
+        atTick: 0,
+        ready: (state) => findTarget(state) !== undefined,
+        execute: (state) => {
+            log.push(["withdraw", state.tick]);
+            return remove(state, ref(findTarget(state)), { reason: "SCRIPT" });
+        },
+    };
+    const following = {
+        atTick: 1,
+        execute: (state) => {
+            assert.equal(findTarget(state), undefined);
+            log.push(["next fragment", state.tick]);
+            return state;
+        },
+    };
+    const schedule = {
+        waves: [
+            wave([
+                fragment([
+                    spawn(definition("after", record), 1),
+                    spawn(definition("before", record)),
+                    withdraw,
+                ]),
+                fragment([following]),
+            ]),
+        ],
+        branches: { appear: { phases: [{ preDelayTicks: 2, entries: [spawn(target)] }] } },
+    };
+    let state = triggerBranch(create(schedule), "appear", false);
+    state = through(state, 2);
+    assert.deepEqual(log, [["before", 0], ["target", 2]]);
+    assert.equal(isCompleted(state.schedule), false);
+
+    state = through(state, 5);
+    assert.deepEqual(log, [
+        ["before", 0],
+        ["target", 2],
+        ["withdraw", 3],
+        ["after", 3],
+        ["next fragment", 4],
+    ]);
+    assert.equal(isCompleted(state.schedule), true);
+});
+
+test("a weighted branch operation can wait past its due tick and see the latest state", () => {
+    const calls = [];
+    const target = definition("branch-target");
+    const findTarget = (state) => all(state).find((unit) => unit.definition === target);
+    const operation = {
+        atTick: 0,
+        ready: (state) => findTarget(state) !== undefined,
+        execute: (state) => {
+            calls.push(state.tick);
+            return remove(state, ref(findTarget(state)), { reason: "SCRIPT" });
+        },
+    };
+    const schedule = {
+        waves: [wave([fragment([spawn(target, 2, "WAVE")])])],
+        branches: {
+            withdraw: {
+                phases: [
+                    {
+                        preDelayTicks: 0,
+                        entries: [{
+                            options: [
+                                { weight: 0, entries: [] },
+                                { weight: 1, entries: [operation] },
+                            ],
+                        }],
+                    },
+                ],
+            },
+        },
+    };
+    let state = triggerBranch(create(schedule), "withdraw", false);
+    state = through(state, 1);
+    assert.deepEqual(calls, []);
+    state = through(state, 4);
+    assert.deepEqual(calls, [2]);
+    assert.equal(findTarget(state), undefined);
+    assert.equal(isCompleted(state.schedule), true);
+});
+
 test("wait policies publish before the entered hook and timeout leaves final waits until complete removal", () => {
     const entries = [];
     const observe = (state, self) => {
@@ -118,7 +210,7 @@ test("wait policies publish before the entered hook and timeout leaves final wai
                     phases: [
                         {
                             preDelayTicks: 0,
-                            entries: [[spawn(definition("late-wave", observe), 0, "WAVE")]],
+                            entries: [spawn(definition("late-wave", observe), 0, "WAVE")],
                         },
                     ],
                 },
@@ -236,7 +328,7 @@ test("the entered hook can trigger the next branch phase without losing its late
     });
     const secondPhase = {
         preDelayTicks: 0,
-        entries: [[spawn(definition("nested", record)), spawn(definition("later", record), 2)]],
+        entries: [spawn(definition("nested", record)), spawn(definition("later", record), 2)],
     };
     let state = triggerBranch(
         create({
@@ -246,7 +338,7 @@ test("the entered hook can trigger the next branch phase without losing its late
                     phases: [
                         {
                             preDelayTicks: 0,
-                            entries: [[spawn(first), spawn(definition("outer-tail", record))]],
+                            entries: [spawn(first), spawn(definition("outer-tail", record))],
                         },
                         secondPhase,
                     ],
@@ -277,14 +369,14 @@ test("looping weighted phases publish RNG before the entered hook and retain eac
                 options: [
                     {
                         weight: 1,
-                        spawns: [
+                        entries: [
                             spawn(definition("a", record)),
                             spawn(definition("a-tail", record), 1),
                         ],
                     },
                     {
                         weight: 1,
-                        spawns: [
+                        entries: [
                             spawn(definition("b", record)),
                             spawn(definition("b-tail", record), 2),
                         ],
@@ -346,7 +438,7 @@ test("dynamic birth waits use the captured Wave and Fragment clocks", () => {
                 preDelayTicks: 2,
             }),
         ],
-        branches: { branch: { phases: [{ preDelayTicks: 2, entries: [[spawn(branch)]] }] } },
+        branches: { branch: { phases: [{ preDelayTicks: 2, entries: [spawn(branch)] }] } },
     } });
     assert.deepEqual(timing(state.schedule), { waveStartTick: 0, fragmentReadyTick: 0 });
     state = through(state, 9);

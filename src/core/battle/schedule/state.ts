@@ -1,5 +1,5 @@
 import type { Id as UnitId } from "../../unit/unit.js";
-import type { BranchPhase, Definition, Spawn } from "./definition.js";
+import type { BranchPhase, Definition, Entry } from "./definition.js";
 
 export interface State {
     readonly definition: Definition;
@@ -17,7 +17,12 @@ export interface State {
 
 export type MainProgress =
     | { readonly type: "PRE_DELAY" }
-    | { readonly type: "FRAGMENT"; readonly fragmentIndex: number }
+    | {
+          readonly type: "FRAGMENT";
+          readonly fragmentIndex: number;
+          readonly entries: readonly Entry[];
+          readonly nextEntry: number;
+      }
     | { readonly type: "WAITING"; readonly startTick: number }
     | { readonly type: "POST_DELAY"; readonly startTick: number }
     | { readonly type: "COMPLETED" };
@@ -25,7 +30,8 @@ export type MainProgress =
 export interface ActivePhase {
     readonly phase: BranchPhase;
     readonly startTick: number;
-    readonly spawns: readonly Spawn[];
+    readonly entries: readonly Entry[];
+    readonly nextEntry: number;
 }
 
 export function initialize(definition: Definition): State {

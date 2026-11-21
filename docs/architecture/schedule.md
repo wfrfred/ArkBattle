@@ -1,12 +1,14 @@
 # Schedule 设计
 
-Schedule 保存出生计划、主 Wave 进度、Branch 实例和出生 Unit 的等待关系。当前调度范围是出怪及其波次等待。关卡程序使用 Unit 和 Mechanism 的普通操作处理实体出现、触发与离场。
+Schedule 推进主 Wave 和 Branch 的战斗操作，管理出生 Unit 的波次等待。关卡可以在同一计划中安排出怪、实体出现、触发和离场。
 
 ## 静态计划
 
-Definition 包含主 Waves 与按名称查找的 Branches。Wave 提供前延迟、后延迟、可空最大等待和 Fragment 序列；Fragment 提供前延迟与确定 Spawn 序列；Branch 的每个 Phase 提供前延迟及 Entry 序列。Entry 是确定出生组或按权重选取整组 Spawn 的候选。
+Definition 包含主 Waves 与按名称查找的 Branches。Wave 提供前延迟、后延迟、可空最大等待和 Fragment 序列。Fragment 提供前延迟与 Entry 序列。Branch 的每个 Phase 提供前延迟，允许混排确定 Entry 与按权重抽选的整组 Entry。
 
-每项 Spawn 只描述一次出生：完整 UnitDefinition、本次 Route Plan、固定 offset、随机半宽 randomRange、前延迟后的 atTick 和 Wait。主线 count／interval 与随机组在 Data 预处理为确定序列；Branch 随执行抽选。
+Entry 可以是 Spawn 或 ScheduledOperation。Spawn 描述一次出生，包含完整 UnitDefinition、本次 Route Plan、固定 offset、随机半宽 randomRange、前延迟后的 atTick 和 Wait。主线 count／interval 与随机组在 Data 预处理为确定序列，Branch 随执行抽选。
+
+Operation 通过 `execute(battle): BattleState` 同步完成一次战斗操作。ScheduledOperation 加上相对时刻 `atTick`，可以提供读取实时 BattleState 的 `ready` 谓词。关卡绑定目标与业务规则，通过各领域的正常入口执行操作。Data 的 `compileSpawnSchedule` 负责出怪转换，其他操作由关卡组装。
 
 普通 Spawn 的定义必须有 Route，可选择 Facing 等其他能力；不支持 Occupancy／Deployable，因为出生不提供登记地块。创建同时提供 Route 的 Plan／offset 和 Facing 的 RIGHT 初值；未声明 Facing 时按通用规则忽略额外已知输入。Plan 与实例偏移独立于共享 UnitDefinition，具体类型见 [schedule/index.ts](../../src/core/battle/schedule/index.ts)。
 
@@ -14,11 +16,11 @@ Definition 包含主 Waves 与按名称查找的 Branches。Wave 提供前延迟
 
 ## 运行 State
 
-主线保存 waveIndex、waveStartTick、fragmentStartTick 与阶段：PRE_DELAY、带当前 fragmentIndex 的 FRAGMENT、带开始时刻的 WAITING／POST_DELAY、COMPLETED。fragmentIndex 只在 FRAGMENT 持有，其他阶段从主线位置与 Definition 查最近进入过的片段。
+主线保存 waveIndex、waveStartTick、fragmentStartTick 与阶段。FRAGMENT 持有当前 fragmentIndex、排序后的条目与游标。WAITING／POST_DELAY 持有开始时刻。其他阶段从主线位置与 Definition 查最近进入过的片段。
 
-每个 Branch 保存下次 Phase 索引，活动实例保存 Phase 定义、触发时刻与本次抽选的完整 Spawn 列表。waiting.wave 与 waiting.final 分别保存实际 Unit 等待关系。
+每个 Branch 保存下次 Phase 索引，活动实例保存 Phase 定义、触发时刻、本次抽选并排序的条目及游标。waiting.wave 与 waiting.final 分别保存实际 Unit 等待关系。
 
-主线 COMPLETED 不等于全部调度完成：仍可能有活动 Phase 或 final 等待。没有出生队列游标、剩余序列、独立 lastTick 或完成锁存。
+全部调度完成要求主线 COMPLETED、活动 Phase 为空且 final 等待为空。
 
 ## 公开入口
 
@@ -28,17 +30,19 @@ advance 推进主线与已有活动 Phase；triggerBranch 触发一个 Phase，l
 
 Battle 初始化登记全局 `battle.unit.removed` 反馈，任意完整 Unit 离场同步释放等待；通用 Unit 生命周期不依赖 Schedule。
 
-## 出生时间
+## 调度时间
 
 所有时刻基于 battle.tick。进入阶段的时刻不含前延迟：
 
 - Wave 就绪为 waveStartTick 加 Wave 前延迟。
-- Fragment 出生为 fragmentStartTick 加 Fragment 前延迟和 Spawn.atTick。
-- Phase 出生为本实例 startTick 加 Phase 前延迟和 Spawn.atTick。
+- Fragment 条目时刻为 fragmentStartTick 加 Fragment 前延迟和 Entry.atTick。
+- Phase 条目时刻为本实例 startTick 加 Phase 前延迟和 Entry.atTick。
 - Wave 等待超时为 WAITING.startTick 加最大等待；null 表示无超时。
 - 后延迟结束为 POST_DELAY.startTick 加 Wave 后延迟。
 
 进入新阶段记录当前 Tick，推进不快进战斗时间；零延迟或已满足条件在本次调用连续处理。
+
+每个队列按 `atTick` 推进，同刻条目沿用计划顺序。条目到期后才检查 `ready`。谓词返回 false 时保留该条目及其后续条目，其他队列仍可推进。后续推进用当前 BattleState 重查，条件满足时执行一次，接着处理同队列已到期的后续条目。各条目沿用最初的绝对时刻，进入下一 Fragment 或 Wave 才建立新的时基。
 
 ## 从 Spawn 到 Unit
 
@@ -52,17 +56,17 @@ Route 在实际初始化时取得主线时间快照，登记后的 entered 同�
 
 PRE_DELAY → 各 FRAGMENT → WAITING → POST_DELAY → 下一 Wave／COMPLETED。
 
-一次 advance 转换到未来出生／延迟、未解除的 Wave 等待或主线结束。Fragment 完成只表示出生操作执行完，不等 Unit 离场，空 Fragment 立即完成；WAITING 不看 final 集合。
+一次 advance 推进至未来条目、未就绪操作、阶段延迟、未解除的 Wave 等待或主线结束。Fragment 完成表示所有条目执行完，空 Fragment 立即完成。Unit 离场等待由 WAITING 处理，只看 wave 集合。
 
-常规主线每 Tick 推进一次；绝对出生 Tick 决定本 Tick 的项目。同步 Hook 返回后继续未执行项，不重新扫描已出生项目；新阶段以实际进入 Tick 重新计算后续时刻。
+常规主线每 Tick 推进一次。同步操作和 Hook 返回后从最新 BattleState 继续剩余条目。
 
 ## Branch 抽选与同步重入
 
-每次触发按当前下一索引选择一个 Phase，使用当前 RNG 对 WeightedSpawns 选一个完整组，再先发布下一索引、RNG 与新 ActivePhase，最后同步执行当前到期的出生。循环重入同一 Phase 重新抽选，执行期间不重抽或修改静态 Definition。
+每次触发按当前下一索引选择一个 Phase，使用当前 RNG 从 WeightedEntries 选一个完整组，先发布下一索引、RNG 与新 ActivePhase，再同步执行当前到期的条目。循环重入同一 Phase 重新抽选，本次执行沿用已抽选的序列。
 
-entered 重入同一 Branch 时已看见下一索引和新 RNG，会建立独立实例；外层接续最新状态继续自身剩余项目。完成时按本次实例对象身份从最新集合移除，不按相同定义或触发 Tick 批量删除。
+Operation 或 entered 钩子触发同一 Branch 时，会看到已发布的索引和 RNG，并建立独立实例。外层接续最新 BattleState 继续自己的条目，按当前实例对象更新游标或移除已完成实例。
 
-triggerBranch 处理新实例触发 Tick 的到期项；常规 advance 仅推进 startTick 早于本 Tick 的已有实例，各一次。因此触发在普通推进之前、期间或之后，都不重复出生。
+triggerBranch 处理新实例触发 Tick 的到期项。常规 advance 只推进 startTick 早于本 Tick 的已有实例，各一次。
 
 Data 当前支持无 Pack 的加权组：主线先选 Action 再按原序展开，Branch 要求组候选连续。交错组与 Pack 关联明确报不支持；Core 只执行转换后的序列和整组候选。
 
@@ -90,7 +94,7 @@ Schedule 只维护调度与等待；Route 决定路线出口并请求完整离�
 
 ## 回归语义
 
-[统一验收](verification.md)覆盖时间轴、同样本出生与路线、等待早于 entered、超时／活 Unit 解除／离场、Branch 整组重抽与同步重入，以及空计划和真实出生时基。公共 Hook、RNG、Unit 析构不逐入口重复。
+[统一验收](verification.md)覆盖时间轴、混排操作的就绪等待、同样本出生与路线、等待早于 entered、超时／活 Unit 解除／离场、Branch 整组重抽与同步重入，以及空计划和真实出生时基。
 
 ## 机制依据
 

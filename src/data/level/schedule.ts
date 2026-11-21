@@ -1,6 +1,12 @@
 import { assertNonnegativeSafeInteger } from "../../core/common/assert.js";
 import { createRng, type Rng, type Seed } from "../../core/common/rng.js";
-import type { Branch, Definition, Entry, Spawn, Wait } from "../../core/battle/schedule/index.js";
+import type {
+    Branch,
+    BranchPhase,
+    Definition,
+    Spawn,
+    Wait,
+} from "../../core/battle/schedule/index.js";
 import type {
     ArknightsEnemyDbRef,
     ArknightsLevelDefinition,
@@ -123,9 +129,9 @@ function compileEntries(
     preDelay: number,
     fromBranch: boolean,
     resolveEnemy: ArknightsEnemyResolver,
-): readonly Entry[] {
-    const entries: Entry[] = [];
-    const groups = new Map<string, { weight: number; spawns: readonly Spawn[] }[]>();
+): BranchPhase["entries"] {
+    const entries: BranchPhase["entries"][number][] = [];
+    const groups = new Map<string, { weight: number; entries: readonly Spawn[] }[]>();
     let previousGroup: string | null = null;
 
     for (const action of actions) {
@@ -138,7 +144,7 @@ function compileEntries(
         previousGroup = group;
         const spawns = compileAction(level, action, preDelay, fromBranch, resolveEnemy);
         if (group === null) {
-            entries.push(spawns);
+            entries.push(...spawns);
             continue;
         }
 
@@ -149,7 +155,7 @@ function compileEntries(
             entries.push({ options });
         }
 
-        options.push({ weight: action.weight, spawns });
+        options.push({ weight: action.weight, entries: spawns });
     }
 
     for (const options of groups.values()) {
@@ -256,7 +262,7 @@ export function compileSpawnSchedule(
 
                 return {
                     preDelayTicks: secondsToTicks(fragment.preDelay),
-                    spawns: selectActions(actions, rng).flatMap((action) =>
+                    entries: selectActions(actions, rng).flatMap((action) =>
                         compileAction(level, action, fragment.preDelay, false, resolveEnemy),
                     ),
                 };
