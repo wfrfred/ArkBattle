@@ -9,7 +9,6 @@ import {
     createPredefinedDefinition,
     type StoredPredefinedDefinition,
 } from "../../core/battle/predefined.js";
-import { createMechanismDefinition } from "../../core/mechanism/index.js";
 import { createTerrainMechanism } from "../../content/terrain/mechanism.js";
 import { mire, deepsea } from "../../content/terrain/definition.js";
 import { create as createCrate } from "../../content/devices/crate.js";
@@ -220,10 +219,10 @@ export function parsePredefinedDefinition(
             initiallyPresent: !instance.hidden,
             creation: {
                 type: "MECHANISM",
-                definition: createMechanismDefinition({
+                definition: {
                     ...createTerrainMechanism(profile.terrain === "MIRE" ? mire : deepsea),
                     id: instance.inst.characterKey,
-                }),
+                },
             },
         });
     }

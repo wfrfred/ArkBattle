@@ -1,5 +1,5 @@
 import type { State as BattlefieldState } from "../battlefield/state.js";
-import { Mechanisms } from "../mechanism/mechanisms.js";
+import { Store } from "../common/collection/store.js";
 import * as dependency from "../lifetime/dependency.js";
 import type { State as LifetimeState } from "../lifetime/lifetime.js";
 import { Hooks } from "../hook.js";
@@ -9,7 +9,7 @@ import type { Event } from "./event.js";
 import type { Id as ProjectileId } from "../projectile/projectile.js";
 import type { Seed } from "../common/rng.js";
 import type { Id as UnitId } from "../unit/unit.js";
-import type { MechanismId } from "../mechanism/index.js";
+import type { Mechanism, MechanismId } from "../mechanism/index.js";
 import type { Id as OverlayId } from "../battlefield/navigation/overlay.js";
 import type { PredefinedPresence } from "./predefined.js";
 import { initialize as initializeSchedule, type State as ScheduleState } from "./schedule/state.js";
@@ -48,7 +48,7 @@ const defaultDefinition: Definition = {
 export interface State {
     readonly definition: Definition;
     readonly battlefield: BattlefieldState;
-    readonly mechanisms: Mechanisms;
+    readonly mechanisms: Store<MechanismId, Mechanism<any>>;
     readonly tick: number;
     readonly execution: BattleExecutionState;
     readonly deployment: DeploymentState;
@@ -75,7 +75,7 @@ export function createBattleState(
     return {
         definition,
         battlefield,
-        mechanisms: Mechanisms.empty(),
+        mechanisms: Store.empty(),
         tick,
         execution,
         deployment,

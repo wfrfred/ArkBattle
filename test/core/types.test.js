@@ -814,12 +814,18 @@ const counterCard: CardDefinition<{ count: number }> = {
         },
     },
 };
-const counterMechanism = mechanisms.createMechanismDefinition({
-    id: 'counter', initialize: () => ({ count: 0 }),
+const counterMechanism: mechanisms.Definition<{ count: number }> & { readonly tag: 'counter' } = {
+    id: 'counter', tag: 'counter', initialize: () => ({ count: 0 }),
     onTick(state, self) {
         return mechanisms.setState(state, mechanisms.ref(self), { count: self.state.count + 1 });
     },
-});
+};
+const initializedMechanism = mechanisms.initialize(battle, { definition: counterMechanism });
+const mechanismRef = mechanisms.ref(initializedMechanism.value);
+const mechanismBattle = mechanisms.add(initializedMechanism.state, initializedMechanism.value);
+const exactMechanismTag: 'counter' = mechanisms.get(mechanismBattle, mechanismRef)!.definition.tag;
+// @ts-expect-error the Ref preserves the private state type.
+mechanisms.setState(mechanismBattle, mechanismRef, { count: 'wrong' });
 const predefined = createPredefinedDefinition({
     id: 0, alias: null, initiallyPresent: true,
     creation: { type: 'UNIT', definition: patient.definition, position: [0, 0] },

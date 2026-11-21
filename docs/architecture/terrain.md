@@ -14,7 +14,9 @@ siteCondition 是单个条件身份或 null，null 不等于普通场地条件�
 
 ## Mechanism 操作
 
-Mechanism 是全场独立身份，其[领域模块](../../src/core/mechanism/index.ts)拥有模型、容器、创建与生命周期；Battle 保存容器并安排推进。具体 Definition 配对初始化和私有 state；setState 只改私有数据。setActive 可逆切换参与资格，remove 不可逆结束。INACTIVE 仍存在且可作依赖，ACTIVE remove 的 Prepare 以 ENDING 调用 onDisable，INACTIVE 不重复停用；Finalize 调用 onEnd 后注销。处于 ACTIVE 的 Mechanism 通过 `onUnitRemoved` 响应 Battle 级 Unit 注销通知。
+Mechanism 是全场独立身份。Battle 持有通用 `Store` 并安排推进。初始与预置 Mechanism 使用同一份 `Input`，提供 `Definition<S>` 和可选的初始启用状态。`initialize` 分配 ID、初始化私有 `state` 并保留具体 Definition 类型。预置流程在 `initialize` 后、`add` 前登记关联。`add` 登记实例与需要的 Battle 监听，`get` 以 Ref 恢复具体类型。 [Mechanism 入口](../../src/core/mechanism/index.ts)
+
+`setState` 只改私有数据。`setActive` 可逆切换参与资格，`remove` 请求终结。`INACTIVE` 的实例仍可作依赖。移除 `ACTIVE` 实例时，Lifetime 先发布 `ENDING`，再在 Prepare 调用 `onDisable`。Finalize 先调用 `onEnd`，再注销实例和监听。`ACTIVE` 的 Mechanism 通过 `onUnitRemoved` 响应 Unit 注销通知。
 
 嵌套结束与依赖完成统一见 [Lifetime](lifetime.md)，不在地形再实现一套停止协议。
 

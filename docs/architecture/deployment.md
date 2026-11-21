@@ -54,7 +54,7 @@ Quote 承诺 DP、库存和额度消费：dp 为 null 表示不支付，零表�
 
 ## 关卡预置与开场 Unit
 
-Predefined 持有完整 Unit 或 Mechanism 创建项。Unit 复用其具体 Definition 所需的初始化输入。initiallyPresent 声明开场出现。Unit 分支由 `Unit.initialize` 分配实例身份，appear 登记预置绑定后再 add 并派发 entered。
+Predefined 持有完整 Unit 或 Mechanism 创建项，只增加区分领域的 `type`。`initiallyPresent` 声明开场出现。`appear` 先用所属领域的 `initialize` 分配身份并构造实例，再登记预置绑定，最后通过 `add` 登记实例。Unit 此时派发 `entered`，Mechanism 此时安装所需的 Battle 监听。
 
 appear／remove 是按 PredefinedDefinition.id 的领域操作，不通过 Command。remove 先撤销旧绑定再完整结束实例；Unit 分支接收 Unit.End。离场回调重新出现同一预置项时，外层保留新绑定。预置不执行玩家部署的支付与部署通知。
 

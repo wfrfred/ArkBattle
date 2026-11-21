@@ -1,15 +1,9 @@
-export type {
-    MechanismId,
-    Lifecycle,
-    MechanismDefinition,
-    MechanismPlacementDefinition,
-    Mechanism,
-} from "./mechanism.js";
+export type { MechanismId, Lifecycle, Definition, Input, Mechanism } from "./mechanism.js";
 
 export {
     ref,
-    createMechanismDefinition,
-    create,
+    initialize,
+    add,
     get,
     all,
     setState,

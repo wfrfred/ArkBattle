@@ -3,12 +3,14 @@ import type { Definition as UnitDefinition, End, Unit } from "../unit/unit.js";
 import { initialize as initializeUnit, type Input as UnitInput } from "../unit/initialize.js";
 import { get as getUnit, ref as unitRef } from "../unit/query.js";
 import {
-    create as createMechanism,
+    add as addMechanism,
+    initialize as initializeMechanism,
     get as getMechanism,
+    ref as mechanismRef,
     remove as removeMechanism,
-    type MechanismDefinition,
+    type Input as MechanismInput,
     type Mechanism,
-} from "../mechanism/mechanism.js";
+} from "../mechanism/index.js";
 import type { Ref } from "../common/ref.js";
 import { add, remove as removeUnit } from "../unit/operations.js";
 import type { State as BattleState } from "./state.js";
@@ -20,10 +22,9 @@ export type PredefinedUnitCreation<
     readonly type: "UNIT";
 } & UnitInput<D>;
 
-export interface PredefinedMechanismCreation<S extends object = object> {
+export type PredefinedMechanismCreation<S extends object = object> = {
     readonly type: "MECHANISM";
-    readonly definition: MechanismDefinition<S>;
-}
+} & MechanismInput<S>;
 
 export type Source =
     | { readonly type: "UNIT"; readonly ref: Ref<Unit> }
@@ -105,14 +106,16 @@ export function appear(battle: BattleState, id: PredefinedDefinition["id"]): Bat
         };
         battle = add(battle, unit);
     } else {
-        const initialized = createMechanism(battle, creation.definition);
+        const initialized = initializeMechanism(battle, creation);
+        const mechanism = initialized.value;
         battle = {
             ...initialized.state,
             predefinedPresence: [
                 ...initialized.state.predefinedPresence,
-                { definitionId: id, source: { type: "MECHANISM", ref: initialized.value } },
+                { definitionId: id, source: { type: "MECHANISM", ref: mechanismRef(mechanism) } },
             ],
         };
+        battle = addMechanism(battle, mechanism);
     }
 
     return reconcile(battle);

@@ -2,7 +2,7 @@ import type { Ref } from "../../core/common/ref.js";
 import { scope, type Scope as LifetimeScope } from "../../core/lifetime/index.js";
 import type { State as BattleState, OperationResult as Result } from "../../core/battle/index.js";
 import * as mechanisms from "../../core/mechanism/index.js";
-import type { MechanismDefinition } from "../../core/mechanism/index.js";
+import type { Definition as MechanismDefinition } from "../../core/mechanism/index.js";
 import type { Definition as TerrainDefinition } from "../../core/battlefield/map/terrain.js";
 import { contains } from "../../core/battlefield/map/map.js";
 import { World } from "../../core/geometry/coordinate.js";

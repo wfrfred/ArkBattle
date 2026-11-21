@@ -1,4 +1,3 @@
-import { assertNonnegativeSafeInteger } from "../common/assert.js";
 import type { Identified, Ref } from "../common/ref.js";
 import { create as createLifetime } from "../lifetime/operations.js";
 import type { Query } from "../common/query.js";
@@ -10,7 +9,7 @@ export type MechanismId = number;
 
 export type Lifecycle = "ACTIVE" | "INACTIVE" | "ENDING";
 
-export interface MechanismDefinition<S extends object = object> {
+export interface Definition<S extends object = object> {
     readonly id: string;
     readonly initialize: () => S;
     readonly onTick?: (battle: BattleState, self: Mechanism<S>) => BattleState;
@@ -23,8 +22,8 @@ export interface MechanismDefinition<S extends object = object> {
     readonly onEnd?: (battle: BattleState, self: Mechanism<S>) => BattleState;
 }
 
-export interface MechanismPlacementDefinition<S extends object = object> {
-    readonly definition: MechanismDefinition<S>;
+export interface Input<S extends object = object> {
+    readonly definition: Definition<S>;
     readonly active?: boolean;
 }
 
@@ -32,7 +31,7 @@ export interface Mechanism<S extends object = object> extends Identified<{
     readonly id: MechanismId;
 }> {
     readonly id: MechanismId;
-    readonly definition: MechanismDefinition<S>;
+    readonly definition: Definition<S>;
     readonly lifecycle: Lifecycle;
     readonly state: S;
 }
@@ -41,68 +40,61 @@ export function ref<M extends Mechanism<any>>(mechanism: M): Ref<M> {
     return { id: mechanism.id } as Ref<M>;
 }
 
-export function createMechanismDefinition<S extends object>(
-    definition: MechanismDefinition<S>,
-): MechanismDefinition<S> {
-    if (definition.id.length === 0) {
-        throw new TypeError("mechanism definition id must be nonempty");
-    }
-
-    return definition;
-}
-
-export function create<S extends object>(
+export function initialize<S extends object, const D extends Definition<S>>(
     battle: BattleState,
-    definition: MechanismDefinition<S>,
-    options: { readonly active?: boolean } = {},
-): Result<Ref<Mechanism<S>>> {
+    input: Input<S> & { readonly definition: D },
+): Result<Mechanism<S> & { readonly definition: D }> {
     const id = battle.execution.nextMechanismId;
-    assertNonnegativeSafeInteger(id, "mechanism id");
-    const nextMechanismId = id + 1;
-    if (!Number.isSafeInteger(nextMechanismId)) {
-        throw new RangeError("mechanism identity overflow");
-    }
-
-    const created = battle.mechanisms.create(id, definition, options.active ?? true);
-    battle = {
-        ...battle,
-        mechanisms: created.mechanisms,
-        execution: { ...battle.execution, nextMechanismId },
-    };
-    const self = created.mechanisms.get(created.reference)!;
-    if (self.definition.onUnitRemoved !== undefined) {
-        const reference = created.reference;
-        battle = setHook(battle, removed, {
-            id: `@mechanism/${id}/unit-leave`,
-            invoke: (current, departure) => {
-                const mechanism = current.mechanisms.get(reference);
-
-                return {
-                    state:
-                        mechanism?.lifecycle === "ACTIVE"
-                            ? mechanism.definition.onUnitRemoved!(current, mechanism, departure)
-                            : current,
-                    value: undefined,
-                };
-            },
-        });
-    }
+    const { definition, active = true } = input;
 
     return {
-        state: battle,
-        value: created.reference,
+        state: { ...battle, execution: { ...battle.execution, nextMechanismId: id + 1 } },
+        value: {
+            id,
+            definition,
+            state: definition.initialize(),
+            lifecycle: active ? "ACTIVE" : "INACTIVE",
+        },
     };
+}
+
+export function add<S extends object>(battle: BattleState, self: Mechanism<S>): BattleState {
+    battle = {
+        ...battle,
+        mechanisms: battle.mechanisms.add(self.id, self),
+    };
+
+    if (self.definition.onUnitRemoved === undefined) {
+        return battle;
+    }
+
+    const reference = ref(self);
+
+    return setHook(battle, removed, {
+        id: `@mechanism/${reference.id}/unit-leave`,
+        invoke: (current, departure) => {
+            const mechanism = get(current, reference);
+
+            return {
+                state:
+                    mechanism?.lifecycle === "ACTIVE"
+                        ? mechanism.definition.onUnitRemoved!(current, mechanism, departure)
+                        : current,
+                value: undefined,
+            };
+        },
+    });
 }
 
 export function get<M extends Mechanism<any>>(
     battle: BattleState,
     reference: Ref<M>,
 ): M | undefined {
-    return battle.mechanisms.get(reference);
+    return battle.mechanisms.get(reference.id) as M | undefined;
 }
 
 export function all(battle: BattleState): Query<Mechanism> {
-    return battle.mechanisms.values();
+    return battle.mechanisms.values() as Query<Mechanism>;
 }
 
 export function setState<T extends Mechanism<any>>(
@@ -117,7 +109,7 @@ export function setState<T extends Mechanism<any>>(
 
     return state === self.state
         ? battle
-        : { ...battle, mechanisms: battle.mechanisms.replace(reference, { ...self, state }) };
+        : { ...battle, mechanisms: battle.mechanisms.replace(reference.id, { ...self, state }) };
 }
 
 export function setActive<M extends Mechanism<any>>(
@@ -132,7 +124,7 @@ export function setActive<M extends Mechanism<any>>(
     }
 
     const next: M = { ...self, lifecycle };
-    battle = { ...battle, mechanisms: battle.mechanisms.replace(ref(self), next) };
+    battle = { ...battle, mechanisms: battle.mechanisms.replace(reference.id, next) };
 
     return !active && next.definition.onDisable !== undefined
         ? next.definition.onDisable(battle, next)
@@ -145,9 +137,9 @@ export const lifetime = createLifetime<Mechanism, Mechanism<any>, string>({
     get,
     isEnding: (self) => self.lifecycle === "ENDING",
     begin: (self) => ({ ...self, lifecycle: "ENDING" }),
-    replace: (battle, _ref, next) => ({
+    replace: (battle, reference, next) => ({
         ...battle,
-        mechanisms: battle.mechanisms.replace(ref(next), next),
+        mechanisms: battle.mechanisms.replace(reference.id, next),
     }),
     prepare: (battle, reference, initial) => {
         const self = get(battle, reference)!;

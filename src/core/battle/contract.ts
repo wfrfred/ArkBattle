@@ -1,6 +1,6 @@
 import type { Seed } from "../common/rng.js";
 import type { Map } from "../battlefield/map/map.js";
-import type { MechanismPlacementDefinition } from "../mechanism/mechanism.js";
+import type { Input as MechanismInput } from "../mechanism/index.js";
 import type { Definition as ScheduleDefinition } from "./schedule/definition.js";
 import type { Unit } from "../unit/unit.js";
 import type { Input as DeploymentInput } from "./deployment/deployment.js";
@@ -29,7 +29,7 @@ export interface Input<
     readonly map: Map;
     readonly schedule: ScheduleDefinition;
     readonly initialMechanisms: {
-        readonly [K in keyof MechanismStates]: MechanismPlacementDefinition<MechanismStates[K]>;
+        readonly [K in keyof MechanismStates]: MechanismInput<MechanismStates[K]>;
     };
     readonly rngState: Seed;
 }
