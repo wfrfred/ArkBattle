@@ -6,7 +6,6 @@ import * as units from "../../query.js";
 import type { Unit } from "../../unit.js";
 import { hasAction, type Action as ActionCapability } from "./capability.js";
 import type { Action } from "./action.js";
-import type { Actions } from "./actions.js";
 import type { Execution, ExecutionRef } from "./execution.js";
 import type { Id as DefinitionId } from "./definition.js";
 
@@ -42,14 +41,8 @@ export function getExecution<P extends object, E extends object>(
     battle: BattleState,
     reference: Ref<Execution<P, E>>,
 ): Execution<P, E> | undefined;
-export function getExecution(
-    battle: BattleState,
-    reference: ExecutionRef,
-): ReturnType<Actions["getExecution"]>;
-export function getExecution(
-    battle: BattleState,
-    reference: ExecutionRef,
-): ReturnType<Actions["getExecution"]> {
+export function getExecution(battle: BattleState, reference: ExecutionRef): Execution | undefined;
+export function getExecution(battle: BattleState, reference: ExecutionRef): Execution | undefined {
     return units.get(battle, reference.host)?.action.actions.getExecution(reference.id);
 }
 

@@ -14,10 +14,6 @@ export interface State<E extends object = object> {
     readonly state: E;
 }
 
-export interface Snapshot extends Omit<State, "state"> {
-    readonly state: unknown;
-}
-
 export interface Execution<
     in out P extends object = object,
     in out E extends object = object,
@@ -31,7 +27,7 @@ export interface Execution<
     readonly execution: State<E>;
 }
 
-export type ExecutionIdentity = Identified<Identity<Execution>, { readonly execution: Snapshot }>;
+export type ExecutionIdentity = Identified<Identity<Execution>, Pick<Execution, "execution">>;
 
 export type ExecutionRef = Ref<ExecutionIdentity>;
 

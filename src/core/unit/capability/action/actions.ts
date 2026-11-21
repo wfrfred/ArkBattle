@@ -1,7 +1,7 @@
 import { Store } from "../../../common/collection/store.js";
 import type { Query } from "../../../common/query.js";
-import type { Action, Snapshot } from "./action.js";
-import type { Execution, Id as ExecutionId, Snapshot as ExecutionSnapshot } from "./execution.js";
+import type { Action } from "./action.js";
+import type { Execution, Id as ExecutionId } from "./execution.js";
 import type { Definition, Id } from "./definition.js";
 import type { Identified } from "../../../common/ref.js";
 
@@ -26,7 +26,7 @@ export class Actions {
         id: Id,
         definition: Definition<P, E, never>,
     ): Action<P, E> | undefined;
-    get(id: Id): Snapshot | undefined;
+    get(id: Id): Action | undefined;
     get(id: Id, definition?: Definition<any, any, never>): Action<any, any> | undefined {
         const self = this.#store.get(id);
 
@@ -37,16 +37,14 @@ export class Actions {
         return self?.definition === definition ? self : undefined;
     }
 
-    getExecution(
-        id: ExecutionId,
-    ): (Snapshot & { readonly execution: ExecutionSnapshot }) | undefined {
+    getExecution(id: ExecutionId): Execution | undefined {
         const self = this.#store.values().find((entry) => entry.execution?.id === id);
 
-        return self as Execution<any, any> | undefined;
+        return self as Execution | undefined;
     }
 
-    values(): Query<Snapshot> {
-        return this.#store.values();
+    values(): Query<Action> {
+        return this.#store.values() as Query<Action>;
     }
 
     keys(): Query<Id> {
@@ -68,7 +66,7 @@ export class Actions {
         return store === this.#store ? this : new Actions(store);
     }
 
-    toJSON(): readonly Snapshot[] {
-        return this.#store.values().toArray();
+    toJSON(): readonly Action[] {
+        return this.values().toArray();
     }
 }

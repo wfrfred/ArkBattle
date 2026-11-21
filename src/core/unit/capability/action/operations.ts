@@ -167,13 +167,11 @@ export const lifetime = lifetimes.create<ExecutionIdentity, ExecutionIdentity, E
     isEnding: (self) => self.execution.lifecycle === "ENDING",
     begin: (self) => ({ ...self, execution: { ...self.execution, lifecycle: "ENDING" } }),
     replace: (battle, reference, next) =>
-        replaceAction(battle, units.get(battle, reference.host)!, next as Execution<any, any>),
+        replaceAction(battle, units.get(battle, reference.host)!, next as Execution),
     finalize(battle, reference, result) {
-        const self = units
-            .get(battle, reference.host)!
-            .action.actions.getExecution(reference.id)! as Execution<any, any>;
+        const self = units.get(battle, reference.host)!.action.actions.getExecution(reference.id)!;
 
-        const definition = self.definition as Definition<any, any>;
+        const definition = self.definition as Definition;
         battle = definition.onEnd?.(battle, reference.host, self, result) ?? battle;
 
         const host = units.get(battle, reference.host)!;
@@ -237,9 +235,7 @@ export function advance(battle: BattleState, reference: ExecutionRef): BattleSta
         return cancel(battle, reference, "SOURCE_ABSENT");
     }
 
-    const self = current as Execution<any, any>;
-
-    return (self.definition as Definition<any, any>).onTick(battle, reference.host, self);
+    return (current.definition as Definition).onTick(battle, reference.host, current);
 }
 
 export function refreshCooldowns(
@@ -262,8 +258,7 @@ export function refreshCooldowns(
         const period = resolvePeriod(unit, self.definition);
         const next = cooldown.resizeKeepingProgress(self.cooldown, period, battle.tick);
         if (next !== self.cooldown) {
-            const action = self as Action<any, any>;
-            actions = actions.replace(action.definition, { ...action, cooldown: next });
+            actions = actions.replace(self.definition, { ...self, cooldown: next });
         }
     }
 

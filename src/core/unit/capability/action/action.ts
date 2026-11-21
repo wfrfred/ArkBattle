@@ -3,7 +3,7 @@ import type { Unit } from "../../unit.js";
 import type { Action as ActionCapability } from "./capability.js";
 import type { Definition } from "./definition.js";
 import type * as cooldown from "./cooldown.js";
-import type { State as ExecutionState, Snapshot as ExecutionSnapshot } from "./execution.js";
+import type { State as ExecutionState } from "./execution.js";
 
 export interface Action<
     in out P extends object = object,
@@ -16,13 +16,6 @@ export interface Action<
     readonly state: P;
     readonly cooldown: cooldown.State;
     readonly execution: ExecutionState<E> | null;
-}
-
-export interface Snapshot {
-    readonly definition: Pick<Definition, "id" | "applyWay" | "period">;
-    readonly cooldown: cooldown.State;
-    readonly state: unknown;
-    readonly execution: ExecutionSnapshot | null;
 }
 
 export function ref<P extends object, E extends object, H extends object>(

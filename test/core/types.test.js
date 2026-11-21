@@ -259,6 +259,10 @@ removeUnit(battle, reference, { reason: 'DEATH' });
 removeUnit(battle, reference, { reason: 'SCRIPT', killer: null });
 const currentAction = host.action.actions.get(program.id, program)!;
 const currentPeriod: number = actions.resolvePeriod(host, currentAction.definition);
+const ordinaryAction = host.action.actions.values().find(action => action.definition.id === program.id)!;
+const ordinaryActionState: object = ordinaryAction.state;
+// @ts-expect-error enumerating actions does not recover their private state fields.
+ordinaryAction.state.uses;
 actions.setSpeedContribution({ id: 'fixed-speed', value: [] });
 const dynamicModifiers = (_state: State, _self: Unit & actions.ActionCapability) => [];
 // @ts-expect-error Action time contributions publish fixed values through a Change.
@@ -290,14 +294,15 @@ const runningIdentity: actions.ExecutionRef = actions.forUnit(battle, reference)
 declare const effectOnActionHost: Ref<effects.OrdinaryEffect<object, actions.ActionCapability>>;
 // @ts-expect-error a unit's Effect and Execution have distinct referents.
 actions.cancel(battle, effectOnActionHost);
-const executionSnapshot = actions.getExecution(battle, runningIdentity)!;
-if (executionSnapshot.definition === program) {
+const ordinaryExecution = actions.getExecution(battle, runningIdentity)!;
+const ordinaryExecutionState: object = ordinaryExecution.execution.state;
+if (Object.is(ordinaryExecution.definition, program)) {
     actions.cancel(battle, runningIdentity);
 }
 // @ts-expect-error an ordinary query cannot read fields of the execution's private state.
-executionSnapshot.execution.state.hits;
-// @ts-expect-error an ordinary query does not expose the definition callbacks.
-executionSnapshot.definition.onTick(battle, reference, executionSnapshot);
+ordinaryExecution.execution.state.hits;
+// @ts-expect-error an ordinary query does not recover the callback's host requirement.
+ordinaryExecution.definition.onTick(battle, reference, ordinaryExecution);
 // @ts-expect-error an identity-only reference cannot write private state.
 actions.setExecutionState(battle, runningIdentity, { hits: 0 });
 const shield = {
