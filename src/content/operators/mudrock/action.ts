@@ -48,6 +48,11 @@ import { healSelf } from "./common.js";
 
 export type AttackHost = Classification & Occupancy & Blocker & Offense;
 
+export interface NormalAttackParameters {
+    readonly range: readonly TilePosition[];
+    readonly timing: Timing;
+}
+
 export interface SkillActionParameters {
     readonly range: readonly TilePosition[];
     readonly attackScale: number;
@@ -98,10 +103,10 @@ export function skillTargets(
     return allUnits(battle).filter(skillTarget(battle, self, range));
 }
 
-export function createNormal(
-    range: readonly TilePosition[],
-    timing: Timing,
-): Attack<object, object, AttackHost> {
+export function createNormal({
+    range,
+    timing,
+}: NormalAttackParameters): Attack<object, object, AttackHost> {
     return createAttack<AttackHost>({
         id: "normal-attack",
         triggerBindingId: "primary",

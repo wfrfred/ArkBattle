@@ -4,19 +4,24 @@ import {
     activationRef,
     lifetime,
     type Definition,
+    type SpDefinition,
+    type Trigger,
 } from "../../../core/unit/capability/skill/index.js";
 import { install } from "../../../core/unit/effect/index.js";
 import { get, ref } from "../../../core/unit/index.js";
-import type { SkillLevel } from "../parameters.js";
 import { createAttackBonus } from "./effect.js";
 
-export function create(id: string, { blackboard, cost, durationTicks, sp, trigger }: SkillLevel) {
-    const bonus = blackboard.find((entry) => entry.key === "atk")?.value;
-    if (bonus === undefined || durationTicks === null) {
-        throw new TypeError("Melantha's first skill requires an attack bonus and a duration");
-    }
+export interface SkillParameters {
+    readonly id: string;
+    readonly cost: number;
+    readonly durationTicks: number;
+    readonly sp: SpDefinition;
+    readonly trigger: Trigger;
+    readonly attackBonus: number;
+}
 
-    const effect = createAttackBonus("melantha/attack-up", bonus);
+export function create({ id, cost, durationTicks, sp, trigger, attackBonus }: SkillParameters) {
+    const effect = createAttackBonus("melantha/attack-up", attackBonus);
 
     return {
         id,

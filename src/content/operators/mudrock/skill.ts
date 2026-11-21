@@ -6,9 +6,13 @@ import {
     ref as actionRef,
     type ActionCapability,
 } from "../../../core/unit/capability/action/index.js";
+import type { TilePosition } from "../../../core/geometry/coordinate.js";
 import { get as getCurrentUnit } from "../../../core/unit/index.js";
-import type { Definition as SkillDefinition } from "../../../core/unit/capability/skill/index.js";
-import type { resolve } from "./parameters.js";
+import type {
+    Definition as SkillDefinition,
+    SpDefinition,
+    Trigger,
+} from "../../../core/unit/capability/skill/index.js";
 import {
     skillTargets,
     type AttackHost,
@@ -16,8 +20,16 @@ import {
     type createSkill as createSkillAction,
 } from "./action.js";
 
+export interface SkillParameters {
+    readonly id: string;
+    readonly range: readonly TilePosition[];
+    readonly sp: SpDefinition;
+    readonly trigger: Trigger;
+    readonly cost: number;
+}
+
 export function create(
-    { id, range, sp, trigger, cost }: ReturnType<typeof resolve>["skill"],
+    { id, range, sp, trigger, cost }: SkillParameters,
     normalAttack: ReturnType<typeof createNormal>,
     action: ReturnType<typeof createSkillAction>,
 ) {

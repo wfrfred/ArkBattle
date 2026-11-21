@@ -188,7 +188,7 @@ export function resolveAttributes(
     parameters: Pick<Parameters, "favorKeyFrames" | "potential">,
     phase: Phase,
     configuration: Configuration,
-    module: ModuleStage | undefined,
+    module: Pick<ModuleStage, "attributes"> | undefined,
 ): Attributes {
     const attributes = interpolate(phase.frames, configuration.level);
     const { battlePhase } = favorFrame(configuration.trust);
@@ -212,10 +212,12 @@ export function resolveAttributes(
     return attributes;
 }
 
-export function selectSkill(
-    skills: readonly Skill[],
+export function selectSkill<L>(
+    skills: readonly (Pick<Skill, "index" | "id" | "unlock" | "upgrades"> & {
+        readonly levels: readonly L[];
+    })[],
     configuration: Configuration & SkillSelection,
-): { readonly id: string; readonly level: SkillLevel } {
+): { readonly id: string; readonly level: L } {
     assertNonnegativeSafeInteger(configuration.skillIndex, "operator skill index");
     assertPositiveSafeInteger(configuration.skillLevel, "operator skill level");
     const skill = skills.find(({ index }) => index === configuration.skillIndex);
@@ -238,10 +240,10 @@ export function selectSkill(
     return { id: skill.id, level };
 }
 
-export function selectModule(
-    modules: readonly Module[],
+export function selectModule<S extends Pick<ModuleStage, "level" | "minFavor">>(
+    modules: readonly (Pick<Module, "id" | "unlock"> & { readonly stages: readonly S[] })[],
     configuration: Configuration,
-): ModuleStage | undefined {
+): S | undefined {
     const selection = configuration.module;
     if (selection === undefined) {
         return undefined;
@@ -272,7 +274,7 @@ export function selectModule(
     return stage;
 }
 
-function selectCandidate<T>(
+export function selectCandidate<T>(
     candidates: readonly Candidate<T>[],
     configuration: Configuration,
 ): T | undefined {

@@ -23,18 +23,9 @@ import { createAttackBonus } from "./effect.js";
 import { create as createSkill } from "./skill.js";
 import type { Operator } from "../operator.js";
 import type { Configuration, SkillSelection } from "../configuration.js";
-import {
-    resolveAttributes,
-    selectModule,
-    selectPhase,
-    selectSkill,
-    selectTalents,
-    type Parameters,
-} from "../parameters.js";
-import type { AttackSpeedTiming } from "../../actions/timing.js";
+import { resolve, table } from "./parameters.js";
 import { allows } from "../../../core/restriction.js";
 import { secondsToTicks, TICKS_PER_SECOND } from "../../../core/tick.js";
-import source from "./parameters.json" with { type: "json" };
 
 export type Melantha = Operator &
     ActionCapability<Melantha> &
@@ -46,26 +37,24 @@ export type Melantha = Operator &
 
 export type Definition = Melantha["definition"];
 
-const parameters = source as unknown as Parameters & { readonly timing: AttackSpeedTiming };
-
 export function create(configuration: Configuration & SkillSelection) {
-    if (configuration.skillIndex !== 0) {
-        throw new TypeError("Melantha content requires her first skill");
-    }
-
-    const phase = selectPhase(parameters.phases, configuration);
-    const stage = selectModule(parameters.modules, configuration);
-    const attributes = resolveAttributes(parameters, phase, configuration, stage);
-    const { id, level } = selectSkill(parameters.skills, configuration);
-    const skill = createSkill(id, level);
-    const talentBonus = selectTalents(parameters.talents, configuration, stage)
-        .find((talent) => talent.key === "1")
-        ?.blackboard.find((entry) => entry.key === "atk")?.value;
-    const talent = createAttackBonus("melantha/attack-talent", talentBonus ?? 0);
-    const attack = createAttack(phase.range, parameters.timing);
+    const {
+        id,
+        groupTags,
+        attributes,
+        attack: attackParameters,
+        s1,
+        talentBonus,
+    } = resolve(configuration, table);
+    const skill = createSkill(s1);
+    const talent =
+        talentBonus === undefined
+            ? undefined
+            : createAttackBonus("melantha/attack-talent", talentBonus);
+    const attack = createAttack(attackParameters);
 
     const definition = {
-        id: parameters.id,
+        id,
         occupancy: { slot: "OCCUPANT" },
         facing: { restrictions: [] },
         targetable: {
@@ -122,7 +111,7 @@ export function create(configuration: Configuration & SkillSelection) {
             profession: "WARRIOR",
             subProfession: "FEARLESS",
             extraProfessions: [],
-            groupTags: parameters.groupTags,
+            groupTags,
         },
         layer: { type: "GROUND" },
         hitbox: { shape: { type: "CIRCLE", offset: [0, 0], radius: 0.25 } },
@@ -143,7 +132,7 @@ export function create(configuration: Configuration & SkillSelection) {
                 const reference = actionRef(unitRef(self), attack);
                 const current = getAction(battle, reference);
                 if (
-                    !hasTarget(battle, self, phase.range) ||
+                    !hasTarget(battle, self, attackParameters.range) ||
                     !allows(battle, { self, definitionId: attack.id }, self.action.restrictions)
                 ) {
                     if (current?.execution === null && current.state.inSession) {
@@ -162,7 +151,7 @@ export function create(configuration: Configuration & SkillSelection) {
             invoke(state, self) {
                 return {
                     state:
-                        talentBonus !== undefined && hasOffense(self)
+                        talent !== undefined && hasOffense(self)
                             ? install(state, unitRef(self), talent).state
                             : state,
                     value: undefined,

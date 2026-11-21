@@ -18,7 +18,7 @@ import type { Configuration, SkillSelection } from "../configuration.js";
 import { createNormal, createSkill as createSkillAction } from "./action.js";
 import { shieldEffect } from "./effect.js";
 import { create as createSkill } from "./skill.js";
-import { resolve } from "./parameters.js";
+import { resolve, table } from "./parameters.js";
 
 export type Mudrock = Operator &
     ActionCapability<Mudrock> &
@@ -31,12 +31,12 @@ export type Mudrock = Operator &
 export type Definition = Mudrock["definition"];
 
 export function create(configuration: Configuration & SkillSelection) {
-    const parameters = resolve(configuration);
+    const parameters = resolve(configuration, table);
     const { attributes } = parameters;
     const shield = shieldEffect(parameters.shield);
-    const normalAttack = createNormal(parameters.range, parameters.timing);
-    const action = createSkillAction(parameters.skillAction);
-    const skill = createSkill(parameters.skill, normalAttack, action);
+    const normalAttack = createNormal(parameters.normalAttack);
+    const action = createSkillAction(parameters.s2Action);
+    const skill = createSkill(parameters.s2Skill, normalAttack, action);
 
     const definition = {
         elemental: createElemental({ receiver: "CHARACTER" }),

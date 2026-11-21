@@ -18,6 +18,11 @@ export interface State {
     readonly inSession: boolean;
 }
 
+export interface AttackParameters {
+    readonly range: readonly TilePosition[];
+    readonly timing: AttackSpeedTiming;
+}
+
 type Host = Classification & Occupancy & Blocker & Offense;
 
 const inDefaultCategory = targeting.inCategories(["DEFAULT"]);
@@ -53,10 +58,7 @@ export function hasTarget(
     return candidates(battle, self, range).some(() => true);
 }
 
-export function create(
-    range: readonly TilePosition[],
-    timing: AttackSpeedTiming,
-): Attack<State, object, Host> {
+export function create({ range, timing }: AttackParameters): Attack<State, object, Host> {
     return createWithState<State, object, Host>({
         id: "normal-attack",
         initialize: (battle) => ({ state: battle, value: { inSession: false } }),

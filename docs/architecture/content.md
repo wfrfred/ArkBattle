@@ -6,7 +6,7 @@ Core 提供通用机制并保存模拟状态，Content 提供具体行为，Data
 
 [Data](data.md)解析、选择、覆写和换算静态输入，可以建图或为已有工厂绑定参数；Content 通过 ESM 明确组合 Capability、Effect、Hook 和 Action，提供完整 Definition。Core 使用 Definition／Initial 创建和推进实例。
 
-Unit Definition 保存实际消费者读取的配置。干员的 `create(configuration)` 从自己绑定的 `parameters.json` 选择养成与战斗参数，组装完整 Definition。行动配置集中在 `action.definitions`。
+Unit Definition 保存实际消费者读取的配置。干员的 `create(configuration)` 用解析后的参数构造 Action、Skill 和 Effect，再组装完整 Definition。行动配置集中在 `action.definitions`。
 
 Content 不自行推进模拟，不在共享模块或闭包中保存本场事实；私有运行数据由初始化程序放入 State，不通过字符串动态装载程序。Meta 提供本次阵容与玩法配置；未支持配置在入口明确拒绝，不静默丢弃。
 
@@ -24,6 +24,8 @@ Content 不自行推进模拟，不在共享模块或闭包中保存本场事实
 | `action.ts` | 定义普攻和特殊行动的目标、时序与输出程序。技能期间带独立执行和冷却的行动也写在这里。 |
 | `skill.ts` | 定义 Skill、Activation 程序及该技能专属的 SP 规则。 |
 | `effect.ts` | 定义该单位专属的 Effect。 |
+| `parameters.ts` | 根据养成配置和该干员的 `parameters.json` 解析各工厂所需的具名参数。 |
+| `parameters.json` | 保存该干员已支持的配置所需的静态表。 |
 | `projectile.ts` | 定义该单位专属的弹道及其命中程序。 |
 | `summons/` | 组织专属召唤物自身的 Unit、Action、Skill 等程序。 |
 
@@ -98,7 +100,7 @@ type Device = Unit & Classification<"DEVICE">;
 
 ### 具体单位的写法
 
-干员构造函数接收 `operators/configuration.ts` 中的 `Configuration`。有技能的干员同时要求 `SkillSelection`。构造时校验本次选择，从静态资料读取等级曲线、技能等级、天赋候选和模组阶段，再生成具体的 Action、Skill 与 Effect。固定引用由 Data 提取时接好，构造时的插值、信赖和候选选择由 `operators/parameters.ts` 共享。[干员静态资料](data.md#干员静态资料)
+干员构造函数接收 `operators/configuration.ts` 中的 `Configuration`。有技能的干员同时要求 `SkillSelection`。该干员的 `resolve(configuration, table)` 校验选择并返回属性、普攻及已选技能和效果的具名参数。Action、Skill 和 Effect 的工厂声明自己需要的参数，由 `unit.ts` 调用并组装。插值、信赖和候选选择由 `operators/parameters.ts` 共享。[干员静态资料](data.md#干员静态资料)
 
 在 `content/operators/melantha/unit.ts` 中声明具体单位的能力组合，从该单位的 `definition` 推导完整配置类型，并用 `satisfies` 检查实际提供的配置。
 
