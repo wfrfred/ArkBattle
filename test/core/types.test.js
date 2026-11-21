@@ -31,6 +31,7 @@ import * as runtime from ${module("battle/runtime")};
 import type { Input as BattleInput, Command } from ${module("battle/contract")};
 import type { SkillCommand } from ${module("battle/index")};
 import type { UnitDefinition as CardDefinition } from ${module("battle/deployment/card/card")};
+import * as cards from ${module("battle/deployment/card/index")};
 import * as projectiles from ${module("projectile/index")};
 import type { Definition as ProjectileDefinition, Projectile, Slowable } from ${module("projectile/index")};
 import * as tracking from ${module("../content/projectiles/tracking")};
@@ -814,6 +815,15 @@ const counterCard: CardDefinition<{ count: number }> = {
         },
     },
 };
+const initializedCard = cards.initialize(battle, { ...counterCard, marker: true as const });
+const cardRef = cards.ref(initializedCard.value);
+const cardBattle = cards.add(initializedCard.state, initializedCard.value);
+const registeredCard = cards.get(cardBattle, cardRef)!;
+const cardMarker: true = registeredCard.definition.marker;
+const cardCount: number = registeredCard.state.count;
+cards.setState(cardBattle, cardRef, { count: cardCount + 1 });
+// @ts-expect-error lookup through a Card Ref preserves its exact private state.
+cards.setState(cardBattle, cards.ref(registeredCard), { label: 'wrong' });
 const counterMechanism: mechanisms.Definition<{ count: number }> & { readonly tag: 'counter' } = {
     id: 'counter', tag: 'counter', initialize: () => ({ count: 0 }),
     onTick(state, self) {

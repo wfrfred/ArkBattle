@@ -8,7 +8,7 @@ import { hasDeployable } from "../../unit/capability/deployable/capability.js";
 import type { State as BattleState } from "../state.js";
 import type { Unit } from "../../unit/unit.js";
 import { ref as cardRef, type Card } from "./card/card.js";
-import { get } from "./card/query.js";
+import { all, get } from "./card/query.js";
 import { resolveCost } from "./card/state.js";
 import type { Restriction as CardRestriction } from "./card/restriction.js";
 import type { Restriction } from "./restriction.js";
@@ -23,14 +23,14 @@ import { advanceResources } from "./resources.js";
 import { Hooks } from "../../hook.js";
 
 export function cardForUnit(battle: BattleState, reference: Ref<Unit>): Ref<Card> | null {
-    const self = battle.deployment.cards.find((card) =>
+    const self = all(battle).find((card) =>
         card.deployedUnits.some((unit) => unit.id === reference.id),
     );
 
     return self === undefined ? null : cardRef(self);
 }
 
-export function activeCount(battle: BattleState, reference: Ref<Card<any>>): number {
+export function deployedCount(battle: BattleState, reference: Ref<Card<any>>): number {
     let count = 0;
 
     for (const unit of battle.battlefield.units.values()) {
@@ -85,7 +85,7 @@ const defaults: readonly [Rejection, Contribution<Restriction>][] = [
                 allows: (battle, { request }) => {
                     const limit = get(battle, request.card)!.definition.card.activeLimit;
 
-                    return limit === null || activeCount(battle, request.card) < limit;
+                    return limit === null || deployedCount(battle, request.card) < limit;
                 },
             },
         },

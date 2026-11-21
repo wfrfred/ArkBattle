@@ -18,7 +18,8 @@ import { advanceSkills } from "./steps/skills.js";
 import { initialize as initializeSchedule } from "./schedule/state.js";
 import { initializeBattlefield } from "./initialization.js";
 import * as unit from "../unit/operations.js";
-import { addCard, advance as advanceDeployment } from "./deployment/resources.js";
+import { advance as advanceDeployment } from "./deployment/resources.js";
+import * as cards from "./deployment/card/index.js";
 import type { Card } from "./deployment/card/card.js";
 import { initialize as initializeDeployment } from "./deployment/deployment.js";
 
@@ -70,7 +71,8 @@ export function initialize(input: Input<readonly any[], readonly any[]>): State 
     );
 
     for (const definition of input.deployment?.cards ?? []) {
-        initial = addCard(initial, definition).state;
+        const initialized = cards.initialize(initial, definition);
+        initial = cards.add(initialized.state, initialized.value);
     }
 
     return initializeBattlefield(initial, input);

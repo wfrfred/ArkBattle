@@ -16,7 +16,7 @@ export { deployed, setHook, removeHook } from "./hook.js";
 
 export {
     cardForUnit,
-    activeCount,
+    deployedCount,
     createRequest,
     evaluate,
     preview,
@@ -24,7 +24,7 @@ export {
     defaultRestrictions,
 } from "./query.js";
 
-export { addCard, advance } from "./resources.js";
+export { advance } from "./resources.js";
 
 export type { DeploymentCommand } from "./operations.js";
 

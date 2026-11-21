@@ -24,11 +24,13 @@ Deployment 完成部署资格、消费、实例创建与通知；Card 保存跨�
 
 ## 静态内容与 Card
 
-内容提供顶层声明 card、occupancy、deployable 的完整静态 Unit Definition，Card 保留原对象，部署时直接复用。Card 创建执行一次初始化，之后在返手与多次场上实例之间持续存在；同 Definition 的多张 Card 仍有独立身份。
+内容提供顶层声明 card、occupancy、deployable 的完整静态 Unit Definition，Card 保留原对象，部署时直接复用。Card 在返手与多次场上实例之间持续存在。同 Definition 的多张 Card 各有独立身份。
+
+`card.initialize(battle, definition)` 分配 ID、运行 Definition 的初始化并返回完整实例。`card.add(battle, self)` 将实例按 ID 登记进通用 `Store`。`card.get(battle, ref)` 依据 typed Ref 恢复实例类型。展示顺序独立保存，Card 登记或写回变更后接续 Deployment 的排序策略。
 
 Card 配置明确费用、部署间隔、库存／在场上限、额度、退款和供给政策。当前 cooldownOnDeploy 控制部署时启动间隔，recoverOnRetreatOrDeath 与 increaseCostOnRetreatOrDeath 分别控制普通撤退／死亡恢复及费用阶段；这些字段的组织仍待重审，不能把现有布尔组合视为已完成领域收口。
 
-deployedUnits 保存本场成功部署的 Unit Ref 历史，在初始化后、任何 entered 前登记；离场不删除。cardForUnit 因而在来源注销后仍可查 Card，支持 [Effect 来源分组](effect.md#来源分组)。历史不等于在场数，activeCount 查询当前仍登记的实例，包含 ENDING。
+deployedUnits 保存本场成功部署的 Unit Ref 历史，在初始化后、任何 entered 前登记；离场不删除。cardForUnit 因而在来源注销后仍可查 Card，支持 [Effect 来源分组](effect.md#来源分组)。历史不等于在场数，deployedCount 查询当前仍登记的实例，包含 ENDING。
 
 Card 的 unitHooks 注入未来实例，不追改已经创建的 Unit。私有状态的构造、类型配对与写回遵守公共约定，不在此复制异构容器接口。
 
@@ -78,7 +80,7 @@ retreat 要求当前 ACTIVE 且撤退限制允许，先按本次依据退款，�
 
 removing 和依赖收尾期间的 removed 登记变化进入注销前快照；固定 Departure 仍代表离场开始时的历史。所有本地 removed 都看到 Unit 与结构已注销，旧配对不清掉同格替代实例的新绑定。
 
-usedSlots 在 removing 和依赖结束期间仍计入本次份额，物理注销后的 Deployable Hook 调用 Deployment 归还；预置份额为零。账户不由能力直接写入，Card 历史和当前 activeCount 也不代替它。
+usedSlots 在 removing 和依赖结束期间仍计入本次份额，物理注销后的 Deployable Hook 调用 Deployment 归还；预置份额为零。账户不由能力直接写入，Card 历史和当前 deployedCount 也不代替它。
 
 ## 部署观察
 

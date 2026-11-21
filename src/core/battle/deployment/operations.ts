@@ -15,7 +15,7 @@ import type { Card } from "./card/card.js";
 import * as card from "./card/state.js";
 import * as cards from "./card/operations.js";
 import * as dp from "./dp.js";
-import { advanceResources, replaceCard } from "./resources.js";
+import { advanceResources } from "./resources.js";
 import { evaluateCurrent, resolveRestrictions, createRequest } from "./query.js";
 import { validateQuote, type DeployRequest, type DeployOutcome } from "./request.js";
 import { Hooks } from "../../hook.js";
@@ -83,7 +83,7 @@ export function deploy<T extends Card<any>>(
         consumed = card.advance(card.startCooldown(consumed, battle.tick), battle.tick);
     }
 
-    battle = replaceCard(battle, consumed);
+    battle = cards.replace(battle, consumed);
     const initialized = initializeUnit(battle, {
         definition: self.definition,
         position: Tile.center(request.tilePosition),
@@ -129,7 +129,10 @@ export function deploy<T extends Card<any>>(
         refund,
     });
     battle = initialized.state;
-    battle = replaceCard(battle, card.recordDeployment(get(battle, request.card)!, unitRef(unit)));
+    battle = cards.replace(
+        battle,
+        card.recordDeployment(get(battle, request.card)!, unitRef(unit)),
+    );
     battle = add(battle, unit);
 
     return {

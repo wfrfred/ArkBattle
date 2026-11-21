@@ -4,6 +4,7 @@ import {
     assertNonnegativeSafeInteger,
     assertPositiveSafeInteger,
 } from "../../common/assert.js";
+import { Store } from "../../common/collection/store.js";
 import type * as card from "./card/card.js";
 import type { Ref } from "../../common/ref.js";
 import type { Ordering } from "./order.js";
@@ -25,7 +26,7 @@ export interface Input<States extends readonly object[] = readonly object[]> {
 
 export interface State {
     readonly definition: Definition;
-    readonly cards: readonly card.Card[];
+    readonly cards: Store<card.Id, card.Card<any>>;
     readonly order: readonly Ref<card.Card>[];
     readonly ordering: Ordering | null;
     readonly hooks: Hooks;
@@ -65,7 +66,7 @@ export function initialize(definition: Definition = emptyDefinition, tick = 0): 
 
     return {
         definition,
-        cards: [],
+        cards: Store.empty(),
         order: [],
         ordering: null,
         hooks: Hooks.empty(),

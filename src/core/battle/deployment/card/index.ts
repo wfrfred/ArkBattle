@@ -6,11 +6,14 @@ export type { RestrictionContext, Purpose, Restriction } from "./restriction.js"
 
 export { ref } from "./card.js";
 
+export { initialize } from "./initialize.js";
+
 export { get, all, allows } from "./query.js";
 
 export { resolveBaseCost, resolveCost, resolveRedeployTicks } from "./state.js";
 
 export {
+    add,
     setState,
     recharge,
     consume,

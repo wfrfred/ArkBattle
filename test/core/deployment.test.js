@@ -41,6 +41,36 @@ const account = {
     slotLimit: 3,
 };
 
+test("Card initialization reserves identity and Card writes refresh deployment order", () => {
+    const definition = (rank) => ({
+        ...operator,
+        card: { ...operator.card, initialize: (state) => ({ state, value: { rank } }) },
+    });
+    let state = battle([], { deployment: { definition: account, cards: [] } });
+    state = deployment.setOrdering(state, (current, references) =>
+        [...references].sort((left, right) =>
+            cards.get(current, left).state.rank - cards.get(current, right).state.rank,
+        ),
+    );
+    const first = cards.initialize(state, definition(10));
+    const second = cards.initialize(first.state, definition(5));
+    const firstRef = cards.ref(first.value);
+    const secondRef = cards.ref(second.value);
+    assert.notEqual(firstRef.id, secondRef.id);
+    assert.equal(cards.get(second.state, firstRef), undefined);
+    assert.equal(cards.get(second.state, secondRef), undefined);
+    assert.deepEqual([...deployment.ordered(second.state)], []);
+
+    state = cards.add(second.state, first.value);
+    state = cards.add(state, second.value);
+    assert.strictEqual(cards.get(state, firstRef), first.value);
+    assert.deepEqual([...cards.all(state)].map(cards.ref), [firstRef, secondRef]);
+    assert.deepEqual([...deployment.ordered(state)].map(cards.ref), [secondRef, firstRef]);
+
+    state = cards.setState(state, firstRef, { rank: 1 });
+    assert.deepEqual([...deployment.ordered(state)].map(cards.ref), [firstRef, secondRef]);
+});
+
 test("preview, evaluation and deployment share a request, rejection spends nothing, and the entered hook sees consumption", () => {
     const constructions = [];
     const deployments = [];
@@ -248,7 +278,7 @@ test("retreat settles refund and the persistent Card before departure; confirmed
     state = deployment.retreat(first.state, firstUnit);
     assert.equal(get(state, first.value.unitId), undefined);
     assert.deepEqual(deployment.cardForUnit(state, firstUnit), card);
-    assert.equal(deployment.activeCount(state, card), 0);
+    assert.equal(deployment.deployedCount(state, card), 0);
     assert.equal(state.deployment.usedSlots, 0);
     assert.deepEqual(departures, [{ reason: "RETREAT", dp: 45, stage: 1, pending: 1, slots: 0 }]);
 
@@ -260,7 +290,7 @@ test("retreat settles refund and the persistent Card before departure; confirmed
     assert.equal(get(state, second.value.unitId).deployable.card.id, card.id);
     const secondUnit = units.ref(get(state, second.value.unitId));
     assert.deepEqual(deployment.cardForUnit(state, firstUnit), card);
-    assert.equal(deployment.activeCount(state, card), 1);
+    assert.equal(deployment.deployedCount(state, card), 1);
     assert.equal(state.deployment.dp, 30);
     const request = {
         source: null,
@@ -270,7 +300,7 @@ test("retreat settles refund and the persistent Card before departure; confirmed
     state = damage.applyDamage(request, damage.calculateDamage(state, request)).state;
     assert.equal(get(state, second.value.unitId), undefined);
     assert.deepEqual(deployment.cardForUnit(state, secondUnit), card);
-    assert.equal(deployment.activeCount(state, card), 0);
+    assert.equal(deployment.deployedCount(state, card), 0);
     assert.equal(state.deployment.usedSlots, 0);
     assert.deepEqual(departures[1], { reason: "DEATH", dp: 30, stage: 2, pending: 1, slots: 0 });
 });

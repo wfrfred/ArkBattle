@@ -3,13 +3,32 @@ import { assertNonnegativeSafeInteger } from "../../../common/assert.js";
 import type { Contribution } from "../../../common/contribution.js";
 import type { Modifier } from "../../../common/modifier.js";
 import type { State as BattleState } from "../../state.js";
-import { replaceCard } from "../resources.js";
-import type { Card, TimerTarget } from "./card.js";
+import { refreshOrder } from "../order.js";
+import { ref, type Card, type TimerTarget } from "./card.js";
 import type { Key } from "../../../hook.js";
 import { type Entry, set, remove } from "../../../common/collection/entries.js";
 import type { Restriction } from "./restriction.js";
 import { get } from "./query.js";
 import * as card from "./state.js";
+
+export function add(battle: BattleState, self: Card<any>): BattleState {
+    return refreshOrder({
+        ...battle,
+        deployment: {
+            ...battle.deployment,
+            cards: battle.deployment.cards.add(self.id, self),
+            order: [...battle.deployment.order, ref(self)],
+        },
+    });
+}
+
+export function replace(battle: BattleState, self: Card<any>): BattleState {
+    const cards = battle.deployment.cards.replace(self.id, self);
+
+    return cards === battle.deployment.cards
+        ? battle
+        : refreshOrder({ ...battle, deployment: { ...battle.deployment, cards } });
+}
 
 export function setState<T extends Card<any>>(
     battle: BattleState,
@@ -18,7 +37,7 @@ export function setState<T extends Card<any>>(
 ): BattleState {
     const self = requireCard(battle, reference);
 
-    return state === self.state ? battle : replaceCard(battle, { ...self, state });
+    return state === self.state ? battle : replace(battle, { ...self, state });
 }
 
 export function recharge(
@@ -29,7 +48,7 @@ export function recharge(
     assertNonnegativeSafeInteger(count, "card recharge count");
     const self = requireCard(battle, reference);
 
-    return replaceCard(battle, card.recharge(self, count));
+    return replace(battle, card.recharge(self, count));
 }
 
 export function consume(battle: BattleState, reference: Ref<Card<any>>, count = 1): BattleState {
@@ -39,11 +58,11 @@ export function consume(battle: BattleState, reference: Ref<Card<any>>, count = 
         throw new RangeError("card stock is insufficient");
     }
 
-    return replaceCard(battle, card.consume(self, count));
+    return replace(battle, card.consume(self, count));
 }
 
 export function incrementCostStage(battle: BattleState, reference: Ref<Card<any>>): BattleState {
-    return replaceCard(battle, card.incrementCostStage(requireCard(battle, reference)));
+    return replace(battle, card.incrementCostStage(requireCard(battle, reference)));
 }
 
 export function startCooldown(
@@ -57,7 +76,7 @@ export function startCooldown(
 
     const self = requireCard(battle, reference);
 
-    return replaceCard(
+    return replace(
         battle,
         card.advance(card.startCooldown(self, battle.tick, durationTicks), battle.tick),
     );
@@ -71,7 +90,7 @@ export function enqueueRecovery(
     assertNonnegativeSafeInteger(count, "card recovery count");
     const self = card.advance(requireCard(battle, reference), battle.tick);
 
-    return replaceCard(
+    return replace(
         battle,
         card.advance(card.enqueueRecovery(self, battle.tick, count), battle.tick),
     );
@@ -86,7 +105,7 @@ export function reduceCooldown(
     assertNonnegativeSafeInteger(ticks, "cooldown reduction ticks");
     const self = card.advance(requireCard(battle, reference), battle.tick);
 
-    return replaceCard(
+    return replace(
         battle,
         card.advance(card.reduceCooldown(self, ticks, battle.tick, target), battle.tick),
     );
@@ -99,7 +118,7 @@ export function clearCooldown(
 ): BattleState {
     const self = card.advance(requireCard(battle, reference), battle.tick);
 
-    return replaceCard(
+    return replace(
         battle,
         card.advance(card.clearCooldown(self, battle.tick, target), battle.tick),
     );
@@ -112,7 +131,7 @@ export function pauseCooldown(
 ): BattleState {
     const self = card.advance(requireCard(battle, reference), battle.tick);
 
-    return replaceCard(battle, card.pauseCooldown(self, battle.tick, target));
+    return replace(battle, card.pauseCooldown(self, battle.tick, target));
 }
 
 export function resumeCooldown(
@@ -122,7 +141,7 @@ export function resumeCooldown(
 ): BattleState {
     const self = requireCard(battle, reference);
 
-    return replaceCard(
+    return replace(
         battle,
         card.advance(card.resumeCooldown(self, battle.tick, target), battle.tick),
     );
@@ -137,7 +156,7 @@ export function setUnitHook<H extends Entry, Owner extends object>(
     const self = requireCard(battle, reference);
     const unitHooks = self.unitHooks.set(key, entry);
 
-    return unitHooks === self.unitHooks ? battle : replaceCard(battle, { ...self, unitHooks });
+    return unitHooks === self.unitHooks ? battle : replace(battle, { ...self, unitHooks });
 }
 
 export function removeUnitHook<H extends Entry, Owner extends object>(
@@ -149,7 +168,7 @@ export function removeUnitHook<H extends Entry, Owner extends object>(
     const self = requireCard(battle, reference);
     const unitHooks = self.unitHooks.remove(key, id);
 
-    return unitHooks === self.unitHooks ? battle : replaceCard(battle, { ...self, unitHooks });
+    return unitHooks === self.unitHooks ? battle : replace(battle, { ...self, unitHooks });
 }
 
 export function setRestriction(
@@ -160,9 +179,7 @@ export function setRestriction(
     const self = requireCard(battle, reference);
     const restrictions = set(self.restrictions, entry);
 
-    return restrictions === self.restrictions
-        ? battle
-        : replaceCard(battle, { ...self, restrictions });
+    return restrictions === self.restrictions ? battle : replace(battle, { ...self, restrictions });
 }
 
 export function removeRestriction(
@@ -173,9 +190,7 @@ export function removeRestriction(
     const self = requireCard(battle, reference);
     const restrictions = remove(self.restrictions, id);
 
-    return restrictions === self.restrictions
-        ? battle
-        : replaceCard(battle, { ...self, restrictions });
+    return restrictions === self.restrictions ? battle : replace(battle, { ...self, restrictions });
 }
 
 export function setCostContribution(
@@ -183,7 +198,7 @@ export function setCostContribution(
     reference: Ref<Card<any>>,
     entry: Contribution<readonly Modifier[]>,
 ): BattleState {
-    return replaceCard(battle, card.setCostContribution(requireCard(battle, reference), entry));
+    return replace(battle, card.setCostContribution(requireCard(battle, reference), entry));
 }
 
 export function removeCostContribution(
@@ -191,7 +206,7 @@ export function removeCostContribution(
     reference: Ref<Card<any>>,
     id: string,
 ): BattleState {
-    return replaceCard(battle, card.removeCostContribution(requireCard(battle, reference), id));
+    return replace(battle, card.removeCostContribution(requireCard(battle, reference), id));
 }
 
 export function setRedeployTimeContribution(
@@ -199,10 +214,7 @@ export function setRedeployTimeContribution(
     reference: Ref<Card<any>>,
     entry: Contribution<readonly Modifier[]>,
 ): BattleState {
-    return replaceCard(
-        battle,
-        card.setRedeployTimeContribution(requireCard(battle, reference), entry),
-    );
+    return replace(battle, card.setRedeployTimeContribution(requireCard(battle, reference), entry));
 }
 
 export function removeRedeployTimeContribution(
@@ -210,10 +222,7 @@ export function removeRedeployTimeContribution(
     reference: Ref<Card<any>>,
     id: string,
 ): BattleState {
-    return replaceCard(
-        battle,
-        card.removeRedeployTimeContribution(requireCard(battle, reference), id),
-    );
+    return replace(battle, card.removeRedeployTimeContribution(requireCard(battle, reference), id));
 }
 
 function requireCard<T extends Card<any>>(battle: BattleState, reference: Ref<T>): T {
