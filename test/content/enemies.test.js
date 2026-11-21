@@ -11,9 +11,9 @@ import { advance as advanceBlocking, release as releaseBlocking } from "../../di
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { prepare } from '../../dist/data/unit/enemy.js';
+import { readEnemyParameters, resolveEnemy } from '../../dist/data/unit/enemy.js';
 import { parseAttackTiming } from '../../dist/data/action/timing.js';
-import { parseEnemyMovementPrefab } from '../../dist/data/unit/prefab.js';
+import { readEnemyMovementPrefab } from '../../dist/data/unit/prefab.js';
 import { create as createHound } from '../../dist/content/enemies/hound/unit.js';
 import { create as createCrossbowman } from '../../dist/content/enemies/crossbowman/unit.js';
 import { createArrow } from '../../dist/content/enemies/crossbowman/projectile.js';
@@ -46,9 +46,12 @@ const crossbowTiming = {
   ranged: parseAttackTiming(timingData.crossbowRanged),
 };
 const rawEnemy = id => fixture.enemies.find(entry => entry.Key === id);
-const profile = (id, level = 0, overwrittenData) => prepare(rawEnemy(id), { level, overwrittenData });
-const houndMovement = parseEnemyMovementPrefab(JSON.parse(readFileSync(new URL('../fixtures/arknights/prefab_enemy_1000_gopro.json', import.meta.url), 'utf8')));
-const crossbowMovement = { halfBodyWidth: 0.2, steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 } };
+const enemy = (id, level = 0, overwrittenData) => resolveEnemy(rawEnemy(id), { level, overwrittenData });
+const parameters = id => readEnemyParameters(enemy(id));
+const houndPrefab = JSON.parse(readFileSync(new URL('../fixtures/arknights/prefab_enemy_1000_gopro.json', import.meta.url), 'utf8'));
+const crossbowPrefab = JSON.parse(readFileSync(new URL('../fixtures/arknights/prefab_enemy_1003_ncbow.json', import.meta.url), 'utf8'));
+const houndMovement = readEnemyMovementPrefab(enemy('enemy_1000_gopro'), { [houndPrefab.prefabKey]: houndPrefab });
+const crossbowMovement = readEnemyMovementPrefab(enemy('enemy_1003_ncbow'), { [crossbowPrefab.prefabKey]: crossbowPrefab });
 
 function emptyBattle() {
   const tile = createTile({
@@ -80,8 +83,9 @@ function guard(id, position, blockCapacity = 1, restrictions = []) {
 }
 
 test('hound content binds configured regeneration and rejects unimplemented stun immunity', () => {
-  const timing = { timing: houndTiming, hitRadius: 0.2 };
-  const advanced = profile('enemy_1000_gopro', 1, {
+  const prefabKey = 'enemy_1000_gopro_variant';
+  const advanced = enemy('enemy_1000_gopro', 1, {
+    prefabKey: { m_defined: true, m_value: prefabKey },
     levelType: { m_defined: true, m_value: 'BOSS' },
     attributes: {
       maxHp: { m_defined: true, m_value: 4000 },
@@ -90,12 +94,17 @@ test('hound content binds configured regeneration and rejects unimplemented stun
       hpRecoveryPerSec: { m_defined: true, m_value: 20 },
     },
   });
-  const regenerating = createHound(advanced, timing, houndMovement);
+  const movement = readEnemyMovementPrefab(advanced, { [prefabKey]: { ...houndPrefab, prefabKey } });
+  const configured = { ...readEnemyParameters(advanced), timing: houndTiming, hitRadius: 0.2, movement };
+  const regenerating = createHound(configured);
 
-  assert.equal(regenerating.definition.vitality.recoverySpeed.default, 20);
-  assert.equal(regenerating.definition.classification.rank, 'BOSS');
-  assert.equal(regenerating.definition.elemental.maxEp.default, 2000);
-  assert.throws(() => createHound({ ...profile('enemy_1000_gopro'), stunImmune: true }, timing, houndMovement), /stun immunity/);
+  assert.equal(movement.prefabKey, prefabKey);
+  assert.equal(regenerating.locomotion.halfBodyWidth, movement.halfBodyWidth);
+  assert.equal(regenerating.route.alwaysCheckCurrentPoint, movement.alwaysCheckCurrentPoint);
+  assert.equal(regenerating.vitality.recoverySpeed.default, 20);
+  assert.equal(regenerating.classification.rank, 'BOSS');
+  assert.equal(regenerating.elemental.maxEp.default, 2000);
+  assert.throws(() => createHound({ ...configured, stunImmune: true }), /stun immunity/);
 });
 
 function routeInitial(position) {
@@ -106,9 +115,9 @@ function routeInitial(position) {
 }
 
 test('scheduled hound faces its route after the first checkpoint has changed its birth position', () => {
-  const { definition } = createHound(profile('enemy_1000_gopro'), {
-    timing: houndTiming, hitRadius: 0.2,
-  }, houndMovement);
+  const definition = createHound({
+    ...parameters('enemy_1000_gopro'), timing: houndTiming, hitRadius: 0.2, movement: houndMovement,
+  });
   const plan = {
     motionMode: 'WALK', startPosition: [1, 1], endPosition: null,
     checkpoints: [
@@ -136,9 +145,10 @@ test('scheduled hound faces its route after the first checkpoint has changed its
 });
 
 test('a hound attacks its hidden blocker while still respecting invincibility', () => {
-  const { definition, action } = createHound(profile('enemy_1000_gopro'), {
-    timing: houndTiming, hitRadius: 0.2,
-  }, houndMovement);
+  const definition = createHound({
+    ...parameters('enemy_1000_gopro'), timing: houndTiming, hitRadius: 0.2, movement: houndMovement,
+  });
+  const [action] = definition.action.definitions;
   const blocker = guard(0, [2, 2], 1, [{ id: 'hidden', value: invisibleRestriction }]);
   const hound = initialize({ id: 1, position: [2, 2.5], definition, initial: routeInitial([2, 2.5]) });
   const before = advanceBlocking(addUnit(addUnit(emptyBattle(), blocker), hound));
@@ -159,15 +169,17 @@ test('a hound attacks its hidden blocker while still respecting invincibility', 
 test('crossbow selects melee for its actual blocker while ranged targeting keeps ordinary restrictions', () => {
   const narrow = [{ type: 'CIRCLE', offset: [0, 0], radius: 0.01 }];
   const projectile = { definition: createArrow(), speedPerSecond: 6, stopDelayTicks: 0 };
-  const { definition, actions } = createCrossbowman({ ...profile('enemy_1003_ncbow'), rangeRadius: 0.01 }, {
-    ...crossbowTiming, hitRadius: 0.2, projectile,
-  }, crossbowMovement);
+  const definition = createCrossbowman({
+    ...parameters('enemy_1003_ncbow'), rangeRadius: 0.01,
+    timing: crossbowTiming, hitRadius: 0.2, projectile, movement: crossbowMovement,
+  });
+  const [meleeAction, rangedAction] = definition.action.definitions;
   const blocker = guard(0, [2, 2], 1, [{ id: 'innate', value: invisibleRestriction }]);
   const bow = initialize({ id: 1, position: [2, 2.5], definition, initial: routeInitial([2, 2.5]) });
   const initial = addUnit(addUnit(emptyBattle(), blocker), bow);
   const state = advanceBlocking(update(initial, unitRef(blocker), setCategory("DEVICE")));
-  const melee = actions.melee.attack.targetGroups[0].select;
-  const ranged = actions.ranged.attack.targetGroups[0].select;
+  const melee = meleeAction.attack.targetGroups[0].select;
+  const ranged = rangedAction.attack.targetGroups[0].select;
 
   assert.equal(inRange(bow.position, narrow)(getUnit(state, 0)), false);
   assert.equal(allowsRestrictions(state, bow)(getUnit(state, 0)), false);
@@ -193,10 +205,11 @@ test('crossbow selects melee for its actual blocker while ranged targeting keeps
 test('crossbow uses its authored release event and arrow speed, then settles damage on contact', () => {
 
   const projectileDefinition = createArrow();
-  const { definition, actions: { ranged: attack } } = createCrossbowman(profile('enemy_1003_ncbow'), {
-    ...crossbowTiming, hitRadius: 0.2,
+  const definition = createCrossbowman({
+    ...parameters('enemy_1003_ncbow'), timing: crossbowTiming, hitRadius: 0.2, movement: crossbowMovement,
     projectile: { definition: projectileDefinition, speedPerSecond: 6, stopDelayTicks: 0 },
-  }, crossbowMovement);
+  });
+  const attack = definition.action.definitions.find(({ id }) => id === 'ranged');
 
   const bow = initialize({ id: 1, position: [2, 3.5], definition, initial: routeInitial([2, 3.5]) });
   const guardUnit = guard(0, [2, 2], 0);
@@ -226,10 +239,11 @@ test('crossbow uses its authored release event and arrow speed, then settles dam
 });
 
 test('crossbow switching between ranged and blocker melee preserves independent cooldowns', () => {
-  const { definition, actions } = createCrossbowman(profile('enemy_1003_ncbow'), {
-    ...crossbowTiming, hitRadius: 0.2,
+  const definition = createCrossbowman({
+    ...parameters('enemy_1003_ncbow'), timing: crossbowTiming, hitRadius: 0.2, movement: crossbowMovement,
     projectile: { definition: createArrow(), speedPerSecond: 6, stopDelayTicks: 0 },
-  }, crossbowMovement);
+  });
+  const [meleeAction, rangedAction] = definition.action.definitions;
   const bow = initialize({ id: 1, position: [2, 2.5], definition, initial: routeInitial([2, 2.5]) });
   const initial = addUnit(addUnit(emptyBattle(), guard(0, [2, 2])), bow);
   const cooldown = (battle, action) => getUnit(battle, 1).action.actions.get(action.id).cooldown.readyAtTick;
@@ -237,8 +251,8 @@ test('crossbow switching between ranged and blocker melee preserves independent 
 
   const ranged = advanceCombatUntil(advanceCombat(initial), 16);
   assert.equal(ranged.battlefield.projectiles.size, 1);
-  assert.equal(cooldown(ranged, actions.ranged), period);
-  assert.equal(cooldown(ranged, actions.melee), 0);
+  assert.equal(cooldown(ranged, rangedAction), period);
+  assert.equal(cooldown(ranged, meleeAction), 0);
 
   const recovered = advanceCombatUntil(ranged, 30);
   const blocked = advanceBlocking({ ...recovered, tick: 31 });
@@ -246,15 +260,15 @@ test('crossbow switching between ranged and blocker melee preserves independent 
   const melee = advanceCombatUntil(advanceCombat(blocked), 46);
   assert.equal(getUnit(melee, 0).vitality.health.hp, 800);
   assert.equal(melee.battlefield.projectiles.size, 1);
-  assert.equal(cooldown(melee, actions.melee), period + 31);
-  assert.equal(cooldown(melee, actions.ranged), period);
+  assert.equal(cooldown(melee, meleeAction), period + 31);
+  assert.equal(cooldown(melee, rangedAction), period);
 
   const meleeRecovered = advanceCombatUntil(melee, 61);
   const unblocked = releaseBlocking({ ...meleeRecovered, tick: 62 }, blockingQueries.relations(meleeRecovered, unitRef(getUnit(meleeRecovered, 1))));
   assert.equal(advanceCombat(unblocked).battlefield.projectiles.size, 1);
   const rangedAgain = advanceCombatUntil(advanceCombat({ ...unblocked, tick: period }), period + 16);
   assert.equal(rangedAgain.battlefield.projectiles.size, 2);
-  assert.equal(cooldown(rangedAgain, actions.ranged), period * 2);
-  assert.equal(cooldown(rangedAgain, actions.melee), period + 31);
+  assert.equal(cooldown(rangedAgain, rangedAction), period * 2);
+  assert.equal(cooldown(rangedAgain, meleeAction), period + 31);
 
 });

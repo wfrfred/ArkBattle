@@ -5,8 +5,7 @@ import {
     type Attack as BaseAttack,
 } from "../../actions/attack.js";
 import * as units from "../../../core/unit/index.js";
-import type { Timing as AttackTiming } from "../../actions/timing.js";
-import type { Profile } from "../../../data/unit/enemy.js";
+import type { Timing } from "../../actions/timing.js";
 import { perSecondToPerTick } from "../../../core/tick.js";
 import { assertNonnegativeSafeInteger, assertPositiveNumber } from "../../../core/common/assert.js";
 import * as projectiles from "../../../core/projectile/index.js";
@@ -20,11 +19,6 @@ import type { Classification } from "../../../core/unit/capability/classificatio
 import { topK } from "../../../core/common/collection/order.js";
 import { arrowApplyWay, type Projectile } from "./projectile.js";
 
-export interface Timing {
-    readonly melee: AttackTiming;
-    readonly ranged: AttackTiming;
-}
-
 export type Host = Classification & Blockable & Offense;
 
 export type Attack = BaseAttack<object, object, Host>;
@@ -35,7 +29,7 @@ export function createMelee(timing: Timing): Attack {
         onStart: faceTarget,
         triggerBindingId: "primary",
         period: { type: "ATTACK_SPEED" },
-        timing: timing.melee,
+        timing,
         targetGroups: [
             {
                 id: "primary",
@@ -72,7 +66,7 @@ export function createMelee(timing: Timing): Attack {
     });
 }
 
-export function createRanged(profile: Profile, timing: Timing, projectile: Projectile): Attack {
+export function createRanged(rangeRadius: number, timing: Timing, projectile: Projectile): Attack {
     assertPositiveNumber(projectile.speedPerSecond, "enemy arrow speed");
     assertNonnegativeSafeInteger(projectile.stopDelayTicks, "enemy arrow stop delay");
 
@@ -82,7 +76,7 @@ export function createRanged(profile: Profile, timing: Timing, projectile: Proje
         onStart: faceTarget,
         triggerBindingId: "primary",
         period: { type: "ATTACK_SPEED" },
-        timing: timing.ranged,
+        timing,
         targetGroups: [
             {
                 id: "primary",
@@ -101,7 +95,7 @@ export function createRanged(profile: Profile, timing: Timing, projectile: Proje
                         .filter((target) => target.id !== blocker?.id)
                         .filter(
                             targeting.inRange(self.position, [
-                                { type: "CIRCLE", offset: [0, 0], radius: profile.rangeRadius },
+                                { type: "CIRCLE", offset: [0, 0], radius: rangeRadius },
                             ]),
                         );
 

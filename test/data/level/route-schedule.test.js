@@ -6,7 +6,8 @@ import { Hooks } from "../../../dist/core/hook.js";
 import { parseLevelDefinition } from "../../../dist/data/level/definition.js";
 import { parseRouteDefinition } from "../../../dist/data/level/route.js";
 import { compileSpawnSchedule } from "../../../dist/data/level/schedule.js";
-import { resolveEnemyMovementValues } from "../../../dist/data/unit/enemy.js";
+import { resolveEnemy } from "../../../dist/data/unit/enemy.js";
+import { readEnemyMovementPrefab } from "../../../dist/data/unit/prefab.js";
 import { initialize, step } from "../../../dist/core/battle/runtime.js";
 import { isCompleted, triggerBranch } from "../../../dist/core/battle/schedule/index.js";
 import { remove } from "../../../dist/core/unit/operations.js";
@@ -109,6 +110,7 @@ test("Action and Enemy notCountInTotal release scheduling from still-present uni
     const wave = { ...raw.waves[0], preDelay: 0, postDelay: 0, maxTimeWaitingForNextWave: -1 };
     const action = { ...wave.fragments[0].actions[0], key: "enemy_1000_gopro", count: 1, preDelay: 0, interval: 0 };
     const enemy = "enemy_1003_ncbow";
+    const skills = [{ prefabKey: "stage-crossbow-shot" }];
     raw.waves = [
         { ...wave, fragments: [{ preDelay: 0, actions: [
             { ...action, notCountInTotal: true },
@@ -124,9 +126,14 @@ test("Action and Enemy notCountInTotal release scheduling from still-present uni
         { id: action.key, useDb: true, level: 0, overwrittenData: null },
         { id: enemy, useDb: true, level: 0, overwrittenData: {
             attributes: {}, notCountInTotal: { m_defined: true, m_value: true },
+            skills,
         } },
     ];
     const records = fixture("main-mode-units").enemies;
+    const prefabs = {
+        [action.key]: fixture(`prefab_${action.key}`),
+        [enemy]: fixture(`prefab_${enemy}`),
+    };
     const level = parseLevelDefinition(raw);
     const definition = {
         id: "scheduled-unit", hooks: Hooks.empty(),
@@ -136,8 +143,15 @@ test("Action and Enemy notCountInTotal release scheduling from still-present uni
         actions: [0, 1].map((actionIndex) => ({ waveIndex: 0, fragmentIndex: 0, actionIndex })),
         branches: ["uncounted"],
     }, (reference) => {
-        const values = resolveEnemyMovementValues(records.find(({ Key }) => Key === reference.id), reference.level, reference.overwrittenData);
-        return { definition, notCountInTotal: values.notCountInTotal, delayToBornTicks: 0 };
+        const record = records.find(({ Key }) => Key === reference.id);
+        const resolved = resolveEnemy(record, {
+            level: reference.level, overwrittenData: reference.overwrittenData,
+        });
+        if (reference.id === enemy) {
+            assert.deepEqual(resolved.layers.at(-1).skills, skills);
+        }
+        const { delayToBornTicks } = readEnemyMovementPrefab(resolved, prefabs);
+        return { definition, notCountInTotal: resolved.notCountInTotal, delayToBornTicks };
     }, 7);
     assert.deepEqual(compiled.schedule.waves[0].fragments[0].spawns.map(({ wait }) => wait), ["NONE", "WAVE"]);
     let state = step(initialize({

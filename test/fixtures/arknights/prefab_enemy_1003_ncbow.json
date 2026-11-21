@@ -1,0 +1,27 @@
+{
+  "prefabKey": "enemy_1003_ncbow",
+  "source": {
+    "bundle": "battle/enm_pfb_base_0.ab",
+    "cab": "CAB-b2b15d37e92fccb550555511a61b9297",
+    "sha256": "da7e5c5fd620eac9b7020f143423285b87eea861a0b6cf6534142db7dcf06b5b",
+    "evidence": "docs/research/evidence/action-timing-20261014/records.json#/enemyComponents"
+  },
+  "components": [
+    {
+      "object": { "id": "-5684249958478128563" },
+      "fields": {
+        "_alwaysCheckCurrentPoint": false,
+        "_delayToBorn": 0,
+        "_onlyDelayToBornOnTileStart": false
+      }
+    },
+    {
+      "object": { "id": "2072793587615324749" },
+      "fields": {
+        "_steeringFactor": 8,
+        "_maxSteeringForce": 10,
+        "_halfBodyWidth": 0.20000000298023224
+      }
+    }
+  ]
+}

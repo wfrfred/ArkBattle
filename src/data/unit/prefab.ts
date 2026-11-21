@@ -53,3 +53,19 @@ export function parseEnemyMovementPrefab(value: unknown): EnemyMovementPrefab {
         halfBodyWidth: nonnegative(movement._halfBodyWidth, "movement _halfBodyWidth"),
     };
 }
+
+export function readEnemyMovementPrefab(
+    { prefabKey }: Pick<EnemyMovementPrefab, "prefabKey">,
+    prefabs: Readonly<Record<string, unknown>>,
+): EnemyMovementPrefab {
+    if (!Object.hasOwn(prefabs, prefabKey)) {
+        throw new RangeError(`missing enemy prefab ${prefabKey}`);
+    }
+
+    const prefab = parseEnemyMovementPrefab(prefabs[prefabKey]);
+    if (prefab.prefabKey !== prefabKey) {
+        throw new TypeError(`enemy prefab record does not match ${prefabKey}`);
+    }
+
+    return prefab;
+}

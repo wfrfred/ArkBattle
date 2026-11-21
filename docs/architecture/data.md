@@ -47,9 +47,15 @@ Effect 的重复施加、启用竞争、接收免疫／抵抗和生命周期关�
 
 常规养成按配置读取所选精英阶段、已获得的潜能、信赖、所选技能等级及模组阶段。等级属性和信赖增量分别按各自关键帧插值。MaxHP、ATK、DEF、嘲讽、阻挡数、费用和再部署时间取偶舍入，法抗、攻速与基础攻击间隔保留小数。先分别取整，再相加，然后应用潜能与选中模组阶段的加值。[干员配置数据补核](../research/cases/06-talent-lifecycle-and-model.md#干员配置数据补核2026-11-10)
 
+## 敌人静态资料
+
+`resolveEnemy(record, configuration)` 接收按关卡 ID 找到的敌人数据库条目。标有 `m_defined` 的字段和属性按等级 0、指定等级、关卡覆写的顺序合并。`ResolvedEnemy.layers` 保留完整原始层，包括 `skills`、`talentBlackboard` 和 `spData`，由需要这些数据的内容读取。`readEnemyParameters()` 转换普通战斗属性。[敌人数据](../../src/data/unit/enemy.ts)
+
+`readEnemyMovementPrefab()` 用最终的 `prefabKey` 选择已提取的组件记录，提供转向、避让宽度、路点策略和出生延迟。关卡接入处把运动参数交给敌人工厂，把出生延迟和计数资格交给调度。[Prefab 读取](../../src/data/unit/prefab.ts) · [路点策略依据](../research/cases/13-route-and-movement-timing.md)
+
 ## 静态配置与数值
 
-敌人的模板等级与关卡覆盖先合并。`m_defined`、潜能的零基 rank、原表天赋候选和模组数据槽等原始表示不进入 Core。标签、免疫和关联资源应有明确的转换结果，不要求 Content 从原始 Profile 猜测身份或规则。原始敌人资料的 `applyWay` 保留输入兼容，查询以实际登记的 [Action](action.md#攻击方式) 为准。
+`m_defined`、潜能的零基 rank、原表天赋候选和模组数据槽等原始表示不进入 Core。标签、免疫和关联资源应有明确的转换结果。原始敌人资料的 `applyWay` 随记录保留，查询以实际登记的 [Action](action.md#攻击方式) 为准。
 
 Content 明确 [Classification](capability.md#classification) 的单位类别、职业／子职业，Data 提供组织与战斗筛选标签。角色的 mainPower／subPower 合并为 `groupTags`，以首次出现顺序去重；敌人的 enemyTags／levelType 规范为 filterTags／rank。标签必须是非空字符串，转换保留大小写。
 
@@ -61,7 +67,7 @@ Content 明确 [Classification](capability.md#classification) 的单位类别、
 
 ## 当前支持边界
 
-现有转换覆盖代表性干员的养成数据与已接入技能、敌人等级及部分运动配置、已提取的攻击时序、范围与黑板、元素枚举，以及关卡地图、路线、调度、预置和地形。敌人招式配置与共享 SP 的转换尚未接入，当前敌人转换拒绝非空 skills／spData。上文规定完整职责范围，不表示所有原生配置均已支持。
+现有转换覆盖代表性干员的养成数据与已接入技能、敌人等级及部分运动配置、已提取的攻击时序、范围与黑板、元素枚举，以及关卡地图、路线、调度、预置和地形。敌人招式配置与共享 SP 目前保留原始记录，具体转换随内容接入。
 
 `effect/stacking.ts` 与 `effect/modifier.ts` 提供重应用和属性修正的静态描述。Core Effect 提供分组、重应用与层数操作；具体配置到 Definition 的绑定由 Content 实现，属性修正描述的通用运行采样仍未接入。装置部署资格由 Content 的共享装置程序实现，Data 只绑定解析后的条件。更多动作模板、完整选择与弹道配置，以及异常适用和生命周期选项仍需随实际内容接入，详见[内容支持与缺口](tactical-semantics.md)。
 

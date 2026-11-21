@@ -354,27 +354,10 @@ function enemyDbRef(
     let overwrittenData: ArknightsJsonValue = null;
 
     if (source.overwrittenData !== null) {
-        object(source.overwrittenData, `${name}.overwrittenData`, [
-            "name",
-            "description",
-            "prefabKey",
-            "attributes",
-            "applyWay",
-            "motion",
-            "enemyTags",
-            "lifePointReduce",
-            "levelType",
-            "rangeRadius",
-            "numOfExtraDrops",
-            "viewRadius",
-            "notCountInTotal",
-            "talentBlackboard",
-            "skills",
-            "spData",
-        ]);
-        overwrittenData = json(source.overwrittenData, `${name}.overwrittenData`);
+        const path = `${name}.overwrittenData`;
+        overwrittenData = json(object(source.overwrittenData, path), path);
         unresolved.push({
-            path: `${name}.overwrittenData`,
+            path,
             reason: "enemy attribute overrides require a content resolver",
         });
     }

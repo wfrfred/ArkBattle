@@ -1,18 +1,21 @@
-import type { Profile } from "../../../data/unit/enemy.js";
 import { ref } from "../../../core/unit/index.js";
 import { hasExecution, type ActionCapability } from "../../../core/unit/capability/action/index.js";
+import type { Timing as AttackTiming } from "../../actions/timing.js";
 
 import {
     createDefinition as createGroundDefinition,
-    type Definition as GroundDefinition,
     type GroundEnemy,
+    type Parameters as GroundParameters,
 } from "../ground.js";
-import { createMelee, createRanged, type Attack, type Timing } from "./action.js";
+import { createMelee, createRanged } from "./action.js";
 import type { Projectile } from "./projectile.js";
 import { TICKS_PER_SECOND } from "../../../core/tick.js";
 
-export interface AttackTiming extends Timing {
-    readonly hitRadius: number;
+export interface Parameters extends GroundParameters {
+    readonly attackSpeed: number;
+    readonly baseAttackTime: number;
+    readonly timing: { readonly melee: AttackTiming; readonly ranged: AttackTiming };
+    readonly rangeRadius: number;
     readonly projectile: Projectile;
 }
 
@@ -20,26 +23,20 @@ export type Crossbowman = GroundEnemy & ActionCapability<Crossbowman>;
 
 export type Definition = Crossbowman["definition"];
 
-export function create(
-    profile: Profile,
-    timing: AttackTiming,
-    movement: Pick<GroundDefinition["locomotion"], "steeringParameters" | "halfBodyWidth">,
-): {
-    readonly definition: Definition;
-    readonly actions: { readonly melee: Attack; readonly ranged: Attack };
-} {
-    if (profile.id !== "enemy_1003_ncbow") {
-        throw new TypeError("Crossbowman content requires its own profile");
-    }
+export function create(parameters: Parameters) {
+    const ground = createGroundDefinition("enemy_1003_ncbow", parameters);
+    const melee = createMelee(parameters.timing.melee);
+    const ranged = createRanged(
+        parameters.rangeRadius,
+        parameters.timing.ranged,
+        parameters.projectile,
+    );
 
-    const ground = createGroundDefinition(profile, timing.hitRadius, movement);
-    const melee = createMelee(timing);
-    const ranged = createRanged(profile, timing, timing.projectile);
-    const definition = {
+    return {
         ...ground,
         action: {
-            speed: { default: profile.attackSpeed, min: 20, max: null },
-            interval: { default: profile.baseAttackTime * TICKS_PER_SECOND, min: 0, max: null },
+            speed: { default: parameters.attackSpeed, min: 20, max: null },
+            interval: { default: parameters.baseAttackTime * TICKS_PER_SECOND, min: 0, max: null },
             definitions: [melee, ranged],
             select: (battle, self) => ({
                 state: battle,
@@ -49,6 +46,4 @@ export function create(
             }),
         },
     } satisfies Definition;
-
-    return { definition, actions: { melee, ranged } };
 }

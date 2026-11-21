@@ -6,6 +6,7 @@ import { update as updateUnit, get as getUnit, ref as unitRef } from "../../core
 import { Vec2 } from "../../core/common/vector.js";
 import { hasAction, hasExecution } from "../../core/unit/capability/action/index.js";
 import type { Blockable } from "../../core/unit/capability/blocking/index.js";
+import type { Rank } from "../../core/unit/capability/classification/index.js";
 import {
     hasLocomotion,
     setRestriction,
@@ -16,7 +17,6 @@ import { hasRoute, movementTarget, type Route } from "../../core/unit/capability
 import type { Presence } from "../../core/unit/capability/presence/index.js";
 import type { Shiftable } from "../../core/unit/capability/shifting/index.js";
 
-import type { Profile } from "../../data/unit/enemy.js";
 import { perSecondToPerTick } from "../../core/tick.js";
 import { assertPositiveNumber } from "../../core/common/assert.js";
 
@@ -30,27 +30,46 @@ export type GroundEnemy = Enemy & Blockable & Shiftable & Route & Presence;
 
 export type Definition = GroundEnemy["definition"];
 
-export function createDefinition(
-    profile: Profile,
-    hitRadius: number,
-    movement: Pick<Definition["locomotion"], "steeringParameters" | "halfBodyWidth">,
-): Definition {
-    if (profile.stunImmune) {
+export interface Parameters {
+    readonly motion: string;
+    readonly maxHp: number;
+    readonly attack: number;
+    readonly defense: number;
+    readonly resistance: number;
+    readonly recoverySpeed: number;
+    readonly taunt: number;
+    readonly moveSpeedPerSecond: number;
+    readonly filterTags: readonly string[];
+    readonly rank: Rank;
+    readonly blockVolume: number;
+    readonly massLevel: number;
+    readonly stunImmune: boolean;
+    readonly hitRadius: number;
+    readonly movement: Pick<Definition["locomotion"], "steeringParameters" | "halfBodyWidth"> &
+        Pick<Definition["route"], "alwaysCheckCurrentPoint">;
+}
+
+export function createDefinition(id: string, parameters: Parameters): Definition {
+    if (parameters.motion !== "WALK") {
+        throw new TypeError(`unsupported enemy motion ${parameters.motion}`);
+    }
+    if (parameters.stunImmune) {
         throw new TypeError("this enemy content does not implement stun immunity");
     }
-    if (profile.blockVolume === 0) {
+    if (parameters.blockVolume === 0) {
         throw new TypeError("this enemy content requires a blockable ground unit");
     }
 
+    const { hitRadius, movement } = parameters;
     assertPositiveNumber(hitRadius, "enemy hit radius");
 
     const elemental = createElemental({
         receiver: "ENEMY",
-        boss: profile.rank === "BOSS",
+        boss: parameters.rank === "BOSS",
     });
 
     return {
-        id: profile.id,
+        id,
         hooks: Hooks.empty()
             .set(unitHooks.entered, {
                 id: "ground-enemy/movement-casting-rule",
@@ -92,27 +111,27 @@ export function createDefinition(
         elemental,
         facing: { restrictions: [] },
         vitality: {
-            maxHp: { default: profile.maxHp, min: 1, max: null },
-            defense: { default: profile.defense, min: 0, max: null },
-            resistance: { default: profile.resistance, min: 0, max: 100 },
-            recoverySpeed: { default: profile.recoverySpeed, min: 0, max: null },
+            maxHp: { default: parameters.maxHp, min: 1, max: null },
+            defense: { default: parameters.defense, min: 0, max: null },
+            resistance: { default: parameters.resistance, min: 0, max: 100 },
+            recoverySpeed: { default: parameters.recoverySpeed, min: 0, max: null },
             recoveryRatio: { default: 0, min: 0, max: 1 },
         },
-        offense: { attack: { default: profile.attack, min: 0, max: null } },
+        offense: { attack: { default: parameters.attack, min: 0, max: null } },
         classification: {
             type: "ENEMY",
             side: "ENEMY",
-            filterTags: profile.filterTags,
-            rank: profile.rank,
+            filterTags: parameters.filterTags,
+            rank: parameters.rank,
         },
         layer: { type: "GROUND" },
         hitbox: {
             shape: { type: "CIRCLE", offset: [0, 0], radius: hitRadius },
         },
-        blockable: { volume: profile.blockVolume, restrictions: [] },
+        blockable: { volume: parameters.blockVolume, restrictions: [] },
         locomotion: {
             speed: {
-                default: perSecondToPerTick(profile.moveSpeedPerSecond),
+                default: perSecondToPerTick(parameters.moveSpeedPerSecond),
                 min: perSecondToPerTick(0.1),
                 max: null,
             },
@@ -120,7 +139,7 @@ export function createDefinition(
             halfBodyWidth: movement.halfBodyWidth,
         },
         shiftable: {
-            massLevel: { default: profile.massLevel, min: 0, max: null },
+            massLevel: { default: parameters.massLevel, min: 0, max: null },
             restrictions: [],
             body: {
                 shape: {
@@ -134,11 +153,11 @@ export function createDefinition(
                 frictionFactor: 1,
             },
         },
-        route: { alwaysCheckCurrentPoint: true },
+        route: { alwaysCheckCurrentPoint: movement.alwaysCheckCurrentPoint },
         presence: {},
         targetable: {
             category: "DEFAULT",
-            taunt: { default: profile.taunt, min: -2, max: 2 },
+            taunt: { default: parameters.taunt, min: -2, max: 2 },
             restrictions: [],
         },
     };
