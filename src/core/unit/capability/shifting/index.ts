@@ -19,7 +19,7 @@ export type { Shifter } from "./shifter.js";
 export type { Unbalance } from "./unbalance.js";
 
 export const pull = {
-    create: pulls.create,
+    apply: pulls.apply,
     ref: pulls.ref,
     get: pulls.get,
     lifetime: pulls.lifetime,

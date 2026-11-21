@@ -9,11 +9,11 @@ export type DefinitionId = string;
 
 export type Lifecycle = "ACTIVE" | "ENDING";
 
-export type LeaveReason = "DEATH" | "RETREAT" | "EXPIRED" | "SCRIPT";
+export type EndReason = "DEATH" | "RETREAT" | "EXPIRED" | "SCRIPT";
 
 export type End =
     | { readonly reason: "DEATH"; readonly killer: Ref<Unit> | null }
-    | { readonly reason: Exclude<LeaveReason, "DEATH"> };
+    | { readonly reason: Exclude<EndReason, "DEATH"> };
 
 export interface Definition {
     readonly id: DefinitionId;

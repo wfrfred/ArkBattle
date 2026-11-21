@@ -118,7 +118,7 @@ export function isNear(battle: BattleState, self: Pull): boolean {
     return self.nearStop.some((test) => test(battle, self));
 }
 
-export function create(
+export function apply(
     battle: BattleState,
     source: Ref<Unit & Shifter>,
     target: Ref<Unit & Shiftable>,

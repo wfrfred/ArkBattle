@@ -72,18 +72,18 @@ test("push uses the current source and target grades and the battle push multipl
 
 test("pull creation refuses a zero table result and an ended source", () => {
     const { state, host, source } = setup();
-    const tooLight = pull.create(state, source, host, fixedPull(source, [5, 1], { forceLevel: -4 }));
+    const tooLight = pull.apply(state, source, host, fixedPull(source, [5, 1], { forceLevel: -4 }));
     assert.deepEqual(tooLight, { state, value: null });
 
     const departed = units.remove(state, source, { reason: "SCRIPT" });
-    const withoutSource = pull.create(departed, source, host, fixedPull(source, [5, 1]));
+    const withoutSource = pull.apply(departed, source, host, fixedPull(source, [5, 1]));
     assert.deepEqual(withoutSource, { state: departed, value: null });
 });
 
 test("a pull samples its force once and later pulls use the updated grades", () => {
     const { state, host, source } = setup();
     const options = fixedPull(source, [5, 1]);
-    const original = pull.create(state, source, host, options);
+    const original = pull.apply(state, source, host, options);
     assert.ok(original.value);
     const stronger = units.update(original.state, source, shifter.setBaseForceLevelContribution({
         id: "extra-force", value: [modifier({ addition: 2 })],
@@ -93,7 +93,7 @@ test("a pull samples its force once and later pulls use the updated grades", () 
     }));
     assertPosition(step(changed, []), [1 + 40 / 900, 1]);
 
-    const fresh = pull.create(pull.remove(changed, original.value), source, host, options);
+    const fresh = pull.apply(pull.remove(changed, original.value), source, host, options);
     assert.ok(fresh.value);
     assertPosition(step(fresh.state, []), [1 + 2 / 900, 1]);
 });
@@ -103,8 +103,8 @@ test("pulls with a shared source scope stack and only the sole pull can brake", 
     const initial = unbalance.applyImpulse(state, host, [0.6, 0]);
     const repeat = unbalance.applyImpulse(initial.state, host, [0.6, 0]);
     const options = fixedPull(source, [5, 1]);
-    const first = pull.create(repeat.state, source, host, options);
-    const second = pull.create(first.state, source, host, options);
+    const first = pull.apply(repeat.state, source, host, options);
+    const second = pull.apply(first.state, source, host, options);
     assert.ok(first.value && second.value);
     assert.deepEqual(repeat.value, initial.value);
     assert.deepEqual(first.value.unbalance, second.value.unbalance);
@@ -131,7 +131,7 @@ test("a moving pull point can hold a pull at zero, resume it, and end it without
     });
     const anchorRef = projectiles.ref(anchor.value);
     const added = projectiles.add(anchor.state, anchor.value);
-    const linked = pull.create(added, source, host, fixedPull(source, [2, 1], {
+    const linked = pull.apply(added, source, host, fixedPull(source, [2, 1], {
         point: { type: "PROJECTILE", projectile: anchorRef },
         nearStop: [pull.withinRadius(0.05)],
     }));
@@ -166,7 +166,7 @@ test("a moving pull point can hold a pull at zero, resume it, and end it without
 test("near braking uses ONCE or WHILE_NEAR with the same retained pull", () => {
     const { state, host, source } = setup();
     for (const brake of ["ONCE", "WHILE_NEAR"]) {
-        const linked = pull.create(state, source, host, fixedPull(source, [1.01, 1], {
+        const linked = pull.apply(state, source, host, fixedPull(source, [1.01, 1], {
             nearStop: [pull.withinRadius(0.2)],
             brake,
         }));
@@ -199,7 +199,7 @@ test("near braking follows displacement and leaves the pull active until explici
             },
         }),
     });
-    const linked = pull.create(state, source, host, fixedPull(source, [2, 1], {
+    const linked = pull.apply(state, source, host, fixedPull(source, [2, 1], {
         nearStop: [pull.withinRadius(0.2)],
         brake: "ONCE",
     }));
@@ -295,7 +295,7 @@ test("forced movement slides along a physical wall and publishes its committed c
 
 test("ending a segment settles its pulls even when a pull dependent starts the next segment", () => {
     const { state, host, source } = setup();
-    const first = pull.create(state, source, host, fixedPull(source, [5, 1]));
+    const first = pull.apply(state, source, host, fixedPull(source, [5, 1]));
     assert.ok(first.value);
     const oldScope = lifetime.scope(unbalance.lifetime, first.value.unbalance);
     const oldPullScope = lifetime.scope(pull.lifetime, first.value);
@@ -307,7 +307,7 @@ test("ending a segment settles its pulls even when a pull dependent starts the n
             assert.equal(shiftable.isUnbalanced(get(current, 0)), false);
             assert.equal(lifetime.available(current, oldScope), false);
             assert.equal(lifetime.available(current, oldPullScope), false);
-            const started = pull.create(current, source, host, fixedPull(source, [1, 2]));
+            const started = pull.apply(current, source, host, fixedPull(source, [1, 2]));
             next = started.value;
             return started.state;
         },

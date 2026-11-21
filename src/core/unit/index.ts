@@ -4,7 +4,7 @@ export type {
     Id,
     DefinitionId,
     Lifecycle,
-    LeaveReason,
+    EndReason,
     End,
     Departure,
 } from "./unit.js";
