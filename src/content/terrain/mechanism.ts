@@ -201,16 +201,6 @@ function create<P extends object>(
 
             return battle;
         },
-        onUnitRemoved(battle, self, departure) {
-            if (!self.state.contacts.has(departure.unit.id)) {
-                return battle;
-            }
-
-            const contacts = new Map(self.state.contacts);
-            contacts.delete(departure.unit.id);
-
-            return mechanisms.setState(battle, mechanisms.ref(self), { ...self.state, contacts });
-        },
         onDisable(battle, self) {
             const owned = [...self.state.contacts.values()];
             battle = mechanisms.setState(battle, mechanisms.ref(self), {

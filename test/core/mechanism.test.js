@@ -1,11 +1,8 @@
 // Contract: [terrain](../../docs/architecture/terrain.md).
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { Hooks } from "../../dist/core/hook.js";
 import * as mechanisms from "../../dist/core/mechanism/index.js";
-import { remove as removeUnit } from "../../dist/core/unit/operations.js";
-import { battle as runtimeBattle, get } from "../helpers/battle.js";
-import { ref } from "../../dist/core/unit/query.js";
+import { battle as runtimeBattle } from "../helpers/battle.js";
 
 const counter = (id, extra = {}) => ({
     id, initialize: () => ({ count: 0 }), ...extra,
@@ -64,32 +61,4 @@ test("disabled mechanisms retain their state, and removal disables only active o
         ["disable", "INACTIVE"], ["end", "ENDING", 1],
         ["disable", "ENDING"], ["end", "ENDING", 1],
     ]);
-});
-
-test("onTick and nested unit departure preserve the latest mechanism state", () => {
-    let battle = runtimeBattle([{
-        definition: { hooks: Hooks.empty(), id: "host" }, position: [0, 0],
-    }]);
-    const definition = {
-        id: "contacts", initialize: () => ({ contacts: [], departures: 0 }),
-        onTick(state, self) {
-            const currentState = mechanisms.get(state, mechanisms.ref(self)).state;
-            state = mechanisms.setState(state, mechanisms.ref(self), {
-                ...currentState, contacts: [0],
-            });
-            return removeUnit(state, ref(get(state, 0)), { reason: "SCRIPT" });
-        },
-        onUnitRemoved(state, self, departure) {
-            assert.deepEqual(self.state.contacts, [departure.unit.id]);
-            const currentState = mechanisms.get(state, mechanisms.ref(self)).state;
-            return mechanisms.setState(state, mechanisms.ref(self), {
-                contacts: [], departures: currentState.departures + 1,
-            });
-        },
-    };
-    let reference;
-    [battle, reference] = register(battle, definition);
-    battle = mechanisms.advance(battle);
-    assert.deepEqual(mechanisms.get(battle, reference).state, { contacts: [], departures: 1 });
-    assert.equal(battle.battlefield.units.get(0), undefined);
 });

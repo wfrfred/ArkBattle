@@ -1,9 +1,7 @@
 import type { Identified, Ref } from "../common/ref.js";
 import { create as createLifetime } from "../lifetime/operations.js";
 import type { Query } from "../common/query.js";
-import type { Departure } from "../unit/unit.js";
 import type { Result, State as BattleState } from "../battle/state.js";
-import { setHook, removeHook, removed } from "../battle/unit-hook.js";
 
 export type MechanismId = number;
 
@@ -13,11 +11,6 @@ export interface Definition<S extends object = object> {
     readonly id: string;
     readonly initialize: () => S;
     readonly onTick?: (battle: BattleState, self: Mechanism<S>) => BattleState;
-    readonly onUnitRemoved?: (
-        battle: BattleState,
-        self: Mechanism<S>,
-        departure: Departure,
-    ) => BattleState;
     readonly onDisable?: (battle: BattleState, self: Mechanism<S>) => BattleState;
     readonly onEnd?: (battle: BattleState, self: Mechanism<S>) => BattleState;
 }
@@ -59,31 +52,10 @@ export function initialize<S extends object, const D extends Definition<S>>(
 }
 
 export function add<S extends object>(battle: BattleState, self: Mechanism<S>): BattleState {
-    battle = {
+    return {
         ...battle,
         mechanisms: battle.mechanisms.add(self.id, self),
     };
-
-    if (self.definition.onUnitRemoved === undefined) {
-        return battle;
-    }
-
-    const reference = ref(self);
-
-    return setHook(battle, removed, {
-        id: `@mechanism/${reference.id}/unit-leave`,
-        invoke: (current, departure) => {
-            const mechanism = get(current, reference);
-
-            return {
-                state:
-                    mechanism?.lifecycle === "ACTIVE"
-                        ? mechanism.definition.onUnitRemoved!(current, mechanism, departure)
-                        : current,
-                value: undefined,
-            };
-        },
-    });
 }
 
 export function get<M extends Mechanism<any>>(
@@ -152,9 +124,7 @@ export const lifetime = createLifetime<Mechanism, Mechanism<any>, string>({
         const self = get(battle, reference)!;
         battle = self.definition.onEnd?.(battle, self) ?? battle;
 
-        battle = { ...battle, mechanisms: battle.mechanisms.remove(reference.id) };
-
-        return removeHook(battle, removed, `@mechanism/${reference.id}/unit-leave`);
+        return { ...battle, mechanisms: battle.mechanisms.remove(reference.id) };
     },
     reason: (reason) => reason,
 });
