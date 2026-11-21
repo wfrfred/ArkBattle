@@ -10,9 +10,26 @@ Content 不自行推进模拟，不在共享模块或闭包中保存本场事实
 
 ## 内容目录与共享规则
 
-具体角色按目录组织 action 与 unit：行动文件表达目标、时序和输出，单位文件组合能力、天赋和选择政策。实际共同规则用普通函数共享，不建立模板继承或中央角色 ID 分派器。分支规则与个人机制分别组合，数值读取规范化配置，不按职业名称硬编码。
+### 单位内容的归属
 
-标准成品位于 [core/effects](../../src/core/effects)，通用实例操作位于 [unit/effect](../../src/core/unit/effect/index.ts)。Content 选择对象、时点、参数和专属后继，不重写同一标准机制的竞争与伤判。Elemental 的已有成品可由 Data 静态绑定，执行仍归 Core，见 [Elemental](elemental.md)。
+`content/operators/`、`content/enemies/` 和 `content/devices/` 分别组织干员、敌人和装置内容。包含多个文件的具体单位使用独立目录。专属召唤物放在所属内容目录下的 `summons/`，例如 `operators/ling/summons/dragon.ts` 和 `operators/kaltsit/summons/mon3tr.ts`。召唤物的战斗身份由 `Classification<"SUMMON">` 表达，目录归属用于组织代码。跨单位共享的攻击、弹道和地形程序放在对应的 `actions/`、`projectiles/` 和 `terrain/`。[Classification](capability.md#classification)
+
+具体单位按实际职责拆分文件。单个召唤物的实现可写在一个文件，内容较多时可继续按这些职责拆分。
+
+| 文件 | 职责 |
+| --- | --- |
+| `unit.ts` | 声明具体 Unit 类型，组合 Capability 配置和完整 Definition。Core 根据这些配置装配实例。 |
+| `action.ts` | 定义普攻和特殊行动的目标、时序与输出程序。技能期间带独立执行和冷却的行动也写在这里。 |
+| `skill.ts` | 定义 Skill、Activation 程序及该技能专属的 SP 规则。 |
+| `effect.ts` | 定义该单位专属的 Effect。 |
+| `projectile.ts` | 定义该单位专属的弹道及其命中程序。 |
+| `summons/` | 组织专属召唤物自身的 Unit、Action、Skill 等程序。 |
+
+### Core 标准机制与 Content 共享工厂
+
+Core 定义战斗的标准语义。Action 的执行与冷却、Skill 的 SP 与激活、Effect 的实例与生命周期由对应 Core 领域处理。标准 Effect 实现位于 `core/effects/`，实例操作位于 `core/unit/effect/`。实现标准眩晕等行为时，Content 调用对应的 Core 实现，并决定目标、时点、时长和专属后继。Data 可为 Elemental 等已有标准实现绑定静态参数。[标准 Effect](../../src/core/effects) · [Effect 实例操作](../../src/core/unit/effect/index.ts) · [Elemental](elemental.md)
+
+Content 共享的是可选工厂。`content/actions/attack.ts` 提供常见攻击的组装，特殊行动可以直接编写 Action Definition。共享工厂按产出的 Definition 归类。`content/actions/skill.ts` 复用攻击模板，产出由技能驱动的 Action。返回 Skill Definition 的共享工厂归 `content/skills/`。共用规则用普通函数组合，具体数值读取规范化数据。
 
 攻击 Operation 明确提供攻击类别与施加途径，HP 伤害另提供性质、HIT 许可和死亡归属，不由范围、距离、来源或技能状态猜测。共同输出协议见 [Resource](resource.md)。
 
@@ -42,7 +59,27 @@ Content 按 [Attribute](attribute.md) 契约绑定所属能力的属性；攻速
 
 ## Unit 与 Capability 的类型约束
 
-具体 Definition 必须声明回调实际依赖的能力，Effect 的宿主类型表达读取需求。调用者先确定具体构造分支，Catalog 自动推导标准状态和必需 Initial；允许额外已知 Initial，不为联合 Definition 维护并行校验层。
+基础类型及类别内共享的装配函数放在所属类别目录。普通可部署干员以以下 `Operator` 组合为基础。`Enemy` 和 `Device` 的共同基础表达身份。地面敌人的被阻挡、路线与移动能力由地面敌人模板组合，地块装置的占格、部署与生命由地块装置模板组合。[地面敌人模板](../../src/content/enemies/ground.ts) · [地块装置模板](../../src/content/devices/tile.ts)
+
+```typescript
+type Operator = Unit &
+    Classification<"OPERATOR"> &
+    Vitality &
+    Offense &
+    Blocker &
+    Targetable &
+    Layer &
+    Facing &
+    Occupancy &
+    Deployable;
+
+type Enemy = Unit & Classification<"ENEMY">;
+type Device = Unit & Classification<"DEVICE">;
+```
+
+普通原生角色默认具备阻挡能力，因此 `Blocker` 属于 `Operator` 的基础组合。零阻挡以容量 `0` 表达，高台等情况依照地块和阻挡层资格结算。具体单位在基础组合上加入自身能力，并从 `Melantha["definition"]` 这样的索引类型推导完整配置。[原生阻挡证据](../research/cases/23-blocker-and-blockable-roles.md) · [阻挡资格](blocking.md#关系资格与-restriction)
+
+具体 Definition 声明回调实际依赖的能力。Action Capability 的 `CapabilityDefinition<H>` 用具体宿主检查行动列表并为 `select` 提供宿主类型。Effect 通过 Definition 声明宿主要求。调用者先确定具体构造分支，Catalog 自动推导标准状态和必需 Initial；允许额外已知 Initial，不为联合 Definition 维护并行校验层。
 
 可部署内容明确声明 Card／Deployable／Occupancy，Card 持久状态与每次 Unit 初态分开；预置和普通出生直接复用统一初始化，不临时重组静态 Definition。方向属于本次 Initial，基础 Unit 不伪造方向。
 
