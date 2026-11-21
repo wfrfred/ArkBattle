@@ -22,7 +22,7 @@ ID 的范围是集合 × Key × ID。无登记返回空集合；同键同 ID 的
 
 Definition、创建输入与 Unit 使用同一种 Hooks 集合，无登记使用 Hooks.empty()。初始化从输入集合开始，按 Capability initializer 顺序装配，最后合并 Definition.hooks；全部固有登记在 add 与 entered 之前就绪。
 
-固有 Hook 可以直接声明，不必包装 Effect。Card 的 Unit Hook 或预置输入也使用同一集合；修改 Card 只影响以后创建的 Unit，不追溯已有实例。
+固有 Hook 可以直接声明，不必包装 Effect。Card 的 Unit Hook 和 `Unit.Input` 也使用同一集合；修改 Card 只影响以后创建的 Unit，不追溯已有实例。
 
 ## 动态登记
 

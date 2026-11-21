@@ -14,7 +14,7 @@ siteCondition 是单个条件身份或 null，null 不等于普通场地条件�
 
 ## Mechanism 操作
 
-Mechanism 是全场独立身份。Battle 持有通用 `Store` 并安排推进。初始与预置 Mechanism 使用同一份 `Input`，提供 `Definition<S>` 和可选的初始启用状态。`initialize` 分配 ID、初始化私有 `state` 并保留具体 Definition 类型。预置流程在 `initialize` 后、`add` 前登记关联。`add` 登记实例，`get` 以 Ref 恢复具体类型。 [Mechanism 入口](../../src/core/mechanism/index.ts)
+Mechanism 是全场独立身份。Battle 持有通用 `Store` 并安排推进。开场 `initialMechanisms` 与运行时创建共用 `Mechanism.Input`，提供 `Definition<S>` 和可选的初始启用状态。`initialize` 分配 ID、初始化私有 `state` 并保留具体 Definition 类型。`add` 登记实例，`get` 以 Ref 恢复具体类型。 [Mechanism 入口](../../src/core/mechanism/index.ts)
 
 `setState` 只改私有数据。`setActive` 可逆切换参与资格，`remove` 请求终结。`INACTIVE` 的实例仍可作依赖。移除 `ACTIVE` 实例时，Lifetime 先发布 `ENDING`，再在 Prepare 调用 `onDisable`。Finalize 先调用 `onEnd`，再注销实例。
 
@@ -26,7 +26,7 @@ Runtime 顺序为 Movement → Mechanism → Blocking。Movement 先推进阻挡
 
 轮询维护进入、离开和持续接触，并每次重判动态资格：活性源石、沼泽、深水、地穴要求地面，烟雾允许空中。单位离场时，其 Effect 随宿主 Lifetime 结束，地形在下一次扫描清理接触记录。轮询不捕获同 Tick 所有中间位置，也不复刻 Unity 对象交错。
 
-同一控制器可管理参数不同的多格；预置控制器负责其沼泽／深水，静态装配排除重复管理。预置出现、隐藏和移除复用 Mechanism 生命周期。
+同一控制器可管理参数不同的多格；关卡配置的控制器负责其沼泽／深水，静态装配排除重复管理。关卡程序可按 Mechanism 的生命周期操作创建、启停和移除控制器。
 
 ## Content 行为
 

@@ -70,7 +70,7 @@ test("Card initialization reserves identity and Card writes refresh deployment o
     assert.deepEqual([...deployment.ordered(state)].map(cards.ref), [firstRef, secondRef]);
 });
 
-test("different Card definitions can deploy the same Unit Definition used by a predefined unit", () => {
+test("different Card definitions can deploy the same Unit Definition used by an initial unit", () => {
     const discount = { ...operatorCard, cost: 7, slots: 0 };
     let state = battle([
         { definition: operator, position: [7, 0], initial: { occupancy: { tile: [0, 7] } } },
@@ -81,10 +81,10 @@ test("different Card definitions can deploy the same Unit Definition used by a p
             { definition: discount, unitDefinition: operator },
         ],
     } });
-    const predefined = get(state, 0);
-    assert.strictEqual(predefined.definition, operator);
-    assert.equal(predefined.deployable.card, null);
-    assert.equal(deployment.cardForUnit(state, units.ref(predefined)), null);
+    const initial = get(state, 0);
+    assert.strictEqual(initial.definition, operator);
+    assert.equal(initial.deployable.card, null);
+    assert.equal(deployment.cardForUnit(state, units.ref(initial)), null);
 
     const [regular, discounted] = [...cards.all(state)];
     assert.strictEqual(regular.definition, operatorCard);
@@ -105,7 +105,7 @@ test("different Card definitions can deploy the same Unit Definition used by a p
     }
     assert.equal(state.deployment.dp, 33);
     assert.equal(state.deployment.usedSlots, 1);
-    assert.equal(deployment.cardForUnit(state, units.ref(predefined)), null);
+    assert.equal(deployment.cardForUnit(state, units.ref(initial)), null);
 });
 
 test("preview, evaluation and deployment share a request, rejection spends nothing, and the entered hook sees consumption", () => {

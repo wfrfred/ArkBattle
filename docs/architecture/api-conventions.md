@@ -62,7 +62,7 @@ Context 只保存本次业务所需的输入和明确样本，不把 `request.ta
 
 ### 统一 Typed Ref 与类型恢复
 
-Ref 表示领域身份，对目标类型协变。实体命令使用 Typed Ref；分支 ID、预置 Definition ID 等非实体身份保留自身 ID。跨 Battle 使用 Ref 属调用契约错误，不增加 Battle token 或运行时品牌。
+Ref 表示领域身份，对目标类型协变。实体命令使用 Typed Ref；分支 ID 等非实体身份保留自身 ID。跨 Battle 使用 Ref 属调用契约错误，不增加 Battle token 或运行时品牌。
 
 Identified 的可选类型标记只声明身份协议，不增加运行字段；身份与完整业务类型配对。类型恢复发生在创建、带 Definition 身份的查询或容器内部受信任边界。不能从空结构猜测身份；未声明身份的类型不能构造 Ref。
 

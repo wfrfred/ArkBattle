@@ -61,9 +61,7 @@ function setup(terrains, placements, definitions) {
     const battle = initialize({
         map: createMap(1, terrains.length, tiles),
         initialMechanisms: controllers.map(definition => ({ definition })),
-        predefines: placements.map((creation, id) => ({
-            id, alias: null, initiallyPresent: true, creation: { type: "UNIT", ...creation },
-        })),
+        initialUnits: placements,
         schedule: { waves: [], branches: {} }, routeMoveMultiplier: 1, rngState: 7,
     });
     return {

@@ -2,8 +2,9 @@ import { createBattleState, DEFAULT_PUSH_MULTIPLIER, type State } from "./state.
 import { advance as advanceEffects } from "../unit/effect/operations.js";
 import { assert, assertNonnegativeNumber } from "../common/assert.js";
 import { create as createBattlefield } from "../battlefield/state.js";
-import { reconcilePredefinedPresence } from "./predefined.js";
 import type { Input, Command } from "./contract.js";
+import type { Definition as UnitDefinition } from "../unit/unit.js";
+import type { Definitions as CapabilityDefinitions } from "../unit/capability/catalog.js";
 import { prepare as prepareCombat, advance as advanceCombat } from "./steps/combat.js";
 import { advance as advanceSchedule } from "./schedule/runtime.js";
 import { resolveDeploymentCommands } from "./deployment/operations.js";
@@ -28,7 +29,8 @@ export type { Input, Command, Event } from "./contract.js";
 export function initialize<
     CardStates extends readonly object[],
     MechanismStates extends readonly object[],
->(input: Input<CardStates, MechanismStates>): State;
+    UnitDefinitions extends readonly (UnitDefinition & Partial<CapabilityDefinitions>)[],
+>(input: Input<CardStates, MechanismStates, UnitDefinitions>): State;
 export function initialize(input: Input<readonly any[], readonly any[]>): State {
     const { pushMultiplier = DEFAULT_PUSH_MULTIPLIER } = input;
     assertNonnegativeNumber(input.routeMoveMultiplier, "routeMoveMultiplier");
@@ -38,16 +40,6 @@ export function initialize(input: Input<readonly any[], readonly any[]>): State 
         "battle RNG state must be an unsigned 32-bit integer",
         RangeError,
     );
-
-    const predefinedIds = new Set<number>();
-
-    for (const definition of input.predefines) {
-        if (predefinedIds.has(definition.id)) {
-            throw new RangeError(`duplicate predefined definition: ${definition.id}`);
-        }
-
-        predefinedIds.add(definition.id);
-    }
 
     const battlefield = createBattlefield(input.map);
     let initial = createBattleState(
@@ -64,7 +56,6 @@ export function initialize(input: Input<readonly any[], readonly any[]>): State 
         initializeDeployment(input.deployment?.definition),
         initializeSchedule(input.schedule),
         {
-            predefines: input.predefines,
             routeMoveMultiplier: input.routeMoveMultiplier,
             pushMultiplier,
         },
@@ -114,7 +105,6 @@ export function step(battle: State, commands: readonly Command<Card<any>>[]): St
 
     return {
         ...state,
-        predefinedPresence: reconcilePredefinedPresence(state),
         tick: battle.tick + 1,
     };
 }

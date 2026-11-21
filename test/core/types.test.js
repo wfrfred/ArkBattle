@@ -40,7 +40,6 @@ import * as tracking from ${module("../content/projectiles/tracking")};
 import type { Point as PullPoint } from ${module("unit/capability/shifting/pull")};
 import { reassign, selectContext, setTicking, type Plan, type Route } from ${module("unit/capability/route/index")};
 import * as mechanisms from ${module("mechanism/index")};
-import { createPredefinedDefinition } from ${module("battle/predefined")};
 import { createRegistrationOperations } from ${module("unit/registration")};
 import type { Offense } from ${module("unit/capability/offense/index")};
 import { setAttackContribution, resolveAttack } from ${module("unit/capability/offense/index")};
@@ -908,7 +907,7 @@ dispatchElemental(battle, elementalHost, elemental.burstStarted, burst);
 // @ts-expect-error the typed notification key determines the exact payload.
 dispatchElemental(battle, elementalHost, elemental.damaged, burst);
 
-declare const baseInput: Omit<BattleInput, 'deployment' | 'predefines' | 'initialMechanisms'>;
+declare const baseInput: Omit<BattleInput, 'deployment' | 'initialUnits' | 'initialMechanisms'>;
 declare const cardUnitBase: cards.UnitDefinition;
 declare const cardConfiguration: Omit<cards.Definition, 'initialize' | 'onTick'>;
 const counterCard: cards.Definition<{ count: number }> = {
@@ -951,32 +950,49 @@ const mechanismBattle = mechanisms.add(initializedMechanism.state, initializedMe
 const exactMechanismTag: 'counter' = mechanisms.get(mechanismBattle, mechanismRef)!.definition.tag;
 // @ts-expect-error the Ref preserves the private state type.
 mechanisms.setState(mechanismBattle, mechanismRef, { count: 'wrong' });
-const predefined = createPredefinedDefinition({
-    id: 0, alias: null, initiallyPresent: true,
-    creation: { type: 'UNIT', definition: patient.definition, position: [0, 0] },
-});
-const occupiedPredefined = createPredefinedDefinition({
-    id: 2, alias: null, initiallyPresent: true,
-    creation: { type: 'UNIT', ...occupiedInput },
-});
-const incompletePredefined = {
-    id: 3, alias: null, initiallyPresent: true,
-    creation: { type: 'UNIT' as const, ...missingInitial },
+const labelCard: cards.Definition<{ label: string }> = {
+    ...cardConfiguration,
+    initialize: state => ({ state, value: { label: 'ready' } }),
+    onTick: (state, self) => cards.setState(state, cards.ref(self), { label: self.state.label }),
 };
-// @ts-expect-error predefined forwarding retains required capability input.
-createPredefinedDefinition(incompletePredefined);
+const labelMechanism: mechanisms.Definition<{ label: string }> = {
+    id: 'label', initialize: () => ({ label: 'ready' }),
+    onTick: (state, self) => mechanisms.setState(state, mechanisms.ref(self), { label: self.state.label }),
+};
 const account = { initialDp: 0, maxDp: 99, dpRecoveryTicks: null, slotLimit: null };
 runtime.initialize({ ...baseInput,
-    deployment: { definition: account, cards: [cardInput] },
-    initialMechanisms: [{ definition: counterMechanism }],
-    predefines: [predefined, occupiedPredefined, createPredefinedDefinition({
-        id: 1, alias: null, initiallyPresent: true,
-        creation: { type: 'MECHANISM', definition: counterMechanism },
-    })],
+    deployment: { definition: account, cards: [cardInput, { definition: labelCard, unitDefinition: cardUnitBase }] },
+    initialMechanisms: [{ definition: counterMechanism }, { definition: labelMechanism }],
+    initialUnits: [
+        { definition: patient.definition, position: [0, 0] },
+        occupiedInput,
+        { definition: armedDefinition, position: [0, 0], initial: {
+            occupancy: { tile: [0, 0] },
+            facing: { direction: 'LEFT' },
+        } },
+        { definition: bare.definition, position: [0, 0], initial: { occupancy: { tile: [0, 0] } } },
+    ],
 });
+runtime.initialize({ ...baseInput, initialMechanisms: [], initialUnits: [
+    { definition: bare.definition, position: [0, 0] },
+    // @ts-expect-error aggregating initial units preserves Occupancy's required input.
+    missingInitial,
+] });
+runtime.initialize({ ...baseInput, initialMechanisms: [], initialUnits: [
+    // @ts-expect-error a concrete unit's Facing input remains required alongside Occupancy.
+    { definition: armedDefinition, position: [0, 0], initial: { occupancy: { tile: [0, 0] } } },
+] });
+runtime.initialize({ ...baseInput, initialMechanisms: [], initialUnits: [
+    // @ts-expect-error required initial capability data keeps its expected type.
+    { ...occupiedInput, initial: { occupancy: { tile: 'wrong' } } },
+] });
+runtime.initialize({ ...baseInput, initialMechanisms: [], initialUnits: [
+    // @ts-expect-error known optional capability data also keeps its expected type.
+    { definition: bare.definition, position: [0, 0], initial: { facing: { direction: 'UP' } } },
+] });
 const mismatchedMechanism = { ...counterMechanism, initialize: () => ({ label: 'wrong' }) };
-// @ts-expect-error predefined construction cannot erase a mismatch rejected by ordinary creation.
-createPredefinedDefinition({ id: 0, alias: null, initiallyPresent: true, creation: { type: 'MECHANISM', definition: mismatchedMechanism } });
+// @ts-expect-error aggregating a Mechanism cannot weaken initialize/callback pairing.
+runtime.initialize({ ...baseInput, initialMechanisms: [{ definition: mismatchedMechanism }], initialUnits: [] });
 const mismatchedCard = {
     ...cardInput,
     definition: { ...counterCard, initialize: (state: State) => ({ state, value: { label: 'wrong' } }) },
@@ -984,10 +1000,8 @@ const mismatchedCard = {
 // @ts-expect-error separate Unit Definition input does not weaken Card private-state pairing.
 cards.initialize(battle, mismatchedCard);
 // @ts-expect-error aggregating a Card cannot weaken initialize/callback pairing.
-runtime.initialize({ ...baseInput, deployment: { definition: account, cards: [mismatchedCard] }, initialMechanisms: [], predefines: [] });
-const unusedOccupancy = { id: 0, alias: null, initiallyPresent: true, creation: { type: 'UNIT' as const, definition: bare.definition, position: [0, 0] as const, initial: { occupancy: { tile: [0, 0] as const } } } };
-createPredefinedDefinition(unusedOccupancy);
-runtime.initialize({ ...baseInput, initialMechanisms: [], predefines: [], deployment: { definition: account, cards: [{ ...cardInput, definition: { ...counterCard,
+runtime.initialize({ ...baseInput, deployment: { definition: account, cards: [mismatchedCard] }, initialMechanisms: [], initialUnits: [] });
+runtime.initialize({ ...baseInput, initialMechanisms: [], initialUnits: [], deployment: { definition: account, cards: [{ ...cardInput, definition: { ...counterCard,
     onTick(state, self) {
         // @ts-expect-error aggregation must not supply an any private-state context.
         self.state.missing.deeply;

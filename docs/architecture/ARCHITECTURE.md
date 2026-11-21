@@ -30,11 +30,11 @@ Core 不裁定胜负，也不因 Schedule 完成而冻结。调用者读取调�
 
 ## 战斗状态的层级
 
-`BattleState` 持有 Tick、RNG、身份分配进度、Schedule、Deployment、Mechanism、Lifetime、预置绑定与本 Tick 的 events。Battlefield 持有 Map、Unit、Projectile、Navigation 和 Occupancy 结构索引。
+`BattleState` 持有 Tick、RNG、身份分配进度、Schedule、Deployment、Mechanism、Lifetime 与本 Tick 的 events。Battlefield 持有 Map、Unit、Projectile、Navigation 和 Occupancy 结构索引。
 
 每项业务事实有唯一所属领域。索引随权威状态同步维护，不形成第二份 Unit；UI 事件只记录表现所需的瞬时事实，不作为结算命令重放。各领域的所有权见[专题文档](README.md)，不可变和状态接续规则见[函数式内核](functional-core.md)。
 
-`initialize` 创建完整初态；开场预置与之后的预置出现共用创建流程。`step(battle, commands)` 接收必填只读命令数组，每次成功调用推进一个 30 Hz 逻辑 Tick。无命令时传 `[]`。
+`initialize` 按手牌、`initialMechanisms`、`initialUnits` 的顺序创建完整初态，每组按输入顺序逐个初始化并登记。`step(battle, commands)` 接收必填只读命令数组，每次成功调用推进一个 30 Hz 逻辑 Tick。无命令时传 `[]`。
 
 当前 Tick 顺序如下，前一步返回的状态是后一步的输入：
 
@@ -52,7 +52,7 @@ Core 不裁定胜负，也不因 Schedule 完成而冻结。调用者读取调�
 | 9 | Movement：站位计划、Route 与 Locomotion |
 | 10 | Mechanism |
 | 11 | Blocking：维护旧关系，再搜索新关系 |
-| 收帧 | 更新预置绑定，Tick 加一并返回 |
+| 收帧 | Tick 加一并返回 |
 
 领域决定自己的候选、首次推进和续执行资格。上述顺序不代表所有新实例都采用相同的“下 Tick 才推进”政策。Unit 完整离场会同步解除 Schedule 等待，不依赖收帧扫描；普通 HP 死亡由资源操作确认，不另做 Combat 零 HP 扫描。
 

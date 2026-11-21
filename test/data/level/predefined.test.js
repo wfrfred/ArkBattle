@@ -3,14 +3,13 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { parseLevelContent, parseLevelDefinition } from "../../../dist/data/level/definition.js";
-import { parsePredefinedDefinition, resolvePredefinedPrefabKey } from "../../../dist/data/level/predefined.js";
+import { parsePredefinedCreation, resolvePredefinedPrefabKey } from "../../../dist/data/level/predefined.js";
 import { parsePredefinedPrefab } from "../../../dist/data/level/prefab.js";
 import { resolvePredefinedSkillId, resolvePredefinedSkillBlackboard } from "../../../dist/data/skill/predefined.js";
 import { resolveTerrainControllers } from "../../../dist/data/level/terrain.js";
-import { predefinedIdsForAlias, appear } from "../../../dist/core/battle/predefined.js";
 import { initialize } from "../../../dist/core/battle/index.js";
 import { at as occupancyAt } from "../../../dist/core/battlefield/occupancy.js";
-import { all } from "../../../dist/core/unit/index.js";
+import { add, all, initialize as initializeUnit } from "../../../dist/core/unit/index.js";
 import { hasTargetable } from "../../../dist/core/unit/capability/targetable/capability.js";
 import { inCategories } from "../../../dist/core/battle/targeting/index.js";
 
@@ -35,21 +34,27 @@ function predefined(raw, key) {
 test("real hidden devices preserve placement, static classification and target category", () => {
     const raw = fixture("level_act1autochess_m02");
     const { instance, character, profile } = predefined(raw, "trap_1105_accrate");
-    const definition = parsePredefinedDefinition(0, instance, profile, character);
+    const crateCreation = parsePredefinedCreation(instance, profile, character);
     const platformData = predefined(raw, "trap_1106_achplat");
-    const platformDefinition = parsePredefinedDefinition(
-        1, platformData.instance, platformData.profile, platformData.character,
+    const platformCreation = parsePredefinedCreation(
+        platformData.instance, platformData.profile, platformData.character,
     );
+    assert.equal(instance.hidden, true);
+    assert.equal(instance.alias, "trap_1105_accrate#001");
+    assert.equal(platformData.instance.hidden, true);
+    assert.equal(platformData.instance.alias, "trap_1106_achplat#001");
+    assert.equal(crateCreation.type, "UNIT");
+    assert.equal(platformCreation.type, "UNIT");
     const level = parseLevelDefinition(raw, {
         consumeTileBlackboard: (_context, entry) => ["isValidHand", "previewNotAlloed"].includes(entry.key),
     });
     let battle = initialize({
-        map: level.map, predefines: [definition, platformDefinition], initialMechanisms: [],
+        map: level.map, initialUnits: [], initialMechanisms: [],
         schedule: { waves: [], branches: {} }, routeMoveMultiplier: 1, rngState: 123,
     });
     assert.equal(battle.battlefield.units.size, 0);
-    const [id] = predefinedIdsForAlias(battle.definition.predefines, "trap_1105_accrate#001");
-    battle = appear(battle, id);
+    const initializedCrate = initializeUnit(battle, crateCreation);
+    battle = add(initializedCrate.state, initializedCrate.value);
     const [crate] = battle.battlefield.units.values();
     assert.deepEqual(crate.position, [4, 12]);
     assert.deepEqual(crate.occupancy.tile, [12, 4]);
@@ -59,8 +64,8 @@ test("real hidden devices preserve placement, static classification and target c
         type: "DEVICE", side: "ALLY", filterTags: [], groupTags: [],
     });
     assert.equal(crate.targetable.category, "OBSTACLE");
-    const [platformId] = predefinedIdsForAlias(battle.definition.predefines, "trap_1106_achplat#001");
-    battle = appear(battle, platformId);
+    const initializedPlatform = initializeUnit(battle, platformCreation);
+    battle = add(initializedPlatform.state, initializedPlatform.value);
     const platform = [...battle.battlefield.units.values()]
         .find(unit => unit.definition.id === "trap_1106_achplat");
     assert.deepEqual(platform.definition.classification, {
@@ -81,13 +86,13 @@ test("real hidden devices preserve placement, static classification and target c
         mainPower: { nationId: "laterano", groupId: null, teamId: null },
         subPower: [{ nationId: "kazimierz", groupId: null, teamId: null }],
     };
-    const modifiedDefinition = parsePredefinedDefinition(
-        2, platformData.instance, parsePredefinedPrefab(modifiedPrefab), modifiedCharacter,
+    const modifiedPlatform = parsePredefinedCreation(
+        platformData.instance, parsePredefinedPrefab(modifiedPrefab), modifiedCharacter,
     );
-    assert.deepEqual(modifiedDefinition.creation.definition.classification, {
+    assert.deepEqual(modifiedPlatform.definition.classification, {
         type: "DEVICE", side: "ENEMY", filterTags: ["changed-filter"], groupTags: ["laterano", "kazimierz"],
     });
-    assert.equal(modifiedDefinition.creation.definition.targetable.category, "DEVICE");
+    assert.equal(modifiedPlatform.definition.targetable.category, "DEVICE");
 });
 
 test("real controller and skill data supply shared terrain parameters", () => {
@@ -100,7 +105,10 @@ test("real controller and skill data supply shared terrain parameters", () => {
             damage: 40, attackSpeedModifier: -0.6, moveSpeedMultiplier: 0.6,
         }],
     ]) {
-        const { profile, skill } = predefined(fixture(name), key);
+        const { instance, character, profile, skill } = predefined(fixture(name), key);
+        const creation = parsePredefinedCreation(instance, profile, character);
+        assert.equal(creation.type, "MECHANISM");
+        assert.equal(creation.definition.id, key);
         const resolved = resolveTerrainControllers([{ profile, skill }]);
         assert.deepEqual(resolved.mapOptions[terrain], parameters);
     }

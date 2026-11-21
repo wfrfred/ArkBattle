@@ -13,23 +13,18 @@ function register(battle, definition, options) {
     return [mechanisms.add(initialized.state, initialized.value), mechanisms.ref(initialized.value)];
 }
 
-test("initial and predefined mechanisms use the same input and reserve IDs before registration", () => {
+test("initial mechanisms retain activation input and reserve IDs before direct registration", () => {
     const definition = counter("counter");
     const state = runtimeBattle([], {
-        initialMechanisms: [{ definition }],
-        predefines: [{ id: 7, alias: null, initiallyPresent: true, creation: {
-            type: "MECHANISM", definition, active: false,
-        } }],
+        initialMechanisms: [{ definition }, { definition, active: false }],
     });
-    const [initial, predefined] = mechanisms.all(state).toArray();
-    const [binding] = state.predefinedPresence;
-    assert.equal(initial.lifecycle, "ACTIVE");
-    assert.equal(predefined.lifecycle, "INACTIVE");
-    assert.deepEqual(binding, { definitionId: 7, source: { type: "MECHANISM", ref: mechanisms.ref(predefined) } });
+    const [active, inactive] = mechanisms.all(state).toArray();
+    assert.equal(active.lifecycle, "ACTIVE");
+    assert.equal(inactive.lifecycle, "INACTIVE");
 
     const initialized = mechanisms.initialize(state, { definition });
     const reference = mechanisms.ref(initialized.value);
-    assert.equal(reference.id, predefined.id + 1);
+    assert.equal(reference.id, inactive.id + 1);
     assert.equal(mechanisms.get(initialized.state, reference), undefined);
     const added = mechanisms.add(initialized.state, initialized.value);
     assert.equal(mechanisms.get(added, reference), initialized.value);

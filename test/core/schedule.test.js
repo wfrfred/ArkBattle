@@ -4,8 +4,8 @@ import { test } from "node:test";
 import { Hooks } from "../../dist/core/hook.js";
 import * as lifecycle from "../../dist/core/unit/hook.js";
 import { all, get, ref } from "../../dist/core/unit/query.js";
-import { remove } from "../../dist/core/unit/operations.js";
-import * as predefined from "../../dist/core/battle/predefined.js";
+import { add, remove } from "../../dist/core/unit/operations.js";
+import { initialize } from "../../dist/core/unit/index.js";
 import { step } from "../../dist/core/battle/runtime.js";
 import { isCompleted, timing, triggerBranch, releaseFromWave } from "../../dist/core/battle/schedule/index.js";
 import { battle, get as getUnit } from "../helpers/battle.js";
@@ -333,7 +333,11 @@ test("dynamic birth waits use the captured Wave and Fragment clocks", () => {
         { type: "MOVE", position: [1, 3], offset: [0, 0], randomizeOffset: false },
     ] };
     const branch = definition("branch", (state, self) => {
-        return predefined.appear(capture(state, self), 10);
+        const created = initialize(capture(state, self), {
+            definition: follower, position: [1, 1],
+            initial: { route: { plan: followerPlan, offset: [0, 0] } },
+        });
+        return add(created.state, created.value);
     });
     let state = battle([], { schedule: {
         waves: [
@@ -343,12 +347,7 @@ test("dynamic birth waits use the captured Wave and Fragment clocks", () => {
             }),
         ],
         branches: { branch: { phases: [{ preDelayTicks: 2, entries: [[spawn(branch)]] }] } },
-    }, predefines: [{
-        id: 10, alias: null, initiallyPresent: false,
-        creation: { type: "UNIT", definition: follower, position: [1, 1],
-            initial: { route: { plan: followerPlan, offset: [0, 0] } },
-        },
-    }] });
+    } });
     assert.deepEqual(timing(state.schedule), { waveStartTick: 0, fragmentReadyTick: 0 });
     state = through(state, 9);
     state = triggerBranch(state, "branch", false);

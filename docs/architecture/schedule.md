@@ -1,6 +1,6 @@
 # Schedule 设计
 
-Schedule 保存出生计划、主 Wave 进度、Branch 实例和出生 Unit 的等待关系。出生时刻与波次等待互相影响，因此围绕出怪组织，不是通用定时任务；STORY、ACTIVATE_PREDEFINED 等原生 Action 不在当前范围，预置出现／移除使用自身领域操作。
+Schedule 保存出生计划、主 Wave 进度、Branch 实例和出生 Unit 的等待关系。当前调度范围是出怪及其波次等待。关卡程序使用 Unit 和 Mechanism 的普通操作处理实体出现、触发与离场。
 
 ## 静态计划
 

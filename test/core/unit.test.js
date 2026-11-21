@@ -4,7 +4,6 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { battle } from "../helpers/battle.js";
 import { Hooks, dispatch } from "../../dist/core/hook.js";
-import { appear } from "../../dist/core/battle/predefined.js";
 import * as units from "../../dist/core/unit/index.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import * as skills from "../../dist/core/unit/capability/skill/index.js";
@@ -73,26 +72,20 @@ test("Unit construction requires unique restriction IDs within each capability l
     assert.equal(targetable.allowsRestrictions(turned, current)(current), false);
 });
 
-test("direct Unit initialization shares instance identity allocation with predefines", () => {
-    const predefined = { id: "predefined", hooks: Hooks.empty() };
+test("initial and later Units share their instance identity allocator", () => {
+    const starting = { id: "starting", hooks: Hooks.empty() };
     const summoned = { id: "summoned", hooks: Hooks.empty() };
-    const initial = battle([], {
-        predefines: [{
-            id: 0, alias: null, initiallyPresent: false,
-            creation: { type: "UNIT", definition: predefined, position: [1, 0] },
-        }],
-    });
+    const initial = battle([{ definition: starting, position: [1, 0] }]);
+    const placed = units.all(initial).find((unit) => unit.definition === starting);
 
     const created = units.initialize(initial, { definition: summoned, position: [0, 0] });
     const reference = units.ref(created.value);
     assert.equal(units.get(created.state, reference), undefined);
     const registered = add(created.state, created.value);
-    const appeared = appear(registered, 0);
-    const placed = units.all(appeared).find((unit) => unit.definition === predefined);
 
-    assert.ok(placed);
     assert.notDeepEqual(units.ref(placed), reference);
-    assert.equal(units.get(appeared, reference)?.definition, summoned);
+    assert.equal(units.get(registered, units.ref(placed)), placed);
+    assert.equal(units.get(registered, reference)?.definition, summoned);
 });
 
 test("Unit death preserves its attribution through Effect responses and the original departure", () => {

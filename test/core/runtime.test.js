@@ -4,8 +4,8 @@ import { test } from "node:test";
 import { battle, get } from "../helpers/battle.js";
 import { Hooks } from "../../dist/core/hook.js";
 import * as units from "../../dist/core/unit/index.js";
+import * as mechanisms from "../../dist/core/mechanism/index.js";
 import { step } from "../../dist/core/battle/runtime.js";
-import * as predefined from "../../dist/core/battle/predefined.js";
 import { dp } from "../../dist/core/battle/deployment/index.js";
 import * as cards from "../../dist/core/battle/deployment/card/index.js";
 import * as skills from "../../dist/core/unit/capability/skill/index.js";
@@ -19,6 +19,7 @@ const account = {
 
 test("initial and scheduled entry see registered battle facts and preserve their resource operations", () => {
     const entered = [];
+    const controller = { id: "controller", initialize: () => ({}) };
     const plan = {
         motionMode: "WALK",
         startPosition: [0, 5],
@@ -47,16 +48,31 @@ test("initial and scheduled entry see registered battle facts and preserve their
                 assert.equal(current.schedule.definition.waves.length, 1);
                 assert.equal(current.deployment.dp, 20);
                 assert.equal(get(current, self.id).definition, initial);
-                assert.ok(current.predefinedPresence.some(
-                    ({ source }) => source.type === "UNIT" && source.ref.id === self.id,
-                ));
+                const mechanism = mechanisms.all(current).find(({ definition }) => definition === controller);
+                assert.equal(mechanism?.lifecycle, "ACTIVE");
                 entered.push(self.definition.id);
                 return { state: dp.modify(current, 2), value: undefined };
             },
         }),
     };
-    let state = battle([{ definition: initial, position: [0, 0] }], {
+    const following = {
+        id: "following",
+        hooks: Hooks.empty().set(units.entered, {
+            id: "observe-previous-initial-unit",
+            invoke(current, self) {
+                assert.equal(current.deployment.dp, 22);
+                assert.equal(get(current, 0).definition, initial);
+                entered.push(self.definition.id);
+                return { state: current, value: undefined };
+            },
+        }),
+    };
+    let state = battle([
+        { definition: initial, position: [0, 0] },
+        { definition: following, position: [1, 0] },
+    ], {
         deployment: { definition: account, cards: [] },
+        initialMechanisms: [{ definition: controller }],
         schedule: { waves: [{
             preDelayTicks: 0, postDelayTicks: 0, maxWaitingTicks: null,
             fragments: [{ preDelayTicks: 0, spawns: [{
@@ -67,43 +83,41 @@ test("initial and scheduled entry see registered battle facts and preserve their
     });
     assert.equal(state.deployment.dp, 22);
     state = step(state, []);
-    assert.deepEqual(entered, ["initial", "scheduled"]);
+    assert.deepEqual(entered, ["initial", "following", "scheduled"]);
     assert.equal(state.deployment.dp, 25);
 });
 
-test("a predefined departure can create its successor without losing that binding or the next operation", () => {
+test("a Unit can create its replacement during removal before the next birth", () => {
     const reappearing = {
         id: "reappearing",
         hooks: Hooks.empty().set(units.removed, {
             id: "return-after-departure",
             invoke(current, { unit }) {
                 assert.equal(get(current, unit.id), undefined);
-                assert.equal(current.predefinedPresence.some(({ definitionId }) => definitionId === 10), false);
+                const replacement = units.initialize(current, {
+                    definition: reappearing, position: unit.position,
+                });
                 return {
-                    state: predefined.appear(current, 10),
+                    state: units.add(replacement.state, replacement.value),
                     value: undefined,
                 };
             },
         }),
     };
-    const predefines = [
-        { id: 10, alias: null, initiallyPresent: true, creation: {
-            type: "UNIT", definition: reappearing, position: [0, 0],
-        } },
-        { id: 11, alias: null, initiallyPresent: false, creation: {
-            type: "UNIT", definition: { id: "next-operation", hooks: Hooks.empty() }, position: [1, 0],
-        } },
-    ];
-    const before = battle([], { predefines });
+    const before = battle([{ definition: reappearing, position: [0, 0] }]);
     const original = units.all(before).find((self) => self.definition === reappearing);
-    const after = predefined.appear(predefined.remove(before, 10, { reason: "SCRIPT" }), 11);
-    const replacement = after.predefinedPresence.find(({ definitionId }) => definitionId === 10).source.ref.id;
-    const next = after.predefinedPresence.find(({ definitionId }) => definitionId === 11).source.ref.id;
-    assert.notEqual(replacement, original.id);
-    assert.notEqual(next, replacement);
+    const removed = units.remove(before, units.ref(original), { reason: "SCRIPT" });
+    const replacement = units.all(removed).find((self) => self.definition === reappearing);
+    const next = units.initialize(removed, {
+        definition: { id: "next-operation", hooks: Hooks.empty() }, position: [1, 0],
+    });
+    const after = units.add(next.state, next.value);
+
+    assert.notEqual(replacement.id, original.id);
+    assert.notEqual(next.value.id, replacement.id);
     assert.equal(get(after, original.id), undefined);
-    assert.equal(get(after, replacement).definition, reappearing);
-    assert.equal(get(after, next).definition.id, "next-operation");
+    assert.equal(get(after, replacement.id), replacement);
+    assert.equal(get(after, next.value.id), next.value);
 });
 
 test("Tick phases publish their resource operations and failures preserve the input", () => {

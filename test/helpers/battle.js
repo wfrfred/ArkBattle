@@ -5,7 +5,7 @@ import { Tiles } from "../../dist/core/battlefield/map/tiles.js";
 import { all } from "../../dist/core/unit/query.js";
 import { normal } from "../../dist/content/terrain/definition.js";
 
-export function battle(creations = [], { rows = 3, columns = 8, ...options } = {}) {
+export function battle(initialUnits = [], { rows = 3, columns = 8, ...options } = {}) {
     const definition = {
         terrain: normal.create({}),
         initial: {
@@ -24,12 +24,7 @@ export function battle(creations = [], { rows = 3, columns = 8, ...options } = {
     return initialize({
         map: createMap(rows, columns, tiles),
         initialMechanisms: [],
-        predefines: creations.map((creation, id) => ({
-            id,
-            alias: null,
-            initiallyPresent: true,
-            creation: { type: "UNIT", ...creation },
-        })),
+        initialUnits,
         schedule: { waves: [], branches: {} },
         routeMoveMultiplier: 1,
         rngState: 7,

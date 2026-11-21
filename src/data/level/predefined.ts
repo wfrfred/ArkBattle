@@ -4,11 +4,9 @@ import {
     assertPositiveSafeInteger,
     assertSafeInteger,
 } from "../../core/common/assert.js";
-import {
-    createPredefinedDefinition,
-    type StoredPredefinedDefinition,
-} from "../../core/battle/predefined.js";
-import { createTerrainMechanism } from "../../content/terrain/mechanism.js";
+import type { Input as MechanismInput } from "../../core/mechanism/index.js";
+import type { Input as UnitInput } from "../../core/unit/index.js";
+import { createTerrainMechanism, type ContactState } from "../../content/terrain/mechanism.js";
 import { mire, deepsea } from "../../content/terrain/definition.js";
 import {
     create as createCrate,
@@ -170,41 +168,31 @@ function unitDefinition(
     }
 }
 
-export function parsePredefinedDefinition(
-    id: number,
+export type PredefinedCreation =
+    | ({ readonly type: "UNIT" } & UnitInput<ReturnType<typeof unitDefinition>>)
+    | ({ readonly type: "MECHANISM" } & MechanismInput<ContactState>);
+
+export function parsePredefinedCreation(
     instance: ArknightsPredefinedInstance,
     profile: PredefinedPrefab,
     characterValue: unknown,
-): StoredPredefinedDefinition {
+): PredefinedCreation {
     const phase = predefinedCharacter(instance, profile, characterValue);
 
     if (profile.type === "MECHANISM") {
-        return createPredefinedDefinition({
-            id,
-            alias: instance.alias,
-            initiallyPresent: !instance.hidden,
-            creation: {
-                type: "MECHANISM",
-                definition: {
-                    ...createTerrainMechanism(profile.terrain === "MIRE" ? mire : deepsea),
-                    id: instance.inst.characterKey,
-                },
+        return {
+            type: "MECHANISM",
+            definition: {
+                ...createTerrainMechanism(profile.terrain === "MIRE" ? mire : deepsea),
+                id: instance.inst.characterKey,
             },
-        });
+        };
     }
 
-    const definition = unitDefinition(instance, phase, profile, parseGroupTags(characterValue));
-    const position = Tile.center(instance.position);
-
-    return createPredefinedDefinition({
-        id,
-        alias: instance.alias,
-        initiallyPresent: !instance.hidden,
-        creation: {
-            type: "UNIT",
-            definition,
-            position,
-            initial: { occupancy: { tile: instance.position } },
-        },
-    });
+    return {
+        type: "UNIT",
+        definition: unitDefinition(instance, phase, profile, parseGroupTags(characterValue)),
+        position: Tile.center(instance.position),
+        initial: { occupancy: { tile: instance.position } },
+    };
 }

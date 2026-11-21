@@ -11,7 +11,6 @@ import type { Seed } from "../common/rng.js";
 import type { Id as UnitId } from "../unit/unit.js";
 import type { Mechanism, MechanismId } from "../mechanism/index.js";
 import type { Id as OverlayId } from "../battlefield/navigation/overlay.js";
-import type { PredefinedPresence } from "./predefined.js";
 import { initialize as initializeSchedule, type State as ScheduleState } from "./schedule/state.js";
 import { removedHook as scheduleRemovedHook } from "./schedule/runtime.js";
 import {
@@ -40,7 +39,6 @@ const defaultExecution: BattleExecutionState = {
 export const DEFAULT_PUSH_MULTIPLIER = 0.5;
 
 const defaultDefinition: Definition = {
-    predefines: [],
     routeMoveMultiplier: 1,
     pushMultiplier: DEFAULT_PUSH_MULTIPLIER,
 };
@@ -55,7 +53,6 @@ export interface State {
     readonly lifetime: LifetimeState;
     readonly unitHooks: Hooks;
     readonly schedule: ScheduleState;
-    readonly predefinedPresence: readonly PredefinedPresence[];
     readonly events: readonly Event[];
 }
 
@@ -86,7 +83,6 @@ export function createBattleState(
         },
         unitHooks: Hooks.empty().set(unitRemoved, scheduleRemovedHook),
         schedule,
-        predefinedPresence: [],
         events: [],
     };
 }

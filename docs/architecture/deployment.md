@@ -54,11 +54,11 @@ Quote 承诺 DP、库存和额度消费：dp 为 null 表示不支付，零表�
 
 部署 entered 程序先装配，然后 Card／Request Hook，再 Capability 和内容程序；公共 priority 可调整同一集合，默认同级保持装配顺序。Deployment 部署通知和 Occupancy 配对各自通过已登记程序完成，Unit.add 不特判这些领域。
 
-## 关卡预置与开场 Unit
+## 开场 Unit
 
-Predefined 持有完整 Unit 或 Mechanism 创建项，只增加区分领域的 `type`。`initiallyPresent` 声明开场出现。`appear` 先用所属领域的 `initialize` 分配身份并构造实例，再登记预置绑定，最后通过 `add` 登记实例。预布置 Unit 在该路径直接使用 Unit Definition，`deployable.card` 初始为空。Unit 此时派发 `entered`，Mechanism 此时安装所需的 Battle 监听。
+`Battle.initialize()` 的 `initialUnits` 接收普通 `Unit.Input`。开场依次调用 `Unit.initialize()` 和 `Unit.add()`，用各自的 Definition、位置及 Initial 创建、登记并派发 `entered`。通过这个入口创建的 Deployable 初始来源 Card 为空，COST 与额度为零。
 
-appear／remove 是按 PredefinedDefinition.id 的领域操作，不通过 Command。remove 先撤销旧绑定再完整结束实例；Unit 分支接收 Unit.End。离场回调重新出现同一预置项时，外层保留新绑定。预置不执行玩家部署的支付与部署通知。
+关卡运行中的出现或离场由具体关卡程序调用 Unit 或 Mechanism 的创建及结束入口。开场装配的业务通知沿用所创建实体的登场流程。
 
 ## Deployable 依赖与构造
 
