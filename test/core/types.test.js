@@ -24,6 +24,8 @@ import { createWithState as createAttackWithState, type Operation as AttackOpera
 import * as vitality from ${module("unit/capability/vitality/index")};
 import * as elemental from ${module("unit/capability/elemental/index")};
 import * as facing from ${module("unit/capability/facing/index")};
+import type { Occupancy } from ${module("unit/capability/occupancy/index")};
+import type { Layer } from ${module("unit/capability/layer/index")};
 import * as skills from ${module("unit/capability/skill/index")};
 import { hasSkill, spRecovered, type SkillCapability, type RecoveryRestriction } from ${module("unit/capability/skill/index")};
 import { hasPresence, disappear } from ${module("unit/capability/presence/index")};
@@ -183,14 +185,8 @@ Hooks.empty().set(hpDamage.beforeReceive, { id: 'rewrite-reason', invoke: (state
 Hooks.empty().set(receivingKey, { id: 'restore-then-fix', invoke: (state, _context, current) => ({ state, value: hpDamage.fix({ ...current, type: 'NORMAL' as const }) }) });
 // @ts-expect-error cancelling again cannot hide replacement of an existing reason.
 Hooks.empty().set(receivingKey, { id: 'rewrite-then-cancel', invoke: (state, context, current) => ({ state, value: current.type === 'CANCELLED' ? hpDamage.cancel({ ...current, reason: 'BLOCKED' as const }, 'MISS', context.forbidden) : current }) });
-type ArmedDefinition = Unit['definition'] & {
-    readonly offense: Offense['definition']['offense'];
-    readonly layer: { readonly type: 'GROUND' };
-    readonly action: actions.CapabilityDefinition<ArmedHost>;
-};
-interface ArmedHost extends Unit, Offense, actions.ActionCapability {
-    readonly definition: ArmedDefinition;
-}
+type ArmedHost = Unit & Offense & Occupancy & Layer & facing.Facing &
+    actions.ActionCapability<ArmedHost> & SkillCapability<ArmedHost>;
 declare const plainActionHost: Ref<Unit & actions.ActionCapability>;
 const program: actions.Definition<{ uses: number }, { hits: number }, ArmedHost> = {
     id: 'attack', applyWay: 'NONE', period: { type: 'FIXED', ticks: 10 },
@@ -236,20 +232,69 @@ const plainHostActions: actions.CapabilityDefinition<object>['definitions'] = [t
 createAttackWithState({ ...timedAttackInput, applyWay: 'RANGED' });
 // @ts-expect-error custom output declares its apply way explicitly.
 createAttackWithState({ ...timedAttackInput, output: state => state });
-const armedDefinition: ArmedDefinition = {
+type ControlledSkillState = { completed: number };
+type ControlledActivationState = { remaining: number };
+const controlledActivation: skills.ActivationDefinition<ControlledSkillState, ControlledActivationState, ArmedHost> = {
+    trigger: 'MANUAL', ignoreRestrictions: [], requirement: 0, cost: 0,
+    initialize(battle, source, self) {
+        const direction = get(battle, source)?.facing.direction;
+        const duration: skills.DurationDefinition = self.state.completed === 0 && direction === 'RIGHT'
+            ? { type: 'TIME', durationTicks: 30 }
+            : { type: 'INFINITE' };
+        const initial: skills.ActivationInitial<ControlledActivationState> = {
+            state: { remaining: 3 }, duration,
+        };
+        return initial;
+    },
+    operations: {
+        STOP(state, source, self) {
+            const completed: number = self.state.completed;
+            const reference = skills.activationRef(source, self);
+            // @ts-expect-error operation handlers retain the activation's private state type.
+            skills.setActivationState(state, reference, { completed: 1 });
+            return skills.finish(state, reference);
+        },
+    },
+};
+const skillProgram = {
+    id: 'controlled-skill', sp: null,
+    initialize: state => ({ state, value: { completed: 0 } }),
+    activation: controlledActivation,
+    onTick(state, source, self) {
+        const owner = get(state, source);
+        return owner !== undefined && self.state.completed > 0
+            ? facing.turn(state, source, owner.occupancy.tile[1] > 0 ? 'LEFT' : 'RIGHT')
+            : state;
+    },
+} satisfies skills.Definition<ControlledSkillState, ControlledActivationState, ArmedHost>;
+const armedDefinition = {
     id: 'armed', hooks: Hooks.empty(), offense: { attack: attribute(100) }, layer: { type: 'GROUND' },
+    occupancy: { slot: 'OCCUPANT' }, facing: { restrictions: [] },
     action: {
         speed: attribute(100, 20), interval: attribute(10),
         definitions: [program, timedAttack],
         select(state, owner) {
             resolveAttack(state, owner);
-            return { state, value: [program.id] };
+            return { state, value: owner.skill.activation === null ? [program.id] : [] };
         },
     },
-};
+    skill: { definition: skillProgram },
+} satisfies ArmedHost['definition'];
+const { facing: _requiredFacing, ...missingFacing } = armedDefinition;
+// @ts-expect-error the concrete unit configuration includes the host's required capabilities.
+missingFacing satisfies ArmedHost['definition'];
 // @ts-expect-error a host without the required capabilities cannot use this program.
 const wrongHostActions: actions.CapabilityDefinition<object>['definitions'] = [program];
-const host = initialize(battle, { position: [0, 0], definition: armedDefinition }).value;
+// @ts-expect-error installing a skill also requires the capabilities declared by its program.
+const wrongHostSkill: skills.SkillCapability<object>['definition']['skill']['definition'] = skillProgram;
+const host: ArmedHost = initialize(battle, {
+    position: [0, 0], definition: armedDefinition,
+    initial: { occupancy: { tile: [0, 0] }, facing: { direction: 'RIGHT' } },
+}).value;
+// @ts-expect-error recursive host assembly still needs the initial facing direction.
+initialize(battle, { position: [0, 0], definition: armedDefinition, initial: { occupancy: { tile: [0, 0] } } });
+// @ts-expect-error recursive host assembly still needs the initial occupancy tile.
+initialize(battle, { position: [0, 0], definition: armedDefinition, initial: { facing: { direction: 'RIGHT' } } });
 const reference = ref(host);
 removeUnit(battle, reference, { reason: 'SCRIPT' });
 removeUnit(battle, reference, { reason: 'DEATH', killer: null });
@@ -597,32 +642,11 @@ vitality.isAlive(bare);
 // @ts-expect-error HP proportions require the Vitality capability.
 vitality.hpRatio(bare);
 declare const skillHost: Unit & SkillCapability;
-const controlledActivation: skills.ActivationDefinition<{ completed: number }, { remaining: number }> = {
-    trigger: 'MANUAL', ignoreRestrictions: [], requirement: 0, cost: 0,
-    initialize(_battle, _source, self) {
-        const duration: skills.DurationDefinition = self.state.completed === 0
-            ? { type: 'TIME', durationTicks: 30 }
-            : { type: 'INFINITE' };
-        const initial: skills.ActivationInitial<{ remaining: number }> = {
-            state: { remaining: 3 }, duration,
-        };
-        return initial;
-    },
-    operations: {
-        STOP(state, source, self) {
-            const completed: number = self.state.completed;
-            const reference = skills.activationRef(source, self);
-            // @ts-expect-error operation handlers retain the activation's private state type.
-            skills.setActivationState(state, reference, { completed: 1 });
-            return skills.finish(state, reference);
-        },
-    },
-};
 // @ts-expect-error an activation must declare its payment, including zero.
 const missingPayment: skills.ActivationDefinition<object, object> = {
     trigger: 'MANUAL', ignoreRestrictions: [], requirement: 0, initialize: () => ({ state: {}, duration: { type: 'INFINITE' } }),
 };
-const invalidDynamicPayment: skills.ActivationDefinition<{ completed: number }, { remaining: number }> = {
+const invalidDynamicPayment: typeof controlledActivation = {
     ...controlledActivation,
     // @ts-expect-error activation payment is a static amount.
     cost: () => 1,
@@ -630,14 +654,28 @@ const invalidDynamicPayment: skills.ActivationDefinition<{ completed: number }, 
 const recoveryOnly: RecoveryRestriction = {
     allows: (_battle, context) => context.source === 'TIME',
 };
-const invalidActivationExemption: skills.ActivationDefinition<{ completed: number }, { remaining: number }> = {
+const invalidActivationExemption: typeof controlledActivation = {
     ...controlledActivation,
     // @ts-expect-error a recovery restriction requires facts not supplied by an activation check.
     ignoreRestrictions: [recoveryOnly],
 };
 const activationParameters: skills.ActivationParameters = { requirement: 0, cost: 0 };
-const skillReference = skills.ref(ref(skillHost), skillHost.skill.definition);
-skills.activate(battle, skillReference, activationParameters);
+const skillReference = skills.ref(reference, skillProgram);
+// @ts-expect-error a precise skill identity requires its declared host capabilities.
+skills.ref(ref(skillHost), skillProgram);
+const typedActivation = skills.activate(battle, skillReference, activationParameters);
+if (typedActivation.value !== null) {
+    const self = skills.getActivation(typedActivation.state, typedActivation.value)!;
+    const remaining: number = self.activation.state.remaining;
+    const completed: number = self.state.completed;
+}
+const configuredActivation = skills.activate(battle, ref(skillHost), activationParameters);
+if (configuredActivation.value !== null) {
+    const self = skills.getActivation(configuredActivation.state, configuredActivation.value)!;
+    const ordinaryActivationState: object = self.activation.state;
+    // @ts-expect-error activating the configured skill by host does not recover its private state.
+    self.activation.state.remaining;
+}
 // @ts-expect-error a special activation must supply its requirement and payment together.
 skills.activate(battle, skillReference, { requirement: 0 });
 // @ts-expect-error a special activation must supply its requirement and payment together.

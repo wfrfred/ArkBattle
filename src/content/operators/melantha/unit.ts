@@ -7,24 +7,25 @@ import {
     getAction,
     ref as actionRef,
     setState as setActionState,
-    type CapabilityDefinition as ActionCapabilityDefinition,
+    type ActionCapability,
 } from "../../../core/unit/capability/action/index.js";
 import {
     update as updateUnit,
     get as getCurrentUnit,
     ref as unitRef,
-    type Definition as UnitDefinition,
 } from "../../../core/unit/index.js";
 import type { Profile } from "../../../data/unit/operator.js";
 
-import type { Definitions as CapabilityDefinitions } from "../../../core/unit/capability/catalog.js";
 import {
     type Definition as SkillDefinition,
+    type SkillCapability,
     activationRef,
     lifetime as skillLifetime,
 } from "../../../core/unit/capability/skill/index.js";
 
 import type { Definition as CardDefinition } from "../../../core/battle/deployment/card/index.js";
+import type { Elemental } from "../../../core/unit/capability/elemental/index.js";
+import type { Hitbox } from "../../../core/unit/capability/hitbox/capability.js";
 import { get as getTile } from "../../../core/battlefield/map/map.js";
 import { sides } from "../../../core/unit/capability/blocking/index.js";
 import {
@@ -40,29 +41,24 @@ import {
 
 import * as modifier from "../../../core/common/modifier.js";
 import { secondsToTicks } from "../../../data/time.js";
-import { create as createAttack, hasTarget, type Host } from "./action.js";
+import { create as createAttack, hasTarget } from "./action.js";
+import type { Operator } from "../operator.js";
 import type { AttackSpeedTiming } from "../../actions/timing.js";
 import { allows } from "../../../core/restriction.js";
 import { TICKS_PER_SECOND } from "../../../core/tick.js";
 
-export type Definition = UnitDefinition &
-    Host["definition"] &
-    Pick<
-        CapabilityDefinitions,
-        | "deployable"
-        | "elemental"
-        | "facing"
-        | "hitbox"
-        | "layer"
-        | "occupancy"
-        | "skill"
-        | "targetable"
-        | "vitality"
-    > & {
-        readonly action: ActionCapabilityDefinition<Host>;
-        readonly profile: Profile;
-        readonly card: CardDefinition;
+export type Melantha = Operator &
+    Elemental &
+    Hitbox &
+    ActionCapability<Melantha> &
+    SkillCapability<Melantha> & {
+        readonly definition: {
+            readonly profile: Profile;
+            readonly card: CardDefinition;
+        };
     };
+
+export type Definition = Melantha["definition"];
 
 function attackBonus(id: string, amount: number): EffectDefinition<object, Offense> {
     return {
@@ -96,7 +92,7 @@ function attackBonus(id: string, amount: number): EffectDefinition<object, Offen
     };
 }
 
-export function create(profile: Profile, timing: AttackSpeedTiming): Definition {
+export function create(profile: Profile, timing: AttackSpeedTiming) {
     if (profile.id !== "char_208_melan" || profile.skill.definition.id !== "skcom_atk_up[1]") {
         throw new TypeError("Melantha content requires her first skill");
     }
@@ -107,13 +103,13 @@ export function create(profile: Profile, timing: AttackSpeedTiming): Definition 
         ?.blackboard.find((entry) => entry.key === "atk")?.value;
     const talent = attackBonus("melantha/attack-talent", talentBonus ?? 0);
     const skillEffect = attackBonus("melantha/attack-up", skillBonus);
-    const skill: SkillDefinition = {
+    const skill = {
         ...profile.skill.definition,
         activation: {
             ...profile.skill.definition.activation!,
             onStart(state, source, self) {
                 const unit = getCurrentUnit(state, source);
-                if (unit === undefined || !hasOffense(unit)) {
+                if (unit === undefined) {
                     return state;
                 }
 
@@ -125,11 +121,11 @@ export function create(profile: Profile, timing: AttackSpeedTiming): Definition 
                 return result.state;
             },
         },
-    };
+    } satisfies SkillDefinition<object, object, Offense>;
 
     const attack = createAttack(profile, timing);
 
-    return {
+    const definition = {
         id: profile.id,
         profile,
         occupancy: { slot: "OCCUPANT" },
@@ -235,5 +231,7 @@ export function create(profile: Profile, timing: AttackSpeedTiming): Definition 
                 };
             },
         }),
-    };
+    } satisfies Definition;
+
+    return definition;
 }

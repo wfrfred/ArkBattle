@@ -14,32 +14,29 @@ import {
     cancel as cancelAction,
     forUnit,
     getExecution,
-    hasAction,
     ref as actionRef,
-    type CapabilityDefinition as ActionCapabilityDefinition,
+    type ActionCapability,
 } from "../../../core/unit/capability/action/index.js";
-import type { Attack } from "../../actions/attack.js";
-import type { State as SkillAttackState } from "../../actions/skill.js";
 import {
     update as updateUnit,
     get as getCurrentUnit,
     ref as unitRef,
     type Unit,
-    type Definition as UnitDefinition,
 } from "../../../core/unit/index.js";
 import { blocked } from "../../../core/battle/blocking/index.js";
 import { hasBlocker, sides } from "../../../core/unit/capability/blocking/index.js";
-import { hasOffense } from "../../../core/unit/capability/offense/index.js";
 import type { Profile } from "../../../data/unit/operator.js";
 import { secondsToTicks } from "../../../data/time.js";
 import {
     hasSkill,
     modify,
     type Definition as SkillDefinition,
+    type SkillCapability,
 } from "../../../core/unit/capability/skill/index.js";
 
-import type { Definitions as CapabilityDefinitions } from "../../../core/unit/capability/catalog.js";
 import type { Definition as CardDefinition } from "../../../core/battle/deployment/card/index.js";
+import type { Elemental } from "../../../core/unit/capability/elemental/index.js";
+import type { Hitbox } from "../../../core/unit/capability/hitbox/capability.js";
 import { get as getTile } from "../../../core/battlefield/map/map.js";
 
 import { healFree } from "../../../core/effects/protection.js";
@@ -54,31 +51,27 @@ import {
     setState,
 } from "../../../core/unit/effect/index.js";
 
+import type { Operator } from "../operator.js";
 import {
     createNormal,
     createSkill as createSkillAction,
     skillTargets,
-    type ActionHost,
+    type AttackHost,
 } from "./action.js";
 import { value, healSelf } from "./common.js";
 
-export type Definition = UnitDefinition &
-    ActionHost["definition"] &
-    Pick<
-        CapabilityDefinitions,
-        | "deployable"
-        | "elemental"
-        | "facing"
-        | "hitbox"
-        | "layer"
-        | "occupancy"
-        | "targetable"
-        | "vitality"
-    > & {
-        readonly action: ActionCapabilityDefinition<ActionHost>;
-        readonly profile: Profile;
-        readonly card: CardDefinition;
+export type Mudrock = Operator &
+    Elemental &
+    Hitbox &
+    ActionCapability<Mudrock> &
+    SkillCapability<Mudrock> & {
+        readonly definition: {
+            readonly profile: Profile;
+            readonly card: CardDefinition;
+        };
     };
+
+export type Definition = Mudrock["definition"];
 
 interface ShieldState {
     readonly layers: number;
@@ -240,10 +233,7 @@ export function create(
     profile: Profile,
     normalTiming: Timing,
     options: { readonly recoveryTicks?: number } = {},
-): {
-    readonly definition: Definition;
-    readonly action: Attack<object, SkillAttackState, ActionHost>;
-} {
+) {
     if (
         profile.id !== "char_311_mudrok" ||
         profile.skill.definition.id !== "skchr_mudrok_2" ||
@@ -264,7 +254,7 @@ export function create(
     const normalAttack = createNormal(profile, normalTiming);
     const action = createSkillAction(profile, recoveryTicks);
     const activation = profile.skill.definition.activation!;
-    const skill: SkillDefinition = {
+    const skill = {
         ...profile.skill.definition,
         activation: {
             ...activation,
@@ -278,24 +268,14 @@ export function create(
                 const source = getCurrentUnit(battle, sourceRef);
 
                 return (
-                    source !== undefined &&
-                    hasClassification(source) &&
-                    skillTargets(battle, source, profile).some(() => true)
+                    source !== undefined && skillTargets(battle, source, profile).some(() => true)
                 );
             },
-            onStart(state, source) {
-                const unit = getCurrentUnit(state, source);
-                if (
-                    unit === undefined ||
-                    !hasAction(unit) ||
-                    !hasClassification(unit) ||
-                    !hasBlocker(unit) ||
-                    !hasOffense(unit)
-                ) {
+            onStart(state, host) {
+                if (getCurrentUnit(state, host) === undefined) {
                     return state;
                 }
 
-                const host = unitRef(unit);
                 const normal = forUnit(state, host).find(
                     (reference) => getExecution(state, reference)?.definition === normalAttack,
                 );
@@ -313,9 +293,9 @@ export function create(
                 return state;
             },
         },
-    };
+    } satisfies SkillDefinition<object, object, ActionCapability & AttackHost>;
 
-    const definition: Definition = {
+    const definition = {
         elemental: createArknightsElementalDefinition({ receiver: "CHARACTER" }),
         id: profile.id,
         profile,
@@ -410,7 +390,7 @@ export function create(
                 return { state: install(state, host, healFree).state, value: undefined };
             },
         }),
-    };
+    } satisfies Definition;
 
     return { definition, action };
 }

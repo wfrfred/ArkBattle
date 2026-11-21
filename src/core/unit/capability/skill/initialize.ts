@@ -6,7 +6,7 @@ import * as sp from "./sp.js";
 
 export function initialize<S extends object, A extends object>(
     battle: BattleState,
-    definition: Definition<S, A>,
+    definition: Definition<S, A, never>,
 ): Result<Skill<S, A>> {
     if (definition.id.length === 0) {
         throw new TypeError("skill identity must be nonempty");

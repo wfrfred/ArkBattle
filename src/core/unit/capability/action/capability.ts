@@ -39,8 +39,8 @@ export interface State extends Restrictions {
     readonly speed: attribute.State;
 }
 
-export interface Action {
-    readonly definition: { readonly action: Definition };
+export interface Action<H extends object = never> {
+    readonly definition: { readonly action: Definition<H> };
     readonly action: State;
 }
 

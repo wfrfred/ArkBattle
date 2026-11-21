@@ -4,10 +4,10 @@ import { ref as actionRef, setState } from "../../../core/unit/capability/action
 import * as targeting from "../../../core/battle/targeting/index.js";
 import * as units from "../../../core/unit/index.js";
 import { hasTargetable } from "../../../core/unit/capability/targetable/capability.js";
-import type { Classification } from "../../../core/unit/capability/classification/index.js";
 import { hasBlockable, type Blocker } from "../../../core/unit/capability/blocking/index.js";
+import type { Classification } from "../../../core/unit/capability/classification/index.js";
+import type { Occupancy } from "../../../core/unit/capability/occupancy/index.js";
 import type { Offense } from "../../../core/unit/capability/offense/index.js";
-import { hasDirection } from "../../../core/unit/capability/occupancy/index.js";
 import { hasLayer } from "../../../core/unit/capability/layer/index.js";
 import { fromTiles } from "../../../core/geometry/range.js";
 import { topK } from "../../../core/common/collection/order.js";
@@ -19,14 +19,20 @@ export interface State {
     readonly inSession: boolean;
 }
 
-export type Host = Classification & Blocker & Offense;
+type Host = Classification & Occupancy & Blocker & Offense;
 
 const inDefaultCategory = targeting.inCategories(["DEFAULT"]);
 
-function candidates(battle: BattleState, self: units.Unit & Classification, profile: Profile) {
-    const withinRange = hasDirection(self)
-        ? targeting.inRange(self.position, fromTiles(profile.range, self.occupancy.direction))
-        : () => false;
+function candidates(
+    battle: BattleState,
+    self: units.Unit & Classification & Occupancy,
+    profile: Profile,
+) {
+    const { direction } = self.occupancy;
+    const withinRange =
+        direction === null
+            ? () => false
+            : targeting.inRange(self.position, fromTiles(profile.range, direction));
 
     return units
         .all(battle)
@@ -42,7 +48,7 @@ function candidates(battle: BattleState, self: units.Unit & Classification, prof
 
 export function hasTarget(
     battle: BattleState,
-    self: units.Unit & Classification,
+    self: units.Unit & Classification & Occupancy,
     profile: Profile,
 ): boolean {
     return candidates(battle, self, profile).some(() => true);

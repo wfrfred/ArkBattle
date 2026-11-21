@@ -2,12 +2,12 @@ import type { Timing } from "../../actions/timing.js";
 import type { Profile } from "../../../data/unit/enemy.js";
 import type { Unit } from "../../../core/unit/index.js";
 import type { Product } from "../../../core/unit/capability/catalog.js";
-import type { CapabilityDefinition } from "../../../core/unit/capability/action/index.js";
+import type { ActionCapability } from "../../../core/unit/capability/action/index.js";
 import {
     createDefinition as createGroundDefinition,
     type Definition as GroundDefinition,
 } from "../ground.js";
-import { create as createAttack, type Attack, type Host } from "./action.js";
+import { create as createAttack, type Attack } from "./action.js";
 import { TICKS_PER_SECOND } from "../../../core/tick.js";
 
 export interface AttackTiming {
@@ -15,15 +15,17 @@ export interface AttackTiming {
     readonly hitRadius: number;
 }
 
-export type Definition = GroundDefinition &
-    Host["definition"] & {
-        readonly action: CapabilityDefinition<Host>;
-        readonly profile: Profile;
-        readonly attackTiming: AttackTiming;
-        readonly attack: Attack;
+export type Enemy = Unit &
+    Product<GroundDefinition> &
+    ActionCapability<Enemy> & {
+        readonly definition: {
+            readonly profile: Profile;
+            readonly attackTiming: AttackTiming;
+            readonly attack: Attack;
+        };
     };
 
-export type Enemy = Unit & Product<Definition>;
+export type Definition = Enemy["definition"];
 
 export function create(
     profile: Profile,
@@ -36,7 +38,7 @@ export function create(
 
     const ground = createGroundDefinition(profile, timing.hitRadius, movement);
     const attack = createAttack(timing.timing);
-    const definition: Definition = {
+    const definition = {
         ...ground,
         profile,
         attackTiming: timing,
@@ -46,7 +48,7 @@ export function create(
             interval: { default: profile.baseAttackTime * TICKS_PER_SECOND, min: 0, max: null },
             definitions: [attack],
         },
-    };
+    } satisfies Definition;
 
     return { definition, action: attack };
 }

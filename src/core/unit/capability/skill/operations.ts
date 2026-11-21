@@ -17,6 +17,7 @@ import { hasSkill, type Skill as SkillCapability } from "./capability.js";
 import {
     ref as activationRef,
     type Activation,
+    type Definition as ActivationDefinition,
     type Parameters as ActivationParameters,
     type End,
     type Operation,
@@ -24,7 +25,8 @@ import {
 import type { Definition as DurationDefinition, State as DurationState } from "./duration.js";
 import { dispatch, activationStarted, spPaid, activationEnded } from "./hook.js";
 import * as query from "./query.js";
-import { ref as skillRef, type Skill } from "./skill.js";
+import type { Skill } from "./skill.js";
+import type { Definition as SkillDefinition } from "./definition.js";
 import * as sp from "./sp.js";
 import { resolveCapacity as resolveAmmoCapacity } from "./ammo.js";
 import { allows } from "../../../restriction.js";
@@ -109,24 +111,34 @@ export function activate<S extends object, A extends object>(
     battle: BattleState,
     reference: Ref<Skill<S, A>>,
     parameters?: ActivationParameters,
-): Result<Ref<Activation<S, A>> | null> {
+): Result<Ref<Activation<S, A>> | null>;
+export function activate(
+    battle: BattleState,
+    reference: Ref<Unit & SkillCapability>,
+    parameters?: ActivationParameters,
+): Result<Ref<Activation> | null>;
+export function activate(
+    battle: BattleState,
+    reference: Ref<Skill<any, any>> | Ref<Unit & SkillCapability>,
+    parameters?: ActivationParameters,
+): Result<Ref<Activation> | null> {
     if (parameters !== undefined) {
         assertNonnegativeSafeInteger(parameters.requirement, "skill activation SP requirement");
         assertNonnegativeSafeInteger(parameters.cost, "skill activation SP cost");
     }
 
-    const source = reference.host;
+    const source = "host" in reference ? reference.host : reference;
     const unit = units.get(battle, source);
     if (unit?.lifecycle !== "ACTIVE" || (hasVitality(unit) && !isAlive(unit))) {
         return { state: battle, value: null };
     }
 
-    const self = query.getSkill(battle, reference);
-    if (self === undefined) {
+    if ("definition" in reference && unit.skill.definition !== reference.definition) {
         throw new TypeError("skill definition is not configured for its source");
     }
 
-    const definition = self.definition.activation;
+    const self = unit.skill;
+    const definition = self.definition.activation as ActivationDefinition<object, object> | null;
     if (definition === null) {
         return { state: battle, value: null };
     }
@@ -153,7 +165,7 @@ export function activate<S extends object, A extends object>(
 
     const initialized = definition.initialize(battle, source, self);
     const duration = initialDuration(battle, unit, initialized.duration);
-    const active: Activation<S, A> = {
+    const active: Activation = {
         definition: self.definition,
         state: self.state,
         sp: previousSp === null ? null : { ...previousSp, value: previousSp.value - cost },
@@ -192,7 +204,7 @@ export function activate<S extends object, A extends object>(
         },
     ]);
     battle = dispatch(battle, source, activationStarted, {
-        ref: activationRef<Activation<any, any>>(source, active),
+        ref: activatedRef,
     });
 
     if (previousSp !== null) {
@@ -239,8 +251,8 @@ export const lifetime = lifetimes.create<Activation, Activation<any, any>, End>(
     },
     finalize(battle, reference, ending) {
         const self = query.getActivation(battle, reference)!;
-        battle =
-            self.definition.activation!.onEnd?.(battle, reference.host, self, ending) ?? battle;
+        const definition = self.definition.activation as ActivationDefinition<object, object>;
+        battle = definition.onEnd?.(battle, reference.host, self, ending) ?? battle;
 
         const host = units.get(battle, reference.host)!;
         battle = replaceUnits(battle, [{ ...host, skill: { ...host.skill, activation: null } }]);
@@ -292,7 +304,8 @@ export function operate<X extends Activation<any, any>>(
         return { state: battle, value: false };
     }
 
-    const handler = self.definition.activation!.operations?.[operation];
+    const definition = self.definition.activation as ActivationDefinition<object, object>;
+    const handler = definition.operations?.[operation];
     if (handler === undefined) {
         return { state: battle, value: false };
     }
@@ -307,8 +320,9 @@ export function operate<X extends Activation<any, any>>(
 export function advance(battle: BattleState, host: Ref<Unit & SkillCapability>): BattleState {
     battle = sp.advance(battle, host);
     let unit = units.get(battle, host);
-    if (unit?.lifecycle === "ACTIVE" && unit.skill.definition.onTick !== undefined) {
-        battle = unit.skill.definition.onTick(battle, host, unit.skill);
+    if (unit?.lifecycle === "ACTIVE") {
+        const definition = unit.skill.definition as SkillDefinition;
+        battle = definition.onTick?.(battle, host, unit.skill) ?? battle;
     }
 
     unit = units.get(battle, host);
@@ -321,7 +335,8 @@ export function advance(battle: BattleState, host: Ref<Unit & SkillCapability>):
         ) {
             battle = finish(battle, activationRef<Activation>(host, active));
         } else {
-            battle = active.definition.activation!.onTick?.(battle, host, active) ?? battle;
+            const definition = active.definition.activation as ActivationDefinition<object, object>;
+            battle = definition.onTick?.(battle, host, active) ?? battle;
         }
     }
 
@@ -332,7 +347,7 @@ export function advance(battle: BattleState, host: Ref<Unit & SkillCapability>):
         current.skill.activation === null &&
         (trigger === "AUTO" || trigger === "PASSIVE")
     ) {
-        battle = activate(battle, skillRef(host, current.skill.definition)).state;
+        battle = activate(battle, host).state;
     }
 
     return battle;
@@ -343,7 +358,7 @@ export const entered: EnteredHook = {
     invoke: (battle, self) => {
         const host = units.ref(self as Unit & SkillCapability);
         let unit = units.get(battle, host)!;
-        const definition = unit.skill.definition;
+        const definition = unit.skill.definition as SkillDefinition;
         if (hasVitality(unit) && definition.sp?.recovery.type === "HIT") {
             battle = update(battle, units.ref(unit), setHook(receiving, hitRecovery));
         } else if (hasAction(unit) && definition.sp?.recovery.type === "ACTION") {
@@ -358,7 +373,7 @@ export const entered: EnteredHook = {
             current?.lifecycle === "ACTIVE" &&
             current.skill.definition.activation?.trigger === "PASSIVE"
         ) {
-            battle = activate(battle, skillRef(host, current.skill.definition)).state;
+            battle = activate(battle, host).state;
         }
 
         return { state: battle, value: undefined };

@@ -23,27 +23,31 @@ export interface Parameters {
     readonly cost: number;
 }
 
-export interface Definition<S extends object, A extends object> extends Parameters {
+export interface Definition<
+    S extends object,
+    A extends object,
+    H extends object = object,
+> extends Parameters {
     readonly trigger: Trigger;
     readonly ignoreRestrictions: readonly ActivationRestriction[];
     readonly initialize: (
         battle: BattleState,
-        source: Ref<Unit & SkillCapability>,
+        source: Ref<Unit & SkillCapability & H>,
         self: Skill<S, A>,
     ) => Initial<A>;
     readonly accepts?: (
         battle: BattleState,
-        source: Ref<Unit & SkillCapability>,
+        source: Ref<Unit & SkillCapability & H>,
         self: Skill<S, A>,
     ) => boolean;
     readonly onStart?: (
         battle: BattleState,
-        source: Ref<Unit & SkillCapability>,
+        source: Ref<Unit & SkillCapability & H>,
         self: Activation<S, A>,
     ) => BattleState;
     readonly onTick?: (
         battle: BattleState,
-        source: Ref<Unit & SkillCapability>,
+        source: Ref<Unit & SkillCapability & H>,
         self: Activation<S, A>,
     ) => BattleState;
     readonly operations?: Readonly<
@@ -52,7 +56,7 @@ export interface Definition<S extends object, A extends object> extends Paramete
                 Operation,
                 (
                     battle: BattleState,
-                    source: Ref<Unit & SkillCapability>,
+                    source: Ref<Unit & SkillCapability & H>,
                     self: Activation<S, A>,
                 ) => BattleState
             >
@@ -60,7 +64,7 @@ export interface Definition<S extends object, A extends object> extends Paramete
     >;
     readonly onEnd?: (
         battle: BattleState,
-        source: Ref<Unit & SkillCapability>,
+        source: Ref<Unit & SkillCapability & H>,
         self: Activation<S, A>,
         end: End,
     ) => BattleState;

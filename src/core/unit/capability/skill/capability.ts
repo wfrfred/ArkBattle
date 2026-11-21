@@ -16,8 +16,8 @@ const activeRecoveryRestriction: RecoveryRestriction = {
     allows: (_battle, { self }) => self.skill.activation === null,
 };
 
-export interface Definition {
-    readonly definition: SkillDefinition<any, any>;
+export interface Definition<H extends object = never> {
+    readonly definition: SkillDefinition<any, any, H>;
 }
 
 export interface State extends SkillState, Restrictions {
@@ -25,8 +25,8 @@ export interface State extends SkillState, Restrictions {
     readonly ammo: readonly contribution.Contribution<AmmoInput>[];
 }
 
-export interface Skill {
-    readonly definition: { readonly skill: Definition };
+export interface Skill<H extends object = never> {
+    readonly definition: { readonly skill: Definition<H> };
     readonly skill: State;
 }
 

@@ -6,19 +6,23 @@ import type { Unit } from "../../unit.js";
 import type { Skill as SkillCapability } from "./capability.js";
 import type * as sp from "./sp.js";
 
-export interface Definition<S extends object = object, A extends object = object> {
+export interface Definition<
+    S extends object = object,
+    A extends object = object,
+    H extends object = object,
+> {
     readonly id: string;
     readonly sp: sp.Definition | null;
     readonly initialize: (battle: BattleState) => Result<S>;
-    readonly activation: ActivationDefinition<S, A> | null;
+    readonly activation: ActivationDefinition<S, A, H> | null;
     readonly onEnter?: (
         battle: BattleState,
-        source: Ref<Unit & SkillCapability>,
+        source: Ref<Unit & SkillCapability & H>,
         self: Skill<S, A>,
     ) => BattleState;
     readonly onTick?: (
         battle: BattleState,
-        source: Ref<Unit & SkillCapability>,
+        source: Ref<Unit & SkillCapability & H>,
         self: Skill<S, A>,
     ) => BattleState;
 }
