@@ -1,7 +1,5 @@
 import * as actions from "../../unit/capability/action/operations.js";
 import { forUnit } from "../../unit/capability/action/query.js";
-import { ref as actionRef } from "../../unit/capability/action/action.js";
-import type { Definition } from "../../unit/capability/action/definition.js";
 import * as units from "../../unit/query.js";
 import {
     hasAction,
@@ -38,7 +36,6 @@ export function advance(battle: BattleState): BattleState {
         }
 
         const reference = units.ref(unit);
-        // This configuration is attached to this unit.
         const configuration = unit.definition.action as CapabilityDefinition<object>;
         const selected = configuration.select?.(battle, unit) ?? {
             state: battle,
@@ -52,15 +49,7 @@ export function advance(battle: BattleState): BattleState {
                 break;
             }
 
-            const self = latest.action.actions.get(id);
-            if (self === undefined) {
-                throw new RangeError(`unknown selected action definition ${id}`);
-            }
-
-            const started = actions.start(
-                battle,
-                actionRef(reference, self.definition as Definition<any, any>),
-            );
+            const started = actions.startConfigured(battle, latest, id);
             battle =
                 started.value !== null
                     ? actions.advance(started.state, started.value)

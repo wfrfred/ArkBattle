@@ -34,7 +34,7 @@ prepare 检查本次内容条件、初始化执行数据并采样；返回 null 
 
 ## 4. 异构容器与两种引用身份
 
-行动按配置 ID 登记，重复 ID 在创建边界拒绝。容器将异构类型擦除留在 Core 内，普通查询通过已有 `Snapshot` 类型提供公共字段，并保留 Definition 对象身份。调度和生命周期操作从宿主读取已登记的聚合，再调用该聚合的 Definition 回调。按 Definition 对象身份查询或使用精确 Ref 可以恢复持久状态和执行状态的类型。
+行动按配置 ID 登记，重复 ID 在创建边界拒绝。异构容器内部擦除 `P/E`。普通查询通过已有 `Snapshot` 类型提供公共字段，并保留 Definition 对象身份。Battle 按配置 ID 启动行动，按执行引用推进。Action 操作从宿主读取已登记的聚合，在调用回调或写回时恢复类型。按 Definition 对象身份查询或使用精确 Ref 可以恢复持久状态和执行状态的类型。
 
 持久 Ref 由宿主和 Definition 对象标识，跨多轮有效。构造时，`ref` 的宿主参数必须满足具体 Definition 的 `H`。`executionRef` 根据已配对的宿主和本轮执行构造精确引用。`ExecutionRef` 表示宿主和本轮执行 ID，可用于 `forUnit` 查询返回、释放通知和取消命令。执行 ID 在宿主内单调分配，不回收，旧引用不能操作后来的执行。`getExecution` 与 `hasExecution` 均读到仍占位的 ENDING 本轮，直到该轮清空。
 

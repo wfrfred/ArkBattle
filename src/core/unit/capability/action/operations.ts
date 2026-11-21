@@ -9,9 +9,9 @@ import type { Action as ActionCapability } from "./capability.js";
 import { hasVitality } from "../vitality/capability.js";
 import { isAlive } from "../vitality/query.js";
 import { resolvePeriod } from "./timing.js";
-import type { Action } from "./action.js";
+import { ref as actionRef, type Action } from "./action.js";
 import { ref, type Execution, type ExecutionIdentity, type ExecutionRef } from "./execution.js";
-import type { Definition, End } from "./definition.js";
+import type { Definition, End, Id as DefinitionId } from "./definition.js";
 import * as cooldown from "./cooldown.js";
 import { executionRefs } from "./query.js";
 import { allows } from "../../../restriction.js";
@@ -123,6 +123,19 @@ export function start<P extends object, E extends object>(
     return { state: battle, value: execution };
 }
 
+export function startConfigured(
+    battle: BattleState,
+    unit: Unit & ActionCapability,
+    id: DefinitionId,
+): Result<ExecutionRef | null> {
+    const action = unit.action.actions.get(id);
+    if (action === undefined) {
+        throw new RangeError(`unknown selected action definition ${id}`);
+    }
+
+    return start(battle, actionRef(units.ref(unit), action.definition as Definition));
+}
+
 export function setExecutionState<P extends object, E extends object>(
     battle: BattleState,
     reference: Ref<Execution<P, E>>,
@@ -216,14 +229,15 @@ export function advance(battle: BattleState, reference: ExecutionRef): BattleSta
         return battle;
     }
 
-    const self = source.action.actions.getExecution(reference.id) as
-        Execution<any, any> | undefined;
-    if (self?.execution.lifecycle !== "ACTIVE") {
+    const current = source.action.actions.getExecution(reference.id);
+    if (current?.execution.lifecycle !== "ACTIVE") {
         return battle;
     }
     if (source.lifecycle !== "ACTIVE") {
         return cancel(battle, reference, "SOURCE_ABSENT");
     }
+
+    const self = current as Execution<any, any>;
 
     return (self.definition as Definition<any, any>).onTick(battle, reference.host, self);
 }
@@ -240,7 +254,7 @@ export function refreshCooldowns(
     let actions = unit.action.actions;
 
     for (const id of actions.keys()) {
-        const self = actions.get(id)! as Action<any, any>;
+        const self = actions.get(id)!;
         if (self.definition.period.type !== "ATTACK_SPEED") {
             continue;
         }
@@ -248,7 +262,8 @@ export function refreshCooldowns(
         const period = resolvePeriod(unit, self.definition);
         const next = cooldown.resizeKeepingProgress(self.cooldown, period, battle.tick);
         if (next !== self.cooldown) {
-            actions = actions.replace(self.definition, { ...self, cooldown: next });
+            const action = self as Action<any, any>;
+            actions = actions.replace(action.definition, { ...action, cooldown: next });
         }
     }
 
@@ -298,10 +313,10 @@ function getAction<P extends object, E extends object>(
     return { unit, action };
 }
 
-function replaceAction(
+function replaceAction<P extends object, E extends object>(
     battle: BattleState,
     unit: Unit & ActionCapability,
-    self: Action<any, any> | Execution<any, any>,
+    self: Action<P, E> | Execution<P, E>,
 ): BattleState {
     return replaceUnits(battle, [
         {
