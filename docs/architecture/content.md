@@ -6,6 +6,8 @@ Core 提供通用机制并保存模拟状态，Content 提供具体行为，Data
 
 [Data](data.md)解析、选择、覆写和换算静态输入，可以建图或为已有工厂绑定参数；Content 通过 ESM 明确组合 Capability、Effect、Hook 和 Action，提供完整 Definition。Core 使用 Definition／Initial 创建和推进实例。
 
+Unit Definition 保存实际消费者读取的配置。Content 用 Profile 和时序资料装配能力、构建行动和绑定回调。行动配置集中在 `action.definitions`，工厂也可以把具体 Action 单独返回给调用方。
+
 Content 不自行推进模拟，不在共享模块或闭包中保存本场事实；私有运行数据由初始化程序放入 State，不通过字符串动态装载程序。Meta 提供本次阵容与玩法配置；未支持配置在入口明确拒绝，不静默丢弃。
 
 ## 内容目录与共享规则

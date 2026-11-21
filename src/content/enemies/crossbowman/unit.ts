@@ -15,14 +15,7 @@ export interface AttackTiming extends Timing {
     readonly projectile: Projectile;
 }
 
-export type Crossbowman = GroundEnemy &
-    ActionCapability<Crossbowman> & {
-        readonly definition: {
-            readonly profile: Profile;
-            readonly attackTiming: AttackTiming;
-            readonly attack: Attack;
-        };
-    };
+export type Crossbowman = GroundEnemy & ActionCapability<Crossbowman>;
 
 export type Definition = Crossbowman["definition"];
 
@@ -43,9 +36,6 @@ export function create(
     const ranged = createRanged(profile, timing, timing.projectile);
     const definition = {
         ...ground,
-        profile,
-        attackTiming: timing,
-        attack: ranged,
         action: {
             speed: { default: profile.attackSpeed, min: 20, max: null },
             interval: { default: profile.baseAttackTime * TICKS_PER_SECOND, min: 0, max: null },

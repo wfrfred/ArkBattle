@@ -62,7 +62,6 @@ export type Mudrock = Operator &
     ActionCapability<Mudrock> &
     SkillCapability<Mudrock> & {
         readonly definition: {
-            readonly profile: Profile;
             readonly card: CardDefinition;
         };
     };
@@ -294,7 +293,6 @@ export function create(
     const definition = {
         elemental: createArknightsElementalDefinition({ receiver: "CHARACTER" }),
         id: profile.id,
-        profile,
         occupancy: { slot: "OCCUPANT" },
         facing: { restrictions: [] },
         targetable: {

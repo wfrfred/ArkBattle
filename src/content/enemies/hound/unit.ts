@@ -14,14 +14,7 @@ export interface AttackTiming {
     readonly hitRadius: number;
 }
 
-export type Hound = GroundEnemy &
-    ActionCapability<Hound> & {
-        readonly definition: {
-            readonly profile: Profile;
-            readonly attackTiming: AttackTiming;
-            readonly attack: Attack;
-        };
-    };
+export type Hound = GroundEnemy & ActionCapability<Hound>;
 
 export type Definition = Hound["definition"];
 
@@ -38,9 +31,6 @@ export function create(
     const attack = createAttack(timing.timing);
     const definition = {
         ...ground,
-        profile,
-        attackTiming: timing,
-        attack,
         action: {
             speed: { default: profile.attackSpeed, min: 20, max: null },
             interval: { default: profile.baseAttackTime * TICKS_PER_SECOND, min: 0, max: null },

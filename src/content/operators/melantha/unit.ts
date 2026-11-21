@@ -49,7 +49,6 @@ export type Melantha = Operator &
     ActionCapability<Melantha> &
     SkillCapability<Melantha> & {
         readonly definition: {
-            readonly profile: Profile;
             readonly card: CardDefinition;
         };
     };
@@ -123,7 +122,6 @@ export function create(profile: Profile, timing: AttackSpeedTiming) {
 
     const definition = {
         id: profile.id,
-        profile,
         occupancy: { slot: "OCCUPANT" },
         facing: { restrictions: [] },
         targetable: {
