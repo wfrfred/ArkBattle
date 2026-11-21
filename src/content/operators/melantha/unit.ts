@@ -1,7 +1,6 @@
 import { Hooks } from "../../../core/hook.js";
 import * as unitHooks from "../../../core/unit/hook.js";
 import { normal as normalSite } from "../../terrain/condition.js";
-import { scope } from "../../../core/lifetime/index.js";
 import { createArknightsElementalDefinition } from "../../../data/effect/elemental.js";
 import {
     getAction,
@@ -9,37 +8,21 @@ import {
     setState as setActionState,
     type ActionCapability,
 } from "../../../core/unit/capability/action/index.js";
-import {
-    update as updateUnit,
-    get as getCurrentUnit,
-    ref as unitRef,
-} from "../../../core/unit/index.js";
+import { ref as unitRef } from "../../../core/unit/index.js";
 import type { Profile } from "../../../data/unit/operator.js";
 
-import {
-    type Definition as SkillDefinition,
-    type SkillCapability,
-    activationRef,
-    lifetime as skillLifetime,
-} from "../../../core/unit/capability/skill/index.js";
+import type { SkillCapability } from "../../../core/unit/capability/skill/index.js";
 
 import type { Definition as CardDefinition } from "../../../core/battle/deployment/card/index.js";
 import { get as getTile } from "../../../core/battlefield/map/map.js";
 import { sides } from "../../../core/unit/capability/blocking/index.js";
-import {
-    hasOffense,
-    setAttackContribution,
-    removeAttackContribution,
-    type Offense,
-} from "../../../core/unit/capability/offense/index.js";
-import {
-    type OrdinaryDefinition as EffectDefinition,
-    install,
-} from "../../../core/unit/effect/index.js";
+import { hasOffense } from "../../../core/unit/capability/offense/index.js";
+import { install } from "../../../core/unit/effect/index.js";
 
-import * as modifier from "../../../core/common/modifier.js";
 import { secondsToTicks } from "../../../data/time.js";
 import { create as createAttack, hasTarget } from "./action.js";
+import { createAttackBonus } from "./effect.js";
+import { create as createSkill } from "./skill.js";
 import type { Operator } from "../operator.js";
 import type { AttackSpeedTiming } from "../../actions/timing.js";
 import { allows } from "../../../core/restriction.js";
@@ -55,69 +38,16 @@ export type Melantha = Operator &
 
 export type Definition = Melantha["definition"];
 
-function attackBonus(id: string, amount: number): EffectDefinition<object, Offense> {
-    return {
-        id,
-        initialize: () => ({}),
-        onEnable: (state, self) => {
-            const unit = getCurrentUnit(state, self.host);
-
-            return unit === undefined
-                ? state
-                : updateUnit(
-                      state,
-                      unitRef(unit),
-                      setAttackContribution({
-                          id: `effect/${self.id}/attack`,
-                          value: [modifier.create({ multiplier: amount })],
-                      }),
-                  );
-        },
-        onDisable: (state, self) => {
-            const unit = getCurrentUnit(state, self.host);
-
-            return unit === undefined
-                ? state
-                : updateUnit(
-                      state,
-                      unitRef(unit),
-                      removeAttackContribution(`effect/${self.id}/attack`),
-                  );
-        },
-    };
-}
-
 export function create(profile: Profile, timing: AttackSpeedTiming) {
     if (profile.id !== "char_208_melan" || profile.skill.definition.id !== "skcom_atk_up[1]") {
         throw new TypeError("Melantha content requires her first skill");
     }
 
-    const skillBonus = profile.skill.blackboard.find((entry) => entry.key === "atk")!.value;
+    const skill = createSkill(profile.skill);
     const talentBonus = profile.talents
         .find((talent) => talent.key === "1")
         ?.blackboard.find((entry) => entry.key === "atk")?.value;
-    const talent = attackBonus("melantha/attack-talent", talentBonus ?? 0);
-    const skillEffect = attackBonus("melantha/attack-up", skillBonus);
-    const skill = {
-        ...profile.skill.definition,
-        activation: {
-            ...profile.skill.definition.activation!,
-            onStart(state, source, self) {
-                const unit = getCurrentUnit(state, source);
-                if (unit === undefined) {
-                    return state;
-                }
-
-                const result = install(state, unitRef(unit), skillEffect, {
-                    source: unitRef(unit),
-                    scopes: [scope(skillLifetime, activationRef(source, self))],
-                });
-
-                return result.state;
-            },
-        },
-    } satisfies SkillDefinition<object, object, Offense>;
-
+    const talent = createAttackBonus("melantha/attack-talent", talentBonus ?? 0);
     const attack = createAttack(profile, timing);
 
     const definition = {

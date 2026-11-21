@@ -16,7 +16,7 @@ import { parseAttackTiming } from '../../dist/data/action/timing.js';
 import { parseEnemyMovementPrefab } from '../../dist/data/unit/prefab.js';
 import { create as createHound } from '../../dist/content/enemies/hound/unit.js';
 import { create as createCrossbowman } from '../../dist/content/enemies/crossbowman/unit.js';
-import { createArrow } from '../../dist/content/enemies/crossbowman/action.js';
+import { createArrow } from '../../dist/content/enemies/crossbowman/projectile.js';
 import { initialize } from "../helpers/unit.js";
 
 import { createBattleState } from '../../dist/core/battle/state.js';

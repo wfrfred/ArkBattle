@@ -7,7 +7,8 @@ import {
     type Definition as GroundDefinition,
     type GroundEnemy,
 } from "../ground.js";
-import { createMelee, createRanged, type Attack, type Projectile, type Timing } from "./action.js";
+import { createMelee, createRanged, type Attack, type Timing } from "./action.js";
+import type { Projectile } from "./projectile.js";
 import { TICKS_PER_SECOND } from "../../../core/tick.js";
 
 export interface AttackTiming extends Timing {

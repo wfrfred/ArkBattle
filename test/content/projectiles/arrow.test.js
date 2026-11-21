@@ -11,7 +11,7 @@ import { getUnit } from '../../helpers/unit.js';
 import * as projectiles from '../../../dist/core/projectile/index.js';
 import { advance } from '../../../dist/core/projectile/operations.js';
 import { ref } from '../../../dist/core/unit/query.js';
-import { createArrow } from '../../../dist/content/enemies/crossbowman/action.js';
+import { createArrow } from '../../../dist/content/enemies/crossbowman/projectile.js';
 import { targetApplied } from '../../../dist/core/battle/resource/hp/damage/index.js';
 import { setAttackContribution } from '../../../dist/core/unit/capability/offense/index.js';
 import { create as modifier } from '../../../dist/core/common/modifier.js';
