@@ -14,21 +14,14 @@ export type Period =
 export type End =
     { readonly type: "FINISHED" } | { readonly type: "CANCELLED"; readonly reason: string };
 
-export interface Program<Source = never> {
-    readonly id: Id;
-    readonly applyWay: ApplyWay;
-    readonly period: Period;
-    readonly initialize: (battle: BattleState) => Result<object>;
-    readonly prepare: (battle: BattleState, source: Source, self: never) => Result<object | null>;
-    readonly onTick: (battle: BattleState, source: Source, self: never) => BattleState;
-    readonly onEnd?: (battle: BattleState, source: Source, self: never, end: End) => BattleState;
-}
-
 export interface Definition<
     P extends object = object,
     E extends object = object,
     H extends object = object,
-> extends Program<Ref<Unit & ActionCapability & H>> {
+> {
+    readonly id: Id;
+    readonly applyWay: ApplyWay;
+    readonly period: Period;
     readonly initialize: (battle: BattleState) => Result<P>;
     readonly prepare: (
         battle: BattleState,

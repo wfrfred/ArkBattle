@@ -9,8 +9,8 @@ import type { Action as ActionCapability } from "./capability.js";
 import { hasVitality } from "../vitality/capability.js";
 import { isAlive } from "../vitality/query.js";
 import { resolvePeriod } from "./timing.js";
-import type { Action, ActionView } from "./action.js";
-import { ref, type Execution, type ExecutionView } from "./execution.js";
+import type { Action } from "./action.js";
+import { ref, type Execution, type ExecutionIdentity, type ExecutionRef } from "./execution.js";
 import type { End } from "./definition.js";
 import * as cooldown from "./cooldown.js";
 import { executionRefs } from "./query.js";
@@ -26,9 +26,9 @@ export function setState<P extends object, E extends object, H extends object>(
     return state === action.state ? battle : replaceAction(battle, unit, { ...action, state });
 }
 
-export function setCooldown(
+export function setCooldown<P extends object, E extends object, H extends object>(
     battle: BattleState,
-    reference: Ref<ActionView>,
+    reference: Ref<Action<P, E, H>>,
     next: cooldown.State,
 ): BattleState {
     const { unit, action } = getAction(battle, reference);
@@ -129,7 +129,8 @@ export function setExecutionState<P extends object, E extends object, H extends 
         throw new RangeError(`unknown unit: ${reference.host.id}`);
     }
 
-    const current = unit.action.actions.getExecution(reference.id);
+    const current = unit.action.actions.getExecution(reference.id) as
+        Execution<P, E, H> | undefined;
     if (current === undefined) {
         throw new RangeError(`unknown action execution: ${reference.id}`);
     }
@@ -142,7 +143,7 @@ export function setExecutionState<P extends object, E extends object, H extends 
           });
 }
 
-export const lifetime = lifetimes.create<ExecutionView, ExecutionView, End>({
+export const lifetime = lifetimes.create<ExecutionIdentity, ExecutionIdentity, End>({
     kind: "ACTION",
     address: (reference) => [reference.host.id, reference.id],
     get: (battle, reference) =>
@@ -150,11 +151,11 @@ export const lifetime = lifetimes.create<ExecutionView, ExecutionView, End>({
     isEnding: (self) => self.execution.lifecycle === "ENDING",
     begin: (self) => ({ ...self, execution: { ...self.execution, lifecycle: "ENDING" } }),
     replace: (battle, reference, next) =>
-        replaceAction(battle, units.get(battle, reference.host)!, next),
+        replaceAction(battle, units.get(battle, reference.host)!, next as Execution<any, any>),
     finalize(battle, reference, result) {
         const self = units
             .get(battle, reference.host)!
-            .action.actions.getExecution(reference.id)! as Execution;
+            .action.actions.getExecution(reference.id)! as Execution<any, any>;
 
         if (self.definition.onEnd !== undefined) {
             battle = self.definition.onEnd(battle, reference.host, self, result);
@@ -177,13 +178,13 @@ export const lifetime = lifetimes.create<ExecutionView, ExecutionView, End>({
     fromDependency: () => ({ type: "CANCELLED", reason: "SOURCE_ABSENT" }),
 });
 
-export function finish(battle: BattleState, reference: Ref<ExecutionView>): BattleState {
+export function finish(battle: BattleState, reference: ExecutionRef): BattleState {
     return lifetime.end(battle, reference, { type: "FINISHED" });
 }
 
 export function cancel(
     battle: BattleState,
-    reference: Ref<ExecutionView>,
+    reference: ExecutionRef,
     reason = "CANCELLED",
 ): BattleState {
     return lifetime.end(battle, reference, { type: "CANCELLED", reason });
@@ -207,13 +208,14 @@ export function cancelForUnit(
     return battle;
 }
 
-export function advance(battle: BattleState, reference: Ref<ExecutionView>): BattleState {
+export function advance(battle: BattleState, reference: ExecutionRef): BattleState {
     const source = units.get(battle, reference.host);
     if (source === undefined) {
         return battle;
     }
 
-    const self = source.action.actions.getExecution(reference.id) as Execution | undefined;
+    const self = source.action.actions.getExecution(reference.id) as
+        Execution<any, any> | undefined;
     if (self?.execution.lifecycle !== "ACTIVE") {
         return battle;
     }
@@ -236,7 +238,7 @@ export function refreshCooldowns(
     let actions = unit.action.actions;
 
     for (const id of actions.keys()) {
-        const self = actions.get(id)! as Action;
+        const self = actions.get(id)! as Action<any, any, any>;
         if (self.definition.period.type !== "ATTACK_SPEED") {
             continue;
         }
@@ -253,7 +255,10 @@ export function refreshCooldowns(
         : replaceUnits(battle, [{ ...unit, action: { ...unit.action, actions } }]);
 }
 
-export function resetCooldown(battle: BattleState, reference: Ref<ActionView>): BattleState {
+export function resetCooldown<P extends object, E extends object, H extends object>(
+    battle: BattleState,
+    reference: Ref<Action<P, E, H>>,
+): BattleState {
     const { unit, action } = getAction(battle, reference);
     const next = cooldown.reset(action.cooldown, battle.tick);
 
@@ -262,7 +267,10 @@ export function resetCooldown(battle: BattleState, reference: Ref<ActionView>): 
         : replaceAction(battle, unit, { ...action, cooldown: next });
 }
 
-export function clearCooldown(battle: BattleState, reference: Ref<ActionView>): BattleState {
+export function clearCooldown<P extends object, E extends object, H extends object>(
+    battle: BattleState,
+    reference: Ref<Action<P, E, H>>,
+): BattleState {
     const { unit, action } = getAction(battle, reference);
     const next = cooldown.clear(action.cooldown, battle.tick);
 
@@ -271,7 +279,10 @@ export function clearCooldown(battle: BattleState, reference: Ref<ActionView>): 
         : replaceAction(battle, unit, { ...action, cooldown: next });
 }
 
-function getAction(battle: BattleState, reference: Ref<ActionView>) {
+function getAction<P extends object, E extends object, H extends object>(
+    battle: BattleState,
+    reference: Ref<Action<P, E, H>>,
+) {
     const unit = units.get(battle, reference.host);
     if (unit === undefined) {
         throw new RangeError(`unknown unit: ${reference.host.id}`);
@@ -288,10 +299,8 @@ function getAction(battle: BattleState, reference: Ref<ActionView>) {
 function replaceAction(
     battle: BattleState,
     unit: Unit & ActionCapability,
-    entry: ActionView | ExecutionView,
+    self: Action<any, any, any> | Execution<any, any, any>,
 ): BattleState {
-    const self = entry as Action | Execution;
-
     return replaceUnits(battle, [
         {
             ...unit,

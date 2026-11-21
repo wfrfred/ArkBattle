@@ -8,7 +8,7 @@ import type { Card } from "./deployment/card/card.js";
 import type { StoredPredefinedDefinition } from "./predefined.js";
 import type { DeploymentCommand } from "./deployment/operations.js";
 import type { Ref } from "../common/ref.js";
-import type { ExecutionView } from "../unit/capability/action/execution.js";
+import type { ExecutionRef } from "../unit/capability/action/execution.js";
 import type { Operation } from "../unit/capability/skill/activation.js";
 import type { Skill } from "../unit/capability/skill/capability.js";
 
@@ -45,5 +45,5 @@ export type Command<T extends Card<any> = Card> =
     | SkillCommand
     | {
           readonly type: "CANCEL_ACTION_EXECUTION";
-          readonly ref: Ref<ExecutionView>;
+          readonly ref: ExecutionRef;
       };

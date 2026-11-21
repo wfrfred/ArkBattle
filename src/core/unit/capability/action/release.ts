@@ -1,6 +1,6 @@
 import type { Ref } from "../../../common/ref.js";
 import type { State as BattleState, Result } from "../../../battle/state.js";
-import type { ExecutionView } from "./execution.js";
+import type { ExecutionRef } from "./execution.js";
 import type { Unit } from "../../unit.js";
 import * as units from "../../query.js";
 import * as hook from "../../../hook.js";
@@ -11,7 +11,7 @@ export type Directive =
 
 export interface Context {
     readonly source: Ref<Unit & Action>;
-    readonly execution: Ref<ExecutionView>;
+    readonly execution: ExecutionRef;
 }
 
 export type BeforeReleaseHook = hook.Hook<Context, Directive>;
@@ -22,10 +22,7 @@ export const beforeRelease = hook.key<BeforeReleaseHook, Unit & Action>("action.
 
 export const released = hook.key<ReleasedHook, Unit & Action>("action.released");
 
-export function dispatchBeforeRelease(
-    battle: BattleState,
-    ref: Ref<ExecutionView>,
-): Result<Directive> {
+export function dispatchBeforeRelease(battle: BattleState, ref: ExecutionRef): Result<Directive> {
     const context: Context = { execution: ref, source: ref.host };
 
     return hook.dispatch<Context, Directive>(
@@ -43,7 +40,7 @@ export function dispatchBeforeRelease(
     );
 }
 
-export function dispatchReleased(battle: BattleState, ref: Ref<ExecutionView>): BattleState {
+export function dispatchReleased(battle: BattleState, ref: ExecutionRef): BattleState {
     const context: Context = { execution: ref, source: ref.host };
 
     return hook.dispatch(battle, context, undefined, {

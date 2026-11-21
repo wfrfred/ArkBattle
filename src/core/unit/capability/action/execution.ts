@@ -1,7 +1,7 @@
-import type { Identified, Ref } from "../../../common/ref.js";
+import type { Identified, Identity, Ref } from "../../../common/ref.js";
 import type { Unit } from "../../unit.js";
 import type { Action as ActionCapability } from "./capability.js";
-import type { Action, ActionView } from "./action.js";
+import type { Action } from "./action.js";
 
 export type Id = number;
 
@@ -19,9 +19,9 @@ export interface Snapshot extends Omit<State, "state"> {
 }
 
 export interface Execution<
-    P extends object = object,
-    E extends object = object,
-    H extends object = object,
+    in out P extends object = object,
+    in out E extends object = object,
+    in out H extends object = object,
 > extends Identified<
     {
         readonly host: Ref<Unit & ActionCapability & H>;
@@ -32,16 +32,13 @@ export interface Execution<
     readonly execution: State<E>;
 }
 
-export interface ExecutionView extends Identified<
-    {
-        readonly host: Ref<Unit & ActionCapability>;
-        readonly id: Id;
-    },
-    ActionView
-> {
-    readonly execution: State;
-}
+export type ExecutionIdentity = Identified<Identity<Execution>, { readonly execution: Snapshot }>;
 
-export function ref<X extends ExecutionView>(host: NoInfer<Ref<X>["host"]>, self: X): Ref<X> {
-    return { host, id: self.execution.id } as Ref<X>;
+export type ExecutionRef = Ref<ExecutionIdentity>;
+
+export function ref<P extends object, E extends object, H extends object>(
+    host: Ref<Unit & ActionCapability & NoInfer<H>>,
+    self: Execution<P, E, H>,
+): Ref<Execution<P, E, H>> {
+    return { host, id: self.execution.id } as Ref<Execution<P, E, H>>;
 }

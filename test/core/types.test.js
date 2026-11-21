@@ -271,7 +271,10 @@ if (started.value !== null) {
     const execution = started.value;
     const executionHost: Ref<ArmedHost> = execution.host;
     const hits: number = actions.getExecution(started.state, execution)!.execution.state.hits;
-    const cancellation: Command = { type: 'CANCEL_ACTION_EXECUTION', ref: execution };
+    // @ts-expect-error a precise execution cannot be widened to a different state and host pairing.
+    const widenedExecution: Ref<actions.Execution> = execution;
+    const identity: actions.ExecutionRef = execution;
+    const cancellation: Command = { type: 'CANCEL_ACTION_EXECUTION', ref: identity };
     runtime.step(started.state, [cancellation]);
     actions.setExecutionState(started.state, execution, { hits: hits + 1 });
     // @ts-expect-error the execution identity retains its own private state type.
@@ -279,14 +282,20 @@ if (started.value !== null) {
     // @ts-expect-error persistent and execution identities are different.
     actions.getAction(started.state, execution);
 }
-const erasedExecution = actions.forUnit(battle, reference)[0]!;
-const executionView = actions.getExecution(battle, erasedExecution)!;
-// @ts-expect-error ordinary erased reads cannot invent private fields.
-executionView.execution.state.hits;
-// @ts-expect-error an erased definition cannot be invoked directly.
-executionView.definition.onTick(battle, reference, executionView);
-// @ts-expect-error an erased execution reference cannot write private state.
-actions.setExecutionState(battle, erasedExecution, { hits: 0 });
+const runningIdentity: actions.ExecutionRef = actions.forUnit(battle, reference)[0]!;
+declare const effectOnActionHost: Ref<effects.OrdinaryEffect<object, actions.ActionCapability>>;
+// @ts-expect-error a unit's Effect and Execution have distinct referents.
+actions.cancel(battle, effectOnActionHost);
+const executionSnapshot = actions.getExecution(battle, runningIdentity)!;
+if (executionSnapshot.definition === program) {
+    actions.cancel(battle, runningIdentity);
+}
+// @ts-expect-error an ordinary query cannot read fields of the execution's private state.
+executionSnapshot.execution.state.hits;
+// @ts-expect-error an ordinary query does not expose the definition callbacks.
+executionSnapshot.definition.onTick(battle, reference, executionSnapshot);
+// @ts-expect-error an identity-only reference cannot write private state.
+actions.setExecutionState(battle, runningIdentity, { hits: 0 });
 const shield = {
     id: 'shield', initialize: () => ({ charges: 1 }),
     onTick(state, self) {

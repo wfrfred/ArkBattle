@@ -57,10 +57,9 @@ export function advance(battle: BattleState): BattleState {
                 throw new RangeError(`unknown selected action definition ${id}`);
             }
 
-            // The unit's configured action and its source come from the same registration.
             const started = actions.start(
                 battle,
-                actionRef(reference, self.definition as Definition),
+                actionRef(reference, self.definition as Definition<any, any>),
             );
             battle =
                 started.value !== null

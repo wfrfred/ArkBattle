@@ -1,7 +1,7 @@
 import type { Identified, Ref } from "../../../common/ref.js";
 import type { Unit } from "../../unit.js";
 import type { Action as ActionCapability } from "./capability.js";
-import type { Definition, Program } from "./definition.js";
+import type { Definition } from "./definition.js";
 import type * as cooldown from "./cooldown.js";
 import type { State as ExecutionState, Snapshot as ExecutionSnapshot } from "./execution.js";
 
@@ -17,16 +17,6 @@ export interface Action<
     readonly state: P;
     readonly cooldown: cooldown.State;
     readonly execution: ExecutionState<E> | null;
-}
-
-export interface ActionView
-    extends
-        Identified<{
-            readonly host: Ref<Unit & ActionCapability>;
-            readonly definition: Program;
-        }>,
-        Pick<Action, "state" | "cooldown" | "execution"> {
-    readonly definition: Program;
 }
 
 export interface Snapshot {

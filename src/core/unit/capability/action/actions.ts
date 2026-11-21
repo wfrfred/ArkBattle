@@ -1,16 +1,16 @@
 import { Store } from "../../../common/collection/store.js";
 import type { Query } from "../../../common/query.js";
-import type { Action, ActionView, Snapshot } from "./action.js";
-import type { Execution, ExecutionView, Id as ExecutionId } from "./execution.js";
-import type { Definition, Id, Program } from "./definition.js";
+import type { Action, Snapshot } from "./action.js";
+import type { Execution, Id as ExecutionId, Snapshot as ExecutionSnapshot } from "./execution.js";
+import type { Definition, Id } from "./definition.js";
 import type { Identified } from "../../../common/ref.js";
 
 export class Actions {
-    static readonly #empty = new Actions(Store.empty<Id, ActionView>());
+    static readonly #empty = new Actions(Store.empty<Id, Action<any, any, any>>());
 
-    readonly #store: Store<Id, ActionView>;
+    readonly #store: Store<Id, Action<any, any, any>>;
 
-    private constructor(store: Store<Id, ActionView>) {
+    private constructor(store: Store<Id, Action<any, any, any>>) {
         this.#store = store;
     }
 
@@ -26,8 +26,8 @@ export class Actions {
         id: Id,
         definition: Definition<P, E, H>,
     ): Action<P, E, H> | undefined;
-    get(id: Id, definition?: Program): ActionView | undefined;
-    get(id: Id, definition?: Program): unknown {
+    get(id: Id): Snapshot | undefined;
+    get(id: Id, definition?: Definition<any, any, any>): Action<any, any, any> | undefined {
         const self = this.#store.get(id);
 
         if (definition === undefined) {
@@ -37,13 +37,15 @@ export class Actions {
         return self?.definition === definition ? self : undefined;
     }
 
-    getExecution(id: ExecutionId): ExecutionView | undefined {
-        const self = this.values().find((entry) => entry.execution?.id === id);
+    getExecution(
+        id: ExecutionId,
+    ): (Snapshot & { readonly execution: ExecutionSnapshot }) | undefined {
+        const self = this.#store.values().find((entry) => entry.execution?.id === id);
 
-        return self as ExecutionView | undefined;
+        return self as Execution<any, any, any> | undefined;
     }
 
-    values(): Query<ActionView> {
+    values(): Query<Snapshot> {
         return this.#store.values();
     }
 
