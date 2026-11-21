@@ -257,6 +257,32 @@ test("DEPLOY-RESTRICTION-01: policy overrides retain resource and occupancy prer
     assert.equal(get(state, second.value.unitId).deployable.slots, 0);
 });
 
+test("Card Definition and DeployRequest each reject duplicate restriction IDs", () => {
+    const restrictions = [
+        { id: "placement", value: { allows: () => false } },
+        { id: "placement", value: { allows: () => true } },
+    ];
+    const state = battle([], {
+        deployment: {
+            definition: account,
+            cards: [{ definition: operatorCard, unitDefinition: operator }],
+        },
+    });
+
+    assert.throws(() => cards.initialize(state, {
+        definition: { ...operatorCard, deploymentRestrictions: restrictions },
+        unitDefinition: operator,
+    }), /duplicate restriction identity/);
+
+    const card = cards.ref([...cards.all(state)][0]);
+    const request = { ...deployment.createRequest(state, card, [0, 2]), restrictions };
+    for (const operation of [
+        deployment.preview, deployment.evaluate, deployment.positions, deployment.deploy,
+    ]) {
+        assert.throws(() => operation(state, request), /duplicate restriction identity/);
+    }
+});
+
 test("DEPLOY-RESTRICTION-02: Definition, Card and Request replace IDs before group resolution and deterministic rejection", () => {
     const permit = { allows: () => true };
     const deny = { allows: () => false };

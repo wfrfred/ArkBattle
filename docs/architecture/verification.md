@@ -118,7 +118,7 @@ Prefab、范围读取和换算由实际业务使用；目录移动、提取工�
 | RESTRICTION-01 | 有效贡献、组竞争、定义身份和 AND 判断正确；复用 Targetable，不为 resolve 查询建同构矩阵。 |
 | RESTRICTION-02 | 三次接收复检使用同一 ignore、最新有效项，豁免不恢复败项、不绕过固有前提、不传嵌套；资源代表补同步变化。 |
 | RESTRICTION-03 | 领域操作保留各自资格时点和后继，类型不放宽能力／载荷；Skill 按共享定义豁免多来源眩晕，仍受沉默／Presence 限制及 SP 等前提约束，不解除异常或其他领域限制。[公共类型契约](../../test/core/types.test.js)、Blocking／Skill／Presence 各承担自身结果。 |
-| RESTRICTION-04 | 同一初始列表拒绝重复登记 ID，不同列表可使用同一 ID。运行时替换仅作用于所在列表。[Unit 构造](../../test/core/unit.test.js)以 Facing 与 Targetable 为代表。 |
+| RESTRICTION-04 | 同一初始或请求列表拒绝重复登记 ID，不同列表可使用同一 ID。运行时替换仅作用于所在列表。[Unit 构造](../../test/core/unit.test.js)以 Facing 与 Targetable 为代表，[Deployment](../../test/core/deployment.test.js)覆盖 Card Definition 和 DeployRequest。 |
 | DEPLOY-RESTRICTION-01 | 非法 Quote 在预览与部署一致拒绝；库存、支付、地图、双槽等固定前提不能被规则覆盖，免费与免支付保留不同账务。 |
 | DEPLOY-RESTRICTION-02 | Definition／Card／Request 的覆盖和互斥选择得到稳定拒绝原因；一个分层代表，不枚举所有字段和来源。 |
 

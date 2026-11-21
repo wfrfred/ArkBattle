@@ -13,7 +13,7 @@ import { resolveCost } from "./card/state.js";
 import type { Restriction as CardRestriction } from "./card/restriction.js";
 import type { Restriction } from "./restriction.js";
 import {
-    validateQuote,
+    validateRequest,
     type DeployRequest,
     type Quote,
     type Rejected,
@@ -181,9 +181,9 @@ export function evaluate<T extends Card<any>>(
     battle: BattleState,
     request: DeployRequest<T>,
 ): Rejected | null {
-    validateQuote(request.quote);
-
     const input = request as object as DeployRequest;
+    validateRequest(input);
+
     const self = get(battle, input.card);
     if (self === undefined) {
         return { type: "REJECTED", reason: "UNKNOWN_CARD" };
@@ -204,9 +204,9 @@ export function preview<T extends Card<any>>(
           readonly cost: number;
           readonly quote: Quote;
       } {
-    validateQuote(request.quote);
-
     const input = request as object as DeployRequest;
+    validateRequest(input);
+
     const self = get(battle, input.card);
     if (self === undefined) {
         return { type: "REJECTED", reason: "UNKNOWN_CARD" };
@@ -232,10 +232,10 @@ export function positions<T extends Card<any>>(
     battle: BattleState,
     request: DeployRequest<T>,
 ): readonly TilePosition[] {
-    validateQuote(request.quote);
+    const input = request as object as DeployRequest;
+    validateRequest(input);
 
     const result: TilePosition[] = [];
-    const input = request as object as DeployRequest;
     const self = get(battle, input.card);
     if (self === undefined) {
         return result;

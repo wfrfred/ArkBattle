@@ -17,7 +17,7 @@ import * as cards from "./card/operations.js";
 import * as dp from "./dp.js";
 import { advanceResources } from "./resources.js";
 import { evaluateCurrent, resolveRestrictions, createRequest } from "./query.js";
-import { validateQuote, type DeployRequest, type DeployOutcome } from "./request.js";
+import { validateRequest, type DeployRequest, type DeployOutcome } from "./request.js";
 import { Hooks } from "../../hook.js";
 import * as lifecycle from "../../unit/hook.js";
 
@@ -38,9 +38,9 @@ export function deploy<T extends Card<any>>(
     battle: BattleState,
     request: DeployRequest<T>,
 ): Result<DeployOutcome> {
-    validateQuote(request.quote);
-
     const input = request as object as DeployRequest;
+    validateRequest(input);
+
     const previous = battle;
     let self = get(battle, request.card);
     if (self === undefined) {

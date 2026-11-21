@@ -1,4 +1,5 @@
 import { assertNonnegativeNumber, assertNonnegativeSafeInteger } from "../../../common/assert.js";
+import { validateRestrictions } from "../../../restriction.js";
 import type { State as BattleState, Result } from "../../state.js";
 import type { Card, UnitDefinition } from "./card.js";
 import type { Definition } from "./definition.js";
@@ -39,6 +40,8 @@ export function initialize<
     if (stockLimit !== null && stock > stockLimit) {
         throw new RangeError("card stock exceeds the limit");
     }
+
+    validateRestrictions(definition.deploymentRestrictions);
 
     const id = battle.execution.nextCardId;
     battle = { ...battle, execution: { ...battle.execution, nextCardId: id + 1 } };

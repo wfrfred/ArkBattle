@@ -4,6 +4,7 @@ import { assertNonnegativeNumber, assertNonnegativeSafeInteger } from "../../com
 import type { Direction } from "../../geometry/direction.js";
 import type { TilePosition } from "../../geometry/coordinate.js";
 import type { Hooks } from "../../hook.js";
+import { validateRestrictions } from "../../restriction.js";
 import type { Card } from "./card/card.js";
 import type { Restriction } from "./restriction.js";
 
@@ -13,15 +14,6 @@ export interface Quote {
     readonly slots: number;
 }
 
-export function validateQuote(quote: Quote): void {
-    if (quote.dp !== null) {
-        assertNonnegativeNumber(quote.dp, "deployment payment");
-    }
-
-    assertNonnegativeSafeInteger(quote.stock, "deployment stock consumption");
-    assertNonnegativeSafeInteger(quote.slots, "deployment slot consumption");
-}
-
 export interface DeployRequest<T extends Card<any> = Card> {
     readonly card: Ref<T>;
     readonly tilePosition: TilePosition;
@@ -29,6 +21,16 @@ export interface DeployRequest<T extends Card<any> = Card> {
     readonly quote: Quote;
     readonly restrictions: readonly Contribution<Restriction>[];
     readonly hooks: Hooks;
+}
+
+export function validateRequest({ quote, restrictions }: DeployRequest): void {
+    if (quote.dp !== null) {
+        assertNonnegativeNumber(quote.dp, "deployment payment");
+    }
+
+    assertNonnegativeSafeInteger(quote.stock, "deployment stock consumption");
+    assertNonnegativeSafeInteger(quote.slots, "deployment slot consumption");
+    validateRestrictions(restrictions);
 }
 
 export type Rejection =
