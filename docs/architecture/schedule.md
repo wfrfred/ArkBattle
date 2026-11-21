@@ -8,7 +8,7 @@ Definition 包含主 Waves 与按名称查找的 Branches。Wave 提供前延迟
 
 Entry 可以是 Spawn 或 ScheduledOperation。Spawn 描述一次出生，包含完整 UnitDefinition、本次 Route Plan、固定 offset、随机半宽 randomRange、前延迟后的 atTick 和 Wait。主线 count／interval 与随机组在 Data 预处理为确定序列，Branch 随执行抽选。
 
-Operation 通过 `execute(battle): BattleState` 同步完成一次战斗操作。ScheduledOperation 加上相对时刻 `atTick`，可以提供读取实时 BattleState 的 `ready` 谓词。关卡绑定目标与业务规则，通过各领域的正常入口执行操作。Data 的 `compileSpawnSchedule` 负责出怪转换，其他操作由关卡组装。
+Operation 通过 `execute(battle): Result<boolean>` 尝试同步执行一次战斗操作。ScheduledOperation 加上相对时刻 `atTick`。关卡在 execute 中读取实时 BattleState，按业务规则调用各领域的正常入口。Data 的 `compileSpawnSchedule` 负责出怪转换，其他操作由关卡组装。
 
 普通 Spawn 的定义必须有 Route，可选择 Facing 等其他能力；不支持 Occupancy／Deployable，因为出生不提供登记地块。创建同时提供 Route 的 Plan／offset 和 Facing 的 RIGHT 初值；未声明 Facing 时按通用规则忽略额外已知输入。Plan 与实例偏移独立于共享 UnitDefinition，具体类型见 [schedule/index.ts](../../src/core/battle/schedule/index.ts)。
 
@@ -42,7 +42,7 @@ Battle 初始化登记全局 `battle.unit.removed` 反馈，任意完整 Unit �
 
 进入新阶段记录当前 Tick，推进不快进战斗时间；零延迟或已满足条件在本次调用连续处理。
 
-每个队列按 `atTick` 推进，同刻条目沿用计划顺序。条目到期后才检查 `ready`。谓词返回 false 时保留该条目及其后续条目，其他队列仍可推进。后续推进用当前 BattleState 重查，条件满足时执行一次，接着处理同队列已到期的后续条目。各条目沿用最初的绝对时刻，进入下一 Fragment 或 Wave 才建立新的时基。
+每个队列按 `atTick` 推进，同刻条目沿用计划顺序。条目到期后调用 execute 并接续返回的 State。操作完成时返回 `value: true`，游标推进。遇到目标尚未出现等情况时，操作可以返回 `{ state: battle, value: false }`，保留当前条目和后续条目，其他队列仍可推进。下次推进用当前 BattleState 重试，完成后接着处理同队列已到期的条目。各条目沿用最初的绝对时刻，进入下一 Fragment 或 Wave 才建立新的时基。
 
 ## 从 Spawn 到 Unit
 
@@ -56,7 +56,7 @@ Route 在实际初始化时取得主线时间快照，登记后的 entered 同�
 
 PRE_DELAY → 各 FRAGMENT → WAITING → POST_DELAY → 下一 Wave／COMPLETED。
 
-一次 advance 推进至未来条目、未就绪操作、阶段延迟、未解除的 Wave 等待或主线结束。Fragment 完成表示所有条目执行完，空 Fragment 立即完成。Unit 离场等待由 WAITING 处理，只看 wave 集合。
+一次 advance 推进至未来条目、待重试的操作、阶段延迟、未解除的 Wave 等待或主线结束。Fragment 完成表示所有条目执行完，空 Fragment 立即完成。Unit 离场等待由 WAITING 处理，只看 wave 集合。
 
 常规主线每 Tick 推进一次。同步操作和 Hook 返回后从最新 BattleState 继续剩余条目。
 
@@ -94,7 +94,7 @@ Schedule 只维护调度与等待；Route 决定路线出口并请求完整离�
 
 ## 回归语义
 
-[统一验收](verification.md)覆盖时间轴、混排操作的就绪等待、同样本出生与路线、等待早于 entered、超时／活 Unit 解除／离场、Branch 整组重抽与同步重入，以及空计划和真实出生时基。
+[统一验收](verification.md)覆盖时间轴、混排操作等待目标并重试、同样本出生与路线、等待早于 entered、超时／活 Unit 解除／离场、Branch 整组重抽与同步重入，以及空计划和真实出生时基。
 
 ## 机制依据
 

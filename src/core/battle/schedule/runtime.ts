@@ -62,11 +62,12 @@ function advanceEntries(
         }
 
         if ("execute" in entry) {
-            if (entry.ready !== undefined && !entry.ready(battle)) {
+            const { state, value: completed } = entry.execute(battle);
+            battle = state;
+
+            if (!completed) {
                 break;
             }
-
-            battle = entry.execute(battle);
         } else {
             battle = spawn(battle, entry);
         }

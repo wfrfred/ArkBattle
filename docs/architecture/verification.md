@@ -99,7 +99,7 @@ Prefab、范围读取和换算由实际业务使用；目录移动、提取工�
 依据 [Route](navigation.md) 和 [Schedule](schedule.md)，对应[路线](../../test/core/navigation/route.test.js)与[调度](../../test/core/schedule.test.js)套件：
 
 - Route：首指令同步进入、MOVE 进入与重入采样、长无环链完整执行／即时环让出；active 与 ticking 独立，ENTER 可暂停而绝对等待保留出生时基。TRACE 到达后保留指令和最后格，支持同格重启；Main 出口不随临时控制权改变，无终点不离场。空间副作用后使用最新 Context。
-- Schedule：前延迟、出生偏移和位置共用样本、等待先于 entered。主线与 Branch 支持混排 Spawn 和 Operation，未就绪操作暂停所在队列，其他队列推进，恢复后按顺序执行到期条目一次。Wave 超时只解除 wave 等待，final 保留；活 Unit 的指定等待释放与完整离场各有正确结果。Branch 每次整组重抽，执行前发布索引／RNG／实例，触发 Tick 推进一次，重入保留各实例。空计划与完成后继续 step 正常。
+- Schedule：前延迟、出生偏移和位置共用样本、等待先于 entered。主线与 Branch 支持混排 Spawn 和 Operation。操作返回 false 时暂停所在队列，其他队列继续推进。操作重试完成后按顺序处理到期条目。Wave 超时只解除 wave 等待，final 保留；活 Unit 的指定等待释放与完整离场各有正确结果。Branch 每次整组重抽，执行前发布索引／RNG／实例，触发 Tick 推进一次，重入保留各实例。空计划与完成后继续 step 正常。
 
 路线距离只累计导航运动，不计 APPEAR 跳跃；Data 转换与 Core 运行分别集中保障，Hook／RNG 不重复验证。
 

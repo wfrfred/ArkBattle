@@ -2,7 +2,7 @@ import type { WorldPosition } from "../../geometry/coordinate.js";
 import type { Definitions } from "../../unit/capability/catalog.js";
 import type { Plan, Route } from "../../unit/capability/route/capability.js";
 import type { Definition as BaseDefinition } from "../../unit/unit.js";
-import type { State as BattleState } from "../state.js";
+import type { Result, State as BattleState } from "../state.js";
 
 export type UnitDefinition = BaseDefinition &
     Route["definition"] &
@@ -23,12 +23,11 @@ export interface Spawn {
 export type Wait = "NONE" | "FINAL" | "WAVE";
 
 export interface Operation {
-    readonly execute: (battle: BattleState) => BattleState;
+    readonly execute: (battle: BattleState) => Result<boolean>;
 }
 
 export interface ScheduledOperation extends Operation {
     readonly atTick: number;
-    readonly ready?: (battle: BattleState) => boolean;
 }
 
 export type Entry = Spawn | ScheduledOperation;

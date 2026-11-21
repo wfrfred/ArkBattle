@@ -98,10 +98,14 @@ test("a scheduled operation waits for its target while another queue advances", 
     const findTarget = (state) => all(state).find((unit) => unit.definition === target);
     const withdraw = {
         atTick: 0,
-        ready: (state) => findTarget(state) !== undefined,
         execute: (state) => {
+            const self = findTarget(state);
+            if (self === undefined) {
+                return { state, value: false };
+            }
+
             log.push(["withdraw", state.tick]);
-            return remove(state, ref(findTarget(state)), { reason: "SCRIPT" });
+            return { state: remove(state, ref(self), { reason: "SCRIPT" }), value: true };
         },
     };
     const following = {
@@ -109,7 +113,7 @@ test("a scheduled operation waits for its target while another queue advances", 
         execute: (state) => {
             assert.equal(findTarget(state), undefined);
             log.push(["next fragment", state.tick]);
-            return state;
+            return { state, value: true };
         },
     };
     const schedule = {
@@ -144,13 +148,16 @@ test("a scheduled operation waits for its target while another queue advances", 
 test("a weighted branch operation can wait past its due tick and see the latest state", () => {
     const calls = [];
     const target = definition("branch-target");
-    const findTarget = (state) => all(state).find((unit) => unit.definition === target);
     const operation = {
         atTick: 0,
-        ready: (state) => findTarget(state) !== undefined,
         execute: (state) => {
+            const self = all(state).find((unit) => unit.definition === target);
+            if (self === undefined) {
+                return { state, value: false };
+            }
+
             calls.push(state.tick);
-            return remove(state, ref(findTarget(state)), { reason: "SCRIPT" });
+            return { state: remove(state, ref(self), { reason: "SCRIPT" }), value: true };
         },
     };
     const schedule = {
@@ -176,7 +183,7 @@ test("a weighted branch operation can wait past its due tick and see the latest 
     assert.deepEqual(calls, []);
     state = through(state, 4);
     assert.deepEqual(calls, [2]);
-    assert.equal(findTarget(state), undefined);
+    assert.equal(all(state).find((unit) => unit.definition === target), undefined);
     assert.equal(isCompleted(state.schedule), true);
 });
 
