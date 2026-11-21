@@ -77,9 +77,32 @@ type Enemy = Unit & Classification<"ENEMY">;
 type Device = Unit & Classification<"DEVICE">;
 ```
 
-普通原生角色默认具备阻挡能力，因此 `Blocker` 属于 `Operator` 的基础组合。零阻挡以容量 `0` 表达，高台等情况依照地块和阻挡层资格结算。具体单位在基础组合上加入自身能力，并从 `Melantha["definition"]` 这样的索引类型推导完整配置。[原生阻挡证据](../research/cases/23-blocker-and-blockable-roles.md) · [阻挡资格](blocking.md#关系资格与-restriction)
+普通原生角色默认具备阻挡能力，因此 `Blocker` 属于 `Operator` 的基础组合。零阻挡以容量 `0` 表达，高台等情况依照地块和阻挡层资格结算。[原生阻挡证据](../research/cases/23-blocker-and-blockable-roles.md) · [阻挡资格](blocking.md#关系资格与-restriction)
 
-具体 Definition 声明回调实际依赖的能力。Action Capability 的 `CapabilityDefinition<H>` 用具体宿主检查行动列表并为 `select` 提供宿主类型。Effect 通过 Definition 声明宿主要求。调用者先确定具体构造分支，Catalog 自动推导标准状态和必需 Initial；允许额外已知 Initial，不为联合 Definition 维护并行校验层。
+### 具体单位的目标写法
+
+在 `content/operators/melantha/unit.ts` 中声明具体单位的能力组合，从该单位的 `definition` 推导完整配置类型，并用 `satisfies` 检查实际提供的配置。
+
+```typescript
+type Melantha =
+    Operator &
+    ActionCapability<Melantha> &
+    SkillCapability<Melantha>;
+
+type Definition = Melantha["definition"];
+
+const definition = {
+    ...operatorDefinition,
+    action: actionConfiguration,
+    skill: { definition: skillDefinition },
+} satisfies Definition;
+```
+
+`satisfies` 校验必需的能力配置，并保留具体 Definition 对象的推导类型。Action 和 Skill 的能力配置以 `Melantha` 校验宿主配对，接收宿主 Ref 的回调可以直接读取已声明的能力。
+
+Action 的 `CapabilityDefinition<H>` 已用具体宿主检查行动列表，并为 `select` 提供宿主类型。Action Definition 也已支持在回调中声明宿主要求。该写法还需将 `H` 接入 `ActionCapability`，以及为 `SkillCapability` 和 Skill 回调接入宿主约束。
+
+具体 Definition 声明回调实际依赖的能力。Effect 通过 Definition 声明宿主要求。调用者先确定具体构造分支，Catalog 自动推导标准状态和必需 Initial；允许额外已知 Initial，不为联合 Definition 维护并行校验层。
 
 可部署内容明确声明 Card／Deployable／Occupancy，Card 持久状态与每次 Unit 初态分开；预置和普通出生直接复用统一初始化，不临时重组静态 Definition。方向属于本次 Initial，基础 Unit 不伪造方向。
 
