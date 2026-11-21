@@ -16,6 +16,7 @@ import {
     getExecution,
     hasAction,
     ref as actionRef,
+    type CapabilityDefinition as ActionCapabilityDefinition,
 } from "../../../core/unit/capability/action/index.js";
 import type { Attack } from "../../actions/attack.js";
 import type { State as SkillAttackState } from "../../actions/skill.js";
@@ -28,6 +29,7 @@ import {
 } from "../../../core/unit/index.js";
 import { blocked } from "../../../core/battle/blocking/index.js";
 import { hasBlocker, sides } from "../../../core/unit/capability/blocking/index.js";
+import { hasOffense } from "../../../core/unit/capability/offense/index.js";
 import type { Profile } from "../../../data/unit/operator.js";
 import { secondsToTicks } from "../../../data/time.js";
 import {
@@ -52,31 +54,31 @@ import {
     setState,
 } from "../../../core/unit/effect/index.js";
 
-import { createNormal, createSkill as createSkillAction, skillTargets } from "./action.js";
+import {
+    createNormal,
+    createSkill as createSkillAction,
+    skillTargets,
+    type ActionHost,
+} from "./action.js";
 import { value, healSelf } from "./common.js";
 
-export interface Definition
-    extends
-        UnitDefinition,
-        Pick<
-            CapabilityDefinitions,
-            | "action"
-            | "classification"
-            | "blocker"
-            | "deployable"
-            | "elemental"
-            | "facing"
-            | "hitbox"
-            | "layer"
-            | "occupancy"
-            | "offense"
-            | "skill"
-            | "targetable"
-            | "vitality"
-        > {
-    readonly profile: Profile;
-    readonly card: CardDefinition;
-}
+export type Definition = UnitDefinition &
+    ActionHost["definition"] &
+    Pick<
+        CapabilityDefinitions,
+        | "deployable"
+        | "elemental"
+        | "facing"
+        | "hitbox"
+        | "layer"
+        | "occupancy"
+        | "targetable"
+        | "vitality"
+    > & {
+        readonly action: ActionCapabilityDefinition<ActionHost>;
+        readonly profile: Profile;
+        readonly card: CardDefinition;
+    };
 
 interface ShieldState {
     readonly layers: number;
@@ -238,7 +240,10 @@ export function create(
     profile: Profile,
     normalTiming: Timing,
     options: { readonly recoveryTicks?: number } = {},
-): { readonly definition: Definition; readonly action: Attack<object, SkillAttackState> } {
+): {
+    readonly definition: Definition;
+    readonly action: Attack<object, SkillAttackState, ActionHost>;
+} {
     if (
         profile.id !== "char_311_mudrok" ||
         profile.skill.definition.id !== "skchr_mudrok_2" ||
@@ -280,24 +285,30 @@ export function create(
             },
             onStart(state, source) {
                 const unit = getCurrentUnit(state, source);
-                if (unit === undefined || !hasAction(unit)) {
+                if (
+                    unit === undefined ||
+                    !hasAction(unit) ||
+                    !hasClassification(unit) ||
+                    !hasBlocker(unit) ||
+                    !hasOffense(unit)
+                ) {
                     return state;
                 }
 
-                const normal = forUnit(state, unitRef(unit)).find(
+                const host = unitRef(unit);
+                const normal = forUnit(state, host).find(
                     (reference) => getExecution(state, reference)?.definition === normalAttack,
                 );
                 if (normal !== undefined) {
                     state = cancelAction(state, normal, "INTERRUPTED");
                 }
 
-                const current = getCurrentUnit(state, source);
-                if (current?.lifecycle !== "ACTIVE" || !hasAction(current)) {
+                if (getCurrentUnit(state, host)?.lifecycle !== "ACTIVE") {
                     return state;
                 }
 
-                state = clearCooldown(state, actionRef(unitRef(current), normalAttack));
-                state = clearCooldown(state, actionRef(unitRef(current), action));
+                state = clearCooldown(state, actionRef(host, normalAttack));
+                state = clearCooldown(state, actionRef(host, action));
 
                 return state;
             },
@@ -382,9 +393,7 @@ export function create(
             definitions: [normalAttack, action],
             select: (battle, self) => ({
                 state: battle,
-                value: [
-                    hasSkill(self) && self.skill.activation !== null ? action.id : normalAttack.id,
-                ],
+                value: [self.skill.activation === null ? normalAttack.id : action.id],
             }),
         },
         skill: { definition: skill },

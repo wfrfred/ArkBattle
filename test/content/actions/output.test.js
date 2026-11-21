@@ -9,6 +9,7 @@ import { selectDamage } from "../../helpers/targeting.js";
 import * as units from "../../../dist/core/unit/query.js";
 import * as actions from "../../../dist/core/unit/capability/action/index.js";
 import { advance } from "../../../dist/core/unit/capability/action/index.js";
+import { sourceAttack } from "../../../dist/content/actions/attack.js";
 
 
 import { setAttackContribution } from "../../../dist/core/unit/capability/offense/capability.js";
@@ -19,7 +20,7 @@ test("source attack samples current Offense separately for each target after nes
         targetGroups: [{
             id: "primary",
             select: selectDamage({ geometry, canTargetAir: true, maxTargets: 2 }),
-            operations: [{ type: "DAMAGE", attackType: "NORMAL", applyWay: "MELEE", powerSource: "SOURCE_ATTACK", power: 1, damageType: "TRUE" }],
+            operations: [{ type: "DAMAGE", attackType: "NORMAL", applyWay: "MELEE", power: sourceAttack, damageType: "TRUE" }],
         }],
     });
     const source = unit(0, { action: definition });

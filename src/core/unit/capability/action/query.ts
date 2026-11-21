@@ -5,8 +5,8 @@ import type { Identified, Ref } from "../../../common/ref.js";
 import * as units from "../../query.js";
 import type { Unit } from "../../unit.js";
 import { hasAction, type Action as ActionCapability } from "./capability.js";
-import type { Action } from "./action.js";
-import { ref, type Execution } from "./execution.js";
+import type { ActionView } from "./action.js";
+import { ref, type ExecutionView } from "./execution.js";
 import type { Id as DefinitionId } from "./definition.js";
 
 export function getApplyWay(unit: Unit): ApplyWay {
@@ -18,23 +18,25 @@ export function getApplyWay(unit: Unit): ApplyWay {
 export function forUnit(
     battle: BattleState,
     source: Ref<Unit & ActionCapability>,
-): readonly Ref<Execution>[] {
+): readonly Ref<ExecutionView>[] {
     const unit = units.get(battle, source);
 
     return unit === undefined ? [] : executionRefs(unit);
 }
 
-export function executionRefs(self: Unit & ActionCapability): readonly Ref<Execution>[] {
+export function executionRefs(self: Unit & ActionCapability): readonly Ref<ExecutionView>[] {
     return sort(
         self.action.actions
             .values()
-            .filter((action): action is Identified<never, Execution> => action.execution !== null)
-            .map((action) => ref<Execution>(units.ref(self), action)),
+            .filter(
+                (action): action is Identified<never, ExecutionView> => action.execution !== null,
+            )
+            .map((action) => ref<ExecutionView>(units.ref(self), action)),
         (left, right) => left.id - right.id,
     );
 }
 
-export function getExecution<X extends Execution<any, any>>(
+export function getExecution<X extends ExecutionView>(
     battle: BattleState,
     reference: Ref<X>,
 ): X | undefined {
@@ -42,7 +44,7 @@ export function getExecution<X extends Execution<any, any>>(
         X | undefined;
 }
 
-export function getAction<X extends Action<any, any>>(
+export function getAction<X extends ActionView>(
     battle: BattleState,
     reference: Ref<X>,
 ): X | undefined {

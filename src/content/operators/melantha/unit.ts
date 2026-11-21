@@ -7,6 +7,7 @@ import {
     getAction,
     ref as actionRef,
     setState as setActionState,
+    type CapabilityDefinition as ActionCapabilityDefinition,
 } from "../../../core/unit/capability/action/index.js";
 import {
     update as updateUnit,
@@ -39,33 +40,29 @@ import {
 
 import * as modifier from "../../../core/common/modifier.js";
 import { secondsToTicks } from "../../../data/time.js";
-import { create as createAttack, hasTarget } from "./action.js";
+import { create as createAttack, hasTarget, type Host } from "./action.js";
 import type { AttackSpeedTiming } from "../../actions/timing.js";
 import { allows } from "../../../core/restriction.js";
 import { TICKS_PER_SECOND } from "../../../core/tick.js";
 
-export interface Definition
-    extends
-        UnitDefinition,
-        Pick<
-            CapabilityDefinitions,
-            | "action"
-            | "classification"
-            | "blocker"
-            | "deployable"
-            | "elemental"
-            | "facing"
-            | "hitbox"
-            | "layer"
-            | "occupancy"
-            | "offense"
-            | "skill"
-            | "targetable"
-            | "vitality"
-        > {
-    readonly profile: Profile;
-    readonly card: CardDefinition;
-}
+export type Definition = UnitDefinition &
+    Host["definition"] &
+    Pick<
+        CapabilityDefinitions,
+        | "deployable"
+        | "elemental"
+        | "facing"
+        | "hitbox"
+        | "layer"
+        | "occupancy"
+        | "skill"
+        | "targetable"
+        | "vitality"
+    > & {
+        readonly action: ActionCapabilityDefinition<Host>;
+        readonly profile: Profile;
+        readonly card: CardDefinition;
+    };
 
 function attackBonus(id: string, amount: number): EffectDefinition<object, Offense> {
     return {

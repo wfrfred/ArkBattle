@@ -1,7 +1,7 @@
 import type { Identified, Ref } from "../../../common/ref.js";
 import type { Unit } from "../../unit.js";
 import type { Action as ActionCapability } from "./capability.js";
-import type { Action } from "./action.js";
+import type { Action, ActionView } from "./action.js";
 
 export type Id = number;
 
@@ -18,19 +18,30 @@ export interface Snapshot extends Omit<State, "state"> {
     readonly state: unknown;
 }
 
-export interface Execution<P extends object = object, E extends object = object> extends Identified<
+export interface Execution<
+    P extends object = object,
+    E extends object = object,
+    H extends object = object,
+> extends Identified<
     {
-        readonly host: Ref<Unit & ActionCapability>;
+        readonly host: Ref<Unit & ActionCapability & H>;
         readonly id: Id;
     },
-    Action<P, E>
+    Action<P, E, H>
 > {
     readonly execution: State<E>;
 }
 
-export function ref<X extends Execution<any, any>>(
-    host: Ref<Unit & ActionCapability>,
-    self: X,
-): Ref<X> {
+export interface ExecutionView extends Identified<
+    {
+        readonly host: Ref<Unit & ActionCapability>;
+        readonly id: Id;
+    },
+    ActionView
+> {
+    readonly execution: State;
+}
+
+export function ref<X extends ExecutionView>(host: NoInfer<Ref<X>["host"]>, self: X): Ref<X> {
     return { host, id: self.execution.id } as Ref<X>;
 }

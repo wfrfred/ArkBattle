@@ -7,7 +7,6 @@ import type {
 } from "../../core/projectile/index.js";
 
 import { type WorldPosition } from "../../core/geometry/coordinate.js";
-import { hasOffense, resolveAttack } from "../../core/unit/capability/offense/index.js";
 
 import { isAlive, type Vitality } from "../../core/unit/capability/vitality/index.js";
 import * as units from "../../core/unit/index.js";
@@ -18,7 +17,6 @@ export interface State {
     readonly source: Ref<Unit> | null;
     readonly target: Ref<Unit & Vitality>;
     readonly destination: WorldPosition;
-    readonly cachedAtk: number;
     readonly speedPerTick: number;
     readonly stopDelayTicks: number;
     readonly stopAtTick: number | null;
@@ -26,7 +24,10 @@ export interface State {
     readonly launchedAtTick: number;
 }
 
-export interface Definition<T extends object = object> extends ProjectileDefinition<State, T> {
+export interface Definition<
+    S extends State = State,
+    T extends object = object,
+> extends ProjectileDefinition<S, T> {
     readonly tracking: true;
 }
 
@@ -61,18 +62,6 @@ export function project<S extends object, T extends object>(
         destination: state.destination,
         launchedAtTick: state.launchedAtTick,
     };
-}
-
-export function attackPower<S extends State, T extends object>(
-    battle: BattleState,
-    self: Projectile<S, T>,
-): number {
-    const source = self.state.source === null ? undefined : units.get(battle, self.state.source);
-    if (source === undefined) {
-        return self.state.cachedAtk;
-    }
-
-    return hasOffense(source) ? resolveAttack(battle, source) : 0;
 }
 
 export function hit<S extends State, T extends object>(

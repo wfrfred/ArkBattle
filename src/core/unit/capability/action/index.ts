@@ -1,10 +1,10 @@
 export { ref } from "./action.js";
 
-export type { Action } from "./action.js";
+export type { Action, ActionView } from "./action.js";
 
 export { ref as executionRef } from "./execution.js";
 
-export type { Execution } from "./execution.js";
+export type { Execution, ExecutionView } from "./execution.js";
 
 export type { Definition, Period } from "./definition.js";
 

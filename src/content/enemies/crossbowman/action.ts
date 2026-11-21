@@ -1,4 +1,10 @@
-import { create as createAttack, faceTarget, type Attack } from "../../actions/attack.js";
+import {
+    create as createAttack,
+    faceTarget,
+    sourceAttack,
+    type Attack as BaseAttack,
+} from "../../actions/attack.js";
+import type { Ref } from "../../../core/common/ref.js";
 import {
     calculateDamage,
     applyDamage,
@@ -6,6 +12,7 @@ import {
 } from "../../../core/battle/resource/hp/damage/index.js";
 
 import * as units from "../../../core/unit/index.js";
+import type { Unit } from "../../../core/unit/index.js";
 import type { Timing as AttackTiming } from "../../actions/timing.js";
 import type { Profile } from "../../../data/unit/enemy.js";
 import { perSecondToPerTick } from "../../../data/time.js";
@@ -14,13 +21,13 @@ import * as projectiles from "../../../core/projectile/index.js";
 import type { Projectile as ProjectileInstance } from "../../../core/projectile/index.js";
 import type { State as BattleState } from "../../../core/battle/index.js";
 import * as tracking from "../../projectiles/tracking.js";
-import { hasOffense, resolveAttack } from "../../../core/unit/capability/offense/index.js";
+import { resolveAttack, type Offense } from "../../../core/unit/capability/offense/index.js";
 
 import { hasVitality } from "../../../core/unit/capability/vitality/index.js";
 import * as targeting from "../../../core/battle/targeting/index.js";
-import { hasBlockable } from "../../../core/unit/capability/blocking/index.js";
+import type { Blockable } from "../../../core/unit/capability/blocking/index.js";
 import { hasTargetable } from "../../../core/unit/capability/targetable/capability.js";
-import { hasClassification } from "../../../core/unit/capability/classification/index.js";
+import type { Classification } from "../../../core/unit/capability/classification/index.js";
 import { topK } from "../../../core/common/collection/order.js";
 
 export interface Timing {
@@ -28,30 +35,43 @@ export interface Timing {
     readonly ranged: AttackTiming;
 }
 
+export type Host = Classification & Blockable & Offense;
+
+export type Attack = BaseAttack<object, object, Host>;
+
+interface ArrowState extends tracking.State {
+    readonly source: Ref<Unit & Offense> | null;
+    readonly cachedAtk: number;
+}
+
 export interface Projectile {
-    readonly definition: tracking.Definition;
+    readonly definition: tracking.Definition<ArrowState>;
     readonly speedPerSecond: number;
     readonly stopDelayTicks: number;
 }
 
 const arrowApplyWay = "RANGED";
 
-export function createArrow(): tracking.Definition {
-    const hit = (battle: BattleState, self: ProjectileInstance<tracking.State>): BattleState =>
+export function createArrow(): tracking.Definition<ArrowState> {
+    const hit = (battle: BattleState, self: ProjectileInstance<ArrowState>): BattleState =>
         tracking.hit(battle, self, (state, current, target) => {
-            const source = current.state.source;
+            const sourceRef = current.state.source;
+            const source = sourceRef === null ? undefined : units.get(state, sourceRef);
             const request: DamageRequest = {
                 attackType: "NORMAL",
                 applyWay: arrowApplyWay,
-                source: source !== null && units.get(state, source) !== undefined ? source : null,
-                killer: source,
+                source: source === undefined ? null : sourceRef,
+                killer: sourceRef,
                 target: units.ref(target),
                 nature: "DAMAGE",
                 hitRecovery: true,
                 parameters: {
                     type: "PHYSICAL",
                     attack: {
-                        power: tracking.attackPower(state, current),
+                        power:
+                            source === undefined
+                                ? current.state.cachedAtk
+                                : resolveAttack(state, source),
                         multiplier: 1,
                         addition: 0,
                     },
@@ -70,8 +90,8 @@ export function createArrow(): tracking.Definition {
     };
 }
 
-export function createMelee(profile: Profile, timing: Timing): Attack {
-    return createAttack({
+export function createMelee(timing: Timing): Attack {
+    return createAttack<Host>({
         id: "melee",
         onStart: faceTarget,
         triggerBindingId: "primary",
@@ -82,11 +102,11 @@ export function createMelee(profile: Profile, timing: Timing): Attack {
                 id: "primary",
                 select(battle, source) {
                     const self = units.get(battle, source);
-                    if (self === undefined || !hasClassification(self)) {
+                    if (self === undefined) {
                         return { state: battle, value: [] };
                     }
 
-                    const owner = hasBlockable(self) ? self.blockable.relation?.blocker : undefined;
+                    const owner = self.blockable.relation?.blocker;
                     const target = owner === undefined ? undefined : units.get(battle, owner);
                     if (target === undefined || !hasTargetable(target)) {
                         return { state: battle, value: [] };
@@ -104,8 +124,7 @@ export function createMelee(profile: Profile, timing: Timing): Attack {
                         type: "DAMAGE",
                         attackType: "NORMAL",
                         applyWay: "MELEE",
-                        power: profile.attack,
-                        powerSource: "SOURCE_ATTACK",
+                        power: sourceAttack,
                         damageType: "PHYSICAL",
                     },
                 ],
@@ -118,7 +137,7 @@ export function createRanged(profile: Profile, timing: Timing, projectile: Proje
     assertPositiveNumber(projectile.speedPerSecond, "enemy arrow speed");
     assertNonnegativeSafeInteger(projectile.stopDelayTicks, "enemy arrow stop delay");
 
-    return createAttack({
+    return createAttack<Host>({
         id: "ranged",
         applyWay: arrowApplyWay,
         onStart: faceTarget,
@@ -130,13 +149,11 @@ export function createRanged(profile: Profile, timing: Timing, projectile: Proje
                 id: "primary",
                 select(battle, source) {
                     const self = units.get(battle, source);
-                    if (self === undefined || !hasClassification(self)) {
+                    if (self === undefined) {
                         return { state: battle, value: [] };
                     }
 
-                    const blocker = hasBlockable(self)
-                        ? self.blockable.relation?.blocker
-                        : undefined;
+                    const blocker = self.blockable.relation?.blocker;
                     const candidates = units
                         .all(battle)
                         .filter(hasTargetable)
@@ -162,16 +179,9 @@ export function createRanged(profile: Profile, timing: Timing, projectile: Proje
         output: (state, host, self) => {
             const source = units.get(state, host);
             const target = units.get(state, self.execution.state.target);
-            if (
-                source === undefined ||
-                !hasClassification(source) ||
-                target === undefined ||
-                !hasVitality(target)
-            ) {
+            if (source === undefined || target === undefined || !hasVitality(target)) {
                 return state;
             }
-
-            const cachedAtk = hasOffense(source) ? resolveAttack(state, source) : 0;
 
             const initialized = projectiles.initialize(state, {
                 definition: projectile.definition,
@@ -181,7 +191,7 @@ export function createRanged(profile: Profile, timing: Timing, projectile: Proje
                     source: units.ref(source),
                     target: units.ref(target),
                     destination: target.position,
-                    cachedAtk,
+                    cachedAtk: resolveAttack(state, source),
                     speedPerTick: perSecondToPerTick(projectile.speedPerSecond),
                     stopDelayTicks: projectile.stopDelayTicks,
                     stopAtTick: null,

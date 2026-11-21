@@ -7,7 +7,7 @@ import {
     type Activation,
     consume,
     check,
-    hasSkill,
+    type SkillCapability,
 } from "../../core/unit/capability/skill/index.js";
 
 import * as units from "../../core/unit/index.js";
@@ -17,16 +17,22 @@ export interface State {
     readonly activation: Ref<Activation> | null;
 }
 
-export type Definition = AttackDefinition<object, State> & {
+export type Definition<H extends object = object> = AttackDefinition<
+    object,
+    State,
+    H & SkillCapability
+> & {
     readonly ammoPerAction?: number;
 };
 
-export function create(definition: Definition): Attack<object, State> {
+export function create<H extends object = object>(
+    definition: Definition<H>,
+): Attack<object, State, H & SkillCapability> {
     const amount = definition.ammoPerAction ?? 1;
     const afterOutput = definition.afterOutput;
     assertPositiveSafeInteger(amount, "skill attack ammunition consumption");
 
-    return createWithState<object, State>({
+    return createWithState<object, State, H & SkillCapability>({
         ...definition,
         initialize: (battle) => ({ state: battle, value: {} }),
         prepare(battle, source) {
@@ -36,7 +42,7 @@ export function create(definition: Definition): Attack<object, State> {
                 state: battle,
                 value: {
                     activation:
-                        host !== undefined && hasSkill(host) && host.skill.activation !== null
+                        host !== undefined && host.skill.activation !== null
                             ? activationRef<Activation>(
                                   units.ref(host),
                                   host.skill as Identified<never, typeof host.skill> as Activation,

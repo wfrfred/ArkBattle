@@ -2,6 +2,7 @@ import type { Timing } from "../../actions/timing.js";
 import {
     create as createAttack,
     faceTarget,
+    sourceAttack,
     type Attack,
     type Configuration as AttackConfiguration,
 } from "../../actions/attack.js";
@@ -20,13 +21,10 @@ import {
     hasTargetable,
     type Targetable,
 } from "../../../core/unit/capability/targetable/capability.js";
-import { hasOffense, resolveAttack } from "../../../core/unit/capability/offense/index.js";
-import {
-    hasClassification,
-    type Classification,
-} from "../../../core/unit/capability/classification/index.js";
+import { resolveAttack, type Offense } from "../../../core/unit/capability/offense/index.js";
+import type { Classification } from "../../../core/unit/capability/classification/index.js";
 
-import { finish, hasSkill } from "../../../core/unit/capability/skill/index.js";
+import { finish, type SkillCapability } from "../../../core/unit/capability/skill/index.js";
 
 import type { Vitality } from "../../../core/unit/capability/vitality/index.js";
 import {
@@ -36,7 +34,7 @@ import {
 } from "../../../core/battle/resource/hp/damage/index.js";
 
 import * as targeting from "../../../core/battle/targeting/index.js";
-import { hasBlockable, hasBlocker } from "../../../core/unit/capability/blocking/index.js";
+import { hasBlockable, type Blocker } from "../../../core/unit/capability/blocking/index.js";
 import { hasDirection } from "../../../core/unit/capability/occupancy/index.js";
 import { hasLayer, type Layer } from "../../../core/unit/capability/layer/index.js";
 import { fromTiles } from "../../../core/geometry/range.js";
@@ -49,6 +47,8 @@ import { secondsToTicks } from "../../../data/time.js";
 import { stun } from "../../../core/effects/control.js";
 import { install } from "../../../core/unit/effect/index.js";
 import { value, healSelf } from "./common.js";
+
+export type ActionHost = Classification & Blocker & Offense & SkillCapability;
 
 const inDefaultCategory = targeting.inCategories(["DEFAULT"]);
 
@@ -97,15 +97,14 @@ function attackDefinition(profile: Profile, skill: boolean, timing: Timing) {
                 id: "primary",
                 select(battle, source) {
                     const self = getCurrentUnit(battle, source);
-                    if (self === undefined || !hasClassification(self)) {
+                    if (self === undefined) {
                         return { state: battle, value: [] };
                     }
 
                     const candidates = skill
                         ? skillTargets(battle, self, profile)
                         : allUnits(battle).filter(attackTarget(battle, self, profile, false));
-                    const blockedFirst =
-                        !skill && hasBlocker(self) ? targeting.blockedFirst(self) : () => 0;
+                    const blockedFirst = skill ? () => 0 : targeting.blockedFirst(self);
                     const distance = targeting.distance(self.position);
 
                     return {
@@ -124,18 +123,17 @@ function attackDefinition(profile: Profile, skill: boolean, timing: Timing) {
                               type: "DAMAGE",
                               attackType: "NORMAL",
                               applyWay: "MELEE",
-                              power: 0,
-                              powerSource: "SOURCE_ATTACK",
+                              power: sourceAttack,
                               damageType: "PHYSICAL",
                           },
                       ],
             },
         ],
-    } satisfies AttackConfiguration;
+    } satisfies AttackConfiguration<object, object, ActionHost>;
 }
 
-export function createNormal(profile: Profile, timing: Timing): Attack {
-    return createAttack({
+export function createNormal(profile: Profile, timing: Timing): Attack<object, object, ActionHost> {
+    return createAttack<ActionHost>({
         ...attackDefinition(profile, false, timing),
         onStart: faceTarget,
     });
@@ -144,7 +142,7 @@ export function createNormal(profile: Profile, timing: Timing): Attack {
 export function createSkill(
     profile: Profile,
     recoveryTicks: number,
-): Attack<object, SkillAttackState> {
+): Attack<object, SkillAttackState, ActionHost> {
     const activeConfiguration = attackDefinition(profile, true, {
         type: "FIXED",
         windupTicks: 0,
@@ -155,16 +153,16 @@ export function createSkill(
     const stunChance = value(profile.skill.blackboard, "buff_prob");
     const stunTicks = secondsToTicks(value(profile.skill.blackboard, "stun"));
 
-    return createSkillAttack({
+    return createSkillAttack<ActionHost>({
         ...activeConfiguration,
         applyWay: "MELEE",
         output(state, host, self) {
             const source = getCurrentUnit(state, host);
-            if (source === undefined || !hasSkill(source) || source.skill.activation === null) {
+            if (source?.skill.activation == null) {
                 return state;
             }
 
-            const power = hasOffense(source) ? resolveAttack(state, source) : 0;
+            const power = resolveAttack(state, source);
             state = healSelf(state, source.id, healRatio);
 
             for (const targetRef of self.execution.state.bindings.primary ?? []) {
@@ -177,7 +175,7 @@ export function createSkill(
                 const currentSource = getCurrentUnit(state, host);
                 const target = getCurrentUnit(state, targetRef);
 
-                if (currentSource?.lifecycle !== "ACTIVE" || !hasClassification(currentSource)) {
+                if (currentSource?.lifecycle !== "ACTIVE") {
                     return state;
                 }
 

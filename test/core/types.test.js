@@ -1,4 +1,5 @@
 // Contract: [api-conventions](../../docs/architecture/api-conventions.md#统一-typed-ref-与类型恢复).
+// Contract: [action](../../docs/architecture/action.md#3-definitionaction-与-execution).
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { fileURLToPath } from "node:url";
@@ -182,11 +183,28 @@ Hooks.empty().set(hpDamage.beforeReceive, { id: 'rewrite-reason', invoke: (state
 Hooks.empty().set(receivingKey, { id: 'restore-then-fix', invoke: (state, _context, current) => ({ state, value: hpDamage.fix({ ...current, type: 'NORMAL' as const }) }) });
 // @ts-expect-error cancelling again cannot hide replacement of an existing reason.
 Hooks.empty().set(receivingKey, { id: 'rewrite-then-cancel', invoke: (state, context, current) => ({ state, value: current.type === 'CANCELLED' ? hpDamage.cancel({ ...current, reason: 'BLOCKED' as const }, 'MISS', context.forbidden) : current }) });
-const program: actions.Definition<{ uses: number }, { hits: number }> = {
+type ArmedDefinition = Unit['definition'] & {
+    readonly offense: Offense['definition']['offense'];
+    readonly layer: { readonly type: 'GROUND' };
+    readonly action: actions.CapabilityDefinition<ArmedHost>;
+};
+interface ArmedHost extends Unit, Offense, actions.ActionCapability {
+    readonly definition: ArmedDefinition;
+}
+declare const plainActionHost: Ref<Unit & actions.ActionCapability>;
+const program: actions.Definition<{ uses: number }, { hits: number }, ArmedHost> = {
     id: 'attack', applyWay: 'NONE', period: { type: 'FIXED', ticks: 10 },
     initialize: state => ({ state, value: { uses: 0 } }),
     prepare: state => ({ state, value: { hits: 1 } }),
-    onTick: (state, source, self) => actions.finish(state, actions.executionRef(source, self)),
+    onTick(state, source, self) {
+        const owner: ArmedHost | undefined = get(state, source);
+        if (owner !== undefined) {
+            resolveAttack(state, owner);
+        }
+        // @ts-expect-error a precise execution identity requires its declared host capabilities.
+        actions.executionRef(plainActionHost, self);
+        return actions.finish(state, actions.executionRef(source, self));
+    },
 };
 const timedAttack = createAttackWithState<{ uses: number }, { hits: number }>({
     id: 'typed-timing', period: { type: 'ATTACK_SPEED' }, triggerBindingId: 'primary',
@@ -214,13 +232,20 @@ const timedAttackInput = {
 createAttackWithState({ ...timedAttackInput, applyWay: 'RANGED' });
 // @ts-expect-error custom output declares its apply way explicitly.
 createAttackWithState({ ...timedAttackInput, output: state => state });
-const host = initialize(battle, { position: [0, 0], definition: {
+const armedDefinition: ArmedDefinition = {
     id: 'armed', hooks: Hooks.empty(), offense: { attack: attribute(100) }, layer: { type: 'GROUND' },
     action: {
         speed: attribute(100, 20), interval: attribute(10),
-        definitions: [program],
+        definitions: [program, timedAttack],
+        select(state, owner) {
+            resolveAttack(state, owner);
+            return { state, value: [program.id] };
+        },
     },
-} }).value;
+};
+// @ts-expect-error a host without the required capabilities cannot use this program.
+const wrongHostActions: actions.CapabilityDefinition<object>['definitions'] = [program];
+const host = initialize(battle, { position: [0, 0], definition: armedDefinition }).value;
 const reference = ref(host);
 removeUnit(battle, reference, { reason: 'SCRIPT' });
 removeUnit(battle, reference, { reason: 'DEATH', killer: null });
@@ -235,11 +260,16 @@ const dynamicModifiers = (_state: State, _self: Unit & actions.ActionCapability)
 // @ts-expect-error Action time contributions publish fixed values through a Change.
 actions.setSpeedContribution({ id: 'dynamic-speed', value: dynamicModifiers });
 const persistent = actions.ref(reference, program);
+// @ts-expect-error a precise action identity requires its declared host capabilities.
+actions.ref(plainActionHost, program);
 const uses: number = actions.getAction(battle, persistent)!.state.uses;
 actions.setState(battle, persistent, { uses: uses + 1 });
+// @ts-expect-error the persistent identity retains its own private state type.
+actions.setState(battle, persistent, { uses: 'wrong' });
 const started = actions.start(battle, persistent);
 if (started.value !== null) {
     const execution = started.value;
+    const executionHost: Ref<ArmedHost> = execution.host;
     const hits: number = actions.getExecution(started.state, execution)!.execution.state.hits;
     const cancellation: Command = { type: 'CANCEL_ACTION_EXECUTION', ref: execution };
     runtime.step(started.state, [cancellation]);
@@ -249,9 +279,14 @@ if (started.value !== null) {
     // @ts-expect-error persistent and execution identities are different.
     actions.getAction(started.state, execution);
 }
-declare const erased: Ref<actions.Execution>;
+const erasedExecution = actions.forUnit(battle, reference)[0]!;
+const executionView = actions.getExecution(battle, erasedExecution)!;
 // @ts-expect-error ordinary erased reads cannot invent private fields.
-actions.getExecution(battle, erased)!.execution.state.hits;
+executionView.execution.state.hits;
+// @ts-expect-error an erased definition cannot be invoked directly.
+executionView.definition.onTick(battle, reference, executionView);
+// @ts-expect-error an erased execution reference cannot write private state.
+actions.setExecutionState(battle, erasedExecution, { hits: 0 });
 const shield = {
     id: 'shield', initialize: () => ({ charges: 1 }),
     onTick(state, self) {

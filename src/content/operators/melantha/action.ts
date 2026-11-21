@@ -1,14 +1,12 @@
-import { createWithState, faceTarget, type Attack } from "../../actions/attack.js";
+import { createWithState, faceTarget, sourceAttack, type Attack } from "../../actions/attack.js";
 import type { AttackSpeedTiming } from "../../actions/timing.js";
 import { ref as actionRef, setState } from "../../../core/unit/capability/action/index.js";
 import * as targeting from "../../../core/battle/targeting/index.js";
 import * as units from "../../../core/unit/index.js";
 import { hasTargetable } from "../../../core/unit/capability/targetable/capability.js";
-import {
-    hasClassification,
-    type Classification,
-} from "../../../core/unit/capability/classification/index.js";
-import { hasBlockable, hasBlocker } from "../../../core/unit/capability/blocking/index.js";
+import type { Classification } from "../../../core/unit/capability/classification/index.js";
+import { hasBlockable, type Blocker } from "../../../core/unit/capability/blocking/index.js";
+import type { Offense } from "../../../core/unit/capability/offense/index.js";
 import { hasDirection } from "../../../core/unit/capability/occupancy/index.js";
 import { hasLayer } from "../../../core/unit/capability/layer/index.js";
 import { fromTiles } from "../../../core/geometry/range.js";
@@ -20,6 +18,8 @@ import type { State as BattleState } from "../../../core/battle/state.js";
 export interface State {
     readonly inSession: boolean;
 }
+
+export type Host = Classification & Blocker & Offense;
 
 const inDefaultCategory = targeting.inCategories(["DEFAULT"]);
 
@@ -40,12 +40,16 @@ function candidates(battle: BattleState, self: units.Unit & Classification, prof
         );
 }
 
-export function hasTarget(battle: BattleState, self: units.Unit, profile: Profile): boolean {
-    return hasClassification(self) && candidates(battle, self, profile).some(() => true);
+export function hasTarget(
+    battle: BattleState,
+    self: units.Unit & Classification,
+    profile: Profile,
+): boolean {
+    return candidates(battle, self, profile).some(() => true);
 }
 
-export function create(profile: Profile, timing: AttackSpeedTiming): Attack<State> {
-    return createWithState<State, object>({
+export function create(profile: Profile, timing: AttackSpeedTiming): Attack<State, object, Host> {
+    return createWithState<State, object, Host>({
         id: "normal-attack",
         initialize: (battle) => ({ state: battle, value: { inSession: false } }),
         prepare: (battle) => ({ state: battle, value: {} }),
@@ -68,11 +72,11 @@ export function create(profile: Profile, timing: AttackSpeedTiming): Attack<Stat
                 id: "primary",
                 select(battle, source) {
                     const self = units.get(battle, source);
-                    if (self === undefined || !hasClassification(self)) {
+                    if (self === undefined) {
                         return { state: battle, value: [] };
                     }
 
-                    const blockedFirst = hasBlocker(self) ? targeting.blockedFirst(self) : () => 0;
+                    const blockedFirst = targeting.blockedFirst(self);
                     const distance = targeting.distance(self.position);
 
                     return {
@@ -89,8 +93,7 @@ export function create(profile: Profile, timing: AttackSpeedTiming): Attack<Stat
                         type: "DAMAGE",
                         attackType: "NORMAL",
                         applyWay: "MELEE",
-                        power: profile.attributes.attack,
-                        powerSource: "SOURCE_ATTACK",
+                        power: sourceAttack,
                         damageType: "PHYSICAL",
                     },
                 ],

@@ -9,26 +9,26 @@ import type { Action as ActionCapability } from "./capability.js";
 import { hasVitality } from "../vitality/capability.js";
 import { isAlive } from "../vitality/query.js";
 import { resolvePeriod } from "./timing.js";
-import type { Action } from "./action.js";
-import { ref, type Execution } from "./execution.js";
+import type { Action, ActionView } from "./action.js";
+import { ref, type Execution, type ExecutionView } from "./execution.js";
 import type { End } from "./definition.js";
 import * as cooldown from "./cooldown.js";
 import { executionRefs } from "./query.js";
 import { allows } from "../../../restriction.js";
 
-export function setState<X extends Action<any, any>>(
+export function setState<P extends object, E extends object, H extends object>(
     battle: BattleState,
-    reference: Ref<X>,
-    state: NoInfer<X["state"]>,
+    reference: Ref<Action<P, E, H>>,
+    state: NoInfer<P>,
 ): BattleState {
     const { unit, action } = getAction(battle, reference);
 
     return state === action.state ? battle : replaceAction(battle, unit, { ...action, state });
 }
 
-export function setCooldown<X extends Action<any, any>>(
+export function setCooldown(
     battle: BattleState,
-    reference: Ref<X>,
+    reference: Ref<ActionView>,
     next: cooldown.State,
 ): BattleState {
     const { unit, action } = getAction(battle, reference);
@@ -38,10 +38,10 @@ export function setCooldown<X extends Action<any, any>>(
         : replaceAction(battle, unit, { ...action, cooldown: next });
 }
 
-export function start<P extends object, E extends object>(
+export function start<P extends object, E extends object, H extends object>(
     battle: BattleState,
-    reference: Ref<Action<P, E>>,
-): Result<Ref<Execution<P, E>> | null> {
+    reference: Ref<Action<P, E, H>>,
+): Result<Ref<Execution<P, E, H>> | null> {
     const { host: source, definition } = reference;
 
     function check(battle: BattleState) {
@@ -88,7 +88,7 @@ export function start<P extends object, E extends object>(
     }
 
     const { unit, action } = latest;
-    const self: Execution<P, E> = {
+    const self: Execution<P, E, H> = {
         definition: action.definition,
         state: action.state,
         cooldown: cooldown.reset(action.cooldown, battle.tick),
@@ -119,10 +119,10 @@ export function start<P extends object, E extends object>(
     return { state: battle, value: execution };
 }
 
-export function setExecutionState<X extends Execution<any, any>>(
+export function setExecutionState<P extends object, E extends object, H extends object>(
     battle: BattleState,
-    reference: Ref<X>,
-    state: NoInfer<X["execution"]["state"]>,
+    reference: Ref<Execution<P, E, H>>,
+    state: NoInfer<E>,
 ): BattleState {
     const unit = units.get(battle, reference.host);
     if (unit === undefined) {
@@ -142,7 +142,7 @@ export function setExecutionState<X extends Execution<any, any>>(
           });
 }
 
-export const lifetime = lifetimes.create<Execution, Execution<any, any>, End>({
+export const lifetime = lifetimes.create<ExecutionView, ExecutionView, End>({
     kind: "ACTION",
     address: (reference) => [reference.host.id, reference.id],
     get: (battle, reference) =>
@@ -152,7 +152,9 @@ export const lifetime = lifetimes.create<Execution, Execution<any, any>, End>({
     replace: (battle, reference, next) =>
         replaceAction(battle, units.get(battle, reference.host)!, next),
     finalize(battle, reference, result) {
-        const self = units.get(battle, reference.host)!.action.actions.getExecution(reference.id)!;
+        const self = units
+            .get(battle, reference.host)!
+            .action.actions.getExecution(reference.id)! as Execution;
 
         if (self.definition.onEnd !== undefined) {
             battle = self.definition.onEnd(battle, reference.host, self, result);
@@ -175,16 +177,13 @@ export const lifetime = lifetimes.create<Execution, Execution<any, any>, End>({
     fromDependency: () => ({ type: "CANCELLED", reason: "SOURCE_ABSENT" }),
 });
 
-export function finish<X extends Execution<any, any>>(
-    battle: BattleState,
-    reference: Ref<X>,
-): BattleState {
+export function finish(battle: BattleState, reference: Ref<ExecutionView>): BattleState {
     return lifetime.end(battle, reference, { type: "FINISHED" });
 }
 
-export function cancel<X extends Execution<any, any>>(
+export function cancel(
     battle: BattleState,
-    reference: Ref<X>,
+    reference: Ref<ExecutionView>,
     reason = "CANCELLED",
 ): BattleState {
     return lifetime.end(battle, reference, { type: "CANCELLED", reason });
@@ -208,16 +207,13 @@ export function cancelForUnit(
     return battle;
 }
 
-export function advance<X extends Execution<any, any>>(
-    battle: BattleState,
-    reference: Ref<X>,
-): BattleState {
+export function advance(battle: BattleState, reference: Ref<ExecutionView>): BattleState {
     const source = units.get(battle, reference.host);
     if (source === undefined) {
         return battle;
     }
 
-    const self = source.action.actions.getExecution(reference.id);
+    const self = source.action.actions.getExecution(reference.id) as Execution | undefined;
     if (self?.execution.lifecycle !== "ACTIVE") {
         return battle;
     }
@@ -240,7 +236,7 @@ export function refreshCooldowns(
     let actions = unit.action.actions;
 
     for (const id of actions.keys()) {
-        const self = actions.get(id)!;
+        const self = actions.get(id)! as Action;
         if (self.definition.period.type !== "ATTACK_SPEED") {
             continue;
         }
@@ -257,10 +253,7 @@ export function refreshCooldowns(
         : replaceUnits(battle, [{ ...unit, action: { ...unit.action, actions } }]);
 }
 
-export function resetCooldown<X extends Action<any, any>>(
-    battle: BattleState,
-    reference: Ref<X>,
-): BattleState {
+export function resetCooldown(battle: BattleState, reference: Ref<ActionView>): BattleState {
     const { unit, action } = getAction(battle, reference);
     const next = cooldown.reset(action.cooldown, battle.tick);
 
@@ -269,10 +262,7 @@ export function resetCooldown<X extends Action<any, any>>(
         : replaceAction(battle, unit, { ...action, cooldown: next });
 }
 
-export function clearCooldown<X extends Action<any, any>>(
-    battle: BattleState,
-    reference: Ref<X>,
-): BattleState {
+export function clearCooldown(battle: BattleState, reference: Ref<ActionView>): BattleState {
     const { unit, action } = getAction(battle, reference);
     const next = cooldown.clear(action.cooldown, battle.tick);
 
@@ -281,7 +271,7 @@ export function clearCooldown<X extends Action<any, any>>(
         : replaceAction(battle, unit, { ...action, cooldown: next });
 }
 
-function getAction<X extends Action<any, any>>(battle: BattleState, reference: Ref<X>) {
+function getAction(battle: BattleState, reference: Ref<ActionView>) {
     const unit = units.get(battle, reference.host);
     if (unit === undefined) {
         throw new RangeError(`unknown unit: ${reference.host.id}`);
@@ -295,11 +285,13 @@ function getAction<X extends Action<any, any>>(battle: BattleState, reference: R
     return { unit, action };
 }
 
-function replaceAction<P extends object, E extends object>(
+function replaceAction(
     battle: BattleState,
     unit: Unit & ActionCapability,
-    self: Action<P, E> | Execution<P, E>,
+    entry: ActionView | ExecutionView,
 ): BattleState {
+    const self = entry as Action | Execution;
+
     return replaceUnits(battle, [
         {
             ...unit,

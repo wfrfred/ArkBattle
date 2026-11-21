@@ -1,18 +1,24 @@
-import type { Attack } from "../../actions/attack.js";
 import type { Profile } from "../../../data/unit/enemy.js";
 import { type Unit, ref } from "../../../core/unit/index.js";
-import type {
-    Definitions as CapabilityDefinitions,
-    Product,
-} from "../../../core/unit/capability/catalog.js";
-import { hasExecution } from "../../../core/unit/capability/action/index.js";
+import type { Product } from "../../../core/unit/capability/catalog.js";
+import {
+    hasExecution,
+    type CapabilityDefinition,
+} from "../../../core/unit/capability/action/index.js";
 
 import { hasBlockable } from "../../../core/unit/capability/blocking/index.js";
 import {
     createDefinition as createGroundDefinition,
     type Definition as GroundDefinition,
 } from "../ground.js";
-import { createMelee, createRanged, type Projectile, type Timing } from "./action.js";
+import {
+    createMelee,
+    createRanged,
+    type Attack,
+    type Host,
+    type Projectile,
+    type Timing,
+} from "./action.js";
 import { TICKS_PER_SECOND } from "../../../core/tick.js";
 
 export interface AttackTiming extends Timing {
@@ -20,11 +26,13 @@ export interface AttackTiming extends Timing {
     readonly projectile: Projectile;
 }
 
-export interface Definition extends GroundDefinition, Pick<CapabilityDefinitions, "action"> {
-    readonly profile: Profile;
-    readonly attackTiming: AttackTiming;
-    readonly attack: Attack;
-}
+export type Definition = GroundDefinition &
+    Host["definition"] & {
+        readonly action: CapabilityDefinition<Host>;
+        readonly profile: Profile;
+        readonly attackTiming: AttackTiming;
+        readonly attack: Attack;
+    };
 
 export type Enemy = Unit & Product<Definition>;
 
@@ -41,7 +49,7 @@ export function create(
     }
 
     const ground = createGroundDefinition(profile, timing.hitRadius, movement);
-    const melee = createMelee(profile, timing);
+    const melee = createMelee(timing);
     const ranged = createRanged(profile, timing, timing.projectile);
     const definition: Definition = {
         ...ground,

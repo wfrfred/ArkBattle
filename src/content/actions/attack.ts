@@ -26,7 +26,7 @@ import * as timing from "./timing.js";
 import type { Timing, Sample as TimingSample } from "./timing.js";
 import { mergeApplyWays } from "../../core/battle/resource/damage.js";
 
-import { hasOffense, resolveAttack } from "../../core/unit/capability/offense/index.js";
+import { resolveAttack, type Offense } from "../../core/unit/capability/offense/index.js";
 import { hasFacing, fromVector, turn } from "../../core/unit/capability/facing/index.js";
 
 import {
@@ -52,14 +52,15 @@ import {
 import * as epDamage from "../../core/battle/resource/ep/damage/index.js";
 import * as epHealing from "../../core/battle/resource/ep/healing/index.js";
 
-export type Operation =
+type Source<H extends object> = Ref<Unit & ActionCapability & H>;
+
+export type Operation<H extends object = object> =
     | {
           readonly type: "DAMAGE";
-          readonly power: number;
+          readonly power: number | ((battle: BattleState, source: Source<H>) => number | undefined);
           readonly damageType: DamageType;
           readonly attackType: AttackType;
           readonly applyWay: ApplyWay;
-          readonly powerSource?: "SOURCE_ATTACK";
       }
     | { readonly type: "HEAL"; readonly power: number }
     | {
@@ -71,69 +72,70 @@ export type Operation =
       }
     | { readonly type: "ELEMENTAL_INJURY_HEALED"; readonly power: number };
 
-export interface TargetGroup {
+export interface TargetGroup<H extends object = object> {
     readonly id: string;
-    readonly select: (
-        battle: BattleState,
-        source: Ref<Unit & ActionCapability>,
-    ) => Result<readonly Ref<Unit>[]>;
-    readonly operations: readonly Operation[];
+    readonly select: (battle: BattleState, source: Source<H>) => Result<readonly Ref<Unit>[]>;
+    readonly operations: readonly Operation<H>[];
 }
 
-export interface FollowUp {
+export interface FollowUp<H extends object = object> {
     readonly receiver:
         { readonly type: "SOURCE" } | { readonly type: "BINDING"; readonly bindingId: string };
-    readonly operation: Operation;
+    readonly operation: Operation<H>;
 }
 
-export interface Configuration<P extends object = object, E extends object = object> {
+export interface Configuration<
+    P extends object = object,
+    E extends object = object,
+    H extends object = object,
+> {
     readonly id: string;
     readonly period: Period;
     readonly triggerBindingId: string;
-    readonly targetGroups: readonly [TargetGroup, ...TargetGroup[]];
-    readonly followUps?: readonly FollowUp[];
+    readonly targetGroups: readonly [TargetGroup<H>, ...TargetGroup<H>[]];
+    readonly followUps?: readonly FollowUp<H>[];
     readonly timing:
-        | Timing
-        | ((
-              battle: BattleState,
-              source: Ref<Unit & ActionCapability>,
-              self: Action<P, State<E>>,
-          ) => Timing);
+        Timing | ((battle: BattleState, source: Source<H>, self: Action<P, State<E>, H>) => Timing);
 }
 
-export type Definition<P extends object = object, E extends object = object> = Configuration<
-    P,
-    E
-> & {
+export type Definition<
+    P extends object = object,
+    E extends object = object,
+    H extends object = object,
+> = Configuration<P, E, H> & {
     readonly onStart?: (
         battle: BattleState,
-        source: Ref<Unit & ActionCapability>,
-        self: Execution<P, State<E>>,
+        source: Source<H>,
+        self: Execution<P, State<E>, H>,
     ) => BattleState;
     readonly afterOutput?: (
         battle: BattleState,
-        source: Ref<Unit & ActionCapability>,
-        self: Execution<P, State<E>>,
+        source: Source<H>,
+        self: Execution<P, State<E>, H>,
     ) => BattleState;
-    readonly onEnd?: ActionDefinition<P, State<E>>["onEnd"];
+    readonly onEnd?: ActionDefinition<P, State<E>, H>["onEnd"];
 } & (
         | { readonly output?: undefined; readonly applyWay?: never }
         | {
               readonly applyWay: ApplyWay;
               readonly output: (
                   battle: BattleState,
-                  source: Ref<Unit & ActionCapability>,
-                  self: Execution<P, State<E>>,
+                  source: Source<H>,
+                  self: Execution<P, State<E>, H>,
               ) => BattleState;
           }
     );
 
-export type StatefulDefinition<P extends object, E extends object> = Definition<P, E> & {
+export type StatefulDefinition<
+    P extends object,
+    E extends object,
+    H extends object = object,
+> = Definition<P, E, H> & {
     readonly initialize: (battle: BattleState) => Result<P>;
     readonly prepare: (
         battle: BattleState,
-        source: Ref<Unit & ActionCapability>,
-        self: Action<P, State<E>>,
+        source: Source<H>,
+        self: Action<P, State<E>, H>,
     ) => Result<E>;
 };
 
@@ -150,8 +152,9 @@ export interface State<S extends object = object> {
 export interface Attack<
     P extends object = object,
     E extends object = object,
-> extends ActionDefinition<P, State<E>> {
-    readonly attack: Configuration<P, E>;
+    H extends object = object,
+> extends ActionDefinition<P, State<E>, H> {
+    readonly attack: Configuration<P, E, H>;
 }
 
 function isSourceActive(battle: BattleState, source: Ref<Unit>): boolean {
@@ -160,10 +163,10 @@ function isSourceActive(battle: BattleState, source: Ref<Unit>): boolean {
     return current?.lifecycle === "ACTIVE";
 }
 
-export function faceTarget<P extends object, E extends object>(
+export function faceTarget<P extends object, E extends object, H extends object>(
     battle: BattleState,
-    source: Ref<Unit & ActionCapability>,
-    self: Execution<P, State<E>>,
+    source: Source<H>,
+    self: Execution<P, State<E>, H>,
 ): BattleState {
     const host = units.get(battle, source);
     const target = units.get(battle, self.execution.state.target);
@@ -181,10 +184,10 @@ export function faceTarget<P extends object, E extends object>(
     return direction === null ? battle : turn(battle, units.ref(host), direction);
 }
 
-export function chooseTargets<P extends object, E extends object>(
+export function chooseTargets<P extends object, E extends object, H extends object>(
     battle: BattleState,
-    source: Ref<Unit & ActionCapability>,
-    definition: Configuration<P, E>,
+    source: Source<H>,
+    definition: Configuration<P, E, H>,
 ): Result<State["bindings"]> {
     const unit = units.get(battle, source);
     if (unit === undefined) {
@@ -202,29 +205,30 @@ export function chooseTargets<P extends object, E extends object>(
     return { state: battle, value: bindings };
 }
 
-function apply(
+export function sourceAttack(battle: BattleState, source: Ref<Unit & Offense>): number | undefined {
+    const current = units.get(battle, source);
+
+    return current === undefined ? undefined : resolveAttack(battle, current);
+}
+
+function apply<H extends object>(
     battle: BattleState,
-    source: Ref<Unit>,
+    source: Source<H>,
     target: Ref<Unit>,
-    operation: Operation,
+    operation: Operation<H>,
 ): BattleState {
     switch (operation.type) {
         case "DAMAGE": {
             const receiver = units.get(battle, target);
-            let power: number | undefined = operation.power;
-
-            if (operation.powerSource === "SOURCE_ATTACK") {
-                const current = units.get(battle, source);
-                if (current === undefined) {
-                    power = undefined;
-                } else if (hasOffense(current)) {
-                    power = resolveAttack(battle, current);
-                } else {
-                    power = 0;
-                }
+            if (receiver === undefined || !hasVitality(receiver)) {
+                return battle;
             }
 
-            if (power === undefined || receiver === undefined || !hasVitality(receiver)) {
+            const power =
+                typeof operation.power === "function"
+                    ? operation.power(battle, source)
+                    : operation.power;
+            if (power === undefined) {
                 return battle;
             }
 
@@ -298,24 +302,28 @@ function apply(
     }
 }
 
-export function create(definition: Definition): Attack {
-    return createWithState({
+export function create<H extends object = object>(
+    definition: Definition<object, object, H>,
+): Attack<object, object, H> {
+    return createWithState<object, object, H>({
         ...definition,
         initialize: (battle) => ({ state: battle, value: {} }),
         prepare: (battle) => ({ state: battle, value: {} }),
     });
 }
 
-export function createWithState<P extends object, E extends object>(
-    definition: StatefulDefinition<P, E>,
-): Attack<P, E> {
+export function createWithState<P extends object, E extends object, H extends object = object>(
+    definition: StatefulDefinition<P, E, H>,
+): Attack<P, E, H> {
     if (typeof definition.timing !== "function") {
         timing.validate(definition.timing);
     }
 
     for (const group of definition.targetGroups) {
         for (const operation of group.operations) {
-            assertNonnegativeNumber(operation.power, "attack operation power");
+            if (typeof operation.power !== "function") {
+                assertNonnegativeNumber(operation.power, "attack operation power");
+            }
         }
     }
 
@@ -335,14 +343,16 @@ export function createWithState<P extends object, E extends object>(
             throw new TypeError("attack follow-up references an unknown target binding");
         }
 
-        assertNonnegativeNumber(followUp.operation.power, "attack operation power");
+        if (typeof followUp.operation.power !== "function") {
+            assertNonnegativeNumber(followUp.operation.power, "attack operation power");
+        }
     }
 
     const operations = [
         ...definition.targetGroups.flatMap((group) => group.operations),
         ...followUps.map(({ operation }) => operation),
     ];
-    const configuration: Configuration<P, E> = {
+    const configuration: Configuration<P, E, H> = {
         id: definition.id,
         period: definition.period,
         triggerBindingId: definition.triggerBindingId,
@@ -350,7 +360,7 @@ export function createWithState<P extends object, E extends object>(
         followUps,
         timing: definition.timing,
     };
-    const attack: Attack<P, E> = {
+    const attack: Attack<P, E, H> = {
         id: definition.id,
         applyWay:
             definition.output === undefined

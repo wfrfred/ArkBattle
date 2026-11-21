@@ -24,13 +24,17 @@ Definition 提供基础时序、持久初始化、prepare、onTick 和可选 onE
 
 Content 在 Action Capability 的 `definitions` 中按顺序声明行动。Capability 装配时逐项接续 BattleState，执行 Definition 的持久初始化，并保存带就绪冷却和空执行槽位的 Action。`select` 仍由 Content 决定运行时选招。共享 Definition 的不同宿主分别产生私有状态。初始化期间宿主尚未登记，也不能假定兄弟能力已完成装配。
 
+`Definition<P, E, H>` 将持久状态 `P`、执行状态 `E` 和额外宿主要求 `H` 配对。`prepare`、`onTick` 和 `onEnd` 收到 `Ref<Unit & ActionCapability & H>`，精确的 Action 与 Execution Ref 延续这份配对。只依赖 Action Capability 的程序可使用默认的 `H`。
+
+需要其他能力的 Content 声明具备这些能力的具体 Unit 配置。`CapabilityDefinition<H>` 在类型上校验行动列表能用于该宿主，并为 `select` 提供相应的宿主类型。例如，读取宿主攻击力的程序可以声明 `Offense`，让回调在查到宿主后直接读取该能力。可复用的程序声明自身所需能力，具备更多能力的宿主也能配置它。
+
 prepare 检查本次内容条件、初始化执行数据并采样；返回 null 表示未启动，已经完成的状态变化仍接续。需要执行身份的伤害、召唤、绑定 Effect 等业务放在登记后的 onTick；prepare 不递归启动自己或改变来源配置。
 
 `onTick` 返回接续的 BattleState。程序正常完成时调用 `finish`，取消时调用 `cancel`。本轮进度由执行状态操作发布，需要被嵌套业务观察的进度先提交。
 
 ## 4. 异构容器与两种引用身份
 
-行动按配置 ID 登记，重复 ID 在创建边界拒绝。容器保存完整聚合，普通查询保留完整实体但不承诺私有形状；精确 Definition／Typed Ref 恢复私有类型，类型擦除仅留在异构存储边界。
+行动按配置 ID 登记，重复 ID 在创建边界拒绝。容器保存完整聚合，普通查询提供公共字段与可用于取消等操作的执行引用。调度和生命周期操作从宿主读取已登记的聚合，再调用该聚合的 Definition 回调。按 Definition 对象身份查询或使用精确 Ref 可以恢复持久状态、执行状态和宿主要求。
 
 持久 Ref 由宿主和 Definition 对象标识，跨多轮有效；Execution Ref 由宿主和本轮执行 ID 标识，不能操作后来的执行。执行 ID 在宿主内单调分配，不回收。`getExecution` 与 `hasExecution` 均读到仍占位的 ENDING 本轮，直到该轮清空。
 
@@ -60,7 +64,7 @@ Action Definition 显式提供 `applyWay`。攻击工厂从伤害与元素损伤
 
 start 先检查配置身份、宿主资格、执行占位、限制与冷却，再运行 prepare；返回后按最新宿主、聚合和周期复查。仍可启动时才一次发布 Execution、Cooldown 与身份计数，并登记 Execution→Unit 所有权。普通拒绝不分配身份或开始周期，Result 保留准备程序已经提交的业务。start 只登记，首次执行由调度器调用 advance。
 
-持久状态、执行状态和冷却各有字段级写回，只替换对应字段。结束程序可以更新仍登记的本轮私有状态，写回保留执行身份和 ENDING。缺失身份或 Definition 错配属于调用错误。类型配对、最新读取和不可变发布遵守公共契约。
+持久状态、执行状态和冷却各有字段级写回，只替换对应字段。写入私有状态需要与相应 Definition 配对的精确 Ref。结束程序可以更新仍登记的本轮私有状态，写回保留执行身份和 ENDING。缺失身份或 Definition 错配属于调用错误。最新读取和不可变发布遵守公共契约。
 
 `finish` 请求 FINISHED，`cancel` 请求 CANCELLED。终止发布 ENDING，等待依赖者结束后将结果传给 onEnd，再只清空同一轮 execution，保留最新持久状态／冷却并输出结束事实。Lifetime 保护宿主到整个 Finalize 返回；它不保护任意普通 onTick 调用栈。嵌套结束请求返回时本轮可能仍占位，同一结算中立即重启可能被拒绝。
 
@@ -89,6 +93,8 @@ Combat 固定入口的 Unit 与已有执行候选。对每个宿主先推进原�
 beforeRelease 返回继续或中断及恢复时长；released 表示已到达成功释放点，先于伤害／治疗输出。派发要求当前执行与宿主均为 ACTIVE，首个中断停止；恢复信息交给具体攻击，不增加通用 Unit 恢复字段。
 
 攻击通过拦截后记录 ACTION_RELEASED、派发 released，再读取最新执行的输出载荷。释放通知可以取消执行或结束宿主，此时旧输出停止，已完成的释放事实和回复保留。Skill 在此登记 ACTION 回复，Action 本身不读取 Skill。
+
+攻击模板的伤害 `power` 可以是固定值，也可以在每个目标结算前根据实时 BattleState 读取。`sourceAttack` 要求宿主具备 `Offense`，连续命中间发生的属性变化可影响后续目标。固定值伤害不要求 `Offense`。
 
 afterOutput 只在对应执行仍 ACTIVE 时进入，不是无条件清理回调；它自身也可取消执行或结束技能。回调后重新读取同一身份，避免重复完成。已经发生的输出、耗弹与后继责任由具体内容的消费时序决定。
 
