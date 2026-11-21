@@ -47,14 +47,14 @@
       {
         "path": "content/extract.py",
         "kind": "historical-script",
-        "bytes": 4143,
-        "sha256": "7cfdf854b371d934b33a3d9abe7f61241154082277d04d4d6beb2c151d5b3b98"
+        "bytes": 4348,
+        "sha256": "afad9521c3eddbb43fd14982ac619deb6cb775a756448dcbc4847443a8ffcb26"
       },
       {
         "path": "content/levels.json",
         "kind": "record",
-        "bytes": 21408,
-        "sha256": "d7750bf7fd23b026c2e6d9d2ed4a67b46a8e1615f069892152f67163f89dc992"
+        "bytes": 24964,
+        "sha256": "f0c1fd6c7725719a45faf68e6c17be5349431cb2f6053a76fcc405defdc81c3e"
       },
       {
         "path": "native/bodies/ActivateHiddenCard-66758.asm",

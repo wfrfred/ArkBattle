@@ -422,6 +422,10 @@ CD 策略、份数消耗／归还和回收惩罚有不同原生维度；当前�
 
 **N**　`ACTIVATE_PREDEFINED` 将 Action 的 key 交给 `TryActivePredefined`（73336）。它完成 `ActivateInternalHiddenCard` 和 `SpawnPredefinedInstanceByAlias` 两次调用后统计成功次数。一条成功时返回 true，两条均成功时记录错误并直接返回 false。前一路遍历活跃 Deck 按别名找到已有的隐藏卡，调用 `Card.SetHidden(false, hiddenKey)`。`Deck.ActivateHiddenCard`（66759）此后可返回 true，卡处理后可见时才通知 `OnCardListChanged`。TR-1 的 key `char_120_hibisc` 对应这类隐藏卡配置。后一路按别名先查干员实例数组，再查 Token 实例数组，命中后直接调用预置创建。普通 `WITHDRAW_PREDEFINED` 只在实例数组中解析别名，由 `_WithdrawPredefinedCharacter`（65761）在配置位置检查当前角色、匹配角色 ID 并要求 `isBuiltPredefined` 后结束实例。`TRIGGER_PREDEFINED` 与 `SHOW_ALL_HIDDEN_CARDS` 是独立的调度入口。见[别名调用链](../evidence/predefined-lifecycle-20261122/README.md#客户端证据)及 [Scheduler 执行器](30-scheduler-action-data-fields.md#非-spawn-执行器)。
 
+**N**　`TRIGGER_PREDEFINED` 执行已在场对象挂载的 Ability。`_DoTriggerPredefined.MoveNext`（73538）解析 Action key，以第一段为别名，通过 `UnitManager.GetCharacterByAlias`（`0x18098f774`）查询当前对象，第二段交给 `TryFindFirstAttachedAbility` 查找 Ability（`0x18098f7d9`）。找到后在 `0x18098f89a` 调用虚槽 36，即 `Ability.CastDirectly(null, true)`。BI-EX-2 的同一 Fragment 先以 `ACTIVATE_PREDEFINED` 和 `trap_050_blizzard#1` 令暴风雪装置登场，下一项用 `TRIGGER_PREDEFINED` 和 `trap_050_blizzard#1:Right` 执行该对象的 `Right` Ability。[关卡摘录](../evidence/predefined-lifecycle-20261122/content/levels.json) · [执行器正文与类型](../evidence/predefined-lifecycle-20261122/README.md#客户端证据)
+
+按别名找不到对象时，执行器记录错误并暂让协程，恢复后重新查询（`0x18098f945`、`0x18098f982`、`0x18098f547`）。对象存在而 Ability 查找失败时，则记录错误并进入动作完成路径（`0x18098f830`、`0x18098f89c`）。
+
 **U**　证据范围为固定版本配置和原生静态分支。重复激活的占位冲突、隐藏原因的全量来源、预置实例结束时的 Card 回收／返费、TokenCard 的初始库存创建细节、其它模式与 XLua 替换均需各自取证。
 
 ## 未决项

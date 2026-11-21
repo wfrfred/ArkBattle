@@ -4,7 +4,7 @@
 
 ## 原表证据
 
-[levels.json](content/levels.json) 从仓库固定的 `Kengxxiao/ArknightsGameData@17759cc8cdf37388414145d16262a3a06f3ab25e` 读取八份关卡和对应阶段表行。记录原文件相对路径、Git blob、原始字节 SHA-256、四数组条数及选中的 JSON Pointer。此处为用途取样，涵盖普通有卡无实例、直接预放、隐藏卡共用调度命令、同角色不同实例别名、Token 卡与实例并存及困难数组的实际正例。
+[levels.json](content/levels.json) 从仓库固定的 `Kengxxiao/ArknightsGameData@17759cc8cdf37388414145d16262a3a06f3ab25e` 读取九份关卡和对应阶段表行。记录原文件相对路径、Git blob、原始字节 SHA-256、四数组条数及选中的 JSON Pointer。此处为用途取样，涵盖普通有卡无实例、直接预放、隐藏卡共用调度命令、同角色不同实例别名、Token 卡与实例并存、困难数组，以及 BI-EX-2 先激活再触发同一装置的正例。
 
 社区对照按各自页面的固定编队、已部署干员和调度行为读取。表字段与原生调用关系由本批的镜像及客户端证据分别证明。 [PRTS 1-2](https://prts.wiki/w/1-2) · [M8-6](https://prts.wiki/w/M8-6) · [TW-S-1](https://prts.wiki/w/TW-S-1#遭遇) · [作战机制](https://prts.wiki/w/%E4%BD%9C%E6%88%98%E6%9C%BA%E5%88%B6)
 
@@ -22,6 +22,7 @@ Windows x64 IL2CPP，metadata v29。以下输入指纹与前一批一致。配�
 - [ACTIVATE_PREDEFINED 包装](native/bodies/MoveNext-73514.asm) 和 [TryActivePredefined](native/bodies/TryActivePredefined-73336.asm) 定位 Action key、调用顺序及返回分支。[GetAliasId](native/bodies/GetAliasId-32208.asm) 固定别名回退。[预置加载](native/bodies/LoadPredefinedData-65640.asm)、[别名创建](native/bodies/SpawnPredefinedInstanceByAlias-65656.asm) 固定存储容器与命中后的创建入口。
 - [卡分支](native/bodies/ActivateInternalHiddenCard-65627.asm)、[Deck 回调](native/bodies/_ActivateInternalHiddenCard_b__0-65860.asm) 和 [Deck 别名入口](native/bodies/ActivateHiddenCard-66758.asm) 固定活跃 Deck 查卡链。[Deck 卡对象重载](native/bodies/ActivateHiddenCard-66759.asm) 保留 `SetHidden` 及之后的列表通知判断。全量隐藏卡命令另见 [Scheduler 执行器原件](../scheduler-general-20261107/execution/native.json) 的 #73526。
 - [撤回别名解析](native/bodies/WithdrawPredefinedInstByAlias-65660.asm) 和[撤回资格及结束](native/bodies/_WithdrawPredefinedCharacter-65761.asm) 固定配置匹配及实际单位判定。
+- `TRIGGER_PREDEFINED` 复用 [Scheduler 正文](../scheduler-action-fields-20261107/action-fields-bodies.json) 的 #73538。虚槽 36 由 [Ability 元数据](../anger-family-20261117/native/metadata.json) 的 #64023 确认为 `CastDirectly`。
 
 ## 复跑
 

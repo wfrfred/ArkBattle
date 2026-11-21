@@ -50,10 +50,16 @@ examples = {
         "/predefines/characterInsts/0",
         "/hardPredefines/characterCards/0",
     ),
+    "activities/act14side/level_act14side_ex02.json": (
+        "/predefines/tokenInsts/0",
+        "/waves/0/fragments/0/actions/0",
+        "/waves/0/fragments/0/actions/1",
+    ),
 }
 stage_ids = (
     "main_01-02", "main_01-11", "main_03-07", "main_08-09", "main_14-09", "tr_01",
     "act11d0_s01", "act11d0_s01#f#", "act11d0_s02", "act11d0_s02#f#",
+    "act14side_ex02",
 )
 
 parser = argparse.ArgumentParser(description=__doc__)

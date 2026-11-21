@@ -603,6 +603,108 @@
             "overrideTalents": null
           }
         }
+      },
+      {
+        "source": {
+          "path": "zh_CN/gamedata/levels/activities/act14side/level_act14side_ex02.json",
+          "gitBlob": "6ddf371ed88031fc1ff6356730919121e70b171b",
+          "bytes": 95000,
+          "sha256": "fbdf2aae184a047bbfcb51b847f892bc2a4a705676cc15ec51e50ca67d659bd3"
+        },
+        "counts": {
+          "predefines": {
+            "characterInsts": 0,
+            "tokenInsts": 4,
+            "characterCards": 0,
+            "tokenCards": 0
+          },
+          "hardPredefines": {
+            "characterInsts": 0,
+            "tokenInsts": 0,
+            "characterCards": 0,
+            "tokenCards": 0
+          }
+        },
+        "options": {
+          "isTrainingLevel": false,
+          "isHardTrainingLevel": false,
+          "isPredefinedCardsSelectable": false
+        },
+        "excerpts": {
+          "/predefines/tokenInsts/0": {
+            "position": {
+              "row": 0,
+              "col": 0
+            },
+            "direction": "RIGHT",
+            "hidden": true,
+            "alias": "trap_050_blizzard#1",
+            "uniEquipIds": null,
+            "showSpIllust": false,
+            "masterInfos": null,
+            "inst": {
+              "characterKey": "trap_050_blizzard",
+              "level": 1,
+              "phase": "PHASE_0",
+              "favorPoint": 0,
+              "potentialRank": 0
+            },
+            "skillIndex": 0,
+            "mainSkillLvl": 1,
+            "skinId": null,
+            "tmplId": null,
+            "overrideSkillBlackboard": [
+              {
+                "key": "duration",
+                "value": 10.0,
+                "valueStr": null
+              }
+            ],
+            "overrideTalents": null
+          },
+          "/waves/0/fragments/0/actions/0": {
+            "actionType": "ACTIVATE_PREDEFINED",
+            "managedByScheduler": true,
+            "key": "trap_050_blizzard#1",
+            "count": 1,
+            "preDelay": 2.0,
+            "interval": 1.0,
+            "routeIndex": 0,
+            "blockFragment": false,
+            "autoPreviewRoute": false,
+            "autoDisplayEnemyInfo": false,
+            "isUnharmfulAndAlwaysCountAsKilled": false,
+            "hiddenGroup": null,
+            "randomSpawnGroupKey": null,
+            "randomSpawnGroupPackKey": null,
+            "randomType": "ALWAYS",
+            "refreshType": "ALWAYS",
+            "weight": 0,
+            "dontBlockWave": false,
+            "forceBlockWaveInBranch": false
+          },
+          "/waves/0/fragments/0/actions/1": {
+            "actionType": "TRIGGER_PREDEFINED",
+            "managedByScheduler": true,
+            "key": "trap_050_blizzard#1:Right",
+            "count": 1,
+            "preDelay": 3.0,
+            "interval": 1.0,
+            "routeIndex": 1,
+            "blockFragment": false,
+            "autoPreviewRoute": false,
+            "autoDisplayEnemyInfo": false,
+            "isUnharmfulAndAlwaysCountAsKilled": false,
+            "hiddenGroup": null,
+            "randomSpawnGroupKey": null,
+            "randomSpawnGroupPackKey": null,
+            "randomType": "ALWAYS",
+            "refreshType": "ALWAYS",
+            "weight": 0,
+            "dontBlockWave": false,
+            "forceBlockWaveInBranch": false
+          }
+        }
       }
     ],
     "stageTable": {
@@ -682,6 +784,13 @@
           "code": "TW-S-2",
           "name": "一束哀悼",
           "difficulty": "FOUR_STAR"
+        },
+        "/stages/act14side_ex02": {
+          "stageId": "act14side_ex02",
+          "levelId": "Activities/ACT14SIDE/level_act14side_ex02",
+          "code": "BI-EX-2",
+          "name": "过度扩张",
+          "difficulty": "NORMAL"
         }
       }
     }
