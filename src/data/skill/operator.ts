@@ -1,7 +1,16 @@
-import type { Recovery, Trigger } from "../../core/unit/capability/skill/index.js";
-import type { SkillLevel } from "../../content/operators/parameters.js";
+import type { Recovery, SpDefinition, Trigger } from "../../core/unit/capability/skill/index.js";
 import { secondsToTicks } from "../../core/tick.js";
-import { parseBlackboard } from "../blackboard.js";
+import { parseBlackboard, type ArknightsBlackboardEntry } from "../blackboard.js";
+
+export interface SkillLevel {
+    readonly blackboard: readonly ArknightsBlackboardEntry[];
+    readonly trigger: Trigger;
+    readonly sp: SpDefinition;
+    readonly cost: number;
+    readonly durationTicks: number | null;
+    readonly prefabId: string;
+    readonly rangeId: string | null;
+}
 
 function object(value: unknown, name: string): Record<string, unknown> {
     if (value === null || typeof value !== "object" || Array.isArray(value)) {
@@ -61,10 +70,7 @@ function spRecovery(value: unknown): Recovery["type"] {
     }
 }
 
-export function parseArknightsSkillLevel(
-    value: unknown,
-    level = 1,
-): Omit<SkillLevel, "range"> & { readonly rangeId: string | null } {
+export function parseArknightsSkillLevel(value: unknown, level = 1): SkillLevel {
     const skill = object(value, "skill record");
     if (typeof skill.skillId !== "string" || skill.skillId.length === 0) {
         throw new TypeError("skill record requires an identity");

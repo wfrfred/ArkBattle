@@ -15,7 +15,7 @@ import { hasVitality } from "../../../core/unit/capability/vitality/index.js";
 import { install } from "../../../core/unit/effect/index.js";
 import type { Operator } from "../operator.js";
 import type { Configuration, SkillSelection } from "../configuration.js";
-import type { Tables } from "../parameters.js";
+import type { Tables } from "../../../data/unit/operator.js";
 import { createNormal, createSkill as createSkillAction } from "./action.js";
 import { shieldEffect } from "./effect.js";
 import { create as createSkill } from "./skill.js";

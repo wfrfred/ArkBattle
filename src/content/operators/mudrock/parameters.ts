@@ -1,17 +1,20 @@
 import { secondsToTicks } from "../../../core/tick.js";
+import { record, type Tables } from "../../../data/unit/operator.js";
+import { parseGroupTags } from "../../../data/unit/tags.js";
 import type { AttackSpeedTiming } from "../../actions/timing.js";
 import type { Configuration, SkillSelection } from "../configuration.js";
 import {
+    favorFrame,
+    growth,
     resolveAttributes,
     selectModule,
-    selectPhase,
     selectSkill,
     selectTalents,
     selectTrait,
     type Blackboard,
-    type Tables,
 } from "../parameters.js";
 
+const operatorId = "char_311_mudrok";
 const moduleX = "uniequip_002_mudrok";
 const secondSkillIndex = 1;
 
@@ -41,20 +44,19 @@ export function resolve(configuration: Configuration & SkillSelection, tables: T
         throw new TypeError("Mudrock content supports only module X");
     }
 
-    const table = tables.operator("char_311_mudrok", {
-        skillIndices: [secondSkillIndex],
-        moduleIds: configuration.module === undefined ? [] : [moduleX],
-    });
-    const phase = selectPhase(table.phases, configuration);
-    const stage = selectModule(table.modules, configuration, tables.favor);
-    const attributes = resolveAttributes(table, phase, configuration, stage, tables.favor);
-    const { id, level } = selectSkill(table.skills, configuration);
+    const character = record(tables.characters[operatorId], "operator character record");
+    const progression = growth(character, tables.ranges, configuration);
+    const { phase } = progression;
+    const favor = favorFrame(tables.favor, configuration.trust);
+    const stage = selectModule(operatorId, tables, configuration, favor);
+    const attributes = resolveAttributes(progression, configuration, stage, favor);
+    const { id, level } = selectSkill(character, tables, configuration);
     const { range, sp, trigger, cost, blackboard } = level;
     if (range === null) {
         throw new TypeError("Mudrock content requires a range for her second skill");
     }
 
-    const talents = selectTalents(table.talents, configuration, stage);
+    const talents = selectTalents(character, configuration, stage);
     const shield = talents.find((talent) => talent.key === "1")?.blackboard;
     if (shield === undefined) {
         throw new TypeError("Mudrock content requires her shield talent");
@@ -64,8 +66,8 @@ export function resolve(configuration: Configuration & SkillSelection, tables: T
     const trait = selectTrait(configuration, stage);
 
     return {
-        id: table.id,
-        groupTags: table.groupTags,
+        id: operatorId,
+        groupTags: parseGroupTags(character),
         attributes,
         normalAttack: { range: phase.range, timing },
         s2Skill: { id, range, sp, trigger, cost },

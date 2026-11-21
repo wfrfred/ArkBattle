@@ -1,12 +1,16 @@
+import { record, type Tables } from "../../../data/unit/operator.js";
+import { parseGroupTags } from "../../../data/unit/tags.js";
 import type { Configuration, SkillSelection } from "../configuration.js";
 import {
+    favorFrame,
+    growth,
     resolveAttributes,
-    selectPhase,
     selectSkill,
     selectTalents,
-    type Tables,
 } from "../parameters.js";
 import type { AttackParameters } from "./action.js";
+
+const operatorId = "char_208_melan";
 
 const timing: AttackParameters["timing"] = {
     type: "ATTACK_SPEED",
@@ -25,23 +29,25 @@ export function resolve(configuration: Configuration & SkillSelection, tables: T
         throw new RangeError("selected module is unavailable for this operator");
     }
 
-    const parameters = tables.operator("char_208_melan", { skillIndices: [0], moduleIds: [] });
-    const phase = selectPhase(parameters.phases, configuration);
-    const attributes = resolveAttributes(parameters, phase, configuration, undefined, tables.favor);
-    const { id, level } = selectSkill(parameters.skills, configuration);
+    const character = record(tables.characters[operatorId], "operator character record");
+    const progression = growth(character, tables.ranges, configuration);
+    const { phase } = progression;
+    const favor = favorFrame(tables.favor, configuration.trust);
+    const attributes = resolveAttributes(progression, configuration, undefined, favor);
+    const { id, level } = selectSkill(character, tables, configuration);
     const { blackboard, cost, durationTicks, sp, trigger } = level;
     const attackBonus = blackboard.find((entry) => entry.key === "atk")?.value;
     if (attackBonus === undefined || durationTicks === null) {
         throw new TypeError("Melantha's first skill requires an attack bonus and a duration");
     }
 
-    const talentBonus = selectTalents(parameters.talents, configuration, undefined)
+    const talentBonus = selectTalents(character, configuration, undefined)
         .find((talent) => talent.key === "1")
         ?.blackboard.find((entry) => entry.key === "atk")?.value;
 
     return {
-        id: parameters.id,
-        groupTags: parameters.groupTags,
+        id: operatorId,
+        groupTags: parseGroupTags(character),
         attributes,
         attack: { range: phase.range, timing },
         s1: { id, cost, durationTicks, sp, trigger, attackBonus },

@@ -99,7 +99,7 @@ type Device = Unit & Classification<"DEVICE">;
 
 ### 具体单位的写法
 
-干员通过 `create(configuration, tables)` 构造。配置使用 `operators/configuration.ts` 中的 `Configuration`，有技能的干员同时要求 `SkillSelection`。该干员的 `resolve(configuration, tables)` 按需读取绑定的角色表项，校验选择并返回属性、普攻及已选技能和效果的具名参数。Action、Skill 和 Effect 的工厂声明自己需要的参数，由 `unit.ts` 调用并组装。插值、信赖和候选选择由 `operators/parameters.ts` 共享。[干员静态资料](data.md#干员静态资料)
+干员通过 `create(configuration, tables)` 构造。配置使用 `operators/configuration.ts` 中的 `Configuration`，有技能的干员同时要求 `SkillSelection`。`tables` 是 Data 提供的完整原表。该干员的 `resolve(configuration, tables)` 选择自己使用的角色记录、技能等级和模组阶段，解释相应字段并返回属性、普攻、技能和效果的具名参数。Action、Skill 和 Effect 的工厂声明自己需要的参数，由 `unit.ts` 调用并组装。常规养成、解锁和普通天赋候选选择由 `operators/parameters.ts` 共享。[干员静态资料](data.md#干员静态资料)
 
 在 `content/operators/melantha/unit.ts` 中声明具体单位的能力组合，从该单位的 `definition` 推导完整配置类型，并用 `satisfies` 检查实际提供的配置。
 
