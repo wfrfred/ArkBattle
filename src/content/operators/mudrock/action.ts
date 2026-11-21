@@ -4,7 +4,6 @@ import {
     faceTarget,
     sourceAttack,
     type Attack,
-    type Configuration as AttackConfiguration,
 } from "../../actions/attack.js";
 import {
     create as createSkillAttack,
@@ -39,7 +38,7 @@ import type { Occupancy } from "../../../core/unit/capability/occupancy/index.js
 import { hasLayer, type Layer } from "../../../core/unit/capability/layer/index.js";
 import type { TilePosition } from "../../../core/geometry/coordinate.js";
 import { fromTiles } from "../../../core/geometry/range.js";
-import { topK } from "../../../core/common/collection/order.js";
+import { sort, topK } from "../../../core/common/collection/order.js";
 import type { State as BattleState } from "../../../core/battle/index.js";
 
 import { createRng } from "../../../core/common/rng.js";
@@ -59,28 +58,24 @@ export interface SkillActionParameters {
 
 const inDefaultCategory = targeting.inCategories(["DEFAULT"]);
 
-function attackTarget(
-    battle: BattleState,
-    self: Unit & Classification & Occupancy,
-    range: readonly TilePosition[],
-    skill: boolean,
-) {
-    const eligible = targeting.damage(self)(battle);
-    const { direction } = self.occupancy;
-    const withinRange =
-        direction === null
-            ? () => false
-            : targeting.inRange(self.position, fromTiles(range, direction));
+type Target = Unit & Targetable & Vitality & Classification & Layer;
 
-    return <U extends Unit>(
-        target: U,
-    ): target is U & Targetable & Vitality & Classification & Layer =>
+function groundTarget(battle: BattleState, self: Unit & Classification) {
+    const eligible = targeting.damage(self)(battle);
+
+    return (target: Unit): target is Target =>
         hasTargetable(target) &&
         eligible(target) &&
         hasLayer(target) &&
-        target.layer.type === "GROUND" &&
-        ((inDefaultCategory(target) && withinRange(target)) ||
-            (!skill && hasBlockable(target) && target.blockable.relation?.blocker.id === self.id));
+        target.layer.type === "GROUND";
+}
+
+function inAttackRange(self: Unit & Occupancy, range: readonly TilePosition[]) {
+    const { direction } = self.occupancy;
+
+    return direction === null
+        ? () => false
+        : targeting.inRange(self.position, fromTiles(range, direction));
 }
 
 function skillTarget(
@@ -88,7 +83,11 @@ function skillTarget(
     self: Unit & Classification & Occupancy,
     range: readonly TilePosition[],
 ) {
-    return attackTarget(battle, self, range, true);
+    const eligible = groundTarget(battle, self);
+    const withinRange = inAttackRange(self, range);
+
+    return (target: Unit): target is Target =>
+        eligible(target) && inDefaultCategory(target) && withinRange(target);
 }
 
 export function skillTargets(
@@ -99,13 +98,17 @@ export function skillTargets(
     return allUnits(battle).filter(skillTarget(battle, self, range));
 }
 
-function attackDefinition(range: readonly TilePosition[], skill: boolean, timing: Timing) {
-    return {
-        id: skill ? "mudrock/s2" : "normal-attack",
+export function createNormal(
+    range: readonly TilePosition[],
+    timing: Timing,
+): Attack<object, object, AttackHost> {
+    return createAttack<AttackHost>({
+        id: "normal-attack",
         triggerBindingId: "primary",
-        period: skill ? { type: "FIXED", ticks: 0 } : { type: "ATTACK_SPEED" },
+        period: { type: "ATTACK_SPEED" },
         timing,
         followUps: [],
+        onStart: faceTarget,
         targetGroups: [
             {
                 id: "primary",
@@ -115,44 +118,38 @@ function attackDefinition(range: readonly TilePosition[], skill: boolean, timing
                         return { state: battle, value: [] };
                     }
 
-                    const candidates = allUnits(battle).filter(
-                        attackTarget(battle, self, range, skill),
-                    );
-                    const blockedFirst = skill ? () => 0 : targeting.blockedFirst(self);
+                    const withinRange = inAttackRange(self, range);
+                    const candidates = allUnits(battle)
+                        .filter(groundTarget(battle, self))
+                        .filter(
+                            (target) =>
+                                (inDefaultCategory(target) && withinRange(target)) ||
+                                (hasBlockable(target) &&
+                                    target.blockable.relation?.blocker.id === self.id),
+                        );
+                    const blockedFirst = targeting.blockedFirst(self);
                     const distance = targeting.distance(self.position);
 
                     return {
                         state: battle,
                         value: topK(
                             candidates,
-                            skill ? Number.MAX_SAFE_INTEGER : 1,
+                            1,
                             (left, right) => blockedFirst(left, right) || distance(left, right),
                         ).map(unitRef),
                     };
                 },
-                operations: skill
-                    ? []
-                    : [
-                          {
-                              type: "DAMAGE",
-                              attackType: "NORMAL",
-                              applyWay: "MELEE",
-                              power: sourceAttack,
-                              damageType: "PHYSICAL",
-                          },
-                      ],
+                operations: [
+                    {
+                        type: "DAMAGE",
+                        attackType: "NORMAL",
+                        applyWay: "MELEE",
+                        power: sourceAttack,
+                        damageType: "PHYSICAL",
+                    },
+                ],
             },
         ],
-    } satisfies AttackConfiguration<object, object, AttackHost>;
-}
-
-export function createNormal(
-    range: readonly TilePosition[],
-    timing: Timing,
-): Attack<object, object, AttackHost> {
-    return createAttack<AttackHost>({
-        ...attackDefinition(range, false, timing),
-        onStart: faceTarget,
     });
 }
 
@@ -163,14 +160,31 @@ export function createSkill({
     stunChance,
     stunTicks,
 }: SkillActionParameters): Attack<object, SkillAttackState, AttackHost & SkillCapability> {
-    const activeConfiguration = attackDefinition(range, true, {
-        type: "FIXED",
-        windupTicks: 0,
-        recoveryTicks: 0,
-    });
-
     return createSkillAttack<AttackHost>({
-        ...activeConfiguration,
+        id: "mudrock/s2",
+        triggerBindingId: "primary",
+        period: { type: "FIXED", ticks: 0 },
+        timing: { type: "FIXED", windupTicks: 0, recoveryTicks: 0 },
+        followUps: [],
+        targetGroups: [
+            {
+                id: "primary",
+                select(battle, source) {
+                    const self = getCurrentUnit(battle, source);
+                    if (self === undefined) {
+                        return { state: battle, value: [] };
+                    }
+
+                    const targets = skillTargets(battle, self, range);
+
+                    return {
+                        state: battle,
+                        value: sort(targets, targeting.distance(self.position)).map(unitRef),
+                    };
+                },
+                operations: [],
+            },
+        ],
         applyWay: "MELEE",
         output(state, host, self) {
             const source = getCurrentUnit(state, host);
