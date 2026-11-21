@@ -1,0 +1,361 @@
+{
+  "provenance": {
+    "collectedAt": "2026-11-21T12:59:51.665398+00:00",
+    "scope": "Selected local JSON documents only. Value matches locate potential references; they do not resolve or validate bindings.",
+    "tool": {
+      "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/config.py",
+      "sha256": "67c2a913386059a57f9316f25e532c9dd20cdc4adb91d820065d09fd9dec76e4"
+    },
+    "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+    "argv": [
+      ".cache/native-research/unit-audit-20261110/operator-config/battle_equip_table.json",
+      "--source-url",
+      "https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/17759cc8cdf37388414145d16262a3a06f3ab25e/zh_CN/gamedata/excel/battle_equip_table.json",
+      "--revision",
+      "17759cc8cdf37388414145d16262a3a06f3ab25e",
+      "--out",
+      "docs/research/evidence/operator-table-bindings-20261121/equipment-parts.json",
+      "select",
+      "",
+      "--field",
+      "/uniequip_002_mudrok/phases/0/equipLevel",
+      "--field",
+      "/uniequip_002_mudrok/phases/0/attributeBlackboard",
+      "--field",
+      "/uniequip_002_mudrok/phases/1/equipLevel",
+      "--field",
+      "/uniequip_002_mudrok/phases/1/attributeBlackboard",
+      "--field",
+      "/uniequip_002_mudrok/phases/2/equipLevel",
+      "--field",
+      "/uniequip_002_mudrok/phases/2/attributeBlackboard",
+      "--field",
+      "/uniequip_003_mudrok/phases/0/equipLevel",
+      "--field",
+      "/uniequip_003_mudrok/phases/0/attributeBlackboard",
+      "--field",
+      "/uniequip_003_mudrok/phases/1/equipLevel",
+      "--field",
+      "/uniequip_003_mudrok/phases/1/attributeBlackboard",
+      "--field",
+      "/uniequip_003_mudrok/phases/2/equipLevel",
+      "--field",
+      "/uniequip_003_mudrok/phases/2/attributeBlackboard",
+      "--field",
+      "/uniequip_002_mudrok/phases/0/parts/0/target",
+      "--field",
+      "/uniequip_002_mudrok/phases/0/parts/0/overrideTraitDataBundle/candidates/0",
+      "--field",
+      "/uniequip_002_mudrok/phases/1/parts/1/target",
+      "--field",
+      "/uniequip_002_mudrok/phases/1/parts/1/addOrOverrideTalentDataBundle/candidates/0",
+      "--field",
+      "/uniequip_002_mudrok/phases/2/parts/1/addOrOverrideTalentDataBundle/candidates/1",
+      "--field",
+      "/uniequip_003_mudrok/phases/2/parts/1/target",
+      "--field",
+      "/uniequip_003_mudrok/phases/2/parts/1/addOrOverrideTalentDataBundle/candidates/0",
+      "--field",
+      "/uniequip_002_shu/phases/2/parts/1/target",
+      "--field",
+      "/uniequip_002_shu/phases/2/parts/1/addOrOverrideTalentDataBundle/candidates/0/blackboard",
+      "--field",
+      "/uniequip_003_rosmon/phases/0/parts/1/addOrOverrideTalentDataBundle/candidates/0",
+      "--field",
+      "/uniequip_003_rosmon/phases/1/parts/1/target",
+      "--field",
+      "/uniequip_003_rosmon/phases/2/parts/1/isToken",
+      "--field",
+      "/uniequip_001_mudrok"
+    ],
+    "sourceUrl": "https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/17759cc8cdf37388414145d16262a3a06f3ab25e/zh_CN/gamedata/excel/battle_equip_table.json",
+    "revision": "17759cc8cdf37388414145d16262a3a06f3ab25e",
+    "inputs": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/unit-audit-20261110/operator-config/battle_equip_table.json",
+        "bytes": 5763741,
+        "sha256": "991ce1a8cd76682704b7e95fb71de8c726fd9ff62038a2da31b8a3870dc48055",
+        "status": "ok",
+        "matched": 1
+      }
+    ]
+  },
+  "result": {
+    "matched": 1,
+    "matches": [
+      {
+        "source": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/unit-audit-20261110/operator-config/battle_equip_table.json",
+        "pointer": "",
+        "fields": {
+          "/uniequip_002_mudrok/phases/0/equipLevel": 1,
+          "/uniequip_002_mudrok/phases/0/attributeBlackboard": [
+            {
+              "key": "max_hp",
+              "value": 245.0,
+              "valueStr": null
+            },
+            {
+              "key": "atk",
+              "value": 55.0,
+              "valueStr": null
+            }
+          ],
+          "/uniequip_002_mudrok/phases/1/equipLevel": 2,
+          "/uniequip_002_mudrok/phases/1/attributeBlackboard": [
+            {
+              "key": "max_hp",
+              "value": 325.0,
+              "valueStr": null
+            },
+            {
+              "key": "atk",
+              "value": 70.0,
+              "valueStr": null
+            }
+          ],
+          "/uniequip_002_mudrok/phases/2/equipLevel": 3,
+          "/uniequip_002_mudrok/phases/2/attributeBlackboard": [
+            {
+              "key": "max_hp",
+              "value": 400.0,
+              "valueStr": null
+            },
+            {
+              "key": "atk",
+              "value": 80.0,
+              "valueStr": null
+            }
+          ],
+          "/uniequip_003_mudrok/phases/0/equipLevel": 1,
+          "/uniequip_003_mudrok/phases/0/attributeBlackboard": [
+            {
+              "key": "atk",
+              "value": 60.0,
+              "valueStr": null
+            },
+            {
+              "key": "def",
+              "value": 50.0,
+              "valueStr": null
+            }
+          ],
+          "/uniequip_003_mudrok/phases/1/equipLevel": 2,
+          "/uniequip_003_mudrok/phases/1/attributeBlackboard": [
+            {
+              "key": "atk",
+              "value": 75.0,
+              "valueStr": null
+            },
+            {
+              "key": "def",
+              "value": 60.0,
+              "valueStr": null
+            }
+          ],
+          "/uniequip_003_mudrok/phases/2/equipLevel": 3,
+          "/uniequip_003_mudrok/phases/2/attributeBlackboard": [
+            {
+              "key": "atk",
+              "value": 85.0,
+              "valueStr": null
+            },
+            {
+              "key": "def",
+              "value": 70.0,
+              "valueStr": null
+            }
+          ],
+          "/uniequip_002_mudrok/phases/0/parts/0/target": "TRAIT",
+          "/uniequip_002_mudrok/phases/0/parts/0/overrideTraitDataBundle/candidates/0": {
+            "additionalDescription": "受到来自自身阻挡单位的伤害降低<@ba.kw>15%</>",
+            "unlockCondition": {
+              "phase": "PHASE_2",
+              "level": 60
+            },
+            "requiredPotentialRank": 0,
+            "blackboard": [
+              {
+                "key": "damage_scale",
+                "value": 0.85,
+                "valueStr": null
+              }
+            ],
+            "overrideDescripton": null,
+            "prefabKey": null,
+            "rangeId": null
+          },
+          "/uniequip_002_mudrok/phases/1/parts/1/target": "TALENT",
+          "/uniequip_002_mudrok/phases/1/parts/1/addOrOverrideTalentDataBundle/candidates/0": {
+            "displayRangeId": false,
+            "upgradeDescription": "每9秒获得1层<$ba.shield>护盾</>（最多3层，部署后立即获得1层），每层护盾破裂时恢复自身22%最大生命和1点技力",
+            "talentIndex": 0,
+            "validModeIndices": null,
+            "unlockCondition": {
+              "phase": "PHASE_2",
+              "level": 60
+            },
+            "requiredPotentialRank": 0,
+            "prefabKey": "1",
+            "name": "沃土予身",
+            "description": null,
+            "rangeId": null,
+            "blackboard": [
+              {
+                "key": "interval",
+                "value": 9.0,
+                "valueStr": null
+              },
+              {
+                "key": "times",
+                "value": 1.0,
+                "valueStr": null
+              },
+              {
+                "key": "max_times",
+                "value": 3.0,
+                "valueStr": null
+              },
+              {
+                "key": "hp_ratio",
+                "value": 0.22,
+                "valueStr": null
+              },
+              {
+                "key": "sp",
+                "value": 1.0,
+                "valueStr": null
+              }
+            ],
+            "tokenKey": null,
+            "isHideTalent": false
+          },
+          "/uniequip_002_mudrok/phases/2/parts/1/addOrOverrideTalentDataBundle/candidates/1": {
+            "displayRangeId": false,
+            "upgradeDescription": "每9秒获得1层<$ba.shield>护盾</>（最多3层，部署后立即获得1层），每层护盾破裂时恢复自身25%<@ba.talpu>（+2%）</>最大生命和2点技力",
+            "talentIndex": 0,
+            "validModeIndices": null,
+            "unlockCondition": {
+              "phase": "PHASE_2",
+              "level": 60
+            },
+            "requiredPotentialRank": 4,
+            "prefabKey": "1",
+            "name": "沃土予身",
+            "description": null,
+            "rangeId": null,
+            "blackboard": [
+              {
+                "key": "interval",
+                "value": 9.0,
+                "valueStr": null
+              },
+              {
+                "key": "times",
+                "value": 1.0,
+                "valueStr": null
+              },
+              {
+                "key": "max_times",
+                "value": 3.0,
+                "valueStr": null
+              },
+              {
+                "key": "hp_ratio",
+                "value": 0.25,
+                "valueStr": null
+              },
+              {
+                "key": "sp",
+                "value": 2.0,
+                "valueStr": null
+              }
+            ],
+            "tokenKey": null,
+            "isHideTalent": false
+          },
+          "/uniequip_003_mudrok/phases/2/parts/1/target": "TALENT",
+          "/uniequip_003_mudrok/phases/2/parts/1/addOrOverrideTalentDataBundle/candidates/0": {
+            "displayRangeId": false,
+            "upgradeDescription": "受到来自【萨卡兹】敌人的伤害降低35%，对非【萨卡兹】敌人造成的伤害提升20%",
+            "talentIndex": 1,
+            "validModeIndices": null,
+            "unlockCondition": {
+              "phase": "PHASE_2",
+              "level": 60
+            },
+            "requiredPotentialRank": 0,
+            "prefabKey": "2",
+            "name": "手足相惜",
+            "description": null,
+            "rangeId": null,
+            "blackboard": [
+              {
+                "key": "damage_resistance",
+                "value": 0.35,
+                "valueStr": null
+              },
+              {
+                "key": "damage_scale",
+                "value": 1.2,
+                "valueStr": null
+              }
+            ],
+            "tokenKey": null,
+            "isHideTalent": false
+          },
+          "/uniequip_002_shu/phases/2/parts/1/target": "TALENT_DATA_ONLY",
+          "/uniequip_002_shu/phases/2/parts/1/addOrOverrideTalentDataBundle/candidates/0/blackboard": [
+            {
+              "key": "hp_recovery_per_sec",
+              "value": 80.0,
+              "valueStr": null
+            },
+            {
+              "key": "damage_resistance",
+              "value": 0.15,
+              "valueStr": null
+            },
+            {
+              "key": "born_range_id",
+              "value": 0.0,
+              "valueStr": "0-1"
+            }
+          ],
+          "/uniequip_003_rosmon/phases/0/parts/1/addOrOverrideTalentDataBundle/candidates/0": {
+            "displayRangeId": false,
+            "upgradeDescription": "",
+            "talentIndex": -1,
+            "validModeIndices": null,
+            "unlockCondition": {
+              "phase": "PHASE_2",
+              "level": 60
+            },
+            "requiredPotentialRank": 0,
+            "prefabKey": "10",
+            "name": null,
+            "description": null,
+            "rangeId": null,
+            "blackboard": [
+              {
+                "key": "equip_atk_scale",
+                "value": 1.0,
+                "valueStr": null
+              }
+            ],
+            "tokenKey": null,
+            "isHideTalent": true
+          },
+          "/uniequip_003_rosmon/phases/1/parts/1/target": "OVERWRITE_BATTLE_DATA",
+          "/uniequip_003_rosmon/phases/2/parts/1/isToken": true
+        },
+        "missingFields": [
+          "/uniequip_001_mudrok"
+        ]
+      }
+    ],
+    "complete": true,
+    "scanned": 1,
+    "succeeded": 1,
+    "errors": []
+  }
+}

@@ -1,0 +1,118 @@
+{
+  "provenance": {
+    "collectedAt": "2026-11-21T12:58:33.946704+00:00",
+    "scope": "Selected local JSON documents only. Value matches locate potential references; they do not resolve or validate bindings.",
+    "tool": {
+      "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/config.py",
+      "sha256": "67c2a913386059a57f9316f25e532c9dd20cdc4adb91d820065d09fd9dec76e4"
+    },
+    "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+    "argv": [
+      ".cache/native-research/unit-audit-20261110/operator-config/uniequip_table.json",
+      "--source-url",
+      "https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/17759cc8cdf37388414145d16262a3a06f3ab25e/zh_CN/gamedata/excel/uniequip_table.json",
+      "--revision",
+      "17759cc8cdf37388414145d16262a3a06f3ab25e",
+      "--out",
+      "docs/research/evidence/operator-table-bindings-20261121/equipment-registry.json",
+      "select",
+      "",
+      "--field",
+      "/equipDict/uniequip_001_mudrok/uniEquipId",
+      "--field",
+      "/equipDict/uniequip_001_mudrok/charId",
+      "--field",
+      "/equipDict/uniequip_001_mudrok/type",
+      "--field",
+      "/equipDict/uniequip_001_mudrok/unlockEvolvePhase",
+      "--field",
+      "/equipDict/uniequip_001_mudrok/unlockLevel",
+      "--field",
+      "/equipDict/uniequip_001_mudrok/unlockFavors",
+      "--field",
+      "/equipDict/uniequip_002_mudrok/uniEquipId",
+      "--field",
+      "/equipDict/uniequip_002_mudrok/charId",
+      "--field",
+      "/equipDict/uniequip_002_mudrok/type",
+      "--field",
+      "/equipDict/uniequip_002_mudrok/unlockEvolvePhase",
+      "--field",
+      "/equipDict/uniequip_002_mudrok/unlockLevel",
+      "--field",
+      "/equipDict/uniequip_002_mudrok/unlockFavors",
+      "--field",
+      "/equipDict/uniequip_003_mudrok/uniEquipId",
+      "--field",
+      "/equipDict/uniequip_003_mudrok/charId",
+      "--field",
+      "/equipDict/uniequip_003_mudrok/type",
+      "--field",
+      "/equipDict/uniequip_003_mudrok/unlockEvolvePhase",
+      "--field",
+      "/equipDict/uniequip_003_mudrok/unlockLevel",
+      "--field",
+      "/equipDict/uniequip_003_mudrok/unlockFavors",
+      "--field",
+      "/charEquip/char_311_mudrok"
+    ],
+    "sourceUrl": "https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/17759cc8cdf37388414145d16262a3a06f3ab25e/zh_CN/gamedata/excel/uniequip_table.json",
+    "revision": "17759cc8cdf37388414145d16262a3a06f3ab25e",
+    "inputs": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/unit-audit-20261110/operator-config/uniequip_table.json",
+        "bytes": 3392727,
+        "sha256": "c436d9ca672c8e8c3926d0ccbd496f7591004baf944f8cb47458572f4eaa8590",
+        "status": "ok",
+        "matched": 1
+      }
+    ]
+  },
+  "result": {
+    "matched": 1,
+    "matches": [
+      {
+        "source": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/unit-audit-20261110/operator-config/uniequip_table.json",
+        "pointer": "",
+        "fields": {
+          "/equipDict/uniequip_001_mudrok/uniEquipId": "uniequip_001_mudrok",
+          "/equipDict/uniequip_001_mudrok/charId": "char_311_mudrok",
+          "/equipDict/uniequip_001_mudrok/type": "INITIAL",
+          "/equipDict/uniequip_001_mudrok/unlockEvolvePhase": "PHASE_0",
+          "/equipDict/uniequip_001_mudrok/unlockLevel": 0,
+          "/equipDict/uniequip_001_mudrok/unlockFavors": null,
+          "/equipDict/uniequip_002_mudrok/uniEquipId": "uniequip_002_mudrok",
+          "/equipDict/uniequip_002_mudrok/charId": "char_311_mudrok",
+          "/equipDict/uniequip_002_mudrok/type": "ADVANCED",
+          "/equipDict/uniequip_002_mudrok/unlockEvolvePhase": "PHASE_2",
+          "/equipDict/uniequip_002_mudrok/unlockLevel": 60,
+          "/equipDict/uniequip_002_mudrok/unlockFavors": {
+            "1": 0,
+            "2": 2732,
+            "3": 10070
+          },
+          "/equipDict/uniequip_003_mudrok/uniEquipId": "uniequip_003_mudrok",
+          "/equipDict/uniequip_003_mudrok/charId": "char_311_mudrok",
+          "/equipDict/uniequip_003_mudrok/type": "ADVANCED",
+          "/equipDict/uniequip_003_mudrok/unlockEvolvePhase": "PHASE_2",
+          "/equipDict/uniequip_003_mudrok/unlockLevel": 60,
+          "/equipDict/uniequip_003_mudrok/unlockFavors": {
+            "1": 0,
+            "2": 2732,
+            "3": 10070
+          },
+          "/charEquip/char_311_mudrok": [
+            "uniequip_001_mudrok",
+            "uniequip_002_mudrok",
+            "uniequip_003_mudrok"
+          ]
+        },
+        "missingFields": []
+      }
+    ],
+    "complete": true,
+    "scanned": 1,
+    "succeeded": 1,
+    "errors": []
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-11-21"
+    ],
+    "collectionDateSource": "batch directory",
+    "organizedOn": "2026-11-21",
+    "client": {
+      "dll": null,
+      "metadata": null
+    },
+    "sourceRecords": [
+      "character-bindings.json",
+      "equipment-parts.json",
+      "equipment-registry.json",
+      "skill-levels.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12895,
+        "sha256": "9c5b246859318caaec4aab5275ef0d2d49fce5d612c6b4e569973a9941ba621a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "character-bindings.json",
+        "kind": "record",
+        "bytes": 16835,
+        "sha256": "736a0900cbd35e18fa1b423fb567ac3af32956fa05f1484544db1db43b0929d7"
+      },
+      {
+        "path": "equipment-parts.json",
+        "kind": "record",
+        "bytes": 12400,
+        "sha256": "aa98383edf0f0bdb6cd0d611c9d24ca213013f8b5aef01b88c42131f5a32f33e"
+      },
+      {
+        "path": "equipment-registry.json",
+        "kind": "record",
+        "bytes": 4729,
+        "sha256": "ba9ec29cd5961ba4ac1d3c4406738643ba1b3626e0f977eab3ea092bf6dac122"
+      },
+      {
+        "path": "skill-levels.json",
+        "kind": "record",
+        "bytes": 7298,
+        "sha256": "eef37a0a608747dbb2be814ddc8ae3affe9c6c99f787d1aefbe1ea15f2d58263"
+      }
+    ],
+    "replay": {
+      "methods": [],
+      "blocks": [],
+      "types": [],
+      "constants": [],
+      "bundles": []
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

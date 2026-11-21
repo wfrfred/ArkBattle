@@ -1,0 +1,448 @@
+{
+  "provenance": {
+    "collectedAt": "2026-11-21T12:58:34.071201+00:00",
+    "scope": "Selected local JSON documents only. Value matches locate potential references; they do not resolve or validate bindings.",
+    "tool": {
+      "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/config.py",
+      "sha256": "67c2a913386059a57f9316f25e532c9dd20cdc4adb91d820065d09fd9dec76e4"
+    },
+    "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+    "argv": [
+      ".cache/native-research/route-operations-20261107/data/character_table.json",
+      "--source-url",
+      "https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/63c7cec73c3858d0ae913f85cc89af3cef4d744f/zh_CN/gamedata/excel/character_table.json",
+      "--revision",
+      "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+      "--out",
+      "docs/research/evidence/operator-table-bindings-20261121/character-bindings.json",
+      "select",
+      "",
+      "--field",
+      "/char_208_melan/phases/0/maxLevel",
+      "--field",
+      "/char_208_melan/phases/0/rangeId",
+      "--field",
+      "/char_208_melan/phases/0/characterPrefabKey",
+      "--field",
+      "/char_208_melan/phases/0/attributesKeyFrames/0/level",
+      "--field",
+      "/char_208_melan/phases/0/attributesKeyFrames/1/level",
+      "--field",
+      "/char_208_melan/phases/1/maxLevel",
+      "--field",
+      "/char_208_melan/phases/1/rangeId",
+      "--field",
+      "/char_208_melan/phases/1/characterPrefabKey",
+      "--field",
+      "/char_208_melan/phases/1/attributesKeyFrames/0/level",
+      "--field",
+      "/char_208_melan/phases/1/attributesKeyFrames/1/level",
+      "--field",
+      "/char_208_melan/favorKeyFrames/1/level",
+      "--field",
+      "/char_208_melan/allSkillLvlup/0/unlockCond",
+      "--field",
+      "/char_208_melan/allSkillLvlup/1/unlockCond",
+      "--field",
+      "/char_208_melan/allSkillLvlup/2/unlockCond",
+      "--field",
+      "/char_208_melan/allSkillLvlup/3/unlockCond",
+      "--field",
+      "/char_208_melan/allSkillLvlup/4/unlockCond",
+      "--field",
+      "/char_208_melan/allSkillLvlup/5/unlockCond",
+      "--field",
+      "/char_208_melan/skills/0/skillId",
+      "--field",
+      "/char_208_melan/skills/0/unlockCond",
+      "--field",
+      "/char_208_melan/skills/0/overridePrefabKey",
+      "--field",
+      "/char_208_melan/skills/0/overrideTokenKey",
+      "--field",
+      "/char_208_melan/skills/0/levelUpCostCond",
+      "--field",
+      "/char_208_melan/talents/0/candidates/0/unlockCondition",
+      "--field",
+      "/char_208_melan/talents/0/candidates/0/requiredPotentialRank",
+      "--field",
+      "/char_208_melan/talents/0/candidates/0/prefabKey",
+      "--field",
+      "/char_208_melan/talents/0/candidates/0/rangeId",
+      "--field",
+      "/char_208_melan/talents/0/candidates/0/blackboard",
+      "--field",
+      "/char_208_melan/talents/0/candidates/1/unlockCondition",
+      "--field",
+      "/char_208_melan/talents/0/candidates/1/requiredPotentialRank",
+      "--field",
+      "/char_208_melan/talents/0/candidates/1/prefabKey",
+      "--field",
+      "/char_208_melan/talents/0/candidates/1/rangeId",
+      "--field",
+      "/char_208_melan/talents/0/candidates/1/blackboard",
+      "--field",
+      "/char_311_mudrok/phases/0/maxLevel",
+      "--field",
+      "/char_311_mudrok/phases/0/rangeId",
+      "--field",
+      "/char_311_mudrok/phases/0/characterPrefabKey",
+      "--field",
+      "/char_311_mudrok/phases/0/attributesKeyFrames/0/level",
+      "--field",
+      "/char_311_mudrok/phases/0/attributesKeyFrames/1/level",
+      "--field",
+      "/char_311_mudrok/phases/1/maxLevel",
+      "--field",
+      "/char_311_mudrok/phases/1/rangeId",
+      "--field",
+      "/char_311_mudrok/phases/1/characterPrefabKey",
+      "--field",
+      "/char_311_mudrok/phases/1/attributesKeyFrames/0/level",
+      "--field",
+      "/char_311_mudrok/phases/1/attributesKeyFrames/1/level",
+      "--field",
+      "/char_311_mudrok/phases/2/maxLevel",
+      "--field",
+      "/char_311_mudrok/phases/2/rangeId",
+      "--field",
+      "/char_311_mudrok/phases/2/characterPrefabKey",
+      "--field",
+      "/char_311_mudrok/phases/2/attributesKeyFrames/0/level",
+      "--field",
+      "/char_311_mudrok/phases/2/attributesKeyFrames/1/level",
+      "--field",
+      "/char_311_mudrok/favorKeyFrames/1/level",
+      "--field",
+      "/char_311_mudrok/allSkillLvlup/0/unlockCond",
+      "--field",
+      "/char_311_mudrok/allSkillLvlup/1/unlockCond",
+      "--field",
+      "/char_311_mudrok/allSkillLvlup/2/unlockCond",
+      "--field",
+      "/char_311_mudrok/allSkillLvlup/3/unlockCond",
+      "--field",
+      "/char_311_mudrok/allSkillLvlup/4/unlockCond",
+      "--field",
+      "/char_311_mudrok/allSkillLvlup/5/unlockCond",
+      "--field",
+      "/char_311_mudrok/skills/1/skillId",
+      "--field",
+      "/char_311_mudrok/skills/1/unlockCond",
+      "--field",
+      "/char_311_mudrok/skills/1/overridePrefabKey",
+      "--field",
+      "/char_311_mudrok/skills/1/overrideTokenKey",
+      "--field",
+      "/char_311_mudrok/skills/1/levelUpCostCond/0/unlockCond",
+      "--field",
+      "/char_311_mudrok/skills/1/levelUpCostCond/1/unlockCond",
+      "--field",
+      "/char_311_mudrok/skills/1/levelUpCostCond/2/unlockCond",
+      "--field",
+      "/char_311_mudrok/talents/0/candidates/0/unlockCondition",
+      "--field",
+      "/char_311_mudrok/talents/0/candidates/0/requiredPotentialRank",
+      "--field",
+      "/char_311_mudrok/talents/0/candidates/0/prefabKey",
+      "--field",
+      "/char_311_mudrok/talents/0/candidates/0/rangeId",
+      "--field",
+      "/char_311_mudrok/talents/0/candidates/0/blackboard",
+      "--field",
+      "/char_311_mudrok/talents/0/candidates/5/unlockCondition",
+      "--field",
+      "/char_311_mudrok/talents/0/candidates/5/requiredPotentialRank",
+      "--field",
+      "/char_311_mudrok/talents/0/candidates/5/prefabKey",
+      "--field",
+      "/char_311_mudrok/talents/0/candidates/5/rangeId",
+      "--field",
+      "/char_311_mudrok/talents/0/candidates/5/blackboard",
+      "--field",
+      "/char_311_mudrok/talents/1/candidates/0/unlockCondition",
+      "--field",
+      "/char_311_mudrok/talents/1/candidates/0/requiredPotentialRank",
+      "--field",
+      "/char_311_mudrok/talents/1/candidates/0/prefabKey",
+      "--field",
+      "/char_311_mudrok/talents/1/candidates/0/rangeId",
+      "--field",
+      "/char_311_mudrok/talents/1/candidates/0/blackboard",
+      "--field",
+      "/char_311_mudrok/skills/0/skillId",
+      "--field",
+      "/char_311_mudrok/skills/0/overridePrefabKey",
+      "--field",
+      "/char_311_mudrok/skills/2/skillId",
+      "--field",
+      "/char_325_bison/skills/0/skillId",
+      "--field",
+      "/char_344_beewax/skills/1/skillId",
+      "--field",
+      "/char_344_beewax/skills/1/overrideTokenKey",
+      "--field",
+      "/char_344_beewax/trait/candidates/0",
+      "--field",
+      "/token_10011_beewax_oblisk/name"
+    ],
+    "sourceUrl": "https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/63c7cec73c3858d0ae913f85cc89af3cef4d744f/zh_CN/gamedata/excel/character_table.json",
+    "revision": "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+    "inputs": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/route-operations-20261107/data/character_table.json",
+        "bytes": 15468242,
+        "sha256": "6a61f54802ee194dbb21968976eb99e2a4050e38928bd24bd2b770479076cea1",
+        "status": "ok",
+        "matched": 1
+      }
+    ]
+  },
+  "result": {
+    "matched": 1,
+    "matches": [
+      {
+        "source": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/route-operations-20261107/data/character_table.json",
+        "pointer": "",
+        "fields": {
+          "/char_208_melan/phases/0/maxLevel": 40,
+          "/char_208_melan/phases/0/rangeId": "1-1",
+          "/char_208_melan/phases/0/characterPrefabKey": "char_208_melan",
+          "/char_208_melan/phases/0/attributesKeyFrames/0/level": 1,
+          "/char_208_melan/phases/0/attributesKeyFrames/1/level": 40,
+          "/char_208_melan/phases/1/maxLevel": 55,
+          "/char_208_melan/phases/1/rangeId": "1-1",
+          "/char_208_melan/phases/1/characterPrefabKey": "char_208_melan",
+          "/char_208_melan/phases/1/attributesKeyFrames/0/level": 1,
+          "/char_208_melan/phases/1/attributesKeyFrames/1/level": 55,
+          "/char_208_melan/favorKeyFrames/1/level": 50,
+          "/char_208_melan/allSkillLvlup/0/unlockCond": {
+            "phase": "PHASE_0",
+            "level": 1
+          },
+          "/char_208_melan/allSkillLvlup/1/unlockCond": {
+            "phase": "PHASE_0",
+            "level": 1
+          },
+          "/char_208_melan/allSkillLvlup/2/unlockCond": {
+            "phase": "PHASE_0",
+            "level": 1
+          },
+          "/char_208_melan/allSkillLvlup/3/unlockCond": {
+            "phase": "PHASE_1",
+            "level": 1
+          },
+          "/char_208_melan/allSkillLvlup/4/unlockCond": {
+            "phase": "PHASE_1",
+            "level": 1
+          },
+          "/char_208_melan/allSkillLvlup/5/unlockCond": {
+            "phase": "PHASE_1",
+            "level": 1
+          },
+          "/char_208_melan/skills/0/skillId": "skcom_atk_up[1]",
+          "/char_208_melan/skills/0/unlockCond": {
+            "phase": "PHASE_0",
+            "level": 1
+          },
+          "/char_208_melan/skills/0/overridePrefabKey": null,
+          "/char_208_melan/skills/0/overrideTokenKey": null,
+          "/char_208_melan/skills/0/levelUpCostCond": [],
+          "/char_208_melan/talents/0/candidates/0/unlockCondition": {
+            "phase": "PHASE_1",
+            "level": 1
+          },
+          "/char_208_melan/talents/0/candidates/0/requiredPotentialRank": 0,
+          "/char_208_melan/talents/0/candidates/0/prefabKey": "1",
+          "/char_208_melan/talents/0/candidates/0/rangeId": null,
+          "/char_208_melan/talents/0/candidates/0/blackboard": [
+            {
+              "key": "atk",
+              "value": 0.04,
+              "valueStr": null
+            }
+          ],
+          "/char_208_melan/talents/0/candidates/1/unlockCondition": {
+            "phase": "PHASE_1",
+            "level": 55
+          },
+          "/char_208_melan/talents/0/candidates/1/requiredPotentialRank": 0,
+          "/char_208_melan/talents/0/candidates/1/prefabKey": "1",
+          "/char_208_melan/talents/0/candidates/1/rangeId": null,
+          "/char_208_melan/talents/0/candidates/1/blackboard": [
+            {
+              "key": "atk",
+              "value": 0.08,
+              "valueStr": null
+            }
+          ],
+          "/char_311_mudrok/phases/0/maxLevel": 50,
+          "/char_311_mudrok/phases/0/rangeId": "1-1",
+          "/char_311_mudrok/phases/0/characterPrefabKey": "char_311_mudrok",
+          "/char_311_mudrok/phases/0/attributesKeyFrames/0/level": 1,
+          "/char_311_mudrok/phases/0/attributesKeyFrames/1/level": 50,
+          "/char_311_mudrok/phases/1/maxLevel": 80,
+          "/char_311_mudrok/phases/1/rangeId": "1-1",
+          "/char_311_mudrok/phases/1/characterPrefabKey": "char_311_mudrok",
+          "/char_311_mudrok/phases/1/attributesKeyFrames/0/level": 1,
+          "/char_311_mudrok/phases/1/attributesKeyFrames/1/level": 80,
+          "/char_311_mudrok/phases/2/maxLevel": 90,
+          "/char_311_mudrok/phases/2/rangeId": "1-1",
+          "/char_311_mudrok/phases/2/characterPrefabKey": "char_311_mudrok",
+          "/char_311_mudrok/phases/2/attributesKeyFrames/0/level": 1,
+          "/char_311_mudrok/phases/2/attributesKeyFrames/1/level": 90,
+          "/char_311_mudrok/favorKeyFrames/1/level": 50,
+          "/char_311_mudrok/allSkillLvlup/0/unlockCond": {
+            "phase": "PHASE_0",
+            "level": 1
+          },
+          "/char_311_mudrok/allSkillLvlup/1/unlockCond": {
+            "phase": "PHASE_0",
+            "level": 1
+          },
+          "/char_311_mudrok/allSkillLvlup/2/unlockCond": {
+            "phase": "PHASE_0",
+            "level": 1
+          },
+          "/char_311_mudrok/allSkillLvlup/3/unlockCond": {
+            "phase": "PHASE_1",
+            "level": 1
+          },
+          "/char_311_mudrok/allSkillLvlup/4/unlockCond": {
+            "phase": "PHASE_1",
+            "level": 1
+          },
+          "/char_311_mudrok/allSkillLvlup/5/unlockCond": {
+            "phase": "PHASE_1",
+            "level": 1
+          },
+          "/char_311_mudrok/skills/1/skillId": "skchr_mudrok_2",
+          "/char_311_mudrok/skills/1/unlockCond": {
+            "phase": "PHASE_1",
+            "level": 1
+          },
+          "/char_311_mudrok/skills/1/overridePrefabKey": null,
+          "/char_311_mudrok/skills/1/overrideTokenKey": null,
+          "/char_311_mudrok/skills/1/levelUpCostCond/0/unlockCond": {
+            "phase": "PHASE_2",
+            "level": 1
+          },
+          "/char_311_mudrok/skills/1/levelUpCostCond/1/unlockCond": {
+            "phase": "PHASE_2",
+            "level": 1
+          },
+          "/char_311_mudrok/skills/1/levelUpCostCond/2/unlockCond": {
+            "phase": "PHASE_2",
+            "level": 1
+          },
+          "/char_311_mudrok/talents/0/candidates/0/unlockCondition": {
+            "phase": "PHASE_0",
+            "level": 1
+          },
+          "/char_311_mudrok/talents/0/candidates/0/requiredPotentialRank": 0,
+          "/char_311_mudrok/talents/0/candidates/0/prefabKey": "1",
+          "/char_311_mudrok/talents/0/candidates/0/rangeId": null,
+          "/char_311_mudrok/talents/0/candidates/0/blackboard": [
+            {
+              "key": "interval",
+              "value": 9.0,
+              "valueStr": null
+            },
+            {
+              "key": "times",
+              "value": 1.0,
+              "valueStr": null
+            },
+            {
+              "key": "max_times",
+              "value": 2.0,
+              "valueStr": null
+            },
+            {
+              "key": "hp_ratio",
+              "value": 0.15,
+              "valueStr": null
+            }
+          ],
+          "/char_311_mudrok/talents/0/candidates/5/unlockCondition": {
+            "phase": "PHASE_2",
+            "level": 1
+          },
+          "/char_311_mudrok/talents/0/candidates/5/requiredPotentialRank": 4,
+          "/char_311_mudrok/talents/0/candidates/5/prefabKey": "1",
+          "/char_311_mudrok/talents/0/candidates/5/rangeId": null,
+          "/char_311_mudrok/talents/0/candidates/5/blackboard": [
+            {
+              "key": "interval",
+              "value": 9.0,
+              "valueStr": null
+            },
+            {
+              "key": "times",
+              "value": 1.0,
+              "valueStr": null
+            },
+            {
+              "key": "max_times",
+              "value": 3.0,
+              "valueStr": null
+            },
+            {
+              "key": "hp_ratio",
+              "value": 0.22,
+              "valueStr": null
+            }
+          ],
+          "/char_311_mudrok/talents/1/candidates/0/unlockCondition": {
+            "phase": "PHASE_2",
+            "level": 1
+          },
+          "/char_311_mudrok/talents/1/candidates/0/requiredPotentialRank": 0,
+          "/char_311_mudrok/talents/1/candidates/0/prefabKey": "2",
+          "/char_311_mudrok/talents/1/candidates/0/rangeId": null,
+          "/char_311_mudrok/talents/1/candidates/0/blackboard": [
+            {
+              "key": "damage_resistance",
+              "value": 0.3,
+              "valueStr": null
+            }
+          ],
+          "/char_311_mudrok/skills/0/skillId": "skcom_def_up[3]",
+          "/char_311_mudrok/skills/0/overridePrefabKey": "skchr_mudrok_1",
+          "/char_311_mudrok/skills/2/skillId": "skchr_mudrok_3",
+          "/char_325_bison/skills/0/skillId": "skcom_def_up[3]",
+          "/char_344_beewax/skills/1/skillId": "skchr_beewax_2",
+          "/char_344_beewax/skills/1/overrideTokenKey": "token_10011_beewax_oblisk",
+          "/char_344_beewax/trait/candidates/0": {
+            "unlockCondition": {
+              "phase": "PHASE_0",
+              "level": 1
+            },
+            "requiredPotentialRank": 0,
+            "blackboard": [
+              {
+                "key": "def",
+                "value": 2.0,
+                "valueStr": null
+              },
+              {
+                "key": "magic_resistance",
+                "value": 20.0,
+                "valueStr": null
+              }
+            ],
+            "overrideDescripton": null,
+            "prefabKey": null,
+            "rangeId": null
+          },
+          "/token_10011_beewax_oblisk/name": "沙之碑"
+        },
+        "missingFields": []
+      }
+    ],
+    "complete": true,
+    "scanned": 1,
+    "succeeded": 1,
+    "errors": []
+  }
+}

@@ -1,0 +1,219 @@
+{
+  "provenance": {
+    "collectedAt": "2026-11-21T12:59:51.368399+00:00",
+    "scope": "Selected local JSON documents only. Value matches locate potential references; they do not resolve or validate bindings.",
+    "tool": {
+      "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/config.py",
+      "sha256": "67c2a913386059a57f9316f25e532c9dd20cdc4adb91d820065d09fd9dec76e4"
+    },
+    "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+    "argv": [
+      ".cache/native-research/route-operations-20261107/data/skill_table.json",
+      "--source-url",
+      "https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/63c7cec73c3858d0ae913f85cc89af3cef4d744f/zh_CN/gamedata/excel/skill_table.json",
+      "--revision",
+      "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+      "--out",
+      "docs/research/evidence/operator-table-bindings-20261121/skill-levels.json",
+      "select",
+      "",
+      "--field",
+      "/skcom_atk_up[1]/levels/6/rangeId",
+      "--field",
+      "/skcom_atk_up[1]/levels/6/prefabId",
+      "--field",
+      "/skcom_atk_up[1]/levels/6/spData",
+      "--field",
+      "/skcom_atk_up[1]/levels/6/skillType",
+      "--field",
+      "/skcom_atk_up[1]/levels/6/durationType",
+      "--field",
+      "/skcom_atk_up[1]/levels/6/duration",
+      "--field",
+      "/skcom_atk_up[1]/levels/6/blackboard",
+      "--field",
+      "/skchr_mudrok_2/levels/6/rangeId",
+      "--field",
+      "/skchr_mudrok_2/levels/6/prefabId",
+      "--field",
+      "/skchr_mudrok_2/levels/6/spData",
+      "--field",
+      "/skchr_mudrok_2/levels/6/skillType",
+      "--field",
+      "/skchr_mudrok_2/levels/6/durationType",
+      "--field",
+      "/skchr_mudrok_2/levels/6/duration",
+      "--field",
+      "/skchr_mudrok_2/levels/6/blackboard",
+      "--field",
+      "/skchr_mudrok_2/levels/9/rangeId",
+      "--field",
+      "/skchr_mudrok_2/levels/9/prefabId",
+      "--field",
+      "/skchr_mudrok_2/levels/9/spData",
+      "--field",
+      "/skchr_mudrok_2/levels/9/skillType",
+      "--field",
+      "/skchr_mudrok_2/levels/9/durationType",
+      "--field",
+      "/skchr_mudrok_2/levels/9/duration",
+      "--field",
+      "/skchr_mudrok_2/levels/9/blackboard",
+      "--field",
+      "/skcom_def_up[3]/levels/0/rangeId",
+      "--field",
+      "/skcom_def_up[3]/levels/0/prefabId",
+      "--field",
+      "/skcom_def_up[3]/levels/0/spData",
+      "--field",
+      "/skcom_def_up[3]/levels/0/skillType",
+      "--field",
+      "/skcom_def_up[3]/levels/0/durationType",
+      "--field",
+      "/skcom_def_up[3]/levels/0/duration",
+      "--field",
+      "/skcom_def_up[3]/levels/0/blackboard",
+      "--field",
+      "/skchr_mudrok_1"
+    ],
+    "sourceUrl": "https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/63c7cec73c3858d0ae913f85cc89af3cef4d744f/zh_CN/gamedata/excel/skill_table.json",
+    "revision": "63c7cec73c3858d0ae913f85cc89af3cef4d744f",
+    "inputs": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/route-operations-20261107/data/skill_table.json",
+        "bytes": 11766431,
+        "sha256": "492900f6b957233296c9736c86bb4e5f3ab4b4d7f5055a0f973c5acec3d174b1",
+        "status": "ok",
+        "matched": 1
+      }
+    ]
+  },
+  "result": {
+    "matched": 1,
+    "matches": [
+      {
+        "source": "/home/wfrfred/workspace/ArkBattle/.cache/native-research/route-operations-20261107/data/skill_table.json",
+        "pointer": "",
+        "fields": {
+          "/skcom_atk_up[1]/levels/6/rangeId": null,
+          "/skcom_atk_up[1]/levels/6/prefabId": "skcom_atk_up",
+          "/skcom_atk_up[1]/levels/6/spData": {
+            "spType": "INCREASE_WITH_TIME",
+            "levelUpCost": null,
+            "maxChargeTime": 1,
+            "spCost": 40,
+            "initSp": 0,
+            "increment": 1.0
+          },
+          "/skcom_atk_up[1]/levels/6/skillType": "MANUAL",
+          "/skcom_atk_up[1]/levels/6/durationType": "NONE",
+          "/skcom_atk_up[1]/levels/6/duration": 20.0,
+          "/skcom_atk_up[1]/levels/6/blackboard": [
+            {
+              "key": "atk",
+              "value": 0.5,
+              "valueStr": null
+            }
+          ],
+          "/skchr_mudrok_2/levels/6/rangeId": "x-4",
+          "/skchr_mudrok_2/levels/6/prefabId": "skchr_mudrok_2",
+          "/skchr_mudrok_2/levels/6/spData": {
+            "spType": "INCREASE_WHEN_TAKEN_DAMAGE",
+            "levelUpCost": null,
+            "maxChargeTime": 1,
+            "spCost": 5,
+            "initSp": 0,
+            "increment": 1.0
+          },
+          "/skchr_mudrok_2/levels/6/skillType": "AUTO",
+          "/skchr_mudrok_2/levels/6/durationType": "NONE",
+          "/skchr_mudrok_2/levels/6/duration": 0.0,
+          "/skchr_mudrok_2/levels/6/blackboard": [
+            {
+              "key": "atk_scale",
+              "value": 2.1,
+              "valueStr": null
+            },
+            {
+              "key": "buff_prob",
+              "value": 0.3,
+              "valueStr": null
+            },
+            {
+              "key": "stun",
+              "value": 0.6,
+              "valueStr": null
+            },
+            {
+              "key": "hp_ratio",
+              "value": 0.05,
+              "valueStr": null
+            }
+          ],
+          "/skchr_mudrok_2/levels/9/rangeId": "x-4",
+          "/skchr_mudrok_2/levels/9/prefabId": "skchr_mudrok_2",
+          "/skchr_mudrok_2/levels/9/spData": {
+            "spType": "INCREASE_WHEN_TAKEN_DAMAGE",
+            "levelUpCost": null,
+            "maxChargeTime": 1,
+            "spCost": 4,
+            "initSp": 0,
+            "increment": 1.0
+          },
+          "/skchr_mudrok_2/levels/9/skillType": "AUTO",
+          "/skchr_mudrok_2/levels/9/durationType": "NONE",
+          "/skchr_mudrok_2/levels/9/duration": 0.0,
+          "/skchr_mudrok_2/levels/9/blackboard": [
+            {
+              "key": "atk_scale",
+              "value": 2.7,
+              "valueStr": null
+            },
+            {
+              "key": "buff_prob",
+              "value": 0.3,
+              "valueStr": null
+            },
+            {
+              "key": "stun",
+              "value": 1.2,
+              "valueStr": null
+            },
+            {
+              "key": "hp_ratio",
+              "value": 0.06,
+              "valueStr": null
+            }
+          ],
+          "/skcom_def_up[3]/levels/0/rangeId": null,
+          "/skcom_def_up[3]/levels/0/prefabId": "skcom_def_up",
+          "/skcom_def_up[3]/levels/0/spData": {
+            "spType": "INCREASE_WITH_TIME",
+            "levelUpCost": null,
+            "maxChargeTime": 1,
+            "spCost": 45,
+            "initSp": 0,
+            "increment": 1.0
+          },
+          "/skcom_def_up[3]/levels/0/skillType": "MANUAL",
+          "/skcom_def_up[3]/levels/0/durationType": "NONE",
+          "/skcom_def_up[3]/levels/0/duration": 40.0,
+          "/skcom_def_up[3]/levels/0/blackboard": [
+            {
+              "key": "def",
+              "value": 0.3,
+              "valueStr": null
+            }
+          ]
+        },
+        "missingFields": [
+          "/skchr_mudrok_1"
+        ]
+      }
+    ],
+    "complete": true,
+    "scanned": 1,
+    "succeeded": 1,
+    "errors": []
+  }
+}
