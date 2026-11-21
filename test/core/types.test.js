@@ -195,15 +195,18 @@ declare const plainActionHost: Ref<Unit & actions.ActionCapability>;
 const program: actions.Definition<{ uses: number }, { hits: number }, ArmedHost> = {
     id: 'attack', applyWay: 'NONE', period: { type: 'FIXED', ticks: 10 },
     initialize: state => ({ state, value: { uses: 0 } }),
-    prepare: state => ({ state, value: { hits: 1 } }),
+    prepare(state, _source, self) {
+        const action: actions.Action<{ uses: number }, { hits: number }> = self;
+        return { state, value: { hits: action.state.uses + 1 } };
+    },
     onTick(state, source, self) {
         const owner: ArmedHost | undefined = get(state, source);
         if (owner !== undefined) {
             resolveAttack(state, owner);
         }
-        // @ts-expect-error a precise execution identity requires its declared host capabilities.
-        actions.executionRef(plainActionHost, self);
-        return actions.finish(state, actions.executionRef(source, self));
+        const host: Ref<Unit & actions.ActionCapability> = source;
+        const execution: actions.Execution<{ uses: number }, { hits: number }> = self;
+        return actions.finish(state, actions.executionRef(host, execution));
     },
 };
 const timedAttack = createAttackWithState<{ uses: number }, { hits: number }>({
@@ -228,6 +231,7 @@ const timedAttackInput = {
     initialize: (state: typeof battle) => ({ state, value: { uses: 0 } }),
     prepare: (state: typeof battle) => ({ state, value: { hits: 1 } }),
 };
+const plainHostActions: actions.CapabilityDefinition<object>['definitions'] = [timedAttack];
 // @ts-expect-error declarative attacks derive their apply way from operations.
 createAttackWithState({ ...timedAttackInput, applyWay: 'RANGED' });
 // @ts-expect-error custom output declares its apply way explicitly.
@@ -259,7 +263,7 @@ actions.setSpeedContribution({ id: 'fixed-speed', value: [] });
 const dynamicModifiers = (_state: State, _self: Unit & actions.ActionCapability) => [];
 // @ts-expect-error Action time contributions publish fixed values through a Change.
 actions.setSpeedContribution({ id: 'dynamic-speed', value: dynamicModifiers });
-const persistent = actions.ref(reference, program);
+const persistent: Ref<actions.Action<{ uses: number }, { hits: number }>> = actions.ref(reference, program);
 // @ts-expect-error a precise action identity requires its declared host capabilities.
 actions.ref(plainActionHost, program);
 const uses: number = actions.getAction(battle, persistent)!.state.uses;
@@ -268,10 +272,10 @@ actions.setState(battle, persistent, { uses: uses + 1 });
 actions.setState(battle, persistent, { uses: 'wrong' });
 const started = actions.start(battle, persistent);
 if (started.value !== null) {
-    const execution = started.value;
-    const executionHost: Ref<ArmedHost> = execution.host;
+    const execution: Ref<actions.Execution<{ uses: number }, { hits: number }>> = started.value;
+    const executionHost: Ref<Unit & actions.ActionCapability> = execution.host;
     const hits: number = actions.getExecution(started.state, execution)!.execution.state.hits;
-    // @ts-expect-error a precise execution cannot be widened to a different state and host pairing.
+    // @ts-expect-error a precise execution cannot be widened to different state types.
     const widenedExecution: Ref<actions.Execution> = execution;
     const identity: actions.ExecutionRef = execution;
     const cancellation: Command = { type: 'CANCEL_ACTION_EXECUTION', ref: identity };

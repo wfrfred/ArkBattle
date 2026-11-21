@@ -38,10 +38,10 @@ export function executionRefs(self: Unit & ActionCapability): readonly Execution
     );
 }
 
-export function getExecution<P extends object, E extends object, H extends object>(
+export function getExecution<P extends object, E extends object>(
     battle: BattleState,
-    reference: Ref<Execution<P, E, H>> & ExecutionRef,
-): Execution<P, E, H> | undefined;
+    reference: Ref<Execution<P, E>>,
+): Execution<P, E> | undefined;
 export function getExecution(
     battle: BattleState,
     reference: ExecutionRef,
@@ -53,10 +53,10 @@ export function getExecution(
     return units.get(battle, reference.host)?.action.actions.getExecution(reference.id);
 }
 
-export function getAction<P extends object, E extends object, H extends object>(
+export function getAction<P extends object, E extends object>(
     battle: BattleState,
-    reference: Ref<Action<P, E, H>>,
-): Action<P, E, H> | undefined {
+    reference: Ref<Action<P, E>>,
+): Action<P, E> | undefined {
     return units
         .get(battle, reference.host)
         ?.action.actions.get(reference.definition.id, reference.definition);

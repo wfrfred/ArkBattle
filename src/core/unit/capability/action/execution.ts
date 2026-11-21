@@ -21,13 +21,12 @@ export interface Snapshot extends Omit<State, "state"> {
 export interface Execution<
     in out P extends object = object,
     in out E extends object = object,
-    in out H extends object = object,
 > extends Identified<
     {
-        readonly host: Ref<Unit & ActionCapability & H>;
+        readonly host: Ref<Unit & ActionCapability>;
         readonly id: Id;
     },
-    Action<P, E, H>
+    Action<P, E>
 > {
     readonly execution: State<E>;
 }
@@ -36,9 +35,9 @@ export type ExecutionIdentity = Identified<Identity<Execution>, { readonly execu
 
 export type ExecutionRef = Ref<ExecutionIdentity>;
 
-export function ref<P extends object, E extends object, H extends object>(
-    host: Ref<Unit & ActionCapability & NoInfer<H>>,
-    self: Execution<P, E, H>,
-): Ref<Execution<P, E, H>> {
-    return { host, id: self.execution.id } as Ref<Execution<P, E, H>>;
+export function ref<P extends object, E extends object>(
+    host: Ref<Unit & ActionCapability>,
+    self: Execution<P, E>,
+): Ref<Execution<P, E>> {
+    return { host, id: self.execution.id } as Ref<Execution<P, E>>;
 }

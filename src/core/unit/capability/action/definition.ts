@@ -26,17 +26,17 @@ export interface Definition<
     readonly prepare: (
         battle: BattleState,
         source: Ref<Unit & ActionCapability & H>,
-        self: Action<P, E, H>,
+        self: Action<P, E>,
     ) => Result<E | null>;
     readonly onTick: (
         battle: BattleState,
         source: Ref<Unit & ActionCapability & H>,
-        self: Execution<P, E, H>,
+        self: Execution<P, E>,
     ) => BattleState;
     readonly onEnd?: (
         battle: BattleState,
         source: Ref<Unit & ActionCapability & H>,
-        self: Execution<P, E, H>,
+        self: Execution<P, E>,
         end: End,
     ) => BattleState;
 }

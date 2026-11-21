@@ -7,11 +7,11 @@ import type { Action } from "./action.js";
 import type { Definition } from "./definition.js";
 import * as cooldown from "./cooldown.js";
 
-export function initialize<P extends object, E extends object, H extends object>(
+export function initialize<P extends object, E extends object>(
     battle: BattleState,
     source: Unit & ActionCapability,
-    definition: Definition<P, E, H>,
-): Result<Action<P, E, H>> {
+    definition: Definition<P, E, never>,
+): Result<Action<P, E>> {
     if (definition.id.length === 0) {
         throw new TypeError("action definition identity must be nonempty");
     }

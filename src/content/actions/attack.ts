@@ -95,7 +95,7 @@ export interface Configuration<
     readonly targetGroups: readonly [TargetGroup<H>, ...TargetGroup<H>[]];
     readonly followUps?: readonly FollowUp<H>[];
     readonly timing:
-        Timing | ((battle: BattleState, source: Source<H>, self: Action<P, State<E>, H>) => Timing);
+        Timing | ((battle: BattleState, source: Source<H>, self: Action<P, State<E>>) => Timing);
 }
 
 export type Definition<
@@ -106,12 +106,12 @@ export type Definition<
     readonly onStart?: (
         battle: BattleState,
         source: Source<H>,
-        self: Execution<P, State<E>, H>,
+        self: Execution<P, State<E>>,
     ) => BattleState;
     readonly afterOutput?: (
         battle: BattleState,
         source: Source<H>,
-        self: Execution<P, State<E>, H>,
+        self: Execution<P, State<E>>,
     ) => BattleState;
     readonly onEnd?: ActionDefinition<P, State<E>, H>["onEnd"];
 } & (
@@ -121,7 +121,7 @@ export type Definition<
               readonly output: (
                   battle: BattleState,
                   source: Source<H>,
-                  self: Execution<P, State<E>, H>,
+                  self: Execution<P, State<E>>,
               ) => BattleState;
           }
     );
@@ -135,7 +135,7 @@ export type StatefulDefinition<
     readonly prepare: (
         battle: BattleState,
         source: Source<H>,
-        self: Action<P, State<E>, H>,
+        self: Action<P, State<E>>,
     ) => Result<E>;
 };
 
@@ -163,10 +163,10 @@ function isSourceActive(battle: BattleState, source: Ref<Unit>): boolean {
     return current?.lifecycle === "ACTIVE";
 }
 
-export function faceTarget<P extends object, E extends object, H extends object>(
+export function faceTarget<P extends object, E extends object>(
     battle: BattleState,
-    source: Source<H>,
-    self: Execution<P, State<E>, H>,
+    source: Ref<Unit>,
+    self: Execution<P, State<E>>,
 ): BattleState {
     const host = units.get(battle, source);
     const target = units.get(battle, self.execution.state.target);
@@ -384,7 +384,7 @@ export function createWithState<P extends object, E extends object, H extends ob
             }
 
             const initialized = definition.prepare(battle, source, self);
-            const current = actions.getAction(initialized.state, ref(source, self.definition));
+            const current = actions.getAction(initialized.state, ref(source, attack));
             const host = units.get(initialized.state, source);
             if (current === undefined || host === undefined) {
                 return { state: initialized.state, value: null };
@@ -418,7 +418,7 @@ export function createWithState<P extends object, E extends object, H extends ob
                 const overdue =
                     self.execution.startedAtTick - self.execution.state.previousReadyAtTick;
                 if (overdue >= 0 && overdue < 1) {
-                    battle = actions.setCooldown(battle, ref(source, self.definition), {
+                    battle = actions.setCooldown(battle, ref(source, attack), {
                         ...self.cooldown,
                         readyAtTick:
                             self.execution.state.previousReadyAtTick + self.cooldown.periodTicks,
@@ -503,7 +503,7 @@ export function createWithState<P extends object, E extends object, H extends ob
                 }
                 if (permission.value.type === "INTERRUPT") {
                     const recoveryTicks = permission.value.recoveryTicks;
-                    battle = actions.setCooldown(battle, ref(source, self.definition), {
+                    battle = actions.setCooldown(battle, ref(source, attack), {
                         ...current.cooldown,
                         readyAtTick: Math.max(
                             current.cooldown.readyAtTick,

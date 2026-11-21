@@ -1,7 +1,6 @@
 import type { State as BattleState, Result } from "../../../battle/state.js";
-import type { Ref } from "../../../common/ref.js";
 import type { Unit } from "../../unit.js";
-import type { Definition as ActionDefinition, End, Id as DefinitionId } from "./definition.js";
+import type { Definition as ActionDefinition, Id as DefinitionId } from "./definition.js";
 import { Actions } from "./actions.js";
 import { initialize as initializeAction } from "./initialize.js";
 import type * as contribution from "../../../common/contribution.js";
@@ -13,24 +12,7 @@ import type { Restriction as BaseRestriction } from "../../../restriction.js";
 export interface Definition<H extends object = never> {
     readonly speed: attribute.Definition;
     readonly interval: attribute.Definition;
-    readonly definitions: readonly (Omit<ActionDefinition, "prepare" | "onTick" | "onEnd"> & {
-        readonly prepare: (
-            battle: BattleState,
-            source: Ref<Unit & Action & H>,
-            self: never,
-        ) => Result<object | null>;
-        readonly onTick: (
-            battle: BattleState,
-            source: Ref<Unit & Action & H>,
-            self: never,
-        ) => BattleState;
-        readonly onEnd?: (
-            battle: BattleState,
-            source: Ref<Unit & Action & H>,
-            self: never,
-            end: End,
-        ) => BattleState;
-    })[];
+    readonly definitions: readonly ActionDefinition<any, any, H>[];
     readonly select?: (
         battle: BattleState,
         self: Unit & Action & H,
@@ -84,7 +66,7 @@ export function initialize<U extends Unit & Pick<Action, "definition">>(
     let actions = self.action.actions;
 
     for (const program of definition.definitions) {
-        const initialized = initializeAction(battle, self, program as ActionDefinition<any, any>);
+        const initialized = initializeAction(battle, self, program);
         battle = initialized.state;
         actions = actions.add(initialized.value);
     }

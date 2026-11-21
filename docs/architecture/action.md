@@ -24,7 +24,7 @@ Definition 提供基础时序、持久初始化、prepare、onTick 和可选 onE
 
 Content 在 Action Capability 的 `definitions` 中按顺序声明行动。Capability 装配时逐项接续 BattleState，执行 Definition 的持久初始化，并保存带就绪冷却和空执行槽位的 Action。`select` 仍由 Content 决定运行时选招。共享 Definition 的不同宿主分别产生私有状态。初始化期间宿主尚未登记，也不能假定兄弟能力已完成装配。
 
-`Definition<P, E, H>` 将持久状态 `P`、执行状态 `E` 和额外宿主要求 `H` 配对。`prepare`、`onTick` 和 `onEnd` 收到 `Ref<Unit & ActionCapability & H>`，精确的 Action 与 Execution Ref 延续这份配对。只依赖 Action Capability 的程序可使用默认的 `H`。
+`Definition<P, E, H>` 声明持久状态 `P`、执行状态 `E` 和额外宿主要求 `H`。`prepare`、`onTick` 和 `onEnd` 的 `source` 类型是 `Ref<Unit & ActionCapability & H>`。回调的 `self` 使用 `Action<P, E>` 或 `Execution<P, E>` 保留私有状态类型。只依赖 Action Capability 的程序可使用默认的 `H`。
 
 Content 先声明具体的行动 Definition，再在具备所需能力的 Unit 配置中组装行动列表。`CapabilityDefinition<H>` 在组装处校验行动与宿主的配对，并为 `select` 提供对应的宿主类型。例如，声明了 `Offense` 的行动在查到宿主后可以直接读取攻击力。
 
@@ -34,9 +34,9 @@ prepare 检查本次内容条件、初始化执行数据并采样；返回 null 
 
 ## 4. 异构容器与两种引用身份
 
-行动按配置 ID 登记，重复 ID 在创建边界拒绝。容器将异构类型擦除留在 Core 内，普通查询通过已有 `Snapshot` 类型提供公共字段，并保留 Definition 对象身份。调度和生命周期操作从宿主读取已登记的聚合，再调用该聚合的 Definition 回调。按 Definition 对象身份查询或使用精确 Ref 可以恢复持久状态、执行状态和宿主要求。
+行动按配置 ID 登记，重复 ID 在创建边界拒绝。容器将异构类型擦除留在 Core 内，普通查询通过已有 `Snapshot` 类型提供公共字段，并保留 Definition 对象身份。调度和生命周期操作从宿主读取已登记的聚合，再调用该聚合的 Definition 回调。按 Definition 对象身份查询或使用精确 Ref 可以恢复持久状态和执行状态的类型。
 
-持久 Ref 由宿主和 Definition 对象标识，跨多轮有效。`ExecutionRef` 表示宿主和本轮执行 ID，可用于 `forUnit` 查询返回、释放通知和取消命令。执行 ID 在宿主内单调分配，不回收，旧引用不能操作后来的执行。`getExecution` 与 `hasExecution` 均读到仍占位的 ENDING 本轮，直到该轮清空。
+持久 Ref 由宿主和 Definition 对象标识，跨多轮有效。构造时，`ref` 的宿主参数必须满足具体 Definition 的 `H`。`executionRef` 根据已配对的宿主和本轮执行构造精确引用。`ExecutionRef` 表示宿主和本轮执行 ID，可用于 `forUnit` 查询返回、释放通知和取消命令。执行 ID 在宿主内单调分配，不回收，旧引用不能操作后来的执行。`getExecution` 与 `hasExecution` 均读到仍占位的 ENDING 本轮，直到该轮清空。
 
 配置登记顺序用于默认候选；本宿主已有执行按启动顺序枚举。诊断序列化不承担恢复 Definition 或程序的协议。
 
