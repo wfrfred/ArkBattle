@@ -1,0 +1,44 @@
+import type { Definition as CardDefinition } from "../../core/battle/deployment/card/index.js";
+import { get as getTile } from "../../core/battlefield/map/map.js";
+import { Hooks } from "../../core/hook.js";
+import { secondsToTicks } from "../../core/tick.js";
+import { normal as normalSite } from "../terrain/condition.js";
+
+export interface Parameters {
+    readonly cost: number;
+    readonly respawnTime: number;
+}
+
+export function create({ cost, respawnTime }: Parameters): CardDefinition {
+    return {
+        cost,
+        redeployTicks: secondsToTicks(respawnTime),
+        slots: 1,
+        stock: 1,
+        stockLimit: 1,
+        activeLimit: 1,
+        cooldownOnDeploy: false,
+        recoverOnRetreatOrDeath: true,
+        increaseCostOnRetreatOrDeath: true,
+        refund: { rate: 0.5, limit: "BASE_COST" },
+        deploymentRestrictions: [
+            {
+                id: "deployment/site",
+                value: {
+                    allows(battle, { request }) {
+                        const tile = getTile(battle.battlefield.map, request.tilePosition);
+
+                        return (
+                            tile !== undefined &&
+                            (tile.state.placement === "MELEE" || tile.state.placement === "ALL") &&
+                            (tile.state.siteCondition === null ||
+                                tile.state.siteCondition === normalSite)
+                        );
+                    },
+                },
+            },
+        ],
+        unitHooks: Hooks.empty(),
+        initialize: (battle) => ({ state: battle, value: {} }),
+    };
+}

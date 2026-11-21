@@ -12,7 +12,7 @@ export function resolveBaseCost(card: Card<any>): number {
         .flat()
         .reduce((sum, value) => sum + value.addition, 0);
 
-    return Math.max(0, Math.floor(card.definition.card.cost + addition));
+    return Math.max(0, Math.floor(card.definition.cost + addition));
 }
 
 export function resolveCost(card: Card<any>, ceiling = 99): number {
@@ -20,7 +20,7 @@ export function resolveCost(card: Card<any>, ceiling = 99): number {
     const baseCost = Math.max(
         0,
         Math.floor(
-            card.definition.card.cost + modifiers.reduce((sum, value) => sum + value.addition, 0),
+            card.definition.cost + modifiers.reduce((sum, value) => sum + value.addition, 0),
         ),
     );
     const rawCost = Math.floor(baseCost * (1 + 0.5 * card.costStage));
@@ -37,7 +37,7 @@ export function resolveRedeployTicks(card: Card<any>): number {
         0,
         Math.ceil(
             modifier.apply(
-                card.definition.card.redeployTicks,
+                card.definition.redeployTicks,
                 contribution.resolve(card.redeployTimeContributions).flat(),
             ),
         ),
@@ -112,7 +112,7 @@ export function recharge<T extends Card<any>>(card: T, count: number): T {
         return card;
     }
 
-    const stock = Math.min(card.definition.card.stockLimit ?? Infinity, card.stock + count);
+    const stock = Math.min(card.definition.stockLimit ?? Infinity, card.stock + count);
 
     return stock === card.stock ? card : { ...card, stock };
 }

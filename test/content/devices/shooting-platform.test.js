@@ -8,7 +8,7 @@ import { create as createPlatform } from "../../../dist/content/devices/shooting
 import { add, remove, update } from "../../../dist/core/unit/operations.js";
 import { get as getTile } from "../../../dist/core/battlefield/map/map.js";
 import { Tile } from "../../../dist/core/geometry/coordinate.js";
-import { createDefinition as createDeployable, createCardDefinition } from "../../helpers/deployable.js";
+import { createDefinition as createDeployable } from "../../helpers/deployable.js";
 import { sides, setLayer } from "../../../dist/core/unit/capability/blocking/index.js";
 import { fixture as blockingFixture, holder, target, acquire, ownerId } from "../../helpers/blocking.js";
 import { getUnit, initialize } from "../../helpers/unit.js";
@@ -16,7 +16,6 @@ import { getUnit, initialize } from "../../helpers/unit.js";
 const first = [1, 2];
 const second = [1, 5];
 const deployable = createDeployable();
-const card = createCardDefinition({ cost: 0, redeployTicks: 0, slots: 0, placement: "ALL" });
 function passenger(id = 10, tile = first, layer = "GROUND") {
     return initialize({
         id, position: Tile.center(tile), initial: { occupancy: { tile } }, definition: {
@@ -33,7 +32,7 @@ function platform() {
             id: "platform", vitality: vitality(100),
             classification: { type: "DEVICE", side: "ALLY", filterTags: [], groupTags: [] },
             taunt: -1,
-            deployable, card, tileChanges: { elevation: "HIGHLAND" },
+            deployable, tileChanges: { elevation: "HIGHLAND" },
         }),
     });
 }

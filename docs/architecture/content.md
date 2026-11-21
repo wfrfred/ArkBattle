@@ -95,7 +95,7 @@ type Device = Unit & Classification<"DEVICE">;
 
 普通干员和敌人都具备 `Elemental` 和用于空间命中的 `Hitbox`。具体 Definition 绑定角色或敌人的元素接收规则，并配置命中体形状。元素免疫由接收限制表达。[元素接收](elemental.md#1-能力与定义) · [空间查询](spatial.md)
 
-猎狗和弩手各自在 `Enemy` 上组合被阻挡、受力移动、路线和 Presence。战术装备整理箱和战术射击台各自在 `Device` 上组合生命、受选、占格与部署，并提供 Card 配置。两种装置按各自的出入场流程调用共用的地块修改和恢复函数。具体单位均从自身的 `definition` 推导配置类型。[猎狗](../../src/content/enemies/hound/unit.ts) · [战术装备整理箱](../../src/content/devices/crate.ts) · [地块操作](../../src/content/devices/tile.ts)
+猎狗和弩手各自在 `Enemy` 上组合被阻挡、受力移动、路线和 Presence。战术装备整理箱和战术射击台各自在 `Device` 上组合生命、受选、占格与部署。两种装置按各自的出入场流程调用共用的地块修改和恢复函数。具体单位均从自身的 `definition` 推导配置类型。[猎狗](../../src/content/enemies/hound/unit.ts) · [战术装备整理箱](../../src/content/devices/crate.ts) · [地块操作](../../src/content/devices/tile.ts)
 
 ### 具体单位的写法
 
@@ -124,6 +124,6 @@ const definition = {
 
 Effect 也通过 Definition 声明宿主要求。调用者先确定具体构造分支，Catalog 自动推导标准状态和必需 Initial；允许额外已知 Initial，不为联合 Definition 维护并行校验层。
 
-可部署内容明确声明 Card／Deployable／Occupancy，Card 持久状态与每次 Unit 初态分开；预置和普通出生直接复用统一初始化，不临时重组静态 Definition。方向属于本次 Initial，基础 Unit 不伪造方向。
+干员的 `create(configuration, tables)` 返回 Unit Definition。编队把它与独立的 Card Definition 绑定为开场手牌，普通干员的费用与再部署时间可由 `operators/card.ts` 组装。Unit 的 `Deployable` 和 `Occupancy` 由各具体内容声明。预布置和普通出生直接使用 Unit Definition，方向属于本次 Initial。[干员 Card 工厂](../../src/content/operators/card.ts) · [部署](deployment.md#静态内容与-card)
 
 同宿主多个领域写入组合其合法 Change 后一次提交；动态能力判断由 optional 读取实际前序结果。精确私有写回、完整生命周期与跨领域结算保持所属业务契约，不直接调用 Core 内部 replace。完整规则见[接口约定](api-conventions.md)与[领域能力](capability.md)。

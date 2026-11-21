@@ -114,13 +114,6 @@ test("Tick phases publish their resource operations and failures preserve the in
         id: "operator",
         occupancy: { slot: "OCCUPANT" },
         deployable: { retreatRestrictions: [] },
-        card: {
-            cost: 5, redeployTicks: 0, slots: 1,
-            stock: 1, stockLimit: 1, activeLimit: 1,
-            cooldownOnDeploy: false, recoverOnRetreatOrDeath: true, increaseCostOnRetreatOrDeath: false,
-            refund: null, deploymentRestrictions: [], unitHooks: Hooks.empty(),
-            initialize: (current) => ({ state: current, value: {} }),
-        },
         hooks: Hooks.empty().set(units.tick, {
             id: "tick-resource",
             invoke(current) {
@@ -133,8 +126,18 @@ test("Tick phases publish their resource operations and failures preserve the in
             },
         }),
     };
+    const cardDefinition = {
+        cost: 5, redeployTicks: 0, slots: 1,
+        stock: 1, stockLimit: 1, activeLimit: 1,
+        cooldownOnDeploy: false, recoverOnRetreatOrDeath: true, increaseCostOnRetreatOrDeath: false,
+        refund: null, deploymentRestrictions: [], unitHooks: Hooks.empty(),
+        initialize: (current) => ({ state: current, value: {} }),
+    };
     const before = battle([], {
-        deployment: { definition: account, cards: [operator] },
+        deployment: {
+            definition: account,
+            cards: [{ definition: cardDefinition, unitDefinition: operator }],
+        },
     });
     const card = cards.ref([...cards.all(before)][0]);
     const commands = [

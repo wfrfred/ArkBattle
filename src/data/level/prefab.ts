@@ -1,12 +1,8 @@
-import type {
-    Placement,
-    SiteCondition,
-    State as TileState,
-} from "../../core/battlefield/map/tile.js";
+import type { SiteCondition, State as TileState } from "../../core/battlefield/map/tile.js";
 import type { Side } from "../../core/side.js";
 import { parsePrefabExtraction, getPrefabComponent, type PrefabExtraction } from "../prefab.js";
 import { parseTags } from "../unit/tags.js";
-import { parseSiteCondition, parseAllowedSiteConditions } from "./site-condition.js";
+import { parseSiteCondition } from "./site-condition.js";
 
 export interface TileDeploymentPrefab {
     readonly prefabKey: string;
@@ -21,10 +17,6 @@ export type PredefinedPrefab =
           readonly side: Side;
           readonly filterTags: readonly string[];
           readonly tileChanges: Partial<TileState>;
-          readonly deployable: {
-              readonly placement: Exclude<Placement, "NONE">;
-              readonly allowedSiteConditions: readonly SiteCondition[];
-          };
       }
     | {
           readonly type: "MECHANISM";
@@ -180,59 +172,6 @@ function elevation(value: unknown): TileState["elevation"] {
     return value === 0 ? "LOWLAND" : "HIGHLAND";
 }
 
-function deployable(
-    token: Record<string, unknown>,
-): Extract<PredefinedPrefab, { readonly type: "UNIT" }>["deployable"] {
-    const condition = object(token._buildCondition, "token build condition");
-    const extra = object(condition.extraBuildConditionArray, "token extra build condition");
-    const buildableType = condition.buildableType;
-    if (buildableType !== 1 && buildableType !== 2 && buildableType !== 3) {
-        throw new TypeError("unsupported token deployment buildable type");
-    }
-
-    boolean(condition.needSpecifyDirection, "token deployment needSpecifyDirection");
-
-    for (const key of [
-        "isTryingOverlapCharacater",
-        "limitByHostAttackRange",
-        "limitByHostAbilityRange",
-        "canNotBuildInHostAttackRange",
-        "excludeNoTargetTile",
-        "checkManuallyBuildableType",
-        "_excludeOccupiedByWalkEnemy",
-        "allowWalkEnemyInHostRange",
-        "_checkUpdateBuildable",
-    ]) {
-        if (condition[key] !== false) {
-            throw new TypeError(`unsupported token deployment condition ${key}`);
-        }
-    }
-    if (
-        condition.abilityName !== "" ||
-        condition.tileKey !== "" ||
-        condition.extraLocateRange !== "" ||
-        condition.manuallyBuildableType !== 0 ||
-        typeof extra.SerializedState !== "string" ||
-        !Array.isArray(extra.SerializedObjectReferences) ||
-        extra.SerializedObjectReferences.length !== 0
-    ) {
-        throw new TypeError("unsupported token extra deployment condition");
-    }
-
-    const serialized: unknown = JSON.parse(extra.SerializedState);
-    if (serialized !== null && (!Array.isArray(serialized) || serialized.length !== 0)) {
-        throw new TypeError("unsupported token serialized deployment condition");
-    }
-
-    return {
-        placement: ({ 1: "MELEE", 2: "RANGED", 3: "ALL" } as const)[buildableType],
-        allowedSiteConditions: parseAllowedSiteConditions(
-            condition.advancedBuildableMask,
-            "token deployment advancedBuildableMask",
-        ),
-    };
-}
-
 export function parsePredefinedPrefab(value: unknown, skillValue?: unknown): PredefinedPrefab {
     const source = parsePrefabExtraction(value);
     const token = getPrefabComponent(source, "_rewriteTileOptions");
@@ -254,7 +193,6 @@ export function parsePredefinedPrefab(value: unknown, skillValue?: unknown): Pre
             side: side(token._sideType),
             filterTags: parseTags(token._filterTag),
             tileChanges: tileChanges(mode, options),
-            deployable: deployable(token),
         };
     }
     if (token._disableUIHub !== true || token._withdrawable !== false || token._category !== 2) {

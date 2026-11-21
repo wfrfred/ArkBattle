@@ -6,6 +6,7 @@ import {
 } from "../../common/assert.js";
 import { Store } from "../../common/collection/store.js";
 import type * as card from "./card/card.js";
+import type { Input as CardInput } from "./card/initialize.js";
 import type { Ref } from "../../common/ref.js";
 import type { Ordering } from "./order.js";
 import { Hooks } from "../../hook.js";
@@ -21,7 +22,7 @@ export interface Definition {
 
 export interface Input<States extends readonly object[] = readonly object[]> {
     readonly definition: Definition;
-    readonly cards: { readonly [K in keyof States]: card.UnitDefinition<States[K]> };
+    readonly cards: { readonly [K in keyof States]: CardInput<States[K]> };
 }
 
 export interface State {

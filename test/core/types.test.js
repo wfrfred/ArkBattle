@@ -33,7 +33,6 @@ import { dispatch as dispatchElemental } from ${module("unit/capability/elementa
 import * as runtime from ${module("battle/runtime")};
 import type { Input as BattleInput, Command } from ${module("battle/contract")};
 import type { SkillCommand } from ${module("battle/index")};
-import type { UnitDefinition as CardDefinition } from ${module("battle/deployment/card/card")};
 import * as cards from ${module("battle/deployment/card/index")};
 import * as projectiles from ${module("projectile/index")};
 import type { Definition as ProjectileDefinition, Projectile, Slowable } from ${module("projectile/index")};
@@ -910,28 +909,32 @@ dispatchElemental(battle, elementalHost, elemental.burstStarted, burst);
 dispatchElemental(battle, elementalHost, elemental.damaged, burst);
 
 declare const baseInput: Omit<BattleInput, 'deployment' | 'predefines' | 'initialMechanisms'>;
-declare const cardBase: Omit<CardDefinition, 'card'>;
-declare const cardConfiguration: Omit<CardDefinition['card'], 'initialize' | 'onTick'>;
-const counterCard: CardDefinition<{ count: number }> = {
-    ...cardBase,
-    card: {
-        ...cardConfiguration,
-        initialize: state => ({ state, value: { count: 0 } }),
-        onTick(state, self) {
-            const count: number = self.state.count;
-            // @ts-expect-error a complete Card Definition retains its private state.
-            self.state.label;
-            return state;
-        },
+declare const cardUnitBase: cards.UnitDefinition;
+declare const cardConfiguration: Omit<cards.Definition, 'initialize' | 'onTick'>;
+const counterCard: cards.Definition<{ count: number }> = {
+    ...cardConfiguration,
+    initialize: state => ({ state, value: { count: 0 } }),
+    onTick(state, self) {
+        const count: number = self.state.count;
+        // @ts-expect-error a complete Card Definition retains its private state.
+        self.state.label;
+        return state;
     },
 };
-const initializedCard = cards.initialize(battle, { ...counterCard, marker: true as const });
+const cardInput = {
+    definition: { ...counterCard, marker: true as const },
+    unitDefinition: { ...cardUnitBase, marker: 'unit' as const },
+};
+const initializedCard = cards.initialize(battle, cardInput);
+// @ts-expect-error deployment requires a Unit Definition with Occupancy and Deployable.
+cards.initialize(battle, { definition: counterCard, unitDefinition: bare.definition });
 const cardRef = cards.ref(initializedCard.value);
 const cardBattle = cards.add(initializedCard.state, initializedCard.value);
 // @ts-expect-error registration requires the state type declared by the Card Definition.
 cards.add(initializedCard.state, { ...initializedCard.value, state: { count: 'wrong' } });
 const registeredCard = cards.get(cardBattle, cardRef)!;
 const cardMarker: true = registeredCard.definition.marker;
+const cardUnitMarker: 'unit' = registeredCard.unitDefinition.marker;
 const cardCount: number = registeredCard.state.count;
 cards.setState(cardBattle, cardRef, { count: cardCount + 1 });
 // @ts-expect-error lookup through a Card Ref preserves its exact private state.
@@ -964,7 +967,7 @@ const incompletePredefined = {
 createPredefinedDefinition(incompletePredefined);
 const account = { initialDp: 0, maxDp: 99, dpRecoveryTicks: null, slotLimit: null };
 runtime.initialize({ ...baseInput,
-    deployment: { definition: account, cards: [counterCard] },
+    deployment: { definition: account, cards: [cardInput] },
     initialMechanisms: [{ definition: counterMechanism }],
     predefines: [predefined, occupiedPredefined, createPredefinedDefinition({
         id: 1, alias: null, initiallyPresent: true,
@@ -974,12 +977,17 @@ runtime.initialize({ ...baseInput,
 const mismatchedMechanism = { ...counterMechanism, initialize: () => ({ label: 'wrong' }) };
 // @ts-expect-error predefined construction cannot erase a mismatch rejected by ordinary creation.
 createPredefinedDefinition({ id: 0, alias: null, initiallyPresent: true, creation: { type: 'MECHANISM', definition: mismatchedMechanism } });
-const mismatchedCard = { ...counterCard, card: { ...counterCard.card, initialize: (state: State) => ({ state, value: { label: 'wrong' } }) } };
+const mismatchedCard = {
+    ...cardInput,
+    definition: { ...counterCard, initialize: (state: State) => ({ state, value: { label: 'wrong' } }) },
+};
+// @ts-expect-error separate Unit Definition input does not weaken Card private-state pairing.
+cards.initialize(battle, mismatchedCard);
 // @ts-expect-error aggregating a Card cannot weaken initialize/callback pairing.
 runtime.initialize({ ...baseInput, deployment: { definition: account, cards: [mismatchedCard] }, initialMechanisms: [], predefines: [] });
 const unusedOccupancy = { id: 0, alias: null, initiallyPresent: true, creation: { type: 'UNIT' as const, definition: bare.definition, position: [0, 0] as const, initial: { occupancy: { tile: [0, 0] as const } } } };
 createPredefinedDefinition(unusedOccupancy);
-runtime.initialize({ ...baseInput, initialMechanisms: [], predefines: [], deployment: { definition: account, cards: [{ ...counterCard, card: { ...counterCard.card,
+runtime.initialize({ ...baseInput, initialMechanisms: [], predefines: [], deployment: { definition: account, cards: [{ ...cardInput, definition: { ...counterCard,
     onTick(state, self) {
         // @ts-expect-error aggregation must not supply an any private-state context.
         self.state.missing.deeply;

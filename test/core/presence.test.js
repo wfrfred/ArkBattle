@@ -42,12 +42,12 @@ test("disappearance preserves deployment and lifetimes, releases blocking before
         deployable: { retreatRestrictions: [] },
         blocker: { capacity: 2, layer: "GROUND", restrictions: [] },
         action: { speed: defineAttribute(100, 20), interval: defineAttribute(10), definitions: [program, idle] },
-        card: {
-            cost: 10, redeployTicks: 10, slots: 1, stock: 1, stockLimit: 1, activeLimit: 1,
-            cooldownOnDeploy: false, recoverOnRetreatOrDeath: true, increaseCostOnRetreatOrDeath: true,
-            refund: { rate: 0.5, limit: "BASE_COST" }, deploymentRestrictions: [], unitHooks: Hooks.empty(),
-            initialize: (state) => ({ state, value: {} }),
-        },
+    };
+    const cardDefinition = {
+        cost: 10, redeployTicks: 10, slots: 1, stock: 1, stockLimit: 1, activeLimit: 1,
+        cooldownOnDeploy: false, recoverOnRetreatOrDeath: true, increaseCostOnRetreatOrDeath: true,
+        refund: { rate: 0.5, limit: "BASE_COST" }, deploymentRestrictions: [], unitHooks: Hooks.empty(),
+        initialize: (state) => ({ state, value: {} }),
     };
     const enemy = {
         id: "enemy", hooks: Hooks.empty(), presence: {},
@@ -59,7 +59,7 @@ test("disappearance preserves deployment and lifetimes, releases blocking before
         { definition: enemy, position: [2.2, 1] },
     ], { deployment: {
         definition: { initialDp: 20, maxDp: 99, dpRecoveryTicks: null, slotLimit: 1 },
-        cards: [operator],
+        cards: [{ definition: cardDefinition, unitDefinition: operator }],
     } });
     const card = cards.ref([...cards.all(state)][0]);
     const deployed = deployment.deploy(state, deployment.createRequest(state, card, [1, 2]));

@@ -14,8 +14,8 @@ const operator = {
     hooks: Hooks.empty(),
     occupancy: { slot: "OCCUPANT" },
     deployable: { retreatRestrictions: [] },
-    card: createCardDefinition({ redeployTicks: 10, slots: 1 }),
 };
+const operatorCard = createCardDefinition({ redeployTicks: 10, slots: 1 });
 const account = {
     initialDp: 50,
     maxDp: 99,
@@ -41,30 +41,33 @@ test("occupancy pairs notify once and an old departure cannot clear the replacem
                 return state;
             },
         },
-        card: {
-            ...operator.card,
-            cost: 0,
-            slots: 0,
-            stock: 2,
-            stockLimit: 2,
-            recoverOnRetreatOrDeath: false,
-            increaseCostOnRetreatOrDeath: false,
-        },
     };
-    const summon = {
-        ...operator,
-        card: {
-            ...operator.card,
-            cost: 0,
-            stock: 2,
-            stockLimit: 2,
-            activeLimit: null,
-            recoverOnRetreatOrDeath: false,
-            increaseCostOnRetreatOrDeath: false,
-        },
+    const supportDefinition = {
+        ...operatorCard,
+        cost: 0,
+        slots: 0,
+        stock: 2,
+        stockLimit: 2,
+        recoverOnRetreatOrDeath: false,
+        increaseCostOnRetreatOrDeath: false,
+    };
+    const summonDefinition = {
+        ...operatorCard,
+        cost: 0,
+        stock: 2,
+        stockLimit: 2,
+        activeLimit: null,
+        recoverOnRetreatOrDeath: false,
+        increaseCostOnRetreatOrDeath: false,
     };
     let state = battle([], {
-        deployment: { definition: { ...account, slotLimit: 1 }, cards: [support, summon] },
+        deployment: {
+            definition: { ...account, slotLimit: 1 },
+            cards: [
+                { definition: supportDefinition, unitDefinition: support },
+                { definition: summonDefinition, unitDefinition: operator },
+            ],
+        },
     });
     const [supportCard, unitCard] = [...cards.all(state)].map(cards.ref);
     const placedSupport = deployment.deploy(

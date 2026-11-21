@@ -70,8 +70,8 @@ export function initialize(input: Input<readonly any[], readonly any[]>): State 
         },
     );
 
-    for (const definition of input.deployment?.cards ?? []) {
-        const initialized = cards.initialize(initial, definition);
+    for (const card of input.deployment?.cards ?? []) {
+        const initialized = cards.initialize(initial, card);
         initial = cards.add(initialized.state, initialized.value);
     }
 

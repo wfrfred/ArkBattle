@@ -1,35 +1,9 @@
 import type { State as BattleState } from "../../core/battle/index.js";
 import { update as updateTile } from "../../core/battle/tile.js";
 import { get as getTile } from "../../core/battlefield/map/map.js";
-import type {
-    State as TileState,
-    Placement,
-    SiteCondition,
-} from "../../core/battlefield/map/tile.js";
+import type { State as TileState } from "../../core/battlefield/map/tile.js";
 import type { TilePosition } from "../../core/geometry/coordinate.js";
-import type { Restriction as DeploymentRestriction } from "../../core/battle/deployment/index.js";
 import { hole } from "../terrain/definition.js";
-
-export function deploymentSiteRestriction(
-    placement: Exclude<Placement, "NONE">,
-    allowedSiteConditions: readonly SiteCondition[],
-): DeploymentRestriction {
-    return {
-        allows(battle, { request }) {
-            const tile = getTile(battle.battlefield.map, request.tilePosition);
-
-            return (
-                tile !== undefined &&
-                tile.state.placement !== "NONE" &&
-                (tile.state.placement === "ALL" ||
-                    placement === "ALL" ||
-                    tile.state.placement === placement) &&
-                (tile.state.siteCondition === null ||
-                    allowedSiteConditions.includes(tile.state.siteCondition))
-            );
-        },
-    };
-}
 
 export function apply(
     battle: BattleState,

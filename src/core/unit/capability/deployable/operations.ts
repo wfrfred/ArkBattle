@@ -42,7 +42,7 @@ export function retreat(battle: BattleState, reference: Ref<Unit & Deployable>):
 
     const card = self.deployable.card;
     if (card !== null) {
-        const definition = getCard(battle, card)!.definition.card;
+        const definition = getCard(battle, card)!.definition;
         if (definition.increaseCostOnRetreatOrDeath) {
             battle = cards.incrementCostStage(battle, card);
         }

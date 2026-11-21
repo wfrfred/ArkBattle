@@ -501,12 +501,12 @@ test("source grouping follows persistent Cards across redeployment and keeps Car
         ...operator,
         occupancy: { slot: "OCCUPANT" },
         deployable: { retreatRestrictions: [] },
-        card: createCardDefinition(),
     };
+    const card = { definition: createCardDefinition(), unitDefinition: deployable };
     let state = battle([{ definition: operator, position: [1, 1] }], {
         deployment: {
             definition: { initialDp: 0, maxDp: 99, dpRecoveryTicks: null, slotLimit: 2 },
-            cards: [deployable, deployable],
+            cards: [card, card],
         },
     });
     const owner = units.ref(get(state, 0));

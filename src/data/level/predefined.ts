@@ -1,4 +1,3 @@
-import { Hooks } from "../../core/hook.js";
 import {
     assertNonnegativeNumber,
     assertPositiveNumber,
@@ -19,11 +18,9 @@ import {
     create as createShootingPlatform,
     type Parameters as ShootingPlatformParameters,
 } from "../../content/devices/shooting-platform.js";
-import { deploymentSiteRestriction } from "../../content/devices/tile.js";
 import { Tile } from "../../core/geometry/coordinate.js";
 import type { ArknightsPredefinedInstance } from "./definition.js";
 import type { PredefinedPrefab } from "./prefab.js";
-import { secondsToTicks } from "../../core/tick.js";
 import { parseGroupTags } from "../unit/tags.js";
 
 function object(value: unknown, name: string): Record<string, unknown> {
@@ -104,8 +101,6 @@ function unitDefinition(
 
     let maxHp: number | undefined;
     let recoverySpeed: number | undefined;
-    let cost: number | undefined;
-    let respawnTime: number | undefined;
     let taunt: number | undefined;
     let minimumLevel = Infinity;
     let maximumLevel = -Infinity;
@@ -118,21 +113,15 @@ function unitDefinition(
 
         const hp = attributes.maxHp;
         const frameRecoverySpeed = attributes.hpRecoveryPerSec;
-        const frameCost = attributes.cost;
-        const frameRespawnTime = attributes.respawnTime;
         const frameTaunt = attributes.tauntLevel;
 
         assertPositiveNumber(hp, "predefined maxHp");
         assertNonnegativeNumber(frameRecoverySpeed, "predefined HP recovery speed");
-        assertNonnegativeNumber(frameCost, "predefined deployment cost");
-        assertNonnegativeNumber(frameRespawnTime, "predefined respawn time");
         assertSafeInteger(frameTaunt, "predefined taunt level");
 
         if (
             (maxHp !== undefined && maxHp !== hp) ||
             (recoverySpeed !== undefined && recoverySpeed !== frameRecoverySpeed) ||
-            (cost !== undefined && cost !== frameCost) ||
-            (respawnTime !== undefined && respawnTime !== frameRespawnTime) ||
             (taunt !== undefined && taunt !== frameTaunt)
         ) {
             throw new TypeError("varying predefined unit attributes are not supported");
@@ -140,8 +129,6 @@ function unitDefinition(
 
         maxHp = hp;
         recoverySpeed = frameRecoverySpeed;
-        cost = frameCost;
-        respawnTime = frameRespawnTime;
         taunt = frameTaunt;
         minimumLevel = Math.min(minimumLevel, frame.level);
         maximumLevel = Math.max(maximumLevel, frame.level);
@@ -168,29 +155,6 @@ function unitDefinition(
             recoveryRatio: { default: 0, min: 0, max: 1 },
         },
         deployable: { retreatRestrictions: [] },
-        card: {
-            cost: cost!,
-            redeployTicks: secondsToTicks(respawnTime!),
-            slots: 0,
-            stock: 1,
-            stockLimit: 1,
-            activeLimit: 1,
-            cooldownOnDeploy: false,
-            recoverOnRetreatOrDeath: false,
-            increaseCostOnRetreatOrDeath: false,
-            refund: { rate: 0.5, limit: "BASE_COST" },
-            deploymentRestrictions: [
-                {
-                    id: "deployment/site",
-                    value: deploymentSiteRestriction(
-                        profile.deployable.placement,
-                        profile.deployable.allowedSiteConditions,
-                    ),
-                },
-            ],
-            unitHooks: Hooks.empty(),
-            initialize: (battle) => ({ state: battle, value: {} }),
-        },
         tileChanges: profile.tileChanges,
     } satisfies CrateParameters & ShootingPlatformParameters;
 

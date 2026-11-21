@@ -54,7 +54,7 @@ export function deploy<T extends Card<any>>(
     }
 
     self = get(battle, request.card)!;
-    const definition = self.definition.card;
+    const definition = self.definition;
     const cost = card.resolveCost(self, battle.deployment.definition.costCeiling ?? 99);
     const refund =
         definition.refund === null
@@ -85,7 +85,7 @@ export function deploy<T extends Card<any>>(
 
     battle = cards.replace(battle, consumed);
     const initialized = initializeUnit(battle, {
-        definition: self.definition,
+        definition: self.unitDefinition,
         position: Tile.center(request.tilePosition),
         initial: {
             facing: { direction: request.direction === "LEFT" ? "LEFT" : "RIGHT" },

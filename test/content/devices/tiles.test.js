@@ -14,7 +14,6 @@ import { create as createTile } from "../../../dist/core/battlefield/map/tile.js
 import { Tiles } from "../../../dist/core/battlefield/map/tiles.js";
 import { Tile } from "../../../dist/core/geometry/coordinate.js";
 import { initialize, ref } from "../../../dist/core/unit/index.js";
-import { createCardDefinition } from "../../helpers/deployable.js";
 import { getUnit } from "../../helpers/unit.js";
 
 function battle(firstTerrain = normal, firstCost = 2000) {
@@ -40,7 +39,6 @@ function configuration(id, tileChanges = {}) {
         taunt: -1,
         vitality: vitality(100),
         deployable: { retreatRestrictions: [] },
-        card: createCardDefinition({ cost: 0, redeployTicks: 0, slots: 0, placement: "ALL" }),
         tileChanges,
     };
 }

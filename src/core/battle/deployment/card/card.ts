@@ -13,8 +13,7 @@ import type { Restriction } from "./restriction.js";
 
 export type Id = number;
 
-export type UnitDefinition<S extends object = object> = BaseDefinition & {
-    readonly card: Definition<S>;
+export type UnitDefinition = BaseDefinition & {
     readonly deployable: DeployableDefinition;
     readonly occupancy: OccupancyDefinition;
 };
@@ -35,7 +34,8 @@ export type TimerTarget = "COOLDOWN" | "RECOVERY";
 
 export interface Card<S extends object = object> extends Identified<{ readonly id: Id }> {
     readonly id: Id;
-    readonly definition: UnitDefinition<S>;
+    readonly definition: Definition<S>;
+    readonly unitDefinition: UnitDefinition;
     readonly deployedUnits: readonly Ref<Unit & Deployable>[];
     readonly unitHooks: Hooks;
     readonly restrictions: readonly Contribution<Restriction>[];

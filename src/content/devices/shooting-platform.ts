@@ -1,7 +1,6 @@
 import { Hooks } from "../../core/hook.js";
 import * as unitHooks from "../../core/unit/hook.js";
 import type { State as BattleState } from "../../core/battle/index.js";
-import type { Definition as CardDefinition } from "../../core/battle/deployment/card/index.js";
 import type { State as TileState } from "../../core/battlefield/map/tile.js";
 import { remove as removeUnit, update, ref as unitRef } from "../../core/unit/index.js";
 import { at as occupancyAt } from "../../core/battlefield/occupancy.js";
@@ -19,19 +18,13 @@ import {
 import type { Device } from "./device.js";
 import { apply, restore } from "./tile.js";
 
-export type ShootingPlatform = Device &
-    Vitality &
-    Targetable &
-    Occupancy &
-    Deployable & {
-        readonly definition: { readonly card: CardDefinition };
-    };
+export type ShootingPlatform = Device & Vitality & Targetable & Occupancy & Deployable;
 
 export type Definition = ShootingPlatform["definition"];
 
 export interface Parameters extends Pick<
     Definition,
-    "id" | "classification" | "vitality" | "deployable" | "card"
+    "id" | "classification" | "vitality" | "deployable"
 > {
     readonly taunt: number;
     readonly tileChanges: Partial<TileState>;
@@ -50,7 +43,7 @@ function clearOccupant(battle: BattleState, position: TilePosition): BattleState
 }
 
 export function create(parameters: Parameters): Definition {
-    const { id, classification, taunt, vitality, deployable, card } = parameters;
+    const { id, classification, taunt, vitality, deployable } = parameters;
     const tileChanges = {
         ...parameters.tileChanges,
         walkCost: 1000,
@@ -66,7 +59,6 @@ export function create(parameters: Parameters): Definition {
         },
         vitality,
         deployable,
-        card,
         occupancy: {
             slot: "SUPPORT",
             onOccupantAdded(battle, { support, occupant }) {

@@ -60,7 +60,7 @@ export function createRequest<T extends Card<any>>(
         quote: {
             dp: resolveCost(self, battle.deployment.definition.costCeiling ?? 99),
             stock: 1,
-            slots: self.definition.card.slots,
+            slots: self.definition.slots,
         },
         restrictions: [],
         hooks: Hooks.empty(),
@@ -83,7 +83,7 @@ const defaults: readonly [Rejection, Contribution<Restriction>][] = [
             id: "@deployment/active-limit",
             value: {
                 allows: (battle, { request }) => {
-                    const limit = get(battle, request.card)!.definition.card.activeLimit;
+                    const limit = get(battle, request.card)!.definition.activeLimit;
 
                     return limit === null || deployedCount(battle, request.card) < limit;
                 },
@@ -127,7 +127,7 @@ export function resolveRestrictions(
 
     for (const entry of [
         ...defaultRestrictions,
-        ...self.definition.card.deploymentRestrictions,
+        ...self.definition.deploymentRestrictions,
         ...self.restrictions,
         ...request.restrictions,
     ]) {
@@ -157,7 +157,7 @@ export function evaluateCurrent(
         return { type: "REJECTED", reason: "OUTSIDE_MAP" };
     }
 
-    const slot = self.definition.occupancy.slot;
+    const slot = self.unitDefinition.occupancy.slot;
     const occupancy = at(battle.battlefield, request.tilePosition);
     if ((slot === "SUPPORT" ? occupancy?.support : occupancy?.occupant) != null) {
         return { type: "REJECTED", reason: "OCCUPIED" };

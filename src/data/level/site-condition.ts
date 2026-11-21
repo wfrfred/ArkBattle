@@ -38,9 +38,3 @@ export function parseSiteCondition(value: unknown, name: string): SiteCondition 
 
     return condition;
 }
-
-export function parseAllowedSiteConditions(value: unknown, name: string): readonly SiteCondition[] {
-    const raw = mask(value, name);
-
-    return CONDITIONS.filter(([bit]) => (raw & bit) !== 0).map(([, condition]) => condition);
-}

@@ -32,7 +32,7 @@ export function advance(state: BattleState): BattleState {
         const reference = ref(candidate);
         const self = card.advance(get(state, reference)!, tick);
         state = replace(state, self);
-        state = self.definition.card.onTick?.(state, self) ?? state;
+        state = self.definition.onTick?.(state, self) ?? state;
     }
 
     const deployment = dp.advance(state.deployment, tick);

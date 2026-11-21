@@ -24,9 +24,9 @@ Deployment 完成部署资格、消费、实例创建与通知；Card 保存跨�
 
 ## 静态内容与 Card
 
-内容提供顶层声明 card、occupancy、deployable 的完整静态 Unit Definition，Card 保留原对象，部署时直接复用。Card 在返手与多次场上实例之间持续存在。同 Definition 的多张 Card 各有独立身份。
+开场手牌的每一项绑定一份 `definition` 和一份 `unitDefinition`。Card Definition 描述卡牌政策和程序。Unit Definition 描述场上单位，并提供卡牌部署所需的 `occupancy` 和 `deployable`。部署时直接复用该 Unit Definition。多张 Card 可以共用一份 Unit Definition，各有独立身份和资源。
 
-`card.initialize(battle, definition)` 分配 ID、运行 Definition 的初始化并返回完整实例。`card.add(battle, self)` 接收私有状态与 Definition 配对的 `Card<S>`，按 ID 登记进通用 `Store`。`card.get(battle, ref)` 依据 typed Ref 恢复实例类型。展示顺序独立保存，Card 登记或写回变更后接续 Deployment 的排序策略。
+`card.initialize(battle, { definition, unitDefinition })` 分配 ID、运行 Card Definition 的初始化并返回完整实例。`card.add(battle, self)` 接收私有状态与 Definition 配对的 `Card<S>`，按 ID 登记进通用 `Store`。`card.get(battle, ref)` 依据 typed Ref 恢复实例类型。展示顺序独立保存，Card 登记或写回变更后接续 Deployment 的排序策略。
 
 Card 配置明确费用、部署间隔、库存／在场上限、额度、退款和供给政策。当前 cooldownOnDeploy 控制部署时启动间隔，recoverOnRetreatOrDeath 与 increaseCostOnRetreatOrDeath 分别控制普通撤退／死亡恢复及费用阶段；这些字段的组织仍待重审，不能把现有布尔组合视为已完成领域收口。
 
@@ -56,7 +56,7 @@ Quote 承诺 DP、库存和额度消费：dp 为 null 表示不支付，零表�
 
 ## 关卡预置与开场 Unit
 
-Predefined 持有完整 Unit 或 Mechanism 创建项，只增加区分领域的 `type`。`initiallyPresent` 声明开场出现。`appear` 先用所属领域的 `initialize` 分配身份并构造实例，再登记预置绑定，最后通过 `add` 登记实例。Unit 此时派发 `entered`，Mechanism 此时安装所需的 Battle 监听。
+Predefined 持有完整 Unit 或 Mechanism 创建项，只增加区分领域的 `type`。`initiallyPresent` 声明开场出现。`appear` 先用所属领域的 `initialize` 分配身份并构造实例，再登记预置绑定，最后通过 `add` 登记实例。预布置 Unit 在该路径直接使用 Unit Definition，`deployable.card` 初始为空。Unit 此时派发 `entered`，Mechanism 此时安装所需的 Battle 监听。
 
 appear／remove 是按 PredefinedDefinition.id 的领域操作，不通过 Command。remove 先撤销旧绑定再完整结束实例；Unit 分支接收 Unit.End。离场回调重新出现同一预置项时，外层保留新绑定。预置不执行玩家部署的支付与部署通知。
 

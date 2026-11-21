@@ -1,15 +1,12 @@
-import { secondsToTicks, TICKS_PER_SECOND } from "../../../core/tick.js";
+import { TICKS_PER_SECOND } from "../../../core/tick.js";
 import { Hooks } from "../../../core/hook.js";
 import * as unitHooks from "../../../core/unit/hook.js";
-import { normal as normalSite } from "../../terrain/condition.js";
 import { hasTargetable } from "../../../core/unit/capability/targetable/capability.js";
 import { create as createElemental } from "../../elemental.js";
 import type { ActionCapability } from "../../../core/unit/capability/action/index.js";
 import { ref as unitRef } from "../../../core/unit/index.js";
 import { sides } from "../../../core/unit/capability/blocking/index.js";
 import type { SkillCapability } from "../../../core/unit/capability/skill/index.js";
-import type { Definition as CardDefinition } from "../../../core/battle/deployment/card/index.js";
-import { get as getTile } from "../../../core/battlefield/map/map.js";
 import { healFree } from "../../../core/effects/protection.js";
 import { hasVitality } from "../../../core/unit/capability/vitality/index.js";
 import { install } from "../../../core/unit/effect/index.js";
@@ -21,13 +18,7 @@ import { shieldEffect } from "./effect.js";
 import { create as createSkill } from "./skill.js";
 import { resolve } from "./parameters.js";
 
-export type Mudrock = Operator &
-    ActionCapability<Mudrock> &
-    SkillCapability<Mudrock> & {
-        readonly definition: {
-            readonly card: CardDefinition;
-        };
-    };
+export type Mudrock = Operator & ActionCapability<Mudrock> & SkillCapability<Mudrock>;
 
 export type Definition = Mudrock["definition"];
 
@@ -50,38 +41,6 @@ export function create(configuration: Configuration & SkillSelection, tables: Ta
             restrictions: [],
         },
         deployable: { retreatRestrictions: [] },
-        card: {
-            cost: attributes.cost,
-            redeployTicks: secondsToTicks(attributes.respawnTime),
-            slots: 1,
-            stock: 1,
-            stockLimit: 1,
-            activeLimit: 1,
-            cooldownOnDeploy: false,
-            recoverOnRetreatOrDeath: true,
-            increaseCostOnRetreatOrDeath: true,
-            refund: { rate: 0.5, limit: "BASE_COST" },
-            deploymentRestrictions: [
-                {
-                    id: "deployment/site",
-                    value: {
-                        allows(battle, { request }) {
-                            const tile = getTile(battle.battlefield.map, request.tilePosition);
-
-                            return (
-                                tile !== undefined &&
-                                (tile.state.placement === "MELEE" ||
-                                    tile.state.placement === "ALL") &&
-                                (tile.state.siteCondition === null ||
-                                    tile.state.siteCondition === normalSite)
-                            );
-                        },
-                    },
-                },
-            ],
-            unitHooks: Hooks.empty(),
-            initialize: (battle) => ({ state: battle, value: {} }),
-        },
         vitality: {
             maxHp: { default: attributes.maxHp, min: 1, max: null },
             defense: { default: attributes.defense, min: 0, max: null },

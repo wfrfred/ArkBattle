@@ -17,21 +17,21 @@ const operator = {
     occupancy: { slot: "OCCUPANT" },
     deployable: { retreatRestrictions: [] },
     vitality: defineVitality(100),
-    card: {
-        cost: 10,
-        redeployTicks: 10,
-        slots: 1,
-        stock: 1,
-        stockLimit: 1,
-        activeLimit: 1,
-        cooldownOnDeploy: false,
-        recoverOnRetreatOrDeath: true,
-        increaseCostOnRetreatOrDeath: true,
-        refund: { rate: 0.5, limit: "BASE_COST" },
-        deploymentRestrictions: [],
-        unitHooks: Hooks.empty(),
-        initialize: (state) => ({ state, value: {} }),
-    },
+};
+const operatorCard = {
+    cost: 10,
+    redeployTicks: 10,
+    slots: 1,
+    stock: 1,
+    stockLimit: 1,
+    activeLimit: 1,
+    cooldownOnDeploy: false,
+    recoverOnRetreatOrDeath: true,
+    increaseCostOnRetreatOrDeath: true,
+    refund: { rate: 0.5, limit: "BASE_COST" },
+    deploymentRestrictions: [],
+    unitHooks: Hooks.empty(),
+    initialize: (state) => ({ state, value: {} }),
 };
 const account = {
     initialDp: 50,
@@ -42,8 +42,8 @@ const account = {
 
 test("Card initialization reserves identity and Card writes refresh deployment order", () => {
     const definition = (rank) => ({
-        ...operator,
-        card: { ...operator.card, initialize: (state) => ({ state, value: { rank } }) },
+        ...operatorCard,
+        initialize: (state) => ({ state, value: { rank } }),
     });
     let state = battle([], { deployment: { definition: account, cards: [] } });
     state = deployment.setOrdering(state, (current, references) =>
@@ -51,8 +51,8 @@ test("Card initialization reserves identity and Card writes refresh deployment o
             cards.get(current, left).state.rank - cards.get(current, right).state.rank,
         ),
     );
-    const first = cards.initialize(state, definition(10));
-    const second = cards.initialize(first.state, definition(5));
+    const first = cards.initialize(state, { definition: definition(10), unitDefinition: operator });
+    const second = cards.initialize(first.state, { definition: definition(5), unitDefinition: operator });
     const firstRef = cards.ref(first.value);
     const secondRef = cards.ref(second.value);
     assert.notEqual(firstRef.id, secondRef.id);
@@ -68,6 +68,44 @@ test("Card initialization reserves identity and Card writes refresh deployment o
 
     state = cards.setState(state, firstRef, { rank: 1 });
     assert.deepEqual([...deployment.ordered(state)].map(cards.ref), [firstRef, secondRef]);
+});
+
+test("different Card definitions can deploy the same Unit Definition used by a predefined unit", () => {
+    const discount = { ...operatorCard, cost: 7, slots: 0 };
+    let state = battle([
+        { definition: operator, position: [7, 0], initial: { occupancy: { tile: [0, 7] } } },
+    ], { deployment: {
+        definition: account,
+        cards: [
+            { definition: operatorCard, unitDefinition: operator },
+            { definition: discount, unitDefinition: operator },
+        ],
+    } });
+    const predefined = get(state, 0);
+    assert.strictEqual(predefined.definition, operator);
+    assert.equal(predefined.deployable.card, null);
+    assert.equal(deployment.cardForUnit(state, units.ref(predefined)), null);
+
+    const [regular, discounted] = [...cards.all(state)];
+    assert.strictEqual(regular.definition, operatorCard);
+    assert.strictEqual(discounted.definition, discount);
+    assert.strictEqual(regular.unitDefinition, operator);
+    assert.strictEqual(discounted.unitDefinition, operator);
+
+    for (const [card, tile] of [[regular, [0, 2]], [discounted, [1, 2]]]) {
+        const reference = cards.ref(card);
+        const result = deployment.deploy(state, deployment.createRequest(state, reference, tile));
+        assert.equal(result.value.type, "DEPLOYED");
+        state = result.state;
+        const unit = get(state, result.value.unitId);
+        assert.strictEqual(unit.definition, operator);
+        assert.equal(unit.deployable.cost, card.definition.cost);
+        assert.equal(unit.deployable.slots, card.definition.slots);
+        assert.deepEqual(deployment.cardForUnit(state, units.ref(unit)), reference);
+    }
+    assert.equal(state.deployment.dp, 33);
+    assert.equal(state.deployment.usedSlots, 1);
+    assert.equal(deployment.cardForUnit(state, units.ref(predefined)), null);
 });
 
 test("preview, evaluation and deployment share a request, rejection spends nothing, and the entered hook sees consumption", () => {
@@ -96,7 +134,9 @@ test("preview, evaluation and deployment share a request, rejection spends nothi
             }],
         },
     };
-    let state = battle([], { deployment: { definition: account, cards: [definition] } });
+    let state = battle([], {
+        deployment: { definition: account, cards: [{ definition: operatorCard, unitDefinition: definition }] },
+    });
     state = deployment.setHook(state, deployment.deployed, {
         id: "deployed",
         invoke(current, { unit, request }) {
@@ -175,7 +215,8 @@ test("preview, evaluation and deployment share a request, rejection spends nothi
 
 test("DEPLOY-RESTRICTION-01: policy overrides retain resource and occupancy prerequisites while zero quotes remain legal", () => {
     let state = battle([], { deployment: {
-        definition: { ...account, initialDp: 0, minDp: -5, slotLimit: 0 }, cards: [operator],
+        definition: { ...account, initialDp: 0, minDp: -5, slotLimit: 0 },
+        cards: [{ definition: operatorCard, unitDefinition: operator }],
     } });
     const card = cards.ref([...cards.all(state)][0]);
     const permit = { allows: () => true };
@@ -220,8 +261,8 @@ test("DEPLOY-RESTRICTION-02: Definition, Card and Request replace IDs before gro
     const permit = { allows: () => true };
     const deny = { allows: () => false };
     let state = battle([], { deployment: {
-        definition: { ...account, slotLimit: 0 }, cards: [{ ...operator, card: {
-            ...operator.card, activeLimit: 0,
+        definition: { ...account, slotLimit: 0 }, cards: [{ unitDefinition: operator, definition: {
+            ...operatorCard, activeLimit: 0,
             deploymentRestrictions: [
                 { id: "@deployment/cooldown", value: deny },
                 { id: "@deployment/active-limit", value: deny, group: { id: "permission", priority: 1 } },
@@ -257,9 +298,9 @@ test("retreat settles refund and the persistent Card before departure; confirmed
             definition: account,
             cards: [
                 {
-                    ...operator,
-                    card: {
-                        ...operator.card,
+                    unitDefinition: operator,
+                    definition: {
+                        ...operatorCard,
                         unitHooks: Hooks.empty().set(unitLifecycle.removed, {
                                 id: "observe-departure",
 
@@ -317,7 +358,10 @@ test("stock recovers serially with sampled budgets; pause and reduction affect o
     let state = battle([], {
         deployment: {
             definition: account,
-            cards: [{ ...operator, card: { ...operator.card, stock: 0, stockLimit: 3 } }],
+            cards: [{
+                unitDefinition: operator,
+                definition: { ...operatorCard, stock: 0, stockLimit: 3 },
+            }],
         },
     });
     const card = cards.ref([...cards.all(state)][0]);

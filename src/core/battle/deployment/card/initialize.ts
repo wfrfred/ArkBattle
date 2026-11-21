@@ -1,12 +1,25 @@
 import { assertNonnegativeNumber, assertNonnegativeSafeInteger } from "../../../common/assert.js";
 import type { State as BattleState, Result } from "../../state.js";
 import type { Card, UnitDefinition } from "./card.js";
+import type { Definition } from "./definition.js";
 
-export function initialize<S extends object, const D extends UnitDefinition<S>>(
+export interface Input<S extends object = object> {
+    readonly definition: Definition<S>;
+    readonly unitDefinition: UnitDefinition;
+}
+
+export function initialize<
+    S extends object,
+    const D extends Definition<S>,
+    const U extends UnitDefinition,
+>(
     battle: BattleState,
-    definition: UnitDefinition<S> & D,
-): Result<Card<S> & { readonly definition: D }> {
-    const { stock, stockLimit, activeLimit, cost, redeployTicks, slots, refund } = definition.card;
+    {
+        definition,
+        unitDefinition,
+    }: Input<S> & { readonly definition: D; readonly unitDefinition: U },
+): Result<Card<S> & { readonly definition: D; readonly unitDefinition: U }> {
+    const { stock, stockLimit, activeLimit, cost, redeployTicks, slots, refund } = definition;
 
     assertNonnegativeNumber(cost, "card cost");
     assertNonnegativeSafeInteger(redeployTicks, "card redeployment ticks");
@@ -29,15 +42,16 @@ export function initialize<S extends object, const D extends UnitDefinition<S>>(
 
     const id = battle.execution.nextCardId;
     battle = { ...battle, execution: { ...battle.execution, nextCardId: id + 1 } };
-    const initialized = definition.card.initialize(battle);
+    const initialized = definition.initialize(battle);
 
     return {
         state: initialized.state,
         value: {
             id,
             definition,
+            unitDefinition,
             deployedUnits: [],
-            unitHooks: definition.card.unitHooks,
+            unitHooks: definition.unitHooks,
             restrictions: [],
             state: initialized.value,
             stock,

@@ -1,6 +1,5 @@
 import { Hooks } from "../../../core/hook.js";
 import * as unitHooks from "../../../core/unit/hook.js";
-import { normal as normalSite } from "../../terrain/condition.js";
 import { create as createElemental } from "../../elemental.js";
 import {
     getAction,
@@ -12,8 +11,6 @@ import { ref as unitRef } from "../../../core/unit/index.js";
 
 import type { SkillCapability } from "../../../core/unit/capability/skill/index.js";
 
-import type { Definition as CardDefinition } from "../../../core/battle/deployment/card/index.js";
-import { get as getTile } from "../../../core/battlefield/map/map.js";
 import { sides } from "../../../core/unit/capability/blocking/index.js";
 import { hasOffense } from "../../../core/unit/capability/offense/index.js";
 import { install } from "../../../core/unit/effect/index.js";
@@ -26,15 +23,9 @@ import type { Configuration, SkillSelection } from "../configuration.js";
 import type { Tables } from "../../../data/unit/operator.js";
 import { resolve } from "./parameters.js";
 import { allows } from "../../../core/restriction.js";
-import { secondsToTicks, TICKS_PER_SECOND } from "../../../core/tick.js";
+import { TICKS_PER_SECOND } from "../../../core/tick.js";
 
-export type Melantha = Operator &
-    ActionCapability<Melantha> &
-    SkillCapability<Melantha> & {
-        readonly definition: {
-            readonly card: CardDefinition;
-        };
-    };
+export type Melantha = Operator & ActionCapability<Melantha> & SkillCapability<Melantha>;
 
 export type Definition = Melantha["definition"];
 
@@ -64,38 +55,6 @@ export function create(configuration: Configuration & SkillSelection, tables: Ta
             restrictions: [],
         },
         deployable: { retreatRestrictions: [] },
-        card: {
-            cost: attributes.cost,
-            redeployTicks: secondsToTicks(attributes.respawnTime),
-            slots: 1,
-            stock: 1,
-            stockLimit: 1,
-            activeLimit: 1,
-            cooldownOnDeploy: false,
-            recoverOnRetreatOrDeath: true,
-            increaseCostOnRetreatOrDeath: true,
-            refund: { rate: 0.5, limit: "BASE_COST" },
-            deploymentRestrictions: [
-                {
-                    id: "deployment/site",
-                    value: {
-                        allows(battle, { request }) {
-                            const tile = getTile(battle.battlefield.map, request.tilePosition);
-
-                            return (
-                                tile !== undefined &&
-                                (tile.state.placement === "MELEE" ||
-                                    tile.state.placement === "ALL") &&
-                                (tile.state.siteCondition === null ||
-                                    tile.state.siteCondition === normalSite)
-                            );
-                        },
-                    },
-                },
-            ],
-            unitHooks: Hooks.empty(),
-            initialize: (battle) => ({ state: battle, value: {} }),
-        },
         elemental: createElemental({ receiver: "CHARACTER" }),
         vitality: {
             maxHp: { default: attributes.maxHp, min: 1, max: null },
