@@ -11,8 +11,6 @@ import {
 } from "../../../core/unit/index.js";
 import { blocked } from "../../../core/battle/blocking/index.js";
 import { hasBlocker } from "../../../core/unit/capability/blocking/index.js";
-import type { Profile } from "../../../data/unit/operator.js";
-import { secondsToTicks } from "../../../data/time.js";
 import { hasSkill, modify } from "../../../core/unit/capability/skill/index.js";
 import type { Vitality } from "../../../core/unit/capability/vitality/index.js";
 import { cancel, receiving } from "../../../core/battle/resource/hp/damage/index.js";
@@ -23,12 +21,22 @@ import {
     get,
     setState,
 } from "../../../core/unit/effect/index.js";
-import { value, healSelf } from "./common.js";
+import { healSelf } from "./common.js";
 
 interface ShieldState {
     readonly layers: number;
     readonly timer: number;
     readonly lastTick: number;
+}
+
+export interface ShieldParameters {
+    readonly interval: number;
+    readonly initialLayers: number;
+    readonly capacity: number;
+    readonly healRatio: number;
+    readonly extraSp: number;
+    readonly sarkazResistance: number;
+    readonly blockedDamageScale: number;
 }
 
 const SHIELD_ID = "mudrock/shield";
@@ -50,24 +58,15 @@ function hasSarkazTag(unit: Unit | undefined): boolean {
     return unit !== undefined && hasClassification(unit) && hasFilterTag(unit, "sarkaz");
 }
 
-export function shieldEffect(profile: Profile): EffectDefinition<ShieldState, Vitality> {
-    const talent = profile.talents.find((talent) => talent.key === "1");
-    if (talent === undefined) {
-        throw new TypeError("Mudrock content requires her shield talent");
-    }
-
-    const interval = secondsToTicks(value(talent.blackboard, "interval"));
-    const initialLayers = value(talent.blackboard, "times");
-    const capacity = value(talent.blackboard, "max_times");
-    const healRatio = value(talent.blackboard, "hp_ratio");
-    const extraSp = talent.blackboard.find((entry) => entry.key === "sp")?.value ?? 0;
-    const sarkazResistance =
-        profile.talents
-            .find((talent) => talent.key === "2")
-            ?.blackboard.find((entry) => entry.key === "damage_resistance")?.value ?? 0;
-    const blockedDamageScale =
-        profile.moduleTrait.find((entry) => entry.key === "damage_scale")?.value ?? 1;
-
+export function shieldEffect({
+    interval,
+    initialLayers,
+    capacity,
+    healRatio,
+    extraSp,
+    sarkazResistance,
+    blockedDamageScale,
+}: ShieldParameters): EffectDefinition<ShieldState, Vitality> {
     const definition: EffectDefinition<ShieldState, Vitality> = {
         id: SHIELD_ID,
         initialize: () => ({ layers: initialLayers, timer: interval, lastTick: 0 }),

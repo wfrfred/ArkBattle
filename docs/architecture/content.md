@@ -6,7 +6,7 @@ Core 提供通用机制并保存模拟状态，Content 提供具体行为，Data
 
 [Data](data.md)解析、选择、覆写和换算静态输入，可以建图或为已有工厂绑定参数；Content 通过 ESM 明确组合 Capability、Effect、Hook 和 Action，提供完整 Definition。Core 使用 Definition／Initial 创建和推进实例。
 
-Unit Definition 保存实际消费者读取的配置。Content 用 Profile 和时序资料装配能力、构建行动和绑定回调。行动配置集中在 `action.definitions`，工厂也可以把具体 Action 单独返回给调用方。
+Unit Definition 保存实际消费者读取的配置。干员的 `create(configuration)` 从自己绑定的 `parameters.json` 选择养成与战斗参数，组装完整 Definition。行动配置集中在 `action.definitions`。
 
 Content 不自行推进模拟，不在共享模块或闭包中保存本场事实；私有运行数据由初始化程序放入 State，不通过字符串动态装载程序。Meta 提供本次阵容与玩法配置；未支持配置在入口明确拒绝，不静默丢弃。
 
@@ -29,7 +29,7 @@ Content 不自行推进模拟，不在共享模块或闭包中保存本场事实
 
 ### Core 标准机制与 Content 共享工厂
 
-Core 定义战斗的标准语义。Action 的执行与冷却、Skill 的 SP 与激活、Effect 的实例与生命周期由对应 Core 领域处理。标准 Effect 实现位于 `core/effects/`，实例操作位于 `core/unit/effect/`。实现标准眩晕等行为时，Content 调用对应的 Core 实现，并决定目标、时点、时长和专属后继。Data 可为 Elemental 等已有标准实现绑定静态参数。[标准 Effect](../../src/core/effects) · [Effect 实例操作](../../src/core/unit/effect/index.ts) · [Elemental](elemental.md)
+Core 定义战斗的标准语义。Action 的执行与冷却、Skill 的 SP 与激活、Effect 的实例与生命周期由对应 Core 领域处理。标准 Effect 实现位于 `core/effects/`，实例操作位于 `core/unit/effect/`。实现标准眩晕等行为时，Content 调用对应的 Core 实现，并决定目标、时点、时长和专属后继。角色与敌人的默认元素配置调用共享的 Content 工厂。[标准 Effect](../../src/core/effects) · [Effect 实例操作](../../src/core/unit/effect/index.ts) · [Elemental](elemental.md)
 
 Content 共享的是可选工厂。`content/actions/attack.ts` 提供常见攻击的组装，特殊行动可以直接编写 Action Definition。共享工厂按产出的 Definition 归类。`content/actions/skill.ts` 复用攻击模板，产出由技能驱动的 Action。返回 Skill Definition 的共享工厂归 `content/skills/`。共用规则用普通函数组合，具体数值读取规范化数据。
 
@@ -97,6 +97,8 @@ type Device = Unit & Classification<"DEVICE">;
 猎狗和弩手使用 `GroundEnemy`，在 `Enemy` 上组合被阻挡、受力移动、路线和 Presence。战术装备整理箱和战术射击台使用 `TileDevice`，在 `Device` 上组合生命、受选、占格与部署，并提供 Card 配置。两类模板均从对应单位组合的 `definition` 推导配置类型。[地面敌人模板](../../src/content/enemies/ground.ts) · [地块装置模板](../../src/content/devices/tile.ts)
 
 ### 具体单位的写法
+
+干员构造函数接收 `operators/configuration.ts` 中的 `Configuration`。有技能的干员同时要求 `SkillSelection`。构造时校验本次选择，从静态资料读取等级曲线、技能等级、天赋候选和模组阶段，再生成具体的 Action、Skill 与 Effect。固定引用由 Data 提取时接好，构造时的插值、信赖和候选选择由 `operators/parameters.ts` 共享。[干员静态资料](data.md#干员静态资料)
 
 在 `content/operators/melantha/unit.ts` 中声明具体单位的能力组合，从该单位的 `definition` 推导完整配置类型，并用 `satisfies` 检查实际提供的配置。
 

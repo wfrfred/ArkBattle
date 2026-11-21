@@ -7,7 +7,7 @@ import {
 import * as units from "../../../core/unit/index.js";
 import type { Timing as AttackTiming } from "../../actions/timing.js";
 import type { Profile } from "../../../data/unit/enemy.js";
-import { perSecondToPerTick } from "../../../data/time.js";
+import { perSecondToPerTick } from "../../../core/tick.js";
 import { assertNonnegativeSafeInteger, assertPositiveNumber } from "../../../core/common/assert.js";
 import * as projectiles from "../../../core/projectile/index.js";
 import { resolveAttack, type Offense } from "../../../core/unit/capability/offense/index.js";

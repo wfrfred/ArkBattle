@@ -1,15 +1,12 @@
-import type { Timing } from "../../actions/timing.js";
-import { TICKS_PER_SECOND } from "../../../core/tick.js";
+import { secondsToTicks, TICKS_PER_SECOND } from "../../../core/tick.js";
 import { Hooks } from "../../../core/hook.js";
 import * as unitHooks from "../../../core/unit/hook.js";
 import { normal as normalSite } from "../../terrain/condition.js";
 import { hasTargetable } from "../../../core/unit/capability/targetable/capability.js";
-import { createArknightsElementalDefinition } from "../../../data/effect/elemental.js";
+import { create as createElemental } from "../../elemental.js";
 import type { ActionCapability } from "../../../core/unit/capability/action/index.js";
 import { ref as unitRef } from "../../../core/unit/index.js";
 import { sides } from "../../../core/unit/capability/blocking/index.js";
-import type { Profile } from "../../../data/unit/operator.js";
-import { secondsToTicks } from "../../../data/time.js";
 import type { SkillCapability } from "../../../core/unit/capability/skill/index.js";
 import type { Definition as CardDefinition } from "../../../core/battle/deployment/card/index.js";
 import { get as getTile } from "../../../core/battlefield/map/map.js";
@@ -17,9 +14,11 @@ import { healFree } from "../../../core/effects/protection.js";
 import { hasVitality } from "../../../core/unit/capability/vitality/index.js";
 import { install } from "../../../core/unit/effect/index.js";
 import type { Operator } from "../operator.js";
+import type { Configuration, SkillSelection } from "../configuration.js";
 import { createNormal, createSkill as createSkillAction } from "./action.js";
 import { shieldEffect } from "./effect.js";
 import { create as createSkill } from "./skill.js";
+import { resolve } from "./parameters.js";
 
 export type Mudrock = Operator &
     ActionCapability<Mudrock> &
@@ -31,46 +30,28 @@ export type Mudrock = Operator &
 
 export type Definition = Mudrock["definition"];
 
-export function create(
-    profile: Profile,
-    normalTiming: Timing,
-    options: { readonly recoveryTicks?: number } = {},
-) {
-    if (
-        profile.id !== "char_311_mudrok" ||
-        profile.skill.definition.id !== "skchr_mudrok_2" ||
-        profile.skillRange === null
-    ) {
-        throw new TypeError("Mudrock content requires her second skill and its range");
-    }
-    if (
-        profile.configuration.module !== undefined &&
-        profile.configuration.module.id !== "uniequip_002_mudrok"
-    ) {
-        throw new TypeError("Mudrock content supports only module X");
-    }
-
-    const recoveryTicks = options.recoveryTicks ?? 0;
-
-    const shield = shieldEffect(profile);
-    const normalAttack = createNormal(profile, normalTiming);
-    const action = createSkillAction(profile, recoveryTicks);
-    const skill = createSkill(profile, normalAttack, action);
+export function create(configuration: Configuration & SkillSelection) {
+    const parameters = resolve(configuration);
+    const { attributes } = parameters;
+    const shield = shieldEffect(parameters.shield);
+    const normalAttack = createNormal(parameters.range, parameters.timing);
+    const action = createSkillAction(parameters.skillAction);
+    const skill = createSkill(parameters.skill, normalAttack, action);
 
     const definition = {
-        elemental: createArknightsElementalDefinition({ receiver: "CHARACTER" }),
-        id: profile.id,
+        elemental: createElemental({ receiver: "CHARACTER" }),
+        id: parameters.id,
         occupancy: { slot: "OCCUPANT" },
         facing: { restrictions: [] },
         targetable: {
             category: "DEFAULT",
-            taunt: { default: profile.attributes.taunt, min: -2, max: 2 },
+            taunt: { default: attributes.taunt, min: -2, max: 2 },
             restrictions: [],
         },
         deployable: { retreatRestrictions: [] },
         card: {
-            cost: profile.attributes.cost,
-            redeployTicks: secondsToTicks(profile.attributes.respawnTime),
+            cost: attributes.cost,
+            redeployTicks: secondsToTicks(attributes.respawnTime),
             slots: 1,
             stock: 1,
             stockLimit: 1,
@@ -101,13 +82,13 @@ export function create(
             initialize: (battle) => ({ state: battle, value: {} }),
         },
         vitality: {
-            maxHp: { default: profile.attributes.maxHp, min: 1, max: null },
-            defense: { default: profile.attributes.defense, min: 0, max: null },
-            resistance: { default: profile.attributes.resistance, min: 0, max: 100 },
-            recoverySpeed: { default: profile.attributes.recoverySpeed, min: 0, max: null },
+            maxHp: { default: attributes.maxHp, min: 1, max: null },
+            defense: { default: attributes.defense, min: 0, max: null },
+            resistance: { default: attributes.resistance, min: 0, max: 100 },
+            recoverySpeed: { default: attributes.recoverySpeed, min: 0, max: null },
             recoveryRatio: { default: 0, min: 0, max: 1 },
         },
-        offense: { attack: { default: profile.attributes.attack, min: 0, max: null } },
+        offense: { attack: { default: attributes.attack, min: 0, max: null } },
 
         classification: {
             type: "OPERATOR",
@@ -115,19 +96,19 @@ export function create(
             profession: "TANK",
             subProfession: "UNYIELD",
             extraProfessions: [],
-            groupTags: profile.groupTags,
+            groupTags: parameters.groupTags,
         },
         layer: { type: "GROUND" },
         hitbox: { shape: { type: "CIRCLE", offset: [0, 0], radius: 0.25 } },
         blocker: {
-            capacity: profile.attributes.blockCapacity,
+            capacity: attributes.blockCapacity,
             layer: "GROUND",
             restrictions: [{ id: "blocking/sides", value: sides("ENEMY") }],
         },
         action: {
-            speed: { default: profile.attributes.attackSpeed, min: 20, max: null },
+            speed: { default: attributes.attackSpeed, min: 20, max: null },
             interval: {
-                default: profile.attributes.baseAttackTime * TICKS_PER_SECOND,
+                default: attributes.baseAttackTime * TICKS_PER_SECOND,
                 min: 0,
                 max: null,
             },
@@ -153,5 +134,5 @@ export function create(
         }),
     } satisfies Definition;
 
-    return { definition, action };
+    return definition;
 }

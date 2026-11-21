@@ -14,7 +14,7 @@ import * as skills from "../../dist/core/unit/capability/skill/index.js";
 import * as elemental from "../../dist/core/unit/capability/elemental/index.js";
 import * as vitality from "../../dist/core/unit/capability/vitality/index.js";
 import * as epDamage from "../../dist/core/battle/resource/ep/damage/index.js";
-import { createArknightsElementalDefinition } from "../../dist/data/effect/elemental.js";
+import { create as createElementalDefinition } from "../../dist/content/elemental.js";
 
 test("HOOK-03: Skill and Burst end notifications observe their cleared state while the owner is ENDING", () => {
     const observed = [];
@@ -27,7 +27,7 @@ test("HOOK-03: Skill and Burst end notifications observe their cleared state whi
     const definition = {
         id: "owner",
         vitality: defineVitality(10000),
-        elemental: createArknightsElementalDefinition({ receiver: "CHARACTER" }),
+        elemental: createElementalDefinition({ receiver: "CHARACTER" }),
         skill: { definition: program },
         hooks: Hooks.empty()
             .set(skills.activationEnded, {

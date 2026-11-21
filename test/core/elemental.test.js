@@ -20,18 +20,18 @@ import { silence, blockSpRecovery } from "../../dist/core/effects/control.js";
 import { create as modifier } from "../../dist/core/common/modifier.js";
 import { elementHealing } from "../../dist/core/battle/targeting/index.js";
 import { hasTargetable } from "../../dist/core/unit/capability/targetable/capability.js";
-import { createArknightsElementalDefinition } from "../../dist/data/effect/elemental.js";
+import { create as createElementalDefinition } from "../../dist/content/elemental.js";
 
 const elementalReceiver = {
     id: "ep-receiver", hooks: Hooks.empty(), presence: {}, classification: { type: "DEVICE", side: "ALLY", filterTags: [], groupTags: [] },
     vitality: defineVitality(10000, { resistance: defineAttribute(50, 0, 100) }),
-    elemental: createArknightsElementalDefinition({ receiver: "CHARACTER" }),
+    elemental: createElementalDefinition({ receiver: "CHARACTER" }),
 };
 
 const recoveringElementalReceiver = {
     id: "ep-receiver", hooks: Hooks.empty(), presence: {}, classification: { type: "DEVICE", side: "ALLY", filterTags: [], groupTags: [] },
     targetable: { category: "DEFAULT", taunt: defineAttribute(0, -2, 2), restrictions: [] },
-    elemental: createArknightsElementalDefinition({ receiver: "CHARACTER", recoveryPerSecond: 15 }),
+    elemental: createElementalDefinition({ receiver: "CHARACTER", recoveryPerSecond: 15 }),
 };
 
 function injuryRequest(target, type, power, source = null) {

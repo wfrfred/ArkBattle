@@ -1,8 +1,7 @@
 import { assertNonnegativeNumber } from "../../core/common/assert.js";
-import { TICKS_PER_SECOND } from "../../core/tick.js";
+import { secondsToTicks, TICKS_PER_SECOND } from "../../core/tick.js";
 import type { SteeringParameters } from "../../core/unit/capability/locomotion/index.js";
 import { parsePrefabExtraction, getPrefabComponent } from "../prefab.js";
-import { secondsToTicks } from "../time.js";
 
 export interface EnemyMovementPrefab {
     readonly prefabKey: string;

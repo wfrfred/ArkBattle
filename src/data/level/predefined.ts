@@ -21,7 +21,7 @@ import {
 import { Tile } from "../../core/geometry/coordinate.js";
 import type { ArknightsPredefinedInstance } from "./definition.js";
 import type { PredefinedPrefab } from "./prefab.js";
-import { secondsToTicks } from "../time.js";
+import { secondsToTicks } from "../../core/tick.js";
 import { parseGroupTags } from "../unit/tags.js";
 
 function object(value: unknown, name: string): Record<string, unknown> {

@@ -7,7 +7,7 @@ import type {
     ArknightsSpawnAction,
 } from "./definition.js";
 import type { Route } from "./route.js";
-import { secondsToTicks } from "../time.js";
+import { secondsToTicks } from "../../core/tick.js";
 
 export interface ArknightsActionSelection {
     readonly waveIndex: number;

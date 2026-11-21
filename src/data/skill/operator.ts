@@ -1,18 +1,7 @@
-import type {
-    Definition as SkillDefinition,
-    DurationDefinition,
-    Recovery,
-} from "../../core/unit/capability/skill/index.js";
-import { assertNonnegativeSafeInteger } from "../../core/common/assert.js";
-
-import { parseBlackboard, type ArknightsBlackboardEntry } from "../blackboard.js";
-import { secondsToTicks } from "../time.js";
-
-export interface ArknightsSkillLevel {
-    readonly definition: SkillDefinition;
-    readonly level: number;
-    readonly blackboard: readonly ArknightsBlackboardEntry[];
-}
+import type { Recovery, Trigger } from "../../core/unit/capability/skill/index.js";
+import type { SkillLevel } from "../../content/operators/parameters.js";
+import { secondsToTicks } from "../../core/tick.js";
+import { parseBlackboard } from "../blackboard.js";
 
 function object(value: unknown, name: string): Record<string, unknown> {
     if (value === null || typeof value !== "object" || Array.isArray(value)) {
@@ -30,7 +19,7 @@ function number(value: unknown, name: string): number {
     return value;
 }
 
-function activation(value: unknown): NonNullable<SkillDefinition["activation"]>["trigger"] {
+function activation(value: unknown): Trigger {
     switch (value) {
         case "PASSIVE":
         case 0:
@@ -75,8 +64,7 @@ function spRecovery(value: unknown): Recovery["type"] {
 export function parseArknightsSkillLevel(
     value: unknown,
     level = 1,
-    ammo?: number,
-): ArknightsSkillLevel {
+): Omit<SkillLevel, "range"> & { readonly rangeId: string | null } {
     const skill = object(value, "skill record");
     if (typeof skill.skillId !== "string" || skill.skillId.length === 0) {
         throw new TypeError("skill record requires an identity");
@@ -91,20 +79,17 @@ export function parseArknightsSkillLevel(
     }
 
     const selected = object(skill.levels[level - 1], "skill level");
-    const ammunitionMode = selected.durationType === "AMMO" || selected.durationType === 1;
+    if (selected.durationType === "AMMO" || selected.durationType === 1) {
+        throw new TypeError(
+            "AMMO operator skills require dedicated content and are unsupported here",
+        );
+    }
     if (
         selected.durationType !== undefined &&
         selected.durationType !== "NONE" &&
-        selected.durationType !== 0 &&
-        !ammunitionMode
+        selected.durationType !== 0
     ) {
         throw new TypeError("unsupported skill duration mode");
-    }
-    if (ammunitionMode && ammo === undefined) {
-        throw new TypeError("AMMO skill requires an explicit ammunition count from its content");
-    }
-    if (!ammunitionMode && ammo !== undefined) {
-        throw new TypeError("ammunition count requires AMMO skill data");
     }
 
     const sp = object(selected.spData, "skill SP data");
@@ -130,44 +115,32 @@ export function parseArknightsSkillLevel(
         recoveryDefinition = { type: recovery, amount: increment };
     }
 
-    let duration: DurationDefinition;
-
-    if (ammo !== undefined) {
-        assertNonnegativeSafeInteger(ammo, "skill ammunition");
-        duration = { type: "AMMO", amount: ammo };
-    } else if (durationSeconds === -1) {
-        duration = { type: "INFINITE" };
-    } else {
-        duration = {
-            type: "TIME",
-            durationTicks: secondsToTicks(durationSeconds, "skill duration"),
-        };
+    const { prefabId, rangeId } = selected;
+    if (typeof prefabId !== "string" || prefabId.length === 0) {
+        throw new TypeError("skill prefab identity must be a nonempty string");
+    }
+    if (rangeId !== null && (typeof rangeId !== "string" || rangeId.length === 0)) {
+        throw new TypeError("skill range identity must be a nonempty string or null");
     }
 
     return {
-        definition: {
-            id: skill.skillId,
-            initialize: (battle) => ({ state: battle, value: {} }),
-            sp: {
-                initial: number(sp.initSp, "skill initial SP"),
-                capacity: spCost * number(sp.maxChargeTime, "skill maximum charges"),
-                recovery: recoveryDefinition,
-                recoverySpeed: {
-                    default: recovery === "TIME" ? increment : 0,
-                    min: 0,
-                    max: null,
-                },
-                recoveryMultiplier: { default: 1, min: 0, max: null },
+        sp: {
+            initial: number(sp.initSp, "skill initial SP"),
+            capacity: spCost * number(sp.maxChargeTime, "skill maximum charges"),
+            recovery: recoveryDefinition,
+            recoverySpeed: {
+                default: recovery === "TIME" ? increment : 0,
+                min: 0,
+                max: null,
             },
-            activation: {
-                trigger: activation(selected.skillType),
-                ignoreRestrictions: [],
-                requirement: spCost,
-                cost: spCost,
-                initialize: () => ({ state: {}, duration }),
-            },
+            recoveryMultiplier: { default: 1, min: 0, max: null },
         },
-        level,
+        trigger: activation(selected.skillType),
+        cost: spCost,
+        durationTicks:
+            durationSeconds === -1 ? null : secondsToTicks(durationSeconds, "skill duration"),
+        prefabId,
+        rangeId,
         blackboard: parseBlackboard(selected.blackboard, "skill blackboard"),
     };
 }

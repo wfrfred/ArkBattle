@@ -1,6 +1,6 @@
 import { Hooks } from "../../core/hook.js";
 import * as unitHooks from "../../core/unit/hook.js";
-import { createArknightsElementalDefinition } from "../../data/effect/elemental.js";
+import { create as createElemental } from "../elemental.js";
 
 import { update as updateUnit, get as getUnit, ref as unitRef } from "../../core/unit/index.js";
 import { Vec2 } from "../../core/common/vector.js";
@@ -17,7 +17,7 @@ import type { Presence } from "../../core/unit/capability/presence/index.js";
 import type { Shiftable } from "../../core/unit/capability/shifting/index.js";
 
 import type { Profile } from "../../data/unit/enemy.js";
-import { perSecondToPerTick } from "../../data/time.js";
+import { perSecondToPerTick } from "../../core/tick.js";
 import { assertPositiveNumber } from "../../core/common/assert.js";
 
 import type { Enemy } from "./enemy.js";
@@ -44,7 +44,7 @@ export function createDefinition(
 
     assertPositiveNumber(hitRadius, "enemy hit radius");
 
-    const elemental = createArknightsElementalDefinition({
+    const elemental = createElemental({
         receiver: "ENEMY",
         boss: profile.rank === "BOSS",
     });

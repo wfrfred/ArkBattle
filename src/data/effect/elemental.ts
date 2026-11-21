@@ -1,23 +1,4 @@
-import {
-    Type,
-    type Definition as ElementalDefinition,
-    type BurstDefinition,
-} from "../../core/unit/capability/elemental/index.js";
-import { createStun, createParalysis } from "../../core/effects/elemental/neural.js";
-import {
-    createPhysical,
-    createElemental as createElementalErosion,
-} from "../../core/effects/elemental/erosion.js";
-import {
-    createArts,
-    createElemental as createElementalBurn,
-} from "../../core/effects/elemental/burn.js";
-import { createSpDrain, createAttackReduction } from "../../core/effects/elemental/necrosis.js";
-import {
-    createActionScaledDamage,
-    createTimeScaledDamage,
-} from "../../core/effects/elemental/mania.js";
-import { secondsToTicks } from "../time.js";
+import { Type } from "../../core/unit/capability/elemental/index.js";
 
 const elements = {
     SANITY: Type.NEURAL,
@@ -27,80 +8,6 @@ const elements = {
     ANGER: Type.MANIA,
 } as const;
 
-export type Receiver = "CHARACTER" | "ENEMY";
-
-export interface ArknightsElementalOptions {
-    readonly receiver: Receiver;
-    readonly boss?: boolean;
-    readonly maxEp?: number;
-    readonly recoveryPerSecond?: number;
-    readonly elementResistance?: number;
-    readonly damageResistance?: number;
-    readonly burstRecoverySpeed?: number;
-}
-
-const bursts: Readonly<Record<Receiver, Readonly<Record<Type, BurstDefinition>>>> = {
-    CHARACTER: {
-        [Type.MANIA]: createActionScaledDamage({
-            durationTicks: secondsToTicks(15),
-            effectDurationTicks: secondsToTicks(15),
-            attackSpeed: 50,
-            damagePerSecond: 100,
-            damagePerAction: 50,
-            maxDamagePerSecond: 600,
-        }),
-        [Type.NEURAL]: createStun({
-            durationTicks: secondsToTicks(10),
-            stunDurationTicks: secondsToTicks(10),
-            damage: 1000,
-        }),
-        [Type.EROSION]: createPhysical({
-            durationTicks: secondsToTicks(10),
-            damage: 800,
-            defReduction: 100,
-        }),
-        [Type.BURN]: createArts({
-            durationTicks: secondsToTicks(10),
-            damage: 1200,
-            resReduction: 20,
-        }),
-        [Type.NECROSIS]: createSpDrain({
-            durationTicks: secondsToTicks(15),
-            damagePerSecond: 100,
-            spDrainPerSecond: 1,
-        }),
-    },
-    ENEMY: {
-        // Erase only after the factory has paired its private state with its callbacks.
-        [Type.MANIA]: createTimeScaledDamage({
-            durationTicks: secondsToTicks(15),
-            attackSpeed: 20,
-            damagePerSecond: 160,
-            damageIncreasePerSecond: 130,
-        }) as unknown as BurstDefinition,
-        [Type.NEURAL]: createParalysis({
-            durationTicks: secondsToTicks(10),
-            damage: 6000,
-            paralysisStacks: 3,
-        }),
-        [Type.EROSION]: createElementalErosion({
-            durationTicks: secondsToTicks(8),
-            damage: 5000,
-            defReduction: 120,
-        }),
-        [Type.BURN]: createElementalBurn({
-            durationTicks: secondsToTicks(10),
-            damage: 7000,
-            resReduction: 20,
-        }),
-        [Type.NECROSIS]: createAttackReduction({
-            durationTicks: secondsToTicks(15),
-            damagePerSecond: 800,
-            attackReductionRatio: 0.5,
-        }),
-    },
-};
-
 export function parseElementType(value: unknown): Type {
     for (const [index, key] of Object.keys(elements).entries()) {
         if (value === key || value === index + 1) {
@@ -109,23 +16,4 @@ export function parseElementType(value: unknown): Type {
     }
 
     throw new TypeError(`unsupported element type: ${String(value)}`);
-}
-
-export function createArknightsElementalDefinition(
-    options: ArknightsElementalOptions,
-): ElementalDefinition {
-    return {
-        maxEp: {
-            default:
-                options.maxEp ??
-                (options.receiver === "ENEMY" && options.boss === true ? 2000 : 1000),
-            min: 1,
-            max: null,
-        },
-        recoverySpeed: { default: options.recoveryPerSecond ?? 0, min: 0, max: null },
-        elementResistance: { default: options.elementResistance ?? 0, min: 0, max: 100 },
-        damageResistance: { default: options.damageResistance ?? 0, min: 0, max: 100 },
-        burstRecoverySpeed: { default: options.burstRecoverySpeed ?? 1, min: 0, max: null },
-        bursts: bursts[options.receiver],
-    };
 }

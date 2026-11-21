@@ -18,7 +18,7 @@ import * as blocking from "../../../dist/core/battle/blocking/index.js";
 import * as effects from "../../../dist/core/unit/effect/index.js";
 import { invincible, invincibleHpDamageRestriction } from "../../../dist/core/effects/protection.js";
 import * as presence from "../../../dist/core/unit/capability/presence/index.js";
-import { createArknightsElementalDefinition } from "../../../dist/data/effect/elemental.js";
+import { create as createElementalDefinition } from "../../../dist/content/elemental.js";
 
 function damageRequest(source, target, power, type = "TRUE", penetration = { fixed: 0, proportional: 0 }) {
     const attack = { power, multiplier: 1, addition: 0 };
@@ -719,7 +719,7 @@ test("EP-05: environmental EP uses ordinary resistance and reception, with immun
     let state = battle([{ definition: {
         id: "environmental-ep-target",
         elemental: {
-            ...createArknightsElementalDefinition({ receiver: "CHARACTER" }),
+            ...createElementalDefinition({ receiver: "CHARACTER" }),
             elementResistance: defineAttribute(50, 0, 100),
         },
         hooks: Hooks.empty().set(epDamage.receiving, {
@@ -995,7 +995,7 @@ test("HP Healing accepts full resources and absent patients while damage require
             },
         }),
         vitality: defineVitality(100.5),
-        elemental: createArknightsElementalDefinition({ receiver: "CHARACTER", recoveryPerSecond: 15 }),
+        elemental: createElementalDefinition({ receiver: "CHARACTER", recoveryPerSecond: 15 }),
     }, position: [0, 0] }]);
     const target = units.ref(get(state, 0));
     assert.equal(get(state, 0).vitality.health.hp, 100.5);

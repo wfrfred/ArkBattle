@@ -20,7 +20,7 @@ import { resolveAttack } from "../../../dist/core/unit/capability/offense/index.
 import { create as modifier } from "../../../dist/core/common/modifier.js";
 import * as elemental from "../../../dist/core/unit/capability/elemental/index.js";
 import { elementValues, setContribution } from "../../../dist/core/unit/capability/elemental/index.js";
-import { createArknightsElementalDefinition } from "../../../dist/data/effect/elemental.js";
+import { create as createElementalDefinition } from "../../../dist/content/elemental.js";
 import { stun } from "../../../dist/core/effects/control.js";
 import * as epDamage from "../../../dist/core/battle/resource/ep/damage/index.js";
 import * as hpDamage from "../../../dist/core/battle/resource/hp/damage/index.js";
@@ -39,7 +39,7 @@ function definition(receiver = 'CHARACTER', overrides = {}) {
   return { hooks: Hooks.empty(), id: `element-${receiver}`,
     vitality: defineVitality(100000, { defense: defineAttribute(500), resistance: defineAttribute(50, 0, 100) }),
     offense: { attack: defineAttribute(100) },
-    elemental: createArknightsElementalDefinition({ receiver }), ...overrides };
+    elemental: createElementalDefinition({ receiver }), ...overrides };
 }
 
 function receiverBattle(receiver = 'CHARACTER', overrides = {}) {
@@ -149,7 +149,7 @@ function battle(receiver, type) {
   return createBattle([
     { definition: actor('ALLY', casterAttack), position: [0, 0] },
     { definition: { ...actor('ENEMY', action()),
-      elemental: createArknightsElementalDefinition({ receiver }),
+      elemental: createElementalDefinition({ receiver }),
     }, position: [1, 0] },
   ], { rows: 1, columns: 8 });
 }

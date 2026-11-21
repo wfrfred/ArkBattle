@@ -8,17 +8,6 @@ import {
     type Request as HealingRequest,
 } from "../../../core/battle/resource/hp/healing/index.js";
 
-import type { Profile } from "../../../data/unit/operator.js";
-
-export function value(entries: Profile["moduleTrait"], key: string): number {
-    const entry = entries.find((entry) => entry.key === key);
-    if (entry === undefined) {
-        throw new TypeError(`Mudrock content requires ${key}`);
-    }
-
-    return entry.value;
-}
-
 export function healSelf(state: BattleState, unitId: Id, ratio: number): BattleState {
     const unit = state.battlefield.units.get(unitId);
     if (unit === undefined || !hasVitality(unit)) {

@@ -2,10 +2,7 @@ import { attribute, vitality } from "../../helpers/attribute.js";
 // Contract: [content](../../../docs/architecture/content.md).
 import { Hooks } from "../../../dist/core/hook.js";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
 import { test } from "node:test";
-import { parseAttackTiming } from "../../../dist/data/action/timing.js";
-import { prepare } from "../../../dist/data/unit/operator.js";
 import { create } from "../../../dist/content/operators/mudrock/unit.js";
 import { readShield } from "../../../dist/content/operators/mudrock/effect.js";
 import { initialize, getUnit } from "../../helpers/unit.js";
@@ -28,20 +25,11 @@ import { create as modifier } from "../../../dist/core/common/modifier.js";
 import { Vec2 } from "../../../dist/core/common/vector.js";
 import { turn } from "../../../dist/core/unit/capability/facing/index.js";
 
-const data = JSON.parse(readFileSync(new URL("../../fixtures/arknights/main-mode-units.json", import.meta.url), "utf8"));
-const normalTiming = parseAttackTiming(JSON.parse(readFileSync(new URL("../../fixtures/arknights/action_timing.json", import.meta.url), "utf8")).mudrockNormal);
+const base = { elite: 2, level: 90, potential: 1, skillIndex: 1, skillLevel: 7, trust: 100 };
 const moduleX = "uniequip_002_mudrok";
-const profile = (fields = {}) => {
-    const configuration = { elite: 2, level: 90, potential: 1, skillIndex: 1, skillLevel: 7, trust: 100, ...fields };
-    return prepare({ id: "char_311_mudrok", record: data.characters.char_311_mudrok },
-        data.skills.skchr_mudrok_2, configuration, {
-            ranges: data.ranges, favor: data.favor,
-            ...(configuration.module === undefined ? {} : {
-                equipment: data.equipment[configuration.module.id],
-                battleEquipment: data.battleEquipment[configuration.module.id],
-            }),
-        });
-};
+const baseMaxHp = 4428;
+const moduleXMaxHp = 4828;
+const baseAttack = 882;
 const enemy = (id, position, fields = {}) => initialize({ id, position, definition: {
     id: "enemy", hooks: Hooks.empty(), targetable: { category: "DEFAULT", taunt: attribute(0, -2, 2), restrictions: [] },
     vitality: vitality(10000),
@@ -50,14 +38,12 @@ const enemy = (id, position, fields = {}) => initialize({ id, position, definiti
     locomotion: { halfBodyWidth: 0, speed: attribute(0.1, 0), steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 } },
     ...fields,
 } });
-function setup(configuration = {}, targets = [], options = {}) {
-    const prepared = profile(configuration);
-    const content = create(prepared, normalTiming, options);
-    const unit = initialize({ id: 0, position: [0, 0], definition: content.definition,
+function setup(configuration = {}, targets = []) {
+    const unit = initialize({ id: 0, position: [0, 0], definition: create({ ...base, ...configuration }),
         initial: { occupancy: { tile: [0, 0], direction: "RIGHT" }, facing: { direction: "RIGHT" } } });
     let battle = add(createBattleState(fixtureBattlefieldState([])), unit);
     for (const target of targets) battle = add(battle, target);
-    return { prepared, ...content, unit, battle: advanceBlocking(battle) };
+    return { unit, battle: advanceBlocking(battle) };
 }
 const hit = (battle, source = null, power = 100) => damage(battle, {
     source: source === null ? null : { id: source }, target: { id: 0 },
@@ -91,7 +77,7 @@ test("Mudrock's shield cancels environmental damage, self-heals and retains elig
         parameters: parameters(5000, "TRUE"),
     });
     assert.equal(result.value.received.reason, "BLOCKED");
-    approximate(getUnit(result.state, 0).vitality.health.hp, 1000 + fixture.prepared.attributes.maxHp * 0.2);
+    approximate(getUnit(result.state, 0).vitality.health.hp, 1000 + baseMaxHp * 0.2);
     assert.equal(getUnit(result.state, 0).skill.sp.value, 1);
     assert.equal(hit(result.state).value.application.hpLoss, 100);
 });
@@ -119,7 +105,7 @@ test("module X uses current max HP for shield healing and distinguishes blocked 
     }));
     battle = advanceEffectsUntil(wound(battle), 270);
     const shielded = hit(battle);
-    approximate(getUnit(shielded.state, 0).vitality.health.hp, 1000 + (fixture.prepared.attributes.maxHp + 1000) * 0.23);
+    approximate(getUnit(shielded.state, 0).vitality.health.hp, 1000 + (moduleXMaxHp + 1000) * 0.23);
     assert.equal(getUnit(shielded.state, 0).skill.sp.value, 3);
     approximate(hit(shielded.state, 1).value.application.hpLoss, 59.5);
     approximate(hit(shielded.state, 2).value.application.hpLoss, 70);
@@ -156,7 +142,7 @@ test("APPLY-03: Mudrock requires a successful block for shield costs and benefit
     assert.deepEqual(shielded.value.received, {
         type: "CANCELLED", amount: 100, reason: "BLOCKED",
     });
-    approximate(getUnit(shielded.state, 0).vitality.health.hp, 1000 + fixture.prepared.attributes.maxHp * 0.23);
+    approximate(getUnit(shielded.state, 0).vitality.health.hp, 1000 + moduleXMaxHp * 0.23);
     assert.equal(getUnit(shielded.state, 0).skill.sp.value, 3);
     assert.equal(readShield(getUnit(shielded.state, 0)).layers, 0);
     assert.deepEqual(observed, []);
@@ -220,7 +206,7 @@ test("S2 waits for an eligible target without spending its SP", () => {
 
 test("S2 replaces normal recovery, heals once and revalidates its bound targets without selecting replacements", () => {
     const fixture = setup({}, [enemy(1, [1, 0]), enemy(2, [0.8, 0]),
-        enemy(3, [1, 0], { layer: { type: "AIR" } })], { recoveryTicks: 2 });
+        enemy(3, [1, 0], { layer: { type: "AIR" } })]);
     let battle = wound(fixture.battle);
     battle = turn(battle, ref(fixture.unit), "LEFT");
     const normal = fixture.unit.action.actions.get("normal-attack").definition;
@@ -236,19 +222,21 @@ test("S2 replaces normal recovery, heals once and revalidates its bound targets 
     battle = advanceSkill(battle, ref(fixture.unit));
     assert.equal(getUnit(battle, 0).action.actions.get(normal.id).cooldown.readyAtTick, 0);
     battle = turn(battle, ref(fixture.unit), "LEFT");
-    const started = start(battle, actionRef(ref(fixture.unit), fixture.action));
+    const action = fixture.unit.action.actions.get("mudrock/s2").definition;
+    const started = start(battle, actionRef(ref(fixture.unit), action));
+    assert.notEqual(started.value, null);
+    assert.notEqual(getUnit(started.state, 0).skill.activation, null);
+    assert.equal(getUnit(started.state, 1).vitality.health.hp, beforeFirst);
     battle = update(started.state, ref(getUnit(started.state, 2)), setType("AIR"));
     battle = update(battle, ref(getUnit(battle, 3)), setType("GROUND"));
     battle = advanceAction(battle, started.value);
     assert.equal(getUnit(battle, 0).facing.direction, "LEFT");
-    const amount = (fixture.prepared.attributes.attack + 100) * 2.1;
+    const amount = (baseAttack + 100) * 2.1;
     approximate(getUnit(battle, 1).vitality.health.hp, beforeFirst - amount);
     assert.equal(getUnit(battle, 2).vitality.health.hp, beforeSecond);
     assert.equal(getUnit(battle, 3).vitality.health.hp, 10000);
-    approximate(getUnit(battle, 0).vitality.health.hp, 1000 + fixture.prepared.attributes.maxHp * 0.05);
+    approximate(getUnit(battle, 0).vitality.health.hp, 1000 + baseMaxHp * 0.05);
     assert.equal(getUnit(battle, 0).skill.sp.value, 0);
-    assert.notEqual(getUnit(battle, 0).skill.activation, null);
-    battle = advanceAction({ ...battle, tick: 2 }, started.value);
     assert.equal(getUnit(battle, 0).skill.activation, null);
 
     assert.equal(canMove(battle, getUnit(battle, 1)), false);
@@ -269,15 +257,16 @@ test("S2 interrupts an ordinary attack before its authored release and prevents 
     assert.notEqual(activated.value, null);
     battle = activated.state;
     assert.equal(getExecution(battle, pending.value), undefined);
-    const special = start(battle, actionRef(host, fixture.action));
+    const action = fixture.unit.action.actions.get("mudrock/s2").definition;
+    const special = start(battle, actionRef(host, action));
     assert.notEqual(special.value, null);
     battle = advanceAction(special.state, special.value);
-    const afterSkill = 10000 - fixture.prepared.attributes.attack * 2.1;
+    const afterSkill = 10000 - baseAttack * 2.1;
     approximate(getUnit(battle, 1).vitality.health.hp, afterSkill);
     for (let tick = 6; tick <= 48; tick++) battle = advanceAction({ ...battle, tick }, pending.value);
     approximate(getUnit(battle, 1).vitality.health.hp, afterSkill);
 });
 
 test("Mudrock rejects the unimplemented module Y instead of applying module X behavior", () => {
-    assert.throws(() => create(profile({ module: { id: "uniequip_003_mudrok", level: 3 } }), normalTiming), /only module X/);
+    assert.throws(() => create({ ...base, module: { id: "uniequip_003_mudrok", level: 3 } }), /only module X/);
 });

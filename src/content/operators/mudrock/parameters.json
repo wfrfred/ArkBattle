@@ -1,0 +1,1740 @@
+{
+  "id": "char_311_mudrok",
+  "groupTags": [
+    "rhodes"
+  ],
+  "phases": [
+    {
+      "maxLevel": 50,
+      "frames": [
+        {
+          "level": 1,
+          "attributes": {
+            "maxHp": 1677,
+            "attack": 370,
+            "defense": 229,
+            "resistance": 10,
+            "recoverySpeed": 0,
+            "attackSpeed": 100,
+            "taunt": 0,
+            "baseAttackTime": 1.6,
+            "blockCapacity": 2,
+            "cost": 32,
+            "respawnTime": 70
+          }
+        },
+        {
+          "level": 50,
+          "attributes": {
+            "maxHp": 2207,
+            "attack": 515,
+            "defense": 347,
+            "resistance": 10,
+            "recoverySpeed": 0,
+            "attackSpeed": 100,
+            "taunt": 0,
+            "baseAttackTime": 1.6,
+            "blockCapacity": 2,
+            "cost": 32,
+            "respawnTime": 70
+          }
+        }
+      ],
+      "range": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ]
+      ]
+    },
+    {
+      "maxLevel": 80,
+      "frames": [
+        {
+          "level": 1,
+          "attributes": {
+            "maxHp": 2207,
+            "attack": 515,
+            "defense": 347,
+            "resistance": 10,
+            "recoverySpeed": 0,
+            "attackSpeed": 100,
+            "taunt": 0,
+            "baseAttackTime": 1.6,
+            "blockCapacity": 3,
+            "cost": 34,
+            "respawnTime": 70
+          }
+        },
+        {
+          "level": 80,
+          "attributes": {
+            "maxHp": 2867,
+            "attack": 687,
+            "defense": 463,
+            "resistance": 10,
+            "recoverySpeed": 0,
+            "attackSpeed": 100,
+            "taunt": 0,
+            "baseAttackTime": 1.6,
+            "blockCapacity": 3,
+            "cost": 34,
+            "respawnTime": 70
+          }
+        }
+      ],
+      "range": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ]
+      ]
+    },
+    {
+      "maxLevel": 90,
+      "frames": [
+        {
+          "level": 1,
+          "attributes": {
+            "maxHp": 2867,
+            "attack": 687,
+            "defense": 463,
+            "resistance": 10,
+            "recoverySpeed": 0,
+            "attackSpeed": 100,
+            "taunt": 0,
+            "baseAttackTime": 1.6,
+            "blockCapacity": 3,
+            "cost": 36,
+            "respawnTime": 70
+          }
+        },
+        {
+          "level": 90,
+          "attributes": {
+            "maxHp": 3928,
+            "attack": 882,
+            "defense": 602,
+            "resistance": 10,
+            "recoverySpeed": 0,
+            "attackSpeed": 100,
+            "taunt": 0,
+            "baseAttackTime": 1.6,
+            "blockCapacity": 3,
+            "cost": 36,
+            "respawnTime": 70
+          }
+        }
+      ],
+      "range": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ]
+      ]
+    }
+  ],
+  "favorKeyFrames": [
+    {
+      "level": 0,
+      "attributes": {
+        "maxHp": 0,
+        "attack": 0,
+        "defense": 0,
+        "resistance": 0,
+        "recoverySpeed": 0,
+        "attackSpeed": 0,
+        "taunt": 0,
+        "baseAttackTime": 0,
+        "blockCapacity": 0,
+        "cost": 0,
+        "respawnTime": 0
+      }
+    },
+    {
+      "level": 50,
+      "attributes": {
+        "maxHp": 500,
+        "attack": 0,
+        "defense": 60,
+        "resistance": 0,
+        "recoverySpeed": 0,
+        "attackSpeed": 0,
+        "taunt": 0,
+        "baseAttackTime": 0,
+        "blockCapacity": 0,
+        "cost": 0,
+        "respawnTime": 0
+      }
+    }
+  ],
+  "potential": [
+    {
+      "cost": -1
+    },
+    {
+      "respawnTime": -4
+    },
+    {
+      "defense": 29
+    },
+    {},
+    {
+      "cost": -1
+    }
+  ],
+  "talents": [
+    [
+      {
+        "unlock": {
+          "elite": 0,
+          "level": 1
+        },
+        "potentialRank": 0,
+        "value": {
+          "key": "1",
+          "blackboard": [
+            {
+              "key": "interval",
+              "value": 9,
+              "valueStr": null
+            },
+            {
+              "key": "times",
+              "value": 1,
+              "valueStr": null
+            },
+            {
+              "key": "max_times",
+              "value": 2,
+              "valueStr": null
+            },
+            {
+              "key": "hp_ratio",
+              "value": 0.15,
+              "valueStr": null
+            }
+          ]
+        }
+      },
+      {
+        "unlock": {
+          "elite": 0,
+          "level": 1
+        },
+        "potentialRank": 4,
+        "value": {
+          "key": "1",
+          "blackboard": [
+            {
+              "key": "interval",
+              "value": 9,
+              "valueStr": null
+            },
+            {
+              "key": "times",
+              "value": 1,
+              "valueStr": null
+            },
+            {
+              "key": "max_times",
+              "value": 2,
+              "valueStr": null
+            },
+            {
+              "key": "hp_ratio",
+              "value": 0.17,
+              "valueStr": null
+            }
+          ]
+        }
+      },
+      {
+        "unlock": {
+          "elite": 1,
+          "level": 1
+        },
+        "potentialRank": 0,
+        "value": {
+          "key": "1",
+          "blackboard": [
+            {
+              "key": "interval",
+              "value": 9,
+              "valueStr": null
+            },
+            {
+              "key": "times",
+              "value": 1,
+              "valueStr": null
+            },
+            {
+              "key": "max_times",
+              "value": 2,
+              "valueStr": null
+            },
+            {
+              "key": "hp_ratio",
+              "value": 0.2,
+              "valueStr": null
+            }
+          ]
+        }
+      },
+      {
+        "unlock": {
+          "elite": 1,
+          "level": 1
+        },
+        "potentialRank": 4,
+        "value": {
+          "key": "1",
+          "blackboard": [
+            {
+              "key": "interval",
+              "value": 9,
+              "valueStr": null
+            },
+            {
+              "key": "times",
+              "value": 1,
+              "valueStr": null
+            },
+            {
+              "key": "max_times",
+              "value": 2,
+              "valueStr": null
+            },
+            {
+              "key": "hp_ratio",
+              "value": 0.22,
+              "valueStr": null
+            }
+          ]
+        }
+      },
+      {
+        "unlock": {
+          "elite": 2,
+          "level": 1
+        },
+        "potentialRank": 0,
+        "value": {
+          "key": "1",
+          "blackboard": [
+            {
+              "key": "interval",
+              "value": 9,
+              "valueStr": null
+            },
+            {
+              "key": "times",
+              "value": 1,
+              "valueStr": null
+            },
+            {
+              "key": "max_times",
+              "value": 3,
+              "valueStr": null
+            },
+            {
+              "key": "hp_ratio",
+              "value": 0.2,
+              "valueStr": null
+            }
+          ]
+        }
+      },
+      {
+        "unlock": {
+          "elite": 2,
+          "level": 1
+        },
+        "potentialRank": 4,
+        "value": {
+          "key": "1",
+          "blackboard": [
+            {
+              "key": "interval",
+              "value": 9,
+              "valueStr": null
+            },
+            {
+              "key": "times",
+              "value": 1,
+              "valueStr": null
+            },
+            {
+              "key": "max_times",
+              "value": 3,
+              "valueStr": null
+            },
+            {
+              "key": "hp_ratio",
+              "value": 0.22,
+              "valueStr": null
+            }
+          ]
+        }
+      }
+    ],
+    [
+      {
+        "unlock": {
+          "elite": 2,
+          "level": 1
+        },
+        "potentialRank": 0,
+        "value": {
+          "key": "2",
+          "blackboard": [
+            {
+              "key": "damage_resistance",
+              "value": 0.3,
+              "valueStr": null
+            }
+          ]
+        }
+      }
+    ]
+  ],
+  "skills": [
+    {
+      "index": 1,
+      "id": "skchr_mudrok_2",
+      "unlock": {
+        "elite": 1,
+        "level": 1
+      },
+      "upgrades": [
+        {
+          "elite": 0,
+          "level": 1
+        },
+        {
+          "elite": 0,
+          "level": 1
+        },
+        {
+          "elite": 0,
+          "level": 1
+        },
+        {
+          "elite": 1,
+          "level": 1
+        },
+        {
+          "elite": 1,
+          "level": 1
+        },
+        {
+          "elite": 1,
+          "level": 1
+        },
+        {
+          "elite": 2,
+          "level": 1
+        },
+        {
+          "elite": 2,
+          "level": 1
+        },
+        {
+          "elite": 2,
+          "level": 1
+        }
+      ],
+      "levels": [
+        {
+          "sp": {
+            "initial": 0,
+            "capacity": 6,
+            "recovery": {
+              "type": "HIT",
+              "amount": 1
+            },
+            "recoverySpeed": {
+              "default": 0,
+              "min": 0,
+              "max": null
+            },
+            "recoveryMultiplier": {
+              "default": 1,
+              "min": 0,
+              "max": null
+            }
+          },
+          "trigger": "AUTO",
+          "cost": 6,
+          "durationTicks": 0,
+          "prefabId": "skchr_mudrok_2",
+          "blackboard": [
+            {
+              "key": "atk_scale",
+              "value": 1.7,
+              "valueStr": null
+            },
+            {
+              "key": "buff_prob",
+              "value": 0.3,
+              "valueStr": null
+            },
+            {
+              "key": "stun",
+              "value": 0.4,
+              "valueStr": null
+            },
+            {
+              "key": "hp_ratio",
+              "value": 0.04,
+              "valueStr": null
+            }
+          ],
+          "range": [
+            [
+              1,
+              -1
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              0,
+              -1
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              -1,
+              -1
+            ],
+            [
+              -1,
+              0
+            ],
+            [
+              -1,
+              1
+            ]
+          ]
+        },
+        {
+          "sp": {
+            "initial": 0,
+            "capacity": 6,
+            "recovery": {
+              "type": "HIT",
+              "amount": 1
+            },
+            "recoverySpeed": {
+              "default": 0,
+              "min": 0,
+              "max": null
+            },
+            "recoveryMultiplier": {
+              "default": 1,
+              "min": 0,
+              "max": null
+            }
+          },
+          "trigger": "AUTO",
+          "cost": 6,
+          "durationTicks": 0,
+          "prefabId": "skchr_mudrok_2",
+          "blackboard": [
+            {
+              "key": "atk_scale",
+              "value": 1.75,
+              "valueStr": null
+            },
+            {
+              "key": "buff_prob",
+              "value": 0.3,
+              "valueStr": null
+            },
+            {
+              "key": "stun",
+              "value": 0.4,
+              "valueStr": null
+            },
+            {
+              "key": "hp_ratio",
+              "value": 0.04,
+              "valueStr": null
+            }
+          ],
+          "range": [
+            [
+              1,
+              -1
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              0,
+              -1
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              -1,
+              -1
+            ],
+            [
+              -1,
+              0
+            ],
+            [
+              -1,
+              1
+            ]
+          ]
+        },
+        {
+          "sp": {
+            "initial": 0,
+            "capacity": 6,
+            "recovery": {
+              "type": "HIT",
+              "amount": 1
+            },
+            "recoverySpeed": {
+              "default": 0,
+              "min": 0,
+              "max": null
+            },
+            "recoveryMultiplier": {
+              "default": 1,
+              "min": 0,
+              "max": null
+            }
+          },
+          "trigger": "AUTO",
+          "cost": 6,
+          "durationTicks": 0,
+          "prefabId": "skchr_mudrok_2",
+          "blackboard": [
+            {
+              "key": "atk_scale",
+              "value": 1.8,
+              "valueStr": null
+            },
+            {
+              "key": "buff_prob",
+              "value": 0.3,
+              "valueStr": null
+            },
+            {
+              "key": "stun",
+              "value": 0.4,
+              "valueStr": null
+            },
+            {
+              "key": "hp_ratio",
+              "value": 0.04,
+              "valueStr": null
+            }
+          ],
+          "range": [
+            [
+              1,
+              -1
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              0,
+              -1
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              -1,
+              -1
+            ],
+            [
+              -1,
+              0
+            ],
+            [
+              -1,
+              1
+            ]
+          ]
+        },
+        {
+          "sp": {
+            "initial": 0,
+            "capacity": 5,
+            "recovery": {
+              "type": "HIT",
+              "amount": 1
+            },
+            "recoverySpeed": {
+              "default": 0,
+              "min": 0,
+              "max": null
+            },
+            "recoveryMultiplier": {
+              "default": 1,
+              "min": 0,
+              "max": null
+            }
+          },
+          "trigger": "AUTO",
+          "cost": 5,
+          "durationTicks": 0,
+          "prefabId": "skchr_mudrok_2",
+          "blackboard": [
+            {
+              "key": "atk_scale",
+              "value": 1.9,
+              "valueStr": null
+            },
+            {
+              "key": "buff_prob",
+              "value": 0.3,
+              "valueStr": null
+            },
+            {
+              "key": "stun",
+              "value": 0.5,
+              "valueStr": null
+            },
+            {
+              "key": "hp_ratio",
+              "value": 0.04,
+              "valueStr": null
+            }
+          ],
+          "range": [
+            [
+              1,
+              -1
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              0,
+              -1
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              -1,
+              -1
+            ],
+            [
+              -1,
+              0
+            ],
+            [
+              -1,
+              1
+            ]
+          ]
+        },
+        {
+          "sp": {
+            "initial": 0,
+            "capacity": 5,
+            "recovery": {
+              "type": "HIT",
+              "amount": 1
+            },
+            "recoverySpeed": {
+              "default": 0,
+              "min": 0,
+              "max": null
+            },
+            "recoveryMultiplier": {
+              "default": 1,
+              "min": 0,
+              "max": null
+            }
+          },
+          "trigger": "AUTO",
+          "cost": 5,
+          "durationTicks": 0,
+          "prefabId": "skchr_mudrok_2",
+          "blackboard": [
+            {
+              "key": "atk_scale",
+              "value": 1.95,
+              "valueStr": null
+            },
+            {
+              "key": "buff_prob",
+              "value": 0.3,
+              "valueStr": null
+            },
+            {
+              "key": "stun",
+              "value": 0.5,
+              "valueStr": null
+            },
+            {
+              "key": "hp_ratio",
+              "value": 0.04,
+              "valueStr": null
+            }
+          ],
+          "range": [
+            [
+              1,
+              -1
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              0,
+              -1
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              -1,
+              -1
+            ],
+            [
+              -1,
+              0
+            ],
+            [
+              -1,
+              1
+            ]
+          ]
+        },
+        {
+          "sp": {
+            "initial": 0,
+            "capacity": 5,
+            "recovery": {
+              "type": "HIT",
+              "amount": 1
+            },
+            "recoverySpeed": {
+              "default": 0,
+              "min": 0,
+              "max": null
+            },
+            "recoveryMultiplier": {
+              "default": 1,
+              "min": 0,
+              "max": null
+            }
+          },
+          "trigger": "AUTO",
+          "cost": 5,
+          "durationTicks": 0,
+          "prefabId": "skchr_mudrok_2",
+          "blackboard": [
+            {
+              "key": "atk_scale",
+              "value": 2,
+              "valueStr": null
+            },
+            {
+              "key": "buff_prob",
+              "value": 0.3,
+              "valueStr": null
+            },
+            {
+              "key": "stun",
+              "value": 0.5,
+              "valueStr": null
+            },
+            {
+              "key": "hp_ratio",
+              "value": 0.04,
+              "valueStr": null
+            }
+          ],
+          "range": [
+            [
+              1,
+              -1
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              0,
+              -1
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              -1,
+              -1
+            ],
+            [
+              -1,
+              0
+            ],
+            [
+              -1,
+              1
+            ]
+          ]
+        },
+        {
+          "sp": {
+            "initial": 0,
+            "capacity": 5,
+            "recovery": {
+              "type": "HIT",
+              "amount": 1
+            },
+            "recoverySpeed": {
+              "default": 0,
+              "min": 0,
+              "max": null
+            },
+            "recoveryMultiplier": {
+              "default": 1,
+              "min": 0,
+              "max": null
+            }
+          },
+          "trigger": "AUTO",
+          "cost": 5,
+          "durationTicks": 0,
+          "prefabId": "skchr_mudrok_2",
+          "blackboard": [
+            {
+              "key": "atk_scale",
+              "value": 2.1,
+              "valueStr": null
+            },
+            {
+              "key": "buff_prob",
+              "value": 0.3,
+              "valueStr": null
+            },
+            {
+              "key": "stun",
+              "value": 0.6,
+              "valueStr": null
+            },
+            {
+              "key": "hp_ratio",
+              "value": 0.05,
+              "valueStr": null
+            }
+          ],
+          "range": [
+            [
+              1,
+              -1
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              0,
+              -1
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              -1,
+              -1
+            ],
+            [
+              -1,
+              0
+            ],
+            [
+              -1,
+              1
+            ]
+          ]
+        },
+        {
+          "sp": {
+            "initial": 0,
+            "capacity": 4,
+            "recovery": {
+              "type": "HIT",
+              "amount": 1
+            },
+            "recoverySpeed": {
+              "default": 0,
+              "min": 0,
+              "max": null
+            },
+            "recoveryMultiplier": {
+              "default": 1,
+              "min": 0,
+              "max": null
+            }
+          },
+          "trigger": "AUTO",
+          "cost": 4,
+          "durationTicks": 0,
+          "prefabId": "skchr_mudrok_2",
+          "blackboard": [
+            {
+              "key": "atk_scale",
+              "value": 2.3,
+              "valueStr": null
+            },
+            {
+              "key": "buff_prob",
+              "value": 0.3,
+              "valueStr": null
+            },
+            {
+              "key": "stun",
+              "value": 0.8,
+              "valueStr": null
+            },
+            {
+              "key": "hp_ratio",
+              "value": 0.05,
+              "valueStr": null
+            }
+          ],
+          "range": [
+            [
+              1,
+              -1
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              0,
+              -1
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              -1,
+              -1
+            ],
+            [
+              -1,
+              0
+            ],
+            [
+              -1,
+              1
+            ]
+          ]
+        },
+        {
+          "sp": {
+            "initial": 0,
+            "capacity": 4,
+            "recovery": {
+              "type": "HIT",
+              "amount": 1
+            },
+            "recoverySpeed": {
+              "default": 0,
+              "min": 0,
+              "max": null
+            },
+            "recoveryMultiplier": {
+              "default": 1,
+              "min": 0,
+              "max": null
+            }
+          },
+          "trigger": "AUTO",
+          "cost": 4,
+          "durationTicks": 0,
+          "prefabId": "skchr_mudrok_2",
+          "blackboard": [
+            {
+              "key": "atk_scale",
+              "value": 2.5,
+              "valueStr": null
+            },
+            {
+              "key": "buff_prob",
+              "value": 0.3,
+              "valueStr": null
+            },
+            {
+              "key": "stun",
+              "value": 1,
+              "valueStr": null
+            },
+            {
+              "key": "hp_ratio",
+              "value": 0.05,
+              "valueStr": null
+            }
+          ],
+          "range": [
+            [
+              1,
+              -1
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              0,
+              -1
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              -1,
+              -1
+            ],
+            [
+              -1,
+              0
+            ],
+            [
+              -1,
+              1
+            ]
+          ]
+        },
+        {
+          "sp": {
+            "initial": 0,
+            "capacity": 4,
+            "recovery": {
+              "type": "HIT",
+              "amount": 1
+            },
+            "recoverySpeed": {
+              "default": 0,
+              "min": 0,
+              "max": null
+            },
+            "recoveryMultiplier": {
+              "default": 1,
+              "min": 0,
+              "max": null
+            }
+          },
+          "trigger": "AUTO",
+          "cost": 4,
+          "durationTicks": 0,
+          "prefabId": "skchr_mudrok_2",
+          "blackboard": [
+            {
+              "key": "atk_scale",
+              "value": 2.7,
+              "valueStr": null
+            },
+            {
+              "key": "buff_prob",
+              "value": 0.3,
+              "valueStr": null
+            },
+            {
+              "key": "stun",
+              "value": 1.2,
+              "valueStr": null
+            },
+            {
+              "key": "hp_ratio",
+              "value": 0.06,
+              "valueStr": null
+            }
+          ],
+          "range": [
+            [
+              1,
+              -1
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              0,
+              -1
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              -1,
+              -1
+            ],
+            [
+              -1,
+              0
+            ],
+            [
+              -1,
+              1
+            ]
+          ]
+        }
+      ],
+      "overridePrefabKey": null,
+      "overrideTokenKey": null
+    }
+  ],
+  "modules": [
+    {
+      "id": "uniequip_002_mudrok",
+      "unlock": {
+        "elite": 2,
+        "level": 60
+      },
+      "stages": [
+        {
+          "level": 1,
+          "minFavor": 0,
+          "attributes": {
+            "maxHp": 245,
+            "attack": 55
+          },
+          "parts": [
+            {
+              "target": "TRAIT",
+              "candidates": [
+                {
+                  "unlock": {
+                    "elite": 2,
+                    "level": 60
+                  },
+                  "potentialRank": 0,
+                  "value": [
+                    {
+                      "key": "damage_scale",
+                      "value": 0.85,
+                      "valueStr": null
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "level": 2,
+          "minFavor": 2732,
+          "attributes": {
+            "maxHp": 325,
+            "attack": 70
+          },
+          "parts": [
+            {
+              "target": "TRAIT",
+              "candidates": [
+                {
+                  "unlock": {
+                    "elite": 2,
+                    "level": 60
+                  },
+                  "potentialRank": 0,
+                  "value": [
+                    {
+                      "key": "damage_scale",
+                      "value": 0.85,
+                      "valueStr": null
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "target": "TALENT",
+              "candidates": [
+                {
+                  "unlock": {
+                    "elite": 2,
+                    "level": 60
+                  },
+                  "potentialRank": 0,
+                  "value": {
+                    "key": "1",
+                    "blackboard": [
+                      {
+                        "key": "interval",
+                        "value": 9,
+                        "valueStr": null
+                      },
+                      {
+                        "key": "times",
+                        "value": 1,
+                        "valueStr": null
+                      },
+                      {
+                        "key": "max_times",
+                        "value": 3,
+                        "valueStr": null
+                      },
+                      {
+                        "key": "hp_ratio",
+                        "value": 0.22,
+                        "valueStr": null
+                      },
+                      {
+                        "key": "sp",
+                        "value": 1,
+                        "valueStr": null
+                      }
+                    ],
+                    "index": 0
+                  }
+                },
+                {
+                  "unlock": {
+                    "elite": 2,
+                    "level": 60
+                  },
+                  "potentialRank": 4,
+                  "value": {
+                    "key": "1",
+                    "blackboard": [
+                      {
+                        "key": "interval",
+                        "value": 9,
+                        "valueStr": null
+                      },
+                      {
+                        "key": "times",
+                        "value": 1,
+                        "valueStr": null
+                      },
+                      {
+                        "key": "max_times",
+                        "value": 3,
+                        "valueStr": null
+                      },
+                      {
+                        "key": "hp_ratio",
+                        "value": 0.24,
+                        "valueStr": null
+                      },
+                      {
+                        "key": "sp",
+                        "value": 1,
+                        "valueStr": null
+                      }
+                    ],
+                    "index": 0
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "level": 3,
+          "minFavor": 10070,
+          "attributes": {
+            "maxHp": 400,
+            "attack": 80
+          },
+          "parts": [
+            {
+              "target": "TRAIT",
+              "candidates": [
+                {
+                  "unlock": {
+                    "elite": 2,
+                    "level": 60
+                  },
+                  "potentialRank": 0,
+                  "value": [
+                    {
+                      "key": "damage_scale",
+                      "value": 0.85,
+                      "valueStr": null
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "target": "TALENT",
+              "candidates": [
+                {
+                  "unlock": {
+                    "elite": 2,
+                    "level": 60
+                  },
+                  "potentialRank": 0,
+                  "value": {
+                    "key": "1",
+                    "blackboard": [
+                      {
+                        "key": "interval",
+                        "value": 9,
+                        "valueStr": null
+                      },
+                      {
+                        "key": "times",
+                        "value": 1,
+                        "valueStr": null
+                      },
+                      {
+                        "key": "max_times",
+                        "value": 3,
+                        "valueStr": null
+                      },
+                      {
+                        "key": "hp_ratio",
+                        "value": 0.23,
+                        "valueStr": null
+                      },
+                      {
+                        "key": "sp",
+                        "value": 2,
+                        "valueStr": null
+                      }
+                    ],
+                    "index": 0
+                  }
+                },
+                {
+                  "unlock": {
+                    "elite": 2,
+                    "level": 60
+                  },
+                  "potentialRank": 4,
+                  "value": {
+                    "key": "1",
+                    "blackboard": [
+                      {
+                        "key": "interval",
+                        "value": 9,
+                        "valueStr": null
+                      },
+                      {
+                        "key": "times",
+                        "value": 1,
+                        "valueStr": null
+                      },
+                      {
+                        "key": "max_times",
+                        "value": 3,
+                        "valueStr": null
+                      },
+                      {
+                        "key": "hp_ratio",
+                        "value": 0.25,
+                        "valueStr": null
+                      },
+                      {
+                        "key": "sp",
+                        "value": 2,
+                        "valueStr": null
+                      }
+                    ],
+                    "index": 0
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "uniequip_003_mudrok",
+      "unlock": {
+        "elite": 2,
+        "level": 60
+      },
+      "stages": [
+        {
+          "level": 1,
+          "minFavor": 0,
+          "attributes": {
+            "attack": 60,
+            "defense": 50
+          },
+          "parts": [
+            {
+              "target": "TRAIT",
+              "candidates": [
+                {
+                  "unlock": {
+                    "elite": 2,
+                    "level": 60
+                  },
+                  "potentialRank": 0,
+                  "value": [
+                    {
+                      "key": "atk",
+                      "value": 0.08,
+                      "valueStr": null
+                    },
+                    {
+                      "key": "def",
+                      "value": 0.08,
+                      "valueStr": null
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "level": 2,
+          "minFavor": 2732,
+          "attributes": {
+            "attack": 75,
+            "defense": 60
+          },
+          "parts": [
+            {
+              "target": "TRAIT",
+              "candidates": [
+                {
+                  "unlock": {
+                    "elite": 2,
+                    "level": 60
+                  },
+                  "potentialRank": 0,
+                  "value": [
+                    {
+                      "key": "atk",
+                      "value": 0.08,
+                      "valueStr": null
+                    },
+                    {
+                      "key": "def",
+                      "value": 0.08,
+                      "valueStr": null
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "target": "TALENT",
+              "candidates": [
+                {
+                  "unlock": {
+                    "elite": 2,
+                    "level": 60
+                  },
+                  "potentialRank": 0,
+                  "value": {
+                    "key": "2",
+                    "blackboard": [
+                      {
+                        "key": "damage_resistance",
+                        "value": 0.33,
+                        "valueStr": null
+                      },
+                      {
+                        "key": "damage_scale",
+                        "value": 1.15,
+                        "valueStr": null
+                      }
+                    ],
+                    "index": 1
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "level": 3,
+          "minFavor": 10070,
+          "attributes": {
+            "attack": 85,
+            "defense": 70
+          },
+          "parts": [
+            {
+              "target": "TRAIT",
+              "candidates": [
+                {
+                  "unlock": {
+                    "elite": 2,
+                    "level": 60
+                  },
+                  "potentialRank": 0,
+                  "value": [
+                    {
+                      "key": "atk",
+                      "value": 0.08,
+                      "valueStr": null
+                    },
+                    {
+                      "key": "def",
+                      "value": 0.08,
+                      "valueStr": null
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "target": "TALENT",
+              "candidates": [
+                {
+                  "unlock": {
+                    "elite": 2,
+                    "level": 60
+                  },
+                  "potentialRank": 0,
+                  "value": {
+                    "key": "2",
+                    "blackboard": [
+                      {
+                        "key": "damage_resistance",
+                        "value": 0.35,
+                        "valueStr": null
+                      },
+                      {
+                        "key": "damage_scale",
+                        "value": 1.2,
+                        "valueStr": null
+                      }
+                    ],
+                    "index": 1
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "timing": {
+    "type": "ATTACK_SPEED",
+    "beginTicks": 0,
+    "durationTicks": 48,
+    "releaseTicks": 19,
+    "minScale": 0.1,
+    "maxScale": 1
+  }
+}

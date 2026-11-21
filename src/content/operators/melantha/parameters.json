@@ -1,0 +1,459 @@
+{
+  "id": "char_208_melan",
+  "groupTags": [
+    "rhodes",
+    "reserve4",
+    "victoria"
+  ],
+  "phases": [
+    {
+      "maxLevel": 40,
+      "frames": [
+        {
+          "level": 1,
+          "attributes": {
+            "maxHp": 1395,
+            "attack": 396,
+            "defense": 83,
+            "resistance": 0,
+            "recoverySpeed": 0,
+            "attackSpeed": 100,
+            "taunt": 0,
+            "baseAttackTime": 1.5,
+            "blockCapacity": 1,
+            "cost": 13,
+            "respawnTime": 70
+          }
+        },
+        {
+          "level": 40,
+          "attributes": {
+            "maxHp": 1993,
+            "attack": 583,
+            "defense": 119,
+            "resistance": 0,
+            "recoverySpeed": 0,
+            "attackSpeed": 100,
+            "taunt": 0,
+            "baseAttackTime": 1.5,
+            "blockCapacity": 1,
+            "cost": 13,
+            "respawnTime": 70
+          }
+        }
+      ],
+      "range": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ]
+      ]
+    },
+    {
+      "maxLevel": 55,
+      "frames": [
+        {
+          "level": 1,
+          "attributes": {
+            "maxHp": 1993,
+            "attack": 583,
+            "defense": 119,
+            "resistance": 0,
+            "recoverySpeed": 0,
+            "attackSpeed": 100,
+            "taunt": 0,
+            "baseAttackTime": 1.5,
+            "blockCapacity": 1,
+            "cost": 15,
+            "respawnTime": 70
+          }
+        },
+        {
+          "level": 55,
+          "attributes": {
+            "maxHp": 2745,
+            "attack": 738,
+            "defense": 155,
+            "resistance": 0,
+            "recoverySpeed": 0,
+            "attackSpeed": 100,
+            "taunt": 0,
+            "baseAttackTime": 1.5,
+            "blockCapacity": 1,
+            "cost": 15,
+            "respawnTime": 70
+          }
+        }
+      ],
+      "range": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ]
+      ]
+    }
+  ],
+  "favorKeyFrames": [
+    {
+      "level": 0,
+      "attributes": {
+        "maxHp": 0,
+        "attack": 0,
+        "defense": 0,
+        "resistance": 0,
+        "recoverySpeed": 0,
+        "attackSpeed": 0,
+        "taunt": 0,
+        "baseAttackTime": 0,
+        "blockCapacity": 0,
+        "cost": 0,
+        "respawnTime": 0
+      }
+    },
+    {
+      "level": 50,
+      "attributes": {
+        "maxHp": 0,
+        "attack": 65,
+        "defense": 0,
+        "resistance": 0,
+        "recoverySpeed": 0,
+        "attackSpeed": 0,
+        "taunt": 0,
+        "baseAttackTime": 0,
+        "blockCapacity": 0,
+        "cost": 0,
+        "respawnTime": 0
+      }
+    }
+  ],
+  "potential": [
+    {
+      "cost": -1
+    },
+    {
+      "respawnTime": -4
+    },
+    {
+      "attack": 25
+    },
+    {
+      "respawnTime": -6
+    },
+    {
+      "cost": -1
+    }
+  ],
+  "talents": [
+    [
+      {
+        "unlock": {
+          "elite": 1,
+          "level": 1
+        },
+        "potentialRank": 0,
+        "value": {
+          "key": "1",
+          "blackboard": [
+            {
+              "key": "atk",
+              "value": 0.04,
+              "valueStr": null
+            }
+          ]
+        }
+      },
+      {
+        "unlock": {
+          "elite": 1,
+          "level": 55
+        },
+        "potentialRank": 0,
+        "value": {
+          "key": "1",
+          "blackboard": [
+            {
+              "key": "atk",
+              "value": 0.08,
+              "valueStr": null
+            }
+          ]
+        }
+      }
+    ]
+  ],
+  "skills": [
+    {
+      "index": 0,
+      "id": "skcom_atk_up[1]",
+      "unlock": {
+        "elite": 0,
+        "level": 1
+      },
+      "upgrades": [
+        {
+          "elite": 0,
+          "level": 1
+        },
+        {
+          "elite": 0,
+          "level": 1
+        },
+        {
+          "elite": 0,
+          "level": 1
+        },
+        {
+          "elite": 1,
+          "level": 1
+        },
+        {
+          "elite": 1,
+          "level": 1
+        },
+        {
+          "elite": 1,
+          "level": 1
+        }
+      ],
+      "levels": [
+        {
+          "sp": {
+            "initial": 0,
+            "capacity": 50,
+            "recovery": {
+              "type": "TIME"
+            },
+            "recoverySpeed": {
+              "default": 1,
+              "min": 0,
+              "max": null
+            },
+            "recoveryMultiplier": {
+              "default": 1,
+              "min": 0,
+              "max": null
+            }
+          },
+          "trigger": "MANUAL",
+          "cost": 50,
+          "durationTicks": 600,
+          "prefabId": "skcom_atk_up",
+          "blackboard": [
+            {
+              "key": "atk",
+              "value": 0.1,
+              "valueStr": null
+            }
+          ],
+          "range": null
+        },
+        {
+          "sp": {
+            "initial": 0,
+            "capacity": 50,
+            "recovery": {
+              "type": "TIME"
+            },
+            "recoverySpeed": {
+              "default": 1,
+              "min": 0,
+              "max": null
+            },
+            "recoveryMultiplier": {
+              "default": 1,
+              "min": 0,
+              "max": null
+            }
+          },
+          "trigger": "MANUAL",
+          "cost": 50,
+          "durationTicks": 600,
+          "prefabId": "skcom_atk_up",
+          "blackboard": [
+            {
+              "key": "atk",
+              "value": 0.15,
+              "valueStr": null
+            }
+          ],
+          "range": null
+        },
+        {
+          "sp": {
+            "initial": 0,
+            "capacity": 50,
+            "recovery": {
+              "type": "TIME"
+            },
+            "recoverySpeed": {
+              "default": 1,
+              "min": 0,
+              "max": null
+            },
+            "recoveryMultiplier": {
+              "default": 1,
+              "min": 0,
+              "max": null
+            }
+          },
+          "trigger": "MANUAL",
+          "cost": 50,
+          "durationTicks": 600,
+          "prefabId": "skcom_atk_up",
+          "blackboard": [
+            {
+              "key": "atk",
+              "value": 0.2,
+              "valueStr": null
+            }
+          ],
+          "range": null
+        },
+        {
+          "sp": {
+            "initial": 0,
+            "capacity": 45,
+            "recovery": {
+              "type": "TIME"
+            },
+            "recoverySpeed": {
+              "default": 1,
+              "min": 0,
+              "max": null
+            },
+            "recoveryMultiplier": {
+              "default": 1,
+              "min": 0,
+              "max": null
+            }
+          },
+          "trigger": "MANUAL",
+          "cost": 45,
+          "durationTicks": 600,
+          "prefabId": "skcom_atk_up",
+          "blackboard": [
+            {
+              "key": "atk",
+              "value": 0.3,
+              "valueStr": null
+            }
+          ],
+          "range": null
+        },
+        {
+          "sp": {
+            "initial": 0,
+            "capacity": 45,
+            "recovery": {
+              "type": "TIME"
+            },
+            "recoverySpeed": {
+              "default": 1,
+              "min": 0,
+              "max": null
+            },
+            "recoveryMultiplier": {
+              "default": 1,
+              "min": 0,
+              "max": null
+            }
+          },
+          "trigger": "MANUAL",
+          "cost": 45,
+          "durationTicks": 600,
+          "prefabId": "skcom_atk_up",
+          "blackboard": [
+            {
+              "key": "atk",
+              "value": 0.35,
+              "valueStr": null
+            }
+          ],
+          "range": null
+        },
+        {
+          "sp": {
+            "initial": 0,
+            "capacity": 45,
+            "recovery": {
+              "type": "TIME"
+            },
+            "recoverySpeed": {
+              "default": 1,
+              "min": 0,
+              "max": null
+            },
+            "recoveryMultiplier": {
+              "default": 1,
+              "min": 0,
+              "max": null
+            }
+          },
+          "trigger": "MANUAL",
+          "cost": 45,
+          "durationTicks": 600,
+          "prefabId": "skcom_atk_up",
+          "blackboard": [
+            {
+              "key": "atk",
+              "value": 0.4,
+              "valueStr": null
+            }
+          ],
+          "range": null
+        },
+        {
+          "sp": {
+            "initial": 0,
+            "capacity": 40,
+            "recovery": {
+              "type": "TIME"
+            },
+            "recoverySpeed": {
+              "default": 1,
+              "min": 0,
+              "max": null
+            },
+            "recoveryMultiplier": {
+              "default": 1,
+              "min": 0,
+              "max": null
+            }
+          },
+          "trigger": "MANUAL",
+          "cost": 40,
+          "durationTicks": 600,
+          "prefabId": "skcom_atk_up",
+          "blackboard": [
+            {
+              "key": "atk",
+              "value": 0.5,
+              "valueStr": null
+            }
+          ],
+          "range": null
+        }
+      ],
+      "overridePrefabKey": null,
+      "overrideTokenKey": null
+    }
+  ],
+  "modules": [],
+  "timing": {
+    "type": "ATTACK_SPEED",
+    "beginTicks": 15,
+    "durationTicks": 30,
+    "releaseTicks": 14,
+    "minScale": 0,
+    "maxScale": null
+  }
+}

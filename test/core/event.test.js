@@ -14,10 +14,10 @@ import * as presence from "../../dist/core/unit/capability/presence/index.js";
 import { appendEvents } from "../../dist/core/battle/state.js";
 import { step } from "../../dist/core/battle/index.js";
 
-import { createArknightsElementalDefinition } from "../../dist/data/effect/elemental.js";
+import { create as createElementalDefinition } from "../../dist/content/elemental.js";
 import { update } from "../../dist/core/unit/operations.js";
 
-const elemental = createArknightsElementalDefinition({ receiver: "CHARACTER" });
+const elemental = createElementalDefinition({ receiver: "CHARACTER" });
 
 test("EVENT-01: real HP and EP operations emit display facts including zero changes", () => {
     let state = battle([{ definition: {

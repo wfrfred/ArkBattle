@@ -37,25 +37,32 @@ import * as targeting from "../../../core/battle/targeting/index.js";
 import { hasBlockable, type Blocker } from "../../../core/unit/capability/blocking/index.js";
 import type { Occupancy } from "../../../core/unit/capability/occupancy/index.js";
 import { hasLayer, type Layer } from "../../../core/unit/capability/layer/index.js";
+import type { TilePosition } from "../../../core/geometry/coordinate.js";
 import { fromTiles } from "../../../core/geometry/range.js";
 import { topK } from "../../../core/common/collection/order.js";
 import type { State as BattleState } from "../../../core/battle/index.js";
 
 import { createRng } from "../../../core/common/rng.js";
-import type { Profile } from "../../../data/unit/operator.js";
-import { secondsToTicks } from "../../../data/time.js";
 import { stun } from "../../../core/effects/control.js";
 import { install } from "../../../core/unit/effect/index.js";
-import { value, healSelf } from "./common.js";
+import { healSelf } from "./common.js";
 
 export type AttackHost = Classification & Occupancy & Blocker & Offense;
+
+export interface SkillActionParameters {
+    readonly range: readonly TilePosition[];
+    readonly attackScale: number;
+    readonly healRatio: number;
+    readonly stunChance: number;
+    readonly stunTicks: number;
+}
 
 const inDefaultCategory = targeting.inCategories(["DEFAULT"]);
 
 function attackTarget(
     battle: BattleState,
     self: Unit & Classification & Occupancy,
-    profile: Profile,
+    range: readonly TilePosition[],
     skill: boolean,
 ) {
     const eligible = targeting.damage(self)(battle);
@@ -63,10 +70,7 @@ function attackTarget(
     const withinRange =
         direction === null
             ? () => false
-            : targeting.inRange(
-                  self.position,
-                  fromTiles(skill ? profile.skillRange! : profile.range, direction),
-              );
+            : targeting.inRange(self.position, fromTiles(range, direction));
 
     return <U extends Unit>(
         target: U,
@@ -79,23 +83,23 @@ function attackTarget(
             (!skill && hasBlockable(target) && target.blockable.relation?.blocker.id === self.id));
 }
 
-export function skillTarget(
+function skillTarget(
     battle: BattleState,
     self: Unit & Classification & Occupancy,
-    profile: Profile,
+    range: readonly TilePosition[],
 ) {
-    return attackTarget(battle, self, profile, true);
+    return attackTarget(battle, self, range, true);
 }
 
 export function skillTargets(
     battle: BattleState,
     self: Unit & Classification & Occupancy,
-    profile: Profile,
+    range: readonly TilePosition[],
 ) {
-    return allUnits(battle).filter(skillTarget(battle, self, profile));
+    return allUnits(battle).filter(skillTarget(battle, self, range));
 }
 
-function attackDefinition(profile: Profile, skill: boolean, timing: Timing) {
+function attackDefinition(range: readonly TilePosition[], skill: boolean, timing: Timing) {
     return {
         id: skill ? "mudrock/s2" : "normal-attack",
         triggerBindingId: "primary",
@@ -111,9 +115,9 @@ function attackDefinition(profile: Profile, skill: boolean, timing: Timing) {
                         return { state: battle, value: [] };
                     }
 
-                    const candidates = skill
-                        ? skillTargets(battle, self, profile)
-                        : allUnits(battle).filter(attackTarget(battle, self, profile, false));
+                    const candidates = allUnits(battle).filter(
+                        attackTarget(battle, self, range, skill),
+                    );
                     const blockedFirst = skill ? () => 0 : targeting.blockedFirst(self);
                     const distance = targeting.distance(self.position);
 
@@ -142,26 +146,28 @@ function attackDefinition(profile: Profile, skill: boolean, timing: Timing) {
     } satisfies AttackConfiguration<object, object, AttackHost>;
 }
 
-export function createNormal(profile: Profile, timing: Timing): Attack<object, object, AttackHost> {
+export function createNormal(
+    range: readonly TilePosition[],
+    timing: Timing,
+): Attack<object, object, AttackHost> {
     return createAttack<AttackHost>({
-        ...attackDefinition(profile, false, timing),
+        ...attackDefinition(range, false, timing),
         onStart: faceTarget,
     });
 }
 
-export function createSkill(
-    profile: Profile,
-    recoveryTicks: number,
-): Attack<object, SkillAttackState, AttackHost & SkillCapability> {
-    const activeConfiguration = attackDefinition(profile, true, {
+export function createSkill({
+    range,
+    attackScale,
+    healRatio,
+    stunChance,
+    stunTicks,
+}: SkillActionParameters): Attack<object, SkillAttackState, AttackHost & SkillCapability> {
+    const activeConfiguration = attackDefinition(range, true, {
         type: "FIXED",
         windupTicks: 0,
-        recoveryTicks,
+        recoveryTicks: 0,
     });
-    const attackScale = value(profile.skill.blackboard, "atk_scale");
-    const healRatio = value(profile.skill.blackboard, "hp_ratio");
-    const stunChance = value(profile.skill.blackboard, "buff_prob");
-    const stunTicks = secondsToTicks(value(profile.skill.blackboard, "stun"));
 
     return createSkillAttack<AttackHost>({
         ...activeConfiguration,
@@ -189,7 +195,7 @@ export function createSkill(
                     return state;
                 }
 
-                if (target === undefined || !skillTarget(state, currentSource, profile)(target)) {
+                if (target === undefined || !skillTarget(state, currentSource, range)(target)) {
                     continue;
                 }
 

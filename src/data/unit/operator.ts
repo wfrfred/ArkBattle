@@ -3,59 +3,34 @@ import {
     assertNonnegativeSafeInteger,
     assertPositiveSafeInteger,
 } from "../../core/common/assert.js";
-import { roundToEven } from "../../core/common/math.js";
-import type { TilePosition } from "../../core/geometry/coordinate.js";
-import { parseBlackboard, type ArknightsBlackboardEntry } from "../blackboard.js";
+import type {
+    Attributes,
+    Candidate,
+    Frame,
+    Module,
+    ModulePart,
+    ModuleStage,
+    Parameters,
+    Phase,
+    Skill,
+    Talent,
+    Unlock,
+} from "../../content/operators/parameters.js";
+import { parseBlackboard } from "../blackboard.js";
 import { parseRange } from "../range.js";
-import { parseArknightsSkillLevel, type ArknightsSkillLevel } from "../skill/operator.js";
+import { parseArknightsSkillLevel } from "../skill/operator.js";
 import { parseGroupTags } from "./tags.js";
 
-export interface Configuration {
-    readonly elite: 0 | 1 | 2;
-    readonly level: number;
-    readonly potential: 1 | 2 | 3 | 4 | 5 | 6;
-    readonly skillIndex: number;
-    readonly skillLevel: number;
-    readonly trust: number;
-    readonly module?: { readonly id: string; readonly level: 1 | 2 | 3 };
-}
-
-interface Attributes {
-    maxHp: number;
-    attack: number;
-    defense: number;
-    resistance: number;
-    recoverySpeed: number;
-    attackSpeed: number;
-    taunt: number;
-    baseAttackTime: number;
-    blockCapacity: number;
-    cost: number;
-    respawnTime: number;
-}
-
-interface Talent {
-    readonly key: string;
-    readonly blackboard: readonly ArknightsBlackboardEntry[];
-}
-
-export interface Profile {
-    readonly id: string;
-    readonly groupTags: readonly string[];
-    readonly configuration: Configuration;
-    readonly attributes: Readonly<Attributes>;
-    readonly range: readonly TilePosition[];
-    readonly skill: ArknightsSkillLevel;
-    readonly skillRange: readonly TilePosition[] | null;
-    readonly talents: readonly Talent[];
-    readonly moduleTrait: readonly ArknightsBlackboardEntry[];
-}
-
 interface Tables {
+    readonly skills: unknown;
     readonly ranges: unknown;
-    readonly favor: unknown;
-    readonly equipment?: unknown;
-    readonly battleEquipment?: unknown;
+    readonly equipment: unknown;
+    readonly battleEquipment: unknown;
+}
+
+interface Selection {
+    readonly skillIndices: readonly number[];
+    readonly moduleIds: readonly string[];
 }
 
 const potentialAttributes: Readonly<Record<string, keyof Attributes>> = {
@@ -78,16 +53,6 @@ const moduleAttributes: Readonly<Record<string, keyof Attributes>> = {
     cost: "cost",
     respawn_time: "respawnTime",
 };
-
-const integerAttributes: ReadonlySet<keyof Attributes> = new Set([
-    "maxHp",
-    "attack",
-    "defense",
-    "taunt",
-    "blockCapacity",
-    "cost",
-    "respawnTime",
-]);
 
 function record(value: unknown, name: string): Record<string, unknown> {
     if (value === null || typeof value !== "object" || Array.isArray(value)) {
@@ -125,7 +90,7 @@ function number(value: unknown, name: string): number {
     return value;
 }
 
-function elite(value: unknown): Configuration["elite"] {
+function elite(value: unknown): number {
     switch (value) {
         case "PHASE_0":
             return 0;
@@ -141,37 +106,17 @@ function elite(value: unknown): Configuration["elite"] {
     }
 }
 
-function unlocked(value: unknown, configuration: Configuration): boolean {
+function unlock(value: unknown): Unlock {
     const condition = record(value, "unlock condition");
     const phase = elite(condition.phase);
     const level = condition.level;
     assertNonnegativeSafeInteger(level, "unlock level");
 
-    return (
-        configuration.elite > phase ||
-        (configuration.elite === phase && configuration.level >= level)
-    );
+    return { elite: phase, level };
 }
 
-function validateConfiguration(configuration: Configuration): void {
-    assertNonnegativeSafeInteger(configuration.elite, "operator elite");
-    assertPositiveSafeInteger(configuration.level, "operator level");
-    assertPositiveSafeInteger(configuration.potential, "operator potential");
-    assertNonnegativeSafeInteger(configuration.skillIndex, "operator skill index");
-    assertPositiveSafeInteger(configuration.skillLevel, "operator skill level");
-    assertNonnegativeSafeInteger(configuration.trust, "operator trust percentage");
-
-    if (configuration.elite > 2 || configuration.potential > 6 || configuration.trust > 200) {
-        throw new RangeError("operator configuration is outside its supported range");
-    }
-    if (configuration.module !== undefined) {
-        text(configuration.module.id, "module identity");
-        assertPositiveSafeInteger(configuration.module.level, "module level");
-
-        if (configuration.module.level > 3) {
-            throw new RangeError("module level must be between 1 and 3");
-        }
-    }
+function nullableText(value: unknown, name: string): string | null {
+    return value == null ? null : text(value, name);
 }
 
 function readAttributes(value: unknown): Attributes {
@@ -192,388 +137,270 @@ function readAttributes(value: unknown): Attributes {
     };
 }
 
-function interpolateAttributes(value: unknown, level: number): Attributes {
+function readFrames(value: unknown): readonly Frame[] {
     const frames = array(value, "operator attribute keyframes").map((value) => {
         const frame = record(value, "operator attribute keyframe");
         assertNonnegativeSafeInteger(frame.level, "operator attribute keyframe level");
 
         return { level: frame.level, attributes: readAttributes(frame.data) };
     });
-    const first = frames[0];
-    const last = frames.at(-1);
-    if (first === undefined || last === undefined || level < first.level || level > last.level) {
-        throw new RangeError("operator level is outside attribute keyframes");
-    }
 
+    if (frames.length === 0) {
+        throw new RangeError("operator requires attribute keyframes");
+    }
     for (let index = 1; index < frames.length; index++) {
         if (frames[index]!.level <= frames[index - 1]!.level) {
             throw new TypeError("operator attribute keyframes must have increasing levels");
         }
     }
 
-    const upperIndex = frames.findIndex((frame) => frame.level >= level);
-    const upper = frames[upperIndex]!;
-    const lower = frames[Math.max(0, upperIndex - 1)]!;
-    const ratio =
-        upper.level === lower.level ? 0 : (level - lower.level) / (upper.level - lower.level);
-    const attributes = { ...lower.attributes };
+    return frames;
+}
 
-    for (const key of Object.keys(attributes) as (keyof Attributes)[]) {
-        const value = attributes[key] + (upper.attributes[key] - lower.attributes[key]) * ratio;
+function readPhase(value: unknown, ranges: unknown): Phase {
+    const phase = record(value, "operator phase");
+    assertPositiveSafeInteger(phase.maxLevel, "operator phase maximum level");
 
-        attributes[key] = integerAttributes.has(key) ? roundToEven(value) : value;
+    return {
+        maxLevel: phase.maxLevel,
+        frames: readFrames(phase.attributesKeyFrames),
+        range: parseRange(ranges, phase.rangeId),
+    };
+}
+
+export function extractFavor(value: unknown) {
+    const favor = record(value, "favor table");
+
+    return array(favor.favorFrames, "favor frames").map((value) => {
+        const frame = record(value, "favor frame");
+        const { percent, battlePhase, favorPoint } = record(frame.data, "favor frame data");
+        assertNonnegativeSafeInteger(percent, "favor percentage");
+        assertNonnegativeSafeInteger(battlePhase, "favor battle phase");
+        assertNonnegativeSafeInteger(favorPoint, "favor point");
+
+        return { percent, battlePhase, favorPoint };
+    });
+}
+
+function readPotential(value: unknown): Partial<Attributes> {
+    const potential = record(value, "operator potential rank");
+    if (potential.type === "CUSTOM" && potential.buff === null) {
+        return {};
+    }
+    if (potential.type !== "BUFF") {
+        throw new TypeError("unsupported operator potential type");
+    }
+
+    const attributes: Partial<Attributes> = {};
+    const buff = record(potential.buff, "potential buff");
+    const data = record(buff.attributes, "potential buff attributes");
+
+    for (const value of array(data.attributeModifiers, "potential attribute modifiers")) {
+        const modifier = record(value, "potential attribute modifier");
+        const type = text(modifier.attributeType, "potential attribute type");
+        const key = Object.hasOwn(potentialAttributes, type)
+            ? potentialAttributes[type]
+            : undefined;
+        if (
+            key === undefined ||
+            modifier.formulaItem !== "ADDITION" ||
+            modifier.loadFromBlackboard !== false ||
+            modifier.fetchBaseValueFromSourceEntity !== false
+        ) {
+            throw new TypeError("unsupported operator potential attribute modifier");
+        }
+
+        attributes[key] =
+            (attributes[key] ?? 0) + number(modifier.value, "potential attribute addition");
     }
 
     return attributes;
 }
 
-function trustFrame(
-    value: unknown,
-    percentage: number,
-): { battlePhase: number; favorPoint: number } {
-    const favor = record(value, "favor table");
-    const frames = array(favor.favorFrames, "favor frames");
+function readSkill(character: Record<string, unknown>, tables: Tables, index: number): Skill {
+    assertNonnegativeSafeInteger(index, "operator skill index");
 
-    for (const value of frames) {
-        const frame = record(value, "favor frame");
-        const data = record(frame.data, "favor frame data");
-        if (data.percent !== percentage) {
-            continue;
-        }
-
-        assertNonnegativeSafeInteger(data.battlePhase, "favor battle phase");
-        assertNonnegativeSafeInteger(data.favorPoint, "favor point");
-
-        return { battlePhase: data.battlePhase, favorPoint: data.favorPoint };
-    }
-
-    throw new RangeError(`unknown trust percentage ${percentage}`);
-}
-
-function applyPotential(
-    character: Record<string, unknown>,
-    rank: number,
-    attributes: Attributes,
-): void {
-    const ranks = array(character.potentialRanks, "operator potential ranks");
-    if (rank > ranks.length) {
-        throw new RangeError("operator potential exceeds its available ranks");
-    }
-
-    for (const value of ranks.slice(0, rank)) {
-        const potential = record(value, "operator potential rank");
-        if (potential.type === "CUSTOM" && potential.buff === null) {
-            continue;
-        }
-        if (potential.type !== "BUFF") {
-            throw new TypeError("unsupported operator potential type");
-        }
-
-        const buff = record(potential.buff, "potential buff");
-        const data = record(buff.attributes, "potential buff attributes");
-
-        for (const value of array(data.attributeModifiers, "potential attribute modifiers")) {
-            const modifier = record(value, "potential attribute modifier");
-            const type = text(modifier.attributeType, "potential attribute type");
-            const key = Object.hasOwn(potentialAttributes, type)
-                ? potentialAttributes[type]
-                : undefined;
-            if (
-                key === undefined ||
-                modifier.formulaItem !== "ADDITION" ||
-                modifier.loadFromBlackboard !== false ||
-                modifier.fetchBaseValueFromSourceEntity !== false
-            ) {
-                throw new TypeError("unsupported operator potential attribute modifier");
-            }
-
-            attributes[key] += number(modifier.value, "potential attribute addition");
-        }
-    }
-}
-
-function selectedSkill(
-    character: Record<string, unknown>,
-    skill: unknown,
-    configuration: Configuration,
-): {
-    parsed: ArknightsSkillLevel;
-    rangeId: unknown;
-} {
     const selected = record(
-        array(character.skills, "operator skills")[configuration.skillIndex],
+        array(character.skills, "operator skills")[index],
         "selected operator skill",
     );
-    const source = record(skill, "skill record");
-    if (source.skillId !== text(selected.skillId, "selected skill identity")) {
+    const id = text(selected.skillId, "selected skill identity");
+    const source = record(record(tables.skills, "skill table")[id], "skill record");
+    if (source.skillId !== id) {
         throw new TypeError("selected skill record does not match the operator skill");
-    }
-    if (!unlocked(selected.unlockCond, configuration)) {
-        throw new RangeError("selected operator skill is locked");
     }
 
     const common = array(character.allSkillLvlup, "common skill upgrades");
     const mastery = array(selected.levelUpCostCond, "skill mastery upgrades");
-    const upgrades = [...common, ...mastery];
-    if (configuration.skillLevel > upgrades.length + 1) {
-        throw new RangeError("selected skill level exceeds its available upgrades");
-    }
-
-    for (const value of upgrades.slice(0, configuration.skillLevel - 1)) {
-        if (!unlocked(record(value, "skill upgrade").unlockCond, configuration)) {
-            throw new RangeError("selected skill level requires a higher elite phase or level");
-        }
-    }
-
-    const level = record(
-        array(source.levels, "skill levels")[configuration.skillLevel - 1],
-        "selected skill level",
+    const upgrades = [...common, ...mastery].map((value) =>
+        unlock(record(value, "skill upgrade").unlockCond),
     );
-    if (level.durationType === "AMMO" || level.durationType === 1) {
-        throw new TypeError(
-            "AMMO operator skills require dedicated content and are unsupported here",
-        );
-    }
+
+    const levels = array(source.levels, "skill levels").map((_, i) => {
+        const { rangeId, ...level } = parseArknightsSkillLevel(source, i + 1);
+
+        return { ...level, range: rangeId === null ? null : parseRange(tables.ranges, rangeId) };
+    });
 
     return {
-        parsed: parseArknightsSkillLevel(skill, configuration.skillLevel),
-        rangeId: level.rangeId,
+        index,
+        id,
+        unlock: unlock(selected.unlockCond),
+        upgrades,
+        levels,
+        overridePrefabKey: nullableText(selected.overridePrefabKey, "skill prefab override"),
+        overrideTokenKey: nullableText(selected.overrideTokenKey, "skill token override"),
     };
 }
 
-function selectCandidate(
-    value: unknown,
-    configuration: Configuration,
-): Record<string, unknown> | undefined {
-    let selected:
-        | { candidate: Record<string, unknown>; phase: number; level: number; rank: number }
-        | undefined;
-
-    for (const entry of array(value, "talent candidates")) {
-        const candidate = record(entry, "talent candidate");
-        const rank = candidate.requiredPotentialRank;
-        assertNonnegativeSafeInteger(rank, "talent required potential rank");
-
-        if (
-            rank > configuration.potential - 1 ||
-            !unlocked(candidate.unlockCondition, configuration)
-        ) {
-            continue;
-        }
-        if (candidate.validModeIndices !== undefined && candidate.validModeIndices !== null) {
-            throw new TypeError("mode-specific operator talent candidates are unsupported");
-        }
-
-        const condition = record(candidate.unlockCondition, "talent unlock condition");
-        const phase = elite(condition.phase);
-        const level = number(condition.level, "talent unlock level");
-        if (
-            selected === undefined ||
-            phase > selected.phase ||
-            (phase === selected.phase && level > selected.level) ||
-            (phase === selected.phase && level === selected.level && rank > selected.rank)
-        ) {
-            selected = { candidate, phase, level, rank };
-        }
-    }
-
-    return selected?.candidate;
-}
-
-function talent(candidate: Record<string, unknown>): Talent {
+function readTalent(candidate: Record<string, unknown>): Talent {
     return {
         key: text(candidate.prefabKey, "talent prefab key"),
         blackboard: parseBlackboard(candidate.blackboard, "talent blackboard"),
     };
 }
 
-function applyModule(
-    id: string,
-    configuration: Configuration,
-    tables: Tables,
-    favorPoint: number,
-    attributes: Attributes,
-    talents: (Talent | undefined)[],
-): readonly ArknightsBlackboardEntry[] {
-    const module = configuration.module;
-    if (module === undefined) {
-        return [];
+function readCandidates<T>(
+    value: unknown,
+    readValue: (candidate: Record<string, unknown>) => T,
+): readonly Candidate<T>[] {
+    return array(value, "talent candidates").map((value) => {
+        const candidate = record(value, "talent candidate");
+        const potentialRank = candidate.requiredPotentialRank;
+        assertNonnegativeSafeInteger(potentialRank, "talent required potential rank");
+
+        if (candidate.validModeIndices != null) {
+            throw new TypeError("mode-specific operator talent candidates are unsupported");
+        }
+
+        return {
+            unlock: unlock(candidate.unlockCondition),
+            potentialRank,
+            value: readValue(candidate),
+        };
+    });
+}
+
+function readModulePart(value: unknown, talentSlots: number): ModulePart | null {
+    const part = record(value, "module part");
+    const { target } = part;
+    if (part.isToken === true || target === "DISPLAY") {
+        return null;
+    }
+    if (part.validInGameTag != null || part.validInMapTag != null) {
+        throw new TypeError("mode-specific operator module parts are unsupported");
+    }
+    if (target === "TRAIT" || target === "TRAIT_DATA_ONLY") {
+        return {
+            target,
+            candidates: readCandidates(
+                record(part.overrideTraitDataBundle, "module trait bundle").candidates,
+                (candidate) => parseBlackboard(candidate.blackboard, "module trait blackboard"),
+            ),
+        };
+    }
+    if (target === "TALENT" || target === "TALENT_DATA_ONLY") {
+        return {
+            target,
+            candidates: readCandidates(
+                record(part.addOrOverrideTalentDataBundle, "module talent bundle").candidates,
+                (candidate) => {
+                    const index = candidate.talentIndex;
+                    if (index !== -1) {
+                        assertNonnegativeSafeInteger(index, "module talent index");
+
+                        if (index >= talentSlots) {
+                            throw new RangeError(
+                                "module talent index is outside the operator talent slots",
+                            );
+                        }
+                    }
+
+                    return { ...readTalent(candidate), index };
+                },
+            ),
+        };
     }
 
-    const equipment = record(tables.equipment, "module equipment record");
-    if (equipment.uniEquipId !== module.id || equipment.charId !== id) {
+    throw new TypeError("unsupported module target " + String(target));
+}
+
+function readModule(id: string, moduleId: string, tables: Tables, talentSlots: number): Module {
+    const equipment = record(
+        record(tables.equipment, "module equipment table")[moduleId],
+        "module equipment record",
+    );
+    if (equipment.uniEquipId !== moduleId || equipment.charId !== id) {
         throw new TypeError("module equipment does not match the selected operator and module");
-    }
-    if (
-        !unlocked(
-            { phase: equipment.unlockEvolvePhase, level: equipment.unlockLevel },
-            configuration,
-        )
-    ) {
-        throw new RangeError("module requires a higher elite phase or level");
     }
 
     const favors = record(equipment.unlockFavors, "module trust unlocks");
-    const requiredFavor = favors[module.level];
-    assertNonnegativeSafeInteger(requiredFavor, "module required favor point");
+    const battle = record(
+        record(tables.battleEquipment, "module battle equipment table")[moduleId],
+        "module battle equipment record",
+    );
+    const stages = array(battle.phases, "module phases").map((value): ModuleStage => {
+        const stage = record(value, "module phase");
+        const level = stage.equipLevel;
+        assertPositiveSafeInteger(level, "module level");
 
-    if (favorPoint < requiredFavor) {
-        throw new RangeError("module level requires more trust");
-    }
+        const minFavor = favors[level];
+        assertNonnegativeSafeInteger(minFavor, "module required favor point");
 
-    const battle = record(tables.battleEquipment, "module battle equipment record");
-    const phase = array(battle.phases, "module phases")
-        .map((value) => record(value, "module phase"))
-        .find((phase) => phase.equipLevel === module.level);
-    if (phase === undefined) {
-        throw new RangeError("unknown module level");
-    }
+        const attributes: Partial<Attributes> = {};
 
-    for (const entry of parseBlackboard(phase.attributeBlackboard, "module attributes")) {
-        const key = Object.hasOwn(moduleAttributes, entry.key)
-            ? moduleAttributes[entry.key]
-            : undefined;
-        if (key === undefined || entry.valueStr !== null) {
-            throw new TypeError(`unsupported module attribute ${entry.key}`);
-        }
-
-        attributes[key] += entry.value;
-    }
-
-    const trait = new Map<string, ArknightsBlackboardEntry>();
-
-    for (const value of array(phase.parts, "module parts")) {
-        const part = record(value, "module part");
-        if (part.isToken === true || part.target === "DISPLAY") {
-            continue;
-        }
-        if (
-            (part.validInGameTag !== undefined && part.validInGameTag !== null) ||
-            (part.validInMapTag !== undefined && part.validInMapTag !== null)
-        ) {
-            throw new TypeError("mode-specific operator module parts are unsupported");
-        }
-        if (part.target === "TRAIT" || part.target === "TRAIT_DATA_ONLY") {
-            const candidate = selectCandidate(
-                record(part.overrideTraitDataBundle, "module trait bundle").candidates,
-                configuration,
-            );
-            if (candidate !== undefined) {
-                for (const entry of parseBlackboard(
-                    candidate.blackboard,
-                    "module trait blackboard",
-                )) {
-                    trait.set(entry.key, entry);
-                }
-            }
-        } else if (part.target === "TALENT" || part.target === "TALENT_DATA_ONLY") {
-            const candidate = selectCandidate(
-                record(part.addOrOverrideTalentDataBundle, "module talent bundle").candidates,
-                configuration,
-            );
-            if (candidate === undefined) {
-                continue;
+        for (const entry of parseBlackboard(stage.attributeBlackboard, "module attributes")) {
+            const key = Object.hasOwn(moduleAttributes, entry.key)
+                ? moduleAttributes[entry.key]
+                : undefined;
+            if (key === undefined || entry.valueStr !== null) {
+                throw new TypeError("unsupported module attribute " + entry.key);
             }
 
-            const index = candidate.talentIndex;
-            const selected = talent(candidate);
-
-            if (index === -1) {
-                const previous = talents.findIndex((talent) => talent?.key === selected.key);
-                if (previous === -1) {
-                    talents.push(selected);
-                } else {
-                    talents[previous] = selected;
-                }
-            } else {
-                assertNonnegativeSafeInteger(index, "module talent index");
-
-                if (index >= talents.length) {
-                    throw new RangeError(
-                        "module talent index is outside the operator talent slots",
-                    );
-                }
-
-                talents[index] = selected;
-            }
-        } else {
-            throw new TypeError(`unsupported module target ${String(part.target)}`);
+            attributes[key] = entry.value;
         }
-    }
 
-    return Array.from(trait.values());
+        const parts = array(stage.parts, "module parts")
+            .map((part) => readModulePart(part, talentSlots))
+            .filter((part) => part !== null);
+
+        return { level, minFavor, attributes, parts };
+    });
+
+    return {
+        id: moduleId,
+        unlock: unlock({ phase: equipment.unlockEvolvePhase, level: equipment.unlockLevel }),
+        stages,
+    };
 }
 
-export function prepare(
+export function extract(
     input: { readonly id: string; readonly record: unknown },
-    skill: unknown,
-    configuration: Configuration,
     tables: Tables,
-): Profile {
+    selection: Selection,
+): Parameters {
     const id = text(input.id, "operator table identity");
     const character = record(input.record, "operator character record");
-    validateConfiguration(configuration);
-    const phase = record(
-        array(character.phases, "operator phases")[configuration.elite],
-        "selected operator phase",
-    );
-    assertPositiveSafeInteger(phase.maxLevel, "operator phase maximum level");
-
-    if (configuration.level > phase.maxLevel) {
-        throw new RangeError("operator level exceeds the selected phase maximum");
-    }
-
-    const attributes = interpolateAttributes(phase.attributesKeyFrames, configuration.level);
-    const favor = trustFrame(tables.favor, configuration.trust);
-
-    if (character.favorKeyFrames !== null) {
-        const frames = array(character.favorKeyFrames, "operator favor keyframes");
-        const last = record(frames.at(-1), "final operator favor keyframe");
-        const bonus = interpolateAttributes(
-            frames,
-            Math.min(favor.battlePhase, number(last.level, "final favor keyframe level")),
-        );
-
-        for (const key of Object.keys(attributes) as (keyof Attributes)[]) {
-            attributes[key] += bonus[key];
-        }
-    }
-
-    applyPotential(character, configuration.potential - 1, attributes);
-    const selected = selectedSkill(character, skill, configuration);
     const talents =
         character.talents === null
             ? []
-            : array(character.talents, "operator talents").map((value) => {
-                  const candidate = selectCandidate(
-                      record(value, "operator talent").candidates,
-                      configuration,
-                  );
-
-                  return candidate === undefined ? undefined : talent(candidate);
-              });
-    const moduleTrait = applyModule(
-        id,
-        configuration,
-        tables,
-        favor.favorPoint,
-        attributes,
-        talents,
-    );
-
-    for (const key of Object.keys(attributes) as (keyof Attributes)[]) {
-        assertFiniteNumber(attributes[key], `prepared operator ${key}`);
-    }
+            : array(character.talents, "operator talents").map((value) =>
+                  readCandidates(record(value, "operator talent").candidates, readTalent),
+              );
 
     return {
         id,
         groupTags: parseGroupTags(character),
-        configuration,
-        attributes,
-        range: parseRange(tables.ranges, phase.rangeId),
-        skill: selected.parsed,
-        skillRange: selected.rangeId === null ? null : parseRange(tables.ranges, selected.rangeId),
-        talents: talents.filter((talent): talent is Talent => talent !== undefined),
-        moduleTrait,
+        phases: array(character.phases, "operator phases").map((phase) =>
+            readPhase(phase, tables.ranges),
+        ),
+        favorKeyFrames:
+            character.favorKeyFrames === null ? null : readFrames(character.favorKeyFrames),
+        potential: array(character.potentialRanks, "operator potential ranks").map(readPotential),
+        talents,
+        skills: selection.skillIndices.map((index) => readSkill(character, tables, index)),
+        modules: selection.moduleIds.map((moduleId) =>
+            readModule(id, moduleId, tables, talents.length),
+        ),
     };
 }

@@ -26,7 +26,7 @@ import {
 import type { TilePosition } from "../../core/geometry/coordinate.js";
 import { Direction } from "../../core/geometry/direction.js";
 import { parseBlackboard, type ArknightsBlackboardEntry } from "../blackboard.js";
-import { secondsToTicks } from "../time.js";
+import { secondsToTicks } from "../../core/tick.js";
 import type { TileDeploymentPrefab } from "./prefab.js";
 import { parseSiteCondition } from "./site-condition.js";
 

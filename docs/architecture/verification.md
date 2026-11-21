@@ -19,7 +19,7 @@
 
 | 结果 | 集中代表 |
 | --- | --- |
-| 养成、等级覆盖、技能选择、静态覆写、范围与资源关联正确；真实非零自然回复保留单位换算。 | [单位配置](../../test/data/unit/)使用实际资料，不枚举默认零值。 |
+| 提取结果保留等级曲线、解锁、模组覆写和范围／资源关联。干员按配置选择后正确计算养成数值，真实非零自然回复保留单位换算。 | [单位配置](../../test/data/unit/)使用实际资料，具体干员的构造和战斗行为由 [Content 测试](../../test/content/operators/)覆盖。 |
 | 组织标签合并、去重且不双计旧字段，标签保留大小写与顺序；装置的实际阵营及筛选标签进入 DEVICE Definition。 | [标签转换](../../test/data/unit/tags.test.js)、[角色配置](../../test/data/unit/operator.test.js)与[预置装置](../../test/data/level/predefined.test.js)保障规范化和内容绑定，不重复 Core 标签查询。 |
 | 作者帧参数正确转换起手、主段与释放位置，保留连续 Tick 与无界缩放标记。 | [动作时序](../../test/data/action/timing.test.js)以玫兰莎起手为代表；运行攻速与帧内调度不在 Data 验收。 |
 | 地图几何、路线时基与控制流、出兵展开、随机组及等待政策保留。 | [Route／Schedule 转换](../../test/data/level/route-schedule.test.js)与[预置配置](../../test/data/level/predefined.test.js)；主线预处理、Branch 运行时抽选及 notCountInTotal 转换。 |

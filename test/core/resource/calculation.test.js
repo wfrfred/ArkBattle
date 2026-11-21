@@ -13,7 +13,7 @@ import * as epHealing from "../../../dist/core/battle/resource/ep/healing/index.
 import * as vitality from "../../../dist/core/unit/capability/vitality/index.js";
 import * as elemental from "../../../dist/core/unit/capability/elemental/index.js";
 import * as modifier from "../../../dist/core/common/modifier.js";
-import { createArknightsElementalDefinition } from "../../../dist/data/effect/elemental.js";
+import { create as createElementalDefinition } from "../../../dist/content/elemental.js";
 
 function damageRequest(source, target, power, type = "TRUE", penetration = { fixed: 0, proportional: 0 }) {
     const attack = { power, multiplier: 1, addition: 0 };
@@ -32,7 +32,7 @@ const healingRequest = (source, target, power) => ({
 function elementalDefinition(config = {}, hooks = Hooks.empty()) {
     return {
         id: "ep-receiver", hooks, presence: {}, classification: { type: "DEVICE", side: "ALLY", filterTags: [], groupTags: [] },
-        elemental: { ...createArknightsElementalDefinition({ receiver: "CHARACTER" }), ...config },
+        elemental: { ...createElementalDefinition({ receiver: "CHARACTER" }), ...config },
     };
 }
 
@@ -43,7 +43,7 @@ function injuryRequest(target, type, power, source = null) {
 const elementalReceiver = {
     id: "ep-receiver", hooks: Hooks.empty(), presence: {}, classification: { type: "DEVICE", side: "ALLY", filterTags: [], groupTags: [] },
     targetable: { category: "DEFAULT", taunt: defineAttribute(0, -2, 2), restrictions: [] },
-    elemental: createArknightsElementalDefinition({ receiver: "CHARACTER", recoveryPerSecond: 15 }),
+    elemental: createElementalDefinition({ receiver: "CHARACTER", recoveryPerSecond: 15 }),
 };
 
 test("HP-01: formulas use the calculated type and sampled defenses without beginning reception", () => {
@@ -53,7 +53,7 @@ test("HP-01: formulas use the calculated type and sampled defenses without begin
             id: "target", hooks: Hooks.empty(),
             vitality: defineVitality(1000, { defense: defineAttribute(150), resistance: defineAttribute(80, 0, 100) }),
             elemental: {
-                ...createArknightsElementalDefinition({ receiver: "CHARACTER" }),
+                ...createElementalDefinition({ receiver: "CHARACTER" }),
                 elementResistance: defineAttribute(95, 0, 100), damageResistance: defineAttribute(40, 0, 100),
             },
         }, position: [1, 0] },

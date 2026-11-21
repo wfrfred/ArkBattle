@@ -8,7 +8,7 @@ import {
 } from "../../../core/unit/capability/action/index.js";
 import { get as getCurrentUnit } from "../../../core/unit/index.js";
 import type { Definition as SkillDefinition } from "../../../core/unit/capability/skill/index.js";
-import type { Profile } from "../../../data/unit/operator.js";
+import type { resolve } from "./parameters.js";
 import {
     skillTargets,
     type AttackHost,
@@ -17,28 +17,24 @@ import {
 } from "./action.js";
 
 export function create(
-    profile: Profile,
+    { id, range, sp, trigger, cost }: ReturnType<typeof resolve>["skill"],
     normalAttack: ReturnType<typeof createNormal>,
     action: ReturnType<typeof createSkillAction>,
 ) {
-    const activation = profile.skill.definition.activation!;
-
     return {
-        ...profile.skill.definition,
+        id,
+        sp,
+        initialize: (battle) => ({ state: battle, value: {} }),
         activation: {
-            ...activation,
-            initialize(battle, source, self) {
-                return {
-                    ...activation.initialize(battle, source, self),
-                    duration: { type: "INFINITE" },
-                };
-            },
+            trigger,
+            ignoreRestrictions: [],
+            requirement: cost,
+            cost,
+            initialize: () => ({ state: {}, duration: { type: "INFINITE" } }),
             accepts(battle, sourceRef) {
                 const source = getCurrentUnit(battle, sourceRef);
 
-                return (
-                    source !== undefined && skillTargets(battle, source, profile).some(() => true)
-                );
+                return source !== undefined && skillTargets(battle, source, range).some(() => true);
             },
             onStart(state, host) {
                 if (getCurrentUnit(state, host) === undefined) {

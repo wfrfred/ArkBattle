@@ -10,9 +10,8 @@ import type { Occupancy } from "../../../core/unit/capability/occupancy/index.js
 import type { Offense } from "../../../core/unit/capability/offense/index.js";
 import { hasLayer } from "../../../core/unit/capability/layer/index.js";
 import { fromTiles } from "../../../core/geometry/range.js";
+import type { TilePosition } from "../../../core/geometry/coordinate.js";
 import { topK } from "../../../core/common/collection/order.js";
-
-import type { Profile } from "../../../data/unit/operator.js";
 import type { State as BattleState } from "../../../core/battle/state.js";
 
 export interface State {
@@ -26,13 +25,13 @@ const inDefaultCategory = targeting.inCategories(["DEFAULT"]);
 function candidates(
     battle: BattleState,
     self: units.Unit & Classification & Occupancy,
-    profile: Profile,
+    range: readonly TilePosition[],
 ) {
     const { direction } = self.occupancy;
     const withinRange =
         direction === null
             ? () => false
-            : targeting.inRange(self.position, fromTiles(profile.range, direction));
+            : targeting.inRange(self.position, fromTiles(range, direction));
 
     return units
         .all(battle)
@@ -49,12 +48,15 @@ function candidates(
 export function hasTarget(
     battle: BattleState,
     self: units.Unit & Classification & Occupancy,
-    profile: Profile,
+    range: readonly TilePosition[],
 ): boolean {
-    return candidates(battle, self, profile).some(() => true);
+    return candidates(battle, self, range).some(() => true);
 }
 
-export function create(profile: Profile, timing: AttackSpeedTiming): Attack<State, object, Host> {
+export function create(
+    range: readonly TilePosition[],
+    timing: AttackSpeedTiming,
+): Attack<State, object, Host> {
     return createWithState<State, object, Host>({
         id: "normal-attack",
         initialize: (battle) => ({ state: battle, value: { inSession: false } }),
@@ -88,7 +90,7 @@ export function create(profile: Profile, timing: AttackSpeedTiming): Attack<Stat
                     return {
                         state: battle,
                         value: topK(
-                            candidates(battle, self, profile),
+                            candidates(battle, self, range),
                             1,
                             (left, right) => blockedFirst(left, right) || distance(left, right),
                         ).map(units.ref),

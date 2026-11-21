@@ -2,10 +2,7 @@ import { attribute, vitality } from "../../helpers/attribute.js";
 // Contract: [content](../../../docs/architecture/content.md).
 import { Hooks } from "../../../dist/core/hook.js";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
 import { test } from "node:test";
-import { parseAttackTiming } from "../../../dist/data/action/timing.js";
-import { prepare } from "../../../dist/data/unit/operator.js";
 import { create } from "../../../dist/content/operators/melantha/unit.js";
 import { initialize, getUnit } from "../../helpers/unit.js";
 import { createBattleState } from "../../../dist/core/battle/state.js";
@@ -22,14 +19,7 @@ import { invisible, invisibleRestriction } from "../../../dist/core/effects/visi
 import { install, remove as removeEffect } from "../../../dist/core/unit/effect/index.js";
 import { advance as advanceCombat } from "../../../dist/core/battle/steps/combat.js";
 
-const data = JSON.parse(readFileSync(new URL("../../fixtures/arknights/main-mode-units.json", import.meta.url)));
-const attackTiming = parseAttackTiming(JSON.parse(readFileSync(new URL("../../fixtures/arknights/action_timing.json", import.meta.url), "utf8")).melantha);
-const profile = () => prepare(
-    { id: "char_208_melan", record: data.characters.char_208_melan },
-    data.skills["skcom_atk_up[1]"],
-    { elite: 1, level: 55, potential: 6, skillIndex: 0, skillLevel: 7, trust: 100 },
-    { ranges: data.ranges, favor: data.favor },
-);
+const configuration = { elite: 1, level: 55, potential: 6, skillIndex: 0, skillLevel: 7, trust: 100 };
 const receiver = (restrictions = []) => initialize({
     id: 1, position: [0.6, 0], definition: {
         id: "enemy", hooks: Hooks.empty(), targetable: { category: "DEFAULT", taunt: attribute(0, -2, 2), restrictions },
@@ -39,7 +29,7 @@ const receiver = (restrictions = []) => initialize({
     },
 });
 const source = () => initialize({
-    id: 0, position: [0, 0], definition: create(profile(), attackTiming),
+    id: 0, position: [0, 0], definition: create(configuration),
     initial: { occupancy: { tile: [0, 0], direction: "RIGHT" }, facing: { direction: "RIGHT" } },
 });
 
