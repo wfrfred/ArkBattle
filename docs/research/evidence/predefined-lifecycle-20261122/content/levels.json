@@ -1,0 +1,689 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-22",
+    "repository": "https://github.com/Kengxxiao/ArknightsGameData",
+    "revision": "17759cc8cdf37388414145d16262a3a06f3ab25e",
+    "scope": "Explicitly selected level and stage-table JSON pointers from verified Git blobs"
+  },
+  "result": {
+    "levels": [
+      {
+        "source": {
+          "path": "zh_CN/gamedata/levels/obt/main/level_main_01-02.json",
+          "gitBlob": "a5d4c746b8cae6acda7c4b351b3aee130cac7547",
+          "bytes": 60323,
+          "sha256": "d87731a394fd99199c1cdedb8caa689c22e42b2ea4ca1d9fd587933384831249"
+        },
+        "counts": {
+          "predefines": {
+            "characterInsts": 0,
+            "tokenInsts": 0,
+            "characterCards": 8,
+            "tokenCards": 0
+          },
+          "hardPredefines": null
+        },
+        "options": {
+          "isTrainingLevel": true,
+          "isHardTrainingLevel": false,
+          "isPredefinedCardsSelectable": false
+        },
+        "excerpts": {
+          "/predefines/characterCards/0": {
+            "hidden": false,
+            "alias": null,
+            "uniEquipIds": null,
+            "showSpIllust": false,
+            "masterInfos": null,
+            "inst": {
+              "characterKey": "char_123_fang",
+              "level": 10,
+              "phase": "PHASE_0",
+              "favorPoint": 0,
+              "potentialRank": 0
+            },
+            "skillIndex": 0,
+            "mainSkillLvl": 1,
+            "skinId": null,
+            "tmplId": null,
+            "overrideSkillBlackboard": null,
+            "overrideTalents": null
+          }
+        }
+      },
+      {
+        "source": {
+          "path": "zh_CN/gamedata/levels/obt/main/level_main_01-11.json",
+          "gitBlob": "94dcaced3879d49a8baac58858e4767092983e45",
+          "bytes": 72773,
+          "sha256": "8e87e6f4f651ac540100ca90caddb06b4bdcddd43686f587e8e4ddf35ffe64fc"
+        },
+        "counts": {
+          "predefines": {
+            "characterInsts": 1,
+            "tokenInsts": 0,
+            "characterCards": 12,
+            "tokenCards": 0
+          },
+          "hardPredefines": null
+        },
+        "options": {
+          "isTrainingLevel": true,
+          "isHardTrainingLevel": false,
+          "isPredefinedCardsSelectable": false
+        },
+        "excerpts": {
+          "/predefines/characterInsts/0": {
+            "position": {
+              "row": 3,
+              "col": 6
+            },
+            "direction": "RIGHT",
+            "hidden": true,
+            "alias": null,
+            "uniEquipIds": null,
+            "showSpIllust": false,
+            "masterInfos": null,
+            "inst": {
+              "characterKey": "char_211_adnach",
+              "level": 20,
+              "phase": "PHASE_0",
+              "favorPoint": 0,
+              "potentialRank": 0
+            },
+            "skillIndex": 0,
+            "mainSkillLvl": 1,
+            "skinId": null,
+            "tmplId": null,
+            "overrideSkillBlackboard": null,
+            "overrideTalents": null
+          },
+          "/waves/0/fragments/1/actions/2": {
+            "actionType": "ACTIVATE_PREDEFINED",
+            "managedByScheduler": true,
+            "key": "char_211_adnach",
+            "count": 1,
+            "preDelay": 2.99,
+            "interval": 1.0,
+            "routeIndex": 3,
+            "blockFragment": false,
+            "autoPreviewRoute": true,
+            "autoDisplayEnemyInfo": false,
+            "isUnharmfulAndAlwaysCountAsKilled": false,
+            "hiddenGroup": null,
+            "randomSpawnGroupKey": null,
+            "randomSpawnGroupPackKey": null,
+            "randomType": "ALWAYS",
+            "refreshType": "ALWAYS",
+            "weight": 0,
+            "dontBlockWave": false,
+            "forceBlockWaveInBranch": false
+          }
+        }
+      },
+      {
+        "source": {
+          "path": "zh_CN/gamedata/levels/obt/main/level_main_03-07.json",
+          "gitBlob": "57201a88db50f20d0a8b28587177e172187e4121",
+          "bytes": 84121,
+          "sha256": "1308874d7fc4d6847f45db5617b9459f49debde0a53603a5cfa40dd22dba87f5"
+        },
+        "counts": {
+          "predefines": {
+            "characterInsts": 0,
+            "tokenInsts": 1,
+            "characterCards": 0,
+            "tokenCards": 1
+          },
+          "hardPredefines": null
+        },
+        "options": {
+          "isTrainingLevel": false,
+          "isHardTrainingLevel": false,
+          "isPredefinedCardsSelectable": false
+        },
+        "excerpts": {
+          "/predefines/tokenInsts/0": {
+            "position": {
+              "row": 4,
+              "col": 3
+            },
+            "direction": "UP",
+            "hidden": false,
+            "alias": null,
+            "uniEquipIds": null,
+            "showSpIllust": false,
+            "masterInfos": null,
+            "inst": {
+              "characterKey": "trap_005_sensor",
+              "level": 60,
+              "phase": "PHASE_0",
+              "favorPoint": 0,
+              "potentialRank": 0
+            },
+            "skillIndex": 0,
+            "mainSkillLvl": 1,
+            "skinId": null,
+            "tmplId": null,
+            "overrideSkillBlackboard": null,
+            "overrideTalents": null
+          },
+          "/predefines/tokenCards/0": {
+            "initialCnt": 5,
+            "hidden": false,
+            "alias": null,
+            "uniEquipIds": null,
+            "showSpIllust": false,
+            "masterInfos": null,
+            "inst": {
+              "characterKey": "trap_001_crate",
+              "level": 1,
+              "phase": "PHASE_0",
+              "favorPoint": 0,
+              "potentialRank": 0
+            },
+            "skillIndex": 0,
+            "mainSkillLvl": 1,
+            "skinId": null,
+            "tmplId": null,
+            "overrideSkillBlackboard": null,
+            "overrideTalents": null
+          }
+        }
+      },
+      {
+        "source": {
+          "path": "zh_CN/gamedata/levels/obt/main/level_main_08-09.json",
+          "gitBlob": "a4bc691b666cfb2ac7c2032b72cd537cd3db8edd",
+          "bytes": 125864,
+          "sha256": "1321e847d9d2c4c873c72d0c108fe424fbcd38cc205583feb30f1b0b09adf9b3"
+        },
+        "counts": {
+          "predefines": {
+            "characterInsts": 1,
+            "tokenInsts": 4,
+            "characterCards": 0,
+            "tokenCards": 0
+          },
+          "hardPredefines": {
+            "characterInsts": 0,
+            "tokenInsts": 0,
+            "characterCards": 0,
+            "tokenCards": 0
+          }
+        },
+        "options": {
+          "isTrainingLevel": false,
+          "isHardTrainingLevel": false,
+          "isPredefinedCardsSelectable": false
+        },
+        "excerpts": {
+          "/predefines/characterInsts/0": {
+            "position": {
+              "row": 4,
+              "col": 1
+            },
+            "direction": "RIGHT",
+            "hidden": false,
+            "alias": null,
+            "uniEquipIds": null,
+            "showSpIllust": false,
+            "masterInfos": null,
+            "inst": {
+              "characterKey": "char_391_rosmon",
+              "level": 20,
+              "phase": "PHASE_2",
+              "favorPoint": 0,
+              "potentialRank": 0
+            },
+            "skillIndex": 1,
+            "mainSkillLvl": 7,
+            "skinId": null,
+            "tmplId": null,
+            "overrideSkillBlackboard": null,
+            "overrideTalents": null
+          }
+        }
+      },
+      {
+        "source": {
+          "path": "zh_CN/gamedata/levels/obt/main/level_main_14-09.json",
+          "gitBlob": "c0cad1bf7900277a37e13fd271337d313347b2ba",
+          "bytes": 249178,
+          "sha256": "5190e981eb421cf7d1816f9844309a633a57cb18630997080678ef4e24ad928e"
+        },
+        "counts": {
+          "predefines": {
+            "characterInsts": 12,
+            "tokenInsts": 3,
+            "characterCards": 0,
+            "tokenCards": 0
+          },
+          "hardPredefines": {
+            "characterInsts": 0,
+            "tokenInsts": 0,
+            "characterCards": 0,
+            "tokenCards": 0
+          }
+        },
+        "options": {
+          "isTrainingLevel": true,
+          "isHardTrainingLevel": false,
+          "isPredefinedCardsSelectable": false
+        },
+        "excerpts": {
+          "/predefines/characterInsts/0": {
+            "position": {
+              "row": 5,
+              "col": 10
+            },
+            "direction": "UP",
+            "hidden": false,
+            "alias": "char_112_siege#1",
+            "uniEquipIds": null,
+            "showSpIllust": false,
+            "masterInfos": null,
+            "inst": {
+              "characterKey": "char_112_siege",
+              "level": 90,
+              "phase": "PHASE_2",
+              "favorPoint": 0,
+              "potentialRank": 0
+            },
+            "skillIndex": 1,
+            "mainSkillLvl": 10,
+            "skinId": "",
+            "tmplId": null,
+            "overrideSkillBlackboard": null,
+            "overrideTalents": null
+          },
+          "/predefines/characterInsts/6": {
+            "position": {
+              "row": 5,
+              "col": 8
+            },
+            "direction": "DOWN",
+            "hidden": true,
+            "alias": "char_112_siege#2",
+            "uniEquipIds": null,
+            "showSpIllust": false,
+            "masterInfos": null,
+            "inst": {
+              "characterKey": "char_112_siege",
+              "level": 90,
+              "phase": "PHASE_2",
+              "favorPoint": 0,
+              "potentialRank": 0
+            },
+            "skillIndex": 1,
+            "mainSkillLvl": 10,
+            "skinId": "",
+            "tmplId": null,
+            "overrideSkillBlackboard": null,
+            "overrideTalents": null
+          },
+          "/waves/0/fragments/8/actions/12": {
+            "actionType": "WITHDRAW_PREDEFINED",
+            "managedByScheduler": true,
+            "key": "char_112_siege#1",
+            "count": 1,
+            "preDelay": 51.0,
+            "interval": 1.0,
+            "routeIndex": 99,
+            "blockFragment": false,
+            "autoPreviewRoute": false,
+            "autoDisplayEnemyInfo": false,
+            "isUnharmfulAndAlwaysCountAsKilled": false,
+            "hiddenGroup": null,
+            "randomSpawnGroupKey": null,
+            "randomSpawnGroupPackKey": null,
+            "randomType": "ALWAYS",
+            "refreshType": "ALWAYS",
+            "weight": 0,
+            "dontBlockWave": false,
+            "forceBlockWaveInBranch": false
+          },
+          "/waves/0/fragments/8/actions/13": {
+            "actionType": "ACTIVATE_PREDEFINED",
+            "managedByScheduler": true,
+            "key": "char_112_siege#2",
+            "count": 1,
+            "preDelay": 52.0,
+            "interval": 1.0,
+            "routeIndex": 100,
+            "blockFragment": false,
+            "autoPreviewRoute": false,
+            "autoDisplayEnemyInfo": false,
+            "isUnharmfulAndAlwaysCountAsKilled": false,
+            "hiddenGroup": null,
+            "randomSpawnGroupKey": null,
+            "randomSpawnGroupPackKey": null,
+            "randomType": "ALWAYS",
+            "refreshType": "ALWAYS",
+            "weight": 0,
+            "dontBlockWave": false,
+            "forceBlockWaveInBranch": false
+          }
+        }
+      },
+      {
+        "source": {
+          "path": "zh_CN/gamedata/levels/obt/training/level_training_1.json",
+          "gitBlob": "eda918f6846a7475e6a30aa154ce4ea28b5edfed",
+          "bytes": 32762,
+          "sha256": "bfb75076befd83ea99f3ccb4a0e44763049a31ce40641f65ce6bdb0ea1ddf983"
+        },
+        "counts": {
+          "predefines": {
+            "characterInsts": 0,
+            "tokenInsts": 0,
+            "characterCards": 3,
+            "tokenCards": 0
+          },
+          "hardPredefines": null
+        },
+        "options": {
+          "isTrainingLevel": true,
+          "isHardTrainingLevel": false,
+          "isPredefinedCardsSelectable": false
+        },
+        "excerpts": {
+          "/predefines/characterCards/2": {
+            "hidden": true,
+            "alias": null,
+            "uniEquipIds": null,
+            "showSpIllust": false,
+            "masterInfos": null,
+            "inst": {
+              "characterKey": "char_120_hibisc",
+              "level": 1,
+              "phase": "PHASE_0",
+              "favorPoint": 0,
+              "potentialRank": 0
+            },
+            "skillIndex": -1,
+            "mainSkillLvl": 1,
+            "skinId": null,
+            "tmplId": null,
+            "overrideSkillBlackboard": null,
+            "overrideTalents": null
+          },
+          "/waves/2/fragments/0/actions/0": {
+            "actionType": "ACTIVATE_PREDEFINED",
+            "managedByScheduler": true,
+            "key": "char_120_hibisc",
+            "count": 1,
+            "preDelay": 1.0,
+            "interval": 1.0,
+            "routeIndex": 5,
+            "blockFragment": false,
+            "autoPreviewRoute": false,
+            "autoDisplayEnemyInfo": false,
+            "isUnharmfulAndAlwaysCountAsKilled": false,
+            "hiddenGroup": null,
+            "randomSpawnGroupKey": null,
+            "randomSpawnGroupPackKey": null,
+            "randomType": "ALWAYS",
+            "refreshType": "ALWAYS",
+            "weight": 0,
+            "dontBlockWave": false,
+            "forceBlockWaveInBranch": false
+          }
+        }
+      },
+      {
+        "source": {
+          "path": "zh_CN/gamedata/levels/activities/act11d0/level_act11d0_sub-1-1.json",
+          "gitBlob": "569bc19c2f3d0f594b03dcde4c71d7a22831664b",
+          "bytes": 91032,
+          "sha256": "78c0db39ce90527e128061cfbce501c8f0e41421b284fbb1f1931dc1e2eeae59"
+        },
+        "counts": {
+          "predefines": {
+            "characterInsts": 2,
+            "tokenInsts": 4,
+            "characterCards": 0,
+            "tokenCards": 0
+          },
+          "hardPredefines": {
+            "characterInsts": 0,
+            "tokenInsts": 0,
+            "characterCards": 10,
+            "tokenCards": 0
+          }
+        },
+        "options": {
+          "isTrainingLevel": false,
+          "isHardTrainingLevel": true,
+          "isPredefinedCardsSelectable": false
+        },
+        "excerpts": {
+          "/predefines/characterInsts/0": {
+            "position": {
+              "row": 3,
+              "col": 1
+            },
+            "direction": "UP",
+            "hidden": true,
+            "alias": "char_115_headbr",
+            "uniEquipIds": null,
+            "showSpIllust": false,
+            "masterInfos": null,
+            "inst": {
+              "characterKey": "char_115_headbr",
+              "level": 20,
+              "phase": "PHASE_2",
+              "favorPoint": 50,
+              "potentialRank": 0
+            },
+            "skillIndex": 0,
+            "mainSkillLvl": 7,
+            "skinId": null,
+            "tmplId": null,
+            "overrideSkillBlackboard": null,
+            "overrideTalents": null
+          },
+          "/predefines/characterInsts/1": {
+            "position": {
+              "row": 3,
+              "col": 8
+            },
+            "direction": "RIGHT",
+            "hidden": true,
+            "alias": "char_196_sunbr",
+            "uniEquipIds": null,
+            "showSpIllust": false,
+            "masterInfos": null,
+            "inst": {
+              "characterKey": "char_196_sunbr",
+              "level": 20,
+              "phase": "PHASE_2",
+              "favorPoint": 50,
+              "potentialRank": 0
+            },
+            "skillIndex": 0,
+            "mainSkillLvl": 7,
+            "skinId": null,
+            "tmplId": null,
+            "overrideSkillBlackboard": null,
+            "overrideTalents": null
+          },
+          "/hardPredefines/characterCards/0": {
+            "hidden": false,
+            "alias": null,
+            "uniEquipIds": null,
+            "showSpIllust": false,
+            "masterInfos": null,
+            "inst": {
+              "characterKey": "char_102_texas",
+              "level": 20,
+              "phase": "PHASE_2",
+              "favorPoint": 50,
+              "potentialRank": 0
+            },
+            "skillIndex": 1,
+            "mainSkillLvl": 7,
+            "skinId": null,
+            "tmplId": null,
+            "overrideSkillBlackboard": null,
+            "overrideTalents": null
+          }
+        }
+      },
+      {
+        "source": {
+          "path": "zh_CN/gamedata/levels/activities/act11d0/level_act11d0_sub-1-2.json",
+          "gitBlob": "e2147b8094a75af7ddf8aa4144a64efa4ac1759b",
+          "bytes": 113753,
+          "sha256": "241d3bc1c420242581b19b4f6e0682b833e9465f6be9c5d6400cf7cbc199593b"
+        },
+        "counts": {
+          "predefines": {
+            "characterInsts": 1,
+            "tokenInsts": 4,
+            "characterCards": 0,
+            "tokenCards": 0
+          },
+          "hardPredefines": {
+            "characterInsts": 0,
+            "tokenInsts": 0,
+            "characterCards": 12,
+            "tokenCards": 0
+          }
+        },
+        "options": {
+          "isTrainingLevel": false,
+          "isHardTrainingLevel": true,
+          "isPredefinedCardsSelectable": false
+        },
+        "excerpts": {
+          "/predefines/characterInsts/0": {
+            "position": {
+              "row": 5,
+              "col": 3
+            },
+            "direction": "RIGHT",
+            "hidden": true,
+            "alias": "char_291_aglina",
+            "uniEquipIds": null,
+            "showSpIllust": false,
+            "masterInfos": null,
+            "inst": {
+              "characterKey": "char_291_aglina",
+              "level": 30,
+              "phase": "PHASE_2",
+              "favorPoint": 50,
+              "potentialRank": 0
+            },
+            "skillIndex": 2,
+            "mainSkillLvl": 8,
+            "skinId": null,
+            "tmplId": null,
+            "overrideSkillBlackboard": null,
+            "overrideTalents": null
+          },
+          "/hardPredefines/characterCards/0": {
+            "hidden": false,
+            "alias": null,
+            "uniEquipIds": null,
+            "showSpIllust": false,
+            "masterInfos": null,
+            "inst": {
+              "characterKey": "char_151_myrtle",
+              "level": 60,
+              "phase": "PHASE_1",
+              "favorPoint": 50,
+              "potentialRank": 1
+            },
+            "skillIndex": 1,
+            "mainSkillLvl": 7,
+            "skinId": null,
+            "tmplId": null,
+            "overrideSkillBlackboard": null,
+            "overrideTalents": null
+          }
+        }
+      }
+    ],
+    "stageTable": {
+      "source": {
+        "path": "zh_CN/gamedata/excel/stage_table.json",
+        "gitBlob": "fd673297317667efdbfaefaf8aff5c786a38c352",
+        "bytes": 19794267,
+        "sha256": "59b5946f9a3491828fc021424340564a396574dabd15df8dabbd246705f04392"
+      },
+      "excerpts": {
+        "/stages/main_01-02": {
+          "stageId": "main_01-02",
+          "levelId": "Obt/Main/level_main_01-02",
+          "code": "1-2",
+          "name": "蔓延",
+          "difficulty": "NORMAL"
+        },
+        "/stages/main_01-11": {
+          "stageId": "main_01-11",
+          "levelId": "Obt/Main/level_main_01-11",
+          "code": "1-11",
+          "name": "遗忘",
+          "difficulty": "NORMAL"
+        },
+        "/stages/main_03-07": {
+          "stageId": "main_03-07",
+          "levelId": "Obt/Main/level_main_03-07",
+          "code": "3-7",
+          "name": "轰鸣",
+          "difficulty": "NORMAL"
+        },
+        "/stages/main_08-09": {
+          "stageId": "main_08-09",
+          "levelId": "Obt/Main/level_main_08-09",
+          "code": "M8-6",
+          "name": "再见，只为再见",
+          "difficulty": "NORMAL"
+        },
+        "/stages/main_14-09": {
+          "stageId": "main_14-09",
+          "levelId": "Obt/Main/level_main_14-09",
+          "code": "14-10",
+          "name": "自光辉中奔涌",
+          "difficulty": "NORMAL"
+        },
+        "/stages/tr_01": {
+          "stageId": "tr_01",
+          "levelId": "Obt/Training/level_training_1",
+          "code": "TR-1",
+          "name": "战地医疗 ",
+          "difficulty": "NORMAL"
+        },
+        "/stages/act11d0_s01": {
+          "stageId": "act11d0_s01",
+          "levelId": "Activities/ACT11D0/level_act11d0_sub-1-1",
+          "code": "TW-S-1",
+          "name": "三座巨像",
+          "difficulty": "NORMAL"
+        },
+        "/stages/act11d0_s01#f#": {
+          "stageId": "act11d0_s01#f#",
+          "levelId": "Activities/ACT11D0/level_act11d0_sub-1-1",
+          "code": "TW-S-1",
+          "name": "三座巨像",
+          "difficulty": "FOUR_STAR"
+        },
+        "/stages/act11d0_s02": {
+          "stageId": "act11d0_s02",
+          "levelId": "Activities/ACT11D0/level_act11d0_sub-1-2",
+          "code": "TW-S-2",
+          "name": "一束哀悼",
+          "difficulty": "NORMAL"
+        },
+        "/stages/act11d0_s02#f#": {
+          "stageId": "act11d0_s02#f#",
+          "levelId": "Activities/ACT11D0/level_act11d0_sub-1-2",
+          "code": "TW-S-2",
+          "name": "一束哀悼",
+          "difficulty": "FOUR_STAR"
+        }
+      }
+    }
+  }
+}

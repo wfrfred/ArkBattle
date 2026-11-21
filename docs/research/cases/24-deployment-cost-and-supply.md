@@ -405,6 +405,25 @@ CD 策略、份数消耗／归还和回收惩罚有不同原生维度；当前�
 
 **I**：普通预放置干员可以没有对应 Card，却仍有自己的 Character.cardUid，并参与 Buff 的 Character 独立来源分组。cardUid 在这里是角色数据身份，不是“已关联 Card 对象”的证明。此处不因此归纳全部预处理玩法、运行时创建、重复出现或预置退场回收政策。
 
+### 关卡预置的实例、手卡与别名
+
+2026-11-22 补核普通／困难配置的合成、隐藏别名以及撤回。采用固定镜像提交 `17759cc8cdf37388414145d16262a3a06f3ab25e` 和同前一批指纹的 Windows 客户端。原表 Pointer、完整方法选段和复跑命令见[预置入口证据](../evidence/predefined-lifecycle-20261122/README.md)。
+
+| 原表路径 | 数据形态及样例 |
+| --- | --- |
+| `/predefines/characterInsts/*`、`/predefines/tokenInsts/*` | 继承 `hidden` 和 `alias`，另有 `position`、`direction` 和角色配置。M8-6 的迷迭香在普通实例表登记位置，两类手卡数组均空。关卡开始加载会创建非隐藏实例。隐藏项留给别名操作。 [PRTS M8-6](https://prts.wiki/w/M8-6) |
+| `/predefines/characterCards/*` | 角色配置另带 `hidden`、`alias`。位置和朝向由实例配置声明。1-2 有八张可见干员卡和空实例数组。TR-1 则有两张可见卡、一张隐藏的芙蓉卡，干员实例数组为空。 [PRTS 1-2](https://prts.wiki/w/1-2) · [PRTS TR-1](https://prts.wiki/w/TR-1_%E6%88%98%E5%9C%B0%E5%8C%BB%E7%96%97) |
+| `/predefines/tokenCards/*` | 类型在普通预置卡字段上另有 `initialCnt`。3-7 同时包含一个预置探测装置实例和一条 `initialCnt=5` 的障碍物卡记录。该数量属于卡配置。 |
+| `/hardPredefines/characterCards/*` | TW-S-1、TW-S-2 的困难块分别有 10、12 张干员卡，普通块有隐藏干员实例、可见留声机及空的干员卡数组。两关各自的普通与遭遇阶段引用同一个关卡资源。PRTS 分别记述了遭遇固定编队及已部署干员。 [PRTS TW-S-1](https://prts.wiki/w/TW-S-1#遭遇) · [PRTS TW-S-2](https://prts.wiki/w/TW-S-2#遭遇) |
+
+**N**　普通 `GenPredefinedCardsToInject`（34447）读普通块的 `characterCards`。模式值 2 转到 `LoadComposeHardPredefine`（34313）。困难块存在且 `options.isHardTrainingLevel=true` 时，该方法构造组合块，将困难块的 `characterCards` 整个赋值给结果，按原引用保留普通的 `characterInsts`、`tokenCards`、`tokenInsts`。由困难数组本身决定空或 null。替换发生在数组层。其余分支直接返回普通块。普通注入入口在 `isPredefinedCardsSelectable=true` 时返回 null。UI 选择流程的卡牌入口尚未追踪。既有 `CheckStagePredefine`（34446）按模式检查 `isTrainingLevel` 或 `isHardTrainingLevel`，玩家原队伍的接纳由 Converter 连同额外输入开关另行判断。见[注入与配置合成正文](../evidence/predefined-lifecycle-20261122/README.md#客户端证据)。
+
+**N**　关卡预置别名使用 `GetAliasId`（32208），取配置 `alias`，为 null 或空串时取角色 ID。1-11 以 `char_211_adnach` 激活未填写 alias 的隐藏安德切尔实例。14-10 则以不同 alias 区分推王的两个预置位置，先撤回 `char_112_siege#1`，再激活 `char_112_siege#2`。固定镜像中的关卡的这组操作使用 `ACTIVATE_PREDEFINED`／`WITHDRAW_PREDEFINED`。有关含 `APPEAR`／`DISAPPEAR` 的路线检查点另见[路线操作](31-route-operations-and-state.md)。 [PRTS 作战机制](https://prts.wiki/w/%E4%BD%9C%E6%88%98%E6%9C%BA%E5%88%B6)
+
+**N**　`ACTIVATE_PREDEFINED` 将 Action 的 key 交给 `TryActivePredefined`（73336）。它完成 `ActivateInternalHiddenCard` 和 `SpawnPredefinedInstanceByAlias` 两次调用后统计成功次数。一条成功时返回 true，两条均成功时记录错误并直接返回 false。前一路遍历活跃 Deck 按别名找到已有的隐藏卡，调用 `Card.SetHidden(false, hiddenKey)`。`Deck.ActivateHiddenCard`（66759）此后可返回 true，卡处理后可见时才通知 `OnCardListChanged`。TR-1 的 key `char_120_hibisc` 对应这类隐藏卡配置。后一路按别名先查干员实例数组，再查 Token 实例数组，命中后直接调用预置创建。普通 `WITHDRAW_PREDEFINED` 只在实例数组中解析别名，由 `_WithdrawPredefinedCharacter`（65761）在配置位置检查当前角色、匹配角色 ID 并要求 `isBuiltPredefined` 后结束实例。`TRIGGER_PREDEFINED` 与 `SHOW_ALL_HIDDEN_CARDS` 是独立的调度入口。见[别名调用链](../evidence/predefined-lifecycle-20261122/README.md#客户端证据)及 [Scheduler 执行器](30-scheduler-action-data-fields.md#非-spawn-执行器)。
+
+**U**　证据范围为固定版本配置和原生静态分支。重复激活的占位冲突、隐藏原因的全量来源、预置实例结束时的 Card 回收／返费、TokenCard 的初始库存创建细节、其它模式与 XLua 替换均需各自取证。
+
 ## 未决项
 
 1. **费用上限与多来源计算。** `MAX_COST_CEIL` 的配置来源、与 `MAX_COST` 的动态同步，以及 `rawCostScale`、`costDelta` 的多来源写入、互斥、归并尚未取证。Getter 读取汇总值不能证明各来源如何组合；再部署属性修正、一次缩短与多阶段取整也没有完整统一公式。

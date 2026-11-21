@@ -1,0 +1,338 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-11-22"
+    ],
+    "collectionDateSource": "batch directory",
+    "organizedOn": "2026-11-22",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+        "records": [
+          "native/bodies/native.json#/provenance/client/dll"
+        ],
+        "bytes": 223112680
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        "records": [
+          "native/bodies/native.json#/provenance/client/metadata"
+        ],
+        "bytes": 46669332
+      }
+    },
+    "sourceRecords": [
+      "content/levels.json",
+      "native/bodies/native.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12895,
+        "sha256": "9c5b246859318caaec4aab5275ef0d2d49fce5d612c6b4e569973a9941ba621a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "content/extract.py",
+        "kind": "historical-script",
+        "bytes": 4143,
+        "sha256": "7cfdf854b371d934b33a3d9abe7f61241154082277d04d4d6beb2c151d5b3b98"
+      },
+      {
+        "path": "content/levels.json",
+        "kind": "record",
+        "bytes": 21408,
+        "sha256": "d7750bf7fd23b026c2e6d9d2ed4a67b46a8e1615f069892152f67163f89dc992"
+      },
+      {
+        "path": "native/bodies/ActivateHiddenCard-66758.asm",
+        "kind": "instructions",
+        "bytes": 1781,
+        "sha256": "1ce7c24f868ff6700f3e8d03c398d414765eb0aefc73b0edb5825537b5bbf164"
+      },
+      {
+        "path": "native/bodies/ActivateHiddenCard-66759.asm",
+        "kind": "instructions",
+        "bytes": 4523,
+        "sha256": "c0c9d2d5ac0f20e92736a0a43ecefe4927d56d52f36346de35b109992c8b944a"
+      },
+      {
+        "path": "native/bodies/ActivateInternalHiddenCard-65627.asm",
+        "kind": "instructions",
+        "bytes": 3517,
+        "sha256": "ed387038d68331700f247dd438fbc1fb95436e4a7da50abaf94a744d5af80adc"
+      },
+      {
+        "path": "native/bodies/GetAliasId-32208.asm",
+        "kind": "instructions",
+        "bytes": 642,
+        "sha256": "54a43d19f8c9a0e2b52f43902b02be75bf57954b86d80d07d187830ca795523c"
+      },
+      {
+        "path": "native/bodies/LoadComposeHardPredefine-34313.asm",
+        "kind": "instructions",
+        "bytes": 2936,
+        "sha256": "ad23b02ff76695b155fba6c0b68f6d54bdb35718b1545df5bd652f6df36b0b32"
+      },
+      {
+        "path": "native/bodies/LoadPredefinedData-65640.asm",
+        "kind": "instructions",
+        "bytes": 1642,
+        "sha256": "2542988fe928f8ac7a82648e94a242a0618ef5c7a5a3a711bffa0fa9b1fc0ef0"
+      },
+      {
+        "path": "native/bodies/MoveNext-73514.asm",
+        "kind": "instructions",
+        "bytes": 2167,
+        "sha256": "551ca66cc1031d237346ea854d58dddf856eadaae2597198456328258b6c3f45"
+      },
+      {
+        "path": "native/bodies/SpawnPredefinedInstanceByAlias-65656.asm",
+        "kind": "instructions",
+        "bytes": 6451,
+        "sha256": "f01345f02d3e0a75b28117542a75a4efa0e8f6e79a49f9a1b480cedb89e32cd6"
+      },
+      {
+        "path": "native/bodies/TryActivePredefined-73336.asm",
+        "kind": "instructions",
+        "bytes": 4384,
+        "sha256": "d5f17c25a514e26c7e5df315aff3782c13eeb33e9ce23bf9321febc7edb7fc5d"
+      },
+      {
+        "path": "native/bodies/WithdrawPredefinedInstByAlias-65660.asm",
+        "kind": "instructions",
+        "bytes": 5210,
+        "sha256": "fd693108a4a3cf3e6db1dc80f5e0aa6c70d30ebe7990ff8a5f6a000151c12bbf"
+      },
+      {
+        "path": "native/bodies/_ActivateInternalHiddenCard_b__0-65860.asm",
+        "kind": "instructions",
+        "bytes": 1664,
+        "sha256": "272177d8c8587e55b1b32e4760ec920b847814aa4444bfb5ebb54e79c9a38c7a"
+      },
+      {
+        "path": "native/bodies/_WithdrawPredefinedCharacter-65761.asm",
+        "kind": "instructions",
+        "bytes": 3009,
+        "sha256": "9eafc50ad6142fed9674aef104d242a7a5a27382b29d73604ba3f7d02a571b10"
+      },
+      {
+        "path": "native/bodies/native.json",
+        "kind": "record",
+        "bytes": 70557,
+        "sha256": "7e5b54976750aefde77cbc74fa74e4a0908888287212db22425f8b484c05d725"
+      },
+      {
+        "path": "native/extract.py",
+        "kind": "historical-script",
+        "bytes": 3418,
+        "sha256": "5270e9f27ac1045f5fa81c6511227c56f8354e9bf52f74c003a2e0f560752515"
+      },
+      {
+        "path": "native/extract.py.lock",
+        "kind": "artifact",
+        "bytes": 3739,
+        "sha256": "1ed9e3b399cf0743106d2124514970f3a3b5db6d9f1192fba528019ccbefdf04"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 32208,
+          "mode": "disasm",
+          "records": [
+            "native/bodies/GetAliasId-32208.asm",
+            "native/bodies/native.json#/result/methods/7/method"
+          ],
+          "fullname": "Torappu.LevelData/PredefinedData/PredefinedInst.GetAliasId",
+          "address": "0x182470b30"
+        },
+        {
+          "index": 34313,
+          "mode": "disasm",
+          "records": [
+            "native/bodies/LoadComposeHardPredefine-34313.asm",
+            "native/bodies/native.json#/result/methods/0/method"
+          ],
+          "fullname": "Torappu.DataConvertUtil.LoadComposeHardPredefine",
+          "address": "0x182791ac0"
+        },
+        {
+          "index": 65627,
+          "mode": "disasm",
+          "records": [
+            "native/bodies/ActivateInternalHiddenCard-65627.asm",
+            "native/bodies/native.json#/result/methods/8/method"
+          ],
+          "fullname": "Torappu.Battle.BattleController.ActivateInternalHiddenCard",
+          "address": "0x180648a20"
+        },
+        {
+          "index": 65640,
+          "mode": "disasm",
+          "records": [
+            "native/bodies/LoadPredefinedData-65640.asm",
+            "native/bodies/native.json#/result/methods/1/method"
+          ],
+          "fullname": "Torappu.Battle.BattleController.LoadPredefinedData",
+          "address": "0x180656f70"
+        },
+        {
+          "index": 65656,
+          "mode": "disasm",
+          "records": [
+            "native/bodies/SpawnPredefinedInstanceByAlias-65656.asm",
+            "native/bodies/native.json#/result/methods/2/method"
+          ],
+          "fullname": "Torappu.Battle.BattleController.SpawnPredefinedInstanceByAlias",
+          "address": "0x180660b90"
+        },
+        {
+          "index": 65660,
+          "mode": "disasm",
+          "records": [
+            "native/bodies/WithdrawPredefinedInstByAlias-65660.asm",
+            "native/bodies/native.json#/result/methods/3/method"
+          ],
+          "fullname": "Torappu.Battle.BattleController.WithdrawPredefinedInstByAlias",
+          "address": "0x180663ac0"
+        },
+        {
+          "index": 65761,
+          "mode": "disasm",
+          "records": [
+            "native/bodies/_WithdrawPredefinedCharacter-65761.asm",
+            "native/bodies/native.json#/result/methods/4/method"
+          ],
+          "fullname": "Torappu.Battle.BattleController._WithdrawPredefinedCharacter",
+          "address": "0x18066d9a0"
+        },
+        {
+          "index": 65860,
+          "mode": "disasm",
+          "records": [
+            "native/bodies/_ActivateInternalHiddenCard_b__0-65860.asm",
+            "native/bodies/native.json#/result/methods/9/method"
+          ],
+          "fullname": "Torappu.Battle.BattleController/<>c__DisplayClass444_0.<ActivateInternalHiddenCard>b__0",
+          "address": "0x18068fbd0"
+        },
+        {
+          "index": 66758,
+          "mode": "disasm",
+          "records": [
+            "native/bodies/ActivateHiddenCard-66758.asm",
+            "native/bodies/native.json#/result/methods/10/method"
+          ],
+          "fullname": "Torappu.Battle.Deck.ActivateHiddenCard",
+          "address": "0x1806f86c0"
+        },
+        {
+          "index": 66759,
+          "mode": "disasm",
+          "records": [
+            "native/bodies/ActivateHiddenCard-66759.asm",
+            "native/bodies/native.json#/result/methods/11/method"
+          ],
+          "fullname": "Torappu.Battle.Deck.ActivateHiddenCard",
+          "address": "0x1806f84d0"
+        },
+        {
+          "index": 73336,
+          "mode": "disasm",
+          "records": [
+            "native/bodies/TryActivePredefined-73336.asm",
+            "native/bodies/native.json#/result/methods/6/method"
+          ],
+          "fullname": "Torappu.Battle.Scheduler.TryActivePredefined",
+          "address": "0x1809834c0"
+        },
+        {
+          "index": 73514,
+          "mode": "disasm",
+          "records": [
+            "native/bodies/MoveNext-73514.asm",
+            "native/bodies/native.json#/result/methods/5/method"
+          ],
+          "fullname": "Torappu.Battle.Scheduler/<_DoActivatePredefined>d__154.MoveNext",
+          "address": "0x18098cbc0"
+        }
+      ],
+      "blocks": [],
+      "types": [
+        {
+          "name": "Torappu.AdvancedCharacterInst",
+          "records": [
+            "native/bodies/native.json#/result/types/1"
+          ]
+        },
+        {
+          "name": "Torappu.CharacterInst",
+          "records": [
+            "native/bodies/native.json#/result/types/0"
+          ]
+        },
+        {
+          "name": "Torappu.LevelData",
+          "records": [
+            "native/bodies/native.json#/result/types/8"
+          ]
+        },
+        {
+          "name": "Torappu.LevelData/Options",
+          "records": [
+            "native/bodies/native.json#/result/types/2"
+          ]
+        },
+        {
+          "name": "Torappu.LevelData/PredefinedData",
+          "records": [
+            "native/bodies/native.json#/result/types/7"
+          ]
+        },
+        {
+          "name": "Torappu.LevelData/PredefinedData/PredefinedCard",
+          "records": [
+            "native/bodies/native.json#/result/types/5"
+          ]
+        },
+        {
+          "name": "Torappu.LevelData/PredefinedData/PredefinedCharacter",
+          "records": [
+            "native/bodies/native.json#/result/types/4"
+          ]
+        },
+        {
+          "name": "Torappu.LevelData/PredefinedData/PredefinedInst",
+          "records": [
+            "native/bodies/native.json#/result/types/3"
+          ]
+        },
+        {
+          "name": "Torappu.LevelData/PredefinedData/PredefinedTokenCard",
+          "records": [
+            "native/bodies/native.json#/result/types/6"
+          ]
+        }
+      ],
+      "constants": [],
+      "bundles": []
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}
