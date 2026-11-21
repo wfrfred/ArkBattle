@@ -11,13 +11,15 @@ import {
 } from "../../core/battle/predefined.js";
 import { createTerrainMechanism } from "../../content/terrain/mechanism.js";
 import { mire, deepsea } from "../../content/terrain/definition.js";
-import { create as createCrate } from "../../content/devices/crate.js";
-import { create as createShootingPlatform } from "../../content/devices/shooting-platform.js";
 import {
-    deploymentSiteRestriction,
-    type Definition as TileDeviceDefinition,
-    type Configuration,
-} from "../../content/devices/tile.js";
+    create as createCrate,
+    type Parameters as CrateParameters,
+} from "../../content/devices/crate.js";
+import {
+    create as createShootingPlatform,
+    type Parameters as ShootingPlatformParameters,
+} from "../../content/devices/shooting-platform.js";
+import { deploymentSiteRestriction } from "../../content/devices/tile.js";
 import { Tile } from "../../core/geometry/coordinate.js";
 import type { ArknightsPredefinedInstance } from "./definition.js";
 import type { PredefinedPrefab } from "./prefab.js";
@@ -92,7 +94,7 @@ function unitDefinition(
     phase: Record<string, unknown>,
     profile: Extract<PredefinedPrefab, { readonly type: "UNIT" }>,
     groupTags: readonly string[],
-): TileDeviceDefinition {
+) {
     if (instance.inst.potentialRank !== 0 || instance.inst.favorPoint !== 0) {
         throw new TypeError("predefined unit potential and favor modifiers are not supported");
     }
@@ -149,7 +151,7 @@ function unitDefinition(
         throw new RangeError("predefined unit level is outside attribute keyframes");
     }
 
-    const configuration: Configuration = {
+    const parameters = {
         id: instance.inst.characterKey,
         classification: {
             type: "DEVICE",
@@ -190,14 +192,14 @@ function unitDefinition(
             initialize: (battle) => ({ state: battle, value: {} }),
         },
         tileChanges: profile.tileChanges,
-    };
+    } satisfies CrateParameters & ShootingPlatformParameters;
 
     switch (profile.prefabKey) {
         case "trap_1105_accrate":
-            return createCrate(configuration);
+            return createCrate(parameters);
 
         case "trap_1106_achplat":
-            return createShootingPlatform(configuration);
+            return createShootingPlatform(parameters);
 
         default:
             throw new TypeError(`unsupported predefined unit content ${profile.prefabKey}`);

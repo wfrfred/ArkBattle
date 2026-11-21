@@ -1,11 +1,35 @@
 import { Hooks } from "../../core/hook.js";
 import * as unitHooks from "../../core/unit/hook.js";
-import { hasOccupancy } from "../../core/unit/capability/occupancy/index.js";
-import { apply, restore, type Configuration, type Definition } from "./tile.js";
+import type { Definition as CardDefinition } from "../../core/battle/deployment/card/index.js";
+import type { State as TileState } from "../../core/battlefield/map/tile.js";
+import type { Deployable } from "../../core/unit/capability/deployable/index.js";
+import { hasOccupancy, type Occupancy } from "../../core/unit/capability/occupancy/index.js";
+import type { Targetable } from "../../core/unit/capability/targetable/capability.js";
+import type { Vitality } from "../../core/unit/capability/vitality/index.js";
+import type { Device } from "./device.js";
+import { apply, restore } from "./tile.js";
 
-export function create(configuration: Configuration): Definition {
-    const { id, classification, taunt, vitality, deployable, card } = configuration;
-    const tileChanges = { ...configuration.tileChanges, walkCost: 1000 };
+export type Crate = Device &
+    Vitality &
+    Targetable &
+    Occupancy &
+    Deployable & {
+        readonly definition: { readonly card: CardDefinition };
+    };
+
+export type Definition = Crate["definition"];
+
+export interface Parameters extends Pick<
+    Definition,
+    "id" | "classification" | "vitality" | "deployable" | "card"
+> {
+    readonly taunt: number;
+    readonly tileChanges: Partial<TileState>;
+}
+
+export function create(parameters: Parameters): Definition {
+    const { id, classification, taunt, vitality, deployable, card } = parameters;
+    const tileChanges = { ...parameters.tileChanges, walkCost: 1000 };
 
     return {
         id,

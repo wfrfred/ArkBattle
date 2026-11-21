@@ -7,32 +7,8 @@ import type {
     SiteCondition,
 } from "../../core/battlefield/map/tile.js";
 import type { TilePosition } from "../../core/geometry/coordinate.js";
-import type { Deployable } from "../../core/unit/capability/deployable/index.js";
-import type { Occupancy } from "../../core/unit/capability/occupancy/index.js";
-import type { Targetable } from "../../core/unit/capability/targetable/capability.js";
-import type { Vitality } from "../../core/unit/capability/vitality/index.js";
-import type { Definition as CardDefinition } from "../../core/battle/deployment/card/index.js";
 import type { Restriction as DeploymentRestriction } from "../../core/battle/deployment/index.js";
 import { hole } from "../terrain/definition.js";
-import type { Device } from "./device.js";
-
-export type TileDevice = Device &
-    Vitality &
-    Targetable &
-    Occupancy &
-    Deployable & {
-        readonly definition: { readonly card: CardDefinition };
-    };
-
-export type Definition = TileDevice["definition"];
-
-export interface Configuration extends Pick<
-    Definition,
-    "id" | "classification" | "vitality" | "deployable" | "card"
-> {
-    readonly taunt: number;
-    readonly tileChanges: Partial<TileState>;
-}
 
 export function deploymentSiteRestriction(
     placement: Exclude<Placement, "NONE">,

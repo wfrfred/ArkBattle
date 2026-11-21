@@ -36,7 +36,7 @@ Content 共享的是可选工厂。`content/actions/attack.ts` 提供常见攻�
 
 攻击 Operation 明确提供攻击类别与施加途径，HP 伤害另提供性质、HIT 许可和死亡归属，不由范围、距离、来源或技能状态猜测。共同输出协议见 [Resource](resource.md)。
 
-猎狗和弩手各自声明所需的 `Parameters`，由 `create(parameters)` 直接组装 Unit Definition。关卡接入处读取敌人属性和 Prefab，将结果与该敌人的攻击时序等参数一起交给工厂。地面模板校验 `WALK`，并使用 Prefab 提供的路点策略。弩手近远程独立冷却与主行动互斥属于其内容政策，场景负责选择内容和波次。[敌人数据接入](data.md#敌人静态资料)
+猎狗和弩手各自声明所需的 `Parameters`，由 `create(parameters)` 直接组装 Unit Definition。关卡接入处读取敌人属性和 Prefab，将结果与该敌人的攻击时序等参数一起交给工厂。两者各自校验 `WALK`、使用 Prefab 提供的路点策略，并明确登记共用的攻击停步与登场面向 Hook。弩手近远程独立冷却与主行动互斥属于其内容政策，场景负责选择内容和波次。[敌人数据接入](data.md#敌人静态资料) · [共用敌人 Hook](../../src/content/enemies/hook.ts)
 
 Content 按 [Attribute](attribute.md) 契约绑定所属能力的属性；攻速与连续基础攻击间隔归 Action Capability，每个 Action 显式选择 ATTACK_SPEED 或 FIXED 周期。普通攻击接收 Data 转换的静态时序，共享程序处理缩放、开始预算和分段等待。玫兰莎的首次／续轮起手由其持久 Action 状态组织，不由 Core 保存动画状态，详细时序见 [Action](action.md#8-普通攻击释放-hook-与移动)。
 
@@ -95,7 +95,7 @@ type Device = Unit & Classification<"DEVICE">;
 
 普通干员和敌人都具备 `Elemental` 和用于空间命中的 `Hitbox`。具体 Definition 绑定角色或敌人的元素接收规则，并配置命中体形状。元素免疫由接收限制表达。[元素接收](elemental.md#1-能力与定义) · [空间查询](spatial.md)
 
-猎狗和弩手使用 `GroundEnemy`，在 `Enemy` 上组合被阻挡、受力移动、路线和 Presence。战术装备整理箱和战术射击台使用 `TileDevice`，在 `Device` 上组合生命、受选、占格与部署，并提供 Card 配置。两类模板均从对应单位组合的 `definition` 推导配置类型。[地面敌人模板](../../src/content/enemies/ground.ts) · [地块装置模板](../../src/content/devices/tile.ts)
+猎狗和弩手各自在 `Enemy` 上组合被阻挡、受力移动、路线和 Presence。战术装备整理箱和战术射击台各自在 `Device` 上组合生命、受选、占格与部署，并提供 Card 配置。两种装置按各自的出入场流程调用共用的地块修改和恢复函数。具体单位均从自身的 `definition` 推导配置类型。[猎狗](../../src/content/enemies/hound/unit.ts) · [战术装备整理箱](../../src/content/devices/crate.ts) · [地块操作](../../src/content/devices/tile.ts)
 
 ### 具体单位的写法
 

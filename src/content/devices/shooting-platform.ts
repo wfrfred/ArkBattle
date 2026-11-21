@@ -1,17 +1,41 @@
 import { Hooks } from "../../core/hook.js";
 import * as unitHooks from "../../core/unit/hook.js";
 import type { State as BattleState } from "../../core/battle/index.js";
+import type { Definition as CardDefinition } from "../../core/battle/deployment/card/index.js";
+import type { State as TileState } from "../../core/battlefield/map/tile.js";
 import { remove as removeUnit, update, ref as unitRef } from "../../core/unit/index.js";
 import { at as occupancyAt } from "../../core/battlefield/occupancy.js";
 import type { TilePosition } from "../../core/geometry/coordinate.js";
-import { hasOccupancy } from "../../core/unit/capability/occupancy/index.js";
+import type { Deployable } from "../../core/unit/capability/deployable/index.js";
+import { hasOccupancy, type Occupancy } from "../../core/unit/capability/occupancy/index.js";
+import type { Targetable } from "../../core/unit/capability/targetable/capability.js";
+import type { Vitality } from "../../core/unit/capability/vitality/index.js";
 import {
     hasBlocker,
     removeBlockerRestriction as removeRestriction,
     setBlockerRestriction as setRestriction,
     type Restriction,
 } from "../../core/unit/capability/blocking/index.js";
-import { apply, restore, type Configuration, type Definition } from "./tile.js";
+import type { Device } from "./device.js";
+import { apply, restore } from "./tile.js";
+
+export type ShootingPlatform = Device &
+    Vitality &
+    Targetable &
+    Occupancy &
+    Deployable & {
+        readonly definition: { readonly card: CardDefinition };
+    };
+
+export type Definition = ShootingPlatform["definition"];
+
+export interface Parameters extends Pick<
+    Definition,
+    "id" | "classification" | "vitality" | "deployable" | "card"
+> {
+    readonly taunt: number;
+    readonly tileChanges: Partial<TileState>;
+}
 
 const groundBlockingRestriction: Restriction = {
     allows: (_battle, { blocker }) => blocker.blocker.layer === "AIR",
@@ -25,10 +49,10 @@ function clearOccupant(battle: BattleState, position: TilePosition): BattleState
         : removeUnit(battle, occupant, { reason: "DEATH", killer: null });
 }
 
-export function create(configuration: Configuration): Definition {
-    const { id, classification, taunt, vitality, deployable, card } = configuration;
+export function create(parameters: Parameters): Definition {
+    const { id, classification, taunt, vitality, deployable, card } = parameters;
     const tileChanges = {
-        ...configuration.tileChanges,
+        ...parameters.tileChanges,
         walkCost: 1000,
     };
 
