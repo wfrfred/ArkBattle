@@ -7,6 +7,7 @@ import { create } from "../../../dist/content/operators/mudrock/unit.js";
 import { readShield } from "../../../dist/content/operators/mudrock/effect.js";
 import { initialize, getUnit } from "../../helpers/unit.js";
 import { fixtureBattlefieldState } from "../../helpers/battlefield.js";
+import { tables } from "../../helpers/operator.js";
 import { damage, parameters } from "../../helpers/vitality.js";
 import { createBattleState } from "../../../dist/core/battle/state.js";
 import { add, update } from "../../../dist/core/unit/operations.js";
@@ -39,7 +40,7 @@ const enemy = (id, position, fields = {}) => initialize({ id, position, definiti
     ...fields,
 } });
 function setup(configuration = {}, targets = []) {
-    const unit = initialize({ id: 0, position: [0, 0], definition: create({ ...base, ...configuration }),
+    const unit = initialize({ id: 0, position: [0, 0], definition: create({ ...base, ...configuration }, tables),
         initial: { occupancy: { tile: [0, 0], direction: "RIGHT" }, facing: { direction: "RIGHT" } } });
     let battle = add(createBattleState(fixtureBattlefieldState([])), unit);
     for (const target of targets) battle = add(battle, target);
@@ -268,5 +269,5 @@ test("S2 interrupts an ordinary attack before its authored release and prevents 
 });
 
 test("Mudrock rejects the unimplemented module Y instead of applying module X behavior", () => {
-    assert.throws(() => create({ ...base, module: { id: "uniequip_003_mudrok", level: 3 } }), /only module X/);
+    assert.throws(() => create({ ...base, module: { id: "uniequip_003_mudrok", level: 3 } }, tables), /only module X/);
 });

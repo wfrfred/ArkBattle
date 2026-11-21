@@ -6,13 +6,16 @@ import {
 import type {
     Attributes,
     Candidate,
+    FavorFrame,
     Frame,
     Module,
     ModulePart,
     ModuleStage,
     Parameters,
     Phase,
+    Selection,
     Skill,
+    Tables as OperatorTables,
     Talent,
     Unlock,
 } from "../../content/operators/parameters.js";
@@ -28,9 +31,9 @@ interface Tables {
     readonly battleEquipment: unknown;
 }
 
-interface Selection {
-    readonly skillIndices: readonly number[];
-    readonly moduleIds: readonly string[];
+export interface RawTables extends Tables {
+    readonly characters: unknown;
+    readonly favor: unknown;
 }
 
 const potentialAttributes: Readonly<Record<string, keyof Attributes>> = {
@@ -168,7 +171,7 @@ function readPhase(value: unknown, ranges: unknown): Phase {
     };
 }
 
-export function extractFavor(value: unknown) {
+export function extractFavor(value: unknown): readonly FavorFrame[] {
     const favor = record(value, "favor table");
 
     return array(favor.favorFrames, "favor frames").map((value) => {
@@ -402,5 +405,14 @@ export function extract(
         modules: selection.moduleIds.map((moduleId) =>
             readModule(id, moduleId, tables, talents.length),
         ),
+    };
+}
+
+export function fromTables(tables: RawTables): OperatorTables {
+    const characters = record(tables.characters, "character table");
+
+    return {
+        favor: extractFavor(tables.favor),
+        operator: (id, selection) => extract({ id, record: characters[id] }, tables, selection),
     };
 }

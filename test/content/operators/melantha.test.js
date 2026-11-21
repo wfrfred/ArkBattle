@@ -4,6 +4,7 @@ import { Hooks } from "../../../dist/core/hook.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { create } from "../../../dist/content/operators/melantha/unit.js";
+import { tables } from "../../helpers/operator.js";
 import { initialize, getUnit } from "../../helpers/unit.js";
 import { createBattleState } from "../../../dist/core/battle/state.js";
 import { add } from "../../../dist/core/unit/operations.js";
@@ -29,7 +30,7 @@ const receiver = (restrictions = []) => initialize({
     },
 });
 const source = () => initialize({
-    id: 0, position: [0, 0], definition: create(configuration),
+    id: 0, position: [0, 0], definition: create(configuration, tables),
     initial: { occupancy: { tile: [0, 0], direction: "RIGHT" }, facing: { direction: "RIGHT" } },
 });
 

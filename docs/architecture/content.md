@@ -24,8 +24,7 @@ Content 不自行推进模拟，不在共享模块或闭包中保存本场事实
 | `action.ts` | 定义普攻和特殊行动的目标、时序与输出程序。技能期间带独立执行和冷却的行动也写在这里。 |
 | `skill.ts` | 定义 Skill、Activation 程序及该技能专属的 SP 规则。 |
 | `effect.ts` | 定义该单位专属的 Effect。 |
-| `parameters.ts` | 根据养成配置和该干员的 `parameters.json` 解析各工厂所需的具名参数。 |
-| `parameters.json` | 保存该干员已支持的配置所需的静态表。 |
+| `parameters.ts` | 从传入的原表读取所选干员和配置，解析各工厂所需的具名参数。 |
 | `projectile.ts` | 定义该单位专属的弹道及其命中程序。 |
 | `summons/` | 组织专属召唤物自身的 Unit、Action、Skill 等程序。 |
 
@@ -100,7 +99,7 @@ type Device = Unit & Classification<"DEVICE">;
 
 ### 具体单位的写法
 
-干员构造函数接收 `operators/configuration.ts` 中的 `Configuration`。有技能的干员同时要求 `SkillSelection`。该干员的 `resolve(configuration, table)` 校验选择并返回属性、普攻及已选技能和效果的具名参数。Action、Skill 和 Effect 的工厂声明自己需要的参数，由 `unit.ts` 调用并组装。插值、信赖和候选选择由 `operators/parameters.ts` 共享。[干员静态资料](data.md#干员静态资料)
+干员通过 `create(configuration, tables)` 构造。配置使用 `operators/configuration.ts` 中的 `Configuration`，有技能的干员同时要求 `SkillSelection`。该干员的 `resolve(configuration, tables)` 按需读取绑定的角色表项，校验选择并返回属性、普攻及已选技能和效果的具名参数。Action、Skill 和 Effect 的工厂声明自己需要的参数，由 `unit.ts` 调用并组装。插值、信赖和候选选择由 `operators/parameters.ts` 共享。[干员静态资料](data.md#干员静态资料)
 
 在 `content/operators/melantha/unit.ts` 中声明具体单位的能力组合，从该单位的 `definition` 推导完整配置类型，并用 `satisfies` 检查实际提供的配置。
 

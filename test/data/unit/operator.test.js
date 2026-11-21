@@ -13,6 +13,7 @@ import {
 } from "../../../dist/content/operators/parameters.js";
 
 const fixture = JSON.parse(readFileSync(new URL("../../fixtures/arknights/main-mode-units.json", import.meta.url), "utf8"));
+const favor = extractFavor(fixture.favor);
 const mudrock = "char_311_mudrok";
 const melantha = "char_208_melan";
 const moduleX = "uniequip_002_mudrok";
@@ -41,10 +42,10 @@ const melanthaParameters = parameters(melantha);
 
 function select(input = mudrockParameters, configuration = base) {
     const phase = selectPhase(input.phases, configuration);
-    const stage = selectModule(input.modules, configuration);
+    const stage = selectModule(input.modules, configuration, favor);
 
     return {
-        attributes: resolveAttributes(input, phase, configuration, stage),
+        attributes: resolveAttributes(input, phase, configuration, stage, favor),
         range: phase.range,
         skill: selectSkill(input.skills, configuration),
         talents: selectTalents(input.talents, configuration, stage),
@@ -149,7 +150,7 @@ test("module stages use their total attributes, trust gates and potential-aware 
     assert.equal(talent(select(mudrockParameters, { ...configured(3), potential: 1 }), "1").hp_ratio, 0.23);
     assert.throws(() => select(mudrockParameters, { ...configured(1), level: 59 }), /module requires/);
     assert.throws(() => select(mudrockParameters, { ...configured(2), trust: 49 }), /more trust/);
-    assert.equal(selectModule(mudrockParameters.modules, { ...configured(2), trust: 50 }).level, 2);
+    assert.equal(selectModule(mudrockParameters.modules, { ...configured(2), trust: 50 }, favor).level, 2);
     assert.throws(() => select(mudrockParameters, { ...configured(3), trust: 99 }), /more trust/);
     assert.throws(() => parameters(melantha, { moduleIds: [moduleX] }), /does not match/);
     const y = select(mudrockParameters, { ...base, trust: 100, module: { id: moduleY, level: 3 } });

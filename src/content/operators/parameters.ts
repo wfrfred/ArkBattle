@@ -6,7 +6,6 @@ import { roundToEven } from "../../core/common/math.js";
 import type { TilePosition } from "../../core/geometry/coordinate.js";
 import type { SpDefinition, Trigger } from "../../core/unit/capability/skill/index.js";
 import type { Configuration, SkillSelection } from "./configuration.js";
-import favor from "./favor.json" with { type: "json" };
 
 export interface Attributes {
     maxHp: number;
@@ -109,6 +108,22 @@ export interface Parameters {
     readonly modules: readonly Module[];
 }
 
+export interface FavorFrame {
+    readonly percent: number;
+    readonly battlePhase: number;
+    readonly favorPoint: number;
+}
+
+export interface Selection {
+    readonly skillIndices: readonly number[];
+    readonly moduleIds: readonly string[];
+}
+
+export interface Tables {
+    readonly favor: readonly FavorFrame[];
+    readonly operator: (id: string, selection: Selection) => Parameters;
+}
+
 const integerAttributes: ReadonlySet<keyof Attributes> = new Set([
     "maxHp",
     "attack",
@@ -126,7 +141,7 @@ function unlocked(condition: Unlock, configuration: Configuration): boolean {
     );
 }
 
-function favorFrame(trust: number) {
+function favorFrame(favor: readonly FavorFrame[], trust: number): FavorFrame {
     const frame = favor.find((frame) => frame.percent === trust);
     if (frame === undefined) {
         throw new RangeError(`unknown trust percentage ${trust}`);
@@ -189,9 +204,10 @@ export function resolveAttributes(
     phase: Phase,
     configuration: Configuration,
     module: Pick<ModuleStage, "attributes"> | undefined,
+    favor: readonly FavorFrame[],
 ): Attributes {
     const attributes = interpolate(phase.frames, configuration.level);
-    const { battlePhase } = favorFrame(configuration.trust);
+    const { battlePhase } = favorFrame(favor, configuration.trust);
     const trust = parameters.favorKeyFrames;
     if (trust !== null) {
         addAttributes(attributes, interpolate(trust, Math.min(battlePhase, trust.at(-1)!.level)));
@@ -212,12 +228,10 @@ export function resolveAttributes(
     return attributes;
 }
 
-export function selectSkill<L>(
-    skills: readonly (Pick<Skill, "index" | "id" | "unlock" | "upgrades"> & {
-        readonly levels: readonly L[];
-    })[],
+export function selectSkill(
+    skills: readonly Skill[],
     configuration: Configuration & SkillSelection,
-): { readonly id: string; readonly level: L } {
+): { readonly id: string; readonly level: SkillLevel } {
     assertNonnegativeSafeInteger(configuration.skillIndex, "operator skill index");
     assertPositiveSafeInteger(configuration.skillLevel, "operator skill level");
     const skill = skills.find(({ index }) => index === configuration.skillIndex);
@@ -240,10 +254,11 @@ export function selectSkill<L>(
     return { id: skill.id, level };
 }
 
-export function selectModule<S extends Pick<ModuleStage, "level" | "minFavor">>(
-    modules: readonly (Pick<Module, "id" | "unlock"> & { readonly stages: readonly S[] })[],
+export function selectModule(
+    modules: readonly Module[],
     configuration: Configuration,
-): S | undefined {
+    favor: readonly FavorFrame[],
+): ModuleStage | undefined {
     const selection = configuration.module;
     if (selection === undefined) {
         return undefined;
@@ -267,14 +282,14 @@ export function selectModule<S extends Pick<ModuleStage, "level" | "minFavor">>(
     if (stage === undefined) {
         throw new RangeError("unknown module level");
     }
-    if (favorFrame(configuration.trust).favorPoint < stage.minFavor) {
+    if (favorFrame(favor, configuration.trust).favorPoint < stage.minFavor) {
         throw new RangeError("module level requires more trust");
     }
 
     return stage;
 }
 
-export function selectCandidate<T>(
+function selectCandidate<T>(
     candidates: readonly Candidate<T>[],
     configuration: Configuration,
 ): T | undefined {

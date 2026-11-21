@@ -15,10 +15,11 @@ import { hasVitality } from "../../../core/unit/capability/vitality/index.js";
 import { install } from "../../../core/unit/effect/index.js";
 import type { Operator } from "../operator.js";
 import type { Configuration, SkillSelection } from "../configuration.js";
+import type { Tables } from "../parameters.js";
 import { createNormal, createSkill as createSkillAction } from "./action.js";
 import { shieldEffect } from "./effect.js";
 import { create as createSkill } from "./skill.js";
-import { resolve, table } from "./parameters.js";
+import { resolve } from "./parameters.js";
 
 export type Mudrock = Operator &
     ActionCapability<Mudrock> &
@@ -30,8 +31,8 @@ export type Mudrock = Operator &
 
 export type Definition = Mudrock["definition"];
 
-export function create(configuration: Configuration & SkillSelection) {
-    const parameters = resolve(configuration, table);
+export function create(configuration: Configuration & SkillSelection, tables: Tables) {
+    const parameters = resolve(configuration, tables);
     const { attributes } = parameters;
     const shield = shieldEffect(parameters.shield);
     const normalAttack = createNormal(parameters.normalAttack);

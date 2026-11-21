@@ -1,0 +1,3 @@
+[submodule "arknights-game-data"]
+	path = assets/arknights-game-data
+	url = https://github.com/Kengxxiao/ArknightsGameData.git

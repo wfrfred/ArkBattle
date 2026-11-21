@@ -23,7 +23,8 @@ import { createAttackBonus } from "./effect.js";
 import { create as createSkill } from "./skill.js";
 import type { Operator } from "../operator.js";
 import type { Configuration, SkillSelection } from "../configuration.js";
-import { resolve, table } from "./parameters.js";
+import type { Tables } from "../parameters.js";
+import { resolve } from "./parameters.js";
 import { allows } from "../../../core/restriction.js";
 import { secondsToTicks, TICKS_PER_SECOND } from "../../../core/tick.js";
 
@@ -37,7 +38,7 @@ export type Melantha = Operator &
 
 export type Definition = Melantha["definition"];
 
-export function create(configuration: Configuration & SkillSelection) {
+export function create(configuration: Configuration & SkillSelection, tables: Tables) {
     const {
         id,
         groupTags,
@@ -45,7 +46,7 @@ export function create(configuration: Configuration & SkillSelection) {
         attack: attackParameters,
         s1,
         talentBonus,
-    } = resolve(configuration, table);
+    } = resolve(configuration, tables);
     const skill = createSkill(s1);
     const talent =
         talentBonus === undefined
