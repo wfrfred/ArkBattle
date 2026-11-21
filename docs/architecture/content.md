@@ -59,7 +59,7 @@ Content 按 [Attribute](attribute.md) 契约绑定所属能力的属性；攻速
 
 ## Unit 与 Capability 的类型约束
 
-基础类型及类别内共享的装配函数放在所属类别目录。普通可部署干员以以下 `Operator` 组合为基础。`Enemy` 和 `Device` 的共同基础表达身份。地面敌人的被阻挡、路线与移动能力由地面敌人模板组合，地块装置的占格、部署与生命由地块装置模板组合。[地面敌人模板](../../src/content/enemies/ground.ts) · [地块装置模板](../../src/content/devices/tile.ts)
+基础类型及类别内共享的装配函数放在所属类别目录。`Operator` 用于普通可部署干员，`Enemy` 用于常规战斗敌人。`Device` 表达装置身份，地块装置另行组合自身能力。[干员基型](../../src/content/operators/operator.ts) · [敌人基型](../../src/content/enemies/enemy.ts) · [装置基型](../../src/content/devices/device.ts)
 
 ```typescript
 type Operator = Unit &
@@ -75,13 +75,24 @@ type Operator = Unit &
     Occupancy &
     Deployable;
 
-type Enemy = Unit & Classification<"ENEMY">;
+type Enemy = Unit &
+    Classification<"ENEMY"> &
+    Vitality &
+    Elemental &
+    Offense &
+    Targetable &
+    Layer &
+    Hitbox &
+    Facing;
+
 type Device = Unit & Classification<"DEVICE">;
 ```
 
 普通原生角色默认具备阻挡能力，因此 `Blocker` 属于 `Operator` 的基础组合。零阻挡以容量 `0` 表达，高台等情况依照地块和阻挡层资格结算。[原生阻挡证据](../research/cases/23-blocker-and-blockable-roles.md) · [阻挡资格](blocking.md#关系资格与-restriction)
 
-普通干员具备 `Elemental` 的角色元素接收规则和用于空间命中的 `Hitbox`。元素免疫由接收限制表达，命中体的形状由具体单位配置。[元素接收](elemental.md#1-能力与定义) · [空间查询](spatial.md)
+普通干员和敌人都具备 `Elemental` 和用于空间命中的 `Hitbox`。具体 Definition 绑定角色或敌人的元素接收规则，并配置命中体形状。元素免疫由接收限制表达。[元素接收](elemental.md#1-能力与定义) · [空间查询](spatial.md)
+
+猎狗和弩手使用 `GroundEnemy`，在 `Enemy` 上组合被阻挡、受力移动、路线和 Presence。战术装备整理箱和战术射击台使用 `TileDevice`，在 `Device` 上组合生命、受选、占格与部署，并提供 Card 配置。两类模板均从对应单位组合的 `definition` 推导配置类型。[地面敌人模板](../../src/content/enemies/ground.ts) · [地块装置模板](../../src/content/devices/tile.ts)
 
 ### 具体单位的写法
 

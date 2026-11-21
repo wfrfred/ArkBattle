@@ -1,11 +1,10 @@
 import type { Timing } from "../../actions/timing.js";
 import type { Profile } from "../../../data/unit/enemy.js";
-import type { Unit } from "../../../core/unit/index.js";
-import type { Product } from "../../../core/unit/capability/catalog.js";
 import type { ActionCapability } from "../../../core/unit/capability/action/index.js";
 import {
     createDefinition as createGroundDefinition,
     type Definition as GroundDefinition,
+    type GroundEnemy,
 } from "../ground.js";
 import { create as createAttack, type Attack } from "./action.js";
 import { TICKS_PER_SECOND } from "../../../core/tick.js";
@@ -15,9 +14,8 @@ export interface AttackTiming {
     readonly hitRadius: number;
 }
 
-export type Enemy = Unit &
-    Product<GroundDefinition> &
-    ActionCapability<Enemy> & {
+export type Hound = GroundEnemy &
+    ActionCapability<Hound> & {
         readonly definition: {
             readonly profile: Profile;
             readonly attackTiming: AttackTiming;
@@ -25,7 +23,7 @@ export type Enemy = Unit &
         };
     };
 
-export type Definition = Enemy["definition"];
+export type Definition = Hound["definition"];
 
 export function create(
     profile: Profile,

@@ -2,49 +2,33 @@ import { Hooks } from "../../core/hook.js";
 import * as unitHooks from "../../core/unit/hook.js";
 import { createArknightsElementalDefinition } from "../../data/effect/elemental.js";
 
-import {
-    update as updateUnit,
-    get as getUnit,
-    ref as unitRef,
-    type Definition as UnitDefinition,
-} from "../../core/unit/index.js";
+import { update as updateUnit, get as getUnit, ref as unitRef } from "../../core/unit/index.js";
 import { Vec2 } from "../../core/common/vector.js";
 import { hasAction, hasExecution } from "../../core/unit/capability/action/index.js";
+import type { Blockable } from "../../core/unit/capability/blocking/index.js";
 import {
     hasLocomotion,
     setRestriction,
     type Restriction,
 } from "../../core/unit/capability/locomotion/index.js";
 import { hasFacing, fromVector, turn } from "../../core/unit/capability/facing/index.js";
-import { hasRoute, movementTarget } from "../../core/unit/capability/route/index.js";
+import { hasRoute, movementTarget, type Route } from "../../core/unit/capability/route/index.js";
+import type { Presence } from "../../core/unit/capability/presence/index.js";
+import type { Shiftable } from "../../core/unit/capability/shifting/index.js";
 
 import type { Profile } from "../../data/unit/enemy.js";
 import { perSecondToPerTick } from "../../data/time.js";
 import { assertPositiveNumber } from "../../core/common/assert.js";
 
-import type { Definitions as CapabilityDefinitions } from "../../core/unit/capability/catalog.js";
+import type { Enemy } from "./enemy.js";
 
 const castingRestriction: Restriction = {
     allows: (battle, { self }) => !hasAction(self) || !hasExecution(battle, unitRef(self)),
 };
 
-export type Definition = UnitDefinition &
-    Pick<
-        CapabilityDefinitions,
-        | "classification"
-        | "blockable"
-        | "elemental"
-        | "facing"
-        | "hitbox"
-        | "layer"
-        | "locomotion"
-        | "shiftable"
-        | "offense"
-        | "route"
-        | "presence"
-        | "targetable"
-        | "vitality"
-    >;
+export type GroundEnemy = Enemy & Blockable & Shiftable & Route & Presence;
+
+export type Definition = GroundEnemy["definition"];
 
 export function createDefinition(
     profile: Profile,

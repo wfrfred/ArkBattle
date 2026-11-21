@@ -1,12 +1,11 @@
 import type { Profile } from "../../../data/unit/enemy.js";
-import { type Unit, ref } from "../../../core/unit/index.js";
-import type { Product } from "../../../core/unit/capability/catalog.js";
+import { ref } from "../../../core/unit/index.js";
 import { hasExecution, type ActionCapability } from "../../../core/unit/capability/action/index.js";
 
-import { hasBlockable } from "../../../core/unit/capability/blocking/index.js";
 import {
     createDefinition as createGroundDefinition,
     type Definition as GroundDefinition,
+    type GroundEnemy,
 } from "../ground.js";
 import { createMelee, createRanged, type Attack, type Projectile, type Timing } from "./action.js";
 import { TICKS_PER_SECOND } from "../../../core/tick.js";
@@ -16,9 +15,8 @@ export interface AttackTiming extends Timing {
     readonly projectile: Projectile;
 }
 
-export type Enemy = Unit &
-    Product<GroundDefinition> &
-    ActionCapability<Enemy> & {
+export type Crossbowman = GroundEnemy &
+    ActionCapability<Crossbowman> & {
         readonly definition: {
             readonly profile: Profile;
             readonly attackTiming: AttackTiming;
@@ -26,7 +24,7 @@ export type Enemy = Unit &
         };
     };
 
-export type Definition = Enemy["definition"];
+export type Definition = Crossbowman["definition"];
 
 export function create(
     profile: Profile,
@@ -56,11 +54,7 @@ export function create(
                 state: battle,
                 value: hasExecution(battle, ref(self))
                     ? []
-                    : [
-                          hasBlockable(self) && self.blockable.relation !== null
-                              ? melee.id
-                              : ranged.id,
-                      ],
+                    : [self.blockable.relation !== null ? melee.id : ranged.id],
             }),
         },
     } satisfies Definition;

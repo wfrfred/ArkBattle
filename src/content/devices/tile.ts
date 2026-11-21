@@ -7,24 +7,24 @@ import type {
     SiteCondition,
 } from "../../core/battlefield/map/tile.js";
 import type { TilePosition } from "../../core/geometry/coordinate.js";
-import type { Definition as DeployableDefinition } from "../../core/unit/capability/deployable/index.js";
-import type { Definition as OccupancyDefinition } from "../../core/unit/capability/occupancy/index.js";
-import type { Definition as VitalityDefinition } from "../../core/unit/capability/vitality/index.js";
-import type { Definition as UnitDefinition } from "../../core/unit/index.js";
-import type { Definition as ClassificationDefinition } from "../../core/unit/capability/classification/index.js";
-import type { Definition as TargetableDefinition } from "../../core/unit/capability/targetable/capability.js";
+import type { Deployable } from "../../core/unit/capability/deployable/index.js";
+import type { Occupancy } from "../../core/unit/capability/occupancy/index.js";
+import type { Targetable } from "../../core/unit/capability/targetable/capability.js";
+import type { Vitality } from "../../core/unit/capability/vitality/index.js";
 import type { Definition as CardDefinition } from "../../core/battle/deployment/card/index.js";
 import type { Restriction as DeploymentRestriction } from "../../core/battle/deployment/index.js";
 import { hole } from "../terrain/definition.js";
+import type { Device } from "./device.js";
 
-export interface Definition extends UnitDefinition {
-    readonly classification: Extract<ClassificationDefinition, { readonly type: "DEVICE" }>;
-    readonly targetable: TargetableDefinition;
-    readonly vitality: VitalityDefinition;
-    readonly deployable: DeployableDefinition;
-    readonly occupancy: OccupancyDefinition;
-    readonly card: CardDefinition;
-}
+export type TileDevice = Device &
+    Vitality &
+    Targetable &
+    Occupancy &
+    Deployable & {
+        readonly definition: { readonly card: CardDefinition };
+    };
+
+export type Definition = TileDevice["definition"];
 
 export interface Configuration extends Pick<
     Definition,

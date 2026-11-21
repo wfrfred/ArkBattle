@@ -15,7 +15,7 @@ import { create as createCrate } from "../../content/devices/crate.js";
 import { create as createShootingPlatform } from "../../content/devices/shooting-platform.js";
 import {
     deploymentSiteRestriction,
-    type Definition as DeviceDefinition,
+    type Definition as TileDeviceDefinition,
     type Configuration,
 } from "../../content/devices/tile.js";
 import { Tile } from "../../core/geometry/coordinate.js";
@@ -92,7 +92,7 @@ function unitDefinition(
     phase: Record<string, unknown>,
     profile: Extract<PredefinedPrefab, { readonly type: "UNIT" }>,
     groupTags: readonly string[],
-): DeviceDefinition {
+): TileDeviceDefinition {
     if (instance.inst.potentialRank !== 0 || instance.inst.favorPoint !== 0) {
         throw new TypeError("predefined unit potential and favor modifiers are not supported");
     }
