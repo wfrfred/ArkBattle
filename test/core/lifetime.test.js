@@ -138,7 +138,7 @@ test("an ending ancestor rejects new dependents before its active Action executi
         period: { type: "FIXED", ticks: 1 },
         initialize: (state) => ({ state, value: {} }),
         prepare: (state) => ({ state, value: {} }),
-        onTick: (state) => ({ state, value: false }),
+        onTick: state => state,
     };
     const dependent = {
         id: "late-dependent",

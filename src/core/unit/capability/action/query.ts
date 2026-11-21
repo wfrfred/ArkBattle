@@ -51,7 +51,7 @@ export function getAction<X extends Action<any, any>>(
         ?.action.actions.get(reference.definition.id, reference.definition) as X | undefined;
 }
 
-export function isCasting(
+export function hasExecution(
     battle: BattleState,
     source: Ref<Unit & ActionCapability>,
     definitionId?: DefinitionId,

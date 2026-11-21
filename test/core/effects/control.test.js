@@ -19,7 +19,7 @@ function actor(ignoreRestrictions, onEnd = state => state) {
         id: "held", applyWay: "NONE", period: { type: "FIXED", ticks: 0 },
         initialize: state => ({ state, value: {} }),
         prepare: state => ({ state, value: {} }),
-        onTick: state => ({ state, value: false }),
+        onTick: state => state,
         onEnd,
     };
     const skill = {

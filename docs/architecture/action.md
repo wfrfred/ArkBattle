@@ -26,13 +26,13 @@ Content 在 Action Capability 的 `definitions` 中按顺序声明行动。Capab
 
 prepare 检查本次内容条件、初始化执行数据并采样；返回 null 表示未启动，已经完成的状态变化仍接续。需要执行身份的伤害、召唤、绑定 Effect 等业务放在登记后的 onTick；prepare 不递归启动自己或改变来源配置。
 
-onTick 返回是否完成，本轮进度由执行状态操作发布。需要被嵌套业务观察的进度先提交；回调返回不自动以入口 self 覆盖最新聚合。
+`onTick` 返回接续的 BattleState。程序正常完成时调用 `finish`，取消时调用 `cancel`。本轮进度由执行状态操作发布，需要被嵌套业务观察的进度先提交。
 
 ## 4. 异构容器与两种引用身份
 
 行动按配置 ID 登记，重复 ID 在创建边界拒绝。容器保存完整聚合，普通查询保留完整实体但不承诺私有形状；精确 Definition／Typed Ref 恢复私有类型，类型擦除仅留在异构存储边界。
 
-持久 Ref 由宿主和 Definition 对象标识，跨多轮有效；Execution Ref 由宿主和本轮执行 ID 标识，不能操作后来的执行。执行 ID 在宿主内单调分配，不回收。查询当前执行和 casting 时保留 ENDING 占位，直到本轮清空。
+持久 Ref 由宿主和 Definition 对象标识，跨多轮有效；Execution Ref 由宿主和本轮执行 ID 标识，不能操作后来的执行。执行 ID 在宿主内单调分配，不回收。`getExecution` 与 `hasExecution` 均读到仍占位的 ENDING 本轮，直到该轮清空。
 
 配置登记顺序用于默认候选；本宿主已有执行按启动顺序枚举。诊断序列化不承担恢复 Definition 或程序的协议。
 
@@ -60,9 +60,9 @@ Action Definition 显式提供 `applyWay`。攻击工厂从伤害与元素损伤
 
 start 先检查配置身份、宿主资格、执行占位、限制与冷却，再运行 prepare；返回后按最新宿主、聚合和周期复查。仍可启动时才一次发布 Execution、Cooldown 与身份计数，并登记 Execution→Unit 所有权。普通拒绝不分配身份或开始周期，Result 保留准备程序已经提交的业务。start 只登记，首次执行由调度器调用 advance。
 
-持久状态、执行状态和冷却各有字段级写回，只替换对应字段；执行状态不允许在 ENDING 时修改，结束程序仍可更新持久状态／冷却。缺失身份或 Definition 错配属于调用错误。类型配对、最新读取和不可变发布遵守公共契约。
+持久状态、执行状态和冷却各有字段级写回，只替换对应字段。结束程序可以更新仍登记的本轮私有状态，写回保留执行身份和 ENDING。缺失身份或 Definition 错配属于调用错误。类型配对、最新读取和不可变发布遵守公共契约。
 
-终止发布 ENDING，等待依赖者结束后调用 onEnd，再只清空同一轮 execution，保留最新持久状态／冷却并输出结束事实。Lifetime 保护宿主到整个 Finalize 返回；它不保护任意普通 onTick 调用栈。嵌套 cancel 返回时本轮可能仍占位，同一结算中立即重启可能被拒绝。
+`finish` 请求 FINISHED，`cancel` 请求 CANCELLED。终止发布 ENDING，等待依赖者结束后将结果传给 onEnd，再只清空同一轮 execution，保留最新持久状态／冷却并输出结束事实。Lifetime 保护宿主到整个 Finalize 返回；它不保护任意普通 onTick 调用栈。嵌套结束请求返回时本轮可能仍占位，同一结算中立即重启可能被拒绝。
 
 cancelForUnit 从当前状态取得执行 Ref 候选并逐项取消；Unit 真实离场通过所有权边传播。对 Action 报告的 SOURCE_ABSENT 与向依赖者传播的原离场原因分别保留。
 
@@ -70,7 +70,7 @@ cancelForUnit 从当前状态取得执行 Ref 候选并逐项取消；Unit 真�
 
 Combat 固定入口的 Unit 与已有执行候选。对每个宿主先推进原执行，再读取最新来源；仍为 ACTIVE 且空间存在才运行可能消费 RNG 的 select。未配置 select 时采用已登记配置，候选去重后逐项启动；每项仍使用最新资格。
 
-自动启动成功后，同 Tick 显式推进返回的 Execution；每个自动候选只尝试一次，即时完成不循环重启。内容直接或嵌套 start 仅登记，已固定候选之后产生的执行等后续调度。advance 按程序结果请求完成，不直接查询 Presence；[Presence](presence.md)通过启动限制和取消操作表达消失。
+自动启动成功后，同 Tick 显式推进返回的 Execution；每个自动候选只尝试一次，即时完成不循环重启。内容直接或嵌套 start 仅登记，已固定候选之后产生的执行等后续调度。`advance` 检查执行与宿主资格，再直接接续 `onTick` 返回的 BattleState。[Presence](presence.md)通过启动限制和取消操作表达消失。
 
 ## 8. 普通攻击、释放 Hook 与移动
 

@@ -186,7 +186,7 @@ const program: actions.Definition<{ uses: number }, { hits: number }> = {
     id: 'attack', applyWay: 'NONE', period: { type: 'FIXED', ticks: 10 },
     initialize: state => ({ state, value: { uses: 0 } }),
     prepare: state => ({ state, value: { hits: 1 } }),
-    onTick: state => ({ state, value: true }),
+    onTick: (state, source, self) => actions.finish(state, actions.executionRef(source, self)),
 };
 const timedAttack = createAttackWithState<{ uses: number }, { hits: number }>({
     id: 'typed-timing', period: { type: 'ATTACK_SPEED' }, triggerBindingId: 'primary',
@@ -504,7 +504,7 @@ const relationshipHook: BlockingHook<Unit & Blocker> = {
 };
 actions.cancelForUnit(battle, reference, 'SOURCE_ABSENT');
 actions.forUnit(battle, reference);
-actions.isCasting(battle, reference);
+actions.hasExecution(battle, reference);
 // @ts-expect-error cancelling a Unit's Actions requires its Action capability.
 actions.cancelForUnit(battle, ref(bare), 'SOURCE_ABSENT');
 // @ts-expect-error the host has not established the required capability.

@@ -24,7 +24,7 @@ test("disappearance preserves deployment and lifetimes, releases blocking before
         id: "attack", applyWay: "NONE", period: { type: "FIXED", ticks: 0 },
         initialize: (state) => ({ state, value: {} }),
         prepare: (state) => ({ state, value: {} }),
-        onTick: (state) => ({ state, value: false }),
+        onTick: state => state,
         onEnd(state, _source, _self, end) {
             ended.push(end);
             return state;

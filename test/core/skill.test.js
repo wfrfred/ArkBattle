@@ -39,7 +39,15 @@ test("activation publishes payment before onStart and clears only the completed 
                 });
             },
             onEnd(state, source, self, end) {
-                observed.push({ stage: "end", total: self.activation.state.total, end });
+                const reference = skills.activationRef(source, self);
+                state = skills.setActivationState(state, reference, {
+                    ...self.activation.state,
+                    cleaned: true,
+                });
+                const current = skills.getActivation(state, reference);
+                assert.equal(current.activation.lifecycle, "ENDING");
+                assert.equal(current.activation.state.cleaned, true);
+                observed.push({ stage: "end", total: current.activation.state.total, end });
                 return skills.setState(state, skills.ref(source, program), {
                     completed: self.state.completed + 1,
                 });
@@ -93,6 +101,7 @@ test("activation publishes payment before onStart and clears only the completed 
         { stage: "notified", activation: null, id: first.value.id },
     ]);
     assert.equal(skills.getSkill(state, reference).state.completed, 1);
+    assert.throws(() => skills.setActivationState(state, first.value, { total: 0 }), RangeError);
 
     assert.equal(skills.activate(state, reference).value, null);
     state = update(state, source, presence.appear([1, 1]));
@@ -101,6 +110,10 @@ test("activation publishes payment before onStart and clears only the completed 
     assert.equal(skills.getActivation(state, second.value).activation.lifecycle, "ACTIVE");
     state = skills.cancel(state, second.value, "STOPPED");
     assert.equal(skills.getSkill(state, reference).state.completed, 2);
+    assert.deepEqual(
+        state.events.filter(event => event.type.startsWith("SKILL_")).map(event => event.type),
+        ["SKILL_ACTIVATED", "SKILL_ENDED", "SKILL_ACTIVATED", "SKILL_ENDED"],
+    );
     assert.deepEqual(initializedAtSp, [30, 20]);
     assert.equal(skills.activate(state, reference).value, null);
 });

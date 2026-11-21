@@ -10,7 +10,7 @@ export type { Definition, Period } from "./definition.js";
 
 export type { Event } from "./event.js";
 
-export { forUnit, getAction, getExecution, getApplyWay, isCasting } from "./query.js";
+export { forUnit, getAction, getExecution, getApplyWay, hasExecution } from "./query.js";
 
 export {
     lifetime,
@@ -18,6 +18,7 @@ export {
     setExecutionState,
     setState,
     setCooldown,
+    finish,
     cancel,
     cancelForUnit,
     resetCooldown,

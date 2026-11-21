@@ -99,9 +99,6 @@ export function setActivationState<X extends Activation<any, any>>(
     }
 
     const active = self.activation;
-    if (active.lifecycle === "ENDING") {
-        throw new TypeError("cannot update an ending skill activation");
-    }
 
     return state === active.state
         ? battle
@@ -250,7 +247,7 @@ export const lifetime = lifetimes.create<Activation, Activation<any, any>, End>(
         battle = unregister(battle, lifetimes.scope(lifetime, reference));
         battle = appendEvents(battle, [
             {
-                type: "SKILL_FINISHED",
+                type: "SKILL_ENDED",
                 unitId: reference.host.id,
                 tick: battle.tick,
             },

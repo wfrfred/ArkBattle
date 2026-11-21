@@ -28,7 +28,7 @@ Content 在 Skill Capability 的 `definition` 中声明选定技能。Capability
 
 持久 Ref 由宿主与 Definition 对象标识；Activation Ref 由宿主与本轮 ID 标识。查询保留完整聚合，精确引用恢复私有类型；旧激活 Ref 不读取或更新后来的轮次。
 
-持久与本轮状态有各自写回操作，仅更新对应字段。持久状态可在结束程序更新，本轮 ENDING 后不接受普通私有状态写入。跨完整业务后接续最新状态；通用类型、错误和不可变约定见[接口约定](api-conventions.md)。
+持久与本轮状态有各自写回操作，仅更新对应字段。结束程序可以更新持久状态和仍登记的本轮私有状态，写回保留激活身份和 ENDING。跨完整业务后接续最新状态。通用类型、错误和不可变约定见[接口约定](api-conventions.md)。
 
 ## 2. SP
 

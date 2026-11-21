@@ -31,7 +31,7 @@ test("capabilities initialize declared programs in order and carry their battle 
         period: { type: "FIXED", ticks: 1 },
         initialize,
         prepare: (state) => ({ state, value: null }),
-        onTick: (state) => ({ state, value: false }),
+        onTick: state => state,
     };
     const second = { ...first, id: "second" };
     const skill = { id: "skill", initialize, sp: null, activation: null };
@@ -67,15 +67,23 @@ test("prepare can reject without allocating a round; ending preserves the latest
         },
         onTick(state, source, self) {
             const advances = self.execution.state.advances + 1;
-            state = actions.setExecutionState(state, actions.executionRef(source, self), {
-                advances,
-            });
-            return { state, value: advances === 2 };
+            const reference = actions.executionRef(source, self);
+            state = actions.setExecutionState(state, reference, { advances });
+            return advances === 2 ? actions.finish(state, reference) : state;
         },
         onEnd(state, source, self, end) {
+            const reference = actions.executionRef(source, self);
+            state = actions.setExecutionState(state, reference, {
+                ...self.execution.state,
+                cleaned: true,
+            });
+            const current = actions.getExecution(state, reference);
+            assert.equal(current.execution.lifecycle, "ENDING");
+            assert.equal(current.execution.state.cleaned, true);
+            assert.equal(actions.hasExecution(state, source, program.id), true);
             return actions.setState(state, actions.ref(source, program), {
                 ...self.state,
-                ended: [...self.state.ended, { end, advances: self.execution.state.advances }],
+                ended: [...self.state.ended, { end, advances: current.execution.state.advances }],
             });
         },
     };
@@ -100,6 +108,8 @@ test("prepare can reject without allocating a round; ending preserves the latest
     state = actions.advance(state, started.value);
     state = actions.advance({ ...state, tick: 1 }, started.value);
     assert.equal(actions.getAction(state, reference).execution, null);
+    assert.equal(actions.hasExecution(state, source, program.id), false);
+    assert.throws(() => actions.setExecutionState(state, started.value, { advances: 0 }), RangeError);
     assert.deepEqual(actions.getAction(state, reference).state, {
         attempts: 2,
         ended: [{ end: { type: "FINISHED" }, advances: 2 }],
@@ -120,7 +130,7 @@ test("attribute changes preserve independent attack cooldown progress and leave 
         id: "first", applyWay: "NONE", period: { type: "ATTACK_SPEED" },
         initialize: state => ({ state, value: {} }),
         prepare: state => ({ state, value: {} }),
-        onTick: state => ({ state, value: true }),
+        onTick: (state, source, self) => actions.finish(state, actions.executionRef(source, self)),
     };
     const second = { ...first, id: "second" };
     const fixed = { ...first, id: "fixed", period: { type: "FIXED", ticks: 20 } };
@@ -250,12 +260,10 @@ test("Combat advances an instantaneous action once per Tick and skips selection 
         initialize: (state) => ({ state, value: { completed: 0 } }),
         prepare: (state) => ({ state, value: {} }),
         onTick(state, source, self) {
-            return {
-                state: actions.setState(state, actions.ref(source, program), {
-                    completed: self.state.completed + 1,
-                }),
-                value: true,
-            };
+            state = actions.setState(state, actions.ref(source, program), {
+                completed: self.state.completed + 1,
+            });
+            return actions.finish(state, actions.executionRef(source, self));
         },
     };
     const resource = {

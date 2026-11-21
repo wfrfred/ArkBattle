@@ -7,7 +7,6 @@ import * as terrain from "../../dist/content/terrain/definition.js";
 import { createTerrainMechanism } from "../../dist/content/terrain/mechanism.js";
 import * as mechanisms from "../../dist/core/mechanism/index.js";
 import * as units from "../../dist/core/unit/index.js";
-import * as skills from "../../dist/core/unit/capability/skill/index.js";
 import * as vitality from "../../dist/core/unit/capability/vitality/index.js";
 import * as hpDamage from "../../dist/core/battle/resource/hp/damage/index.js";
 import { create as createTile } from "../../dist/core/battlefield/map/tile.js";
@@ -18,6 +17,7 @@ import { update } from "../../dist/core/unit/operations.js";
 import { initialize, step } from "../../dist/core/battle/index.js";
 import { update as updateTile } from "../../dist/core/battle/tile.js";
 import { actionCapability } from "../helpers/actions.js";
+import { executionRef, finish } from "../../dist/core/unit/capability/action/index.js";
 import { resolveAttack } from "../../dist/core/unit/capability/offense/index.js";
 import { resolveSpeed } from "../../dist/core/unit/capability/action/timing.js";
 import { damage } from "../../dist/core/battle/targeting/index.js";
@@ -41,7 +41,7 @@ const combat = {
         id: "primary", applyWay: "NONE", period: { type: "ATTACK_SPEED" },
         initialize: state => ({ state, value: {} }),
         prepare: state => ({ state, value: null }),
-        onTick: state => ({ state, value: true }),
+        onTick: (state, source, self) => finish(state, executionRef(source, self)),
     }), interval: attribute(30) },
 };
 const unit = (column, fields = {}) => ({

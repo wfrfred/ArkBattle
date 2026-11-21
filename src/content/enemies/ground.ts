@@ -9,7 +9,7 @@ import {
     type Definition as UnitDefinition,
 } from "../../core/unit/index.js";
 import { Vec2 } from "../../core/common/vector.js";
-import { hasAction, isCasting } from "../../core/unit/capability/action/index.js";
+import { hasAction, hasExecution } from "../../core/unit/capability/action/index.js";
 import {
     hasLocomotion,
     setRestriction,
@@ -25,7 +25,7 @@ import { assertPositiveNumber } from "../../core/common/assert.js";
 import type { Definitions as CapabilityDefinitions } from "../../core/unit/capability/catalog.js";
 
 const castingRestriction: Restriction = {
-    allows: (battle, { self }) => !hasAction(self) || !isCasting(battle, unitRef(self)),
+    allows: (battle, { self }) => !hasAction(self) || !hasExecution(battle, unitRef(self)),
 };
 
 export type Definition = UnitDefinition &

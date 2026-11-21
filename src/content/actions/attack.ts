@@ -431,11 +431,11 @@ export function createWithState<P extends object, E extends object>(
                 battle = definition.onStart?.(battle, source, self) ?? battle;
 
                 const current = actions.getExecution(battle, identity);
-                if (current?.execution.lifecycle !== "ACTIVE" || !isSourceActive(battle, source)) {
-                    return {
-                        state: actions.cancel(battle, identity, "SOURCE_ABSENT"),
-                        value: true,
-                    };
+                if (current?.execution.lifecycle !== "ACTIVE") {
+                    return battle;
+                }
+                if (!isSourceActive(battle, source)) {
+                    return actions.cancel(battle, identity, "SOURCE_ABSENT");
                 }
 
                 self = current;
@@ -449,7 +449,7 @@ export function createWithState<P extends object, E extends object>(
             ) {
                 const host = units.get(battle, source);
                 if (host === undefined) {
-                    return { state: battle, value: true };
+                    return battle;
                 }
 
                 const progressed = timing.advance(
@@ -485,11 +485,11 @@ export function createWithState<P extends object, E extends object>(
                 const permission = dispatchBeforeRelease(battle, identity);
                 battle = permission.state;
                 const current = actions.getExecution(battle, identity);
-                if (current?.execution.lifecycle !== "ACTIVE" || !isSourceActive(battle, source)) {
-                    return {
-                        state: actions.cancel(battle, identity, "SOURCE_ABSENT"),
-                        value: true,
-                    };
+                if (current?.execution.lifecycle !== "ACTIVE") {
+                    return battle;
+                }
+                if (!isSourceActive(battle, source)) {
+                    return actions.cancel(battle, identity, "SOURCE_ABSENT");
                 }
                 if (permission.value.type === "INTERRUPT") {
                     const recoveryTicks = permission.value.recoveryTicks;
@@ -501,7 +501,7 @@ export function createWithState<P extends object, E extends object>(
                         ),
                     });
 
-                    return { state: actions.cancel(battle, identity, "INTERRUPTED"), value: true };
+                    return actions.cancel(battle, identity, "INTERRUPTED");
                 }
 
                 battle = appendEvents(battle, [
@@ -515,11 +515,11 @@ export function createWithState<P extends object, E extends object>(
                 battle = dispatchReleased(battle, identity);
 
                 const output = actions.getExecution(battle, identity);
-                if (output?.execution.lifecycle !== "ACTIVE" || !isSourceActive(battle, source)) {
-                    return {
-                        state: actions.cancel(battle, identity, "SOURCE_ABSENT"),
-                        value: true,
-                    };
+                if (output?.execution.lifecycle !== "ACTIVE") {
+                    return battle;
+                }
+                if (!isSourceActive(battle, source)) {
+                    return actions.cancel(battle, identity, "SOURCE_ABSENT");
                 }
 
                 if (definition.output !== undefined) {
@@ -532,7 +532,7 @@ export function createWithState<P extends object, E extends object>(
                                     actions.getExecution(battle, identity)?.execution.lifecycle !==
                                     "ACTIVE"
                                 ) {
-                                    return { state: battle, value: true };
+                                    return battle;
                                 }
 
                                 battle = apply(battle, source, target, operation);
@@ -548,7 +548,7 @@ export function createWithState<P extends object, E extends object>(
                                 actions.getExecution(battle, identity)?.execution.lifecycle !==
                                 "ACTIVE"
                             ) {
-                                return { state: battle, value: true };
+                                return battle;
                             }
 
                             battle = apply(battle, source, target, followUp.operation);
@@ -558,7 +558,7 @@ export function createWithState<P extends object, E extends object>(
 
                 const completed = actions.getExecution(battle, identity);
                 if (completed?.execution.lifecycle !== "ACTIVE") {
-                    return { state: battle, value: true };
+                    return battle;
                 }
 
                 if (definition.afterOutput !== undefined) {
@@ -567,14 +567,15 @@ export function createWithState<P extends object, E extends object>(
             }
 
             const current = actions.getExecution(battle, identity);
+            if (current?.execution.lifecycle !== "ACTIVE") {
+                return battle;
+            }
 
-            return {
-                state: battle,
-                value:
-                    current === undefined ||
-                    (current.execution.state.timing.finishAtTick !== null &&
-                        battle.tick >= current.execution.state.timing.finishAtTick),
-            };
+            const { finishAtTick } = current.execution.state.timing;
+
+            return finishAtTick !== null && battle.tick >= finishAtTick
+                ? actions.finish(battle, identity)
+                : battle;
         },
         ...(definition.onEnd === undefined ? {} : { onEnd: definition.onEnd }),
     };

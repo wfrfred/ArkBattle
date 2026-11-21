@@ -133,9 +133,6 @@ export function setExecutionState<X extends Execution<any, any>>(
     if (current === undefined) {
         throw new RangeError(`unknown action execution: ${reference.id}`);
     }
-    if (current.execution.lifecycle === "ENDING") {
-        throw new TypeError("cannot update an ending action");
-    }
 
     return state === current.execution.state
         ? battle
@@ -178,6 +175,13 @@ export const lifetime = lifetimes.create<Execution, Execution<any, any>, End>({
     fromDependency: () => ({ type: "CANCELLED", reason: "SOURCE_ABSENT" }),
 });
 
+export function finish<X extends Execution<any, any>>(
+    battle: BattleState,
+    reference: Ref<X>,
+): BattleState {
+    return lifetime.end(battle, reference, { type: "FINISHED" });
+}
+
 export function cancel<X extends Execution<any, any>>(
     battle: BattleState,
     reference: Ref<X>,
@@ -218,14 +222,10 @@ export function advance<X extends Execution<any, any>>(
         return battle;
     }
     if (source.lifecycle !== "ACTIVE") {
-        return lifetime.end(battle, reference, { type: "CANCELLED", reason: "SOURCE_ABSENT" });
+        return cancel(battle, reference, "SOURCE_ABSENT");
     }
 
-    const advanced = self.definition.onTick(battle, reference.host, self);
-
-    return advanced.value
-        ? lifetime.end(advanced.state, reference, { type: "FINISHED" })
-        : advanced.state;
+    return self.definition.onTick(battle, reference.host, self);
 }
 
 export function refreshCooldowns(

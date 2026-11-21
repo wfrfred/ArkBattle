@@ -5,7 +5,7 @@ import type {
     Definitions as CapabilityDefinitions,
     Product,
 } from "../../../core/unit/capability/catalog.js";
-import { isCasting } from "../../../core/unit/capability/action/index.js";
+import { hasExecution } from "../../../core/unit/capability/action/index.js";
 
 import { hasBlockable } from "../../../core/unit/capability/blocking/index.js";
 import {
@@ -54,7 +54,7 @@ export function create(
             definitions: [melee, ranged],
             select: (battle, self) => ({
                 state: battle,
-                value: isCasting(battle, ref(self))
+                value: hasExecution(battle, ref(self))
                     ? []
                     : [
                           hasBlockable(self) && self.blockable.relation !== null

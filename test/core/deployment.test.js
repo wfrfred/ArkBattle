@@ -92,7 +92,7 @@ test("preview, evaluation and deployment share a request, rejection spends nothi
                     return { state: current, value: {} };
                 },
                 prepare: state => ({ state, value: null }),
-                onTick: state => ({ state, value: false }),
+                onTick: state => state,
             }],
         },
     };

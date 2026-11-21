@@ -28,7 +28,7 @@ export interface Definition<P extends object = object, E extends object = object
         battle: BattleState,
         source: Ref<Unit & ActionCapability>,
         self: Execution<P, E>,
-    ) => Result<boolean>;
+    ) => BattleState;
     readonly onEnd?: (
         battle: BattleState,
         source: Ref<Unit & ActionCapability>,

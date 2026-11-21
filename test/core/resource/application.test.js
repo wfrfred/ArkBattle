@@ -15,7 +15,6 @@ import * as vitality from "../../../dist/core/unit/capability/vitality/index.js"
 import * as elemental from "../../../dist/core/unit/capability/elemental/index.js";
 import * as modifier from "../../../dist/core/common/modifier.js";
 import * as blocking from "../../../dist/core/battle/blocking/index.js";
-import * as skills from "../../../dist/core/unit/capability/skill/index.js";
 import * as effects from "../../../dist/core/unit/effect/index.js";
 import { invincible, invincibleHpDamageRestriction } from "../../../dist/core/effects/protection.js";
 import * as presence from "../../../dist/core/unit/capability/presence/index.js";
