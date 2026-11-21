@@ -669,17 +669,21 @@ if (classification.isType(professionCandidate, requestedCategory)) {
 }
 
 declare const targetingSource: Unit & classification.Classification;
-const damagedCandidates = selectableActions.filter(targeting.damage(targetingSource)(battle));
-const nearestPatient = topK(damagedCandidates, 1, targeting.hpRatio)[0]!;
-const patientAlive: boolean = vitality.isAlive(nearestPatient);
-const patientHpRatio: number = vitality.hpRatio(nearestPatient);
-const preservedAction: actions.ActionCapability = nearestPatient;
-const establishedVitality: vitality.Vitality = nearestPatient;
-const establishedClassification: classification.Classification = nearestPatient;
-for (const self of selectableActions.filter(targeting.elementHealing(battle, targetingSource))) {
-    const preservedAction: actions.ActionCapability = self;
-    const establishedElemental: elemental.Elemental = self;
-    const establishedClassification: classification.Classification = self;
+for (const qualify of [targeting.damage, targeting.healing]) {
+    const candidates = selectableActions.filter(qualify(targetingSource)(battle));
+    const nearestPatient = topK(candidates, 1, targeting.hpRatio)[0]!;
+    const patientAlive: boolean = vitality.isAlive(nearestPatient);
+    const patientHpRatio: number = vitality.hpRatio(nearestPatient);
+    const preservedAction: actions.ActionCapability = nearestPatient;
+    const establishedVitality: vitality.Vitality = nearestPatient;
+    const establishedClassification: classification.Classification = nearestPatient;
+}
+for (const qualify of [targeting.elementDamage, targeting.elementHealing]) {
+    for (const self of selectableActions.filter(qualify(targetingSource)(battle))) {
+        const preservedAction: actions.ActionCapability = self;
+        const establishedElemental: elemental.Elemental = self;
+        const establishedClassification: classification.Classification = self;
+    }
 }
 // @ts-expect-error standard target eligibility requires the source's Classification capability.
 targeting.damage(host)(battle);

@@ -15,7 +15,7 @@ const selected = topK(candidates, count, targeting.distance(origin));
 
 Query 绑定输入版本，来源 Unit 是调用者选定的事实。候选可来自全场、阻挡或已有名单，内容可多次查询组合策略；终端保留能力类型，只在保存身份或调用后续操作时生成 Ref。
 
-`targeting.damage(source, ignore?)` 绑定调用方选定的来源和限制豁免。它返回一个接收 `BattleState` 的函数，使用查询当时提供的状态构造目标谓词。延迟输出可以先保存该函数，再于命中时传入当前战斗状态。
+`damage`、`healing`、`elementDamage` 和 `elementHealing` 统一使用 `fn(source, ignore?)(battle)` 构造目标谓词。第一步绑定调用方选定的来源和限制豁免，第二步提供本次查询的 `BattleState`。延迟输出可以先保存来源绑定，再于选敌时传入当前战斗状态。
 
 topK 稳定排序截取，take 只取现有顺序；随机无放回选择立即消费序列，调用者显式接续 RNG，不在惰性谓词或比较器中取随机。
 

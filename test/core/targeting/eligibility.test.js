@@ -100,11 +100,13 @@ test("mixed healing keeps HP or EP demand while only an ACTIVE healFree marker r
         id: "no-ep-healing", value: { allows: () => false },
     }));
     const source = get(state, 0);
-    const hpRecipients = state => candidates(state).filter(targeting.healing(state, source));
-    const epRecipients = state => candidates(state).filter(targeting.elementHealing(state, source));
+    const healing = targeting.healing(source);
+    const elementHealing = targeting.elementHealing(source);
+    const hpRecipients = state => candidates(state).filter(healing(state));
+    const epRecipients = state => candidates(state).filter(elementHealing(state));
     const recipients = state => {
-        const hp = targeting.healing(state, source);
-        const ep = targeting.elementHealing(state, source);
+        const hp = healing(state);
+        const ep = elementHealing(state);
         return candidates(state).filter(target => hp(target) || ep(target));
     };
 
@@ -144,8 +146,8 @@ test("EP selection checks current resource eligibility without executing recepti
     state = update(state, target, elemental.setRestriction("healingRestrictions", {
         id: "receive-healing", value: { allows() { healingChecks++; return false; } },
     }));
-    const damageCandidates = state => candidates(state).filter(targeting.elementDamage(state, get(state, 0)));
-    const healingCandidates = state => candidates(state).filter(targeting.elementHealing(state, get(state, 1)));
+    const damageCandidates = state => candidates(state).filter(targeting.elementDamage(get(state, 0))(state));
+    const healingCandidates = state => candidates(state).filter(targeting.elementHealing(get(state, 1))(state));
 
     assert.deepEqual(ids(damageCandidates(state)), [1]);
     assert.deepEqual(ids(healingCandidates(state)), []);

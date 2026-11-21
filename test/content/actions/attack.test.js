@@ -129,7 +129,7 @@ test("bound healing keeps its receivers when a later selection restriction would
     const recipients = (state, source) => ({
         state,
         value: topK(units.all(state).filter(hasTargetable)
-            .filter(targeting.healing(state, units.get(state, source)))
+            .filter(targeting.healing(units.get(state, source))(state))
             .filter(target => target.id !== source.id), 1, targeting.hpRatio).map(units.ref),
     });
     let selected;

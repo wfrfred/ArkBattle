@@ -353,7 +353,7 @@ test("EP-01/03: losses stay per element, healing gives every bar the full amount
 
     const recipients = state => units.all(state)
         .filter(hasTargetable)
-        .filter(elementHealing(state, units.get(state, target)))
+        .filter(elementHealing(units.get(state, target))(state))
         .map(units.ref)
         .toArray();
     assert.deepEqual(recipients(full.state), []);
