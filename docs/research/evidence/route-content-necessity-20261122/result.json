@@ -1,0 +1,444 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-22",
+    "scope": [
+      "assets/arknights-game-data/zh_CN/gamedata/levels/obt",
+      "assets/arknights-game-data/zh_CN/gamedata/levels/activities"
+    ],
+    "source": "https://github.com/Kengxxiao/ArknightsGameData",
+    "fixedRevision": "17759cc8cdf37388414145d16262a3a06f3ab25e",
+    "arkBattleRevision": "7ba99d2",
+    "sourceFiles": [
+      {
+        "path": "zh_CN/gamedata/levels/activities/act13side/level_act13side_10.json",
+        "sha256": "6904dabce09e6cde072746fbcfc7d16121b06b6ee5c67ab389fd1241d5314a9c"
+      },
+      {
+        "path": "zh_CN/gamedata/levels/activities/act13side/level_act13side_sub-1-4.json",
+        "sha256": "86bfdab8fd30e8d91cbf2dc9ae6aaf7a980f3126e084618081f26353fbae3d6d"
+      },
+      {
+        "path": "zh_CN/gamedata/levels/activities/act17d0/level_act17d0_08.json",
+        "sha256": "dbe82a2ebad74a2cfd6d35af5479b9d0907abae342b75866ad77fd342cee30ce"
+      },
+      {
+        "path": "zh_CN/gamedata/levels/activities/act1multi/level_act1multi_07.json",
+        "sha256": "dab74ca726398ba2753b4a373cdf1b9a202b131d0920c72ae0f18258aff927bc"
+      },
+      {
+        "path": "zh_CN/gamedata/levels/activities/act1multi/level_act1multi_rm01.json",
+        "sha256": "4a87bcf254729f5c590c1e8ca511bc7045fab35d7d4fb9f2c0832fb4bece684b"
+      },
+      {
+        "path": "zh_CN/gamedata/levels/activities/act20side/level_act20side_05.json",
+        "sha256": "8e3bbcbad901e4e13175bf8a30c17e196ad912ce019af7a47aa9531994ec87bd"
+      },
+      {
+        "path": "zh_CN/gamedata/levels/activities/act53side/level_act53side_02.json",
+        "sha256": "06b8b6abad34305e06ee53da31271939da752a160d4c75d98586401f8e4a000b"
+      },
+      {
+        "path": "zh_CN/gamedata/levels/activities/act53side/level_act53side_04.json",
+        "sha256": "083929e2b2587814f4d2239ea0eebebcf0eaf85ef8929cdb4d7202ca5681066a"
+      },
+      {
+        "path": "zh_CN/gamedata/levels/obt/main/level_main_04-01.json",
+        "sha256": "635d1febd0650f22eb055f9e77c4724773ec9f015728afe3108110ab87ee0f5f"
+      },
+      {
+        "path": "zh_CN/gamedata/levels/obt/main/level_main_05-02.json",
+        "sha256": "76e2d1cabd5413285f8e3169bc9c8d314a8aeb154057232f9f1b64865b427be9"
+      },
+      {
+        "path": "zh_CN/gamedata/levels/obt/main/level_sub_05-3-1.json",
+        "sha256": "6d5eefb1b275d8659eee80747a6b6e39946eb5ff9ba7b602a64ec632693633d0"
+      }
+    ]
+  },
+  "result": {
+    "levelFiles": 3944,
+    "counts": {
+      "level_count": 3944,
+      "route_count": 144418,
+      "checkpoint_count": 503185,
+      "motionMode": 22771,
+      "spawns_evaluated": 118248,
+      "crossing": 528,
+      "null_route": 1070,
+      "spawn_bad_motion": 1981,
+      "first_DISAPPEAR": 48,
+      "enemy_1576_spbell": 2,
+      "first_APPEAR_AT_POS": 72,
+      "main_crossing": 117
+    },
+    "samples": {
+      "main_crossing": [
+        [
+          "zh_CN/gamedata/levels/obt/main/level_main_04-01.json",
+          "/routes/24/checkpoints/0",
+          {
+            "action": "/waves/0/fragments/2/actions/8",
+            "id": "enemy_1003_ncbow_2",
+            "original": [
+              3,
+              3
+            ],
+            "quantized": [
+              3,
+              2
+            ],
+            "offset": {
+              "x": -0.5,
+              "y": 0.01
+            },
+            "from_mask": "ALL",
+            "to_mask": "ALL",
+            "mode": "WALK"
+          }
+        ],
+        [
+          "zh_CN/gamedata/levels/obt/main/level_main_05-02.json",
+          "/routes/29/checkpoints/3",
+          {
+            "action": "/waves/0/fragments/4/actions/5",
+            "id": "enemy_1039_breakr",
+            "original": [
+              1,
+              4
+            ],
+            "quantized": [
+              2,
+              4
+            ],
+            "offset": {
+              "x": 0.25,
+              "y": 0.5
+            },
+            "from_mask": "ALL",
+            "to_mask": "ALL",
+            "mode": "WALK"
+          }
+        ],
+        [
+          "zh_CN/gamedata/levels/obt/main/level_main_05-02.json",
+          "/routes/30/checkpoints/3",
+          {
+            "action": "/waves/0/fragments/4/actions/6",
+            "id": "enemy_1039_breakr",
+            "original": [
+              1,
+              4
+            ],
+            "quantized": [
+              2,
+              4
+            ],
+            "offset": {
+              "x": 0.4,
+              "y": 0.5
+            },
+            "from_mask": "ALL",
+            "to_mask": "ALL",
+            "mode": "WALK"
+          }
+        ]
+      ],
+      "main_spawn_bad_motion": [],
+      "spawn_bad_motion": [
+        [
+          "zh_CN/gamedata/levels/activities/act13side/level_act13side_10.json",
+          "/branches/bldkgt_bldbld/phases/2/actions/0",
+          {
+            "routeIndex": 5,
+            "enemy": "enemy_1186_bldbld",
+            "mode": "E_NUM"
+          }
+        ],
+        [
+          "zh_CN/gamedata/levels/activities/act13side/level_act13side_sub-1-4.json",
+          "/branches/bldkgt_bldbld2/phases/0/actions/0",
+          {
+            "routeIndex": 10,
+            "enemy": "enemy_1186_bldbld",
+            "mode": "E_NUM"
+          }
+        ],
+        [
+          "zh_CN/gamedata/levels/activities/act17d0/level_act17d0_08.json",
+          "/branches/branch_1/phases/1/actions/0",
+          {
+            "routeIndex": 1,
+            "enemy": "enemy_1137_plasm",
+            "mode": "E_NUM"
+          }
+        ]
+      ],
+      "first_DISAPPEAR": [
+        [
+          "zh_CN/gamedata/levels/activities/act1multi/level_act1multi_07.json",
+          "/extraRoutes/0/checkpoints/0",
+          {
+            "type": "DISAPPEAR",
+            "time": 0.0,
+            "position": {
+              "row": 0,
+              "col": 0
+            },
+            "reachOffset": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "randomizeReachOffset": false,
+            "reachDistance": 0.0
+          }
+        ],
+        [
+          "zh_CN/gamedata/levels/activities/act1multi/level_act1multi_07.json",
+          "/extraRoutes/1/checkpoints/0",
+          {
+            "type": "DISAPPEAR",
+            "time": 0.0,
+            "position": {
+              "row": 0,
+              "col": 0
+            },
+            "reachOffset": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "randomizeReachOffset": false,
+            "reachDistance": 0.0
+          }
+        ],
+        [
+          "zh_CN/gamedata/levels/activities/act1multi/level_act1multi_rm01.json",
+          "/extraRoutes/0/checkpoints/0",
+          {
+            "type": "DISAPPEAR",
+            "time": 0.0,
+            "position": {
+              "row": 0,
+              "col": 0
+            },
+            "reachOffset": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "randomizeReachOffset": false,
+            "reachDistance": 0.0
+          }
+        ]
+      ],
+      "first_APPEAR_AT_POS": [
+        [
+          "zh_CN/gamedata/levels/activities/act53side/level_act53side_02.json",
+          "/extraRoutes/0/checkpoints/0",
+          {
+            "type": "APPEAR_AT_POS",
+            "time": 0.0,
+            "position": {
+              "row": 2,
+              "col": 6
+            },
+            "reachOffset": {
+              "x": 0.03125,
+              "y": -0.015625
+            },
+            "randomizeReachOffset": false,
+            "reachDistance": 0.0
+          }
+        ],
+        [
+          "zh_CN/gamedata/levels/activities/act53side/level_act53side_02.json",
+          "/extraRoutes/1/checkpoints/0",
+          {
+            "type": "APPEAR_AT_POS",
+            "time": 0.0,
+            "position": {
+              "row": 6,
+              "col": 4
+            },
+            "reachOffset": {
+              "x": 0.0,
+              "y": -0.015625
+            },
+            "randomizeReachOffset": false,
+            "reachDistance": 0.0
+          }
+        ],
+        [
+          "zh_CN/gamedata/levels/activities/act53side/level_act53side_04.json",
+          "/extraRoutes/0/checkpoints/0",
+          {
+            "type": "APPEAR_AT_POS",
+            "time": 0.0,
+            "position": {
+              "row": 5,
+              "col": 4
+            },
+            "reachOffset": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "randomizeReachOffset": false,
+            "reachDistance": 0.0
+          }
+        ]
+      ]
+    },
+    "singleVariableNavigationComparison": {
+      "unique": 501,
+      "valid": 133,
+      "fail": 368,
+      "differences": 8,
+      "samples": [
+        {
+          "file": "zh_CN/gamedata/levels/obt/main/level_main_05-02.json",
+          "pointer": "/routes/29/checkpoints/3",
+          "action": "/waves/0/fragments/4/actions/5",
+          "start": [
+            3.175,
+            0.85
+          ],
+          "a": [
+            4.25,
+            1.5
+          ],
+          "b": [
+            4,
+            1
+          ],
+          "target": [
+            4.25,
+            1.5
+          ],
+          "index": 3,
+          "mode": "WALK",
+          "id": "enemy_1039_breakr"
+        },
+        {
+          "file": "zh_CN/gamedata/levels/obt/main/level_main_05-02.json",
+          "pointer": "/routes/30/checkpoints/3",
+          "action": "/waves/0/fragments/4/actions/6",
+          "start": [
+            3.1875,
+            0.8
+          ],
+          "a": [
+            4.4,
+            1.5
+          ],
+          "b": [
+            4,
+            1
+          ],
+          "target": [
+            4.4,
+            1.5
+          ],
+          "index": 3,
+          "mode": "WALK",
+          "id": "enemy_1039_breakr"
+        },
+        {
+          "file": "zh_CN/gamedata/levels/obt/main/level_sub_05-3-1.json",
+          "pointer": "/routes/32/checkpoints/4",
+          "action": "/waves/0/fragments/3/actions/10",
+          "start": [
+            3.36,
+            5.06
+          ],
+          "a": [
+            4,
+            4
+          ],
+          "b": [
+            3.99,
+            3.5
+          ],
+          "target": [
+            3.99,
+            3.5
+          ],
+          "index": 4,
+          "mode": "WALK",
+          "id": "enemy_1037_lunsbr"
+        }
+      ],
+      "others": [
+        {
+          "file": "zh_CN/gamedata/levels/activities/act20side/level_act20side_05.json",
+          "pointer": "/routes/6/checkpoints/0",
+          "action": "/waves/0/fragments/4/actions/0",
+          "start": [
+            0,
+            6
+          ],
+          "a": [
+            5,
+            6
+          ],
+          "b": [
+            4,
+            6
+          ],
+          "target": [
+            4.5,
+            5
+          ],
+          "index": 0,
+          "mode": "WALK",
+          "id": "enemy_1259_durwar"
+        },
+        {
+          "file": "zh_CN/gamedata/levels/activities/act20side/level_act20side_05.json",
+          "pointer": "/routes/11/checkpoints/0",
+          "action": "/waves/0/fragments/7/actions/0",
+          "start": [
+            0,
+            6
+          ],
+          "a": [
+            5,
+            6
+          ],
+          "b": [
+            4,
+            6
+          ],
+          "target": [
+            4.5,
+            5
+          ],
+          "index": 0,
+          "mode": "WALK",
+          "id": "enemy_1259_durwar"
+        },
+        {
+          "file": "zh_CN/gamedata/levels/activities/act20side/level_act20side_05.json",
+          "pointer": "/routes/20/checkpoints/0",
+          "action": "/waves/1/fragments/1/actions/0",
+          "start": [
+            0,
+            6
+          ],
+          "a": [
+            5,
+            6
+          ],
+          "b": [
+            4,
+            6
+          ],
+          "target": [
+            4.5,
+            5
+          ],
+          "index": 0,
+          "mode": "WALK",
+          "id": "enemy_1259_durwar"
+        }
+      ]
+    }
+  }
+}

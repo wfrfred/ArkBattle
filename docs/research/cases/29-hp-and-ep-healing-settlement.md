@@ -164,6 +164,6 @@ SetHpSameToSource读取 `source.hp−target.hp`，零差直接返回；非零用
 ## 9. 剩余证据边界
 
 - ElementHealViaMaxHpRatio有完整native，但1180包与9054Holder没有找到引用；普通EP自然回复另有余的实际天赋，见[案例25](25-elemental-burst-recovery-timing.md#8-自然ep回复的实际非零配置)。没有据零命中批准弃用。
-- AverageHealViaHpUseAbilitySelector与HealSplitToUnionFindMembers的当前Holder命中分别是legion／sandbox命名的模板；完整体与定位已保存。若没有独立模式绑定，只记候选，不能靠名字宣布全客户端只在排除模式使用。
+- AverageHealViaHpUseAbilitySelector 与 HealSplitToUnionFindMembers 的当前 Holder 命中分别是 legion／sandbox 模板；完整体与定位已保存。[保全派驻卡牌](../../../assets/arknights-game-data/zh_CN/gamedata/excel/climb_tower_table.json#L13990)的 `/mainCards/card_tower_10` 明列战地援护无人机 `trap_726_cdrone` 及均摊生命／元素损伤治疗，印证 `legion_trap_cdrone_heal` 所属玩法。[生息演算单位配置](../../../assets/arknights-game-data/zh_CN/gamedata/excel/sandbox_perm_table.json#L108558)的 `/detail/SANDBOX_V3/sandbox_2/trapData/trap_546_xb2fmr2` 对应稻谷幼苗，当前[模板表](../../../assets/arknights-game-data/zh_CN/gamedata/battle/buff_template_data.json#L751792)的 `sandbox_v3_relic[paddy-share-heal]` 检查 `sandbox_v3_xb2fmr2` 专用治疗标记。以上为固定数据修订 `17759cc8cdf37388414145d16262a3a06f3ab25e` 的配置交叉证据，两组已查样本均属明确排除模式；Prefab 选择和其它玩法绑定仍按各自证据判断。
 - 满血重复setter通知的native行为已证，实际缇缇消费者已闭合；尚无该重复no-op改变结果的可达实例，故不推翻已定逐Tick自然回复近似，也不凭字段存在新增Hook。
 - 本轮不把“任意组合没实机跑过”用作省略上述实际资源机制的理由。新的不实现／简化须另获用户确认；原生 ES、债务、同步复制与复活恢复的项目组织各见对应架构，不在本案维护旧接口差距。

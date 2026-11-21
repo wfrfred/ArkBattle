@@ -42,6 +42,9 @@ uv run "$skill/scripts/archive.py" docs/research/evidence
 
 | 批次 | 调查主题 |
 | --- | --- |
+| [cjstel-route-selection-20261122](cjstel-route-selection-20261122/README.md) | 思旧吸收后所用路线分支的实际关卡数、条目和参数引用 |
+| [talent-schedule-callers-20261122](talent-schedule-callers-20261122/README.md) | 次生预案的天赋重绑调用和 Scheduler 最终等待配置的实读位置 |
+| [route-content-necessity-20261122](route-content-necessity-20261122/README.md) | 固定关卡路线配置、出怪引用、跨格 MOVE 的目标归格对照 |
 | [forced-motion-20261118](forced-motion-20261118/README.md) | 阿消推击、暗索持续施力、力度表和失衡退出；三个实际场景的碰撞体、地穴与物理提交顺序 |
 | [resource-mechanisms-20261114](resource-mechanisms-20261114/README.md) | HP／ES／负生命、生命干预与复活、Modifier分类／权限、HP／EP回复、五型爆发／恢复修改、死亡归属及属性范围的完整调用链与实际Content绑定 |
 | [facing-conditions-20261114](facing-conditions-20261114/README.md) | 统一转向资格、出生／移动／攻击／受力／重现／待机入口、实际符号发布、动画后端差别及火龙普通关卡部位机制绑定 |
@@ -95,6 +98,7 @@ uv run "$skill/scripts/archive.py" docs/research/evidence
 | [card-ordering-20261031](card-ordering-20261031/README.md) | Card 排序入口、调用实参与 Aura 边界；凛御银灰实际比较器安装／撤销及多来源竞争尚未闭合 |
 | [deployment-entry-20261101](deployment-entry-20261101/README.md) | 卡牌 Buff 转入角色、属性启用、基础 SP／HP 与出生事件；松桐、凛御银灰的具体模板和时点区别 |
 | [deployment-recovery-20261101](deployment-recovery-20261101/README.md) | 新客户端的队列库存恢复预算、负 DP 半速自然回复及费用短链复核 |
+| [dp-cap-20261122](dp-cap-20261122/README.md) | 诺伯特平民的游戏图鉴与真实出生配置、关卡账户上限与价格截断的独立配置及普通客户端写入 |
 | [deployment-direction-20261101](deployment-direction-20261101/README.md) | 有／无朝向设置的部署实例、岁相巨型范围与未绑定具体资源的 EnemyGiantBoss 类证据 |
 | [deployment-move-20261102](deployment-move-20261102/README.md) | 特殊移动的独立结束原因；与旧版结束后重新创建调用链分别标明版本边界 |
 | [card-policy-distribution-20261102](card-policy-distribution-20261102/README.md) | 原生 CardPolicy、份数消耗、回收与费用惩罚的配置分布和执行分支 |

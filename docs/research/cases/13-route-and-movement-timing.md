@@ -166,6 +166,8 @@ DefaultGameMode.DestroyEntity 对 REACH_EXIT 使用 RecycleSelfWithDelay，逻�
 
 requireAllCheckpoints=false 说明终点资格不只取决于指令索引；上述路径不保存独立 completed，不能为项目锁存标记或 Blocking 门槛背书。项目终点操作见 [Navigation／Route](../../architecture/navigation.md#运动目标与-main-出口)。
 
+**2026-11-22 补核，内容可以直接请求出口结算。** 实际 OR-7（Act40Side_07）出生的思旧在默认模式用吸收光环为无谓／饮啄安装 `enemy_cjstel_absorb`。开始动作对被拾取者调用 `InstantKill`，实际配置为 `_markReachExit=true` 和 `_switchState=true`。普通 native 体 #99235 在 `0x181102858` 读取前者，进入 `0x18110287d..0x1811028b3`，把后者传给虚槽 95 的 `FinishWithReachExit`。Enemy 覆盖 #77832 切换到对应状态后，在 `0x180abbf26` 把 `REACH_EXIT=1` 传给 FinishMe。这条入口没有先查询被拾取者的几何终点。受害者的到达响应以及关卡扣血资格按各自消费者决定，常规完成／击杀／波次等待的区别仍见案例 30 和 39。此为实际配置和已存普通静态分支的交叉核对。 [绑定](31-route-operations-and-state.md#4-内容证据与可执行条件) · [模板](../evidence/route-operations-20261107/content/route-templates.json#L2589) · [InstantKill 原体](../evidence/resource-mechanisms-20261114/death-attributes/source-writers.json) · [FinishWithReachExit 原体](../evidence/route-exit-20261108/entry.json#L3241) · [PRTS 思旧](https://prts.wiki/w/思旧)
+
 ## 6. 末段跟踪的偏移
 
 **N：** 原生 MoveCheckpoint.GetNextDirection（70190）在安全 next 格已经指向路点目标格时，就将本次已采样 offset 加入 next 位置后求方向；不要求当前格先进入目标格。位置计算与分支见 `0x1808a03f3..0x1808a0437`。[末段方向](../evidence/route-movement-20261018/70190.asm)
@@ -266,6 +268,8 @@ BObject.Init 在 `0x1806afb63` 建立位置，早于 Enemy.Init 随后的 Cursor
 **N／I：** 消失标志改变不等于已经进入 DisappearState。Enemy 的后回调会请求该状态；普通 SwitchState 在 currentStateId<=0 时拒绝转换，而未启动的新 StateMachine 的该字段为默认零。因此，初始化首 DISAPPEAR 可以已写标志并执行同步回调，却尚未施加 DisappearState 的渐隐和状态效果。后面的 Start 使用强制切换进入 Enemy 的初始状态；所查 BornState.OnEnter 初始化出生动画和等待，并不检查该标志。[普通切换](../evidence/checkpoint-semantics-20261107/state-switch-internal.json)、[构造](../evidence/checkpoint-semantics-20261107/state-constructor-body.json)、[Start](../evidence/checkpoint-semantics-20261107/state-start-bodies.json)、[初始状态](../evidence/checkpoint-semantics-20261107/init-state-body.json)、[BornState](../evidence/checkpoint-semantics-20261107/presence/born-state-enter-body.json)。本轮不据此推导之后永远不进入消失状态。
 
 **U：** 82 份完整源文件的 routes／extraRoutes 中，未找到首个 Checkpoint 为 DISAPPEAR／APPEAR_AT_POS 的配置；不能将这种静态允许的调用链冒充已验证的实际关卡行为，也不能宣称全局没有此类路线。未运行游戏、核实活跃 XLua、穷举 OnInit 已安装的监听器，或继续展开出生结束后的全部状态选择。
+
+2026-11-22 对固定镜像的 3,944 份关卡复扫，在 `extraRoutes` 找到 48 条首项 DISAPPEAR 和 72 条首项 APPEAR，普通正数 SPAWN 的 `routes` 引用没有命中这两项。额外路线实际由什么业务选择、该业务何时执行以及谁依赖登记前的通知，仍需具体见证。 [关卡扫描](../evidence/route-content-necessity-20261122/README.md)
 
 ### 对后续设计的约束
 

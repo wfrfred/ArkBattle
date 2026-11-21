@@ -136,6 +136,8 @@ dontCountAsFinished = (B && !M) || N
 - **销毁／回收**：销毁解除 wave 阻塞。动态配置 useRecycleToFinishScheduler=false 时也解除 final；为 true 时 final 留到回收入口解除。不能固定认为死亡或回收的任意一项总是最后等待点。
 - **结束判断**：wave 集合、final 集合、模式条件及显式结束 blocker 分别参与；remaining=total−finished，completeProgress 使用 killed／total，都不是管理集合数量或完整结束条件的同义接口。
 
+2026-11-22 重查 `get_useRecycleToFinishScheduler`。普通 getter 直接读取运行时配置对象，调度销毁与显式记账入口均有实际调用。固定 gamedata JSON 未找到同名字面项，实际运行取值及此等待差在支持玩法中的消费者仍未取得。 [调用原件](../evidence/talent-schedule-callers-20261122/README.md)
+
 外部 MarkEnemyKilled 可提前完成账务并使实例不再重复完成计数；ReleaseEnemyFromCurrentWave 只释放本波／缓存关系，不增加完成计数或移除 final。动作完成回调在普通创建成功或失败路径都执行，也不等待敌人死亡。
 
 因此已有证据足以否定“managed 是总开关”“不阻波就不计数”“分支统一固定政策”等合并方式。尚未据此决定 Core 最终保留几个字段：需要保留的是这些独立的战斗事实，而不是原生字段数量本身。

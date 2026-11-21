@@ -298,6 +298,8 @@ Route 描述路线脚本，Navigation 回答当前移动意图如何经过有效
 
 这些数据都使用 `env_gbuff_new_with_verify`。**证实**：该字段连到具体内容 key；字段名不能自行决定内容是持续分发、一次目标采样还是全局事件机制。不能仅凭描述认定层数变化会立即重算全部 Buff。
 
+固定资料修订 `17759cc8cdf37388414145d16262a3a06f3ab25e` 的 `activity_table.json` 中，`/activity/AUTOCHESS_SEASON/{赛季}/bandDataListDict/band_ermengard` 都引用 `aceffect_band_48`。跟随 `effectBuffInfoDataDict/aceffect_band_48/0`，两季均选择 `act1autochess_band28_buff`，但上半 `act1autochess` 的 `max_respawn_cnt` 为 2，下半 `act2autochess` 为 3，与各自赛季文本吻合。共享上限由本轮配置决定；这次补核未执行 Lua 复活程序。 [下半配置](../../assets/arknights-game-data/zh_CN/gamedata/excel/activity_table.json#L351668) · [上半配置](../../assets/arknights-game-data/zh_CN/gamedata/excel/activity_table.json#L385552)
+
 `GlobalEnvSystem` 独立保存 executors、managers、blackboard、身份与寿命设置，由 `GlobalEnvSystemController` 创建、Tick、移除，并提供环境变更和 Action／Projectile 等入口。**推断**：全局周期、共享计数、阶段与环境启停自然属于非 Unit 的机制事实；不能强制全部环境规则都展开成每个 Unit 的属性 Buff。
 
 全局过程与接收 Buff 的身份、安装关联、共享额度和来源清理分别核实；不能仅从当前几何恢复已发生的安装。项目组织见 [Effect](../architecture/effect.md)与[总体架构](../architecture/ARCHITECTURE.md)。

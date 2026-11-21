@@ -42,6 +42,8 @@ N 表示客户端原生分支直接证实；D 表示固定版本数据及引用�
 
 原始 motionMode 还存在数值 0／1 及 E_NUM。Map._InitRoutesAndPassableMaps（70040）只为 0、1 创建两套通行地图；本次未追出 E_NUM 的执行决议，标为 U，不猜测其必然回退到 EnemyData.motion，也不将其视为第三种寻路策略。
 
+2026-11-22 的固定镜像复扫统计 144,418 条有效路线定义。三个开关保持上述默认值。E_NUM 有 22,771 条静态定义和 1,981 次正数 SPAWN 到 `routes` 的配置引用，其中主线目录没有命中。活动 `act13side_10` 的 Branch `bldkgt_bldbld` 第 3 段有引用起终点均为 `(0, 0)`、无检查点的 E_NUM 路线；同段也有真实 WALK 路线。活动 `act17d0_08` 的 `branch_2` 给多项该类出生标为 `isValid=false`。本轮没有确认 E_NUM 在实际步行或飞行时如何选图。 [关卡复扫、引用及复现](../evidence/route-content-necessity-20261122/README.md)
+
 ## 3. 出生偏移持续作用于整条路线
 
 **N：** Route.GetSpawnOffset（70368）取得 `RandomVector2(spawnRandomRange) + spawnOffset`。RandomVector2（22393）对两个轴分别使用随机数，范围为各自的 `[-range, +range]`。

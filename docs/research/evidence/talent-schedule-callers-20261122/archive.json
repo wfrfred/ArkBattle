@@ -1,0 +1,116 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-11-22"
+    ],
+    "collectionDateSource": "batch directory",
+    "organizedOn": "2026-11-22",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+        "records": [
+          "result.json#/provenance/client/dll"
+        ],
+        "bytes": 223112680
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        "records": [
+          "result.json#/provenance/client/metadata"
+        ],
+        "bytes": 46669332
+      }
+    },
+    "sourceRecords": [
+      "result.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12895,
+        "sha256": "9c5b246859318caaec4aab5275ef0d2d49fce5d612c6b4e569973a9941ba621a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "result.json",
+        "kind": "record",
+        "bytes": 32930,
+        "sha256": "2eb471570ccddc1b528d3b7a6d8645c9bd04b474f32397b56d35380dd0f4a1b7"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 44076,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/use-recycle/selectedBodies/0",
+            "result.json#/result/use-recycle/selectedBodies/0/method"
+          ],
+          "fullname": "Torappu.Config.DynamicConfig.get_useRecycleToFinishScheduler",
+          "address": "0x183e52640"
+        },
+        {
+          "index": 73333,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/use-recycle/selectedBodies/2",
+            "result.json#/result/use-recycle/selectedBodies/2/method"
+          ],
+          "fullname": "Torappu.Battle.Scheduler._OnUnitDestroyed",
+          "address": "0x180986c00"
+        },
+        {
+          "index": 73334,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/use-recycle/selectedBodies/1",
+            "result.json#/result/use-recycle/selectedBodies/1/method"
+          ],
+          "fullname": "Torappu.Battle.Scheduler.MarkEnemyKilled",
+          "address": "0x18097f410"
+        },
+        {
+          "index": 77370,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/reassign/selectedBodies/0",
+            "result.json#/result/reassign/selectedBodies/0/method"
+          ],
+          "fullname": "Torappu.Battle.Character.ReassignTalents",
+          "address": "0x180aa5730"
+        },
+        {
+          "index": 84253,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/reassign/selectedBodies/1",
+            "result.json#/result/reassign/selectedBodies/1/method"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/HalfIdleGameMode.GainExp",
+          "address": "0x180cd2670"
+        }
+      ],
+      "blocks": [],
+      "types": [],
+      "constants": [],
+      "bundles": []
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

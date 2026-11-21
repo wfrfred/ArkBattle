@@ -92,3 +92,9 @@ S1／S2 起飞模式 Attack 对象上的 BuffToOwner
 | 特殊对象覆盖 | Trap getter 读取实例 `_blockRadiusSquare`；GiantTrap 使用自己的固定平方半径并遍历多个原点 | 不能把普通 Character 默认值宣称为所有装置的强制常量。 |
 
 常量地址、倍率字段、方法和旧证据指纹见 [selected-witnesses.json](../evidence/air-blocking-radius-20261029/selected-witnesses.json)。这证明倍率通道存在，没有调查每项内容是否实际修正它，也不根据可写 schema 虚构某个干员的特殊倍率。
+
+### 2026-11-22 补核：凯尔希·思衡托的动态半径
+
+**D：** 固定镜像 `17759cc8cdf37388414145d16262a3a06f3ab25e` 中，`char_1052_kalts2` 的第一天赋“遗尘守望”在 `/char_1052_kalts2/talents/0/candidates/*/blackboard/3` 写有 `block_radius_scale=0.23`。同角色 S1 `skchr_kalts2_1` 的各技能等级在 `/skchr_kalts2_1/levels/*/blackboard/1` 写有 `attack@block_radius_scale=0.23`，持续时间均为 35 秒。 [角色表](../../../assets/arknights-game-data/zh_CN/gamedata/excel/character_table.json) · [技能表](../../../assets/arknights-game-data/zh_CN/gamedata/excel/skill_table.json)
+
+**P：** 社区条目将天赋的范围变化记为自身的阻挡半径倍率，S1 则提高其他持有对地规避的友方干员的倍率。S1 开启和结束能改变已在场受益者的有效范围，范围内外的飞行单位取得阻挡关系的结果会不同。第 6 节的原生半径读取证明普通飞行阻挡消费 `BLOCK_RADIUS_SCALE`，普通地面阻挡不消费该属性。本次没有重新提取新版 Buff 模板或运行客户端验证倍率叠加。 [PRTS 天赋与技能](https://prts.wiki/w/凯尔希·思衡托#技能) · [半径读取原件](../evidence/air-blocking-radius-20261029/selected-witnesses.json)

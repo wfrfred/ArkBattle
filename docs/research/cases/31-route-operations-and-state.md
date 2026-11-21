@@ -36,6 +36,8 @@ Enemy 入口的完整方法、准确参数与 VA 在[操作原件](../evidence/r
 
 **N：从 Branch 取得路线也可能是操作。** `ModifyRuntimeRouteUseBranchRoute` 使用的 `Scheduler.TryGetEnemyRouteFromBranch` 并非只读查询：它先按允许循环的政策取下一 Phase 并推进 Branch 索引，再验证指定 Action、取得对应 Route。这条链不因此执行该 Action 或出生 Unit，后续取路线失败也不回滚已推进的 Phase。`TryGetAllEnemyRoutFromBranch` 具有同类推进。原件及实参纠正见[既有调用记录](../evidence/scheduler-general-20261107/lifecycle/branch-route-cursor-note.md)。因此，原生 Branch 既可以执行出生，也可以被内容作为路线选择来源；不能把两者都误写成 triggerBranch 出怪。如何在 Data／Content／Core 表达这种需求尚未定稿。
 
+2026-11-22 复核思旧实际关卡。固定 `act40side` 目录的 23 个关卡文件中，6 份定义共 18 个 `cjstel_move_N`，每个仅含一 Phase、一 SPAWN 条目。17 次分支名引用均为敌人参数，本次静态扫描未发现同一分支名还用于执行出怪。结合上面的循环取项证据，已见的配置每次取得同一路线条目。运行时动态分支名和其它关卡不在这条结论内。 [配置扫描](../evidence/cjstel-route-selection-20261122/README.md)
+
 ## 3. 状态究竟保留什么
 
 ### 3.1 程序、进度与路点私有状态

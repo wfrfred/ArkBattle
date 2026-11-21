@@ -1,0 +1,461 @@
+{
+  "provenance": {
+    "source": "https://github.com/Kengxxiao/ArknightsGameData",
+    "revision": "17759cc8cdf37388414145d16262a3a06f3ab25e",
+    "selection": "gamedata/levels/activities/act40side/level_*.json"
+  },
+  "result": [
+    {
+      "file": "level_act40side_01.json",
+      "sha256": "8fc672d133244c67ba9ad8bb9b7dc9b32dd052d405a37a3f085d64a09bad78a4",
+      "branches": [],
+      "references": []
+    },
+    {
+      "file": "level_act40side_02.json",
+      "sha256": "50252ad8f4e6785843c31de4bab927ef6989acdb146e713b596c4ea8ac5da119",
+      "branches": [],
+      "references": []
+    },
+    {
+      "file": "level_act40side_03.json",
+      "sha256": "7cdeb6251c989a4b2e29063870cf55f379217aa457bc8c7ef9cb52d582322648",
+      "branches": [],
+      "references": []
+    },
+    {
+      "file": "level_act40side_04.json",
+      "sha256": "68e19e64d9dde10b22eab4ddd8a310c7dc3f2c23f73368132a1451698bbe9c2c",
+      "branches": [],
+      "references": []
+    },
+    {
+      "file": "level_act40side_05.json",
+      "sha256": "cd8c5c1e9a98e6f3ce89d72e734d7f2a7c44830a86af47727bc6e8d7aa8406ee",
+      "branches": [],
+      "references": []
+    },
+    {
+      "file": "level_act40side_06.json",
+      "sha256": "222dd2429a0d60745451fcc23f8f443e410b34a08af24e8ff2f243aa6b85845b",
+      "branches": [],
+      "references": []
+    },
+    {
+      "file": "level_act40side_07.json",
+      "sha256": "a345ccf9d7f27106123610c02058343384d30ada7ef2531637d2ea34d6f1e62f",
+      "branches": [
+        {
+          "pointer": "/branches/cjstel_move_1",
+          "phases": [
+            [
+              {
+                "actionType": "SPAWN",
+                "key": "enemy_10057_cjstel",
+                "routeIndex": 2,
+                "count": 1
+              }
+            ]
+          ]
+        },
+        {
+          "pointer": "/branches/cjstel_move_2",
+          "phases": [
+            [
+              {
+                "actionType": "SPAWN",
+                "key": "enemy_10057_cjstel",
+                "routeIndex": 3,
+                "count": 1
+              }
+            ]
+          ]
+        },
+        {
+          "pointer": "/branches/cjstel_move_3",
+          "phases": [
+            [
+              {
+                "actionType": "SPAWN",
+                "key": "enemy_10057_cjstel_c",
+                "routeIndex": 4,
+                "count": 1
+              }
+            ]
+          ]
+        },
+        {
+          "pointer": "/branches/cjstel_move_4",
+          "phases": [
+            [
+              {
+                "actionType": "SPAWN",
+                "key": "enemy_10057_cjstel_d",
+                "routeIndex": 5,
+                "count": 1
+              }
+            ]
+          ]
+        },
+        {
+          "pointer": "/branches/cjstel_move_5",
+          "phases": [
+            [
+              {
+                "actionType": "SPAWN",
+                "key": "enemy_10057_cjstel_e",
+                "routeIndex": 6,
+                "count": 1
+              }
+            ]
+          ]
+        }
+      ],
+      "references": [
+        {
+          "pointer": "/enemyDbRefs/9/overwrittenData/talentBlackboard/2/valueStr",
+          "value": "cjstel_move_2"
+        },
+        {
+          "pointer": "/enemyDbRefs/10/overwrittenData/talentBlackboard/2/valueStr",
+          "value": "cjstel_move_3"
+        },
+        {
+          "pointer": "/enemyDbRefs/11/overwrittenData/talentBlackboard/2/valueStr",
+          "value": "cjstel_move_4"
+        },
+        {
+          "pointer": "/enemyDbRefs/12/overwrittenData/talentBlackboard/2/valueStr",
+          "value": "cjstel_move_5"
+        }
+      ]
+    },
+    {
+      "file": "level_act40side_08.json",
+      "sha256": "2ab58c5498193332ded038c6885118d756ab50710d22c316f9623c4ed18f790f",
+      "branches": [],
+      "references": []
+    },
+    {
+      "file": "level_act40side_09.json",
+      "sha256": "ef4e21794318a60b7faf867a6f0366b372e53caaf78d2124ddc6e810d169f589",
+      "branches": [],
+      "references": []
+    },
+    {
+      "file": "level_act40side_ex01.json",
+      "sha256": "8f0d4f8e0038b1936f6cc81a51f5c73e523c91ffe4b81573822eb5ef07aa5230",
+      "branches": [],
+      "references": []
+    },
+    {
+      "file": "level_act40side_ex02.json",
+      "sha256": "ae0905415850dcaa973e3ca650ced6614bbaf7b9be578bcd06e16b17e36b43ba",
+      "branches": [],
+      "references": []
+    },
+    {
+      "file": "level_act40side_ex03.json",
+      "sha256": "bea15b42c6dc61948166b63095ff141da7f4ada9134ef1abcfff0023c68b7bd1",
+      "branches": [],
+      "references": []
+    },
+    {
+      "file": "level_act40side_ex04.json",
+      "sha256": "99b353eae05ac3807e99ef6d2efeff4d49f269afb39b41a16615cc90852c50b4",
+      "branches": [
+        {
+          "pointer": "/branches/cjstel_move_1",
+          "phases": [
+            [
+              {
+                "actionType": "SPAWN",
+                "key": "enemy_10057_cjstel_2_b_1",
+                "routeIndex": 2,
+                "count": 1
+              }
+            ]
+          ]
+        },
+        {
+          "pointer": "/branches/cjstel_move_2",
+          "phases": [
+            [
+              {
+                "actionType": "SPAWN",
+                "key": "enemy_10057_cjstel_2_b_2",
+                "routeIndex": 3,
+                "count": 1
+              }
+            ]
+          ]
+        }
+      ],
+      "references": [
+        {
+          "pointer": "/enemyDbRefs/6/overwrittenData/talentBlackboard/2/valueStr",
+          "value": "cjstel_move_1"
+        },
+        {
+          "pointer": "/enemyDbRefs/7/overwrittenData/talentBlackboard/2/valueStr",
+          "value": "cjstel_move_2"
+        }
+      ]
+    },
+    {
+      "file": "level_act40side_ex05.json",
+      "sha256": "24f86f094d1d61b3501edd03940960491eeeb484ddacd7c8f94677c7fa30184a",
+      "branches": [],
+      "references": []
+    },
+    {
+      "file": "level_act40side_ex06.json",
+      "sha256": "5c8805bae5bc7b50b78dff35bc75bbd0218e95e4f315654f20f0470784eb84f6",
+      "branches": [],
+      "references": []
+    },
+    {
+      "file": "level_act40side_ex07.json",
+      "sha256": "d4256d1e2a1b2bf6b524c7c7de0829477f3a8fbc7d55f26bf088d90f7867d04c",
+      "branches": [],
+      "references": []
+    },
+    {
+      "file": "level_act40side_ex08.json",
+      "sha256": "07cd0990f21badca8a17d0c5da356c836f59b6701938467c11333ef2cb025261",
+      "branches": [
+        {
+          "pointer": "/branches/cjstel_move_1",
+          "phases": [
+            [
+              {
+                "actionType": "SPAWN",
+                "key": "enemy_10057_cjstel_2_b",
+                "routeIndex": 10,
+                "count": 1
+              }
+            ]
+          ]
+        },
+        {
+          "pointer": "/branches/cjstel_move_2",
+          "phases": [
+            [
+              {
+                "actionType": "SPAWN",
+                "key": "enemy_10057_cjstel_2_c",
+                "routeIndex": 11,
+                "count": 1
+              }
+            ]
+          ]
+        },
+        {
+          "pointer": "/branches/cjstel_move_3",
+          "phases": [
+            [
+              {
+                "actionType": "SPAWN",
+                "key": "enemy_10057_cjstel_2_d",
+                "routeIndex": 12,
+                "count": 1
+              }
+            ]
+          ]
+        },
+        {
+          "pointer": "/branches/cjstel_move_4",
+          "phases": [
+            [
+              {
+                "actionType": "SPAWN",
+                "key": "enemy_10057_cjstel_2_e",
+                "routeIndex": 13,
+                "count": 1
+              }
+            ]
+          ]
+        },
+        {
+          "pointer": "/branches/cjstel_move_5",
+          "phases": [
+            [
+              {
+                "actionType": "SPAWN",
+                "key": "enemy_10057_cjstel_2_c",
+                "routeIndex": 14,
+                "count": 1
+              }
+            ]
+          ]
+        }
+      ],
+      "references": [
+        {
+          "pointer": "/enemyDbRefs/12/overwrittenData/talentBlackboard/2/valueStr",
+          "value": "cjstel_move_2"
+        },
+        {
+          "pointer": "/enemyDbRefs/13/overwrittenData/talentBlackboard/2/valueStr",
+          "value": "cjstel_move_4"
+        },
+        {
+          "pointer": "/enemyDbRefs/14/overwrittenData/talentBlackboard/2/valueStr",
+          "value": "cjstel_move_1"
+        },
+        {
+          "pointer": "/enemyDbRefs/15/overwrittenData/talentBlackboard/2/valueStr",
+          "value": "cjstel_move_3"
+        },
+        {
+          "pointer": "/enemyDbRefs/16/overwrittenData/talentBlackboard/2/valueStr",
+          "value": "cjstel_move_5"
+        }
+      ]
+    },
+    {
+      "file": "level_act40side_mo01.json",
+      "sha256": "7b3a7681db897f7eb95865fd5ae3ffd5191db632d2b9ac684ae98ef662a6bc5e",
+      "branches": [
+        {
+          "pointer": "/branches/cjstel_move_1",
+          "phases": [
+            [
+              {
+                "actionType": "SPAWN",
+                "key": "enemy_10057_cjstel_2",
+                "routeIndex": 2,
+                "count": 1
+              }
+            ]
+          ]
+        }
+      ],
+      "references": [
+        {
+          "pointer": "/enemyDbRefs/16/overwrittenData/talentBlackboard/2/valueStr",
+          "value": "cjstel_move_1"
+        }
+      ]
+    },
+    {
+      "file": "level_act40side_sub-1-1.json",
+      "sha256": "ca9d045ecda818e78749b82e7a3d3516b151f48657fa9dd63e6dd4d4ab81d2cf",
+      "branches": [
+        {
+          "pointer": "/branches/cjstel_move_1",
+          "phases": [
+            [
+              {
+                "actionType": "SPAWN",
+                "key": "enemy_10057_cjstel_2_b_1",
+                "routeIndex": 2,
+                "count": 1
+              }
+            ]
+          ]
+        },
+        {
+          "pointer": "/branches/cjstel_move_2",
+          "phases": [
+            [
+              {
+                "actionType": "SPAWN",
+                "key": "enemy_10057_cjstel_2_b_1",
+                "routeIndex": 3,
+                "count": 1
+              }
+            ]
+          ]
+        }
+      ],
+      "references": [
+        {
+          "pointer": "/enemyDbRefs/5/overwrittenData/talentBlackboard/2/valueStr",
+          "value": "cjstel_move_1"
+        },
+        {
+          "pointer": "/enemyDbRefs/6/overwrittenData/talentBlackboard/2/valueStr",
+          "value": "cjstel_move_2"
+        }
+      ]
+    },
+    {
+      "file": "level_act40side_sub-1-2.json",
+      "sha256": "80015b1056fa9f82ad13864cf5f6c3acf3f861bd79c88906d6dc901972e9126e",
+      "branches": [],
+      "references": []
+    },
+    {
+      "file": "level_act40side_sub-1-3.json",
+      "sha256": "874a4be1de820065d3b811586f3a151e6981a3a4c2c7dcfe3b2d0c89753a5a39",
+      "branches": [
+        {
+          "pointer": "/branches/cjstel_move_1",
+          "phases": [
+            [
+              {
+                "actionType": "SPAWN",
+                "key": "enemy_10057_cjstel_a",
+                "routeIndex": 2,
+                "count": 1
+              }
+            ]
+          ]
+        },
+        {
+          "pointer": "/branches/cjstel_move_2",
+          "phases": [
+            [
+              {
+                "actionType": "SPAWN",
+                "key": "enemy_10057_cjstel_b",
+                "routeIndex": 3,
+                "count": 1
+              }
+            ]
+          ]
+        },
+        {
+          "pointer": "/branches/cjstel_move_3",
+          "phases": [
+            [
+              {
+                "actionType": "SPAWN",
+                "key": "enemy_10057_cjstel_c",
+                "routeIndex": 4,
+                "count": 1
+              }
+            ]
+          ]
+        }
+      ],
+      "references": [
+        {
+          "pointer": "/enemyDbRefs/10/overwrittenData/talentBlackboard/2/valueStr",
+          "value": "cjstel_move_1"
+        },
+        {
+          "pointer": "/enemyDbRefs/11/overwrittenData/talentBlackboard/2/valueStr",
+          "value": "cjstel_move_2"
+        },
+        {
+          "pointer": "/enemyDbRefs/12/overwrittenData/talentBlackboard/2/valueStr",
+          "value": "cjstel_move_3"
+        }
+      ]
+    },
+    {
+      "file": "level_act40side_sub-1-4.json",
+      "sha256": "c08521ae6b16145ae768ca177a515bec0f36d400c3a71bb737179129e8c54346",
+      "branches": [],
+      "references": []
+    },
+    {
+      "file": "level_act40side_tr01.json",
+      "sha256": "021a20f9b603d99ca73e5e98260b64f1d10c98b4449d5335f32473bfd21a8f27",
+      "branches": [],
+      "references": []
+    }
+  ]
+}

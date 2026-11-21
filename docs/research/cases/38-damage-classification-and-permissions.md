@@ -297,7 +297,9 @@ EP恢复资格的组合依据复用[当前控制器原件](../evidence/resource-
 
 [PRTS蒂比](https://prts.wiki/w/蒂比)记载S2闪避后不再执行伤判，包括第一天赋计时；[社区讨论](https://prts.wiki/w/话题:Ytavkwvywob1ug8x)也区分它与普通闪避。但当前完整fallback在事件6后没有统一取消早退，`get_isDamage`只看目标与数学类型，Unit及其接收虚覆盖也没有能撤销先前事件10的前置门。实际 `tippi_t` 的事件10本身没有取消过滤。该具体计时表现尚未由当前静态链复现，不能把社区概括直接补成当前fallback中未见的统一早退；有效XLua及实机结果保留为明确证据边界，不以此否定其已绑定的早期技能程序。
 
-部分候选没有被用来证明普通玩法必须支持某种额外分支：`enemy_wdsdw[loss_hp]` 实际绑在 `enemy_1323_wdbshd`，当前只闭合原表／关卡引用，未闭合召唤或直接出场链；`enemy_wlrage_t_check`也未闭合直接出场。`immune_env_damage`绑定巨翼兽，既有sandbox也有玩法归属未核实的act1arkhub记录，不能简单视为普通玩法正例，也不能宣称全为排除模式。完整索引与未闭合项保留于配置记录，不由“未闭合”推导可删除。
+2026-11-22 补核 `enemy_wdsdw[loss_hp]` 的实际出场。主线 12-18 出生的变形者集群在第二形态启用 `syncAttackWithSummon`；实际弹道 `projectile_enemy_wdslm_p2s2` 通过 `SummonEnemiesOnTargetTile` 召唤 `enemy_1323_wdbshd`。子 Prefab 的实际天赋引用该模板，前置 EP 中断已取得普通玩法的配置绑定。仍未找到实际被该中断省略的来源 EP 输出后继，或读取中断原因的独立玩法程序。 [配置与复查](../evidence/wdslm-ep-interrupt-20261122/README.md)
+
+`enemy_wlrage_t_check` 尚未闭合直接出场。`immune_env_damage` 绑定巨翼兽，既有 sandbox 也有玩法归属未核实的 act1arkhub 记录。完整索引与未闭合项保留于配置记录。
 
 ### 项目对应
 

@@ -1,0 +1,435 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-22",
+    "sources": [
+      {
+        "bundle": "anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+        "bytes": 477255,
+        "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99"
+      },
+      {
+        "bundle": "battle/enm_pfb_18.ab",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_18.ab",
+        "bytes": 895456,
+        "sha256": "7bc74aef8fbb3cbc7ce86d7e4b789e2c0daaadf076d47b0e9989e83e7ff4eb69"
+      },
+      {
+        "bundle": "battle/enm_pfb_13.ab",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_13.ab",
+        "bytes": 342400,
+        "sha256": "0b3c936babb315fa9771a7e78e4cd2b1dfdee9ce80e043fdac65122d8b424a59"
+      },
+      {
+        "bundle": "battle/prefabs/[uc]projectiles.ab",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]projectiles.ab",
+        "bytes": 1905483,
+        "sha256": "cc3f21b73b10fbc619a1ff8b099f31e678c883ddacb7bb6775fea960ffecb0e1"
+      }
+    ],
+    "decoder": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/nymph-action-settlement-20261103/projectile/decode_projectile.py",
+      "bytes": 6749,
+      "sha256": "dab13196fb726d06bd9094c29f09a12dc3677b2c129359a1f7c305e13a8157fb"
+    }
+  },
+  "components": [
+    {
+      "purpose": "P2 syncAttackWithSummon EnemySkill",
+      "bundle": "battle/enm_pfb_18.ab",
+      "file": "CAB-0df5f4c8c8dade07e2ee475a972da576",
+      "pathId": "-112682243156362432",
+      "objectSha256": "70627477dfe0a7a94c2d99f6b07774bae0729b47f5aaac380d83c271f8c12550",
+      "hierarchy": [
+        "enemy_1542_wdslm",
+        "Modes",
+        "P2",
+        "Body",
+        "Skills",
+        "syncAttackWithSummon"
+      ],
+      "script": {
+        "id": "-5087399121287503180",
+        "name": "EnemySkill",
+        "cl": "EnemySkill",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "fields": {
+        "_trigger": {
+          "m_FileID": 0,
+          "m_PathID": -1989564279266493632
+        }
+      }
+    },
+    {
+      "purpose": "boss P2 mode",
+      "bundle": "battle/enm_pfb_18.ab",
+      "file": "CAB-0df5f4c8c8dade07e2ee475a972da576",
+      "pathId": "309747327906134848",
+      "objectSha256": "2ce722e89bdc15fa2a5ec06f2b33a697962c43fe3137f1c38a7a3ef30ac20ff3",
+      "hierarchy": [
+        "enemy_1542_wdslm",
+        "Modes",
+        "P2"
+      ],
+      "script": {
+        "id": "5390319429299248724",
+        "name": "UnitMode",
+        "cl": "UnitMode",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "fields": {
+        "_generalAbilities": {
+          "Array": []
+        },
+        "_bodyTransform": {
+          "m_FileID": 0,
+          "m_PathID": -301458722456945856
+        }
+      }
+    },
+    {
+      "purpose": "P2 syncAttackWithSummon",
+      "bundle": "battle/enm_pfb_18.ab",
+      "file": "CAB-0df5f4c8c8dade07e2ee475a972da576",
+      "pathId": "3025183016322382656",
+      "objectSha256": "e2cc3d79401860428c1dd650ea8935903b303cd655c84a74f2f9008c712dde34",
+      "hierarchy": [
+        "enemy_1542_wdslm",
+        "Modes",
+        "P2",
+        "Body",
+        "Skills",
+        "syncAttackWithSummon"
+      ],
+      "script": {
+        "id": "-4806719744953836297",
+        "name": "ProjectileToTileWithExtraActionsAbility",
+        "cl": "ProjectileToTileWithExtraActionsAbility",
+        "ns": "Torappu.Battle.Abilities",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "fields": {
+        "_metadata": {
+          "namedAsAlias": "syncAttackWithSummon",
+          "blackboardPrefix": ""
+        },
+        "_projectileKey": "projectile_enemy_wdslm_p2s2"
+      }
+    },
+    {
+      "purpose": "boss reborn",
+      "bundle": "battle/enm_pfb_18.ab",
+      "file": "CAB-0df5f4c8c8dade07e2ee475a972da576",
+      "pathId": "3975990805935340352",
+      "objectSha256": "9205ebe28dfad285f4be92f3668ae521cac83f01bf42a16dae8ba5946d77d5dd",
+      "hierarchy": [
+        "enemy_1542_wdslm",
+        "Talents",
+        "reborn"
+      ],
+      "script": {
+        "id": "-4458530021321694031",
+        "name": "RebornTalent",
+        "cl": "RebornTalent",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "fields": {
+        "_modeIndex": 2,
+        "_maxRespawnCnt": 1
+      }
+    },
+    {
+      "purpose": "boss",
+      "bundle": "battle/enm_pfb_18.ab",
+      "file": "CAB-0df5f4c8c8dade07e2ee475a972da576",
+      "pathId": "5624699378828557120",
+      "objectSha256": "923a28e00a7451fe1bee9f3f1a6f7400752994d8426afb344c7f0af6c25fa6dc",
+      "hierarchy": [
+        "enemy_1542_wdslm"
+      ],
+      "script": {
+        "id": "-6629209555389654693",
+        "name": "Enemy",
+        "cl": "Enemy",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "fields": {
+        "_modes": {
+          "Array": [
+            {
+              "m_FileID": 0,
+              "m_PathID": -5575847274343253184
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 9068715731461847872
+            },
+            {
+              "m_FileID": 0,
+              "m_PathID": 309747327906134848
+            }
+          ]
+        }
+      }
+    },
+    {
+      "purpose": "summoned target PassiveBuffAbility",
+      "bundle": "battle/enm_pfb_13.ab",
+      "file": "CAB-d5a5ebb06b9b5c15f66b6f736b421497",
+      "pathId": "-7188237669545160030",
+      "objectSha256": "d530ba9f3126c212e3057f1aeb4a68e5dbd3e439357bbb542b79863126bfbf65",
+      "hierarchy": [
+        "enemy_1323_wdbshd",
+        "Talents",
+        "lossHP"
+      ],
+      "script": {
+        "id": "3800760148018415462",
+        "name": "PassiveBuffAbility",
+        "cl": "PassiveBuffAbility",
+        "ns": "Torappu.Battle.Abilities",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "fields": {
+        "_buffs": {
+          "Array": [
+            {
+              "attributes": {
+                "abnormalFlags": {
+                  "Array": []
+                },
+                "abnormalImmunes": {
+                  "Array": []
+                },
+                "abnormalAntis": {
+                  "Array": []
+                },
+                "abnormalCombos": {
+                  "Array": []
+                },
+                "abnormalComboImmunes": {
+                  "Array": []
+                },
+                "attributeModifiers": {
+                  "Array": []
+                }
+              },
+              "buffKey": "enemy_wdsdw[loss_hp]",
+              "loadFromDB": false,
+              "isDurableBuff": false,
+              "isDamageMissable": false,
+              "isSilenceable": false,
+              "isStunnable": false,
+              "isFreezable": false,
+              "isLevitatable": false,
+              "isGroundBoundable": false,
+              "statusResistable": true,
+              "templateKey": "enemy_wdsdw[loss_hp]",
+              "disableOverride": false,
+              "overrideKey": "",
+              "overrideType": 0,
+              "maxStackCnt": 1,
+              "refreshRemainingTimeWhenStackMax": false,
+              "clearAllStackCntWhenTimeUp": false,
+              "maxValidStackCnt": -1,
+              "independentCharacterSource": false,
+              "overrideEffectKey": "enemy_wdbshd_idle",
+              "overrideOnEventPriority": false,
+              "onEventPriority": 0,
+              "audioSignal": "",
+              "lifeTimeType": true,
+              "takeSnapshotWhenExtend": false,
+              "durationKey": "duration",
+              "remainingTimeKey": "",
+              "lifeTime": 0.0,
+              "triggerLifeType": true,
+              "triggerCnt": 0,
+              "triggerInterval": 1.0,
+              "waitFirstTriggerInterval": true,
+              "firstTriggerInterval": 1.0,
+              "priority": -1,
+              "priorityBBKeys": {
+                "Array": []
+              },
+              "stripBlackboardParamsWithBuffKey": false,
+              "blackboard": {
+                "Array": []
+              },
+              "enableInitDirectionFromSource": false
+            }
+          ]
+        }
+      }
+    },
+    {
+      "purpose": "summoned target Talent",
+      "bundle": "battle/enm_pfb_13.ab",
+      "file": "CAB-d5a5ebb06b9b5c15f66b6f736b421497",
+      "pathId": "-6677586229009001822",
+      "objectSha256": "bf9a63aab285e80d3721c430d00b7be4b662526f8d0545266e89850e821d4857",
+      "hierarchy": [
+        "enemy_1323_wdbshd",
+        "Talents",
+        "lossHP"
+      ],
+      "script": {
+        "id": "-2726233351382997147",
+        "name": "Talent",
+        "cl": "Talent",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "fields": {
+        "_defaultModeIndex": -1
+      }
+    },
+    {
+      "purpose": "summoned target",
+      "bundle": "battle/enm_pfb_13.ab",
+      "file": "CAB-d5a5ebb06b9b5c15f66b6f736b421497",
+      "pathId": "-3417072777402592606",
+      "objectSha256": "ec72f485338ff4abf66860a45f842b4b90893ab9b537ab728afc5e65978f3e02",
+      "hierarchy": [
+        "enemy_1323_wdbshd"
+      ],
+      "script": {
+        "id": "-6629209555389654693",
+        "name": "Enemy",
+        "cl": "Enemy",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "fields": {
+        "_commonAbilities": {
+          "Array": []
+        }
+      }
+    },
+    {
+      "purpose": "projectile",
+      "bundle": "battle/prefabs/[uc]projectiles.ab",
+      "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+      "pathId": "-1243116483898611156",
+      "objectSha256": "3b75ca92f46ae742d7ce39d48105b54a7b4b8b460f6a88559a682fe767c0dfc4",
+      "hierarchy": [
+        "projectile_enemy_wdslm_p2s2"
+      ],
+      "script": {
+        "id": "-8797129986015012478",
+        "name": "SimpleProjectile",
+        "cl": "SimpleProjectile",
+        "ns": "Torappu.Battle",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "fields": {
+        "_actionController": {
+          "_detachBuffsWhenTargetLeave": false,
+          "_detachAllBuffsWhenStopped": false,
+          "_onlyAddBuffsToTraceTarget": false,
+          "_onlyAddBuffsToTargetOnce": false,
+          "_dontAddBuffs": false,
+          "_excludeAttachments": false,
+          "_useSelfBlackboard": false,
+          "_extraBuffsInTheEnd": {
+            "Array": []
+          },
+          "_useExtraBuffsWhenStopHit": false,
+          "_addExtraBuffsWhenReached": false,
+          "_detachAllExtraBuffsWhenStopped": false
+        }
+      }
+    },
+    {
+      "purpose": "projectile summon actions",
+      "bundle": "battle/prefabs/[uc]projectiles.ab",
+      "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+      "pathId": "7339034304921823788",
+      "objectSha256": "5d7b753beb632788bb58a828d0393c8e70ab2940953051a38563c5b8c3bc54a3",
+      "hierarchy": [
+        "projectile_enemy_wdslm_p2s2"
+      ],
+      "script": {
+        "id": "-6187353529015254799",
+        "name": "ProjectileActionBehaviour",
+        "cl": "ProjectileActionBehaviour",
+        "ns": "Torappu.Battle.Projectiles",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "fields": {
+        "_ev": 1,
+        "_actions": [
+          {
+            "_source": "PROJECTILE_SOURCE",
+            "_enemyKey": "enemy_1323_wdbshd",
+            "_summonCount": 1,
+            "_randomOffsetBound": {
+              "_serializedValue": 0
+            },
+            "_selectTileInSnapshot": true,
+            "_useProjectileTraceTargetMapPos": true,
+            "_delayTime": 0.0,
+            "_addBuffToEnemy": true,
+            "_unharmful": false,
+            "_buffToEnemy": {
+              "attributes": {
+                "abnormalFlags": [],
+                "abnormalImmunes": [],
+                "abnormalAntis": [],
+                "abnormalCombos": [],
+                "abnormalComboImmunes": [],
+                "attributeModifiers": []
+              },
+              "buffKey": "buffNotUsed",
+              "loadFromDB": false,
+              "isDurableBuff": false,
+              "isDamageMissable": false,
+              "isSilenceable": false,
+              "isStunnable": false,
+              "isFreezable": false,
+              "isLevitatable": false,
+              "isGroundBoundable": false,
+              "statusResistable": "AUTOMATIC",
+              "templateKey": "empty",
+              "disableOverride": false,
+              "overrideKey": null,
+              "overrideType": "DEFAULT",
+              "maxStackCnt": 1,
+              "refreshRemainingTimeWhenStackMax": false,
+              "clearAllStackCntWhenTimeUp": false,
+              "maxValidStackCnt": -1,
+              "independentCharacterSource": false,
+              "overrideEffectKey": null,
+              "overrideOnEventPriority": false,
+              "onEventPriority": "DEFAULT",
+              "audioSignal": null,
+              "lifeTimeType": "IMMEDIATELY",
+              "takeSnapshotWhenExtend": false,
+              "durationKey": null,
+              "remainingTimeKey": null,
+              "lifeTime": 0.0,
+              "triggerLifeType": "IMMEDIATELY",
+              "triggerCnt": 0,
+              "triggerInterval": -1.0,
+              "waitFirstTriggerInterval": true,
+              "firstTriggerInterval": -1.0,
+              "priority": -1,
+              "priorityBBKeys": [],
+              "stripBlackboardParamsWithBuffKey": false,
+              "blackboard": [],
+              "enableInitDirectionFromSource": false
+            },
+            "_checkMotionMode": "FLY_ONLY",
+            "_managedByScheduler": false,
+            "_excludeRootTile": false,
+            "$type": "Torappu.Battle.Action.Nodes+SummonEnemiesOnTargetTile"
+          }
+        ]
+      }
+    }
+  ]
+}
