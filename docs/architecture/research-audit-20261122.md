@@ -2,7 +2,7 @@
 
 基线 `10256fe`，审计日期 2026-11-22。范围覆盖 `docs/research` 的 7 篇总览、39 篇编号案例和 102 个证据批次。复核案例正文、证据索引及批次中额外记录的具体疑问，并用现行领域契约及公共操作核对 Core 表达能力。 [研究入口](../research/00-INDEX.md) · [案例索引](../research/cases/00-INDEX.md) · [证据索引](../research/evidence/README.md)
 
-**全库记有 181 个具体未决问题，170 个涉及当前项目，其中 59 个可能影响 Core 契约。另有 11 个已确认的 Core 架构缺口。** 已确认缺口以独立的公共语义为计数单位。某个缺口的正例已经成立时，相关的更多原生组合仍可有独立的未决问题。例如松桐证明部署附加属性参与初始 HP，其他出生程序发生冲突时的排序仍待核实。
+**全库记有 181 个具体未决问题，170 个涉及当前项目，其中 59 个可能影响 Core 契约。当前清单保留 7 个已确认的 Core 架构缺口。** 已确认缺口以独立的公共语义为计数单位。某个缺口的正例已经成立时，相关的更多原生组合仍可有独立的未决问题。例如松桐证明部署附加属性参与初始 HP，其他出生程序发生冲突时的排序仍待核实。
 
 每条未决按可独立查证的问题计，同一问题在案例、总览和批次重复出现时只记一次。数字适用于本版归档中能落到具体机制的问题。原生结论足够且只剩内容接入的项、全游戏覆盖率和全量热更等通用证据限制不计入。模式对照、显示和逐帧验证中的具体问题列在本页末尾，仍纳入全库数量。 [项目范围](ARCHITECTURE.md#范围与行为依据) · [当前支持边界](tactical-semantics.md)
 
@@ -21,21 +21,26 @@
 
 | 编号 | 缺口 | 实际机制 | 现有 Core 边界 | 依据 |
 | --- | --- | --- | --- | --- |
-| G01 | HP 归零后的同实例存续 | 霜星及屠谕者进入假死等待，保持同一角色身份，并可逐步写回实际 HP。 | 普通损伤确认 HP 为零后直接请求 Unit 结束。ENDING 之后无法继续同实例的可逆等待。 | [原生依据](../research/cases/11-damage-apply-and-hp-application.md#L84) · [Core](../../src/core/battle/resource/hp/damage/apply.ts#L123) |
 | G02 | 全局效果同步覆盖后来出生者 | 普通 GlobalBuff 在登记时施加到符合资格的新单位。后兽的实际 GlobalAura 同时安装到现有和后来出生的目标。 | Unit.add 只派发本地 entered。Mechanism 定时扫描无法让嵌套创建或入场后的业务同步看到本次安装。 | [原生依据](../research/03-space-units-and-mechanisms.md#L285) · [Core](../../src/core/unit/operations.ts#L14) · [后兽实例](../research/cases/31-route-operations-and-state.md#L127) |
-| G03 | 施放成功与狂躁计数资格 | 郁金香 S1 没有目标仍成功发动并扣 SP，空施放不增加狂躁。 | 狂躁目前监听 activationStarted 并对所有成功发动计数。现有回调不携带这次实际执行的计数资格。 | [原生依据](../research/cases/25-elemental-burst-recovery-timing.md#L278) · [Core](../../src/core/effects/elemental/mania.ts#L136) |
 | G04 | 阻挡目标的运动层资格 | 酒神的迷狂牢笼在实际阻挡分支使用目标运动层豁免。 | 阻挡资格硬编码两侧层相等，Content 的限制只能进一步缩小集合。阻挡者的地块判断还需要自己的阻挡层。 | [原生依据](../research/evidence/resource-mechanisms-20261114/life/content.json#L136150) · [Core](../../src/core/battle/blocking/operations.ts#L51) · [原生资格检查](../research/evidence/blocking-native-20261023/modes/report.txt#L11) |
 | G05 | 战中修改 DP 上限 | 诺伯特平民确认身份后进入保护区会增加我方费用上限。 | Core 提供动态下限。自然回复、余额修改及边界截断读取静态 Definition.maxDp。 | [原生依据](../research/cases/20-norport-civilian-allegiance-and-blocking.md#L22) · [Core](../../src/core/battle/deployment/dp.ts#L5) |
 | G06 | 本次部署参与初始化的 Card 效果 | 松桐 S2 的 DeckBuff 在读取本次出生 HP 前参与 MaxHP 计算。 | 部署入口以固定蓝图完成 Unit.initialize，卡牌只能注入 entered／removed Hook。进入注册后修改属性无法让之前的构造过程和固定入场快照看到该值。 | [原生依据](../research/cases/24-deployment-cost-and-supply.md#L268) · [Core](../../src/core/battle/deployment/operations.ts#L87) |
 | G07 | 同一 Card 的特殊部署 | 卫戍初始布阵保留卡牌身份，免初始费用，预放召唤物免库存，并跳过部分普通部署效果。 | 走 deploy 可以留 Card 的关联历史，但固定派发普通部署通知。直接 Unit 初始化即使设置 Deployable.card，也不能用公开操作登记供 cardForUnit 读取的同一卡来源历史。 | [原生依据](../research/cases/24-deployment-cost-and-supply.md#L208) · [Core](../../src/core/battle/deployment/operations.ts#L86) · [Card 反查](../../src/core/battle/deployment/query.ts#L25) |
 | G08 | 路线到达、退出资格与退出事实 | 普通终点结算用 REACH_EXIT。喀兰圣女等实际 Prefab 禁止退出但仍有路线，主线 6-15 另有不扣蓝门生命但计击杀的配置。 | 到达终点直接移除，内部结束原因通用 SCRIPT，只有表现事件区分出口。改成最后一道 MOVE 会丢失真实终点及剩余路程。 | [原生依据](../research/cases/13-route-and-movement-timing.md#L153) · [Core](../../src/core/unit/capability/route/operations.ts#L378) · [禁止退出配置](../research/evidence/route-operations-20261107/temporary/content.json#L2819) · [退出与击杀](../research/cases/30-scheduler-action-data-fields.md#L155) |
 | G09 | 推进分支与执行分支分开 | 活动关卡实际出生的思旧通过 ModifyRuntimeRouteUseBranchRoute 取路线，消耗下一 Phase，取路线失败也保留已推进索引。 | 公开 triggerBranch 在推进索引后立即启动当前 Phase。Content 要保留同一游标并用于真正触发时，缺少可单独消费 Phase 的操作。 | [原生依据](../research/cases/31-route-operations-and-state.md#L105) · [Core](../../src/core/battle/schedule/runtime.ts#L228) |
-| G10 | 运行时提交 SP 配置 | 琳琅诗怀雅 S3 从 SP 状态切到金币状态，更新费用及容量，余额的清空或补入由后继程序显式处理。 | 当前容量和普通恢复策略取静态 Definition。临时本次 Activation 报价不能修改持久容量与计时策略，也没有保持 Skill 身份的配置写入口。 | [原生依据](../research/evidence/skill-audit-20261117/sp/result.md#L17) · [Core](../../src/core/unit/capability/skill/sp.ts#L28) |
-| G11 | 封闭普通 SP 修改 | 玛露西尔技能期间禁止外部正常 SP 增减，角色凋亡的普通负 SP 是实际消费者，自身魔力扣除使用强制权限。 | 当前恢复限制只挡住普通正向修改。正常负 SP 可以直接改余额，事后回滚会让错误结果先被观察者消费。 | [原生依据](../research/evidence/skill-audit-20261117/sp/result.md#L28) · [Core](../../src/core/unit/capability/skill/sp.ts#L314) |
 
 部署退出单独核对了普通撤退和死亡。主动返还 DP 在请求结束前，普通撤退与死亡的卡牌回收都在原生 `OnFinish`，对象注销则在 `OnRecycle`。仍需要证据的是在场单位退出后**部署额度何时释放**、**同卡在场上限何时放行**，以及有关条件下对结算期间重入部署的实际影响。 [Case 24 普通退出结算](../research/cases/24-deployment-cost-and-supply.md#L382)
 
 标准沉默当前只限制 Skill 发动，已证实的天赋暂停与恢复仍需接入。现有 Effect 身份、启停和作用域能组织这一行为，已证需求暂无额外的 Effect 或 Lifetime 契约。纯烬艾雅法拉 S2 需要先消耗屏障再做 EP 准入，当前 `beforeReceive` 可以同时改本次值和盾池。 [沉默证据](../research/cases/06-talent-lifecycle-and-model.md#L34) · [EP 屏障](../research/cases/38-damage-classification-and-permissions.md#L287) · [EP Apply](../../src/core/battle/resource/ep/damage/apply.ts#L41)
+
+## 已有项目方案与暂缓项
+
+| 原审计编号 | 现行结论 |
+| --- | --- |
+| G01 | 同实例复活采用 1 HP、复活等待 Effect 和 increaseHp。恰在路线终点时的探针差异已接受。G08 仍覆盖有真实独立需求的路线退出资格与退出结算。 [Vitality](vitality.md#特殊-hp-application-的支持边界) |
+| G03 | 郁金香 S1 空施放的狂躁计数是已知且明确暂缓的内容例外。普通双监听按已定契约运行。 [Elemental](elemental.md#支持边界) |
+| G10 | 琳琅诗怀雅的金币可以由 Content 私有状态保存，技能可通过本次发动参数决定是否收取 SP。已查案例不足以确认普通 SP 配置需要运行期提交。 [Case 09](../research/cases/09-skill-mechanisms-and-requirements.md#L115) · [Skill](skill.md#6-覆盖边界) |
+| G11 | 若玛露西尔的魔力由 Content 私有状态承载，普通 SP 操作自然与魔力隔离。共享 SP 封闭仍取决于资源表示和真正需要它的普通 SP 消费者。 [Case 09](../research/cases/09-skill-mechanisms-and-requirements.md#L317) |
 
 ## 逐项未决清单
 
@@ -114,9 +119,9 @@
 | U064 | 维什戴尔 A／B／C 随机组的真实尝试频率、失败后继和重置冷却。Core 具备选招、同步成败及 Content 程序 | [Case 02](../research/cases/02-action-and-projectile-phases.md#L81) |
 | U065 | 实际在途弹道的黑板倍率哪些发射时采样、哪些在不同目标命中时更新。State／实时查询可按路径选择 | [Case 02](../research/cases/02-action-and-projectile-phases.md#L108) |
 | U066 | 前摇／飞行中目标资格失效后的落点、范围接收者、锁定后是否复验阵营。与 Cases 16–18、33 对照，普通位置／来源／停止链后续已补 | [Case 02](../research/cases/02-action-and-projectile-phases.md#L154) |
-| U067 | 具体死亡反应中的重新回复／生成及外层后继持有已结束目标时的资格。Cases 11、18、39 已关闭普通死亡和失效查询的通用部分。同步接续可表达消费规则。同实例 HP0 重生单独作为确认缺口 | [Case 03](../research/cases/03-dispatch-and-nested-settlement.md#L178) |
+| U067 | 具体死亡反应中的重新回复／生成及外层后继持有已结束目标时的资格。Cases 11、18、39 已关闭普通死亡和失效查询的通用部分。同步接续可表达消费规则 | [Case 03](../research/cases/03-dispatch-and-nested-settlement.md#L178) |
 | U068 | 一个实际技能开始通知令宿主消失时，施放中断、持续结束及后继钩子的组合。普通 native 分支已核实。Action cancel、Activation 结束与 Presence 分立 | [Case 05](../research/cases/05-skill-start-and-finish.md#L45) |
-| U069 | 具体模式切换、假死及撤退重部署时，天赋计数和目标身份的持久范围。已知 Card／持久 Skill／Effect 各有存储。Case 11 假死核心缺口单列 | [Case 06](../research/cases/06-talent-lifecycle-and-model.md#L59) |
+| U069 | 具体模式切换、假死及撤退重部署时，天赋计数和目标身份的持久范围。Card、持久 Skill、Effect 各有存储，假死期间保留同一 Unit Ref | [Case 06](../research/cases/06-talent-lifecycle-and-model.md#L59) |
 | U070 | 切换 UnitMode 清普通攻击间隔的 native 具体调用者。项目 clearCooldown 已能表达 | [Case 07](../research/cases/07-action-timing-and-animation.md#L260) |
 | U071 | Animator 特殊等待语义在中断后是否留下实际可观察的后继（普通动画帧换算已闭合） | [Case 07](../research/cases/07-action-timing-and-animation.md#L307) |
 | U072 | 敌人独立技能计时因模式暂停的实际 native 调用者。持久 Skill／各 Action 内容可管理独立计时 | [Case 08](../research/cases/08-action-eligibility-and-interruption.md#L81) |
