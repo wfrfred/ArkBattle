@@ -822,6 +822,8 @@ const counterCard: CardDefinition<{ count: number }> = {
 const initializedCard = cards.initialize(battle, { ...counterCard, marker: true as const });
 const cardRef = cards.ref(initializedCard.value);
 const cardBattle = cards.add(initializedCard.state, initializedCard.value);
+// @ts-expect-error registration requires the state type declared by the Card Definition.
+cards.add(initializedCard.state, { ...initializedCard.value, state: { count: 'wrong' } });
 const registeredCard = cards.get(cardBattle, cardRef)!;
 const cardMarker: true = registeredCard.definition.marker;
 const cardCount: number = registeredCard.state.count;

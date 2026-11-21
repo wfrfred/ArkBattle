@@ -11,7 +11,7 @@ import type { Restriction } from "./restriction.js";
 import { get } from "./query.js";
 import * as card from "./state.js";
 
-export function add(battle: BattleState, self: Card<any>): BattleState {
+export function add<S extends object>(battle: BattleState, self: Card<S>): BattleState {
     return refreshOrder({
         ...battle,
         deployment: {

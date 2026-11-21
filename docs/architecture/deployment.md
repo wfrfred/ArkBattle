@@ -26,7 +26,7 @@ Deployment 完成部署资格、消费、实例创建与通知；Card 保存跨�
 
 内容提供顶层声明 card、occupancy、deployable 的完整静态 Unit Definition，Card 保留原对象，部署时直接复用。Card 在返手与多次场上实例之间持续存在。同 Definition 的多张 Card 各有独立身份。
 
-`card.initialize(battle, definition)` 分配 ID、运行 Definition 的初始化并返回完整实例。`card.add(battle, self)` 将实例按 ID 登记进通用 `Store`。`card.get(battle, ref)` 依据 typed Ref 恢复实例类型。展示顺序独立保存，Card 登记或写回变更后接续 Deployment 的排序策略。
+`card.initialize(battle, definition)` 分配 ID、运行 Definition 的初始化并返回完整实例。`card.add(battle, self)` 接收私有状态与 Definition 配对的 `Card<S>`，按 ID 登记进通用 `Store`。`card.get(battle, ref)` 依据 typed Ref 恢复实例类型。展示顺序独立保存，Card 登记或写回变更后接续 Deployment 的排序策略。
 
 Card 配置明确费用、部署间隔、库存／在场上限、额度、退款和供给政策。当前 cooldownOnDeploy 控制部署时启动间隔，recoverOnRetreatOrDeath 与 increaseCostOnRetreatOrDeath 分别控制普通撤退／死亡恢复及费用阶段；这些字段的组织仍待重审，不能把现有布尔组合视为已完成领域收口。
 
