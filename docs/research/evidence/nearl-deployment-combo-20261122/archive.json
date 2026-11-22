@@ -29,7 +29,8 @@
       }
     },
     "sourceRecords": [
-      "result.json"
+      "result.json",
+      "s2-respawn-config.json"
     ],
     "tool": {
       "script": {
@@ -54,6 +55,12 @@
         "kind": "record",
         "bytes": 162616,
         "sha256": "d80ab7678cc978b404075caeeec1b571c23d69fac409e16c1e3552c6f8168d6d"
+      },
+      {
+        "path": "s2-respawn-config.json",
+        "kind": "record",
+        "bytes": 7099,
+        "sha256": "15d6d679c481f8d0ea859cc7a171203840b0ac7dfab6f7a1c2900d50751aa5c8"
       }
     ],
     "replay": {

@@ -19,7 +19,7 @@
 | 消费者 | 读取时点和证据 |
 | --- | --- |
 | 耀骑士临光第一天赋 | 同一角色组件 `PassiveBuffAbility -8334569484248517245` 安装 `nearl2_t_1[mark]`。Holder 的 `ON_OWNER_BORN` 检查本次实例所属的 Card 是否含有 `nearl2_t_1`，缺失时结束这份出生标记。`CheckContainsCardBuff.Execute#98730` 在 `0x1810c676a` 查 Card，在 `0x1810c6836` 查 CardBuff。普通 `MeleeAttack -4516670402379287165` 与 Y 模组阶段 `nearl2_equip_2_2_p3` 的 `MeleeAttack 5615665115770057395` 均通过 `nearl2_t_1[combo]` 消费出生标记。 |
-| S2 结束时的再部署时间 | `PassiveBuffAbility -4621350421976157959` 的 `nearl2_s_2[end]` 根据本实例既有的 `nearl2_t_1[mark]` 决定是否走附带再部署惩罚的分支。`nearl2_s_2[withdraw]` 的 `ON_BUFF_FINISH` 分支只在应惩罚时添加 Card 调整，再触发撤退。部署后发生的其他 Draw 不改变本实例已经读取的接力。 |
+| S2 结束时的再部署时间 | `PassiveBuffAbility -4621350421976157959` 的 `nearl2_s_2[end]` 按本实例既有的 `nearl2_t_1[mark]` 选择 `nearl2_s_2[withdraw][combo]` 或普通 `nearl2_s_2[withdraw]`。二者使用同一个退场模板，模板先执行 `CreateCardBuff` 的比例修正，再执行 `Withdraw`。接力分支按自己的键覆写 `respawn_time` 为 `1.0`，普通分支使用 `1.25`。固定技能表十个等级的取值相同。部署后发生的其他 Draw 不改变本实例已经读取的接力。 [技能表摘录](s2-respawn-config.json) |
 | S3 召唤的“耀阳” | `pkgrps/btl_pfb_tokens_0.ab` 中的 `token_10019_nearl2_sword` 自带相同规则（`DeckManagedCardBuffTalent -8241836201348457715`）和出生标记程序（`PassiveBuffAbility 3472860911299042061`）。它从自己的 Card 读取出生标记，`sktok_nearl2_3` 的 `MeleeAttack 1149999816210528705` 读这份标记，耀骑士临光的 Draw 本身可使其满足条件。耀骑士临光 S3 的 `nearl2_s_3[effect]` 另读取自身 Card，切换 `nearl2_buff_01_start` 的视觉 Buff。 |
 
 成功的普通生成路径经 `Card.SpawnPrefab#66857` 同步执行出生程序，再到上述 `Card.Draw`。因此本次出生读取先前结果，此次 Draw 再更新后续出生看到的规则状态。[出生与 Draw 的原生调用链](../special-redeploy-failure-20261122/README.md#特殊入场的实际观察者)
@@ -30,4 +30,13 @@
 UV_CACHE_DIR="$PWD/.cache/uv" uv run --offline \
   docs/research/evidence/nearl-deployment-combo-20261122/extract.py \
   --out /tmp/arkbattle-nearl-deployment-combo.json
+```
+
+技能等级参数可对镜像提交 `17759cc8cdf37388414145d16262a3a06f3ab25e` 复查。
+
+```sh
+python3 .agents/skills/arkbattle-native-research/scripts/config.py \
+  assets/arknights-game-data/zh_CN/gamedata/excel/skill_table.json \
+  --out /tmp/arkbattle-nearl-s2-respawn-config.json \
+  select '/skchr_nearl2_2/levels/*' --field /blackboard/2 --field /blackboard/3
 ```

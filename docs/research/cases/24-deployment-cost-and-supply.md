@@ -281,6 +281,8 @@ HE-7「以爱相连」刷出的赏金猎人扰乱者通过已启用的 `PassiveB
 
 **N／D　耀骑士临光的卡西米尔判定使用牌组管理的标记。** `DeckManagedCardBuffController` 为她的卡保存一份组合规则。一次参与此规则的 `Card.Draw` 到来时，召唤物和装置跳过更新。其余牌按 `kazimierz` 判定，有该势力时给她的卡写 `nearl2_t_1`，否则清除。它只保存当前判定结果。部署的新对象先执行出生程序，随后才处理该卡的 `Draw`，所以她入场时读到上一张有效牌留下的结果。第一天赋和 S2 使用本次出生时确认的 Unit 标记，之后再部署别人不改写这次 S2 的退场优惠。S3 的耀阳有自己的 Card 标记，并在耀阳出生时另行采样，因而能认到此前部署的耀骑士临光本人。 [实际角色与召唤物组件、写入和读取链](../evidence/nearl-deployment-combo-20261122/README.md) · [干员天赋与技能](https://prts.wiki/w/174)
 
+**D　临光 S2 正常结束时按接力结果选择再部署倍率。** 两个分支用同一退场模板，先提交卡牌再部署修正，再自动撤退。固定技能表的十个等级都配置无接力 `1.25`、有接力 `1.0`。 [固定技能配置](../evidence/nearl-deployment-combo-20261122/s2-respawn-config.json) · [退场模板](../evidence/nearl-deployment-combo-20261122/result.json)
+
 **N／D　集成战略「罗德之门」保存的是最后一张合格 Card 的 UID。** 其 `rogue_4_log_final_locate` 在出生事件中判断角色并排除自身特殊移动，写入玩法黑板的 `unique_id` 并增加发生次数。写入字符串会覆盖旧值。`Rogue4DLC2LastDeployManager` 在结算时读这两项，按 UID 转回玩家阵容身份。撤退不清该选择，目标不再适用时也不回退到上一个。 [实际写入和战斗结束消费者](../evidence/deployment-order-consumers-20261122/README.md) · [罗德之门备注](https://prts.wiki/w/罗德之门)
 
 **N／D　思衡托 S3 和菲亚梅塔模组需要当前仍在场的候选。** 思衡托在范围与 Card 资格筛选后按当前角色的 `createdTime` 降序取至多两名。菲亚梅塔模组按在场对象的创建时间选最近部署的其他合格干员，只在自己的效果里缓存攻击范围锚点。敌方「门」也从当前场上的候选选最后出现的目标，成功取得 Card 后才锁牌。 [思衡托实际选择器](../evidence/deployment-target-order-20261122/README.md) · [菲亚梅塔的原生查询与敌方「门」](../evidence/deployment-order-consumers-20261122/README.md) · [「门」的资格说明](https://prts.wiki/w/“门”)
