@@ -24,11 +24,25 @@ export function create<V extends Identified<object>, S extends V, E>(
 
             battle = drain(battle);
 
-            return { ...battle, lifetime: { ...battle.lifetime, settling: false } };
+            return flushDeferred({ ...battle, lifetime: { ...battle.lifetime, settling: false } });
         },
     };
 
     return lifetime;
+}
+
+export function defer(
+    battle: BattleState,
+    operation: (battle: BattleState) => BattleState,
+): BattleState {
+    if (battle.lifetime.settling || battle.lifetime.flushing) {
+        return {
+            ...battle,
+            lifetime: { ...battle.lifetime, deferred: [...battle.lifetime.deferred, operation] },
+        };
+    }
+
+    return operation(battle);
 }
 
 export function scope<V extends Identified<object>, S extends V, E, T extends S>(
@@ -247,4 +261,21 @@ function drain(battle: BattleState): BattleState {
     }
 
     return battle;
+}
+
+function flushDeferred(battle: BattleState): BattleState {
+    if (battle.lifetime.flushing || battle.lifetime.deferred.length === 0) {
+        return battle;
+    }
+
+    battle = { ...battle, lifetime: { ...battle.lifetime, flushing: true } };
+
+    while (true) {
+        const [operation, ...deferred] = battle.lifetime.deferred;
+        if (operation === undefined) {
+            return { ...battle, lifetime: { ...battle.lifetime, flushing: false } };
+        }
+
+        battle = operation({ ...battle, lifetime: { ...battle.lifetime, deferred } });
+    }
 }

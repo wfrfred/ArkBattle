@@ -6,7 +6,7 @@ Lifetime 统一结束请求、依赖传播与最终析构。领域负责实例�
 
 ## 身份、Scope 与公共入口
 
-[公共入口](../../src/core/lifetime/index.ts)提供静态描述符、Scope 构造／恢复、可用性、显式依赖查询及绑定／解绑；登记、注销和结算器属于内部协作。
+[公共入口](../../src/core/lifetime/index.ts)提供静态描述符、Scope 构造／恢复、可用性、显式依赖查询、绑定／解绑和 `defer`。登记、注销和结算器属于内部协作。
 
 身份使用领域 kind 与完整数值地址：Unit／Projectile／Mechanism 使用自身 ID，Execution／Activation／Effect 使用宿主与局部 ID。值相同的地址表达同一身份，不依赖 Scope 对象引用，也不分配另一套全局 ID。
 
@@ -28,13 +28,13 @@ Unit 不是可依赖结束的子节点，不提供 `fromDependency`。各能力�
 
 ## 状态归属与关系权威
 
-BattleState.lifetime 保存关系图、未完成 endings 和最外层 settling 标记。关系图是 owner／显式 Scope 唯一权威；槽位、普通私有 Ref 或 source 不投影成关系，字段更新也不重建图。
+BattleState.lifetime 保存关系图、未完成 endings、拓扑析构的 `settling`、延后队列的 `flushing` 及待执行操作。关系图是 owner／显式 Scope 唯一权威；槽位、普通私有 Ref 或 source 不投影成关系，字段更新也不重建图。
 
 每个实例有一个 owner 和显式 scopes，反向 children 合并两种边并按身份去重。创建时登记，最终移除时注销。图不保存另一份实例、存活状态或时间。
 
 Pending 保存本次结束载荷、父等待与阶段。实例物理移除可撤去活索引，但 Pending.parents 保留到整个 Finalize 返回；查询子项同时合并活关系与未完成工作，保证子项末尾通知请求 owner 时仍有保护。
 
-初始 Battle 建空图，各领域通过正常创建登记，不扫描预装容器。稳定的最外层返回状态无未完成结算。
+初始 Battle 建空图和空队列，各领域通过正常创建登记，不扫描预装容器。稳定的最外层返回状态无未完成结算或延后操作。
 
 ## 请求与 Prepare
 
@@ -64,8 +64,16 @@ Prepare 早于自动请求依赖者；它可先主动结束子项，从而确定
 
 兄弟可以都先进入 ENDING，某个 onEnd 不保证其他兄弟仍正常运行。共享依赖只 Finalize 一次，首次原因保持不变。
 
-嵌套结束返回时，实例可能仍可查询、占格或占槽。后继资格不能只看存在；依赖槽位释放的业务使用领域完成通知，不强行开启嵌套 drain。Damage 的 Completed／Outcome 不承诺目标所有离场 Finalize 已完成，见 [Resource](resource.md)。
+嵌套结束返回时，实例可能仍可查询、占格或占槽。依赖整个析构结束的操作使用 `defer`。Damage 的 Completed／Outcome 不承诺目标所有离场 Finalize 已完成，见 [Resource](resource.md)。
 
 等待只来自真实关系，普通函数调用不生成反向等待。例如 Effect.onEnd 请求 Unit.remove 时 Unit 等已有子 Effect 完成，Effect 不因为调用 remove 又等待 Unit。独立 Projectile 不随来源／Action 自动结束；Blocking、Occupancy 与 Card 冷却也不自动成为生命周期依赖。
 
 清理期间允许哪些字段写回由领域决定。Mechanism 的 `setActive` 负责可逆启停。`remove` 发布 `ENDING` 并请求结束依赖者，待依赖者完成收尾后调用 `onEnd` 并注销实例。领域只能使用自身合法操作修改状态。
+
+## 析构后执行操作
+
+`defer(battle, operation)` 接收从 BattleState 返回下一份 BattleState 的同步操作。在 `settling` 和 `flushing` 均为 false 时立即调用。任一标记为 true 时，操作加入队尾。
+
+启动本轮析构的 `end` 等待所有依赖析构及完成通知返回，然后清除 `settling`。如果当时没有冲刷过程，该入口开始冲刷队列。冲刷先移除队首，再执行该操作，并从其返回的最新 BattleState 继续处理。整个过程在当前同步调用链内完成。
+
+延后操作可以发起新一轮同步析构。新一轮完成拓扑清理后由当前冲刷过程继续处理队列。若先登记 A、B，A 期间登记 C，则任务顺序为 A、B、C。队列仍按登记顺序推进，A 发起的 Finalize 仍在 A 期间执行。

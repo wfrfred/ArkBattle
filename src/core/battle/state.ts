@@ -1,7 +1,9 @@
 import type { State as BattlefieldState } from "../battlefield/state.js";
 import { Store } from "../common/collection/store.js";
-import * as dependency from "../lifetime/dependency.js";
-import type { State as LifetimeState } from "../lifetime/lifetime.js";
+import {
+    initialize as initializeLifetime,
+    type State as LifetimeState,
+} from "../lifetime/lifetime.js";
 import { Hooks } from "../hook.js";
 import { removed as unitRemoved } from "./unit-hook.js";
 import type { Definition } from "./contract.js";
@@ -76,11 +78,7 @@ export function createBattleState(
         tick,
         execution,
         deployment,
-        lifetime: {
-            dependencies: dependency.empty(),
-            endings: new Map(),
-            settling: false,
-        },
+        lifetime: initializeLifetime(),
         unitHooks: Hooks.empty().set(unitRemoved, scheduleRemovedHook),
         schedule,
         events: [],

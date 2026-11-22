@@ -1,6 +1,6 @@
 import type { Identified, Ref } from "../common/ref.js";
 import type { State as BattleState } from "../battle/state.js";
-import type { Index } from "./dependency.js";
+import { empty, type Index } from "./dependency.js";
 
 export const paired: unique symbol = Symbol("lifetime");
 
@@ -46,4 +46,16 @@ export interface State {
     readonly dependencies: Index;
     readonly endings: ReadonlyMap<string, Pending>;
     readonly settling: boolean;
+    readonly flushing: boolean;
+    readonly deferred: readonly ((battle: BattleState) => BattleState)[];
+}
+
+export function initialize(): State {
+    return {
+        dependencies: empty(),
+        endings: new Map(),
+        settling: false,
+        flushing: false,
+        deferred: [],
+    };
 }

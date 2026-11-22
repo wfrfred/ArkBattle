@@ -128,6 +128,95 @@ test("an owner waits for dependent finalizers and repeated requests preserve the
     assert.equal(units.get(after, owner), undefined);
 });
 
+test("defer executes immediately outside a settlement", () => {
+    const state = battle([{ definition: { id: "owner", hooks: Hooks.empty() }, position: [0, 0] }]);
+    const owner = units.ref(units.all(state).find(() => true));
+
+    const result = lifetimes.defer(state, current => remove(current, owner, { reason: "SCRIPT" }));
+
+    assert.equal(units.get(result, owner), undefined);
+    assert.equal(result.tick, state.tick);
+});
+
+test("defer waits for finalizers and flushes in registration order across new settlements", () => {
+    const calls = [];
+    const initial = battle([
+        {
+            definition: {
+                id: "owner",
+                hooks: Hooks.empty().set(unitLifecycle.removed, {
+                    id: "defer-b",
+                    invoke(current) {
+                        calls.push("owner-removed");
+                        return {
+                            state: lifetimes.defer(current, next => {
+                                assert.equal(units.get(next, nested), undefined);
+                                calls.push("B");
+                                return remove(next, last, { reason: "SCRIPT" });
+                            }),
+                            value: undefined,
+                        };
+                    },
+                }),
+            },
+            position: [0, 0],
+        },
+        {
+            definition: {
+                id: "nested",
+                hooks: Hooks.empty().set(unitLifecycle.removed, {
+                    id: "defer-c",
+                    invoke(current) {
+                        calls.push("nested-removed");
+                        return {
+                            state: lifetimes.defer(current, next => {
+                                assert.equal(units.get(next, last), undefined);
+                                calls.push("C");
+                                return next;
+                            }),
+                            value: undefined,
+                        };
+                    },
+                }),
+            },
+            position: [1, 0],
+        },
+        { definition: { id: "last", hooks: Hooks.empty() }, position: [2, 0] },
+    ]);
+    const [owner, nested, last] = [...units.all(initial)].map(units.ref);
+    const installed = effects.install(initial, owner, {
+        id: "defer-a",
+        initialize: () => ({}),
+        onEnd(current) {
+            calls.push("effect-ended");
+            return lifetimes.defer(current, next => {
+                assert.equal(units.get(next, owner), undefined);
+                calls.push("A-start");
+                const removed = remove(next, nested, { reason: "SCRIPT" });
+                assert.equal(units.get(removed, nested), undefined);
+                calls.push("A-end");
+                return lifetimes.defer(removed, latest => {
+                    calls.push("D");
+                    return latest;
+                });
+            });
+        },
+    });
+
+    const result = remove(installed.state, owner, { reason: "SCRIPT" });
+    lifetimes.defer(result, current => {
+        calls.push("after-settlement");
+        return current;
+    });
+
+    assert.deepEqual(calls, [
+        "effect-ended", "owner-removed", "A-start", "nested-removed", "A-end", "B", "C", "D",
+        "after-settlement",
+    ]);
+    assert.deepEqual([...units.all(result)], []);
+    assert.equal(result.tick, initial.tick);
+});
+
 test("an ending ancestor rejects new dependents before its active Action execution receives the end request", () => {
     let execution;
     let attempted = "not attempted";
