@@ -14,15 +14,21 @@ siteCondition 是单个条件身份或 null，null 不等于普通场地条件�
 
 ## Mechanism 操作
 
-Mechanism 是全场独立身份。Battle 持有通用 `Store` 并安排推进。开场 `initialMechanisms` 与运行时创建共用 `Mechanism.Input`，提供 `Definition<S>` 和可选的初始启用状态。`initialize` 分配 ID、初始化私有 `state` 并保留具体 Definition 类型。`add` 登记实例，`get` 以 Ref 恢复具体类型。 [Mechanism 入口](../../src/core/mechanism/index.ts)
+Mechanism 是全场独立身份。Battle 持有通用 `Store` 并安排推进。开场 `initialMechanisms` 与运行时创建共用 `Mechanism.Input`，提供 `Definition<S>` 和可选的初始启用状态。`initialize` 分配 ID、初始化私有 `state` 并保留具体 Definition 类型。`get` 以 Ref 恢复具体类型。 [Mechanism 入口](../../src/core/mechanism/index.ts)
 
-`setState` 只改私有数据。`setActive` 可逆切换参与资格，`remove` 请求终结。`INACTIVE` 的实例仍可作依赖。移除 `ACTIVE` 实例时，Lifetime 先发布 `ENDING`，再在 Prepare 调用 `onDisable`。Finalize 先调用 `onEnd`，再注销实例。
+`add` 先登记实例，再调用一次 `onEnter`。初始停用的实例也执行这项登记业务。初始启用的实例在 `onEnter` 返回后，若仍登记为 `ACTIVE`，则以当前实例调用 `onEnable`。
+
+`setState` 只改私有数据。`setActive` 先发布实际发生的启停变化，再分别调用 `onEnable` 或 `onDisable`。重复设置同一状态没有效果。`INACTIVE` 的实例仍可作依赖。
+
+`remove` 请求终结实例。Lifetime 先发布 `ENDING`，若原实例为 `ACTIVE`，则在 Prepare 调用 `onDisable`。依赖者结束后，Finalize 调用 `onEnd` 并注销实例。
 
 嵌套结束与依赖完成统一见 [Lifetime](lifetime.md)，不在地形再实现一套停止协议。
 
 ## 地形接触与调度
 
 Runtime 顺序为 Movement → Mechanism → Blocking。Movement 先推进阻挡位置计划，再推进路线／自主运动；地形读取这些操作后的身体位置，要求 ACTIVE 且空间存在，不用 Occupancy 代替接触。
+
+Mechanism 阶段只调用当前 `ACTIVE` 实例的 `onTick`。
 
 轮询维护进入、离开和持续接触，并每次重判动态资格：活性源石、沼泽、深水、地穴要求地面，烟雾允许空中。单位离场时，其 Effect 随宿主 Lifetime 结束，地形在下一次扫描清理接触记录。轮询不捕获同 Tick 所有中间位置，也不复刻 Unity 对象交错。
 

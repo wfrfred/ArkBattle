@@ -10,8 +10,10 @@ export type Lifecycle = "ACTIVE" | "INACTIVE" | "ENDING";
 export interface Definition<S extends object = object> {
     readonly id: string;
     readonly initialize: () => S;
-    readonly onTick?: (battle: BattleState, self: Mechanism<S>) => BattleState;
+    readonly onEnter?: (battle: BattleState, self: Mechanism<S>) => BattleState;
+    readonly onEnable?: (battle: BattleState, self: Mechanism<S>) => BattleState;
     readonly onDisable?: (battle: BattleState, self: Mechanism<S>) => BattleState;
+    readonly onTick?: (battle: BattleState, self: Mechanism<S>) => BattleState;
     readonly onEnd?: (battle: BattleState, self: Mechanism<S>) => BattleState;
 }
 
@@ -52,10 +54,21 @@ export function initialize<S extends object, const D extends Definition<S>>(
 }
 
 export function add<S extends object>(battle: BattleState, self: Mechanism<S>): BattleState {
-    return {
+    battle = {
         ...battle,
         mechanisms: battle.mechanisms.add(self.id, self),
     };
+    battle = self.definition.onEnter?.(battle, self) ?? battle;
+
+    if (self.lifecycle !== "ACTIVE") {
+        return battle;
+    }
+
+    const current = get(battle, ref(self));
+
+    return current?.lifecycle === "ACTIVE"
+        ? (current.definition.onEnable?.(battle, current) ?? battle)
+        : battle;
 }
 
 export function get<M extends Mechanism<any>>(
@@ -98,9 +111,9 @@ export function setActive<M extends Mechanism<any>>(
     const next: M = { ...self, lifecycle };
     battle = { ...battle, mechanisms: battle.mechanisms.replace(reference.id, next) };
 
-    return !active && next.definition.onDisable !== undefined
-        ? next.definition.onDisable(battle, next)
-        : battle;
+    const callback = active ? next.definition.onEnable : next.definition.onDisable;
+
+    return callback?.(battle, next) ?? battle;
 }
 
 export const lifetime = createLifetime<Mechanism, Mechanism<any>, string>({

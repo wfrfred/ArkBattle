@@ -30,6 +30,50 @@ test("initial mechanisms retain activation input and reserve IDs before direct r
     assert.equal(mechanisms.get(added, reference), initialized.value);
 });
 
+test("mechanisms enter once at registration and enable on each activation", () => {
+    const trace = [];
+    const definition = counter("callbacks", {
+        onEnter(state, self) {
+            trace.push(["enter", self.id]);
+            return mechanisms.setState(state, mechanisms.ref(self), { count: 1 });
+        },
+        onEnable(state, self) {
+            assert.equal(mechanisms.get(state, mechanisms.ref(self)).lifecycle, "ACTIVE");
+            trace.push(["enable", self.id, self.state.count]);
+            return state;
+        },
+        onDisable(state, self) {
+            assert.equal(mechanisms.get(state, mechanisms.ref(self)).lifecycle, "INACTIVE");
+            trace.push(["disable", self.id]);
+            return state;
+        },
+    });
+    const initial = runtimeBattle([], {
+        initialMechanisms: [{ definition }, { definition, active: false }],
+    });
+    const [active, inactive] = mechanisms.all(initial).toArray();
+    assert.deepEqual(trace, [
+        ["enter", active.id], ["enable", active.id, 1], ["enter", inactive.id],
+    ]);
+
+    const [added, addedRef] = register(initial, definition);
+    const inactiveRef = mechanisms.ref(inactive);
+    let state = added;
+    assert.equal(mechanisms.setActive(state, inactiveRef, false), state);
+    state = mechanisms.setActive(state, inactiveRef, true);
+    assert.equal(mechanisms.setActive(state, inactiveRef, true), state);
+    state = mechanisms.setActive(state, inactiveRef, false);
+    assert.equal(mechanisms.setActive(state, inactiveRef, false), state);
+    state = mechanisms.setActive(state, inactiveRef, true);
+    assert.equal(mechanisms.get(state, inactiveRef).lifecycle, "ACTIVE");
+
+    assert.deepEqual(trace, [
+        ["enter", active.id], ["enable", active.id, 1], ["enter", inactive.id],
+        ["enter", addedRef.id], ["enable", addedRef.id, 1],
+        ["enable", inactive.id, 1], ["disable", inactive.id], ["enable", inactive.id, 1],
+    ]);
+});
+
 test("disabled mechanisms retain their state, and removal disables only active output", () => {
     const trace = [];
     const definition = counter("cleanup", {
