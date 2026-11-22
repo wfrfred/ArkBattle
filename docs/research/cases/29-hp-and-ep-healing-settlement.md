@@ -161,6 +161,20 @@ EP 自然回复与爆发恢复通过直接 EP setter 推进，不经过上表普
 
 SetHpSameToSource读取 `source.hp−target.hp`，零差直接返回；非零用NewHp #72184按正负选择deltaType，value取Abs，再按实际参数加非致命、skip标记并ApplyModifier。因此它可增加或减少HP，进入HP资源语义；既不同于CopyHealth的缺失量伤害，也不是裸字段复制。完整体及实际绑定见[hp-synchronization.json](../evidence/resource-mechanisms-20261114/recovery-elemental/hp-synchronization.json)。当前喷口／装置链已到实际Prefab，关卡引用的种类在原件分别记录，不把EnemyDbRef声明冒称已执行SPAWN。
 
+### 魔王 S3 的生命重新分配
+
+魔王 S3「编织重构现世」的 `AuraHeal` 装配 `cetsyr_s_3[collect_hp_ratio]` 和 `[cal_hp_ratio]`。周期内先收集攻击范围内合格友方单位的当前 HP 和 MaxHP，再以 `ΣHP / ΣMaxHP` 求一个比例。另一轮范围操作对合格目标安装 `[set_hp_ratio]`，以这个比例调整各自的 HP。两轮选择的配置允许忽略 `healFree`。 [技能和组件绑定](../evidence/health-equalization-20261122/README.md) · [技能备注](https://prts.wiki/w/魔王#技能)
+
+`EqualizeTargetHpRatio.Execute`（102136）为每个目标独立计算 `(新比例 − 目标当前比例) × 目标 MaxHP`，构造有符号 HP Modifier，在 `0x1811fcb12` 设置 `SKIP_MODIFIER_EVENT`，于 `0x1811fcb25` 调用 `ApplyModifier`。差值可以为正或负，普通伤害／治疗的接收与应用后通知按前文的 skip 路径绕过，生命提交仍逐个执行。该内容使用独立的等比例重分配节点。固定 Holder 的两个均摊治疗节点检索没有包括这一路径。 [原生摘录与版本](../evidence/health-equalization-20261122/README.md)
+
+### 变形者集群与同构碎片的生命同步
+
+主线 12-20 的变形者集群、本体召出的同构碎片有各自的 HP。实际 Prefab 均装配 `enemy_wdslm[splitDamage]`。该模板在受伤应用后读取受伤实例的当前生命比例，通过 `standRegisterList` 遍历其他碎片及本体，分别应用 `EqualizeTargetHpRatio`。`_useSourceHpRatio` 为 true，`_skipModifierEvent` 为 false。这个正例证实受伤后的比例同步会提交多笔有符号 HP 差值。致命受伤到全组结束还有独立程序，归属和其它提交观察者的完整交互仍需核对。 [主线出生与资源绑定](../evidence/wdslm-hp-sync-20261122/README.md)
+
+### 「岁」的四部位生命同步
+
+支线 TA-10 和 TA-EX-8 实际刷出「岁」的四个部位。四个 Prefab 启用的被动均装配 `enemy_sui_report_damage`，在受伤应用后调用 `Act49sideBossSyncHPRatio.Execute`，再由 Boss Manager 转发给 `UpdateEnemyHP`。普通客户端分支在被击部位累积本笔数值，再按该部位扣血后的比例计算其它部位各自的有符号 HP 差值。同步请求设置 `SKIP_MODIFIER_EVENT`。计量本部位受伤与维持四部位 HP 比例可以分别追踪。抬起、退场及归零的后续条件仍需结合实际配置核对。 [关卡、模板及原生分支](../evidence/sui-hp-sync-20261122/README.md)
+
 ## 9. 剩余证据边界
 
 - ElementHealViaMaxHpRatio有完整native，但1180包与9054Holder没有找到引用；普通EP自然回复另有余的实际天赋，见[案例25](25-elemental-burst-recovery-timing.md#8-自然ep回复的实际非零配置)。没有据零命中批准弃用。

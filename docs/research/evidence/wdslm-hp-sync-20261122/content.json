@@ -1,0 +1,248 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-22",
+    "fixedDataRevision": "17759cc8cdf37388414145d16262a3a06f3ab25e",
+    "sources": [
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_18.ab",
+        "bytes": 895456,
+        "sha256": "7bc74aef8fbb3cbc7ce86d7e4b789e2c0daaadf076d47b0e9989e83e7ff4eb69"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+        "bytes": 477255,
+        "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/assets/arknights-game-data/zh_CN/gamedata/levels/obt/main/level_main_12-18.json",
+        "bytes": 86645,
+        "sha256": "bdf08f76648fba54af812af04dd5e5897df15628c73009c39cd443c848ac3d4e"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/assets/arknights-game-data/zh_CN/gamedata/battle/buff_template_data.json",
+        "bytes": 28623543,
+        "sha256": "6786d60fa1f081346f7885a0a9782e201c942017588b09830afb011e16c6df3c"
+      }
+    ]
+  },
+  "result": {
+    "components": [
+      {
+        "bundle": "battle/enm_pfb_18.ab",
+        "file": "CAB-0df5f4c8c8dade07e2ee475a972da576",
+        "pathId": "-2043665165734528192",
+        "gameObjectPathId": "8311919319646255936",
+        "hierarchy": [
+          "enemy_1542_wdslm",
+          "Talents",
+          "splitDamage"
+        ],
+        "script": {
+          "id": "3800760148018415462",
+          "name": "PassiveBuffAbility",
+          "cl": "PassiveBuffAbility",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "fields": {
+          "_metadata": {
+            "namedAsAlias": "",
+            "blackboardPrefix": ""
+          },
+          "_buffs": [
+            {
+              "buffKey": "enemy_wdslm[splitDamage]",
+              "templateKey": "enemy_wdslm[splitDamage]",
+              "loadFromDB": false
+            },
+            {
+              "buffKey": "enemy_wdslm[syncReborn]",
+              "templateKey": "enemy_wdslm[syncReborn]",
+              "loadFromDB": false
+            }
+          ]
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_18.ab",
+        "file": "CAB-0df5f4c8c8dade07e2ee475a972da576",
+        "pathId": "238617005377944023",
+        "gameObjectPathId": "-3137156799380358697",
+        "hierarchy": [
+          "enemy_1542_wdslm_2",
+          "Talents",
+          "splitDamage"
+        ],
+        "script": {
+          "id": "3800760148018415462",
+          "name": "PassiveBuffAbility",
+          "cl": "PassiveBuffAbility",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "fields": {
+          "_metadata": {
+            "namedAsAlias": "",
+            "blackboardPrefix": ""
+          },
+          "_buffs": [
+            {
+              "buffKey": "enemy_wdslm[splitDamage]",
+              "templateKey": "enemy_wdslm[splitDamage]",
+              "loadFromDB": false
+            },
+            {
+              "buffKey": "enemy_wdslm[syncReborn]",
+              "templateKey": "enemy_wdslm[syncReborn]",
+              "loadFromDB": false
+            }
+          ]
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_18.ab",
+        "file": "CAB-0df5f4c8c8dade07e2ee475a972da576",
+        "pathId": "-3648310526488036544",
+        "gameObjectPathId": "3860136956319218496",
+        "hierarchy": [
+          "enemy_1542_wdslm",
+          "Talents",
+          "standRegisterList"
+        ],
+        "script": {
+          "id": "-4739418098716054352",
+          "name": "WdslmsStandAbility",
+          "cl": "WdslmsStandAbility",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "fields": {
+          "_metadata": {
+            "namedAsAlias": "standRegisterList",
+            "blackboardPrefix": ""
+          }
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_18.ab",
+        "file": "CAB-0df5f4c8c8dade07e2ee475a972da576",
+        "pathId": "2772085753718274519",
+        "gameObjectPathId": "6687776023216224727",
+        "hierarchy": [
+          "enemy_1542_wdslm_2",
+          "Talents",
+          "standRegisterList"
+        ],
+        "script": {
+          "id": "-4739418098716054352",
+          "name": "WdslmsStandAbility",
+          "cl": "WdslmsStandAbility",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "fields": {
+          "_metadata": {
+            "namedAsAlias": "standRegisterList",
+            "blackboardPrefix": ""
+          }
+        }
+      }
+    ],
+    "stage": [
+      {
+        "pointer": "/waves/0/fragments/0/actions/0",
+        "value": {
+          "actionType": "SPAWN",
+          "managedByScheduler": true,
+          "key": "enemy_1542_wdslm",
+          "count": 1,
+          "preDelay": 3.0,
+          "interval": 1.0,
+          "routeIndex": 0,
+          "blockFragment": false,
+          "autoPreviewRoute": true,
+          "autoDisplayEnemyInfo": true,
+          "isUnharmfulAndAlwaysCountAsKilled": false,
+          "hiddenGroup": null,
+          "randomSpawnGroupKey": null,
+          "randomSpawnGroupPackKey": null,
+          "randomType": "ALWAYS",
+          "refreshType": "ALWAYS",
+          "weight": 0,
+          "dontBlockWave": false,
+          "forceBlockWaveInBranch": false
+        }
+      },
+      {
+        "pointer": "/branches/branch_2/phases/0/actions/0",
+        "value": {
+          "actionType": "SPAWN",
+          "managedByScheduler": true,
+          "key": "enemy_1542_wdslm_2",
+          "count": 1,
+          "preDelay": 0.0,
+          "interval": 1.0,
+          "routeIndex": 0,
+          "blockFragment": false,
+          "autoPreviewRoute": true,
+          "autoDisplayEnemyInfo": false,
+          "isUnharmfulAndAlwaysCountAsKilled": false,
+          "hiddenGroup": null,
+          "randomSpawnGroupKey": null,
+          "randomSpawnGroupPackKey": null,
+          "randomType": "ALWAYS",
+          "refreshType": "ALWAYS",
+          "weight": 0,
+          "dontBlockWave": false,
+          "forceBlockWaveInBranch": false
+        }
+      }
+    ],
+    "template": {
+      "enemy_wdslm[splitDamage]": {
+        "templateKey": "enemy_wdslm[splitDamage]",
+        "effectKey": "",
+        "onEventPriority": "DEFAULT",
+        "eventToActions": {
+          "ON_APPLIED_MODIFIER": [
+            {
+              "$type": "Torappu.Battle.Action.Nodes+IsDamage, Assembly-CSharp"
+            },
+            {
+              "$type": "Torappu.Battle.Action.Nodes+RunActionsToWdslmAbilityTarget, Assembly-CSharp",
+              "_abilityName": "standRegisterList",
+              "_sourceType": "BUFF_OWNER",
+              "_actionTargetType": "STANDS_EXCEPT_SELF",
+              "_actionsToTarget": [
+                {
+                  "$type": "Torappu.Battle.Action.Nodes+EqualizeTargetHpRatio, Assembly-CSharp",
+                  "_source": "BUFF_OWNER",
+                  "_target": "TARGET",
+                  "_useSourceHpRatio": true,
+                  "_hpRatio": 0.5,
+                  "_skipModifierEvent": false
+                }
+              ]
+            },
+            {
+              "$type": "Torappu.Battle.Action.Nodes+RunActionsToWdslmAbilityTarget, Assembly-CSharp",
+              "_abilityName": "standRegisterList",
+              "_sourceType": "BUFF_OWNER",
+              "_actionTargetType": "HOST",
+              "_actionsToTarget": [
+                {
+                  "$type": "Torappu.Battle.Action.Nodes+EqualizeTargetHpRatio, Assembly-CSharp",
+                  "_source": "BUFF_OWNER",
+                  "_target": "TARGET",
+                  "_useSourceHpRatio": true,
+                  "_hpRatio": 0.5,
+                  "_skipModifierEvent": false
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
+}

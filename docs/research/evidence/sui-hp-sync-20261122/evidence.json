@@ -1,0 +1,1066 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-22",
+    "client": {
+      "dll": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "bytes": 223112680,
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff"
+      },
+      "metadata": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "bytes": 46669332,
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5"
+      },
+      "metadataVersion": 29,
+      "imageBase": "0x180000000"
+    },
+    "tools": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/sui-hp-sync-20261122/extract.py",
+        "bytes": 9007,
+        "sha256": "4c7ca4ff9c906d5629db0b2c9c3bd3689add641f01c5f96f672118cb32f1b676"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/native.py",
+        "bytes": 18723,
+        "sha256": "1c6c16dc97e0dd9af0af4033c81a7534384dd65ebb1e604df3f4a3289df158e6"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/nymph-action-settlement-20261103/projectile/decode_projectile.py",
+        "bytes": 6749,
+        "sha256": "dab13196fb726d06bd9094c29f09a12dc3677b2c129359a1f7c305e13a8157fb"
+      }
+    ],
+    "assets": [
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_30.ab",
+        "bytes": 398250,
+        "sha256": "aebb60e02a2cac41c6a240bcaa678130c8a529c81ca1834421fe531a5a146e36"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+        "bytes": 2151020,
+        "sha256": "8edcb8017c977cdf52c2593b58e21db96949f3ad1e6f904180ac1241f145ca79"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+        "bytes": 477255,
+        "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99"
+      }
+    ],
+    "configRevision": "17759cc8cdf37388414145d16262a3a06f3ab25e"
+  },
+  "result": {
+    "config": [
+      {
+        "path": "zh_CN/gamedata/levels/activities/act49side/level_act49side_10.json",
+        "gitBlob": "ab559369ede099dcfb0f2dcea9d5d2f40d0b356b",
+        "entries": {
+          "/waves/1/fragments/0/actions/1": {
+            "actionType": "SPAWN",
+            "managedByScheduler": true,
+            "key": "enemy_1583_suizzh",
+            "count": 1,
+            "preDelay": 5.0,
+            "interval": 0.0,
+            "routeIndex": 3,
+            "blockFragment": false,
+            "autoPreviewRoute": false,
+            "autoDisplayEnemyInfo": false,
+            "isUnharmfulAndAlwaysCountAsKilled": false,
+            "hiddenGroup": null,
+            "randomSpawnGroupKey": null,
+            "randomSpawnGroupPackKey": null,
+            "randomType": "ALWAYS",
+            "refreshType": "ALWAYS",
+            "weight": 0,
+            "dontBlockWave": false,
+            "forceBlockWaveInBranch": false
+          },
+          "/waves/1/fragments/0/actions/2": {
+            "actionType": "SPAWN",
+            "managedByScheduler": true,
+            "key": "enemy_1584_suiyzh",
+            "count": 1,
+            "preDelay": 5.0,
+            "interval": 0.0,
+            "routeIndex": 4,
+            "blockFragment": false,
+            "autoPreviewRoute": false,
+            "autoDisplayEnemyInfo": false,
+            "isUnharmfulAndAlwaysCountAsKilled": false,
+            "hiddenGroup": null,
+            "randomSpawnGroupKey": null,
+            "randomSpawnGroupPackKey": null,
+            "randomType": "ALWAYS",
+            "refreshType": "ALWAYS",
+            "weight": 0,
+            "dontBlockWave": false,
+            "forceBlockWaveInBranch": false
+          },
+          "/waves/1/fragments/0/actions/3": {
+            "actionType": "SPAWN",
+            "managedByScheduler": true,
+            "key": "enemy_1585_suiwei",
+            "count": 1,
+            "preDelay": 5.0,
+            "interval": 0.0,
+            "routeIndex": 5,
+            "blockFragment": false,
+            "autoPreviewRoute": false,
+            "autoDisplayEnemyInfo": false,
+            "isUnharmfulAndAlwaysCountAsKilled": false,
+            "hiddenGroup": null,
+            "randomSpawnGroupKey": null,
+            "randomSpawnGroupPackKey": null,
+            "randomType": "ALWAYS",
+            "refreshType": "ALWAYS",
+            "weight": 0,
+            "dontBlockWave": false,
+            "forceBlockWaveInBranch": false
+          },
+          "/waves/1/fragments/0/actions/4": {
+            "actionType": "SPAWN",
+            "managedByScheduler": true,
+            "key": "enemy_1582_suisho",
+            "count": 1,
+            "preDelay": 5.0,
+            "interval": 0.0,
+            "routeIndex": 6,
+            "blockFragment": false,
+            "autoPreviewRoute": false,
+            "autoDisplayEnemyInfo": true,
+            "isUnharmfulAndAlwaysCountAsKilled": false,
+            "hiddenGroup": null,
+            "randomSpawnGroupKey": null,
+            "randomSpawnGroupPackKey": null,
+            "randomType": "ALWAYS",
+            "refreshType": "ALWAYS",
+            "weight": 0,
+            "dontBlockWave": false,
+            "forceBlockWaveInBranch": false
+          }
+        }
+      },
+      {
+        "path": "zh_CN/gamedata/levels/activities/act49side/level_act49side_ex08.json",
+        "gitBlob": "b8c1aec3edb08bb14c3bad5425f812d8900d9196",
+        "entries": {
+          "/waves/1/fragments/0/actions/1": {
+            "actionType": "SPAWN",
+            "managedByScheduler": true,
+            "key": "enemy_1583_suizzh",
+            "count": 1,
+            "preDelay": 5.0,
+            "interval": 0.0,
+            "routeIndex": 2,
+            "blockFragment": false,
+            "autoPreviewRoute": false,
+            "autoDisplayEnemyInfo": false,
+            "isUnharmfulAndAlwaysCountAsKilled": false,
+            "hiddenGroup": null,
+            "randomSpawnGroupKey": null,
+            "randomSpawnGroupPackKey": null,
+            "randomType": "ALWAYS",
+            "refreshType": "ALWAYS",
+            "weight": 0,
+            "dontBlockWave": false,
+            "forceBlockWaveInBranch": false
+          },
+          "/waves/1/fragments/0/actions/2": {
+            "actionType": "SPAWN",
+            "managedByScheduler": true,
+            "key": "enemy_1584_suiyzh",
+            "count": 1,
+            "preDelay": 5.0,
+            "interval": 0.0,
+            "routeIndex": 3,
+            "blockFragment": false,
+            "autoPreviewRoute": false,
+            "autoDisplayEnemyInfo": false,
+            "isUnharmfulAndAlwaysCountAsKilled": false,
+            "hiddenGroup": null,
+            "randomSpawnGroupKey": null,
+            "randomSpawnGroupPackKey": null,
+            "randomType": "ALWAYS",
+            "refreshType": "ALWAYS",
+            "weight": 0,
+            "dontBlockWave": false,
+            "forceBlockWaveInBranch": false
+          },
+          "/waves/1/fragments/0/actions/3": {
+            "actionType": "SPAWN",
+            "managedByScheduler": true,
+            "key": "enemy_1585_suiwei",
+            "count": 1,
+            "preDelay": 5.0,
+            "interval": 0.0,
+            "routeIndex": 4,
+            "blockFragment": false,
+            "autoPreviewRoute": false,
+            "autoDisplayEnemyInfo": false,
+            "isUnharmfulAndAlwaysCountAsKilled": false,
+            "hiddenGroup": null,
+            "randomSpawnGroupKey": null,
+            "randomSpawnGroupPackKey": null,
+            "randomType": "ALWAYS",
+            "refreshType": "ALWAYS",
+            "weight": 0,
+            "dontBlockWave": false,
+            "forceBlockWaveInBranch": false
+          },
+          "/waves/1/fragments/0/actions/4": {
+            "actionType": "SPAWN",
+            "managedByScheduler": true,
+            "key": "enemy_1582_suisho",
+            "count": 1,
+            "preDelay": 5.0,
+            "interval": 0.0,
+            "routeIndex": 5,
+            "blockFragment": false,
+            "autoPreviewRoute": false,
+            "autoDisplayEnemyInfo": true,
+            "isUnharmfulAndAlwaysCountAsKilled": false,
+            "hiddenGroup": null,
+            "randomSpawnGroupKey": null,
+            "randomSpawnGroupPackKey": null,
+            "randomType": "ALWAYS",
+            "refreshType": "ALWAYS",
+            "weight": 0,
+            "dontBlockWave": false,
+            "forceBlockWaveInBranch": false
+          }
+        }
+      },
+      {
+        "path": "zh_CN/gamedata/excel/enemy_handbook_table.json",
+        "gitBlob": "14dde01def7067414b18c7dab82b4f9850a6ec89",
+        "entries": {
+          "/enemyData/enemy_1582_suisho": {
+            "enemyId": "enemy_1582_suisho",
+            "enemyIndex": "SUI1",
+            "enemyTags": null,
+            "sortId": 1503,
+            "name": "岁",
+            "enemyLevel": "BOSS",
+            "description": "大炎最后射落的神明，复立于对手面前。祂仰起头，望穿自太古至终末的所有时间，却未尝真正走入这人间。",
+            "attackType": null,
+            "ability": null,
+            "isInvalidKilled": false,
+            "overrideKillCntInfos": {},
+            "hideInHandbook": false,
+            "hideInStage": true,
+            "abilityList": [
+              {
+                "text": "巨大的身躯横亘在场上，四个部位共享生命值且依序释放技能，单个部位受到过高伤害时，会抬起并脱离战斗",
+                "textFormat": "NORMAL"
+              },
+              {
+                "text": "部位释放技能时会抬起，无法被攻击且不再使所在地块不可部署，不可通行",
+                "textFormat": "NORMAL"
+              },
+              {
+                "text": "部位被镇岁柱影响后，会削弱对应属性以及对应部位的技能，岁全盛时拥有额外的高额属性且受到的物理与法术伤害减少",
+                "textFormat": "NORMAL"
+              },
+              {
+                "text": "【十方怼怒】抬起岁·首，一段时间后对最北边的友方单位喷吐一口火焰，造成法术伤害与<$ba.dt.burning>灼燃损伤</>，火焰随后向南爆开，使范围内持续灼烧，造成法术伤害与<$ba.dt.burning>灼燃损伤</>并引爆<“未熄”>，持续一段时间",
+                "textFormat": "NORMAL"
+              },
+              {
+                "text": "【柱折维绝】生命值低于一定比例时，召唤额外敌人且4个部位立即同时释放【十方怼怒】、【掩月】、【蔽日】、【天倾地陷】",
+                "textFormat": "NORMAL"
+              },
+              {
+                "text": "被镇岁柱削弱后，岁的攻击力降低，且【十方怼怒】的范围减少",
+                "textFormat": "NORMAL"
+              }
+            ],
+            "linkEnemies": [
+              "enemy_10172_sheart",
+              "enemy_1583_suizzh",
+              "enemy_1584_suiyzh",
+              "enemy_1585_suiwei"
+            ],
+            "damageType": [
+              "MAGIC"
+            ],
+            "invisibleDetail": false
+          }
+        }
+      },
+      {
+        "path": "zh_CN/gamedata/battle/buff_template_data.json",
+        "gitBlob": "a34ed3b4ee4cc020045e89d74efc5085244fc38e",
+        "entries": {
+          "/enemy_sui_report_damage": {
+            "templateKey": "enemy_sui_report_damage",
+            "effectKey": "",
+            "onEventPriority": "DEFAULT",
+            "eventToActions": {
+              "ON_APPLIED_MODIFIER": [
+                {
+                  "$type": "Torappu.Battle.Action.Nodes+IsDamage, Assembly-CSharp"
+                },
+                {
+                  "$type": "Torappu.Battle.Action.Nodes+Act49sideBossSyncHPRatio, Assembly-CSharp",
+                  "_sourceType": "BUFF_OWNER"
+                }
+              ]
+            }
+          }
+        }
+      }
+    ],
+    "assets": {
+      "prefabBundle": "battle/enm_pfb_30.ab",
+      "prefabFile": "CAB-4259af29fb317836113f2409abf8b606",
+      "reports": [
+        {
+          "pathId": "-6199737944141290950",
+          "gameObjectId": -2506134866403286470,
+          "scriptPPtr": {
+            "m_FileID": 1,
+            "m_PathID": 3800760148018415462
+          },
+          "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+          "script": {
+            "id": "3800760148018415462",
+            "name": "PassiveBuffAbility",
+            "cl": "PassiveBuffAbility",
+            "ns": "Torappu.Battle.Abilities",
+            "asm": "Assembly-CSharp.dll"
+          },
+          "enabled": true,
+          "buffs": [
+            {
+              "buffKey": "enemy_suisho_hp_ctrl",
+              "templateKey": "enemy_sui_report_damage",
+              "loadFromDB": false
+            }
+          ],
+          "hierarchy": [
+            "enemy_1582_suisho",
+            "CommonAbility",
+            "Passive"
+          ]
+        },
+        {
+          "pathId": "4543096748044416758",
+          "gameObjectId": 2592632926526732022,
+          "scriptPPtr": {
+            "m_FileID": 1,
+            "m_PathID": 3800760148018415462
+          },
+          "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+          "script": {
+            "id": "3800760148018415462",
+            "name": "PassiveBuffAbility",
+            "cl": "PassiveBuffAbility",
+            "ns": "Torappu.Battle.Abilities",
+            "asm": "Assembly-CSharp.dll"
+          },
+          "enabled": true,
+          "buffs": [
+            {
+              "buffKey": "enemy_suiwei_hp_ctrl",
+              "templateKey": "enemy_sui_report_damage",
+              "loadFromDB": false
+            }
+          ],
+          "hierarchy": [
+            "enemy_1585_suiwei",
+            "CommonAbility",
+            "Passive"
+          ]
+        },
+        {
+          "pathId": "5301837016014110933",
+          "gameObjectId": -2324008218157530923,
+          "scriptPPtr": {
+            "m_FileID": 1,
+            "m_PathID": 3800760148018415462
+          },
+          "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+          "script": {
+            "id": "3800760148018415462",
+            "name": "PassiveBuffAbility",
+            "cl": "PassiveBuffAbility",
+            "ns": "Torappu.Battle.Abilities",
+            "asm": "Assembly-CSharp.dll"
+          },
+          "enabled": true,
+          "buffs": [
+            {
+              "buffKey": "enemy_suiyzh_hp_ctrl",
+              "templateKey": "enemy_sui_report_damage",
+              "loadFromDB": false
+            }
+          ],
+          "hierarchy": [
+            "enemy_1584_suiyzh",
+            "CommonAbility",
+            "Passive"
+          ]
+        },
+        {
+          "pathId": "5698704191513468768",
+          "gameObjectId": 3895028940236758880,
+          "scriptPPtr": {
+            "m_FileID": 1,
+            "m_PathID": 3800760148018415462
+          },
+          "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+          "script": {
+            "id": "3800760148018415462",
+            "name": "PassiveBuffAbility",
+            "cl": "PassiveBuffAbility",
+            "ns": "Torappu.Battle.Abilities",
+            "asm": "Assembly-CSharp.dll"
+          },
+          "enabled": true,
+          "buffs": [
+            {
+              "buffKey": "enemy_suizzh_hp_ctrl",
+              "templateKey": "enemy_sui_report_damage",
+              "loadFromDB": false
+            }
+          ],
+          "hierarchy": [
+            "enemy_1583_suizzh",
+            "CommonAbility",
+            "Passive"
+          ]
+        }
+      ],
+      "holder": {
+        "bundle": "config/buff_template_holder.ab",
+        "file": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+        "pathId": "6070581171229484677",
+        "index": 2259,
+        "templateKey": "enemy_sui_report_damage",
+        "events": [
+          {
+            "event": 7,
+            "actions": [
+              {
+                "$type": "Torappu.Battle.Action.Nodes+IsDamage"
+              },
+              {
+                "_sourceType": "BUFF_OWNER",
+                "$type": "Torappu.Battle.Action.Nodes+Act49sideBossSyncHPRatio"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "native": {
+      "methods": [
+        {
+          "method": {
+            "nameIndex": 397673,
+            "declaringType": 13900,
+            "returnType": 46024,
+            "parameterStart": 92764,
+            "genericContainerIndex": -1,
+            "token": 100760959,
+            "flags": 198,
+            "iflags": 0,
+            "slot": 6,
+            "parameterCount": 3,
+            "index": 97662,
+            "image": "Assembly-CSharp.dll",
+            "address": 6459776608,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.Action.Nodes/Act49sideBossSyncHPRatio.Execute",
+            "returnTypeName": "bool",
+            "parameters": [
+              {
+                "nameIndex": 3124,
+                "token": 134310509,
+                "typeIndex": 45909,
+                "index": 92764,
+                "name": "blackboard",
+                "typeName": "Torappu.Blackboard"
+              },
+              {
+                "nameIndex": 440673,
+                "token": 134310510,
+                "typeIndex": 90650,
+                "index": 92765,
+                "name": "sourceType",
+                "typeName": "Torappu.Battle.Action.ActionNode/SourceType"
+              },
+              {
+                "nameIndex": 440684,
+                "token": 134310511,
+                "typeIndex": 32502,
+                "index": 92766,
+                "name": "snapshot",
+                "typeName": "Torappu.Battle.Context/Snapshot&"
+              }
+            ]
+          },
+          "spans": [
+            {
+              "address": "0x181085fb0",
+              "range": [
+                "0x181085fb0",
+                "0x181086063"
+              ],
+              "instructions": [
+                "0x181085fb0: mov rdx, qword ptr [rdx]",
+                "0x181085fb3: call 0x180653460",
+                "0x181085fb8: mov rcx, qword ptr [rip + 0x7a9a091]",
+                "0x181085fbf: mov rdi, rax",
+                "0x181085fc2: cmp dword ptr [rcx + 0xe0], 0",
+                "0x181085fc9: jne 0x181085fd0",
+                "0x181085fcb: call 0x18049c450",
+                "0x181085fd0: xor r8d, r8d",
+                "0x181085fd3: xor edx, edx",
+                "0x181085fd5: mov rcx, rdi",
+                "0x181085fd8: call 0x186dcf290",
+                "0x181085fdd: test al, al",
+                "0x181085fdf: jne 0x181086065",
+                "0x181085fe5: mov rcx, qword ptr [rip + 0x7a9a064]",
+                "0x181085fec: cmp dword ptr [rcx + 0xe0], 0",
+                "0x181085ff3: jne 0x181085ffa",
+                "0x181085ff5: call 0x18049c450",
+                "0x181085ffa: xor r8d, r8d",
+                "0x181085ffd: xor edx, edx",
+                "0x181085fff: mov rcx, rbx",
+                "0x181086002: call 0x186dcf290",
+                "0x181086007: test al, al",
+                "0x181086009: jne 0x181086065",
+                "0x18108600b: test rdi, rdi",
+                "0x18108600e: je 0x18108609a",
+                "0x181086014: mov rdx, qword ptr [rip + 0x7aeb165]",
+                "0x18108601b: mov rcx, rdi",
+                "0x18108601e: call 0x184704430",
+                "0x181086023: mov rcx, qword ptr [rip + 0x7a9a026]",
+                "0x18108602a: mov rdi, rax",
+                "0x18108602d: cmp dword ptr [rcx + 0xe0], 0",
+                "0x181086034: jne 0x18108603b",
+                "0x181086036: call 0x18049c450",
+                "0x18108603b: xor r8d, r8d",
+                "0x18108603e: xor edx, edx",
+                "0x181086040: mov rcx, rdi",
+                "0x181086043: call 0x186dcf290",
+                "0x181086048: test al, al",
+                "0x18108604a: jne 0x181086065",
+                "0x18108604c: test rdi, rdi",
+                "0x18108604f: je 0x18108609a",
+                "0x181086051: lea r8, [rbp + 0x20]",
+                "0x181086055: xor r9d, r9d",
+                "0x181086058: mov rdx, rbx",
+                "0x18108605b: mov rcx, rdi",
+                "0x18108605e: call 0x1807d8200"
+              ]
+            }
+          ]
+        },
+        {
+          "method": {
+            "nameIndex": 2640525,
+            "declaringType": 10576,
+            "returnType": 46024,
+            "parameterStart": 69862,
+            "genericContainerIndex": -1,
+            "token": 100732824,
+            "flags": 134,
+            "iflags": 0,
+            "slot": 65535,
+            "parameterCount": 2,
+            "index": 69527,
+            "image": "Assembly-CSharp.dll",
+            "address": 6450676224,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.Act49SideLevelBossManager.ApplyDamageToLevelBoss",
+            "returnTypeName": "bool",
+            "parameters": [
+              {
+                "nameIndex": 6707,
+                "token": 134287596,
+                "typeIndex": 53407,
+                "index": 69862,
+                "name": "source",
+                "typeName": "Torappu.Battle.Enemy"
+              },
+              {
+                "nameIndex": 512949,
+                "token": 134287597,
+                "typeIndex": 31991,
+                "index": 69863,
+                "name": "modifier",
+                "typeName": "Torappu.Battle.Modifier&"
+              }
+            ]
+          },
+          "spans": [
+            {
+              "address": "0x1807d8253",
+              "range": [
+                "0x1807d8253",
+                "0x1807d828f"
+              ],
+              "instructions": [
+                "0x1807d8253: mov rax, qword ptr [rax + 0xb8]",
+                "0x1807d825a: mov rcx, qword ptr [rax + 0x148]",
+                "0x1807d8261: test rcx, rcx",
+                "0x1807d8264: jne 0x1807d828f",
+                "0x1807d8266: mov rcx, qword ptr [rbx + 0x348]",
+                "0x1807d826d: test rcx, rcx",
+                "0x1807d8270: je 0x1807d82b6",
+                "0x1807d8272: xor r9d, r9d",
+                "0x1807d8275: mov r8, rdi",
+                "0x1807d8278: mov rdx, rsi",
+                "0x1807d827b: mov rbx, qword ptr [rsp + 0x40]",
+                "0x1807d8280: mov rsi, qword ptr [rsp + 0x48]",
+                "0x1807d8285: add rsp, 0x30",
+                "0x1807d8289: pop rdi",
+                "0x1807d828a: jmp 0x18082d450"
+              ]
+            }
+          ]
+        },
+        {
+          "method": {
+            "nameIndex": 2646338,
+            "declaringType": 10567,
+            "returnType": 46024,
+            "parameterStart": 69888,
+            "genericContainerIndex": -1,
+            "token": 100732862,
+            "flags": 134,
+            "iflags": 0,
+            "slot": 65535,
+            "parameterCount": 2,
+            "index": 69565,
+            "image": "Assembly-CSharp.dll",
+            "address": 6451024976,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.Act49SideLevelBossManager/Act49sideBossState.UpdateEnemyHP",
+            "returnTypeName": "bool",
+            "parameters": [
+              {
+                "nameIndex": 6707,
+                "token": 134287622,
+                "typeIndex": 53407,
+                "index": 69888,
+                "name": "source",
+                "typeName": "Torappu.Battle.Enemy"
+              },
+              {
+                "nameIndex": 2646330,
+                "token": 134287623,
+                "typeIndex": 31991,
+                "index": 69889,
+                "name": "modifer",
+                "typeName": "Torappu.Battle.Modifier&"
+              }
+            ]
+          },
+          "spans": [
+            {
+              "address": "0x18082d612",
+              "range": [
+                "0x18082d612",
+                "0x18082d64e"
+              ],
+              "instructions": [
+                "0x18082d612: xor edx, edx",
+                "0x18082d614: mov rcx, r13",
+                "0x18082d617: call 0x18090d4d0",
+                "0x18082d61c: test al, al",
+                "0x18082d61e: je 0x18082e84b",
+                "0x18082d624: mov rcx, qword ptr [rip + 0x82f2a25]",
+                "0x18082d62b: mov rbx, qword ptr [r14 + 0x18]",
+                "0x18082d62f: cmp dword ptr [rcx + 0xe0], 0",
+                "0x18082d636: jne 0x18082d63d",
+                "0x18082d638: call 0x18049c450",
+                "0x18082d63d: xor r8d, r8d",
+                "0x18082d640: xor edx, edx",
+                "0x18082d642: mov rcx, rbx",
+                "0x18082d645: call 0x186dcf290",
+                "0x18082d64a: test al, al",
+                "0x18082d64c: jne 0x18082e84b"
+              ]
+            },
+            {
+              "address": "0x18082d722",
+              "range": [
+                "0x18082d722",
+                "0x18082d777"
+              ],
+              "instructions": [
+                "0x18082d722: xor edx, edx",
+                "0x18082d724: mov rcx, r12",
+                "0x18082d727: call 0x1807363c0",
+                "0x18082d72c: mov rcx, qword ptr [rip + 0x839957d]",
+                "0x18082d733: mov rbx, rax",
+                "0x18082d736: cmp dword ptr [rcx + 0xe0], 0",
+                "0x18082d73d: jne 0x18082d744",
+                "0x18082d73f: call 0x18049c450",
+                "0x18082d744: xor edx, edx",
+                "0x18082d746: xorps xmm0, xmm0",
+                "0x18082d749: call 0x18695e180",
+                "0x18082d74e: mov rcx, qword ptr [rip + 0x8408b53]",
+                "0x18082d755: mov rdi, rax",
+                "0x18082d758: cmp dword ptr [rcx + 0xe0], 0",
+                "0x18082d75f: jne 0x18082d766",
+                "0x18082d761: call 0x18049c450",
+                "0x18082d766: xor r8d, r8d",
+                "0x18082d769: mov rdx, rdi",
+                "0x18082d76c: mov rcx, rbx",
+                "0x18082d76f: call 0x186945ca0",
+                "0x18082d774: test al, al",
+                "0x18082d776: jne 0x18082e69b"
+              ]
+            },
+            {
+              "address": "0x18082d79e",
+              "range": [
+                "0x18082d79e",
+                "0x18082d8e7"
+              ],
+              "instructions": [
+                "0x18082d79e: xor edx, edx",
+                "0x18082d7a0: mov rcx, r12",
+                "0x18082d7a3: mov qword ptr [rbp + 0x2d8], r15",
+                "0x18082d7aa: mov rbx, rax",
+                "0x18082d7ad: call 0x180736530",
+                "0x18082d7b2: mov rcx, qword ptr [r14 + 0x18]",
+                "0x18082d7b6: mov rdi, rax",
+                "0x18082d7b9: test rcx, rcx",
+                "0x18082d7bc: je 0x18082e852",
+                "0x18082d7c2: xor edx, edx",
+                "0x18082d7c4: call 0x180736530",
+                "0x18082d7c9: xor r8d, r8d",
+                "0x18082d7cc: mov rdx, rax",
+                "0x18082d7cf: mov rcx, rdi",
+                "0x18082d7d2: call 0x186020b40",
+                "0x18082d7d7: test al, al",
+                "0x18082d7d9: jne 0x18082d83b",
+                "0x18082d7db: mov rcx, qword ptr [rip + 0x8432b7e]",
+                "0x18082d7e2: mov rbx, qword ptr [r14 + 0x68]",
+                "0x18082d7e6: cmp dword ptr [rcx + 0xe0], r15d",
+                "0x18082d7ed: jne 0x18082d7f4",
+                "0x18082d7ef: call 0x18049c450",
+                "0x18082d7f4: xor edx, edx",
+                "0x18082d7f6: mov rcx, r13",
+                "0x18082d7f9: call 0x18090e0a0",
+                "0x18082d7fe: mov rcx, qword ptr [rip + 0x83994ab]",
+                "0x18082d805: mov rdi, rax",
+                "0x18082d808: cmp dword ptr [rcx + 0xe0], r15d",
+                "0x18082d80f: jne 0x18082d816",
+                "0x18082d811: call 0x18049c450",
+                "0x18082d816: xor r8d, r8d",
+                "0x18082d819: mov rdx, rdi",
+                "0x18082d81c: mov rcx, rbx",
+                "0x18082d81f: call 0x18480bfc0",
+                "0x18082d824: mov rbx, rax",
+                "0x18082d827: mov qword ptr [r14 + 0x68], rax",
+                "0x18082d82b: mov rax, qword ptr [r14 + 0x18]",
+                "0x18082d82f: mov qword ptr [rbp + 0x2d8], rax",
+                "0x18082d836: jmp 0x18082d965",
+                "0x18082d83b: xor edx, edx",
+                "0x18082d83d: mov rcx, r12",
+                "0x18082d840: call 0x1807363c0",
+                "0x18082d845: mov rcx, qword ptr [r14 + 0x18]",
+                "0x18082d849: mov rsi, rax",
+                "0x18082d84c: test rcx, rcx",
+                "0x18082d84f: je 0x18082e852",
+                "0x18082d855: xor edx, edx",
+                "0x18082d857: call 0x1807363c0",
+                "0x18082d85c: mov rcx, qword ptr [rip + 0x839944d]",
+                "0x18082d863: mov rdi, rax",
+                "0x18082d866: cmp dword ptr [rcx + 0xe0], r15d",
+                "0x18082d86d: jne 0x18082d874",
+                "0x18082d86f: call 0x18049c450",
+                "0x18082d874: xor r8d, r8d",
+                "0x18082d877: mov rdx, rdi",
+                "0x18082d87a: mov rcx, rsi",
+                "0x18082d87d: call 0x18695c0c0",
+                "0x18082d882: mov rcx, qword ptr [r14 + 0x18]",
+                "0x18082d886: mov rdi, rax",
+                "0x18082d889: test rcx, rcx",
+                "0x18082d88c: je 0x18082e852",
+                "0x18082d892: xor edx, edx",
+                "0x18082d894: call 0x180738b40",
+                "0x18082d899: xor r8d, r8d",
+                "0x18082d89c: mov rdx, rax",
+                "0x18082d89f: mov rcx, rdi",
+                "0x18082d8a2: call 0x18695bf20",
+                "0x18082d8a7: mov rcx, qword ptr [rip + 0x8432ab2]",
+                "0x18082d8ae: mov rdi, rax",
+                "0x18082d8b1: mov rsi, qword ptr [r14 + 0x18]",
+                "0x18082d8b5: cmp dword ptr [rcx + 0xe0], r15d",
+                "0x18082d8bc: jne 0x18082d8c3",
+                "0x18082d8be: call 0x18049c450",
+                "0x18082d8c3: mov r9, rsi",
+                "0x18082d8c6: mov qword ptr [rsp + 0x20], r15",
+                "0x18082d8cb: mov r8, r12",
+                "0x18082d8ce: lea rcx, [rbp + 0x1e0]",
+                "0x18082d8d5: mov rdx, rdi",
+                "0x18082d8d8: call 0x18090af40",
+                "0x18082d8dd: mov edx, 7",
+                "0x18082d8e2: lea rcx, [rsp + 0x60]"
+              ]
+            },
+            {
+              "address": "0x18082d936",
+              "range": [
+                "0x18082d936",
+                "0x18082d965"
+              ],
+              "instructions": [
+                "0x18082d936: movsd xmm1, qword ptr [rax + 0x90]",
+                "0x18082d93e: movsd qword ptr [rbp - 0x10], xmm1",
+                "0x18082d943: call 0x18090c010",
+                "0x18082d948: mov rcx, qword ptr [r14 + 0x18]",
+                "0x18082d94c: test rcx, rcx",
+                "0x18082d94f: je 0x18082e852",
+                "0x18082d955: xor r9d, r9d",
+                "0x18082d958: lea rdx, [rsp + 0x60]",
+                "0x18082d95d: xor r8d, r8d",
+                "0x18082d960: call 0x1807211a0"
+              ]
+            },
+            {
+              "address": "0x18082da95",
+              "range": [
+                "0x18082da95",
+                "0x18082daa4"
+              ],
+              "instructions": [
+                "0x18082da95: call 0x18090af40",
+                "0x18082da9a: mov edx, 7",
+                "0x18082da9f: lea rcx, [rbp]",
+                "0x18082daa3: xor r8d, r8d"
+              ]
+            },
+            {
+              "address": "0x18082dafb",
+              "range": [
+                "0x18082daf6",
+                "0x18082db24"
+              ],
+              "instructions": [
+                "0x18082dafb: movsd qword ptr [rbp + 0x90], xmm1",
+                "0x18082db03: call 0x18090c010",
+                "0x18082db08: mov rcx, qword ptr [r14 + 0x20]",
+                "0x18082db0c: test rcx, rcx",
+                "0x18082db0f: je 0x18082e852",
+                "0x18082db15: xor r9d, r9d",
+                "0x18082db18: lea rdx, [rbp]",
+                "0x18082db1c: xor r8d, r8d",
+                "0x18082db1f: call 0x1807211a0"
+              ]
+            },
+            {
+              "address": "0x18082dc54",
+              "range": [
+                "0x18082dc54",
+                "0x18082dc63"
+              ],
+              "instructions": [
+                "0x18082dc54: call 0x18090af40",
+                "0x18082dc59: mov edx, 7",
+                "0x18082dc5e: lea rcx, [rbp + 0xa0]"
+              ]
+            },
+            {
+              "address": "0x18082dccd",
+              "range": [
+                "0x18082dccc",
+                "0x18082dd01"
+              ],
+              "instructions": [
+                "0x18082dccd: movsd xmm1, qword ptr [rax + 0x90]",
+                "0x18082dcd5: movsd qword ptr [rbp + 0x130], xmm1",
+                "0x18082dcdd: call 0x18090c010",
+                "0x18082dce2: mov rcx, qword ptr [r14 + 0x28]",
+                "0x18082dce6: test rcx, rcx",
+                "0x18082dce9: je 0x18082e852",
+                "0x18082dcef: xor r9d, r9d",
+                "0x18082dcf2: lea rdx, [rbp + 0xa0]",
+                "0x18082dcf9: xor r8d, r8d",
+                "0x18082dcfc: call 0x1807211a0"
+              ]
+            },
+            {
+              "address": "0x18082de30",
+              "range": [
+                "0x18082de30",
+                "0x18082de3f"
+              ],
+              "instructions": [
+                "0x18082de30: call 0x18090af40",
+                "0x18082de35: mov edx, 7",
+                "0x18082de3a: lea rcx, [rbp + 0x140]"
+              ]
+            },
+            {
+              "address": "0x18082dea9",
+              "range": [
+                "0x18082dea8",
+                "0x18082dedd"
+              ],
+              "instructions": [
+                "0x18082dea9: movsd xmm1, qword ptr [rax + 0x90]",
+                "0x18082deb1: movsd qword ptr [rbp + 0x1d0], xmm1",
+                "0x18082deb9: call 0x18090c010",
+                "0x18082debe: mov rcx, qword ptr [r14 + 0x30]",
+                "0x18082dec2: test rcx, rcx",
+                "0x18082dec5: je 0x18082e852",
+                "0x18082decb: xor r9d, r9d",
+                "0x18082dece: lea rdx, [rbp + 0x140]",
+                "0x18082ded5: xor r8d, r8d",
+                "0x18082ded8: call 0x1807211a0"
+              ]
+            },
+            {
+              "address": "0x18082dee4",
+              "range": [
+                "0x18082dee0",
+                "0x18082df20"
+              ],
+              "instructions": [
+                "0x18082dee4: mov rcx, qword ptr [r14 + 0x18]",
+                "0x18082dee8: test rcx, rcx",
+                "0x18082deeb: je 0x18082e852",
+                "0x18082def1: xor edx, edx",
+                "0x18082def3: call 0x1807364b0",
+                "0x18082def8: mov rcx, qword ptr [r14 + 0x18]",
+                "0x18082defc: mov qword ptr [r14 + 0x58], rax",
+                "0x18082df00: test rcx, rcx",
+                "0x18082df03: je 0x18082e852",
+                "0x18082df09: xor edx, edx",
+                "0x18082df0b: call 0x180738b40",
+                "0x18082df10: xor edx, edx",
+                "0x18082df12: mov qword ptr [r14 + 0x60], rax",
+                "0x18082df16: mov rcx, r14",
+                "0x18082df19: call 0x18082f380",
+                "0x18082df1e: mov rcx, qword ptr [rip + 0x8408383]"
+              ]
+            }
+          ]
+        }
+      ],
+      "bossStateFields": [
+        {
+          "nameIndex": 2646388,
+          "typeIndex": 53409,
+          "token": 67186231,
+          "index": 77366,
+          "name": "headEnemy",
+          "typeName": "Torappu.Battle.Enemy",
+          "static": false,
+          "offset": 24,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2646398,
+          "typeIndex": 53409,
+          "token": 67186232,
+          "index": 77367,
+          "name": "tailEnemy",
+          "typeName": "Torappu.Battle.Enemy",
+          "static": false,
+          "offset": 32,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2646408,
+          "typeIndex": 53409,
+          "token": 67186233,
+          "index": 77368,
+          "name": "leftHandEnemy",
+          "typeName": "Torappu.Battle.Enemy",
+          "static": false,
+          "offset": 40,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2646422,
+          "typeIndex": 53409,
+          "token": 67186234,
+          "index": 77369,
+          "name": "rightHandEnemy",
+          "typeName": "Torappu.Battle.Enemy",
+          "static": false,
+          "offset": 48,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2646506,
+          "typeIndex": 54455,
+          "token": 67186239,
+          "index": 77374,
+          "name": "enemyHp",
+          "typeName": "Torappu.FP",
+          "static": false,
+          "offset": 88,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2646514,
+          "typeIndex": 54455,
+          "token": 67186240,
+          "index": 77375,
+          "name": "enemyMaxHp",
+          "typeName": "Torappu.FP",
+          "static": false,
+          "offset": 96,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2646525,
+          "typeIndex": 54455,
+          "token": 67186241,
+          "index": 77376,
+          "name": "headDmg",
+          "typeName": "Torappu.FP",
+          "static": false,
+          "offset": 104,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2646533,
+          "typeIndex": 54455,
+          "token": 67186242,
+          "index": 77377,
+          "name": "tailDmg",
+          "typeName": "Torappu.FP",
+          "static": false,
+          "offset": 112,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2646541,
+          "typeIndex": 54455,
+          "token": 67186243,
+          "index": 77378,
+          "name": "leftHandDmg",
+          "typeName": "Torappu.FP",
+          "static": false,
+          "offset": 120,
+          "unboxedOffset": null
+        },
+        {
+          "nameIndex": 2646553,
+          "typeIndex": 54455,
+          "token": 67186244,
+          "index": 77379,
+          "name": "rightHandDmg",
+          "typeName": "Torappu.FP",
+          "static": false,
+          "offset": 128,
+          "unboxedOffset": null
+        }
+      ]
+    }
+  }
+}

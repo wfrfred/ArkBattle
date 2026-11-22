@@ -47,6 +47,7 @@
 | 机制 | 实际使用 | 证据与结论 |
 | --- | --- | --- |
 | 普通HP、ES及负生命债务 | 休谟斯／医生；斩业星熊 | [11](11-damage-apply-and-hp-application.md)、[29](29-hp-and-ep-healing-settlement.md)：独立存储、消耗与偿还顺序；damage值不等于HP差 |
+| 多单位生命比例 | 魔王 S3、变形者集群与同构碎片、「岁」的四部位 | [29 §8](29-hp-and-ep-healing-settlement.md#8-特殊回复和hp同步不是一个操作)补查了集体采样后重分配、受伤后同步比例和部位独立受伤计量。魔王与「岁」的同步请求设置跳过普通 Modifier 通知，变形者集群使用普通应用。 |
 | 每击固定损失HP | 小说／诗画卷轴；酒神迷狂牢笼 | [11](11-damage-apply-and-hp-application.md)：派生提交保留原value，另写realDelta；普通nonlethal分支不能自动覆盖派生提交 |
 | 非致命、不死与普通免死 | 嵯峨、史尔特尔、号角、斯卡蒂Y、信仰搅拌机S2 | [11](11-damage-apply-and-hp-application.md)：拟写HP限制、动态下限、consumer竞争和成功后继分别存在 |
 | 替身／模式切换 | 贝娜、若叶睦、结城理 | [11](11-damage-apply-and-hp-application.md)：若叶睦是mortis而非makoto；程序不同、保留白名单、未完整离场 |
