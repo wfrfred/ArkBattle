@@ -208,7 +208,7 @@ function create<P extends object>(
                 contacts: new Map(),
             });
 
-            if (!behaviour.retainOnLeave && self.lifecycle !== "ENDING") {
+            if (!behaviour.retainOnLeave) {
                 for (const contact of owned) {
                     if (contact.effect !== null) {
                         battle = effects.remove(battle, contact.effect, "TERRAIN_UNAVAILABLE");

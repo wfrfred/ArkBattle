@@ -68,4 +68,4 @@ Prepare 早于自动请求依赖者；它可先主动结束子项，从而确定
 
 等待只来自真实关系，普通函数调用不生成反向等待。例如 Effect.onEnd 请求 Unit.remove 时 Unit 等已有子 Effect 完成，Effect 不因为调用 remove 又等待 Unit。独立 Projectile 不随来源／Action 自动结束；Blocking、Occupancy 与 Card 冷却也不自动成为生命周期依赖。
 
-清理期间允许哪些字段写回由领域决定。Mechanism 的 `setActive` 可逆，`remove` 请求终结。Prepare 只对原 `ACTIVE` 的实例调用 `onDisable`，此时实例已是 `ENDING`。Finalize 执行 `onEnd` 后注销实例。领域只能使用自身合法操作修改状态。
+清理期间允许哪些字段写回由领域决定。Mechanism 的 `setActive` 负责可逆启停。`remove` 发布 `ENDING` 并请求结束依赖者，待依赖者完成收尾后调用 `onEnd` 并注销实例。领域只能使用自身合法操作修改状态。

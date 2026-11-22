@@ -58,17 +58,8 @@ export function add<S extends object>(battle: BattleState, self: Mechanism<S>): 
         ...battle,
         mechanisms: battle.mechanisms.add(self.id, self),
     };
-    battle = self.definition.onEnter?.(battle, self) ?? battle;
 
-    if (self.lifecycle !== "ACTIVE") {
-        return battle;
-    }
-
-    const current = get(battle, ref(self));
-
-    return current?.lifecycle === "ACTIVE"
-        ? (current.definition.onEnable?.(battle, current) ?? battle)
-        : battle;
+    return self.definition.onEnter?.(battle, self) ?? battle;
 }
 
 export function get<M extends Mechanism<any>>(
@@ -126,13 +117,6 @@ export const lifetime = createLifetime<Mechanism, Mechanism<any>, string>({
         ...battle,
         mechanisms: battle.mechanisms.replace(reference.id, next),
     }),
-    prepare: (battle, reference, initial) => {
-        const self = get(battle, reference)!;
-
-        return initial.lifecycle === "ACTIVE"
-            ? (self.definition.onDisable?.(battle, self) ?? battle)
-            : battle;
-    },
     finalize: (battle, reference) => {
         const self = get(battle, reference)!;
         battle = self.definition.onEnd?.(battle, self) ?? battle;

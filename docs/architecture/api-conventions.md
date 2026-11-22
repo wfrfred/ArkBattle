@@ -32,7 +32,7 @@
 | 依赖者完成收尾之后，实例注销之前 | Definition 程序 `onEnd` |
 | 实例注销之后 | Unit 通知 `removed`，Battle 级键名为 `battle.unit.removed` |
 
-`onEnable` 建立初次生效或重新启用时的输出。`onDisable` 撤销生效中的输出。可逆停用和移除 `ACTIVE` 的 Effect 或 Mechanism 都可触发 `onDisable`。
+`onEnable` 与 `onDisable` 对应生效与停用。Mechanism 在 `setActive` 发布实际变化后调用对应程序。Effect 在安装生效或重新生效时调用 `onEnable`，在可逆停用或移除 `ACTIVE` 实例时调用 `onDisable`。
 
 ### Restriction 接口约定
 

@@ -30,14 +30,16 @@ test("initial mechanisms retain activation input and reserve IDs before direct r
     assert.equal(mechanisms.get(added, reference), initialized.value);
 });
 
-test("mechanisms enter once at registration and enable on each activation", () => {
+test("registration invokes enter and actual toggles invoke enable or disable", () => {
     const trace = [];
     const definition = counter("callbacks", {
         onEnter(state, self) {
-            trace.push(["enter", self.id]);
+            assert.equal(mechanisms.get(state, mechanisms.ref(self)).lifecycle, self.lifecycle);
+            trace.push(["enter", self.id, self.lifecycle]);
             return mechanisms.setState(state, mechanisms.ref(self), { count: 1 });
         },
         onEnable(state, self) {
+            assert.equal(self.lifecycle, "ACTIVE");
             assert.equal(mechanisms.get(state, mechanisms.ref(self)).lifecycle, "ACTIVE");
             trace.push(["enable", self.id, self.state.count]);
             return state;
@@ -53,7 +55,7 @@ test("mechanisms enter once at registration and enable on each activation", () =
     });
     const [active, inactive] = mechanisms.all(initial).toArray();
     assert.deepEqual(trace, [
-        ["enter", active.id], ["enable", active.id, 1], ["enter", inactive.id],
+        ["enter", active.id, "ACTIVE"], ["enter", inactive.id, "INACTIVE"],
     ]);
 
     const [added, addedRef] = register(initial, definition);
@@ -68,13 +70,13 @@ test("mechanisms enter once at registration and enable on each activation", () =
     assert.equal(mechanisms.get(state, inactiveRef).lifecycle, "ACTIVE");
 
     assert.deepEqual(trace, [
-        ["enter", active.id], ["enable", active.id, 1], ["enter", inactive.id],
-        ["enter", addedRef.id], ["enable", addedRef.id, 1],
+        ["enter", active.id, "ACTIVE"], ["enter", inactive.id, "INACTIVE"],
+        ["enter", addedRef.id, "ACTIVE"],
         ["enable", inactive.id, 1], ["disable", inactive.id], ["enable", inactive.id, 1],
     ]);
 });
 
-test("disabled mechanisms retain their state, and removal disables only active output", () => {
+test("disabled mechanisms retain their state and removal invokes end", () => {
     const trace = [];
     const definition = counter("cleanup", {
         onDisable(state, self) {
@@ -98,6 +100,6 @@ test("disabled mechanisms retain their state, and removal disables only active o
     assert.equal(mechanisms.get(state, activeRef), undefined);
     assert.deepEqual(trace, [
         ["disable", "INACTIVE"], ["end", "ENDING", 1],
-        ["disable", "ENDING"], ["end", "ENDING", 1],
+        ["end", "ENDING", 0],
     ]);
 });

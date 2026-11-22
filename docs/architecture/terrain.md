@@ -16,11 +16,11 @@ siteCondition 是单个条件身份或 null，null 不等于普通场地条件�
 
 Mechanism 是全场独立身份。Battle 持有通用 `Store` 并安排推进。开场 `initialMechanisms` 与运行时创建共用 `Mechanism.Input`，提供 `Definition<S>` 和可选的初始启用状态。`initialize` 分配 ID、初始化私有 `state` 并保留具体 Definition 类型。`get` 以 Ref 恢复具体类型。 [Mechanism 入口](../../src/core/mechanism/index.ts)
 
-`add` 先登记实例，再调用一次 `onEnter`。初始停用的实例也执行这项登记业务。初始启用的实例在 `onEnter` 返回后，若仍登记为 `ACTIVE`，则以当前实例调用 `onEnable`。
+`add` 按初始配置登记 `ACTIVE` 或 `INACTIVE` 实例，默认为 `ACTIVE`。登记后调用一次 `onEnter`。
 
 `setState` 只改私有数据。`setActive` 先发布实际发生的启停变化，再分别调用 `onEnable` 或 `onDisable`。重复设置同一状态没有效果。`INACTIVE` 的实例仍可作依赖。
 
-`remove` 请求终结实例。Lifetime 先发布 `ENDING`，若原实例为 `ACTIVE`，则在 Prepare 调用 `onDisable`。依赖者结束后，Finalize 调用 `onEnd` 并注销实例。
+`remove` 请求 Lifetime 发布 `ENDING` 并结束依赖者。依赖者完成收尾后，Finalize 调用 `onEnd` 并注销实例。
 
 嵌套结束与依赖完成统一见 [Lifetime](lifetime.md)，不在地形再实现一套停止协议。
 
@@ -44,7 +44,7 @@ walkCost 是最终有效代价。普通装置阻碍为 1000，真实地穴固定
 - 烟雾为受选类别为 DEFAULT 的我方单位安装标准隐匿，离开撤销；阻挡不破隐，也没有三秒恢复延迟，空中同样受益。
 - 沼泽与深水分开保存控制器扫描和宿主 Effect 周期，不每轮重装；沼泽一秒叠层与重量门槛是独立参数，重型敌人按内容取得双层。
 - 活性源石 HP 周期伤害为 ENVIRONMENT，敌方深水为 DAMAGE；均禁本笔 HIT 而保留正常接收／Applied，不把地形、无来源或周期一概等同流失，见 [Resource](resource.md)。
-- 必须随控制器结束的接触 Effect 绑定其 Lifetime；onDisable 清 Contact，可逆停用时按业务结束，移除时由依赖图结束产物，不在 onEnd 再重复清理。离格保留的活性源石不自动绑定控制器。
+- 停用控制器时，`onDisable` 清除接触记录，并按内容的保留规则结束接触 Effect。需要随控制器移除的 Effect 绑定其 Lifetime，在依赖结算阶段结束。活性源石的 Effect 在离格及控制器停用后保留，按自身期限结束。
 - 地穴由内容判断坠落资格并完整移除 Unit，空地变化在后续接触轮询重判。
 
 活性源石与烟雾的调用链见[原生短链](../research/03-space-units-and-mechanisms.md#51-进入周期与资格的原生短链2026-11-10-补核)。当前支持和更多地形缺口见 [Tactical 语义](tactical-semantics.md)，独立结果的集中验收见 [Verification](verification.md)。
