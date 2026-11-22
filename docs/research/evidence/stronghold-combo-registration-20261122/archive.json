@@ -1,0 +1,234 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-11-22"
+    ],
+    "collectionDateSource": "batch directory",
+    "organizedOn": "2026-11-22",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+        "records": [
+          "result.json#/provenance/client/dll"
+        ],
+        "bytes": 223112680
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        "records": [
+          "result.json#/provenance/client/metadata"
+        ],
+        "bytes": 46669332
+      }
+    },
+    "sourceRecords": [
+      "result.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12895,
+        "sha256": "9c5b246859318caaec4aab5275ef0d2d49fce5d612c6b4e569973a9941ba621a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "extract.py",
+        "kind": "historical-script",
+        "bytes": 4357,
+        "sha256": "c2fb2cd282d18c7301adbe65570b3ed46971e4070c831ad2dfcc53b94c718d8f"
+      },
+      {
+        "path": "result.json",
+        "kind": "record",
+        "bytes": 93460,
+        "sha256": "79910ec75fe9d8c8f948ce27a30efbb12c578e24158bb807d2025cccea8d76b9"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 65788,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/methods/65788",
+            "result.json#/result/methods/65788/method"
+          ],
+          "fullname": "Torappu.Battle.BattleController.LoadGameWithRune",
+          "address": "0x180655380"
+        },
+        {
+          "index": 65789,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/methods/65789",
+            "result.json#/result/methods/65789/method"
+          ],
+          "fullname": "Torappu.Battle.BattleController._GenerateDeckDict",
+          "address": "0x180666850"
+        },
+        {
+          "index": 66739,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/methods/66739",
+            "result.json#/result/methods/66739/method"
+          ],
+          "fullname": "Torappu.Battle.Deck..ctor",
+          "address": "0x1806feb70"
+        },
+        {
+          "index": 66853,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/methods/66853",
+            "result.json#/result/methods/66853/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card..ctor",
+          "address": "0x1806f1730"
+        },
+        {
+          "index": 66884,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/methods/66884",
+            "result.json#/result/methods/66884/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card.AddCardBuff",
+          "address": "0x1806ea0e0"
+        },
+        {
+          "index": 66911,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/methods/66911",
+            "result.json#/result/methods/66911/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card.DealDummyTalent",
+          "address": "0x1806eb360"
+        },
+        {
+          "index": 67048,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/methods/67048",
+            "result.json#/result/methods/67048/method",
+            "result.json#/result/cardConstructorCallback/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card/<>c__DisplayClass167_0.<.ctor>b__0",
+          "address": "0x18071e770"
+        },
+        {
+          "index": 67059,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/methods/67059",
+            "result.json#/result/methods/67059/method",
+            "result.json#/result/touchPrefabSlot/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/CharacterCard.TouchPrefab",
+          "address": "0x180707930"
+        },
+        {
+          "index": 67063,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/methods/67063",
+            "result.json#/result/methods/67063/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/CharacterCard..ctor",
+          "address": "0x180707a10"
+        },
+        {
+          "index": 72802,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/methods/72802",
+            "result.json#/result/methods/72802/method"
+          ],
+          "fullname": "Torappu.Battle.BattleFactory.TouchCharacter",
+          "address": "0x180926ef0"
+        },
+        {
+          "index": 74509,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/methods/74509",
+            "result.json#/result/methods/74509/method"
+          ],
+          "fullname": "Torappu.Battle.BasicTalent.get_isValid",
+          "address": "0x1809c0880"
+        },
+        {
+          "index": 74635,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/methods/74635",
+            "result.json#/result/methods/74635/method"
+          ],
+          "fullname": "Torappu.Battle.DeckManagedCardBuffTalent.RegisterDeckManagedCardBuff",
+          "address": "0x1809c3830"
+        },
+        {
+          "index": 80930,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/methods/80930",
+            "result.json#/result/methods/80930/method"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessBattleEntityManager._TryDeployChessInst",
+          "address": "0x180bb3630"
+        },
+        {
+          "index": 80989,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/methods/80989",
+            "result.json#/result/methods/80989/method"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessBattleEntityManager/<_DoPreSpawn>d__43.MoveNext",
+          "address": "0x180bc8300"
+        },
+        {
+          "index": 81328,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/methods/81328",
+            "result.json#/result/methods/81328/method"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.DoLoadGameInternal",
+          "address": "0x180bd4d20"
+        },
+        {
+          "index": 81393,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/methods/81393",
+            "result.json#/result/methods/81393/method"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager/<StartBattle>d__114.MoveNext",
+          "address": "0x180bffca0"
+        }
+      ],
+      "blocks": [],
+      "types": [],
+      "constants": [],
+      "bundles": []
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

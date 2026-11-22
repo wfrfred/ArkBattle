@@ -1,0 +1,694 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-22",
+    "game": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game",
+    "mirrorRepository": "yuanyan3060/ArknightsGameResource",
+    "mirrorCommit": "0fdfa06570cda97c404a4519da4df984eae56951",
+    "scope": "Installed Windows resource manifests and a separately versioned public decoded Lua registry. No runtime execution."
+  },
+  "result": {
+    "localManifests": {
+      "StreamingAssets/AB/Windows": {
+        "manifest": {
+          "bytes": 2434686,
+          "sha256": "89fa835c6bd08ebb9fa26daff025d4232ae87df58b50488bb0c2d0562d2e4651"
+        },
+        "versionId": "26-10-20-11-10-38-04170990",
+        "manifestVersion": "V079",
+        "resources": {
+          "activity/[uc]act3autochess.ab": {
+            "manifestEntry": null,
+            "downloaded": null
+          },
+          "charpack/char_1014_nearl2.ab": {
+            "manifestEntry": {
+              "name": "charpack/char_1014_nearl2.ab",
+              "hash": "077aca965fa368fa551023a1475f0978",
+              "md5": "c250680c0a7651182ac046830de81e55",
+              "totalSize": 22906,
+              "abSize": 22906
+            },
+            "downloaded": {
+              "bytes": 22906,
+              "sha256": "e395052d6042109b8ea7b07384b715cb5e539ad0fa47b5d8842cb489e6102f70"
+            }
+          },
+          "config/buff_template_holder.ab": {
+            "manifestEntry": {
+              "name": "config/buff_template_holder.ab",
+              "hash": "51be525ccae469ea58e728c11a3af0de",
+              "md5": "961d99ad765192d692fc001cdc7f36ed",
+              "totalSize": 2151020,
+              "abSize": 2151020
+            },
+            "downloaded": {
+              "bytes": 2151020,
+              "sha256": "8edcb8017c977cdf52c2593b58e21db96949f3ad1e6f904180ac1241f145ca79"
+            }
+          },
+          "battle/prefabs/[uc]skills.ab": {
+            "manifestEntry": {
+              "name": "battle/prefabs/[uc]skills.ab",
+              "hash": "a016b9538d43570c661205ee76f772a3",
+              "md5": "c32f0600ba8f522d9772c5e714c6b217",
+              "totalSize": 1367500,
+              "abSize": 1367500
+            },
+            "downloaded": {
+              "bytes": 1367500,
+              "sha256": "0d0b4c0f9252c14a69a20d4bea09527403dd3eddfc2f7bcd757c3c30cf37ffc3"
+            }
+          }
+        }
+      },
+      "PersistentData/Bundles": {
+        "manifest": {
+          "bytes": 3348046,
+          "sha256": "f5d0009a16adadf90d27e6a211af5716ae34c7eea982ce6dfc23dbaf9cc6103d"
+        },
+        "versionId": "26-11-13-06-34-18-84612175",
+        "manifestVersion": "V079",
+        "resources": {
+          "activity/[uc]act3autochess.ab": {
+            "manifestEntry": {
+              "name": "activity/[uc]act3autochess.ab",
+              "hash": "a39fed9dd6b245a31f36afb18ef0c039",
+              "md5": "9a410094d301cd4e25075f5cf829a5c8",
+              "totalSize": 9779765,
+              "abSize": 11421884,
+              "pid": "lpack_misc11",
+              "cid": 2926
+            },
+            "downloaded": {
+              "bytes": 11421884,
+              "sha256": "48b0455120bcdb87465229dd98c99a4500cd2708af4b6e5de506d89c52dff18e"
+            }
+          },
+          "charpack/char_1014_nearl2.ab": {
+            "manifestEntry": {
+              "name": "charpack/char_1014_nearl2.ab",
+              "hash": "077aca965fa368fa551023a1475f0978",
+              "md5": "c250680c0a7651182ac046830de81e55",
+              "totalSize": 18022,
+              "abSize": 22906,
+              "pid": "lpack_char",
+              "cid": 4553
+            },
+            "downloaded": null
+          },
+          "config/buff_template_holder.ab": {
+            "manifestEntry": {
+              "name": "config/buff_template_holder.ab",
+              "hash": "2ba9ed5b6315f06c276c9acf26edbf4f",
+              "md5": "7c0f3cdf2a160f1d3eba887104bd6b96",
+              "totalSize": 1726897,
+              "abSize": 2197532,
+              "cid": 37
+            },
+            "downloaded": {
+              "bytes": 2197532,
+              "sha256": "f486df86406db62b2773039b87d05a405fb95a31ddc82568c6a6efef14e47f01"
+            }
+          },
+          "battle/prefabs/[uc]skills.ab": {
+            "manifestEntry": {
+              "name": "battle/prefabs/[uc]skills.ab",
+              "hash": "3e33f54c0bcdb299fee3a3b2aaaa522b",
+              "md5": "8af280824137f4aa65815bf57bb7b2aa",
+              "totalSize": 1106062,
+              "abSize": 1367896,
+              "pid": "lpack_init5",
+              "cid": 5671
+            },
+            "downloaded": {
+              "bytes": 1367896,
+              "sha256": "f7ead0e0d8362df84d196f1a30d2165cae1c542fcb9809fb4d6efdb4027c094f"
+            }
+          }
+        }
+      }
+    },
+    "mirror": {
+      "version": "26-11-13-06-37-23-89286612",
+      "registry": "gamedata/[uc]lua/hotfixes/definedfix.lua",
+      "sources": {
+        "version": {
+          "url": "https://raw.githubusercontent.com/yuanyan3060/ArknightsGameResource/0fdfa06570cda97c404a4519da4df984eae56951/version",
+          "gitBlob": "507dd7201723b66d75d9718737e1fb3ec7fa85aa",
+          "bytes": 26,
+          "sha256": "e0877e7be273e74f845096f12cfe6257c312122dd327b5a55135f8310784669b"
+        },
+        "gamedata/[uc]lua/hotfixes/definedfix.lua": {
+          "url": "https://raw.githubusercontent.com/yuanyan3060/ArknightsGameResource/0fdfa06570cda97c404a4519da4df984eae56951/gamedata/%5Buc%5Dlua/hotfixes/definedfix.lua",
+          "gitBlob": "754e3f7a55a652bb15af679b485674815e745466",
+          "bytes": 939,
+          "sha256": "40f808614e36504cde5f3ecdd62174ae3edc3fdee05e16b06144a72fc960a06c"
+        },
+        "gamedata/[uc]lua/hotfixes/teststubhotfixer.lua": {
+          "url": "https://raw.githubusercontent.com/yuanyan3060/ArknightsGameResource/0fdfa06570cda97c404a4519da4df984eae56951/gamedata/%5Buc%5Dlua/hotfixes/teststubhotfixer.lua",
+          "gitBlob": "b60a9f37eb14491abb11cb0674dd333409f8efbb",
+          "bytes": 347,
+          "sha256": "d84ed297aee98b43b23e4aae896a3767f98c1ba4018ba66b93eaa2379223a54a"
+        },
+        "gamedata/[uc]lua/hotfixes/pcmousemgrhotfixer.lua": {
+          "url": "https://raw.githubusercontent.com/yuanyan3060/ArknightsGameResource/0fdfa06570cda97c404a4519da4df984eae56951/gamedata/%5Buc%5Dlua/hotfixes/pcmousemgrhotfixer.lua",
+          "gitBlob": "8ce12d292467169d683f886d3d53cd1e747c2dc1",
+          "bytes": 608,
+          "sha256": "fcb8c43d835f226c49481845d93770ee2d44b9831f350f24f2fa01af33382f92"
+        },
+        "gamedata/[uc]lua/hotfixes/autochesshotfixer.lua": {
+          "url": "https://raw.githubusercontent.com/yuanyan3060/ArknightsGameResource/0fdfa06570cda97c404a4519da4df984eae56951/gamedata/%5Buc%5Dlua/hotfixes/autochesshotfixer.lua",
+          "gitBlob": "bd23255721ec829e06a7cf497d1ec77adf51e89b",
+          "bytes": 7793,
+          "sha256": "d4dbee3e1c72474098deba3622ec4e20a7f54d50541a40e23beebb666554593c"
+        },
+        "gamedata/[uc]lua/hotfixes/autochessgamemanagerhotfixer.lua": {
+          "url": "https://raw.githubusercontent.com/yuanyan3060/ArknightsGameResource/0fdfa06570cda97c404a4519da4df984eae56951/gamedata/%5Buc%5Dlua/hotfixes/autochessgamemanagerhotfixer.lua",
+          "gitBlob": "1a234e3f738d20804b983bb9ed8db6167fa8a29b",
+          "bytes": 6949,
+          "sha256": "a315fd57689af7bf03ae9bf17d9a1b284cd5738f0b9d64d5821b4626870a0296"
+        },
+        "gamedata/[uc]lua/hotfixes/autochessgarrisonmanagerhotfixer.lua": {
+          "url": "https://raw.githubusercontent.com/yuanyan3060/ArknightsGameResource/0fdfa06570cda97c404a4519da4df984eae56951/gamedata/%5Buc%5Dlua/hotfixes/autochessgarrisonmanagerhotfixer.lua",
+          "gitBlob": "dbe2cf0ebe05dd8bd484dbdcd5c86cc5f1210613",
+          "bytes": 1175,
+          "sha256": "81e918e77cc67afec605d98540d370854cb41ef681330e0ead63dded2e37cf59"
+        },
+        "gamedata/[uc]lua/hotfixes/autochessdatabridgemultiplayerhotfixer.lua": {
+          "url": "https://raw.githubusercontent.com/yuanyan3060/ArknightsGameResource/0fdfa06570cda97c404a4519da4df984eae56951/gamedata/%5Buc%5Dlua/hotfixes/autochessdatabridgemultiplayerhotfixer.lua",
+          "gitBlob": "948dd1cce36eb4a011078aec4469e0741664891f",
+          "bytes": 1737,
+          "sha256": "d656ab6d183443415cdcf936a5ee95b11f2121c2814ac2bea661095cf1d71271"
+        },
+        "gamedata/[uc]lua/hotfixes/autochesslevelenemymanagerhotfixer.lua": {
+          "url": "https://raw.githubusercontent.com/yuanyan3060/ArknightsGameResource/0fdfa06570cda97c404a4519da4df984eae56951/gamedata/%5Buc%5Dlua/hotfixes/autochesslevelenemymanagerhotfixer.lua",
+          "gitBlob": "bd544aa7631f9dd536efb3d07a6f42ab5db22446",
+          "bytes": 788,
+          "sha256": "08aec9eac3ae0129edd3f33421fa874820267231393e137c6bb09d8474d524c0"
+        },
+        "gamedata/[uc]lua/hotfixes/autochessmapareamanagerhotfixer.lua": {
+          "url": "https://raw.githubusercontent.com/yuanyan3060/ArknightsGameResource/0fdfa06570cda97c404a4519da4df984eae56951/gamedata/%5Buc%5Dlua/hotfixes/autochessmapareamanagerhotfixer.lua",
+          "gitBlob": "b1697eb9a1498ec10c13f55ec279b0d8cd8f6780",
+          "bytes": 2689,
+          "sha256": "4b33333626d78136df5cdc7749005514c525f00fc000a670cac04e1f588e1904"
+        },
+        "gamedata/[uc]lua/hotfixes/serverhotfixer.lua": {
+          "url": "https://raw.githubusercontent.com/yuanyan3060/ArknightsGameResource/0fdfa06570cda97c404a4519da4df984eae56951/gamedata/%5Buc%5Dlua/hotfixes/serverhotfixer.lua",
+          "gitBlob": "21dd26fcbb79f96f71a021357590f132d3b97782",
+          "bytes": 923,
+          "sha256": "b893a14c39563feef1e5e4ac5d5a66f3d71a783a36cc3e39f0847ecc84d784a1"
+        },
+        "gamedata/[uc]lua/hotfixes/templateactivityentryhotfixer.lua": {
+          "url": "https://raw.githubusercontent.com/yuanyan3060/ArknightsGameResource/0fdfa06570cda97c404a4519da4df984eae56951/gamedata/%5Buc%5Dlua/hotfixes/templateactivityentryhotfixer.lua",
+          "gitBlob": "9ce97882cd880036a7ddb71345fb1354e0bed02c",
+          "bytes": 1127,
+          "sha256": "e8bf940271ca98873b22162720fab27425c11d8a3fba24d335193dd5da46da20"
+        },
+        "gamedata/[uc]lua/hotfixes/screenshotmanagerhotfixer.lua": {
+          "url": "https://raw.githubusercontent.com/yuanyan3060/ArknightsGameResource/0fdfa06570cda97c404a4519da4df984eae56951/gamedata/%5Buc%5Dlua/hotfixes/screenshotmanagerhotfixer.lua",
+          "gitBlob": "2094ad0ba694d22fe85b7e7caa31987b91016341",
+          "bytes": 857,
+          "sha256": "700fb03e58ec72f16201207e9d6aae3318314a91afd6056cf06f52ec969973c4"
+        },
+        "gamedata/[uc]lua/hotfixes/adaptivedynillustupdaterhotfixer.lua": {
+          "url": "https://raw.githubusercontent.com/yuanyan3060/ArknightsGameResource/0fdfa06570cda97c404a4519da4df984eae56951/gamedata/%5Buc%5Dlua/hotfixes/adaptivedynillustupdaterhotfixer.lua",
+          "gitBlob": "f31c9180ef78d31df45727c879f5a8860c38d22b",
+          "bytes": 430,
+          "sha256": "bcfa657c2cf229c66121f79959b495935463ccbcab2eecc069a9be6abe47315d"
+        },
+        "gamedata/[uc]lua/hotfixes/autochessassignbondidtoblackboardhotfixer.lua": {
+          "url": "https://raw.githubusercontent.com/yuanyan3060/ArknightsGameResource/0fdfa06570cda97c404a4519da4df984eae56951/gamedata/%5Buc%5Dlua/hotfixes/autochessassignbondidtoblackboardhotfixer.lua",
+          "gitBlob": "e37d3471a8c20d0507076e06dea1cd70e589fb4b",
+          "bytes": 1633,
+          "sha256": "40c04826d638ebabd1f4b8ca380dde0d772b2873de476bdf8f73da4ea8853b67"
+        },
+        "gamedata/[uc]lua/hotfixes/stormmanagerhotfixer.lua": {
+          "url": "https://raw.githubusercontent.com/yuanyan3060/ArknightsGameResource/0fdfa06570cda97c404a4519da4df984eae56951/gamedata/%5Buc%5Dlua/hotfixes/stormmanagerhotfixer.lua",
+          "gitBlob": "bbc41d464b0d20dcf4bb15b98caa38a3a6b200b0",
+          "bytes": 634,
+          "sha256": "3b03a640bd9d2e452bfb9ad534c6ad5e52b69ff1d71caf895abc3e1d47ce627a"
+        },
+        "gamedata/[uc]lua/hotfixes/maphotfixer.lua": {
+          "url": "https://raw.githubusercontent.com/yuanyan3060/ArknightsGameResource/0fdfa06570cda97c404a4519da4df984eae56951/gamedata/%5Buc%5Dlua/hotfixes/maphotfixer.lua",
+          "gitBlob": "fb6f2aabcc2ae2be0b7b1faa4a97744c4069b848",
+          "bytes": 351,
+          "sha256": "f3279b445f8c685308b8f2e2b108b7cae380595c4dfdf9b19981d2831777662a"
+        },
+        "gamedata/[uc]lua/hotfixes/enemyhotfixer.lua": {
+          "url": "https://raw.githubusercontent.com/yuanyan3060/ArknightsGameResource/0fdfa06570cda97c404a4519da4df984eae56951/gamedata/%5Buc%5Dlua/hotfixes/enemyhotfixer.lua",
+          "gitBlob": "ffbeadb1c8af320d53beb2901b471c30ea42d5a1",
+          "bytes": 1077,
+          "sha256": "393e1981d43951caa7ccf4fe0e26f086b0a4bdc1da6c115890a5badd170cee08"
+        },
+        "gamedata/[uc]lua/hotfixes/spineanimatorhotfixer.lua": {
+          "url": "https://raw.githubusercontent.com/yuanyan3060/ArknightsGameResource/0fdfa06570cda97c404a4519da4df984eae56951/gamedata/%5Buc%5Dlua/hotfixes/spineanimatorhotfixer.lua",
+          "gitBlob": "3e0c2f9766b0b92bfad6c9d145a6f00579553a67",
+          "bytes": 1161,
+          "sha256": "a7b305d2d14b2788036832d79ab0209fc1c379f268e6c0c6f03d4418f1e70b72"
+        },
+        "gamedata/[uc]lua/hotfixes/autochessstepmodemanagerhotfixer.lua": {
+          "url": "https://raw.githubusercontent.com/yuanyan3060/ArknightsGameResource/0fdfa06570cda97c404a4519da4df984eae56951/gamedata/%5Buc%5Dlua/hotfixes/autochessstepmodemanagerhotfixer.lua",
+          "gitBlob": "9a246ca157a9c69b3676ec5020a2bf1be33a71c9",
+          "bytes": 3152,
+          "sha256": "f783fd8ea3e303caeb22477dd991372269642826d404d5ab89f620e3bb0a90bd"
+        },
+        "gamedata/[uc]lua/hotfixes/autochesshelpbattlecnthotfixer.lua": {
+          "url": "https://raw.githubusercontent.com/yuanyan3060/ArknightsGameResource/0fdfa06570cda97c404a4519da4df984eae56951/gamedata/%5Buc%5Dlua/hotfixes/autochesshelpbattlecnthotfixer.lua",
+          "gitBlob": "62983a8d259e1bad3c45f323ad2bf5102bb717a8",
+          "bytes": 1412,
+          "sha256": "cfb9387d97f99cf9149abdf69d9fb52c9e94cb4037d16015f072b9730c32b658"
+        },
+        "gamedata/[uc]lua/hotfixes/autochessmaingameinhelpbattlehotfixer.lua": {
+          "url": "https://raw.githubusercontent.com/yuanyan3060/ArknightsGameResource/0fdfa06570cda97c404a4519da4df984eae56951/gamedata/%5Buc%5Dlua/hotfixes/autochessmaingameinhelpbattlehotfixer.lua",
+          "gitBlob": "7a85a5ad1c847163c34184908c554e90d06adabe",
+          "bytes": 1753,
+          "sha256": "09a72949d1b6510fdc7cee523fbacf0c779907814b221af2f73e91cc74f981d4"
+        },
+        "gamedata/[uc]lua/hotfixes/uicontrollerhotfixer.lua": {
+          "url": "https://raw.githubusercontent.com/yuanyan3060/ArknightsGameResource/0fdfa06570cda97c404a4519da4df984eae56951/gamedata/%5Buc%5Dlua/hotfixes/uicontrollerhotfixer.lua",
+          "gitBlob": "2602208382400d8ad45ae1be25811b05d15af7a9",
+          "bytes": 650,
+          "sha256": "090ccf2b295e7a9eecdd3ae6c81b7c8d0a3e70790969e0625e69a466d912b43a"
+        },
+        "gamedata/[uc]lua/hotfixes/autochessemotionalmanagerhotfixer.lua": {
+          "url": "https://raw.githubusercontent.com/yuanyan3060/ArknightsGameResource/0fdfa06570cda97c404a4519da4df984eae56951/gamedata/%5Buc%5Dlua/hotfixes/autochessemotionalmanagerhotfixer.lua",
+          "gitBlob": "bd5695f37ff6859fab4e492f1794273be6035157",
+          "bytes": 1174,
+          "sha256": "f96fa713263ae782c4f8998cf3da886a5d444347eeca665f95a0f0accce8775d"
+        }
+      },
+      "scripts": [
+        {
+          "name": "HotFixes/TestStubHotfixer",
+          "path": "gamedata/[uc]lua/hotfixes/teststubhotfixer.lua",
+          "replacements": [
+            {
+              "line": 11,
+              "target": "CS.Torappu.HotfixTestStub",
+              "method": "GenerateDevInfo"
+            }
+          ],
+          "termHits": []
+        },
+        {
+          "name": "HotFixes/PCMouseMgrHotfixer",
+          "path": "gamedata/[uc]lua/hotfixes/pcmousemgrhotfixer.lua",
+          "replacements": [
+            {
+              "line": 17,
+              "target": "CS.Torappu.UI.PCMouseMgr",
+              "method": "OnSceneChanged"
+            }
+          ],
+          "termHits": []
+        },
+        {
+          "name": "HotFixes/AutoChessHotfixer",
+          "path": "gamedata/[uc]lua/hotfixes/autochesshotfixer.lua",
+          "replacements": [
+            {
+              "line": 57,
+              "target": "AutoChessBattleUIHUDModel",
+              "method": "_CalcBondInfoIdx"
+            },
+            {
+              "line": 66,
+              "target": "AutoChessBattlePlayerStatusGroupModel",
+              "method": "_UpdateObTargetPlayer"
+            },
+            {
+              "line": 96,
+              "target": "AutoChessBattleUIController",
+              "method": "_OnOpenPlayerDetail"
+            },
+            {
+              "line": 134,
+              "target": "ActAutoChessEntryViewModel",
+              "method": "_CheckIfNeedShowMatchBanAlert"
+            },
+            {
+              "line": 225,
+              "target": "AutoChessUtil",
+              "method": "CheckAllBandTrack"
+            },
+            {
+              "line": 234,
+              "target": "_BandTrackModelTypeName",
+              "method": "UpdateState"
+            },
+            {
+              "line": 242,
+              "target": "ActAutoChessHandbookTopBarView",
+              "method": "OnValueChanged"
+            }
+          ],
+          "termHits": []
+        },
+        {
+          "name": "HotFixes/AutoChessGameManagerHotfixer",
+          "path": "gamedata/[uc]lua/hotfixes/autochessgamemanagerhotfixer.lua",
+          "replacements": [
+            {
+              "line": 150,
+              "target": "AutoChessGameManager",
+              "method": "_FinishUnitInRecycle"
+            },
+            {
+              "line": 154,
+              "target": "AutoChessGameManager",
+              "method": "FinishBattle"
+            },
+            {
+              "line": 158,
+              "target": "GameFinishInBattle",
+              "method": "CoroutineTask"
+            },
+            {
+              "line": 163,
+              "target": "AutoChessGameManager",
+              "method": "_OnGameStateChanged"
+            },
+            {
+              "line": 171,
+              "target": "AutoChessObModel",
+              "method": "get_realPlayerIndex"
+            },
+            {
+              "line": 177,
+              "target": "AutoChessGameManager",
+              "method": "Start"
+            },
+            {
+              "line": 181,
+              "target": "AutoChessGameManager",
+              "method": "Dispose"
+            },
+            {
+              "line": 187,
+              "target": "AutoChessDataCenter",
+              "method": "UpdatePlayerBattleData"
+            },
+            {
+              "line": 196,
+              "target": "AutoChessGameManager",
+              "method": "UpdateGameState"
+            },
+            {
+              "line": 215,
+              "target": "AutoChessObModel",
+              "method": "SetCurrentPlayerView"
+            },
+            {
+              "line": 221,
+              "target": "AutoChessObModel",
+              "method": "SetDeadObIndex"
+            },
+            {
+              "line": 230,
+              "target": "AutoChessGameManager",
+              "method": "StartBattle"
+            }
+          ],
+          "termHits": [
+            {
+              "line": 76,
+              "matches": [
+                "DoLoadGameInternal"
+              ]
+            },
+            {
+              "line": 77,
+              "matches": [
+                "_ResetBattleInfo"
+              ]
+            },
+            {
+              "line": 86,
+              "matches": [
+                "DoBattlePreSpawn"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "HotFixes/AutoChessGarrisonManagerHotfixer",
+          "path": "gamedata/[uc]lua/hotfixes/autochessgarrisonmanagerhotfixer.lua",
+          "replacements": [
+            {
+              "line": 14,
+              "target": "AutoChessGarrisonManager",
+              "method": "TriggerGarrisonStatusRefresh"
+            },
+            {
+              "line": 24,
+              "target": "AutoChessGarrisonManager",
+              "method": "_GetBondIdsSelfAndBehind"
+            }
+          ],
+          "termHits": []
+        },
+        {
+          "name": "HotFixes/AutoChessDataBridgeMultiPlayerHotfixer",
+          "path": "gamedata/[uc]lua/hotfixes/autochessdatabridgemultiplayerhotfixer.lua",
+          "replacements": [
+            {
+              "line": 27,
+              "target": "AutoChessDataBridgeMultiPlayer",
+              "method": "_ReqHelpBattleFinish"
+            },
+            {
+              "line": 40,
+              "target": "ReqAutoResenderTypeName",
+              "method": "SetDesiredPlayerState"
+            },
+            {
+              "line": 46,
+              "target": "ReqAutoResenderTypeName",
+              "method": "Refresh"
+            }
+          ],
+          "termHits": []
+        },
+        {
+          "name": "HotFixes/AutoChessLevelEnemyManagerHotfixer",
+          "path": "gamedata/[uc]lua/hotfixes/autochesslevelenemymanagerhotfixer.lua",
+          "replacements": [
+            {
+              "line": 13,
+              "target": "AutoChessLevelEnemyManager",
+              "method": "_GetMapLayerByGroup"
+            }
+          ],
+          "termHits": []
+        },
+        {
+          "name": "HotFixes/AutoChessMapAreaManagerHotfixer",
+          "path": "gamedata/[uc]lua/hotfixes/autochessmapareamanagerhotfixer.lua",
+          "replacements": [
+            {
+              "line": 78,
+              "target": "AutoChessMapAreaManager",
+              "method": "UpdateMapTiles"
+            },
+            {
+              "line": 82,
+              "target": "AutoChessMapAreaManager",
+              "method": "_ResetPlayerIndexerInBossBattle"
+            }
+          ],
+          "termHits": []
+        },
+        {
+          "name": "HotFixes/ServerHotfixer",
+          "path": "gamedata/[uc]lua/hotfixes/serverhotfixer.lua",
+          "replacements": [
+            {
+              "line": 17,
+              "target": "Server",
+              "method": "_NetStateChanged"
+            }
+          ],
+          "termHits": []
+        },
+        {
+          "name": "HotFixes/TemplateActivityEntryHotfixer",
+          "path": "gamedata/[uc]lua/hotfixes/templateactivityentryhotfixer.lua",
+          "replacements": [
+            {
+              "line": 22,
+              "target": "TemplateActivityEntry",
+              "method": "_SampleAllAnimClipAtBegin"
+            }
+          ],
+          "termHits": []
+        },
+        {
+          "name": "HotFixes/ScreenshotManagerHotfixer",
+          "path": "gamedata/[uc]lua/hotfixes/screenshotmanagerhotfixer.lua",
+          "replacements": [
+            {
+              "line": 17,
+              "target": "ScreenshotManager",
+              "method": "RequestCapture"
+            }
+          ],
+          "termHits": []
+        },
+        {
+          "name": "HotFixes/AdaptiveDynIllustUpdaterHotfixer",
+          "path": "gamedata/[uc]lua/hotfixes/adaptivedynillustupdaterhotfixer.lua",
+          "replacements": [
+            {
+              "line": 8,
+              "target": "AdaptiveDynIllustArbiter",
+              "method": "ShouldSkipAdaptiveFraming"
+            }
+          ],
+          "termHits": []
+        },
+        {
+          "name": "Hotfixes/AutoChessAssignBondIdToBlackboardHotfixer",
+          "path": "gamedata/[uc]lua/hotfixes/autochessassignbondidtoblackboardhotfixer.lua",
+          "replacements": [
+            {
+              "line": 32,
+              "target": "AssignBondIdNode",
+              "method": "Execute"
+            }
+          ],
+          "termHits": []
+        },
+        {
+          "name": "Hotfixes/StormManagerHotfixer",
+          "path": "gamedata/[uc]lua/hotfixes/stormmanagerhotfixer.lua",
+          "replacements": [
+            {
+              "line": 10,
+              "target": "StormManager",
+              "method": "Init"
+            }
+          ],
+          "termHits": []
+        },
+        {
+          "name": "Hotfixes/MapHotfixer",
+          "path": "gamedata/[uc]lua/hotfixes/maphotfixer.lua",
+          "replacements": [
+            {
+              "line": 8,
+              "target": "Map",
+              "method": "get_tiles"
+            }
+          ],
+          "termHits": []
+        },
+        {
+          "name": "Hotfixes/EnemyHotfixer",
+          "path": "gamedata/[uc]lua/hotfixes/enemyhotfixer.lua",
+          "replacements": [
+            {
+              "line": 27,
+              "target": "Enemy",
+              "method": "Spawn"
+            }
+          ],
+          "termHits": []
+        },
+        {
+          "name": "Hotfixes/SpineAnimatorHotfixer",
+          "path": "gamedata/[uc]lua/hotfixes/spineanimatorhotfixer.lua",
+          "replacements": [
+            {
+              "line": 39,
+              "target": "SpineAnimator",
+              "method": "Init"
+            }
+          ],
+          "termHits": []
+        },
+        {
+          "name": "Hotfixes/AutoChessStepModeManagerHotfixer",
+          "path": "gamedata/[uc]lua/hotfixes/autochessstepmodemanagerhotfixer.lua",
+          "replacements": [
+            {
+              "line": 48,
+              "target": "AutoChessStepModeManager",
+              "method": "_ReqCharBattleStatusChanged"
+            },
+            {
+              "line": 58,
+              "target": "AutoChessStepModeManager",
+              "method": "_OnNewSummonedEnemyReachExit"
+            },
+            {
+              "line": 67,
+              "target": "AutoChessStepModeManager",
+              "method": "_ApplyEnemyAppear"
+            },
+            {
+              "line": 82,
+              "target": "AutoChessStepModeManager",
+              "method": "_ApplySummonedEnemyAppear"
+            }
+          ],
+          "termHits": [
+            {
+              "line": 50,
+              "matches": [
+                "inBattlePrespawn"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Hotfixes/AutoChessHelpBattleCntHotfixer",
+          "path": "gamedata/[uc]lua/hotfixes/autochesshelpbattlecnthotfixer.lua",
+          "replacements": [
+            {
+              "line": 34,
+              "target": "HelpBattleRoundStatus",
+              "method": "get_curEnemyCnt"
+            }
+          ],
+          "termHits": []
+        },
+        {
+          "name": "Hotfixes/AutoChessMainGameInHelpBattleHotfixer",
+          "path": "gamedata/[uc]lua/hotfixes/autochessmaingameinhelpbattlehotfixer.lua",
+          "replacements": [
+            {
+              "line": 47,
+              "target": "MainGameInHelpBattle",
+              "method": "_ApplyChessStatus"
+            }
+          ],
+          "termHits": []
+        },
+        {
+          "name": "Hotfixes/UIControllerHotfixer",
+          "path": "gamedata/[uc]lua/hotfixes/uicontrollerhotfixer.lua",
+          "replacements": [
+            {
+              "line": 12,
+              "target": "UIController",
+              "method": "_OnGiantBossHudUsed"
+            }
+          ],
+          "termHits": []
+        },
+        {
+          "name": "Hotfixes/AutoChessEmotionalManagerHotfixer",
+          "path": "gamedata/[uc]lua/hotfixes/autochessemotionalmanagerhotfixer.lua",
+          "replacements": [
+            {
+              "line": 33,
+              "target": "EmotionalChess",
+              "method": "_OnTileClicked"
+            }
+          ],
+          "termHits": []
+        }
+      ]
+    }
+  }
+}

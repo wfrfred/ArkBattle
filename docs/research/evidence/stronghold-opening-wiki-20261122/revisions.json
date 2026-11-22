@@ -1,0 +1,175 @@
+{
+  "collectedOn": "2026-11-22",
+  "provenance": {
+    "collectedAt": "2026-11-22T13:51:18.743679+00:00",
+    "scope": "PRTS public MediaWiki revision bodies and metadata. No in-game test.",
+    "api": "https://prts.wiki/api.php",
+    "request": {
+      "action": "query",
+      "prop": "revisions",
+      "rvprop": "ids|timestamp|comment|content",
+      "rvslots": "main",
+      "format": "json"
+    },
+    "wikitextSha256": "SHA-256 of the UTF-8 encoding of MediaWiki slots.main text, before any normalization."
+  },
+  "result": {
+    "markedSentences": {
+      "linkedLegacy": "该部署不会触发如[[耀骑士临光]]二技能对卡西米尔干员判定的效果",
+      "combined": "该部署不会消耗费用，不会触发如耀骑士临光二技能对卡西米尔干员判定的效果"
+    },
+    "pages": [
+      {
+        "title": "卫戍协议/2024/帮助",
+        "pageId": 73556,
+        "revisionCount": 92,
+        "firstRevision": 326779,
+        "lastRevision": 375102,
+        "occurrences": {
+          "absent": 69,
+          "linkedLegacy": 23
+        },
+        "transitions": [
+          {
+            "revision": 327715,
+            "clause": "linkedLegacy"
+          },
+          {
+            "revision": 327716,
+            "clause": null
+          },
+          {
+            "revision": 327806,
+            "clause": "linkedLegacy"
+          }
+        ],
+        "selectedRevisions": [
+          {
+            "revision": 326779,
+            "parent": 0,
+            "editedAt": "2024-11-15T12:03:14Z",
+            "revisionUrl": "https://prts.wiki/index.php?oldid=326779",
+            "markedSentence": null,
+            "wikitextSha256": "417a05e846361579b6c0eebd9e7a38bd72de385f18cf315ee85ab002796403c0"
+          },
+          {
+            "revision": 327580,
+            "parent": 327569,
+            "editedAt": "2024-11-19T13:04:03Z",
+            "revisionUrl": "https://prts.wiki/index.php?oldid=327580",
+            "markedSentence": null,
+            "wikitextSha256": "a12f25bf9b4869422dc887918760180d58d9068f28817dded443581a7b8c7822"
+          },
+          {
+            "revision": 327715,
+            "parent": 327580,
+            "editedAt": "2024-11-21T17:01:52Z",
+            "revisionUrl": "https://prts.wiki/index.php?oldid=327715",
+            "markedSentence": "linkedLegacy",
+            "wikitextSha256": "ba1e0fe70600fc397bd5d85f9f30536c7816c47205236775ceeb2bde14a122e4"
+          },
+          {
+            "revision": 327716,
+            "parent": 327715,
+            "editedAt": "2024-11-21T17:22:28Z",
+            "revisionUrl": "https://prts.wiki/index.php?oldid=327716",
+            "markedSentence": null,
+            "wikitextSha256": "a12f25bf9b4869422dc887918760180d58d9068f28817dded443581a7b8c7822"
+          },
+          {
+            "revision": 327727,
+            "parent": 327726,
+            "editedAt": "2024-11-22T02:26:57Z",
+            "revisionUrl": "https://prts.wiki/index.php?oldid=327727",
+            "markedSentence": null,
+            "wikitextSha256": "36cc257f7df98ce3ebd85de2fd50dabc4bef4f763774544a32a8621f57d0d1a4"
+          },
+          {
+            "revision": 327806,
+            "parent": 327727,
+            "editedAt": "2024-11-22T15:34:25Z",
+            "revisionUrl": "https://prts.wiki/index.php?oldid=327806",
+            "markedSentence": "linkedLegacy",
+            "wikitextSha256": "a47c79a7f53567d05954a2efe9793a4d3ba3faa615f95551d9b23412428f8546"
+          },
+          {
+            "revision": 375102,
+            "parent": 327955,
+            "editedAt": "2025-11-18T07:00:18Z",
+            "revisionUrl": "https://prts.wiki/index.php?oldid=375102",
+            "markedSentence": "linkedLegacy",
+            "wikitextSha256": "a3317815bb0f97d5046595fc33337bd54b4f2fe0959bc9bf8d9c9f3672bf71a2"
+          }
+        ]
+      },
+      {
+        "title": "卫戍协议/帮助",
+        "pageId": 86165,
+        "revisionCount": 66,
+        "firstRevision": 375846,
+        "lastRevision": 450752,
+        "occurrences": {
+          "combined": 66
+        },
+        "transitions": [
+          {
+            "revision": 375846,
+            "clause": "combined"
+          }
+        ],
+        "selectedRevisions": [
+          {
+            "revision": 375846,
+            "parent": 0,
+            "editedAt": "2025-11-25T05:58:18Z",
+            "revisionUrl": "https://prts.wiki/index.php?oldid=375846",
+            "markedSentence": "combined",
+            "wikitextSha256": "e97e04890f85a8f393a32d31af8664a26429667178904436c58386804dd60e1a"
+          },
+          {
+            "revision": 450752,
+            "parent": 450519,
+            "editedAt": "2026-11-17T07:50:13Z",
+            "revisionUrl": "https://prts.wiki/index.php?oldid=450752",
+            "markedSentence": "combined",
+            "wikitextSha256": "524e6e6a550dbdfacbc685b4c69d2ad6918806bdb1abda48bd9ce8097acab095"
+          }
+        ]
+      },
+      {
+        "title": "卫戍协议/帮助v2",
+        "pageId": 100756,
+        "revisionCount": 14,
+        "firstRevision": 451117,
+        "lastRevision": 451231,
+        "occurrences": {
+          "combined": 14
+        },
+        "transitions": [
+          {
+            "revision": 451117,
+            "clause": "combined"
+          }
+        ],
+        "selectedRevisions": [
+          {
+            "revision": 451117,
+            "parent": 0,
+            "editedAt": "2026-11-21T10:46:58Z",
+            "revisionUrl": "https://prts.wiki/index.php?oldid=451117",
+            "markedSentence": "combined",
+            "wikitextSha256": "524e6e6a550dbdfacbc685b4c69d2ad6918806bdb1abda48bd9ce8097acab095"
+          },
+          {
+            "revision": 451231,
+            "parent": 451229,
+            "editedAt": "2026-11-22T08:45:41Z",
+            "revisionUrl": "https://prts.wiki/index.php?oldid=451231",
+            "markedSentence": "combined",
+            "wikitextSha256": "595793591ed24bbfda0dbd389f6afaebe3df7713bdaf55daf968a179756c1d2d"
+          }
+        ]
+      }
+    ]
+  }
+}

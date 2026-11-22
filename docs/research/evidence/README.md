@@ -44,6 +44,10 @@ uv run "$skill/scripts/archive.py" docs/research/evidence
 | --- | --- |
 | [nearl-deployment-combo-20261122](nearl-deployment-combo-20261122/README.md) | 耀骑士临光与耀阳的牌组接力状态、出牌过滤与出生采样 |
 | [stronghold-opening-deploy-20261122](stronghold-opening-deploy-20261122/README.md) | 卫戍开场与战中补位的原生实参、接力判定的证据边界 |
+| [stronghold-opening-wiki-20261122](stronghold-opening-wiki-20261122/README.md) | 卫戍开场临光规则从 2024 首期到规程序列Ⅰ的 PRTS 修订历史 |
+| [stronghold-opening-hotfix-20261122](stronghold-opening-hotfix-20261122/README.md) | 本期缓存版本和所登记的开场流程热更新 |
+| [stronghold-opening-current-content-20261122](stronghold-opening-current-content-20261122/README.md) | 规程序列Ⅰ临光与砾的配置及卡西米尔盟约实际模板 |
+| [stronghold-combo-registration-20261122](stronghold-combo-registration-20261122/README.md) | 牌组构造时同步注册临光接力与逐一开场部署的顺序 |
 | [deployment-order-consumers-20261122](deployment-order-consumers-20261122/README.md) | 罗德之门的结算身份、菲亚梅塔的在场排序与界园通宝的增益转移 |
 | [deployment-target-order-20261122](deployment-target-order-20261122/README.md) | 思衡托 S3 的当前在场候选、Card 资格与角色创建时间排序 |
 | [special-redeploy-failure-20261122](special-redeploy-failure-20261122/README.md) | 特殊移动的落点检查、返回失败、待投放与技能接续 |

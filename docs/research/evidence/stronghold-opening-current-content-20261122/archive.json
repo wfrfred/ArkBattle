@@ -1,0 +1,64 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-11-22"
+    ],
+    "collectionDateSource": "batch directory",
+    "organizedOn": "2026-11-22",
+    "client": {
+      "dll": null,
+      "metadata": null
+    },
+    "sourceRecords": [
+      "result.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12895,
+        "sha256": "9c5b246859318caaec4aab5275ef0d2d49fce5d612c6b4e569973a9941ba621a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "extract.py",
+        "kind": "historical-script",
+        "bytes": 3105,
+        "sha256": "580dff13601ad5e91ce72fb1598333fed5444af30adf8366657ee501c625a878"
+      },
+      {
+        "path": "result.json",
+        "kind": "record",
+        "bytes": 14941,
+        "sha256": "d8941a99c3d21bb763c654b3877a4499bc1ba94a3e67531f699d0132b3721571"
+      }
+    ],
+    "replay": {
+      "methods": [],
+      "blocks": [],
+      "types": [],
+      "constants": [],
+      "bundles": [
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/config/buff_template_holder.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/config/buff_template_holder.ab",
+          "sha256": "f486df86406db62b2773039b87d05a405fb95a31ddc82568c6a6efef14e47f01",
+          "records": [
+            "result.json#/provenance/holder"
+          ],
+          "bytes": 2197532
+        }
+      ]
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

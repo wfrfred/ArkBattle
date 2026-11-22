@@ -10,7 +10,7 @@
 | 进入接力写入的普通成功分支 | `#66755` 在 `0x1806fd35f` 通过 Card 生成实例。付费和免费分支都能在 `0x1806fd5d1` 汇合，通过 `0x1806fd5e2` 的虚槽 41 检查 `Character.get_aliveOrDying`。该检查通过后，`0x1806fd60d` 执行 `Card.Draw`。`Card.Draw` 里免费跳过库存扣减后仍能到 `0x1806ebb0f` 派发 `OnCardDrawn`，其规则回调只收到 Card。`0x1806fd420` 是无角色实例而 `SpawnDetailsTracker` 报告成功时的重叠类旁路，要求 `isOverlapLikeOperation=true`、`ignoreRespawn=false` 才调用 Draw。 |
 | 开场标记 | 可定位到 `AutoChessGameMode._CheckBuildableInBattle#82885` 在 `0x180c63af8` 读取该字段并参与落点合法性校验。所查普通成功的 Draw 和接力链路没有这个读点。 |
 
-[卫戍协议作战阶段说明](https://prts.wiki/w/卫戍协议/帮助#作战阶段)明确记录开场布阵不触发耀骑士临光 S2 对卡西米尔干员的判定。所查原生静态分支中，两个入口共用生成成功后的 Draw 路径，`spawnManually` 相同，而 `freely` 只证实免去普通费用和库存操作，不能解释 S2 的接力差异。基础资源与本机已下载热更新 Holder 中的 `nearl2_t_1[mark]`、`nearl2_t_1[combo]`、`nearl2_s_2[end]` 投影完全相同。没有在安装客户端回放或核实运行时 XLua 替换、当时已注册的 Card 规则，现有证据未定位具体哪一层排除开场布阵，也不足以推广到其他部署记录或观察者。
+两个入口共用生成成功后的 Draw 路径，`spawnManually` 相同，`freely` 分支免去普通费用和库存操作。基础资源与本机已下载热更新 Holder 中的 `nearl2_t_1[mark]`、`nearl2_t_1[combo]`、`nearl2_s_2[end]` 投影完全相同。后续核对了临光接力在开场前的注册、同日公开镜像的热更新入口，以及社区说法的首期来源。本批未运行客户端对照战斗。 [注册时点](../stronghold-combo-registration-20261122/README.md) · [热更新核对](../stronghold-opening-hotfix-20261122/README.md) · [2024 至今的说明修订](../stronghold-opening-wiki-20261122/README.md)
 
 从仓库根目录复跑。`--game` 可指定相同指纹的客户端安装。
 
