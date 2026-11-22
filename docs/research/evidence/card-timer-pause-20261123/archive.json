@@ -1,0 +1,153 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-11-23"
+    ],
+    "collectionDateSource": "batch directory",
+    "organizedOn": "2026-11-23",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+        "records": [
+          "character-check.json#/provenance/client/dll",
+          "selector.json#/provenance/client/dll"
+        ],
+        "bytes": 223112680
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        "records": [
+          "character-check.json#/provenance/client/metadata",
+          "selector.json#/provenance/client/metadata"
+        ],
+        "bytes": 46669332
+      }
+    },
+    "sourceRecords": [
+      "character-check.json",
+      "config.json",
+      "prefabs.json",
+      "reconstruction.json",
+      "selector.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12895,
+        "sha256": "9c5b246859318caaec4aab5275ef0d2d49fce5d612c6b4e569973a9941ba621a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "character-check.json",
+        "kind": "record",
+        "bytes": 21314,
+        "sha256": "d545160343938a8ca1167aa104781532f18296a698ba5f9d2cc42aed3e60fe66"
+      },
+      {
+        "path": "config.json",
+        "kind": "record",
+        "bytes": 2364,
+        "sha256": "b393377b14a5fb709a2dfc7f368a4a771f949fa4708019d7df021e1199a2b19e"
+      },
+      {
+        "path": "extract_prefabs.py",
+        "kind": "historical-script",
+        "bytes": 3662,
+        "sha256": "e7435f07ca629bc69721c5c00569ea6157634f52fac756bb3ce659a9c95e6922"
+      },
+      {
+        "path": "prefabs.json",
+        "kind": "record",
+        "bytes": 3718,
+        "sha256": "4cc10835034206a2504697bfa1028956788ec191218428a6719ee36ce5043229"
+      },
+      {
+        "path": "reconstruction.json",
+        "kind": "record",
+        "bytes": 11704,
+        "sha256": "f3bfc61257401f133d7721f4bf2fc1aac608e73ccf9dbc1e2f794d3b1b97936b"
+      },
+      {
+        "path": "selector.json",
+        "kind": "record",
+        "bytes": 30583,
+        "sha256": "6b8827abf330ecb91a13c4bb893b117669023cfb5d41daddcfca3c6d2b646d0a"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 79623,
+          "mode": "disasm",
+          "records": [
+            "selector.json#/result/1",
+            "selector.json#/result/1/method"
+          ],
+          "fullname": "Torappu.Battle.BattleUtil.IsCharacter",
+          "address": "0x180b42740"
+        },
+        {
+          "index": 101487,
+          "mode": "disasm",
+          "records": [
+            "selector.json#/result/0",
+            "selector.json#/result/0/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/IsCharacter.Execute",
+          "address": "0x1811d9d10"
+        }
+      ],
+      "blocks": [],
+      "types": [],
+      "constants": [],
+      "bundles": [
+        {
+          "kind": "bundle",
+          "path": "battle/enm_pfb_20.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_20.ab",
+          "sha256": "a8691210052bd5668850ab7b08d0926f835f17abce02503efea0556e418017ee",
+          "records": [
+            "prefabs.json#/bundle"
+          ],
+          "bytes": 470562
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_0.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_0.ab",
+          "sha256": "adcf77f260748418d57e08d2539993232de53053bf4a5ec2292ff9a4c7865f1d",
+          "records": [
+            "reconstruction.json#/provenance/prefab"
+          ],
+          "bytes": 5089969
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99",
+          "records": [
+            "reconstruction.json#/provenance/scriptsBundle"
+          ],
+          "bytes": 477255
+        }
+      ]
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

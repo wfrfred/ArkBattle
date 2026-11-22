@@ -428,6 +428,16 @@ QUEUED 对应 `token_10070_aphris_pc`（中继器）；DEFAULT／有限份数中
 
 本能的召唤是 DEFAULT 且使用有限份数。退场程序立即补回一份可用库存，同时保留已经启动的部署冷却。这个样本的补库直接写库存，没有登记待恢复份数或启动额外计时。[Prefab、Buff 和库存写回证据](../evidence/default-card-stock-return-20261123/README.md)
 
+### 三种策略的停表样本
+
+2026-11-23 补查。三种策略共用 `Card.OnTick` 的停表判断。暂停期间跳过当前计时的推进，解除后沿用原余时。DEFAULT 的部署后冷却与 QUEUED 的逐份恢复在原生都具备这个能力。本轮核对固定 Buff 表、已归档 Prefab 和普通客户端静态路径，实际样本如下。 [配置、计时及选敌证据](../evidence/card-timer-pause-20261123/README.md)
+
+| 策略 | 已核实的内容 |
+| --- | --- |
+| UNIQUE | 放逐的黑棺和托生莲座暂停符合角色类别的干员卡，附着及装载条件排除召唤物与装置。机械师 S3 也给自己的召唤物卡写停表标记，该召唤物在已核 Prefab 中同样为 UNIQUE。 |
+| DEFAULT | Mon3tr 的重构体在幼体阶段暂停部署后冷却。幼体 Buff 结束后解除暂停，计时从原余时继续。 [Prefab 与解除路径](../evidence/card-timer-pause-20261123/README.md#default-重构体) |
+| QUEUED | 本轮未确认有内容冻结正在进行的逐份恢复。已核中继器的 S3 将当前余时清零。 [中继器的重置指令](../evidence/repeater-recovery-20261122/README.md#调用锚点) |
+
 ### 涨费与回收的关系
 
 **N：** Card.OnRecycle 的 UNIQUE＋当前 INUSE 分支启动再部署，并按 m_addRespawnCostMultCnt 开关增加 m_respawnCostMultCnt。该增量确实附着在回收路径，而不是一项任意部署后回调。DEFAULT／QUEUED 不走这段计数增加分支。

@@ -1,0 +1,120 @@
+{
+  "bundle": {
+    "path": "battle/enm_pfb_20.ab",
+    "bytes": 470562,
+    "sha256": "a8691210052bd5668850ab7b08d0926f835f17abce02503efea0556e418017ee",
+    "unityVersion": "5.x.x",
+    "serializedFile": "CAB-d6fd4ca05b8201d765eb078efa151e40"
+  },
+  "scope": "Installed Windows Unity assets with whole MonoBehaviour TypeTree decoding.",
+  "cases": [
+    {
+      "enemyKey": "enemy_2083_skzhg",
+      "gameObject": {
+        "pathId": "4147982119113708428",
+        "name": "M0Aura"
+      },
+      "aura": {
+        "pathId": "-4808716054052809844",
+        "classId": 114,
+        "scriptId": "144d1c7b3ee9ca55c921d3f45aa44642",
+        "bytes": 824,
+        "sha256": "139b9771b422d9ad0b91a2a43a9c94c42a8a35d63ceea600d22f6e3e5198a9b0",
+        "buffKey": "skzhg_m0_t[aura]",
+        "templateKey": "skzhg_m0_t[aura]",
+        "loadFromDB": 0,
+        "selector": {
+          "m_FileID": 0,
+          "m_PathID": "0"
+        },
+        "targetValidator": {
+          "m_FileID": 0,
+          "m_PathID": "5002905682677781388"
+        }
+      },
+      "validator": {
+        "pathId": "5002905682677781388",
+        "classId": 114,
+        "scriptId": "e2dbc5c0779cd91918dcd7476edafcb4",
+        "bytes": 112,
+        "sha256": "4cc6e84239051c9069d8332378443af2972718f8954886d96905347a3189a35e",
+        "targetOptions": {
+          "targetSide": 2,
+          "targetMotion": 1,
+          "targetCategory": 1,
+          "enableAdvancedOptions": 1,
+          "ignoreTargetFree": 1,
+          "ignoreAllyTargetFree": 1,
+          "ignoreHealFree": 1,
+          "ignoreMotionMode": 0,
+          "ignoreTargetSide": 0,
+          "excludeSomeAbnormalFlags": 0,
+          "containSomeAbnormalFlags": 0,
+          "excludeAbnormalFlag": 0,
+          "containAbnormalFlag": 0,
+          "purposeMask": 0,
+          "professionMask": 639,
+          "checkUnitType": 0,
+          "unitTypeMask": 0,
+          "onlyIgnoreSomeOfTargetFreeCase": 0,
+          "abnormalFlag": 0,
+          "abnormalCombo": 0
+        }
+      }
+    },
+    {
+      "enemyKey": "enemy_2090_skzjbc",
+      "gameObject": {
+        "pathId": "-2789499125240090536",
+        "name": "swallowOperators"
+      },
+      "aura": {
+        "pathId": "3765033937093603416",
+        "classId": 114,
+        "scriptId": "144d1c7b3ee9ca55c921d3f45aa44642",
+        "bytes": 352,
+        "sha256": "c3cd19608aed277ff54a602dee1b6f2af0cc21d2a1195998aa3b7491e47df5b5",
+        "buffKey": "skzjbc_t[swallow_mark]",
+        "templateKey": "skzjbc_t[swallow_mark]",
+        "loadFromDB": 0,
+        "selector": {
+          "m_FileID": 0,
+          "m_PathID": "0"
+        },
+        "targetValidator": {
+          "m_FileID": 0,
+          "m_PathID": "-3665645853810937768"
+        }
+      },
+      "validator": {
+        "pathId": "-3665645853810937768",
+        "classId": 114,
+        "scriptId": "e2dbc5c0779cd91918dcd7476edafcb4",
+        "bytes": 112,
+        "sha256": "9f625c182ea235c3460842bdd589fa013e70b6bebcf51846a4d83dfb0e95c9bc",
+        "targetOptions": {
+          "targetSide": 2,
+          "targetMotion": 1,
+          "targetCategory": 1,
+          "enableAdvancedOptions": 1,
+          "ignoreTargetFree": 1,
+          "ignoreAllyTargetFree": 0,
+          "ignoreHealFree": 0,
+          "ignoreMotionMode": 0,
+          "ignoreTargetSide": 0,
+          "excludeSomeAbnormalFlags": 0,
+          "containSomeAbnormalFlags": 0,
+          "excludeAbnormalFlag": 0,
+          "containAbnormalFlag": 0,
+          "purposeMask": 0,
+          "professionMask": 639,
+          "checkUnitType": 0,
+          "unitTypeMask": 0,
+          "onlyIgnoreSomeOfTargetFreeCase": 0,
+          "abnormalFlag": 0,
+          "abnormalCombo": 0
+        }
+      }
+    }
+  ]
+}

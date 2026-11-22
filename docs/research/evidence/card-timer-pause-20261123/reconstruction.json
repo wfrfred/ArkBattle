@@ -1,0 +1,330 @@
+{
+  "provenance": {
+    "prefab": {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_0.ab",
+      "bytes": 5089969,
+      "sha256": "adcf77f260748418d57e08d2539993232de53053bf4a5ec2292ff9a4c7865f1d"
+    },
+    "scriptsBundle": {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+      "bytes": 477255,
+      "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99"
+    },
+    "config": {
+      "path": "zh_CN/gamedata/battle/buff_template_data.json",
+      "revision": "17759cc8cdf37388414145d16262a3a06f3ab25e",
+      "sha256": "6786d60fa1f081346f7885a0a9782e201c942017588b09830afb011e16c6df3c"
+    }
+  },
+  "result": {
+    "binding": {
+      "serializedFile": "CAB-f68700761ef4b9b267b0af89309727d6",
+      "components": {
+        "Token": {
+          "pathId": "3549317659382103584",
+          "script": {
+            "id": "-795855429403065218",
+            "name": "Token",
+            "cl": "Token",
+            "ns": "Torappu.Battle",
+            "asm": "Assembly-CSharp.dll"
+          },
+          "gameObject": {
+            "pathId": "-7561030455343268320",
+            "name": "token_10050_monstr_prosts",
+            "localComponents": [
+              "8125849757803724320",
+              "3549317659382103584",
+              "-6424585855081857504",
+              "-2632091701910847968",
+              "7271594371149381152"
+            ]
+          },
+          "enabled": true,
+          "fields": {
+            "_cardPolicy": 0,
+            "_isInfinity": false,
+            "_notShowInDeck": false,
+            "_commonAbilities": {
+              "Array": [
+                {
+                  "m_FileID": 0,
+                  "m_PathID": -2289011437262029280
+                }
+              ]
+            }
+          },
+          "rawSha256": "d09d207cd6279175eebef3bce75a31a535ed7ea661359758cf53d9dcce315f42"
+        },
+        "PassiveBuffAbility": {
+          "pathId": "9174674518516416032",
+          "script": {
+            "id": "3800760148018415462",
+            "name": "PassiveBuffAbility",
+            "cl": "PassiveBuffAbility",
+            "ns": "Torappu.Battle.Abilities",
+            "asm": "Assembly-CSharp.dll"
+          },
+          "gameObject": {
+            "pathId": "-9170738918154977760",
+            "name": "-1",
+            "localComponents": [
+              "3123493247650872864",
+              "2556129597892050464",
+              "9174674518516416032"
+            ]
+          },
+          "enabled": true,
+          "fields": {
+            "_buffs": {
+              "Array": [
+                {
+                  "attributes": {
+                    "abnormalFlags": {
+                      "Array": []
+                    },
+                    "abnormalImmunes": {
+                      "Array": []
+                    },
+                    "abnormalAntis": {
+                      "Array": []
+                    },
+                    "abnormalCombos": {
+                      "Array": []
+                    },
+                    "abnormalComboImmunes": {
+                      "Array": []
+                    },
+                    "attributeModifiers": {
+                      "Array": [
+                        {
+                          "attributeType": 5,
+                          "formulaItem": 3,
+                          "value": 0.0,
+                          "loadFromBlackboard": true,
+                          "fetchBaseValueFromSourceEntity": false
+                        }
+                      ]
+                    }
+                  },
+                  "buffKey": "prosts_t_1[born_charge]",
+                  "loadFromDB": false,
+                  "isDurableBuff": false,
+                  "isDamageMissable": false,
+                  "isSilenceable": false,
+                  "isStunnable": false,
+                  "isFreezable": false,
+                  "isLevitatable": false,
+                  "isGroundBoundable": false,
+                  "statusResistable": true,
+                  "templateKey": "prosts_t_1[born_charge]",
+                  "disableOverride": false,
+                  "overrideKey": "",
+                  "overrideType": 0,
+                  "maxStackCnt": 1,
+                  "refreshRemainingTimeWhenStackMax": false,
+                  "clearAllStackCntWhenTimeUp": false,
+                  "maxValidStackCnt": -1,
+                  "independentCharacterSource": false,
+                  "overrideEffectKey": "",
+                  "overrideOnEventPriority": false,
+                  "onEventPriority": 0,
+                  "audioSignal": "",
+                  "lifeTimeType": true,
+                  "takeSnapshotWhenExtend": false,
+                  "durationKey": "duration",
+                  "remainingTimeKey": "",
+                  "lifeTime": 0.0,
+                  "triggerLifeType": true,
+                  "triggerCnt": 0,
+                  "triggerInterval": 0.10000000149011612,
+                  "waitFirstTriggerInterval": false,
+                  "firstTriggerInterval": 1.0,
+                  "priority": -1,
+                  "priorityBBKeys": {
+                    "Array": []
+                  },
+                  "stripBlackboardParamsWithBuffKey": false,
+                  "blackboard": {
+                    "Array": [
+                      {
+                        "key": "interval",
+                        "value": 0.10000000149011612,
+                        "valueStr": ""
+                      },
+                      {
+                        "key": "damage",
+                        "value": 0.0,
+                        "valueStr": ""
+                      },
+                      {
+                        "key": "respawn_stopped",
+                        "value": 1.0,
+                        "valueStr": ""
+                      }
+                    ]
+                  },
+                  "enableInitDirectionFromSource": false
+                }
+              ]
+            }
+          },
+          "rawSha256": "efa2081d8cb5d27f42c1683367309d00cf6fcdaed7dca45b75001faf93645ea1"
+        }
+      }
+    },
+    "hierarchy": [
+      {
+        "transformPathId": "3123493247650872864",
+        "gameObjectPathId": "-9170738918154977760",
+        "gameObjectName": "-1"
+      },
+      {
+        "transformPathId": "4653391454433885728",
+        "gameObjectPathId": "-1703643779760144864",
+        "gameObjectName": "Talents"
+      },
+      {
+        "transformPathId": "-3982737317003936224",
+        "gameObjectPathId": "-1964849649292493280",
+        "gameObjectName": "Body"
+      },
+      {
+        "transformPathId": "-3589039222925836768",
+        "gameObjectPathId": "4671051106696281632",
+        "gameObjectName": "Default"
+      },
+      {
+        "transformPathId": "-3182702678144860640",
+        "gameObjectPathId": "1638112749668711968",
+        "gameObjectName": "Modes"
+      },
+      {
+        "transformPathId": "8125849757803724320",
+        "gameObjectPathId": "-7561030455343268320",
+        "gameObjectName": "token_10050_monstr_prosts"
+      }
+    ],
+    "template": {
+      "templateKey": "prosts_t_1[born_charge]",
+      "effectKey": "",
+      "onEventPriority": "DEFAULT",
+      "eventToActions": {
+        "ON_OWNER_FINISH": [],
+        "ON_BUFF_START": [
+          {
+            "$type": "Torappu.Battle.Action.Nodes+CalculateBlackboardValueViaParams, Assembly-CSharp",
+            "_inputKey": "damage_per_second",
+            "_outputKey": "damage",
+            "_multiplyParamKey": "interval",
+            "_dividedParamKey": "",
+            "_useRemainder": false,
+            "_addParamKey": null,
+            "_minusParamKey": null,
+            "_minValueKey": null,
+            "_maxValueKey": null,
+            "_finalAbs": false,
+            "_finalCeil": false,
+            "_finalFloor": false,
+            "_finalRound": false,
+            "_useAbilityBlackboard": false,
+            "_abilityName": ""
+          },
+          {
+            "$type": "Torappu.Battle.Action.Nodes+CreateCardBuff, Assembly-CSharp",
+            "_target": "TARGET",
+            "_donotInheritBlackboard": false,
+            "_lifeType": "ALL_THE_TIME",
+            "_isRatio": false,
+            "_enableMaxStackCount": false,
+            "_filterIsInHand": false,
+            "_useCardBuffKey": true,
+            "_cardBuffKey": "prosts_t_1[raw_born]"
+          },
+          {
+            "$type": "Torappu.Battle.Action.Nodes+SetDisableClickCharacterInfo, Assembly-CSharp",
+            "_target": "BUFF_OWNER",
+            "_reasonMask": "OWNER_SETTING",
+            "_enabled": true
+          }
+        ],
+        "ON_BUFF_TRIGGER": [
+          {
+            "$type": "Torappu.Battle.Action.Nodes+IfElse, Assembly-CSharp",
+            "_conditionNode": {
+              "$type": "Torappu.Battle.Action.Nodes+CheckContainsBuff, Assembly-CSharp",
+              "_targetType": "BUFF_OWNER",
+              "_buffKeys": [
+                "prosts_s_3[mode]"
+              ],
+              "isAND": true,
+              "_loadFromBlackboard": false,
+              "_checkBuffSource": false,
+              "_buffSourceType": "BUFF_SOURCE",
+              "_checkSourceHost": false
+            },
+            "_succeedNodes": [
+              {
+                "$type": "Torappu.Battle.Action.Nodes+SwitchMode, Assembly-CSharp",
+                "_modeIndex": 2,
+                "_loadModeFromBlackboard": false,
+                "_restoreDefault": false,
+                "_restartFSM": true,
+                "_targetType": "BUFF_OWNER"
+              }
+            ],
+            "_failNodes": [
+              {
+                "$type": "Torappu.Battle.Action.Nodes+FixedValueDamage, Assembly-CSharp",
+                "_damageType": "PURE",
+                "_damageKey": "damage",
+                "_atkScaleKey": "atk_scale",
+                "_ignoreForSp": true,
+                "_attackType": "BUFF",
+                "_skipModifierEvent": true,
+                "_considerUnhurtable": false,
+                "_noSourceDamage": false,
+                "_targetType": "BUFF_OWNER",
+                "_assignRealDamageToBB": false,
+                "_assignFinalDamageToBB": false,
+                "_multiplierByKey": false,
+                "_multiplierKey": "cnt",
+                "_damageSourceType": "SOURCE",
+                "_damageTargetType": "TARGET",
+                "_triggerOnCalculateDamage": false,
+                "_isEnvDamage": false,
+                "_ignoreCancelReasonMask": "NONE",
+                "_forceDisplayDamageNum": false,
+                "_undeadable": false,
+                "_modifierKey": "",
+                "_devideDamageFromAbilityCnt": false
+              }
+            ]
+          }
+        ],
+        "ON_BUFF_FINISH": [
+          {
+            "$type": "Torappu.Battle.Action.Nodes+RechargeToken, Assembly-CSharp",
+            "_cntKey": "cnt",
+            "_rechargeTiming": "NORMAL",
+            "_refreshRemainingCnt": true
+          },
+          {
+            "$type": "Torappu.Battle.Action.Nodes+FinishCardBuffsByKey, Assembly-CSharp",
+            "_cardBuffKey": "prosts_t_1[raw_born]",
+            "_findAllCard": false,
+            "_useUid": false,
+            "_ignoreOwner": false,
+            "_onlyOwner": true
+          },
+          {
+            "$type": "Torappu.Battle.Action.Nodes+SetDisableClickCharacterInfo, Assembly-CSharp",
+            "_target": "BUFF_OWNER",
+            "_reasonMask": "OWNER_SETTING",
+            "_enabled": false
+          }
+        ]
+      }
+    }
+  }
+}

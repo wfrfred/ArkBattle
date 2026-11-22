@@ -1,0 +1,58 @@
+{
+  "provenance": {
+    "collectedAt": "2026-11-22T19:54:04.720889+00:00",
+    "scope": "Selected local JSON documents only. Value matches locate potential references; they do not resolve or validate bindings.",
+    "tool": {
+      "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/config.py",
+      "sha256": "67c2a913386059a57f9316f25e532c9dd20cdc4adb91d820065d09fd9dec76e4"
+    },
+    "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+    "argv": [
+      "assets/arknights-game-data/zh_CN/gamedata/battle/buff_template_data.json",
+      "--source-url",
+      "https://github.com/Kengxxiao/ArknightsGameData",
+      "--revision",
+      "17759cc8cdf37388414145d16262a3a06f3ab25e",
+      "--out",
+      "docs/research/evidence/card-timer-pause-20261123/config.json",
+      "find",
+      "--value",
+      "respawn_stopped"
+    ],
+    "sourceUrl": "https://github.com/Kengxxiao/ArknightsGameData",
+    "revision": "17759cc8cdf37388414145d16262a3a06f3ab25e",
+    "inputs": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/assets/arknights-game-data/zh_CN/gamedata/battle/buff_template_data.json",
+        "bytes": 28623543,
+        "sha256": "6786d60fa1f081346f7885a0a9782e201c942017588b09830afb011e16c6df3c",
+        "status": "ok",
+        "matched": 3
+      }
+    ]
+  },
+  "result": {
+    "matched": 3,
+    "matches": [
+      {
+        "source": "/home/wfrfred/workspace/ArkBattle/assets/arknights-game-data/zh_CN/gamedata/battle/buff_template_data.json",
+        "pointer": "/skzhg_m0_t[aura]/eventToActions/ON_OWNER_FINISH/0/_failNodes/0/_buff/blackboard/0/key",
+        "value": "respawn_stopped"
+      },
+      {
+        "source": "/home/wfrfred/workspace/ArkBattle/assets/arknights-game-data/zh_CN/gamedata/battle/buff_template_data.json",
+        "pointer": "/skzjbc_t[swallow_core]/eventToActions/ON_OWNER_FINISH/0/_buff/blackboard/0/key",
+        "value": "respawn_stopped"
+      },
+      {
+        "source": "/home/wfrfred/workspace/ArkBattle/assets/arknights-game-data/zh_CN/gamedata/battle/buff_template_data.json",
+        "pointer": "/mcnist_s_3_projectile_trigger/eventToActions/ON_BUFF_TRIGGER/0/_buff/blackboard/0/key",
+        "value": "respawn_stopped"
+      }
+    ],
+    "complete": true,
+    "scanned": 1,
+    "succeeded": 1,
+    "errors": []
+  }
+}
