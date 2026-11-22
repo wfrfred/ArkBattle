@@ -3,11 +3,9 @@ import type { Entry } from "../common/collection/entries.js";
 import type { EnteredHook, RemovedHook } from "../unit/hook.js";
 import type { State as BattleState } from "./state.js";
 
-export type Hook = RemovedHook;
-
 export const entered = hooks.key<EnteredHook, BattleState>("battle.unit.entered");
 
-export const removed = hooks.key<Hook, BattleState>("battle.unit.removed");
+export const removed = hooks.key<RemovedHook, BattleState>("battle.unit.removed");
 
 export function setHook<H extends Entry>(
     battle: BattleState,
