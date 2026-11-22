@@ -96,15 +96,6 @@ export function enqueueRecovery(
     );
 }
 
-export function recoverOnDeparture(battle: BattleState, reference: Ref<Card>): BattleState {
-    const { definition } = requireCard(battle, reference);
-    if (definition.increaseCostOnRetreatOrDeath) {
-        battle = incrementCostStage(battle, reference);
-    }
-
-    return definition.recoverOnRetreatOrDeath ? enqueueRecovery(battle, reference) : battle;
-}
-
 export function reduceCooldown(
     battle: BattleState,
     reference: Ref<Card<any>>,

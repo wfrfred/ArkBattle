@@ -6,14 +6,7 @@ export type { Id as CardId, Clock as CardClock, Card } from "./card/card.js";
 
 export { resolveBaseCost, resolveCost, resolveRedeployTicks } from "./card/state.js";
 
-export type {
-    Quote,
-    DeployRequest,
-    DeployOutcome,
-    RedeployRequest,
-    Rejection,
-    Rejected,
-} from "./request.js";
+export type { Quote, DeployRequest, DeployOutcome, Rejection, Rejected } from "./request.js";
 
 export type { Restriction, RestrictionContext } from "./restriction.js";
 
@@ -35,7 +28,7 @@ export { advance } from "./resources.js";
 
 export type { DeploymentCommand } from "./operations.js";
 
-export { deploy, redeploy, resolveDeploymentCommands } from "./operations.js";
+export { deploy, resolveDeploymentCommands } from "./operations.js";
 
 export { retreat, canRetreat } from "../../unit/capability/deployable/operations.js";
 

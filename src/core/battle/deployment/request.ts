@@ -5,8 +5,6 @@ import type { Direction } from "../../geometry/direction.js";
 import type { TilePosition } from "../../geometry/coordinate.js";
 import type { Hooks } from "../../hook.js";
 import { validateRestrictions } from "../../restriction.js";
-import type { Unit } from "../../unit/unit.js";
-import type { Deployable } from "../../unit/capability/deployable/capability.js";
 import type { Card } from "./card/card.js";
 import type { Restriction } from "./restriction.js";
 
@@ -23,13 +21,6 @@ export interface DeployRequest<T extends Card<any> = Card> {
     readonly quote: Quote;
     readonly restrictions: readonly Contribution<Restriction>[];
     readonly hooks: Hooks;
-}
-
-export interface RedeployRequest {
-    readonly unit: Ref<Unit & Deployable>;
-    readonly tilePosition: TilePosition;
-    readonly direction: Direction | null;
-    readonly kind: "SELF" | "EXTERNAL";
 }
 
 export function validateRequest({ quote, restrictions }: DeployRequest): void {

@@ -9,8 +9,7 @@ export type DefinitionId = string;
 
 export type Lifecycle = "ACTIVE" | "ENDING";
 
-export type EndReason =
-    "DEATH" | "RETREAT" | "EXPIRED" | "SCRIPT" | "REDEPLOY_SELF" | "REDEPLOY_EXTERNAL";
+export type EndReason = "DEATH" | "RETREAT" | "EXPIRED" | "SCRIPT";
 
 export type End =
     | { readonly reason: "DEATH"; readonly killer: Ref<Unit> | null }

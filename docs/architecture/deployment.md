@@ -1,6 +1,6 @@
 # Deployment、Card 与 Unit 生命周期
 
-Deployment 完成部署资格、消费、实例创建与通知；Card 保存跨部署资源，Deployable 保存本次场上部署事实，Occupancy 保存登记格与摆放朝向，Unit／Lifetime 处理通用生命周期。当前支持普通按格部署、特殊移动、主动撤退及被动死亡。
+Deployment 完成部署资格、消费、实例创建与通知；Card 保存跨部署资源，Deployable 保存本次场上部署事实，Occupancy 保存登记格与摆放朝向，Unit／Lifetime 处理通用生命周期。当前支持普通按格部署、主动撤退及被动死亡。
 
 ## 关键语义
 
@@ -36,7 +36,7 @@ Card 的 unitHooks 注入未来实例，不追改已经创建的 Unit。私有�
 
 ## 部署历史
 
-`battle.deployment.history` 是本场成功 Card 部署的只读序列，每条保存 `card: Ref<Card>` 和 `unit: Ref<Unit & Deployable>`。`deploy` 和 `redeploy` 按实际部署顺序追加，在 Unit 初始化后、任何 `entered` 前发布记录。拒绝部署和无 Card 的直接 Unit 登记不产生记录。
+`battle.deployment.history` 是本场成功 Card 部署的只读序列，每条保存 `card: Ref<Card>` 和 `unit: Ref<Unit & Deployable>`。`deploy` 按实际部署顺序追加，在 Unit 初始化后、任何 `entered` 前发布记录。拒绝部署和无 Card 的直接 Unit 登记不产生记录。
 
 Unit 注销后保留记录，`cardForUnit` 仍可反查它来自哪张 Card，支持 [Effect 来源分组](effect.md#来源分组)。`deployedCount` 统计当前仍登记的在场实例，包含 `ENDING`。
 
@@ -59,16 +59,6 @@ Card 初始化与 DeployRequest 入口各自校验列表内的限制 ID 唯一�
 付款先处理 DP 时基，不能在消费后补发满额期间回复。落点与方向通过 Occupancy Initial 提供；Deployment 不直接重建 Deployable State。
 
 部署 entered 程序先装配，然后 Card／Request Hook，再 Capability 和内容程序；公共 priority 可调整同一集合，默认同级保持装配顺序。Deployment 部署通知和 Occupancy 配对各自通过已登记程序完成，Unit.add 不特判这些领域。
-
-## 特殊移动
-
-`redeploy(battle, { unit, tilePosition, direction, kind })` 对已有来源 Card 的 ACTIVE Unit 发起特殊移动。`kind` 为 `SELF` 或 `EXTERNAL`，对应 `REDEPLOY_SELF` 或 `REDEPLOY_EXTERNAL` 离场原因。`direction` 为 `null` 时新 Unit 的 Occupancy 不指定朝向。
-
-离场前按原 Card 检查落点和限制。资格检查扣除旧 Unit 的本卡和部署位占用，允许在原格替换自己。拒绝时保留旧 Unit 及原战斗状态。接受后走 Unit 正常离场，等旧 Unit 注销、释放占格和部署位后，按当时的落点、额度及 Card 限制再次验证。
-
-成功时同一 Card 创建新 Unit，沿用原部署的 COST、退款依据与份额。移动免支付 DP、免普通库存消费与默认部署间隔检查，旧离场也不退款。`SELF` 成功时保留 Card 的原费用阶段，`EXTERNAL` 按 Card 的回收政策累积费用阶段。成功替换继续占用原库存份额，无需为旧 Unit 另排库存恢复。若离场后落点被拒绝，按 Card 政策回收一份，费用阶段只结算一次，Card 私有状态仍可供下次部署读取。
-
-新 Unit 由原 Card 的当前蓝图与 Hook 装配，追加部署记录并使用正常的入场通知。`deployment.deployed` 提供本次移动请求。HP、SP 或技能进度接续由触发机制处理，可借 Card 私有状态与新 Unit 的入场程序接续。 [原生特殊移动](../research/cases/24-deployment-cost-and-supply.md#特殊移动的结束原因)
 
 ## 开场 Unit
 
@@ -100,7 +90,7 @@ usedSlots 在 removing 和依赖结束期间仍计入本次份额，物理注销
 
 ## 部署观察
 
-Deployment 的 deployed 与全局 Unit removed 分别存于所属 Battle Hooks 集合，不塞进某个 Unit。Deployed 固定 `{ unit, request, redeploy }` 创建事实，支付读取 `request.quote`，普通部署的 `redeploy` 为 `null`。后续 entered 仍可能改变或移除实例，需要实时状态时重新查询。
+Deployment 的 deployed 与全局 Unit removed 分别存于所属 Battle Hooks 集合，不塞进某个 Unit。Deployed 固定 `{ unit, request }` 创建事实，支付读取 request.quote；后续 entered 仍可能改变或移除实例，需要实时状态时重新查询。
 
 公共候选、priority、替换和嵌套派发见 [Hook](hook.md)。一次性来源在同步触发新部署前先消费自己的机会，不用 Event 执行业务。
 
@@ -116,7 +106,7 @@ DP 自然回复受周期和上限约束，满额期间不积累补发；付款�
 
 ## 支持范围
 
-特殊移动暂不支持单次地块部署类型豁免，例如「泡影流大冲击」的原地移动。 [原生翔虫配置](../research/evidence/external-redeploy-20261122/README.md)
+特殊移动需要独立的 `deployment.redeploy` 操作，目前仍待接入。原生正常路径沿用 Card 并更换 Unit，具体的账务、失败后续和通知边界见 [Core 缺口 U028](research-necessity-20261122.md#deployment--card--dp)。
 
 手牌重排竞争、隐藏／锁定和特殊回收仍未完整实现。卫戍倒地、自动部署与经济政策由外部机制／Meta 组合。费用和再部署时间的多来源公式仍待核对。
 

@@ -4,7 +4,7 @@ import type { Direction } from "../../geometry/direction.js";
 import type { TilePosition } from "../../geometry/coordinate.js";
 import { at } from "../../battlefield/occupancy.js";
 import { get as getTile } from "../../battlefield/map/map.js";
-import { hasDeployable, type Deployable } from "../../unit/capability/deployable/capability.js";
+import { hasDeployable } from "../../unit/capability/deployable/capability.js";
 import type { State as BattleState } from "../state.js";
 import type { Unit } from "../../unit/unit.js";
 import type { Card } from "./card/card.js";
@@ -63,66 +63,53 @@ export function createRequest<T extends Card<any>>(
     };
 }
 
-function restrictionDefaults(
-    replacing?: (Unit & Deployable) | null,
-): readonly [Rejection, Contribution<Restriction>][] {
-    return [
-        [
-            "COOLDOWN",
-            {
-                id: "@deployment/cooldown",
-                value: {
-                    allows: (battle, { request }) =>
-                        replacing !== undefined || get(battle, request.card)!.cooldown === null,
-                },
+const defaults: readonly [Rejection, Contribution<Restriction>][] = [
+    [
+        "COOLDOWN",
+        {
+            id: "@deployment/cooldown",
+            value: {
+                allows: (battle, { request }) => get(battle, request.card)!.cooldown === null,
             },
-        ],
-        [
-            "ACTIVE_LIMIT",
-            {
-                id: "@deployment/active-limit",
-                value: {
-                    allows: (battle, { request }) => {
-                        const limit = get(battle, request.card)!.definition.activeLimit;
+        },
+    ],
+    [
+        "ACTIVE_LIMIT",
+        {
+            id: "@deployment/active-limit",
+            value: {
+                allows: (battle, { request }) => {
+                    const limit = get(battle, request.card)!.definition.activeLimit;
 
-                        return (
-                            limit === null ||
-                            deployedCount(battle, request.card) - (replacing == null ? 0 : 1) <
-                                limit
-                        );
-                    },
+                    return limit === null || deployedCount(battle, request.card) < limit;
                 },
             },
-        ],
-        [
-            "SLOT_LIMIT",
-            {
-                id: "@deployment/slots",
-                value: {
-                    allows: (battle, { request }) =>
-                        battle.deployment.definition.slotLimit === null ||
-                        battle.deployment.usedSlots -
-                            (replacing?.deployable.slots ?? 0) +
-                            request.quote.slots <=
-                            battle.deployment.definition.slotLimit,
-                },
+        },
+    ],
+    [
+        "SLOT_LIMIT",
+        {
+            id: "@deployment/slots",
+            value: {
+                allows: (battle, { request }) =>
+                    battle.deployment.definition.slotLimit === null ||
+                    battle.deployment.usedSlots + request.quote.slots <=
+                        battle.deployment.definition.slotLimit,
             },
-        ],
-        [
-            "RULE",
-            {
-                id: "@deployment/placement",
-                value: {
-                    allows: (battle, { request }) =>
-                        getTile(battle.battlefield.map, request.tilePosition)!.state.placement !==
-                        "NONE",
-                },
+        },
+    ],
+    [
+        "RULE",
+        {
+            id: "@deployment/placement",
+            value: {
+                allows: (battle, { request }) =>
+                    getTile(battle.battlefield.map, request.tilePosition)!.state.placement !==
+                    "NONE",
             },
-        ],
-    ];
-}
-
-const defaults = restrictionDefaults();
+        },
+    ],
+];
 
 export const defaultRestrictions: readonly Contribution<Restriction>[] = defaults.map(
     ([, entry]) => entry,
@@ -131,16 +118,11 @@ export const defaultRestrictions: readonly Contribution<Restriction>[] = default
 export function resolveRestrictions(
     self: Card<any>,
     request: DeployRequest,
-    replacing?: (Unit & Deployable) | null,
 ): readonly Contribution<Restriction | CardRestriction>[] {
     const restrictions = new Map<string, Contribution<Restriction | CardRestriction>>();
-    const baseline =
-        replacing === undefined
-            ? defaultRestrictions
-            : restrictionDefaults(replacing).map(([, entry]) => entry);
 
     for (const entry of [
-        ...baseline,
+        ...defaultRestrictions,
         ...self.definition.deploymentRestrictions,
         ...self.restrictions,
         ...request.restrictions,
@@ -155,7 +137,6 @@ export function evaluateCurrent(
     battle: BattleState,
     request: DeployRequest,
     restrictions: readonly Contribution<Restriction | CardRestriction>[],
-    replacing?: Unit & Deployable,
 ): Rejected | null {
     const self = get(battle, request.card)!;
     if (self.stock < request.quote.stock) {
@@ -174,8 +155,7 @@ export function evaluateCurrent(
 
     const slot = self.unitDefinition.occupancy.slot;
     const occupancy = at(battle.battlefield, request.tilePosition);
-    const occupant = slot === "SUPPORT" ? occupancy?.support : occupancy?.occupant;
-    if (occupant != null && occupant.id !== replacing?.id) {
+    if ((slot === "SUPPORT" ? occupancy?.support : occupancy?.occupant) != null) {
         return { type: "REJECTED", reason: "OCCUPIED" };
     }
 
