@@ -11,6 +11,11 @@
         "bytes": 45213,
         "sha256": "97d58abead488de8af1aa40aa1eee8f3ddfa55e5d459140451f28ce05e142713"
       },
+      "battle/prefabs/[uc]dynamicabilities.ab": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]dynamicabilities.ab",
+        "bytes": 138460,
+        "sha256": "107f69348d7515321c77d3553f1d963b1e3a0dd1643fc36efcec0d9e73d8251c"
+      },
       "anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin": {
         "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
         "bytes": 477255,
@@ -24,8 +29,8 @@
     },
     "tool": {
       "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/special-redeploy-failure-20261122/extract_prefab.py",
-      "bytes": 7591,
-      "sha256": "89c15eff9e3c7298212abd9a2d619a222a90ee3a22af385eacbe2fa2ea3d3202"
+      "bytes": 9459,
+      "sha256": "d0e8bfe1021e1bc846545f6871dc83f47d694859c8dda36081d9590ac01a14ff"
     },
     "typeTreeDecoder": {
       "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/nymph-action-settlement-20261103/projectile/decode_projectile.py",
@@ -59,7 +64,10 @@
           },
           "enabled": true,
           "fields": {
+            "_inherateProgressFromSharedBlackboardBBKey": "kalts2_restore_skill_progress",
             "_skillProgressBBKey": "kalts2_skill_progress",
+            "_skillDurationBBKey": "duration",
+            "_respawnBBKey": "kalts2_respawn",
             "_restoreSkillBuff": {
               "attributes": {
                 "abnormalFlags": {
@@ -675,7 +683,417 @@
         }
       }
     },
+    "battle/prefabs/[uc]dynamicabilities.ab": {
+      "serializedFile": "CAB-6e944a56f5e293093b39d8279f31aded",
+      "components": {
+        "AbilityParallelGroup": {
+          "pathId": "917955117762087795",
+          "script": {
+            "id": "8671737732485835867",
+            "name": "AbilityParallelGroup",
+            "cl": "AbilityParallelGroup",
+            "ns": "Torappu.Battle.Abilities",
+            "asm": "Assembly-CSharp.dll"
+          },
+          "gameObject": {
+            "pathId": "-9101048267271959693",
+            "name": "rogue_1_random_damage_on_born",
+            "localComponents": [
+              "8119559919721057139",
+              "917955117762087795",
+              "3408380390757567347"
+            ]
+          },
+          "enabled": true,
+          "fields": {
+            "_abilities": {
+              "Array": [
+                {
+                  "m_FileID": 0,
+                  "m_PathID": 7483162558775888755
+                },
+                {
+                  "m_FileID": 0,
+                  "m_PathID": 2292401635086109555
+                }
+              ]
+            }
+          }
+        },
+        "EmptyAnimatedAbility": {
+          "pathId": "7483162558775888755",
+          "script": {
+            "id": "8145049199648393782",
+            "name": "EmptyAnimatedAbility",
+            "cl": "EmptyAnimatedAbility",
+            "ns": "Torappu.Battle.Abilities",
+            "asm": "Assembly-CSharp.dll"
+          },
+          "gameObject": {
+            "pathId": "-6153613606921368717",
+            "name": "Attack",
+            "localComponents": [
+              "5351268463828798323",
+              "7483162558775888755",
+              "8252047895964945267"
+            ]
+          },
+          "enabled": true,
+          "fields": {
+            "_metadata": {
+              "namedAsAlias": "rogue_1_random_attack",
+              "blackboardPrefix": ""
+            },
+            "_activeBuffs": {
+              "Array": [
+                {
+                  "attributes": {
+                    "abnormalFlags": {
+                      "Array": []
+                    },
+                    "abnormalImmunes": {
+                      "Array": []
+                    },
+                    "abnormalAntis": {
+                      "Array": []
+                    },
+                    "abnormalCombos": {
+                      "Array": []
+                    },
+                    "abnormalComboImmunes": {
+                      "Array": []
+                    },
+                    "attributeModifiers": {
+                      "Array": []
+                    }
+                  },
+                  "buffKey": "rogue_1_random_attack",
+                  "loadFromDB": false,
+                  "isDurableBuff": false,
+                  "isDamageMissable": false,
+                  "isSilenceable": false,
+                  "isStunnable": false,
+                  "isFreezable": false,
+                  "isLevitatable": false,
+                  "isGroundBoundable": false,
+                  "statusResistable": true,
+                  "templateKey": "rogue_1_random_attack",
+                  "disableOverride": false,
+                  "overrideKey": "",
+                  "overrideType": 0,
+                  "maxStackCnt": 1,
+                  "refreshRemainingTimeWhenStackMax": false,
+                  "clearAllStackCntWhenTimeUp": false,
+                  "maxValidStackCnt": -1,
+                  "independentCharacterSource": false,
+                  "overrideEffectKey": "",
+                  "overrideOnEventPriority": false,
+                  "onEventPriority": 0,
+                  "audioSignal": "",
+                  "lifeTimeType": false,
+                  "takeSnapshotWhenExtend": false,
+                  "durationKey": "",
+                  "remainingTimeKey": "",
+                  "lifeTime": 0.0,
+                  "triggerLifeType": false,
+                  "triggerCnt": 0,
+                  "triggerInterval": -1.0,
+                  "waitFirstTriggerInterval": true,
+                  "firstTriggerInterval": -1.0,
+                  "priority": -1,
+                  "priorityBBKeys": {
+                    "Array": []
+                  },
+                  "stripBlackboardParamsWithBuffKey": false,
+                  "blackboard": {
+                    "Array": []
+                  },
+                  "enableInitDirectionFromSource": false
+                }
+              ]
+            },
+            "_selector": {
+              "m_FileID": 0,
+              "m_PathID": 5799069327624244083
+            }
+          }
+        },
+        "PassiveBuffAbility": {
+          "pathId": "2292401635086109555",
+          "script": {
+            "id": "3800760148018415462",
+            "name": "PassiveBuffAbility",
+            "cl": "PassiveBuffAbility",
+            "ns": "Torappu.Battle.Abilities",
+            "asm": "Assembly-CSharp.dll"
+          },
+          "gameObject": {
+            "pathId": "-1348161129209853069",
+            "name": "Trigger",
+            "localComponents": [
+              "-5322344624226301069",
+              "2292401635086109555"
+            ]
+          },
+          "enabled": true,
+          "fields": {
+            "_buffs": {
+              "Array": [
+                {
+                  "attributes": {
+                    "abnormalFlags": {
+                      "Array": []
+                    },
+                    "abnormalImmunes": {
+                      "Array": []
+                    },
+                    "abnormalAntis": {
+                      "Array": []
+                    },
+                    "abnormalCombos": {
+                      "Array": []
+                    },
+                    "abnormalComboImmunes": {
+                      "Array": []
+                    },
+                    "attributeModifiers": {
+                      "Array": []
+                    }
+                  },
+                  "buffKey": "rogue_1_trigger_attack",
+                  "loadFromDB": false,
+                  "isDurableBuff": false,
+                  "isDamageMissable": false,
+                  "isSilenceable": false,
+                  "isStunnable": false,
+                  "isFreezable": false,
+                  "isLevitatable": false,
+                  "isGroundBoundable": false,
+                  "statusResistable": true,
+                  "templateKey": "rogue_1_trigger_ability[on_born]",
+                  "disableOverride": true,
+                  "overrideKey": "",
+                  "overrideType": 0,
+                  "maxStackCnt": 1,
+                  "refreshRemainingTimeWhenStackMax": false,
+                  "clearAllStackCntWhenTimeUp": false,
+                  "maxValidStackCnt": -1,
+                  "independentCharacterSource": false,
+                  "overrideEffectKey": "",
+                  "overrideOnEventPriority": false,
+                  "onEventPriority": 0,
+                  "audioSignal": "",
+                  "lifeTimeType": true,
+                  "takeSnapshotWhenExtend": false,
+                  "durationKey": "_",
+                  "remainingTimeKey": "",
+                  "lifeTime": 0.10000000149011612,
+                  "triggerLifeType": false,
+                  "triggerCnt": 0,
+                  "triggerInterval": -1.0,
+                  "waitFirstTriggerInterval": true,
+                  "firstTriggerInterval": -1.0,
+                  "priority": -1,
+                  "priorityBBKeys": {
+                    "Array": []
+                  },
+                  "stripBlackboardParamsWithBuffKey": false,
+                  "blackboard": {
+                    "Array": [
+                      {
+                        "key": "ability_name",
+                        "value": 0.0,
+                        "valueStr": "rogue_1_random_attack"
+                      }
+                    ]
+                  },
+                  "enableInitDirectionFromSource": false
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
     "config/buff_template_holder.ab": {
+      "rogue_1_trigger_ability[on_born]": {
+        "serializedFile": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+        "pathId": "6070581171229484677",
+        "events": [
+          {
+            "event": 35,
+            "program": [
+              {
+                "_sideMask": "ALLY",
+                "_targetType": "BUFF_OWNER",
+                "$type": "Torappu.Battle.Action.Nodes+IfTargetSide"
+              },
+              {
+                "_ownerType": "BUFF_OWNER",
+                "_targetType": "BUFF_OWNER",
+                "_abilityName": "",
+                "_checkCanUseAblityFlag": false,
+                "_castDirectly": false,
+                "_useFirstActiveAbility": false,
+                "_useCastResult": false,
+                "_triggerHostAbility": false,
+                "_notInterruptAbilityIfCasting": false,
+                "$type": "Torappu.Battle.Action.Nodes+TriggerAbility"
+              }
+            ]
+          }
+        ]
+      },
+      "rogue_1_random_attack": {
+        "serializedFile": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+        "pathId": "6070581171229484677",
+        "events": [
+          {
+            "event": 0,
+            "program": [
+              {
+                "_useAbilitySourceSide": true,
+                "_sourceType": "BUFF_OWNER",
+                "_targetType": "BUFF_OWNER",
+                "_damageType": "MAGICAL",
+                "_sourceApplyWay": "NONE",
+                "_targetOptions": {
+                  "targetSide": "ENEMY",
+                  "targetMotion": "ALL",
+                  "targetCategory": "NONE,DEFAULT",
+                  "enableAdvancedOptions": true,
+                  "ignoreTargetFree": false,
+                  "ignoreAllyTargetFree": false,
+                  "ignoreHealFree": false,
+                  "ignoreMotionMode": false,
+                  "ignoreTargetSide": false,
+                  "excludeSomeAbnormalFlags": false,
+                  "containSomeAbnormalFlags": false,
+                  "excludeAbnormalFlag": "STUNNED",
+                  "containAbnormalFlag": "STUNNED",
+                  "purposeMask": "NONE",
+                  "professionMask": "NONE",
+                  "checkUnitType": false,
+                  "unitTypeMask": "NONE",
+                  "onlyIgnoreSomeOfTargetFreeCase": false,
+                  "abnormalFlag": "STUNNED",
+                  "abnormalCombo": "SLEEPING"
+                },
+                "_excludeTarget": false,
+                "_rangeId": null,
+                "_useRadius": true,
+                "_useDynamicTreeForRadius": false,
+                "_radius": 0.0,
+                "_useAbilitySelector": false,
+                "_abilityName": null,
+                "_damageScale": "",
+                "_buffs": [],
+                "_attackType": "SPLASH",
+                "_createEffect": true,
+                "_hitEffectKey": null,
+                "_hitEffectUseSourceFaceTo": false,
+                "_useDamageFromBB": true,
+                "_damageKey": "damage",
+                "_isNoSourceDamage": true,
+                "_checkTargetAlive": false,
+                "_modifierKey": "",
+                "_maxTargetCountKey": "",
+                "_filterType": "ALL",
+                "$type": "Torappu.Battle.Action.Nodes+AOEDamage"
+              }
+            ]
+          }
+        ]
+      },
+      "kalts2_s_3[restore]": {
+        "serializedFile": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+        "pathId": "6070581171229484677",
+        "events": [
+          {
+            "event": 0,
+            "program": [
+              {
+                "_buff": {
+                  "attributes": {
+                    "abnormalFlags": [],
+                    "abnormalImmunes": [],
+                    "abnormalAntis": [],
+                    "abnormalCombos": [],
+                    "abnormalComboImmunes": [],
+                    "attributeModifiers": []
+                  },
+                  "buffKey": "kalts2_s_3",
+                  "loadFromDB": false,
+                  "isDurableBuff": false,
+                  "isDamageMissable": false,
+                  "isSilenceable": false,
+                  "isStunnable": false,
+                  "isFreezable": false,
+                  "isLevitatable": false,
+                  "isGroundBoundable": false,
+                  "statusResistable": "AUTOMATIC",
+                  "templateKey": "kalts2_s_3",
+                  "disableOverride": false,
+                  "overrideKey": null,
+                  "overrideType": "DEFAULT",
+                  "maxStackCnt": 1,
+                  "refreshRemainingTimeWhenStackMax": false,
+                  "clearAllStackCntWhenTimeUp": false,
+                  "maxValidStackCnt": -1,
+                  "independentCharacterSource": false,
+                  "overrideEffectKey": null,
+                  "overrideOnEventPriority": false,
+                  "onEventPriority": "DEFAULT",
+                  "audioSignal": null,
+                  "lifeTimeType": "LIMITED",
+                  "takeSnapshotWhenExtend": false,
+                  "durationKey": null,
+                  "remainingTimeKey": null,
+                  "lifeTime": 0.0,
+                  "triggerLifeType": "IMMEDIATELY",
+                  "triggerCnt": 0,
+                  "triggerInterval": -1.0,
+                  "waitFirstTriggerInterval": true,
+                  "firstTriggerInterval": -1.0,
+                  "priority": -1,
+                  "priorityBBKeys": [],
+                  "stripBlackboardParamsWithBuffKey": false,
+                  "blackboard": [],
+                  "enableInitDirectionFromSource": false
+                },
+                "_buffOwner": "BUFF_OWNER",
+                "_useSpecialBuffSource": false,
+                "_specialBuffSource": "BUFF_SOURCE",
+                "_isDerivedBuff": false,
+                "_finishDerivedBuffIfParentFinish": false,
+                "_inherateSourceProjectileFromParentBuff": true,
+                "_hookEffectKeyFromSourceProjectile": true,
+                "$type": "Torappu.Battle.Action.Nodes+CreateBuff"
+              },
+              {
+                "_target": "BUFF_OWNER",
+                "_blackboardKey": "kalts2_respawn",
+                "_valueToCompare": 0.0,
+                "_valueToCompareKey": "value",
+                "_condType": "GT",
+                "$type": "Torappu.Battle.Action.Nodes+FilterByCharacterSharedBlackboard"
+              },
+              {
+                "_ownerType": "BUFF_OWNER",
+                "_targetType": "BUFF_OWNER",
+                "_abilityName": "RespawnBorn",
+                "_checkCanUseAblityFlag": true,
+                "_castDirectly": true,
+                "_useFirstActiveAbility": false,
+                "_useCastResult": false,
+                "_triggerHostAbility": false,
+                "_notInterruptAbilityIfCasting": false,
+                "$type": "Torappu.Battle.Action.Nodes+TriggerAbility"
+              }
+            ]
+          }
+        ]
+      },
       "kalts2_try_restore_skill": {
         "serializedFile": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
         "pathId": "6070581171229484677",
@@ -782,6 +1200,158 @@
             ]
           }
         ]
+      },
+      "rogue_6_char_loss_hp": {
+        "serializedFile": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+        "pathId": "6070581171229484677",
+        "events": [
+          {
+            "event": 35,
+            "program": [
+              {
+                "_characterType": "BUFF_OWNER",
+                "_finishReason": "MOVE_LIKE_RESPAWN_SELF",
+                "$type": "Torappu.Battle.Action.Nodes+FilterCharacterLastDeathReason"
+              },
+              {
+                "$type": "Torappu.Battle.Action.Nodes+IfNot"
+              },
+              {
+                "_ownerType": "BUFF_OWNER",
+                "_recordKey": "cur_hp",
+                "_needOffset": false,
+                "_recordType": "hp",
+                "$type": "Torappu.Battle.Action.Nodes+RecordCurrentHpRatio"
+              },
+              {
+                "_blackboardKey": "atk_scale",
+                "_blackboardSource": "CURRENT",
+                "_keySource": "CONSTANT",
+                "_keyTargetType": "TARGET",
+                "_value": 0.0,
+                "_copyFromKey": "hp_ratio",
+                "_assignString": false,
+                "$type": "Torappu.Battle.Action.Nodes+AssignValueToBB"
+              },
+              {
+                "_damageType": "PURE",
+                "_damageKey": "cur_hp",
+                "_ignoreForSp": false,
+                "_damageWithoutModify": false,
+                "_attackType": "NORMAL",
+                "_isEnvDamage": false,
+                "_isUndeadable": false,
+                "_ignoreCancelReasonMask": "NONE",
+                "_instantKillLikeDamage": false,
+                "_isNotChangeableValue": true,
+                "_multiplierByKey": false,
+                "_multiplierKey": "cnt",
+                "_modifierKey": "",
+                "_setOriginalSource": false,
+                "_originalSourceType": "SOURCE",
+                "$type": "Torappu.Battle.Action.Nodes+NoSourceDamage"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "relics": {
+      "revision": "17759cc8cdf37388414145d16262a3a06f3ab25e",
+      "path": "zh_CN/gamedata/excel/roguelike_topic_table.json",
+      "bytes": 17958101,
+      "sha256": "36d8189e1e466fa07226effbf2cf224a69fb41a942ae83827934052e7a01cc69",
+      "records": {
+        "/details/rogue_2/relics/rogue_2_relic_fight_108": {
+          "id": "rogue_2_relic_fight_108",
+          "buffs": [
+            {
+              "key": "char_ability_new",
+              "blackboard": [
+                {
+                  "key": "key",
+                  "value": 0.0,
+                  "valueStr": "rogue_1_random_damage_on_born"
+                },
+                {
+                  "key": "damage",
+                  "value": 3000.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "range_radius",
+                  "value": 1.5,
+                  "valueStr": null
+                }
+              ]
+            }
+          ]
+        },
+        "/details/rogue_3/relics/rogue_3_relic_legacy_157": {
+          "id": "rogue_3_relic_legacy_157",
+          "buffs": [
+            {
+              "key": "char_ability_new",
+              "blackboard": [
+                {
+                  "key": "key",
+                  "value": 0.0,
+                  "valueStr": "rogue_1_random_damage_on_born"
+                },
+                {
+                  "key": "damage",
+                  "value": 3000.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "range_radius",
+                  "value": 1.5,
+                  "valueStr": null
+                }
+              ]
+            }
+          ]
+        },
+        "/details/rogue_6/relics/rogue_6_relic_fight_11": {
+          "id": "rogue_6_relic_fight_11",
+          "buffs": [
+            {
+              "key": "char_attribute_mul",
+              "blackboard": [
+                {
+                  "key": "cost",
+                  "value": -0.5,
+                  "valueStr": null
+                },
+                {
+                  "key": "selector.profession",
+                  "value": 0.0,
+                  "valueStr": "WARRIOR|SNIPER|TANK|MEDIC|SUPPORT|CASTER|SPECIAL|PIONEER"
+                }
+              ]
+            },
+            {
+              "key": "global_buff_normal",
+              "blackboard": [
+                {
+                  "key": "key",
+                  "value": 0.0,
+                  "valueStr": "rogue_6_char_loss_hp"
+                },
+                {
+                  "key": "hp_ratio",
+                  "value": 0.7,
+                  "valueStr": null
+                },
+                {
+                  "key": "selector.profession",
+                  "value": 0.0,
+                  "valueStr": "WARRIOR|SNIPER|TANK|MEDIC|SUPPORT|CASTER|SPECIAL|PIONEER"
+                }
+              ]
+            }
+          ]
+        }
       }
     }
   }

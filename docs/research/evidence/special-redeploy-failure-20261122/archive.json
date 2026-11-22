@@ -47,30 +47,40 @@
       {
         "path": "extract.py",
         "kind": "historical-script",
-        "bytes": 6621,
-        "sha256": "6057d8a832218317a932383a3f681965d7563e3a9e5cfbd973bcd8535480ce8a"
+        "bytes": 8951,
+        "sha256": "fc56e6b39332e63dcd8ed2c150c89c2d31e05a60751b077b92b302cc9b07574c"
       },
       {
         "path": "extract_prefab.py",
         "kind": "historical-script",
-        "bytes": 7591,
-        "sha256": "89c15eff9e3c7298212abd9a2d619a222a90ee3a22af385eacbe2fa2ea3d3202"
+        "bytes": 9459,
+        "sha256": "d0e8bfe1021e1bc846545f6871dc83f47d694859c8dda36081d9590ac01a14ff"
       },
       {
         "path": "prefab.json",
         "kind": "record",
-        "bytes": 29068,
-        "sha256": "27375e0d22a3c58add533e281e8f0e27b6dd43d392d08f8b68a536d609827ad6"
+        "bytes": 49583,
+        "sha256": "ecf9139f0ad0836b938c59504e175350424816a7337004f285ac37b63957282b"
       },
       {
         "path": "result.json",
         "kind": "record",
-        "bytes": 178111,
-        "sha256": "cf3ef6d6cc1033a643cfb7bae1a3adcea73ae21007d566af8ce9a60abbbd1c06"
+        "bytes": 241930,
+        "sha256": "858a46e2593cf5031d776cd8d5325272fb2f44375130d90a6284615c8e811154"
       }
     ],
     "replay": {
       "methods": [
+        {
+          "index": 65677,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/Torappu.Battle.BattleController.CreateCharacter",
+            "result.json#/result/Torappu.Battle.BattleController.CreateCharacter/method"
+          ],
+          "fullname": "Torappu.Battle.BattleController.CreateCharacter",
+          "address": "0x18064ba60"
+        },
         {
           "index": 65741,
           "mode": "disasm",
@@ -82,6 +92,56 @@
           "address": "0x180658ea0"
         },
         {
+          "index": 66006,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/Torappu.Battle.BObject.Born",
+            "result.json#/result/Torappu.Battle.BObject.Born/method"
+          ],
+          "fullname": "Torappu.Battle.BObject.Born",
+          "address": "0x1806af800"
+        },
+        {
+          "index": 66131,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/Torappu.Battle.Buff.OnOwnerBorn",
+            "result.json#/result/Torappu.Battle.Buff.OnOwnerBorn/method"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnOwnerBorn",
+          "address": "0x1806d3d70"
+        },
+        {
+          "index": 66132,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/Torappu.Battle.Buff.OnOwnerPostBorn",
+            "result.json#/result/Torappu.Battle.Buff.OnOwnerPostBorn/method"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnOwnerPostBorn",
+          "address": "0x1806d4410"
+        },
+        {
+          "index": 66364,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/Torappu.Battle.Buff~1BuffContainer.OnOwnerBorn",
+            "result.json#/result/Torappu.Battle.Buff~1BuffContainer.OnOwnerBorn/method"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnOwnerBorn",
+          "address": "0x1806c3630"
+        },
+        {
+          "index": 66365,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/Torappu.Battle.Buff~1BuffContainer.OnOwnerPostBorn",
+            "result.json#/result/Torappu.Battle.Buff~1BuffContainer.OnOwnerPostBorn/method"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.OnOwnerPostBorn",
+          "address": "0x1806c4520"
+        },
+        {
           "index": 66755,
           "mode": "disasm",
           "records": [
@@ -90,6 +150,46 @@
           ],
           "fullname": "Torappu.Battle.Deck.SpawnCharacterOrToken",
           "address": "0x1806fd140"
+        },
+        {
+          "index": 66857,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/Torappu.Battle.Deck~1Card.SpawnPrefab",
+            "result.json#/result/Torappu.Battle.Deck~1Card.SpawnPrefab/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card.SpawnPrefab",
+          "address": "0x1806eeaa0"
+        },
+        {
+          "index": 67060,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/Torappu.Battle.Deck~1CharacterCard.SpawnInternal",
+            "result.json#/result/Torappu.Battle.Deck~1CharacterCard.SpawnInternal/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/CharacterCard.SpawnInternal",
+          "address": "0x180707820"
+        },
+        {
+          "index": 67647,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/Torappu.Battle.Entity.OnBorn",
+            "result.json#/result/Torappu.Battle.Entity.OnBorn/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.OnBorn",
+          "address": "0x180729200"
+        },
+        {
+          "index": 71876,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/Torappu.Battle.Tile.LocateCharacter",
+            "result.json#/result/Torappu.Battle.Tile.LocateCharacter/method"
+          ],
+          "fullname": "Torappu.Battle.Tile.LocateCharacter",
+          "address": "0x1808f4ef0"
         },
         {
           "index": 74009,
@@ -192,6 +292,46 @@
           "address": "0x1809d4160"
         },
         {
+          "index": 77215,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/Torappu.Battle.Character.get_sharedData",
+            "result.json#/result/Torappu.Battle.Character.get_sharedData/method"
+          ],
+          "fullname": "Torappu.Battle.Character.get_sharedData",
+          "address": "0x180ab1de0"
+        },
+        {
+          "index": 77239,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/Torappu.Battle.Character.BuildAt",
+            "result.json#/result/Torappu.Battle.Character.BuildAt/method"
+          ],
+          "fullname": "Torappu.Battle.Character.BuildAt",
+          "address": "0x180a9d3a0"
+        },
+        {
+          "index": 77242,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/Torappu.Battle.Character.Born",
+            "result.json#/result/Torappu.Battle.Character.Born/method"
+          ],
+          "fullname": "Torappu.Battle.Character.Born",
+          "address": "0x180a9cd40"
+        },
+        {
+          "index": 77255,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/Torappu.Battle.Character.LocateOnTile",
+            "result.json#/result/Torappu.Battle.Character.LocateOnTile/method"
+          ],
+          "fullname": "Torappu.Battle.Character.LocateOnTile",
+          "address": "0x180aa1020"
+        },
+        {
           "index": 77285,
           "mode": "disasm",
           "records": [
@@ -212,6 +352,56 @@
           "address": "0x180aac3d0"
         },
         {
+          "index": 77293,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/Torappu.Battle.Character._BuildAtInternal",
+            "result.json#/result/Torappu.Battle.Character._BuildAtInternal/method"
+          ],
+          "fullname": "Torappu.Battle.Character._BuildAtInternal",
+          "address": "0x180aaaaf0"
+        },
+        {
+          "index": 77334,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/Torappu.Battle.Character.OnBorn",
+            "result.json#/result/Torappu.Battle.Character.OnBorn/method"
+          ],
+          "fullname": "Torappu.Battle.Character.OnBorn",
+          "address": "0x180aa2b30"
+        },
+        {
+          "index": 77340,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/Torappu.Battle.Character.OnFinish",
+            "result.json#/result/Torappu.Battle.Character.OnFinish/method"
+          ],
+          "fullname": "Torappu.Battle.Character.OnFinish",
+          "address": "0x180aa32c0"
+        },
+        {
+          "index": 77361,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/Torappu.Battle.Character._AssignData",
+            "result.json#/result/Torappu.Battle.Character._AssignData/method"
+          ],
+          "fullname": "Torappu.Battle.Character._AssignData",
+          "address": "0x180aa9900"
+        },
+        {
+          "index": 79022,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/Torappu.Battle.Unit.OnBorn",
+            "result.json#/result/Torappu.Battle.Unit.OnBorn/method"
+          ],
+          "fullname": "Torappu.Battle.Unit.OnBorn",
+          "address": "0x180b18920"
+        },
+        {
           "index": 84168,
           "mode": "disasm",
           "records": [
@@ -230,6 +420,16 @@
           ],
           "fullname": "Torappu.Battle.Abilities.UlpiaS3Ability.OnProjectileReached",
           "address": "0x180fffbb0"
+        },
+        {
+          "index": 101864,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/Torappu.Battle.Action.Nodes~1FilterCharacterLastDeathReason.Execute",
+            "result.json#/result/Torappu.Battle.Action.Nodes~1FilterCharacterLastDeathReason.Execute/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/FilterCharacterLastDeathReason.Execute",
+          "address": "0x1811ee100"
         },
         {
           "index": 102249,
@@ -315,6 +515,16 @@
             "prefab.json#/provenance/bundles/charpack~1char_1052_kalts2.ab"
           ],
           "bytes": 45213
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]dynamicabilities.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]dynamicabilities.ab",
+          "sha256": "107f69348d7515321c77d3553f1d963b1e3a0dd1643fc36efcec0d9e73d8251c",
+          "records": [
+            "prefab.json#/provenance/bundles/battle~1prefabs~1[uc]dynamicabilities.ab"
+          ],
+          "bytes": 138460
         },
         {
           "kind": "bundle",

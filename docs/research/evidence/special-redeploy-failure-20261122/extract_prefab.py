@@ -5,8 +5,10 @@
 """Extract the Kalts2 special-deployment bindings and their selected Buff programs."""
 
 import argparse
+from hashlib import sha256
 import json
 from pathlib import Path
+from subprocess import check_output
 import sys
 
 sys.dont_write_bytecode = True
@@ -22,11 +24,14 @@ from decode_projectile import decode, trees
 
 SKILL = "battle/prefabs/[uc]skills.ab"
 CHARACTER = "charpack/char_1052_kalts2.ab"
+DYNAMIC_ABILITIES = "battle/prefabs/[uc]dynamicabilities.ab"
 SCRIPTS = "anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin"
 HOLDER = "config/buff_template_holder.ab"
+GAME_DATA_REVISION = "17759cc8cdf37388414145d16262a3a06f3ab25e"
 EXPECTED = {
     SKILL: "0d0b4c0f9252c14a69a20d4bea09527403dd3eddfc2f7bcd757c3c30cf37ffc3",
     CHARACTER: "97d58abead488de8af1aa40aa1eee8f3ddfa55e5d459140451f28ce05e142713",
+    DYNAMIC_ABILITIES: "107f69348d7515321c77d3553f1d963b1e3a0dd1643fc36efcec0d9e73d8251c",
     SCRIPTS: "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99",
     HOLDER: "8edcb8017c977cdf52c2593b58e21db96949f3ad1e6f904180ac1241f145ca79",
 }
@@ -102,7 +107,10 @@ def extract(assets):
                if not file.endswith(('.resS', '.resource')) for row in serialized(data)['objects']
                if row['classid'] == 115}
     skill = read_bindings(assets / SKILL, 'CAB-e39773c4d1462aefe0ea30134bbccdbb', [
-        ('SkillProgressHooker', -2859062326968680928, ('_skillProgressBBKey', '_restoreSkillBuff', '_endSkillBuff')),
+        ('SkillProgressHooker', -2859062326968680928, (
+            '_inherateProgressFromSharedBlackboardBBKey', '_skillProgressBBKey', '_skillDurationBBKey',
+            '_respawnBBKey', '_restoreSkillBuff', '_endSkillBuff',
+        )),
         ('Kalts2StatesRecorder', 188519180379717152, ('_cardBuffKeyList', '_deckEffectBuffKey', '_cardBuildableCheckerBuffKey',
                                                     '_inherateProgressFromSharedBlackboardBBKey', '_affectedCardCntKey',
                                                     '_affectedCardUIDKey_1', '_affectedCardUIDKey_2')),
@@ -131,8 +139,34 @@ def extract(assets):
     assert projectile['_projectileKey'] == 'projectile_chr_kalts2_s3_2'
     projectile['_extraActions'] = json.loads(projectile['_extraActions']['SerializedState'])
     assert projectile['_extraActions'][1]['$type'].endswith('+Kalts2S3CheckAbleToLand')
-    templates = read_holder(assets / HOLDER, {'kalts2_s_3_interrupt', 'kalts2_try_restore_skill'})
-    return {SKILL: skill, CHARACTER: character, HOLDER: templates}
+    born_damage = read_bindings(assets / DYNAMIC_ABILITIES, 'CAB-6e944a56f5e293093b39d8279f31aded', [
+        ('AbilityParallelGroup', 917955117762087795, ('_abilities',)),
+        ('EmptyAnimatedAbility', 7483162558775888755, ('_metadata', '_activeBuffs', '_selector')),
+        ('PassiveBuffAbility', 2292401635086109555, ('_buffs',)),
+    ], scripts)
+    group = born_damage['components']['AbilityParallelGroup']
+    assert group['gameObject']['name'] == 'rogue_1_random_damage_on_born'
+    assert [ref['m_PathID'] for ref in group['fields']['_abilities']['Array']] == [7483162558775888755, 2292401635086109555]
+    templates = read_holder(assets / HOLDER, {
+        'kalts2_s_3_interrupt', 'kalts2_try_restore_skill', 'kalts2_s_3[restore]', 'rogue_1_trigger_ability[on_born]',
+        'rogue_1_random_attack', 'rogue_6_char_loss_hp',
+    })
+    return {SKILL: skill, CHARACTER: character, DYNAMIC_ABILITIES: born_damage, HOLDER: templates}
+
+
+def read_relics():
+    path = 'zh_CN/gamedata/excel/roguelike_topic_table.json'
+    raw = check_output([
+        'git', '-C', ROOT / 'assets/arknights-game-data', 'show', f'{GAME_DATA_REVISION}:{path}',
+    ])
+    details = json.loads(raw)['details']
+    selections = (
+        ('rogue_2', 'rogue_2_relic_fight_108'), ('rogue_3', 'rogue_3_relic_legacy_157'),
+        ('rogue_6', 'rogue_6_relic_fight_11'),
+    )
+    rows = {f'/details/{topic}/relics/{key}': details[topic]['relics'][key] for topic, key in selections}
+    return {'revision': GAME_DATA_REVISION, 'path': path, 'bytes': len(raw), 'sha256': sha256(raw).hexdigest(),
+            'records': rows}
 
 
 def main():
@@ -144,7 +178,7 @@ def main():
     packages = {name: fingerprint(assets / name) for name in EXPECTED}
     assert {name: package['sha256'] for name, package in packages.items()} == EXPECTED, packages
     provenance = dict(bundles=packages, tool=fingerprint(Path(__file__)), typeTreeDecoder=fingerprint(DECODER))
-    result = dict(provenance=provenance, result=extract(assets))
+    result = dict(provenance=provenance, result={**extract(assets), 'relics': read_relics()})
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(result, ensure_ascii=False, indent=2) + '\n')
 

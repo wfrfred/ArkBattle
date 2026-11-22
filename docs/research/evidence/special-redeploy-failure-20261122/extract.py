@@ -19,8 +19,18 @@ from native import DEFAULT_GAME, Native, fingerprint
 
 
 SELECTION = {
+    "Torappu.Battle.BattleController.CreateCharacter": ((0x18064bb26, 0x18064bb3b), (0x18064bd8e, 0x18064bdc2)),
     "Torappu.Battle.BattleController.OnCharacterFinished": ((0x180658f49, 0x180658fb9),),
-    "Torappu.Battle.Deck.SpawnCharacterOrToken": ((0x1806fd21e, 0x1806fd311), (0x1806fd567, 0x1806fd612)),
+    "Torappu.Battle.Deck.SpawnCharacterOrToken": ((0x1806fd21e, 0x1806fd311), (0x1806fd341, 0x1806fd365), (0x1806fd567, 0x1806fd612)),
+    "Torappu.Battle.Deck/Card.SpawnPrefab": ((0x1806eeb31, 0x1806eeb5b), (0x1806eecf5, 0x1806eed31)),
+    "Torappu.Battle.Deck/CharacterCard.SpawnInternal": ((0x1807078ad, 0x1807078d0),),
+    "Torappu.Battle.BObject.Born": ((0x1806af81d, 0x1806af834),),
+    "Torappu.Battle.Buff.OnOwnerBorn": ((0x1806d3dea, 0x1806d3dfd),),
+    "Torappu.Battle.Buff.OnOwnerPostBorn": ((0x1806d448a, 0x1806d449d),),
+    "Torappu.Battle.Buff/BuffContainer.OnOwnerBorn": ((0x1806c37d5, 0x1806c37e7),),
+    "Torappu.Battle.Buff/BuffContainer.OnOwnerPostBorn": ((0x1806c46b0, 0x1806c46c2),),
+    "Torappu.Battle.Entity.OnBorn": ((0x1807292b7, 0x1807292c7),),
+    "Torappu.Battle.Tile.LocateCharacter": ((0x1808f501b, 0x1808f5044),),
     "Torappu.Battle.GameMode.GameModeFactory/DefaultGameMode.OnCharacterRespawnFailed": ((0x180c9dcc2, 0x180c9dd08),),
     "Torappu.Battle.Kalts2StatesRecorder.OnInit": ((0x1809b6043, 0x1809b60f0),),
     "Torappu.Battle.Kalts2StatesRecorder.OnOwnerFinish": ((0x1809b6230, 0x1809b623f), (0x1809b6276, 0x1809b62d7), (0x1809b6317, 0x1809b6358)),
@@ -34,6 +44,15 @@ SELECTION = {
     "Torappu.Battle.UlpiaS3CastSkill._RespawnToLocatedPos": ((0x1809d4354, 0x1809d4409), (0x1809d44ac, 0x1809d4551)),
     "Torappu.Battle.Character.MoveLikeRespawnSelf": ((0x180aa1bfe, 0x180aa1c63),),
     "Torappu.Battle.Character._MoveLikeRespawn": ((0x180aac45e, 0x180aac4a7), (0x180aac507, 0x180aac57b)),
+    "Torappu.Battle.Character.BuildAt": ((0x180a9d451, 0x180a9d473), (0x180a9d584, 0x180a9d5a4)),
+    "Torappu.Battle.Character._BuildAtInternal": ((0x180aaae3e, 0x180aaae57), (0x180aaafc1, 0x180aaafdd)),
+    "Torappu.Battle.Character._AssignData": ((0x180aa99d0, 0x180aa99e0),),
+    "Torappu.Battle.Character.get_sharedData": ((0x180ab1e48, 0x180ab1e60),),
+    "Torappu.Battle.Character.Born": ((0x180a9ce27, 0x180a9ce3c),),
+    "Torappu.Battle.Character.LocateOnTile": ((0x180aa10c7, 0x180aa110e),),
+    "Torappu.Battle.Character.OnBorn": ((0x180aa2dd2, 0x180aa2de1),),
+    "Torappu.Battle.Character.OnFinish": ((0x180aa3351, 0x180aa336c),),
+    "Torappu.Battle.Unit.OnBorn": ((0x180b18989, 0x180b189ba), (0x180b18a18, 0x180b18a95), (0x180b18bd7, 0x180b18bec), (0x180b18c11, 0x180b18c27)),
     "Torappu.Battle.Abilities.UlpiaS3Ability.OnProjectileReached": ((0x180fffe0f, 0x180fffe6e), (0x180ffff7b, 0x180ffffdc)),
     "Torappu.Battle.Action.Nodes/Kalts2S3CheckAbleToLand.Execute": ((0x1812121df, 0x181212285), (0x1812122cc, 0x18121236b)),
     "Torappu.Battle.Action.Nodes/Kalts2S3ApplyPunishBuff.Execute": ((0x1811fead0, 0x1811feae5),),
@@ -41,6 +60,13 @@ SELECTION = {
     "Torappu.Battle.Action.Nodes/Kalts2S3ResetCardRecord.Execute": ((0x181212860, 0x181212875),),
     "Torappu.Battle.Action.Nodes/RestoreCharacterSkillStates.Execute": ((0x18122d700, 0x18122d715),),
     "Torappu.Battle.Action.Nodes/RespawnCharacter.Execute": ((0x181218ac9, 0x181218adf), (0x181218cd2, 0x181218cde), (0x181218ea7, 0x181218f3d)),
+    "Torappu.Battle.Action.Nodes/FilterCharacterLastDeathReason.Execute": ((0x1811ee20a, 0x1811ee225),),
+}
+
+FIELD_SELECTION = {
+    "Torappu.Battle.BattleCharacterData": {"shared"},
+    "Torappu.Battle.BattleCharacterData/SharedData": {"lastFinishReason", "blackboard"},
+    "Torappu.Battle.Character": {"m_spawnMannually", "m_freelySpawnedFromDeck"},
 }
 
 EXPECTED = {
@@ -116,7 +142,10 @@ def main():
     metadata = dict(client=client, metadataVersion=native.version, imageBase=hex(native.pe.base),
                     tool=fingerprint(Path(__file__)), capstone=capstone.__version__,
                     scope='Fixed-client static branch excerpts selected by method and address. No game execution or live XLua verification.')
-    result = dict(provenance=metadata, result=extract(native), abilityHierarchy=ability_hierarchy(native))
+    fields = {name: [field for field in native.fields(row['index']) if field['name'] in FIELD_SELECTION[name]]
+              for row in native.types if (name := native.typename(row['index'])) in FIELD_SELECTION}
+    assert {name: {f['name'] for f in selection} for name, selection in fields.items()} == FIELD_SELECTION
+    result = dict(provenance=metadata, result=extract(native), abilityHierarchy=ability_hierarchy(native), fields=fields)
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(result, ensure_ascii=False, indent=2) + '\n')
 

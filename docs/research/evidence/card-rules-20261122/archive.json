@@ -46,14 +46,14 @@
       {
         "path": "extract.py",
         "kind": "historical-script",
-        "bytes": 15642,
-        "sha256": "dba8c243558341231ba6bd3af1547d25f7298478b18b6482e00e175dca35d6a4"
+        "bytes": 15711,
+        "sha256": "b4ee78d78239a48b2d34c1633861bd82513dbbbb31ce77058ad5c4b51fba00c6"
       },
       {
         "path": "result.json",
         "kind": "record",
-        "bytes": 241171,
-        "sha256": "3092bde403d05928355abca65852d3e0bcfddf6e6a705020fd77545a999f7022"
+        "bytes": 245165,
+        "sha256": "0f0a3832ac8612d60094cffd504c99da447a851e13ad0fa1d4e57009182ff43e"
       }
     ],
     "replay": {
@@ -92,8 +92,8 @@
           "index": 65778,
           "mode": "disasm",
           "records": [
-            "result.json#/result/native/methods/47",
-            "result.json#/result/native/methods/47/method"
+            "result.json#/result/native/methods/48",
+            "result.json#/result/native/methods/48/method"
           ],
           "fullname": "Torappu.Battle.BattleController.CreateCardBuffWithBlackboard",
           "address": "0x18064b5c0"
@@ -182,8 +182,8 @@
           "index": 66742,
           "mode": "disasm",
           "records": [
-            "result.json#/result/native/methods/33",
-            "result.json#/result/native/methods/33/method"
+            "result.json#/result/native/methods/34",
+            "result.json#/result/native/methods/34/method"
           ],
           "fullname": "Torappu.Battle.Deck.RechargeToken",
           "address": "0x1806fb9b0"
@@ -199,11 +199,21 @@
           "address": "0x1806fd140"
         },
         {
-          "index": 66823,
+          "index": 66761,
           "mode": "disasm",
           "records": [
             "result.json#/result/native/methods/12",
             "result.json#/result/native/methods/12/method"
+          ],
+          "fullname": "Torappu.Battle.Deck.OnFixedUpdate",
+          "address": "0x1806fabd0"
+        },
+        {
+          "index": 66823,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/methods/13",
+            "result.json#/result/native/methods/13/method"
           ],
           "fullname": "Torappu.Battle.Deck/Card.get_rawCost",
           "address": "0x1806f3420"
@@ -212,8 +222,8 @@
           "index": 66826,
           "mode": "disasm",
           "records": [
-            "result.json#/result/native/methods/13",
-            "result.json#/result/native/methods/13/method"
+            "result.json#/result/native/methods/14",
+            "result.json#/result/native/methods/14/method"
           ],
           "fullname": "Torappu.Battle.Deck/Card.get_cost",
           "address": "0x1806f2310"
@@ -222,8 +232,8 @@
           "index": 66865,
           "mode": "disasm",
           "records": [
-            "result.json#/result/native/methods/14",
-            "result.json#/result/native/methods/14/method"
+            "result.json#/result/native/methods/15",
+            "result.json#/result/native/methods/15/method"
           ],
           "fullname": "Torappu.Battle.Deck/Card.ResetRespawnTimeUseItsNewRespawnTimePeriod",
           "address": "0x1806ee690"
@@ -232,8 +242,8 @@
           "index": 66869,
           "mode": "disasm",
           "records": [
-            "result.json#/result/native/methods/15",
-            "result.json#/result/native/methods/15/method"
+            "result.json#/result/native/methods/16",
+            "result.json#/result/native/methods/16/method"
           ],
           "fullname": "Torappu.Battle.Deck/Card._UpdateCardBuff",
           "address": "0x1806f0c30"
@@ -242,8 +252,8 @@
           "index": 66882,
           "mode": "disasm",
           "records": [
-            "result.json#/result/native/methods/16",
-            "result.json#/result/native/methods/16/method"
+            "result.json#/result/native/methods/17",
+            "result.json#/result/native/methods/17/method"
           ],
           "fullname": "Torappu.Battle.Deck/Card.CreateCardBuffByBuff",
           "address": "0x1806eb020"
@@ -252,8 +262,8 @@
           "index": 66890,
           "mode": "disasm",
           "records": [
-            "result.json#/result/native/methods/17",
-            "result.json#/result/native/methods/17/method"
+            "result.json#/result/native/methods/18",
+            "result.json#/result/native/methods/18/method"
           ],
           "fullname": "Torappu.Battle.Deck/Card.FinishCardBuffByKey",
           "address": "0x1806ebd30"
@@ -262,8 +272,8 @@
           "index": 66909,
           "mode": "disasm",
           "records": [
-            "result.json#/result/native/methods/18",
-            "result.json#/result/native/methods/18/method"
+            "result.json#/result/native/methods/19",
+            "result.json#/result/native/methods/19/method"
           ],
           "fullname": "Torappu.Battle.Deck/Card.OnTick",
           "address": "0x1806ed530"
@@ -272,8 +282,8 @@
           "index": 66993,
           "mode": "disasm",
           "records": [
-            "result.json#/result/native/methods/19",
-            "result.json#/result/native/methods/19/method"
+            "result.json#/result/native/methods/20",
+            "result.json#/result/native/methods/20/method"
           ],
           "fullname": "Torappu.Battle.Deck/Card/RuntimeCostModifier.CreateRuntimeModifier",
           "address": "0x180719250"
@@ -282,8 +292,8 @@
           "index": 66996,
           "mode": "disasm",
           "records": [
-            "result.json#/result/native/methods/20",
-            "result.json#/result/native/methods/20/method"
+            "result.json#/result/native/methods/21",
+            "result.json#/result/native/methods/21/method"
           ],
           "fullname": "Torappu.Battle.Deck/Card/RuntimeCostModifier.ApplyFirstPass",
           "address": "0x180719120"
@@ -292,8 +302,8 @@
           "index": 67007,
           "mode": "disasm",
           "records": [
-            "result.json#/result/native/methods/21",
-            "result.json#/result/native/methods/21/method"
+            "result.json#/result/native/methods/22",
+            "result.json#/result/native/methods/22/method"
           ],
           "fullname": "Torappu.Battle.Deck/Card/RuntimeRespawnTimeModifier.ApplyFirstPass",
           "address": "0x180719440"
@@ -302,8 +312,8 @@
           "index": 67008,
           "mode": "disasm",
           "records": [
-            "result.json#/result/native/methods/22",
-            "result.json#/result/native/methods/22/method"
+            "result.json#/result/native/methods/23",
+            "result.json#/result/native/methods/23/method"
           ],
           "fullname": "Torappu.Battle.Deck/Card/RuntimeRespawnTimeModifier.ApplySecondPass",
           "address": "0x180719610"
@@ -312,8 +322,8 @@
           "index": 67009,
           "mode": "disasm",
           "records": [
-            "result.json#/result/native/methods/23",
-            "result.json#/result/native/methods/23/method"
+            "result.json#/result/native/methods/24",
+            "result.json#/result/native/methods/24/method"
           ],
           "fullname": "Torappu.Battle.Deck/Card/RuntimeRespawnTimeModifier.ApplyModifierFinalPass",
           "address": "0x1807194f0"
@@ -322,8 +332,8 @@
           "index": 67016,
           "mode": "disasm",
           "records": [
-            "result.json#/result/native/methods/24",
-            "result.json#/result/native/methods/24/method"
+            "result.json#/result/native/methods/25",
+            "result.json#/result/native/methods/25/method"
           ],
           "fullname": "Torappu.Battle.Deck/Card/RemainingRespawnTimeModifier.CreateRuntimeModifier",
           "address": "0x180718ec0"
@@ -332,8 +342,8 @@
           "index": 67017,
           "mode": "disasm",
           "records": [
-            "result.json#/result/native/methods/25",
-            "result.json#/result/native/methods/25/method"
+            "result.json#/result/native/methods/26",
+            "result.json#/result/native/methods/26/method"
           ],
           "fullname": "Torappu.Battle.Deck/Card/RemainingRespawnTimeModifier.ApplyFirstPass",
           "address": "0x180718be0"
@@ -342,8 +352,8 @@
           "index": 67018,
           "mode": "disasm",
           "records": [
-            "result.json#/result/native/methods/26",
-            "result.json#/result/native/methods/26/method"
+            "result.json#/result/native/methods/27",
+            "result.json#/result/native/methods/27/method"
           ],
           "fullname": "Torappu.Battle.Deck/Card/RemainingRespawnTimeModifier.ApplySecondPass",
           "address": "0x180718d30"
@@ -352,8 +362,8 @@
           "index": 67038,
           "mode": "disasm",
           "records": [
-            "result.json#/result/native/methods/27",
-            "result.json#/result/native/methods/27/method"
+            "result.json#/result/native/methods/28",
+            "result.json#/result/native/methods/28/method"
           ],
           "fullname": "Torappu.Battle.Deck/Card/CardBuff..ctor",
           "address": "0x180706fd0"
@@ -362,8 +372,8 @@
           "index": 67039,
           "mode": "disasm",
           "records": [
-            "result.json#/result/native/methods/28",
-            "result.json#/result/native/methods/28/method"
+            "result.json#/result/native/methods/29",
+            "result.json#/result/native/methods/29/method"
           ],
           "fullname": "Torappu.Battle.Deck/Card/CardBuff.ApplyModifiersFirstPass",
           "address": "0x1807064f0"
@@ -372,8 +382,8 @@
           "index": 67088,
           "mode": "disasm",
           "records": [
-            "result.json#/result/native/methods/29",
-            "result.json#/result/native/methods/29/method"
+            "result.json#/result/native/methods/30",
+            "result.json#/result/native/methods/30/method"
           ],
           "fullname": "Torappu.Battle.Deck/TokenCard.Recharge",
           "address": "0x18071d4d0"
@@ -382,8 +392,8 @@
           "index": 67089,
           "mode": "disasm",
           "records": [
-            "result.json#/result/native/methods/30",
-            "result.json#/result/native/methods/30/method"
+            "result.json#/result/native/methods/31",
+            "result.json#/result/native/methods/31/method"
           ],
           "fullname": "Torappu.Battle.Deck/TokenCard.ForceRecharge",
           "address": "0x18071c510"
@@ -392,8 +402,8 @@
           "index": 67091,
           "mode": "disasm",
           "records": [
-            "result.json#/result/native/methods/31",
-            "result.json#/result/native/methods/31/method"
+            "result.json#/result/native/methods/32",
+            "result.json#/result/native/methods/32/method"
           ],
           "fullname": "Torappu.Battle.Deck/TokenCard.OnHostSpawned",
           "address": "0x18071d2a0"
@@ -402,8 +412,8 @@
           "index": 67092,
           "mode": "disasm",
           "records": [
-            "result.json#/result/native/methods/32",
-            "result.json#/result/native/methods/32/method"
+            "result.json#/result/native/methods/33",
+            "result.json#/result/native/methods/33/method"
           ],
           "fullname": "Torappu.Battle.Deck/TokenCard.OnHostRecycled",
           "address": "0x18071d240"
@@ -412,8 +422,8 @@
           "index": 67549,
           "mode": "disasm",
           "records": [
-            "result.json#/result/native/methods/37",
-            "result.json#/result/native/methods/37/method"
+            "result.json#/result/native/methods/38",
+            "result.json#/result/native/methods/38/method"
           ],
           "fullname": "Torappu.Battle.Entity.RemoveBuffs",
           "address": "0x18072d2f0"
@@ -422,8 +432,8 @@
           "index": 67653,
           "mode": "disasm",
           "records": [
-            "result.json#/result/native/methods/38",
-            "result.json#/result/native/methods/38/method"
+            "result.json#/result/native/methods/39",
+            "result.json#/result/native/methods/39/method"
           ],
           "fullname": "Torappu.Battle.Entity.OnFinish",
           "address": "0x18072a060"
@@ -432,8 +442,8 @@
           "index": 77256,
           "mode": "disasm",
           "records": [
-            "result.json#/result/native/methods/34",
-            "result.json#/result/native/methods/34/method"
+            "result.json#/result/native/methods/35",
+            "result.json#/result/native/methods/35/method"
           ],
           "fullname": "Torappu.Battle.Character.RechargeToken",
           "address": "0x180aa5ac0"
@@ -442,8 +452,8 @@
           "index": 77332,
           "mode": "disasm",
           "records": [
-            "result.json#/result/native/methods/35",
-            "result.json#/result/native/methods/35/method"
+            "result.json#/result/native/methods/36",
+            "result.json#/result/native/methods/36/method"
           ],
           "fullname": "Torappu.Battle.Character.OnInit",
           "address": "0x180aa3660"
@@ -452,8 +462,8 @@
           "index": 77340,
           "mode": "disasm",
           "records": [
-            "result.json#/result/native/methods/36",
-            "result.json#/result/native/methods/36/method"
+            "result.json#/result/native/methods/37",
+            "result.json#/result/native/methods/37/method"
           ],
           "fullname": "Torappu.Battle.Character.OnFinish",
           "address": "0x180aa32c0"
@@ -462,8 +472,8 @@
           "index": 77745,
           "mode": "disasm",
           "records": [
-            "result.json#/result/native/methods/41",
-            "result.json#/result/native/methods/41/method"
+            "result.json#/result/native/methods/42",
+            "result.json#/result/native/methods/42/method"
           ],
           "fullname": "Torappu.Battle.Enemy.RegisterBlocker",
           "address": "0x180ac2460"
@@ -472,8 +482,8 @@
           "index": 78504,
           "mode": "disasm",
           "records": [
-            "result.json#/result/native/methods/39",
-            "result.json#/result/native/methods/39/method"
+            "result.json#/result/native/methods/40",
+            "result.json#/result/native/methods/40/method"
           ],
           "fullname": "Torappu.Battle.BlockManager.SearchBlockee",
           "address": "0x180aee5a0"
@@ -482,8 +492,8 @@
           "index": 78505,
           "mode": "disasm",
           "records": [
-            "result.json#/result/native/methods/40",
-            "result.json#/result/native/methods/40/method"
+            "result.json#/result/native/methods/41",
+            "result.json#/result/native/methods/41/method"
           ],
           "fullname": "Torappu.Battle.BlockManager.AddBlockee",
           "address": "0x180aedff0"
@@ -492,8 +502,8 @@
           "index": 93828,
           "mode": "disasm",
           "records": [
-            "result.json#/result/native/methods/42",
-            "result.json#/result/native/methods/42/method"
+            "result.json#/result/native/methods/43",
+            "result.json#/result/native/methods/43/method"
           ],
           "fullname": "Torappu.Battle.Abilities.AbilitySequenceGroup._OnSubAbilityFinished",
           "address": "0x180f8f260"
@@ -502,8 +512,8 @@
           "index": 93933,
           "mode": "disasm",
           "records": [
-            "result.json#/result/native/methods/43",
-            "result.json#/result/native/methods/43/method"
+            "result.json#/result/native/methods/44",
+            "result.json#/result/native/methods/44/method"
           ],
           "fullname": "Torappu.Battle.Abilities.ActiveAbilityWrapper.OnCastEnd",
           "address": "0x180f927f0"
@@ -512,8 +522,8 @@
           "index": 94716,
           "mode": "disasm",
           "records": [
-            "result.json#/result/native/methods/44",
-            "result.json#/result/native/methods/44/method"
+            "result.json#/result/native/methods/45",
+            "result.json#/result/native/methods/45/method"
           ],
           "fullname": "Torappu.Battle.Abilities.BlockedToggleChecker._OnBlockeeChanged",
           "address": "0x180fbff70"
@@ -522,8 +532,8 @@
           "index": 94719,
           "mode": "disasm",
           "records": [
-            "result.json#/result/native/methods/45",
-            "result.json#/result/native/methods/45/method"
+            "result.json#/result/native/methods/46",
+            "result.json#/result/native/methods/46/method"
           ],
           "fullname": "Torappu.Battle.Abilities.BlockedToggleChecker._UpdateEnemyBlockeeBuffs",
           "address": "0x180fc0940"
@@ -532,8 +542,8 @@
           "index": 98646,
           "mode": "disasm",
           "records": [
-            "result.json#/result/native/methods/46",
-            "result.json#/result/native/methods/46/method"
+            "result.json#/result/native/methods/47",
+            "result.json#/result/native/methods/47/method"
           ],
           "fullname": "Torappu.Battle.Action.Nodes/CreateCardFilterByProfession.Execute",
           "address": "0x1810d3550"
@@ -542,8 +552,8 @@
           "index": 98706,
           "mode": "disasm",
           "records": [
-            "result.json#/result/native/methods/49",
-            "result.json#/result/native/methods/49/method"
+            "result.json#/result/native/methods/50",
+            "result.json#/result/native/methods/50/method"
           ],
           "fullname": "Torappu.Battle.Action.Nodes/BaseCreateCardBuff.DoCreateCardBuff",
           "address": "0x1810c5dc0"
@@ -552,8 +562,8 @@
           "index": 98739,
           "mode": "disasm",
           "records": [
-            "result.json#/result/native/methods/48",
-            "result.json#/result/native/methods/48/method"
+            "result.json#/result/native/methods/49",
+            "result.json#/result/native/methods/49/method"
           ],
           "fullname": "Torappu.Battle.Action.Nodes/CreateCardBuffFilterByTag.Execute",
           "address": "0x1810d0e50"
@@ -562,8 +572,8 @@
           "index": 101199,
           "mode": "disasm",
           "records": [
-            "result.json#/result/native/methods/50",
-            "result.json#/result/native/methods/50/method"
+            "result.json#/result/native/methods/51",
+            "result.json#/result/native/methods/51/method"
           ],
           "fullname": "Torappu.Battle.Action.Nodes/RechargeToken.Execute",
           "address": "0x1811bf220"

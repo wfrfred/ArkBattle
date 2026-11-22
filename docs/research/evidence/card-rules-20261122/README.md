@@ -20,12 +20,13 @@
 - `[uc]skills.ab` 的 `4611325026417859596` 把 `slent2_s_2` 和 `trigger_charge_token` 装到技能根。后者开始时发放一份，前者结束时撤回场上无人机，再走 `RechargeToken(0, NORMAL, true)` 清库存。
 - `Character.RechargeToken#77256` 把宿主关联的 Token Card UID 交给 `Deck.RechargeToken#66742`，后者按 `m_tokenMap` 查既有卡，找到才调用 `TokenCard.Recharge#67088`。两个动作均使用这张卡，当前库存和再次发放数量改变，冷却由回收链另行管理。
 - Token Prefab `-5202899342101043299` 记录 `_cardPolicy=1`（`UNIQUE`）、`_isInfinity=false`、`_rechargeOnlyOnce=false`。`#67088` 的队列更新只进入 `QUEUED` 且 `ON_FINISH` 的分支。
+- `Deck.OnFixedUpdate#66761` 遍历登记卡牌，在 `0x1806facbe` 调用各卡的 `Card.OnTick#66909`。`OnTick` 依据现有冷却状态及暂停条件推进计时，库存为零仍可推进已启动且未暂停的计时。
 
 ## 谬因 S3
 
 - `AbilitySequenceGroup` `-1073599293142318865` 按顺序持有准备包装器 `-4303161870961327889` 和持续阶段 `-5427451279434235665`。准备包装器装配 `875698991745679599`。两阶段分别使用 `aphris_sk3[token-withdraw]` 和 `aphris_sk3[on_finish]`。准备期响应宿主结束并撤销两份增量、清余量。持续期响应 Buff 结束，按撤容量、召回、清余量执行。
 - `Ability.FinishIfNot#64056` 先在 `0x180602f58` 调用准备阶段的 `ActiveAbilityWrapper.OnCastEnd#93933`。该程序解除附属 `PassiveBuffAbility`，经 `Ability.DoDetach#64020 → Entity.RemoveBuffs#67549 → BuffContainer.RemoveBuffs#66304` 同步标记准备 Buff 结束。然后 `#64056` 才执行启动后继阶段的回调。所查普通顺序下，准备 Buff 的结束标记先于持续阶段启动。
-- `Entity.OnFinish#67653` 的 `0x18072a431–0x18072a470` 先调用 `OnOwnerFinish` 再清理 Buff，`Character.OnFinish#77340` 另执行 Card 回收后继。`TokenCard.ForceRecharge#67089` 先提交容量，再裁剪当前库存。`ON_FINISH` 的排队份数受新库存及本次增量约束。`TokenCard.ResetRespawnTimer#67092` 写入计时，队列完成由后续 Card 推进。实际中继器卡配置见[前一批证据](../redeploy-state-and-repeater-20261122/README.md#谬因-s3-的中继器)。
+- `Entity.OnFinish#67653` 的 `0x18072a431–0x18072a470` 先调用 `OnOwnerFinish` 再清理 Buff，`Character.OnFinish#77340` 另执行 Card 回收后继。`TokenCard.ForceRecharge#67089` 先提交容量，再裁剪当前库存。`ON_FINISH` 的排队份数受新库存及本次增量约束。实际清计时节点 `ResetTokenRespawnTime#99423` 经 Character、Deck 进入 `Card.ResetRespawnTime#66863`。队列完成由后续 Card 推进。 [中继器计时与回收的完整调用](../repeater-recovery-20261122/README.md)
 
 ## 大君之触与大君之赐
 

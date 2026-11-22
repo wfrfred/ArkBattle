@@ -210,9 +210,15 @@ HE-7「以爱相连」刷出的赏金猎人扰乱者通过已启用的 `PassiveB
 
 **D：Mon3tr 去程失败有专属后继。** 选中的 `monstr_s_3_buff[respawn]` 把 `RespawnCharacter` 用作条件。失败分支移除 `respawn_buff`，中断自身技能，通过比例 `ModifySp` 恢复技力，最后进入重构体补货条件。成功分支另外尝试在原格设置返回标志。 [实际 Holder 分支](../evidence/redeploy-state-and-repeater-20261122/result.json#L3073)
 
-**N：静态实现可以区分离场前的落点判定和离场后创建失败。** 思衡托角色包中，弹道的附加程序先调用 `Kalts2S3CheckAbleToLand`。该节点处理满足归属检查的目标格占位者，再检查部署条件。部署资格拒绝时会对思衡托调用 `Suicide`。通过检查后保存技能剩余进度和待投放 Card 的身份，再调用 Self 移动。`MoveLikeRespawnSelf` 会先结束旧对象，再从同一 Card 尝试创建。创建失败进入 GameMode 分支并返回 false。`Kalts2StatesRecorder.OnOwnerFinish` 在特殊移动结束原因下跳过普通退场的待投放清理，普通分支会移除已记录友方卡牌的部署检查 Buff，再处理惩罚 Buff。实际角色包有按共享标记触发的技能接续，接续计时结束时有移除 Card／Deck Buff 与附加部署检查的分支。二次检查失败后的下次部署何时调用清理，仍以 PRTS 的行为记录为据。乌尔比安与 Mon3tr 的实际技能根共用 `UlpiaS3CastSkill._RespawnToLocatedPos`，对原地以外的返回目标检查场上占位者与所属 Card，并有 Buff 豁免。不满足返回前提时会调用 `Suicide`。 [指令、绑定与复查范围](../evidence/special-redeploy-failure-20261122/README.md)
+**N　思衡托离场前拒绝和离场后创建失败会走不同后继。** 弹道先检查目标格及占位者归属，拒绝时调用 `Suicide`。首轮通过后保存技能进度和待投放 Card，特殊离场会跳过普通退场的待投放清理。原 Card 创建失败时，原生清掉落点坐标和旧 HP 比例，保留技能恢复标记、剩余进度及待投放 Card 记录。下次部署从原 Card 读回这份数据，恢复计时。所查原生路径在接续计时结束时清除相关 Card／Deck Buff 和附加部署检查。PRTS 确认思衡托离场时友方 Card 被锁、再次部署后解锁。出生至解锁的间隔未实测。 [落点、失败返回和下一次部署的实际调用](../evidence/special-redeploy-failure-20261122/README.md) · [PRTS 破梏重生](https://prts.wiki/index.php?title=凯尔希·思衡托&oldid=448412#技能)
+
+乌尔比安与 Mon3tr 的技能根共用 `UlpiaS3CastSkill._RespawnToLocatedPos`。返回到不同格时会检查场上占位者及所属 Card，允许特定 Buff 豁免，返回条件失败时执行 `Suicide`。 [返回检查](../evidence/special-redeploy-failure-20261122/README.md)
 
 **N／P：部署通知与技能接续是两个事实。** 同一卡的特殊移动跳过普通 DP 检查、扣费和旧实例的普通卡牌回收，落点再检查失败后默认模式会回收 Card。PRTS 记录移动后可再次触发部分部署效果，手动部署才计入的效果仍按自身条件判断，例如渡桥的泄压准备。思衡托的 `SkillProgressHooker.RestoreSkillProgress` 写回计时进度并安装恢复 Buff，普通技能发动和 SP 支付没有在这条入口重跑。恢复 Buff 有条件地请求 `RespawnBorn`。该能力是角色的公共 `EmptyAnimatedAbility`，若执行到标准 `SpellOn` 分支则派发自己的能力通知，编号为 `GENERAL` 的公共能力不计入标准狂躁的攻击／技能次数。其他技能接续和通知的过滤仍取决于各自实现。 [费用、回收与原生恢复程序](../evidence/special-redeploy-failure-20261122/README.md) · [泄压准备](https://prts.wiki/w/渡桥#天赋)
+
+#### 特殊入场如何触发部署效果
+
+自身特殊移动经原 Card 创建新实例，保留通常的出生、登记和出生后通知。集成战略「岁怒」的真实程序收到友方单位的出生后通知便请求触发，特殊移动可再次触发。「他缚」收到同一类通知后读取原 Card 记录的上次离场原因，遇到 `MOVE_LIKE_RESPAWN_SELF` 跳过生命损失。渡桥的泄压准备还要求本次为手动部署且经过费用结算。新实例出生、是否手动部署、是否参与费用结算和上次离场原因是这些消费者分别使用的事实。 [实际组件、原表及通知调用链](../evidence/special-redeploy-failure-20261122/README.md#特殊入场的实际观察者) · [渡桥的部署条件](https://prts.wiki/w/渡桥#天赋)
 
 ### 在场单位的手动撤退资格
 
@@ -241,7 +247,7 @@ HE-7「以爱相连」刷出的赏金猎人扰乱者通过已启用的 `PassiveB
 
 ### 已核的两条附属 Card 路径
 
-**N／D：淬羽赫默 S2 的夜灯使用已有 Card。** 技能根安装一次发放 `trigger_charge_token`（`cnt=1`，通常累加），窗口结束先撤回场上无人机，再以 `RechargeToken(0, NORMAL, true)` 把剩余库存重设为 0。两者都从宿主的 Token Card UID 查询已有卡，只更新库存，无卡时查询失败分支返回。该 `UNIQUE` 卡手动撤回的冷却另由普通回收推进，清零／重新发放库存本身没有重置计时。已查的窗口不需要注销再重建卡牌。 [技能根、Token Card 和库存写入](../evidence/card-rules-20261122/README.md#淬羽赫默-s2)
+**N／D　淬羽赫默 S2 的夜灯使用已有 Card。** 技能根安装一次发放 `trigger_charge_token`（`cnt=1`，通常累加），窗口结束先撤回场上无人机，再以 `RechargeToken(0, NORMAL, true)` 把剩余库存重设为 0。两者都从宿主的 Token Card UID 查询已有卡，只更新库存。该 `UNIQUE` 卡手动撤回后，冷却按普通回收处理。清库存和重新发放保留同一计时，零库存期间已启动且未暂停的冷却仍会推进。 [技能根、Token Card、库存与计时写入](../evidence/card-rules-20261122/README.md#淬羽赫默-s2)
 
 **N／D　谬因 S3 的宿主提前结束有两个阶段的清理程序。** 准备阶段的 `aphris_sk3[token-withdraw]` 以 `charge_time` 为限，宿主提前结束时用 `ON_OWNER_FINISH` 撤销两份容量和库存，再将当前余量置零。普通阶段交接先将准备 Buff 标记结束，再启动持续阶段。持续阶段的 `aphris_sk3[on_finish]` 在 Buff 结束时按撤容量、召回在场件、清余量执行。每条 `ON_FINISH` -2 把排队数按本次增量与更新后的总份数截断。 [实际两个阶段的配置和宿主结束调用链](../evidence/card-rules-20261122/README.md#谬因-s3)
 
