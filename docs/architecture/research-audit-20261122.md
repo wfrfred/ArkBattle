@@ -2,7 +2,7 @@
 
 基线 `10256fe`，审计日期 2026-11-22。范围覆盖 `docs/research` 的 7 篇总览、39 篇编号案例和 102 个证据批次。复核案例正文、证据索引及批次中额外记录的具体疑问，并用现行领域契约及公共操作核对 Core 表达能力。 [研究入口](../research/00-INDEX.md) · [案例索引](../research/cases/00-INDEX.md) · [证据索引](../research/evidence/README.md)
 
-初次盘点记录 181 个具体未决问题，170 个涉及当前项目，其中 59 个进入 Core 候选调查。下面保留初次盘点和原编号。当前已经查实的架构缺口、能由现有操作表达的案例和待证条件见 [Core 架构缺口复核](research-necessity-20261122.md)。
+初次盘点记录 181 个具体未决问题，170 个涉及当前项目，其中 59 个进入 Core 候选调查。下面保留该次盘点的分类、数量和编号。当前进度见 [Core 待查证](research-necessity-20261122.md#待查证)与[已证实的架构缺口](research-necessity-20261122.md#已证实的架构缺口)。
 
 每条未决按可独立查证的问题计，同一问题在案例、总览和批次重复出现时只记一次。数字适用于本版归档中能落到具体机制的问题。原生结论足够且只剩内容接入的项、全游戏覆盖率和全量热更等通用证据限制不计入。模式对照、显示和逐帧验证中的具体问题列在本页末尾，仍纳入全库数量。 [项目范围](ARCHITECTURE.md#范围与行为依据) · [当前支持边界](tactical-semantics.md)
 
@@ -29,7 +29,7 @@
 | G08 | 路线到达、退出资格与退出事实 | 普通终点结算用 REACH_EXIT。喀兰圣女等实际 Prefab 禁止退出但仍有路线，主线 6-15 另有不扣蓝门生命但计击杀的配置。 | 到达终点直接移除，内部结束原因通用 SCRIPT，只有表现事件区分出口。改成最后一道 MOVE 会丢失真实终点及剩余路程。 | [原生依据](../research/cases/13-route-and-movement-timing.md#L153) · [Core](../../src/core/unit/capability/route/operations.ts#L378) · [禁止退出配置](../research/evidence/route-operations-20261107/temporary/content.json#L2819) · [退出与击杀](../research/cases/30-scheduler-action-data-fields.md#L155) |
 | G09 | 推进分支与执行分支分开 | 活动关卡实际出生的思旧通过 ModifyRuntimeRouteUseBranchRoute 取路线，消耗下一 Phase，取路线失败也保留已推进索引。 | 公开 triggerBranch 在推进索引后立即启动当前 Phase。Content 要保留同一游标并用于真正触发时，缺少可单独消费 Phase 的操作。 | [原生依据](../research/cases/31-route-operations-and-state.md#L105) · [Core](../../src/core/battle/schedule/runtime.ts#L228) |
 
-首次复核确认主动返还 DP 在请求结束前，普通撤退与死亡的卡牌回收都在原生 `OnFinish`，对象注销在 `OnRecycle`。后续取证已定位全局部署额度与同卡在场名额各自的释放时点和部署资格消费者，也复核了本次审计当时留下的中继器回收、动态召唤等待线索。 [后续证据与项目对照](research-necessity-20261122.md#回收部署额度与动态召唤的原生调用链)
+首次复核确认主动返还 DP 在请求结束前，普通撤退与死亡的卡牌回收都在原生 `OnFinish`，对象注销在 `OnRecycle`。后续取证已定位全局部署额度与同卡在场名额各自的释放时点和部署资格消费者，也复核了本次审计当时留下的中继器回收、动态召唤等待线索。 [部署额度](../research/evidence/deployment-exit-limits-20261122/README.md) · [中继器回收](../research/evidence/repeater-recovery-20261122/README.md) · [动态召唤等待](../research/evidence/managed-summons-20261122/README.md)
 
 标准沉默当前只限制 Skill 发动，已证实的天赋暂停与恢复仍需接入。现有 Effect 身份、启停和作用域能组织这一行为，已证需求暂无额外的 Effect 或 Lifetime 契约。纯烬艾雅法拉 S2 需要先消耗屏障再做 EP 准入，当前 `beforeReceive` 可以同时改本次值和盾池。 [沉默证据](../research/cases/06-talent-lifecycle-and-model.md#L34) · [EP 屏障](../research/cases/38-damage-classification-and-permissions.md#L287) · [EP Apply](../../src/core/battle/resource/ep/damage/apply.ts#L41)
 

@@ -334,6 +334,8 @@ MoveController.OnTick 不是普通路线速度积分的第二次入口；普通�
 
 `Action.IfEnemyIsMoving`（99311）读取刚体速度并检查模长>0.1；`IfEnemyIsMovingBySelf`（99314）读取上述状态查询，说明区分具有实际内容消费者。不能将所有“移动时”条件统一解释成 positionChanged。[查询与消费者](../evidence/locomotion-native-20261019/states/metadata.json)。
 
+固定数据 `17759cc8cdf37388414145d16262a3a06f3ab25e` 中，`enemy_hvymot_crash` 与 `enemy_mhboar_crash` 的 `ON_BUFF_START` 均在伤害前以 `SOURCE` 检查 `IfEnemyIsMovingBySelf`。水手重艇和凶豕兽分别有支线、集成战略关卡的直接出怪配置。仍待核对这两条冲撞调用在仅受外力移动或自主停步后是否触发。 [水手重艇冲撞](../../../assets/arknights-game-data/zh_CN/gamedata/battle/buff_template_data.json#L36582) · [凶豕兽冲撞](../../../assets/arknights-game-data/zh_CN/gamedata/battle/buff_template_data.json#L99147) · [支线出怪](../../../assets/arknights-game-data/zh_CN/gamedata/levels/activities/act12side/level_act12side_07.json#L3000) · [集成战略出怪](../../../assets/arknights-game-data/zh_CN/gamedata/levels/obt/roguelike/ro5/level_rogue5_2-2.json#L3352)
+
 ## 9. 证据边界
 
 积分与参数开关、预测吸附、速度保留、普通空间修正及移动资格已有直接分支。自主运动方向、运动积分和实际位移约束不能仅凭相同最终坐标互相替代；各类“正在移动”查询也不能统一为 positionChanged。
