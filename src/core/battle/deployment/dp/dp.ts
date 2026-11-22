@@ -38,7 +38,6 @@ export function initialize(definition: Definition = emptyDefinition): State {
     assertFiniteNumber(initial, "initial deployment points");
     assertFiniteNumber(min, "deployment point minimum");
     assertNonnegativeNumber(max, "deployment point limit");
-    validateLimits(min, max);
 
     if (initial < min || initial > max) {
         throw new RangeError("initial deployment points are outside the account limits");
@@ -68,7 +67,6 @@ export function setMinContribution(
     }
 
     const min = resolveMin(next);
-    validateLimits(min, resolveMax(next));
 
     return replaceIn(
         battle,
@@ -85,7 +83,6 @@ export function removeMinContribution(battle: BattleState, id: string): BattleSt
     }
 
     const min = resolveMin(next);
-    validateLimits(min, resolveMax(next));
 
     return replaceIn(
         battle,
@@ -101,26 +98,23 @@ export function setMaxContribution(
 ): BattleState {
     const { dp } = battle.deployment;
     const next = replaceIn(dp, ["max"], entries.set(dp.max, entry));
+    if (!clamp) {
+        return replaceIn(battle, ["deployment", "dp"], next);
+    }
+
     const max = resolveMax(next);
-    validateLimits(resolveMin(next), max);
 
     return replaceIn(
         battle,
         ["deployment", "dp"],
-        clamp && next.balance > max ? replaceIn(next, ["balance"], max) : next,
+        next.balance > max ? replaceIn(next, ["balance"], max) : next,
     );
 }
 
 export function removeMaxContribution(battle: BattleState, id: string): BattleState {
     const { dp } = battle.deployment;
-    const next = replaceIn(dp, ["max"], entries.remove(dp.max, id));
-    if (next === dp) {
-        return battle;
-    }
 
-    validateLimits(resolveMin(next), resolveMax(next));
-
-    return replaceIn(battle, ["deployment", "dp"], next);
+    return replaceIn(battle, ["deployment", "dp", "max"], entries.remove(dp.max, id));
 }
 
 export function setRecoverySpeedContribution(
@@ -144,10 +138,4 @@ export function removeRecoverySpeedContribution(battle: BattleState, id: string)
         ["deployment", "dp", "recoverySpeed"],
         entries.remove(dp.recoverySpeed, id),
     );
-}
-
-function validateLimits(min: number, max: number): void {
-    if (min > max) {
-        throw new RangeError("deployment point minimum exceeds the limit");
-    }
 }
