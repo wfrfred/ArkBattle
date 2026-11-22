@@ -42,6 +42,10 @@ uv run "$skill/scripts/archive.py" docs/research/evidence
 
 | 批次 | 调查主题 |
 | --- | --- |
+| [special-redeploy-failure-20261122](special-redeploy-failure-20261122/README.md) | 特殊移动的落点检查、返回失败、待投放与技能接续 |
+| [card-rules-20261122](card-rules-20261122/README.md) | 涨费与减费叠加、两种再部署计时量、临时库存与关系后的阻挡增容 |
+| [route-crash-20261122](route-crash-20261122/README.md) | 5-2 跨格路点的原生构场输入、两种冲撞的自主运动条件 |
+| [signed-hp-adjustment-20261122](signed-hp-adjustment-20261122/README.md) | 跳过普通伤疗通知的生命调整、归零保护和淬羽赫默屏障 |
 | [scheduler-recycle-config-20261122](scheduler-recycle-config-20261122/README.md) | 安装版最终回收等待的配置来源、普通末敌和关卡完成消费者 |
 | [redeploy-state-and-repeater-20261122](redeploy-state-and-repeater-20261122/README.md) | 特殊移动的 HP／SP 接续、中继器容量变化与卫戍自动部署重试 |
 | [resource-observers-20261122](resource-observers-20261122/README.md) | 实际爆发前置、成功抵挡观察者、锁血权限、取消原因与技力配置 |

@@ -1,0 +1,176 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-11-22"
+    ],
+    "collectionDateSource": "batch directory",
+    "organizedOn": "2026-11-22",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+        "records": [
+          "settlement.json#/provenance/client/dll"
+        ],
+        "bytes": 223112680
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        "records": [
+          "settlement.json#/provenance/client/metadata"
+        ],
+        "bytes": 46669332
+      }
+    },
+    "sourceRecords": [
+      "settlement.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12895,
+        "sha256": "9c5b246859318caaec4aab5275ef0d2d49fce5d612c6b4e569973a9941ba621a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "extract.py",
+        "kind": "historical-script",
+        "bytes": 7631,
+        "sha256": "b0358a33c22fb35cefe4b2867490c93f495013980ab3e97cbc329e13dc231ded"
+      },
+      {
+        "path": "settlement.json",
+        "kind": "record",
+        "bytes": 191552,
+        "sha256": "28d21017b146b461ba82dbfe37171aafb099abd214846a842691aeab5b9d8f47"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 67625,
+          "mode": "metadata",
+          "records": [
+            "settlement.json#/result/native/6/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.SetHpInternal",
+          "address": "0x18072e970"
+        },
+        {
+          "index": 67665,
+          "mode": "metadata",
+          "records": [
+            "settlement.json#/result/native/3/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.ApplyModifier",
+          "address": "0x1807211a0"
+        },
+        {
+          "index": 67667,
+          "mode": "metadata",
+          "records": [
+            "settlement.json#/result/native/4/method"
+          ],
+          "fullname": "Torappu.Battle.Entity._OnApplyingModifier",
+          "address": "0x1807314a0"
+        },
+        {
+          "index": 67669,
+          "mode": "metadata",
+          "records": [
+            "settlement.json#/result/native/7/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.OnAppliedModifier",
+          "address": "0x180727cb0"
+        },
+        {
+          "index": 67683,
+          "mode": "metadata",
+          "records": [
+            "settlement.json#/result/native/5/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.DoApplyModifier",
+          "address": "0x180722fe0"
+        },
+        {
+          "index": 69565,
+          "mode": "metadata",
+          "records": [
+            "settlement.json#/result/native/1/method"
+          ],
+          "fullname": "Torappu.Battle.Act49SideLevelBossManager/Act49sideBossState.UpdateEnemyHP",
+          "address": "0x18082d450"
+        },
+        {
+          "index": 72184,
+          "mode": "metadata",
+          "records": [
+            "settlement.json#/result/native/2/method"
+          ],
+          "fullname": "Torappu.Battle.Modifier.NewHp",
+          "address": "0x18090af40"
+        },
+        {
+          "index": 102136,
+          "mode": "metadata",
+          "records": [
+            "settlement.json#/result/native/0/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/EqualizeTargetHpRatio.Execute",
+          "address": "0x1811fc7f0"
+        },
+        {
+          "index": 106903,
+          "mode": "metadata",
+          "records": [
+            "settlement.json#/result/native/8/method"
+          ],
+          "fullname": "Torappu.Battle.UI.UIUnitHUD.Attach",
+          "address": "0x181372e30"
+        },
+        {
+          "index": 106913,
+          "mode": "metadata",
+          "records": [
+            "settlement.json#/result/native/9/method",
+            "settlement.json#/result/hudDelegates/1/method",
+            "settlement.json#/result/hudDelegates/2/method",
+            "settlement.json#/result/hudDelegates/3/method"
+          ],
+          "fullname": "Torappu.Battle.UI.UIUnitHUD._ShowDamageText",
+          "address": "0x1813752f0"
+        },
+        {
+          "index": 106914,
+          "mode": "metadata",
+          "records": [
+            "settlement.json#/result/native/10/method",
+            "settlement.json#/result/hudDelegates/0/method",
+            "settlement.json#/result/hudDelegates/4/method"
+          ],
+          "fullname": "Torappu.Battle.UI.UIUnitHUD._OnAppliedModifier",
+          "address": "0x181374c10"
+        }
+      ],
+      "blocks": [],
+      "types": [],
+      "constants": [],
+      "bundles": []
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

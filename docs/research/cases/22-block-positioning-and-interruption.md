@@ -74,6 +74,10 @@ UnregisterBlocker 76433 在匹配当前 blocker 后清归属，再 EmitEvent 和
 
 酒神召唤物迷狂牢笼的实际 `PropLikeStaticBlockToken` 组件覆盖 `BlockeeOffsetPosSet`。该程序使用敌人实际位置相对牢笼的方向。距离不大于 `DIST_MAX=0.2` 时保留原相对位置，超过时在原方向上把距离缩为随机的 0 至 0.2。`AddBlockee` 传入该覆盖值，`Enemy.RegisterBlocker` 将它加到阻挡者位置作为 `_MoveToBlockPosition` 的目标。这个差异发生在站位终点，与插值步数无关。 [Prefab 绑定、阈值和分支证据](../evidence/cage-block-position-20261122/README.md)
 
+### 大君之触与大君之赐的阻挡增容
+
+**N／D：** 两个实际敌人都装配 `ToggleablePassiveBuffAbility` 和 `BlockedToggleChecker`。`BlockManager.SearchBlockee` 在当前容量用尽时直接返回，`AddBlockee` 也先验证目标占用和剩余容量，然后才调用 `Enemy.RegisterBlocker`。目标写好阻挡者引用后，检查器才能读到关系并为阻挡者安装 `enemy_bloodsucker_block_cnt[control]`。该程序增加独立的 `BLOCK_CNT` 层，关系解除时对应该层撤销。由此，两个敌人的增容仅在成功取得关系后生效。容量已经满时，这份增容无法帮助自己先建立关系。 [实际 Prefab、阻挡方法和模板](../evidence/card-rules-20261122/README.md#大君之触与大君之赐) · [大君之触](https://prts.wiki/w/大君之触) · [大君之赐](https://prts.wiki/w/大君之赐)
+
 ## 3. 未决项与区分案例
 
 未执行游戏、热更或完整物理模拟；未证明全部模式使用相同 Tween 分支，没有给线性六步与客户端逐帧轨迹作数值等价背书。DOTween 运行态最终默认曲线、特殊传送／位移覆盖、全部特殊状态下的最终轨迹，以及同步重入的具体内容实例仍需按需补证。上文确定性管理器与普通移动分支的结论不等于实战逐帧观测。

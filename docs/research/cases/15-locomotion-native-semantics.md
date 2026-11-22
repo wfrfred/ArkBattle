@@ -334,7 +334,13 @@ MoveController.OnTick 不是普通路线速度积分的第二次入口；普通�
 
 `Action.IfEnemyIsMoving`（99311）读取刚体速度并检查模长>0.1；`IfEnemyIsMovingBySelf`（99314）读取上述状态查询，说明区分具有实际内容消费者。不能将所有“移动时”条件统一解释成 positionChanged。[查询与消费者](../evidence/locomotion-native-20261019/states/metadata.json)。
 
-固定数据 `17759cc8cdf37388414145d16262a3a06f3ab25e` 中，`enemy_hvymot_crash` 与 `enemy_mhboar_crash` 的 `ON_BUFF_START` 均在伤害前以 `SOURCE` 检查 `IfEnemyIsMovingBySelf`。水手重艇和凶豕兽分别有支线、集成战略关卡的直接出怪配置。仍待核对这两条冲撞调用在仅受外力移动或自主停步后是否触发。 [水手重艇冲撞](../../../assets/arknights-game-data/zh_CN/gamedata/battle/buff_template_data.json#L36582) · [凶豕兽冲撞](../../../assets/arknights-game-data/zh_CN/gamedata/battle/buff_template_data.json#L99147) · [支线出怪](../../../assets/arknights-game-data/zh_CN/gamedata/levels/activities/act12side/level_act12side_07.json#L3000) · [集成战略出怪](../../../assets/arknights-game-data/zh_CN/gamedata/levels/obt/roguelike/ro5/level_rogue5_2-2.json#L3352)
+#### 水手重艇与凶豕兽的冲撞
+
+**D／N：有实际组件和伤害模板。** 水手重艇 `enemy_1163_hvymot` 和凶豕兽 `enemy_1309_mhboar` 分别在支线和集成战略有直接出生。两个 Prefab 的 `Talents/Crash` 均有启用的 `AuraAbility`，PathID 分别为 `766096568602719842` 和 `-5346787934817604323`。`AuraAbility.DealTargetTouched`（94015）于 `0x180f94730` 给符合接触资格的对象安装 Buff。基础包和本机热更新 Holder 的 `enemy_hvymot_crash`、`enemy_mhboar_crash` 都在 `ON_BUFF_START` 的伤害前以 `SOURCE` 执行 `IfEnemyIsMovingBySelf`。凶豕兽还有由 `FirstAttack/PassiveAttachmentAbility` 附加的 `enemy_mhboar_t_atk`，在普通攻击单独结算，此处只核对接触伤害。 [关卡、Prefab 和两版模板](../evidence/route-crash-20261122/config.json) · [当前原生调用](../evidence/route-crash-20261122/native.json) · [PRTS 水手重艇](https://prts.wiki/w/水手重艇) · [PRTS 凶豕兽](https://prts.wiki/w/凶豕兽)
+
+**N：失衡中的外力位移与停步后保留的历史速度，均不能使这两条接触伤害取得自主运动资格。** 当前 `IfEnemyIsMovingBySelf.Execute`（101644）取得 `SOURCE` 对应的 Enemy 后调用虚槽 158。`Enemy.get_isMovingBySelf`（77672）读取 `isDisappeared`、状态机当前状态 `Move=1`、原始 `Blackboard.isHanging=false`。普通 `KnockBack` 与 `BeginPull` 对刚体施力后请求状态 `9`，`Enemy.get_isUnbalanced`（77649）直接读取该状态。因而在采样到失衡时，伤害前置条件为 false。已经停步且离开 Move 或写入 `isHanging=true` 时也为 false；若仍处于 Move 且未悬停，即使本次位置未变也满足该条件。只跑位移大小或读取任一种历史／物理速度，都会误判某些状态。独立 `IfEnemyIsMoving`（101641）才读取刚体速度模长。 [字段、虚槽与条件原件](../evidence/route-crash-20261122/native.json)
+
+本轮确认的是伤害节点执行时的资格。与推拉在同一时刻发生的接触，仍需以实际接触回调读取到的状态为准。未运行客户端验证各回调在边界帧的先后，凶豕兽 `AlwaysNext` 之后的其他动作也不计入本次伤害结论。
 
 ## 9. 证据边界
 

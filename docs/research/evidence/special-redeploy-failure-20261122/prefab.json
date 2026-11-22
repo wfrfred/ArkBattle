@@ -1,0 +1,788 @@
+{
+  "provenance": {
+    "bundles": {
+      "battle/prefabs/[uc]skills.ab": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+        "bytes": 1367500,
+        "sha256": "0d0b4c0f9252c14a69a20d4bea09527403dd3eddfc2f7bcd757c3c30cf37ffc3"
+      },
+      "charpack/char_1052_kalts2.ab": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_1052_kalts2.ab",
+        "bytes": 45213,
+        "sha256": "97d58abead488de8af1aa40aa1eee8f3ddfa55e5d459140451f28ce05e142713"
+      },
+      "anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+        "bytes": 477255,
+        "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99"
+      },
+      "config/buff_template_holder.ab": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+        "bytes": 2151020,
+        "sha256": "8edcb8017c977cdf52c2593b58e21db96949f3ad1e6f904180ac1241f145ca79"
+      }
+    },
+    "tool": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/special-redeploy-failure-20261122/extract_prefab.py",
+      "bytes": 7591,
+      "sha256": "89c15eff9e3c7298212abd9a2d619a222a90ee3a22af385eacbe2fa2ea3d3202"
+    },
+    "typeTreeDecoder": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/nymph-action-settlement-20261103/projectile/decode_projectile.py",
+      "bytes": 6749,
+      "sha256": "dab13196fb726d06bd9094c29f09a12dc3677b2c129359a1f7c305e13a8157fb"
+    }
+  },
+  "result": {
+    "battle/prefabs/[uc]skills.ab": {
+      "serializedFile": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+      "components": {
+        "SkillProgressHooker": {
+          "pathId": "-2859062326968680928",
+          "script": {
+            "id": "-8650025640945540263",
+            "name": "SkillProgressHooker",
+            "cl": "SkillProgressHooker",
+            "ns": "Torappu.Battle",
+            "asm": "Assembly-CSharp.dll"
+          },
+          "gameObject": {
+            "pathId": "-7330159812629004768",
+            "name": "skchr_kalts2_3",
+            "localComponents": [
+              "3614199102229020192",
+              "5301122414234271264",
+              "5556348927912738336",
+              "-2859062326968680928",
+              "188519180379717152"
+            ]
+          },
+          "enabled": true,
+          "fields": {
+            "_skillProgressBBKey": "kalts2_skill_progress",
+            "_restoreSkillBuff": {
+              "attributes": {
+                "abnormalFlags": {
+                  "Array": []
+                },
+                "abnormalImmunes": {
+                  "Array": []
+                },
+                "abnormalAntis": {
+                  "Array": []
+                },
+                "abnormalCombos": {
+                  "Array": []
+                },
+                "abnormalComboImmunes": {
+                  "Array": []
+                },
+                "attributeModifiers": {
+                  "Array": []
+                }
+              },
+              "buffKey": "kalts2_s_3[restore]",
+              "loadFromDB": false,
+              "isDurableBuff": false,
+              "isDamageMissable": false,
+              "isSilenceable": false,
+              "isStunnable": false,
+              "isFreezable": false,
+              "isLevitatable": false,
+              "isGroundBoundable": false,
+              "statusResistable": true,
+              "templateKey": "kalts2_s_3[restore]",
+              "disableOverride": false,
+              "overrideKey": "",
+              "overrideType": 0,
+              "maxStackCnt": 1,
+              "refreshRemainingTimeWhenStackMax": false,
+              "clearAllStackCntWhenTimeUp": false,
+              "maxValidStackCnt": -1,
+              "independentCharacterSource": false,
+              "overrideEffectKey": "",
+              "overrideOnEventPriority": false,
+              "onEventPriority": 0,
+              "audioSignal": "",
+              "lifeTimeType": true,
+              "takeSnapshotWhenExtend": false,
+              "durationKey": "duration",
+              "remainingTimeKey": "",
+              "lifeTime": 0.0,
+              "triggerLifeType": false,
+              "triggerCnt": 0,
+              "triggerInterval": -1.0,
+              "waitFirstTriggerInterval": true,
+              "firstTriggerInterval": -1.0,
+              "priority": -1,
+              "priorityBBKeys": {
+                "Array": []
+              },
+              "stripBlackboardParamsWithBuffKey": false,
+              "blackboard": {
+                "Array": [
+                  {
+                    "key": "cnt",
+                    "value": 1.0,
+                    "valueStr": ""
+                  },
+                  {
+                    "key": "cnt_minus",
+                    "value": 0.0,
+                    "valueStr": ""
+                  }
+                ]
+              },
+              "enableInitDirectionFromSource": false
+            },
+            "_endSkillBuff": {
+              "attributes": {
+                "abnormalFlags": {
+                  "Array": []
+                },
+                "abnormalImmunes": {
+                  "Array": []
+                },
+                "abnormalAntis": {
+                  "Array": []
+                },
+                "abnormalCombos": {
+                  "Array": []
+                },
+                "abnormalComboImmunes": {
+                  "Array": []
+                },
+                "attributeModifiers": {
+                  "Array": []
+                }
+              },
+              "buffKey": "kalts2_s_3_interrupt",
+              "loadFromDB": false,
+              "isDurableBuff": false,
+              "isDamageMissable": false,
+              "isSilenceable": false,
+              "isStunnable": false,
+              "isFreezable": false,
+              "isLevitatable": false,
+              "isGroundBoundable": false,
+              "statusResistable": true,
+              "templateKey": "kalts2_s_3_interrupt",
+              "disableOverride": false,
+              "overrideKey": "",
+              "overrideType": 0,
+              "maxStackCnt": 1,
+              "refreshRemainingTimeWhenStackMax": false,
+              "clearAllStackCntWhenTimeUp": false,
+              "maxValidStackCnt": -1,
+              "independentCharacterSource": false,
+              "overrideEffectKey": "",
+              "overrideOnEventPriority": false,
+              "onEventPriority": 0,
+              "audioSignal": "",
+              "lifeTimeType": false,
+              "takeSnapshotWhenExtend": false,
+              "durationKey": "",
+              "remainingTimeKey": "",
+              "lifeTime": 0.0,
+              "triggerLifeType": false,
+              "triggerCnt": 0,
+              "triggerInterval": -1.0,
+              "waitFirstTriggerInterval": true,
+              "firstTriggerInterval": -1.0,
+              "priority": -1,
+              "priorityBBKeys": {
+                "Array": []
+              },
+              "stripBlackboardParamsWithBuffKey": false,
+              "blackboard": {
+                "Array": []
+              },
+              "enableInitDirectionFromSource": false
+            }
+          }
+        },
+        "Kalts2StatesRecorder": {
+          "pathId": "188519180379717152",
+          "script": {
+            "id": "5651885608347807085",
+            "name": "Kalts2StatesRecorder",
+            "cl": "Kalts2StatesRecorder",
+            "ns": "Torappu.Battle",
+            "asm": "Assembly-CSharp.dll"
+          },
+          "gameObject": {
+            "pathId": "-7330159812629004768",
+            "name": "skchr_kalts2_3",
+            "localComponents": [
+              "3614199102229020192",
+              "5301122414234271264",
+              "5556348927912738336",
+              "-2859062326968680928",
+              "188519180379717152"
+            ]
+          },
+          "enabled": true,
+          "fields": {
+            "_cardBuffKeyList": {
+              "Array": [
+                "kalts2_s_3[card_buff]",
+                "char_angel2_target_free"
+              ]
+            },
+            "_deckEffectBuffKey": "kalts2_deck_effect",
+            "_cardBuildableCheckerBuffKey": "kalts2_buildable_checker",
+            "_inherateProgressFromSharedBlackboardBBKey": "kalts2_restore_skill_progress",
+            "_affectedCardCntKey": "cnt",
+            "_affectedCardUIDKey_1": "card_uid_1",
+            "_affectedCardUIDKey_2": "card_uid_2"
+          }
+        }
+      }
+    },
+    "charpack/char_1052_kalts2.ab": {
+      "serializedFile": "CAB-9f91da3a576bbe3aad2aece933113030",
+      "components": {
+        "Character": {
+          "pathId": "1384548417202445919",
+          "script": {
+            "id": "-1297314214590689040",
+            "name": "Character",
+            "cl": "Character",
+            "ns": "Torappu.Battle",
+            "asm": "Assembly-CSharp.dll"
+          },
+          "gameObject": {
+            "pathId": "7253335175392616031",
+            "name": "char_1052_kalts2",
+            "localComponents": [
+              "8064883068118654559",
+              "1384548417202445919",
+              "7422641859727285855",
+              "-7983131083682587041",
+              "-7004977872515408289"
+            ]
+          },
+          "enabled": true,
+          "fields": {
+            "_commonAbilities": {
+              "Array": [
+                {
+                  "m_FileID": 0,
+                  "m_PathID": 7538721606666968671
+                },
+                {
+                  "m_FileID": 0,
+                  "m_PathID": 3745648292404878943
+                },
+                {
+                  "m_FileID": 0,
+                  "m_PathID": -6540820176560234913
+                },
+                {
+                  "m_FileID": 0,
+                  "m_PathID": 7741168197661449823
+                },
+                {
+                  "m_FileID": 0,
+                  "m_PathID": -7153696030547091873
+                }
+              ]
+            }
+          }
+        },
+        "EmptyAnimatedAbility": {
+          "pathId": "7538721606666968671",
+          "script": {
+            "id": "8145049199648393782",
+            "name": "EmptyAnimatedAbility",
+            "cl": "EmptyAnimatedAbility",
+            "ns": "Torappu.Battle.Abilities",
+            "asm": "Assembly-CSharp.dll"
+          },
+          "gameObject": {
+            "pathId": "-1205677277949501857",
+            "name": "RespawnBorn",
+            "localComponents": [
+              "-6869686894461100449",
+              "7538721606666968671",
+              "-4404402526677148065",
+              "-4557409645507355041"
+            ]
+          },
+          "enabled": true,
+          "fields": {
+            "_animKey": "Skill_3_Restart_End",
+            "_waitForAttackEvent": true,
+            "_allowNoTarget": true
+          }
+        },
+        "BuffDuringCastingFixed": {
+          "pathId": "-4404402526677148065",
+          "script": {
+            "id": "1339719624887862345",
+            "name": "BuffDuringCastingFixed",
+            "cl": "BuffDuringCastingFixed",
+            "ns": "Torappu.Battle.Abilities",
+            "asm": "Assembly-CSharp.dll"
+          },
+          "gameObject": {
+            "pathId": "-1205677277949501857",
+            "name": "RespawnBorn",
+            "localComponents": [
+              "-6869686894461100449",
+              "7538721606666968671",
+              "-4404402526677148065",
+              "-4557409645507355041"
+            ]
+          },
+          "enabled": true,
+          "fields": {
+            "_buffs": {
+              "Array": [
+                {
+                  "attributes": {
+                    "abnormalFlags": {
+                      "Array": [
+                        18
+                      ]
+                    },
+                    "abnormalImmunes": {
+                      "Array": []
+                    },
+                    "abnormalAntis": {
+                      "Array": []
+                    },
+                    "abnormalCombos": {
+                      "Array": []
+                    },
+                    "abnormalComboImmunes": {
+                      "Array": []
+                    },
+                    "attributeModifiers": {
+                      "Array": []
+                    }
+                  },
+                  "buffKey": "kalts2_s_3[respawn_anim]",
+                  "loadFromDB": false,
+                  "isDurableBuff": false,
+                  "isDamageMissable": false,
+                  "isSilenceable": false,
+                  "isStunnable": false,
+                  "isFreezable": false,
+                  "isLevitatable": false,
+                  "isGroundBoundable": false,
+                  "statusResistable": true,
+                  "templateKey": "empty",
+                  "disableOverride": false,
+                  "overrideKey": "",
+                  "overrideType": 0,
+                  "maxStackCnt": 1,
+                  "refreshRemainingTimeWhenStackMax": false,
+                  "clearAllStackCntWhenTimeUp": false,
+                  "maxValidStackCnt": -1,
+                  "independentCharacterSource": false,
+                  "overrideEffectKey": "kalts2_skill_03_teleport_end_01",
+                  "overrideOnEventPriority": false,
+                  "onEventPriority": 0,
+                  "audioSignal": "kalts2_respawn_range",
+                  "lifeTimeType": true,
+                  "takeSnapshotWhenExtend": false,
+                  "durationKey": "",
+                  "remainingTimeKey": "",
+                  "lifeTime": 0.0,
+                  "triggerLifeType": false,
+                  "triggerCnt": 0,
+                  "triggerInterval": -1.0,
+                  "waitFirstTriggerInterval": true,
+                  "firstTriggerInterval": -1.0,
+                  "priority": -1,
+                  "priorityBBKeys": {
+                    "Array": []
+                  },
+                  "stripBlackboardParamsWithBuffKey": false,
+                  "blackboard": {
+                    "Array": []
+                  },
+                  "enableInitDirectionFromSource": false
+                }
+              ]
+            }
+          }
+        },
+        "PassiveBuffAbility": {
+          "pathId": "3745648292404878943",
+          "script": {
+            "id": "3800760148018415462",
+            "name": "PassiveBuffAbility",
+            "cl": "PassiveBuffAbility",
+            "ns": "Torappu.Battle.Abilities",
+            "asm": "Assembly-CSharp.dll"
+          },
+          "gameObject": {
+            "pathId": "-1425033408882254241",
+            "name": "TryRestoreSkill",
+            "localComponents": [
+              "-335083338609697185",
+              "3745648292404878943"
+            ]
+          },
+          "enabled": true,
+          "fields": {
+            "_buffs": {
+              "Array": [
+                {
+                  "attributes": {
+                    "abnormalFlags": {
+                      "Array": []
+                    },
+                    "abnormalImmunes": {
+                      "Array": []
+                    },
+                    "abnormalAntis": {
+                      "Array": []
+                    },
+                    "abnormalCombos": {
+                      "Array": []
+                    },
+                    "abnormalComboImmunes": {
+                      "Array": []
+                    },
+                    "attributeModifiers": {
+                      "Array": []
+                    }
+                  },
+                  "buffKey": "kalts2_try_restore_skill",
+                  "loadFromDB": false,
+                  "isDurableBuff": false,
+                  "isDamageMissable": false,
+                  "isSilenceable": false,
+                  "isStunnable": false,
+                  "isFreezable": false,
+                  "isLevitatable": false,
+                  "isGroundBoundable": false,
+                  "statusResistable": true,
+                  "templateKey": "kalts2_try_restore_skill",
+                  "disableOverride": false,
+                  "overrideKey": "",
+                  "overrideType": 0,
+                  "maxStackCnt": 1,
+                  "refreshRemainingTimeWhenStackMax": false,
+                  "clearAllStackCntWhenTimeUp": false,
+                  "maxValidStackCnt": -1,
+                  "independentCharacterSource": false,
+                  "overrideEffectKey": "",
+                  "overrideOnEventPriority": false,
+                  "onEventPriority": 0,
+                  "audioSignal": "",
+                  "lifeTimeType": true,
+                  "takeSnapshotWhenExtend": false,
+                  "durationKey": "",
+                  "remainingTimeKey": "",
+                  "lifeTime": 0.0,
+                  "triggerLifeType": false,
+                  "triggerCnt": 0,
+                  "triggerInterval": -1.0,
+                  "waitFirstTriggerInterval": true,
+                  "firstTriggerInterval": -1.0,
+                  "priority": -1,
+                  "priorityBBKeys": {
+                    "Array": []
+                  },
+                  "stripBlackboardParamsWithBuffKey": false,
+                  "blackboard": {
+                    "Array": [
+                      {
+                        "key": "is_respawn",
+                        "value": 0.0,
+                        "valueStr": ""
+                      }
+                    ]
+                  },
+                  "enableInitDirectionFromSource": false
+                }
+              ]
+            }
+          }
+        },
+        "ProjectileToTileWithExtraActionsAbility": {
+          "pathId": "-6288204701876396449",
+          "script": {
+            "id": "-4806719744953836297",
+            "name": "ProjectileToTileWithExtraActionsAbility",
+            "cl": "ProjectileToTileWithExtraActionsAbility",
+            "ns": "Torappu.Battle.Abilities",
+            "asm": "Assembly-CSharp.dll"
+          },
+          "gameObject": {
+            "pathId": "-7203783910404366753",
+            "name": "-1",
+            "localComponents": [
+              "-384492708804207009",
+              "-6288204701876396449",
+              "-99761061122777505",
+              "-8305687822113612193"
+            ]
+          },
+          "enabled": true,
+          "fields": {
+            "_projectileKey": "projectile_chr_kalts2_s3_2",
+            "_extraActionEvent": 3,
+            "_extraActions": [
+              {
+                "_targetType": "SOURCE",
+                "_checkTargetHost": false,
+                "_checkSpShowedBuff": false,
+                "$type": "Torappu.Battle.Action.Nodes+CheckCharSkillAffecting"
+              },
+              {
+                "_targetType": "SOURCE",
+                "$type": "Torappu.Battle.Action.Nodes+Kalts2S3CheckAbleToLand"
+              },
+              {
+                "_abilityName": "StartTransporting",
+                "_rowKey": "kalts2_row",
+                "_colKey": "kalts2_col",
+                "$type": "Torappu.Battle.Action.Nodes+AssignProjectileGridPosToAbilityBB"
+              },
+              {
+                "_character": "SOURCE",
+                "_progressBBKey": "kalts2_skill_progress",
+                "$type": "Torappu.Battle.Action.Nodes+AssignSkillProgressToSharedBlackboard"
+              },
+              {
+                "$type": "Torappu.Battle.Action.Nodes+AlwaysNext"
+              },
+              {
+                "_target": "SOURCE",
+                "_isStringBB": false,
+                "_blackboardKey": "kalts2_restore_skill_progress",
+                "_bbKeyFromBB": "",
+                "_value": 1.0,
+                "_valueStr": "",
+                "_isOverwrite": true,
+                "_useValueKey": false,
+                "_valueKey": "",
+                "$type": "Torappu.Battle.Action.Nodes+AddCharacterSharedBlackboard"
+              },
+              {
+                "$type": "Torappu.Battle.Action.Nodes+AlwaysNext"
+              },
+              {
+                "_sourceType": "PROJECTILE_SOURCE",
+                "$type": "Torappu.Battle.Action.Nodes+Kalts2S3RecordCardInfoToSharedBlackboard"
+              },
+              {
+                "$type": "Torappu.Battle.Action.Nodes+AlwaysNext"
+              },
+              {
+                "_conditionNode": {
+                  "_targetType": "SOURCE",
+                  "_ignoreAdvancedBuildableMask": false,
+                  "_buildCheckParam": {
+                    "ignoreBuildableType": false
+                  },
+                  "_canRespawnInPlace": false,
+                  "_forceRespawnInPlace": false,
+                  "_rowKey": "kalts2_row",
+                  "_colKey": "kalts2_col",
+                  "_loadPosFromSharedBlackboard": false,
+                  "_loadDirectionFromBB": true,
+                  "_recordRespawnToSharedData": true,
+                  "_respawnInSameTile": false,
+                  "_respawnBBKey": "kalts2_respawn",
+                  "_respawnInPlaceBBKey": "kalts2_respawn_in_place",
+                  "_addSharedBlackboardValueIfExists": false,
+                  "_assignSkillProgress": false,
+                  "_skillProgressBBKey": "",
+                  "_respawnBlackboardKeys": [
+                    "kalts2_row",
+                    "kalts2_col",
+                    "kalts2_hp_ratio"
+                  ],
+                  "_useExternalRespawn": false,
+                  "_forceSpawn": false,
+                  "_addBuffToRespawnedCharacter": false,
+                  "_buff": {
+                    "attributes": {
+                      "abnormalFlags": null,
+                      "abnormalImmunes": null,
+                      "abnormalAntis": null,
+                      "abnormalCombos": null,
+                      "abnormalComboImmunes": null,
+                      "attributeModifiers": null
+                    },
+                    "buffKey": null,
+                    "loadFromDB": false,
+                    "isDurableBuff": false,
+                    "isDamageMissable": false,
+                    "isSilenceable": false,
+                    "isStunnable": false,
+                    "isFreezable": false,
+                    "isLevitatable": false,
+                    "isGroundBoundable": false,
+                    "statusResistable": "AUTOMATIC",
+                    "templateKey": "empty",
+                    "disableOverride": false,
+                    "overrideKey": null,
+                    "overrideType": "DEFAULT",
+                    "maxStackCnt": 1,
+                    "refreshRemainingTimeWhenStackMax": false,
+                    "clearAllStackCntWhenTimeUp": false,
+                    "maxValidStackCnt": -1,
+                    "independentCharacterSource": false,
+                    "overrideEffectKey": null,
+                    "overrideOnEventPriority": false,
+                    "onEventPriority": "DEFAULT",
+                    "audioSignal": null,
+                    "lifeTimeType": "LIMITED",
+                    "takeSnapshotWhenExtend": false,
+                    "durationKey": null,
+                    "remainingTimeKey": null,
+                    "lifeTime": 0.0,
+                    "triggerLifeType": "IMMEDIATELY",
+                    "triggerCnt": 0,
+                    "triggerInterval": -1.0,
+                    "waitFirstTriggerInterval": true,
+                    "firstTriggerInterval": -1.0,
+                    "priority": -1,
+                    "priorityBBKeys": null,
+                    "stripBlackboardParamsWithBuffKey": false,
+                    "blackboard": null,
+                    "enableInitDirectionFromSource": false
+                  },
+                  "_buffSourceType": "BUFF_SOURCE",
+                  "$type": "Torappu.Battle.Action.Nodes+RespawnCharacter"
+                },
+                "_succeedNodes": [],
+                "_failNodes": [
+                  {
+                    "_targetType": "SOURCE",
+                    "_killSource": false,
+                    "_noSource": false,
+                    "_withdrawIfRallyPoint": false,
+                    "_resultIfInRallyPointMode": false,
+                    "_skipReborn": true,
+                    "_noReason": false,
+                    "_markReachExit": false,
+                    "_switchState": false,
+                    "$type": "Torappu.Battle.Action.Nodes+InstantKill"
+                  }
+                ],
+                "$type": "Torappu.Battle.Action.Nodes+IfElse"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "config/buff_template_holder.ab": {
+      "kalts2_try_restore_skill": {
+        "serializedFile": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+        "pathId": "6070581171229484677",
+        "events": [
+          {
+            "event": 0,
+            "program": [
+              {
+                "_conditionNode": {
+                  "_target": "BUFF_OWNER",
+                  "_blackboardKey": "kalts2_respawn",
+                  "_valueToCompare": 0.0,
+                  "_valueToCompareKey": "value",
+                  "_condType": "GT",
+                  "$type": "Torappu.Battle.Action.Nodes+FilterByCharacterSharedBlackboard"
+                },
+                "_succeedNodes": [
+                  {
+                    "_forceFlag": true,
+                    "_charFrom": "BUFF_OWNER",
+                    "$type": "Torappu.Battle.Action.Nodes+ClearCharacterSp"
+                  },
+                  {
+                    "_targetType": "BUFF_OWNER",
+                    "$type": "Torappu.Battle.Action.Nodes+RestoreCharacterSkillStates"
+                  }
+                ],
+                "_failNodes": [
+                  {
+                    "_targetType": "BUFF_OWNER",
+                    "_sourceType": "BUFF_OWNER",
+                    "_effectKey": "kalts2_birth_01",
+                    "_useSourceFaceVactor": false,
+                    "_useSourceToTargetDirection": false,
+                    "_useConstDirection": false,
+                    "_constDirection": "UP",
+                    "_createEffectHoldBySource": false,
+                    "_createEffectConstDirectionHoldBySource": false,
+                    "_useAttackPlaybackSpeed": false,
+                    "_manualSetPlaybackSpeed": false,
+                    "_blackboardKey": "",
+                    "_playbackSpeed": 1.0,
+                    "$type": "Torappu.Battle.Action.Nodes+CreateEffect"
+                  }
+                ],
+                "$type": "Torappu.Battle.Action.Nodes+IfElse"
+              }
+            ]
+          }
+        ]
+      },
+      "kalts2_s_3_interrupt": {
+        "serializedFile": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+        "pathId": "6070581171229484677",
+        "events": [
+          {
+            "event": 0,
+            "program": [
+              {
+                "_buffKey": "kalts2_s_3",
+                "_loadFromBlackboard": false,
+                "_decCntIfStack": false,
+                "_updateOverrideMap": true,
+                "_targetType": "BUFF_OWNER",
+                "_checkBuffSource": false,
+                "_sourceType": "BUFF_SOURCE",
+                "_alsoClearNullSource": false,
+                "_finishHostBuff": false,
+                "_excludeThisBuff": false,
+                "_decCntKey": null,
+                "_decCnt": 1,
+                "$type": "Torappu.Battle.Action.Nodes+FinishBuffsById"
+              },
+              {
+                "$type": "Torappu.Battle.Action.Nodes+AlwaysNext"
+              },
+              {
+                "_buffKey": "kalts2_s_3[core]",
+                "_loadFromBlackboard": false,
+                "_decCntIfStack": false,
+                "_updateOverrideMap": true,
+                "_targetType": "BUFF_OWNER",
+                "_checkBuffSource": false,
+                "_sourceType": "BUFF_SOURCE",
+                "_alsoClearNullSource": false,
+                "_finishHostBuff": false,
+                "_excludeThisBuff": false,
+                "_decCntKey": null,
+                "_decCnt": 1,
+                "$type": "Torappu.Battle.Action.Nodes+FinishBuffsById"
+              },
+              {
+                "_sourceType": "BUFF_OWNER",
+                "$type": "Torappu.Battle.Action.Nodes+Kalts2S3ApplyPunishBuff"
+              },
+              {
+                "_sourceType": "BUFF_OWNER",
+                "$type": "Torappu.Battle.Action.Nodes+Kalts2S3CancelExtraBuildableChecker"
+              },
+              {
+                "_sourceType": "BUFF_OWNER",
+                "$type": "Torappu.Battle.Action.Nodes+Kalts2S3ResetCardRecord"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

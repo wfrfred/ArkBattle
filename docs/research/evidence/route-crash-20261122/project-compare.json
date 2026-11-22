@@ -1,0 +1,26 @@
+{
+  "position": [
+    3.175,
+    0.85
+  ],
+  "originalTile": [
+    1,
+    4
+  ],
+  "roundedTile": [
+    2,
+    4
+  ],
+  "reachPosition": [
+    4.25,
+    1.5
+  ],
+  "fromOriginalGridWithOffset": [
+    4.25,
+    1.5
+  ],
+  "fromRoundedGrid": [
+    4,
+    1
+  ]
+}

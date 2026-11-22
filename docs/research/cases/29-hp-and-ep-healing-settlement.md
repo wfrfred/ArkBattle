@@ -175,6 +175,12 @@ SetHpSameToSource读取 `source.hp−target.hp`，零差直接返回；非零用
 
 支线 TA-10 和 TA-EX-8 实际刷出「岁」的四个部位。四个 Prefab 启用的被动均装配 `enemy_sui_report_damage`，在受伤应用后调用 `Act49sideBossSyncHPRatio.Execute`，再由 Boss Manager 转发给 `UpdateEnemyHP`。普通客户端分支在被击部位累积本笔数值，再按该部位扣血后的比例计算其它部位各自的有符号 HP 差值。同步请求设置 `SKIP_MODIFIER_EVENT`。计量本部位受伤与维持四部位 HP 比例可以分别追踪。抬起、退场及归零的后续条件仍需结合实际配置核对。 [关卡、模板及原生分支](../evidence/sui-hp-sync-20261122/README.md)
 
+### 有符号调整保留特定接收与生命归零程序
+
+魔王 S3 和「岁」的普通同步请求进入 `ApplyModifier` 的跳过分支，仍检查目标存活和输入取消，允许 `OnApplyingSkippedModifier` 修改或拒绝本笔，并保留有资格的来源提交前程序。由于两例只添加跳过标记，不要求复查常规不可伤；目标的专用跳过接收仍可拒绝。实际 HP 经普通 `SetHpInternal` 写入，适用归零前程序、不死下限和最终归零后继。普通受伤和受疗浮字、目标应用后通知和 `BattleLogger.LogModifier` 不处理这笔修改。「岁」仍在部位同步后读取实际 HP 并判断阶段，血条与定制特效也各有独立路径。 [指令和显示订阅](../evidence/signed-hp-adjustment-20261122/README.md)
+
+淬羽赫默 Y2／Y3 的屏障天赋实际装配了 `ON_APPLYING_SKIPPED_MODIFIER`。它能读取这类负差值，在预测目标将跌破 50% 时标记资格并授予屏障。通过两份配置和客户端分支得出，实际魔王重分配满足该天赋接收条件时仍可触发屏障，全关普通受伤 Hook 的探针只能验证所选 HP 结果。变形者集群的同比例同步配置仍使用普通接收，两者分别处理。 [赫默模组配置、Prefab 和具体数值推导](../evidence/signed-hp-adjustment-20261122/README.md#真的会读取跳过分支的保护)
+
 ## 9. 剩余证据边界
 
 - ElementHealViaMaxHpRatio有完整native，但1180包与9054Holder没有找到引用；普通EP自然回复另有余的实际天赋，见[案例25](25-elemental-burst-recovery-timing.md#8-自然ep回复的实际非零配置)。没有据零命中批准弃用。

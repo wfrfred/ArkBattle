@@ -1,0 +1,806 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-11-22"
+    ],
+    "collectionDateSource": "batch directory",
+    "organizedOn": "2026-11-22",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+        "records": [
+          "result.json#/provenance/client/dll"
+        ],
+        "bytes": 223112680
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        "records": [
+          "result.json#/provenance/client/metadata"
+        ],
+        "bytes": 46669332
+      }
+    },
+    "sourceRecords": [
+      "result.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12895,
+        "sha256": "9c5b246859318caaec4aab5275ef0d2d49fce5d612c6b4e569973a9941ba621a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "extract.py",
+        "kind": "historical-script",
+        "bytes": 15642,
+        "sha256": "dba8c243558341231ba6bd3af1547d25f7298478b18b6482e00e175dca35d6a4"
+      },
+      {
+        "path": "result.json",
+        "kind": "record",
+        "bytes": 241171,
+        "sha256": "3092bde403d05928355abca65852d3e0bcfddf6e6a705020fd77545a999f7022"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 64020,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/methods/0",
+            "result.json#/result/native/methods/0/method"
+          ],
+          "fullname": "Torappu.Battle.Ability.DoDetach",
+          "address": "0x1806026d0"
+        },
+        {
+          "index": 64056,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/methods/1",
+            "result.json#/result/native/methods/1/method"
+          ],
+          "fullname": "Torappu.Battle.Ability.FinishIfNot",
+          "address": "0x180602e60"
+        },
+        {
+          "index": 65727,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/methods/2",
+            "result.json#/result/native/methods/2/method"
+          ],
+          "fullname": "Torappu.Battle.BattleController.RecycleBuffNextFrame",
+          "address": "0x18065d110"
+        },
+        {
+          "index": 65778,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/methods/47",
+            "result.json#/result/native/methods/47/method"
+          ],
+          "fullname": "Torappu.Battle.BattleController.CreateCardBuffWithBlackboard",
+          "address": "0x18064b5c0"
+        },
+        {
+          "index": 65914,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/methods/3",
+            "result.json#/result/native/methods/3/method"
+          ],
+          "fullname": "Torappu.Battle.BattleFormula.CalculateRuntimeCardCost",
+          "address": "0x1806872b0"
+        },
+        {
+          "index": 66009,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/methods/4",
+            "result.json#/result/native/methods/4/method"
+          ],
+          "fullname": "Torappu.Battle.BObject.Init",
+          "address": "0x1806afb40"
+        },
+        {
+          "index": 66101,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/methods/5",
+            "result.json#/result/native/methods/5/method"
+          ],
+          "fullname": "Torappu.Battle.Buff.MarkFinish",
+          "address": "0x1806cfa80"
+        },
+        {
+          "index": 66120,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/methods/6",
+            "result.json#/result/native/methods/6/method"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnRecycle",
+          "address": "0x1806d49b0"
+        },
+        {
+          "index": 66126,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/methods/7",
+            "result.json#/result/native/methods/7/method"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnTick",
+          "address": "0x1806d54d0"
+        },
+        {
+          "index": 66304,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/methods/8",
+            "result.json#/result/native/methods/8/method"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.RemoveBuffs",
+          "address": "0x1806c9170"
+        },
+        {
+          "index": 66349,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/methods/9",
+            "result.json#/result/native/methods/9/method"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.Tick",
+          "address": "0x1806c9880"
+        },
+        {
+          "index": 66363,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/methods/10",
+            "result.json#/result/native/methods/10/method"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer._FinishBuff",
+          "address": "0x1806cd740"
+        },
+        {
+          "index": 66742,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/methods/33",
+            "result.json#/result/native/methods/33/method"
+          ],
+          "fullname": "Torappu.Battle.Deck.RechargeToken",
+          "address": "0x1806fb9b0"
+        },
+        {
+          "index": 66755,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/methods/11",
+            "result.json#/result/native/methods/11/method"
+          ],
+          "fullname": "Torappu.Battle.Deck.SpawnCharacterOrToken",
+          "address": "0x1806fd140"
+        },
+        {
+          "index": 66823,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/methods/12",
+            "result.json#/result/native/methods/12/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card.get_rawCost",
+          "address": "0x1806f3420"
+        },
+        {
+          "index": 66826,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/methods/13",
+            "result.json#/result/native/methods/13/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card.get_cost",
+          "address": "0x1806f2310"
+        },
+        {
+          "index": 66865,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/methods/14",
+            "result.json#/result/native/methods/14/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card.ResetRespawnTimeUseItsNewRespawnTimePeriod",
+          "address": "0x1806ee690"
+        },
+        {
+          "index": 66869,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/methods/15",
+            "result.json#/result/native/methods/15/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card._UpdateCardBuff",
+          "address": "0x1806f0c30"
+        },
+        {
+          "index": 66882,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/methods/16",
+            "result.json#/result/native/methods/16/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card.CreateCardBuffByBuff",
+          "address": "0x1806eb020"
+        },
+        {
+          "index": 66890,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/methods/17",
+            "result.json#/result/native/methods/17/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card.FinishCardBuffByKey",
+          "address": "0x1806ebd30"
+        },
+        {
+          "index": 66909,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/methods/18",
+            "result.json#/result/native/methods/18/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card.OnTick",
+          "address": "0x1806ed530"
+        },
+        {
+          "index": 66993,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/methods/19",
+            "result.json#/result/native/methods/19/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card/RuntimeCostModifier.CreateRuntimeModifier",
+          "address": "0x180719250"
+        },
+        {
+          "index": 66996,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/methods/20",
+            "result.json#/result/native/methods/20/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card/RuntimeCostModifier.ApplyFirstPass",
+          "address": "0x180719120"
+        },
+        {
+          "index": 67007,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/methods/21",
+            "result.json#/result/native/methods/21/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card/RuntimeRespawnTimeModifier.ApplyFirstPass",
+          "address": "0x180719440"
+        },
+        {
+          "index": 67008,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/methods/22",
+            "result.json#/result/native/methods/22/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card/RuntimeRespawnTimeModifier.ApplySecondPass",
+          "address": "0x180719610"
+        },
+        {
+          "index": 67009,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/methods/23",
+            "result.json#/result/native/methods/23/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card/RuntimeRespawnTimeModifier.ApplyModifierFinalPass",
+          "address": "0x1807194f0"
+        },
+        {
+          "index": 67016,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/methods/24",
+            "result.json#/result/native/methods/24/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card/RemainingRespawnTimeModifier.CreateRuntimeModifier",
+          "address": "0x180718ec0"
+        },
+        {
+          "index": 67017,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/methods/25",
+            "result.json#/result/native/methods/25/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card/RemainingRespawnTimeModifier.ApplyFirstPass",
+          "address": "0x180718be0"
+        },
+        {
+          "index": 67018,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/methods/26",
+            "result.json#/result/native/methods/26/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card/RemainingRespawnTimeModifier.ApplySecondPass",
+          "address": "0x180718d30"
+        },
+        {
+          "index": 67038,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/methods/27",
+            "result.json#/result/native/methods/27/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card/CardBuff..ctor",
+          "address": "0x180706fd0"
+        },
+        {
+          "index": 67039,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/methods/28",
+            "result.json#/result/native/methods/28/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card/CardBuff.ApplyModifiersFirstPass",
+          "address": "0x1807064f0"
+        },
+        {
+          "index": 67088,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/methods/29",
+            "result.json#/result/native/methods/29/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/TokenCard.Recharge",
+          "address": "0x18071d4d0"
+        },
+        {
+          "index": 67089,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/methods/30",
+            "result.json#/result/native/methods/30/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/TokenCard.ForceRecharge",
+          "address": "0x18071c510"
+        },
+        {
+          "index": 67091,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/methods/31",
+            "result.json#/result/native/methods/31/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/TokenCard.OnHostSpawned",
+          "address": "0x18071d2a0"
+        },
+        {
+          "index": 67092,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/methods/32",
+            "result.json#/result/native/methods/32/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/TokenCard.OnHostRecycled",
+          "address": "0x18071d240"
+        },
+        {
+          "index": 67549,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/methods/37",
+            "result.json#/result/native/methods/37/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.RemoveBuffs",
+          "address": "0x18072d2f0"
+        },
+        {
+          "index": 67653,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/methods/38",
+            "result.json#/result/native/methods/38/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.OnFinish",
+          "address": "0x18072a060"
+        },
+        {
+          "index": 77256,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/methods/34",
+            "result.json#/result/native/methods/34/method"
+          ],
+          "fullname": "Torappu.Battle.Character.RechargeToken",
+          "address": "0x180aa5ac0"
+        },
+        {
+          "index": 77332,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/methods/35",
+            "result.json#/result/native/methods/35/method"
+          ],
+          "fullname": "Torappu.Battle.Character.OnInit",
+          "address": "0x180aa3660"
+        },
+        {
+          "index": 77340,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/methods/36",
+            "result.json#/result/native/methods/36/method"
+          ],
+          "fullname": "Torappu.Battle.Character.OnFinish",
+          "address": "0x180aa32c0"
+        },
+        {
+          "index": 77745,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/methods/41",
+            "result.json#/result/native/methods/41/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.RegisterBlocker",
+          "address": "0x180ac2460"
+        },
+        {
+          "index": 78504,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/methods/39",
+            "result.json#/result/native/methods/39/method"
+          ],
+          "fullname": "Torappu.Battle.BlockManager.SearchBlockee",
+          "address": "0x180aee5a0"
+        },
+        {
+          "index": 78505,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/methods/40",
+            "result.json#/result/native/methods/40/method"
+          ],
+          "fullname": "Torappu.Battle.BlockManager.AddBlockee",
+          "address": "0x180aedff0"
+        },
+        {
+          "index": 93828,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/methods/42",
+            "result.json#/result/native/methods/42/method"
+          ],
+          "fullname": "Torappu.Battle.Abilities.AbilitySequenceGroup._OnSubAbilityFinished",
+          "address": "0x180f8f260"
+        },
+        {
+          "index": 93933,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/methods/43",
+            "result.json#/result/native/methods/43/method"
+          ],
+          "fullname": "Torappu.Battle.Abilities.ActiveAbilityWrapper.OnCastEnd",
+          "address": "0x180f927f0"
+        },
+        {
+          "index": 94716,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/methods/44",
+            "result.json#/result/native/methods/44/method"
+          ],
+          "fullname": "Torappu.Battle.Abilities.BlockedToggleChecker._OnBlockeeChanged",
+          "address": "0x180fbff70"
+        },
+        {
+          "index": 94719,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/methods/45",
+            "result.json#/result/native/methods/45/method"
+          ],
+          "fullname": "Torappu.Battle.Abilities.BlockedToggleChecker._UpdateEnemyBlockeeBuffs",
+          "address": "0x180fc0940"
+        },
+        {
+          "index": 98646,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/methods/46",
+            "result.json#/result/native/methods/46/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/CreateCardFilterByProfession.Execute",
+          "address": "0x1810d3550"
+        },
+        {
+          "index": 98706,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/methods/49",
+            "result.json#/result/native/methods/49/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/BaseCreateCardBuff.DoCreateCardBuff",
+          "address": "0x1810c5dc0"
+        },
+        {
+          "index": 98739,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/methods/48",
+            "result.json#/result/native/methods/48/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/CreateCardBuffFilterByTag.Execute",
+          "address": "0x1810d0e50"
+        },
+        {
+          "index": 101199,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/methods/50",
+            "result.json#/result/native/methods/50/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/RechargeToken.Execute",
+          "address": "0x1811bf220"
+        }
+      ],
+      "blocks": [],
+      "types": [],
+      "constants": [],
+      "bundles": [
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99",
+          "records": [
+            "result.json#/result/assets/sources/1"
+          ],
+          "bytes": 477255
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "sha256": "8edcb8017c977cdf52c2593b58e21db96949f3ad1e6f904180ac1241f145ca79",
+          "records": [
+            "result.json#/result/assets/sources/2"
+          ],
+          "bytes": 2151020
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_496_wildmn.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_496_wildmn.ab",
+          "sha256": "c73160ae6c0e00369efd9c36bd2a2fdf8e7784c6581e66e3f8cdf4960b9d9f60",
+          "records": [
+            "result.json#/result/assets/sources/3"
+          ],
+          "bytes": 22334
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]equips.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]equips.ab",
+          "sha256": "1698bc4166582fc953e54367e31cf46de2585fa94bdbeda8ab93256eb6cf5b4b",
+          "records": [
+            "result.json#/result/assets/sources/4"
+          ],
+          "bytes": 749424
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "sha256": "0d0b4c0f9252c14a69a20d4bea09527403dd3eddfc2f7bcd757c3c30cf37ffc3",
+          "records": [
+            "result.json#/result/assets/sources/5"
+          ],
+          "bytes": 1367500
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_0.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_0.ab",
+          "sha256": "adcf77f260748418d57e08d2539993232de53053bf4a5ec2292ff9a4c7865f1d",
+          "records": [
+            "result.json#/result/assets/sources/6"
+          ],
+          "bytes": 5089969
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_10.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_10.ab",
+          "sha256": "7d88a8815d0947b2836c8770c0ff3c2b92645696ec5e2c9d715d6d0b18148fbb",
+          "records": [
+            "result.json#/result/assets/sources/7"
+          ],
+          "bytes": 270254
+        },
+        {
+          "kind": "bundle",
+          "path": "charpack/char_496_wildmn.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_496_wildmn.ab",
+          "sha256": "00f189a059908460d08ac3c349ac73449ef32445ba1fcbb83a97dc4c5c9f7658",
+          "records": [
+            "result.json#/result/assets/components/0"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "battle/prefabs/[uc]equips.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]equips.ab",
+          "sha256": "070da8336415277d332400698b12ac6af329c0e1f7d626d23a13925262562d5b",
+          "records": [
+            "result.json#/result/assets/components/1"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "battle/prefabs/[uc]equips.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]equips.ab",
+          "sha256": "c5f7135bb30e1f6f3eef37df6e235598066c219eb29faf0b3731f594351511f5",
+          "records": [
+            "result.json#/result/assets/components/2"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "battle/prefabs/[uc]equips.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]equips.ab",
+          "sha256": "a010f4503c368326701d2c0d526a1f4fa56a20dc07179a872e1410cdd14160f1",
+          "records": [
+            "result.json#/result/assets/components/3"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "battle/prefabs/[uc]equips.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]equips.ab",
+          "sha256": "99c850bf48b94423c130ed7e4e63fbf20c783e2f7d5917705e6df7e2d136bdb0",
+          "records": [
+            "result.json#/result/assets/components/4"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "battle/prefabs/[uc]skills.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "sha256": "07a0fc1299bbe87adf78ce8d8e01ceb9db34a9648be02694e1dc7718fb3df98b",
+          "records": [
+            "result.json#/result/assets/components/5"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "battle/prefabs/[uc]skills.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "sha256": "681066d159c4d4bc82c6b129d91f280b9ffecc0215d140ce94425d306bf5debf",
+          "records": [
+            "result.json#/result/assets/components/6"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "battle/prefabs/[uc]skills.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "sha256": "abf071c158195e11e3752076984e7ed33512f47ae0b7a94dc65668828250e8b3",
+          "records": [
+            "result.json#/result/assets/components/7"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "battle/prefabs/[uc]skills.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "sha256": "bab01561ac9c27917ba2a11e97aa5ffa45157a0163b937f46fdc7e3801d8a363",
+          "records": [
+            "result.json#/result/assets/components/8"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "battle/prefabs/[uc]skills.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "sha256": "4abd7aa555f7f7c3fa7a7f24b9c4174a1c1b110cc2479cf0c42f22feeaafd8d5",
+          "records": [
+            "result.json#/result/assets/components/9"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "pkgrps/btl_pfb_tokens_0.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_0.ab",
+          "sha256": "9cce855b5ef766908fe654ba1f57c80a1dce3c451502dae32e5958699d700b90",
+          "records": [
+            "result.json#/result/assets/components/10"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "battle/enm_pfb_10.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_10.ab",
+          "sha256": "31c22a0bb95033098eee15a9e3326ae9d881ac3eeeb678b00b604bf357df5ca9",
+          "records": [
+            "result.json#/result/assets/components/11"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "battle/enm_pfb_10.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_10.ab",
+          "sha256": "79c6dde40e75b699d47a01c2393528ca85069cb0a1904eb7a1f56b4bc7cf810b",
+          "records": [
+            "result.json#/result/assets/components/12"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "battle/enm_pfb_10.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_10.ab",
+          "sha256": "786f35b4041177cada0b1c740e74ca72b7a0a7dae0d860651ce7799e0dbd024a",
+          "records": [
+            "result.json#/result/assets/components/13"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "battle/enm_pfb_10.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_10.ab",
+          "sha256": "0698c088e824cd4a48aa546378558a97116eb8cc923e8f3e388d8e6bc8a7a089",
+          "records": [
+            "result.json#/result/assets/components/14"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "battle/enm_pfb_10.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_10.ab",
+          "sha256": "c28d258748b181742aa10d6edf464ca29b146d33f8465c204308234a52e1302b",
+          "records": [
+            "result.json#/result/assets/components/15"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "battle/enm_pfb_10.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_10.ab",
+          "sha256": "30f7333e24fb9a42344b116d937bc1ec272b59ae3ff3688f0ec9f8e51df1264c",
+          "records": [
+            "result.json#/result/assets/components/16"
+          ]
+        }
+      ]
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

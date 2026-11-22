@@ -127,4 +127,4 @@ Movement 两遍推进各项接续最新状态，不承诺所有偏移一次原�
 
 大君之触／大君之赐使阻挡者容量增加，同类最多六层；容量贡献与目标占用是独立事实，不能将 volume 改零代替。项目的实时容量只允许后续既有候选重新尝试，不绕过当前容量前提。
 
-满容量是否允许新取得这类目标、贡献生效时点及额外调用链尚未完整闭合。普通原生路径在无剩余容量时退出，不能仅凭 +1 描述推出特殊取得权限；实际内容和证据范围见[满阻挡研究](../research/evidence/blocking-native-20261023/competition/report.txt)及 [Tactical 语义](tactical-semantics.md)。
+大君之触／赐的实际增容要等目标已有阻挡者才生效。其普通原生搜索和关系取得入口均先检查可用容量，满员时无法凭目标自己的增容取得它。 [实际关系取得与增容](../research/cases/22-block-positioning-and-interruption.md#大君之触与大君之赐的阻挡增容) · [Tactical 语义](tactical-semantics.md)

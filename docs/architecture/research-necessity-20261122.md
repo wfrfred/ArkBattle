@@ -4,19 +4,19 @@
 
 组合探针证明指定输入能得到某个结果。接口复核还要确认账务、状态和通知由负责该业务的领域维护。如果调用者要重算领域公式、另存同一业务事实，或借用其它操作模拟一个已有明确语义的业务，保留为 Core 缺口或待定取舍。
 
+本轮取证已更新各项状态。待查证指可能影响 Core 的具体组合或分支，待定指已有证据、仍需项目作设计取舍，待接入指已有语义缺少对应的 Core 表达。
+
 ## Deployment / Card / DP
 
 | 状态 | 事项 | 剩下的问题 |
 | --- | --- | --- |
-| 待接入，细节待查证 | **特殊移动（U028）** | 缺明确的 `deployment.redeploy`，表达同一卡下的特殊离场与再入场。乌尔比安和 Mon3tr 的原生正常路径沿用原 Card、创建新 Unit。普通 `retreat` 会结算退款、涨费与库存恢复，普通 `deploy` 派发部署通知。渡桥会识别上次离场是否属于特殊移动，这个区别有实际用途。还需核对落点失败、同一卡的账务与通知、技能接续，以及思衡托待投放解除后如何接续。 [特殊移动原生路径](../research/cases/24-deployment-cost-and-supply.md#特殊移动的结束原因) · [渡桥的部署条件](../research/cases/24-deployment-cost-and-supply.md#L103) |
-| 待定 | 同卡特殊部署的业务事实（G07） | 卫戍开场布阵保留 Card 关联，但不计入耀骑士临光 S2 使用的普通部署记录。现有 `Quote` 只表达费用、库存和部署位，探针另存本次请求供监听器辨认。需明确部署操作如何让多个观察者读取同一份部署事实。 [实际部署规则](../research/cases/24-deployment-cost-and-supply.md#L102) · [当前通知](../../src/core/battle/deployment/hook.ts#L8) |
-| 待定 | Card 参与本次 Unit 的初始属性（G06、U035） | 松桐的生命上限修正用于建立出生 HP。探针用高优先级 `entered` 改 HP，按 Ref 读到 115／115，`entered` 和 `deployed` 的固定载荷仍是 100／100。需确定哪里提交这份部署输入，让入场观察者读取一致的创建事实。 [原生生命初始化](../research/cases/24-deployment-cost-and-supply.md#L286) · [当前入场载荷](../../src/core/unit/operations.ts#L14) |
+| 待接入，细节待查证 | **特殊移动（U028）** | 缺明确的 `deployment.redeploy`。原生特殊离场跳过普通回收，同一卡免费生成新 Unit，创建失败时默认模式回收 Card。乌尔比安可回退落点，Mon3tr 初次落点失败中断技能并退还 SP，返回失败可能被击倒。思衡托另行恢复技能进度，`RespawnBorn` 属于通用 Ability，不计狂躁。仍需核对思衡托后检失败后锁住的友方 Card 如何在下一次部署解锁，以及哪些实际部署观察者读取特殊入场。 [特殊移动原生路径](../research/cases/24-deployment-cost-and-supply.md#特殊移动的结束原因) |
+| 待定 | 同卡特殊部署的业务事实（G07） | 卫戍开场布阵分别跳过 DP 和预放召唤物库存消耗，也不计入耀骑士临光 S2 使用的部署记录。现有 `Quote` 表达费用、库存和部署位，探针另存本次请求供监听器辨认。需明确部署操作如何让观察者读取同一份部署事实。 [卫戍作战规则及消费者](../research/cases/24-deployment-cost-and-supply.md#卫戍协议) · [当前通知](../../src/core/battle/deployment/hook.ts#L8) |
+| 待定 | Card 参与本次 Unit 的初始属性（G06、U035） | 松桐的 Card 修正先进入单位属性，再用有效 MaxHP 建立出生 HP。探针用高优先级 `entered` 改 HP，按 Ref 读到 115／115，`entered` 和 `deployed` 的固定载荷仍是 100／100。已查的另一个出生观察者「他缚」是在出生后读取实时 HP。需决定在哪里提交部署输入，令固定载荷与实际初始状态一致。 [原生生命初始化](../research/cases/24-deployment-cost-and-supply.md#普通-native-分支的阶段区别) · [当前入场载荷](../../src/core/unit/operations.ts#L14) |
 | 待接入 | 战中调整 DP 上限（G05） | 诺伯特平民鉴定后进入保护区可提高我方 DP 上限。当前自然回复和显式加费都受开场上限约束。 [奖励依据](../research/cases/20-norport-civilian-allegiance-and-blocking.md#L22) · [现行上限](../../src/core/battle/deployment/dp.ts#L5) |
 | 待接入 | 死亡后独立归还全局部署位（U038） | 实机确认干员被击倒后仍暂占全局部署位。当前死亡离场立即归还，满额时另一张卡可随即部署。 [原生与实机复测](../research/evidence/deployment-exit-limits-20261122/README.md#实机复测) |
-| 待接入，细节待查证 | 可修正的再部署涨费上限（U023） | 凛御银灰 X3 在计算原始费用前把涨费上限从 ×2 改为 ×1.75。Core 把涨费上限固定为 ×2。探针要在调用端重算基础费用和取整，再将补偿编码成后段倍率。上限应由 Card 算价处理。与野鬃减费的叠加仍待核对。 [涨费公式](../research/evidence/redeploy-cost-cap-20261122/README.md) · [当前算价](../../src/core/battle/deployment/card/state.ts#L18) · [野鬃减费](../research/cases/24-deployment-cost-and-supply.md#L139) |
-| 待查证 | 运行中的再部署冷却（U026、U027） | 原版银灰 X 模组修正随银灰退场解除时，是否重算受益卡正在运行的冷却。与砾 X 缩短当前段叠加时，核对结算顺序与取整。当前 Core 分开处理开始时采样与显式减时。 [实际规则](../research/cases/24-deployment-cost-and-supply.md#L145) · [原生计时入口](../research/evidence/deployment-recovery-20261101/README.md) |
-| 待接入，细节待查证 | 动态容量与恢复队列（U029） | 谬因 S3 同时改变 Card 的持有上限、在场上限和恢复库存。部署与补货当前都读静态上限，探针预留最大容量，再由调用者加限制、召回并手工结算库存。有效容量与恢复队列的裁剪应由 Card 统一处理。宿主提前离场时各部分的结算顺序仍待核对。 [实际容量与结束分支](../research/evidence/redeploy-state-and-repeater-20261122/README.md#谬因-s3-的中继器) · [当前在场上限](../../src/core/battle/deployment/query.ts#L81) · [当前库存上限](../../src/core/battle/deployment/card/state.ts#L110) |
-| 待查证 | 临时 Card 的结束与重建（U031） | 淬羽赫默 S2 结束后，未部署的无人机卡是否注销。下次发动是否沿用卡牌身份、库存和冷却。现有资格限制能控制窗口，是否需要 Card 注销入口取决于实际结果。 [技能窗口](../research/cases/24-deployment-cost-and-supply.md#L214) |
+| 待接入 | 可修正的再部署涨费上限（U023） | 凛御银灰 X3 在计算原始费用前把涨费上限从 ×2 改为 ×1.75。野鬃的整数减费在原始费用和后段倍率取整之后结算。Core 把涨费上限固定为 ×2，探针由调用端重算再编码成倍率。算价与取整应由 Card 按这两个输入阶段处理。 [实际叠加顺序](../research/cases/24-deployment-cost-and-supply.md#凛御银灰-x3-与野鬃) · [当前算价](../../src/core/battle/deployment/card/state.ts#L18) |
+| 待接入 | 动态容量与恢复队列（U029） | 谬因 S3 同时改变 Card 的持有上限、在场上限和恢复库存。准备阶段宿主离场时撤两份并清计时余量，持续阶段结束按撤容量、召回、清余量处理。原生队列随增量和更新后的总库存裁剪。部署与补货当前都读静态上限，Card 需要统一结算有效容量和队列。 [实际容量与结束分支](../research/cases/24-deployment-cost-and-supply.md#已核的两条附属-card-路径) · [当前库存上限](../../src/core/battle/deployment/card/state.ts#L110) |
 
 ## Blocking
 
@@ -25,7 +25,6 @@
 | 待接入 | 跨层阻挡（G04） | 迷狂牢笼同时维持地面与空中关系，自身受击资格也读取这些关系。当前获取要求双方同层，切层会解除原有关系。 [实际配置](../research/evidence/resource-mechanisms-20261114/life/content.json#L136150) · [当前资格检查](../../src/core/battle/blocking/operations.ts#L51) |
 | 待接入 | 动态空中阻挡半径（U022） | 凯尔希·思衡托 S1 让在场干员拦截原半径外的空中目标。当前 Restriction 只能筛除固定搜索范围内的候选。 [实际规则](../research/cases/21-tippi-air-blocking.md#L96) · [当前搜索](../../src/core/battle/blocking/operations.ts#L183) |
 | 待接入 | 迷狂牢笼的阻挡站位 | 牢笼保留距离 0.2 格内目标的位置，较远目标向中心聚拢。当前取得关系会向外推开近处目标，探针中距离 0.1 格的目标被推入邻格。 [站位依据](../research/evidence/cage-block-position-20261122/README.md) · [当前取得流程](../../src/core/battle/blocking/operations.ts#L150) |
-| 待查证 | 满容量时的关系增容 | 大君之触／赐被阻挡后可提高阻挡者容量。需核对容量已满时能否先取得关系，以及增容什么时候生效。常规路径在满容量时终止搜索。 [满阻挡与增容](blocking.md#满阻挡筛选与关系引起的容量变化) |
 
 ## Unit / Effect
 
@@ -38,8 +37,8 @@
 | 状态 | 事项 | 剩下的问题 |
 | --- | --- | --- |
 | 待接入 | 出口资格与离场原因（G08） | 喀兰圣女有真实终点且抵达后留场，探针需要额外 MOVE 和持续 WAIT 才能保留两者。终点抵达与允许退出应作为独立判断。自然到达蓝门与思旧强制出口还应提供可供关卡结算消费的出口事实，当前自然抵达和同位置脚本清除都传 `SCRIPT`。 [原生出口路径](../research/cases/13-route-and-movement-timing.md#L153) · [实际业务消费者](../research/cases/30-scheduler-action-data-fields.md#L155) |
-| 待查证 | 跨格路点偏移（U006） | 主线 5-2 破阵者的 MOVE 偏移后落在另一格。项目探针分别按原格和偏移格构场时得出不同中间点，需要核对原生取格是否会改变实际走位、到达或接敌。Plan 已保存两个输入。 [实际配置与导航探针](../research/cases/12-navigation-native-algorithm.md#10-实际路线中的跨格-move) |
-| 待查证 | 自主运动的冲撞资格（U019） | 水手重艇和凶豕兽的冲撞模板先检查自主运动。核对仅受外力移动或已停但仍有历史速度时的实际冲撞结果，以及现有运动状态能否区分。 [冲撞配置与出场记录](../research/cases/15-locomotion-native-semantics.md#moving-不是唯一事实) |
+| 待定 | 跨格路点偏移（U006） | 原生按路点原格构场，到最后一段才加世界偏移。主线 5-2 破阵者的首段朝向因此与当前 Core 不同。Plan 已保存两个输入，需决定是否采用原格构场。 [实际路线与取格对照](../research/cases/12-navigation-native-algorithm.md#10-实际路线中的跨格-move) |
+| 待接入 | 自主运动的冲撞资格（U019） | 水手重艇和凶豕兽的冲撞读来源当时的自主运动状态。失衡中的外力位移以及已经脱离自主移动状态的历史速度均不满足资格。Core 需要表达这一共同的运动事实。 [实际冲撞模板与原生谓词](../research/cases/15-locomotion-native-semantics.md#水手重艇与凶豕兽的冲撞) |
 
 ## Targeting / Route
 
@@ -51,7 +50,7 @@
 
 | 状态 | 事项 | 剩下的问题 |
 | --- | --- | --- |
-| 待定，细节待查证 | 生命比例同步的 HP 调整 | 魔王和「岁」分别计算有符号 HP 差值，逐笔提交并跳过普通伤害或治疗通知。探针正差走 `increaseHp`，负差构造 `LOSS` 请求并排除两阶段 Hook，仍产生 `DAMAGE` Event。需核对实际的伤害报数与致命保护，再决定这两种方向是否共享一个 HP 调整入口。变形者的同步保留普通接收，使用不同政策。 [同步实证](../research/cases/29-hp-and-ep-healing-settlement.md#L164) · [当前提交](../../src/core/unit/capability/vitality/operations.ts#L131) |
+| 待接入 | 生命比例同步的 HP 调整 | 魔王和「岁」的有符号调整跳过普通浮字、伤疗应用后通知和战斗记录，保留专用接收及生命归零处理。淬羽赫默 Y2／Y3 的屏障实际监听专用接收。探针负差走 `LOSS` 并排除普通 Hook，仍会产生 `DAMAGE` Event，也无法派发这项专用接收。变形者的同比例同步使用普通接收。 [生命提交与实际消费者](../research/cases/29-hp-and-ep-healing-settlement.md#有符号调整保留特定接收与生命归零程序) · [当前提交](../../src/core/unit/capability/vitality/operations.ts#L131) |
 
 ## Schedule
 
