@@ -5,7 +5,7 @@ import * as units from "./query.js";
 import { appendEvents, type State as BattleState } from "../battle/state.js";
 import { create as createLifetime } from "../lifetime/operations.js";
 import type { Ref } from "../common/ref.js";
-import { dispatch as dispatchObservers, removed as unitRemoved } from "../battle/unit-hook.js";
+import * as observers from "../battle/unit-hook.js";
 import type { Change } from "./change.js";
 import * as lifecycle from "./hook.js";
 import { dispatch } from "../hook.js";
@@ -16,8 +16,20 @@ export function add<U extends Unit>(battle: BattleState, unit: U): BattleState {
     battle = publishBattlefield(battle, next);
     const reference = units.ref(unit);
 
-    return dispatch(battle, unit, undefined, {
-        candidates: () => unit.hooks.get(lifecycle.entered),
+    battle = observers.dispatch(
+        battle,
+        observers.entered,
+        unit,
+        (current) => units.get(current, reference)?.lifecycle !== "ACTIVE",
+    );
+
+    const entered = units.get(battle, reference);
+    if (entered?.lifecycle !== "ACTIVE") {
+        return battle;
+    }
+
+    return dispatch(battle, entered, undefined, {
+        candidates: () => entered.hooks.get(lifecycle.entered),
         find: (current, id) => {
             const self = units.get(current, reference);
 
@@ -87,7 +99,7 @@ export const lifetime = createLifetime<Unit, Unit, Departure>({
             find: (_current, id) => entries.find((entry) => entry.id === id),
         }).state;
 
-        return dispatchObservers(battle, unitRemoved, departure);
+        return observers.dispatch(battle, observers.removed, departure);
     },
     reason: (departure) => departure.reason,
 });

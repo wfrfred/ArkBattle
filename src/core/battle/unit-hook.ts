@@ -1,9 +1,11 @@
 import * as hooks from "../hook.js";
 import type { Entry } from "../common/collection/entries.js";
-import type { Departure } from "../unit/unit.js";
+import type { EnteredHook, RemovedHook } from "../unit/hook.js";
 import type { State as BattleState } from "./state.js";
 
-export type Hook = hooks.Hook<Departure, void>;
+export type Hook = RemovedHook;
+
+export const entered = hooks.key<EnteredHook, BattleState>("battle.unit.entered");
 
 export const removed = hooks.key<Hook, BattleState>("battle.unit.removed");
 
@@ -27,13 +29,15 @@ export function removeHook<H extends Entry>(
     return next === battle.unitHooks ? battle : { ...battle, unitHooks: next };
 }
 
-export function dispatch(
+export function dispatch<C>(
     battle: BattleState,
-    key: hooks.Key<Hook, BattleState>,
-    event: Departure,
+    key: hooks.Key<hooks.Hook<C, void>, BattleState>,
+    event: NoInfer<C>,
+    stop?: (battle: BattleState) => boolean,
 ): BattleState {
     return hooks.dispatch(battle, event, undefined, {
         candidates: (current) => current.unitHooks.get(key),
         find: (current, id) => current.unitHooks.find(key, id),
+        ...(stop === undefined ? {} : { stop }),
     }).state;
 }

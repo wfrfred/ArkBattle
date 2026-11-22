@@ -26,12 +26,6 @@
 | 待接入 | 动态空中阻挡半径（U022） | 凯尔希·思衡托 S1 让在场干员拦截原半径外的空中目标。当前 Restriction 只能筛除固定搜索范围内的候选。 [实际规则](../research/cases/21-tippi-air-blocking.md#L96) · [当前搜索](../../src/core/battle/blocking/operations.ts#L183) |
 | 待接入 | 迷狂牢笼的阻挡站位 | 牢笼保留距离 0.2 格内目标的位置，较远目标向中心聚拢。当前取得关系会向外推开近处目标，探针中距离 0.1 格的目标被推入邻格。 [站位依据](../research/evidence/cage-block-position-20261122/README.md) · [当前取得流程](../../src/core/battle/blocking/operations.ts#L150) |
 
-## Unit / Effect
-
-| 状态 | 事项 | 剩下的问题 |
-| --- | --- | --- |
-| 待定 | 全局规则同步处理后来登记的 Unit（G02） | 全局效果在启用时补发给在场对象，后来出生者也接受同一资格判断。后兽的 Aura 已有实际例子。此前探针要在每种受影响的出生蓝图上注入 `entered`，全局规则因而依赖接收者的构造入口。需确定战斗级规则如何同步观察 Unit 登记，以及和本地 `entered` 的先后。 [后兽的实际注册](../research/evidence/insert-patrol-20261107/content/README.md#L28) · [全局施加](../research/03-space-units-and-mechanisms.md#普通-globalbuff-与全局共享状态) · [当前入场派发](../../src/core/unit/operations.ts#L14) |
-
 ## Navigation / Route / Locomotion / Shifting
 
 | 状态 | 事项 | 剩下的问题 |

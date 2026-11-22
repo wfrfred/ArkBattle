@@ -27,7 +27,7 @@
 
 | 执行时点 | 名称 |
 | --- | --- |
-| 登记实例之后 | Definition 程序 `onEnter` 或 Unit 通知 `entered` |
+| 登记实例之后 | Definition 程序 `onEnter` 或 Unit 通知 `entered`，Battle 级键名为 `battle.unit.entered` |
 | 已发布 `ENDING`，自动请求依赖者结束之前 | Unit Hook `removing` |
 | 依赖者完成收尾之后，实例注销之前 | Definition 程序 `onEnd` |
 | 实例注销之后 | Unit 通知 `removed`，Battle 级键名为 `battle.unit.removed` |

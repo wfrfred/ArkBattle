@@ -7,7 +7,7 @@ import * as units from "../../dist/core/unit/index.js";
 import { remove, update } from "../../dist/core/unit/operations.js";
 import * as hooks from "../../dist/core/hook.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
-import { removed as unitRemoved, setHook, removeHook } from "../../dist/core/battle/unit-hook.js";
+import { entered as unitEntered, removed as unitRemoved, setHook, removeHook } from "../../dist/core/battle/unit-hook.js";
 
 test("HOOK-01: registration reuses identical entries and replaces an ID without changing its position", () => {
     const stage = key("test.stage");
@@ -78,6 +78,73 @@ test("Hook priority fixes this dispatch's order while replacement and nested dis
         ["outer", "a-tie"],
         ["outer", "replacement"],
     ]);
+});
+
+test("Battle entered applies a global Effect before the Unit runs its own entered", () => {
+    const effect = { id: "global-effect", initialize: () => ({}) };
+    const initial = battle([], {
+        initialMechanisms: [{
+            definition: {
+                id: "global-rule",
+                initialize: () => ({}),
+                onEnter(state) {
+                    return setHook(state, unitEntered, {
+                        id: "apply-global-effect",
+                        invoke(current, unit) {
+                            const reference = units.ref(unit);
+                            assert.equal(units.get(current, reference), unit);
+                            return { state: effects.install(current, reference, effect).state, value: undefined };
+                        },
+                    });
+                },
+            },
+        }],
+    });
+    let localEntered = false;
+    const created = units.initialize(initial, {
+        position: [0, 0],
+        definition: {
+            id: "later-unit",
+            hooks: Hooks.empty().set(units.entered, {
+                id: "observe-global-effect",
+                invoke(current, self) {
+                    assert.ok(self.effects.values().some((instance) => instance.definition === effect));
+                    localEntered = true;
+                    return { state: current, value: undefined };
+                },
+            }),
+        },
+    });
+    const registered = units.add(created.state, created.value);
+    assert.equal(localEntered, true);
+    const self = units.get(registered, units.ref(created.value));
+    assert.ok(self?.effects.values().some((instance) => instance.definition === effect));
+});
+
+test("An ended Unit skips the remaining Battle and local entered programs", () => {
+    let state = setHook(battle(), unitEntered, {
+        id: "remove-on-entry",
+        invoke: (current, unit) => ({
+            state: units.remove(current, units.ref(unit), { reason: "SCRIPT" }),
+            value: undefined,
+        }),
+    });
+    state = setHook(state, unitEntered, {
+        id: "remaining-observer",
+        invoke: () => assert.fail("an ended Unit cannot run another Battle entered program"),
+    });
+    const created = units.initialize(state, {
+        position: [0, 0],
+        definition: {
+            id: "ending-on-entry",
+            hooks: Hooks.empty().set(units.entered, {
+                id: "unit-entry",
+                invoke: () => assert.fail("an ended Unit cannot run its local entered program"),
+            }),
+        },
+    });
+    const next = units.add(created.state, created.value);
+    assert.equal(units.get(next, units.ref(created.value)), undefined);
 });
 
 test("Unit removing uses priority and removed uses the registrations captured before unlinking", () => {
