@@ -70,25 +70,33 @@ U023 的实际样本是凛御银灰 X 模组 3 级。符合天赋条件的 Card 
 | U023 | 已知凛冬、极境与费用交换可分别用卡牌费用贡献。凛御银灰 X3 的实际单独效果经现有 Card 操作验证。原先合成探针只排除了后段直接乘 0.875 的近似，已取整的固定基础费校正通过。若找到基础费后改且同时有后段倍率的真实组合，才需重新判断共同算价的表达能力。 [原生与 Core 对照](#凛御银灰模组的再部署涨费上限) |
 | U024 | 初始配置允许一起设定或分别设定 DP 上限与卡价上限。普通战中 `ModifyMaxCost` 只改账户上限，并以已有卡价上限截断。HE-7 实际刷出的赏金猎人扰乱者绑定该节点，每名在场时将我方 DP 上限降低 10，卡价上限继续使用开场配置。该用例归入 G05。 [原生与实际关卡](../research/evidence/dp-cap-20261122/README.md) · [当前 Definition](../../src/core/battle/deployment/deployment.ts#L14) |
 | U025–U027 | U025 的普通连续归队按本次定向补查结论保留当前段。银灰和砾分别作用下一次预算与当前段，已有对应贡献和操作。回滚、半值取整和多来源顺序继续按真实组合查证。 [Case 24](../research/cases/24-deployment-cost-and-supply.md#L109) |
-| U028 | 乌尔比安和 Mon3tr 的 Self 路径实际复用原 Card 创建新 Unit，并调整 HP 比例。公开入口用零费用、零库存消费的 Request 和新实例的 `LOSS`、`skill.modify`、带剩余时长的 `activate` 复现了正常移动的账务与状态。探针中的 `LOSS` 仍派发普通接收和提交后通知，原生比例写入设置跳过普通 Modifier 通知的标志。能否影响真实的伤判或技能观察者，以及思衡托的待投放和失败返回仍需核对。 [实际绑定与原生写入](../research/evidence/redeploy-state-and-repeater-20261122/README.md#特殊移动) |
+| U028 | 乌尔比安和 Mon3tr 的 Self 路径复用原 Card 创建新 Unit，并调整 HP 比例。正常移动探针用零费用、零库存消费的 Request、新实例的 `LOSS`、`skill.modify` 和带剩余时长的 `activate` 复现账务与状态。在恢复 HP 的 `LOSS` 中排除普通接收、提交后和结算结束的 Damage Hook。按 Unit ID 核对，`receiving` 与 `targetApplied` 只来自移动前的旧实例扣血。取消这项排除后，新实例的比例写入也触发这两条通知。Vitality 内部的生命提交 Hook 仍按原契约运行。技能接续的通知消费者、思衡托的待投放和失败返回仍需核对。 [实际绑定与原生写入](../research/evidence/redeploy-state-and-repeater-20261122/README.md#特殊移动) · [排除范围](resource.md#本次-hook-排除取消权限与接收豁免) |
 | U029–U031 | 谬因 S3 同改持有上限、在场上限和库存。正常结束的公开探针覆盖技能期间部署 0–3 个中继器，预留最大容量、临时部署限制、召回及显式恢复均能结算到一份可用库存。宿主结束和其他内容的并行恢复、回收或附属卡身份按实际交互继续核对。 [中继器证据](../research/evidence/redeploy-state-and-repeater-20261122/README.md#谬因-s3-的中继器) |
 | U032–U034 | 卫戍自动部署从原棋子位置和 Card UID 重试。费用或占位失败可以用现有 `evaluate`／`deploy` 保留原部署对象，成功后替换并清原倒地对象。原生按同阵营和同宿主复用匹配召唤物的 Card UID。以队列策略的中继器为例，公开探针中同卡两份先后离场后串行恢复，另一宿主的独立卡并行恢复。U034 保留实际暂停组合问题。 [原生卡牌分配与重试](../research/evidence/redeploy-state-and-repeater-20261122/README.md#卫戍自动再部署) |
 | U035 | G06 的探针保留真实实时 HP，冻结载荷仍是出生旧样本。优先找必须消费早期出生事实的内容，查清基础 SP、MaxHP 与该消费者的时点。若具体消费者可按 Ref 查询，则已有路径。 [Case 24](../research/cases/24-deployment-cost-and-supply.md#L266) |
 | U036–U037 | 岁相的矩形清场、按格布置封印可用 Box 查询、Unit.remove 与独立地块覆盖／单位。多格 Occupancy 需找到消费同一主体跨格占位的业务。普通无卡预置用 Unit.initialize；关联既有 Card 的特殊预置尚需查清退场返费、库存及具体回收对象。 [方向和巨型范围](../research/cases/24-deployment-cost-and-supply.md#L291) · [预置样本](../research/cases/24-deployment-cost-and-supply.md#L418) |
 | U038–U040 | 普通死亡的部署额度与同卡名额已经分别追到各自的写回及资格查询，见定向补查。源石封印是否约束自动入口仍缺实际规则。共用同一卡时已有 DEPLOY Restriction 可供明确政策消费。 [普通回收](../research/cases/24-deployment-cost-and-supply.md#普通撤退与死亡的结算顺序) |
 | U041 | 红丝绒 AD-8／AD-EX-8 的酒神在神经爆发前置发送约 2 秒后命中的真实弹道。资源开关禁止同步命中。公开探针用 `burstStarted` 创建延迟 Projectile 成功保持下一目标先未爆发、随后由命中启动的顺序。该实际内容不产生同宿主并行第二轮。 [原生与资源](../research/evidence/resource-observers-20261122/README.md#爆发前置实际发射的是延迟弹道) |
-| U042 | 妮芙的 Action／Projectile 先按命中前爆发事实决定附段，HP beforeCommit 可以装延迟程序，sourceApplied 触发 EP。若主 HP 已归零而未救回，后续 EP 不可用。若其他已知伤后程序须与这个观察者排序，先查是否可由同轮 Hook 优先级组织，再找真实相互覆盖。 [Case 27](../research/cases/27-attack-additions-and-damage-events.md#L152) |
-| U043–U044 | 奥术法阵在普通接收前即对本笔目标尝试沉默。公开探针用 `hpDamage.output` 安装标准沉默，后续抵挡或将伤害归零均保留沉默。初始零值与特殊免疫入口仍待证。星熊 Y2／Y3 实际消费独立的成功抵挡，包含外部抵挡。公开探针用接收 Hook 读取取消结果，成功抵挡时同笔后续处理即可读到攻击增益。 [Case 26](../research/cases/26-arcane-circle-chain-silence.md) · [抵挡证据](../research/evidence/resource-observers-20261122/README.md#星熊-y2y3-消费独立的成功抵挡) |
+| U042 | 妮芙的 Action／Projectile 先按命中前爆发事实决定附段。公开探针验证 `beforeCommit` 读取提交前状态、`sourceApplied` 按接收量触发 EP。仍存活的目标可以在同轮爆发，HP 已归零的目标拒绝后续 EP。接收量超过实际扣血时，附加 EP 的基数仍为接收量。其他伤后程序与妮芙发生实际顺序竞争时，再核对两者对应的 Hook。 [Case 27](../research/cases/27-attack-additions-and-damage-events.md#L152) |
+| U043–U044 | 奥术法阵在普通接收前尝试沉默。原生入口拒绝初始为零的 Modifier，普通不可伤判定在来源输出后。公开探针用 `hpDamage.output` 的正数资格安装标准沉默，直接零输出不安装，后续抵挡或接收归零均保留。仍须查实际特殊入口能否在输出前拦截，以及更早的来源输出程序能否把原先正数改为零后仍须触发沉默。星熊 Y2／Y3 实际观察外部成功抵挡，公开探针用接收 Hook 读取取消结果，成功抵挡时同笔后续处理即可读到攻击增益。 [Case 26](../research/cases/26-arcane-circle-chain-silence.md) · [抵挡证据](../research/evidence/resource-observers-20261122/README.md#星熊-y2y3-消费独立的成功抵挡) |
 | U045 | 原生目标的 reason 5 能跳过来源输出，现有 Calculate.output 已早于 Apply.beforeReceive。主线 12-20 的变形者集群通过弹道召唤带 EP INTERRUPT 天赋的解构畸变体，其模板只拦 ENEMY 来源的 EP，普通我方 EP 输出不能构成这个冲突。仍缺同一可达请求中有副作用的来源 EP 程序。 [先后比较](../research/cases/28-damage-hooks-and-event-granularity.md#L50) · [召唤链证据](../research/evidence/wdslm-ep-interrupt-20261122/README.md) |
-| U046 | 已绑定的均摊 HP／EP 是保全派驻战地援护无人机，联合分治候选有生息演算单位绑定。适用范围内若有分多人回复，可先由作用程序固定成员列表，再按比例对各 Ref 发起现有 Healing。只有共享结算资格产生真实差异时再问资源模型。 [Case 29](../research/cases/29-hp-and-ep-healing-settlement.md#L164) |
+| U046 | 两个均摊治疗节点的已知绑定分别属于保全派驻和生息演算。该检索只覆盖所选节点，当前支持范围内的均摊治疗仍待证。补查时另找到生命重分配与同步的实际案例，见下节。 [均摊治疗取证](../research/cases/29-hp-and-ep-healing-settlement.md#9-剩余证据边界) |
 | U047 | 安装版配置保留回收解除最终等待的默认值 true。普通 0-1 末敌的回收预算默认 1.0 秒，最终等待用于正常关卡完成。公开探针在先于 Schedule 回收反馈的 `battle.unit.removed` 中为每个仍列于 final 的死亡单位触发一段 30 Tick 的 Branch Operation。两名敌人相隔 10 Tick 死亡，首名死亡后下一波立即推进，`isCompleted` 等最后一段结束才变为 true。已证普通终局延迟可组合，未实机量测具体时长。 [配置与实际消费](../research/evidence/scheduler-recycle-config-20261122/README.md) · [调度完成条件](../../src/core/battle/schedule/query.ts#L3) |
 | U048 | 本次定向补查确认了动态创建后加入调度的实际调用，以及本波加最终、只最终、两处均无的三个真实样本。活 Unit 独立解除本波等待继续由已存在的 `releaseFromWave` 表达。 [Case 30](../research/cases/30-scheduler-action-data-fields.md) · [解除等待的原生正例](../research/cases/34-prts-mechanism-coverage-audit.md#L17) |
 | U049 | 马特奥和后兽已有改道样本。规程实际 Prefab 和 Holder 确认「假想敌：械」按左右确定分支，然后为刚生成的量变之械在索引 0 插 MOVE。已用 `Route.reassign` 探针复现插点并继续后续路线。未出现这项内容必须保留旧巡逻进度或当前 WAIT 的情况。 [实际绑定与配置](../research/evidence/spatial-content-20261122/README.md) |
 | U050–U051 | 莱塔尼亚召唤物正例只建立出向关系。四个缓存敌人包的 184 个控制器中，三个非零掩码均为我方阻挡敌方。本轮仍未找到同时建立入向与出向关系的实际见证。已有 Blocker + Route TRACE 和取得／解除关系的资格调整可表达停走和攻击。隐藏后重选追踪目标的实际后继仍待证。 [Case 32](../research/cases/32-leithanien-summons-blocking-and-movement.md) |
 | U052–U053 | 火龙确有朝向消费者，但没有证据链接到 MultiSpine 的延迟发布。异常恢复自动补发也未见正例。若某内容确实延迟转向，可由其 Effect 在实际时点清限制再调 facing.turn。 [Case 35](../research/cases/35-facing-and-turning-conditions.md#L69) |
-| U054–U057 | 煌的普通锁血限幅后保留请求原有数值权限。真正设置写保护的「他缚」在部署时失去 70% 当前 HP。公开探针用 `beforeReceive` 和 `fix` 验证后续普通接收程序不能缩小这笔 700 点伤害，抵挡仍能取消。两种机制共同作用时的实际消费者仍待证。固定模板中的八处取消原因过滤都在 HP 受伤事件。EP 后置取消消费者、标志 4 的实际缩放交互与蒂比天赋计时仍待证。 [原生调用与模板检索](../research/evidence/resource-observers-20261122/README.md) |
+| U054–U057 | 煌限幅后保留原有写入权限。公开探针用 `beforeReceive` 和 `fix` 复现肉鸽「他缚」的固定损失仍可被抵挡。两者共同作用时的实际消费者仍待证。固定模板中的八处取消原因过滤都在 HP 受伤事件，EP 后置取消消费者及标志 4 的实际缩放交互仍待证。蒂比 S2 的公开探针在 `beforeReceive` 发动技能并尝试闪避，再由天赋自己的 `receiving` 资格决定计时是否重置。两种计时结果均可表达，实际线上规则仍待证。 [原生调用与模板检索](../research/evidence/resource-observers-20261122/README.md) · [蒂比的证据差异](../research/cases/38-damage-classification-and-permissions.md#L300) |
 | U058 | 固定模板唯一 `_onlyUpdateSpCost=false` 的节点确有建筑工具间绑定。原生节点只修改 `spCost`，恢复类型随原值复制。该实际调用没有建立战中切换 SP 回复类型的需求。 [配置和字段写入](../research/evidence/resource-observers-20261122/README.md#取消原因与-sp-方式的固定表检索) |
 | U059 | 固定卫戍资料至少两版配置采用不同共享次数。验证了 Mechanism.state 可保存同一预算，多个 Unit 的 damageCommitting 同步取用，成功者进入 G01 等待。需要继续核对真实判例的扣减、例外和后来加入单位的装配，已证共享预算无需第二套计数机制。 [全局样例](../research/03-space-units-and-mechanisms.md#L285) |
+
+## 生命比例的重分配与同步
+
+魔王 S3 采样范围内总 HP 与总 MaxHP，再逐目标应用有符号差值。公开探针用 `increaseHp` 和排除普通通知的 `LOSS`，将 250／1000 与 1700／2000 调到 650／1000 与 1300／2000，同时无普通伤害或治疗通知。Vitality 自身的伤害提交仍可观察减量。债务、生命提交观察者及两轮目标资格之间的实际交互仍需核对。 [原生绑定](../research/evidence/health-equalization-20261122/README.md)
+
+主线 12-20 的同构实例分别提交生命并同步比例。公开探针用 `targetApplied` 遍历同组 Ref，保留其它实例接收本次差值的机会，再继续原笔的 `sourceApplied`。两次非致命伤害分别命中碎片和本体，三个实例都同步到 80% 和 50%。致命分支、重入和其它观察程序仍按实际内容核对。 [原生绑定](../research/evidence/wdslm-hp-sync-20261122/README.md)
+
+「岁」在同步 HP 比例之外还独立累计受击部位的本笔数值。公开探针让两个部位分别受到 200 和 600 的非致命伤害，四个部位依次同步到 80% 和 50%。只有实际受击部位的普通接收程序与计数更新，镜像差值走排除普通通知的 `LOSS`。部位抬起、离场与归零的后续交互仍待证。 [普通同步路径](../research/evidence/sui-hp-sync-20261122/README.md)
 
 ## 验证与范围
 

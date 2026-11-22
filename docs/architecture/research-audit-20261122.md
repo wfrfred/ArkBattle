@@ -93,7 +93,7 @@
 | U043 | 零伤害、无敌、完全吸收下伤后观察者的资格，含奥术法阵各段跳跃与妮芙附加 EP | [Case 28](../research/cases/28-damage-hooks-and-event-granularity.md#L48) |
 | U044 | 是否存在独立抵挡通知或区分两种 BLOCKED 的实际后继（含 Case 38） | [Case 28](../research/cases/28-damage-hooks-and-event-granularity.md#L48) |
 | U045 | 实际内容中目标前置（含原因 5 提前中断）与来源输出换位是否会改变结果 | [Case 28](../research/cases/28-damage-hooks-and-event-granularity.md#L52) |
-| U046 | 联合分担或均摊治疗能否绑定到支持范围内的实际玩法 | [Case 29](../research/cases/29-hp-and-ep-healing-settlement.md#L167) |
+| U046 | 联合分担或均摊治疗能否绑定到支持范围内的实际玩法 | [Case 29](../research/cases/29-hp-and-ep-healing-settlement.md#9-剩余证据边界) |
 | U047 | useRecycleToFinishScheduler 等运行动态配置的当前有效取值和实际等待差异 | [Case 30](../research/cases/30-scheduler-action-data-fields.md#L136) |
 | U048 | 外部召唤或动态 Branch 生成是否实际需要登记到当前波次等待。卫戍 dragon 的触发条件纳入这一链 | [Case 30](../research/cases/30-scheduler-action-data-fields.md#L182) |
 | U049 | acfnc 等保留原巡逻再插点的可达链和真实巡逻回边 | [Case 31](../research/cases/31-route-operations-and-state.md#L139) |
@@ -228,7 +228,7 @@
 | U163 | 凛御银灰 S2 原生 1.1／0.5 秒的完整逐 Tick 调度 | [Case 24](../research/cases/24-deployment-cost-and-supply.md#L282) |
 | U164 | 客户端 FP 舍入、固定帧率及持续输出次数逐 Tick 完全一致 | [Case 25](../research/cases/25-elemental-burst-recovery-timing.md#L165) |
 | U165 | 可同时命中的普通暴击和弱点程序的相对顺序及实际受影响结果 | [Case 28](../research/cases/28-damage-hooks-and-event-granularity.md#L48) |
-| U166 | 缇缇满血后重复空 setter 通知是否产生额外结果 | [Case 29](../research/cases/29-hp-and-ep-healing-settlement.md#L168) |
+| U166 | 缇缇满血后重复空 setter 通知是否产生额外结果 | [Case 29](../research/cases/29-hp-and-ep-healing-settlement.md#9-剩余证据边界) |
 | U167 | 当前 EnemyData 与 level 0 上的攻击方式差异，能改变结果的同一敌人实际正例。项目明确以 Action Definition 推导 | [Case 36](../research/cases/36-unit-classification-and-combat-tags.md#L143) |
 | U168 | 忽略闪避和忽略取消原因对有效线上随机消费的差异 | [Case 38](../research/cases/38-damage-classification-and-permissions.md#L186) |
 | U169 | Scheduler 等待恢复相对于对象推进的原生帧内位置 | [总览01](../research/01-scope-and-battle-flow.md#L106) |
