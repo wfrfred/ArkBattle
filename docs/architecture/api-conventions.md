@@ -100,6 +100,8 @@ Hook 固定 Context，逐项接续 BattleState 和工作值；通知使用 void�
 
 readonly 表达调用约定，不依赖 freeze、深拷贝或递归只读包装。未变字段共享，真正无变化返回原引用；同值请求若仍有明确业务后继，就不能当作整个操作 no-op。
 
+`replaceIn(state, path, value)` 接收非空键元组和算好的字段值。调用方保证路径经过普通状态对象，判别联合应先收窄。数组和实例可以作为叶值整体替换。叶值按 `Object.is` 比较，相同则返回原对象，否则只复制路径上的对象。
+
 Contribution 的动态 Input 在只读查询时求值，不接收累计值或推进状态；先竞争再求值。会驱动持续时序的 Action speed／interval 只接受静态 Modifier，并在变更后同步结算当前冷却，不在每 Tick 查询刷新。领域公式直接使用真实需要的 self、definition／state 或 base／modifiers，不为统一参数数量增加无用途的 BattleState。
 
 私有状态采用“查询、计算、提交”：计算与 setter 之间不执行其他完整操作。setter 接收结果值，只替换允许字段并保留最新身份、进度及生命周期；不接收值／转换函数双协议，也不写回旧聚合。Typed Ref 与 NoInfer 保持原始私有类型配对，不能先弱化 Ref 再写入不兼容状态。

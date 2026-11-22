@@ -1,4 +1,5 @@
 import type { Identified, Ref } from "../common/ref.js";
+import { replaceIn } from "../common/object.js";
 import type { State as BattleState, Result } from "../battle/state.js";
 import { paired, type Definition, type Lifetime, type Scope } from "./lifetime.js";
 import * as dependency from "./dependency.js";
@@ -24,7 +25,7 @@ export function create<V extends Identified<object>, S extends V, E>(
 
             battle = drain(battle);
 
-            return flushDeferred({ ...battle, lifetime: { ...battle.lifetime, settling: false } });
+            return flushDeferred(replaceIn(battle, ["lifetime", "settling"], false));
         },
     };
 
@@ -36,10 +37,11 @@ export function defer(
     operation: (battle: BattleState) => BattleState,
 ): BattleState {
     if (battle.lifetime.settling || battle.lifetime.flushing) {
-        return {
-            ...battle,
-            lifetime: { ...battle.lifetime, deferred: [...battle.lifetime.deferred, operation] },
-        };
+        return replaceIn(
+            battle,
+            ["lifetime", "deferred"],
+            [...battle.lifetime.deferred, operation],
+        );
     }
 
     return operation(battle);
@@ -154,9 +156,7 @@ function change(
     const previous = index.entries.get(dependency.key(target));
     const dependencies = dependency.derive(index, [{ previous, next }]);
 
-    return dependencies === index
-        ? battle
-        : { ...battle, lifetime: { ...battle.lifetime, dependencies } };
+    return replaceIn(battle, ["lifetime", "dependencies"], dependencies);
 }
 
 function request(
@@ -220,13 +220,12 @@ function request(
 
     const pending = battle.lifetime.endings.get(identity)!;
 
-    return {
-        ...battle,
-        lifetime: {
-            ...battle.lifetime,
-            endings: new Map(battle.lifetime.endings).set(identity, { ...pending, phase: "READY" }),
-        },
-    };
+    const endings = new Map(battle.lifetime.endings).set(identity, {
+        ...pending,
+        phase: "READY",
+    });
+
+    return replaceIn(battle, ["lifetime", "endings"], endings);
 }
 
 function drain(battle: BattleState): BattleState {
@@ -243,21 +242,16 @@ function drain(battle: BattleState): BattleState {
         }
 
         const [identity, pending] = current;
-        battle = {
-            ...battle,
-            lifetime: {
-                ...battle.lifetime,
-                endings: new Map(battle.lifetime.endings).set(identity, {
-                    ...pending,
-                    phase: "FINALIZING",
-                }),
-            },
-        };
+        const finalizing = new Map(battle.lifetime.endings).set(identity, {
+            ...pending,
+            phase: "FINALIZING",
+        });
+        battle = replaceIn(battle, ["lifetime", "endings"], finalizing);
         const { definition, ref } = pending.target[paired] as Pair;
         battle = definition.finalize(battle, ref, pending.end);
         const endings = new Map(battle.lifetime.endings);
         endings.delete(identity);
-        battle = { ...battle, lifetime: { ...battle.lifetime, endings } };
+        battle = replaceIn(battle, ["lifetime", "endings"], endings);
     }
 
     return battle;
@@ -268,14 +262,14 @@ function flushDeferred(battle: BattleState): BattleState {
         return battle;
     }
 
-    battle = { ...battle, lifetime: { ...battle.lifetime, flushing: true } };
+    battle = replaceIn(battle, ["lifetime", "flushing"], true);
 
     while (true) {
         const [operation, ...deferred] = battle.lifetime.deferred;
         if (operation === undefined) {
-            return { ...battle, lifetime: { ...battle.lifetime, flushing: false } };
+            return replaceIn(battle, ["lifetime", "flushing"], false);
         }
 
-        battle = operation({ ...battle, lifetime: { ...battle.lifetime, deferred } });
+        battle = operation(replaceIn(battle, ["lifetime", "deferred"], deferred));
     }
 }

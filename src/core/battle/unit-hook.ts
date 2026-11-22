@@ -1,5 +1,6 @@
 import * as hooks from "../hook.js";
 import type { Entry } from "../common/collection/entries.js";
+import { replaceIn } from "../common/object.js";
 import type { EnteredHook, RemovedHook } from "../unit/hook.js";
 import type { State as BattleState } from "./state.js";
 
@@ -14,7 +15,7 @@ export function setHook<H extends Entry>(
 ): BattleState {
     const next = battle.unitHooks.set(key, entry);
 
-    return next === battle.unitHooks ? battle : { ...battle, unitHooks: next };
+    return replaceIn(battle, ["unitHooks"], next);
 }
 
 export function removeHook<H extends Entry>(
@@ -24,7 +25,7 @@ export function removeHook<H extends Entry>(
 ): BattleState {
     const next = battle.unitHooks.remove(key, id);
 
-    return next === battle.unitHooks ? battle : { ...battle, unitHooks: next };
+    return replaceIn(battle, ["unitHooks"], next);
 }
 
 export function dispatch<C>(

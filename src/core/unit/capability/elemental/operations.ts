@@ -26,6 +26,7 @@ import {
 import type { Request as HealingRequest } from "../../../battle/resource/ep/healing/contract.js";
 import type { CommitContext as HealingCommitContext } from "../../../battle/resource/ep/healing/hook.js";
 import { allows } from "../../../restriction.js";
+import { replaceIn } from "../../../common/object.js";
 
 export interface DamageApplication {
     readonly type: Type;
@@ -88,7 +89,7 @@ export function commitDamage(
             ? elementValues(0)
             : { ...normalizedEp(self, maximum), [type]: epAfter };
     if (ELEMENT_TYPES.some((type) => ep[type] !== self.elemental.ep[type])) {
-        battle = replaceUnits(battle, [{ ...self, elemental: { ...self.elemental, ep } }]);
+        battle = replaceUnits(battle, [replaceIn(self, ["elemental", "ep"], ep)]);
     }
 
     battle = appendEvents(battle, [
@@ -143,7 +144,7 @@ export function commitHealing(
     const application: HealingApplication = { epBefore, epAfter, epGain };
     const amount = Object.values(epGain).reduce((total, gain) => total + gain, 0);
     if (ELEMENT_TYPES.some((type) => epAfter[type] !== self.elemental.ep[type])) {
-        battle = replaceUnits(battle, [{ ...self, elemental: { ...self.elemental, ep: epAfter } }]);
+        battle = replaceUnits(battle, [replaceIn(self, ["elemental", "ep"], epAfter)]);
     }
 
     battle = appendEvents(battle, [
@@ -193,7 +194,7 @@ export function reduceDuration(
     const current = units.get(battle, reference.host)!;
     const maximum = query.resolveMaxEp(battle, current);
     const ep = elementValues(remaining === 0 ? maximum : (maximum * elapsed) / duration);
-    battle = replaceUnits(battle, [{ ...current, elemental: { ...current.elemental, ep } }]);
+    battle = replaceUnits(battle, [replaceIn(current, ["elemental", "ep"], ep)]);
 
     return remaining === 0 ? finish(battle, reference) : battle;
 }
@@ -237,7 +238,7 @@ export function advance(battle: BattleState, host: Ref<Unit & Elemental>): Battl
         return battle;
     }
 
-    return replaceUnits(battle, [{ ...self, elemental: { ...self.elemental, ep } }]);
+    return replaceUnits(battle, [replaceIn(self, ["elemental", "ep"], ep)]);
 }
 
 function normalizedEp(self: Unit & Elemental, maximum: number): Values {

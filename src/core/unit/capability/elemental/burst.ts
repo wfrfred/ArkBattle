@@ -12,6 +12,7 @@ import type { Expiration } from "../../effect/expiration.js";
 import { elementValues, type Elemental, type Type } from "./capability.js";
 import { available, resolveMaxEp, resolveBurstRecoverySpeed } from "./query.js";
 import { dispatch, burstStarted, burstEnded } from "./hook.js";
+import { replaceIn } from "../../../common/object.js";
 
 export interface State {
     readonly type: Type;
@@ -47,12 +48,7 @@ export function onInstall<S extends State>(
             rate: 0,
         },
     };
-    battle = replace(battle, [
-        {
-            ...host,
-            elemental: { ...host.elemental, burst: ref(current) },
-        },
-    ]);
+    battle = replace(battle, [replaceIn(host, ["elemental", "burst"], ref(current))]);
     battle = setExpiration(battle, ref(current), current.expiration);
     battle = appendEvents(battle, [
         {
@@ -89,12 +85,7 @@ export function advance<S extends State>(
     const elapsed = expiration.duration - remaining;
     const maximum = resolveMaxEp(battle, host);
     const ep = elementValues((maximum * elapsed) / expiration.duration);
-    battle = replace(battle, [
-        {
-            ...host,
-            elemental: { ...host.elemental, ep },
-        },
-    ]);
+    battle = replace(battle, [replaceIn(host, ["elemental", "ep"], ep)]);
     battle = setExpiration(battle, reference, { ...expiration, remaining });
 
     if (onSecond !== undefined) {

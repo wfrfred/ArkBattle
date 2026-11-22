@@ -2,6 +2,7 @@ import type { Identified, Ref } from "../common/ref.js";
 import { create as createLifetime } from "../lifetime/operations.js";
 import type { Query } from "../common/query.js";
 import type { Result, State as BattleState } from "../battle/state.js";
+import { replaceIn } from "../common/object.js";
 
 export type MechanismId = number;
 
@@ -43,7 +44,7 @@ export function initialize<S extends object, const D extends Definition<S>>(
     const { definition, active = true } = input;
 
     return {
-        state: { ...battle, execution: { ...battle.execution, nextMechanismId: id + 1 } },
+        state: replaceIn(battle, ["execution", "nextMechanismId"], id + 1),
         value: {
             id,
             definition,
@@ -54,10 +55,7 @@ export function initialize<S extends object, const D extends Definition<S>>(
 }
 
 export function add<S extends object>(battle: BattleState, self: Mechanism<S>): BattleState {
-    battle = {
-        ...battle,
-        mechanisms: battle.mechanisms.add(self.id, self),
-    };
+    battle = replaceIn(battle, ["mechanisms"], battle.mechanisms.add(self.id, self));
 
     return self.definition.onEnter?.(battle, self) ?? battle;
 }
@@ -85,7 +83,11 @@ export function setState<T extends Mechanism<any>>(
 
     return state === self.state
         ? battle
-        : { ...battle, mechanisms: battle.mechanisms.replace(reference.id, { ...self, state }) };
+        : replaceIn(
+              battle,
+              ["mechanisms"],
+              battle.mechanisms.replace(reference.id, { ...self, state }),
+          );
 }
 
 export function setActive<M extends Mechanism<any>>(
@@ -100,7 +102,7 @@ export function setActive<M extends Mechanism<any>>(
     }
 
     const next: M = { ...self, lifecycle };
-    battle = { ...battle, mechanisms: battle.mechanisms.replace(reference.id, next) };
+    battle = replaceIn(battle, ["mechanisms"], battle.mechanisms.replace(reference.id, next));
 
     const callback = active ? next.definition.onEnable : next.definition.onDisable;
 
@@ -113,15 +115,13 @@ export const lifetime = createLifetime<Mechanism, Mechanism<any>, string>({
     get,
     isEnding: (self) => self.lifecycle === "ENDING",
     begin: (self) => ({ ...self, lifecycle: "ENDING" }),
-    replace: (battle, reference, next) => ({
-        ...battle,
-        mechanisms: battle.mechanisms.replace(reference.id, next),
-    }),
+    replace: (battle, reference, next) =>
+        replaceIn(battle, ["mechanisms"], battle.mechanisms.replace(reference.id, next)),
     finalize: (battle, reference) => {
         const self = get(battle, reference)!;
         battle = self.definition.onEnd?.(battle, self) ?? battle;
 
-        return { ...battle, mechanisms: battle.mechanisms.remove(reference.id) };
+        return replaceIn(battle, ["mechanisms"], battle.mechanisms.remove(reference.id));
     },
     reason: (reason) => reason,
 });

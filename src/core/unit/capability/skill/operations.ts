@@ -30,6 +30,7 @@ import type { Definition as SkillDefinition } from "./definition.js";
 import * as sp from "./sp.js";
 import { resolveCapacity as resolveAmmoCapacity } from "./ammo.js";
 import { allows } from "../../../restriction.js";
+import { replaceIn } from "../../../common/object.js";
 
 const hitRecovery: ReceivingHook = {
     id: "@skill/hit-recovery",
@@ -245,7 +246,7 @@ export const lifetime = lifetimes.create<Activation, Activation<any, any>, End>(
         battle = definition.onEnd?.(battle, reference.host, self, ending) ?? battle;
 
         const host = units.get(battle, reference.host)!;
-        battle = replaceUnits(battle, [{ ...host, skill: { ...host.skill, activation: null } }]);
+        battle = replaceUnits(battle, [replaceIn(host, ["skill", "activation"], null)]);
         battle = unregister(battle, lifetimes.scope(lifetime, reference));
         battle = appendEvents(battle, [
             {

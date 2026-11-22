@@ -5,6 +5,7 @@ import type { Unit } from "../../unit.js";
 import * as units from "../../query.js";
 import type { Direction, Facing } from "./capability.js";
 import { allows } from "../../../restriction.js";
+import { replaceIn } from "../../../common/object.js";
 
 export function turn(
     battle: BattleState,
@@ -20,5 +21,5 @@ export function turn(
         return battle;
     }
 
-    return replace(battle, [{ ...self, facing: { ...self.facing, direction } }]);
+    return replace(battle, [replaceIn(self, ["facing", "direction"], direction)]);
 }

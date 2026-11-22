@@ -1,4 +1,5 @@
 import type { Ref } from "../../../common/ref.js";
+import { replaceIn } from "../../../common/object.js";
 import { create, type Query } from "../../../common/query.js";
 import type { State as BattleState } from "../../state.js";
 import type { Card } from "./card/card.js";
@@ -13,10 +14,7 @@ export function ordered(battle: BattleState): Query<Card> {
 }
 
 export function setOrdering(battle: BattleState, ordering: Ordering | null): BattleState {
-    battle = {
-        ...battle,
-        deployment: { ...battle.deployment, deck: { ...battle.deployment.deck, ordering } },
-    };
+    battle = replaceIn(battle, ["deployment", "deck", "ordering"], ordering);
 
     return refreshOrder(battle);
 }
@@ -32,8 +30,5 @@ export function refreshOrder(battle: BattleState): BattleState {
     return order.length === previous.length &&
         order.every((ref, index) => ref.id === previous[index]!.id)
         ? battle
-        : {
-              ...battle,
-              deployment: { ...battle.deployment, deck: { ...battle.deployment.deck, order } },
-          };
+        : replaceIn(battle, ["deployment", "deck", "order"], order);
 }

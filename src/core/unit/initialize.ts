@@ -9,6 +9,7 @@ import {
 import { Effects } from "./effect/effects.js";
 import type { Unit, Definition } from "./unit.js";
 import { Hooks } from "../hook.js";
+import { replaceIn } from "../common/object.js";
 
 export type Input<D extends Definition & Partial<Definitions> = Definition> = {
     readonly definition: D;
@@ -24,7 +25,7 @@ export function initialize<D extends Definition & Partial<Definitions>>(
 ): Result<Unit & Product<D>>;
 export function initialize(battle: BattleState, input: Input): Result<Unit> {
     const id = battle.execution.nextUnitId;
-    battle = { ...battle, execution: { ...battle.execution, nextUnitId: id + 1 } };
+    battle = replaceIn(battle, ["execution", "nextUnitId"], id + 1);
 
     let unit: Unit = {
         id,

@@ -3,6 +3,7 @@ import type { State as BattleState } from "../battle/state.js";
 import { assertFiniteNumber } from "../common/assert.js";
 import * as entries from "../common/collection/entries.js";
 import * as contribution from "../common/contribution.js";
+import { replaceIn } from "../common/object.js";
 
 export interface Range {
     readonly min: number | null;
@@ -65,15 +66,11 @@ export function setContribution<I>(
     state: State<I>,
     entry: contribution.Contribution<NoInfer<I>>,
 ): State<I> {
-    const contributions = entries.set(state.contributions, entry);
-
-    return contributions === state.contributions ? state : { ...state, contributions };
+    return replaceIn(state, ["contributions"], entries.set(state.contributions, entry));
 }
 
 export function removeContribution<I>(state: State<I>, id: string): State<I> {
-    const contributions = entries.remove(state.contributions, id);
-
-    return contributions === state.contributions ? state : { ...state, contributions };
+    return replaceIn(state, ["contributions"], entries.remove(state.contributions, id));
 }
 
 export function setRange<I>(definition: Definition, state: State<I>, range: Range): State<I> {

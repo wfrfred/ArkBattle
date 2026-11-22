@@ -1,4 +1,5 @@
 import type { Ref } from "../common/ref.js";
+import { replaceIn } from "../common/object.js";
 import type { WorldPosition } from "../geometry/coordinate.js";
 import type { EndReason } from "./definition.js";
 import type { Eliminatable, Projectile } from "./projectile.js";
@@ -10,13 +11,8 @@ export function add<S extends object, T extends object>(
     battle: BattleState,
     self: Projectile<S, T> & NoInfer<T>,
 ): BattleState {
-    battle = {
-        ...battle,
-        battlefield: {
-            ...battle.battlefield,
-            projectiles: battle.battlefield.projectiles.add(self.id, self),
-        },
-    };
+    const projectiles = battle.battlefield.projectiles.add(self.id, self);
+    battle = replaceIn(battle, ["battlefield", "projectiles"], projectiles);
 
     return self.definition.onEnter?.(battle, self) ?? battle;
 }
@@ -50,12 +46,7 @@ export function replace<P extends Projectile<object, any>>(
 ): BattleState {
     const projectiles = battle.battlefield.projectiles.replace(reference.id, self);
 
-    return projectiles === battle.battlefield.projectiles
-        ? battle
-        : {
-              ...battle,
-              battlefield: { ...battle.battlefield, projectiles },
-          };
+    return replaceIn(battle, ["battlefield", "projectiles"], projectiles);
 }
 
 export const lifetime = createLifetime<Projectile, Projectile<object, any>, EndReason>({
@@ -69,13 +60,9 @@ export const lifetime = createLifetime<Projectile, Projectile<object, any>, EndR
         const self = get(battle, reference)!;
         battle = self.definition.onEnd?.(battle, self, reason) ?? battle;
 
-        return {
-            ...battle,
-            battlefield: {
-                ...battle.battlefield,
-                projectiles: battle.battlefield.projectiles.remove(reference.id),
-            },
-        };
+        const projectiles = battle.battlefield.projectiles.remove(reference.id);
+
+        return replaceIn(battle, ["battlefield", "projectiles"], projectiles);
     },
     reason: (reason) => reason,
 });

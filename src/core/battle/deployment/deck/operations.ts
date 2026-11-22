@@ -1,3 +1,4 @@
+import { replaceIn } from "../../../common/object.js";
 import type { State as BattleState } from "../../state.js";
 import { ref, type Card } from "./card/card.js";
 import * as card from "./card/state.js";
@@ -5,30 +6,24 @@ import { all, get } from "./deck.js";
 import { refreshOrder } from "./order.js";
 
 export function add<S extends object>(battle: BattleState, self: Card<S>): BattleState {
-    const { deployment } = battle;
-    const { deck } = deployment;
+    const { deck } = battle.deployment;
 
-    return refreshOrder({
-        ...battle,
-        deployment: {
-            ...deployment,
-            deck: {
-                ...deck,
-                cards: deck.cards.add(self.id, self),
-                order: [...deck.order, ref(self)],
-            },
-        },
-    });
+    return refreshOrder(
+        replaceIn(battle, ["deployment", "deck"], {
+            ...deck,
+            cards: deck.cards.add(self.id, self),
+            order: [...deck.order, ref(self)],
+        }),
+    );
 }
 
 export function replace(battle: BattleState, self: Card<any>): BattleState {
-    const { deployment } = battle;
-    const { deck } = deployment;
+    const { deck } = battle.deployment;
     const cards = deck.cards.replace(self.id, self);
 
     return cards === deck.cards
         ? battle
-        : refreshOrder({ ...battle, deployment: { ...deployment, deck: { ...deck, cards } } });
+        : refreshOrder(replaceIn(battle, ["deployment", "deck", "cards"], cards));
 }
 
 export function advanceCard(battle: BattleState, self: Card<any>): BattleState {

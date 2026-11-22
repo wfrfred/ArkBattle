@@ -16,6 +16,7 @@ import * as units from "../../query.js";
 import type { WorldPosition } from "../../../geometry/coordinate.js";
 import { Vec2 } from "../../../common/vector.js";
 import { settleCapacity } from "./blocker-operations.js";
+import { replaceIn } from "../../../common/object.js";
 
 const POSITION_ADJUSTMENT_TICKS = 0.2 * TICKS_PER_SECOND;
 
@@ -42,7 +43,7 @@ export function release(battle: BattleState, reference: Ref<Unit & Blockable>): 
     }
 
     if (self.blockable.adjustment !== null) {
-        battle = replace(battle, [{ ...self, blockable: { ...self.blockable, adjustment: null } }]);
+        battle = replace(battle, [replaceIn(self, ["blockable", "adjustment"], null)]);
     }
 
     const relation = self.blockable.relation;

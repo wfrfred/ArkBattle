@@ -1,4 +1,5 @@
 import { createRng } from "../../common/rng.js";
+import { replaceIn } from "../../common/object.js";
 import { Vec2 } from "../../common/vector.js";
 import type { Ref } from "../../common/ref.js";
 import { Tile, type WorldPosition } from "../../geometry/coordinate.js";
@@ -17,10 +18,7 @@ function spawn(battle: BattleState, entry: Spawn): BattleState {
         entry.offset[1] + (rng.next() * 2 - 1) * entry.randomRange[1],
     ];
 
-    battle = {
-        ...battle,
-        execution: { ...battle.execution, rngState: rng.state() },
-    };
+    battle = replaceIn(battle, ["execution", "rngState"], rng.state());
     const created = initializeUnit(battle, {
         definition: entry.definition,
         position: Vec2.add(Tile.center(entry.plan.startPosition), offset),
@@ -34,16 +32,10 @@ function spawn(battle: BattleState, entry: Spawn): BattleState {
     if (entry.wait !== "NONE") {
         const { id } = created.value;
         const { waiting } = battle.schedule;
-        battle = {
-            ...battle,
-            schedule: {
-                ...battle.schedule,
-                waiting: {
-                    wave: entry.wait === "WAVE" ? [...waiting.wave, id] : waiting.wave,
-                    final: [...waiting.final, id],
-                },
-            },
-        };
+        battle = replaceIn(battle, ["schedule", "waiting"], {
+            wave: entry.wait === "WAVE" ? [...waiting.wave, id] : waiting.wave,
+            final: [...waiting.final, id],
+        });
     }
 
     return add(battle, created.value);
@@ -80,7 +72,7 @@ function enterFragment(battle: BattleState, wave: Wave, fragmentIndex: number): 
     const { schedule, tick } = battle;
     const fragment = wave.fragments[fragmentIndex];
     if (fragment === undefined) {
-        return { ...battle, schedule: { ...schedule, main: { type: "WAITING", startTick: tick } } };
+        return replaceIn(battle, ["schedule", "main"], { type: "WAITING", startTick: tick });
     }
 
     return {
@@ -133,10 +125,7 @@ function advanceMain(battle: BattleState): BattleState {
                 if (value < main.entries.length) {
                     return value === main.nextEntry
                         ? state
-                        : {
-                              ...state,
-                              schedule: { ...state.schedule, main: { ...main, nextEntry: value } },
-                          };
+                        : replaceIn(state, ["schedule", "main"], { ...main, nextEntry: value });
                 }
 
                 battle = enterFragment(state, wave, main.fragmentIndex + 1);
@@ -198,18 +187,14 @@ function advancePhase(battle: BattleState, phase: ActivePhase): BattleState {
 
     const { activePhases } = state.schedule;
 
-    return {
-        ...state,
-        schedule: {
-            ...state.schedule,
-            activePhases:
-                value === phase.entries.length
-                    ? activePhases.filter((current) => current !== phase)
-                    : activePhases.map((current) =>
-                          current === phase ? { ...phase, nextEntry: value } : current,
-                      ),
-        },
-    };
+    const nextPhases =
+        value === phase.entries.length
+            ? activePhases.filter((current) => current !== phase)
+            : activePhases.map((current) =>
+                  current === phase ? { ...phase, nextEntry: value } : current,
+              );
+
+    return replaceIn(state, ["schedule", "activePhases"], nextPhases);
 }
 
 export function advance(battle: BattleState): BattleState {
@@ -279,13 +264,7 @@ export function releaseFromWave(battle: BattleState, reference: Ref<Unit>): Batt
 
     return wave.length === waiting.wave.length
         ? battle
-        : {
-              ...battle,
-              schedule: {
-                  ...battle.schedule,
-                  waiting: { ...waiting, wave },
-              },
-          };
+        : replaceIn(battle, ["schedule", "waiting", "wave"], wave);
 }
 
 export function resolveUnits(battle: BattleState, removedUnitIds: readonly UnitId[]): BattleState {
@@ -296,16 +275,10 @@ export function resolveUnits(battle: BattleState, removedUnitIds: readonly UnitI
 
     return wave.length === waiting.wave.length && final.length === waiting.final.length
         ? battle
-        : {
-              ...battle,
-              schedule: {
-                  ...battle.schedule,
-                  waiting: {
-                      wave: wave.length === waiting.wave.length ? waiting.wave : wave,
-                      final: final.length === waiting.final.length ? waiting.final : final,
-                  },
-              },
-          };
+        : replaceIn(battle, ["schedule", "waiting"], {
+              wave: wave.length === waiting.wave.length ? waiting.wave : wave,
+              final: final.length === waiting.final.length ? waiting.final : final,
+          });
 }
 
 export const removedHook: RemovedHook = {

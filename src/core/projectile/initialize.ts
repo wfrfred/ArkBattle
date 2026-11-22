@@ -1,4 +1,5 @@
 import type { State as BattleState, Result } from "../battle/state.js";
+import { replaceIn } from "../common/object.js";
 import type { WorldPosition } from "../geometry/coordinate.js";
 import type { Side } from "../side.js";
 import type { Definition } from "./definition.js";
@@ -18,7 +19,7 @@ export function initialize<S extends object, T extends object, const D extends D
     const id = battle.execution.nextProjectileId;
 
     return {
-        state: { ...battle, execution: { ...battle.execution, nextProjectileId: id + 1 } },
+        state: replaceIn(battle, ["execution", "nextProjectileId"], id + 1),
         value: { ...input, id, lifecycle: "ACTIVE" },
     };
 }

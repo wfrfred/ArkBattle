@@ -1,6 +1,7 @@
 import { advanceForcedMotion } from "../../../battlefield/collision.js";
 import type { Result, State as BattleState } from "../../../battle/state.js";
 import { assert } from "../../../common/assert.js";
+import { replaceIn } from "../../../common/object.js";
 import type { Identified, Ref } from "../../../common/ref.js";
 import { Vec2 } from "../../../common/vector.js";
 import * as lifetimes from "../../../lifetime/index.js";
@@ -74,14 +75,12 @@ export const lifetime = lifetimes.create<Unbalance, Unbalance, End>({
         const unit = units.get(battle, reference.host)!;
         const { shiftable } = unit;
         if (shiftable.unbalance?.id === reference.id) {
-            battle = replaceUnits(battle, [
-                { ...unit, shiftable: { ...shiftable, unbalance: null } },
-            ]);
+            battle = replaceUnits(battle, [replaceIn(unit, ["shiftable", "unbalance"], null)]);
         } else {
             const endingUnbalances = new Map(shiftable.endingUnbalances);
             endingUnbalances.delete(reference.id);
             battle = replaceUnits(battle, [
-                { ...unit, shiftable: { ...shiftable, endingUnbalances } },
+                replaceIn(unit, ["shiftable", "endingUnbalances"], endingUnbalances),
             ]);
         }
 

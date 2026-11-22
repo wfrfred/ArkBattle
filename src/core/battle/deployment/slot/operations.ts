@@ -1,3 +1,4 @@
+import { replaceIn } from "../../../common/object.js";
 import type { State as BattleState } from "../../state.js";
 import type { PendingSlotRelease, State } from "./slot.js";
 
@@ -8,7 +9,7 @@ export function allows(slot: State, slots: number): boolean {
 export function occupy(battle: BattleState, slots: number): BattleState {
     const { slot } = battle.deployment;
 
-    return replace(battle, { ...slot, used: slot.used + slots });
+    return replaceIn(battle, ["deployment", "slot", "used"], slot.used + slots);
 }
 
 export function release(battle: BattleState, slots: number, readyAtTick: number): BattleState {
@@ -17,12 +18,14 @@ export function release(battle: BattleState, slots: number, readyAtTick: number)
     }
 
     const { slot } = battle.deployment;
-    const next =
-        readyAtTick <= battle.tick
-            ? { ...slot, used: slot.used - slots }
-            : { ...slot, pending: [...slot.pending, { readyAtTick, slots }] };
 
-    return replace(battle, next);
+    return readyAtTick <= battle.tick
+        ? replaceIn(battle, ["deployment", "slot", "used"], slot.used - slots)
+        : replaceIn(
+              battle,
+              ["deployment", "slot", "pending"],
+              [...slot.pending, { readyAtTick, slots }],
+          );
 }
 
 export function advance(battle: BattleState): BattleState {
@@ -40,9 +43,9 @@ export function advance(battle: BattleState): BattleState {
 
     return releasedSlots === 0
         ? battle
-        : replace(battle, { ...slot, used: slot.used - releasedSlots, pending });
-}
-
-function replace(battle: BattleState, slot: State): BattleState {
-    return { ...battle, deployment: { ...battle.deployment, slot } };
+        : replaceIn(battle, ["deployment", "slot"], {
+              ...slot,
+              used: slot.used - releasedSlots,
+              pending,
+          });
 }

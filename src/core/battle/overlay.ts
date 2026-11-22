@@ -1,4 +1,5 @@
 import type { Ref } from "../common/ref.js";
+import { replaceIn } from "../common/object.js";
 import type { Input, Overlay } from "../battlefield/navigation/overlay.js";
 import {
     setOverlay,
@@ -35,7 +36,7 @@ export function update(battle: BattleState, reference: Ref<Overlay>, input: Inpu
 
     const navigation = setOverlay(current, mode, { ...input, id: reference.id });
 
-    return { ...battle, battlefield: { ...battle.battlefield, navigation } };
+    return replaceIn(battle, ["battlefield", "navigation"], navigation);
 }
 
 export function remove(battle: BattleState, reference: Ref<Overlay>): BattleState {
@@ -47,7 +48,7 @@ export function remove(battle: BattleState, reference: Ref<Overlay>): BattleStat
 
     const navigation = removeOverlay(current, mode, reference);
 
-    return { ...battle, battlefield: { ...battle.battlefield, navigation } };
+    return replaceIn(battle, ["battlefield", "navigation"], navigation);
 }
 
 function modeOf(state: NavigationState, reference: Ref<Overlay>): MotionMode | undefined {

@@ -21,6 +21,7 @@ import {
     type DamageCommittedHook,
 } from "./hook.js";
 import { change, normalize, type Health } from "./health.js";
+import { replaceIn } from "../../../common/object.js";
 
 export interface DamageApplication {
     readonly before: Health;
@@ -129,9 +130,7 @@ export function commitDamage(
     };
 
     if (after.hp !== before.hp || after.minusHp !== before.minusHp) {
-        battle = replace(battle, [
-            { ...current, vitality: { ...current.vitality, health: after } },
-        ]);
+        battle = replace(battle, [replaceIn(current, ["vitality", "health"], after)]);
     }
 
     battle = appendEvents(battle, [
@@ -209,7 +208,7 @@ function recoverHp(
     };
 
     if (after.hp !== before.hp || after.minusHp !== before.minusHp) {
-        battle = replace(battle, [{ ...unit, vitality: { ...unit.vitality, health: after } }]);
+        battle = replace(battle, [replaceIn(unit, ["vitality", "health"], after)]);
     }
 
     if (event !== null) {

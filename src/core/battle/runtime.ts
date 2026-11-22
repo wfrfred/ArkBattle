@@ -1,6 +1,7 @@
 import { createBattleState, DEFAULT_PUSH_MULTIPLIER, type State } from "./state.js";
 import { advance as advanceEffects } from "../unit/effect/operations.js";
 import { assert, assertNonnegativeNumber } from "../common/assert.js";
+import { replaceIn } from "../common/object.js";
 import { create as createBattlefield } from "../battlefield/state.js";
 import type { Input, Command } from "./contract.js";
 import type { Definition as UnitDefinition } from "../unit/unit.js";
@@ -73,7 +74,7 @@ export function initialize(input: Input<readonly any[], readonly any[]>): State 
 
 export function step(battle: State, commands: readonly Command<Card<any>>[]): State {
     const projectileCandidates = projectiles.all(battle).map(projectiles.ref);
-    let state: State = { ...battle, events: [] };
+    let state = replaceIn(battle, ["events"], []);
 
     state = advanceDeployment(state);
 
@@ -105,8 +106,5 @@ export function step(battle: State, commands: readonly Command<Card<any>>[]): St
 
     state = advanceBlocking(state);
 
-    return {
-        ...state,
-        tick: battle.tick + 1,
-    };
+    return replaceIn(state, ["tick"], battle.tick + 1);
 }

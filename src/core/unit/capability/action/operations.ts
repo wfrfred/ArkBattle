@@ -15,6 +15,7 @@ import type { Definition, End, Id as DefinitionId } from "./definition.js";
 import * as cooldown from "./cooldown.js";
 import { executionRefs } from "./query.js";
 import { allows } from "../../../restriction.js";
+import { replaceIn } from "../../../common/object.js";
 
 export function setState<P extends object, E extends object>(
     battle: BattleState,
@@ -153,10 +154,7 @@ export function setExecutionState<P extends object, E extends object>(
 
     return state === current.execution.state
         ? battle
-        : replaceAction(battle, unit, {
-              ...current,
-              execution: { ...current.execution, state },
-          });
+        : replaceAction(battle, unit, replaceIn(current, ["execution", "state"], state));
 }
 
 export const lifetime = lifetimes.create<ExecutionIdentity, ExecutionIdentity, End>({
@@ -264,7 +262,7 @@ export function refreshCooldowns(
 
     return actions === unit.action.actions
         ? battle
-        : replaceUnits(battle, [{ ...unit, action: { ...unit.action, actions } }]);
+        : replaceUnits(battle, [replaceIn(unit, ["action", "actions"], actions)]);
 }
 
 export function resetCooldown<P extends object, E extends object>(
@@ -314,12 +312,6 @@ function replaceAction<P extends object, E extends object>(
     self: Action<P, E> | Execution<P, E>,
 ): BattleState {
     return replaceUnits(battle, [
-        {
-            ...unit,
-            action: {
-                ...unit.action,
-                actions: unit.action.actions.replace(self.definition, self),
-            },
-        },
+        replaceIn(unit, ["action", "actions"], unit.action.actions.replace(self.definition, self)),
     ]);
 }

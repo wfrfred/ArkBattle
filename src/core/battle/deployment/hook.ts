@@ -1,5 +1,6 @@
 import * as hooks from "../../hook.js";
 import type { Entry } from "../../common/collection/entries.js";
+import { replaceIn } from "../../common/object.js";
 import type { Unit } from "../../unit/unit.js";
 import type { Deployable } from "../../unit/capability/deployable/capability.js";
 import type { State as BattleState } from "../state.js";
@@ -21,12 +22,7 @@ export function setHook<H extends Entry>(
 ): BattleState {
     const next = battle.deployment.hooks.set(key, entry);
 
-    return next === battle.deployment.hooks
-        ? battle
-        : {
-              ...battle,
-              deployment: { ...battle.deployment, hooks: next },
-          };
+    return replaceIn(battle, ["deployment", "hooks"], next);
 }
 
 export function removeHook<H extends Entry>(
@@ -36,12 +32,7 @@ export function removeHook<H extends Entry>(
 ): BattleState {
     const next = battle.deployment.hooks.remove(key, id);
 
-    return next === battle.deployment.hooks
-        ? battle
-        : {
-              ...battle,
-              deployment: { ...battle.deployment, hooks: next },
-          };
+    return replaceIn(battle, ["deployment", "hooks"], next);
 }
 
 export function dispatch(battle: BattleState, event: Deployed): BattleState {

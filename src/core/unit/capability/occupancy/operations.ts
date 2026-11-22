@@ -7,6 +7,7 @@ import type { Direction } from "../../../geometry/direction.js";
 import { createChange, type Change } from "../../change.js";
 import type { Unit } from "../../unit.js";
 import type { Occupancy, Pair } from "./capability.js";
+import { replaceIn } from "../../../common/object.js";
 
 export function setDirection(direction: Direction): Change<Unit & Occupancy> {
     return createChange<Unit & Occupancy>((unit) =>
@@ -47,8 +48,8 @@ export function enter(battle: State, reference: Ref<Unit & Occupancy>): State {
 
     const pair: Pair = { tile, support, occupant };
     battle = replace(battle, [
-        { ...support, occupancy: { ...support.occupancy, pair } },
-        { ...occupant, occupancy: { ...occupant.occupancy, pair } },
+        replaceIn(support, ["occupancy", "pair"], pair),
+        replaceIn(occupant, ["occupancy", "pair"], pair),
     ]);
 
     return support.definition.occupancy.onOccupantAdded?.(battle, pair) ?? battle;
@@ -64,7 +65,7 @@ function release(battle: State, pair: Pair): State {
     for (const self of [pair.support, pair.occupant]) {
         const current = units.get(battle, units.ref(self));
         if (current?.occupancy.pair === pair) {
-            updates.push({ ...current, occupancy: { ...current.occupancy, pair: null } });
+            updates.push(replaceIn(current, ["occupancy", "pair"], null));
         }
     }
     if (updates.length === 0) {

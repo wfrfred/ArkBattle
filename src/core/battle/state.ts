@@ -1,5 +1,6 @@
 import type { State as BattlefieldState } from "../battlefield/state.js";
 import { Store } from "../common/collection/store.js";
+import { replaceIn } from "../common/object.js";
 import {
     initialize as initializeLifetime,
     type State as LifetimeState,
@@ -86,5 +87,5 @@ export function createBattleState(
 }
 
 export function appendEvents(state: State, events: readonly Event[]): State {
-    return events.length === 0 ? state : { ...state, events: [...state.events, ...events] };
+    return events.length === 0 ? state : replaceIn(state, ["events"], [...state.events, ...events]);
 }

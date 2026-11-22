@@ -13,6 +13,7 @@ import { replace as replaceUnits } from "../../operations.js";
 import { dispatch, spRecovered, spPaid, spModified } from "./hook.js";
 import { allows } from "../../../restriction.js";
 import { createChange, type Change } from "../../change.js";
+import { replaceIn } from "../../../common/object.js";
 
 export type Source = "TIME" | "ACTION" | "HIT" | "EXTERNAL";
 
@@ -244,12 +245,7 @@ export function recover(
         previous: state.value,
         current: state.value + gained,
     };
-    battle = replaceUnits(battle, [
-        {
-            ...self,
-            skill: { ...self.skill, sp: { ...state, value: event.current } },
-        },
-    ]);
+    battle = replaceUnits(battle, [replaceIn(self, ["skill", "sp", "value"], event.current)]);
 
     return applied(dispatch(battle, units.ref(self), spRecovered, event), gained);
 }
@@ -280,12 +276,7 @@ export function pay(battle: BattleState, ref: Ref<Unit & Skill>, amount: number)
         previous: state.value,
         current: state.value - amount,
     };
-    battle = replaceUnits(battle, [
-        {
-            ...self,
-            skill: { ...self.skill, sp: { ...state, value: event.current } },
-        },
-    ]);
+    battle = replaceUnits(battle, [replaceIn(self, ["skill", "sp", "value"], event.current)]);
 
     return applied(dispatch(battle, units.ref(self), spPaid, event), amount);
 }
@@ -324,12 +315,7 @@ export function modify(
     }
 
     const event: Modified = { delta, amount, forced, previous: state.value, current };
-    battle = replaceUnits(battle, [
-        {
-            ...self,
-            skill: { ...self.skill, sp: { ...state, value: current } },
-        },
-    ]);
+    battle = replaceUnits(battle, [replaceIn(self, ["skill", "sp", "value"], current)]);
 
     return applied(dispatch(battle, units.ref(self), spModified, event), amount);
 }
@@ -389,7 +375,7 @@ export function advance(battle: BattleState, ref: Ref<Unit & Skill>): BattleStat
     }
 
     const next = { ...state, recovery, lastTick: battle.tick };
-    battle = replaceUnits(battle, [{ ...self, skill: { ...self.skill, sp: next } }]);
+    battle = replaceUnits(battle, [replaceIn(self, ["skill", "sp"], next)]);
 
     return pulses === 0 ? battle : recover(battle, ref, "TIME", pulses).state;
 }
