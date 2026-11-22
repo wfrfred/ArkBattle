@@ -7,7 +7,7 @@ import { validateRestrictions, type Restriction as BaseRestriction } from "../..
 import { hasOccupancy, type Occupancy } from "../occupancy/capability.js";
 import { Hooks } from "../../../hook.js";
 import { removed } from "../../hook.js";
-import { releaseSlots } from "../../../battle/deployment/resources.js";
+import { settleDeparture } from "../../../battle/deployment/resources.js";
 import { createRegistrationOperations } from "../../registration.js";
 
 export interface Refund {
@@ -55,11 +55,14 @@ export function initialize<
             ...unit,
             hooks: Hooks.empty()
                 .set(removed, {
-                    id: "@deployable/release-slots",
+                    id: "@deployable/settle-departure",
                     invoke: (current, departure) => {
-                        const { slots } = (departure.unit as Unit & Deployable).deployable;
+                        const { deployable } = departure.unit as Unit & Deployable;
 
-                        return { state: releaseSlots(current, slots), value: undefined };
+                        return {
+                            state: settleDeparture(current, departure.reason, deployable),
+                            value: undefined,
+                        };
                     },
                 })
                 .merge(unit.hooks),

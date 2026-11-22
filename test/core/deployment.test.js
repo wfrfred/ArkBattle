@@ -8,9 +8,11 @@ import assert from "node:assert/strict";
 import { battle, get } from "../helpers/battle.js";
 import * as deployment from "../../dist/core/battle/deployment/index.js";
 import * as cards from "../../dist/core/battle/deployment/card/index.js";
-import * as units from "../../dist/core/unit/query.js";
+import * as units from "../../dist/core/unit/index.js";
 import * as damage from "../../dist/core/battle/resource/hp/damage/index.js";
 import * as modifier from "../../dist/core/common/modifier.js";
+import { at } from "../../dist/core/battlefield/occupancy.js";
+import { TICKS_PER_SECOND } from "../../dist/core/tick.js";
 
 const operator = {
     id: "operator",
@@ -334,19 +336,34 @@ test("DEPLOY-RESTRICTION-02: Definition, Card and Request replace IDs before gro
     assert.equal(deployment.deploy(state, allowed).value.type, "DEPLOYED");
 });
 
-test("retreat settles refund and the persistent Card before departure; confirmed death never refunds", () => {
+test("retreat refunds before removal, and death delays global slot release independently of Card recovery", () => {
+    const tilePosition = [1, 2];
     const departures = [];
+    const retreats = [];
     let state = battle([], {
         deployment: {
-            definition: account,
+            definition: { ...account, slotLimit: 1 },
             cards: [
                 {
                     unitDefinition: operator,
                     definition: {
                         ...operatorCard,
-                        unitHooks: Hooks.empty().set(unitLifecycle.removed, {
+                        unitHooks: Hooks.empty()
+                            .set(unitLifecycle.removing, {
+                                id: "observe-retreat-refund",
+                                accepts: (_current, { reason }) => reason === "RETREAT",
+                                invoke: (current, { unit }) => {
+                                    const card = cards.get(current, unit.deployable.card);
+                                    retreats.push({
+                                        dp: current.deployment.dp,
+                                        stage: card.costStage,
+                                        recovery: card.recovery,
+                                    });
+                                    return { state: current, value: undefined };
+                                },
+                            })
+                            .set(unitLifecycle.removed, {
                                 id: "observe-departure",
-
                                 invoke: (current, { unit, reason }) => {
                                     const card = cards.get(current, unit.deployable.card);
                                     departures.push({
@@ -361,22 +378,24 @@ test("retreat settles refund and the persistent Card before departure; confirmed
                             }),
                     },
                 },
+                { unitDefinition: operator, definition: operatorCard },
             ],
         },
     });
-    const card = cards.ref([...cards.all(state)][0]);
-    const first = deployment.deploy(state, deployment.createRequest(state, card, [1, 2]));
+    const [card, nextCard] = [...cards.all(state)].map(cards.ref);
+    const first = deployment.deploy(state, deployment.createRequest(state, card, tilePosition));
     const firstUnit = units.ref(get(first.state, first.value.unitId));
     state = deployment.retreat(first.state, firstUnit);
     assert.equal(get(state, first.value.unitId), undefined);
     assert.deepEqual(deployment.cardForUnit(state, firstUnit), card);
     assert.equal(deployment.deployedCount(state, card), 0);
     assert.equal(state.deployment.usedSlots, 0);
+    assert.deepEqual(retreats, [{ dp: 45, stage: 0, recovery: null }]);
     assert.deepEqual(departures, [{ reason: "RETREAT", dp: 45, stage: 1, pending: 1, slots: 0 }]);
 
     state = deployment.advance({ ...state, tick: 10 });
     assert.equal(cards.get(state, card).stock, 1);
-    const second = deployment.deploy(state, deployment.createRequest(state, card, [1, 2]));
+    const second = deployment.deploy(state, deployment.createRequest(state, card, tilePosition));
     state = second.state;
     assert.notEqual(second.value.unitId, first.value.unitId);
     assert.equal(get(state, second.value.unitId).deployable.card.id, card.id);
@@ -391,10 +410,60 @@ test("retreat settles refund and the persistent Card before departure; confirmed
     };
     state = damage.applyDamage(request, damage.calculateDamage(state, request)).state;
     assert.equal(get(state, second.value.unitId), undefined);
+    assert.equal(at(state.battlefield, tilePosition)?.occupant ?? null, null);
     assert.deepEqual(deployment.cardForUnit(state, secondUnit), card);
     assert.equal(deployment.deployedCount(state, card), 0);
-    assert.equal(state.deployment.usedSlots, 0);
-    assert.deepEqual(departures[1], { reason: "DEATH", dp: 30, stage: 2, pending: 1, slots: 0 });
+    assert.equal(state.deployment.usedSlots, 1);
+    assert.deepEqual(departures[1], { reason: "DEATH", dp: 30, stage: 2, pending: 1, slots: 1 });
+
+    const releasedAt = state.tick + TICKS_PER_SECOND;
+    const beforeRelease = { ...state, tick: releasedAt - 1 };
+    const next = deployment.createRequest(beforeRelease, nextCard, tilePosition);
+    const rejection = { type: "REJECTED", reason: "SLOT_LIMIT" };
+    assert.deepEqual(deployment.preview(beforeRelease, next), rejection);
+    assert.deepEqual(deployment.evaluate(beforeRelease, next), rejection);
+    assert.deepEqual(deployment.deploy(beforeRelease, next).value, rejection);
+
+    const atRelease = { ...state, tick: releasedAt };
+    assert.equal(deployment.preview(atRelease, next).type, "ALLOWED");
+    assert.equal(deployment.evaluate(atRelease, next), null);
+    const replaced = deployment.deploy(atRelease, next);
+    assert.equal(replaced.value.type, "DEPLOYED");
+    assert.equal(replaced.state.deployment.usedSlots, 1);
+    assert.equal(deployment.advance({ ...replaced.state, tick: releasedAt + 1 }).deployment.usedSlots, 1);
+
+    const advanced = deployment.advance(atRelease);
+    assert.equal(advanced.deployment.usedSlots, 0);
+    assert.equal(deployment.advance({ ...advanced, tick: releasedAt + 1 }).deployment.usedSlots, 0);
+});
+
+test("external movement recycles on departure and self movement keeps the card in use", () => {
+    for (const [reason, recycled] of [["REDEPLOY_SELF", false], ["REDEPLOY_EXTERNAL", true]]) {
+        const initial = battle([], {
+            deployment: {
+                definition: account,
+                cards: [{ definition: operatorCard, unitDefinition: operator }],
+            },
+        });
+        const card = cards.ref([...cards.all(initial)][0]);
+        const placed = deployment.deploy(initial, deployment.createRequest(initial, card, [1, 2]));
+        const unit = units.ref(get(placed.state, placed.value.unitId));
+        const observed = unitObservers.setHook(placed.state, unitObservers.removed, {
+            id: "observe-card-recycle",
+            invoke(state) {
+                assert.equal(state.deployment.usedSlots, 0);
+                const current = cards.get(state, card);
+                assert.equal(current.costStage, recycled ? 1 : 0);
+                assert.equal(current.recovery?.pending, recycled ? 1 : undefined);
+                return { state, value: undefined };
+            },
+        });
+
+        const removed = units.remove(observed, unit, { reason });
+
+        assert.equal(units.get(removed, unit), undefined);
+        assert.equal(removed.deployment.dp, 40);
+    }
 });
 
 test("stock recovers serially with sampled budgets; pause and reduction affect only the selected segment", () => {

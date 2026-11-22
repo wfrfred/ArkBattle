@@ -39,7 +39,7 @@ Prefab、范围读取和换算由实际业务使用；目录移动、提取工�
 | [Hook](hook.md)、[Lifetime](lifetime.md) | 候选固定、最新登记、独立嵌套、priority 同级稳定；Unit 登记后全局入场规则同步生效，本地 entered 观察到该结果，结束的 Unit 不再执行入场程序；首次有效结束固定载荷，依赖完整结束后宿主才注销。旧执行 Ref 不操作后来实例。 |
 | [Action](action.md)、[Skill](skill.md) | 启动受理与已发生前缀、静态时序修正的同步冷却结算、释放／中断／输出、持久与单轮身份；发动门槛与支付额独立且显式声明，本次完整参数不改配置或后续普通启动，命令与自动调度各守入口条件；拒绝不初始化或支付，支付通知看到已发布的本轮；Duration 按长期状态与扣费前余额构造，弹药本轮基础值先确定再修正，贡献变更只影响后续轮次；显式 SP 支付与回复许可；主动操作须有处理器并通过限制，受理不等于结束，内部结束独立；跨回调不重复消费或恢复旧执行。 |
 | [Effect](effect.md)、[Contribution](capability.md#属性与贡献) | 安装与启停、竞争、重应用、到期和最后业务正确；先选有效贡献再求动态输入，所属公式保留小数与数值范围。 |
-| [Occupancy](occupancy.md)、[Deployment](deployment.md) | 双槽排他、Pair 先发布再通知，旧配对不影响替代实例；Quote 预览与执行一致，资源先消费再入场，主动／被动离场分别结账，库存／DP 预算及 Card 延续正确。 |
+| [Occupancy](occupancy.md)、[Deployment](deployment.md) | 双槽排他、Pair 先发布再通知，旧配对不影响替代实例；Quote 预览与执行一致，资源先消费再入场。主动撤退先返 DP，适用的离场统一回收 Card。死亡注销时清格并启动 Card 恢复，全局部署位一战斗秒后归还，部署资格与执行使用同一额度。库存／DP 预算及 Card 延续正确。 |
 | [Blocking](blocking.md)、[Layer](capability.md#layer-与-hitbox) | 资格、容量尾裁、批量双端发布与旧 Relation；主动空间覆盖取消自身计划、解除当前关系。Layer 同值请求仍清理，Settlement 使用当时当前关系，通知中新建关系不追删。 |
 | [Locomotion](navigation.md#locomotion) | 历史速度、限力／限速、转向、最终目标吸附、地形避障与反射。推进包含无 Route 的受力单位并采样实际位移。由[运动](../../test/core/navigation/locomotion.test.js)和[路线](../../test/core/navigation/route.test.js)集中验证。 |
 | [Shifting](navigation.md#强制位移) | 推击取当前有效力度和重量，牵引创建时采样力值，同一来源的多个实例独立。近停保持零力牵引，位置发布与位移通知先于自动清速。唯一有效牵引才可清速，依赖结束保留剩余速度。手动结束牵引后，失衡由后续推进结算。免疫先于位移，旧段依赖清理不影响新段。积分读取当前摩擦倍率，倍率跨失衡段保留，恢复后使用配置底值。由[失衡](../../test/core/navigation/unbalance.test.js)集中验证。 |

@@ -6,8 +6,9 @@ Deployment 完成部署资格、消费、实例创建与通知；Card 保存跨�
 
 - 预览与执行使用同一请求、报价契约和资格流程；拒绝不消费，成功先支付再构造与入场。
 - 本次来源 Card、COST、退款依据与额度在登记前由 Deployable 构造，账户仍归 Deployment。
-- 主动撤退在请求离场前结账，被动死亡由真实死亡的 removed 结账；SCRIPT／EXPIRED 不冒充死亡。
+- 主动撤退在请求离场前返还 DP。Card 回收统一由 `removed` 结算。
 - Unit 注销及结构占格释放先于本地 removed，再全局 removed；各集合内部遵守公共 priority。
+- 死亡时立即清格及回收 Card，全局部署位从 `removed` 起占用 1 战斗秒。
 - 部署间隔与逐份恢复独立，暂停保留余时，不把满额等待补发为资源。
 
 ## 状态归属
@@ -16,7 +17,7 @@ Deployment 完成部署资格、消费、实例创建与通知；Card 保存跨�
 | --- | --- |
 | 身份、身体位置、生命周期 | Unit |
 | 登记格、方向与 Support 配对 | Occupancy |
-| DP、自然回复进度、usedSlots 与部署历史 | Deployment |
+| DP、自然回复进度、usedSlots、待归还部署位与部署历史 | Deployment |
 | 库存、费用阶段、时钟和私有 state | Card |
 | 本次 Card／COST／额度／退款与撤退限制 | Deployable |
 
@@ -72,21 +73,23 @@ Deployable 单向依赖 Occupancy。初始来源为空、COST／额度为零、�
 
 可占格但不可部署的对象不需要 Card；Deployable.card 只是来源关系，不是 Lifetime 依赖。
 
-## 主动操作与被动死亡
+## 离场结算
 
-retreat 要求当前 ACTIVE 且撤退限制允许，先按本次依据退款，再按 Card 政策推进费用阶段／库存恢复，最后请求 Unit 以 RETREAT 结束。已有恢复队列保留当前段，新段启动时才采样时长。嵌套结束只完成 Prepare 时，这些前置账务也已完成。
+`retreat` 要求当前 ACTIVE 且撤退限制允许，先按本次依据返还 DP，再请求 Unit 以 RETREAT 结束。`removing` 可观察到已返还的 DP。
 
-被动死亡程序只在 DEATH 的 removed 结算 Card；零 HP 的暂态不是死亡确认。其他真实离场仍清理 Occupancy 配对和本次额度。HP 死亡确认与归属通知见 [Resource](resource.md)。
+Unit 注销后，Deployable 的 `removed` 将离场原因、原 Card 与占位数交给 Deployment 结算。RETREAT、DEATH 和 REDEPLOY_EXTERNAL 共用 Card 回收政策，依设置推进费用阶段与库存恢复。REDEPLOY_SELF、SCRIPT、EXPIRED 跳过回收。已有恢复队列保留当前段，新段启动时采样时长。
+
+DEATH 的非零占位登记为 `PendingSlotRelease`，在本次 `removed` 的 Tick 加 `TICKS_PER_SECOND` 后到期。其他离场立即归还占位。Deployment 推进时归还到期记录，部署查询与执行也按当前 Tick 先结算到期占位。Unit 与格子在离场时立即注销，待归还部署位只记录额度及到期 Tick。同卡在场计数仍按当前登记实例计算。 [原生退出与延迟](../research/evidence/deployment-exit-limits-20261122/README.md#退出与延迟)
 
 ## 离场清理的偏序
 
 公共阶段为：发布 ENDING／派发 removing → 真实依赖完整结束 → 捕获当前 removed 登记快照 → 注销 Unit 与结构占格、记录移除 → 本地 removed → 全局 removed。
 
-本地默认同级装配顺序是：归还本次 slots、适用的死亡 Card 结账、Card Hook、Request Hook、Occupancy 配对清理、Definition Hook。显式 priority 可改变本地顺序，不能跨公共阶段。高优先级内容不能假设尚未执行的账务已经完成。
+本地默认同级装配顺序为 Deployment 离场结算、Card Hook、Request Hook、Occupancy 配对清理、Definition Hook。显式 priority 可改变本地顺序，不能跨公共阶段。高优先级内容不能假设尚未执行的账务已经完成。
 
 removing 和依赖收尾期间的 removed 登记变化进入注销前快照；固定 Departure 仍代表离场开始时的历史。所有本地 removed 都看到 Unit 与结构已注销，旧配对不清掉同格替代实例的新绑定。
 
-usedSlots 在 removing 和依赖结束期间仍计入本次份额，物理注销后的 Deployable Hook 调用 Deployment 归还。预置份额为零。Deployment 根据 Deployable 的结算维护额度账户，部署历史用于来源反查，`deployedCount` 用于当前在场统计。
+`usedSlots` 在 `removing`、依赖结束和死亡延迟期间仍计入本次份额。预置份额为零。部署历史用于来源反查，`deployedCount` 用于当前在场统计。
 
 ## 部署观察
 

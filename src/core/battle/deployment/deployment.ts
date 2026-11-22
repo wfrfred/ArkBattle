@@ -32,6 +32,11 @@ export interface DeploymentRecord {
     readonly unit: Ref<Unit & Deployable>;
 }
 
+export interface PendingSlotRelease {
+    readonly readyAtTick: number;
+    readonly slots: number;
+}
+
 export interface State {
     readonly definition: Definition;
     readonly cards: Store<card.Id, card.Card<any>>;
@@ -40,6 +45,7 @@ export interface State {
     readonly ordering: Ordering | null;
     readonly hooks: Hooks;
     readonly usedSlots: number;
+    readonly pendingSlotReleases: readonly PendingSlotRelease[];
     readonly dp: number;
     readonly minDp: number;
     readonly dpRecoveryProgress: number;
@@ -81,6 +87,7 @@ export function initialize(definition: Definition = emptyDefinition, tick = 0): 
         ordering: null,
         hooks: Hooks.empty(),
         usedSlots: 0,
+        pendingSlotReleases: [],
         dp: definition.initialDp,
         minDp,
         dpRecoveryProgress: 0,

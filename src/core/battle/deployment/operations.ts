@@ -106,20 +106,6 @@ export function deploy<T extends Card<any>>(
                     value: undefined,
                 }),
             })
-            .set(lifecycle.removed, {
-                id: "@deployment/death",
-                accepts: (_state, departure) => departure.reason === "DEATH",
-                invoke: (state) => {
-                    if (definition.increaseCostOnRetreatOrDeath) {
-                        state = cards.incrementCostStage(state, request.card);
-                    }
-                    if (definition.recoverOnRetreatOrDeath) {
-                        state = cards.enqueueRecovery(state, request.card);
-                    }
-
-                    return { state, value: undefined };
-                },
-            })
             .merge(self.unitHooks)
             .merge(request.hooks),
     });
