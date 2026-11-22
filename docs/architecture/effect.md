@@ -78,7 +78,7 @@ decreaseStack 是完整减层操作：剩余层数先发布再通知，耗尽正
 | 按来源独立，来源没有 Card | group.id 与 Unit 身份 |
 | 按来源独立，没有来源 | group.id 与 null |
 
-共享组 x 与独立无来源组 `(x, null)` 不匹配；Card 与 Unit 属于不同身份域。Card.deployedUnits 保存本场成功部署历史，来源退场后仍可反查，旧弹道及再部署保留同一 Card 分区，不同 Card 不合并。无 Card 的预置对象按各自 Unit 区分。
+共享组 x 与独立无来源组 `(x, null)` 不匹配。Card 与 Unit 属于不同身份域。`cardForUnit` 从[部署历史](deployment.md#部署历史)反查来源 Card，来源退场后仍可使用。旧弹道及再部署保留同一 Card 分区，不同 Card 不合并。无 Card 的预置对象按各自 Unit 区分。
 
 Core 安装时采样 groupSource；调用者只传实际 source。该样本不替换 Effect.source，也不成为 Lifetime 依赖。来源由具体机制决定，例如海嗣转发宿主浊心斯卡蒂的身份。
 

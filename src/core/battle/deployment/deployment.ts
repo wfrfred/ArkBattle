@@ -8,6 +8,8 @@ import { Store } from "../../common/collection/store.js";
 import type * as card from "./card/card.js";
 import type { Input as CardInput } from "./card/initialize.js";
 import type { Ref } from "../../common/ref.js";
+import type { Unit } from "../../unit/unit.js";
+import type { Deployable } from "../../unit/capability/deployable/capability.js";
 import type { Ordering } from "./order.js";
 import { Hooks } from "../../hook.js";
 
@@ -25,9 +27,15 @@ export interface Input<States extends readonly object[] = readonly object[]> {
     readonly cards: { readonly [K in keyof States]: CardInput<States[K]> };
 }
 
+export interface DeploymentRecord {
+    readonly card: Ref<card.Card>;
+    readonly unit: Ref<Unit & Deployable>;
+}
+
 export interface State {
     readonly definition: Definition;
     readonly cards: Store<card.Id, card.Card<any>>;
+    readonly history: readonly DeploymentRecord[];
     readonly order: readonly Ref<card.Card>[];
     readonly ordering: Ordering | null;
     readonly hooks: Hooks;
@@ -68,6 +76,7 @@ export function initialize(definition: Definition = emptyDefinition, tick = 0): 
     return {
         definition,
         cards: Store.empty(),
+        history: [],
         order: [],
         ordering: null,
         hooks: Hooks.empty(),

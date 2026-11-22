@@ -1,4 +1,4 @@
-export type { Definition, Input, State } from "./deployment.js";
+export type { Definition, Input, DeploymentRecord, State } from "./deployment.js";
 
 export { initialize, changeDp } from "./deployment.js";
 

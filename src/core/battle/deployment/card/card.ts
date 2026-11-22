@@ -1,9 +1,6 @@
 import type { Identified, Ref } from "../../../common/ref.js";
-import type { Definition as BaseDefinition, Unit } from "../../../unit/unit.js";
-import type {
-    Definition as DeployableDefinition,
-    Deployable,
-} from "../../../unit/capability/deployable/capability.js";
+import type { Definition as BaseDefinition } from "../../../unit/unit.js";
+import type { Definition as DeployableDefinition } from "../../../unit/capability/deployable/capability.js";
 import type { Definition as OccupancyDefinition } from "../../../unit/capability/occupancy/capability.js";
 import type { Contribution } from "../../../common/contribution.js";
 import type { Modifier } from "../../../common/modifier.js";
@@ -37,7 +34,6 @@ export interface Card<S extends object = object> extends Identified<{ readonly i
     readonly id: Id;
     readonly definition: Definition<S>;
     readonly unitDefinition: UnitDefinition;
-    readonly deployedUnits: readonly Ref<Unit & Deployable>[];
     readonly unitHooks: Hooks;
     readonly restrictions: readonly Contribution<Restriction>[];
     readonly state: S;

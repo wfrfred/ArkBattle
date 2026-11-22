@@ -16,8 +16,8 @@ Deployment 完成部署资格、消费、实例创建与通知；Card 保存跨�
 | --- | --- |
 | 身份、身体位置、生命周期 | Unit |
 | 登记格、方向与 Support 配对 | Occupancy |
-| DP、自然回复进度与 usedSlots | Deployment |
-| 库存、费用阶段、时钟、私有 state 和部署历史 | Card |
+| DP、自然回复进度、usedSlots 与部署历史 | Deployment |
+| 库存、费用阶段、时钟和私有 state | Card |
 | 本次 Card／COST／额度／退款与撤退限制 | Deployable |
 
 各领域通过自身操作维护状态，不借通用 Unit 更新推断账务。具体声明见 [deployment/index.ts](../../src/core/battle/deployment/index.ts)。
@@ -32,9 +32,13 @@ Card 绑定的蓝图所需 `Initial` 必须由部署入口提供。普通按格�
 
 Card 配置明确费用、部署间隔、库存／在场上限、额度、退款和供给政策。当前 cooldownOnDeploy 控制部署时启动间隔，recoverOnRetreatOrDeath 与 increaseCostOnRetreatOrDeath 分别控制普通撤退／死亡恢复及费用阶段；这些字段的组织仍待重审，不能把现有布尔组合视为已完成领域收口。
 
-deployedUnits 保存本场成功部署的 Unit Ref 历史，在初始化后、任何 entered 前登记；离场不删除。cardForUnit 因而在来源注销后仍可查 Card，支持 [Effect 来源分组](effect.md#来源分组)。历史不等于在场数，deployedCount 查询当前仍登记的实例，包含 ENDING。
-
 Card 的 unitHooks 注入未来实例，不追改已经创建的 Unit。私有状态的构造、类型配对与写回遵守公共约定，不在此复制异构容器接口。
+
+## 部署历史
+
+`battle.deployment.history` 是本场成功 Card 部署的只读序列，每条保存 `card: Ref<Card>` 和 `unit: Ref<Unit & Deployable>`。`deploy` 按实际部署顺序追加，在 Unit 初始化后、任何 `entered` 前发布记录。拒绝部署和无 Card 的直接 Unit 登记不产生记录。
+
+Unit 注销后保留记录，`cardForUnit` 仍可反查它来自哪张 Card，支持 [Effect 来源分组](effect.md#来源分组)。`deployedCount` 统计当前仍登记的在场实例，包含 `ENDING`。
 
 ## 请求与统一资格
 
@@ -50,7 +54,7 @@ Card 初始化与 DeployRequest 入口各自校验列表内的限制 ID 唯一�
 
 ## 普通部署流程
 
-合并并判定资格 → 采样 COST／退款依据 → 提交 DP、库存、usedSlots 及部署间隔 → `Unit.initialize` 分配身份并装配 → Deployable.setDeployment 写入本次事实 → 登记 Unit／占格 → 普通 entered。
+合并并判定资格 → 采样 COST／退款依据 → 提交 DP、库存、usedSlots 及部署间隔 → `Unit.initialize` 分配身份并装配 → Deployable.setDeployment 写入本次事实 → 追加部署记录 → 登记 Unit／占格 → 派发 Battle 级和 Unit 本地 `entered`。
 
 付款先处理 DP 时基，不能在消费后补发满额期间回复。落点与方向通过 Occupancy Initial 提供；Deployment 不直接重建 Deployable State。
 
@@ -82,7 +86,7 @@ retreat 要求当前 ACTIVE 且撤退限制允许，先按本次依据退款，�
 
 removing 和依赖收尾期间的 removed 登记变化进入注销前快照；固定 Departure 仍代表离场开始时的历史。所有本地 removed 都看到 Unit 与结构已注销，旧配对不清掉同格替代实例的新绑定。
 
-usedSlots 在 removing 和依赖结束期间仍计入本次份额，物理注销后的 Deployable Hook 调用 Deployment 归还；预置份额为零。账户不由能力直接写入，Card 历史和当前 deployedCount 也不代替它。
+usedSlots 在 removing 和依赖结束期间仍计入本次份额，物理注销后的 Deployable Hook 调用 Deployment 归还。预置份额为零。Deployment 根据 Deployable 的结算维护额度账户，部署历史用于来源反查，`deployedCount` 用于当前在场统计。
 
 ## 部署观察
 

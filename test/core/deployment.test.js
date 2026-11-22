@@ -2,6 +2,7 @@
 import { attribute as defineAttribute, vitality as defineVitality } from "../helpers/attribute.js";
 import { Hooks } from "../../dist/core/hook.js";
 import * as unitLifecycle from "../../dist/core/unit/hook.js";
+import * as unitObservers from "../../dist/core/battle/unit-hook.js";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { battle, get } from "../helpers/battle.js";
@@ -85,6 +86,7 @@ test("different Card definitions can deploy the same Unit Definition used by an 
     assert.strictEqual(initial.definition, operator);
     assert.equal(initial.deployable.card, null);
     assert.equal(deployment.cardForUnit(state, units.ref(initial)), null);
+    assert.deepEqual(state.deployment.history, []);
 
     const [regular, discounted] = [...cards.all(state)];
     assert.strictEqual(regular.definition, operatorCard);
@@ -92,7 +94,18 @@ test("different Card definitions can deploy the same Unit Definition used by an 
     assert.strictEqual(regular.unitDefinition, operator);
     assert.strictEqual(discounted.unitDefinition, operator);
 
-    for (const [card, tile] of [[regular, [0, 2]], [discounted, [1, 2]]]) {
+    state = unitObservers.setHook(state, unitObservers.entered, {
+        id: "observe-deployment-history",
+        invoke(current, unit) {
+            assert.deepEqual(current.deployment.history.at(-1), {
+                card: unit.deployable.card,
+                unit: units.ref(unit),
+            });
+            return { state: current, value: undefined };
+        },
+    });
+
+    for (const [card, tile] of [[discounted, [1, 2]], [regular, [0, 2]]]) {
         const reference = cards.ref(card);
         const result = deployment.deploy(state, deployment.createRequest(state, reference, tile));
         assert.equal(result.value.type, "DEPLOYED");
@@ -106,6 +119,10 @@ test("different Card definitions can deploy the same Unit Definition used by an 
     assert.equal(state.deployment.dp, 33);
     assert.equal(state.deployment.usedSlots, 1);
     assert.equal(deployment.cardForUnit(state, units.ref(initial)), null);
+    assert.deepEqual(state.deployment.history.map(({ card }) => card), [
+        cards.ref(discounted),
+        cards.ref(regular),
+    ]);
 });
 
 test("preview, evaluation and deployment share a request, rejection spends nothing, and the entered hook sees consumption", () => {

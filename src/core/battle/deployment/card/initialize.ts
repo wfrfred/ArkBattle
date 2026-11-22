@@ -53,7 +53,6 @@ export function initialize<
             id,
             definition,
             unitDefinition,
-            deployedUnits: [],
             unitHooks: definition.unitHooks,
             restrictions: [],
             state: initialized.value,

@@ -7,8 +7,8 @@ import { get as getTile } from "../../battlefield/map/map.js";
 import { hasDeployable } from "../../unit/capability/deployable/capability.js";
 import type { State as BattleState } from "../state.js";
 import type { Unit } from "../../unit/unit.js";
-import { ref as cardRef, type Card } from "./card/card.js";
-import { all, get } from "./card/query.js";
+import type { Card } from "./card/card.js";
+import { get } from "./card/query.js";
 import { resolveCost } from "./card/state.js";
 import type { Restriction as CardRestriction } from "./card/restriction.js";
 import type { Restriction } from "./restriction.js";
@@ -23,11 +23,7 @@ import { advanceResources } from "./resources.js";
 import { Hooks } from "../../hook.js";
 
 export function cardForUnit(battle: BattleState, reference: Ref<Unit>): Ref<Card> | null {
-    const self = all(battle).find((card) =>
-        card.deployedUnits.some((unit) => unit.id === reference.id),
-    );
-
-    return self === undefined ? null : cardRef(self);
+    return battle.deployment.history.find(({ unit }) => unit.id === reference.id)?.card ?? null;
 }
 
 export function deployedCount(battle: BattleState, reference: Ref<Card<any>>): number {

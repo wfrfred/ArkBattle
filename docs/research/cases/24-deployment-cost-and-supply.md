@@ -287,7 +287,7 @@ HE-7「以爱相连」刷出的赏金猎人扰乱者通过已启用的 `PassiveB
 
 **D　界园通宝「分久必合」由登场触发效果转移。** 新入场者取得效果，并通过程序移除其他在场者的同类效果。此路径使用本次入场与当前场上对象。 [通宝实际模板](../evidence/deployment-order-consumers-20261122/README.md)
 
-上述消费者各自保留接力结果、结算目标或当前在场对象的创建时间。与这些状态并存的是普通部署时记录的来源身份。原生 Character 携带跨同卡重部署保持的 `cardUid`，包括由卡部署的召唤物与装置。ArkBattle 的 `Card.deployedUnits` 保存单位与原 Card 的关联，供 `cardForUnit` 在来源注销后继续反查 Effect 的来源分组。 [原生来源身份](01-buff-installation-and-parent-scope.md#96-carduid-的生成与重部署保留) · [项目部署来源](../../architecture/deployment.md#静态内容与-card)
+上述消费者各自保留接力结果、结算目标或当前在场对象的创建时间。与这些状态并存的是普通部署时记录的来源身份。原生 Character 携带跨同卡重部署保持的 `cardUid`，包括由卡部署的召唤物与装置。ArkBattle 的 `battle.deployment.history` 保存单位与原 Card 的关联，供 `cardForUnit` 在来源注销后继续反查 Effect 的来源分组。 [原生来源身份](01-buff-installation-and-parent-scope.md#96-carduid-的生成与重部署保留) · [项目部署历史](../../architecture/deployment.md#部署历史)
 
 ### 其它模式与活动
 

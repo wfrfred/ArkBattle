@@ -17,6 +17,7 @@ import * as cards from "./card/operations.js";
 import * as dp from "./dp.js";
 import { advanceResources } from "./resources.js";
 import { evaluateCurrent, resolveRestrictions, createRequest } from "./query.js";
+import { refreshOrder } from "./order.js";
 import { validateRequest, type DeployRequest, type DeployOutcome } from "./request.js";
 import { Hooks } from "../../hook.js";
 import * as lifecycle from "../../unit/hook.js";
@@ -129,10 +130,13 @@ export function deploy<T extends Card<any>>(
         refund,
     });
     battle = initialized.state;
-    battle = cards.replace(
-        battle,
-        card.recordDeployment(get(battle, request.card)!, unitRef(unit)),
-    );
+    battle = refreshOrder({
+        ...battle,
+        deployment: {
+            ...battle.deployment,
+            history: [...battle.deployment.history, { card: input.card, unit: unitRef(unit) }],
+        },
+    });
     battle = add(battle, unit);
 
     return {
