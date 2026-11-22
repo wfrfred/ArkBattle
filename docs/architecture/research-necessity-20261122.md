@@ -11,7 +11,7 @@
 | 状态 | 事项 | 剩下的问题 |
 | --- | --- | --- |
 | 待接入 | **特殊移动（U028）** | 缺明确的 `deployment.redeploy`。原生跳过普通回收，从同一卡免费生成新 Unit，创建失败时默认模式回收 Card。思衡托后检失败保留 Card 上的技能进度和待投放记录，下一次入场恢复计时，结束后清除限制。特殊移动保留通常的出生通知。「岁怒」仍触发，「他缚」根据原 Card 记录的离场原因跳过。 [特殊移动的结果与实际消费者](../research/cases/24-deployment-cost-and-supply.md#特殊移动的结束原因) |
-| 待定 | 同卡特殊部署的业务事实（G07） | 卫戍开场布阵分别跳过 DP 和预放召唤物库存消耗，也不计入耀骑士临光 S2 使用的部署记录。现有 `Quote` 表达费用、库存和部署位，探针另存本次请求供监听器辨认。需明确部署操作如何让观察者读取同一份部署事实。 [卫戍作战规则及消费者](../research/cases/24-deployment-cost-and-supply.md#卫戍协议) · [当前通知](../../src/core/battle/deployment/hook.ts#L8) |
+| 待定 | 同卡特殊部署的业务事实（G07） | 卫戍开场布阵可用原 Card 和 `Quote` 表达资源消耗，并保留来源关联。耀骑士临光在出生时读取有效出牌留下的组合标记，开场布阵不参与 S2 的接力判定。罗德之门跨退场保存最后合格 Card，思衡托按在场单位的创建时间选目标。需明确 Deployment 如何表达本次入场与参与出牌判定的资格，以及入场读取上次结果的时点。 [原生消费者](../research/cases/24-deployment-cost-and-supply.md#上一名部署者与在场时间) · [当前通知](../../src/core/battle/deployment/hook.ts#L8) |
 | 待定 | Card 参与本次 Unit 的初始属性（G06、U035） | 松桐的 Card 修正先进入单位属性，再用有效 MaxHP 建立出生 HP。探针用高优先级 `entered` 改 HP，按 Ref 读到 115／115，`entered` 和 `deployed` 的固定载荷仍是 100／100。已查的另一个出生观察者「他缚」是在出生后读取实时 HP。需决定在哪里提交部署输入，令固定载荷与实际初始状态一致。 [原生生命初始化](../research/cases/24-deployment-cost-and-supply.md#普通-native-分支的阶段区别) · [当前入场载荷](../../src/core/unit/operations.ts#L14) |
 | 待接入 | 战中调整 DP 上限（G05） | 诺伯特平民鉴定后进入保护区可提高我方 DP 上限。当前自然回复和显式加费都受开场上限约束。 [奖励依据](../research/cases/20-norport-civilian-allegiance-and-blocking.md#L22) · [现行上限](../../src/core/battle/deployment/dp.ts#L5) |
 | 待接入 | 死亡后独立归还全局部署位（U038） | 实机确认干员被击倒后仍暂占全局部署位。当前死亡离场立即归还，满额时另一张卡可随即部署。 [原生与实机复测](../research/evidence/deployment-exit-limits-20261122/README.md#实机复测) |

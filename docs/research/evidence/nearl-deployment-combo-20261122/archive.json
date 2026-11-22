@@ -1,0 +1,315 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-11-22"
+    ],
+    "collectionDateSource": "batch directory",
+    "organizedOn": "2026-11-22",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+        "records": [
+          "result.json#/provenance/client/dll"
+        ],
+        "bytes": 223112680
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        "records": [
+          "result.json#/provenance/client/metadata"
+        ],
+        "bytes": 46669332
+      }
+    },
+    "sourceRecords": [
+      "result.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12895,
+        "sha256": "9c5b246859318caaec4aab5275ef0d2d49fce5d612c6b4e569973a9941ba621a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "extract.py",
+        "kind": "historical-script",
+        "bytes": 8160,
+        "sha256": "4bad29b85b7ce04cfb6fb8468353d3f3230c740e78373d9e3a84523693e5d041"
+      },
+      {
+        "path": "result.json",
+        "kind": "record",
+        "bytes": 162616,
+        "sha256": "d80ab7678cc978b404075caeeec1b571c23d69fac409e16c1e3552c6f8168d6d"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 66755,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/methods/66755",
+            "result.json#/result/methods/66755/method"
+          ],
+          "fullname": "Torappu.Battle.Deck.SpawnCharacterOrToken",
+          "address": "0x1806fd140"
+        },
+        {
+          "index": 66792,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/methods/66792",
+            "result.json#/result/methods/66792/method"
+          ],
+          "fullname": "Torappu.Battle.Deck.get_managedCardBuffController",
+          "address": "0x1806ff660"
+        },
+        {
+          "index": 66861,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/methods/66861",
+            "result.json#/result/methods/66861/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card.Draw",
+          "address": "0x1806eb980"
+        },
+        {
+          "index": 66911,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/methods/66911",
+            "result.json#/result/methods/66911/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card.DealDummyTalent",
+          "address": "0x1806eb360"
+        },
+        {
+          "index": 67123,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/methods/67123",
+            "result.json#/result/methods/67123/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/DeckManagedCardBuffController.RegisterComboDrawCardBuff",
+          "address": "0x18070cb90"
+        },
+        {
+          "index": 67124,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/methods/67124",
+            "result.json#/result/methods/67124/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/DeckManagedCardBuffController.OnCardDrawn",
+          "address": "0x18070c8f0"
+        },
+        {
+          "index": 67125,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/methods/67125",
+            "result.json#/result/methods/67125/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/DeckManagedCardBuffController.Init",
+          "address": "0x18070c750"
+        },
+        {
+          "index": 67127,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/methods/67127",
+            "result.json#/result/methods/67127/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/DeckManagedCardBuffController/ManagedCardBuff.AddCardBuffToOwner",
+          "address": "0x1807113a0"
+        },
+        {
+          "index": 67130,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/methods/67130",
+            "result.json#/result/methods/67130/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/DeckManagedCardBuffController/ManagedComboDrawCardBuff.OnCardDrawn",
+          "address": "0x1807114e0"
+        },
+        {
+          "index": 67131,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/methods/67131",
+            "result.json#/result/methods/67131/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/DeckManagedCardBuffController/ManagedComboDrawCardBuff..ctor",
+          "address": "0x1807116b0"
+        },
+        {
+          "index": 67162,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/methods/67162",
+            "result.json#/result/methods/67162/method"
+          ],
+          "fullname": "Torappu.Battle.DeckSelector.Verify",
+          "address": "0x18070d7c0"
+        },
+        {
+          "index": 74635,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/methods/74635",
+            "result.json#/result/methods/74635/method"
+          ],
+          "fullname": "Torappu.Battle.DeckManagedCardBuffTalent.RegisterDeckManagedCardBuff",
+          "address": "0x1809c3830"
+        },
+        {
+          "index": 79597,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/methods/79597",
+            "result.json#/result/methods/79597/method"
+          ],
+          "fullname": "Torappu.Battle.BattleUtil.CheckProfessionMask",
+          "address": "0x180b40670"
+        },
+        {
+          "index": 98730,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/methods/98730",
+            "result.json#/result/methods/98730/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/CheckContainsCardBuff.Execute",
+          "address": "0x1810c65d0"
+        },
+        {
+          "index": 104760,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/methods/104760",
+            "result.json#/result/methods/104760/method"
+          ],
+          "fullname": "Torappu.Battle.UI.UICard._UpdateComboState",
+          "address": "0x1812c9030"
+        }
+      ],
+      "blocks": [],
+      "types": [],
+      "constants": [],
+      "bundles": [
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_1014_nearl2.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_1014_nearl2.ab",
+          "sha256": "e395052d6042109b8ea7b07384b715cb5e539ad0fa47b5d8842cb489e6102f70",
+          "records": [
+            "result.json#/provenance/packages/charpack~1char_1014_nearl2.ab"
+          ],
+          "bytes": 22906
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_0.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_0.ab",
+          "sha256": "adcf77f260748418d57e08d2539993232de53053bf4a5ec2292ff9a4c7865f1d",
+          "records": [
+            "result.json#/provenance/packages/pkgrps~1btl_pfb_tokens_0.ab"
+          ],
+          "bytes": 5089969
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "sha256": "0d0b4c0f9252c14a69a20d4bea09527403dd3eddfc2f7bcd757c3c30cf37ffc3",
+          "records": [
+            "result.json#/provenance/packages/battle~1prefabs~1[uc]skills.ab"
+          ],
+          "bytes": 1367500
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]equips.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]equips.ab",
+          "sha256": "1698bc4166582fc953e54367e31cf46de2585fa94bdbeda8ab93256eb6cf5b4b",
+          "records": [
+            "result.json#/provenance/packages/battle~1prefabs~1[uc]equips.ab"
+          ],
+          "bytes": 749424
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "sha256": "8edcb8017c977cdf52c2593b58e21db96949f3ad1e6f904180ac1241f145ca79",
+          "records": [
+            "result.json#/provenance/packages/config~1buff_template_holder.ab"
+          ],
+          "bytes": 2151020
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99",
+          "records": [
+            "result.json#/provenance/packages/anon~1bac85f8fe65f27a2b7ea13fff6de62e8.bin"
+          ],
+          "bytes": 477255
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/prefabs/[uc]skills.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/prefabs/[uc]skills.ab",
+          "sha256": "f7ead0e0d8362df84d196f1a30d2165cae1c542fcb9809fb4d6efdb4027c094f",
+          "records": [
+            "result.json#/result/cached/skill2/package",
+            "result.json#/result/cached/skill3Visual/package",
+            "result.json#/result/cached/swordAttack/package"
+          ],
+          "bytes": 1367896
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/prefabs/[uc]equips.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/prefabs/[uc]equips.ab",
+          "sha256": "2f91622056c90655e7977db7466950302e17bb0c4a8268c33ee62672bc9be4fb",
+          "records": [
+            "result.json#/result/cached/module/package"
+          ],
+          "bytes": 750180
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/config/buff_template_holder.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/config/buff_template_holder.ab",
+          "sha256": "f486df86406db62b2773039b87d05a405fb95a31ddc82568c6a6efef14e47f01",
+          "records": [
+            "result.json#/result/cached/templates/package"
+          ],
+          "bytes": 2197532
+        }
+      ]
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

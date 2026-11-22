@@ -275,6 +275,20 @@ HE-7「以爱相连」刷出的赏金猎人扰乱者通过已启用的 `PassiveB
 
 **C／D　开场布阵分别跳过费用和预放召唤物库存消耗。** 卫戍作战说明记录这次部署不进入耀骑士临光 S2 对卡西米尔干员的判定。固定原表显示，S2 结束程序读取场上的 `nearl2_t_1[mark]`，该标记由出生时对应 Card 是否持有特定 Buff 决定。本轮对开场豁免的证据限于说明中列出的这一实际消费者。 [卫戍作战阶段](https://prts.wiki/w/卫戍协议/帮助#作战阶段) · [模板摘录](../evidence/card-rules-20261122/README.md#卫戍开场的部署记录)
 
+**N　初始布阵和战中自动补位调用同一个 Card 部署入口。** 安装版静态代码均传 `spawnManually=true`，初始布阵额外传 `freely=true`。普通部署的 `freely` 分支跳过 DP 与库存结算，仍能走到 `Card.Draw` 的组合通知。现有静态证据尚未定位卫戍开场排除 S2 判定的具体分支。 [开场和补位的实参与原生分支](../evidence/stronghold-opening-deploy-20261122/README.md)
+
+### 上一名部署者与在场时间
+
+**N／D　耀骑士临光的卡西米尔判定使用牌组管理的标记。** `DeckManagedCardBuffController` 为她的卡保存一份组合规则。一次参与此规则的 `Card.Draw` 到来时，召唤物和装置跳过更新。其余牌按 `kazimierz` 判定，有该势力时给她的卡写 `nearl2_t_1`，否则清除。它只保存当前判定结果。部署的新对象先执行出生程序，随后才处理该卡的 `Draw`，所以她入场时读到上一张有效牌留下的结果。第一天赋和 S2 使用本次出生时确认的 Unit 标记，之后再部署别人不改写这次 S2 的退场优惠。S3 的耀阳有自己的 Card 标记，并在耀阳出生时另行采样，因而能认到此前部署的耀骑士临光本人。 [实际角色与召唤物组件、写入和读取链](../evidence/nearl-deployment-combo-20261122/README.md) · [干员天赋与技能](https://prts.wiki/w/174)
+
+**N／D　集成战略「罗德之门」保存的是最后一张合格 Card 的 UID。** 其 `rogue_4_log_final_locate` 在出生事件中判断角色并排除自身特殊移动，写入玩法黑板的 `unique_id` 并增加发生次数。写入字符串会覆盖旧值。`Rogue4DLC2LastDeployManager` 在结算时读这两项，按 UID 转回玩家阵容身份。撤退不清该选择，目标不再适用时也不回退到上一个。 [实际写入和战斗结束消费者](../evidence/deployment-order-consumers-20261122/README.md) · [罗德之门备注](https://prts.wiki/w/罗德之门)
+
+**N／D　思衡托 S3 和菲亚梅塔模组需要当前仍在场的候选。** 思衡托在范围与 Card 资格筛选后按当前角色的 `createdTime` 降序取至多两名。菲亚梅塔模组按在场对象的创建时间选最近部署的其他合格干员，只在自己的效果里缓存攻击范围锚点。敌方「门」也从当前场上的候选选最后出现的目标，成功取得 Card 后才锁牌。 [思衡托实际选择器](../evidence/deployment-target-order-20261122/README.md) · [菲亚梅塔的原生查询与敌方「门」](../evidence/deployment-order-consumers-20261122/README.md) · [「门」的资格说明](https://prts.wiki/w/“门”)
+
+**D　界园通宝「分久必合」由登场触发效果转移。** 新入场者取得效果，并通过程序移除其他在场者的同类效果。此路径使用本次入场与当前场上对象。 [通宝实际模板](../evidence/deployment-order-consumers-20261122/README.md)
+
+上述消费者各自保留接力结果、结算目标或当前在场对象的创建时间。与这些状态并存的是普通部署时记录的来源身份。原生 Character 携带跨同卡重部署保持的 `cardUid`，包括由卡部署的召唤物与装置。ArkBattle 的 `Card.deployedUnits` 保存单位与原 Card 的关联，供 `cardForUnit` 在来源注销后继续反查 Effect 的来源分组。 [原生来源身份](01-buff-installation-and-parent-scope.md#96-carduid-的生成与重部署保留) · [项目部署来源](../../architecture/deployment.md#静态内容与-card)
+
 ### 其它模式与活动
 
 以下仅作语义对照，不自动成为主模式或卫戍协议的实现范围。

@@ -1,0 +1,376 @@
+98976 Torappu.Battle.Action.Nodes/AddGlobalBlackboard.Execute 0x1810db9a0–0x1810dbb90
+0x1810db9a0 mov   qword ptr [rsp + 0x10], rbx
+0x1810db9a5 mov   qword ptr [rsp + 0x18], rsi
+0x1810db9aa mov   qword ptr [rsp + 0x20], rdi
+0x1810db9af push  r14
+0x1810db9b1 sub   rsp, 0x40
+0x1810db9b5 cmp   byte ptr [rip + 0x7ec5fb3], 0
+0x1810db9bc mov   rdi, r9
+0x1810db9bf mov   r14d, r8d
+0x1810db9c2 mov   rsi, rdx
+0x1810db9c5 mov   rbx, rcx
+0x1810db9c8 jne   0x1810db9e9
+0x1810db9ca lea   rcx, [rip + 0x7ac9faf]
+0x1810db9d1 call  0x18049c210
+0x1810db9d6 lea   rcx, [rip + 0x7ad6183]
+0x1810db9dd call  0x18049c210
+0x1810db9e2 mov   byte ptr [rip + 0x7ec5f86], 1
+0x1810db9e9 mov   rax, qword ptr [rip + 0x7ac9f90]
+0x1810db9f0 mov   qword ptr [rsp + 0x50], rbp
+0x1810db9f5 mov   r8, qword ptr [rax + 0xb8]
+0x1810db9fc mov   rcx, qword ptr [r8 + 8]
+0x1810dba00 test  rcx, rcx
+0x1810dba03 jne   0x1810dbb6a
+0x1810dba09 movaps xmmword ptr [rsp + 0x30], xmm6
+0x1810dba0e cmp   dword ptr [rbx + 0x20], 7
+0x1810dba12 je    0x1810dbb66
+0x1810dba18 test  rsi, rsi
+0x1810dba1b je    0x1810dbb86
+0x1810dba21 mov   r8, qword ptr [rbx + 0x10]
+0x1810dba25 xor   ebp, ebp
+0x1810dba27 mov   rdx, qword ptr [rbx + 0x18]
+0x1810dba2b xor   r9d, r9d
+0x1810dba2e mov   rcx, rsi
+0x1810dba31 mov   qword ptr [rsp + 0x20], rbp
+0x1810dba36 call  0x182378e10   Torappu.Blackboard.GetStringOrDefault
+0x1810dba3b xor   edx, edx
+0x1810dba3d mov   rcx, rax
+0x1810dba40 mov   r14, rax
+0x1810dba43 call  0x18601a180   System.String.IsNullOrEmpty
+0x1810dba48 test  al, al
+0x1810dba4a jne   0x1810dbb66
+0x1810dba50 mov   rcx, qword ptr [rip + 0x7ad6109]
+0x1810dba57 call  0x18558e720
+0x1810dba5c test  rax, rax
+0x1810dba5f je    0x1810dbb86
+0x1810dba65 xor   edx, edx
+0x1810dba67 mov   rcx, rax
+0x1810dba6a call  0x180670590   Torappu.Battle.BattleController.get_globalBlackboard
+0x1810dba6f mov   rcx, qword ptr [rbx + 0x28]
+0x1810dba73 mov   rdi, rax
+0x1810dba76 xor   edx, edx
+0x1810dba78 cmp   byte ptr [rbx + 0x30], bpl
+0x1810dba7c jne   0x1810dbb02
+0x1810dba82 call  0x18601a180   System.String.IsNullOrEmpty
+0x1810dba87 test  al, al
+0x1810dba89 jne   0x1810dbaa9
+0x1810dba8b movss xmm2, dword ptr [rbx + 0x24]
+0x1810dba90 mov   r9b, 1
+0x1810dba93 mov   rdx, qword ptr [rbx + 0x28]
+0x1810dba97 mov   rcx, rsi
+0x1810dba9a mov   qword ptr [rsp + 0x20], rbp
+0x1810dba9f call  0x182378940   Torappu.Blackboard.GetFloatOrDefault
+0x1810dbaa4 movaps xmm6, xmm0
+0x1810dbaa7 jmp   0x1810dbaae
+0x1810dbaa9 movss xmm6, dword ptr [rbx + 0x24]
+0x1810dbaae cmp   byte ptr [rbx + 0x40], bpl
+0x1810dbab2 je    0x1810dbac2
+0x1810dbab4 xorps xmm0, xmm0
+0x1810dbab7 test  rdi, rdi
+0x1810dbaba je    0x1810dbb86
+0x1810dbac0 jmp   0x1810dbae6
+0x1810dbac2 test  rdi, rdi
+0x1810dbac5 je    0x1810dbb86
+0x1810dbacb mov   edx, dword ptr [rbx + 0x20]
+0x1810dbace xorps xmm3, xmm3
+0x1810dbad1 mov   qword ptr [rsp + 0x28], rbp
+0x1810dbad6 mov   r8, r14
+0x1810dbad9 mov   rcx, rdi
+0x1810dbadc mov   byte ptr [rsp + 0x20], bpl
+0x1810dbae1 call  0x180687a10   Torappu.Battle.BattleGlobalBlackboard.GetFloatOrDefault
+0x1810dbae6 mov   edx, dword ptr [rbx + 0x20]
+0x1810dbae9 addss xmm0, xmm6
+0x1810dbaed mov   r8, r14
+0x1810dbaf0 mov   qword ptr [rsp + 0x20], rbp
+0x1810dbaf5 mov   rcx, rdi
+0x1810dbaf8 movaps xmm3, xmm0
+0x1810dbafb call  0x180687690   Torappu.Battle.BattleGlobalBlackboard.Assign
+0x1810dbb00 jmp   0x1810dbb44
+0x1810dbb02 call  0x18601a180   System.String.IsNullOrEmpty
+0x1810dbb07 test  al, al
+0x1810dbb09 jne   0x1810dbb25
+0x1810dbb0b mov   r8, qword ptr [rbx + 0x38]
+0x1810dbb0f mov   r9b, 1
+0x1810dbb12 mov   rdx, qword ptr [rbx + 0x28]
+0x1810dbb16 mov   rcx, rsi
+0x1810dbb19 mov   qword ptr [rsp + 0x20], rbp
+0x1810dbb1e call  0x182378e10   Torappu.Blackboard.GetStringOrDefault
+0x1810dbb23 jmp   0x1810dbb29
+0x1810dbb25 mov   rax, qword ptr [rbx + 0x38]
+0x1810dbb29 test  rdi, rdi
+0x1810dbb2c je    0x1810dbb86
+0x1810dbb2e mov   edx, dword ptr [rbx + 0x20]
+0x1810dbb31 mov   r9, rax
+0x1810dbb34 mov   r8, r14
+0x1810dbb37 mov   qword ptr [rsp + 0x20], rbp
+0x1810dbb3c mov   rcx, rdi
+0x1810dbb3f call  0x1806875e0   Torappu.Battle.BattleGlobalBlackboard.Assign
+0x1810dbb44 mov   al, 1
+0x1810dbb46 movaps xmm6, xmmword ptr [rsp + 0x30]
+0x1810dbb4b mov   rbp, qword ptr [rsp + 0x50]
+0x1810dbb50 mov   rbx, qword ptr [rsp + 0x58]
+0x1810dbb55 mov   rsi, qword ptr [rsp + 0x60]
+0x1810dbb5a mov   rdi, qword ptr [rsp + 0x68]
+0x1810dbb5f add   rsp, 0x40
+0x1810dbb63 pop   r14
+0x1810dbb65 ret
+0x1810dbb66 xor   al, al
+0x1810dbb68 jmp   0x1810dbb46
+0x1810dbb6a xor   ebp, ebp
+0x1810dbb6c mov   r9d, r14d
+0x1810dbb6f mov   qword ptr [rsp + 0x28], rbp
+0x1810dbb74 mov   r8, rsi
+0x1810dbb77 mov   rdx, rbx
+0x1810dbb7a mov   qword ptr [rsp + 0x20], rdi
+0x1810dbb7f call  0x1831be380   XLua.DelegateBridge.__Gen_Delegate_Imp11420
+0x1810dbb84 jmp   0x1810dbb4b
+0x1810dbb86 call  0x18049c3c0
+0x1810dbb8b int3
+0x1810dbb8c int3
+0x1810dbb8d int3
+0x1810dbb8e int3
+0x1810dbb8f int3
+65920 Torappu.Battle.BattleGlobalBlackboard.Assign 0x180687690–0x180687740
+0x180687690 mov   qword ptr [rsp + 8], rbx
+0x180687695 mov   qword ptr [rsp + 0x10], rsi
+0x18068769a push  rdi
+0x18068769b sub   rsp, 0x40
+0x18068769f cmp   byte ptr [rip + 0x8913aef], 0
+0x1806876a6 mov   rbx, r8
+0x1806876a9 movaps xmmword ptr [rsp + 0x30], xmm6
+0x1806876ae mov   edi, edx
+0x1806876b0 movaps xmm6, xmm3
+0x1806876b3 mov   rsi, rcx
+0x1806876b6 jne   0x1806876cb
+0x1806876b8 lea   rcx, [rip + 0x8490781]
+0x1806876bf call  0x18049c210
+0x1806876c4 mov   byte ptr [rip + 0x8913aca], 1
+0x1806876cb mov   rax, qword ptr [rip + 0x849076e]
+0x1806876d2 mov   r9, qword ptr [rax + 0xb8]
+0x1806876d9 mov   rcx, qword ptr [r9]
+0x1806876dc test  rcx, rcx
+0x1806876df jne   0x180687706
+0x1806876e1 xor   r8d, r8d
+0x1806876e4 mov   edx, edi
+0x1806876e6 mov   rcx, rsi
+0x1806876e9 call  0x180688100   Torappu.Battle.BattleGlobalBlackboard._EnsureChannel
+0x1806876ee test  rax, rax
+0x1806876f1 je    0x180687738
+0x1806876f3 xor   r9d, r9d
+0x1806876f6 movaps xmm2, xmm6
+0x1806876f9 mov   rdx, rbx
+0x1806876fc mov   rcx, rax
+0x1806876ff call  0x182377ce0   Torappu.Blackboard.Assign
+0x180687704 jmp   0x180687723
+0x180687706 mov   qword ptr [rsp + 0x28], 0
+0x18068770f mov   r9, rbx
+0x180687712 mov   r8d, edi
+0x180687715 movss dword ptr [rsp + 0x20], xmm6
+0x18068771b mov   rdx, rsi
+0x18068771e call  0x1833e45b0   XLua.DelegateBridge.__Gen_Delegate_Imp2962
+0x180687723 mov   rbx, qword ptr [rsp + 0x50]
+0x180687728 mov   rsi, qword ptr [rsp + 0x58]
+0x18068772d movaps xmm6, xmmword ptr [rsp + 0x30]
+0x180687732 add   rsp, 0x40
+0x180687736 pop   rdi
+0x180687737 ret
+0x180687738 call  0x18049c3c0
+0x18068773d int3
+0x18068773e int3
+0x18068773f int3
+65921 Torappu.Battle.BattleGlobalBlackboard.Assign 0x180687520–0x1806875e0
+0x180687520 mov   qword ptr [rsp + 8], rbx
+0x180687525 mov   qword ptr [rsp + 0x10], rbp
+0x18068752a mov   qword ptr [rsp + 0x18], rsi
+0x18068752f push  rdi
+0x180687530 sub   rsp, 0x30
+0x180687534 cmp   byte ptr [rip + 0x8913c5b], 0
+0x18068753b mov   ebx, r9d
+0x18068753e mov   rdi, r8
+0x180687541 mov   esi, edx
+0x180687543 mov   rbp, rcx
+0x180687546 jne   0x18068755b
+0x180687548 lea   rcx, [rip + 0x84908f1]
+0x18068754f call  0x18049c210
+0x180687554 mov   byte ptr [rip + 0x8913c3b], 1
+0x18068755b mov   rax, qword ptr [rip + 0x84908de]
+0x180687562 mov   r10, qword ptr [rax + 0xb8]
+0x180687569 mov   rcx, qword ptr [r10 + 8]
+0x18068756d test  rcx, rcx
+0x180687570 jne   0x18068759b
+0x180687572 xor   r8d, r8d
+0x180687575 mov   edx, esi
+0x180687577 mov   rcx, rbp
+0x18068757a call  0x180688100   Torappu.Battle.BattleGlobalBlackboard._EnsureChannel
+0x18068757f test  rax, rax
+0x180687582 je    0x1806875cb
+0x180687584 movd  xmm2, ebx
+0x180687588 xor   r9d, r9d
+0x18068758b cvtdq2ps xmm2, xmm2
+0x18068758e mov   rdx, rdi
+0x180687591 mov   rcx, rax
+0x180687594 call  0x182377ce0   Torappu.Blackboard.Assign
+0x180687599 jmp   0x1806875b6
+0x18068759b mov   qword ptr [rsp + 0x28], 0
+0x1806875a4 mov   r9, rdi
+0x1806875a7 mov   r8d, esi
+0x1806875aa mov   dword ptr [rsp + 0x20], ebx
+0x1806875ae mov   rdx, rbp
+0x1806875b1 call  0x1833e47a0   XLua.DelegateBridge.__Gen_Delegate_Imp2963
+0x1806875b6 mov   rbx, qword ptr [rsp + 0x40]
+0x1806875bb mov   rbp, qword ptr [rsp + 0x48]
+0x1806875c0 mov   rsi, qword ptr [rsp + 0x50]
+0x1806875c5 add   rsp, 0x30
+0x1806875c9 pop   rdi
+0x1806875ca ret
+0x1806875cb call  0x18049c3c0
+0x1806875d0 int3
+0x1806875d1 int3
+0x1806875d2 int3
+0x1806875d3 int3
+0x1806875d4 int3
+0x1806875d5 int3
+0x1806875d6 int3
+0x1806875d7 int3
+0x1806875d8 int3
+0x1806875d9 int3
+0x1806875da int3
+0x1806875db int3
+0x1806875dc int3
+0x1806875dd int3
+0x1806875de int3
+0x1806875df int3
+65922 Torappu.Battle.BattleGlobalBlackboard.Assign 0x180687740–0x180687890
+0x180687740 mov   qword ptr [rsp + 8], rbx
+0x180687745 mov   qword ptr [rsp + 0x10], rsi
+0x18068774a mov   qword ptr [rsp + 0x20], r9
+0x18068774f push  rdi
+0x180687750 sub   rsp, 0x40
+0x180687754 cmp   byte ptr [rip + 0x8913a3c], 0
+0x18068775b mov   rbx, r8
+0x18068775e mov   edi, edx
+0x180687760 mov   rsi, rcx
+0x180687763 jne   0x180687789
+0x180687765 lea   rcx, [rip + 0x84906d4]
+0x18068776c call  0x18049c210
+0x180687771 lea   rcx, [rip + 0x853f538]
+0x180687778 call  0x18049c210
+0x18068777d mov   r9, qword ptr [rsp + 0x68]
+0x180687782 mov   byte ptr [rip + 0x8913a0e], 1
+0x180687789 mov   rax, qword ptr [rip + 0x84906b0]
+0x180687790 mov   rcx, qword ptr [rax + 0xb8]
+0x180687797 mov   rcx, qword ptr [rcx + 0x10]
+0x18068779b test  rcx, rcx
+0x18068779e jne   0x180687856
+0x1806877a4 movaps xmmword ptr [rsp + 0x30], xmm6
+0x1806877a9 mov   rcx, qword ptr [rip + 0x853f500]
+0x1806877b0 cmp   dword ptr [rcx + 0xe0], 0
+0x1806877b7 jne   0x1806877be
+0x1806877b9 call  0x18049c450
+0x1806877be xor   edx, edx
+0x1806877c0 lea   rcx, [rsp + 0x68]
+0x1806877c5 call  0x18695b4d0   Torappu.FP.AsFloat
+0x1806877ca cmp   byte ptr [rip + 0x89139c4], 0
+0x1806877d1 movaps xmm6, xmm0
+0x1806877d4 jne   0x1806877e9
+0x1806877d6 lea   rcx, [rip + 0x8490663]
+0x1806877dd call  0x18049c210
+0x1806877e2 mov   byte ptr [rip + 0x89139ac], 1
+0x1806877e9 mov   rax, qword ptr [rip + 0x8490650]
+0x1806877f0 mov   rcx, qword ptr [rax + 0xb8]
+0x1806877f7 mov   rcx, qword ptr [rcx]
+0x1806877fa test  rcx, rcx
+0x1806877fd jne   0x180687837
+0x1806877ff xor   r8d, r8d
+0x180687802 mov   edx, edi
+0x180687804 mov   rcx, rsi
+0x180687807 call  0x180688100   Torappu.Battle.BattleGlobalBlackboard._EnsureChannel
+0x18068780c test  rax, rax
+0x18068780f je    0x180687882
+0x180687811 xor   r9d, r9d
+0x180687814 movaps xmm2, xmm6
+0x180687817 mov   rdx, rbx
+0x18068781a mov   rcx, rax
+0x18068781d call  0x182377ce0   Torappu.Blackboard.Assign
+0x180687822 movaps xmm6, xmmword ptr [rsp + 0x30]
+0x180687827 mov   rbx, qword ptr [rsp + 0x50]
+0x18068782c mov   rsi, qword ptr [rsp + 0x58]
+0x180687831 add   rsp, 0x40
+0x180687835 pop   rdi
+0x180687836 ret
+0x180687837 mov   qword ptr [rsp + 0x28], 0
+0x180687840 mov   r9, rbx
+0x180687843 mov   r8d, edi
+0x180687846 movss dword ptr [rsp + 0x20], xmm6
+0x18068784c mov   rdx, rsi
+0x18068784f call  0x1833e45b0   XLua.DelegateBridge.__Gen_Delegate_Imp2962
+0x180687854 jmp   0x180687822
+0x180687856 mov   qword ptr [rsp + 0x28], 0
+0x18068785f mov   r8d, edi
+0x180687862 mov   qword ptr [rsp + 0x20], r9
+0x180687867 mov   rdx, rsi
+0x18068786a mov   r9, rbx
+0x18068786d call  0x1833e4990   XLua.DelegateBridge.__Gen_Delegate_Imp2964
+0x180687872 mov   rbx, qword ptr [rsp + 0x50]
+0x180687877 mov   rsi, qword ptr [rsp + 0x58]
+0x18068787c add   rsp, 0x40
+0x180687880 pop   rdi
+0x180687881 ret
+0x180687882 call  0x18049c3c0
+0x180687887 int3
+0x180687888 int3
+0x180687889 int3
+0x18068788a int3
+0x18068788b int3
+0x18068788c int3
+0x18068788d int3
+0x18068788e int3
+0x18068788f int3
+65925 Torappu.Battle.BattleGlobalBlackboard.Assign 0x1806875e0–0x180687690
+0x1806875e0 mov   qword ptr [rsp + 8], rbx
+0x1806875e5 mov   qword ptr [rsp + 0x10], rbp
+0x1806875ea mov   qword ptr [rsp + 0x18], rsi
+0x1806875ef push  rdi
+0x1806875f0 sub   rsp, 0x30
+0x1806875f4 cmp   byte ptr [rip + 0x8913b9f], 0
+0x1806875fb mov   rbx, r9
+0x1806875fe mov   rdi, r8
+0x180687601 mov   esi, edx
+0x180687603 mov   rbp, rcx
+0x180687606 jne   0x18068761b
+0x180687608 lea   rcx, [rip + 0x8490831]
+0x18068760f call  0x18049c210
+0x180687614 mov   byte ptr [rip + 0x8913b7f], 1
+0x18068761b mov   rax, qword ptr [rip + 0x849081e]
+0x180687622 mov   r10, qword ptr [rax + 0xb8]
+0x180687629 mov   rcx, qword ptr [r10 + 0x28]
+0x18068762d test  rcx, rcx
+0x180687630 jne   0x180687657
+0x180687632 xor   r8d, r8d
+0x180687635 mov   edx, esi
+0x180687637 mov   rcx, rbp
+0x18068763a call  0x180688100   Torappu.Battle.BattleGlobalBlackboard._EnsureChannel
+0x18068763f test  rax, rax
+0x180687642 je    0x180687688
+0x180687644 xor   r9d, r9d
+0x180687647 mov   r8, rbx
+0x18068764a mov   rdx, rdi
+0x18068764d mov   rcx, rax
+0x180687650 call  0x182377b30   Torappu.Blackboard.Assign
+0x180687655 jmp   0x180687673
+0x180687657 mov   qword ptr [rsp + 0x28], 0
+0x180687660 mov   r9, rdi
+0x180687663 mov   r8d, esi
+0x180687666 mov   qword ptr [rsp + 0x20], rbx
+0x18068766b mov   rdx, rbp
+0x18068766e call  0x1833e5050   XLua.DelegateBridge.__Gen_Delegate_Imp2967
+0x180687673 mov   rbx, qword ptr [rsp + 0x40]
+0x180687678 mov   rbp, qword ptr [rsp + 0x48]
+0x18068767d mov   rsi, qword ptr [rsp + 0x50]
+0x180687682 add   rsp, 0x30
+0x180687686 pop   rdi
+0x180687687 ret
+0x180687688 call  0x18049c3c0
+0x18068768d int3
+0x18068768e int3
+0x18068768f int3

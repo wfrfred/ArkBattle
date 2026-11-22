@@ -1,0 +1,1427 @@
+{
+  "provenance": {
+    "revision": "17759cc8cdf37388414145d16262a3a06f3ab25e",
+    "source": "https://github.com/Kengxxiao/ArknightsGameData",
+    "base": "assets/arknights-game-data/zh_CN/gamedata",
+    "inputs": [
+      {
+        "path": "excel/roguelike_topic_table.json",
+        "bytes": 17958101,
+        "sha256": "36d8189e1e466fa07226effbf2cf224a69fb41a942ae83827934052e7a01cc69"
+      },
+      {
+        "path": "battle/buff_template_data.json",
+        "bytes": 28623543,
+        "sha256": "6786d60fa1f081346f7885a0a9782e201c942017588b09830afb011e16c6df3c"
+      },
+      {
+        "path": "excel/uniequip_table.json",
+        "bytes": 3392727,
+        "sha256": "c436d9ca672c8e8c3926d0ccbd496f7591004baf944f8cb47458572f4eaa8590"
+      },
+      {
+        "path": "excel/battle_equip_table.json",
+        "bytes": 5763741,
+        "sha256": "991ce1a8cd76682704b7e95fb71de8c726fd9ff62038a2da31b8a3870dc48055"
+      },
+      {
+        "path": "excel/enemy_handbook_table.json",
+        "bytes": 1854506,
+        "sha256": "4a849cc4f9cfd321d3253032686ffdab8ab9ae3fabe5f8223c1f9b27da9715bf"
+      }
+    ]
+  },
+  "result": {
+    "excel/roguelike_topic_table.json": {
+      "/details/rogue_4/relics/rogue_4_relic_explore_8": {
+        "id": "rogue_4_relic_explore_8",
+        "buffs": [
+          {
+            "key": "global_buff_normal",
+            "blackboard": [
+              {
+                "key": "key",
+                "value": 0.0,
+                "valueStr": "rogue_4_log_final_locate"
+              },
+              {
+                "key": "selector.profession",
+                "value": 0.0,
+                "valueStr": "warrior|sniper|tank|medic|support|caster|special|pioneer"
+              }
+            ]
+          },
+          {
+            "key": "battle_expedition",
+            "blackboard": [
+              {
+                "key": "event_id",
+                "value": 0.0,
+                "valueStr": "rogue_last_deploy"
+              },
+              {
+                "key": "limit",
+                "value": 1.0,
+                "valueStr": null
+              },
+              {
+                "key": "node",
+                "value": 0.0,
+                "valueStr": "DUEL"
+              }
+            ]
+          },
+          {
+            "key": "misc_add_env_system",
+            "blackboard": [
+              {
+                "key": "key",
+                "value": 0.0,
+                "valueStr": "env_022_ro4dlc2_log_final_deploy"
+              }
+            ]
+          },
+          {
+            "key": "immediate_recruit",
+            "blackboard": [
+              {
+                "key": "char_list",
+                "value": 0.0,
+                "valueStr": "char_504_rguard,char_507_rsnipe,char_505_rcast,char_506_rmedic,char_514_rdfend"
+              }
+            ]
+          }
+        ]
+      },
+      "/details/rogue_5/items/rogue_5_copper_E_05_a": {
+        "id": "rogue_5_copper_E_05_a",
+        "name": "花-分久必合",
+        "description": "百氏兴乱，神明睥睨。英杰出世，炎祚久续。",
+        "usage": "投出时，使战斗中最后部署的干员攻击力+50％，攻击速度+50，生命值+50％，初始技力+10",
+        "obtainApproach": "在集成战略模式中获得",
+        "iconId": "rogue_5_copper_E_05_a",
+        "itemIconGroupId": "rogue_5_copper_E_05",
+        "type": "COPPER",
+        "subType": "NONE",
+        "rarity": "SUPER_RARE",
+        "sortId": 999,
+        "canSacrifice": true,
+        "tinyIconColor": null,
+        "unlockCondDesc": null,
+        "shortUsage": "投出时，使战斗中最后部署的干员攻击力+50％，攻击速度+50，生命值+50％，初始技力+10"
+      },
+      "/details/rogue_5/relics/rogue_5_copper_buff_E_05_a": {
+        "id": "rogue_5_copper_buff_E_05_a",
+        "buffs": [
+          {
+            "key": "global_buff_normal",
+            "blackboard": [
+              {
+                "key": "trig_type",
+                "value": 0.0,
+                "valueStr": "TAKE_OUT"
+              },
+              {
+                "key": "key",
+                "value": 0.0,
+                "valueStr": "rogue_5_last_character_get_buff"
+              },
+              {
+                "key": "atk",
+                "value": 0.5,
+                "valueStr": null
+              },
+              {
+                "key": "max_hp",
+                "value": 0.5,
+                "valueStr": null
+              },
+              {
+                "key": "attack_speed",
+                "value": 50.0,
+                "valueStr": null
+              },
+              {
+                "key": "sp",
+                "value": 10.0,
+                "valueStr": null
+              },
+              {
+                "key": "selector.profession",
+                "value": 0.0,
+                "valueStr": "warrior|sniper|tank|medic|support|caster|special|pioneer"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "battle/buff_template_data.json": {
+      "/rogue_4_log_final_locate": {
+        "templateKey": "rogue_4_log_final_locate",
+        "effectKey": "",
+        "onEventPriority": "DEFAULT",
+        "eventToActions": {
+          "ON_OWNER_BORN": [
+            {
+              "$type": "Torappu.Battle.Action.Nodes+FilterCharacterLastDeathReason, Assembly-CSharp",
+              "_characterType": "BUFF_OWNER",
+              "_finishReason": "MOVE_LIKE_RESPAWN_SELF"
+            },
+            {
+              "$type": "Torappu.Battle.Action.Nodes+IfNot, Assembly-CSharp"
+            },
+            {
+              "$type": "Torappu.Battle.Action.Nodes+IsCharacter, Assembly-CSharp",
+              "_targetType": "BUFF_OWNER"
+            },
+            {
+              "$type": "Torappu.Battle.Action.Nodes+AddGlobalBlackboard, Assembly-CSharp",
+              "_blackboardKey": "rogue_4_log_final_locate",
+              "_channel": "ROGUELIKE",
+              "_value": 1.0,
+              "_valueBlackboardKey": "",
+              "_addString": false,
+              "_valueStr": null,
+              "_overwrite": false
+            },
+            {
+              "$type": "Torappu.Battle.Action.Nodes+AssignCardUIDToBlackBoard, Assembly-CSharp",
+              "_targetType": "BUFF_OWNER",
+              "_blackBoardKey": "unique_id",
+              "_assignAsString": true,
+              "_assignHostOrToken": false,
+              "_assignAsKey": false
+            },
+            {
+              "$type": "Torappu.Battle.Action.Nodes+AddGlobalBlackboard, Assembly-CSharp",
+              "_blackboardKey": "unique_id",
+              "_channel": "ROGUELIKE",
+              "_value": 0.0,
+              "_valueBlackboardKey": "unique_id",
+              "_addString": true,
+              "_valueStr": null,
+              "_overwrite": false
+            }
+          ]
+        }
+      },
+      "/skzcy_t[first_step]": {
+        "templateKey": "skzcy_t[first_step]",
+        "effectKey": "",
+        "onEventPriority": "DEFAULT",
+        "eventToActions": {
+          "ON_OWNER_KILLED": [
+            {
+              "$type": "Torappu.Battle.Action.Nodes+CreateBuffUseAbilitySelector, Assembly-CSharp",
+              "_sourceType": "SOURCE",
+              "_targetType": "TARGET",
+              "_useAbilityFromTarget": false,
+              "_abilityFromTargetType": "SOURCE",
+              "_abilityName": "JustSelector",
+              "_excludeTarget": false,
+              "_excludeTargetType": "SOURCE",
+              "_buff": {
+                "attributes": {
+                  "abnormalFlags": [],
+                  "abnormalImmunes": [],
+                  "abnormalAntis": [],
+                  "abnormalCombos": [],
+                  "abnormalComboImmunes": [],
+                  "attributeModifiers": []
+                },
+                "buffKey": "skzcy_t[ban_card]",
+                "loadFromDB": false,
+                "isDurableBuff": false,
+                "isDamageMissable": false,
+                "isSilenceable": false,
+                "isStunnable": false,
+                "isFreezable": false,
+                "isLevitatable": false,
+                "isGroundBoundable": false,
+                "statusResistable": "AUTOMATIC",
+                "templateKey": "skzcy_t[ban_card]",
+                "disableOverride": false,
+                "overrideKey": null,
+                "overrideType": "DEFAULT",
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": false,
+                "clearAllStackCntWhenTimeUp": false,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": false,
+                "overrideEffectKey": null,
+                "overrideOnEventPriority": false,
+                "onEventPriority": "DEFAULT",
+                "audioSignal": null,
+                "lifeTimeType": "IMMEDIATELY",
+                "takeSnapshotWhenExtend": false,
+                "durationKey": null,
+                "remainingTimeKey": null,
+                "lifeTime": 0.0,
+                "triggerLifeType": "IMMEDIATELY",
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": true,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": [],
+                "stripBlackboardParamsWithBuffKey": false,
+                "blackboard": [],
+                "enableInitDirectionFromSource": false
+              },
+              "_isDerivedBuff": false,
+              "_finishDerivedBuffIfParentFinish": false,
+              "_actionFailedIfNoTarget": false,
+              "_overrideBuffSourceType": false,
+              "_buffSourceType": "SOURCE",
+              "_assignTargetCntToBB": false
+            }
+          ],
+          "ON_BUFF_START": [
+            {
+              "$type": "Torappu.Battle.Action.Nodes+CreateBuff, Assembly-CSharp",
+              "_buff": {
+                "attributes": {
+                  "abnormalFlags": [],
+                  "abnormalImmunes": [],
+                  "abnormalAntis": [],
+                  "abnormalCombos": [],
+                  "abnormalComboImmunes": [],
+                  "attributeModifiers": []
+                },
+                "buffKey": "skzcy_t[effect]",
+                "loadFromDB": false,
+                "isDurableBuff": false,
+                "isDamageMissable": false,
+                "isSilenceable": false,
+                "isStunnable": false,
+                "isFreezable": false,
+                "isLevitatable": false,
+                "isGroundBoundable": false,
+                "statusResistable": "AUTOMATIC",
+                "templateKey": "empty",
+                "disableOverride": false,
+                "overrideKey": null,
+                "overrideType": "DEFAULT",
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": false,
+                "clearAllStackCntWhenTimeUp": false,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": false,
+                "overrideEffectKey": "enemy_skzcy_idle_01",
+                "overrideOnEventPriority": false,
+                "onEventPriority": "DEFAULT",
+                "audioSignal": null,
+                "lifeTimeType": "INFINITY",
+                "takeSnapshotWhenExtend": false,
+                "durationKey": null,
+                "remainingTimeKey": null,
+                "lifeTime": 0.0,
+                "triggerLifeType": "IMMEDIATELY",
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": true,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": [],
+                "stripBlackboardParamsWithBuffKey": false,
+                "blackboard": [],
+                "enableInitDirectionFromSource": false
+              },
+              "_buffOwner": "BUFF_OWNER",
+              "_useSpecialBuffSource": false,
+              "_specialBuffSource": "BUFF_SOURCE",
+              "_isDerivedBuff": false,
+              "_finishDerivedBuffIfParentFinish": false,
+              "_inherateSourceProjectileFromParentBuff": false,
+              "_hookEffectKeyFromSourceProjectile": false
+            }
+          ]
+        }
+      },
+      "/skzcy_t[ban_card]": {
+        "templateKey": "skzcy_t[ban_card]",
+        "effectKey": "",
+        "onEventPriority": "DEFAULT",
+        "eventToActions": {
+          "ON_BUFF_START": [
+            {
+              "$type": "Torappu.Battle.Action.Nodes+CreateCardBuff, Assembly-CSharp",
+              "_target": "BUFF_OWNER",
+              "_donotInheritBlackboard": false,
+              "_lifeType": "ALL_THE_TIME",
+              "_isRatio": false,
+              "_enableMaxStackCount": false,
+              "_filterIsInHand": false,
+              "_useCardBuffKey": false,
+              "_cardBuffKey": ""
+            },
+            {
+              "$type": "Torappu.Battle.Action.Nodes+CreateDeckBuff, Assembly-CSharp",
+              "_deckBuff": {
+                "cardEffectType": "DEVOURED",
+                "lifeType": "ALL_THE_TIME",
+                "affectInHand": false,
+                "affectOutOfHand": false,
+                "wontSpawnWhenRallyPointSwitch": false,
+                "showToastWhenAffect": false,
+                "cardAnimWhenDeckbuffAdd": null,
+                "ignoreSpecialBuild": false,
+                "buff": {
+                  "attributes": {
+                    "abnormalFlags": null,
+                    "abnormalImmunes": null,
+                    "abnormalAntis": null,
+                    "abnormalCombos": null,
+                    "abnormalComboImmunes": null,
+                    "attributeModifiers": null
+                  },
+                  "buffKey": null,
+                  "loadFromDB": false,
+                  "isDurableBuff": false,
+                  "isDamageMissable": false,
+                  "isSilenceable": false,
+                  "isStunnable": false,
+                  "isFreezable": false,
+                  "isLevitatable": false,
+                  "isGroundBoundable": false,
+                  "statusResistable": "AUTOMATIC",
+                  "templateKey": "empty",
+                  "disableOverride": false,
+                  "overrideKey": null,
+                  "overrideType": "DEFAULT",
+                  "maxStackCnt": 1,
+                  "refreshRemainingTimeWhenStackMax": false,
+                  "clearAllStackCntWhenTimeUp": false,
+                  "maxValidStackCnt": -1,
+                  "independentCharacterSource": false,
+                  "overrideEffectKey": null,
+                  "overrideOnEventPriority": false,
+                  "onEventPriority": "DEFAULT",
+                  "audioSignal": null,
+                  "lifeTimeType": "LIMITED",
+                  "takeSnapshotWhenExtend": false,
+                  "durationKey": null,
+                  "remainingTimeKey": null,
+                  "lifeTime": 0.0,
+                  "triggerLifeType": "IMMEDIATELY",
+                  "triggerCnt": 0,
+                  "triggerInterval": -1.0,
+                  "waitFirstTriggerInterval": true,
+                  "firstTriggerInterval": -1.0,
+                  "priority": -1,
+                  "priorityBBKeys": null,
+                  "stripBlackboardParamsWithBuffKey": false,
+                  "blackboard": null,
+                  "enableInitDirectionFromSource": false
+                }
+              },
+              "_randomOneDeckCard": false,
+              "_filterIsInHand": false,
+              "_exceptTokenAndTrap": false,
+              "_onlyTokenAndTrap": false,
+              "_excludeTarget": false,
+              "_onlyToTarget": true,
+              "_target": "BUFF_OWNER"
+            },
+            {
+              "$type": "Torappu.Battle.Action.Nodes+LogExtraBattleInfoInstId, Assembly-CSharp",
+              "_target": "BUFF_OWNER",
+              "_key": "rogue_first_step"
+            },
+            {
+              "$type": "Torappu.Battle.Action.Nodes+AlwaysNext, Assembly-CSharp"
+            },
+            {
+              "$type": "Torappu.Battle.Action.Nodes+InstantKill, Assembly-CSharp",
+              "_targetType": "BUFF_OWNER",
+              "_killSource": false,
+              "_noSource": false,
+              "_withdrawIfRallyPoint": false,
+              "_resultIfInRallyPointMode": false,
+              "_skipReborn": false,
+              "_noReason": false,
+              "_markReachExit": false,
+              "_switchState": false
+            }
+          ]
+        }
+      },
+      "references": [
+        {
+          "pointer": "/rogue_4_log_final_locate/templateKey",
+          "value": "rogue_4_log_final_locate"
+        },
+        {
+          "pointer": "/rogue_4_log_final_locate/eventToActions/ON_OWNER_BORN/3/_blackboardKey",
+          "value": "rogue_4_log_final_locate"
+        },
+        {
+          "pointer": "/phenxi_echo_buff/eventToActions/ON_ABILITY_SPELL_ON/0/_succeedNodes/0/$type",
+          "value": "Torappu.Battle.Action.Nodes+CacheOrAssignLatestDeployedAllyCharacter, Assembly-CSharp"
+        },
+        {
+          "pointer": "/phenxi_echo_buff/eventToActions/ON_BUFF_TRIGGER/0/_conditionsNode/2/$type",
+          "value": "Torappu.Battle.Action.Nodes+CacheOrAssignLatestDeployedAllyCharacter, Assembly-CSharp"
+        },
+        {
+          "pointer": "/phenxi_echo_buff[modify]/eventToActions/ON_BUFF_TRIGGER/0/_succeedNodes/2/$type",
+          "value": "Torappu.Battle.Action.Nodes+CacheOrAssignLatestDeployedAllyCharacter, Assembly-CSharp"
+        }
+      ],
+      "/rogue_5_last_character_get_buff": {
+        "templateKey": "rogue_5_last_character_get_buff",
+        "effectKey": "",
+        "onEventPriority": "DEFAULT",
+        "eventToActions": {
+          "ON_BUFF_START": [
+            {
+              "$type": "Torappu.Battle.Action.Nodes+CreateBuffInRange, Assembly-CSharp",
+              "_sourceType": "BUFF_SOURCE",
+              "_targetType": "BUFF_OWNER",
+              "_targetOptions": {
+                "targetSide": "ALLY",
+                "targetMotion": "ALL",
+                "targetCategory": "DEFAULT",
+                "enableAdvancedOptions": true,
+                "ignoreTargetFree": true,
+                "ignoreAllyTargetFree": true,
+                "ignoreHealFree": false,
+                "ignoreMotionMode": false,
+                "ignoreTargetSide": false,
+                "excludeSomeAbnormalFlags": false,
+                "containSomeAbnormalFlags": false,
+                "excludeAbnormalFlag": "STUNNED",
+                "containAbnormalFlag": "STUNNED",
+                "purposeMask": "NONE",
+                "professionMask": "WARRIOR, SNIPER, TANK, MEDIC, SUPPORT, CASTER, SPECIAL, PIONEER",
+                "checkUnitType": false,
+                "unitTypeMask": "NONE",
+                "onlyIgnoreSomeOfTargetFreeCase": false,
+                "abnormalFlag": "STUNNED",
+                "abnormalCombo": "SLEEPING"
+              },
+              "_useCentainSide": false,
+              "_side": "NONE",
+              "_useHostAsSource": false,
+              "_excludeTarget": true,
+              "_excludeCurAtkTarget": false,
+              "_alwaysIncudeCurAtkTarget": false,
+              "_alwaysIncludeSourceBlocker": false,
+              "_randomTarget": false,
+              "_limitMaxTarget": false,
+              "_useAttackRange": false,
+              "_useCurrentModeRange": false,
+              "_useRangeToShow": false,
+              "_rangeTargetSideType": "ALLY",
+              "_rangeModeIndex": -1,
+              "_useTargetRangeInsteadOfSource": false,
+              "_rangeId": null,
+              "_useRadius": false,
+              "_useGlobalRange": true,
+              "_radius": 0.0,
+              "_filterByBuildableType": false,
+              "_allowedBuildableType": "NONE",
+              "_filterByTags": false,
+              "_allowFilterTags": null,
+              "_checkGiantTrapAllLocateTiles": false,
+              "_buffs": [
+                {
+                  "attributes": {
+                    "abnormalFlags": [],
+                    "abnormalImmunes": [],
+                    "abnormalAntis": [],
+                    "abnormalCombos": [],
+                    "abnormalComboImmunes": [],
+                    "attributeModifiers": []
+                  },
+                  "buffKey": "rogue_5_last_character_get_buff[finish_buff]",
+                  "loadFromDB": false,
+                  "isDurableBuff": false,
+                  "isDamageMissable": false,
+                  "isSilenceable": false,
+                  "isStunnable": false,
+                  "isFreezable": false,
+                  "isLevitatable": false,
+                  "isGroundBoundable": false,
+                  "statusResistable": "AUTOMATIC",
+                  "templateKey": "rogue_5_last_character_get_buff[finish_buff]",
+                  "disableOverride": false,
+                  "overrideKey": null,
+                  "overrideType": "DEFAULT",
+                  "maxStackCnt": 1,
+                  "refreshRemainingTimeWhenStackMax": false,
+                  "clearAllStackCntWhenTimeUp": false,
+                  "maxValidStackCnt": -1,
+                  "independentCharacterSource": false,
+                  "overrideEffectKey": null,
+                  "overrideOnEventPriority": false,
+                  "onEventPriority": "DEFAULT",
+                  "audioSignal": null,
+                  "lifeTimeType": "IMMEDIATELY",
+                  "takeSnapshotWhenExtend": false,
+                  "durationKey": null,
+                  "remainingTimeKey": null,
+                  "lifeTime": 0.0,
+                  "triggerLifeType": "IMMEDIATELY",
+                  "triggerCnt": 0,
+                  "triggerInterval": -1.0,
+                  "waitFirstTriggerInterval": true,
+                  "firstTriggerInterval": -1.0,
+                  "priority": -1,
+                  "priorityBBKeys": [],
+                  "stripBlackboardParamsWithBuffKey": false,
+                  "blackboard": [],
+                  "enableInitDirectionFromSource": false
+                }
+              ],
+              "_isDerivedBuff": false,
+              "_finishDerivedBuffIfParentFinish": false,
+              "_removeExcludeTargetBeforeShrink": false,
+              "_filterTargets": false,
+              "_filterType": "ALL",
+              "_maxTargetKey": "max_target"
+            },
+            {
+              "$type": "Torappu.Battle.Action.Nodes+ModifySp, Assembly-CSharp",
+              "_targetType": "BUFF_OWNER",
+              "_modifyByRatio": false,
+              "_modifyRatio": 0.0,
+              "_modifyByRatioBasedOnCurSP": false,
+              "_modifyBySpCost": false,
+              "_dontCheckSpType": false,
+              "_spMask": "ALL",
+              "_forceFlag": false,
+              "_dontShowSpUI": false,
+              "_modifyValue": 0,
+              "_spString": "sp",
+              "_isMinis": false,
+              "_customModifierKey": ""
+            }
+          ]
+        }
+      },
+      "/rogue_5_last_character_get_buff[finish_buff]": {
+        "templateKey": "rogue_5_last_character_get_buff[finish_buff]",
+        "effectKey": "",
+        "onEventPriority": "DEFAULT",
+        "eventToActions": {
+          "ON_BUFF_START": [
+            {
+              "$type": "Torappu.Battle.Action.Nodes+FinishBuffsById, Assembly-CSharp",
+              "_buffKey": "[g]rogue_5_last_character_get_buff",
+              "_loadFromBlackboard": false,
+              "_decCntIfStack": false,
+              "_updateOverrideMap": true,
+              "_targetType": "BUFF_OWNER",
+              "_checkBuffSource": false,
+              "_sourceType": "BUFF_SOURCE",
+              "_alsoClearNullSource": false,
+              "_finishHostBuff": false,
+              "_excludeThisBuff": false,
+              "_decCntKey": null,
+              "_decCnt": 1
+            }
+          ]
+        }
+      }
+    },
+    "excel/uniequip_table.json": {
+      "/equipDict/uniequip_004_phenxi": {
+        "uniEquipId": "uniequip_004_phenxi",
+        "uniEquipName": "菲亚梅塔特限证章",
+        "uniEquipIcon": "uniequip_004_phenxi",
+        "uniEquipDesc": "菲亚梅塔已获得特别认证许可\n根据外勤部门决议\n在集成战略行动中以改良策略应对敌人\n特别颁发此证章\n以兹证明\n“最终的正当无须证明。”",
+        "typeIcon": "isw-a",
+        "typeName1": "ISW",
+        "typeName2": "A",
+        "equipShiningColor": "purple",
+        "showEvolvePhase": "PHASE_2",
+        "unlockEvolvePhase": "PHASE_2",
+        "charId": "char_300_phenxi",
+        "tmplId": null,
+        "showLevel": 1,
+        "unlockLevel": 60,
+        "missionList": [],
+        "unlockFavors": {
+          "1": 0,
+          "2": 2732,
+          "3": 10070
+        },
+        "itemCost": {
+          "1": [
+            {
+              "id": "mod_unlock_token",
+              "count": 1,
+              "type": "MATERIAL"
+            }
+          ],
+          "2": [
+            {
+              "id": "mod_unlock_token",
+              "count": 1,
+              "type": "MATERIAL"
+            }
+          ],
+          "3": [
+            {
+              "id": "mod_unlock_token",
+              "count": 1,
+              "type": "MATERIAL"
+            }
+          ]
+        },
+        "type": "ADVANCED",
+        "uniEquipGetTime": 1785538800,
+        "uniEquipShowEnd": 1788476400,
+        "charEquipOrder": 4,
+        "hasUnlockMission": false,
+        "isSpecialEquip": true,
+        "specialEquipDesc": "适配限定模式",
+        "specialEquipColor": "0098dc",
+        "charColor": "#85302d"
+      },
+      "/equipDict/uniequip_002_orchd2": {
+        "uniEquipId": "uniequip_002_orchd2",
+        "uniEquipName": "梓兰特制箭靶",
+        "uniEquipIcon": "uniequip_002_orchd2",
+        "uniEquipDesc": "梓兰来到训练场的角落，她在这里竖起了几个她专用的靶子——好吧，她其实没说过别人不能用，但大家认为就是她专用的，毕竟，这些靶子的造型太过特别。\n梓兰刚结束了一次令人头疼的A6任务复盘。空爆又擅自行动了，斑点提交的报告画满了他新漫画的分镜草稿，而月见夜则试图用几张酒吧优惠券来蒙混过关。她感到那种熟悉的心烦像潮水一样涌来。\n梓兰深吸一口气，拉开了弓。\n对她来说，她的狩猎对象，并不是野兽，而是混乱。\n显而易见的是，从泡影国归来没有让她的生活发生任何改变，某个瞬间的心态变化也并不能平息现实带来的怒火。\n唰。箭矢精准地钉在斑点的胸口。她想起了那份潦草的报告和那家伙懒洋洋的脸。\n唰。箭矢戳破了月见夜的衣领。她想起了那股刺鼻的香水味和他那套敷衍的说辞。\n唰、唰、唰。她想起了空爆在战斗中那近乎自毁的兴奋。她的呼吸变得急促，箭矢接二连三地飞出，直到那个靶子上插满了箭。\n随后，她的视线落在最后一个靶子上。泡普卡。梓兰拉开弓，瞄准了它。\n泡普卡一直是她最头疼的孩子。因为，泡普卡执拗地相信，A6必然会永远存在，这一点完全没有随着其年龄的增长发生任何改变。\n有的时候，泡普卡的坚定会让她产生自己要被A6这些烦恼纠缠一辈子的恐慌感。\n不过，她凝视了泡普卡许久，最终，深呼吸了一次，平静下来。\n过去她从未做过这样的事——她会直接发脾气，但是，她知道自己发脾气没有用，这帮人并不会改，最终，她只能独自消化。\n但从泡影国回来后，她决定尝试一下新方法，然后，她惊讶地发现，A6的队员们并没有对此有什么不满，他们甚至开始拿她今天有没有对彼此的靶子射箭来互相调侃。而对她来说，每次这么做之后，她的心中都会有一些想法。\n她打算不去骂斑点，而是暂时搁置对他报告的评价，等他自己憋不住了来问。\n她决定假装相信月见夜的鬼话，看看如果自己按照他说的去做，这家伙会有什么反应。\n至于空爆，好吧，她必须承认，她其实并不讨厌现在的空爆，如果说自己真的能做些什么，那或许只有磨练技艺，以便在未来阻止她做危险的事，或者……帮助她？梓兰叹了口气，她实在不愿意承认自己在想这样的事。\n而泡普卡，唉，泡普卡又能有什么错呢！她已经在想该给泡普卡的新衣服做什么设计了。\n这么想着，她愉快地放下了弓箭。\n是的，在怨气被发散出去后，她感觉自己也变得轻盈了。\n她逐渐开始相信——有些事好像确实没有自己过去想的那么复杂。",
+        "typeIcon": "arc-x",
+        "typeName1": "ARC",
+        "typeName2": "X",
+        "equipShiningColor": "grey",
+        "showEvolvePhase": "PHASE_2",
+        "unlockEvolvePhase": "PHASE_2",
+        "charId": "char_1048_orchd2",
+        "tmplId": null,
+        "showLevel": 1,
+        "unlockLevel": 60,
+        "missionList": [
+          "uniequip_002_orchd2_1",
+          "uniequip_002_orchd2_2"
+        ],
+        "unlockFavors": {
+          "1": 0,
+          "2": 2732,
+          "3": 10070
+        },
+        "itemCost": {
+          "1": [
+            {
+              "id": "mod_unlock_token",
+              "count": 4,
+              "type": "MATERIAL"
+            },
+            {
+              "id": "30165",
+              "count": 2,
+              "type": "MATERIAL"
+            },
+            {
+              "id": "4001",
+              "count": 80000,
+              "type": "GOLD"
+            }
+          ],
+          "2": [
+            {
+              "id": "mod_unlock_token",
+              "count": 4,
+              "type": "MATERIAL"
+            },
+            {
+              "id": "mod_update_token_1",
+              "count": 60,
+              "type": "MATERIAL"
+            },
+            {
+              "id": "30115",
+              "count": 3,
+              "type": "MATERIAL"
+            },
+            {
+              "id": "4001",
+              "count": 100000,
+              "type": "GOLD"
+            }
+          ],
+          "3": [
+            {
+              "id": "mod_unlock_token",
+              "count": 4,
+              "type": "MATERIAL"
+            },
+            {
+              "id": "mod_update_token_2",
+              "count": 20,
+              "type": "MATERIAL"
+            },
+            {
+              "id": "30155",
+              "count": 4,
+              "type": "MATERIAL"
+            },
+            {
+              "id": "4001",
+              "count": 120000,
+              "type": "GOLD"
+            }
+          ]
+        },
+        "type": "ADVANCED",
+        "uniEquipGetTime": 1780268400,
+        "uniEquipShowEnd": 1783638000,
+        "charEquipOrder": 1,
+        "hasUnlockMission": true,
+        "isSpecialEquip": false,
+        "specialEquipDesc": null,
+        "specialEquipColor": null,
+        "charColor": "#58549c"
+      }
+    },
+    "excel/battle_equip_table.json": {
+      "/uniequip_004_phenxi": {
+        "phases": [
+          {
+            "equipLevel": 1,
+            "parts": [
+              {
+                "resKey": null,
+                "target": "DISPLAY",
+                "isToken": false,
+                "validInGameTag": null,
+                "validInMapTag": null,
+                "addOrOverrideTalentDataBundle": {
+                  "candidates": null
+                },
+                "overrideTraitDataBundle": {
+                  "candidates": [
+                    {
+                      "additionalDescription": "在<@ba.kw>集成战略</>中，首次部署时降低50%部署费用，且在倒下时仅一次立即重新部署",
+                      "unlockCondition": {
+                        "phase": "PHASE_2",
+                        "level": 60
+                      },
+                      "requiredPotentialRank": 0,
+                      "blackboard": [],
+                      "overrideDescripton": null,
+                      "prefabKey": null,
+                      "rangeId": null
+                    }
+                  ]
+                }
+              },
+              {
+                "resKey": "phenxi_equip_3_1_p1",
+                "target": "TRAIT",
+                "isToken": false,
+                "validInGameTag": "roguelike",
+                "validInMapTag": null,
+                "addOrOverrideTalentDataBundle": {
+                  "candidates": null
+                },
+                "overrideTraitDataBundle": {
+                  "candidates": [
+                    {
+                      "additionalDescription": null,
+                      "unlockCondition": {
+                        "phase": "PHASE_2",
+                        "level": 60
+                      },
+                      "requiredPotentialRank": 0,
+                      "blackboard": [],
+                      "overrideDescripton": null,
+                      "prefabKey": null,
+                      "rangeId": null
+                    }
+                  ]
+                }
+              },
+              {
+                "resKey": "phenxi_equip_3_1_p2",
+                "target": "TALENT",
+                "isToken": false,
+                "validInGameTag": "roguelike",
+                "validInMapTag": null,
+                "addOrOverrideTalentDataBundle": {
+                  "candidates": [
+                    {
+                      "displayRangeId": false,
+                      "upgradeDescription": "",
+                      "talentIndex": -1,
+                      "validModeIndices": null,
+                      "unlockCondition": {
+                        "phase": "PHASE_2",
+                        "level": 60
+                      },
+                      "requiredPotentialRank": 0,
+                      "prefabKey": "3_root",
+                      "name": null,
+                      "description": null,
+                      "rangeId": null,
+                      "blackboard": [
+                        {
+                          "key": "cost_scale",
+                          "value": 0.5,
+                          "valueStr": null
+                        }
+                      ],
+                      "tokenKey": null,
+                      "isHideTalent": true
+                    }
+                  ]
+                },
+                "overrideTraitDataBundle": {
+                  "candidates": null
+                }
+              }
+            ],
+            "attributeBlackboard": [
+              {
+                "key": "max_hp",
+                "value": 85.0,
+                "valueStr": null
+              },
+              {
+                "key": "atk",
+                "value": 65.0,
+                "valueStr": null
+              }
+            ],
+            "tokenAttributeBlackboard": {}
+          },
+          {
+            "equipLevel": 2,
+            "parts": [
+              {
+                "resKey": null,
+                "target": "DISPLAY",
+                "isToken": false,
+                "validInGameTag": null,
+                "validInMapTag": null,
+                "addOrOverrideTalentDataBundle": {
+                  "candidates": null
+                },
+                "overrideTraitDataBundle": {
+                  "candidates": [
+                    {
+                      "additionalDescription": "在<@ba.kw>集成战略</>中，首次部署时降低50%部署费用，且在倒下时仅一次立即重新部署",
+                      "unlockCondition": {
+                        "phase": "PHASE_2",
+                        "level": 60
+                      },
+                      "requiredPotentialRank": 0,
+                      "blackboard": [],
+                      "overrideDescripton": null,
+                      "prefabKey": null,
+                      "rangeId": null
+                    }
+                  ]
+                }
+              },
+              {
+                "resKey": "phenxi_equip_3_2_p1",
+                "target": "TRAIT",
+                "isToken": false,
+                "validInGameTag": "roguelike",
+                "validInMapTag": null,
+                "addOrOverrideTalentDataBundle": {
+                  "candidates": null
+                },
+                "overrideTraitDataBundle": {
+                  "candidates": [
+                    {
+                      "additionalDescription": null,
+                      "unlockCondition": {
+                        "phase": "PHASE_2",
+                        "level": 60
+                      },
+                      "requiredPotentialRank": 0,
+                      "blackboard": [],
+                      "overrideDescripton": null,
+                      "prefabKey": null,
+                      "rangeId": null
+                    }
+                  ]
+                }
+              },
+              {
+                "resKey": null,
+                "target": "TALENT_DATA_ONLY",
+                "isToken": false,
+                "validInGameTag": null,
+                "validInMapTag": null,
+                "addOrOverrideTalentDataBundle": {
+                  "candidates": [
+                    {
+                      "displayRangeId": false,
+                      "upgradeDescription": "自身生命会不断流失（该效果不会使生命降至0）；生命值高于50%时获得+25%攻击力的<$ba.strong>精力充沛</>；高于80%效果翻倍；\n在<@ba.kw>集成战略</>中，生命流失速度减缓，菲亚梅塔<$ba.strong>精力充沛</>时，该天赋的攻击力加成提升100%，技能或技能期间的攻击，会以最后部署的另一名干员的攻击范围再度施放",
+                      "talentIndex": 0,
+                      "validModeIndices": null,
+                      "unlockCondition": {
+                        "phase": "PHASE_2",
+                        "level": 60
+                      },
+                      "requiredPotentialRank": 0,
+                      "prefabKey": "#",
+                      "name": "陈述苦难",
+                      "description": null,
+                      "rangeId": null,
+                      "blackboard": [],
+                      "tokenKey": null,
+                      "isHideTalent": false
+                    }
+                  ]
+                },
+                "overrideTraitDataBundle": {
+                  "candidates": null
+                }
+              },
+              {
+                "resKey": "phenxi_equip_3_2_p2",
+                "target": "TALENT",
+                "isToken": false,
+                "validInGameTag": "roguelike",
+                "validInMapTag": null,
+                "addOrOverrideTalentDataBundle": {
+                  "candidates": [
+                    {
+                      "displayRangeId": false,
+                      "upgradeDescription": "",
+                      "talentIndex": -1,
+                      "validModeIndices": null,
+                      "unlockCondition": {
+                        "phase": "PHASE_2",
+                        "level": 60
+                      },
+                      "requiredPotentialRank": 0,
+                      "prefabKey": "3_root",
+                      "name": null,
+                      "description": null,
+                      "rangeId": null,
+                      "blackboard": [
+                        {
+                          "key": "cost_scale",
+                          "value": 0.5,
+                          "valueStr": null
+                        }
+                      ],
+                      "tokenKey": null,
+                      "isHideTalent": true
+                    }
+                  ]
+                },
+                "overrideTraitDataBundle": {
+                  "candidates": null
+                }
+              },
+              {
+                "resKey": "phenxi_equip_3_2_p3",
+                "target": "TALENT",
+                "isToken": false,
+                "validInGameTag": "roguelike",
+                "validInMapTag": null,
+                "addOrOverrideTalentDataBundle": {
+                  "candidates": [
+                    {
+                      "displayRangeId": false,
+                      "upgradeDescription": "",
+                      "talentIndex": 0,
+                      "validModeIndices": null,
+                      "unlockCondition": {
+                        "phase": "PHASE_2",
+                        "level": 60
+                      },
+                      "requiredPotentialRank": 0,
+                      "prefabKey": "1",
+                      "name": null,
+                      "description": null,
+                      "rangeId": null,
+                      "blackboard": [
+                        {
+                          "key": "interval",
+                          "value": 0.2,
+                          "valueStr": null
+                        },
+                        {
+                          "key": "hp_ratio",
+                          "value": 0.005,
+                          "valueStr": null
+                        },
+                        {
+                          "key": "min_hp_ratio",
+                          "value": 0.002,
+                          "valueStr": null
+                        },
+                        {
+                          "key": "phenxi_t_1[peak_1].peak_performance.atk",
+                          "value": 0.5,
+                          "valueStr": null
+                        },
+                        {
+                          "key": "phenxi_t_1[peak_1].peak_performance.hp_ratio",
+                          "value": 0.5,
+                          "valueStr": null
+                        },
+                        {
+                          "key": "phenxi_t_1[peak_2].peak_performance.atk",
+                          "value": 1.0,
+                          "valueStr": null
+                        },
+                        {
+                          "key": "phenxi_t_1[peak_2].peak_performance.hp_ratio",
+                          "value": 0.8,
+                          "valueStr": null
+                        }
+                      ],
+                      "tokenKey": null,
+                      "isHideTalent": true
+                    }
+                  ]
+                },
+                "overrideTraitDataBundle": {
+                  "candidates": null
+                }
+              },
+              {
+                "resKey": "phenxi_equip_3_2_p4",
+                "target": "TALENT",
+                "isToken": false,
+                "validInGameTag": "roguelike",
+                "validInMapTag": null,
+                "addOrOverrideTalentDataBundle": {
+                  "candidates": [
+                    {
+                      "displayRangeId": false,
+                      "upgradeDescription": "",
+                      "talentIndex": -1,
+                      "validModeIndices": null,
+                      "unlockCondition": {
+                        "phase": "PHASE_2",
+                        "level": 60
+                      },
+                      "requiredPotentialRank": 0,
+                      "prefabKey": "4_root",
+                      "name": null,
+                      "description": null,
+                      "rangeId": null,
+                      "blackboard": [],
+                      "tokenKey": null,
+                      "isHideTalent": true
+                    }
+                  ]
+                },
+                "overrideTraitDataBundle": {
+                  "candidates": null
+                }
+              }
+            ],
+            "attributeBlackboard": [
+              {
+                "key": "max_hp",
+                "value": 100.0,
+                "valueStr": null
+              },
+              {
+                "key": "atk",
+                "value": 80.0,
+                "valueStr": null
+              }
+            ],
+            "tokenAttributeBlackboard": {}
+          },
+          {
+            "equipLevel": 3,
+            "parts": [
+              {
+                "resKey": null,
+                "target": "DISPLAY",
+                "isToken": false,
+                "validInGameTag": null,
+                "validInMapTag": null,
+                "addOrOverrideTalentDataBundle": {
+                  "candidates": null
+                },
+                "overrideTraitDataBundle": {
+                  "candidates": [
+                    {
+                      "additionalDescription": "在<@ba.kw>集成战略</>中，首次部署时降低50%部署费用，且在倒下时仅一次立即重新部署",
+                      "unlockCondition": {
+                        "phase": "PHASE_2",
+                        "level": 60
+                      },
+                      "requiredPotentialRank": 0,
+                      "blackboard": [],
+                      "overrideDescripton": null,
+                      "prefabKey": null,
+                      "rangeId": null
+                    }
+                  ]
+                }
+              },
+              {
+                "resKey": "phenxi_equip_3_3_p1",
+                "target": "TRAIT",
+                "isToken": false,
+                "validInGameTag": "roguelike",
+                "validInMapTag": null,
+                "addOrOverrideTalentDataBundle": {
+                  "candidates": null
+                },
+                "overrideTraitDataBundle": {
+                  "candidates": [
+                    {
+                      "additionalDescription": null,
+                      "unlockCondition": {
+                        "phase": "PHASE_2",
+                        "level": 60
+                      },
+                      "requiredPotentialRank": 0,
+                      "blackboard": [],
+                      "overrideDescripton": null,
+                      "prefabKey": null,
+                      "rangeId": null
+                    }
+                  ]
+                }
+              },
+              {
+                "resKey": null,
+                "target": "TALENT_DATA_ONLY",
+                "isToken": false,
+                "validInGameTag": null,
+                "validInMapTag": null,
+                "addOrOverrideTalentDataBundle": {
+                  "candidates": [
+                    {
+                      "displayRangeId": false,
+                      "upgradeDescription": "自身生命会不断流失（该效果不会使生命降至0）；生命值高于50%时获得+25%攻击力的<$ba.strong>精力充沛</>；高于80%效果翻倍；\n在<@ba.kw>集成战略</>中，生命流失速度减缓，菲亚梅塔<$ba.strong>精力充沛</>时，该天赋的攻击力加成提升100%，技能或技能期间的攻击，会以最后部署的另一名干员的攻击范围再度施放，菲亚梅塔和该干员额外获得30攻速",
+                      "talentIndex": 0,
+                      "validModeIndices": null,
+                      "unlockCondition": {
+                        "phase": "PHASE_2",
+                        "level": 60
+                      },
+                      "requiredPotentialRank": 0,
+                      "prefabKey": "#",
+                      "name": "陈述苦难",
+                      "description": null,
+                      "rangeId": null,
+                      "blackboard": [],
+                      "tokenKey": null,
+                      "isHideTalent": false
+                    }
+                  ]
+                },
+                "overrideTraitDataBundle": {
+                  "candidates": null
+                }
+              },
+              {
+                "resKey": "phenxi_equip_3_3_p2",
+                "target": "TALENT",
+                "isToken": false,
+                "validInGameTag": "roguelike",
+                "validInMapTag": null,
+                "addOrOverrideTalentDataBundle": {
+                  "candidates": [
+                    {
+                      "displayRangeId": false,
+                      "upgradeDescription": "",
+                      "talentIndex": -1,
+                      "validModeIndices": null,
+                      "unlockCondition": {
+                        "phase": "PHASE_2",
+                        "level": 60
+                      },
+                      "requiredPotentialRank": 0,
+                      "prefabKey": "3_root",
+                      "name": null,
+                      "description": null,
+                      "rangeId": null,
+                      "blackboard": [
+                        {
+                          "key": "cost_scale",
+                          "value": 0.5,
+                          "valueStr": null
+                        }
+                      ],
+                      "tokenKey": null,
+                      "isHideTalent": true
+                    }
+                  ]
+                },
+                "overrideTraitDataBundle": {
+                  "candidates": null
+                }
+              },
+              {
+                "resKey": "phenxi_equip_3_3_p3",
+                "target": "TALENT",
+                "isToken": false,
+                "validInGameTag": "roguelike",
+                "validInMapTag": null,
+                "addOrOverrideTalentDataBundle": {
+                  "candidates": [
+                    {
+                      "displayRangeId": false,
+                      "upgradeDescription": "",
+                      "talentIndex": 0,
+                      "validModeIndices": null,
+                      "unlockCondition": {
+                        "phase": "PHASE_2",
+                        "level": 60
+                      },
+                      "requiredPotentialRank": 0,
+                      "prefabKey": "1",
+                      "name": null,
+                      "description": null,
+                      "rangeId": null,
+                      "blackboard": [
+                        {
+                          "key": "interval",
+                          "value": 0.2,
+                          "valueStr": null
+                        },
+                        {
+                          "key": "hp_ratio",
+                          "value": 0.005,
+                          "valueStr": null
+                        },
+                        {
+                          "key": "min_hp_ratio",
+                          "value": 0.002,
+                          "valueStr": null
+                        },
+                        {
+                          "key": "phenxi_t_1[peak_1].peak_performance.atk",
+                          "value": 0.5,
+                          "valueStr": null
+                        },
+                        {
+                          "key": "phenxi_t_1[peak_1].peak_performance.hp_ratio",
+                          "value": 0.5,
+                          "valueStr": null
+                        },
+                        {
+                          "key": "phenxi_t_1[peak_2].peak_performance.atk",
+                          "value": 1.0,
+                          "valueStr": null
+                        },
+                        {
+                          "key": "phenxi_t_1[peak_2].peak_performance.hp_ratio",
+                          "value": 0.8,
+                          "valueStr": null
+                        }
+                      ],
+                      "tokenKey": null,
+                      "isHideTalent": true
+                    }
+                  ]
+                },
+                "overrideTraitDataBundle": {
+                  "candidates": null
+                }
+              },
+              {
+                "resKey": "phenxi_equip_3_3_p4",
+                "target": "TALENT",
+                "isToken": false,
+                "validInGameTag": "roguelike",
+                "validInMapTag": null,
+                "addOrOverrideTalentDataBundle": {
+                  "candidates": [
+                    {
+                      "displayRangeId": false,
+                      "upgradeDescription": "",
+                      "talentIndex": -1,
+                      "validModeIndices": null,
+                      "unlockCondition": {
+                        "phase": "PHASE_2",
+                        "level": 60
+                      },
+                      "requiredPotentialRank": 0,
+                      "prefabKey": "4_root",
+                      "name": null,
+                      "description": null,
+                      "rangeId": null,
+                      "blackboard": [
+                        {
+                          "key": "attack_speed",
+                          "value": 30.0,
+                          "valueStr": null
+                        }
+                      ],
+                      "tokenKey": null,
+                      "isHideTalent": true
+                    }
+                  ]
+                },
+                "overrideTraitDataBundle": {
+                  "candidates": null
+                }
+              }
+            ],
+            "attributeBlackboard": [
+              {
+                "key": "max_hp",
+                "value": 115.0,
+                "valueStr": null
+              },
+              {
+                "key": "atk",
+                "value": 90.0,
+                "valueStr": null
+              }
+            ],
+            "tokenAttributeBlackboard": {}
+          }
+        ]
+      }
+    },
+    "excel/enemy_handbook_table.json": {
+      "/enemyData/enemy_6032_fxdjj": {
+        "enemyId": "enemy_6032_fxdjj",
+        "enemyIndex": "DL32",
+        "enemyTags": null,
+        "sortId": 1644,
+        "name": "“绝对安保”试做型 ",
+        "enemyLevel": "BOSS",
+        "description": "多索雷斯某家初创公司为克里斯达尔艺术馆量身定做的安保机器人，他们欠下许多外债，指望靠这笔生意一炮而红。雷内尔曾承诺会在收货后三天内付清货款，可直到那家公司被催债人用推土机夷为平地，雷内尔都没掏出一分钱，他甚至没有拆封这台耗费大量心血的机器——也许他只是想看着那群聪明人被逼疯，谁知道呢？",
+        "attackType": null,
+        "ability": null,
+        "isInvalidKilled": false,
+        "overrideKillCntInfos": {},
+        "hideInHandbook": false,
+        "hideInStage": true,
+        "abilityList": [
+          {
+            "text": "只能被阻挡数大于等于3的单位阻挡",
+            "textFormat": "NORMAL"
+          },
+          {
+            "text": "持有护盾，始终面朝我方最后部署的单位，大幅降低来自正面的物理和法术伤害",
+            "textFormat": "NORMAL"
+          },
+          {
+            "text": "受到来自护盾方向的攻击时，使危险等级加快提升",
+            "textFormat": "NORMAL"
+          },
+          {
+            "text": "移动到特定位置时，在自身所在位置留下一个“绝对助手”，其面朝方向和自身相同，攻击力不断提升，攻击造成物理溅射伤害",
+            "textFormat": "NORMAL"
+          },
+          {
+            "text": "每当危险等级提升或损失一定比例生命时，会停止攻击并开始蓄力，蓄力一定时间后对所有我方单位发起一次特殊攻击，对位于自身护盾背面的单位造成更高伤害，且施加<$ba.stun>晕眩</>效果",
+            "textFormat": "NORMAL"
+          }
+        ],
+        "linkEnemies": [],
+        "damageType": [
+          "PHYSIC"
+        ],
+        "invisibleDetail": false
+      }
+    }
+  }
+}

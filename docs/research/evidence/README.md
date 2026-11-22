@@ -42,6 +42,10 @@ uv run "$skill/scripts/archive.py" docs/research/evidence
 
 | 批次 | 调查主题 |
 | --- | --- |
+| [nearl-deployment-combo-20261122](nearl-deployment-combo-20261122/README.md) | 耀骑士临光与耀阳的牌组接力状态、出牌过滤与出生采样 |
+| [stronghold-opening-deploy-20261122](stronghold-opening-deploy-20261122/README.md) | 卫戍开场与战中补位的原生实参、接力判定的证据边界 |
+| [deployment-order-consumers-20261122](deployment-order-consumers-20261122/README.md) | 罗德之门的结算身份、菲亚梅塔的在场排序与界园通宝的增益转移 |
+| [deployment-target-order-20261122](deployment-target-order-20261122/README.md) | 思衡托 S3 的当前在场候选、Card 资格与角色创建时间排序 |
 | [special-redeploy-failure-20261122](special-redeploy-failure-20261122/README.md) | 特殊移动的落点检查、返回失败、待投放与技能接续 |
 | [card-rules-20261122](card-rules-20261122/README.md) | 涨费与减费叠加、两种再部署计时量、临时库存与关系后的阻挡增容 |
 | [route-crash-20261122](route-crash-20261122/README.md) | 5-2 跨格路点的原生构场输入、两种冲撞的自主运动条件 |

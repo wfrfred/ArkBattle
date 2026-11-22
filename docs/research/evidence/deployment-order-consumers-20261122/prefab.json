@@ -1,0 +1,76 @@
+{
+  "provenance": {
+    "inputs": [
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+        "bytes": 477255,
+        "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]envsystems.ab",
+        "bytes": 182398,
+        "sha256": "ad66947bec144849ca3f22237c28cea1639d9e5c746beae6f478831ebd93afcc"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_300_phenxi.ab",
+        "bytes": 25043,
+        "sha256": "d7b2a1664fe5eed5cff7dabeacfbb5eb23afd8252f06c083491ff95e127a73e9"
+      }
+    ]
+  },
+  "result": {
+    "battle/prefabs/[uc]envsystems.ab": {
+      "serializedFile": "CAB-63d3144cebdd9c7c80a7d0b4f965ca02",
+      "components": {
+        "Rogue4DLC2LastDeployManager": {
+          "pathId": "-258206237697375398",
+          "script": {
+            "id": "-581077113809975812",
+            "name": "Rogue4DLC2LastDeployManager",
+            "cl": "Rogue4DLC2LastDeployManager",
+            "ns": "Torappu.Battle",
+            "asm": "Assembly-CSharp.dll"
+          },
+          "gameObject": {
+            "pathId": "-5127940064914832550",
+            "name": "env_022_ro4dlc2_log_final_deploy",
+            "localComponents": [
+              "5822331396379050842",
+              "8212797596145419098",
+              "-258206237697375398"
+            ]
+          },
+          "enabled": true,
+          "fields": {}
+        }
+      }
+    },
+    "charpack/char_300_phenxi.ab": {
+      "serializedFile": "CAB-7a64bdbb726987a07b984077e2d17e98",
+      "components": {
+        "LatestDeployedAllyAttackRangeSelector": {
+          "pathId": "-2367124869781431311",
+          "script": {
+            "id": "8816190581592434317",
+            "name": "LatestDeployedAllyAttackRangeSelector",
+            "cl": "LatestDeployedAllyAttackRangeSelector",
+            "ns": "Torappu.Battle",
+            "asm": "Assembly-CSharp.dll"
+          },
+          "gameObject": {
+            "pathId": "5767652743737596913",
+            "name": "Selector",
+            "localComponents": [
+              "2578204052388928497",
+              "-197982472378033167",
+              "-2367124869781431311",
+              "-8843079975666820111"
+            ]
+          },
+          "enabled": true,
+          "fields": {}
+        }
+      }
+    }
+  }
+}
