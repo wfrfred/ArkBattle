@@ -420,6 +420,12 @@ QUEUED 对应 `token_10070_aphris_pc`（中继器）；DEFAULT／有限份数中
 
 **限制：** isInfinity=false 仅证明普通 Draw 会按条件消耗份数，不能证明退场永不归还。Mon3tr 就是有限份数＋UNIQUE，PRTS 另明确其退场返还一份。库存归还的来源与具体退出链仍应另外核对，不能把字段名或零库存直接当作生命周期策略。
 
+### 同一张 Card 的计时器
+
+2026-11-23 复查已归档的客户端字段和普通静态分支。基类 `Card` 只有一个 `m_respawnTimer`（`+0x30`），`CharacterCard` 和 `TokenCard` 均未声明另一条计时器。DEFAULT 的 `Draw` 在 `0x1806eba8b` 读取该字段并开始部署后的冷却。UNIQUE 与 QUEUED 的 `OnRecycle` 在 `0x1806ecd4e`、`0x1806ecdcd`、`0x1806ece0d` 读取同一字段。普通 `OnTick` 从 `0x1806ed736` 推进这一条计时，QUEUED 到期时减少待恢复份数，仍有余量就在 `0x1806ed7a2` 读取同一计时器并开始下一段。[字段和方法摘录](../evidence/deployment-recovery-20261101/README.md#库存恢复预算) · [三个类的布局](../evidence/card-policy-distribution-20261102/native-evidence.json)
+
+因此已核的三种普通策略均无独立的部署间隔与库存恢复计时同时运行。中继器在有可用份数时可以边恢复边部署，普通 Draw 保留已在推进的恢复段。特殊的显式重置也在已核路径中改动原计时器。该结论来自固定客户端的普通静态分支和所列实际样本，活跃 XLua 或未检查的模式入口仍需按具体机制取证。[中继器 Draw、回收与计时指令](../evidence/repeater-recovery-20261122/README.md#调用锚点)
+
 ### 涨费与回收的关系
 
 **N：** Card.OnRecycle 的 UNIQUE＋当前 INUSE 分支启动再部署，并按 m_addRespawnCostMultCnt 开关增加 m_respawnCostMultCnt。该增量确实附着在回收路径，而不是一项任意部署后回调。DEFAULT／QUEUED 不走这段计数增加分支。
