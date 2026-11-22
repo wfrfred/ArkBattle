@@ -1,0 +1,4407 @@
+{
+  "provenance": {
+    "scope": "Selected ordinary static native branches and actual operator resources. No live execution.",
+    "client": {
+      "dll": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "bytes": 223112680,
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff"
+      },
+      "metadata": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "bytes": 46669332,
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5"
+      }
+    },
+    "content": {
+      "activity": {
+        "path": "/tmp/arkbattle-current-activity-20261113.json",
+        "bytes": 15074852,
+        "sha256": "8869e76acaf1e78d27152ae896bcb837e43d6390a7e61eca6b927fb0901f6dc0",
+        "url": "https://raw.githubusercontent.com/yuanyan3060/ArknightsGameResource/0fdfa06570cda97c404a4519da4df984eae56951/gamedata/excel/activity_table.json",
+        "revision": "0fdfa06570cda97c404a4519da4df984eae56951"
+      },
+      "ordinaryTables": [
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/assets/arknights-game-data/zh_CN/gamedata/excel/skill_table.json",
+          "bytes": 11557971,
+          "sha256": "b6559b845efea6042e23f1d976185f12e13de3d749464543f5c2c17a7d2fa280"
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/assets/arknights-game-data/zh_CN/gamedata/excel/character_table.json",
+          "bytes": 15069101,
+          "sha256": "e523c7c83c36e2d76697121079e17d0282da1a94d59a55e1cc55616edf0b41c4"
+        }
+      ],
+      "ordinaryTablesRevision": "17759cc8cdf37388414145d16262a3a06f3ab25e",
+      "bundles": [
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "bytes": 477255,
+          "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "bytes": 1367500,
+          "sha256": "0d0b4c0f9252c14a69a20d4bea09527403dd3eddfc2f7bcd757c3c30cf37ffc3"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/prefabs/[uc]skills.ab",
+          "bytes": 1367896,
+          "sha256": "f7ead0e0d8362df84d196f1a30d2165cae1c542fcb9809fb4d6efdb4027c094f"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_4065_judge.ab",
+          "bytes": 23571,
+          "sha256": "fd0e2d255d681e7cdca6134a4e1da760d74deebe503acdabe4a6d53ffeb27fe0"
+        },
+        {
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/config/buff_template_holder.ab",
+          "bytes": 2197532,
+          "sha256": "f486df86406db62b2773039b87d05a405fb95a31ddc82568c6a6efef14e47f01"
+        }
+      ]
+    },
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/stronghold-opening-operator-effects-20261122/extract.py",
+        "bytes": 8154,
+        "sha256": "93fabcd4996b9d89ac485faacd44cd44aee3015902b6cb2026bc9f2025a915b4"
+      },
+      "capstone": "5.0.7"
+    }
+  },
+  "result": {
+    "methods": {
+      "64019": {
+        "method": {
+          "nameIndex": 2432196,
+          "declaringType": 10009,
+          "returnType": 84484,
+          "parameterStart": 64880,
+          "genericContainerIndex": -1,
+          "token": 100727316,
+          "flags": 452,
+          "iflags": 0,
+          "slot": 32,
+          "parameterCount": 1,
+          "index": 64019,
+          "image": "Assembly-CSharp.dll",
+          "address": 6448751696,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.Ability.DoAttach",
+          "returnTypeName": "void",
+          "parameters": [
+            {
+              "nameIndex": 485847,
+              "token": 134282614,
+              "typeIndex": 53921,
+              "index": 64880,
+              "name": "owner",
+              "typeName": "Torappu.Battle.Entity"
+            }
+          ]
+        },
+        "selected": [
+          [
+            "0x18060261e",
+            "0x18060266a"
+          ]
+        ],
+        "instructions": [
+          {
+            "address": "0x18060261e",
+            "bytes": "480f45fe",
+            "mnemonic": "cmovne",
+            "operands": "rdi, rsi"
+          },
+          {
+            "address": "0x180602622",
+            "bytes": "33d2",
+            "mnemonic": "xor",
+            "operands": "edx, edx"
+          },
+          {
+            "address": "0x180602624",
+            "bytes": "488bcf",
+            "mnemonic": "mov",
+            "operands": "rcx, rdi"
+          },
+          {
+            "address": "0x180602627",
+            "bytes": "e814f45100",
+            "mnemonic": "call",
+            "operands": "0x180b21a40",
+            "callees": [
+              "Torappu.Battle.Unit.get_isDummy"
+            ]
+          },
+          {
+            "address": "0x18060262c",
+            "bytes": "84c0",
+            "mnemonic": "test",
+            "operands": "al, al"
+          },
+          {
+            "address": "0x18060262e",
+            "bytes": "7406",
+            "mnemonic": "je",
+            "operands": "0x180602636"
+          },
+          {
+            "address": "0x180602630",
+            "bytes": "807b4900",
+            "mnemonic": "cmp",
+            "operands": "byte ptr [rbx + 0x49], 0"
+          },
+          {
+            "address": "0x180602634",
+            "bytes": "7427",
+            "mnemonic": "je",
+            "operands": "0x18060265d"
+          },
+          {
+            "address": "0x180602636",
+            "bytes": "803d33649d0800",
+            "mnemonic": "cmp",
+            "operands": "byte ptr [rip + 0x89d6433], 0"
+          },
+          {
+            "address": "0x18060263d",
+            "bytes": "7608",
+            "mnemonic": "jbe",
+            "operands": "0x180602647"
+          },
+          {
+            "address": "0x18060263f",
+            "bytes": "488b0b",
+            "mnemonic": "mov",
+            "operands": "rcx, qword ptr [rbx]"
+          },
+          {
+            "address": "0x180602642",
+            "bytes": "e8c949e5ff",
+            "mnemonic": "call",
+            "operands": "0x180457010",
+            "callees": []
+          },
+          {
+            "address": "0x180602647",
+            "bytes": "488b13",
+            "mnemonic": "mov",
+            "operands": "rdx, qword ptr [rbx]"
+          },
+          {
+            "address": "0x18060264a",
+            "bytes": "488bcb",
+            "mnemonic": "mov",
+            "operands": "rcx, rbx"
+          },
+          {
+            "address": "0x18060264d",
+            "bytes": "488b8260050000",
+            "mnemonic": "mov",
+            "operands": "rax, qword ptr [rdx + 0x560]"
+          },
+          {
+            "address": "0x180602654",
+            "bytes": "488b9268050000",
+            "mnemonic": "mov",
+            "operands": "rdx, qword ptr [rdx + 0x568]"
+          },
+          {
+            "address": "0x18060265b",
+            "bytes": "ffd0",
+            "mnemonic": "call",
+            "operands": "rax"
+          },
+          {
+            "address": "0x18060265d",
+            "bytes": "4533c0",
+            "mnemonic": "xor",
+            "operands": "r8d, r8d"
+          },
+          {
+            "address": "0x180602660",
+            "bytes": "b201",
+            "mnemonic": "mov",
+            "operands": "dl, 1"
+          },
+          {
+            "address": "0x180602662",
+            "bytes": "488bcb",
+            "mnemonic": "mov",
+            "operands": "rcx, rbx"
+          },
+          {
+            "address": "0x180602665",
+            "bytes": "e896380000",
+            "mnemonic": "call",
+            "operands": "0x180605f00",
+            "callees": [
+              "Torappu.Battle.Ability.set_isAttached"
+            ]
+          }
+        ]
+      },
+      "64057": {
+        "method": {
+          "nameIndex": 2432801,
+          "declaringType": 10009,
+          "returnType": 84484,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100727354,
+          "flags": 452,
+          "iflags": 0,
+          "slot": 66,
+          "parameterCount": 0,
+          "index": 64057,
+          "image": "Assembly-CSharp.dll",
+          "address": 6448749360,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.Ability.AddPassiveBuffs",
+          "returnTypeName": "void",
+          "parameters": []
+        },
+        "selected": [
+          [
+            "0x180601d06",
+            "0x180601d42"
+          ]
+        ],
+        "instructions": [
+          {
+            "address": "0x180601d06",
+            "bytes": "e8053b0000",
+            "mnemonic": "call",
+            "operands": "0x180605810",
+            "callees": [
+              "Torappu.Battle.Ability.get_owner"
+            ]
+          },
+          {
+            "address": "0x180601d0b",
+            "bytes": "33d2",
+            "mnemonic": "xor",
+            "operands": "edx, edx"
+          },
+          {
+            "address": "0x180601d0d",
+            "bytes": "498bce",
+            "mnemonic": "mov",
+            "operands": "rcx, r14"
+          },
+          {
+            "address": "0x180601d10",
+            "bytes": "488bd8",
+            "mnemonic": "mov",
+            "operands": "rbx, rax"
+          },
+          {
+            "address": "0x180601d13",
+            "bytes": "e878300000",
+            "mnemonic": "call",
+            "operands": "0x180604d90",
+            "callees": [
+              "Torappu.Battle.Ability.get_blackboard"
+            ]
+          },
+          {
+            "address": "0x180601d18",
+            "bytes": "4c89642440",
+            "mnemonic": "mov",
+            "operands": "qword ptr [rsp + 0x40], r12"
+          },
+          {
+            "address": "0x180601d1d",
+            "bytes": "4d8bce",
+            "mnemonic": "mov",
+            "operands": "r9, r14"
+          },
+          {
+            "address": "0x180601d20",
+            "bytes": "4c89642438",
+            "mnemonic": "mov",
+            "operands": "qword ptr [rsp + 0x38], r12"
+          },
+          {
+            "address": "0x180601d25",
+            "bytes": "4c8bc3",
+            "mnemonic": "mov",
+            "operands": "r8, rbx"
+          },
+          {
+            "address": "0x180601d28",
+            "bytes": "4c89642430",
+            "mnemonic": "mov",
+            "operands": "qword ptr [rsp + 0x30], r12"
+          },
+          {
+            "address": "0x180601d2d",
+            "bytes": "488bd7",
+            "mnemonic": "mov",
+            "operands": "rdx, rdi"
+          },
+          {
+            "address": "0x180601d30",
+            "bytes": "4c89642428",
+            "mnemonic": "mov",
+            "operands": "qword ptr [rsp + 0x28], r12"
+          },
+          {
+            "address": "0x180601d35",
+            "bytes": "488bce",
+            "mnemonic": "mov",
+            "operands": "rcx, rsi"
+          },
+          {
+            "address": "0x180601d38",
+            "bytes": "4889442420",
+            "mnemonic": "mov",
+            "operands": "qword ptr [rsp + 0x20], rax"
+          },
+          {
+            "address": "0x180601d3d",
+            "bytes": "e87eeb1100",
+            "mnemonic": "call",
+            "operands": "0x1807208c0",
+            "callees": [
+              "Torappu.Battle.Entity.AddBuff"
+            ]
+          }
+        ]
+      },
+      "66123": {
+        "method": {
+          "nameIndex": 62247,
+          "declaringType": 10207,
+          "returnType": 84484,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100729420,
+          "flags": 132,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 0,
+          "index": 66123,
+          "image": "Assembly-CSharp.dll",
+          "address": 6449614784,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.Buff.OnStart",
+          "returnTypeName": "void",
+          "parameters": []
+        },
+        "selected": [
+          [
+            "0x1806d501a",
+            "0x1806d503c"
+          ]
+        ],
+        "instructions": [
+          {
+            "address": "0x1806d501a",
+            "bytes": "388bf9010000",
+            "mnemonic": "cmp",
+            "operands": "byte ptr [rbx + 0x1f9], cl"
+          },
+          {
+            "address": "0x1806d5020",
+            "bytes": "756c",
+            "mnemonic": "jne",
+            "operands": "0x1806d508e"
+          },
+          {
+            "address": "0x1806d5022",
+            "bytes": "48894c2420",
+            "mnemonic": "mov",
+            "operands": "qword ptr [rsp + 0x20], rcx"
+          },
+          {
+            "address": "0x1806d5027",
+            "bytes": "41b101",
+            "mnemonic": "mov",
+            "operands": "r9b, 1"
+          },
+          {
+            "address": "0x1806d502a",
+            "bytes": "488d4c2430",
+            "mnemonic": "lea",
+            "operands": "rcx, [rsp + 0x30]"
+          },
+          {
+            "address": "0x1806d502f",
+            "bytes": "4533c0",
+            "mnemonic": "xor",
+            "operands": "r8d, r8d"
+          },
+          {
+            "address": "0x1806d5032",
+            "bytes": "488bd3",
+            "mnemonic": "mov",
+            "operands": "rdx, rbx"
+          },
+          {
+            "address": "0x1806d5035",
+            "bytes": "e816700000",
+            "mnemonic": "call",
+            "operands": "0x1806dc050",
+            "callees": [
+              "Torappu.Battle.Buff._RunActions"
+            ]
+          },
+          {
+            "address": "0x1806d503a",
+            "bytes": "33d2",
+            "mnemonic": "xor",
+            "operands": "edx, edx"
+          }
+        ]
+      },
+      "73732": {
+        "method": {
+          "nameIndex": 2788674,
+          "declaringType": 11050,
+          "returnType": 46024,
+          "parameterStart": 73437,
+          "genericContainerIndex": -1,
+          "token": 100737029,
+          "flags": 196,
+          "iflags": 0,
+          "slot": 52,
+          "parameterCount": 2,
+          "index": 73732,
+          "image": "Assembly-CSharp.dll",
+          "address": 6452479184,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.AppearSkill.DoCast",
+          "returnTypeName": "bool",
+          "parameters": [
+            {
+              "nameIndex": 1949318,
+              "token": 134291171,
+              "typeIndex": 87550,
+              "index": 73437,
+              "name": "finishCb",
+              "typeName": "Torappu.Battle.Ability/FinishCallbackDelegate"
+            },
+            {
+              "nameIndex": 2788598,
+              "token": 134291172,
+              "typeIndex": 65995,
+              "index": 73438,
+              "name": "operationSide",
+              "typeName": "Torappu.PlayerSide"
+            }
+          ]
+        },
+        "selected": [
+          [
+            "0x180990585",
+            "0x1809905a5"
+          ]
+        ],
+        "instructions": [
+          {
+            "address": "0x180990585",
+            "bytes": "4c8b0b",
+            "mnemonic": "mov",
+            "operands": "r9, qword ptr [rbx]"
+          },
+          {
+            "address": "0x180990588",
+            "bytes": "41b001",
+            "mnemonic": "mov",
+            "operands": "r8b, 1"
+          },
+          {
+            "address": "0x18099058b",
+            "bytes": "488bd6",
+            "mnemonic": "mov",
+            "operands": "rdx, rsi"
+          },
+          {
+            "address": "0x18099058e",
+            "bytes": "488bcb",
+            "mnemonic": "mov",
+            "operands": "rcx, rbx"
+          },
+          {
+            "address": "0x180990591",
+            "bytes": "498b8180030000",
+            "mnemonic": "mov",
+            "operands": "rax, qword ptr [r9 + 0x380]"
+          },
+          {
+            "address": "0x180990598",
+            "bytes": "4d8b8988030000",
+            "mnemonic": "mov",
+            "operands": "r9, qword ptr [r9 + 0x388]"
+          },
+          {
+            "address": "0x18099059f",
+            "bytes": "ffd0",
+            "mnemonic": "call",
+            "operands": "rax"
+          },
+          {
+            "address": "0x1809905a1",
+            "bytes": "84c0",
+            "mnemonic": "test",
+            "operands": "al, al"
+          },
+          {
+            "address": "0x1809905a3",
+            "bytes": "7510",
+            "mnemonic": "jne",
+            "operands": "0x1809905b5"
+          }
+        ]
+      },
+      "73733": {
+        "method": {
+          "nameIndex": 2788681,
+          "declaringType": 11050,
+          "returnType": 46024,
+          "parameterStart": 73439,
+          "genericContainerIndex": -1,
+          "token": 100737030,
+          "flags": 198,
+          "iflags": 0,
+          "slot": 54,
+          "parameterCount": 1,
+          "index": 73733,
+          "image": "Assembly-CSharp.dll",
+          "address": 6452480736,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.AppearSkill.UseSkill",
+          "returnTypeName": "bool",
+          "parameters": [
+            {
+              "nameIndex": 2788598,
+              "token": 134291173,
+              "typeIndex": 65995,
+              "index": 73439,
+              "name": "operationSide",
+              "typeName": "Torappu.PlayerSide"
+            }
+          ]
+        },
+        "selected": [
+          [
+            "0x180990b22",
+            "0x180990b45"
+          ]
+        ],
+        "instructions": [
+          {
+            "address": "0x180990b22",
+            "bytes": "33d2",
+            "mnemonic": "xor",
+            "operands": "edx, edx"
+          },
+          {
+            "address": "0x180990b24",
+            "bytes": "488bcb",
+            "mnemonic": "mov",
+            "operands": "rcx, rbx"
+          },
+          {
+            "address": "0x180990b27",
+            "bytes": "389328010000",
+            "mnemonic": "cmp",
+            "operands": "byte ptr [rbx + 0x128], dl"
+          },
+          {
+            "address": "0x180990b2d",
+            "bytes": "7515",
+            "mnemonic": "jne",
+            "operands": "0x180990b44"
+          },
+          {
+            "address": "0x180990b2f",
+            "bytes": "4533c9",
+            "mnemonic": "xor",
+            "operands": "r9d, r9d"
+          },
+          {
+            "address": "0x180990b32",
+            "bytes": "448bc7",
+            "mnemonic": "mov",
+            "operands": "r8d, edi"
+          },
+          {
+            "address": "0x180990b35",
+            "bytes": "488b5c2430",
+            "mnemonic": "mov",
+            "operands": "rbx, qword ptr [rsp + 0x30]"
+          },
+          {
+            "address": "0x180990b3a",
+            "bytes": "4883c420",
+            "mnemonic": "add",
+            "operands": "rsp, 0x20"
+          },
+          {
+            "address": "0x180990b3e",
+            "bytes": "5f",
+            "mnemonic": "pop",
+            "operands": "rdi"
+          },
+          {
+            "address": "0x180990b3f",
+            "bytes": "e9cc2a0000",
+            "mnemonic": "jmp",
+            "operands": "0x180993610",
+            "callees": [
+              "Torappu.Battle.BasicSkill.Cast"
+            ]
+          },
+          {
+            "address": "0x180990b44",
+            "bytes": "e857a00000",
+            "mnemonic": "call",
+            "operands": "0x18099aba0",
+            "callees": [
+              "Torappu.Battle.BasicSkill.get_owner"
+            ]
+          }
+        ]
+      },
+      "73734": {
+        "method": {
+          "nameIndex": 2504127,
+          "declaringType": 11050,
+          "returnType": 84484,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100737031,
+          "flags": 198,
+          "iflags": 0,
+          "slot": 61,
+          "parameterCount": 0,
+          "index": 73734,
+          "image": "Assembly-CSharp.dll",
+          "address": 6452479792,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.AppearSkill.OnBorn",
+          "returnTypeName": "void",
+          "parameters": []
+        },
+        "selected": [
+          [
+            "0x18099076c",
+            "0x1809907c9"
+          ]
+        ],
+        "instructions": [
+          {
+            "address": "0x18099076c",
+            "bytes": "33d2",
+            "mnemonic": "xor",
+            "operands": "edx, edx"
+          },
+          {
+            "address": "0x18099076e",
+            "bytes": "488bcb",
+            "mnemonic": "mov",
+            "operands": "rcx, rbx"
+          },
+          {
+            "address": "0x180990771",
+            "bytes": "e8ca510000",
+            "mnemonic": "call",
+            "operands": "0x180995940",
+            "callees": [
+              "Torappu.Battle.BasicSkill.OnBorn"
+            ]
+          },
+          {
+            "address": "0x180990776",
+            "bytes": "80bb2901000000",
+            "mnemonic": "cmp",
+            "operands": "byte ptr [rbx + 0x129], 0"
+          },
+          {
+            "address": "0x18099077d",
+            "bytes": "755b",
+            "mnemonic": "jne",
+            "operands": "0x1809907da"
+          },
+          {
+            "address": "0x18099077f",
+            "bytes": "33d2",
+            "mnemonic": "xor",
+            "operands": "edx, edx"
+          },
+          {
+            "address": "0x180990781",
+            "bytes": "488bcb",
+            "mnemonic": "mov",
+            "operands": "rcx, rbx"
+          },
+          {
+            "address": "0x180990784",
+            "bytes": "e817a40000",
+            "mnemonic": "call",
+            "operands": "0x18099aba0",
+            "callees": [
+              "Torappu.Battle.BasicSkill.get_owner"
+            ]
+          },
+          {
+            "address": "0x180990789",
+            "bytes": "4885c0",
+            "mnemonic": "test",
+            "operands": "rax, rax"
+          },
+          {
+            "address": "0x18099078c",
+            "bytes": "7452",
+            "mnemonic": "je",
+            "operands": "0x1809907e0"
+          },
+          {
+            "address": "0x18099078e",
+            "bytes": "803ddb82640800",
+            "mnemonic": "cmp",
+            "operands": "byte ptr [rip + 0x86482db], 0"
+          },
+          {
+            "address": "0x180990795",
+            "bytes": "48897c2430",
+            "mnemonic": "mov",
+            "operands": "qword ptr [rsp + 0x30], rdi"
+          },
+          {
+            "address": "0x18099079a",
+            "bytes": "8b7820",
+            "mnemonic": "mov",
+            "operands": "edi, dword ptr [rax + 0x20]"
+          },
+          {
+            "address": "0x18099079d",
+            "bytes": "7608",
+            "mnemonic": "jbe",
+            "operands": "0x1809907a7"
+          },
+          {
+            "address": "0x18099079f",
+            "bytes": "488b0b",
+            "mnemonic": "mov",
+            "operands": "rcx, qword ptr [rbx]"
+          },
+          {
+            "address": "0x1809907a2",
+            "bytes": "e86968acff",
+            "mnemonic": "call",
+            "operands": "0x180457010",
+            "callees": []
+          },
+          {
+            "address": "0x1809907a7",
+            "bytes": "4c8b03",
+            "mnemonic": "mov",
+            "operands": "r8, qword ptr [rbx]"
+          },
+          {
+            "address": "0x1809907aa",
+            "bytes": "8bd7",
+            "mnemonic": "mov",
+            "operands": "edx, edi"
+          },
+          {
+            "address": "0x1809907ac",
+            "bytes": "488bcb",
+            "mnemonic": "mov",
+            "operands": "rcx, rbx"
+          },
+          {
+            "address": "0x1809907af",
+            "bytes": "498b80a0040000",
+            "mnemonic": "mov",
+            "operands": "rax, qword ptr [r8 + 0x4a0]"
+          },
+          {
+            "address": "0x1809907b6",
+            "bytes": "4d8b80a8040000",
+            "mnemonic": "mov",
+            "operands": "r8, qword ptr [r8 + 0x4a8]"
+          },
+          {
+            "address": "0x1809907bd",
+            "bytes": "488b7c2430",
+            "mnemonic": "mov",
+            "operands": "rdi, qword ptr [rsp + 0x30]"
+          },
+          {
+            "address": "0x1809907c2",
+            "bytes": "4883c420",
+            "mnemonic": "add",
+            "operands": "rsp, 0x20"
+          },
+          {
+            "address": "0x1809907c6",
+            "bytes": "5b",
+            "mnemonic": "pop",
+            "operands": "rbx"
+          },
+          {
+            "address": "0x1809907c7",
+            "bytes": "48ffe0",
+            "mnemonic": "jmp",
+            "operands": "rax"
+          }
+        ]
+      },
+      "73735": {
+        "method": {
+          "nameIndex": 2559163,
+          "declaringType": 11050,
+          "returnType": 84484,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100737032,
+          "flags": 198,
+          "iflags": 0,
+          "slot": 62,
+          "parameterCount": 0,
+          "index": 73735,
+          "image": "Assembly-CSharp.dll",
+          "address": 6452480240,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.AppearSkill.OnLocate",
+          "returnTypeName": "void",
+          "parameters": []
+        },
+        "selected": [
+          [
+            "0x180990970",
+            "0x1809909c4"
+          ]
+        ],
+        "instructions": [
+          {
+            "address": "0x180990970",
+            "bytes": "80bb2901000000",
+            "mnemonic": "cmp",
+            "operands": "byte ptr [rbx + 0x129], 0"
+          },
+          {
+            "address": "0x180990977",
+            "bytes": "745b",
+            "mnemonic": "je",
+            "operands": "0x1809909d4"
+          },
+          {
+            "address": "0x180990979",
+            "bytes": "33d2",
+            "mnemonic": "xor",
+            "operands": "edx, edx"
+          },
+          {
+            "address": "0x18099097b",
+            "bytes": "488bcb",
+            "mnemonic": "mov",
+            "operands": "rcx, rbx"
+          },
+          {
+            "address": "0x18099097e",
+            "bytes": "e81da20000",
+            "mnemonic": "call",
+            "operands": "0x18099aba0",
+            "callees": [
+              "Torappu.Battle.BasicSkill.get_owner"
+            ]
+          },
+          {
+            "address": "0x180990983",
+            "bytes": "4885c0",
+            "mnemonic": "test",
+            "operands": "rax, rax"
+          },
+          {
+            "address": "0x180990986",
+            "bytes": "7452",
+            "mnemonic": "je",
+            "operands": "0x1809909da"
+          },
+          {
+            "address": "0x180990988",
+            "bytes": "803de180640800",
+            "mnemonic": "cmp",
+            "operands": "byte ptr [rip + 0x86480e1], 0"
+          },
+          {
+            "address": "0x18099098f",
+            "bytes": "48897c2430",
+            "mnemonic": "mov",
+            "operands": "qword ptr [rsp + 0x30], rdi"
+          },
+          {
+            "address": "0x180990994",
+            "bytes": "8b7820",
+            "mnemonic": "mov",
+            "operands": "edi, dword ptr [rax + 0x20]"
+          },
+          {
+            "address": "0x180990997",
+            "bytes": "7608",
+            "mnemonic": "jbe",
+            "operands": "0x1809909a1"
+          },
+          {
+            "address": "0x180990999",
+            "bytes": "488b0b",
+            "mnemonic": "mov",
+            "operands": "rcx, qword ptr [rbx]"
+          },
+          {
+            "address": "0x18099099c",
+            "bytes": "e86f66acff",
+            "mnemonic": "call",
+            "operands": "0x180457010",
+            "callees": []
+          },
+          {
+            "address": "0x1809909a1",
+            "bytes": "4c8b03",
+            "mnemonic": "mov",
+            "operands": "r8, qword ptr [rbx]"
+          },
+          {
+            "address": "0x1809909a4",
+            "bytes": "8bd7",
+            "mnemonic": "mov",
+            "operands": "edx, edi"
+          },
+          {
+            "address": "0x1809909a6",
+            "bytes": "488bcb",
+            "mnemonic": "mov",
+            "operands": "rcx, rbx"
+          },
+          {
+            "address": "0x1809909a9",
+            "bytes": "498b80a0040000",
+            "mnemonic": "mov",
+            "operands": "rax, qword ptr [r8 + 0x4a0]"
+          },
+          {
+            "address": "0x1809909b0",
+            "bytes": "4d8b80a8040000",
+            "mnemonic": "mov",
+            "operands": "r8, qword ptr [r8 + 0x4a8]"
+          },
+          {
+            "address": "0x1809909b7",
+            "bytes": "488b7c2430",
+            "mnemonic": "mov",
+            "operands": "rdi, qword ptr [rsp + 0x30]"
+          },
+          {
+            "address": "0x1809909bc",
+            "bytes": "4883c420",
+            "mnemonic": "add",
+            "operands": "rsp, 0x20"
+          },
+          {
+            "address": "0x1809909c0",
+            "bytes": "5b",
+            "mnemonic": "pop",
+            "operands": "rbx"
+          },
+          {
+            "address": "0x1809909c1",
+            "bytes": "48ffe0",
+            "mnemonic": "jmp",
+            "operands": "rax"
+          }
+        ]
+      },
+      "74552": {
+        "method": {
+          "nameIndex": 2432196,
+          "declaringType": 11098,
+          "returnType": 84484,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100737849,
+          "flags": 452,
+          "iflags": 0,
+          "slot": 29,
+          "parameterCount": 0,
+          "index": 74552,
+          "image": "Assembly-CSharp.dll",
+          "address": 6452666704,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.BasicTalent.DoAttach",
+          "returnTypeName": "void",
+          "parameters": []
+        },
+        "selected": [
+          [
+            "0x1809be18f",
+            "0x1809be1a9"
+          ]
+        ],
+        "instructions": [
+          {
+            "address": "0x1809be18f",
+            "bytes": "488b4b38",
+            "mnemonic": "mov",
+            "operands": "rcx, qword ptr [rbx + 0x38]"
+          },
+          {
+            "address": "0x1809be193",
+            "bytes": "4885c9",
+            "mnemonic": "test",
+            "operands": "rcx, rcx"
+          },
+          {
+            "address": "0x1809be196",
+            "bytes": "7421",
+            "mnemonic": "je",
+            "operands": "0x1809be1b9"
+          },
+          {
+            "address": "0x1809be198",
+            "bytes": "488b5330",
+            "mnemonic": "mov",
+            "operands": "rdx, qword ptr [rbx + 0x30]"
+          },
+          {
+            "address": "0x1809be19c",
+            "bytes": "4533c0",
+            "mnemonic": "xor",
+            "operands": "r8d, r8d"
+          },
+          {
+            "address": "0x1809be19f",
+            "bytes": "4883c420",
+            "mnemonic": "add",
+            "operands": "rsp, 0x20"
+          },
+          {
+            "address": "0x1809be1a3",
+            "bytes": "5b",
+            "mnemonic": "pop",
+            "operands": "rbx"
+          },
+          {
+            "address": "0x1809be1a4",
+            "bytes": "e9873ec4ff",
+            "mnemonic": "jmp",
+            "operands": "0x180602030",
+            "callees": [
+              "Torappu.Battle.Ability.Attach"
+            ]
+          }
+        ]
+      },
+      "77332": {
+        "method": {
+          "nameIndex": 5026,
+          "declaringType": 11491,
+          "returnType": 84484,
+          "parameterStart": 76634,
+          "genericContainerIndex": -1,
+          "token": 100740629,
+          "flags": 196,
+          "iflags": 0,
+          "slot": 30,
+          "parameterCount": 1,
+          "index": 77332,
+          "image": "Assembly-CSharp.dll",
+          "address": 6453605984,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.Character.OnInit",
+          "returnTypeName": "void",
+          "parameters": [
+            {
+              "nameIndex": 2504116,
+              "token": 134294368,
+              "typeIndex": 76377,
+              "index": 76634,
+              "name": "initHeight",
+              "typeName": "float"
+            }
+          ]
+        },
+        "selected": [
+          [
+            "0x180aa3911",
+            "0x180aa394b"
+          ]
+        ],
+        "instructions": [
+          {
+            "address": "0x180aa3912",
+            "bytes": "488bcf",
+            "mnemonic": "mov",
+            "operands": "rcx, rdi"
+          },
+          {
+            "address": "0x180aa3915",
+            "bytes": "e826b8f1ff",
+            "mnemonic": "call",
+            "operands": "0x1809bf140",
+            "callees": [
+              "Torappu.Battle.BasicTalent.CheckRootOrValidModeTalent"
+            ]
+          },
+          {
+            "address": "0x180aa391a",
+            "bytes": "84c0",
+            "mnemonic": "test",
+            "operands": "al, al"
+          },
+          {
+            "address": "0x180aa391c",
+            "bytes": "742d",
+            "mnemonic": "je",
+            "operands": "0x180aa394b"
+          },
+          {
+            "address": "0x180aa391e",
+            "bytes": "33d2",
+            "mnemonic": "xor",
+            "operands": "edx, edx"
+          },
+          {
+            "address": "0x180aa3920",
+            "bytes": "488bcb",
+            "mnemonic": "mov",
+            "operands": "rcx, rbx"
+          },
+          {
+            "address": "0x180aa3923",
+            "bytes": "e818e10700",
+            "mnemonic": "call",
+            "operands": "0x180b21a40",
+            "callees": [
+              "Torappu.Battle.Unit.get_isDummy"
+            ]
+          },
+          {
+            "address": "0x180aa3928",
+            "bytes": "84c0",
+            "mnemonic": "test",
+            "operands": "al, al"
+          },
+          {
+            "address": "0x180aa392a",
+            "bytes": "7411",
+            "mnemonic": "je",
+            "operands": "0x180aa393d"
+          },
+          {
+            "address": "0x180aa392c",
+            "bytes": "b907000000",
+            "mnemonic": "mov",
+            "operands": "ecx, 7"
+          },
+          {
+            "address": "0x180aa3931",
+            "bytes": "488bd7",
+            "mnemonic": "mov",
+            "operands": "rdx, rdi"
+          },
+          {
+            "address": "0x180aa3934",
+            "bytes": "e8d71c56ff",
+            "mnemonic": "call",
+            "operands": "0x180005610",
+            "callees": []
+          },
+          {
+            "address": "0x180aa3939",
+            "bytes": "84c0",
+            "mnemonic": "test",
+            "operands": "al, al"
+          },
+          {
+            "address": "0x180aa393b",
+            "bytes": "740e",
+            "mnemonic": "je",
+            "operands": "0x180aa394b"
+          },
+          {
+            "address": "0x180aa393d",
+            "bytes": "4533c0",
+            "mnemonic": "xor",
+            "operands": "r8d, r8d"
+          },
+          {
+            "address": "0x180aa3940",
+            "bytes": "488bd3",
+            "mnemonic": "mov",
+            "operands": "rdx, rbx"
+          },
+          {
+            "address": "0x180aa3943",
+            "bytes": "488bcf",
+            "mnemonic": "mov",
+            "operands": "rcx, rdi"
+          },
+          {
+            "address": "0x180aa3946",
+            "bytes": "e815b6f1ff",
+            "mnemonic": "call",
+            "operands": "0x1809bef60",
+            "callees": [
+              "Torappu.Battle.BasicTalent.Attach"
+            ]
+          }
+        ]
+      },
+      "77334": {
+        "method": {
+          "nameIndex": 2504127,
+          "declaringType": 11491,
+          "returnType": 84484,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100740631,
+          "flags": 196,
+          "iflags": 0,
+          "slot": 32,
+          "parameterCount": 0,
+          "index": 77334,
+          "image": "Assembly-CSharp.dll",
+          "address": 6453603120,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.Character.OnBorn",
+          "returnTypeName": "void",
+          "parameters": []
+        },
+        "selected": [
+          [
+            "0x180aa2e30",
+            "0x180aa2e90"
+          ]
+        ],
+        "instructions": [
+          {
+            "address": "0x180aa2e30",
+            "bytes": "488b0d19d20708",
+            "mnemonic": "mov",
+            "operands": "rcx, qword ptr [rip + 0x807d219]"
+          },
+          {
+            "address": "0x180aa2e37",
+            "bytes": "488bbbc8030000",
+            "mnemonic": "mov",
+            "operands": "rdi, qword ptr [rbx + 0x3c8]"
+          },
+          {
+            "address": "0x180aa2e3e",
+            "bytes": "83b9e000000000",
+            "mnemonic": "cmp",
+            "operands": "dword ptr [rcx + 0xe0], 0"
+          },
+          {
+            "address": "0x180aa2e45",
+            "bytes": "7505",
+            "mnemonic": "jne",
+            "operands": "0x180aa2e4c"
+          },
+          {
+            "address": "0x180aa2e47",
+            "bytes": "e804969fff",
+            "mnemonic": "call",
+            "operands": "0x18049c450",
+            "callees": []
+          },
+          {
+            "address": "0x180aa2e4c",
+            "bytes": "4533c0",
+            "mnemonic": "xor",
+            "operands": "r8d, r8d"
+          },
+          {
+            "address": "0x180aa2e4f",
+            "bytes": "33d2",
+            "mnemonic": "xor",
+            "operands": "edx, edx"
+          },
+          {
+            "address": "0x180aa2e51",
+            "bytes": "488bcf",
+            "mnemonic": "mov",
+            "operands": "rcx, rdi"
+          },
+          {
+            "address": "0x180aa2e54",
+            "bytes": "e8d7c53206",
+            "mnemonic": "call",
+            "operands": "0x186dcf430",
+            "callees": [
+              "UnityEngine.Object.op_Inequality"
+            ]
+          },
+          {
+            "address": "0x180aa2e59",
+            "bytes": "84c0",
+            "mnemonic": "test",
+            "operands": "al, al"
+          },
+          {
+            "address": "0x180aa2e5b",
+            "bytes": "7433",
+            "mnemonic": "je",
+            "operands": "0x180aa2e90"
+          },
+          {
+            "address": "0x180aa2e5d",
+            "bytes": "488b9bc8030000",
+            "mnemonic": "mov",
+            "operands": "rbx, qword ptr [rbx + 0x3c8]"
+          },
+          {
+            "address": "0x180aa2e64",
+            "bytes": "4885db",
+            "mnemonic": "test",
+            "operands": "rbx, rbx"
+          },
+          {
+            "address": "0x180aa2e67",
+            "bytes": "7453",
+            "mnemonic": "je",
+            "operands": "0x180aa2ebc"
+          },
+          {
+            "address": "0x180aa2e69",
+            "bytes": "803d005c530800",
+            "mnemonic": "cmp",
+            "operands": "byte ptr [rip + 0x8535c00], 0"
+          },
+          {
+            "address": "0x180aa2e70",
+            "bytes": "7608",
+            "mnemonic": "jbe",
+            "operands": "0x180aa2e7a"
+          },
+          {
+            "address": "0x180aa2e72",
+            "bytes": "488b0b",
+            "mnemonic": "mov",
+            "operands": "rcx, qword ptr [rbx]"
+          },
+          {
+            "address": "0x180aa2e75",
+            "bytes": "e896419bff",
+            "mnemonic": "call",
+            "operands": "0x180457010",
+            "callees": []
+          },
+          {
+            "address": "0x180aa2e7a",
+            "bytes": "488b13",
+            "mnemonic": "mov",
+            "operands": "rdx, qword ptr [rbx]"
+          },
+          {
+            "address": "0x180aa2e7d",
+            "bytes": "488bcb",
+            "mnemonic": "mov",
+            "operands": "rcx, rbx"
+          },
+          {
+            "address": "0x180aa2e80",
+            "bytes": "488b8210050000",
+            "mnemonic": "mov",
+            "operands": "rax, qword ptr [rdx + 0x510]"
+          },
+          {
+            "address": "0x180aa2e87",
+            "bytes": "488b9218050000",
+            "mnemonic": "mov",
+            "operands": "rdx, qword ptr [rdx + 0x518]"
+          },
+          {
+            "address": "0x180aa2e8e",
+            "bytes": "ffd0",
+            "mnemonic": "call",
+            "operands": "rax"
+          }
+        ]
+      },
+      "77339": {
+        "method": {
+          "nameIndex": 2559163,
+          "declaringType": 11491,
+          "returnType": 84484,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100740636,
+          "flags": 196,
+          "iflags": 0,
+          "slot": 119,
+          "parameterCount": 0,
+          "index": 77339,
+          "image": "Assembly-CSharp.dll",
+          "address": 6453606832,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.Character.OnLocate",
+          "returnTypeName": "void",
+          "parameters": []
+        },
+        "selected": [
+          [
+            "0x180aa3a23",
+            "0x180aa3aa7"
+          ]
+        ],
+        "instructions": [
+          {
+            "address": "0x180aa3a23",
+            "bytes": "48897c2430",
+            "mnemonic": "mov",
+            "operands": "qword ptr [rsp + 0x30], rdi"
+          },
+          {
+            "address": "0x180aa3a28",
+            "bytes": "33d2",
+            "mnemonic": "xor",
+            "operands": "edx, edx"
+          },
+          {
+            "address": "0x180aa3a2a",
+            "bytes": "488bcb",
+            "mnemonic": "mov",
+            "operands": "rcx, rbx"
+          },
+          {
+            "address": "0x180aa3a2d",
+            "bytes": "e83e6dc8ff",
+            "mnemonic": "call",
+            "operands": "0x18072a770",
+            "callees": [
+              "Torappu.Battle.Entity.OnLocate"
+            ]
+          },
+          {
+            "address": "0x180aa3a32",
+            "bytes": "488b0d17c60708",
+            "mnemonic": "mov",
+            "operands": "rcx, qword ptr [rip + 0x807c617]"
+          },
+          {
+            "address": "0x180aa3a39",
+            "bytes": "488bbbc8030000",
+            "mnemonic": "mov",
+            "operands": "rdi, qword ptr [rbx + 0x3c8]"
+          },
+          {
+            "address": "0x180aa3a40",
+            "bytes": "83b9e000000000",
+            "mnemonic": "cmp",
+            "operands": "dword ptr [rcx + 0xe0], 0"
+          },
+          {
+            "address": "0x180aa3a47",
+            "bytes": "7505",
+            "mnemonic": "jne",
+            "operands": "0x180aa3a4e"
+          },
+          {
+            "address": "0x180aa3a49",
+            "bytes": "e8028a9fff",
+            "mnemonic": "call",
+            "operands": "0x18049c450",
+            "callees": []
+          },
+          {
+            "address": "0x180aa3a4e",
+            "bytes": "4533c0",
+            "mnemonic": "xor",
+            "operands": "r8d, r8d"
+          },
+          {
+            "address": "0x180aa3a51",
+            "bytes": "33d2",
+            "mnemonic": "xor",
+            "operands": "edx, edx"
+          },
+          {
+            "address": "0x180aa3a53",
+            "bytes": "488bcf",
+            "mnemonic": "mov",
+            "operands": "rcx, rdi"
+          },
+          {
+            "address": "0x180aa3a56",
+            "bytes": "e8d5b93206",
+            "mnemonic": "call",
+            "operands": "0x186dcf430",
+            "callees": [
+              "UnityEngine.Object.op_Inequality"
+            ]
+          },
+          {
+            "address": "0x180aa3a5b",
+            "bytes": "84c0",
+            "mnemonic": "test",
+            "operands": "al, al"
+          },
+          {
+            "address": "0x180aa3a5d",
+            "bytes": "7433",
+            "mnemonic": "je",
+            "operands": "0x180aa3a92"
+          },
+          {
+            "address": "0x180aa3a5f",
+            "bytes": "488bbbc8030000",
+            "mnemonic": "mov",
+            "operands": "rdi, qword ptr [rbx + 0x3c8]"
+          },
+          {
+            "address": "0x180aa3a66",
+            "bytes": "4885ff",
+            "mnemonic": "test",
+            "operands": "rdi, rdi"
+          },
+          {
+            "address": "0x180aa3a69",
+            "bytes": "7479",
+            "mnemonic": "je",
+            "operands": "0x180aa3ae4"
+          },
+          {
+            "address": "0x180aa3a6b",
+            "bytes": "803dfe4f530800",
+            "mnemonic": "cmp",
+            "operands": "byte ptr [rip + 0x8534ffe], 0"
+          },
+          {
+            "address": "0x180aa3a72",
+            "bytes": "7608",
+            "mnemonic": "jbe",
+            "operands": "0x180aa3a7c"
+          },
+          {
+            "address": "0x180aa3a74",
+            "bytes": "488b0f",
+            "mnemonic": "mov",
+            "operands": "rcx, qword ptr [rdi]"
+          },
+          {
+            "address": "0x180aa3a77",
+            "bytes": "e894359bff",
+            "mnemonic": "call",
+            "operands": "0x180457010",
+            "callees": []
+          },
+          {
+            "address": "0x180aa3a7c",
+            "bytes": "488b17",
+            "mnemonic": "mov",
+            "operands": "rdx, qword ptr [rdi]"
+          },
+          {
+            "address": "0x180aa3a7f",
+            "bytes": "488bcf",
+            "mnemonic": "mov",
+            "operands": "rcx, rdi"
+          },
+          {
+            "address": "0x180aa3a82",
+            "bytes": "488b8220050000",
+            "mnemonic": "mov",
+            "operands": "rax, qword ptr [rdx + 0x520]"
+          },
+          {
+            "address": "0x180aa3a89",
+            "bytes": "488b9228050000",
+            "mnemonic": "mov",
+            "operands": "rdx, qword ptr [rdx + 0x528]"
+          },
+          {
+            "address": "0x180aa3a90",
+            "bytes": "ffd0",
+            "mnemonic": "call",
+            "operands": "rax"
+          },
+          {
+            "address": "0x180aa3a92",
+            "bytes": "33d2",
+            "mnemonic": "xor",
+            "operands": "edx, edx"
+          },
+          {
+            "address": "0x180aa3a94",
+            "bytes": "488bcb",
+            "mnemonic": "mov",
+            "operands": "rcx, rbx"
+          },
+          {
+            "address": "0x180aa3a97",
+            "bytes": "e804fec8ff",
+            "mnemonic": "call",
+            "operands": "0x1807338a0",
+            "callees": [
+              "Torappu.Battle.Entity.get_buffContainer"
+            ]
+          },
+          {
+            "address": "0x180aa3a9c",
+            "bytes": "4885c0",
+            "mnemonic": "test",
+            "operands": "rax, rax"
+          },
+          {
+            "address": "0x180aa3a9f",
+            "bytes": "7443",
+            "mnemonic": "je",
+            "operands": "0x180aa3ae4"
+          },
+          {
+            "address": "0x180aa3aa1",
+            "bytes": "33d2",
+            "mnemonic": "xor",
+            "operands": "edx, edx"
+          },
+          {
+            "address": "0x180aa3aa3",
+            "bytes": "488bc8",
+            "mnemonic": "mov",
+            "operands": "rcx, rax"
+          },
+          {
+            "address": "0x180aa3aa6",
+            "bytes": "e82505c2ff",
+            "mnemonic": "call",
+            "operands": "0x1806c3fd0",
+            "callees": [
+              "Torappu.Battle.Buff/BuffContainer.OnOwnerLocate"
+            ]
+          }
+        ]
+      },
+      "77465": {
+        "method": {
+          "nameIndex": 3165,
+          "declaringType": 11470,
+          "returnType": 84484,
+          "parameterStart": 76746,
+          "genericContainerIndex": -1,
+          "token": 100740762,
+          "flags": 198,
+          "iflags": 0,
+          "slot": 12,
+          "parameterCount": 1,
+          "index": 77465,
+          "image": "Assembly-CSharp.dll",
+          "address": 6453572944,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.Character/States/BornState.OnTick",
+          "returnTypeName": "void",
+          "parameters": [
+            {
+              "nameIndex": 3876,
+              "token": 134294480,
+              "typeIndex": 54451,
+              "index": 76746,
+              "name": "deltaTime",
+              "typeName": "Torappu.FP"
+            }
+          ]
+        },
+        "selected": [
+          [
+            "0x180a9b66d",
+            "0x180a9b69d"
+          ],
+          [
+            "0x180a9b6ec",
+            "0x180a9b72f"
+          ]
+        ],
+        "instructions": [
+          {
+            "address": "0x180a9b66d",
+            "bytes": "e84e0aec05",
+            "mnemonic": "call",
+            "operands": "0x18695c0c0",
+            "callees": [
+              "Torappu.FP.op_Subtraction",
+              "Torappu.FP.FastSub",
+              "UnityEngine.Timeline.DiscreteTime.op_Subtraction"
+            ]
+          },
+          {
+            "address": "0x180a9b672",
+            "bytes": "33d2",
+            "mnemonic": "xor",
+            "operands": "edx, edx"
+          },
+          {
+            "address": "0x180a9b674",
+            "bytes": "48894618",
+            "mnemonic": "mov",
+            "operands": "qword ptr [rsi + 0x18], rax"
+          },
+          {
+            "address": "0x180a9b678",
+            "bytes": "33c9",
+            "mnemonic": "xor",
+            "operands": "ecx, ecx"
+          },
+          {
+            "address": "0x180a9b67a",
+            "bytes": "488bd8",
+            "mnemonic": "mov",
+            "operands": "rbx, rax"
+          },
+          {
+            "address": "0x180a9b67d",
+            "bytes": "e8ee2aec05",
+            "mnemonic": "call",
+            "operands": "0x18695e170",
+            "callees": [
+              "Torappu.FP.op_Implicit"
+            ]
+          },
+          {
+            "address": "0x180a9b682",
+            "bytes": "4533c0",
+            "mnemonic": "xor",
+            "operands": "r8d, r8d"
+          },
+          {
+            "address": "0x180a9b685",
+            "bytes": "488bd0",
+            "mnemonic": "mov",
+            "operands": "rdx, rax"
+          },
+          {
+            "address": "0x180a9b688",
+            "bytes": "488bcb",
+            "mnemonic": "mov",
+            "operands": "rcx, rbx"
+          },
+          {
+            "address": "0x180a9b68b",
+            "bytes": "e8c0df6905",
+            "mnemonic": "call",
+            "operands": "0x186139650",
+            "callees": [
+              "Torappu.FP.op_LessThanOrEqual",
+              "System.TimeSpan.op_LessThanOrEqual",
+              "UnityEngine.Timeline.DiscreteTime.op_LessThanOrEqual"
+            ]
+          },
+          {
+            "address": "0x180a9b690",
+            "bytes": "488b7c2440",
+            "mnemonic": "mov",
+            "operands": "rdi, qword ptr [rsp + 0x40]"
+          },
+          {
+            "address": "0x180a9b695",
+            "bytes": "84c0",
+            "mnemonic": "test",
+            "operands": "al, al"
+          },
+          {
+            "address": "0x180a9b697",
+            "bytes": "0f840c010000",
+            "mnemonic": "je",
+            "operands": "0x180a9b7a9"
+          },
+          {
+            "address": "0x180a9b6ec",
+            "bytes": "488b15d5d81908",
+            "mnemonic": "mov",
+            "operands": "rdx, qword ptr [rip + 0x819d8d5]"
+          },
+          {
+            "address": "0x180a9b6f3",
+            "bytes": "488bce",
+            "mnemonic": "mov",
+            "operands": "rcx, rsi"
+          },
+          {
+            "address": "0x180a9b6f6",
+            "bytes": "e8d59cb204",
+            "mnemonic": "call",
+            "operands": "0x1855c53d0",
+            "callees": []
+          },
+          {
+            "address": "0x180a9b6fb",
+            "bytes": "488bd8",
+            "mnemonic": "mov",
+            "operands": "rbx, rax"
+          },
+          {
+            "address": "0x180a9b6fe",
+            "bytes": "4885c0",
+            "mnemonic": "test",
+            "operands": "rax, rax"
+          },
+          {
+            "address": "0x180a9b701",
+            "bytes": "0f84ad000000",
+            "mnemonic": "je",
+            "operands": "0x180a9b7b4"
+          },
+          {
+            "address": "0x180a9b707",
+            "bytes": "803d62d3530800",
+            "mnemonic": "cmp",
+            "operands": "byte ptr [rip + 0x853d362], 0"
+          },
+          {
+            "address": "0x180a9b70e",
+            "bytes": "7608",
+            "mnemonic": "jbe",
+            "operands": "0x180a9b718"
+          },
+          {
+            "address": "0x180a9b710",
+            "bytes": "488b08",
+            "mnemonic": "mov",
+            "operands": "rcx, qword ptr [rax]"
+          },
+          {
+            "address": "0x180a9b713",
+            "bytes": "e8f8b89bff",
+            "mnemonic": "call",
+            "operands": "0x180457010",
+            "callees": []
+          },
+          {
+            "address": "0x180a9b718",
+            "bytes": "488b13",
+            "mnemonic": "mov",
+            "operands": "rdx, qword ptr [rbx]"
+          },
+          {
+            "address": "0x180a9b71b",
+            "bytes": "488bcb",
+            "mnemonic": "mov",
+            "operands": "rcx, rbx"
+          },
+          {
+            "address": "0x180a9b71e",
+            "bytes": "4c8b82b0080000",
+            "mnemonic": "mov",
+            "operands": "r8, qword ptr [rdx + 0x8b0]"
+          },
+          {
+            "address": "0x180a9b725",
+            "bytes": "488b92b8080000",
+            "mnemonic": "mov",
+            "operands": "rdx, qword ptr [rdx + 0x8b8]"
+          },
+          {
+            "address": "0x180a9b72c",
+            "bytes": "41ffd0",
+            "mnemonic": "call",
+            "operands": "r8"
+          }
+        ]
+      },
+      "77467": {
+        "method": {
+          "nameIndex": 2810932,
+          "declaringType": 11470,
+          "returnType": 84484,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100740764,
+          "flags": 129,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 0,
+          "index": 77467,
+          "image": "Assembly-CSharp.dll",
+          "address": 6453573568,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.Character/States/BornState._OnLocate",
+          "returnTypeName": "void",
+          "parameters": []
+        },
+        "selected": [
+          [
+            "0x180a9b818",
+            "0x180a9b860"
+          ]
+        ],
+        "instructions": [
+          {
+            "address": "0x180a9b818",
+            "bytes": "48897c2430",
+            "mnemonic": "mov",
+            "operands": "qword ptr [rsp + 0x30], rdi"
+          },
+          {
+            "address": "0x180a9b81d",
+            "bytes": "488b15a4d71908",
+            "mnemonic": "mov",
+            "operands": "rdx, qword ptr [rip + 0x819d7a4]"
+          },
+          {
+            "address": "0x180a9b824",
+            "bytes": "488bcb",
+            "mnemonic": "mov",
+            "operands": "rcx, rbx"
+          },
+          {
+            "address": "0x180a9b827",
+            "bytes": "e8a49bb204",
+            "mnemonic": "call",
+            "operands": "0x1855c53d0",
+            "callees": []
+          },
+          {
+            "address": "0x180a9b82c",
+            "bytes": "488bf8",
+            "mnemonic": "mov",
+            "operands": "rdi, rax"
+          },
+          {
+            "address": "0x180a9b82f",
+            "bytes": "4885c0",
+            "mnemonic": "test",
+            "operands": "rax, rax"
+          },
+          {
+            "address": "0x180a9b832",
+            "bytes": "0f8495000000",
+            "mnemonic": "je",
+            "operands": "0x180a9b8cd"
+          },
+          {
+            "address": "0x180a9b838",
+            "bytes": "803d31d2530800",
+            "mnemonic": "cmp",
+            "operands": "byte ptr [rip + 0x853d231], 0"
+          },
+          {
+            "address": "0x180a9b83f",
+            "bytes": "7608",
+            "mnemonic": "jbe",
+            "operands": "0x180a9b849"
+          },
+          {
+            "address": "0x180a9b841",
+            "bytes": "488b08",
+            "mnemonic": "mov",
+            "operands": "rcx, qword ptr [rax]"
+          },
+          {
+            "address": "0x180a9b844",
+            "bytes": "e8c7b79bff",
+            "mnemonic": "call",
+            "operands": "0x180457010",
+            "callees": []
+          },
+          {
+            "address": "0x180a9b849",
+            "bytes": "488b17",
+            "mnemonic": "mov",
+            "operands": "rdx, qword ptr [rdi]"
+          },
+          {
+            "address": "0x180a9b84c",
+            "bytes": "488bcf",
+            "mnemonic": "mov",
+            "operands": "rcx, rdi"
+          },
+          {
+            "address": "0x180a9b84f",
+            "bytes": "4c8b82b0080000",
+            "mnemonic": "mov",
+            "operands": "r8, qword ptr [rdx + 0x8b0]"
+          },
+          {
+            "address": "0x180a9b856",
+            "bytes": "488b92b8080000",
+            "mnemonic": "mov",
+            "operands": "rdx, qword ptr [rdx + 0x8b8]"
+          },
+          {
+            "address": "0x180a9b85d",
+            "bytes": "41ffd0",
+            "mnemonic": "call",
+            "operands": "r8"
+          }
+        ]
+      },
+      "92986": {
+        "method": {
+          "nameIndex": 3337770,
+          "declaringType": 13359,
+          "returnType": 46024,
+          "parameterStart": 89598,
+          "genericContainerIndex": -1,
+          "token": 100756283,
+          "flags": 132,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 1,
+          "index": 92986,
+          "image": "Assembly-CSharp.dll",
+          "address": 6458535872,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.Abilities.ActiveBuffAbility.DoOnSpellStart",
+          "returnTypeName": "bool",
+          "parameters": [
+            {
+              "nameIndex": 1192191,
+              "token": 134307343,
+              "typeIndex": 33591,
+              "index": 89598,
+              "name": "buffs",
+              "typeName": "Torappu.BuffData[]"
+            }
+          ]
+        },
+        "selected": [
+          [
+            "0x180f570e3",
+            "0x180f57140"
+          ]
+        ],
+        "instructions": [
+          {
+            "address": "0x180f570e3",
+            "bytes": "0f8334010000",
+            "mnemonic": "jae",
+            "operands": "0x180f5721d"
+          },
+          {
+            "address": "0x180f570e9",
+            "bytes": "498b2e",
+            "mnemonic": "mov",
+            "operands": "rbp, qword ptr [r14]"
+          },
+          {
+            "address": "0x180f570ec",
+            "bytes": "33d2",
+            "mnemonic": "xor",
+            "operands": "edx, edx"
+          },
+          {
+            "address": "0x180f570ee",
+            "bytes": "488bcf",
+            "mnemonic": "mov",
+            "operands": "rcx, rdi"
+          },
+          {
+            "address": "0x180f570f1",
+            "bytes": "e89adc6aff",
+            "mnemonic": "call",
+            "operands": "0x180604d90",
+            "callees": [
+              "Torappu.Battle.Ability.get_blackboard"
+            ]
+          },
+          {
+            "address": "0x180f570f6",
+            "bytes": "4d85ff",
+            "mnemonic": "test",
+            "operands": "r15, r15"
+          },
+          {
+            "address": "0x180f570f9",
+            "bytes": "0f8424010000",
+            "mnemonic": "je",
+            "operands": "0x180f57223"
+          },
+          {
+            "address": "0x180f570ff",
+            "bytes": "4c89642440",
+            "mnemonic": "mov",
+            "operands": "qword ptr [rsp + 0x40], r12"
+          },
+          {
+            "address": "0x180f57104",
+            "bytes": "4c8bcf",
+            "mnemonic": "mov",
+            "operands": "r9, rdi"
+          },
+          {
+            "address": "0x180f57107",
+            "bytes": "4c89642438",
+            "mnemonic": "mov",
+            "operands": "qword ptr [rsp + 0x38], r12"
+          },
+          {
+            "address": "0x180f5710c",
+            "bytes": "4d8bc7",
+            "mnemonic": "mov",
+            "operands": "r8, r15"
+          },
+          {
+            "address": "0x180f5710f",
+            "bytes": "4c89642430",
+            "mnemonic": "mov",
+            "operands": "qword ptr [rsp + 0x30], r12"
+          },
+          {
+            "address": "0x180f57114",
+            "bytes": "488bd5",
+            "mnemonic": "mov",
+            "operands": "rdx, rbp"
+          },
+          {
+            "address": "0x180f57117",
+            "bytes": "4c89642428",
+            "mnemonic": "mov",
+            "operands": "qword ptr [rsp + 0x28], r12"
+          },
+          {
+            "address": "0x180f5711c",
+            "bytes": "498bcf",
+            "mnemonic": "mov",
+            "operands": "rcx, r15"
+          },
+          {
+            "address": "0x180f5711f",
+            "bytes": "4889442420",
+            "mnemonic": "mov",
+            "operands": "qword ptr [rsp + 0x20], rax"
+          },
+          {
+            "address": "0x180f57124",
+            "bytes": "e897977cff",
+            "mnemonic": "call",
+            "operands": "0x1807208c0",
+            "callees": [
+              "Torappu.Battle.Entity.AddBuff"
+            ]
+          },
+          {
+            "address": "0x180f57129",
+            "bytes": "4885c0",
+            "mnemonic": "test",
+            "operands": "rax, rax"
+          },
+          {
+            "address": "0x180f5712c",
+            "bytes": "7443",
+            "mnemonic": "je",
+            "operands": "0x180f57171"
+          },
+          {
+            "address": "0x180f5712e",
+            "bytes": "4c8b052b59cb07",
+            "mnemonic": "mov",
+            "operands": "r8, qword ptr [rip + 0x7cb592b]"
+          },
+          {
+            "address": "0x180f57135",
+            "bytes": "488d4c2450",
+            "mnemonic": "lea",
+            "operands": "rcx, [rsp + 0x50]"
+          },
+          {
+            "address": "0x180f5713a",
+            "bytes": "488baf68010000",
+            "mnemonic": "mov",
+            "operands": "rbp, qword ptr [rdi + 0x168]"
+          }
+        ]
+      }
+    },
+    "types": {
+      "Torappu.Battle.AppearSkill": {
+        "vtable": {
+          "54": {
+            "encoded": "0x6002400b",
+            "method": {
+              "nameIndex": 2788681,
+              "declaringType": 11050,
+              "returnType": 46024,
+              "parameterStart": 73439,
+              "genericContainerIndex": -1,
+              "token": 100737030,
+              "flags": 198,
+              "iflags": 0,
+              "slot": 54,
+              "parameterCount": 1,
+              "index": 73733,
+              "image": "Assembly-CSharp.dll",
+              "address": 6452480736,
+              "addressStatus": "file-backed",
+              "fullname": "Torappu.Battle.AppearSkill.UseSkill",
+              "returnTypeName": "bool",
+              "parameters": [
+                {
+                  "nameIndex": 2788598,
+                  "token": 134291173,
+                  "typeIndex": 65995,
+                  "index": 73439,
+                  "name": "operationSide",
+                  "typeName": "Torappu.PlayerSide"
+                }
+              ]
+            }
+          },
+          "61": {
+            "encoded": "0x6002400d",
+            "method": {
+              "nameIndex": 2504127,
+              "declaringType": 11050,
+              "returnType": 84484,
+              "parameterStart": -1,
+              "genericContainerIndex": -1,
+              "token": 100737031,
+              "flags": 198,
+              "iflags": 0,
+              "slot": 61,
+              "parameterCount": 0,
+              "index": 73734,
+              "image": "Assembly-CSharp.dll",
+              "address": 6452479792,
+              "addressStatus": "file-backed",
+              "fullname": "Torappu.Battle.AppearSkill.OnBorn",
+              "returnTypeName": "void",
+              "parameters": []
+            }
+          },
+          "62": {
+            "encoded": "0x6002400f",
+            "method": {
+              "nameIndex": 2559163,
+              "declaringType": 11050,
+              "returnType": 84484,
+              "parameterStart": -1,
+              "genericContainerIndex": -1,
+              "token": 100737032,
+              "flags": 198,
+              "iflags": 0,
+              "slot": 62,
+              "parameterCount": 0,
+              "index": 73735,
+              "image": "Assembly-CSharp.dll",
+              "address": 6452480240,
+              "addressStatus": "file-backed",
+              "fullname": "Torappu.Battle.AppearSkill.OnLocate",
+              "returnTypeName": "void",
+              "parameters": []
+            }
+          }
+        },
+        "castOnLocateField": {
+          "nameIndex": 2788821,
+          "typeIndex": 46025,
+          "token": 67191866,
+          "index": 83001,
+          "name": "_castOnLocate",
+          "typeName": "bool",
+          "static": false,
+          "offset": 297,
+          "unboxedOffset": null
+        }
+      },
+      "Torappu.Battle.Character": {
+        "vtable": {
+          "119": {
+            "encoded": "0x60025c37",
+            "method": {
+              "nameIndex": 2559163,
+              "declaringType": 11491,
+              "returnType": 84484,
+              "parameterStart": -1,
+              "genericContainerIndex": -1,
+              "token": 100740636,
+              "flags": 196,
+              "iflags": 0,
+              "slot": 119,
+              "parameterCount": 0,
+              "index": 77339,
+              "image": "Assembly-CSharp.dll",
+              "address": 6453606832,
+              "addressStatus": "file-backed",
+              "fullname": "Torappu.Battle.Character.OnLocate",
+              "returnTypeName": "void",
+              "parameters": []
+            }
+          }
+        }
+      },
+      "Torappu.Battle.Abilities.PassiveBuffAbility": {
+        "vtable": {
+          "66": {
+            "encoded": "0x6001f473",
+            "method": {
+              "nameIndex": 2432801,
+              "declaringType": 10009,
+              "returnType": 84484,
+              "parameterStart": -1,
+              "genericContainerIndex": -1,
+              "token": 100727354,
+              "flags": 452,
+              "iflags": 0,
+              "slot": 66,
+              "parameterCount": 0,
+              "index": 64057,
+              "image": "Assembly-CSharp.dll",
+              "address": 6448749360,
+              "addressStatus": "file-backed",
+              "fullname": "Torappu.Battle.Ability.AddPassiveBuffs",
+              "returnTypeName": "void",
+              "parameters": []
+            }
+          }
+        }
+      }
+    },
+    "operatorSelections": {
+      "chess_char_2_16_a": {
+        "shop": {
+          "chessId": "chess_char_2_16_a",
+          "goldenChessId": "chess_char_2_16_b",
+          "chessLevel": 2,
+          "shopLevelSortId": 16,
+          "chessType": 2,
+          "charId": "char_337_utage",
+          "tmplId": null,
+          "defaultSkillIndex": 1,
+          "defaultUniEquipId": "uniequip_002_utage",
+          "backupCharId": "char_337_utage",
+          "backupTmplId": null,
+          "backupCharSkillIndex": 1,
+          "backupCharUniEquipId": "uniequip_002_utage",
+          "backupCharPotRank": 0,
+          "isHidden": false
+        },
+        "status": {
+          "evolvePhase": 1,
+          "charLevel": 60,
+          "skillLevel": 4,
+          "favorPoint": 0,
+          "equipLevel": 0
+        },
+        "skill": {
+          "id": "skchr_utage_2",
+          "name": "落地斩·破门",
+          "rangeId": null,
+          "description": "部署后立即流失<@ba.vdown>{hp_ratio:0%}</>当前生命，并在<@ba.vup>{duration}</>秒内攻击力<@ba.vup>+{atk:0%}</>，伤害类型变为<@ba.vup>法术</>",
+          "skillType": "PASSIVE",
+          "durationType": "NONE",
+          "spData": {
+            "spType": 8,
+            "levelUpCost": null,
+            "maxChargeTime": 0,
+            "spCost": 0,
+            "initSp": 0,
+            "increment": 0.0
+          },
+          "prefabId": "skchr_utage_2",
+          "duration": -1.0,
+          "blackboard": [
+            {
+              "key": "atk",
+              "value": 0.65,
+              "valueStr": null
+            },
+            {
+              "key": "duration",
+              "value": 14.0,
+              "valueStr": null
+            },
+            {
+              "key": "hp_ratio",
+              "value": 0.5,
+              "valueStr": null
+            },
+            {
+              "key": "respawn_time",
+              "value": 1.0,
+              "valueStr": null
+            }
+          ]
+        }
+      },
+      "chess_char_2_06_a": {
+        "shop": {
+          "chessId": "chess_char_2_06_a",
+          "goldenChessId": "chess_char_2_06_b",
+          "chessLevel": 2,
+          "shopLevelSortId": 6,
+          "chessType": 2,
+          "charId": "char_237_gravel",
+          "tmplId": null,
+          "defaultSkillIndex": 0,
+          "defaultUniEquipId": "uniequip_002_gravel",
+          "backupCharId": "char_237_gravel",
+          "backupTmplId": null,
+          "backupCharSkillIndex": 0,
+          "backupCharUniEquipId": "uniequip_002_gravel",
+          "backupCharPotRank": 0,
+          "isHidden": false
+        },
+        "status": {
+          "evolvePhase": 1,
+          "charLevel": 60,
+          "skillLevel": 4,
+          "favorPoint": 0,
+          "equipLevel": 0
+        },
+        "skill": {
+          "id": "skchr_gravel_1",
+          "name": "影袭",
+          "rangeId": null,
+          "description": "部署后防御力<@ba.vup>+{def:0%}</>，在<@ba.vup>{duration}</>秒内持续衰减",
+          "skillType": "PASSIVE",
+          "durationType": "NONE",
+          "spData": {
+            "spType": 8,
+            "levelUpCost": null,
+            "maxChargeTime": 0,
+            "spCost": 0,
+            "initSp": 0,
+            "increment": 0.0
+          },
+          "prefabId": "skchr_gravel_1",
+          "duration": -1.0,
+          "blackboard": [
+            {
+              "key": "def",
+              "value": 2.7,
+              "valueStr": null
+            },
+            {
+              "key": "duration",
+              "value": 7.0,
+              "valueStr": null
+            }
+          ]
+        }
+      },
+      "chess_char_4_16_a": {
+        "shop": {
+          "chessId": "chess_char_4_16_a",
+          "goldenChessId": "chess_char_4_16_b",
+          "chessLevel": 4,
+          "shopLevelSortId": 16,
+          "chessType": 0,
+          "charId": "char_4065_judge",
+          "tmplId": null,
+          "defaultSkillIndex": 1,
+          "defaultUniEquipId": "uniequip_002_judge",
+          "backupCharId": "char_610_acfend",
+          "backupTmplId": null,
+          "backupCharSkillIndex": 2,
+          "backupCharUniEquipId": "uniequip_002_acfend",
+          "backupCharPotRank": 0,
+          "isHidden": false
+        },
+        "status": {
+          "evolvePhase": 2,
+          "charLevel": 1,
+          "skillLevel": 4,
+          "favorPoint": 0,
+          "equipLevel": 0
+        },
+        "talentCandidates": [
+          {
+            "unlockCondition": {
+              "phase": "PHASE_0",
+              "level": 1
+            },
+            "requiredPotentialRank": 0,
+            "prefabKey": "1",
+            "name": "律法卫士",
+            "description": "部署后立即获得相当于生命上限30%的<$ba.barrier>屏障</>",
+            "rangeId": null,
+            "blackboard": [
+              {
+                "key": "max_hp_ratio",
+                "value": 3.0,
+                "valueStr": null
+              },
+              {
+                "key": "kill_hp_ratio",
+                "value": 0.0,
+                "valueStr": null
+              },
+              {
+                "key": "born_hp_ratio",
+                "value": 0.3,
+                "valueStr": null
+              },
+              {
+                "key": "higher_effect_hp_ratio",
+                "value": 1.0,
+                "valueStr": null
+              }
+            ],
+            "tokenKey": null,
+            "isHideTalent": false
+          },
+          {
+            "unlockCondition": {
+              "phase": "PHASE_0",
+              "level": 1
+            },
+            "requiredPotentialRank": 2,
+            "prefabKey": "1",
+            "name": "律法卫士",
+            "description": "部署后立即获得相当于生命上限35%<@ba.talpu>（+5%）</>的<$ba.barrier>屏障</>",
+            "rangeId": null,
+            "blackboard": [
+              {
+                "key": "max_hp_ratio",
+                "value": 3.0,
+                "valueStr": null
+              },
+              {
+                "key": "kill_hp_ratio",
+                "value": 0.0,
+                "valueStr": null
+              },
+              {
+                "key": "born_hp_ratio",
+                "value": 0.35,
+                "valueStr": null
+              },
+              {
+                "key": "higher_effect_hp_ratio",
+                "value": 1.0,
+                "valueStr": null
+              }
+            ],
+            "tokenKey": null,
+            "isHideTalent": false
+          },
+          {
+            "unlockCondition": {
+              "phase": "PHASE_1",
+              "level": 1
+            },
+            "requiredPotentialRank": 0,
+            "prefabKey": "1",
+            "name": "律法卫士",
+            "description": "部署后立即获得相当于生命上限30%的<$ba.barrier>屏障</>，每击倒一名敌人时获得相当于生命上限6%的<$ba.barrier>屏障</>（最多不超过生命上限300%）",
+            "rangeId": null,
+            "blackboard": [
+              {
+                "key": "max_hp_ratio",
+                "value": 3.0,
+                "valueStr": null
+              },
+              {
+                "key": "kill_hp_ratio",
+                "value": 0.06,
+                "valueStr": null
+              },
+              {
+                "key": "born_hp_ratio",
+                "value": 0.3,
+                "valueStr": null
+              },
+              {
+                "key": "higher_effect_hp_ratio",
+                "value": 1.0,
+                "valueStr": null
+              }
+            ],
+            "tokenKey": null,
+            "isHideTalent": false
+          },
+          {
+            "unlockCondition": {
+              "phase": "PHASE_1",
+              "level": 1
+            },
+            "requiredPotentialRank": 2,
+            "prefabKey": "1",
+            "name": "律法卫士",
+            "description": "部署后立即获得相当于生命上限35%<@ba.talpu>（+5%）</>的<$ba.barrier>屏障</>，每击倒一名敌人时获得相当于生命上限6%的<$ba.barrier>屏障</>（最多不超过生命上限300%）",
+            "rangeId": null,
+            "blackboard": [
+              {
+                "key": "max_hp_ratio",
+                "value": 3.0,
+                "valueStr": null
+              },
+              {
+                "key": "kill_hp_ratio",
+                "value": 0.06,
+                "valueStr": null
+              },
+              {
+                "key": "born_hp_ratio",
+                "value": 0.35,
+                "valueStr": null
+              },
+              {
+                "key": "higher_effect_hp_ratio",
+                "value": 1.0,
+                "valueStr": null
+              }
+            ],
+            "tokenKey": null,
+            "isHideTalent": false
+          },
+          {
+            "unlockCondition": {
+              "phase": "PHASE_2",
+              "level": 1
+            },
+            "requiredPotentialRank": 0,
+            "prefabKey": "1",
+            "name": "律法卫士",
+            "description": "部署后立即获得相当于生命上限50%的<$ba.barrier>屏障</>，每击倒一名敌人时获得相当于生命上限10%的<$ba.barrier>屏障</>（最多不超过生命上限300%）",
+            "rangeId": null,
+            "blackboard": [
+              {
+                "key": "max_hp_ratio",
+                "value": 3.0,
+                "valueStr": null
+              },
+              {
+                "key": "kill_hp_ratio",
+                "value": 0.1,
+                "valueStr": null
+              },
+              {
+                "key": "born_hp_ratio",
+                "value": 0.5,
+                "valueStr": null
+              },
+              {
+                "key": "higher_effect_hp_ratio",
+                "value": 1.0,
+                "valueStr": null
+              }
+            ],
+            "tokenKey": null,
+            "isHideTalent": false
+          },
+          {
+            "unlockCondition": {
+              "phase": "PHASE_2",
+              "level": 1
+            },
+            "requiredPotentialRank": 2,
+            "prefabKey": "1",
+            "name": "律法卫士",
+            "description": "部署后立即获得相当于生命上限55%<@ba.talpu>（+5%）</>的<$ba.barrier>屏障</>，每击倒一名敌人时获得相当于生命上限10%的<$ba.barrier>屏障</>（最多不超过生命上限300%）",
+            "rangeId": null,
+            "blackboard": [
+              {
+                "key": "max_hp_ratio",
+                "value": 3.0,
+                "valueStr": null
+              },
+              {
+                "key": "kill_hp_ratio",
+                "value": 0.1,
+                "valueStr": null
+              },
+              {
+                "key": "born_hp_ratio",
+                "value": 0.55,
+                "valueStr": null
+              },
+              {
+                "key": "higher_effect_hp_ratio",
+                "value": 1.0,
+                "valueStr": null
+              }
+            ],
+            "tokenKey": null,
+            "isHideTalent": false
+          }
+        ]
+      }
+    },
+    "skillComponents": {
+      "Windows": {
+        "skchr_utage_2": {
+          "serializedFile": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+          "components": {
+            "AppearSkill": {
+              "pathId": "-7589396649162081342",
+              "script": {
+                "id": "2822254928132392630",
+                "name": "AppearSkill",
+                "cl": "AppearSkill",
+                "ns": "Torappu.Battle",
+                "asm": "Assembly-CSharp.dll"
+              },
+              "gameObject": {
+                "pathId": "-6166973204244825150",
+                "name": "skchr_utage_2",
+                "localComponents": [
+                  "6225594925302512578",
+                  "-7589396649162081342",
+                  "2105435139465313218"
+                ]
+              },
+              "enabled": true,
+              "fields": {
+                "_castOnLocate": true,
+                "_availableValidator": {
+                  "m_FileID": 0,
+                  "m_PathID": 0
+                },
+                "_switchToState": false
+              }
+            },
+            "ActiveBuffAbility": {
+              "pathId": "2105435139465313218",
+              "script": {
+                "id": "-4234909118878081699",
+                "name": "ActiveBuffAbility",
+                "cl": "ActiveBuffAbility",
+                "ns": "Torappu.Battle.Abilities",
+                "asm": "Assembly-CSharp.dll"
+              },
+              "gameObject": {
+                "pathId": "-6166973204244825150",
+                "name": "skchr_utage_2",
+                "localComponents": [
+                  "6225594925302512578",
+                  "-7589396649162081342",
+                  "2105435139465313218"
+                ]
+              },
+              "enabled": true,
+              "fields": {
+                "_buffs": {
+                  "Array": [
+                    {
+                      "attributes": {
+                        "abnormalFlags": {
+                          "Array": []
+                        },
+                        "abnormalImmunes": {
+                          "Array": []
+                        },
+                        "abnormalAntis": {
+                          "Array": []
+                        },
+                        "abnormalCombos": {
+                          "Array": []
+                        },
+                        "abnormalComboImmunes": {
+                          "Array": []
+                        },
+                        "attributeModifiers": {
+                          "Array": [
+                            {
+                              "attributeType": 1,
+                              "formulaItem": 1,
+                              "value": 0.0,
+                              "loadFromBlackboard": true,
+                              "fetchBaseValueFromSourceEntity": false
+                            }
+                          ]
+                        }
+                      },
+                      "buffKey": "utage_s_2[atk]",
+                      "loadFromDB": false,
+                      "isDurableBuff": false,
+                      "isDamageMissable": false,
+                      "isSilenceable": false,
+                      "isStunnable": false,
+                      "isFreezable": false,
+                      "isLevitatable": false,
+                      "isGroundBoundable": false,
+                      "statusResistable": true,
+                      "templateKey": "switch_mode",
+                      "disableOverride": false,
+                      "overrideKey": "",
+                      "overrideType": 0,
+                      "maxStackCnt": 1,
+                      "refreshRemainingTimeWhenStackMax": false,
+                      "clearAllStackCntWhenTimeUp": false,
+                      "maxValidStackCnt": -1,
+                      "independentCharacterSource": false,
+                      "overrideEffectKey": "utage_skill_02_buff",
+                      "overrideOnEventPriority": false,
+                      "onEventPriority": 0,
+                      "audioSignal": "",
+                      "lifeTimeType": true,
+                      "takeSnapshotWhenExtend": false,
+                      "durationKey": "",
+                      "remainingTimeKey": "",
+                      "lifeTime": 0.0,
+                      "triggerLifeType": false,
+                      "triggerCnt": 0,
+                      "triggerInterval": -1.0,
+                      "waitFirstTriggerInterval": true,
+                      "firstTriggerInterval": -1.0,
+                      "priority": -1,
+                      "priorityBBKeys": {
+                        "Array": []
+                      },
+                      "stripBlackboardParamsWithBuffKey": false,
+                      "blackboard": {
+                        "Array": [
+                          {
+                            "key": "mode",
+                            "value": 2.0,
+                            "valueStr": ""
+                          }
+                        ]
+                      },
+                      "enableInitDirectionFromSource": false
+                    },
+                    {
+                      "attributes": {
+                        "abnormalFlags": {
+                          "Array": []
+                        },
+                        "abnormalImmunes": {
+                          "Array": []
+                        },
+                        "abnormalAntis": {
+                          "Array": []
+                        },
+                        "abnormalCombos": {
+                          "Array": []
+                        },
+                        "abnormalComboImmunes": {
+                          "Array": []
+                        },
+                        "attributeModifiers": {
+                          "Array": []
+                        }
+                      },
+                      "buffKey": "utage_s_2[self_damage]",
+                      "loadFromDB": false,
+                      "isDurableBuff": false,
+                      "isDamageMissable": false,
+                      "isSilenceable": false,
+                      "isStunnable": false,
+                      "isFreezable": false,
+                      "isLevitatable": false,
+                      "isGroundBoundable": false,
+                      "statusResistable": true,
+                      "templateKey": "utage_s_2",
+                      "disableOverride": false,
+                      "overrideKey": "",
+                      "overrideType": 0,
+                      "maxStackCnt": 1,
+                      "refreshRemainingTimeWhenStackMax": false,
+                      "clearAllStackCntWhenTimeUp": false,
+                      "maxValidStackCnt": -1,
+                      "independentCharacterSource": false,
+                      "overrideEffectKey": "",
+                      "overrideOnEventPriority": false,
+                      "onEventPriority": 0,
+                      "audioSignal": "",
+                      "lifeTimeType": true,
+                      "takeSnapshotWhenExtend": false,
+                      "durationKey": "",
+                      "remainingTimeKey": "",
+                      "lifeTime": 0.0,
+                      "triggerLifeType": false,
+                      "triggerCnt": 0,
+                      "triggerInterval": -1.0,
+                      "waitFirstTriggerInterval": true,
+                      "firstTriggerInterval": -1.0,
+                      "priority": -1,
+                      "priorityBBKeys": {
+                        "Array": []
+                      },
+                      "stripBlackboardParamsWithBuffKey": false,
+                      "blackboard": {
+                        "Array": []
+                      },
+                      "enableInitDirectionFromSource": false
+                    }
+                  ]
+                },
+                "_passiveBuffs": {
+                  "Array": [
+                    {
+                      "attributes": {
+                        "abnormalFlags": {
+                          "Array": []
+                        },
+                        "abnormalImmunes": {
+                          "Array": []
+                        },
+                        "abnormalAntis": {
+                          "Array": []
+                        },
+                        "abnormalCombos": {
+                          "Array": []
+                        },
+                        "abnormalComboImmunes": {
+                          "Array": []
+                        },
+                        "attributeModifiers": {
+                          "Array": [
+                            {
+                              "attributeType": 21,
+                              "formulaItem": 3,
+                              "value": 0.0,
+                              "loadFromBlackboard": true,
+                              "fetchBaseValueFromSourceEntity": false
+                            }
+                          ]
+                        }
+                      },
+                      "buffKey": "utage_s_2[respawn]",
+                      "loadFromDB": false,
+                      "isDurableBuff": false,
+                      "isDamageMissable": false,
+                      "isSilenceable": false,
+                      "isStunnable": false,
+                      "isFreezable": false,
+                      "isLevitatable": false,
+                      "isGroundBoundable": false,
+                      "statusResistable": true,
+                      "templateKey": "empty",
+                      "disableOverride": false,
+                      "overrideKey": "",
+                      "overrideType": 0,
+                      "maxStackCnt": 1,
+                      "refreshRemainingTimeWhenStackMax": false,
+                      "clearAllStackCntWhenTimeUp": false,
+                      "maxValidStackCnt": -1,
+                      "independentCharacterSource": false,
+                      "overrideEffectKey": "",
+                      "overrideOnEventPriority": false,
+                      "onEventPriority": 0,
+                      "audioSignal": "",
+                      "lifeTimeType": true,
+                      "takeSnapshotWhenExtend": false,
+                      "durationKey": "",
+                      "remainingTimeKey": "",
+                      "lifeTime": 0.0,
+                      "triggerLifeType": false,
+                      "triggerCnt": 0,
+                      "triggerInterval": -1.0,
+                      "waitFirstTriggerInterval": true,
+                      "firstTriggerInterval": -1.0,
+                      "priority": -1,
+                      "priorityBBKeys": {
+                        "Array": []
+                      },
+                      "stripBlackboardParamsWithBuffKey": false,
+                      "blackboard": {
+                        "Array": []
+                      },
+                      "enableInitDirectionFromSource": false
+                    }
+                  ]
+                },
+                "_preDelay": 0.0,
+                "_waitForCasting": false
+              }
+            }
+          }
+        },
+        "skchr_gravel_1": {
+          "serializedFile": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+          "components": {
+            "AppearSkill": {
+              "pathId": "4339346020550054301",
+              "script": {
+                "id": "2822254928132392630",
+                "name": "AppearSkill",
+                "cl": "AppearSkill",
+                "ns": "Torappu.Battle",
+                "asm": "Assembly-CSharp.dll"
+              },
+              "gameObject": {
+                "pathId": "-5754530408342875747",
+                "name": "skchr_gravel_1",
+                "localComponents": [
+                  "1151760637725774237",
+                  "4339346020550054301",
+                  "-3447525517632663139"
+                ]
+              },
+              "enabled": true,
+              "fields": {
+                "_castOnLocate": false,
+                "_availableValidator": {
+                  "m_FileID": 0,
+                  "m_PathID": 0
+                },
+                "_switchToState": false
+              }
+            },
+            "ActiveBuffAbility": {
+              "pathId": "-3447525517632663139",
+              "script": {
+                "id": "-4234909118878081699",
+                "name": "ActiveBuffAbility",
+                "cl": "ActiveBuffAbility",
+                "ns": "Torappu.Battle.Abilities",
+                "asm": "Assembly-CSharp.dll"
+              },
+              "gameObject": {
+                "pathId": "-5754530408342875747",
+                "name": "skchr_gravel_1",
+                "localComponents": [
+                  "1151760637725774237",
+                  "4339346020550054301",
+                  "-3447525517632663139"
+                ]
+              },
+              "enabled": true,
+              "fields": {
+                "_buffs": {
+                  "Array": [
+                    {
+                      "attributes": {
+                        "abnormalFlags": {
+                          "Array": []
+                        },
+                        "abnormalImmunes": {
+                          "Array": []
+                        },
+                        "abnormalAntis": {
+                          "Array": []
+                        },
+                        "abnormalCombos": {
+                          "Array": []
+                        },
+                        "abnormalComboImmunes": {
+                          "Array": []
+                        },
+                        "attributeModifiers": {
+                          "Array": []
+                        }
+                      },
+                      "buffKey": "gravel_s_1",
+                      "loadFromDB": false,
+                      "isDurableBuff": false,
+                      "isDamageMissable": false,
+                      "isSilenceable": false,
+                      "isStunnable": false,
+                      "isFreezable": false,
+                      "isLevitatable": false,
+                      "isGroundBoundable": false,
+                      "statusResistable": true,
+                      "templateKey": "def_atten",
+                      "disableOverride": false,
+                      "overrideKey": "",
+                      "overrideType": 0,
+                      "maxStackCnt": 1,
+                      "refreshRemainingTimeWhenStackMax": false,
+                      "clearAllStackCntWhenTimeUp": false,
+                      "maxValidStackCnt": -1,
+                      "independentCharacterSource": false,
+                      "overrideEffectKey": "gravel_skill_01_buff",
+                      "overrideOnEventPriority": false,
+                      "onEventPriority": 0,
+                      "audioSignal": "",
+                      "lifeTimeType": true,
+                      "takeSnapshotWhenExtend": false,
+                      "durationKey": "",
+                      "remainingTimeKey": "",
+                      "lifeTime": 0.0,
+                      "triggerLifeType": true,
+                      "triggerCnt": 0,
+                      "triggerInterval": 1.0,
+                      "waitFirstTriggerInterval": false,
+                      "firstTriggerInterval": -1.0,
+                      "priority": -1,
+                      "priorityBBKeys": {
+                        "Array": []
+                      },
+                      "stripBlackboardParamsWithBuffKey": false,
+                      "blackboard": {
+                        "Array": []
+                      },
+                      "enableInitDirectionFromSource": false
+                    }
+                  ]
+                },
+                "_passiveBuffs": {
+                  "Array": []
+                },
+                "_preDelay": 0.0,
+                "_waitForCasting": false
+              }
+            }
+          }
+        }
+      },
+      "Bundles": {
+        "skchr_utage_2": {
+          "serializedFile": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+          "components": {
+            "AppearSkill": {
+              "pathId": "-7589396649162081342",
+              "script": {
+                "id": "2822254928132392630",
+                "name": "AppearSkill",
+                "cl": "AppearSkill",
+                "ns": "Torappu.Battle",
+                "asm": "Assembly-CSharp.dll"
+              },
+              "gameObject": {
+                "pathId": "-6166973204244825150",
+                "name": "skchr_utage_2",
+                "localComponents": [
+                  "6225594925302512578",
+                  "-7589396649162081342",
+                  "2105435139465313218"
+                ]
+              },
+              "enabled": true,
+              "fields": {
+                "_castOnLocate": true,
+                "_availableValidator": {
+                  "m_FileID": 0,
+                  "m_PathID": 0
+                },
+                "_switchToState": false
+              }
+            },
+            "ActiveBuffAbility": {
+              "pathId": "2105435139465313218",
+              "script": {
+                "id": "-4234909118878081699",
+                "name": "ActiveBuffAbility",
+                "cl": "ActiveBuffAbility",
+                "ns": "Torappu.Battle.Abilities",
+                "asm": "Assembly-CSharp.dll"
+              },
+              "gameObject": {
+                "pathId": "-6166973204244825150",
+                "name": "skchr_utage_2",
+                "localComponents": [
+                  "6225594925302512578",
+                  "-7589396649162081342",
+                  "2105435139465313218"
+                ]
+              },
+              "enabled": true,
+              "fields": {
+                "_buffs": {
+                  "Array": [
+                    {
+                      "attributes": {
+                        "abnormalFlags": {
+                          "Array": []
+                        },
+                        "abnormalImmunes": {
+                          "Array": []
+                        },
+                        "abnormalAntis": {
+                          "Array": []
+                        },
+                        "abnormalCombos": {
+                          "Array": []
+                        },
+                        "abnormalComboImmunes": {
+                          "Array": []
+                        },
+                        "attributeModifiers": {
+                          "Array": [
+                            {
+                              "attributeType": 1,
+                              "formulaItem": 1,
+                              "value": 0.0,
+                              "loadFromBlackboard": true,
+                              "fetchBaseValueFromSourceEntity": false
+                            }
+                          ]
+                        }
+                      },
+                      "buffKey": "utage_s_2[atk]",
+                      "loadFromDB": false,
+                      "isDurableBuff": false,
+                      "isDamageMissable": false,
+                      "isSilenceable": false,
+                      "isStunnable": false,
+                      "isFreezable": false,
+                      "isLevitatable": false,
+                      "isGroundBoundable": false,
+                      "statusResistable": true,
+                      "templateKey": "switch_mode",
+                      "disableOverride": false,
+                      "overrideKey": "",
+                      "overrideType": 0,
+                      "maxStackCnt": 1,
+                      "refreshRemainingTimeWhenStackMax": false,
+                      "clearAllStackCntWhenTimeUp": false,
+                      "maxValidStackCnt": -1,
+                      "independentCharacterSource": false,
+                      "overrideEffectKey": "utage_skill_02_buff",
+                      "overrideOnEventPriority": false,
+                      "onEventPriority": 0,
+                      "audioSignal": "",
+                      "lifeTimeType": true,
+                      "takeSnapshotWhenExtend": false,
+                      "durationKey": "",
+                      "remainingTimeKey": "",
+                      "lifeTime": 0.0,
+                      "triggerLifeType": false,
+                      "triggerCnt": 0,
+                      "triggerInterval": -1.0,
+                      "waitFirstTriggerInterval": true,
+                      "firstTriggerInterval": -1.0,
+                      "priority": -1,
+                      "priorityBBKeys": {
+                        "Array": []
+                      },
+                      "stripBlackboardParamsWithBuffKey": false,
+                      "blackboard": {
+                        "Array": [
+                          {
+                            "key": "mode",
+                            "value": 2.0,
+                            "valueStr": ""
+                          }
+                        ]
+                      },
+                      "enableInitDirectionFromSource": false
+                    },
+                    {
+                      "attributes": {
+                        "abnormalFlags": {
+                          "Array": []
+                        },
+                        "abnormalImmunes": {
+                          "Array": []
+                        },
+                        "abnormalAntis": {
+                          "Array": []
+                        },
+                        "abnormalCombos": {
+                          "Array": []
+                        },
+                        "abnormalComboImmunes": {
+                          "Array": []
+                        },
+                        "attributeModifiers": {
+                          "Array": []
+                        }
+                      },
+                      "buffKey": "utage_s_2[self_damage]",
+                      "loadFromDB": false,
+                      "isDurableBuff": false,
+                      "isDamageMissable": false,
+                      "isSilenceable": false,
+                      "isStunnable": false,
+                      "isFreezable": false,
+                      "isLevitatable": false,
+                      "isGroundBoundable": false,
+                      "statusResistable": true,
+                      "templateKey": "utage_s_2",
+                      "disableOverride": false,
+                      "overrideKey": "",
+                      "overrideType": 0,
+                      "maxStackCnt": 1,
+                      "refreshRemainingTimeWhenStackMax": false,
+                      "clearAllStackCntWhenTimeUp": false,
+                      "maxValidStackCnt": -1,
+                      "independentCharacterSource": false,
+                      "overrideEffectKey": "",
+                      "overrideOnEventPriority": false,
+                      "onEventPriority": 0,
+                      "audioSignal": "",
+                      "lifeTimeType": true,
+                      "takeSnapshotWhenExtend": false,
+                      "durationKey": "",
+                      "remainingTimeKey": "",
+                      "lifeTime": 0.0,
+                      "triggerLifeType": false,
+                      "triggerCnt": 0,
+                      "triggerInterval": -1.0,
+                      "waitFirstTriggerInterval": true,
+                      "firstTriggerInterval": -1.0,
+                      "priority": -1,
+                      "priorityBBKeys": {
+                        "Array": []
+                      },
+                      "stripBlackboardParamsWithBuffKey": false,
+                      "blackboard": {
+                        "Array": []
+                      },
+                      "enableInitDirectionFromSource": false
+                    }
+                  ]
+                },
+                "_passiveBuffs": {
+                  "Array": [
+                    {
+                      "attributes": {
+                        "abnormalFlags": {
+                          "Array": []
+                        },
+                        "abnormalImmunes": {
+                          "Array": []
+                        },
+                        "abnormalAntis": {
+                          "Array": []
+                        },
+                        "abnormalCombos": {
+                          "Array": []
+                        },
+                        "abnormalComboImmunes": {
+                          "Array": []
+                        },
+                        "attributeModifiers": {
+                          "Array": [
+                            {
+                              "attributeType": 21,
+                              "formulaItem": 3,
+                              "value": 0.0,
+                              "loadFromBlackboard": true,
+                              "fetchBaseValueFromSourceEntity": false
+                            }
+                          ]
+                        }
+                      },
+                      "buffKey": "utage_s_2[respawn]",
+                      "loadFromDB": false,
+                      "isDurableBuff": false,
+                      "isDamageMissable": false,
+                      "isSilenceable": false,
+                      "isStunnable": false,
+                      "isFreezable": false,
+                      "isLevitatable": false,
+                      "isGroundBoundable": false,
+                      "statusResistable": true,
+                      "templateKey": "empty",
+                      "disableOverride": false,
+                      "overrideKey": "",
+                      "overrideType": 0,
+                      "maxStackCnt": 1,
+                      "refreshRemainingTimeWhenStackMax": false,
+                      "clearAllStackCntWhenTimeUp": false,
+                      "maxValidStackCnt": -1,
+                      "independentCharacterSource": false,
+                      "overrideEffectKey": "",
+                      "overrideOnEventPriority": false,
+                      "onEventPriority": 0,
+                      "audioSignal": "",
+                      "lifeTimeType": true,
+                      "takeSnapshotWhenExtend": false,
+                      "durationKey": "",
+                      "remainingTimeKey": "",
+                      "lifeTime": 0.0,
+                      "triggerLifeType": false,
+                      "triggerCnt": 0,
+                      "triggerInterval": -1.0,
+                      "waitFirstTriggerInterval": true,
+                      "firstTriggerInterval": -1.0,
+                      "priority": -1,
+                      "priorityBBKeys": {
+                        "Array": []
+                      },
+                      "stripBlackboardParamsWithBuffKey": false,
+                      "blackboard": {
+                        "Array": []
+                      },
+                      "enableInitDirectionFromSource": false
+                    }
+                  ]
+                },
+                "_preDelay": 0.0,
+                "_waitForCasting": false
+              }
+            }
+          }
+        },
+        "skchr_gravel_1": {
+          "serializedFile": "CAB-e39773c4d1462aefe0ea30134bbccdbb",
+          "components": {
+            "AppearSkill": {
+              "pathId": "4339346020550054301",
+              "script": {
+                "id": "2822254928132392630",
+                "name": "AppearSkill",
+                "cl": "AppearSkill",
+                "ns": "Torappu.Battle",
+                "asm": "Assembly-CSharp.dll"
+              },
+              "gameObject": {
+                "pathId": "-5754530408342875747",
+                "name": "skchr_gravel_1",
+                "localComponents": [
+                  "1151760637725774237",
+                  "4339346020550054301",
+                  "-3447525517632663139"
+                ]
+              },
+              "enabled": true,
+              "fields": {
+                "_castOnLocate": false,
+                "_availableValidator": {
+                  "m_FileID": 0,
+                  "m_PathID": 0
+                },
+                "_switchToState": false
+              }
+            },
+            "ActiveBuffAbility": {
+              "pathId": "-3447525517632663139",
+              "script": {
+                "id": "-4234909118878081699",
+                "name": "ActiveBuffAbility",
+                "cl": "ActiveBuffAbility",
+                "ns": "Torappu.Battle.Abilities",
+                "asm": "Assembly-CSharp.dll"
+              },
+              "gameObject": {
+                "pathId": "-5754530408342875747",
+                "name": "skchr_gravel_1",
+                "localComponents": [
+                  "1151760637725774237",
+                  "4339346020550054301",
+                  "-3447525517632663139"
+                ]
+              },
+              "enabled": true,
+              "fields": {
+                "_buffs": {
+                  "Array": [
+                    {
+                      "attributes": {
+                        "abnormalFlags": {
+                          "Array": []
+                        },
+                        "abnormalImmunes": {
+                          "Array": []
+                        },
+                        "abnormalAntis": {
+                          "Array": []
+                        },
+                        "abnormalCombos": {
+                          "Array": []
+                        },
+                        "abnormalComboImmunes": {
+                          "Array": []
+                        },
+                        "attributeModifiers": {
+                          "Array": []
+                        }
+                      },
+                      "buffKey": "gravel_s_1",
+                      "loadFromDB": false,
+                      "isDurableBuff": false,
+                      "isDamageMissable": false,
+                      "isSilenceable": false,
+                      "isStunnable": false,
+                      "isFreezable": false,
+                      "isLevitatable": false,
+                      "isGroundBoundable": false,
+                      "statusResistable": true,
+                      "templateKey": "def_atten",
+                      "disableOverride": false,
+                      "overrideKey": "",
+                      "overrideType": 0,
+                      "maxStackCnt": 1,
+                      "refreshRemainingTimeWhenStackMax": false,
+                      "clearAllStackCntWhenTimeUp": false,
+                      "maxValidStackCnt": -1,
+                      "independentCharacterSource": false,
+                      "overrideEffectKey": "gravel_skill_01_buff",
+                      "overrideOnEventPriority": false,
+                      "onEventPriority": 0,
+                      "audioSignal": "",
+                      "lifeTimeType": true,
+                      "takeSnapshotWhenExtend": false,
+                      "durationKey": "",
+                      "remainingTimeKey": "",
+                      "lifeTime": 0.0,
+                      "triggerLifeType": true,
+                      "triggerCnt": 0,
+                      "triggerInterval": 1.0,
+                      "waitFirstTriggerInterval": false,
+                      "firstTriggerInterval": -1.0,
+                      "priority": -1,
+                      "priorityBBKeys": {
+                        "Array": []
+                      },
+                      "stripBlackboardParamsWithBuffKey": false,
+                      "blackboard": {
+                        "Array": []
+                      },
+                      "enableInitDirectionFromSource": false
+                    }
+                  ]
+                },
+                "_passiveBuffs": {
+                  "Array": []
+                },
+                "_preDelay": 0.0,
+                "_waitForCasting": false
+              }
+            }
+          }
+        }
+      }
+    },
+    "judge": {
+      "serializedFile": "CAB-477c14cc28d6491dc9d13aa70761cadf",
+      "components": {
+        "PassiveBuffAbility": {
+          "pathId": "-5237745640822817507",
+          "script": {
+            "id": "3800760148018415462",
+            "name": "PassiveBuffAbility",
+            "cl": "PassiveBuffAbility",
+            "ns": "Torappu.Battle.Abilities",
+            "asm": "Assembly-CSharp.dll"
+          },
+          "gameObject": {
+            "pathId": "4692012431683599645",
+            "name": "1",
+            "localComponents": [
+              "9080279275964251421",
+              "4826676886968122653",
+              "-5237745640822817507"
+            ]
+          },
+          "enabled": true,
+          "fields": {
+            "_buffs": {
+              "Array": [
+                {
+                  "attributes": {
+                    "abnormalFlags": {
+                      "Array": []
+                    },
+                    "abnormalImmunes": {
+                      "Array": []
+                    },
+                    "abnormalAntis": {
+                      "Array": []
+                    },
+                    "abnormalCombos": {
+                      "Array": []
+                    },
+                    "abnormalComboImmunes": {
+                      "Array": []
+                    },
+                    "attributeModifiers": {
+                      "Array": []
+                    }
+                  },
+                  "buffKey": "judge_t_1[effect]",
+                  "loadFromDB": false,
+                  "isDurableBuff": false,
+                  "isDamageMissable": false,
+                  "isSilenceable": false,
+                  "isStunnable": false,
+                  "isFreezable": false,
+                  "isLevitatable": false,
+                  "isGroundBoundable": false,
+                  "statusResistable": true,
+                  "templateKey": "judge_t_1[effect]",
+                  "disableOverride": false,
+                  "overrideKey": "",
+                  "overrideType": 0,
+                  "maxStackCnt": 1,
+                  "refreshRemainingTimeWhenStackMax": false,
+                  "clearAllStackCntWhenTimeUp": false,
+                  "maxValidStackCnt": -1,
+                  "independentCharacterSource": false,
+                  "overrideEffectKey": "",
+                  "overrideOnEventPriority": false,
+                  "onEventPriority": 0,
+                  "audioSignal": "",
+                  "lifeTimeType": true,
+                  "takeSnapshotWhenExtend": false,
+                  "durationKey": "duration",
+                  "remainingTimeKey": "",
+                  "lifeTime": 0.0,
+                  "triggerLifeType": true,
+                  "triggerCnt": 0,
+                  "triggerInterval": 9999.0,
+                  "waitFirstTriggerInterval": true,
+                  "firstTriggerInterval": -1.0,
+                  "priority": -1,
+                  "priorityBBKeys": {
+                    "Array": []
+                  },
+                  "stripBlackboardParamsWithBuffKey": false,
+                  "blackboard": {
+                    "Array": []
+                  },
+                  "enableInitDirectionFromSource": false
+                },
+                {
+                  "attributes": {
+                    "abnormalFlags": {
+                      "Array": []
+                    },
+                    "abnormalImmunes": {
+                      "Array": []
+                    },
+                    "abnormalAntis": {
+                      "Array": []
+                    },
+                    "abnormalCombos": {
+                      "Array": []
+                    },
+                    "abnormalComboImmunes": {
+                      "Array": []
+                    },
+                    "attributeModifiers": {
+                      "Array": []
+                    }
+                  },
+                  "buffKey": "judge_t_1",
+                  "loadFromDB": false,
+                  "isDurableBuff": false,
+                  "isDamageMissable": false,
+                  "isSilenceable": false,
+                  "isStunnable": false,
+                  "isFreezable": false,
+                  "isLevitatable": false,
+                  "isGroundBoundable": false,
+                  "statusResistable": true,
+                  "templateKey": "judge_t_1",
+                  "disableOverride": false,
+                  "overrideKey": "",
+                  "overrideType": 0,
+                  "maxStackCnt": 1,
+                  "refreshRemainingTimeWhenStackMax": false,
+                  "clearAllStackCntWhenTimeUp": false,
+                  "maxValidStackCnt": -1,
+                  "independentCharacterSource": false,
+                  "overrideEffectKey": "judge_shield_all_01",
+                  "overrideOnEventPriority": false,
+                  "onEventPriority": 0,
+                  "audioSignal": "",
+                  "lifeTimeType": true,
+                  "takeSnapshotWhenExtend": false,
+                  "durationKey": "duration",
+                  "remainingTimeKey": "",
+                  "lifeTime": 0.0,
+                  "triggerLifeType": true,
+                  "triggerCnt": 0,
+                  "triggerInterval": 9999.0,
+                  "waitFirstTriggerInterval": true,
+                  "firstTriggerInterval": -1.0,
+                  "priority": -1,
+                  "priorityBBKeys": {
+                    "Array": []
+                  },
+                  "stripBlackboardParamsWithBuffKey": false,
+                  "blackboard": {
+                    "Array": []
+                  },
+                  "enableInitDirectionFromSource": false
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "holderTemplates": {
+      "def_atten": {
+        "serializedFile": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+        "pathId": "6070581171229484677",
+        "events": [
+          {
+            "event": 2,
+            "program": [
+              {
+                "_attributeType": "DEF",
+                "_formulaType": "MULTIPLIER",
+                "_isInversed": false,
+                "_endTime": 0.0,
+                "$type": "Torappu.Battle.Action.Nodes+RemainingRatioToAttributeModifier"
+              }
+            ]
+          }
+        ]
+      },
+      "utage_s_2": {
+        "serializedFile": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+        "pathId": "6070581171229484677",
+        "events": [
+          {
+            "event": 0,
+            "program": [
+              {
+                "_targetType": "SOURCE",
+                "_damageType": "PURE",
+                "_applyWay": "NONE",
+                "_ignoreForSp": false,
+                "_isUndeadable": true,
+                "_attackType": "NORMAL",
+                "_skipModifierEvent": true,
+                "_ceilingDamageToInt": false,
+                "_modifierKey": "",
+                "_triggerOnCalculateDamage": false,
+                "_damageNoLessThanValueBasedOnSourceAtk": false,
+                "_atkScaleKey": "",
+                "$type": "Torappu.Battle.Action.Nodes+DamageViaCurHpRatio"
+              }
+            ]
+          }
+        ]
+      },
+      "judge_t_1": {
+        "serializedFile": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+        "pathId": "6070581171229484677",
+        "events": [
+          {
+            "event": 0,
+            "program": [
+              {
+                "_blackboardKey": "shield_scale",
+                "_blackboardSource": "CURRENT",
+                "_keySource": "CONSTANT",
+                "_keyTargetType": "TARGET",
+                "_value": 1.0,
+                "_copyFromKey": null,
+                "_assignString": false,
+                "$type": "Torappu.Battle.Action.Nodes+AssignValueToBB"
+              },
+              {
+                "_targetType": "BUFF_OWNER",
+                "_attributeType": "MAX_HP",
+                "_scaleVar": "max_hp_ratio",
+                "_blackboardKey": "max_shield",
+                "$type": "Torappu.Battle.Action.Nodes+AssignAttributeToBB"
+              },
+              {
+                "_targetType": "BUFF_OWNER",
+                "_attributeType": "MAX_HP",
+                "_scaleVar": "born_hp_ratio",
+                "_blackboardKey": "born_shield",
+                "$type": "Torappu.Battle.Action.Nodes+AssignAttributeToBB"
+              },
+              {
+                "_inputKey": "born_shield",
+                "_outputKey": "born_shield",
+                "_multiplyParamKey": "shield_scale",
+                "_dividedParamKey": null,
+                "_useRemainder": false,
+                "_addParamKey": "",
+                "_minusParamKey": null,
+                "_minValueKey": null,
+                "_maxValueKey": "",
+                "_finalAbs": true,
+                "_finalCeil": false,
+                "_finalFloor": false,
+                "_finalRound": false,
+                "_useAbilityBlackboard": false,
+                "_abilityName": "",
+                "$type": "Torappu.Battle.Action.Nodes+CalculateBlackboardValueViaParams"
+              },
+              {
+                "_blackboardKey": "dynamic",
+                "_blackboardSource": "CURRENT",
+                "_keySource": "CONSTANT",
+                "_keyTargetType": "TARGET",
+                "_value": 0.0,
+                "_copyFromKey": null,
+                "_assignString": false,
+                "$type": "Torappu.Battle.Action.Nodes+AssignValueToBB"
+              },
+              {
+                "_inputKey": "dynamic",
+                "_outputKey": "dynamic",
+                "_multiplyParamKey": "",
+                "_dividedParamKey": null,
+                "_useRemainder": false,
+                "_addParamKey": "born_shield",
+                "_minusParamKey": null,
+                "_minValueKey": null,
+                "_maxValueKey": "max_shield",
+                "_finalAbs": true,
+                "_finalCeil": false,
+                "_finalFloor": false,
+                "_finalRound": false,
+                "_useAbilityBlackboard": false,
+                "_abilityName": "",
+                "$type": "Torappu.Battle.Action.Nodes+CalculateBlackboardValueViaParams"
+              },
+              {
+                "_targetType": "BUFF_OWNER",
+                "_blackboardKey": "dynamic",
+                "_valueKey": "dynamic",
+                "_buffKey": "judge_t_1[effect]",
+                "_useBlackboardBuffKey": false,
+                "_buffKeyAssignFrom": null,
+                "_useCurBuffBB": false,
+                "_assignString": false,
+                "_defaultValue": 0.0,
+                "_assignFirstBuff": true,
+                "_checkAssignToBuffSource": false,
+                "_assignToBuffSourceType": "TARGET",
+                "_assignMode": "OVERRIDE",
+                "_assignToMainBuff": false,
+                "_includeDisableBuffs": false,
+                "$type": "Torappu.Battle.Action.Nodes+AssignBuffBlackboard"
+              },
+              {
+                "_targetType": "BUFF_OWNER",
+                "_excludeThisBuff": false,
+                "_excludeInTriggerAll": false,
+                "_buffKeys": [
+                  "judge_t_1[effect]"
+                ],
+                "_forceTrigger": false,
+                "_triggerAllBuffs": false,
+                "$type": "Torappu.Battle.Action.Nodes+TriggerBuffsByKeys"
+              },
+              {
+                "_targetType": "BUFF_OWNER",
+                "_anotherBuff": false,
+                "_buffKey": null,
+                "_blackboardKey": "dynamic",
+                "_blackboardKeyFromBb": null,
+                "_valueToCompare": 0,
+                "_anotherKeyToCompare": "",
+                "_condType": "GT",
+                "$type": "Torappu.Battle.Action.Nodes+FilterByBlackboardValue"
+              },
+              {
+                "_targetType": "BUFF_OWNER",
+                "_buffKeys": [
+                  "judge_shield[mark]"
+                ],
+                "isAND": true,
+                "_loadFromBlackboard": false,
+                "_checkBuffSource": false,
+                "_buffSourceType": "BUFF_SOURCE",
+                "_checkSourceHost": false,
+                "$type": "Torappu.Battle.Action.Nodes+CheckContainsBuff"
+              },
+              {
+                "$type": "Torappu.Battle.Action.Nodes+IfNot"
+              },
+              {
+                "_buff": {
+                  "attributes": {
+                    "abnormalFlags": [],
+                    "abnormalImmunes": [],
+                    "abnormalAntis": [],
+                    "abnormalCombos": [],
+                    "abnormalComboImmunes": [],
+                    "attributeModifiers": []
+                  },
+                  "buffKey": "judge_shield[mark]",
+                  "loadFromDB": false,
+                  "isDurableBuff": false,
+                  "isDamageMissable": false,
+                  "isSilenceable": false,
+                  "isStunnable": false,
+                  "isFreezable": false,
+                  "isLevitatable": false,
+                  "isGroundBoundable": false,
+                  "statusResistable": "AUTOMATIC",
+                  "templateKey": "empty",
+                  "disableOverride": true,
+                  "overrideKey": null,
+                  "overrideType": "DEFAULT",
+                  "maxStackCnt": 1,
+                  "refreshRemainingTimeWhenStackMax": false,
+                  "clearAllStackCntWhenTimeUp": false,
+                  "maxValidStackCnt": -1,
+                  "independentCharacterSource": false,
+                  "overrideEffectKey": null,
+                  "overrideOnEventPriority": false,
+                  "onEventPriority": "DEFAULT",
+                  "audioSignal": null,
+                  "lifeTimeType": "INFINITY",
+                  "takeSnapshotWhenExtend": false,
+                  "durationKey": null,
+                  "remainingTimeKey": null,
+                  "lifeTime": 0.0,
+                  "triggerLifeType": "IMMEDIATELY",
+                  "triggerCnt": 0,
+                  "triggerInterval": -1.0,
+                  "waitFirstTriggerInterval": true,
+                  "firstTriggerInterval": -1.0,
+                  "priority": -1,
+                  "priorityBBKeys": [],
+                  "stripBlackboardParamsWithBuffKey": false,
+                  "blackboard": [],
+                  "enableInitDirectionFromSource": false
+                },
+                "_buffOwner": "BUFF_OWNER",
+                "_useSpecialBuffSource": false,
+                "_specialBuffSource": "BUFF_SOURCE",
+                "_isDerivedBuff": false,
+                "_finishDerivedBuffIfParentFinish": false,
+                "_inherateSourceProjectileFromParentBuff": false,
+                "_hookEffectKeyFromSourceProjectile": false,
+                "$type": "Torappu.Battle.Action.Nodes+CreateBuff"
+              }
+            ]
+          },
+          {
+            "event": 10,
+            "program": [
+              {
+                "_filterDamageType": false,
+                "_damageMask": "NONE",
+                "_useDynamicVar": true,
+                "_allowNegativeDynamicVar": false,
+                "_useFixedValue": false,
+                "_showDamageNumber": false,
+                "_specifyBlockEffect": "judge_shield_hit_01",
+                "_useSource": true,
+                "_sourceType": "SOURCE",
+                "_filterApplyWay": false,
+                "_applyWayFilter": "NONE",
+                "_showShieldUI": true,
+                "$type": "Torappu.Battle.Action.Nodes+BlockDamage"
+              },
+              {
+                "_targetType": "BUFF_OWNER",
+                "_blackboardKey": "dynamic",
+                "_valueKey": "dynamic",
+                "_buffKey": "judge_t_1[effect]",
+                "_useBlackboardBuffKey": false,
+                "_buffKeyAssignFrom": null,
+                "_useCurBuffBB": false,
+                "_assignString": false,
+                "_defaultValue": 0.0,
+                "_assignFirstBuff": true,
+                "_checkAssignToBuffSource": false,
+                "_assignToBuffSourceType": "TARGET",
+                "_assignMode": "OVERRIDE",
+                "_assignToMainBuff": false,
+                "_includeDisableBuffs": false,
+                "$type": "Torappu.Battle.Action.Nodes+AssignBuffBlackboard"
+              },
+              {
+                "_targetType": "BUFF_OWNER",
+                "_excludeThisBuff": false,
+                "_excludeInTriggerAll": false,
+                "_buffKeys": [
+                  "judge_t_1[effect]"
+                ],
+                "_forceTrigger": false,
+                "_triggerAllBuffs": false,
+                "$type": "Torappu.Battle.Action.Nodes+TriggerBuffsByKeys"
+              },
+              {
+                "_targetType": "BUFF_OWNER",
+                "_anotherBuff": false,
+                "_buffKey": null,
+                "_blackboardKey": "dynamic",
+                "_blackboardKeyFromBb": null,
+                "_valueToCompare": 0,
+                "_anotherKeyToCompare": null,
+                "_condType": "LE",
+                "$type": "Torappu.Battle.Action.Nodes+FilterByBlackboardValue"
+              },
+              {
+                "_targetType": "BUFF_OWNER",
+                "_buffKeys": [
+                  "judge_shield[mark]"
+                ],
+                "isAND": true,
+                "_loadFromBlackboard": false,
+                "_checkBuffSource": false,
+                "_buffSourceType": "BUFF_SOURCE",
+                "_checkSourceHost": false,
+                "$type": "Torappu.Battle.Action.Nodes+CheckContainsBuff"
+              },
+              {
+                "_buffKey": "judge_shield[mark]",
+                "_loadFromBlackboard": false,
+                "_decCntIfStack": false,
+                "_updateOverrideMap": true,
+                "_targetType": "BUFF_OWNER",
+                "_checkBuffSource": false,
+                "_sourceType": "BUFF_SOURCE",
+                "_alsoClearNullSource": false,
+                "_finishHostBuff": false,
+                "_excludeThisBuff": false,
+                "_decCntKey": null,
+                "_decCnt": 1,
+                "$type": "Torappu.Battle.Action.Nodes+FinishBuffsById"
+              }
+            ]
+          },
+          {
+            "event": 9,
+            "program": [
+              {
+                "_targetType": "BUFF_OWNER",
+                "_attributeType": "MAX_HP",
+                "_scaleVar": "max_hp_ratio",
+                "_blackboardKey": "max_shield",
+                "$type": "Torappu.Battle.Action.Nodes+AssignAttributeToBB"
+              },
+              {
+                "_targetType": "BUFF_OWNER",
+                "_anotherBuff": false,
+                "_buffKey": null,
+                "_blackboardKey": "max_shield",
+                "_blackboardKeyFromBb": null,
+                "_valueToCompare": 0,
+                "_anotherKeyToCompare": "dynamic",
+                "_condType": "GT",
+                "$type": "Torappu.Battle.Action.Nodes+FilterByBlackboardValue"
+              },
+              {
+                "_targetType": "BUFF_OWNER",
+                "_attributeType": "MAX_HP",
+                "_scaleVar": "kill_hp_ratio",
+                "_blackboardKey": "kill_shield",
+                "$type": "Torappu.Battle.Action.Nodes+AssignAttributeToBB"
+              },
+              {
+                "_inputKey": "kill_shield",
+                "_outputKey": "kill_shield",
+                "_multiplyParamKey": "shield_scale",
+                "_dividedParamKey": null,
+                "_useRemainder": false,
+                "_addParamKey": "",
+                "_minusParamKey": null,
+                "_minValueKey": "",
+                "_maxValueKey": "",
+                "_finalAbs": true,
+                "_finalCeil": false,
+                "_finalFloor": false,
+                "_finalRound": false,
+                "_useAbilityBlackboard": false,
+                "_abilityName": "",
+                "$type": "Torappu.Battle.Action.Nodes+CalculateBlackboardValueViaParams"
+              },
+              {
+                "_inputKey": "dynamic",
+                "_outputKey": "dynamic",
+                "_multiplyParamKey": null,
+                "_dividedParamKey": null,
+                "_useRemainder": false,
+                "_addParamKey": "kill_shield",
+                "_minusParamKey": null,
+                "_minValueKey": "",
+                "_maxValueKey": "max_shield",
+                "_finalAbs": true,
+                "_finalCeil": false,
+                "_finalFloor": false,
+                "_finalRound": false,
+                "_useAbilityBlackboard": false,
+                "_abilityName": "",
+                "$type": "Torappu.Battle.Action.Nodes+CalculateBlackboardValueViaParams"
+              },
+              {
+                "_blackboardKey": "kill_shield",
+                "_blackboardSource": "CURRENT",
+                "_keySource": "CONSTANT",
+                "_keyTargetType": "TARGET",
+                "_value": 0.0,
+                "_copyFromKey": null,
+                "_assignString": false,
+                "$type": "Torappu.Battle.Action.Nodes+AssignValueToBB"
+              },
+              {
+                "_targetType": "BUFF_OWNER",
+                "_blackboardKey": "dynamic",
+                "_valueKey": "dynamic",
+                "_buffKey": "judge_t_1[effect]",
+                "_useBlackboardBuffKey": false,
+                "_buffKeyAssignFrom": null,
+                "_useCurBuffBB": false,
+                "_assignString": false,
+                "_defaultValue": 0.0,
+                "_assignFirstBuff": true,
+                "_checkAssignToBuffSource": false,
+                "_assignToBuffSourceType": "TARGET",
+                "_assignMode": "OVERRIDE",
+                "_assignToMainBuff": false,
+                "_includeDisableBuffs": false,
+                "$type": "Torappu.Battle.Action.Nodes+AssignBuffBlackboard"
+              },
+              {
+                "_targetType": "BUFF_OWNER",
+                "_excludeThisBuff": false,
+                "_excludeInTriggerAll": false,
+                "_buffKeys": [
+                  "judge_t_1[effect]"
+                ],
+                "_forceTrigger": false,
+                "_triggerAllBuffs": false,
+                "$type": "Torappu.Battle.Action.Nodes+TriggerBuffsByKeys"
+              },
+              {
+                "_targetType": "BUFF_OWNER",
+                "_anotherBuff": false,
+                "_buffKey": null,
+                "_blackboardKey": "dynamic",
+                "_blackboardKeyFromBb": null,
+                "_valueToCompare": 0,
+                "_anotherKeyToCompare": "",
+                "_condType": "GT",
+                "$type": "Torappu.Battle.Action.Nodes+FilterByBlackboardValue"
+              },
+              {
+                "_targetType": "BUFF_OWNER",
+                "_buffKeys": [
+                  "judge_shield[mark]"
+                ],
+                "isAND": true,
+                "_loadFromBlackboard": false,
+                "_checkBuffSource": false,
+                "_buffSourceType": "BUFF_SOURCE",
+                "_checkSourceHost": false,
+                "$type": "Torappu.Battle.Action.Nodes+CheckContainsBuff"
+              },
+              {
+                "$type": "Torappu.Battle.Action.Nodes+IfNot"
+              },
+              {
+                "_buff": {
+                  "attributes": {
+                    "abnormalFlags": [],
+                    "abnormalImmunes": [],
+                    "abnormalAntis": [],
+                    "abnormalCombos": [],
+                    "abnormalComboImmunes": [],
+                    "attributeModifiers": []
+                  },
+                  "buffKey": "judge_shield[mark]",
+                  "loadFromDB": false,
+                  "isDurableBuff": false,
+                  "isDamageMissable": false,
+                  "isSilenceable": false,
+                  "isStunnable": false,
+                  "isFreezable": false,
+                  "isLevitatable": false,
+                  "isGroundBoundable": false,
+                  "statusResistable": "AUTOMATIC",
+                  "templateKey": "empty",
+                  "disableOverride": true,
+                  "overrideKey": null,
+                  "overrideType": "DEFAULT",
+                  "maxStackCnt": 1,
+                  "refreshRemainingTimeWhenStackMax": false,
+                  "clearAllStackCntWhenTimeUp": false,
+                  "maxValidStackCnt": -1,
+                  "independentCharacterSource": false,
+                  "overrideEffectKey": null,
+                  "overrideOnEventPriority": false,
+                  "onEventPriority": "DEFAULT",
+                  "audioSignal": null,
+                  "lifeTimeType": "INFINITY",
+                  "takeSnapshotWhenExtend": false,
+                  "durationKey": null,
+                  "remainingTimeKey": null,
+                  "lifeTime": 0.0,
+                  "triggerLifeType": "IMMEDIATELY",
+                  "triggerCnt": 0,
+                  "triggerInterval": -1.0,
+                  "waitFirstTriggerInterval": true,
+                  "firstTriggerInterval": -1.0,
+                  "priority": -1,
+                  "priorityBBKeys": [],
+                  "stripBlackboardParamsWithBuffKey": false,
+                  "blackboard": [],
+                  "enableInitDirectionFromSource": false
+                },
+                "_buffOwner": "BUFF_OWNER",
+                "_useSpecialBuffSource": false,
+                "_specialBuffSource": "BUFF_SOURCE",
+                "_isDerivedBuff": false,
+                "_finishDerivedBuffIfParentFinish": false,
+                "_inherateSourceProjectileFromParentBuff": false,
+                "_hookEffectKeyFromSourceProjectile": false,
+                "$type": "Torappu.Battle.Action.Nodes+CreateBuff"
+              }
+            ]
+          },
+          {
+            "event": 2,
+            "program": [
+              {
+                "_targetType": "BUFF_OWNER",
+                "_anotherBuff": false,
+                "_buffKey": null,
+                "_blackboardKey": "other_shield",
+                "_blackboardKeyFromBb": null,
+                "_valueToCompare": 0,
+                "_anotherKeyToCompare": "",
+                "_condType": "GT",
+                "$type": "Torappu.Battle.Action.Nodes+FilterByBlackboardValue"
+              },
+              {
+                "_targetType": "BUFF_OWNER",
+                "_attributeType": "MAX_HP",
+                "_scaleVar": "max_hp_ratio",
+                "_blackboardKey": "max_shield",
+                "$type": "Torappu.Battle.Action.Nodes+AssignAttributeToBB"
+              },
+              {
+                "_targetType": "BUFF_OWNER",
+                "_anotherBuff": false,
+                "_buffKey": null,
+                "_blackboardKey": "max_shield",
+                "_blackboardKeyFromBb": null,
+                "_valueToCompare": 0,
+                "_anotherKeyToCompare": "dynamic",
+                "_condType": "GT",
+                "$type": "Torappu.Battle.Action.Nodes+FilterByBlackboardValue"
+              },
+              {
+                "_inputKey": "other_shield",
+                "_outputKey": "other_shield",
+                "_multiplyParamKey": "shield_scale",
+                "_dividedParamKey": null,
+                "_useRemainder": false,
+                "_addParamKey": "",
+                "_minusParamKey": null,
+                "_minValueKey": "",
+                "_maxValueKey": "",
+                "_finalAbs": true,
+                "_finalCeil": false,
+                "_finalFloor": false,
+                "_finalRound": false,
+                "_useAbilityBlackboard": false,
+                "_abilityName": "",
+                "$type": "Torappu.Battle.Action.Nodes+CalculateBlackboardValueViaParams"
+              },
+              {
+                "_inputKey": "dynamic",
+                "_outputKey": "dynamic",
+                "_multiplyParamKey": "",
+                "_dividedParamKey": null,
+                "_useRemainder": false,
+                "_addParamKey": "other_shield",
+                "_minusParamKey": null,
+                "_minValueKey": "",
+                "_maxValueKey": "max_shield",
+                "_finalAbs": true,
+                "_finalCeil": false,
+                "_finalFloor": false,
+                "_finalRound": false,
+                "_useAbilityBlackboard": false,
+                "_abilityName": "",
+                "$type": "Torappu.Battle.Action.Nodes+CalculateBlackboardValueViaParams"
+              },
+              {
+                "_blackboardKey": "other_shield",
+                "_blackboardSource": "CURRENT",
+                "_keySource": "CONSTANT",
+                "_keyTargetType": "TARGET",
+                "_value": 0.0,
+                "_copyFromKey": null,
+                "_assignString": false,
+                "$type": "Torappu.Battle.Action.Nodes+AssignValueToBB"
+              },
+              {
+                "_targetType": "BUFF_OWNER",
+                "_blackboardKey": "dynamic",
+                "_valueKey": "dynamic",
+                "_buffKey": "judge_t_1[effect]",
+                "_useBlackboardBuffKey": false,
+                "_buffKeyAssignFrom": null,
+                "_useCurBuffBB": false,
+                "_assignString": false,
+                "_defaultValue": 0.0,
+                "_assignFirstBuff": true,
+                "_checkAssignToBuffSource": false,
+                "_assignToBuffSourceType": "TARGET",
+                "_assignMode": "OVERRIDE",
+                "_assignToMainBuff": false,
+                "_includeDisableBuffs": false,
+                "$type": "Torappu.Battle.Action.Nodes+AssignBuffBlackboard"
+              },
+              {
+                "_targetType": "BUFF_OWNER",
+                "_excludeThisBuff": false,
+                "_excludeInTriggerAll": false,
+                "_buffKeys": [
+                  "judge_t_1[effect]"
+                ],
+                "_forceTrigger": false,
+                "_triggerAllBuffs": false,
+                "$type": "Torappu.Battle.Action.Nodes+TriggerBuffsByKeys"
+              },
+              {
+                "_targetType": "BUFF_OWNER",
+                "_anotherBuff": false,
+                "_buffKey": null,
+                "_blackboardKey": "dynamic",
+                "_blackboardKeyFromBb": null,
+                "_valueToCompare": 0,
+                "_anotherKeyToCompare": "",
+                "_condType": "GT",
+                "$type": "Torappu.Battle.Action.Nodes+FilterByBlackboardValue"
+              },
+              {
+                "_targetType": "BUFF_OWNER",
+                "_buffKeys": [
+                  "judge_shield[mark]"
+                ],
+                "isAND": true,
+                "_loadFromBlackboard": false,
+                "_checkBuffSource": false,
+                "_buffSourceType": "BUFF_SOURCE",
+                "_checkSourceHost": false,
+                "$type": "Torappu.Battle.Action.Nodes+CheckContainsBuff"
+              },
+              {
+                "$type": "Torappu.Battle.Action.Nodes+IfNot"
+              },
+              {
+                "_buff": {
+                  "attributes": {
+                    "abnormalFlags": [],
+                    "abnormalImmunes": [],
+                    "abnormalAntis": [],
+                    "abnormalCombos": [],
+                    "abnormalComboImmunes": [],
+                    "attributeModifiers": []
+                  },
+                  "buffKey": "judge_shield[mark]",
+                  "loadFromDB": false,
+                  "isDurableBuff": false,
+                  "isDamageMissable": false,
+                  "isSilenceable": false,
+                  "isStunnable": false,
+                  "isFreezable": false,
+                  "isLevitatable": false,
+                  "isGroundBoundable": false,
+                  "statusResistable": "AUTOMATIC",
+                  "templateKey": "empty",
+                  "disableOverride": true,
+                  "overrideKey": null,
+                  "overrideType": "DEFAULT",
+                  "maxStackCnt": 1,
+                  "refreshRemainingTimeWhenStackMax": false,
+                  "clearAllStackCntWhenTimeUp": false,
+                  "maxValidStackCnt": -1,
+                  "independentCharacterSource": false,
+                  "overrideEffectKey": null,
+                  "overrideOnEventPriority": false,
+                  "onEventPriority": "DEFAULT",
+                  "audioSignal": null,
+                  "lifeTimeType": "INFINITY",
+                  "takeSnapshotWhenExtend": false,
+                  "durationKey": null,
+                  "remainingTimeKey": null,
+                  "lifeTime": 0.0,
+                  "triggerLifeType": "IMMEDIATELY",
+                  "triggerCnt": 0,
+                  "triggerInterval": -1.0,
+                  "waitFirstTriggerInterval": true,
+                  "firstTriggerInterval": -1.0,
+                  "priority": -1,
+                  "priorityBBKeys": [],
+                  "stripBlackboardParamsWithBuffKey": false,
+                  "blackboard": [],
+                  "enableInitDirectionFromSource": false
+                },
+                "_buffOwner": "BUFF_OWNER",
+                "_useSpecialBuffSource": false,
+                "_specialBuffSource": "BUFF_SOURCE",
+                "_isDerivedBuff": false,
+                "_finishDerivedBuffIfParentFinish": false,
+                "_inherateSourceProjectileFromParentBuff": false,
+                "_hookEffectKeyFromSourceProjectile": false,
+                "$type": "Torappu.Battle.Action.Nodes+CreateBuff"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

@@ -273,6 +273,16 @@ HE-7「以爱相连」刷出的赏金猎人扰乱者通过已启用的 `PassiveB
 
 2026-11-22 补核默认卫戍的 Card 分配与自动部署。**N：默认加载为每个宿主生成一份 Token Card 数据，同侧、同宿主的召唤物棋子共用该 Card UID。** `AutoChessBattleTrigger` 跳过已在战斗的棋子，按该 UID 读取 `readyToSpawn`，沿同一位置尝试 `SpawnCharacterOrToken`，成功才写回新实例及清理倒地对象。独立 Card 分别推进，共用 Card 的棋子读取同一份库存和资格。谬因中继器的实际配置采用 `QUEUED`，同一宿主的中继器在该政策下共享串行恢复。 [Card 分配](../evidence/same-character-source-20261111/native/bodies/_LoadBattlePlayerData-81754.asm)、[自动部署与中继器证据](../evidence/redeploy-state-and-repeater-20261122/README.md#卫戍自动再部署)
 
+#### 开场实际部署的入场效果
+
+**N　开场免费部署保留 Unit 的出生效果派发。** `Character.LocateOnTile` 写入手动和免费标记，随后执行出生程序。`Unit.OnBorn` 在登记前调用效果容器的 `OnOwnerBorn`，登记后再进入 `OnOwnerPostBorn`。出生派发检查各效果是否仍有效，以及是否有对应程序。已核的普通分支未发现按开场或免费统一跳过这些程序的判断。各效果的条件与执行时点仍由自身程序决定。 [原生派发与筛选](../evidence/stronghold-opening-born-dispatch-20261122/README.md)
+
+**N／D　本期宴 S2、砾 S1 使用两种不同的入场发动时点。** 活动表给这两张棋子选用对应技能。热更新 Prefab 中，宴的 `AppearSkill` 配置在定位时发动，技能效果开始时扣除 50% 当前生命。砾的 `AppearSkill` 配置在出生时发动，施加临时防御加成。开场走通常的定位和出生分支，两个 `AppearSkill` 入口都没有按开场或免费标记跳过发动的条件。 [本期技能配置与发动链](../evidence/stronghold-opening-operator-effects-20261122/README.md)
+
+**N／D　手动召唤物也可在开场走通常的出生与能力程序。** 本期罗比菈塔的造型仪由 Token Card 生成，使用通常的落地与出生链。实际造型仪 Prefab 的光环在取得合格目标后安装护盾。护盾需要光环接触自己的目标。 [召唤物生成与光环配置](../evidence/stronghold-opening-summon-effects-20261122/README.md)
+
+本批核对的是本期配置及原生静态分支，未运行开场对照战斗。已验证的派发和实际技能绑定不足以支持「开局统一禁用入场效果」的规则。进一步问题按效果的具体发动条件核对。
+
 #### 开场部署是否计入临光 S2
 
 **C　不触发 S2 判定的说法出自 2024 年首期。** PRTS 在 2024-11-22 的 `327715` 首次加入这句话，2025 年「盟约」帮助首版沿用。2026 年 11 月 8 日开启「规程·序列Ⅰ」，本期帮助仍沿用相同文本。`帮助v2` 的首版与旧帮助页当时的全文一致。能定位的页面证据没有提供本期独立复测。 [首期修订](https://prts.wiki/index.php?oldid=327715) · [本期官方公告](https://ak.hypergryph.com/news/0787.html) · [逐版核对](../evidence/stronghold-opening-wiki-20261122/README.md)

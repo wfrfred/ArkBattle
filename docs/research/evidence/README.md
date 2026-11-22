@@ -44,6 +44,9 @@ uv run "$skill/scripts/archive.py" docs/research/evidence
 | --- | --- |
 | [nearl-deployment-combo-20261122](nearl-deployment-combo-20261122/README.md) | 耀骑士临光与耀阳的牌组接力状态、出牌过滤与出生采样 |
 | [stronghold-opening-deploy-20261122](stronghold-opening-deploy-20261122/README.md) | 卫戍开场与战中补位的原生实参、接力判定的证据边界 |
+| [stronghold-opening-born-dispatch-20261122](stronghold-opening-born-dispatch-20261122/README.md) | 开场免费落地的出生派发和效果自身的程序资格检查 |
+| [stronghold-opening-operator-effects-20261122](stronghold-opening-operator-effects-20261122/README.md) | 本期宴和砾的落地、出生技能及斥罪的初始屏障 |
+| [stronghold-opening-summon-effects-20261122](stronghold-opening-summon-effects-20261122/README.md) | 本期罗比菈塔造型仪的开场生成、出生和护盾光环 |
 | [stronghold-opening-wiki-20261122](stronghold-opening-wiki-20261122/README.md) | 卫戍开场临光规则从 2024 首期到规程序列Ⅰ的 PRTS 修订历史 |
 | [stronghold-opening-hotfix-20261122](stronghold-opening-hotfix-20261122/README.md) | 本期缓存版本和所登记的开场流程热更新 |
 | [stronghold-opening-current-content-20261122](stronghold-opening-current-content-20261122/README.md) | 规程序列Ⅰ临光与砾的配置及卡西米尔盟约实际模板 |

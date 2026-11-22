@@ -1,0 +1,268 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-11-22"
+    ],
+    "collectionDateSource": "batch directory",
+    "organizedOn": "2026-11-22",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+        "records": [
+          "result.json#/provenance/client/dll"
+        ],
+        "bytes": 223112680
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        "records": [
+          "result.json#/provenance/client/metadata"
+        ],
+        "bytes": 46669332
+      }
+    },
+    "sourceRecords": [
+      "result.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12895,
+        "sha256": "9c5b246859318caaec4aab5275ef0d2d49fce5d612c6b4e569973a9941ba621a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "extract.py",
+        "kind": "historical-script",
+        "bytes": 8154,
+        "sha256": "93fabcd4996b9d89ac485faacd44cd44aee3015902b6cb2026bc9f2025a915b4"
+      },
+      {
+        "path": "result.json",
+        "kind": "record",
+        "bytes": 144846,
+        "sha256": "3fef1e7abaa63e95bd3af95dfac4195b06d74cf1866e584c1fb3773d48d13c92"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 64019,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/methods/64019",
+            "result.json#/result/methods/64019/method"
+          ],
+          "fullname": "Torappu.Battle.Ability.DoAttach",
+          "address": "0x180602450"
+        },
+        {
+          "index": 64057,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/methods/64057",
+            "result.json#/result/methods/64057/method",
+            "result.json#/result/types/Torappu.Battle.Abilities.PassiveBuffAbility/vtable/66/method"
+          ],
+          "fullname": "Torappu.Battle.Ability.AddPassiveBuffs",
+          "address": "0x180601b30"
+        },
+        {
+          "index": 66123,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/methods/66123",
+            "result.json#/result/methods/66123/method"
+          ],
+          "fullname": "Torappu.Battle.Buff.OnStart",
+          "address": "0x1806d4fc0"
+        },
+        {
+          "index": 73732,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/methods/73732",
+            "result.json#/result/methods/73732/method"
+          ],
+          "fullname": "Torappu.Battle.AppearSkill.DoCast",
+          "address": "0x1809904d0"
+        },
+        {
+          "index": 73733,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/methods/73733",
+            "result.json#/result/methods/73733/method",
+            "result.json#/result/types/Torappu.Battle.AppearSkill/vtable/54/method"
+          ],
+          "fullname": "Torappu.Battle.AppearSkill.UseSkill",
+          "address": "0x180990ae0"
+        },
+        {
+          "index": 73734,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/methods/73734",
+            "result.json#/result/methods/73734/method",
+            "result.json#/result/types/Torappu.Battle.AppearSkill/vtable/61/method"
+          ],
+          "fullname": "Torappu.Battle.AppearSkill.OnBorn",
+          "address": "0x180990730"
+        },
+        {
+          "index": 73735,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/methods/73735",
+            "result.json#/result/methods/73735/method",
+            "result.json#/result/types/Torappu.Battle.AppearSkill/vtable/62/method"
+          ],
+          "fullname": "Torappu.Battle.AppearSkill.OnLocate",
+          "address": "0x1809908f0"
+        },
+        {
+          "index": 74552,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/methods/74552",
+            "result.json#/result/methods/74552/method"
+          ],
+          "fullname": "Torappu.Battle.BasicTalent.DoAttach",
+          "address": "0x1809be150"
+        },
+        {
+          "index": 77332,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/methods/77332",
+            "result.json#/result/methods/77332/method"
+          ],
+          "fullname": "Torappu.Battle.Character.OnInit",
+          "address": "0x180aa3660"
+        },
+        {
+          "index": 77334,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/methods/77334",
+            "result.json#/result/methods/77334/method"
+          ],
+          "fullname": "Torappu.Battle.Character.OnBorn",
+          "address": "0x180aa2b30"
+        },
+        {
+          "index": 77339,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/methods/77339",
+            "result.json#/result/methods/77339/method",
+            "result.json#/result/types/Torappu.Battle.Character/vtable/119/method"
+          ],
+          "fullname": "Torappu.Battle.Character.OnLocate",
+          "address": "0x180aa39b0"
+        },
+        {
+          "index": 77465,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/methods/77465",
+            "result.json#/result/methods/77465/method"
+          ],
+          "fullname": "Torappu.Battle.Character/States/BornState.OnTick",
+          "address": "0x180a9b550"
+        },
+        {
+          "index": 77467,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/methods/77467",
+            "result.json#/result/methods/77467/method"
+          ],
+          "fullname": "Torappu.Battle.Character/States/BornState._OnLocate",
+          "address": "0x180a9b7c0"
+        },
+        {
+          "index": 92986,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/methods/92986",
+            "result.json#/result/methods/92986/method"
+          ],
+          "fullname": "Torappu.Battle.Abilities.ActiveBuffAbility.DoOnSpellStart",
+          "address": "0x180f56fc0"
+        }
+      ],
+      "blocks": [],
+      "types": [],
+      "constants": [],
+      "bundles": [
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99",
+          "records": [
+            "result.json#/provenance/content/bundles/0"
+          ],
+          "bytes": 477255
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "sha256": "0d0b4c0f9252c14a69a20d4bea09527403dd3eddfc2f7bcd757c3c30cf37ffc3",
+          "records": [
+            "result.json#/provenance/content/bundles/1"
+          ],
+          "bytes": 1367500
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/prefabs/[uc]skills.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/prefabs/[uc]skills.ab",
+          "sha256": "f7ead0e0d8362df84d196f1a30d2165cae1c542fcb9809fb4d6efdb4027c094f",
+          "records": [
+            "result.json#/provenance/content/bundles/2"
+          ],
+          "bytes": 1367896
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_4065_judge.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_4065_judge.ab",
+          "sha256": "fd0e2d255d681e7cdca6134a4e1da760d74deebe503acdabe4a6d53ffeb27fe0",
+          "records": [
+            "result.json#/provenance/content/bundles/3"
+          ],
+          "bytes": 23571
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/config/buff_template_holder.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/config/buff_template_holder.ab",
+          "sha256": "f486df86406db62b2773039b87d05a405fb95a31ddc82568c6a6efef14e47f01",
+          "records": [
+            "result.json#/provenance/content/bundles/4"
+          ],
+          "bytes": 2197532
+        }
+      ]
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}
