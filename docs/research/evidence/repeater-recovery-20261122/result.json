@@ -1,0 +1,1746 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-22",
+    "client": {
+      "dll": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "bytes": 223112680,
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff"
+      },
+      "metadata": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "bytes": 46669332,
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5"
+      },
+      "metadataVersion": 29,
+      "imageBase": "0x180000000"
+    },
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/native.py",
+        "bytes": 18723,
+        "sha256": "1c6c16dc97e0dd9af0af4033c81a7534384dd65ebb1e604df3f4a3289df158e6"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]"
+    },
+    "assets": [
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+        "bytes": 477255,
+        "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_5.ab",
+        "bytes": 2812726,
+        "sha256": "4a49fe9d4535474d896e64331657773790c891f14dd99616b6774dfe5a1d7a96"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/nymph-action-settlement-20261103/projectile/decode_projectile.py",
+        "bytes": 6749,
+        "sha256": "dab13196fb726d06bd9094c29f09a12dc3677b2c129359a1f7c305e13a8157fb"
+      }
+    ],
+    "config": {
+      "revision": "17759cc8cdf37388414145d16262a3a06f3ab25e",
+      "files": [
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/assets/arknights-game-data/zh_CN/gamedata/battle/buff_template_data.json",
+          "bytes": 28623543,
+          "sha256": "6786d60fa1f081346f7885a0a9782e201c942017588b09830afb011e16c6df3c"
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/assets/arknights-game-data/zh_CN/gamedata/excel/character_table.json",
+          "bytes": 15069101,
+          "sha256": "e523c7c83c36e2d76697121079e17d0282da1a94d59a55e1cc55616edf0b41c4"
+        }
+      ]
+    }
+  },
+  "result": {
+    "prefab": [
+      {
+        "file": "CAB-d45134594599a24ae95f928a8f1b3420",
+        "pathId": "-8739687973461992897",
+        "hierarchy": [
+          "token_10070_aphris_pc"
+        ],
+        "enabled": true,
+        "script": {
+          "id": "-795855429403065218",
+          "name": "Token",
+          "cl": "Token",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "fields": {
+          "_cardPolicy": 2,
+          "_isInfinity": false,
+          "_rechargeOnlyOnce": false
+        }
+      },
+      {
+        "file": "CAB-d45134594599a24ae95f928a8f1b3420",
+        "pathId": "-6219056184261649857",
+        "hierarchy": [
+          "token_10070_aphris_pc",
+          "Others",
+          "Direction",
+          "Talents",
+          "-1"
+        ],
+        "enabled": true,
+        "script": {
+          "id": "-2726233351382997147",
+          "name": "Talent",
+          "cl": "Talent",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "fields": {
+          "_overwriteTalentKey": "",
+          "_defaultModeIndex": -1
+        }
+      },
+      {
+        "file": "CAB-d45134594599a24ae95f928a8f1b3420",
+        "pathId": "4654743988350966335",
+        "hierarchy": [
+          "token_10070_aphris_pc",
+          "Others",
+          "Direction",
+          "Talents",
+          "-1"
+        ],
+        "enabled": true,
+        "script": {
+          "id": "3800760148018415462",
+          "name": "PassiveBuffAbility",
+          "cl": "PassiveBuffAbility",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "fields": {
+          "_buffs": [
+            {
+              "buffKey": "aphris_pc_t[with-draw]",
+              "templateKey": "aphris_pc_t[with-draw]",
+              "isDurableBuff": false,
+              "lifeTimeType": true,
+              "durationKey": "duration",
+              "blackboard": {
+                "Array": []
+              }
+            },
+            {
+              "buffKey": "aphris_pc[recharge]",
+              "templateKey": "aphris_pc[recharge]",
+              "isDurableBuff": false,
+              "lifeTimeType": true,
+              "durationKey": "duration",
+              "blackboard": {
+                "Array": []
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "config": {
+      "buff_template_data.json": {
+        "aphris_pc[recharge]": {
+          "ON_BUFF_FINISH": [
+            {
+              "$type": "Torappu.Battle.Action.Nodes+RechargeToken, Assembly-CSharp",
+              "_cntKey": "cnt",
+              "_rechargeTiming": "ON_FINISH",
+              "_refreshRemainingCnt": false
+            }
+          ]
+        },
+        "aphris_pc_t[with-draw]": {
+          "ON_BUFF_FINISH": [
+            {
+              "$type": "Torappu.Battle.Action.Nodes+CheckContainsBuff, Assembly-CSharp",
+              "_targetType": "BUFF_OWNER",
+              "_buffKeys": [
+                "aphris_sk1_token"
+              ],
+              "isAND": true,
+              "_loadFromBlackboard": false,
+              "_checkBuffSource": false,
+              "_buffSourceType": "BUFF_SOURCE",
+              "_checkSourceHost": false
+            },
+            {
+              "$type": "Torappu.Battle.Action.Nodes+IfNot, Assembly-CSharp"
+            },
+            {
+              "$type": "Torappu.Battle.Action.Nodes+Withdraw, Assembly-CSharp",
+              "_withdrawSource": false,
+              "_switchToDeadState": true,
+              "_force": true,
+              "_needLog": false
+            }
+          ],
+          "ON_BUFF_START": [
+            {
+              "$type": "Torappu.Battle.Action.Nodes+IfConditions, Assembly-CSharp",
+              "_conditionsNode": [
+                {
+                  "$type": "Torappu.Battle.Action.Nodes+CheckHostContainsBuff, Assembly-CSharp",
+                  "_targetType": "BUFF_OWNER",
+                  "_buffKeys": [
+                    "aphris_sk1",
+                    "aphris_sk3[sheltering]",
+                    "aphris_sk3[on_finish]",
+                    "aphris_sk3[mark]"
+                  ],
+                  "isAND": false
+                }
+              ],
+              "_succeedNodes": [
+                {
+                  "$type": "Torappu.Battle.Action.Nodes+CreateBuff, Assembly-CSharp",
+                  "_buff": {
+                    "attributes": {
+                      "abnormalFlags": [],
+                      "abnormalImmunes": [],
+                      "abnormalAntis": [],
+                      "abnormalCombos": [],
+                      "abnormalComboImmunes": [],
+                      "attributeModifiers": []
+                    },
+                    "buffKey": "aphris_sk1_token",
+                    "loadFromDB": false,
+                    "isDurableBuff": false,
+                    "isDamageMissable": false,
+                    "isSilenceable": false,
+                    "isStunnable": false,
+                    "isFreezable": false,
+                    "isLevitatable": false,
+                    "isGroundBoundable": false,
+                    "statusResistable": "AUTOMATIC",
+                    "templateKey": "aphris_sk1_token",
+                    "disableOverride": true,
+                    "overrideKey": null,
+                    "overrideType": "DEFAULT",
+                    "maxStackCnt": 1,
+                    "refreshRemainingTimeWhenStackMax": false,
+                    "clearAllStackCntWhenTimeUp": false,
+                    "maxValidStackCnt": -1,
+                    "independentCharacterSource": false,
+                    "overrideEffectKey": null,
+                    "overrideOnEventPriority": false,
+                    "onEventPriority": "DEFAULT",
+                    "audioSignal": null,
+                    "lifeTimeType": "INFINITY",
+                    "takeSnapshotWhenExtend": false,
+                    "durationKey": null,
+                    "remainingTimeKey": null,
+                    "lifeTime": 0.0,
+                    "triggerLifeType": "IMMEDIATELY",
+                    "triggerCnt": 0,
+                    "triggerInterval": -1.0,
+                    "waitFirstTriggerInterval": true,
+                    "firstTriggerInterval": -1.0,
+                    "priority": -1,
+                    "priorityBBKeys": [],
+                    "stripBlackboardParamsWithBuffKey": false,
+                    "blackboard": [],
+                    "enableInitDirectionFromSource": false
+                  },
+                  "_buffOwner": "BUFF_OWNER",
+                  "_useSpecialBuffSource": false,
+                  "_specialBuffSource": "BUFF_SOURCE",
+                  "_isDerivedBuff": false,
+                  "_finishDerivedBuffIfParentFinish": false,
+                  "_inherateSourceProjectileFromParentBuff": false,
+                  "_hookEffectKeyFromSourceProjectile": false
+                }
+              ],
+              "_failNodes": [
+                {
+                  "$type": "Torappu.Battle.Action.Nodes+SpShowBuff, Assembly-CSharp",
+                  "_targetType": "BUFF_OWNER",
+                  "_spShowBuffKey": null,
+                  "_isSelf": true,
+                  "_isSkillCountDown": false,
+                  "_advancedShowType": "NONE"
+                }
+              ],
+              "_isAnd": false
+            }
+          ]
+        },
+        "aphris_sk3[token-withdraw]": {
+          "ON_BUFF_START": [
+            {
+              "$type": "Torappu.Battle.Action.Nodes+ForceRechargeToken, Assembly-CSharp",
+              "_target": "BUFF_OWNER",
+              "_cntKey": "token_recharge_cnt",
+              "_rechargeTiming": "NORMAL",
+              "_refreshRemainingCnt": false
+            },
+            {
+              "$type": "Torappu.Battle.Action.Nodes+WithdrawTokens, Assembly-CSharp",
+              "_switchToDeadState": true,
+              "_force": true,
+              "_checkContainsBuff": false,
+              "_buffKey": "",
+              "_needLog": false
+            },
+            {
+              "$type": "Torappu.Battle.Action.Nodes+AlwaysNext, Assembly-CSharp"
+            },
+            {
+              "$type": "Torappu.Battle.Action.Nodes+ResetTokenRespawnTime, Assembly-CSharp",
+              "_target": "BUFF_OWNER",
+              "_waitFirstPeriod": false
+            }
+          ],
+          "ON_OWNER_FINISH": [
+            {
+              "$type": "Torappu.Battle.Action.Nodes+CalculateBlackboardValueViaParams, Assembly-CSharp",
+              "_inputKey": "zero",
+              "_outputKey": "minus_recharge_cnt",
+              "_multiplyParamKey": null,
+              "_dividedParamKey": null,
+              "_useRemainder": false,
+              "_addParamKey": null,
+              "_minusParamKey": "token_recharge_cnt",
+              "_minValueKey": "",
+              "_maxValueKey": null,
+              "_finalAbs": false,
+              "_finalCeil": false,
+              "_finalFloor": false,
+              "_finalRound": false,
+              "_useAbilityBlackboard": false,
+              "_abilityName": ""
+            },
+            {
+              "$type": "Torappu.Battle.Action.Nodes+ForceRechargeToken, Assembly-CSharp",
+              "_target": "BUFF_OWNER",
+              "_cntKey": "minus_recharge_cnt",
+              "_rechargeTiming": "ON_FINISH",
+              "_refreshRemainingCnt": false
+            },
+            {
+              "$type": "Torappu.Battle.Action.Nodes+ResetTokenRespawnTime, Assembly-CSharp",
+              "_target": "BUFF_OWNER",
+              "_waitFirstPeriod": false
+            }
+          ]
+        }
+      },
+      "character_table.json": {
+        "/token_10070_aphris_pc/talents/0/candidates": [
+          {
+            "unlockCondition": {
+              "phase": "PHASE_0",
+              "level": 1
+            },
+            "requiredPotentialRank": 0,
+            "prefabKey": "-1",
+            "name": "转向",
+            "description": "能将谬因的攻击转向，且使该次攻击距离+2",
+            "rangeId": null,
+            "blackboard": [
+              {
+                "key": "duration",
+                "value": 15.0,
+                "valueStr": null
+              }
+            ],
+            "tokenKey": null,
+            "isHideTalent": false
+          },
+          {
+            "unlockCondition": {
+              "phase": "PHASE_1",
+              "level": 1
+            },
+            "requiredPotentialRank": 0,
+            "prefabKey": "-1",
+            "name": "转向",
+            "description": "能将谬因的攻击转向，且使该次攻击距离+2",
+            "rangeId": null,
+            "blackboard": [
+              {
+                "key": "duration",
+                "value": 20.0,
+                "valueStr": null
+              }
+            ],
+            "tokenKey": null,
+            "isHideTalent": false
+          },
+          {
+            "unlockCondition": {
+              "phase": "PHASE_2",
+              "level": 1
+            },
+            "requiredPotentialRank": 0,
+            "prefabKey": "-1",
+            "name": "转向",
+            "description": "能将谬因的攻击转向，且使该次攻击距离+2",
+            "rangeId": null,
+            "blackboard": [
+              {
+                "key": "duration",
+                "value": 25.0,
+                "valueStr": null
+              }
+            ],
+            "tokenKey": null,
+            "isHideTalent": false
+          }
+        ],
+        "/char_4229_aphris/talents/0/candidates": [
+          {
+            "unlockCondition": {
+              "phase": "PHASE_0",
+              "level": 1
+            },
+            "requiredPotentialRank": 0,
+            "prefabKey": "1",
+            "name": "链路协议",
+            "description": "可以使用一个持续时间15秒的“中继器”，能改变自身的攻击方向，且使该次攻击距离+2",
+            "rangeId": null,
+            "blackboard": [
+              {
+                "key": "cnt",
+                "value": 1.0,
+                "valueStr": null
+              }
+            ],
+            "tokenKey": "token_10070_aphris_pc",
+            "isHideTalent": false
+          },
+          {
+            "unlockCondition": {
+              "phase": "PHASE_1",
+              "level": 1
+            },
+            "requiredPotentialRank": 0,
+            "prefabKey": "1",
+            "name": "链路协议",
+            "description": "可以使用一个持续时间20秒的“中继器”，能改变自身的攻击方向，且使该次攻击距离+2；“中继器”在场时，自身攻击力+15%",
+            "rangeId": null,
+            "blackboard": [
+              {
+                "key": "cnt",
+                "value": 1.0,
+                "valueStr": null
+              },
+              {
+                "key": "atk",
+                "value": 0.15,
+                "valueStr": null
+              }
+            ],
+            "tokenKey": "token_10070_aphris_pc",
+            "isHideTalent": false
+          },
+          {
+            "unlockCondition": {
+              "phase": "PHASE_2",
+              "level": 1
+            },
+            "requiredPotentialRank": 0,
+            "prefabKey": "1",
+            "name": "链路协议",
+            "description": "可以使用一个持续时间25秒的“中继器”，能改变自身的攻击方向，且使该次攻击距离+2；“中继器”在场时，自身攻击力+25%",
+            "rangeId": null,
+            "blackboard": [
+              {
+                "key": "cnt",
+                "value": 1.0,
+                "valueStr": null
+              },
+              {
+                "key": "atk",
+                "value": 0.25,
+                "valueStr": null
+              }
+            ],
+            "tokenKey": "token_10070_aphris_pc",
+            "isHideTalent": false
+          }
+        ]
+      }
+    },
+    "native": [
+      {
+        "method": {
+          "nameIndex": 3172,
+          "declaringType": 1446,
+          "returnType": 84484,
+          "parameterStart": 40886,
+          "genericContainerIndex": -1,
+          "token": 100689721,
+          "flags": 134,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 2,
+          "index": 26424,
+          "image": "Assembly-CSharp.dll",
+          "address": 6474215360,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.PeriodicTimer.Reset",
+          "returnTypeName": "void",
+          "parameters": [
+            {
+              "nameIndex": 881588,
+              "token": 134258618,
+              "typeIndex": 54451,
+              "index": 40886,
+              "name": "newPeriod",
+              "typeName": "Torappu.FP"
+            },
+            {
+              "nameIndex": 881572,
+              "token": 134258619,
+              "typeIndex": 46049,
+              "index": 40887,
+              "name": "waitFirstPeriod",
+              "typeName": "bool"
+            }
+          ]
+        },
+        "instructions": [
+          "0x181e4b04a cmp byte ptr [rip + 0x7160b4c], 0",
+          "0x181e4b051 mov qword ptr [rsi + 0x10], rax",
+          "0x181e4b055 jne 0x181e4b06a",
+          "0x181e4b057 lea rcx, [rip + 0x6d7bc52]",
+          "0x181e4b05e call 0x18049c210",
+          "0x181e4b063 mov byte ptr [rip + 0x7160b33], 1",
+          "0x181e4b06a test bpl, bpl",
+          "0x181e4b06d je 0x181e4b075",
+          "0x181e4b06f mov rax, qword ptr [rsi + 0x10]",
+          "0x181e4b073 jmp 0x181e4b093",
+          "0x181e4b075 mov rcx, qword ptr [rip + 0x6d7bc34]",
+          "0x181e4b07c cmp dword ptr [rcx + 0xe0], 0",
+          "0x181e4b083 jne 0x181e4b08a",
+          "0x181e4b085 call 0x18049c450",
+          "0x181e4b08a xor edx, edx",
+          "0x181e4b08c xor ecx, ecx",
+          "0x181e4b08e call 0x18695e170",
+          "0x181e4b093 mov qword ptr [rsi + 0x18], rax"
+        ]
+      },
+      {
+        "method": {
+          "nameIndex": 2482600,
+          "declaringType": 10185,
+          "returnType": 84484,
+          "parameterStart": 66485,
+          "genericContainerIndex": -1,
+          "token": 100729038,
+          "flags": 134,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 2,
+          "index": 65741,
+          "image": "Assembly-CSharp.dll",
+          "address": 6449106592,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.BattleController.OnCharacterFinished",
+          "returnTypeName": "void",
+          "parameters": [
+            {
+              "nameIndex": 1858,
+              "token": 134284219,
+              "typeIndex": 48460,
+              "index": 66485,
+              "name": "character",
+              "typeName": "Torappu.Battle.Character"
+            },
+            {
+              "nameIndex": 16408,
+              "token": 134284220,
+              "typeIndex": 98014,
+              "index": 66486,
+              "name": "reason",
+              "typeName": "Torappu.Battle.Entity/FinishReason"
+            }
+          ]
+        },
+        "instructions": [
+          "0x180658fa2 xor edx, edx",
+          "0x180658fa4 mov rcx, rbx",
+          "0x180658fa7 call 0x180aaf750",
+          "0x180658fac xor r8d, r8d",
+          "0x180658faf mov edx, eax",
+          "0x180658fb1 mov rcx, rdi",
+          "0x180658fb4 call 0x1806fbed0",
+          "0x180658fb9 xor edx, edx",
+          "0x180658fbb mov rcx, rbx",
+          "0x180658fbe call 0x180aaf970"
+        ]
+      },
+      {
+        "method": {
+          "nameIndex": 394250,
+          "declaringType": 10205,
+          "returnType": 84484,
+          "parameterStart": 67090,
+          "genericContainerIndex": -1,
+          "token": 100729648,
+          "flags": 134,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 1,
+          "index": 66351,
+          "image": "Assembly-CSharp.dll",
+          "address": 6449471152,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.Buff/BuffContainer.Clear",
+          "returnTypeName": "void",
+          "parameters": [
+            {
+              "nameIndex": 2505573,
+              "token": 134284824,
+              "typeIndex": 46049,
+              "index": 67090,
+              "name": "immediatelyFinishEffect",
+              "typeName": "bool"
+            }
+          ]
+        },
+        "instructions": [
+          "0x1806b1ebf push rdi",
+          "0x1806b1ec0 push r12",
+          "0x1806b1ec2 push r13",
+          "0x1806b1ec4 push r14",
+          "0x1806b1ec6 push r15",
+          "0x1806b1ec8 sub rsp, 0x80",
+          "0x1806b1ecf movzx r15d, dl",
+          "0x1806b1ed3 mov r13, rcx",
+          "0x1806b1ed6 cmp byte ptr [rip + 0x88e94f6], 0",
+          "0x1806b2088 mov qword ptr [rsp + 0x28], r12",
+          "0x1806b208d mov byte ptr [rsp + 0x20], r15b",
+          "0x1806b2092 mov r9b, 1",
+          "0x1806b2095 xor r8d, r8d",
+          "0x1806b2098 mov rdx, rax",
+          "0x1806b209b mov rcx, r13",
+          "0x1806b209e call 0x1806cd740",
+          "0x1806b20a3 jmp 0x1806b1fc2"
+        ]
+      },
+      {
+        "method": {
+          "nameIndex": 2518548,
+          "declaringType": 10205,
+          "returnType": 84484,
+          "parameterStart": 67102,
+          "genericContainerIndex": -1,
+          "token": 100729660,
+          "flags": 129,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 4,
+          "index": 66363,
+          "image": "Assembly-CSharp.dll",
+          "address": 6449583936,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.Buff/BuffContainer._FinishBuff",
+          "returnTypeName": "void",
+          "parameters": [
+            {
+              "nameIndex": 382745,
+              "token": 134284836,
+              "typeIndex": 46289,
+              "index": 67102,
+              "name": "buff",
+              "typeName": "Torappu.Battle.Buff"
+            },
+            {
+              "nameIndex": 2505152,
+              "token": 134284837,
+              "typeIndex": 46024,
+              "index": 67103,
+              "name": "updateOverrideMap",
+              "typeName": "bool"
+            },
+            {
+              "nameIndex": 2518533,
+              "token": 134284838,
+              "typeIndex": 46024,
+              "index": 67104,
+              "name": "delayToRecycle",
+              "typeName": "bool"
+            },
+            {
+              "nameIndex": 2505573,
+              "token": 134284839,
+              "typeIndex": 46049,
+              "index": 67105,
+              "name": "immediatelyFinishEffect",
+              "typeName": "bool"
+            }
+          ]
+        },
+        "instructions": [
+          "0x1806cd7b3 mov rcx, qword ptr [rcx + 0x230]",
+          "0x1806cd7ba test rcx, rcx",
+          "0x1806cd7bd jne 0x1806cd994",
+          "0x1806cd7c3 test rbx, rbx",
+          "0x1806cd7c6 je 0x1806cd9d6",
+          "0x1806cd7cc xor r8d, r8d",
+          "0x1806cd7cf movzx edx, dil",
+          "0x1806cd7d3 mov rcx, rbx",
+          "0x1806cd7d6 call 0x1806cfa80",
+          "0x1806cd7db cmp byte ptr [rip + 0x88cdb11], 0",
+          "0x1806cd82d cmp byte ptr [rbx + 0x1fb], cl",
+          "0x1806cd833 jne 0x1806cd9bd",
+          "0x1806cd839 xor r8d, r8d",
+          "0x1806cd83c mov byte ptr [rbx + 0x1fb], 1",
+          "0x1806cd843 mov dl, 1",
+          "0x1806cd845 mov rcx, rbx",
+          "0x1806cd848 call 0x1806ce520",
+          "0x1806cd84d mov r9b, 1",
+          "0x1806cd850 mov qword ptr [rsp + 0x20], 0",
+          "0x1806cd859 mov r8d, 1",
+          "0x1806cd85f lea rcx, [rsp + 0x50]",
+          "0x1806cd864 mov rdx, rbx",
+          "0x1806cd867 call 0x1806dc050"
+        ]
+      },
+      {
+        "method": {
+          "nameIndex": 2532216,
+          "declaringType": 10276,
+          "returnType": 84484,
+          "parameterStart": 67357,
+          "genericContainerIndex": -1,
+          "token": 100730039,
+          "flags": 134,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 4,
+          "index": 66742,
+          "image": "Assembly-CSharp.dll",
+          "address": 6449772976,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.Deck.RechargeToken",
+          "returnTypeName": "void",
+          "parameters": [
+            {
+              "nameIndex": 16336,
+              "token": 134285091,
+              "typeIndex": 83054,
+              "index": 67357,
+              "name": "uid",
+              "typeName": "uint"
+            },
+            {
+              "nameIndex": 72751,
+              "token": 134285092,
+              "typeIndex": 60309,
+              "index": 67358,
+              "name": "count",
+              "typeName": "int"
+            },
+            {
+              "nameIndex": 410736,
+              "token": 134285093,
+              "typeIndex": 114649,
+              "index": 67359,
+              "name": "timing",
+              "typeName": "Torappu.Battle.Deck/Card/RechargeTiming"
+            },
+            {
+              "nameIndex": 2532196,
+              "token": 134285094,
+              "typeIndex": 46049,
+              "index": 67360,
+              "name": "refreshRemainingCnt",
+              "typeName": "bool"
+            }
+          ]
+        },
+        "instructions": [
+          "0x1806fba05 mov rcx, qword ptr [rax + 0xb8]",
+          "0x1806fba0c mov rcx, qword ptr [rcx + 0xa8]",
+          "0x1806fba13 test rcx, rcx",
+          "0x1806fba16 jne 0x1806fbbec",
+          "0x1806fba1c mov rcx, qword ptr [rdi + 0x48]",
+          "0x1806fba20 test rcx, rcx",
+          "0x1806fba23 je 0x1806fbc24",
+          "0x1806fba29 mov r9, qword ptr [rip + 0x849ba88]",
+          "0x1806fba30 lea r8, [rsp + 0x40]",
+          "0x1806fba35 mov edx, ebx",
+          "0x1806fba37 call 0x185be68b0",
+          "0x1806fba3c test al, al",
+          "0x1806fba3e je 0x1806fbc0f",
+          "0x1806fba44 mov rdx, qword ptr [rsp + 0x40]",
+          "0x1806fba49 test rdx, rdx",
+          "0x1806fba4c je 0x1806fbc24",
+          "0x1806fba52 movzx eax, byte ptr [rsp + 0x80]",
+          "0x1806fba5a mov ecx, 0x18",
+          "0x1806fba5f mov r9d, esi",
+          "0x1806fba62 mov byte ptr [rsp + 0x20], al",
+          "0x1806fba66 mov r8d, ebp",
+          "0x1806fba69 call 0x180013240",
+          "0x1806fba6e cmp byte ptr [rip + 0x889fad1], 0",
+          "0x1806fba75 mov rbx, qword ptr [rsp + 0x40]",
+          "0x1806fba7a jne 0x1806fba9b",
+          "0x1806fba7c lea rcx, [rip + 0x842fcfd]",
+          "0x1806fba83 call 0x18049c210",
+          "0x1806fba88 lea rcx, [rip + 0x84b60d1]",
+          "0x1806fba8f call 0x18049c210",
+          "0x1806fba94 mov byte ptr [rip + 0x889faab], 1",
+          "0x1806fba9b mov rax, qword ptr [rip + 0x842fcde]",
+          "0x1806fbaa2 mov rcx, qword ptr [rax + 0xb8]",
+          "0x1806fbaa9 mov rcx, qword ptr [rcx + 0x190]",
+          "0x1806fbab0 test rcx, rcx",
+          "0x1806fbab3 jne 0x1806fbbdc"
+        ]
+      },
+      {
+        "method": {
+          "nameIndex": 2532328,
+          "declaringType": 10276,
+          "returnType": 84484,
+          "parameterStart": 67375,
+          "genericContainerIndex": -1,
+          "token": 100730044,
+          "flags": 134,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 2,
+          "index": 66747,
+          "image": "Assembly-CSharp.dll",
+          "address": 6449777680,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.Deck.ResetTokenRespawnTime",
+          "returnTypeName": "void",
+          "parameters": [
+            {
+              "nameIndex": 16336,
+              "token": 134285109,
+              "typeIndex": 83054,
+              "index": 67375,
+              "name": "uid",
+              "typeName": "uint"
+            },
+            {
+              "nameIndex": 881572,
+              "token": 134285110,
+              "typeIndex": 46024,
+              "index": 67376,
+              "name": "waitFirstPeriod",
+              "typeName": "bool"
+            }
+          ]
+        },
+        "instructions": [
+          "0x1806fcc75 mov rcx, qword ptr [rdi + 0x48]",
+          "0x1806fcc79 test rcx, rcx",
+          "0x1806fcc7c je 0x1806fce74",
+          "0x1806fcc82 mov r9, qword ptr [rip + 0x849a82f]",
+          "0x1806fcc89 lea r8, [rsp + 0x30]",
+          "0x1806fcc8e mov edx, esi",
+          "0x1806fcc90 call 0x185be68b0",
+          "0x1806fcc95 test al, al",
+          "0x1806fcc97 je 0x1806fce64",
+          "0x1806fcc9d mov rcx, qword ptr [rsp + 0x30]",
+          "0x1806fcca2 test rcx, rcx",
+          "0x1806fcca5 je 0x1806fce74",
+          "0x1806fccab xor r8d, r8d",
+          "0x1806fccae movzx edx, bl",
+          "0x1806fccb1 call 0x1806ee800"
+        ]
+      },
+      {
+        "method": {
+          "nameIndex": 2482620,
+          "declaringType": 10276,
+          "returnType": 84484,
+          "parameterStart": 67377,
+          "genericContainerIndex": -1,
+          "token": 100730045,
+          "flags": 134,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 1,
+          "index": 66748,
+          "image": "Assembly-CSharp.dll",
+          "address": 6449774288,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.Deck.RecycleCard",
+          "returnTypeName": "void",
+          "parameters": [
+            {
+              "nameIndex": 4804,
+              "token": 134285111,
+              "typeIndex": 83054,
+              "index": 67377,
+              "name": "instanceUid",
+              "typeName": "uint"
+            }
+          ]
+        },
+        "instructions": [
+          "0x1806fbf36 mov qword ptr [rsp + 0x50], rsi",
+          "0x1806fbf3b mov rcx, qword ptr [rdi + 0x40]",
+          "0x1806fbf3f test rcx, rcx",
+          "0x1806fbf42 je 0x1806fc2d7",
+          "0x1806fbf48 mov r9, qword ptr [rip + 0x849ac39]",
+          "0x1806fbf4f lea r8, [rsp + 0x30]",
+          "0x1806fbf54 mov edx, ebx",
+          "0x1806fbf56 call 0x185be68b0",
+          "0x1806fbf5b test al, al",
+          "0x1806fbf5d je 0x1806fc294",
+          "0x1806fbf63 mov rbx, qword ptr [rsp + 0x30]",
+          "0x1806fbf68 test rbx, rbx",
+          "0x1806fbf6b je 0x1806fc2d7",
+          "0x1806fbf71 cmp byte ptr [rip + 0x88dcaf8], bpl",
+          "0x1806fbf78 jbe 0x1806fbf82",
+          "0x1806fbf7a mov rcx, qword ptr [rbx]",
+          "0x1806fbf7d call 0x180457010",
+          "0x1806fbf82 mov rdx, qword ptr [rbx]",
+          "0x1806fbf85 mov rcx, rbx",
+          "0x1806fbf88 mov rax, qword ptr [rdx + 0x2d0]",
+          "0x1806fbf8f mov rdx, qword ptr [rdx + 0x2d8]",
+          "0x1806fbf96 call rax"
+        ]
+      },
+      {
+        "method": {
+          "nameIndex": 2536886,
+          "declaringType": 10264,
+          "returnType": 46024,
+          "parameterStart": 67496,
+          "genericContainerIndex": -1,
+          "token": 100730158,
+          "flags": 134,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 4,
+          "index": 66861,
+          "image": "Assembly-CSharp.dll",
+          "address": 6449707392,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.Deck/Card.Draw",
+          "returnTypeName": "bool",
+          "parameters": [
+            {
+              "nameIndex": 2532415,
+              "token": 134285230,
+              "typeIndex": 46024,
+              "index": 67496,
+              "name": "freely",
+              "typeName": "bool"
+            },
+            {
+              "nameIndex": 2532506,
+              "token": 134285231,
+              "typeIndex": 46049,
+              "index": 67497,
+              "name": "forceReduceRemainingCnt",
+              "typeName": "bool"
+            },
+            {
+              "nameIndex": 2480943,
+              "token": 134285232,
+              "typeIndex": 46049,
+              "index": 67498,
+              "name": "dontUpdateState",
+              "typeName": "bool"
+            },
+            {
+              "nameIndex": 2536876,
+              "token": 134285233,
+              "typeIndex": 46049,
+              "index": 67499,
+              "name": "forceDraw",
+              "typeName": "bool"
+            }
+          ]
+        },
+        "instructions": [
+          "0x1806eba24 xor dil, 1",
+          "0x1806eba28 or dil, bpl",
+          "0x1806eba2b je 0x1806eba30",
+          "0x1806eba2d dec dword ptr [rbx + 0x18]",
+          "0x1806eba30 test sil, sil",
+          "0x1806eba33 jne 0x1806ebaba",
+          "0x1806eba39 cmp byte ptr [rip + 0x88ed030], sil",
+          "0x1806eba40 jbe 0x1806eba4a",
+          "0x1806eba42 mov rcx, qword ptr [rbx]",
+          "0x1806eba45 call 0x180457010",
+          "0x1806eba4a mov rdx, qword ptr [rbx]",
+          "0x1806eba4d mov rcx, rbx",
+          "0x1806eba50 mov rax, qword ptr [rdx + 0x1f0]",
+          "0x1806eba57 mov rdx, qword ptr [rdx + 0x1f8]",
+          "0x1806eba5e call rax",
+          "0x1806eba60 test eax, eax",
+          "0x1806eba62 je 0x1806eba8b",
+          "0x1806eba64 sub eax, 1",
+          "0x1806eba67 je 0x1806eba84",
+          "0x1806eba69 cmp eax, 1",
+          "0x1806eba6c jne 0x1806eba8b",
+          "0x1806eba6e mov eax, dword ptr [rbx + 0x18]",
+          "0x1806eba71 cmp dword ptr [rbx + 0x170], eax",
+          "0x1806eba77 jl 0x1806ebaba",
+          "0x1806eba79 cmp dword ptr [rbx + 0x170], 0",
+          "0x1806eba80 jle 0x1806ebaba",
+          "0x1806eba82 jmp 0x1806ebaaa",
+          "0x1806eba84 mov edx, 2",
+          "0x1806eba89 jmp 0x1806ebaaf",
+          "0x1806eba8b mov rcx, qword ptr [rbx + 0x30]",
+          "0x1806eba8f test rcx, rcx",
+          "0x1806eba92 je 0x1806ebb66",
+          "0x1806eba98 mov rdx, qword ptr [rbx + 0x1d0]",
+          "0x1806eba9f xor r9d, r9d",
+          "0x1806ebaa2 mov r8b, 1",
+          "0x1806ebaa5 call 0x181e4afc0",
+          "0x1806ebaaa mov edx, 3",
+          "0x1806ebaaf xor r8d, r8d",
+          "0x1806ebab2 mov rcx, rbx",
+          "0x1806ebab5 call 0x1806f42c0",
+          "0x1806ebaba mov rdi, qword ptr [rbx + 0x10]"
+        ]
+      },
+      {
+        "method": {
+          "nameIndex": 2536900,
+          "declaringType": 10264,
+          "returnType": 84484,
+          "parameterStart": 67503,
+          "genericContainerIndex": -1,
+          "token": 100730160,
+          "flags": 134,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 1,
+          "index": 66863,
+          "image": "Assembly-CSharp.dll",
+          "address": 6449719296,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.Deck/Card.ResetRespawnTime",
+          "returnTypeName": "void",
+          "parameters": [
+            {
+              "nameIndex": 881572,
+              "token": 134285237,
+              "typeIndex": 46049,
+              "index": 67503,
+              "name": "waitFirstPeriod",
+              "typeName": "bool"
+            }
+          ]
+        },
+        "instructions": [
+          "0x1806ee867 cmp byte ptr [rip + 0x88acd21], cl",
+          "0x1806ee86d mov rdi, qword ptr [rbx + 0x30]",
+          "0x1806ee871 jne 0x1806ee88d",
+          "0x1806ee873 lea rcx, [rip + 0x84d34ae]",
+          "0x1806ee87a call 0x18049c210",
+          "0x1806ee87f mov rdx, qword ptr [rip + 0x84d34a2]",
+          "0x1806ee886 mov byte ptr [rip + 0x88acd01], 1",
+          "0x1806ee88d mov rax, qword ptr [rdx + 0xb8]",
+          "0x1806ee894 mov rcx, qword ptr [rax + 0x178]",
+          "0x1806ee89b test rcx, rcx",
+          "0x1806ee89e jne 0x1806ee8a9",
+          "0x1806ee8a0 mov rax, qword ptr [rbx + 0x1e0]",
+          "0x1806ee8a7 jmp 0x1806ee8b4",
+          "0x1806ee8a9 xor r8d, r8d",
+          "0x1806ee8ac mov rdx, rbx",
+          "0x1806ee8af call 0x183197090",
+          "0x1806ee8b4 test rax, rax",
+          "0x1806ee8b7 je 0x1806ee96c",
+          "0x1806ee8bd xor r8d, r8d",
+          "0x1806ee8c0 lea rcx, [rsp + 0x40]",
+          "0x1806ee8c5 mov rdx, rax",
+          "0x1806ee8c8 call 0x180712480",
+          "0x1806ee924 xor edx, edx",
+          "0x1806ee926 mov ecx, ebx",
+          "0x1806ee928 call 0x18695e170",
+          "0x1806ee92d test rdi, rdi",
+          "0x1806ee930 je 0x1806ee96c",
+          "0x1806ee932 xor r9d, r9d",
+          "0x1806ee935 movzx r8d, sil",
+          "0x1806ee939 mov rdx, rax",
+          "0x1806ee93c mov rcx, rdi",
+          "0x1806ee93f mov rdi, qword ptr [rsp + 0x70]",
+          "0x1806ee944 mov rbx, qword ptr [rsp + 0x78]",
+          "0x1806ee949 add rsp, 0x60",
+          "0x1806ee94d pop rsi",
+          "0x1806ee94e jmp 0x181e4afc0"
+        ]
+      },
+      {
+        "method": {
+          "nameIndex": 4496,
+          "declaringType": 10264,
+          "returnType": 84484,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100730164,
+          "flags": 454,
+          "iflags": 0,
+          "slot": 25,
+          "parameterCount": 0,
+          "index": 66867,
+          "image": "Assembly-CSharp.dll",
+          "address": 6449712240,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.Deck/Card.OnRecycle",
+          "returnTypeName": "void",
+          "parameters": []
+        },
+        "instructions": [
+          "0x1806ecd94 mov rdx, qword ptr [rbx]",
+          "0x1806ecd97 mov rcx, rbx",
+          "0x1806ecd9a mov rax, qword ptr [rdx + 0x1f0]",
+          "0x1806ecda1 mov rdx, qword ptr [rdx + 0x1f8]",
+          "0x1806ecda8 call rax",
+          "0x1806ecdaa cmp eax, 2",
+          "0x1806ecdad jne 0x1806ece3c",
+          "0x1806ecdb3 xor edx, edx",
+          "0x1806ecdb5 mov rcx, rbx",
+          "0x1806ecdb8 call 0x1806f3f20",
+          "0x1806ecdbd cmp eax, 4",
+          "0x1806ecdc0 je 0x1806ecdf3",
+          "0x1806ecdc2 mov eax, dword ptr [rbx + 0x18]",
+          "0x1806ecdc5 cmp dword ptr [rbx + 0x170], eax",
+          "0x1806ecdcb jge 0x1806ecdf3",
+          "0x1806ecdcd mov rcx, qword ptr [rbx + 0x30]",
+          "0x1806ecdd1 test rcx, rcx",
+          "0x1806ecdd4 je 0x1806ecf5f",
+          "0x1806ecdda mov rdx, qword ptr [rbx + 0x1d0]",
+          "0x1806ecde1 xor r9d, r9d",
+          "0x1806ecde4 mov r8b, 1",
+          "0x1806ecde7 call 0x181e4afc0",
+          "0x1806ecdec mov edx, 4",
+          "0x1806ecdf1 jmp 0x1806ece31",
+          "0x1806ecdf3 xor edx, edx",
+          "0x1806ecdf5 mov rcx, rbx",
+          "0x1806ecdf8 call 0x1806f3f20",
+          "0x1806ecdfd cmp eax, 3",
+          "0x1806ece00 je 0x1806ece3c",
+          "0x1806ece02 mov eax, dword ptr [rbx + 0x18]",
+          "0x1806ece05 cmp dword ptr [rbx + 0x170], eax",
+          "0x1806ece0b jl 0x1806ece3c",
+          "0x1806ece0d mov rcx, qword ptr [rbx + 0x30]",
+          "0x1806ece11 test rcx, rcx",
+          "0x1806ece14 je 0x1806ecf5f",
+          "0x1806ece1a mov rdx, qword ptr [rbx + 0x1d0]",
+          "0x1806ece21 xor r9d, r9d",
+          "0x1806ece24 mov r8b, 1",
+          "0x1806ece27 call 0x181e4afc0",
+          "0x1806ece2c mov edx, 3",
+          "0x1806ece31 xor r8d, r8d",
+          "0x1806ece34 mov rcx, rbx",
+          "0x1806ece37 call 0x1806f42c0"
+        ]
+      },
+      {
+        "method": {
+          "nameIndex": 3165,
+          "declaringType": 10264,
+          "returnType": 84484,
+          "parameterStart": 67572,
+          "genericContainerIndex": -1,
+          "token": 100730206,
+          "flags": 134,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 1,
+          "index": 66909,
+          "image": "Assembly-CSharp.dll",
+          "address": 6449714480,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.Deck/Card.OnTick",
+          "returnTypeName": "void",
+          "parameters": [
+            {
+              "nameIndex": 3876,
+              "token": 134285306,
+              "typeIndex": 54451,
+              "index": 67572,
+              "name": "deltaTime",
+              "typeName": "Torappu.FP"
+            }
+          ]
+        },
+        "instructions": [
+          "0x1806ed798 mov dword ptr [rsi + 0x170], eax",
+          "0x1806ed79e test eax, eax",
+          "0x1806ed7a0 jle 0x1806ed7d3",
+          "0x1806ed7a2 mov rcx, qword ptr [rsi + 0x30]",
+          "0x1806ed7a6 test rcx, rcx",
+          "0x1806ed7a9 je 0x1806edc69",
+          "0x1806ed7af xor r9d, r9d",
+          "0x1806ed7b2 mov r8b, 1",
+          "0x1806ed7b5 mov rdx, qword ptr [rsi + 0x1d0]",
+          "0x1806ed7bc call 0x181e4afc0",
+          "0x1806ed7c1 xor r8d, r8d",
+          "0x1806ed7c4 mov edx, 4",
+          "0x1806ed7c9 mov rcx, rsi",
+          "0x1806ed7cc call 0x1806f42c0",
+          "0x1806ed7d1 jmp 0x1806ed7f9",
+          "0x1806ed7d3 xor r8d, r8d",
+          "0x1806ed7d6 mov edx, 1",
+          "0x1806ed7db mov rcx, rsi",
+          "0x1806ed7de call 0x1806f42c0",
+          "0x1806ed7e3 jmp 0x1806ed7f9",
+          "0x1806ed7e5 mov rcx, qword ptr [rsi + 0x30]",
+          "0x1806ed7e9 test rcx, rcx",
+          "0x1806ed7ec je 0x1806edc69",
+          "0x1806ed7f2 xor edx, edx",
+          "0x1806ed7f4 call 0x181e4aca0"
+        ]
+      },
+      {
+        "method": {
+          "nameIndex": 2536891,
+          "declaringType": 10266,
+          "returnType": 84484,
+          "parameterStart": 67744,
+          "genericContainerIndex": -1,
+          "token": 100730385,
+          "flags": 198,
+          "iflags": 0,
+          "slot": 24,
+          "parameterCount": 3,
+          "index": 67088,
+          "image": "Assembly-CSharp.dll",
+          "address": 6449910992,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.Deck/TokenCard.Recharge",
+          "returnTypeName": "void",
+          "parameters": [
+            {
+              "nameIndex": 1072154,
+              "token": 134285478,
+              "typeIndex": 60309,
+              "index": 67744,
+              "name": "cnt",
+              "typeName": "int"
+            },
+            {
+              "nameIndex": 410736,
+              "token": 134285479,
+              "typeIndex": 114649,
+              "index": 67745,
+              "name": "timing",
+              "typeName": "Torappu.Battle.Deck/Card/RechargeTiming"
+            },
+            {
+              "nameIndex": 2532196,
+              "token": 134285480,
+              "typeIndex": 46049,
+              "index": 67746,
+              "name": "refreshRemainingCnt",
+              "typeName": "bool"
+            }
+          ]
+        },
+        "instructions": [
+          "0x18071d55a call rax",
+          "0x18071d55c test al, al",
+          "0x18071d55e jne 0x18071d733",
+          "0x18071d564 test esi, esi",
+          "0x18071d566 jne 0x18071d57d",
+          "0x18071d568 cmp byte ptr [rbx + 0x1f4], sil",
+          "0x18071d56f je 0x18071d57d",
+          "0x18071d571 cmp dword ptr [rbx + 0x1f8], esi",
+          "0x18071d577 jg 0x18071d733",
+          "0x18071d57d test dil, dil",
+          "0x18071d580 jne 0x18071d621",
+          "0x18071d610 call 0x18686bef0",
+          "0x18071d615 mov edx, dword ptr [rbx + 0x18]",
+          "0x18071d618 add edx, ebp",
+          "0x18071d61a cmp eax, edx",
+          "0x18071d61c jmp 0x18071d6b4",
+          "0x18071d6b4 cmovl edx, eax",
+          "0x18071d6b7 mov dword ptr [rbx + 0x18], edx",
+          "0x18071d6ba cmp byte ptr [rbx + 0x1f4], 0",
+          "0x18071d6c1 je 0x18071d6c9",
+          "0x18071d6c3 inc dword ptr [rbx + 0x1f8]",
+          "0x18071d6c9 cmp byte ptr [rip + 0x88bb3a0], 0",
+          "0x18071d6d0 jbe 0x18071d6da",
+          "0x18071d6d2 mov rcx, qword ptr [rbx]",
+          "0x18071d6d5 call 0x180457010",
+          "0x18071d6da mov rdx, qword ptr [rbx]",
+          "0x18071d6dd mov rcx, rbx",
+          "0x18071d6e0 mov rax, qword ptr [rdx + 0x1f0]",
+          "0x18071d6e7 mov rdx, qword ptr [rdx + 0x1f8]",
+          "0x18071d6ee call rax",
+          "0x18071d6f0 cmp eax, 2",
+          "0x18071d6f3 jne 0x18071d733",
+          "0x18071d6f5 cmp esi, 1",
+          "0x18071d6f8 jne 0x18071d733",
+          "0x18071d6fa mov ecx, dword ptr [rbx + 0x170]",
+          "0x18071d700 mov edx, dword ptr [rbx + 0x18]",
+          "0x18071d703 add ecx, ebp",
+          "0x18071d705 cmp edx, ecx",
+          "0x18071d707 cmovge edx, ecx",
+          "0x18071d70a xor eax, eax",
+          "0x18071d70c test edx, edx",
+          "0x18071d70e cmovs edx, eax",
+          "0x18071d711 mov dword ptr [rbx + 0x170], edx",
+          "0x18071d717 jmp 0x18071d733"
+        ]
+      },
+      {
+        "method": {
+          "nameIndex": 4496,
+          "declaringType": 10266,
+          "returnType": 84484,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100730391,
+          "flags": 198,
+          "iflags": 0,
+          "slot": 25,
+          "parameterCount": 0,
+          "index": 67094,
+          "image": "Assembly-CSharp.dll",
+          "address": 6449910528,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.Deck/TokenCard.OnRecycle",
+          "returnTypeName": "void",
+          "parameters": []
+        },
+        "instructions": [
+          "0x18071d325 mov rax, qword ptr [rip + 0x84a5c5c]",
+          "0x18071d32c mov rdx, qword ptr [rax + 0xb8]",
+          "0x18071d333 mov rcx, qword ptr [rdx + 0xe8]",
+          "0x18071d33a test rcx, rcx",
+          "0x18071d33d jne 0x18071d363",
+          "0x18071d33f xor edx, edx",
+          "0x18071d341 mov rcx, rbx",
+          "0x18071d344 call 0x1806ecc70",
+          "0x18071d349 xor edx, edx",
+          "0x18071d34b mov rcx, rbx",
+          "0x18071d34e call 0x1806f25a0",
+          "0x18071d353 test al, al",
+          "0x18071d355 jne 0x18071d373",
+          "0x18071d357 dec dword ptr [rbx + 0x1f0]"
+        ]
+      },
+      {
+        "method": {
+          "nameIndex": 6505,
+          "declaringType": 10318,
+          "returnType": 84484,
+          "parameterStart": 68185,
+          "genericContainerIndex": -1,
+          "token": 100730950,
+          "flags": 452,
+          "iflags": 0,
+          "slot": 123,
+          "parameterCount": 1,
+          "index": 67653,
+          "image": "Assembly-CSharp.dll",
+          "address": 6449963104,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.Entity.OnFinish",
+          "returnTypeName": "void",
+          "parameters": [
+            {
+              "nameIndex": 16408,
+              "token": 134285919,
+              "typeIndex": 98014,
+              "index": 68185,
+              "name": "reason",
+              "typeName": "Torappu.Battle.Entity/FinishReason"
+            }
+          ]
+        },
+        "instructions": [
+          "0x18072a44f xor edx, edx",
+          "0x18072a451 mov rcx, rdi",
+          "0x18072a454 call 0x1807338a0",
+          "0x18072a459 test rax, rax",
+          "0x18072a45c je 0x18072a4f7",
+          "0x18072a462 xor r8d, r8d",
+          "0x18072a465 mov dl, 1",
+          "0x18072a467 mov rcx, rax",
+          "0x18072a46a call 0x1806b1eb0",
+          "0x18072a46f cmp byte ptr [rip + 0x88ae5fa], 0"
+        ]
+      },
+      {
+        "method": {
+          "nameIndex": 2532216,
+          "declaringType": 11491,
+          "returnType": 46024,
+          "parameterStart": 76534,
+          "genericContainerIndex": -1,
+          "token": 100740553,
+          "flags": 134,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 3,
+          "index": 77256,
+          "image": "Assembly-CSharp.dll",
+          "address": 6453615296,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.Character.RechargeToken",
+          "returnTypeName": "bool",
+          "parameters": [
+            {
+              "nameIndex": 1072154,
+              "token": 134294268,
+              "typeIndex": 60309,
+              "index": 76534,
+              "name": "cnt",
+              "typeName": "int"
+            },
+            {
+              "nameIndex": 410736,
+              "token": 134294269,
+              "typeIndex": 114649,
+              "index": 76535,
+              "name": "timing",
+              "typeName": "Torappu.Battle.Deck/Card/RechargeTiming"
+            },
+            {
+              "nameIndex": 2532196,
+              "token": 134294270,
+              "typeIndex": 46049,
+              "index": 76536,
+              "name": "refreshRemainingCnt",
+              "typeName": "bool"
+            }
+          ]
+        },
+        "instructions": [
+          "0x180aa5b80 mov rcx, rbx",
+          "0x180aa5b83 call 0x180aaf970",
+          "0x180aa5b88 test rax, rax",
+          "0x180aa5b8b je 0x180aa5c56",
+          "0x180aa5b91 cmp byte ptr [rax + 0x90], 0",
+          "0x180aa5b98 mov rcx, qword ptr [rip + 0x810bfc1]",
+          "0x180aa5b9f jne 0x180aa5be0",
+          "0x180aa5ba1 call 0x18558e720",
+          "0x180aa5ba6 test rax, rax",
+          "0x180aa5ba9 je 0x180aa5c56",
+          "0x180aa5baf mov edx, dword ptr [rbx + 0x20]",
+          "0x180aa5bb2 xor r8d, r8d",
+          "0x180aa5bb5 mov rcx, rax",
+          "0x180aa5bb8 call 0x180653380",
+          "0x180aa5bbd xor edx, edx",
+          "0x180aa5bbf mov rcx, rbx",
+          "0x180aa5bc2 mov rdi, rax",
+          "0x180aa5bc5 call 0x180aaf970",
+          "0x180aa5bca test rax, rax",
+          "0x180aa5bcd je 0x180aa5c56",
+          "0x180aa5bd3 test rdi, rdi",
+          "0x180aa5bd6 je 0x180aa5c56",
+          "0x180aa5bd8 mov edx, dword ptr [rax + 0xa0]",
+          "0x180aa5bde jmp 0x180aa5c12",
+          "0x180aa5be0 call 0x18558e720",
+          "0x180aa5be5 test rax, rax",
+          "0x180aa5be8 je 0x180aa5c56",
+          "0x180aa5bea mov edx, dword ptr [rbx + 0x20]",
+          "0x180aa5bed xor r8d, r8d",
+          "0x180aa5bf0 mov rcx, rax",
+          "0x180aa5bf3 call 0x180653380",
+          "0x180aa5bf8 xor edx, edx",
+          "0x180aa5bfa mov rcx, rbx",
+          "0x180aa5bfd mov rdi, rax",
+          "0x180aa5c00 call 0x180aaf970",
+          "0x180aa5c05 test rax, rax",
+          "0x180aa5c08 je 0x180aa5c56",
+          "0x180aa5c0a test rdi, rdi",
+          "0x180aa5c0d je 0x180aa5c56",
+          "0x180aa5c0f mov edx, dword ptr [rax + 0x6c]",
+          "0x180aa5c12 mov qword ptr [rsp + 0x28], 0",
+          "0x180aa5c1b mov r9d, ebp",
+          "0x180aa5c1e mov r8d, r14d",
+          "0x180aa5c21 mov byte ptr [rsp + 0x20], sil",
+          "0x180aa5c26 mov rcx, rdi",
+          "0x180aa5c29 call 0x1806fb9b0"
+        ]
+      },
+      {
+        "method": {
+          "nameIndex": 2532328,
+          "declaringType": 11491,
+          "returnType": 46024,
+          "parameterStart": 76540,
+          "genericContainerIndex": -1,
+          "token": 100740555,
+          "flags": 134,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 1,
+          "index": 77258,
+          "image": "Assembly-CSharp.dll",
+          "address": 6453618320,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.Character.ResetTokenRespawnTime",
+          "returnTypeName": "bool",
+          "parameters": [
+            {
+              "nameIndex": 881572,
+              "token": 134294274,
+              "typeIndex": 46024,
+              "index": 76540,
+              "name": "waitFirstPeriod",
+              "typeName": "bool"
+            }
+          ]
+        },
+        "instructions": [
+          "0x180aa66fe mov qword ptr [rsp + 0x30], rdi",
+          "0x180aa6703 xor edx, edx",
+          "0x180aa6705 mov rcx, rbx",
+          "0x180aa6708 call 0x180aaf970",
+          "0x180aa670d test rax, rax",
+          "0x180aa6710 je 0x180aa67d1",
+          "0x180aa6716 cmp dword ptr [rax + 0xa0], 0",
+          "0x180aa671d ja 0x180aa6731",
+          "0x180aa671f mov rdi, qword ptr [rsp + 0x30]",
+          "0x180aa6724 xor al, al",
+          "0x180aa6726 mov rbx, qword ptr [rsp + 0x38]",
+          "0x180aa672b add rsp, 0x20",
+          "0x180aa672f pop rsi",
+          "0x180aa6730 ret",
+          "0x180aa6766 xor edx, edx",
+          "0x180aa6768 mov rcx, rbx",
+          "0x180aa676b cmp byte ptr [rax + 0x90], dl",
+          "0x180aa6771 je 0x180aa6782",
+          "0x180aa6773 call 0x180aaf970",
+          "0x180aa6778 test rax, rax",
+          "0x180aa677b je 0x180aa67d1",
+          "0x180aa677d mov edx, dword ptr [rax + 0x6c]",
+          "0x180aa6780 jmp 0x180aa6792",
+          "0x180aa6782 call 0x180aaf970",
+          "0x180aa6787 test rax, rax",
+          "0x180aa678a je 0x180aa67d1",
+          "0x180aa678c mov edx, dword ptr [rax + 0xa0]",
+          "0x180aa6792 test rdi, rdi",
+          "0x180aa6795 je 0x180aa67d1",
+          "0x180aa6797 xor r9d, r9d",
+          "0x180aa679a movzx r8d, sil",
+          "0x180aa679e mov rcx, rdi",
+          "0x180aa67a1 call 0x1806fcc10",
+          "0x180aa67a6 mov rdi, qword ptr [rsp + 0x30]",
+          "0x180aa67ab mov al, 1",
+          "0x180aa67ad mov rbx, qword ptr [rsp + 0x38]",
+          "0x180aa67b2 add rsp, 0x20",
+          "0x180aa67b6 pop rsi",
+          "0x180aa67b7 ret"
+        ]
+      },
+      {
+        "method": {
+          "nameIndex": 6505,
+          "declaringType": 11491,
+          "returnType": 84484,
+          "parameterStart": 76640,
+          "genericContainerIndex": -1,
+          "token": 100740637,
+          "flags": 196,
+          "iflags": 0,
+          "slot": 123,
+          "parameterCount": 1,
+          "index": 77340,
+          "image": "Assembly-CSharp.dll",
+          "address": 6453605056,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.Character.OnFinish",
+          "returnTypeName": "void",
+          "parameters": [
+            {
+              "nameIndex": 16408,
+              "token": 134294374,
+              "typeIndex": 98014,
+              "index": 76640,
+              "name": "reason",
+              "typeName": "Torappu.Battle.Entity/FinishReason"
+            }
+          ]
+        },
+        "instructions": [
+          "0x180aa33ef call rax",
+          "0x180aa33f1 xor r8d, r8d",
+          "0x180aa33f4 mov edx, edi",
+          "0x180aa33f6 mov rcx, rbx",
+          "0x180aa33f9 call 0x180b18e40",
+          "0x180aa33fe cmp byte ptr [rip + 0x853566b], 0",
+          "0x180aa34c2 test rax, rax",
+          "0x180aa34c5 je 0x180aa3500",
+          "0x180aa34c7 xor r9d, r9d",
+          "0x180aa34ca mov r8d, edi",
+          "0x180aa34cd mov rdx, rbx",
+          "0x180aa34d0 mov rcx, rax",
+          "0x180aa34d3 call 0x180658ea0",
+          "0x180aa34d8 mov rsi, qword ptr [rsp + 0x30]"
+        ]
+      },
+      {
+        "method": {
+          "nameIndex": 6505,
+          "declaringType": 11603,
+          "returnType": 84484,
+          "parameterStart": 77765,
+          "genericContainerIndex": -1,
+          "token": 100742312,
+          "flags": 196,
+          "iflags": 0,
+          "slot": 123,
+          "parameterCount": 1,
+          "index": 79015,
+          "image": "Assembly-CSharp.dll",
+          "address": 6454087232,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.Unit.OnFinish",
+          "returnTypeName": "void",
+          "parameters": [
+            {
+              "nameIndex": 16408,
+              "token": 134295499,
+              "typeIndex": 98014,
+              "index": 77765,
+              "name": "reason",
+              "typeName": "Torappu.Battle.Entity/FinishReason"
+            }
+          ]
+        },
+        "instructions": [
+          "0x180b18e9b jne 0x180b19098",
+          "0x180b18ea1 mov qword ptr [rsp + 0x30], rdi",
+          "0x180b18ea6 xor r8d, r8d",
+          "0x180b18ea9 mov edx, esi",
+          "0x180b18eab mov rcx, rbx",
+          "0x180b18eae call 0x18072a060",
+          "0x180b18eb3 cmp byte ptr [rip + 0x84bfbb6], 0"
+        ]
+      },
+      {
+        "method": {
+          "nameIndex": 397673,
+          "declaringType": 14405,
+          "returnType": 46024,
+          "parameterStart": 94615,
+          "genericContainerIndex": -1,
+          "token": 100762720,
+          "flags": 198,
+          "iflags": 0,
+          "slot": 6,
+          "parameterCount": 3,
+          "index": 99423,
+          "image": "Assembly-CSharp.dll",
+          "address": 6460404352,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.Action.Nodes/ResetTokenRespawnTime.Execute",
+          "returnTypeName": "bool",
+          "parameters": [
+            {
+              "nameIndex": 3124,
+              "token": 134312360,
+              "typeIndex": 45909,
+              "index": 94615,
+              "name": "blackboard",
+              "typeName": "Torappu.Blackboard"
+            },
+            {
+              "nameIndex": 440673,
+              "token": 134312361,
+              "typeIndex": 90650,
+              "index": 94616,
+              "name": "sourceType",
+              "typeName": "Torappu.Battle.Action.ActionNode/SourceType"
+            },
+            {
+              "nameIndex": 440684,
+              "token": 134312362,
+              "typeIndex": 32502,
+              "index": 94617,
+              "name": "snapshot",
+              "typeName": "Torappu.Battle.Context/Snapshot&"
+            }
+          ]
+        },
+        "instructions": [
+          "0x18111f349 cmovne r9, rbx",
+          "0x18111f34d test r9, r9",
+          "0x18111f350 je 0x18111f363",
+          "0x18111f352 movzx edx, byte ptr [rdi + 0x14]",
+          "0x18111f356 xor r8d, r8d",
+          "0x18111f359 mov rcx, r9",
+          "0x18111f35c call 0x180aa6690",
+          "0x18111f361 jmp 0x18111f382"
+        ]
+      },
+      {
+        "method": {
+          "nameIndex": 397673,
+          "declaringType": 14945,
+          "returnType": 46024,
+          "parameterStart": 96389,
+          "genericContainerIndex": -1,
+          "token": 100764496,
+          "flags": 198,
+          "iflags": 0,
+          "slot": 6,
+          "parameterCount": 3,
+          "index": 101199,
+          "image": "Assembly-CSharp.dll",
+          "address": 6461059616,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.Action.Nodes/RechargeToken.Execute",
+          "returnTypeName": "bool",
+          "parameters": [
+            {
+              "nameIndex": 3124,
+              "token": 134314134,
+              "typeIndex": 45909,
+              "index": 96389,
+              "name": "blackboard",
+              "typeName": "Torappu.Blackboard"
+            },
+            {
+              "nameIndex": 440673,
+              "token": 134314135,
+              "typeIndex": 90650,
+              "index": 96390,
+              "name": "sourceType",
+              "typeName": "Torappu.Battle.Action.ActionNode/SourceType"
+            },
+            {
+              "nameIndex": 440684,
+              "token": 134314136,
+              "typeIndex": 32502,
+              "index": 96391,
+              "name": "snapshot",
+              "typeName": "Torappu.Battle.Context/Snapshot&"
+            }
+          ]
+        },
+        "instructions": [
+          "0x1811bf304 xor r8d, r8d",
+          "0x1811bf307 xor edx, edx",
+          "0x1811bf309 mov rcx, rbx",
+          "0x1811bf30c call 0x186dcf290",
+          "0x1811bf311 test al, al",
+          "0x1811bf313 jne 0x1811bf35b",
+          "0x1811bf315 test rsi, rsi",
+          "0x1811bf318 je 0x1811bf390",
+          "0x1811bf31a mov rdx, qword ptr [rbp + 0x10]",
+          "0x1811bf31e xor r9d, r9d",
+          "0x1811bf321 mov r8d, 1",
+          "0x1811bf327 mov qword ptr [rsp + 0x20], 0",
+          "0x1811bf330 mov rcx, rsi",
+          "0x1811bf333 call 0x182378c90",
+          "0x1811bf338 test rbx, rbx",
+          "0x1811bf33b je 0x1811bf390",
+          "0x1811bf33d movzx r9d, byte ptr [rbp + 0x1c]",
+          "0x1811bf342 mov edx, eax",
+          "0x1811bf344 mov r8d, dword ptr [rbp + 0x18]",
+          "0x1811bf348 mov rcx, rbx",
+          "0x1811bf34b mov qword ptr [rsp + 0x20], 0",
+          "0x1811bf354 call 0x180aa5ac0"
+        ]
+      }
+    ]
+  }
+}

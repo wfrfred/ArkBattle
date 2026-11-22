@@ -173,6 +173,20 @@ Enemy.SetExtraMeta 写的是同一 Options.actionExtraMeta，但这是出生后�
 
 79 份非生息样本中，managed=false 有 3 项、blockFragment=true 有 41 项、dontBlockWave=true 有 69 项；隐藏组非空 318 项、group 非空 327 项、Pack 非空 332 项。排除模式的字段对照独立统计，不纳入通用机制支持清单。数字枚举原值也保留，不凭声明顺序转换为名称。
 
+### 2026-11-22 补查：战中召唤与本波、最终等待
+
+追到三种等待结果的实际内容，均经过外部出生入口。[固定镜像、Prefab 和原生参数证据](../evidence/managed-summons-20261122/README.md)
+
+| 实际内容 | 从内容到调度登记 | 对等待的效果 |
+| --- | --- | --- |
+| FD-8／GA-6 的寻路者甜品商召唤糖果车 | `enemy_1217_rescar` 的 `Skills/BornCar` 将 `enemy_rescar_skill[summon]` 挂到自身。该模板在 `ON_BUFF_START` 执行 `SummonEnemiesFollowMyRoute`，约 0.1 秒后创建 `enemy_1218_bomscr`。出生位置由技能调用时的宿主位置和可通过格决定，协程在延迟前读宿主原路线与路线进度。节点配置 `_managedByScheduler=true`、`_dontBlockWave=false`，协程创建成功后把糖果车加入本波和最终两个集合。 | FD-8 第一波的 `/waves/0/fragments/0/actions/9` 实际安排了这名敌人，且 `maxTimeWaitingForNextWave=-1`，全关共三波。片段完成后，未释放的糖果车可继续阻止第二波开始，即使召唤者已经离场。GA-6 为单波，糖果车仍参与最终等待。 |
+| 主线 12-20（关卡文件 `main_12-18`）的变形者集群在第一形态生命降至触发线时召唤分身 | P1 的 `P1SummonStand` 挂载 `enemy_wdslm[p1SummonTrigger]`，敌人表提供 `hp_ratio=0.5`、`branch_id=branch_2`、`action_index=0`。`ON_APPLIED_MODIFIER` 执行 `SummonEnemiesFollowBranchRoute`，从 `/branches/branch_2/phases/0/actions/0` 取得分身 `enemy_1542_wdslm_2` 与路线。节点用自己的 `_managedByScheduler=true`，调用时固定 `dontBlockWave=true`。 | 这条实际召唤只加入最终集合。模板 SPAWN 上的 `dontBlockWave=false` 没有传给外部出生方法，分身可延后最终完成，同时允许推进下一波。 |
+| 卫戍协议·盟约下半的炎佑 | 羁绊 Holder 响应模式切换，实际 `SummonEnemiesFollowBranchRoute` 节点从 `dragon` 借用敌人与路线，节点自己的 `_managedByScheduler=false`。 | 两个集合均不登记。`dragon` 的 SPAWN 模板标为 `managedByScheduler=true`，该字段只会在对应调度执行路径消费。 [Holder、关卡和调用证据](../evidence/stronghold-yan-summon-20261122/README.md) |
+
+两者的登记发生在新实例成功创建后，参加等待与是否计入初始出怪总数分开。`_CheckWaveNotFinish` 在 `0x1809848f4` 查询本波集合，`_DealWave.MoveNext` 对 FD-8 的负数等待上限走 `WaitWhileFixed`（`0x18098ca08`）；`_CheckFinalNotFinish` 在 `0x1809846eb` 查询最终集合。糖果车成功出生后以 `0x18098a328` 和 `0x18098a347` 分别加入本波和最终集合。变形者分身经 `0x1811a70cd`、`0x1811a70ed–0x1811a7109` 传入固定不阻波与节点管理值，经 `0x180981ad0` 转交出生；该路径跳过本波登记，仍在 `0x180980d1b` 加入最终集合。销毁／回收解除最终等待的条件见本案第 5 节。上述等待效果由真实内容和普通客户端分支交叉证实，未回放关卡测量等待时长。[波次与最终等待原件](../evidence/scheduler-native-20261107/README.md)
+
+当前 Core 只在 Schedule 内部的计划出怪路径登记等待。技能可在战中按实际位置和路线进度创建 Unit，但 `unit.initialize`、`unit.add` 无法让该实例加入 Schedule 的等待集合。静态 Branch 可以承载变形者分身的固定路线，无法代替甜品商按宿主实时位置和进度出生的过程。
+
 ## 8. 项目对应
 
 预处理的阵容替换、Phase 内运行时选择、动作执行、实例等待及统计是不同的原生事实。项目计划、运行状态与 Data／Content 边界见 [Schedule](../../architecture/schedule.md)、[Data](../../architecture/data.md)和[Content](../../architecture/content.md)，不在本案另存类型草案。
@@ -181,7 +195,7 @@ Enemy.SetExtraMeta 写的是同一 Options.actionExtraMeta，但这是出生后�
 
 1. randomType／refreshType 的具体周期策略消费者及其产生外部有效项／刷新结果的完整链。已追踪的通用预处理和最小额外字段处理没有闭合这点；不得按枚举名称补出规则。
 2. forceBlockWaveInBranch=true 与 ActionData.notCountInTotal=true 的实际非默认内容来源；已有原生分支与 EnemyData 见证不能代替这两项自身的配置／生成见证。
-3. 个别 Branch、隐藏组、其他 Wave 标签及外部重载的实际内容调用者、参数和激活条件；静态入口差异已证实，不把每个公开入口都宣称为本季实际可达。
+3. 个别 Branch、隐藏组、其他 Wave 标签及其余外部重载的实际内容调用者、参数和激活条件；本波加最终等待、仅最终等待已有第 7 节的实际召唤见证，其余入口按各自内容取证。
 4. XLua 实际覆盖、运行时动态配置开关当前取值和跨协程精确唤醒顺序。记录静态条件及分支，不宣称所有线上版本逐帧一致。
 5. 非空 key 的 EMPTY 项如何避免进入未注册对应执行器的普通队列；空 key 清理、类型存在和外部路线模板可读取 EMPTY，均不能代替这条实际流转证据。
 

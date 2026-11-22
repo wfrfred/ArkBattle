@@ -1,0 +1,257 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-11-22"
+    ],
+    "collectionDateSource": "batch directory",
+    "organizedOn": "2026-11-22",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+        "records": [
+          "native.json#/provenance/client/dll"
+        ],
+        "bytes": 223112680
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        "records": [
+          "native.json#/provenance/client/metadata"
+        ],
+        "bytes": 46669332
+      }
+    },
+    "sourceRecords": [
+      "content.json",
+      "native.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12895,
+        "sha256": "9c5b246859318caaec4aab5275ef0d2d49fce5d612c6b4e569973a9941ba621a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "content.json",
+        "kind": "record",
+        "bytes": 73031,
+        "sha256": "35ff4703957d8621c8161bf894577366bb341d32ba0f6f6030ddcb09bbb7e429"
+      },
+      {
+        "path": "extract.py",
+        "kind": "historical-script",
+        "bytes": 10787,
+        "sha256": "209c5eee9323460045b1ed979eeb59c596f4e4aa62e91c016505698461343fd4"
+      },
+      {
+        "path": "native.json",
+        "kind": "record",
+        "bytes": 103673,
+        "sha256": "b9328aad68bb06ee5b86f1677a2ae4d5acfdc20f093278a6b4a9ce9250571195"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 73301,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/bodies/6/method"
+          ],
+          "fullname": "Torappu.Battle.Scheduler.SpawnSummonedEnemyTrackedInGameMode",
+          "address": "0x1809812c0"
+        },
+        {
+          "index": 73460,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/bodies/7/method",
+            "native.json#/result/bodies/8/method",
+            "native.json#/result/bodies/9/method"
+          ],
+          "fullname": "Torappu.Battle.Scheduler/<SpawnSummonedEnemyTrackedInGameMode>d__131.MoveNext",
+          "address": "0x180989de0"
+        },
+        {
+          "index": 100952,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/bodies/0/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/SummonEnemiesFollowBranchRoute.Execute",
+          "address": "0x1811a6dc0"
+        },
+        {
+          "index": 100953,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/bodies/1/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/SummonEnemiesFollowBranchRoute._SummonEnemy",
+          "address": "0x1811a7010"
+        },
+        {
+          "index": 100959,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/bodies/2/method",
+            "native.json#/result/bodies/3/method",
+            "native.json#/result/bodies/4/method",
+            "native.json#/result/bodies/5/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/SummonEnemiesFollowMyRoute.Execute",
+          "address": "0x1811a7ef0"
+        }
+      ],
+      "blocks": [],
+      "types": [
+        {
+          "name": "Torappu.Battle.Action.Nodes/SummonEnemiesFollowBranchRoute",
+          "records": [
+            "native.json#/result/types/0"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Action.Nodes/SummonEnemiesFollowMyRoute",
+          "records": [
+            "native.json#/result/types/1"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Scheduler/<SpawnSummonedEnemyTrackedInGameMode>d__131",
+          "records": [
+            "native.json#/result/types/3"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.Scheduler/SpawnSummonedEnemyTrackedInGameModeParams",
+          "records": [
+            "native.json#/result/types/2"
+          ]
+        }
+      ],
+      "constants": [],
+      "bundles": [
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99",
+          "records": [
+            "content.json#/provenance/clientBundles/0"
+          ],
+          "bytes": 477255
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_9.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_9.ab",
+          "sha256": "31f435cffff8870afc44c046504ebae472851ac0c5ff818e1565ee7e39c7aef8",
+          "records": [
+            "content.json#/provenance/clientBundles/1"
+          ],
+          "bytes": 233619
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_18.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_18.ab",
+          "sha256": "7bc74aef8fbb3cbc7ce86d7e4b789e2c0daaadf076d47b0e9989e83e7ff4eb69",
+          "records": [
+            "content.json#/provenance/clientBundles/2"
+          ],
+          "bytes": 895456
+        },
+        {
+          "kind": "bundle",
+          "path": "battle/enm_pfb_9.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_9.ab",
+          "sha256": "4c26b5d2e40cff62ab572b864caa6c6204969069b33ffb70afffad126d4f0865",
+          "records": [
+            "content.json#/result/components/0"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "battle/enm_pfb_9.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_9.ab",
+          "sha256": "2f9db8f948c52d09c82975f433a32ffdc7a2cfedd1f536b10a58ac7819ba1a7f",
+          "records": [
+            "content.json#/result/components/1"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "battle/enm_pfb_9.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_9.ab",
+          "sha256": "7bcf061183fce05582aea8eb7b457c3630a416860eacb76acd0e2642f529a71f",
+          "records": [
+            "content.json#/result/components/2"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "battle/enm_pfb_18.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_18.ab",
+          "sha256": "d47189197288653af53d8b072cfa59e36ec7c42007dd81151fdc4bcc11ee0807",
+          "records": [
+            "content.json#/result/components/3"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "battle/enm_pfb_18.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_18.ab",
+          "sha256": "f2d9519dcbe70ca6d3a4aa3aa44c4d1f52f75a3bb27a13d9879b1ba402e75be3",
+          "records": [
+            "content.json#/result/components/4"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "battle/enm_pfb_18.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_18.ab",
+          "sha256": "2ce722e89bdc15fa2a5ec06f2b33a697962c43fe3137f1c38a7a3ef30ac20ff3",
+          "records": [
+            "content.json#/result/components/5"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "battle/enm_pfb_18.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_18.ab",
+          "sha256": "923a28e00a7451fe1bee9f3f1a6f7400752994d8426afb344c7f0af6c25fa6dc",
+          "records": [
+            "content.json#/result/components/6"
+          ]
+        },
+        {
+          "kind": "bundle",
+          "path": "battle/enm_pfb_18.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_18.ab",
+          "sha256": "40b2bc94e5e0a7dc7eaa7cd52ed76c00639d585a6e684817f2cf3c3571892354",
+          "records": [
+            "content.json#/result/components/7"
+          ]
+        }
+      ]
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

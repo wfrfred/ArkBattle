@@ -10,12 +10,12 @@ PRTS 检索以待部署区为入口，按费用与返还、左右与近邻选择
 - **C：部署费用属性、实际扣款与本次是否允许返费是不同事实。** 免费投递后仍可返费的内容实例能区分三者，不能用“实付为 0”直接推导“本次费用属性为 0”或“不可返费”。
 - **C：在场实例的费用与隐藏待部署卡牌的费用可以不同。** 前者通常保留部署时的值；后者即使对应干员已经在场，仍可接受部分卡组减费与排序效果。
 - **C：供给至少存在部署时冷却、离场时冷却和离场后排队冷却三种机制。** 可用持有数、同时在场数、冷却队列与冷却起点不是同一个量。
-- **N：普通 QUEUED 分支不为每份排队库存保存时长预算。** Card 保存待恢复份数和一条当前计时器；一段结束后，仍有份数时读取届时 Card 的后续周期来启动下一段。显式修改当前剩余时间、回收状态切换重启有独立路径，不能概括为“任何后续归队或修正都不影响当前进度”。
+- **N／I：中继器普通回收追加待恢复份数，保留已启动的一段。** Card 保存待恢复份数和一条当前计时器。一段到期后，剩余份数按届时 Card 已记录的后续周期逐份恢复。技能显式重置与当前剩余时间修正走独立路径。
 - **N／C：负 DP 还改变自然回复推进。** 当前 DP 小于 0 时，自然回复计时推进量乘默认 0.5；每次推进重新看当前符号，回到 0 后恢复正常速度，保留已有进度。主动加费不因此减半。
 - **C：待部署卡牌可接受效果并成为业务目标。** 左右顺序、相对位置、费用与职业都可参与选取；某些效果先在卡牌上登记，再于后续部署或退场时生效、消耗。普通初始排序与持续重排不是同一规则。
 - **C：卡牌存在、显示、点选、部署资格与实际计时分别有不同机制。** 冷却归零仍可被锁定；封印未必禁止部署；真实冷却已经开始时，也可能临时按零冷却获得特殊部署资格。
 - **C：场上实例与其供给来源并非统一的拥有关系。** 来源退场会移除部分召唤物，但幻影和医疗探机可继续存在；未使用卡牌如何保留、隐藏或删除不能仅由场上清理推导。
-- **N／I：普通撤退的返费和 Card 回收发生在不同阶段。** 有资格的撤退先返 DP，再请求结束。普通撤退和 HP 归零死亡均在角色的 OnFinish 中回收 Card。对象身份随后在 OnRecycle 中注销。见[普通退出结算](#普通撤退与死亡的结算顺序)。
+- **N／I：普通退场的 Card 回收和部署位归还分别结算。** 有资格的撤退先返 DP。普通撤退和 HP 归零死亡均在角色的 OnFinish 中回收 Card，并扣减有限 TokenCard 所计入的在场数。全局部署位随后由 Unit 的 OnRecycle 归还。默认对象池路径中，普通撤退立即回收，普通死亡按角色的默认 1 秒战斗时间延迟回收。见[普通退出结算](#普通撤退与死亡的结算顺序)。
 
 N 表示本轮客户端静态 native 分支直接证据；C 表示 PRTS 社区资料，不标为官方文档。未运行完整游戏，未核实 XLua 覆盖。
 
@@ -110,7 +110,9 @@ cost = clamp(floor(rawCost × rawCostScale) + costDelta, 0, MAX_COST_CEIL)
 
 2026-11-01 的[新版 native 短链](../evidence/deployment-recovery-20261101/README.md)确认：普通 QUEUED 策略存储待恢复份数与单个 PeriodicTimer，不为每份记录入队时长。当前一段预算已经保存在 Timer 中；一段到期后，若仍有待恢复份数，`OnTick` 读取当时 Card 的 `m_newRespawnTimePeriod`，Reset 出下一段。因此后续预算采用启动该段时已写入 Card 的后续周期值，不是每份离场时各存一份，也不是整条队列共用首次启动时的永久快照。这里是读取已有值，不是在启动处即时重新求值全部修正；同次 `OnTick` 中限时 CardBuff 的推进和相应更新位于计时器处理之后。
 
-这不代表当前计时永远不变：`_UpdateCardBuff` 有显式剩余时间操作；`OnRecycle` 从 QUEUING 等状态转向 RESPAWNING 的部分分支也会以当前后续周期完整 Reset。枚举、条件和指令均已保存，但退出到 Recharge／OnRecycle 的完整实参和顺序尚未闭合，不能仅据静态分支断言某个具体归队次数必然重启，也不能预先规定所有追加归队都保留当前进度。来源特化与运行时 XLua 仍不在本轮确认范围内。
+2026-11-22 的[中继器 Prefab／模板与离场调用链](../evidence/repeater-recovery-20261122/README.md)确认了普通回收的实际入参。离场时若回收 Buff 仍在，`Character.OnFinish` 经 `Unit.OnFinish`、`Entity.OnFinish` 同步结束这个 Buff，执行 `RechargeToken(1, ON_FINISH, false)`，之后才通知原 Card 的 `OnRecycle`。Buff 自然结束也执行同一补充动作。在持有上限稳定且有份数可归还时，总份数和排队份数同时加一，可用份数不变。第一份回收启动计时。第一段尚在进行时，第二份普通回收维持原来的 QUEUING 或 RESPAWNING，保留第一份已经经过的时间。若此间部署了最后一份可用库存，Draw 已切到 RESPAWNING 并保留原计时。
+
+`OnRecycle` 的状态切换 Reset 分支仍存在。`_UpdateCardBuff` 可以显式修改当前剩余时间。谬因三技能的 `aphris_sk3[token-withdraw]` 在起始和宿主结束事件中都经 `ResetTokenRespawnTime(waitFirstPeriod=false)` 将当前计时器置为零，库存仍由 Card 的队列推进。这个显式指令有独立入口。技能额外补货、强制撤回的其它条件，以及运行时 XLua，未纳入本段普通回收的推导。[节点参数与时钟写入](../evidence/repeater-recovery-20261122/README.md#调用锚点)
 
 ## 四、手牌顺序与目标选择
 
@@ -316,7 +318,7 @@ QUEUED 对应 `token_10070_aphris_pc`（中继器）；DEFAULT／有限份数中
 
 **N：** 普通 CharacterCard.get_cardPolicy 返回 UNIQUE，get_isInfinity 返回 true。原生普通干员不靠每次 Draw 递减库存实现单实例部署限制，而靠 UNIQUE 的使用中与再部署状态。项目若使用 `stock 1→0→1`，属于项目重新表达相同业务的取舍，不是直接复刻此原生字段。
 
-**N／C：** DEFAULT 在部署的普通状态更新路径启动再部署计时；UNIQUE 在 Draw 后进入 INUSE，在 OnRecycle 中转为 RESPAWNING 并启动计时。QUEUED 有独立的 queuedRespawnCnt、可用份数与 QUEUING／RESPAWNING 分支；中继器 PRTS 的可用数与冷却数描述与此一致。它没有额外的连续投放间隔，不等于 DEFAULT 唯一时长简单设为 0：回收后的串行计时、份数转换和状态切换仍须表达。此前关于 QUEUING→RESPAWNING 可能 Reset 的证据限制继续有效。
+**N／C：** DEFAULT 在部署的普通状态更新路径启动再部署计时。UNIQUE 在 Draw 后进入 INUSE，在 OnRecycle 中转为 RESPAWNING 并启动计时。QUEUED 有独立的 queuedRespawnCnt、可用份数与 QUEUING／RESPAWNING 分支。中继器没有额外的连续投放间隔，离场后串行恢复份数。第三节的实际调用链确认普通追加回收保留当前计时。
 
 **限制：** isInfinity=false 仅证明普通 Draw 会按条件消耗份数，不能证明退场永不归还。Mon3tr 就是有限份数＋UNIQUE，PRTS 另明确其退场返还一份。库存归还的来源与具体退出链仍应另外核对，不能把字段名或零库存直接当作生命周期策略。
 
@@ -381,11 +383,15 @@ CD 策略、份数消耗／归还和回收惩罚有不同原生维度；当前�
 
 ### 普通撤退与死亡的结算顺序
 
-2026-11-22 交叉复核身份、撤退和死亡的已有原件。以下方法均核对到 2026-11-11 身份批次所记录的同一 Windows x64 客户端指纹，范围为默认战斗中由普通 CharacterCard 生成的角色及普通静态分支。
+2026-11-22 交叉核对同一 Windows x64 客户端指纹的身份、撤退、死亡和额度结算。默认模式的普通 CharacterCard 与有限 TokenCard 使用以下路径。字段、分支、消费者和复跑命令见[退场额度证据](../evidence/deployment-exit-limits-20261122/README.md)。
 
 - **N**　允许返费时，`Character.Withdraw`（77251）在 `0x180aa97b8` 调用 `BattleController.ModifyCost`，随后在 `0x180aa97ee` 通过虚槽 117 调用 `FinishMe`。这补齐了第二节社区资料未核对的返费顺序。[Withdraw 正文](../evidence/card-source-identity-20261111/deployment/native/Withdraw-77251.asm) · [撤退虚调用核对](33-targeting-and-targetable-pipeline.md#46-来源离场后的真实群攻弹道)
 - **N／I**　普通撤退和未被复活接管的 HP 归零死亡都进入 `FinishMe`，再派发 `OnFinish`。在 `Character.OnFinish` 的普通分支，`0x180aa348a` 调用地块清理，`0x180aa34a1` 清理阻挡，`0x180aa34d3` 才通知 Controller 回收原 Card。普通 UNIQUE 卡在 INUSE 状态下由 `Card.OnRecycle` 启动冷却，并按开关增加再部署费用阶段。[OnFinish 正文](../evidence/card-source-identity-20261111/deployment/native/OnFinish-77340.asm) · [死亡入口与 FinishMe](39-death-attribution-and-attribute-ranges.md#2-最终死亡怎样读取归属) · [Card 回收分支](../evidence/card-source-identity-20261111/deployment/native/OnRecycle-66867.asm)
-- **I**　`FinishMe` 在 `OnFinish` 返回后才把处理交给 `GameMode.DestroyEntity`。对象池回收时，`BObject.OnRecycle` 调用 `UnregisterBObject`（`0x1806afcef`），再清零实例身份。因此这条普通路径的 Card 回收早于对象身份注销。部署额度和同卡在场上限的生效点仍需查看各自的账户或资格查询。[FinishMe 正文](../evidence/resource-mechanisms-20261114/death-attributes/context-bodies.json) · [对象回收正文](../evidence/nymph-action-settlement-20261103/damage/native-damage.json)
+- **N**　同卡在场计数在 `Character.OnFinish → BattleController.OnCharacterFinished → Deck.RecycleCard → TokenCard.OnRecycle` 减少。计入在场数的实例部署时增加 `m_spawnedCnt`，Card 回收时减一。有限 TokenCard 的准备资格通过 `isMaxDeployed` 读取 `m_spawnedCnt >= maxDeployCnt`。普通干员的 UNIQUE 卡使用 INUSE／RESPAWNING 冷却状态，库存和全局部署位还各有独立检查。[计数与资格调用链](../evidence/deployment-exit-limits-20261122/README.md#资格与计数)
+- **N**　全局部署位在 `Unit.OnRecycle → BattleController.UnregisterUnit → UnitManager.Unregister` 归还。确认已从登记集合移除后，才从玩家部署占用计数减去该 Character 的占用量。部署资格和界面都从 `GetRemainingAvailableCharacterCnt` 读取玩家额度减占用数的结果。回收随后由 `BObject.OnRecycle` 注销对象身份。[计数与资格调用链](../evidence/deployment-exit-limits-20261122/README.md#资格与计数)
+- **N／I**　`FinishMe` 在 `OnFinish` 返回后才派发 `DefaultGameMode.DestroyEntity`。普通撤退立即回收，普通死亡的对象池分支先等待角色的回收延迟。Character 构造与 Reset 默认值为 1 秒，回收协程先用该值做 `WaitForFixedSeconds`，恢复后才调用对象池回收。全局部署位已用尽时，另一张需占位的 Card 即便满足格子、费用等其余条件，也要等全局占用扣减才能部署。普通撤退在同一调用内归还额度。[退出与延迟调用链](../evidence/deployment-exit-limits-20261122/README.md#退出与延迟)
+
+这些结论来自固定客户端的静态普通分支。角色可改写回收延迟，非对象池路径、模式替换、复活接管与 XLua 回调须按各自入口核对。
 
 ### 卫戍的同名副本
 
@@ -441,7 +447,7 @@ CD 策略、份数消耗／归还和回收惩罚有不同原生维度；当前�
 ## 未决项
 
 1. **费用上限与多来源计算。** 已定位 `Card._UpdateCardBuff` 的费用汇总写回及关卡符文分别配置两个上限的入口。同步位为 true 时的全部写入路径，以及具体来源进入汇总的资格、竞争与数值顺序仍待核对。再部署属性修正、一次缩短与多阶段取整仍需按实际路径核对。
-2. **退出阶段的剩余问题。** 普通撤退的返费、退出清理、Card 回收和对象身份注销的顺序见[普通退出结算](#普通撤退与死亡的结算顺序)。待核对部署额度何时归还、同卡在场上限何时放行，以及贾维等具体减免的采样条件。特殊或模式替换的退出分支按各自入口核对。
+2. **退出阶段的剩余问题。** 普通退出返费、同卡上限、全局部署位和回收的时点已核对。贾维等具体减免的采样条件，以及特殊或模式替换的退出分支，按各自入口核对。见[普通退出结算](#普通撤退与死亡的结算顺序)。
 3. **暂停与叠加。** 黑棺／莲座的暂停与显式减时、归零、临时豁免如何交互，多个锁定／封印如何组合尚未形成完整证据。莲座的特例不决定通用解除规则；银灰临时效果结束是否回滚已有计时也未知。
 4. **顺序与目标资格。** [多来源重排调查](../evidence/card-ordering-20261031/README.md)尚未定位凛御银灰实际比较器的安装／撤销连接，退场恢复与多个来源的竞争规则仍未知；各策士技能是否纳入隐藏、冷却中、被封印或库存为零的 Card，也尚未逐技能闭合。只在已有明确条件的具体机制中作判断。
 5. **删除、隐藏与宿主关系。** 大多数未使用附属 Card 在宿主结束时，身份、库存与 CD 是保留、隐藏、禁用还是重建，PRTS 常未说明。在场召唤物退场与否不能证明手卡物理删除；关卡隐藏同样不证明注销。

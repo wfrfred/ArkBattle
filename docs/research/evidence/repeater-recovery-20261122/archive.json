@@ -1,0 +1,293 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-11-22"
+    ],
+    "collectionDateSource": "batch directory",
+    "organizedOn": "2026-11-22",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+        "records": [
+          "result.json#/provenance/client/dll"
+        ],
+        "bytes": 223112680
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        "records": [
+          "result.json#/provenance/client/metadata"
+        ],
+        "bytes": 46669332
+      }
+    },
+    "sourceRecords": [
+      "result.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12895,
+        "sha256": "9c5b246859318caaec4aab5275ef0d2d49fce5d612c6b4e569973a9941ba621a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "extract.py",
+        "kind": "historical-script",
+        "bytes": 7962,
+        "sha256": "4f16773eda0428674116f6da713de1bf6c029e761764cfbbacbe36759914b431"
+      },
+      {
+        "path": "result.json",
+        "kind": "record",
+        "bytes": 60380,
+        "sha256": "05aa3e4b8159b7283e68808de3e8b0dc3a989c921d5b82c81376da2f41a2fbe7"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 26424,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/0",
+            "result.json#/result/native/0/method"
+          ],
+          "fullname": "Torappu.PeriodicTimer.Reset",
+          "address": "0x181e4afc0"
+        },
+        {
+          "index": 65741,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/1",
+            "result.json#/result/native/1/method"
+          ],
+          "fullname": "Torappu.Battle.BattleController.OnCharacterFinished",
+          "address": "0x180658ea0"
+        },
+        {
+          "index": 66351,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/2",
+            "result.json#/result/native/2/method"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer.Clear",
+          "address": "0x1806b1eb0"
+        },
+        {
+          "index": 66363,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/3",
+            "result.json#/result/native/3/method"
+          ],
+          "fullname": "Torappu.Battle.Buff/BuffContainer._FinishBuff",
+          "address": "0x1806cd740"
+        },
+        {
+          "index": 66742,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/4",
+            "result.json#/result/native/4/method"
+          ],
+          "fullname": "Torappu.Battle.Deck.RechargeToken",
+          "address": "0x1806fb9b0"
+        },
+        {
+          "index": 66747,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/5",
+            "result.json#/result/native/5/method"
+          ],
+          "fullname": "Torappu.Battle.Deck.ResetTokenRespawnTime",
+          "address": "0x1806fcc10"
+        },
+        {
+          "index": 66748,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/6",
+            "result.json#/result/native/6/method"
+          ],
+          "fullname": "Torappu.Battle.Deck.RecycleCard",
+          "address": "0x1806fbed0"
+        },
+        {
+          "index": 66861,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/7",
+            "result.json#/result/native/7/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card.Draw",
+          "address": "0x1806eb980"
+        },
+        {
+          "index": 66863,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/8",
+            "result.json#/result/native/8/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card.ResetRespawnTime",
+          "address": "0x1806ee800"
+        },
+        {
+          "index": 66867,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/9",
+            "result.json#/result/native/9/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card.OnRecycle",
+          "address": "0x1806ecc70"
+        },
+        {
+          "index": 66909,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/10",
+            "result.json#/result/native/10/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card.OnTick",
+          "address": "0x1806ed530"
+        },
+        {
+          "index": 67088,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/11",
+            "result.json#/result/native/11/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/TokenCard.Recharge",
+          "address": "0x18071d4d0"
+        },
+        {
+          "index": 67094,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/12",
+            "result.json#/result/native/12/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/TokenCard.OnRecycle",
+          "address": "0x18071d300"
+        },
+        {
+          "index": 67653,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/13",
+            "result.json#/result/native/13/method"
+          ],
+          "fullname": "Torappu.Battle.Entity.OnFinish",
+          "address": "0x18072a060"
+        },
+        {
+          "index": 77256,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/14",
+            "result.json#/result/native/14/method"
+          ],
+          "fullname": "Torappu.Battle.Character.RechargeToken",
+          "address": "0x180aa5ac0"
+        },
+        {
+          "index": 77258,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/15",
+            "result.json#/result/native/15/method"
+          ],
+          "fullname": "Torappu.Battle.Character.ResetTokenRespawnTime",
+          "address": "0x180aa6690"
+        },
+        {
+          "index": 77340,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/16",
+            "result.json#/result/native/16/method"
+          ],
+          "fullname": "Torappu.Battle.Character.OnFinish",
+          "address": "0x180aa32c0"
+        },
+        {
+          "index": 79015,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/17",
+            "result.json#/result/native/17/method"
+          ],
+          "fullname": "Torappu.Battle.Unit.OnFinish",
+          "address": "0x180b18e40"
+        },
+        {
+          "index": 99423,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/18",
+            "result.json#/result/native/18/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ResetTokenRespawnTime.Execute",
+          "address": "0x18111f280"
+        },
+        {
+          "index": 101199,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/native/19",
+            "result.json#/result/native/19/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/RechargeToken.Execute",
+          "address": "0x1811bf220"
+        }
+      ],
+      "blocks": [],
+      "types": [],
+      "constants": [],
+      "bundles": [
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99",
+          "records": [
+            "result.json#/provenance/assets/0"
+          ],
+          "bytes": 477255
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_5.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_5.ab",
+          "sha256": "4a49fe9d4535474d896e64331657773790c891f14dd99616b6774dfe5a1d7a96",
+          "records": [
+            "result.json#/provenance/assets/1"
+          ],
+          "bytes": 2812726
+        }
+      ]
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

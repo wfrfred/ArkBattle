@@ -118,7 +118,7 @@ Fear／Attract 的目标刷新可以对各自现有临时 Cursor 调用 OnRouteC
 | 妮芙 S2 | Character／Skill 固定数据 → 启用的 CastSkill／RangedAttack → S2 弹道 → extraBuff → 数据库 fear → fear_buff → FearController | 已核对弹道、Buff 数据、异常资格及注册／移除节点的静态条件链 |
 | 酒神 S2 | Character 的 S2 overrideTokenKey → “本能的召唤”天赋／被动 Buff → 启用的 attract Ability → flag 41 与模板 → AttractController | 目标由实时 Selector 决定；内容与控制器通路已闭合，不代表任意单位都满足目标资格 |
 | 活性源石风暴的 TraceStorm | `level_main_14-02.json` 同一 Fragment 直接出生风暴 lrmm 与信标 lrchld → 风暴 Default Mode／周期触发 → TraceStorm；信标实际 PassiveBuffAbility 提供目标过滤所需标记 | 已闭合目标生产者、Talent 附着、模式绑定和目标消费条件；未把文件编号猜作游戏显示关卡号 |
-| “炎佑”的 Priority Trace | 卫戍 dragon Branch 的 acloon 配置与实际启用 Priority Trace Ability | 仅 D 绑定；此前未闭合 dragon 的真实触发，本轮也不据 Branch 条目存在宣称已经出生 |
+| “炎佑”的 Priority Trace | 卫戍 dragon Branch 的 acloon 配置与实际启用 Priority Trace Ability | 2026-11-22 补核「炎」盟约的实际 Holder 和事件链。召唤程序读取这份分支路线，自身传入不参加调度等待的参数。 [召唤依据](../evidence/stronghold-yan-summon-20261122/README.md) |
 
 内容原件保留实际 GameObject／组件身份、外部 MonoScript PPtr、模板动作与关卡 Pointer。模板递归扫描包含 IfElse 等嵌套动作；只扫描顶层动作的首次结果已废弃。热情导游的仅终点改写另有独立[条件正例补核](../evidence/route-operations-20261107/endpoint/README.md)，以免把 `flgshp_tile_mark > 0` 当作没有来源的假设。
 

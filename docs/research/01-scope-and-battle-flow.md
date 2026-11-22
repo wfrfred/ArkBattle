@@ -133,6 +133,8 @@ Buff 派发期间增删实例的完整可见性、延迟命中与技能切换同
 
 主线 routeIndex 指 routes，Branch 指 extraRoutes。dragon 的 Phase0含 enemy_9012_acloon、count1、preDelay0、routeIndex0；具体触发来源未由该配置证明。两份文件均没有顶层 timeline；Branch 配置只有 phases，各项为 preDelay／actions，不携带触发器。配置名义时刻不能冒充实际出生帧，仍受 delayToBorn 与 coroutine 调度影响。
 
+2026-11-22 补核了「炎」盟约的开战召唤。`dragon` 供召唤节点取路线。实际节点设置不参与调度等待，覆盖了同名分支条目的管理字段。 [实际配置与调用](evidence/stronghold-yan-summon-20261122/README.md)
+
 ## 7. 地图、设备与隐藏内容的可达性
 
 本次有 17 份原始关卡样本，均为单 wave／单 fragment，但包括地图骨架、普通、联合防御与部分领袖模板；不能代表全部 38 份模板。

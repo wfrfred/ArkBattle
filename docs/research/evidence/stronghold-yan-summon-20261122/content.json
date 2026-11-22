@@ -1,0 +1,890 @@
+{
+  "provenance": {
+    "source": {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+      "bytes": 2151020,
+      "sha256": "8edcb8017c977cdf52c2593b58e21db96949f3ad1e6f904180ac1241f145ca79"
+    },
+    "reader": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/attack-addon-order-20261102/content/decode_content.py",
+      "bytes": 8161,
+      "sha256": "d17abeee072576a29ca060884dcc0dd770fe0f8194ca7eed7b5c13b99b41e14e"
+    },
+    "revision": "17759cc8cdf37388414145d16262a3a06f3ab25e"
+  },
+  "result": {
+    "holder": {
+      "serializedFile": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+      "pathId": "6070581171229484677",
+      "objectSha256": "c03149251d47fa31e6f6cb5b696f9e93925f51a97bf9ee335593c888bdcb6fec",
+      "templates": [
+        {
+          "index": 4081,
+          "key": "act1autochess_bond_eff_yan[long]",
+          "events": [
+            {
+              "event": 0,
+              "actions": [
+                {
+                  "_modeIndex": 0,
+                  "_loadModeFromBlackboard": true,
+                  "_restoreDefault": false,
+                  "_restartFSM": true,
+                  "_targetType": "TARGET",
+                  "$type": "Torappu.Battle.Action.Nodes+SwitchMode"
+                }
+              ]
+            },
+            {
+              "event": 10,
+              "actions": [
+                {
+                  "_filterDamageType": false,
+                  "_damageMask": "NONE",
+                  "_filterApplyWay": false,
+                  "_applyWayFilter": "NONE",
+                  "_filterModifierKey": false,
+                  "_modifierKey": "",
+                  "_isOneMinus": true,
+                  "_isStackable": false,
+                  "_isValidStackCnt": false,
+                  "_cachedDeltaValueToBBKey": "",
+                  "_customKey": "",
+                  "$type": "Torappu.Battle.Action.Nodes+DamageScale"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 4082,
+          "key": "act1autochess_bond_eff_yan[spawn][another]",
+          "events": [
+            {
+              "event": 1,
+              "actions": [
+                {
+                  "_unharmful": true,
+                  "_managedByScheduler": false,
+                  "_alwaysCountAsKilled": false,
+                  "_disableBornTweenColor": false,
+                  "_buffToEnemy": {
+                    "attributes": {
+                      "abnormalFlags": [],
+                      "abnormalImmunes": [],
+                      "abnormalAntis": [],
+                      "abnormalCombos": [],
+                      "abnormalComboImmunes": [],
+                      "attributeModifiers": [
+                        {
+                          "attributeType": "ATK",
+                          "formulaItem": "FINAL_SCALER",
+                          "value": 0.0,
+                          "loadFromBlackboard": true,
+                          "fetchBaseValueFromSourceEntity": false
+                        }
+                      ]
+                    },
+                    "buffKey": "act1autochess_bond_eff_yan[long]",
+                    "loadFromDB": false,
+                    "isDurableBuff": false,
+                    "isDamageMissable": false,
+                    "isSilenceable": false,
+                    "isStunnable": false,
+                    "isFreezable": false,
+                    "isLevitatable": false,
+                    "isGroundBoundable": false,
+                    "statusResistable": "AUTOMATIC",
+                    "templateKey": "act1autochess_bond_eff_yan[long]",
+                    "disableOverride": false,
+                    "overrideKey": null,
+                    "overrideType": "DEFAULT",
+                    "maxStackCnt": 1,
+                    "refreshRemainingTimeWhenStackMax": false,
+                    "clearAllStackCntWhenTimeUp": false,
+                    "maxValidStackCnt": -1,
+                    "independentCharacterSource": false,
+                    "overrideEffectKey": null,
+                    "overrideOnEventPriority": false,
+                    "onEventPriority": "DEFAULT",
+                    "audioSignal": null,
+                    "lifeTimeType": "INFINITY",
+                    "takeSnapshotWhenExtend": false,
+                    "durationKey": null,
+                    "remainingTimeKey": null,
+                    "lifeTime": 0.0,
+                    "triggerLifeType": "IMMEDIATELY",
+                    "triggerCnt": 0,
+                    "triggerInterval": -1.0,
+                    "waitFirstTriggerInterval": true,
+                    "firstTriggerInterval": -1.0,
+                    "priority": -1,
+                    "priorityBBKeys": [],
+                    "stripBlackboardParamsWithBuffKey": false,
+                    "blackboard": [
+                      {
+                        "key": "mode",
+                        "value": 2.0,
+                        "valueStr": ""
+                      }
+                    ],
+                    "enableInitDirectionFromSource": false
+                  },
+                  "_overrideEnemyKey": "",
+                  "_setHostUid": false,
+                  "_summonAllRoute": false,
+                  "_defaultBranchId": "dragon",
+                  "$type": "Torappu.Battle.Action.Nodes+SummonEnemiesFollowBranchRoute"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 4083,
+          "key": "act1autochess_bond_eff_yan[spawn]",
+          "events": [
+            {
+              "event": 96,
+              "actions": [
+                {
+                  "_targetType": "BUFF_OWNER",
+                  "_buffKeys": [
+                    "trap_ac_controller_mark"
+                  ],
+                  "isAND": true,
+                  "_loadFromBlackboard": false,
+                  "_checkBuffSource": false,
+                  "_buffSourceType": "BUFF_SOURCE",
+                  "_checkSourceHost": false,
+                  "$type": "Torappu.Battle.Action.Nodes+CheckContainsBuff"
+                },
+                {
+                  "_conditionNode": {
+                    "_target": "BUFF_OWNER",
+                    "_getPlayerIndexFormBB": false,
+                    "_playerIndexBBKey": "autochess_player_index",
+                    "_bondId": "yanShip",
+                    "_keyToStoreCnt": "bond_char_cnt",
+                    "_filterCount": true,
+                    "_keyToCompare": "power_bond_char_cnt",
+                    "_condType": "GE",
+                    "_useMaxBondCharCntInCurArea": false,
+                    "$type": "Torappu.Battle.Action.Nodes+AutoChessAssignBondCharCntToBB"
+                  },
+                  "_succeedNodes": [
+                    {
+                      "_conditionNode": {
+                        "_targetType": "BUFF_OWNER",
+                        "_anotherBuff": false,
+                        "_buffKey": null,
+                        "_blackboardKey": "bond_char_cnt",
+                        "_blackboardKeyFromBb": null,
+                        "_valueToCompare": 0,
+                        "_anotherKeyToCompare": "ex_bond_char_cnt",
+                        "_condType": "GE",
+                        "$type": "Torappu.Battle.Action.Nodes+FilterByBlackboardValue"
+                      },
+                      "_succeedNodes": [
+                        {
+                          "_unharmful": true,
+                          "_managedByScheduler": false,
+                          "_alwaysCountAsKilled": false,
+                          "_disableBornTweenColor": false,
+                          "_buffToEnemy": {
+                            "attributes": {
+                              "abnormalFlags": [],
+                              "abnormalImmunes": [],
+                              "abnormalAntis": [],
+                              "abnormalCombos": [],
+                              "abnormalComboImmunes": [],
+                              "attributeModifiers": [
+                                {
+                                  "attributeType": "ATK",
+                                  "formulaItem": "FINAL_SCALER",
+                                  "value": 0.0,
+                                  "loadFromBlackboard": true,
+                                  "fetchBaseValueFromSourceEntity": false
+                                }
+                              ]
+                            },
+                            "buffKey": "act1autochess_bond_eff_yan[long]",
+                            "loadFromDB": false,
+                            "isDurableBuff": false,
+                            "isDamageMissable": false,
+                            "isSilenceable": false,
+                            "isStunnable": false,
+                            "isFreezable": false,
+                            "isLevitatable": false,
+                            "isGroundBoundable": false,
+                            "statusResistable": "AUTOMATIC",
+                            "templateKey": "act1autochess_bond_eff_yan[long]",
+                            "disableOverride": false,
+                            "overrideKey": null,
+                            "overrideType": "DEFAULT",
+                            "maxStackCnt": 1,
+                            "refreshRemainingTimeWhenStackMax": false,
+                            "clearAllStackCntWhenTimeUp": false,
+                            "maxValidStackCnt": -1,
+                            "independentCharacterSource": false,
+                            "overrideEffectKey": null,
+                            "overrideOnEventPriority": false,
+                            "onEventPriority": "DEFAULT",
+                            "audioSignal": null,
+                            "lifeTimeType": "INFINITY",
+                            "takeSnapshotWhenExtend": false,
+                            "durationKey": null,
+                            "remainingTimeKey": null,
+                            "lifeTime": 0.0,
+                            "triggerLifeType": "IMMEDIATELY",
+                            "triggerCnt": 0,
+                            "triggerInterval": -1.0,
+                            "waitFirstTriggerInterval": true,
+                            "firstTriggerInterval": -1.0,
+                            "priority": -1,
+                            "priorityBBKeys": [],
+                            "stripBlackboardParamsWithBuffKey": false,
+                            "blackboard": [
+                              {
+                                "key": "mode",
+                                "value": 2.0,
+                                "valueStr": ""
+                              }
+                            ],
+                            "enableInitDirectionFromSource": false
+                          },
+                          "_overrideEnemyKey": "",
+                          "_setHostUid": false,
+                          "_summonAllRoute": false,
+                          "_defaultBranchId": "dragon",
+                          "$type": "Torappu.Battle.Action.Nodes+SummonEnemiesFollowBranchRoute"
+                        },
+                        {
+                          "_buff": {
+                            "attributes": {
+                              "abnormalFlags": [],
+                              "abnormalImmunes": [],
+                              "abnormalAntis": [],
+                              "abnormalCombos": [],
+                              "abnormalComboImmunes": [],
+                              "attributeModifiers": []
+                            },
+                            "buffKey": "act1autochess_bond_eff_yan[spawn][another]",
+                            "loadFromDB": false,
+                            "isDurableBuff": false,
+                            "isDamageMissable": false,
+                            "isSilenceable": false,
+                            "isStunnable": false,
+                            "isFreezable": false,
+                            "isLevitatable": false,
+                            "isGroundBoundable": false,
+                            "statusResistable": "AUTOMATIC",
+                            "templateKey": "act1autochess_bond_eff_yan[spawn][another]",
+                            "disableOverride": false,
+                            "overrideKey": null,
+                            "overrideType": "DEFAULT",
+                            "maxStackCnt": 1,
+                            "refreshRemainingTimeWhenStackMax": false,
+                            "clearAllStackCntWhenTimeUp": false,
+                            "maxValidStackCnt": -1,
+                            "independentCharacterSource": false,
+                            "overrideEffectKey": null,
+                            "overrideOnEventPriority": false,
+                            "onEventPriority": "DEFAULT",
+                            "audioSignal": null,
+                            "lifeTimeType": "LIMITED",
+                            "takeSnapshotWhenExtend": false,
+                            "durationKey": "none",
+                            "remainingTimeKey": null,
+                            "lifeTime": 0.5,
+                            "triggerLifeType": "IMMEDIATELY",
+                            "triggerCnt": 0,
+                            "triggerInterval": -1.0,
+                            "waitFirstTriggerInterval": true,
+                            "firstTriggerInterval": -1.0,
+                            "priority": -1,
+                            "priorityBBKeys": [],
+                            "stripBlackboardParamsWithBuffKey": false,
+                            "blackboard": [],
+                            "enableInitDirectionFromSource": false
+                          },
+                          "_buffOwner": "BUFF_OWNER",
+                          "_useSpecialBuffSource": false,
+                          "_specialBuffSource": "BUFF_SOURCE",
+                          "_isDerivedBuff": false,
+                          "_finishDerivedBuffIfParentFinish": false,
+                          "_inherateSourceProjectileFromParentBuff": false,
+                          "_hookEffectKeyFromSourceProjectile": false,
+                          "$type": "Torappu.Battle.Action.Nodes+CreateBuff"
+                        }
+                      ],
+                      "_failNodes": [
+                        {
+                          "_unharmful": true,
+                          "_managedByScheduler": false,
+                          "_alwaysCountAsKilled": false,
+                          "_disableBornTweenColor": false,
+                          "_buffToEnemy": {
+                            "attributes": {
+                              "abnormalFlags": [],
+                              "abnormalImmunes": [],
+                              "abnormalAntis": [],
+                              "abnormalCombos": [],
+                              "abnormalComboImmunes": [],
+                              "attributeModifiers": []
+                            },
+                            "buffKey": "act1autochess_bond_eff_yan[long]",
+                            "loadFromDB": false,
+                            "isDurableBuff": false,
+                            "isDamageMissable": false,
+                            "isSilenceable": false,
+                            "isStunnable": false,
+                            "isFreezable": false,
+                            "isLevitatable": false,
+                            "isGroundBoundable": false,
+                            "statusResistable": "AUTOMATIC",
+                            "templateKey": "switch_mode_restart_fsm",
+                            "disableOverride": false,
+                            "overrideKey": null,
+                            "overrideType": "DEFAULT",
+                            "maxStackCnt": 1,
+                            "refreshRemainingTimeWhenStackMax": false,
+                            "clearAllStackCntWhenTimeUp": false,
+                            "maxValidStackCnt": -1,
+                            "independentCharacterSource": false,
+                            "overrideEffectKey": null,
+                            "overrideOnEventPriority": false,
+                            "onEventPriority": "DEFAULT",
+                            "audioSignal": null,
+                            "lifeTimeType": "INFINITY",
+                            "takeSnapshotWhenExtend": false,
+                            "durationKey": null,
+                            "remainingTimeKey": null,
+                            "lifeTime": 0.0,
+                            "triggerLifeType": "IMMEDIATELY",
+                            "triggerCnt": 0,
+                            "triggerInterval": -1.0,
+                            "waitFirstTriggerInterval": true,
+                            "firstTriggerInterval": -1.0,
+                            "priority": -1,
+                            "priorityBBKeys": [],
+                            "stripBlackboardParamsWithBuffKey": false,
+                            "blackboard": [
+                              {
+                                "key": "mode",
+                                "value": 2.0,
+                                "valueStr": ""
+                              }
+                            ],
+                            "enableInitDirectionFromSource": false
+                          },
+                          "_overrideEnemyKey": "",
+                          "_setHostUid": false,
+                          "_summonAllRoute": false,
+                          "_defaultBranchId": "dragon",
+                          "$type": "Torappu.Battle.Action.Nodes+SummonEnemiesFollowBranchRoute"
+                        }
+                      ],
+                      "$type": "Torappu.Battle.Action.Nodes+IfElse"
+                    }
+                  ],
+                  "_failNodes": null,
+                  "$type": "Torappu.Battle.Action.Nodes+IfElse"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 4084,
+          "key": "act1autochess_bond_eff_yan",
+          "events": [
+            {
+              "event": 96,
+              "actions": [
+                {
+                  "_targetType": "BUFF_OWNER",
+                  "_buffKeys": [
+                    "trap_ac_controller_mark"
+                  ],
+                  "isAND": true,
+                  "_loadFromBlackboard": false,
+                  "_checkBuffSource": false,
+                  "_buffSourceType": "BUFF_SOURCE",
+                  "_checkSourceHost": false,
+                  "$type": "Torappu.Battle.Action.Nodes+CheckContainsBuff"
+                },
+                {
+                  "_conditionNode": {
+                    "_target": "BUFF_OWNER",
+                    "_getPlayerIndexFormBB": false,
+                    "_playerIndexBBKey": "autochess_player_index",
+                    "_bondId": "yanShip",
+                    "_keyToStoreCnt": "bond_char_cnt",
+                    "_filterCount": true,
+                    "_keyToCompare": "power_bond_char_cnt",
+                    "_condType": "GE",
+                    "_useMaxBondCharCntInCurArea": false,
+                    "$type": "Torappu.Battle.Action.Nodes+AutoChessAssignBondCharCntToBB"
+                  },
+                  "_succeedNodes": [
+                    {
+                      "_conditionNode": {
+                        "_targetType": "BUFF_OWNER",
+                        "_anotherBuff": false,
+                        "_buffKey": null,
+                        "_blackboardKey": "bond_char_cnt",
+                        "_blackboardKeyFromBb": null,
+                        "_valueToCompare": 0,
+                        "_anotherKeyToCompare": "ex_bond_char_cnt",
+                        "_condType": "GE",
+                        "$type": "Torappu.Battle.Action.Nodes+FilterByBlackboardValue"
+                      },
+                      "_succeedNodes": [
+                        {
+                          "_unharmful": true,
+                          "_managedByScheduler": false,
+                          "_alwaysCountAsKilled": false,
+                          "_disableBornTweenColor": false,
+                          "_buffToEnemy": {
+                            "attributes": {
+                              "abnormalFlags": [],
+                              "abnormalImmunes": [],
+                              "abnormalAntis": [],
+                              "abnormalCombos": [],
+                              "abnormalComboImmunes": [],
+                              "attributeModifiers": []
+                            },
+                            "buffKey": "act1autochess_bond_eff_yan[long]",
+                            "loadFromDB": false,
+                            "isDurableBuff": false,
+                            "isDamageMissable": false,
+                            "isSilenceable": false,
+                            "isStunnable": false,
+                            "isFreezable": false,
+                            "isLevitatable": false,
+                            "isGroundBoundable": false,
+                            "statusResistable": "AUTOMATIC",
+                            "templateKey": "act1autochess_bond_eff_yan[long]",
+                            "disableOverride": false,
+                            "overrideKey": null,
+                            "overrideType": "DEFAULT",
+                            "maxStackCnt": 1,
+                            "refreshRemainingTimeWhenStackMax": false,
+                            "clearAllStackCntWhenTimeUp": false,
+                            "maxValidStackCnt": -1,
+                            "independentCharacterSource": false,
+                            "overrideEffectKey": null,
+                            "overrideOnEventPriority": false,
+                            "onEventPriority": "DEFAULT",
+                            "audioSignal": null,
+                            "lifeTimeType": "INFINITY",
+                            "takeSnapshotWhenExtend": false,
+                            "durationKey": null,
+                            "remainingTimeKey": null,
+                            "lifeTime": 0.0,
+                            "triggerLifeType": "IMMEDIATELY",
+                            "triggerCnt": 0,
+                            "triggerInterval": -1.0,
+                            "waitFirstTriggerInterval": true,
+                            "firstTriggerInterval": -1.0,
+                            "priority": -1,
+                            "priorityBBKeys": [],
+                            "stripBlackboardParamsWithBuffKey": false,
+                            "blackboard": [
+                              {
+                                "key": "mode",
+                                "value": 2.0,
+                                "valueStr": ""
+                              }
+                            ],
+                            "enableInitDirectionFromSource": false
+                          },
+                          "_overrideEnemyKey": "",
+                          "_setHostUid": false,
+                          "_summonAllRoute": false,
+                          "_defaultBranchId": "dragon",
+                          "$type": "Torappu.Battle.Action.Nodes+SummonEnemiesFollowBranchRoute"
+                        },
+                        {
+                          "_unharmful": true,
+                          "_managedByScheduler": false,
+                          "_alwaysCountAsKilled": false,
+                          "_disableBornTweenColor": false,
+                          "_buffToEnemy": {
+                            "attributes": {
+                              "abnormalFlags": [],
+                              "abnormalImmunes": [],
+                              "abnormalAntis": [],
+                              "abnormalCombos": [],
+                              "abnormalComboImmunes": [],
+                              "attributeModifiers": []
+                            },
+                            "buffKey": "act1autochess_bond_eff_yan[long]",
+                            "loadFromDB": false,
+                            "isDurableBuff": false,
+                            "isDamageMissable": false,
+                            "isSilenceable": false,
+                            "isStunnable": false,
+                            "isFreezable": false,
+                            "isLevitatable": false,
+                            "isGroundBoundable": false,
+                            "statusResistable": "AUTOMATIC",
+                            "templateKey": "act1autochess_bond_eff_yan[long]",
+                            "disableOverride": false,
+                            "overrideKey": null,
+                            "overrideType": "DEFAULT",
+                            "maxStackCnt": 1,
+                            "refreshRemainingTimeWhenStackMax": false,
+                            "clearAllStackCntWhenTimeUp": false,
+                            "maxValidStackCnt": -1,
+                            "independentCharacterSource": false,
+                            "overrideEffectKey": null,
+                            "overrideOnEventPriority": false,
+                            "onEventPriority": "DEFAULT",
+                            "audioSignal": null,
+                            "lifeTimeType": "INFINITY",
+                            "takeSnapshotWhenExtend": false,
+                            "durationKey": null,
+                            "remainingTimeKey": null,
+                            "lifeTime": 0.0,
+                            "triggerLifeType": "IMMEDIATELY",
+                            "triggerCnt": 0,
+                            "triggerInterval": -1.0,
+                            "waitFirstTriggerInterval": true,
+                            "firstTriggerInterval": -1.0,
+                            "priority": -1,
+                            "priorityBBKeys": [],
+                            "stripBlackboardParamsWithBuffKey": false,
+                            "blackboard": [
+                              {
+                                "key": "mode",
+                                "value": 2.0,
+                                "valueStr": ""
+                              }
+                            ],
+                            "enableInitDirectionFromSource": false
+                          },
+                          "_overrideEnemyKey": "",
+                          "_setHostUid": false,
+                          "_summonAllRoute": false,
+                          "_defaultBranchId": "dragon",
+                          "$type": "Torappu.Battle.Action.Nodes+SummonEnemiesFollowBranchRoute"
+                        }
+                      ],
+                      "_failNodes": [
+                        {
+                          "_unharmful": true,
+                          "_managedByScheduler": false,
+                          "_alwaysCountAsKilled": false,
+                          "_disableBornTweenColor": false,
+                          "_buffToEnemy": {
+                            "attributes": {
+                              "abnormalFlags": [],
+                              "abnormalImmunes": [],
+                              "abnormalAntis": [],
+                              "abnormalCombos": [],
+                              "abnormalComboImmunes": [],
+                              "attributeModifiers": []
+                            },
+                            "buffKey": "act1autochess_bond_eff_yan[long]",
+                            "loadFromDB": false,
+                            "isDurableBuff": false,
+                            "isDamageMissable": false,
+                            "isSilenceable": false,
+                            "isStunnable": false,
+                            "isFreezable": false,
+                            "isLevitatable": false,
+                            "isGroundBoundable": false,
+                            "statusResistable": "AUTOMATIC",
+                            "templateKey": "switch_mode_restart_fsm",
+                            "disableOverride": false,
+                            "overrideKey": null,
+                            "overrideType": "DEFAULT",
+                            "maxStackCnt": 1,
+                            "refreshRemainingTimeWhenStackMax": false,
+                            "clearAllStackCntWhenTimeUp": false,
+                            "maxValidStackCnt": -1,
+                            "independentCharacterSource": false,
+                            "overrideEffectKey": null,
+                            "overrideOnEventPriority": false,
+                            "onEventPriority": "DEFAULT",
+                            "audioSignal": null,
+                            "lifeTimeType": "INFINITY",
+                            "takeSnapshotWhenExtend": false,
+                            "durationKey": null,
+                            "remainingTimeKey": null,
+                            "lifeTime": 0.0,
+                            "triggerLifeType": "IMMEDIATELY",
+                            "triggerCnt": 0,
+                            "triggerInterval": -1.0,
+                            "waitFirstTriggerInterval": true,
+                            "firstTriggerInterval": -1.0,
+                            "priority": -1,
+                            "priorityBBKeys": [],
+                            "stripBlackboardParamsWithBuffKey": false,
+                            "blackboard": [
+                              {
+                                "key": "mode",
+                                "value": 2.0,
+                                "valueStr": ""
+                              }
+                            ],
+                            "enableInitDirectionFromSource": false
+                          },
+                          "_overrideEnemyKey": "",
+                          "_setHostUid": false,
+                          "_summonAllRoute": false,
+                          "_defaultBranchId": "dragon",
+                          "$type": "Torappu.Battle.Action.Nodes+SummonEnemiesFollowBranchRoute"
+                        }
+                      ],
+                      "$type": "Torappu.Battle.Action.Nodes+IfElse"
+                    }
+                  ],
+                  "_failNodes": null,
+                  "$type": "Torappu.Battle.Action.Nodes+IfElse"
+                },
+                {
+                  "$type": "Torappu.Battle.Action.Nodes+AlwaysNext"
+                },
+                {
+                  "_decCntIfStack": false,
+                  "_updateOverrideMap": true,
+                  "$type": "Torappu.Battle.Action.Nodes+FinishBuff"
+                }
+              ]
+            },
+            {
+              "event": 0,
+              "actions": [
+                {
+                  "_target": "TARGET",
+                  "_bondIds": [
+                    "yanShip"
+                  ],
+                  "_bondIdsKey": null,
+                  "_checkTargetInRangeId": null,
+                  "_considerManiShip": true,
+                  "$type": "Torappu.Battle.Action.Nodes+AutoChessFilterCharacterBondIds"
+                },
+                {
+                  "$type": "Torappu.Battle.Action.Nodes+IfNot"
+                },
+                {
+                  "_decCntIfStack": false,
+                  "_updateOverrideMap": true,
+                  "$type": "Torappu.Battle.Action.Nodes+FinishBuff"
+                }
+              ]
+            },
+            {
+              "event": 2,
+              "actions": [
+                {
+                  "_target": "BUFF_OWNER",
+                  "_getPlayerIndexFormBB": false,
+                  "_playerIndexBBKey": "autochess_player_index",
+                  "_bondBlackboardKey": "none",
+                  "_bondId": "yanShip",
+                  "_keyToStoreCnt": "bond_stack_cnt",
+                  "_checkDiffWithOldStoreCnt": false,
+                  "_byPosition": false,
+                  "_assignCurrentMaxBond": false,
+                  "_assignAllPlayerIndex": false,
+                  "_useMaxBondStackCntInCurArea": false,
+                  "$type": "Torappu.Battle.Action.Nodes+AutoChessAssignBondStackCntToBB"
+                },
+                {
+                  "_inputKey": "atk_per_stack",
+                  "_outputKey": "real_atk",
+                  "_multiplyParamKey": "bond_stack_cnt",
+                  "_dividedParamKey": null,
+                  "_useRemainder": false,
+                  "_addParamKey": "base_atk",
+                  "_minusParamKey": null,
+                  "_minValueKey": null,
+                  "_maxValueKey": null,
+                  "_finalAbs": true,
+                  "_finalCeil": false,
+                  "_finalFloor": false,
+                  "_finalRound": false,
+                  "_useAbilityBlackboard": false,
+                  "_abilityName": "",
+                  "$type": "Torappu.Battle.Action.Nodes+CalculateBlackboardValueViaParams"
+                },
+                {
+                  "_targetType": "BUFF_OWNER",
+                  "_attributeType": "ATK",
+                  "_valueKey": "real_atk",
+                  "_formulaType": "MULTIPLIER",
+                  "$type": "Torappu.Battle.Action.Nodes+AttributeModifierWithBB"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "config": {
+      "activity": {
+        "path": "/home/wfrfred/workspace/ArkBattle/assets/arknights-game-data/zh_CN/gamedata/excel/activity_table.json",
+        "bytes": 14126572,
+        "sha256": "10f9b70a5e69a86dfa845e761ee49232c7d17755f469202b080c59bef5feb304"
+      },
+      "seasons": [
+        {
+          "season": "act1autochess",
+          "bondPointer": "/activity/AUTOCHESS_SEASON/act1autochess/effectBuffInfoDataDict/bondeffect_yan",
+          "bond": [
+            {
+              "key": "env_gbuff_new",
+              "blackboard": [
+                {
+                  "key": "key",
+                  "value": 0.0,
+                  "valueStr": "act1autochess_bond_eff_yan"
+                },
+                {
+                  "key": "base_atk",
+                  "value": 0.23,
+                  "valueStr": null
+                },
+                {
+                  "key": "atk_per_stack",
+                  "value": 0.009,
+                  "valueStr": null
+                },
+                {
+                  "key": "power_bond_char_cnt",
+                  "value": 6.0,
+                  "valueStr": null
+                }
+              ],
+              "countType": "NONE"
+            }
+          ],
+          "level": {
+            "path": "/home/wfrfred/workspace/ArkBattle/assets/arknights-game-data/zh_CN/gamedata/levels/activities/act1autochess/level_act1autochess_h07_02.json",
+            "bytes": 151304,
+            "sha256": "f7ab2094b2a11c4cf65b345c4d42c19b00b38fe990cb728c87e76d50a329e2ee"
+          },
+          "branchPointer": "/branches/dragon",
+          "branch": {
+            "phases": [
+              {
+                "preDelay": 0.0,
+                "actions": [
+                  {
+                    "actionType": "SPAWN",
+                    "managedByScheduler": true,
+                    "key": "enemy_9012_acloon",
+                    "count": 1,
+                    "preDelay": 0.0,
+                    "interval": 1.0,
+                    "routeIndex": 0,
+                    "blockFragment": false,
+                    "autoPreviewRoute": false,
+                    "autoDisplayEnemyInfo": false,
+                    "isUnharmfulAndAlwaysCountAsKilled": false,
+                    "hiddenGroup": null,
+                    "randomSpawnGroupKey": null,
+                    "randomSpawnGroupPackKey": null,
+                    "randomType": "ALWAYS",
+                    "refreshType": "ALWAYS",
+                    "weight": 0,
+                    "dontBlockWave": false,
+                    "forceBlockWaveInBranch": false
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "season": "act2autochess",
+          "bondPointer": "/activity/AUTOCHESS_SEASON/act2autochess/effectBuffInfoDataDict/bondeffect_yan",
+          "bond": [
+            {
+              "key": "env_gbuff_new",
+              "blackboard": [
+                {
+                  "key": "key",
+                  "value": 0.0,
+                  "valueStr": "act1autochess_bond_eff_yan"
+                },
+                {
+                  "key": "base_atk",
+                  "value": 0.23,
+                  "valueStr": null
+                },
+                {
+                  "key": "atk_per_stack",
+                  "value": 0.009,
+                  "valueStr": null
+                },
+                {
+                  "key": "power_bond_char_cnt",
+                  "value": 6.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "ex_bond_char_cnt",
+                  "value": 9.0,
+                  "valueStr": null
+                },
+                {
+                  "key": "damage_resistance",
+                  "value": 0.9,
+                  "valueStr": null
+                },
+                {
+                  "key": "atk",
+                  "value": 1.5,
+                  "valueStr": null
+                }
+              ],
+              "countType": "NONE"
+            }
+          ],
+          "level": {
+            "path": "/home/wfrfred/workspace/ArkBattle/assets/arknights-game-data/zh_CN/gamedata/levels/activities/act2autochess/level_act2autochess_h07_05.json",
+            "bytes": 164565,
+            "sha256": "75c05eae0a48a2e572cbc6b3d2ee62f610af143c10d427122e4c3e11013fb481"
+          },
+          "branchPointer": "/branches/dragon",
+          "branch": {
+            "phases": [
+              {
+                "preDelay": 0.0,
+                "actions": [
+                  {
+                    "actionType": "SPAWN",
+                    "managedByScheduler": true,
+                    "key": "enemy_9012_acloon",
+                    "count": 1,
+                    "preDelay": 0.0,
+                    "interval": 1.0,
+                    "routeIndex": 0,
+                    "blockFragment": false,
+                    "autoPreviewRoute": false,
+                    "autoDisplayEnemyInfo": false,
+                    "isUnharmfulAndAlwaysCountAsKilled": false,
+                    "hiddenGroup": null,
+                    "randomSpawnGroupKey": null,
+                    "randomSpawnGroupPackKey": null,
+                    "randomType": "ALWAYS",
+                    "refreshType": "ALWAYS",
+                    "weight": 0,
+                    "dontBlockWave": false,
+                    "forceBlockWaveInBranch": false
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
