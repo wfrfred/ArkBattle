@@ -1,6 +1,6 @@
 export type { Definition, Input, DeploymentRecord, State } from "./deployment.js";
 
-export { initialize, changeDp } from "./deployment.js";
+export { initialize } from "./deployment.js";
 
 export type { Id as CardId, Clock as CardClock, Card } from "./deck/card/card.js";
 

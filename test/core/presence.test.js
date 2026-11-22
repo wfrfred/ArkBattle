@@ -58,7 +58,10 @@ test("disappearance preserves deployment and lifetimes, releases blocking before
         { definition: enemy, position: [2.1, 1] },
         { definition: enemy, position: [2.2, 1] },
     ], { deployment: {
-        definition: { initialDp: 20, maxDp: 99, dpRecoveryTicks: null, slotLimit: 1 },
+        definition: {
+            dp: { initial: 20, min: 0, max: 99, recoveryInterval: null },
+            slotLimit: 1,
+        },
         cards: [{ definition: cardDefinition, unitDefinition: operator }],
     } });
     const card = cards.ref([...cards.all(state)][0]);

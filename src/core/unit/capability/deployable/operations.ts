@@ -1,7 +1,7 @@
 import type { Ref } from "../../../common/ref.js";
 import type { State as BattleState } from "../../../battle/state.js";
 import { remove } from "../../operations.js";
-import { recover } from "../../../battle/deployment/dp/operations.js";
+import { modify } from "../../../battle/deployment/dp/operations.js";
 import type { Unit } from "../../unit.js";
 import * as units from "../../query.js";
 import type { Deployable, State } from "./capability.js";
@@ -35,7 +35,7 @@ export function retreat(battle: BattleState, reference: Ref<Unit & Deployable>):
             0,
             Math.floor(Math.min(self.deployable.cost * refund.rate, refund.limit)),
         );
-        battle = recover(battle, amount);
+        battle = modify(battle, amount);
     }
 
     return remove(battle, reference, { reason: "RETREAT" });

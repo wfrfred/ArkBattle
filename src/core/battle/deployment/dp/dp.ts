@@ -3,90 +3,151 @@ import {
     assertNonnegativeNumber,
     assertPositiveSafeInteger,
 } from "../../../common/assert.js";
+import * as entries from "../../../common/collection/entries.js";
+import type { Contribution } from "../../../common/contribution.js";
+import type { Modifier } from "../../../common/modifier.js";
+import { replaceIn } from "../../../common/object.js";
+import type { State as BattleState } from "../../state.js";
+import { resolveMax, resolveMin } from "./query.js";
 
 export interface Definition {
-    readonly initialDp: number;
-    readonly minDp?: number;
-    readonly maxDp: number;
-    readonly dpRecoveryTicks: number | null;
+    readonly initial: number;
+    readonly min: number;
+    readonly max: number;
+    readonly recoveryInterval: number | null;
 }
 
 export interface State {
-    readonly value: number;
-    readonly min: number;
-    readonly max: number;
-    readonly recoveryTicks: number | null;
-    readonly recoveryProgress: number;
-    readonly lastRecoveryTick: number;
+    readonly definition: Definition;
+    readonly balance: number;
+    readonly progress: number;
+    readonly min: readonly Contribution<Modifier>[];
+    readonly max: readonly Contribution<Modifier>[];
+    readonly recoverySpeed: readonly Contribution<Modifier>[];
 }
 
 const emptyDefinition: Definition = {
-    initialDp: 0,
-    maxDp: 99,
-    dpRecoveryTicks: null,
+    initial: 0,
+    min: 0,
+    max: 99,
+    recoveryInterval: null,
 };
 
-export function initialize(definition: Definition = emptyDefinition, tick = 0): State {
-    const { initialDp, maxDp, dpRecoveryTicks } = definition;
-    const minDp = definition.minDp ?? 0;
-    assertFiniteNumber(initialDp, "initial deployment points");
-    assertFiniteNumber(minDp, "deployment point minimum");
-    assertNonnegativeNumber(maxDp, "deployment point limit");
+export function initialize(definition: Definition = emptyDefinition): State {
+    const { initial, min, max, recoveryInterval } = definition;
+    assertFiniteNumber(initial, "initial deployment points");
+    assertFiniteNumber(min, "deployment point minimum");
+    assertNonnegativeNumber(max, "deployment point limit");
+    validateLimits(min, max);
 
-    if (minDp > maxDp) {
-        throw new RangeError("deployment point minimum exceeds the limit");
-    }
-    if (initialDp < minDp || initialDp > maxDp) {
+    if (initial < min || initial > max) {
         throw new RangeError("initial deployment points are outside the account limits");
     }
-    if (dpRecoveryTicks !== null) {
-        assertPositiveSafeInteger(dpRecoveryTicks, "deployment point recovery interval");
+    if (recoveryInterval !== null) {
+        assertPositiveSafeInteger(recoveryInterval, "deployment point recovery interval");
     }
 
     return {
-        value: initialDp,
-        min: minDp,
-        max: maxDp,
-        recoveryTicks: dpRecoveryTicks,
-        recoveryProgress: 0,
-        lastRecoveryTick: tick,
+        definition,
+        balance: initial,
+        progress: 0,
+        min: [],
+        max: [],
+        recoverySpeed: [],
     };
 }
 
-export function advance(state: State, tick: number): State {
-    const interval = state.recoveryTicks;
-    if (interval === null || state.value >= state.max || tick === state.lastRecoveryTick) {
-        return state;
+export function setMinContribution(
+    battle: BattleState,
+    entry: Contribution<Modifier>,
+): BattleState {
+    const { dp } = battle.deployment;
+    const next = replaceIn(dp, ["min"], entries.set(dp.min, entry));
+    if (next === dp) {
+        return battle;
     }
 
-    const elapsed = (tick - state.lastRecoveryTick) * (state.value < 0 ? 0.5 : 1);
-    const progress = state.recoveryProgress + elapsed;
-    const count = Math.floor(progress / interval);
-    const value = Math.min(state.max, state.value + count);
+    const min = resolveMin(next);
+    validateLimits(min, resolveMax(next));
 
-    return {
-        ...state,
-        value,
-        recoveryProgress: value === state.max ? 0 : progress - count * interval,
-        lastRecoveryTick: tick,
-    };
+    return replaceIn(
+        battle,
+        ["deployment", "dp"],
+        next.balance < min ? replaceIn(next, ["balance"], min) : next,
+    );
 }
 
-export function changeDp(state: State, amount: number, tick: number): State {
-    state = advance(state, tick);
-    const value = Math.max(state.min, Math.min(state.max, state.value + amount));
-    if (value === state.value) {
-        return state;
+export function removeMinContribution(battle: BattleState, id: string): BattleState {
+    const { dp } = battle.deployment;
+    const next = replaceIn(dp, ["min"], entries.remove(dp.min, id));
+    if (next === dp) {
+        return battle;
     }
 
-    return {
-        ...state,
-        value,
-        recoveryProgress: value === state.max ? 0 : state.recoveryProgress,
-        lastRecoveryTick: tick,
-    };
+    const min = resolveMin(next);
+    validateLimits(min, resolveMax(next));
+
+    return replaceIn(
+        battle,
+        ["deployment", "dp"],
+        next.balance < min ? replaceIn(next, ["balance"], min) : next,
+    );
 }
 
-export function canPay(state: State, amount: number): boolean {
-    return state.value - amount >= state.min;
+export function setMaxContribution(
+    battle: BattleState,
+    entry: Contribution<Modifier>,
+    clamp = false,
+): BattleState {
+    const { dp } = battle.deployment;
+    const next = replaceIn(dp, ["max"], entries.set(dp.max, entry));
+    const max = resolveMax(next);
+    validateLimits(resolveMin(next), max);
+
+    return replaceIn(
+        battle,
+        ["deployment", "dp"],
+        clamp && next.balance > max ? replaceIn(next, ["balance"], max) : next,
+    );
+}
+
+export function removeMaxContribution(battle: BattleState, id: string): BattleState {
+    const { dp } = battle.deployment;
+    const next = replaceIn(dp, ["max"], entries.remove(dp.max, id));
+    if (next === dp) {
+        return battle;
+    }
+
+    validateLimits(resolveMin(next), resolveMax(next));
+
+    return replaceIn(battle, ["deployment", "dp"], next);
+}
+
+export function setRecoverySpeedContribution(
+    battle: BattleState,
+    entry: Contribution<Modifier>,
+): BattleState {
+    const { dp } = battle.deployment;
+
+    return replaceIn(
+        battle,
+        ["deployment", "dp", "recoverySpeed"],
+        entries.set(dp.recoverySpeed, entry),
+    );
+}
+
+export function removeRecoverySpeedContribution(battle: BattleState, id: string): BattleState {
+    const { dp } = battle.deployment;
+
+    return replaceIn(
+        battle,
+        ["deployment", "dp", "recoverySpeed"],
+        entries.remove(dp.recoverySpeed, id),
+    );
+}
+
+function validateLimits(min: number, max: number): void {
+    if (min > max) {
+        throw new RangeError("deployment point minimum exceeds the limit");
+    }
 }

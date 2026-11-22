@@ -505,7 +505,10 @@ test("source grouping follows persistent Cards across redeployment and keeps Car
     const card = { definition: createCardDefinition(), unitDefinition: deployable };
     let state = battle([{ definition: operator, position: [1, 1] }], {
         deployment: {
-            definition: { initialDp: 0, maxDp: 99, dpRecoveryTicks: null, slotLimit: 2 },
+            definition: {
+                dp: { initial: 0, min: 0, max: 99, recoveryInterval: null },
+                slotLimit: 2,
+            },
             cards: [card, card],
         },
     });

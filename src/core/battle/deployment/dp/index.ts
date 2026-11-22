@@ -1,3 +1,15 @@
-export { advance, changeDp, initialize, type Definition, type State } from "./dp.js";
+export {
+    initialize,
+    removeMaxContribution,
+    removeMinContribution,
+    removeRecoverySpeedContribution,
+    setMaxContribution,
+    setMinContribution,
+    setRecoverySpeedContribution,
+    type Definition,
+    type State,
+} from "./dp.js";
 
-export { modify, pay, recover, setMinimum } from "./operations.js";
+export { resolveMax, resolveMin, resolveRecoverySpeed } from "./query.js";
+
+export { modify, pay } from "./operations.js";

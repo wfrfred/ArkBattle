@@ -19,8 +19,7 @@ import {
     type Rejected,
     type Rejection,
 } from "./request.js";
-import { canPay } from "./dp/dp.js";
-import { advanceBattle as advanceDp } from "./dp/operations.js";
+import { canPay } from "./dp/query.js";
 import { advance as advanceSlots, allows as allowsSlots } from "./slot/operations.js";
 import { Hooks } from "../../hook.js";
 
@@ -134,10 +133,7 @@ export function resolveRestrictions(
 }
 
 export function advanceResources(battle: BattleState, self: Card<any>): BattleState {
-    battle = advanceSlots(battle);
-    battle = advanceCard(battle, self);
-
-    return advanceDp(battle, battle.tick);
+    return advanceCard(advanceSlots(battle), self);
 }
 
 export function evaluateCurrent(

@@ -1,4 +1,5 @@
 import type { Ref } from "../../common/ref.js";
+import { replaceIn } from "../../common/object.js";
 import type { Unit } from "../../unit/unit.js";
 import { ref as unitRef } from "../../unit/query.js";
 import type { Deployable } from "../../unit/capability/deployable/capability.js";
@@ -104,13 +105,13 @@ export function deploy<T extends Card<any>>(
         refund,
     });
     battle = initialized.state;
-    battle = refreshOrder({
-        ...battle,
-        deployment: {
-            ...battle.deployment,
-            history: [...battle.deployment.history, { card: input.card, unit: unitRef(unit) }],
-        },
-    });
+    battle = refreshOrder(
+        replaceIn(
+            battle,
+            ["deployment", "history"],
+            [...battle.deployment.history, { card: input.card, unit: unitRef(unit) }],
+        ),
+    );
     battle = add(battle, unit);
 
     return {
@@ -143,9 +144,8 @@ export function resolveDeploymentCommands(
 }
 
 export function advance(state: BattleState): BattleState {
-    const tick = state.tick;
     state = slot.advance(state);
     state = deck.advance(state);
 
-    return dp.advanceBattle(state, tick);
+    return dp.advance(state);
 }

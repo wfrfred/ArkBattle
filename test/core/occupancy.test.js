@@ -17,9 +17,7 @@ const operator = {
 };
 const operatorCard = createCardDefinition({ redeployTicks: 10, slots: 1 });
 const account = {
-    initialDp: 50,
-    maxDp: 99,
-    dpRecoveryTicks: null,
+    dp: { initial: 50, min: 0, max: 99, recoveryInterval: null },
     slotLimit: 3,
 };
 

@@ -56,13 +56,13 @@ Quote 承诺 DP、库存和额度消费：dp 为 null 表示不支付，零表�
 
 Card 初始化与 DeployRequest 入口各自校验列表内的限制 ID 唯一。限制依次合并默认、Card 静态、Card 当前与 Request，不同列表的同 ID 后者覆盖。有效项按贡献政策选择，按 ID 稳定求值；首拒绝映射既有原因，自定义原因是 RULE，不依赖历史插入位置。查询与执行都使用同一规则和资源事实。
 
-求值先接续到当前 Tick 的库存／时钟／DP。preview／evaluate 只读这个临时版本，positions 保留完整报价和限制逐落点求值；拒绝不发布资源推进或创建实例。
+求值先接续到当前 Tick 的库存、时钟和部署位，支付资格使用当前 DP 余额。preview／evaluate 只读这个临时版本，positions 保留完整报价和限制逐落点求值；拒绝不发布资源推进或创建实例。
 
 ## 普通部署流程
 
 合并并判定资格 → 采样 COST／退款依据 → 提交 DP、部署位、库存及部署间隔 → `Unit.initialize` 分配身份并装配 → Deployable.setDeployment 写入本次事实 → 追加部署记录 → 登记 Unit／占格 → 派发 Battle 级和 Unit 本地 `entered`。
 
-付款先处理 DP 时基，不能在消费后补发满额期间回复。落点与方向通过 Occupancy Initial 提供；Deployment 不直接重建 Deployable State。
+付款使用当前 DP 余额。落点与方向通过 Occupancy Initial 提供；Deployment 不直接重建 Deployable State。
 
 部署 entered 程序先装配，然后 Card／Request Hook，再 Capability 和内容程序；公共 priority 可调整同一集合，默认同级保持装配顺序。Deployment 部署通知和 Occupancy 配对各自通过已登记程序完成，Unit.add 不特判这些领域。
 
@@ -110,7 +110,13 @@ cooldown 是部署间隔，recovery 是串行逐份恢复；间隔到期不凭�
 
 ## DP
 
-DP 自然回复受周期和上限约束，满额期间不积累补发；付款和显式修改先接续已有回复事实。允许负值时，负 DP 仅使自然回复减半，主动回复不减半，跨零保留已有进度。
+`Deployment.Definition.dp` 提供起始余额、基础上下限和自然回复周期。`dp.resolveMin`、`dp.resolveMax` 与 `dp.resolveRecoverySpeed` 按对应的 Modifier 贡献求出有效值。账户上限独立于 Deck 的卡牌费用截断上限。
+
+调度器每 Tick 调用一次 DP 推进。自然回复的基础速率为每 Tick `1 / recoveryInterval` 点 DP，周期为 `null` 时关闭自然回复。`progress` 以基础回复速度对应的 Tick 数累计。每次推进按有效速率累积，负余额时额外乘 0.5。跨零或变更回复速度保留已有进度，达到或超过有效上限时停止累积并清空进度。
+
+`dp.modify` 按有符号差值修改余额并应用有效上下限。余额已超上限时，正差值保持原余额，负差值按实际金额减少并仍受下限约束。`dp.pay` 按有效下限判断能否支付，成功时扣除准确金额，拒绝时返回原状态。支付零点合法，免支付的报价由 Deployment 跳过付款。支付、余额修改与资格查询都使用当前余额。
+
+提高有效下限时同步抬高低于下限的余额。设置上限贡献默认保留余额，传入 `clamp: true` 时将超出的余额截到新上限。移除上限贡献重新求值，保留余额。
 
 ## 支持范围
 

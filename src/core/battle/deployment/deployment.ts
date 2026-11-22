@@ -8,7 +8,9 @@ import type { Unit } from "../../unit/unit.js";
 import type { Deployable } from "../../unit/capability/deployable/capability.js";
 import { Hooks } from "../../hook.js";
 
-export interface Definition extends deck.Definition, dp.Definition, slot.Definition {}
+export interface Definition extends deck.Definition, slot.Definition {
+    readonly dp: dp.Definition;
+}
 
 export interface Input<States extends readonly object[] = readonly object[]> {
     readonly definition: Definition;
@@ -28,18 +30,12 @@ export interface State {
     readonly hooks: Hooks;
 }
 
-export function initialize(definition?: Definition, tick = 0): State {
+export function initialize(definition?: Definition): State {
     return {
         deck: deck.initialize(definition),
-        dp: dp.initialize(definition, tick),
+        dp: dp.initialize(definition?.dp),
         slot: slot.initialize(definition),
         history: [],
         hooks: Hooks.empty(),
     };
-}
-
-export function changeDp(state: State, amount: number, tick: number): State {
-    const next = dp.changeDp(state.dp, amount, tick);
-
-    return next === state.dp ? state : { ...state, dp: next };
 }

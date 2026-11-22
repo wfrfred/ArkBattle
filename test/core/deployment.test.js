@@ -7,6 +7,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { battle, get } from "../helpers/battle.js";
 import * as deployment from "../../dist/core/battle/deployment/index.js";
+import { step } from "../../dist/core/battle/runtime.js";
 import * as cards from "../../dist/core/battle/deployment/deck/card/index.js";
 import * as units from "../../dist/core/unit/index.js";
 import * as damage from "../../dist/core/battle/resource/hp/damage/index.js";
@@ -37,9 +38,7 @@ const operatorCard = {
     initialize: (state) => ({ state, value: {} }),
 };
 const account = {
-    initialDp: 50,
-    maxDp: 99,
-    dpRecoveryTicks: null,
+    dp: { initial: 50, min: 0, max: 99, recoveryInterval: null },
     slotLimit: 3,
 };
 
@@ -118,7 +117,7 @@ test("different Card definitions can deploy the same Unit Definition used by an 
         assert.equal(unit.deployable.slots, card.definition.slots);
         assert.deepEqual(deployment.cardForUnit(state, units.ref(unit)), reference);
     }
-    assert.equal(state.deployment.dp.value, 33);
+    assert.equal(state.deployment.dp.balance, 33);
     assert.equal(state.deployment.slot.used, 1);
     assert.equal(deployment.cardForUnit(state, units.ref(initial)), null);
     assert.deepEqual(state.deployment.history.map(({ card }) => card), [
@@ -142,7 +141,7 @@ test("preview, evaluation and deployment share a request, rejection spends nothi
                 period: { type: "FIXED", ticks: 1 },
                 initialize(current) {
                     constructions.push({
-                        dp: current.deployment.dp.value,
+                        dp: current.deployment.dp.balance,
                         stock: cards.get(current, card).stock,
                         slots: current.deployment.slot.used,
                     });
@@ -187,7 +186,7 @@ test("preview, evaluation and deployment share a request, rejection spends nothi
         state,
         value: { type: "REJECTED", reason: "RULE" },
     });
-    assert.equal(state.deployment.dp.value, 50);
+    assert.equal(state.deployment.dp.balance, 50);
     assert.equal(cards.get(state, card).stock, 1);
     assert.equal(state.deployment.slot.used, 0);
     assert.deepEqual(constructions, []);
@@ -202,7 +201,7 @@ test("preview, evaluation and deployment share a request, rejection spends nothi
 
                 invoke: (current, self) => {
                     entered = true;
-                    assert.equal(current.deployment.dp.value, 40);
+                    assert.equal(current.deployment.dp.balance, 40);
                     assert.equal(cards.get(current, card).stock, 0);
                     assert.equal(current.deployment.slot.used, 1);
                     assert.equal(get(current, self.id).deployable.card.id, card.id);
@@ -234,7 +233,7 @@ test("preview, evaluation and deployment share a request, rejection spends nothi
 
 test("DEPLOY-RESTRICTION-01: policy overrides retain resource and occupancy prerequisites while zero quotes remain legal", () => {
     let state = battle([], { deployment: {
-        definition: { ...account, initialDp: 0, minDp: -5, slotLimit: 0 },
+        definition: { ...account, dp: { ...account.dp, initial: 0, min: -5 }, slotLimit: 0 },
         cards: [{ definition: operatorCard, unitDefinition: operator }],
     } });
     const card = cards.ref([...cards.all(state)][0]);
@@ -270,7 +269,7 @@ test("DEPLOY-RESTRICTION-01: policy overrides retain resource and occupancy prer
     state = second.state;
     assert.equal(second.value.type, "DEPLOYED");
     assert.equal(cards.get(state, card).stock, 1);
-    assert.equal(state.deployment.dp.value, 0);
+    assert.equal(state.deployment.dp.balance, 0);
     assert.equal(state.deployment.slot.used, 0);
     assert.equal(get(state, first.value.unitId).deployable.cost, 10);
     assert.equal(get(state, second.value.unitId).deployable.slots, 0);
@@ -355,7 +354,7 @@ test("retreat refunds before removal, and death delays global slot release indep
                                 invoke: (current, { unit }) => {
                                     const card = cards.get(current, unit.deployable.card);
                                     retreats.push({
-                                        dp: current.deployment.dp.value,
+                                        dp: current.deployment.dp.balance,
                                         stage: card.costStage,
                                         recovery: card.recovery,
                                     });
@@ -368,7 +367,7 @@ test("retreat refunds before removal, and death delays global slot release indep
                                     const card = cards.get(current, unit.deployable.card);
                                     departures.push({
                                         reason,
-                                        dp: current.deployment.dp.value,
+                                        dp: current.deployment.dp.balance,
                                         stage: card.costStage,
                                         pending: card.recovery.pending,
                                         slots: current.deployment.slot.used,
@@ -402,7 +401,7 @@ test("retreat refunds before removal, and death delays global slot release indep
     const secondUnit = units.ref(get(state, second.value.unitId));
     assert.deepEqual(deployment.cardForUnit(state, firstUnit), card);
     assert.equal(deployment.deployedCount(state, card), 1);
-    assert.equal(state.deployment.dp.value, 30);
+    assert.equal(state.deployment.dp.balance, 30);
     const request = {
         source: null,
         target: units.ref(get(state, second.value.unitId)),
@@ -462,7 +461,7 @@ test("external movement recycles on departure and self movement keeps the card i
         const removed = units.remove(observed, unit, { reason });
 
         assert.equal(units.get(removed, unit), undefined);
-        assert.equal(removed.deployment.dp.value, 40);
+        assert.equal(removed.deployment.dp.balance, 40);
     }
 });
 
@@ -504,25 +503,132 @@ test("stock recovers serially with sampled budgets; pause and reduction affect o
     assert.equal(cards.get(state, card).cooldown, null);
 });
 
-test("negative DP halves only natural recovery, preserves progress across zero, and full time is not banked", () => {
+test("only battle steps advance natural DP recovery", () => {
+    const { dp } = deployment;
+    const initial = battle([], {
+        deployment: {
+            definition: { ...account, dp: { initial: 0, min: 0, max: 10, recoveryInterval: 1 } },
+            cards: [{ definition: { ...operatorCard, cost: 1 }, unitDefinition: operator }],
+        },
+    });
+    const state = { ...initial, tick: 12 };
+    const card = cards.ref([...cards.all(state)][0]);
+    const request = deployment.createRequest(state, card, [1, 2]);
+    const rejected = { type: "REJECTED", reason: "INSUFFICIENT_DP" };
+
+    assert.deepEqual(deployment.evaluate(state, request), rejected);
+    assert.deepEqual(deployment.preview(state, request), rejected);
+    assert.deepEqual(deployment.deploy(state, request), { state, value: rejected });
+    assert.deepEqual(dp.pay(state, 1), { state, value: false });
+    assert.equal(dp.modify(state, 1).deployment.dp.balance, 1);
+
+    const advanced = step(state, []);
+    assert.equal(advanced.deployment.dp.balance, 1);
+    const deployed = deployment.deploy(advanced, request);
+    assert.equal(deployed.value.type, "DEPLOYED");
+    assert.equal(deployed.state.deployment.dp.balance, 0);
+});
+
+test("negative DP halves natural recovery, crossing zero keeps progress, and a full account banks none", () => {
+    const { dp } = deployment;
     let state = battle([], {
         deployment: {
-            definition: { ...account, initialDp: -1, minDp: -5, maxDp: 10, dpRecoveryTicks: 10 },
+            definition: { ...account, dp: { initial: -2, min: -5, max: 3, recoveryInterval: 2 } },
             cards: [],
         },
     });
-    state = deployment.advance({ ...state, tick: 10 });
-    assert.equal(state.deployment.dp.value, -1);
-    state = deployment.dp.recover(state, 2);
-    assert.equal(state.deployment.dp.value, 1);
-    state = deployment.advance({ ...state, tick: 15 });
-    assert.equal(state.deployment.dp.value, 2);
-    state = deployment.dp.recover(state, 8);
-    state = deployment.advance({ ...state, tick: 100 });
-    const paid = deployment.dp.pay(state, 5);
+    for (let tick = 0; tick < 3; tick++) {
+        state = step(state, []);
+        assert.equal(state.deployment.dp.balance, -2);
+    }
+    state = step(state, []);
+    assert.equal(state.deployment.dp.balance, -1);
+
+    state = step(step(state, []), []);
+    assert.equal(state.deployment.dp.balance, -1);
+    state = dp.modify(state, 2);
+    assert.equal(state.deployment.dp.balance, 1);
+    state = step(state, []);
+    assert.equal(state.deployment.dp.balance, 2);
+
+    state = dp.modify(state, 8);
+    assert.equal(state.deployment.dp.balance, 3);
+    state = step(step(state, []), []);
+    const paid = dp.pay(state, 1);
     assert.equal(paid.value, true);
-    state = deployment.advance({ ...paid.state, tick: 109 });
-    assert.equal(state.deployment.dp.value, 5);
-    state = deployment.advance({ ...state, tick: 110 });
-    assert.equal(state.deployment.dp.value, 6);
+    state = step(paid.state, []);
+    assert.equal(state.deployment.dp.balance, 2);
+    assert.equal(step(state, []).deployment.dp.balance, 3);
+});
+
+test("DP limits preserve excess unless clamped and payments honor the effective minimum", () => {
+    const { dp } = deployment;
+    let state = battle([], {
+        deployment: {
+            definition: { ...account, dp: { initial: 8, min: 0, max: 10, recoveryInterval: 2 } },
+            cards: [],
+        },
+    });
+    const lowerMax = { id: "lower-limit", value: modifier.create({ addition: -4 }) };
+    state = dp.setMaxContribution(state, lowerMax);
+    assert.equal(dp.resolveMax(state.deployment.dp), 6);
+    assert.equal(state.deployment.dp.balance, 8);
+    state = step(step(state, []), []);
+    assert.equal(state.deployment.dp.balance, 8);
+    assert.equal(dp.modify(state, 1).deployment.dp.balance, 8);
+    assert.equal(dp.modify(state, -1).deployment.dp.balance, 7);
+
+    state = dp.setMaxContribution(state, lowerMax, true);
+    assert.equal(state.deployment.dp.balance, 6);
+    state = dp.setMaxContribution(
+        state,
+        { ...lowerMax, value: modifier.create({ addition: -3 }) },
+        true,
+    );
+    assert.equal(dp.resolveMax(state.deployment.dp), 7);
+    assert.equal(state.deployment.dp.balance, 6);
+    state = dp.removeMaxContribution(state, lowerMax.id);
+    assert.equal(dp.resolveMax(state.deployment.dp), 10);
+    assert.equal(state.deployment.dp.balance, 6);
+
+    const raised = dp.setMaxContribution(state, {
+        id: "raise-limit",
+        value: modifier.create({ addition: 2 }),
+    });
+    assert.equal(dp.resolveMax(raised.deployment.dp), 12);
+    assert.equal(dp.modify(raised, 5).deployment.dp.balance, 11);
+    const atBaseMax = dp.modify(raised, 4);
+    assert.equal(step(step(atBaseMax, []), []).deployment.dp.balance, 11);
+
+    const lowerMin = { id: "allow-negative", value: modifier.create({ addition: -2 }) };
+    state = dp.setMinContribution(state, lowerMin);
+    assert.equal(dp.resolveMin(state.deployment.dp), -2);
+    assert.deepEqual(dp.pay(state, 9), { state, value: false });
+    const paid = dp.pay(state, 8);
+    assert.equal(paid.value, true);
+    assert.equal(paid.state.deployment.dp.balance, -2);
+    state = dp.removeMinContribution(paid.state, lowerMin.id);
+    assert.equal(dp.resolveMin(state.deployment.dp), 0);
+    assert.equal(state.deployment.dp.balance, 0);
+});
+
+test("changing and removing DP recovery speed contributions preserves accrued progress", () => {
+    const { dp } = deployment;
+    let state = battle([], {
+        deployment: {
+            definition: { ...account, dp: { initial: 0, min: 0, max: 10, recoveryInterval: 4 } },
+            cards: [],
+        },
+    });
+    const slow = { id: "slow-recovery", value: modifier.create({ multiplier: -0.5 }) };
+    state = step(state, []);
+    state = dp.setRecoverySpeedContribution(state, slow);
+    assert.equal(dp.resolveRecoverySpeed(state.deployment.dp), 1 / 8);
+    state = step(state, []);
+    state = dp.removeRecoverySpeedContribution(state, slow.id);
+    assert.equal(dp.resolveRecoverySpeed(state.deployment.dp), 1 / 4);
+
+    state = step(step(state, []), []);
+    assert.equal(state.deployment.dp.balance, 0);
+    assert.equal(step(state, []).deployment.dp.balance, 1);
 });
