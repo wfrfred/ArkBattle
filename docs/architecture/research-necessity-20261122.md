@@ -90,6 +90,8 @@ U023 的实际样本是凛御银灰 X 模组 3 级。符合天赋条件的 Card 
 | U058 | 固定模板唯一 `_onlyUpdateSpCost=false` 的节点确有建筑工具间绑定。原生节点只修改 `spCost`，恢复类型随原值复制。该实际调用没有建立战中切换 SP 回复类型的需求。 [配置和字段写入](../research/evidence/resource-observers-20261122/README.md#取消原因与-sp-方式的固定表检索) |
 | U059 | 固定卫戍资料至少两版配置采用不同共享次数。验证了 Mechanism.state 可保存同一预算，多个 Unit 的 damageCommitting 同步取用，成功者进入 G01 等待。需要继续核对真实判例的扣减、例外和后来加入单位的装配，已证共享预算无需第二套计数机制。 [全局样例](../research/03-space-units-and-mechanisms.md#L285) |
 
+U042–U045 的公共结算时序已定。妮芙后继、奥术法阵、抵挡观察、零伤害和免疫沿用现行 Calculate／Apply、接收与通知契约。来源 Output 保持在 Calculate，目标前置接收保持在 Apply。上表的原生差异与具体 Content 资格作为取证记录保留。 [Resource 契约](resource.md#calculate-与-apply-的语义边界)
+
 ## 生命比例的重分配与同步
 
 魔王 S3 采样范围内总 HP 与总 MaxHP，再逐目标应用有符号差值。公开探针用 `increaseHp` 和排除普通通知的 `LOSS`，将 250／1000 与 1700／2000 调到 650／1000 与 1300／2000，同时无普通伤害或治疗通知。Vitality 自身的伤害提交仍可观察减量。债务、生命提交观察者及两轮目标资格之间的实际交互仍需核对。 [原生绑定](../research/evidence/health-equalization-20261122/README.md)
