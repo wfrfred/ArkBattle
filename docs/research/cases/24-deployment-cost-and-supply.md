@@ -194,7 +194,9 @@ HE-7「以爱相连」刷出的赏金猎人扰乱者通过已启用的 `PassiveB
 
 2026-11-02 补查。**N：当前客户端的结束原因枚举显式区分特殊移动。** [本轮 metadata 摘录](../evidence/deployment-move-20261102/README.md)直接列出 `Entity/FinishReason.MOVE_LIKE_RESPAWN_SELF` 与 `MOVE_LIKE_RESPAWN_EXTERNAL`，并与 `WITHDRAW`、`RESPAWN_SELF` 等成员区分。
 
-[案例 23 的旧版本调用链](23-blocker-and-blockable-roles.md#原生调用链与关系维护)另已确认特殊移动先调用 `FinishMe(reason)`，再走新实例创建；保留指令中 Self／External 路径传入不同的结束原因常量。两批客户端指纹不同，本轮不把旧常量直接映射为新版枚举值，也没有重新提取新版的完整移动正文。
+[案例 23 的旧版本调用链](23-blocker-and-blockable-roles.md#原生调用链与关系维护)确认特殊移动先调用 `FinishMe(reason)`，再走新实例创建。2026-11-22 以当前客户端复核，自身移动传入 `0xb`，外部移动传入 `0xc`，两者共用同一卡的免费创建入口。`OnCharacterFinished` 为 `0xb` 跳过 Card 回收，`0xc` 则进入通常的回收路径。 [当前客户端指令](../evidence/external-redeploy-20261122/README.md)
+
+**D／N／P**　支线「泡影苍霆」的泡影流大冲击让目标干员原地移动并改为翔虫的朝向，翔虫闪击让目标干员移到命中位置。两者实际技能绑定的 Holder 均选择外部移动，沿用该路径的 HP／SP 比例恢复。泡影流大冲击还会累积再部署费用惩罚，来源是旧 Unit 触发的 Card 回收。 [技能绑定、回收及属性接续](../evidence/external-redeploy-20261122/README.md) · [泡影流大冲击](https://prts.wiki/w/泡影流大冲击#装置机制)
 
 2026-11-22 沿当前客户端补查乌尔比安与 Mon3tr S3。**N／I：两者的实际 Self 移动通过原 Card 生成新实例，并由专属 Buff 保存、恢复 HP 比例。** 乌尔比安仅在 `MOVE_LIKE_RESPAWN_SELF` 结束时保存比例，新实例出生读取；Mon3tr 的重生模式在 Buff 安装时读取比例。`FetchHpToBlackboard` 以新实例最大 HP 计算从当前比例到目标比例的有符号差量，设置 `SKIP_MODIFIER_EVENT` 后提交。两份技能各有专属进度键和返回条件，乌尔比安移动、返回模式分别绑定清 SP；通用 `RespawnCharacter` 另有 External 的 HP／SP 比例传递，Mon3tr S3 的实际调用关闭它。 [组件、Holder 与原生调用](../evidence/redeploy-state-and-repeater-20261122/README.md#特殊移动)
 
@@ -214,7 +216,7 @@ HE-7「以爱相连」刷出的赏金猎人扰乱者通过已启用的 `PassiveB
 
 乌尔比安与 Mon3tr 的技能根共用 `UlpiaS3CastSkill._RespawnToLocatedPos`。返回到不同格时会检查场上占位者及所属 Card，允许特定 Buff 豁免，返回条件失败时执行 `Suicide`。 [返回检查](../evidence/special-redeploy-failure-20261122/README.md)
 
-**N／P：部署通知与技能接续是两个事实。** 同一卡的特殊移动跳过普通 DP 检查、扣费和旧实例的普通卡牌回收，落点再检查失败后默认模式会回收 Card。PRTS 记录移动后可再次触发部分部署效果，手动部署才计入的效果仍按自身条件判断，例如渡桥的泄压准备。思衡托的 `SkillProgressHooker.RestoreSkillProgress` 写回计时进度并安装恢复 Buff，普通技能发动和 SP 支付没有在这条入口重跑。恢复 Buff 有条件地请求 `RespawnBorn`。该能力是角色的公共 `EmptyAnimatedAbility`，若执行到标准 `SpellOn` 分支则派发自己的能力通知，编号为 `GENERAL` 的公共能力不计入标准狂躁的攻击／技能次数。其他技能接续和通知的过滤仍取决于各自实现。 [费用、回收与原生恢复程序](../evidence/special-redeploy-failure-20261122/README.md) · [泄压准备](https://prts.wiki/w/渡桥#天赋)
+**N／P：部署通知与技能接续是两个事实。** 自身特殊移动跳过普通 DP 检查、扣费和旧实例的普通卡牌回收，落点再检查失败后默认模式会回收 Card。PRTS 记录移动后可再次触发部分部署效果，手动部署才计入的效果仍按自身条件判断，例如渡桥的泄压准备。思衡托的 `SkillProgressHooker.RestoreSkillProgress` 写回计时进度并安装恢复 Buff，普通技能发动和 SP 支付没有在这条入口重跑。恢复 Buff 有条件地请求 `RespawnBorn`。该能力是角色的公共 `EmptyAnimatedAbility`，若执行到标准 `SpellOn` 分支则派发自己的能力通知，编号为 `GENERAL` 的公共能力不计入标准狂躁的攻击／技能次数。其他技能接续和通知的过滤仍取决于各自实现。 [费用、回收与原生恢复程序](../evidence/special-redeploy-failure-20261122/README.md) · [泄压准备](https://prts.wiki/w/渡桥#天赋)
 
 #### 特殊入场如何触发部署效果
 
