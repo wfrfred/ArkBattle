@@ -7,7 +7,10 @@ import type { Definition as UnitDefinition } from "../unit/unit.js";
 import type { Definitions as CapabilityDefinitions } from "../unit/capability/catalog.js";
 import { prepare as prepareCombat, advance as advanceCombat } from "./steps/combat.js";
 import { advance as advanceSchedule } from "./schedule/runtime.js";
-import { resolveDeploymentCommands } from "./deployment/operations.js";
+import {
+    advance as advanceDeployment,
+    resolveDeploymentCommands,
+} from "./deployment/operations.js";
 import { advanceMovement } from "./steps/movement.js";
 import { advance as advanceBlocking } from "./blocking/operations.js";
 import { advance as advanceProjectiles } from "../projectile/operations.js";
@@ -19,9 +22,8 @@ import { advanceSkills } from "./steps/skills.js";
 import { initialize as initializeSchedule } from "./schedule/state.js";
 import { initializeBattlefield } from "./initialization.js";
 import * as unit from "../unit/operations.js";
-import { advance as advanceDeployment } from "./deployment/resources.js";
-import * as cards from "./deployment/card/index.js";
-import type { Card } from "./deployment/card/card.js";
+import * as cards from "./deployment/deck/card/index.js";
+import type { Card } from "./deployment/deck/card/card.js";
 import { initialize as initializeDeployment } from "./deployment/deployment.js";
 
 export type { Input, Command, Event } from "./contract.js";

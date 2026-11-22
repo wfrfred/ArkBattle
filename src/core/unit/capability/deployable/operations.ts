@@ -1,7 +1,7 @@
 import type { Ref } from "../../../common/ref.js";
 import type { State as BattleState } from "../../../battle/state.js";
 import { remove } from "../../operations.js";
-import { recover } from "../../../battle/deployment/dp.js";
+import { recover } from "../../../battle/deployment/dp/operations.js";
 import type { Unit } from "../../unit.js";
 import * as units from "../../query.js";
 import type { Deployable, State } from "./capability.js";

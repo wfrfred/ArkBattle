@@ -6,7 +6,7 @@ import type { Definition as UnitDefinition, Unit } from "../unit/unit.js";
 import type { Input as UnitInput } from "../unit/initialize.js";
 import type { Definitions as CapabilityDefinitions } from "../unit/capability/catalog.js";
 import type { Input as DeploymentInput } from "./deployment/deployment.js";
-import type { Card } from "./deployment/card/card.js";
+import type { Card } from "./deployment/deck/card/card.js";
 import type { DeploymentCommand } from "./deployment/operations.js";
 import type { Ref } from "../common/ref.js";
 import type { ExecutionRef } from "../unit/capability/action/execution.js";

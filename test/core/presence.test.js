@@ -13,7 +13,7 @@ import * as block from "../../dist/core/unit/capability/blocking/index.js";
 import * as actions from "../../dist/core/unit/capability/action/index.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import * as deployment from "../../dist/core/battle/deployment/index.js";
-import * as cards from "../../dist/core/battle/deployment/card/index.js";
+import * as cards from "../../dist/core/battle/deployment/deck/card/index.js";
 import { step } from "../../dist/core/battle/runtime.js";
 
 test("disappearance preserves deployment and lifetimes, releases blocking before cancelling actions, and removes only its restrictions", () => {

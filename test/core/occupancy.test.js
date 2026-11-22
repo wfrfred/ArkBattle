@@ -6,7 +6,7 @@ import assert from "node:assert/strict";
 import { battle, get } from "../helpers/battle.js";
 import { createCardDefinition } from "../helpers/deployable.js";
 import * as deployment from "../../dist/core/battle/deployment/index.js";
-import * as cards from "../../dist/core/battle/deployment/card/index.js";
+import * as cards from "../../dist/core/battle/deployment/deck/card/index.js";
 import * as units from "../../dist/core/unit/query.js";
 
 const operator = {

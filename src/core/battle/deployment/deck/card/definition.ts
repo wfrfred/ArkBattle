@@ -1,8 +1,8 @@
-import type { Contribution } from "../../../common/contribution.js";
-import type { Result, State as BattleState } from "../../state.js";
+import type { Contribution } from "../../../../common/contribution.js";
+import type { Result, State as BattleState } from "../../../state.js";
 import type { Card } from "./card.js";
-import type { Restriction } from "../restriction.js";
-import type { Hooks } from "../../../hook.js";
+import type { Restriction } from "../../restriction.js";
+import type { Hooks } from "../../../../hook.js";
 
 export interface Refund {
     readonly rate: number;

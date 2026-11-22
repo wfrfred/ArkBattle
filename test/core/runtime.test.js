@@ -7,7 +7,7 @@ import * as units from "../../dist/core/unit/index.js";
 import * as mechanisms from "../../dist/core/mechanism/index.js";
 import { step } from "../../dist/core/battle/runtime.js";
 import { dp } from "../../dist/core/battle/deployment/index.js";
-import * as cards from "../../dist/core/battle/deployment/card/index.js";
+import * as cards from "../../dist/core/battle/deployment/deck/card/index.js";
 import * as skills from "../../dist/core/unit/capability/skill/index.js";
 
 const account = {

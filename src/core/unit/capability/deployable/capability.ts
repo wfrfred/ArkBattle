@@ -2,12 +2,12 @@ import type * as contribution from "../../../common/contribution.js";
 import type { State as BattleState, Result } from "../../../battle/state.js";
 import type { Unit } from "../../unit.js";
 import type { Ref } from "../../../common/ref.js";
-import type { Card } from "../../../battle/deployment/card/card.js";
+import type { Card } from "../../../battle/deployment/deck/card/card.js";
 import { validateRestrictions, type Restriction as BaseRestriction } from "../../../restriction.js";
 import { hasOccupancy, type Occupancy } from "../occupancy/capability.js";
 import { Hooks } from "../../../hook.js";
 import { removed } from "../../hook.js";
-import { settleDeparture } from "../../../battle/deployment/resources.js";
+import { settleDeparture } from "../../../battle/deployment/settlement.js";
 import { createRegistrationOperations } from "../../registration.js";
 
 export interface Refund {

@@ -1,6 +1,9 @@
-import { assertNonnegativeNumber, assertNonnegativeSafeInteger } from "../../../common/assert.js";
-import { validateRestrictions } from "../../../restriction.js";
-import type { State as BattleState, Result } from "../../state.js";
+import {
+    assertNonnegativeNumber,
+    assertNonnegativeSafeInteger,
+} from "../../../../common/assert.js";
+import { validateRestrictions } from "../../../../restriction.js";
+import type { State as BattleState, Result } from "../../../state.js";
 import type { Card, UnitDefinition } from "./card.js";
 import type { Definition } from "./definition.js";
 

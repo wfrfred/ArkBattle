@@ -1,6 +1,6 @@
-import type { Ref } from "../../../common/ref.js";
-import type { Restriction as BaseRestriction } from "../../../restriction.js";
-import type { DeployRequest } from "../request.js";
+import type { Ref } from "../../../../common/ref.js";
+import type { Restriction as BaseRestriction } from "../../../../restriction.js";
+import type { DeployRequest } from "../../request.js";
 import type { Card } from "./card.js";
 
 export type RestrictionContext<T extends Card<any> = Card> =

@@ -1,6 +1,6 @@
-import * as contribution from "../../../common/contribution.js";
-import * as entries from "../../../common/collection/entries.js";
-import * as modifier from "../../../common/modifier.js";
+import * as contribution from "../../../../common/contribution.js";
+import * as entries from "../../../../common/collection/entries.js";
+import * as modifier from "../../../../common/modifier.js";
 import type { Card, Clock, TimerTarget } from "./card.js";
 
 export function resolveBaseCost(card: Card<any>): number {

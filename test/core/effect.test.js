@@ -9,7 +9,7 @@ import * as units from "../../dist/core/unit/index.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import * as offense from "../../dist/core/unit/capability/offense/index.js";
 import * as deployment from "../../dist/core/battle/deployment/index.js";
-import * as cards from "../../dist/core/battle/deployment/card/index.js";
+import * as cards from "../../dist/core/battle/deployment/deck/card/index.js";
 import { create as modifier } from "../../dist/core/common/modifier.js";
 import { update, remove, lifetime as unitLifetime } from "../../dist/core/unit/operations.js";
 import { scope } from "../../dist/core/lifetime/index.js";

@@ -1,6 +1,6 @@
-import type { Ref } from "../../common/ref.js";
-import { create, type Query } from "../../common/query.js";
-import type { State as BattleState } from "../state.js";
+import type { Ref } from "../../../common/ref.js";
+import { create, type Query } from "../../../common/query.js";
+import type { State as BattleState } from "../../state.js";
 import type { Card } from "./card/card.js";
 import { get } from "./card/query.js";
 

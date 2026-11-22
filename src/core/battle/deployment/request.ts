@@ -5,7 +5,7 @@ import type { Direction } from "../../geometry/direction.js";
 import type { TilePosition } from "../../geometry/coordinate.js";
 import type { Hooks } from "../../hook.js";
 import { validateRestrictions } from "../../restriction.js";
-import type { Card } from "./card/card.js";
+import type { Card } from "./deck/card/card.js";
 import type { Restriction } from "./restriction.js";
 
 export interface Quote {

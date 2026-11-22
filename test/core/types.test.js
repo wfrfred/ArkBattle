@@ -34,7 +34,7 @@ import { dispatch as dispatchElemental } from ${module("unit/capability/elementa
 import * as runtime from ${module("battle/runtime")};
 import type { Input as BattleInput, Command } from ${module("battle/contract")};
 import type { SkillCommand } from ${module("battle/index")};
-import * as cards from ${module("battle/deployment/card/index")};
+import * as cards from ${module("battle/deployment/deck/card/index")};
 import * as projectiles from ${module("projectile/index")};
 import type { Definition as ProjectileDefinition, Projectile, Slowable } from ${module("projectile/index")};
 import * as tracking from ${module("../content/projectiles/tracking")};

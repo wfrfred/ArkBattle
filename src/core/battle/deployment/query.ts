@@ -7,10 +7,11 @@ import { get as getTile } from "../../battlefield/map/map.js";
 import { hasDeployable } from "../../unit/capability/deployable/capability.js";
 import type { State as BattleState } from "../state.js";
 import type { Unit } from "../../unit/unit.js";
-import type { Card } from "./card/card.js";
-import { get } from "./card/query.js";
-import { resolveCost } from "./card/state.js";
-import type { Restriction as CardRestriction } from "./card/restriction.js";
+import type { Card } from "./deck/card/card.js";
+import { get } from "./deck/card/query.js";
+import { advance as advanceCard, resolveCost } from "./deck/card/state.js";
+import { replace } from "./deck/card/operations.js";
+import type { Restriction as CardRestriction } from "./deck/card/restriction.js";
 import type { Restriction } from "./restriction.js";
 import {
     validateRequest,
@@ -19,7 +20,8 @@ import {
     type Rejected,
     type Rejection,
 } from "./request.js";
-import { advanceResources } from "./resources.js";
+import * as dp from "./dp/operations.js";
+import { advanceSlotReleases } from "./slot/operations.js";
 import { Hooks } from "../../hook.js";
 
 export function cardForUnit(battle: BattleState, reference: Ref<Unit>): Ref<Card> | null {
@@ -131,6 +133,14 @@ export function resolveRestrictions(
     }
 
     return resolveEntries([...restrictions.values()]);
+}
+
+export function advanceResources(battle: BattleState, self: Card<any>): BattleState {
+    battle = advanceSlotReleases(battle);
+    battle = replace(battle, advanceCard(self, battle.tick));
+    const deployment = dp.advance(battle.deployment, battle.tick);
+
+    return deployment === battle.deployment ? battle : { ...battle, deployment };
 }
 
 export function evaluateCurrent(

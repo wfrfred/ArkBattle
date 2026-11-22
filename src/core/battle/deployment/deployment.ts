@@ -5,12 +5,12 @@ import {
     assertPositiveSafeInteger,
 } from "../../common/assert.js";
 import { Store } from "../../common/collection/store.js";
-import type * as card from "./card/card.js";
-import type { Input as CardInput } from "./card/initialize.js";
+import type * as card from "./deck/card/card.js";
+import type { Input as CardInput } from "./deck/card/initialize.js";
 import type { Ref } from "../../common/ref.js";
 import type { Unit } from "../../unit/unit.js";
 import type { Deployable } from "../../unit/capability/deployable/capability.js";
-import type { Ordering } from "./order.js";
+import type { Ordering } from "./deck/order.js";
 import { Hooks } from "../../hook.js";
 
 export interface Definition {
@@ -95,4 +95,4 @@ export function initialize(definition: Definition = emptyDefinition, tick = 0): 
     };
 }
 
-export { changeDp } from "./dp.js";
+export { changeDp } from "./dp/operations.js";

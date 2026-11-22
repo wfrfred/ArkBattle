@@ -1,4 +1,4 @@
-import type { Definition as CardDefinition } from "../../core/battle/deployment/card/index.js";
+import type { Definition as CardDefinition } from "../../core/battle/deployment/deck/card/index.js";
 import { get as getTile } from "../../core/battlefield/map/map.js";
 import { Hooks } from "../../core/hook.js";
 import { secondsToTicks } from "../../core/tick.js";

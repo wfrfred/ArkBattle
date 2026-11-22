@@ -10,14 +10,14 @@ import { initialize as initializeUnit } from "../../unit/initialize.js";
 import { Tile, type TilePosition } from "../../geometry/coordinate.js";
 import type { Direction } from "../../geometry/direction.js";
 import { dispatch as notifyDeployed } from "./hook.js";
-import { get } from "./card/query.js";
-import type { Card } from "./card/card.js";
-import * as card from "./card/state.js";
-import * as cards from "./card/operations.js";
-import * as dp from "./dp.js";
-import { advanceResources } from "./resources.js";
-import { evaluateCurrent, resolveRestrictions, createRequest } from "./query.js";
-import { refreshOrder } from "./order.js";
+import { all, get } from "./deck/card/query.js";
+import { ref, type Card } from "./deck/card/card.js";
+import * as card from "./deck/card/state.js";
+import * as cards from "./deck/card/operations.js";
+import * as dp from "./dp/operations.js";
+import { advanceSlotReleases } from "./slot/operations.js";
+import { advanceResources, evaluateCurrent, resolveRestrictions, createRequest } from "./query.js";
+import { refreshOrder } from "./deck/order.js";
 import { validateRequest, type DeployRequest, type DeployOutcome } from "./request.js";
 import { Hooks } from "../../hook.js";
 import * as lifecycle from "../../unit/hook.js";
@@ -152,4 +152,21 @@ export function resolveDeploymentCommands(
     }
 
     return battle;
+}
+
+export function advance(state: BattleState): BattleState {
+    state = advanceSlotReleases(state);
+    const tick = state.tick;
+    const candidates = all(state);
+
+    for (const candidate of candidates) {
+        const reference = ref(candidate);
+        const self = card.advance(get(state, reference)!, tick);
+        state = cards.replace(state, self);
+        state = self.definition.onTick?.(state, self) ?? state;
+    }
+
+    const deployment = dp.advance(state.deployment, tick);
+
+    return deployment === state.deployment ? state : { ...state, deployment };
 }

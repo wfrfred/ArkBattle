@@ -7,7 +7,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { battle, get } from "../helpers/battle.js";
 import * as deployment from "../../dist/core/battle/deployment/index.js";
-import * as cards from "../../dist/core/battle/deployment/card/index.js";
+import * as cards from "../../dist/core/battle/deployment/deck/card/index.js";
 import * as units from "../../dist/core/unit/index.js";
 import * as damage from "../../dist/core/battle/resource/hp/damage/index.js";
 import * as modifier from "../../dist/core/common/modifier.js";
