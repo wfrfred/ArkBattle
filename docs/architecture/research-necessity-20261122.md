@@ -11,10 +11,9 @@
 | 迷狂牢笼的阻挡站位 | 牢笼保留距离 0.2 格以内目标的位置，较远目标向牢笼中心聚拢。现有 `acquire` 在取得关系时将近处目标向外推至 0.5 格。探针中距牢笼 0.1 格的目标被推入邻格。用 `presence.appear` 移回会同时解除阻挡。 [原生站位](../research/evidence/cage-block-position-20261122/README.md) · [Core 取得](../../src/core/battle/blocking/operations.ts#L150) |
 | G05 战中 DP 上限 | 鉴定过的诺伯特平民进保护区后，普通 DP 账户能存下此前存不下的 DP。目前自然回复和显式加费都受开场上限约束。 |
 | G08 出口结算原因 | 到达蓝门和思旧的强制出口结算都能产生独立于死亡、脚本清除的业务结果。当前自然抵达和同位置的脚本清除都让 `Unit.removed` 收到 `SCRIPT`。圣女停在终点已有组合，见下文。 |
-| U038 死亡后全局部署位的独立归还 | 普通死亡时 Card 先结算，满额队伍仍需等全局部署位归还才能下另一张卡。当前离场同时归还名额和开始卡牌恢复。 |
 | U048 动态召唤参与现有调度等待 | FD-8 的糖果车在实时路线和位置出生后能阻止下一波和关卡完成。当前普通动态出生能创建实际 Unit，但可共用的波次／最终登记路径只接收计划内 Spawn。 |
 
-G03 是已确认且明确暂缓的标准狂躁行为差异。U023 目前已有单独模组的组合路径。其余条目的结论以已核对案例及实际交互条件为准。
+U038 有固定客户端静态证据支持，实机归还时点仍待确认，见下文。G03 是已确认且明确暂缓的标准狂躁行为差异。U023 目前已有单独模组的组合路径。
 
 ## 原审计的十一项
 
@@ -37,7 +36,7 @@ G03 是已确认且明确暂缓的标准狂躁行为差异。U023 目前已有�
 | 编号 | 已查实的可观察结果 | 当前 Core 对照 |
 | --- | --- | --- |
 | U025 中继器回收 | 实际中继器的结束 Buff 先按 ON_FINISH 补货，再进入 Card 回收。持有上限稳定、确实补入一份且无显式刷新时，剩余总份和排队份数同加，可用份数保持不变。正在恢复时再次普通归队只追加恢复份数，不重置当前段时钟。谬因 S3 的显式重置节点将当前时钟归零。 | `enqueueRecovery` 已能保留当前段，下段在启动时采样预算。其余技能库存逻辑可独立处理，运行中单段归零可用 `clearCooldown(..., "RECOVERY")`。 [原生与实际绑定](../research/evidence/repeater-recovery-20261122/README.md) |
-| U038／U039 部署额度和同卡名额 | 普通撤退先返 DP。普通死亡和撤退都在 `Character.OnFinish` 通知原 Card。此时普通 UNIQUE 卡开始冷却，TokenCard 可释放自身在场名额。全局部署额度到 `Unit.OnRecycle → UnitManager.Unregister` 才释放。普通撤退即时回收，普通死亡走延迟回收，Character 默认预算为 1 秒。 | 实际部署资格读取剩余全局额度，已满额时另一张 Card 必须等这个预算结束。当前探针中普通 DEATH 完成时 `usedSlots` 同 Tick 归零，另一张 Card 可立即部署。保留整个 Unit 会延迟 Card 冷却或同卡名额，单卡 DEPLOY Restriction 则无法让全局额度查询保持占用。U039 的同卡名额已随退场结算，明确差异是 U038 的独立全局占用。 [原生与资格](../research/evidence/deployment-exit-limits-20261122/README.md) · [Core 释放](../../src/core/unit/capability/deployable/capability.ts#L62) |
+| U038／U039 部署额度和同卡名额 | 普通撤退先返 DP。普通死亡和撤退都在 `Character.OnFinish` 通知原 Card。此时普通 UNIQUE 卡开始冷却，TokenCard 可释放自身在场名额。静态默认对象池路径到 `Unit.OnRecycle → UnitManager.Unregister` 才扣减全局占用。普通撤退即时回收，普通死亡传默认 1 秒战斗时间的预算。 | 复查确认正常部署提交读取该全局计数，未查到普通死亡提前扣减的路径。若这条静态路径在实机生效，满额时另一张卡须等待。当前 Core 探针中完成 DEATH 即可部署另一张卡。U038 保留为有静态证据的候选，实机观察须区分 HP 归零、卡牌回收、剩余部署位更新与另一张卡成功部署。U039 的同卡名额已有现有退场结算。 [原生与资格](../research/evidence/deployment-exit-limits-20261122/README.md) · [Core 释放](../../src/core/unit/capability/deployable/capability.ts#L62) |
 | U048 动态召唤与调度等待 | 寻路者甜品商按活宿主的当前路线和进度生成糖果车。真实调用在成功出生后将它加入当前波次与最终两处等待。主线 12-20 的变形者集群分身只加入最终等待。卫戍炎佑只借用 `dragon` 路线，其调用参数明确跳过两处。 | `Unit.initialize → Unit.add` 能创建动态 Unit，两个等待集合仍为空，Schedule 可以提前完成。固定 Branch Spawn 可以先登记等待，随后在 `entered` 用动态 APPEAR 重定位。探针验证这个组合能阻止进波，但 `entered` 的出生快照仍是模板位置，Spawn 还会额外消费共享 RNG。分别在主线及 Branch 增加阻塞 Operation 可以等待已知结果，需要在关卡另行管理待出生对象和两套等待。缺的是让普通动态创建的真实 Unit 参与同一调度等待。 [真实出生与等待](../research/evidence/managed-summons-20261122/README.md) · [炎佑反例](../research/evidence/stronghold-yan-summon-20261122/README.md) · [Core 等待登记](../../src/core/battle/schedule/runtime.ts#L13) |
 
 本节闭合所述实际普通路径。其它模式的政策、特例和不同版本仍按原证据适用范围记录。
