@@ -963,7 +963,10 @@ const labelMechanism: mechanisms.Definition<{ label: string }> = {
     id: 'label', initialize: () => ({ label: 'ready' }),
     onTick: (state, self) => mechanisms.setState(state, mechanisms.ref(self), { label: self.state.label }),
 };
-const account = { dp: { initial: 0, min: 0, max: 99, recoveryInterval: null }, slotLimit: null };
+const account = {
+    dp: { initial: 0, min: 0, max: 99, recoveryInterval: null },
+    slot: { limit: null },
+};
 runtime.initialize({ ...baseInput,
     deployment: { definition: account, cards: [cardInput, { definition: labelCard, unitDefinition: cardUnitBase }] },
     initialMechanisms: [{ definition: counterMechanism }, { definition: labelMechanism }],

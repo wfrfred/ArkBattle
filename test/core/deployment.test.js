@@ -39,7 +39,7 @@ const operatorCard = {
 };
 const account = {
     dp: { initial: 50, min: 0, max: 99, recoveryInterval: null },
-    slotLimit: 3,
+    slot: { limit: 3 },
 };
 
 test("Card initialization reserves identity and Card writes refresh deployment order", () => {
@@ -233,7 +233,7 @@ test("preview, evaluation and deployment share a request, rejection spends nothi
 
 test("DEPLOY-RESTRICTION-01: policy overrides retain resource and occupancy prerequisites while zero quotes remain legal", () => {
     let state = battle([], { deployment: {
-        definition: { ...account, dp: { ...account.dp, initial: 0, min: -5 }, slotLimit: 0 },
+        definition: { ...account, dp: { ...account.dp, initial: 0, min: -5 }, slot: { limit: 0 } },
         cards: [{ definition: operatorCard, unitDefinition: operator }],
     } });
     const card = cards.ref([...cards.all(state)][0]);
@@ -305,7 +305,7 @@ test("DEPLOY-RESTRICTION-02: Definition, Card and Request replace IDs before gro
     const permit = { allows: () => true };
     const deny = { allows: () => false };
     let state = battle([], { deployment: {
-        definition: { ...account, slotLimit: 0 }, cards: [{ unitDefinition: operator, definition: {
+        definition: { ...account, slot: { limit: 0 } }, cards: [{ unitDefinition: operator, definition: {
             ...operatorCard, activeLimit: 0,
             deploymentRestrictions: [
                 { id: "@deployment/cooldown", value: deny },
@@ -341,7 +341,7 @@ test("retreat refunds before removal, and death delays global slot release indep
     const retreats = [];
     let state = battle([], {
         deployment: {
-            definition: { ...account, slotLimit: 1 },
+            definition: { ...account, slot: { limit: 1 } },
             cards: [
                 {
                     unitDefinition: operator,
@@ -416,24 +416,89 @@ test("retreat refunds before removal, and death delays global slot release indep
     assert.deepEqual(departures[1], { reason: "DEATH", dp: 30, stage: 2, pending: 1, slots: 1 });
 
     const releasedAt = state.tick + TICKS_PER_SECOND;
-    const beforeRelease = { ...state, tick: releasedAt - 1 };
-    const next = deployment.createRequest(beforeRelease, nextCard, tilePosition);
+    assert.deepEqual(state.deployment.slot.pending, [{ amount: 1, atTick: releasedAt }]);
+    while (state.tick < releasedAt) {
+        state = step(state, []);
+    }
+    assert.equal(state.deployment.slot.used, 1);
+    const next = deployment.createRequest(state, nextCard, tilePosition);
     const rejection = { type: "REJECTED", reason: "SLOT_LIMIT" };
-    assert.deepEqual(deployment.preview(beforeRelease, next), rejection);
-    assert.deepEqual(deployment.evaluate(beforeRelease, next), rejection);
-    assert.deepEqual(deployment.deploy(beforeRelease, next).value, rejection);
+    assert.deepEqual(deployment.preview(state, next), rejection);
+    assert.deepEqual(deployment.evaluate(state, next), rejection);
+    assert.deepEqual(deployment.deploy(state, next), { state, value: rejection });
 
-    const atRelease = { ...state, tick: releasedAt };
-    assert.equal(deployment.preview(atRelease, next).type, "ALLOWED");
-    assert.equal(deployment.evaluate(atRelease, next), null);
-    const replaced = deployment.deploy(atRelease, next);
+    const placedOnRelease = step(state, [{ type: "DEPLOY_UNIT", ref: nextCard, tilePosition }]);
+    assert.deepEqual(placedOnRelease.deployment.history.at(-1)?.card, nextCard);
+    assert.equal(placedOnRelease.deployment.slot.used, 1);
+
+    state = step(state, []);
+    assert.equal(state.deployment.slot.used, 0);
+    assert.deepEqual(state.deployment.slot.pending, []);
+    assert.equal(deployment.preview(state, next).type, "ALLOWED");
+    assert.equal(deployment.evaluate(state, next), null);
+    const replaced = deployment.deploy(state, next);
     assert.equal(replaced.value.type, "DEPLOYED");
-    assert.equal(replaced.state.deployment.slot.used, 1);
-    assert.equal(deployment.advance({ ...replaced.state, tick: releasedAt + 1 }).deployment.slot.used, 1);
+    assert.equal(step(replaced.state, []).deployment.slot.used, 1);
+});
 
-    const advanced = deployment.advance(atRelease);
-    assert.equal(advanced.deployment.slot.used, 0);
-    assert.equal(deployment.advance({ ...advanced, tick: releasedAt + 1 }).deployment.slot.used, 0);
+test("slot limit contributions affect new deployments without changing occupied slots", () => {
+    const { slot } = deployment;
+    let state = battle([], {
+        deployment: {
+            definition: { ...account, slot: { limit: 1 } },
+            cards: [1, 1, 1, 0].map(slots => ({
+                unitDefinition: operator,
+                definition: { ...operatorCard, slots },
+            })),
+        },
+    });
+    const requests = [...cards.all(state)].map((card, index) =>
+        deployment.createRequest(state, cards.ref(card), [1, index + 1]),
+    );
+    const [first, second, third, free] = requests;
+    const occupied = deployment.deploy(state, first);
+    assert.equal(occupied.value.type, "DEPLOYED");
+    state = occupied.state;
+    assert.equal(slot.resolveLimit(state), 1);
+    assert.equal(slot.remaining(state), 0);
+    const rejection = { type: "REJECTED", reason: "SLOT_LIMIT" };
+    assert.deepEqual(deployment.evaluate(state, second), rejection);
+
+    const bonus = { id: "extra-slot", value: modifier.create({ addition: 1 }) };
+    state = slot.setLimitContribution(state, bonus);
+    assert.equal(slot.resolveLimit(state), 2);
+    assert.equal(slot.remaining(state), 1);
+    const extra = deployment.deploy(state, second);
+    assert.equal(extra.value.type, "DEPLOYED");
+
+    state = slot.removeLimitContribution(extra.state, bonus.id);
+    assert.equal(slot.resolveLimit(state), 1);
+    assert.equal(slot.remaining(state), 0);
+    assert.equal(state.deployment.slot.used, 2);
+    assert.deepEqual(deployment.evaluate(state, third), rejection);
+    const withoutSlot = deployment.deploy(state, free);
+    assert.equal(withoutSlot.value.type, "DEPLOYED");
+    assert.equal(withoutSlot.state.deployment.slot.used, 2);
+});
+
+test("an unlimited slot configuration remains unlimited with limit contributions", () => {
+    const { slot } = deployment;
+    const initial = battle([], {
+        deployment: {
+            definition: { ...account, slot: { limit: null } },
+            cards: [{ unitDefinition: operator, definition: operatorCard }],
+        },
+    });
+    const state = slot.setLimitContribution(initial, {
+        id: "extra-slot",
+        value: modifier.create({ addition: 1 }),
+    });
+    assert.equal(slot.resolveLimit(state), null);
+    assert.equal(slot.remaining(state), null);
+    const card = cards.ref([...cards.all(state)][0]);
+    const deployed = deployment.deploy(state, deployment.createRequest(state, card, [1, 2]));
+    assert.equal(deployed.value.type, "DEPLOYED");
+    assert.equal(deployed.state.deployment.slot.used, 1);
 });
 
 test("external movement recycles on departure and self movement keeps the card in use", () => {

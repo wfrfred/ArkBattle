@@ -10,8 +10,7 @@ export function settleDeparture(
     reason: EndReason,
     { card, slots }: Pick<DeployableState, "card" | "slots">,
 ): BattleState {
-    const readyAtTick = reason === "DEATH" ? battle.tick + TICKS_PER_SECOND : battle.tick;
-    battle = release(battle, slots, readyAtTick);
+    battle = reason === "DEATH" ? release(battle, slots, TICKS_PER_SECOND) : release(battle, slots);
 
     return card !== null &&
         (reason === "RETREAT" || reason === "DEATH" || reason === "REDEPLOY_EXTERNAL")

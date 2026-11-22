@@ -1,51 +1,47 @@
 import { replaceIn } from "../../../common/object.js";
 import type { State as BattleState } from "../../state.js";
-import type { PendingSlotRelease, State } from "./slot.js";
+import type { Pending } from "./slot.js";
 
-export function allows(slot: State, slots: number): boolean {
-    return slot.limit === null || slot.used + slots <= slot.limit;
-}
-
-export function occupy(battle: BattleState, slots: number): BattleState {
+export function occupy(battle: BattleState, amount: number): BattleState {
     const { slot } = battle.deployment;
 
-    return replaceIn(battle, ["deployment", "slot", "used"], slot.used + slots);
+    return replaceIn(battle, ["deployment", "slot", "used"], slot.used + amount);
 }
 
-export function release(battle: BattleState, slots: number, readyAtTick: number): BattleState {
-    if (slots === 0) {
+export function release(battle: BattleState, amount: number, delayTicks = 0): BattleState {
+    if (amount === 0) {
         return battle;
     }
 
     const { slot } = battle.deployment;
 
-    return readyAtTick <= battle.tick
-        ? replaceIn(battle, ["deployment", "slot", "used"], slot.used - slots)
+    return delayTicks === 0
+        ? replaceIn(battle, ["deployment", "slot", "used"], slot.used - amount)
         : replaceIn(
               battle,
               ["deployment", "slot", "pending"],
-              [...slot.pending, { readyAtTick, slots }],
+              [...slot.pending, { amount, atTick: battle.tick + delayTicks }],
           );
 }
 
 export function advance(battle: BattleState): BattleState {
     const { slot } = battle.deployment;
-    let releasedSlots = 0;
-    const pending: PendingSlotRelease[] = [];
+    let released = 0;
+    const pending: Pending[] = [];
 
     for (const release of slot.pending) {
-        if (release.readyAtTick <= battle.tick) {
-            releasedSlots += release.slots;
+        if (release.atTick <= battle.tick) {
+            released += release.amount;
         } else {
             pending.push(release);
         }
     }
 
-    return releasedSlots === 0
+    return released === 0
         ? battle
         : replaceIn(battle, ["deployment", "slot"], {
               ...slot,
-              used: slot.used - releasedSlots,
+              used: slot.used - released,
               pending,
           });
 }

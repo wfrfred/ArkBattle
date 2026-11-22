@@ -507,7 +507,7 @@ test("source grouping follows persistent Cards across redeployment and keeps Car
         deployment: {
             definition: {
                 dp: { initial: 0, min: 0, max: 99, recoveryInterval: null },
-                slotLimit: 2,
+                slot: { limit: 2 },
             },
             cards: [card, card],
         },

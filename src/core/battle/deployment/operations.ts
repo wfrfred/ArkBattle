@@ -18,7 +18,7 @@ import { get } from "./deck/deck.js";
 import * as deck from "./deck/operations.js";
 import * as dp from "./dp/operations.js";
 import * as slot from "./slot/operations.js";
-import { advanceResources, evaluateCurrent, resolveRestrictions, createRequest } from "./query.js";
+import { evaluateCurrent, resolveRestrictions, createRequest } from "./query.js";
 import { refreshOrder } from "./deck/order.js";
 import { validateRequest, type DeployRequest, type DeployOutcome } from "./request.js";
 import { Hooks } from "../../hook.js";
@@ -50,7 +50,7 @@ export function deploy<T extends Card<any>>(
         return { state: battle, value: { type: "REJECTED", reason: "UNKNOWN_CARD" } };
     }
 
-    battle = advanceResources(battle, self);
+    battle = deck.advanceCard(battle, self);
     const rejected = evaluateCurrent(battle, input, resolveRestrictions(self, input));
     if (rejected !== null) {
         return { state: previous, value: rejected };

@@ -20,7 +20,7 @@ import {
     type Rejection,
 } from "./request.js";
 import { canPay } from "./dp/query.js";
-import { advance as advanceSlots, allows as allowsSlots } from "./slot/operations.js";
+import { remaining } from "./slot/query.js";
 import { Hooks } from "../../hook.js";
 
 export function cardForUnit(battle: BattleState, reference: Ref<Unit>): Ref<Card> | null {
@@ -92,8 +92,11 @@ const defaults: readonly [Rejection, Contribution<Restriction>][] = [
         {
             id: "@deployment/slots",
             value: {
-                allows: (battle, { request }) =>
-                    allowsSlots(battle.deployment.slot, request.quote.slots),
+                allows: (battle, { request }) => {
+                    const available = remaining(battle);
+
+                    return available === null || request.quote.slots <= available;
+                },
             },
         },
     ],
@@ -130,10 +133,6 @@ export function resolveRestrictions(
     }
 
     return resolveEntries([...restrictions.values()]);
-}
-
-export function advanceResources(battle: BattleState, self: Card<any>): BattleState {
-    return advanceCard(advanceSlots(battle), self);
 }
 
 export function evaluateCurrent(
@@ -185,7 +184,7 @@ export function evaluate<T extends Card<any>>(
         return { type: "REJECTED", reason: "UNKNOWN_CARD" };
     }
 
-    battle = advanceResources(battle, self);
+    battle = advanceCard(battle, self);
 
     return evaluateCurrent(battle, input, resolveRestrictions(self, input));
 }
@@ -208,7 +207,7 @@ export function preview<T extends Card<any>>(
         return { type: "REJECTED", reason: "UNKNOWN_CARD" };
     }
 
-    battle = advanceResources(battle, self);
+    battle = advanceCard(battle, self);
     const rejected = evaluateCurrent(battle, input, resolveRestrictions(self, input));
     if (rejected !== null) {
         return rejected;
@@ -234,7 +233,7 @@ export function positions<T extends Card<any>>(
         return result;
     }
 
-    battle = advanceResources(battle, self);
+    battle = advanceCard(battle, self);
     const restrictions = resolveRestrictions(self, input);
     const { rows, columns } = battle.battlefield.map;
 

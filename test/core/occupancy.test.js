@@ -18,7 +18,7 @@ const operator = {
 const operatorCard = createCardDefinition({ redeployTicks: 10, slots: 1 });
 const account = {
     dp: { initial: 50, min: 0, max: 99, recoveryInterval: null },
-    slotLimit: 3,
+    slot: { limit: 3 },
 };
 
 test("occupancy pairs notify once and an old departure cannot clear the replacement pair", () => {
@@ -60,7 +60,7 @@ test("occupancy pairs notify once and an old departure cannot clear the replacem
     };
     let state = battle([], {
         deployment: {
-            definition: { ...account, slotLimit: 1 },
+            definition: { ...account, slot: { limit: 1 } },
             cards: [
                 { definition: supportDefinition, unitDefinition: support },
                 { definition: summonDefinition, unitDefinition: operator },

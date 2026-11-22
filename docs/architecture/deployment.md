@@ -26,7 +26,7 @@ Deployment 完成部署资格、消费、实例创建与通知；Card 保存跨�
 
 各领域通过自身操作维护状态，不借通用 Unit 更新推断账务。具体声明见 [deployment/index.ts](../../src/core/battle/deployment/index.ts)。
 
-`Deployment.State` 聚合 `deck`、`dp`、`slot` 与部署历史和通知。初始化配置由三个子域的 Definition 组合，子域初始化各自读取配置并建立运行状态。`deck.costCeiling` 是 Card 费用计算的截断上限，`dp.max` 是账户余额上限。
+`Deployment.State` 聚合 `deck`、`dp`、`slot` 与部署历史和通知。初始化配置由三个子域的 Definition 组合，`Deployment.Definition.dp` 和 `Deployment.Definition.slot` 分别提供账户和部署位的基础配置。`deck.costCeiling` 是 Card 费用计算的截断上限，DP 的有效上限约束账户余额。
 
 ## 静态内容与 Card
 
@@ -56,7 +56,7 @@ Quote 承诺 DP、库存和额度消费：dp 为 null 表示不支付，零表�
 
 Card 初始化与 DeployRequest 入口各自校验列表内的限制 ID 唯一。限制依次合并默认、Card 静态、Card 当前与 Request，不同列表的同 ID 后者覆盖。有效项按贡献政策选择，按 ID 稳定求值；首拒绝映射既有原因，自定义原因是 RULE，不依赖历史插入位置。查询与执行都使用同一规则和资源事实。
 
-求值先接续到当前 Tick 的库存、时钟和部署位，支付资格使用当前 DP 余额。preview／evaluate 只读这个临时版本，positions 保留完整报价和限制逐落点求值；拒绝不发布资源推进或创建实例。
+求值先接续请求 Card 到当前 Tick 的库存和时钟，部署位与 DP 资格读取已经结算的状态。preview／evaluate 只读这个临时版本，positions 保留完整报价和限制逐落点求值；拒绝不发布资源推进或创建实例。
 
 ## 普通部署流程
 
@@ -84,7 +84,7 @@ Deployable 单向依赖 Occupancy。初始来源为空、COST／额度为零、�
 
 Unit 注销后，Deployable 的 `removed` 将离场原因、原 Card 与占位数交给 Deployment 结算。RETREAT、DEATH 和 REDEPLOY_EXTERNAL 共用 Card 回收政策，依设置推进费用阶段与库存恢复。REDEPLOY_SELF、SCRIPT、EXPIRED 跳过回收。已有恢复队列保留当前段，新段启动时采样时长。
 
-DEATH 的非零占位登记为 `PendingSlotRelease`，在本次 `removed` 的 Tick 加 `TICKS_PER_SECOND` 后到期。其他离场立即归还占位。Deployment 推进时归还到期记录，部署查询与执行也按当前 Tick 先结算到期占位。Unit 与格子在离场时立即注销，待归还部署位只记录额度及到期 Tick。同卡在场计数仍按当前登记实例计算。 [原生退出与延迟](../research/evidence/deployment-exit-limits-20261122/README.md#退出与延迟)
+DEATH 传入 `TICKS_PER_SECOND` 作为归还延迟，其他离场立即归还占位。Unit 与格子在离场时立即注销，同卡在场计数仍按当前登记实例计算。 [原生退出与延迟](../research/evidence/deployment-exit-limits-20261122/README.md#退出与延迟)
 
 ## 离场清理的偏序
 
@@ -117,6 +117,12 @@ cooldown 是部署间隔，recovery 是串行逐份恢复；间隔到期不凭�
 `dp.modify` 按有符号差值修改余额并应用有效上下限。余额已超上限时，正差值保持原余额，负差值按实际金额减少并仍受下限约束。`dp.pay` 按有效下限判断能否支付，成功时扣除准确金额，拒绝时返回原状态。支付零点合法，免支付的报价由 Deployment 跳过付款。支付、余额修改与资格查询都使用当前余额。
 
 提高有效下限时同步抬高低于下限的余额。设置上限贡献默认保留余额，传入 `clamp: true` 时将超出的余额截到新上限。移除上限贡献重新求值，保留余额。
+
+## Slot
+
+`slot.resolveLimit(battle)` 从基础上限和贡献求出有效上限，`slot.remaining(battle)` 返回非负的剩余额度。基础上限为 `null` 时表示不限位，两项查询均返回 `null`。改变上限只影响之后的资格检查，已有占用继续保留。剩余额度为零时，零占位部署仍可通过部署位检查。
+
+`occupy` 登记本次实际占用。`release` 接收相对延迟，零延迟立即扣减占用，有延迟时保存 `{ amount, atTick }`，其中 `atTick = battle.tick + delayTicks`。调度器在处理本 Tick 的部署命令前结算到期归还，扣减 `used` 并移除记录。部署查询和部署操作使用已结算的占用。
 
 ## 支持范围
 

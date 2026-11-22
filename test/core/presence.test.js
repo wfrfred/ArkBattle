@@ -60,7 +60,7 @@ test("disappearance preserves deployment and lifetimes, releases blocking before
     ], { deployment: {
         definition: {
             dp: { initial: 20, min: 0, max: 99, recoveryInterval: null },
-            slotLimit: 1,
+            slot: { limit: 1 },
         },
         cards: [{ definition: cardDefinition, unitDefinition: operator }],
     } });

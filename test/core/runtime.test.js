@@ -12,7 +12,7 @@ import * as skills from "../../dist/core/unit/capability/skill/index.js";
 
 const account = {
     dp: { initial: 20, min: 0, max: 99, recoveryInterval: null },
-    slotLimit: 1,
+    slot: { limit: 1 },
 };
 
 test("initial and scheduled entry see registered battle facts and preserve their resource operations", () => {
