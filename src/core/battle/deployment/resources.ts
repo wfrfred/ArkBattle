@@ -5,6 +5,18 @@ import * as card from "./card/state.js";
 import * as dp from "./dp.js";
 import { replace } from "./card/operations.js";
 
+export function reserveSlots(battle: BattleState, amount: number): BattleState {
+    return amount === 0
+        ? battle
+        : {
+              ...battle,
+              deployment: {
+                  ...battle.deployment,
+                  usedSlots: battle.deployment.usedSlots + amount,
+              },
+          };
+}
+
 export function releaseSlots(battle: BattleState, amount: number): BattleState {
     return amount === 0
         ? battle

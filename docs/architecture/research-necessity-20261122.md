@@ -10,7 +10,6 @@
 
 | 状态 | 事项 | 剩下的问题 |
 | --- | --- | --- |
-| 待接入 | **特殊移动（U028）** | 缺明确的 `deployment.redeploy`。两种移动均从同一卡免费创建新 Unit。自身移动跳过普通回收，创建失败时默认模式回收 Card。翔虫的外部移动在旧 Unit 离场时走通常的回收，可累积下次部署费用惩罚。思衡托后检失败保留 Card 上的技能进度和待投放记录，下一次入场恢复计时，结束后清除限制。特殊移动保留通常的出生通知。「岁怒」仍触发，「他缚」读取原 Card 的离场原因并跳过自身移动。 [特殊移动的结果与实际消费者](../research/cases/24-deployment-cost-and-supply.md#特殊移动的结束原因) |
 | 待定 | Card 参与本次 Unit 的初始属性（G06、U035） | 松桐的 Card 修正先进入单位属性，再用有效 MaxHP 建立出生 HP。探针用高优先级 `entered` 改 HP，按 Ref 读到 115／115，`entered` 和 `deployed` 的固定载荷仍是 100／100。已查的另一个出生观察者「他缚」是在出生后读取实时 HP。需决定在哪里提交部署输入，令固定载荷与实际初始状态一致。 [原生生命初始化](../research/cases/24-deployment-cost-and-supply.md#普通-native-分支的阶段区别) · [当前入场载荷](../../src/core/unit/operations.ts#L14) |
 | 待接入 | 战中调整 DP 上限（G05） | 诺伯特平民鉴定后进入保护区可提高我方 DP 上限。当前自然回复和显式加费都受开场上限约束。 [奖励依据](../research/cases/20-norport-civilian-allegiance-and-blocking.md#L22) · [现行上限](../../src/core/battle/deployment/dp.ts#L5) |
 | 待接入 | 死亡后独立归还全局部署位（U038） | 实机确认干员被击倒后仍暂占全局部署位。当前死亡离场立即归还，满额时另一张卡可随即部署。 [原生与实机复测](../research/evidence/deployment-exit-limits-20261122/README.md#实机复测) |

@@ -3,11 +3,12 @@ import type { Entry } from "../../common/collection/entries.js";
 import type { Unit } from "../../unit/unit.js";
 import type { Deployable } from "../../unit/capability/deployable/capability.js";
 import type { State as BattleState } from "../state.js";
-import type { DeployRequest } from "./request.js";
+import type { DeployRequest, RedeployRequest } from "./request.js";
 
 export interface Deployed {
     readonly unit: Unit & Deployable;
     readonly request: DeployRequest;
+    readonly redeploy: RedeployRequest | null;
 }
 
 export type Hook = hooks.Hook<Deployed, void>;

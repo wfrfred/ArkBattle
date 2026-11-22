@@ -2,8 +2,7 @@ import type { Ref } from "../../../common/ref.js";
 import type { State as BattleState } from "../../../battle/state.js";
 import { remove } from "../../operations.js";
 import { recover } from "../../../battle/deployment/dp.js";
-import * as cards from "../../../battle/deployment/card/operations.js";
-import { get as getCard } from "../../../battle/deployment/card/query.js";
+import { recoverOnDeparture } from "../../../battle/deployment/card/operations.js";
 import type { Unit } from "../../unit.js";
 import * as units from "../../query.js";
 import type { Deployable, State } from "./capability.js";
@@ -42,13 +41,7 @@ export function retreat(battle: BattleState, reference: Ref<Unit & Deployable>):
 
     const card = self.deployable.card;
     if (card !== null) {
-        const definition = getCard(battle, card)!.definition;
-        if (definition.increaseCostOnRetreatOrDeath) {
-            battle = cards.incrementCostStage(battle, card);
-        }
-        if (definition.recoverOnRetreatOrDeath) {
-            battle = cards.enqueueRecovery(battle, card);
-        }
+        battle = recoverOnDeparture(battle, card);
     }
 
     return remove(battle, reference, { reason: "RETREAT" });
